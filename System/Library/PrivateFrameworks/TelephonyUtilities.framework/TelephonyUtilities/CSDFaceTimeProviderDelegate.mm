@@ -1,48 +1,48 @@
 @interface CSDFaceTimeProviderDelegate
-- (BOOL)providerDelegate:(id)a3 isExclusivelyManagingCallWithUUID:(id)a4;
-- (BOOL)providerDelegate:(id)a3 isManagingCallWithUUID:(id)a4;
+- (BOOL)providerDelegate:(id)delegate isExclusivelyManagingCallWithUUID:(id)d;
+- (BOOL)providerDelegate:(id)delegate isManagingCallWithUUID:(id)d;
 - (CSDFaceTimeProviderDelegate)init;
-- (CSDFaceTimeProviderDelegate)initWithCallSource:(id)a3 queue:(id)a4 chManager:(id)a5 conversationManager:(id)a6;
-- (CSDFaceTimeProviderDelegate)initWithCallSource:(id)a3 queue:(id)a4 featureFlags:(id)a5 blockUtilities:(id)a6 shouldUseIDSDemuxer:(BOOL)a7 chManager:(id)a8 conversationManager:(id)a9;
+- (CSDFaceTimeProviderDelegate)initWithCallSource:(id)source queue:(id)queue chManager:(id)manager conversationManager:(id)conversationManager;
+- (CSDFaceTimeProviderDelegate)initWithCallSource:(id)source queue:(id)queue featureFlags:(id)flags blockUtilities:(id)utilities shouldUseIDSDemuxer:(BOOL)demuxer chManager:(id)manager conversationManager:(id)conversationManager;
 - (CSDProviderCallDataSource)callDataSource;
 - (CXProviderConfiguration)providerConfiguration;
-- (id)ISOCountryCodeForCallWithUUID:(id)a3;
-- (id)_createJoinCallAction:(id)a3 outgoingCallerID:(id)a4 gftOneToOneDestinations:(id)a5;
-- (void)_checkAndSendReturningSilencedIMAVAnalytic:(id)a3;
-- (void)_createDelayedActionListIfNecessary:(id)a3;
-- (void)_processDelayedActionList:(id)a3 provider:(id)a4;
+- (id)ISOCountryCodeForCallWithUUID:(id)d;
+- (id)_createJoinCallAction:(id)action outgoingCallerID:(id)d gftOneToOneDestinations:(id)destinations;
+- (void)_checkAndSendReturningSilencedIMAVAnalytic:(id)analytic;
+- (void)_createDelayedActionListIfNecessary:(id)necessary;
+- (void)_processDelayedActionList:(id)list provider:(id)provider;
 - (void)dealloc;
-- (void)deferReportingAudioFinishedForCallWithUUID:(id)a3;
-- (void)initiateModernFTInviteForAction:(id)a3 destinations:(id)a4 excludedIMAVDestinations:(id)a5 joinCallActionToFulfill:(id)a6;
-- (void)provider:(id)a3 didActivateAudioSession:(id)a4;
-- (void)provider:(id)a3 didDeactivateAudioSession:(id)a4;
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4;
-- (void)provider:(id)a3 performEnableVideoCallAction:(id)a4;
-- (void)provider:(id)a3 performEndCallAction:(id)a4;
-- (void)provider:(id)a3 performJoinCallAction:(id)a4;
-- (void)provider:(id)a3 performJoinCallAction:(id)a4 shouldUseIDSDemuxer:(BOOL)a5;
-- (void)provider:(id)a3 performSetAllowUplinkAudioInjectionAction:(id)a4;
-- (void)provider:(id)a3 performSetHeldCallAction:(id)a4;
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4;
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4;
-- (void)provider:(id)a3 performSetScreenShareAttributesCallAction:(id)a4;
-- (void)provider:(id)a3 performSetScreeningCallAction:(id)a4;
-- (void)provider:(id)a3 performSetSendingVideoCallAction:(id)a4;
-- (void)provider:(id)a3 performSetSharingScreenCallAction:(id)a4;
-- (void)provider:(id)a3 performSetVideoPresentationSizeCallAction:(id)a4;
-- (void)provider:(id)a3 performSetVideoPresentationStateCallAction:(id)a4;
-- (void)provider:(id)a3 performStartCallAction:(id)a4;
-- (void)provider:(id)a3 performStartCallAction:(id)a4 shouldUseIDSDemuxer:(BOOL)a5;
-- (void)provider:(id)a3 timedOutPerformingAction:(id)a4;
-- (void)providerDelegate:(id)a3 callWithUUID:(id)a4 connectedAtDate:(id)a5;
-- (void)providerDelegate:(id)a3 callWithUUID:(id)a4 endedAtDate:(id)a5 withReason:(int64_t)a6 failureContext:(id)a7;
-- (void)providerDelegate:(id)a3 callWithUUID:(id)a4 startedConnectingAtDate:(id)a5;
-- (void)providerDelegate:(id)a3 endOtherProvidersCallWithUUID:(id)a4;
-- (void)providerDelegate:(id)a3 requestedTransaction:(id)a4 completion:(id)a5;
-- (void)providerDelegate:(id)a3 requestedUpgradeToExistingCallForConversation:(id)a4 withSessionToken:(id)a5 completion:(id)a6;
-- (void)providerDidBegin:(id)a3;
-- (void)providerDidReset:(id)a3;
-- (void)updateProviderConfigurationWithSenderIdentities:(id)a3;
+- (void)deferReportingAudioFinishedForCallWithUUID:(id)d;
+- (void)initiateModernFTInviteForAction:(id)action destinations:(id)destinations excludedIMAVDestinations:(id)vDestinations joinCallActionToFulfill:(id)fulfill;
+- (void)provider:(id)provider didActivateAudioSession:(id)session;
+- (void)provider:(id)provider didDeactivateAudioSession:(id)session;
+- (void)provider:(id)provider performAnswerCallAction:(id)action;
+- (void)provider:(id)provider performEnableVideoCallAction:(id)action;
+- (void)provider:(id)provider performEndCallAction:(id)action;
+- (void)provider:(id)provider performJoinCallAction:(id)action;
+- (void)provider:(id)provider performJoinCallAction:(id)action shouldUseIDSDemuxer:(BOOL)demuxer;
+- (void)provider:(id)provider performSetAllowUplinkAudioInjectionAction:(id)action;
+- (void)provider:(id)provider performSetHeldCallAction:(id)action;
+- (void)provider:(id)provider performSetMutedCallAction:(id)action;
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action;
+- (void)provider:(id)provider performSetScreenShareAttributesCallAction:(id)action;
+- (void)provider:(id)provider performSetScreeningCallAction:(id)action;
+- (void)provider:(id)provider performSetSendingVideoCallAction:(id)action;
+- (void)provider:(id)provider performSetSharingScreenCallAction:(id)action;
+- (void)provider:(id)provider performSetVideoPresentationSizeCallAction:(id)action;
+- (void)provider:(id)provider performSetVideoPresentationStateCallAction:(id)action;
+- (void)provider:(id)provider performStartCallAction:(id)action;
+- (void)provider:(id)provider performStartCallAction:(id)action shouldUseIDSDemuxer:(BOOL)demuxer;
+- (void)provider:(id)provider timedOutPerformingAction:(id)action;
+- (void)providerDelegate:(id)delegate callWithUUID:(id)d connectedAtDate:(id)date;
+- (void)providerDelegate:(id)delegate callWithUUID:(id)d endedAtDate:(id)date withReason:(int64_t)reason failureContext:(id)context;
+- (void)providerDelegate:(id)delegate callWithUUID:(id)d startedConnectingAtDate:(id)date;
+- (void)providerDelegate:(id)delegate endOtherProvidersCallWithUUID:(id)d;
+- (void)providerDelegate:(id)delegate requestedTransaction:(id)transaction completion:(id)completion;
+- (void)providerDelegate:(id)delegate requestedUpgradeToExistingCallForConversation:(id)conversation withSessionToken:(id)token completion:(id)completion;
+- (void)providerDidBegin:(id)begin;
+- (void)providerDidReset:(id)reset;
+- (void)updateProviderConfigurationWithSenderIdentities:(id)identities;
 @end
 
 @implementation CSDFaceTimeProviderDelegate
@@ -55,54 +55,54 @@
   return 0;
 }
 
-- (CSDFaceTimeProviderDelegate)initWithCallSource:(id)a3 queue:(id)a4 chManager:(id)a5 conversationManager:(id)a6
+- (CSDFaceTimeProviderDelegate)initWithCallSource:(id)source queue:(id)queue chManager:(id)manager conversationManager:(id)conversationManager
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  conversationManagerCopy = conversationManager;
+  managerCopy = manager;
+  queueCopy = queue;
+  sourceCopy = source;
   v14 = objc_alloc_init(TUFeatureFlags);
   v15 = objc_alloc_init(CSDBlockUtilities);
-  v16 = -[CSDFaceTimeProviderDelegate initWithCallSource:queue:featureFlags:blockUtilities:shouldUseIDSDemuxer:chManager:conversationManager:](self, "initWithCallSource:queue:featureFlags:blockUtilities:shouldUseIDSDemuxer:chManager:conversationManager:", v13, v12, v14, v15, [v14 conversationOneToOneModeEnabled], v11, v10);
+  v16 = -[CSDFaceTimeProviderDelegate initWithCallSource:queue:featureFlags:blockUtilities:shouldUseIDSDemuxer:chManager:conversationManager:](self, "initWithCallSource:queue:featureFlags:blockUtilities:shouldUseIDSDemuxer:chManager:conversationManager:", sourceCopy, queueCopy, v14, v15, [v14 conversationOneToOneModeEnabled], managerCopy, conversationManagerCopy);
 
   return v16;
 }
 
-- (CSDFaceTimeProviderDelegate)initWithCallSource:(id)a3 queue:(id)a4 featureFlags:(id)a5 blockUtilities:(id)a6 shouldUseIDSDemuxer:(BOOL)a7 chManager:(id)a8 conversationManager:(id)a9
+- (CSDFaceTimeProviderDelegate)initWithCallSource:(id)source queue:(id)queue featureFlags:(id)flags blockUtilities:(id)utilities shouldUseIDSDemuxer:(BOOL)demuxer chManager:(id)manager conversationManager:(id)conversationManager
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v74 = a6;
-  v18 = a8;
-  v73 = a9;
+  sourceCopy = source;
+  queueCopy = queue;
+  flagsCopy = flags;
+  utilitiesCopy = utilities;
+  managerCopy = manager;
+  conversationManagerCopy = conversationManager;
   v78.receiver = self;
   v78.super_class = CSDFaceTimeProviderDelegate;
   v19 = [(CSDFaceTimeProviderDelegate *)&v78 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_queue, a4);
-    v21 = [(CSDFaceTimeProviderDelegate *)v20 queue];
-    dispatch_assert_queue_V2(v21);
+    objc_storeStrong(&v19->_queue, queue);
+    queue = [(CSDFaceTimeProviderDelegate *)v20 queue];
+    dispatch_assert_queue_V2(queue);
 
-    objc_storeStrong(&v20->_featureFlags, a5);
+    objc_storeStrong(&v20->_featureFlags, flags);
     v22 = objc_alloc_init(CSDSharedConversationServerBag);
     serverBag = v20->_serverBag;
     v20->_serverBag = v22;
 
-    objc_storeStrong(&v20->_blockUtilities, a6);
-    v20->_shouldUseIDSDemuxer = a7;
+    objc_storeStrong(&v20->_blockUtilities, utilities);
+    v20->_shouldUseIDSDemuxer = demuxer;
     v24 = objc_alloc_init(CSDFaceTimeInviteDemuxer);
     faceTimeInviteDemuxer = v20->_faceTimeInviteDemuxer;
     v20->_faceTimeInviteDemuxer = v24;
 
-    v26 = [[CSDFaceTimeIDSProviderDelegate alloc] initWithQueue:v16];
+    v26 = [[CSDFaceTimeIDSProviderDelegate alloc] initWithQueue:queueCopy];
     faceTimeIDSProviderDelegate = v20->_faceTimeIDSProviderDelegate;
     v20->_faceTimeIDSProviderDelegate = v26;
 
     [(CSDFaceTimeIDSProviderDelegate *)v20->_faceTimeIDSProviderDelegate setFaceTimeDemuxerDelegate:v20];
-    v28 = [[CSDFaceTimeIMAVProviderDelegate alloc] initWithQueue:v16];
+    v28 = [[CSDFaceTimeIMAVProviderDelegate alloc] initWithQueue:queueCopy];
     faceTimeIMAVProviderDelegate = v20->_faceTimeIMAVProviderDelegate;
     v20->_faceTimeIMAVProviderDelegate = v28;
 
@@ -115,35 +115,35 @@
     v33 = [CSDIDSFirewallManager alloc];
     v34 = +[CSDFaceTimeMultiwayIDSService sharedInstance];
     v35 = objc_alloc_init(CSDSharedConversationServerBag);
-    v36 = [(CSDIDSFirewallManager *)v33 initWithService:v34 chManager:v18 featureFlags:v17 serverBag:v35 queue:v16];
+    v36 = [(CSDIDSFirewallManager *)v33 initWithService:v34 chManager:managerCopy featureFlags:flagsCopy serverBag:v35 queue:queueCopy];
     firewallManager = v20->_firewallManager;
     v20->_firewallManager = v36;
 
     [(CSDIDSFirewallManager *)v20->_firewallManager updateFirewallWithCallHistoryIfNecessary];
     v38 = objc_alloc_init(CSDConversationInvitationResolver);
-    objc_storeStrong(&v20->_conversationManager, a9);
+    objc_storeStrong(&v20->_conversationManager, conversationManager);
     v39 = [[CSDConversationManagerXPCServer alloc] initWithConversationManager:v20->_conversationManager featureFlags:v20->_featureFlags];
     conversationManagerXPCServer = v20->_conversationManagerXPCServer;
     v20->_conversationManagerXPCServer = v39;
 
     v41 = +[FTDeviceSupport sharedInstance];
-    v42 = [v41 deviceType];
+    deviceType = [v41 deviceType];
 
-    if (v42 != 7 && (TUSharePlayForceDisabled() & 1) == 0)
+    if (deviceType != 7 && (TUSharePlayForceDisabled() & 1) == 0)
     {
       v43 = +[TUCallCenter sharedInstance];
-      v44 = [v43 neighborhoodActivityConduit];
+      neighborhoodActivityConduit = [v43 neighborhoodActivityConduit];
       neighborhoodActivityConduit = v20->_neighborhoodActivityConduit;
-      v20->_neighborhoodActivityConduit = v44;
+      v20->_neighborhoodActivityConduit = neighborhoodActivityConduit;
 
       v46 = [CSDConduitLifecycleController alloc];
       v47 = +[TUCallCenter sharedInstance];
-      v48 = [v47 conversationManager];
-      v49 = [(CSDConduitLifecycleController *)v46 initWithConversationManager:v48 delegate:v20->_neighborhoodActivityConduit];
+      conversationManager = [v47 conversationManager];
+      v49 = [(CSDConduitLifecycleController *)v46 initWithConversationManager:conversationManager delegate:v20->_neighborhoodActivityConduit];
       [(TUNeighborhoodActivityConduit *)v20->_neighborhoodActivityConduit setConduitLifecycleController:v49];
     }
 
-    v50 = [[CPBiomeSessionDonator alloc] initWithDataSource:v20->_conversationManager parentQueue:v16];
+    v50 = [[CPBiomeSessionDonator alloc] initWithDataSource:v20->_conversationManager parentQueue:queueCopy];
     cpBiomeStreamDonator = v20->_cpBiomeStreamDonator;
     v20->_cpBiomeStreamDonator = v50;
 
@@ -151,19 +151,19 @@
     conversationManagerHost = v20->_conversationManagerHost;
     v20->_conversationManagerHost = v52;
 
-    v54 = [[CPApplicationMonitor alloc] initWithApplicationController:v32 queue:v16];
+    v54 = [[CPApplicationMonitor alloc] initWithApplicationController:v32 queue:queueCopy];
     applicationMonitor = v20->_applicationMonitor;
     v20->_applicationMonitor = v54;
 
-    [(CSDConversationManager *)v20->_conversationManager addObserver:v20->_applicationMonitor queue:v16];
-    v56 = [[CSDFaceTimeConversationProviderDelegate alloc] initWithConversationManager:v20->_conversationManager queue:v16 invitationResolver:v38];
+    [(CSDConversationManager *)v20->_conversationManager addObserver:v20->_applicationMonitor queue:queueCopy];
+    v56 = [[CSDFaceTimeConversationProviderDelegate alloc] initWithConversationManager:v20->_conversationManager queue:queueCopy invitationResolver:v38];
     faceTimeConversationProviderDelegate = v20->_faceTimeConversationProviderDelegate;
     v20->_faceTimeConversationProviderDelegate = v56;
 
     [(CSDAbstractFaceTimeConversationProviderDelegate *)v20->_faceTimeConversationProviderDelegate setFaceTimeDemuxerDelegate:v20];
-    if ([v17 groupFacetimeAsAServiceEnabled])
+    if ([flagsCopy groupFacetimeAsAServiceEnabled])
     {
-      v58 = [[CSDGFTServiceConversationProviderDelegate alloc] initWithConversationManager:v20->_conversationManager queue:v16 invitationResolver:v38];
+      v58 = [[CSDGFTServiceConversationProviderDelegate alloc] initWithConversationManager:v20->_conversationManager queue:queueCopy invitationResolver:v38];
       groupFaceTimeServiceProviderDelegate = v20->_groupFaceTimeServiceProviderDelegate;
       v20->_groupFaceTimeServiceProviderDelegate = v58;
 
@@ -189,21 +189,21 @@
       v62 = off_100616618;
     }
 
-    v64 = [(__objc2_class *)*v62 sharedInstance];
-    [(CSDConversationManager *)conversationManager beginListeningOnService:v64];
+    sharedInstance = [(__objc2_class *)*v62 sharedInstance];
+    [(CSDConversationManager *)conversationManager beginListeningOnService:sharedInstance];
 
     [(CSDConversationManager *)v20->_conversationManager generateAllInactiveLinks];
     v65 = [CXInProcessProvider alloc];
-    v66 = [(CSDFaceTimeProviderDelegate *)v20 providerConfiguration];
-    v67 = [v65 initWithConfiguration:v66 callSource:v15];
+    providerConfiguration = [(CSDFaceTimeProviderDelegate *)v20 providerConfiguration];
+    v67 = [v65 initWithConfiguration:providerConfiguration callSource:sourceCopy];
     provider = v20->_provider;
     v20->_provider = v67;
 
     [(CXProvider *)v20->_provider setDelegate:v20 queue:v20->_queue];
-    v69 = [(CSDFaceTimeProviderDelegate *)v20 featureFlags];
-    LODWORD(v66) = [v69 ftAppDeletionEnabled];
+    featureFlags = [(CSDFaceTimeProviderDelegate *)v20 featureFlags];
+    LODWORD(providerConfiguration) = [featureFlags ftAppDeletionEnabled];
 
-    if (v66)
+    if (providerConfiguration)
     {
       v70 = [[CSDFaceTimeInstallationNotifier alloc] initWithQueue:v20->_queue];
       facetimeInstallationNotifier = v20->_facetimeInstallationNotifier;
@@ -216,8 +216,8 @@
 
 - (void)dealloc
 {
-  v3 = [(CSDFaceTimeProviderDelegate *)self conversationManagerXPCServer];
-  [v3 invalidate];
+  conversationManagerXPCServer = [(CSDFaceTimeProviderDelegate *)self conversationManagerXPCServer];
+  [conversationManagerXPCServer invalidate];
 
   v4.receiver = self;
   v4.super_class = CSDFaceTimeProviderDelegate;
@@ -239,69 +239,69 @@
   return v2;
 }
 
-- (id)ISOCountryCodeForCallWithUUID:(id)a3
+- (id)ISOCountryCodeForCallWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v6 = [v5 ISOCountryCodeForCallWithUUID:v4];
+  dCopy = d;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  v6 = [faceTimeIDSProviderDelegate ISOCountryCodeForCallWithUUID:dCopy];
 
   return v6;
 }
 
-- (void)updateProviderConfigurationWithSenderIdentities:(id)a3
+- (void)updateProviderConfigurationWithSenderIdentities:(id)identities
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  [v5 updateProviderConfigurationWithSenderIdentities:v4];
+  identitiesCopy = identities;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  [faceTimeIDSProviderDelegate updateProviderConfigurationWithSenderIdentities:identitiesCopy];
 }
 
-- (void)deferReportingAudioFinishedForCallWithUUID:(id)a3
+- (void)deferReportingAudioFinishedForCallWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_time(0, 1750000000);
-  v6 = [(CSDFaceTimeProviderDelegate *)self queue];
+  queue = [(CSDFaceTimeProviderDelegate *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10012CBDC;
   v8[3] = &unk_100619D88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_after(v5, v6, v8);
+  v9 = dCopy;
+  v7 = dCopy;
+  dispatch_after(v5, queue, v8);
 }
 
-- (void)_createDelayedActionListIfNecessary:(id)a3
+- (void)_createDelayedActionListIfNecessary:(id)necessary
 {
-  v8 = a3;
-  v4 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-  v5 = [v4 objectForKeyedSubscript:v8];
+  necessaryCopy = necessary;
+  delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+  v5 = [delayedActionsByCallUUID objectForKeyedSubscript:necessaryCopy];
 
   if (!v5)
   {
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-    [v7 setObject:v6 forKeyedSubscript:v8];
+    delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+    [delayedActionsByCallUUID2 setObject:v6 forKeyedSubscript:necessaryCopy];
   }
 }
 
-- (void)_processDelayedActionList:(id)a3 provider:(id)a4
+- (void)_processDelayedActionList:(id)list provider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  listCopy = list;
+  providerCopy = provider;
+  delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+  v9 = [delayedActionsByCallUUID objectForKeyedSubscript:listCopy];
 
   if (v9)
   {
-    v10 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+    v11 = [delayedActionsByCallUUID2 objectForKeyedSubscript:listCopy];
     v12 = [v11 copy];
 
-    v13 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-    [v13 setObject:0 forKeyedSubscript:v6];
+    delayedActionsByCallUUID3 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+    [delayedActionsByCallUUID3 setObject:0 forKeyedSubscript:listCopy];
 
-    v14 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v15 = [v14 _callWithUUID:v6];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    v15 = [callDataSource _callWithUUID:listCopy];
 
     v16 = sub_100004778();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -324,7 +324,7 @@
       {
         v19 = v18;
         v35 = v12;
-        v36 = v6;
+        v36 = listCopy;
         v20 = *v38;
         v21 = &swift_cvw_initEnumMetadataSinglePayloadWithLayoutString_ptr;
         v22 = &swift_cvw_initEnumMetadataSinglePayloadWithLayoutString_ptr;
@@ -343,7 +343,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(CSDFaceTimeProviderDelegate *)self provider:v7 performSetRelayingCallAction:v25];
+              [(CSDFaceTimeProviderDelegate *)self provider:providerCopy performSetRelayingCallAction:v25];
             }
 
             else
@@ -352,7 +352,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [(CSDFaceTimeProviderDelegate *)self provider:v7 performSetMutedCallAction:v25];
+                [(CSDFaceTimeProviderDelegate *)self provider:providerCopy performSetMutedCallAction:v25];
               }
 
               else
@@ -361,13 +361,13 @@
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [(CSDFaceTimeProviderDelegate *)self provider:v7 performSetSendingVideoCallAction:v25];
+                  [(CSDFaceTimeProviderDelegate *)self provider:providerCopy performSetSendingVideoCallAction:v25];
                 }
 
                 else
                 {
-                  v29 = self;
-                  v30 = v7;
+                  selfCopy = self;
+                  v30 = providerCopy;
                   v31 = v16;
                   v32 = v22;
                   v33 = v23;
@@ -383,8 +383,8 @@
                   v23 = v33;
                   v22 = v32;
                   v16 = v31;
-                  v7 = v30;
-                  self = v29;
+                  providerCopy = v30;
+                  self = selfCopy;
                   v21 = &swift_cvw_initEnumMetadataSinglePayloadWithLayoutString_ptr;
                 }
               }
@@ -396,7 +396,7 @@
 
         while (v19);
         v12 = v35;
-        v6 = v36;
+        listCopy = v36;
       }
     }
 
@@ -408,29 +408,29 @@
   }
 }
 
-- (void)providerDelegate:(id)a3 callWithUUID:(id)a4 startedConnectingAtDate:(id)a5
+- (void)providerDelegate:(id)delegate callWithUUID:(id)d startedConnectingAtDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  dCopy = d;
+  dateCopy = date;
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412802;
-    v17 = v8;
+    v17 = delegateCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = dateCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "providerDelegate: %@ callUUID: %@ dateStartedConnecting: %@", &v16, 0x20u);
   }
 
-  v12 = [(CSDFaceTimeProviderDelegate *)self provider];
-  [v12 reportOutgoingCallWithUUID:v9 startedConnectingAtDate:v10];
+  provider = [(CSDFaceTimeProviderDelegate *)self provider];
+  [provider reportOutgoingCallWithUUID:dCopy startedConnectingAtDate:dateCopy];
 
-  [(CSDFaceTimeProviderDelegate *)self providerDelegate:v8 endOtherProvidersCallWithUUID:v9];
-  v13 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-  v14 = [v13 _callWithUUID:v9];
+  [(CSDFaceTimeProviderDelegate *)self providerDelegate:delegateCopy endOtherProvidersCallWithUUID:dCopy];
+  callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+  v14 = [callDataSource _callWithUUID:dCopy];
 
   if (!v14)
   {
@@ -438,37 +438,37 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v9;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Ending call since dataSource is not tracking any call for callUUID: %@", &v16, 0xCu);
     }
 
-    [v8 endCallWithUUIDAsLocalHangup:v9];
+    [delegateCopy endCallWithUUIDAsLocalHangup:dCopy];
   }
 }
 
-- (void)providerDelegate:(id)a3 callWithUUID:(id)a4 connectedAtDate:(id)a5
+- (void)providerDelegate:(id)delegate callWithUUID:(id)d connectedAtDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  dCopy = d;
+  dateCopy = date;
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412802;
-    v17 = v8;
+    v17 = delegateCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = dateCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "providerDelegate: %@ callUUID: %@ dateConnected: %@", &v16, 0x20u);
   }
 
-  v12 = [(CSDFaceTimeProviderDelegate *)self provider];
-  [v12 reportOutgoingCallWithUUID:v9 connectedAtDate:v10];
+  provider = [(CSDFaceTimeProviderDelegate *)self provider];
+  [provider reportOutgoingCallWithUUID:dCopy connectedAtDate:dateCopy];
 
-  [(CSDFaceTimeProviderDelegate *)self providerDelegate:v8 endOtherProvidersCallWithUUID:v9];
-  v13 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-  v14 = [v13 _callWithUUID:v9];
+  [(CSDFaceTimeProviderDelegate *)self providerDelegate:delegateCopy endOtherProvidersCallWithUUID:dCopy];
+  callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+  v14 = [callDataSource _callWithUUID:dCopy];
 
   if (!v14)
   {
@@ -476,74 +476,74 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v9;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Ending call since dataSource is not tracking any call for callUUID: %@", &v16, 0xCu);
     }
 
-    [v8 endCallWithUUIDAsLocalHangup:v9];
+    [delegateCopy endCallWithUUIDAsLocalHangup:dCopy];
   }
 }
 
-- (void)providerDelegate:(id)a3 callWithUUID:(id)a4 endedAtDate:(id)a5 withReason:(int64_t)a6 failureContext:(id)a7
+- (void)providerDelegate:(id)delegate callWithUUID:(id)d endedAtDate:(id)date withReason:(int64_t)reason failureContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  delegateCopy = delegate;
+  dCopy = d;
+  dateCopy = date;
+  contextCopy = context;
   v15 = sub_100004778();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v59 = v11;
+    v59 = delegateCopy;
     v60 = 2112;
-    v61 = v12;
+    v61 = dCopy;
     v62 = 2112;
-    v63 = v13;
+    reasonCopy2 = dateCopy;
     v64 = 2048;
-    v65 = a6;
+    reasonCopy = reason;
     v66 = 2112;
-    v67 = v14;
+    v67 = contextCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "providerDelegate: %@ callUUID: %@ dateEnded: %@ endedReason: %ld failureContext: %@", buf, 0x34u);
   }
 
-  v16 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
 
-  v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v18 = v17;
-  if (v16 == v11)
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  faceTimeConversationProviderDelegate2 = faceTimeIDSProviderDelegate;
+  if (faceTimeConversationProviderDelegate == delegateCopy)
   {
-    v57[0] = v17;
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    v57[1] = v21;
+    v57[0] = faceTimeIDSProviderDelegate;
+    faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    v57[1] = faceTimeIMAVProviderDelegate;
     v22 = v57;
   }
 
   else
   {
 
-    if (v18 == v11)
+    if (faceTimeConversationProviderDelegate2 == delegateCopy)
     {
-      v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-      v56[0] = v18;
-      v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-      v56[1] = v21;
+      faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+      v56[0] = faceTimeConversationProviderDelegate2;
+      faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+      v56[1] = faceTimeIMAVProviderDelegate;
       v22 = v56;
     }
 
     else
     {
-      v19 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+      faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
 
-      if (v19 != v11)
+      if (faceTimeIMAVProviderDelegate2 != delegateCopy)
       {
         v20 = 0;
         goto LABEL_11;
       }
 
-      v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-      v55[0] = v18;
-      v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-      v55[1] = v21;
+      faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+      v55[0] = faceTimeConversationProviderDelegate2;
+      faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+      v55[1] = faceTimeIMAVProviderDelegate;
       v22 = v55;
     }
   }
@@ -557,10 +557,10 @@ LABEL_11:
   v50 = 0u;
   v23 = v20;
   v24 = [v23 countByEnumeratingWithState:&v49 objects:v54 count:16];
-  v42 = v11;
+  v42 = delegateCopy;
   obj = v23;
-  v40 = v14;
-  v41 = v13;
+  v40 = contextCopy;
+  v41 = dateCopy;
   if (v24)
   {
     v25 = v24;
@@ -577,8 +577,8 @@ LABEL_13:
       }
 
       v30 = *(*(&v49 + 1) + 8 * v29);
-      v27 |= [v30 hasCallStartedConnectingWithUUID:{v12, v40, v41, v42}];
-      v26 |= [v30 isManagingCallWithUUID:v12];
+      v27 |= [v30 hasCallStartedConnectingWithUUID:{dCopy, v40, v41, v42}];
+      v26 |= [v30 isManagingCallWithUUID:dCopy];
       if (v27 & 1) != 0 && (v26)
       {
         goto LABEL_39;
@@ -593,9 +593,9 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v13 = v41;
-        v11 = v42;
-        v14 = v40;
+        dateCopy = v41;
+        delegateCopy = v42;
+        contextCopy = v40;
         if ((v27 & 1) == 0)
         {
           goto LABEL_23;
@@ -608,22 +608,22 @@ LABEL_13:
 
   LOBYTE(v26) = 0;
 LABEL_23:
-  if (a6 == 2)
+  if (reason == 2)
   {
 LABEL_26:
     v31 = [(CSDFaceTimeProviderDelegate *)self provider:v40];
     v32 = v31;
-    if (v14)
+    if (contextCopy)
     {
-      [v31 reportCallWithUUID:v12 failedAtDate:v13 withContext:v14];
+      [v31 reportCallWithUUID:dCopy failedAtDate:dateCopy withContext:contextCopy];
     }
 
     else
     {
-      [v31 reportCallWithUUID:v12 endedAtDate:v13 privateReason:a6];
+      [v31 reportCallWithUUID:dCopy endedAtDate:dateCopy privateReason:reason];
     }
 
-    [(CSDFaceTimeProviderDelegate *)self deferReportingAudioFinishedForCallWithUUID:v12];
+    [(CSDFaceTimeProviderDelegate *)self deferReportingAudioFinishedForCallWithUUID:dCopy];
 LABEL_30:
     v47 = 0u;
     v48 = 0u;
@@ -649,15 +649,15 @@ LABEL_30:
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
-            v59 = v12;
+            v59 = dCopy;
             v60 = 2112;
             v61 = v38;
             v62 = 2048;
-            v63 = a6;
+            reasonCopy2 = reason;
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Ending call with UUID %@ on other provider delegate %@ because ended reason was %ld", buf, 0x20u);
           }
 
-          [v38 endCallWithUUIDAsDeclinedElsewhere:v12];
+          [v38 endCallWithUUIDAsDeclinedElsewhere:dCopy];
         }
 
         v35 = [v33 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -669,15 +669,15 @@ LABEL_30:
 LABEL_39:
     v23 = obj;
 
-    v13 = v41;
-    v11 = v42;
-    v14 = v40;
+    dateCopy = v41;
+    delegateCopy = v42;
+    contextCopy = v40;
     goto LABEL_40;
   }
 
-  if ((v26 & ([v14 failureReason] != 4)) == 0)
+  if ((v26 & ([contextCopy failureReason] != 4)) == 0)
   {
-    if (a6 == -1)
+    if (reason == -1)
     {
       goto LABEL_30;
     }
@@ -688,71 +688,71 @@ LABEL_39:
 LABEL_40:
 }
 
-- (void)providerDelegate:(id)a3 requestedTransaction:(id)a4 completion:(id)a5
+- (void)providerDelegate:(id)delegate requestedTransaction:(id)transaction completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  transactionCopy = transaction;
+  completionCopy = completion;
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v8;
+    v14 = delegateCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = transactionCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "providerDelegate: %@ transaction: %@", &v13, 0x16u);
   }
 
-  v12 = [(CSDFaceTimeProviderDelegate *)self provider];
-  [v12 requestTransaction:v9 completion:v10];
+  provider = [(CSDFaceTimeProviderDelegate *)self provider];
+  [provider requestTransaction:transactionCopy completion:completionCopy];
 }
 
-- (void)providerDelegate:(id)a3 requestedUpgradeToExistingCallForConversation:(id)a4 withSessionToken:(id)a5 completion:(id)a6
+- (void)providerDelegate:(id)delegate requestedUpgradeToExistingCallForConversation:(id)conversation withSessionToken:(id)token completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v21 = [v12 upgradeCallForConversation:v11 withSessionToken:v10];
+  completionCopy = completion;
+  tokenCopy = token;
+  conversationCopy = conversation;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  v21 = [faceTimeIDSProviderDelegate upgradeCallForConversation:conversationCopy withSessionToken:tokenCopy];
 
-  v13 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v14 = [v13 callForConversation:v11 withSessionToken:v10];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  v14 = [faceTimeIDSProviderDelegate2 callForConversation:conversationCopy withSessionToken:tokenCopy];
 
-  v15 = [v14 isMuted];
-  v16 = [v14 isSendingVideo];
-  v17 = [v14 isVideo];
-  v18 = [v14 upgradeSessionUUID];
-  v19 = [v14 handle];
-  v20 = [v14 remoteFromID];
-  v9[2](v9, v21, v15, v16, v17, v18, v19, v20);
+  isMuted = [v14 isMuted];
+  isSendingVideo = [v14 isSendingVideo];
+  isVideo = [v14 isVideo];
+  upgradeSessionUUID = [v14 upgradeSessionUUID];
+  handle = [v14 handle];
+  remoteFromID = [v14 remoteFromID];
+  completionCopy[2](completionCopy, v21, isMuted, isSendingVideo, isVideo, upgradeSessionUUID, handle, remoteFromID);
 }
 
-- (BOOL)providerDelegate:(id)a3 isManagingCallWithUUID:(id)a4
+- (BOOL)providerDelegate:(id)delegate isManagingCallWithUUID:(id)d
 {
-  v5 = a4;
-  v6 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-  v7 = [v6 _callWithUUID:v5];
+  dCopy = d;
+  callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+  v7 = [callDataSource _callWithUUID:dCopy];
 
   return v7 != 0;
 }
 
-- (BOOL)providerDelegate:(id)a3 isExclusivelyManagingCallWithUUID:(id)a4
+- (BOOL)providerDelegate:(id)delegate isExclusivelyManagingCallWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  delegateCopy = delegate;
+  dCopy = d;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
 
-  v9 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v10 = v9;
-  if (v8 == v6)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  faceTimeIDSProviderDelegate2 = faceTimeIMAVProviderDelegate;
+  if (faceTimeIDSProviderDelegate == delegateCopy)
   {
 LABEL_7:
-    if (([v9 isManagingCallWithUUID:v7] & 1) == 0)
+    if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:dCopy] & 1) == 0)
     {
-      v13 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+      faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
 LABEL_10:
-      v14 = v13;
-      v12 = [v13 isManagingCallWithUUID:v7] ^ 1;
+      v14 = faceTimeConversationProviderDelegate;
+      v12 = [faceTimeConversationProviderDelegate isManagingCallWithUUID:dCopy] ^ 1;
 
       goto LABEL_11;
     }
@@ -764,21 +764,21 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v10 == v6)
+  if (faceTimeIDSProviderDelegate2 == delegateCopy)
   {
-    v9 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    v10 = v9;
+    faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    faceTimeIDSProviderDelegate2 = faceTimeIMAVProviderDelegate;
     goto LABEL_7;
   }
 
-  v11 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
 
-  if (v11 == v6)
+  if (faceTimeConversationProviderDelegate2 == delegateCopy)
   {
-    v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    if (([v10 isManagingCallWithUUID:v7] & 1) == 0)
+    faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    if (([faceTimeIDSProviderDelegate2 isManagingCallWithUUID:dCopy] & 1) == 0)
     {
-      v13 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+      faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
       goto LABEL_10;
     }
 
@@ -791,194 +791,194 @@ LABEL_12:
   return v12;
 }
 
-- (void)providerDelegate:(id)a3 endOtherProvidersCallWithUUID:(id)a4
+- (void)providerDelegate:(id)delegate endOtherProvidersCallWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  dCopy = d;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v6;
+    v17 = delegateCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "providerDelegate: %@ ending callUUID %@", &v16, 0x16u);
   }
 
-  v9 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = v10;
-  if (v9 == v6)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  v11 = faceTimeIMAVProviderDelegate;
+  if (faceTimeIDSProviderDelegate == delegateCopy)
   {
     goto LABEL_9;
   }
 
-  if (v11 == v6)
+  if (v11 == delegateCopy)
   {
-    v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    v11 = v10;
+    faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    v11 = faceTimeIMAVProviderDelegate;
 LABEL_9:
-    [v10 endCallWithUUIDAsAnsweredElsewhere:v7];
+    [faceTimeIMAVProviderDelegate endCallWithUUIDAsAnsweredElsewhere:dCopy];
 
-    v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
     goto LABEL_10;
   }
 
-  v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
 
-  if (v12 == v6)
+  if (faceTimeConversationProviderDelegate2 == delegateCopy)
   {
-    v13 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v13 endCallWithUUIDAsAnsweredElsewhere:v7];
+    faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate2 endCallWithUUIDAsAnsweredElsewhere:dCopy];
 
-    v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
 LABEL_10:
-    v15 = v14;
-    [v14 endCallWithUUIDAsAnsweredElsewhere:v7];
+    v15 = faceTimeConversationProviderDelegate;
+    [faceTimeConversationProviderDelegate endCallWithUUIDAsAnsweredElsewhere:dCopy];
   }
 }
 
-- (void)providerDidBegin:(id)a3
+- (void)providerDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  beginCopy = begin;
+  queue = [(CSDFaceTimeProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  [v6 providerDidBegin:v4];
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  [faceTimeIDSProviderDelegate providerDidBegin:beginCopy];
 
-  v7 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  [v7 providerDidBegin:v4];
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  [faceTimeIMAVProviderDelegate providerDidBegin:beginCopy];
 
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  [v8 providerDidBegin:v4];
+  faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  [faceTimeConversationProviderDelegate providerDidBegin:beginCopy];
 
-  v9 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  [v9 providerDidBegin:v4];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  [groupFaceTimeServiceProviderDelegate providerDidBegin:beginCopy];
 }
 
-- (void)providerDidReset:(id)a3
+- (void)providerDidReset:(id)reset
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  resetCopy = reset;
+  queue = [(CSDFaceTimeProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  [v6 providerDidReset:v4];
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  [faceTimeIDSProviderDelegate providerDidReset:resetCopy];
 
-  v7 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  [v7 providerDidReset:v4];
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  [faceTimeIMAVProviderDelegate providerDidReset:resetCopy];
 
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  [v8 providerDidReset:v4];
+  faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  [faceTimeConversationProviderDelegate providerDidReset:resetCopy];
 
-  v9 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  [v9 providerDidReset:v4];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  [groupFaceTimeServiceProviderDelegate providerDidReset:resetCopy];
 }
 
-- (void)provider:(id)a3 timedOutPerformingAction:(id)a4
+- (void)provider:(id)provider timedOutPerformingAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[WARN] action: %@", &v6, 0xCu);
   }
 }
 
-- (void)provider:(id)a3 performStartCallAction:(id)a4
+- (void)provider:(id)provider performStartCallAction:(id)action
 {
-  v6 = a4;
-  v7 = a3;
-  [(CSDFaceTimeProviderDelegate *)self provider:v7 performStartCallAction:v6 shouldUseIDSDemuxer:[(CSDFaceTimeProviderDelegate *)self shouldUseIDSDemuxer]];
+  actionCopy = action;
+  providerCopy = provider;
+  [(CSDFaceTimeProviderDelegate *)self provider:providerCopy performStartCallAction:actionCopy shouldUseIDSDemuxer:[(CSDFaceTimeProviderDelegate *)self shouldUseIDSDemuxer]];
 }
 
-- (void)provider:(id)a3 performStartCallAction:(id)a4 shouldUseIDSDemuxer:(BOOL)a5
+- (void)provider:(id)provider performStartCallAction:(id)action shouldUseIDSDemuxer:(BOOL)demuxer
 {
-  v8 = a3;
-  v9 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v57 = v9;
+    v57 = actionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  [(CSDFaceTimeProviderDelegate *)self _checkAndSendReturningSilencedIMAVAnalytic:v9];
-  v11 = [(CSDFaceTimeProviderDelegate *)self blockUtilities];
-  v12 = [(__CFString *)v9 handle];
-  v13 = [NSSet setWithObject:v12];
-  v14 = [v11 blockCallReasonForHandles:v13 providerIdentifier:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
+  [(CSDFaceTimeProviderDelegate *)self _checkAndSendReturningSilencedIMAVAnalytic:actionCopy];
+  blockUtilities = [(CSDFaceTimeProviderDelegate *)self blockUtilities];
+  handle = [(__CFString *)actionCopy handle];
+  v13 = [NSSet setWithObject:handle];
+  v14 = [blockUtilities blockCallReasonForHandles:v13 providerIdentifier:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
 
   if (v14 >= 1)
   {
-    v15 = [(CSDFaceTimeProviderDelegate *)self blockUtilities];
-    v16 = [(__CFString *)v9 callUUID];
-    [(__CFString *)v15 reportFailureForReason:v14 provider:v8 callUUID:v16 actionToFail:v9];
+    blockUtilities2 = [(CSDFaceTimeProviderDelegate *)self blockUtilities];
+    callUUID = [(__CFString *)actionCopy callUUID];
+    [(__CFString *)blockUtilities2 reportFailureForReason:v14 provider:providerCopy callUUID:callUUID actionToFail:actionCopy];
     goto LABEL_27;
   }
 
-  if (!a5)
+  if (!demuxer)
   {
-    v15 = [(__CFString *)v9 handle];
-    v16 = [(__CFString *)v15 value];
-    v38 = [v16 IDSFormattedDestinationID];
-    v39 = [NSArray arrayWithObject:v38];
-    [(CSDFaceTimeProviderDelegate *)self initiateModernFTInviteForAction:v9 destinations:v39 excludedIMAVDestinations:&__NSArray0__struct joinCallActionToFulfill:0];
+    blockUtilities2 = [(__CFString *)actionCopy handle];
+    callUUID = [(__CFString *)blockUtilities2 value];
+    iDSFormattedDestinationID = [callUUID IDSFormattedDestinationID];
+    v39 = [NSArray arrayWithObject:iDSFormattedDestinationID];
+    [(CSDFaceTimeProviderDelegate *)self initiateModernFTInviteForAction:actionCopy destinations:v39 excludedIMAVDestinations:&__NSArray0__struct joinCallActionToFulfill:0];
 
     goto LABEL_27;
   }
 
-  v15 = +[TUCallCapabilities outgoingRelayCallerID];
+  blockUtilities2 = +[TUCallCapabilities outgoingRelayCallerID];
   v17 = sub_100004778();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v57 = v15;
+    v57 = blockUtilities2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "outgoingCallerID: %@", buf, 0xCu);
   }
 
-  v16 = +[NSDate now];
-  v18 = [(CSDFaceTimeProviderDelegate *)self featureFlags];
-  if ([v18 uPlusOneSessionWithCapabilitiesEnabled])
+  callUUID = +[NSDate now];
+  featureFlags = [(CSDFaceTimeProviderDelegate *)self featureFlags];
+  if ([featureFlags uPlusOneSessionWithCapabilitiesEnabled])
   {
-    v19 = [(CSDFaceTimeProviderDelegate *)self serverBag];
-    v20 = [v19 isUPlusOneSessionCapabilitiesEnabled];
+    serverBag = [(CSDFaceTimeProviderDelegate *)self serverBag];
+    isUPlusOneSessionCapabilitiesEnabled = [serverBag isUPlusOneSessionCapabilitiesEnabled];
 
-    if (v20)
+    if (isUPlusOneSessionCapabilitiesEnabled)
     {
-      v21 = [(CSDFaceTimeProviderDelegate *)self _createJoinCallAction:v9 outgoingCallerID:v15 gftOneToOneDestinations:0];
+      v21 = [(CSDFaceTimeProviderDelegate *)self _createJoinCallAction:actionCopy outgoingCallerID:blockUtilities2 gftOneToOneDestinations:0];
       v22 = +[NSDate now];
-      [v22 timeIntervalSinceDate:v16];
+      [v22 timeIntervalSinceDate:callUUID];
       v24 = v23 * 1000.0;
 
       if (v24 > 5000.0)
       {
         v60 = TUCallTUStartCallActionDuration;
         v25 = [NSNumber numberWithDouble:v24];
-        v26 = [v25 stringValue];
-        v27 = [v26 stringByAppendingString:@"ms duration"];
+        stringValue = [v25 stringValue];
+        v27 = [stringValue stringByAppendingString:@"ms duration"];
         v61 = v27;
         v28 = [NSDictionary dictionaryWithObjects:&v61 forKeys:&v60 count:1];
 
         v29 = sub_100004778();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(__CFString *)v9 callUUID];
+          callUUID2 = [(__CFString *)actionCopy callUUID];
           *buf = 138412546;
-          v57 = v30;
+          v57 = callUUID2;
           v58 = 2112;
           v59 = v28;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "reportJoinDurationLongerThanThreasholdForCallUUID: %@, %@", buf, 0x16u);
         }
 
         v31 = +[CSDReportingController sharedInstance];
-        v32 = [(__CFString *)v9 callUUID];
-        [v31 reportJoinDurationLongerThanThreasholdForCallUUID:v32 report:v28];
+        callUUID3 = [(__CFString *)actionCopy callUUID];
+        [v31 reportJoinDurationLongerThanThreasholdForCallUUID:callUUID3 report:v28];
       }
 
       v33 = sub_100004778();
@@ -989,12 +989,12 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Created join call action without gftOneToOneDestinations: %@", buf, 0xCu);
       }
 
-      [(CSDFaceTimeProviderDelegate *)self provider:v8 performJoinCallAction:v21 shouldUseIDSDemuxer:0];
-      v34 = [(__CFString *)v9 handle];
-      v35 = [v34 value];
-      v36 = [v35 IDSFormattedDestinationID];
-      v37 = [NSArray arrayWithObject:v36];
-      [(CSDFaceTimeProviderDelegate *)self initiateModernFTInviteForAction:v9 destinations:v37 excludedIMAVDestinations:&__NSArray0__struct joinCallActionToFulfill:0];
+      [(CSDFaceTimeProviderDelegate *)self provider:providerCopy performJoinCallAction:v21 shouldUseIDSDemuxer:0];
+      handle2 = [(__CFString *)actionCopy handle];
+      value = [handle2 value];
+      iDSFormattedDestinationID2 = [value IDSFormattedDestinationID];
+      v37 = [NSArray arrayWithObject:iDSFormattedDestinationID2];
+      [(CSDFaceTimeProviderDelegate *)self initiateModernFTInviteForAction:actionCopy destinations:v37 excludedIMAVDestinations:&__NSArray0__struct joinCallActionToFulfill:0];
 
       goto LABEL_27;
     }
@@ -1007,8 +1007,8 @@ LABEL_10:
   v40 = sub_100004778();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = [(CSDFaceTimeProviderDelegate *)self featureFlags];
-    if ([v41 uPlusOneSessionWithCapabilitiesEnabled])
+    featureFlags2 = [(CSDFaceTimeProviderDelegate *)self featureFlags];
+    if ([featureFlags2 uPlusOneSessionWithCapabilitiesEnabled])
     {
       v42 = @"YES";
     }
@@ -1018,10 +1018,10 @@ LABEL_10:
       v42 = @"NO";
     }
 
-    v43 = [(CSDFaceTimeProviderDelegate *)self serverBag];
-    v44 = [v43 isUPlusOneSessionCapabilitiesEnabled];
+    serverBag2 = [(CSDFaceTimeProviderDelegate *)self serverBag];
+    isUPlusOneSessionCapabilitiesEnabled2 = [serverBag2 isUPlusOneSessionCapabilitiesEnabled];
     v45 = @"NO";
-    if (v44)
+    if (isUPlusOneSessionCapabilitiesEnabled2)
     {
       v45 = @"YES";
     }
@@ -1033,87 +1033,87 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "uPlusOneSessionWithCapabilitiesEnabled: %@, isUPlusOneSessionCapabilitiesEnabled: %@", buf, 0x16u);
   }
 
-  v46 = [(__CFString *)v9 callUUID];
-  [(CSDFaceTimeProviderDelegate *)self _createDelayedActionListIfNecessary:v46];
+  callUUID4 = [(__CFString *)actionCopy callUUID];
+  [(CSDFaceTimeProviderDelegate *)self _createDelayedActionListIfNecessary:callUUID4];
 
-  v47 = [(CSDFaceTimeProviderDelegate *)self faceTimeInviteDemuxer];
-  v48 = [(__CFString *)v9 handle];
-  v49 = [v48 tuHandle];
-  v50 = [(__CFString *)v9 isVideo];
+  faceTimeInviteDemuxer = [(CSDFaceTimeProviderDelegate *)self faceTimeInviteDemuxer];
+  handle3 = [(__CFString *)actionCopy handle];
+  tuHandle = [handle3 tuHandle];
+  isVideo = [(__CFString *)actionCopy isVideo];
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_10012E774;
   v51[3] = &unk_10061C300;
   v51[4] = self;
-  v52 = v9;
-  v15 = v15;
-  v53 = v15;
-  v16 = v16;
-  v54 = v16;
-  v55 = v8;
-  [v47 idsPeersForHandle:v49 video:v50 fromID:v15 completionHandler:v51];
+  v52 = actionCopy;
+  blockUtilities2 = blockUtilities2;
+  v53 = blockUtilities2;
+  callUUID = callUUID;
+  v54 = callUUID;
+  v55 = providerCopy;
+  [faceTimeInviteDemuxer idsPeersForHandle:tuHandle video:isVideo fromID:blockUtilities2 completionHandler:v51];
 
 LABEL_27:
 }
 
-- (void)initiateModernFTInviteForAction:(id)a3 destinations:(id)a4 excludedIMAVDestinations:(id)a5 joinCallActionToFulfill:(id)a6
+- (void)initiateModernFTInviteForAction:(id)action destinations:(id)destinations excludedIMAVDestinations:(id)vDestinations joinCallActionToFulfill:(id)fulfill
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [NSSet setWithArray:v13];
+  actionCopy = action;
+  vDestinationsCopy = vDestinations;
+  fulfillCopy = fulfill;
+  destinationsCopy = destinations;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  v15 = [NSSet setWithArray:destinationsCopy];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10012F3B0;
   v19[3] = &unk_10061C328;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  [v14 inviteIDSPeersWithAction:v18 destinations:v15 joinCallActionToFulfill:v16 completion:v19];
+  v20 = actionCopy;
+  v21 = vDestinationsCopy;
+  v22 = fulfillCopy;
+  v16 = fulfillCopy;
+  v17 = vDestinationsCopy;
+  v18 = actionCopy;
+  [faceTimeIDSProviderDelegate inviteIDSPeersWithAction:v18 destinations:v15 joinCallActionToFulfill:v16 completion:v19];
 }
 
-- (void)provider:(id)a3 performJoinCallAction:(id)a4
+- (void)provider:(id)provider performJoinCallAction:(id)action
 {
-  v9 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   if ([(CSDFaceTimeProviderDelegate *)self shouldUseIDSDemuxer])
   {
-    v7 = [v6 remoteMembers];
-    if ([v7 count] == 1)
+    remoteMembers = [actionCopy remoteMembers];
+    if ([remoteMembers count] == 1)
     {
-      v8 = [v6 associationIdentifier];
-      [(CSDFaceTimeProviderDelegate *)self provider:v9 performJoinCallAction:v6 shouldUseIDSDemuxer:v8 == 0];
+      associationIdentifier = [actionCopy associationIdentifier];
+      [(CSDFaceTimeProviderDelegate *)self provider:providerCopy performJoinCallAction:actionCopy shouldUseIDSDemuxer:associationIdentifier == 0];
     }
 
     else
     {
-      [(CSDFaceTimeProviderDelegate *)self provider:v9 performJoinCallAction:v6 shouldUseIDSDemuxer:0];
+      [(CSDFaceTimeProviderDelegate *)self provider:providerCopy performJoinCallAction:actionCopy shouldUseIDSDemuxer:0];
     }
   }
 
   else
   {
-    [(CSDFaceTimeProviderDelegate *)self provider:v9 performJoinCallAction:v6 shouldUseIDSDemuxer:0];
+    [(CSDFaceTimeProviderDelegate *)self provider:providerCopy performJoinCallAction:actionCopy shouldUseIDSDemuxer:0];
   }
 }
 
-- (void)provider:(id)a3 performJoinCallAction:(id)a4 shouldUseIDSDemuxer:(BOOL)a5
+- (void)provider:(id)provider performJoinCallAction:(id)action shouldUseIDSDemuxer:(BOOL)demuxer
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 participantCluster];
-  if (v10)
+  demuxerCopy = demuxer;
+  providerCopy = provider;
+  actionCopy = action;
+  participantCluster = [actionCopy participantCluster];
+  if (participantCluster)
   {
-    v11 = [v9 participantCluster];
-    v12 = [v11 type] == 1;
+    participantCluster2 = [actionCopy participantCluster];
+    v12 = [participantCluster2 type] == 1;
   }
 
   else
@@ -1124,8 +1124,8 @@ LABEL_27:
   v13 = sub_100004778();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v9 UUID];
-    v15 = v14;
+    uUID = [actionCopy UUID];
+    v15 = uUID;
     v16 = &stru_100631E68;
     if (v12)
     {
@@ -1133,23 +1133,23 @@ LABEL_27:
     }
 
     *buf = 138412546;
-    v86 = v14;
+    v86 = uUID;
     v87 = 2112;
     v88 = v16;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Perform join call with action UUID: %@%@", buf, 0x16u);
   }
 
-  v17 = [(CSDFaceTimeProviderDelegate *)self blockUtilities];
-  v18 = [v9 remoteMembers];
-  v19 = [v17 blockCallReasonForMembers:v18 providerIdentifier:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
+  blockUtilities = [(CSDFaceTimeProviderDelegate *)self blockUtilities];
+  remoteMembers = [actionCopy remoteMembers];
+  v19 = [blockUtilities blockCallReasonForMembers:remoteMembers providerIdentifier:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
 
   if (v19 < 1)
   {
-    v22 = [v9 pseudonym];
-    if ([v22 length])
+    pseudonym = [actionCopy pseudonym];
+    if ([pseudonym length])
     {
-      v23 = [v9 publicKey];
-      v24 = [v23 length];
+      publicKey = [actionCopy publicKey];
+      v24 = [publicKey length];
 
       if (v24)
       {
@@ -1162,8 +1162,8 @@ LABEL_27:
     {
     }
 
-    v26 = [v9 remoteMembers];
-    v27 = [v26 count];
+    remoteMembers2 = [actionCopy remoteMembers];
+    v27 = [remoteMembers2 count];
 
     if (!v27)
     {
@@ -1178,9 +1178,9 @@ LABEL_27:
 
     v25 = 1;
 LABEL_16:
-    v28 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    v29 = [v9 callUUID];
-    v30 = [v28 isUpgradingCallWithUUID:v29];
+    faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    callUUID = [actionCopy callUUID];
+    v30 = [faceTimeIDSProviderDelegate isUpgradingCallWithUUID:callUUID];
 
     if (v30)
     {
@@ -1192,11 +1192,11 @@ LABEL_16:
 
 LABEL_29:
 
-      [v9 fail];
+      [actionCopy fail];
       goto LABEL_63;
     }
 
-    if (([v9 isVideo] & 1) == 0 && objc_msgSend(v9, "isVideoEnabled"))
+    if (([actionCopy isVideo] & 1) == 0 && objc_msgSend(actionCopy, "isVideoEnabled"))
     {
       v31 = sub_100004778();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1207,44 +1207,44 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v32 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    v33 = [v9 callUUID];
-    v34 = [v32 isManagingCallWithUUID:v33];
+    faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    callUUID2 = [actionCopy callUUID];
+    v34 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID2];
 
     if (v34)
     {
-      [v9 setUpgrade:1];
-      v35 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-      v36 = [v9 callUUID];
-      v37 = [v35 upgradeSessionUUIDForCallWithUUID:v36];
-      [v9 setUpgradeSessionUUID:v37];
+      [actionCopy setUpgrade:1];
+      faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+      callUUID3 = [actionCopy callUUID];
+      v37 = [faceTimeIDSProviderDelegate3 upgradeSessionUUIDForCallWithUUID:callUUID3];
+      [actionCopy setUpgradeSessionUUID:v37];
 
       v38 = sub_100004778();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v86 = v9;
+        v86 = actionCopy;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Updated to action: %@", buf, 0xCu);
       }
 
-      v39 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-      [v39 provider:v8 performJoinCallAction:v9];
+      faceTimeIDSProviderDelegate4 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+      [faceTimeIDSProviderDelegate4 provider:providerCopy performJoinCallAction:actionCopy];
     }
 
     else
     {
-      v40 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-      v41 = [v9 callUUID];
-      v42 = [v40 isManagingCallWithUUID:v41];
+      faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+      callUUID4 = [actionCopy callUUID];
+      v42 = [faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID4];
 
       if (!v42)
       {
 LABEL_35:
         v45 = +[CSDConversationProviderManager sharedInstance];
-        v46 = [v9 conversationProviderIdentifier];
-        v47 = [v45 tuConversationProviderForIdentifier:v46];
+        conversationProviderIdentifier = [actionCopy conversationProviderIdentifier];
+        v47 = [v45 tuConversationProviderForIdentifier:conversationProviderIdentifier];
 
-        if ((v25 & v5) != 1 || v12 | (([v47 isDefaultProvider] & 1) == 0))
+        if ((v25 & demuxerCopy) != 1 || v12 | (([v47 isDefaultProvider] & 1) == 0))
         {
           if (!v47)
           {
@@ -1253,19 +1253,19 @@ LABEL_62:
             goto LABEL_63;
           }
 
-          v48 = [v47 isDefaultProvider];
+          isDefaultProvider = [v47 isDefaultProvider];
           v49 = sub_100004778();
           v50 = os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT);
-          if (v48)
+          if (isDefaultProvider)
           {
             if (v50)
             {
               *buf = 138412290;
-              v86 = v9;
+              v86 = actionCopy;
               _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "Sending JoinCallAction to FaceTimeConversationProviderDelegate- action: %@", buf, 0xCu);
             }
 
-            v51 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+            faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
           }
 
           else
@@ -1273,15 +1273,15 @@ LABEL_62:
             if (v50)
             {
               *buf = 138412290;
-              v86 = v9;
+              v86 = actionCopy;
               _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "Sending JoinCallAction to CSDGFTServiceConversationProviderDelegate- action: %@", buf, 0xCu);
             }
 
-            v51 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+            faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
           }
 
-          v52 = v51;
-          [v51 provider:v8 performJoinCallAction:v9];
+          v52 = faceTimeConversationProviderDelegate;
+          [faceTimeConversationProviderDelegate provider:providerCopy performJoinCallAction:actionCopy];
 LABEL_61:
 
           goto LABEL_62;
@@ -1296,29 +1296,29 @@ LABEL_61:
           _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "joinCall: callerID: %@", buf, 0xCu);
         }
 
-        v54 = [(CSDFaceTimeProviderDelegate *)self featureFlags];
-        if ([v54 uPlusOneSessionWithCapabilitiesEnabled])
+        featureFlags = [(CSDFaceTimeProviderDelegate *)self featureFlags];
+        if ([featureFlags uPlusOneSessionWithCapabilitiesEnabled])
         {
-          v55 = [(CSDFaceTimeProviderDelegate *)self serverBag];
-          v56 = [v55 isUPlusOneSessionCapabilitiesEnabled];
+          serverBag = [(CSDFaceTimeProviderDelegate *)self serverBag];
+          isUPlusOneSessionCapabilitiesEnabled = [serverBag isUPlusOneSessionCapabilitiesEnabled];
 
-          if (v56)
+          if (isUPlusOneSessionCapabilitiesEnabled)
           {
-            v57 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-            [v57 provider:v8 performJoinCallAction:v9];
+            faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+            [faceTimeConversationProviderDelegate2 provider:providerCopy performJoinCallAction:actionCopy];
 
             v58 = [CXStartCallAction alloc];
-            v59 = [v9 callUUID];
-            v60 = [v9 remoteMembers];
-            v61 = [v60 anyObject];
-            v62 = [v61 handle];
-            v63 = [v58 initWithCallUUID:v59 handle:v62];
+            callUUID5 = [actionCopy callUUID];
+            remoteMembers3 = [actionCopy remoteMembers];
+            anyObject = [remoteMembers3 anyObject];
+            handle = [anyObject handle];
+            v63 = [v58 initWithCallUUID:callUUID5 handle:handle];
 
-            [v63 setVideo:{objc_msgSend(v9, "isVideo")}];
-            v64 = [v63 handle];
-            v65 = [v64 value];
-            v66 = [v65 IDSFormattedDestinationID];
-            v67 = [NSArray arrayWithObject:v66];
+            [v63 setVideo:{objc_msgSend(actionCopy, "isVideo")}];
+            handle2 = [v63 handle];
+            value = [handle2 value];
+            iDSFormattedDestinationID = [value IDSFormattedDestinationID];
+            v67 = [NSArray arrayWithObject:iDSFormattedDestinationID];
             [(CSDFaceTimeProviderDelegate *)self initiateModernFTInviteForAction:v63 destinations:v67 excludedIMAVDestinations:&__NSArray0__struct joinCallActionToFulfill:0];
 
             goto LABEL_61;
@@ -1333,8 +1333,8 @@ LABEL_61:
         v68 = sub_100004778();
         if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
         {
-          v69 = [(CSDFaceTimeProviderDelegate *)self featureFlags];
-          if ([v69 uPlusOneSessionWithCapabilitiesEnabled])
+          featureFlags2 = [(CSDFaceTimeProviderDelegate *)self featureFlags];
+          if ([featureFlags2 uPlusOneSessionWithCapabilitiesEnabled])
           {
             v70 = @"YES";
           }
@@ -1344,8 +1344,8 @@ LABEL_61:
             v70 = @"NO";
           }
 
-          v71 = [(CSDFaceTimeProviderDelegate *)self serverBag];
-          if ([v71 isUPlusOneSessionCapabilitiesEnabled])
+          serverBag2 = [(CSDFaceTimeProviderDelegate *)self serverBag];
+          if ([serverBag2 isUPlusOneSessionCapabilitiesEnabled])
           {
             v72 = @"YES";
           }
@@ -1362,25 +1362,25 @@ LABEL_61:
           _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "uPlusOneSessionWithCapabilitiesEnabled: %@, isUPlusOneSessionCapabilitiesEnabled: %@", buf, 0x16u);
         }
 
-        v73 = [v9 callUUID];
-        [(CSDFaceTimeProviderDelegate *)self _createDelayedActionListIfNecessary:v73];
+        callUUID6 = [actionCopy callUUID];
+        [(CSDFaceTimeProviderDelegate *)self _createDelayedActionListIfNecessary:callUUID6];
 
-        v74 = [(CSDFaceTimeProviderDelegate *)self faceTimeInviteDemuxer];
-        v75 = [v9 remoteMembers];
-        v76 = [v75 anyObject];
-        v77 = [v76 handle];
-        v78 = [v77 tuHandle];
-        v79 = [v9 isVideo];
+        faceTimeInviteDemuxer = [(CSDFaceTimeProviderDelegate *)self faceTimeInviteDemuxer];
+        remoteMembers4 = [actionCopy remoteMembers];
+        anyObject2 = [remoteMembers4 anyObject];
+        handle3 = [anyObject2 handle];
+        tuHandle = [handle3 tuHandle];
+        isVideo = [actionCopy isVideo];
         v82[0] = _NSConcreteStackBlock;
         v82[1] = 3221225472;
         v82[2] = sub_1001301B8;
         v82[3] = &unk_10061C378;
         v82[4] = self;
-        v83 = v9;
-        v84 = v8;
-        v80 = v79;
+        v83 = actionCopy;
+        v84 = providerCopy;
+        v80 = isVideo;
         v52 = v81;
-        [v74 idsPeersForHandle:v78 video:v80 fromID:v81 completionHandler:v82];
+        [faceTimeInviteDemuxer idsPeersForHandle:tuHandle video:v80 fromID:v81 completionHandler:v82];
 
         goto LABEL_61;
       }
@@ -1389,54 +1389,54 @@ LABEL_61:
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v86 = v9;
+        v86 = actionCopy;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Found a IMAV chat that is being tracked for action: %@", buf, 0xCu);
       }
 
-      v39 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-      v44 = [v9 callUUID];
-      [v39 endCallWithUUID:v44];
+      faceTimeIDSProviderDelegate4 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+      callUUID7 = [actionCopy callUUID];
+      [faceTimeIDSProviderDelegate4 endCallWithUUID:callUUID7];
     }
 
     goto LABEL_35;
   }
 
-  v20 = [(CSDFaceTimeProviderDelegate *)self blockUtilities];
-  v21 = [v9 callUUID];
-  [v20 reportFailureForReason:v19 provider:v8 callUUID:v21 actionToFail:v9];
+  blockUtilities2 = [(CSDFaceTimeProviderDelegate *)self blockUtilities];
+  callUUID8 = [actionCopy callUUID];
+  [blockUtilities2 reportFailureForReason:v19 provider:providerCopy callUUID:callUUID8 actionToFail:actionCopy];
 
 LABEL_63:
 }
 
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4
+- (void)provider:(id)provider performAnswerCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -1446,19 +1446,19 @@ LABEL_63:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -1471,14 +1471,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -1503,16 +1503,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -1522,78 +1522,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performAnswerCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performAnswerCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performAnswerCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performAnswerCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performAnswerCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performAnswerCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performAnswerCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performAnswerCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performEndCallAction:(id)a4
+- (void)provider:(id)provider performEndCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v31 = v48 = v6;
-    v32 = [v7 callUUID];
-    v47 = [v31 isManagingCallWithUUID:v32];
+    v31 = v48 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v47 = [v31 isManagingCallWithUUID:callUUID4];
 
-    v6 = v48;
+    providerCopy = v48;
     if (v47)
     {
       goto LABEL_7;
@@ -1603,19 +1603,19 @@ LABEL_15:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v50 = v7;
+      v50 = actionCopy;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v34 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v35 = [v7 callUUID];
-    v36 = [v34 _callWithUUID:v35];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v36 = [callDataSource _callWithUUID:callUUID5];
 
     if (v36)
     {
-      v37 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v38 = [v7 callUUID];
-      v39 = [v37 objectForKeyedSubscript:v38];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v39 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v39)
       {
         v40 = v39;
@@ -1628,14 +1628,14 @@ LABEL_24:
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v50 = v7;
+            v50 = actionCopy;
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v42 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v43 = [v7 callUUID];
-          v44 = [v42 objectForKeyedSubscript:v43];
-          [v44 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v44 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v44 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -1660,16 +1660,16 @@ LABEL_24:
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v50 = v7;
+          v50 = actionCopy;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -1679,80 +1679,80 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performEndCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performEndCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performEndCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performEndCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performEndCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performEndCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performEndCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performEndCallAction:actionCopy];
   }
 
 LABEL_15:
-  v30 = [v7 callUUID];
-  [(CSDFaceTimeProviderDelegate *)self deferReportingAudioFinishedForCallWithUUID:v30];
+  callUUID12 = [actionCopy callUUID];
+  [(CSDFaceTimeProviderDelegate *)self deferReportingAudioFinishedForCallWithUUID:callUUID12];
 }
 
-- (void)provider:(id)a3 performSetHeldCallAction:(id)a4
+- (void)provider:(id)provider performSetHeldCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -1762,19 +1762,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -1787,14 +1787,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -1819,16 +1819,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -1838,78 +1838,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetHeldCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetHeldCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetHeldCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetHeldCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetHeldCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetHeldCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetHeldCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetHeldCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetSendingVideoCallAction:(id)a4
+- (void)provider:(id)provider performSetSendingVideoCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -1919,19 +1919,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -1944,14 +1944,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -1976,16 +1976,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -1995,78 +1995,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetSendingVideoCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetSendingVideoCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetSendingVideoCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetSendingVideoCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetSendingVideoCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetSendingVideoCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetSendingVideoCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetSendingVideoCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetSharingScreenCallAction:(id)a4
+- (void)provider:(id)provider performSetSharingScreenCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -2076,19 +2076,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -2101,14 +2101,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -2133,16 +2133,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -2152,78 +2152,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetSharingScreenCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetSharingScreenCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetSharingScreenCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetSharingScreenCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetSharingScreenCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetSharingScreenCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetSharingScreenCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetSharingScreenCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetScreenShareAttributesCallAction:(id)a4
+- (void)provider:(id)provider performSetScreenShareAttributesCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -2233,19 +2233,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -2258,14 +2258,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -2290,16 +2290,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -2309,78 +2309,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetScreenShareAttributesCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetScreenShareAttributesCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetScreenShareAttributesCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetScreenShareAttributesCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetScreenShareAttributesCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetScreenShareAttributesCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetScreenShareAttributesCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetScreenShareAttributesCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performEnableVideoCallAction:(id)a4
+- (void)provider:(id)provider performEnableVideoCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -2390,19 +2390,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -2415,14 +2415,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -2447,16 +2447,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -2466,78 +2466,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performEnableVideoCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performEnableVideoCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performEnableVideoCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performEnableVideoCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performEnableVideoCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performEnableVideoCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performEnableVideoCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performEnableVideoCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetVideoPresentationSizeCallAction:(id)a4
+- (void)provider:(id)provider performSetVideoPresentationSizeCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -2547,19 +2547,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -2572,14 +2572,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -2604,16 +2604,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -2623,78 +2623,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetVideoPresentationSizeCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetVideoPresentationSizeCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetVideoPresentationSizeCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetVideoPresentationSizeCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetVideoPresentationSizeCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetVideoPresentationSizeCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetVideoPresentationSizeCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetVideoPresentationSizeCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetVideoPresentationStateCallAction:(id)a4
+- (void)provider:(id)provider performSetVideoPresentationStateCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -2704,19 +2704,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -2729,14 +2729,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -2761,16 +2761,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -2780,78 +2780,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetVideoPresentationStateCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetVideoPresentationStateCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetVideoPresentationStateCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetVideoPresentationStateCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetVideoPresentationStateCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetVideoPresentationStateCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetVideoPresentationStateCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetVideoPresentationStateCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -2861,19 +2861,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -2886,14 +2886,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -2918,16 +2918,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -2937,78 +2937,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetRelayingCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetRelayingCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetRelayingCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetRelayingCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetRelayingCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetRelayingCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetRelayingCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetRelayingCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetScreeningCallAction:(id)a4
+- (void)provider:(id)provider performSetScreeningCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -3018,19 +3018,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -3043,14 +3043,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -3075,16 +3075,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -3094,78 +3094,78 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetScreeningCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetScreeningCallAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetScreeningCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetScreeningCallAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetScreeningCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetScreeningCallAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetScreeningCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetScreeningCallAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetAllowUplinkAudioInjectionAction:(id)a4
+- (void)provider:(id)provider performSetAllowUplinkAudioInjectionAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v9 = [v7 callUUID];
-  if ([v8 isManagingCallWithUUID:v9])
+  providerCopy = provider;
+  actionCopy = action;
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if ([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID2 = [actionCopy callUUID];
+  if (([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_5;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v30 = v47 = v6;
-    v31 = [v7 callUUID];
-    v46 = [v30 isManagingCallWithUUID:v31];
+    v30 = v47 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v46 = [v30 isManagingCallWithUUID:callUUID4];
 
-    v6 = v47;
+    providerCopy = v47;
     if (v46)
     {
       goto LABEL_7;
@@ -3175,19 +3175,19 @@ LABEL_15:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v49 = v7;
+      v49 = actionCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v33 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v34 = [v7 callUUID];
-    v35 = [v33 _callWithUUID:v34];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v35 = [callDataSource _callWithUUID:callUUID5];
 
     if (v35)
     {
-      v36 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v37 = [v7 callUUID];
-      v38 = [v36 objectForKeyedSubscript:v37];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v38 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v38)
       {
         v39 = v38;
@@ -3200,14 +3200,14 @@ LABEL_24:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v49 = v7;
+            v49 = actionCopy;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v41 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v42 = [v7 callUUID];
-          v43 = [v41 objectForKeyedSubscript:v42];
-          [v43 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v43 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v43 addObject:actionCopy];
 
           goto LABEL_35;
         }
@@ -3232,16 +3232,16 @@ LABEL_24:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v7;
+          v49 = actionCopy;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_35;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_35:
 
     goto LABEL_15;
@@ -3251,95 +3251,95 @@ LABEL_5:
 
 LABEL_6:
 LABEL_7:
-  v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v15 = [v7 callUUID];
-  v16 = [v14 isManagingCallWithUUID:v15];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v16 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v16)
   {
-    v17 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v17 provider:v6 performSetAllowUplinkAudioInjectionAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetAllowUplinkAudioInjectionAction:actionCopy];
   }
 
-  v18 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v19 = [v7 callUUID];
-  v20 = [v18 isManagingCallWithUUID:v19];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v20 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v20)
   {
-    v21 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v21 provider:v6 performSetAllowUplinkAudioInjectionAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetAllowUplinkAudioInjectionAction:actionCopy];
   }
 
-  v22 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v23 = [v7 callUUID];
-  v24 = [v22 isManagingCallWithUUID:v23];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v24 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v24)
   {
-    v25 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v25 provider:v6 performSetAllowUplinkAudioInjectionAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetAllowUplinkAudioInjectionAction:actionCopy];
   }
 
-  v26 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v27 = [v7 callUUID];
-  v28 = [v26 isManagingCallWithUUID:v27];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v28 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v28)
   {
-    v29 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v29 provider:v6 performSetAllowUplinkAudioInjectionAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetAllowUplinkAudioInjectionAction:actionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4
+- (void)provider:(id)provider performSetMutedCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFaceTimeProviderDelegate *)self featureFlags];
-  if (([v8 sessionBasedMutingEnabled] & 1) == 0)
+  providerCopy = provider;
+  actionCopy = action;
+  featureFlags = [(CSDFaceTimeProviderDelegate *)self featureFlags];
+  if (([featureFlags sessionBasedMutingEnabled] & 1) == 0)
   {
-    v9 = [v7 isBottomUpMute];
+    isBottomUpMute = [actionCopy isBottomUpMute];
 
-    if (v9)
+    if (isBottomUpMute)
     {
       goto LABEL_5;
     }
 
-    v8 = +[TUAudioSystemController sharedAudioSystemController];
-    [v8 setUplinkMuted:{objc_msgSend(v7, "isMuted")}];
+    featureFlags = +[TUAudioSystemController sharedAudioSystemController];
+    [featureFlags setUplinkMuted:{objc_msgSend(actionCopy, "isMuted")}];
   }
 
 LABEL_5:
-  v10 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v11 = [v7 callUUID];
-  if (([v10 isManagingCallWithUUID:v11] & 1) == 0)
+  faceTimeIDSProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID = [actionCopy callUUID];
+  if (([faceTimeIDSProviderDelegate isManagingCallWithUUID:callUUID] & 1) == 0)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    v13 = [v7 callUUID];
-    if ([v12 isManagingCallWithUUID:v13])
+    faceTimeIMAVProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    callUUID2 = [actionCopy callUUID];
+    if ([faceTimeIMAVProviderDelegate isManagingCallWithUUID:callUUID2])
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v14 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    v15 = [v7 callUUID];
-    if ([v14 isManagingCallWithUUID:v15])
+    faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    callUUID3 = [actionCopy callUUID];
+    if ([faceTimeConversationProviderDelegate isManagingCallWithUUID:callUUID3])
     {
 
       goto LABEL_9;
     }
 
     [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    v32 = v49 = v6;
-    v33 = [v7 callUUID];
-    v48 = [v32 isManagingCallWithUUID:v33];
+    v32 = v49 = providerCopy;
+    callUUID4 = [actionCopy callUUID];
+    v48 = [v32 isManagingCallWithUUID:callUUID4];
 
-    v6 = v49;
+    providerCopy = v49;
     if (v48)
     {
       goto LABEL_11;
@@ -3349,19 +3349,19 @@ LABEL_9:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v7;
+      v51 = actionCopy;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "[WARN] No provider delegate is managing call for action %@", buf, 0xCu);
     }
 
-    v35 = [(CSDFaceTimeProviderDelegate *)self callDataSource];
-    v36 = [v7 callUUID];
-    v37 = [v35 _callWithUUID:v36];
+    callDataSource = [(CSDFaceTimeProviderDelegate *)self callDataSource];
+    callUUID5 = [actionCopy callUUID];
+    v37 = [callDataSource _callWithUUID:callUUID5];
 
     if (v37)
     {
-      v38 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-      v39 = [v7 callUUID];
-      v40 = [v38 objectForKeyedSubscript:v39];
+      delayedActionsByCallUUID = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+      callUUID6 = [actionCopy callUUID];
+      v40 = [delayedActionsByCallUUID objectForKeyedSubscript:callUUID6];
       if (v40)
       {
         v41 = v40;
@@ -3374,14 +3374,14 @@ LABEL_28:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v51 = v7;
+            v51 = actionCopy;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Delaying action %@", buf, 0xCu);
           }
 
-          v43 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
-          v44 = [v7 callUUID];
-          v45 = [v43 objectForKeyedSubscript:v44];
-          [v45 addObject:v7];
+          delayedActionsByCallUUID2 = [(CSDFaceTimeProviderDelegate *)self delayedActionsByCallUUID];
+          callUUID7 = [actionCopy callUUID];
+          v45 = [delayedActionsByCallUUID2 objectForKeyedSubscript:callUUID7];
+          [v45 addObject:actionCopy];
 
           goto LABEL_39;
         }
@@ -3406,16 +3406,16 @@ LABEL_28:
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v51 = v7;
+          v51 = actionCopy;
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Fulfilling action %@ because call has ended", buf, 0xCu);
         }
 
-        [v7 fulfill];
+        [actionCopy fulfill];
         goto LABEL_39;
       }
     }
 
-    [v7 fail];
+    [actionCopy fail];
 LABEL_39:
 
     goto LABEL_19;
@@ -3424,116 +3424,116 @@ LABEL_39:
 LABEL_10:
 
 LABEL_11:
-  v16 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-  v17 = [v7 callUUID];
-  v18 = [v16 isManagingCallWithUUID:v17];
+  faceTimeIDSProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+  callUUID8 = [actionCopy callUUID];
+  v18 = [faceTimeIDSProviderDelegate2 isManagingCallWithUUID:callUUID8];
 
   if (v18)
   {
-    v19 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
-    [v19 provider:v6 performSetMutedCallAction:v7];
+    faceTimeIDSProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIDSProviderDelegate];
+    [faceTimeIDSProviderDelegate3 provider:providerCopy performSetMutedCallAction:actionCopy];
   }
 
-  v20 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-  v21 = [v7 callUUID];
-  v22 = [v20 isManagingCallWithUUID:v21];
+  faceTimeIMAVProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+  callUUID9 = [actionCopy callUUID];
+  v22 = [faceTimeIMAVProviderDelegate2 isManagingCallWithUUID:callUUID9];
 
   if (v22)
   {
-    v23 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
-    [v23 provider:v6 performSetMutedCallAction:v7];
+    faceTimeIMAVProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeIMAVProviderDelegate];
+    [faceTimeIMAVProviderDelegate3 provider:providerCopy performSetMutedCallAction:actionCopy];
   }
 
-  v24 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-  v25 = [v7 callUUID];
-  v26 = [v24 isManagingCallWithUUID:v25];
+  faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  callUUID10 = [actionCopy callUUID];
+  v26 = [faceTimeConversationProviderDelegate2 isManagingCallWithUUID:callUUID10];
 
   if (v26)
   {
-    v27 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v27 provider:v6 performSetMutedCallAction:v7];
+    faceTimeConversationProviderDelegate3 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate3 provider:providerCopy performSetMutedCallAction:actionCopy];
   }
 
-  v28 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-  v29 = [v7 callUUID];
-  v30 = [v28 isManagingCallWithUUID:v29];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  callUUID11 = [actionCopy callUUID];
+  v30 = [groupFaceTimeServiceProviderDelegate isManagingCallWithUUID:callUUID11];
 
   if (v30)
   {
-    v31 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v31 provider:v6 performSetMutedCallAction:v7];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy performSetMutedCallAction:actionCopy];
   }
 
 LABEL_19:
 }
 
-- (void)provider:(id)a3 didActivateAudioSession:(id)a4
+- (void)provider:(id)provider didActivateAudioSession:(id)session
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  providerCopy = provider;
+  sessionCopy = session;
+  faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v9 provider:v13 didActivateAudioSession:v6];
+    faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate2 provider:providerCopy didActivateAudioSession:sessionCopy];
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v12 provider:v13 didActivateAudioSession:v6];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy didActivateAudioSession:sessionCopy];
   }
 }
 
-- (void)provider:(id)a3 didDeactivateAudioSession:(id)a4
+- (void)provider:(id)provider didDeactivateAudioSession:(id)session
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+  providerCopy = provider;
+  sessionCopy = session;
+  faceTimeConversationProviderDelegate = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
-    [v9 provider:v13 didDeactivateAudioSession:v6];
+    faceTimeConversationProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self faceTimeConversationProviderDelegate];
+    [faceTimeConversationProviderDelegate2 provider:providerCopy didDeactivateAudioSession:sessionCopy];
   }
 
-  v10 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+  groupFaceTimeServiceProviderDelegate = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
-    [v12 provider:v13 didDeactivateAudioSession:v6];
+    groupFaceTimeServiceProviderDelegate2 = [(CSDFaceTimeProviderDelegate *)self groupFaceTimeServiceProviderDelegate];
+    [groupFaceTimeServiceProviderDelegate2 provider:providerCopy didDeactivateAudioSession:sessionCopy];
   }
 }
 
-- (id)_createJoinCallAction:(id)a3 outgoingCallerID:(id)a4 gftOneToOneDestinations:(id)a5
+- (id)_createJoinCallAction:(id)action outgoingCallerID:(id)d gftOneToOneDestinations:(id)destinations
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  dCopy = d;
+  destinationsCopy = destinations;
   v11 = [CXJoinCallAction alloc];
-  v12 = [v8 callUUID];
+  callUUID = [actionCopy callUUID];
   v13 = +[NSUUID UUID];
-  v14 = [v11 initWithCallUUID:v12 groupUUID:v13];
+  v14 = [v11 initWithCallUUID:callUUID groupUUID:v13];
 
   v15 = [CXMember alloc];
-  v16 = [v8 handle];
-  v17 = [v15 initWithHandle:v16];
+  handle = [actionCopy handle];
+  v17 = [v15 initWithHandle:handle];
   v18 = [NSSet setWithObject:v17];
   [v14 setRemoteMembers:v18];
 
-  [v14 setVideoEnabled:{objc_msgSend(v8, "isVideo")}];
-  [v14 setVideo:{objc_msgSend(v8, "isVideo")}];
-  [v14 setIsUpgradeToVideo:{objc_msgSend(v8, "isUpgradeToVideo")}];
-  [v14 setRelay:{objc_msgSend(v8, "isRelay")}];
-  if ([v8 isVideo])
+  [v14 setVideoEnabled:{objc_msgSend(actionCopy, "isVideo")}];
+  [v14 setVideo:{objc_msgSend(actionCopy, "isVideo")}];
+  [v14 setIsUpgradeToVideo:{objc_msgSend(actionCopy, "isUpgradeToVideo")}];
+  [v14 setRelay:{objc_msgSend(actionCopy, "isRelay")}];
+  if ([actionCopy isVideo])
   {
     v19 = 2;
   }
@@ -3546,18 +3546,18 @@ LABEL_19:
   [v14 setAvMode:v19];
   [v14 setPresentationMode:0];
   [v14 setConversationProviderIdentifier:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
-  if (v10)
+  if (destinationsCopy)
   {
-    v37 = self;
+    selfCopy = self;
     v38 = v14;
-    v40 = v8;
+    v40 = actionCopy;
     v20 = +[NSMutableArray array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v39 = v10;
-    v21 = v10;
+    v39 = destinationsCopy;
+    v21 = destinationsCopy;
     v22 = [v21 countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v22)
     {
@@ -3606,18 +3606,18 @@ LABEL_19:
     v14 = v38;
     [v38 setRemotePushTokens:v30];
 
-    v8 = v40;
-    v10 = v39;
-    self = v37;
+    actionCopy = v40;
+    destinationsCopy = v39;
+    self = selfCopy;
   }
 
-  v31 = [v8 localSenderIdentityUUID];
+  localSenderIdentityUUID = [actionCopy localSenderIdentityUUID];
 
-  if (v31)
+  if (localSenderIdentityUUID)
   {
-    v32 = [(CSDFaceTimeProviderDelegate *)self conversationManager];
-    v33 = [v8 localSenderIdentityUUID];
-    v34 = [v32 callerIDHandleForSenderIdentityUUID:v33 callerID:v9];
+    conversationManager = [(CSDFaceTimeProviderDelegate *)self conversationManager];
+    localSenderIdentityUUID2 = [actionCopy localSenderIdentityUUID];
+    v34 = [conversationManager callerIDHandleForSenderIdentityUUID:localSenderIdentityUUID2 callerID:dCopy];
 
     if (v34)
     {
@@ -3629,15 +3629,15 @@ LABEL_19:
   return v14;
 }
 
-- (void)_checkAndSendReturningSilencedIMAVAnalytic:(id)a3
+- (void)_checkAndSendReturningSilencedIMAVAnalytic:(id)analytic
 {
-  v3 = a3;
+  analyticCopy = analytic;
   v48 = +[NSUserDefaults standardUserDefaults];
   v4 = [v48 arrayForKey:@"returnedIMAVCalls"];
   v5 = objc_alloc_init(CHManager);
   v6 = [CHHandle alloc];
-  v7 = [v3 handle];
-  if ([v7 type] == 2)
+  handle = [analyticCopy handle];
+  if ([handle type] == 2)
   {
     v8 = 2;
   }
@@ -3647,9 +3647,9 @@ LABEL_19:
     v8 = 3;
   }
 
-  v9 = [v3 handle];
-  v10 = [v9 value];
-  v11 = [v6 initWithType:v8 value:v10];
+  handle2 = [analyticCopy handle];
+  value = [handle2 value];
+  v11 = [v6 initWithType:v8 value:value];
 
   v12 = +[NSMutableArray array];
   v45 = v11;
@@ -3680,7 +3680,7 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Found %lu calls matching search predicate for returning silenced IMAV", buf, 0xCu);
   }
 
-  v47 = v3;
+  v47 = analyticCopy;
   if (v4)
   {
     v23 = [v4 mutableCopy];
@@ -3714,8 +3714,8 @@ LABEL_19:
         }
 
         v31 = *(*(&v49 + 1) + 8 * i);
-        v32 = [v31 uniqueId];
-        v33 = [v4 containsObject:v32];
+        uniqueId = [v31 uniqueId];
+        v33 = [v4 containsObject:uniqueId];
 
         if (v33)
         {
@@ -3729,8 +3729,8 @@ LABEL_19:
           v29 = 0;
         }
 
-        v35 = [v31 uniqueId];
-        [v24 addObject:v35];
+        uniqueId2 = [v31 uniqueId];
+        [v24 addObject:uniqueId2];
       }
 
       v27 = [v25 countByEnumeratingWithState:&v49 objects:v53 count:16];
@@ -3746,10 +3746,10 @@ LABEL_19:
       v37 = v47;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [v47 handle];
-        v39 = [v38 value];
+        handle3 = [v47 handle];
+        value2 = [handle3 value];
         *buf = 138412290;
-        v55 = v39;
+        v55 = value2;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "No recent unreturned silenced IMAV calls found for handle %@ in the last 24 hours", buf, 0xCu);
       }
 
@@ -3767,10 +3767,10 @@ LABEL_19:
   v37 = v47;
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = [v47 handle];
-    v42 = [v41 value];
+    handle4 = [v47 handle];
+    value3 = [handle4 value];
     *buf = 138412290;
-    v55 = v42;
+    v55 = value3;
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Found recent IMAV calls for handle that has not been returned %@", buf, 0xCu);
   }
 

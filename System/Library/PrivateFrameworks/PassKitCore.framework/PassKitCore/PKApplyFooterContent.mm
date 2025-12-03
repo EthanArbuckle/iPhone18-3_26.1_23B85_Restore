@@ -1,23 +1,23 @@
 @interface PKApplyFooterContent
-- (BOOL)isEqual:(id)a3;
-- (PKApplyFooterContent)initWithCoder:(id)a3;
-- (PKApplyFooterContent)initWithDictionary:(id)a3;
-- (PKApplyFooterContent)initWithFooterText:(id)a3 links:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKApplyFooterContent)initWithCoder:(id)coder;
+- (PKApplyFooterContent)initWithDictionary:(id)dictionary;
+- (PKApplyFooterContent)initWithFooterText:(id)text links:(id)links;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)termsIdentifiers;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyFooterContent
 
-- (PKApplyFooterContent)initWithDictionary:(id)a3
+- (PKApplyFooterContent)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"footerText"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"footerText"];
   if (v5)
   {
     v26.receiver = self;
@@ -27,7 +27,7 @@
     if (v6)
     {
       objc_storeStrong(&v6->_footerText, v5);
-      v8 = [v4 PKSetContaining:objc_opt_class() forKey:@"links"];
+      v8 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"links"];
       v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v22 = 0u;
       v23 = 0u;
@@ -71,36 +71,36 @@
     }
 
     self = v7;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (PKApplyFooterContent)initWithFooterText:(id)a3 links:(id)a4
+- (PKApplyFooterContent)initWithFooterText:(id)text links:(id)links
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  textCopy = text;
+  linksCopy = links;
+  if (textCopy)
   {
     v15.receiver = self;
     v15.super_class = PKApplyFooterContent;
     v8 = [(PKApplyFooterContent *)&v15 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [textCopy copy];
       footerText = v8->_footerText;
       v8->_footerText = v9;
 
-      v11 = [v7 count];
+      v11 = [linksCopy count];
       if (v11)
       {
-        v11 = [v7 copy];
+        v11 = [linksCopy copy];
       }
 
       links = v8->_links;
@@ -108,23 +108,23 @@
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:self->_footerText forKeyedSubscript:@"footerText"];
-  v4 = [(NSSet *)self->_links allObjects];
-  v5 = [v4 pk_arrayBySafelyApplyingBlock:&__block_literal_global_238];
+  allObjects = [(NSSet *)self->_links allObjects];
+  v5 = [allObjects pk_arrayBySafelyApplyingBlock:&__block_literal_global_238];
   [v3 setObject:v5 forKeyedSubscript:@"links"];
 
   v6 = [v3 copy];
@@ -155,8 +155,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) termsIdentifier];
-        [v3 pk_safelyAddObject:v9];
+        termsIdentifier = [*(*(&v12 + 1) + 8 * i) termsIdentifier];
+        [v3 pk_safelyAddObject:termsIdentifier];
       }
 
       v6 = [(NSSet *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -178,18 +178,18 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -277,22 +277,22 @@ LABEL_19:
   return v5;
 }
 
-- (PKApplyFooterContent)initWithCoder:(id)a3
+- (PKApplyFooterContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKApplyFooterContent;
   v5 = [(PKApplyFooterContent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"footerText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"footerText"];
     footerText = v5->_footerText;
     v5->_footerText = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"links"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"links"];
     links = v5->_links;
     v5->_links = v11;
   }
@@ -300,22 +300,22 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   footerText = self->_footerText;
-  v5 = a3;
-  [v5 encodeObject:footerText forKey:@"footerText"];
-  [v5 encodeObject:self->_links forKey:@"links"];
+  coderCopy = coder;
+  [coderCopy encodeObject:footerText forKey:@"footerText"];
+  [coderCopy encodeObject:self->_links forKey:@"links"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKApplyFooterContent allocWithZone:](PKApplyFooterContent init];
-  v6 = [(NSString *)self->_footerText copyWithZone:a3];
+  v6 = [(NSString *)self->_footerText copyWithZone:zone];
   footerText = v5->_footerText;
   v5->_footerText = v6;
 
-  v8 = [(NSSet *)self->_links copyWithZone:a3];
+  v8 = [(NSSet *)self->_links copyWithZone:zone];
   links = v5->_links;
   v5->_links = v8;
 

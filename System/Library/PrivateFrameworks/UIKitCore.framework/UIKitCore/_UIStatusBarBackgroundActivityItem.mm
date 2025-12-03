@@ -1,44 +1,44 @@
 @interface _UIStatusBarBackgroundActivityItem
-+ (BOOL)_identifierContainsItemImage:(id)a3;
-+ (BOOL)_identifierContainsSecondaryItemImage:(id)a3;
-+ (double)_fontSizeAdjustmentForActivityType:(int64_t)a3;
-+ (double)_verticalOffsetForActivityType:(int64_t)a3;
-- (BOOL)_shouldPulseForActivityType:(int64_t)a3 traitCollection:(id)a4;
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
-- (BOOL)crossfadeForUpdate:(id)a3;
++ (BOOL)_identifierContainsItemImage:(id)image;
++ (BOOL)_identifierContainsSecondaryItemImage:(id)image;
++ (double)_fontSizeAdjustmentForActivityType:(int64_t)type;
++ (double)_verticalOffsetForActivityType:(int64_t)type;
+- (BOOL)_shouldPulseForActivityType:(int64_t)type traitCollection:(id)collection;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
+- (BOOL)crossfadeForUpdate:(id)update;
 - (_UIStatusBarActivityIconView)iconView;
-- (_UIStatusBarBackgroundActivityItem)initWithIdentifier:(id)a3 statusBar:(id)a4;
+- (_UIStatusBarBackgroundActivityItem)initWithIdentifier:(id)identifier statusBar:(id)bar;
 - (_UIStatusBarImageView)secondaryIconView;
 - (_UIStatusBarPillView)backgroundView;
-- (id)_backgroundActivityViewForIdentifier:(id)a3;
-- (id)_backgroundColorForActivityType:(int64_t)a3;
-- (id)_imageNameForActivityType:(int64_t)a3;
-- (id)_systemImageNameForActivityType:(int64_t)a3;
-- (id)_textLabelForActivityType:(int64_t)a3;
-- (id)_visualEffectForActivityType:(int64_t)a3 traitCollection:(id)a4;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
-- (id)imageForUpdate:(id)a3;
-- (id)imageNameForUpdate:(id)a3;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)secondaryImageForUpdate:(id)a3;
-- (id)systemImageNameForUpdate:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)_backgroundActivityViewForIdentifier:(id)identifier;
+- (id)_backgroundColorForActivityType:(int64_t)type;
+- (id)_imageNameForActivityType:(int64_t)type;
+- (id)_systemImageNameForActivityType:(int64_t)type;
+- (id)_textLabelForActivityType:(int64_t)type;
+- (id)_visualEffectForActivityType:(int64_t)type traitCollection:(id)collection;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
+- (id)imageForUpdate:(id)update;
+- (id)imageNameForUpdate:(id)update;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)secondaryImageForUpdate:(id)update;
+- (id)systemImageNameForUpdate:(id)update;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_backgroundView;
 - (void)_create_iconView;
 - (void)_create_secondaryIconView;
-- (void)applyStyleAttributes:(id)a3 toDisplayItem:(id)a4;
-- (void)updatedDisplayItemsWithData:(id)a3;
+- (void)applyStyleAttributes:(id)attributes toDisplayItem:(id)item;
+- (void)updatedDisplayItemsWithData:(id)data;
 @end
 
 @implementation _UIStatusBarBackgroundActivityItem
 
-- (_UIStatusBarBackgroundActivityItem)initWithIdentifier:(id)a3 statusBar:(id)a4
+- (_UIStatusBarBackgroundActivityItem)initWithIdentifier:(id)identifier statusBar:(id)bar
 {
   v5.receiver = self;
   v5.super_class = _UIStatusBarBackgroundActivityItem;
-  result = [(_UIStatusBarItem *)&v5 initWithIdentifier:a3 statusBar:a4];
+  result = [(_UIStatusBarItem *)&v5 initWithIdentifier:identifier statusBar:bar];
   if (result)
   {
     result->_previousType = -1;
@@ -47,15 +47,15 @@
   return result;
 }
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = _UIStatusBarBackgroundActivityItem;
-  v3 = [(_UIStatusBarItem *)&v7 createDisplayItemForIdentifier:a3];
-  v4 = [v3 identifier];
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  v3 = [(_UIStatusBarItem *)&v7 createDisplayItemForIdentifier:identifier];
+  identifier = [v3 identifier];
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v4 == v5)
+  if (identifier == backgroundDisplayIdentifier)
   {
     [v3 setBackground:1];
   }
@@ -63,48 +63,48 @@
   return v3;
 }
 
-- (id)_backgroundActivityViewForIdentifier:(id)a3
+- (id)_backgroundActivityViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  identifierCopy = identifier;
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v5 == v4)
+  if (backgroundDisplayIdentifier == identifierCopy)
   {
-    v6 = [(_UIStatusBarBackgroundActivityItem *)self backgroundView];
+    backgroundView = [(_UIStatusBarBackgroundActivityItem *)self backgroundView];
   }
 
   else
   {
-    v6 = 0;
+    backgroundView = 0;
   }
 
-  return v6;
+  return backgroundView;
 }
 
-+ (BOOL)_identifierContainsItemImage:(id)a3
++ (BOOL)_identifierContainsItemImage:(id)image
 {
-  v4 = a3;
-  v5 = [a1 defaultDisplayIdentifier];
+  imageCopy = image;
+  defaultDisplayIdentifier = [self defaultDisplayIdentifier];
 
-  return v5 == v4;
+  return defaultDisplayIdentifier == imageCopy;
 }
 
-+ (BOOL)_identifierContainsSecondaryItemImage:(id)a3
++ (BOOL)_identifierContainsSecondaryItemImage:(id)image
 {
-  v4 = a3;
-  v5 = [a1 secondaryIconDisplayIdentifier];
+  imageCopy = image;
+  secondaryIconDisplayIdentifier = [self secondaryIconDisplayIdentifier];
 
-  return v5 == v4;
+  return secondaryIconDisplayIdentifier == imageCopy;
 }
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [objc_opt_class() secondaryIconDisplayIdentifier];
+  itemCopy = item;
+  dataCopy = data;
+  identifier = [itemCopy identifier];
+  secondaryIconDisplayIdentifier = [objc_opt_class() secondaryIconDisplayIdentifier];
 
-  if (v8 == v9)
+  if (identifier == secondaryIconDisplayIdentifier)
   {
     v10 = 0;
   }
@@ -113,42 +113,42 @@
   {
     v12.receiver = self;
     v12.super_class = _UIStatusBarBackgroundActivityItem;
-    v10 = [(_UIStatusBarItem *)&v12 canEnableDisplayItem:v6 fromData:v7];
+    v10 = [(_UIStatusBarItem *)&v12 canEnableDisplayItem:itemCopy fromData:dataCopy];
   }
 
   return v10;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v49.receiver = self;
   v49.super_class = _UIStatusBarBackgroundActivityItem;
-  v8 = [(_UIStatusBarIndicatorItem *)&v49 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v6 data];
-  v10 = [v9 backgroundActivityEntry];
+  v8 = [(_UIStatusBarIndicatorItem *)&v49 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  data = [updateCopy data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
 
-  v11 = [v10 type];
-  if ([v6 dataChanged])
+  type = [backgroundActivityEntry type];
+  if ([updateCopy dataChanged])
   {
     v12 = _UIStatusBar_Log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v51 = v11;
+      v51 = type;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "Updating background activity item to type: %li", buf, 0xCu);
     }
 
-    v13 = [v7 identifier];
-    v14 = [(_UIStatusBarBackgroundActivityItem *)self _backgroundActivityViewForIdentifier:v13];
+    identifier = [itemCopy identifier];
+    v14 = [(_UIStatusBarBackgroundActivityItem *)self _backgroundActivityViewForIdentifier:identifier];
 
     if (v14)
     {
-      v43 = v10;
-      v15 = [(_UIStatusBarBackgroundActivityItem *)self _backgroundColorForActivityType:v11];
-      if ([(_UIStatusBarBackgroundActivityItem *)self crossfadeForUpdate:v6])
+      v43 = backgroundActivityEntry;
+      v15 = [(_UIStatusBarBackgroundActivityItem *)self _backgroundColorForActivityType:type];
+      if ([(_UIStatusBarBackgroundActivityItem *)self crossfadeForUpdate:updateCopy])
       {
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
@@ -165,91 +165,91 @@
         [v14 setPillColor:v15];
       }
 
-      v17 = [v6 styleAttributes];
-      v18 = [v17 traitCollection];
-      v19 = [(_UIStatusBarBackgroundActivityItem *)self _visualEffectForActivityType:v11 traitCollection:v18];
+      styleAttributes = [updateCopy styleAttributes];
+      traitCollection = [styleAttributes traitCollection];
+      v19 = [(_UIStatusBarBackgroundActivityItem *)self _visualEffectForActivityType:type traitCollection:traitCollection];
       [v14 setVisualEffect:v19];
 
-      v20 = [v6 styleAttributes];
-      v21 = [v20 traitCollection];
-      [v14 setPulsing:{-[_UIStatusBarBackgroundActivityItem _shouldPulseForActivityType:traitCollection:](self, "_shouldPulseForActivityType:traitCollection:", v11, v21)}];
+      styleAttributes2 = [updateCopy styleAttributes];
+      traitCollection2 = [styleAttributes2 traitCollection];
+      [v14 setPulsing:{-[_UIStatusBarBackgroundActivityItem _shouldPulseForActivityType:traitCollection:](self, "_shouldPulseForActivityType:traitCollection:", type, traitCollection2)}];
 
       v8 = v16;
-      v10 = v43;
+      backgroundActivityEntry = v43;
     }
 
-    v22 = [(_UIStatusBarBackgroundActivityItem *)self iconView];
-    v23 = [v6 styleAttributes];
-    v24 = [v23 traitCollection];
-    [v22 setRinging:-[_UIStatusBarBackgroundActivityItem _shouldRingForActivityType:traitCollection:](self forUpdate:{"_shouldRingForActivityType:traitCollection:", v11, v24), v6}];
+    iconView = [(_UIStatusBarBackgroundActivityItem *)self iconView];
+    styleAttributes3 = [updateCopy styleAttributes];
+    traitCollection3 = [styleAttributes3 traitCollection];
+    [iconView setRinging:-[_UIStatusBarBackgroundActivityItem _shouldRingForActivityType:traitCollection:](self forUpdate:{"_shouldRingForActivityType:traitCollection:", type, traitCollection3), updateCopy}];
   }
 
   v25 = objc_opt_class();
-  v26 = [v7 identifier];
-  if (![v25 _identifierContainsItemImage:v26] || !objc_msgSend(v7, "isEnabled"))
+  identifier2 = [itemCopy identifier];
+  if (![v25 _identifierContainsItemImage:identifier2] || !objc_msgSend(itemCopy, "isEnabled"))
   {
     goto LABEL_18;
   }
 
-  if ([v6 styleAttributesChanged])
+  if ([updateCopy styleAttributesChanged])
   {
 
 LABEL_15:
-    v28 = [v6 styleAttributes];
-    v26 = [v28 copy];
+    styleAttributes4 = [updateCopy styleAttributes];
+    identifier2 = [styleAttributes4 copy];
 
-    [objc_opt_class() _fontSizeAdjustmentForActivityType:v11];
+    [objc_opt_class() _fontSizeAdjustmentForActivityType:type];
     if (v29 != 0.0)
     {
       v30 = v29;
-      v31 = [v26 font];
-      v32 = [v31 fontDescriptor];
-      [v26 font];
-      v44 = v10;
+      font = [identifier2 font];
+      fontDescriptor = [font fontDescriptor];
+      [identifier2 font];
+      v44 = backgroundActivityEntry;
       v34 = v33 = v8;
       [v34 pointSize];
-      v36 = [off_1E70ECC18 fontWithDescriptor:v32 size:v30 + v35];
-      [v26 setFont:v36];
+      v36 = [off_1E70ECC18 fontWithDescriptor:fontDescriptor size:v30 + v35];
+      [identifier2 setFont:v36];
 
       v8 = v33;
-      v10 = v44;
+      backgroundActivityEntry = v44;
     }
 
-    [objc_opt_class() _verticalOffsetForActivityType:v11];
-    [v7 setCenterOffset:?];
+    [objc_opt_class() _verticalOffsetForActivityType:type];
+    [itemCopy setCenterOffset:?];
     v45.receiver = self;
     v45.super_class = _UIStatusBarBackgroundActivityItem;
-    [(_UIStatusBarItem *)&v45 applyStyleAttributes:v26 toDisplayItem:v7];
+    [(_UIStatusBarItem *)&v45 applyStyleAttributes:identifier2 toDisplayItem:itemCopy];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v27 = [v6 dataChanged];
+  dataChanged = [updateCopy dataChanged];
 
-  if (v27)
+  if (dataChanged)
   {
     goto LABEL_15;
   }
 
 LABEL_19:
   v37 = objc_opt_class();
-  v38 = [v7 identifier];
-  if ([v37 _identifierContainsSecondaryItemImage:v38] && objc_msgSend(v7, "isEnabled"))
+  identifier3 = [itemCopy identifier];
+  if ([v37 _identifierContainsSecondaryItemImage:identifier3] && objc_msgSend(itemCopy, "isEnabled"))
   {
-    v39 = [v6 dataChanged];
+    dataChanged2 = [updateCopy dataChanged];
 
-    if (!v39)
+    if (!dataChanged2)
     {
       goto LABEL_24;
     }
 
-    v38 = [(_UIStatusBarBackgroundActivityItem *)self secondaryImageForUpdate:v6];
-    v40 = [(_UIStatusBarBackgroundActivityItem *)self secondaryIconView];
-    [v40 setEnabled:v38 != 0];
+    identifier3 = [(_UIStatusBarBackgroundActivityItem *)self secondaryImageForUpdate:updateCopy];
+    secondaryIconView = [(_UIStatusBarBackgroundActivityItem *)self secondaryIconView];
+    [secondaryIconView setEnabled:identifier3 != 0];
 
-    v41 = [(_UIStatusBarBackgroundActivityItem *)self secondaryIconView];
-    [v41 setImage:v38];
+    secondaryIconView2 = [(_UIStatusBarBackgroundActivityItem *)self secondaryIconView];
+    [secondaryIconView2 setImage:identifier3];
   }
 
 LABEL_24:
@@ -257,78 +257,78 @@ LABEL_24:
   return v8;
 }
 
-- (void)updatedDisplayItemsWithData:(id)a3
+- (void)updatedDisplayItemsWithData:(id)data
 {
   v6.receiver = self;
   v6.super_class = _UIStatusBarBackgroundActivityItem;
-  v4 = a3;
-  [(_UIStatusBarItem *)&v6 updatedDisplayItemsWithData:v4];
-  v5 = [v4 backgroundActivityEntry];
+  dataCopy = data;
+  [(_UIStatusBarItem *)&v6 updatedDisplayItemsWithData:dataCopy];
+  backgroundActivityEntry = [dataCopy backgroundActivityEntry];
 
-  if (v5)
+  if (backgroundActivityEntry)
   {
-    self->_previousType = [v5 type];
+    self->_previousType = [backgroundActivityEntry type];
   }
 }
 
-- (void)applyStyleAttributes:(id)a3 toDisplayItem:(id)a4
+- (void)applyStyleAttributes:(id)attributes toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  itemCopy = item;
   v8 = objc_opt_class();
-  v9 = [v7 identifier];
-  LOBYTE(v8) = [v8 _identifierContainsItemImage:v9];
+  identifier = [itemCopy identifier];
+  LOBYTE(v8) = [v8 _identifierContainsItemImage:identifier];
 
   if ((v8 & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = _UIStatusBarBackgroundActivityItem;
-    [(_UIStatusBarItem *)&v10 applyStyleAttributes:v6 toDisplayItem:v7];
+    [(_UIStatusBarItem *)&v10 applyStyleAttributes:attributesCopy toDisplayItem:itemCopy];
   }
 }
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v4 = [a3 data];
-  v5 = [v4 backgroundActivityEntry];
-  v6 = -[_UIStatusBarBackgroundActivityItem _systemImageNameForActivityType:](self, "_systemImageNameForActivityType:", [v5 type]);
+  data = [update data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  v6 = -[_UIStatusBarBackgroundActivityItem _systemImageNameForActivityType:](self, "_systemImageNameForActivityType:", [backgroundActivityEntry type]);
 
   return v6;
 }
 
-- (id)imageNameForUpdate:(id)a3
+- (id)imageNameForUpdate:(id)update
 {
-  v4 = [a3 data];
-  v5 = [v4 backgroundActivityEntry];
-  v6 = -[_UIStatusBarBackgroundActivityItem _imageNameForActivityType:](self, "_imageNameForActivityType:", [v5 type]);
+  data = [update data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  v6 = -[_UIStatusBarBackgroundActivityItem _imageNameForActivityType:](self, "_imageNameForActivityType:", [backgroundActivityEntry type]);
 
   return v6;
 }
 
-- (id)_systemImageNameForActivityType:(int64_t)a3
+- (id)_systemImageNameForActivityType:(int64_t)type
 {
-  if ((a3 - 2) > 0x23)
+  if ((type - 2) > 0x23)
   {
     return 0;
   }
 
   else
   {
-    return off_1E711FA48[a3 - 2];
+    return off_1E711FA48[type - 2];
   }
 }
 
-- (id)_imageNameForActivityType:(int64_t)a3
+- (id)_imageNameForActivityType:(int64_t)type
 {
-  if (a3 <= 19)
+  if (type <= 19)
   {
     v4 = @"BackgroundTask_satellite-disconnected";
-    if (a3 != 1)
+    if (type != 1)
     {
       v4 = 0;
     }
 
-    if (a3)
+    if (type)
     {
       return v4;
     }
@@ -341,7 +341,7 @@ LABEL_24:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 20:
         return @"BackgroundTask_screen-sharing";
@@ -355,9 +355,9 @@ LABEL_24:
   }
 }
 
-- (id)_textLabelForActivityType:(int64_t)a3
+- (id)_textLabelForActivityType:(int64_t)type
 {
-  if (a3 == 36)
+  if (type == 36)
   {
     return @"SOS";
   }
@@ -368,22 +368,22 @@ LABEL_24:
   }
 }
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 data];
-  v6 = [v5 backgroundActivityEntry];
-  v7 = [v6 type];
+  updateCopy = update;
+  data = [updateCopy data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  type = [backgroundActivityEntry type];
 
-  v8 = [(_UIStatusBarBackgroundActivityItem *)self _textLabelForActivityType:v7];
+  v8 = [(_UIStatusBarBackgroundActivityItem *)self _textLabelForActivityType:type];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x1E696AAB0]);
     v23[0] = *off_1E70EC918;
-    v10 = [v4 styleAttributes];
-    v11 = [v10 smallFont];
-    v24[0] = v11;
+    styleAttributes = [updateCopy styleAttributes];
+    smallFont = [styleAttributes smallFont];
+    v24[0] = smallFont;
     v23[1] = *off_1E70EC920;
     v12 = +[UIColor whiteColor];
     v24[1] = v12;
@@ -406,17 +406,17 @@ LABEL_24:
   {
     v20.receiver = self;
     v20.super_class = _UIStatusBarBackgroundActivityItem;
-    v18 = [(_UIStatusBarIndicatorItem *)&v20 imageForUpdate:v4];
+    v18 = [(_UIStatusBarIndicatorItem *)&v20 imageForUpdate:updateCopy];
   }
 
   return v18;
 }
 
-- (id)secondaryImageForUpdate:(id)a3
+- (id)secondaryImageForUpdate:(id)update
 {
-  v4 = [a3 data];
-  v5 = [v4 backgroundActivityEntry];
-  v6 = -[_UIStatusBarBackgroundActivityItem _secondarySystemImageNameForActivityType:](self, "_secondarySystemImageNameForActivityType:", [v5 type]);
+  data = [update data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  v6 = -[_UIStatusBarBackgroundActivityItem _secondarySystemImageNameForActivityType:](self, "_secondarySystemImageNameForActivityType:", [backgroundActivityEntry type]);
 
   if (v6)
   {
@@ -431,22 +431,22 @@ LABEL_24:
   return v7;
 }
 
-+ (double)_verticalOffsetForActivityType:(int64_t)a3
++ (double)_verticalOffsetForActivityType:(int64_t)type
 {
   v3 = 0.0;
-  if (a3 == 6)
+  if (type == 6)
   {
-    v4 = [objc_opt_self() mainScreen];
-    [v4 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v3 = 1.0 / v5;
   }
 
   return v3;
 }
 
-+ (double)_fontSizeAdjustmentForActivityType:(int64_t)a3
++ (double)_fontSizeAdjustmentForActivityType:(int64_t)type
 {
-  v3 = a3 == 37 || a3 == 3;
+  v3 = type == 37 || type == 3;
   result = 0.0;
   if (v3)
   {
@@ -456,9 +456,9 @@ LABEL_24:
   return result;
 }
 
-- (id)_backgroundColorForActivityType:(int64_t)a3
+- (id)_backgroundColorForActivityType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
     case 6:
@@ -529,12 +529,12 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_shouldPulseForActivityType:(int64_t)a3 traitCollection:(id)a4
+- (BOOL)_shouldPulseForActivityType:(int64_t)type traitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceIdiom];
-  if (a3 <= 0x1B)
+  userInterfaceIdiom = [collection userInterfaceIdiom];
+  if (type <= 0x1B)
   {
-    v6 = 0x7FFFDF0u >> a3;
+    v6 = 0x7FFFDF0u >> type;
   }
 
   else
@@ -542,7 +542,7 @@ LABEL_12:
     LOBYTE(v6) = 1;
   }
 
-  if (v5 == 3)
+  if (userInterfaceIdiom == 3)
   {
     LOBYTE(v6) = 0;
   }
@@ -550,11 +550,11 @@ LABEL_12:
   return v6 & 1;
 }
 
-- (id)_visualEffectForActivityType:(int64_t)a3 traitCollection:(id)a4
+- (id)_visualEffectForActivityType:(int64_t)type traitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceIdiom];
+  userInterfaceIdiom = [collection userInterfaceIdiom];
   v6 = 0;
-  if ((a3 - 2) <= 3 && v5 != 3)
+  if ((type - 2) <= 3 && userInterfaceIdiom != 3)
   {
     v6 = [UIBlurEffect effectWithStyle:2];
   }
@@ -622,41 +622,41 @@ LABEL_12:
   self->_secondaryIconView = v4;
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  identifierCopy = identifier;
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v5 == v4)
+  if (backgroundDisplayIdentifier == identifierCopy)
   {
-    v7 = [(_UIStatusBarBackgroundActivityItem *)self backgroundView];
+    backgroundView = [(_UIStatusBarBackgroundActivityItem *)self backgroundView];
   }
 
   else
   {
-    v6 = [objc_opt_class() secondaryIconDisplayIdentifier];
+    secondaryIconDisplayIdentifier = [objc_opt_class() secondaryIconDisplayIdentifier];
 
-    if (v6 == v4)
+    if (secondaryIconDisplayIdentifier == identifierCopy)
     {
-      v7 = [(_UIStatusBarBackgroundActivityItem *)self secondaryIconView];
+      backgroundView = [(_UIStatusBarBackgroundActivityItem *)self secondaryIconView];
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = _UIStatusBarBackgroundActivityItem;
-      v7 = [(_UIStatusBarIndicatorItem *)&v10 viewForIdentifier:v4];
+      backgroundView = [(_UIStatusBarIndicatorItem *)&v10 viewForIdentifier:identifierCopy];
     }
   }
 
-  v8 = v7;
+  v8 = backgroundView;
 
   return v8;
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _UIStatusBar_Log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -666,14 +666,14 @@ LABEL_12:
 
   v8.receiver = self;
   v8.super_class = _UIStatusBarBackgroundActivityItem;
-  v6 = [(_UIStatusBarItem *)&v8 additionAnimationForDisplayItemWithIdentifier:v4];
+  v6 = [(_UIStatusBarItem *)&v8 additionAnimationForDisplayItemWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _UIStatusBar_Log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -683,27 +683,27 @@ LABEL_12:
 
   v8.receiver = self;
   v8.super_class = _UIStatusBarBackgroundActivityItem;
-  v6 = [(_UIStatusBarItem *)&v8 removalAnimationForDisplayItemWithIdentifier:v4];
+  v6 = [(_UIStatusBarItem *)&v8 removalAnimationForDisplayItemWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)crossfadeForUpdate:(id)a3
+- (BOOL)crossfadeForUpdate:(id)update
 {
-  v4 = [a3 data];
-  v5 = [v4 backgroundActivityEntry];
-  v6 = [v5 type];
+  data = [update data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  type = [backgroundActivityEntry type];
 
   previousType = self->_previousType;
-  if (previousType == 21 && v6 == 19)
+  if (previousType == 21 && type == 19)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = previousType == 19 && v6 == 21;
-    if (previousType == 1 && v6 == 0)
+    v10 = previousType == 19 && type == 21;
+    if (previousType == 1 && type == 0)
     {
       v12 = 1;
       return v12 & 1;
@@ -717,7 +717,7 @@ LABEL_12:
 
   else
   {
-    v13 = v6 == 1;
+    v13 = type == 1;
   }
 
   v14 = v13;

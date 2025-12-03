@@ -1,13 +1,13 @@
 @interface _LTDTTSAssetModel
-+ (id)modelFromAsset:(id)a3;
++ (id)modelFromAsset:(id)asset;
 - (BOOL)canBePurged;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)supportsLocale:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)supportsLocale:(id)locale;
 - (NSArray)localeIdentifiers;
 - (NSArray)supportedLanguages;
 - (NSString)debugDescription;
-- (_LTDTTSAssetModel)initWithAssetIdentifier:(id)a3;
-- (_LTDTTSAssetModel)initWithProvider:(id)a3;
+- (_LTDTTSAssetModel)initWithAssetIdentifier:(id)identifier;
+- (_LTDTTSAssetModel)initWithProvider:(id)provider;
 - (int64_t)unarchivedSize;
 - (unint64_t)assetSubtype;
 - (unint64_t)hash;
@@ -16,18 +16,18 @@
 
 @implementation _LTDTTSAssetModel
 
-- (_LTDTTSAssetModel)initWithAssetIdentifier:(id)a3
+- (_LTDTTSAssetModel)initWithAssetIdentifier:(id)identifier
 {
-  v5 = a3;
-  if ([v5 hasPrefix:@"TTS-"])
+  identifierCopy = identifier;
+  if ([identifierCopy hasPrefix:@"TTS-"])
   {
-    objc_storeStrong(&self->_assetName, a3);
-    v6 = [v5 substringFromIndex:{objc_msgSend(@"TTS-", "length")}];
+    objc_storeStrong(&self->_assetName, identifier);
+    v6 = [identifierCopy substringFromIndex:{objc_msgSend(@"TTS-", "length")}];
     v7 = [_LTDTTSAssetService ttsAssetForLocaleIdentifier:v6 onDeviceOnly:0];
     v8 = v7;
     if (v7)
     {
-      [(_LTDTTSAssetModel *)v7 setAssetName:v5];
+      [(_LTDTTSAssetModel *)v7 setAssetName:identifierCopy];
       v9 = v8;
     }
 
@@ -36,7 +36,7 @@
       v11 = _LTOSLogAssets();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(_LTDTTSAssetModel *)v5 initWithAssetIdentifier:v11];
+        [(_LTDTTSAssetModel *)identifierCopy initWithAssetIdentifier:v11];
       }
     }
   }
@@ -46,7 +46,7 @@
     v10 = _LTOSLogAssets();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(_LTDTTSAssetModel *)v5 initWithAssetIdentifier:v10];
+      [(_LTDTTSAssetModel *)identifierCopy initWithAssetIdentifier:v10];
     }
 
     v8 = 0;
@@ -55,17 +55,17 @@
   return v8;
 }
 
-- (_LTDTTSAssetModel)initWithProvider:(id)a3
+- (_LTDTTSAssetModel)initWithProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = _LTDTTSAssetModel;
   v6 = [(_LTDTTSAssetModel *)&v24 init];
   if (v6)
   {
-    v7 = [v5 primaryLanguage];
+    primaryLanguage = [providerCopy primaryLanguage];
     language = v6->_language;
-    v6->_language = v7;
+    v6->_language = primaryLanguage;
 
     v9 = [(NSString *)v6->_language stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
     ltIdentifier = v6->_ltIdentifier;
@@ -75,35 +75,35 @@
     assetName = v6->_assetName;
     v6->_assetName = v11;
 
-    objc_storeStrong(&v6->_provider, a3);
+    objc_storeStrong(&v6->_provider, provider);
     v13 = MEMORY[0x277CE1AC0];
     v14 = v6->_assetName;
-    v15 = [(TTSAsset *)v6->_provider downloadSize];
-    v16 = [v15 integerValue];
+    downloadSize = [(TTSAsset *)v6->_provider downloadSize];
+    integerValue = [downloadSize integerValue];
 
-    if (v16 <= 314572800)
+    if (integerValue <= 314572800)
     {
       v17 = 314572800;
     }
 
     else
     {
-      v17 = v16;
+      v17 = integerValue;
     }
 
     v18 = [v13 discreteProgressWithIdentifier:v14 totalUnitCount:v17];
     progress = v6->_progress;
     v6->_progress = v18;
 
-    v20 = [(_LTDTTSAssetModel *)v6 state];
-    if (v20 == 1)
+    state = [(_LTDTTSAssetModel *)v6 state];
+    if (state == 1)
     {
       v21 = 2;
     }
 
     else
     {
-      if (v20 != 2)
+      if (state != 2)
       {
 LABEL_10:
         v22 = v6;
@@ -122,15 +122,15 @@ LABEL_11:
   return v6;
 }
 
-+ (id)modelFromAsset:(id)a3
++ (id)modelFromAsset:(id)asset
 {
-  v3 = [a3 provider];
-  if (v3)
+  provider = [asset provider];
+  if (provider)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = provider;
     }
 
     else
@@ -188,36 +188,36 @@ LABEL_11:
 
 - (int64_t)unarchivedSize
 {
-  v2 = [(_LTDTTSAssetModel *)self provider];
-  v3 = [v2 diskSize];
-  v4 = [v3 integerValue];
+  provider = [(_LTDTTSAssetModel *)self provider];
+  diskSize = [provider diskSize];
+  integerValue = [diskSize integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)canBePurged
 {
-  v2 = [(_LTDTTSAssetModel *)self provider];
-  v3 = [v2 purgeable];
+  provider = [(_LTDTTSAssetModel *)self provider];
+  purgeable = [provider purgeable];
 
-  return v3;
+  return purgeable;
 }
 
-- (BOOL)supportsLocale:(id)a3
+- (BOOL)supportsLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(_LTDTTSAssetModel *)self assetLanguage];
-  v6 = [v4 _ltLocaleIdentifier];
+  localeCopy = locale;
+  assetLanguage = [(_LTDTTSAssetModel *)self assetLanguage];
+  _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(localeCopy) = [assetLanguage isEqualToString:_ltLocaleIdentifier];
+  return localeCopy;
 }
 
 - (NSArray)localeIdentifiers
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(_LTDTTSAssetModel *)self identifier];
-  v3 = [v2 componentsSeparatedByString:@"-"];
+  identifier = [(_LTDTTSAssetModel *)self identifier];
+  v3 = [identifier componentsSeparatedByString:@"-"];
 
   if ([v3 count] == 2)
   {
@@ -238,24 +238,24 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(_LTDTTSAssetModel *)self assetName];
-  v3 = [v2 hash];
+  assetName = [(_LTDTTSAssetModel *)self assetName];
+  v3 = [assetName hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -275,17 +275,17 @@ LABEL_11:
     }
 
     v8 = v6;
-    v9 = [(_LTDTTSAssetModel *)self assetName];
-    v10 = [(_LTDTTSAssetModel *)v8 assetName];
-    v11 = [v9 isEqualToString:v10];
+    assetName = [(_LTDTTSAssetModel *)self assetName];
+    assetName2 = [(_LTDTTSAssetModel *)v8 assetName];
+    v11 = [assetName isEqualToString:assetName2];
 
     if (v11)
     {
-      v12 = [(_LTDTTSAssetModel *)self getLocalFileUrl];
-      v13 = [(_LTDTTSAssetModel *)v8 getLocalFileUrl];
-      if (v12 | v13)
+      getLocalFileUrl = [(_LTDTTSAssetModel *)self getLocalFileUrl];
+      getLocalFileUrl2 = [(_LTDTTSAssetModel *)v8 getLocalFileUrl];
+      if (getLocalFileUrl | getLocalFileUrl2)
       {
-        v7 = [v12 isEqual:v13];
+        v7 = [getLocalFileUrl isEqual:getLocalFileUrl2];
       }
 
       else
@@ -308,10 +308,10 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_LTDTTSAssetModel *)self assetName];
-  v7 = [(_LTDTTSAssetModel *)self provider];
-  v8 = [v7 debugDescription];
-  v9 = [v3 stringWithFormat:@"<%@ %@, %@>", v5, v6, v8];
+  assetName = [(_LTDTTSAssetModel *)self assetName];
+  provider = [(_LTDTTSAssetModel *)self provider];
+  v8 = [provider debugDescription];
+  v9 = [v3 stringWithFormat:@"<%@ %@, %@>", v5, assetName, v8];
 
   return v9;
 }

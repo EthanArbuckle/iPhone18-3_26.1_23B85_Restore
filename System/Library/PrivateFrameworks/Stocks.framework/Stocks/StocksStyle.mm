@@ -31,8 +31,8 @@
   v2 = [(StocksStyle *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_resetLocale name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_resetLocale name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v2;
@@ -50,9 +50,9 @@
 - (id)gainColor
 {
   v2 = +[StocksPreferences sharedPreferences];
-  v3 = [v2 isChangeColorSwapped];
+  isChangeColorSwapped = [v2 isChangeColorSwapped];
 
-  if (v3)
+  if (isChangeColorSwapped)
   {
     [MEMORY[0x277D75348] systemRedColor];
   }
@@ -69,9 +69,9 @@
 - (id)lossColor
 {
   v2 = +[StocksPreferences sharedPreferences];
-  v3 = [v2 isChangeColorSwapped];
+  isChangeColorSwapped = [v2 isChangeColorSwapped];
 
-  if (v3)
+  if (isChangeColorSwapped)
   {
     [MEMORY[0x277D75348] systemGreenColor];
   }

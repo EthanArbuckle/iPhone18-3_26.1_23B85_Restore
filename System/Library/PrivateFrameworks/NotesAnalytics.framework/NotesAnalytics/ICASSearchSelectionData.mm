@@ -1,42 +1,42 @@
 @interface ICASSearchSelectionData
-- (ICASSearchSelectionData)initWithSelectedResultID:(id)a3 selectedResultAccountType:(id)a4 selectedResultType:(id)a5 gmRankingStrategyType:(id)a6 gmRank:(id)a7 searchRankingExperimentSummary:(id)a8 gmRankIOS13:(id)a9 charLengthOfQueryString:(id)a10 isNoteFoundByAttachment:(id)a11 isTopHit:(id)a12;
+- (ICASSearchSelectionData)initWithSelectedResultID:(id)d selectedResultAccountType:(id)type selectedResultType:(id)resultType gmRankingStrategyType:(id)strategyType gmRank:(id)rank searchRankingExperimentSummary:(id)summary gmRankIOS13:(id)s13 charLengthOfQueryString:(id)self0 isNoteFoundByAttachment:(id)self1 isTopHit:(id)self2;
 - (id)toDict;
 @end
 
 @implementation ICASSearchSelectionData
 
-- (ICASSearchSelectionData)initWithSelectedResultID:(id)a3 selectedResultAccountType:(id)a4 selectedResultType:(id)a5 gmRankingStrategyType:(id)a6 gmRank:(id)a7 searchRankingExperimentSummary:(id)a8 gmRankIOS13:(id)a9 charLengthOfQueryString:(id)a10 isNoteFoundByAttachment:(id)a11 isTopHit:(id)a12
+- (ICASSearchSelectionData)initWithSelectedResultID:(id)d selectedResultAccountType:(id)type selectedResultType:(id)resultType gmRankingStrategyType:(id)strategyType gmRank:(id)rank searchRankingExperimentSummary:(id)summary gmRankIOS13:(id)s13 charLengthOfQueryString:(id)self0 isNoteFoundByAttachment:(id)self1 isTopHit:(id)self2
 {
-  v35 = a3;
-  obj = a4;
-  v34 = a4;
-  v27 = a5;
-  v33 = a5;
-  v32 = a6;
-  v28 = a7;
-  v31 = a7;
-  v29 = a8;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
+  dCopy = d;
+  obj = type;
+  typeCopy = type;
+  resultTypeCopy = resultType;
+  resultTypeCopy2 = resultType;
+  strategyTypeCopy = strategyType;
+  rankCopy = rank;
+  rankCopy2 = rank;
+  summaryCopy = summary;
+  summaryCopy2 = summary;
+  s13Copy = s13;
+  stringCopy = string;
+  attachmentCopy = attachment;
+  hitCopy = hit;
   v36.receiver = self;
   v36.super_class = ICASSearchSelectionData;
   v23 = [(ICASSearchSelectionData *)&v36 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_selectedResultID, a3);
+    objc_storeStrong(&v23->_selectedResultID, d);
     objc_storeStrong(&v24->_selectedResultAccountType, obj);
-    objc_storeStrong(&v24->_selectedResultType, v27);
-    objc_storeStrong(&v24->_gmRankingStrategyType, a6);
-    objc_storeStrong(&v24->_gmRank, v28);
-    objc_storeStrong(&v24->_searchRankingExperimentSummary, v29);
-    objc_storeStrong(&v24->_gmRankIOS13, a9);
-    objc_storeStrong(&v24->_charLengthOfQueryString, a10);
-    objc_storeStrong(&v24->_isNoteFoundByAttachment, a11);
-    objc_storeStrong(&v24->_isTopHit, a12);
+    objc_storeStrong(&v24->_selectedResultType, resultTypeCopy);
+    objc_storeStrong(&v24->_gmRankingStrategyType, strategyType);
+    objc_storeStrong(&v24->_gmRank, rankCopy);
+    objc_storeStrong(&v24->_searchRankingExperimentSummary, summaryCopy);
+    objc_storeStrong(&v24->_gmRankIOS13, s13);
+    objc_storeStrong(&v24->_charLengthOfQueryString, string);
+    objc_storeStrong(&v24->_isNoteFoundByAttachment, attachment);
+    objc_storeStrong(&v24->_isTopHit, hit);
   }
 
   return v24;
@@ -46,145 +46,145 @@
 {
   v37[10] = *MEMORY[0x277D85DE8];
   v36[0] = @"selectedResultID";
-  v35 = [(ICASSearchSelectionData *)self selectedResultID];
-  if (v35)
+  selectedResultID = [(ICASSearchSelectionData *)self selectedResultID];
+  if (selectedResultID)
   {
-    v3 = [(ICASSearchSelectionData *)self selectedResultID];
+    selectedResultID2 = [(ICASSearchSelectionData *)self selectedResultID];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    selectedResultID2 = objc_opt_new();
   }
 
-  v34 = v3;
-  v37[0] = v3;
+  v34 = selectedResultID2;
+  v37[0] = selectedResultID2;
   v36[1] = @"selectedResultAccountType";
-  v33 = [(ICASSearchSelectionData *)self selectedResultAccountType];
-  if (v33)
+  selectedResultAccountType = [(ICASSearchSelectionData *)self selectedResultAccountType];
+  if (selectedResultAccountType)
   {
-    v4 = [(ICASSearchSelectionData *)self selectedResultAccountType];
+    selectedResultAccountType2 = [(ICASSearchSelectionData *)self selectedResultAccountType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    selectedResultAccountType2 = objc_opt_new();
   }
 
-  v32 = v4;
-  v37[1] = v4;
+  v32 = selectedResultAccountType2;
+  v37[1] = selectedResultAccountType2;
   v36[2] = @"selectedResultType";
-  v31 = [(ICASSearchSelectionData *)self selectedResultType];
-  if (v31)
+  selectedResultType = [(ICASSearchSelectionData *)self selectedResultType];
+  if (selectedResultType)
   {
-    v5 = [(ICASSearchSelectionData *)self selectedResultType];
+    selectedResultType2 = [(ICASSearchSelectionData *)self selectedResultType];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    selectedResultType2 = objc_opt_new();
   }
 
-  v30 = v5;
-  v37[2] = v5;
+  v30 = selectedResultType2;
+  v37[2] = selectedResultType2;
   v36[3] = @"gmRankingStrategyType";
-  v29 = [(ICASSearchSelectionData *)self gmRankingStrategyType];
-  if (v29)
+  gmRankingStrategyType = [(ICASSearchSelectionData *)self gmRankingStrategyType];
+  if (gmRankingStrategyType)
   {
-    v6 = [(ICASSearchSelectionData *)self gmRankingStrategyType];
+    gmRankingStrategyType2 = [(ICASSearchSelectionData *)self gmRankingStrategyType];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    gmRankingStrategyType2 = objc_opt_new();
   }
 
-  v28 = v6;
-  v37[3] = v6;
+  v28 = gmRankingStrategyType2;
+  v37[3] = gmRankingStrategyType2;
   v36[4] = @"gmRank";
-  v27 = [(ICASSearchSelectionData *)self gmRank];
-  if (v27)
+  gmRank = [(ICASSearchSelectionData *)self gmRank];
+  if (gmRank)
   {
-    v7 = [(ICASSearchSelectionData *)self gmRank];
+    gmRank2 = [(ICASSearchSelectionData *)self gmRank];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    gmRank2 = objc_opt_new();
   }
 
-  v26 = v7;
-  v37[4] = v7;
+  v26 = gmRank2;
+  v37[4] = gmRank2;
   v36[5] = @"searchRankingExperimentSummary";
-  v25 = [(ICASSearchSelectionData *)self searchRankingExperimentSummary];
-  if (v25)
+  searchRankingExperimentSummary = [(ICASSearchSelectionData *)self searchRankingExperimentSummary];
+  if (searchRankingExperimentSummary)
   {
-    v8 = [(ICASSearchSelectionData *)self searchRankingExperimentSummary];
+    searchRankingExperimentSummary2 = [(ICASSearchSelectionData *)self searchRankingExperimentSummary];
   }
 
   else
   {
-    v8 = objc_opt_new();
+    searchRankingExperimentSummary2 = objc_opt_new();
   }
 
-  v9 = v8;
-  v37[5] = v8;
+  v9 = searchRankingExperimentSummary2;
+  v37[5] = searchRankingExperimentSummary2;
   v36[6] = @"gmRankIOS13";
-  v10 = [(ICASSearchSelectionData *)self gmRankIOS13];
-  if (v10)
+  gmRankIOS13 = [(ICASSearchSelectionData *)self gmRankIOS13];
+  if (gmRankIOS13)
   {
-    v11 = [(ICASSearchSelectionData *)self gmRankIOS13];
+    gmRankIOS132 = [(ICASSearchSelectionData *)self gmRankIOS13];
   }
 
   else
   {
-    v11 = objc_opt_new();
+    gmRankIOS132 = objc_opt_new();
   }
 
-  v12 = v11;
-  v37[6] = v11;
+  v12 = gmRankIOS132;
+  v37[6] = gmRankIOS132;
   v36[7] = @"charLengthOfQueryString";
-  v13 = [(ICASSearchSelectionData *)self charLengthOfQueryString];
-  if (v13)
+  charLengthOfQueryString = [(ICASSearchSelectionData *)self charLengthOfQueryString];
+  if (charLengthOfQueryString)
   {
-    v14 = [(ICASSearchSelectionData *)self charLengthOfQueryString];
+    charLengthOfQueryString2 = [(ICASSearchSelectionData *)self charLengthOfQueryString];
   }
 
   else
   {
-    v14 = objc_opt_new();
+    charLengthOfQueryString2 = objc_opt_new();
   }
 
-  v15 = v14;
-  v37[7] = v14;
+  v15 = charLengthOfQueryString2;
+  v37[7] = charLengthOfQueryString2;
   v36[8] = @"isNoteFoundByAttachment";
-  v16 = [(ICASSearchSelectionData *)self isNoteFoundByAttachment];
-  if (v16)
+  isNoteFoundByAttachment = [(ICASSearchSelectionData *)self isNoteFoundByAttachment];
+  if (isNoteFoundByAttachment)
   {
-    v17 = [(ICASSearchSelectionData *)self isNoteFoundByAttachment];
+    isNoteFoundByAttachment2 = [(ICASSearchSelectionData *)self isNoteFoundByAttachment];
   }
 
   else
   {
-    v17 = objc_opt_new();
+    isNoteFoundByAttachment2 = objc_opt_new();
   }
 
-  v18 = v17;
-  v37[8] = v17;
+  v18 = isNoteFoundByAttachment2;
+  v37[8] = isNoteFoundByAttachment2;
   v36[9] = @"isTopHit";
-  v19 = [(ICASSearchSelectionData *)self isTopHit];
-  if (v19)
+  isTopHit = [(ICASSearchSelectionData *)self isTopHit];
+  if (isTopHit)
   {
-    v20 = [(ICASSearchSelectionData *)self isTopHit];
+    isTopHit2 = [(ICASSearchSelectionData *)self isTopHit];
   }
 
   else
   {
-    v20 = objc_opt_new();
+    isTopHit2 = objc_opt_new();
   }
 
-  v21 = v20;
-  v37[9] = v20;
+  v21 = isTopHit2;
+  v37[9] = isTopHit2;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:10];
 
   v23 = *MEMORY[0x277D85DE8];

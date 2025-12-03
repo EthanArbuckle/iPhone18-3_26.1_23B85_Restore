@@ -2,7 +2,7 @@
 + (NSString)specifierKey;
 - (NSDictionary)resourceDictionary;
 - (_TtC14FamilyCircleUI28PSControllerURLHandlingRelay)init;
-- (void)setResourceDictionary:(id)a3;
+- (void)setResourceDictionary:(id)dictionary;
 @end
 
 @implementation PSControllerURLHandlingRelay
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (void)setResourceDictionary:(id)a3
+- (void)setResourceDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = sub_21BE2890C();
   }

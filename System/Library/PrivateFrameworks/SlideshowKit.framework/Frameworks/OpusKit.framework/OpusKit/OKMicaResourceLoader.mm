@@ -1,33 +1,33 @@
 @interface OKMicaResourceLoader
-- (BOOL)canLoadResourceWithURL:(id)a3;
-- (id)copyResource:(id)a3;
-- (id)loadResourceWithURL:(id)a3 withPresentationViewController:(id)a4;
-- (void)deleteResource:(id)a3;
+- (BOOL)canLoadResourceWithURL:(id)l;
+- (id)copyResource:(id)resource;
+- (id)loadResourceWithURL:(id)l withPresentationViewController:(id)controller;
+- (void)deleteResource:(id)resource;
 @end
 
 @implementation OKMicaResourceLoader
 
-- (BOOL)canLoadResourceWithURL:(id)a3
+- (BOOL)canLoadResourceWithURL:(id)l
 {
-  v3 = [objc_msgSend(a3 "absoluteString")];
+  v3 = [objc_msgSend(l "absoluteString")];
 
   return [v3 isEqualToString:@"caar"];
 }
 
-- (id)loadResourceWithURL:(id)a3 withPresentationViewController:(id)a4
+- (id)loadResourceWithURL:(id)l withPresentationViewController:(id)controller
 {
-  v4 = [[OKWidgetMicaDocument alloc] initWithURL:a3];
+  v4 = [[OKWidgetMicaDocument alloc] initWithURL:l];
 
   return v4;
 }
 
-- (id)copyResource:(id)a3
+- (id)copyResource:(id)resource
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [a3 copy];
+    return [resource copy];
   }
 
   else
@@ -41,12 +41,12 @@
   }
 }
 
-- (void)deleteResource:(id)a3
+- (void)deleteResource:(id)resource
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a3)
+    if (resource)
     {
     }
   }

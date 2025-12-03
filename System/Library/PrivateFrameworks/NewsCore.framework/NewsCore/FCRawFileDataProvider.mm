@@ -1,26 +1,26 @@
 @interface FCRawFileDataProvider
 - (FCRawFileDataProvider)init;
-- (FCRawFileDataProvider)initWithFilePath:(id)a3 holdToken:(id)a4;
+- (FCRawFileDataProvider)initWithFilePath:(id)path holdToken:(id)token;
 - (NSData)data;
 @end
 
 @implementation FCRawFileDataProvider
 
-- (FCRawFileDataProvider)initWithFilePath:(id)a3 holdToken:(id)a4
+- (FCRawFileDataProvider)initWithFilePath:(id)path holdToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = FCRawFileDataProvider;
   v8 = [(FCRawFileDataProvider *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [pathCopy copy];
     filePath = v8->_filePath;
     v8->_filePath = v9;
 
     v8->_isRawFileConsumable = 1;
-    objc_storeStrong(&v8->_holdToken, a4);
+    objc_storeStrong(&v8->_holdToken, token);
   }
 
   return v8;
@@ -55,8 +55,8 @@
 - (NSData)data
 {
   v2 = MEMORY[0x1E695DEF0];
-  v3 = [(FCRawFileDataProvider *)self filePath];
-  v4 = [v2 dataWithContentsOfFile:v3];
+  filePath = [(FCRawFileDataProvider *)self filePath];
+  v4 = [v2 dataWithContentsOfFile:filePath];
 
   return v4;
 }

@@ -1,20 +1,20 @@
 @interface BiometricKitCoreAnalyticsEvent
-- (BOOL)postEventExtendedBy:(id)a3;
-- (BiometricKitCoreAnalyticsEvent)initWithName:(id)a3;
-- (BiometricKitCoreAnalyticsEvent)initWithName:(id)a3 dictionary:(id)a4;
-- (BiometricKitCoreAnalyticsEvent)initWithPersistedDataWithName:(id)a3;
-- (id)dictionaryRepresentationArchiving:(BOOL)a3;
-- (id)dictionaryRepresentationForClass:(Class)a3;
+- (BOOL)postEventExtendedBy:(id)by;
+- (BiometricKitCoreAnalyticsEvent)initWithName:(id)name;
+- (BiometricKitCoreAnalyticsEvent)initWithName:(id)name dictionary:(id)dictionary;
+- (BiometricKitCoreAnalyticsEvent)initWithPersistedDataWithName:(id)name;
+- (id)dictionaryRepresentationArchiving:(BOOL)archiving;
+- (id)dictionaryRepresentationForClass:(Class)class;
 - (id)isPasscodeSet;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)incrementCountField:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (void)incrementCountField:(id)field;
 - (void)isPasscodeSet;
 - (void)persistData;
 - (void)reset;
-- (void)resetClass:(Class)a3;
-- (void)setNilValueForKey:(id)a3;
-- (void)setTimeSinceLastEnrollment:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)resetClass:(Class)class;
+- (void)setNilValueForKey:(id)key;
+- (void)setTimeSinceLastEnrollment:(id)enrollment;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)updateBoundedFieldValue;
 - (void)updateStatus;
 @end
@@ -75,9 +75,9 @@
 
 - (void)updateStatus
 {
-  v3 = [(BiometricKitCoreAnalyticsEvent *)self isPasscodeSet];
+  isPasscodeSet = [(BiometricKitCoreAnalyticsEvent *)self isPasscodeSet];
   passcodeSet = self->_passcodeSet;
-  self->_passcodeSet = v3;
+  self->_passcodeSet = isPasscodeSet;
 
   MEMORY[0x2821F96F8]();
 }
@@ -226,16 +226,16 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BiometricKitCoreAnalyticsEvent)initWithName:(id)a3
+- (BiometricKitCoreAnalyticsEvent)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = BiometricKitCoreAnalyticsEvent;
   v6 = [(BiometricKitCoreAnalyticsEvent *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventName, a3);
+    objc_storeStrong(&v6->_eventName, name);
     [(BiometricKitCoreAnalyticsEvent *)v7 reset];
     v8 = MEMORY[0x277CCABB0];
     v9 = MGCopyAnswer();
@@ -247,20 +247,20 @@ LABEL_11:
   return v7;
 }
 
-- (BiometricKitCoreAnalyticsEvent)initWithName:(id)a3 dictionary:(id)a4
+- (BiometricKitCoreAnalyticsEvent)initWithName:(id)name dictionary:(id)dictionary
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BiometricKitCoreAnalyticsEvent *)self initWithName:v6];
+  nameCopy = name;
+  dictionaryCopy = dictionary;
+  v8 = [(BiometricKitCoreAnalyticsEvent *)self initWithName:nameCopy];
   if (v8)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v20 = v7;
-    v9 = v7;
+    v20 = dictionaryCopy;
+    v9 = dictionaryCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v31 count:16];
     if (v10)
     {
@@ -299,7 +299,7 @@ LABEL_11:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412802;
-              v26 = v6;
+              v26 = nameCopy;
               v27 = 2112;
               v28 = v9;
               v29 = 2112;
@@ -315,28 +315,28 @@ LABEL_11:
       while (v11);
     }
 
-    v7 = v20;
+    dictionaryCopy = v20;
   }
 
   v18 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (BiometricKitCoreAnalyticsEvent)initWithPersistedDataWithName:(id)a3
+- (BiometricKitCoreAnalyticsEvent)initWithPersistedDataWithName:(id)name
 {
   v4 = MEMORY[0x277CF1BF0];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 objectOfClass:objc_opt_class() forKey:v5];
-  v8 = [(BiometricKitCoreAnalyticsEvent *)self initWithName:v5 dictionary:v7];
+  nameCopy = name;
+  sharedInstance = [v4 sharedInstance];
+  v7 = [sharedInstance objectOfClass:objc_opt_class() forKey:nameCopy];
+  v8 = [(BiometricKitCoreAnalyticsEvent *)self initWithName:nameCopy dictionary:v7];
 
   return v8;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   if (__osLog)
   {
     v5 = __osLog;
@@ -353,7 +353,7 @@ LABEL_11:
     v9 = 138412546;
     v10 = eventName;
     v11 = 2112;
-    v12 = v4;
+    v12 = keyCopy;
     _os_log_impl(&dword_223E00000, v5, OS_LOG_TYPE_ERROR, "BiometricKitCoreAnalyticsEvent(%@) valueForUndefinedKey: %@\n", &v9, 0x16u);
   }
 
@@ -361,10 +361,10 @@ LABEL_11:
   return 0;
 }
 
-- (void)setNilValueForKey:(id)a3
+- (void)setNilValueForKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   if (__osLog)
   {
     v5 = __osLog;
@@ -381,18 +381,18 @@ LABEL_11:
     v8 = 138412546;
     v9 = eventName;
     v10 = 2112;
-    v11 = v4;
+    v11 = keyCopy;
     _os_log_impl(&dword_223E00000, v5, OS_LOG_TYPE_ERROR, "BiometricKitCoreAnalyticsEvent(%@) setNilValueForKey: %@\n", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (__osLog)
   {
     v8 = __osLog;
@@ -409,19 +409,19 @@ LABEL_11:
     v11 = 138412802;
     v12 = eventName;
     v13 = 2112;
-    v14 = v6;
+    v14 = valueCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = keyCopy;
     _os_log_impl(&dword_223E00000, v8, OS_LOG_TYPE_ERROR, "BiometricKitCoreAnalyticsEvent(%@) setValue: %@ forUndefinedKey: %@\n", &v11, 0x20u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)postEventExtendedBy:(id)a3
+- (BOOL)postEventExtendedBy:(id)by
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  byCopy = by;
   v5 = MEMORY[0x277D86220];
   if (__osLog)
   {
@@ -439,7 +439,7 @@ LABEL_11:
     *buf = 138412546;
     v28 = eventName;
     v29 = 2112;
-    v30 = v4;
+    v30 = byCopy;
     _os_log_impl(&dword_223E00000, v6, OS_LOG_TYPE_DEBUG, "BiometricKitCoreAnalyticsEvent(%@) postEventExtendedBy: %@\n", buf, 0x16u);
   }
 
@@ -458,12 +458,12 @@ LABEL_11:
 
   [(BiometricKitCoreAnalyticsEvent *)self updateBoundedFieldValue];
   v14 = MEMORY[0x277CBEB38];
-  v15 = [(BiometricKitCoreAnalyticsEvent *)self getEventDictionary];
-  v16 = [v14 dictionaryWithDictionary:v15];
+  getEventDictionary = [(BiometricKitCoreAnalyticsEvent *)self getEventDictionary];
+  v16 = [v14 dictionaryWithDictionary:getEventDictionary];
 
-  if (v4)
+  if (byCopy)
   {
-    [v16 addEntriesFromDictionary:v4];
+    [v16 addEntriesFromDictionary:byCopy];
   }
 
   v17 = self->_eventName;
@@ -507,9 +507,9 @@ id __54__BiometricKitCoreAnalyticsEvent_postEventExtendedBy___block_invoke(uint6
   return v2;
 }
 
-- (id)dictionaryRepresentationArchiving:(BOOL)a3
+- (id)dictionaryRepresentationArchiving:(BOOL)archiving
 {
-  v3 = a3;
+  archivingCopy = archiving;
   v22 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D86220];
   if (__osLog)
@@ -528,11 +528,11 @@ id __54__BiometricKitCoreAnalyticsEvent_postEventExtendedBy___block_invoke(uint6
     v16 = 138412546;
     v17 = eventName;
     v18 = 1024;
-    v19 = v3;
+    v19 = archivingCopy;
     _os_log_impl(&dword_223E00000, v6, OS_LOG_TYPE_DEBUG, "BiometricKitCoreAnalyticsEvent(%@) dictionaryRepresentation: %d\n", &v16, 0x12u);
   }
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = objc_opt_class();
   [(BiometricKitCoreAnalyticsEvent *)self updateStatus];
   if ([v9 isSubclassOfClass:objc_opt_class()])
@@ -540,7 +540,7 @@ id __54__BiometricKitCoreAnalyticsEvent_postEventExtendedBy___block_invoke(uint6
     do
     {
       v10 = [(BiometricKitCoreAnalyticsEvent *)self dictionaryRepresentationForClass:v9];
-      [v8 addEntriesFromDictionary:v10];
+      [dictionary addEntriesFromDictionary:v10];
 
       v9 = [v9 superclass];
     }
@@ -548,7 +548,7 @@ id __54__BiometricKitCoreAnalyticsEvent_postEventExtendedBy___block_invoke(uint6
     while (([v9 isSubclassOfClass:objc_opt_class()] & 1) != 0);
   }
 
-  if (!v3)
+  if (!archivingCopy)
   {
     if (__osLog)
     {
@@ -573,18 +573,18 @@ id __54__BiometricKitCoreAnalyticsEvent_postEventExtendedBy___block_invoke(uint6
       _os_log_impl(&dword_223E00000, v11, OS_LOG_TYPE_DEBUG, "BiometricKitCoreAnalyticsEvent(%@) dictionaryRepresentation: %d _privateProperties: %@\n", &v16, 0x1Cu);
     }
 
-    [v8 removeObjectsForKeys:self->_privateProperties];
+    [dictionary removeObjectsForKeys:self->_privateProperties];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return dictionary;
 }
 
-- (void)resetClass:(Class)a3
+- (void)resetClass:(Class)class
 {
   outCount = 0;
-  v4 = class_copyPropertyList(a3, &outCount);
+  v4 = class_copyPropertyList(class, &outCount);
   v5 = v4;
   if (v4 && outCount)
   {
@@ -604,15 +604,15 @@ LABEL_5:
   }
 }
 
-- (void)incrementCountField:(id)a3
+- (void)incrementCountField:(id)field
 {
-  v4 = a3;
-  v5 = [(BiometricKitCoreAnalyticsEvent *)self valueForKey:v4];
+  fieldCopy = field;
+  v5 = [(BiometricKitCoreAnalyticsEvent *)self valueForKey:fieldCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "intValue") + 1}];
-    [(BiometricKitCoreAnalyticsEvent *)self setValue:v6 forKey:v4];
+    [(BiometricKitCoreAnalyticsEvent *)self setValue:v6 forKey:fieldCopy];
   }
 
   else
@@ -621,22 +621,22 @@ LABEL_5:
   }
 }
 
-- (void)setTimeSinceLastEnrollment:(id)a3
+- (void)setTimeSinceLastEnrollment:(id)enrollment
 {
-  v11 = a3;
-  objc_storeStrong(&self->_timeSinceLastEnrollment, a3);
-  v5 = [(NSNumber *)self->_timeSinceLastEnrollment unsignedIntegerValue];
+  enrollmentCopy = enrollment;
+  objc_storeStrong(&self->_timeSinceLastEnrollment, enrollment);
+  unsignedIntegerValue = [(NSNumber *)self->_timeSinceLastEnrollment unsignedIntegerValue];
   timeSinceLastEnrollment = self->_timeSinceLastEnrollment;
-  if (v5 < 0x80)
+  if (unsignedIntegerValue < 0x80)
   {
     v9 = timeSinceLastEnrollment;
   }
 
   else
   {
-    v7 = [(NSNumber *)timeSinceLastEnrollment unsignedIntegerValue];
-    v8 = ((v7 - 128) * 0x2492492492492493uLL) >> 64;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:((v8 + ((v7 - 128 - v8) >> 1)) >> 2) + 128];
+    unsignedIntegerValue2 = [(NSNumber *)timeSinceLastEnrollment unsignedIntegerValue];
+    v8 = ((unsignedIntegerValue2 - 128) * 0x2492492492492493uLL) >> 64;
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:((v8 + ((unsignedIntegerValue2 - 128 - v8) >> 1)) >> 2) + 128];
   }
 
   timeSinceLastEnrollmentBinned = self->_timeSinceLastEnrollmentBinned;
@@ -645,17 +645,17 @@ LABEL_5:
 
 - (void)persistData
 {
-  v4 = [MEMORY[0x277CF1BF0] sharedInstance];
+  mEMORY[0x277CF1BF0] = [MEMORY[0x277CF1BF0] sharedInstance];
   v3 = [(BiometricKitCoreAnalyticsEvent *)self dictionaryRepresentationArchiving:1];
-  [v4 setObject:v3 forKey:self->_eventName];
+  [mEMORY[0x277CF1BF0] setObject:v3 forKey:self->_eventName];
 }
 
-- (id)dictionaryRepresentationForClass:(Class)a3
+- (id)dictionaryRepresentationForClass:(Class)class
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   outCount = 0;
-  v6 = class_copyPropertyList(a3, &outCount);
+  v6 = class_copyPropertyList(class, &outCount);
   if (v6)
   {
     v7 = v6;
@@ -667,7 +667,7 @@ LABEL_5:
         v10 = [(BiometricKitCoreAnalyticsEvent *)self valueForKey:v9];
         if (v10)
         {
-          [v5 setObject:v10 forKey:v9];
+          [dictionary setObject:v10 forKey:v9];
         }
       }
     }
@@ -692,7 +692,7 @@ LABEL_5:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
 - (void)incrementCountField:.cold.1()
@@ -733,7 +733,7 @@ LABEL_5:
   }
 
   *a2 = 0;
-  *a1 = 0;
+  *self = 0;
   v6 = *MEMORY[0x277D85DE8];
 }
 

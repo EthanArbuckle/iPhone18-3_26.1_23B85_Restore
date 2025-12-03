@@ -1,23 +1,23 @@
 @interface HRAtrialFibrillationEducationSection
-- (id)_accessibilitySuffixForEducationRow:(unint64_t)a3;
-- (id)_cellTitleForEducationRow:(unint64_t)a3;
-- (id)_viewControllerForEducationRow:(unint64_t)a3;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
-- (id)initForSinglePlayer:(BOOL)a3;
+- (id)_accessibilitySuffixForEducationRow:(unint64_t)row;
+- (id)_cellTitleForEducationRow:(unint64_t)row;
+- (id)_viewControllerForEducationRow:(unint64_t)row;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
+- (id)initForSinglePlayer:(BOOL)player;
 - (unint64_t)numberOfRowsInSection;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation HRAtrialFibrillationEducationSection
 
-- (id)initForSinglePlayer:(BOOL)a3
+- (id)initForSinglePlayer:(BOOL)player
 {
   v5.receiver = self;
   v5.super_class = HRAtrialFibrillationEducationSection;
   result = [(HRAtrialFibrillationEducationSection *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = player;
   }
 
   return result;
@@ -36,48 +36,48 @@
   }
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"UITableViewCell"];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"UITableViewCell"];
-    v7 = [v6 textLabel];
-    [v7 setAdjustsFontForContentSizeCategory:1];
+    textLabel = [v6 textLabel];
+    [textLabel setAdjustsFontForContentSizeCategory:1];
 
-    v8 = [v6 textLabel];
-    [v8 setNumberOfLines:0];
+    textLabel2 = [v6 textLabel];
+    [textLabel2 setNumberOfLines:0];
 
     [v6 setAccessoryType:1];
   }
 
-  v9 = [(HRAtrialFibrillationEducationSection *)self _cellTitleForEducationRow:a3];
-  v10 = [v6 textLabel];
-  [v10 setText:v9];
+  v9 = [(HRAtrialFibrillationEducationSection *)self _cellTitleForEducationRow:index];
+  textLabel3 = [v6 textLabel];
+  [textLabel3 setText:v9];
 
-  v11 = [(HRAtrialFibrillationEducationSection *)self _accessibilitySuffixForEducationRow:a3];
+  v11 = [(HRAtrialFibrillationEducationSection *)self _accessibilitySuffixForEducationRow:index];
   v12 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:2 suffix:v11];
   [v6 setAccessibilityIdentifier:v12];
 
   return v6;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
-  v9 = a4;
-  v7 = [(HRAtrialFibrillationEducationSection *)self _viewControllerForEducationRow:a3];
+  controllerCopy = controller;
+  v7 = [(HRAtrialFibrillationEducationSection *)self _viewControllerForEducationRow:index];
   if (v7)
   {
-    v8 = [v9 topViewController];
-    [v8 showAdaptively:v7 sender:0 animated:1];
+    topViewController = [controllerCopy topViewController];
+    [topViewController showAdaptively:v7 sender:0 animated:1];
   }
 }
 
-- (id)_cellTitleForEducationRow:(unint64_t)a3
+- (id)_cellTitleForEducationRow:(unint64_t)row
 {
-  if (a3 <= 3)
+  if (row <= 3)
   {
-    v4 = off_2796FBA10[a3];
+    v4 = off_2796FBA10[row];
     v5 = HRHeartRhythmUIFrameworkBundle();
     v3 = [v5 localizedStringForKey:v4 value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
   }
@@ -85,34 +85,34 @@
   return v3;
 }
 
-- (id)_accessibilitySuffixForEducationRow:(unint64_t)a3
+- (id)_accessibilitySuffixForEducationRow:(unint64_t)row
 {
-  if (a3 > 3)
+  if (row > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_2796FBA30[a3];
+    v3 = off_2796FBA30[row];
   }
 
   return [MEMORY[0x277CCACA8] stringWithFormat:@"Education.%@", v3];
 }
 
-- (id)_viewControllerForEducationRow:(unint64_t)a3
+- (id)_viewControllerForEducationRow:(unint64_t)row
 {
   v3 = 0;
-  if (a3 > 1)
+  if (row > 1)
   {
-    if (a3 == 2)
+    if (row == 2)
     {
       v4 = HROnboardingAtrialFibrillationLimitationViewController;
     }
 
     else
     {
-      if (a3 != 3)
+      if (row != 3)
       {
         goto LABEL_11;
       }
@@ -123,13 +123,13 @@
 
   else
   {
-    if (!a3)
+    if (!row)
     {
       v3 = objc_alloc_init(HRAtrialFibrillationIntroViewController);
       goto LABEL_11;
     }
 
-    if (a3 != 1)
+    if (row != 1)
     {
       goto LABEL_11;
     }

@@ -1,8 +1,8 @@
 @interface FCUserVectorManager
-- (FCUserVectorManager)initWithContext:(id)a3;
+- (FCUserVectorManager)initWithContext:(id)context;
 - (void)_applicationDidEnterBackground;
 - (void)_cacheGSToken;
-- (void)_fetchUserVector:(id)a3;
+- (void)_fetchUserVector:(id)vector;
 - (void)_submitPersonalizationVector;
 @end
 
@@ -10,32 +10,32 @@
 
 - (void)_cacheGSToken
 {
-  v2 = [(FCUserVectorManager *)self context];
-  v5 = [v2 newsletterManager];
+  context = [(FCUserVectorManager *)self context];
+  newsletterManager = [context newsletterManager];
 
   v3 = +[FCAppleAccount sharedAccount];
-  if ([v5 enabled])
+  if ([newsletterManager enabled])
   {
-    v4 = [v3 getGSToken];
+    getGSToken = [v3 getGSToken];
   }
 }
 
-- (FCUserVectorManager)initWithContext:(id)a3
+- (FCUserVectorManager)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = FCUserVectorManager;
   v6 = [(FCUserVectorManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = [[FCAsyncSerialQueue alloc] initWithQualityOfService:17];
     queue = v7->_queue;
     v7->_queue = v8;
 
-    v10 = [v5 appActivityMonitor];
-    [v10 addObserver:v7];
+    appActivityMonitor = [contextCopy appActivityMonitor];
+    [appActivityMonitor addObserver:v7];
   }
 
   return v7;
@@ -50,19 +50,19 @@
 
 - (void)_submitPersonalizationVector
 {
-  v3 = [(FCUserVectorManager *)self context];
-  v4 = [v3 newsletterManager];
-  v5 = [v4 shouldSubmitPersonalizationVector];
+  context = [(FCUserVectorManager *)self context];
+  newsletterManager = [context newsletterManager];
+  shouldSubmitPersonalizationVector = [newsletterManager shouldSubmitPersonalizationVector];
 
-  if (v5)
+  if (shouldSubmitPersonalizationVector)
   {
-    v6 = [(FCUserVectorManager *)self context];
-    v7 = [v6 appConfigurationManager];
-    v8 = [v7 possiblyUnfetchedAppConfiguration];
-    v9 = [v8 personalizationTreatment];
+    context2 = [(FCUserVectorManager *)self context];
+    appConfigurationManager = [context2 appConfigurationManager];
+    possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+    personalizationTreatment = [possiblyUnfetchedAppConfiguration personalizationTreatment];
 
-    v10 = [(FCUserVectorManager *)self context];
-    v11 = [v10 backgroundTaskable];
+    context3 = [(FCUserVectorManager *)self context];
+    backgroundTaskable = [context3 backgroundTaskable];
 
     v32 = 0;
     v33 = &v32;
@@ -72,7 +72,7 @@
     v29[1] = 3221225472;
     v29[2] = __51__FCUserVectorManager__submitPersonalizationVector__block_invoke_2;
     v29[3] = &unk_1E7C3A3A0;
-    v12 = v11;
+    v12 = backgroundTaskable;
     v30 = v12;
     v31 = &v32;
     v13 = [v12 fc_beginBackgroundTaskWithName:@"User Vector Upload" expirationHandler:v29];
@@ -85,11 +85,11 @@
     v27 = v14;
     v28 = &v32;
     v15 = _Block_copy(aBlock);
-    v16 = [(FCUserVectorManager *)self aggregateVectorProvider];
-    v17 = v16;
-    if (v16)
+    aggregateVectorProvider = [(FCUserVectorManager *)self aggregateVectorProvider];
+    v17 = aggregateVectorProvider;
+    if (aggregateVectorProvider)
     {
-      v18 = v16;
+      v18 = aggregateVectorProvider;
       v19 = dispatch_get_global_queue(17, 0);
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -97,7 +97,7 @@
       v22[3] = &unk_1E7C43498;
       v22[4] = self;
       v23 = v18;
-      v24 = v9;
+      v24 = personalizationTreatment;
       v25 = v15;
       v20 = v18;
       dispatch_async(v19, v22);
@@ -210,27 +210,27 @@ uint64_t __51__FCUserVectorManager__submitPersonalizationVector__block_invoke_10
   return v6();
 }
 
-- (void)_fetchUserVector:(id)a3
+- (void)_fetchUserVector:(id)vector
 {
-  v4 = a3;
-  v5 = [(FCUserVectorManager *)self userVector];
-  if (!v5)
+  vectorCopy = vector;
+  userVector = [(FCUserVectorManager *)self userVector];
+  if (!userVector)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  v7 = [(FCUserVectorManager *)self userVector];
-  if (!v7)
+  v6 = userVector;
+  userVector2 = [(FCUserVectorManager *)self userVector];
+  if (!userVector2)
   {
 
     goto LABEL_6;
   }
 
-  v8 = v7;
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [(FCUserVectorManager *)self lastUpdated];
-  [v9 timeIntervalSinceDate:v10];
+  v8 = userVector2;
+  date = [MEMORY[0x1E695DF00] date];
+  lastUpdated = [(FCUserVectorManager *)self lastUpdated];
+  [date timeIntervalSinceDate:lastUpdated];
   v12 = v11;
 
   if (v12 <= 86400.0)
@@ -241,7 +241,7 @@ LABEL_6:
     v18[2] = __40__FCUserVectorManager__fetchUserVector___block_invoke;
     v18[3] = &unk_1E7C37778;
     v18[4] = self;
-    v19 = v4;
+    v19 = vectorCopy;
     __40__FCUserVectorManager__fetchUserVector___block_invoke(v18);
 
     goto LABEL_7;
@@ -249,15 +249,15 @@ LABEL_6:
 
 LABEL_4:
   objc_initWeak(&location, self);
-  v13 = [(FCUserVectorManager *)self queue];
+  queue = [(FCUserVectorManager *)self queue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __40__FCUserVectorManager__fetchUserVector___block_invoke_2;
   v14[3] = &unk_1E7C435B0;
   objc_copyWeak(&v16, &location);
   v14[4] = self;
-  v15 = v4;
-  [v13 enqueueBlock:v14];
+  v15 = vectorCopy;
+  [queue enqueueBlock:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);

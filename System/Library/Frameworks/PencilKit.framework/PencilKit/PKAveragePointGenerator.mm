@@ -2,9 +2,9 @@
 - (PKAveragePointGenerator)init;
 - (double)currentStrokePoint;
 - (id).cxx_construct;
-- (void)addInputPoint:(uint64_t)a1;
-- (void)addStroke:(uint64_t)a1;
-- (void)addStrokes:(uint64_t)a1;
+- (void)addInputPoint:(uint64_t)point;
+- (void)addStroke:(uint64_t)stroke;
+- (void)addStrokes:(uint64_t)strokes;
 - (void)currentInputPoint;
 - (void)reset;
 @end
@@ -102,89 +102,89 @@
 
 - (void)reset
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 88));
-    *(a1 + 16) = 0u;
-    *(a1 + 80) = 0;
-    os_unfair_lock_unlock((a1 + 88));
-    os_unfair_lock_lock((a1 + 176));
-    *(a1 + 104) = 0u;
-    *(a1 + 168) = 0;
-    os_unfair_lock_unlock((a1 + 176));
-    os_unfair_lock_lock((a1 + 264));
-    *(a1 + 192) = 0u;
-    *(a1 + 256) = 0;
-    os_unfair_lock_unlock((a1 + 264));
-    os_unfair_lock_lock((a1 + 352));
-    *(a1 + 280) = 0u;
-    *(a1 + 344) = 0;
-    os_unfair_lock_unlock((a1 + 352));
-    os_unfair_lock_lock((a1 + 440));
-    *(a1 + 368) = 0u;
-    *(a1 + 432) = 0;
-    os_unfair_lock_unlock((a1 + 440));
-    os_unfair_lock_lock((a1 + 528));
-    *(a1 + 456) = 0u;
-    *(a1 + 520) = 0;
-    os_unfair_lock_unlock((a1 + 528));
-    os_unfair_lock_lock((a1 + 616));
-    *(a1 + 544) = 0u;
-    *(a1 + 608) = 0;
-    os_unfair_lock_unlock((a1 + 616));
-    os_unfair_lock_lock((a1 + 704));
-    *(a1 + 632) = 0u;
-    *(a1 + 696) = 0;
-    os_unfair_lock_unlock((a1 + 704));
-    os_unfair_lock_lock((a1 + 792));
-    *(a1 + 720) = 0u;
-    *(a1 + 784) = 0;
-    os_unfair_lock_unlock((a1 + 792));
-    os_unfair_lock_lock((a1 + 880));
-    *(a1 + 808) = 0u;
-    *(a1 + 872) = 0;
-    os_unfair_lock_unlock((a1 + 880));
-    os_unfair_lock_lock((a1 + 968));
-    *(a1 + 896) = 0u;
-    *(a1 + 960) = 0;
-    os_unfair_lock_unlock((a1 + 968));
-    os_unfair_lock_lock((a1 + 1056));
-    *(a1 + 984) = 0u;
-    *(a1 + 1048) = 0;
-    os_unfair_lock_unlock((a1 + 1056));
-    os_unfair_lock_lock((a1 + 1144));
-    *(a1 + 1072) = 0u;
-    *(a1 + 1136) = 0;
-    os_unfair_lock_unlock((a1 + 1144));
-    os_unfair_lock_lock((a1 + 1232));
-    *(a1 + 1160) = 0u;
-    *(a1 + 1224) = 0;
-    os_unfair_lock_unlock((a1 + 1232));
-    os_unfair_lock_lock((a1 + 1320));
-    *(a1 + 1248) = 0u;
-    *(a1 + 1312) = 0;
-    os_unfair_lock_unlock((a1 + 1320));
-    os_unfair_lock_lock((a1 + 1408));
-    *(a1 + 1336) = 0u;
-    *(a1 + 1400) = 0;
-    os_unfair_lock_unlock((a1 + 1408));
-    os_unfair_lock_lock((a1 + 1496));
-    *(a1 + 1424) = 0u;
-    *(a1 + 1488) = 0;
+    os_unfair_lock_lock((self + 88));
+    *(self + 16) = 0u;
+    *(self + 80) = 0;
+    os_unfair_lock_unlock((self + 88));
+    os_unfair_lock_lock((self + 176));
+    *(self + 104) = 0u;
+    *(self + 168) = 0;
+    os_unfair_lock_unlock((self + 176));
+    os_unfair_lock_lock((self + 264));
+    *(self + 192) = 0u;
+    *(self + 256) = 0;
+    os_unfair_lock_unlock((self + 264));
+    os_unfair_lock_lock((self + 352));
+    *(self + 280) = 0u;
+    *(self + 344) = 0;
+    os_unfair_lock_unlock((self + 352));
+    os_unfair_lock_lock((self + 440));
+    *(self + 368) = 0u;
+    *(self + 432) = 0;
+    os_unfair_lock_unlock((self + 440));
+    os_unfair_lock_lock((self + 528));
+    *(self + 456) = 0u;
+    *(self + 520) = 0;
+    os_unfair_lock_unlock((self + 528));
+    os_unfair_lock_lock((self + 616));
+    *(self + 544) = 0u;
+    *(self + 608) = 0;
+    os_unfair_lock_unlock((self + 616));
+    os_unfair_lock_lock((self + 704));
+    *(self + 632) = 0u;
+    *(self + 696) = 0;
+    os_unfair_lock_unlock((self + 704));
+    os_unfair_lock_lock((self + 792));
+    *(self + 720) = 0u;
+    *(self + 784) = 0;
+    os_unfair_lock_unlock((self + 792));
+    os_unfair_lock_lock((self + 880));
+    *(self + 808) = 0u;
+    *(self + 872) = 0;
+    os_unfair_lock_unlock((self + 880));
+    os_unfair_lock_lock((self + 968));
+    *(self + 896) = 0u;
+    *(self + 960) = 0;
+    os_unfair_lock_unlock((self + 968));
+    os_unfair_lock_lock((self + 1056));
+    *(self + 984) = 0u;
+    *(self + 1048) = 0;
+    os_unfair_lock_unlock((self + 1056));
+    os_unfair_lock_lock((self + 1144));
+    *(self + 1072) = 0u;
+    *(self + 1136) = 0;
+    os_unfair_lock_unlock((self + 1144));
+    os_unfair_lock_lock((self + 1232));
+    *(self + 1160) = 0u;
+    *(self + 1224) = 0;
+    os_unfair_lock_unlock((self + 1232));
+    os_unfair_lock_lock((self + 1320));
+    *(self + 1248) = 0u;
+    *(self + 1312) = 0;
+    os_unfair_lock_unlock((self + 1320));
+    os_unfair_lock_lock((self + 1408));
+    *(self + 1336) = 0u;
+    *(self + 1400) = 0;
+    os_unfair_lock_unlock((self + 1408));
+    os_unfair_lock_lock((self + 1496));
+    *(self + 1424) = 0u;
+    *(self + 1488) = 0;
 
-    os_unfair_lock_unlock((a1 + 1496));
+    os_unfair_lock_unlock((self + 1496));
   }
 }
 
 - (void)currentInputPoint
 {
-  if (a1)
+  if (self)
   {
-    *a2 = PKRunningStat::mean((a1 + 8));
-    *(a2 + 8) = PKRunningStat::mean((a1 + 96));
-    *(a2 + 16) = PKRunningStat::mean((a1 + 184));
-    v15 = PKRunningStat::mean((a1 + 272));
-    __x = PKRunningStat::mean((a1 + 360));
+    *a2 = PKRunningStat::mean((self + 8));
+    *(a2 + 8) = PKRunningStat::mean((self + 96));
+    *(a2 + 16) = PKRunningStat::mean((self + 184));
+    v15 = PKRunningStat::mean((self + 272));
+    __x = PKRunningStat::mean((self + 360));
     v4.f64[0] = v15;
     v4.f64[1] = __x;
     v19 = v4;
@@ -197,8 +197,8 @@
     v7 = vbslq_s8(v18, v6, v19);
     v8 = vbslq_s8(vcltzq_f64(v7), vaddq_f64(v7, v20), v7);
     *(a2 + 24) = vbicq_s8(v8, vceqzq_f64(v8));
-    *(a2 + 40) = PKRunningStat::mean((a1 + 448));
-    v9 = PKRunningStat::mean((a1 + 536));
+    *(a2 + 40) = PKRunningStat::mean((self + 448));
+    v9 = PKRunningStat::mean((self + 536));
     v10 = fmod(v9, 6.28318531);
     if (v9 <= 6.28318531 && v9 >= 0.0)
     {
@@ -217,13 +217,13 @@
 
     *(a2 + 48) = v10;
     *(a2 + 56) = 0;
-    *(a2 + 64) = PKRunningStat::mean((a1 + 712));
+    *(a2 + 64) = PKRunningStat::mean((self + 712));
     *(a2 + 72) = 0;
     *(a2 + 80) = 0;
-    *(a2 + 88) = PKRunningStat::mean((a1 + 800));
+    *(a2 + 88) = PKRunningStat::mean((self + 800));
     *(a2 + 96) = 0;
     *(a2 + 104) = 0;
-    v12 = PKRunningStat::mean((a1 + 888));
+    v12 = PKRunningStat::mean((self + 888));
     v13 = fmod(v12, 6.28318531);
     if (v12 <= 6.28318531 && v12 >= 0.0)
     {
@@ -261,20 +261,20 @@
 
 - (double)currentStrokePoint
 {
-  if (a1)
+  if (self)
   {
-    *a2 = PKRunningStat::mean((a1 + 712));
-    a2[1] = PKRunningStat::mean((a1 + 8));
-    a2[2] = PKRunningStat::mean((a1 + 96));
-    a2[3] = PKRunningStat::mean((a1 + 976));
-    a2[4] = PKRunningStat::mean((a1 + 1152));
-    a2[5] = PKRunningStat::mean((a1 + 1064));
-    a2[6] = PKRunningStat::mean((a1 + 184));
-    a2[7] = PKRunningStat::mean((a1 + 272));
-    a2[8] = PKRunningStat::mean((a1 + 360));
-    a2[9] = PKRunningStat::mean((a1 + 1240));
-    a2[10] = PKRunningStat::mean((a1 + 1328));
-    result = PKRunningStat::mean((a1 + 1416));
+    *a2 = PKRunningStat::mean((self + 712));
+    a2[1] = PKRunningStat::mean((self + 8));
+    a2[2] = PKRunningStat::mean((self + 96));
+    a2[3] = PKRunningStat::mean((self + 976));
+    a2[4] = PKRunningStat::mean((self + 1152));
+    a2[5] = PKRunningStat::mean((self + 1064));
+    a2[6] = PKRunningStat::mean((self + 184));
+    a2[7] = PKRunningStat::mean((self + 272));
+    a2[8] = PKRunningStat::mean((self + 360));
+    a2[9] = PKRunningStat::mean((self + 1240));
+    a2[10] = PKRunningStat::mean((self + 1328));
+    result = PKRunningStat::mean((self + 1416));
     a2[11] = result;
   }
 
@@ -292,42 +292,42 @@
   return result;
 }
 
-- (void)addInputPoint:(uint64_t)a1
+- (void)addInputPoint:(uint64_t)point
 {
-  if (a1)
+  if (point)
   {
-    PKRunningStat::push((a1 + 8), *a2);
-    PKRunningStat::push((a1 + 96), a2[1]);
-    PKRunningStat::push((a1 + 184), a2[2]);
-    PKRunningStat::push((a1 + 272), a2[3]);
-    PKRunningStat::push((a1 + 360), a2[4]);
-    PKRunningStat::push((a1 + 448), a2[5]);
-    PKRunningStat::push((a1 + 536), a2[6]);
-    PKRunningStat::push((a1 + 624), a2[7]);
-    PKRunningStat::push((a1 + 712), a2[8]);
-    PKRunningStat::push((a1 + 800), a2[11]);
+    PKRunningStat::push((point + 8), *a2);
+    PKRunningStat::push((point + 96), a2[1]);
+    PKRunningStat::push((point + 184), a2[2]);
+    PKRunningStat::push((point + 272), a2[3]);
+    PKRunningStat::push((point + 360), a2[4]);
+    PKRunningStat::push((point + 448), a2[5]);
+    PKRunningStat::push((point + 536), a2[6]);
+    PKRunningStat::push((point + 624), a2[7]);
+    PKRunningStat::push((point + 712), a2[8]);
+    PKRunningStat::push((point + 800), a2[11]);
     v4 = a2[14];
 
-    PKRunningStat::push((a1 + 888), v4);
+    PKRunningStat::push((point + 888), v4);
   }
 }
 
-- (void)addStroke:(uint64_t)a1
+- (void)addStroke:(uint64_t)stroke
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (stroke)
   {
-    v5 = [v3 path];
-    v6 = [v5 count];
+    path = [v3 path];
+    v6 = [path count];
     v7 = [v4 ink];
-    v8 = [v7 behavior];
-    v9 = [v8 renderingDescriptor];
-    v10 = [v9 type];
+    behavior = [v7 behavior];
+    renderingDescriptor = [behavior renderingDescriptor];
+    type = [renderingDescriptor type];
 
     v11 = 0.0;
     v12 = 2.0;
-    if (v10)
+    if (type)
     {
       v12 = 0.0;
     }
@@ -367,33 +367,33 @@
       v21 = v19;
       do
       {
-        if (v5)
+        if (path)
         {
-          [v5 decompressedPointAt:v18];
+          [path decompressedPointAt:v18];
         }
 
         v20 = 0.0;
-        if (v10)
+        if (type)
         {
           v20 = v19 * 0.0;
         }
 
-        PKRunningStat::push((a1 + 712), 0.0);
-        PKRunningStat::push((a1 + 8), 0.0);
-        PKRunningStat::push((a1 + 96), 0.0);
-        PKRunningStat::push((a1 + 976), v22 + (0.0 - v22) * v19);
-        PKRunningStat::push((a1 + 1152), 0.0);
-        PKRunningStat::push((a1 + 1064), v19 * 0.0);
-        PKRunningStat::push((a1 + 184), 0.0);
+        PKRunningStat::push((stroke + 712), 0.0);
+        PKRunningStat::push((stroke + 8), 0.0);
+        PKRunningStat::push((stroke + 96), 0.0);
+        PKRunningStat::push((stroke + 976), v22 + (0.0 - v22) * v19);
+        PKRunningStat::push((stroke + 1152), 0.0);
+        PKRunningStat::push((stroke + 1064), v19 * 0.0);
+        PKRunningStat::push((stroke + 184), 0.0);
         if ((v17 & 1) == 0)
         {
-          PKRunningStat::push((a1 + 272), 0.0);
+          PKRunningStat::push((stroke + 272), 0.0);
         }
 
-        PKRunningStat::push((a1 + 360), 0.0);
-        PKRunningStat::push((a1 + 1240), 0.0);
-        PKRunningStat::push((a1 + 1328), v20);
-        PKRunningStat::push((a1 + 1416), 0.0);
+        PKRunningStat::push((stroke + 360), 0.0);
+        PKRunningStat::push((stroke + 1240), 0.0);
+        PKRunningStat::push((stroke + 1328), v20);
+        PKRunningStat::push((stroke + 1416), 0.0);
         ++v18;
         v19 = v21;
       }
@@ -403,12 +403,12 @@
   }
 }
 
-- (void)addStrokes:(uint64_t)a1
+- (void)addStrokes:(uint64_t)strokes
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (strokes)
   {
     v11 = 0u;
     v12 = 0u;
@@ -429,7 +429,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [(PKAveragePointGenerator *)a1 addStroke:?];
+          [(PKAveragePointGenerator *)strokes addStroke:?];
         }
 
         while (v6 != v8);

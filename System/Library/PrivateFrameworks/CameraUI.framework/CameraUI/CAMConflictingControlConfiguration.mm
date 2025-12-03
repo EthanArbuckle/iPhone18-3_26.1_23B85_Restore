@@ -1,16 +1,16 @@
 @interface CAMConflictingControlConfiguration
-+ (BOOL)isNightModePhotoModeDepthConflictRelevantForMode:(int64_t)a3 device:(int64_t)a4 photoFormat:(id)a5;
-+ (BOOL)shouldDisableMacroForLockedPortraitForMode:(int64_t)a3 devicePosition:(int64_t)a4 photoFormat:(id)a5 optionalDepthEffectEnabled:(BOOL)a6;
-+ (int64_t)resolveDesiredMacroMode:(int64_t)a3 forMode:(int64_t)a4 device:(int64_t)a5 videoConfiguration:(int64_t)a6 videoStabilizationStrength:(int64_t)a7 photoFormat:(id)a8 optionalDepthEffectEnabled:(BOOL)a9 frontRearSimultaneousVideoEnabled:(BOOL)a10;
-+ (unint64_t)resolveDesiredNightModeControlMode:(unint64_t)a3 nightModeConflicts:(unint64_t)a4 resolvedFlashMode:(int64_t)a5 captureMode:(int64_t)a6 captureDevice:(int64_t)a7 photoFormat:(id)a8 depthEffectEnabledFromSuggestion:(BOOL)a9;
-+ (unint64_t)validatedNightModeConflicts:(unint64_t)a3 forMode:(int64_t)a4 device:(int64_t)a5 photoFormat:(id)a6;
-+ (void)resolveDesiredRAWMode:(int64_t)a3 photoFormatConflicts:(unint64_t)a4 desiredLivePhotoMode:(int64_t)a5 desiredFlashMode:(int64_t)a6 toRAWMode:(int64_t *)a7 toLivePhotoMode:(int64_t *)a8 toFlashMode:(int64_t *)a9;
-- (CAMConflictingControlConfiguration)initWithDesiredFlashMode:(int64_t)a3 desiredHDRMode:(int64_t)a4 desiredLivePhotoMode:(int64_t)a5 desiredRAWMode:(int64_t)a6 desiredPhotoResolution:(int64_t)a7 photoFormatConflicts:(unint64_t)a8 desiredNightModeControlMode:(unint64_t)a9 nightModeConflicts:(unint64_t)a10 desiredMacroMode:(int64_t)a11;
++ (BOOL)isNightModePhotoModeDepthConflictRelevantForMode:(int64_t)mode device:(int64_t)device photoFormat:(id)format;
++ (BOOL)shouldDisableMacroForLockedPortraitForMode:(int64_t)mode devicePosition:(int64_t)position photoFormat:(id)format optionalDepthEffectEnabled:(BOOL)enabled;
++ (int64_t)resolveDesiredMacroMode:(int64_t)mode forMode:(int64_t)forMode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength photoFormat:(id)format optionalDepthEffectEnabled:(BOOL)enabled frontRearSimultaneousVideoEnabled:(BOOL)self0;
++ (unint64_t)resolveDesiredNightModeControlMode:(unint64_t)mode nightModeConflicts:(unint64_t)conflicts resolvedFlashMode:(int64_t)flashMode captureMode:(int64_t)captureMode captureDevice:(int64_t)device photoFormat:(id)format depthEffectEnabledFromSuggestion:(BOOL)suggestion;
++ (unint64_t)validatedNightModeConflicts:(unint64_t)conflicts forMode:(int64_t)mode device:(int64_t)device photoFormat:(id)format;
++ (void)resolveDesiredRAWMode:(int64_t)mode photoFormatConflicts:(unint64_t)conflicts desiredLivePhotoMode:(int64_t)photoMode desiredFlashMode:(int64_t)flashMode toRAWMode:(int64_t *)wMode toLivePhotoMode:(int64_t *)livePhotoMode toFlashMode:(int64_t *)toFlashMode;
+- (CAMConflictingControlConfiguration)initWithDesiredFlashMode:(int64_t)mode desiredHDRMode:(int64_t)rMode desiredLivePhotoMode:(int64_t)photoMode desiredRAWMode:(int64_t)wMode desiredPhotoResolution:(int64_t)resolution photoFormatConflicts:(unint64_t)conflicts desiredNightModeControlMode:(unint64_t)controlMode nightModeConflicts:(unint64_t)self0 desiredMacroMode:(int64_t)self1;
 @end
 
 @implementation CAMConflictingControlConfiguration
 
-- (CAMConflictingControlConfiguration)initWithDesiredFlashMode:(int64_t)a3 desiredHDRMode:(int64_t)a4 desiredLivePhotoMode:(int64_t)a5 desiredRAWMode:(int64_t)a6 desiredPhotoResolution:(int64_t)a7 photoFormatConflicts:(unint64_t)a8 desiredNightModeControlMode:(unint64_t)a9 nightModeConflicts:(unint64_t)a10 desiredMacroMode:(int64_t)a11
+- (CAMConflictingControlConfiguration)initWithDesiredFlashMode:(int64_t)mode desiredHDRMode:(int64_t)rMode desiredLivePhotoMode:(int64_t)photoMode desiredRAWMode:(int64_t)wMode desiredPhotoResolution:(int64_t)resolution photoFormatConflicts:(unint64_t)conflicts desiredNightModeControlMode:(unint64_t)controlMode nightModeConflicts:(unint64_t)self0 desiredMacroMode:(int64_t)self1
 {
   v21.receiver = self;
   v21.super_class = CAMConflictingControlConfiguration;
@@ -18,66 +18,66 @@
   v18 = v17;
   if (v17)
   {
-    v17->_desiredFlashMode = a3;
-    v17->_desiredHDRMode = a4;
-    v17->_desiredLivePhotoMode = a5;
-    v17->_desiredRAWMode = a6;
-    v17->_desiredPhotoResolution = a7;
-    v17->_photoFormatConflicts = a8;
-    v17->_desiredNightModeControlMode = a9;
-    v17->_nightModeConflicts = a10;
-    v17->_desiredMacroMode = a11;
+    v17->_desiredFlashMode = mode;
+    v17->_desiredHDRMode = rMode;
+    v17->_desiredLivePhotoMode = photoMode;
+    v17->_desiredRAWMode = wMode;
+    v17->_desiredPhotoResolution = resolution;
+    v17->_photoFormatConflicts = conflicts;
+    v17->_desiredNightModeControlMode = controlMode;
+    v17->_nightModeConflicts = modeConflicts;
+    v17->_desiredMacroMode = macroMode;
     v19 = v17;
   }
 
   return v18;
 }
 
-+ (void)resolveDesiredRAWMode:(int64_t)a3 photoFormatConflicts:(unint64_t)a4 desiredLivePhotoMode:(int64_t)a5 desiredFlashMode:(int64_t)a6 toRAWMode:(int64_t *)a7 toLivePhotoMode:(int64_t *)a8 toFlashMode:(int64_t *)a9
++ (void)resolveDesiredRAWMode:(int64_t)mode photoFormatConflicts:(unint64_t)conflicts desiredLivePhotoMode:(int64_t)photoMode desiredFlashMode:(int64_t)flashMode toRAWMode:(int64_t *)wMode toLivePhotoMode:(int64_t *)livePhotoMode toFlashMode:(int64_t *)toFlashMode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v9 = a4 == 0;
+    modeCopy = conflicts == 0;
   }
 
   else
   {
-    v9 = a3;
+    modeCopy = mode;
   }
 
-  if (a3 == 1 && a4 == 0)
+  if (mode == 1 && conflicts == 0)
   {
-    v10 = 0;
+    photoModeCopy = 0;
   }
 
   else
   {
-    v10 = a5;
+    photoModeCopy = photoMode;
   }
 
-  if (a9)
+  if (toFlashMode)
   {
-    *a9 = a6;
+    *toFlashMode = flashMode;
   }
 
-  if (a8)
+  if (livePhotoMode)
   {
-    *a8 = v10;
+    *livePhotoMode = photoModeCopy;
   }
 
-  if (a7)
+  if (wMode)
   {
-    *a7 = v9;
+    *wMode = modeCopy;
   }
 }
 
-+ (unint64_t)resolveDesiredNightModeControlMode:(unint64_t)a3 nightModeConflicts:(unint64_t)a4 resolvedFlashMode:(int64_t)a5 captureMode:(int64_t)a6 captureDevice:(int64_t)a7 photoFormat:(id)a8 depthEffectEnabledFromSuggestion:(BOOL)a9
++ (unint64_t)resolveDesiredNightModeControlMode:(unint64_t)mode nightModeConflicts:(unint64_t)conflicts resolvedFlashMode:(int64_t)flashMode captureMode:(int64_t)captureMode captureDevice:(int64_t)device photoFormat:(id)format depthEffectEnabledFromSuggestion:(BOOL)suggestion
 {
-  v11 = [a1 validatedNightModeConflicts:a4 forMode:a6 device:a7 photoFormat:a8.var0, a8.var1];
-  v13 = a5 != 2 || v11 != 1;
+  v11 = [self validatedNightModeConflicts:conflicts forMode:captureMode device:device photoFormat:format.var0, format.var1];
+  v13 = flashMode != 2 || v11 != 1;
   if (v11)
   {
-    v14 = a3 == 2;
+    v14 = mode == 2;
   }
 
   else
@@ -88,34 +88,34 @@
 
   if (v14)
   {
-    v15 = 1;
+    modeCopy = 1;
   }
 
   else
   {
-    v15 = a3;
+    modeCopy = mode;
   }
 
-  if (v15 == 1 && v13)
+  if (modeCopy == 1 && v13)
   {
     return 0;
   }
 
   else
   {
-    return v15;
+    return modeCopy;
   }
 }
 
-+ (unint64_t)validatedNightModeConflicts:(unint64_t)a3 forMode:(int64_t)a4 device:(int64_t)a5 photoFormat:(id)a6
++ (unint64_t)validatedNightModeConflicts:(unint64_t)conflicts forMode:(int64_t)mode device:(int64_t)device photoFormat:(id)format
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
+  var1 = format.var1;
+  var0 = format.var0;
   v12 = +[CAMCaptureCapabilities capabilities];
-  if ((a5 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v13 = 0;
-    if ((a3 & 8) == 0)
+    if ((conflicts & 8) == 0)
     {
       goto LABEL_7;
     }
@@ -123,22 +123,22 @@
 
   else
   {
-    v13 = qword_1A3A687D8[a5 - 1];
-    if ((a3 & 8) == 0)
+    v13 = qword_1A3A687D8[device - 1];
+    if ((conflicts & 8) == 0)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a1 isNightModePhotoModeDepthConflictRelevantForMode:a4 device:a5 photoFormat:var0, var1] & 1) == 0)
+  if (([self isNightModePhotoModeDepthConflictRelevantForMode:mode device:device photoFormat:var0, var1] & 1) == 0)
   {
-    a3 = (a3 & 0xFFFFFFFFFFFFFFF7) != 0;
+    conflicts = (conflicts & 0xFFFFFFFFFFFFFFF7) != 0;
   }
 
 LABEL_7:
-  if ((a3 & 4) == 0)
+  if ((conflicts & 4) == 0)
   {
-    if ((a3 & 1) == 0)
+    if ((conflicts & 1) == 0)
     {
       goto LABEL_11;
     }
@@ -146,45 +146,45 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (([v12 isLivePhotoSupportedForMode:a4 devicePosition:v13] & 1) == 0)
+  if (([v12 isLivePhotoSupportedForMode:mode devicePosition:v13] & 1) == 0)
   {
-    a3 = (a3 & 0xFFFFFFFFFFFFFFFBLL) != 0;
+    conflicts = (conflicts & 0xFFFFFFFFFFFFFFFBLL) != 0;
   }
 
-  if (a3)
+  if (conflicts)
   {
 LABEL_9:
-    if (([v12 isFlashSupportedForMode:a4 devicePosition:v13] & 1) == 0)
+    if (([v12 isFlashSupportedForMode:mode devicePosition:v13] & 1) == 0)
     {
-      a3 = a3 > 1;
+      conflicts = conflicts > 1;
     }
   }
 
 LABEL_11:
 
-  return a3;
+  return conflicts;
 }
 
-+ (BOOL)isNightModePhotoModeDepthConflictRelevantForMode:(int64_t)a3 device:(int64_t)a4 photoFormat:(id)a5
++ (BOOL)isNightModePhotoModeDepthConflictRelevantForMode:(int64_t)mode device:(int64_t)device photoFormat:(id)format
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = format.var1;
+  var0 = format.var0;
   v9 = +[CAMCaptureCapabilities capabilities];
   v10 = v9;
-  if ((a4 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = qword_1A3A687D8[a4 - 1];
+    v11 = qword_1A3A687D8[device - 1];
   }
 
-  v12 = [v9 isDepthSuggestionSupportedForMode:a3 devicePosition:v11 photoFormat:var0, var1];
-  v13 = [v10 isNightModeSupportedForMode:a3 device:a4];
-  v14 = v13 & ([v10 isNightModeWithDepthSupportedForMode:a3 device:a4] ^ 1);
-  if (v12)
+  var1 = [v9 isDepthSuggestionSupportedForMode:mode devicePosition:v11 photoFormat:var0, var1];
+  v13 = [v10 isNightModeSupportedForMode:mode device:device];
+  v14 = v13 & ([v10 isNightModeWithDepthSupportedForMode:mode device:device] ^ 1);
+  if (var1)
   {
     v15 = v14;
   }
@@ -197,44 +197,44 @@ LABEL_11:
   return v15;
 }
 
-+ (int64_t)resolveDesiredMacroMode:(int64_t)a3 forMode:(int64_t)a4 device:(int64_t)a5 videoConfiguration:(int64_t)a6 videoStabilizationStrength:(int64_t)a7 photoFormat:(id)a8 optionalDepthEffectEnabled:(BOOL)a9 frontRearSimultaneousVideoEnabled:(BOOL)a10
++ (int64_t)resolveDesiredMacroMode:(int64_t)mode forMode:(int64_t)forMode device:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength photoFormat:(id)format optionalDepthEffectEnabled:(BOOL)enabled frontRearSimultaneousVideoEnabled:(BOOL)self0
 {
   v16 = +[CAMCaptureCapabilities capabilities];
-  if ([v16 isSuperWideAutoMacroSupportedForMode:a4 device:a5 videoConfiguration:a6 videoStabilizationStrength:a7 frontRearSimultaneousVideoEnabled:a10])
+  if ([v16 isSuperWideAutoMacroSupportedForMode:forMode device:device videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:videoEnabled])
   {
-    if ((a5 - 1) > 0xA)
+    if ((device - 1) > 0xA)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = qword_1A3A687D8[a5 - 1];
+      v17 = qword_1A3A687D8[device - 1];
     }
 
-    if ([a1 shouldDisableMacroForLockedPortraitForMode:a4 devicePosition:v17 photoFormat:a8.var0 optionalDepthEffectEnabled:a8.var1, a9])
+    if ([self shouldDisableMacroForLockedPortraitForMode:forMode devicePosition:v17 photoFormat:format.var0 optionalDepthEffectEnabled:format.var1, enabled])
     {
-      a3 = 0;
+      mode = 0;
     }
   }
 
   else
   {
-    a3 = 0;
+    mode = 0;
   }
 
-  return a3;
+  return mode;
 }
 
-+ (BOOL)shouldDisableMacroForLockedPortraitForMode:(int64_t)a3 devicePosition:(int64_t)a4 photoFormat:(id)a5 optionalDepthEffectEnabled:(BOOL)a6
++ (BOOL)shouldDisableMacroForLockedPortraitForMode:(int64_t)mode devicePosition:(int64_t)position photoFormat:(id)format optionalDepthEffectEnabled:(BOOL)enabled
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = format.var1;
+  var0 = format.var0;
   v11 = +[CAMCaptureCapabilities capabilities];
-  LOBYTE(var1) = [v11 isDepthSuggestionSupportedForMode:a3 devicePosition:a4 photoFormat:var0, var1];
+  LOBYTE(var1) = [v11 isDepthSuggestionSupportedForMode:mode devicePosition:position photoFormat:var0, var1];
   LOBYTE(var0) = (~[v11 portraitInPhotoModeBehavior] & 0x11) == 0;
 
-  return var1 & a6 & var0;
+  return var1 & enabled & var0;
 }
 
 @end

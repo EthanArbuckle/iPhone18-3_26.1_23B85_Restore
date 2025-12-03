@@ -1,23 +1,23 @@
 @interface ECDigestMD5AuthScheme
 + (ECDigestMD5AuthScheme)digestMD5AuthScheme;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation ECDigestMD5AuthScheme
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot directly allocate a %@ object, use +sharedInstance instead.", a1];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot directly allocate a %@ object, use +sharedInstance instead.", self];
     v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v6);
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___ECDigestMD5AuthScheme;
-  return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
 }
 
 + (ECDigestMD5AuthScheme)digestMD5AuthScheme
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __44__ECDigestMD5AuthScheme_digestMD5AuthScheme__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (digestMD5AuthScheme_predicate != -1)
   {
     dispatch_once(&digestMD5AuthScheme_predicate, block);

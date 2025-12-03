@@ -1,71 +1,71 @@
 @interface _UIFeedbackBackBoardHIDPattern
-+ (id)feedbackPatternWithName:(id)a3 deviceType:(int64_t)a4;
-+ (id)feedbackPatternWithName:(id)a3 deviceType:(int64_t)a4 senderID:(unint64_t)a5;
++ (id)feedbackPatternWithName:(id)name deviceType:(int64_t)type;
++ (id)feedbackPatternWithName:(id)name deviceType:(int64_t)type senderID:(unint64_t)d;
 - (BKSHIDHapticFeedbackRequest)hidRequest;
-- (BOOL)isEqual:(id)a3;
-- (_UIFeedbackBackBoardHIDPattern)initWithDictionaryRepresentation:(id)a3;
-- (_UIFeedbackBackBoardHIDPattern)initWithName:(id)a3 deviceType:(int64_t)a4 senderID:(unint64_t)a5 powerSourceID:(id)a6;
-- (id)completeFeedbackPatternWithPowerSourceID:(id)a3;
-- (id)completeFeedbackPatternWithSenderID:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIFeedbackBackBoardHIDPattern)initWithDictionaryRepresentation:(id)representation;
+- (_UIFeedbackBackBoardHIDPattern)initWithName:(id)name deviceType:(int64_t)type senderID:(unint64_t)d powerSourceID:(id)iD;
+- (id)completeFeedbackPatternWithPowerSourceID:(id)d;
+- (id)completeFeedbackPatternWithSenderID:(unint64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)_effectivePlayableFeedbackTypes;
 @end
 
 @implementation _UIFeedbackBackBoardHIDPattern
 
-+ (id)feedbackPatternWithName:(id)a3 deviceType:(int64_t)a4
++ (id)feedbackPatternWithName:(id)name deviceType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithName:v6 deviceType:a4 senderID:0 powerSourceID:0];
+  nameCopy = name;
+  v7 = [[self alloc] initWithName:nameCopy deviceType:type senderID:0 powerSourceID:0];
 
   return v7;
 }
 
-+ (id)feedbackPatternWithName:(id)a3 deviceType:(int64_t)a4 senderID:(unint64_t)a5
++ (id)feedbackPatternWithName:(id)name deviceType:(int64_t)type senderID:(unint64_t)d
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithName:v8 deviceType:a4 senderID:a5 powerSourceID:0];
+  nameCopy = name;
+  v9 = [[self alloc] initWithName:nameCopy deviceType:type senderID:d powerSourceID:0];
 
   return v9;
 }
 
-- (_UIFeedbackBackBoardHIDPattern)initWithName:(id)a3 deviceType:(int64_t)a4 senderID:(unint64_t)a5 powerSourceID:(id)a6
+- (_UIFeedbackBackBoardHIDPattern)initWithName:(id)name deviceType:(int64_t)type senderID:(unint64_t)d powerSourceID:(id)iD
 {
-  v11 = a3;
-  v12 = a6;
+  nameCopy = name;
+  iDCopy = iD;
   v17.receiver = self;
   v17.super_class = _UIFeedbackBackBoardHIDPattern;
   v13 = [(_UIFeedback *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_patternName, a3);
-    v14->_deviceType = a4;
-    v14->_senderID = a5;
-    objc_storeStrong(&v14->_powerSourceID, a6);
+    objc_storeStrong(&v13->_patternName, name);
+    v14->_deviceType = type;
+    v14->_senderID = d;
+    objc_storeStrong(&v14->_powerSourceID, iD);
     v15 = v14;
   }
 
   return v14;
 }
 
-- (id)completeFeedbackPatternWithSenderID:(unint64_t)a3
+- (id)completeFeedbackPatternWithSenderID:(unint64_t)d
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithName:self->_patternName deviceType:self->_deviceType senderID:a3 powerSourceID:0];
+  v3 = [objc_alloc(objc_opt_class()) initWithName:self->_patternName deviceType:self->_deviceType senderID:d powerSourceID:0];
 
   return v3;
 }
 
-- (id)completeFeedbackPatternWithPowerSourceID:(id)a3
+- (id)completeFeedbackPatternWithPowerSourceID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithName:self->_patternName deviceType:self->_deviceType senderID:0 powerSourceID:v4];
+  dCopy = d;
+  v5 = [objc_alloc(objc_opt_class()) initWithName:self->_patternName deviceType:self->_deviceType senderID:0 powerSourceID:dCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = _UIFeedbackBackBoardHIDPattern;
@@ -73,21 +73,21 @@
   objc_storeStrong(v5 + 20, self->_patternName);
   v5[17] = self->_deviceType;
   v5[18] = self->_senderID;
-  v6 = [(NSNumber *)self->_powerSourceID copyWithZone:a3];
+  v6 = [(NSNumber *)self->_powerSourceID copyWithZone:zone];
   v7 = v5[19];
   v5[19] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v17.receiver = self;
   v17.super_class = _UIFeedbackBackBoardHIDPattern;
-  if ([(_UIFeedback *)&v17 isEqual:v4])
+  if ([(_UIFeedback *)&v17 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[20];
     v7 = self->_patternName;
     v8 = v6;
@@ -160,25 +160,25 @@ LABEL_21:
   return v11;
 }
 
-- (_UIFeedbackBackBoardHIDPattern)initWithDictionaryRepresentation:(id)a3
+- (_UIFeedbackBackBoardHIDPattern)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = _UIFeedbackBackBoardHIDPattern;
-  v5 = [(_UIFeedback *)&v14 initWithDictionaryRepresentation:v4];
+  v5 = [(_UIFeedback *)&v14 initWithDictionaryRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"patternName"];
+    v6 = [representationCopy objectForKeyedSubscript:@"patternName"];
     patternName = v5->_patternName;
     v5->_patternName = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v8 = [representationCopy objectForKeyedSubscript:@"deviceType"];
     v5->_deviceType = [v8 integerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"senderID"];
+    v9 = [representationCopy objectForKeyedSubscript:@"senderID"];
     v5->_senderID = [v9 unsignedLongLongValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"powerSourceID"];
+    v10 = [representationCopy objectForKeyedSubscript:@"powerSourceID"];
     powerSourceID = v5->_powerSourceID;
     v5->_powerSourceID = v10;
 
@@ -192,11 +192,11 @@ LABEL_21:
 {
   v9.receiver = self;
   v9.super_class = _UIFeedbackBackBoardHIDPattern;
-  v3 = [(_UIFeedback *)&v9 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(_UIFeedback *)&v9 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(BKSHIDHapticFeedbackRequest *)self->_hidRequest pattern];
-  [v4 setObject:v5 forKeyedSubscript:@"patternName"];
+  pattern = [(BKSHIDHapticFeedbackRequest *)self->_hidRequest pattern];
+  [v4 setObject:pattern forKeyedSubscript:@"patternName"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[BKSHIDHapticFeedbackRequest deviceType](self->_hidRequest, "deviceType")}];
   [v4 setObject:v6 forKeyedSubscript:@"deviceType"];

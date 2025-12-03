@@ -1,41 +1,41 @@
 @interface SUUIHorizontalLockupCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
 - (BOOL)isDeleteButtonHidden;
 - (BOOL)isScrollingCellToHideActionButton;
-- (SUUIHorizontalLockupCollectionViewCell)initWithFrame:(CGRect)a3;
+- (SUUIHorizontalLockupCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
-- (id)_attributedStringForActionButton:(id)a3 context:(id)a4;
+- (id)_attributedStringForActionButton:(id)button context:(id)context;
 - (id)_editControlImage;
 - (id)_highlightBackgroundColor;
-- (void)_addEditControlAnimated:(BOOL)a3;
-- (void)_reloadActionsScrollViewWithViewElement:(id)a3 context:(id)a4;
+- (void)_addEditControlAnimated:(BOOL)animated;
+- (void)_reloadActionsScrollViewWithViewElement:(id)element context:(id)context;
 - (void)_reloadHighlightBackgroundView;
 - (void)_reloadLockupViewBackgroundColor;
-- (void)_removeEditControlAnimated:(BOOL)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)_removeEditControlAnimated:(BOOL)animated;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPerspectiveTargetView:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPerspectiveTargetView:(id)view;
+- (void)setSelected:(BOOL)selected;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 @end
 
 @implementation SUUIHorizontalLockupCollectionViewCell
 
-- (SUUIHorizontalLockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIHorizontalLockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUIHorizontalLockupCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SUUIHorizontalLockupView alloc];
@@ -44,8 +44,8 @@
     lockupView = v3->_lockupView;
     v3->_lockupView = v5;
 
-    v7 = [(SUUIHorizontalLockupCollectionViewCell *)v3 contentView];
-    [v7 addSubview:v3->_lockupView];
+    contentView = [(SUUIHorizontalLockupCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_lockupView];
   }
 
   return v3;
@@ -98,48 +98,48 @@
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIHorizontalLockupCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if ((((self->_editModeControl == 0) ^ a3) & 1) == 0)
+  if ((((self->_editModeControl == 0) ^ editing) & 1) == 0)
   {
     v11 = v4;
-    if (a3)
+    if (editing)
     {
-      [(SUUIHorizontalLockupCollectionViewCell *)self _addEditControlAnimated:a4];
+      [(SUUIHorizontalLockupCollectionViewCell *)self _addEditControlAnimated:animated];
     }
 
     else
     {
-      [(SUUIHorizontalLockupCollectionViewCell *)self _removeEditControlAnimated:a4];
+      [(SUUIHorizontalLockupCollectionViewCell *)self _removeEditControlAnimated:animated];
     }
 
     [(SUUICellScrollView *)self->_actionsScrollView setContentOffset:0 animated:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v5, v11, v6];
     actionsScrollView = self->_actionsScrollView;
-    v10 = [(SUUIHorizontalLockupCollectionViewCell *)self _isActionsScrollViewEnabled];
+    _isActionsScrollViewEnabled = [(SUUIHorizontalLockupCollectionViewCell *)self _isActionsScrollViewEnabled];
 
-    [(SUUICellScrollView *)actionsScrollView setScrollEnabled:v10];
+    [(SUUICellScrollView *)actionsScrollView setScrollEnabled:_isActionsScrollViewEnabled];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 backgroundColor];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
   lockupViewBackgroundColor = self->_lockupViewBackgroundColor;
-  self->_lockupViewBackgroundColor = v5;
+  self->_lockupViewBackgroundColor = backgroundColor;
 
   if (self->_lockupViewBackgroundColor)
   {
@@ -148,22 +148,22 @@
 
   v7.receiver = self;
   v7.super_class = SUUIHorizontalLockupCollectionViewCell;
-  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:v4];
+  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
   lockupView = self->_lockupView;
-  v4 = a3;
-  [(SUUIHorizontalLockupView *)lockupView setPerspectiveTargetView:v4];
+  viewCopy = view;
+  [(SUUIHorizontalLockupView *)lockupView setPerspectiveTargetView:viewCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -174,27 +174,27 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SUUIHorizontalLockupView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SUUIHorizontalLockupView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v19 = a3;
-  v8 = a5;
-  [(SUUIHorizontalLockupCollectionViewCell *)self _reloadActionsScrollViewWithViewElement:v19 context:v8];
-  v9 = [v8 aggregateValueForKey:@"SUUIHorizontalLockupShowsEditModeKey"];
-  v10 = [v9 BOOLValue];
+  elementCopy = element;
+  contextCopy = context;
+  [(SUUIHorizontalLockupCollectionViewCell *)self _reloadActionsScrollViewWithViewElement:elementCopy context:contextCopy];
+  v9 = [contextCopy aggregateValueForKey:@"SUUIHorizontalLockupShowsEditModeKey"];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v19 firstChildForElementType:18];
+  v11 = [elementCopy firstChildForElementType:18];
   editModeCheckboxElement = self->_editModeCheckboxElement;
   self->_editModeCheckboxElement = v11;
 
-  if (v10)
+  if (bOOLValue)
   {
     v13 = self->_editModeCheckboxElement != 0;
   }
@@ -208,42 +208,42 @@
   editModeControl = self->_editModeControl;
   if (editModeControl)
   {
-    v15 = [(SUUIHorizontalLockupCollectionViewCell *)self _editControlImage];
-    [(UIImageView *)editModeControl setImage:v15];
+    _editControlImage = [(SUUIHorizontalLockupCollectionViewCell *)self _editControlImage];
+    [(UIImageView *)editModeControl setImage:_editControlImage];
   }
 
   [(SUUICellScrollView *)self->_actionsScrollView setContentOffset:0 animated:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   [(SUUICellScrollView *)self->_actionsScrollView setScrollEnabled:[(SUUIHorizontalLockupCollectionViewCell *)self _isActionsScrollViewEnabled]];
-  [(SUUIHorizontalLockupView *)self->_lockupView reloadWithViewElement:v19 width:v8 context:a4];
+  [(SUUIHorizontalLockupView *)self->_lockupView reloadWithViewElement:elementCopy width:contextCopy context:width];
   if (!self->_lockupViewBackgroundColor)
   {
-    v16 = [(SUUIHorizontalLockupView *)self->_lockupView preferredBackgroundColor];
+    preferredBackgroundColor = [(SUUIHorizontalLockupView *)self->_lockupView preferredBackgroundColor];
 
-    if (v16)
+    if (preferredBackgroundColor)
     {
-      v17 = [(SUUIHorizontalLockupView *)self->_lockupView preferredBackgroundColor];
+      preferredBackgroundColor2 = [(SUUIHorizontalLockupView *)self->_lockupView preferredBackgroundColor];
       lockupViewBackgroundColor = self->_lockupViewBackgroundColor;
-      self->_lockupViewBackgroundColor = v17;
+      self->_lockupViewBackgroundColor = preferredBackgroundColor2;
     }
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SUUIHorizontalLockupCollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setHighlighted:a3];
+  [(SUUICollectionViewCell *)&v4 setHighlighted:highlighted];
   if (!self->_editModeControl)
   {
     [(SUUIHorizontalLockupCollectionViewCell *)self _reloadHighlightBackgroundView];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SUUIHorizontalLockupCollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setSelected:a3];
+  [(SUUICollectionViewCell *)&v4 setSelected:selected];
   if (!self->_editModeControl)
   {
     [(SUUIHorizontalLockupCollectionViewCell *)self _reloadHighlightBackgroundView];
@@ -255,8 +255,8 @@
   v31.receiver = self;
   v31.super_class = SUUIHorizontalLockupCollectionViewCell;
   [(SUUICollectionViewCell *)&v31 layoutSubviews];
-  v3 = [(SUUIHorizontalLockupCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIHorizontalLockupCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -315,49 +315,49 @@
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = SUUIHorizontalLockupCollectionViewCell;
   [(SUUIHorizontalLockupCollectionViewCell *)&v5 setSemanticContentAttribute:?];
-  [(SUUIHorizontalLockupView *)self->_lockupView setSemanticContentAttribute:a3];
-  [(SUUICellScrollView *)self->_actionsScrollView setSemanticContentAttribute:a3];
-  [(UIButton *)self->_actionButton setSemanticContentAttribute:a3];
+  [(SUUIHorizontalLockupView *)self->_lockupView setSemanticContentAttribute:attribute];
+  [(SUUICellScrollView *)self->_actionsScrollView setSemanticContentAttribute:attribute];
+  [(UIButton *)self->_actionButton setSemanticContentAttribute:attribute];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = SUUIHorizontalLockupCollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setBackgroundColor:a3];
+  [(SUUICollectionViewCell *)&v4 setBackgroundColor:color];
   [(SUUIHorizontalLockupCollectionViewCell *)self _reloadLockupViewBackgroundColor];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v9 = SUUICollectionViewForView(self);
-  v5 = [v9 delegate];
-  [v4 contentOffset];
+  delegate = [v9 delegate];
+  [animationCopy contentOffset];
   v7 = v6;
 
   if (v7 == 0.0 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v8 = [v9 indexPathForCell:self];
-    [v5 collectionView:v9 didEndEditingItemAtIndexPath:v8];
+    [delegate collectionView:v9 didEndEditingItemAtIndexPath:v8];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v18 = a3;
-  [v18 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v5 = v4;
   v6 = SUUICollectionViewForView(self);
-  v7 = [v6 delegate];
-  if (v5 <= 0.0 || (objc_opt_respondsToSelector() & 1) != 0 && ([v6 indexPathForCell:self], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "collectionView:canScrollCellAtIndexPath:", v6, v8), v8, (v9 & 1) == 0))
+  delegate = [v6 delegate];
+  if (v5 <= 0.0 || (objc_opt_respondsToSelector() & 1) != 0 && ([v6 indexPathForCell:self], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(delegate, "collectionView:canScrollCellAtIndexPath:", v6, v8), v8, (v9 & 1) == 0))
   {
-    [v18 setContentOffset:0 animated:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+    [scrollCopy setContentOffset:0 animated:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   }
 
   else
@@ -378,41 +378,41 @@
     if (objc_opt_respondsToSelector())
     {
       v17 = [v6 indexPathForCell:self];
-      [v7 collectionView:v6 willBeginEditingItemAtIndexPath:v17];
+      [delegate collectionView:v6 willBeginEditingItemAtIndexPath:v17];
     }
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v9 = a3;
+  draggingCopy = dragging;
   [(UIButton *)self->_actionButton frame];
-  y = a5->y;
-  if (v7 * 0.5 <= a5->x)
+  y = offset->y;
+  if (v7 * 0.5 <= offset->x)
   {
-    [v9 setContentOffset:1 animated:{v7, y}];
+    [draggingCopy setContentOffset:1 animated:{v7, y}];
   }
 
   else
   {
-    [v9 setContentOffset:1 animated:{0.0, y}];
-    [(SUUIHorizontalLockupCollectionViewCell *)self scrollViewDidEndScrollingAnimation:v9];
+    [draggingCopy setContentOffset:1 animated:{0.0, y}];
+    [(SUUIHorizontalLockupCollectionViewCell *)self scrollViewDidEndScrollingAnimation:draggingCopy];
   }
 }
 
-- (void)_addEditControlAnimated:(BOOL)a3
+- (void)_addEditControlAnimated:(BOOL)animated
 {
   v5 = objc_alloc(MEMORY[0x277D755E8]);
-  v6 = [(SUUIHorizontalLockupCollectionViewCell *)self _editControlImage];
-  v7 = [v5 initWithImage:v6];
+  _editControlImage = [(SUUIHorizontalLockupCollectionViewCell *)self _editControlImage];
+  v7 = [v5 initWithImage:_editControlImage];
   editModeControl = self->_editModeControl;
   self->_editModeControl = v7;
 
-  v9 = [(SUUIHorizontalLockupCollectionViewCell *)self contentView];
-  [v9 addSubview:self->_editModeControl];
-  if (a3)
+  contentView = [(SUUIHorizontalLockupCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_editModeControl];
+  if (animated)
   {
-    [v9 bounds];
+    [contentView bounds];
     v11 = v10;
     v18 = 0;
     v19 = &v18;
@@ -463,23 +463,23 @@ void __66__SUUIHorizontalLockupCollectionViewCell__addEditControlAnimated___bloc
   [v7 setFrame:{CGRectGetMaxX(*(*(*(a1 + 40) + 8) + 32)) + 15.0 - *(*(a1 + 32) + 800), v4, v5, v6}];
 }
 
-- (id)_attributedStringForActionButton:(id)a3 context:(id)a4
+- (id)_attributedStringForActionButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = v7;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = v9;
+  v10 = style;
 
   v11 = SUUIViewElementFontWithStyle(v10);
   if (!v11)
@@ -487,16 +487,16 @@ void __66__SUUIHorizontalLockupCollectionViewCell__addEditControlAnimated___bloc
     v11 = SUUIFontPreferredFontForTextStyle(1);
   }
 
-  v12 = [v6 tintColor];
-  v13 = SUUIViewElementPlainColorWithStyle(v10, v12);
+  tintColor = [contextCopy tintColor];
+  whiteColor = SUUIViewElementPlainColorWithStyle(v10, tintColor);
 
-  if (!v13)
+  if (!whiteColor)
   {
-    v13 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v14 = [v5 buttonText];
-  v15 = [v14 attributedStringWithDefaultFont:v11 foregroundColor:v13 style:v10];
+  buttonText = [buttonCopy buttonText];
+  v15 = [buttonText attributedStringWithDefaultFont:v11 foregroundColor:whiteColor style:v10];
 
   return v15;
 }
@@ -509,8 +509,8 @@ void __66__SUUIHorizontalLockupCollectionViewCell__addEditControlAnimated___bloc
     if ([(SUUICheckboxInputViewElement *)editModeCheckboxElement isSelected])
     {
       v4 = [MEMORY[0x277D755B8] _kitImageNamed:@"UITintedCircularButtonCheckmark" withTrait:0];
-      v5 = [(SUUICheckboxInputViewElement *)self->_editModeCheckboxElement style];
-      v6 = SUUIViewElementPlainColorWithStyle(v5, 0);
+      style = [(SUUICheckboxInputViewElement *)self->_editModeCheckboxElement style];
+      v6 = SUUIViewElementPlainColorWithStyle(style, 0);
 
       if (v6)
       {
@@ -523,19 +523,19 @@ void __66__SUUIHorizontalLockupCollectionViewCell__addEditControlAnimated___bloc
       }
       v9 = ;
 
-      v10 = [v9 _imageThatSuppressesAccessibilityHairlineThickening];
+      _imageThatSuppressesAccessibilityHairlineThickening = [v9 _imageThatSuppressesAccessibilityHairlineThickening];
     }
 
     else
     {
-      v8 = [(SUUIHorizontalLockupCollectionViewCell *)self backgroundColor];
-      v6 = SUUIBorderColorWithBackgroundColor(v8);
+      backgroundColor = [(SUUIHorizontalLockupCollectionViewCell *)self backgroundColor];
+      v6 = SUUIBorderColorWithBackgroundColor(backgroundColor);
 
       v9 = [MEMORY[0x277D755B8] _kitImageNamed:@"UIRemoveControlMultiNotCheckedImage" withTrait:0];
-      v10 = [v9 _flatImageWithColor:v6];
+      _imageThatSuppressesAccessibilityHairlineThickening = [v9 _flatImageWithColor:v6];
     }
 
-    v7 = v10;
+    v7 = _imageThatSuppressesAccessibilityHairlineThickening;
   }
 
   else
@@ -548,9 +548,9 @@ void __66__SUUIHorizontalLockupCollectionViewCell__addEditControlAnimated___bloc
 
 - (id)_highlightBackgroundColor
 {
-  v2 = [(SUUIHorizontalLockupCollectionViewCell *)self backgroundColor];
-  v3 = v2;
-  if (!v2)
+  backgroundColor = [(SUUIHorizontalLockupCollectionViewCell *)self backgroundColor];
+  v3 = backgroundColor;
+  if (!backgroundColor)
   {
     v6 = [MEMORY[0x277D75348] colorWithWhite:0.9 alpha:1.0];
 LABEL_12:
@@ -558,7 +558,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = SUUIColorSchemeStyleForColor(v2);
+  v4 = SUUIColorSchemeStyleForColor(backgroundColor);
   v5 = 0;
   if (v4 > 1)
   {
@@ -596,10 +596,10 @@ LABEL_13:
   return v5;
 }
 
-- (void)_reloadActionsScrollViewWithViewElement:(id)a3 context:(id)a4
+- (void)_reloadActionsScrollViewWithViewElement:(id)element context:(id)context
 {
-  v24 = a4;
-  v6 = [a3 firstChildForElementType:3];
+  contextCopy = context;
+  v6 = [element firstChildForElementType:3];
   v7 = [v6 firstChildForElementType:12];
   actionButtonViewElement = self->_actionButtonViewElement;
   self->_actionButtonViewElement = v7;
@@ -615,8 +615,8 @@ LABEL_13:
       self->_actionsScrollView = v10;
 
       v12 = self->_actionsScrollView;
-      v13 = [(SUUIHorizontalLockupView *)self->_lockupView backgroundColor];
-      [(SUUICellScrollView *)v12 setBackgroundColor:v13];
+      backgroundColor = [(SUUIHorizontalLockupView *)self->_lockupView backgroundColor];
+      [(SUUICellScrollView *)v12 setBackgroundColor:backgroundColor];
 
       [(SUUICellScrollView *)self->_actionsScrollView setDelegate:self];
       [(SUUICellScrollView *)self->_actionsScrollView setScrollsToTop:0];
@@ -625,8 +625,8 @@ LABEL_13:
       [(SUUICellScrollView *)self->_actionsScrollView bounds];
       [(SUUIHorizontalLockupView *)lockupView setFrame:?];
       [(SUUICellScrollView *)self->_actionsScrollView addSubview:self->_lockupView];
-      v15 = [(SUUIHorizontalLockupCollectionViewCell *)self contentView];
-      [v15 addSubview:self->_actionsScrollView];
+      contentView = [(SUUIHorizontalLockupCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_actionsScrollView];
     }
 
     if (!self->_actionButton)
@@ -638,24 +638,24 @@ LABEL_13:
       [(UIButton *)self->_actionButton addTarget:self action:sel__actionButtonAction_ forControlEvents:64];
       [(UIButton *)self->_actionButton setContentEdgeInsets:0.0, 15.0, 0.0, 15.0];
       [(UIButton *)self->_actionButton setHidden:1];
-      v18 = [(UIButton *)self->_actionButton titleLabel];
-      [v18 setTextAlignment:1];
+      titleLabel = [(UIButton *)self->_actionButton titleLabel];
+      [titleLabel setTextAlignment:1];
     }
 
-    v19 = [(SUUIButtonViewElement *)self->_actionButtonViewElement style];
-    v20 = [v19 ikBackgroundColor];
-    v21 = [v20 color];
+    style = [(SUUIButtonViewElement *)self->_actionButtonViewElement style];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
 
-    if (!v21)
+    if (!color)
     {
-      v21 = [MEMORY[0x277D75348] systemRedColor];
+      color = [MEMORY[0x277D75348] systemRedColor];
     }
 
     v22 = self->_actionButton;
-    v23 = [(SUUIHorizontalLockupCollectionViewCell *)self _attributedStringForActionButton:self->_actionButtonViewElement context:v24];
+    v23 = [(SUUIHorizontalLockupCollectionViewCell *)self _attributedStringForActionButton:self->_actionButtonViewElement context:contextCopy];
     [(UIButton *)v22 setAttributedTitle:v23 forState:0];
 
-    [(UIButton *)self->_actionButton setBackgroundColor:v21];
+    [(UIButton *)self->_actionButton setBackgroundColor:color];
     [(SUUICellScrollView *)self->_actionsScrollView addSubview:self->_actionButton];
   }
 
@@ -678,8 +678,8 @@ LABEL_13:
       self->_highlightBackgroundView = v8;
 
       v10 = self->_highlightBackgroundView;
-      v11 = [(SUUIHorizontalLockupCollectionViewCell *)self _highlightBackgroundColor];
-      [(UIView *)v10 setBackgroundColor:v11];
+      _highlightBackgroundColor = [(SUUIHorizontalLockupCollectionViewCell *)self _highlightBackgroundColor];
+      [(UIView *)v10 setBackgroundColor:_highlightBackgroundColor];
 
       highlightBackgroundView = self->_highlightBackgroundView;
     }
@@ -727,44 +727,44 @@ void __72__SUUIHorizontalLockupCollectionViewCell__reloadHighlightBackgroundView
 
 - (void)_reloadLockupViewBackgroundColor
 {
-  v8 = [(SUUIHorizontalLockupView *)self->_lockupView metadataBackgroundView];
+  metadataBackgroundView = [(SUUIHorizontalLockupView *)self->_lockupView metadataBackgroundView];
   if (([(SUUIHorizontalLockupCollectionViewCell *)self isHighlighted]& 1) != 0 || ([(SUUIHorizontalLockupCollectionViewCell *)self isSelected]& 1) != 0 || self->_highlightBackgroundView)
   {
     lockupView = self->_lockupView;
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIHorizontalLockupView *)lockupView setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIHorizontalLockupView *)lockupView setBackgroundColor:clearColor];
 
-    if (v8)
+    if (metadataBackgroundView)
     {
-      v5 = [MEMORY[0x277D75348] clearColor];
-      [v8 setBackgroundColor:v5];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      [metadataBackgroundView setBackgroundColor:clearColor2];
     }
   }
 
   else if (self->_lockupViewBackgroundColor)
   {
     [(SUUIHorizontalLockupView *)self->_lockupView setBackgroundColor:?];
-    if (v8)
+    if (metadataBackgroundView)
     {
-      [v8 setBackgroundColor:self->_lockupViewBackgroundColor];
+      [metadataBackgroundView setBackgroundColor:self->_lockupViewBackgroundColor];
     }
   }
 
   actionsScrollView = self->_actionsScrollView;
-  v7 = [(SUUIHorizontalLockupView *)self->_lockupView backgroundColor];
-  [(SUUICellScrollView *)actionsScrollView setBackgroundColor:v7];
+  backgroundColor = [(SUUIHorizontalLockupView *)self->_lockupView backgroundColor];
+  [(SUUICellScrollView *)actionsScrollView setBackgroundColor:backgroundColor];
 }
 
-- (void)_removeEditControlAnimated:(BOOL)a3
+- (void)_removeEditControlAnimated:(BOOL)animated
 {
   v5 = self->_editModeControl;
   editModeControl = self->_editModeControl;
   self->_editModeControl = 0;
 
-  if (a3)
+  if (animated)
   {
-    v7 = [(SUUIHorizontalLockupCollectionViewCell *)self contentView];
-    [v7 bounds];
+    contentView = [(SUUIHorizontalLockupCollectionViewCell *)self contentView];
+    [contentView bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -776,7 +776,7 @@ void __72__SUUIHorizontalLockupCollectionViewCell__reloadHighlightBackgroundView
     v19[2] = __69__SUUIHorizontalLockupCollectionViewCell__removeEditControlAnimated___block_invoke;
     v19[3] = &unk_2798F8DB0;
     v20 = v5;
-    v21 = self;
+    selfCopy = self;
     v22 = v9;
     v23 = v11;
     v24 = v13;

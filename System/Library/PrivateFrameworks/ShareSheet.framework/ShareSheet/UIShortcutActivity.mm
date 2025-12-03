@@ -1,71 +1,71 @@
 @interface UIShortcutActivity
-- (UIShortcutActivity)initWithApplicationExtension:(id)a3 partialShortcutWithName:(id)a4 identifier:(id)a5 image:(id)a6 sortValue:(id)a7;
-- (UIShortcutActivity)initWithApplicationExtension:(id)a3 singleUseToken:(id)a4 photosAssetIdentifiers:(id)a5;
-- (UIShortcutActivity)initWithPartial:(id)a3;
+- (UIShortcutActivity)initWithApplicationExtension:(id)extension partialShortcutWithName:(id)name identifier:(id)identifier image:(id)image sortValue:(id)value;
+- (UIShortcutActivity)initWithApplicationExtension:(id)extension singleUseToken:(id)token photosAssetIdentifiers:(id)identifiers;
+- (UIShortcutActivity)initWithPartial:(id)partial;
 - (id)_actionImage;
 - (id)activityType;
-- (void)prepareWithActivityExtensionItemData:(id)a3;
+- (void)prepareWithActivityExtensionItemData:(id)data;
 @end
 
 @implementation UIShortcutActivity
 
-- (UIShortcutActivity)initWithPartial:(id)a3
+- (UIShortcutActivity)initWithPartial:(id)partial
 {
-  v4 = a3;
-  v5 = [v4 applicationExtension];
+  partialCopy = partial;
+  applicationExtension = [partialCopy applicationExtension];
   v12.receiver = self;
   v12.super_class = UIShortcutActivity;
-  v6 = [(UIApplicationExtensionActivity *)&v12 initWithApplicationExtension:v5];
+  v6 = [(UIApplicationExtensionActivity *)&v12 initWithApplicationExtension:applicationExtension];
 
   if (v6)
   {
-    v7 = [v4 name];
-    [(UIShortcutActivity *)v6 setName:v7];
+    name = [partialCopy name];
+    [(UIShortcutActivity *)v6 setName:name];
 
-    v8 = [v4 identifier];
-    [(UIShortcutActivity *)v6 setIdentifier:v8];
+    identifier = [partialCopy identifier];
+    [(UIShortcutActivity *)v6 setIdentifier:identifier];
 
-    v9 = [v4 iconImage];
-    [(UIShortcutActivity *)v6 setIconImage:v9];
+    iconImage = [partialCopy iconImage];
+    [(UIShortcutActivity *)v6 setIconImage:iconImage];
 
-    v10 = [v4 sortValue];
-    [(UIShortcutActivity *)v6 setSortValue:v10];
+    sortValue = [partialCopy sortValue];
+    [(UIShortcutActivity *)v6 setSortValue:sortValue];
   }
 
   return v6;
 }
 
-- (UIShortcutActivity)initWithApplicationExtension:(id)a3 partialShortcutWithName:(id)a4 identifier:(id)a5 image:(id)a6 sortValue:(id)a7
+- (UIShortcutActivity)initWithApplicationExtension:(id)extension partialShortcutWithName:(id)name identifier:(id)identifier image:(id)image sortValue:(id)value
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  identifierCopy = identifier;
+  imageCopy = image;
+  valueCopy = value;
   v19.receiver = self;
   v19.super_class = UIShortcutActivity;
-  v16 = [(UIApplicationExtensionActivity *)&v19 initWithApplicationExtension:a3];
+  v16 = [(UIApplicationExtensionActivity *)&v19 initWithApplicationExtension:extension];
   v17 = v16;
   if (v16)
   {
-    [(UIShortcutActivity *)v16 setName:v12];
-    [(UIShortcutActivity *)v17 setIdentifier:v13];
-    [(UIShortcutActivity *)v17 setIconImage:v14];
-    [(UIShortcutActivity *)v17 setSortValue:v15];
+    [(UIShortcutActivity *)v16 setName:nameCopy];
+    [(UIShortcutActivity *)v17 setIdentifier:identifierCopy];
+    [(UIShortcutActivity *)v17 setIconImage:imageCopy];
+    [(UIShortcutActivity *)v17 setSortValue:valueCopy];
   }
 
   return v17;
 }
 
-- (UIShortcutActivity)initWithApplicationExtension:(id)a3 singleUseToken:(id)a4 photosAssetIdentifiers:(id)a5
+- (UIShortcutActivity)initWithApplicationExtension:(id)extension singleUseToken:(id)token photosAssetIdentifiers:(id)identifiers
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UIApplicationExtensionActivity *)self initWithApplicationExtension:a3];
+  tokenCopy = token;
+  identifiersCopy = identifiers;
+  v10 = [(UIApplicationExtensionActivity *)self initWithApplicationExtension:extension];
   v11 = v10;
   if (v10)
   {
-    [(UIShortcutActivity *)v10 setSingleUseToken:v8];
-    [(UIShortcutActivity *)v11 setPhotosAssetIdentifiers:v9];
+    [(UIShortcutActivity *)v10 setSingleUseToken:tokenCopy];
+    [(UIShortcutActivity *)v11 setPhotosAssetIdentifiers:identifiersCopy];
     v12 = v11;
   }
 
@@ -75,9 +75,9 @@
 - (id)_actionImage
 {
   v3 = objc_opt_class();
-  v4 = [(UIShortcutActivity *)self iconImage];
-  v5 = [(UIActivity *)self contentSizeCategory];
-  v6 = [v3 _actionImageForActionRepresentationImage:v4 contentSizeCategory:v5];
+  iconImage = [(UIShortcutActivity *)self iconImage];
+  contentSizeCategory = [(UIActivity *)self contentSizeCategory];
+  v6 = [v3 _actionImageForActionRepresentationImage:iconImage contentSizeCategory:contentSizeCategory];
 
   return v6;
 }
@@ -85,40 +85,40 @@
 - (id)activityType
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v5 = [v4 identifier];
-  v6 = [(UIShortcutActivity *)self identifier];
-  v7 = [v3 stringWithFormat:@"%@.%@", v5, v6];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  identifier = [applicationExtension identifier];
+  identifier2 = [(UIShortcutActivity *)self identifier];
+  v7 = [v3 stringWithFormat:@"%@.%@", identifier, identifier2];
 
   return v7;
 }
 
-- (void)prepareWithActivityExtensionItemData:(id)a3
+- (void)prepareWithActivityExtensionItemData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 extensionItems];
-  v6 = [v5 firstObject];
-  v7 = [v6 userInfo];
-  v8 = [v7 mutableCopy];
+  dataCopy = data;
+  extensionItems = [dataCopy extensionItems];
+  firstObject = [extensionItems firstObject];
+  userInfo = [firstObject userInfo];
+  v8 = [userInfo mutableCopy];
 
-  v9 = [(UIShortcutActivity *)self singleUseToken];
-  [v8 setObject:v9 forKeyedSubscript:@"ActionExtensionWorkflowToken"];
+  singleUseToken = [(UIShortcutActivity *)self singleUseToken];
+  [v8 setObject:singleUseToken forKeyedSubscript:@"ActionExtensionWorkflowToken"];
 
-  v10 = [(UIShortcutActivity *)self photosAssetIdentifiers];
+  photosAssetIdentifiers = [(UIShortcutActivity *)self photosAssetIdentifiers];
 
-  if (v10)
+  if (photosAssetIdentifiers)
   {
-    v11 = [(UIShortcutActivity *)self photosAssetIdentifiers];
-    [v8 setObject:v11 forKeyedSubscript:@"WFPhotosAssetIdentifiers"];
+    photosAssetIdentifiers2 = [(UIShortcutActivity *)self photosAssetIdentifiers];
+    [v8 setObject:photosAssetIdentifiers2 forKeyedSubscript:@"WFPhotosAssetIdentifiers"];
   }
 
-  v12 = [v5 firstObject];
-  [v12 setUserInfo:v8];
+  firstObject2 = [extensionItems firstObject];
+  [firstObject2 setUserInfo:v8];
 
-  [v4 setExtensionItems:v5];
+  [dataCopy setExtensionItems:extensionItems];
   v13.receiver = self;
   v13.super_class = UIShortcutActivity;
-  [(UIApplicationExtensionActivity *)&v13 prepareWithActivityExtensionItemData:v4];
+  [(UIApplicationExtensionActivity *)&v13 prepareWithActivityExtensionItemData:dataCopy];
 }
 
 @end

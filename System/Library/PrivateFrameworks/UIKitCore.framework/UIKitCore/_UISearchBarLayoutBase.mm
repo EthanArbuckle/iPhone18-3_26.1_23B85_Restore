@@ -3,16 +3,16 @@
 - (UIEdgeInsets)containerSafeAreaInsets;
 - (UIEdgeInsets)contentInset;
 - (UIView)associatedView;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)invalidateLayout;
-- (void)setBarMetrics:(int64_t)a3;
-- (void)setContainerSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setHostedByNavigationBar:(BOOL)a3;
-- (void)setLayoutRTL:(BOOL)a3;
-- (void)setLayoutSize:(CGSize)a3;
-- (void)setShouldApplyContainerSafeAreaInsets:(BOOL)a3;
+- (void)setBarMetrics:(int64_t)metrics;
+- (void)setContainerSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setHostedByNavigationBar:(BOOL)bar;
+- (void)setLayoutRTL:(BOOL)l;
+- (void)setLayoutSize:(CGSize)size;
+- (void)setShouldApplyContainerSafeAreaInsets:(BOOL)insets;
 - (void)updateLayoutIfNeeded;
 @end
 
@@ -71,7 +71,7 @@
   self->_isLayoutValid = 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -93,75 +93,75 @@
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setBarMetrics:(int64_t)a3
+- (void)setBarMetrics:(int64_t)metrics
 {
-  if (self->_barMetrics != a3)
+  if (self->_barMetrics != metrics)
   {
-    self->_barMetrics = a3;
+    self->_barMetrics = metrics;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setLayoutRTL:(BOOL)a3
+- (void)setLayoutRTL:(BOOL)l
 {
-  if (self->_layoutRTL != a3)
+  if (self->_layoutRTL != l)
   {
-    self->_layoutRTL = a3;
+    self->_layoutRTL = l;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setLayoutSize:(CGSize)a3
+- (void)setLayoutSize:(CGSize)size
 {
-  if (a3.width != self->_layoutSize.width || a3.height != self->_layoutSize.height)
+  if (size.width != self->_layoutSize.width || size.height != self->_layoutSize.height)
   {
-    self->_layoutSize = a3;
+    self->_layoutSize = size;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setHostedByNavigationBar:(BOOL)a3
+- (void)setHostedByNavigationBar:(BOOL)bar
 {
-  if (self->_hostedByNavigationBar != a3)
+  if (self->_hostedByNavigationBar != bar)
   {
-    self->_hostedByNavigationBar = a3;
+    self->_hostedByNavigationBar = bar;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setShouldApplyContainerSafeAreaInsets:(BOOL)a3
+- (void)setShouldApplyContainerSafeAreaInsets:(BOOL)insets
 {
-  if (self->_shouldApplyContainerSafeAreaInsets != a3)
+  if (self->_shouldApplyContainerSafeAreaInsets != insets)
   {
-    self->_shouldApplyContainerSafeAreaInsets = a3;
+    self->_shouldApplyContainerSafeAreaInsets = insets;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setContainerSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setContainerSafeAreaInsets:(UIEdgeInsets)insets
 {
   if (self->_shouldApplyContainerSafeAreaInsets)
   {
-    v3.f64[0] = a3.top;
-    v3.f64[1] = a3.left;
-    v4.f64[0] = a3.bottom;
-    v4.f64[1] = a3.right;
+    v3.f64[0] = insets.top;
+    v3.f64[1] = insets.left;
+    v4.f64[0] = insets.bottom;
+    v4.f64[1] = insets.right;
     if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_containerSafeAreaInsets.top), vceqq_f64(v4, *&self->_containerSafeAreaInsets.bottom)))) & 1) == 0)
     {
-      self->_containerSafeAreaInsets = a3;
+      self->_containerSafeAreaInsets = insets;
       [(_UISearchBarLayoutBase *)self invalidateLayout];
     }
   }

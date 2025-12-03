@@ -1,5 +1,5 @@
 @interface ISJSONDataProvider
-- (BOOL)parseData:(id)a3 returningError:(id *)a4;
+- (BOOL)parseData:(id)data returningError:(id *)error;
 - (ISJSONDataProvider)init;
 @end
 
@@ -13,11 +13,11 @@
   return [(ISDataProvider *)&v4 init];
 }
 
-- (BOOL)parseData:(id)a3 returningError:(id *)a4
+- (BOOL)parseData:(id)data returningError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0;
-  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:-[ISJSONDataProvider parserOptions](self error:{"parserOptions"), &v16}];
+  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:-[ISJSONDataProvider parserOptions](self error:{"parserOptions"), &v16}];
   if (v6)
   {
     [(ISDataProvider *)self setOutput:v6];
@@ -25,24 +25,24 @@
 
   else
   {
-    v9 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v9)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v9 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_ERROR))
     {
       v11 &= 2u;
     }
@@ -66,9 +66,9 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16;
+    *error = v16;
   }
 
   result = v6 != 0;

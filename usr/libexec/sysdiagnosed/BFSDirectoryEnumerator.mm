@@ -1,21 +1,21 @@
 @interface BFSDirectoryEnumerator
-+ (id)BFSEnumeratorWithPath:(id)a3 withDepth:(unint64_t)a4;
++ (id)BFSEnumeratorWithPath:(id)path withDepth:(unint64_t)depth;
 - (id)getNextMatch;
 @end
 
 @implementation BFSDirectoryEnumerator
 
-+ (id)BFSEnumeratorWithPath:(id)a3 withDepth:(unint64_t)a4
++ (id)BFSEnumeratorWithPath:(id)path withDepth:(unint64_t)depth
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc_init(BFSDirectoryEnumerator);
   if (v6)
   {
-    v7 = [BFSDirectory BFSDirectoryWithURL:v5 withDepth:a4];
+    v7 = [BFSDirectory BFSDirectoryWithURL:pathCopy withDepth:depth];
     v8 = [NSMutableArray arrayWithObject:v7];
     [(BFSDirectoryEnumerator *)v6 setDirectoryQueue:v8];
 
-    [(BFSDirectoryEnumerator *)v6 setDepth:a4];
+    [(BFSDirectoryEnumerator *)v6 setDepth:depth];
   }
 
   return v6;
@@ -23,52 +23,52 @@
 
 - (id)getNextMatch
 {
-  v3 = [(BFSDirectoryEnumerator *)self directoryQueue];
-  v4 = [v3 count];
+  directoryQueue = [(BFSDirectoryEnumerator *)self directoryQueue];
+  v4 = [directoryQueue count];
 
   if (v4)
   {
-    v5 = 0;
+    firstObject = 0;
     while (1)
     {
-      v6 = v5;
-      v7 = [(BFSDirectoryEnumerator *)self directoryQueue];
-      v5 = [v7 firstObject];
+      v6 = firstObject;
+      directoryQueue2 = [(BFSDirectoryEnumerator *)self directoryQueue];
+      firstObject = [directoryQueue2 firstObject];
 
-      v8 = [v5 url];
+      v8 = [firstObject url];
       if (v8)
       {
         v9 = v8;
-        v10 = [v5 urlEnumerator];
+        urlEnumerator = [firstObject urlEnumerator];
 
-        if (!v10)
+        if (!urlEnumerator)
         {
-          v25 = [(BFSDirectoryEnumerator *)self directoryQueue];
-          [v25 removeObjectAtIndex:0];
+          directoryQueue3 = [(BFSDirectoryEnumerator *)self directoryQueue];
+          [directoryQueue3 removeObjectAtIndex:0];
 
-          v12 = [v5 url];
+          nextObject = [firstObject url];
           goto LABEL_19;
         }
       }
 
-      v11 = [v5 urlEnumerator];
-      v12 = [v11 nextObject];
+      urlEnumerator2 = [firstObject urlEnumerator];
+      nextObject = [urlEnumerator2 nextObject];
 
-      if (v12)
+      if (nextObject)
       {
         break;
       }
 
 LABEL_16:
-      v21 = [(BFSDirectoryEnumerator *)self directoryQueue];
-      [v21 removeObjectAtIndex:0];
+      directoryQueue4 = [(BFSDirectoryEnumerator *)self directoryQueue];
+      [directoryQueue4 removeObjectAtIndex:0];
 
-      v22 = [(BFSDirectoryEnumerator *)self directoryQueue];
-      v23 = [v22 count];
+      directoryQueue5 = [(BFSDirectoryEnumerator *)self directoryQueue];
+      v23 = [directoryQueue5 count];
 
       if (!v23)
       {
-        v12 = 0;
+        nextObject = 0;
         goto LABEL_19;
       }
     }
@@ -76,7 +76,7 @@ LABEL_16:
     while (1)
     {
       v26 = 0;
-      v13 = [v12 getResourceValue:&v26 forKey:NSURLIsDirectoryKey error:0];
+      v13 = [nextObject getResourceValue:&v26 forKey:NSURLIsDirectoryKey error:0];
       v14 = v26;
       v15 = v14;
       if (!v13 || ([v14 BOOLValue] & 1) == 0)
@@ -86,7 +86,7 @@ LABEL_16:
 
       if ([(BFSDirectoryEnumerator *)self depth])
       {
-        v16 = [v5 remainingDepth] - 1;
+        v16 = [firstObject remainingDepth] - 1;
       }
 
       else
@@ -94,18 +94,18 @@ LABEL_16:
         v16 = 0;
       }
 
-      if (!-[BFSDirectoryEnumerator depth](self, "depth") || [v5 remainingDepth] && v16)
+      if (!-[BFSDirectoryEnumerator depth](self, "depth") || [firstObject remainingDepth] && v16)
       {
-        v17 = [(BFSDirectoryEnumerator *)self directoryQueue];
-        v18 = [BFSDirectory BFSDirectoryWithURL:v12 withDepth:v16];
-        [v17 addObject:v18];
+        directoryQueue6 = [(BFSDirectoryEnumerator *)self directoryQueue];
+        v18 = [BFSDirectory BFSDirectoryWithURL:nextObject withDepth:v16];
+        [directoryQueue6 addObject:v18];
       }
 
-      v19 = [v5 urlEnumerator];
-      v20 = [v19 nextObject];
+      urlEnumerator3 = [firstObject urlEnumerator];
+      nextObject2 = [urlEnumerator3 nextObject];
 
-      v12 = v20;
-      if (!v20)
+      nextObject = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_16;
       }
@@ -116,10 +116,10 @@ LABEL_19:
 
   else
   {
-    v12 = 0;
+    nextObject = 0;
   }
 
-  return v12;
+  return nextObject;
 }
 
 @end

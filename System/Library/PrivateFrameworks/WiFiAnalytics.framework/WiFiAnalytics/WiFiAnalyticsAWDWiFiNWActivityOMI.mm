@@ -1,34 +1,34 @@
 @interface WiFiAnalyticsAWDWiFiNWActivityOMI
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasChBWReq:(BOOL)a3;
-- (void)setHasCompletionDelay:(BOOL)a3;
-- (void)setHasDLResoundAck:(BOOL)a3;
-- (void)setHasDLResoundReq:(BOOL)a3;
-- (void)setHasERSUAck:(BOOL)a3;
-- (void)setHasERSUReq:(BOOL)a3;
-- (void)setHasRetries:(BOOL)a3;
-- (void)setHasRxNSSAck:(BOOL)a3;
-- (void)setHasRxNSSReq:(BOOL)a3;
-- (void)setHasScheduled:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setHasTxNSTSAck:(BOOL)a3;
-- (void)setHasTxNSTSReq:(BOOL)a3;
-- (void)setHasULMUAck:(BOOL)a3;
-- (void)setHasULMUReq:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasChBWReq:(BOOL)req;
+- (void)setHasCompletionDelay:(BOOL)delay;
+- (void)setHasDLResoundAck:(BOOL)ack;
+- (void)setHasDLResoundReq:(BOOL)req;
+- (void)setHasERSUAck:(BOOL)ack;
+- (void)setHasERSUReq:(BOOL)req;
+- (void)setHasRetries:(BOOL)retries;
+- (void)setHasRxNSSAck:(BOOL)ack;
+- (void)setHasRxNSSReq:(BOOL)req;
+- (void)setHasScheduled:(BOOL)scheduled;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setHasTxNSTSAck:(BOOL)ack;
+- (void)setHasTxNSTSReq:(BOOL)req;
+- (void)setHasULMUAck:(BOOL)ack;
+- (void)setHasULMUReq:(BOOL)req;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiNWActivityOMI
 
-- (void)setHasScheduled:(BOOL)a3
+- (void)setHasScheduled:(BOOL)scheduled
 {
-  if (a3)
+  if (scheduled)
   {
     v3 = 1024;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2048;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasRetries:(BOOL)a3
+- (void)setHasRetries:(BOOL)retries
 {
-  if (a3)
+  if (retries)
   {
     v3 = 128;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasCompletionDelay:(BOOL)a3
+- (void)setHasCompletionDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 4;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasULMUReq:(BOOL)a3
+- (void)setHasULMUReq:(BOOL)req
 {
-  if (a3)
+  if (req)
   {
     v3 = 0x8000;
   }
@@ -101,9 +101,9 @@
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasULMUAck:(BOOL)a3
+- (void)setHasULMUAck:(BOOL)ack
 {
-  if (a3)
+  if (ack)
   {
     v3 = 0x4000;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasTxNSTSReq:(BOOL)a3
+- (void)setHasTxNSTSReq:(BOOL)req
 {
-  if (a3)
+  if (req)
   {
     v3 = 0x2000;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasTxNSTSAck:(BOOL)a3
+- (void)setHasTxNSTSAck:(BOOL)ack
 {
-  if (a3)
+  if (ack)
   {
     v3 = 4096;
   }
@@ -146,9 +146,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasRxNSSReq:(BOOL)a3
+- (void)setHasRxNSSReq:(BOOL)req
 {
-  if (a3)
+  if (req)
   {
     v3 = 512;
   }
@@ -161,9 +161,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasRxNSSAck:(BOOL)a3
+- (void)setHasRxNSSAck:(BOOL)ack
 {
-  if (a3)
+  if (ack)
   {
     v3 = 256;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasChBWReq:(BOOL)a3
+- (void)setHasChBWReq:(BOOL)req
 {
-  if (a3)
+  if (req)
   {
     v3 = 2;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasERSUReq:(BOOL)a3
+- (void)setHasERSUReq:(BOOL)req
 {
-  if (a3)
+  if (req)
   {
     v3 = 64;
   }
@@ -206,9 +206,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasERSUAck:(BOOL)a3
+- (void)setHasERSUAck:(BOOL)ack
 {
-  if (a3)
+  if (ack)
   {
     v3 = 32;
   }
@@ -221,9 +221,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasDLResoundReq:(BOOL)a3
+- (void)setHasDLResoundReq:(BOOL)req
 {
-  if (a3)
+  if (req)
   {
     v3 = 16;
   }
@@ -236,9 +236,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDLResoundAck:(BOOL)a3
+- (void)setHasDLResoundAck:(BOOL)ack
 {
-  if (a3)
+  if (ack)
   {
     v3 = 8;
   }
@@ -257,20 +257,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiNWActivityOMI;
   v4 = [(WiFiAnalyticsAWDWiFiNWActivityOMI *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiNWActivityOMI *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiNWActivityOMI *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x400) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_scheduled];
-    [v3 setObject:v7 forKey:@"scheduled"];
+    [dictionary setObject:v7 forKey:@"scheduled"];
 
     has = self->_has;
     if ((has & 0x800) == 0)
@@ -291,7 +291,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_success];
-  [v3 setObject:v8 forKey:@"success"];
+  [dictionary setObject:v8 forKey:@"success"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -307,7 +307,7 @@ LABEL_4:
 
 LABEL_23:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_retries];
-  [v3 setObject:v9 forKey:@"retries"];
+  [dictionary setObject:v9 forKey:@"retries"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -323,7 +323,7 @@ LABEL_5:
 
 LABEL_24:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_completionDelay];
-  [v3 setObject:v10 forKey:@"completionDelay"];
+  [dictionary setObject:v10 forKey:@"completionDelay"];
 
   has = self->_has;
   if ((has & 0x8000) == 0)
@@ -339,7 +339,7 @@ LABEL_6:
 
 LABEL_25:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_uLMUReq];
-  [v3 setObject:v11 forKey:@"ULMUReq"];
+  [dictionary setObject:v11 forKey:@"ULMUReq"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -355,7 +355,7 @@ LABEL_7:
 
 LABEL_26:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_uLMUAck];
-  [v3 setObject:v12 forKey:@"ULMUAck"];
+  [dictionary setObject:v12 forKey:@"ULMUAck"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -371,7 +371,7 @@ LABEL_8:
 
 LABEL_27:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txNSTSReq];
-  [v3 setObject:v13 forKey:@"TxNSTSReq"];
+  [dictionary setObject:v13 forKey:@"TxNSTSReq"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -387,7 +387,7 @@ LABEL_9:
 
 LABEL_28:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txNSTSAck];
-  [v3 setObject:v14 forKey:@"TxNSTSAck"];
+  [dictionary setObject:v14 forKey:@"TxNSTSAck"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -403,7 +403,7 @@ LABEL_10:
 
 LABEL_29:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rxNSSReq];
-  [v3 setObject:v15 forKey:@"RxNSSReq"];
+  [dictionary setObject:v15 forKey:@"RxNSSReq"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -419,7 +419,7 @@ LABEL_11:
 
 LABEL_30:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rxNSSAck];
-  [v3 setObject:v16 forKey:@"RxNSSAck"];
+  [dictionary setObject:v16 forKey:@"RxNSSAck"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -435,7 +435,7 @@ LABEL_12:
 
 LABEL_31:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_chBWReq];
-  [v3 setObject:v17 forKey:@"ChBWReq"];
+  [dictionary setObject:v17 forKey:@"ChBWReq"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -451,7 +451,7 @@ LABEL_13:
 
 LABEL_32:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_chBWAck];
-  [v3 setObject:v18 forKey:@"ChBWAck"];
+  [dictionary setObject:v18 forKey:@"ChBWAck"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -467,7 +467,7 @@ LABEL_14:
 
 LABEL_33:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_eRSUReq];
-  [v3 setObject:v19 forKey:@"ERSUReq"];
+  [dictionary setObject:v19 forKey:@"ERSUReq"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -483,7 +483,7 @@ LABEL_15:
 
 LABEL_34:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_eRSUAck];
-  [v3 setObject:v20 forKey:@"ERSUAck"];
+  [dictionary setObject:v20 forKey:@"ERSUAck"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -499,23 +499,23 @@ LABEL_16:
 
 LABEL_35:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_dLResoundReq];
-  [v3 setObject:v21 forKey:@"DLResoundReq"];
+  [dictionary setObject:v21 forKey:@"DLResoundReq"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_17:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_dLResoundAck];
-    [v3 setObject:v5 forKey:@"DLResoundAck"];
+    [dictionary setObject:v5 forKey:@"DLResoundAck"];
   }
 
 LABEL_18:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x400) != 0)
   {
@@ -746,14 +746,14 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    v4[12] = self->_scheduled;
-    *(v4 + 36) |= 0x400u;
+    toCopy[12] = self->_scheduled;
+    *(toCopy + 36) |= 0x400u;
     has = self->_has;
     if ((has & 0x800) == 0)
     {
@@ -772,8 +772,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[13] = self->_success;
-  *(v4 + 36) |= 0x800u;
+  toCopy[13] = self->_success;
+  *(toCopy + 36) |= 0x800u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -787,8 +787,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  v4[9] = self->_retries;
-  *(v4 + 36) |= 0x80u;
+  toCopy[9] = self->_retries;
+  *(toCopy + 36) |= 0x80u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -802,8 +802,8 @@ LABEL_5:
   }
 
 LABEL_24:
-  v4[4] = self->_completionDelay;
-  *(v4 + 36) |= 4u;
+  toCopy[4] = self->_completionDelay;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 0x8000) == 0)
   {
@@ -817,8 +817,8 @@ LABEL_6:
   }
 
 LABEL_25:
-  v4[17] = self->_uLMUReq;
-  *(v4 + 36) |= 0x8000u;
+  toCopy[17] = self->_uLMUReq;
+  *(toCopy + 36) |= 0x8000u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -832,8 +832,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  v4[16] = self->_uLMUAck;
-  *(v4 + 36) |= 0x4000u;
+  toCopy[16] = self->_uLMUAck;
+  *(toCopy + 36) |= 0x4000u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -847,8 +847,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  v4[15] = self->_txNSTSReq;
-  *(v4 + 36) |= 0x2000u;
+  toCopy[15] = self->_txNSTSReq;
+  *(toCopy + 36) |= 0x2000u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -862,8 +862,8 @@ LABEL_9:
   }
 
 LABEL_28:
-  v4[14] = self->_txNSTSAck;
-  *(v4 + 36) |= 0x1000u;
+  toCopy[14] = self->_txNSTSAck;
+  *(toCopy + 36) |= 0x1000u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -877,8 +877,8 @@ LABEL_10:
   }
 
 LABEL_29:
-  v4[11] = self->_rxNSSReq;
-  *(v4 + 36) |= 0x200u;
+  toCopy[11] = self->_rxNSSReq;
+  *(toCopy + 36) |= 0x200u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -892,8 +892,8 @@ LABEL_11:
   }
 
 LABEL_30:
-  v4[10] = self->_rxNSSAck;
-  *(v4 + 36) |= 0x100u;
+  toCopy[10] = self->_rxNSSAck;
+  *(toCopy + 36) |= 0x100u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -907,8 +907,8 @@ LABEL_12:
   }
 
 LABEL_31:
-  v4[3] = self->_chBWReq;
-  *(v4 + 36) |= 2u;
+  toCopy[3] = self->_chBWReq;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -922,8 +922,8 @@ LABEL_13:
   }
 
 LABEL_32:
-  v4[2] = self->_chBWAck;
-  *(v4 + 36) |= 1u;
+  toCopy[2] = self->_chBWAck;
+  *(toCopy + 36) |= 1u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -937,8 +937,8 @@ LABEL_14:
   }
 
 LABEL_33:
-  v4[8] = self->_eRSUReq;
-  *(v4 + 36) |= 0x40u;
+  toCopy[8] = self->_eRSUReq;
+  *(toCopy + 36) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -952,8 +952,8 @@ LABEL_15:
   }
 
 LABEL_34:
-  v4[7] = self->_eRSUAck;
-  *(v4 + 36) |= 0x20u;
+  toCopy[7] = self->_eRSUAck;
+  *(toCopy + 36) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -967,21 +967,21 @@ LABEL_16:
   }
 
 LABEL_35:
-  v4[6] = self->_dLResoundReq;
-  *(v4 + 36) |= 0x10u;
+  toCopy[6] = self->_dLResoundReq;
+  *(toCopy + 36) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_17:
-    v4[5] = self->_dLResoundAck;
-    *(v4 + 36) |= 8u;
+    toCopy[5] = self->_dLResoundAck;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_18:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x400) != 0)
   {
@@ -1213,45 +1213,45 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_82;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 36) & 0x400) == 0 || self->_scheduled != *(v4 + 12))
+    if ((*(equalCopy + 36) & 0x400) == 0 || self->_scheduled != *(equalCopy + 12))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 36) & 0x400) != 0)
+  else if ((*(equalCopy + 36) & 0x400) != 0)
   {
     goto LABEL_82;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 36) & 0x800) == 0 || self->_success != *(v4 + 13))
+    if ((*(equalCopy + 36) & 0x800) == 0 || self->_success != *(equalCopy + 13))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 36) & 0x800) != 0)
+  else if ((*(equalCopy + 36) & 0x800) != 0)
   {
     goto LABEL_82;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_retries != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_retries != *(equalCopy + 9))
     {
       goto LABEL_82;
     }
@@ -1264,7 +1264,7 @@ LABEL_17:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_completionDelay != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_completionDelay != *(equalCopy + 4))
     {
       goto LABEL_82;
     }
@@ -1277,13 +1277,13 @@ LABEL_17:
 
   if ((*&self->_has & 0x8000) != 0)
   {
-    if ((*(v4 + 36) & 0x8000) == 0 || self->_uLMUReq != *(v4 + 17))
+    if ((*(equalCopy + 36) & 0x8000) == 0 || self->_uLMUReq != *(equalCopy + 17))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 36) & 0x8000) != 0)
+  else if ((*(equalCopy + 36) & 0x8000) != 0)
   {
 LABEL_82:
     v7 = 0;
@@ -1292,72 +1292,72 @@ LABEL_82:
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 36) & 0x4000) == 0 || self->_uLMUAck != *(v4 + 16))
+    if ((*(equalCopy + 36) & 0x4000) == 0 || self->_uLMUAck != *(equalCopy + 16))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 36) & 0x4000) != 0)
+  else if ((*(equalCopy + 36) & 0x4000) != 0)
   {
     goto LABEL_82;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 36) & 0x2000) == 0 || self->_txNSTSReq != *(v4 + 15))
+    if ((*(equalCopy + 36) & 0x2000) == 0 || self->_txNSTSReq != *(equalCopy + 15))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 36) & 0x2000) != 0)
+  else if ((*(equalCopy + 36) & 0x2000) != 0)
   {
     goto LABEL_82;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 36) & 0x1000) == 0 || self->_txNSTSAck != *(v4 + 14))
+    if ((*(equalCopy + 36) & 0x1000) == 0 || self->_txNSTSAck != *(equalCopy + 14))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 36) & 0x1000) != 0)
+  else if ((*(equalCopy + 36) & 0x1000) != 0)
   {
     goto LABEL_82;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 36) & 0x200) == 0 || self->_rxNSSReq != *(v4 + 11))
+    if ((*(equalCopy + 36) & 0x200) == 0 || self->_rxNSSReq != *(equalCopy + 11))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 36) & 0x200) != 0)
+  else if ((*(equalCopy + 36) & 0x200) != 0)
   {
     goto LABEL_82;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 36) & 0x100) == 0 || self->_rxNSSAck != *(v4 + 10))
+    if ((*(equalCopy + 36) & 0x100) == 0 || self->_rxNSSAck != *(equalCopy + 10))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 36) & 0x100) != 0)
+  else if ((*(equalCopy + 36) & 0x100) != 0)
   {
     goto LABEL_82;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_chBWReq != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_chBWReq != *(equalCopy + 3))
     {
       goto LABEL_82;
     }
@@ -1370,7 +1370,7 @@ LABEL_82:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_chBWAck != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_chBWAck != *(equalCopy + 2))
     {
       goto LABEL_82;
     }
@@ -1383,7 +1383,7 @@ LABEL_82:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_eRSUReq != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_eRSUReq != *(equalCopy + 8))
     {
       goto LABEL_82;
     }
@@ -1396,7 +1396,7 @@ LABEL_82:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_eRSUAck != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_eRSUAck != *(equalCopy + 7))
     {
       goto LABEL_82;
     }
@@ -1409,7 +1409,7 @@ LABEL_82:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_dLResoundReq != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_dLResoundReq != *(equalCopy + 6))
     {
       goto LABEL_82;
     }
@@ -1422,7 +1422,7 @@ LABEL_82:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_dLResoundAck != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_dLResoundAck != *(equalCopy + 5))
     {
       goto LABEL_82;
     }
@@ -1663,15 +1663,15 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x400) != 0)
   {
-    self->_scheduled = *(v4 + 12);
+    self->_scheduled = *(fromCopy + 12);
     *&self->_has |= 0x400u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 0x800) == 0)
     {
 LABEL_3:
@@ -1684,14 +1684,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 0x800) == 0)
+  else if ((*(fromCopy + 36) & 0x800) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_success = *(v4 + 13);
+  self->_success = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x80) == 0)
   {
 LABEL_4:
@@ -1704,9 +1704,9 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_retries = *(v4 + 9);
+  self->_retries = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -1719,9 +1719,9 @@ LABEL_5:
   }
 
 LABEL_24:
-  self->_completionDelay = *(v4 + 4);
+  self->_completionDelay = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_6:
@@ -1734,9 +1734,9 @@ LABEL_6:
   }
 
 LABEL_25:
-  self->_uLMUReq = *(v4 + 17);
+  self->_uLMUReq = *(fromCopy + 17);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_7:
@@ -1749,9 +1749,9 @@ LABEL_7:
   }
 
 LABEL_26:
-  self->_uLMUAck = *(v4 + 16);
+  self->_uLMUAck = *(fromCopy + 16);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_8:
@@ -1764,9 +1764,9 @@ LABEL_8:
   }
 
 LABEL_27:
-  self->_txNSTSReq = *(v4 + 15);
+  self->_txNSTSReq = *(fromCopy + 15);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_9:
@@ -1779,9 +1779,9 @@ LABEL_9:
   }
 
 LABEL_28:
-  self->_txNSTSAck = *(v4 + 14);
+  self->_txNSTSAck = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x200) == 0)
   {
 LABEL_10:
@@ -1794,9 +1794,9 @@ LABEL_10:
   }
 
 LABEL_29:
-  self->_rxNSSReq = *(v4 + 11);
+  self->_rxNSSReq = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x100) == 0)
   {
 LABEL_11:
@@ -1809,9 +1809,9 @@ LABEL_11:
   }
 
 LABEL_30:
-  self->_rxNSSAck = *(v4 + 10);
+  self->_rxNSSAck = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_12:
@@ -1824,9 +1824,9 @@ LABEL_12:
   }
 
 LABEL_31:
-  self->_chBWReq = *(v4 + 3);
+  self->_chBWReq = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 1) == 0)
   {
 LABEL_13:
@@ -1839,9 +1839,9 @@ LABEL_13:
   }
 
 LABEL_32:
-  self->_chBWAck = *(v4 + 2);
+  self->_chBWAck = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x40) == 0)
   {
 LABEL_14:
@@ -1854,9 +1854,9 @@ LABEL_14:
   }
 
 LABEL_33:
-  self->_eRSUReq = *(v4 + 8);
+  self->_eRSUReq = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x20) == 0)
   {
 LABEL_15:
@@ -1869,9 +1869,9 @@ LABEL_15:
   }
 
 LABEL_34:
-  self->_eRSUAck = *(v4 + 7);
+  self->_eRSUAck = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_16:
@@ -1884,12 +1884,12 @@ LABEL_16:
   }
 
 LABEL_35:
-  self->_dLResoundReq = *(v4 + 6);
+  self->_dLResoundReq = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_17:
-    self->_dLResoundAck = *(v4 + 5);
+    self->_dLResoundAck = *(fromCopy + 5);
     *&self->_has |= 8u;
   }
 

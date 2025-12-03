@@ -38,8 +38,8 @@
               objc_enumerationMutation(obj);
             }
 
-            v14 = [*(*(&v24 + 1) + 8 * i) range];
-            v16 = [v5 substringWithRange:{v14, v15}];
+            range = [*(*(&v24 + 1) + 8 * i) range];
+            v16 = [v5 substringWithRange:{range, v15}];
             v17 = [v16 mutableCopy];
             [v17 replaceOccurrencesOfString:@"%" withString:&stru_2875C9CD8 options:1 range:{0, objc_msgSend(v17, "length")}];
             [v17 replaceOccurrencesOfString:@"$@" withString:&stru_2875C9CD8 options:1 range:{0, objc_msgSend(v17, "length")}];

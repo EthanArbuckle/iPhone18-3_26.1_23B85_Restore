@@ -1,9 +1,9 @@
 @interface MapsSuggestionsCompositeOrCondition
 - (BOOL)isTrue;
 - (NSArray)_conditions;
-- (_TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition)initWithConditions:(id)a3;
-- (_TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition)initWithName:(id)a3;
-- (void)set_conditions:(id)a3;
+- (_TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition)initWithConditions:(id)conditions;
+- (_TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition)initWithName:(id)name;
+- (void)set_conditions:(id)set_conditions;
 @end
 
 @implementation MapsSuggestionsCompositeOrCondition
@@ -17,7 +17,7 @@
   return v2;
 }
 
-- (void)set_conditions:(id)a3
+- (void)set_conditions:(id)set_conditions
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC1563D0);
   *(self + OBJC_IVAR____TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition__conditions) = sub_1C529D7DC();
@@ -25,13 +25,13 @@
 
 - (BOOL)isTrue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C528A50C();
 
   return v3;
 }
 
-- (_TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition)initWithConditions:(id)a3
+- (_TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition)initWithConditions:(id)conditions
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC1563D0);
   *(self + OBJC_IVAR____TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition__conditions) = sub_1C529D7DC();
@@ -43,7 +43,7 @@
   return v5;
 }
 
-- (_TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition)initWithName:(id)a3
+- (_TtC15MapsSuggestions35MapsSuggestionsCompositeOrCondition)initWithName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

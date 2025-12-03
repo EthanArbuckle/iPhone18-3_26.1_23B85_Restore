@@ -1,7 +1,7 @@
 @interface CKAssistantSMSCreate
 + (void)initialize;
 - (id)_createSMSObject;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CKAssistantSMSCreate
@@ -24,32 +24,32 @@
 
 - (id)_createSMSObject
 {
-  v2 = [(CKAssistantSMSCreate *)self object];
-  v3 = [v2 identifier];
-  v4 = [v3 absoluteString];
-  v5 = [v4 isEqualToString:@"sms:draft"];
+  object = [(CKAssistantSMSCreate *)self object];
+  identifier = [object identifier];
+  absoluteString = [identifier absoluteString];
+  v5 = [absoluteString isEqualToString:@"sms:draft"];
 
   if ((v5 & 1) == 0)
   {
     v6 = +[NSString stringGUID];
     v7 = [NSString stringWithFormat:@"x-apple-sms-draft:guid=%@", v6];
 
-    v8 = [v7 urlFromString];
-    [v2 setIdentifier:v8];
+    urlFromString = [v7 urlFromString];
+    [object setIdentifier:urlFromString];
   }
 
   CKAssistantClearDrafts();
   CKAssistantUpdateStoreDraftWithSMS();
   v9 = objc_alloc_init(SADomainObjectCreateCompleted);
-  v10 = [v2 identifier];
-  [v9 setIdentifier:v10];
+  identifier2 = [object identifier];
+  [v9 setIdentifier:identifier2];
 
   return v9;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -73,29 +73,29 @@
     }
 
     v14 = [SACommandFailed alloc];
-    v8 = [v14 initWithErrorCode:SASmsIMessageNotAvailableErrorCode];
+    _createSMSObject = [v14 initWithErrorCode:SASmsIMessageNotAvailableErrorCode];
   }
 
   else
   {
-    v8 = [(CKAssistantSMSCreate *)self _createSMSObject];
+    _createSMSObject = [(CKAssistantSMSCreate *)self _createSMSObject];
   }
 
-  v9 = v8;
+  v9 = _createSMSObject;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v9 dictionary];
+      dictionary = [v9 dictionary];
       v15 = 138412290;
-      v16 = v11;
+      v16 = dictionary;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "SMSCreate returning %@", &v15, 0xCu);
     }
   }
 
-  v12 = [v9 dictionary];
-  v4[2](v4, v12);
+  dictionary2 = [v9 dictionary];
+  completionCopy[2](completionCopy, dictionary2);
 }
 
 @end

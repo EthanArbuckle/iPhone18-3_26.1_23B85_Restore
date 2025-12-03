@@ -1,7 +1,7 @@
 @interface SSUInstalledAppProviderSandbox
-- (SSUInstalledAppProviderSandbox)initWithDirectory:(id)a3 locale:(id)a4;
+- (SSUInstalledAppProviderSandbox)initWithDirectory:(id)directory locale:(id)locale;
 - (id)lookupAllSSUEnabledApps;
-- (id)lookupSSUEnabledAppByBundleId:(id)a3;
+- (id)lookupSSUEnabledAppByBundleId:(id)id;
 @end
 
 @implementation SSUInstalledAppProviderSandbox
@@ -20,16 +20,16 @@
     _os_log_debug_impl(&dword_1DC287000, v3, OS_LOG_TYPE_DEBUG, "%s Looking up all installed SSU-enabled apps in sandbox directory: %@.", buf, 0x16u);
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [(NSURL *)self->_directory path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)self->_directory path];
   v32 = 0;
-  v6 = [v4 contentsOfDirectoryAtPath:v5 error:&v32];
+  v6 = [defaultManager contentsOfDirectoryAtPath:path error:&v32];
   v7 = v32;
 
   if (v6)
   {
     v25 = v7;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -57,19 +57,19 @@
             v15 = CDMOSLoggerForCategory(0);
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
-              v16 = [v14 bundleIdentifier];
-              v27 = [v14 assetURL];
-              v17 = [v27 path];
+              bundleIdentifier = [v14 bundleIdentifier];
+              assetURL = [v14 assetURL];
+              path2 = [assetURL path];
               *buf = 136315650;
               v35 = "[SSUInstalledAppProviderSandbox lookupAllSSUEnabledApps]";
               v36 = 2112;
-              v37 = v16;
+              v37 = bundleIdentifier;
               v38 = 2112;
-              v39 = v17;
+              v39 = path2;
               _os_log_debug_impl(&dword_1DC287000, v15, OS_LOG_TYPE_DEBUG, "%s Found SSU app %@ with asset URL %@", buf, 0x20u);
             }
 
-            [v8 addObject:v14];
+            [array addObject:v14];
           }
 
           ++v13;
@@ -85,7 +85,7 @@
     v18 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v8 count];
+      v22 = [array count];
       *buf = 136315394;
       v35 = "[SSUInstalledAppProviderSandbox lookupAllSSUEnabledApps]";
       v36 = 2048;
@@ -113,23 +113,23 @@
       _os_log_error_impl(&dword_1DC287000, v18, OS_LOG_TYPE_ERROR, "%s [ERR]: Failed to list contents of directory %@ due to error: %@. Returning no installed apps.", buf, 0x20u);
     }
 
-    v8 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return array;
 }
 
-- (id)lookupSSUEnabledAppByBundleId:(id)a3
+- (id)lookupSSUEnabledAppByBundleId:(id)id
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSURL *)self->_directory URLByAppendingPathComponent:v4];
+  idCopy = id;
+  v5 = [(NSURL *)self->_directory URLByAppendingPathComponent:idCopy];
   v23 = 0;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [(NSURL *)v5 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:&v23];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)v5 path];
+  v8 = [defaultManager fileExistsAtPath:path isDirectory:&v23];
 
   if ((v8 & 1) == 0)
   {
@@ -142,7 +142,7 @@
       v26 = 2112;
       v27 = directory;
       v28 = 2112;
-      v29 = v4;
+      v29 = idCopy;
       _os_log_debug_impl(&dword_1DC287000, v10, OS_LOG_TYPE_DEBUG, "%s The installed app sandbox directory %@ not contain a subdirectory: %@. Reporting app as not available.", buf, 0x20u);
     }
 
@@ -173,7 +173,7 @@ LABEL_12:
   {
     locale = self->_locale;
     v22 = 0;
-    v12 = [MEMORY[0x1E69D1480] applicationInfoWithBundleIdentifier:v4 assetURL:v10 forLocale:locale error:&v22];
+    v12 = [MEMORY[0x1E69D1480] applicationInfoWithBundleIdentifier:idCopy assetURL:v10 forLocale:locale error:&v22];
     v13 = v22;
     v14 = CDMOSLoggerForCategory(0);
     v15 = v14;
@@ -181,11 +181,11 @@ LABEL_12:
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v20 = [v12 bundleIdentifier];
+        bundleIdentifier = [v12 bundleIdentifier];
         *buf = 136315394;
         v25 = "[SSUInstalledAppProviderSandbox lookupSSUEnabledAppByBundleId:]";
         v26 = 2112;
-        v27 = v20;
+        v27 = bundleIdentifier;
         _os_log_debug_impl(&dword_1DC287000, v15, OS_LOG_TYPE_DEBUG, "%s Found SSU-enabled app in sandbox: %@", buf, 0x16u);
       }
 
@@ -200,7 +200,7 @@ LABEL_12:
         *buf = 136315906;
         v25 = "[SSUInstalledAppProviderSandbox lookupSSUEnabledAppByBundleId:]";
         v26 = 2112;
-        v27 = v4;
+        v27 = idCopy;
         v28 = 2112;
         v29 = v5;
         v30 = 2112;
@@ -231,19 +231,19 @@ LABEL_21:
   return v12;
 }
 
-- (SSUInstalledAppProviderSandbox)initWithDirectory:(id)a3 locale:(id)a4
+- (SSUInstalledAppProviderSandbox)initWithDirectory:(id)directory locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  localeCopy = locale;
   v13.receiver = self;
   v13.super_class = SSUInstalledAppProviderSandbox;
   v8 = [(SSUInstalledAppProviderSandbox *)&v13 init];
   directory = v8->_directory;
-  v8->_directory = v6;
-  v10 = v6;
+  v8->_directory = directoryCopy;
+  v10 = directoryCopy;
 
   locale = v8->_locale;
-  v8->_locale = v7;
+  v8->_locale = localeCopy;
 
   return v8;
 }

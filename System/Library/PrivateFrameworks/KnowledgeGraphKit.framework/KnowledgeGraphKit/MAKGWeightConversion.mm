@@ -1,20 +1,20 @@
 @interface MAKGWeightConversion
-+ (id)kgPropertiesForMAProperties:(void *)a3 weight:;
-+ (void)maPropertiesAndWeightForKGProperties:(id)a3 maProperties:(id *)a4 maWeight:(float *)a5;
++ (id)kgPropertiesForMAProperties:(void *)properties weight:;
++ (void)maPropertiesAndWeightForKGProperties:(id)properties maProperties:(id *)maProperties maWeight:(float *)weight;
 @end
 
 @implementation MAKGWeightConversion
 
-+ (void)maPropertiesAndWeightForKGProperties:(id)a3 maProperties:(id *)a4 maWeight:(float *)a5
++ (void)maPropertiesAndWeightForKGProperties:(id)properties maProperties:(id *)maProperties maWeight:(float *)weight
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  propertiesCopy = properties;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = propertiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -40,8 +40,8 @@
 
         else
         {
-          v17 = [v15 kgPropertyValue];
-          [v7 setObject:v17 forKeyedSubscript:v14];
+          kgPropertyValue = [v15 kgPropertyValue];
+          [v7 setObject:kgPropertyValue forKeyedSubscript:v14];
         }
       }
 
@@ -56,31 +56,31 @@
     v12 = 1.0;
   }
 
-  if (a4)
+  if (maProperties)
   {
     v18 = v7;
-    *a4 = v7;
+    *maProperties = v7;
   }
 
-  if (a5)
+  if (weight)
   {
-    *a5 = v12;
+    *weight = v12;
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)kgPropertiesForMAProperties:(void *)a3 weight:
++ (id)kgPropertiesForMAProperties:(void *)properties weight:
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   objc_opt_self();
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = propertiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v7)
   {
@@ -123,9 +123,9 @@
     while (v9);
   }
 
-  if (a1 != 1.0)
+  if (self != 1.0)
   {
-    v16 = [[KGDoublePropertyValue alloc] initWithValue:a1];
+    v16 = [[KGDoublePropertyValue alloc] initWithValue:self];
     [v5 setObject:v16 forKeyedSubscript:@"__weight"];
   }
 

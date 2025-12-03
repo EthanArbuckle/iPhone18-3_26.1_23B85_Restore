@@ -6,8 +6,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(UIImageViewAccessibility__PassKitUI__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"LogoImage"];
+  accessibilityIdentification = [(UIImageViewAccessibility__PassKitUI__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"LogoImage"];
 
   if (v4)
   {

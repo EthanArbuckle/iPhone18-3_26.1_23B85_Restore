@@ -1,11 +1,11 @@
 @interface BrandedAppTodayCardNoArtBackgroundView
-- (_TtC20ProductPageExtension38BrandedAppTodayCardNoArtBackgroundView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension38BrandedAppTodayCardNoArtBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation BrandedAppTodayCardNoArtBackgroundView
 
-- (_TtC20ProductPageExtension38BrandedAppTodayCardNoArtBackgroundView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension38BrandedAppTodayCardNoArtBackgroundView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension38BrandedAppTodayCardNoArtBackgroundView_style;
   v5 = sub_10076BF6C();
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001175B0();
 }
 

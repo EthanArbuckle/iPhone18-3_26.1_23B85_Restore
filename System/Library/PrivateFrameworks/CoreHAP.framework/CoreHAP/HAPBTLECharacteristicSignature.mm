@@ -1,19 +1,19 @@
 @interface HAPBTLECharacteristicSignature
-- (HAPBTLECharacteristicSignature)initWithCharacteristicType:(id)a3 serviceInstanceID:(id)a4 serviceType:(id)a5 characteristicProperties:(unsigned __int16)a6 characteristicMetadata:(id)a7 authenticated:(BOOL)a8;
+- (HAPBTLECharacteristicSignature)initWithCharacteristicType:(id)type serviceInstanceID:(id)d serviceType:(id)serviceType characteristicProperties:(unsigned __int16)properties characteristicMetadata:(id)metadata authenticated:(BOOL)authenticated;
 @end
 
 @implementation HAPBTLECharacteristicSignature
 
-- (HAPBTLECharacteristicSignature)initWithCharacteristicType:(id)a3 serviceInstanceID:(id)a4 serviceType:(id)a5 characteristicProperties:(unsigned __int16)a6 characteristicMetadata:(id)a7 authenticated:(BOOL)a8
+- (HAPBTLECharacteristicSignature)initWithCharacteristicType:(id)type serviceInstanceID:(id)d serviceType:(id)serviceType characteristicProperties:(unsigned __int16)properties characteristicMetadata:(id)metadata authenticated:(BOOL)authenticated
 {
-  v10 = a6;
+  propertiesCopy = properties;
   v39 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = v17;
-  if (!v14)
+  typeCopy = type;
+  dCopy = d;
+  serviceTypeCopy = serviceType;
+  metadataCopy = metadata;
+  v18 = metadataCopy;
+  if (!typeCopy)
   {
     v27 = objc_autoreleasePoolPush();
     v28 = HMFGetOSLogHandle();
@@ -35,7 +35,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v15)
+  if (!dCopy)
   {
     v27 = objc_autoreleasePoolPush();
     v28 = HMFGetOSLogHandle();
@@ -54,7 +54,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v16)
+  if (!serviceTypeCopy)
   {
     v27 = objc_autoreleasePoolPush();
     v28 = HMFGetOSLogHandle();
@@ -73,7 +73,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v10)
+  if (!propertiesCopy)
   {
     v27 = objc_autoreleasePoolPush();
     v28 = HMFGetOSLogHandle();
@@ -92,7 +92,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!metadataCopy)
   {
     v27 = objc_autoreleasePoolPush();
     v28 = HMFGetOSLogHandle();
@@ -111,7 +111,7 @@ LABEL_19:
 LABEL_20:
 
     objc_autoreleasePoolPop(v27);
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -120,29 +120,29 @@ LABEL_20:
   v19 = [(HAPBTLECharacteristicSignature *)&v34 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [typeCopy copy];
     characteristicType = v19->_characteristicType;
     v19->_characteristicType = v20;
 
-    v22 = [v15 copy];
+    v22 = [dCopy copy];
     serviceInstanceID = v19->_serviceInstanceID;
     v19->_serviceInstanceID = v22;
 
-    v24 = [v16 copy];
+    v24 = [serviceTypeCopy copy];
     serviceType = v19->_serviceType;
     v19->_serviceType = v24;
 
-    v19->_characteristicProperties = v10;
-    objc_storeStrong(&v19->_characteristicMetadata, a7);
-    v19->_authenticated = a8;
+    v19->_characteristicProperties = propertiesCopy;
+    objc_storeStrong(&v19->_characteristicMetadata, metadata);
+    v19->_authenticated = authenticated;
   }
 
   self = v19;
-  v26 = self;
+  selfCopy = self;
 LABEL_21:
 
   v32 = *MEMORY[0x277D85DE8];
-  return v26;
+  return selfCopy;
 }
 
 @end

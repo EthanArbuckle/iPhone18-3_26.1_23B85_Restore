@@ -1,6 +1,6 @@
 @interface HFCustomDiffableDataSourceSnapshot
 - (id)itemIdentifiers;
-- (id)itemIdentifiersInSectionWithIdentifier:(id)a3;
+- (id)itemIdentifiersInSectionWithIdentifier:(id)identifier;
 - (int64_t)numberOfItems;
 - (int64_t)numberOfSections;
 @end
@@ -9,39 +9,39 @@
 
 - (int64_t)numberOfSections
 {
-  v2 = [(HFCustomDiffableDataSourceSnapshot *)self sections];
-  v3 = [v2 count];
+  sections = [(HFCustomDiffableDataSourceSnapshot *)self sections];
+  v3 = [sections count];
 
   return v3;
 }
 
 - (id)itemIdentifiers
 {
-  v2 = [(HFCustomDiffableDataSourceSnapshot *)self sections];
-  v3 = [v2 na_flatMap:&__block_literal_global_228];
+  sections = [(HFCustomDiffableDataSourceSnapshot *)self sections];
+  v3 = [sections na_flatMap:&__block_literal_global_228];
 
   return v3;
 }
 
 - (int64_t)numberOfItems
 {
-  v2 = [(HFCustomDiffableDataSourceSnapshot *)self itemIdentifiers];
-  v3 = [v2 count];
+  itemIdentifiers = [(HFCustomDiffableDataSourceSnapshot *)self itemIdentifiers];
+  v3 = [itemIdentifiers count];
 
   return v3;
 }
 
-- (id)itemIdentifiersInSectionWithIdentifier:(id)a3
+- (id)itemIdentifiersInSectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HFCustomDiffableDataSourceSnapshot *)self sections];
+  identifierCopy = identifier;
+  sections = [(HFCustomDiffableDataSourceSnapshot *)self sections];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__HFCustomDiffableDataSourceSnapshot_itemIdentifiersInSectionWithIdentifier___block_invoke;
   v9[3] = &unk_277E01DB0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_flatMap:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [sections na_flatMap:v9];
 
   return v7;
 }

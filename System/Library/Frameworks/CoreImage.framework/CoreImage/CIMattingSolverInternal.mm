@@ -145,10 +145,10 @@
   [objc_msgSend(v4 objectAtIndexedSubscript:{2), "extent"}];
   v26[2] = [CIVector vectorWithCGRect:?];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
-  v6 = [(CIImage *)self->inputImage imageByClampingToExtent];
+  imageByClampingToExtent = [(CIImage *)self->inputImage imageByClampingToExtent];
   v25[0] = self->inputPredicateImage;
   v25[1] = inputMainImage;
-  v25[2] = v6;
+  v25[2] = imageByClampingToExtent;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
   v22 = 0;
   [(CIImage *)self->inputPredicateImage extent];

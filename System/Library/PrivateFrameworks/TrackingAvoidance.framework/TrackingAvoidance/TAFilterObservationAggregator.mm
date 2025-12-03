@@ -1,78 +1,78 @@
 @interface TAFilterObservationAggregator
-+ (id)aggregateObservationsThroughHistoryForDetectionResults:(id)a3 visitSnapshotBuffer:(id)a4 intervisitSnapshotBuffer:(id)a5 clock:(id)a6;
-+ (id)aggregateObservationsThroughHistoryForSingleDetection:(id)a3 visitSnapshotBuffer:(id)a4 intervisitSnapshotBuffer:(id)a5 clock:(id)a6;
-+ (id)location:(id)a3 withAdvertisementTimestamp:(id)a4;
-+ (id)normalizeDualT18PoshAdvertisersAsPosh:(id)a3 deviceRecord:(id)a4;
-+ (void)attachAISInfo:(id)a3 deviceRecord:(id)a4;
++ (id)aggregateObservationsThroughHistoryForDetectionResults:(id)results visitSnapshotBuffer:(id)buffer intervisitSnapshotBuffer:(id)snapshotBuffer clock:(id)clock;
++ (id)aggregateObservationsThroughHistoryForSingleDetection:(id)detection visitSnapshotBuffer:(id)buffer intervisitSnapshotBuffer:(id)snapshotBuffer clock:(id)clock;
++ (id)location:(id)location withAdvertisementTimestamp:(id)timestamp;
++ (id)normalizeDualT18PoshAdvertisersAsPosh:(id)posh deviceRecord:(id)record;
++ (void)attachAISInfo:(id)info deviceRecord:(id)record;
 @end
 
 @implementation TAFilterObservationAggregator
 
-+ (id)location:(id)a3 withAdvertisementTimestamp:(id)a4
++ (id)location:(id)location withAdvertisementTimestamp:(id)timestamp
 {
-  v5 = a4;
-  v6 = a3;
+  timestampCopy = timestamp;
+  locationCopy = location;
   v7 = [TALocationLite alloc];
-  v8 = [v5 scanDate];
+  scanDate = [timestampCopy scanDate];
 
-  [v6 latitude];
+  [locationCopy latitude];
   v41 = v9;
-  [v6 longitude];
+  [locationCopy longitude];
   v40 = v10;
-  [v6 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v39 = v11;
-  [v6 altitude];
+  [locationCopy altitude];
   v38 = v12;
-  [v6 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   v37 = v13;
-  [v6 speed];
+  [locationCopy speed];
   v36 = v14;
-  [v6 speedAccuracy];
+  [locationCopy speedAccuracy];
   v35 = v15;
-  [v6 course];
+  [locationCopy course];
   v17 = v16;
-  [v6 courseAccuracy];
+  [locationCopy courseAccuracy];
   v19 = v18;
-  [v6 deltaDistance];
+  [locationCopy deltaDistance];
   v21 = v20;
-  [v6 deltaDistanceAccuracy];
+  [locationCopy deltaDistanceAccuracy];
   v23 = v22;
-  [v6 groundAltitude];
+  [locationCopy groundAltitude];
   v25 = v24;
-  [v6 groundAltitudeUncertainty];
+  [locationCopy groundAltitudeUncertainty];
   v27 = v26;
-  [v6 pressure];
+  [locationCopy pressure];
   v29 = v28;
-  [v6 pressureUncertainty];
+  [locationCopy pressureUncertainty];
   v31 = v30;
-  v32 = [v6 isSimulatedOrSpoofed];
+  isSimulatedOrSpoofed = [locationCopy isSimulatedOrSpoofed];
 
-  v33 = [(TALocationLite *)v7 initWithTimestamp:v8 latitude:v32 longitude:v41 horizontalAccuracy:v40 altitude:v39 verticalAccuracy:v38 speed:v37 speedAccuracy:v36 course:v35 courseAccuracy:v17 deltaDistance:v19 deltaDistanceAccuracy:v21 groundAltitude:v23 groundAltitudeUncertainty:v25 pressure:v27 pressureUncertainty:v29 isSimulatedOrSpoofed:v31];
+  v33 = [(TALocationLite *)v7 initWithTimestamp:scanDate latitude:isSimulatedOrSpoofed longitude:v41 horizontalAccuracy:v40 altitude:v39 verticalAccuracy:v38 speed:v37 speedAccuracy:v36 course:v35 courseAccuracy:v17 deltaDistance:v19 deltaDistanceAccuracy:v21 groundAltitude:v23 groundAltitudeUncertainty:v25 pressure:v27 pressureUncertainty:v29 isSimulatedOrSpoofed:v31];
 
   return v33;
 }
 
-+ (id)aggregateObservationsThroughHistoryForSingleDetection:(id)a3 visitSnapshotBuffer:(id)a4 intervisitSnapshotBuffer:(id)a5 clock:(id)a6
++ (id)aggregateObservationsThroughHistoryForSingleDetection:(id)detection visitSnapshotBuffer:(id)buffer intervisitSnapshotBuffer:(id)snapshotBuffer clock:(id)clock
 {
   v65 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  detectionCopy = detection;
+  bufferCopy = buffer;
+  snapshotBufferCopy = snapshotBuffer;
+  clockCopy = clock;
   v13 = 0;
-  if (v9 && v12)
+  if (detectionCopy && clockCopy)
   {
-    v51 = v12;
+    v51 = clockCopy;
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v52 = v10;
-    if (v10)
+    v52 = bufferCopy;
+    if (bufferCopy)
     {
-      v50 = v11;
+      v50 = snapshotBufferCopy;
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      obj = [v10 bufferCopy];
+      obj = [bufferCopy bufferCopy];
       v15 = [obj countByEnumeratingWithState:&v59 objects:v64 count:16];
       if (v15)
       {
@@ -88,24 +88,24 @@
             }
 
             v19 = *(*(&v59 + 1) + 8 * i);
-            v20 = [v19 earliestUtAdvertisements];
-            v21 = [v9 address];
-            v22 = [v20 objectForKeyedSubscript:v21];
+            earliestUtAdvertisements = [v19 earliestUtAdvertisements];
+            address = [detectionCopy address];
+            v22 = [earliestUtAdvertisements objectForKeyedSubscript:address];
 
-            v23 = [v19 latestUtAdvertisements];
-            v24 = [v9 address];
-            v25 = [v23 objectForKeyedSubscript:v24];
+            latestUtAdvertisements = [v19 latestUtAdvertisements];
+            address2 = [detectionCopy address];
+            v25 = [latestUtAdvertisements objectForKeyedSubscript:address2];
 
-            v26 = [v19 getLocationRepresentingSnapshot];
+            getLocationRepresentingSnapshot = [v19 getLocationRepresentingSnapshot];
             if (v22)
             {
-              v27 = [TAFilterObservationAggregator location:v26 withAdvertisementTimestamp:v22];
+              v27 = [TAFilterObservationAggregator location:getLocationRepresentingSnapshot withAdvertisementTimestamp:v22];
               [v14 addObject:v27];
             }
 
             if (v25 && ([v25 isEqual:v22] & 1) == 0)
             {
-              v28 = [TAFilterObservationAggregator location:v26 withAdvertisementTimestamp:v25];
+              v28 = [TAFilterObservationAggregator location:getLocationRepresentingSnapshot withAdvertisementTimestamp:v25];
               [v14 addObject:v28];
             }
           }
@@ -116,17 +116,17 @@
         while (v16);
       }
 
-      v11 = v50;
+      snapshotBufferCopy = v50;
     }
 
-    if (v11)
+    if (snapshotBufferCopy)
     {
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v29 = [v11 bufferCopy];
-      v30 = [v29 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      bufferCopy = [snapshotBufferCopy bufferCopy];
+      v30 = [bufferCopy countByEnumeratingWithState:&v55 objects:v63 count:16];
       if (v30)
       {
         v31 = v30;
@@ -137,45 +137,45 @@
           {
             if (*v56 != v32)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(bufferCopy);
             }
 
-            v34 = [*(*(&v55 + 1) + 8 * j) accumulatedDeviceMetrics];
-            v35 = [v9 address];
-            v36 = [v34 objectForKeyedSubscript:v35];
+            accumulatedDeviceMetrics = [*(*(&v55 + 1) + 8 * j) accumulatedDeviceMetrics];
+            address3 = [detectionCopy address];
+            v36 = [accumulatedDeviceMetrics objectForKeyedSubscript:address3];
 
             if (v36)
             {
-              v37 = [v36 sampledObservedLocations];
-              [v14 addObjectsFromArray:v37];
+              sampledObservedLocations = [v36 sampledObservedLocations];
+              [v14 addObjectsFromArray:sampledObservedLocations];
             }
           }
 
-          v31 = [v29 countByEnumeratingWithState:&v55 objects:v63 count:16];
+          v31 = [bufferCopy countByEnumeratingWithState:&v55 objects:v63 count:16];
         }
 
         while (v31);
       }
     }
 
-    v38 = [v9 locationHistory];
-    [v14 addObjectsFromArray:v38];
+    locationHistory = [detectionCopy locationHistory];
+    [v14 addObjectsFromArray:locationHistory];
 
     obja = [TASuspiciousDevice alloc];
-    v39 = [v9 latestAdvertisement];
-    v40 = [v9 detectionSummary];
+    latestAdvertisement = [detectionCopy latestAdvertisement];
+    detectionSummary = [detectionCopy detectionSummary];
     v41 = [v14 copy];
-    v42 = [v9 detectionMetrics];
-    v43 = [v9 detectionType];
-    v44 = v11;
-    v45 = [v9 immediacyType];
-    v46 = [v9 accessoryInfo];
-    v49 = v45;
-    v11 = v44;
-    v13 = -[TASuspiciousDevice initWithLatestAdv:detectionSummary:date:locHistory:detectionMetrics:detectionType:immediacyType:accessoryInfo:forceSurfaceReason:](obja, "initWithLatestAdv:detectionSummary:date:locHistory:detectionMetrics:detectionType:immediacyType:accessoryInfo:forceSurfaceReason:", v39, v40, v51, v41, v42, v43, v49, v46, [v9 forceSurfaceReason]);
+    detectionMetrics = [detectionCopy detectionMetrics];
+    detectionType = [detectionCopy detectionType];
+    v44 = snapshotBufferCopy;
+    immediacyType = [detectionCopy immediacyType];
+    accessoryInfo = [detectionCopy accessoryInfo];
+    v49 = immediacyType;
+    snapshotBufferCopy = v44;
+    v13 = -[TASuspiciousDevice initWithLatestAdv:detectionSummary:date:locHistory:detectionMetrics:detectionType:immediacyType:accessoryInfo:forceSurfaceReason:](obja, "initWithLatestAdv:detectionSummary:date:locHistory:detectionMetrics:detectionType:immediacyType:accessoryInfo:forceSurfaceReason:", latestAdvertisement, detectionSummary, v51, v41, detectionMetrics, detectionType, v49, accessoryInfo, [detectionCopy forceSurfaceReason]);
 
-    v12 = v51;
-    v10 = v52;
+    clockCopy = v51;
+    bufferCopy = v52;
   }
 
   v47 = *MEMORY[0x277D85DE8];
@@ -183,19 +183,19 @@
   return v13;
 }
 
-+ (id)aggregateObservationsThroughHistoryForDetectionResults:(id)a3 visitSnapshotBuffer:(id)a4 intervisitSnapshotBuffer:(id)a5 clock:(id)a6
++ (id)aggregateObservationsThroughHistoryForDetectionResults:(id)results visitSnapshotBuffer:(id)buffer intervisitSnapshotBuffer:(id)snapshotBuffer clock:(id)clock
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  resultsCopy = results;
+  bufferCopy = buffer;
+  snapshotBufferCopy = snapshotBuffer;
+  clockCopy = clock;
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v9;
+  v14 = resultsCopy;
   v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
@@ -210,7 +210,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [TAFilterObservationAggregator aggregateObservationsThroughHistoryForSingleDetection:*(*(&v22 + 1) + 8 * i) visitSnapshotBuffer:v10 intervisitSnapshotBuffer:v11 clock:v12, v22];
+        v19 = [TAFilterObservationAggregator aggregateObservationsThroughHistoryForSingleDetection:*(*(&v22 + 1) + 8 * i) visitSnapshotBuffer:bufferCopy intervisitSnapshotBuffer:snapshotBufferCopy clock:clockCopy, v22];
         [v13 addObject:v19];
       }
 
@@ -225,16 +225,16 @@
   return v13;
 }
 
-+ (void)attachAISInfo:(id)a3 deviceRecord:(id)a4
++ (void)attachAISInfo:(id)info deviceRecord:(id)record
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  recordCopy = record;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [infoCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -245,17 +245,17 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(infoCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 address];
-        v13 = [v6 getAccessoryInfo:v12];
+        address = [v11 address];
+        v13 = [recordCopy getAccessoryInfo:address];
 
         [v11 setAccessoryInfo:v13];
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [infoCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -264,24 +264,24 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)normalizeDualT18PoshAdvertisersAsPosh:(id)a3 deviceRecord:(id)a4
++ (id)normalizeDualT18PoshAdvertisersAsPosh:(id)posh deviceRecord:(id)record
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  poshCopy = posh;
+  recordCopy = record;
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(poshCopy, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = v5;
+  v8 = poshCopy;
   v9 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v35;
     v29 = v8;
-    v30 = v6;
+    v30 = recordCopy;
     v28 = *v35;
     do
     {
@@ -294,21 +294,21 @@
         }
 
         v13 = *(*(&v34 + 1) + 8 * v12);
-        v14 = [v13 address];
-        v15 = [v6 getLatestAdvertisement:v14];
+        address = [v13 address];
+        v15 = [recordCopy getLatestAdvertisement:address];
 
         if ([v15 isApple] && objc_msgSend(v15, "isPosh") && (objc_msgSend(v13, "latestAdvertisement"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isPosh"), v16, (v17 & 1) == 0))
         {
           v33 = [TASuspiciousDevice alloc];
-          v32 = [v13 detectionSummary];
-          v18 = [v13 date];
-          v19 = [v13 locationHistory];
-          v20 = [v13 detectionMetrics];
-          v31 = [v13 detectionType];
-          v21 = [v13 immediacyType];
+          detectionSummary = [v13 detectionSummary];
+          date = [v13 date];
+          locationHistory = [v13 locationHistory];
+          detectionMetrics = [v13 detectionMetrics];
+          detectionType = [v13 detectionType];
+          immediacyType = [v13 immediacyType];
           [v13 accessoryInfo];
           v23 = v22 = v7;
-          v24 = -[TASuspiciousDevice initWithLatestAdv:detectionSummary:date:locHistory:detectionMetrics:detectionType:immediacyType:accessoryInfo:forceSurfaceReason:](v33, "initWithLatestAdv:detectionSummary:date:locHistory:detectionMetrics:detectionType:immediacyType:accessoryInfo:forceSurfaceReason:", v15, v32, v18, v19, v20, v31, v21, v23, [v13 forceSurfaceReason]);
+          v24 = -[TASuspiciousDevice initWithLatestAdv:detectionSummary:date:locHistory:detectionMetrics:detectionType:immediacyType:accessoryInfo:forceSurfaceReason:](v33, "initWithLatestAdv:detectionSummary:date:locHistory:detectionMetrics:detectionType:immediacyType:accessoryInfo:forceSurfaceReason:", v15, detectionSummary, date, locationHistory, detectionMetrics, detectionType, immediacyType, v23, [v13 forceSurfaceReason]);
 
           v7 = v22;
           v8 = v29;
@@ -316,7 +316,7 @@
           v11 = v28;
           [v22 addObject:v24];
 
-          v6 = v30;
+          recordCopy = v30;
         }
 
         else

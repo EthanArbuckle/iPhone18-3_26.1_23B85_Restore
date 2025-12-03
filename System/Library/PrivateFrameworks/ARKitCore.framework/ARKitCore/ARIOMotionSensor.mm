@@ -1,9 +1,9 @@
 @interface ARIOMotionSensor
 - (ARIOMotionSensor)init;
 - (ARSensorDelegate)delegate;
-- (void)accelerometerDidOutputEvent:(__IOHIDEvent *)a3 timestamp:(double)a4;
+- (void)accelerometerDidOutputEvent:(__IOHIDEvent *)event timestamp:(double)timestamp;
 - (void)dealloc;
-- (void)gyroscopeDidOutputEvent:(__IOHIDEvent *)a3 timestamp:(double)a4;
+- (void)gyroscopeDidOutputEvent:(__IOHIDEvent *)event timestamp:(double)timestamp;
 - (void)start;
 - (void)stop;
 - (void)waitForOutstandingCallbacks;
@@ -104,7 +104,7 @@ LABEL_13:
     *buf = 138543618;
     v13 = v6;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: ARIOMotionSensor dealloc", buf, 0x16u);
   }
 
@@ -152,11 +152,11 @@ LABEL_13:
 
 - (void)start
 {
-  v3 = [(ARIOMotionSensor *)self preferredSampleRate];
+  preferredSampleRate = [(ARIOMotionSensor *)self preferredSampleRate];
   accelerometerService = self->_accelerometerService;
   if (accelerometerService && self->_gyroService)
   {
-    v5 = (1000000.0 / v3);
+    v5 = (1000000.0 / preferredSampleRate);
     v6 = [MEMORY[0x1E696AD98] numberWithInt:v5];
     IOHIDServiceClientSetProperty(accelerometerService, @"ReportInterval", v6);
 
@@ -204,12 +204,12 @@ LABEL_13:
   dispatch_sync(imuDataQueue, &__block_literal_global_3);
 }
 
-- (void)accelerometerDidOutputEvent:(__IOHIDEvent *)a3 timestamp:(double)a4
+- (void)accelerometerDidOutputEvent:(__IOHIDEvent *)event timestamp:(double)timestamp
 {
   if (!IOHIDEventGetIntegerValue())
   {
     kdebug_trace();
-    [(ARAccelerometerData *)self->_currentAccelerometerData setTimestamp:a4];
+    [(ARAccelerometerData *)self->_currentAccelerometerData setTimestamp:timestamp];
     IOHIDEventGetFloatValue();
     v7 = v6;
     IOHIDEventGetFloatValue();
@@ -234,27 +234,27 @@ LABEL_13:
       CFRelease(v12);
     }
 
-    v14 = [(ARIOMotionSensor *)self delegate];
-    [v14 sensor:self didOutputSensorData:self->_currentAccelerometerData];
+    delegate = [(ARIOMotionSensor *)self delegate];
+    [delegate sensor:self didOutputSensorData:self->_currentAccelerometerData];
 
     kdebug_trace();
   }
 }
 
-- (void)gyroscopeDidOutputEvent:(__IOHIDEvent *)a3 timestamp:(double)a4
+- (void)gyroscopeDidOutputEvent:(__IOHIDEvent *)event timestamp:(double)timestamp
 {
   if (!IOHIDEventGetIntegerValue())
   {
     kdebug_trace();
-    [(ARGyroscopeData *)self->_currentGyroData setTimestamp:a4];
+    [(ARGyroscopeData *)self->_currentGyroData setTimestamp:timestamp];
     IOHIDEventGetFloatValue();
     v7 = v6;
     IOHIDEventGetFloatValue();
     v9 = v8;
     IOHIDEventGetFloatValue();
     [(ARGyroscopeData *)self->_currentGyroData setRotationRate:v7, v9, v10];
-    v11 = [(ARIOMotionSensor *)self delegate];
-    [v11 sensor:self didOutputSensorData:self->_currentGyroData];
+    delegate = [(ARIOMotionSensor *)self delegate];
+    [delegate sensor:self didOutputSensorData:self->_currentGyroData];
 
     kdebug_trace();
   }

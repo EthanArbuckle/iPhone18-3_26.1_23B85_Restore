@@ -1,15 +1,15 @@
 @interface EMBaseMessageListItem
-+ (BOOL)_shouldArchiveByDefaultForMailboxes:(id)a3;
++ (BOOL)_shouldArchiveByDefaultForMailboxes:(id)mailboxes;
 + (OS_os_log)log;
-- (BOOL)arePropertiesEqual:(id)a3;
+- (BOOL)arePropertiesEqual:(id)equal;
 - (BOOL)deleteMovesToTrash;
 - (BOOL)hasUnflagged;
 - (BOOL)isEditable;
 - (BOOL)shouldArchiveByDefault;
 - (BOOL)supportsArchiving;
-- (EMBaseMessageListItem)initWithCoder:(id)a3;
-- (EMBaseMessageListItem)initWithObjectID:(id)a3;
-- (EMBaseMessageListItem)initWithObjectID:(id)a3 baseBuilder:(id)a4;
+- (EMBaseMessageListItem)initWithCoder:(id)coder;
+- (EMBaseMessageListItem)initWithObjectID:(id)d;
+- (EMBaseMessageListItem)initWithObjectID:(id)d baseBuilder:(id)builder;
 - (EMMessageRepository)repository;
 - (NSArray)mailboxObjectIDs;
 - (NSArray)mailboxes;
@@ -19,18 +19,18 @@
 - (NSString)debugDescription;
 - (NSString)ef_publicDescription;
 - (NSString)ef_shortPublicDescription;
-- (id)changeFrom:(id)a3;
+- (id)changeFrom:(id)from;
 - (id)flagDescription;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_commonInitWithBaseBuilder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDisplayMessageItemID:(id)a3;
-- (void)setFlagColors:(id)a3;
-- (void)setHasUnflagged:(BOOL)a3;
-- (void)setMailboxObjectIDs:(id)a3;
-- (void)setMailboxes:(id)a3;
-- (void)setRepository:(id)a3;
-- (void)setSenderList:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_commonInitWithBaseBuilder:(id)builder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDisplayMessageItemID:(id)d;
+- (void)setFlagColors:(id)colors;
+- (void)setHasUnflagged:(BOOL)unflagged;
+- (void)setMailboxObjectIDs:(id)ds;
+- (void)setMailboxes:(id)mailboxes;
+- (void)setRepository:(id)repository;
+- (void)setSenderList:(id)list;
 @end
 
 @implementation EMBaseMessageListItem
@@ -39,36 +39,36 @@
 {
   v7.receiver = self;
   v7.super_class = EMBaseMessageListItem;
-  v4 = [(EMRepositoryObject *)&v7 repository];
-  if (v4)
+  repository = [(EMRepositoryObject *)&v7 repository];
+  if (repository)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"EMBaseMessageListItem.m" lineNumber:34 description:@"Wrong repository type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EMBaseMessageListItem.m" lineNumber:34 description:@"Wrong repository type"];
     }
   }
 
-  return v4;
+  return repository;
 }
 
-- (void)setRepository:(id)a3
+- (void)setRepository:(id)repository
 {
-  v5 = a3;
-  if (v5)
+  repositoryCopy = repository;
+  if (repositoryCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"EMBaseMessageListItem.m" lineNumber:34 description:@"Wrong repository type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EMBaseMessageListItem.m" lineNumber:34 description:@"Wrong repository type"];
     }
   }
 
   v7.receiver = self;
   v7.super_class = EMBaseMessageListItem;
-  [(EMRepositoryObject *)&v7 setRepository:v5];
+  [(EMRepositoryObject *)&v7 setRepository:repositoryCopy];
 }
 
 + (OS_os_log)log
@@ -77,7 +77,7 @@
   block[1] = 3221225472;
   block[2] = __28__EMBaseMessageListItem_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -96,82 +96,82 @@ void __28__EMBaseMessageListItem_log__block_invoke(uint64_t a1)
   log_log_2 = v1;
 }
 
-- (EMBaseMessageListItem)initWithObjectID:(id)a3
+- (EMBaseMessageListItem)initWithObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   [(EMBaseMessageListItem *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EMBaseMessageListItem initWithObjectID:]", "EMBaseMessageListItem.m", 101, "0");
 }
 
-- (EMBaseMessageListItem)initWithObjectID:(id)a3 baseBuilder:(id)a4
+- (EMBaseMessageListItem)initWithObjectID:(id)d baseBuilder:(id)builder
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"EMBaseMessageListItem.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMBaseMessageListItem.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v15.receiver = self;
   v15.super_class = EMBaseMessageListItem;
-  v9 = [(EMObject *)&v15 initWithObjectID:v7];
+  v9 = [(EMObject *)&v15 initWithObjectID:dCopy];
   v10 = v9;
   if (v9)
   {
     v13 = v9;
-    v14 = v8;
+    v14 = builderCopy;
     ECAllowNetworkActivityButLog();
   }
 
   return v10;
 }
 
-- (void)_commonInitWithBaseBuilder:(id)a3
+- (void)_commonInitWithBaseBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   self->_mailboxesLock._os_unfair_lock_opaque = 0;
-  v7 = v4;
-  (*(v4 + 2))(v4, self);
-  v5 = [(EMBaseMessageListItem *)self displayDate];
+  v7 = builderCopy;
+  (*(builderCopy + 2))(builderCopy, self);
+  displayDate = [(EMBaseMessageListItem *)self displayDate];
 
-  if (!v5)
+  if (!displayDate)
   {
-    v6 = [(EMBaseMessageListItem *)self date];
-    [(EMBaseMessageListItem *)self setDisplayDate:v6];
+    date = [(EMBaseMessageListItem *)self date];
+    [(EMBaseMessageListItem *)self setDisplayDate:date];
   }
 }
 
-- (id)changeFrom:(id)a3
+- (id)changeFrom:(id)from
 {
-  v3 = [EMMessageListItemChange changeFrom:a3 to:self];
+  v3 = [EMMessageListItemChange changeFrom:from to:self];
 
   return v3;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"readLaterDate"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"readLaterDate"])
   {
-    v5 = [(EMBaseMessageListItem *)self readLater];
-    v6 = [v5 date];
+    readLater = [(EMBaseMessageListItem *)self readLater];
+    date = [readLater date];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = EMBaseMessageListItem;
-    v6 = [(EMBaseMessageListItem *)&v8 valueForUndefinedKey:v4];
+    date = [(EMBaseMessageListItem *)&v8 valueForUndefinedKey:keyCopy];
   }
 
-  return v6;
+  return date;
 }
 
-- (BOOL)arePropertiesEqual:(id)a3
+- (BOOL)arePropertiesEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v23 = 1;
   }
@@ -181,80 +181,80 @@ void __28__EMBaseMessageListItem_log__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(EMObject *)self objectID];
-      v6 = [(EMObject *)v4 objectID];
+      objectID = [(EMObject *)self objectID];
+      objectID2 = [(EMObject *)equalCopy objectID];
       if (EFObjectsAreEqual())
       {
-        v7 = [(EMBaseMessageListItem *)self subject];
-        v8 = [(EMBaseMessageListItem *)v4 subject];
+        subject = [(EMBaseMessageListItem *)self subject];
+        subject2 = [(EMBaseMessageListItem *)equalCopy subject];
         if (EFObjectsAreEqual())
         {
-          v9 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
-          v10 = [(EMBaseMessageListItem *)v4 mailboxObjectIDs];
+          mailboxObjectIDs = [(EMBaseMessageListItem *)self mailboxObjectIDs];
+          mailboxObjectIDs2 = [(EMBaseMessageListItem *)equalCopy mailboxObjectIDs];
           if (EFObjectsAreEqual())
           {
-            v56 = [(EMBaseMessageListItem *)self senderAddress];
-            v11 = [(EMBaseMessageListItem *)v4 senderAddress];
+            senderAddress = [(EMBaseMessageListItem *)self senderAddress];
+            senderAddress2 = [(EMBaseMessageListItem *)equalCopy senderAddress];
             if (EFObjectsAreEqual())
             {
-              v55 = [(EMBaseMessageListItem *)self flags];
-              v54 = [(EMBaseMessageListItem *)v4 flags];
-              if (EFObjectsAreEqual() && (v12 = [(EMBaseMessageListItem *)self isVIP], v12 == [(EMBaseMessageListItem *)v4 isVIP]) && (v13 = [(EMBaseMessageListItem *)self isBlocked], v13 == [(EMBaseMessageListItem *)v4 isBlocked]) && (v14 = [(EMBaseMessageListItem *)self searchResultType], v14 == [(EMBaseMessageListItem *)v4 searchResultType]))
+              flags = [(EMBaseMessageListItem *)self flags];
+              flags2 = [(EMBaseMessageListItem *)equalCopy flags];
+              if (EFObjectsAreEqual() && (v12 = [(EMBaseMessageListItem *)self isVIP], v12 == [(EMBaseMessageListItem *)equalCopy isVIP]) && (v13 = [(EMBaseMessageListItem *)self isBlocked], v13 == [(EMBaseMessageListItem *)equalCopy isBlocked]) && (v14 = [(EMBaseMessageListItem *)self searchResultType], v14 == [(EMBaseMessageListItem *)equalCopy searchResultType]))
               {
-                v53 = [(EMBaseMessageListItem *)self searchRelevanceScore];
-                v52 = [(EMBaseMessageListItem *)v4 searchRelevanceScore];
-                if (v53 == v52 && (v15 = [(EMBaseMessageListItem *)self unsubscribeType], v15 == [(EMBaseMessageListItem *)v4 unsubscribeType]) && (v16 = [(EMBaseMessageListItem *)self isToMe], v16 == [(EMBaseMessageListItem *)v4 isToMe]) && (v17 = [(EMBaseMessageListItem *)self isCCMe], v17 == [(EMBaseMessageListItem *)v4 isCCMe]) && (v18 = [(EMBaseMessageListItem *)self hasAttachments], v18 == [(EMBaseMessageListItem *)v4 hasAttachments]) && (v19 = [(EMBaseMessageListItem *)self isAuthenticated], v19 == [(EMBaseMessageListItem *)v4 isAuthenticated]) && (v20 = [(EMBaseMessageListItem *)self allowAuthenticationWarning], v20 == [(EMBaseMessageListItem *)v4 allowAuthenticationWarning]) && (v21 = [(EMBaseMessageListItem *)self conversationNotificationLevel], v21 == [(EMBaseMessageListItem *)v4 conversationNotificationLevel]))
+                searchRelevanceScore = [(EMBaseMessageListItem *)self searchRelevanceScore];
+                searchRelevanceScore2 = [(EMBaseMessageListItem *)equalCopy searchRelevanceScore];
+                if (searchRelevanceScore == searchRelevanceScore2 && (v15 = [(EMBaseMessageListItem *)self unsubscribeType], v15 == [(EMBaseMessageListItem *)equalCopy unsubscribeType]) && (v16 = [(EMBaseMessageListItem *)self isToMe], v16 == [(EMBaseMessageListItem *)equalCopy isToMe]) && (v17 = [(EMBaseMessageListItem *)self isCCMe], v17 == [(EMBaseMessageListItem *)equalCopy isCCMe]) && (v18 = [(EMBaseMessageListItem *)self hasAttachments], v18 == [(EMBaseMessageListItem *)equalCopy hasAttachments]) && (v19 = [(EMBaseMessageListItem *)self isAuthenticated], v19 == [(EMBaseMessageListItem *)equalCopy isAuthenticated]) && (v20 = [(EMBaseMessageListItem *)self allowAuthenticationWarning], v20 == [(EMBaseMessageListItem *)equalCopy allowAuthenticationWarning]) && (v21 = [(EMBaseMessageListItem *)self conversationNotificationLevel], v21 == [(EMBaseMessageListItem *)equalCopy conversationNotificationLevel]))
                 {
-                  v51 = [(EMBaseMessageListItem *)self brandIndicatorLocation];
-                  v50 = [(EMBaseMessageListItem *)v4 brandIndicatorLocation];
+                  brandIndicatorLocation = [(EMBaseMessageListItem *)self brandIndicatorLocation];
+                  brandIndicatorLocation2 = [(EMBaseMessageListItem *)equalCopy brandIndicatorLocation];
                   if (EFObjectsAreEqual())
                   {
-                    v49 = [(EMBaseMessageListItem *)self date];
-                    v48 = [(EMBaseMessageListItem *)v4 date];
+                    date = [(EMBaseMessageListItem *)self date];
+                    date2 = [(EMBaseMessageListItem *)equalCopy date];
                     if (EFObjectsAreEqual())
                     {
-                      v47 = [(EMBaseMessageListItem *)self displayDate];
-                      v46 = [(EMBaseMessageListItem *)v4 displayDate];
+                      displayDate = [(EMBaseMessageListItem *)self displayDate];
+                      displayDate2 = [(EMBaseMessageListItem *)equalCopy displayDate];
                       if (EFObjectsAreEqual())
                       {
-                        v45 = [(EMBaseMessageListItem *)self readLater];
-                        v44 = [(EMBaseMessageListItem *)v4 readLater];
+                        readLater = [(EMBaseMessageListItem *)self readLater];
+                        readLater2 = [(EMBaseMessageListItem *)equalCopy readLater];
                         if (EFObjectsAreEqual())
                         {
-                          v43 = [(EMBaseMessageListItem *)self sendLaterDate];
-                          v42 = [(EMBaseMessageListItem *)v4 sendLaterDate];
+                          sendLaterDate = [(EMBaseMessageListItem *)self sendLaterDate];
+                          sendLaterDate2 = [(EMBaseMessageListItem *)equalCopy sendLaterDate];
                           if (EFObjectsAreEqual())
                           {
-                            v41 = [(EMBaseMessageListItem *)self followUp];
-                            v40 = [(EMBaseMessageListItem *)v4 followUp];
+                            followUp = [(EMBaseMessageListItem *)self followUp];
+                            followUp2 = [(EMBaseMessageListItem *)equalCopy followUp];
                             if (EFObjectsAreEqual())
                             {
-                              v39 = [(EMBaseMessageListItem *)self category];
-                              v38 = [(EMBaseMessageListItem *)v4 category];
+                              category = [(EMBaseMessageListItem *)self category];
+                              category2 = [(EMBaseMessageListItem *)equalCopy category];
                               if (EFObjectsAreEqual())
                               {
-                                v37 = [(EMBaseMessageListItem *)self groupedSenderMessageListItems];
-                                v36 = [(EMBaseMessageListItem *)v4 groupedSenderMessageListItems];
-                                if (EFArraysAreEqual() && (v22 = [(EMBaseMessageListItem *)self businessID], v22 == [(EMBaseMessageListItem *)v4 businessID]))
+                                groupedSenderMessageListItems = [(EMBaseMessageListItem *)self groupedSenderMessageListItems];
+                                groupedSenderMessageListItems2 = [(EMBaseMessageListItem *)equalCopy groupedSenderMessageListItems];
+                                if (EFArraysAreEqual() && (v22 = [(EMBaseMessageListItem *)self businessID], v22 == [(EMBaseMessageListItem *)equalCopy businessID]))
                                 {
-                                  v35 = [(EMBaseMessageListItem *)self businessLogoID];
-                                  v34 = [(EMBaseMessageListItem *)v4 businessLogoID];
-                                  if (v35 == v34)
+                                  businessLogoID = [(EMBaseMessageListItem *)self businessLogoID];
+                                  businessLogoID2 = [(EMBaseMessageListItem *)equalCopy businessLogoID];
+                                  if (businessLogoID == businessLogoID2)
                                   {
-                                    v33 = [(EMBaseMessageListItem *)self summary];
-                                    v32 = [(EMBaseMessageListItem *)v4 summary];
-                                    if (EFObjectsAreEqual() && (v25 = [(EMBaseMessageListItem *)self conversationID], v25 == [(EMBaseMessageListItem *)v4 conversationID]))
+                                    summary = [(EMBaseMessageListItem *)self summary];
+                                    summary2 = [(EMBaseMessageListItem *)equalCopy summary];
+                                    if (EFObjectsAreEqual() && (v25 = [(EMBaseMessageListItem *)self conversationID], v25 == [(EMBaseMessageListItem *)equalCopy conversationID]))
                                     {
-                                      v26 = [(EMBaseMessageListItem *)self toList];
-                                      v31 = [(EMBaseMessageListItem *)v4 toList];
+                                      toList = [(EMBaseMessageListItem *)self toList];
+                                      toList2 = [(EMBaseMessageListItem *)equalCopy toList];
                                       if (EFArraysAreEqual())
                                       {
-                                        v30 = [(EMBaseMessageListItem *)self ccList];
-                                        v29 = [(EMBaseMessageListItem *)v4 ccList];
+                                        ccList = [(EMBaseMessageListItem *)self ccList];
+                                        ccList2 = [(EMBaseMessageListItem *)equalCopy ccList];
                                         if (EFArraysAreEqual())
                                         {
-                                          v28 = [(EMBaseMessageListItem *)self bccList];
-                                          v27 = [(EMBaseMessageListItem *)v4 bccList];
+                                          bccList = [(EMBaseMessageListItem *)self bccList];
+                                          bccList2 = [(EMBaseMessageListItem *)equalCopy bccList];
                                           v23 = EFArraysAreEqual();
                                         }
 
@@ -381,85 +381,85 @@ void __28__EMBaseMessageListItem_log__block_invoke(uint64_t a1)
   v45.receiver = self;
   v45.super_class = EMBaseMessageListItem;
   v44 = [(EMObject *)&v45 debugDescription];
-  v37 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
-  v43 = [v37 debugDescription];
-  v36 = [(EMBaseMessageListItem *)self senderAddress];
-  v42 = [v36 debugDescription];
-  v35 = [(EMBaseMessageListItem *)self subject];
-  v41 = [v35 debugDescription];
-  v34 = [(EMBaseMessageListItem *)self category];
-  v40 = [v34 debugDescription];
-  v25 = [(EMBaseMessageListItem *)self businessID];
-  v39 = [(EMBaseMessageListItem *)self businessLogoID];
-  v3 = [(EMBaseMessageListItem *)self isAuthenticated];
+  mailboxObjectIDs = [(EMBaseMessageListItem *)self mailboxObjectIDs];
+  v43 = [mailboxObjectIDs debugDescription];
+  senderAddress = [(EMBaseMessageListItem *)self senderAddress];
+  v42 = [senderAddress debugDescription];
+  subject = [(EMBaseMessageListItem *)self subject];
+  v41 = [subject debugDescription];
+  category = [(EMBaseMessageListItem *)self category];
+  v40 = [category debugDescription];
+  businessID = [(EMBaseMessageListItem *)self businessID];
+  businessLogoID = [(EMBaseMessageListItem *)self businessLogoID];
+  isAuthenticated = [(EMBaseMessageListItem *)self isAuthenticated];
   v4 = @"NO";
-  if (v3)
+  if (isAuthenticated)
   {
     v4 = @"YES";
   }
 
   v23 = v4;
-  v33 = [(EMBaseMessageListItem *)self toList];
-  v38 = [v33 debugDescription];
-  v31 = [(EMBaseMessageListItem *)self ccList];
-  v32 = [v31 debugDescription];
-  v27 = [(EMBaseMessageListItem *)self bccList];
-  v30 = [v27 debugDescription];
-  v26 = [(EMBaseMessageListItem *)self flags];
-  v21 = [(EMBaseMessageListItem *)self conversationNotificationLevel];
-  v5 = [(EMBaseMessageListItem *)self isVIP];
+  toList = [(EMBaseMessageListItem *)self toList];
+  v38 = [toList debugDescription];
+  ccList = [(EMBaseMessageListItem *)self ccList];
+  v32 = [ccList debugDescription];
+  bccList = [(EMBaseMessageListItem *)self bccList];
+  v30 = [bccList debugDescription];
+  flags = [(EMBaseMessageListItem *)self flags];
+  conversationNotificationLevel = [(EMBaseMessageListItem *)self conversationNotificationLevel];
+  isVIP = [(EMBaseMessageListItem *)self isVIP];
   v6 = @"NO";
-  if (v5)
+  if (isVIP)
   {
     v6 = @"YES";
   }
 
   v19 = v6;
-  v7 = [(EMBaseMessageListItem *)self isBlocked];
+  isBlocked = [(EMBaseMessageListItem *)self isBlocked];
   v8 = @"NO";
-  if (v7)
+  if (isBlocked)
   {
     v8 = @"YES";
   }
 
   v17 = v8;
-  v16 = [(EMBaseMessageListItem *)self searchResultType];
-  v24 = [(EMBaseMessageListItem *)self searchRelevanceScore];
-  v14 = [(EMBaseMessageListItem *)self unsubscribeType];
+  searchResultType = [(EMBaseMessageListItem *)self searchResultType];
+  searchRelevanceScore = [(EMBaseMessageListItem *)self searchRelevanceScore];
+  unsubscribeType = [(EMBaseMessageListItem *)self unsubscribeType];
   [(EMBaseMessageListItem *)self conversationID];
   v22 = EFStringWithInt64();
-  v20 = [(EMBaseMessageListItem *)self date];
-  v18 = [(EMBaseMessageListItem *)self displayDate];
-  v15 = [(EMBaseMessageListItem *)self summary];
-  v9 = [(EMBaseMessageListItem *)self generatedSummary];
-  v10 = [v9 debugDescription];
-  v11 = [(EMBaseMessageListItem *)self isUrgent];
+  date = [(EMBaseMessageListItem *)self date];
+  displayDate = [(EMBaseMessageListItem *)self displayDate];
+  summary = [(EMBaseMessageListItem *)self summary];
+  generatedSummary = [(EMBaseMessageListItem *)self generatedSummary];
+  v10 = [generatedSummary debugDescription];
+  isUrgent = [(EMBaseMessageListItem *)self isUrgent];
   v12 = @"NO";
-  if (v11)
+  if (isUrgent)
   {
     v12 = @"YES";
   }
 
-  v29 = [v28 stringWithFormat:@"%@\n\tMailboxes:%@\n\tSenderAddress:%@\n\tSubject:%@ \n\tCategory:%@\n\tBusinessID:%llu\n\tBusinessLogoID:%@\n\tisAuthenticated:%@\n\tToList:%@ \n\tCCList:%@ \n\tBCCList:%@ \n\tFlags:%@ \n\tConversationNotificationLevel:%ld \n\tIsVIP:%@ \n\tIsBlocked:%@ \n\tSearchResultType:%ld \n\tSearchRelevanceScore:%@ \n\tUnsubscribeType:%ld \n\tConversationID:%@ \n\tDate:%@ \n\tDisplayDate:%@ \n\tSummary:%@\n\tGenerated Summary:%@ (isUrgent = %@)", v44, v43, v42, v41, v40, v25, v39, v23, v38, v32, v30, v26, v21, v19, v17, v16, v24, v14, v22, v20, v18, v15, v10, v12];
+  v29 = [v28 stringWithFormat:@"%@\n\tMailboxes:%@\n\tSenderAddress:%@\n\tSubject:%@ \n\tCategory:%@\n\tBusinessID:%llu\n\tBusinessLogoID:%@\n\tisAuthenticated:%@\n\tToList:%@ \n\tCCList:%@ \n\tBCCList:%@ \n\tFlags:%@ \n\tConversationNotificationLevel:%ld \n\tIsVIP:%@ \n\tIsBlocked:%@ \n\tSearchResultType:%ld \n\tSearchRelevanceScore:%@ \n\tUnsubscribeType:%ld \n\tConversationID:%@ \n\tDate:%@ \n\tDisplayDate:%@ \n\tSummary:%@\n\tGenerated Summary:%@ (isUrgent = %@)", v44, v43, v42, v41, v40, businessID, businessLogoID, v23, v38, v32, v30, flags, conversationNotificationLevel, v19, v17, searchResultType, searchRelevanceScore, unsubscribeType, v22, date, displayDate, summary, v10, v12];
 
   return v29;
 }
 
 - (NSString)ef_publicDescription
 {
-  v63 = [(EMBaseMessageListItem *)self mailboxesIfAvailable];
-  v3 = [v63 count];
-  v4 = [v63 firstObject];
-  v5 = [v4 accountIfAvailable];
+  mailboxesIfAvailable = [(EMBaseMessageListItem *)self mailboxesIfAvailable];
+  v3 = [mailboxesIfAvailable count];
+  firstObject = [mailboxesIfAvailable firstObject];
+  accountIfAvailable = [firstObject accountIfAvailable];
 
   if (v3)
   {
-    [EMMailbox supportsArchivingForMailboxes:v63];
+    [EMMailbox supportsArchivingForMailboxes:mailboxesIfAvailable];
     v62 = NSStringFromBOOL();
-    if (v5)
+    if (accountIfAvailable)
     {
 LABEL_3:
-      [objc_opt_class() _shouldArchiveByDefaultForMailboxes:v63];
+      [objc_opt_class() _shouldArchiveByDefaultForMailboxes:mailboxesIfAvailable];
       v61 = NSStringFromBOOL();
       goto LABEL_6;
     }
@@ -468,7 +468,7 @@ LABEL_3:
   else
   {
     v62 = @"?";
-    if (v5)
+    if (accountIfAvailable)
     {
       goto LABEL_3;
     }
@@ -476,81 +476,81 @@ LABEL_3:
 
   v61 = @"?";
 LABEL_6:
-  v6 = [MEMORY[0x1E699B7B0] currentDevice];
-  v7 = [v6 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v7)
+  if (isInternal)
   {
     v64 = [objc_alloc(MEMORY[0x1E699B250]) initWithStyle:2];
     v43 = MEMORY[0x1E696AEC0];
     v66.receiver = self;
     v66.super_class = EMBaseMessageListItem;
-    v60 = [(EMObject *)&v66 ef_publicDescription];
-    v59 = [(EMObject *)self objectID];
-    v56 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
-    v57 = [(EMBaseMessageListItem *)self senderAddress];
-    v58 = [v57 emailAddressValue];
-    v55 = [(EMBaseMessageListItem *)self subject];
-    v49 = [(EMBaseMessageListItem *)self category];
-    v54 = EMShortStringForCategory(v49);
-    v41 = [(EMBaseMessageListItem *)self businessID];
-    v53 = [(EMBaseMessageListItem *)self businessLogoID];
-    v8 = [(EMBaseMessageListItem *)self isAuthenticated];
+    ef_publicDescription = [(EMObject *)&v66 ef_publicDescription];
+    objectID = [(EMObject *)self objectID];
+    mailboxObjectIDs = [(EMBaseMessageListItem *)self mailboxObjectIDs];
+    senderAddress = [(EMBaseMessageListItem *)self senderAddress];
+    emailAddressValue = [senderAddress emailAddressValue];
+    subject = [(EMBaseMessageListItem *)self subject];
+    category = [(EMBaseMessageListItem *)self category];
+    v54 = EMShortStringForCategory(category);
+    businessID = [(EMBaseMessageListItem *)self businessID];
+    businessLogoID = [(EMBaseMessageListItem *)self businessLogoID];
+    isAuthenticated = [(EMBaseMessageListItem *)self isAuthenticated];
     v9 = @"NO";
-    if (v8)
+    if (isAuthenticated)
     {
       v9 = @"YES";
     }
 
     v40 = v9;
-    v48 = [(EMBaseMessageListItem *)self toList];
-    v52 = [v64 stringFromEmailAddressList:v48];
-    v47 = [(EMBaseMessageListItem *)self ccList];
-    v51 = [v64 stringFromEmailAddressList:v47];
-    v46 = [(EMBaseMessageListItem *)self bccList];
-    v50 = [v64 stringFromEmailAddressList:v46];
-    v45 = [(EMBaseMessageListItem *)self flags];
-    v36 = [(EMBaseMessageListItem *)self conversationNotificationLevel];
-    v10 = [(EMBaseMessageListItem *)self isVIP];
+    toList = [(EMBaseMessageListItem *)self toList];
+    v52 = [v64 stringFromEmailAddressList:toList];
+    ccList = [(EMBaseMessageListItem *)self ccList];
+    v51 = [v64 stringFromEmailAddressList:ccList];
+    bccList = [(EMBaseMessageListItem *)self bccList];
+    v50 = [v64 stringFromEmailAddressList:bccList];
+    flags = [(EMBaseMessageListItem *)self flags];
+    conversationNotificationLevel = [(EMBaseMessageListItem *)self conversationNotificationLevel];
+    isVIP = [(EMBaseMessageListItem *)self isVIP];
     v11 = @"NO";
-    if (v10)
+    if (isVIP)
     {
       v11 = @"YES";
     }
 
     v34 = v11;
-    v12 = [(EMBaseMessageListItem *)self isBlocked];
+    isBlocked = [(EMBaseMessageListItem *)self isBlocked];
     v13 = @"NO";
-    if (v12)
+    if (isBlocked)
     {
       v13 = @"YES";
     }
 
     v32 = v13;
-    v31 = [(EMBaseMessageListItem *)self searchResultType];
-    v42 = [(EMBaseMessageListItem *)self searchRelevanceScore];
-    v30 = [(EMBaseMessageListItem *)self unsubscribeType];
+    searchResultType = [(EMBaseMessageListItem *)self searchResultType];
+    searchRelevanceScore = [(EMBaseMessageListItem *)self searchRelevanceScore];
+    unsubscribeType = [(EMBaseMessageListItem *)self unsubscribeType];
     [(EMBaseMessageListItem *)self conversationID];
     v39 = EFStringWithInt64();
-    v38 = [(EMBaseMessageListItem *)self date];
-    v37 = [(EMBaseMessageListItem *)self displayDate];
-    v33 = [(EMBaseMessageListItem *)self readLater];
-    v35 = [v33 ef_publicDescription];
-    v28 = [(EMBaseMessageListItem *)self followUp];
-    v29 = [v28 ef_publicDescription];
+    date = [(EMBaseMessageListItem *)self date];
+    displayDate = [(EMBaseMessageListItem *)self displayDate];
+    readLater = [(EMBaseMessageListItem *)self readLater];
+    ef_publicDescription2 = [readLater ef_publicDescription];
+    followUp = [(EMBaseMessageListItem *)self followUp];
+    ef_publicDescription3 = [followUp ef_publicDescription];
     v14 = MEMORY[0x1E699B858];
-    v26 = [(EMBaseMessageListItem *)self summary];
-    v27 = [v14 ec_partiallyRedactedStringForSubjectOrSummary:v26];
-    v15 = [(EMBaseMessageListItem *)self generatedSummary];
-    v16 = [v15 ef_publicDescription];
-    v17 = [(EMBaseMessageListItem *)self isUrgent];
+    summary = [(EMBaseMessageListItem *)self summary];
+    v27 = [v14 ec_partiallyRedactedStringForSubjectOrSummary:summary];
+    generatedSummary = [(EMBaseMessageListItem *)self generatedSummary];
+    ef_publicDescription4 = [generatedSummary ef_publicDescription];
+    isUrgent = [(EMBaseMessageListItem *)self isUrgent];
     v18 = @"NO";
-    if (v17)
+    if (isUrgent)
     {
       v18 = @"YES";
     }
 
-    v44 = [v43 stringWithFormat:@"%@\n\tObjectID:%@\n\tMailboxes:%@\n\tSenderAddress:%@\n\tSubject:%@ \n\tCategory:%@\n\tBusinessID:%llu\n\tBusinessLogoID:%@\n\tisAuthenticated:%@\n\tToList:%@ \n\tCCList:%@ \n\tBCCList:%@ \n\tFlags:%@ \n\tConversationNotificationLevel:%ld \n\tIsVIP:%@ \n\tIsBlocked:%@ \n\tSearchResultType:%ld \n\tSearchRelevanceScore:%@ \n\tUnsubscribeType:%ld \n\tConversationID:%@ \n\tDate:%@ \n\tDisplayDate:%@ \n\tRemind Me:%@ \n\tFollow Up:%@ \n\tSummary:%@ \n\tGenerated Summary:%@ (isUrgent = %@)\n\tSupportsArchiving:%@ \n\tShouldArchive:%@", v60, v59, v56, v58, v55, v54, v41, v53, v40, v52, v51, v50, v45, v36, v34, v32, v31, v42, v30, v39, v38, v37, v35, v29, v27, v16, v18, v62, v61];
+    v44 = [v43 stringWithFormat:@"%@\n\tObjectID:%@\n\tMailboxes:%@\n\tSenderAddress:%@\n\tSubject:%@ \n\tCategory:%@\n\tBusinessID:%llu\n\tBusinessLogoID:%@\n\tisAuthenticated:%@\n\tToList:%@ \n\tCCList:%@ \n\tBCCList:%@ \n\tFlags:%@ \n\tConversationNotificationLevel:%ld \n\tIsVIP:%@ \n\tIsBlocked:%@ \n\tSearchResultType:%ld \n\tSearchRelevanceScore:%@ \n\tUnsubscribeType:%ld \n\tConversationID:%@ \n\tDate:%@ \n\tDisplayDate:%@ \n\tRemind Me:%@ \n\tFollow Up:%@ \n\tSummary:%@ \n\tGenerated Summary:%@ (isUrgent = %@)\n\tSupportsArchiving:%@ \n\tShouldArchive:%@", ef_publicDescription, objectID, mailboxObjectIDs, emailAddressValue, subject, v54, businessID, businessLogoID, v40, v52, v51, v50, flags, conversationNotificationLevel, v34, v32, searchResultType, searchRelevanceScore, unsubscribeType, v39, date, displayDate, ef_publicDescription2, ef_publicDescription3, v27, ef_publicDescription4, v18, v62, v61];
 
     v19 = v44;
   }
@@ -561,11 +561,11 @@ LABEL_6:
     v20 = MEMORY[0x1E696AEC0];
     v65.receiver = self;
     v65.super_class = EMBaseMessageListItem;
-    v60 = [(EMObject *)&v65 ef_publicDescription];
-    v59 = [v64 ef_publicDescription];
-    v56 = [(EMBaseMessageListItem *)self flags];
-    v57 = [v56 ef_publicDescription];
-    v21 = [(EMBaseMessageListItem *)self conversationNotificationLevel];
+    ef_publicDescription = [(EMObject *)&v65 ef_publicDescription];
+    objectID = [v64 ef_publicDescription];
+    mailboxObjectIDs = [(EMBaseMessageListItem *)self flags];
+    senderAddress = [mailboxObjectIDs ef_publicDescription];
+    conversationNotificationLevel2 = [(EMBaseMessageListItem *)self conversationNotificationLevel];
     if ([(EMBaseMessageListItem *)self isBlocked])
     {
       v22 = @"YES";
@@ -576,11 +576,11 @@ LABEL_6:
       v22 = @"NO";
     }
 
-    v23 = [(EMBaseMessageListItem *)self searchResultType];
-    v58 = [(EMBaseMessageListItem *)self searchRelevanceScore];
-    v24 = [(EMBaseMessageListItem *)self unsubscribeType];
-    v55 = [(EMBaseMessageListItem *)self date];
-    v19 = [v20 stringWithFormat:@"%@ \n\tConversationID:%@ \n\tFlags:%@ \n\tConversationNotificationLevel:%ld \n\tIsBlocked:%@ \n\tSearchResultType:%ld \n\tSearchRelevanceScore:%@ \n\tunsubscribeType:%ld \n\tDate:%@ \n\tSupports Archiving:%@ \n\tShould Archive By Default:%@", v60, v59, v57, v21, v22, v23, v58, v24, v55, v62, v61];
+    searchResultType2 = [(EMBaseMessageListItem *)self searchResultType];
+    emailAddressValue = [(EMBaseMessageListItem *)self searchRelevanceScore];
+    unsubscribeType2 = [(EMBaseMessageListItem *)self unsubscribeType];
+    subject = [(EMBaseMessageListItem *)self date];
+    v19 = [v20 stringWithFormat:@"%@ \n\tConversationID:%@ \n\tFlags:%@ \n\tConversationNotificationLevel:%ld \n\tIsBlocked:%@ \n\tSearchResultType:%ld \n\tSearchRelevanceScore:%@ \n\tunsubscribeType:%ld \n\tDate:%@ \n\tSupports Archiving:%@ \n\tShould Archive By Default:%@", ef_publicDescription, objectID, senderAddress, conversationNotificationLevel2, v22, searchResultType2, emailAddressValue, unsubscribeType2, subject, v62, v61];
   }
 
   return v19;
@@ -588,36 +588,36 @@ LABEL_6:
 
 - (NSString)ef_shortPublicDescription
 {
-  v3 = [MEMORY[0x1E699B7B0] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     v5 = MEMORY[0x1E696AEC0];
     v17.receiver = self;
     v17.super_class = EMBaseMessageListItem;
-    v6 = [(EMObject *)&v17 ef_publicDescription];
+    ef_publicDescription = [(EMObject *)&v17 ef_publicDescription];
     [(EMBaseMessageListItem *)self conversationID];
-    v7 = EFStringWithInt64();
-    v8 = [(EMBaseMessageListItem *)self subject];
-    v9 = [v8 ef_publicDescription];
-    v10 = [(EMBaseMessageListItem *)self flags];
-    v11 = [v10 ef_publicDescription];
-    v12 = [v5 stringWithFormat:@"%@ \n\tConversationID:%@\n\tSubject:%@ \n\tFlags:%@ \n", v6, v7, v9, v11];
+    ef_publicDescription4 = EFStringWithInt64();
+    subject = [(EMBaseMessageListItem *)self subject];
+    ef_publicDescription2 = [subject ef_publicDescription];
+    flags = [(EMBaseMessageListItem *)self flags];
+    ef_publicDescription3 = [flags ef_publicDescription];
+    v12 = [v5 stringWithFormat:@"%@ \n\tConversationID:%@\n\tSubject:%@ \n\tFlags:%@ \n", ef_publicDescription, ef_publicDescription4, ef_publicDescription2, ef_publicDescription3];
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E699B990]) initWithHash:{-[EMBaseMessageListItem conversationID](self, "conversationID")}];
+    ef_publicDescription = [objc_alloc(MEMORY[0x1E699B990]) initWithHash:{-[EMBaseMessageListItem conversationID](self, "conversationID")}];
     v13 = MEMORY[0x1E696AEC0];
     v16.receiver = self;
     v16.super_class = EMBaseMessageListItem;
-    v7 = [(EMObject *)&v16 ef_publicDescription];
-    v8 = [v6 ef_publicDescription];
-    v9 = [(EMBaseMessageListItem *)self flags];
-    v10 = [v9 ef_publicDescription];
-    v11 = [(EMBaseMessageListItem *)self date];
-    v12 = [v13 stringWithFormat:@"%@ \n\tConversationID:%@ \n\tFlags:%@ \n\tDate:%@ \n", v7, v8, v10, v11];
+    ef_publicDescription4 = [(EMObject *)&v16 ef_publicDescription];
+    subject = [ef_publicDescription ef_publicDescription];
+    ef_publicDescription2 = [(EMBaseMessageListItem *)self flags];
+    flags = [ef_publicDescription2 ef_publicDescription];
+    ef_publicDescription3 = [(EMBaseMessageListItem *)self date];
+    v12 = [v13 stringWithFormat:@"%@ \n\tConversationID:%@ \n\tFlags:%@ \n\tDate:%@ \n", ef_publicDescription4, subject, flags, ef_publicDescription3];
   }
 
   v14 = v12;
@@ -630,28 +630,28 @@ LABEL_6:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(EMObject *)self objectID];
+  objectID = [(EMObject *)self objectID];
   [(EMBaseMessageListItem *)self conversationID];
   v7 = EFStringWithInt64();
-  v8 = [(EMBaseMessageListItem *)self flags];
-  v9 = [v3 stringWithFormat:@"<%@: %p> ObjectID:%@, ConversationID:%@, Flags:%@", v5, self, v6, v7, v8];
+  flags = [(EMBaseMessageListItem *)self flags];
+  v9 = [v3 stringWithFormat:@"<%@: %p> ObjectID:%@, ConversationID:%@, Flags:%@", v5, self, objectID, v7, flags];
 
   return v9;
 }
 
-- (EMBaseMessageListItem)initWithCoder:(id)a3
+- (EMBaseMessageListItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EMBaseMessageListItem;
-  v5 = [(EMObject *)&v9 initWithCoder:v4];
+  v5 = [(EMObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __39__EMBaseMessageListItem_initWithCoder___block_invoke;
     v7[3] = &unk_1E826C2A0;
-    v8 = v4;
+    v8 = coderCopy;
     [(EMBaseMessageListItem *)v5 _commonInitWithBaseBuilder:v7];
   }
 
@@ -762,82 +762,82 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
   [v52 setBccList:v51];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = EMBaseMessageListItem;
-  [(EMObject *)&v25 encodeWithCoder:v4];
-  v5 = [(EMBaseMessageListItem *)self subject];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_subject"];
+  [(EMObject *)&v25 encodeWithCoder:coderCopy];
+  subject = [(EMBaseMessageListItem *)self subject];
+  [coderCopy encodeObject:subject forKey:@"EFPropertyKey_subject"];
 
-  v6 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
-  [v4 encodeObject:v6 forKey:@"EFPropertyKey_mailboxObjectIDs"];
+  mailboxObjectIDs = [(EMBaseMessageListItem *)self mailboxObjectIDs];
+  [coderCopy encodeObject:mailboxObjectIDs forKey:@"EFPropertyKey_mailboxObjectIDs"];
 
-  v7 = [(EMBaseMessageListItem *)self senderAddress];
-  [v4 encodeObject:v7 forKey:@"EFPropertyKey_senderAddress"];
+  senderAddress = [(EMBaseMessageListItem *)self senderAddress];
+  [coderCopy encodeObject:senderAddress forKey:@"EFPropertyKey_senderAddress"];
 
-  v8 = [(EMBaseMessageListItem *)self flags];
-  [v4 encodeObject:v8 forKey:@"EFPropertyKey_flags"];
+  flags = [(EMBaseMessageListItem *)self flags];
+  [coderCopy encodeObject:flags forKey:@"EFPropertyKey_flags"];
 
-  [v4 encodeBool:-[EMBaseMessageListItem isVIP](self forKey:{"isVIP"), @"EFPropertyKey_isVIP"}];
-  [v4 encodeBool:-[EMBaseMessageListItem isBlocked](self forKey:{"isBlocked"), @"EFPropertyKey_isBlocked"}];
-  [v4 encodeInteger:-[EMBaseMessageListItem searchResultType](self forKey:{"searchResultType"), @"EFPropertyKey_searchResultType"}];
-  v9 = [(EMBaseMessageListItem *)self searchRelevanceScore];
-  [v4 encodeObject:v9 forKey:@"EFPropertyKey_searchRelevanceScore"];
+  [coderCopy encodeBool:-[EMBaseMessageListItem isVIP](self forKey:{"isVIP"), @"EFPropertyKey_isVIP"}];
+  [coderCopy encodeBool:-[EMBaseMessageListItem isBlocked](self forKey:{"isBlocked"), @"EFPropertyKey_isBlocked"}];
+  [coderCopy encodeInteger:-[EMBaseMessageListItem searchResultType](self forKey:{"searchResultType"), @"EFPropertyKey_searchResultType"}];
+  searchRelevanceScore = [(EMBaseMessageListItem *)self searchRelevanceScore];
+  [coderCopy encodeObject:searchRelevanceScore forKey:@"EFPropertyKey_searchRelevanceScore"];
 
-  [v4 encodeInteger:-[EMBaseMessageListItem unsubscribeType](self forKey:{"unsubscribeType"), @"EFPropertyKey_unsubscribeType"}];
-  [v4 encodeBool:-[EMBaseMessageListItem isToMe](self forKey:{"isToMe"), @"EFPropertyKey_isToMe"}];
-  [v4 encodeBool:-[EMBaseMessageListItem isCCMe](self forKey:{"isCCMe"), @"EFPropertyKey_isCCMe"}];
-  [v4 encodeBool:-[EMBaseMessageListItem hasAttachments](self forKey:{"hasAttachments"), @"EFPropertyKey_hasAttachments"}];
-  [v4 encodeBool:-[EMBaseMessageListItem isAuthenticated](self forKey:{"isAuthenticated"), @"EFPropertyKey_isAuthenticated"}];
-  [v4 encodeBool:-[EMBaseMessageListItem allowAuthenticationWarning](self forKey:{"allowAuthenticationWarning"), @"EFPropertyKey_allowAuthenticationWarning"}];
+  [coderCopy encodeInteger:-[EMBaseMessageListItem unsubscribeType](self forKey:{"unsubscribeType"), @"EFPropertyKey_unsubscribeType"}];
+  [coderCopy encodeBool:-[EMBaseMessageListItem isToMe](self forKey:{"isToMe"), @"EFPropertyKey_isToMe"}];
+  [coderCopy encodeBool:-[EMBaseMessageListItem isCCMe](self forKey:{"isCCMe"), @"EFPropertyKey_isCCMe"}];
+  [coderCopy encodeBool:-[EMBaseMessageListItem hasAttachments](self forKey:{"hasAttachments"), @"EFPropertyKey_hasAttachments"}];
+  [coderCopy encodeBool:-[EMBaseMessageListItem isAuthenticated](self forKey:{"isAuthenticated"), @"EFPropertyKey_isAuthenticated"}];
+  [coderCopy encodeBool:-[EMBaseMessageListItem allowAuthenticationWarning](self forKey:{"allowAuthenticationWarning"), @"EFPropertyKey_allowAuthenticationWarning"}];
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[EMBaseMessageListItem conversationNotificationLevel](self, "conversationNotificationLevel")}];
-  [v4 encodeObject:v10 forKey:@"EFPropertyKey_conversationNotificationLevel"];
+  [coderCopy encodeObject:v10 forKey:@"EFPropertyKey_conversationNotificationLevel"];
 
-  v11 = [(EMBaseMessageListItem *)self brandIndicatorLocation];
-  [v4 encodeObject:v11 forKey:@"EFPropertyKey_brandIndicatorLocation"];
+  brandIndicatorLocation = [(EMBaseMessageListItem *)self brandIndicatorLocation];
+  [coderCopy encodeObject:brandIndicatorLocation forKey:@"EFPropertyKey_brandIndicatorLocation"];
 
-  v12 = [(EMBaseMessageListItem *)self date];
-  [v4 encodeObject:v12 forKey:@"EFPropertyKey_date"];
+  date = [(EMBaseMessageListItem *)self date];
+  [coderCopy encodeObject:date forKey:@"EFPropertyKey_date"];
 
-  v13 = [(EMBaseMessageListItem *)self displayDate];
-  [v4 encodeObject:v13 forKey:@"EFPropertyKey_displayDate"];
+  displayDate = [(EMBaseMessageListItem *)self displayDate];
+  [coderCopy encodeObject:displayDate forKey:@"EFPropertyKey_displayDate"];
 
-  v14 = [(EMBaseMessageListItem *)self readLater];
-  [v4 encodeObject:v14 forKey:@"EFPropertyKey_readLater"];
+  readLater = [(EMBaseMessageListItem *)self readLater];
+  [coderCopy encodeObject:readLater forKey:@"EFPropertyKey_readLater"];
 
-  v15 = [(EMBaseMessageListItem *)self sendLaterDate];
-  [v4 encodeObject:v15 forKey:@"EFPropertyKey_sendLaterDate"];
+  sendLaterDate = [(EMBaseMessageListItem *)self sendLaterDate];
+  [coderCopy encodeObject:sendLaterDate forKey:@"EFPropertyKey_sendLaterDate"];
 
-  v16 = [(EMBaseMessageListItem *)self followUp];
-  [v4 encodeObject:v16 forKey:@"EFPropertyKey_followUp"];
+  followUp = [(EMBaseMessageListItem *)self followUp];
+  [coderCopy encodeObject:followUp forKey:@"EFPropertyKey_followUp"];
 
-  v17 = [(EMBaseMessageListItem *)self category];
-  [v4 encodeObject:v17 forKey:@"EFPropertyKey_category"];
+  category = [(EMBaseMessageListItem *)self category];
+  [coderCopy encodeObject:category forKey:@"EFPropertyKey_category"];
 
-  v18 = [(EMBaseMessageListItem *)self groupedSenderMessageListItems];
-  [v4 encodeObject:v18 forKey:@"EFPropertyKey_groupedSenderMessageListItems"];
+  groupedSenderMessageListItems = [(EMBaseMessageListItem *)self groupedSenderMessageListItems];
+  [coderCopy encodeObject:groupedSenderMessageListItems forKey:@"EFPropertyKey_groupedSenderMessageListItems"];
 
-  [v4 encodeInt64:-[EMBaseMessageListItem businessID](self forKey:{"businessID"), @"EFPropertyKey_businessID"}];
-  v19 = [(EMBaseMessageListItem *)self businessLogoID];
-  [v4 encodeObject:v19 forKey:@"EFPropertyKey_businessLogoID"];
+  [coderCopy encodeInt64:-[EMBaseMessageListItem businessID](self forKey:{"businessID"), @"EFPropertyKey_businessID"}];
+  businessLogoID = [(EMBaseMessageListItem *)self businessLogoID];
+  [coderCopy encodeObject:businessLogoID forKey:@"EFPropertyKey_businessLogoID"];
 
-  v20 = [(EMBaseMessageListItem *)self summary];
-  [v4 encodeObject:v20 forKey:@"EFPropertyKey_summary"];
+  summary = [(EMBaseMessageListItem *)self summary];
+  [coderCopy encodeObject:summary forKey:@"EFPropertyKey_summary"];
 
-  v21 = [(EMBaseMessageListItem *)self generatedSummary];
-  [v4 encodeObject:v21 forKey:@"EFPropertyKey_generatedSummary"];
+  generatedSummary = [(EMBaseMessageListItem *)self generatedSummary];
+  [coderCopy encodeObject:generatedSummary forKey:@"EFPropertyKey_generatedSummary"];
 
-  [v4 encodeInt64:-[EMBaseMessageListItem conversationID](self forKey:{"conversationID"), @"EFPropertyKey_conversationID"}];
-  v22 = [(EMBaseMessageListItem *)self toList];
-  [v4 encodeObject:v22 forKey:@"EFPropertyKey_toList"];
+  [coderCopy encodeInt64:-[EMBaseMessageListItem conversationID](self forKey:{"conversationID"), @"EFPropertyKey_conversationID"}];
+  toList = [(EMBaseMessageListItem *)self toList];
+  [coderCopy encodeObject:toList forKey:@"EFPropertyKey_toList"];
 
-  v23 = [(EMBaseMessageListItem *)self ccList];
-  [v4 encodeObject:v23 forKey:@"EFPropertyKey_ccList"];
+  ccList = [(EMBaseMessageListItem *)self ccList];
+  [coderCopy encodeObject:ccList forKey:@"EFPropertyKey_ccList"];
 
-  v24 = [(EMBaseMessageListItem *)self bccList];
-  [v4 encodeObject:v24 forKey:@"EFPropertyKey_bccList"];
+  bccList = [(EMBaseMessageListItem *)self bccList];
+  [coderCopy encodeObject:bccList forKey:@"EFPropertyKey_bccList"];
 }
 
 - (NSArray)mailboxObjectIDs
@@ -849,14 +849,14 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
   return v3;
 }
 
-- (void)setMailboxObjectIDs:(id)a3
+- (void)setMailboxObjectIDs:(id)ds
 {
-  v8 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->_mailboxesLock);
   mailboxObjectIDs = self->_mailboxObjectIDs;
   if ((EFArraysAreEqual() & 1) == 0)
   {
-    v5 = [v8 copy];
+    v5 = [dsCopy copy];
     v6 = self->_mailboxObjectIDs;
     self->_mailboxObjectIDs = v5;
 
@@ -876,16 +876,16 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
   os_unfair_lock_unlock(&self->_mailboxesLock);
   if (!v3)
   {
-    v4 = [(EMBaseMessageListItem *)self repository];
-    v5 = [v4 mailboxRepository];
+    repository = [(EMBaseMessageListItem *)self repository];
+    mailboxRepository = [repository mailboxRepository];
 
-    if (v5)
+    if (mailboxRepository)
     {
       v6 = MEMORY[0x1E699B7C8];
-      v7 = [(EMBaseMessageListItem *)self repository];
-      v8 = [v7 mailboxRepository];
-      v9 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
-      v10 = [v8 mailboxesForObjectIDs:v9];
+      repository2 = [(EMBaseMessageListItem *)self repository];
+      mailboxRepository2 = [repository2 mailboxRepository];
+      mailboxObjectIDs = [(EMBaseMessageListItem *)self mailboxObjectIDs];
+      v10 = [mailboxRepository2 mailboxesForObjectIDs:mailboxObjectIDs];
       v11 = [v6 combine:v10];
       v12 = [v11 result:0];
       v3 = [v12 ef_filter:*MEMORY[0x1E699B748]];
@@ -913,13 +913,13 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
   os_unfair_lock_unlock(&self->_mailboxesLock);
   if (!v3)
   {
-    v4 = [(EMBaseMessageListItem *)self repository];
-    v5 = [v4 mailboxRepository];
+    repository = [(EMBaseMessageListItem *)self repository];
+    mailboxRepository = [repository mailboxRepository];
 
-    if (v5)
+    if (mailboxRepository)
     {
-      v6 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
-      v3 = [v5 mailboxesIfAvailableForObjectIDs:v6];
+      mailboxObjectIDs = [(EMBaseMessageListItem *)self mailboxObjectIDs];
+      v3 = [mailboxRepository mailboxesIfAvailableForObjectIDs:mailboxObjectIDs];
     }
 
     else
@@ -937,15 +937,15 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
   return v3;
 }
 
-- (void)setMailboxes:(id)a3
+- (void)setMailboxes:(id)mailboxes
 {
-  v8 = a3;
+  mailboxesCopy = mailboxes;
   os_unfair_lock_lock(&self->_mailboxesLock);
-  v4 = [v8 copy];
+  v4 = [mailboxesCopy copy];
   mailboxes = self->_mailboxes;
   self->_mailboxes = v4;
 
-  v6 = [v8 ef_mapSelector:sel_objectID];
+  v6 = [mailboxesCopy ef_mapSelector:sel_objectID];
   mailboxObjectIDs = self->_mailboxObjectIDs;
   self->_mailboxObjectIDs = v6;
 
@@ -955,36 +955,36 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
 
 - (BOOL)hasUnflagged
 {
-  v2 = [(EMBaseMessageListItem *)self flags];
-  v3 = [v2 flagged];
+  flags = [(EMBaseMessageListItem *)self flags];
+  flagged = [flags flagged];
 
-  return v3 ^ 1;
+  return flagged ^ 1;
 }
 
-- (void)setHasUnflagged:(BOOL)a3
+- (void)setHasUnflagged:(BOOL)unflagged
 {
   v5 = objc_alloc(MEMORY[0x1E699B300]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __41__EMBaseMessageListItem_setHasUnflagged___block_invoke;
   v9[3] = &__block_descriptor_33_e38_v16__0___ECMessageFlagChangeBuilder__8l;
-  v10 = a3;
+  unflaggedCopy = unflagged;
   v6 = [v5 initWithBuilder:v9];
-  v7 = [(EMBaseMessageListItem *)self flags];
-  v8 = [v6 flagsAfterChangingFlags:v7 flagsWereChanged:0];
+  flags = [(EMBaseMessageListItem *)self flags];
+  v8 = [v6 flagsAfterChangingFlags:flags flagsWereChanged:0];
   [(EMBaseMessageListItem *)self setFlags:v8];
 }
 
 - (NSIndexSet)flagColors
 {
-  v3 = [(EMBaseMessageListItem *)self flags];
-  v4 = [v3 flagged];
+  flags = [(EMBaseMessageListItem *)self flags];
+  flagged = [flags flagged];
 
-  if (v4)
+  if (flagged)
   {
     v5 = objc_alloc(MEMORY[0x1E696AC90]);
-    v6 = [(EMBaseMessageListItem *)self flags];
-    v7 = [v5 initWithIndex:{objc_msgSend(v6, "flagColor")}];
+    flags2 = [(EMBaseMessageListItem *)self flags];
+    v7 = [v5 initWithIndex:{objc_msgSend(flags2, "flagColor")}];
   }
 
   else
@@ -995,26 +995,26 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (void)setFlagColors:(id)a3
+- (void)setFlagColors:(id)colors
 {
-  v4 = a3;
-  v5 = [(EMBaseMessageListItem *)self flags];
-  v6 = [v5 flagged];
+  colorsCopy = colors;
+  flags = [(EMBaseMessageListItem *)self flags];
+  flagged = [flags flagged];
 
-  if (v6)
+  if (flagged)
   {
-    v7 = [v4 firstIndex];
-    if (v7 <= 6)
+    firstIndex = [colorsCopy firstIndex];
+    if (firstIndex <= 6)
     {
       v8 = objc_alloc(MEMORY[0x1E699B300]);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __39__EMBaseMessageListItem_setFlagColors___block_invoke;
       v12[3] = &__block_descriptor_40_e38_v16__0___ECMessageFlagChangeBuilder__8l;
-      v12[4] = v7;
+      v12[4] = firstIndex;
       v9 = [v8 initWithBuilder:v12];
-      v10 = [(EMBaseMessageListItem *)self flags];
-      v11 = [v9 flagsAfterChangingFlags:v10 flagsWereChanged:0];
+      flags2 = [(EMBaseMessageListItem *)self flags];
+      v11 = [v9 flagsAfterChangingFlags:flags2 flagsWereChanged:0];
       [(EMBaseMessageListItem *)self setFlags:v11];
     }
   }
@@ -1023,11 +1023,11 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
 - (NSArray)senderList
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(EMBaseMessageListItem *)self senderAddress];
-  v3 = v2;
-  if (v2)
+  senderAddress = [(EMBaseMessageListItem *)self senderAddress];
+  v3 = senderAddress;
+  if (senderAddress)
   {
-    v7[0] = v2;
+    v7[0] = senderAddress;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -1041,30 +1041,30 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (void)setSenderList:(id)a3
+- (void)setSenderList:(id)list
 {
-  v4 = [a3 firstObject];
+  firstObject = [list firstObject];
   [(EMBaseMessageListItem *)self setSenderAddress:?];
 }
 
-- (void)setDisplayMessageItemID:(id)a3
+- (void)setDisplayMessageItemID:(id)d
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"EMBaseMessageListItem.m" lineNumber:622 description:@"displayMessageItemID cannot be set on EMMessage"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"EMBaseMessageListItem.m" lineNumber:622 description:@"displayMessageItemID cannot be set on EMMessage"];
 }
 
 - (BOOL)deleteMovesToTrash
 {
-  v2 = [(EMBaseMessageListItem *)self mailboxes];
-  v3 = [EMMailbox deleteMovesToTrashForMailboxes:v2];
+  mailboxes = [(EMBaseMessageListItem *)self mailboxes];
+  v3 = [EMMailbox deleteMovesToTrashForMailboxes:mailboxes];
 
   return v3;
 }
 
 - (BOOL)supportsArchiving
 {
-  v2 = [(EMBaseMessageListItem *)self mailboxes];
-  v3 = [EMMailbox supportsArchivingForMailboxes:v2];
+  mailboxes = [(EMBaseMessageListItem *)self mailboxes];
+  v3 = [EMMailbox supportsArchivingForMailboxes:mailboxes];
 
   return v3;
 }
@@ -1072,18 +1072,18 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
 - (BOOL)shouldArchiveByDefault
 {
   v3 = objc_opt_class();
-  v4 = [(EMBaseMessageListItem *)self mailboxes];
-  LOBYTE(v3) = [v3 _shouldArchiveByDefaultForMailboxes:v4];
+  mailboxes = [(EMBaseMessageListItem *)self mailboxes];
+  LOBYTE(v3) = [v3 _shouldArchiveByDefaultForMailboxes:mailboxes];
 
   return v3;
 }
 
-+ (BOOL)_shouldArchiveByDefaultForMailboxes:(id)a3
++ (BOOL)_shouldArchiveByDefaultForMailboxes:(id)mailboxes
 {
-  v3 = a3;
-  if ([EMMailbox supportsArchivingForMailboxes:v3])
+  mailboxesCopy = mailboxes;
+  if ([EMMailbox supportsArchivingForMailboxes:mailboxesCopy])
   {
-    v4 = [EMMailbox shouldArchiveByDefaultForMailboxes:v3];
+    v4 = [EMMailbox shouldArchiveByDefaultForMailboxes:mailboxesCopy];
   }
 
   else
@@ -1099,8 +1099,8 @@ void __39__EMBaseMessageListItem_initWithCoder___block_invoke(uint64_t a1, void 
   isEditable = self->_isEditable;
   if (!isEditable)
   {
-    v4 = [(EMBaseMessageListItem *)self mailboxes];
-    v5 = [v4 ef_any:&__block_literal_global_1];
+    mailboxes = [(EMBaseMessageListItem *)self mailboxes];
+    v5 = [mailboxes ef_any:&__block_literal_global_1];
 
     isEditable = 1;
     if (v5)

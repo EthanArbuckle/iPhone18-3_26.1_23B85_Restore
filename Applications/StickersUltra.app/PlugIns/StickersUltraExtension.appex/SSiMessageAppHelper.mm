@@ -1,14 +1,14 @@
 @interface SSiMessageAppHelper
 + (BOOL)balloonHostAppIsMessages;
-+ (id)entitlementValueForBalloonHost:(id)a3 expectedClass:(Class)a4;
-+ (id)extendedIdentifierFromIdentifier:(id)a3;
++ (id)entitlementValueForBalloonHost:(id)host expectedClass:(Class)class;
++ (id)extendedIdentifierFromIdentifier:(id)identifier;
 @end
 
 @implementation SSiMessageAppHelper
 
-+ (id)extendedIdentifierFromIdentifier:(id)a3
++ (id)extendedIdentifierFromIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -27,36 +27,36 @@
 
   v5 = v4;
   _Block_object_dispose(&v17, 8);
-  v6 = [v4 pluginKitProxyForIdentifier:v3];
-  v7 = [v6 teamID];
-  v8 = v7;
-  if (v7)
+  v6 = [v4 pluginKitProxyForIdentifier:identifierCopy];
+  teamID = [v6 teamID];
+  v8 = teamID;
+  if (teamID)
   {
-    v9 = v7;
+    v9 = teamID;
   }
 
   else
   {
-    v10 = [v6 containingBundle];
-    v11 = [v10 teamID];
-    v12 = v11;
+    containingBundle = [v6 containingBundle];
+    teamID2 = [containingBundle teamID];
+    v12 = teamID2;
     v13 = @"0000000000";
-    if (v11)
+    if (teamID2)
     {
-      v13 = v11;
+      v13 = teamID2;
     }
 
     v9 = v13;
   }
 
-  v14 = [IMBalloonPluginIdentifierMessageExtension stringByAppendingFormat:@":%@:%@", v9, v3];
+  identifierCopy = [IMBalloonPluginIdentifierMessageExtension stringByAppendingFormat:@":%@:%@", v9, identifierCopy];
 
-  return v14;
+  return identifierCopy;
 }
 
-+ (id)entitlementValueForBalloonHost:(id)a3 expectedClass:(Class)a4
++ (id)entitlementValueForBalloonHost:(id)host expectedClass:(Class)class
 {
-  v4 = a3;
+  hostCopy = host;
   v5 = +[_MSMessageAppContext activeExtensionContext];
   if (objc_opt_respondsToSelector())
   {

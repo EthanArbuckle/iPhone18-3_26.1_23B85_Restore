@@ -1,32 +1,32 @@
 @interface PXFocusTimelineView
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
-- (BOOL)_isEventWithinZoomRange:(id)a3;
-- (BOOL)_isTickWithinActiveTrackRange:(double)a3;
-- (CGPoint)_closestTickPointToPointOnTrack:(CGPoint)a3;
-- (CGPoint)_trackPointFromTimestamp:(id *)a3;
+- (BOOL)_isEventWithinZoomRange:(id)range;
+- (BOOL)_isTickWithinActiveTrackRange:(double)range;
+- (CGPoint)_closestTickPointToPointOnTrack:(CGPoint)track;
+- (CGPoint)_trackPointFromTimestamp:(id *)timestamp;
 - (CGRect)_trackFrame;
 - (CGSize)intrinsicContentSize;
-- (PXFocusTimelineView)initWithFrame:(CGRect)a3;
+- (PXFocusTimelineView)initWithFrame:(CGRect)frame;
 - (PXFocusTimelineViewDelegate)delegate;
 - (double)_zoomAdjustedTickGap;
-- (id)_axDescriptionForFocusEvent:(id)a3;
-- (id)_eventAtLocation:(CGPoint)a3 threshold:(double)a4;
-- (id)_imageViewForFocusEvent:(id)a3;
-- (void)_addEventToTimeline:(id)a3 atIndex:(unint64_t)a4;
-- (void)_animateFocusChangeFrom:(id)a3 to:(id)a4 completion:(id)a5;
+- (id)_axDescriptionForFocusEvent:(id)event;
+- (id)_eventAtLocation:(CGPoint)location threshold:(double)threshold;
+- (id)_imageViewForFocusEvent:(id)event;
+- (void)_addEventToTimeline:(id)timeline atIndex:(unint64_t)index;
+- (void)_animateFocusChangeFrom:(id)from to:(id)to completion:(id)completion;
 - (void)_updateTrack;
 - (void)_updateTrackingProgress;
-- (void)addFocusEvent:(id *)a3 userInitiated:(BOOL)a4 shouldAnimate:(BOOL)a5;
-- (void)handleEventSelectedAtLocation:(CGPoint)a3;
+- (void)addFocusEvent:(id *)event userInitiated:(BOOL)initiated shouldAnimate:(BOOL)animate;
+- (void)handleEventSelectedAtLocation:(CGPoint)location;
 - (void)layoutSubviews;
-- (void)objectTrackingFinishedWithSuccess:(BOOL)a3;
-- (void)objectTrackingStartedAtTime:(id *)a3;
+- (void)objectTrackingFinishedWithSuccess:(BOOL)success;
+- (void)objectTrackingStartedAtTime:(id *)time;
 - (void)resetTimeline;
-- (void)setDimmed:(BOOL)a3;
-- (void)setTimeRange:(id *)a3;
-- (void)setZoomMinValue:(double)a3 maxValue:(double)a4;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setTimeRange:(id *)range;
+- (void)setZoomMinValue:(double)value maxValue:(double)maxValue;
 - (void)unzoom;
-- (void)updateObjectTrackingProgressAtTime:(id *)a3 shouldStop:(BOOL *)a4;
+- (void)updateObjectTrackingProgressAtTime:(id *)time shouldStop:(BOOL *)stop;
 - (void)updateTimeline;
 @end
 
@@ -48,15 +48,15 @@
   return WeakRetained;
 }
 
-- (id)_axDescriptionForFocusEvent:(id)a3
+- (id)_axDescriptionForFocusEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
-    v4 = a3;
-    v5 = [(PXFocusTimelineView *)self delegate];
-    [v4 time];
+    eventCopy = event;
+    delegate = [(PXFocusTimelineView *)self delegate];
+    [eventCopy time];
 
-    v6 = [v5 axDescriptionForFocusEventATime:v8];
+    v6 = [delegate axDescriptionForFocusEventATime:v8];
   }
 
   else
@@ -80,10 +80,10 @@
   return result;
 }
 
-- (BOOL)_isTickWithinActiveTrackRange:(double)a3
+- (BOOL)_isTickWithinActiveTrackRange:(double)range
 {
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"disableTimelineAnimations"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"disableTimelineAnimations"];
 
   if ((v6 & 1) != 0 || ![(NSMutableArray *)self->_focusEvents count])
   {
@@ -101,7 +101,7 @@
     v10[1] = 3221225472;
     v10[2] = __53__PXFocusTimelineView__isTickWithinActiveTrackRange___block_invoke;
     v10[3] = &unk_1E773E8F8;
-    *&v10[6] = a3;
+    *&v10[6] = range;
     v10[4] = self;
     v10[5] = &v11;
     [(NSMutableArray *)focusEvents enumerateObjectsUsingBlock:v10];
@@ -184,16 +184,16 @@ void __53__PXFocusTimelineView__isTickWithinActiveTrackRange___block_invoke(uint
   }
 }
 
-- (BOOL)_isEventWithinZoomRange:(id)a3
+- (BOOL)_isEventWithinZoomRange:(id)range
 {
-  v4 = a3;
-  v5 = v4;
+  rangeCopy = range;
+  v5 = rangeCopy;
   memset(&v19, 0, sizeof(v19));
   zoomMinValue = self->_zoomMinValue;
-  if (v4)
+  if (rangeCopy)
   {
-    [v4 time];
-    LODWORD(v4) = v17;
+    [rangeCopy time];
+    LODWORD(rangeCopy) = v17;
   }
 
   else
@@ -203,7 +203,7 @@ void __53__PXFocusTimelineView__isTickWithinActiveTrackRange___block_invoke(uint
     v18 = 0;
   }
 
-  CMTimeMakeWithSeconds(&v19, zoomMinValue, v4);
+  CMTimeMakeWithSeconds(&v19, zoomMinValue, rangeCopy);
   memset(&v15, 0, sizeof(v15));
   zoomMaxValue = self->_zoomMaxValue;
   if (!v5)
@@ -258,11 +258,11 @@ LABEL_16:
   return v8;
 }
 
-- (id)_eventAtLocation:(CGPoint)a3 threshold:(double)a4
+- (id)_eventAtLocation:(CGPoint)location threshold:(double)threshold
 {
-  x = a3.x;
+  x = location.x;
   v37 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   focusEvents = self->_focusEvents;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -270,8 +270,8 @@ LABEL_16:
   v31[3] = &unk_1E773E8D0;
   v33 = x;
   v34 = 0x401C000000000000;
-  v35 = a4;
-  v9 = v7;
+  thresholdCopy = threshold;
+  v9 = array;
   v32 = v9;
   [(NSMutableArray *)focusEvents enumerateObjectsUsingBlock:v31];
   v29 = 0u;
@@ -298,12 +298,12 @@ LABEL_16:
         v17 = *(*(&v27 + 1) + 8 * i);
         [v17 location];
         v19 = v18 - x;
-        if (v18 - x < a4)
+        if (v18 - x < threshold)
         {
           v20 = v17;
 
           v14 = v20;
-          a4 = v19;
+          threshold = v19;
         }
 
         if ([v17 type] == 1)
@@ -326,10 +326,10 @@ LABEL_16:
     v14 = 0;
   }
 
-  v22 = [v14 type];
+  type = [v14 type];
   if (v13)
   {
-    v23 = v22 == 1;
+    v23 = type == 1;
   }
 
   else
@@ -374,10 +374,10 @@ void __50__PXFocusTimelineView__eventAtLocation_threshold___block_invoke(uint64_
   }
 }
 
-- (CGPoint)_closestTickPointToPointOnTrack:(CGPoint)a3
+- (CGPoint)_closestTickPointToPointOnTrack:(CGPoint)track
 {
-  y = a3.y;
-  x = a3.x;
+  y = track.y;
+  x = track.x;
   [(PXFocusTimelineView *)self _zoomAdjustedTickGap];
   v6 = v5 * round(x / v5);
   v7 = y;
@@ -386,9 +386,9 @@ void __50__PXFocusTimelineView__eventAtLocation_threshold___block_invoke(uint64_
   return result;
 }
 
-- (CGPoint)_trackPointFromTimestamp:(id *)a3
+- (CGPoint)_trackPointFromTimestamp:(id *)timestamp
 {
-  var0 = a3->var0;
+  var0 = timestamp->var0;
   [(PXFocusTimelineView *)self _trackFrame];
   v7 = v6;
   v9 = v8;
@@ -398,9 +398,9 @@ void __50__PXFocusTimelineView__eventAtLocation_threshold___block_invoke(uint64_
   v14 = v27;
   [(PXFocusTimelineView *)self timeRange];
   v15 = v26;
-  CMTimeMakeWithSeconds(&v25, self->_zoomMinValue, a3->var1);
+  CMTimeMakeWithSeconds(&v25, self->_zoomMinValue, timestamp->var1);
   value = v25.value;
-  CMTimeMakeWithSeconds(&v24, self->_zoomMaxValue, a3->var1);
+  CMTimeMakeWithSeconds(&v24, self->_zoomMaxValue, timestamp->var1);
   v17 = v24.value - value;
   zoomed = self->_zoomed;
   v19 = v17 > 0.0;
@@ -472,30 +472,30 @@ void __50__PXFocusTimelineView__eventAtLocation_threshold___block_invoke(uint64_
   }
 }
 
-- (void)_animateFocusChangeFrom:(id)a3 to:(id)a4 completion:(id)a5
+- (void)_animateFocusChangeFrom:(id)from to:(id)to completion:(id)completion
 {
   v60[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v38 = [(PXFocusTimelineView *)self _imageViewForFocusEvent:v8];
-  v37 = [v38 layer];
-  [v37 setOpacity:0.0];
+  fromCopy = from;
+  toCopy = to;
+  completionCopy = completion;
+  v38 = [(PXFocusTimelineView *)self _imageViewForFocusEvent:fromCopy];
+  layer = [v38 layer];
+  [layer setOpacity:0.0];
   [(UIView *)self->_focusEventsView addSubview:v38];
   v54 = 0;
   v55 = &v54;
   v56 = 0x3032000000;
   v57 = __Block_byref_object_copy__157649;
   v58 = __Block_byref_object_dispose__157650;
-  v11 = v9;
+  v11 = toCopy;
   v59 = v11;
-  if (v11 || (focusEvents = self->_focusEvents, v50[0] = MEMORY[0x1E69E9820], v50[1] = 3221225472, v50[2] = __61__PXFocusTimelineView__animateFocusChangeFrom_to_completion___block_invoke, v50[3] = &unk_1E773E880, v51 = v8, v52 = self, v53 = &v54, [(NSMutableArray *)focusEvents enumerateObjectsUsingBlock:v50], v11 = v55[5], v51, v11))
+  if (v11 || (focusEvents = self->_focusEvents, v50[0] = MEMORY[0x1E69E9820], v50[1] = 3221225472, v50[2] = __61__PXFocusTimelineView__animateFocusChangeFrom_to_completion___block_invoke, v50[3] = &unk_1E773E880, v51 = fromCopy, v52 = self, v53 = &v54, [(NSMutableArray *)focusEvents enumerateObjectsUsingBlock:v50], v11 = v55[5], v51, v11))
   {
     v13 = [(PXFocusTimelineView *)self _imageViewForFocusEvent:v11];
-    v36 = [v13 layer];
+    layer2 = [v13 layer];
     if ([v11 shouldAnimate])
     {
-      [v36 setOpacity:0.0];
+      [layer2 setOpacity:0.0];
     }
 
     [(UIView *)self->_focusEventsView addSubview:v13];
@@ -503,20 +503,20 @@ void __50__PXFocusTimelineView__eventAtLocation_threshold___block_invoke(uint64_
 
   else
   {
-    v36 = 0;
+    layer2 = 0;
     v13 = 0;
   }
 
-  v14 = [(NSMutableArray *)self->_animatableFocusEvents indexOfObject:v8];
+  v14 = [(NSMutableArray *)self->_animatableFocusEvents indexOfObject:fromCopy];
   if ([(NSMutableArray *)self->_animatableFocusEvents count]<= (v14 - 1))
   {
-    v16 = 0;
+    shouldAnimate = 0;
   }
 
   else
   {
     v15 = [(NSMutableArray *)self->_animatableFocusEvents objectAtIndexedSubscript:?];
-    v16 = [v15 shouldAnimate];
+    shouldAnimate = [v15 shouldAnimate];
   }
 
   [MEMORY[0x1E6979518] begin];
@@ -543,9 +543,9 @@ void __50__PXFocusTimelineView__eventAtLocation_threshold___block_invoke(uint64_
   aBlock[1] = 3221225472;
   aBlock[2] = __61__PXFocusTimelineView__animateFocusChangeFrom_to_completion___block_invoke_64;
   aBlock[3] = &unk_1E773E8A8;
-  v25 = v8;
+  v25 = fromCopy;
   v42 = v25;
-  v43 = self;
+  selfCopy = self;
   v26 = v11;
   v44 = v26;
   v27 = v21;
@@ -554,13 +554,13 @@ void __50__PXFocusTimelineView__eventAtLocation_threshold___block_invoke(uint64_
   v46 = v28;
   v29 = v24;
   v47 = v29;
-  v30 = v10;
+  v30 = completionCopy;
   v49 = v30;
   v31 = v13;
   v48 = v31;
   v32 = _Block_copy(aBlock);
   v33 = v32;
-  if (v16)
+  if (shouldAnimate)
   {
     (*(v32 + 2))(v32);
   }
@@ -579,7 +579,7 @@ void __50__PXFocusTimelineView__eventAtLocation_threshold___block_invoke(uint64_
     v39[3] = &unk_1E774C250;
     v40 = v33;
     [v35 setCompletionBlock:v39];
-    [v37 addAnimation:v22 forKey:@"appearAnimations"];
+    [layer addAnimation:v22 forKey:@"appearAnimations"];
     [MEMORY[0x1E6979518] commit];
   }
 
@@ -737,13 +737,13 @@ void __61__PXFocusTimelineView__animateFocusChangeFrom_to_completion___block_inv
   [MEMORY[0x1E6979518] commit];
 }
 
-- (id)_imageViewForFocusEvent:(id)a3
+- (id)_imageViewForFocusEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    [v4 time];
+    [eventCopy time];
   }
 
   else
@@ -772,37 +772,37 @@ void __61__PXFocusTimelineView__animateFocusChangeFrom_to_completion___block_inv
   return v11;
 }
 
-- (void)_addEventToTimeline:(id)a3 atIndex:(unint64_t)a4
+- (void)_addEventToTimeline:(id)timeline atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (![(PXFocusTimelineView *)self _isEventWithinZoomRange:v6])
+  timelineCopy = timeline;
+  if (![(PXFocusTimelineView *)self _isEventWithinZoomRange:timelineCopy])
   {
-    v7 = [(PXFocusTimelineView *)self _imageViewForFocusEvent:v6];
+    v7 = [(PXFocusTimelineView *)self _imageViewForFocusEvent:timelineCopy];
     v22[0] = 0;
     v22[1] = v22;
     v22[2] = 0x2020000000;
-    v22[3] = a4;
+    v22[3] = index;
     v8 = [(NSMutableArray *)self->_animatableFocusEvents count];
-    if (v8 <= a4 - 1)
+    if (v8 <= index - 1)
     {
-      v10 = 0;
+      shouldAnimate = 0;
     }
 
     else
     {
       v9 = [(NSMutableArray *)self->_animatableFocusEvents objectAtIndexedSubscript:?];
-      v10 = [v9 shouldAnimate];
+      shouldAnimate = [v9 shouldAnimate];
     }
 
-    v11 = (a4 + 1);
-    if (v8 <= a4 + 1)
+    v11 = (index + 1);
+    if (v8 <= index + 1)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = [(NSMutableArray *)self->_animatableFocusEvents objectAtIndexedSubscript:a4 + 1];
+      v12 = [(NSMutableArray *)self->_animatableFocusEvents objectAtIndexedSubscript:index + 1];
     }
 
     objc_initWeak(&location, self);
@@ -817,19 +817,19 @@ void __61__PXFocusTimelineView__animateFocusChangeFrom_to_completion___block_inv
     v18 = v13;
     v20[2] = v11;
     v14 = _Block_copy(aBlock);
-    if ([v6 shouldAnimate])
+    if ([timelineCopy shouldAnimate])
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __51__PXFocusTimelineView__addEventToTimeline_atIndex___block_invoke_3;
       v15[3] = &unk_1E774C250;
       v16 = v14;
-      [(PXFocusTimelineView *)self _animateFocusChangeFrom:v6 to:v13 completion:v15];
+      [(PXFocusTimelineView *)self _animateFocusChangeFrom:timelineCopy to:v13 completion:v15];
     }
 
     else
     {
-      if ((v10 & 1) == 0)
+      if ((shouldAnimate & 1) == 0)
       {
         [(UIView *)self->_focusEventsView addSubview:v7];
       }
@@ -880,12 +880,12 @@ LABEL_7:
   [(PXFocusTimelineView *)self timeRange];
   if ((v22 & 1) != 0 && [(NSMutableArray *)self->_focusEvents count])
   {
-    v3 = [(UIView *)self->_focusEventsView subviews];
-    v4 = [v3 copy];
+    subviews = [(UIView *)self->_focusEventsView subviews];
+    v4 = [subviews copy];
     [v4 makeObjectsPerformSelector:sel_removeFromSuperview];
 
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    LODWORD(v4) = [v5 BOOLForKey:@"disableTimelineAnimations"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    LODWORD(v4) = [standardUserDefaults BOOLForKey:@"disableTimelineAnimations"];
 
     if (v4)
     {
@@ -973,9 +973,9 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
 
 - (void)_updateTrack
 {
-  v3 = [(UIImageView *)self->_trackImageView layer];
-  v4 = [v3 sublayers];
-  v5 = [v4 copy];
+  layer = [(UIImageView *)self->_trackImageView layer];
+  sublayers = [layer sublayers];
+  v5 = [sublayers copy];
   [v5 makeObjectsPerformSelector:sel_removeFromSuperlayer];
 
   [(PXFocusTimelineView *)self _trackFrame];
@@ -1009,16 +1009,16 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
     CGContextSetBaseCTM();
   }
 
-  v18 = [MEMORY[0x1E69DC888] systemYellowColor];
-  v19 = [MEMORY[0x1E69DC888] labelColor];
-  v20 = [(PXFocusTimelineView *)self traitCollection];
-  v21 = [v19 resolvedColorWithTraitCollection:v20];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  traitCollection = [(PXFocusTimelineView *)self traitCollection];
+  v21 = [labelColor resolvedColorWithTraitCollection:traitCollection];
   v22 = [v21 colorWithAlphaComponent:0.6];
-  v23 = [v22 CGColor];
+  cGColor = [v22 CGColor];
 
-  v24 = [(PXFocusTimelineView *)self traitCollection];
-  v25 = [v18 resolvedColorWithTraitCollection:v24];
-  v26 = [v25 CGColor];
+  traitCollection2 = [(PXFocusTimelineView *)self traitCollection];
+  v25 = [systemYellowColor resolvedColorWithTraitCollection:traitCollection2];
+  cGColor2 = [v25 CGColor];
 
   v27 = 1.0;
   CGContextSetLineWidth(v17, 1.0);
@@ -1055,12 +1055,12 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
   CGContextBeginPath(v17);
   if ([(PXFocusTimelineView *)self _isTickWithinActiveTrackRange:1.0])
   {
-    v31 = v26;
+    v31 = cGColor2;
   }
 
   else
   {
-    v31 = v23;
+    v31 = cGColor;
   }
 
   CGContextSetStrokeColorWithColor(v17, v31);
@@ -1078,7 +1078,7 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
       CGContextBeginPath(v17);
       if ([(PXFocusTimelineView *)self _isTickWithinActiveTrackRange:v27])
       {
-        CGContextSetStrokeColorWithColor(v17, v26);
+        CGContextSetStrokeColorWithColor(v17, cGColor2);
         CGContextMoveToPoint(v17, v27, 1.0);
         CGContextAddLineToPoint(v17, v27, 5.0);
       }
@@ -1087,7 +1087,7 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
       {
         CGContextMoveToPoint(v17, v27, 2.0);
         CGContextAddLineToPoint(v17, v27, 4.0);
-        CGContextSetStrokeColorWithColor(v17, v23);
+        CGContextSetStrokeColorWithColor(v17, cGColor);
       }
 
       CGContextStrokePath(v17);
@@ -1106,12 +1106,12 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
   CGContextBeginPath(v17);
   if ([(PXFocusTimelineView *)self _isTickWithinActiveTrackRange:v27])
   {
-    v38 = v26;
+    v38 = cGColor2;
   }
 
   else
   {
-    v38 = v23;
+    v38 = cGColor;
   }
 
   CGContextSetStrokeColorWithColor(v17, v38);
@@ -1125,10 +1125,10 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
   [(UIImageView *)self->_trackImageView setImage:v40];
 }
 
-- (void)objectTrackingFinishedWithSuccess:(BOOL)a3
+- (void)objectTrackingFinishedWithSuccess:(BOOL)success
 {
-  v4 = [(PXFocusTimelineView *)self delegate];
-  [v4 hideFocusTimelineActions:self];
+  delegate = [(PXFocusTimelineView *)self delegate];
+  [delegate hideFocusTimelineActions:self];
 
   self->_currentTrackingTime = **&MEMORY[0x1E6960C70];
   [(UIView *)self->_progressView setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -1136,44 +1136,44 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
   [(PXFocusTimelineView *)self setUserInteractionEnabled:1];
 }
 
-- (void)updateObjectTrackingProgressAtTime:(id *)a3 shouldStop:(BOOL *)a4
+- (void)updateObjectTrackingProgressAtTime:(id *)time shouldStop:(BOOL *)stop
 {
-  if (self->_objectTrackingEvent && (a3->var2 & 1) != 0)
+  if (self->_objectTrackingEvent && (time->var2 & 1) != 0)
   {
     v7 = *&self->_timeRange.start.epoch;
     *&range.start.value = *&self->_timeRange.start.value;
     *&range.start.epoch = v7;
     *&range.duration.timescale = *&self->_timeRange.duration.timescale;
-    v10 = *a3;
+    v10 = *time;
     if (CMTimeRangeContainsTime(&range, &v10))
     {
-      v8 = [(PXFocusTimelineView *)self delegate];
-      [v8 focusTimeline:self updateTrackingProgressShouldStop:a4];
+      delegate = [(PXFocusTimelineView *)self delegate];
+      [delegate focusTimeline:self updateTrackingProgressShouldStop:stop];
 
-      var3 = a3->var3;
-      *&self->_currentTrackingTime.value = *&a3->var0;
+      var3 = time->var3;
+      *&self->_currentTrackingTime.value = *&time->var0;
       self->_currentTrackingTime.epoch = var3;
       [(PXFocusTimelineView *)self _updateTrackingProgress];
     }
   }
 }
 
-- (void)objectTrackingStartedAtTime:(id *)a3
+- (void)objectTrackingStartedAtTime:(id *)time
 {
-  if (a3->var2)
+  if (time->var2)
   {
     v5 = *&self->_timeRange.start.epoch;
     *&range.start.value = *&self->_timeRange.start.value;
     *&range.start.epoch = v5;
     *&range.duration.timescale = *&self->_timeRange.duration.timescale;
-    v11 = *a3;
+    v11 = *time;
     if (CMTimeRangeContainsTime(&range, &v11))
     {
       if (!self->_objectTrackingEvent)
       {
         v6 = [PXFocusTimelineEvent alloc];
-        *&range.start.value = *&a3->var0;
-        range.start.epoch = a3->var3;
+        *&range.start.value = *&time->var0;
+        range.start.epoch = time->var3;
         v7 = [(PXFocusTimelineEvent *)v6 initWithTime:&range type:1];
         objectTrackingEvent = self->_objectTrackingEvent;
         self->_objectTrackingEvent = v7;
@@ -1183,22 +1183,22 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
       }
 
       v9 = objc_alloc_init(PXFocusTimelineAction);
-      *&range.start.value = *&a3->var0;
-      range.start.epoch = a3->var3;
+      *&range.start.value = *&time->var0;
+      range.start.epoch = time->var3;
       [(PXFocusTimelineAction *)v9 setTime:&range];
       [(PXFocusTimelineAction *)v9 setKind:1];
-      v10 = [(PXFocusTimelineView *)self delegate];
+      delegate = [(PXFocusTimelineView *)self delegate];
       [(PXFocusTimelineEvent *)self->_objectTrackingEvent location];
-      [v10 focusTimeline:self presentAction:v9 locationInTimeline:?];
+      [delegate focusTimeline:self presentAction:v9 locationInTimeline:?];
 
       [(PXFocusTimelineView *)self setUserInteractionEnabled:0];
     }
   }
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  v3 = a3 || !self->_viewCanBeEnabled;
+  v3 = dimmed || !self->_viewCanBeEnabled;
   if (self->_dimmed != v3)
   {
     self->_dimmed = v3;
@@ -1222,24 +1222,24 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
   [(PXFocusTimelineView *)self layoutIfNeeded];
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  if ((a3->var0.var2 & 1) != 0 && (a3->var1.var2 & 1) != 0 && !a3->var1.var3 && (a3->var1.var0 & 0x8000000000000000) == 0)
+  if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && (range->var1.var0 & 0x8000000000000000) == 0)
   {
     p_timeRange = &self->_timeRange;
-    v6 = *&a3->var0.var3;
-    *&range1.start.value = *&a3->var0.var0;
+    v6 = *&range->var0.var3;
+    *&range1.start.value = *&range->var0.var0;
     *&range1.start.epoch = v6;
-    *&range1.duration.timescale = *&a3->var1.var1;
+    *&range1.duration.timescale = *&range->var1.var1;
     v7 = *&self->_timeRange.start.epoch;
     *&v10.start.value = *&self->_timeRange.start.value;
     *&v10.start.epoch = v7;
     *&v10.duration.timescale = *&self->_timeRange.duration.timescale;
     if (!CMTimeRangeEqual(&range1, &v10))
     {
-      v8 = *&a3->var0.var0;
-      v9 = *&a3->var1.var1;
-      *&p_timeRange->start.epoch = *&a3->var0.var3;
+      v8 = *&range->var0.var0;
+      v9 = *&range->var1.var1;
+      *&p_timeRange->start.epoch = *&range->var0.var3;
       *&p_timeRange->duration.timescale = v9;
       *&p_timeRange->start.value = v8;
       [(PXFocusTimelineView *)self updateTimeline];
@@ -1247,22 +1247,22 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
   }
 }
 
-- (void)addFocusEvent:(id *)a3 userInitiated:(BOOL)a4 shouldAnimate:(BOOL)a5
+- (void)addFocusEvent:(id *)event userInitiated:(BOOL)initiated shouldAnimate:(BOOL)animate
 {
-  v5 = a5;
-  v8 = a4;
+  animateCopy = animate;
+  initiatedCopy = initiated;
   v9 = [PXFocusTimelineEvent alloc];
-  time1 = *a3;
-  v10 = [(PXFocusTimelineEvent *)v9 initWithTime:&time1 type:v8];
-  v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v12 = [v11 BOOLForKey:@"disableTimelineAnimations"];
+  time1 = *event;
+  v10 = [(PXFocusTimelineEvent *)v9 initWithTime:&time1 type:initiatedCopy];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v12 = [standardUserDefaults BOOLForKey:@"disableTimelineAnimations"];
 
   if ((v12 & 1) == 0)
   {
-    if (v5)
+    if (animateCopy)
     {
       objectTrackingEvent = self->_objectTrackingEvent;
-      if (!objectTrackingEvent || ([(PXFocusTimelineEvent *)objectTrackingEvent time], v15 = *a3, CMTimeCompare(&time1, &v15)))
+      if (!objectTrackingEvent || ([(PXFocusTimelineEvent *)objectTrackingEvent time], v15 = *event, CMTimeCompare(&time1, &v15)))
       {
         [(PXFocusTimelineEvent *)v10 setShouldAnimate:1];
         [(NSMutableArray *)self->_animatableFocusEvents addObject:v10];
@@ -1277,15 +1277,15 @@ void __37__PXFocusTimelineView_updateTimeline__block_invoke_2(uint64_t a1, void 
   }
 
 LABEL_8:
-  time1 = *a3;
+  time1 = *event;
   [(PXFocusTimelineView *)self _trackPointFromTimestamp:&time1];
   [(PXFocusTimelineEvent *)v10 setLocation:?];
   [(NSMutableArray *)self->_focusEvents addObject:v10];
 }
 
-- (void)handleEventSelectedAtLocation:(CGPoint)a3
+- (void)handleEventSelectedAtLocation:(CGPoint)location
 {
-  v4 = [(PXFocusTimelineView *)self _eventAtLocation:a3.x threshold:a3.y, 10.0];
+  v4 = [(PXFocusTimelineView *)self _eventAtLocation:location.x threshold:location.y, 10.0];
   if (v4)
   {
     v5 = objc_alloc_init(PXFocusTimelineAction);
@@ -1294,9 +1294,9 @@ LABEL_8:
     v8 = v10;
     [(PXFocusTimelineAction *)v5 setTime:&v7];
     -[PXFocusTimelineAction setKind:](v5, "setKind:", 2 * ([v4 type] != 1));
-    v6 = [(PXFocusTimelineView *)self delegate];
+    delegate = [(PXFocusTimelineView *)self delegate];
     [v4 location];
-    [v6 focusTimeline:self presentAction:v5 locationInTimeline:?];
+    [delegate focusTimeline:self presentAction:v5 locationInTimeline:?];
   }
 }
 
@@ -1308,11 +1308,11 @@ LABEL_8:
   [(PXFocusTimelineView *)self layoutIfNeeded];
 }
 
-- (void)setZoomMinValue:(double)a3 maxValue:(double)a4
+- (void)setZoomMinValue:(double)value maxValue:(double)maxValue
 {
   self->_zoomed = 1;
-  self->_zoomMinValue = a3;
-  self->_zoomMaxValue = a4;
+  self->_zoomMinValue = value;
+  self->_zoomMaxValue = maxValue;
   [(PXFocusTimelineView *)self setNeedsLayout];
 
   [(PXFocusTimelineView *)self layoutIfNeeded];
@@ -1345,24 +1345,24 @@ LABEL_8:
   }
 }
 
-- (PXFocusTimelineView)initWithFrame:(CGRect)a3
+- (PXFocusTimelineView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = PXFocusTimelineView;
-  v3 = [(PXFocusTimelineView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXFocusTimelineView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PXFocusTimelineView *)v3 setOpaque:0];
     [(PXFocusTimelineView *)v4 setDimmed:1];
     v4->_viewCanBeEnabled = 1;
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     focusEvents = v4->_focusEvents;
-    v4->_focusEvents = v5;
+    v4->_focusEvents = array;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     animatableFocusEvents = v4->_animatableFocusEvents;
-    v4->_animatableFocusEvents = v7;
+    v4->_animatableFocusEvents = array2;
 
     v9 = MEMORY[0x1E6960C70];
     *&v4->_currentTrackingTime.value = *MEMORY[0x1E6960C70];
@@ -1389,8 +1389,8 @@ LABEL_8:
     progressView = v4->_progressView;
     v4->_progressView = v20;
 
-    v22 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(UIView *)v4->_progressView setBackgroundColor:v22];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(UIView *)v4->_progressView setBackgroundColor:systemYellowColor];
     [(PXFocusTimelineView *)v4 addSubview:v4->_trackImageView];
     [(PXFocusTimelineView *)v4 addSubview:v4->_progressView];
     [(PXFocusTimelineView *)v4 addSubview:v4->_focusEventsView];

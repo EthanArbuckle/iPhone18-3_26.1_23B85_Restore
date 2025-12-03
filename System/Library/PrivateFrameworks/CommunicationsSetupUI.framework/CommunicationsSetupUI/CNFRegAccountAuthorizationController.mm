@@ -1,25 +1,25 @@
 @interface CNFRegAccountAuthorizationController
-- (CNFRegAccountAuthorizationController)initWithRegController:(id)a3 authID:(id)a4 token:(id)a5;
+- (CNFRegAccountAuthorizationController)initWithRegController:(id)controller authID:(id)d token:(id)token;
 - (id)bagKey;
 - (void)cancelTapped;
-- (void)completeHandoffWithStatus:(int)a3 appleID:(id)a4 authID:(id)a5 authToken:(id)a6;
+- (void)completeHandoffWithStatus:(int)status appleID:(id)d authID:(id)iD authToken:(id)token;
 - (void)dealloc;
 @end
 
 @implementation CNFRegAccountAuthorizationController
 
-- (CNFRegAccountAuthorizationController)initWithRegController:(id)a3 authID:(id)a4 token:(id)a5
+- (CNFRegAccountAuthorizationController)initWithRegController:(id)controller authID:(id)d token:(id)token
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  tokenCopy = token;
   v13.receiver = self;
   v13.super_class = CNFRegAccountAuthorizationController;
-  v10 = [(CNFRegAccountWebViewController *)&v13 initWithRegController:a3];
+  v10 = [(CNFRegAccountWebViewController *)&v13 initWithRegController:controller];
   v11 = v10;
   if (v10)
   {
-    [(CNFRegAccountAuthorizationController *)v10 setAuthID:v8];
-    [(CNFRegAccountAuthorizationController *)v11 setAuthToken:v9];
+    [(CNFRegAccountAuthorizationController *)v10 setAuthID:dCopy];
+    [(CNFRegAccountAuthorizationController *)v11 setAuthToken:tokenCopy];
   }
 
   return v11;
@@ -35,10 +35,10 @@
 
 - (id)bagKey
 {
-  v2 = [(CNFRegServerWebViewController *)self regController];
-  v3 = [v2 serviceType];
+  regController = [(CNFRegServerWebViewController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (v3 == 1)
+  if (serviceType == 1)
   {
     return @"md-profile-authorize";
   }
@@ -51,15 +51,15 @@
 
 - (void)cancelTapped
 {
-  v3 = [(CNFRegAccountAuthorizationController *)self delegate];
-  [v3 authorizationController:self authorizedAccount:0];
+  delegate = [(CNFRegAccountAuthorizationController *)self delegate];
+  [delegate authorizationController:self authorizedAccount:0];
 }
 
-- (void)completeHandoffWithStatus:(int)a3 appleID:(id)a4 authID:(id)a5 authToken:(id)a6
+- (void)completeHandoffWithStatus:(int)status appleID:(id)d authID:(id)iD authToken:(id)token
 {
-  v7 = a3 == 0;
-  v8 = [(CNFRegAccountAuthorizationController *)self delegate];
-  [v8 authorizationController:self authorizedAccount:v7];
+  v7 = status == 0;
+  delegate = [(CNFRegAccountAuthorizationController *)self delegate];
+  [delegate authorizationController:self authorizedAccount:v7];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface CNStringRangeFinder
-+ (id)rangesOfString:(id)a3 inString:(id)a4;
-+ (id)rangesOfStrings:(id)a3 inString:(id)a4;
-+ (void)removeOverlappingRanges:(id)a3;
++ (id)rangesOfString:(id)string inString:(id)inString;
++ (id)rangesOfStrings:(id)strings inString:(id)string;
++ (void)removeOverlappingRanges:(id)ranges;
 @end
 
 @implementation CNStringRangeFinder
 
-+ (id)rangesOfStrings:(id)a3 inString:(id)a4
++ (id)rangesOfStrings:(id)strings inString:(id)string
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  stringsCopy = strings;
+  stringCopy = string;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = stringsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -31,8 +31,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [a1 rangesOfString:*(*(&v17 + 1) + 8 * i) inString:{v7, v17}];
-        [v8 addObjectsFromArray:v14];
+        v14 = [self rangesOfString:*(*(&v17 + 1) + 8 * i) inString:{stringCopy, v17}];
+        [array addObjectsFromArray:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -41,20 +41,20 @@
     while (v11);
   }
 
-  [v8 sortUsingComparator:&__block_literal_global_67];
-  [a1 removeOverlappingRanges:v8];
+  [array sortUsingComparator:&__block_literal_global_67];
+  [self removeOverlappingRanges:array];
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return array;
 }
 
-+ (id)rangesOfString:(id)a3 inString:(id)a4
++ (id)rangesOfString:(id)string inString:(id)inString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [v6 rangeOfString:v5 options:0 range:{0, objc_msgSend(v6, "length")}];
+  stringCopy = string;
+  inStringCopy = inString;
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = [inStringCopy rangeOfString:stringCopy options:0 range:{0, objc_msgSend(inStringCopy, "length")}];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = v8;
@@ -62,49 +62,49 @@
     do
     {
       v12 = [MEMORY[0x1E696B098] valueWithRange:{v10, v11}];
-      [v7 addObject:v12];
-      v10 = [v6 rangeOfString:v5 options:0 range:{v10 + v11, objc_msgSend(v6, "length") - (v10 + v11)}];
+      [array addObject:v12];
+      v10 = [inStringCopy rangeOfString:stringCopy options:0 range:{v10 + v11, objc_msgSend(inStringCopy, "length") - (v10 + v11)}];
       v11 = v13;
     }
 
     while (v10 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  return v7;
+  return array;
 }
 
-+ (void)removeOverlappingRanges:(id)a3
++ (void)removeOverlappingRanges:(id)ranges
 {
-  v12 = a3;
-  if ([v12 count] >= 2)
+  rangesCopy = ranges;
+  if ([rangesCopy count] >= 2)
   {
-    v3 = [v12 objectAtIndex:0];
-    v4 = [v3 rangeValue];
+    v3 = [rangesCopy objectAtIndex:0];
+    rangeValue = [v3 rangeValue];
     v6 = v5;
 
-    if ([v12 count] >= 2)
+    if ([rangesCopy count] >= 2)
     {
       v7 = 1;
       do
       {
-        v8 = [v12 objectAtIndex:v7];
-        v9 = [v8 rangeValue];
+        v8 = [rangesCopy objectAtIndex:v7];
+        rangeValue2 = [v8 rangeValue];
         v11 = v10;
 
-        if (v9 >= v6 + v4)
+        if (rangeValue2 >= v6 + rangeValue)
         {
           ++v7;
-          v4 = v9;
+          rangeValue = rangeValue2;
           v6 = v11;
         }
 
         else
         {
-          [v12 removeObjectAtIndex:v7];
+          [rangesCopy removeObjectAtIndex:v7];
         }
       }
 
-      while (v7 < [v12 count]);
+      while (v7 < [rangesCopy count]);
     }
   }
 }

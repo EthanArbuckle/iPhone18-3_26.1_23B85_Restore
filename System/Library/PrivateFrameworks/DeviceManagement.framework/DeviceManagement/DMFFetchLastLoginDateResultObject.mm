@@ -1,20 +1,20 @@
 @interface DMFFetchLastLoginDateResultObject
-- (DMFFetchLastLoginDateResultObject)initWithCoder:(id)a3;
-- (DMFFetchLastLoginDateResultObject)initWithDatesByAppleID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFFetchLastLoginDateResultObject)initWithCoder:(id)coder;
+- (DMFFetchLastLoginDateResultObject)initWithDatesByAppleID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchLastLoginDateResultObject
 
-- (DMFFetchLastLoginDateResultObject)initWithDatesByAppleID:(id)a3
+- (DMFFetchLastLoginDateResultObject)initWithDatesByAppleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = DMFFetchLastLoginDateResultObject;
   v5 = [(CATTaskResultObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     lastLoginDatesByAppleID = v5->_lastLoginDatesByAppleID;
     v5->_lastLoginDatesByAppleID = v6;
   }
@@ -22,12 +22,12 @@
   return v5;
 }
 
-- (DMFFetchLastLoginDateResultObject)initWithCoder:(id)a3
+- (DMFFetchLastLoginDateResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = DMFFetchLastLoginDateResultObject;
-  v5 = [(CATTaskResultObject *)&v21 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v20 = MEMORY[0x1E695DFD8];
@@ -42,7 +42,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v20 setWithObjects:{v19, v18, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"lastLoginDatesByAppleID"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"lastLoginDatesByAppleID"];
     lastLoginDatesByAppleID = v5->_lastLoginDatesByAppleID;
     v5->_lastLoginDatesByAppleID = v15;
   }
@@ -50,14 +50,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFFetchLastLoginDateResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchLastLoginDateResultObject *)self lastLoginDatesByAppleID:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"lastLoginDatesByAppleID"];
+  [coderCopy encodeObject:v5 forKey:@"lastLoginDatesByAppleID"];
 }
 
 @end

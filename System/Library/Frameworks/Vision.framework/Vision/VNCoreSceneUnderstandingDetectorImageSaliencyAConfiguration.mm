@@ -1,13 +1,13 @@
 @interface VNCoreSceneUnderstandingDetectorImageSaliencyAConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation VNCoreSceneUnderstandingDetectorImageSaliencyAConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -19,7 +19,7 @@
     {
       v7.receiver = self;
       v7.super_class = VNCoreSceneUnderstandingDetectorImageSaliencyAConfiguration;
-      v5 = [(VNCoreSceneUnderstandingDetectorFeatureConfiguration *)&v7 isEqual:v4];
+      v5 = [(VNCoreSceneUnderstandingDetectorFeatureConfiguration *)&v7 isEqual:equalCopy];
     }
 
     else

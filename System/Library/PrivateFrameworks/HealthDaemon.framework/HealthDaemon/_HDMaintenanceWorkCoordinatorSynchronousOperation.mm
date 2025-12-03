@@ -1,28 +1,28 @@
 @interface _HDMaintenanceWorkCoordinatorSynchronousOperation
-- (_HDMaintenanceWorkCoordinatorSynchronousOperation)initWithName:(id)a3 queue:(id)a4 block:(id)a5 canceledBlock:(id)a6;
+- (_HDMaintenanceWorkCoordinatorSynchronousOperation)initWithName:(id)name queue:(id)queue block:(id)block canceledBlock:(id)canceledBlock;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation _HDMaintenanceWorkCoordinatorSynchronousOperation
 
-- (_HDMaintenanceWorkCoordinatorSynchronousOperation)initWithName:(id)a3 queue:(id)a4 block:(id)a5 canceledBlock:(id)a6
+- (_HDMaintenanceWorkCoordinatorSynchronousOperation)initWithName:(id)name queue:(id)queue block:(id)block canceledBlock:(id)canceledBlock
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  queueCopy = queue;
+  blockCopy = block;
+  canceledBlockCopy = canceledBlock;
   v21.receiver = self;
   v21.super_class = _HDMaintenanceWorkCoordinatorSynchronousOperation;
-  v14 = [(HDMaintenanceOperation *)&v21 initWithName:a3];
+  v14 = [(HDMaintenanceOperation *)&v21 initWithName:name];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_queue, a4);
-    v16 = _Block_copy(v12);
+    objc_storeStrong(&v14->_queue, queue);
+    v16 = _Block_copy(blockCopy);
     block = v15->_block;
     v15->_block = v16;
 
-    v18 = _Block_copy(v13);
+    v18 = _Block_copy(canceledBlockCopy);
     canceledBlock = v15->_canceledBlock;
     v15->_canceledBlock = v18;
   }

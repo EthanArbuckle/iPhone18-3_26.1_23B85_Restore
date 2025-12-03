@@ -1,9 +1,9 @@
 @interface PGCuratedLibraryIntelligenceMetricEvent
-+ (id)librarySizeRangeDescriptionForLibrarySizeRange:(int64_t)a3;
-- (PGCuratedLibraryIntelligenceMetricEvent)initWithGraphManager:(id)a3;
-- (double)_ratioFromNumerator:(unint64_t)a3 denominator:(unint64_t)a4;
++ (id)librarySizeRangeDescriptionForLibrarySizeRange:(int64_t)range;
+- (PGCuratedLibraryIntelligenceMetricEvent)initWithGraphManager:(id)manager;
+- (double)_ratioFromNumerator:(unint64_t)numerator denominator:(unint64_t)denominator;
 - (id)_aggregationGroups;
-- (id)_assetsStatisticsInHighlights:(id)a3 photoLibrary:(id)a4 includeUtility:(BOOL)a5 progressReporter:(id)a6;
+- (id)_assetsStatisticsInHighlights:(id)highlights photoLibrary:(id)library includeUtility:(BOOL)utility progressReporter:(id)reporter;
 - (id)_dayHighlights;
 - (id)_daysWithinAggregations;
 - (id)_daysWithinTrips;
@@ -13,108 +13,108 @@
 - (id)payload;
 - (unint64_t)_debugNumberOfAssets;
 - (unint64_t)_numberOfDayHighlights;
-- (void)_fillContentScoreStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillDayHighlightsStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillGenericStatisticsWithGraph:(id)a3;
-- (void)_fillHiddenHighlightsStatisticsWithGraph:(id)a3;
-- (void)_fillKeyAssetsStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillMomentsStatisticsWithGraph:(id)a3;
-- (void)_fillMonthHighlightsStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillOnesiesHighlightStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillProcessingLevelStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillYearHighlightsStatisticsWithGraph:(id)a3;
-- (void)_saveKey:(id)a3 doubleValue:(double)a4 payload:(id)a5;
-- (void)_saveKey:(id)a3 integerValue:(unint64_t)a4 payload:(id)a5;
-- (void)gatherMetricsWithProgressBlock:(id)a3;
+- (void)_fillContentScoreStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillDayHighlightsStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillGenericStatisticsWithGraph:(id)graph;
+- (void)_fillHiddenHighlightsStatisticsWithGraph:(id)graph;
+- (void)_fillKeyAssetsStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillMomentsStatisticsWithGraph:(id)graph;
+- (void)_fillMonthHighlightsStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillOnesiesHighlightStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillProcessingLevelStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillYearHighlightsStatisticsWithGraph:(id)graph;
+- (void)_saveKey:(id)key doubleValue:(double)value payload:(id)payload;
+- (void)_saveKey:(id)key integerValue:(unint64_t)value payload:(id)payload;
+- (void)gatherMetricsWithProgressBlock:(id)block;
 @end
 
 @implementation PGCuratedLibraryIntelligenceMetricEvent
 
 - (id)_longTripDayGroups
 {
-  v2 = [(PGManager *)self->_manager photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d", 1];
-  [v3 setPredicate:v4];
+  [librarySpecificFetchOptions setPredicate:v4];
 
-  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:v3];
+  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:librarySpecificFetchOptions];
 
   return v5;
 }
 
 - (id)_shortTripDayGroups
 {
-  v2 = [(PGManager *)self->_manager photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d", 2];
-  [v3 setPredicate:v4];
+  [librarySpecificFetchOptions setPredicate:v4];
 
-  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:v3];
+  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:librarySpecificFetchOptions];
 
   return v5;
 }
 
 - (id)_daysWithinTrips
 {
-  v2 = [(PGManager *)self->_manager photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d", 5];
-  [v3 setPredicate:v4];
+  [librarySpecificFetchOptions setPredicate:v4];
 
-  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:v3];
+  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:librarySpecificFetchOptions];
 
   return v5;
 }
 
 - (id)_aggregationGroups
 {
-  v2 = [(PGManager *)self->_manager photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d", 3];
-  [v3 setPredicate:v4];
+  [librarySpecificFetchOptions setPredicate:v4];
 
-  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:v3];
+  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:librarySpecificFetchOptions];
 
   return v5;
 }
 
 - (id)_daysWithinAggregations
 {
-  v2 = [(PGManager *)self->_manager photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d", 6];
-  [v3 setPredicate:v4];
+  [librarySpecificFetchOptions setPredicate:v4];
 
-  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:v3];
+  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:librarySpecificFetchOptions];
 
   return v5;
 }
 
 - (id)_defaultHighlights
 {
-  v2 = [(PGManager *)self->_manager photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d", 0];
-  [v3 setPredicate:v4];
+  [librarySpecificFetchOptions setPredicate:v4];
 
-  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:v3];
+  v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:librarySpecificFetchOptions];
 
   return v5;
 }
 
 - (unint64_t)_numberOfDayHighlights
 {
-  v2 = [(PGManager *)self->_manager photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v3 setShouldPrefetchCount:1];
-  v4 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:v3];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  v4 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:librarySpecificFetchOptions];
   v5 = [v4 count];
 
   return v5;
@@ -122,19 +122,19 @@
 
 - (id)_dayHighlights
 {
-  v2 = [(PGManager *)self->_manager photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v4 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:v3];
+  v4 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:librarySpecificFetchOptions];
 
   return v4;
 }
 
-- (double)_ratioFromNumerator:(unint64_t)a3 denominator:(unint64_t)a4
+- (double)_ratioFromNumerator:(unint64_t)numerator denominator:(unint64_t)denominator
 {
-  if (a4)
+  if (denominator)
   {
-    return a3 / a4;
+    return numerator / denominator;
   }
 
   else
@@ -143,23 +143,23 @@
   }
 }
 
-- (id)_assetsStatisticsInHighlights:(id)a3 photoLibrary:(id)a4 includeUtility:(BOOL)a5 progressReporter:(id)a6
+- (id)_assetsStatisticsInHighlights:(id)highlights photoLibrary:(id)library includeUtility:(BOOL)utility progressReporter:(id)reporter
 {
-  v7 = a5;
+  utilityCopy = utility;
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (![v12 isCancelledWithProgress:0.0])
+  highlightsCopy = highlights;
+  libraryCopy = library;
+  reporterCopy = reporter;
+  if (![reporterCopy isCancelledWithProgress:0.0])
   {
-    v33 = v11;
+    v33 = libraryCopy;
     v32 = objc_autoreleasePoolPush();
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v34 = v10;
-    v14 = v10;
+    v34 = highlightsCopy;
+    v14 = highlightsCopy;
     v15 = [v14 countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v15)
     {
@@ -193,19 +193,19 @@
       v18 = 0;
     }
 
-    if (v7)
+    if (utilityCopy)
     {
-      v11 = v33;
-      v22 = [v33 librarySpecificFetchOptions];
-      [v22 setShouldPrefetchCount:1];
-      v23 = [(PGCuratedLibraryIntelligenceMetricEvent *)self utilityPredicate];
-      [v22 setInternalPredicate:v23];
+      libraryCopy = v33;
+      librarySpecificFetchOptions = [v33 librarySpecificFetchOptions];
+      [librarySpecificFetchOptions setShouldPrefetchCount:1];
+      utilityPredicate = [(PGCuratedLibraryIntelligenceMetricEvent *)self utilityPredicate];
+      [librarySpecificFetchOptions setInternalPredicate:utilityPredicate];
 
-      [v22 setIncludeGuestAssets:1];
-      v24 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollections:v14 options:v22];
+      [librarySpecificFetchOptions setIncludeGuestAssets:1];
+      v24 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollections:v14 options:librarySpecificFetchOptions];
       v25 = [v24 count];
       v26 = v32;
-      if ([v12 isCancelledWithProgress:0.8])
+      if ([reporterCopy isCancelledWithProgress:0.8])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -225,11 +225,11 @@
     {
       v25 = 0;
       v26 = v32;
-      v11 = v33;
+      libraryCopy = v33;
     }
 
     objc_autoreleasePoolPop(v26);
-    if (![v12 isCancelledWithProgress:1.0])
+    if (![reporterCopy isCancelledWithProgress:1.0])
     {
       v39[0] = @"total";
       v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
@@ -257,7 +257,7 @@
 LABEL_24:
     v13 = MEMORY[0x277CBEC10];
 LABEL_26:
-    v10 = v34;
+    highlightsCopy = v34;
     goto LABEL_27;
   }
 
@@ -280,15 +280,15 @@ LABEL_27:
 
 - (unint64_t)_debugNumberOfAssets
 {
-  v3 = [(PGManager *)self->_manager photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"creationDate >= %@", self->_debugDate];
-  [v4 setPredicate:v5];
+  [librarySpecificFetchOptions setPredicate:v5];
 
-  [v4 setShouldPrefetchCount:1];
-  [v4 setIncludeGuestAssets:1];
-  v6 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v4];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  v6 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
   v7 = [v6 count];
 
   return v7;
@@ -296,97 +296,97 @@ LABEL_27:
 
 - (id)payload
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"librarySize" integerValue:self->_librarySize payload:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"librarySize" integerValue:self->_librarySize payload:dictionary];
   v4 = [objc_opt_class() librarySizeRangeDescriptionForLibrarySizeRange:self->_librarySizeRange];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"librarySizeRange" stringValue:v4 payload:v3];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"librarySizeRange" stringValue:v4 payload:dictionary];
 
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDaysWithPhotosInPastYear" integerValue:self->_numberOfDaysWithPhotosInPastYear payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDayHighlights" integerValue:self->_numberOfDayHighlights payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDefaultDayHighlights" integerValue:self->_numberOfDefaultDayHighlights payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDaysInTrips" integerValue:self->_numberOfDaysInTrips payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDaysInAggregations" integerValue:self->_numberOfDaysInAggregations payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDefaultDays" doubleValue:v3 payload:self->_ratioOfDefaultDays];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDaysInTrips" doubleValue:v3 payload:self->_ratioOfDaysInTrips];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDaysInAggregations" doubleValue:v3 payload:self->_ratioOfDaysInAggregations];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfAggregations" integerValue:self->_numberOfAggregations payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfShortTrips" integerValue:self->_numberOfShortTrips payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfLongTrips" integerValue:self->_numberOfLongTrips payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfAssetsInDefaultHighlights" doubleValue:v3 payload:self->_averageNumberOfAssetsInDefaultHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfAssetsInAggregationHighlights" doubleValue:v3 payload:self->_averageNumberOfAssetsInAggregationHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfAssetsInTripHighlights" doubleValue:v3 payload:self->_averageNumberOfAssetsInTripHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfHiddenDayHighlights" doubleValue:v3 payload:self->_ratioOfHiddenDayHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsInDefaultHighlights" doubleValue:v3 payload:self->_ratioOfAssetsInDefaultHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsInAggregationHighlights" doubleValue:v3 payload:self->_ratioOfAssetsInAggregationHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsInTripHighlights" doubleValue:v3 payload:self->_ratioOfAssetsInTripHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsWithUtilityCurationScore" doubleValue:v3 payload:self->_ratioOfAssetsWithUtilityCurationScore];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsWithDefaultCurationScore" doubleValue:v3 payload:self->_ratioOfAssetsWithDefaultCurationScore];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsWithImprovedCurationScore" doubleValue:v3 payload:self->_ratioOfAssetsWithImprovedCurationScore];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsWithBetterCurationScore" doubleValue:v3 payload:self->_ratioOfAssetsWithBetterCurationScore];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"personalHighAestheticScore" doubleValue:v3 payload:self->_personalHighAestheticScore];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"personalGoodAestheticScore" doubleValue:v3 payload:self->_personalGoodAestheticScore];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"topTierAestheticScore" doubleValue:v3 payload:self->_topTierAestheticScore];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"topTierAestheticScoreForTripKeyAsset" doubleValue:v3 payload:self->_topTierAestheticScoreForTripKeyAsset];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfMonthHighlights" integerValue:self->_numberOfMonthHighlights payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfPromotedHighlightsPerMonth" doubleValue:v3 payload:self->_averageNumberOfPromotedHighlightsPerMonth];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfPromotedHighlightsPerMonthPastYear" doubleValue:v3 payload:self->_averageNumberOfPromotedHighlightsPerMonthPastYear];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfCuratedAssetsPerMonth" doubleValue:v3 payload:self->_averageNumberOfCuratedAssetsPerMonth];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssetsCoveredInMonth" doubleValue:v3 payload:self->_ratioOfCuratedAssetsCoveredInMonth];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfYearHighlights" integerValue:self->_numberOfYearHighlights payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOf1siesAmongVisibleHighlights" doubleValue:v3 payload:self->_ratioOfCurated1siesAmongVisibleHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOf2siesAmongVisibleHighlights" doubleValue:v3 payload:self->_ratioOfCurated2siesAmongVisibleHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfCuratedAssets" doubleValue:v3 payload:self->_numberOfCuratedAssets];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssets" doubleValue:v3 payload:self->_ratioOfCuratedAssets];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssetsInTrips" doubleValue:v3 payload:self->_ratioOfCuratedAssetsInTrips];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssetsInDefaultHighlights" doubleValue:v3 payload:self->_ratioOfCuratedAssetsInDefaultHighlights];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssetsInAggregations" doubleValue:v3 payload:self->_ratioOfCuratedAssetsInAggregations];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfUtilityAssets" doubleValue:v3 payload:self->_ratioOfUtilityAssets];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfUtilityAssetsInTrips" doubleValue:v3 payload:self->_ratioOfUtilityAssetsInTrips];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDedupedAssets" doubleValue:v3 payload:self->_ratioOfDedupedAssets];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDedupedAssetsInTrips" doubleValue:v3 payload:self->_ratioOfDedupedAssetsInTrips];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfMoments" integerValue:self->_numberOfMoments payload:v3];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfPhotoKeyAssets" doubleValue:v3 payload:self->_ratioOfPhotoKeyAssets];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfVideoKeyAssets" doubleValue:v3 payload:self->_ratioOfVideoKeyAssets];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAutoplayedPhotoKeyAssets" doubleValue:v3 payload:self->_ratioOfAutoplayedPhotoKeyAssets];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAutoplayedVideoKeyAssets" doubleValue:v3 payload:self->_ratioOfAutoplayedVideoKeyAssets];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfProcessedScenes" doubleValue:v3 payload:self->_ratioOfProcessedScenes];
-  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfProcessedFaces" doubleValue:v3 payload:self->_ratioOfProcessedFaces];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDaysWithPhotosInPastYear" integerValue:self->_numberOfDaysWithPhotosInPastYear payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDayHighlights" integerValue:self->_numberOfDayHighlights payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDefaultDayHighlights" integerValue:self->_numberOfDefaultDayHighlights payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDaysInTrips" integerValue:self->_numberOfDaysInTrips payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfDaysInAggregations" integerValue:self->_numberOfDaysInAggregations payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDefaultDays" doubleValue:dictionary payload:self->_ratioOfDefaultDays];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDaysInTrips" doubleValue:dictionary payload:self->_ratioOfDaysInTrips];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDaysInAggregations" doubleValue:dictionary payload:self->_ratioOfDaysInAggregations];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfAggregations" integerValue:self->_numberOfAggregations payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfShortTrips" integerValue:self->_numberOfShortTrips payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfLongTrips" integerValue:self->_numberOfLongTrips payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfAssetsInDefaultHighlights" doubleValue:dictionary payload:self->_averageNumberOfAssetsInDefaultHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfAssetsInAggregationHighlights" doubleValue:dictionary payload:self->_averageNumberOfAssetsInAggregationHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfAssetsInTripHighlights" doubleValue:dictionary payload:self->_averageNumberOfAssetsInTripHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfHiddenDayHighlights" doubleValue:dictionary payload:self->_ratioOfHiddenDayHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsInDefaultHighlights" doubleValue:dictionary payload:self->_ratioOfAssetsInDefaultHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsInAggregationHighlights" doubleValue:dictionary payload:self->_ratioOfAssetsInAggregationHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsInTripHighlights" doubleValue:dictionary payload:self->_ratioOfAssetsInTripHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsWithUtilityCurationScore" doubleValue:dictionary payload:self->_ratioOfAssetsWithUtilityCurationScore];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsWithDefaultCurationScore" doubleValue:dictionary payload:self->_ratioOfAssetsWithDefaultCurationScore];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsWithImprovedCurationScore" doubleValue:dictionary payload:self->_ratioOfAssetsWithImprovedCurationScore];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAssetsWithBetterCurationScore" doubleValue:dictionary payload:self->_ratioOfAssetsWithBetterCurationScore];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"personalHighAestheticScore" doubleValue:dictionary payload:self->_personalHighAestheticScore];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"personalGoodAestheticScore" doubleValue:dictionary payload:self->_personalGoodAestheticScore];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"topTierAestheticScore" doubleValue:dictionary payload:self->_topTierAestheticScore];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"topTierAestheticScoreForTripKeyAsset" doubleValue:dictionary payload:self->_topTierAestheticScoreForTripKeyAsset];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfMonthHighlights" integerValue:self->_numberOfMonthHighlights payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfPromotedHighlightsPerMonth" doubleValue:dictionary payload:self->_averageNumberOfPromotedHighlightsPerMonth];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfPromotedHighlightsPerMonthPastYear" doubleValue:dictionary payload:self->_averageNumberOfPromotedHighlightsPerMonthPastYear];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"averageNumberOfCuratedAssetsPerMonth" doubleValue:dictionary payload:self->_averageNumberOfCuratedAssetsPerMonth];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssetsCoveredInMonth" doubleValue:dictionary payload:self->_ratioOfCuratedAssetsCoveredInMonth];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfYearHighlights" integerValue:self->_numberOfYearHighlights payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOf1siesAmongVisibleHighlights" doubleValue:dictionary payload:self->_ratioOfCurated1siesAmongVisibleHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOf2siesAmongVisibleHighlights" doubleValue:dictionary payload:self->_ratioOfCurated2siesAmongVisibleHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfCuratedAssets" doubleValue:dictionary payload:self->_numberOfCuratedAssets];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssets" doubleValue:dictionary payload:self->_ratioOfCuratedAssets];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssetsInTrips" doubleValue:dictionary payload:self->_ratioOfCuratedAssetsInTrips];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssetsInDefaultHighlights" doubleValue:dictionary payload:self->_ratioOfCuratedAssetsInDefaultHighlights];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfCuratedAssetsInAggregations" doubleValue:dictionary payload:self->_ratioOfCuratedAssetsInAggregations];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfUtilityAssets" doubleValue:dictionary payload:self->_ratioOfUtilityAssets];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfUtilityAssetsInTrips" doubleValue:dictionary payload:self->_ratioOfUtilityAssetsInTrips];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDedupedAssets" doubleValue:dictionary payload:self->_ratioOfDedupedAssets];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfDedupedAssetsInTrips" doubleValue:dictionary payload:self->_ratioOfDedupedAssetsInTrips];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"numberOfMoments" integerValue:self->_numberOfMoments payload:dictionary];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfPhotoKeyAssets" doubleValue:dictionary payload:self->_ratioOfPhotoKeyAssets];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfVideoKeyAssets" doubleValue:dictionary payload:self->_ratioOfVideoKeyAssets];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAutoplayedPhotoKeyAssets" doubleValue:dictionary payload:self->_ratioOfAutoplayedPhotoKeyAssets];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfAutoplayedVideoKeyAssets" doubleValue:dictionary payload:self->_ratioOfAutoplayedVideoKeyAssets];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfProcessedScenes" doubleValue:dictionary payload:self->_ratioOfProcessedScenes];
+  [(PGCuratedLibraryIntelligenceMetricEvent *)self _saveKey:@"ratioOfProcessedFaces" doubleValue:dictionary payload:self->_ratioOfProcessedFaces];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_saveKey:(id)a3 integerValue:(unint64_t)a4 payload:(id)a5
+- (void)_saveKey:(id)key integerValue:(unint64_t)value payload:(id)payload
 {
   v7 = MEMORY[0x277CCABB0];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 numberWithUnsignedInteger:a4];
-  [v8 setObject:v10 forKeyedSubscript:v9];
+  payloadCopy = payload;
+  keyCopy = key;
+  v10 = [v7 numberWithUnsignedInteger:value];
+  [payloadCopy setObject:v10 forKeyedSubscript:keyCopy];
 }
 
-- (void)_saveKey:(id)a3 doubleValue:(double)a4 payload:(id)a5
+- (void)_saveKey:(id)key doubleValue:(double)value payload:(id)payload
 {
-  if (*&PGMetricsUnavailableDoubleValue != a4)
+  if (*&PGMetricsUnavailableDoubleValue != value)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = a5;
-    v9 = a3;
-    v10 = [v7 numberWithDouble:a4];
-    [v8 setObject:v10 forKeyedSubscript:v9];
+    payloadCopy = payload;
+    keyCopy = key;
+    v10 = [v7 numberWithDouble:value];
+    [payloadCopy setObject:v10 forKeyedSubscript:keyCopy];
   }
 }
 
-- (void)_fillProcessingLevelStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillProcessingLevelStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   if (![v9 isCancelledWithProgress:0.0])
   {
-    v10 = [(PGManager *)self->_manager photoLibrary];
-    [v10 ratioOfAssetsWithFacesProcessed];
+    photoLibrary = [(PGManager *)self->_manager photoLibrary];
+    [photoLibrary ratioOfAssetsWithFacesProcessed];
     [(PGCuratedLibraryIntelligenceMetricEvent *)self setRatioOfProcessedFaces:?];
     if ([v9 isCancelledWithProgress:0.5])
     {
@@ -406,7 +406,7 @@ LABEL_11:
 
     else
     {
-      [v10 ratioOfAssetsWithScenesProcessed];
+      [photoLibrary ratioOfAssetsWithScenesProcessed];
       [(PGCuratedLibraryIntelligenceMetricEvent *)self setRatioOfProcessedScenes:?];
       if (![v9 isCancelledWithProgress:1.0] || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -439,21 +439,21 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillMomentsStatisticsWithGraph:(id)a3
+- (void)_fillMomentsStatisticsWithGraph:(id)graph
 {
-  v5 = a3;
+  graphCopy = graph;
   v4 = objc_autoreleasePoolPush();
-  self->_numberOfMoments = [v5 numberOfMomentNodes];
+  self->_numberOfMoments = [graphCopy numberOfMomentNodes];
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_fillKeyAssetsStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillKeyAssetsStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
@@ -462,7 +462,7 @@ LABEL_12:
   *(v46 + 24) = v10;
   if (!v10)
   {
-    v11 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _dayHighlights];
+    _dayHighlights = [(PGCuratedLibraryIntelligenceMetricEvent *)self _dayHighlights];
     if (v46[3])
     {
       *(v46 + 24) = 1;
@@ -502,10 +502,10 @@ LABEL_7:
     v34 = &v33;
     v35 = 0x2020000000;
     v36 = 0;
-    v13 = [(PGManager *)self->_manager photoLibrary];
-    v14 = [v13 librarySpecificFetchOptions];
+    photoLibrary = [(PGManager *)self->_manager photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v15 = [MEMORY[0x277CD97A8] fetchKeyAssetByHighlightUUIDForHighlights:v11 options:v14];
+    v15 = [MEMORY[0x277CD97A8] fetchKeyAssetByHighlightUUIDForHighlights:_dayHighlights options:librarySpecificFetchOptions];
     if (v46[3])
     {
       *(v46 + 24) = 1;
@@ -652,22 +652,22 @@ LABEL_8:
   *(v7 + 24) = v8;
 }
 
-- (void)_fillOnesiesHighlightStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillOnesiesHighlightStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   if (![v9 isCancelledWithProgress:0.0])
   {
-    v10 = [(PGManager *)self->_manager photoLibrary];
-    v11 = [v10 librarySpecificFetchOptions];
+    photoLibrary = [(PGManager *)self->_manager photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"visibilityState == %d || visibilityState == %d", 1, 3];
-    [v11 setInternalPredicate:v12];
+    [librarySpecificFetchOptions setInternalPredicate:v12];
 
-    v13 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:0x7FFFFFFFFFFFFFFFLL options:v11];
+    v13 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
     if ([v9 isCancelledWithProgress:0.4])
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -686,9 +686,9 @@ LABEL_30:
 
     else
     {
-      v31 = v11;
+      v31 = librarySpecificFetchOptions;
       v32 = v8;
-      v33 = v6;
+      v33 = graphCopy;
       v29 = [v13 count];
       v30 = v13;
       v34 = 0u;
@@ -714,8 +714,8 @@ LABEL_30:
 
             v22 = *(*(&v34 + 1) + 8 * i);
             v23 = objc_autoreleasePoolPush();
-            v24 = [v22 extendedCount];
-            if (v24 == 1)
+            extendedCount = [v22 extendedCount];
+            if (extendedCount == 1)
             {
               v25 = v19 + 1;
             }
@@ -725,7 +725,7 @@ LABEL_30:
               v25 = v19;
             }
 
-            if (v24 == 2)
+            if (extendedCount == 2)
             {
               ++v18;
             }
@@ -749,9 +749,9 @@ LABEL_30:
               objc_autoreleasePoolPop(v23);
 
               v8 = v32;
-              v6 = v33;
+              graphCopy = v33;
               v13 = v30;
-              v11 = v31;
+              librarySpecificFetchOptions = v31;
               goto LABEL_30;
             }
 
@@ -779,9 +779,9 @@ LABEL_30:
       [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v18 denominator:v29];
       self->_ratioOfCurated2siesAmongVisibleHighlights = v27;
       v8 = v32;
-      v6 = v33;
+      graphCopy = v33;
       v13 = v30;
-      v11 = v31;
+      librarySpecificFetchOptions = v31;
       if (![v9 isCancelledWithProgress:1.0] || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
@@ -813,43 +813,43 @@ LABEL_31:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillHiddenHighlightsStatisticsWithGraph:(id)a3
+- (void)_fillHiddenHighlightsStatisticsWithGraph:(id)graph
 {
-  v10 = a3;
+  graphCopy = graph;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(PGManager *)self->_manager photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"promotionScore < 0.25"];
-  [v6 setInternalPredicate:v7];
+  [librarySpecificFetchOptions setInternalPredicate:v7];
 
-  v8 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:v6];
+  v8 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:librarySpecificFetchOptions];
   -[PGCuratedLibraryIntelligenceMetricEvent _ratioFromNumerator:denominator:](self, "_ratioFromNumerator:denominator:", [v8 count], self->_numberOfDayHighlights);
   self->_ratioOfHiddenDayHighlights = v9;
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_fillYearHighlightsStatisticsWithGraph:(id)a3
+- (void)_fillYearHighlightsStatisticsWithGraph:(id)graph
 {
-  v8 = a3;
+  graphCopy = graph;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(PGManager *)self->_manager photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v7 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000303 options:v6];
+  v7 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000303 options:librarySpecificFetchOptions];
   self->_numberOfYearHighlights = [v7 count];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_fillMonthHighlightsStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillMonthHighlightsStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   v49 = v9;
   if ([v9 isCancelledWithProgress:0.0])
   {
@@ -865,9 +865,9 @@ LABEL_31:
 
   else
   {
-    v10 = [(PGManager *)self->_manager photoLibrary];
-    v11 = [v10 librarySpecificFetchOptions];
-    v12 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000302 options:v11];
+    photoLibrary = [(PGManager *)self->_manager photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v12 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000302 options:librarySpecificFetchOptions];
     self->_numberOfMonthHighlights = [v12 count];
     if ([v9 isCancelledWithProgress:0.2])
     {
@@ -883,11 +883,11 @@ LABEL_31:
 
     else
     {
-      v48 = [MEMORY[0x277D27690] currentLocalDate];
-      v13 = [v10 librarySpecificFetchOptions];
+      currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
+      librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
       v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"visibilityState == %d || visibilityState == %d", 3, 2];
-      v47 = v13;
-      [v13 setInternalPredicate:v14];
+      v47 = librarySpecificFetchOptions2;
+      [librarySpecificFetchOptions2 setInternalPredicate:v14];
 
       v56 = 0u;
       v57 = 0u;
@@ -903,11 +903,11 @@ LABEL_31:
       {
         v45 = *v55;
         v42 = v8;
-        v43 = v6;
-        v40 = v11;
-        v41 = v10;
+        v43 = graphCopy;
+        v40 = librarySpecificFetchOptions;
+        v41 = photoLibrary;
         v39 = v12;
-        v38 = self;
+        selfCopy = self;
         while (2)
         {
           v19 = 0;
@@ -921,8 +921,8 @@ LABEL_31:
 
             v21 = *(*(&v54 + 1) + 8 * v19);
             v22 = objc_autoreleasePoolPush();
-            v23 = [v21 startDate];
-            [v23 timeIntervalSinceDate:v48];
+            startDate = [v21 startDate];
+            [startDate timeIntervalSinceDate:currentLocalDate];
             v25 = v24;
 
             if (v25 < 0.0)
@@ -949,9 +949,9 @@ LABEL_31:
 
               objc_autoreleasePoolPop(v22);
               v8 = v42;
-              v6 = v43;
-              v11 = v40;
-              v10 = v41;
+              graphCopy = v43;
+              librarySpecificFetchOptions = v40;
+              photoLibrary = v41;
               v12 = v39;
               goto LABEL_38;
             }
@@ -1001,9 +1001,9 @@ LABEL_31:
             if ([v49 isCancelledWithProgress:0.5])
             {
               v8 = v42;
-              v6 = v43;
-              v11 = v40;
-              v10 = v41;
+              graphCopy = v43;
+              librarySpecificFetchOptions = v40;
+              photoLibrary = v41;
               v12 = v39;
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
@@ -1024,11 +1024,11 @@ LABEL_38:
 
           while (v19 != v46);
           v8 = v42;
-          v6 = v43;
-          v11 = v40;
-          v10 = v41;
+          graphCopy = v43;
+          librarySpecificFetchOptions = v40;
+          photoLibrary = v41;
           v12 = v39;
-          self = v38;
+          self = selfCopy;
           v46 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
           if (v46)
           {
@@ -1064,10 +1064,10 @@ LABEL_39:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillContentScoreStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillContentScoreStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ([a4 isCancelledWithProgress:{a3, 0.0}])
+  if ([reporter isCancelledWithProgress:{graph, 0.0}])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1092,12 +1092,12 @@ LABEL_39:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillDayHighlightsStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillDayHighlightsStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v112 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isCancelledWithProgress:0.0])
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1111,14 +1111,14 @@ LABEL_39:
 
   else
   {
-    v106 = v6;
-    v8 = [(PGManager *)self->_manager photoLibrary];
-    v9 = [(PGManager *)self->_manager enrichmentLoggingConnection];
+    v106 = graphCopy;
+    photoLibrary = [(PGManager *)self->_manager photoLibrary];
+    enrichmentLoggingConnection = [(PGManager *)self->_manager enrichmentLoggingConnection];
     v10 = objc_autoreleasePoolPush();
     self->_numberOfDayHighlights = [(PGCuratedLibraryIntelligenceMetricEvent *)self _numberOfDayHighlights];
     objc_autoreleasePoolPop(v10);
     context = objc_autoreleasePoolPush();
-    v11 = v9;
+    v11 = enrichmentLoggingConnection;
     v12 = os_signpost_id_generate(v11);
     v13 = v11;
     v14 = v13;
@@ -1131,24 +1131,24 @@ LABEL_39:
     info = 0;
     mach_timebase_info(&info);
     v102 = mach_absolute_time();
-    v15 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _defaultHighlights];
-    self->_numberOfDefaultDayHighlights = [v15 count];
-    v108 = v7;
-    v16 = [v7 childProgressReporterFromStart:0.01 toEnd:0.09];
-    v107 = v8;
-    v17 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _assetsStatisticsInHighlights:v15 photoLibrary:v8 includeUtility:0 progressReporter:v16];
+    _defaultHighlights = [(PGCuratedLibraryIntelligenceMetricEvent *)self _defaultHighlights];
+    self->_numberOfDefaultDayHighlights = [_defaultHighlights count];
+    v108 = reporterCopy;
+    v16 = [reporterCopy childProgressReporterFromStart:0.01 toEnd:0.09];
+    v107 = photoLibrary;
+    v17 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _assetsStatisticsInHighlights:_defaultHighlights photoLibrary:photoLibrary includeUtility:0 progressReporter:v16];
     v18 = [v17 objectForKeyedSubscript:@"total"];
-    v19 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
 
     v20 = [v17 objectForKeyedSubscript:@"curated"];
-    v21 = [v20 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v20 unsignedIntegerValue];
 
-    [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v19 denominator:self->_numberOfDefaultDayHighlights];
+    [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue denominator:self->_numberOfDefaultDayHighlights];
     self->_averageNumberOfAssetsInDefaultHighlights = v22;
-    [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v19 denominator:self->_librarySize];
+    [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue denominator:self->_librarySize];
     self->_ratioOfAssetsInDefaultHighlights = v23;
-    v99 = v21;
-    [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v21 denominator:v19];
+    v99 = unsignedIntegerValue2;
+    [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue2 denominator:unsignedIntegerValue];
     self->_ratioOfCuratedAssetsInDefaultHighlights = v24;
     [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:self->_numberOfDefaultDayHighlights denominator:self->_numberOfDayHighlights];
     self->_ratioOfDefaultDays = v25;
@@ -1171,7 +1171,7 @@ LABEL_39:
       _os_log_impl(&dword_22F0FC000, v29, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
     }
 
-    v7 = v108;
+    reporterCopy = v108;
     if ([v108 isCancelledWithProgress:0.1])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1205,7 +1205,7 @@ LABEL_39:
       info = 0;
       mach_timebase_info(&info);
       v36 = mach_absolute_time();
-      v37 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _daysWithinAggregations];
+      _daysWithinAggregations = [(PGCuratedLibraryIntelligenceMetricEvent *)self _daysWithinAggregations];
       if ([v108 isCancelledWithProgress:0.2])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1219,12 +1219,12 @@ LABEL_39:
 
         objc_autoreleasePoolPop(v31);
         v30 = v107;
-        v7 = v108;
+        reporterCopy = v108;
       }
 
       else
       {
-        v38 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _aggregationGroups];
+        _aggregationGroups = [(PGCuratedLibraryIntelligenceMetricEvent *)self _aggregationGroups];
         if ([v108 isCancelledWithProgress:0.3])
         {
           LOBYTE(v39) = 1;
@@ -1240,30 +1240,30 @@ LABEL_39:
           contexta = 0;
           v40 = 0;
           v30 = v107;
-          v7 = v108;
+          reporterCopy = v108;
         }
 
         else
         {
-          v97 = v38;
-          self->_numberOfAggregations = [v38 count];
-          self->_numberOfDaysInAggregations = [v37 count];
+          v97 = _aggregationGroups;
+          self->_numberOfAggregations = [_aggregationGroups count];
+          self->_numberOfDaysInAggregations = [_daysWithinAggregations count];
           [v108 childProgressReporterFromStart:0.31 toEnd:0.39];
-          v95 = spid = v37;
-          v41 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _assetsStatisticsInHighlights:v37 photoLibrary:v107 includeUtility:0 progressReporter:?];
+          v95 = spid = _daysWithinAggregations;
+          v41 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _assetsStatisticsInHighlights:_daysWithinAggregations photoLibrary:v107 includeUtility:0 progressReporter:?];
           v42 = [v41 objectForKeyedSubscript:@"total"];
-          v43 = [v42 unsignedIntegerValue];
+          unsignedIntegerValue3 = [v42 unsignedIntegerValue];
 
           v93 = v41;
           v44 = [v41 objectForKeyedSubscript:@"curated"];
-          v45 = [v44 unsignedIntegerValue];
+          unsignedIntegerValue4 = [v44 unsignedIntegerValue];
 
-          [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v43 denominator:self->_numberOfAggregations];
+          [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue3 denominator:self->_numberOfAggregations];
           self->_averageNumberOfAssetsInAggregationHighlights = v46;
-          [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v43 denominator:self->_librarySize];
+          [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue3 denominator:self->_librarySize];
           self->_ratioOfAssetsInAggregationHighlights = v47;
-          contexta = v45;
-          [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v45 denominator:v43];
+          contexta = unsignedIntegerValue4;
+          [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue4 denominator:unsignedIntegerValue3];
           self->_ratioOfCuratedAssetsInAggregations = v48;
           [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:self->_numberOfDaysInAggregations denominator:self->_numberOfDayHighlights];
           self->_ratioOfDaysInAggregations = v49;
@@ -1287,10 +1287,10 @@ LABEL_39:
             _os_log_impl(&dword_22F0FC000, v54, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
           }
 
-          v7 = v108;
+          reporterCopy = v108;
           v39 = [v108 isCancelledWithProgress:0.4];
           v30 = v107;
-          v38 = v97;
+          _aggregationGroups = v97;
           if (v39 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             *buf = 67109378;
@@ -1302,7 +1302,7 @@ LABEL_39:
 
           v40 = v39 ^ 1;
 
-          v37 = spid;
+          _daysWithinAggregations = spid;
         }
 
         objc_autoreleasePoolPop(v31);
@@ -1322,7 +1322,7 @@ LABEL_39:
           info = 0;
           mach_timebase_info(&info);
           v60 = mach_absolute_time();
-          v61 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _daysWithinTrips];
+          _daysWithinTrips = [(PGCuratedLibraryIntelligenceMetricEvent *)self _daysWithinTrips];
           if ((v39 & 1) != 0 || [v108 isCancelledWithProgress:0.5])
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1335,14 +1335,14 @@ LABEL_39:
             }
 
             objc_autoreleasePoolPop(v55);
-            v7 = v108;
+            reporterCopy = v108;
           }
 
           else
           {
             v98 = v60;
-            v63 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _shortTripDayGroups];
-            v103 = v63;
+            _shortTripDayGroups = [(PGCuratedLibraryIntelligenceMetricEvent *)self _shortTripDayGroups];
+            v103 = _shortTripDayGroups;
             if ([v108 isCancelledWithProgress:0.6])
             {
               LOBYTE(v64) = 1;
@@ -1357,13 +1357,13 @@ LABEL_39:
 
               v65 = 0;
               v66 = 0;
-              v7 = v108;
+              reporterCopy = v108;
             }
 
             else
             {
-              spida = v61;
-              v67 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _longTripDayGroups];
+              spida = _daysWithinTrips;
+              _longTripDayGroups = [(PGCuratedLibraryIntelligenceMetricEvent *)self _longTripDayGroups];
               if ([v108 isCancelledWithProgress:0.7])
               {
                 LOBYTE(v64) = 1;
@@ -1378,40 +1378,40 @@ LABEL_39:
 
                 v65 = 0;
                 v66 = 0;
-                v7 = v108;
+                reporterCopy = v108;
               }
 
               else
               {
                 v96 = v55;
-                self->_numberOfShortTrips = [v63 count];
-                v94 = v67;
-                v68 = [v67 count];
+                self->_numberOfShortTrips = [_shortTripDayGroups count];
+                v94 = _longTripDayGroups;
+                v68 = [_longTripDayGroups count];
                 self->_numberOfLongTrips = v68;
                 numberOfShortTrips = self->_numberOfShortTrips;
                 self->_numberOfDaysInTrips = [spida count];
                 v92 = [v108 childProgressReporterFromStart:0.71 toEnd:0.79];
                 v70 = [(PGCuratedLibraryIntelligenceMetricEvent *)self _assetsStatisticsInHighlights:spida photoLibrary:v30 includeUtility:0 progressReporter:v92];
                 v71 = [v70 objectForKeyedSubscript:@"total"];
-                v72 = [v71 unsignedIntegerValue];
+                unsignedIntegerValue5 = [v71 unsignedIntegerValue];
 
-                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v72 denominator:numberOfShortTrips + v68];
+                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue5 denominator:numberOfShortTrips + v68];
                 self->_averageNumberOfAssetsInTripHighlights = v73;
-                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v72 denominator:self->_librarySize];
+                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue5 denominator:self->_librarySize];
                 self->_ratioOfAssetsInTripHighlights = v74;
                 v75 = [v70 objectForKeyedSubscript:@"curated"];
-                v76 = [v75 unsignedIntegerValue];
+                unsignedIntegerValue6 = [v75 unsignedIntegerValue];
 
-                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v76 denominator:v72];
+                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue6 denominator:unsignedIntegerValue5];
                 self->_ratioOfCuratedAssetsInTrips = v77;
                 v91 = v70;
                 v78 = [v70 objectForKeyedSubscript:@"utility"];
-                v79 = [v78 unsignedIntegerValue];
+                unsignedIntegerValue7 = [v78 unsignedIntegerValue];
 
-                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v79 denominator:v72];
+                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue7 denominator:unsignedIntegerValue5];
                 self->_ratioOfUtilityAssetsInTrips = v80;
-                v81 = v76;
-                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:v72 - (v76 + v79) denominator:v72];
+                v81 = unsignedIntegerValue6;
+                [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:unsignedIntegerValue5 - (unsignedIntegerValue6 + unsignedIntegerValue7) denominator:unsignedIntegerValue5];
                 self->_ratioOfDedupedAssetsInTrips = v82;
                 [(PGCuratedLibraryIntelligenceMetricEvent *)self _ratioFromNumerator:self->_numberOfDaysInTrips denominator:self->_numberOfDayHighlights];
                 self->_ratioOfDaysInTrips = v83;
@@ -1436,7 +1436,7 @@ LABEL_39:
                   _os_log_impl(&dword_22F0FC000, v88, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
                 }
 
-                v7 = v108;
+                reporterCopy = v108;
                 v64 = [v108 isCancelledWithProgress:0.8];
                 v30 = v107;
                 v65 = v81;
@@ -1451,10 +1451,10 @@ LABEL_39:
 
                 v66 = v64 ^ 1;
 
-                v67 = v94;
+                _longTripDayGroups = v94;
               }
 
-              v61 = spida;
+              _daysWithinTrips = spida;
             }
 
             objc_autoreleasePoolPop(v55);
@@ -1464,7 +1464,7 @@ LABEL_39:
               librarySize = self->_librarySize;
               [PGCuratedLibraryIntelligenceMetricEvent _ratioFromNumerator:"_ratioFromNumerator:denominator:" denominator:?];
               self->_ratioOfCuratedAssets = v90;
-              if (((v64 & 1) != 0 || [v7 isCancelledWithProgress:1.0]) && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+              if (((v64 & 1) != 0 || [reporterCopy isCancelledWithProgress:1.0]) && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
                 *buf = 67109378;
                 *v111 = 370;
@@ -1478,51 +1478,51 @@ LABEL_39:
       }
     }
 
-    v6 = v106;
+    graphCopy = v106;
   }
 
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillGenericStatisticsWithGraph:(id)a3
+- (void)_fillGenericStatisticsWithGraph:(id)graph
 {
-  v13 = a3;
+  graphCopy = graph;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v13 infoNode];
-  self->_librarySize = [v5 numberOfAssets];
+  infoNode = [graphCopy infoNode];
+  self->_librarySize = [infoNode numberOfAssets];
 
-  self->_librarySizeRange = [v13 librarySizeRange];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [MEMORY[0x277D27690] dateByAddingDays:-365 toDate:v6];
+  self->_librarySizeRange = [graphCopy librarySizeRange];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [MEMORY[0x277D27690] dateByAddingDays:-365 toDate:date];
   v8 = [MEMORY[0x277D27690] startOfDayForDate:v7];
 
-  v9 = [(PGManager *)self->_manager photoLibrary];
-  v10 = [v9 librarySpecificFetchOptions];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"startDate >= %@", v8];
-  [v10 setPredicate:v11];
+  [librarySpecificFetchOptions setPredicate:v11];
 
-  [v10 setShouldPrefetchCount:1];
-  v12 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:v10];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  v12 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000301 options:librarySpecificFetchOptions];
   self->_numberOfDaysWithPhotosInPastYear = [v12 count];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)gatherMetricsWithProgressBlock:(id)a3
+- (void)gatherMetricsWithProgressBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PGManager *)self->_manager enrichmentLoggingConnection];
+  blockCopy = block;
+  enrichmentLoggingConnection = [(PGManager *)self->_manager enrichmentLoggingConnection];
   manager = self->_manager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__PGCuratedLibraryIntelligenceMetricEvent_gatherMetricsWithProgressBlock___block_invoke;
   v9[3] = &unk_27888B2F8;
-  v11 = self;
-  v12 = v4;
-  v10 = v5;
-  v7 = v5;
-  v8 = v4;
+  selfCopy = self;
+  v12 = blockCopy;
+  v10 = enrichmentLoggingConnection;
+  v7 = enrichmentLoggingConnection;
+  v8 = blockCopy;
   [(PGManager *)manager performSynchronousConcurrentGraphReadUsingBlock:v9];
 }
 
@@ -2218,16 +2218,16 @@ void __74__PGCuratedLibraryIntelligenceMetricEvent_gatherMetricsWithProgressBloc
   v148 = *MEMORY[0x277D85DE8];
 }
 
-- (PGCuratedLibraryIntelligenceMetricEvent)initWithGraphManager:(id)a3
+- (PGCuratedLibraryIntelligenceMetricEvent)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = PGCuratedLibraryIntelligenceMetricEvent;
   v6 = [(PGCuratedLibraryIntelligenceMetricEvent *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
     v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:1559088000.0];
     debugDate = v7->_debugDate;
     v7->_debugDate = v8;
@@ -2236,16 +2236,16 @@ void __74__PGCuratedLibraryIntelligenceMetricEvent_gatherMetricsWithProgressBloc
   return v7;
 }
 
-+ (id)librarySizeRangeDescriptionForLibrarySizeRange:(int64_t)a3
++ (id)librarySizeRangeDescriptionForLibrarySizeRange:(int64_t)range
 {
-  if (a3 > 5)
+  if (range > 5)
   {
     v4 = @"Unknown";
   }
 
   else
   {
-    v4 = *off_278880050[a3];
+    v4 = *off_278880050[range];
   }
 
   return v4;

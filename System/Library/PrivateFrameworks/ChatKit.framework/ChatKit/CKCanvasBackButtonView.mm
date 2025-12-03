@@ -1,32 +1,32 @@
 @interface CKCanvasBackButtonView
 - (CGSize)_titlePaddingViewSizeForTitle;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKCanvasBackButtonView)initWithFrame:(CGRect)a3 showPaddingTitleView:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKCanvasBackButtonView)initWithFrame:(CGRect)frame showPaddingTitleView:(BOOL)view;
 - (UIImageView)backButtonView;
 - (UILabel)titleLabel;
 - (UIView)titlePaddingView;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4 modifiers:(int64_t)a5;
-- (void)_setVisuallyHighlighted:(BOOL)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region modifiers:(int64_t)modifiers;
+- (void)_setVisuallyHighlighted:(BOOL)highlighted;
 - (void)layoutSubviews;
-- (void)setBackButtonTitle:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setShouldShowTitlePaddingView:(BOOL)a3;
+- (void)setBackButtonTitle:(id)title;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setShouldShowTitlePaddingView:(BOOL)view;
 - (void)sizeToFit;
 - (void)tintColorDidChange;
 @end
 
 @implementation CKCanvasBackButtonView
 
-- (CKCanvasBackButtonView)initWithFrame:(CGRect)a3 showPaddingTitleView:(BOOL)a4
+- (CKCanvasBackButtonView)initWithFrame:(CGRect)frame showPaddingTitleView:(BOOL)view
 {
-  v4 = a4;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = CKCanvasBackButtonView;
-  v5 = [(CKCanvasBackButtonView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CKCanvasBackButtonView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(CKCanvasBackButtonView *)v5 setShouldShowTitlePaddingView:v4];
+    [(CKCanvasBackButtonView *)v5 setShouldShowTitlePaddingView:viewCopy];
     [(CKCanvasBackButtonView *)v6 setAccessibilityIdentifier:@"backButton"];
     v7 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v6];
     [(CKCanvasBackButtonView *)v6 addInteraction:v7];
@@ -35,51 +35,51 @@
   return v6;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = CKCanvasBackButtonView;
   [(CKCanvasBackButtonView *)&v5 setHighlighted:?];
-  [(CKCanvasBackButtonView *)self _setVisuallyHighlighted:v3];
+  [(CKCanvasBackButtonView *)self _setVisuallyHighlighted:highlightedCopy];
 }
 
-- (void)setBackButtonTitle:(id)a3
+- (void)setBackButtonTitle:(id)title
 {
-  v10 = a3;
-  if (v10)
+  titleCopy = title;
+  if (titleCopy)
   {
-    v4 = [(CKCanvasBackButtonView *)self titleLabel];
-    [v4 setHidden:0];
+    titleLabel = [(CKCanvasBackButtonView *)self titleLabel];
+    [titleLabel setHidden:0];
 
-    v5 = [(CKCanvasBackButtonView *)self titlePaddingView];
-    [v5 setHidden:0];
+    titlePaddingView = [(CKCanvasBackButtonView *)self titlePaddingView];
+    [titlePaddingView setHidden:0];
 
-    v6 = [(CKCanvasBackButtonView *)self titleLabel];
-    [v6 setText:v10];
+    titleLabel2 = [(CKCanvasBackButtonView *)self titleLabel];
+    [titleLabel2 setText:titleCopy];
 
-    v7 = [(CKCanvasBackButtonView *)self titleLabel];
-    [v7 sizeToFit];
+    titleLabel3 = [(CKCanvasBackButtonView *)self titleLabel];
+    [titleLabel3 sizeToFit];
 
     [(CKCanvasBackButtonView *)self setNeedsLayout];
   }
 
   else
   {
-    v8 = [(CKCanvasBackButtonView *)self titlePaddingView];
-    [v8 setHidden:1];
+    titlePaddingView2 = [(CKCanvasBackButtonView *)self titlePaddingView];
+    [titlePaddingView2 setHidden:1];
 
-    v9 = [(CKCanvasBackButtonView *)self titleLabel];
-    [v9 setHidden:1];
+    titleLabel4 = [(CKCanvasBackButtonView *)self titleLabel];
+    [titleLabel4 setHidden:1];
   }
 }
 
-- (void)setShouldShowTitlePaddingView:(BOOL)a3
+- (void)setShouldShowTitlePaddingView:(BOOL)view
 {
-  if (self->_shouldShowTitlePaddingView != a3)
+  if (self->_shouldShowTitlePaddingView != view)
   {
-    self->_shouldShowTitlePaddingView = a3;
-    if (!a3)
+    self->_shouldShowTitlePaddingView = view;
+    if (!view)
     {
       [(CKCanvasBackButtonView *)self setTitlePaddingView:0];
     }
@@ -100,9 +100,9 @@
 
     if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
     {
-      v8 = [v7 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection = [v7 imageFlippedForRightToLeftLayoutDirection];
 
-      v7 = v8;
+      v7 = imageFlippedForRightToLeftLayoutDirection;
     }
 
     [(UIImageView *)self->_backButtonView setImage:v7];
@@ -131,8 +131,8 @@
 
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     [(UILabel *)self->_titleLabel setUserInteractionEnabled:0];
-    v8 = [(CKCanvasBackButtonView *)self titleLabelColor];
-    if (v8)
+    titleLabelColor = [(CKCanvasBackButtonView *)self titleLabelColor];
+    if (titleLabelColor)
     {
       [(CKCanvasBackButtonView *)self titleLabelColor];
     }
@@ -162,19 +162,19 @@
       v5 = self->_titlePaddingView;
       self->_titlePaddingView = v4;
 
-      v6 = [(CKCanvasBackButtonView *)self tintColor];
-      [(UIView *)self->_titlePaddingView setBackgroundColor:v6];
+      tintColor = [(CKCanvasBackButtonView *)self tintColor];
+      [(UIView *)self->_titlePaddingView setBackgroundColor:tintColor];
 
       [(UIView *)self->_titlePaddingView setUserInteractionEnabled:0];
-      v7 = [(UIView *)self->_titlePaddingView layer];
-      [v7 setMasksToBounds:0];
+      layer = [(UIView *)self->_titlePaddingView layer];
+      [layer setMasksToBounds:0];
 
-      v8 = [(UIView *)self->_titlePaddingView layer];
-      [v8 setAllowsEdgeAntialiasing:1];
+      layer2 = [(UIView *)self->_titlePaddingView layer];
+      [layer2 setAllowsEdgeAntialiasing:1];
 
       v9 = self->_titlePaddingView;
-      v10 = [(CKCanvasBackButtonView *)self titleLabel];
-      [(CKCanvasBackButtonView *)self insertSubview:v9 belowSubview:v10];
+      titleLabel = [(CKCanvasBackButtonView *)self titleLabel];
+      [(CKCanvasBackButtonView *)self insertSubview:v9 belowSubview:titleLabel];
 
       titlePaddingView = self->_titlePaddingView;
     }
@@ -195,25 +195,25 @@
   v11.receiver = self;
   v11.super_class = CKCanvasBackButtonView;
   [(CKCanvasBackButtonView *)&v11 tintColorDidChange];
-  v3 = [(CKCanvasBackButtonView *)self tintColor];
-  [(UIView *)self->_titlePaddingView setBackgroundColor:v3];
+  tintColor = [(CKCanvasBackButtonView *)self tintColor];
+  [(UIView *)self->_titlePaddingView setBackgroundColor:tintColor];
 
-  v4 = [(CKCanvasBackButtonView *)self tintColor];
+  tintColor2 = [(CKCanvasBackButtonView *)self tintColor];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 theme];
-  v7 = [v6 entryFieldDarkEffectButtonColor];
-  v8 = [v4 isEqual:v7];
+  theme = [v5 theme];
+  entryFieldDarkEffectButtonColor = [theme entryFieldDarkEffectButtonColor];
+  v8 = [tintColor2 isEqual:entryFieldDarkEffectButtonColor];
 
   if (v8)
   {
-    v9 = [(CKCanvasBackButtonView *)self tintColor];
-    [(UILabel *)self->_titleLabel setTextColor:v9];
+    tintColor3 = [(CKCanvasBackButtonView *)self tintColor];
+    [(UILabel *)self->_titleLabel setTextColor:tintColor3];
   }
 
   else
   {
-    v9 = [(CKCanvasBackButtonView *)self titleLabelColor];
-    if (v9)
+    tintColor3 = [(CKCanvasBackButtonView *)self titleLabelColor];
+    if (tintColor3)
     {
       [(CKCanvasBackButtonView *)self titleLabelColor];
     }
@@ -238,9 +238,9 @@
   [(CKCanvasBackButtonView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CKCanvasBackButtonView *)self _titlePaddingViewSizeForTitle:a3.width];
+  [(CKCanvasBackButtonView *)self _titlePaddingViewSizeForTitle:fits.width];
   v5 = v4;
   v7 = v6;
   if ([(CKCanvasBackButtonView *)self usesModernNavigationBar])
@@ -253,8 +253,8 @@
 
   else
   {
-    v12 = [(CKCanvasBackButtonView *)self backButtonView];
-    [v12 bounds];
+    backButtonView = [(CKCanvasBackButtonView *)self backButtonView];
+    [backButtonView bounds];
     v14 = v13;
     v8 = v15;
 
@@ -289,8 +289,8 @@
   v6 = v5;
   v8 = v7;
   rect = v9;
-  v10 = [(CKCanvasBackButtonView *)self titleLabel];
-  [v10 frame];
+  titleLabel = [(CKCanvasBackButtonView *)self titleLabel];
+  [titleLabel frame];
   v12 = v11;
   v60 = v13;
   v15 = v14;
@@ -312,8 +312,8 @@
     v55 = v21;
     v54 = v19;
     v23 = v19 * 0.381887616;
-    v24 = [(CKCanvasBackButtonView *)self backButtonView];
-    [v24 frame];
+    backButtonView = [(CKCanvasBackButtonView *)self backButtonView];
+    [backButtonView frame];
     v26 = v25;
     v28 = v27;
     v30 = v29;
@@ -530,10 +530,10 @@ void __40__CKCanvasBackButtonView_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_setVisuallyHighlighted:(BOOL)a3
+- (void)_setVisuallyHighlighted:(BOOL)highlighted
 {
   v3 = 1.0;
-  if (a3)
+  if (highlighted)
   {
     v3 = 0.2;
   }
@@ -543,7 +543,7 @@ void __40__CKCanvasBackButtonView_layoutSubviews__block_invoke_2(uint64_t a1)
   v5[0] = MEMORY[0x1E69E9820];
   v5[2] = __50__CKCanvasBackButtonView__setVisuallyHighlighted___block_invoke;
   v5[3] = &unk_1E72ED810;
-  if (a3)
+  if (highlighted)
   {
     v4 = 0.17;
   }
@@ -576,8 +576,8 @@ void __50__CKCanvasBackButtonView__setVisuallyHighlighted___block_invoke(uint64_
 
 - (CGSize)_titlePaddingViewSizeForTitle
 {
-  v3 = [(CKCanvasBackButtonView *)self titleLabel];
-  [v3 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  titleLabel = [(CKCanvasBackButtonView *)self titleLabel];
+  [titleLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v5 = v4;
   v7 = v6;
 
@@ -586,9 +586,9 @@ void __50__CKCanvasBackButtonView__setVisuallyHighlighted___block_invoke(uint64_
     v5 = v7;
   }
 
-  v8 = [(CKCanvasBackButtonView *)self titleLabel];
-  v9 = [v8 text];
-  if ([v9 length] <= 1)
+  titleLabel2 = [(CKCanvasBackButtonView *)self titleLabel];
+  text = [titleLabel2 text];
+  if ([text length] <= 1)
   {
     v10 = 2.0;
   }
@@ -605,23 +605,23 @@ void __50__CKCanvasBackButtonView__setVisuallyHighlighted___block_invoke(uint64_
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4 modifiers:(int64_t)a5
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region modifiers:(int64_t)modifiers
 {
   v6 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v7 = [MEMORY[0x1E69DCDA0] effectWithPreview:v6];
   [(CKCanvasBackButtonView *)self frame];
   [(CKCanvasBackButtonView *)self sizeThatFits:v8, v9];
   v11 = v10;
-  v12 = [(CKCanvasBackButtonView *)self titleLabel];
-  if ([v12 isHidden])
+  titleLabel = [(CKCanvasBackButtonView *)self titleLabel];
+  if ([titleLabel isHidden])
   {
   }
 
   else
   {
-    v13 = [(CKCanvasBackButtonView *)self titleLabel];
-    v14 = [v13 text];
-    v15 = [v14 length];
+    titleLabel2 = [(CKCanvasBackButtonView *)self titleLabel];
+    text = [titleLabel2 text];
+    v15 = [text length];
 
     if (v15)
     {

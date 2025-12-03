@@ -1,14 +1,14 @@
 @interface _NSStringAttributeDescriptor
-- (id)attributeValueFromValue:(id)a3;
+- (id)attributeValueFromValue:(id)value;
 @end
 
 @implementation _NSStringAttributeDescriptor
 
-- (id)attributeValueFromValue:(id)a3
+- (id)attributeValueFromValue:(id)value
 {
   if (_NSIsNSString())
   {
-    return a3;
+    return value;
   }
 
   else

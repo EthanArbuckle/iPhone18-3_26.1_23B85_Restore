@@ -4,21 +4,21 @@
 - (void)_activate;
 - (void)_cleanup;
 - (void)_clientHeartbeatSend;
-- (void)_clientPairSetup:(id)a3 start:(BOOL)a4;
-- (void)_clientPairVerify:(id)a3 start:(BOOL)a4;
+- (void)_clientPairSetup:(id)setup start:(BOOL)start;
+- (void)_clientPairVerify:(id)verify start:(BOOL)start;
 - (void)_clientRun;
 - (void)_clientSFSessionStart;
-- (void)_clientTryPIN:(id)a3;
-- (void)_handleServerRequest:(id)a3;
+- (void)_clientTryPIN:(id)n;
+- (void)_handleServerRequest:(id)request;
 - (void)_hearbeatTimer;
 - (void)_invalidate;
 - (void)activate;
-- (void)clientTryPIN:(id)a3;
+- (void)clientTryPIN:(id)n;
 - (void)dealloc;
-- (void)handleServerHeartbeat:(id)a3;
-- (void)handleServerPairSetup:(id)a3 reset:(BOOL)a4;
-- (void)handleServerPairVerify:(id)a3 reset:(BOOL)a4;
-- (void)handleServerRequest:(id)a3;
+- (void)handleServerHeartbeat:(id)heartbeat;
+- (void)handleServerPairSetup:(id)setup reset:(BOOL)reset;
+- (void)handleServerPairVerify:(id)verify reset:(BOOL)reset;
+- (void)handleServerRequest:(id)request;
 - (void)invalidate;
 @end
 
@@ -469,16 +469,16 @@ void __41__SFPINPairSession__clientSFSessionStart__block_invoke_4(uint64_t a1, v
   }
 }
 
-- (void)_clientPairVerify:(id)a3 start:(BOOL)a4
+- (void)_clientPairVerify:(id)verify start:(BOOL)start
 {
-  v4 = a4;
+  startCopy = start;
   v31[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  verifyCopy = verify;
   Int64Ranged = 0;
   v27 = 0;
   v28 = 0;
   v26 = 0;
-  if (v4)
+  if (startCopy)
   {
     if (gLogCategory_SFPINPairSession <= 30 && (gLogCategory_SFPINPairSession != -1 || _LogCategory_Initialize()))
     {
@@ -531,9 +531,9 @@ LABEL_54:
     }
   }
 
-  if (v6)
+  if (verifyCopy)
   {
-    v12 = [v6 headerFields];
+    headerFields = [verifyCopy headerFields];
     Int64Ranged = CFDictionaryGetInt64Ranged();
 
     if (Int64Ranged)
@@ -554,7 +554,7 @@ LABEL_52:
       goto LABEL_40;
     }
 
-    v13 = [v6 headerFields];
+    headerFields2 = [verifyCopy headerFields];
     CFDataGetTypeID();
     v10 = CFDictionaryGetTypedValue();
 
@@ -615,7 +615,7 @@ LABEL_27:
 
   v11 = objc_alloc_init(SFRequestMessage);
   v16 = &unk_1F1D7D0A8;
-  if (v4)
+  if (startCopy)
   {
     v16 = &unk_1F1D7D090;
   }
@@ -703,16 +703,16 @@ void __44__SFPINPairSession__clientPairVerify_start___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_clientPairSetup:(id)a3 start:(BOOL)a4
+- (void)_clientPairSetup:(id)setup start:(BOOL)start
 {
-  v4 = a4;
+  startCopy = start;
   v39[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  setupCopy = setup;
   Int64Ranged = 0;
   v35 = 0;
   v36 = 0;
   v34 = 0;
-  if (v4)
+  if (startCopy)
   {
     if (gLogCategory_SFPINPairSession <= 30 && (gLogCategory_SFPINPairSession != -1 || _LogCategory_Initialize()))
     {
@@ -770,13 +770,13 @@ void __44__SFPINPairSession__clientPairVerify_start___block_invoke(uint64_t a1, 
     }
   }
 
-  if (!v6)
+  if (!setupCopy)
   {
     v11 = 0;
     goto LABEL_24;
   }
 
-  v16 = [v6 headerFields];
+  headerFields = [setupCopy headerFields];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   v10 = Int64Ranged;
@@ -805,7 +805,7 @@ LABEL_61:
     goto LABEL_37;
   }
 
-  v17 = [v6 headerFields];
+  headerFields2 = [setupCopy headerFields];
   CFDataGetTypeID();
   v11 = CFDictionaryGetTypedValue();
 
@@ -861,7 +861,7 @@ LABEL_30:
     {
       v12 = objc_alloc_init(SFRequestMessage);
       v20 = &unk_1F1D7D0D8;
-      if (v4)
+      if (startCopy)
       {
         v20 = &unk_1F1D7D0C0;
       }
@@ -960,23 +960,23 @@ void __43__SFPINPairSession__clientPairSetup_start___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)clientTryPIN:(id)a3
+- (void)clientTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__SFPINPairSession_clientTryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_clientTryPIN:(id)a3
+- (void)_clientTryPIN:(id)n
 {
-  v6 = a3;
+  nCopy = n;
   if (gLogCategory_SFPINPairSession <= 30 && (gLogCategory_SFPINPairSession != -1 || _LogCategory_Initialize()))
   {
     [SFPINPairSession _clientTryPIN:];
@@ -985,7 +985,7 @@ void __43__SFPINPairSession__clientPairSetup_start___block_invoke(uint64_t a1, v
   self->_pairSetupWaitingForUser = 0;
   if (self->_pairSetupSession)
   {
-    [v6 UTF8String];
+    [nCopy UTF8String];
     v4 = PairingSessionSetSetupCode();
     if (!v4)
     {
@@ -1005,24 +1005,24 @@ void __43__SFPINPairSession__clientPairSetup_start___block_invoke(uint64_t a1, v
 LABEL_7:
 }
 
-- (void)handleServerRequest:(id)a3
+- (void)handleServerRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__SFPINPairSession_handleServerRequest___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_handleServerRequest:(id)a3
+- (void)_handleServerRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 headerFields];
+  requestCopy = request;
+  headerFields = [requestCopy headerFields];
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (gLogCategory_SFPINPairSession <= 30 && (gLogCategory_SFPINPairSession != -1 || _LogCategory_Initialize()))
   {
@@ -1035,43 +1035,43 @@ LABEL_7:
     {
       if (Int64Ranged == 4)
       {
-        v7 = self;
-        v8 = v4;
+        selfCopy2 = self;
+        v8 = requestCopy;
         v9 = 1;
         goto LABEL_15;
       }
 
       if (Int64Ranged == 5)
       {
-        v7 = self;
-        v8 = v4;
+        selfCopy2 = self;
+        v8 = requestCopy;
         v9 = 0;
 LABEL_15:
-        [(SFPINPairSession *)v7 handleServerPairSetup:v8 reset:v9];
+        [(SFPINPairSession *)selfCopy2 handleServerPairSetup:v8 reset:v9];
         goto LABEL_20;
       }
 
       goto LABEL_17;
     }
 
-    v10 = self;
-    v11 = v4;
+    selfCopy4 = self;
+    v11 = requestCopy;
     v12 = 0;
 LABEL_13:
-    [(SFPINPairSession *)v10 handleServerPairVerify:v11 reset:v12];
+    [(SFPINPairSession *)selfCopy4 handleServerPairVerify:v11 reset:v12];
     goto LABEL_20;
   }
 
   if (Int64Ranged == 1)
   {
-    [(SFPINPairSession *)self handleServerHeartbeat:v4];
+    [(SFPINPairSession *)self handleServerHeartbeat:requestCopy];
     goto LABEL_20;
   }
 
   if (Int64Ranged == 2)
   {
-    v10 = self;
-    v11 = v4;
+    selfCopy4 = self;
+    v11 = requestCopy;
     v12 = 1;
     goto LABEL_13;
   }
@@ -1085,23 +1085,23 @@ LABEL_17:
 LABEL_20:
 }
 
-- (void)handleServerHeartbeat:(id)a3
+- (void)handleServerHeartbeat:(id)heartbeat
 {
-  v4 = a3;
+  heartbeatCopy = heartbeat;
   self->_heartbeatLastTicks = mach_absolute_time();
-  v5 = [[SFResponseMessage alloc] initWithRequestMessage:v4];
+  v5 = [[SFResponseMessage alloc] initWithRequestMessage:heartbeatCopy];
 
   [(SFService *)self->_sfService sendResponse:v5];
 }
 
-- (void)handleServerPairVerify:(id)a3 reset:(BOOL)a4
+- (void)handleServerPairVerify:(id)verify reset:(BOOL)reset
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  verifyCopy = verify;
   v21 = 0;
   p_pairVerifySession = &self->_pairVerifySession;
   pairVerifySession = self->_pairVerifySession;
-  if (a4)
+  if (reset)
   {
     if (pairVerifySession)
     {
@@ -1134,7 +1134,7 @@ LABEL_7:
   v12 = *p_pairVerifySession;
   PairingSessionSetLogging();
 LABEL_11:
-  v13 = [v6 headerFields];
+  headerFields = [verifyCopy headerFields];
   CFDataGetTypeID();
   v10 = CFDictionaryGetTypedValue();
 
@@ -1159,7 +1159,7 @@ LABEL_11:
   [v10 bytes];
   [v10 length];
   v21 = PairingSessionExchange();
-  v9 = [[SFResponseMessage alloc] initWithRequestMessage:v6];
+  v9 = [[SFResponseMessage alloc] initWithRequestMessage:verifyCopy];
   v15 = v21;
   if (!v21)
   {
@@ -1190,17 +1190,17 @@ LABEL_21:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleServerPairSetup:(id)a3 reset:(BOOL)a4
+- (void)handleServerPairSetup:(id)setup reset:(BOOL)reset
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  setupCopy = setup;
   v31 = 0;
   v29 = 0;
   v30 = 0;
   v28 = 0;
   p_pairSetupSession = &self->_pairSetupSession;
   pairSetupSession = self->_pairSetupSession;
-  if (a4 || !pairSetupSession)
+  if (reset || !pairSetupSession)
   {
     v27 = 0u;
     v26 = 0u;
@@ -1236,7 +1236,7 @@ LABEL_7:
     PairingSessionSetACL();
   }
 
-  v14 = [v6 headerFields];
+  headerFields = [setupCopy headerFields];
   CFDataGetTypeID();
   v10 = CFDictionaryGetTypedValue();
 
@@ -1246,7 +1246,7 @@ LABEL_7:
     [v10 bytes];
     [v10 length];
     v31 = PairingSessionExchange();
-    v9 = [[SFResponseMessage alloc] initWithRequestMessage:v6];
+    v9 = [[SFResponseMessage alloc] initWithRequestMessage:setupCopy];
     v16 = v31;
     if (v31)
     {
@@ -1319,7 +1319,7 @@ LABEL_23:
     LogPrintF();
   }
 
-  return [a1 _completed:4294960591];
+  return [self _completed:4294960591];
 }
 
 - (uint64_t)_clientTryPIN:(void *)a1 .cold.2(void *a1, uint64_t a2)

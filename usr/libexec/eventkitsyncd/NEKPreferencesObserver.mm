@@ -1,6 +1,6 @@
 @interface NEKPreferencesObserver
 - (BOOL)alertInviteeDeclines;
-- (BOOL)handleDarwinNotificationOfName:(id)a3;
+- (BOOL)handleDarwinNotificationOfName:(id)name;
 - (BOOL)showDeclinedEvents;
 - (NEKPreferencesObserver)init;
 - (void)migratePrefsIfNecessary;
@@ -99,7 +99,7 @@
 
 LABEL_10:
       [(NPSDomainAccessor *)self->_domainAccessor setInteger:2 forKey:@"com.apple.NanoCalendar.PrefSync.PrefMigrationSeed"];
-      v10 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+      synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
     }
   }
 }
@@ -138,7 +138,7 @@ LABEL_10:
 - (BOOL)alertInviteeDeclines
 {
   v6 = 0;
-  v3 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   v4 = [(NPSDomainAccessor *)self->_domainAccessor BOOLForKey:@"InviteeDeclineAlerts-rebroadcast" keyExistsAndHasValidFormat:&v6];
   return v6 & v4 & 1;
 }
@@ -146,28 +146,28 @@ LABEL_10:
 - (BOOL)showDeclinedEvents
 {
   v6 = 0;
-  v3 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   v4 = [(NPSDomainAccessor *)self->_domainAccessor BOOLForKey:@"ShowDeclinedEvents-rebroadcast" keyExistsAndHasValidFormat:&v6];
   return v6 & v4 & 1;
 }
 
-- (BOOL)handleDarwinNotificationOfName:(id)a3
+- (BOOL)handleDarwinNotificationOfName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   if (!sub_100016740())
   {
-    if ([v4 isEqualToString:@"CalEventDeclineEventPrefChanged"])
+    if ([nameCopy isEqualToString:@"CalEventDeclineEventPrefChanged"])
     {
       [(NEKPreferencesObserver *)self rebroadcastShowDeclinedChangeNotification];
     }
 
     else
     {
-      if (![v4 isEqualToString:@"CalEventShowInviteeDeclinesPrefChanged"])
+      if (![nameCopy isEqualToString:@"CalEventShowInviteeDeclinesPrefChanged"])
       {
         objc_initWeak(&location, self);
         keysToDirectMirrorCompanionToGizmo = self->_keysToDirectMirrorCompanionToGizmo;
@@ -176,7 +176,7 @@ LABEL_10:
         v8[2] = sub_100026560;
         v8[3] = &unk_1000B5260;
         objc_copyWeak(&v11, &location);
-        v9 = v4;
+        v9 = nameCopy;
         v10 = &v13;
         [(NSDictionary *)keysToDirectMirrorCompanionToGizmo enumerateKeysAndObjectsUsingBlock:v8];
 
@@ -191,7 +191,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"CalEventDeclineEventPrefChangedRebroadcast"])
+  if ([nameCopy isEqualToString:@"CalEventDeclineEventPrefChangedRebroadcast"])
   {
     [(NEKPreferencesObserver *)self applyRebroadcastShowDeclinedEvents];
 LABEL_10:
@@ -199,7 +199,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"CalEventShowInviteeDeclinesPrefChangedRebroadcast"])
+  if ([nameCopy isEqualToString:@"CalEventShowInviteeDeclinesPrefChangedRebroadcast"])
   {
     [(NEKPreferencesObserver *)self applyRebroadcastAlertInviteeDeclines];
     goto LABEL_10;

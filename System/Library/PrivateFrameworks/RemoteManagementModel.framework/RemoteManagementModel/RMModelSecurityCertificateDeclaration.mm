@@ -1,12 +1,12 @@
 @interface RMModelSecurityCertificateDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 credentialAssetReference:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 credentialAssetReference:(id)a4;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier credentialAssetReference:(id)reference;
++ (id)buildWithIdentifier:(id)identifier credentialAssetReference:(id)reference;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelSecurityCertificateDeclaration
@@ -48,50 +48,50 @@ void __56__RMModelSecurityCertificateDeclaration_assetReferences__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 credentialAssetReference:(id)a4
++ (id)buildWithIdentifier:(id)identifier credentialAssetReference:(id)reference
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.security.certificate"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadCredentialAssetReference:v6];
+  [v7 setPayloadCredentialAssetReference:referenceCopy];
 
   [v7 updateServerToken];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 credentialAssetReference:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier credentialAssetReference:(id)reference
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.security.certificate"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadCredentialAssetReference:v6];
+  [v7 setPayloadCredentialAssetReference:referenceCopy];
 
   [v7 updateServerToken];
 
@@ -150,12 +150,12 @@ void __56__RMModelSecurityCertificateDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
   v7 = MEMORY[0x277CBEB58];
-  v8 = a3;
-  v9 = [v8 allKeys];
-  v10 = [v7 setWithArray:v9];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v7 setWithArray:allKeys];
 
   v11 = +[RMModelSecurityCertificateDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -163,26 +163,26 @@ void __56__RMModelSecurityCertificateDeclaration_assetReferences__block_invoke()
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  LOBYTE(a5) = [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"CredentialAssetReference" forKeyPath:@"payloadCredentialAssetReference" isRequired:1 defaultValue:0 error:a5];
-  return a5;
+  LOBYTE(error) = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"CredentialAssetReference" forKeyPath:@"payloadCredentialAssetReference" isRequired:1 defaultValue:0 error:error];
+  return error;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelSecurityCertificateDeclaration *)self payloadCredentialAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CredentialAssetReference" value:v5 isRequired:1 defaultValue:0];
+  payloadCredentialAssetReference = [(RMModelSecurityCertificateDeclaration *)self payloadCredentialAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CredentialAssetReference" value:payloadCredentialAssetReference isRequired:1 defaultValue:0];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelSecurityCertificateDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadCredentialAssetReference copy];
   v6 = v4[6];
   v4[6] = v5;

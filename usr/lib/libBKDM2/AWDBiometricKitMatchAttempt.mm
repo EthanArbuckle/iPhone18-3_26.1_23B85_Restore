@@ -1,108 +1,108 @@
 @interface AWDBiometricKitMatchAttempt
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)identityCreationTimeAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)identityCreationTimeAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAmbientLux:(BOOL)a3;
-- (void)setHasAsDepthFailure:(BOOL)a3;
-- (void)setHasAsFailure:(BOOL)a3;
-- (void)setHasAsFloodFailure:(BOOL)a3;
-- (void)setHasAutoRetry:(BOOL)a3;
-- (void)setHasAutoRetryAllowed:(BOOL)a3;
-- (void)setHasAutoRetryEnabled:(BOOL)a3;
-- (void)setHasBioCheckCamRectH:(BOOL)a3;
-- (void)setHasBioCheckCamRectW:(BOOL)a3;
-- (void)setHasBioCheckCamRectX:(BOOL)a3;
-- (void)setHasBioCheckCamRectY:(BOOL)a3;
-- (void)setHasBioCheckFaceDistance:(BOOL)a3;
-- (void)setHasBioCheckFrameCount:(BOOL)a3;
-- (void)setHasBioCheckFrameDenseCount:(BOOL)a3;
-- (void)setHasBioCheckFrameFloodCount:(BOOL)a3;
-- (void)setHasBioCheckFrameSparseCount:(BOOL)a3;
-- (void)setHasBioCheckPPMAllocatedBudget:(BOOL)a3;
-- (void)setHasBioCheckPPMRequestedBudget:(BOOL)a3;
-- (void)setHasBioCheckResult:(BOOL)a3;
-- (void)setHasBioLockout:(BOOL)a3;
-- (void)setHasBioLockoutReason:(BOOL)a3;
-- (void)setHasCamRectH:(BOOL)a3;
-- (void)setHasCamRectW:(BOOL)a3;
-- (void)setHasCamRectX:(BOOL)a3;
-- (void)setHasCamRectY:(BOOL)a3;
-- (void)setHasCameraErr:(BOOL)a3;
-- (void)setHasCaptureMethod:(BOOL)a3;
-- (void)setHasCombinedSequenceEnabled:(BOOL)a3;
-- (void)setHasDeviceOrientation:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackCameraObstructed:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackFaceOccluded:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackFaceTooClose:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackFaceTooFar:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackNoAttention:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackNoFaceDetected:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackNoseAndMouthOccluded:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackPartialOutOfFOV:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackPoseMarginal:(BOOL)a3;
-- (void)setHasEngagementInfoFeedbackPoseOutOfRange:(BOOL)a3;
-- (void)setHasFaceDetectCamRectH:(BOOL)a3;
-- (void)setHasFaceDetectCamRectW:(BOOL)a3;
-- (void)setHasFaceDetectCamRectX:(BOOL)a3;
-- (void)setHasFaceDetectCamRectY:(BOOL)a3;
-- (void)setHasFaceDetectEndTime:(BOOL)a3;
-- (void)setHasFaceDetectFaceDistance:(BOOL)a3;
-- (void)setHasFaceDetectFrameCount:(BOOL)a3;
-- (void)setHasFaceDetectFrameDenseCount:(BOOL)a3;
-- (void)setHasFaceDetectFrameFloodCount:(BOOL)a3;
-- (void)setHasFaceDetectFrameSparseCount:(BOOL)a3;
-- (void)setHasFaceDetectPPMAllocatedBudget:(BOOL)a3;
-- (void)setHasFaceDetectPPMRequestedBudget:(BOOL)a3;
-- (void)setHasFaceDetectResult:(BOOL)a3;
-- (void)setHasFaceDistance:(BOOL)a3;
-- (void)setHasFaceOrientation:(BOOL)a3;
-- (void)setHasFacePitch:(BOOL)a3;
-- (void)setHasFaceRoll:(BOOL)a3;
-- (void)setHasFaceYaw:(BOOL)a3;
-- (void)setHasFailedMatchAttemptsFromBiocheck:(BOOL)a3;
-- (void)setHasFailedMatchAttemptsFromFD:(BOOL)a3;
-- (void)setHasFailedUnlockAttemptsFromBiocheck:(BOOL)a3;
-- (void)setHasFailedUnlockAttemptsFromFD:(BOOL)a3;
-- (void)setHasFeatureGenerationError:(BOOL)a3;
-- (void)setHasHasOcclusion:(BOOL)a3;
-- (void)setHasMatchCancelled:(BOOL)a3;
-- (void)setHasMatchDepthFailure:(BOOL)a3;
-- (void)setHasMatchFeatureVectorError:(BOOL)a3;
-- (void)setHasMatchFloodFailure:(BOOL)a3;
-- (void)setHasMatchForUnlock:(BOOL)a3;
-- (void)setHasMatchIdentityCount:(BOOL)a3;
-- (void)setHasMatchType:(BOOL)a3;
-- (void)setHasMatcherFailure:(BOOL)a3;
-- (void)setHasOnlineTemplateAge:(BOOL)a3;
-- (void)setHasOnlineTemplateUpdated:(BOOL)a3;
-- (void)setHasOverallResult:(BOOL)a3;
-- (void)setHasOverallTime:(BOOL)a3;
-- (void)setHasOverallTimeWithRetries:(BOOL)a3;
-- (void)setHasPasscodeChallengeAllowed:(BOOL)a3;
-- (void)setHasProbingPatternCamRectH:(BOOL)a3;
-- (void)setHasProbingPatternCamRectW:(BOOL)a3;
-- (void)setHasProbingPatternCamRectX:(BOOL)a3;
-- (void)setHasProbingPatternCamRectY:(BOOL)a3;
-- (void)setHasProbingPatternEndTime:(BOOL)a3;
-- (void)setHasProbingPatternFaceDistance:(BOOL)a3;
-- (void)setHasProbingPatternFailure:(BOOL)a3;
-- (void)setHasProbingPatternFrameCount:(BOOL)a3;
-- (void)setHasProbingPatternFrameDenseCount:(BOOL)a3;
-- (void)setHasProbingPatternFrameFloodCount:(BOOL)a3;
-- (void)setHasProbingPatternResult:(BOOL)a3;
-- (void)setHasRfcFrameIndex:(BOOL)a3;
-- (void)setHasRfcSetIndex:(BOOL)a3;
-- (void)setHasSensorTemperature:(BOOL)a3;
-- (void)setHasShortTermTemplateAge:(BOOL)a3;
-- (void)setHasTimeSinceSleep:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAmbientLux:(BOOL)lux;
+- (void)setHasAsDepthFailure:(BOOL)failure;
+- (void)setHasAsFailure:(BOOL)failure;
+- (void)setHasAsFloodFailure:(BOOL)failure;
+- (void)setHasAutoRetry:(BOOL)retry;
+- (void)setHasAutoRetryAllowed:(BOOL)allowed;
+- (void)setHasAutoRetryEnabled:(BOOL)enabled;
+- (void)setHasBioCheckCamRectH:(BOOL)h;
+- (void)setHasBioCheckCamRectW:(BOOL)w;
+- (void)setHasBioCheckCamRectX:(BOOL)x;
+- (void)setHasBioCheckCamRectY:(BOOL)y;
+- (void)setHasBioCheckFaceDistance:(BOOL)distance;
+- (void)setHasBioCheckFrameCount:(BOOL)count;
+- (void)setHasBioCheckFrameDenseCount:(BOOL)count;
+- (void)setHasBioCheckFrameFloodCount:(BOOL)count;
+- (void)setHasBioCheckFrameSparseCount:(BOOL)count;
+- (void)setHasBioCheckPPMAllocatedBudget:(BOOL)budget;
+- (void)setHasBioCheckPPMRequestedBudget:(BOOL)budget;
+- (void)setHasBioCheckResult:(BOOL)result;
+- (void)setHasBioLockout:(BOOL)lockout;
+- (void)setHasBioLockoutReason:(BOOL)reason;
+- (void)setHasCamRectH:(BOOL)h;
+- (void)setHasCamRectW:(BOOL)w;
+- (void)setHasCamRectX:(BOOL)x;
+- (void)setHasCamRectY:(BOOL)y;
+- (void)setHasCameraErr:(BOOL)err;
+- (void)setHasCaptureMethod:(BOOL)method;
+- (void)setHasCombinedSequenceEnabled:(BOOL)enabled;
+- (void)setHasDeviceOrientation:(BOOL)orientation;
+- (void)setHasEngagementInfoFeedbackCameraObstructed:(BOOL)obstructed;
+- (void)setHasEngagementInfoFeedbackFaceOccluded:(BOOL)occluded;
+- (void)setHasEngagementInfoFeedbackFaceTooClose:(BOOL)close;
+- (void)setHasEngagementInfoFeedbackFaceTooFar:(BOOL)far;
+- (void)setHasEngagementInfoFeedbackNoAttention:(BOOL)attention;
+- (void)setHasEngagementInfoFeedbackNoFaceDetected:(BOOL)detected;
+- (void)setHasEngagementInfoFeedbackNoseAndMouthOccluded:(BOOL)occluded;
+- (void)setHasEngagementInfoFeedbackPartialOutOfFOV:(BOOL)v;
+- (void)setHasEngagementInfoFeedbackPoseMarginal:(BOOL)marginal;
+- (void)setHasEngagementInfoFeedbackPoseOutOfRange:(BOOL)range;
+- (void)setHasFaceDetectCamRectH:(BOOL)h;
+- (void)setHasFaceDetectCamRectW:(BOOL)w;
+- (void)setHasFaceDetectCamRectX:(BOOL)x;
+- (void)setHasFaceDetectCamRectY:(BOOL)y;
+- (void)setHasFaceDetectEndTime:(BOOL)time;
+- (void)setHasFaceDetectFaceDistance:(BOOL)distance;
+- (void)setHasFaceDetectFrameCount:(BOOL)count;
+- (void)setHasFaceDetectFrameDenseCount:(BOOL)count;
+- (void)setHasFaceDetectFrameFloodCount:(BOOL)count;
+- (void)setHasFaceDetectFrameSparseCount:(BOOL)count;
+- (void)setHasFaceDetectPPMAllocatedBudget:(BOOL)budget;
+- (void)setHasFaceDetectPPMRequestedBudget:(BOOL)budget;
+- (void)setHasFaceDetectResult:(BOOL)result;
+- (void)setHasFaceDistance:(BOOL)distance;
+- (void)setHasFaceOrientation:(BOOL)orientation;
+- (void)setHasFacePitch:(BOOL)pitch;
+- (void)setHasFaceRoll:(BOOL)roll;
+- (void)setHasFaceYaw:(BOOL)yaw;
+- (void)setHasFailedMatchAttemptsFromBiocheck:(BOOL)biocheck;
+- (void)setHasFailedMatchAttemptsFromFD:(BOOL)d;
+- (void)setHasFailedUnlockAttemptsFromBiocheck:(BOOL)biocheck;
+- (void)setHasFailedUnlockAttemptsFromFD:(BOOL)d;
+- (void)setHasFeatureGenerationError:(BOOL)error;
+- (void)setHasHasOcclusion:(BOOL)occlusion;
+- (void)setHasMatchCancelled:(BOOL)cancelled;
+- (void)setHasMatchDepthFailure:(BOOL)failure;
+- (void)setHasMatchFeatureVectorError:(BOOL)error;
+- (void)setHasMatchFloodFailure:(BOOL)failure;
+- (void)setHasMatchForUnlock:(BOOL)unlock;
+- (void)setHasMatchIdentityCount:(BOOL)count;
+- (void)setHasMatchType:(BOOL)type;
+- (void)setHasMatcherFailure:(BOOL)failure;
+- (void)setHasOnlineTemplateAge:(BOOL)age;
+- (void)setHasOnlineTemplateUpdated:(BOOL)updated;
+- (void)setHasOverallResult:(BOOL)result;
+- (void)setHasOverallTime:(BOOL)time;
+- (void)setHasOverallTimeWithRetries:(BOOL)retries;
+- (void)setHasPasscodeChallengeAllowed:(BOOL)allowed;
+- (void)setHasProbingPatternCamRectH:(BOOL)h;
+- (void)setHasProbingPatternCamRectW:(BOOL)w;
+- (void)setHasProbingPatternCamRectX:(BOOL)x;
+- (void)setHasProbingPatternCamRectY:(BOOL)y;
+- (void)setHasProbingPatternEndTime:(BOOL)time;
+- (void)setHasProbingPatternFaceDistance:(BOOL)distance;
+- (void)setHasProbingPatternFailure:(BOOL)failure;
+- (void)setHasProbingPatternFrameCount:(BOOL)count;
+- (void)setHasProbingPatternFrameDenseCount:(BOOL)count;
+- (void)setHasProbingPatternFrameFloodCount:(BOOL)count;
+- (void)setHasProbingPatternResult:(BOOL)result;
+- (void)setHasRfcFrameIndex:(BOOL)index;
+- (void)setHasRfcSetIndex:(BOOL)index;
+- (void)setHasSensorTemperature:(BOOL)temperature;
+- (void)setHasShortTermTemplateAge:(BOOL)age;
+- (void)setHasTimeSinceSleep:(BOOL)sleep;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDBiometricKitMatchAttempt
@@ -115,10 +115,10 @@
   [(AWDBiometricKitMatchAttempt *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
   v3 = 256;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasOverallResult:(BOOL)a3
+- (void)setHasOverallResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 0x20000000;
   }
@@ -141,10 +141,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xDFFFFFFF | v3;
 }
 
-- (void)setHasOverallTime:(BOOL)a3
+- (void)setHasOverallTime:(BOOL)time
 {
   v3 = 4;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -152,10 +152,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setHasFaceDetectEndTime:(BOOL)a3
+- (void)setHasFaceDetectEndTime:(BOOL)time
 {
   v3 = 2;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -163,10 +163,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (void)setHasFaceDetectResult:(BOOL)a3
+- (void)setHasFaceDetectResult:(BOOL)result
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!result)
   {
     v3 = 0;
   }
@@ -174,10 +174,10 @@
   *&self->_has = *&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectFrameCount:(BOOL)a3
+- (void)setHasFaceDetectFrameCount:(BOOL)count
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -185,10 +185,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectFrameFloodCount:(BOOL)a3
+- (void)setHasFaceDetectFrameFloodCount:(BOOL)count
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -196,10 +196,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectFrameSparseCount:(BOOL)a3
+- (void)setHasFaceDetectFrameSparseCount:(BOOL)count
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -207,10 +207,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectFrameDenseCount:(BOOL)a3
+- (void)setHasFaceDetectFrameDenseCount:(BOOL)count
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -218,10 +218,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (void)setHasBioCheckResult:(BOOL)a3
+- (void)setHasBioCheckResult:(BOOL)result
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!result)
   {
     v3 = 0;
   }
@@ -229,10 +229,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasBioCheckFrameCount:(BOOL)a3
+- (void)setHasBioCheckFrameCount:(BOOL)count
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -240,10 +240,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3;
 }
 
-- (void)setHasBioCheckFrameFloodCount:(BOOL)a3
+- (void)setHasBioCheckFrameFloodCount:(BOOL)count
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -251,10 +251,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasBioCheckFrameSparseCount:(BOOL)a3
+- (void)setHasBioCheckFrameSparseCount:(BOOL)count
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -262,10 +262,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasBioCheckFrameDenseCount:(BOOL)a3
+- (void)setHasBioCheckFrameDenseCount:(BOOL)count
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -273,10 +273,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (void)setHasProbingPatternEndTime:(BOOL)a3
+- (void)setHasProbingPatternEndTime:(BOOL)time
 {
   v3 = 16;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -284,9 +284,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (void)setHasProbingPatternResult:(BOOL)a3
+- (void)setHasProbingPatternResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 2;
   }
@@ -299,10 +299,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFFFD | v3;
 }
 
-- (void)setHasProbingPatternFrameCount:(BOOL)a3
+- (void)setHasProbingPatternFrameCount:(BOOL)count
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -310,10 +310,10 @@
   *&self->_has = *&self->_has & 0xDFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasProbingPatternFrameFloodCount:(BOOL)a3
+- (void)setHasProbingPatternFrameFloodCount:(BOOL)count
 {
   v3 = 0x8000000000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -321,10 +321,10 @@
   *&self->_has = v3 & 0x8000000000000000 | *&self->_has & 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setHasProbingPatternFrameDenseCount:(BOOL)a3
+- (void)setHasProbingPatternFrameDenseCount:(BOOL)count
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -332,10 +332,10 @@
   *&self->_has = *&self->_has & 0xBFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAmbientLux:(BOOL)a3
+- (void)setHasAmbientLux:(BOOL)lux
 {
   v3 = 512;
-  if (!a3)
+  if (!lux)
   {
     v3 = 0;
   }
@@ -343,9 +343,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3;
 }
 
-- (void)setHasProbingPatternFailure:(BOOL)a3
+- (void)setHasProbingPatternFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 0x80000000;
   }
@@ -358,9 +358,9 @@
   *(&self->_has + 2) = v3 & 0x80000000 | *(&self->_has + 2) & 0x7FFFFFFF;
 }
 
-- (void)setHasMatcherFailure:(BOOL)a3
+- (void)setHasMatcherFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 0x8000000;
   }
@@ -373,9 +373,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xF7FFFFFF | v3;
 }
 
-- (void)setHasMatchDepthFailure:(BOOL)a3
+- (void)setHasMatchDepthFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 0x1000000;
   }
@@ -388,9 +388,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFEFFFFFF | v3;
 }
 
-- (void)setHasMatchFloodFailure:(BOOL)a3
+- (void)setHasMatchFloodFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 0x2000000;
   }
@@ -403,9 +403,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFDFFFFFF | v3;
 }
 
-- (void)setHasAsFloodFailure:(BOOL)a3
+- (void)setHasAsFloodFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 64;
   }
@@ -418,9 +418,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFFBF | v3;
 }
 
-- (void)setHasAsDepthFailure:(BOOL)a3
+- (void)setHasAsDepthFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 16;
   }
@@ -433,9 +433,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFFEF | v3;
 }
 
-- (void)setHasOnlineTemplateUpdated:(BOOL)a3
+- (void)setHasOnlineTemplateUpdated:(BOOL)updated
 {
-  if (a3)
+  if (updated)
   {
     v3 = 0x10000000;
   }
@@ -448,9 +448,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xEFFFFFFF | v3;
 }
 
-- (void)setHasPasscodeChallengeAllowed:(BOOL)a3
+- (void)setHasPasscodeChallengeAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 0x40000000;
   }
@@ -463,10 +463,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xBFFFFFFF | v3;
 }
 
-- (void)setHasFeatureGenerationError:(BOOL)a3
+- (void)setHasFeatureGenerationError:(BOOL)error
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!error)
   {
     v3 = 0;
   }
@@ -474,9 +474,9 @@
   *&self->_has = *&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasSensorTemperature:(BOOL)a3
+- (void)setHasSensorTemperature:(BOOL)temperature
 {
-  if (a3)
+  if (temperature)
   {
     v3 = 4;
   }
@@ -489,10 +489,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFFFB | v3;
 }
 
-- (void)setHasFaceDistance:(BOOL)a3
+- (void)setHasFaceDistance:(BOOL)distance
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!distance)
   {
     v3 = 0;
   }
@@ -500,9 +500,9 @@
   *&self->_has = *&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasHasOcclusion:(BOOL)a3
+- (void)setHasHasOcclusion:(BOOL)occlusion
 {
-  if (a3)
+  if (occlusion)
   {
     v3 = 0x400000;
   }
@@ -515,10 +515,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFBFFFFF | v3;
 }
 
-- (void)setHasCamRectX:(BOOL)a3
+- (void)setHasCamRectX:(BOOL)x
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!x)
   {
     v3 = 0;
   }
@@ -526,10 +526,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasCamRectY:(BOOL)a3
+- (void)setHasCamRectY:(BOOL)y
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!y)
   {
     v3 = 0;
   }
@@ -537,10 +537,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasCamRectW:(BOOL)a3
+- (void)setHasCamRectW:(BOOL)w
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!w)
   {
     v3 = 0;
   }
@@ -548,10 +548,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasCamRectH:(BOOL)a3
+- (void)setHasCamRectH:(BOOL)h
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!h)
   {
     v3 = 0;
   }
@@ -559,10 +559,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectPPMRequestedBudget:(BOOL)a3
+- (void)setHasFaceDetectPPMRequestedBudget:(BOOL)budget
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!budget)
   {
     v3 = 0;
   }
@@ -570,10 +570,10 @@
   *&self->_has = *&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectPPMAllocatedBudget:(BOOL)a3
+- (void)setHasFaceDetectPPMAllocatedBudget:(BOOL)budget
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!budget)
   {
     v3 = 0;
   }
@@ -581,10 +581,10 @@
   *&self->_has = *&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3;
 }
 
-- (void)setHasBioCheckPPMRequestedBudget:(BOOL)a3
+- (void)setHasBioCheckPPMRequestedBudget:(BOOL)budget
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!budget)
   {
     v3 = 0;
   }
@@ -592,10 +592,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasBioCheckPPMAllocatedBudget:(BOOL)a3
+- (void)setHasBioCheckPPMAllocatedBudget:(BOOL)budget
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!budget)
   {
     v3 = 0;
   }
@@ -603,10 +603,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasRfcSetIndex:(BOOL)a3
+- (void)setHasRfcSetIndex:(BOOL)index
 {
   v3 = 64;
-  if (!a3)
+  if (!index)
   {
     v3 = 0;
   }
@@ -614,10 +614,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setHasRfcFrameIndex:(BOOL)a3
+- (void)setHasRfcFrameIndex:(BOOL)index
 {
   v3 = 32;
-  if (!a3)
+  if (!index)
   {
     v3 = 0;
   }
@@ -625,9 +625,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)setHasBioLockout:(BOOL)a3
+- (void)setHasBioLockout:(BOOL)lockout
 {
-  if (a3)
+  if (lockout)
   {
     v3 = 1024;
   }
@@ -640,10 +640,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFBFF | v3;
 }
 
-- (void)setHasCameraErr:(BOOL)a3
+- (void)setHasCameraErr:(BOOL)err
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!err)
   {
     v3 = 0;
   }
@@ -651,9 +651,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasMatchForUnlock:(BOOL)a3
+- (void)setHasMatchForUnlock:(BOOL)unlock
 {
-  if (a3)
+  if (unlock)
   {
     v3 = 0x4000000;
   }
@@ -666,10 +666,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFBFFFFFF | v3;
 }
 
-- (void)setHasFailedUnlockAttemptsFromFD:(BOOL)a3
+- (void)setHasFailedUnlockAttemptsFromFD:(BOOL)d
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -677,10 +677,10 @@
   *&self->_has = *&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFailedUnlockAttemptsFromBiocheck:(BOOL)a3
+- (void)setHasFailedUnlockAttemptsFromBiocheck:(BOOL)biocheck
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!biocheck)
   {
     v3 = 0;
   }
@@ -688,10 +688,10 @@
   *&self->_has = *&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFailedMatchAttemptsFromFD:(BOOL)a3
+- (void)setHasFailedMatchAttemptsFromFD:(BOOL)d
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -699,10 +699,10 @@
   *&self->_has = *&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFailedMatchAttemptsFromBiocheck:(BOOL)a3
+- (void)setHasFailedMatchAttemptsFromBiocheck:(BOOL)biocheck
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!biocheck)
   {
     v3 = 0;
   }
@@ -710,10 +710,10 @@
   *&self->_has = *&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasBioLockoutReason:(BOOL)a3
+- (void)setHasBioLockoutReason:(BOOL)reason
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!reason)
   {
     v3 = 0;
   }
@@ -721,10 +721,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasMatchFeatureVectorError:(BOOL)a3
+- (void)setHasMatchFeatureVectorError:(BOOL)error
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!error)
   {
     v3 = 0;
   }
@@ -732,10 +732,10 @@
   *&self->_has = *&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasOnlineTemplateAge:(BOOL)a3
+- (void)setHasOnlineTemplateAge:(BOOL)age
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!age)
   {
     v3 = 0;
   }
@@ -743,9 +743,9 @@
   *&self->_has = *&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasShortTermTemplateAge:(BOOL)a3
+- (void)setHasShortTermTemplateAge:(BOOL)age
 {
-  if (a3)
+  if (age)
   {
     v3 = 8;
   }
@@ -758,10 +758,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFFF7 | v3;
 }
 
-- (void)setHasFaceDetectFaceDistance:(BOOL)a3
+- (void)setHasFaceDetectFaceDistance:(BOOL)distance
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!distance)
   {
     v3 = 0;
   }
@@ -769,10 +769,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectCamRectX:(BOOL)a3
+- (void)setHasFaceDetectCamRectX:(BOOL)x
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!x)
   {
     v3 = 0;
   }
@@ -780,10 +780,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectCamRectY:(BOOL)a3
+- (void)setHasFaceDetectCamRectY:(BOOL)y
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!y)
   {
     v3 = 0;
   }
@@ -791,10 +791,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectCamRectW:(BOOL)a3
+- (void)setHasFaceDetectCamRectW:(BOOL)w
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!w)
   {
     v3 = 0;
   }
@@ -802,10 +802,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasFaceDetectCamRectH:(BOOL)a3
+- (void)setHasFaceDetectCamRectH:(BOOL)h
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!h)
   {
     v3 = 0;
   }
@@ -813,10 +813,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)setHasBioCheckFaceDistance:(BOOL)a3
+- (void)setHasBioCheckFaceDistance:(BOOL)distance
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!distance)
   {
     v3 = 0;
   }
@@ -824,10 +824,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (void)setHasBioCheckCamRectX:(BOOL)a3
+- (void)setHasBioCheckCamRectX:(BOOL)x
 {
   v3 = 4096;
-  if (!a3)
+  if (!x)
   {
     v3 = 0;
   }
@@ -835,10 +835,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasBioCheckCamRectY:(BOOL)a3
+- (void)setHasBioCheckCamRectY:(BOOL)y
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!y)
   {
     v3 = 0;
   }
@@ -846,10 +846,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasBioCheckCamRectW:(BOOL)a3
+- (void)setHasBioCheckCamRectW:(BOOL)w
 {
   v3 = 2048;
-  if (!a3)
+  if (!w)
   {
     v3 = 0;
   }
@@ -857,10 +857,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasBioCheckCamRectH:(BOOL)a3
+- (void)setHasBioCheckCamRectH:(BOOL)h
 {
   v3 = 1024;
-  if (!a3)
+  if (!h)
   {
     v3 = 0;
   }
@@ -868,10 +868,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (void)setHasProbingPatternFaceDistance:(BOOL)a3
+- (void)setHasProbingPatternFaceDistance:(BOOL)distance
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!distance)
   {
     v3 = 0;
   }
@@ -879,10 +879,10 @@
   *&self->_has = *&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasProbingPatternCamRectX:(BOOL)a3
+- (void)setHasProbingPatternCamRectX:(BOOL)x
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!x)
   {
     v3 = 0;
   }
@@ -890,10 +890,10 @@
   *&self->_has = *&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasProbingPatternCamRectY:(BOOL)a3
+- (void)setHasProbingPatternCamRectY:(BOOL)y
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!y)
   {
     v3 = 0;
   }
@@ -901,10 +901,10 @@
   *&self->_has = *&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasProbingPatternCamRectW:(BOOL)a3
+- (void)setHasProbingPatternCamRectW:(BOOL)w
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!w)
   {
     v3 = 0;
   }
@@ -912,10 +912,10 @@
   *&self->_has = *&self->_has & 0xFDFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasProbingPatternCamRectH:(BOOL)a3
+- (void)setHasProbingPatternCamRectH:(BOOL)h
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!h)
   {
     v3 = 0;
   }
@@ -923,9 +923,9 @@
   *&self->_has = *&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAsFailure:(BOOL)a3
+- (void)setHasAsFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 32;
   }
@@ -938,9 +938,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFFDF | v3;
 }
 
-- (void)setHasAutoRetry:(BOOL)a3
+- (void)setHasAutoRetry:(BOOL)retry
 {
-  if (a3)
+  if (retry)
   {
     v3 = 128;
   }
@@ -953,9 +953,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFF7F | v3;
 }
 
-- (void)setHasAutoRetryAllowed:(BOOL)a3
+- (void)setHasAutoRetryAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 256;
   }
@@ -968,10 +968,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFEFF | v3;
 }
 
-- (void)setHasDeviceOrientation:(BOOL)a3
+- (void)setHasDeviceOrientation:(BOOL)orientation
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!orientation)
   {
     v3 = 0;
   }
@@ -979,10 +979,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasMatchIdentityCount:(BOOL)a3
+- (void)setHasMatchIdentityCount:(BOOL)count
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -990,10 +990,10 @@
   *&self->_has = *&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCaptureMethod:(BOOL)a3
+- (void)setHasCaptureMethod:(BOOL)method
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!method)
   {
     v3 = 0;
   }
@@ -1001,9 +1001,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackNoFaceDetected:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackNoFaceDetected:(BOOL)detected
 {
-  if (a3)
+  if (detected)
   {
     v3 = 0x20000;
   }
@@ -1016,9 +1016,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFDFFFF | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackFaceTooClose:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackFaceTooClose:(BOOL)close
 {
-  if (a3)
+  if (close)
   {
     v3 = 0x4000;
   }
@@ -1031,9 +1031,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFBFFF | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackFaceTooFar:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackFaceTooFar:(BOOL)far
 {
-  if (a3)
+  if (far)
   {
     v3 = 0x8000;
   }
@@ -1046,9 +1046,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFF7FFF | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackPoseOutOfRange:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackPoseOutOfRange:(BOOL)range
 {
-  if (a3)
+  if (range)
   {
     v3 = 0x200000;
   }
@@ -1061,9 +1061,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFDFFFFF | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackNoAttention:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackNoAttention:(BOOL)attention
 {
-  if (a3)
+  if (attention)
   {
     v3 = 0x10000;
   }
@@ -1076,9 +1076,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFEFFFF | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackFaceOccluded:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackFaceOccluded:(BOOL)occluded
 {
-  if (a3)
+  if (occluded)
   {
     v3 = 0x2000;
   }
@@ -1091,9 +1091,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFDFFF | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackCameraObstructed:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackCameraObstructed:(BOOL)obstructed
 {
-  if (a3)
+  if (obstructed)
   {
     v3 = 4096;
   }
@@ -1106,9 +1106,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFEFFF | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackPartialOutOfFOV:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackPartialOutOfFOV:(BOOL)v
 {
-  if (a3)
+  if (v)
   {
     v3 = 0x80000;
   }
@@ -1121,9 +1121,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFF7FFFF | v3;
 }
 
-- (void)setHasCombinedSequenceEnabled:(BOOL)a3
+- (void)setHasCombinedSequenceEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2048;
   }
@@ -1136,10 +1136,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFF7FF | v3;
 }
 
-- (void)setHasOverallTimeWithRetries:(BOOL)a3
+- (void)setHasOverallTimeWithRetries:(BOOL)retries
 {
   v3 = 8;
-  if (!a3)
+  if (!retries)
   {
     v3 = 0;
   }
@@ -1147,9 +1147,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setHasAutoRetryEnabled:(BOOL)a3
+- (void)setHasAutoRetryEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 512;
   }
@@ -1162,25 +1162,25 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFFFDFF | v3;
 }
 
-- (unint64_t)identityCreationTimeAtIndex:(unint64_t)a3
+- (unint64_t)identityCreationTimeAtIndex:(unint64_t)index
 {
   p_identityCreationTimes = &self->_identityCreationTimes;
   count = self->_identityCreationTimes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_identityCreationTimes->list[a3];
+  return p_identityCreationTimes->list[index];
 }
 
-- (void)setHasMatchCancelled:(BOOL)a3
+- (void)setHasMatchCancelled:(BOOL)cancelled
 {
-  if (a3)
+  if (cancelled)
   {
     v3 = 0x800000;
   }
@@ -1193,9 +1193,9 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFF7FFFFF | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackPoseMarginal:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackPoseMarginal:(BOOL)marginal
 {
-  if (a3)
+  if (marginal)
   {
     v3 = 0x100000;
   }
@@ -1208,10 +1208,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFEFFFFF | v3;
 }
 
-- (void)setHasFaceOrientation:(BOOL)a3
+- (void)setHasFaceOrientation:(BOOL)orientation
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!orientation)
   {
     v3 = 0;
   }
@@ -1219,10 +1219,10 @@
   *&self->_has = *&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFacePitch:(BOOL)a3
+- (void)setHasFacePitch:(BOOL)pitch
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!pitch)
   {
     v3 = 0;
   }
@@ -1230,10 +1230,10 @@
   *&self->_has = *&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceYaw:(BOOL)a3
+- (void)setHasFaceYaw:(BOOL)yaw
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!yaw)
   {
     v3 = 0;
   }
@@ -1241,10 +1241,10 @@
   *&self->_has = *&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFaceRoll:(BOOL)a3
+- (void)setHasFaceRoll:(BOOL)roll
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!roll)
   {
     v3 = 0;
   }
@@ -1252,10 +1252,10 @@
   *&self->_has = *&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTimeSinceSleep:(BOOL)a3
+- (void)setHasTimeSinceSleep:(BOOL)sleep
 {
   v3 = 128;
-  if (!a3)
+  if (!sleep)
   {
     v3 = 0;
   }
@@ -1263,9 +1263,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasEngagementInfoFeedbackNoseAndMouthOccluded:(BOOL)a3
+- (void)setHasEngagementInfoFeedbackNoseAndMouthOccluded:(BOOL)occluded
 {
-  if (a3)
+  if (occluded)
   {
     v3 = 0x40000;
   }
@@ -1278,10 +1278,10 @@
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFBFFFF | v3;
 }
 
-- (void)setHasMatchType:(BOOL)a3
+- (void)setHasMatchType:(BOOL)type
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -1295,33 +1295,33 @@
   v8.receiver = self;
   v8.super_class = AWDBiometricKitMatchAttempt;
   v4 = [(AWDBiometricKitMatchAttempt *)&v8 description];
-  v5 = [(AWDBiometricKitMatchAttempt *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDBiometricKitMatchAttempt *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   p_has = &self->_has;
   if (*(&self->_has + 1))
   {
     v5 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
   }
 
   if ((*(&self->_has + 11) & 0x20) != 0)
   {
     v6 = [MEMORY[0x29EDBA070] numberWithBool:self->_overallResult];
-    [v3 setObject:v6 forKey:@"overallResult"];
+    [dictionary setObject:v6 forKey:@"overallResult"];
   }
 
   v7 = *p_has;
   if ((*p_has & 4) != 0)
   {
     v54 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_overallTime];
-    [v3 setObject:v54 forKey:@"overallTime"];
+    [dictionary setObject:v54 forKey:@"overallTime"];
 
     v7 = *p_has;
     if ((*p_has & 2) == 0)
@@ -1342,7 +1342,7 @@ LABEL_7:
   }
 
   v55 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_faceDetectEndTime];
-  [v3 setObject:v55 forKey:@"faceDetectEndTime"];
+  [dictionary setObject:v55 forKey:@"faceDetectEndTime"];
 
   v7 = *p_has;
   if ((*p_has & 0x20000000000) == 0)
@@ -1358,7 +1358,7 @@ LABEL_8:
 
 LABEL_135:
   v56 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectResult];
-  [v3 setObject:v56 forKey:@"faceDetectResult"];
+  [dictionary setObject:v56 forKey:@"faceDetectResult"];
 
   v7 = *p_has;
   if ((*p_has & 0x800000000) == 0)
@@ -1374,7 +1374,7 @@ LABEL_9:
 
 LABEL_136:
   v57 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectFrameCount];
-  [v3 setObject:v57 forKey:@"faceDetectFrameCount"];
+  [dictionary setObject:v57 forKey:@"faceDetectFrameCount"];
 
   v7 = *p_has;
   if ((*p_has & 0x2000000000) == 0)
@@ -1390,7 +1390,7 @@ LABEL_10:
 
 LABEL_137:
   v58 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectFrameFloodCount];
-  [v3 setObject:v58 forKey:@"faceDetectFrameFloodCount"];
+  [dictionary setObject:v58 forKey:@"faceDetectFrameFloodCount"];
 
   v7 = *p_has;
   if ((*p_has & 0x4000000000) == 0)
@@ -1406,7 +1406,7 @@ LABEL_11:
 
 LABEL_138:
   v59 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectFrameSparseCount];
-  [v3 setObject:v59 forKey:@"faceDetectFrameSparseCount"];
+  [dictionary setObject:v59 forKey:@"faceDetectFrameSparseCount"];
 
   v7 = *p_has;
   if ((*p_has & 0x1000000000) == 0)
@@ -1422,7 +1422,7 @@ LABEL_12:
 
 LABEL_139:
   v60 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectFrameDenseCount];
-  [v3 setObject:v60 forKey:@"faceDetectFrameDenseCount"];
+  [dictionary setObject:v60 forKey:@"faceDetectFrameDenseCount"];
 
   v7 = *p_has;
   if ((*p_has & 1) == 0)
@@ -1438,7 +1438,7 @@ LABEL_13:
 
 LABEL_140:
   v61 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_bioCheckEndTime];
-  [v3 setObject:v61 forKey:@"bioCheckEndTime"];
+  [dictionary setObject:v61 forKey:@"bioCheckEndTime"];
 
   v7 = *p_has;
   if ((*p_has & 0x200000) == 0)
@@ -1454,7 +1454,7 @@ LABEL_14:
 
 LABEL_141:
   v62 = [MEMORY[0x29EDBA070] numberWithInt:self->_bioCheckResult];
-  [v3 setObject:v62 forKey:@"bioCheckResult"];
+  [dictionary setObject:v62 forKey:@"bioCheckResult"];
 
   v7 = *p_has;
   if ((*p_has & 0x8000) == 0)
@@ -1470,7 +1470,7 @@ LABEL_15:
 
 LABEL_142:
   v63 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckFrameCount];
-  [v3 setObject:v63 forKey:@"bioCheckFrameCount"];
+  [dictionary setObject:v63 forKey:@"bioCheckFrameCount"];
 
   v7 = *p_has;
   if ((*p_has & 0x20000) == 0)
@@ -1486,7 +1486,7 @@ LABEL_16:
 
 LABEL_143:
   v64 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckFrameFloodCount];
-  [v3 setObject:v64 forKey:@"bioCheckFrameFloodCount"];
+  [dictionary setObject:v64 forKey:@"bioCheckFrameFloodCount"];
 
   v7 = *p_has;
   if ((*p_has & 0x40000) == 0)
@@ -1502,7 +1502,7 @@ LABEL_17:
 
 LABEL_144:
   v65 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckFrameSparseCount];
-  [v3 setObject:v65 forKey:@"bioCheckFrameSparseCount"];
+  [dictionary setObject:v65 forKey:@"bioCheckFrameSparseCount"];
 
   v7 = *p_has;
   if ((*p_has & 0x10000) == 0)
@@ -1518,27 +1518,27 @@ LABEL_18:
 
 LABEL_145:
   v66 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckFrameDenseCount];
-  [v3 setObject:v66 forKey:@"bioCheckFrameDenseCount"];
+  [dictionary setObject:v66 forKey:@"bioCheckFrameDenseCount"];
 
   if ((*p_has & 0x10) != 0)
   {
 LABEL_19:
     v8 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_probingPatternEndTime];
-    [v3 setObject:v8 forKey:@"probingPatternEndTime"];
+    [dictionary setObject:v8 forKey:@"probingPatternEndTime"];
   }
 
 LABEL_20:
   if ((*(&self->_has + 8) & 2) != 0)
   {
     v9 = [MEMORY[0x29EDBA070] numberWithInt:self->_probingPatternResult];
-    [v3 setObject:v9 forKey:@"probingPatternResult"];
+    [dictionary setObject:v9 forKey:@"probingPatternResult"];
   }
 
   v10 = *p_has;
   if ((*p_has & 0x2000000000000000) != 0)
   {
     v11 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternFrameCount];
-    [v3 setObject:v11 forKey:@"probingPatternFrameCount"];
+    [dictionary setObject:v11 forKey:@"probingPatternFrameCount"];
 
     v10 = *p_has;
   }
@@ -1546,20 +1546,20 @@ LABEL_20:
   if (v10 < 0)
   {
     v12 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternFrameFloodCount];
-    [v3 setObject:v12 forKey:@"probingPatternFrameFloodCount"];
+    [dictionary setObject:v12 forKey:@"probingPatternFrameFloodCount"];
   }
 
   if (*(&self->_has + 8))
   {
     v13 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternFrameSparseCount];
-    [v3 setObject:v13 forKey:@"probingPatternFrameSparseCount"];
+    [dictionary setObject:v13 forKey:@"probingPatternFrameSparseCount"];
   }
 
   v14 = *p_has;
   if ((*p_has & 0x4000000000000000) != 0)
   {
     v15 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternFrameDenseCount];
-    [v3 setObject:v15 forKey:@"probingPatternFrameDenseCount"];
+    [dictionary setObject:v15 forKey:@"probingPatternFrameDenseCount"];
 
     v14 = *p_has;
   }
@@ -1567,14 +1567,14 @@ LABEL_20:
   if ((v14 & 0x200) != 0)
   {
     v16 = [MEMORY[0x29EDBA070] numberWithInt:self->_ambientLux];
-    [v3 setObject:v16 forKey:@"ambientLux"];
+    [dictionary setObject:v16 forKey:@"ambientLux"];
   }
 
   v17 = *(&self->_has + 2);
   if (v17 < 0)
   {
     v110 = [MEMORY[0x29EDBA070] numberWithBool:self->_probingPatternFailure];
-    [v3 setObject:v110 forKey:@"probingPatternFailure"];
+    [dictionary setObject:v110 forKey:@"probingPatternFailure"];
 
     v17 = *(&self->_has + 2);
     if ((v17 & 0x8000000) == 0)
@@ -1595,7 +1595,7 @@ LABEL_34:
   }
 
   v111 = [MEMORY[0x29EDBA070] numberWithBool:self->_matcherFailure];
-  [v3 setObject:v111 forKey:@"matcherFailure"];
+  [dictionary setObject:v111 forKey:@"matcherFailure"];
 
   v17 = *(&self->_has + 2);
   if ((v17 & 0x1000000) == 0)
@@ -1611,7 +1611,7 @@ LABEL_35:
 
 LABEL_198:
   v112 = [MEMORY[0x29EDBA070] numberWithBool:self->_matchDepthFailure];
-  [v3 setObject:v112 forKey:@"matchDepthFailure"];
+  [dictionary setObject:v112 forKey:@"matchDepthFailure"];
 
   v17 = *(&self->_has + 2);
   if ((v17 & 0x2000000) == 0)
@@ -1627,7 +1627,7 @@ LABEL_36:
 
 LABEL_199:
   v113 = [MEMORY[0x29EDBA070] numberWithBool:self->_matchFloodFailure];
-  [v3 setObject:v113 forKey:@"matchFloodFailure"];
+  [dictionary setObject:v113 forKey:@"matchFloodFailure"];
 
   v17 = *(&self->_has + 2);
   if ((v17 & 0x40) == 0)
@@ -1643,7 +1643,7 @@ LABEL_37:
 
 LABEL_200:
   v114 = [MEMORY[0x29EDBA070] numberWithBool:self->_asFloodFailure];
-  [v3 setObject:v114 forKey:@"asFloodFailure"];
+  [dictionary setObject:v114 forKey:@"asFloodFailure"];
 
   v17 = *(&self->_has + 2);
   if ((v17 & 0x10) == 0)
@@ -1659,7 +1659,7 @@ LABEL_38:
 
 LABEL_201:
   v115 = [MEMORY[0x29EDBA070] numberWithBool:self->_asDepthFailure];
-  [v3 setObject:v115 forKey:@"asDepthFailure"];
+  [dictionary setObject:v115 forKey:@"asDepthFailure"];
 
   v17 = *(&self->_has + 2);
   if ((v17 & 0x10000000) == 0)
@@ -1675,45 +1675,45 @@ LABEL_39:
 
 LABEL_202:
   v116 = [MEMORY[0x29EDBA070] numberWithBool:self->_onlineTemplateUpdated];
-  [v3 setObject:v116 forKey:@"onlineTemplateUpdated"];
+  [dictionary setObject:v116 forKey:@"onlineTemplateUpdated"];
 
   if ((*(&self->_has + 2) & 0x40000000) != 0)
   {
 LABEL_40:
     v18 = [MEMORY[0x29EDBA070] numberWithBool:self->_passcodeChallengeAllowed];
-    [v3 setObject:v18 forKey:@"passcodeChallengeAllowed"];
+    [dictionary setObject:v18 forKey:@"passcodeChallengeAllowed"];
   }
 
 LABEL_41:
   if ((*(&self->_has + 6) & 8) != 0)
   {
     v19 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_featureGenerationError];
-    [v3 setObject:v19 forKey:@"featureGenerationError"];
+    [dictionary setObject:v19 forKey:@"featureGenerationError"];
   }
 
   if ((*(&self->_has + 8) & 4) != 0)
   {
     v20 = [MEMORY[0x29EDBA070] numberWithInt:self->_sensorTemperature];
-    [v3 setObject:v20 forKey:@"sensorTemperature"];
+    [dictionary setObject:v20 forKey:@"sensorTemperature"];
   }
 
   if ((*(&self->_has + 5) & 4) != 0)
   {
     v21 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDistance];
-    [v3 setObject:v21 forKey:@"faceDistance"];
+    [dictionary setObject:v21 forKey:@"faceDistance"];
   }
 
   if ((*(&self->_has + 10) & 0x40) != 0)
   {
     v22 = [MEMORY[0x29EDBA070] numberWithBool:self->_hasOcclusion];
-    [v3 setObject:v22 forKey:@"hasOcclusion"];
+    [dictionary setObject:v22 forKey:@"hasOcclusion"];
   }
 
   v23 = *p_has;
   if ((*p_has & 0x2000000) != 0)
   {
     v67 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_camRectX];
-    [v3 setObject:v67 forKey:@"camRectX"];
+    [dictionary setObject:v67 forKey:@"camRectX"];
 
     v23 = *p_has;
     if ((*p_has & 0x4000000) == 0)
@@ -1734,7 +1734,7 @@ LABEL_51:
   }
 
   v68 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_camRectY];
-  [v3 setObject:v68 forKey:@"camRectY"];
+  [dictionary setObject:v68 forKey:@"camRectY"];
 
   v23 = *p_has;
   if ((*p_has & 0x1000000) == 0)
@@ -1750,7 +1750,7 @@ LABEL_52:
 
 LABEL_149:
   v69 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_camRectW];
-  [v3 setObject:v69 forKey:@"camRectW"];
+  [dictionary setObject:v69 forKey:@"camRectW"];
 
   v23 = *p_has;
   if ((*p_has & 0x800000) == 0)
@@ -1766,7 +1766,7 @@ LABEL_53:
 
 LABEL_150:
   v70 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_camRectH];
-  [v3 setObject:v70 forKey:@"camRectH"];
+  [dictionary setObject:v70 forKey:@"camRectH"];
 
   v23 = *p_has;
   if ((*p_has & 0x10000000000) == 0)
@@ -1782,7 +1782,7 @@ LABEL_54:
 
 LABEL_151:
   v71 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectPPMRequestedBudget];
-  [v3 setObject:v71 forKey:@"faceDetectPPMRequestedBudget"];
+  [dictionary setObject:v71 forKey:@"faceDetectPPMRequestedBudget"];
 
   v23 = *p_has;
   if ((*p_has & 0x8000000000) == 0)
@@ -1798,7 +1798,7 @@ LABEL_55:
 
 LABEL_152:
   v72 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectPPMAllocatedBudget];
-  [v3 setObject:v72 forKey:@"faceDetectPPMAllocatedBudget"];
+  [dictionary setObject:v72 forKey:@"faceDetectPPMAllocatedBudget"];
 
   v23 = *p_has;
   if ((*p_has & 0x100000) == 0)
@@ -1814,7 +1814,7 @@ LABEL_56:
 
 LABEL_153:
   v73 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckPPMRequestedBudget];
-  [v3 setObject:v73 forKey:@"bioCheckPPMRequestedBudget"];
+  [dictionary setObject:v73 forKey:@"bioCheckPPMRequestedBudget"];
 
   v23 = *p_has;
   if ((*p_has & 0x80000) == 0)
@@ -1830,7 +1830,7 @@ LABEL_57:
 
 LABEL_154:
   v74 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckPPMAllocatedBudget];
-  [v3 setObject:v74 forKey:@"bioCheckPPMAllocatedBudget"];
+  [dictionary setObject:v74 forKey:@"bioCheckPPMAllocatedBudget"];
 
   v23 = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -1846,39 +1846,39 @@ LABEL_58:
 
 LABEL_155:
   v75 = [MEMORY[0x29EDBA070] numberWithLongLong:self->_rfcSetIndex];
-  [v3 setObject:v75 forKey:@"rfcSetIndex"];
+  [dictionary setObject:v75 forKey:@"rfcSetIndex"];
 
   if ((*p_has & 0x20) != 0)
   {
 LABEL_59:
     v24 = [MEMORY[0x29EDBA070] numberWithLongLong:self->_rfcFrameIndex];
-    [v3 setObject:v24 forKey:@"rfcFrameIndex"];
+    [dictionary setObject:v24 forKey:@"rfcFrameIndex"];
   }
 
 LABEL_60:
   if ((*(&self->_has + 9) & 4) != 0)
   {
     v25 = [MEMORY[0x29EDBA070] numberWithBool:self->_bioLockout];
-    [v3 setObject:v25 forKey:@"bioLockout"];
+    [dictionary setObject:v25 forKey:@"bioLockout"];
   }
 
   if ((*(&self->_has + 3) & 8) != 0)
   {
     v26 = [MEMORY[0x29EDBA070] numberWithInt:self->_cameraErr];
-    [v3 setObject:v26 forKey:@"cameraErr"];
+    [dictionary setObject:v26 forKey:@"cameraErr"];
   }
 
   if ((*(&self->_has + 11) & 4) != 0)
   {
     v27 = [MEMORY[0x29EDBA070] numberWithBool:self->_matchForUnlock];
-    [v3 setObject:v27 forKey:@"matchForUnlock"];
+    [dictionary setObject:v27 forKey:@"matchForUnlock"];
   }
 
   v28 = *p_has;
   if ((*p_has & 0x4000000000000) != 0)
   {
     v76 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_failedUnlockAttemptsFromFD];
-    [v3 setObject:v76 forKey:@"failedUnlockAttemptsFromFD"];
+    [dictionary setObject:v76 forKey:@"failedUnlockAttemptsFromFD"];
 
     v28 = *p_has;
     if ((*p_has & 0x2000000000000) == 0)
@@ -1899,7 +1899,7 @@ LABEL_68:
   }
 
   v77 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_failedUnlockAttemptsFromBiocheck];
-  [v3 setObject:v77 forKey:@"failedUnlockAttemptsFromBiocheck"];
+  [dictionary setObject:v77 forKey:@"failedUnlockAttemptsFromBiocheck"];
 
   v28 = *p_has;
   if ((*p_has & 0x1000000000000) == 0)
@@ -1915,7 +1915,7 @@ LABEL_69:
 
 LABEL_159:
   v78 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_failedMatchAttemptsFromFD];
-  [v3 setObject:v78 forKey:@"failedMatchAttemptsFromFD"];
+  [dictionary setObject:v78 forKey:@"failedMatchAttemptsFromFD"];
 
   v28 = *p_has;
   if ((*p_has & 0x800000000000) == 0)
@@ -1931,7 +1931,7 @@ LABEL_70:
 
 LABEL_160:
   v79 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_failedMatchAttemptsFromBiocheck];
-  [v3 setObject:v79 forKey:@"failedMatchAttemptsFromBiocheck"];
+  [dictionary setObject:v79 forKey:@"failedMatchAttemptsFromBiocheck"];
 
   v28 = *p_has;
   if ((*p_has & 0x400000) == 0)
@@ -1947,7 +1947,7 @@ LABEL_71:
 
 LABEL_161:
   v80 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioLockoutReason];
-  [v3 setObject:v80 forKey:@"bioLockoutReason"];
+  [dictionary setObject:v80 forKey:@"bioLockoutReason"];
 
   v28 = *p_has;
   if ((*p_has & 0x10000000000000) == 0)
@@ -1963,27 +1963,27 @@ LABEL_72:
 
 LABEL_162:
   v81 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchFeatureVectorError];
-  [v3 setObject:v81 forKey:@"matchFeatureVectorError"];
+  [dictionary setObject:v81 forKey:@"matchFeatureVectorError"];
 
   if ((*p_has & 0x80000000000000) != 0)
   {
 LABEL_73:
     v29 = [MEMORY[0x29EDBA070] numberWithInt:self->_onlineTemplateAge];
-    [v3 setObject:v29 forKey:@"onlineTemplateAge"];
+    [dictionary setObject:v29 forKey:@"onlineTemplateAge"];
   }
 
 LABEL_74:
   if ((*(&self->_has + 8) & 8) != 0)
   {
     v30 = [MEMORY[0x29EDBA070] numberWithInt:self->_shortTermTemplateAge];
-    [v3 setObject:v30 forKey:@"shortTermTemplateAge"];
+    [dictionary setObject:v30 forKey:@"shortTermTemplateAge"];
   }
 
   v31 = *p_has;
   if ((*p_has & 0x400000000) != 0)
   {
     v82 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectFaceDistance];
-    [v3 setObject:v82 forKey:@"faceDetectFaceDistance"];
+    [dictionary setObject:v82 forKey:@"faceDetectFaceDistance"];
 
     v31 = *p_has;
     if ((*p_has & 0x100000000) == 0)
@@ -2004,7 +2004,7 @@ LABEL_78:
   }
 
   v83 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectCamRectX];
-  [v3 setObject:v83 forKey:@"faceDetectCamRectX"];
+  [dictionary setObject:v83 forKey:@"faceDetectCamRectX"];
 
   v31 = *p_has;
   if ((*p_has & 0x200000000) == 0)
@@ -2020,7 +2020,7 @@ LABEL_79:
 
 LABEL_166:
   v84 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectCamRectY];
-  [v3 setObject:v84 forKey:@"faceDetectCamRectY"];
+  [dictionary setObject:v84 forKey:@"faceDetectCamRectY"];
 
   v31 = *p_has;
   if ((*p_has & 0x80000000) == 0)
@@ -2036,7 +2036,7 @@ LABEL_80:
 
 LABEL_167:
   v85 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectCamRectW];
-  [v3 setObject:v85 forKey:@"faceDetectCamRectW"];
+  [dictionary setObject:v85 forKey:@"faceDetectCamRectW"];
 
   v31 = *p_has;
   if ((*p_has & 0x40000000) == 0)
@@ -2052,7 +2052,7 @@ LABEL_81:
 
 LABEL_168:
   v86 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDetectCamRectH];
-  [v3 setObject:v86 forKey:@"faceDetectCamRectH"];
+  [dictionary setObject:v86 forKey:@"faceDetectCamRectH"];
 
   v31 = *p_has;
   if ((*p_has & 0x4000) == 0)
@@ -2068,7 +2068,7 @@ LABEL_82:
 
 LABEL_169:
   v87 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckFaceDistance];
-  [v3 setObject:v87 forKey:@"bioCheckFaceDistance"];
+  [dictionary setObject:v87 forKey:@"bioCheckFaceDistance"];
 
   v31 = *p_has;
   if ((*p_has & 0x1000) == 0)
@@ -2084,7 +2084,7 @@ LABEL_83:
 
 LABEL_170:
   v88 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckCamRectX];
-  [v3 setObject:v88 forKey:@"bioCheckCamRectX"];
+  [dictionary setObject:v88 forKey:@"bioCheckCamRectX"];
 
   v31 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -2100,7 +2100,7 @@ LABEL_84:
 
 LABEL_171:
   v89 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckCamRectY];
-  [v3 setObject:v89 forKey:@"bioCheckCamRectY"];
+  [dictionary setObject:v89 forKey:@"bioCheckCamRectY"];
 
   v31 = *p_has;
   if ((*p_has & 0x800) == 0)
@@ -2116,7 +2116,7 @@ LABEL_85:
 
 LABEL_172:
   v90 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckCamRectW];
-  [v3 setObject:v90 forKey:@"bioCheckCamRectW"];
+  [dictionary setObject:v90 forKey:@"bioCheckCamRectW"];
 
   v31 = *p_has;
   if ((*p_has & 0x400) == 0)
@@ -2132,7 +2132,7 @@ LABEL_86:
 
 LABEL_173:
   v91 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCheckCamRectH];
-  [v3 setObject:v91 forKey:@"bioCheckCamRectH"];
+  [dictionary setObject:v91 forKey:@"bioCheckCamRectH"];
 
   v31 = *p_has;
   if ((*p_has & 0x1000000000000000) == 0)
@@ -2148,7 +2148,7 @@ LABEL_87:
 
 LABEL_174:
   v92 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternFaceDistance];
-  [v3 setObject:v92 forKey:@"probingPatternFaceDistance"];
+  [dictionary setObject:v92 forKey:@"probingPatternFaceDistance"];
 
   v31 = *p_has;
   if ((*p_has & 0x400000000000000) == 0)
@@ -2164,7 +2164,7 @@ LABEL_88:
 
 LABEL_175:
   v93 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternCamRectX];
-  [v3 setObject:v93 forKey:@"probingPatternCamRectX"];
+  [dictionary setObject:v93 forKey:@"probingPatternCamRectX"];
 
   v31 = *p_has;
   if ((*p_has & 0x800000000000000) == 0)
@@ -2180,7 +2180,7 @@ LABEL_89:
 
 LABEL_176:
   v94 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternCamRectY];
-  [v3 setObject:v94 forKey:@"probingPatternCamRectY"];
+  [dictionary setObject:v94 forKey:@"probingPatternCamRectY"];
 
   v31 = *p_has;
   if ((*p_has & 0x200000000000000) == 0)
@@ -2196,13 +2196,13 @@ LABEL_90:
 
 LABEL_177:
   v95 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternCamRectW];
-  [v3 setObject:v95 forKey:@"probingPatternCamRectW"];
+  [dictionary setObject:v95 forKey:@"probingPatternCamRectW"];
 
   if ((*p_has & 0x100000000000000) != 0)
   {
 LABEL_91:
     v32 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_probingPatternCamRectH];
-    [v3 setObject:v32 forKey:@"probingPatternCamRectH"];
+    [dictionary setObject:v32 forKey:@"probingPatternCamRectH"];
   }
 
 LABEL_92:
@@ -2210,7 +2210,7 @@ LABEL_92:
   if ((v33 & 0x20) != 0)
   {
     v96 = [MEMORY[0x29EDBA070] numberWithBool:self->_asFailure];
-    [v3 setObject:v96 forKey:@"asFailure"];
+    [dictionary setObject:v96 forKey:@"asFailure"];
 
     v33 = *(&self->_has + 2);
     if ((v33 & 0x80) == 0)
@@ -2231,13 +2231,13 @@ LABEL_94:
   }
 
   v97 = [MEMORY[0x29EDBA070] numberWithBool:self->_autoRetry];
-  [v3 setObject:v97 forKey:@"autoRetry"];
+  [dictionary setObject:v97 forKey:@"autoRetry"];
 
   if ((*(&self->_has + 2) & 0x100) != 0)
   {
 LABEL_95:
     v34 = [MEMORY[0x29EDBA070] numberWithBool:self->_autoRetryAllowed];
-    [v3 setObject:v34 forKey:@"autoRetryAllowed"];
+    [dictionary setObject:v34 forKey:@"autoRetryAllowed"];
   }
 
 LABEL_96:
@@ -2245,7 +2245,7 @@ LABEL_96:
   if ((*p_has & 0x20000000) != 0)
   {
     v36 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_deviceOrientation];
-    [v3 setObject:v36 forKey:@"deviceOrientation"];
+    [dictionary setObject:v36 forKey:@"deviceOrientation"];
 
     v35 = *p_has;
   }
@@ -2253,26 +2253,26 @@ LABEL_96:
   if ((v35 & 0x20000000000000) != 0)
   {
     v37 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchIdentityCount];
-    [v3 setObject:v37 forKey:@"matchIdentityCount"];
+    [dictionary setObject:v37 forKey:@"matchIdentityCount"];
   }
 
   cameraHWParameters = self->_cameraHWParameters;
   if (cameraHWParameters)
   {
-    [v3 setObject:cameraHWParameters forKey:@"cameraHWParameters"];
+    [dictionary setObject:cameraHWParameters forKey:@"cameraHWParameters"];
   }
 
   if ((*(&self->_has + 3) & 0x10) != 0)
   {
     v39 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_captureMethod];
-    [v3 setObject:v39 forKey:@"captureMethod"];
+    [dictionary setObject:v39 forKey:@"captureMethod"];
   }
 
   v40 = *(&self->_has + 2);
   if ((v40 & 0x20000) != 0)
   {
     v98 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackNoFaceDetected];
-    [v3 setObject:v98 forKey:@"engagementInfoFeedbackNoFaceDetected"];
+    [dictionary setObject:v98 forKey:@"engagementInfoFeedbackNoFaceDetected"];
 
     v40 = *(&self->_has + 2);
     if ((v40 & 0x4000) == 0)
@@ -2293,7 +2293,7 @@ LABEL_106:
   }
 
   v99 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackFaceTooClose];
-  [v3 setObject:v99 forKey:@"engagementInfoFeedbackFaceTooClose"];
+  [dictionary setObject:v99 forKey:@"engagementInfoFeedbackFaceTooClose"];
 
   v40 = *(&self->_has + 2);
   if ((v40 & 0x8000) == 0)
@@ -2309,7 +2309,7 @@ LABEL_107:
 
 LABEL_184:
   v100 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackFaceTooFar];
-  [v3 setObject:v100 forKey:@"engagementInfoFeedbackFaceTooFar"];
+  [dictionary setObject:v100 forKey:@"engagementInfoFeedbackFaceTooFar"];
 
   v40 = *(&self->_has + 2);
   if ((v40 & 0x200000) == 0)
@@ -2325,7 +2325,7 @@ LABEL_108:
 
 LABEL_185:
   v101 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackPoseOutOfRange];
-  [v3 setObject:v101 forKey:@"engagementInfoFeedbackPoseOutOfRange"];
+  [dictionary setObject:v101 forKey:@"engagementInfoFeedbackPoseOutOfRange"];
 
   v40 = *(&self->_has + 2);
   if ((v40 & 0x10000) == 0)
@@ -2341,7 +2341,7 @@ LABEL_109:
 
 LABEL_186:
   v102 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackNoAttention];
-  [v3 setObject:v102 forKey:@"engagementInfoFeedbackNoAttention"];
+  [dictionary setObject:v102 forKey:@"engagementInfoFeedbackNoAttention"];
 
   v40 = *(&self->_has + 2);
   if ((v40 & 0x2000) == 0)
@@ -2357,7 +2357,7 @@ LABEL_110:
 
 LABEL_187:
   v103 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackFaceOccluded];
-  [v3 setObject:v103 forKey:@"engagementInfoFeedbackFaceOccluded"];
+  [dictionary setObject:v103 forKey:@"engagementInfoFeedbackFaceOccluded"];
 
   v40 = *(&self->_has + 2);
   if ((v40 & 0x1000) == 0)
@@ -2373,7 +2373,7 @@ LABEL_111:
 
 LABEL_188:
   v104 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackCameraObstructed];
-  [v3 setObject:v104 forKey:@"engagementInfoFeedbackCameraObstructed"];
+  [dictionary setObject:v104 forKey:@"engagementInfoFeedbackCameraObstructed"];
 
   v40 = *(&self->_has + 2);
   if ((v40 & 0x80000) == 0)
@@ -2389,36 +2389,36 @@ LABEL_112:
 
 LABEL_189:
   v105 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackPartialOutOfFOV];
-  [v3 setObject:v105 forKey:@"engagementInfoFeedbackPartialOutOfFOV"];
+  [dictionary setObject:v105 forKey:@"engagementInfoFeedbackPartialOutOfFOV"];
 
   if ((*(&self->_has + 2) & 0x800) != 0)
   {
 LABEL_113:
     v41 = [MEMORY[0x29EDBA070] numberWithBool:self->_combinedSequenceEnabled];
-    [v3 setObject:v41 forKey:@"combinedSequenceEnabled"];
+    [dictionary setObject:v41 forKey:@"combinedSequenceEnabled"];
   }
 
 LABEL_114:
   if ((*p_has & 8) != 0)
   {
     v42 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_overallTimeWithRetries];
-    [v3 setObject:v42 forKey:@"overallTimeWithRetries"];
+    [dictionary setObject:v42 forKey:@"overallTimeWithRetries"];
   }
 
   if ((*(&self->_has + 9) & 2) != 0)
   {
     v43 = [MEMORY[0x29EDBA070] numberWithBool:self->_autoRetryEnabled];
-    [v3 setObject:v43 forKey:@"autoRetryEnabled"];
+    [dictionary setObject:v43 forKey:@"autoRetryEnabled"];
   }
 
   v44 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v44 forKey:@"identityCreationTime"];
+  [dictionary setObject:v44 forKey:@"identityCreationTime"];
 
   v45 = *(&self->_has + 2);
   if ((v45 & 0x800000) != 0)
   {
     v46 = [MEMORY[0x29EDBA070] numberWithBool:self->_matchCancelled];
-    [v3 setObject:v46 forKey:@"matchCancelled"];
+    [dictionary setObject:v46 forKey:@"matchCancelled"];
 
     v45 = *(&self->_has + 2);
   }
@@ -2426,14 +2426,14 @@ LABEL_114:
   if ((v45 & 0x100000) != 0)
   {
     v47 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackPoseMarginal];
-    [v3 setObject:v47 forKey:@"engagementInfoFeedbackPoseMarginal"];
+    [dictionary setObject:v47 forKey:@"engagementInfoFeedbackPoseMarginal"];
   }
 
   v48 = *p_has;
   if ((*p_has & 0x80000000000) != 0)
   {
     v106 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceOrientation];
-    [v3 setObject:v106 forKey:@"faceOrientation"];
+    [dictionary setObject:v106 forKey:@"faceOrientation"];
 
     v48 = *p_has;
     if ((*p_has & 0x100000000000) == 0)
@@ -2454,7 +2454,7 @@ LABEL_124:
   }
 
   v107 = [MEMORY[0x29EDBA070] numberWithInt:self->_facePitch];
-  [v3 setObject:v107 forKey:@"facePitch"];
+  [dictionary setObject:v107 forKey:@"facePitch"];
 
   v48 = *p_has;
   if ((*p_has & 0x400000000000) == 0)
@@ -2470,7 +2470,7 @@ LABEL_125:
 
 LABEL_193:
   v108 = [MEMORY[0x29EDBA070] numberWithInt:self->_faceYaw];
-  [v3 setObject:v108 forKey:@"faceYaw"];
+  [dictionary setObject:v108 forKey:@"faceYaw"];
 
   v48 = *p_has;
   if ((*p_has & 0x200000000000) == 0)
@@ -2486,50 +2486,50 @@ LABEL_126:
 
 LABEL_194:
   v109 = [MEMORY[0x29EDBA070] numberWithInt:self->_faceRoll];
-  [v3 setObject:v109 forKey:@"faceRoll"];
+  [dictionary setObject:v109 forKey:@"faceRoll"];
 
   if ((*p_has & 0x80) != 0)
   {
 LABEL_127:
     v49 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_timeSinceSleep];
-    [v3 setObject:v49 forKey:@"timeSinceSleep"];
+    [dictionary setObject:v49 forKey:@"timeSinceSleep"];
   }
 
 LABEL_128:
   if ((*(&self->_has + 10) & 4) != 0)
   {
     v50 = [MEMORY[0x29EDBA070] numberWithBool:self->_engagementInfoFeedbackNoseAndMouthOccluded];
-    [v3 setObject:v50 forKey:@"engagementInfoFeedbackNoseAndMouthOccluded"];
+    [dictionary setObject:v50 forKey:@"engagementInfoFeedbackNoseAndMouthOccluded"];
   }
 
   if ((*(&self->_has + 6) & 0x40) != 0)
   {
     v51 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchType];
-    [v3 setObject:v51 forKey:@"matchType"];
+    [dictionary setObject:v51 forKey:@"matchType"];
   }
 
-  v52 = v3;
+  v52 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_has = &self->_has;
-  v116 = v4;
+  v116 = toCopy;
   if (*(&self->_has + 1))
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 11) & 0x20) != 0)
   {
     overallResult = self->_overallResult;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v8 = *p_has;
@@ -2537,7 +2537,7 @@ LABEL_128:
   {
     overallTime = self->_overallTime;
     PBDataWriterWriteUint64Field();
-    v4 = v116;
+    toCopy = v116;
     v8 = *p_has;
     if ((*p_has & 2) == 0)
     {
@@ -2558,7 +2558,7 @@ LABEL_7:
 
   faceDetectEndTime = self->_faceDetectEndTime;
   PBDataWriterWriteUint64Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x20000000000) == 0)
   {
@@ -2574,7 +2574,7 @@ LABEL_8:
 LABEL_140:
   faceDetectResult = self->_faceDetectResult;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x800000000) == 0)
   {
@@ -2590,7 +2590,7 @@ LABEL_9:
 LABEL_141:
   faceDetectFrameCount = self->_faceDetectFrameCount;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x2000000000) == 0)
   {
@@ -2606,7 +2606,7 @@ LABEL_10:
 LABEL_142:
   faceDetectFrameFloodCount = self->_faceDetectFrameFloodCount;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x4000000000) == 0)
   {
@@ -2622,7 +2622,7 @@ LABEL_11:
 LABEL_143:
   faceDetectFrameSparseCount = self->_faceDetectFrameSparseCount;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x1000000000) == 0)
   {
@@ -2638,7 +2638,7 @@ LABEL_12:
 LABEL_144:
   faceDetectFrameDenseCount = self->_faceDetectFrameDenseCount;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 1) == 0)
   {
@@ -2654,7 +2654,7 @@ LABEL_13:
 LABEL_145:
   bioCheckEndTime = self->_bioCheckEndTime;
   PBDataWriterWriteUint64Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x200000) == 0)
   {
@@ -2670,7 +2670,7 @@ LABEL_14:
 LABEL_146:
   bioCheckResult = self->_bioCheckResult;
   PBDataWriterWriteInt32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x8000) == 0)
   {
@@ -2686,7 +2686,7 @@ LABEL_15:
 LABEL_147:
   bioCheckFrameCount = self->_bioCheckFrameCount;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x20000) == 0)
   {
@@ -2702,7 +2702,7 @@ LABEL_16:
 LABEL_148:
   bioCheckFrameFloodCount = self->_bioCheckFrameFloodCount;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x40000) == 0)
   {
@@ -2718,7 +2718,7 @@ LABEL_17:
 LABEL_149:
   bioCheckFrameSparseCount = self->_bioCheckFrameSparseCount;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v8 = *p_has;
   if ((*p_has & 0x10000) == 0)
   {
@@ -2734,13 +2734,13 @@ LABEL_18:
 LABEL_150:
   bioCheckFrameDenseCount = self->_bioCheckFrameDenseCount;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   if ((*p_has & 0x10) != 0)
   {
 LABEL_19:
     probingPatternEndTime = self->_probingPatternEndTime;
     PBDataWriterWriteUint64Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
 LABEL_20:
@@ -2748,7 +2748,7 @@ LABEL_20:
   {
     probingPatternResult = self->_probingPatternResult;
     PBDataWriterWriteInt32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v11 = *p_has;
@@ -2756,7 +2756,7 @@ LABEL_20:
   {
     probingPatternFrameCount = self->_probingPatternFrameCount;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
     v11 = *p_has;
   }
 
@@ -2764,14 +2764,14 @@ LABEL_20:
   {
     probingPatternFrameFloodCount = self->_probingPatternFrameFloodCount;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if (*(&self->_has + 8))
   {
     probingPatternFrameSparseCount = self->_probingPatternFrameSparseCount;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v15 = *p_has;
@@ -2779,7 +2779,7 @@ LABEL_20:
   {
     probingPatternFrameDenseCount = self->_probingPatternFrameDenseCount;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
     v15 = *p_has;
   }
 
@@ -2787,7 +2787,7 @@ LABEL_20:
   {
     ambientLux = self->_ambientLux;
     PBDataWriterWriteInt32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v18 = *(&self->_has + 2);
@@ -2795,7 +2795,7 @@ LABEL_20:
   {
     probingPatternFailure = self->_probingPatternFailure;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
     v18 = *(&self->_has + 2);
     if ((v18 & 0x8000000) == 0)
     {
@@ -2816,7 +2816,7 @@ LABEL_34:
 
   matcherFailure = self->_matcherFailure;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v18 = *(&self->_has + 2);
   if ((v18 & 0x1000000) == 0)
   {
@@ -2832,7 +2832,7 @@ LABEL_35:
 LABEL_203:
   matchDepthFailure = self->_matchDepthFailure;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v18 = *(&self->_has + 2);
   if ((v18 & 0x2000000) == 0)
   {
@@ -2848,7 +2848,7 @@ LABEL_36:
 LABEL_204:
   matchFloodFailure = self->_matchFloodFailure;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v18 = *(&self->_has + 2);
   if ((v18 & 0x40) == 0)
   {
@@ -2864,7 +2864,7 @@ LABEL_37:
 LABEL_205:
   asFloodFailure = self->_asFloodFailure;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v18 = *(&self->_has + 2);
   if ((v18 & 0x10) == 0)
   {
@@ -2880,7 +2880,7 @@ LABEL_38:
 LABEL_206:
   asDepthFailure = self->_asDepthFailure;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v18 = *(&self->_has + 2);
   if ((v18 & 0x10000000) == 0)
   {
@@ -2896,13 +2896,13 @@ LABEL_39:
 LABEL_207:
   onlineTemplateUpdated = self->_onlineTemplateUpdated;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   if ((*(&self->_has + 2) & 0x40000000) != 0)
   {
 LABEL_40:
     passcodeChallengeAllowed = self->_passcodeChallengeAllowed;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
 LABEL_41:
@@ -2910,28 +2910,28 @@ LABEL_41:
   {
     featureGenerationError = self->_featureGenerationError;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 8) & 4) != 0)
   {
     sensorTemperature = self->_sensorTemperature;
     PBDataWriterWriteInt32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 5) & 4) != 0)
   {
     faceDistance = self->_faceDistance;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 10) & 0x40) != 0)
   {
     hasOcclusion = self->_hasOcclusion;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v24 = *p_has;
@@ -2939,7 +2939,7 @@ LABEL_41:
   {
     camRectX = self->_camRectX;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
     v24 = *p_has;
     if ((*p_has & 0x4000000) == 0)
     {
@@ -2960,7 +2960,7 @@ LABEL_51:
 
   camRectY = self->_camRectY;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v24 = *p_has;
   if ((*p_has & 0x1000000) == 0)
   {
@@ -2976,7 +2976,7 @@ LABEL_52:
 LABEL_154:
   camRectW = self->_camRectW;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v24 = *p_has;
   if ((*p_has & 0x800000) == 0)
   {
@@ -2992,7 +2992,7 @@ LABEL_53:
 LABEL_155:
   camRectH = self->_camRectH;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v24 = *p_has;
   if ((*p_has & 0x10000000000) == 0)
   {
@@ -3008,7 +3008,7 @@ LABEL_54:
 LABEL_156:
   faceDetectPPMRequestedBudget = self->_faceDetectPPMRequestedBudget;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v24 = *p_has;
   if ((*p_has & 0x8000000000) == 0)
   {
@@ -3024,7 +3024,7 @@ LABEL_55:
 LABEL_157:
   faceDetectPPMAllocatedBudget = self->_faceDetectPPMAllocatedBudget;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v24 = *p_has;
   if ((*p_has & 0x100000) == 0)
   {
@@ -3040,7 +3040,7 @@ LABEL_56:
 LABEL_158:
   bioCheckPPMRequestedBudget = self->_bioCheckPPMRequestedBudget;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v24 = *p_has;
   if ((*p_has & 0x80000) == 0)
   {
@@ -3056,7 +3056,7 @@ LABEL_57:
 LABEL_159:
   bioCheckPPMAllocatedBudget = self->_bioCheckPPMAllocatedBudget;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v24 = *p_has;
   if ((*p_has & 0x40) == 0)
   {
@@ -3072,13 +3072,13 @@ LABEL_58:
 LABEL_160:
   rfcSetIndex = self->_rfcSetIndex;
   PBDataWriterWriteInt64Field();
-  v4 = v116;
+  toCopy = v116;
   if ((*p_has & 0x20) != 0)
   {
 LABEL_59:
     rfcFrameIndex = self->_rfcFrameIndex;
     PBDataWriterWriteInt64Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
 LABEL_60:
@@ -3086,21 +3086,21 @@ LABEL_60:
   {
     bioLockout = self->_bioLockout;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 3) & 8) != 0)
   {
     cameraErr = self->_cameraErr;
     PBDataWriterWriteInt32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 11) & 4) != 0)
   {
     matchForUnlock = self->_matchForUnlock;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v29 = *p_has;
@@ -3108,7 +3108,7 @@ LABEL_60:
   {
     failedUnlockAttemptsFromFD = self->_failedUnlockAttemptsFromFD;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
     v29 = *p_has;
     if ((*p_has & 0x2000000000000) == 0)
     {
@@ -3129,7 +3129,7 @@ LABEL_68:
 
   failedUnlockAttemptsFromBiocheck = self->_failedUnlockAttemptsFromBiocheck;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v29 = *p_has;
   if ((*p_has & 0x1000000000000) == 0)
   {
@@ -3145,7 +3145,7 @@ LABEL_69:
 LABEL_164:
   failedMatchAttemptsFromFD = self->_failedMatchAttemptsFromFD;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v29 = *p_has;
   if ((*p_has & 0x800000000000) == 0)
   {
@@ -3161,7 +3161,7 @@ LABEL_70:
 LABEL_165:
   failedMatchAttemptsFromBiocheck = self->_failedMatchAttemptsFromBiocheck;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v29 = *p_has;
   if ((*p_has & 0x400000) == 0)
   {
@@ -3177,7 +3177,7 @@ LABEL_71:
 LABEL_166:
   bioLockoutReason = self->_bioLockoutReason;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v29 = *p_has;
   if ((*p_has & 0x10000000000000) == 0)
   {
@@ -3193,13 +3193,13 @@ LABEL_72:
 LABEL_167:
   matchFeatureVectorError = self->_matchFeatureVectorError;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   if ((*p_has & 0x80000000000000) != 0)
   {
 LABEL_73:
     onlineTemplateAge = self->_onlineTemplateAge;
     PBDataWriterWriteInt32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
 LABEL_74:
@@ -3207,7 +3207,7 @@ LABEL_74:
   {
     shortTermTemplateAge = self->_shortTermTemplateAge;
     PBDataWriterWriteInt32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v32 = *p_has;
@@ -3215,7 +3215,7 @@ LABEL_74:
   {
     faceDetectFaceDistance = self->_faceDetectFaceDistance;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
     v32 = *p_has;
     if ((*p_has & 0x100000000) == 0)
     {
@@ -3236,7 +3236,7 @@ LABEL_78:
 
   faceDetectCamRectX = self->_faceDetectCamRectX;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x200000000) == 0)
   {
@@ -3252,7 +3252,7 @@ LABEL_79:
 LABEL_171:
   faceDetectCamRectY = self->_faceDetectCamRectY;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x80000000) == 0)
   {
@@ -3268,7 +3268,7 @@ LABEL_80:
 LABEL_172:
   faceDetectCamRectW = self->_faceDetectCamRectW;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x40000000) == 0)
   {
@@ -3284,7 +3284,7 @@ LABEL_81:
 LABEL_173:
   faceDetectCamRectH = self->_faceDetectCamRectH;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x4000) == 0)
   {
@@ -3300,7 +3300,7 @@ LABEL_82:
 LABEL_174:
   bioCheckFaceDistance = self->_bioCheckFaceDistance;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x1000) == 0)
   {
@@ -3316,7 +3316,7 @@ LABEL_83:
 LABEL_175:
   bioCheckCamRectX = self->_bioCheckCamRectX;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x2000) == 0)
   {
@@ -3332,7 +3332,7 @@ LABEL_84:
 LABEL_176:
   bioCheckCamRectY = self->_bioCheckCamRectY;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x800) == 0)
   {
@@ -3348,7 +3348,7 @@ LABEL_85:
 LABEL_177:
   bioCheckCamRectW = self->_bioCheckCamRectW;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x400) == 0)
   {
@@ -3364,7 +3364,7 @@ LABEL_86:
 LABEL_178:
   bioCheckCamRectH = self->_bioCheckCamRectH;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x1000000000000000) == 0)
   {
@@ -3380,7 +3380,7 @@ LABEL_87:
 LABEL_179:
   probingPatternFaceDistance = self->_probingPatternFaceDistance;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x400000000000000) == 0)
   {
@@ -3396,7 +3396,7 @@ LABEL_88:
 LABEL_180:
   probingPatternCamRectX = self->_probingPatternCamRectX;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x800000000000000) == 0)
   {
@@ -3412,7 +3412,7 @@ LABEL_89:
 LABEL_181:
   probingPatternCamRectY = self->_probingPatternCamRectY;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   v32 = *p_has;
   if ((*p_has & 0x200000000000000) == 0)
   {
@@ -3428,13 +3428,13 @@ LABEL_90:
 LABEL_182:
   probingPatternCamRectW = self->_probingPatternCamRectW;
   PBDataWriterWriteUint32Field();
-  v4 = v116;
+  toCopy = v116;
   if ((*p_has & 0x100000000000000) != 0)
   {
 LABEL_91:
     probingPatternCamRectH = self->_probingPatternCamRectH;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
 LABEL_92:
@@ -3443,7 +3443,7 @@ LABEL_92:
   {
     asFailure = self->_asFailure;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
     v34 = *(&self->_has + 2);
     if ((v34 & 0x80) == 0)
     {
@@ -3464,13 +3464,13 @@ LABEL_94:
 
   autoRetry = self->_autoRetry;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   if ((*(&self->_has + 2) & 0x100) != 0)
   {
 LABEL_95:
     autoRetryAllowed = self->_autoRetryAllowed;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
 LABEL_96:
@@ -3479,7 +3479,7 @@ LABEL_96:
   {
     deviceOrientation = self->_deviceOrientation;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
     v36 = *p_has;
   }
 
@@ -3487,20 +3487,20 @@ LABEL_96:
   {
     matchIdentityCount = self->_matchIdentityCount;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if (self->_cameraHWParameters)
   {
     PBDataWriterWriteStringField();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 3) & 0x10) != 0)
   {
     captureMethod = self->_captureMethod;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v40 = *(&self->_has + 2);
@@ -3508,7 +3508,7 @@ LABEL_96:
   {
     engagementInfoFeedbackNoFaceDetected = self->_engagementInfoFeedbackNoFaceDetected;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
     v40 = *(&self->_has + 2);
     if ((v40 & 0x4000) == 0)
     {
@@ -3529,7 +3529,7 @@ LABEL_106:
 
   engagementInfoFeedbackFaceTooClose = self->_engagementInfoFeedbackFaceTooClose;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v40 = *(&self->_has + 2);
   if ((v40 & 0x8000) == 0)
   {
@@ -3545,7 +3545,7 @@ LABEL_107:
 LABEL_189:
   engagementInfoFeedbackFaceTooFar = self->_engagementInfoFeedbackFaceTooFar;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v40 = *(&self->_has + 2);
   if ((v40 & 0x200000) == 0)
   {
@@ -3561,7 +3561,7 @@ LABEL_108:
 LABEL_190:
   engagementInfoFeedbackPoseOutOfRange = self->_engagementInfoFeedbackPoseOutOfRange;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v40 = *(&self->_has + 2);
   if ((v40 & 0x10000) == 0)
   {
@@ -3577,7 +3577,7 @@ LABEL_109:
 LABEL_191:
   engagementInfoFeedbackNoAttention = self->_engagementInfoFeedbackNoAttention;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v40 = *(&self->_has + 2);
   if ((v40 & 0x2000) == 0)
   {
@@ -3593,7 +3593,7 @@ LABEL_110:
 LABEL_192:
   engagementInfoFeedbackFaceOccluded = self->_engagementInfoFeedbackFaceOccluded;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v40 = *(&self->_has + 2);
   if ((v40 & 0x1000) == 0)
   {
@@ -3609,7 +3609,7 @@ LABEL_111:
 LABEL_193:
   engagementInfoFeedbackCameraObstructed = self->_engagementInfoFeedbackCameraObstructed;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   v40 = *(&self->_has + 2);
   if ((v40 & 0x80000) == 0)
   {
@@ -3625,13 +3625,13 @@ LABEL_112:
 LABEL_194:
   engagementInfoFeedbackPartialOutOfFOV = self->_engagementInfoFeedbackPartialOutOfFOV;
   PBDataWriterWriteBOOLField();
-  v4 = v116;
+  toCopy = v116;
   if ((*(&self->_has + 2) & 0x800) != 0)
   {
 LABEL_113:
     combinedSequenceEnabled = self->_combinedSequenceEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
 LABEL_114:
@@ -3639,14 +3639,14 @@ LABEL_114:
   {
     overallTimeWithRetries = self->_overallTimeWithRetries;
     PBDataWriterWriteUint64Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 9) & 2) != 0)
   {
     autoRetryEnabled = self->_autoRetryEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if (self->_identityCreationTimes.count)
@@ -3656,7 +3656,7 @@ LABEL_114:
     {
       v45 = self->_identityCreationTimes.list[v44];
       PBDataWriterWriteUint64Field();
-      v4 = v116;
+      toCopy = v116;
       ++v44;
     }
 
@@ -3668,7 +3668,7 @@ LABEL_114:
   {
     matchCancelled = self->_matchCancelled;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
     v46 = *(&self->_has + 2);
   }
 
@@ -3676,7 +3676,7 @@ LABEL_114:
   {
     engagementInfoFeedbackPoseMarginal = self->_engagementInfoFeedbackPoseMarginal;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
   v49 = *p_has;
@@ -3684,7 +3684,7 @@ LABEL_114:
   {
     faceOrientation = self->_faceOrientation;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
     v49 = *p_has;
     if ((*p_has & 0x100000000000) == 0)
     {
@@ -3705,7 +3705,7 @@ LABEL_127:
 
   facePitch = self->_facePitch;
   PBDataWriterWriteInt32Field();
-  v4 = v116;
+  toCopy = v116;
   v49 = *p_has;
   if ((*p_has & 0x400000000000) == 0)
   {
@@ -3721,7 +3721,7 @@ LABEL_128:
 LABEL_198:
   faceYaw = self->_faceYaw;
   PBDataWriterWriteInt32Field();
-  v4 = v116;
+  toCopy = v116;
   v49 = *p_has;
   if ((*p_has & 0x200000000000) == 0)
   {
@@ -3737,13 +3737,13 @@ LABEL_129:
 LABEL_199:
   faceRoll = self->_faceRoll;
   PBDataWriterWriteInt32Field();
-  v4 = v116;
+  toCopy = v116;
   if ((*p_has & 0x80) != 0)
   {
 LABEL_130:
     timeSinceSleep = self->_timeSinceSleep;
     PBDataWriterWriteUint64Field();
-    v4 = v116;
+    toCopy = v116;
   }
 
 LABEL_131:
@@ -3751,38 +3751,38 @@ LABEL_131:
   {
     engagementInfoFeedbackNoseAndMouthOccluded = self->_engagementInfoFeedbackNoseAndMouthOccluded;
     PBDataWriterWriteBOOLField();
-    v4 = v116;
+    toCopy = v116;
   }
 
   if ((*(&self->_has + 6) & 0x40) != 0)
   {
     matchType = self->_matchType;
     PBDataWriterWriteUint32Field();
-    v4 = v116;
+    toCopy = v116;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_has = &self->_has;
   if (*(&self->_has + 1))
   {
-    v4[12] = self->_timestamp;
-    *(v4 + 380) |= 0x100uLL;
+    toCopy[12] = self->_timestamp;
+    *(toCopy + 380) |= 0x100uLL;
   }
 
   if ((*(&self->_has + 11) & 0x20) != 0)
   {
-    *(v4 + 377) = self->_overallResult;
-    *(v4 + 97) |= 0x20000000u;
+    *(toCopy + 377) = self->_overallResult;
+    *(toCopy + 97) |= 0x20000000u;
   }
 
   has = *p_has;
   if ((*p_has & 4) != 0)
   {
-    v4[6] = self->_overallTime;
-    *(v4 + 380) |= 4uLL;
+    toCopy[6] = self->_overallTime;
+    *(toCopy + 380) |= 4uLL;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -3801,8 +3801,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[5] = self->_faceDetectEndTime;
-  *(v4 + 380) |= 2uLL;
+  toCopy[5] = self->_faceDetectEndTime;
+  *(toCopy + 380) |= 2uLL;
   has = self->_has;
   if ((has & 0x20000000000) == 0)
   {
@@ -3816,8 +3816,8 @@ LABEL_8:
   }
 
 LABEL_141:
-  *(v4 + 61) = self->_faceDetectResult;
-  *(v4 + 380) |= 0x20000000000uLL;
+  *(toCopy + 61) = self->_faceDetectResult;
+  *(toCopy + 380) |= 0x20000000000uLL;
   has = self->_has;
   if ((has & 0x800000000) == 0)
   {
@@ -3831,8 +3831,8 @@ LABEL_9:
   }
 
 LABEL_142:
-  *(v4 + 55) = self->_faceDetectFrameCount;
-  *(v4 + 380) |= 0x800000000uLL;
+  *(toCopy + 55) = self->_faceDetectFrameCount;
+  *(toCopy + 380) |= 0x800000000uLL;
   has = self->_has;
   if ((has & 0x2000000000) == 0)
   {
@@ -3846,8 +3846,8 @@ LABEL_10:
   }
 
 LABEL_143:
-  *(v4 + 57) = self->_faceDetectFrameFloodCount;
-  *(v4 + 380) |= 0x2000000000uLL;
+  *(toCopy + 57) = self->_faceDetectFrameFloodCount;
+  *(toCopy + 380) |= 0x2000000000uLL;
   has = self->_has;
   if ((has & 0x4000000000) == 0)
   {
@@ -3861,8 +3861,8 @@ LABEL_11:
   }
 
 LABEL_144:
-  *(v4 + 58) = self->_faceDetectFrameSparseCount;
-  *(v4 + 380) |= 0x4000000000uLL;
+  *(toCopy + 58) = self->_faceDetectFrameSparseCount;
+  *(toCopy + 380) |= 0x4000000000uLL;
   has = self->_has;
   if ((has & 0x1000000000) == 0)
   {
@@ -3876,8 +3876,8 @@ LABEL_12:
   }
 
 LABEL_145:
-  *(v4 + 56) = self->_faceDetectFrameDenseCount;
-  *(v4 + 380) |= 0x1000000000uLL;
+  *(toCopy + 56) = self->_faceDetectFrameDenseCount;
+  *(toCopy + 380) |= 0x1000000000uLL;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -3891,8 +3891,8 @@ LABEL_13:
   }
 
 LABEL_146:
-  v4[4] = self->_bioCheckEndTime;
-  *(v4 + 380) |= 1uLL;
+  toCopy[4] = self->_bioCheckEndTime;
+  *(toCopy + 380) |= 1uLL;
   has = self->_has;
   if ((has & 0x200000) == 0)
   {
@@ -3906,8 +3906,8 @@ LABEL_14:
   }
 
 LABEL_147:
-  *(v4 + 38) = self->_bioCheckResult;
-  *(v4 + 380) |= 0x200000uLL;
+  *(toCopy + 38) = self->_bioCheckResult;
+  *(toCopy + 380) |= 0x200000uLL;
   has = self->_has;
   if ((has & 0x8000) == 0)
   {
@@ -3921,8 +3921,8 @@ LABEL_15:
   }
 
 LABEL_148:
-  *(v4 + 32) = self->_bioCheckFrameCount;
-  *(v4 + 380) |= 0x8000uLL;
+  *(toCopy + 32) = self->_bioCheckFrameCount;
+  *(toCopy + 380) |= 0x8000uLL;
   has = self->_has;
   if ((has & 0x20000) == 0)
   {
@@ -3936,8 +3936,8 @@ LABEL_16:
   }
 
 LABEL_149:
-  *(v4 + 34) = self->_bioCheckFrameFloodCount;
-  *(v4 + 380) |= 0x20000uLL;
+  *(toCopy + 34) = self->_bioCheckFrameFloodCount;
+  *(toCopy + 380) |= 0x20000uLL;
   has = self->_has;
   if ((has & 0x40000) == 0)
   {
@@ -3951,8 +3951,8 @@ LABEL_17:
   }
 
 LABEL_150:
-  *(v4 + 35) = self->_bioCheckFrameSparseCount;
-  *(v4 + 380) |= 0x40000uLL;
+  *(toCopy + 35) = self->_bioCheckFrameSparseCount;
+  *(toCopy + 380) |= 0x40000uLL;
   has = self->_has;
   if ((has & 0x10000) == 0)
   {
@@ -3966,61 +3966,61 @@ LABEL_18:
   }
 
 LABEL_151:
-  *(v4 + 33) = self->_bioCheckFrameDenseCount;
-  *(v4 + 380) |= 0x10000uLL;
+  *(toCopy + 33) = self->_bioCheckFrameDenseCount;
+  *(toCopy + 380) |= 0x10000uLL;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_19:
-    v4[8] = self->_probingPatternEndTime;
-    *(v4 + 380) |= 0x10uLL;
+    toCopy[8] = self->_probingPatternEndTime;
+    *(toCopy + 380) |= 0x10uLL;
   }
 
 LABEL_20:
   if ((*(&self->_has + 8) & 2) != 0)
   {
-    *(v4 + 85) = self->_probingPatternResult;
-    *(v4 + 97) |= 2u;
+    *(toCopy + 85) = self->_probingPatternResult;
+    *(toCopy + 97) |= 2u;
   }
 
   v7 = *p_has;
   if ((*p_has & 0x2000000000000000) != 0)
   {
-    *(v4 + 81) = self->_probingPatternFrameCount;
-    *(v4 + 380) |= 0x2000000000000000uLL;
+    *(toCopy + 81) = self->_probingPatternFrameCount;
+    *(toCopy + 380) |= 0x2000000000000000uLL;
     v7 = self->_has;
   }
 
   if (v7 < 0)
   {
-    *(v4 + 83) = self->_probingPatternFrameFloodCount;
-    *(v4 + 380) |= 0x8000000000000000;
+    *(toCopy + 83) = self->_probingPatternFrameFloodCount;
+    *(toCopy + 380) |= 0x8000000000000000;
   }
 
   if (*(&self->_has + 8))
   {
-    *(v4 + 84) = self->_probingPatternFrameSparseCount;
-    *(v4 + 97) |= 1u;
+    *(toCopy + 84) = self->_probingPatternFrameSparseCount;
+    *(toCopy + 97) |= 1u;
   }
 
   v8 = *p_has;
   if ((*p_has & 0x4000000000000000) != 0)
   {
-    *(v4 + 82) = self->_probingPatternFrameDenseCount;
-    *(v4 + 380) |= 0x4000000000000000uLL;
+    *(toCopy + 82) = self->_probingPatternFrameDenseCount;
+    *(toCopy + 380) |= 0x4000000000000000uLL;
     v8 = self->_has;
   }
 
   if ((v8 & 0x200) != 0)
   {
-    *(v4 + 26) = self->_ambientLux;
-    *(v4 + 380) |= 0x200uLL;
+    *(toCopy + 26) = self->_ambientLux;
+    *(toCopy + 380) |= 0x200uLL;
   }
 
   v9 = *(&self->_has + 2);
   if (v9 < 0)
   {
-    *(v4 + 379) = self->_probingPatternFailure;
-    *(v4 + 97) |= 0x80000000;
+    *(toCopy + 379) = self->_probingPatternFailure;
+    *(toCopy + 97) |= 0x80000000;
     v9 = *(&self->_has + 2);
     if ((v9 & 0x8000000) == 0)
     {
@@ -4039,8 +4039,8 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  *(v4 + 375) = self->_matcherFailure;
-  *(v4 + 97) |= 0x8000000u;
+  *(toCopy + 375) = self->_matcherFailure;
+  *(toCopy + 97) |= 0x8000000u;
   v9 = *(&self->_has + 2);
   if ((v9 & 0x1000000) == 0)
   {
@@ -4054,8 +4054,8 @@ LABEL_35:
   }
 
 LABEL_204:
-  *(v4 + 372) = self->_matchDepthFailure;
-  *(v4 + 97) |= 0x1000000u;
+  *(toCopy + 372) = self->_matchDepthFailure;
+  *(toCopy + 97) |= 0x1000000u;
   v9 = *(&self->_has + 2);
   if ((v9 & 0x2000000) == 0)
   {
@@ -4069,8 +4069,8 @@ LABEL_36:
   }
 
 LABEL_205:
-  *(v4 + 373) = self->_matchFloodFailure;
-  *(v4 + 97) |= 0x2000000u;
+  *(toCopy + 373) = self->_matchFloodFailure;
+  *(toCopy + 97) |= 0x2000000u;
   v9 = *(&self->_has + 2);
   if ((v9 & 0x40) == 0)
   {
@@ -4084,8 +4084,8 @@ LABEL_37:
   }
 
 LABEL_206:
-  *(v4 + 354) = self->_asFloodFailure;
-  *(v4 + 97) |= 0x40u;
+  *(toCopy + 354) = self->_asFloodFailure;
+  *(toCopy + 97) |= 0x40u;
   v9 = *(&self->_has + 2);
   if ((v9 & 0x10) == 0)
   {
@@ -4099,8 +4099,8 @@ LABEL_38:
   }
 
 LABEL_207:
-  *(v4 + 352) = self->_asDepthFailure;
-  *(v4 + 97) |= 0x10u;
+  *(toCopy + 352) = self->_asDepthFailure;
+  *(toCopy + 97) |= 0x10u;
   v9 = *(&self->_has + 2);
   if ((v9 & 0x10000000) == 0)
   {
@@ -4114,45 +4114,45 @@ LABEL_39:
   }
 
 LABEL_208:
-  *(v4 + 376) = self->_onlineTemplateUpdated;
-  *(v4 + 97) |= 0x10000000u;
+  *(toCopy + 376) = self->_onlineTemplateUpdated;
+  *(toCopy + 97) |= 0x10000000u;
   if ((*(&self->_has + 2) & 0x40000000) != 0)
   {
 LABEL_40:
-    *(v4 + 378) = self->_passcodeChallengeAllowed;
-    *(v4 + 97) |= 0x40000000u;
+    *(toCopy + 378) = self->_passcodeChallengeAllowed;
+    *(toCopy + 97) |= 0x40000000u;
   }
 
 LABEL_41:
   if ((*(&self->_has + 6) & 8) != 0)
   {
-    *(v4 + 71) = self->_featureGenerationError;
-    *(v4 + 380) |= 0x8000000000000uLL;
+    *(toCopy + 71) = self->_featureGenerationError;
+    *(toCopy + 380) |= 0x8000000000000uLL;
   }
 
   if ((*(&self->_has + 8) & 4) != 0)
   {
-    *(v4 + 86) = self->_sensorTemperature;
-    *(v4 + 97) |= 4u;
+    *(toCopy + 86) = self->_sensorTemperature;
+    *(toCopy + 97) |= 4u;
   }
 
   if ((*(&self->_has + 5) & 4) != 0)
   {
-    *(v4 + 62) = self->_faceDistance;
-    *(v4 + 380) |= 0x40000000000uLL;
+    *(toCopy + 62) = self->_faceDistance;
+    *(toCopy + 380) |= 0x40000000000uLL;
   }
 
   if ((*(&self->_has + 10) & 0x40) != 0)
   {
-    *(v4 + 370) = self->_hasOcclusion;
-    *(v4 + 97) |= 0x400000u;
+    *(toCopy + 370) = self->_hasOcclusion;
+    *(toCopy + 97) |= 0x400000u;
   }
 
   v10 = *p_has;
   if ((*p_has & 0x2000000) != 0)
   {
-    *(v4 + 42) = self->_camRectX;
-    *(v4 + 380) |= 0x2000000uLL;
+    *(toCopy + 42) = self->_camRectX;
+    *(toCopy + 380) |= 0x2000000uLL;
     v10 = self->_has;
     if ((v10 & 0x4000000) == 0)
     {
@@ -4171,8 +4171,8 @@ LABEL_51:
     goto LABEL_51;
   }
 
-  *(v4 + 43) = self->_camRectY;
-  *(v4 + 380) |= 0x4000000uLL;
+  *(toCopy + 43) = self->_camRectY;
+  *(toCopy + 380) |= 0x4000000uLL;
   v10 = self->_has;
   if ((v10 & 0x1000000) == 0)
   {
@@ -4186,8 +4186,8 @@ LABEL_52:
   }
 
 LABEL_155:
-  *(v4 + 41) = self->_camRectW;
-  *(v4 + 380) |= 0x1000000uLL;
+  *(toCopy + 41) = self->_camRectW;
+  *(toCopy + 380) |= 0x1000000uLL;
   v10 = self->_has;
   if ((v10 & 0x800000) == 0)
   {
@@ -4201,8 +4201,8 @@ LABEL_53:
   }
 
 LABEL_156:
-  *(v4 + 40) = self->_camRectH;
-  *(v4 + 380) |= 0x800000uLL;
+  *(toCopy + 40) = self->_camRectH;
+  *(toCopy + 380) |= 0x800000uLL;
   v10 = self->_has;
   if ((v10 & 0x10000000000) == 0)
   {
@@ -4216,8 +4216,8 @@ LABEL_54:
   }
 
 LABEL_157:
-  *(v4 + 60) = self->_faceDetectPPMRequestedBudget;
-  *(v4 + 380) |= 0x10000000000uLL;
+  *(toCopy + 60) = self->_faceDetectPPMRequestedBudget;
+  *(toCopy + 380) |= 0x10000000000uLL;
   v10 = self->_has;
   if ((v10 & 0x8000000000) == 0)
   {
@@ -4231,8 +4231,8 @@ LABEL_55:
   }
 
 LABEL_158:
-  *(v4 + 59) = self->_faceDetectPPMAllocatedBudget;
-  *(v4 + 380) |= 0x8000000000uLL;
+  *(toCopy + 59) = self->_faceDetectPPMAllocatedBudget;
+  *(toCopy + 380) |= 0x8000000000uLL;
   v10 = self->_has;
   if ((v10 & 0x100000) == 0)
   {
@@ -4246,8 +4246,8 @@ LABEL_56:
   }
 
 LABEL_159:
-  *(v4 + 37) = self->_bioCheckPPMRequestedBudget;
-  *(v4 + 380) |= 0x100000uLL;
+  *(toCopy + 37) = self->_bioCheckPPMRequestedBudget;
+  *(toCopy + 380) |= 0x100000uLL;
   v10 = self->_has;
   if ((v10 & 0x80000) == 0)
   {
@@ -4261,8 +4261,8 @@ LABEL_57:
   }
 
 LABEL_160:
-  *(v4 + 36) = self->_bioCheckPPMAllocatedBudget;
-  *(v4 + 380) |= 0x80000uLL;
+  *(toCopy + 36) = self->_bioCheckPPMAllocatedBudget;
+  *(toCopy + 380) |= 0x80000uLL;
   v10 = self->_has;
   if ((v10 & 0x40) == 0)
   {
@@ -4276,39 +4276,39 @@ LABEL_58:
   }
 
 LABEL_161:
-  v4[10] = self->_rfcSetIndex;
-  *(v4 + 380) |= 0x40uLL;
+  toCopy[10] = self->_rfcSetIndex;
+  *(toCopy + 380) |= 0x40uLL;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_59:
-    v4[9] = self->_rfcFrameIndex;
-    *(v4 + 380) |= 0x20uLL;
+    toCopy[9] = self->_rfcFrameIndex;
+    *(toCopy + 380) |= 0x20uLL;
   }
 
 LABEL_60:
   if ((*(&self->_has + 9) & 4) != 0)
   {
-    *(v4 + 358) = self->_bioLockout;
-    *(v4 + 97) |= 0x400u;
+    *(toCopy + 358) = self->_bioLockout;
+    *(toCopy + 97) |= 0x400u;
   }
 
   if ((*(&self->_has + 3) & 8) != 0)
   {
-    *(v4 + 44) = self->_cameraErr;
-    *(v4 + 380) |= 0x8000000uLL;
+    *(toCopy + 44) = self->_cameraErr;
+    *(toCopy + 380) |= 0x8000000uLL;
   }
 
   if ((*(&self->_has + 11) & 4) != 0)
   {
-    *(v4 + 374) = self->_matchForUnlock;
-    *(v4 + 97) |= 0x4000000u;
+    *(toCopy + 374) = self->_matchForUnlock;
+    *(toCopy + 97) |= 0x4000000u;
   }
 
   v11 = *p_has;
   if ((*p_has & 0x4000000000000) != 0)
   {
-    *(v4 + 70) = self->_failedUnlockAttemptsFromFD;
-    *(v4 + 380) |= 0x4000000000000uLL;
+    *(toCopy + 70) = self->_failedUnlockAttemptsFromFD;
+    *(toCopy + 380) |= 0x4000000000000uLL;
     v11 = self->_has;
     if ((v11 & 0x2000000000000) == 0)
     {
@@ -4327,8 +4327,8 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  *(v4 + 69) = self->_failedUnlockAttemptsFromBiocheck;
-  *(v4 + 380) |= 0x2000000000000uLL;
+  *(toCopy + 69) = self->_failedUnlockAttemptsFromBiocheck;
+  *(toCopy + 380) |= 0x2000000000000uLL;
   v11 = self->_has;
   if ((v11 & 0x1000000000000) == 0)
   {
@@ -4342,8 +4342,8 @@ LABEL_69:
   }
 
 LABEL_165:
-  *(v4 + 68) = self->_failedMatchAttemptsFromFD;
-  *(v4 + 380) |= 0x1000000000000uLL;
+  *(toCopy + 68) = self->_failedMatchAttemptsFromFD;
+  *(toCopy + 380) |= 0x1000000000000uLL;
   v11 = self->_has;
   if ((v11 & 0x800000000000) == 0)
   {
@@ -4357,8 +4357,8 @@ LABEL_70:
   }
 
 LABEL_166:
-  *(v4 + 67) = self->_failedMatchAttemptsFromBiocheck;
-  *(v4 + 380) |= 0x800000000000uLL;
+  *(toCopy + 67) = self->_failedMatchAttemptsFromBiocheck;
+  *(toCopy + 380) |= 0x800000000000uLL;
   v11 = self->_has;
   if ((v11 & 0x400000) == 0)
   {
@@ -4372,8 +4372,8 @@ LABEL_71:
   }
 
 LABEL_167:
-  *(v4 + 39) = self->_bioLockoutReason;
-  *(v4 + 380) |= 0x400000uLL;
+  *(toCopy + 39) = self->_bioLockoutReason;
+  *(toCopy + 380) |= 0x400000uLL;
   v11 = self->_has;
   if ((v11 & 0x10000000000000) == 0)
   {
@@ -4387,27 +4387,27 @@ LABEL_72:
   }
 
 LABEL_168:
-  *(v4 + 72) = self->_matchFeatureVectorError;
-  *(v4 + 380) |= 0x10000000000000uLL;
+  *(toCopy + 72) = self->_matchFeatureVectorError;
+  *(toCopy + 380) |= 0x10000000000000uLL;
   if ((*&self->_has & 0x80000000000000) != 0)
   {
 LABEL_73:
-    *(v4 + 75) = self->_onlineTemplateAge;
-    *(v4 + 380) |= 0x80000000000000uLL;
+    *(toCopy + 75) = self->_onlineTemplateAge;
+    *(toCopy + 380) |= 0x80000000000000uLL;
   }
 
 LABEL_74:
   if ((*(&self->_has + 8) & 8) != 0)
   {
-    *(v4 + 87) = self->_shortTermTemplateAge;
-    *(v4 + 97) |= 8u;
+    *(toCopy + 87) = self->_shortTermTemplateAge;
+    *(toCopy + 97) |= 8u;
   }
 
   v12 = *p_has;
   if ((*p_has & 0x400000000) != 0)
   {
-    *(v4 + 54) = self->_faceDetectFaceDistance;
-    *(v4 + 380) |= 0x400000000uLL;
+    *(toCopy + 54) = self->_faceDetectFaceDistance;
+    *(toCopy + 380) |= 0x400000000uLL;
     v12 = self->_has;
     if ((v12 & 0x100000000) == 0)
     {
@@ -4426,8 +4426,8 @@ LABEL_78:
     goto LABEL_78;
   }
 
-  *(v4 + 52) = self->_faceDetectCamRectX;
-  *(v4 + 380) |= 0x100000000uLL;
+  *(toCopy + 52) = self->_faceDetectCamRectX;
+  *(toCopy + 380) |= 0x100000000uLL;
   v12 = self->_has;
   if ((v12 & 0x200000000) == 0)
   {
@@ -4441,8 +4441,8 @@ LABEL_79:
   }
 
 LABEL_172:
-  *(v4 + 53) = self->_faceDetectCamRectY;
-  *(v4 + 380) |= 0x200000000uLL;
+  *(toCopy + 53) = self->_faceDetectCamRectY;
+  *(toCopy + 380) |= 0x200000000uLL;
   v12 = self->_has;
   if ((v12 & 0x80000000) == 0)
   {
@@ -4456,8 +4456,8 @@ LABEL_80:
   }
 
 LABEL_173:
-  *(v4 + 51) = self->_faceDetectCamRectW;
-  *(v4 + 380) |= 0x80000000uLL;
+  *(toCopy + 51) = self->_faceDetectCamRectW;
+  *(toCopy + 380) |= 0x80000000uLL;
   v12 = self->_has;
   if ((v12 & 0x40000000) == 0)
   {
@@ -4471,8 +4471,8 @@ LABEL_81:
   }
 
 LABEL_174:
-  *(v4 + 50) = self->_faceDetectCamRectH;
-  *(v4 + 380) |= 0x40000000uLL;
+  *(toCopy + 50) = self->_faceDetectCamRectH;
+  *(toCopy + 380) |= 0x40000000uLL;
   v12 = self->_has;
   if ((v12 & 0x4000) == 0)
   {
@@ -4486,8 +4486,8 @@ LABEL_82:
   }
 
 LABEL_175:
-  *(v4 + 31) = self->_bioCheckFaceDistance;
-  *(v4 + 380) |= 0x4000uLL;
+  *(toCopy + 31) = self->_bioCheckFaceDistance;
+  *(toCopy + 380) |= 0x4000uLL;
   v12 = self->_has;
   if ((v12 & 0x1000) == 0)
   {
@@ -4501,8 +4501,8 @@ LABEL_83:
   }
 
 LABEL_176:
-  *(v4 + 29) = self->_bioCheckCamRectX;
-  *(v4 + 380) |= 0x1000uLL;
+  *(toCopy + 29) = self->_bioCheckCamRectX;
+  *(toCopy + 380) |= 0x1000uLL;
   v12 = self->_has;
   if ((v12 & 0x2000) == 0)
   {
@@ -4516,8 +4516,8 @@ LABEL_84:
   }
 
 LABEL_177:
-  *(v4 + 30) = self->_bioCheckCamRectY;
-  *(v4 + 380) |= 0x2000uLL;
+  *(toCopy + 30) = self->_bioCheckCamRectY;
+  *(toCopy + 380) |= 0x2000uLL;
   v12 = self->_has;
   if ((v12 & 0x800) == 0)
   {
@@ -4531,8 +4531,8 @@ LABEL_85:
   }
 
 LABEL_178:
-  *(v4 + 28) = self->_bioCheckCamRectW;
-  *(v4 + 380) |= 0x800uLL;
+  *(toCopy + 28) = self->_bioCheckCamRectW;
+  *(toCopy + 380) |= 0x800uLL;
   v12 = self->_has;
   if ((v12 & 0x400) == 0)
   {
@@ -4546,8 +4546,8 @@ LABEL_86:
   }
 
 LABEL_179:
-  *(v4 + 27) = self->_bioCheckCamRectH;
-  *(v4 + 380) |= 0x400uLL;
+  *(toCopy + 27) = self->_bioCheckCamRectH;
+  *(toCopy + 380) |= 0x400uLL;
   v12 = self->_has;
   if ((v12 & 0x1000000000000000) == 0)
   {
@@ -4561,8 +4561,8 @@ LABEL_87:
   }
 
 LABEL_180:
-  *(v4 + 80) = self->_probingPatternFaceDistance;
-  *(v4 + 380) |= 0x1000000000000000uLL;
+  *(toCopy + 80) = self->_probingPatternFaceDistance;
+  *(toCopy + 380) |= 0x1000000000000000uLL;
   v12 = self->_has;
   if ((v12 & 0x400000000000000) == 0)
   {
@@ -4576,8 +4576,8 @@ LABEL_88:
   }
 
 LABEL_181:
-  *(v4 + 78) = self->_probingPatternCamRectX;
-  *(v4 + 380) |= 0x400000000000000uLL;
+  *(toCopy + 78) = self->_probingPatternCamRectX;
+  *(toCopy + 380) |= 0x400000000000000uLL;
   v12 = self->_has;
   if ((v12 & 0x800000000000000) == 0)
   {
@@ -4591,8 +4591,8 @@ LABEL_89:
   }
 
 LABEL_182:
-  *(v4 + 79) = self->_probingPatternCamRectY;
-  *(v4 + 380) |= 0x800000000000000uLL;
+  *(toCopy + 79) = self->_probingPatternCamRectY;
+  *(toCopy + 380) |= 0x800000000000000uLL;
   v12 = self->_has;
   if ((v12 & 0x200000000000000) == 0)
   {
@@ -4606,21 +4606,21 @@ LABEL_90:
   }
 
 LABEL_183:
-  *(v4 + 77) = self->_probingPatternCamRectW;
-  *(v4 + 380) |= 0x200000000000000uLL;
+  *(toCopy + 77) = self->_probingPatternCamRectW;
+  *(toCopy + 380) |= 0x200000000000000uLL;
   if ((*&self->_has & 0x100000000000000) != 0)
   {
 LABEL_91:
-    *(v4 + 76) = self->_probingPatternCamRectH;
-    *(v4 + 380) |= 0x100000000000000uLL;
+    *(toCopy + 76) = self->_probingPatternCamRectH;
+    *(toCopy + 380) |= 0x100000000000000uLL;
   }
 
 LABEL_92:
   v13 = *(&self->_has + 2);
   if ((v13 & 0x20) != 0)
   {
-    *(v4 + 353) = self->_asFailure;
-    *(v4 + 97) |= 0x20u;
+    *(toCopy + 353) = self->_asFailure;
+    *(toCopy + 97) |= 0x20u;
     v13 = *(&self->_has + 2);
     if ((v13 & 0x80) == 0)
     {
@@ -4639,48 +4639,48 @@ LABEL_94:
     goto LABEL_94;
   }
 
-  *(v4 + 355) = self->_autoRetry;
-  *(v4 + 97) |= 0x80u;
+  *(toCopy + 355) = self->_autoRetry;
+  *(toCopy + 97) |= 0x80u;
   if ((*(&self->_has + 2) & 0x100) != 0)
   {
 LABEL_95:
-    *(v4 + 356) = self->_autoRetryAllowed;
-    *(v4 + 97) |= 0x100u;
+    *(toCopy + 356) = self->_autoRetryAllowed;
+    *(toCopy + 97) |= 0x100u;
   }
 
 LABEL_96:
   v14 = *p_has;
   if ((*p_has & 0x20000000) != 0)
   {
-    *(v4 + 49) = self->_deviceOrientation;
-    *(v4 + 380) |= 0x20000000uLL;
+    *(toCopy + 49) = self->_deviceOrientation;
+    *(toCopy + 380) |= 0x20000000uLL;
     v14 = self->_has;
   }
 
   if ((v14 & 0x20000000000000) != 0)
   {
-    *(v4 + 73) = self->_matchIdentityCount;
-    *(v4 + 380) |= 0x20000000000000uLL;
+    *(toCopy + 73) = self->_matchIdentityCount;
+    *(toCopy + 380) |= 0x20000000000000uLL;
   }
 
-  v21 = v4;
+  v21 = toCopy;
   if (self->_cameraHWParameters)
   {
-    [v4 setCameraHWParameters:?];
-    v4 = v21;
+    [toCopy setCameraHWParameters:?];
+    toCopy = v21;
   }
 
   if ((*(&self->_has + 3) & 0x10) != 0)
   {
-    *(v4 + 48) = self->_captureMethod;
-    *(v4 + 380) |= 0x10000000uLL;
+    *(toCopy + 48) = self->_captureMethod;
+    *(toCopy + 380) |= 0x10000000uLL;
   }
 
   v15 = *(&self->_has + 2);
   if ((v15 & 0x20000) != 0)
   {
-    *(v4 + 365) = self->_engagementInfoFeedbackNoFaceDetected;
-    *(v4 + 97) |= 0x20000u;
+    *(toCopy + 365) = self->_engagementInfoFeedbackNoFaceDetected;
+    *(toCopy + 97) |= 0x20000u;
     v15 = *(&self->_has + 2);
     if ((v15 & 0x4000) == 0)
     {
@@ -4699,8 +4699,8 @@ LABEL_106:
     goto LABEL_106;
   }
 
-  *(v4 + 362) = self->_engagementInfoFeedbackFaceTooClose;
-  *(v4 + 97) |= 0x4000u;
+  *(toCopy + 362) = self->_engagementInfoFeedbackFaceTooClose;
+  *(toCopy + 97) |= 0x4000u;
   v15 = *(&self->_has + 2);
   if ((v15 & 0x8000) == 0)
   {
@@ -4714,8 +4714,8 @@ LABEL_107:
   }
 
 LABEL_190:
-  *(v4 + 363) = self->_engagementInfoFeedbackFaceTooFar;
-  *(v4 + 97) |= 0x8000u;
+  *(toCopy + 363) = self->_engagementInfoFeedbackFaceTooFar;
+  *(toCopy + 97) |= 0x8000u;
   v15 = *(&self->_has + 2);
   if ((v15 & 0x200000) == 0)
   {
@@ -4729,8 +4729,8 @@ LABEL_108:
   }
 
 LABEL_191:
-  *(v4 + 369) = self->_engagementInfoFeedbackPoseOutOfRange;
-  *(v4 + 97) |= 0x200000u;
+  *(toCopy + 369) = self->_engagementInfoFeedbackPoseOutOfRange;
+  *(toCopy + 97) |= 0x200000u;
   v15 = *(&self->_has + 2);
   if ((v15 & 0x10000) == 0)
   {
@@ -4744,8 +4744,8 @@ LABEL_109:
   }
 
 LABEL_192:
-  *(v4 + 364) = self->_engagementInfoFeedbackNoAttention;
-  *(v4 + 97) |= 0x10000u;
+  *(toCopy + 364) = self->_engagementInfoFeedbackNoAttention;
+  *(toCopy + 97) |= 0x10000u;
   v15 = *(&self->_has + 2);
   if ((v15 & 0x2000) == 0)
   {
@@ -4759,8 +4759,8 @@ LABEL_110:
   }
 
 LABEL_193:
-  *(v4 + 361) = self->_engagementInfoFeedbackFaceOccluded;
-  *(v4 + 97) |= 0x2000u;
+  *(toCopy + 361) = self->_engagementInfoFeedbackFaceOccluded;
+  *(toCopy + 97) |= 0x2000u;
   v15 = *(&self->_has + 2);
   if ((v15 & 0x1000) == 0)
   {
@@ -4774,8 +4774,8 @@ LABEL_111:
   }
 
 LABEL_194:
-  *(v4 + 360) = self->_engagementInfoFeedbackCameraObstructed;
-  *(v4 + 97) |= 0x1000u;
+  *(toCopy + 360) = self->_engagementInfoFeedbackCameraObstructed;
+  *(toCopy + 97) |= 0x1000u;
   v15 = *(&self->_has + 2);
   if ((v15 & 0x80000) == 0)
   {
@@ -4789,35 +4789,35 @@ LABEL_112:
   }
 
 LABEL_195:
-  *(v4 + 367) = self->_engagementInfoFeedbackPartialOutOfFOV;
-  *(v4 + 97) |= 0x80000u;
+  *(toCopy + 367) = self->_engagementInfoFeedbackPartialOutOfFOV;
+  *(toCopy + 97) |= 0x80000u;
   if ((*(&self->_has + 2) & 0x800) != 0)
   {
 LABEL_113:
-    *(v4 + 359) = self->_combinedSequenceEnabled;
-    *(v4 + 97) |= 0x800u;
+    *(toCopy + 359) = self->_combinedSequenceEnabled;
+    *(toCopy + 97) |= 0x800u;
   }
 
 LABEL_114:
   if ((*p_has & 8) != 0)
   {
-    v4[7] = self->_overallTimeWithRetries;
-    *(v4 + 380) |= 8uLL;
+    toCopy[7] = self->_overallTimeWithRetries;
+    *(toCopy + 380) |= 8uLL;
   }
 
   if ((*(&self->_has + 9) & 2) != 0)
   {
-    *(v4 + 357) = self->_autoRetryEnabled;
-    *(v4 + 97) |= 0x200u;
+    *(toCopy + 357) = self->_autoRetryEnabled;
+    *(toCopy + 97) |= 0x200u;
   }
 
   if ([(AWDBiometricKitMatchAttempt *)self identityCreationTimesCount])
   {
     [v21 clearIdentityCreationTimes];
-    v16 = [(AWDBiometricKitMatchAttempt *)self identityCreationTimesCount];
-    if (v16)
+    identityCreationTimesCount = [(AWDBiometricKitMatchAttempt *)self identityCreationTimesCount];
+    if (identityCreationTimesCount)
     {
-      v17 = v16;
+      v17 = identityCreationTimesCount;
       for (i = 0; i != v17; ++i)
       {
         [v21 addIdentityCreationTime:{-[AWDBiometricKitMatchAttempt identityCreationTimeAtIndex:](self, "identityCreationTimeAtIndex:", i)}];
@@ -4915,9 +4915,9 @@ LABEL_132:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   p_has = &self->_has;
   if (*(&self->_has + 1))
@@ -5817,7 +5817,7 @@ LABEL_96:
     *(v5 + 380) |= 0x20000000000000uLL;
   }
 
-  v17 = [(NSString *)self->_cameraHWParameters copyWithZone:a3];
+  v17 = [(NSString *)self->_cameraHWParameters copyWithZone:zone];
   v18 = *(v6 + 184);
   *(v6 + 184) = v17;
 
@@ -6057,19 +6057,19 @@ LABEL_126:
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_569;
   }
 
   has = self->_has;
-  v6 = *(v4 + 380);
+  v6 = *(equalCopy + 380);
   if ((has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_timestamp != *(v4 + 12))
+    if ((v6 & 0x100) == 0 || self->_timestamp != *(equalCopy + 12))
     {
       goto LABEL_569;
     }
@@ -6081,7 +6081,7 @@ LABEL_126:
   }
 
   v7 = *(&self->_has + 2);
-  v8 = *(v4 + 97);
+  v8 = *(equalCopy + 97);
   if ((v7 & 0x20000000) != 0)
   {
     if ((v8 & 0x20000000) == 0)
@@ -6089,16 +6089,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v9 = v4[377];
+    v9 = equalCopy[377];
     if (self->_overallResult)
     {
-      if ((v4[377] & 1) == 0)
+      if ((equalCopy[377] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[377])
+    else if (equalCopy[377])
     {
       goto LABEL_569;
     }
@@ -6111,7 +6111,7 @@ LABEL_126:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_overallTime != *(v4 + 6))
+    if ((v6 & 4) == 0 || self->_overallTime != *(equalCopy + 6))
     {
       goto LABEL_569;
     }
@@ -6124,7 +6124,7 @@ LABEL_126:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_faceDetectEndTime != *(v4 + 5))
+    if ((v6 & 2) == 0 || self->_faceDetectEndTime != *(equalCopy + 5))
     {
       goto LABEL_569;
     }
@@ -6137,7 +6137,7 @@ LABEL_126:
 
   if ((has & 0x20000000000) != 0)
   {
-    if ((v6 & 0x20000000000) == 0 || self->_faceDetectResult != *(v4 + 61))
+    if ((v6 & 0x20000000000) == 0 || self->_faceDetectResult != *(equalCopy + 61))
     {
       goto LABEL_569;
     }
@@ -6150,7 +6150,7 @@ LABEL_126:
 
   if ((has & 0x800000000) != 0)
   {
-    if ((v6 & 0x800000000) == 0 || self->_faceDetectFrameCount != *(v4 + 55))
+    if ((v6 & 0x800000000) == 0 || self->_faceDetectFrameCount != *(equalCopy + 55))
     {
       goto LABEL_569;
     }
@@ -6163,7 +6163,7 @@ LABEL_126:
 
   if ((has & 0x2000000000) != 0)
   {
-    if ((v6 & 0x2000000000) == 0 || self->_faceDetectFrameFloodCount != *(v4 + 57))
+    if ((v6 & 0x2000000000) == 0 || self->_faceDetectFrameFloodCount != *(equalCopy + 57))
     {
       goto LABEL_569;
     }
@@ -6176,7 +6176,7 @@ LABEL_126:
 
   if ((has & 0x4000000000) != 0)
   {
-    if ((v6 & 0x4000000000) == 0 || self->_faceDetectFrameSparseCount != *(v4 + 58))
+    if ((v6 & 0x4000000000) == 0 || self->_faceDetectFrameSparseCount != *(equalCopy + 58))
     {
       goto LABEL_569;
     }
@@ -6188,10 +6188,10 @@ LABEL_126:
   }
 
   p_has = &self->_has;
-  v50 = (v4 + 380);
+  v50 = (equalCopy + 380);
   if ((has & 0x1000000000) != 0)
   {
-    if ((v6 & 0x1000000000) == 0 || self->_faceDetectFrameDenseCount != *(v4 + 56))
+    if ((v6 & 0x1000000000) == 0 || self->_faceDetectFrameDenseCount != *(equalCopy + 56))
     {
       goto LABEL_569;
     }
@@ -6204,7 +6204,7 @@ LABEL_126:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_bioCheckEndTime != *(v4 + 4))
+    if ((v6 & 1) == 0 || self->_bioCheckEndTime != *(equalCopy + 4))
     {
       goto LABEL_569;
     }
@@ -6217,7 +6217,7 @@ LABEL_126:
 
   if ((has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_bioCheckResult != *(v4 + 38))
+    if ((v6 & 0x200000) == 0 || self->_bioCheckResult != *(equalCopy + 38))
     {
       goto LABEL_569;
     }
@@ -6230,7 +6230,7 @@ LABEL_126:
 
   if ((has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_bioCheckFrameCount != *(v4 + 32))
+    if ((v6 & 0x8000) == 0 || self->_bioCheckFrameCount != *(equalCopy + 32))
     {
       goto LABEL_569;
     }
@@ -6243,7 +6243,7 @@ LABEL_126:
 
   if ((has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_bioCheckFrameFloodCount != *(v4 + 34))
+    if ((v6 & 0x20000) == 0 || self->_bioCheckFrameFloodCount != *(equalCopy + 34))
     {
       goto LABEL_569;
     }
@@ -6256,7 +6256,7 @@ LABEL_126:
 
   if ((has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_bioCheckFrameSparseCount != *(v4 + 35))
+    if ((v6 & 0x40000) == 0 || self->_bioCheckFrameSparseCount != *(equalCopy + 35))
     {
       goto LABEL_569;
     }
@@ -6269,7 +6269,7 @@ LABEL_126:
 
   if ((has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_bioCheckFrameDenseCount != *(v4 + 33))
+    if ((v6 & 0x10000) == 0 || self->_bioCheckFrameDenseCount != *(equalCopy + 33))
     {
       goto LABEL_569;
     }
@@ -6282,7 +6282,7 @@ LABEL_126:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_probingPatternEndTime != *(v4 + 8))
+    if ((v6 & 0x10) == 0 || self->_probingPatternEndTime != *(equalCopy + 8))
     {
       goto LABEL_569;
     }
@@ -6295,7 +6295,7 @@ LABEL_126:
 
   if ((v7 & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_probingPatternResult != *(v4 + 85))
+    if ((v8 & 2) == 0 || self->_probingPatternResult != *(equalCopy + 85))
     {
       goto LABEL_569;
     }
@@ -6308,7 +6308,7 @@ LABEL_126:
 
   if ((has & 0x2000000000000000) != 0)
   {
-    if ((v6 & 0x2000000000000000) == 0 || self->_probingPatternFrameCount != *(v4 + 81))
+    if ((v6 & 0x2000000000000000) == 0 || self->_probingPatternFrameCount != *(equalCopy + 81))
     {
       goto LABEL_569;
     }
@@ -6321,7 +6321,7 @@ LABEL_126:
 
   if (has < 0)
   {
-    if ((v6 & 0x8000000000000000) == 0 || self->_probingPatternFrameFloodCount != *(v4 + 83))
+    if ((v6 & 0x8000000000000000) == 0 || self->_probingPatternFrameFloodCount != *(equalCopy + 83))
     {
       goto LABEL_569;
     }
@@ -6334,7 +6334,7 @@ LABEL_126:
 
   if (v7)
   {
-    if ((v8 & 1) == 0 || self->_probingPatternFrameSparseCount != *(v4 + 84))
+    if ((v8 & 1) == 0 || self->_probingPatternFrameSparseCount != *(equalCopy + 84))
     {
       goto LABEL_569;
     }
@@ -6347,7 +6347,7 @@ LABEL_126:
 
   if ((has & 0x4000000000000000) != 0)
   {
-    if ((v6 & 0x4000000000000000) == 0 || self->_probingPatternFrameDenseCount != *(v4 + 82))
+    if ((v6 & 0x4000000000000000) == 0 || self->_probingPatternFrameDenseCount != *(equalCopy + 82))
     {
       goto LABEL_569;
     }
@@ -6360,7 +6360,7 @@ LABEL_126:
 
   if ((has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_ambientLux != *(v4 + 26))
+    if ((v6 & 0x200) == 0 || self->_ambientLux != *(equalCopy + 26))
     {
       goto LABEL_569;
     }
@@ -6378,16 +6378,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v10 = v4[379];
+    v10 = equalCopy[379];
     if (self->_probingPatternFailure)
     {
-      if ((v4[379] & 1) == 0)
+      if ((equalCopy[379] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[379])
+    else if (equalCopy[379])
     {
       goto LABEL_569;
     }
@@ -6405,16 +6405,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v11 = v4[375];
+    v11 = equalCopy[375];
     if (self->_matcherFailure)
     {
-      if ((v4[375] & 1) == 0)
+      if ((equalCopy[375] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[375])
+    else if (equalCopy[375])
     {
       goto LABEL_569;
     }
@@ -6432,16 +6432,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v12 = v4[372];
+    v12 = equalCopy[372];
     if (self->_matchDepthFailure)
     {
-      if ((v4[372] & 1) == 0)
+      if ((equalCopy[372] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[372])
+    else if (equalCopy[372])
     {
       goto LABEL_569;
     }
@@ -6459,16 +6459,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v13 = v4[373];
+    v13 = equalCopy[373];
     if (self->_matchFloodFailure)
     {
-      if ((v4[373] & 1) == 0)
+      if ((equalCopy[373] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[373])
+    else if (equalCopy[373])
     {
       goto LABEL_569;
     }
@@ -6486,16 +6486,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v14 = v4[354];
+    v14 = equalCopy[354];
     if (self->_asFloodFailure)
     {
-      if ((v4[354] & 1) == 0)
+      if ((equalCopy[354] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[354])
+    else if (equalCopy[354])
     {
       goto LABEL_569;
     }
@@ -6513,16 +6513,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v15 = v4[352];
+    v15 = equalCopy[352];
     if (self->_asDepthFailure)
     {
-      if ((v4[352] & 1) == 0)
+      if ((equalCopy[352] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[352])
+    else if (equalCopy[352])
     {
       goto LABEL_569;
     }
@@ -6540,16 +6540,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v16 = v4[376];
+    v16 = equalCopy[376];
     if (self->_onlineTemplateUpdated)
     {
-      if ((v4[376] & 1) == 0)
+      if ((equalCopy[376] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[376])
+    else if (equalCopy[376])
     {
       goto LABEL_569;
     }
@@ -6567,16 +6567,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v17 = v4[378];
+    v17 = equalCopy[378];
     if (self->_passcodeChallengeAllowed)
     {
-      if ((v4[378] & 1) == 0)
+      if ((equalCopy[378] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[378])
+    else if (equalCopy[378])
     {
       goto LABEL_569;
     }
@@ -6589,7 +6589,7 @@ LABEL_126:
 
   if ((has & 0x8000000000000) != 0)
   {
-    if ((v6 & 0x8000000000000) == 0 || self->_featureGenerationError != *(v4 + 71))
+    if ((v6 & 0x8000000000000) == 0 || self->_featureGenerationError != *(equalCopy + 71))
     {
       goto LABEL_569;
     }
@@ -6602,7 +6602,7 @@ LABEL_126:
 
   if ((v7 & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_sensorTemperature != *(v4 + 86))
+    if ((v8 & 4) == 0 || self->_sensorTemperature != *(equalCopy + 86))
     {
       goto LABEL_569;
     }
@@ -6615,7 +6615,7 @@ LABEL_126:
 
   if ((has & 0x40000000000) != 0)
   {
-    if ((v6 & 0x40000000000) == 0 || self->_faceDistance != *(v4 + 62))
+    if ((v6 & 0x40000000000) == 0 || self->_faceDistance != *(equalCopy + 62))
     {
       goto LABEL_569;
     }
@@ -6633,16 +6633,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v18 = v4[370];
+    v18 = equalCopy[370];
     if (self->_hasOcclusion)
     {
-      if ((v4[370] & 1) == 0)
+      if ((equalCopy[370] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[370])
+    else if (equalCopy[370])
     {
       goto LABEL_569;
     }
@@ -6655,7 +6655,7 @@ LABEL_126:
 
   if ((has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_camRectX != *(v4 + 42))
+    if ((v6 & 0x2000000) == 0 || self->_camRectX != *(equalCopy + 42))
     {
       goto LABEL_569;
     }
@@ -6668,7 +6668,7 @@ LABEL_126:
 
   if ((has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_camRectY != *(v4 + 43))
+    if ((v6 & 0x4000000) == 0 || self->_camRectY != *(equalCopy + 43))
     {
       goto LABEL_569;
     }
@@ -6681,7 +6681,7 @@ LABEL_126:
 
   if ((has & 0x1000000) != 0)
   {
-    if ((v6 & 0x1000000) == 0 || self->_camRectW != *(v4 + 41))
+    if ((v6 & 0x1000000) == 0 || self->_camRectW != *(equalCopy + 41))
     {
       goto LABEL_569;
     }
@@ -6694,7 +6694,7 @@ LABEL_126:
 
   if ((has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_camRectH != *(v4 + 40))
+    if ((v6 & 0x800000) == 0 || self->_camRectH != *(equalCopy + 40))
     {
       goto LABEL_569;
     }
@@ -6707,7 +6707,7 @@ LABEL_126:
 
   if ((has & 0x10000000000) != 0)
   {
-    if ((v6 & 0x10000000000) == 0 || self->_faceDetectPPMRequestedBudget != *(v4 + 60))
+    if ((v6 & 0x10000000000) == 0 || self->_faceDetectPPMRequestedBudget != *(equalCopy + 60))
     {
       goto LABEL_569;
     }
@@ -6720,7 +6720,7 @@ LABEL_126:
 
   if ((has & 0x8000000000) != 0)
   {
-    if ((v6 & 0x8000000000) == 0 || self->_faceDetectPPMAllocatedBudget != *(v4 + 59))
+    if ((v6 & 0x8000000000) == 0 || self->_faceDetectPPMAllocatedBudget != *(equalCopy + 59))
     {
       goto LABEL_569;
     }
@@ -6733,7 +6733,7 @@ LABEL_126:
 
   if ((has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_bioCheckPPMRequestedBudget != *(v4 + 37))
+    if ((v6 & 0x100000) == 0 || self->_bioCheckPPMRequestedBudget != *(equalCopy + 37))
     {
       goto LABEL_569;
     }
@@ -6746,7 +6746,7 @@ LABEL_126:
 
   if ((has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_bioCheckPPMAllocatedBudget != *(v4 + 36))
+    if ((v6 & 0x80000) == 0 || self->_bioCheckPPMAllocatedBudget != *(equalCopy + 36))
     {
       goto LABEL_569;
     }
@@ -6759,7 +6759,7 @@ LABEL_126:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_rfcSetIndex != *(v4 + 10))
+    if ((v6 & 0x40) == 0 || self->_rfcSetIndex != *(equalCopy + 10))
     {
       goto LABEL_569;
     }
@@ -6772,7 +6772,7 @@ LABEL_126:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_rfcFrameIndex != *(v4 + 9))
+    if ((v6 & 0x20) == 0 || self->_rfcFrameIndex != *(equalCopy + 9))
     {
       goto LABEL_569;
     }
@@ -6790,16 +6790,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v19 = v4[358];
+    v19 = equalCopy[358];
     if (self->_bioLockout)
     {
-      if ((v4[358] & 1) == 0)
+      if ((equalCopy[358] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[358])
+    else if (equalCopy[358])
     {
       goto LABEL_569;
     }
@@ -6813,7 +6813,7 @@ LABEL_126:
   v20 = *v50;
   if ((has & 0x8000000) != 0)
   {
-    if ((v20 & 0x8000000) == 0 || self->_cameraErr != *(v4 + 44))
+    if ((v20 & 0x8000000) == 0 || self->_cameraErr != *(equalCopy + 44))
     {
       goto LABEL_569;
     }
@@ -6824,7 +6824,7 @@ LABEL_126:
     goto LABEL_569;
   }
 
-  v21 = *(v4 + 97);
+  v21 = *(equalCopy + 97);
   if ((v7 & 0x4000000) != 0)
   {
     if ((v21 & 0x4000000) == 0)
@@ -6832,16 +6832,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v22 = v4[374];
+    v22 = equalCopy[374];
     if (self->_matchForUnlock)
     {
-      if ((v4[374] & 1) == 0)
+      if ((equalCopy[374] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[374])
+    else if (equalCopy[374])
     {
       goto LABEL_569;
     }
@@ -6854,7 +6854,7 @@ LABEL_126:
 
   if ((has & 0x4000000000000) != 0)
   {
-    if ((v20 & 0x4000000000000) == 0 || self->_failedUnlockAttemptsFromFD != *(v4 + 70))
+    if ((v20 & 0x4000000000000) == 0 || self->_failedUnlockAttemptsFromFD != *(equalCopy + 70))
     {
       goto LABEL_569;
     }
@@ -6867,7 +6867,7 @@ LABEL_126:
 
   if ((has & 0x2000000000000) != 0)
   {
-    if ((v20 & 0x2000000000000) == 0 || self->_failedUnlockAttemptsFromBiocheck != *(v4 + 69))
+    if ((v20 & 0x2000000000000) == 0 || self->_failedUnlockAttemptsFromBiocheck != *(equalCopy + 69))
     {
       goto LABEL_569;
     }
@@ -6880,7 +6880,7 @@ LABEL_126:
 
   if ((has & 0x1000000000000) != 0)
   {
-    if ((v20 & 0x1000000000000) == 0 || self->_failedMatchAttemptsFromFD != *(v4 + 68))
+    if ((v20 & 0x1000000000000) == 0 || self->_failedMatchAttemptsFromFD != *(equalCopy + 68))
     {
       goto LABEL_569;
     }
@@ -6893,7 +6893,7 @@ LABEL_126:
 
   if ((has & 0x800000000000) != 0)
   {
-    if ((v20 & 0x800000000000) == 0 || self->_failedMatchAttemptsFromBiocheck != *(v4 + 67))
+    if ((v20 & 0x800000000000) == 0 || self->_failedMatchAttemptsFromBiocheck != *(equalCopy + 67))
     {
       goto LABEL_569;
     }
@@ -6906,7 +6906,7 @@ LABEL_126:
 
   if ((has & 0x400000) != 0)
   {
-    if ((v20 & 0x400000) == 0 || self->_bioLockoutReason != *(v4 + 39))
+    if ((v20 & 0x400000) == 0 || self->_bioLockoutReason != *(equalCopy + 39))
     {
       goto LABEL_569;
     }
@@ -6919,7 +6919,7 @@ LABEL_126:
 
   if ((has & 0x10000000000000) != 0)
   {
-    if ((v20 & 0x10000000000000) == 0 || self->_matchFeatureVectorError != *(v4 + 72))
+    if ((v20 & 0x10000000000000) == 0 || self->_matchFeatureVectorError != *(equalCopy + 72))
     {
       goto LABEL_569;
     }
@@ -6932,7 +6932,7 @@ LABEL_126:
 
   if ((has & 0x80000000000000) != 0)
   {
-    if ((v20 & 0x80000000000000) == 0 || self->_onlineTemplateAge != *(v4 + 75))
+    if ((v20 & 0x80000000000000) == 0 || self->_onlineTemplateAge != *(equalCopy + 75))
     {
       goto LABEL_569;
     }
@@ -6945,7 +6945,7 @@ LABEL_126:
 
   if ((v7 & 8) != 0)
   {
-    if ((v21 & 8) == 0 || self->_shortTermTemplateAge != *(v4 + 87))
+    if ((v21 & 8) == 0 || self->_shortTermTemplateAge != *(equalCopy + 87))
     {
       goto LABEL_569;
     }
@@ -6958,7 +6958,7 @@ LABEL_126:
 
   if ((has & 0x400000000) != 0)
   {
-    if ((v20 & 0x400000000) == 0 || self->_faceDetectFaceDistance != *(v4 + 54))
+    if ((v20 & 0x400000000) == 0 || self->_faceDetectFaceDistance != *(equalCopy + 54))
     {
       goto LABEL_569;
     }
@@ -6971,7 +6971,7 @@ LABEL_126:
 
   if ((has & 0x100000000) != 0)
   {
-    if ((v20 & 0x100000000) == 0 || self->_faceDetectCamRectX != *(v4 + 52))
+    if ((v20 & 0x100000000) == 0 || self->_faceDetectCamRectX != *(equalCopy + 52))
     {
       goto LABEL_569;
     }
@@ -6984,7 +6984,7 @@ LABEL_126:
 
   if ((has & 0x200000000) != 0)
   {
-    if ((v20 & 0x200000000) == 0 || self->_faceDetectCamRectY != *(v4 + 53))
+    if ((v20 & 0x200000000) == 0 || self->_faceDetectCamRectY != *(equalCopy + 53))
     {
       goto LABEL_569;
     }
@@ -6997,7 +6997,7 @@ LABEL_126:
 
   if ((has & 0x80000000) != 0)
   {
-    if ((v20 & 0x80000000) == 0 || self->_faceDetectCamRectW != *(v4 + 51))
+    if ((v20 & 0x80000000) == 0 || self->_faceDetectCamRectW != *(equalCopy + 51))
     {
       goto LABEL_569;
     }
@@ -7010,7 +7010,7 @@ LABEL_126:
 
   if ((has & 0x40000000) != 0)
   {
-    if ((v20 & 0x40000000) == 0 || self->_faceDetectCamRectH != *(v4 + 50))
+    if ((v20 & 0x40000000) == 0 || self->_faceDetectCamRectH != *(equalCopy + 50))
     {
       goto LABEL_569;
     }
@@ -7023,7 +7023,7 @@ LABEL_126:
 
   if ((has & 0x4000) != 0)
   {
-    if ((v20 & 0x4000) == 0 || self->_bioCheckFaceDistance != *(v4 + 31))
+    if ((v20 & 0x4000) == 0 || self->_bioCheckFaceDistance != *(equalCopy + 31))
     {
       goto LABEL_569;
     }
@@ -7036,7 +7036,7 @@ LABEL_126:
 
   if ((has & 0x1000) != 0)
   {
-    if ((v20 & 0x1000) == 0 || self->_bioCheckCamRectX != *(v4 + 29))
+    if ((v20 & 0x1000) == 0 || self->_bioCheckCamRectX != *(equalCopy + 29))
     {
       goto LABEL_569;
     }
@@ -7049,7 +7049,7 @@ LABEL_126:
 
   if ((has & 0x2000) != 0)
   {
-    if ((v20 & 0x2000) == 0 || self->_bioCheckCamRectY != *(v4 + 30))
+    if ((v20 & 0x2000) == 0 || self->_bioCheckCamRectY != *(equalCopy + 30))
     {
       goto LABEL_569;
     }
@@ -7062,7 +7062,7 @@ LABEL_126:
 
   if ((has & 0x800) != 0)
   {
-    if ((v20 & 0x800) == 0 || self->_bioCheckCamRectW != *(v4 + 28))
+    if ((v20 & 0x800) == 0 || self->_bioCheckCamRectW != *(equalCopy + 28))
     {
       goto LABEL_569;
     }
@@ -7075,7 +7075,7 @@ LABEL_126:
 
   if ((has & 0x400) != 0)
   {
-    if ((v20 & 0x400) == 0 || self->_bioCheckCamRectH != *(v4 + 27))
+    if ((v20 & 0x400) == 0 || self->_bioCheckCamRectH != *(equalCopy + 27))
     {
       goto LABEL_569;
     }
@@ -7088,7 +7088,7 @@ LABEL_126:
 
   if ((has & 0x1000000000000000) != 0)
   {
-    if ((v20 & 0x1000000000000000) == 0 || self->_probingPatternFaceDistance != *(v4 + 80))
+    if ((v20 & 0x1000000000000000) == 0 || self->_probingPatternFaceDistance != *(equalCopy + 80))
     {
       goto LABEL_569;
     }
@@ -7101,7 +7101,7 @@ LABEL_126:
 
   if ((has & 0x400000000000000) != 0)
   {
-    if ((v20 & 0x400000000000000) == 0 || self->_probingPatternCamRectX != *(v4 + 78))
+    if ((v20 & 0x400000000000000) == 0 || self->_probingPatternCamRectX != *(equalCopy + 78))
     {
       goto LABEL_569;
     }
@@ -7114,7 +7114,7 @@ LABEL_126:
 
   if ((has & 0x800000000000000) != 0)
   {
-    if ((v20 & 0x800000000000000) == 0 || self->_probingPatternCamRectY != *(v4 + 79))
+    if ((v20 & 0x800000000000000) == 0 || self->_probingPatternCamRectY != *(equalCopy + 79))
     {
       goto LABEL_569;
     }
@@ -7127,7 +7127,7 @@ LABEL_126:
 
   if ((has & 0x200000000000000) != 0)
   {
-    if ((v20 & 0x200000000000000) == 0 || self->_probingPatternCamRectW != *(v4 + 77))
+    if ((v20 & 0x200000000000000) == 0 || self->_probingPatternCamRectW != *(equalCopy + 77))
     {
       goto LABEL_569;
     }
@@ -7140,7 +7140,7 @@ LABEL_126:
 
   if ((has & 0x100000000000000) != 0)
   {
-    if ((v20 & 0x100000000000000) == 0 || self->_probingPatternCamRectH != *(v4 + 76))
+    if ((v20 & 0x100000000000000) == 0 || self->_probingPatternCamRectH != *(equalCopy + 76))
     {
       goto LABEL_569;
     }
@@ -7158,16 +7158,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v23 = v4[353];
+    v23 = equalCopy[353];
     if (self->_asFailure)
     {
-      if ((v4[353] & 1) == 0)
+      if ((equalCopy[353] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[353])
+    else if (equalCopy[353])
     {
       goto LABEL_569;
     }
@@ -7185,16 +7185,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v24 = v4[355];
+    v24 = equalCopy[355];
     if (self->_autoRetry)
     {
-      if ((v4[355] & 1) == 0)
+      if ((equalCopy[355] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[355])
+    else if (equalCopy[355])
     {
       goto LABEL_569;
     }
@@ -7212,16 +7212,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v25 = v4[356];
+    v25 = equalCopy[356];
     if (self->_autoRetryAllowed)
     {
-      if ((v4[356] & 1) == 0)
+      if ((equalCopy[356] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[356])
+    else if (equalCopy[356])
     {
       goto LABEL_569;
     }
@@ -7234,7 +7234,7 @@ LABEL_126:
 
   if ((has & 0x20000000) != 0)
   {
-    if ((v20 & 0x20000000) == 0 || self->_deviceOrientation != *(v4 + 49))
+    if ((v20 & 0x20000000) == 0 || self->_deviceOrientation != *(equalCopy + 49))
     {
       goto LABEL_569;
     }
@@ -7247,7 +7247,7 @@ LABEL_126:
 
   if ((has & 0x20000000000000) != 0)
   {
-    if ((v20 & 0x20000000000000) == 0 || self->_matchIdentityCount != *(v4 + 73))
+    if ((v20 & 0x20000000000000) == 0 || self->_matchIdentityCount != *(equalCopy + 73))
     {
       goto LABEL_569;
     }
@@ -7259,7 +7259,7 @@ LABEL_126:
   }
 
   cameraHWParameters = self->_cameraHWParameters;
-  if (cameraHWParameters | *(v4 + 23) && ![(NSString *)cameraHWParameters isEqual:?])
+  if (cameraHWParameters | *(equalCopy + 23) && ![(NSString *)cameraHWParameters isEqual:?])
   {
     goto LABEL_569;
   }
@@ -7267,7 +7267,7 @@ LABEL_126:
   v27 = *v50;
   if ((*p_has & 0x10000000) != 0)
   {
-    if ((v27 & 0x10000000) == 0 || self->_captureMethod != *(v4 + 48))
+    if ((v27 & 0x10000000) == 0 || self->_captureMethod != *(equalCopy + 48))
     {
       goto LABEL_569;
     }
@@ -7279,7 +7279,7 @@ LABEL_126:
   }
 
   v28 = *(&self->_has + 2);
-  v29 = *(v4 + 97);
+  v29 = *(equalCopy + 97);
   if ((v28 & 0x20000) != 0)
   {
     if ((v29 & 0x20000) == 0)
@@ -7287,16 +7287,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v30 = v4[365];
+    v30 = equalCopy[365];
     if (self->_engagementInfoFeedbackNoFaceDetected)
     {
-      if ((v4[365] & 1) == 0)
+      if ((equalCopy[365] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[365])
+    else if (equalCopy[365])
     {
       goto LABEL_569;
     }
@@ -7314,16 +7314,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v31 = v4[362];
+    v31 = equalCopy[362];
     if (self->_engagementInfoFeedbackFaceTooClose)
     {
-      if ((v4[362] & 1) == 0)
+      if ((equalCopy[362] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[362])
+    else if (equalCopy[362])
     {
       goto LABEL_569;
     }
@@ -7341,16 +7341,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v32 = v4[363];
+    v32 = equalCopy[363];
     if (self->_engagementInfoFeedbackFaceTooFar)
     {
-      if ((v4[363] & 1) == 0)
+      if ((equalCopy[363] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[363])
+    else if (equalCopy[363])
     {
       goto LABEL_569;
     }
@@ -7368,16 +7368,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v33 = v4[369];
+    v33 = equalCopy[369];
     if (self->_engagementInfoFeedbackPoseOutOfRange)
     {
-      if ((v4[369] & 1) == 0)
+      if ((equalCopy[369] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[369])
+    else if (equalCopy[369])
     {
       goto LABEL_569;
     }
@@ -7395,16 +7395,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v34 = v4[364];
+    v34 = equalCopy[364];
     if (self->_engagementInfoFeedbackNoAttention)
     {
-      if ((v4[364] & 1) == 0)
+      if ((equalCopy[364] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[364])
+    else if (equalCopy[364])
     {
       goto LABEL_569;
     }
@@ -7422,16 +7422,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v35 = v4[361];
+    v35 = equalCopy[361];
     if (self->_engagementInfoFeedbackFaceOccluded)
     {
-      if ((v4[361] & 1) == 0)
+      if ((equalCopy[361] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[361])
+    else if (equalCopy[361])
     {
       goto LABEL_569;
     }
@@ -7449,16 +7449,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v36 = v4[360];
+    v36 = equalCopy[360];
     if (self->_engagementInfoFeedbackCameraObstructed)
     {
-      if ((v4[360] & 1) == 0)
+      if ((equalCopy[360] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[360])
+    else if (equalCopy[360])
     {
       goto LABEL_569;
     }
@@ -7476,16 +7476,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v37 = v4[367];
+    v37 = equalCopy[367];
     if (self->_engagementInfoFeedbackPartialOutOfFOV)
     {
-      if ((v4[367] & 1) == 0)
+      if ((equalCopy[367] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[367])
+    else if (equalCopy[367])
     {
       goto LABEL_569;
     }
@@ -7503,16 +7503,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v38 = v4[359];
+    v38 = equalCopy[359];
     if (self->_combinedSequenceEnabled)
     {
-      if ((v4[359] & 1) == 0)
+      if ((equalCopy[359] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[359])
+    else if (equalCopy[359])
     {
       goto LABEL_569;
     }
@@ -7525,7 +7525,7 @@ LABEL_126:
 
   if ((*p_has & 8) != 0)
   {
-    if ((v27 & 8) == 0 || self->_overallTimeWithRetries != *(v4 + 7))
+    if ((v27 & 8) == 0 || self->_overallTimeWithRetries != *(equalCopy + 7))
     {
       goto LABEL_569;
     }
@@ -7543,16 +7543,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v39 = v4[357];
+    v39 = equalCopy[357];
     if (self->_autoRetryEnabled)
     {
-      if ((v4[357] & 1) == 0)
+      if ((equalCopy[357] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[357])
+    else if (equalCopy[357])
     {
       goto LABEL_569;
     }
@@ -7569,7 +7569,7 @@ LABEL_126:
   }
 
   v40 = *(&self->_has + 2);
-  v41 = *(v4 + 97);
+  v41 = *(equalCopy + 97);
   if ((v40 & 0x800000) != 0)
   {
     if ((v41 & 0x800000) == 0)
@@ -7577,16 +7577,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v42 = v4[371];
+    v42 = equalCopy[371];
     if (self->_matchCancelled)
     {
-      if ((v4[371] & 1) == 0)
+      if ((equalCopy[371] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[371])
+    else if (equalCopy[371])
     {
       goto LABEL_569;
     }
@@ -7604,16 +7604,16 @@ LABEL_126:
       goto LABEL_569;
     }
 
-    v43 = v4[368];
+    v43 = equalCopy[368];
     if (self->_engagementInfoFeedbackPoseMarginal)
     {
-      if ((v4[368] & 1) == 0)
+      if ((equalCopy[368] & 1) == 0)
       {
         goto LABEL_569;
       }
     }
 
-    else if (v4[368])
+    else if (equalCopy[368])
     {
       goto LABEL_569;
     }
@@ -7628,7 +7628,7 @@ LABEL_126:
   v45 = *v50;
   if ((*p_has & 0x80000000000) != 0)
   {
-    if ((v45 & 0x80000000000) == 0 || self->_faceOrientation != *(v4 + 63))
+    if ((v45 & 0x80000000000) == 0 || self->_faceOrientation != *(equalCopy + 63))
     {
       goto LABEL_569;
     }
@@ -7641,7 +7641,7 @@ LABEL_126:
 
   if ((v44 & 0x100000000000) != 0)
   {
-    if ((v45 & 0x100000000000) == 0 || self->_facePitch != *(v4 + 64))
+    if ((v45 & 0x100000000000) == 0 || self->_facePitch != *(equalCopy + 64))
     {
       goto LABEL_569;
     }
@@ -7654,7 +7654,7 @@ LABEL_126:
 
   if ((v44 & 0x400000000000) != 0)
   {
-    if ((v45 & 0x400000000000) == 0 || self->_faceYaw != *(v4 + 66))
+    if ((v45 & 0x400000000000) == 0 || self->_faceYaw != *(equalCopy + 66))
     {
       goto LABEL_569;
     }
@@ -7667,7 +7667,7 @@ LABEL_126:
 
   if ((v44 & 0x200000000000) != 0)
   {
-    if ((v45 & 0x200000000000) == 0 || self->_faceRoll != *(v4 + 65))
+    if ((v45 & 0x200000000000) == 0 || self->_faceRoll != *(equalCopy + 65))
     {
       goto LABEL_569;
     }
@@ -7680,7 +7680,7 @@ LABEL_126:
 
   if ((v44 & 0x80) != 0)
   {
-    if ((v45 & 0x80) == 0 || self->_timeSinceSleep != *(v4 + 11))
+    if ((v45 & 0x80) == 0 || self->_timeSinceSleep != *(equalCopy + 11))
     {
       goto LABEL_569;
     }
@@ -7695,10 +7695,10 @@ LABEL_126:
   {
     if ((v41 & 0x40000) != 0)
     {
-      v46 = v4[366];
+      v46 = equalCopy[366];
       if (self->_engagementInfoFeedbackNoseAndMouthOccluded)
       {
-        if ((v4[366] & 1) == 0)
+        if ((equalCopy[366] & 1) == 0)
         {
           goto LABEL_569;
         }
@@ -7706,7 +7706,7 @@ LABEL_126:
         goto LABEL_564;
       }
 
-      if ((v4[366] & 1) == 0)
+      if ((equalCopy[366] & 1) == 0)
       {
         goto LABEL_564;
       }
@@ -7725,7 +7725,7 @@ LABEL_569:
 LABEL_564:
   if ((v44 & 0x40000000000000) != 0)
   {
-    if ((v45 & 0x40000000000000) == 0 || self->_matchType != *(v4 + 74))
+    if ((v45 & 0x40000000000000) == 0 || self->_matchType != *(equalCopy + 74))
     {
       goto LABEL_569;
     }
@@ -9068,28 +9068,28 @@ LABEL_191:
   return v106 ^ v107 ^ v105 ^ v104 ^ v103 ^ v102 ^ v101 ^ v100 ^ v99 ^ v98 ^ v97 ^ v96 ^ v95 ^ v94 ^ v93 ^ v92 ^ v91 ^ v90 ^ v89 ^ v88 ^ v87 ^ v86 ^ v85 ^ v84 ^ v83 ^ v82 ^ v81 ^ v80 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v17 ^ v18 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4 + 380;
-  if (v4[381])
+  fromCopy = from;
+  v5 = fromCopy + 380;
+  if (fromCopy[381])
   {
-    self->_timestamp = *(v4 + 12);
+    self->_timestamp = *(fromCopy + 12);
     *&self->_has |= 0x100uLL;
   }
 
-  if ((v4[391] & 0x20) != 0)
+  if ((fromCopy[391] & 0x20) != 0)
   {
-    self->_overallResult = v4[377];
+    self->_overallResult = fromCopy[377];
     *(&self->_has + 2) |= 0x20000000u;
   }
 
   v6 = *v5;
   if ((*v5 & 4) != 0)
   {
-    self->_overallTime = *(v4 + 6);
+    self->_overallTime = *(fromCopy + 6);
     *&self->_has |= 4uLL;
-    v6 = *(v4 + 380);
+    v6 = *(fromCopy + 380);
     if ((v6 & 2) == 0)
     {
 LABEL_7:
@@ -9107,9 +9107,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_faceDetectEndTime = *(v4 + 5);
+  self->_faceDetectEndTime = *(fromCopy + 5);
   *&self->_has |= 2uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x20000000000) == 0)
   {
 LABEL_8:
@@ -9122,9 +9122,9 @@ LABEL_8:
   }
 
 LABEL_140:
-  self->_faceDetectResult = *(v4 + 61);
+  self->_faceDetectResult = *(fromCopy + 61);
   *&self->_has |= 0x20000000000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x800000000) == 0)
   {
 LABEL_9:
@@ -9137,9 +9137,9 @@ LABEL_9:
   }
 
 LABEL_141:
-  self->_faceDetectFrameCount = *(v4 + 55);
+  self->_faceDetectFrameCount = *(fromCopy + 55);
   *&self->_has |= 0x800000000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x2000000000) == 0)
   {
 LABEL_10:
@@ -9152,9 +9152,9 @@ LABEL_10:
   }
 
 LABEL_142:
-  self->_faceDetectFrameFloodCount = *(v4 + 57);
+  self->_faceDetectFrameFloodCount = *(fromCopy + 57);
   *&self->_has |= 0x2000000000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x4000000000) == 0)
   {
 LABEL_11:
@@ -9167,9 +9167,9 @@ LABEL_11:
   }
 
 LABEL_143:
-  self->_faceDetectFrameSparseCount = *(v4 + 58);
+  self->_faceDetectFrameSparseCount = *(fromCopy + 58);
   *&self->_has |= 0x4000000000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x1000000000) == 0)
   {
 LABEL_12:
@@ -9182,9 +9182,9 @@ LABEL_12:
   }
 
 LABEL_144:
-  self->_faceDetectFrameDenseCount = *(v4 + 56);
+  self->_faceDetectFrameDenseCount = *(fromCopy + 56);
   *&self->_has |= 0x1000000000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 1) == 0)
   {
 LABEL_13:
@@ -9197,9 +9197,9 @@ LABEL_13:
   }
 
 LABEL_145:
-  self->_bioCheckEndTime = *(v4 + 4);
+  self->_bioCheckEndTime = *(fromCopy + 4);
   *&self->_has |= 1uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x200000) == 0)
   {
 LABEL_14:
@@ -9212,9 +9212,9 @@ LABEL_14:
   }
 
 LABEL_146:
-  self->_bioCheckResult = *(v4 + 38);
+  self->_bioCheckResult = *(fromCopy + 38);
   *&self->_has |= 0x200000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x8000) == 0)
   {
 LABEL_15:
@@ -9227,9 +9227,9 @@ LABEL_15:
   }
 
 LABEL_147:
-  self->_bioCheckFrameCount = *(v4 + 32);
+  self->_bioCheckFrameCount = *(fromCopy + 32);
   *&self->_has |= 0x8000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x20000) == 0)
   {
 LABEL_16:
@@ -9242,9 +9242,9 @@ LABEL_16:
   }
 
 LABEL_148:
-  self->_bioCheckFrameFloodCount = *(v4 + 34);
+  self->_bioCheckFrameFloodCount = *(fromCopy + 34);
   *&self->_has |= 0x20000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x40000) == 0)
   {
 LABEL_17:
@@ -9257,9 +9257,9 @@ LABEL_17:
   }
 
 LABEL_149:
-  self->_bioCheckFrameSparseCount = *(v4 + 35);
+  self->_bioCheckFrameSparseCount = *(fromCopy + 35);
   *&self->_has |= 0x40000uLL;
-  v6 = *(v4 + 380);
+  v6 = *(fromCopy + 380);
   if ((v6 & 0x10000) == 0)
   {
 LABEL_18:
@@ -9272,62 +9272,62 @@ LABEL_18:
   }
 
 LABEL_150:
-  self->_bioCheckFrameDenseCount = *(v4 + 33);
+  self->_bioCheckFrameDenseCount = *(fromCopy + 33);
   *&self->_has |= 0x10000uLL;
-  if ((*(v4 + 380) & 0x10) != 0)
+  if ((*(fromCopy + 380) & 0x10) != 0)
   {
 LABEL_19:
-    self->_probingPatternEndTime = *(v4 + 8);
+    self->_probingPatternEndTime = *(fromCopy + 8);
     *&self->_has |= 0x10uLL;
   }
 
 LABEL_20:
-  if ((v4[388] & 2) != 0)
+  if ((fromCopy[388] & 2) != 0)
   {
-    self->_probingPatternResult = *(v4 + 85);
+    self->_probingPatternResult = *(fromCopy + 85);
     *(&self->_has + 2) |= 2u;
   }
 
   v7 = *v5;
   if ((*v5 & 0x2000000000000000) != 0)
   {
-    self->_probingPatternFrameCount = *(v4 + 81);
+    self->_probingPatternFrameCount = *(fromCopy + 81);
     *&self->_has |= 0x2000000000000000uLL;
-    v7 = *(v4 + 380);
+    v7 = *(fromCopy + 380);
   }
 
   if (v7 < 0)
   {
-    self->_probingPatternFrameFloodCount = *(v4 + 83);
+    self->_probingPatternFrameFloodCount = *(fromCopy + 83);
     *&self->_has |= 0x8000000000000000;
   }
 
-  if (v4[388])
+  if (fromCopy[388])
   {
-    self->_probingPatternFrameSparseCount = *(v4 + 84);
+    self->_probingPatternFrameSparseCount = *(fromCopy + 84);
     *(&self->_has + 2) |= 1u;
   }
 
   v8 = *v5;
   if ((*v5 & 0x4000000000000000) != 0)
   {
-    self->_probingPatternFrameDenseCount = *(v4 + 82);
+    self->_probingPatternFrameDenseCount = *(fromCopy + 82);
     *&self->_has |= 0x4000000000000000uLL;
-    v8 = *(v4 + 380);
+    v8 = *(fromCopy + 380);
   }
 
   if ((v8 & 0x200) != 0)
   {
-    self->_ambientLux = *(v4 + 26);
+    self->_ambientLux = *(fromCopy + 26);
     *&self->_has |= 0x200uLL;
   }
 
-  v9 = *(v4 + 97);
+  v9 = *(fromCopy + 97);
   if (v9 < 0)
   {
-    self->_probingPatternFailure = v4[379];
+    self->_probingPatternFailure = fromCopy[379];
     *(&self->_has + 2) |= 0x80000000;
-    v9 = *(v4 + 97);
+    v9 = *(fromCopy + 97);
     if ((v9 & 0x8000000) == 0)
     {
 LABEL_34:
@@ -9345,9 +9345,9 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  self->_matcherFailure = v4[375];
+  self->_matcherFailure = fromCopy[375];
   *(&self->_has + 2) |= 0x8000000u;
-  v9 = *(v4 + 97);
+  v9 = *(fromCopy + 97);
   if ((v9 & 0x1000000) == 0)
   {
 LABEL_35:
@@ -9360,9 +9360,9 @@ LABEL_35:
   }
 
 LABEL_203:
-  self->_matchDepthFailure = v4[372];
+  self->_matchDepthFailure = fromCopy[372];
   *(&self->_has + 2) |= 0x1000000u;
-  v9 = *(v4 + 97);
+  v9 = *(fromCopy + 97);
   if ((v9 & 0x2000000) == 0)
   {
 LABEL_36:
@@ -9375,9 +9375,9 @@ LABEL_36:
   }
 
 LABEL_204:
-  self->_matchFloodFailure = v4[373];
+  self->_matchFloodFailure = fromCopy[373];
   *(&self->_has + 2) |= 0x2000000u;
-  v9 = *(v4 + 97);
+  v9 = *(fromCopy + 97);
   if ((v9 & 0x40) == 0)
   {
 LABEL_37:
@@ -9390,9 +9390,9 @@ LABEL_37:
   }
 
 LABEL_205:
-  self->_asFloodFailure = v4[354];
+  self->_asFloodFailure = fromCopy[354];
   *(&self->_has + 2) |= 0x40u;
-  v9 = *(v4 + 97);
+  v9 = *(fromCopy + 97);
   if ((v9 & 0x10) == 0)
   {
 LABEL_38:
@@ -9405,9 +9405,9 @@ LABEL_38:
   }
 
 LABEL_206:
-  self->_asDepthFailure = v4[352];
+  self->_asDepthFailure = fromCopy[352];
   *(&self->_has + 2) |= 0x10u;
-  v9 = *(v4 + 97);
+  v9 = *(fromCopy + 97);
   if ((v9 & 0x10000000) == 0)
   {
 LABEL_39:
@@ -9420,46 +9420,46 @@ LABEL_39:
   }
 
 LABEL_207:
-  self->_onlineTemplateUpdated = v4[376];
+  self->_onlineTemplateUpdated = fromCopy[376];
   *(&self->_has + 2) |= 0x10000000u;
-  if ((*(v4 + 97) & 0x40000000) != 0)
+  if ((*(fromCopy + 97) & 0x40000000) != 0)
   {
 LABEL_40:
-    self->_passcodeChallengeAllowed = v4[378];
+    self->_passcodeChallengeAllowed = fromCopy[378];
     *(&self->_has + 2) |= 0x40000000u;
   }
 
 LABEL_41:
-  if ((v4[386] & 8) != 0)
+  if ((fromCopy[386] & 8) != 0)
   {
-    self->_featureGenerationError = *(v4 + 71);
+    self->_featureGenerationError = *(fromCopy + 71);
     *&self->_has |= 0x8000000000000uLL;
   }
 
-  if ((v4[388] & 4) != 0)
+  if ((fromCopy[388] & 4) != 0)
   {
-    self->_sensorTemperature = *(v4 + 86);
+    self->_sensorTemperature = *(fromCopy + 86);
     *(&self->_has + 2) |= 4u;
   }
 
-  if ((v4[385] & 4) != 0)
+  if ((fromCopy[385] & 4) != 0)
   {
-    self->_faceDistance = *(v4 + 62);
+    self->_faceDistance = *(fromCopy + 62);
     *&self->_has |= 0x40000000000uLL;
   }
 
-  if ((v4[390] & 0x40) != 0)
+  if ((fromCopy[390] & 0x40) != 0)
   {
-    self->_hasOcclusion = v4[370];
+    self->_hasOcclusion = fromCopy[370];
     *(&self->_has + 2) |= 0x400000u;
   }
 
   v10 = *v5;
   if ((*v5 & 0x2000000) != 0)
   {
-    self->_camRectX = *(v4 + 42);
+    self->_camRectX = *(fromCopy + 42);
     *&self->_has |= 0x2000000uLL;
-    v10 = *(v4 + 380);
+    v10 = *(fromCopy + 380);
     if ((v10 & 0x4000000) == 0)
     {
 LABEL_51:
@@ -9477,9 +9477,9 @@ LABEL_51:
     goto LABEL_51;
   }
 
-  self->_camRectY = *(v4 + 43);
+  self->_camRectY = *(fromCopy + 43);
   *&self->_has |= 0x4000000uLL;
-  v10 = *(v4 + 380);
+  v10 = *(fromCopy + 380);
   if ((v10 & 0x1000000) == 0)
   {
 LABEL_52:
@@ -9492,9 +9492,9 @@ LABEL_52:
   }
 
 LABEL_154:
-  self->_camRectW = *(v4 + 41);
+  self->_camRectW = *(fromCopy + 41);
   *&self->_has |= 0x1000000uLL;
-  v10 = *(v4 + 380);
+  v10 = *(fromCopy + 380);
   if ((v10 & 0x800000) == 0)
   {
 LABEL_53:
@@ -9507,9 +9507,9 @@ LABEL_53:
   }
 
 LABEL_155:
-  self->_camRectH = *(v4 + 40);
+  self->_camRectH = *(fromCopy + 40);
   *&self->_has |= 0x800000uLL;
-  v10 = *(v4 + 380);
+  v10 = *(fromCopy + 380);
   if ((v10 & 0x10000000000) == 0)
   {
 LABEL_54:
@@ -9522,9 +9522,9 @@ LABEL_54:
   }
 
 LABEL_156:
-  self->_faceDetectPPMRequestedBudget = *(v4 + 60);
+  self->_faceDetectPPMRequestedBudget = *(fromCopy + 60);
   *&self->_has |= 0x10000000000uLL;
-  v10 = *(v4 + 380);
+  v10 = *(fromCopy + 380);
   if ((v10 & 0x8000000000) == 0)
   {
 LABEL_55:
@@ -9537,9 +9537,9 @@ LABEL_55:
   }
 
 LABEL_157:
-  self->_faceDetectPPMAllocatedBudget = *(v4 + 59);
+  self->_faceDetectPPMAllocatedBudget = *(fromCopy + 59);
   *&self->_has |= 0x8000000000uLL;
-  v10 = *(v4 + 380);
+  v10 = *(fromCopy + 380);
   if ((v10 & 0x100000) == 0)
   {
 LABEL_56:
@@ -9552,9 +9552,9 @@ LABEL_56:
   }
 
 LABEL_158:
-  self->_bioCheckPPMRequestedBudget = *(v4 + 37);
+  self->_bioCheckPPMRequestedBudget = *(fromCopy + 37);
   *&self->_has |= 0x100000uLL;
-  v10 = *(v4 + 380);
+  v10 = *(fromCopy + 380);
   if ((v10 & 0x80000) == 0)
   {
 LABEL_57:
@@ -9567,9 +9567,9 @@ LABEL_57:
   }
 
 LABEL_159:
-  self->_bioCheckPPMAllocatedBudget = *(v4 + 36);
+  self->_bioCheckPPMAllocatedBudget = *(fromCopy + 36);
   *&self->_has |= 0x80000uLL;
-  v10 = *(v4 + 380);
+  v10 = *(fromCopy + 380);
   if ((v10 & 0x40) == 0)
   {
 LABEL_58:
@@ -9582,40 +9582,40 @@ LABEL_58:
   }
 
 LABEL_160:
-  self->_rfcSetIndex = *(v4 + 10);
+  self->_rfcSetIndex = *(fromCopy + 10);
   *&self->_has |= 0x40uLL;
-  if ((*(v4 + 380) & 0x20) != 0)
+  if ((*(fromCopy + 380) & 0x20) != 0)
   {
 LABEL_59:
-    self->_rfcFrameIndex = *(v4 + 9);
+    self->_rfcFrameIndex = *(fromCopy + 9);
     *&self->_has |= 0x20uLL;
   }
 
 LABEL_60:
-  if ((v4[389] & 4) != 0)
+  if ((fromCopy[389] & 4) != 0)
   {
-    self->_bioLockout = v4[358];
+    self->_bioLockout = fromCopy[358];
     *(&self->_has + 2) |= 0x400u;
   }
 
-  if ((v4[383] & 8) != 0)
+  if ((fromCopy[383] & 8) != 0)
   {
-    self->_cameraErr = *(v4 + 44);
+    self->_cameraErr = *(fromCopy + 44);
     *&self->_has |= 0x8000000uLL;
   }
 
-  if ((v4[391] & 4) != 0)
+  if ((fromCopy[391] & 4) != 0)
   {
-    self->_matchForUnlock = v4[374];
+    self->_matchForUnlock = fromCopy[374];
     *(&self->_has + 2) |= 0x4000000u;
   }
 
   v11 = *v5;
   if ((*v5 & 0x4000000000000) != 0)
   {
-    self->_failedUnlockAttemptsFromFD = *(v4 + 70);
+    self->_failedUnlockAttemptsFromFD = *(fromCopy + 70);
     *&self->_has |= 0x4000000000000uLL;
-    v11 = *(v4 + 380);
+    v11 = *(fromCopy + 380);
     if ((v11 & 0x2000000000000) == 0)
     {
 LABEL_68:
@@ -9633,9 +9633,9 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  self->_failedUnlockAttemptsFromBiocheck = *(v4 + 69);
+  self->_failedUnlockAttemptsFromBiocheck = *(fromCopy + 69);
   *&self->_has |= 0x2000000000000uLL;
-  v11 = *(v4 + 380);
+  v11 = *(fromCopy + 380);
   if ((v11 & 0x1000000000000) == 0)
   {
 LABEL_69:
@@ -9648,9 +9648,9 @@ LABEL_69:
   }
 
 LABEL_164:
-  self->_failedMatchAttemptsFromFD = *(v4 + 68);
+  self->_failedMatchAttemptsFromFD = *(fromCopy + 68);
   *&self->_has |= 0x1000000000000uLL;
-  v11 = *(v4 + 380);
+  v11 = *(fromCopy + 380);
   if ((v11 & 0x800000000000) == 0)
   {
 LABEL_70:
@@ -9663,9 +9663,9 @@ LABEL_70:
   }
 
 LABEL_165:
-  self->_failedMatchAttemptsFromBiocheck = *(v4 + 67);
+  self->_failedMatchAttemptsFromBiocheck = *(fromCopy + 67);
   *&self->_has |= 0x800000000000uLL;
-  v11 = *(v4 + 380);
+  v11 = *(fromCopy + 380);
   if ((v11 & 0x400000) == 0)
   {
 LABEL_71:
@@ -9678,9 +9678,9 @@ LABEL_71:
   }
 
 LABEL_166:
-  self->_bioLockoutReason = *(v4 + 39);
+  self->_bioLockoutReason = *(fromCopy + 39);
   *&self->_has |= 0x400000uLL;
-  v11 = *(v4 + 380);
+  v11 = *(fromCopy + 380);
   if ((v11 & 0x10000000000000) == 0)
   {
 LABEL_72:
@@ -9693,28 +9693,28 @@ LABEL_72:
   }
 
 LABEL_167:
-  self->_matchFeatureVectorError = *(v4 + 72);
+  self->_matchFeatureVectorError = *(fromCopy + 72);
   *&self->_has |= 0x10000000000000uLL;
-  if ((*(v4 + 380) & 0x80000000000000) != 0)
+  if ((*(fromCopy + 380) & 0x80000000000000) != 0)
   {
 LABEL_73:
-    self->_onlineTemplateAge = *(v4 + 75);
+    self->_onlineTemplateAge = *(fromCopy + 75);
     *&self->_has |= 0x80000000000000uLL;
   }
 
 LABEL_74:
-  if ((v4[388] & 8) != 0)
+  if ((fromCopy[388] & 8) != 0)
   {
-    self->_shortTermTemplateAge = *(v4 + 87);
+    self->_shortTermTemplateAge = *(fromCopy + 87);
     *(&self->_has + 2) |= 8u;
   }
 
   v12 = *v5;
   if ((*v5 & 0x400000000) != 0)
   {
-    self->_faceDetectFaceDistance = *(v4 + 54);
+    self->_faceDetectFaceDistance = *(fromCopy + 54);
     *&self->_has |= 0x400000000uLL;
-    v12 = *(v4 + 380);
+    v12 = *(fromCopy + 380);
     if ((v12 & 0x100000000) == 0)
     {
 LABEL_78:
@@ -9732,9 +9732,9 @@ LABEL_78:
     goto LABEL_78;
   }
 
-  self->_faceDetectCamRectX = *(v4 + 52);
+  self->_faceDetectCamRectX = *(fromCopy + 52);
   *&self->_has |= 0x100000000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x200000000) == 0)
   {
 LABEL_79:
@@ -9747,9 +9747,9 @@ LABEL_79:
   }
 
 LABEL_171:
-  self->_faceDetectCamRectY = *(v4 + 53);
+  self->_faceDetectCamRectY = *(fromCopy + 53);
   *&self->_has |= 0x200000000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x80000000) == 0)
   {
 LABEL_80:
@@ -9762,9 +9762,9 @@ LABEL_80:
   }
 
 LABEL_172:
-  self->_faceDetectCamRectW = *(v4 + 51);
+  self->_faceDetectCamRectW = *(fromCopy + 51);
   *&self->_has |= 0x80000000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x40000000) == 0)
   {
 LABEL_81:
@@ -9777,9 +9777,9 @@ LABEL_81:
   }
 
 LABEL_173:
-  self->_faceDetectCamRectH = *(v4 + 50);
+  self->_faceDetectCamRectH = *(fromCopy + 50);
   *&self->_has |= 0x40000000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x4000) == 0)
   {
 LABEL_82:
@@ -9792,9 +9792,9 @@ LABEL_82:
   }
 
 LABEL_174:
-  self->_bioCheckFaceDistance = *(v4 + 31);
+  self->_bioCheckFaceDistance = *(fromCopy + 31);
   *&self->_has |= 0x4000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x1000) == 0)
   {
 LABEL_83:
@@ -9807,9 +9807,9 @@ LABEL_83:
   }
 
 LABEL_175:
-  self->_bioCheckCamRectX = *(v4 + 29);
+  self->_bioCheckCamRectX = *(fromCopy + 29);
   *&self->_has |= 0x1000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x2000) == 0)
   {
 LABEL_84:
@@ -9822,9 +9822,9 @@ LABEL_84:
   }
 
 LABEL_176:
-  self->_bioCheckCamRectY = *(v4 + 30);
+  self->_bioCheckCamRectY = *(fromCopy + 30);
   *&self->_has |= 0x2000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x800) == 0)
   {
 LABEL_85:
@@ -9837,9 +9837,9 @@ LABEL_85:
   }
 
 LABEL_177:
-  self->_bioCheckCamRectW = *(v4 + 28);
+  self->_bioCheckCamRectW = *(fromCopy + 28);
   *&self->_has |= 0x800uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x400) == 0)
   {
 LABEL_86:
@@ -9852,9 +9852,9 @@ LABEL_86:
   }
 
 LABEL_178:
-  self->_bioCheckCamRectH = *(v4 + 27);
+  self->_bioCheckCamRectH = *(fromCopy + 27);
   *&self->_has |= 0x400uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x1000000000000000) == 0)
   {
 LABEL_87:
@@ -9867,9 +9867,9 @@ LABEL_87:
   }
 
 LABEL_179:
-  self->_probingPatternFaceDistance = *(v4 + 80);
+  self->_probingPatternFaceDistance = *(fromCopy + 80);
   *&self->_has |= 0x1000000000000000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x400000000000000) == 0)
   {
 LABEL_88:
@@ -9882,9 +9882,9 @@ LABEL_88:
   }
 
 LABEL_180:
-  self->_probingPatternCamRectX = *(v4 + 78);
+  self->_probingPatternCamRectX = *(fromCopy + 78);
   *&self->_has |= 0x400000000000000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x800000000000000) == 0)
   {
 LABEL_89:
@@ -9897,9 +9897,9 @@ LABEL_89:
   }
 
 LABEL_181:
-  self->_probingPatternCamRectY = *(v4 + 79);
+  self->_probingPatternCamRectY = *(fromCopy + 79);
   *&self->_has |= 0x800000000000000uLL;
-  v12 = *(v4 + 380);
+  v12 = *(fromCopy + 380);
   if ((v12 & 0x200000000000000) == 0)
   {
 LABEL_90:
@@ -9912,22 +9912,22 @@ LABEL_90:
   }
 
 LABEL_182:
-  self->_probingPatternCamRectW = *(v4 + 77);
+  self->_probingPatternCamRectW = *(fromCopy + 77);
   *&self->_has |= 0x200000000000000uLL;
-  if ((*(v4 + 380) & 0x100000000000000) != 0)
+  if ((*(fromCopy + 380) & 0x100000000000000) != 0)
   {
 LABEL_91:
-    self->_probingPatternCamRectH = *(v4 + 76);
+    self->_probingPatternCamRectH = *(fromCopy + 76);
     *&self->_has |= 0x100000000000000uLL;
   }
 
 LABEL_92:
-  v13 = *(v4 + 97);
+  v13 = *(fromCopy + 97);
   if ((v13 & 0x20) != 0)
   {
-    self->_asFailure = v4[353];
+    self->_asFailure = fromCopy[353];
     *(&self->_has + 2) |= 0x20u;
-    v13 = *(v4 + 97);
+    v13 = *(fromCopy + 97);
     if ((v13 & 0x80) == 0)
     {
 LABEL_94:
@@ -9945,12 +9945,12 @@ LABEL_94:
     goto LABEL_94;
   }
 
-  self->_autoRetry = v4[355];
+  self->_autoRetry = fromCopy[355];
   *(&self->_has + 2) |= 0x80u;
-  if ((*(v4 + 97) & 0x100) != 0)
+  if ((*(fromCopy + 97) & 0x100) != 0)
   {
 LABEL_95:
-    self->_autoRetryAllowed = v4[356];
+    self->_autoRetryAllowed = fromCopy[356];
     *(&self->_has + 2) |= 0x100u;
   }
 
@@ -9958,34 +9958,34 @@ LABEL_96:
   v14 = *v5;
   if ((*v5 & 0x20000000) != 0)
   {
-    self->_deviceOrientation = *(v4 + 49);
+    self->_deviceOrientation = *(fromCopy + 49);
     *&self->_has |= 0x20000000uLL;
-    v14 = *(v4 + 380);
+    v14 = *(fromCopy + 380);
   }
 
   if ((v14 & 0x20000000000000) != 0)
   {
-    self->_matchIdentityCount = *(v4 + 73);
+    self->_matchIdentityCount = *(fromCopy + 73);
     *&self->_has |= 0x20000000000000uLL;
   }
 
-  v21 = v4;
-  if (*(v4 + 23))
+  v21 = fromCopy;
+  if (*(fromCopy + 23))
   {
     [(AWDBiometricKitMatchAttempt *)self setCameraHWParameters:?];
-    v4 = v21;
+    fromCopy = v21;
   }
 
   if ((v5[3] & 0x10) != 0)
   {
-    self->_captureMethod = *(v4 + 48);
+    self->_captureMethod = *(fromCopy + 48);
     *&self->_has |= 0x10000000uLL;
   }
 
   v15 = *(v5 + 2);
   if ((v15 & 0x20000) != 0)
   {
-    self->_engagementInfoFeedbackNoFaceDetected = v4[365];
+    self->_engagementInfoFeedbackNoFaceDetected = fromCopy[365];
     *(&self->_has + 2) |= 0x20000u;
     v15 = *(v5 + 2);
     if ((v15 & 0x4000) == 0)
@@ -10005,7 +10005,7 @@ LABEL_106:
     goto LABEL_106;
   }
 
-  self->_engagementInfoFeedbackFaceTooClose = v4[362];
+  self->_engagementInfoFeedbackFaceTooClose = fromCopy[362];
   *(&self->_has + 2) |= 0x4000u;
   v15 = *(v5 + 2);
   if ((v15 & 0x8000) == 0)
@@ -10020,7 +10020,7 @@ LABEL_107:
   }
 
 LABEL_189:
-  self->_engagementInfoFeedbackFaceTooFar = v4[363];
+  self->_engagementInfoFeedbackFaceTooFar = fromCopy[363];
   *(&self->_has + 2) |= 0x8000u;
   v15 = *(v5 + 2);
   if ((v15 & 0x200000) == 0)
@@ -10035,7 +10035,7 @@ LABEL_108:
   }
 
 LABEL_190:
-  self->_engagementInfoFeedbackPoseOutOfRange = v4[369];
+  self->_engagementInfoFeedbackPoseOutOfRange = fromCopy[369];
   *(&self->_has + 2) |= 0x200000u;
   v15 = *(v5 + 2);
   if ((v15 & 0x10000) == 0)
@@ -10050,7 +10050,7 @@ LABEL_109:
   }
 
 LABEL_191:
-  self->_engagementInfoFeedbackNoAttention = v4[364];
+  self->_engagementInfoFeedbackNoAttention = fromCopy[364];
   *(&self->_has + 2) |= 0x10000u;
   v15 = *(v5 + 2);
   if ((v15 & 0x2000) == 0)
@@ -10065,7 +10065,7 @@ LABEL_110:
   }
 
 LABEL_192:
-  self->_engagementInfoFeedbackFaceOccluded = v4[361];
+  self->_engagementInfoFeedbackFaceOccluded = fromCopy[361];
   *(&self->_has + 2) |= 0x2000u;
   v15 = *(v5 + 2);
   if ((v15 & 0x1000) == 0)
@@ -10080,7 +10080,7 @@ LABEL_111:
   }
 
 LABEL_193:
-  self->_engagementInfoFeedbackCameraObstructed = v4[360];
+  self->_engagementInfoFeedbackCameraObstructed = fromCopy[360];
   *(&self->_has + 2) |= 0x1000u;
   v15 = *(v5 + 2);
   if ((v15 & 0x80000) == 0)
@@ -10095,32 +10095,32 @@ LABEL_112:
   }
 
 LABEL_194:
-  self->_engagementInfoFeedbackPartialOutOfFOV = v4[367];
+  self->_engagementInfoFeedbackPartialOutOfFOV = fromCopy[367];
   *(&self->_has + 2) |= 0x80000u;
   if ((*(v5 + 2) & 0x800) != 0)
   {
 LABEL_113:
-    self->_combinedSequenceEnabled = v4[359];
+    self->_combinedSequenceEnabled = fromCopy[359];
     *(&self->_has + 2) |= 0x800u;
   }
 
 LABEL_114:
   if ((*v5 & 8) != 0)
   {
-    self->_overallTimeWithRetries = *(v4 + 7);
+    self->_overallTimeWithRetries = *(fromCopy + 7);
     *&self->_has |= 8uLL;
   }
 
   if ((v5[9] & 2) != 0)
   {
-    self->_autoRetryEnabled = v4[357];
+    self->_autoRetryEnabled = fromCopy[357];
     *(&self->_has + 2) |= 0x200u;
   }
 
-  v16 = [v4 identityCreationTimesCount];
-  if (v16)
+  identityCreationTimesCount = [fromCopy identityCreationTimesCount];
+  if (identityCreationTimesCount)
   {
-    v17 = v16;
+    v17 = identityCreationTimesCount;
     for (i = 0; i != v17; ++i)
     {
       -[AWDBiometricKitMatchAttempt addIdentityCreationTime:](self, "addIdentityCreationTime:", [v21 identityCreationTimeAtIndex:i]);

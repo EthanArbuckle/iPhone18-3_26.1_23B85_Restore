@@ -1,59 +1,59 @@
 @interface CAMSmartStyleSettingsResourceLoadResult
-- (CAMSmartStyleSettingsResourceLoadResult)initWithCompositionController:(id)a3 fileURL:(id)a4 imageProperties:(id)a5 cropRect:(CGRect)a6 logIdentifier:(id)a7;
-- (CAMSmartStyleSettingsResourceLoadResult)initWithResourceLoadResult:(id)a3 logIdentifier:(id)a4;
+- (CAMSmartStyleSettingsResourceLoadResult)initWithCompositionController:(id)controller fileURL:(id)l imageProperties:(id)properties cropRect:(CGRect)rect logIdentifier:(id)identifier;
+- (CAMSmartStyleSettingsResourceLoadResult)initWithResourceLoadResult:(id)result logIdentifier:(id)identifier;
 - (CGRect)cropRect;
 @end
 
 @implementation CAMSmartStyleSettingsResourceLoadResult
 
-- (CAMSmartStyleSettingsResourceLoadResult)initWithCompositionController:(id)a3 fileURL:(id)a4 imageProperties:(id)a5 cropRect:(CGRect)a6 logIdentifier:(id)a7
+- (CAMSmartStyleSettingsResourceLoadResult)initWithCompositionController:(id)controller fileURL:(id)l imageProperties:(id)properties cropRect:(CGRect)rect logIdentifier:(id)identifier
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  lCopy = l;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = CAMSmartStyleSettingsResourceLoadResult;
   v20 = [(CAMSmartStyleSettingsResourceLoadResult *)&v24 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_compositionController, a3);
-    objc_storeStrong(&v21->_fileURL, a4);
-    objc_storeStrong(&v21->_fileURLImageProperties, a5);
+    objc_storeStrong(&v20->_compositionController, controller);
+    objc_storeStrong(&v21->_fileURL, l);
+    objc_storeStrong(&v21->_fileURLImageProperties, properties);
     v21->_cropRect.origin.x = x;
     v21->_cropRect.origin.y = y;
     v21->_cropRect.size.width = width;
     v21->_cropRect.size.height = height;
-    objc_storeStrong(&v21->_logIdentifier, a7);
+    objc_storeStrong(&v21->_logIdentifier, identifier);
     v22 = v21;
   }
 
   return v21;
 }
 
-- (CAMSmartStyleSettingsResourceLoadResult)initWithResourceLoadResult:(id)a3 logIdentifier:(id)a4
+- (CAMSmartStyleSettingsResourceLoadResult)initWithResourceLoadResult:(id)result logIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = CAMSmartStyleSettingsResourceLoadResult;
   v8 = [(CAMSmartStyleSettingsResourceLoadResult *)&v15 init];
   if (v8)
   {
-    v9 = [v6 compositionController];
+    compositionController = [resultCopy compositionController];
     compositionController = v8->_compositionController;
-    v8->_compositionController = v9;
+    v8->_compositionController = compositionController;
 
-    v11 = [v6 asset];
+    asset = [resultCopy asset];
     asset = v8->_asset;
-    v8->_asset = v11;
+    v8->_asset = asset;
 
-    objc_storeStrong(&v8->_logIdentifier, a4);
+    objc_storeStrong(&v8->_logIdentifier, identifier);
     v13 = v8;
   }
 

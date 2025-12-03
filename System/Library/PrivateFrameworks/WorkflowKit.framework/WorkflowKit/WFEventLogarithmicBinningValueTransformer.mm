@@ -1,14 +1,14 @@
 @interface WFEventLogarithmicBinningValueTransformer
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation WFEventLogarithmicBinningValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    [a3 doubleValue];
+    [value doubleValue];
     v5 = v4;
     v6 = log2(fabs(v4));
     v7 = exp2(round(v6));

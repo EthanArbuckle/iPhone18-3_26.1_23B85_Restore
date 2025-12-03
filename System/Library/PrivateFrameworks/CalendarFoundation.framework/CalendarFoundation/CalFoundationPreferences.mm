@@ -2,13 +2,13 @@
 + (CalFoundationPreferences)shared;
 - (BOOL)stopTimeDemoModeActive;
 - (CalFoundationPreferences)init;
-- (CalFoundationPreferences)initWithPreferencesForUnitTesting:(id)a3;
+- (CalFoundationPreferences)initWithPreferencesForUnitTesting:(id)testing;
 - (NSDateComponents)stopTimeDemoModeComponents;
 - (NSString)stopTimeDemoMode;
 - (double)defaultEventDuration;
 - (double)simulatedDateForNowOffset;
-- (void)setDefaultEventDuration:(double)a3;
-- (void)setSimulatedDateForNowOffset:(double)a3;
+- (void)setDefaultEventDuration:(double)duration;
+- (void)setSimulatedDateForNowOffset:(double)offset;
 @end
 
 @implementation CalFoundationPreferences
@@ -47,16 +47,16 @@ uint64_t __34__CalFoundationPreferences_shared__block_invoke()
   return v2;
 }
 
-- (CalFoundationPreferences)initWithPreferencesForUnitTesting:(id)a3
+- (CalFoundationPreferences)initWithPreferencesForUnitTesting:(id)testing
 {
-  v5 = a3;
+  testingCopy = testing;
   v9.receiver = self;
   v9.super_class = CalFoundationPreferences;
   v6 = [(CalFoundationPreferences *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferences, a3);
+    objc_storeStrong(&v6->_preferences, testing);
   }
 
   return v7;
@@ -80,9 +80,9 @@ uint64_t __34__CalFoundationPreferences_shared__block_invoke()
   return v5;
 }
 
-- (void)setSimulatedDateForNowOffset:(double)a3
+- (void)setSimulatedDateForNowOffset:(double)offset
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:offset];
   [(CalPreferences *)self->_preferences setValueForPreference:@"simulatedDateForNowOffset" value:v4 notificationName:0];
 }
 
@@ -96,11 +96,11 @@ uint64_t __34__CalFoundationPreferences_shared__block_invoke()
 
 - (BOOL)stopTimeDemoModeActive
 {
-  v2 = [(CalFoundationPreferences *)self stopTimeDemoMode];
-  v3 = v2;
-  if (v2)
+  stopTimeDemoMode = [(CalFoundationPreferences *)self stopTimeDemoMode];
+  v3 = stopTimeDemoMode;
+  if (stopTimeDemoMode)
   {
-    v4 = [v2 length] != 0;
+    v4 = [stopTimeDemoMode length] != 0;
   }
 
   else
@@ -114,14 +114,14 @@ uint64_t __34__CalFoundationPreferences_shared__block_invoke()
 - (NSDateComponents)stopTimeDemoModeComponents
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v4 = [(CalFoundationPreferences *)self stopTimeDemoMode];
+  stopTimeDemoMode = [(CalFoundationPreferences *)self stopTimeDemoMode];
   if ([(CalFoundationPreferences *)self stopTimeDemoModeActive])
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v6 = [MEMORY[0x1E695DF00] now];
-    v7 = [v5 components:124 fromDate:v6];
+    v7 = [currentCalendar components:124 fromDate:v6];
 
-    v8 = [v4 componentsSeparatedByString:@":"];
+    v8 = [stopTimeDemoMode componentsSeparatedByString:@":"];
     if ([v8 count])
     {
       v9 = [v8 objectAtIndexedSubscript:0];
@@ -152,8 +152,8 @@ uint64_t __34__CalFoundationPreferences_shared__block_invoke()
       [v7 setMinute:{objc_msgSend(v13, "intValue")}];
     }
 
-    v14 = [v5 dateFromComponents:v7];
-    v3 = [v5 components:638 fromDate:v14];
+    v14 = [currentCalendar dateFromComponents:v7];
+    v3 = [currentCalendar components:638 fromDate:v14];
   }
 
   return v3;
@@ -185,9 +185,9 @@ uint64_t __34__CalFoundationPreferences_shared__block_invoke()
   return v6;
 }
 
-- (void)setDefaultEventDuration:(double)a3
+- (void)setDefaultEventDuration:(double)duration
 {
-  if (a3 > 240.0 && a3 < 21600.0)
+  if (duration > 240.0 && duration < 21600.0)
   {
     preferences = self->_preferences;
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];

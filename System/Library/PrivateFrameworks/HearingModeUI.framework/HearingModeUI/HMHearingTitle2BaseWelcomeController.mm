@@ -9,8 +9,8 @@
   v4.receiver = self;
   v4.super_class = HMHearingTitle2BaseWelcomeController;
   [(OBBaseWelcomeController *)&v4 viewDidLoad];
-  v3 = [(HMHearingTitle2BaseWelcomeController *)self headerView];
-  [v3 setTitleStyle:1];
+  headerView = [(HMHearingTitle2BaseWelcomeController *)self headerView];
+  [headerView setTitleStyle:1];
 }
 
 @end

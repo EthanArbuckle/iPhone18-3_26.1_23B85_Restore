@@ -8,7 +8,7 @@
 
 - (CLBOpenApplicationVerifierResultError)error
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10008AAB0();
 
   return v3;

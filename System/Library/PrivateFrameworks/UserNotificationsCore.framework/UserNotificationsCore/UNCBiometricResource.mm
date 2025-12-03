@@ -46,8 +46,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [MEMORY[0x1E698F388] availableDevices];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  availableDevices = [MEMORY[0x1E698F388] availableDevices];
+  v5 = [availableDevices countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -59,7 +59,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(availableDevices);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
@@ -67,8 +67,8 @@
         v17 = 0;
         v11 = [(objc_class *)v10 deviceWithDescriptor:v9 error:&v17];
         v12 = v17;
-        v13 = [v11 descriptor];
-        if ([v13 type] == 2)
+        descriptor = [v11 descriptor];
+        if ([descriptor type] == 2)
         {
           NSClassFromString(&cfstr_Bkdevicepearl.isa);
           objc_opt_class();
@@ -80,7 +80,7 @@
           }
 
           v15 = v11;
-          v13 = self->_pearlDevice;
+          descriptor = self->_pearlDevice;
           self->_pearlDevice = v15;
         }
 
@@ -89,7 +89,7 @@ LABEL_10:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [availableDevices countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -129,14 +129,14 @@ LABEL_10:
 
 - (void)_registerForBiometricUnlockAllowedChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__updateIsBiometricUnlockAllowed name:*MEMORY[0x1E69ADD68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateIsBiometricUnlockAllowed name:*MEMORY[0x1E69ADD68] object:0];
 }
 
 - (void)_unregisterForBiometricUnlockAllowedChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69ADD68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69ADD68] object:0];
 }
 
 - (void)_registerForPasscodeChange
@@ -154,11 +154,11 @@ LABEL_10:
 
 - (void)_updateIsPasscodeSet
 {
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  self->_isPasscodeSet = [v3 isPasscodeSet];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  self->_isPasscodeSet = [mEMORY[0x1E69ADFB8] isPasscodeSet];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"BBBiometricResourceStateChanged" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"BBBiometricResourceStateChanged" object:self userInfo:0];
 }
 
 - (void)_updateIsBiometricUnlockAllowed

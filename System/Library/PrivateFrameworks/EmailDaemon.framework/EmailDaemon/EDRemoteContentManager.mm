@@ -1,21 +1,21 @@
 @interface EDRemoteContentManager
-- (BOOL)shouldAddRemoteContentLinksForMessage:(id)a3 logMessage:(id *)a4;
+- (BOOL)shouldAddRemoteContentLinksForMessage:(id)message logMessage:(id *)logMessage;
 - (BOOL)shouldVerifyRemoteLinks;
-- (EDRemoteContentManager)initWithRemoteContentPersistence:(id)a3 contentRuleListManager:(id)a4 urlSession:(id)a5;
+- (EDRemoteContentManager)initWithRemoteContentPersistence:(id)persistence contentRuleListManager:(id)manager urlSession:(id)session;
 - (EDRemoteContentManagerTestDelegate)testDelegate;
 - (EFScheduler)unconditionalRequestScheduler;
 - (double)_getTimeout;
-- (id)_issueAndWaitForBatch:(id)a3 deferBlock:(id)a4 successful:(unint64_t *)a5 failed:(unint64_t *)a6 canceled:(unint64_t *)a7 deferred:(unint64_t *)a8;
-- (id)_requestSchedulerWithInterval:(double)a3;
+- (id)_issueAndWaitForBatch:(id)batch deferBlock:(id)block successful:(unint64_t *)successful failed:(unint64_t *)failed canceled:(unint64_t *)canceled deferred:(unint64_t *)deferred;
+- (id)_requestSchedulerWithInterval:(double)interval;
 - (id)_viewDurationsFromBiome;
-- (unint64_t)_performRequests:(unint64_t)a3 unconditionally:(BOOL)a4 withDeferBlock:(id)a5 completedCount:(unint64_t *)a6;
-- (void)_addRemoteContentLinks:(id)a3 andVerify:(BOOL)a4 WithParsedLinks:(id)a5 defaultCharsetName:(id)a6;
+- (unint64_t)_performRequests:(unint64_t)requests unconditionally:(BOOL)unconditionally withDeferBlock:(id)block completedCount:(unint64_t *)count;
+- (void)_addRemoteContentLinks:(id)links andVerify:(BOOL)verify WithParsedLinks:(id)parsedLinks defaultCharsetName:(id)name;
 - (void)_scheduleBackgroundRequests;
-- (void)_scheduleRequestForLinks:(unint64_t)a3 unconditionally:(BOOL)a4 withDelay:(double)a5 completionHandler:(id)a6;
+- (void)_scheduleRequestForLinks:(unint64_t)links unconditionally:(BOOL)unconditionally withDelay:(double)delay completionHandler:(id)handler;
 - (void)_updateScheduling;
-- (void)_updateTimeoutSettingDefaultIfNeeded:(BOOL)a3;
-- (void)addRemoteContentLinks:(id)a3 requiredParsing:(BOOL)a4;
-- (void)noteViewOfRemoteContentLinks:(id)a3;
+- (void)_updateTimeoutSettingDefaultIfNeeded:(BOOL)needed;
+- (void)addRemoteContentLinks:(id)links requiredParsing:(BOOL)parsing;
+- (void)noteViewOfRemoteContentLinks:(id)links;
 - (void)test_tearDown;
 @end
 
@@ -28,18 +28,18 @@ void ___ef_log_EDRemoteContentManager_block_invoke()
   _ef_log_EDRemoteContentManager_log = v0;
 }
 
-- (EDRemoteContentManager)initWithRemoteContentPersistence:(id)a3 contentRuleListManager:(id)a4 urlSession:(id)a5
+- (EDRemoteContentManager)initWithRemoteContentPersistence:(id)persistence contentRuleListManager:(id)manager urlSession:(id)session
 {
-  v8 = a3;
-  v9 = a5;
+  persistenceCopy = persistence;
+  sessionCopy = session;
   v23.receiver = self;
   v23.super_class = EDRemoteContentManager;
   v10 = [(EDRemoteContentManager *)&v23 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_remoteContentPersistence, a3);
-    objc_storeStrong(&v11->_urlSession, a5);
+    objc_storeStrong(&v10->_remoteContentPersistence, persistence);
+    objc_storeStrong(&v11->_urlSession, session);
     *&v11->_requestSchedulerLock._os_unfair_lock_opaque = 0;
     v11->_schedulingLock._os_unfair_lock_opaque = 0;
     v12 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.email.EDRemoteContentManager.backgroundWorkScheduler" qualityOfService:9];
@@ -72,8 +72,8 @@ void ___ef_log_EDRemoteContentManager_block_invoke()
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v3, &state);
   os_unfair_lock_lock(&self->_schedulingLock);
-  v4 = [(EDRemoteContentManager *)self schedulingLastUpdate];
-  if (v4 && (-[EDRemoteContentManager schedulingLastUpdate](self, "schedulingLastUpdate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 ef_isMoreThanTimeIntervalAgo:86400.0], v5, v4, (v6 & 1) == 0))
+  schedulingLastUpdate = [(EDRemoteContentManager *)self schedulingLastUpdate];
+  if (schedulingLastUpdate && (-[EDRemoteContentManager schedulingLastUpdate](self, "schedulingLastUpdate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 ef_isMoreThanTimeIntervalAgo:86400.0], v5, schedulingLastUpdate, (v6 & 1) == 0))
   {
     v8 = 10.0;
     if (([MEMORY[0x1E699ACE8] preferenceEnabled:8] & 1) == 0)
@@ -83,11 +83,11 @@ void ___ef_log_EDRemoteContentManager_block_invoke()
       v8 = v9;
     }
 
-    v10 = [(EDRemoteContentManager *)self batchSize];
-    if (v10 >= 6)
+    batchSize = [(EDRemoteContentManager *)self batchSize];
+    if (batchSize >= 6)
     {
       EFARC4NormallyDistributedRandomDoubleInRange();
-      v10 = v11;
+      batchSize = v11;
     }
 
     os_unfair_lock_unlock(&self->_schedulingLock);
@@ -97,19 +97,19 @@ void ___ef_log_EDRemoteContentManager_block_invoke()
     v13[2] = __53__EDRemoteContentManager__scheduleBackgroundRequests__block_invoke_2;
     v13[3] = &unk_1E8253F30;
     v13[4] = self;
-    [(EDRemoteContentManager *)self _scheduleRequestForLinks:v10 unconditionally:v12 withDelay:v13 completionHandler:v8];
+    [(EDRemoteContentManager *)self _scheduleRequestForLinks:batchSize unconditionally:v12 withDelay:v13 completionHandler:v8];
   }
 
   else
   {
     os_unfair_lock_unlock(&self->_schedulingLock);
-    v7 = [(EDRemoteContentManager *)self backgroundWorkScheduler];
+    backgroundWorkScheduler = [(EDRemoteContentManager *)self backgroundWorkScheduler];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __53__EDRemoteContentManager__scheduleBackgroundRequests__block_invoke;
     v14[3] = &unk_1E8250260;
     v14[4] = self;
-    [v7 performBlock:v14];
+    [backgroundWorkScheduler performBlock:v14];
   }
 
   os_activity_scope_leave(&state);
@@ -145,15 +145,15 @@ uint64_t __53__EDRemoteContentManager__scheduleBackgroundRequests__block_invoke_
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-86400.0];
-  v4 = [(EDRemoteContentManager *)self remoteContentPersistence];
-  v5 = [v4 countOfLinksLastSeenSince:v3];
+  remoteContentPersistence = [(EDRemoteContentManager *)self remoteContentPersistence];
+  v5 = [remoteContentPersistence countOfLinksLastSeenSince:v3];
 
-  v6 = [(EDRemoteContentManager *)self remoteContentPersistence];
-  v7 = [v6 countOfUnrequestedLinks];
+  remoteContentPersistence2 = [(EDRemoteContentManager *)self remoteContentPersistence];
+  countOfUnrequestedLinks = [remoteContentPersistence2 countOfUnrequestedLinks];
 
-  if (v5 <= v7)
+  if (v5 <= countOfUnrequestedLinks)
   {
-    v8 = v7;
+    v8 = countOfUnrequestedLinks;
   }
 
   else
@@ -189,43 +189,43 @@ uint64_t __53__EDRemoteContentManager__scheduleBackgroundRequests__block_invoke_
     v15 = 134218752;
     v16 = v5;
     v17 = 2048;
-    v18 = v7;
+    v18 = countOfUnrequestedLinks;
     v19 = 2048;
     v20 = v11;
     v21 = 2048;
-    v22 = [(EDRemoteContentManager *)self batchSize];
+    batchSize = [(EDRemoteContentManager *)self batchSize];
     _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Updated scheduling: last day count = %lu, unrequested count = %lu, request interval = %f, batch size = %lu", &v15, 0x2Au);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_scheduleRequestForLinks:(unint64_t)a3 unconditionally:(BOOL)a4 withDelay:(double)a5 completionHandler:(id)a6
+- (void)_scheduleRequestForLinks:(unint64_t)links unconditionally:(BOOL)unconditionally withDelay:(double)delay completionHandler:(id)handler
 {
-  v7 = a4;
+  unconditionallyCopy = unconditionally;
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_requestSchedulerLock);
-  if (v7)
+  if (unconditionallyCopy)
   {
     objc_initWeak(&location, self);
-    v11 = [(EDRemoteContentManager *)self unconditionalRequestScheduler];
+    unconditionalRequestScheduler = [(EDRemoteContentManager *)self unconditionalRequestScheduler];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __95__EDRemoteContentManager__scheduleRequestForLinks_unconditionally_withDelay_completionHandler___block_invoke;
     v23[3] = &unk_1E82563E0;
     objc_copyWeak(v25, &location);
-    v24 = v10;
-    v25[1] = a3;
-    v12 = [v11 afterDelay:v23 performBlock:a5];
+    v24 = handlerCopy;
+    v25[1] = links;
+    v12 = [unconditionalRequestScheduler afterDelay:v23 performBlock:delay];
 
     v13 = _ef_log_EDRemoteContentManager();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v28 = a3;
+      linksCopy2 = links;
       v29 = 2048;
-      v30 = a5;
+      delayCopy2 = delay;
       _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Scheduled unconditional request batch for %lu links with interval: %f", buf, 0x16u);
     }
 
@@ -238,9 +238,9 @@ LABEL_13:
 
   if (!self->_requestScheduler)
   {
-    v15 = [(EDRemoteContentManager *)self _requestSchedulerWithInterval:a5];
+    v15 = [(EDRemoteContentManager *)self _requestSchedulerWithInterval:delay];
     objc_storeStrong(&self->_requestScheduler, v15);
-    self->_remainingCountToSchedule = a3;
+    self->_remainingCountToSchedule = links;
     objc_initWeak(&location, self);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -248,16 +248,16 @@ LABEL_13:
     v19[3] = &unk_1E8256408;
     objc_copyWeak(&v22, &location);
     v20 = v15;
-    v21 = v10;
+    v21 = handlerCopy;
     v16 = v15;
     [v16 scheduleWithBlock:v19];
     v17 = _ef_log_EDRemoteContentManager();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v28 = a3;
+      linksCopy2 = links;
       v29 = 2048;
-      v30 = a5;
+      delayCopy2 = delay;
       _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "Scheduled request batch for %lu links with interval: %f", buf, 0x16u);
     }
 
@@ -274,9 +274,9 @@ LABEL_13:
   }
 
   os_unfair_lock_unlock(&self->_requestSchedulerLock);
-  if (v10)
+  if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_14:
@@ -428,12 +428,12 @@ LABEL_10:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_performRequests:(unint64_t)a3 unconditionally:(BOOL)a4 withDeferBlock:(id)a5 completedCount:(unint64_t *)a6
+- (unint64_t)_performRequests:(unint64_t)requests unconditionally:(BOOL)unconditionally withDeferBlock:(id)block completedCount:(unint64_t *)count
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = [(EDRemoteContentManager *)self remoteContentPersistence];
-  v12 = [v11 remoteContentLinksBelowCount:1 limit:a3];
+  blockCopy = block;
+  remoteContentPersistence = [(EDRemoteContentManager *)self remoteContentPersistence];
+  v12 = [remoteContentPersistence remoteContentLinksBelowCount:1 limit:requests];
   v13 = [v12 count];
   v14 = _ef_log_EDRemoteContentManager();
   v15 = v14;
@@ -455,19 +455,19 @@ LABEL_10:
     *buf = 0;
     v42 = 0;
     v43 = 0;
-    v20 = [(EDRemoteContentManager *)self _issueAndWaitForBatch:v12 deferBlock:v10 successful:buf failed:&v44 canceled:&v43 deferred:&v42];
-    v21 = [MEMORY[0x1E695DF00] date];
-    [v21 timeIntervalSinceDate:v19];
+    v20 = [(EDRemoteContentManager *)self _issueAndWaitForBatch:v12 deferBlock:blockCopy successful:buf failed:&v44 canceled:&v43 deferred:&v42];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v19];
     v23 = v22;
 
-    [v11 updateRequestCountForRemoteContentLinks:v20 updateLastSeen:0];
+    [remoteContentPersistence updateRequestCountForRemoteContentLinks:v20 updateLastSeen:0];
     v24 = [v12 count];
     v30 = MEMORY[0x1E69E9820];
     v31 = 3221225472;
     v32 = __89__EDRemoteContentManager__performRequests_unconditionally_withDeferBlock_completedCount___block_invoke;
     v33 = &unk_1E8256430;
     v36 = v24;
-    LOBYTE(v41) = a4;
+    LOBYTE(v41) = unconditionally;
     v25 = v20;
     v34 = v25;
     v26 = v12;
@@ -477,9 +477,9 @@ LABEL_10:
     v39 = v43;
     v40 = v42;
     AnalyticsSendEventLazy();
-    if (a6)
+    if (count)
     {
-      *a6 = [v25 count];
+      *count = [v25 count];
     }
 
     v27 = [v26 count];
@@ -494,9 +494,9 @@ LABEL_10:
     }
 
     v27 = 0;
-    if (a6)
+    if (count)
     {
-      *a6 = 0;
+      *count = 0;
     }
   }
 
@@ -590,16 +590,16 @@ id __89__EDRemoteContentManager__performRequests_unconditionally_withDeferBlock_
   return v11;
 }
 
-- (id)_issueAndWaitForBatch:(id)a3 deferBlock:(id)a4 successful:(unint64_t *)a5 failed:(unint64_t *)a6 canceled:(unint64_t *)a7 deferred:(unint64_t *)a8
+- (id)_issueAndWaitForBatch:(id)batch deferBlock:(id)block successful:(unint64_t *)successful failed:(unint64_t *)failed canceled:(unint64_t *)canceled deferred:(unint64_t *)deferred
 {
   v109 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v54 = a4;
+  batchCopy = batch;
+  blockCopy = block;
   v58 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v60 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v61 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v62 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:0];
-  v63 = [(EDRemoteContentManager *)self urlSession];
+  urlSession = [(EDRemoteContentManager *)self urlSession];
   v10 = objc_alloc_init(MEMORY[0x1E699B868]);
   v99 = MEMORY[0x1E69E9820];
   v100 = 3221225472;
@@ -608,10 +608,10 @@ id __89__EDRemoteContentManager__performRequests_unconditionally_withDeferBlock_
   v103 = v10;
   v52 = v103;
   EMPrivacyProxyIsDisabledForNetwork();
-  v11 = [v103 future];
-  v12 = [v11 resultWithTimeout:0 error:5.0];
-  v48 = a5;
-  v56 = [v12 BOOLValue];
+  future = [v103 future];
+  v12 = [future resultWithTimeout:0 error:5.0];
+  successfulCopy = successful;
+  bOOLValue = [v12 BOOLValue];
 
   v95 = 0;
   v96 = &v95;
@@ -629,7 +629,7 @@ id __89__EDRemoteContentManager__performRequests_unconditionally_withDeferBlock_
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = v53;
+  obj = batchCopy;
   v13 = [obj countByEnumeratingWithState:&v83 objects:v108 count:16];
   if (v13)
   {
@@ -663,7 +663,7 @@ id __89__EDRemoteContentManager__performRequests_unconditionally_withDeferBlock_
         v22 = v60;
         v77 = v22;
         v78 = v61;
-        v23 = [v63 syntheticDataTaskWithRequest:v17 failOpen:v56 background:1 completionHandler:v74];
+        v23 = [urlSession syntheticDataTaskWithRequest:v17 failOpen:bOOLValue background:1 completionHandler:v74];
         [v20 lock];
         [v21 setObject:v23 forKeyedSubscript:v16];
         v24 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
@@ -729,17 +729,17 @@ id __89__EDRemoteContentManager__performRequests_unconditionally_withDeferBlock_
       break;
     }
 
-    if ((v54[2]() & 1) != 0 || ([(EFManualCancelationToken *)self->_token isCanceled]& 1) != 0)
+    if ((blockCopy[2]() & 1) != 0 || ([(EFManualCancelationToken *)self->_token isCanceled]& 1) != 0)
     {
       [v62 lock];
       v34 = [v61 copy];
-      v35 = [v60 allKeys];
+      allKeys = [v60 allKeys];
       [v62 unlockWithCondition:{objc_msgSend(v61, "count")}];
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v36 = v35;
+      v36 = allKeys;
       v37 = [v36 countByEnumeratingWithState:&v64 objects:v104 count:16];
       if (v37)
       {
@@ -753,7 +753,7 @@ id __89__EDRemoteContentManager__performRequests_unconditionally_withDeferBlock_
               objc_enumerationMutation(v36);
             }
 
-            [v63 abortTask:*(*(&v64 + 1) + 8 * k)];
+            [urlSession abortTask:*(*(&v64 + 1) + 8 * k)];
           }
 
           v37 = [v36 countByEnumeratingWithState:&v64 objects:v104 count:16];
@@ -795,24 +795,24 @@ id __89__EDRemoteContentManager__performRequests_unconditionally_withDeferBlock_
   v36 = v41;
 LABEL_32:
 
-  if (v48)
+  if (successfulCopy)
   {
-    *v48 = v96[3];
+    *successfulCopy = v96[3];
   }
 
-  if (a6)
+  if (failed)
   {
-    *a6 = v88[3];
+    *failed = v88[3];
   }
 
-  if (a7)
+  if (canceled)
   {
-    *a7 = v92[3];
+    *canceled = v92[3];
   }
 
-  if (a8)
+  if (deferred)
   {
-    *a8 = v40;
+    *deferred = v40;
   }
 
   _Block_object_dispose(&v87, 8);
@@ -990,16 +990,16 @@ BOOL __95__EDRemoteContentManager__issueAndWaitForBatch_deferBlock_successful_fa
   return unconditionalRequestScheduler;
 }
 
-- (id)_requestSchedulerWithInterval:(double)a3
+- (id)_requestSchedulerWithInterval:(double)interval
 {
-  v4 = [(EDRemoteContentManager *)self requestSchedulerBlock];
-  v5 = v4;
-  if (!v4 || ((*(v4 + 16))(v4), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  requestSchedulerBlock = [(EDRemoteContentManager *)self requestSchedulerBlock];
+  v5 = requestSchedulerBlock;
+  if (!requestSchedulerBlock || ((*(requestSchedulerBlock + 16))(requestSchedulerBlock), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:@"com.apple.email.EDRemoteContentManager.requestScheduler"];
     [v6 setQualityOfService:9];
     [v6 setRepeats:0];
-    [v6 setInterval:a3];
+    [v6 setInterval:interval];
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_BOOL(v7, *MEMORY[0x1E69E9C40], 0);
     xpc_dictionary_set_BOOL(v7, *MEMORY[0x1E69E9DB0], 1);
@@ -1009,29 +1009,29 @@ BOOL __95__EDRemoteContentManager__issueAndWaitForBatch_deferBlock_successful_fa
   return v6;
 }
 
-- (BOOL)shouldAddRemoteContentLinksForMessage:(id)a3 logMessage:(id *)a4
+- (BOOL)shouldAddRemoteContentLinksForMessage:(id)message logMessage:(id *)logMessage
 {
-  v6 = a3;
-  v7 = [v6 mailbox];
-  v8 = [v7 type];
+  messageCopy = message;
+  mailbox = [messageCopy mailbox];
+  type = [mailbox type];
 
-  if ((v8 > 8 || ((1 << v8) & 0x17A) == 0) && v8 != -500 && v8 != -100)
+  if ((type > 8 || ((1 << type) & 0x17A) == 0) && type != -500 && type != -100)
   {
-    v10 = [v6 dateReceived];
-    v9 = [(EDRemoteContentManager *)self shouldAddRemoteContentLinksForMessageWithDateReceived:v10];
+    dateReceived = [messageCopy dateReceived];
+    v9 = [(EDRemoteContentManager *)self shouldAddRemoteContentLinksForMessageWithDateReceived:dateReceived];
     if (v9)
     {
-      if (a4)
+      if (logMessage)
       {
         v11 = 0;
 LABEL_13:
-        *a4 = v11;
+        *logMessage = v11;
       }
     }
 
-    else if (a4)
+    else if (logMessage)
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"message is too old: %@", v10];
+      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"message is too old: %@", dateReceived];
       goto LABEL_13;
     }
 
@@ -1039,9 +1039,9 @@ LABEL_13:
   }
 
   v9 = 0;
-  if (a4)
+  if (logMessage)
   {
-    *a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"wrong mailbox type: %ld", v8];
+    *logMessage = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"wrong mailbox type: %ld", type];
   }
 
 LABEL_15:
@@ -1085,22 +1085,22 @@ void __49__EDRemoteContentManager_shouldVerifyRemoteLinks__block_invoke(uint64_t
   }
 }
 
-- (void)_addRemoteContentLinks:(id)a3 andVerify:(BOOL)a4 WithParsedLinks:(id)a5 defaultCharsetName:(id)a6
+- (void)_addRemoteContentLinks:(id)links andVerify:(BOOL)verify WithParsedLinks:(id)parsedLinks defaultCharsetName:(id)name
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(EDRemoteContentManager *)self backgroundWorkScheduler];
+  linksCopy = links;
+  parsedLinksCopy = parsedLinks;
+  backgroundWorkScheduler = [(EDRemoteContentManager *)self backgroundWorkScheduler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __94__EDRemoteContentManager__addRemoteContentLinks_andVerify_WithParsedLinks_defaultCharsetName___block_invoke;
   v14[3] = &unk_1E8255940;
   v14[4] = self;
-  v12 = v9;
+  v12 = linksCopy;
   v15 = v12;
-  v17 = a4;
-  v13 = v10;
+  verifyCopy = verify;
+  v13 = parsedLinksCopy;
   v16 = v13;
-  [v11 performBlock:v14];
+  [backgroundWorkScheduler performBlock:v14];
 }
 
 void __94__EDRemoteContentManager__addRemoteContentLinks_andVerify_WithParsedLinks_defaultCharsetName___block_invoke(uint64_t a1)
@@ -1422,19 +1422,19 @@ void __94__EDRemoteContentManager__addRemoteContentLinks_andVerify_WithParsedLin
   [i addObject:v2];
 }
 
-- (void)addRemoteContentLinks:(id)a3 requiredParsing:(BOOL)a4
+- (void)addRemoteContentLinks:(id)links requiredParsing:(BOOL)parsing
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  linksCopy = links;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v6 = [(EDRemoteContentManager *)self remoteContentPersistence];
+    remoteContentPersistence = [(EDRemoteContentManager *)self remoteContentPersistence];
     v16 = 0;
-    [v6 addRemoteContentLinks:v5 newLinks:&v16];
+    [remoteContentPersistence addRemoteContentLinks:linksCopy newLinks:&v16];
     v7 = v16;
 
     v14 = MEMORY[0x1E69E9820];
-    v8 = v5;
+    v8 = linksCopy;
     v15 = v8;
     v9 = v7;
     AnalyticsSendEventLazy();
@@ -1476,11 +1476,11 @@ id __64__EDRemoteContentManager_addRemoteContentLinks_requiredParsing___block_in
 - (double)_getTimeout
 {
   os_unfair_lock_lock(&self->_timeoutLock);
-  v3 = [(EDRemoteContentManager *)self timeoutLastUpdate];
+  timeoutLastUpdate = [(EDRemoteContentManager *)self timeoutLastUpdate];
 
-  if (!v3 || (-[EDRemoteContentManager timeoutLastUpdate](self, "timeoutLastUpdate"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 ef_isMoreThanTimeIntervalAgo:86400.0], v4, v5))
+  if (!timeoutLastUpdate || (-[EDRemoteContentManager timeoutLastUpdate](self, "timeoutLastUpdate"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 ef_isMoreThanTimeIntervalAgo:86400.0], v4, v5))
   {
-    [(EDRemoteContentManager *)self _updateTimeoutSettingDefaultIfNeeded:v3 == 0];
+    [(EDRemoteContentManager *)self _updateTimeoutSettingDefaultIfNeeded:timeoutLastUpdate == 0];
   }
 
   [(EDRemoteContentManager *)self minimumTimeout];
@@ -1490,23 +1490,23 @@ id __64__EDRemoteContentManager_addRemoteContentLinks_requiredParsing___block_in
   os_unfair_lock_unlock(&self->_timeoutLock);
   if (v9 < v7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"double EFARC4RandomDoubleInRange(double, double)"}];
-    [v11 handleFailureInFunction:v12 file:@"EFMathUtilities.h" lineNumber:54 description:@"max must not be less than min"];
+    [currentHandler handleFailureInFunction:v12 file:@"EFMathUtilities.h" lineNumber:54 description:@"max must not be less than min"];
   }
 
   return v7 + (v9 - v7) * (arc4random() / 4294967300.0);
 }
 
-- (void)_updateTimeoutSettingDefaultIfNeeded:(BOOL)a3
+- (void)_updateTimeoutSettingDefaultIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v32 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF00]);
   [(EDRemoteContentManager *)self setTimeoutLastUpdate:v5];
 
-  v6 = [(EDRemoteContentManager *)self _viewDurationsFromBiome];
-  if (!v6)
+  _viewDurationsFromBiome = [(EDRemoteContentManager *)self _viewDurationsFromBiome];
+  if (!_viewDurationsFromBiome)
   {
     v7 = _ef_log_EDRemoteContentManager();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1515,7 +1515,7 @@ id __64__EDRemoteContentManager_addRemoteContentLinks_requiredParsing___block_in
     }
   }
 
-  if ([v6 count] > 9)
+  if ([_viewDurationsFromBiome count] > 9)
   {
     v10 = arc4random_uniform(3u);
     v11 = v10;
@@ -1531,12 +1531,12 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v26 = [v6 ef_min];
-      [v26 doubleValue];
+      ef_min = [_viewDurationsFromBiome ef_min];
+      [ef_min doubleValue];
       v19 = v27;
 
-      v28 = [v6 ef_max];
-      [v28 doubleValue];
+      ef_max = [_viewDurationsFromBiome ef_max];
+      [ef_max doubleValue];
       v20 = v29;
 
       v21 = _ef_log_EDRemoteContentManager();
@@ -1556,12 +1556,12 @@ LABEL_21:
 
     else
     {
-      v12 = [v6 ef_mean];
-      [v12 doubleValue];
+      ef_mean = [_viewDurationsFromBiome ef_mean];
+      [ef_mean doubleValue];
       v14 = v13;
 
-      v15 = [v6 ef_standardDeviation];
-      [v15 doubleValue];
+      ef_standardDeviation = [_viewDurationsFromBiome ef_standardDeviation];
+      [ef_standardDeviation doubleValue];
       v17 = v16;
 
       v18 = v17 * v11;
@@ -1596,7 +1596,7 @@ LABEL_21:
 
   v8 = _ef_log_EDRemoteContentManager();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (neededCopy)
   {
     if (v9)
     {
@@ -1629,8 +1629,8 @@ LABEL_24:
   if (v2)
   {
     v4 = MEMORY[0x1E698F130];
-    v5 = [v2 path];
-    v6 = [v4 newPrivateStreamDefaultConfigurationWithStoreBasePath:v5];
+    path = [v2 path];
+    v6 = [v4 newPrivateStreamDefaultConfigurationWithStoreBasePath:path];
 
     v7 = objc_alloc(MEMORY[0x1E698F318]);
     v8 = [v7 initWithPrivateStreamIdentifier:*MEMORY[0x1E699AF50] storeConfig:v6];
@@ -1691,30 +1691,30 @@ void __49__EDRemoteContentManager__viewDurationsFromBiome__block_invoke_2(uint64
   }
 }
 
-- (void)noteViewOfRemoteContentLinks:(id)a3
+- (void)noteViewOfRemoteContentLinks:(id)links
 {
-  v4 = a3;
+  linksCopy = links;
   v5 = _os_activity_create(&dword_1C61EF000, "[EDRemoteContentManager noteViewOfRemoteContentLinks:]", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v5, &state);
-  if ([v4 count])
+  if ([linksCopy count])
   {
-    v6 = [(EDRemoteContentManager *)self backgroundWorkScheduler];
+    backgroundWorkScheduler = [(EDRemoteContentManager *)self backgroundWorkScheduler];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __55__EDRemoteContentManager_noteViewOfRemoteContentLinks___block_invoke;
     v16 = &unk_1E8250128;
-    v7 = v4;
+    v7 = linksCopy;
     v17 = v7;
-    v18 = self;
-    [v6 performBlock:&v13];
+    selfCopy = self;
+    [backgroundWorkScheduler performBlock:&v13];
 
-    v8 = [MEMORY[0x1E696AE30] processInfo];
-    if (([v8 isLowPowerModeEnabled] & 1) == 0)
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    if (([processInfo isLowPowerModeEnabled] & 1) == 0)
     {
-      v9 = [MEMORY[0x1E699B828] external];
-      if (![v9 isConstrained])
+      external = [MEMORY[0x1E699B828] external];
+      if (![external isConstrained])
       {
         v10 = arc4random_uniform(4u);
 
@@ -1766,13 +1766,13 @@ void __55__EDRemoteContentManager_noteViewOfRemoteContentLinks___block_invoke(ui
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"EDRemoteContentManager.m" lineNumber:906 description:{@"%s can only be called from unit tests", "-[EDRemoteContentManager test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDRemoteContentManager.m" lineNumber:906 description:{@"%s can only be called from unit tests", "-[EDRemoteContentManager test_tearDown]"}];
   }
 
   [(EFManualCancelationToken *)self->_token cancel];
-  v4 = [(EDRemoteContentManager *)self backgroundWorkScheduler];
-  [v4 performSyncBlock:&__block_literal_global_155];
+  backgroundWorkScheduler = [(EDRemoteContentManager *)self backgroundWorkScheduler];
+  [backgroundWorkScheduler performSyncBlock:&__block_literal_global_155];
 
   os_unfair_lock_lock(&self->_requestSchedulerLock);
   [(NSBackgroundActivityScheduler *)self->_requestScheduler invalidate];

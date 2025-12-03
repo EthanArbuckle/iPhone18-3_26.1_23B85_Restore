@@ -1,22 +1,22 @@
 @interface _UIStatesFeedbackGenerator
-- (_UIStatesFeedbackGenerator)initWithConfiguration:(id)a3 view:(id)a4;
-- (_UIStatesFeedbackGenerator)initWithStyle:(int64_t)a3 view:(id)a4;
-- (id)_configurationFromState:(id)a3 toState:(id)a4;
+- (_UIStatesFeedbackGenerator)initWithConfiguration:(id)configuration view:(id)view;
+- (_UIStatesFeedbackGenerator)initWithStyle:(int64_t)style view:(id)view;
+- (id)_configurationFromState:(id)state toState:(id)toState;
 - (void)_stopPlayingContinuousFeedback;
-- (void)transitionToState:(id)a3 ended:(BOOL)a4 atLocation:(CGPoint)a5;
-- (void)transitionToState:(id)a3 updated:(double)a4 atLocation:(CGPoint)a5;
+- (void)transitionToState:(id)state ended:(BOOL)ended atLocation:(CGPoint)location;
+- (void)transitionToState:(id)state updated:(double)updated atLocation:(CGPoint)location;
 @end
 
 @implementation _UIStatesFeedbackGenerator
 
-- (_UIStatesFeedbackGenerator)initWithStyle:(int64_t)a3 view:(id)a4
+- (_UIStatesFeedbackGenerator)initWithStyle:(int64_t)style view:(id)view
 {
-  v6 = a4;
-  if (a3)
+  viewCopy = view;
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
-      v8 = 0;
+      defaultConfiguration = 0;
       goto LABEL_7;
     }
 
@@ -28,53 +28,53 @@
     v7 = off_1E70EC330;
   }
 
-  v8 = [(__objc2_class *)*v7 defaultConfiguration];
+  defaultConfiguration = [(__objc2_class *)*v7 defaultConfiguration];
 LABEL_7:
   v11.receiver = self;
   v11.super_class = _UIStatesFeedbackGenerator;
-  v9 = [(UIFeedbackGenerator *)&v11 initWithConfiguration:v8 view:v6];
+  v9 = [(UIFeedbackGenerator *)&v11 initWithConfiguration:defaultConfiguration view:viewCopy];
 
   return v9;
 }
 
-- (_UIStatesFeedbackGenerator)initWithConfiguration:(id)a3 view:(id)a4
+- (_UIStatesFeedbackGenerator)initWithConfiguration:(id)configuration view:(id)view
 {
   v9.receiver = self;
   v9.super_class = _UIStatesFeedbackGenerator;
-  v4 = [(UIFeedbackGenerator *)&v9 initWithConfiguration:a3 view:a4];
+  v4 = [(UIFeedbackGenerator *)&v9 initWithConfiguration:configuration view:view];
   v5 = v4;
   if (v4)
   {
-    v6 = [(_UIStatesFeedbackGenerator *)v4 _statesConfiguration];
-    v7 = [v6 initialState];
-    [(_UIStatesFeedbackGenerator *)v5 setCurrentState:v7];
+    _statesConfiguration = [(_UIStatesFeedbackGenerator *)v4 _statesConfiguration];
+    initialState = [_statesConfiguration initialState];
+    [(_UIStatesFeedbackGenerator *)v5 setCurrentState:initialState];
   }
 
   return v5;
 }
 
-- (id)_configurationFromState:(id)a3 toState:(id)a4
+- (id)_configurationFromState:(id)state toState:(id)toState
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIStatesFeedbackGenerator *)self _statesConfiguration];
-  v9 = [v8 stateChangeConfigurations];
+  stateCopy = state;
+  toStateCopy = toState;
+  _statesConfiguration = [(_UIStatesFeedbackGenerator *)self _statesConfiguration];
+  stateChangeConfigurations = [_statesConfiguration stateChangeConfigurations];
 
-  v10 = [_UIStatesFeedbackGeneratorConfiguration keyFromState:v6 toState:v7];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  v10 = [_UIStatesFeedbackGeneratorConfiguration keyFromState:stateCopy toState:toStateCopy];
+  v11 = [stateChangeConfigurations objectForKeyedSubscript:v10];
   if (v11)
   {
     goto LABEL_2;
   }
 
-  v13 = [_UIStatesFeedbackGeneratorConfiguration keyFromState:0 toState:v7];
+  v13 = [_UIStatesFeedbackGeneratorConfiguration keyFromState:0 toState:toStateCopy];
 
-  v14 = [v9 objectForKeyedSubscript:v13];
+  v14 = [stateChangeConfigurations objectForKeyedSubscript:v13];
   if (!v14)
   {
-    v10 = [_UIStatesFeedbackGeneratorConfiguration keyFromState:v6 toState:0];
+    v10 = [_UIStatesFeedbackGeneratorConfiguration keyFromState:stateCopy toState:0];
 
-    v11 = [v9 objectForKeyedSubscript:v10];
+    v11 = [stateChangeConfigurations objectForKeyedSubscript:v10];
 LABEL_2:
     v12 = v11;
     goto LABEL_5;
@@ -87,19 +87,19 @@ LABEL_5:
   return v12;
 }
 
-- (void)transitionToState:(id)a3 updated:(double)a4 atLocation:(CGPoint)a5
+- (void)transitionToState:(id)state updated:(double)updated atLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v35 = a3;
+  y = location.y;
+  x = location.x;
+  stateCopy = state;
   [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
   if ([(UIFeedbackGenerator *)self _isEnabled])
   {
-    v10 = [(_UIStatesFeedbackGenerator *)self currentState];
-    v11 = [(_UIStatesFeedbackGenerator *)self _configurationFromState:v10 toState:v35];
+    currentState = [(_UIStatesFeedbackGenerator *)self currentState];
+    v11 = [(_UIStatesFeedbackGenerator *)self _configurationFromState:currentState toState:stateCopy];
 
-    v12 = [v11 approachFeedback];
-    if (v12)
+    approachFeedback = [v11 approachFeedback];
+    if (approachFeedback)
     {
       if (self->_approachActivated)
       {
@@ -107,7 +107,7 @@ LABEL_5:
       }
 
       [v11 approachStart];
-      if (v34 >= a4)
+      if (v34 >= updated)
       {
         self->_approachActivated = 1;
         goto LABEL_18;
@@ -117,15 +117,15 @@ LABEL_5:
       {
 LABEL_4:
         [v11 approachStart];
-        if (v13 <= a4)
+        if (v13 <= updated)
         {
           [v11 approachEnd];
-          if (v14 >= a4)
+          if (v14 >= updated)
           {
             playingContinuousFeedback = self->_playingContinuousFeedback;
             if (!playingContinuousFeedback)
             {
-              v16 = [v12 copy];
+              v16 = [approachFeedback copy];
               v17 = self->_playingContinuousFeedback;
               self->_playingContinuousFeedback = v16;
             }
@@ -135,7 +135,7 @@ LABEL_4:
             [v11 approachStart];
             v21 = v19 - v20;
             [v11 approachStart];
-            v23 = (a4 - v22) / v21;
+            v23 = (updated - v22) / v21;
             [v11 approachCurvature];
             if (v23 != 0.0)
             {
@@ -144,8 +144,8 @@ LABEL_4:
 
             [v11 approachVolumeMax];
             v26 = v25;
-            v27 = [v12 hapticParameters];
-            [v27 volume];
+            hapticParameters = [approachFeedback hapticParameters];
+            [hapticParameters volume];
             v29 = v23 * v28;
 
             if (v26 >= v29)
@@ -159,9 +159,9 @@ LABEL_4:
             }
 
             v31 = v30;
-            v32 = [(_UIFeedbackContinuousPlayable *)self->_playingContinuousFeedback hapticParameters];
+            hapticParameters2 = [(_UIFeedbackContinuousPlayable *)self->_playingContinuousFeedback hapticParameters];
             *&v33 = v31;
-            [v32 setVolume:v33];
+            [hapticParameters2 setVolume:v33];
 
             if (!playingContinuousFeedback)
             {
@@ -179,25 +179,25 @@ LABEL_18:
   }
 }
 
-- (void)transitionToState:(id)a3 ended:(BOOL)a4 atLocation:(CGPoint)a5
+- (void)transitionToState:(id)state ended:(BOOL)ended atLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4;
-  v13 = a3;
+  y = location.y;
+  x = location.x;
+  endedCopy = ended;
+  stateCopy = state;
   [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
   if ([(UIFeedbackGenerator *)self _isEnabled])
   {
     [(_UIStatesFeedbackGenerator *)self _stopPlayingContinuousFeedback];
-    if (v7)
+    if (endedCopy)
     {
-      v10 = [(_UIStatesFeedbackGenerator *)self currentState];
-      v11 = [(_UIStatesFeedbackGenerator *)self _configurationFromState:v10 toState:v13];
+      currentState = [(_UIStatesFeedbackGenerator *)self currentState];
+      v11 = [(_UIStatesFeedbackGenerator *)self _configurationFromState:currentState toState:stateCopy];
 
-      v12 = [v11 thresholdFeedback];
-      [(UIFeedbackGenerator *)self _playFeedback:v12 atLocation:x, y];
+      thresholdFeedback = [v11 thresholdFeedback];
+      [(UIFeedbackGenerator *)self _playFeedback:thresholdFeedback atLocation:x, y];
 
-      [(_UIStatesFeedbackGenerator *)self setCurrentState:v13];
+      [(_UIStatesFeedbackGenerator *)self setCurrentState:stateCopy];
     }
   }
 }

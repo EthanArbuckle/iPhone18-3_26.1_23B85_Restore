@@ -1,71 +1,71 @@
 @interface PKPaymentPassContent
-- (PKPaymentPassContent)initWithCoder:(id)a3;
-- (PKPaymentPassContent)initWithDictionary:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (PKPaymentPassContent)initWithCoder:(id)coder;
+- (PKPaymentPassContent)initWithDictionary:(id)dictionary bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentPassContent
 
-- (PKPaymentPassContent)initWithDictionary:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6
+- (PKPaymentPassContent)initWithDictionary:(id)dictionary bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type
 {
   v161 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v156.receiver = self;
   v156.super_class = PKPaymentPassContent;
-  v138 = a5;
-  v139 = v11;
-  v12 = [PKPassContent initWithDictionary:sel_initWithDictionary_bundle_privateBundle_passType_ bundle:v10 privateBundle:v11 passType:?];
+  privateBundleCopy = privateBundle;
+  v139 = bundleCopy;
+  v12 = [PKPassContent initWithDictionary:sel_initWithDictionary_bundle_privateBundle_passType_ bundle:dictionaryCopy privateBundle:bundleCopy passType:?];
   v13 = v12;
   if (v12)
   {
-    v123 = a6;
+    typeCopy = type;
     [(PKPassContent *)v12 setLogoText:0];
-    v14 = [v10 PKStringForKey:@"cobrandName"];
+    v14 = [dictionaryCopy PKStringForKey:@"cobrandName"];
     [(PKPaymentPassContent *)v13 setCobrandName:v14];
 
     v15 = MEMORY[0x1E695DFF8];
-    v16 = [v10 PKStringForKey:@"transactionServiceURL"];
+    v16 = [dictionaryCopy PKStringForKey:@"transactionServiceURL"];
     v17 = [v15 URLWithString:v16];
     [(PKPaymentPassContent *)v13 setTransactionServiceURL:v17];
 
     v18 = MEMORY[0x1E695DFF8];
-    v19 = [v10 PKStringForKey:@"transactionServiceRegistrationURL"];
+    v19 = [dictionaryCopy PKStringForKey:@"transactionServiceRegistrationURL"];
     v20 = [v18 URLWithString:v19];
     [(PKPaymentPassContent *)v13 setTransactionServiceRegistrationURL:v20];
 
-    v21 = [v10 PKStringForKey:@"transactionPushTopic"];
+    v21 = [dictionaryCopy PKStringForKey:@"transactionPushTopic"];
     [(PKPaymentPassContent *)v13 setTransactionPushTopic:v21];
 
     v22 = MEMORY[0x1E695DFF8];
-    v23 = [v10 PKStringForKey:@"messageServiceURL"];
+    v23 = [dictionaryCopy PKStringForKey:@"messageServiceURL"];
     v24 = [v22 URLWithString:v23];
     [(PKPaymentPassContent *)v13 setMessageServiceURL:v24];
 
     v25 = MEMORY[0x1E695DFF8];
-    v26 = [v10 PKStringForKey:@"messageServiceRegistrationURL"];
+    v26 = [dictionaryCopy PKStringForKey:@"messageServiceRegistrationURL"];
     v27 = [v25 URLWithString:v26];
     [(PKPaymentPassContent *)v13 setMessageServiceRegistrationURL:v27];
 
-    v28 = [v10 PKStringForKey:@"messagePushTopic"];
+    v28 = [dictionaryCopy PKStringForKey:@"messagePushTopic"];
     [(PKPaymentPassContent *)v13 setMessagePushTopic:v28];
 
-    v29 = [v10 PKStringForKey:@"appLaunchURLScheme"];
+    v29 = [dictionaryCopy PKStringForKey:@"appLaunchURLScheme"];
     [(PKPaymentPassContent *)v13 setAppURLScheme:v29];
 
-    v30 = [v10 PKStringForKey:@"customerServiceIdentifier"];
+    v30 = [dictionaryCopy PKStringForKey:@"customerServiceIdentifier"];
     [(PKPaymentPassContent *)v13 setCustomerServiceIdentifier:v30];
 
-    v31 = [v10 PKStringForKey:@"shippingAddressSeed"];
+    v31 = [dictionaryCopy PKStringForKey:@"shippingAddressSeed"];
     [(PKPaymentPassContent *)v13 setShippingAddressSeed:v31];
 
-    v32 = [v10 PKStringForKey:@"speakableCarMake"];
+    v32 = [dictionaryCopy PKStringForKey:@"speakableCarMake"];
     [(PKPaymentPassContent *)v13 setSpeakableMake:v32];
 
-    v33 = [v10 PKStringForKey:@"speakableCarModel"];
+    v33 = [dictionaryCopy PKStringForKey:@"speakableCarModel"];
     [(PKPaymentPassContent *)v13 setSpeakableModel:v33];
 
-    v34 = [v10 PKDictionaryForKey:@"supportedSiriIntents"];
+    v34 = [dictionaryCopy PKDictionaryForKey:@"supportedSiriIntents"];
     if (v34)
     {
       v35 = [[PKSiriIntentsConfiguration alloc] initWithDictionary:v34];
@@ -74,10 +74,10 @@
 
     v127 = v34;
     v129 = v13;
-    v132 = [MEMORY[0x1E695DF90] dictionary];
-    v131 = [MEMORY[0x1E695DF90] dictionary];
-    v130 = [MEMORY[0x1E695DF90] dictionary];
-    v36 = [v10 PKArrayContaining:objc_opt_class() forKey:@"paymentApplications"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    v36 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"paymentApplications"];
     v37 = v36;
     v38 = MEMORY[0x1E695E0F0];
     if (v36)
@@ -92,8 +92,8 @@
 
     v40 = v39;
 
-    v128 = v10;
-    v41 = [v10 PKArrayContaining:objc_opt_class() forKey:@"auxiliaryPaymentApplications"];
+    v128 = dictionaryCopy;
+    v41 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"auxiliaryPaymentApplications"];
     v42 = v41;
     if (v41)
     {
@@ -136,28 +136,28 @@
             v52 = [v51 PKDictionaryForKey:@"dashboard"];
             if (v52)
             {
-              v53 = [[PKPaymentApplicationStateMessageOverride alloc] initWithDictionary:v52 bundle:v139 privateBundle:v138];
+              v53 = [[PKPaymentApplicationStateMessageOverride alloc] initWithDictionary:v52 bundle:v139 privateBundle:privateBundleCopy];
               if (v53)
               {
-                [v131 setObject:v53 forKey:v50];
+                [dictionary2 setObject:v53 forKey:v50];
               }
             }
 
             v54 = [v51 PKDictionaryForKey:@"notification"];
             if (v54)
             {
-              v55 = [[PKPaymentApplicationStateMessageOverride alloc] initWithDictionary:v54 bundle:v139 privateBundle:v138];
+              v55 = [[PKPaymentApplicationStateMessageOverride alloc] initWithDictionary:v54 bundle:v139 privateBundle:privateBundleCopy];
               if (v55)
               {
-                [v130 setObject:v55 forKey:v50];
+                [dictionary3 setObject:v55 forKey:v50];
               }
             }
 
             v56 = [v49 PKStringForKey:@"suspendedReason"];
-            v57 = PKLocalizedPassStringForPassBundle(v56, v139, v138);
+            v57 = PKLocalizedPassStringForPassBundle(v56, v139, privateBundleCopy);
             if (v57)
             {
-              [v132 setObject:v57 forKey:v50];
+              [dictionary setObject:v57 forKey:v50];
             }
           }
         }
@@ -168,10 +168,10 @@
       while (v46);
     }
 
-    [(PKPaymentPassContent *)v129 setPaymentApplicationStateDashboardMessageOverridesByAID:v131];
-    [(PKPaymentPassContent *)v129 setPaymentApplicationStateNotificationMessageOverridesByAID:v130];
-    [(PKPaymentPassContent *)v129 setLocalizedSuspendedReasonsByAID:v132];
-    v10 = v128;
+    [(PKPaymentPassContent *)v129 setPaymentApplicationStateDashboardMessageOverridesByAID:dictionary2];
+    [(PKPaymentPassContent *)v129 setPaymentApplicationStateNotificationMessageOverridesByAID:dictionary3];
+    [(PKPaymentPassContent *)v129 setLocalizedSuspendedReasonsByAID:dictionary];
+    dictionaryCopy = v128;
     v58 = [v128 PKDictionaryForKey:@"transitCard"];
     v59 = v58;
     if (v58)
@@ -180,11 +180,11 @@
     }
 
     v60 = [PKTransitCommutePlanPackage alloc];
-    v61 = [(PKPassContent *)v129 backFieldBuckets];
-    v62 = [(PKTransitCommutePlanPackage *)v60 initWithDictionary:v128 backFieldBuckets:v61 bundle:v139 privateBundle:v138 passType:v123];
+    backFieldBuckets = [(PKPassContent *)v129 backFieldBuckets];
+    v62 = [(PKTransitCommutePlanPackage *)v60 initWithDictionary:v128 backFieldBuckets:backFieldBuckets bundle:v139 privateBundle:privateBundleCopy passType:typeCopy];
 
-    v63 = [(PKTransitCommutePlanPackage *)v62 transitCommutePlans];
-    v64 = [v63 copy];
+    transitCommutePlans = [(PKTransitCommutePlanPackage *)v62 transitCommutePlans];
+    v64 = [transitCommutePlans copy];
     [(PKPaymentPassContent *)v129 setTransitCommutePlans:v64];
 
     v134 = v62;
@@ -192,8 +192,8 @@
     v65 = [v139 pathForResource:@"actions" ofType:@"strings"];
     v137 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v65];
     [(PKPaymentPassContent *)v129 setActionLocalizations:?];
-    v66 = [v139 bundleURL];
-    v67 = PKPaymentPassActionsDictionaryWithError(v66, 0);
+    bundleURL = [v139 bundleURL];
+    v67 = PKPaymentPassActionsDictionaryWithError(bundleURL, 0);
 
     v124 = v67;
     if (v67 && [v67 count])
@@ -260,19 +260,19 @@
             v83 = v82;
             if (v82)
             {
-              v84 = [(PKPaymentPassAction *)v82 associatedPlanIdentifier];
-              v85 = v84;
-              if (v84)
+              associatedPlanIdentifier = [(PKPaymentPassAction *)v82 associatedPlanIdentifier];
+              v85 = associatedPlanIdentifier;
+              if (associatedPlanIdentifier)
               {
-                v86 = v84;
+                relevantPropertyIdentifier = associatedPlanIdentifier;
               }
 
               else
               {
-                v86 = [(PKPaymentPassAction *)v83 relevantPropertyIdentifier];
+                relevantPropertyIdentifier = [(PKPaymentPassAction *)v83 relevantPropertyIdentifier];
               }
 
-              v87 = v86;
+              v87 = relevantPropertyIdentifier;
 
               if (v87)
               {
@@ -309,11 +309,11 @@
       }
 
       [(PKPaymentPassContent *)v129 setAvailableActions:v77];
-      v10 = v128;
+      dictionaryCopy = v128;
       v59 = v122;
     }
 
-    v92 = [v10 PKArrayContaining:objc_opt_class() forKey:@"passUpgrades"];
+    v92 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"passUpgrades"];
     v93 = v92;
     v94 = MEMORY[0x1E695E0F0];
     if (v92)
@@ -361,7 +361,7 @@
     upgradeRequests = v129->_upgradeRequests;
     v129->_upgradeRequests = v103;
 
-    v105 = [v10 PKDictionaryForKey:@"auxiliaryCapabilities"];
+    v105 = [dictionaryCopy PKDictionaryForKey:@"auxiliaryCapabilities"];
     v106 = v105;
     if (v105)
     {
@@ -370,7 +370,7 @@
 
     else
     {
-      v107 = [v10 PKDictionaryForKey:@"auxiliaryRegistrationRequirements"];
+      v107 = [dictionaryCopy PKDictionaryForKey:@"auxiliaryRegistrationRequirements"];
     }
 
     v108 = v107;
@@ -379,7 +379,7 @@
     auxiliaryRegistrationRequirements = v129->_auxiliaryRegistrationRequirements;
     v129->_auxiliaryRegistrationRequirements = v109;
 
-    v111 = [v10 PKDictionaryForKey:@"dynamicLayerConfiguration"];
+    v111 = [dictionaryCopy PKDictionaryForKey:@"dynamicLayerConfiguration"];
     if (v111)
     {
       v112 = [[PKDynamicLayerConfiguration alloc] initWithDictionary:v111];
@@ -387,12 +387,12 @@
       v129->_dynamicLayerConfiguration = v112;
     }
 
-    v114 = [v10 PKStringForKey:@"cardType"];
+    v114 = [dictionaryCopy PKStringForKey:@"cardType"];
     v115 = PKPaymentCardTypeFromString(v114);
 
     if (v115 == 4)
     {
-      accessReportingType = [v10 PKStringForKey:@"cardSubtype"];
+      accessReportingType = [dictionaryCopy PKStringForKey:@"cardSubtype"];
       v129->_identityType = PKSecureElementIdentityPassTypeFromString(accessReportingType);
       v116 = v127;
     }
@@ -402,7 +402,7 @@
       v116 = v127;
       if (v115 == 3)
       {
-        v118 = [v10 PKStringForKey:@"cardSubtype"];
+        v118 = [dictionaryCopy PKStringForKey:@"cardSubtype"];
         v119 = 432;
         accessReportingType = v129->_accessReportingType;
       }
@@ -416,7 +416,7 @@ LABEL_84:
           goto LABEL_85;
         }
 
-        accessReportingType = [v10 PKStringForKey:@"cardSubtype"];
+        accessReportingType = [dictionaryCopy PKStringForKey:@"cardSubtype"];
         v118 = PKSecureElementPaymentPassTypeFromString(accessReportingType);
         v119 = 440;
       }
@@ -432,61 +432,61 @@ LABEL_85:
   return v13;
 }
 
-- (PKPaymentPassContent)initWithCoder:(id)a3
+- (PKPaymentPassContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v83.receiver = self;
   v83.super_class = PKPaymentPassContent;
-  v6 = [(PKPassContent *)&v83 initWithCoder:v4];
+  v6 = [(PKPassContent *)&v83 initWithCoder:coderCopy];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cobrandName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cobrandName"];
     cobrandName = v6->_cobrandName;
     v6->_cobrandName = v7;
 
     v82 = v5;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionServiceURL"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionServiceURL"];
     transactionServiceURL = v6->_transactionServiceURL;
     v6->_transactionServiceURL = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionServiceRegistrationURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionServiceRegistrationURL"];
     transactionServiceRegistrationURL = v6->_transactionServiceRegistrationURL;
     v6->_transactionServiceRegistrationURL = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionPushTopic"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionPushTopic"];
     transactionPushTopic = v6->_transactionPushTopic;
     v6->_transactionPushTopic = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messageServiceURL"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messageServiceURL"];
     messageServiceURL = v6->_messageServiceURL;
     v6->_messageServiceURL = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messageServiceRegistrationURL"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messageServiceRegistrationURL"];
     messageServiceRegistrationURL = v6->_messageServiceRegistrationURL;
     v6->_messageServiceRegistrationURL = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messagePushTopic"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messagePushTopic"];
     messagePushTopic = v6->_messagePushTopic;
     v6->_messagePushTopic = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchURLScheme"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchURLScheme"];
     appURLScheme = v6->_appURLScheme;
     v6->_appURLScheme = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customerServiceIdentifier"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customerServiceIdentifier"];
     customerServiceIdentifier = v6->_customerServiceIdentifier;
     v6->_customerServiceIdentifier = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingAddressSeed"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingAddressSeed"];
     shippingAddressSeed = v6->_shippingAddressSeed;
     v6->_shippingAddressSeed = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"speakableCarMake"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"speakableCarMake"];
     speakableMake = v6->_speakableMake;
     v6->_speakableMake = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"speakableCarModel"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"speakableCarModel"];
     speakableModel = v6->_speakableModel;
     v6->_speakableModel = v29;
 
@@ -494,48 +494,48 @@ LABEL_85:
     v32 = objc_opt_class();
     v33 = objc_opt_class();
     v81 = [v31 setWithObjects:{v32, v33, objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v81 forKey:@"dashboard"];
+    v34 = [coderCopy decodeObjectOfClasses:v81 forKey:@"dashboard"];
     paymentApplicationStateDashboardMessageOverridesByAID = v6->_paymentApplicationStateDashboardMessageOverridesByAID;
     v6->_paymentApplicationStateDashboardMessageOverridesByAID = v34;
 
-    v36 = [v4 decodeObjectOfClasses:v81 forKey:@"notification"];
+    v36 = [coderCopy decodeObjectOfClasses:v81 forKey:@"notification"];
     paymentApplicationStateNotificationMessageOverridesByAID = v6->_paymentApplicationStateNotificationMessageOverridesByAID;
     v6->_paymentApplicationStateNotificationMessageOverridesByAID = v36;
 
     v38 = MEMORY[0x1E695DFD8];
     v39 = objc_opt_class();
     v80 = [v38 setWithObjects:{v39, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v80 forKey:@"suspendedReason"];
+    v40 = [coderCopy decodeObjectOfClasses:v80 forKey:@"suspendedReason"];
     localizedSuspendedReasonsByAID = v6->_localizedSuspendedReasonsByAID;
     v6->_localizedSuspendedReasonsByAID = v40;
 
-    v6->_supportsTransitOnly = [v4 decodeBoolForKey:@"showTransitOnly"];
-    v6->_transitCommutePlanType = [v4 decodeIntegerForKey:@"commutePlanPassContentType"];
+    v6->_supportsTransitOnly = [coderCopy decodeBoolForKey:@"showTransitOnly"];
+    v6->_transitCommutePlanType = [coderCopy decodeIntegerForKey:@"commutePlanPassContentType"];
     v42 = MEMORY[0x1E695DFD8];
     v43 = objc_opt_class();
     v44 = [v42 setWithObjects:{v43, objc_opt_class(), 0}];
     v45 = MEMORY[0x1E695DFD8];
     v46 = objc_opt_class();
     v47 = [v45 setWithObjects:{v46, objc_opt_class(), 0}];
-    v48 = [v4 decodeObjectOfClasses:v47 forKey:@"actionLocalizations"];
+    v48 = [coderCopy decodeObjectOfClasses:v47 forKey:@"actionLocalizations"];
     actionLocalizations = v6->_actionLocalizations;
     v6->_actionLocalizations = v48;
 
-    v50 = [v4 decodeObjectOfClasses:v44 forKey:@"actions"];
+    v50 = [coderCopy decodeObjectOfClasses:v44 forKey:@"actions"];
     availableActions = v6->_availableActions;
     v6->_availableActions = v50;
 
     v52 = MEMORY[0x1E695DFD8];
     v53 = objc_opt_class();
     v54 = [v52 setWithObjects:{v53, objc_opt_class(), 0}];
-    v55 = [v4 decodeObjectOfClasses:v54 forKey:@"transitCommutePlans"];
+    v55 = [coderCopy decodeObjectOfClasses:v54 forKey:@"transitCommutePlans"];
     transitCommutePlans = v6->_transitCommutePlans;
     v6->_transitCommutePlans = v55;
 
     v57 = MEMORY[0x1E695DFD8];
     v58 = objc_opt_class();
     v59 = [v57 setWithObjects:{v58, objc_opt_class(), 0}];
-    v60 = [v4 decodeObjectOfClasses:v59 forKey:@"actionGroups"];
+    v60 = [coderCopy decodeObjectOfClasses:v59 forKey:@"actionGroups"];
     actionGroups = v6->_actionGroups;
     v6->_actionGroups = v60;
 
@@ -544,30 +544,30 @@ LABEL_85:
     v64 = objc_opt_class();
     v65 = objc_opt_class();
     v66 = [v62 setWithObjects:{v63, v64, v65, objc_opt_class(), 0}];
-    v67 = [v4 decodeObjectOfClasses:v66 forKey:@"passUpgrades"];
+    v67 = [coderCopy decodeObjectOfClasses:v66 forKey:@"passUpgrades"];
     upgradeRequests = v6->_upgradeRequests;
     v6->_upgradeRequests = v67;
 
-    v69 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportedSiriIntents"];
+    v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportedSiriIntents"];
     supportedSiriIntents = v6->_supportedSiriIntents;
     v6->_supportedSiriIntents = v69;
 
-    v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryRegistrationRequirements"];
+    v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryRegistrationRequirements"];
     auxiliaryRegistrationRequirements = v6->_auxiliaryRegistrationRequirements;
     v6->_auxiliaryRegistrationRequirements = v71;
 
-    v73 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dynamicLayerConfiguration"];
+    v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dynamicLayerConfiguration"];
     dynamicLayerConfiguration = v6->_dynamicLayerConfiguration;
     v6->_dynamicLayerConfiguration = v73;
 
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identityType"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identityType"];
     v6->_identityType = PKSecureElementIdentityPassTypeFromString(v75);
 
-    v76 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessReportingType"];
+    v76 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessReportingType"];
     accessReportingType = v6->_accessReportingType;
     v6->_accessReportingType = v76;
 
-    v78 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentType"];
+    v78 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentType"];
     v6->_paymentType = PKSecureElementPaymentPassTypeFromString(v78);
 
     v5 = v82;
@@ -578,44 +578,44 @@ LABEL_85:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKPaymentPassContent;
-  v4 = a3;
-  [(PKPassContent *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_cobrandName forKey:{@"cobrandName", v7.receiver, v7.super_class}];
-  [v4 encodeObject:self->_transactionServiceURL forKey:@"transactionServiceURL"];
-  [v4 encodeObject:self->_transactionServiceRegistrationURL forKey:@"transactionServiceRegistrationURL"];
-  [v4 encodeObject:self->_transactionPushTopic forKey:@"transactionPushTopic"];
-  [v4 encodeObject:self->_messageServiceURL forKey:@"messageServiceURL"];
-  [v4 encodeObject:self->_messageServiceRegistrationURL forKey:@"messageServiceRegistrationURL"];
-  [v4 encodeObject:self->_messagePushTopic forKey:@"messagePushTopic"];
-  [v4 encodeObject:self->_appURLScheme forKey:@"appLaunchURLScheme"];
-  [v4 encodeObject:self->_customerServiceIdentifier forKey:@"customerServiceIdentifier"];
-  [v4 encodeObject:self->_shippingAddressSeed forKey:@"shippingAddressSeed"];
-  [v4 encodeObject:self->_speakableMake forKey:@"speakableCarMake"];
-  [v4 encodeObject:self->_speakableModel forKey:@"speakableCarModel"];
-  [v4 encodeObject:self->_paymentApplicationStateDashboardMessageOverridesByAID forKey:@"dashboard"];
-  [v4 encodeObject:self->_paymentApplicationStateNotificationMessageOverridesByAID forKey:@"notification"];
-  [v4 encodeObject:self->_localizedSuspendedReasonsByAID forKey:@"suspendedReason"];
-  [v4 encodeBool:self->_supportsTransitOnly forKey:@"showTransitOnly"];
-  [v4 encodeInteger:self->_transitCommutePlanType forKey:@"commutePlanPassContentType"];
-  [v4 encodeObject:self->_availableActions forKey:@"actions"];
-  [v4 encodeObject:self->_actionGroups forKey:@"actionGroups"];
-  [v4 encodeObject:self->_transitCommutePlans forKey:@"transitCommutePlans"];
-  [v4 encodeObject:self->_upgradeRequests forKey:@"passUpgrades"];
-  [v4 encodeObject:self->_actionLocalizations forKey:@"actionLocalizations"];
-  [v4 encodeObject:self->_auxiliaryRegistrationRequirements forKey:@"auxiliaryRegistrationRequirements"];
-  [v4 encodeObject:self->_dynamicLayerConfiguration forKey:@"dynamicLayerConfiguration"];
+  coderCopy = coder;
+  [(PKPassContent *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_cobrandName forKey:{@"cobrandName", v7.receiver, v7.super_class}];
+  [coderCopy encodeObject:self->_transactionServiceURL forKey:@"transactionServiceURL"];
+  [coderCopy encodeObject:self->_transactionServiceRegistrationURL forKey:@"transactionServiceRegistrationURL"];
+  [coderCopy encodeObject:self->_transactionPushTopic forKey:@"transactionPushTopic"];
+  [coderCopy encodeObject:self->_messageServiceURL forKey:@"messageServiceURL"];
+  [coderCopy encodeObject:self->_messageServiceRegistrationURL forKey:@"messageServiceRegistrationURL"];
+  [coderCopy encodeObject:self->_messagePushTopic forKey:@"messagePushTopic"];
+  [coderCopy encodeObject:self->_appURLScheme forKey:@"appLaunchURLScheme"];
+  [coderCopy encodeObject:self->_customerServiceIdentifier forKey:@"customerServiceIdentifier"];
+  [coderCopy encodeObject:self->_shippingAddressSeed forKey:@"shippingAddressSeed"];
+  [coderCopy encodeObject:self->_speakableMake forKey:@"speakableCarMake"];
+  [coderCopy encodeObject:self->_speakableModel forKey:@"speakableCarModel"];
+  [coderCopy encodeObject:self->_paymentApplicationStateDashboardMessageOverridesByAID forKey:@"dashboard"];
+  [coderCopy encodeObject:self->_paymentApplicationStateNotificationMessageOverridesByAID forKey:@"notification"];
+  [coderCopy encodeObject:self->_localizedSuspendedReasonsByAID forKey:@"suspendedReason"];
+  [coderCopy encodeBool:self->_supportsTransitOnly forKey:@"showTransitOnly"];
+  [coderCopy encodeInteger:self->_transitCommutePlanType forKey:@"commutePlanPassContentType"];
+  [coderCopy encodeObject:self->_availableActions forKey:@"actions"];
+  [coderCopy encodeObject:self->_actionGroups forKey:@"actionGroups"];
+  [coderCopy encodeObject:self->_transitCommutePlans forKey:@"transitCommutePlans"];
+  [coderCopy encodeObject:self->_upgradeRequests forKey:@"passUpgrades"];
+  [coderCopy encodeObject:self->_actionLocalizations forKey:@"actionLocalizations"];
+  [coderCopy encodeObject:self->_auxiliaryRegistrationRequirements forKey:@"auxiliaryRegistrationRequirements"];
+  [coderCopy encodeObject:self->_dynamicLayerConfiguration forKey:@"dynamicLayerConfiguration"];
   v5 = PKSecureElementIdentityPassTypeToString(self->_identityType);
-  [v4 encodeObject:v5 forKey:@"identityType"];
+  [coderCopy encodeObject:v5 forKey:@"identityType"];
 
-  [v4 encodeObject:self->_accessReportingType forKey:@"accessReportingType"];
+  [coderCopy encodeObject:self->_accessReportingType forKey:@"accessReportingType"];
   v6 = PKSecureElementPaymentPassTypeToString(self->_paymentType);
-  [v4 encodeObject:v6 forKey:@"paymentType"];
+  [coderCopy encodeObject:v6 forKey:@"paymentType"];
 
-  [v4 encodeObject:self->_supportedSiriIntents forKey:@"supportedSiriIntents"];
+  [coderCopy encodeObject:self->_supportedSiriIntents forKey:@"supportedSiriIntents"];
 }
 
 @end

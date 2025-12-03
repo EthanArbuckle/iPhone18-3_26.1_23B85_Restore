@@ -1,20 +1,20 @@
 @interface AVTToolbarButton
-- (AVTToolbarButton)initWithTitle:(id)a3 isDefault:(BOOL)a4;
+- (AVTToolbarButton)initWithTitle:(id)title isDefault:(BOOL)default;
 @end
 
 @implementation AVTToolbarButton
 
-- (AVTToolbarButton)initWithTitle:(id)a3 isDefault:(BOOL)a4
+- (AVTToolbarButton)initWithTitle:(id)title isDefault:(BOOL)default
 {
-  v7 = a3;
+  titleCopy = title;
   v11.receiver = self;
   v11.super_class = AVTToolbarButton;
   v8 = [(AVTToolbarButton *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_title, a3);
-    v9->_isDefault = a4;
+    objc_storeStrong(&v8->_title, title);
+    v9->_isDefault = default;
   }
 
   return v9;

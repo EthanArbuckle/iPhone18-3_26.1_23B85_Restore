@@ -1,19 +1,19 @@
 @interface PHSingleCallParticipantLabelView
-- (BOOL)_statusLabelStringWillFit:(id)a3;
-- (BOOL)_statusLabelStringWillFit:(id)a3 attributes:(id)a4 padding:(float)a5;
+- (BOOL)_statusLabelStringWillFit:(id)fit;
+- (BOOL)_statusLabelStringWillFit:(id)fit attributes:(id)attributes padding:(float)padding;
 - (BOOL)inBrandedCall;
 - (BOOL)inCallDirectoryCall;
 - (BOOL)isDisplayStyleAmbient;
 - (BOOL)isDisplayStyleBanner;
 - (BOOL)isDisplayStyleMiniWindow;
 - (BOOL)setUpFirstAndLastNameLabelsIfPossible;
-- (BOOL)shouldBlurAvatarViewForCurrentContactNickname:(id)a3;
+- (BOOL)shouldBlurAvatarViewForCurrentContactNickname:(id)nickname;
 - (BOOL)shouldUseHeroImageLayout;
 - (BOOL)showPostersEnabledForiPad;
 - (BOOL)showsCallDetailsViewButton;
 - (CNContact)contact;
 - (PHPosterNameViewModel)posterNameViewModel;
-- (PHSingleCallParticipantLabelView)initWithCallDisplayStyleManager:(id)a3 delegate:(id)a4;
+- (PHSingleCallParticipantLabelView)initWithCallDisplayStyleManager:(id)manager delegate:(id)delegate;
 - (UILayoutGuide)leadingSideLayoutGuide;
 - (UILayoutGuide)trailingSideLayoutGuide;
 - (UIView)posterBadgeView;
@@ -30,7 +30,7 @@
 - (double)labelsVerticalOffset;
 - (double)voipIconEdge;
 - (double)voipIconMarginH;
-- (id)currentIMNicknameMatchingContact:(id)a3;
+- (id)currentIMNicknameMatchingContact:(id)contact;
 - (id)gameControllerContext;
 - (id)updatedAvatarViewConstraints;
 - (id)updatedParticipantMarqueeLabelFont;
@@ -39,60 +39,60 @@
 - (unint64_t)initialStateForBannerButtonsView;
 - (void)animateToFirstLabel;
 - (void)animateToNextLabel;
-- (void)bannerButtonsView:(id)a3 didPerformActionType:(int64_t)a4;
-- (void)callDetailsGestureRecognizerTapped:(id)a3;
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
+- (void)bannerButtonsView:(id)view didPerformActionType:(int64_t)type;
+- (void)callDetailsGestureRecognizerTapped:(id)tapped;
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
 - (void)deactivateLayoutGuideConstraints;
 - (void)dealloc;
-- (void)fadeStatusLabelToAttributedOrPlainString:(id)a3;
+- (void)fadeStatusLabelToAttributedOrPlainString:(id)string;
 - (void)gameControllerDidChangeContext;
 - (void)hideBadgesOnly;
-- (void)hideFirstAndLastNameAnimated:(BOOL)a3;
-- (void)infoButtonTapped:(id)a3;
+- (void)hideFirstAndLastNameAnimated:(BOOL)animated;
+- (void)infoButtonTapped:(id)tapped;
 - (void)invalidateStatusLabelTimer;
 - (void)layoutSubviews;
 - (void)scheduleStatusLabelTimer;
-- (void)setActivityState:(unsigned __int16)a3 animated:(BOOL)a4;
-- (void)setBannerAudioRouteButtonSelected:(BOOL)a3;
-- (void)setBannerButtonsState:(unint64_t)a3;
-- (void)setBusinessLogo:(id)a3 isPerson:(BOOL)a4;
-- (void)setContact:(id)a3;
-- (void)setCustomAvatar:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHidesLabel:(BOOL)a3;
-- (void)setIcon:(id)a3;
-- (void)setLabelDescriptor:(id)a3;
-- (void)setLabelLayoutState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setParticipantMarqueeLabelFont:(id)a3;
-- (void)setParticipantMarqueeLabelTextColor:(id)a3;
-- (void)setPosterBadgeView:(id)a3;
-- (void)setPosterNameViewModel:(id)a3;
-- (void)setShowsCallDetailsViewButton:(BOOL)a3;
-- (void)setShowsConferenceParticipantsButton:(BOOL)a3;
-- (void)setStatusLabelTextColor:(id)a3;
-- (void)setStatusLabelTextFont:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTrailingSideLayoutGuide:(id)a3;
+- (void)setActivityState:(unsigned __int16)state animated:(BOOL)animated;
+- (void)setBannerAudioRouteButtonSelected:(BOOL)selected;
+- (void)setBannerButtonsState:(unint64_t)state;
+- (void)setBusinessLogo:(id)logo isPerson:(BOOL)person;
+- (void)setContact:(id)contact;
+- (void)setCustomAvatar:(id)avatar;
+- (void)setDelegate:(id)delegate;
+- (void)setHidesLabel:(BOOL)label;
+- (void)setIcon:(id)icon;
+- (void)setLabelDescriptor:(id)descriptor;
+- (void)setLabelLayoutState:(int64_t)state animated:(BOOL)animated;
+- (void)setParticipantMarqueeLabelFont:(id)font;
+- (void)setParticipantMarqueeLabelTextColor:(id)color;
+- (void)setPosterBadgeView:(id)view;
+- (void)setPosterNameViewModel:(id)model;
+- (void)setShowsCallDetailsViewButton:(BOOL)button;
+- (void)setShowsConferenceParticipantsButton:(BOOL)button;
+- (void)setStatusLabelTextColor:(id)color;
+- (void)setStatusLabelTextFont:(id)font;
+- (void)setTextColor:(id)color;
+- (void)setTrailingSideLayoutGuide:(id)guide;
 - (void)setUpCallDetailsViewButton;
-- (void)showFirstAndLastNameAnimated:(BOOL)a3;
-- (void)statusLabelTapped:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)showFirstAndLastNameAnimated:(BOOL)animated;
+- (void)statusLabelTapped:(id)tapped;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAvatarViewConstraints;
-- (void)updateBannerButtonsViewForCallDisplayStyle:(int64_t)a3;
+- (void)updateBannerButtonsViewForCallDisplayStyle:(int64_t)style;
 - (void)updateBusinessLogoSize;
 - (void)updateGestureRecognizersEnabled;
 - (void)updateHeightConstraints;
 - (void)updateIconSize;
-- (void)updateLabelAlignmentForCallDisplayStyle:(int64_t)a3;
+- (void)updateLabelAlignmentForCallDisplayStyle:(int64_t)style;
 - (void)updateLabelConstraints;
 - (void)updateLabelFonts;
 - (void)updateLabelScales;
-- (void)updateLabelTextAlignmentForCallDisplayStyle:(int64_t)a3;
+- (void)updateLabelTextAlignmentForCallDisplayStyle:(int64_t)style;
 - (void)updateLabelTrailingConstraints;
 - (void)updateLabelsOrder;
 - (void)updateLabelsOrderAndLayout;
 - (void)updateLabelsOrderAndText;
-- (void)updateLayoutForCallDisplayStyle:(int64_t)a3;
+- (void)updateLayoutForCallDisplayStyle:(int64_t)style;
 - (void)updateLayoutGuide;
 - (void)updateParticipantMarqueeLabelHorizontalConstraint;
 - (void)updateParticipantMarqueeLabelNumberOfLines;
@@ -102,7 +102,7 @@
 - (void)updateStackViewHorizontalConstraintsWithBusinessLogo;
 - (void)updateStackViewHorizontalConstraintsWithVoIPAppIcon;
 - (void)updateStatusLabelText;
-- (void)updateSubviewWithLayout:(int64_t)a3 contact:(id)a4;
+- (void)updateSubviewWithLayout:(int64_t)layout contact:(id)contact;
 - (void)updateViewForCallState;
 @end
 
@@ -110,16 +110,16 @@
 
 - (void)updatePosterBadgeView
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self posterBadgeView];
+  posterBadgeView = [(PHSingleCallParticipantLabelView *)self posterBadgeView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v8 = [(PHSingleCallParticipantLabelView *)self posterBadgeView];
+  posterBadgeView2 = [(PHSingleCallParticipantLabelView *)self posterBadgeView];
   if (isKindOfClass)
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self badgeView];
-    v6 = [v5 title];
-    [v8 setTitle:v6];
+    badgeView = [(PHSingleCallParticipantLabelView *)self badgeView];
+    title = [badgeView title];
+    [posterBadgeView2 setTitle:title];
   }
 
   else
@@ -132,10 +132,10 @@
       return;
     }
 
-    v8 = [(PHSingleCallParticipantLabelView *)self posterBadgeView];
-    v5 = [(PHSingleCallParticipantLabelView *)self iconView];
-    v6 = [v5 image];
-    [v8 setImage:v6];
+    posterBadgeView2 = [(PHSingleCallParticipantLabelView *)self posterBadgeView];
+    badgeView = [(PHSingleCallParticipantLabelView *)self iconView];
+    title = [badgeView image];
+    [posterBadgeView2 setImage:title];
   }
 }
 
@@ -155,23 +155,23 @@
 
 - (id)updatedParticipantMarqueeLabelFont
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v4 = [v3 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v4 == 3)
+  if (callDisplayStyle == 3)
   {
     v10 = +[PHUIConfiguration singleCallParticipantLabelAmbientFont];
-    v11 = [(PHAbstractCallParticipantLabelView *)self delegate];
+    delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(PHAbstractCallParticipantLabelView *)self delegate];
-      v14 = [v13 customFontForParticipantLabel];
-      v15 = v14;
-      if (v14)
+      delegate2 = [(PHAbstractCallParticipantLabelView *)self delegate];
+      customFontForParticipantLabel = [delegate2 customFontForParticipantLabel];
+      v15 = customFontForParticipantLabel;
+      if (customFontForParticipantLabel)
       {
-        v16 = v14;
+        v16 = customFontForParticipantLabel;
       }
 
       else
@@ -184,9 +184,9 @@
       v10 = v17;
     }
 
-    v18 = [(PHSingleCallParticipantLabelView *)self ambientLayout];
+    ambientLayout = [(PHSingleCallParticipantLabelView *)self ambientLayout];
     v19 = 60.0;
-    if (v18 == 1)
+    if (ambientLayout == 1)
     {
       v19 = 90.0;
     }
@@ -194,26 +194,26 @@
     v9 = [v10 fontWithSize:v19];
   }
 
-  else if (v4 == 1)
+  else if (callDisplayStyle == 1)
   {
     v9 = +[PHUIConfiguration singleCallParticipantLabelMiniWindowFont];
   }
 
   else
   {
-    if (v4)
+    if (callDisplayStyle)
     {
-      v5 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-      v9 = +[PHUIConfiguration singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:](PHUIConfiguration, "singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:", [v5 usesLargeFormatUI]);
+      callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+      v9 = +[PHUIConfiguration singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:](PHUIConfiguration, "singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:", [callDisplayStyleManager2 usesLargeFormatUI]);
     }
 
     else
     {
-      v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      v6 = [v5 text];
-      v7 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      [v7 bounds];
-      v9 = [PHUIConfiguration singleCallParticipantLabelBannerFontForText:v6 availableWidth:v8];
+      callDisplayStyleManager2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      text = [callDisplayStyleManager2 text];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      [participantMarqueeLabel bounds];
+      v9 = [PHUIConfiguration singleCallParticipantLabelBannerFontForText:text availableWidth:v8];
     }
   }
 
@@ -222,27 +222,27 @@
 
 - (unint64_t)ambientLayout
 {
-  v2 = [(PHAbstractCallParticipantLabelView *)self delegate];
-  v3 = [v2 participantLabelShouldShowLargeAvatar];
+  delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+  participantLabelShouldShowLargeAvatar = [delegate participantLabelShouldShowLargeAvatar];
 
-  return v3;
+  return participantLabelShouldShowLargeAvatar;
 }
 
 - (BOOL)setUpFirstAndLastNameLabelsIfPossible
 {
   if ([(PHSingleCallParticipantLabelView *)self ambientLayout]== 1)
   {
-    v3 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+    trailingSideLayoutGuide = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
 
-    if (v3)
+    if (trailingSideLayoutGuide)
     {
-      v4 = [(PHSingleCallParticipantLabelView *)self contact];
-      v5 = [CNContactFormatter posterNameComponentsForContact:v4];
+      contact = [(PHSingleCallParticipantLabelView *)self contact];
+      v5 = [CNContactFormatter posterNameComponentsForContact:contact];
 
-      v6 = [v5 secondNameComponent];
-      LOBYTE(v3) = v6 != 0;
+      secondNameComponent = [v5 secondNameComponent];
+      LOBYTE(trailingSideLayoutGuide) = secondNameComponent != 0;
 
-      if (v6)
+      if (secondNameComponent)
       {
         firstNameLabel = self->_firstNameLabel;
         if (!firstNameLabel)
@@ -276,57 +276,57 @@
             [(UILabel *)self->_lastNameLabel _setExtremeSizingEnabled:1];
             [(UILabel *)self->_lastNameLabel setAlpha:0.0];
             [(PHSingleCallParticipantLabelView *)self addSubview:self->_lastNameLabel];
-            v76 = [(UILabel *)self->_firstNameLabel topAnchor];
-            v75 = [(PHSingleCallParticipantLabelView *)self topAnchor];
-            v74 = [v76 constraintGreaterThanOrEqualToAnchor:v75];
+            topAnchor = [(UILabel *)self->_firstNameLabel topAnchor];
+            topAnchor2 = [(PHSingleCallParticipantLabelView *)self topAnchor];
+            v74 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
             v79[0] = v74;
-            v72 = [(UILabel *)self->_firstNameLabel leadingAnchor];
-            v73 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-            v71 = [v73 leadingAnchor];
-            v70 = [v72 constraintGreaterThanOrEqualToAnchor:v71];
+            leadingAnchor = [(UILabel *)self->_firstNameLabel leadingAnchor];
+            trailingSideLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+            leadingAnchor2 = [trailingSideLayoutGuide2 leadingAnchor];
+            v70 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
             v79[1] = v70;
-            v68 = [(UILabel *)self->_firstNameLabel centerXAnchor];
-            v69 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-            v67 = [v69 centerXAnchor];
-            v66 = [v68 constraintEqualToAnchor:v67];
+            centerXAnchor = [(UILabel *)self->_firstNameLabel centerXAnchor];
+            trailingSideLayoutGuide3 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+            centerXAnchor2 = [trailingSideLayoutGuide3 centerXAnchor];
+            v66 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
             v79[2] = v66;
-            v64 = [(UILabel *)self->_firstNameLabel trailingAnchor];
-            v65 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-            v63 = [v65 trailingAnchor];
-            v62 = [v64 constraintLessThanOrEqualToAnchor:v63];
+            trailingAnchor = [(UILabel *)self->_firstNameLabel trailingAnchor];
+            trailingSideLayoutGuide4 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+            trailingAnchor2 = [trailingSideLayoutGuide4 trailingAnchor];
+            v62 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
             v79[3] = v62;
-            v61 = [(UILabel *)self->_firstNameLabel trailingAnchor];
-            v60 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
-            v59 = [v61 constraintEqualToAnchor:v60];
+            trailingAnchor3 = [(UILabel *)self->_firstNameLabel trailingAnchor];
+            trailingAnchor4 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
+            v59 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
             v79[4] = v59;
-            v58 = [(UILabel *)self->_firstNameLabel bottomAnchor];
-            v57 = [(UILabel *)self->_lastNameLabel topAnchor];
-            v56 = [v58 constraintEqualToAnchor:v57 constant:16.0];
+            bottomAnchor = [(UILabel *)self->_firstNameLabel bottomAnchor];
+            topAnchor3 = [(UILabel *)self->_lastNameLabel topAnchor];
+            v56 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:16.0];
             v79[5] = v56;
-            v54 = [(UILabel *)self->_lastNameLabel leadingAnchor];
-            v55 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-            v53 = [v55 leadingAnchor];
-            v52 = [v54 constraintGreaterThanOrEqualToAnchor:v53];
+            leadingAnchor3 = [(UILabel *)self->_lastNameLabel leadingAnchor];
+            trailingSideLayoutGuide5 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+            leadingAnchor4 = [trailingSideLayoutGuide5 leadingAnchor];
+            v52 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
             v79[6] = v52;
-            v50 = [(UILabel *)self->_lastNameLabel centerXAnchor];
-            v51 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-            v49 = [v51 centerXAnchor];
-            v48 = [v50 constraintEqualToAnchor:v49];
+            centerXAnchor3 = [(UILabel *)self->_lastNameLabel centerXAnchor];
+            trailingSideLayoutGuide6 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+            centerXAnchor4 = [trailingSideLayoutGuide6 centerXAnchor];
+            v48 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
             v79[7] = v48;
-            v46 = [(UILabel *)self->_lastNameLabel trailingAnchor];
-            v47 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-            v45 = [v47 trailingAnchor];
-            v44 = [v46 constraintLessThanOrEqualToAnchor:v45];
+            trailingAnchor5 = [(UILabel *)self->_lastNameLabel trailingAnchor];
+            trailingSideLayoutGuide7 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+            trailingAnchor6 = [trailingSideLayoutGuide7 trailingAnchor];
+            v44 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
             v79[8] = v44;
-            v42 = [(UILabel *)self->_lastNameLabel firstBaselineAnchor];
-            v43 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-            v41 = [v43 firstBaselineAnchor];
-            v12 = [v42 constraintEqualToAnchor:v41];
+            firstBaselineAnchor = [(UILabel *)self->_lastNameLabel firstBaselineAnchor];
+            participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+            firstBaselineAnchor2 = [participantMarqueeLabel firstBaselineAnchor];
+            v12 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
             v79[9] = v12;
-            v13 = [(UILabel *)self->_lastNameLabel bottomAnchor];
-            v14 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-            v15 = [v14 bottomAnchor];
-            v16 = [v13 constraintLessThanOrEqualToAnchor:v15];
+            bottomAnchor2 = [(UILabel *)self->_lastNameLabel bottomAnchor];
+            trailingSideLayoutGuide8 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+            bottomAnchor3 = [trailingSideLayoutGuide8 bottomAnchor];
+            v16 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
             v79[10] = v16;
             v17 = [NSArray arrayWithObjects:v79 count:11];
             [NSLayoutConstraint activateConstraints:v17];
@@ -348,74 +348,74 @@
         }
 
         v22 = v21;
-        v23 = [(PHSingleCallParticipantLabelView *)self updatedParticipantMarqueeLabelFont];
-        v24 = [v23 fontWithSize:48.0];
+        updatedParticipantMarqueeLabelFont = [(PHSingleCallParticipantLabelView *)self updatedParticipantMarqueeLabelFont];
+        v24 = [updatedParticipantMarqueeLabelFont fontWithSize:48.0];
         [(UILabel *)v22 setFont:v24];
 
-        v25 = [(PHSingleCallParticipantLabelView *)self showPostersEnabledForiPad];
+        showPostersEnabledForiPad = [(PHSingleCallParticipantLabelView *)self showPostersEnabledForiPad];
         v26 = 35.0;
-        if (!v25)
+        if (!showPostersEnabledForiPad)
         {
           v26 = 25.0;
         }
 
         [(UILabel *)v22 setMinimumFontSize:v26];
-        v27 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-        v28 = [v27 textColor];
-        [(UILabel *)v22 setTextColor:v28];
+        participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+        textColor = [participantMarqueeLabel2 textColor];
+        [(UILabel *)v22 setTextColor:textColor];
 
         LODWORD(v29) = 1132134400;
         [(UILabel *)v22 setContentCompressionResistancePriority:1 forAxis:v29];
-        [(UILabel *)v20 setFont:v23];
+        [(UILabel *)v20 setFont:updatedParticipantMarqueeLabelFont];
         [(UILabel *)v20 setMinimumFontSize:38.0];
-        v30 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-        v31 = [v30 textColor];
-        [(UILabel *)v20 setTextColor:v31];
+        participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+        textColor2 = [participantMarqueeLabel3 textColor];
+        [(UILabel *)v20 setTextColor:textColor2];
 
         LODWORD(v32) = 1132068864;
         [(UILabel *)v20 setContentCompressionResistancePriority:1 forAxis:v32];
-        v33 = [v5 firstNameComponent];
-        [(UILabel *)self->_firstNameLabel setText:v33];
+        firstNameComponent = [v5 firstNameComponent];
+        [(UILabel *)self->_firstNameLabel setText:firstNameComponent];
 
-        v34 = [v5 secondNameComponent];
-        [(UILabel *)self->_lastNameLabel setText:v34];
+        secondNameComponent2 = [v5 secondNameComponent];
+        [(UILabel *)self->_lastNameLabel setText:secondNameComponent2];
 
-        v35 = [v5 firstNameComponent];
-        v77[0] = v35;
-        v36 = [v5 secondNameComponent];
-        v77[1] = v36;
+        firstNameComponent2 = [v5 firstNameComponent];
+        v77[0] = firstNameComponent2;
+        secondNameComponent3 = [v5 secondNameComponent];
+        v77[1] = secondNameComponent3;
         v37 = [NSArray arrayWithObjects:v77 count:2];
         v38 = [v37 objectAtIndexedSubscript:{objc_msgSend(v5, "singleNameComponentIndex")}];
-        v39 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-        [v39 setText:v38];
+        participantMarqueeLabel4 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+        [participantMarqueeLabel4 setText:v38];
       }
     }
   }
 
   else
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(trailingSideLayoutGuide) = 0;
   }
 
-  return v3;
+  return trailingSideLayoutGuide;
 }
 
 - (BOOL)shouldUseHeroImageLayout
 {
   v2 = +[CNKFeatures sharedInstance];
-  v3 = [v2 isHeroImageEnabled];
+  isHeroImageEnabled = [v2 isHeroImageEnabled];
 
-  return v3;
+  return isHeroImageEnabled;
 }
 
 - (void)invalidateStatusLabelTimer
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self statusLabelTimer];
+  statusLabelTimer = [(PHSingleCallParticipantLabelView *)self statusLabelTimer];
 
-  if (v3)
+  if (statusLabelTimer)
   {
-    v4 = [(PHSingleCallParticipantLabelView *)self statusLabelTimer];
-    [v4 invalidate];
+    statusLabelTimer2 = [(PHSingleCallParticipantLabelView *)self statusLabelTimer];
+    [statusLabelTimer2 invalidate];
 
     [(PHSingleCallParticipantLabelView *)self setStatusLabelTimer:0];
   }
@@ -423,48 +423,48 @@
 
 - (void)updateLabelTrailingConstraints
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self participantMarqueeLabelTrailingConstraint];
-  [v3 setActive:0];
+  participantMarqueeLabelTrailingConstraint = [(PHSingleCallParticipantLabelView *)self participantMarqueeLabelTrailingConstraint];
+  [participantMarqueeLabelTrailingConstraint setActive:0];
 
-  v4 = [(PHSingleCallParticipantLabelView *)self stackViewTrailingConstraint];
-  [v4 setActive:0];
+  stackViewTrailingConstraint = [(PHSingleCallParticipantLabelView *)self stackViewTrailingConstraint];
+  [stackViewTrailingConstraint setActive:0];
 
-  v5 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelTrailingConstraint];
-  [v5 setActive:0];
+  secondaryInfoLabelTrailingConstraint = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelTrailingConstraint];
+  [secondaryInfoLabelTrailingConstraint setActive:0];
 
-  v6 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelLeadingConstraint];
-  [v6 setActive:0];
+  secondaryInfoLabelLeadingConstraint = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelLeadingConstraint];
+  [secondaryInfoLabelLeadingConstraint setActive:0];
 
-  v7 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  if ([v7 callDisplayStyle])
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle])
   {
   }
 
   else
   {
-    v23 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+    bannerButtonsView = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
 
-    if (v23)
+    if (bannerButtonsView)
     {
-      v24 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      v25 = [v24 trailingAnchor];
-      v26 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-      v27 = [v26 leadingAnchor];
-      v28 = [v25 constraintEqualToAnchor:v27 constant:-10.0];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      trailingAnchor = [participantMarqueeLabel trailingAnchor];
+      bannerButtonsView2 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+      leadingAnchor = [bannerButtonsView2 leadingAnchor];
+      v28 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-10.0];
       [(PHSingleCallParticipantLabelView *)self setParticipantMarqueeLabelTrailingConstraint:v28];
 
-      v29 = [(PHSingleCallParticipantLabelView *)self stackView];
-      v30 = [v29 trailingAnchor];
-      v31 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-      v32 = [v31 leadingAnchor];
-      v33 = [v30 constraintLessThanOrEqualToAnchor:v32 constant:-10.0];
+      stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+      trailingAnchor2 = [stackView trailingAnchor];
+      bannerButtonsView3 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+      leadingAnchor2 = [bannerButtonsView3 leadingAnchor];
+      v33 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor2 constant:-10.0];
       [(PHSingleCallParticipantLabelView *)self setStackViewTrailingConstraint:v33];
 
-      v34 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-      v35 = [v34 trailingAnchor];
-      v36 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-      v37 = [v36 leadingAnchor];
-      v38 = [v35 constraintLessThanOrEqualToAnchor:v37 constant:-10.0];
+      secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+      trailingAnchor3 = [secondaryInfoLabel trailingAnchor];
+      bannerButtonsView4 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+      leadingAnchor3 = [bannerButtonsView4 leadingAnchor];
+      v38 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor3 constant:-10.0];
       [(PHSingleCallParticipantLabelView *)self setSecondaryInfoLabelTrailingConstraint:v38];
 
 LABEL_13:
@@ -475,81 +475,81 @@ LABEL_13:
   [(PHSingleCallParticipantLabelView *)self horizontalPaddingConstantForTrailingConstraints];
   v9 = v8;
   v10 = -v8;
-  v11 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-  if (v11 || ([(PHSingleCallParticipantLabelView *)self callDetailsViewButton], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  conferenceParticipantsButton = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+  if (conferenceParticipantsButton || ([(PHSingleCallParticipantLabelView *)self callDetailsViewButton], (conferenceParticipantsButton = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v12 = v11;
-    v13 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v14 = [v13 trailingAnchor];
-    v15 = [v12 leadingAnchor];
-    v16 = [v14 constraintLessThanOrEqualToAnchor:v15 constant:-10.0];
+    participantMarqueeLabel3 = conferenceParticipantsButton;
+    participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    trailingAnchor4 = [participantMarqueeLabel2 trailingAnchor];
+    leadingAnchor4 = [participantMarqueeLabel3 leadingAnchor];
+    v16 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:leadingAnchor4 constant:-10.0];
     [(PHSingleCallParticipantLabelView *)self setParticipantMarqueeLabelTrailingConstraint:v16];
   }
 
   else
   {
-    v12 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v13 = [v12 trailingAnchor];
-    v14 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
-    v15 = [v13 constraintLessThanOrEqualToAnchor:v14 constant:v10];
-    [(PHSingleCallParticipantLabelView *)self setParticipantMarqueeLabelTrailingConstraint:v15];
+    participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    participantMarqueeLabel2 = [participantMarqueeLabel3 trailingAnchor];
+    trailingAnchor4 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
+    leadingAnchor4 = [participantMarqueeLabel2 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:v10];
+    [(PHSingleCallParticipantLabelView *)self setParticipantMarqueeLabelTrailingConstraint:leadingAnchor4];
   }
 
-  v17 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+  callDetailsViewButton = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
 
-  v18 = [(PHSingleCallParticipantLabelView *)self stackView];
-  v19 = [v18 trailingAnchor];
-  if (v17)
+  stackView2 = [(PHSingleCallParticipantLabelView *)self stackView];
+  trailingAnchor5 = [stackView2 trailingAnchor];
+  if (callDetailsViewButton)
   {
-    v20 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-    v21 = [v20 leadingAnchor];
-    v22 = [v19 constraintLessThanOrEqualToAnchor:v21 constant:-10.0];
+    callDetailsViewButton2 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    leadingAnchor5 = [callDetailsViewButton2 leadingAnchor];
+    v22 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor5 constant:-10.0];
     [(PHSingleCallParticipantLabelView *)self setStackViewTrailingConstraint:v22];
   }
 
   else
   {
-    v20 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
-    v21 = [v19 constraintLessThanOrEqualToAnchor:v20 constant:v10];
-    [(PHSingleCallParticipantLabelView *)self setStackViewTrailingConstraint:v21];
+    callDetailsViewButton2 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
+    leadingAnchor5 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:callDetailsViewButton2 constant:v10];
+    [(PHSingleCallParticipantLabelView *)self setStackViewTrailingConstraint:leadingAnchor5];
   }
 
   if ([(PHSingleCallParticipantLabelView *)self labelLayoutState]== 2)
   {
-    v39 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    v40 = [v39 trailingAnchor];
-    v41 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
-    v42 = [v40 constraintLessThanOrEqualToAnchor:v41 constant:v9 * -2.0];
+    secondaryInfoLabel2 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    trailingAnchor6 = [secondaryInfoLabel2 trailingAnchor];
+    trailingAnchor7 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
+    v42 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:trailingAnchor7 constant:v9 * -2.0];
     [(PHSingleCallParticipantLabelView *)self setSecondaryInfoLabelTrailingConstraint:v42];
 
-    v34 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    v35 = [v34 leadingAnchor];
-    v36 = [(PHSingleCallParticipantLabelView *)self leadingAnchor];
-    v37 = [v35 constraintLessThanOrEqualToAnchor:v36 constant:-(v9 * -2.0)];
-    [(PHSingleCallParticipantLabelView *)self setSecondaryInfoLabelLeadingConstraint:v37];
+    secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    trailingAnchor3 = [secondaryInfoLabel leadingAnchor];
+    bannerButtonsView4 = [(PHSingleCallParticipantLabelView *)self leadingAnchor];
+    leadingAnchor3 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:bannerButtonsView4 constant:-(v9 * -2.0)];
+    [(PHSingleCallParticipantLabelView *)self setSecondaryInfoLabelLeadingConstraint:leadingAnchor3];
     goto LABEL_13;
   }
 
-  v43 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-  v44 = [v43 trailingAnchor];
-  v45 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  v46 = [v45 trailingAnchor];
-  v47 = [v44 constraintLessThanOrEqualToAnchor:v46 constant:v10];
+  secondaryInfoLabel3 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+  trailingAnchor8 = [secondaryInfoLabel3 trailingAnchor];
+  participantMarqueeLabel4 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  trailingAnchor9 = [participantMarqueeLabel4 trailingAnchor];
+  v47 = [trailingAnchor8 constraintLessThanOrEqualToAnchor:trailingAnchor9 constant:v10];
   [(PHSingleCallParticipantLabelView *)self setSecondaryInfoLabelTrailingConstraint:v47];
 
   [(PHSingleCallParticipantLabelView *)self setSecondaryInfoLabelLeadingConstraint:0];
 LABEL_15:
-  v48 = [(PHSingleCallParticipantLabelView *)self participantMarqueeLabelTrailingConstraint];
-  [v48 setActive:1];
+  participantMarqueeLabelTrailingConstraint2 = [(PHSingleCallParticipantLabelView *)self participantMarqueeLabelTrailingConstraint];
+  [participantMarqueeLabelTrailingConstraint2 setActive:1];
 
-  v49 = [(PHSingleCallParticipantLabelView *)self stackViewTrailingConstraint];
-  [v49 setActive:1];
+  stackViewTrailingConstraint2 = [(PHSingleCallParticipantLabelView *)self stackViewTrailingConstraint];
+  [stackViewTrailingConstraint2 setActive:1];
 
-  v50 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelLeadingConstraint];
-  [v50 setActive:1];
+  secondaryInfoLabelLeadingConstraint2 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelLeadingConstraint];
+  [secondaryInfoLabelLeadingConstraint2 setActive:1];
 
-  v51 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelTrailingConstraint];
-  [v51 setActive:1];
+  secondaryInfoLabelTrailingConstraint2 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelTrailingConstraint];
+  [secondaryInfoLabelTrailingConstraint2 setActive:1];
 }
 
 - (double)horizontalPaddingConstantForTrailingConstraints
@@ -563,10 +563,10 @@ LABEL_15:
   else
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
     result = 20.0;
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       return 0.0;
     }
@@ -577,47 +577,47 @@ LABEL_15:
 
 - (BOOL)isDisplayStyleMiniWindow
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 1;
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 1;
 
   return v3;
 }
 
 - (void)updateGestureRecognizersEnabled
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v4 = [v3 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v4 < 2)
+  if (callDisplayStyle < 2)
   {
-    v8 = [(PHSingleCallParticipantLabelView *)self callDetailsGestureRecognizer];
-    [v8 setEnabled:0];
+    callDetailsGestureRecognizer = [(PHSingleCallParticipantLabelView *)self callDetailsGestureRecognizer];
+    [callDetailsGestureRecognizer setEnabled:0];
 
     v7 = 0;
   }
 
   else
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self showsCallDetailsViewButton];
-    v6 = [(PHSingleCallParticipantLabelView *)self callDetailsGestureRecognizer];
-    [v6 setEnabled:v5];
+    showsCallDetailsViewButton = [(PHSingleCallParticipantLabelView *)self showsCallDetailsViewButton];
+    callDetailsGestureRecognizer2 = [(PHSingleCallParticipantLabelView *)self callDetailsGestureRecognizer];
+    [callDetailsGestureRecognizer2 setEnabled:showsCallDetailsViewButton];
 
     v7 = [(PHSingleCallParticipantLabelView *)self showsCallDetailsViewButton]^ 1;
   }
 
-  v9 = [(PHSingleCallParticipantLabelView *)self statusLabelTapRecognizer];
-  [v9 setEnabled:v7];
+  statusLabelTapRecognizer = [(PHSingleCallParticipantLabelView *)self statusLabelTapRecognizer];
+  [statusLabelTapRecognizer setEnabled:v7];
 
-  v12 = [(PHSingleCallParticipantLabelView *)self statusLabelTapRecognizer];
-  v10 = [v12 isEnabled];
-  v11 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  [v11 setUserInteractionEnabled:v10];
+  statusLabelTapRecognizer2 = [(PHSingleCallParticipantLabelView *)self statusLabelTapRecognizer];
+  isEnabled = [statusLabelTapRecognizer2 isEnabled];
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  [statusLabel setUserInteractionEnabled:isEnabled];
 }
 
 - (BOOL)showsCallDetailsViewButton
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-  v3 = v2 != 0;
+  callDetailsViewButton = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+  v3 = callDetailsViewButton != 0;
 
   return v3;
 }
@@ -627,13 +627,13 @@ LABEL_15:
   v14.receiver = self;
   v14.super_class = PHSingleCallParticipantLabelView;
   [(PHSingleCallParticipantLabelView *)&v14 layoutSubviews];
-  v3 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  if (![v3 callDisplayStyle])
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  if (![callDisplayStyleManager callDisplayStyle])
   {
     [(PHSingleCallParticipantLabelView *)self cachedBannerParticipantLabelWidth];
     v5 = v4;
-    v6 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v6 bounds];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel bounds];
     v8 = v7;
 
     if (v5 == v8)
@@ -641,20 +641,20 @@ LABEL_15:
       goto LABEL_5;
     }
 
-    v9 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v9 bounds];
+    participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel2 bounds];
     [(PHSingleCallParticipantLabelView *)self setCachedBannerParticipantLabelWidth:v10];
 
-    v3 = [(PHSingleCallParticipantLabelView *)self updatedParticipantMarqueeLabelFont];
-    v11 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v11 setFont:v3];
+    callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self updatedParticipantMarqueeLabelFont];
+    participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel3 setFont:callDisplayStyleManager];
   }
 
 LABEL_5:
-  v12 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v13 = [v12 callDisplayStyle];
+  callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-  if (v13 == 3)
+  if (callDisplayStyle == 3)
   {
     [(PHSingleCallParticipantLabelView *)self updateAvatarViewConstraints];
     [(PHSingleCallParticipantLabelView *)self updateLabelAlignmentForCallDisplayStyle:3];
@@ -663,16 +663,16 @@ LABEL_5:
   }
 }
 
-- (PHSingleCallParticipantLabelView)initWithCallDisplayStyleManager:(id)a3 delegate:(id)a4
+- (PHSingleCallParticipantLabelView)initWithCallDisplayStyleManager:(id)manager delegate:(id)delegate
 {
-  v7 = a3;
+  managerCopy = manager;
   v67.receiver = self;
   v67.super_class = PHSingleCallParticipantLabelView;
-  v8 = [(PHAbstractCallParticipantLabelView *)&v67 initWithCallDisplayStyleManager:v7 delegate:a4];
+  v8 = [(PHAbstractCallParticipantLabelView *)&v67 initWithCallDisplayStyleManager:managerCopy delegate:delegate];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_callDisplayStyleManager, a3);
+    objc_storeStrong(&v8->_callDisplayStyleManager, manager);
     v10 = objc_alloc_init(UIStackView);
     stackView = v9->_stackView;
     v9->_stackView = v10;
@@ -684,28 +684,28 @@ LABEL_5:
     [(UIStackView *)v9->_stackView setSpacing:6.0];
     [(PHSingleCallParticipantLabelView *)v9 addSubview:v9->_stackView];
     v12 = +[UIColor labelColor];
-    v13 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
-    [v13 setTextColor:v12];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
+    [participantMarqueeLabel setTextColor:v12];
 
     [(PHSingleCallParticipantLabelView *)v9 updateLabelScales];
     v14 = objc_alloc_init(UILabel);
     [(PHAbstractCallParticipantLabelView *)v9 setStatusLabel:v14];
 
-    v15 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-    [v15 setAccessibilityIdentifier:@"PHSingleCallParticipantLabelView_StatusLabel"];
+    statusLabel = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    [statusLabel setAccessibilityIdentifier:@"PHSingleCallParticipantLabelView_StatusLabel"];
 
-    v16 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
-    v17 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [v16 callDisplayStyle]);
-    v18 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-    [v18 setFont:v17];
+    callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
+    v17 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
+    statusLabel2 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    [statusLabel2 setFont:v17];
 
-    v19 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-    [v19 setAdjustsFontSizeToFitWidth:1];
+    statusLabel3 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    [statusLabel3 setAdjustsFontSizeToFitWidth:1];
 
-    v20 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-    [v20 setMinimumScaleFactor:0.75999999];
+    statusLabel4 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    [statusLabel4 setMinimumScaleFactor:0.75999999];
 
-    if ([v7 callDisplayStyle] == 3)
+    if ([managerCopy callDisplayStyle] == 3)
     {
       v21 = 1;
     }
@@ -715,88 +715,88 @@ LABEL_5:
       v21 = 2;
     }
 
-    v22 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-    [v22 setNumberOfLines:v21];
+    statusLabel5 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    [statusLabel5 setNumberOfLines:v21];
 
-    v23 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-    [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+    statusLabel6 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    [statusLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     if ([(PHSingleCallParticipantLabelView *)v9 showPostersEnabledForiPad])
     {
       v24 = +[UIColor systemWhiteColor];
-      v25 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-      [v25 setTextColor:v24];
+      statusLabel7 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+      [statusLabel7 setTextColor:v24];
 
-      v26 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-      [v26 setMarqueeEnabled:1];
+      statusLabel8 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+      [statusLabel8 setMarqueeEnabled:1];
 
-      v27 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-      [v27 setMarqueeRunning:1];
+      statusLabel9 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+      [statusLabel9 setMarqueeRunning:1];
 
-      v28 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-      [v28 setPreferredVibrancy:1];
+      statusLabel10 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+      [statusLabel10 setPreferredVibrancy:1];
 
-      v29 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-      [v29 setAdjustsFontForContentSizeCategory:1];
+      statusLabel11 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+      [statusLabel11 setAdjustsFontForContentSizeCategory:1];
 
-      v30 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-      [v30 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraLarge];
+      statusLabel12 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+      [statusLabel12 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraLarge];
 
-      v31 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-      [v31 setMinimumContentSizeCategory:UIContentSizeCategoryMedium];
+      statusLabel13 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+      [statusLabel13 setMinimumContentSizeCategory:UIContentSizeCategoryMedium];
 
-      v32 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
-      [v32 setPreferredVibrancy:1];
+      participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
+      [participantMarqueeLabel2 setPreferredVibrancy:1];
 
       v33 = +[UIColor systemWhiteColor];
-      v34 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
-      [v34 setTextColor:v33];
+      participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
+      [participantMarqueeLabel3 setTextColor:v33];
 
-      v35 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
-      [v35 setAdjustsFontForContentSizeCategory:1];
+      participantMarqueeLabel4 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
+      [participantMarqueeLabel4 setAdjustsFontForContentSizeCategory:1];
 
-      v36 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
-      [v36 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraExtraExtraLarge];
+      participantMarqueeLabel5 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
+      [participantMarqueeLabel5 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraExtraExtraLarge];
 
-      v37 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
-      [v37 setMinimumContentSizeCategory:UIContentSizeCategoryLarge];
+      participantMarqueeLabel6 = [(PHAbstractCallParticipantLabelView *)v9 participantMarqueeLabel];
+      [participantMarqueeLabel6 setMinimumContentSizeCategory:UIContentSizeCategoryLarge];
     }
 
     else
     {
-      v37 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
-      v38 = +[PHUIConfiguration statusLabelFontColorForCallDisplayStyle:](PHUIConfiguration, "statusLabelFontColorForCallDisplayStyle:", [v37 callDisplayStyle]);
-      v39 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-      [v39 setTextColor:v38];
+      participantMarqueeLabel6 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
+      v38 = +[PHUIConfiguration statusLabelFontColorForCallDisplayStyle:](PHUIConfiguration, "statusLabelFontColorForCallDisplayStyle:", [participantMarqueeLabel6 callDisplayStyle]);
+      statusLabel14 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+      [statusLabel14 setTextColor:v38];
     }
 
-    v40 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    statusLabel15 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
     LODWORD(v41) = 1144750080;
-    [v40 setContentCompressionResistancePriority:0 forAxis:v41];
+    [statusLabel15 setContentCompressionResistancePriority:0 forAxis:v41];
 
-    v42 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    statusLabel16 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
     LODWORD(v43) = 1148846080;
-    [v42 setContentCompressionResistancePriority:1 forAxis:v43];
+    [statusLabel16 setContentCompressionResistancePriority:1 forAxis:v43];
 
-    v44 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    statusLabel17 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
     LODWORD(v45) = 1148846080;
-    [v44 setContentHuggingPriority:0 forAxis:v45];
+    [statusLabel17 setContentHuggingPriority:0 forAxis:v45];
 
-    v46 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    statusLabel18 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
     LODWORD(v47) = 1148846080;
-    [v46 setContentHuggingPriority:1 forAxis:v47];
+    [statusLabel18 setContentHuggingPriority:1 forAxis:v47];
 
-    v48 = [(PHSingleCallParticipantLabelView *)v9 stackView];
-    v49 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-    [v48 addArrangedSubview:v49];
+    stackView = [(PHSingleCallParticipantLabelView *)v9 stackView];
+    statusLabel19 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    [stackView addArrangedSubview:statusLabel19];
 
     v50 = [[UITapGestureRecognizer alloc] initWithTarget:v9 action:"statusLabelTapped:"];
     statusLabelTapRecognizer = v9->_statusLabelTapRecognizer;
     v9->_statusLabelTapRecognizer = v50;
 
     [(UITapGestureRecognizer *)v9->_statusLabelTapRecognizer setNumberOfTapsRequired:1];
-    v52 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
-    [v52 addGestureRecognizer:v9->_statusLabelTapRecognizer];
+    statusLabel20 = [(PHAbstractCallParticipantLabelView *)v9 statusLabel];
+    [statusLabel20 addGestureRecognizer:v9->_statusLabelTapRecognizer];
 
     v53 = [[UITapGestureRecognizer alloc] initWithTarget:v9 action:"callDetailsGestureRecognizerTapped:"];
     callDetailsGestureRecognizer = v9->_callDetailsGestureRecognizer;
@@ -815,35 +815,35 @@ LABEL_5:
     v9->_secondaryInfoLabel = v57;
 
     [(UILabel *)v9->_secondaryInfoLabel setAccessibilityIdentifier:@"PHSingleCallParticipantLabelView_SecondaryInfoLabel"];
-    v59 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
-    v60 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [v59 callDisplayStyle]);
+    callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
+    v60 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [callDisplayStyleManager2 callDisplayStyle]);
     [(UILabel *)v9->_secondaryInfoLabel setFont:v60];
 
     [(UILabel *)v9->_secondaryInfoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v9->_secondaryInfoLabel setAlpha:0.0];
-    v61 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
-    LODWORD(v59) = [v61 usesLargeFormatUI];
+    callDisplayStyleManager3 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
+    LODWORD(callDisplayStyleManager2) = [callDisplayStyleManager3 usesLargeFormatUI];
 
-    if (v59)
+    if (callDisplayStyleManager2)
     {
       [(UILabel *)v9->_secondaryInfoLabel setPreferredVibrancy:1];
-      v62 = [(UILabel *)v9->_secondaryInfoLabel layer];
-      [v62 setAllowsGroupBlending:1];
+      layer = [(UILabel *)v9->_secondaryInfoLabel layer];
+      [layer setAllowsGroupBlending:1];
 
       [(UILabel *)v9->_secondaryInfoLabel setAdjustsFontForContentSizeCategory:1];
-      v63 = +[UIColor tertiaryLabelColor];
-      [(UILabel *)v9->_secondaryInfoLabel setTextColor:v63];
+      callDisplayStyleManager4 = +[UIColor tertiaryLabelColor];
+      [(UILabel *)v9->_secondaryInfoLabel setTextColor:callDisplayStyleManager4];
     }
 
     else
     {
-      v63 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
-      v64 = +[PHUIConfiguration statusLabelFontColorForCallDisplayStyle:](PHUIConfiguration, "statusLabelFontColorForCallDisplayStyle:", [v63 callDisplayStyle]);
+      callDisplayStyleManager4 = [(PHSingleCallParticipantLabelView *)v9 callDisplayStyleManager];
+      v64 = +[PHUIConfiguration statusLabelFontColorForCallDisplayStyle:](PHUIConfiguration, "statusLabelFontColorForCallDisplayStyle:", [callDisplayStyleManager4 callDisplayStyle]);
       [(UILabel *)v9->_secondaryInfoLabel setTextColor:v64];
     }
 
     [(PHSingleCallParticipantLabelView *)v9 addSubview:v9->_secondaryInfoLabel];
-    -[PHSingleCallParticipantLabelView updateLayoutForCallDisplayStyle:](v9, "updateLayoutForCallDisplayStyle:", [v7 callDisplayStyle]);
+    -[PHSingleCallParticipantLabelView updateLayoutForCallDisplayStyle:](v9, "updateLayoutForCallDisplayStyle:", [managerCopy callDisplayStyle]);
     [(PHSingleCallParticipantLabelView *)v9 updateLabelConstraints];
     [(PHSingleCallParticipantLabelView *)v9 setAccessibilityIdentifier:@"PHSingleCallParticipantLabelView"];
     v65 = +[NSNotificationCenter defaultCenter];
@@ -864,27 +864,27 @@ LABEL_5:
   [(PHSingleCallParticipantLabelView *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = PHSingleCallParticipantLabelView;
-  [(PHAbstractCallParticipantLabelView *)&v5 setDelegate:a3];
-  v4 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  -[PHSingleCallParticipantLabelView updateLayoutForCallDisplayStyle:](self, "updateLayoutForCallDisplayStyle:", [v4 callDisplayStyle]);
+  [(PHAbstractCallParticipantLabelView *)&v5 setDelegate:delegate];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  -[PHSingleCallParticipantLabelView updateLayoutForCallDisplayStyle:](self, "updateLayoutForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
 }
 
 - (double)labelsVerticalOffset
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   result = 2.0;
-  if (v3 == 3)
+  if (callDisplayStyle == 3)
   {
     result = -2.0;
   }
 
-  if (v3 == 1)
+  if (callDisplayStyle == 1)
   {
     return 0.0;
   }
@@ -892,26 +892,26 @@ LABEL_5:
   return result;
 }
 
-- (void)setLabelLayoutState:(int64_t)a3 animated:(BOOL)a4
+- (void)setLabelLayoutState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_labelLayoutState != a3)
+  if (self->_labelLayoutState != state)
   {
     v18[5] = v4;
     v18[6] = v5;
-    v6 = a4;
-    self->_labelLayoutState = a3;
+    animatedCopy = animated;
+    self->_labelLayoutState = state;
     [(PHSingleCallParticipantLabelView *)self updateLayoutGuide];
     [(PHSingleCallParticipantLabelView *)self updateHeightConstraints];
-    if (v6)
+    if (animatedCopy)
     {
-      if ((a3 - 1) > 2)
+      if ((state - 1) > 2)
       {
         v9 = &stru_100356B30;
       }
 
       else
       {
-        v9 = off_100356D78[a3 - 1];
+        v9 = off_100356D78[state - 1];
       }
 
       objc_initWeak(v18, self);
@@ -930,14 +930,14 @@ LABEL_5:
 
     else
     {
-      if ((a3 - 1) > 2)
+      if ((state - 1) > 2)
       {
         v10 = &stru_100356B30;
       }
 
       else
       {
-        v10 = off_100356D78[a3 - 1];
+        v10 = off_100356D78[state - 1];
       }
 
       objc_initWeak(v18, self);
@@ -956,30 +956,30 @@ LABEL_5:
   }
 }
 
-- (void)setLabelDescriptor:(id)a3
+- (void)setLabelDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 strings];
-  v6 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
-  v7 = [v5 isEqualToArray:v6];
+  descriptorCopy = descriptor;
+  strings = [descriptorCopy strings];
+  statusLabelsArray = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
+  v7 = [strings isEqualToArray:statusLabelsArray];
 
   if (v7)
   {
     goto LABEL_20;
   }
 
-  [(PHSingleCallParticipantLabelView *)self setStatusLabelsArray:v5];
-  if ([v5 count] < 2)
+  [(PHSingleCallParticipantLabelView *)self setStatusLabelsArray:strings];
+  if ([strings count] < 2)
   {
     v13 = +[CNKFeatures sharedInstance];
-    v14 = [v13 isHeroImageEnabled];
+    isHeroImageEnabled = [v13 isHeroImageEnabled];
 
-    if ((v14 & 1) == 0)
+    if ((isHeroImageEnabled & 1) == 0)
     {
-      v15 = [(PHSingleCallParticipantLabelView *)self traitCollection];
-      v16 = [v15 _backlightLuminance];
+      traitCollection = [(PHSingleCallParticipantLabelView *)self traitCollection];
+      _backlightLuminance = [traitCollection _backlightLuminance];
 
-      if (v16 == 1)
+      if (_backlightLuminance == 1)
       {
         v17 = 0.0;
       }
@@ -989,47 +989,47 @@ LABEL_5:
         v17 = 1.0;
       }
 
-      v18 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-      [v18 setAlpha:v17];
+      statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+      [statusLabel setAlpha:v17];
     }
 
     [(PHSingleCallParticipantLabelView *)self invalidateStatusLabelTimer];
     [(PHSingleCallParticipantLabelView *)self setCurrentStatusLabelIndex:0];
-    v19 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    v20 = [v4 strings];
-    v21 = [v20 firstObject];
-    [v19 setAttributedOrPlainText:v21];
+    statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    strings2 = [descriptorCopy strings];
+    firstObject = [strings2 firstObject];
+    [statusLabel2 setAttributedOrPlainText:firstObject];
 
-    v22 = [(PHSingleCallParticipantLabelView *)self posterNameViewModel];
-    v23 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    v24 = [v23 text];
-    [v22 updateStatus:v24];
+    posterNameViewModel = [(PHSingleCallParticipantLabelView *)self posterNameViewModel];
+    statusLabel3 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    text = [statusLabel3 text];
+    [posterNameViewModel updateStatus:text];
 
-    v25 = [v4 strings];
-    v26 = [v25 firstObject];
+    strings3 = [descriptorCopy strings];
+    firstObject2 = [strings3 firstObject];
     objc_opt_class();
-    LOBYTE(v24) = objc_opt_isKindOfClass();
+    LOBYTE(text) = objc_opt_isKindOfClass();
 
-    if ((v24 & 1) == 0)
+    if ((text & 1) == 0)
     {
       goto LABEL_16;
     }
 
-    v27 = [v4 strings];
-    v28 = [v27 firstObject];
+    strings4 = [descriptorCopy strings];
+    firstObject3 = [strings4 firstObject];
 
-    v29 = +[NSBundle mainBundle];
-    v30 = [v29 localizedStringForKey:@"ALERT_ERROR_LABEL" value:&stru_100361FD0 table:@"Localizable-Stewie"];
-    if ([v28 isEqualToString:v30])
+    posterNameViewModel2 = +[NSBundle mainBundle];
+    statusLabel5 = [posterNameViewModel2 localizedStringForKey:@"ALERT_ERROR_LABEL" value:&stru_100361FD0 table:@"Localizable-Stewie"];
+    if ([firstObject3 isEqualToString:statusLabel5])
     {
-      v31 = [(PHSingleCallParticipantLabelView *)self numberOfLinesInStatusLabel];
+      numberOfLinesInStatusLabel = [(PHSingleCallParticipantLabelView *)self numberOfLinesInStatusLabel];
 
-      if (v31 < 3)
+      if (numberOfLinesInStatusLabel < 3)
       {
 LABEL_15:
 
 LABEL_16:
-        v36 = [v4 layoutState] - 1;
+        v36 = [descriptorCopy layoutState] - 1;
         if (v36 > 2)
         {
           v37 = &stru_100356B30;
@@ -1056,92 +1056,92 @@ LABEL_16:
         goto LABEL_20;
       }
 
-      v32 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+      statusLabel4 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
       v33 = +[NSBundle mainBundle];
       v34 = [v33 localizedStringForKey:@"ALERT_ERROR_LABEL_NO_LINE_BREAK" value:&stru_100361FD0 table:@"Localizable-Stewie"];
-      [v32 setAttributedOrPlainText:v34];
+      [statusLabel4 setAttributedOrPlainText:v34];
 
-      v29 = [(PHSingleCallParticipantLabelView *)self posterNameViewModel];
-      v30 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-      v35 = [v30 text];
-      [v29 updateStatus:v35];
+      posterNameViewModel2 = [(PHSingleCallParticipantLabelView *)self posterNameViewModel];
+      statusLabel5 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+      text2 = [statusLabel5 text];
+      [posterNameViewModel2 updateStatus:text2];
     }
 
     goto LABEL_15;
   }
 
-  v8 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  v9 = [v5 firstObject];
-  [v8 setAttributedOrPlainText:v9];
+  statusLabel6 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  firstObject4 = [strings firstObject];
+  [statusLabel6 setAttributedOrPlainText:firstObject4];
 
-  v10 = [(PHSingleCallParticipantLabelView *)self posterNameViewModel];
-  v11 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  v12 = [v11 text];
-  [v10 updateStatus:v12];
+  posterNameViewModel3 = [(PHSingleCallParticipantLabelView *)self posterNameViewModel];
+  statusLabel7 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  text3 = [statusLabel7 text];
+  [posterNameViewModel3 updateStatus:text3];
 
   [(PHSingleCallParticipantLabelView *)self setCurrentStatusLabelIndex:0];
   [(PHSingleCallParticipantLabelView *)self invalidateStatusLabelTimer];
-  if ([v5 count] >= 2)
+  if ([strings count] >= 2)
   {
     [(PHSingleCallParticipantLabelView *)self scheduleStatusLabelTimer];
   }
 
 LABEL_20:
-  v39 = [v4 sourceString];
+  sourceString = [descriptorCopy sourceString];
 
-  if (v39)
+  if (sourceString)
   {
-    v40 = [v4 sourceString];
+    sourceString2 = [descriptorCopy sourceString];
 LABEL_24:
-    v42 = v40;
-    v43 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    v44 = [v43 text];
-    v45 = v42;
+    secondaryInfoLabel3 = sourceString2;
+    secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    text4 = [secondaryInfoLabel text];
+    v45 = secondaryInfoLabel3;
     goto LABEL_25;
   }
 
-  v41 = [v4 secondaryString];
+  secondaryString = [descriptorCopy secondaryString];
 
-  if (v41)
+  if (secondaryString)
   {
-    v40 = [v4 secondaryString];
+    sourceString2 = [descriptorCopy secondaryString];
     goto LABEL_24;
   }
 
-  v65 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-  v66 = [v65 text];
+  secondaryInfoLabel2 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+  text5 = [secondaryInfoLabel2 text];
 
-  if (!v66)
+  if (!text5)
   {
-    [v5 count];
+    [strings count];
     goto LABEL_34;
   }
 
-  v42 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-  v43 = [v42 text];
-  v44 = [v4 secondaryString];
-  v45 = v43;
+  secondaryInfoLabel3 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+  secondaryInfoLabel = [secondaryInfoLabel3 text];
+  text4 = [descriptorCopy secondaryString];
+  v45 = secondaryInfoLabel;
 LABEL_25:
-  v46 = [v45 isEqualToString:v44];
+  v46 = [v45 isEqualToString:text4];
 
-  if ([v5 count] <= 1 && (v46 & 1) == 0)
+  if ([strings count] <= 1 && (v46 & 1) == 0)
   {
-    v47 = [v4 sourceString];
+    sourceString3 = [descriptorCopy sourceString];
 
-    v48 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    if (v47)
+    secondaryInfoLabel4 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    if (sourceString3)
     {
-      [v4 sourceString];
+      [descriptorCopy sourceString];
     }
 
     else
     {
-      [v4 secondaryString];
+      [descriptorCopy secondaryString];
     }
     v49 = ;
-    [v48 setText:v49];
+    [secondaryInfoLabel4 setText:v49];
 
-    v50 = [v4 layoutState] - 1;
+    v50 = [descriptorCopy layoutState] - 1;
     if (v50 > 2)
     {
       v51 = &stru_100356B30;
@@ -1167,67 +1167,67 @@ LABEL_25:
   }
 
 LABEL_34:
-  v53 = [v4 localizedSenderIdentity];
-  v54 = [v53 length];
+  localizedSenderIdentity = [descriptorCopy localizedSenderIdentity];
+  v54 = [localizedSenderIdentity length];
 
   if (v54)
   {
-    v55 = [(PHSingleCallParticipantLabelView *)self badgeView];
+    badgeView = [(PHSingleCallParticipantLabelView *)self badgeView];
 
-    if (v55)
+    if (badgeView)
     {
-      v56 = [v4 localizedSenderIdentity];
-      v57 = [(PHSingleCallParticipantLabelView *)self badgeView];
-      [v57 setTitle:v56];
+      localizedSenderIdentity2 = [descriptorCopy localizedSenderIdentity];
+      badgeView2 = [(PHSingleCallParticipantLabelView *)self badgeView];
+      [badgeView2 setTitle:localizedSenderIdentity2];
     }
 
     else
     {
       v58 = [TPBadgeView alloc];
-      v59 = [v4 localizedSenderIdentity];
-      v56 = [v58 initWithTitle:v59 theme:1];
+      localizedSenderIdentity3 = [descriptorCopy localizedSenderIdentity];
+      localizedSenderIdentity2 = [v58 initWithTitle:localizedSenderIdentity3 theme:1];
 
-      [v56 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v56 setHidden:{-[PHAbstractCallParticipantLabelView hidesLabel](self, "hidesLabel")}];
-      v60 = [(PHSingleCallParticipantLabelView *)self stackView];
-      v61 = [v60 arrangedSubviews];
-      v62 = [v61 firstObject];
+      [localizedSenderIdentity2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [localizedSenderIdentity2 setHidden:{-[PHAbstractCallParticipantLabelView hidesLabel](self, "hidesLabel")}];
+      stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+      arrangedSubviews = [stackView arrangedSubviews];
+      firstObject5 = [arrangedSubviews firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v64 = [(PHSingleCallParticipantLabelView *)self stackView];
-        [v64 insertArrangedSubview:v56 atIndex:0];
+        stackView2 = [(PHSingleCallParticipantLabelView *)self stackView];
+        [stackView2 insertArrangedSubview:localizedSenderIdentity2 atIndex:0];
       }
 
-      [(PHSingleCallParticipantLabelView *)self setBadgeView:v56];
+      [(PHSingleCallParticipantLabelView *)self setBadgeView:localizedSenderIdentity2];
     }
 
     [(PHSingleCallParticipantLabelView *)self updatePosterBadgeView];
   }
 
-  -[PHSingleCallParticipantLabelView setLabelLayoutState:animated:](self, "setLabelLayoutState:animated:", [v4 layoutState], 1);
+  -[PHSingleCallParticipantLabelView setLabelLayoutState:animated:](self, "setLabelLayoutState:animated:", [descriptorCopy layoutState], 1);
 }
 
 - (int64_t)numberOfLinesInStatusLabel
 {
   [(PHSingleCallParticipantLabelView *)self frame];
   v4 = v3 + -48.0;
-  v5 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  v6 = [v5 font];
-  [v6 lineHeight];
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  font = [statusLabel font];
+  [font lineHeight];
   v8 = v7;
 
-  v9 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  v10 = [v9 text];
+  statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  text = [statusLabel2 text];
 
   v17 = NSFontAttributeName;
-  v11 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  v12 = [v11 font];
-  v18 = v12;
+  statusLabel3 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  font2 = [statusLabel3 font];
+  v18 = font2;
   v13 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  [v10 boundingRectWithSize:1 options:v13 attributes:0 context:{v4, 1.79769313e308}];
+  [text boundingRectWithSize:1 options:v13 attributes:0 context:{v4, 1.79769313e308}];
   v15 = v14;
 
   return (v15 / v8);
@@ -1243,15 +1243,15 @@ LABEL_34:
 
 - (double)getStatusLabelHeight
 {
-  v3 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
 
-  if (!v3)
+  if (!statusLabel)
   {
     return 0.0;
   }
 
-  v4 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  [v4 intrinsicContentSize];
+  statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  [statusLabel2 intrinsicContentSize];
   v6 = v5;
 
   return v6;
@@ -1259,88 +1259,88 @@ LABEL_34:
 
 - (double)getParticipantsMarqueeLabelHeight
 {
-  v3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
 
-  if (!v3)
+  if (!participantMarqueeLabel)
   {
     return 0.0;
   }
 
-  v4 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  [v4 intrinsicContentSize];
+  participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  [participantMarqueeLabel2 intrinsicContentSize];
   v6 = v5;
 
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v21.receiver = self;
   v21.super_class = PHSingleCallParticipantLabelView;
-  v4 = a3;
-  [(PHSingleCallParticipantLabelView *)&v21 traitCollectionDidChange:v4];
-  v5 = [v4 _backlightLuminance];
+  changeCopy = change;
+  [(PHSingleCallParticipantLabelView *)&v21 traitCollectionDidChange:changeCopy];
+  _backlightLuminance = [changeCopy _backlightLuminance];
 
-  v6 = [(PHSingleCallParticipantLabelView *)self traitCollection];
-  v7 = [v6 _backlightLuminance];
+  traitCollection = [(PHSingleCallParticipantLabelView *)self traitCollection];
+  _backlightLuminance2 = [traitCollection _backlightLuminance];
 
-  if (v5 != v7)
+  if (_backlightLuminance != _backlightLuminance2)
   {
-    v8 = [(PHSingleCallParticipantLabelView *)self traitCollection];
-    v9 = [v8 _backlightLuminance];
+    traitCollection2 = [(PHSingleCallParticipantLabelView *)self traitCollection];
+    _backlightLuminance3 = [traitCollection2 _backlightLuminance];
 
-    v10 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    v11 = v10;
-    if (v9 == 1)
+    statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    v11 = statusLabel;
+    if (_backlightLuminance3 == 1)
     {
       v12 = 0.0;
 LABEL_4:
-      [v10 setAlpha:v12];
+      [statusLabel setAlpha:v12];
 LABEL_7:
 
       return;
     }
 
-    v13 = [v10 text];
+    text = [statusLabel text];
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"ALERT_ERROR_LABEL" value:&stru_100361FD0 table:@"Localizable-Stewie"];
-    if ([v13 isEqualToString:v15])
+    if ([text isEqualToString:v15])
     {
 
       goto LABEL_7;
     }
 
-    v16 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    v17 = [v16 text];
+    statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    text2 = [statusLabel2 text];
     v18 = +[NSBundle mainBundle];
     v19 = [v18 localizedStringForKey:@"ALERT_ERROR_LABEL_NO_LINE_BREAK" value:&stru_100361FD0 table:@"Localizable-Stewie"];
-    v20 = [v17 isEqualToString:v19];
+    v20 = [text2 isEqualToString:v19];
 
     if ((v20 & 1) == 0)
     {
-      v10 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-      v11 = v10;
+      statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+      v11 = statusLabel;
       v12 = 1.0;
       goto LABEL_4;
     }
   }
 }
 
-- (void)setHidesLabel:(BOOL)a3
+- (void)setHidesLabel:(BOOL)label
 {
-  v3 = a3;
-  if ([(PHAbstractCallParticipantLabelView *)self hidesLabel]!= a3)
+  labelCopy = label;
+  if ([(PHAbstractCallParticipantLabelView *)self hidesLabel]!= label)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100047A94;
     v6[3] = &unk_100356BB8;
     v6[4] = self;
-    v7 = v3;
+    v7 = labelCopy;
     [UIView performWithoutAnimation:v6];
     v5.receiver = self;
     v5.super_class = PHSingleCallParticipantLabelView;
-    [(PHAbstractCallParticipantLabelView *)&v5 setHidesLabel:v3];
+    [(PHAbstractCallParticipantLabelView *)&v5 setHidesLabel:labelCopy];
   }
 }
 
@@ -1354,32 +1354,32 @@ LABEL_7:
   [UIView performWithoutAnimation:v2];
 }
 
-- (void)setActivityState:(unsigned __int16)a3 animated:(BOOL)a4
+- (void)setActivityState:(unsigned __int16)state animated:(BOOL)animated
 {
-  v4 = a3;
-  if ([(PHAbstractCallParticipantLabelView *)self activityState:a3]!= a3)
+  stateCopy = state;
+  if ([(PHAbstractCallParticipantLabelView *)self activityState:state]!= state)
   {
-    [(PHAbstractCallParticipantLabelView *)self setUserInteractionEnabled:v4 > 1];
+    [(PHAbstractCallParticipantLabelView *)self setUserInteractionEnabled:stateCopy > 1];
     v6.receiver = self;
     v6.super_class = PHSingleCallParticipantLabelView;
-    [(PHAbstractCallParticipantLabelView *)&v6 setActivityState:v4];
+    [(PHAbstractCallParticipantLabelView *)&v6 setActivityState:stateCopy];
   }
 }
 
-- (void)setShowsConferenceParticipantsButton:(BOOL)a3
+- (void)setShowsConferenceParticipantsButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if (![(PHSingleCallParticipantLabelView *)self showPostersEnabledForiPad])
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self shouldUseHeroImageLayout];
-    v6 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+    shouldUseHeroImageLayout = [(PHSingleCallParticipantLabelView *)self shouldUseHeroImageLayout];
+    conferenceParticipantsButton = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
 
-    if (v5 || !v3)
+    if (shouldUseHeroImageLayout || !buttonCopy)
     {
-      if (v6)
+      if (conferenceParticipantsButton)
       {
-        v26 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-        [v26 removeFromSuperview];
+        conferenceParticipantsButton2 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+        [conferenceParticipantsButton2 removeFromSuperview];
 
         [(PHSingleCallParticipantLabelView *)self setConferenceParticipantsButton:0];
 
@@ -1387,48 +1387,48 @@ LABEL_7:
       }
     }
 
-    else if (!v6)
+    else if (!conferenceParticipantsButton)
     {
       v7 = [UIButton buttonWithType:3];
       [(PHSingleCallParticipantLabelView *)self setConferenceParticipantsButton:v7];
 
       v8 = +[UIColor systemTealColor];
-      v9 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-      [v9 setTintColor:v8];
+      conferenceParticipantsButton3 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      [conferenceParticipantsButton3 setTintColor:v8];
 
-      v10 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-      [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+      conferenceParticipantsButton4 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      [conferenceParticipantsButton4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v11 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      conferenceParticipantsButton5 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
       LODWORD(v12) = 1148846080;
-      [v11 setContentCompressionResistancePriority:0 forAxis:v12];
+      [conferenceParticipantsButton5 setContentCompressionResistancePriority:0 forAxis:v12];
 
-      v13 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      conferenceParticipantsButton6 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
       LODWORD(v14) = 1148846080;
-      [v13 setContentCompressionResistancePriority:1 forAxis:v14];
+      [conferenceParticipantsButton6 setContentCompressionResistancePriority:1 forAxis:v14];
 
-      v15 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-      [v15 addTarget:self action:"infoButtonTapped:" forControlEvents:64];
+      conferenceParticipantsButton7 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      [conferenceParticipantsButton7 addTarget:self action:"infoButtonTapped:" forControlEvents:64];
 
-      v16 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-      [(PHSingleCallParticipantLabelView *)self addSubview:v16];
+      conferenceParticipantsButton8 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      [(PHSingleCallParticipantLabelView *)self addSubview:conferenceParticipantsButton8];
 
-      v32 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-      v30 = [v32 bottomAnchor];
-      v31 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      v29 = [v31 firstBaselineAnchor];
-      v28 = [v30 constraintEqualToAnchor:v29];
+      conferenceParticipantsButton9 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      bottomAnchor = [conferenceParticipantsButton9 bottomAnchor];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      firstBaselineAnchor = [participantMarqueeLabel firstBaselineAnchor];
+      v28 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor];
       v33[0] = v28;
-      v27 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      v17 = [v27 trailingAnchor];
-      v18 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-      v19 = [v18 leadingAnchor];
-      v20 = [v17 constraintEqualToAnchor:v19 constant:-10.0];
+      participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      trailingAnchor = [participantMarqueeLabel2 trailingAnchor];
+      conferenceParticipantsButton10 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      leadingAnchor = [conferenceParticipantsButton10 leadingAnchor];
+      v20 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-10.0];
       v33[1] = v20;
-      v21 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
-      v22 = [v21 trailingAnchor];
-      v23 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
-      v24 = [v22 constraintLessThanOrEqualToAnchor:v23 constant:-24.0];
+      conferenceParticipantsButton11 = [(PHSingleCallParticipantLabelView *)self conferenceParticipantsButton];
+      trailingAnchor2 = [conferenceParticipantsButton11 trailingAnchor];
+      trailingAnchor3 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
+      v24 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:-24.0];
       v33[2] = v24;
       v25 = [NSArray arrayWithObjects:v33 count:3];
       [(PHSingleCallParticipantLabelView *)self addConstraints:v25];
@@ -1438,15 +1438,15 @@ LABEL_7:
   }
 }
 
-- (void)infoButtonTapped:(id)a3
+- (void)infoButtonTapped:(id)tapped
 {
-  v4 = [(PHAbstractCallParticipantLabelView *)self delegate];
-  [v4 callLabelInfoLabelWasTappedForLabel:self];
+  delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+  [delegate callLabelInfoLabelWasTappedForLabel:self];
 }
 
-- (void)setShowsCallDetailsViewButton:(BOOL)a3
+- (void)setShowsCallDetailsViewButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(PHSingleCallParticipantLabelView *)self showPostersEnabledForiPad])
   {
 
@@ -1455,11 +1455,11 @@ LABEL_7:
 
   else
   {
-    if (v3 && ![(PHSingleCallParticipantLabelView *)self shouldUseHeroImageLayout])
+    if (buttonCopy && ![(PHSingleCallParticipantLabelView *)self shouldUseHeroImageLayout])
     {
-      v6 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+      callDetailsViewButton = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
 
-      if (v6)
+      if (callDetailsViewButton)
       {
         return;
       }
@@ -1469,8 +1469,8 @@ LABEL_7:
 
     else
     {
-      v5 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-      [v5 removeFromSuperview];
+      callDetailsViewButton2 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+      [callDetailsViewButton2 removeFromSuperview];
 
       [(PHSingleCallParticipantLabelView *)self setCallDetailsViewButton:0];
     }
@@ -1483,10 +1483,10 @@ LABEL_7:
 
 - (BOOL)showPostersEnabledForiPad
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 usesLargeFormatUI];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-  return v3;
+  return usesLargeFormatUI;
 }
 
 - (void)setUpCallDetailsViewButton
@@ -1497,56 +1497,56 @@ LABEL_7:
     [(PHSingleCallParticipantLabelView *)self setCallDetailsViewButton:v3];
 
     v4 = +[UIColor secondaryLabelColor];
-    v5 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-    [v5 setTintColor:v4];
+    callDetailsViewButton = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    [callDetailsViewButton setTintColor:v4];
 
-    v6 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-    [v6 setUserInteractionEnabled:0];
+    callDetailsViewButton2 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    [callDetailsViewButton2 setUserInteractionEnabled:0];
 
-    v7 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    callDetailsViewButton3 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    [callDetailsViewButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    callDetailsViewButton4 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
     LODWORD(v9) = 1148846080;
-    [v8 setContentCompressionResistancePriority:0 forAxis:v9];
+    [callDetailsViewButton4 setContentCompressionResistancePriority:0 forAxis:v9];
 
-    v10 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    callDetailsViewButton5 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
     LODWORD(v11) = 1148846080;
-    [v10 setContentCompressionResistancePriority:1 forAxis:v11];
+    [callDetailsViewButton5 setContentCompressionResistancePriority:1 forAxis:v11];
 
-    v12 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-    [(PHSingleCallParticipantLabelView *)self addSubview:v12];
+    callDetailsViewButton6 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    [(PHSingleCallParticipantLabelView *)self addSubview:callDetailsViewButton6];
 
-    v13 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-    v14 = [v13 centerYAnchor];
-    v15 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    callDetailsViewButton7 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    centerYAnchor = [callDetailsViewButton7 centerYAnchor];
+    centerYAnchor2 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
+    v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v22[0] = v16;
-    v17 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
-    v18 = [v17 trailingAnchor];
-    v19 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:-20.0];
+    callDetailsViewButton8 = [(PHSingleCallParticipantLabelView *)self callDetailsViewButton];
+    trailingAnchor = [callDetailsViewButton8 trailingAnchor];
+    trailingAnchor2 = [(PHSingleCallParticipantLabelView *)self trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
     v22[1] = v20;
     v21 = [NSArray arrayWithObjects:v22 count:2];
     [(PHSingleCallParticipantLabelView *)self addConstraints:v21];
   }
 }
 
-- (void)showFirstAndLastNameAnimated:(BOOL)a3
+- (void)showFirstAndLastNameAnimated:(BOOL)animated
 {
   if (self->_firstNameLabel && self->_lastNameLabel)
   {
-    if (a3)
+    if (animated)
     {
       CGAffineTransformMakeScale(&v16, 0.9, 0.9);
-      v4 = [(PHSingleCallParticipantLabelView *)self firstNameLabel];
+      firstNameLabel = [(PHSingleCallParticipantLabelView *)self firstNameLabel];
       v15 = v16;
-      [v4 setTransform:&v15];
+      [firstNameLabel setTransform:&v15];
 
       CGAffineTransformMakeScale(&v14, 0.9, 0.9);
-      v5 = [(PHSingleCallParticipantLabelView *)self lastNameLabel];
+      lastNameLabel = [(PHSingleCallParticipantLabelView *)self lastNameLabel];
       v15 = v14;
-      [v5 setTransform:&v15];
+      [lastNameLabel setTransform:&v15];
 
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
@@ -1570,47 +1570,47 @@ LABEL_7:
 
     else
     {
-      v6 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-      [v6 setAlpha:0.0];
+      statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+      [statusLabel setAlpha:0.0];
 
-      v7 = [(PHSingleCallParticipantLabelView *)self badgeView];
-      [v7 setAlpha:0.0];
+      badgeView = [(PHSingleCallParticipantLabelView *)self badgeView];
+      [badgeView setAlpha:0.0];
 
-      v8 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      [v8 setAlpha:0.0];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      [participantMarqueeLabel setAlpha:0.0];
 
-      v9 = [(PHSingleCallParticipantLabelView *)self firstNameLabel];
-      [v9 setAlpha:1.0];
+      firstNameLabel2 = [(PHSingleCallParticipantLabelView *)self firstNameLabel];
+      [firstNameLabel2 setAlpha:1.0];
 
-      v10 = [(PHSingleCallParticipantLabelView *)self lastNameLabel];
-      [v10 setAlpha:1.0];
+      lastNameLabel2 = [(PHSingleCallParticipantLabelView *)self lastNameLabel];
+      [lastNameLabel2 setAlpha:1.0];
     }
   }
 }
 
-- (void)hideFirstAndLastNameAnimated:(BOOL)a3
+- (void)hideFirstAndLastNameAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PHSingleCallParticipantLabelView *)self firstNameLabel];
-  if (v5)
+  animatedCopy = animated;
+  firstNameLabel = [(PHSingleCallParticipantLabelView *)self firstNameLabel];
+  if (firstNameLabel)
   {
-    v6 = v5;
-    v7 = [(PHSingleCallParticipantLabelView *)self lastNameLabel];
+    v6 = firstNameLabel;
+    lastNameLabel = [(PHSingleCallParticipantLabelView *)self lastNameLabel];
 
-    if (v7)
+    if (lastNameLabel)
     {
-      if (v3)
+      if (animatedCopy)
       {
         CGAffineTransformMakeScale(&v20, 0.9, 0.9);
-        v8 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+        participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
         v19 = v20;
-        [v8 setTransform:&v19];
+        [participantMarqueeLabel setTransform:&v19];
 
-        v9 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-        [v9 setAlpha:0.0];
+        statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+        [statusLabel setAlpha:0.0];
 
-        v10 = [(PHSingleCallParticipantLabelView *)self badgeView];
-        [v10 setAlpha:0.0];
+        badgeView = [(PHSingleCallParticipantLabelView *)self badgeView];
+        [badgeView setAlpha:0.0];
 
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
@@ -1634,87 +1634,87 @@ LABEL_7:
 
       else
       {
-        v11 = [(PHSingleCallParticipantLabelView *)self firstNameLabel];
-        [v11 setAlpha:0.0];
+        firstNameLabel2 = [(PHSingleCallParticipantLabelView *)self firstNameLabel];
+        [firstNameLabel2 setAlpha:0.0];
 
-        v12 = [(PHSingleCallParticipantLabelView *)self lastNameLabel];
-        [v12 setAlpha:0.0];
+        lastNameLabel2 = [(PHSingleCallParticipantLabelView *)self lastNameLabel];
+        [lastNameLabel2 setAlpha:0.0];
 
-        v13 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-        [v13 setAlpha:1.0];
+        statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+        [statusLabel2 setAlpha:1.0];
 
-        v14 = [(PHSingleCallParticipantLabelView *)self badgeView];
-        [v14 setAlpha:1.0];
+        badgeView2 = [(PHSingleCallParticipantLabelView *)self badgeView];
+        [badgeView2 setAlpha:1.0];
 
-        v15 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-        [v15 setAlpha:1.0];
+        participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+        [participantMarqueeLabel2 setAlpha:1.0];
       }
     }
   }
 }
 
-- (void)callDetailsGestureRecognizerTapped:(id)a3
+- (void)callDetailsGestureRecognizerTapped:(id)tapped
 {
-  v4 = [(PHAbstractCallParticipantLabelView *)self delegate];
-  [v4 callLabelDetailsGestureRecognizerTappedForLabel:self];
+  delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+  [delegate callLabelDetailsGestureRecognizerTappedForLabel:self];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = PHSingleCallParticipantLabelView;
-  v4 = a3;
-  [(PHAbstractCallParticipantLabelView *)&v8 setTextColor:v4];
+  colorCopy = color;
+  [(PHAbstractCallParticipantLabelView *)&v8 setTextColor:colorCopy];
   v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel:v8.receiver];
-  [v5 setTextColor:v4];
+  [v5 setTextColor:colorCopy];
 
-  v6 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  [v6 setTextColor:v4];
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  [statusLabel setTextColor:colorCopy];
 
-  v7 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-  [v7 setTextColor:v4];
+  secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+  [secondaryInfoLabel setTextColor:colorCopy];
 }
 
-- (void)setStatusLabelTextColor:(id)a3
+- (void)setStatusLabelTextColor:(id)color
 {
-  v6 = a3;
-  v4 = [(PHSingleCallParticipantLabelView *)self posterNameViewModel];
+  colorCopy = color;
+  posterNameViewModel = [(PHSingleCallParticipantLabelView *)self posterNameViewModel];
 
-  if (!v4)
+  if (!posterNameViewModel)
   {
-    v5 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    [v5 setTextColor:v6];
+    statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    [statusLabel setTextColor:colorCopy];
   }
 }
 
-- (void)setParticipantMarqueeLabelTextColor:(id)a3
+- (void)setParticipantMarqueeLabelTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  [participantMarqueeLabel setTextColor:colorCopy];
 }
 
-- (void)setStatusLabelTextFont:(id)a3
+- (void)setStatusLabelTextFont:(id)font
 {
-  v4 = a3;
-  v5 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  [statusLabel setFont:fontCopy];
 }
 
-- (void)setParticipantMarqueeLabelFont:(id)a3
+- (void)setParticipantMarqueeLabelFont:(id)font
 {
-  v4 = a3;
-  v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  [participantMarqueeLabel setFont:fontCopy];
 }
 
 - (CNContact)contact
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarView2 = [(PHSingleCallParticipantLabelView *)self avatarView];
   if (isKindOfClass)
   {
     goto LABEL_4;
@@ -1725,32 +1725,32 @@ LABEL_7:
 
   if (v6)
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    avatarView2 = [(PHSingleCallParticipantLabelView *)self avatarView];
 LABEL_4:
-    v7 = [v5 contact];
+    contact = [avatarView2 contact];
 
     goto LABEL_6;
   }
 
-  v7 = 0;
+  contact = 0;
 LABEL_6:
 
-  return v7;
+  return contact;
 }
 
-- (BOOL)shouldBlurAvatarViewForCurrentContactNickname:(id)a3
+- (BOOL)shouldBlurAvatarViewForCurrentContactNickname:(id)nickname
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self currentIMNicknameMatchingContact:a3];
+  v3 = [(PHSingleCallParticipantLabelView *)self currentIMNicknameMatchingContact:nickname];
   if (+[_TtC13InCallService23SensitivityFeatureFlags isSensitivityAvatarTreatmentEnabled])
   {
-    v4 = [v3 avatar];
-    v5 = [v4 contentIsSensitive];
+    avatar = [v3 avatar];
+    contentIsSensitive = [avatar contentIsSensitive];
 
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10[0] = 67109120;
-      v10[1] = v5;
+      v10[1] = contentIsSensitive;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "SNAP: IMNicknameAvatarImage.contentIsSensitive for currentNickname returning %d", v10, 8u);
     }
   }
@@ -1764,28 +1764,28 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "SNAP: IMNicknameAvatarImage.contentIsSensitive for currentNickname not performing check", v10, 2u);
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(contentIsSensitive) = 0;
   }
 
   v7 = +[ICSPreferences sharedPreferences];
-  v8 = [v7 forceBlurCurrentPoster];
+  forceBlurCurrentPoster = [v7 forceBlurCurrentPoster];
 
-  return (v8 | v5) & 1;
+  return (forceBlurCurrentPoster | contentIsSensitive) & 1;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v6 = v5;
-  if (!v4)
+  contactCopy = contact;
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+  v6 = avatarView;
+  if (!contactCopy)
   {
-    if (!v5)
+    if (!avatarView)
     {
       goto LABEL_22;
     }
 
-    v7 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    avatarView2 = [(PHSingleCallParticipantLabelView *)self avatarView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1793,7 +1793,7 @@ LABEL_6:
 
     else
     {
-      v16 = [(PHSingleCallParticipantLabelView *)self avatarView];
+      avatarView3 = [(PHSingleCallParticipantLabelView *)self avatarView];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1803,44 +1803,44 @@ LABEL_6:
       }
     }
 
-    v18 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [v18 removeFromSuperview];
+    avatarView4 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [avatarView4 removeFromSuperview];
 
     [(PHSingleCallParticipantLabelView *)self setAvatarView:0];
     [(PHSingleCallParticipantLabelView *)self updateLayoutGuide];
 LABEL_20:
-    v14 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    -[PHSingleCallParticipantLabelView updateLabelAlignmentForCallDisplayStyle:](self, "updateLabelAlignmentForCallDisplayStyle:", [v14 callDisplayStyle]);
+    callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    -[PHSingleCallParticipantLabelView updateLabelAlignmentForCallDisplayStyle:](self, "updateLabelAlignmentForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
     goto LABEL_21;
   }
 
-  if (!v5)
+  if (!avatarView)
   {
-    if (![v4 imageDataAvailable])
+    if (![contactCopy imageDataAvailable])
     {
       goto LABEL_10;
     }
 
-    v8 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    v9 = [v8 callDisplayStyle];
+    callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-    if (v9 == 3)
+    if (callDisplayStyle == 3)
     {
-      v10 = [[_TtC13InCallService17AmbientAvatarView alloc] initWithContact:v4];
+      v10 = [[_TtC13InCallService17AmbientAvatarView alloc] initWithContact:contactCopy];
     }
 
     else
     {
-      v10 = [[_TtC13InCallService19BlurrableAvatarView alloc] initWithContact:v4 wantsBlur:[(PHSingleCallParticipantLabelView *)self shouldBlurAvatarViewForCurrentContactNickname:v4] isCommunicationSafetyEnabled:+[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled]];
-      v19 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-      v20 = [v19 usesLargeFormatUI];
+      v10 = [[_TtC13InCallService19BlurrableAvatarView alloc] initWithContact:contactCopy wantsBlur:[(PHSingleCallParticipantLabelView *)self shouldBlurAvatarViewForCurrentContactNickname:contactCopy] isCommunicationSafetyEnabled:+[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled]];
+      callDisplayStyleManager3 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+      usesLargeFormatUI = [callDisplayStyleManager3 usesLargeFormatUI];
 
-      if (v20)
+      if (usesLargeFormatUI)
       {
-        v21 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-        v22 = [v21 callDisplayStyle];
+        callDisplayStyleManager4 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+        callDisplayStyle2 = [callDisplayStyleManager4 callDisplayStyle];
 
-        if (v22)
+        if (callDisplayStyle2)
         {
           goto LABEL_19;
         }
@@ -1850,11 +1850,11 @@ LABEL_20:
     [(PHSingleCallParticipantLabelView *)self setAvatarView:v10];
 LABEL_19:
 
-    v23 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+    avatarView5 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [avatarView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v24 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [(PHSingleCallParticipantLabelView *)self addSubview:v24];
+    avatarView6 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [(PHSingleCallParticipantLabelView *)self addSubview:avatarView6];
 
     [(PHSingleCallParticipantLabelView *)self updateLayoutGuide];
     [(PHSingleCallParticipantLabelView *)self updateAvatarViewConstraints];
@@ -1862,16 +1862,16 @@ LABEL_19:
   }
 
 LABEL_10:
-  v11 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarView7 = [(PHSingleCallParticipantLabelView *)self avatarView];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
-  v13 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v14 = v13;
+  avatarView8 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  callDisplayStyleManager = avatarView8;
   if (v12)
   {
 LABEL_13:
-    [v13 setContact:v4];
+    [avatarView8 setContact:contactCopy];
 LABEL_21:
 
     goto LABEL_22;
@@ -1882,8 +1882,8 @@ LABEL_21:
 
   if (v15)
   {
-    v13 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v14 = v13;
+    avatarView8 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    callDisplayStyleManager = avatarView8;
     goto LABEL_13;
   }
 
@@ -1892,71 +1892,71 @@ LABEL_22:
   if ([(PHSingleCallParticipantLabelView *)self shouldUseHeroImageLayout])
   {
     v25 = +[CNKFeatures sharedInstance];
-    v26 = [v25 isNameAndPhotoC3Enabled];
+    isNameAndPhotoC3Enabled = [v25 isNameAndPhotoC3Enabled];
 
-    if (v26)
+    if (isNameAndPhotoC3Enabled)
     {
       v27 = +[TUCallCenter sharedInstance];
-      v28 = [v27 frontmostCall];
+      frontmostCall = [v27 frontmostCall];
 
-      if (v4)
+      if (contactCopy)
       {
-        if (v28)
+        if (frontmostCall)
         {
-          if ([v28 status] == 1)
+          if ([frontmostCall status] == 1)
           {
-            v29 = [(PHSingleCallParticipantLabelView *)self avatarView];
-            if (v29)
+            avatarView9 = [(PHSingleCallParticipantLabelView *)self avatarView];
+            if (avatarView9)
             {
-              v30 = v29;
-              v31 = [(PHSingleCallParticipantLabelView *)self avatarView];
+              v30 = avatarView9;
+              avatarView10 = [(PHSingleCallParticipantLabelView *)self avatarView];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 v32 = +[TUCallCenter sharedInstance];
-                v33 = [v32 currentCallCount];
+                currentCallCount = [v32 currentCallCount];
 
-                if (v33 == 1)
+                if (currentCallCount == 1)
                 {
-                  v34 = [(PHSingleCallParticipantLabelView *)self sharedProfileStateOracle];
+                  sharedProfileStateOracle = [(PHSingleCallParticipantLabelView *)self sharedProfileStateOracle];
 
-                  if (!v34)
+                  if (!sharedProfileStateOracle)
                   {
                     v35 = sub_100004F84();
                     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
                     {
-                      v36 = [v28 contactIdentifier];
+                      contactIdentifier = [frontmostCall contactIdentifier];
                       *buf = 138739971;
-                      v62[0] = v36;
+                      v62[0] = contactIdentifier;
                       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "SNAP: creating a new oracle for contactIdentifier: %{sensitive}@", buf, 0xCu);
                     }
 
-                    v37 = [CNContactStoreConfiguration tu_contactStoreConfigurationForCall:v28];
+                    v37 = [CNContactStoreConfiguration tu_contactStoreConfigurationForCall:frontmostCall];
                     v38 = [[CNContactStore alloc] initWithConfiguration:v37];
-                    v39 = [[CNSharedProfileStateOracle alloc] initWithContact:v4 contactStore:v38];
+                    v39 = [[CNSharedProfileStateOracle alloc] initWithContact:contactCopy contactStore:v38];
                     [(PHSingleCallParticipantLabelView *)self setSharedProfileStateOracle:v39];
                   }
 
-                  v40 = [(PHSingleCallParticipantLabelView *)self avatarView];
-                  v41 = [v40 cnAvatarView];
-                  v42 = [(PHSingleCallParticipantLabelView *)self sharedProfileStateOracle];
-                  [v41 setSharedProfileStateOracle:v42];
+                  avatarView11 = [(PHSingleCallParticipantLabelView *)self avatarView];
+                  cnAvatarView = [avatarView11 cnAvatarView];
+                  sharedProfileStateOracle2 = [(PHSingleCallParticipantLabelView *)self sharedProfileStateOracle];
+                  [cnAvatarView setSharedProfileStateOracle:sharedProfileStateOracle2];
 
-                  v43 = [(PHSingleCallParticipantLabelView *)self sharedProfileStateOracle];
-                  v44 = [v43 pendingNickname];
-                  v45 = [v44 avatar];
+                  sharedProfileStateOracle3 = [(PHSingleCallParticipantLabelView *)self sharedProfileStateOracle];
+                  pendingNickname = [sharedProfileStateOracle3 pendingNickname];
+                  avatar = [pendingNickname avatar];
 
                   if (+[_TtC13InCallService23SensitivityFeatureFlags isSensitivityAvatarTreatmentEnabled])
                   {
-                    v46 = [v45 contentIsSensitive];
+                    contentIsSensitive = [avatar contentIsSensitive];
                     v47 = sub_100004F84();
                     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
                     {
-                      v48 = [v40 wantsBlur];
+                      wantsBlur = [avatarView11 wantsBlur];
                       *buf = 67109376;
-                      LODWORD(v62[0]) = v46;
+                      LODWORD(v62[0]) = contentIsSensitive;
                       WORD2(v62[0]) = 1024;
-                      *(v62 + 6) = v48;
+                      *(v62 + 6) = wantsBlur;
                       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "SNAP: IMNicknameAvatarImage.contentIsSensitive for pendingNickname returning %d currentlyBlurred=%d", buf, 0xEu);
                     }
                   }
@@ -1970,19 +1970,19 @@ LABEL_22:
                       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "SNAP: IMNicknameAvatarImage.contentIsSensitive for pendingNickname not performing checks", buf, 2u);
                     }
 
-                    v46 = 0;
+                    contentIsSensitive = 0;
                   }
 
                   v49 = +[ICSPreferences sharedPreferences];
-                  v50 = [v49 forceBlurNewPoster];
+                  forceBlurNewPoster = [v49 forceBlurNewPoster];
 
                   v51 = 0;
-                  if (!v45 || ((v50 | v46) & 1) == 0)
+                  if (!avatar || ((forceBlurNewPoster | contentIsSensitive) & 1) == 0)
                   {
                     goto LABEL_49;
                   }
 
-                  if ([v40 wantsBlur])
+                  if ([avatarView11 wantsBlur])
                   {
                     v51 = 0;
 LABEL_49:
@@ -1998,22 +1998,22 @@ LABEL_49:
                     v57[2] = sub_1000499D4;
                     v57[3] = &unk_100356CC0;
                     v60 = v51;
-                    v58 = v40;
-                    v59 = v41;
-                    v55 = v41;
-                    v56 = v40;
+                    v58 = avatarView11;
+                    v59 = cnAvatarView;
+                    v55 = cnAvatarView;
+                    v56 = avatarView11;
                     [v55 performTransitionAnimationWithCompletion:v57];
 
                     goto LABEL_52;
                   }
 
-                  v52 = [(PHSingleCallParticipantLabelView *)self sharedProfileStateOracle];
-                  v53 = [v52 avatarViewAnimationTypeForEffectiveState];
+                  sharedProfileStateOracle4 = [(PHSingleCallParticipantLabelView *)self sharedProfileStateOracle];
+                  avatarViewAnimationTypeForEffectiveState = [sharedProfileStateOracle4 avatarViewAnimationTypeForEffectiveState];
 
                   v51 = 0;
-                  if (v53)
+                  if (avatarViewAnimationTypeForEffectiveState)
                   {
-                    if (v53 != 1)
+                    if (avatarViewAnimationTypeForEffectiveState != 1)
                     {
                       goto LABEL_49;
                     }
@@ -2021,7 +2021,7 @@ LABEL_49:
                     v51 = 1;
                   }
 
-                  [v40 setWantsBlur:1];
+                  [avatarView11 setWantsBlur:1];
                   goto LABEL_49;
                 }
               }
@@ -2049,7 +2049,7 @@ LABEL_52:
 
 - (void)updateLabelsOrder
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self labelsOrder];
+  labelsOrder = [(PHSingleCallParticipantLabelView *)self labelsOrder];
   if ([(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient])
   {
     v4 = [(PHSingleCallParticipantLabelView *)self ambientLayout]== 1;
@@ -2058,18 +2058,18 @@ LABEL_52:
 
   if ([(PHSingleCallParticipantLabelView *)self shouldUseHeroImageLayout])
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self inBrandedCall]|| [(PHSingleCallParticipantLabelView *)self inCallDirectoryCall];
-    v9 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    [v9 setMarqueeEnabled:v5];
+    inCallDirectoryCall = [(PHSingleCallParticipantLabelView *)self inBrandedCall]|| [(PHSingleCallParticipantLabelView *)self inCallDirectoryCall];
+    statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    [statusLabel setMarqueeEnabled:inCallDirectoryCall];
 
-    v10 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    [v10 setMarqueeRunning:v5];
+    statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    [statusLabel2 setMarqueeRunning:inCallDirectoryCall];
 
-    v11 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    [v11 setMarqueeEnabled:v5];
+    secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    [secondaryInfoLabel setMarqueeEnabled:inCallDirectoryCall];
 
-    v12 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    [v12 setMarqueeRunning:v5];
+    secondaryInfoLabel2 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    [secondaryInfoLabel2 setMarqueeRunning:inCallDirectoryCall];
 
     goto LABEL_12;
   }
@@ -2081,13 +2081,13 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v6 = [(PHAbstractCallParticipantLabelView *)self delegate];
-  if ([v6 isCallRinging])
+  delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+  if ([delegate isCallRinging])
   {
-    v7 = [(PHAbstractCallParticipantLabelView *)self delegate];
-    v8 = [v7 isKnownCaller];
+    delegate2 = [(PHAbstractCallParticipantLabelView *)self delegate];
+    isKnownCaller = [delegate2 isKnownCaller];
 
-    if (v8)
+    if (isKnownCaller)
     {
       goto LABEL_9;
     }
@@ -2101,7 +2101,7 @@ LABEL_12:
   v4 = 1;
 LABEL_13:
   [(PHSingleCallParticipantLabelView *)self setLabelsOrder:v4];
-  if (v3 != [(PHSingleCallParticipantLabelView *)self labelsOrder])
+  if (labelsOrder != [(PHSingleCallParticipantLabelView *)self labelsOrder])
   {
 
     [(PHSingleCallParticipantLabelView *)self updateLabelConstraints];
@@ -2110,10 +2110,10 @@ LABEL_13:
 
 - (double)_distanceFromParticipantNameBaseLineToStatus
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (!v3)
+  if (!callDisplayStyle)
   {
     return -24.0;
   }
@@ -2128,39 +2128,39 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)_statusLabelStringWillFit:(id)a3
+- (BOOL)_statusLabelStringWillFit:(id)fit
 {
   v10 = NSFontAttributeName;
-  v4 = a3;
-  v5 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v6 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [v5 callDisplayStyle]);
+  fitCopy = fit;
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  v6 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
   v11 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   LODWORD(v8) = 15.0;
-  LOBYTE(self) = [(PHSingleCallParticipantLabelView *)self _statusLabelStringWillFit:v4 attributes:v7 padding:v8];
+  LOBYTE(self) = [(PHSingleCallParticipantLabelView *)self _statusLabelStringWillFit:fitCopy attributes:v7 padding:v8];
 
   return self;
 }
 
-- (BOOL)_statusLabelStringWillFit:(id)a3 attributes:(id)a4 padding:(float)a5
+- (BOOL)_statusLabelStringWillFit:(id)fit attributes:(id)attributes padding:(float)padding
 {
-  [a3 sizeWithAttributes:a4];
+  [fit sizeWithAttributes:attributes];
   v8 = v7;
   [(PHSingleCallParticipantLabelView *)self intrinsicContentSize];
   v10 = v9 + -48.0;
-  v11 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  [v11 bounds];
-  v13 = v10 - (v12 + a5);
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+  [avatarView bounds];
+  v13 = v10 - (v12 + padding);
 
   return v13 > v8;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   iconView = self->_iconView;
-  v20 = v4;
-  if (v4 && !iconView)
+  v20 = iconCopy;
+  if (iconCopy && !iconView)
   {
     v6 = objc_alloc_init(UIImageView);
     v7 = self->_iconView;
@@ -2168,27 +2168,27 @@ LABEL_13:
 
     [(UIImageView *)self->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PHSingleCallParticipantLabelView *)self addSubview:self->_iconView];
-    v8 = [(PHSingleCallParticipantLabelView *)self iconView];
-    v9 = [v8 heightAnchor];
+    iconView = [(PHSingleCallParticipantLabelView *)self iconView];
+    heightAnchor = [iconView heightAnchor];
     [(PHSingleCallParticipantLabelView *)self voipIconEdge];
-    v10 = [v9 constraintEqualToConstant:?];
+    v10 = [heightAnchor constraintEqualToConstant:?];
     [(PHSingleCallParticipantLabelView *)self setAppIconHeightConstraint:v10];
 
-    v11 = [(PHSingleCallParticipantLabelView *)self appIconHeightConstraint];
-    [v11 setActive:1];
+    appIconHeightConstraint = [(PHSingleCallParticipantLabelView *)self appIconHeightConstraint];
+    [appIconHeightConstraint setActive:1];
 
-    v12 = [(PHSingleCallParticipantLabelView *)self iconView];
-    v13 = [v12 widthAnchor];
+    iconView2 = [(PHSingleCallParticipantLabelView *)self iconView];
+    widthAnchor = [iconView2 widthAnchor];
     [(PHSingleCallParticipantLabelView *)self voipIconEdge];
-    v14 = [v13 constraintEqualToConstant:?];
+    v14 = [widthAnchor constraintEqualToConstant:?];
     [(PHSingleCallParticipantLabelView *)self setAppIconWidthConstraint:v14];
 
-    v15 = [(PHSingleCallParticipantLabelView *)self appIconWidthConstraint];
-    [v15 setActive:1];
+    appIconWidthConstraint = [(PHSingleCallParticipantLabelView *)self appIconWidthConstraint];
+    [appIconWidthConstraint setActive:1];
 
-    v16 = [(UIImageView *)self->_iconView centerYAnchor];
-    v17 = [(UIStackView *)self->_stackView centerYAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    centerYAnchor = [(UIImageView *)self->_iconView centerYAnchor];
+    centerYAnchor2 = [(UIStackView *)self->_stackView centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v18 setActive:1];
 
     [(PHSingleCallParticipantLabelView *)self updateStackViewHorizontalConstraintsWithVoIPAppIcon];
@@ -2202,40 +2202,40 @@ LABEL_13:
   }
 
   [(PHSingleCallParticipantLabelView *)self updatePosterBadgeView];
-  v19 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  -[PHSingleCallParticipantLabelView updateLabelTextAlignmentForCallDisplayStyle:](self, "updateLabelTextAlignmentForCallDisplayStyle:", [v19 callDisplayStyle]);
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  -[PHSingleCallParticipantLabelView updateLabelTextAlignmentForCallDisplayStyle:](self, "updateLabelTextAlignmentForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
 }
 
 - (void)updateIconSize
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self iconView];
+  iconView = [(PHSingleCallParticipantLabelView *)self iconView];
 
-  if (v3)
+  if (iconView)
   {
     [(PHSingleCallParticipantLabelView *)self voipIconEdge];
     v5 = v4;
-    v6 = [(PHSingleCallParticipantLabelView *)self appIconHeightConstraint];
-    [v6 setConstant:v5];
+    appIconHeightConstraint = [(PHSingleCallParticipantLabelView *)self appIconHeightConstraint];
+    [appIconHeightConstraint setConstant:v5];
 
     [(PHSingleCallParticipantLabelView *)self voipIconEdge];
     v8 = v7;
-    v9 = [(PHSingleCallParticipantLabelView *)self appIconWidthConstraint];
-    [v9 setConstant:v8];
+    appIconWidthConstraint = [(PHSingleCallParticipantLabelView *)self appIconWidthConstraint];
+    [appIconWidthConstraint setConstant:v8];
   }
 }
 
 - (double)voipIconEdge
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   result = 16.0;
-  if (v3 == 3)
+  if (callDisplayStyle == 3)
   {
     result = 26.0;
   }
 
-  if (!v3)
+  if (!callDisplayStyle)
   {
     return 13.0;
   }
@@ -2245,16 +2245,16 @@ LABEL_13:
 
 - (double)voipIconMarginH
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   result = 5.0;
-  if (v3 == 3)
+  if (callDisplayStyle == 3)
   {
     result = 8.0;
   }
 
-  if (!v3)
+  if (!callDisplayStyle)
   {
     return 4.0;
   }
@@ -2262,19 +2262,19 @@ LABEL_13:
   return result;
 }
 
-- (void)setBusinessLogo:(id)a3 isPerson:(BOOL)a4
+- (void)setBusinessLogo:(id)logo isPerson:(BOOL)person
 {
-  v4 = a4;
-  v37 = a3;
+  personCopy = person;
+  logoCopy = logo;
   if (![(PHSingleCallParticipantLabelView *)self shouldUseHeroImageLayout])
   {
-    v6 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    v7 = [v6 callDisplayStyle];
+    callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v7 != 3)
+    if (callDisplayStyle != 3)
     {
       businessLogoView = self->_businessLogoView;
-      if (v37 && !businessLogoView)
+      if (logoCopy && !businessLogoView)
       {
         v17 = objc_alloc_init(UIImageView);
         v18 = self->_businessLogoView;
@@ -2282,27 +2282,27 @@ LABEL_13:
 
         [(UIImageView *)self->_businessLogoView setTranslatesAutoresizingMaskIntoConstraints:0];
         [(PHSingleCallParticipantLabelView *)self addSubview:self->_businessLogoView];
-        v19 = [(PHSingleCallParticipantLabelView *)self businessLogoView];
-        v20 = [v19 heightAnchor];
+        businessLogoView = [(PHSingleCallParticipantLabelView *)self businessLogoView];
+        heightAnchor = [businessLogoView heightAnchor];
         [(PHSingleCallParticipantLabelView *)self businessLogoEdge];
-        v21 = [v20 constraintEqualToConstant:?];
+        v21 = [heightAnchor constraintEqualToConstant:?];
         [(PHSingleCallParticipantLabelView *)self setBusinessLogoHeightConstraint:v21];
 
-        v22 = [(PHSingleCallParticipantLabelView *)self businessLogoHeightConstraint];
-        [v22 setActive:1];
+        businessLogoHeightConstraint = [(PHSingleCallParticipantLabelView *)self businessLogoHeightConstraint];
+        [businessLogoHeightConstraint setActive:1];
 
-        v23 = [(PHSingleCallParticipantLabelView *)self businessLogoView];
-        v24 = [v23 widthAnchor];
+        businessLogoView2 = [(PHSingleCallParticipantLabelView *)self businessLogoView];
+        widthAnchor = [businessLogoView2 widthAnchor];
         [(PHSingleCallParticipantLabelView *)self businessLogoEdge];
-        v25 = [v24 constraintEqualToConstant:?];
+        v25 = [widthAnchor constraintEqualToConstant:?];
         [(PHSingleCallParticipantLabelView *)self setBusinessLogoWidthConstraint:v25];
 
-        v26 = [(PHSingleCallParticipantLabelView *)self businessLogoWidthConstraint];
-        [v26 setActive:1];
+        businessLogoWidthConstraint = [(PHSingleCallParticipantLabelView *)self businessLogoWidthConstraint];
+        [businessLogoWidthConstraint setActive:1];
 
-        v27 = [(UIImageView *)self->_businessLogoView centerYAnchor];
-        v28 = [(UIStackView *)self->_stackView centerYAnchor];
-        v29 = [v27 constraintEqualToAnchor:v28];
+        centerYAnchor = [(UIImageView *)self->_businessLogoView centerYAnchor];
+        centerYAnchor2 = [(UIStackView *)self->_stackView centerYAnchor];
+        v29 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         [v29 setActive:1];
 
         [(PHSingleCallParticipantLabelView *)self updateStackViewHorizontalConstraintsWithBusinessLogo];
@@ -2311,27 +2311,27 @@ LABEL_13:
 
       if (businessLogoView)
       {
-        if (v37)
+        if (logoCopy)
         {
           [(UIImageView *)businessLogoView setImage:?];
           [(PHSingleCallParticipantLabelView *)self businessLogoCornerRadius];
           v31 = v30;
-          v32 = [(UIImageView *)self->_businessLogoView layer];
-          [v32 setCornerRadius:v31];
+          layer = [(UIImageView *)self->_businessLogoView layer];
+          [layer setCornerRadius:v31];
 
-          v33 = [(UIImageView *)self->_businessLogoView layer];
-          [v33 setMasksToBounds:1];
+          layer2 = [(UIImageView *)self->_businessLogoView layer];
+          [layer2 setMasksToBounds:1];
 
           [(PHSingleCallParticipantLabelView *)self updateStackViewHorizontalConstraintsWithBusinessLogo];
         }
 
         else
         {
-          v34 = [(PHSingleCallParticipantLabelView *)self businessLogoHeightConstraint];
-          [v34 setActive:0];
+          businessLogoHeightConstraint2 = [(PHSingleCallParticipantLabelView *)self businessLogoHeightConstraint];
+          [businessLogoHeightConstraint2 setActive:0];
 
-          v35 = [(PHSingleCallParticipantLabelView *)self businessLogoWidthConstraint];
-          [v35 setActive:0];
+          businessLogoWidthConstraint2 = [(PHSingleCallParticipantLabelView *)self businessLogoWidthConstraint];
+          [businessLogoWidthConstraint2 setActive:0];
 
           [(UIImageView *)self->_businessLogoView removeFromSuperview];
           v36 = self->_businessLogoView;
@@ -2339,44 +2339,44 @@ LABEL_13:
         }
       }
 
-      v12 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-      -[PHSingleCallParticipantLabelView updateLabelTextAlignmentForCallDisplayStyle:](self, "updateLabelTextAlignmentForCallDisplayStyle:", [v12 callDisplayStyle]);
+      callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+      -[PHSingleCallParticipantLabelView updateLabelTextAlignmentForCallDisplayStyle:](self, "updateLabelTextAlignmentForCallDisplayStyle:", [callDisplayStyleManager2 callDisplayStyle]);
       goto LABEL_20;
     }
   }
 
-  v8 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
 
-  if (v37 && !v8)
+  if (logoCopy && !avatarView)
   {
-    v9 = [[_TtC13InCallService13LogoImageView alloc] initWithImage:v37 style:!v4];
+    v9 = [[_TtC13InCallService13LogoImageView alloc] initWithImage:logoCopy style:!personCopy];
     [(PHSingleCallParticipantLabelView *)self setAvatarView:v9];
 
-    v10 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    avatarView2 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [avatarView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [(PHSingleCallParticipantLabelView *)self addSubview:v11];
+    avatarView3 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [(PHSingleCallParticipantLabelView *)self addSubview:avatarView3];
 
     [(PHSingleCallParticipantLabelView *)self updateLayoutGuide];
     [(PHSingleCallParticipantLabelView *)self updateAvatarViewConstraints];
 LABEL_6:
-    v12 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    -[PHSingleCallParticipantLabelView updateLabelAlignmentForCallDisplayStyle:](self, "updateLabelAlignmentForCallDisplayStyle:", [v12 callDisplayStyle]);
+    callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    -[PHSingleCallParticipantLabelView updateLabelAlignmentForCallDisplayStyle:](self, "updateLabelAlignmentForCallDisplayStyle:", [callDisplayStyleManager2 callDisplayStyle]);
     goto LABEL_20;
   }
 
-  v13 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarView4 = [(PHSingleCallParticipantLabelView *)self avatarView];
 
-  if (!v13)
+  if (!avatarView4)
   {
     goto LABEL_21;
   }
 
-  v14 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  if (!v37)
+  avatarView5 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  if (!logoCopy)
   {
-    [v14 removeFromSuperview];
+    [avatarView5 removeFromSuperview];
 
     [(PHSingleCallParticipantLabelView *)self setAvatarView:0];
     [(PHSingleCallParticipantLabelView *)self updateLayoutGuide];
@@ -2391,8 +2391,8 @@ LABEL_6:
     goto LABEL_21;
   }
 
-  v12 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  [v12 setImage:v37];
+  callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  [callDisplayStyleManager2 setImage:logoCopy];
 LABEL_20:
 
 LABEL_21:
@@ -2400,34 +2400,34 @@ LABEL_21:
 
 - (void)updateBusinessLogoSize
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self businessLogoView];
+  businessLogoView = [(PHSingleCallParticipantLabelView *)self businessLogoView];
 
-  if (v3)
+  if (businessLogoView)
   {
     [(PHSingleCallParticipantLabelView *)self businessLogoEdge];
     v5 = v4;
-    v6 = [(PHSingleCallParticipantLabelView *)self businessLogoHeightConstraint];
-    [v6 setConstant:v5];
+    businessLogoHeightConstraint = [(PHSingleCallParticipantLabelView *)self businessLogoHeightConstraint];
+    [businessLogoHeightConstraint setConstant:v5];
 
     [(PHSingleCallParticipantLabelView *)self businessLogoEdge];
     v8 = v7;
-    v9 = [(PHSingleCallParticipantLabelView *)self businessLogoWidthConstraint];
-    [v9 setConstant:v8];
+    businessLogoWidthConstraint = [(PHSingleCallParticipantLabelView *)self businessLogoWidthConstraint];
+    [businessLogoWidthConstraint setConstant:v8];
   }
 }
 
 - (double)businessLogoEdge
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   result = 22.0;
-  if (v3 == 3)
+  if (callDisplayStyle == 3)
   {
     result = 26.0;
   }
 
-  if (!v3)
+  if (!callDisplayStyle)
   {
     return 16.0;
   }
@@ -2437,11 +2437,11 @@ LABEL_21:
 
 - (double)businessLogoMarginH
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   result = 8.0;
-  if (!v3)
+  if (!callDisplayStyle)
   {
     return 6.0;
   }
@@ -2451,16 +2451,16 @@ LABEL_21:
 
 - (double)businessLogoCornerRadius
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   result = 4.0;
-  if (v3 == 3)
+  if (callDisplayStyle == 3)
   {
     result = 6.0;
   }
 
-  if (!v3)
+  if (!callDisplayStyle)
   {
     return 3.0;
   }
@@ -2468,49 +2468,49 @@ LABEL_21:
   return result;
 }
 
-- (void)setBannerButtonsState:(unint64_t)a3
+- (void)setBannerButtonsState:(unint64_t)state
 {
-  v4 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-  [v4 setState:a3];
+  bannerButtonsView = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+  [bannerButtonsView setState:state];
 }
 
-- (void)setBannerAudioRouteButtonSelected:(BOOL)a3
+- (void)setBannerAudioRouteButtonSelected:(BOOL)selected
 {
-  v3 = a3;
-  v4 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-  [v4 setAudioRouteButtonSelected:v3];
+  selectedCopy = selected;
+  bannerButtonsView = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+  [bannerButtonsView setAudioRouteButtonSelected:selectedCopy];
 }
 
-- (void)setTrailingSideLayoutGuide:(id)a3
+- (void)setTrailingSideLayoutGuide:(id)guide
 {
-  objc_storeWeak(&self->_trailingSideLayoutGuide, a3);
-  v4 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  -[PHSingleCallParticipantLabelView updateLayoutForCallDisplayStyle:](self, "updateLayoutForCallDisplayStyle:", [v4 callDisplayStyle]);
+  objc_storeWeak(&self->_trailingSideLayoutGuide, guide);
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  -[PHSingleCallParticipantLabelView updateLayoutForCallDisplayStyle:](self, "updateLayoutForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
 }
 
-- (void)setCustomAvatar:(id)a3
+- (void)setCustomAvatar:(id)avatar
 {
-  v11 = a3;
-  v4 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarCopy = avatar;
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
 
-  if (v4)
+  if (avatarView)
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [v5 removeFromSuperview];
+    avatarView2 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [avatarView2 removeFromSuperview];
 
     [(PHSingleCallParticipantLabelView *)self setAvatarView:0];
   }
 
-  if (v11)
+  if (avatarCopy)
   {
-    v6 = [[UIImageView alloc] initWithImage:v11];
+    v6 = [[UIImageView alloc] initWithImage:avatarCopy];
     [(PHSingleCallParticipantLabelView *)self setAvatarView:v6];
 
-    v7 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    avatarView3 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [avatarView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [(PHSingleCallParticipantLabelView *)self addSubview:v8];
+    avatarView4 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [(PHSingleCallParticipantLabelView *)self addSubview:avatarView4];
 
     [(PHSingleCallParticipantLabelView *)self updateLayoutGuide];
     [(PHSingleCallParticipantLabelView *)self updateAvatarViewConstraints];
@@ -2518,41 +2518,41 @@ LABEL_21:
 
   else
   {
-    v9 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    [v9 removeFromSuperview];
+    avatarView5 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    [avatarView5 removeFromSuperview];
 
     [(PHSingleCallParticipantLabelView *)self setAvatarView:0];
     [(PHSingleCallParticipantLabelView *)self updateLayoutGuide];
   }
 
-  v10 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  -[PHSingleCallParticipantLabelView updateLabelAlignmentForCallDisplayStyle:](self, "updateLabelAlignmentForCallDisplayStyle:", [v10 callDisplayStyle]);
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  -[PHSingleCallParticipantLabelView updateLabelAlignmentForCallDisplayStyle:](self, "updateLabelAlignmentForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
 }
 
-- (void)setPosterNameViewModel:(id)a3
+- (void)setPosterNameViewModel:(id)model
 {
-  v7 = a3;
-  v4 = objc_storeWeak(&self->_posterNameViewModel, v7);
-  v5 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  v6 = [v5 text];
-  [v7 updateStatus:v6];
+  modelCopy = model;
+  v4 = objc_storeWeak(&self->_posterNameViewModel, modelCopy);
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  text = [statusLabel text];
+  [modelCopy updateStatus:text];
 }
 
-- (void)setPosterBadgeView:(id)a3
+- (void)setPosterBadgeView:(id)view
 {
-  objc_storeWeak(&self->_posterBadgeView, a3);
+  objc_storeWeak(&self->_posterBadgeView, view);
 
   [(PHSingleCallParticipantLabelView *)self updatePosterBadgeView];
 }
 
-- (void)statusLabelTapped:(id)a3
+- (void)statusLabelTapped:(id)tapped
 {
-  v4 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
-  if (v4)
+  statusLabelsArray = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
+  if (statusLabelsArray)
   {
-    v5 = v4;
-    v6 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
-    v7 = [v6 count];
+    v5 = statusLabelsArray;
+    statusLabelsArray2 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
+    v7 = [statusLabelsArray2 count];
 
     if (v7 >= 2)
     {
@@ -2572,27 +2572,27 @@ LABEL_21:
 
 - (void)animateToNextLabel
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
-  if (v3)
+  statusLabelsArray = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
+  if (statusLabelsArray)
   {
-    v4 = v3;
-    v5 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
-    v6 = [v5 count];
+    v4 = statusLabelsArray;
+    statusLabelsArray2 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
+    v6 = [statusLabelsArray2 count];
 
     if (v6 >= 2)
     {
       [(PHSingleCallParticipantLabelView *)self setCurrentStatusLabelIndex:[(PHSingleCallParticipantLabelView *)self currentStatusLabelIndex]+ 1];
-      v7 = [(PHSingleCallParticipantLabelView *)self currentStatusLabelIndex];
-      v8 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
-      v9 = [v8 count];
+      currentStatusLabelIndex = [(PHSingleCallParticipantLabelView *)self currentStatusLabelIndex];
+      statusLabelsArray3 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
+      v9 = [statusLabelsArray3 count];
 
-      if (v7 >= v9)
+      if (currentStatusLabelIndex >= v9)
       {
         [(PHSingleCallParticipantLabelView *)self setCurrentStatusLabelIndex:0];
       }
 
-      v11 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
-      v10 = [v11 objectAtIndex:{-[PHSingleCallParticipantLabelView currentStatusLabelIndex](self, "currentStatusLabelIndex")}];
+      statusLabelsArray4 = [(PHSingleCallParticipantLabelView *)self statusLabelsArray];
+      v10 = [statusLabelsArray4 objectAtIndex:{-[PHSingleCallParticipantLabelView currentStatusLabelIndex](self, "currentStatusLabelIndex")}];
       [(PHSingleCallParticipantLabelView *)self fadeStatusLabelToAttributedOrPlainString:v10];
     }
   }
@@ -2614,7 +2614,7 @@ LABEL_21:
   objc_destroyWeak(&location);
 }
 
-- (void)fadeStatusLabelToAttributedOrPlainString:(id)a3
+- (void)fadeStatusLabelToAttributedOrPlainString:(id)string
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -2626,114 +2626,114 @@ LABEL_21:
   v4[2] = sub_10004AF34;
   v4[3] = &unk_100356D10;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  stringCopy = string;
+  v3 = stringCopy;
   [UIView animateWithDuration:v6 animations:v4 completion:0.200000003];
 }
 
-- (void)updateLayoutForCallDisplayStyle:(int64_t)a3
+- (void)updateLayoutForCallDisplayStyle:(int64_t)style
 {
-  v5 = sub_100004F84();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  delegate2 = sub_100004F84();
+  if (os_log_type_enabled(delegate2, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICSCallDisplayStyleManager *)self->_callDisplayStyleManager callDisplayStyle];
+    callDisplayStyle = [(ICSCallDisplayStyleManager *)self->_callDisplayStyleManager callDisplayStyle];
     v10 = 134217984;
-    v11 = v6;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating single-participant label for presentation mode %ld", &v10, 0xCu);
+    v11 = callDisplayStyle;
+    _os_log_impl(&_mh_execute_header, delegate2, OS_LOG_TYPE_DEFAULT, "Updating single-participant label for presentation mode %ld", &v10, 0xCu);
   }
 
   [(PHSingleCallParticipantLabelView *)self updateParticipantMarqueeLabelNumberOfLines];
   [(PHSingleCallParticipantLabelView *)self updateLabelsOrderAndLayout];
-  [(PHSingleCallParticipantLabelView *)self updateBannerButtonsViewForCallDisplayStyle:a3];
+  [(PHSingleCallParticipantLabelView *)self updateBannerButtonsViewForCallDisplayStyle:style];
   [(PHSingleCallParticipantLabelView *)self updateAvatarViewConstraints];
-  [(PHSingleCallParticipantLabelView *)self updateLabelAlignmentForCallDisplayStyle:a3];
+  [(PHSingleCallParticipantLabelView *)self updateLabelAlignmentForCallDisplayStyle:style];
   [(PHSingleCallParticipantLabelView *)self updateLabelScales];
   [(PHSingleCallParticipantLabelView *)self updateLabelFonts];
-  v7 = [(PHAbstractCallParticipantLabelView *)self delegate];
-  if (v7)
+  delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+  if (delegate)
   {
-    v5 = [(PHAbstractCallParticipantLabelView *)self delegate];
-    v8 = [v5 shouldShowParticipantLabel];
+    delegate2 = [(PHAbstractCallParticipantLabelView *)self delegate];
+    shouldShowParticipantLabel = [delegate2 shouldShowParticipantLabel];
   }
 
   else
   {
-    v8 = 1.0;
+    shouldShowParticipantLabel = 1.0;
   }
 
-  v9 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  [v9 setAlpha:v8];
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  [participantMarqueeLabel setAlpha:shouldShowParticipantLabel];
 
-  if (v7)
+  if (delegate)
   {
   }
 }
 
 - (void)deactivateLayoutGuideConstraints
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMinLeadingConstraint];
-  [v3 setActive:0];
+  participantAndStatusRectangleMinLeadingConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMinLeadingConstraint];
+  [participantAndStatusRectangleMinLeadingConstraint setActive:0];
 
-  v4 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMaxLeadingConstraint];
-  [v4 setActive:0];
+  participantAndStatusRectangleMaxLeadingConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMaxLeadingConstraint];
+  [participantAndStatusRectangleMaxLeadingConstraint setActive:0];
 
-  v5 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleTrailingConstraint];
-  [v5 setActive:0];
+  participantAndStatusRectangleTrailingConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleTrailingConstraint];
+  [participantAndStatusRectangleTrailingConstraint setActive:0];
 
-  v6 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleCenterXConstraint];
-  [v6 setActive:0];
+  participantAndStatusRectangleCenterXConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleCenterXConstraint];
+  [participantAndStatusRectangleCenterXConstraint setActive:0];
 
-  v7 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleCenterYConstraint];
-  [v7 setActive:0];
+  participantAndStatusRectangleCenterYConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleCenterYConstraint];
+  [participantAndStatusRectangleCenterYConstraint setActive:0];
 
-  v8 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleTopConstraint];
-  [v8 setActive:0];
+  participantAndStatusRectangleTopConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleTopConstraint];
+  [participantAndStatusRectangleTopConstraint setActive:0];
 
-  v9 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleBottomConstraint];
-  [v9 setActive:0];
+  participantAndStatusRectangleBottomConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleBottomConstraint];
+  [participantAndStatusRectangleBottomConstraint setActive:0];
 }
 
 - (void)updateLayoutGuide
 {
   [(PHSingleCallParticipantLabelView *)self deactivateLayoutGuideConstraints];
-  v3 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-  v4 = [v3 centerYAnchor];
-  v5 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  participantAndStatusRectangle = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+  centerYAnchor = [participantAndStatusRectangle centerYAnchor];
+  centerYAnchor2 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
+  v6 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleCenterYConstraint:v6];
 
-  v7 = [(PHSingleCallParticipantLabelView *)self labelsOrder];
-  v8 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-  v9 = [v8 topAnchor];
-  if (v7 == 1)
+  labelsOrder = [(PHSingleCallParticipantLabelView *)self labelsOrder];
+  participantAndStatusRectangle2 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+  topAnchor = [participantAndStatusRectangle2 topAnchor];
+  if (labelsOrder == 1)
   {
-    v10 = [(PHSingleCallParticipantLabelView *)self stackView];
-    v11 = [v10 topAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11];
+    stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+    topAnchor2 = [stackView topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleTopConstraint:v12];
 
-    v13 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    if (!v13 || (-[PHSingleCallParticipantLabelView secondaryInfoLabel](self, "secondaryInfoLabel"), v9 = objc_claimAutoreleasedReturnValue(), [v9 text], v11 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v11, "length")))
+    secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    if (!secondaryInfoLabel || (-[PHSingleCallParticipantLabelView secondaryInfoLabel](self, "secondaryInfoLabel"), topAnchor = objc_claimAutoreleasedReturnValue(), [topAnchor text], topAnchor2 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(topAnchor2, "length")))
     {
-      v17 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
       goto LABEL_10;
     }
   }
 
   else
   {
-    v14 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v11 = [v14 topAnchor];
-    v15 = [v9 constraintEqualToAnchor:v11];
+    participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    topAnchor2 = [participantMarqueeLabel2 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleTopConstraint:v15];
 
-    v13 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    if (!v13 || (-[PHSingleCallParticipantLabelView secondaryInfoLabel](self, "secondaryInfoLabel"), v9 = objc_claimAutoreleasedReturnValue(), [v9 text], v11 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v11, "length")))
+    secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    if (!secondaryInfoLabel || (-[PHSingleCallParticipantLabelView secondaryInfoLabel](self, "secondaryInfoLabel"), topAnchor = objc_claimAutoreleasedReturnValue(), [topAnchor text], topAnchor2 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(topAnchor2, "length")))
     {
-      v17 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
 LABEL_10:
-      v16 = v17;
-      if (!v13)
+      secondaryInfoLabel2 = participantMarqueeLabel;
+      if (!secondaryInfoLabel)
       {
         goto LABEL_12;
       }
@@ -2742,60 +2742,60 @@ LABEL_10:
     }
   }
 
-  v16 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+  secondaryInfoLabel2 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
 LABEL_11:
 
 LABEL_12:
-  v18 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-  v19 = [v18 bottomAnchor];
-  v20 = [v16 bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  participantAndStatusRectangle3 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+  bottomAnchor = [participantAndStatusRectangle3 bottomAnchor];
+  bottomAnchor2 = [secondaryInfoLabel2 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleBottomConstraint:v21];
 
   v22 = [(PHSingleCallParticipantLabelView *)self ambientLayout]== 0;
-  v23 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleCenterYConstraint];
-  [v23 setActive:v22];
+  participantAndStatusRectangleCenterYConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleCenterYConstraint];
+  [participantAndStatusRectangleCenterYConstraint setActive:v22];
 
-  v24 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleTopConstraint];
-  [v24 setActive:1];
+  participantAndStatusRectangleTopConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleTopConstraint];
+  [participantAndStatusRectangleTopConstraint setActive:1];
 
-  v25 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleBottomConstraint];
-  [v25 setActive:1];
+  participantAndStatusRectangleBottomConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleBottomConstraint];
+  [participantAndStatusRectangleBottomConstraint setActive:1];
 
-  v26 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v27 = [v26 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if ((v27 - 1) <= 3)
+  if ((callDisplayStyle - 1) <= 3)
   {
     v28 = +[UIDevice currentDevice];
-    v29 = [v28 userInterfaceIdiom];
+    userInterfaceIdiom = [v28 userInterfaceIdiom];
 
-    v30 = v29 & 0xFFFFFFFFFFFFFFFBLL;
-    v31 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-    v32 = [v31 leadingAnchor];
-    v33 = [(PHSingleCallParticipantLabelView *)self leadingAnchor];
+    v30 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
+    participantAndStatusRectangle4 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+    leadingAnchor = [participantAndStatusRectangle4 leadingAnchor];
+    leadingAnchor2 = [(PHSingleCallParticipantLabelView *)self leadingAnchor];
     if (v30 == 1)
     {
-      v34 = [v32 constraintGreaterThanOrEqualToAnchor:v33];
+      v34 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
       [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleMinLeadingConstraint:v34];
 
-      v35 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-      v36 = [v35 leadingAnchor];
-      v37 = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
-      v38 = [v36 constraintLessThanOrEqualToAnchor:v37 constant:-130.0];
+      participantAndStatusRectangle5 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+      leadingAnchor3 = [participantAndStatusRectangle5 leadingAnchor];
+      centerXAnchor = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
+      v38 = [leadingAnchor3 constraintLessThanOrEqualToAnchor:centerXAnchor constant:-130.0];
       [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleMaxLeadingConstraint:v38];
 
-      v39 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-      v40 = [v39 centerXAnchor];
-      v41 = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
-      v42 = [v40 constraintEqualToAnchor:v41];
+      participantAndStatusRectangle6 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+      centerXAnchor2 = [participantAndStatusRectangle6 centerXAnchor];
+      centerXAnchor3 = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
+      v42 = [centerXAnchor2 constraintEqualToAnchor:centerXAnchor3];
       [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleCenterXConstraint:v42];
 
-      v43 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-      [v43 intrinsicContentSize];
+      secondaryInfoLabel3 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+      [secondaryInfoLabel3 intrinsicContentSize];
       v45 = v44;
-      v46 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      [v46 intrinsicContentSize];
+      participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      [participantMarqueeLabel3 intrinsicContentSize];
       if (v45 > v47)
       {
         [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
@@ -2805,50 +2805,50 @@ LABEL_12:
       {
         [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
       }
-      v31 = ;
+      participantAndStatusRectangle4 = ;
 
-      v49 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-      v50 = [v49 trailingAnchor];
-      v51 = [v31 trailingAnchor];
-      v52 = [v50 constraintEqualToAnchor:v51];
+      participantAndStatusRectangle7 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+      trailingAnchor = [participantAndStatusRectangle7 trailingAnchor];
+      trailingAnchor2 = [participantAndStatusRectangle4 trailingAnchor];
+      v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleTrailingConstraint:v52];
 
-      v53 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMaxLeadingConstraint];
+      participantAndStatusRectangleMaxLeadingConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMaxLeadingConstraint];
       LODWORD(v54) = 1148846080;
-      [v53 setPriority:v54];
+      [participantAndStatusRectangleMaxLeadingConstraint setPriority:v54];
 
-      v55 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMaxLeadingConstraint];
+      participantAndStatusRectangleMaxLeadingConstraint2 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMaxLeadingConstraint];
       v56 = 1;
-      [v55 setActive:1];
+      [participantAndStatusRectangleMaxLeadingConstraint2 setActive:1];
 
-      v57 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleCenterXConstraint];
-      [v57 setActive:1];
+      participantAndStatusRectangleCenterXConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleCenterXConstraint];
+      [participantAndStatusRectangleCenterXConstraint setActive:1];
 
       if ([(ICSCallDisplayStyleManager *)self->_callDisplayStyleManager usesLargeFormatUI])
       {
         v56 = self->_subviewLayout == 1;
       }
 
-      v32 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleTrailingConstraint];
-      [v32 setActive:v56];
+      leadingAnchor = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleTrailingConstraint];
+      [leadingAnchor setActive:v56];
     }
 
     else
     {
-      v48 = [v32 constraintEqualToAnchor:v33 constant:20.0];
+      v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
       [(PHSingleCallParticipantLabelView *)self setParticipantAndStatusRectangleMinLeadingConstraint:v48];
     }
 
-    v58 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMinLeadingConstraint];
-    [v58 setActive:1];
+    participantAndStatusRectangleMinLeadingConstraint = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangleMinLeadingConstraint];
+    [participantAndStatusRectangleMinLeadingConstraint setActive:1];
   }
 }
 
 - (void)gameControllerDidChangeContext
 {
-  v4 = [(PHSingleCallParticipantLabelView *)self gameControllerContext];
-  v3 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-  [v3 setGameControllerContext:v4];
+  gameControllerContext = [(PHSingleCallParticipantLabelView *)self gameControllerContext];
+  bannerButtonsView = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+  [bannerButtonsView setGameControllerContext:gameControllerContext];
 }
 
 - (id)gameControllerContext
@@ -2857,72 +2857,72 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 gameControllerContext];
+    gameControllerContext = [v2 gameControllerContext];
   }
 
   else
   {
-    v4 = 0;
+    gameControllerContext = 0;
   }
 
-  return v4;
+  return gameControllerContext;
 }
 
-- (void)updateBannerButtonsViewForCallDisplayStyle:(int64_t)a3
+- (void)updateBannerButtonsViewForCallDisplayStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-    v6 = [v5 superview];
+    bannerButtonsView = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+    superview = [bannerButtonsView superview];
 
-    if (!v6)
+    if (!superview)
     {
-      v22 = [(PHSingleCallParticipantLabelView *)self gameControllerContext];
-      v7 = [[PHBannerButtonsView alloc] initWithState:[(PHSingleCallParticipantLabelView *)self initialStateForBannerButtonsView] gameControllerContext:v22];
+      gameControllerContext = [(PHSingleCallParticipantLabelView *)self gameControllerContext];
+      v7 = [[PHBannerButtonsView alloc] initWithState:[(PHSingleCallParticipantLabelView *)self initialStateForBannerButtonsView] gameControllerContext:gameControllerContext];
       [(PHSingleCallParticipantLabelView *)self setBannerButtonsView:v7];
 
-      v8 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-      [v8 setDelegate:self];
+      bannerButtonsView2 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+      [bannerButtonsView2 setDelegate:self];
 
-      v9 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      bannerButtonsView3 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+      [bannerButtonsView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v10 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-      [(PHSingleCallParticipantLabelView *)self addSubview:v10];
+      bannerButtonsView4 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+      [(PHSingleCallParticipantLabelView *)self addSubview:bannerButtonsView4];
 
-      v21 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-      v20 = [v21 centerYAnchor];
-      v11 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
-      v12 = [v20 constraintEqualToAnchor:v11];
+      bannerButtonsView5 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+      centerYAnchor = [bannerButtonsView5 centerYAnchor];
+      centerYAnchor2 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
+      v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v23[0] = v12;
-      v13 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-      v14 = [v13 trailingAnchor];
-      v15 = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
-      v16 = [v15 trailingAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16];
+      bannerButtonsView6 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+      trailingAnchor = [bannerButtonsView6 trailingAnchor];
+      layoutMarginsGuide = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
+      trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+      v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v23[1] = v17;
       v18 = [NSArray arrayWithObjects:v23 count:2];
       [(PHSingleCallParticipantLabelView *)self addConstraints:v18];
     }
   }
 
-  v19 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
-  [v19 setHidden:a3 != 0];
+  bannerButtonsView7 = [(PHSingleCallParticipantLabelView *)self bannerButtonsView];
+  [bannerButtonsView7 setHidden:style != 0];
 }
 
 - (unint64_t)initialStateForBannerButtonsView
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 incomingVideoCall];
+  incomingVideoCall = [v2 incomingVideoCall];
 
   v4 = +[TUCallCenter sharedInstance];
   v5 = v4;
-  if (v3)
+  if (incomingVideoCall)
   {
-    v6 = [v4 incomingVideoCall];
-    v7 = [v6 isConversation];
+    incomingVideoCall2 = [v4 incomingVideoCall];
+    isConversation = [incomingVideoCall2 isConversation];
 
-    if (v7 && (+[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), +[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), [v9 incomingVideoCall], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "activeConversationForCall:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v12 = objc_msgSend(v11, "resolvedAudioVideoMode"), v11, v12 == 1))
+    if (isConversation && (+[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), +[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), [v9 incomingVideoCall], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "activeConversationForCall:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v12 = objc_msgSend(v11, "resolvedAudioVideoMode"), v11, v12 == 1))
     {
       return 0;
     }
@@ -2935,8 +2935,8 @@ LABEL_12:
 
   else
   {
-    v14 = [v4 incomingCall];
-    v13 = v14 == 0;
+    incomingCall = [v4 incomingCall];
+    v13 = incomingCall == 0;
   }
 
   return v13;
@@ -2952,16 +2952,16 @@ LABEL_12:
     v18[3] = &unk_100356988;
     v18[4] = self;
     v3 = objc_retainBlock(v18);
-    v4 = [(PHSingleCallParticipantLabelView *)self previousIsCallRinging];
+    previousIsCallRinging = [(PHSingleCallParticipantLabelView *)self previousIsCallRinging];
 
-    v5 = [(PHAbstractCallParticipantLabelView *)self delegate];
-    v6 = [v5 isCallRinging];
-    if (v4)
+    delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+    isCallRinging = [delegate isCallRinging];
+    if (previousIsCallRinging)
     {
-      v7 = [(PHSingleCallParticipantLabelView *)self previousIsCallRinging];
-      v8 = [v7 BOOLValue];
+      previousIsCallRinging2 = [(PHSingleCallParticipantLabelView *)self previousIsCallRinging];
+      bOOLValue = [previousIsCallRinging2 BOOLValue];
 
-      if (v6 != v8)
+      if (isCallRinging != bOOLValue)
       {
         v13 = _NSConcreteStackBlock;
         v14 = 3221225472;
@@ -2970,9 +2970,9 @@ LABEL_12:
         v17 = v3;
         [UIView _animateUsingSpringWithDuration:4 delay:&v13 options:&stru_100356D58 mass:0.5 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:37.0 completion:0.0];
         v9 = [(PHAbstractCallParticipantLabelView *)self delegate:v13];
-        v10 = [v9 isCallRinging];
+        isCallRinging2 = [v9 isCallRinging];
 
-        if ((v10 & 1) == 0)
+        if ((isCallRinging2 & 1) == 0)
         {
           [(PHSingleCallParticipantLabelView *)self hideFirstAndLastNameAnimated:1];
         }
@@ -2982,41 +2982,41 @@ LABEL_12:
     else
     {
 
-      if (v6)
+      if (isCallRinging)
       {
         (v3[2])(v3);
         [(PHSingleCallParticipantLabelView *)self showFirstAndLastNameAnimated:0];
       }
     }
 
-    v11 = [(PHAbstractCallParticipantLabelView *)self delegate];
-    v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isCallRinging]);
+    delegate2 = [(PHAbstractCallParticipantLabelView *)self delegate];
+    v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [delegate2 isCallRinging]);
     [(PHSingleCallParticipantLabelView *)self setPreviousIsCallRinging:v12];
   }
 }
 
-- (void)updateLabelAlignmentForCallDisplayStyle:(int64_t)a3
+- (void)updateLabelAlignmentForCallDisplayStyle:(int64_t)style
 {
   [(PHSingleCallParticipantLabelView *)self updateStackViewHorizontalConstraints];
   [(PHSingleCallParticipantLabelView *)self updateParticipantMarqueeLabelHorizontalConstraint];
   [(PHSingleCallParticipantLabelView *)self updateSecondaryLabelHorizontalConstraint];
   [(PHSingleCallParticipantLabelView *)self updateLabelTrailingConstraints];
 
-  [(PHSingleCallParticipantLabelView *)self updateLabelTextAlignmentForCallDisplayStyle:a3];
+  [(PHSingleCallParticipantLabelView *)self updateLabelTextAlignmentForCallDisplayStyle:style];
 }
 
 - (void)updateLabelScales
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle])
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle])
   {
-    v4 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    v5 = [v4 callDisplayStyle];
+    callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-    if (v5 != 1)
+    if (callDisplayStyle != 1)
     {
-      v6 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      [v6 setAdjustsFontSizeToFitWidth:1];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      [participantMarqueeLabel setAdjustsFontSizeToFitWidth:1];
 
       if ([(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient])
       {
@@ -3028,8 +3028,8 @@ LABEL_12:
         v7 = 0.9;
       }
 
-      v8 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      [v8 setMinimumScaleFactor:v7];
+      participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      [participantMarqueeLabel2 setMinimumScaleFactor:v7];
       goto LABEL_9;
     }
   }
@@ -3038,26 +3038,26 @@ LABEL_12:
   {
   }
 
-  v8 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  [v8 setAdjustsFontSizeToFitWidth:0];
+  participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  [participantMarqueeLabel2 setAdjustsFontSizeToFitWidth:0];
 LABEL_9:
 }
 
 - (void)updateLabelFonts
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self updatedParticipantMarqueeLabelFont];
-  v4 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  [v4 setFont:v3];
+  updatedParticipantMarqueeLabelFont = [(PHSingleCallParticipantLabelView *)self updatedParticipantMarqueeLabelFont];
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  [participantMarqueeLabel setFont:updatedParticipantMarqueeLabelFont];
 
-  v5 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v6 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [v5 callDisplayStyle]);
-  v7 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  [v7 setFont:v6];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  v6 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  [statusLabel setFont:v6];
 
-  v10 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v8 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [v10 callDisplayStyle]);
-  v9 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-  [v9 setFont:v8];
+  callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  v8 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [callDisplayStyleManager2 callDisplayStyle]);
+  secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+  [secondaryInfoLabel setFont:v8];
 }
 
 - (void)updateLabelsOrderAndText
@@ -3071,14 +3071,14 @@ LABEL_9:
 {
   if ([(PHSingleCallParticipantLabelView *)self inBrandedCall])
   {
-    v5 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    [v5 setNumberOfLines:1];
+    statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    [statusLabel setNumberOfLines:1];
   }
 
   else
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    if ([v5 callDisplayStyle] == 3)
+    statusLabel = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    if ([statusLabel callDisplayStyle] == 3)
     {
       v3 = 1;
     }
@@ -3088,50 +3088,50 @@ LABEL_9:
       v3 = 2;
     }
 
-    v4 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    [v4 setNumberOfLines:v3];
+    statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    [statusLabel2 setNumberOfLines:v3];
   }
 }
 
 - (BOOL)inBrandedCall
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 frontmostCall];
+  frontmostCall = [v2 frontmostCall];
 
-  LOBYTE(v2) = [v3 isBranded];
+  LOBYTE(v2) = [frontmostCall isBranded];
   return v2;
 }
 
 - (BOOL)inCallDirectoryCall
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 frontmostCall];
+  frontmostCall = [v2 frontmostCall];
 
-  v4 = [v3 callDirectoryName];
-  LOBYTE(v2) = v4 != 0;
+  callDirectoryName = [frontmostCall callDirectoryName];
+  LOBYTE(v2) = callDirectoryName != 0;
 
   return v2;
 }
 
-- (void)updateLabelTextAlignmentForCallDisplayStyle:(int64_t)a3
+- (void)updateLabelTextAlignmentForCallDisplayStyle:(int64_t)style
 {
   if ([(PHSingleCallParticipantLabelView *)self ambientLayout]== 1)
   {
     goto LABEL_2;
   }
 
-  if (a3)
+  if (style)
   {
-    v6 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    if (v6)
+    avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+    if (avatarView)
     {
     }
 
     else
     {
-      v7 = [(PHSingleCallParticipantLabelView *)self iconView];
+      iconView = [(PHSingleCallParticipantLabelView *)self iconView];
 
-      if (!v7)
+      if (!iconView)
       {
 LABEL_2:
         v5 = 1;
@@ -3142,44 +3142,44 @@ LABEL_2:
 
   v5 = 4;
 LABEL_8:
-  v8 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  [v8 setTextAlignment:v5];
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  [participantMarqueeLabel setTextAlignment:v5];
 
-  v9 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  [v9 setTextAlignment:v5];
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  [statusLabel setTextAlignment:v5];
 
-  v10 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-  [v10 setTextAlignment:v5];
+  secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+  [secondaryInfoLabel setTextAlignment:v5];
 }
 
 - (void)updateStackViewHorizontalConstraints
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
-  [v3 setActive:0];
+  stackViewHorizontalConstraint = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
+  [stackViewHorizontalConstraint setActive:0];
 
   if ([(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient]&& [(PHSingleCallParticipantLabelView *)self ambientLayout]== 1)
   {
-    v4 = [(PHSingleCallParticipantLabelView *)self stackView];
-    v5 = [v4 centerXAnchor];
-    v6 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v7 = [v6 centerXAnchor];
+    stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+    centerXAnchor = [stackView centerXAnchor];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    centerXAnchor2 = [participantMarqueeLabel centerXAnchor];
 LABEL_8:
-    v9 = v7;
-    v10 = [v5 constraintEqualToAnchor:v7];
+    v9 = centerXAnchor2;
+    v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [(PHSingleCallParticipantLabelView *)self setStackViewHorizontalConstraint:v10];
 
     goto LABEL_9;
   }
 
-  v8 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  if (v8 || [(PHSingleCallParticipantLabelView *)self isDisplayStyleBanner])
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+  if (avatarView || [(PHSingleCallParticipantLabelView *)self isDisplayStyleBanner])
   {
 
 LABEL_7:
-    v4 = [(PHSingleCallParticipantLabelView *)self stackView];
-    v5 = [v4 leadingAnchor];
-    v6 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v7 = [v6 leadingAnchor];
+    stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+    centerXAnchor = [stackView leadingAnchor];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    centerXAnchor2 = [participantMarqueeLabel leadingAnchor];
     goto LABEL_8;
   }
 
@@ -3188,27 +3188,27 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4 = [(PHSingleCallParticipantLabelView *)self stackView];
-  v5 = [v4 centerXAnchor];
-  v6 = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
-  v9 = [v5 constraintEqualToAnchor:v6];
+  stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+  centerXAnchor = [stackView centerXAnchor];
+  participantMarqueeLabel = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:participantMarqueeLabel];
   [(PHSingleCallParticipantLabelView *)self setStackViewHorizontalConstraint:v9];
 LABEL_9:
 
-  v11 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
-  [v11 setActive:1];
+  stackViewHorizontalConstraint2 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
+  [stackViewHorizontalConstraint2 setActive:1];
 
-  v12 = [(PHSingleCallParticipantLabelView *)self iconView];
+  iconView = [(PHSingleCallParticipantLabelView *)self iconView];
 
-  if (v12)
+  if (iconView)
   {
     [(PHSingleCallParticipantLabelView *)self updateIconSize];
     [(PHSingleCallParticipantLabelView *)self updateStackViewHorizontalConstraintsWithVoIPAppIcon];
   }
 
-  v13 = [(PHSingleCallParticipantLabelView *)self businessLogoView];
+  businessLogoView = [(PHSingleCallParticipantLabelView *)self businessLogoView];
 
-  if (v13)
+  if (businessLogoView)
   {
     [(PHSingleCallParticipantLabelView *)self updateBusinessLogoSize];
 
@@ -3218,22 +3218,22 @@ LABEL_9:
 
 - (void)updateStackViewHorizontalConstraintsWithVoIPAppIcon
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self appIconViewLeadingAnchor];
-  [v3 setActive:0];
+  appIconViewLeadingAnchor = [(PHSingleCallParticipantLabelView *)self appIconViewLeadingAnchor];
+  [appIconViewLeadingAnchor setActive:0];
 
-  v4 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
+  appIconLayoutGuide = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
 
-  if (v4)
+  if (appIconLayoutGuide)
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
-    [(PHSingleCallParticipantLabelView *)self removeLayoutGuide:v5];
+    appIconLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
+    [(PHSingleCallParticipantLabelView *)self removeLayoutGuide:appIconLayoutGuide2];
   }
 
-  v6 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuideHorizontalAnchor];
-  [v6 setActive:0];
+  appIconLayoutGuideHorizontalAnchor = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuideHorizontalAnchor];
+  [appIconLayoutGuideHorizontalAnchor setActive:0];
 
-  v7 = [(UIImageView *)self->_iconView image];
-  if (v7)
+  image = [(UIImageView *)self->_iconView image];
+  if (image)
   {
     [(PHSingleCallParticipantLabelView *)self voipIconEdge];
     v9 = v8;
@@ -3246,106 +3246,106 @@ LABEL_9:
     v11 = 0.0;
   }
 
-  v12 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  if (v12)
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+  if (avatarView)
   {
   }
 
   else
   {
-    v18 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    v19 = [v18 callDisplayStyle];
+    callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v19)
+    if (callDisplayStyle)
     {
       v20 = objc_alloc_init(UILayoutGuide);
       [(PHSingleCallParticipantLabelView *)self setAppIconLayoutGuide:v20];
 
-      v21 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
-      [(PHSingleCallParticipantLabelView *)self addLayoutGuide:v21];
+      appIconLayoutGuide3 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
+      [(PHSingleCallParticipantLabelView *)self addLayoutGuide:appIconLayoutGuide3];
 
-      v22 = [(UIImageView *)self->_iconView leadingAnchor];
-      v23 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
-      v24 = [v23 leadingAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24];
+      leadingAnchor = [(UIImageView *)self->_iconView leadingAnchor];
+      appIconLayoutGuide4 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
+      leadingAnchor2 = [appIconLayoutGuide4 leadingAnchor];
+      v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [(PHSingleCallParticipantLabelView *)self setAppIconViewLeadingAnchor:v25];
 
-      v26 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
-      [v26 setActive:0];
+      stackViewHorizontalConstraint = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
+      [stackViewHorizontalConstraint setActive:0];
 
-      v27 = [(PHSingleCallParticipantLabelView *)self stackView];
-      v28 = [v27 leadingAnchor];
-      v29 = [(UIImageView *)self->_iconView leadingAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29 constant:v11];
+      stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+      leadingAnchor3 = [stackView leadingAnchor];
+      leadingAnchor4 = [(UIImageView *)self->_iconView leadingAnchor];
+      v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v11];
       [(PHSingleCallParticipantLabelView *)self setStackViewHorizontalConstraint:v30];
 
-      v31 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
-      [v31 setActive:1];
+      stackViewHorizontalConstraint2 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
+      [stackViewHorizontalConstraint2 setActive:1];
 
-      LODWORD(v28) = [(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient];
-      v32 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
-      v33 = v32;
-      if (v28)
+      LODWORD(leadingAnchor3) = [(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient];
+      appIconLayoutGuide5 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
+      v33 = appIconLayoutGuide5;
+      if (leadingAnchor3)
       {
-        v34 = [v32 leadingAnchor];
+        leadingAnchor5 = [appIconLayoutGuide5 leadingAnchor];
         [(PHSingleCallParticipantLabelView *)self leadingAnchor];
       }
 
       else
       {
-        v34 = [v32 centerXAnchor];
+        leadingAnchor5 = [appIconLayoutGuide5 centerXAnchor];
         [(PHSingleCallParticipantLabelView *)self centerXAnchor];
       }
       v35 = ;
-      v36 = [v34 constraintEqualToAnchor:v35];
+      v36 = [leadingAnchor5 constraintEqualToAnchor:v35];
       [(PHSingleCallParticipantLabelView *)self setAppIconLayoutGuideHorizontalAnchor:v36];
 
-      v37 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuideHorizontalAnchor];
-      [v37 setActive:1];
+      appIconLayoutGuideHorizontalAnchor2 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuideHorizontalAnchor];
+      [appIconLayoutGuideHorizontalAnchor2 setActive:1];
 
-      v17 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
-      v38 = [v17 trailingAnchor];
-      v39 = [(PHSingleCallParticipantLabelView *)self stackView];
-      v40 = [v39 trailingAnchor];
-      v41 = [v38 constraintEqualToAnchor:v40];
+      appIconLayoutGuide6 = [(PHSingleCallParticipantLabelView *)self appIconLayoutGuide];
+      trailingAnchor = [appIconLayoutGuide6 trailingAnchor];
+      stackView2 = [(PHSingleCallParticipantLabelView *)self stackView];
+      trailingAnchor2 = [stackView2 trailingAnchor];
+      v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v41 setActive:1];
 
       goto LABEL_14;
     }
   }
 
-  v13 = [(UIImageView *)self->_iconView leadingAnchor];
-  v14 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  leadingAnchor6 = [(UIImageView *)self->_iconView leadingAnchor];
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  leadingAnchor7 = [participantMarqueeLabel leadingAnchor];
+  v16 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   [(PHSingleCallParticipantLabelView *)self setAppIconViewLeadingAnchor:v16];
 
-  v17 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
-  [v17 setConstant:v11];
+  appIconLayoutGuide6 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
+  [appIconLayoutGuide6 setConstant:v11];
 LABEL_14:
 
-  v42 = [(PHSingleCallParticipantLabelView *)self appIconViewLeadingAnchor];
-  [v42 setActive:1];
+  appIconViewLeadingAnchor2 = [(PHSingleCallParticipantLabelView *)self appIconViewLeadingAnchor];
+  [appIconViewLeadingAnchor2 setActive:1];
 }
 
 - (void)updateStackViewHorizontalConstraintsWithBusinessLogo
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self businessLogoViewLeadingAnchor];
-  [v3 setActive:0];
+  businessLogoViewLeadingAnchor = [(PHSingleCallParticipantLabelView *)self businessLogoViewLeadingAnchor];
+  [businessLogoViewLeadingAnchor setActive:0];
 
-  v4 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
+  businessLogoLayoutGuide = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
 
-  if (v4)
+  if (businessLogoLayoutGuide)
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
-    [(PHSingleCallParticipantLabelView *)self removeLayoutGuide:v5];
+    businessLogoLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
+    [(PHSingleCallParticipantLabelView *)self removeLayoutGuide:businessLogoLayoutGuide2];
   }
 
-  v6 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuideHorizontalAnchor];
-  [v6 setActive:0];
+  businessLogoLayoutGuideHorizontalAnchor = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuideHorizontalAnchor];
+  [businessLogoLayoutGuideHorizontalAnchor setActive:0];
 
-  v7 = [(UIImageView *)self->_businessLogoView image];
-  if (v7)
+  image = [(UIImageView *)self->_businessLogoView image];
+  if (image)
   {
     [(PHSingleCallParticipantLabelView *)self businessLogoEdge];
     v9 = v8;
@@ -3358,141 +3358,141 @@ LABEL_14:
     v11 = 0.0;
   }
 
-  v12 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  if (v12)
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+  if (avatarView)
   {
   }
 
   else
   {
-    v18 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    v19 = [v18 callDisplayStyle];
+    callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v19)
+    if (callDisplayStyle)
     {
       v20 = objc_alloc_init(UILayoutGuide);
       [(PHSingleCallParticipantLabelView *)self setBusinessLogoLayoutGuide:v20];
 
-      v21 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
-      [(PHSingleCallParticipantLabelView *)self addLayoutGuide:v21];
+      businessLogoLayoutGuide3 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
+      [(PHSingleCallParticipantLabelView *)self addLayoutGuide:businessLogoLayoutGuide3];
 
-      v22 = [(UIImageView *)self->_businessLogoView leadingAnchor];
-      v23 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
-      v24 = [v23 leadingAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24];
+      leadingAnchor = [(UIImageView *)self->_businessLogoView leadingAnchor];
+      businessLogoLayoutGuide4 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
+      leadingAnchor2 = [businessLogoLayoutGuide4 leadingAnchor];
+      v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [(PHSingleCallParticipantLabelView *)self setBusinessLogoViewLeadingAnchor:v25];
 
-      v26 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
-      [v26 setActive:0];
+      stackViewHorizontalConstraint = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
+      [stackViewHorizontalConstraint setActive:0];
 
-      v27 = [(PHSingleCallParticipantLabelView *)self stackView];
-      v28 = [v27 leadingAnchor];
-      v29 = [(UIImageView *)self->_businessLogoView leadingAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29 constant:v11];
+      stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+      leadingAnchor3 = [stackView leadingAnchor];
+      leadingAnchor4 = [(UIImageView *)self->_businessLogoView leadingAnchor];
+      v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v11];
       [(PHSingleCallParticipantLabelView *)self setStackViewHorizontalConstraint:v30];
 
-      v31 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
-      [v31 setActive:1];
+      stackViewHorizontalConstraint2 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
+      [stackViewHorizontalConstraint2 setActive:1];
 
-      LODWORD(v28) = [(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient];
-      v32 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
-      v33 = v32;
-      if (v28)
+      LODWORD(leadingAnchor3) = [(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient];
+      businessLogoLayoutGuide5 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
+      v33 = businessLogoLayoutGuide5;
+      if (leadingAnchor3)
       {
-        v34 = [v32 leadingAnchor];
+        leadingAnchor5 = [businessLogoLayoutGuide5 leadingAnchor];
         [(PHSingleCallParticipantLabelView *)self leadingAnchor];
       }
 
       else
       {
-        v34 = [v32 centerXAnchor];
+        leadingAnchor5 = [businessLogoLayoutGuide5 centerXAnchor];
         [(PHSingleCallParticipantLabelView *)self centerXAnchor];
       }
       v35 = ;
-      v36 = [v34 constraintEqualToAnchor:v35];
+      v36 = [leadingAnchor5 constraintEqualToAnchor:v35];
       [(PHSingleCallParticipantLabelView *)self setBusinessLogoLayoutGuideHorizontalAnchor:v36];
 
-      v37 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuideHorizontalAnchor];
-      [v37 setActive:1];
+      businessLogoLayoutGuideHorizontalAnchor2 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuideHorizontalAnchor];
+      [businessLogoLayoutGuideHorizontalAnchor2 setActive:1];
 
-      v17 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
-      v38 = [v17 trailingAnchor];
-      v39 = [(PHSingleCallParticipantLabelView *)self stackView];
-      v40 = [v39 trailingAnchor];
-      v41 = [v38 constraintEqualToAnchor:v40];
+      businessLogoLayoutGuide6 = [(PHSingleCallParticipantLabelView *)self businessLogoLayoutGuide];
+      trailingAnchor = [businessLogoLayoutGuide6 trailingAnchor];
+      stackView2 = [(PHSingleCallParticipantLabelView *)self stackView];
+      trailingAnchor2 = [stackView2 trailingAnchor];
+      v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v41 setActive:1];
 
       goto LABEL_14;
     }
   }
 
-  v13 = [(UIImageView *)self->_businessLogoView leadingAnchor];
-  v14 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  leadingAnchor6 = [(UIImageView *)self->_businessLogoView leadingAnchor];
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  leadingAnchor7 = [participantMarqueeLabel leadingAnchor];
+  v16 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   [(PHSingleCallParticipantLabelView *)self setBusinessLogoViewLeadingAnchor:v16];
 
-  v17 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
-  [v17 setConstant:v11];
+  businessLogoLayoutGuide6 = [(PHSingleCallParticipantLabelView *)self stackViewHorizontalConstraint];
+  [businessLogoLayoutGuide6 setConstant:v11];
 LABEL_14:
 
-  v42 = [(PHSingleCallParticipantLabelView *)self businessLogoViewLeadingAnchor];
-  [v42 setActive:1];
+  businessLogoViewLeadingAnchor2 = [(PHSingleCallParticipantLabelView *)self businessLogoViewLeadingAnchor];
+  [businessLogoViewLeadingAnchor2 setActive:1];
 }
 
 - (void)updateParticipantMarqueeLabelNumberOfLines
 {
   if ([(PHSingleCallParticipantLabelView *)self isDisplayStyleBanner])
   {
-    v3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v3 setNumberOfLines:2];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel setNumberOfLines:2];
 
-    v4 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v4 setMarqueeEnabled:0];
+    participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel2 setMarqueeEnabled:0];
 
-    v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v6 = v5;
+    participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    participantMarqueeLabel8 = participantMarqueeLabel3;
     v7 = 0;
   }
 
   else
   {
-    v8 = [(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient];
-    v9 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v9 setNumberOfLines:1];
+    isDisplayStyleAmbient = [(PHSingleCallParticipantLabelView *)self isDisplayStyleAmbient];
+    participantMarqueeLabel4 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel4 setNumberOfLines:1];
 
-    v10 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v11 = v10;
-    if (v8)
+    participantMarqueeLabel5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    v11 = participantMarqueeLabel5;
+    if (isDisplayStyleAmbient)
     {
-      [v10 setMarqueeEnabled:0];
+      [participantMarqueeLabel5 setMarqueeEnabled:0];
 
-      v12 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      [v12 setMarqueeRunning:0];
+      participantMarqueeLabel6 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      [participantMarqueeLabel6 setMarqueeRunning:0];
 
-      v13 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      [v13 setLineBreakMode:4];
+      participantMarqueeLabel7 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      [participantMarqueeLabel7 setLineBreakMode:4];
 
-      v6 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      [v6 _setExtremeSizingEnabled:1];
+      participantMarqueeLabel8 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      [participantMarqueeLabel8 _setExtremeSizingEnabled:1];
       goto LABEL_7;
     }
 
-    [v10 setMarqueeEnabled:1];
+    [participantMarqueeLabel5 setMarqueeEnabled:1];
 
-    v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v6 = v5;
+    participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    participantMarqueeLabel8 = participantMarqueeLabel3;
     v7 = 1;
   }
 
-  [v5 setMarqueeRunning:v7];
+  [participantMarqueeLabel3 setMarqueeRunning:v7];
 LABEL_7:
 
   v14 = sub_100004F84();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    if ([v15 marqueeEnabled])
+    participantMarqueeLabel9 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    if ([participantMarqueeLabel9 marqueeEnabled])
     {
       v16 = @"YES";
     }
@@ -3502,33 +3502,33 @@ LABEL_7:
       v16 = @"NO";
     }
 
-    v17 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    participantMarqueeLabel10 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
     v18 = 138412546;
     v19 = v16;
     v20 = 2048;
-    v21 = [v17 numberOfLines];
+    numberOfLines = [participantMarqueeLabel10 numberOfLines];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Marquee enabled = %@, number of lines for particpant name = %ld", &v18, 0x16u);
   }
 }
 
 - (void)updateParticipantMarqueeLabelHorizontalConstraint
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self participantMarqueeLabelHorizontalConstraint];
-  [v3 setActive:0];
+  participantMarqueeLabelHorizontalConstraint = [(PHSingleCallParticipantLabelView *)self participantMarqueeLabelHorizontalConstraint];
+  [participantMarqueeLabelHorizontalConstraint setActive:0];
 
   if ([(PHSingleCallParticipantLabelView *)self ambientLayout]== 1)
   {
-    v4 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+    trailingSideLayoutGuide = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
 
-    if (v4)
+    if (trailingSideLayoutGuide)
     {
-      v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      v6 = [v5 centerXAnchor];
-      v7 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-      v8 = [v7 centerXAnchor];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      centerXAnchor = [participantMarqueeLabel centerXAnchor];
+      trailingSideLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+      centerXAnchor2 = [trailingSideLayoutGuide2 centerXAnchor];
 LABEL_14:
-      v11 = v8;
-      v12 = [v6 constraintEqualToAnchor:v8];
+      trailingAnchor = centerXAnchor2;
+      v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 LABEL_15:
       v15 = v12;
       [(PHSingleCallParticipantLabelView *)self setParticipantMarqueeLabelHorizontalConstraint:v12];
@@ -3537,9 +3537,9 @@ LABEL_15:
     }
   }
 
-  v9 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
 
-  if (v9)
+  if (avatarView)
   {
     v10 = 10.0;
     if (![(PHSingleCallParticipantLabelView *)self isDisplayStyleBanner])
@@ -3555,61 +3555,61 @@ LABEL_15:
       }
     }
 
-    v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v6 = [v5 leadingAnchor];
-    v7 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v11 = [v7 trailingAnchor];
-    v12 = [v6 constraintEqualToAnchor:v11 constant:v10];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    centerXAnchor = [participantMarqueeLabel leadingAnchor];
+    trailingSideLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    trailingAnchor = [trailingSideLayoutGuide2 trailingAnchor];
+    v12 = [centerXAnchor constraintEqualToAnchor:trailingAnchor constant:v10];
     goto LABEL_15;
   }
 
-  v13 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v14 = [v13 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v14 > 4)
+  if (callDisplayStyle > 4)
   {
     goto LABEL_17;
   }
 
-  if (((1 << v14) & 0x16) == 0)
+  if (((1 << callDisplayStyle) & 0x16) == 0)
   {
-    v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v6 = [v5 leadingAnchor];
-    v7 = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
-    v8 = [v7 leadingAnchor];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    centerXAnchor = [participantMarqueeLabel leadingAnchor];
+    trailingSideLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
+    centerXAnchor2 = [trailingSideLayoutGuide2 leadingAnchor];
     goto LABEL_14;
   }
 
-  v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-  v6 = [v5 centerXAnchor];
-  v7 = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
-  v11 = [v6 constraintEqualToAnchor:v7];
-  [(PHSingleCallParticipantLabelView *)self setParticipantMarqueeLabelHorizontalConstraint:v11];
+  participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  centerXAnchor = [participantMarqueeLabel centerXAnchor];
+  trailingSideLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
+  trailingAnchor = [centerXAnchor constraintEqualToAnchor:trailingSideLayoutGuide2];
+  [(PHSingleCallParticipantLabelView *)self setParticipantMarqueeLabelHorizontalConstraint:trailingAnchor];
 LABEL_16:
 
 LABEL_17:
-  v16 = [(PHSingleCallParticipantLabelView *)self participantMarqueeLabelHorizontalConstraint];
-  [v16 setActive:1];
+  participantMarqueeLabelHorizontalConstraint2 = [(PHSingleCallParticipantLabelView *)self participantMarqueeLabelHorizontalConstraint];
+  [participantMarqueeLabelHorizontalConstraint2 setActive:1];
 }
 
 - (void)updateSecondaryLabelHorizontalConstraint
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelHorizontalConstraint];
-  [v3 setActive:0];
+  secondaryInfoLabelHorizontalConstraint = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelHorizontalConstraint];
+  [secondaryInfoLabelHorizontalConstraint setActive:0];
 
   if ([(PHSingleCallParticipantLabelView *)self ambientLayout]== 1)
   {
-    v4 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+    trailingSideLayoutGuide = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
 
-    if (v4)
+    if (trailingSideLayoutGuide)
     {
-      v5 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-      v6 = [v5 centerXAnchor];
-      v7 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-      v8 = [v7 centerXAnchor];
+      secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+      centerXAnchor = [secondaryInfoLabel centerXAnchor];
+      trailingSideLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+      centerXAnchor2 = [trailingSideLayoutGuide2 centerXAnchor];
 LABEL_7:
-      v11 = v8;
-      v12 = [v6 constraintEqualToAnchor:v8];
+      v11 = centerXAnchor2;
+      v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [(PHSingleCallParticipantLabelView *)self setSecondaryInfoLabelHorizontalConstraint:v12];
 
 LABEL_8:
@@ -3617,151 +3617,151 @@ LABEL_8:
     }
   }
 
-  v9 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
 
-  if (v9)
+  if (avatarView)
   {
-    v5 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    v6 = [v5 leadingAnchor];
-    v10 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    centerXAnchor = [secondaryInfoLabel leadingAnchor];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
 LABEL_6:
-    v7 = v10;
-    v8 = [v10 leadingAnchor];
+    trailingSideLayoutGuide2 = participantMarqueeLabel;
+    centerXAnchor2 = [participantMarqueeLabel leadingAnchor];
     goto LABEL_7;
   }
 
-  v13 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v14 = [v13 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v14 <= 4)
+  if (callDisplayStyle <= 4)
   {
-    if (((1 << v14) & 0x16) != 0)
+    if (((1 << callDisplayStyle) & 0x16) != 0)
     {
-      v5 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-      v6 = [v5 centerXAnchor];
-      v7 = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
-      v11 = [v6 constraintEqualToAnchor:v7];
+      secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+      centerXAnchor = [secondaryInfoLabel centerXAnchor];
+      trailingSideLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self centerXAnchor];
+      v11 = [centerXAnchor constraintEqualToAnchor:trailingSideLayoutGuide2];
       [(PHSingleCallParticipantLabelView *)self setSecondaryInfoLabelHorizontalConstraint:v11];
       goto LABEL_8;
     }
 
-    v5 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    v6 = [v5 leadingAnchor];
-    v10 = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
+    secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    centerXAnchor = [secondaryInfoLabel leadingAnchor];
+    participantMarqueeLabel = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
     goto LABEL_6;
   }
 
 LABEL_9:
-  v15 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelHorizontalConstraint];
-  [v15 setActive:1];
+  secondaryInfoLabelHorizontalConstraint2 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabelHorizontalConstraint];
+  [secondaryInfoLabelHorizontalConstraint2 setActive:1];
 }
 
 - (void)updateAvatarViewConstraints
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
 
-  if (v3)
+  if (avatarView)
   {
-    v4 = [(PHSingleCallParticipantLabelView *)self avatarViewConstraints];
-    [NSLayoutConstraint deactivateConstraints:v4];
+    avatarViewConstraints = [(PHSingleCallParticipantLabelView *)self avatarViewConstraints];
+    [NSLayoutConstraint deactivateConstraints:avatarViewConstraints];
 
-    v5 = [(PHSingleCallParticipantLabelView *)self updatedAvatarViewConstraints];
-    [(PHSingleCallParticipantLabelView *)self setAvatarViewConstraints:v5];
+    updatedAvatarViewConstraints = [(PHSingleCallParticipantLabelView *)self updatedAvatarViewConstraints];
+    [(PHSingleCallParticipantLabelView *)self setAvatarViewConstraints:updatedAvatarViewConstraints];
 
-    v6 = [(PHSingleCallParticipantLabelView *)self avatarViewConstraints];
-    [NSLayoutConstraint activateConstraints:v6];
+    avatarViewConstraints2 = [(PHSingleCallParticipantLabelView *)self avatarViewConstraints];
+    [NSLayoutConstraint activateConstraints:avatarViewConstraints2];
   }
 }
 
 - (id)updatedAvatarViewConstraints
 {
-  v4 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v5 = [v4 callDisplayStyle];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v5 <= 1)
+  if (callDisplayStyle <= 1)
   {
-    if (!v5)
+    if (!callDisplayStyle)
     {
-      v103 = [(PHSingleCallParticipantLabelView *)self avatarView];
-      v101 = [v103 leadingAnchor];
-      v86 = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
-      v95 = [v86 leadingAnchor];
-      v44 = [v101 constraintEqualToAnchor:v95];
+      avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+      leadingAnchor = [avatarView leadingAnchor];
+      layoutMarginsGuide = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v109[0] = v44;
-      v90 = [(PHSingleCallParticipantLabelView *)self avatarView];
-      v82 = [v90 centerYAnchor];
-      v45 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
-      v46 = [v82 constraintEqualToAnchor:v45];
+      avatarView2 = [(PHSingleCallParticipantLabelView *)self avatarView];
+      centerYAnchor = [avatarView2 centerYAnchor];
+      centerYAnchor2 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
+      v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v109[1] = v46;
-      v47 = [(PHSingleCallParticipantLabelView *)self avatarView];
-      v48 = [v47 widthAnchor];
-      v49 = [v48 constraintEqualToConstant:48.0];
+      avatarView3 = [(PHSingleCallParticipantLabelView *)self avatarView];
+      widthAnchor = [avatarView3 widthAnchor];
+      v49 = [widthAnchor constraintEqualToConstant:48.0];
       v109[2] = v49;
-      v50 = [(PHSingleCallParticipantLabelView *)self avatarView];
-      v51 = [v50 heightAnchor];
-      v52 = [v51 constraintEqualToConstant:48.0];
+      avatarView4 = [(PHSingleCallParticipantLabelView *)self avatarView];
+      heightAnchor = [avatarView4 heightAnchor];
+      v52 = [heightAnchor constraintEqualToConstant:48.0];
       v109[3] = v52;
       v2 = [NSArray arrayWithObjects:v109 count:4];
 
       v17 = v44;
-      v18 = v95;
+      v18 = leadingAnchor2;
 
-      v19 = v101;
-      v8 = v86;
+      topAnchor = leadingAnchor;
+      layoutMarginsGuide2 = layoutMarginsGuide;
 
-      v43 = v90;
+      v43 = avatarView2;
       goto LABEL_22;
     }
 
-    if (v5 != 1)
+    if (callDisplayStyle != 1)
     {
       goto LABEL_24;
     }
 
-    v103 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v97 = [v103 leadingAnchor];
-    v8 = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
-    v92 = [v8 leadingAnchor];
+    avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+    leadingAnchor3 = [avatarView leadingAnchor];
+    layoutMarginsGuide2 = [(PHSingleCallParticipantLabelView *)self layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide2 leadingAnchor];
     [(PHSingleCallParticipantLabelView *)self horizontalPaddingForMiniWindow];
-    v87 = [v97 constraintEqualToAnchor:v92 constant:?];
+    v87 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
     v108[0] = v87;
-    v84 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v80 = [v84 centerYAnchor];
-    v9 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
-    v10 = [v80 constraintEqualToAnchor:v9];
+    avatarView5 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    centerYAnchor3 = [avatarView5 centerYAnchor];
+    centerYAnchor4 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
+    v10 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v108[1] = v10;
-    v11 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v12 = [v11 widthAnchor];
-    v13 = [v12 constraintEqualToConstant:40.0];
+    avatarView6 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    widthAnchor2 = [avatarView6 widthAnchor];
+    v13 = [widthAnchor2 constraintEqualToConstant:40.0];
     v108[2] = v13;
-    v14 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v15 = [v14 heightAnchor];
-    v16 = [v15 constraintEqualToConstant:40.0];
+    avatarView7 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    heightAnchor2 = [avatarView7 heightAnchor];
+    v16 = [heightAnchor2 constraintEqualToConstant:40.0];
     v108[3] = v16;
     v2 = [NSArray arrayWithObjects:v108 count:4];
 
     v17 = v87;
-    v18 = v92;
+    v18 = leadingAnchor4;
 
-    v19 = v97;
-    v20 = v80;
+    topAnchor = leadingAnchor3;
+    v20 = centerYAnchor3;
 LABEL_21:
 
-    v43 = v84;
+    v43 = avatarView5;
     goto LABEL_22;
   }
 
-  if (v5 == 2)
+  if (callDisplayStyle == 2)
   {
 LABEL_5:
     if ([(PHSingleCallParticipantLabelView *)self showPostersEnabledForiPad])
     {
       if (!self->_subviewLayout)
       {
-        v6 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-        v7 = [v6 callDisplayStyle];
+        callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+        callDisplayStyle2 = [callDisplayStyleManager2 callDisplayStyle];
 
-        if (v7 == 2)
+        if (callDisplayStyle2 == 2)
         {
           v2 = &__NSArray0__struct;
           goto LABEL_24;
@@ -3770,50 +3770,50 @@ LABEL_5:
     }
 
     v98 = [NSMutableArray alloc];
-    v104 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v88 = [v104 leadingAnchor];
-    v93 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-    v21 = [v93 leadingAnchor];
-    v22 = [v88 constraintEqualToAnchor:v21];
+    avatarView8 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    leadingAnchor5 = [avatarView8 leadingAnchor];
+    participantAndStatusRectangle = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+    leadingAnchor6 = [participantAndStatusRectangle leadingAnchor];
+    v22 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v107[0] = v22;
-    v23 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v24 = [v23 widthAnchor];
+    avatarView9 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    widthAnchor3 = [avatarView9 widthAnchor];
     [(PHSingleCallParticipantLabelView *)self avatarDiameterFullScreen];
-    v25 = [v24 constraintEqualToConstant:?];
+    v25 = [widthAnchor3 constraintEqualToConstant:?];
     v107[1] = v25;
-    v26 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v27 = [v26 heightAnchor];
+    avatarView10 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    heightAnchor3 = [avatarView10 heightAnchor];
     [(PHSingleCallParticipantLabelView *)self avatarDiameterFullScreen];
-    v28 = [v27 constraintEqualToConstant:?];
+    v28 = [heightAnchor3 constraintEqualToConstant:?];
     v107[2] = v28;
     v29 = [NSArray arrayWithObjects:v107 count:3];
     v99 = [v98 initWithArray:v29];
 
-    LODWORD(v27) = [(PHSingleCallParticipantLabelView *)self inBrandedCall];
-    v103 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    if (v27)
+    LODWORD(heightAnchor3) = [(PHSingleCallParticipantLabelView *)self inBrandedCall];
+    avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+    if (heightAnchor3)
     {
-      v19 = [v103 topAnchor];
-      v8 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-      [v8 topAnchor];
+      topAnchor = [avatarView topAnchor];
+      layoutMarginsGuide2 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+      [layoutMarginsGuide2 topAnchor];
     }
 
     else
     {
-      v19 = [v103 centerYAnchor];
-      v8 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-      [v8 centerYAnchor];
+      topAnchor = [avatarView centerYAnchor];
+      layoutMarginsGuide2 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+      [layoutMarginsGuide2 centerYAnchor];
     }
     v18 = ;
-    v17 = [v19 constraintEqualToAnchor:v18];
+    v17 = [topAnchor constraintEqualToAnchor:v18];
     v2 = v99;
     [v99 addObject:v17];
     goto LABEL_23;
   }
 
-  if (v5 != 3)
+  if (callDisplayStyle != 3)
   {
-    if (v5 != 4)
+    if (callDisplayStyle != 4)
     {
       goto LABEL_24;
     }
@@ -3823,88 +3823,88 @@ LABEL_5:
 
   if ([(PHSingleCallParticipantLabelView *)self ambientLayout]!= 1 || ([(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide], v30 = objc_claimAutoreleasedReturnValue(), v30, !v30))
   {
-    v103 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v102 = [v103 leadingAnchor];
-    v8 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-    v96 = [v8 leadingAnchor];
-    v91 = [v102 constraintEqualToAnchor:v96];
+    avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
+    leadingAnchor7 = [avatarView leadingAnchor];
+    layoutMarginsGuide2 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+    leadingAnchor8 = [layoutMarginsGuide2 leadingAnchor];
+    v91 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v105[0] = v91;
-    v84 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v79 = [v84 centerYAnchor];
-    v83 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-    v53 = [v83 centerYAnchor];
-    v54 = [v79 constraintEqualToAnchor:v53];
+    avatarView5 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    centerYAnchor5 = [avatarView5 centerYAnchor];
+    participantAndStatusRectangle2 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+    centerYAnchor6 = [participantAndStatusRectangle2 centerYAnchor];
+    v54 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v105[1] = v54;
-    v55 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v56 = [v55 widthAnchor];
-    v57 = [v56 constraintEqualToConstant:80.0];
+    avatarView11 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    widthAnchor4 = [avatarView11 widthAnchor];
+    v57 = [widthAnchor4 constraintEqualToConstant:80.0];
     v105[2] = v57;
-    v58 = [(PHSingleCallParticipantLabelView *)self avatarView];
-    v59 = [v58 heightAnchor];
-    v60 = [v59 constraintEqualToConstant:80.0];
+    avatarView12 = [(PHSingleCallParticipantLabelView *)self avatarView];
+    heightAnchor4 = [avatarView12 heightAnchor];
+    v60 = [heightAnchor4 constraintEqualToConstant:80.0];
     v105[3] = v60;
     v2 = [NSArray arrayWithObjects:v105 count:4];
 
     v17 = v91;
-    v18 = v96;
+    v18 = leadingAnchor8;
 
-    v19 = v102;
-    v20 = v79;
+    topAnchor = leadingAnchor7;
+    v20 = centerYAnchor5;
     goto LABEL_21;
   }
 
-  v31 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v32 = [v31 heightAnchor];
-  v103 = [v32 constraintEqualToConstant:1.79769313e308];
+  avatarView13 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  heightAnchor5 = [avatarView13 heightAnchor];
+  avatarView = [heightAnchor5 constraintEqualToConstant:1.79769313e308];
 
   LODWORD(v33) = 1144733696;
-  [v103 setPriority:v33];
-  v100 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v85 = [v100 leadingAnchor];
-  v94 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
-  v89 = [v94 leadingAnchor];
-  v81 = [v85 constraintEqualToAnchor:v89];
+  [avatarView setPriority:v33];
+  avatarView14 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  leadingAnchor9 = [avatarView14 leadingAnchor];
+  participantAndStatusRectangle3 = [(PHSingleCallParticipantLabelView *)self participantAndStatusRectangle];
+  leadingAnchor10 = [participantAndStatusRectangle3 leadingAnchor];
+  v81 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v106[0] = v81;
-  v78 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v77 = [v78 leadingAnchor];
-  v76 = [(PHSingleCallParticipantLabelView *)self leadingAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76];
+  avatarView15 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  leadingAnchor11 = [avatarView15 leadingAnchor];
+  leadingAnchor12 = [(PHSingleCallParticipantLabelView *)self leadingAnchor];
+  v75 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v106[1] = v75;
-  v74 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v72 = [v74 trailingAnchor];
-  v73 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-  v71 = [v73 leadingAnchor];
-  v70 = [v72 constraintLessThanOrEqualToAnchor:v71 constant:-32.0];
+  avatarView16 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  trailingAnchor = [avatarView16 trailingAnchor];
+  trailingSideLayoutGuide = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+  leadingAnchor13 = [trailingSideLayoutGuide leadingAnchor];
+  v70 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor13 constant:-32.0];
   v106[2] = v70;
-  v69 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v68 = [v69 centerYAnchor];
-  v67 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  avatarView17 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  centerYAnchor7 = [avatarView17 centerYAnchor];
+  centerYAnchor8 = [(PHSingleCallParticipantLabelView *)self centerYAnchor];
+  v66 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   v106[3] = v66;
-  v65 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v63 = [v65 widthAnchor];
-  v64 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v62 = [v64 heightAnchor];
-  v34 = [v63 constraintEqualToAnchor:v62];
+  avatarView18 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  widthAnchor5 = [avatarView18 widthAnchor];
+  avatarView19 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  heightAnchor6 = [avatarView19 heightAnchor];
+  v34 = [widthAnchor5 constraintEqualToAnchor:heightAnchor6];
   v106[4] = v34;
-  v35 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v36 = [v35 topAnchor];
-  v37 = [(PHSingleCallParticipantLabelView *)self topAnchor];
-  v38 = [v36 constraintGreaterThanOrEqualToAnchor:v37];
+  avatarView20 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  topAnchor2 = [avatarView20 topAnchor];
+  topAnchor3 = [(PHSingleCallParticipantLabelView *)self topAnchor];
+  v38 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:topAnchor3];
   v106[5] = v38;
-  v39 = [(PHSingleCallParticipantLabelView *)self avatarView];
-  v40 = [v39 bottomAnchor];
-  v41 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
-  v42 = [v40 constraintLessThanOrEqualToAnchor:v41];
+  avatarView21 = [(PHSingleCallParticipantLabelView *)self avatarView];
+  bottomAnchor = [avatarView21 bottomAnchor];
+  bottomAnchor2 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
+  v42 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v106[6] = v42;
-  v106[7] = v103;
+  v106[7] = avatarView;
   v2 = [NSArray arrayWithObjects:v106 count:8];
 
-  v8 = v85;
-  v17 = v89;
+  layoutMarginsGuide2 = leadingAnchor9;
+  v17 = leadingAnchor10;
 
-  v18 = v94;
-  v19 = v100;
+  v18 = participantAndStatusRectangle3;
+  topAnchor = avatarView14;
 
   v43 = v81;
 LABEL_22:
@@ -3917,10 +3917,10 @@ LABEL_24:
 
 - (double)avatarDiameterFullScreen
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 usesLargeFormatUI];
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-  if (!v3)
+  if (!usesLargeFormatUI)
   {
     return 60.0;
   }
@@ -3955,42 +3955,42 @@ LABEL_24:
   return result;
 }
 
-- (void)updateSubviewWithLayout:(int64_t)a3 contact:(id)a4
+- (void)updateSubviewWithLayout:(int64_t)layout contact:(id)contact
 {
-  v14 = a4;
-  v6 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v7 = [v6 usesLargeFormatUI];
+  contactCopy = contact;
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-  if (v7)
+  if (usesLargeFormatUI)
   {
-    self->_subviewLayout = a3;
-    if (a3 == 1)
+    self->_subviewLayout = layout;
+    if (layout == 1)
     {
-      v9 = [(PHSingleCallParticipantLabelView *)self avatarView];
+      avatarView = [(PHSingleCallParticipantLabelView *)self avatarView];
 
-      if (!v9)
+      if (!avatarView)
       {
-        v10 = [[_TtC13InCallService19BlurrableAvatarView alloc] initWithContact:v14 wantsBlur:[(PHSingleCallParticipantLabelView *)self shouldBlurAvatarViewForCurrentContactNickname:v14] isCommunicationSafetyEnabled:+[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled]];
+        v10 = [[_TtC13InCallService19BlurrableAvatarView alloc] initWithContact:contactCopy wantsBlur:[(PHSingleCallParticipantLabelView *)self shouldBlurAvatarViewForCurrentContactNickname:contactCopy] isCommunicationSafetyEnabled:+[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled]];
         [(PHSingleCallParticipantLabelView *)self setAvatarView:v10];
 
-        v11 = [(PHSingleCallParticipantLabelView *)self avatarView];
-        [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+        avatarView2 = [(PHSingleCallParticipantLabelView *)self avatarView];
+        [avatarView2 setTranslatesAutoresizingMaskIntoConstraints:0];
       }
 
-      v12 = [(PHSingleCallParticipantLabelView *)self avatarView];
-      [(PHSingleCallParticipantLabelView *)self addSubview:v12];
+      avatarView3 = [(PHSingleCallParticipantLabelView *)self avatarView];
+      [(PHSingleCallParticipantLabelView *)self addSubview:avatarView3];
     }
 
-    else if (!a3)
+    else if (!layout)
     {
-      v8 = [(PHSingleCallParticipantLabelView *)self avatarView];
-      [v8 removeFromSuperview];
+      avatarView4 = [(PHSingleCallParticipantLabelView *)self avatarView];
+      [avatarView4 removeFromSuperview];
 
       [(PHSingleCallParticipantLabelView *)self setAvatarView:0];
     }
 
-    v13 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-    -[PHSingleCallParticipantLabelView updateLayoutForCallDisplayStyle:](self, "updateLayoutForCallDisplayStyle:", [v13 callDisplayStyle]);
+    callDisplayStyleManager2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+    -[PHSingleCallParticipantLabelView updateLayoutForCallDisplayStyle:](self, "updateLayoutForCallDisplayStyle:", [callDisplayStyleManager2 callDisplayStyle]);
 
     [(PHSingleCallParticipantLabelView *)self updateLabelConstraints];
     [(PHSingleCallParticipantLabelView *)self updateHeightConstraints];
@@ -4002,75 +4002,75 @@ LABEL_24:
 
 - (void)updateLabelConstraints
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self labelConstraints];
+  labelConstraints = [(PHSingleCallParticipantLabelView *)self labelConstraints];
 
-  if (v3)
+  if (labelConstraints)
   {
-    v4 = [(PHSingleCallParticipantLabelView *)self labelConstraints];
-    [(PHSingleCallParticipantLabelView *)self removeConstraints:v4];
+    labelConstraints2 = [(PHSingleCallParticipantLabelView *)self labelConstraints];
+    [(PHSingleCallParticipantLabelView *)self removeConstraints:labelConstraints2];
   }
 
   v28 = objc_alloc_init(NSMutableArray);
   if ([(PHSingleCallParticipantLabelView *)self labelsOrder]== 1)
   {
-    v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v6 = [v5 topAnchor];
-    v7 = [(UIStackView *)self->_stackView bottomAnchor];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    topAnchor = [participantMarqueeLabel topAnchor];
+    bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
     [(PHSingleCallParticipantLabelView *)self labelsVerticalOffset];
-    v8 = [v6 constraintEqualToAnchor:v7 constant:?];
+    v8 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
     [v28 addObject:v8];
 
-    v9 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v10 = [v9 topAnchor];
-    v11 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    v12 = [v11 bottomAnchor];
+    participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    topAnchor2 = [participantMarqueeLabel2 topAnchor];
+    statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    bottomAnchor2 = [statusLabel bottomAnchor];
     [(PHSingleCallParticipantLabelView *)self labelsVerticalOffset];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:?];
+    v13 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:?];
     [v28 addObject:v13];
 
-    v14 = [(UILabel *)self->_secondaryInfoLabel topAnchor];
+    topAnchor3 = [(UILabel *)self->_secondaryInfoLabel topAnchor];
     [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
   }
 
   else
   {
-    v15 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    v16 = [v15 topAnchor];
-    v17 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v18 = [v17 bottomAnchor];
+    statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    topAnchor4 = [statusLabel2 topAnchor];
+    participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    bottomAnchor3 = [participantMarqueeLabel3 bottomAnchor];
     [(PHSingleCallParticipantLabelView *)self labelsVerticalOffset];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:?];
+    v19 = [topAnchor4 constraintEqualToAnchor:bottomAnchor3 constant:?];
     [v28 addObject:v19];
 
-    v20 = [(UIStackView *)self->_stackView topAnchor];
-    v21 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    v22 = [v21 bottomAnchor];
+    topAnchor5 = [(UIStackView *)self->_stackView topAnchor];
+    participantMarqueeLabel4 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    bottomAnchor4 = [participantMarqueeLabel4 bottomAnchor];
     [(PHSingleCallParticipantLabelView *)self labelsVerticalOffset];
-    v23 = [v20 constraintEqualToAnchor:v22 constant:?];
+    v23 = [topAnchor5 constraintEqualToAnchor:bottomAnchor4 constant:?];
     [v28 addObject:v23];
 
-    v14 = [(UILabel *)self->_secondaryInfoLabel topAnchor];
+    topAnchor3 = [(UILabel *)self->_secondaryInfoLabel topAnchor];
     [(PHAbstractCallParticipantLabelView *)self statusLabel];
   }
   v24 = ;
-  v25 = [v24 bottomAnchor];
+  bottomAnchor5 = [v24 bottomAnchor];
   [(PHSingleCallParticipantLabelView *)self labelsVerticalOffset];
-  v26 = [v14 constraintEqualToAnchor:v25 constant:?];
+  v26 = [topAnchor3 constraintEqualToAnchor:bottomAnchor5 constant:?];
   [v28 addObject:v26];
 
   [(PHSingleCallParticipantLabelView *)self setLabelConstraints:v28];
-  v27 = [(PHSingleCallParticipantLabelView *)self labelConstraints];
-  [NSLayoutConstraint activateConstraints:v27];
+  labelConstraints3 = [(PHSingleCallParticipantLabelView *)self labelConstraints];
+  [NSLayoutConstraint activateConstraints:labelConstraints3];
 }
 
 - (void)updateHeightConstraints
 {
-  v3 = [(PHSingleCallParticipantLabelView *)self heightConstraints];
+  heightConstraints = [(PHSingleCallParticipantLabelView *)self heightConstraints];
 
-  if (v3)
+  if (heightConstraints)
   {
-    v4 = [(PHSingleCallParticipantLabelView *)self heightConstraints];
-    [(PHSingleCallParticipantLabelView *)self removeConstraints:v4];
+    heightConstraints2 = [(PHSingleCallParticipantLabelView *)self heightConstraints];
+    [(PHSingleCallParticipantLabelView *)self removeConstraints:heightConstraints2];
   }
 
   v5 = 0.0;
@@ -4089,8 +4089,8 @@ LABEL_24:
 
   if ([(PHSingleCallParticipantLabelView *)self isDisplayStyleBanner])
   {
-    v6 = [(PHSingleCallParticipantLabelView *)self heightAnchor];
-    v7 = [v6 constraintEqualToConstant:100.0];
+    heightAnchor = [(PHSingleCallParticipantLabelView *)self heightAnchor];
+    v7 = [heightAnchor constraintEqualToConstant:100.0];
     v52 = v7;
     v8 = &v52;
     v9 = 1;
@@ -4103,84 +4103,84 @@ LABEL_27:
 
   if (![(PHSingleCallParticipantLabelView *)self isDisplayStyleMiniWindow])
   {
-    v11 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-    if (v11 && (v12 = v11, -[PHSingleCallParticipantLabelView secondaryInfoLabel](self, "secondaryInfoLabel"), v13 = objc_claimAutoreleasedReturnValue(), [v13 text], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v12, v15))
+    secondaryInfoLabel = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+    if (secondaryInfoLabel && (v12 = secondaryInfoLabel, -[PHSingleCallParticipantLabelView secondaryInfoLabel](self, "secondaryInfoLabel"), v13 = objc_claimAutoreleasedReturnValue(), [v13 text], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v12, v15))
     {
-      v16 = [(PHSingleCallParticipantLabelView *)self labelsOrder];
-      v17 = [(PHSingleCallParticipantLabelView *)self topAnchor];
-      if (v16)
+      labelsOrder = [(PHSingleCallParticipantLabelView *)self labelsOrder];
+      topAnchor = [(PHSingleCallParticipantLabelView *)self topAnchor];
+      if (labelsOrder)
       {
-        v18 = [(PHSingleCallParticipantLabelView *)self stackView];
-        v19 = [v18 topAnchor];
-        [v17 constraintEqualToAnchor:v19 constant:-v5];
+        stackView = [(PHSingleCallParticipantLabelView *)self stackView];
+        topAnchor2 = [stackView topAnchor];
+        [topAnchor constraintEqualToAnchor:topAnchor2 constant:-v5];
       }
 
       else
       {
-        v18 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-        v19 = [v18 topAnchor];
-        [v17 constraintEqualToAnchor:v19];
+        stackView = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+        topAnchor2 = [stackView topAnchor];
+        [topAnchor constraintEqualToAnchor:topAnchor2];
       }
-      v6 = ;
+      heightAnchor = ;
 
-      v33 = [(PHSingleCallParticipantLabelView *)self ambientLayout];
-      v34 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
-      v35 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
-      v36 = [v35 bottomAnchor];
-      if (v33 == 1)
+      ambientLayout = [(PHSingleCallParticipantLabelView *)self ambientLayout];
+      bottomAnchor = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
+      secondaryInfoLabel2 = [(PHSingleCallParticipantLabelView *)self secondaryInfoLabel];
+      bottomAnchor2 = [secondaryInfoLabel2 bottomAnchor];
+      if (ambientLayout == 1)
       {
-        [v34 constraintGreaterThanOrEqualToAnchor:v36];
+        [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
       }
 
       else
       {
-        [v34 constraintEqualToAnchor:v36];
+        [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       }
       v7 = ;
 
-      v50 = v6;
+      v50 = heightAnchor;
       v51 = v7;
       v8 = &v50;
     }
 
     else
     {
-      v20 = [(PHSingleCallParticipantLabelView *)self labelsOrder];
-      v21 = [(PHSingleCallParticipantLabelView *)self topAnchor];
-      if (v20)
+      labelsOrder2 = [(PHSingleCallParticipantLabelView *)self labelsOrder];
+      topAnchor3 = [(PHSingleCallParticipantLabelView *)self topAnchor];
+      if (labelsOrder2)
       {
-        v22 = [(PHSingleCallParticipantLabelView *)self stackView];
-        v23 = [v22 topAnchor];
-        v6 = [v21 constraintEqualToAnchor:v23 constant:-v5];
+        stackView2 = [(PHSingleCallParticipantLabelView *)self stackView];
+        topAnchor4 = [stackView2 topAnchor];
+        heightAnchor = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:-v5];
 
-        v24 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
+        bottomAnchor3 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
         [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
       }
 
       else
       {
-        v25 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-        v26 = [v25 topAnchor];
-        v6 = [v21 constraintEqualToAnchor:v26];
+        participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+        topAnchor5 = [participantMarqueeLabel topAnchor];
+        heightAnchor = [topAnchor3 constraintEqualToAnchor:topAnchor5];
 
-        v24 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
+        bottomAnchor3 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
         [(PHAbstractCallParticipantLabelView *)self statusLabel];
       }
       v27 = ;
-      v28 = [v27 bottomAnchor];
-      v7 = [v24 constraintEqualToAnchor:v28];
+      bottomAnchor4 = [v27 bottomAnchor];
+      v7 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
 
       if ([(PHSingleCallParticipantLabelView *)self ambientLayout]== 1)
       {
-        v29 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
-        v30 = [(PHSingleCallParticipantLabelView *)self stackView];
-        v31 = [v30 bottomAnchor];
-        v32 = [v29 constraintGreaterThanOrEqualToAnchor:v31];
+        bottomAnchor5 = [(PHSingleCallParticipantLabelView *)self bottomAnchor];
+        stackView3 = [(PHSingleCallParticipantLabelView *)self stackView];
+        bottomAnchor6 = [stackView3 bottomAnchor];
+        v32 = [bottomAnchor5 constraintGreaterThanOrEqualToAnchor:bottomAnchor6];
 
         v7 = v32;
       }
 
-      v48 = v6;
+      v48 = heightAnchor;
       v49 = v7;
       v8 = &v48;
     }
@@ -4194,35 +4194,35 @@ LABEL_28:
   v38 = 1144750080;
   if ([(PHSingleCallParticipantLabelView *)self ambientLayout]== 1)
   {
-    v39 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+    trailingSideLayoutGuide = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
 
-    if (v39)
+    if (trailingSideLayoutGuide)
     {
-      v40 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-      v41 = [v40 bottomAnchor];
-      v42 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
-      v43 = [v42 bottomAnchor];
-      v44 = [v41 constraintLessThanOrEqualToAnchor:v43];
+      participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+      bottomAnchor7 = [participantMarqueeLabel2 bottomAnchor];
+      trailingSideLayoutGuide2 = [(PHSingleCallParticipantLabelView *)self trailingSideLayoutGuide];
+      bottomAnchor8 = [trailingSideLayoutGuide2 bottomAnchor];
+      v44 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8];
       [v10 addObject:v44];
 
       v38 = 1132068864;
     }
   }
 
-  v45 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+  participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
   LODWORD(v46) = v38;
-  [v45 setContentCompressionResistancePriority:1 forAxis:v46];
+  [participantMarqueeLabel3 setContentCompressionResistancePriority:1 forAxis:v46];
 
   [(PHSingleCallParticipantLabelView *)self setHeightConstraints:v10];
-  v47 = [(PHSingleCallParticipantLabelView *)self heightConstraints];
-  [NSLayoutConstraint activateConstraints:v47];
+  heightConstraints3 = [(PHSingleCallParticipantLabelView *)self heightConstraints];
+  [NSLayoutConstraint activateConstraints:heightConstraints3];
 }
 
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    [(PHSingleCallParticipantLabelView *)self updateLayoutForCallDisplayStyle:a4];
+    [(PHSingleCallParticipantLabelView *)self updateLayoutForCallDisplayStyle:toStyle];
 
     [(PHSingleCallParticipantLabelView *)self updateGestureRecognizersEnabled];
   }
@@ -4230,24 +4230,24 @@ LABEL_28:
 
 - (BOOL)isDisplayStyleBanner
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 0;
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 0;
 
   return v3;
 }
 
 - (BOOL)isDisplayStyleAmbient
 {
-  v2 = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 3;
+  callDisplayStyleManager = [(PHSingleCallParticipantLabelView *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 3;
 
   return v3;
 }
 
-- (void)bannerButtonsView:(id)a3 didPerformActionType:(int64_t)a4
+- (void)bannerButtonsView:(id)view didPerformActionType:(int64_t)type
 {
-  v6 = [(PHAbstractCallParticipantLabelView *)self delegate];
-  [v6 participantLabelView:self didPerformActionType:a4];
+  delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+  [delegate participantLabelView:self didPerformActionType:type];
 }
 
 - (UILayoutGuide)leadingSideLayoutGuide
@@ -4264,10 +4264,10 @@ LABEL_28:
   return WeakRetained;
 }
 
-- (id)currentIMNicknameMatchingContact:(id)a3
+- (id)currentIMNicknameMatchingContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
+  contactCopy = contact;
+  selfCopy = self;
   v6 = sub_10022C48C();
 
   return v6;

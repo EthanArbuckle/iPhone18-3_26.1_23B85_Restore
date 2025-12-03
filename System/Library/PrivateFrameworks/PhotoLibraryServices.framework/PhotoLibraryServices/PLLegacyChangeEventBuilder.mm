@@ -1,18 +1,18 @@
 @interface PLLegacyChangeEventBuilder
-+ (id)createXPCDictionaryFromChangedObjectIDs:(id)a3 redundantDeletes:(id)a4 uuidsForCloudDeletion:(id)a5 updatedAttributesByObjectID:(id)a6 updatedRelationshipsByObjectID:(id)a7 updatedOrderKeys:(id)a8 changeSource:(int)a9 syncChangeMarker:(BOOL)a10;
++ (id)createXPCDictionaryFromChangedObjectIDs:(id)ds redundantDeletes:(id)deletes uuidsForCloudDeletion:(id)deletion updatedAttributesByObjectID:(id)d updatedRelationshipsByObjectID:(id)iD updatedOrderKeys:(id)keys changeSource:(int)source syncChangeMarker:(BOOL)self0;
 @end
 
 @implementation PLLegacyChangeEventBuilder
 
-+ (id)createXPCDictionaryFromChangedObjectIDs:(id)a3 redundantDeletes:(id)a4 uuidsForCloudDeletion:(id)a5 updatedAttributesByObjectID:(id)a6 updatedRelationshipsByObjectID:(id)a7 updatedOrderKeys:(id)a8 changeSource:(int)a9 syncChangeMarker:(BOOL)a10
++ (id)createXPCDictionaryFromChangedObjectIDs:(id)ds redundantDeletes:(id)deletes uuidsForCloudDeletion:(id)deletion updatedAttributesByObjectID:(id)d updatedRelationshipsByObjectID:(id)iD updatedOrderKeys:(id)keys changeSource:(int)source syncChangeMarker:(BOOL)self0
 {
   v130[3] = *MEMORY[0x1E69E9840];
-  v74 = a3;
-  v87 = a4;
-  v79 = a5;
-  v84 = a6;
-  v83 = a7;
-  v73 = a8;
+  dsCopy = ds;
+  deletesCopy = deletes;
+  deletionCopy = deletion;
+  dCopy = d;
+  iDCopy = iD;
+  keysCopy = keys;
   v117 = 0;
   v118 = &v117;
   v119 = 0x3032000000;
@@ -24,7 +24,7 @@
   aBlock[2] = __215__PLLegacyChangeEventBuilder_createXPCDictionaryFromChangedObjectIDs_redundantDeletes_uuidsForCloudDeletion_updatedAttributesByObjectID_updatedRelationshipsByObjectID_updatedOrderKeys_changeSource_syncChangeMarker___block_invoke;
   aBlock[3] = &unk_1E756ED68;
   aBlock[4] = &v117;
-  v116 = a9;
+  sourceCopy = source;
   v77 = _Block_copy(aBlock);
   v15 = *MEMORY[0x1E695D4C8];
   v130[0] = *MEMORY[0x1E695D320];
@@ -37,12 +37,12 @@
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v16 = [v79 allKeys];
-  v17 = [v16 countByEnumeratingWithState:&v111 objects:v129 count:16];
+  allKeys = [deletionCopy allKeys];
+  v17 = [allKeys countByEnumeratingWithState:&v111 objects:v129 count:16];
   if (v17)
   {
     v18 = *v112;
-    obj = v16;
+    obj = allKeys;
     do
     {
       for (i = 0; i != v17; ++i)
@@ -53,7 +53,7 @@
         }
 
         v20 = *(*(&v111 + 1) + 8 * i);
-        v21 = [v79 objectForKey:v20];
+        v21 = [deletionCopy objectForKey:v20];
         if (v21)
         {
           v77[2]();
@@ -99,7 +99,7 @@
   else
   {
 
-    if (!a10)
+    if (!marker)
     {
       goto LABEL_20;
     }
@@ -127,8 +127,8 @@ LABEL_20:
         }
 
         v29 = *(*(&v103 + 1) + 8 * k);
-        v82 = [v74 objectForKeyedSubscript:v29];
-        if ([v29 isEqualToString:v72] && objc_msgSend(v87, "count"))
+        v82 = [dsCopy objectForKeyedSubscript:v29];
+        if ([v29 isEqualToString:v72] && objc_msgSend(deletesCopy, "count"))
         {
           v101 = 0u;
           v102 = 0u;
@@ -151,7 +151,7 @@ LABEL_20:
                 }
 
                 v35 = *(*(&v99 + 1) + 8 * m);
-                if ([v87 containsObject:v35])
+                if ([deletesCopy containsObject:v35])
                 {
                   if (!v32)
                   {
@@ -188,7 +188,7 @@ LABEL_41:
         v37 = [v29 isEqualToString:v71];
         if (v37)
         {
-          v38 = [v73 count] != 0;
+          v38 = [keysCopy count] != 0;
         }
 
         else
@@ -223,7 +223,7 @@ LABEL_41:
             value = 0;
           }
 
-          obja = [v73 mutableCopy];
+          obja = [keysCopy mutableCopy];
           v97 = 0u;
           v98 = 0u;
           v95 = 0u;
@@ -245,15 +245,15 @@ LABEL_41:
                 v45 = *(*(&v95 + 1) + 8 * n);
                 if (!v37)
                 {
-                  v49 = 0;
-                  v47 = 0;
+                  unsignedLongLongValue2 = 0;
+                  unsignedLongLongValue = 0;
                   if (!v45)
                   {
                     continue;
                   }
 
 LABEL_64:
-                  if (v47)
+                  if (unsignedLongLongValue)
                   {
                     v51 = 1;
                   }
@@ -263,10 +263,10 @@ LABEL_64:
                     v51 = v37 ^ 1;
                   }
 
-                  if ((v51 & 1) != 0 || v49)
+                  if ((v51 & 1) != 0 || unsignedLongLongValue2)
                   {
-                    v52 = [v45 URIRepresentation];
-                    v53 = CFURLGetBytes(v52, buffer, 160);
+                    uRIRepresentation = [v45 URIRepresentation];
+                    v53 = CFURLGetBytes(uRIRepresentation, buffer, 160);
                     if (v53 < 1)
                     {
                       v54 = PLChangeHandlingGetLog();
@@ -282,8 +282,8 @@ LABEL_64:
                       xpc_array_set_data(xarraya, 0xFFFFFFFFFFFFFFFFLL, buffer, v53);
                       if (v37)
                       {
-                        xpc_array_set_uint64(value, 0xFFFFFFFFFFFFFFFFLL, v47);
-                        xpc_array_set_uint64(v80, 0xFFFFFFFFFFFFFFFFLL, v49);
+                        xpc_array_set_uint64(value, 0xFFFFFFFFFFFFFFFFLL, unsignedLongLongValue);
+                        xpc_array_set_uint64(v80, 0xFFFFFFFFFFFFFFFFLL, unsignedLongLongValue2);
                       }
                     }
                   }
@@ -291,17 +291,17 @@ LABEL_64:
                   continue;
                 }
 
-                v46 = [v84 objectForKey:*(*(&v95 + 1) + 8 * n)];
-                v47 = [v46 unsignedLongLongValue];
+                v46 = [dCopy objectForKey:*(*(&v95 + 1) + 8 * n)];
+                unsignedLongLongValue = [v46 unsignedLongLongValue];
 
-                v48 = [v83 objectForKey:v45];
-                v49 = [v48 unsignedLongLongValue];
+                v48 = [iDCopy objectForKey:v45];
+                unsignedLongLongValue2 = [v48 unsignedLongLongValue];
 
                 v50 = [obja objectForKey:v45];
                 if (v50)
                 {
                   [obja removeObjectForKey:v45];
-                  v49 |= [v50 unsignedLongLongValue];
+                  unsignedLongLongValue2 |= [v50 unsignedLongLongValue];
                 }
 
                 if (v45)
@@ -338,10 +338,10 @@ LABEL_64:
 
                   v59 = *(*(&v90 + 1) + 8 * ii);
                   v60 = [v55 objectForKey:v59];
-                  v61 = [v60 unsignedLongLongValue];
+                  unsignedLongLongValue3 = [v60 unsignedLongLongValue];
 
-                  v62 = [v59 URIRepresentation];
-                  v63 = CFURLGetBytes(v62, buffer, 160);
+                  uRIRepresentation2 = [v59 URIRepresentation];
+                  v63 = CFURLGetBytes(uRIRepresentation2, buffer, 160);
                   if (v63 < 1)
                   {
                     v64 = PLChangeHandlingGetLog();
@@ -356,7 +356,7 @@ LABEL_64:
                   {
                     xpc_array_set_data(xarraya, 0xFFFFFFFFFFFFFFFFLL, buffer, v63);
                     xpc_array_set_uint64(value, 0xFFFFFFFFFFFFFFFFLL, 0);
-                    xpc_array_set_uint64(v80, 0xFFFFFFFFFFFFFFFFLL, v61);
+                    xpc_array_set_uint64(v80, 0xFFFFFFFFFFFFFFFFLL, unsignedLongLongValue3);
                   }
                 }
 

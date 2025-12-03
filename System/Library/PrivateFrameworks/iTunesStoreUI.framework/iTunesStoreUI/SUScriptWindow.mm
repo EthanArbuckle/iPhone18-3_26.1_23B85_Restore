@@ -1,7 +1,7 @@
 @interface SUScriptWindow
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
-+ (void)dismissWindowsWithOptions:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
++ (void)dismissWindowsWithOptions:(id)options;
 + (void)initialize;
 - (CGSize)_overlaySize;
 - (NSNumber)height;
@@ -12,32 +12,32 @@
 - (SUScriptViewController)frontViewController;
 - (SUScriptViewController)windowParentViewController;
 - (SUScriptWindow)init;
-- (SUScriptWindow)initWithContext:(id)a3;
+- (SUScriptWindow)initWithContext:(id)context;
 - (SUScriptWindowContext)context;
 - (WebScriptObject)maskFunction;
 - (WebScriptObject)shouldDismissFunction;
-- (id)_backgroundViewController:(BOOL)a3;
-- (id)_newOverlayTransitionWithOptions:(id)a3;
-- (id)_overlayViewController:(BOOL)a3;
+- (id)_backgroundViewController:(BOOL)controller;
+- (id)_newOverlayTransitionWithOptions:(id)options;
+- (id)_overlayViewController:(BOOL)controller;
 - (id)canSwipeToDismiss;
 - (id)scriptAttributeKeys;
-- (void)_overlayDidDismissNotification:(id)a3;
-- (void)_overlayDidFlipNotification:(id)a3;
-- (void)_overlayDidShowNotification:(id)a3;
+- (void)_overlayDidDismissNotification:(id)notification;
+- (void)_overlayDidFlipNotification:(id)notification;
+- (void)_overlayDidShowNotification:(id)notification;
 - (void)_registerForOverlayNotifications;
 - (void)dealloc;
-- (void)dismiss:(id)a3;
-- (void)flip:(id)a3;
-- (void)setBackViewController:(id)a3;
-- (void)setCanSwipeToDismiss:(id)a3;
-- (void)setFrontViewController:(id)a3;
-- (void)setHeight:(id)a3;
-- (void)setMaskFunction:(id)a3;
-- (void)setShadowOpacity:(id)a3;
-- (void)setShadowRadius:(id)a3;
-- (void)setShouldDismissFunction:(id)a3;
-- (void)setWidth:(id)a3;
-- (void)show:(id)a3;
+- (void)dismiss:(id)dismiss;
+- (void)flip:(id)flip;
+- (void)setBackViewController:(id)controller;
+- (void)setCanSwipeToDismiss:(id)dismiss;
+- (void)setFrontViewController:(id)controller;
+- (void)setHeight:(id)height;
+- (void)setMaskFunction:(id)function;
+- (void)setShadowOpacity:(id)opacity;
+- (void)setShadowRadius:(id)radius;
+- (void)setShouldDismissFunction:(id)function;
+- (void)setWidth:(id)width;
+- (void)show:(id)show;
 @end
 
 @implementation SUScriptWindow
@@ -58,7 +58,7 @@
   return v3;
 }
 
-- (SUScriptWindow)initWithContext:(id)a3
+- (SUScriptWindow)initWithContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = SUScriptWindow;
@@ -67,7 +67,7 @@
   if (v4)
   {
     v4->_canSwipeToDismiss = 1;
-    v4->_context = a3;
+    v4->_context = context;
     [(SUScriptWindow *)v5 _registerForOverlayNotifications];
   }
 
@@ -76,10 +76,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"SUOverlayDidDismissNotification" object:0];
-  [v3 removeObserver:self name:@"SUOverlayDidFlipNotification" object:0];
-  [v3 removeObserver:self name:@"SUOverlayDidShowNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SUOverlayDidDismissNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUOverlayDidFlipNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUOverlayDidShowNotification" object:0];
 
   [(SUScriptFunction *)self->_shouldDismissFunction setScriptObject:0];
   [(SUScriptFunction *)self->_shouldDismissFunction setThisObject:0];
@@ -89,9 +89,9 @@
   [(SUScriptObject *)&v4 dealloc];
 }
 
-+ (void)dismissWindowsWithOptions:(id)a3
++ (void)dismissWindowsWithOptions:(id)options
 {
-  v3 = [a3 safeValueForKey:@"animate"];
+  v3 = [options safeValueForKey:@"animate"];
   if (objc_opt_respondsToSelector())
   {
     [v3 BOOLValue];
@@ -116,9 +116,9 @@ uint64_t __44__SUScriptWindow_dismissWindowsWithOptions___block_invoke(uint64_t 
   return v3;
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v3 = [(SUScriptWindow *)self _copySafeTransitionOptionsFromOptions:a3];
+  v3 = [(SUScriptWindow *)self _copySafeTransitionOptionsFromOptions:dismiss];
   WebThreadRunOnMainThread();
 }
 
@@ -183,9 +183,9 @@ uint64_t __26__SUScriptWindow_dismiss___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)flip:(id)a3
+- (void)flip:(id)flip
 {
-  v3 = [(SUScriptWindow *)self _copySafeTransitionOptionsFromOptions:a3];
+  v3 = [(SUScriptWindow *)self _copySafeTransitionOptionsFromOptions:flip];
   WebThreadRunOnMainThread();
 }
 
@@ -236,9 +236,9 @@ void __23__SUScriptWindow_flip___block_invoke(uint64_t a1)
   }
 }
 
-- (void)show:(id)a3
+- (void)show:(id)show
 {
-  v3 = [(SUScriptWindow *)self _copySafeTransitionOptionsFromOptions:a3];
+  v3 = [(SUScriptWindow *)self _copySafeTransitionOptionsFromOptions:show];
   WebThreadRunOnMainThread();
 }
 
@@ -427,20 +427,20 @@ uint64_t __23__SUScriptWindow_show___block_invoke_16(uint64_t a1)
   v8 = 3221225472;
   v9 = __36__SUScriptWindow_backViewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __36__SUScriptWindow_backViewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __36__SUScriptWindow_backViewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -513,20 +513,20 @@ void *__35__SUScriptWindow_canSwipeToDismiss__block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __37__SUScriptWindow_frontViewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __37__SUScriptWindow_frontViewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __37__SUScriptWindow_frontViewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -576,14 +576,14 @@ uint64_t __24__SUScriptWindow_height__block_invoke(uint64_t a1)
 - (WebScriptObject)maskFunction
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUScriptFunction *)self->_maskFunction scriptObject];
+  scriptObject = [(SUScriptFunction *)self->_maskFunction scriptObject];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return scriptObject;
 }
 
-- (void)setBackViewController:(id)a3
+- (void)setBackViewController:(id)controller
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (controller && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = MEMORY[0x1E69E2F88];
 
@@ -630,7 +630,7 @@ id __40__SUScriptWindow_setBackViewController___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCanSwipeToDismiss:(id)a3
+- (void)setCanSwipeToDismiss:(id)dismiss
 {
   if (objc_opt_respondsToSelector())
   {
@@ -654,7 +654,7 @@ uint64_t __39__SUScriptWindow_setCanSwipeToDismiss___block_invoke(uint64_t a1)
   return [v2 setCanSwipeToDismiss:v3];
 }
 
-- (void)setHeight:(id)a3
+- (void)setHeight:(id)height
 {
   if (objc_opt_respondsToSelector())
   {
@@ -694,10 +694,10 @@ uint64_t __28__SUScriptWindow_setHeight___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMaskFunction:(id)a3
+- (void)setMaskFunction:(id)function
 {
-  v3 = a3;
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  functionCopy = function;
+  if (function && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = MEMORY[0x1E69E2F88];
 
@@ -708,12 +708,12 @@ uint64_t __28__SUScriptWindow_setHeight___block_invoke(uint64_t a1)
   {
     [(SUScriptObject *)self lock];
 
-    if (v3)
+    if (functionCopy)
     {
-      v3 = [(SUScriptFunction *)[SUScriptCanvasFunction alloc] initWithScriptObject:v3];
+      functionCopy = [(SUScriptFunction *)[SUScriptCanvasFunction alloc] initWithScriptObject:functionCopy];
     }
 
-    self->_maskFunction = v3;
+    self->_maskFunction = functionCopy;
     +[SUOverlayViewController defaultOverlaySize];
 
     v5 = self->_maskFunction;
@@ -733,9 +733,9 @@ void __34__SUScriptWindow_setMaskFunction___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setFrontViewController:(id)a3
+- (void)setFrontViewController:(id)controller
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (controller && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = MEMORY[0x1E69E2F88];
 
@@ -782,12 +782,12 @@ id __41__SUScriptWindow_setFrontViewController___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setShadowOpacity:(id)a3
+- (void)setShadowOpacity:(id)opacity
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 floatValue];
+    [opacity floatValue];
     WebThreadRunOnMainThread();
   }
 
@@ -811,12 +811,12 @@ uint64_t __35__SUScriptWindow_setShadowOpacity___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setShadowRadius:(id)a3
+- (void)setShadowRadius:(id)radius
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 floatValue];
+    [radius floatValue];
     WebThreadRunOnMainThread();
   }
 
@@ -840,10 +840,10 @@ uint64_t __34__SUScriptWindow_setShadowRadius___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setShouldDismissFunction:(id)a3
+- (void)setShouldDismissFunction:(id)function
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !function) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -873,7 +873,7 @@ uint64_t __43__SUScriptWindow_setShouldDismissFunction___block_invoke(uint64_t a
   return [v3 setShouldDismissFunction:v4];
 }
 
-- (void)setWidth:(id)a3
+- (void)setWidth:(id)width
 {
   if (objc_opt_respondsToSelector())
   {
@@ -1005,15 +1005,15 @@ void *__30__SUScriptWindow_shadowRadius__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -1073,20 +1073,20 @@ uint64_t __23__SUScriptWindow_width__block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __44__SUScriptWindow_windowParentViewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __44__SUScriptWindow_windowParentViewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __44__SUScriptWindow_windowParentViewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -1120,9 +1120,9 @@ uint64_t __44__SUScriptWindow_windowParentViewController__block_invoke(uint64_t 
   return result;
 }
 
-- (void)_overlayDidDismissNotification:(id)a3
+- (void)_overlayDidDismissNotification:(id)notification
 {
-  v4 = [objc_msgSend(objc_msgSend(a3 "object")];
+  v4 = [objc_msgSend(objc_msgSend(notification "object")];
   if (v4 == [(SUScriptWindowContext *)[(SUScriptWindow *)self context] tag])
   {
     [(SUScriptObject *)self dispatchEvent:0 forName:@"dismiss"];
@@ -1131,9 +1131,9 @@ uint64_t __44__SUScriptWindow_windowParentViewController__block_invoke(uint64_t 
   }
 }
 
-- (void)_overlayDidFlipNotification:(id)a3
+- (void)_overlayDidFlipNotification:(id)notification
 {
-  v4 = [objc_msgSend(objc_msgSend(a3 "object")];
+  v4 = [objc_msgSend(objc_msgSend(notification "object")];
   if (v4 == [(SUScriptWindowContext *)[(SUScriptWindow *)self context] tag])
   {
 
@@ -1141,9 +1141,9 @@ uint64_t __44__SUScriptWindow_windowParentViewController__block_invoke(uint64_t 
   }
 }
 
-- (void)_overlayDidShowNotification:(id)a3
+- (void)_overlayDidShowNotification:(id)notification
 {
-  v4 = [objc_msgSend(objc_msgSend(a3 "object")];
+  v4 = [objc_msgSend(objc_msgSend(notification "object")];
   if (v4 == [(SUScriptWindowContext *)[(SUScriptWindow *)self context] tag])
   {
     [(SUScriptObject *)self dispatchEvent:0 forName:@"show"];
@@ -1189,9 +1189,9 @@ uint64_t __44__SUScriptWindow_windowParentViewController__block_invoke(uint64_t 
   return result;
 }
 
-- (id)_backgroundViewController:(BOOL)a3
+- (id)_backgroundViewController:(BOOL)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v5 = +[SUClientDispatch overlayBackgroundViewController];
   if (v5)
   {
@@ -1200,7 +1200,7 @@ uint64_t __44__SUScriptWindow_windowParentViewController__block_invoke(uint64_t 
 
   else
   {
-    v6 = !v3;
+    v6 = !controllerCopy;
   }
 
   if (!v6)
@@ -1223,24 +1223,24 @@ uint64_t __44__SUScriptWindow_windowParentViewController__block_invoke(uint64_t 
   return v5;
 }
 
-- (id)_newOverlayTransitionWithOptions:(id)a3
+- (id)_newOverlayTransitionWithOptions:(id)options
 {
   v5 = objc_alloc_init(SUOverlayTransition);
-  v6 = [a3 objectForKey:@"duration"];
+  v6 = [options objectForKey:@"duration"];
   if (objc_opt_respondsToSelector())
   {
     [v6 doubleValue];
     [(SUOverlayTransition *)v5 setDuration:?];
   }
 
-  v7 = [a3 objectForKey:@"srcElement"];
+  v7 = [options objectForKey:@"srcElement"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUOverlayTransition *)v5 setSourceElement:[(SUScriptObject *)self DOMElementWithElement:v7]];
   }
 
-  v8 = [a3 objectForKey:@"transition"];
+  v8 = [options objectForKey:@"transition"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1250,44 +1250,44 @@ uint64_t __44__SUScriptWindow_windowParentViewController__block_invoke(uint64_t 
   return v5;
 }
 
-- (id)_overlayViewController:(BOOL)a3
+- (id)_overlayViewController:(BOOL)controller
 {
-  v4 = [(SUScriptWindow *)self _backgroundViewController:a3];
-  v5 = [(SUScriptWindow *)self context];
+  v4 = [(SUScriptWindow *)self _backgroundViewController:controller];
+  context = [(SUScriptWindow *)self context];
 
-  return [v4 viewControllerForScriptWindowContext:v5];
+  return [v4 viewControllerForScriptWindowContext:context];
 }
 
 - (void)_registerForOverlayNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__overlayDidDismissNotification_ name:@"SUOverlayDidDismissNotification" object:0];
-  [v3 addObserver:self selector:sel__overlayDidFlipNotification_ name:@"SUOverlayDidFlipNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__overlayDidDismissNotification_ name:@"SUOverlayDidDismissNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__overlayDidFlipNotification_ name:@"SUOverlayDidFlipNotification" object:0];
 
-  [v3 addObserver:self selector:sel__overlayDidShowNotification_ name:@"SUOverlayDidShowNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__overlayDidShowNotification_ name:@"SUOverlayDidShowNotification" object:0];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_18 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptWindow;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_13, 3);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_13, 3);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptWindow;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -1297,14 +1297,14 @@ uint64_t __44__SUScriptWindow_windowParentViewController__block_invoke(uint64_t 
 {
   v4.receiver = self;
   v4.super_class = SUScriptWindow;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_18 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_18 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_13 = sel_dismiss_;
     unk_1EBF3AAC0 = @"dismiss";

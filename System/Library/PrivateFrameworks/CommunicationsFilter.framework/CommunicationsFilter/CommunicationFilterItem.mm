@@ -1,12 +1,12 @@
 @interface CommunicationFilterItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesFilterItem:(id)a3;
-- (CommunicationFilterItem)initWithDictionaryRepresentation:(id)a3;
-- (CommunicationFilterItem)initWithEmailAddress:(id)a3;
-- (CommunicationFilterItem)initWithPhoneNumber:(__CFPhoneNumber *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesFilterItem:(id)item;
+- (CommunicationFilterItem)initWithDictionaryRepresentation:(id)representation;
+- (CommunicationFilterItem)initWithEmailAddress:(id)address;
+- (CommunicationFilterItem)initWithPhoneNumber:(__CFPhoneNumber *)number;
 - (NSString)unformattedID;
 - (id)_dictionaryRepresentationWithRedaction;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -22,7 +22,7 @@
     return 0;
   }
 
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(CommunicationFilterItem *)self isPhoneNumber])
   {
     phoneNumber = self->_phoneNumber;
@@ -33,10 +33,10 @@
       v7 = self->_phoneNumber;
       v8 = IMCountryCodeCFPhoneNumberRef();
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:0];
-      [v3 setObject:v6 forKey:@"__kCMFItemPhoneNumberUnformattedKey"];
+      [dictionary setObject:v6 forKey:@"__kCMFItemPhoneNumberUnformattedKey"];
       if (v8)
       {
-        [v3 setObject:v8 forKey:@"__kCMFItemPhoneNumberCountryCodeKey"];
+        [dictionary setObject:v8 forKey:@"__kCMFItemPhoneNumberCountryCodeKey"];
       }
 
       goto LABEL_9;
@@ -63,16 +63,16 @@
     return 0;
   }
 
-  [v3 setObject:emailAddress forKey:@"__kCMFItemEmailUnformattedKey"];
+  [dictionary setObject:emailAddress forKey:@"__kCMFItemEmailUnformattedKey"];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
 LABEL_9:
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", 1), @"__kCMFItemVersionKey"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", 1), @"__kCMFItemVersionKey"}];
   if (v9)
   {
-    [v3 setObject:v9 forKey:@"__kCMFItemTypeKey"];
+    [dictionary setObject:v9 forKey:@"__kCMFItemTypeKey"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)dealloc
@@ -89,7 +89,7 @@ LABEL_9:
   [(CommunicationFilterItem *)&v4 dealloc];
 }
 
-- (CommunicationFilterItem)initWithPhoneNumber:(__CFPhoneNumber *)a3
+- (CommunicationFilterItem)initWithPhoneNumber:(__CFPhoneNumber *)number
 {
   v7.receiver = self;
   v7.super_class = CommunicationFilterItem;
@@ -97,24 +97,24 @@ LABEL_9:
   v5 = v4;
   if (v4)
   {
-    v4->_phoneNumber = a3;
-    if (a3)
+    v4->_phoneNumber = number;
+    if (number)
     {
-      CFRetain(a3);
+      CFRetain(number);
     }
   }
 
   return v5;
 }
 
-- (CommunicationFilterItem)initWithEmailAddress:(id)a3
+- (CommunicationFilterItem)initWithEmailAddress:(id)address
 {
   v6.receiver = self;
   v6.super_class = CommunicationFilterItem;
   v4 = [(CommunicationFilterItem *)&v6 init];
   if (v4)
   {
-    v4->_emailAddress = [a3 copy];
+    v4->_emailAddress = [address copy];
   }
 
   return v4;
@@ -122,19 +122,19 @@ LABEL_9:
 
 - (id)description
 {
-  v2 = [(CommunicationFilterItem *)self _dictionaryRepresentationWithRedaction];
+  _dictionaryRepresentationWithRedaction = [(CommunicationFilterItem *)self _dictionaryRepresentationWithRedaction];
 
-  return [v2 description];
+  return [_dictionaryRepresentationWithRedaction description];
 }
 
-- (CommunicationFilterItem)initWithDictionaryRepresentation:(id)a3
+- (CommunicationFilterItem)initWithDictionaryRepresentation:(id)representation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKey:@"__kCMFItemTypeKey"];
-  v6 = [a3 objectForKey:@"__kCMFItemVersionKey"];
-  v7 = [a3 objectForKey:@"__kCMFItemPhoneNumberUnformattedKey"];
-  [a3 objectForKey:@"__kCMFItemPhoneNumberCountryCodeKey"];
-  v8 = [a3 objectForKey:@"__kCMFItemEmailUnformattedKey"];
+  v5 = [representation objectForKey:@"__kCMFItemTypeKey"];
+  v6 = [representation objectForKey:@"__kCMFItemVersionKey"];
+  v7 = [representation objectForKey:@"__kCMFItemPhoneNumberUnformattedKey"];
+  [representation objectForKey:@"__kCMFItemPhoneNumberCountryCodeKey"];
+  v8 = [representation objectForKey:@"__kCMFItemEmailUnformattedKey"];
   if (![(CommunicationFilterItem *)self _acceptItemType:v5]|| ![(CommunicationFilterItem *)self _acceptVersion:v6])
   {
     v11 = CMFDefaultLog();
@@ -149,7 +149,7 @@ LABEL_9:
 
 LABEL_7:
     v15 = 138412290;
-    v16 = [a3 allKeys];
+    allKeys = [representation allKeys];
     _os_log_impl(&dword_243BDE000, v11, OS_LOG_TYPE_DEFAULT, "[WARN] Couldn't create CMFItem from dictionary %@", &v15, 0xCu);
     goto LABEL_8;
   }
@@ -200,27 +200,27 @@ LABEL_7:
   }
 }
 
-- (BOOL)matchesFilterItem:(id)a3
+- (BOOL)matchesFilterItem:(id)item
 {
   v5 = objc_autoreleasePoolPush();
   emailAddress = self->_emailAddress;
   if (emailAddress)
   {
-    v7 = -[NSString caseInsensitiveCompare:](emailAddress, "caseInsensitiveCompare:", [a3 emailAddress]) == NSOrderedSame;
+    v7 = -[NSString caseInsensitiveCompare:](emailAddress, "caseInsensitiveCompare:", [item emailAddress]) == NSOrderedSame;
   }
 
   else
   {
-    v7 = self->_phoneNumber && (v8 = [a3 phoneNumber]) != 0 && CFEqual(v8, self->_phoneNumber) != 0;
+    v7 = self->_phoneNumber && (v8 = [item phoneNumber]) != 0 && CFEqual(v8, self->_phoneNumber) != 0;
   }
 
   objc_autoreleasePoolPop(v5);
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -231,14 +231,14 @@ LABEL_7:
     return 0;
   }
 
-  return [(CommunicationFilterItem *)self matchesFilterItem:a3];
+  return [(CommunicationFilterItem *)self matchesFilterItem:equal];
 }
 
 - (unint64_t)hash
 {
   if (self->_emailAddress)
   {
-    v2 = [(NSString *)self->_emailAddress lowercaseString];
+    lowercaseString = [(NSString *)self->_emailAddress lowercaseString];
   }
 
   else
@@ -251,17 +251,17 @@ LABEL_7:
     }
 
     phoneNumber = self->_phoneNumber;
-    v2 = IMUnformattedPhoneNumberForCFPhoneNumberRef();
+    lowercaseString = IMUnformattedPhoneNumberForCFPhoneNumberRef();
   }
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)lowercaseString hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_emailAddress)
   {
-    v4 = [CommunicationFilterItem allocWithZone:a3];
+    v4 = [CommunicationFilterItem allocWithZone:zone];
     emailAddress = self->_emailAddress;
 
     return [(CommunicationFilterItem *)v4 initWithEmailAddress:emailAddress];
@@ -269,7 +269,7 @@ LABEL_7:
 
   else if (self->_phoneNumber)
   {
-    v7 = [CommunicationFilterItem allocWithZone:a3];
+    v7 = [CommunicationFilterItem allocWithZone:zone];
     phoneNumber = self->_phoneNumber;
 
     return [(CommunicationFilterItem *)v7 initWithPhoneNumber:phoneNumber];
@@ -283,13 +283,13 @@ LABEL_7:
 
 - (id)_dictionaryRepresentationWithRedaction
 {
-  v3 = [(CommunicationFilterItem *)self dictionaryRepresentation];
-  if (!v3)
+  dictionaryRepresentation = [(CommunicationFilterItem *)self dictionaryRepresentation];
+  if (!dictionaryRepresentation)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v3];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:dictionaryRepresentation];
   if ([(CommunicationFilterItem *)self isPhoneNumber])
   {
     v5 = @"__kCMFItemPhoneNumberUnformattedKey";

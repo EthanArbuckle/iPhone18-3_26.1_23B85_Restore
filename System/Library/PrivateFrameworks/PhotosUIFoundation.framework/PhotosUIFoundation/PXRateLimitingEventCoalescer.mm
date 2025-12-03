@@ -1,6 +1,6 @@
 @interface PXRateLimitingEventCoalescer
 - (PXRateLimitingEventCoalescer)init;
-- (PXRateLimitingEventCoalescer)initWithRate:(double)a3;
+- (PXRateLimitingEventCoalescer)initWithRate:(double)rate;
 - (void)_handleTimer;
 - (void)inputEvent;
 @end
@@ -57,17 +57,17 @@ void __42__PXRateLimitingEventCoalescer_inputEvent__block_invoke(uint64_t a1)
   }
 }
 
-- (PXRateLimitingEventCoalescer)initWithRate:(double)a3
+- (PXRateLimitingEventCoalescer)initWithRate:(double)rate
 {
   v4.receiver = self;
   v4.super_class = PXRateLimitingEventCoalescer;
-  return [(PXEventCoalescer *)&v4 initWithInterval:a3];
+  return [(PXEventCoalescer *)&v4 initWithInterval:rate];
 }
 
 - (PXRateLimitingEventCoalescer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXEventCoalescer.m" lineNumber:194 description:{@"%s is not available as initializer", "-[PXRateLimitingEventCoalescer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXEventCoalescer.m" lineNumber:194 description:{@"%s is not available as initializer", "-[PXRateLimitingEventCoalescer init]"}];
 
   abort();
 }

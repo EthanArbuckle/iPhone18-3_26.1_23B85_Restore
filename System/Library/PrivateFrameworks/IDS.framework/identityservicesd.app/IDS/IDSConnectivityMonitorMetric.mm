@@ -1,20 +1,20 @@
 @interface IDSConnectivityMonitorMetric
-- (IDSConnectivityMonitorMetric)initWithProperties:(id)a3;
+- (IDSConnectivityMonitorMetric)initWithProperties:(id)properties;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSConnectivityMonitorMetric
 
-- (IDSConnectivityMonitorMetric)initWithProperties:(id)a3
+- (IDSConnectivityMonitorMetric)initWithProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = IDSConnectivityMonitorMetric;
   v6 = [(IDSConnectivityMonitorMetric *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_properties, a3);
+    objc_storeStrong(&v6->_properties, properties);
   }
 
   return v7;
@@ -23,40 +23,40 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSConnectivityMonitorMetric *)self properties];
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 success]);
+  properties = [(IDSConnectivityMonitorMetric *)self properties];
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [properties success]);
 
   if (v5)
   {
     CFDictionarySetValue(v3, @"MessageSuccess", v5);
   }
 
-  v6 = [(IDSConnectivityMonitorMetric *)self properties];
-  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 terminusConnected]);
+  properties2 = [(IDSConnectivityMonitorMetric *)self properties];
+  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [properties2 terminusConnected]);
 
   if (v7)
   {
     CFDictionarySetValue(v3, @"TerminusConnected", v7);
   }
 
-  v8 = [(IDSConnectivityMonitorMetric *)self properties];
-  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 terminusNearby]);
+  properties3 = [(IDSConnectivityMonitorMetric *)self properties];
+  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [properties3 terminusNearby]);
 
   if (v9)
   {
     CFDictionarySetValue(v3, @"TerminusConnected", v9);
   }
 
-  v10 = [(IDSConnectivityMonitorMetric *)self properties];
-  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 terminusRegistered]);
+  properties4 = [(IDSConnectivityMonitorMetric *)self properties];
+  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [properties4 terminusRegistered]);
 
   if (v11)
   {
     CFDictionarySetValue(v3, @"TerminusConnected", v11);
   }
 
-  v12 = [(IDSConnectivityMonitorMetric *)self properties];
-  [v12 timeConnected];
+  properties5 = [(IDSConnectivityMonitorMetric *)self properties];
+  [properties5 timeConnected];
   v13 = [NSNumber numberWithDouble:?];
 
   if (v13)
@@ -64,8 +64,8 @@
     CFDictionarySetValue(v3, @"TimeConnected", v13);
   }
 
-  v14 = [(IDSConnectivityMonitorMetric *)self properties];
-  [v14 timeDisconnected];
+  properties6 = [(IDSConnectivityMonitorMetric *)self properties];
+  [properties6 timeDisconnected];
   v15 = [NSNumber numberWithDouble:?];
 
   if (v15)
@@ -73,20 +73,20 @@
     CFDictionarySetValue(v3, @"TimeDisconnected", v15);
   }
 
-  v16 = [(IDSConnectivityMonitorMetric *)self properties];
-  v17 = [v16 personalCBUUIDString];
+  properties7 = [(IDSConnectivityMonitorMetric *)self properties];
+  personalCBUUIDString = [properties7 personalCBUUIDString];
 
-  if (v17)
+  if (personalCBUUIDString)
   {
-    CFDictionarySetValue(v3, @"PersonalCBUUID", v17);
+    CFDictionarySetValue(v3, @"PersonalCBUUID", personalCBUUIDString);
   }
 
-  v18 = [(IDSConnectivityMonitorMetric *)self properties];
-  v19 = [v18 pairedDeviceCBUUIDString];
+  properties8 = [(IDSConnectivityMonitorMetric *)self properties];
+  pairedDeviceCBUUIDString = [properties8 pairedDeviceCBUUIDString];
 
-  if (v19)
+  if (pairedDeviceCBUUIDString)
   {
-    CFDictionarySetValue(v3, @"PairedDeviceCBUUID", v19);
+    CFDictionarySetValue(v3, @"PairedDeviceCBUUID", pairedDeviceCBUUIDString);
   }
 
   return v3;

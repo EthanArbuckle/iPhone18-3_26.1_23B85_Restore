@@ -9,12 +9,12 @@
   v5.receiver = self;
   v5.super_class = _UIAlertControllerLayoutObservingContainerView;
   [(UIView *)&v5 layoutSubviews];
-  v3 = [(_UIAlertControllerLayoutObservingContainerView *)self postLayoutBlock];
+  postLayoutBlock = [(_UIAlertControllerLayoutObservingContainerView *)self postLayoutBlock];
 
-  if (v3)
+  if (postLayoutBlock)
   {
-    v4 = [(_UIAlertControllerLayoutObservingContainerView *)self postLayoutBlock];
-    v4[2]();
+    postLayoutBlock2 = [(_UIAlertControllerLayoutObservingContainerView *)self postLayoutBlock];
+    postLayoutBlock2[2]();
   }
 }
 

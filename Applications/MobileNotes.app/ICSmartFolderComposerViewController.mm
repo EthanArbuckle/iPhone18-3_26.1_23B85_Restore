@@ -1,29 +1,29 @@
 @interface ICSmartFolderComposerViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (ICSmartFolderComposerViewController)initWithAccount:(id)a3 smartFolder:(id)a4 completion:(id)a5;
-- (ICSmartFolderComposerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)consumedBottomAreaForResizer:(id)a3;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (ICSmartFolderComposerViewController)initWithAccount:(id)account smartFolder:(id)folder completion:(id)completion;
+- (ICSmartFolderComposerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)consumedBottomAreaForResizer:(id)resizer;
 - (id)keyboardResizerScrollView;
-- (void)cancelActionWithSender:(id)a3;
-- (void)doneActionWithSender:(id)a3;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)cancelActionWithSender:(id)sender;
+- (void)doneActionWithSender:(id)sender;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICSmartFolderComposerViewController
 
-- (ICSmartFolderComposerViewController)initWithAccount:(id)a3 smartFolder:(id)a4 completion:(id)a5
+- (ICSmartFolderComposerViewController)initWithAccount:(id)account smartFolder:(id)folder completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  v9 = a3;
-  v10 = a4;
-  return sub_100492D70(v9, a4, sub_1004960EC, v8);
+  accountCopy = account;
+  folderCopy = folder;
+  return sub_100492D70(accountCopy, folder, sub_1004960EC, v8);
 }
 
 - (void)viewDidLoad
@@ -39,24 +39,24 @@
   *&v2[OBJC_IVAR___ICSmartFolderComposerViewController_scrollViewKeyboardResizer] = v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100493444(a3);
+  selfCopy = self;
+  sub_100493444(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100493E7C(a3);
+  selfCopy = self;
+  sub_100493E7C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = *(&self->super.super.super.isa + OBJC_IVAR___ICSmartFolderComposerViewController_scrollViewKeyboardResizer);
-  v7 = self;
+  selfCopy = self;
   if (v6)
   {
     [v6 stopAutoResizing];
@@ -64,33 +64,33 @@
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(ICSmartFolderComposerViewController *)&v8 viewWillDisappear:v3];
+  [(ICSmartFolderComposerViewController *)&v8 viewWillDisappear:disappearCopy];
 }
 
-- (void)cancelActionWithSender:(id)a3
+- (void)cancelActionWithSender:(id)sender
 {
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v6 = a3;
-  v7 = self;
-  sub_100495458(v6, v7, v5);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100495458(senderCopy, selfCopy, v5);
 }
 
-- (void)doneActionWithSender:(id)a3
+- (void)doneActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_100495F54();
 }
 
-- (ICSmartFolderComposerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICSmartFolderComposerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -101,12 +101,12 @@
   return 0;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___ICSmartFolderComposerViewController_scrollViewKeyboardResizer);
   if (v3)
   {
-    v5 = self;
+    selfCopy = self;
     if ([v3 fullyShowingKeyboard])
     {
       v4 = sub_100490D78();
@@ -115,14 +115,14 @@
   }
 }
 
-- (double)consumedBottomAreaForResizer:(id)a3
+- (double)consumedBottomAreaForResizer:(id)resizer
 {
-  v3 = self;
-  v4 = [(ICSmartFolderComposerViewController *)v3 view];
-  if (v4)
+  selfCopy = self;
+  view = [(ICSmartFolderComposerViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v4;
-    [v4 safeAreaInsets];
+    v6 = view;
+    [view safeAreaInsets];
     v8 = v7;
 
     return v8;
@@ -138,19 +138,19 @@
 
 - (id)keyboardResizerScrollView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100490D78();
 
   return v3;
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v5 = self;
+  selfCopy = self;
   v3 = sub_100272498(&OBJC_IVAR___ICSmartFolderComposerViewController____lazy_storage___cancelBarButtonItem, &selRef_cancelActionWithSender_, 1);
   v4 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  sub_100495458(v3, v5, v4);
+  sub_100495458(v3, selfCopy, v4);
 }
 
 @end

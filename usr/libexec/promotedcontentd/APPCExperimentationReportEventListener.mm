@@ -1,6 +1,6 @@
 @interface APPCExperimentationReportEventListener
 + (id)sharedInstance;
-- (void)_storeReceivedEvent:(id)a3;
+- (void)_storeReceivedEvent:(id)event;
 - (void)start;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100383B54;
   block[3] = &unk_10047E780;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1004EA218[0] != -1)
   {
     dispatch_once(qword_1004EA218, block);
@@ -33,13 +33,13 @@
 
   objc_initWeak(&location, self);
   v7 = +[MetricsModule storage];
-  v8 = [v7 notificationRegistrar];
+  notificationRegistrar = [v7 notificationRegistrar];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100383D70;
   v15 = &unk_100480618;
   objc_copyWeak(&v16, &location);
-  v9 = [v8 registerHandlerForPurpose:100 andMetric:1000 closure:&v12];
+  v9 = [notificationRegistrar registerHandlerForPurpose:100 andMetric:1000 closure:&v12];
 
   v10 = [NSNumber numberWithInteger:v9, v12, v13, v14, v15];
   v18 = v10;
@@ -50,11 +50,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_storeReceivedEvent:(id)a3
+- (void)_storeReceivedEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(APPCExperimentationReportEventListener *)self eventProcessor];
-  [v5 processReceivedMetric:v4];
+  eventCopy = event;
+  eventProcessor = [(APPCExperimentationReportEventListener *)self eventProcessor];
+  [eventProcessor processReceivedMetric:eventCopy];
 }
 
 @end

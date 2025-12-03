@@ -1,17 +1,17 @@
 @interface CUUserAlert
 - (CUUserAlert)init;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_autoInvalidate;
 - (void)_invalidated;
-- (void)_responseCallback:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4;
-- (void)activateWithCompletion:(id)a3;
+- (void)_responseCallback:(__CFUserNotification *)callback responseFlags:(unint64_t)flags;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation CUUserAlert
 
-- (void)_responseCallback:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4
+- (void)_responseCallback:(__CFUserNotification *)callback responseFlags:(unint64_t)flags
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -19,8 +19,8 @@
   block[2] = __47__CUUserAlert__responseCallback_responseFlags___block_invoke;
   block[3] = &unk_1E73A3FC8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = flags;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -152,9 +152,9 @@ uint64_t __25__CUUserAlert_invalidate__block_invoke(uint64_t result, uint64_t a2
   return result;
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -166,7 +166,7 @@ uint64_t __25__CUUserAlert_invalidate__block_invoke(uint64_t result, uint64_t a2
   aBlock[2] = __39__CUUserAlert__activateWithCompletion___block_invoke;
   aBlock[3] = &unk_1E73A3FA0;
   v57 = &v58;
-  v5 = v4;
+  v5 = completionCopy;
   aBlock[4] = self;
   v56 = v5;
   v6 = _Block_copy(aBlock);
@@ -175,13 +175,13 @@ uint64_t __25__CUUserAlert_invalidate__block_invoke(uint64_t result, uint64_t a2
   if (v8)
   {
     localizationBundle = self->_localizationBundle;
-    v10 = localizationBundle;
+    mainBundle = localizationBundle;
     if (!localizationBundle)
     {
-      v10 = [MEMORY[0x1E696AAE8] mainBundle];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
     }
 
-    v11 = CULocalizedStringEx(v10, self->_localizationTableName, v8);
+    v11 = CULocalizedStringEx(mainBundle, self->_localizationTableName, v8);
     if (!localizationBundle)
     {
     }
@@ -204,13 +204,13 @@ uint64_t __25__CUUserAlert_invalidate__block_invoke(uint64_t result, uint64_t a2
   if (v15)
   {
     v16 = self->_localizationBundle;
-    v17 = v16;
+    mainBundle2 = v16;
     if (!v16)
     {
-      v17 = [MEMORY[0x1E696AAE8] mainBundle];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
     }
 
-    v18 = CULocalizedStringEx(v17, self->_localizationTableName, v15);
+    v18 = CULocalizedStringEx(mainBundle2, self->_localizationTableName, v15);
     if (!v16)
     {
     }
@@ -233,13 +233,13 @@ uint64_t __25__CUUserAlert_invalidate__block_invoke(uint64_t result, uint64_t a2
   if (v22)
   {
     v23 = self->_localizationBundle;
-    v24 = v23;
+    mainBundle3 = v23;
     if (!v23)
     {
-      v24 = [MEMORY[0x1E696AAE8] mainBundle];
+      mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
     }
 
-    v25 = CULocalizedStringEx(v24, self->_localizationTableName, v22);
+    v25 = CULocalizedStringEx(mainBundle3, self->_localizationTableName, v22);
     v26 = *MEMORY[0x1E695EE78];
     if (!v23)
     {
@@ -252,13 +252,13 @@ uint64_t __25__CUUserAlert_invalidate__block_invoke(uint64_t result, uint64_t a2
   if (v27)
   {
     v28 = self->_localizationBundle;
-    v29 = v28;
+    mainBundle4 = v28;
     if (!v28)
     {
-      v29 = [MEMORY[0x1E696AAE8] mainBundle];
+      mainBundle4 = [MEMORY[0x1E696AAE8] mainBundle];
     }
 
-    v30 = CULocalizedStringEx(v29, self->_localizationTableName, v27);
+    v30 = CULocalizedStringEx(mainBundle4, self->_localizationTableName, v27);
     v31 = *MEMORY[0x1E695EE70];
     if (!v28)
     {
@@ -346,17 +346,17 @@ LABEL_7:
   return [v15 _autoInvalidate];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__CUUserAlert_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

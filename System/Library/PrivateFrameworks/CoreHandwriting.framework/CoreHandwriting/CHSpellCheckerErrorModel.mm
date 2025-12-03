@@ -1,14 +1,14 @@
 @interface CHSpellCheckerErrorModel
-- (double)replacementErrorScoreForIntendedCharacter:(unsigned __int16)a3 actualCharacter:(unsigned __int16)a4;
+- (double)replacementErrorScoreForIntendedCharacter:(unsigned __int16)character actualCharacter:(unsigned __int16)actualCharacter;
 @end
 
 @implementation CHSpellCheckerErrorModel
 
-- (double)replacementErrorScoreForIntendedCharacter:(unsigned __int16)a3 actualCharacter:(unsigned __int16)a4
+- (double)replacementErrorScoreForIntendedCharacter:(unsigned __int16)character actualCharacter:(unsigned __int16)actualCharacter
 {
-  v6 = a4;
-  v8 = sub_18380BB8C(self, a3, a3, a4, v4, v5);
-  v13 = sub_18380BB8C(self, v6, v9, v10, v11, v12);
+  actualCharacterCopy = actualCharacter;
+  v8 = sub_18380BB8C(self, character, character, actualCharacter, v4, v5);
+  v13 = sub_18380BB8C(self, actualCharacterCopy, v9, v10, v11, v12);
   v19 = objc_msgSend_count(&unk_1EF1EBB80, v14, v15, v16, v17, v18);
   v25 = objc_msgSend_count(&unk_1EF1EBB80, v20, v21, v22, v23, v24);
   v26 = 0.0;

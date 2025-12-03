@@ -1,39 +1,39 @@
 @interface RCRecordingsModelInteractor
 + (id)sharedRecordingsModelInteractor;
-- (BOOL)createUserFolderWithName:(id)a3;
-- (BOOL)isEnhancedForUUID:(id)a3;
-- (BOOL)isFavoriteForUUID:(id)a3;
-- (BOOL)isFavoriteForUUIDs:(id)a3;
-- (BOOL)isRecentlyDeletedForUUID:(id)a3;
-- (BOOL)isSpatialRecordingForUUID:(id)a3;
-- (BOOL)isSpeechIsolatorEnabledForUUID:(id)a3;
-- (BOOL)recordingTitleHasBeenEditedForUUID:(id)a3;
-- (BOOL)userFolderExistsWithName:(id)a3;
-- (RCRecordingsModelInteractor)initWithSavedRecordingsModel:(id)a3;
-- (id)allFoldersWithName:(id)a3;
-- (id)builtInFolderOfType:(int64_t)a3;
-- (id)duplicateRecordingWithUUID:(id)a3;
-- (id)folderForUUID:(id)a3;
-- (id)restoreFolder:(id)a3;
-- (id)restoreRecordingsWithUUIDs:(id)a3;
-- (id)setFavorite:(BOOL)a3 forUUIDs:(id)a4;
-- (id)titleForUUID:(id)a3;
-- (id)uuidOfUserFolderForRecordingWithUUID:(id)a3;
+- (BOOL)createUserFolderWithName:(id)name;
+- (BOOL)isEnhancedForUUID:(id)d;
+- (BOOL)isFavoriteForUUID:(id)d;
+- (BOOL)isFavoriteForUUIDs:(id)ds;
+- (BOOL)isRecentlyDeletedForUUID:(id)d;
+- (BOOL)isSpatialRecordingForUUID:(id)d;
+- (BOOL)isSpeechIsolatorEnabledForUUID:(id)d;
+- (BOOL)recordingTitleHasBeenEditedForUUID:(id)d;
+- (BOOL)userFolderExistsWithName:(id)name;
+- (RCRecordingsModelInteractor)initWithSavedRecordingsModel:(id)model;
+- (id)allFoldersWithName:(id)name;
+- (id)builtInFolderOfType:(int64_t)type;
+- (id)duplicateRecordingWithUUID:(id)d;
+- (id)folderForUUID:(id)d;
+- (id)restoreFolder:(id)folder;
+- (id)restoreRecordingsWithUUIDs:(id)ds;
+- (id)setFavorite:(BOOL)favorite forUUIDs:(id)ds;
+- (id)titleForUUID:(id)d;
+- (id)uuidOfUserFolderForRecordingWithUUID:(id)d;
 - (id)visibleBuiltInFolders;
-- (void)_deleteRecordingsWithUUIDs:(id)a3 withImmediateDeletion:(BOOL)a4;
-- (void)addRecordingWithUUID:(id)a3 toBuiltInFolderOfType:(int64_t)a4;
-- (void)addRecordingWithUUID:(id)a3 toUserFolderNamed:(id)a4;
-- (void)addRecordingsWithUUIDs:(id)a3 toBuiltInFolderOfType:(int64_t)a4;
-- (void)addRecordingsWithUUIDs:(id)a3 toUserFolderNamed:(id)a4;
-- (void)addRecordingsWithUUIDs:(id)a3 toUserFolderWithUUID:(id)a4;
-- (void)deleteUserFolder:(id)a3;
-- (void)deleteUserFolderWithName:(id)a3;
-- (void)performRenameWithNewTitle:(id)a3 forUUID:(id)a4;
-- (void)removeRecordingWithUUID:(id)a3 fromUserFolderName:(id)a4;
-- (void)removeRecordingWithUUID:(id)a3 fromUserFolderWithUUID:(id)a4;
-- (void)removeRecordingsWithUUIDs:(id)a3 fromUserFolderWithUUID:(id)a4;
-- (void)setEnhanced:(BOOL)a3 forUUID:(id)a4;
-- (void)setFavorite:(BOOL)a3 forUUID:(id)a4;
+- (void)_deleteRecordingsWithUUIDs:(id)ds withImmediateDeletion:(BOOL)deletion;
+- (void)addRecordingWithUUID:(id)d toBuiltInFolderOfType:(int64_t)type;
+- (void)addRecordingWithUUID:(id)d toUserFolderNamed:(id)named;
+- (void)addRecordingsWithUUIDs:(id)ds toBuiltInFolderOfType:(int64_t)type;
+- (void)addRecordingsWithUUIDs:(id)ds toUserFolderNamed:(id)named;
+- (void)addRecordingsWithUUIDs:(id)ds toUserFolderWithUUID:(id)d;
+- (void)deleteUserFolder:(id)folder;
+- (void)deleteUserFolderWithName:(id)name;
+- (void)performRenameWithNewTitle:(id)title forUUID:(id)d;
+- (void)removeRecordingWithUUID:(id)d fromUserFolderName:(id)name;
+- (void)removeRecordingWithUUID:(id)d fromUserFolderWithUUID:(id)iD;
+- (void)removeRecordingsWithUUIDs:(id)ds fromUserFolderWithUUID:(id)d;
+- (void)setEnhanced:(BOOL)enhanced forUUID:(id)d;
+- (void)setFavorite:(BOOL)favorite forUUID:(id)d;
 @end
 
 @implementation RCRecordingsModelInteractor
@@ -50,60 +50,60 @@
   return v3;
 }
 
-- (RCRecordingsModelInteractor)initWithSavedRecordingsModel:(id)a3
+- (RCRecordingsModelInteractor)initWithSavedRecordingsModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = RCRecordingsModelInteractor;
   v6 = [(RCRecordingsModelInteractor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
 }
 
-- (id)titleForUUID:(id)a3
+- (id)titleForUUID:(id)d
 {
-  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:a3];
+  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 title];
+    title = [v3 title];
   }
 
   else
   {
-    v5 = 0;
+    title = 0;
   }
 
+  return title;
+}
+
+- (BOOL)isRecentlyDeletedForUUID:(id)d
+{
+  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
+  deletionDate = [v3 deletionDate];
+  v5 = deletionDate != 0;
+
   return v5;
 }
 
-- (BOOL)isRecentlyDeletedForUUID:(id)a3
+- (BOOL)isFavoriteForUUID:(id)d
 {
-  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:a3];
-  v4 = [v3 deletionDate];
-  v5 = v4 != 0;
+  dCopy = d;
+  dCopy2 = d;
+  v5 = [NSArray arrayWithObjects:&dCopy count:1];
 
-  return v5;
-}
-
-- (BOOL)isFavoriteForUUID:(id)a3
-{
-  v7 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v7 count:1];
-
-  LOBYTE(self) = [(RCRecordingsModelInteractor *)self isFavoriteForUUIDs:v5, v7];
+  LOBYTE(self) = [(RCRecordingsModelInteractor *)self isFavoriteForUUIDs:v5, dCopy];
   return self;
 }
 
-- (BOOL)isFavoriteForUUIDs:(id)a3
+- (BOOL)isFavoriteForUUIDs:(id)ds
 {
-  [(RCRecordingsModelInteractor *)self recordingsForUUIDs:a3];
+  [(RCRecordingsModelInteractor *)self recordingsForUUIDs:ds];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -123,7 +123,7 @@ LABEL_3:
       }
 
       v8 = *(*(&v11 + 1) + 8 * v7);
-      v9 = [v8 favorite];
+      favorite = [v8 favorite];
       if (![v8 favorite])
       {
         break;
@@ -144,68 +144,68 @@ LABEL_3:
 
   else
   {
-    v9 = 0;
+    favorite = 0;
   }
 
-  return v9;
+  return favorite;
 }
 
-- (BOOL)isEnhancedForUUID:(id)a3
+- (BOOL)isEnhancedForUUID:(id)d
 {
-  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:a3];
-  v4 = [v3 enhanced];
+  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
+  enhanced = [v3 enhanced];
 
-  return v4;
+  return enhanced;
 }
 
-- (BOOL)isSpatialRecordingForUUID:(id)a3
+- (BOOL)isSpatialRecordingForUUID:(id)d
 {
-  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:a3];
-  v4 = [v3 composedAssetIsSpatialRecording];
+  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
+  composedAssetIsSpatialRecording = [v3 composedAssetIsSpatialRecording];
 
-  return v4;
+  return composedAssetIsSpatialRecording;
 }
 
-- (BOOL)isSpeechIsolatorEnabledForUUID:(id)a3
+- (BOOL)isSpeechIsolatorEnabledForUUID:(id)d
 {
-  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:a3];
-  v4 = [v3 isSpeechIsolatorEnabled];
+  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
+  isSpeechIsolatorEnabled = [v3 isSpeechIsolatorEnabled];
 
-  return v4;
+  return isSpeechIsolatorEnabled;
 }
 
-- (BOOL)recordingTitleHasBeenEditedForUUID:(id)a3
+- (BOOL)recordingTitleHasBeenEditedForUUID:(id)d
 {
-  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:a3];
+  v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 manuallyRenamed];
+    manuallyRenamed = [v3 manuallyRenamed];
   }
 
   else
   {
-    v5 = 0;
+    manuallyRenamed = 0;
   }
 
-  return v5;
+  return manuallyRenamed;
 }
 
-- (void)setFavorite:(BOOL)a3 forUUID:(id)a4
+- (void)setFavorite:(BOOL)favorite forUUID:(id)d
 {
-  v4 = a3;
-  v9 = a4;
-  v6 = a4;
-  v7 = [NSArray arrayWithObjects:&v9 count:1];
+  favoriteCopy = favorite;
+  dCopy = d;
+  dCopy2 = d;
+  v7 = [NSArray arrayWithObjects:&dCopy count:1];
 
-  v8 = [(RCRecordingsModelInteractor *)self setFavorite:v4 forUUIDs:v7, v9];
+  dCopy = [(RCRecordingsModelInteractor *)self setFavorite:favoriteCopy forUUIDs:v7, dCopy];
 }
 
-- (id)setFavorite:(BOOL)a3 forUUIDs:(id)a4
+- (id)setFavorite:(BOOL)favorite forUUIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:v6];
+  v8 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:dsCopy];
 
   v9 = self->_model;
   v16 = _NSConcreteStackBlock;
@@ -213,7 +213,7 @@ LABEL_3:
   v18 = sub_100082484;
   v19 = &unk_10028B7F8;
   v20 = v8;
-  v23 = a3;
+  favoriteCopy = favorite;
   v10 = v7;
   v21 = v10;
   v22 = v9;
@@ -227,31 +227,31 @@ LABEL_3:
   return v10;
 }
 
-- (void)setEnhanced:(BOOL)a3 forUUID:(id)a4
+- (void)setEnhanced:(BOOL)enhanced forUUID:(id)d
 {
-  v4 = a3;
-  v6 = [(RCRecordingsModelInteractor *)self recordingForUUID:a4];
+  enhancedCopy = enhanced;
+  v6 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
   if (v6)
   {
     v7 = v6;
-    [(RCApplicationModel *)self->_model setEnhanced:v4 ofRecording:v6];
+    [(RCApplicationModel *)self->_model setEnhanced:enhancedCopy ofRecording:v6];
     v6 = v7;
   }
 }
 
-- (void)performRenameWithNewTitle:(id)a3 forUUID:(id)a4
+- (void)performRenameWithNewTitle:(id)title forUUID:(id)d
 {
-  v7 = a3;
-  v6 = [(RCRecordingsModelInteractor *)self recordingForUUID:a4];
+  titleCopy = title;
+  v6 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
   if (v6)
   {
-    [(RCApplicationModel *)self->_model setTitle:v7 ofRecording:v6];
+    [(RCApplicationModel *)self->_model setTitle:titleCopy ofRecording:v6];
   }
 }
 
-- (id)duplicateRecordingWithUUID:(id)a3
+- (id)duplicateRecordingWithUUID:(id)d
 {
-  v4 = [(RCRecordingsModelInteractor *)self recordingForUUID:a3];
+  v4 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
   if (v4)
   {
     model = self->_model;
@@ -287,40 +287,40 @@ LABEL_3:
   return v6;
 }
 
-- (void)_deleteRecordingsWithUUIDs:(id)a3 withImmediateDeletion:(BOOL)a4
+- (void)_deleteRecordingsWithUUIDs:(id)ds withImmediateDeletion:(BOOL)deletion
 {
-  v6 = a3;
+  dsCopy = ds;
   v7 = self->_model;
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_100082858;
   v13 = &unk_10028B7F8;
-  v14 = self;
-  v15 = v6;
-  v17 = a4;
+  selfCopy = self;
+  v15 = dsCopy;
+  deletionCopy = deletion;
   v16 = v7;
   v8 = v7;
-  v9 = v6;
+  v9 = dsCopy;
   [(RCApplicationModel *)v8 performWithSavingDisabled:&v10];
   [(RCApplicationModel *)v8 saveIfNecessary:v10];
 }
 
-- (id)restoreRecordingsWithUUIDs:(id)a3
+- (id)restoreRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[NSMutableArray array];
   v6 = self->_model;
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100082A7C;
   v15 = &unk_10028A9B0;
-  v16 = self;
-  v17 = v4;
+  selfCopy = self;
+  v17 = dsCopy;
   v18 = v6;
   v19 = v5;
   v7 = v5;
   v8 = v6;
-  v9 = v4;
+  v9 = dsCopy;
   [(RCApplicationModel *)v8 performWithSavingDisabled:&v12];
   [(RCApplicationModel *)v8 saveIfNecessary:v12];
   v10 = [v7 copy];
@@ -328,22 +328,22 @@ LABEL_3:
   return v10;
 }
 
-- (BOOL)userFolderExistsWithName:(id)a3
+- (BOOL)userFolderExistsWithName:(id)name
 {
-  v3 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:a3];
+  v3 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:name];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)allFoldersWithName:(id)a3
+- (id)allFoldersWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[NSMutableArray array];
   v6 = +[NSCharacterSet whitespaceCharacterSet];
-  v7 = [v4 stringByTrimmingCharactersInSet:v6];
+  v7 = [nameCopy stringByTrimmingCharactersInSet:v6];
 
-  v8 = [(RCRecordingsModelInteractor *)self existingUserFoldersWithName:v4 searchOption:2];
+  v8 = [(RCRecordingsModelInteractor *)self existingUserFoldersWithName:nameCopy searchOption:2];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -359,7 +359,7 @@ LABEL_3:
     [v5 addObjectsFromArray:v10];
   }
 
-  v11 = [(RCRecordingsModelInteractor *)self visibleBuiltInFolders];
+  visibleBuiltInFolders = [(RCRecordingsModelInteractor *)self visibleBuiltInFolders];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_100082E88;
@@ -367,7 +367,7 @@ LABEL_3:
   v20 = v9;
   v21 = 129;
   v12 = v9;
-  v13 = [v11 na_filter:&v16];
+  v13 = [visibleBuiltInFolders na_filter:&v16];
 
   if ([v13 count])
   {
@@ -379,22 +379,22 @@ LABEL_3:
   return v14;
 }
 
-- (id)builtInFolderOfType:(int64_t)a3
+- (id)builtInFolderOfType:(int64_t)type
 {
   v4 = self->_model;
   v5 = v4;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v7 = [(RCApplicationModel *)v4 capturedOnWatchRecordingsFolder];
+      capturedOnWatchRecordingsFolder = [(RCApplicationModel *)v4 capturedOnWatchRecordingsFolder];
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
-        if (a3 == 4)
+        if (type == 4)
         {
           v6 = OSLogForCategory();
           if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -406,23 +406,23 @@ LABEL_3:
         goto LABEL_15;
       }
 
-      v7 = [(RCApplicationModel *)v4 recentlyDeletedRecordingsFolder];
+      capturedOnWatchRecordingsFolder = [(RCApplicationModel *)v4 recentlyDeletedRecordingsFolder];
     }
 
 LABEL_14:
-    v8 = v7;
+    v8 = capturedOnWatchRecordingsFolder;
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v7 = [(RCApplicationModel *)v4 voiceMemosRecordingsFolder];
+    capturedOnWatchRecordingsFolder = [(RCApplicationModel *)v4 voiceMemosRecordingsFolder];
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v7 = [(RCApplicationModel *)v4 favoriteRecordingsFolder];
+    capturedOnWatchRecordingsFolder = [(RCApplicationModel *)v4 favoriteRecordingsFolder];
     goto LABEL_14;
   }
 
@@ -430,7 +430,7 @@ LABEL_15:
   v9 = OSLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001B91D4(a3, v9);
+    sub_1001B91D4(type, v9);
   }
 
   v8 = 0;
@@ -441,24 +441,24 @@ LABEL_18:
 
 - (id)visibleBuiltInFolders
 {
-  v2 = [(RCApplicationModel *)self->_model foldersController];
-  v3 = [v2 builtinFolders];
+  foldersController = [(RCApplicationModel *)self->_model foldersController];
+  builtinFolders = [foldersController builtinFolders];
 
-  return v3;
+  return builtinFolders;
 }
 
-- (id)uuidOfUserFolderForRecordingWithUUID:(id)a3
+- (id)uuidOfUserFolderForRecordingWithUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = [(RCRecordingsModelInteractor *)self recordingForUUID:?];
-    v4 = v3;
-    if (v3)
+    userFolderUUID = [(RCRecordingsModelInteractor *)self recordingForUUID:?];
+    v4 = userFolderUUID;
+    if (userFolderUUID)
     {
-      v3 = [v3 userFolderUUID];
+      userFolderUUID = [userFolderUUID userFolderUUID];
     }
 
-    v5 = v3;
+    v5 = userFolderUUID;
   }
 
   else
@@ -469,9 +469,9 @@ LABEL_18:
   return v5;
 }
 
-- (id)folderForUUID:(id)a3
+- (id)folderForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = 0;
   while (1)
   {
@@ -479,8 +479,8 @@ LABEL_18:
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 uuid];
-      v9 = [v8 isEqual:v4];
+      uuid = [v6 uuid];
+      v9 = [uuid isEqual:dCopy];
 
       if (v9)
       {
@@ -490,7 +490,7 @@ LABEL_18:
 
     if (++v5 == 4)
     {
-      v7 = [(RCApplicationModel *)self->_model existingFolderWithUUID:v4];
+      v7 = [(RCApplicationModel *)self->_model existingFolderWithUUID:dCopy];
       break;
     }
   }
@@ -498,10 +498,10 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)createUserFolderWithName:(id)a3
+- (BOOL)createUserFolderWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:v4];
+  nameCopy = name;
+  v5 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:nameCopy];
 
   if (v5)
   {
@@ -510,7 +510,7 @@ LABEL_18:
 
   else
   {
-    v7 = [(RCApplicationModel *)self->_model folderWithName:v4];
+    v7 = [(RCApplicationModel *)self->_model folderWithName:nameCopy];
 
     v6 = v7 != 0;
   }
@@ -518,9 +518,9 @@ LABEL_18:
   return v6;
 }
 
-- (void)deleteUserFolderWithName:(id)a3
+- (void)deleteUserFolderWithName:(id)name
 {
-  v4 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:a3];
+  v4 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:name];
   if (v4)
   {
     v5 = v4;
@@ -529,33 +529,33 @@ LABEL_18:
   }
 }
 
-- (void)deleteUserFolder:(id)a3
+- (void)deleteUserFolder:(id)folder
 {
-  v6 = a3;
+  folderCopy = folder;
   if ([(RCRecordingsModelInteractor *)self playableCountForFolder:?])
   {
     v4 = +[NSUserDefaults sharedSettingsUserDefaults];
     v5 = v4;
     if (v4 && [v4 rc_deletionIsImmediate])
     {
-      [(RCApplicationModel *)self->_model deleteFolderAndPermanentlyEraseAllPlayableRecordings:v6];
+      [(RCApplicationModel *)self->_model deleteFolderAndPermanentlyEraseAllPlayableRecordings:folderCopy];
     }
 
     else
     {
-      [(RCApplicationModel *)self->_model deleteFolderAndAllPlayableRecordings:v6];
+      [(RCApplicationModel *)self->_model deleteFolderAndAllPlayableRecordings:folderCopy];
     }
   }
 
   else
   {
-    [(RCApplicationModel *)self->_model deleteFolder:v6];
+    [(RCApplicationModel *)self->_model deleteFolder:folderCopy];
   }
 }
 
-- (id)restoreFolder:(id)a3
+- (id)restoreFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = +[NSUserDefaults sharedSettingsUserDefaults];
   v6 = v5;
   if (v5)
@@ -568,18 +568,18 @@ LABEL_18:
     v7 = 1;
   }
 
-  v8 = [v4 name];
-  v9 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:v8];
+  name = [folderCopy name];
+  v9 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:name];
 
   v10 = 0;
   if (v7 && !v9)
   {
     model = self->_model;
-    v12 = [v4 name];
-    v10 = [(RCApplicationModel *)model folderWithName:v12];
+    name2 = [folderCopy name];
+    v10 = [(RCApplicationModel *)model folderWithName:name2];
 
     v13 = self->_model;
-    v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v4 rank], 1);
+    v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [folderCopy rank], 1);
     [(RCApplicationModel *)v13 moveFolder:v10 toIndexPath:v14];
   }
 
@@ -588,22 +588,22 @@ LABEL_18:
   return v10;
 }
 
-- (void)addRecordingWithUUID:(id)a3 toBuiltInFolderOfType:(int64_t)a4
+- (void)addRecordingWithUUID:(id)d toBuiltInFolderOfType:(int64_t)type
 {
-  v8 = a3;
-  v6 = a3;
-  v7 = [NSArray arrayWithObjects:&v8 count:1];
+  dCopy = d;
+  dCopy2 = d;
+  v7 = [NSArray arrayWithObjects:&dCopy count:1];
 
-  [(RCRecordingsModelInteractor *)self addRecordingsWithUUIDs:v7 toBuiltInFolderOfType:a4, v8];
+  [(RCRecordingsModelInteractor *)self addRecordingsWithUUIDs:v7 toBuiltInFolderOfType:type, dCopy];
 }
 
-- (void)addRecordingsWithUUIDs:(id)a3 toBuiltInFolderOfType:(int64_t)a4
+- (void)addRecordingsWithUUIDs:(id)ds toBuiltInFolderOfType:(int64_t)type
 {
-  v8 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:a3];
+  v8 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:ds];
   v6 = [v8 count];
-  if (a4 <= 1 && v6)
+  if (type <= 1 && v6)
   {
-    v7 = [(RCRecordingsModelInteractor *)self builtInFolderOfType:a4];
+    v7 = [(RCRecordingsModelInteractor *)self builtInFolderOfType:type];
     if (v7)
     {
       [(RCApplicationModel *)self->_model addRecordings:v8 toFolder:v7];
@@ -611,14 +611,14 @@ LABEL_18:
   }
 }
 
-- (void)addRecordingsWithUUIDs:(id)a3 toUserFolderWithUUID:(id)a4
+- (void)addRecordingsWithUUIDs:(id)ds toUserFolderWithUUID:(id)d
 {
-  v9 = a4;
-  v6 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:a3];
+  dCopy = d;
+  v6 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:ds];
   if ([v6 count])
   {
     v7 = self->_model;
-    v8 = [(RCApplicationModel *)v7 existingFolderWithUUID:v9];
+    v8 = [(RCApplicationModel *)v7 existingFolderWithUUID:dCopy];
     if (v8)
     {
       [(RCApplicationModel *)v7 addRecordings:v6 toFolder:v8];
@@ -626,23 +626,23 @@ LABEL_18:
   }
 }
 
-- (void)addRecordingWithUUID:(id)a3 toUserFolderNamed:(id)a4
+- (void)addRecordingWithUUID:(id)d toUserFolderNamed:(id)named
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = a3;
-  v8 = [NSArray arrayWithObjects:&v9 count:1];
+  dCopy = d;
+  namedCopy = named;
+  dCopy2 = d;
+  v8 = [NSArray arrayWithObjects:&dCopy count:1];
 
-  [(RCRecordingsModelInteractor *)self addRecordingsWithUUIDs:v8 toUserFolderNamed:v6, v9];
+  [(RCRecordingsModelInteractor *)self addRecordingsWithUUIDs:v8 toUserFolderNamed:namedCopy, dCopy];
 }
 
-- (void)addRecordingsWithUUIDs:(id)a3 toUserFolderNamed:(id)a4
+- (void)addRecordingsWithUUIDs:(id)ds toUserFolderNamed:(id)named
 {
-  v8 = a4;
-  v6 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:a3];
+  namedCopy = named;
+  v6 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:ds];
   if ([v6 count])
   {
-    v7 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:v8];
+    v7 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:namedCopy];
     if (v7)
     {
       [(RCApplicationModel *)self->_model addRecordings:v6 toFolder:v7];
@@ -650,40 +650,40 @@ LABEL_18:
   }
 }
 
-- (void)removeRecordingWithUUID:(id)a3 fromUserFolderWithUUID:(id)a4
+- (void)removeRecordingWithUUID:(id)d fromUserFolderWithUUID:(id)iD
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = a3;
-  v8 = [NSArray arrayWithObjects:&v9 count:1];
+  dCopy = d;
+  iDCopy = iD;
+  dCopy2 = d;
+  v8 = [NSArray arrayWithObjects:&dCopy count:1];
 
-  [(RCRecordingsModelInteractor *)self removeRecordingsWithUUIDs:v8 fromUserFolderWithUUID:v6, v9];
+  [(RCRecordingsModelInteractor *)self removeRecordingsWithUUIDs:v8 fromUserFolderWithUUID:iDCopy, dCopy];
 }
 
-- (void)removeRecordingsWithUUIDs:(id)a3 fromUserFolderWithUUID:(id)a4
+- (void)removeRecordingsWithUUIDs:(id)ds fromUserFolderWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:a3];
+  dCopy = d;
+  v7 = [(RCRecordingsModelInteractor *)self recordingsForUUIDs:ds];
   v8 = self->_model;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100083954;
   v12[3] = &unk_10028B058;
   v13 = v7;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v8;
   v9 = v8;
-  v10 = v6;
+  v10 = dCopy;
   v11 = v7;
   [(RCApplicationModel *)v9 performWithSavingDisabled:v12];
   [(RCApplicationModel *)v9 saveIfNecessary];
 }
 
-- (void)removeRecordingWithUUID:(id)a3 fromUserFolderName:(id)a4
+- (void)removeRecordingWithUUID:(id)d fromUserFolderName:(id)name
 {
-  v6 = a4;
-  v8 = [(RCRecordingsModelInteractor *)self recordingForUUID:a3];
-  v7 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:v6];
+  nameCopy = name;
+  v8 = [(RCRecordingsModelInteractor *)self recordingForUUID:d];
+  v7 = [(RCRecordingsModelInteractor *)self existingUserFolderWithName:nameCopy];
 
   if (v8 && v7)
   {

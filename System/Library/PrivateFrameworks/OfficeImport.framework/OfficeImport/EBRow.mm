@@ -1,26 +1,26 @@
 @interface EBRow
-+ (void)readCellRow:(void *)a3 edRowBlock:(id)a4 edRowBlocks:(id)a5 state:(id)a6;
++ (void)readCellRow:(void *)row edRowBlock:(id)block edRowBlocks:(id)blocks state:(id)state;
 @end
 
 @implementation EBRow
 
-+ (void)readCellRow:(void *)a3 edRowBlock:(id)a4 edRowBlocks:(id)a5 state:(id)a6
++ (void)readCellRow:(void *)row edRowBlock:(id)block edRowBlocks:(id)blocks state:(id)state
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (a3)
+  blockCopy = block;
+  blocksCopy = blocks;
+  stateCopy = state;
+  if (row)
   {
-    if (v9)
+    if (blockCopy)
     {
-      v12 = *(a3 + 1);
+      v12 = *(row + 1);
       v18[1] = &unk_286EC9E80;
       v13 = *(v12 + 21);
       *v19 = *(v12 + 8);
       *&v19[13] = v13;
-      v14 = [v9 rowInfoWithRowNumber:*v19];
+      v14 = [blockCopy rowInfoWithRowNumber:*v19];
       v18[0] = v14;
-      if (v14 || (v14 = [v9 addRowInfoWithRowNumber:*v19 cellCountHint:((*(a3 + 6) - *(a3 + 4)) >> 3)], (v18[0] = v14) != 0))
+      if (v14 || (v14 = [blockCopy addRowInfoWithRowNumber:*v19 cellCountHint:((*(row + 6) - *(row + 4)) >> 3)], (v18[0] = v14) != 0))
       {
         *(v14 + 20) = *&v19[2];
         if (v19[14])
@@ -42,15 +42,15 @@
 
         while (1)
         {
-          v16 = *(a3 + 10);
-          v17 = *(a3 + 2);
-          if (v16 >= ((*(a3 + 3) - v17) >> 3))
+          v16 = *(row + 10);
+          v17 = *(row + 2);
+          if (v16 >= ((*(row + 3) - v17) >> 3))
           {
             break;
           }
 
-          *(a3 + 10) = v16 + 1;
-          [EBCell readXlCell:*(v17 + 8 * v16) edRowInfo:v18 edRowBlock:v9 edRowBlocks:v10 state:v11];
+          *(row + 10) = v16 + 1;
+          [EBCell readXlCell:*(v17 + 8 * v16) edRowInfo:v18 edRowBlock:blockCopy edRowBlocks:blocksCopy state:stateCopy];
         }
       }
     }

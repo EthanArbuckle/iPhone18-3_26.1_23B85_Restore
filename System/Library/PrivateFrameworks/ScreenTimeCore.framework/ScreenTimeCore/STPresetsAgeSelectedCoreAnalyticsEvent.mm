@@ -1,24 +1,24 @@
 @interface STPresetsAgeSelectedCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STPresetsAgeSelectedCoreAnalyticsEvent)initWithSessionId:(id)a3 lowerBoundAgeRange:(int64_t)a4 upperBoundAgeRange:(int64_t)a5;
+- (STPresetsAgeSelectedCoreAnalyticsEvent)initWithSessionId:(id)id lowerBoundAgeRange:(int64_t)range upperBoundAgeRange:(int64_t)ageRange;
 @end
 
 @implementation STPresetsAgeSelectedCoreAnalyticsEvent
 
-- (STPresetsAgeSelectedCoreAnalyticsEvent)initWithSessionId:(id)a3 lowerBoundAgeRange:(int64_t)a4 upperBoundAgeRange:(int64_t)a5
+- (STPresetsAgeSelectedCoreAnalyticsEvent)initWithSessionId:(id)id lowerBoundAgeRange:(int64_t)range upperBoundAgeRange:(int64_t)ageRange
 {
-  v8 = a3;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = STPresetsAgeSelectedCoreAnalyticsEvent;
   v9 = [(STPresetsAgeSelectedCoreAnalyticsEvent *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [idCopy copy];
     sessionId = v9->_sessionId;
     v9->_sessionId = v10;
 
-    v9->_lowerBoundAgeRange = a4;
-    v9->_upperBoundAgeRange = a5;
+    v9->_lowerBoundAgeRange = range;
+    v9->_upperBoundAgeRange = ageRange;
   }
 
   return v9;
@@ -27,8 +27,8 @@
 - (NSDictionary)payload
 {
   v3 = objc_opt_new();
-  v4 = [(STPresetsAgeSelectedCoreAnalyticsEvent *)self sessionId];
-  [v3 setObject:v4 forKeyedSubscript:@"sessionId"];
+  sessionId = [(STPresetsAgeSelectedCoreAnalyticsEvent *)self sessionId];
+  [v3 setObject:sessionId forKeyedSubscript:@"sessionId"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[STPresetsAgeSelectedCoreAnalyticsEvent lowerBoundAgeRange](self, "lowerBoundAgeRange")}];
   [v3 setObject:v5 forKeyedSubscript:@"lowerBoundAgeRange"];

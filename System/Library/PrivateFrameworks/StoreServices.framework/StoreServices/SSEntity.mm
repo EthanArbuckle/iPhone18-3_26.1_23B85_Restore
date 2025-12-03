@@ -1,33 +1,33 @@
 @interface SSEntity
 - (BOOL)_isManaged;
 - (BOOL)exists;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setExternalValuesWithDictionary:(id)a3;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (BOOL)setValuesWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setExternalValuesWithDictionary:(id)dictionary;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (BOOL)setValuesWithDictionary:(id)dictionary;
 - (NSDictionary)_localExternalValues;
 - (NSDictionary)_localValues;
 - (NSString)description;
 - (SSEntity)init;
-- (id)_initWithPersistentIdentifier:(int64_t)a3;
+- (id)_initWithPersistentIdentifier:(int64_t)identifier;
 - (id)copyXPCEncoding;
-- (id)valueForExternalProperty:(id)a3;
-- (id)valueForProperty:(id)a3;
-- (void)__addCachedExternalValues:(id)a3;
-- (void)__addCachedPropertyValues:(id)a3;
-- (void)_addCachedExternalValues:(id)a3;
-- (void)_addCachedPropertyValues:(id)a3;
-- (void)_becomeManagedOnConnection:(id)a3;
-- (void)_getValues:(id *)a3 forProperties:(const void *)a4 count:(unint64_t)a5 message:(int64_t)a6;
-- (void)_setDirtyCachedExternalProperties:(id)a3;
-- (void)_setDirtyCachedProperties:(id)a3;
-- (void)_setLocalExternalValues:(id)a3;
-- (void)_setLocalValues:(id)a3;
+- (id)valueForExternalProperty:(id)property;
+- (id)valueForProperty:(id)property;
+- (void)__addCachedExternalValues:(id)values;
+- (void)__addCachedPropertyValues:(id)values;
+- (void)_addCachedExternalValues:(id)values;
+- (void)_addCachedPropertyValues:(id)values;
+- (void)_becomeManagedOnConnection:(id)connection;
+- (void)_getValues:(id *)values forProperties:(const void *)properties count:(unint64_t)count message:(int64_t)message;
+- (void)_setDirtyCachedExternalProperties:(id)properties;
+- (void)_setDirtyCachedProperties:(id)properties;
+- (void)_setLocalExternalValues:(id)values;
+- (void)_setLocalValues:(id)values;
 - (void)dealloc;
-- (void)getValues:(id *)a3 forExternalProperties:(const void *)a4 count:(unint64_t)a5;
-- (void)getValues:(id *)a3 forProperties:(const void *)a4 count:(unint64_t)a5;
-- (void)resetCachedExternalProperties:(const void *)a3 count:(unint64_t)a4;
-- (void)resetCachedProperties:(const void *)a3 count:(unint64_t)a4;
+- (void)getValues:(id *)values forExternalProperties:(const void *)properties count:(unint64_t)count;
+- (void)getValues:(id *)values forProperties:(const void *)properties count:(unint64_t)count;
+- (void)resetCachedExternalProperties:(const void *)properties count:(unint64_t)count;
+- (void)resetCachedProperties:(const void *)properties count:(unint64_t)count;
 @end
 
 @implementation SSEntity
@@ -41,7 +41,7 @@
   return [(SSEntity *)self _initWithPersistentIdentifier:v4];
 }
 
-- (id)_initWithPersistentIdentifier:(int64_t)a3
+- (id)_initWithPersistentIdentifier:(int64_t)identifier
 {
   v6.receiver = self;
   v6.super_class = SSEntity;
@@ -49,7 +49,7 @@
   if (v4)
   {
     v4->_dispatchQueue = dispatch_queue_create("com.apple.storeservices.SSEntity", 0);
-    v4->_pid = a3;
+    v4->_pid = identifier;
   }
 
   return v4;
@@ -79,15 +79,15 @@
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -136,11 +136,11 @@
   dispatch_sync(dispatchQueue, block);
   if (*(*(&v30 + 1) + 40))
   {
-    v17 = [objc_opt_class() _existsMessage];
-    if (v17)
+    _existsMessage = [objc_opt_class() _existsMessage];
+    if (_existsMessage)
     {
       v18 = xpc_dictionary_create(0, 0, 0);
-      xpc_dictionary_set_int64(v18, "0", v17);
+      xpc_dictionary_set_int64(v18, "0", _existsMessage);
       xpc_dictionary_set_int64(v18, "1", self->_pid);
       v19 = dispatch_semaphore_create(0);
       v20 = *(*(&v30 + 1) + 40);
@@ -182,28 +182,28 @@ intptr_t __18__SSEntity_exists__block_invoke_2(uint64_t a1, void *a2)
   return dispatch_semaphore_signal(v4);
 }
 
-- (void)getValues:(id *)a3 forProperties:(const void *)a4 count:(unint64_t)a5
+- (void)getValues:(id *)values forProperties:(const void *)properties count:(unint64_t)count
 {
-  v9 = [objc_opt_class() _getValueMessage];
+  _getValueMessage = [objc_opt_class() _getValueMessage];
 
-  [(SSEntity *)self _getValues:a3 forProperties:a4 count:a5 message:v9];
+  [(SSEntity *)self _getValues:values forProperties:properties count:count message:_getValueMessage];
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
   v7 = objc_alloc(MEMORY[0x1E695DF20]);
-  if (!a3)
+  if (!value)
   {
-    a3 = [MEMORY[0x1E695DFB0] null];
+    value = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8 = [v7 initWithObjectsAndKeys:{a3, a4, 0}];
+  v8 = [v7 initWithObjectsAndKeys:{value, property, 0}];
   v9 = [(SSEntity *)self setValuesWithDictionary:v8];
 
   return v9;
 }
 
-- (BOOL)setValuesWithDictionary:(id)a3
+- (BOOL)setValuesWithDictionary:(id)dictionary
 {
   v20 = 0;
   v21 = &v20;
@@ -221,17 +221,17 @@ intptr_t __18__SSEntity_exists__block_invoke_2(uint64_t a1, void *a2)
   block[2] = __36__SSEntity_setValuesWithDictionary___block_invoke;
   block[3] = &unk_1E84B0768;
   block[4] = self;
-  block[5] = a3;
+  block[5] = dictionary;
   block[6] = &v14;
   block[7] = &v20;
   dispatch_sync(dispatchQueue, block);
   if (v15[5])
   {
     v6 = xpc_dictionary_create(0, 0, 0);
-    v7 = [objc_opt_class() _setValuesMessage];
-    xpc_dictionary_set_int64(v6, "0", v7);
+    _setValuesMessage = [objc_opt_class() _setValuesMessage];
+    xpc_dictionary_set_int64(v6, "0", _setValuesMessage);
     xpc_dictionary_set_int64(v6, "1", self->_pid);
-    SSXPCDictionarySetCFObject(v6, "2", a3);
+    SSXPCDictionarySetCFObject(v6, "2", dictionary);
     v8 = dispatch_semaphore_create(0);
     v9 = v15[5];
     v12[0] = MEMORY[0x1E69E9820];
@@ -290,22 +290,22 @@ intptr_t __36__SSEntity_setValuesWithDictionary___block_invoke_2(uint64_t a1, vo
   return dispatch_semaphore_signal(v4);
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   v4 = 0;
-  v5 = a3;
-  [(SSEntity *)self getValues:&v4 forProperties:&v5 count:1];
+  propertyCopy = property;
+  [(SSEntity *)self getValues:&v4 forProperties:&propertyCopy count:1];
   return v4;
 }
 
-- (void)getValues:(id *)a3 forExternalProperties:(const void *)a4 count:(unint64_t)a5
+- (void)getValues:(id *)values forExternalProperties:(const void *)properties count:(unint64_t)count
 {
-  v9 = [objc_opt_class() _getExternalValuesMessage];
+  _getExternalValuesMessage = [objc_opt_class() _getExternalValuesMessage];
 
-  [(SSEntity *)self _getValues:a3 forProperties:a4 count:a5 message:v9];
+  [(SSEntity *)self _getValues:values forProperties:properties count:count message:_getExternalValuesMessage];
 }
 
-- (void)resetCachedExternalProperties:(const void *)a3 count:(unint64_t)a4
+- (void)resetCachedExternalProperties:(const void *)properties count:(unint64_t)count
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -313,8 +313,8 @@ intptr_t __36__SSEntity_setValuesWithDictionary___block_invoke_2(uint64_t a1, vo
   block[2] = __48__SSEntity_resetCachedExternalProperties_count___block_invoke;
   block[3] = &unk_1E84AF108;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = count;
+  block[6] = properties;
   dispatch_sync(dispatchQueue, block);
 }
 
@@ -338,7 +338,7 @@ uint64_t __48__SSEntity_resetCachedExternalProperties_count___block_invoke(uint6
   return result;
 }
 
-- (void)resetCachedProperties:(const void *)a3 count:(unint64_t)a4
+- (void)resetCachedProperties:(const void *)properties count:(unint64_t)count
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -346,8 +346,8 @@ uint64_t __48__SSEntity_resetCachedExternalProperties_count___block_invoke(uint6
   block[2] = __40__SSEntity_resetCachedProperties_count___block_invoke;
   block[3] = &unk_1E84AF108;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = count;
+  block[6] = properties;
   dispatch_sync(dispatchQueue, block);
 }
 
@@ -371,7 +371,7 @@ uint64_t __40__SSEntity_resetCachedProperties_count___block_invoke(uint64_t resu
   return result;
 }
 
-- (BOOL)setExternalValuesWithDictionary:(id)a3
+- (BOOL)setExternalValuesWithDictionary:(id)dictionary
 {
   v20 = 0;
   v21 = &v20;
@@ -389,17 +389,17 @@ uint64_t __40__SSEntity_resetCachedProperties_count___block_invoke(uint64_t resu
   block[2] = __44__SSEntity_setExternalValuesWithDictionary___block_invoke;
   block[3] = &unk_1E84B0768;
   block[4] = self;
-  block[5] = a3;
+  block[5] = dictionary;
   block[6] = &v14;
   block[7] = &v20;
   dispatch_sync(dispatchQueue, block);
   if (v15[5])
   {
     v6 = xpc_dictionary_create(0, 0, 0);
-    v7 = [objc_opt_class() _setExternalValuesMessage];
-    xpc_dictionary_set_int64(v6, "0", v7);
+    _setExternalValuesMessage = [objc_opt_class() _setExternalValuesMessage];
+    xpc_dictionary_set_int64(v6, "0", _setExternalValuesMessage);
     xpc_dictionary_set_int64(v6, "1", self->_pid);
-    SSXPCDictionarySetCFObject(v6, "2", a3);
+    SSXPCDictionarySetCFObject(v6, "2", dictionary);
     v8 = dispatch_semaphore_create(0);
     v9 = v15[5];
     v12[0] = MEMORY[0x1E69E9820];
@@ -458,11 +458,11 @@ intptr_t __44__SSEntity_setExternalValuesWithDictionary___block_invoke_2(uint64_
   return dispatch_semaphore_signal(v4);
 }
 
-- (id)valueForExternalProperty:(id)a3
+- (id)valueForExternalProperty:(id)property
 {
   v4 = 0;
-  v5 = a3;
-  [(SSEntity *)self getValues:&v4 forExternalProperties:&v5 count:1];
+  propertyCopy = property;
+  [(SSEntity *)self getValues:&v4 forExternalProperties:&propertyCopy count:1];
   return v4;
 }
 
@@ -473,7 +473,7 @@ intptr_t __44__SSEntity_setExternalValuesWithDictionary___block_invoke_2(uint64_
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %lld", -[SSEntity description](&v3, sel_description), self->_pid];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -481,11 +481,11 @@ intptr_t __44__SSEntity_setExternalValuesWithDictionary___block_invoke_2(uint64_
     return 0;
   }
 
-  v7 = [(SSEntity *)self _persistentIdentifier];
-  return v7 == [a3 _persistentIdentifier];
+  _persistentIdentifier = [(SSEntity *)self _persistentIdentifier];
+  return _persistentIdentifier == [equal _persistentIdentifier];
 }
 
-- (void)_addCachedExternalValues:(id)a3
+- (void)_addCachedExternalValues:(id)values
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -493,11 +493,11 @@ intptr_t __44__SSEntity_setExternalValuesWithDictionary___block_invoke_2(uint64_
   v4[2] = __37__SSEntity__addCachedExternalValues___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = values;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)_addCachedPropertyValues:(id)a3
+- (void)_addCachedPropertyValues:(id)values
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -505,7 +505,7 @@ intptr_t __44__SSEntity_setExternalValuesWithDictionary___block_invoke_2(uint64_
   v4[2] = __37__SSEntity__addCachedPropertyValues___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = values;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -523,7 +523,7 @@ uint64_t __37__SSEntity__addCachedPropertyValues___block_invoke(uint64_t a1)
   return [v2 addEntriesFromDictionary:v3];
 }
 
-- (void)_becomeManagedOnConnection:(id)a3
+- (void)_becomeManagedOnConnection:(id)connection
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -531,7 +531,7 @@ uint64_t __37__SSEntity__addCachedPropertyValues___block_invoke(uint64_t a1)
   v4[2] = __39__SSEntity__becomeManagedOnConnection___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = connection;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -624,7 +624,7 @@ uint64_t __24__SSEntity__localValues__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_setDirtyCachedExternalProperties:(id)a3
+- (void)_setDirtyCachedExternalProperties:(id)properties
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -632,7 +632,7 @@ uint64_t __24__SSEntity__localValues__block_invoke(uint64_t a1)
   v4[2] = __46__SSEntity__setDirtyCachedExternalProperties___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = properties;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -650,7 +650,7 @@ uint64_t __46__SSEntity__setDirtyCachedExternalProperties___block_invoke(uint64_
   return result;
 }
 
-- (void)_setDirtyCachedProperties:(id)a3
+- (void)_setDirtyCachedProperties:(id)properties
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -658,7 +658,7 @@ uint64_t __46__SSEntity__setDirtyCachedExternalProperties___block_invoke(uint64_
   v4[2] = __38__SSEntity__setDirtyCachedProperties___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = properties;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -676,7 +676,7 @@ uint64_t __38__SSEntity__setDirtyCachedProperties___block_invoke(uint64_t result
   return result;
 }
 
-- (void)_setLocalExternalValues:(id)a3
+- (void)_setLocalExternalValues:(id)values
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -684,7 +684,7 @@ uint64_t __38__SSEntity__setDirtyCachedProperties___block_invoke(uint64_t result
   v4[2] = __36__SSEntity__setLocalExternalValues___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = values;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -702,7 +702,7 @@ uint64_t __36__SSEntity__setLocalExternalValues___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_setLocalValues:(id)a3
+- (void)_setLocalValues:(id)values
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -710,7 +710,7 @@ uint64_t __36__SSEntity__setLocalExternalValues___block_invoke(uint64_t result)
   v4[2] = __28__SSEntity__setLocalValues___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = values;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -728,7 +728,7 @@ uint64_t __28__SSEntity__setLocalValues___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)__addCachedExternalValues:(id)a3
+- (void)__addCachedExternalValues:(id)values
 {
   localExternalValues = self->_localExternalValues;
   if (!localExternalValues)
@@ -737,10 +737,10 @@ uint64_t __28__SSEntity__setLocalValues___block_invoke(uint64_t result)
     self->_localExternalValues = localExternalValues;
   }
 
-  [(NSMutableDictionary *)localExternalValues addEntriesFromDictionary:a3];
+  [(NSMutableDictionary *)localExternalValues addEntriesFromDictionary:values];
 }
 
-- (void)__addCachedPropertyValues:(id)a3
+- (void)__addCachedPropertyValues:(id)values
 {
   localValues = self->_localValues;
   if (!localValues)
@@ -749,10 +749,10 @@ uint64_t __28__SSEntity__setLocalValues___block_invoke(uint64_t result)
     self->_localValues = localValues;
   }
 
-  [(NSMutableDictionary *)localValues addEntriesFromDictionary:a3];
+  [(NSMutableDictionary *)localValues addEntriesFromDictionary:values];
 }
 
-- (void)_getValues:(id *)a3 forProperties:(const void *)a4 count:(unint64_t)a5 message:(int64_t)a6
+- (void)_getValues:(id *)values forProperties:(const void *)properties count:(unint64_t)count message:(int64_t)message
 {
   v62 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -763,15 +763,15 @@ uint64_t __28__SSEntity__setLocalValues___block_invoke(uint64_t result)
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
     if (os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -818,36 +818,36 @@ uint64_t __28__SSEntity__setLocalValues___block_invoke(uint64_t result)
   block[1] = 3221225472;
   block[2] = __51__SSEntity__getValues_forProperties_count_message___block_invoke;
   block[3] = &unk_1E84B0790;
-  block[8] = a5;
-  block[9] = a4;
-  block[10] = a3;
+  block[8] = count;
+  block[9] = properties;
+  block[10] = values;
   block[4] = self;
   block[5] = &v57;
   block[6] = &v50;
-  block[7] = a6;
+  block[7] = message;
   dispatch_sync(dispatchQueue, block);
   if (*(*(&v57 + 1) + 40))
   {
     v25 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_int64(v25, "0", a6);
+    xpc_dictionary_set_int64(v25, "0", message);
     xpc_dictionary_set_int64(v25, "1", self->_pid);
     v26 = xpc_array_create(0, 0);
-    if (a5)
+    if (count)
     {
-      v27 = a4;
-      v28 = a5;
+      propertiesCopy = properties;
+      countCopy = count;
       do
       {
-        SSXPCArraySetCFObject(v26, 0xFFFFFFFFFFFFFFFFLL, *v27++);
-        --v28;
+        SSXPCArraySetCFObject(v26, 0xFFFFFFFFFFFFFFFFLL, *propertiesCopy++);
+        --countCopy;
       }
 
-      while (v28);
+      while (countCopy);
     }
 
-    v42 = self;
-    v29 = a6;
-    v30 = a4;
+    selfCopy = self;
+    messageCopy = message;
+    propertiesCopy2 = properties;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -894,8 +894,8 @@ uint64_t __28__SSEntity__setLocalValues___block_invoke(uint64_t result)
     v44[2] = __51__SSEntity__getValues_forProperties_count_message___block_invoke_2;
     v44[3] = &unk_1E84B07B8;
     v44[6] = &v50;
-    v44[7] = a5;
-    v44[8] = a3;
+    v44[7] = count;
+    v44[8] = values;
     v44[4] = v35;
     v44[5] = v36;
     [v37 sendMessage:v25 withReply:v44];
@@ -903,26 +903,26 @@ uint64_t __28__SSEntity__setLocalValues___block_invoke(uint64_t result)
     dispatch_release(v36);
     if ([v35 count])
     {
-      v38 = v42->_dispatchQueue;
+      v38 = selfCopy->_dispatchQueue;
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __51__SSEntity__getValues_forProperties_count_message___block_invoke_3;
       v43[3] = &unk_1E84B0808;
-      v43[8] = a5;
-      v43[9] = v30;
-      v43[4] = v42;
+      v43[8] = count;
+      v43[9] = propertiesCopy2;
+      v43[4] = selfCopy;
       v43[5] = v35;
       v43[6] = &v50;
-      v43[7] = v29;
+      v43[7] = messageCopy;
       dispatch_sync(v38, v43);
     }
 
     xpc_release(v25);
   }
 
-  for (; a5; --a5)
+  for (; count; --count)
   {
-    v39 = *a3++;
+    v39 = *values++;
   }
 
   _Block_object_dispose(&v50, 8);

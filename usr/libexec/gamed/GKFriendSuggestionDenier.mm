@@ -6,7 +6,7 @@
 
 - (void)clearDenyList
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021254C();
 }
 

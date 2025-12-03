@@ -4,34 +4,34 @@
 - (NSXPCConnection)connection;
 - (WCXPCManager)init;
 - (WCXPCManagerDelegate)delegate;
-- (void)acknowledgeFileIndexWithIdentifier:(id)a3 clientPairingID:(id)a4;
-- (void)acknowledgeFileResultIndexWithIdentifier:(id)a3 clientPairingID:(id)a4;
-- (void)acknowledgeUserInfoIndexWithIdentifier:(id)a3 clientPairingID:(id)a4;
-- (void)acknowledgeUserInfoResultIndexWithIdentifier:(id)a3 clientPairingID:(id)a4;
+- (void)acknowledgeFileIndexWithIdentifier:(id)identifier clientPairingID:(id)d;
+- (void)acknowledgeFileResultIndexWithIdentifier:(id)identifier clientPairingID:(id)d;
+- (void)acknowledgeUserInfoIndexWithIdentifier:(id)identifier clientPairingID:(id)d;
+- (void)acknowledgeUserInfoResultIndexWithIdentifier:(id)identifier clientPairingID:(id)d;
 - (void)cancelAllOutstandingMessages;
-- (void)cancelSendWithIdentifier:(id)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (void)cancelSendWithIdentifier:(id)identifier;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 - (void)handleActiveDeviceSwitchStarted;
-- (void)handleApplicationContextWithPairingID:(id)a3;
-- (void)handleFileResultWithPairingID:(id)a3;
-- (void)handleIncomingFileWithPairingID:(id)a3;
-- (void)handleIncomingUserInfoWithPairingID:(id)a3;
+- (void)handleApplicationContextWithPairingID:(id)d;
+- (void)handleFileResultWithPairingID:(id)d;
+- (void)handleIncomingFileWithPairingID:(id)d;
+- (void)handleIncomingUserInfoWithPairingID:(id)d;
 - (void)handleInterruptedConnection;
 - (void)handleMessageSendingAllowed;
-- (void)handleRequest:(id)a3;
-- (void)handleResponse:(id)a3;
-- (void)handleSentMessageWithIdentifier:(id)a3 error:(id)a4;
-- (void)handleSessionStateChanged:(id)a3;
-- (void)handleUserInfoResultWithPairingID:(id)a3;
+- (void)handleRequest:(id)request;
+- (void)handleResponse:(id)response;
+- (void)handleSentMessageWithIdentifier:(id)identifier error:(id)error;
+- (void)handleSessionStateChanged:(id)changed;
+- (void)handleUserInfoResultWithPairingID:(id)d;
 - (void)interruptionHandler;
 - (void)invalidateConnection;
 - (void)onqueue_reconnect;
 - (void)onqueue_retryConnectIfNecessary;
-- (void)sendMessage:(id)a3 clientPairingID:(id)a4 acceptanceHandler:(id)a5 errorHandler:(id)a6;
+- (void)sendMessage:(id)message clientPairingID:(id)d acceptanceHandler:(id)handler errorHandler:(id)errorHandler;
 - (void)setupConnection;
-- (void)transferFile:(id)a3 sandboxToken:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6;
-- (void)transferUserInfo:(id)a3 withURL:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6;
-- (void)updateApplicationContext:(id)a3 clientPairingID:(id)a4 errorHandler:(id)a5;
+- (void)transferFile:(id)file sandboxToken:(id)token clientPairingID:(id)d errorHandler:(id)handler;
+- (void)transferUserInfo:(id)info withURL:(id)l clientPairingID:(id)d errorHandler:(id)handler;
+- (void)updateApplicationContext:(id)context clientPairingID:(id)d errorHandler:(id)handler;
 @end
 
 @implementation WCXPCManager
@@ -81,7 +81,7 @@
   block[1] = 3221225472;
   block[2] = __29__WCXPCManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_0 != -1)
   {
     dispatch_once(&sharedManager_onceToken_0, block);
@@ -115,7 +115,7 @@ uint64_t __29__WCXPCManager_sharedManager__block_invoke(uint64_t a1)
     v3->_workQueue = v4;
 
     objc_initWeak(&location, v3);
-    v6 = [@"com.apple.wcd.listener.resumed" UTF8String];
+    uTF8String = [@"com.apple.wcd.listener.resumed" UTF8String];
     v7 = v3->_workQueue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -123,7 +123,7 @@ uint64_t __29__WCXPCManager_sharedManager__block_invoke(uint64_t a1)
     handler[3] = &unk_278B7C608;
     v10 = v3;
     objc_copyWeak(&v11, &location);
-    notify_register_dispatch(v6, &v3->_listenerResumedToken, v7, handler);
+    notify_register_dispatch(uTF8String, &v3->_listenerResumedToken, v7, handler);
     objc_destroyWeak(&v11);
 
     objc_destroyWeak(&location);
@@ -226,7 +226,7 @@ void __31__WCXPCManager_setupConnection__block_invoke_3(uint64_t a1)
         v6 = 136446466;
         v7 = "[WCXPCManager onqueue_retryConnectIfNecessary]";
         v8 = 1024;
-        v9 = [(WCXPCManager *)self reconnectRetryCount];
+        reconnectRetryCount = [(WCXPCManager *)self reconnectRetryCount];
         _os_log_impl(&dword_23B2FA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}s failed to reconnect to daemon (%d attempts)", &v6, 0x12u);
       }
     }
@@ -240,7 +240,7 @@ void __31__WCXPCManager_setupConnection__block_invoke_3(uint64_t a1)
         v6 = 136446466;
         v7 = "[WCXPCManager onqueue_retryConnectIfNecessary]";
         v8 = 1024;
-        v9 = [(WCXPCManager *)self reconnectRetryCount];
+        reconnectRetryCount = [(WCXPCManager *)self reconnectRetryCount];
         _os_log_impl(&dword_23B2FA000, v3, OS_LOG_TYPE_DEFAULT, "%{public}s retrying previously failed reconnect (%d attempt)", &v6, 0x12u);
       }
 
@@ -264,17 +264,17 @@ void __31__WCXPCManager_setupConnection__block_invoke_3(uint64_t a1)
   }
 
   objc_initWeak(buf, self);
-  v4 = [(WCXPCManager *)self delegate];
-  v5 = [v4 currentPairingID];
-  v6 = [(WCXPCManager *)self delegate];
-  v7 = [v6 supportsActiveDeviceSwitch];
+  delegate = [(WCXPCManager *)self delegate];
+  currentPairingID = [delegate currentPairingID];
+  delegate2 = [(WCXPCManager *)self delegate];
+  supportsActiveDeviceSwitch = [delegate2 supportsActiveDeviceSwitch];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__WCXPCManager_onqueue_reconnect__block_invoke;
   v9[3] = &unk_278B7C630;
   objc_copyWeak(&v10, buf);
   v9[4] = self;
-  [(WCXPCManager *)self sessionReadyForInitialStateForClientPairingID:v5 supportsActiveDeviceSwitch:v7 withErrorHandler:v9];
+  [(WCXPCManager *)self sessionReadyForInitialStateForClientPairingID:currentPairingID supportsActiveDeviceSwitch:supportsActiveDeviceSwitch withErrorHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -312,8 +312,8 @@ void __33__WCXPCManager_onqueue_reconnect__block_invoke(uint64_t a1, void *a2)
 {
   if ([(WCXPCManager *)self connectionInvalidated])
   {
-    v3 = [(WCXPCManager *)self connection];
-    [v3 invalidate];
+    connection = [(WCXPCManager *)self connection];
+    [connection invalidate];
   }
 
   else
@@ -335,21 +335,21 @@ void __33__WCXPCManager_onqueue_reconnect__block_invoke(uint64_t a1, void *a2)
 
 - (void)handleInterruptedConnection
 {
-  v2 = [(WCXPCManager *)self delegate];
-  [v2 xpcConnectionInterrupted];
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate xpcConnectionInterrupted];
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v6 = a4;
-  [v6 retainArguments];
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__WCXPCManager_connection_handleInvocation_isReply___block_invoke;
   block[3] = &unk_278B7BF78;
-  v10 = v6;
-  v8 = v6;
+  v10 = invocationCopy;
+  v8 = invocationCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -373,65 +373,65 @@ void __106__WCXPCManager_sessionReadyForInitialStateForClientPairingID_supportsA
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendMessage:(id)a3 clientPairingID:(id)a4 acceptanceHandler:(id)a5 errorHandler:(id)a6
+- (void)sendMessage:(id)message clientPairingID:(id)d acceptanceHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  dCopy = d;
+  messageCopy = message;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v14 = [(WCXPCManager *)self connection];
-  v15 = [v14 remoteObjectProxyWithErrorHandler:v10];
+  connection = [(WCXPCManager *)self connection];
+  v15 = [connection remoteObjectProxyWithErrorHandler:errorHandlerCopy];
 
-  [v15 sendMessage:v13 clientPairingID:v12 acceptanceHandler:v11];
+  [v15 sendMessage:messageCopy clientPairingID:dCopy acceptanceHandler:handlerCopy];
 }
 
-- (void)updateApplicationContext:(id)a3 clientPairingID:(id)a4 errorHandler:(id)a5
+- (void)updateApplicationContext:(id)context clientPairingID:(id)d errorHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  contextCopy = context;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v11 = [(WCXPCManager *)self connection];
-  v12 = [v11 remoteObjectProxyWithErrorHandler:v8];
+  connection = [(WCXPCManager *)self connection];
+  v12 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
-  [v12 updateApplicationContext:v10 clientPairingID:v9 errorHandler:v8];
+  [v12 updateApplicationContext:contextCopy clientPairingID:dCopy errorHandler:handlerCopy];
 }
 
-- (void)transferFile:(id)a3 sandboxToken:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6
+- (void)transferFile:(id)file sandboxToken:(id)token clientPairingID:(id)d errorHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  tokenCopy = token;
+  fileCopy = file;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v14 = [(WCXPCManager *)self connection];
-  v15 = [v14 remoteObjectProxyWithErrorHandler:v10];
+  connection = [(WCXPCManager *)self connection];
+  v15 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
-  [v15 transferFile:v13 sandboxToken:v12 clientPairingID:v11 errorHandler:v10];
+  [v15 transferFile:fileCopy sandboxToken:tokenCopy clientPairingID:dCopy errorHandler:handlerCopy];
 }
 
-- (void)transferUserInfo:(id)a3 withURL:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6
+- (void)transferUserInfo:(id)info withURL:(id)l clientPairingID:(id)d errorHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  lCopy = l;
+  infoCopy = info;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v14 = [(WCXPCManager *)self connection];
-  v15 = [v14 remoteObjectProxyWithErrorHandler:v10];
+  connection = [(WCXPCManager *)self connection];
+  v15 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
-  [v15 transferUserInfo:v13 withURL:v12 clientPairingID:v11 errorHandler:v10];
+  [v15 transferUserInfo:infoCopy withURL:lCopy clientPairingID:dCopy errorHandler:handlerCopy];
 }
 
-- (void)cancelSendWithIdentifier:(id)a3
+- (void)cancelSendWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v5 = [(WCXPCManager *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_4];
+  connection = [(WCXPCManager *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_4];
 
-  [v6 cancelSendWithIdentifier:v4];
+  [v6 cancelSendWithIdentifier:identifierCopy];
 }
 
 void __41__WCXPCManager_cancelSendWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -447,8 +447,8 @@ void __41__WCXPCManager_cancelSendWithIdentifier___block_invoke(uint64_t a1, voi
 - (void)cancelAllOutstandingMessages
 {
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v3 = [(WCXPCManager *)self connection];
-  v4 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_106];
+  connection = [(WCXPCManager *)self connection];
+  v4 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_106];
 
   [v4 cancelAllOutstandingMessages];
 }
@@ -463,15 +463,15 @@ void __44__WCXPCManager_cancelAllOutstandingMessages__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)acknowledgeFileIndexWithIdentifier:(id)a3 clientPairingID:(id)a4
+- (void)acknowledgeFileIndexWithIdentifier:(id)identifier clientPairingID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v8 = [(WCXPCManager *)self connection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_108];
+  connection = [(WCXPCManager *)self connection];
+  v9 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_108];
 
-  [v9 acknowledgeFileIndexWithIdentifier:v7 clientPairingID:v6];
+  [v9 acknowledgeFileIndexWithIdentifier:identifierCopy clientPairingID:dCopy];
 }
 
 void __67__WCXPCManager_acknowledgeFileIndexWithIdentifier_clientPairingID___block_invoke(uint64_t a1, void *a2)
@@ -484,15 +484,15 @@ void __67__WCXPCManager_acknowledgeFileIndexWithIdentifier_clientPairingID___blo
   }
 }
 
-- (void)acknowledgeFileResultIndexWithIdentifier:(id)a3 clientPairingID:(id)a4
+- (void)acknowledgeFileResultIndexWithIdentifier:(id)identifier clientPairingID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v8 = [(WCXPCManager *)self connection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_110];
+  connection = [(WCXPCManager *)self connection];
+  v9 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_110];
 
-  [v9 acknowledgeFileResultIndexWithIdentifier:v7 clientPairingID:v6];
+  [v9 acknowledgeFileResultIndexWithIdentifier:identifierCopy clientPairingID:dCopy];
 }
 
 void __73__WCXPCManager_acknowledgeFileResultIndexWithIdentifier_clientPairingID___block_invoke(uint64_t a1, void *a2)
@@ -505,15 +505,15 @@ void __73__WCXPCManager_acknowledgeFileResultIndexWithIdentifier_clientPairingID
   }
 }
 
-- (void)acknowledgeUserInfoIndexWithIdentifier:(id)a3 clientPairingID:(id)a4
+- (void)acknowledgeUserInfoIndexWithIdentifier:(id)identifier clientPairingID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v8 = [(WCXPCManager *)self connection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_112];
+  connection = [(WCXPCManager *)self connection];
+  v9 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_112];
 
-  [v9 acknowledgeUserInfoIndexWithIdentifier:v7 clientPairingID:v6];
+  [v9 acknowledgeUserInfoIndexWithIdentifier:identifierCopy clientPairingID:dCopy];
 }
 
 void __71__WCXPCManager_acknowledgeUserInfoIndexWithIdentifier_clientPairingID___block_invoke(uint64_t a1, void *a2)
@@ -526,15 +526,15 @@ void __71__WCXPCManager_acknowledgeUserInfoIndexWithIdentifier_clientPairingID__
   }
 }
 
-- (void)acknowledgeUserInfoResultIndexWithIdentifier:(id)a3 clientPairingID:(id)a4
+- (void)acknowledgeUserInfoResultIndexWithIdentifier:(id)identifier clientPairingID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   [(WCXPCManager *)self onqueue_retryConnectIfNecessary];
-  v8 = [(WCXPCManager *)self connection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_114];
+  connection = [(WCXPCManager *)self connection];
+  v9 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_114];
 
-  [v9 acknowledgeUserInfoResultIndexWithIdentifier:v7 clientPairingID:v6];
+  [v9 acknowledgeUserInfoResultIndexWithIdentifier:identifierCopy clientPairingID:dCopy];
 }
 
 void __77__WCXPCManager_acknowledgeUserInfoResultIndexWithIdentifier_clientPairingID___block_invoke(uint64_t a1, void *a2)
@@ -561,8 +561,8 @@ void __77__WCXPCManager_acknowledgeUserInfoResultIndexWithIdentifier_clientPairi
   if (![(WCXPCManager *)self connectionInvalidated])
   {
     [(WCXPCManager *)self setConnectionInvalidated:1];
-    v4 = [(WCXPCManager *)self connection];
-    [v4 invalidate];
+    connection = [(WCXPCManager *)self connection];
+    [connection invalidate];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -570,78 +570,78 @@ void __77__WCXPCManager_acknowledgeUserInfoResultIndexWithIdentifier_clientPairi
 
 - (void)handleMessageSendingAllowed
 {
-  v2 = [(WCXPCManager *)self delegate];
-  [v2 handleMessageSendingAllowed];
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleMessageSendingAllowed];
 }
 
-- (void)handleSentMessageWithIdentifier:(id)a3 error:(id)a4
+- (void)handleSentMessageWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WCXPCManager *)self delegate];
-  [v8 handleSentMessageWithIdentifier:v7 error:v6];
+  errorCopy = error;
+  identifierCopy = identifier;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleSentMessageWithIdentifier:identifierCopy error:errorCopy];
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WCXPCManager *)self delegate];
-  [v5 handleRequest:v4];
+  requestCopy = request;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleRequest:requestCopy];
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(WCXPCManager *)self delegate];
-  [v5 handleResponse:v4];
+  responseCopy = response;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleResponse:responseCopy];
 }
 
-- (void)handleApplicationContextWithPairingID:(id)a3
+- (void)handleApplicationContextWithPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(WCXPCManager *)self delegate];
-  [v5 handleApplicationContextWithPairingID:v4];
+  dCopy = d;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleApplicationContextWithPairingID:dCopy];
 }
 
-- (void)handleIncomingFileWithPairingID:(id)a3
+- (void)handleIncomingFileWithPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(WCXPCManager *)self delegate];
-  [v5 handleIncomingFileWithPairingID:v4];
+  dCopy = d;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleIncomingFileWithPairingID:dCopy];
 }
 
-- (void)handleIncomingUserInfoWithPairingID:(id)a3
+- (void)handleIncomingUserInfoWithPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(WCXPCManager *)self delegate];
-  [v5 handleIncomingUserInfoWithPairingID:v4];
+  dCopy = d;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleIncomingUserInfoWithPairingID:dCopy];
 }
 
-- (void)handleFileResultWithPairingID:(id)a3
+- (void)handleFileResultWithPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(WCXPCManager *)self delegate];
-  [v5 handleFileResultWithPairingID:v4];
+  dCopy = d;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleFileResultWithPairingID:dCopy];
 }
 
-- (void)handleUserInfoResultWithPairingID:(id)a3
+- (void)handleUserInfoResultWithPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(WCXPCManager *)self delegate];
-  [v5 handleUserInfoResultWithPairingID:v4];
+  dCopy = d;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleUserInfoResultWithPairingID:dCopy];
 }
 
-- (void)handleSessionStateChanged:(id)a3
+- (void)handleSessionStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(WCXPCManager *)self delegate];
-  [v5 handleSessionStateChanged:v4];
+  changedCopy = changed;
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleSessionStateChanged:changedCopy];
 }
 
 - (void)handleActiveDeviceSwitchStarted
 {
-  v2 = [(WCXPCManager *)self delegate];
-  [v2 handleActiveDeviceSwitchStarted];
+  delegate = [(WCXPCManager *)self delegate];
+  [delegate handleActiveDeviceSwitchStarted];
 }
 
 - (WCXPCManagerDelegate)delegate

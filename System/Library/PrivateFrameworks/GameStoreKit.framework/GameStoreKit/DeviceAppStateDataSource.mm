@@ -1,16 +1,16 @@
 @interface DeviceAppStateDataSource
 - (_TtC12GameStoreKit24DeviceAppStateDataSource)init;
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4;
+- (void)appQuery:(id)query resultsDidChange:(id)change;
 @end
 
 @implementation DeviceAppStateDataSource
 
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4
+- (void)appQuery:(id)query resultsDidChange:(id)change
 {
   sub_24E69A5C4(0, &qword_27F22BDE0);
   v6 = sub_24F92B5A8();
-  v7 = a3;
-  v8 = self;
+  queryCopy = query;
+  selfCopy = self;
   sub_24EC36224(v6);
 }
 

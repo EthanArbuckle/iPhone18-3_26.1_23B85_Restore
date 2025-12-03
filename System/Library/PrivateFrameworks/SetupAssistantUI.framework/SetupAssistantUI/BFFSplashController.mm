@@ -2,33 +2,33 @@
 - (BFFPaneHeaderView)headerView;
 - (BFFSplashController)init;
 - (UIEdgeInsets)additionalInsets;
-- (id)_createButtonWithTitle:(id)a3 style:(int64_t)a4;
-- (id)buttonAtIndex:(unint64_t)a3;
-- (void)_buttonPressed:(id)a3;
+- (id)_createButtonWithTitle:(id)title style:(int64_t)style;
+- (id)buttonAtIndex:(unint64_t)index;
+- (void)_buttonPressed:(id)pressed;
 - (void)_updateButtonFonts;
 - (void)_updateTrayVisibility;
-- (void)addButtonWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5;
+- (void)addButtonWithTitle:(id)title style:(int64_t)style action:(id)action;
 - (void)loadView;
 - (void)removeAllButtons;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAdditionalInsets:(UIEdgeInsets)a3;
-- (void)setBleedColor:(id)a3;
-- (void)setButtonsEnabled:(BOOL)a3;
-- (void)setContentView:(id)a3;
-- (void)setContentViewPosition:(int64_t)a3;
-- (void)setDetailText:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setLinkText:(id)a3 action:(id)a4;
-- (void)setScrollingDisabled:(BOOL)a3;
-- (void)setTint:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitle:(id)a3 forButtonAtIndex:(unint64_t)a4 action:(id)a5;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAdditionalInsets:(UIEdgeInsets)insets;
+- (void)setBleedColor:(id)color;
+- (void)setButtonsEnabled:(BOOL)enabled;
+- (void)setContentView:(id)view;
+- (void)setContentViewPosition:(int64_t)position;
+- (void)setDetailText:(id)text;
+- (void)setIcon:(id)icon;
+- (void)setLinkText:(id)text action:(id)action;
+- (void)setScrollingDisabled:(BOOL)disabled;
+- (void)setTint:(id)tint;
+- (void)setTitle:(id)title;
+- (void)setTitle:(id)title forButtonAtIndex:(unint64_t)index action:(id)action;
 - (void)updateBleedColor;
 - (void)updateBleedViewLayout;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BFFSplashController
@@ -40,8 +40,8 @@
   v2 = [(BFFSplashController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] systemBlueColor];
-    [(BFFSplashController *)v2 setTint:v3];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(BFFSplashController *)v2 setTint:systemBlueColor];
 
     v4 = objc_opt_new();
     buttons = v2->_buttons;
@@ -56,88 +56,88 @@
   return v2;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v10 = a3;
-  v4 = [(BFFSplashController *)self tint];
-  if (v4)
+  iconCopy = icon;
+  tint = [(BFFSplashController *)self tint];
+  if (tint)
   {
-    v5 = v4;
-    v6 = [(BFFSplashController *)self disableIconTint];
+    v5 = tint;
+    disableIconTint = [(BFFSplashController *)self disableIconTint];
 
-    if (!v6)
+    if (!disableIconTint)
     {
-      v7 = [(BFFSplashController *)self tint];
-      v8 = [v10 _flatImageWithColor:v7];
+      tint2 = [(BFFSplashController *)self tint];
+      v8 = [iconCopy _flatImageWithColor:tint2];
 
-      v10 = v8;
+      iconCopy = v8;
     }
   }
 
-  v9 = [(BFFSplashController *)self headerView];
-  [v9 setIcon:v10];
+  headerView = [(BFFSplashController *)self headerView];
+  [headerView setIcon:iconCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(BFFSplashController *)self headerView];
-  [v5 setTitleText:v4];
+  titleCopy = title;
+  headerView = [(BFFSplashController *)self headerView];
+  [headerView setTitleText:titleCopy];
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v4 = a3;
-  v6 = [(BFFSplashController *)self headerView];
-  v5 = [v6 detailTextLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  headerView = [(BFFSplashController *)self headerView];
+  detailTextLabel = [headerView detailTextLabel];
+  [detailTextLabel setText:textCopy];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(UIScrollView *)self->_scrollView addSubview:self->_contentView];
-    v7 = [(BFFSplashController *)self view];
-    [v7 setNeedsLayout];
+    view = [(BFFSplashController *)self view];
+    [view setNeedsLayout];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setContentViewPosition:(int64_t)a3
+- (void)setContentViewPosition:(int64_t)position
 {
-  if (self->_contentViewPosition != a3)
+  if (self->_contentViewPosition != position)
   {
-    self->_contentViewPosition = a3;
-    v4 = [(BFFSplashController *)self view];
-    [v4 setNeedsLayout];
+    self->_contentViewPosition = position;
+    view = [(BFFSplashController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setAdditionalInsets:(UIEdgeInsets)a3
+- (void)setAdditionalInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_additionalInsets.top), vceqq_f64(v4, *&self->_additionalInsets.bottom)))) & 1) == 0)
   {
-    self->_additionalInsets = a3;
-    v5 = [(BFFSplashController *)self view];
-    [v5 setNeedsLayout];
+    self->_additionalInsets = insets;
+    view = [(BFFSplashController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)addButtonWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5
+- (void)addButtonWithTitle:(id)title style:(int64_t)style action:(id)action
 {
-  v8 = a5;
-  v9 = [(BFFSplashController *)self _createButtonWithTitle:a3 style:a4];
-  [v9 setAction:v8];
+  actionCopy = action;
+  v9 = [(BFFSplashController *)self _createButtonWithTitle:title style:style];
+  [v9 setAction:actionCopy];
 
   [(NSMutableArray *)self->_buttons addObject:v9];
 }
@@ -165,8 +165,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) button];
-        [v8 removeFromSuperview];
+        button = [*(*(&v9 + 1) + 8 * v7) button];
+        [button removeFromSuperview];
 
         ++v7;
       }
@@ -181,9 +181,9 @@
   [(NSMutableArray *)self->_buttons removeAllObjects];
 }
 
-- (void)setTitle:(id)a3 forButtonAtIndex:(unint64_t)a4 action:(id)a5
+- (void)setTitle:(id)title forButtonAtIndex:(unint64_t)index action:(id)action
 {
-  if (a4)
+  if (index)
   {
     v5 = 2;
   }
@@ -193,45 +193,45 @@
     v5 = 1;
   }
 
-  [(BFFSplashController *)self addButtonWithTitle:a3 style:v5 action:a5];
+  [(BFFSplashController *)self addButtonWithTitle:title style:v5 action:action];
 }
 
-- (id)buttonAtIndex:(unint64_t)a3
+- (id)buttonAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_buttons count]<= a3)
+  if ([(NSMutableArray *)self->_buttons count]<= index)
   {
-    v6 = 0;
+    button = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_buttons objectAtIndexedSubscript:a3];
-    v6 = [v5 button];
+    v5 = [(NSMutableArray *)self->_buttons objectAtIndexedSubscript:index];
+    button = [v5 button];
   }
 
-  return v6;
+  return button;
 }
 
-- (void)setLinkText:(id)a3 action:(id)a4
+- (void)setLinkText:(id)text action:(id)action
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BFFSplashController *)self headerView];
-  [v8 setLinkText:v7 handler:v6];
+  actionCopy = action;
+  textCopy = text;
+  headerView = [(BFFSplashController *)self headerView];
+  [headerView setLinkText:textCopy handler:actionCopy];
 }
 
-- (void)setTint:(id)a3
+- (void)setTint:(id)tint
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_tint != v5)
+  tintCopy = tint;
+  if (self->_tint != tintCopy)
   {
-    objc_storeStrong(&self->_tint, a3);
+    objc_storeStrong(&self->_tint, tint);
     if (![(BFFSplashController *)self disableIconTint])
     {
-      v6 = [(BFFSplashController *)self icon];
-      v7 = [(BFFSplashController *)self tint];
-      v8 = [v6 _flatImageWithColor:v7];
+      icon = [(BFFSplashController *)self icon];
+      tint = [(BFFSplashController *)self tint];
+      v8 = [icon _flatImageWithColor:tint];
 
       [(BFFSplashController *)self setIcon:v8];
     }
@@ -256,8 +256,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v15 + 1) + 8 * v13) button];
-          [v14 setTintColor:v5];
+          button = [*(*(&v15 + 1) + 8 * v13) button];
+          [button setTintColor:tintCopy];
 
           ++v13;
         }
@@ -271,39 +271,39 @@
   }
 }
 
-- (void)setScrollingDisabled:(BOOL)a3
+- (void)setScrollingDisabled:(BOOL)disabled
 {
-  if (self->_scrollingDisabled != a3)
+  if (self->_scrollingDisabled != disabled)
   {
-    v4 = a3;
-    self->_scrollingDisabled = a3;
-    [(UIScrollView *)self->_scrollView setScrollEnabled:!a3];
-    v6 = [(BFFSplashController *)self effectView];
-    [v6 setHidden:v4];
+    disabledCopy = disabled;
+    self->_scrollingDisabled = disabled;
+    [(UIScrollView *)self->_scrollView setScrollEnabled:!disabled];
+    effectView = [(BFFSplashController *)self effectView];
+    [effectView setHidden:disabledCopy];
   }
 }
 
-- (void)setBleedColor:(id)a3
+- (void)setBleedColor:(id)color
 {
-  v5 = a3;
-  v9 = v5;
+  colorCopy = color;
+  v9 = colorCopy;
   if (!self->_bleedView)
   {
     v6 = objc_alloc_init(MEMORY[0x277D75D18]);
     bleedView = self->_bleedView;
     self->_bleedView = v6;
 
-    v8 = [(BFFSplashController *)self view];
-    [v8 addSubview:self->_bleedView];
+    view = [(BFFSplashController *)self view];
+    [view addSubview:self->_bleedView];
 
-    v5 = v9;
+    colorCopy = v9;
   }
 
-  if (self->_bleedColor != v5)
+  if (self->_bleedColor != colorCopy)
   {
-    objc_storeStrong(&self->_bleedColor, a3);
+    objc_storeStrong(&self->_bleedColor, color);
     [(UIView *)self->_bleedView setBackgroundColor:v9];
-    v5 = v9;
+    colorCopy = v9;
   }
 }
 
@@ -351,9 +351,9 @@
         if ([v8 style] == 2)
         {
           v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:v6];
-          v10 = [v8 button];
-          v11 = [v10 titleLabel];
-          [v11 setFont:v9];
+          button = [v8 button];
+          titleLabel = [button titleLabel];
+          [titleLabel setFont:v9];
         }
       }
 
@@ -364,16 +364,16 @@
   }
 }
 
-- (id)_createButtonWithTitle:(id)a3 style:(int64_t)a4
+- (id)_createButtonWithTitle:(id)title style:(int64_t)style
 {
-  v6 = a3;
+  titleCopy = title;
   v7 = objc_opt_new();
-  [v7 setStyle:a4];
-  if (a4 == 1)
+  [v7 setStyle:style];
+  if (style == 1)
   {
     [(BFFSplashController *)self loadViewIfNeeded];
-    v8 = +[BFFStyle sharedStyle];
-    v9 = [v8 continueButtonWithTitle:v6 inView:self->_buttonTray];
+    button2 = +[BFFStyle sharedStyle];
+    v9 = [button2 continueButtonWithTitle:titleCopy inView:self->_buttonTray];
     [v7 setButton:v9];
   }
 
@@ -382,31 +382,31 @@
     v10 = [MEMORY[0x277D75220] buttonWithType:1];
     [v7 setButton:v10];
 
-    v11 = [v7 button];
-    v12 = [v11 titleLabel];
-    [v12 setAdjustsFontSizeToFitWidth:1];
+    button = [v7 button];
+    titleLabel = [button titleLabel];
+    [titleLabel setAdjustsFontSizeToFitWidth:1];
 
     [(BFFSplashController *)self _updateButtonFonts];
     buttonTray = self->_buttonTray;
-    v8 = [v7 button];
-    [(UIView *)buttonTray addSubview:v8];
+    button2 = [v7 button];
+    [(UIView *)buttonTray addSubview:button2];
   }
 
-  v14 = [v7 button];
-  [v14 setTintColor:self->_tint];
+  button3 = [v7 button];
+  [button3 setTintColor:self->_tint];
 
-  v15 = [v7 button];
-  [v15 addTarget:self action:sel__buttonPressed_ forControlEvents:0x2000];
+  button4 = [v7 button];
+  [button4 addTarget:self action:sel__buttonPressed_ forControlEvents:0x2000];
 
-  v16 = [v7 button];
-  [v16 setTitle:v6 forState:0];
+  button5 = [v7 button];
+  [button5 setTitle:titleCopy forState:0];
 
   return v7;
 }
 
-- (void)setButtonsEnabled:(BOOL)a3
+- (void)setButtonsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
@@ -428,8 +428,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) button];
-        [v9 setEnabled:v3];
+        button = [*(*(&v10 + 1) + 8 * v8) button];
+        [button setEnabled:enabledCopy];
 
         ++v8;
       }
@@ -447,10 +447,10 @@
   v19.receiver = self;
   v19.super_class = BFFSplashController;
   [(BFFSplashController *)&v19 loadView];
-  v3 = [(BFFSplashController *)self view];
+  view = [(BFFSplashController *)self view];
   v4 = +[BFFStyle sharedStyle];
-  v5 = [v4 backgroundColor];
-  [v3 setBackgroundColor:v5];
+  backgroundColor = [v4 backgroundColor];
+  [view setBackgroundColor:backgroundColor];
 
   v6 = objc_alloc_init(MEMORY[0x277D759D8]);
   scrollView = self->_scrollView;
@@ -459,28 +459,28 @@
   [(UIScrollView *)self->_scrollView setDelegate:self];
   [(UIScrollView *)self->_scrollView addSubview:self->_headerView];
   [(UIScrollView *)self->_scrollView addSubview:self->_contentView];
-  v8 = [(BFFSplashController *)self view];
-  [v8 addSubview:self->_scrollView];
+  view2 = [(BFFSplashController *)self view];
+  [view2 addSubview:self->_scrollView];
 
   v9 = objc_alloc(MEMORY[0x277D75D68]);
   v10 = [MEMORY[0x277D75210] effectWithStyle:1100];
   v11 = [v9 initWithEffect:v10];
   [(BFFSplashController *)self setEffectView:v11];
 
-  v12 = [(BFFSplashController *)self view];
-  v13 = [(BFFSplashController *)self effectView];
-  [v12 addSubview:v13];
+  view3 = [(BFFSplashController *)self view];
+  effectView = [(BFFSplashController *)self effectView];
+  [view3 addSubview:effectView];
 
   v14 = objc_alloc_init(MEMORY[0x277D75D18]);
   buttonTray = self->_buttonTray;
   self->_buttonTray = v14;
 
-  v16 = [(BFFSplashController *)self view];
-  [v16 addSubview:self->_buttonTray];
+  view4 = [(BFFSplashController *)self view];
+  [view4 addSubview:self->_buttonTray];
 
   v17 = +[BFFStyle sharedStyle];
-  v18 = [(BFFSplashController *)self navigationItem];
-  [v17 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:v18];
+  navigationItem = [(BFFSplashController *)self navigationItem];
+  [v17 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:navigationItem];
 }
 
 - (void)viewDidLayoutSubviews
@@ -499,20 +499,20 @@
   v158.receiver = self;
   v158.super_class = BFFSplashController;
   [(BFFSplashController *)&v158 viewDidLayoutSubviews];
-  v4 = [(BFFSplashController *)self view];
-  [v4 bounds];
+  view = [(BFFSplashController *)self view];
+  [view bounds];
   v132 = v6;
   v134 = v5;
   v8 = v7;
   v10 = v9;
 
   v11 = +[BFFStyle sharedStyle];
-  v12 = [(BFFSplashController *)self view];
-  v13 = [v12 superview];
-  v14 = [(BFFSplashController *)self view];
-  v15 = [v14 superview];
-  [v15 bounds];
-  [v11 horizontalInsetsForContainingInView:v13 width:v16];
+  view2 = [(BFFSplashController *)self view];
+  superview = [view2 superview];
+  view3 = [(BFFSplashController *)self view];
+  superview2 = [view3 superview];
+  [superview2 bounds];
+  [v11 horizontalInsetsForContainingInView:superview width:v16];
 
   UIEdgeInsetsAdd();
   v18 = v17;
@@ -549,8 +549,8 @@
       v157 = 0u;
       v154 = 0u;
       v155 = 0u;
-      v31 = [(UIView *)self->_contentView subviews];
-      v32 = [v31 countByEnumeratingWithState:&v154 objects:v160 count:16];
+      subviews = [(UIView *)self->_contentView subviews];
+      v32 = [subviews countByEnumeratingWithState:&v154 objects:v160 count:16];
       if (v32)
       {
         v33 = v32;
@@ -563,7 +563,7 @@
           {
             if (*v155 != v34)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(subviews);
             }
 
             [*(*(&v154 + 1) + 8 * i) frame];
@@ -582,7 +582,7 @@
             width = v164.size.width;
           }
 
-          v33 = [v31 countByEnumeratingWithState:&v154 objects:v160 count:16];
+          v33 = [subviews countByEnumeratingWithState:&v154 objects:v160 count:16];
         }
 
         while (v33);
@@ -621,10 +621,10 @@
     v141 = v44;
     if (self->_contentViewPosition == 2)
     {
-      v45 = [(BFFSplashController *)self headerView];
-      v46 = [v45 icon];
-      v47 = [(BFFSplashController *)self headerView];
-      [v47 setUseMinimumTopPadding:v46 != 0];
+      headerView = [(BFFSplashController *)self headerView];
+      icon = [headerView icon];
+      headerView2 = [(BFFSplashController *)self headerView];
+      [headerView2 setUseMinimumTopPadding:icon != 0];
 
       v142 = 0.0;
       v165.origin.y = 0.0;
@@ -634,8 +634,8 @@
       MaxY = CGRectGetMaxY(v165);
       if (BFFIsiPad())
       {
-        v48 = [(BFFSplashController *)self headerView];
-        [v48 setCustomTopPadding:60.0];
+        headerView3 = [(BFFSplashController *)self headerView];
+        [headerView3 setCustomTopPadding:60.0];
       }
     }
   }
@@ -649,22 +649,22 @@
   [v49 heightForWidth:self->_scrollView inView:v8];
   v51 = v50;
 
-  v52 = [(BFFSplashController *)self headerView];
+  headerView4 = [(BFFSplashController *)self headerView];
   v138 = v51;
   v139 = v26;
-  [v52 setFrame:{v26, MaxY, v8, v51}];
+  [headerView4 setFrame:{v26, MaxY, v8, v51}];
 
   if ([(NSMutableArray *)self->_buttons count])
   {
     v146 = v25;
     v136 = v8;
     v137 = v3;
-    v53 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
-    [v53 scaledValueForValue:24.0];
+    effectView2 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
+    [effectView2 scaledValueForValue:24.0];
     v55 = v54;
-    [v53 scaledValueForValue:44.0];
+    [effectView2 scaledValueForValue:44.0];
     v144 = v56;
-    [v53 scaledValueForValue:36.0];
+    [effectView2 scaledValueForValue:36.0];
     v145 = v57;
     v150 = 0u;
     v151 = 0u;
@@ -688,14 +688,14 @@
           }
 
           v65 = *(*(&v150 + 1) + 8 * j);
-          v66 = [v65 button];
-          [v66 frame];
+          button = [v65 button];
+          [button frame];
           v68 = v67;
           v70 = v69;
           if ([v65 style] == 2)
           {
-            v71 = [v66 titleLabel];
-            [v71 sizeThatFits:{v146, 1.79769313e308}];
+            titleLabel = [button titleLabel];
+            [titleLabel sizeThatFits:{v146, 1.79769313e308}];
             v73 = v72;
             v75 = v74;
 
@@ -709,10 +709,10 @@
               v76 = v146;
             }
 
-            [v66 setFrame:{v68, v70, v76, v75}];
-            [v66 layoutSubviews];
-            v77 = [v66 titleLabel];
-            [v77 _firstLineBaselineOffsetFromBoundsTop];
+            [button setFrame:{v68, v70, v76, v75}];
+            [button layoutSubviews];
+            titleLabel2 = [button titleLabel];
+            [titleLabel2 _firstLineBaselineOffsetFromBoundsTop];
 
             v63 = v55 + v62;
             v62 = v144 + v62;
@@ -721,8 +721,8 @@
           else
           {
             v78 = +[BFFStyle sharedStyle];
-            v79 = [(BFFSplashController *)self view];
-            [v78 sizeForContinueButtonInAncestor:v79];
+            view4 = [(BFFSplashController *)self view];
+            [v78 sizeForContinueButtonInAncestor:view4];
             v81 = v80;
             v83 = v82;
 
@@ -735,7 +735,7 @@
           }
 
           UIRoundToViewScale();
-          [v66 setFrame:?];
+          [button setFrame:?];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v150 objects:v159 count:16];
@@ -747,16 +747,16 @@
     v84 = 0x280033000uLL;
     [(UIView *)self->_buttonTray frame];
     v86 = v85;
-    v87 = [(NSMutableArray *)self->_buttons lastObject];
-    v88 = [v87 style];
-    v89 = [v87 button];
-    [v89 frame];
+    lastObject = [(NSMutableArray *)self->_buttons lastObject];
+    style = [lastObject style];
+    button2 = [lastObject button];
+    [button2 frame];
     v94 = v91;
-    if (v88 == 2)
+    if (style == 2)
     {
-      v95 = [v87 button];
-      v96 = [v95 titleLabel];
-      [v96 _firstLineBaselineOffsetFromBoundsTop];
+      button3 = [lastObject button];
+      titleLabel3 = [button3 titleLabel];
+      [titleLabel3 _firstLineBaselineOffsetFromBoundsTop];
       v98 = v94 + v97 + 24.0;
     }
 
@@ -769,19 +769,19 @@
     v8 = v136;
     v25 = v146;
 
-    v99 = [(BFFSplashController *)self view];
-    [v99 safeAreaInsets];
+    view5 = [(BFFSplashController *)self view];
+    [view5 safeAreaInsets];
     v101 = v98 + v100;
 
     [(UIView *)self->_buttonTray setFrame:v86, v140 - v101, v136, v101];
-    v102 = [(BFFSplashController *)self effectView];
-    [v102 setFrame:{v86, v140 - v101, v136, v101}];
+    effectView = [(BFFSplashController *)self effectView];
+    [effectView setFrame:{v86, v140 - v101, v136, v101}];
   }
 
   else
   {
-    v53 = [(BFFSplashController *)self effectView];
-    [v53 setFrame:{*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)}];
+    effectView2 = [(BFFSplashController *)self effectView];
+    [effectView2 setFrame:{*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)}];
     v84 = 0x280033000;
   }
 
@@ -819,8 +819,8 @@
     }
 
     v116 = MinY;
-    v117 = [(BFFSplashController *)self view];
-    [v117 convertRect:self->_scrollView fromView:{v139, MaxY, v8, v138}];
+    view6 = [(BFFSplashController *)self view];
+    [view6 convertRect:self->_scrollView fromView:{v139, MaxY, v8, v138}];
     v118 = v3 + CGRectGetMaxY(v169);
 
     v119 = v116 - v118;
@@ -849,8 +849,8 @@
   v113 = v141;
 LABEL_56:
   [(UIView *)self->_contentView setFrame:v113, v114, v111, v112];
-  v121 = [(BFFSplashController *)self headerView];
-  [v121 frame];
+  headerView5 = [(BFFSplashController *)self headerView];
+  [headerView5 frame];
   v122 = CGRectGetMaxY(v171);
 
   [(UIView *)self->_contentView frame];
@@ -876,19 +876,19 @@ LABEL_56:
   [(BFFSplashController *)self updateBleedViewLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BFFSplashController;
-  [(BFFSplashController *)&v4 viewWillAppear:a3];
+  [(BFFSplashController *)&v4 viewWillAppear:appear];
   [(BFFSplashController *)self updateBleedColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = BFFSplashController;
-  [(BFFSplashController *)&v11 viewDidAppear:a3];
+  [(BFFSplashController *)&v11 viewDidAppear:appear];
   [(UIScrollView *)self->_scrollView contentInset];
   v5 = v4;
   v7 = v6;
@@ -903,49 +903,49 @@ LABEL_56:
   [(BFFSplashController *)self updateBleedColor];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = BFFSplashController;
-  [(BFFSplashController *)&v7 viewWillDisappear:a3];
-  v4 = [(BFFSplashController *)self bleedColor];
+  [(BFFSplashController *)&v7 viewWillDisappear:disappear];
+  bleedColor = [(BFFSplashController *)self bleedColor];
 
-  if (v4)
+  if (bleedColor)
   {
     v5 = +[BFFStyle sharedStyle];
-    v6 = [(BFFSplashController *)self navigationController];
-    [v5 applyThemeToNavigationController:v6];
+    navigationController = [(BFFSplashController *)self navigationController];
+    [v5 applyThemeToNavigationController:navigationController];
   }
 }
 
 - (void)updateBleedColor
 {
-  v3 = [(BFFSplashController *)self bleedColor];
+  bleedColor = [(BFFSplashController *)self bleedColor];
 
-  if (v3)
+  if (bleedColor)
   {
-    v4 = [(BFFSplashController *)self navigationController];
-    v5 = [v4 navigationBar];
+    navigationController = [(BFFSplashController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
     v6 = objc_alloc_init(MEMORY[0x277D755B8]);
-    [v5 setBackgroundImage:v6 forBarMetrics:0];
+    [navigationBar setBackgroundImage:v6 forBarMetrics:0];
 
-    v7 = [(BFFSplashController *)self navigationController];
-    v8 = [v7 navigationBar];
-    [v8 setTranslucent:1];
+    navigationController2 = [(BFFSplashController *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 setTranslucent:1];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    v10 = [(BFFSplashController *)self navigationController];
-    v11 = [v10 navigationBar];
-    [v11 setBarTintColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    navigationController3 = [(BFFSplashController *)self navigationController];
+    navigationBar3 = [navigationController3 navigationBar];
+    [navigationBar3 setBarTintColor:clearColor];
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    v12 = [(BFFSplashController *)self navigationController];
-    v13 = [v12 navigationBar];
-    [v13 setBackgroundColor:v14];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    navigationController4 = [(BFFSplashController *)self navigationController];
+    navigationBar4 = [navigationController4 navigationBar];
+    [navigationBar4 setBackgroundColor:clearColor2];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(BFFSplashController *)self _updateTrayVisibility];
 
@@ -962,8 +962,8 @@ LABEL_56:
     [(UIScrollView *)self->_scrollView contentOffset];
   }
 
-  v6 = [(BFFSplashController *)self view];
-  [v6 frame];
+  view = [(BFFSplashController *)self view];
+  [view frame];
   [(UIView *)self->_bleedView setFrame:0.0, 0.0];
 }
 
@@ -976,9 +976,9 @@ LABEL_56:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(BFFSplashController *)self contentViewPosition];
+  contentViewPosition = [(BFFSplashController *)self contentViewPosition];
   v13 = &OBJC_IVAR___BFFSplashController__contentView;
-  if (v12 == 2)
+  if (contentViewPosition == 2)
   {
     v13 = &OBJC_IVAR___BFFSplashController__headerView;
   }
@@ -990,41 +990,41 @@ LABEL_56:
   v19.size.width = v9;
   v19.size.height = v11;
   v15 = MaxY <= CGRectGetMinY(v19);
-  v16 = [(BFFSplashController *)self effectView];
-  [v16 setHidden:v15];
+  effectView = [(BFFSplashController *)self effectView];
+  [effectView setHidden:v15];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   buttons = self->_buttons;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __38__BFFSplashController__buttonPressed___block_invoke;
   v10[3] = &unk_279BB4C30;
-  v6 = v4;
+  v6 = pressedCopy;
   v11 = v6;
   v7 = [(NSMutableArray *)buttons indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = _BYLoggingFacility();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    action = _BYLoggingFacility();
+    if (os_log_type_enabled(action, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v13 = v6;
-      _os_log_impl(&dword_265AC5000, v8, OS_LOG_TYPE_DEFAULT, "Unknown button %@!", buf, 0xCu);
+      _os_log_impl(&dword_265AC5000, action, OS_LOG_TYPE_DEFAULT, "Unknown button %@!", buf, 0xCu);
     }
   }
 
   else
   {
     v9 = [(NSMutableArray *)self->_buttons objectAtIndexedSubscript:v7];
-    v8 = [v9 action];
+    action = [v9 action];
 
-    if (v8)
+    if (action)
     {
-      (*(v8 + 16))(v8);
+      (*(action + 16))(action);
     }
   }
 }

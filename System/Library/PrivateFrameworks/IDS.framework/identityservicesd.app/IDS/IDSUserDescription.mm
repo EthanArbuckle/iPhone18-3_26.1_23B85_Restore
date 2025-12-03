@@ -1,20 +1,20 @@
 @interface IDSUserDescription
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUserDescription:(id)a3;
-- (BOOL)isIdenticalToUserDescription:(id)a3;
-- (IDSUserDescription)initWithCoder:(id)a3;
-- (IDSUserDescription)initWithUser:(id)a3 properties:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUserDescription:(id)description;
+- (BOOL)isIdenticalToUserDescription:(id)description;
+- (IDSUserDescription)initWithCoder:(id)coder;
+- (IDSUserDescription)initWithUser:(id)user properties:(id)properties;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSUserDescription
 
-- (IDSUserDescription)initWithUser:(id)a3 properties:(id)a4
+- (IDSUserDescription)initWithUser:(id)user properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  userCopy = user;
+  propertiesCopy = properties;
+  if (userCopy)
   {
     v14.receiver = self;
     v14.super_class = IDSUserDescription;
@@ -22,12 +22,12 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_user, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v9->_user, user);
+      objc_storeStrong(p_isa + 2, properties);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -39,41 +39,41 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Failed to initialize IDSUserDescription, received nil user.", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (IDSUserDescription)initWithCoder:(id)a3
+- (IDSUserDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = [NSSet setWithObjects:v5, v6, objc_opt_class(), 0];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"user"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"user"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prop"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prop"];
 
   v10 = [(IDSUserDescription *)self initWithUser:v8 properties:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   user = self->_user;
-  v5 = a3;
-  [v5 encodeObject:user forKey:@"user"];
-  [v5 encodeObject:self->_properties forKey:@"prop"];
+  coderCopy = coder;
+  [coderCopy encodeObject:user forKey:@"user"];
+  [coderCopy encodeObject:self->_properties forKey:@"prop"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IDSUserDescription *)self isEqualToUserDescription:v4];
+    v5 = [(IDSUserDescription *)self isEqualToUserDescription:equalCopy];
   }
 
   else
@@ -84,39 +84,39 @@
   return v5;
 }
 
-- (BOOL)isEqualToUserDescription:(id)a3
+- (BOOL)isEqualToUserDescription:(id)description
 {
-  if (self == a3)
+  if (self == description)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(IDSUserDescription *)self user];
-  v6 = [v4 user];
+  descriptionCopy = description;
+  user = [(IDSUserDescription *)self user];
+  user2 = [descriptionCopy user];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(descriptionCopy) = [user isEqual:user2];
+  return descriptionCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IDSUserDescription *)self user];
-  v3 = [v2 hash];
+  user = [(IDSUserDescription *)self user];
+  v3 = [user hash];
 
   return v3;
 }
 
-- (BOOL)isIdenticalToUserDescription:(id)a3
+- (BOOL)isIdenticalToUserDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(IDSUserDescription *)self user];
-  v6 = [v4 user];
-  if ([v5 isIdenticalToUser:v6])
+  descriptionCopy = description;
+  user = [(IDSUserDescription *)self user];
+  user2 = [descriptionCopy user];
+  if ([user isIdenticalToUser:user2])
   {
-    v7 = [(IDSUserDescription *)self properties];
-    v8 = [v4 properties];
-    v9 = [v7 isEqual:v8];
+    properties = [(IDSUserDescription *)self properties];
+    properties2 = [descriptionCopy properties];
+    v9 = [properties isEqual:properties2];
   }
 
   else

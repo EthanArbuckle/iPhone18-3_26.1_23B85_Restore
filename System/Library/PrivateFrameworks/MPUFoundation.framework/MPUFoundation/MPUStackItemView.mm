@@ -1,15 +1,15 @@
 @interface MPUStackItemView
-- (void)setCenter:(CGPoint)a3;
+- (void)setCenter:(CGPoint)center;
 @end
 
 @implementation MPUStackItemView
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MPUStackItemView *)self layer];
-  [v5 setPosition:{x, y}];
+  y = center.y;
+  x = center.x;
+  layer = [(MPUStackItemView *)self layer];
+  [layer setPosition:{x, y}];
 }
 
 @end

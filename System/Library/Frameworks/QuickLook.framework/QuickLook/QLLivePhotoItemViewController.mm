@@ -1,57 +1,57 @@
 @interface QLLivePhotoItemViewController
-- (BOOL)_isPointInNonImageSubjectItems:(CGPoint)a3;
+- (BOOL)_isPointInNonImageSubjectItems:(CGPoint)items;
 - (BOOL)_wasJustPlaying;
 - (BOOL)canEnterFullScreen;
-- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)a3;
+- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)actions;
 - (BOOL)canToggleFullScreen;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)livePhotoView:(id)a3 canBeginPlaybackWithStyle:(int64_t)a4;
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)livePhotoView:(id)view canBeginPlaybackWithStyle:(int64_t)style;
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer;
 - (BOOL)shouldDetectMachineReadableCode;
 - (CGSize)imageSize;
 - (NSDictionary)clientPreviewOptions;
 - (UIImage)imageForAnalysis;
-- (double)livePhotoView:(id)a3 extraMinimumTouchDurationForTouch:(id)a4 withStyle:(int64_t)a5;
-- (id)toolbarButtonsForTraitCollection:(id)a3;
+- (double)livePhotoView:(id)view extraMinimumTouchDurationForTouch:(id)touch withStyle:(int64_t)style;
+- (id)toolbarButtonsForTraitCollection:(id)collection;
 - (void)_setupAndStartImageAnalysisIfNeeded;
-- (void)_updateLivePhotoBadgeAnimated:(BOOL)a3;
+- (void)_updateLivePhotoBadgeAnimated:(BOOL)animated;
 - (void)animateToPreferredDynamicRange;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)didEndZoomingAtScale:(double)a3;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)didEndZoomingAtScale:(double)scale;
 - (void)imageAnalysisInteractionDidDismissVisualSearchController;
 - (void)imageAnalysisInteractionWillPresentVisualSearchController;
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4;
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)performFirstTimeAppearanceActions:(unint64_t)a3;
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style;
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)performFirstTimeAppearanceActions:(unint64_t)actions;
 - (void)previewWillFinishAppearing;
-- (void)updatePreferredDynamicRangeForced:(BOOL)a3;
+- (void)updatePreferredDynamicRangeForced:(BOOL)forced;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation QLLivePhotoItemViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = v6;
+  contentsCopy = contents;
+  handlerCopy = handler;
+  v8 = contentsCopy;
   [v8 size];
   if (v8)
   {
     v10 = v8;
-    v11 = v7;
+    v11 = handlerCopy;
     QLRunInMainThread();
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.quicklook.livePhotoItemViewController" code:1 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
@@ -171,17 +171,17 @@ uint64_t __93__QLLivePhotoItemViewController_loadPreviewControllerWithContents_c
   return result;
 }
 
-- (void)_updateLivePhotoBadgeAnimated:(BOOL)a3
+- (void)_updateLivePhotoBadgeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   livePhotoView = self->_livePhotoView;
-  v6 = [(QLLivePhotoItemViewController *)self view];
-  [(PHLivePhotoView *)livePhotoView convertPoint:v6 toView:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  view = [(QLLivePhotoItemViewController *)self view];
+  [(PHLivePhotoView *)livePhotoView convertPoint:view toView:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(QLItemViewController *)self appearance];
-  [v11 topInset];
+  appearance = [(QLItemViewController *)self appearance];
+  [appearance topInset];
   v13 = v12;
 
   [(NSLayoutConstraint *)self->_livePhotoBadgeLeftConstraint setConstant:v8 + 5.0];
@@ -199,16 +199,16 @@ uint64_t __93__QLLivePhotoItemViewController_loadPreviewControllerWithContents_c
 
   else
   {
-    v20 = [(QLItemViewController *)self appearance];
-    v15 = [v20 presentationMode] != 4;
+    appearance2 = [(QLItemViewController *)self appearance];
+    v15 = [appearance2 presentationMode] != 4;
   }
 
   self->_livePhotoBadgeVisible = v15;
-  v16 = [(QLLivePhotoItemViewController *)self view];
-  [v16 setNeedsLayout];
+  view2 = [(QLLivePhotoItemViewController *)self view];
+  [view2 setNeedsLayout];
 
-  v17 = [(QLLivePhotoItemViewController *)self view];
-  [v17 layoutIfNeeded];
+  view3 = [(QLLivePhotoItemViewController *)self view];
+  [view3 layoutIfNeeded];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -217,7 +217,7 @@ uint64_t __93__QLLivePhotoItemViewController_loadPreviewControllerWithContents_c
   aBlock[4] = self;
   v18 = _Block_copy(aBlock);
   v19 = v18;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v18 animations:0.2];
   }
@@ -247,27 +247,27 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
     return 0;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_didEndPlayingTimestamp];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_didEndPlayingTimestamp];
   v5 = v4 < 0.25;
 
   return v5;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = QLLivePhotoItemViewController;
-  v7 = a4;
-  [(QLScrollableContentItemViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(QLScrollableContentItemViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__QLLivePhotoItemViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_278B57208;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)viewDidLayoutSubviews
@@ -277,12 +277,12 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   [(QLLivePhotoItemViewController *)&v5 viewDidLayoutSubviews];
   if (self->_visualIntelligenceBarContainerView)
   {
-    v3 = [(QLLivePhotoItemViewController *)self view];
-    [v3 bounds];
+    view = [(QLLivePhotoItemViewController *)self view];
+    [view bounds];
     [(UIView *)self->_visualIntelligenceBarContainerView setFrame:?];
 
-    v4 = [(QLLivePhotoItemViewController *)self view];
-    [v4 bringSubviewToFront:self->_visualIntelligenceBarContainerView];
+    view2 = [(QLLivePhotoItemViewController *)self view];
+    [view2 bringSubviewToFront:self->_visualIntelligenceBarContainerView];
   }
 }
 
@@ -293,13 +293,13 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   [(QLItemViewController *)&v2 previewWillFinishAppearing];
 }
 
-- (void)didEndZoomingAtScale:(double)a3
+- (void)didEndZoomingAtScale:(double)scale
 {
-  v4 = [(QLScrollableContentItemViewController *)self scrollView];
-  [v4 zoomScale];
+  scrollView = [(QLScrollableContentItemViewController *)self scrollView];
+  [scrollView zoomScale];
   v6 = v5;
-  v7 = [(QLScrollableContentItemViewController *)self scrollView];
-  [v7 minZoomScale];
+  scrollView2 = [(QLScrollableContentItemViewController *)self scrollView];
+  [scrollView2 minZoomScale];
   self->_fullyZoomedOut = v6 == v8;
 
   [(QLLivePhotoItemViewController *)self _updateLivePhotoBadgeAnimated:1];
@@ -316,16 +316,16 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
 
 - (BOOL)canEnterFullScreen
 {
-  v3 = [(PHLivePhotoView *)self->_livePhotoView playbackGestureRecognizer];
-  if ([v3 state] == 1)
+  playbackGestureRecognizer = [(PHLivePhotoView *)self->_livePhotoView playbackGestureRecognizer];
+  if ([playbackGestureRecognizer state] == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PHLivePhotoView *)self->_livePhotoView playbackGestureRecognizer];
-    v4 = [v5 state] != 2 && !self->_isPlaying;
+    playbackGestureRecognizer2 = [(PHLivePhotoView *)self->_livePhotoView playbackGestureRecognizer];
+    v4 = [playbackGestureRecognizer2 state] != 2 && !self->_isPlaying;
   }
 
   return v4;
@@ -343,33 +343,33 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   return [(QLItemViewController *)&v4 canToggleFullScreen];
 }
 
-- (id)toolbarButtonsForTraitCollection:(id)a3
+- (id)toolbarButtonsForTraitCollection:(id)collection
 {
   v8.receiver = self;
   v8.super_class = QLLivePhotoItemViewController;
-  v4 = [(QLItemViewController *)&v8 toolbarButtonsForTraitCollection:a3];
-  v5 = [v4 mutableCopy];
+  v4 = [(QLItemViewController *)&v8 toolbarButtonsForTraitCollection:collection];
+  array = [v4 mutableCopy];
 
-  if (!v5)
+  if (!array)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   if (_os_feature_enabled_impl() && [(QLImageAnalysisManager *)self->_imageAnalysisManager isInteractionActive]&& [(QLImageAnalysisManager *)self->_imageAnalysisManager hasResultsForVisualSearch])
   {
-    v6 = [(QLImageAnalysisManager *)self->_imageAnalysisManager imageAnalysisToolbarButton];
-    [v5 addObject:v6];
+    imageAnalysisToolbarButton = [(QLImageAnalysisManager *)self->_imageAnalysisManager imageAnalysisToolbarButton];
+    [array addObject:imageAnalysisToolbarButton];
   }
 
-  return v5;
+  return array;
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _os_feature_enabled_impl();
-  if ([v6 isEqualToString:@"QLVisualSearchButton"])
+  if ([identifierCopy isEqualToString:@"QLVisualSearchButton"])
   {
     v9 = v8 == 0;
   }
@@ -383,56 +383,56 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   {
     v13.receiver = self;
     v13.super_class = QLLivePhotoItemViewController;
-    [(QLItemViewController *)&v13 buttonPressedWithIdentifier:v6 completionHandler:v7];
+    [(QLItemViewController *)&v13 buttonPressedWithIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else
   {
     if ([(QLImageAnalysisManager *)self->_imageAnalysisManager isVisualIntelligenceV2Enabled])
     {
-      v10 = [(QLImageAnalysisManager *)self->_imageAnalysisManager visualIntelligenceBarContainerView];
-      if (v10)
+      visualIntelligenceBarContainerView = [(QLImageAnalysisManager *)self->_imageAnalysisManager visualIntelligenceBarContainerView];
+      if (visualIntelligenceBarContainerView)
       {
         if ([(QLImageAnalysisManager *)self->_imageAnalysisManager isVisualIntelligenceV2Active])
         {
-          [v10 removeFromSuperview];
+          [visualIntelligenceBarContainerView removeFromSuperview];
           visualIntelligenceBarContainerView = self->_visualIntelligenceBarContainerView;
           self->_visualIntelligenceBarContainerView = 0;
         }
 
         else
         {
-          objc_storeStrong(&self->_visualIntelligenceBarContainerView, v10);
+          objc_storeStrong(&self->_visualIntelligenceBarContainerView, visualIntelligenceBarContainerView);
           visualIntelligenceBarContainerView = [(QLLivePhotoItemViewController *)self view];
-          [visualIntelligenceBarContainerView addSubview:v10];
+          [visualIntelligenceBarContainerView addSubview:visualIntelligenceBarContainerView];
         }
 
-        v12 = [(QLLivePhotoItemViewController *)self view];
-        [v12 setNeedsLayout];
+        view = [(QLLivePhotoItemViewController *)self view];
+        [view setNeedsLayout];
       }
     }
 
     [(QLImageAnalysisManager *)self->_imageAnalysisManager infoButtonTapped];
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style
 {
   self->_isPlaying = 1;
-  [(QLLivePhotoItemViewController *)self _updateLivePhotoBadgeAnimated:1, a4];
+  [(QLLivePhotoItemViewController *)self _updateLivePhotoBadgeAnimated:1, style];
 
   [(QLLivePhotoItemViewController *)self _updateImageAnalysisInteractionAnimated:1];
 }
 
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   didEndPlayingTimestamp = self->_didEndPlayingTimestamp;
-  self->_didEndPlayingTimestamp = v5;
+  self->_didEndPlayingTimestamp = date;
 
   self->_isPlaying = 0;
   [(QLLivePhotoItemViewController *)self _updateLivePhotoBadgeAnimated:1];
@@ -440,22 +440,22 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   [(QLLivePhotoItemViewController *)self _updateImageAnalysisInteractionAnimated:1];
 }
 
-- (BOOL)livePhotoView:(id)a3 canBeginPlaybackWithStyle:(int64_t)a4
+- (BOOL)livePhotoView:(id)view canBeginPlaybackWithStyle:(int64_t)style
 {
-  v5 = [a3 playbackGestureRecognizer];
-  v6 = [(QLLivePhotoItemViewController *)self imageAnalysisView];
-  [v5 locationInView:v6];
+  playbackGestureRecognizer = [view playbackGestureRecognizer];
+  imageAnalysisView = [(QLLivePhotoItemViewController *)self imageAnalysisView];
+  [playbackGestureRecognizer locationInView:imageAnalysisView];
   v8 = v7;
   v10 = v9;
 
   return ![(QLLivePhotoItemViewController *)self _isPointInNonImageSubjectItems:v8, v10];
 }
 
-- (double)livePhotoView:(id)a3 extraMinimumTouchDurationForTouch:(id)a4 withStyle:(int64_t)a5
+- (double)livePhotoView:(id)view extraMinimumTouchDurationForTouch:(id)touch withStyle:(int64_t)style
 {
-  v6 = a4;
-  v7 = [(QLLivePhotoItemViewController *)self imageAnalysisView];
-  [v6 locationInView:v7];
+  touchCopy = touch;
+  imageAnalysisView = [(QLLivePhotoItemViewController *)self imageAnalysisView];
+  [touchCopy locationInView:imageAnalysisView];
   v9 = v8;
   v11 = v10;
 
@@ -472,18 +472,18 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
 
 - (UIImage)imageForAnalysis
 {
-  v2 = [(PHLivePhotoView *)self->_livePhotoView livePhoto];
-  v3 = [v2 image];
+  livePhoto = [(PHLivePhotoView *)self->_livePhotoView livePhoto];
+  image = [livePhoto image];
 
-  return v3;
+  return image;
 }
 
 - (NSDictionary)clientPreviewOptions
 {
-  v2 = [(QLItemViewController *)self context];
-  v3 = [v2 clientPreviewOptions];
+  context = [(QLItemViewController *)self context];
+  clientPreviewOptions = [context clientPreviewOptions];
 
-  return v3;
+  return clientPreviewOptions;
 }
 
 - (void)imageAnalysisInteractionWillPresentVisualSearchController
@@ -492,8 +492,8 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   savedFullScreenState = self->_savedFullScreenState;
   self->_savedFullScreenState = v3;
 
-  v5 = [(QLItemViewController *)self delegate];
-  [v5 previewItemViewController:self wantsFullScreen:1];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self wantsFullScreen:1];
 }
 
 - (void)imageAnalysisInteractionDidDismissVisualSearchController
@@ -501,26 +501,26 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   savedFullScreenState = self->_savedFullScreenState;
   if (savedFullScreenState)
   {
-    v4 = [(NSNumber *)savedFullScreenState BOOLValue];
+    bOOLValue = [(NSNumber *)savedFullScreenState BOOLValue];
     v5 = self->_savedFullScreenState;
     self->_savedFullScreenState = 0;
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  v6 = [(QLItemViewController *)self delegate];
-  [v6 previewItemViewController:self wantsFullScreen:v4];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self wantsFullScreen:bOOLValue];
 }
 
 - (BOOL)shouldDetectMachineReadableCode
 {
-  v2 = [(QLItemViewController *)self context];
-  v3 = [v2 shouldPreventMachineReadableCodeDetection];
+  context = [(QLItemViewController *)self context];
+  shouldPreventMachineReadableCodeDetection = [context shouldPreventMachineReadableCodeDetection];
 
-  return v3 ^ 1;
+  return shouldPreventMachineReadableCodeDetection ^ 1;
 }
 
 - (void)_setupAndStartImageAnalysisIfNeeded
@@ -528,9 +528,9 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   imageAnalysisManager = self->_imageAnalysisManager;
   if (imageAnalysisManager)
   {
-    v4 = [(QLImageAnalysisManager *)imageAnalysisManager hasAnalysis];
+    hasAnalysis = [(QLImageAnalysisManager *)imageAnalysisManager hasAnalysis];
     v5 = self->_imageAnalysisManager;
-    if (v4)
+    if (hasAnalysis)
     {
 
       [(QLImageAnalysisManager *)v5 addInteractionIfNeeded];
@@ -553,8 +553,8 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   }
 
   v7 = [QLImageAnalysisManager alloc];
-  v10 = [(QLLivePhotoItemViewController *)self view];
-  v8 = [(QLImageAnalysisManager *)v7 initWithDelegate:self presentingView:v10];
+  view = [(QLLivePhotoItemViewController *)self view];
+  v8 = [(QLImageAnalysisManager *)v7 initWithDelegate:self presentingView:view];
   v9 = self->_imageAnalysisManager;
   self->_imageAnalysisManager = v8;
 }
@@ -575,55 +575,55 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)a3
+- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v7.receiver = self;
   v7.super_class = QLLivePhotoItemViewController;
   v4 = [(QLItemViewController *)&v7 canPerformFirstTimeAppearanceActions:?];
-  v5 = (v3 & 0x28) != 0;
+  v5 = (actionsCopy & 0x28) != 0;
   if (v4)
   {
     v5 = 1;
   }
 
-  return (v3 & 0x10) != 0 || v5;
+  return (actionsCopy & 0x10) != 0 || v5;
 }
 
-- (void)performFirstTimeAppearanceActions:(unint64_t)a3
+- (void)performFirstTimeAppearanceActions:(unint64_t)actions
 {
-  if ((a3 & 8) != 0)
+  if ((actions & 8) != 0)
   {
     [(QLImageAnalysisManager *)self->_imageAnalysisManager setShouldHighlightTextAndDDAfterNextAnalysis:1];
   }
 
-  else if ((a3 & 0x10) != 0)
+  else if ((actions & 0x10) != 0)
   {
     [(QLImageAnalysisManager *)self->_imageAnalysisManager setShouldEnterVisualSearchAfterNextAnalysis:1];
   }
 
-  else if ((a3 & 0x20) != 0)
+  else if ((actions & 0x20) != 0)
   {
     [(QLImageAnalysisManager *)self->_imageAnalysisManager setShouldUpliftSubjectAfterNextAnalysis:1];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) == 0 || [v4 numberOfTapsRequired] != 2;
+  v5 = (objc_opt_isKindOfClass() & 1) == 0 || [gestureRecognizerCopy numberOfTapsRequired] != 2;
 
   return v5;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   livePhotoView = self->_livePhotoView;
-  v5 = a3;
-  v6 = [(PHLivePhotoView *)livePhotoView playbackGestureRecognizer];
+  beginCopy = begin;
+  playbackGestureRecognizer = [(PHLivePhotoView *)livePhotoView playbackGestureRecognizer];
 
-  if (v6 != v5)
+  if (playbackGestureRecognizer != beginCopy)
   {
     return 1;
   }
@@ -633,20 +633,20 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   return [(QLLivePhotoItemViewController *)self livePhotoView:v8 canBeginPlaybackWithStyle:1];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHLivePhotoView *)self->_livePhotoView playbackGestureRecognizer];
-  v9 = v8;
-  if (v8 == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  playbackGestureRecognizer = [(PHLivePhotoView *)self->_livePhotoView playbackGestureRecognizer];
+  v9 = playbackGestureRecognizer;
+  if (playbackGestureRecognizer == recognizerCopy)
   {
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      [(QLLivePhotoItemViewController *)self livePhotoView:self->_livePhotoView extraMinimumTouchDurationForTouch:v7 withStyle:1];
-      [v6 setExtraMinimumTouchDuration:?];
+      [(QLLivePhotoItemViewController *)self livePhotoView:self->_livePhotoView extraMinimumTouchDurationForTouch:touchCopy withStyle:1];
+      [recognizerCopy setExtraMinimumTouchDuration:?];
     }
   }
 
@@ -657,19 +657,19 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   return 1;
 }
 
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer
 {
-  v6 = a4;
+  recognizerCopy = recognizer;
   v16.receiver = self;
   v16.super_class = QLLivePhotoItemViewController;
-  v7 = a3;
-  v8 = [(QLItemViewController *)&v16 shouldAcceptTouch:v7 ofGestureRecognizer:v6];
+  touchCopy = touch;
+  v8 = [(QLItemViewController *)&v16 shouldAcceptTouch:touchCopy ofGestureRecognizer:recognizerCopy];
   v9 = [(QLLivePhotoItemViewController *)self imageAnalysisView:v16.receiver];
-  [v7 locationInView:v9];
+  [touchCopy locationInView:v9];
   v11 = v10;
   v13 = v12;
 
-  LODWORD(v9) = [v7 _isPointerTouch];
+  LODWORD(v9) = [touchCopy _isPointerTouch];
   if (v9)
   {
     if ([(QLImageAnalysisManager *)self->_imageAnalysisManager isTextSelectionEnabled])
@@ -693,10 +693,10 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   return v14 & v8;
 }
 
-- (BOOL)_isPointInNonImageSubjectItems:(CGPoint)a3
+- (BOOL)_isPointInNonImageSubjectItems:(CGPoint)items
 {
-  y = a3.y;
-  x = a3.x;
+  y = items.y;
+  x = items.x;
   if ([(QLImageAnalysisManager *)self->_imageAnalysisManager textExistsAtPoint:?]|| [(QLImageAnalysisManager *)self->_imageAnalysisManager dataDetectorExistsAtPoint:x, y])
   {
     return 1;
@@ -707,18 +707,18 @@ uint64_t __63__QLLivePhotoItemViewController__updateLivePhotoBadgeAnimated___blo
   return [(QLImageAnalysisManager *)imageAnalysisManager actionInfoItemExistsAtPoint:x, y];
 }
 
-- (void)updatePreferredDynamicRangeForced:(BOOL)a3
+- (void)updatePreferredDynamicRangeForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   if (_os_feature_enabled_impl())
   {
-    if (!self->_HDRTransitionInProgress || v3)
+    if (!self->_HDRTransitionInProgress || forcedCopy)
     {
-      v6 = [(QLItemViewController *)self appearance];
-      v7 = [v6 presentationMode];
+      appearance = [(QLItemViewController *)self appearance];
+      presentationMode = [appearance presentationMode];
 
       livePhotoView = self->_livePhotoView;
-      if (v7 == 2)
+      if (presentationMode == 2)
       {
         v9 = 2;
       }

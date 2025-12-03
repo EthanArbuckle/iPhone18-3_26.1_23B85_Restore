@@ -1,15 +1,15 @@
 @interface _UIForceLevelClassifier
 - (_UIForceLevelClassifier)init;
 - (_UIForceLevelClassifierDelegate)delegate;
-- (id)observableForProgressToForceLevel:(int64_t)a3;
-- (id)observableForProgressToForceLevel:(int64_t)a3 minimumRequiredForceLevel:(int64_t)a4;
-- (void)_accessibilityForceSensitivityChanged:(id)a3;
-- (void)_notifyDelegateOfProgress:(double)a3 toForceLevel:(int64_t)a4;
+- (id)observableForProgressToForceLevel:(int64_t)level;
+- (id)observableForProgressToForceLevel:(int64_t)level minimumRequiredForceLevel:(int64_t)forceLevel;
+- (void)_accessibilityForceSensitivityChanged:(id)changed;
+- (void)_notifyDelegateOfProgress:(double)progress toForceLevel:(int64_t)level;
 - (void)dealloc;
-- (void)receiveObservedValue:(id)a3;
+- (void)receiveObservedValue:(id)value;
 - (void)reset;
-- (void)setCurrentForceLevel:(int64_t)a3;
-- (void)setDelegate:(id)a3;
+- (void)setCurrentForceLevel:(int64_t)level;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIForceLevelClassifier
@@ -27,8 +27,8 @@
 
     _AXSForceTouchSensitivity();
     [(_UIForceLevelClassifier *)v2 setCurrentTouchForceMultiplier:v5];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel__accessibilityForceSensitivityChanged_ name:@"UIAccessibilityForceTouchSensitivityChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accessibilityForceSensitivityChanged_ name:@"UIAccessibilityForceTouchSensitivityChangedNotification" object:0];
 
     v2->_respectsSystemGestureTouchFiltering = 1;
   }
@@ -38,8 +38,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityForceTouchSensitivityChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityForceTouchSensitivityChangedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIForceLevelClassifier;
@@ -48,25 +48,25 @@
 
 - (void)reset
 {
-  v3 = [(_UIForceLevelClassifier *)self delegate];
+  delegate = [(_UIForceLevelClassifier *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 _forceLevelClassifierDidReset:self];
+    [delegate _forceLevelClassifierDidReset:self];
   }
 }
 
-- (void)setCurrentForceLevel:(int64_t)a3
+- (void)setCurrentForceLevel:(int64_t)level
 {
   currentForceLevel = self->_currentForceLevel;
-  if (currentForceLevel != a3)
+  if (currentForceLevel != level)
   {
-    self->_currentForceLevel = a3;
-    v5 = [(_UIForceLevelClassifier *)self delegate];
-    [v5 _forceLevelClassifier:self currentForceLevelDidChange:currentForceLevel];
+    self->_currentForceLevel = level;
+    delegate = [(_UIForceLevelClassifier *)self delegate];
+    [delegate _forceLevelClassifier:self currentForceLevelDidChange:currentForceLevel];
   }
 }
 
-- (void)_accessibilityForceSensitivityChanged:(id)a3
+- (void)_accessibilityForceSensitivityChanged:(id)changed
 {
   _AXSForceTouchSensitivity();
   [(_UIForceLevelClassifier *)self setCurrentTouchForceMultiplier:v4];
@@ -74,7 +74,7 @@
   [(_UIForceLevelClassifier *)self touchForceMultiplierDidChange];
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -89,7 +89,7 @@
     v7[2] = __48___UIForceLevelClassifier_receiveObservedValue___block_invoke_2;
     v7[3] = &unk_1E70F3590;
     v7[4] = self;
-    [a3 ifObservationUnclamped:v5 ifReset:v7];
+    [value ifObservationUnclamped:v5 ifReset:v7];
   }
 
   else
@@ -99,46 +99,46 @@
     v6[2] = __48___UIForceLevelClassifier_receiveObservedValue___block_invoke_3;
     v6[3] = &unk_1E70F3590;
     v6[4] = self;
-    [a3 ifObservation:v5 ifReset:v6];
+    [value ifObservation:v5 ifReset:v6];
   }
 
-  [(NSObservationSource *)self->_progressTouchForceObservable receiveObservedValue:a3];
+  [(NSObservationSource *)self->_progressTouchForceObservable receiveObservedValue:value];
 }
 
-- (id)observableForProgressToForceLevel:(int64_t)a3
+- (id)observableForProgressToForceLevel:(int64_t)level
 {
-  if ((a3 - 1) >= 3)
+  if ((level - 1) >= 3)
   {
     v3 = 0xFFFFFFFF80000000;
   }
 
   else
   {
-    v3 = a3 - 1;
+    v3 = level - 1;
   }
 
-  return [(_UIForceLevelClassifier *)self observableForProgressToForceLevel:a3 minimumRequiredForceLevel:v3];
+  return [(_UIForceLevelClassifier *)self observableForProgressToForceLevel:level minimumRequiredForceLevel:v3];
 }
 
-- (id)observableForProgressToForceLevel:(int64_t)a3 minimumRequiredForceLevel:(int64_t)a4
+- (id)observableForProgressToForceLevel:(int64_t)level minimumRequiredForceLevel:(int64_t)forceLevel
 {
   v4 = 0;
-  if (a3 > a4 && a3 >= 1 && (a4 & 0x8000000000000000) == 0)
+  if (level > forceLevel && level >= 1 && (forceLevel & 0x8000000000000000) == 0)
   {
-    if (a4 >= 3)
+    if (forceLevel >= 3)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __progressObservableCacheKey_block_invoke;
       block[3] = &__block_descriptor_40_e5_v8__0l;
-      block[4] = a4;
+      block[4] = forceLevel;
       if (progressObservableCacheKey_once != -1)
       {
         dispatch_once(&progressObservableCacheKey_once, block);
       }
     }
 
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4 + 4 * a3];
+    level = [MEMORY[0x1E696AD98] numberWithInteger:forceLevel + 4 * level];
     cachedProgressObservables = self->_cachedProgressObservables;
     if (!cachedProgressObservables)
     {
@@ -149,24 +149,24 @@
       cachedProgressObservables = self->_cachedProgressObservables;
     }
 
-    v4 = [(NSMutableDictionary *)cachedProgressObservables objectForKey:v8];
+    v4 = [(NSMutableDictionary *)cachedProgressObservables objectForKey:level];
     if (!v4)
     {
-      v12 = [(_UIForceLevelClassifier *)self transformerFromTouchForceMessageToProgressToForceLevel:a3 minimumRequiredForceLevel:a4];
+      v12 = [(_UIForceLevelClassifier *)self transformerFromTouchForceMessageToProgressToForceLevel:level minimumRequiredForceLevel:forceLevel];
       v4 = [(NSObservationSource *)self->_progressTouchForceObservable addObserver:v12];
-      [(NSMutableDictionary *)self->_cachedProgressObservables setObject:v4 forKey:v8];
+      [(NSMutableDictionary *)self->_cachedProgressObservables setObject:v4 forKey:level];
     }
   }
 
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   if ((objc_opt_respondsToSelector() & 1) != 0 && !self->_delegateObservations)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     for (i = 1; ; i = 3)
     {
       do
@@ -182,8 +182,8 @@
         v10[1] = v6;
         v8 = [v7 addObserverBlock:v9];
 
-        [v4 addObject:v8];
-        objc_storeStrong(&self->_delegateObservations, v4);
+        [array addObject:v8];
+        objc_storeStrong(&self->_delegateObservations, array);
 
         objc_destroyWeak(v10);
         objc_destroyWeak(&location);
@@ -199,10 +199,10 @@
   }
 }
 
-- (void)_notifyDelegateOfProgress:(double)a3 toForceLevel:(int64_t)a4
+- (void)_notifyDelegateOfProgress:(double)progress toForceLevel:(int64_t)level
 {
-  v7 = [(_UIForceLevelClassifier *)self delegate];
-  [v7 _forceLevelClassifier:self didUpdateProgress:a4 toForceLevel:a3];
+  delegate = [(_UIForceLevelClassifier *)self delegate];
+  [delegate _forceLevelClassifier:self didUpdateProgress:level toForceLevel:progress];
 }
 
 - (_UIForceLevelClassifierDelegate)delegate

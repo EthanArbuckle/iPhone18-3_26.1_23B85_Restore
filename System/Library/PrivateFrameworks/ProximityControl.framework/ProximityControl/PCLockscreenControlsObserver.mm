@@ -1,17 +1,17 @@
 @interface PCLockscreenControlsObserver
 - (PCLockscreenControlsObserver)init;
-- (PCLockscreenControlsObserver)initWithCoder:(id)a3;
+- (PCLockscreenControlsObserver)initWithCoder:(id)coder;
 - (id)knownDevices;
 - (void)_interrupted;
-- (void)_invalidateWithError:(id)a3;
+- (void)_invalidateWithError:(id)error;
 - (void)_xpcEnsureStarted;
 - (void)_xpcEnsureStopped;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deviceLost:(id)a3;
-- (void)deviceUpdated:(id)a3;
-- (void)didSwitchRouteToDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)deviceLost:(id)lost;
+- (void)deviceUpdated:(id)updated;
+- (void)didSwitchRouteToDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
@@ -29,13 +29,13 @@
     v2->_dispatchQueue = v3;
 
     v2->_ucat = LogCategoryCreateEx();
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    v6 = [v5 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
 
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    v8 = [v7 processIdentifier];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processIdentifier = [processInfo2 processIdentifier];
 
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%d", v6, v8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%d", processName, processIdentifier];
 
     processName = v2->_processName;
     v2->_processName = v9;
@@ -100,7 +100,7 @@
     v10[4] = self;
     [(NSXPCConnection *)v6 setInvalidationHandler:v10];
     [(NSXPCConnection *)v6 setRemoteObjectInterface:v4];
-    v7 = [(NSXPCConnection *)v6 _xpcConnection];
+    _xpcConnection = [(NSXPCConnection *)v6 _xpcConnection];
     xpc_connection_set_non_launching();
 
     [(NSXPCConnection *)v6 resume];
@@ -128,17 +128,17 @@ void __49__PCLockscreenControlsObserver__xpcEnsureStarted__block_invoke_2(uint64
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__PCLockscreenControlsObserver_activateWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -191,17 +191,17 @@ LABEL_11:
   v9();
 }
 
-- (void)didSwitchRouteToDevice:(id)a3
+- (void)didSwitchRouteToDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__PCLockscreenControlsObserver_didSwitchRouteToDevice___block_invoke;
   v7[3] = &unk_279AD1A30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -281,15 +281,15 @@ LABEL_5:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_invalidateWithError:(id)a3
+- (void)_invalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_invalidated)
   {
     goto LABEL_9;
   }
 
-  v9 = v4;
+  v9 = errorCopy;
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
@@ -317,7 +317,7 @@ LABEL_6:
     (*(v6 + 16))(v6, v9);
   }
 
-  v4 = v9;
+  errorCopy = v9;
 LABEL_9:
 }
 
@@ -326,20 +326,20 @@ LABEL_9:
   devices = self->_devices;
   if (devices)
   {
-    v4 = [(NSMutableDictionary *)devices allValues];
+    allValues = [(NSMutableDictionary *)devices allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
-  return v4;
+  return allValues;
 }
 
-- (PCLockscreenControlsObserver)initWithCoder:(id)a3
+- (PCLockscreenControlsObserver)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PCLockscreenControlsObserver *)self init];
   if (v5)
   {
@@ -351,33 +351,33 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   processName = self->_processName;
   if (processName)
   {
-    [a3 encodeObject:processName forKey:@"pn"];
+    [coder encodeObject:processName forKey:@"pn"];
   }
 }
 
-- (void)deviceLost:(id)a3
+- (void)deviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   var0 = self->_ucat->var0;
-  v13 = v4;
+  v13 = lostCopy;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v12 = v4;
+      v12 = lostCopy;
       LogPrintF();
-      v4 = v13;
+      lostCopy = v13;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v13;
+    lostCopy = v13;
     if (v6)
     {
       ucat = self->_ucat;
@@ -387,8 +387,8 @@ LABEL_3:
 
 LABEL_5:
   devices = self->_devices;
-  v8 = [v4 mediaRouteID];
-  [(NSMutableDictionary *)devices removeObjectForKey:v8];
+  mediaRouteID = [lostCopy mediaRouteID];
+  [(NSMutableDictionary *)devices removeObjectForKey:mediaRouteID];
 
   v9 = MEMORY[0x2666FB170](self->_deviceLost);
   v10 = v9;
@@ -398,24 +398,24 @@ LABEL_5:
   }
 }
 
-- (void)deviceUpdated:(id)a3
+- (void)deviceUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   var0 = self->_ucat->var0;
-  v15 = v4;
+  v15 = updatedCopy;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v14 = v4;
+      v14 = updatedCopy;
       LogPrintF();
-      v4 = v15;
+      updatedCopy = v15;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v15;
+    updatedCopy = v15;
     if (v6)
     {
       ucat = self->_ucat;
@@ -431,12 +431,12 @@ LABEL_5:
     v9 = self->_devices;
     self->_devices = v8;
 
-    v4 = v15;
+    updatedCopy = v15;
     devices = self->_devices;
   }
 
-  v10 = [v4 mediaRouteID];
-  [(NSMutableDictionary *)devices setObject:v15 forKeyedSubscript:v10];
+  mediaRouteID = [updatedCopy mediaRouteID];
+  [(NSMutableDictionary *)devices setObject:v15 forKeyedSubscript:mediaRouteID];
 
   v11 = MEMORY[0x2666FB170](self->_deviceUpdated);
   v12 = v11;

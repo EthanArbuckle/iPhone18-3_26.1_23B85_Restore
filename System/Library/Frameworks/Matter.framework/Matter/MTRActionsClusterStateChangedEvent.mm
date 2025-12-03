@@ -1,6 +1,6 @@
 @interface MTRActionsClusterStateChangedEvent
 - (MTRActionsClusterStateChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRActionsClusterStateChangedEvent);
-  v5 = [(MTRActionsClusterStateChangedEvent *)self actionID];
-  [(MTRActionsClusterStateChangedEvent *)v4 setActionID:v5];
+  actionID = [(MTRActionsClusterStateChangedEvent *)self actionID];
+  [(MTRActionsClusterStateChangedEvent *)v4 setActionID:actionID];
 
-  v6 = [(MTRActionsClusterStateChangedEvent *)self invokeID];
-  [(MTRActionsClusterStateChangedEvent *)v4 setInvokeID:v6];
+  invokeID = [(MTRActionsClusterStateChangedEvent *)self invokeID];
+  [(MTRActionsClusterStateChangedEvent *)v4 setInvokeID:invokeID];
 
-  v7 = [(MTRActionsClusterStateChangedEvent *)self getNewState];
-  [(MTRActionsClusterStateChangedEvent *)v4 setNewState:v7];
+  getNewState = [(MTRActionsClusterStateChangedEvent *)self getNewState];
+  [(MTRActionsClusterStateChangedEvent *)v4 setNewState:getNewState];
 
   return v4;
 }

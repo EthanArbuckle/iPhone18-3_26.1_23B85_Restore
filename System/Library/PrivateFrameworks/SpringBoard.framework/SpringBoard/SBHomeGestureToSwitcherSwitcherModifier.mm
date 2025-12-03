@@ -1,16 +1,16 @@
 @interface SBHomeGestureToSwitcherSwitcherModifier
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (SBHomeGestureToSwitcherSwitcherModifier)initWithTransitionID:(id)a3 multitaskingModifier:(id)a4 selectedAppLayout:(id)a5 startingEnvironmentMode:(int64_t)a6 liftOffVelocity:(CGPoint)a7 liftOffTranslation:(CGPoint)a8 adjustAppLayoutsBeforeTransition:(BOOL)a9 keepSelectedAppLayoutAsTopMostElement:(BOOL)a10;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (SBHomeGestureToSwitcherSwitcherModifier)initWithTransitionID:(id)d multitaskingModifier:(id)modifier selectedAppLayout:(id)layout startingEnvironmentMode:(int64_t)mode liftOffVelocity:(CGPoint)velocity liftOffTranslation:(CGPoint)translation adjustAppLayoutsBeforeTransition:(BOOL)transition keepSelectedAppLayoutAsTopMostElement:(BOOL)self0;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)containerStatusBarAnimationDuration;
 - (id)_appLayoutToScrollToDuringTransition;
 - (id)_layoutSettings;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheFullsizeSnapshots;
 - (id)appLayoutsToCacheSnapshots;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
@@ -19,29 +19,29 @@
 
 @implementation SBHomeGestureToSwitcherSwitcherModifier
 
-- (SBHomeGestureToSwitcherSwitcherModifier)initWithTransitionID:(id)a3 multitaskingModifier:(id)a4 selectedAppLayout:(id)a5 startingEnvironmentMode:(int64_t)a6 liftOffVelocity:(CGPoint)a7 liftOffTranslation:(CGPoint)a8 adjustAppLayoutsBeforeTransition:(BOOL)a9 keepSelectedAppLayoutAsTopMostElement:(BOOL)a10
+- (SBHomeGestureToSwitcherSwitcherModifier)initWithTransitionID:(id)d multitaskingModifier:(id)modifier selectedAppLayout:(id)layout startingEnvironmentMode:(int64_t)mode liftOffVelocity:(CGPoint)velocity liftOffTranslation:(CGPoint)translation adjustAppLayoutsBeforeTransition:(BOOL)transition keepSelectedAppLayoutAsTopMostElement:(BOOL)self0
 {
-  y = a8.y;
-  x = a8.x;
-  v14 = a7.y;
-  v15 = a7.x;
-  v21 = a4;
-  v22 = a5;
+  y = translation.y;
+  x = translation.x;
+  v14 = velocity.y;
+  v15 = velocity.x;
+  modifierCopy = modifier;
+  layoutCopy = layout;
   v26.receiver = self;
   v26.super_class = SBHomeGestureToSwitcherSwitcherModifier;
-  v23 = [(SBTransitionSwitcherModifier *)&v26 initWithTransitionID:a3];
+  v23 = [(SBTransitionSwitcherModifier *)&v26 initWithTransitionID:d];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_multitaskingModifier, a4);
-    objc_storeStrong(&v24->_selectedAppLayout, a5);
-    v24->_startingEnvironmentMode = a6;
+    objc_storeStrong(&v23->_multitaskingModifier, modifier);
+    objc_storeStrong(&v24->_selectedAppLayout, layout);
+    v24->_startingEnvironmentMode = mode;
     v24->_liftOffVelocity.x = v15;
     v24->_liftOffVelocity.y = v14;
     v24->_liftOffTranslation.x = x;
     v24->_liftOffTranslation.y = y;
-    v24->_adjustAppLayoutsBeforeTransition = a9;
-    v24->_keepSelectedAppLayoutAsTopMostElement = a10;
+    v24->_adjustAppLayoutsBeforeTransition = transition;
+    v24->_keepSelectedAppLayoutAsTopMostElement = element;
     v24->_hidEventSenderID = 0;
   }
 
@@ -52,7 +52,7 @@
 {
   v20.receiver = self;
   v20.super_class = SBHomeGestureToSwitcherSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v20 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v20 transitionWillBegin];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
   if (self->_adjustAppLayoutsBeforeTransition)
   {
@@ -60,60 +60,60 @@
     [(SBChainableModifierEventResponse *)v4 addChildResponse:v5];
   }
 
-  v6 = [(SBHomeGestureToSwitcherSwitcherModifier *)self _appLayoutToScrollToDuringTransition];
-  if (v6)
+  _appLayoutToScrollToDuringTransition = [(SBHomeGestureToSwitcherSwitcherModifier *)self _appLayoutToScrollToDuringTransition];
+  if (_appLayoutToScrollToDuringTransition)
   {
-    v7 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v6 alignment:[(SBHomeGestureToSwitcherSwitcherModifier *)self _appLayoutAlignmentToScrollToDuringTransition] animated:0];
+    v7 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:_appLayoutToScrollToDuringTransition alignment:[(SBHomeGestureToSwitcherSwitcherModifier *)self _appLayoutAlignmentToScrollToDuringTransition] animated:0];
     [(SBChainableModifierEventResponse *)v4 addChildResponse:v7];
   }
 
   v8 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v8];
 
-  v9 = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
-  v10 = [v9 count];
+  appLayouts = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
+  v10 = [appLayouts count];
 
   if (!v10)
   {
-    v11 = [(SBHomeGestureToSwitcherSwitcherModifier *)self switcherSettings];
-    v12 = [v11 animationSettings];
-    [v12 emptySwitcherDismissDelay];
+    switcherSettings = [(SBHomeGestureToSwitcherSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings emptySwitcherDismissDelay];
     v14 = v13;
 
     v15 = [SBTimerEventSwitcherEventResponse alloc];
-    v16 = [(SBHomeGestureToSwitcherSwitcherModifier *)self _dismissForEmptySwitcherResponseName];
-    v17 = [(SBTimerEventSwitcherEventResponse *)v15 initWithDelay:0 validator:v16 reason:v14];
+    _dismissForEmptySwitcherResponseName = [(SBHomeGestureToSwitcherSwitcherModifier *)self _dismissForEmptySwitcherResponseName];
+    v17 = [(SBTimerEventSwitcherEventResponse *)v15 initWithDelay:0 validator:_dismissForEmptySwitcherResponseName reason:v14];
 
     [(SBChainableModifierEventResponse *)v4 addChildResponse:v17];
   }
 
-  v18 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v18 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   return v18;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBHomeGestureToSwitcherSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v11 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v11 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  v7 = [(SBHomeGestureToSwitcherSwitcherModifier *)self _dismissForEmptySwitcherResponseName];
-  if ([(SBDismissForEmptySwitcherSwitcherEventResponse *)v6 isEqualToString:v7])
+  _dismissForEmptySwitcherResponseName = [(SBHomeGestureToSwitcherSwitcherModifier *)self _dismissForEmptySwitcherResponseName];
+  if ([(SBDismissForEmptySwitcherSwitcherEventResponse *)reason isEqualToString:_dismissForEmptySwitcherResponseName])
   {
-    v8 = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
-    v9 = [v8 count];
+    appLayouts = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
+    v9 = [appLayouts count];
 
     if (v9)
     {
       goto LABEL_5;
     }
 
-    v6 = [[SBDismissForEmptySwitcherSwitcherEventResponse alloc] initWithHIDEventSenderID:self->_hidEventSenderID];
-    [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v5];
-    v5 = v7 = v5;
+    reason = [[SBDismissForEmptySwitcherSwitcherEventResponse alloc] initWithHIDEventSenderID:self->_hidEventSenderID];
+    [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:reason toResponse:v5];
+    v5 = _dismissForEmptySwitcherResponseName = v5;
   }
 
 LABEL_5:
@@ -121,7 +121,7 @@ LABEL_5:
   return v5;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
   v10 = 0;
   v11 = &v10;
@@ -135,8 +135,8 @@ LABEL_5:
   v9[3] = &unk_2783AA6B8;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  v9[7] = a4;
+  v9[6] = index;
+  v9[7] = alignment;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:multitaskingModifier usingBlock:v9];
   v5 = v11[4];
   v6 = v11[5];
@@ -157,52 +157,52 @@ uint64_t __75__SBHomeGestureToSwitcherSwitcherModifier_contentOffsetForIndex_ali
   return result;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  self->_fromPeekConfiguration = [v4 fromPeekConfiguration];
+  eventCopy = event;
+  self->_fromPeekConfiguration = [eventCopy fromPeekConfiguration];
   v15.receiver = self;
   v15.super_class = SBHomeGestureToSwitcherSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v15 handleTransitionEvent:v4];
-  v6 = [(SBHomeGestureToSwitcherSwitcherModifier *)self windowManagementContext];
-  v7 = [v6 isFlexibleWindowingEnabled];
+  toAppLayout = [(SBTransitionSwitcherModifier *)&v15 handleTransitionEvent:eventCopy];
+  windowManagementContext = [(SBHomeGestureToSwitcherSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v7)
+  if (isFlexibleWindowingEnabled)
   {
-    if ([v4 phase] == 1)
+    if ([eventCopy phase] == 1)
     {
       v8 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-      v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v5 toResponse:v8];
+      v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:toAppLayout toResponse:v8];
 
       v10 = [SBInvalidateContinuousExposeIdentifiersEventResponse alloc];
-      v11 = [v4 fromAppLayout];
-      v5 = [v4 toAppLayout];
-      v12 = [(SBInvalidateContinuousExposeIdentifiersEventResponse *)v10 initWithTransitioningFromAppLayout:v11 transitioningToAppLayout:v5 animated:0];
+      fromAppLayout = [eventCopy fromAppLayout];
+      toAppLayout = [eventCopy toAppLayout];
+      v12 = [(SBInvalidateContinuousExposeIdentifiersEventResponse *)v10 initWithTransitioningFromAppLayout:fromAppLayout transitioningToAppLayout:toAppLayout animated:0];
       v13 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v12 toResponse:v9];
     }
 
     else
     {
-      if ([v4 phase] != 2)
+      if ([eventCopy phase] != 2)
       {
         goto LABEL_7;
       }
 
-      v11 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-      v13 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v11 toResponse:v5];
+      fromAppLayout = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
+      v13 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:fromAppLayout toResponse:toAppLayout];
     }
 
-    v5 = v13;
+    toAppLayout = v13;
   }
 
 LABEL_7:
 
-  return v5;
+  return toAppLayout;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   if (self->_adjustAppLayoutsBeforeTransition && [(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
     v12 = 0;
@@ -218,7 +218,7 @@ LABEL_7:
     v9[3] = &unk_2783AB258;
     v11 = &v12;
     v9[4] = self;
-    v10 = v4;
+    v10 = layoutsCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:multitaskingModifier usingBlock:v9];
     v6 = v13[5];
 
@@ -229,7 +229,7 @@ LABEL_7:
   {
     v8.receiver = self;
     v8.super_class = SBHomeGestureToSwitcherSwitcherModifier;
-    v6 = [(SBTransitionSwitcherModifier *)&v8 adjustedAppLayoutsForAppLayouts:v4];
+    v6 = [(SBTransitionSwitcherModifier *)&v8 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   }
 
   return v6;
@@ -261,7 +261,7 @@ void __75__SBHomeGestureToSwitcherSwitcherModifier_adjustedAppLayoutsForAppLayou
     v7[4] = self;
     v7[5] = &v8;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:multitaskingModifier usingBlock:v7];
-    v4 = v9[5];
+    visibleAppLayouts = v9[5];
     _Block_object_dispose(&v8, 8);
   }
 
@@ -269,10 +269,10 @@ void __75__SBHomeGestureToSwitcherSwitcherModifier_adjustedAppLayoutsForAppLayou
   {
     v6.receiver = self;
     v6.super_class = SBHomeGestureToSwitcherSwitcherModifier;
-    v4 = [(SBHomeGestureToSwitcherSwitcherModifier *)&v6 visibleAppLayouts];
+    visibleAppLayouts = [(SBHomeGestureToSwitcherSwitcherModifier *)&v6 visibleAppLayouts];
   }
 
-  return v4;
+  return visibleAppLayouts;
 }
 
 void __60__SBHomeGestureToSwitcherSwitcherModifier_visibleAppLayouts__block_invoke(uint64_t a1)
@@ -283,32 +283,32 @@ void __60__SBHomeGestureToSwitcherSwitcherModifier_visibleAppLayouts__block_invo
   *(v3 + 40) = v2;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBHomeGestureToSwitcherSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBHomeGestureToSwitcherSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBHomeGestureToSwitcherSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v3 = [(SBHomeGestureToSwitcherSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBHomeGestureToSwitcherSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (([(SBHomeGestureToSwitcherSwitcherModifier *)self isReduceMotionEnabled]& 1) != 0)
   {
-    [v4 reduceMotionAppToSwitcherSettings];
+    [animationSettings reduceMotionAppToSwitcherSettings];
   }
 
   else
   {
-    [v4 gestureInitiatedAppToSwitcherSettings];
+    [animationSettings gestureInitiatedAppToSwitcherSettings];
   }
   v5 = ;
 
@@ -319,15 +319,15 @@ void __60__SBHomeGestureToSwitcherSwitcherModifier_visibleAppLayouts__block_invo
 {
   v20.receiver = self;
   v20.super_class = SBHomeGestureToSwitcherSwitcherModifier;
-  v3 = [(SBHomeGestureToSwitcherSwitcherModifier *)&v20 topMostLayoutElements];
+  topMostLayoutElements = [(SBHomeGestureToSwitcherSwitcherModifier *)&v20 topMostLayoutElements];
   selectedAppLayout = self->_selectedAppLayout;
   if (selectedAppLayout && self->_keepSelectedAppLayoutAsTopMostElement)
   {
     v5 = selectedAppLayout;
-    v6 = [(SBHomeGestureToSwitcherSwitcherModifier *)self windowManagementContext];
-    v7 = [v6 isFlexibleWindowingEnabled];
+    windowManagementContext = [(SBHomeGestureToSwitcherSwitcherModifier *)self windowManagementContext];
+    isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-    if (!v7)
+    if (!isFlexibleWindowingEnabled)
     {
       goto LABEL_7;
     }
@@ -363,15 +363,15 @@ void __60__SBHomeGestureToSwitcherSwitcherModifier_visibleAppLayouts__block_invo
     if (v5)
     {
 LABEL_7:
-      v10 = [MEMORY[0x277CBEB18] arrayWithArray:v3];
+      v10 = [MEMORY[0x277CBEB18] arrayWithArray:topMostLayoutElements];
       [v10 removeObject:v5];
       [v10 insertObject:v5 atIndex:0];
 
-      v3 = v10;
+      topMostLayoutElements = v10;
     }
   }
 
-  return v3;
+  return topMostLayoutElements;
 }
 
 void __64__SBHomeGestureToSwitcherSwitcherModifier_topMostLayoutElements__block_invoke(uint64_t a1)
@@ -382,7 +382,7 @@ void __64__SBHomeGestureToSwitcherSwitcherModifier_topMostLayoutElements__block_
   *(v3 + 40) = v2;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   v14 = 0;
   v15 = &v14;
@@ -398,7 +398,7 @@ void __64__SBHomeGestureToSwitcherSwitcherModifier_topMostLayoutElements__block_
   v13[3] = &unk_2783AA618;
   v13[4] = self;
   v13[5] = &v14;
-  v13[6] = a3;
+  v13[6] = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:multitaskingModifier usingBlock:v13];
   v5 = v15[4];
   v6 = v15[5];
@@ -429,17 +429,17 @@ uint64_t __63__SBHomeGestureToSwitcherSwitcherModifier_cornerRadiiForIndex___blo
 
 - (double)containerStatusBarAnimationDuration
 {
-  v3 = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
-  v4 = [v3 count];
+  appLayouts = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
+  v4 = [appLayouts count];
 
   if (v4)
   {
     return 0.35;
   }
 
-  v6 = [(SBHomeGestureToSwitcherSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  [v7 statusBarToApexBounceAnimationDuration];
+  switcherSettings = [(SBHomeGestureToSwitcherSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings statusBarToApexBounceAnimationDuration];
   v9 = v8;
 
   return v9;
@@ -477,11 +477,11 @@ void __69__SBHomeGestureToSwitcherSwitcherModifier_appLayoutsToCacheSnapshots__b
 
 - (id)appLayoutsToCacheFullsizeSnapshots
 {
-  v3 = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
-  v4 = v3;
+  appLayouts = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
+  v4 = appLayouts;
   if (self->_selectedAppLayout)
   {
-    v5 = [v3 indexOfObject:?];
+    v5 = [appLayouts indexOfObject:?];
     if (v5)
     {
       v6 = v5 - 1;
@@ -513,42 +513,42 @@ void __69__SBHomeGestureToSwitcherSwitcherModifier_appLayoutsToCacheSnapshots__b
 
 - (id)_appLayoutToScrollToDuringTransition
 {
-  v3 = [(SBHomeGestureToSwitcherSwitcherModifier *)self homeGestureSettings];
-  [v3 velocityXThresholdForUnconditionalArcSwipe];
+  homeGestureSettings = [(SBHomeGestureToSwitcherSwitcherModifier *)self homeGestureSettings];
+  [homeGestureSettings velocityXThresholdForUnconditionalArcSwipe];
   v5 = v4;
   v6 = SBMainScreenPointsPerMillimeter();
-  v7 = [(SBHomeGestureToSwitcherSwitcherModifier *)self windowManagementContext];
-  if ([v7 isFlexibleWindowingEnabled])
+  windowManagementContext = [(SBHomeGestureToSwitcherSwitcherModifier *)self windowManagementContext];
+  if ([windowManagementContext isFlexibleWindowingEnabled])
   {
-    v8 = [(SBHomeGestureToSwitcherSwitcherModifier *)self recentAppLayouts];
-    v9 = [(SBHomeGestureToSwitcherSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:v8];
+    recentAppLayouts = [(SBHomeGestureToSwitcherSwitcherModifier *)self recentAppLayouts];
+    appLayouts = [(SBHomeGestureToSwitcherSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:recentAppLayouts];
   }
 
   else
   {
-    v9 = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
+    appLayouts = [(SBHomeGestureToSwitcherSwitcherModifier *)self appLayouts];
   }
 
   if (self->_startingEnvironmentMode == 1)
   {
-    v10 = [v9 firstObject];
+    firstObject = [appLayouts firstObject];
   }
 
   else
   {
-    v11 = [v9 indexOfObject:self->_selectedAppLayout];
-    if (([v9 containsObject:self->_selectedAppLayout] & 1) == 0)
+    v11 = [appLayouts indexOfObject:self->_selectedAppLayout];
+    if (([appLayouts containsObject:self->_selectedAppLayout] & 1) == 0)
     {
-      v12 = [(SBAppLayout *)self->_selectedAppLayout allItems];
-      v13 = [v12 count];
+      allItems = [(SBAppLayout *)self->_selectedAppLayout allItems];
+      v13 = [allItems count];
 
       if (v13 >= 2)
       {
-        v14 = [(SBHomeGestureToSwitcherSwitcherModifier *)self displayItemInSlideOver];
-        if ([(SBAppLayout *)self->_selectedAppLayout containsItem:v14])
+        displayItemInSlideOver = [(SBHomeGestureToSwitcherSwitcherModifier *)self displayItemInSlideOver];
+        if ([(SBAppLayout *)self->_selectedAppLayout containsItem:displayItemInSlideOver])
         {
-          v15 = [(SBAppLayout *)self->_selectedAppLayout appLayoutByRemovingItemInLayoutRole:[(SBAppLayout *)self->_selectedAppLayout layoutRoleForItem:v14]];
-          v11 = [v9 indexOfObject:v15];
+          v15 = [(SBAppLayout *)self->_selectedAppLayout appLayoutByRemovingItemInLayoutRole:[(SBAppLayout *)self->_selectedAppLayout layoutRoleForItem:displayItemInSlideOver]];
+          v11 = [appLayouts indexOfObject:v15];
         }
       }
     }
@@ -578,12 +578,12 @@ void __69__SBHomeGestureToSwitcherSwitcherModifier_appLayoutsToCacheSnapshots__b
     v23 = 1;
     if (self->_startingEnvironmentMode == 3 && !v21)
     {
-      v24 = [(SBHomeGestureToSwitcherSwitcherModifier *)self switcherSettings];
-      v23 = [v24 effectiveSwitcherStyle] != 1;
+      switcherSettings = [(SBHomeGestureToSwitcherSwitcherModifier *)self switcherSettings];
+      v23 = [switcherSettings effectiveSwitcherStyle] != 1;
     }
 
     v25 = v21 + ((((v22 | v23) | v20) & 1) == 0);
-    v26 = [v9 count];
+    v26 = [appLayouts count];
     if (v26 - 1 >= (v25 & ~(v25 >> 63)))
     {
       v27 = v25 & ~(v25 >> 63);
@@ -594,10 +594,10 @@ void __69__SBHomeGestureToSwitcherSwitcherModifier_appLayoutsToCacheSnapshots__b
       v27 = v26 - 1;
     }
 
-    v10 = [v9 objectAtIndex:v27];
+    firstObject = [appLayouts objectAtIndex:v27];
   }
 
-  v16 = v10;
+  v16 = firstObject;
 LABEL_28:
 
   return v16;

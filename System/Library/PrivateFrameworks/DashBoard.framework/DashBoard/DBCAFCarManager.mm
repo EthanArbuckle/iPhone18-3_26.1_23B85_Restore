@@ -1,12 +1,12 @@
 @interface DBCAFCarManager
 - (CAFCar)car;
 - (_TtP9DashBoard23DBCAFCarManagerDelegate_)delegate;
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
-- (void)positionManager:(id)a3 didUpdateState:(unint64_t)a4;
-- (void)setCar:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
+- (void)positionManager:(id)manager didUpdateState:(unint64_t)state;
+- (void)setCar:(id)car;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation DBCAFCarManager
@@ -19,13 +19,13 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   v4 = *((*MEMORY[0x277D85000] & *self) + 0x78);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
   _s9DashBoard15DBCAFCarManagerC23carDidUpdateAccessoriesyySo6CAFCarCF_0(v6);
   swift_unknownObjectRelease();
@@ -38,37 +38,37 @@
   return *(self + v3);
 }
 
-- (void)setCar:(id)a3
+- (void)setCar:(id)car
 {
   v5 = OBJC_IVAR____TtC9DashBoard15DBCAFCarManager_car;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = car;
+  carCopy = car;
+  selfCopy = self;
 
   sub_24827B060();
 }
 
-- (void)positionManager:(id)a3 didUpdateState:(unint64_t)a4
+- (void)positionManager:(id)manager didUpdateState:(unint64_t)state
 {
-  if (a4 != 3)
+  if (state != 3)
   {
     return;
   }
 
   v5 = MEMORY[0x277D85000];
   v6 = *((*MEMORY[0x277D85000] & *self) + 0x78);
-  v7 = a3;
-  v12 = self;
+  managerCopy = manager;
+  selfCopy = self;
   v8 = v6();
   if (v8)
   {
     v11 = v8;
-    v9 = (*((*v5 & *v12) + 0x60))();
+    v9 = (*((*v5 & *selfCopy) + 0x60))();
     if (v9)
     {
-      [v9 carManager:v12 didUpdateCar:v11];
+      [v9 carManager:selfCopy didUpdateCar:v11];
 
       swift_unknownObjectRelease();
       return;
@@ -80,30 +80,30 @@
   else
   {
 
-    v10 = v12;
+    v10 = selfCopy;
   }
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24827B568(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  sub_24827B568(car);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v5 = a3;
-  v6 = self;
-  _s9DashBoard15DBCAFCarManagerC23carDidUpdateAccessoriesyySo6CAFCarCF_0(a3);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  _s9DashBoard15DBCAFCarManagerC23carDidUpdateAccessoriesyySo6CAFCarCF_0(accessories);
 }
 
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  _s9DashBoard15DBCAFCarManagerC23carDidUpdateAccessoriesyySo6CAFCarCF_0(a3);
+  updateCopy = update;
+  selfCopy = self;
+  _s9DashBoard15DBCAFCarManagerC23carDidUpdateAccessoriesyySo6CAFCarCF_0(update);
 }
 
 @end

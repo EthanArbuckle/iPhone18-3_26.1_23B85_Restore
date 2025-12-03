@@ -1,12 +1,12 @@
 @interface CNPrivateAccessEntry
 + (id)log;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
-- (BOOL)isForClientWithBundleIdentifier:(id)a3;
-- (CNPrivateAccessEntry)initWithBundleIdentifier:(id)a3 privateAccessTipDismissedByUser:(BOOL)a4;
-- (CNPrivateAccessEntry)initWithCoder:(id)a3;
+- (BOOL)isForClientWithBundleIdentifier:(id)identifier;
+- (CNPrivateAccessEntry)initWithBundleIdentifier:(id)identifier privateAccessTipDismissedByUser:(BOOL)user;
+- (CNPrivateAccessEntry)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setLastAccessTimeToNow;
 @end
 
@@ -14,9 +14,9 @@
 
 - (BOOL)isExpired
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 timeProvider];
-  [v4 timestamp];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  timeProvider = [currentEnvironment timeProvider];
+  [timeProvider timestamp];
   LOBYTE(self) = v5 - self->_lastAccessTimestamp > 2592000.0;
 
   return self;
@@ -24,25 +24,25 @@
 
 - (void)setLastAccessTimeToNow
 {
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v5 timeProvider];
-  [v3 timestamp];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  timeProvider = [currentEnvironment timeProvider];
+  [timeProvider timestamp];
   self->_lastAccessTimestamp = v4;
 }
 
-- (BOOL)isForClientWithBundleIdentifier:(id)a3
+- (BOOL)isForClientWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNPrivateAccessEntry *)self bundleIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  identifierCopy = identifier;
+  bundleIdentifier = [(CNPrivateAccessEntry *)self bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -50,7 +50,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -65,9 +65,9 @@
 
     if (v7)
     {
-      v8 = [(CNPrivateAccessEntry *)self bundleIdentifier];
-      v9 = [(CNPrivateAccessEntry *)v7 bundleIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      bundleIdentifier = [(CNPrivateAccessEntry *)self bundleIdentifier];
+      bundleIdentifier2 = [(CNPrivateAccessEntry *)v7 bundleIdentifier];
+      v10 = [bundleIdentifier isEqualToString:bundleIdentifier2];
     }
 
     else
@@ -81,60 +81,60 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CNPrivateAccessEntry *)self bundleIdentifier];
-  v3 = [v2 hash];
+  bundleIdentifier = [(CNPrivateAccessEntry *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
 
   return v3;
 }
 
-- (CNPrivateAccessEntry)initWithCoder:(id)a3
+- (CNPrivateAccessEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNPrivateAccessEntry;
   v5 = [(CNPrivateAccessEntry *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"kPrivateAccessEntryBundleIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"kPrivateAccessEntryBundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    [v4 decodeDoubleForKey:@"kPrivateAccessEntryTimeStamp"];
+    [coderCopy decodeDoubleForKey:@"kPrivateAccessEntryTimeStamp"];
     v5->_lastAccessTimestamp = v8;
-    v5->_isPrivateAccessTipDismissedByUser = [v4 decodeBoolForKey:@"kPrivateAccessEntryPrivateAccessTipDismissedByUser"];
+    v5->_isPrivateAccessTipDismissedByUser = [coderCopy decodeBoolForKey:@"kPrivateAccessEntryPrivateAccessTipDismissedByUser"];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CNPrivateAccessEntry *)self bundleIdentifier];
-  [v5 encodeObject:v4 forKey:@"kPrivateAccessEntryBundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(CNPrivateAccessEntry *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"kPrivateAccessEntryBundleIdentifier"];
 
   [(CNPrivateAccessEntry *)self lastAccessTimestamp];
-  [v5 encodeDouble:@"kPrivateAccessEntryTimeStamp" forKey:?];
-  [v5 encodeBool:-[CNPrivateAccessEntry isPrivateAccessTipDismissedByUser](self forKey:{"isPrivateAccessTipDismissedByUser"), @"kPrivateAccessEntryPrivateAccessTipDismissedByUser"}];
+  [coderCopy encodeDouble:@"kPrivateAccessEntryTimeStamp" forKey:?];
+  [coderCopy encodeBool:-[CNPrivateAccessEntry isPrivateAccessTipDismissedByUser](self forKey:{"isPrivateAccessTipDismissedByUser"), @"kPrivateAccessEntryPrivateAccessTipDismissedByUser"}];
 }
 
-- (CNPrivateAccessEntry)initWithBundleIdentifier:(id)a3 privateAccessTipDismissedByUser:(BOOL)a4
+- (CNPrivateAccessEntry)initWithBundleIdentifier:(id)identifier privateAccessTipDismissedByUser:(BOOL)user
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = CNPrivateAccessEntry;
   v8 = [(CNPrivateAccessEntry *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_bundleIdentifier, a3);
-    v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v11 = [v10 timeProvider];
-    [v11 timestamp];
+    objc_storeStrong(&v8->_bundleIdentifier, identifier);
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    timeProvider = [currentEnvironment timeProvider];
+    [timeProvider timestamp];
     v9->_lastAccessTimestamp = v12;
 
-    v9->_isPrivateAccessTipDismissedByUser = a4;
+    v9->_isPrivateAccessTipDismissedByUser = user;
     v13 = v9;
   }
 

@@ -1,11 +1,11 @@
 @interface SOSStatusManager
 + (SOSStatusManager)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SOSStatusManager)init;
 - (void)_cancelCurrentDeviceClearStatusTimer;
 - (void)_cancelHandoffFallbackTimer;
 - (void)_cancelPairedDeviceClearStatusTimer;
-- (void)_reportSOSEvent:(id)a3 callDuration:(int64_t)a4;
+- (void)_reportSOSEvent:(id)event callDuration:(int64_t)duration;
 - (void)_startCurrentDeviceClearStatusTimer;
 - (void)_startHandoffFallbackTimer;
 - (void)_startPairedDeviceClearStatusTimer;
@@ -21,18 +21,18 @@
 - (void)flowEndedOnCurrentDevice;
 - (void)flowStarted;
 - (void)handleLostStatusReporterConnection;
-- (void)handleSOSCallStatusChange:(id)a3;
-- (void)pairedDeviceSOSStatusDidUpdate:(id)a3 progression:(int64_t)a4 shouldHandleThirdParty:(BOOL)a5;
-- (void)sosTriggerDisabledWithUUID:(id)a3 trigger:(int64_t)a4;
-- (void)sosTriggerPushedToPairedDeviceWithUUID:(id)a3 trigger:(int64_t)a4;
-- (void)sosTriggeredOnPairedDevice:(id)a3;
-- (void)sosTriggeredWithUUID:(id)a3 trigger:(int64_t)a4 source:(int64_t)a5;
+- (void)handleSOSCallStatusChange:(id)change;
+- (void)pairedDeviceSOSStatusDidUpdate:(id)update progression:(int64_t)progression shouldHandleThirdParty:(BOOL)party;
+- (void)sosTriggerDisabledWithUUID:(id)d trigger:(int64_t)trigger;
+- (void)sosTriggerPushedToPairedDeviceWithUUID:(id)d trigger:(int64_t)trigger;
+- (void)sosTriggeredOnPairedDevice:(id)device;
+- (void)sosTriggeredWithUUID:(id)d trigger:(int64_t)trigger source:(int64_t)source;
 - (void)startCurrentDeviceClearStatusTimer;
 - (void)startHandoffFallbackTimer;
 - (void)startPairedDeviceClearStatusTimer;
 - (void)triggerHandoffFallback;
-- (void)updatePairedDeviceSOSStatus:(id)a3;
-- (void)updateSOSFlowState:(int64_t)a3;
+- (void)updatePairedDeviceSOSStatus:(id)status;
+- (void)updateSOSFlowState:(int64_t)state;
 @end
 
 @implementation SOSStatusManager
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __34__SOSStatusManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_7 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_7, block);
@@ -83,17 +83,17 @@ uint64_t __34__SOSStatusManager_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)sosTriggeredWithUUID:(id)a3 trigger:(int64_t)a4 source:(int64_t)a5
+- (void)sosTriggeredWithUUID:(id)d trigger:(int64_t)trigger source:(int64_t)source
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dCopy = d;
   v9 = [SOSStatus alloc];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [(SOSStatus *)v9 initWithUUID:v8 trigger:a4 timeOfDetection:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [(SOSStatus *)v9 initWithUUID:dCopy trigger:trigger timeOfDetection:date];
 
   [(SOSStatus *)v11 setFlowState:14];
   [SOSUtilities setCurrentDeviceSOSStatus:v11];
-  [(SOSStatusManager *)self setMostRecentTriggerSource:a5];
+  [(SOSStatusManager *)self setMostRecentTriggerSource:source];
   v12 = sos_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -114,14 +114,14 @@ uint64_t __34__SOSStatusManager_sharedInstance__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sosTriggerDisabledWithUUID:(id)a3 trigger:(int64_t)a4
+- (void)sosTriggerDisabledWithUUID:(id)d trigger:(int64_t)trigger
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = [SOSStatus alloc];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [(SOSStatus *)v7 initWithUUID:v6 trigger:a4 timeOfDetection:v8 timeOfResolution:v9 resolution:4];
+  date = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v10 = [(SOSStatus *)v7 initWithUUID:dCopy trigger:trigger timeOfDetection:date timeOfResolution:date2 resolution:4];
 
   [SOSUtilities setCurrentDeviceSOSStatus:v10];
   v11 = sos_default_log();
@@ -132,7 +132,7 @@ uint64_t __34__SOSStatusManager_sharedInstance__block_invoke(uint64_t a1)
     _os_log_impl(&dword_264323000, v11, OS_LOG_TYPE_DEFAULT, "SOSStatusManager, sosTriggerDisabledWithUUID: %@", &v14, 0xCu);
   }
 
-  if (a4 == 7)
+  if (trigger == 7)
   {
     v12 = +[SOSEngine sharedInstance];
     [v12 handleNotifyThirdPartyClientsWithSOSStatus:v10];
@@ -143,7 +143,7 @@ uint64_t __34__SOSStatusManager_sharedInstance__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSOSFlowState:(int64_t)a3
+- (void)updateSOSFlowState:(int64_t)state
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = +[SOSUtilities currentDeviceSOSStatus];
@@ -159,12 +159,12 @@ uint64_t __34__SOSStatusManager_sharedInstance__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 67109120;
-    LODWORD(v21) = a3;
+    LODWORD(v21) = state;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "SOSStatusManager, updateSOSFlowState: %d", &v20, 8u);
   }
 
   v8 = [v5 copy];
-  [v8 setFlowState:a3];
+  [v8 setFlowState:state];
   if ([v8 isFlowActive] && !-[SOSStatusManager hasActiveSOSCall](self, "hasActiveSOSCall"))
   {
     [(SOSStatusManager *)self startCurrentDeviceClearStatusTimer];
@@ -177,17 +177,17 @@ uint64_t __34__SOSStatusManager_sharedInstance__block_invoke(uint64_t a1)
 
   if (![v8 resolution])
   {
-    if (a3 != 6)
+    if (state != 6)
     {
-      if (a3 != 4)
+      if (state != 4)
       {
-        if (a3 == 3 || (v9 = [v5 isFlowActive], a3 == 10) && (v9 & 1) != 0)
+        if (state == 3 || (v9 = [v5 isFlowActive], state == 10) && (v9 & 1) != 0)
         {
           v10 = 2;
 LABEL_19:
           [v8 setResolution:v10];
-          v11 = [MEMORY[0x277CBEAA8] date];
-          [v8 setTimeOfResolution:v11];
+          date = [MEMORY[0x277CBEAA8] date];
+          [v8 setTimeOfResolution:date];
 
 LABEL_20:
           if ([v8 resolution] == 3)
@@ -198,7 +198,7 @@ LABEL_20:
           goto LABEL_22;
         }
 
-        if (a3)
+        if (state)
         {
           goto LABEL_20;
         }
@@ -250,18 +250,18 @@ LABEL_22:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSOSCallStatusChange:(id)a3
+- (void)handleSOSCallStatusChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SOSStatusManager *)self hasActiveSOSCall];
-  if (!v4 || v5)
+  changeCopy = change;
+  hasActiveSOSCall = [(SOSStatusManager *)self hasActiveSOSCall];
+  if (!changeCopy || hasActiveSOSCall)
   {
-    v7 = [(SOSStatusManager *)self hasActiveSOSCall];
-    if (!v4 && v7)
+    hasActiveSOSCall2 = [(SOSStatusManager *)self hasActiveSOSCall];
+    if (!changeCopy && hasActiveSOSCall2)
     {
       v8 = +[SOSUtilities currentDeviceSOSStatus];
-      v9 = [(SOSStatusManager *)self activeSOSCall];
-      [v9 callDuration];
+      activeSOSCall = [(SOSStatusManager *)self activeSOSCall];
+      [activeSOSCall callDuration];
       [(SOSStatusManager *)self _reportSOSEvent:v8 callDuration:v10];
 
       v11 = sos_default_log();
@@ -291,7 +291,7 @@ LABEL_22:
     [(SOSStatusManager *)self cancelPairedDeviceClearStatusTimer];
   }
 
-  [(SOSStatusManager *)self setActiveSOSCall:v4];
+  [(SOSStatusManager *)self setActiveSOSCall:changeCopy];
 }
 
 - (void)checkSOSStatusOnLaunch
@@ -347,17 +347,17 @@ LABEL_22:
     }
 
     v10 = +[SOSEngine sharedInstance];
-    v11 = [v8 uuid];
-    -[NSObject retriggerSOSWithUUID:trigger:](v10, "retriggerSOSWithUUID:trigger:", v11, [v8 trigger]);
+    uuid = [v8 uuid];
+    -[NSObject retriggerSOSWithUUID:trigger:](v10, "retriggerSOSWithUUID:trigger:", uuid, [v8 trigger]);
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [v8 isFlowActive];
+  isFlowActive = [v8 isFlowActive];
   v14 = sos_default_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v13)
+  if (isFlowActive)
   {
     if (v15)
     {
@@ -390,10 +390,10 @@ LABEL_17:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 shouldRetriggerSOS];
+    shouldRetriggerSOS = [v3 shouldRetriggerSOS];
     v6 = sos_default_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (shouldRetriggerSOS)
     {
       if (v7)
       {
@@ -521,9 +521,9 @@ void __55__SOSStatusManager__startCurrentDeviceClearStatusTimer__block_invoke(ui
 
 - (void)_cancelCurrentDeviceClearStatusTimer
 {
-  v3 = [(SOSStatusManager *)self currentDeviceStatusClearTimer];
+  currentDeviceStatusClearTimer = [(SOSStatusManager *)self currentDeviceStatusClearTimer];
 
-  if (v3)
+  if (currentDeviceStatusClearTimer)
   {
     v4 = sos_default_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -532,8 +532,8 @@ void __55__SOSStatusManager__startCurrentDeviceClearStatusTimer__block_invoke(ui
       _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSStatusManager,canceling current device clear status timer", v6, 2u);
     }
 
-    v5 = [(SOSStatusManager *)self currentDeviceStatusClearTimer];
-    [v5 invalidate];
+    currentDeviceStatusClearTimer2 = [(SOSStatusManager *)self currentDeviceStatusClearTimer];
+    [currentDeviceStatusClearTimer2 invalidate];
 
     [(SOSStatusManager *)self setCurrentDeviceStatusClearTimer:0];
   }
@@ -556,11 +556,11 @@ void __55__SOSStatusManager__startCurrentDeviceClearStatusTimer__block_invoke(ui
         _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSStatusManager,flowStartedOnEitherDevice", v10, 2u);
       }
 
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v11 = @"SOSHasActiveTriggerValueKey";
       v12[0] = MEMORY[0x277CBEC38];
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      [v6 postNotificationName:@"SOSHasActiveTriggerChangedNotification" object:0 userInfo:v7];
+      [defaultCenter postNotificationName:@"SOSHasActiveTriggerChangedNotification" object:0 userInfo:v7];
 
       [MEMORY[0x277D7A8D8] requestPhraseSpotterBypassing:1 timeout:20.0];
       -[SOSStatusManager startAudioSessionForFlowOnCurrentDevice:](self, "startAudioSessionForFlowOnCurrentDevice:", [v3 isFlowActive]);
@@ -609,11 +609,11 @@ void __55__SOSStatusManager__startCurrentDeviceClearStatusTimer__block_invoke(ui
       _os_log_impl(&dword_264323000, v3, OS_LOG_TYPE_DEFAULT, "SOSStatusManager,flowEndedOnBothDevices", v7, 2u);
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = @"SOSHasActiveTriggerValueKey";
     v9[0] = MEMORY[0x277CBEC28];
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    [v4 postNotificationName:@"SOSHasActiveTriggerChangedNotification" object:0 userInfo:v5];
+    [defaultCenter postNotificationName:@"SOSHasActiveTriggerChangedNotification" object:0 userInfo:v5];
 
     [MEMORY[0x277D7A8D8] requestPhraseSpotterBypassing:0 timeout:0.0];
     [(SOSStatusManager *)self endAudioSession];
@@ -644,19 +644,19 @@ void __55__SOSStatusManager__startCurrentDeviceClearStatusTimer__block_invoke(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportSOSEvent:(id)a3 callDuration:(int64_t)a4
+- (void)_reportSOSEvent:(id)event callDuration:(int64_t)duration
 {
-  v6 = a3;
+  eventCopy = event;
   v7 = [(SOSStatusManager *)self mostRecentTriggerSource]== 1;
-  v8 = [(SOSStatusManager *)self coreAnalyticsReporter];
-  [v8 reportSOSEvent:v6 callDuration:a4 isHandoffTrigger:v7 onWristState:0];
+  coreAnalyticsReporter = [(SOSStatusManager *)self coreAnalyticsReporter];
+  [coreAnalyticsReporter reportSOSEvent:eventCopy callDuration:duration isHandoffTrigger:v7 onWristState:0];
 }
 
-- (void)pairedDeviceSOSStatusDidUpdate:(id)a3 progression:(int64_t)a4 shouldHandleThirdParty:(BOOL)a5
+- (void)pairedDeviceSOSStatusDidUpdate:(id)update progression:(int64_t)progression shouldHandleThirdParty:(BOOL)party
 {
-  v5 = a5;
+  partyCopy = party;
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  updateCopy = update;
   v9 = sos_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -664,7 +664,7 @@ void __55__SOSStatusManager__startCurrentDeviceClearStatusTimer__block_invoke(ui
     _os_log_impl(&dword_264323000, v9, OS_LOG_TYPE_DEFAULT, "SOSStatusManager, pairedDeviceSOSStatusDidUpdate", v14, 2u);
   }
 
-  if (!v8)
+  if (!updateCopy)
   {
     v12 = sos_default_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -677,22 +677,22 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  [v8 setIsPairedDeviceStatus:1];
-  switch(a4)
+  [updateCopy setIsPairedDeviceStatus:1];
+  switch(progression)
   {
     case 3:
-      [(SOSStatusManager *)self updatePairedDeviceSOSStatus:v8];
+      [(SOSStatusManager *)self updatePairedDeviceSOSStatus:updateCopy];
       break;
     case 2:
-      if (v5)
+      if (partyCopy)
       {
-        if ([v8 trigger] != 7)
+        if ([updateCopy trigger] != 7)
         {
           break;
         }
 
         v12 = +[SOSEngine sharedInstance];
-        [v12 handleNotifyThirdPartyClientsWithSOSStatus:v8];
+        [v12 handleNotifyThirdPartyClientsWithSOSStatus:updateCopy];
       }
 
       else
@@ -710,13 +710,13 @@ LABEL_12:
       v10 = sos_default_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v8 trigger];
+        trigger = [updateCopy trigger];
         v14[0] = 67109120;
-        v14[1] = v11;
+        v14[1] = trigger;
         _os_log_impl(&dword_264323000, v10, OS_LOG_TYPE_DEFAULT, "SOSStatusManager, received message with SOSProgressionSOSTriggered, trigger: %d", v14, 8u);
       }
 
-      [(SOSStatusManager *)self sosTriggeredOnPairedDevice:v8];
+      [(SOSStatusManager *)self sosTriggeredOnPairedDevice:updateCopy];
       break;
   }
 
@@ -725,25 +725,25 @@ LABEL_17:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sosTriggeredOnPairedDevice:(id)a3
+- (void)sosTriggeredOnPairedDevice:(id)device
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = deviceCopy;
       _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSStatusManager,sosTriggeredOnPairedDevice: %@", &v8, 0xCu);
     }
 
-    [SOSUtilities setPairedDeviceSOSStatus:v4];
+    [SOSUtilities setPairedDeviceSOSStatus:deviceCopy];
     [(SOSStatusManager *)self checkHandoffFallback];
     [(SOSStatusManager *)self flowStarted];
     v6 = +[SOSEngine sharedInstance];
-    [v6 broadcastUpdatedSOSStatus:v4];
+    [v6 broadcastUpdatedSOSStatus:deviceCopy];
 
     [(SOSStatusManager *)self startPairedDeviceClearStatusTimer];
   }
@@ -751,23 +751,23 @@ LABEL_17:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePairedDeviceSOSStatus:(id)a3
+- (void)updatePairedDeviceSOSStatus:(id)status
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  statusCopy = status;
+  if (statusCopy)
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = statusCopy;
       _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSStatusManager,updatePairedDeviceSOSStatus: %@", &v8, 0xCu);
     }
 
-    [SOSUtilities setPairedDeviceSOSStatus:v4];
+    [SOSUtilities setPairedDeviceSOSStatus:statusCopy];
     [(SOSStatusManager *)self checkHandoffFallback];
-    if ([v4 isFlowActive] && !-[SOSStatusManager hasActiveSOSCall](self, "hasActiveSOSCall"))
+    if ([statusCopy isFlowActive] && !-[SOSStatusManager hasActiveSOSCall](self, "hasActiveSOSCall"))
     {
       [(SOSStatusManager *)self startPairedDeviceClearStatusTimer];
     }
@@ -777,18 +777,18 @@ LABEL_17:
       [(SOSStatusManager *)self cancelPairedDeviceClearStatusTimer];
     }
 
-    if ([v4 isFlowActive] && !-[SOSStatusManager inSOSFlow](self, "inSOSFlow"))
+    if ([statusCopy isFlowActive] && !-[SOSStatusManager inSOSFlow](self, "inSOSFlow"))
     {
       [(SOSStatusManager *)self flowStarted];
     }
 
-    else if (([v4 isFlowActive] & 1) == 0 && -[SOSStatusManager inSOSFlow](self, "inSOSFlow"))
+    else if (([statusCopy isFlowActive] & 1) == 0 && -[SOSStatusManager inSOSFlow](self, "inSOSFlow"))
     {
       [(SOSStatusManager *)self flowEnded];
     }
 
     v6 = +[SOSEngine sharedInstance];
-    [v6 broadcastUpdatedSOSStatus:v4];
+    [v6 broadcastUpdatedSOSStatus:statusCopy];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -873,9 +873,9 @@ void __54__SOSStatusManager__startPairedDeviceClearStatusTimer__block_invoke(uin
 
 - (void)_cancelPairedDeviceClearStatusTimer
 {
-  v3 = [(SOSStatusManager *)self pairedDeviceStatusClearTimer];
+  pairedDeviceStatusClearTimer = [(SOSStatusManager *)self pairedDeviceStatusClearTimer];
 
-  if (v3)
+  if (pairedDeviceStatusClearTimer)
   {
     v4 = sos_default_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -884,19 +884,19 @@ void __54__SOSStatusManager__startPairedDeviceClearStatusTimer__block_invoke(uin
       _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSStatusManager,canceling paired device clear status timer", v6, 2u);
     }
 
-    v5 = [(SOSStatusManager *)self pairedDeviceStatusClearTimer];
-    [v5 invalidate];
+    pairedDeviceStatusClearTimer2 = [(SOSStatusManager *)self pairedDeviceStatusClearTimer];
+    [pairedDeviceStatusClearTimer2 invalidate];
 
     [(SOSStatusManager *)self setPairedDeviceStatusClearTimer:0];
   }
 }
 
-- (void)sosTriggerPushedToPairedDeviceWithUUID:(id)a3 trigger:(int64_t)a4
+- (void)sosTriggerPushedToPairedDeviceWithUUID:(id)d trigger:(int64_t)trigger
 {
-  if (a3)
+  if (d)
   {
     [(SOSStatusManager *)self setHandoffTriggerUUID:?];
-    [(SOSStatusManager *)self setHandoffTrigger:a4];
+    [(SOSStatusManager *)self setHandoffTrigger:trigger];
     [(SOSStatusManager *)self startHandoffFallbackTimer];
 
     [(SOSStatusManager *)self checkHandoffFallback];
@@ -926,8 +926,8 @@ void __54__SOSStatusManager__startPairedDeviceClearStatusTimer__block_invoke(uin
 {
   v14 = *MEMORY[0x277D85DE8];
   [(SOSStatusManager *)self _cancelHandoffFallbackTimer];
-  v3 = [(SOSStatusManager *)self handoffTriggerUUID];
-  v4 = v3 == 0;
+  handoffTriggerUUID = [(SOSStatusManager *)self handoffTriggerUUID];
+  v4 = handoffTriggerUUID == 0;
 
   v5 = sos_default_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -990,9 +990,9 @@ void __46__SOSStatusManager__startHandoffFallbackTimer__block_invoke(uint64_t a1
 
 - (void)_cancelHandoffFallbackTimer
 {
-  v3 = [(SOSStatusManager *)self handoffFallbackTimer];
+  handoffFallbackTimer = [(SOSStatusManager *)self handoffFallbackTimer];
 
-  if (v3)
+  if (handoffFallbackTimer)
   {
     v4 = sos_default_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1001,8 +1001,8 @@ void __46__SOSStatusManager__startHandoffFallbackTimer__block_invoke(uint64_t a1
       _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSStatusManager,canceling handoff fallback timer", v6, 2u);
     }
 
-    v5 = [(SOSStatusManager *)self handoffFallbackTimer];
-    [v5 invalidate];
+    handoffFallbackTimer2 = [(SOSStatusManager *)self handoffFallbackTimer];
+    [handoffFallbackTimer2 invalidate];
 
     [(SOSStatusManager *)self setHandoffFallbackTimer:0];
   }
@@ -1017,9 +1017,9 @@ void __46__SOSStatusManager__startHandoffFallbackTimer__block_invoke(uint64_t a1
 
 - (void)checkHandoffFallback
 {
-  v3 = [(SOSStatusManager *)self handoffTriggerUUID];
+  handoffTriggerUUID = [(SOSStatusManager *)self handoffTriggerUUID];
 
-  if (v3)
+  if (handoffTriggerUUID)
   {
     v4 = +[SOSUtilities pairedDeviceSOSStatus];
     v5 = v4;
@@ -1028,11 +1028,11 @@ void __46__SOSStatusManager__startHandoffFallbackTimer__block_invoke(uint64_t a1
       goto LABEL_11;
     }
 
-    v6 = [v4 uuid];
-    v7 = [v6 UUIDString];
-    v8 = [(SOSStatusManager *)self handoffTriggerUUID];
-    v9 = [v8 UUIDString];
-    v10 = [v7 isEqualToString:v9];
+    uuid = [v4 uuid];
+    uUIDString = [uuid UUIDString];
+    handoffTriggerUUID2 = [(SOSStatusManager *)self handoffTriggerUUID];
+    uUIDString2 = [handoffTriggerUUID2 UUIDString];
+    v10 = [uUIDString isEqualToString:uUIDString2];
 
     if (!v10)
     {
@@ -1072,10 +1072,10 @@ LABEL_11:
 
     else
     {
-      v15 = [v5 flowState];
+      flowState = [v5 flowState];
       v16 = sos_default_log();
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-      if (!v15)
+      if (!flowState)
       {
         if (v17)
         {
@@ -1136,10 +1136,10 @@ void __40__SOSStatusManager_checkHandoffFallback__block_invoke(uint64_t a1)
   [(SOSStatusManager *)self setHandoffTrigger:0];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1147,16 +1147,16 @@ void __40__SOSStatusManager_checkHandoffFallback__block_invoke(uint64_t a1)
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "SOSStatusManager, shouldAcceptNewConnection", buf, 2u);
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.sos.trigger"];
-  v8 = [v7 BOOLValue];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.sos.trigger"];
+  bOOLValue = [v7 BOOLValue];
 
-  if ((v8 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v10 = sos_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v22 = v5;
+      *v22 = connectionCopy;
       *&v22[8] = 2112;
       *&v22[10] = @"com.apple.sos.trigger";
       v11 = "[WARN] SOSStatusManager,New connection %@ missing entitlement: %@";
@@ -1171,15 +1171,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [(SOSStatusManager *)self clientConnection];
+  clientConnection = [(SOSStatusManager *)self clientConnection];
 
-  if (v9)
+  if (clientConnection)
   {
     v10 = sos_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v22 = v5;
+      *v22 = connectionCopy;
       v11 = "[WARN] SOSStatusManager,Cannot accept new connection %@ because of existing client connection";
       v12 = v10;
       v13 = 12;
@@ -1196,7 +1196,7 @@ LABEL_9:
   v19[2] = __55__SOSStatusManager_listener_shouldAcceptNewConnection___block_invoke;
   v19[3] = &unk_279B53BA0;
   v19[4] = self;
-  v17 = v5;
+  v17 = connectionCopy;
   v20 = v17;
   dispatch_async(MEMORY[0x277D85CD0], v19);
   v18 = sos_default_log();

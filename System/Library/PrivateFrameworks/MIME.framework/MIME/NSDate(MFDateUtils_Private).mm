@@ -24,11 +24,11 @@
     }
 
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v10 = [MEMORY[0x1E695DF58] ef_posixLocale];
-    [v9 setLocale:v10];
+    ef_posixLocale = [MEMORY[0x1E695DF58] ef_posixLocale];
+    [v9 setLocale:ef_posixLocale];
 
-    v11 = [MEMORY[0x1E695DF00] date];
-    [v9 setDefaultDate:v11];
+    date = [MEMORY[0x1E695DF00] date];
+    [v9 setDefaultDate:date];
 
     v12 = 0;
     while (1)
@@ -47,8 +47,8 @@
         v15 = objc_alloc_init(MEMORY[0x1E696AB78]);
         [v15 setFormatterBehavior:1040];
         [v15 setLenient:1];
-        v16 = [MEMORY[0x1E695DF00] date];
-        [v15 setDefaultDate:v16];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [v15 setDefaultDate:date2];
 
         v13 = [v15 dateFromString:v3];
 

@@ -1,7 +1,7 @@
 @interface MTPerfUtils
 - (id)DNSServersIPAddresses;
-- (id)loadUrlMeasurementWithURLSessionTaskMetrics:(id)a3;
-- (id)loadUrlMeasurementWithURLSessionTaskTransactionMetrics:(id)a3;
+- (id)loadUrlMeasurementWithURLSessionTaskMetrics:(id)metrics;
+- (id)loadUrlMeasurementWithURLSessionTaskTransactionMetrics:(id)metrics;
 @end
 
 @implementation MTPerfUtils
@@ -79,117 +79,117 @@ LABEL_11:
   return v12;
 }
 
-- (id)loadUrlMeasurementWithURLSessionTaskTransactionMetrics:(id)a3
+- (id)loadUrlMeasurementWithURLSessionTaskTransactionMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(MTObject *)self metricsKit];
-  v6 = [v5 loadUrlMeasurement];
+  metricsCopy = metrics;
+  metricsKit = [(MTObject *)self metricsKit];
+  loadUrlMeasurement = [metricsKit loadUrlMeasurement];
 
-  v7 = [v4 fetchStartDate];
+  fetchStartDate = [metricsCopy fetchStartDate];
 
-  if (v7)
+  if (fetchStartDate)
   {
-    v8 = [v4 fetchStartDate];
-    [v6 mark:@"fetchStartTime" date:v8];
+    fetchStartDate2 = [metricsCopy fetchStartDate];
+    [loadUrlMeasurement mark:@"fetchStartTime" date:fetchStartDate2];
   }
 
-  v9 = [v4 domainLookupStartDate];
+  domainLookupStartDate = [metricsCopy domainLookupStartDate];
 
-  if (v9)
+  if (domainLookupStartDate)
   {
-    v10 = [v4 domainLookupStartDate];
-    [v6 mark:@"domainLookupStartTime" date:v10];
+    domainLookupStartDate2 = [metricsCopy domainLookupStartDate];
+    [loadUrlMeasurement mark:@"domainLookupStartTime" date:domainLookupStartDate2];
   }
 
-  v11 = [v4 domainLookupEndDate];
+  domainLookupEndDate = [metricsCopy domainLookupEndDate];
 
-  if (v11)
+  if (domainLookupEndDate)
   {
-    v12 = [v4 domainLookupEndDate];
-    [v6 mark:@"domainLookupEndTime" date:v12];
+    domainLookupEndDate2 = [metricsCopy domainLookupEndDate];
+    [loadUrlMeasurement mark:@"domainLookupEndTime" date:domainLookupEndDate2];
   }
 
-  v13 = [v4 connectStartDate];
+  connectStartDate = [metricsCopy connectStartDate];
 
-  if (v13)
+  if (connectStartDate)
   {
-    v14 = [v4 connectStartDate];
-    [v6 mark:@"connectionStartTime" date:v14];
+    connectStartDate2 = [metricsCopy connectStartDate];
+    [loadUrlMeasurement mark:@"connectionStartTime" date:connectStartDate2];
   }
 
-  v15 = [v4 connectEndDate];
+  connectEndDate = [metricsCopy connectEndDate];
 
-  if (v15)
+  if (connectEndDate)
   {
-    v16 = [v4 connectEndDate];
-    [v6 mark:@"connectionEndTime" date:v16];
+    connectEndDate2 = [metricsCopy connectEndDate];
+    [loadUrlMeasurement mark:@"connectionEndTime" date:connectEndDate2];
   }
 
-  v17 = [v4 secureConnectionStartDate];
+  secureConnectionStartDate = [metricsCopy secureConnectionStartDate];
 
-  if (v17)
+  if (secureConnectionStartDate)
   {
-    v18 = [v4 secureConnectionStartDate];
-    [v6 mark:@"secureConnectionStartTime" date:v18];
+    secureConnectionStartDate2 = [metricsCopy secureConnectionStartDate];
+    [loadUrlMeasurement mark:@"secureConnectionStartTime" date:secureConnectionStartDate2];
   }
 
-  v19 = [v4 requestStartDate];
+  requestStartDate = [metricsCopy requestStartDate];
 
-  if (v19)
+  if (requestStartDate)
   {
-    v20 = [v4 requestStartDate];
-    [v6 mark:@"requestStartTime" date:v20];
+    requestStartDate2 = [metricsCopy requestStartDate];
+    [loadUrlMeasurement mark:@"requestStartTime" date:requestStartDate2];
   }
 
-  v21 = [v4 responseStartDate];
+  responseStartDate = [metricsCopy responseStartDate];
 
-  if (v21)
+  if (responseStartDate)
   {
-    v22 = [v4 responseStartDate];
-    [v6 mark:@"responseStartTime" date:v22];
+    responseStartDate2 = [metricsCopy responseStartDate];
+    [loadUrlMeasurement mark:@"responseStartTime" date:responseStartDate2];
   }
 
-  v23 = [v4 responseEndDate];
+  responseEndDate = [metricsCopy responseEndDate];
 
-  if (v23)
+  if (responseEndDate)
   {
-    v24 = [v4 responseEndDate];
-    [v6 mark:@"responseEndTime" date:v24];
+    responseEndDate2 = [metricsCopy responseEndDate];
+    [loadUrlMeasurement mark:@"responseEndTime" date:responseEndDate2];
   }
 
-  [v6 setConnectionReused:{objc_msgSend(v4, "isReusedConnection")}];
-  v25 = [v4 request];
-  v26 = [v25 URL];
-  v27 = [v26 absoluteString];
+  [loadUrlMeasurement setConnectionReused:{objc_msgSend(metricsCopy, "isReusedConnection")}];
+  request = [metricsCopy request];
+  v26 = [request URL];
+  absoluteString = [v26 absoluteString];
 
-  if (v27)
+  if (absoluteString)
   {
-    v28 = [v4 request];
-    v29 = [v28 URL];
-    v30 = [v29 absoluteString];
-    [v6 setRequestUrl:v30];
+    request2 = [metricsCopy request];
+    v29 = [request2 URL];
+    absoluteString2 = [v29 absoluteString];
+    [loadUrlMeasurement setRequestUrl:absoluteString2];
   }
 
-  v31 = [v4 response];
-  v32 = v31;
-  if (v31)
+  response = [metricsCopy response];
+  v32 = response;
+  if (response)
   {
-    [v6 setStatusCode:{objc_msgSend(v31, "statusCode")}];
+    [loadUrlMeasurement setStatusCode:{objc_msgSend(response, "statusCode")}];
   }
 
-  return v6;
+  return loadUrlMeasurement;
 }
 
-- (id)loadUrlMeasurementWithURLSessionTaskMetrics:(id)a3
+- (id)loadUrlMeasurementWithURLSessionTaskMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [v4 transactionMetrics];
-  v6 = [v5 lastObject];
+  metricsCopy = metrics;
+  transactionMetrics = [metricsCopy transactionMetrics];
+  lastObject = [transactionMetrics lastObject];
 
-  if (v6)
+  if (lastObject)
   {
-    v7 = [(MTPerfUtils *)self loadUrlMeasurementWithURLSessionTaskTransactionMetrics:v6];
-    [v7 setRedirectCount:{objc_msgSend(v4, "redirectCount")}];
+    v7 = [(MTPerfUtils *)self loadUrlMeasurementWithURLSessionTaskTransactionMetrics:lastObject];
+    [v7 setRedirectCount:{objc_msgSend(metricsCopy, "redirectCount")}];
   }
 
   else

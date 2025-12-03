@@ -1,62 +1,62 @@
 @interface UIEmojiAndStickerBackgroundView
-- (UIEmojiAndStickerBackgroundView)initWithFrame:(CGRect)a3;
+- (UIEmojiAndStickerBackgroundView)initWithFrame:(CGRect)frame;
 - (id)createHittableView;
 @end
 
 @implementation UIEmojiAndStickerBackgroundView
 
-- (UIEmojiAndStickerBackgroundView)initWithFrame:(CGRect)a3
+- (UIEmojiAndStickerBackgroundView)initWithFrame:(CGRect)frame
 {
   v36[8] = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = UIEmojiAndStickerBackgroundView;
-  v3 = [(UIView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIEmojiAndStickerBackgroundView *)v3 createHittableView];
+    createHittableView = [(UIEmojiAndStickerBackgroundView *)v3 createHittableView];
     topRow = v4->_topRow;
-    v4->_topRow = v5;
+    v4->_topRow = createHittableView;
 
-    v7 = [(UIEmojiAndStickerBackgroundView *)v4 createHittableView];
+    createHittableView2 = [(UIEmojiAndStickerBackgroundView *)v4 createHittableView];
     secondRow = v4->_secondRow;
-    v4->_secondRow = v7;
+    v4->_secondRow = createHittableView2;
 
     [(UIView *)v4 addSubview:v4->_topRow];
     [(UIView *)v4 addSubview:v4->_secondRow];
-    v9 = [(UIView *)v4->_topRow heightAnchor];
-    v10 = [v9 constraintEqualToConstant:v4->_cutoutHeight];
+    heightAnchor = [(UIView *)v4->_topRow heightAnchor];
+    v10 = [heightAnchor constraintEqualToConstant:v4->_cutoutHeight];
     firstRowHeightConstraint = v4->_firstRowHeightConstraint;
     v4->_firstRowHeightConstraint = v10;
 
-    v34 = [(UIView *)v4->_topRow topAnchor];
-    v33 = [(UIView *)v4 topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    topAnchor = [(UIView *)v4->_topRow topAnchor];
+    topAnchor2 = [(UIView *)v4 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v36[0] = v32;
     v36[1] = v4->_firstRowHeightConstraint;
-    v31 = [(UIView *)v4->_topRow leadingAnchor];
-    v30 = [(UIView *)v4 leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    leadingAnchor = [(UIView *)v4->_topRow leadingAnchor];
+    leadingAnchor2 = [(UIView *)v4 leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v36[2] = v29;
-    v28 = [(UIView *)v4->_topRow widthAnchor];
-    v27 = [(UIView *)v4 widthAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27 multiplier:0.0];
+    widthAnchor = [(UIView *)v4->_topRow widthAnchor];
+    widthAnchor2 = [(UIView *)v4 widthAnchor];
+    v26 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.0];
     v36[3] = v26;
-    v25 = [(UIView *)v4->_secondRow topAnchor];
-    v24 = [(UIView *)v4->_topRow bottomAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    topAnchor3 = [(UIView *)v4->_secondRow topAnchor];
+    bottomAnchor = [(UIView *)v4->_topRow bottomAnchor];
+    v23 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v36[4] = v23;
-    v22 = [(UIView *)v4->_secondRow bottomAnchor];
-    v12 = [(UIView *)v4 bottomAnchor];
-    v13 = [v22 constraintEqualToAnchor:v12];
+    bottomAnchor2 = [(UIView *)v4->_secondRow bottomAnchor];
+    bottomAnchor3 = [(UIView *)v4 bottomAnchor];
+    v13 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v36[5] = v13;
-    v14 = [(UIView *)v4->_secondRow leadingAnchor];
-    v15 = [(UIView *)v4 leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    leadingAnchor3 = [(UIView *)v4->_secondRow leadingAnchor];
+    leadingAnchor4 = [(UIView *)v4 leadingAnchor];
+    v16 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v36[6] = v16;
-    v17 = [(UIView *)v4->_secondRow trailingAnchor];
-    v18 = [(UIView *)v4 trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    trailingAnchor = [(UIView *)v4->_secondRow trailingAnchor];
+    trailingAnchor2 = [(UIView *)v4 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v36[7] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:8];
 
@@ -71,8 +71,8 @@
   v2 = [UIView alloc];
   v3 = [(UIView *)v2 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(UIView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(UIView *)v3 layer];
-  [v4 setHitTestsAsOpaque:1];
+  layer = [(UIView *)v3 layer];
+  [layer setHitTestsAsOpaque:1];
 
   return v3;
 }

@@ -1,46 +1,46 @@
 @interface TileMetadataVerticalFlowGroup
-+ (id)_predicateForBaseMetadata:(id)a3;
-+ (id)insertMetadata:(id)a3 forBaseMetadata:(id)a4 inDatabase:(id)a5;
-+ (void)deleteEntitiesForBaseMetadata:(id)a3 inDatabase:(id)a4;
-+ (void)inflateMetadata:(id)a3 forBaseMetadata:(id)a4 inDatabase:(id)a5;
-- (TileMetadataVerticalFlowGroup)initWithMetadata:(id)a3 forBaseMetadata:(id)a4 inDatabase:(id)a5;
++ (id)_predicateForBaseMetadata:(id)metadata;
++ (id)insertMetadata:(id)metadata forBaseMetadata:(id)baseMetadata inDatabase:(id)database;
++ (void)deleteEntitiesForBaseMetadata:(id)metadata inDatabase:(id)database;
++ (void)inflateMetadata:(id)metadata forBaseMetadata:(id)baseMetadata inDatabase:(id)database;
+- (TileMetadataVerticalFlowGroup)initWithMetadata:(id)metadata forBaseMetadata:(id)baseMetadata inDatabase:(id)database;
 @end
 
 @implementation TileMetadataVerticalFlowGroup
 
-- (TileMetadataVerticalFlowGroup)initWithMetadata:(id)a3 forBaseMetadata:(id)a4 inDatabase:(id)a5
+- (TileMetadataVerticalFlowGroup)initWithMetadata:(id)metadata forBaseMetadata:(id)baseMetadata inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  databaseCopy = database;
+  baseMetadataCopy = baseMetadata;
+  metadataCopy = metadata;
   v11 = objc_alloc_init(NSMutableDictionary);
-  v12 = [v9 persistentID];
+  persistentID = [baseMetadataCopy persistentID];
 
-  v13 = [NSNumber numberWithLongLong:v12];
+  v13 = [NSNumber numberWithLongLong:persistentID];
   [v11 setObjectOrNull:v13 forKey:@"metadata_pid"];
 
-  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 rows]);
+  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [metadataCopy rows]);
   [v11 setObjectOrNull:v14 forKey:@"rows"];
 
-  [v10 widthClass];
+  [metadataCopy widthClass];
   v15 = PKPassTileWidthClassVerticalFlowToString();
   [v11 setObjectOrNull:v15 forKey:@"width_class"];
 
-  [v10 heightClass];
+  [metadataCopy heightClass];
   v16 = PKPassTileHeightClassToString();
   [v11 setObjectOrNull:v16 forKey:@"height_class"];
 
-  v17 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:v8];
+  v17 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:databaseCopy];
   return v17;
 }
 
-+ (id)insertMetadata:(id)a3 forBaseMetadata:(id)a4 inDatabase:(id)a5
++ (id)insertMetadata:(id)metadata forBaseMetadata:(id)baseMetadata inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  baseMetadataCopy = baseMetadata;
+  databaseCopy = database;
   v11 = 0;
-  if (v8 && v9)
+  if (metadataCopy && baseMetadataCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -53,10 +53,10 @@
     v13[2] = sub_1000E2AB8;
     v13[3] = &unk_10083F200;
     v17 = &v19;
-    v18 = a1;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    selfCopy = self;
+    v14 = metadataCopy;
+    v15 = baseMetadataCopy;
+    v16 = databaseCopy;
     sub_1005D4424(v16, v13);
     v11 = v20[5];
 
@@ -66,14 +66,14 @@
   return v11;
 }
 
-+ (void)inflateMetadata:(id)a3 forBaseMetadata:(id)a4 inDatabase:(id)a5
++ (void)inflateMetadata:(id)metadata forBaseMetadata:(id)baseMetadata inDatabase:(id)database
 {
-  v8 = a3;
-  if (v8)
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
-    v9 = a5;
-    v10 = [a1 _predicateForBaseMetadata:a4];
-    v11 = [(SQLiteEntity *)TileMetadataVerticalFlowGroup queryWithDatabase:v9 predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
+    databaseCopy = database;
+    v10 = [self _predicateForBaseMetadata:baseMetadata];
+    v11 = [(SQLiteEntity *)TileMetadataVerticalFlowGroup queryWithDatabase:databaseCopy predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
 
     v15[0] = @"rows";
     v15[1] = @"width_class";
@@ -83,23 +83,23 @@
     v13[1] = 3221225472;
     v13[2] = sub_1000E2C88;
     v13[3] = &unk_100840B08;
-    v14 = v8;
+    v14 = metadataCopy;
     [v11 enumeratePersistentIDsAndProperties:v12 usingBlock:v13];
   }
 }
 
-+ (void)deleteEntitiesForBaseMetadata:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForBaseMetadata:(id)metadata inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForBaseMetadata:a3];
-  v7 = [(SQLiteEntity *)TileMetadataVerticalFlowGroup queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForBaseMetadata:metadata];
+  v7 = [(SQLiteEntity *)TileMetadataVerticalFlowGroup queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)_predicateForBaseMetadata:(id)a3
++ (id)_predicateForBaseMetadata:(id)metadata
 {
-  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 persistentID]);
+  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [metadata persistentID]);
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"metadata_pid" equalToValue:v3];
 
   return v4;

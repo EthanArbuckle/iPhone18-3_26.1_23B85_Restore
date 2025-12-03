@@ -1,14 +1,14 @@
 @interface DocumentUpdateEventSubscriber
-- (void)appDocumentDidReceiveEvent:(id)a3;
+- (void)appDocumentDidReceiveEvent:(id)event;
 @end
 
 @implementation DocumentUpdateEventSubscriber
 
-- (void)appDocumentDidReceiveEvent:(id)a3
+- (void)appDocumentDidReceiveEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E3A60A0C(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1E3A60A0C(eventCopy);
 }
 
 @end

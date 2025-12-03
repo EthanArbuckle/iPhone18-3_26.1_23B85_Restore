@@ -1,7 +1,7 @@
 @interface UARPMetaDataDevicePayloadCertificate
 - (UARPMetaDataDevicePayloadCertificate)init;
-- (UARPMetaDataDevicePayloadCertificate)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataDevicePayloadCertificate)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataDevicePayloadCertificate)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataDevicePayloadCertificate)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,17 +23,17 @@
   return v3;
 }
 
-- (UARPMetaDataDevicePayloadCertificate)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataDevicePayloadCertificate)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  lCopy = l;
   v8 = [(UARPMetaDataDevicePayloadCertificate *)self init];
   v9 = v8;
   if (v8)
   {
     v23.receiver = v8;
     v23.super_class = UARPMetaDataDevicePayloadCertificate;
-    v10 = [(UARPMetaData *)&v23 dataFromPlistValue:v6];
+    v10 = [(UARPMetaData *)&v23 dataFromPlistValue:valueCopy];
     payloadCertificate = v9->_payloadCertificate;
     v9->_payloadCertificate = v10;
 
@@ -48,11 +48,11 @@
     {
       v22.receiver = v9;
       v22.super_class = UARPMetaDataDevicePayloadCertificate;
-      v14 = [(UARPMetaData *)&v22 stringFromPlistValue:v6];
+      v14 = [(UARPMetaData *)&v22 stringFromPlistValue:valueCopy];
       if (v14)
       {
-        v15 = [v7 path];
-        v24[0] = v15;
+        path = [lCopy path];
+        v24[0] = path;
         v24[1] = v14;
         v16 = [NSArray arrayWithObjects:v24 count:2];
         v17 = [NSString pathWithComponents:v16];
@@ -81,12 +81,12 @@
   return v13;
 }
 
-- (UARPMetaDataDevicePayloadCertificate)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataDevicePayloadCertificate)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataDevicePayloadCertificate *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     payloadCertificate = v6->_payloadCertificate;
     v6->_payloadCertificate = v7;
 
@@ -98,9 +98,9 @@
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataDevicePayloadCertificate *)self payloadCertificate];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  payloadCertificate = [(UARPMetaDataDevicePayloadCertificate *)self payloadCertificate];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, payloadCertificate];
 
   return v5;
 }

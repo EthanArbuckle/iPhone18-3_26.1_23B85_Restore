@@ -1,36 +1,36 @@
 @interface MRUTransportControls
-- (BOOL)isEqual:(id)a3;
-- (MRUTransportControls)initWithMPCResponse:(id)a3;
-- (id)centerItemFromResponse:(id)a3;
-- (id)leadingItemFromResponse:(id)a3;
-- (id)leftItemFromResponse:(id)a3;
-- (id)rightItemFromResponse:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRUTransportControls)initWithMPCResponse:(id)response;
+- (id)centerItemFromResponse:(id)response;
+- (id)leadingItemFromResponse:(id)response;
+- (id)leftItemFromResponse:(id)response;
+- (id)rightItemFromResponse:(id)response;
 @end
 
 @implementation MRUTransportControls
 
-- (MRUTransportControls)initWithMPCResponse:(id)a3
+- (MRUTransportControls)initWithMPCResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v16.receiver = self;
   v16.super_class = MRUTransportControls;
   v5 = [(MRUTransportControls *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(MRUTransportControls *)v5 leadingItemFromResponse:v4];
+    v7 = [(MRUTransportControls *)v5 leadingItemFromResponse:responseCopy];
     leadingItem = v6->_leadingItem;
     v6->_leadingItem = v7;
 
-    v9 = [(MRUTransportControls *)v6 leftItemFromResponse:v4];
+    v9 = [(MRUTransportControls *)v6 leftItemFromResponse:responseCopy];
     leftItem = v6->_leftItem;
     v6->_leftItem = v9;
 
-    v11 = [(MRUTransportControls *)v6 centerItemFromResponse:v4];
+    v11 = [(MRUTransportControls *)v6 centerItemFromResponse:responseCopy];
     centerItem = v6->_centerItem;
     v6->_centerItem = v11;
 
-    v13 = [(MRUTransportControls *)v6 rightItemFromResponse:v4];
+    v13 = [(MRUTransportControls *)v6 rightItemFromResponse:responseCopy];
     rightItem = v6->_rightItem;
     v6->_rightItem = v13;
   }
@@ -38,10 +38,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v13) = 1;
   }
@@ -51,19 +51,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRUTransportControls *)v5 leftItem];
-      v7 = [v6 isEqual:self->_leftItem];
+      v5 = equalCopy;
+      leftItem = [(MRUTransportControls *)v5 leftItem];
+      v7 = [leftItem isEqual:self->_leftItem];
 
-      v8 = [(MRUTransportControls *)v5 centerItem];
-      v9 = v7 & [v8 isEqual:self->_centerItem];
+      centerItem = [(MRUTransportControls *)v5 centerItem];
+      v9 = v7 & [centerItem isEqual:self->_centerItem];
 
-      v10 = [(MRUTransportControls *)v5 rightItem];
-      v11 = [v10 isEqual:self->_rightItem];
+      rightItem = [(MRUTransportControls *)v5 rightItem];
+      v11 = [rightItem isEqual:self->_rightItem];
 
-      v12 = [(MRUTransportControls *)v5 leadingItem];
+      leadingItem = [(MRUTransportControls *)v5 leadingItem];
 
-      v13 = v9 & v11 & [v12 isEqual:self->_leadingItem];
+      v13 = v9 & v11 & [leadingItem isEqual:self->_leadingItem];
     }
 
     else
@@ -75,22 +75,22 @@
   return v13;
 }
 
-- (id)leadingItemFromResponse:(id)a3
+- (id)leadingItemFromResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 tracklist];
-    v5 = [v4 playingItem];
+    tracklist = [responseCopy tracklist];
+    playingItem = [tracklist playingItem];
 
-    v6 = [v5 likeCommand];
-    if (v6)
+    likeCommand = [playingItem likeCommand];
+    if (likeCommand)
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v6 value];
+      value = [likeCommand value];
       v10 = +[MRUAssetsProvider favoritePackageName];
-      if (v9)
+      if (value)
       {
         v11 = @"On";
       }
@@ -100,7 +100,7 @@
         v11 = @"Off";
       }
 
-      if (v9)
+      if (value)
       {
         v12 = @".On";
       }
@@ -116,7 +116,7 @@
       v15 = [MRUAsset packageAsset:v13 symbolName:v14 image:0];
 
       [v15 setAccessibilityIdentifier:@"favorite"];
-      v16 = [v6 changeValue:v9 ^ 1u];
+      v16 = [likeCommand changeValue:value ^ 1u];
       v17 = [@"favorite" stringByAppendingString:v12];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -182,16 +182,16 @@ void __48__MRUTransportControls_leadingItemFromResponse___block_invoke_2(void *a
   }
 }
 
-- (id)leftItemFromResponse:(id)a3
+- (id)leftItemFromResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 tracklist];
-  v5 = [v4 playingItem];
+  responseCopy = response;
+  tracklist = [responseCopy tracklist];
+  playingItem = [tracklist playingItem];
 
-  v6 = [v3 tracklist];
+  tracklist2 = [responseCopy tracklist];
 
-  v7 = [v6 changeItemCommand];
-  v8 = [v7 previousItem];
+  changeItemCommand = [tracklist2 changeItemCommand];
+  previousItem = [changeItemCommand previousItem];
 
   v9 = objc_opt_class();
   v63 = NSStringFromClass(v9);
@@ -215,16 +215,16 @@ void __48__MRUTransportControls_leadingItemFromResponse___block_invoke_2(void *a
   v17 = [MRUAsset packageAsset:v15 symbolName:v16 image:0];
 
   [v17 setAccessibilityIdentifier:@"backward"];
-  v18 = [v5 seekCommand];
-  v19 = [v18 preferredBackwardJumpIntervals];
-  v20 = [v19 count];
+  seekCommand = [playingItem seekCommand];
+  preferredBackwardJumpIntervals = [seekCommand preferredBackwardJumpIntervals];
+  v20 = [preferredBackwardJumpIntervals count];
 
-  v62 = v5;
+  v62 = playingItem;
   v64 = v15;
   if (!v20)
   {
     v61 = v17;
-    if (!v8)
+    if (!previousItem)
     {
       v42 = 0;
       v43 = 0;
@@ -236,16 +236,16 @@ void __48__MRUTransportControls_leadingItemFromResponse___block_invoke_2(void *a
       goto LABEL_10;
     }
 
-    v49 = [v5 seekCommand];
-    v50 = [v49 beginSeekWithDirection:-1];
+    seekCommand2 = [playingItem seekCommand];
+    v50 = [seekCommand2 beginSeekWithDirection:-1];
 
-    v51 = [v5 seekCommand];
-    v52 = [v51 endSeek];
+    seekCommand3 = [playingItem seekCommand];
+    endSeek = [seekCommand3 endSeek];
 
     v41 = 0;
-    v53 = v8;
+    v53 = previousItem;
     v40 = 0;
-    if (v50 && v52)
+    if (v50 && endSeek)
     {
       v54 = [@"backward" stringByAppendingString:@".seek.began"];
       v73[0] = MEMORY[0x1E69E9820];
@@ -263,7 +263,7 @@ void __48__MRUTransportControls_leadingItemFromResponse___block_invoke_2(void *a
       v69[1] = 3221225472;
       v69[2] = __45__MRUTransportControls_leftItemFromResponse___block_invoke_44;
       v69[3] = &unk_1E7663D30;
-      v70 = v52;
+      v70 = endSeek;
       v71 = v55;
       v72 = v57;
       v58 = v57;
@@ -292,15 +292,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v21 = [v5 seekCommand];
-  v22 = [v21 preferredBackwardJumpIntervals];
-  v23 = [v22 firstObject];
-  [v23 doubleValue];
+  seekCommand4 = [playingItem seekCommand];
+  preferredBackwardJumpIntervals2 = [seekCommand4 preferredBackwardJumpIntervals];
+  firstObject = [preferredBackwardJumpIntervals2 firstObject];
+  [firstObject doubleValue];
   v25 = v24;
 
   v26 = [@"backward" stringByAppendingFormat:@".jump: %f", *&v25];
-  v27 = [v5 seekCommand];
-  v28 = [v27 jumpByInterval:v25];
+  seekCommand5 = [playingItem seekCommand];
+  v28 = [seekCommand5 jumpByInterval:v25];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -314,8 +314,8 @@ LABEL_9:
 
   v33 = [MRUCAPackageConfigurator configuratorWithIdentifier:v32 configurationBlock:v29];
   v34 = +[MRUAssetsProvider skipForwardBackwardPackageName];
-  v35 = [MEMORY[0x1E695DF58] currentLocale];
-  v36 = [MRUCAPackageAsset packageNamed:v34 locale:v35 configurator:v33];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v36 = [MRUCAPackageAsset packageNamed:v34 locale:currentLocale configurator:v33];
 
   v37 = [MRUAssetsProvider goBackwardSymbolForTimeInterval:v25];
   v38 = [MRUAsset packageAsset:v36 symbolName:v37];
@@ -458,34 +458,34 @@ void __45__MRUTransportControls_leftItemFromResponse___block_invoke_2_47(void *a
   }
 }
 
-- (id)centerItemFromResponse:(id)a3
+- (id)centerItemFromResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 tracklist];
-  v5 = [v4 playingItem];
+  responseCopy = response;
+  tracklist = [responseCopy tracklist];
+  playingItem = [tracklist playingItem];
 
-  v6 = [v3 play];
-  v7 = [v3 pause];
-  v8 = [v3 stop];
+  play = [responseCopy play];
+  pause = [responseCopy pause];
+  stop = [responseCopy stop];
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v11 = +[MRUAssetsProvider playSymbol];
-  if (v8)
+  if (stop)
   {
-    if (v5)
+    if (playingItem)
     {
-      [v5 duration];
+      [playingItem duration];
       if (v29)
       {
         v12 = +[MRUAssetsProvider stopSymbol];
         v13 = @"stop";
-        v14 = v8;
+        v14 = stop;
 LABEL_8:
 
         v15 = v14;
         v11 = v12;
-        v6 = v15;
+        play = v15;
         goto LABEL_10;
       }
     }
@@ -499,11 +499,11 @@ LABEL_8:
     }
   }
 
-  if (v7)
+  if (pause)
   {
     v12 = +[MRUAssetsProvider pauseSymbol];
     v13 = @"pause";
-    v14 = v7;
+    v14 = pause;
     goto LABEL_8;
   }
 
@@ -514,13 +514,13 @@ LABEL_10:
 
   v18 = [MRUAsset packageAsset:v17 symbolName:v11 image:0];
   [v18 setAccessibilityIdentifier:v13];
-  if (v6)
+  if (play)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __47__MRUTransportControls_centerItemFromResponse___block_invoke;
     aBlock[3] = &unk_1E7663D30;
-    v23 = v6;
+    v23 = play;
     v24 = v10;
     v25 = v13;
     v19 = _Block_copy(aBlock);
@@ -572,13 +572,13 @@ void __47__MRUTransportControls_centerItemFromResponse___block_invoke_2(void *a1
   }
 }
 
-- (id)rightItemFromResponse:(id)a3
+- (id)rightItemFromResponse:(id)response
 {
-  v3 = [a3 tracklist];
-  v4 = [v3 playingItem];
-  v56 = v3;
-  v5 = [v3 changeItemCommand];
-  v6 = [v5 nextItem];
+  tracklist = [response tracklist];
+  playingItem = [tracklist playingItem];
+  v56 = tracklist;
+  changeItemCommand = [tracklist changeItemCommand];
+  nextItem = [changeItemCommand nextItem];
 
   v7 = objc_opt_class();
   v54 = NSStringFromClass(v7);
@@ -589,16 +589,16 @@ void __47__MRUTransportControls_centerItemFromResponse___block_invoke_2(void *a1
   v11 = [MRUAsset packageAsset:v9 symbolName:v10 image:0];
 
   [v11 setAccessibilityIdentifier:@"forward"];
-  v12 = [v4 seekCommand];
-  v13 = [v12 preferredForwardJumpIntervals];
-  v14 = [v13 count];
+  seekCommand = [playingItem seekCommand];
+  preferredForwardJumpIntervals = [seekCommand preferredForwardJumpIntervals];
+  v14 = [preferredForwardJumpIntervals count];
 
-  v55 = v4;
+  v55 = playingItem;
   v57 = v9;
   if (!v14)
   {
     v32 = v11;
-    if (!v6)
+    if (!nextItem)
     {
       v36 = 0;
       v37 = 0;
@@ -609,17 +609,17 @@ void __47__MRUTransportControls_centerItemFromResponse___block_invoke_2(void *a1
       goto LABEL_10;
     }
 
-    v42 = [v4 seekCommand];
-    v43 = [v42 beginSeekWithDirection:1];
+    seekCommand2 = [playingItem seekCommand];
+    v43 = [seekCommand2 beginSeekWithDirection:1];
 
-    v44 = [v4 seekCommand];
-    v45 = [v44 endSeek];
+    seekCommand3 = [playingItem seekCommand];
+    endSeek = [seekCommand3 endSeek];
 
     v35 = 0;
     v41 = v54;
-    v53 = v6;
+    v53 = nextItem;
     v34 = 0;
-    if (v43 && v45)
+    if (v43 && endSeek)
     {
       v46 = [@"forward" stringByAppendingString:@".seek.began"];
       v66[0] = MEMORY[0x1E69E9820];
@@ -637,7 +637,7 @@ void __47__MRUTransportControls_centerItemFromResponse___block_invoke_2(void *a1
       v62[1] = 3221225472;
       v62[2] = __46__MRUTransportControls_rightItemFromResponse___block_invoke_60;
       v62[3] = &unk_1E7663D30;
-      v63 = v45;
+      v63 = endSeek;
       v64 = v47;
       v65 = v49;
       v50 = v49;
@@ -664,15 +664,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v15 = [v4 seekCommand];
-  v16 = [v15 preferredForwardJumpIntervals];
-  v17 = [v16 firstObject];
-  [v17 doubleValue];
+  seekCommand4 = [playingItem seekCommand];
+  preferredForwardJumpIntervals2 = [seekCommand4 preferredForwardJumpIntervals];
+  firstObject = [preferredForwardJumpIntervals2 firstObject];
+  [firstObject doubleValue];
   v19 = v18;
 
   v20 = [@"forward" stringByAppendingFormat:@".jump: %f", *&v19];
-  v21 = [v4 seekCommand];
-  v22 = [v21 jumpByInterval:v19];
+  seekCommand5 = [playingItem seekCommand];
+  v22 = [seekCommand5 jumpByInterval:v19];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -686,8 +686,8 @@ LABEL_9:
 
   v27 = [MRUCAPackageConfigurator configuratorWithIdentifier:v26 configurationBlock:v23];
   v28 = +[MRUAssetsProvider skipForwardBackwardPackageName];
-  v29 = [MEMORY[0x1E695DF58] currentLocale];
-  v30 = [MRUCAPackageAsset packageNamed:v28 locale:v29 configurator:v27];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v30 = [MRUCAPackageAsset packageNamed:v28 locale:currentLocale configurator:v27];
 
   v31 = [MRUAssetsProvider goForwardSymbolForTimeInterval:v19];
   v32 = [MRUAsset packageAsset:v30 symbolName:v31];

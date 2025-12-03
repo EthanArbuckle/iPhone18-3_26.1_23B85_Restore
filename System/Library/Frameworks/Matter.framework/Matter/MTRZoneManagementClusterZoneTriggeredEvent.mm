@@ -1,6 +1,6 @@
 @interface MTRZoneManagementClusterZoneTriggeredEvent
 - (MTRZoneManagementClusterZoneTriggeredEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRZoneManagementClusterZoneTriggeredEvent);
   v5 = [(MTRZoneManagementClusterZoneTriggeredEvent *)self zone];
   [(MTRZoneManagementClusterZoneTriggeredEvent *)v4 setZone:v5];
 
-  v6 = [(MTRZoneManagementClusterZoneTriggeredEvent *)self reason];
-  [(MTRZoneManagementClusterZoneTriggeredEvent *)v4 setReason:v6];
+  reason = [(MTRZoneManagementClusterZoneTriggeredEvent *)self reason];
+  [(MTRZoneManagementClusterZoneTriggeredEvent *)v4 setReason:reason];
 
   return v4;
 }

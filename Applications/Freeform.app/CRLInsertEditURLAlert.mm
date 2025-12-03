@@ -1,18 +1,18 @@
 @interface CRLInsertEditURLAlert
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (_TtC8Freeform21CRLInsertEditURLAlert)init;
-- (void)showAlertFrom:(id)a3;
+- (void)showAlertFrom:(id)from;
 @end
 
 @implementation CRLInsertEditURLAlert
 
-- (void)showAlertFrom:(id)a3
+- (void)showAlertFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  sub_1009DD894(v4);
+  fromCopy = from;
+  selfCopy = self;
+  sub_1009DD894(fromCopy);
 }
 
 - (_TtC8Freeform21CRLInsertEditURLAlert)init
@@ -22,20 +22,20 @@
   return result;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  sub_1009DEB20(v12, location, length, v9, v11);
+  fieldCopy = field;
+  selfCopy = self;
+  sub_1009DEB20(fieldCopy, location, length, v9, v11);
 
   return 1;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLInsertEditURLAlert_replaceAction);
   if (v3)
@@ -46,11 +46,11 @@
   return 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1009DEE1C(v4);
+  returnCopy = return;
+  selfCopy = self;
+  LOBYTE(self) = sub_1009DEE1C(returnCopy);
 
   return self & 1;
 }

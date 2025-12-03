@@ -1,13 +1,13 @@
 @interface UARPTatsuObjectProperties
-- (UARPTatsuObjectProperties)initWithObjectPropertyDictionary:(id)a3;
+- (UARPTatsuObjectProperties)initWithObjectPropertyDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation UARPTatsuObjectProperties
 
-- (UARPTatsuObjectProperties)initWithObjectPropertyDictionary:(id)a3
+- (UARPTatsuObjectProperties)initWithObjectPropertyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = UARPTatsuObjectProperties;
   v5 = [(UARPTatsuObjectProperties *)&v31 init];
@@ -16,7 +16,7 @@
     goto LABEL_28;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"FTAB Subfile"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"FTAB Subfile"];
   if (v6)
   {
     objc_opt_class();
@@ -33,7 +33,7 @@ LABEL_38:
     v5->_ftabSubfile = v7;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"Key Name"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"Key Name"];
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_37:
@@ -45,7 +45,7 @@ LABEL_37:
   keyName = v5->_keyName;
   v5->_keyName = v10;
 
-  v12 = [v4 objectForKeyedSubscript:@"Needs EPRO"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"Needs EPRO"];
   if (v12)
   {
     objc_opt_class();
@@ -59,7 +59,7 @@ LABEL_36:
     v5->_needsEPRO = [v12 BOOLValue];
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"Needs ESEC"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"Needs ESEC"];
   if (v13)
   {
     objc_opt_class();
@@ -73,7 +73,7 @@ LABEL_35:
     v5->_needsESEC = [v13 BOOLValue];
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"Needs SHA256"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"Needs SHA256"];
   if (v14)
   {
     objc_opt_class();
@@ -90,7 +90,7 @@ LABEL_34:
     v5->_digestKeyName = v15;
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"Needs SHA384"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"Needs SHA384"];
   if (v17)
   {
     objc_opt_class();
@@ -107,7 +107,7 @@ LABEL_33:
     v5->_digestKeyName = v18;
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"Needs SHA512"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"Needs SHA512"];
   if (!v20)
   {
     goto LABEL_22;
@@ -127,7 +127,7 @@ LABEL_33:
 
 LABEL_22:
   v30 = v20;
-  v23 = [v4 objectForKeyedSubscript:@"Needs Trusted"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"Needs Trusted"];
   if (v23)
   {
     objc_opt_class();
@@ -140,7 +140,7 @@ LABEL_22:
     v5->_needsTrusted = [v23 BOOLValue];
   }
 
-  v24 = [v4 objectForKeyedSubscript:{@"Payload 4CC", v23}];
+  v24 = [dictionaryCopy objectForKeyedSubscript:{@"Payload 4CC", v23}];
   if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 

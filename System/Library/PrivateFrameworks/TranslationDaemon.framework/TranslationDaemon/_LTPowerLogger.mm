@@ -1,8 +1,8 @@
 @interface _LTPowerLogger
 + (id)sharedInstance;
 - (_LTPowerLogger)init;
-- (id)_maskForRequestType:(id)a3;
-- (void)logTranslateRequestEvent:(id)a3 requestType:(id)a4 routeType:(int64_t)a5;
+- (id)_maskForRequestType:(id)type;
+- (void)logTranslateRequestEvent:(id)event requestType:(id)type routeType:(int64_t)routeType;
 @end
 
 @implementation _LTPowerLogger
@@ -40,27 +40,27 @@
   return v3;
 }
 
-- (void)logTranslateRequestEvent:(id)a3 requestType:(id)a4 routeType:(int64_t)a5
+- (void)logTranslateRequestEvent:(id)event requestType:(id)type routeType:(int64_t)routeType
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(_LTPowerLogger *)self _shouldLogRequest:a5])
+  eventCopy = event;
+  typeCopy = type;
+  if ([(_LTPowerLogger *)self _shouldLogRequest:routeType])
   {
     loggerQueue = self->_loggerQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65___LTPowerLogger_logTranslateRequestEvent_requestType_routeType___block_invoke;
     block[3] = &unk_2789B5968;
-    v12 = v8;
-    v13 = self;
-    v14 = v9;
+    v12 = eventCopy;
+    selfCopy = self;
+    v14 = typeCopy;
     dispatch_async(loggerQueue, block);
   }
 }
 
-- (id)_maskForRequestType:(id)a3
+- (id)_maskForRequestType:(id)type
 {
-  v3 = [(NSOrderedSet *)self->_requestTypeSet indexOfObject:a3];
+  v3 = [(NSOrderedSet *)self->_requestTypeSet indexOfObject:type];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = &unk_284868128;

@@ -1,20 +1,20 @@
 @interface PXPeopleProgressDataSource
 + ($DF4FB41D2F0E3F59E20087ACD782DC9D)_invalidProgressReport;
-+ (int64_t)pendingCountForAllowedCount:(int64_t)a3 processedCount:(int64_t)a4;
++ (int64_t)pendingCountForAllowedCount:(int64_t)count processedCount:(int64_t)processedCount;
 - (BOOL)hasHomePeople;
 - (BOOL)isPhotoLibraryReadyForAnalysis;
-- (PXPeopleProgressDataSource)initWithPhotoLibrary:(id)a3;
+- (PXPeopleProgressDataSource)initWithPhotoLibrary:(id)library;
 - (id)_fetchPeople;
 - (void)_logFaceCounts;
 - (void)appWillEnterForeground;
-- (void)asyncUpdateProgressWithReportBlock:(id)a3;
+- (void)asyncUpdateProgressWithReportBlock:(id)block;
 - (void)dealloc;
 - (void)loadQueryData;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
-- (void)requestPersonPromoterStatusWithCompletionBlock:(id)a3;
-- (void)syncUpdateProgressWithReportBlock:(id)a3;
-- (void)updateProgressFromIsReadyForAnalysis:(BOOL)a3 progressReport:(id *)a4;
-- (void)updateProgressIfNeededWithReportBlock:(id)a3;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
+- (void)requestPersonPromoterStatusWithCompletionBlock:(id)block;
+- (void)syncUpdateProgressWithReportBlock:(id)block;
+- (void)updateProgressFromIsReadyForAnalysis:(BOOL)analysis progressReport:(id *)report;
+- (void)updateProgressIfNeededWithReportBlock:(id)block;
 @end
 
 @implementation PXPeopleProgressDataSource
@@ -187,21 +187,21 @@ void __44__PXPeopleProgressDataSource__logFaceCounts__block_invoke_280(uint64_t 
   os_unfair_lock_unlock(&lock);
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
-  v5 = a3;
-  v6 = [(PXPeopleProgressDataSource *)self homeResult];
-  v7 = [v5 changeDetailsForFetchResult:v6];
+  queueCopy = queue;
+  homeResult = [(PXPeopleProgressDataSource *)self homeResult];
+  v7 = [queueCopy changeDetailsForFetchResult:homeResult];
 
   if (v7)
   {
-    v8 = [v7 fetchResultAfterChanges];
+    fetchResultAfterChanges = [v7 fetchResultAfterChanges];
     lock._os_unfair_lock_opaque = [(PXPeopleProgressDataSource *)self progressLock];
     os_unfair_lock_lock(&lock);
-    [(PXPeopleProgressDataSource *)self setHomeResult:v8];
+    [(PXPeopleProgressDataSource *)self setHomeResult:fetchResultAfterChanges];
     [(PXPeopleProgressDataSource *)self setCountCacheValid:0];
     os_unfair_lock_unlock(&lock);
-    if (![v8 count])
+    if (![fetchResultAfterChanges count])
     {
       v9 = dispatch_time(0, 200000000);
       dispatch_after(v9, MEMORY[0x1E69E96A0], &__block_literal_global_126986);
@@ -215,12 +215,12 @@ void __80__PXPeopleProgressDataSource_photoLibraryDidChangeOnMainQueue_withPrepa
   [v0 postNotificationName:@"PXPeopleProgressDidChangeNotification" object:0];
 }
 
-- (void)updateProgressFromIsReadyForAnalysis:(BOOL)a3 progressReport:(id *)a4
+- (void)updateProgressFromIsReadyForAnalysis:(BOOL)analysis progressReport:(id *)report
 {
-  v4 = a3;
-  var0 = a4->var0;
-  var1 = a4->var1;
-  var2 = a4->var2;
+  analysisCopy = analysis;
+  var0 = report->var0;
+  var1 = report->var1;
+  var2 = report->var2;
   lock._os_unfair_lock_opaque = [(PXPeopleProgressDataSource *)self progressLock];
   os_unfair_lock_lock(&lock);
   [(PXPeopleProgressDataSource *)self setAllowedAssetCount:var0];
@@ -228,42 +228,42 @@ void __80__PXPeopleProgressDataSource_photoLibraryDidChangeOnMainQueue_withPrepa
   [(PXPeopleProgressDataSource *)self setProcessedToAnyVersionAssetCount:var2];
   [(PXPeopleProgressDataSource *)self setPendingToLatestVersionAssetCount:[PXPeopleProgressDataSource pendingCountForAllowedCount:var0 processedCount:var1]];
   [(PXPeopleProgressDataSource *)self setPendingToAnyVersionAssetCount:[PXPeopleProgressDataSource pendingCountForAllowedCount:var0 processedCount:var2]];
-  [(PXPeopleProgressDataSource *)self setIsReadyForAnalysis:v4];
+  [(PXPeopleProgressDataSource *)self setIsReadyForAnalysis:analysisCopy];
   [(PXPeopleProgressDataSource *)self setCountCacheValid:1];
   os_unfair_lock_unlock(&lock);
 }
 
 - (id)_fetchPeople
 {
-  v2 = [(PXPeopleProgressDataSource *)self photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PXPeopleProgressDataSource *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v3 setFetchLimit:1];
-  [v3 setPersonContext:1];
-  v4 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v3 setIncludedDetectionTypes:v4];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  [librarySpecificFetchOptions setPersonContext:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  v5 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v3];
+  v5 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:librarySpecificFetchOptions];
 
   return v5;
 }
 
 - (BOOL)isPhotoLibraryReadyForAnalysis
 {
-  v2 = [(PXPeopleProgressDataSource *)self photoLibrary];
-  v3 = [v2 isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING];
+  photoLibrary = [(PXPeopleProgressDataSource *)self photoLibrary];
+  isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING = [photoLibrary isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING];
 
-  return v3;
+  return isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING;
 }
 
-- (void)syncUpdateProgressWithReportBlock:(id)a3
+- (void)syncUpdateProgressWithReportBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXPeopleProgressDataSource *)self isPhotoLibraryReadyForAnalysis];
-  if (v5)
+  blockCopy = block;
+  isPhotoLibraryReadyForAnalysis = [(PXPeopleProgressDataSource *)self isPhotoLibraryReadyForAnalysis];
+  if (isPhotoLibraryReadyForAnalysis)
   {
-    v6 = [(PXPeopleProgressDataSource *)self photoLibrary];
-    [(PXPeopleProgressDataSource *)self progressReportForLibrary:v6];
+    photoLibrary = [(PXPeopleProgressDataSource *)self photoLibrary];
+    [(PXPeopleProgressDataSource *)self progressReportForLibrary:photoLibrary];
     v14 = *&lock[0]._os_unfair_lock_opaque;
     v15 = v12;
     v9 = v13;
@@ -280,37 +280,37 @@ void __80__PXPeopleProgressDataSource_photoLibraryDidChangeOnMainQueue_withPrepa
   *&lock[0]._os_unfair_lock_opaque = v14;
   v12 = v15;
   v13 = v9;
-  [(PXPeopleProgressDataSource *)self updateProgressFromIsReadyForAnalysis:v5 progressReport:lock, v9];
-  if (v4)
+  [(PXPeopleProgressDataSource *)self updateProgressFromIsReadyForAnalysis:isPhotoLibraryReadyForAnalysis progressReport:lock, v9];
+  if (blockCopy)
   {
     lock[0]._os_unfair_lock_opaque = [(PXPeopleProgressDataSource *)self progressLock];
     os_unfair_lock_lock(lock);
-    v7 = [(PXPeopleProgressDataSource *)self processedToLatestVersionAssetCount];
-    v8 = [(PXPeopleProgressDataSource *)self processedToAnyVersionAssetCount];
+    processedToLatestVersionAssetCount = [(PXPeopleProgressDataSource *)self processedToLatestVersionAssetCount];
+    processedToAnyVersionAssetCount = [(PXPeopleProgressDataSource *)self processedToAnyVersionAssetCount];
     os_unfair_lock_unlock(lock);
-    v4[2](v4, v5, v7, v8, v10, v10.n128_f64[1]);
+    blockCopy[2](blockCopy, isPhotoLibraryReadyForAnalysis, processedToLatestVersionAssetCount, processedToAnyVersionAssetCount, v10, v10.n128_f64[1]);
   }
 }
 
-- (void)requestPersonPromoterStatusWithCompletionBlock:(id)a3
+- (void)requestPersonPromoterStatusWithCompletionBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPeopleProgressDataSource.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleProgressDataSource.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
   }
 
   objc_initWeak(&location, self);
-  v6 = [(PXPeopleProgressDataSource *)self personPromoterQueue];
+  personPromoterQueue = [(PXPeopleProgressDataSource *)self personPromoterQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__PXPeopleProgressDataSource_requestPersonPromoterStatusWithCompletionBlock___block_invoke;
   block[3] = &unk_1E774AA30;
   objc_copyWeak(&v11, &location);
-  v10 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v10 = blockCopy;
+  v7 = blockCopy;
+  dispatch_async(personPromoterQueue, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -353,42 +353,42 @@ void __77__PXPeopleProgressDataSource_requestPersonPromoterStatusWithCompletionB
   }
 }
 
-- (void)asyncUpdateProgressWithReportBlock:(id)a3
+- (void)asyncUpdateProgressWithReportBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXPeopleProgressDataSource *)self scanningProgressQueue];
+  blockCopy = block;
+  scanningProgressQueue = [(PXPeopleProgressDataSource *)self scanningProgressQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__PXPeopleProgressDataSource_asyncUpdateProgressWithReportBlock___block_invoke;
   v7[3] = &unk_1E774C2F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(scanningProgressQueue, v7);
 }
 
-- (void)updateProgressIfNeededWithReportBlock:(id)a3
+- (void)updateProgressIfNeededWithReportBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock._os_unfair_lock_opaque = [(PXPeopleProgressDataSource *)self progressLock];
   os_unfair_lock_lock(&lock);
-  v5 = [(PXPeopleProgressDataSource *)self countCacheValid];
+  countCacheValid = [(PXPeopleProgressDataSource *)self countCacheValid];
   os_unfair_lock_unlock(&lock);
-  if (!v5)
+  if (!countCacheValid)
   {
-    [(PXPeopleProgressDataSource *)self syncUpdateProgressWithReportBlock:v4];
+    [(PXPeopleProgressDataSource *)self syncUpdateProgressWithReportBlock:blockCopy];
   }
 }
 
 - (void)loadQueryData
 {
-  v3 = [(PXPeopleProgressDataSource *)self photoLibrary];
-  [v3 px_registerChangeObserver:self];
+  photoLibrary = [(PXPeopleProgressDataSource *)self photoLibrary];
+  [photoLibrary px_registerChangeObserver:self];
 
-  v4 = [(PXPeopleProgressDataSource *)self _fetchPeople];
+  _fetchPeople = [(PXPeopleProgressDataSource *)self _fetchPeople];
   lock._os_unfair_lock_opaque = [(PXPeopleProgressDataSource *)self progressLock];
   os_unfair_lock_lock(&lock);
-  [(PXPeopleProgressDataSource *)self setHomeResult:v4];
+  [(PXPeopleProgressDataSource *)self setHomeResult:_fetchPeople];
   os_unfair_lock_unlock(&lock);
 }
 
@@ -396,9 +396,9 @@ void __77__PXPeopleProgressDataSource_requestPersonPromoterStatusWithCompletionB
 {
   lock._os_unfair_lock_opaque = [(PXPeopleProgressDataSource *)self progressLock];
   os_unfair_lock_lock(&lock);
-  v3 = [(PXPeopleProgressDataSource *)self homeResult];
+  homeResult = [(PXPeopleProgressDataSource *)self homeResult];
   os_unfair_lock_unlock(&lock);
-  v4 = [v3 count] != 0;
+  v4 = [homeResult count] != 0;
 
   return v4;
 }
@@ -406,28 +406,28 @@ void __77__PXPeopleProgressDataSource_requestPersonPromoterStatusWithCompletionB
 - (void)dealloc
 {
   [(PHPhotoLibrary *)self->_photoLibrary px_unregisterChangeObserver:self];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PXPeopleProgressDataSource;
   [(PXPeopleProgressDataSource *)&v4 dealloc];
 }
 
-- (PXPeopleProgressDataSource)initWithPhotoLibrary:(id)a3
+- (PXPeopleProgressDataSource)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = PXPeopleProgressDataSource;
   v6 = [(PXPeopleProgressDataSource *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9 = *MEMORY[0x1E69DDBC0];
-    [v8 addObserver:v7 selector:sel__logFaceCounts name:*MEMORY[0x1E69DDBA8] object:0];
-    [v8 addObserver:v7 selector:sel_appWillEnterForeground name:v9 object:0];
+    [defaultCenter addObserver:v7 selector:sel__logFaceCounts name:*MEMORY[0x1E69DDBA8] object:0];
+    [defaultCenter addObserver:v7 selector:sel_appWillEnterForeground name:v9 object:0];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.people.progressDataSource.scanningProgress", v10);
     scanningProgressQueue = v7->_scanningProgressQueue;
@@ -444,16 +444,16 @@ void __77__PXPeopleProgressDataSource_requestPersonPromoterStatusWithCompletionB
   return v7;
 }
 
-+ (int64_t)pendingCountForAllowedCount:(int64_t)a3 processedCount:(int64_t)a4
++ (int64_t)pendingCountForAllowedCount:(int64_t)count processedCount:(int64_t)processedCount
 {
-  if (a3 <= a4)
+  if (count <= processedCount)
   {
     return 0;
   }
 
   else
   {
-    return a3 - a4;
+    return count - processedCount;
   }
 }
 

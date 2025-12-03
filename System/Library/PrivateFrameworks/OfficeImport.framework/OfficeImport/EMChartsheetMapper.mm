@@ -1,24 +1,24 @@
 @interface EMChartsheetMapper
-- (EMChartsheetMapper)initWithChartSheet:(id)a3 parent:(id)a4;
-- (int)preprocessHeightWithState:(id)a3;
-- (int)preprocessWidthWithState:(id)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (EMChartsheetMapper)initWithChartSheet:(id)sheet parent:(id)parent;
+- (int)preprocessHeightWithState:(id)state;
+- (int)preprocessWidthWithState:(id)state;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation EMChartsheetMapper
 
-- (EMChartsheetMapper)initWithChartSheet:(id)a3 parent:(id)a4
+- (EMChartsheetMapper)initWithChartSheet:(id)sheet parent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CMMapper *)self initWithParent:v8];
+  sheetCopy = sheet;
+  parentCopy = parent;
+  v9 = [(CMMapper *)self initWithParent:parentCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mChartSheet, a3);
-    if ([v7 areBoundsSet])
+    objc_storeStrong(&v9->mChartSheet, sheet);
+    if ([sheetCopy areBoundsSet])
     {
-      [v7 bounds];
+      [sheetCopy bounds];
       v10->mBox.origin.x = v11;
       v10->mBox.origin.y = v12;
       v10->mBox.size.width = v13;
@@ -29,7 +29,7 @@
   return v10;
 }
 
-- (int)preprocessWidthWithState:(id)a3
+- (int)preprocessWidthWithState:(id)state
 {
   width = self->mBox.size.width;
   if (width <= 0.0)
@@ -40,7 +40,7 @@
   return width;
 }
 
-- (int)preprocessHeightWithState:(id)a3
+- (int)preprocessHeightWithState:(id)state
 {
   height = self->mBox.size.height;
   if (height <= 0.0)
@@ -51,12 +51,12 @@
   return height;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [(EDChartSheet *)self->mChartSheet mainChart];
-  if (v7)
+  atCopy = at;
+  stateCopy = state;
+  mainChart = [(EDChartSheet *)self->mChartSheet mainChart];
+  if (mainChart)
   {
     [(EDChartSheet *)self->mChartSheet bounds];
     v10 = v9;
@@ -65,22 +65,22 @@
     v15 = v8;
     if (v13 == 0.0 && v8 == 0.0)
     {
-      v16 = [v7 clientData];
-      v17 = [v16 anchor];
+      clientData = [mainChart clientData];
+      anchor = [clientData anchor];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v17 position];
+        [anchor position];
         v10 = v18;
         v12 = v19;
-        [v17 size];
+        [anchor size];
         v14 = v20;
         v15 = v21;
       }
     }
 
-    v22 = [[EMDrawableMapper alloc] initWithChartDrawable:v7 box:self parent:v10, v12, v14, v15];
-    [(EMDrawableMapper *)v22 mapAt:v23 withState:v6];
+    v22 = [[EMDrawableMapper alloc] initWithChartDrawable:mainChart box:self parent:v10, v12, v14, v15];
+    [(EMDrawableMapper *)v22 mapAt:atCopy withState:stateCopy];
   }
 }
 

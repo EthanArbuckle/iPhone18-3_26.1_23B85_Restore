@@ -1,55 +1,55 @@
 @interface _SFPBRFReferenceRichCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFReferenceRichCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFReferenceRichCardSection)initWithFacade:(id)a3;
-- (_SFPBRFReferenceRichCardSection)initWithJSON:(id)a3;
+- (_SFPBRFReferenceRichCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFReferenceRichCardSection)initWithFacade:(id)facade;
+- (_SFPBRFReferenceRichCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFReferenceRichCardSection
 
-- (_SFPBRFReferenceRichCardSection)initWithFacade:(id)a3
+- (_SFPBRFReferenceRichCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFReferenceRichCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [_SFPBRFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:v8];
+      text2 = [facadeCopy text];
+      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:text2];
       [(_SFPBRFReferenceRichCardSection *)v5 setText_1:v9];
     }
 
-    v10 = [v4 text];
+    text3 = [facadeCopy text];
 
-    if (v10)
+    if (text3)
     {
       v11 = [_SFPBRFTextProperty alloc];
-      v12 = [v4 text];
-      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:v12];
+      text4 = [facadeCopy text];
+      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:text4];
       [(_SFPBRFReferenceRichCardSection *)v5 setText_2:v13];
     }
 
-    v14 = [v4 thumbnail];
+    thumbnail = [facadeCopy thumbnail];
 
-    if (v14)
+    if (thumbnail)
     {
       v15 = [_SFPBRFVisualProperty alloc];
-      v16 = [v4 thumbnail];
-      v17 = [(_SFPBRFVisualProperty *)v15 initWithFacade:v16];
+      thumbnail2 = [facadeCopy thumbnail];
+      v17 = [(_SFPBRFVisualProperty *)v15 initWithFacade:thumbnail2];
       [(_SFPBRFReferenceRichCardSection *)v5 setThumbnail:v17];
     }
 
-    if ([v4 hasAddTint])
+    if ([facadeCopy hasAddTint])
     {
-      -[_SFPBRFReferenceRichCardSection setAddTint:](v5, "setAddTint:", [v4 addTint]);
+      -[_SFPBRFReferenceRichCardSection setAddTint:](v5, "setAddTint:", [facadeCopy addTint]);
     }
 
     v18 = v5;
@@ -58,15 +58,15 @@
   return v5;
 }
 
-- (_SFPBRFReferenceRichCardSection)initWithDictionary:(id)a3
+- (_SFPBRFReferenceRichCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _SFPBRFReferenceRichCardSection;
   v5 = [(_SFPBRFReferenceRichCardSection *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(_SFPBRFReferenceRichCardSection *)v5 setText_1:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"text2"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"text2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(_SFPBRFReferenceRichCardSection *)v5 setText_2:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"thumbnail"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"thumbnail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(_SFPBRFReferenceRichCardSection *)v5 setThumbnail:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"addTint"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"addTint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (_SFPBRFReferenceRichCardSection)initWithJSON:(id)a3
+- (_SFPBRFReferenceRichCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFReferenceRichCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFReferenceRichCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFReferenceRichCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -139,62 +139,62 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_addTint)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFReferenceRichCardSection addTint](self, "addTint")}];
-    [v3 setObject:v4 forKeyedSubscript:@"addTint"];
+    [dictionary setObject:v4 forKeyedSubscript:@"addTint"];
   }
 
   if (self->_text_1)
   {
-    v5 = [(_SFPBRFReferenceRichCardSection *)self text];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    text = [(_SFPBRFReferenceRichCardSection *)self text];
+    dictionaryRepresentation = [text dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"text1"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"text1"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"text1"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"text1"];
     }
   }
 
   if (self->_text_2)
   {
-    v8 = [(_SFPBRFReferenceRichCardSection *)self text];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    text2 = [(_SFPBRFReferenceRichCardSection *)self text];
+    dictionaryRepresentation2 = [text2 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"text2"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"text2"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"text2"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"text2"];
     }
   }
 
   if (self->_thumbnail)
   {
-    v11 = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    thumbnail = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
+    dictionaryRepresentation3 = [thumbnail dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"thumbnail"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"thumbnail"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"thumbnail"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"thumbnail"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -211,28 +211,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBRFReferenceRichCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFReferenceRichCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBRFReferenceRichCardSection *)self text];
-  if (v7)
+  text3 = [(_SFPBRFReferenceRichCardSection *)self text];
+  if (text3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFReferenceRichCardSection *)self text];
-    v10 = [v4 text];
-    v11 = [v9 isEqual:v10];
+    v8 = text3;
+    text4 = [(_SFPBRFReferenceRichCardSection *)self text];
+    text5 = [equalCopy text];
+    v11 = [text4 isEqual:text5];
 
     if (!v11)
     {
@@ -244,20 +244,20 @@
   {
   }
 
-  v5 = [(_SFPBRFReferenceRichCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFReferenceRichCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBRFReferenceRichCardSection *)self text];
-  if (v12)
+  text6 = [(_SFPBRFReferenceRichCardSection *)self text];
+  if (text6)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFReferenceRichCardSection *)self text];
-    v15 = [v4 text];
-    v16 = [v14 isEqual:v15];
+    v13 = text6;
+    text7 = [(_SFPBRFReferenceRichCardSection *)self text];
+    text8 = [equalCopy text];
+    v16 = [text7 isEqual:text8];
 
     if (!v16)
     {
@@ -269,24 +269,24 @@
   {
   }
 
-  v5 = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
-  v6 = [v4 thumbnail];
-  if ((v5 != 0) != (v6 == 0))
+  text = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
+  text2 = [equalCopy thumbnail];
+  if ((text != 0) != (text2 == 0))
   {
-    v17 = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
-    if (!v17)
+    thumbnail = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
+    if (!thumbnail)
     {
 
 LABEL_20:
       addTint = self->_addTint;
-      v22 = addTint == [v4 addTint];
+      v22 = addTint == [equalCopy addTint];
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
-    v20 = [v4 thumbnail];
-    v21 = [v19 isEqual:v20];
+    v18 = thumbnail;
+    thumbnail2 = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
+    thumbnail3 = [equalCopy thumbnail];
+    v21 = [thumbnail2 isEqual:thumbnail3];
 
     if (v21)
     {
@@ -306,23 +306,23 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBRFReferenceRichCardSection *)self text];
-  if (v4)
+  toCopy = to;
+  text = [(_SFPBRFReferenceRichCardSection *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFReferenceRichCardSection *)self text];
-  if (v5)
+  text2 = [(_SFPBRFReferenceRichCardSection *)self text];
+  if (text2)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
-  if (v6)
+  thumbnail = [(_SFPBRFReferenceRichCardSection *)self thumbnail];
+  if (thumbnail)
   {
     PBDataWriterWriteSubmessage();
   }

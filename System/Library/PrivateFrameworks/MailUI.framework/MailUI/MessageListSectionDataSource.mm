@@ -1,66 +1,66 @@
 @interface MessageListSectionDataSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPrioritySection;
-- (BOOL)messageListItemHelper:(id)a3 anyExpandedThreadContainsItemID:(id)a4;
-- (BOOL)messageListItemHelper:(id)a3 isItemIDExpandedThread:(id)a4;
-- (BOOL)messageListItemHelper:(id)a3 isItemIDSelected:(id)a4;
+- (BOOL)messageListItemHelper:(id)helper anyExpandedThreadContainsItemID:(id)d;
+- (BOOL)messageListItemHelper:(id)helper isItemIDExpandedThread:(id)thread;
+- (BOOL)messageListItemHelper:(id)helper isItemIDSelected:(id)selected;
 - (MessageListItemHelper)itemHelper;
-- (MessageListSectionDataSource)initWithConfiguration:(id)a3;
-- (MessageListSectionDataSource)initWithSection:(id)a3 collectionView:(id)a4 messageList:(id)a5 initialLoadCompletedPromise:(id)a6 layoutValuesHelper:(id)a7 state:(id)a8 headerType:(unint64_t)a9;
+- (MessageListSectionDataSource)initWithConfiguration:(id)configuration;
+- (MessageListSectionDataSource)initWithSection:(id)section collectionView:(id)view messageList:(id)list initialLoadCompletedPromise:(id)promise layoutValuesHelper:(id)helper state:(id)state headerType:(unint64_t)type;
 - (MessageListSectionDataSourceDelegate)delegate;
 - (MessageListSectionDataSourceProvider)provider;
 - (MessageListSectionDataSourceSelectionModelProvider)selectionModelProvider;
 - (NSSet)expandedThreadItemIDs;
 - (UICollectionView)collectionView;
 - (id)_preparedMessageListItemIDs;
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6;
-- (id)configuredReusableSupplementaryViewForCollectionView:(id)a3 elementKind:(id)a4 indexPath:(id)a5;
-- (id)itemIDsInExpandedThread:(id)a3;
-- (id)messageListItemForItemID:(id)a3 indexPath:(id)a4 receiver:(id)a5 completion:(id)a6;
-- (id)relatedItemIDsForSelectedItemID:(id)a3 snapshot:(id)a4;
-- (id)threadItemIDForItemInExpandedThread:(id)a3;
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier;
+- (id)configuredReusableSupplementaryViewForCollectionView:(id)view elementKind:(id)kind indexPath:(id)path;
+- (id)itemIDsInExpandedThread:(id)thread;
+- (id)messageListItemForItemID:(id)d indexPath:(id)path receiver:(id)receiver completion:(id)completion;
+- (id)relatedItemIDsForSelectedItemID:(id)d snapshot:(id)snapshot;
+- (id)threadItemIDForItemInExpandedThread:(id)thread;
 - (int64_t)numberOfPreviewLines;
 - (unint64_t)hash;
-- (void)_addedItemIDs:(id)a3 before:(BOOL)a4 existingItemID:(id)a5 toThreadWithItemID:(id)a6 inCollection:(id)a7 isLastObserver:(BOOL)a8;
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5;
-- (void)_deleteItemsWithIDs:(id)a3 fromCollection:(id)a4 animated:(BOOL)a5 useImmediateCompletion:(BOOL)a6 completionHandler:(id)a7;
-- (void)_enumerateItemIDs:(id)a3 block:(id)a4;
+- (void)_addedItemIDs:(id)ds before:(BOOL)before existingItemID:(id)d toThreadWithItemID:(id)iD inCollection:(id)collection isLastObserver:(BOOL)observer;
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d;
+- (void)_deleteItemsWithIDs:(id)ds fromCollection:(id)collection animated:(BOOL)animated useImmediateCompletion:(BOOL)completion completionHandler:(id)handler;
+- (void)_enumerateItemIDs:(id)ds block:(id)block;
 - (void)_maybeReloadForTimedOutItemIDs;
-- (void)_performDataSourceUpdateAnimated:(BOOL)a3 cleanSnapshot:(BOOL)a4 isLastUpdate:(BOOL)a5 prepare:(id)a6 update:(id)a7 completion:(id)a8;
-- (void)_recordTailspinForBlankCellWithError:(void *)a1;
-- (void)_recoverFailedItemIDsIfNeededForCollection:(id)a3 excluding:(id)a4 completion:(id)a5;
+- (void)_performDataSourceUpdateAnimated:(BOOL)animated cleanSnapshot:(BOOL)snapshot isLastUpdate:(BOOL)update prepare:(id)prepare update:(id)a7 completion:(id)completion;
+- (void)_recordTailspinForBlankCellWithError:(void *)error;
+- (void)_recoverFailedItemIDsIfNeededForCollection:(id)collection excluding:(id)excluding completion:(id)completion;
 - (void)_reloadDataSource;
-- (void)_reloadItemsWithItemIDs:(id)a3;
-- (void)_reloadPreparedItemIDsForCollection:(id)a3 completion:(id)a4;
-- (void)_showBlankCellAlertWithItemID:(void *)a3 indexPath:(void *)a4 reason:;
-- (void)_updateSelectionStateForItemsWithIDs:(id)a3 inThreadWithItemID:(id)a4 snapshot:(id)a5 shouldDeselectMessages:(BOOL)a6;
-- (void)applyFilterPredicate:(id)a3 userFiltered:(BOOL)a4 ignoreMessagesPredicate:(id)a5;
-- (void)beginObservingAnimated:(BOOL)a3 nextUpdateNeedsCleanSnapshot:(BOOL)a4;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 toThreadWithItemID:(id)a5 after:(id)a6 unreadItemIDs:(id)a7 isLastObserver:(BOOL)a8;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 toThreadWithItemID:(id)a5 before:(id)a6 unreadItemIDs:(id)a7 isLastObserver:(BOOL)a8;
-- (void)collection:(id)a3 changedItemIDs:(id)a4;
-- (void)collection:(id)a3 changedItemIDs:(id)a4 itemIDsWithCountChanges:(id)a5 itemIDsWithBrandIndicatorLocationChanges:(id)a6;
-- (void)collection:(id)a3 deletedItemIDs:(id)a4;
-- (void)collection:(id)a3 didFinishInitialLoadForThreadWithItemID:(id)a4;
-- (void)collection:(id)a3 movedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 movedItemIDs:(id)a4 before:(id)a5;
-- (void)collection:(id)a3 oldestItemsUpdatedForMailboxes:(id)a4;
-- (void)collection:(id)a3 replacedExistingItemID:(id)a4 withNewItemID:(id)a5;
-- (void)collectionDidFailInitialLoad:(id)a3 searchInfo:(id)a4;
-- (void)collectionDidFinishInitialLoad:(id)a3 searchInfo:(id)a4;
+- (void)_reloadItemsWithItemIDs:(id)ds;
+- (void)_reloadPreparedItemIDsForCollection:(id)collection completion:(id)completion;
+- (void)_showBlankCellAlertWithItemID:(void *)d indexPath:(void *)path reason:;
+- (void)_updateSelectionStateForItemsWithIDs:(id)ds inThreadWithItemID:(id)d snapshot:(id)snapshot shouldDeselectMessages:(BOOL)messages;
+- (void)applyFilterPredicate:(id)predicate userFiltered:(BOOL)filtered ignoreMessagesPredicate:(id)messagesPredicate;
+- (void)beginObservingAnimated:(BOOL)animated nextUpdateNeedsCleanSnapshot:(BOOL)snapshot;
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before;
+- (void)collection:(id)collection addedItemIDs:(id)ds toThreadWithItemID:(id)d after:(id)after unreadItemIDs:(id)iDs isLastObserver:(BOOL)observer;
+- (void)collection:(id)collection addedItemIDs:(id)ds toThreadWithItemID:(id)d before:(id)before unreadItemIDs:(id)iDs isLastObserver:(BOOL)observer;
+- (void)collection:(id)collection changedItemIDs:(id)ds;
+- (void)collection:(id)collection changedItemIDs:(id)ds itemIDsWithCountChanges:(id)changes itemIDsWithBrandIndicatorLocationChanges:(id)locationChanges;
+- (void)collection:(id)collection deletedItemIDs:(id)ds;
+- (void)collection:(id)collection didFinishInitialLoadForThreadWithItemID:(id)d;
+- (void)collection:(id)collection movedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection movedItemIDs:(id)ds before:(id)before;
+- (void)collection:(id)collection oldestItemsUpdatedForMailboxes:(id)mailboxes;
+- (void)collection:(id)collection replacedExistingItemID:(id)d withNewItemID:(id)iD;
+- (void)collectionDidFailInitialLoad:(id)load searchInfo:(id)info;
+- (void)collectionDidFinishInitialLoad:(id)load searchInfo:(id)info;
 - (void)dealloc;
-- (void)deleteItemsWithIDs:(id)a3 animated:(BOOL)a4 useImmediateCompletion:(BOOL)a5 completionHandler:(id)a6;
-- (void)didFinishRecoveryForCollection:(id)a3;
-- (void)didFinishRemoteSearchForCollection:(id)a3;
-- (void)didScheduleReadInteractionForItemID:(id)a3;
-- (void)didSelectDisclosureButtonForMessageListItem:(id)a3 disclosureEnabled:(BOOL)a4;
-- (void)messageListThreadHelper:(id)a3 didCollapseMessageListItem:(id)a4;
-- (void)messageListThreadHelper:(id)a3 didExpandMessageListItem:(id)a4;
-- (void)reconfigureItemsAtIndexPaths:(id)a3;
+- (void)deleteItemsWithIDs:(id)ds animated:(BOOL)animated useImmediateCompletion:(BOOL)completion completionHandler:(id)handler;
+- (void)didFinishRecoveryForCollection:(id)collection;
+- (void)didFinishRemoteSearchForCollection:(id)collection;
+- (void)didScheduleReadInteractionForItemID:(id)d;
+- (void)didSelectDisclosureButtonForMessageListItem:(id)item disclosureEnabled:(BOOL)enabled;
+- (void)messageListThreadHelper:(id)helper didCollapseMessageListItem:(id)item;
+- (void)messageListThreadHelper:(id)helper didExpandMessageListItem:(id)item;
+- (void)reconfigureItemsAtIndexPaths:(id)paths;
 - (void)refresh;
-- (void)replaceMessageList:(id)a3 initialLoadCompletedPromise:(id)a4;
+- (void)replaceMessageList:(id)list initialLoadCompletedPromise:(id)promise;
 - (void)stopObserving;
 @end
 
@@ -68,8 +68,8 @@
 
 - (BOOL)isPrioritySection
 {
-  v2 = [(MessageListSectionDataSource *)self section];
-  v3 = [v2 isEqualToString:@"MessageListSectionPriority"];
+  section = [(MessageListSectionDataSource *)self section];
+  v3 = [section isEqualToString:@"MessageListSectionPriority"];
 
   return v3;
 }
@@ -83,8 +83,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MessageListSectionDataSource *)self section];
-  v3 = [v2 hash];
+  section = [(MessageListSectionDataSource *)self section];
+  v3 = [section hash];
 
   return v3;
 }
@@ -108,11 +108,11 @@
   itemHelper = self->_itemHelper;
   if (!itemHelper)
   {
-    v4 = [(MessageListSectionDataSource *)self threadHelper];
-    v5 = v4;
-    if (v4)
+    threadHelper = [(MessageListSectionDataSource *)self threadHelper];
+    v5 = threadHelper;
+    if (threadHelper)
     {
-      v6 = v4;
+      v6 = threadHelper;
     }
 
     else
@@ -135,14 +135,14 @@
   {
     objc_initWeak(&location, self);
     self->_numberOfPreviewLines = [MEMORY[0x277CBEBD0] em_linesOfPreview];
-    v3 = [MEMORY[0x277CBEBD0] em_userDefaults];
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
     v4 = *MEMORY[0x277D06CA0];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __52__MessageListSectionDataSource_numberOfPreviewLines__block_invoke;
     v8[3] = &unk_2781893A0;
     objc_copyWeak(&v9, &location);
-    v5 = [v3 ef_observeKeyPath:v4 options:1 autoCancelToken:1 usingBlock:v8];
+    v5 = [em_userDefaults ef_observeKeyPath:v4 options:1 autoCancelToken:1 usingBlock:v8];
     numberOfPreviewLinesToken = self->_numberOfPreviewLinesToken;
     self->_numberOfPreviewLinesToken = v5;
 
@@ -160,58 +160,58 @@
   return WeakRetained;
 }
 
-- (MessageListSectionDataSource)initWithConfiguration:(id)a3
+- (MessageListSectionDataSource)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 collectionView];
-  v7 = [v4 messageList];
-  v8 = [v4 initialLoadCompletedPromise];
-  v9 = [v4 layoutValuesHelper];
-  v10 = [v4 state];
-  v11 = -[MessageListSectionDataSource initWithSection:collectionView:messageList:initialLoadCompletedPromise:layoutValuesHelper:state:headerType:](self, "initWithSection:collectionView:messageList:initialLoadCompletedPromise:layoutValuesHelper:state:headerType:", v5, v6, v7, v8, v9, v10, [v4 headerType]);
+  configurationCopy = configuration;
+  section = [configurationCopy section];
+  collectionView = [configurationCopy collectionView];
+  messageList = [configurationCopy messageList];
+  initialLoadCompletedPromise = [configurationCopy initialLoadCompletedPromise];
+  layoutValuesHelper = [configurationCopy layoutValuesHelper];
+  state = [configurationCopy state];
+  v11 = -[MessageListSectionDataSource initWithSection:collectionView:messageList:initialLoadCompletedPromise:layoutValuesHelper:state:headerType:](self, "initWithSection:collectionView:messageList:initialLoadCompletedPromise:layoutValuesHelper:state:headerType:", section, collectionView, messageList, initialLoadCompletedPromise, layoutValuesHelper, state, [configurationCopy headerType]);
 
   if (v11)
   {
-    v12 = [v4 delegate];
-    objc_storeWeak(&v11->_delegate, v12);
+    delegate = [configurationCopy delegate];
+    objc_storeWeak(&v11->_delegate, delegate);
 
-    v13 = [v4 selectionModelProvider];
-    objc_storeWeak(&v11->_selectionModelProvider, v13);
+    selectionModelProvider = [configurationCopy selectionModelProvider];
+    objc_storeWeak(&v11->_selectionModelProvider, selectionModelProvider);
 
-    v14 = [v4 contactStore];
+    contactStore = [configurationCopy contactStore];
     contactStore = v11->_contactStore;
-    v11->_contactStore = v14;
+    v11->_contactStore = contactStore;
 
-    v16 = [v4 avatarGenerator];
+    avatarGenerator = [configurationCopy avatarGenerator];
     avatarGenerator = v11->_avatarGenerator;
-    v11->_avatarGenerator = v16;
+    v11->_avatarGenerator = avatarGenerator;
   }
 
   return v11;
 }
 
-- (MessageListSectionDataSource)initWithSection:(id)a3 collectionView:(id)a4 messageList:(id)a5 initialLoadCompletedPromise:(id)a6 layoutValuesHelper:(id)a7 state:(id)a8 headerType:(unint64_t)a9
+- (MessageListSectionDataSource)initWithSection:(id)section collectionView:(id)view messageList:(id)list initialLoadCompletedPromise:(id)promise layoutValuesHelper:(id)helper state:(id)state headerType:(unint64_t)type
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v55 = a7;
-  v54 = a8;
+  sectionCopy = section;
+  viewCopy = view;
+  listCopy = list;
+  promiseCopy = promise;
+  helperCopy = helper;
+  stateCopy = state;
   v64.receiver = self;
   v64.super_class = MessageListSectionDataSource;
   v20 = [(MessageListSectionDataSource *)&v64 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_section, a3);
-    objc_storeWeak(&v21->_collectionView, v17);
-    objc_storeStrong(&v21->_messageList, a5);
-    objc_storeStrong(&v21->_initialLoadCompletedPromise, a6);
-    objc_storeStrong(&v21->_layoutValuesHelper, a7);
-    objc_storeStrong(&v21->_state, a8);
-    v21->_headerType = a9;
+    objc_storeStrong(&v20->_section, section);
+    objc_storeWeak(&v21->_collectionView, viewCopy);
+    objc_storeStrong(&v21->_messageList, list);
+    objc_storeStrong(&v21->_initialLoadCompletedPromise, promise);
+    objc_storeStrong(&v21->_layoutValuesHelper, helper);
+    objc_storeStrong(&v21->_state, state);
+    v21->_headerType = type;
     v22 = objc_alloc(MEMORY[0x277D07168]);
     v23 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v24 = [v22 initWithObject:v23];
@@ -236,21 +236,21 @@
     signpostLog = v21->_signpostLog;
     v21->_signpostLog = v34;
 
-    v36 = [[MessageListCollectionHelper alloc] initWithLog:v21->_log updateQueueName:@"remove.me" section:v16];
+    v36 = [[MessageListCollectionHelper alloc] initWithLog:v21->_log updateQueueName:@"remove.me" section:sectionCopy];
     collectionHelper = v21->_collectionHelper;
     v21->_collectionHelper = v36;
 
-    if ([v18 isThreaded])
+    if ([listCopy isThreaded])
     {
       v38 = [[MessageListThreadHelper alloc] initWithDelegate:v21 isPrioritySection:[(MessageListSectionDataSource *)v21 isPrioritySection]];
       threadHelper = v21->_threadHelper;
       v21->_threadHelper = v38;
     }
 
-    v40 = [MEMORY[0x277D07148] currentDevice];
-    v41 = [v40 isInternal];
+    currentDevice = [MEMORY[0x277D07148] currentDevice];
+    isInternal = [currentDevice isInternal];
 
-    if (v41)
+    if (isInternal)
     {
       v21->_shouldAlertOnBlankCell = [MEMORY[0x277D06DA0] preferenceEnabled:19];
       objc_initWeak(&location, v21);
@@ -269,7 +269,7 @@
     }
 
     IsFeatureEnabled = EMBlackPearlIsFeatureEnabled();
-    if (a9 == 3)
+    if (type == 3)
     {
       v46 = IsFeatureEnabled;
     }
@@ -279,17 +279,17 @@
       v46 = 0;
     }
 
-    v47 = [(MessageListSectionDataSource *)v21 headerRegistration];
-    if (v47)
+    headerRegistration = [(MessageListSectionDataSource *)v21 headerRegistration];
+    if (headerRegistration)
     {
 
 LABEL_14:
-      v19 = v53;
+      promiseCopy = v53;
       goto LABEL_15;
     }
 
-    v19 = v53;
-    if (a9 == 1 || v46)
+    promiseCopy = v53;
+    if (type == 1 || v46)
     {
       objc_initWeak(&location, v21);
       v48 = MEMORY[0x277D75320];
@@ -301,8 +301,8 @@ LABEL_14:
       v56[3] = &unk_278189300;
       objc_copyWeak(&v58, &location);
       v59 = v46;
-      v57 = v55;
-      v60 = a9 == 1;
+      v57 = helperCopy;
+      v60 = type == 1;
       v51 = [v48 registrationWithSupplementaryClass:v49 elementKind:v50 configurationHandler:v56];
       [(MessageListSectionDataSource *)v21 setHeaderRegistration:v51];
 
@@ -365,12 +365,12 @@ void __139__MessageListSectionDataSource_initWithSection_collectionView_messageL
 
 - (void)dealloc
 {
-  v3 = [(MessageListSectionDataSource *)self shouldAlertOnBlankCellToken];
-  [v3 cancel];
+  shouldAlertOnBlankCellToken = [(MessageListSectionDataSource *)self shouldAlertOnBlankCellToken];
+  [shouldAlertOnBlankCellToken cancel];
 
   [(MessageListSectionDataSource *)self setShouldAlertOnBlankCellToken:0];
-  v4 = [(MessageListSectionDataSource *)self numberOfPreviewLinesToken];
-  [v4 cancel];
+  numberOfPreviewLinesToken = [(MessageListSectionDataSource *)self numberOfPreviewLinesToken];
+  [numberOfPreviewLinesToken cancel];
 
   [(MessageListSectionDataSource *)self setNumberOfPreviewLinesToken:0];
   v5.receiver = self;
@@ -378,20 +378,20 @@ void __139__MessageListSectionDataSource_initWithSection_collectionView_messageL
   [(MessageListSectionDataSource *)&v5 dealloc];
 }
 
-- (void)replaceMessageList:(id)a3 initialLoadCompletedPromise:(id)a4
+- (void)replaceMessageList:(id)list initialLoadCompletedPromise:(id)promise
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MessageListSectionDataSource *)self messageList];
+  listCopy = list;
+  promiseCopy = promise;
+  messageList = [(MessageListSectionDataSource *)self messageList];
   v9 = [(MessageListSectionDataSource *)self log];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8 == v6)
+  if (messageList == listCopy)
   {
     if (v10)
     {
       v14 = 134217984;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_214A5E000, v9, OS_LOG_TYPE_DEFAULT, "%p: Message list is the same - no need to replace", &v14, 0xCu);
     }
   }
@@ -401,30 +401,30 @@ void __139__MessageListSectionDataSource_initWithSection_collectionView_messageL
     if (v10)
     {
       v14 = 134218498;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
-      v17 = v6;
+      v17 = listCopy;
       v18 = 2114;
-      v19 = v8;
+      v19 = messageList;
       _os_log_impl(&dword_214A5E000, v9, OS_LOG_TYPE_DEFAULT, "%p: replace message list: %{public}@, old: %{public}@", &v14, 0x20u);
     }
 
-    if (v8)
+    if (messageList)
     {
-      [v8 stopObserving:self];
+      [messageList stopObserving:self];
     }
 
-    v11 = [(MessageListSectionDataSource *)self failedItemIDs];
-    [v11 performWhileLocked:&__block_literal_global_7];
+    failedItemIDs = [(MessageListSectionDataSource *)self failedItemIDs];
+    [failedItemIDs performWhileLocked:&__block_literal_global_7];
 
     os_unfair_lock_lock(&self->_timedOutItemIDsLock);
-    v12 = [(MessageListSectionDataSource *)self timedOutItemIDs];
-    [v12 removeAllObjects];
+    timedOutItemIDs = [(MessageListSectionDataSource *)self timedOutItemIDs];
+    [timedOutItemIDs removeAllObjects];
 
     [(MessageListSectionDataSource *)self setHasReloadedForTimeOut:0];
     os_unfair_lock_unlock(&self->_timedOutItemIDsLock);
-    [(MessageListSectionDataSource *)self setMessageList:v6];
-    if ([v6 isThreaded])
+    [(MessageListSectionDataSource *)self setMessageList:listCopy];
+    if ([listCopy isThreaded])
     {
       v13 = [[MessageListThreadHelper alloc] initWithDelegate:self isPrioritySection:[(MessageListSectionDataSource *)self isPrioritySection]];
       [(MessageListSectionDataSource *)self setThreadHelper:v13];
@@ -435,7 +435,7 @@ void __139__MessageListSectionDataSource_initWithSection_collectionView_messageL
       [(MessageListSectionDataSource *)self setThreadHelper:0];
     }
 
-    [(MessageListSectionDataSource *)self setInitialLoadCompletedPromise:v7];
+    [(MessageListSectionDataSource *)self setInitialLoadCompletedPromise:promiseCopy];
   }
 }
 
@@ -445,16 +445,16 @@ void __139__MessageListSectionDataSource_initWithSection_collectionView_messageL
   if (![(MessageListSectionDataSource *)self isRefreshing])
   {
     [(MessageListSectionDataSource *)self setIsRefreshing:1];
-    v3 = [(MessageListSectionDataSource *)self messageList];
-    [v3 refresh];
+    messageList = [(MessageListSectionDataSource *)self messageList];
+    [messageList refresh];
   }
 
   os_unfair_lock_unlock(&self->_isRefreshingLock);
 }
 
-- (void)beginObservingAnimated:(BOOL)a3 nextUpdateNeedsCleanSnapshot:(BOOL)a4
+- (void)beginObservingAnimated:(BOOL)animated nextUpdateNeedsCleanSnapshot:(BOOL)snapshot
 {
-  if (a4)
+  if (snapshot)
   {
     os_unfair_lock_lock(&self->_nextUpdateNeedsCleanSnapshotLock);
     [(MessageListSectionDataSource *)self setNextUpdateNeedsCleanSnapshot:1];
@@ -464,27 +464,27 @@ void __139__MessageListSectionDataSource_initWithSection_collectionView_messageL
   os_unfair_lock_lock(&self->_isRefreshingLock);
   [(MessageListSectionDataSource *)self setIsRefreshing:0];
   os_unfair_lock_unlock(&self->_isRefreshingLock);
-  v5 = [(MessageListSectionDataSource *)self messageList];
-  [v5 beginObserving:self];
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  [messageList beginObserving:self];
 }
 
 - (void)stopObserving
 {
-  v3 = [(MessageListSectionDataSource *)self messageList];
-  [v3 stopObserving:self];
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  [messageList stopObserving:self];
 }
 
-- (void)reconfigureItemsAtIndexPaths:(id)a3
+- (void)reconfigureItemsAtIndexPaths:(id)paths
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = [(MessageListSectionDataSource *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v4;
+    v15 = pathsCopy;
     _os_log_impl(&dword_214A5E000, v5, OS_LOG_TYPE_DEFAULT, "%p: Reconfigure items at index paths: %{public}@", buf, 0x16u);
   }
 
@@ -493,12 +493,12 @@ void __139__MessageListSectionDataSource_initWithSection_collectionView_messageL
   v10[2] = __61__MessageListSectionDataSource_reconfigureItemsAtIndexPaths___block_invoke;
   v10[3] = &unk_278188F78;
   v10[4] = self;
-  v11 = v4;
+  v11 = pathsCopy;
   v6 = v10;
   v7 = MEMORY[0x277D071B8];
-  v8 = v4;
-  v9 = [v7 mainThreadScheduler];
-  [v9 performBlock:v6];
+  v8 = pathsCopy;
+  mainThreadScheduler = [v7 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v6];
 }
 
 void __61__MessageListSectionDataSource_reconfigureItemsAtIndexPaths___block_invoke(uint64_t a1)
@@ -662,223 +662,223 @@ LABEL_26:
   }
 }
 
-- (void)deleteItemsWithIDs:(id)a3 animated:(BOOL)a4 useImmediateCompletion:(BOOL)a5 completionHandler:(id)a6
+- (void)deleteItemsWithIDs:(id)ds animated:(BOOL)animated useImmediateCompletion:(BOOL)completion completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(MessageListSectionDataSource *)self messageList];
-  [(MessageListSectionDataSource *)self _deleteItemsWithIDs:v11 fromCollection:v12 animated:v7 useImmediateCompletion:v6 completionHandler:v10];
+  completionCopy = completion;
+  animatedCopy = animated;
+  handlerCopy = handler;
+  dsCopy = ds;
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  [(MessageListSectionDataSource *)self _deleteItemsWithIDs:dsCopy fromCollection:messageList animated:animatedCopy useImmediateCompletion:completionCopy completionHandler:handlerCopy];
 }
 
-- (id)relatedItemIDsForSelectedItemID:(id)a3 snapshot:(id)a4
+- (id)relatedItemIDsForSelectedItemID:(id)d snapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  snapshotCopy = snapshot;
   v8 = objc_opt_new();
-  v9 = [(MessageListSectionDataSource *)self itemHelper];
-  v10 = [v9 itemIDBeforeItemID:v6 snapshot:v7];
+  itemHelper = [(MessageListSectionDataSource *)self itemHelper];
+  v10 = [itemHelper itemIDBeforeItemID:dCopy snapshot:snapshotCopy];
   [v8 ef_addOptionalObject:v10];
 
-  v11 = [v9 itemIDAfterItemID:v6 snapshot:v7];
+  v11 = [itemHelper itemIDAfterItemID:dCopy snapshot:snapshotCopy];
   [v8 ef_addOptionalObject:v11];
 
-  v12 = [(MessageListSectionDataSource *)self messageList];
-  v13 = [(MessageListSectionDataSource *)self threadHelper];
-  if (v13)
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  threadHelper = [(MessageListSectionDataSource *)self threadHelper];
+  if (threadHelper)
   {
-    v14 = [v12 expandedThreadItemIDs];
-    v15 = [v14 containsObject:v6];
+    expandedThreadItemIDs = [messageList expandedThreadItemIDs];
+    v15 = [expandedThreadItemIDs containsObject:dCopy];
 
     if (v15)
     {
-      v16 = [v13 itemIDsInExpandedThread:v6 snapshot:v7];
-      v17 = [v16 lastObject];
-      if (v17)
+      v16 = [threadHelper itemIDsInExpandedThread:dCopy snapshot:snapshotCopy];
+      lastObject = [v16 lastObject];
+      if (lastObject)
       {
-        [v8 addObject:v17];
-        v18 = [v13 itemIDAfterItemID:v17 snapshot:v7];
+        [v8 addObject:lastObject];
+        v18 = [threadHelper itemIDAfterItemID:lastObject snapshot:snapshotCopy];
         [v8 ef_addOptionalObject:v18];
       }
     }
 
     else
     {
-      if (![v12 anyExpandedThreadContainsItemID:v6])
+      if (![messageList anyExpandedThreadContainsItemID:dCopy])
       {
         goto LABEL_10;
       }
 
-      v16 = [v13 threadItemIDForItemInExpandedThread:v6 snapshot:v7];
+      v16 = [threadHelper threadItemIDForItemInExpandedThread:dCopy snapshot:snapshotCopy];
       if (!v16)
       {
         goto LABEL_9;
       }
 
       [v8 addObject:v16];
-      v17 = [v13 itemIDBeforeItemID:v16 snapshot:v7];
-      [v8 ef_addOptionalObject:v17];
+      lastObject = [threadHelper itemIDBeforeItemID:v16 snapshot:snapshotCopy];
+      [v8 ef_addOptionalObject:lastObject];
     }
 
 LABEL_9:
   }
 
 LABEL_10:
-  [v8 addObject:v6];
+  [v8 addObject:dCopy];
 
   return v8;
 }
 
-- (void)applyFilterPredicate:(id)a3 userFiltered:(BOOL)a4 ignoreMessagesPredicate:(id)a5
+- (void)applyFilterPredicate:(id)predicate userFiltered:(BOOL)filtered ignoreMessagesPredicate:(id)messagesPredicate
 {
-  v6 = a4;
-  v16 = a3;
-  v8 = a5;
-  v9 = [(MessageListSectionDataSource *)self messageList];
-  v10 = [v9 unfilteredMessageList];
-  v11 = v10;
-  if (v16)
+  filteredCopy = filtered;
+  predicateCopy = predicate;
+  messagesPredicateCopy = messagesPredicate;
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  unfilteredMessageList = [messageList unfilteredMessageList];
+  v11 = unfilteredMessageList;
+  if (predicateCopy)
   {
-    v12 = [v10 filteredMessageListWithPredicate:v16 userFiltered:v6];
+    v12 = [unfilteredMessageList filteredMessageListWithPredicate:predicateCopy userFiltered:filteredCopy];
 
     v11 = v12;
   }
 
-  v13 = [(MessageListSectionDataSource *)self messageList];
+  messageList2 = [(MessageListSectionDataSource *)self messageList];
 
-  if (v11 != v13)
+  if (v11 != messageList2)
   {
-    v14 = [(MessageListSectionDataSource *)self delegate];
-    v15 = [v14 initialLoadCompletedPromiseForMessageListSectionDataSource:self];
+    delegate = [(MessageListSectionDataSource *)self delegate];
+    v15 = [delegate initialLoadCompletedPromiseForMessageListSectionDataSource:self];
 
     [(MessageListSectionDataSource *)self replaceMessageList:v11 initialLoadCompletedPromise:v15];
     [(MessageListSectionDataSource *)self beginObservingAnimated:1 nextUpdateNeedsCleanSnapshot:1];
   }
 }
 
-- (void)didScheduleReadInteractionForItemID:(id)a3
+- (void)didScheduleReadInteractionForItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(MessageListSectionDataSource *)self collectionHelper];
-  [v5 didScheduleReadInteractionForItemID:v4];
+  dCopy = d;
+  collectionHelper = [(MessageListSectionDataSource *)self collectionHelper];
+  [collectionHelper didScheduleReadInteractionForItemID:dCopy];
 }
 
-- (id)threadItemIDForItemInExpandedThread:(id)a3
+- (id)threadItemIDForItemInExpandedThread:(id)thread
 {
-  v4 = a3;
-  v5 = [(MessageListSectionDataSource *)self threadHelper];
-  v6 = [(MessageListSectionDataSource *)self provider];
-  v7 = [v6 snapshotForMessageListSectionDataSource:self];
-  v8 = [v5 threadItemIDForItemInExpandedThread:v4 snapshot:v7];
+  threadCopy = thread;
+  threadHelper = [(MessageListSectionDataSource *)self threadHelper];
+  provider = [(MessageListSectionDataSource *)self provider];
+  v7 = [provider snapshotForMessageListSectionDataSource:self];
+  v8 = [threadHelper threadItemIDForItemInExpandedThread:threadCopy snapshot:v7];
 
   return v8;
 }
 
-- (id)itemIDsInExpandedThread:(id)a3
+- (id)itemIDsInExpandedThread:(id)thread
 {
-  v4 = a3;
-  v5 = [(MessageListSectionDataSource *)self threadHelper];
-  v6 = [(MessageListSectionDataSource *)self provider];
-  v7 = [v6 snapshotForMessageListSectionDataSource:self];
-  v8 = [v5 itemIDsInExpandedThread:v4 snapshot:v7];
+  threadCopy = thread;
+  threadHelper = [(MessageListSectionDataSource *)self threadHelper];
+  provider = [(MessageListSectionDataSource *)self provider];
+  v7 = [provider snapshotForMessageListSectionDataSource:self];
+  v8 = [threadHelper itemIDsInExpandedThread:threadCopy snapshot:v7];
 
   return v8;
 }
 
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  viewCopy = view;
+  pathCopy = path;
+  dCopy = d;
+  identifierCopy = identifier;
   [(MessageListSectionDataSource *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MessageListSectionDataSource configuredCollectionViewCellForCollectionView:indexPath:itemID:cellIdentifier:]", "MessageListSectionDataSource.m", 335, "0");
 }
 
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  cellCopy = cell;
+  pathCopy = path;
+  dCopy = d;
   [(MessageListSectionDataSource *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MessageListSectionDataSource _configureCell:atIndexPath:itemID:]", "MessageListSectionDataSource.m", 339, "0");
 }
 
-- (id)messageListItemForItemID:(id)a3 indexPath:(id)a4 receiver:(id)a5 completion:(id)a6
+- (id)messageListItemForItemID:(id)d indexPath:(id)path receiver:(id)receiver completion:(id)completion
 {
   v74 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  dCopy = d;
+  pathCopy = path;
+  receiverCopy = receiver;
+  completionCopy = completion;
+  if (!receiverCopy)
   {
     v14 = [(MessageListSectionDataSource *)self log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v42 = [v11 ef_publicDescription];
+      ef_publicDescription = [pathCopy ef_publicDescription];
       *buf = 134218498;
-      v69 = self;
+      selfCopy = self;
       v70 = 2114;
-      v71 = v10;
+      v71 = dCopy;
       v72 = 2114;
-      v73 = v42;
+      v73 = ef_publicDescription;
       _os_log_error_impl(&dword_214A5E000, v14, OS_LOG_TYPE_ERROR, "%p: No receiver for (itemID: %{public}@, indexPath: %{public}@)", buf, 0x20u);
     }
   }
 
-  v15 = [(MessageListSectionDataSource *)self signpostLog];
-  v16 = os_signpost_id_generate(v15);
+  signpostLog = [(MessageListSectionDataSource *)self signpostLog];
+  v16 = os_signpost_id_generate(signpostLog);
 
-  v17 = [(MessageListSectionDataSource *)self signpostLog];
-  v18 = v17;
-  if ((v16 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
+  signpostLog2 = [(MessageListSectionDataSource *)self signpostLog];
+  v18 = signpostLog2;
+  if ((v16 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(signpostLog2))
   {
-    v19 = [v11 ef_publicDescription];
+    ef_publicDescription2 = [pathCopy ef_publicDescription];
     *buf = 138543618;
-    v69 = v10;
+    selfCopy = dCopy;
     v70 = 2114;
-    v71 = v19;
+    v71 = ef_publicDescription2;
     _os_signpost_emit_with_name_impl(&dword_214A5E000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "MessageListViewControllerItemFetch", "itemID=%{public}@, indexPath=%{public}@", buf, 0x16u);
   }
 
   val = [(MessageListSectionDataSource *)self messageList];
-  v20 = [val messageListItemForItemID:v10];
-  [v12 setItemID:v10];
-  [v12 setMessageListItemFuture:v20];
+  v20 = [val messageListItemForItemID:dCopy];
+  [receiverCopy setItemID:dCopy];
+  [receiverCopy setMessageListItemFuture:v20];
   objc_initWeak(buf, self);
   objc_initWeak(&location, val);
   v43 = objc_alloc_init(MEMORY[0x277D07138]);
-  v21 = [MEMORY[0x277D071B8] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __87__MessageListSectionDataSource_messageListItemForItemID_indexPath_receiver_completion___block_invoke;
   v61[3] = &unk_278189328;
   objc_copyWeak(&v65, buf);
   objc_copyWeak(v66, &location);
-  v22 = v13;
-  v23 = v10;
+  v22 = completionCopy;
+  v23 = dCopy;
   v62 = v23;
-  v24 = v11;
+  v24 = pathCopy;
   v63 = v24;
   v66[1] = v16;
   v25 = v22;
   v64 = v25;
-  v26 = [v21 afterDelay:v61 performBlock:2.0];
+  v26 = [mainThreadScheduler afterDelay:v61 performBlock:2.0];
   [v43 addCancelable:v26];
 
-  [v12 setMessageListItemFetchTimeoutCancelable:v43];
-  v27 = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [receiverCopy setMessageListItemFetchTimeoutCancelable:v43];
+  mainThreadScheduler2 = [MEMORY[0x277D071B8] mainThreadScheduler];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __87__MessageListSectionDataSource_messageListItemForItemID_indexPath_receiver_completion___block_invoke_84;
   v53[3] = &unk_278189350;
-  v28 = v12;
+  v28 = receiverCopy;
   v54 = v28;
   v29 = v20;
   v55 = v29;
-  v56 = self;
+  selfCopy2 = self;
   v60 = v16;
   v30 = v23;
   v57 = v30;
@@ -886,9 +886,9 @@ LABEL_10:
   v58 = v31;
   v32 = v25;
   v59 = v32;
-  [v29 onScheduler:v27 addSuccessBlock:v53];
+  [v29 onScheduler:mainThreadScheduler2 addSuccessBlock:v53];
 
-  v33 = [MEMORY[0x277D071B8] mainThreadScheduler];
+  mainThreadScheduler3 = [MEMORY[0x277D071B8] mainThreadScheduler];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __87__MessageListSectionDataSource_messageListItemForItemID_indexPath_receiver_completion___block_invoke_86;
@@ -906,7 +906,7 @@ LABEL_10:
   v49 = v37;
   v38 = v32;
   v50 = v38;
-  [v37 onScheduler:v33 addFailureBlock:v45];
+  [v37 onScheduler:mainThreadScheduler3 addFailureBlock:v45];
 
   v39 = v50;
   v40 = v37;
@@ -1204,70 +1204,70 @@ void __52__MessageListSectionDataSource_numberOfPreviewLines__block_invoke(uint6
   }
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 toThreadWithItemID:(id)a5 after:(id)a6 unreadItemIDs:(id)a7 isLastObserver:(BOOL)a8
+- (void)collection:(id)collection addedItemIDs:(id)ds toThreadWithItemID:(id)d after:(id)after unreadItemIDs:(id)iDs isLastObserver:(BOOL)observer
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  collectionCopy = collection;
+  dsCopy = ds;
+  dCopy = d;
+  afterCopy = after;
   v23 = MEMORY[0x277D85DD0];
-  v24 = self;
-  v25 = v14;
-  v26 = v16;
-  v27 = v15;
-  v28 = v13;
-  v29 = a8;
+  selfCopy = self;
+  v25 = dsCopy;
+  v26 = afterCopy;
+  v27 = dCopy;
+  v28 = collectionCopy;
+  observerCopy = observer;
   v17 = MEMORY[0x277D071B8];
-  v18 = v14;
-  v19 = v16;
-  v20 = v15;
-  v21 = v13;
-  v22 = [v17 mainThreadScheduler];
-  [v22 performBlock:&v23];
+  v18 = dsCopy;
+  v19 = afterCopy;
+  v20 = dCopy;
+  v21 = collectionCopy;
+  mainThreadScheduler = [v17 mainThreadScheduler];
+  [mainThreadScheduler performBlock:&v23];
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 toThreadWithItemID:(id)a5 before:(id)a6 unreadItemIDs:(id)a7 isLastObserver:(BOOL)a8
+- (void)collection:(id)collection addedItemIDs:(id)ds toThreadWithItemID:(id)d before:(id)before unreadItemIDs:(id)iDs isLastObserver:(BOOL)observer
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  collectionCopy = collection;
+  dsCopy = ds;
+  dCopy = d;
+  beforeCopy = before;
   v23 = MEMORY[0x277D85DD0];
-  v24 = self;
-  v25 = v14;
-  v26 = v16;
-  v27 = v15;
-  v28 = v13;
-  v29 = a8;
+  selfCopy = self;
+  v25 = dsCopy;
+  v26 = beforeCopy;
+  v27 = dCopy;
+  v28 = collectionCopy;
+  observerCopy = observer;
   v17 = MEMORY[0x277D071B8];
-  v18 = v14;
-  v19 = v16;
-  v20 = v15;
-  v21 = v13;
-  v22 = [v17 mainThreadScheduler];
-  [v22 performBlock:&v23];
+  v18 = dsCopy;
+  v19 = beforeCopy;
+  v20 = dCopy;
+  v21 = collectionCopy;
+  mainThreadScheduler = [v17 mainThreadScheduler];
+  [mainThreadScheduler performBlock:&v23];
 }
 
-- (void)collection:(id)a3 movedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection movedItemIDs:(id)ds before:(id)before
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  dsCopy = ds;
+  beforeCopy = before;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __63__MessageListSectionDataSource_collection_movedItemIDs_before___block_invoke;
   v17[3] = &unk_278188C50;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = collectionCopy;
+  v19 = dsCopy;
+  v20 = beforeCopy;
   v11 = v17;
   v12 = MEMORY[0x277D071B8];
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  v16 = [v12 mainThreadScheduler];
-  [v16 performBlock:v11];
+  v13 = beforeCopy;
+  v14 = dsCopy;
+  v15 = collectionCopy;
+  mainThreadScheduler = [v12 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v11];
 }
 
 void __63__MessageListSectionDataSource_collection_movedItemIDs_before___block_invoke(id *a1)
@@ -1380,26 +1380,26 @@ void __63__MessageListSectionDataSource_collection_movedItemIDs_before___block_i
   [v2 messageListSectionDataSource:*(a1 + 32) handleRowSelectionAfterMovingMessagesWithItemIdentifiers:*(a1 + 40)];
 }
 
-- (void)collection:(id)a3 movedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection movedItemIDs:(id)ds after:(id)after
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  dsCopy = ds;
+  afterCopy = after;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __62__MessageListSectionDataSource_collection_movedItemIDs_after___block_invoke;
   v17[3] = &unk_278188C50;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = collectionCopy;
+  v19 = dsCopy;
+  v20 = afterCopy;
   v11 = v17;
   v12 = MEMORY[0x277D071B8];
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  v16 = [v12 mainThreadScheduler];
-  [v16 performBlock:v11];
+  v13 = afterCopy;
+  v14 = dsCopy;
+  v15 = collectionCopy;
+  mainThreadScheduler = [v12 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v11];
 }
 
 void __62__MessageListSectionDataSource_collection_movedItemIDs_after___block_invoke(id *a1)
@@ -1499,29 +1499,29 @@ void __62__MessageListSectionDataSource_collection_movedItemIDs_after___block_in
   [v2 messageListSectionDataSource:*(a1 + 32) handleRowSelectionAfterMovingMessagesWithItemIdentifiers:*(a1 + 40)];
 }
 
-- (void)collection:(id)a3 changedItemIDs:(id)a4 itemIDsWithCountChanges:(id)a5 itemIDsWithBrandIndicatorLocationChanges:(id)a6
+- (void)collection:(id)collection changedItemIDs:(id)ds itemIDsWithCountChanges:(id)changes itemIDsWithBrandIndicatorLocationChanges:(id)locationChanges
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  collectionCopy = collection;
+  dsCopy = ds;
+  changesCopy = changes;
+  locationChangesCopy = locationChanges;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __123__MessageListSectionDataSource_collection_changedItemIDs_itemIDsWithCountChanges_itemIDsWithBrandIndicatorLocationChanges___block_invoke;
   v21[3] = &unk_278189468;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = v13;
+  v22 = collectionCopy;
+  v23 = dsCopy;
+  v24 = changesCopy;
+  v25 = locationChangesCopy;
   v14 = v21;
   v15 = MEMORY[0x277D071B8];
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
-  v20 = [v15 mainThreadScheduler];
-  [v20 performBlock:v14];
+  v16 = locationChangesCopy;
+  v17 = changesCopy;
+  v18 = dsCopy;
+  v19 = collectionCopy;
+  mainThreadScheduler = [v15 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v14];
 }
 
 void __123__MessageListSectionDataSource_collection_changedItemIDs_itemIDsWithCountChanges_itemIDsWithBrandIndicatorLocationChanges___block_invoke(uint64_t a1)
@@ -1774,26 +1774,26 @@ void __123__MessageListSectionDataSource_collection_changedItemIDs_itemIDsWithCo
   [v8 removeCachedAvatarImagesForAuthenticatedMessagesWithEmailAddress:v6 businessLogoID:v9];
 }
 
-- (void)collection:(id)a3 replacedExistingItemID:(id)a4 withNewItemID:(id)a5
+- (void)collection:(id)collection replacedExistingItemID:(id)d withNewItemID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  dCopy = d;
+  iDCopy = iD;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __80__MessageListSectionDataSource_collection_replacedExistingItemID_withNewItemID___block_invoke;
   v17[3] = &unk_278188C50;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = collectionCopy;
+  v19 = dCopy;
+  v20 = iDCopy;
   v11 = v17;
   v12 = MEMORY[0x277D071B8];
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  v16 = [v12 mainThreadScheduler];
-  [v16 performBlock:v11];
+  v13 = iDCopy;
+  v14 = dCopy;
+  v15 = collectionCopy;
+  mainThreadScheduler = [v12 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v11];
 }
 
 void __80__MessageListSectionDataSource_collection_replacedExistingItemID_withNewItemID___block_invoke(id *a1)
@@ -1906,23 +1906,23 @@ id __80__MessageListSectionDataSource_collection_replacedExistingItemID_withNewI
   return v9;
 }
 
-- (void)collection:(id)a3 deletedItemIDs:(id)a4
+- (void)collection:(id)collection deletedItemIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  dsCopy = ds;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__MessageListSectionDataSource_collection_deletedItemIDs___block_invoke;
   v13[3] = &unk_278189490;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = collectionCopy;
+  v15 = dsCopy;
   v8 = v13;
   v9 = MEMORY[0x277D071B8];
-  v10 = v7;
-  v11 = v6;
-  v12 = [v9 mainThreadScheduler];
-  [v12 performBlock:v8];
+  v10 = dsCopy;
+  v11 = collectionCopy;
+  mainThreadScheduler = [v9 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v8];
 }
 
 void __58__MessageListSectionDataSource_collection_deletedItemIDs___block_invoke(uint64_t a1)
@@ -1959,20 +1959,20 @@ void __58__MessageListSectionDataSource_collection_deletedItemIDs___block_invoke
   }
 }
 
-- (void)didFinishRecoveryForCollection:(id)a3
+- (void)didFinishRecoveryForCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__MessageListSectionDataSource_didFinishRecoveryForCollection___block_invoke;
   v9[3] = &unk_278188F78;
   v9[4] = self;
-  v10 = v4;
+  v10 = collectionCopy;
   v5 = v9;
   v6 = MEMORY[0x277D071B8];
-  v7 = v4;
-  v8 = [v6 mainThreadScheduler];
-  [v8 performBlock:v5];
+  v7 = collectionCopy;
+  mainThreadScheduler = [v6 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v5];
 }
 
 void __63__MessageListSectionDataSource_didFinishRecoveryForCollection___block_invoke(uint64_t a1)
@@ -2038,20 +2038,20 @@ void __63__MessageListSectionDataSource_didFinishRecoveryForCollection___block_i
   }
 }
 
-- (void)didFinishRemoteSearchForCollection:(id)a3
+- (void)didFinishRemoteSearchForCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__MessageListSectionDataSource_didFinishRemoteSearchForCollection___block_invoke;
   v9[3] = &unk_278188F78;
   v9[4] = self;
-  v10 = v4;
+  v10 = collectionCopy;
   v5 = v9;
   v6 = MEMORY[0x277D071B8];
-  v7 = v4;
-  v8 = [v6 mainThreadScheduler];
-  [v8 performBlock:v5];
+  v7 = collectionCopy;
+  mainThreadScheduler = [v6 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v5];
 }
 
 void __67__MessageListSectionDataSource_didFinishRemoteSearchForCollection___block_invoke(uint64_t a1)
@@ -2086,23 +2086,23 @@ void __67__MessageListSectionDataSource_didFinishRemoteSearchForCollection___blo
   }
 }
 
-- (void)collection:(id)a3 didFinishInitialLoadForThreadWithItemID:(id)a4
+- (void)collection:(id)collection didFinishInitialLoadForThreadWithItemID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  dCopy = d;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__MessageListSectionDataSource_collection_didFinishInitialLoadForThreadWithItemID___block_invoke;
   v13[3] = &unk_278189490;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = collectionCopy;
+  v15 = dCopy;
   v8 = v13;
   v9 = MEMORY[0x277D071B8];
-  v10 = v7;
-  v11 = v6;
-  v12 = [v9 mainThreadScheduler];
-  [v12 performBlock:v8];
+  v10 = dCopy;
+  v11 = collectionCopy;
+  mainThreadScheduler = [v9 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v8];
 }
 
 void __83__MessageListSectionDataSource_collection_didFinishInitialLoadForThreadWithItemID___block_invoke(id *a1)
@@ -2175,23 +2175,23 @@ void __83__MessageListSectionDataSource_collection_didFinishInitialLoadForThread
   [v5 removeExpandingThreadWithItemID:*(a1 + 40)];
 }
 
-- (void)collectionDidFinishInitialLoad:(id)a3 searchInfo:(id)a4
+- (void)collectionDidFinishInitialLoad:(id)load searchInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  loadCopy = load;
+  infoCopy = info;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__MessageListSectionDataSource_collectionDidFinishInitialLoad_searchInfo___block_invoke;
   v13[3] = &unk_278189490;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = loadCopy;
+  v15 = infoCopy;
   v8 = v13;
   v9 = MEMORY[0x277D071B8];
-  v10 = v7;
-  v11 = v6;
-  v12 = [v9 mainThreadScheduler];
-  [v12 performBlock:v8];
+  v10 = infoCopy;
+  v11 = loadCopy;
+  mainThreadScheduler = [v9 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v8];
 }
 
 void __74__MessageListSectionDataSource_collectionDidFinishInitialLoad_searchInfo___block_invoke(id *a1)
@@ -2277,23 +2277,23 @@ void __74__MessageListSectionDataSource_collectionDidFinishInitialLoad_searchInf
   [v7 postNotificationName:@"kMessageListItemsFinishedLoad" object:*(a1 + 40)];
 }
 
-- (void)collectionDidFailInitialLoad:(id)a3 searchInfo:(id)a4
+- (void)collectionDidFailInitialLoad:(id)load searchInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  loadCopy = load;
+  infoCopy = info;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__MessageListSectionDataSource_collectionDidFailInitialLoad_searchInfo___block_invoke;
   v13[3] = &unk_278189490;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = loadCopy;
+  v15 = infoCopy;
   v8 = v13;
   v9 = MEMORY[0x277D071B8];
-  v10 = v7;
-  v11 = v6;
-  v12 = [v9 mainThreadScheduler];
-  [v12 performBlock:v8];
+  v10 = infoCopy;
+  v11 = loadCopy;
+  mainThreadScheduler = [v9 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v8];
 }
 
 void __72__MessageListSectionDataSource_collectionDidFailInitialLoad_searchInfo___block_invoke(uint64_t a1)
@@ -2331,23 +2331,23 @@ void __72__MessageListSectionDataSource_collectionDidFailInitialLoad_searchInfo_
   }
 }
 
-- (void)collection:(id)a3 oldestItemsUpdatedForMailboxes:(id)a4
+- (void)collection:(id)collection oldestItemsUpdatedForMailboxes:(id)mailboxes
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  mailboxesCopy = mailboxes;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__MessageListSectionDataSource_collection_oldestItemsUpdatedForMailboxes___block_invoke;
   v13[3] = &unk_278189490;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = collectionCopy;
+  v15 = mailboxesCopy;
   v8 = v13;
   v9 = MEMORY[0x277D071B8];
-  v10 = v7;
-  v11 = v6;
-  v12 = [v9 mainThreadScheduler];
-  [v12 performBlock:v8];
+  v10 = mailboxesCopy;
+  v11 = collectionCopy;
+  mainThreadScheduler = [v9 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v8];
 }
 
 void __74__MessageListSectionDataSource_collection_oldestItemsUpdatedForMailboxes___block_invoke(uint64_t a1)
@@ -2393,88 +2393,88 @@ void __74__MessageListSectionDataSource_collection_oldestItemsUpdatedForMailboxe
   }
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  dsCopy = ds;
+  afterCopy = after;
   [(MessageListSectionDataSource *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MessageListSectionDataSource collection:addedItemIDs:after:]", "MessageListSectionDataSource.m", 762, "0");
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  dsCopy = ds;
+  beforeCopy = before;
   [(MessageListSectionDataSource *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MessageListSectionDataSource collection:addedItemIDs:before:]", "MessageListSectionDataSource.m", 766, "0");
 }
 
-- (void)collection:(id)a3 changedItemIDs:(id)a4
+- (void)collection:(id)collection changedItemIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  dsCopy = ds;
   [(MessageListSectionDataSource *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MessageListSectionDataSource collection:changedItemIDs:]", "MessageListSectionDataSource.m", 770, "0");
 }
 
-- (BOOL)messageListItemHelper:(id)a3 anyExpandedThreadContainsItemID:(id)a4
+- (BOOL)messageListItemHelper:(id)helper anyExpandedThreadContainsItemID:(id)d
 {
-  v5 = a4;
-  v6 = [(MessageListSectionDataSource *)self messageList];
-  v7 = [v6 anyExpandedThreadContainsItemID:v5];
+  dCopy = d;
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  v7 = [messageList anyExpandedThreadContainsItemID:dCopy];
 
   return v7;
 }
 
-- (BOOL)messageListItemHelper:(id)a3 isItemIDExpandedThread:(id)a4
+- (BOOL)messageListItemHelper:(id)helper isItemIDExpandedThread:(id)thread
 {
-  v5 = a4;
-  v6 = [(MessageListSectionDataSource *)self messageList];
-  v7 = [v6 expandedThreadItemIDs];
-  v8 = [v7 containsObject:v5];
+  threadCopy = thread;
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  expandedThreadItemIDs = [messageList expandedThreadItemIDs];
+  v8 = [expandedThreadItemIDs containsObject:threadCopy];
 
   return v8;
 }
 
-- (BOOL)messageListItemHelper:(id)a3 isItemIDSelected:(id)a4
+- (BOOL)messageListItemHelper:(id)helper isItemIDSelected:(id)selected
 {
-  v5 = a4;
-  v6 = [(MessageListSectionDataSource *)self selectionModelProvider];
-  v7 = [v6 selectionModelForMessageListSectionDataSource:self];
-  v8 = [v7 isSelectedItemID:v5];
+  selectedCopy = selected;
+  selectionModelProvider = [(MessageListSectionDataSource *)self selectionModelProvider];
+  v7 = [selectionModelProvider selectionModelForMessageListSectionDataSource:self];
+  v8 = [v7 isSelectedItemID:selectedCopy];
 
   return v8;
 }
 
 - (NSSet)expandedThreadItemIDs
 {
-  v2 = [(MessageListSectionDataSource *)self messageList];
-  v3 = [v2 expandedThreadItemIDs];
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  expandedThreadItemIDs = [messageList expandedThreadItemIDs];
 
-  return v3;
+  return expandedThreadItemIDs;
 }
 
-- (void)messageListThreadHelper:(id)a3 didCollapseMessageListItem:(id)a4
+- (void)messageListThreadHelper:(id)helper didCollapseMessageListItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MessageListSectionDataSource *)self messageList];
-    [v5 collapseThread:v6];
+    messageList = [(MessageListSectionDataSource *)self messageList];
+    [messageList collapseThread:itemCopy];
   }
 }
 
-- (void)messageListThreadHelper:(id)a3 didExpandMessageListItem:(id)a4
+- (void)messageListThreadHelper:(id)helper didExpandMessageListItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MessageListSectionDataSource *)self messageList];
-    [v5 expandThread:v6];
+    messageList = [(MessageListSectionDataSource *)self messageList];
+    [messageList expandThread:itemCopy];
   }
 }
 
@@ -2482,24 +2482,24 @@ void __74__MessageListSectionDataSource_collection_oldestItemsUpdatedForMailboxe
 {
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_timedOutItemIDsLock);
-  v3 = [(MessageListSectionDataSource *)self provider];
-  v4 = [v3 shouldReloadMessageListSectionDataSource:self];
+  provider = [(MessageListSectionDataSource *)self provider];
+  v4 = [provider shouldReloadMessageListSectionDataSource:self];
 
   if ((v4 & 1) == 0)
   {
-    v9 = [(MessageListSectionDataSource *)self log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    timedOutItemIDs3 = [(MessageListSectionDataSource *)self log];
+    if (os_log_type_enabled(timedOutItemIDs3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v14 = self;
-      _os_log_impl(&dword_214A5E000, v9, OS_LOG_TYPE_DEFAULT, "%p: Skip reload for timed out item ids", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_214A5E000, timedOutItemIDs3, OS_LOG_TYPE_DEFAULT, "%p: Skip reload for timed out item ids", buf, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  v5 = [(MessageListSectionDataSource *)self timedOutItemIDs];
-  v6 = [v5 count];
+  timedOutItemIDs = [(MessageListSectionDataSource *)self timedOutItemIDs];
+  v6 = [timedOutItemIDs count];
 
   if (v6 >= 0xB)
   {
@@ -2509,28 +2509,28 @@ void __74__MessageListSectionDataSource_collection_oldestItemsUpdatedForMailboxe
       v7 = [(MessageListSectionDataSource *)self log];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(MessageListSectionDataSource *)self timedOutItemIDs];
+        timedOutItemIDs2 = [(MessageListSectionDataSource *)self timedOutItemIDs];
         *buf = 134218240;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2048;
-        v16 = [v8 count];
+        v16 = [timedOutItemIDs2 count];
         _os_log_impl(&dword_214A5E000, v7, OS_LOG_TYPE_DEFAULT, "%p: Triggering a reload for %lu timed out itemIDs", buf, 0x16u);
       }
 
       [(MessageListSectionDataSource *)self setHasReloadedForTimeOut:1];
-      v9 = [(MessageListSectionDataSource *)self timedOutItemIDs];
+      timedOutItemIDs3 = [(MessageListSectionDataSource *)self timedOutItemIDs];
       v10 = [MEMORY[0x277CBEB58] set];
       [(MessageListSectionDataSource *)self setTimedOutItemIDs:v10];
 
-      if ([v9 count])
+      if ([timedOutItemIDs3 count])
       {
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __62__MessageListSectionDataSource__maybeReloadForTimedOutItemIDs__block_invoke;
         v11[3] = &unk_2781894E0;
         v11[4] = self;
-        v9 = v9;
-        v12 = v9;
+        timedOutItemIDs3 = timedOutItemIDs3;
+        v12 = timedOutItemIDs3;
         [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:0 cleanSnapshot:0 isLastUpdate:1 prepare:0 update:v11 completion:0];
       }
 
@@ -2605,28 +2605,28 @@ id __62__MessageListSectionDataSource__maybeReloadForTimedOutItemIDs__block_invo
   return v14;
 }
 
-- (void)_addedItemIDs:(id)a3 before:(BOOL)a4 existingItemID:(id)a5 toThreadWithItemID:(id)a6 inCollection:(id)a7 isLastObserver:(BOOL)a8
+- (void)_addedItemIDs:(id)ds before:(BOOL)before existingItemID:(id)d toThreadWithItemID:(id)iD inCollection:(id)collection isLastObserver:(BOOL)observer
 {
-  v8 = a8;
-  v12 = a4;
+  observerCopy = observer;
+  beforeCopy = before;
   v64 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v26 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(MessageListSectionDataSource *)self messageList];
+  dsCopy = ds;
+  dCopy = d;
+  iDCopy = iD;
+  collectionCopy = collection;
+  messageList = [(MessageListSectionDataSource *)self messageList];
 
-  if (v17 == v16)
+  if (messageList == collectionCopy)
   {
-    v18 = [(MessageListSectionDataSource *)self provider];
-    if (v18)
+    provider = [(MessageListSectionDataSource *)self provider];
+    if (provider)
     {
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x3032000000;
       v59 = __Block_byref_object_copy__0;
       v60 = __Block_byref_object_dispose__0;
-      v61 = [v14 copy];
+      v61 = [dsCopy copy];
       v54[0] = 0;
       v54[1] = v54;
       v54[2] = 0x2020000000;
@@ -2639,12 +2639,12 @@ id __62__MessageListSectionDataSource__maybeReloadForTimedOutItemIDs__block_invo
       v50[1] = v50;
       v50[2] = 0x2020000000;
       v51 = -86;
-      v20 = [(MessageListSectionDataSource *)self signpostLog];
-      v21 = os_signpost_id_generate(v20);
+      signpostLog = [(MessageListSectionDataSource *)self signpostLog];
+      v21 = os_signpost_id_generate(signpostLog);
 
-      v22 = [(MessageListSectionDataSource *)self signpostLog];
-      v23 = v22;
-      if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
+      signpostLog2 = [(MessageListSectionDataSource *)self signpostLog];
+      v23 = signpostLog2;
+      if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(signpostLog2))
       {
         v24 = [*(*&buf[8] + 40) count];
         *v56 = 134217984;
@@ -2658,19 +2658,19 @@ id __62__MessageListSectionDataSource__maybeReloadForTimedOutItemIDs__block_invo
       v40[3] = &unk_278189530;
       v40[4] = self;
       v45 = v54;
-      v41 = v15;
+      v41 = iDCopy;
       v46 = v52;
       v47 = v50;
       v48 = buf;
-      v42 = v14;
-      v49 = v12;
-      v43 = v26;
-      v44 = v16;
+      v42 = dsCopy;
+      v49 = beforeCopy;
+      v43 = dCopy;
+      v44 = collectionCopy;
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __115__MessageListSectionDataSource__addedItemIDs_before_existingItemID_toThreadWithItemID_inCollection_isLastObserver___block_invoke_146;
       v34[3] = &unk_278189558;
-      v39 = v12;
+      v39 = beforeCopy;
       v34[4] = self;
       v37 = buf;
       v35 = v43;
@@ -2681,12 +2681,12 @@ id __62__MessageListSectionDataSource__maybeReloadForTimedOutItemIDs__block_invo
       v27[2] = __115__MessageListSectionDataSource__addedItemIDs_before_existingItemID_toThreadWithItemID_inCollection_isLastObserver___block_invoke_2_147;
       v27[3] = &unk_278189580;
       v28 = v44;
-      v29 = self;
+      selfCopy = self;
       v30 = buf;
       v31 = v54;
       v32 = v52;
       v33 = v21;
-      [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:1 cleanSnapshot:0 isLastUpdate:v8 prepare:v40 update:v34 completion:v27];
+      [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:1 cleanSnapshot:0 isLastUpdate:observerCopy prepare:v40 update:v34 completion:v27];
 
       _Block_object_dispose(v50, 8);
       _Block_object_dispose(v52, 8);
@@ -2706,23 +2706,23 @@ id __62__MessageListSectionDataSource__maybeReloadForTimedOutItemIDs__block_invo
 
   else
   {
-    v18 = [(MessageListSectionDataSource *)self log];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    provider = [(MessageListSectionDataSource *)self log];
+    if (os_log_type_enabled(provider, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v16 ef_publicDescription];
+      ef_publicDescription = [collectionCopy ef_publicDescription];
       *buf = 134219266;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v19;
+      *&buf[14] = ef_publicDescription;
       *&buf[22] = 2114;
-      v59 = v14;
+      v59 = dsCopy;
       LOWORD(v60) = 1024;
-      *(&v60 + 2) = v12;
+      *(&v60 + 2) = beforeCopy;
       HIWORD(v60) = 2114;
-      v61 = v26;
+      v61 = dCopy;
       v62 = 2114;
-      v63 = v15;
-      _os_log_impl(&dword_214A5E000, v18, OS_LOG_TYPE_DEFAULT, "%p: Collection (%{public}@) is stale - ignore added item ids: %{public}@, before: %{BOOL}d, existingItemID: %{public}@, threadItemID: %{public}@", buf, 0x3Au);
+      v63 = iDCopy;
+      _os_log_impl(&dword_214A5E000, provider, OS_LOG_TYPE_DEFAULT, "%p: Collection (%{public}@) is stale - ignore added item ids: %{public}@, before: %{BOOL}d, existingItemID: %{public}@, threadItemID: %{public}@", buf, 0x3Au);
     }
   }
 }
@@ -3060,11 +3060,11 @@ void __115__MessageListSectionDataSource__addedItemIDs_before_existingItemID_toT
   }
 }
 
-- (void)_enumerateItemIDs:(id)a3 block:(id)a4
+- (void)_enumerateItemIDs:(id)ds block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = vcvtpd_u64_f64([v5 count] / 200.0);
+  dsCopy = ds;
+  blockCopy = block;
+  v7 = vcvtpd_u64_f64([dsCopy count] / 200.0);
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -3073,11 +3073,11 @@ void __115__MessageListSectionDataSource__addedItemIDs_before_existingItemID_toT
   v9[1] = 3221225472;
   v9[2] = __56__MessageListSectionDataSource__enumerateItemIDs_block___block_invoke;
   v9[3] = &unk_2781895A8;
-  v8 = v6;
+  v8 = blockCopy;
   v10 = v8;
   v11 = v13;
   v12 = v7;
-  [v5 ef_enumerateObjectsInBatchesOfSize:200 block:v9];
+  [dsCopy ef_enumerateObjectsInBatchesOfSize:200 block:v9];
 
   _Block_object_dispose(v13, 8);
 }
@@ -3089,12 +3089,12 @@ uint64_t __56__MessageListSectionDataSource__enumerateItemIDs_block___block_invo
   return (*(v1 + 16))(v1);
 }
 
-- (void)_deleteItemsWithIDs:(id)a3 fromCollection:(id)a4 animated:(BOOL)a5 useImmediateCompletion:(BOOL)a6 completionHandler:(id)a7
+- (void)_deleteItemsWithIDs:(id)ds fromCollection:(id)collection animated:(BOOL)animated useImmediateCompletion:(BOOL)completion completionHandler:(id)handler
 {
-  v8 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  animatedCopy = animated;
+  dsCopy = ds;
+  collectionCopy = collection;
+  handlerCopy = handler;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
@@ -3112,18 +3112,18 @@ uint64_t __56__MessageListSectionDataSource__enumerateItemIDs_block___block_invo
   v20[2] = __117__MessageListSectionDataSource__deleteItemsWithIDs_fromCollection_animated_useImmediateCompletion_completionHandler___block_invoke_2;
   v20[3] = &unk_2781894E0;
   v20[4] = self;
-  v21 = v11;
+  v21 = dsCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __117__MessageListSectionDataSource__deleteItemsWithIDs_fromCollection_animated_useImmediateCompletion_completionHandler___block_invoke_152;
   v16[3] = &unk_2781895F8;
-  v14 = v13;
+  v14 = handlerCopy;
   v18 = v14;
   v16[4] = self;
   v15 = v21;
   v17 = v15;
   v19 = v23;
-  [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:v8 cleanSnapshot:0 isLastUpdate:1 prepare:v22 update:v20 completion:v16];
+  [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:animatedCopy cleanSnapshot:0 isLastUpdate:1 prepare:v22 update:v20 completion:v16];
 
   _Block_object_dispose(v23, 8);
 }
@@ -3208,25 +3208,25 @@ void __117__MessageListSectionDataSource__deleteItemsWithIDs_fromCollection_anim
   [v10 messageListSectionDataSource:*(a1 + 32) deletedMessagesWithItemIdentifiers:*(a1 + 40)];
 }
 
-- (void)_reloadPreparedItemIDsForCollection:(id)a3 completion:(id)a4
+- (void)_reloadPreparedItemIDsForCollection:(id)collection completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(MessageListSectionDataSource *)self _preparedMessageListItemIDs];
-  if ([v6 count])
+  completionCopy = completion;
+  _preparedMessageListItemIDs = [(MessageListSectionDataSource *)self _preparedMessageListItemIDs];
+  if ([_preparedMessageListItemIDs count])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __79__MessageListSectionDataSource__reloadPreparedItemIDsForCollection_completion___block_invoke;
     v7[3] = &unk_278189620;
-    v8 = v6;
-    v9 = self;
-    v10 = v5;
+    v8 = _preparedMessageListItemIDs;
+    selfCopy = self;
+    v10 = completionCopy;
     [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:0 cleanSnapshot:0 isLastUpdate:1 prepare:0 update:v7 completion:0];
   }
 
   else
   {
-    (*(v5 + 2))(v5, v6);
+    (*(completionCopy + 2))(completionCopy, _preparedMessageListItemIDs);
   }
 }
 
@@ -3292,23 +3292,23 @@ LABEL_7:
   return v21;
 }
 
-- (void)_performDataSourceUpdateAnimated:(BOOL)a3 cleanSnapshot:(BOOL)a4 isLastUpdate:(BOOL)a5 prepare:(id)a6 update:(id)a7 completion:(id)a8
+- (void)_performDataSourceUpdateAnimated:(BOOL)animated cleanSnapshot:(BOOL)snapshot isLastUpdate:(BOOL)update prepare:(id)prepare update:(id)a7 completion:(id)completion
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v14 = a6;
+  updateCopy = update;
+  snapshotCopy = snapshot;
+  animatedCopy = animated;
+  prepareCopy = prepare;
   v15 = a7;
-  v16 = a8;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_nextUpdateNeedsCleanSnapshotLock);
   if ([(MessageListSectionDataSource *)self nextUpdateNeedsCleanSnapshot])
   {
     [(MessageListSectionDataSource *)self setNextUpdateNeedsCleanSnapshot:0];
-    v11 = 1;
+    snapshotCopy = 1;
   }
 
   os_unfair_lock_unlock(&self->_nextUpdateNeedsCleanSnapshotLock);
-  v17 = [(MessageListSectionDataSource *)self provider];
+  provider = [(MessageListSectionDataSource *)self provider];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __118__MessageListSectionDataSource__performDataSourceUpdateAnimated_cleanSnapshot_isLastUpdate_prepare_update_completion___block_invoke;
@@ -3316,7 +3316,7 @@ LABEL_7:
   v19[4] = self;
   v20 = v15;
   v18 = v15;
-  [v17 messageListSectionDataSource:self performUpdateAnimated:v12 cleanSnapshot:v11 isLastUpdate:v10 prepare:v14 update:v19 completion:v16];
+  [provider messageListSectionDataSource:self performUpdateAnimated:animatedCopy cleanSnapshot:snapshotCopy isLastUpdate:updateCopy prepare:prepareCopy update:v19 completion:completionCopy];
 }
 
 id __118__MessageListSectionDataSource__performDataSourceUpdateAnimated_cleanSnapshot_isLastUpdate_prepare_update_completion___block_invoke(uint64_t a1)
@@ -3375,30 +3375,30 @@ uint64_t __118__MessageListSectionDataSource__performDataSourceUpdateAnimated_cl
 
 - (id)_preparedMessageListItemIDs
 {
-  v3 = [(MessageListSectionDataSource *)self collectionView];
-  v4 = [v3 mui_indexPathsForPreparedItems];
+  collectionView = [(MessageListSectionDataSource *)self collectionView];
+  mui_indexPathsForPreparedItems = [collectionView mui_indexPathsForPreparedItems];
 
-  v5 = [(MessageListSectionDataSource *)self provider];
-  v6 = [v5 snapshotForMessageListSectionDataSource:self];
-  v7 = [v6 mui_validItemIDsFromIndexPaths:v4];
+  provider = [(MessageListSectionDataSource *)self provider];
+  v6 = [provider snapshotForMessageListSectionDataSource:self];
+  v7 = [v6 mui_validItemIDsFromIndexPaths:mui_indexPathsForPreparedItems];
 
   return v7;
 }
 
-- (void)_reloadItemsWithItemIDs:(id)a3
+- (void)_reloadItemsWithItemIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__MessageListSectionDataSource__reloadItemsWithItemIDs___block_invoke;
   v9[3] = &unk_278188F78;
   v9[4] = self;
-  v10 = v4;
+  v10 = dsCopy;
   v5 = v9;
   v6 = MEMORY[0x277D071B8];
-  v7 = v4;
-  v8 = [v6 mainThreadScheduler];
-  [v8 performBlock:v5];
+  v7 = dsCopy;
+  mainThreadScheduler = [v6 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v5];
 }
 
 void __56__MessageListSectionDataSource__reloadItemsWithItemIDs___block_invoke(uint64_t a1)
@@ -3440,17 +3440,17 @@ void __56__MessageListSectionDataSource__reloadItemsWithItemIDs___block_invoke(u
   }
 }
 
-- (void)_recoverFailedItemIDsIfNeededForCollection:(id)a3 excluding:(id)a4 completion:(id)a5
+- (void)_recoverFailedItemIDsIfNeededForCollection:(id)collection excluding:(id)excluding completion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v28 = a4;
-  v8 = a5;
+  collectionCopy = collection;
+  excludingCopy = excluding;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__MessageListSectionDataSource__recoverFailedItemIDsIfNeededForCollection_excluding_completion___block_invoke;
   aBlock[3] = &unk_2781891C0;
-  v26 = v8;
+  v26 = completionCopy;
   v45 = v26;
   v27 = _Block_copy(aBlock);
   v38 = 0;
@@ -3459,17 +3459,17 @@ void __56__MessageListSectionDataSource__reloadItemsWithItemIDs___block_invoke(u
   v41 = __Block_byref_object_copy__0;
   v42 = __Block_byref_object_dispose__0;
   v43 = 0;
-  v9 = [(MessageListSectionDataSource *)self failedItemIDs];
+  failedItemIDs = [(MessageListSectionDataSource *)self failedItemIDs];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __96__MessageListSectionDataSource__recoverFailedItemIDsIfNeededForCollection_excluding_completion___block_invoke_2;
   v37[3] = &unk_278189670;
   v37[4] = &v38;
-  [v9 performWhileLocked:v37];
+  [failedItemIDs performWhileLocked:v37];
 
-  if (![v39[5] count] || (-[MessageListSectionDataSource messageList](self, "messageList", v26), v10 = objc_claimAutoreleasedReturnValue(), v11 = v10 == v29, v10, v11))
+  if (![v39[5] count] || (-[MessageListSectionDataSource messageList](self, "messageList", v26), v10 = objc_claimAutoreleasedReturnValue(), v11 = v10 == collectionCopy, v10, v11))
   {
-    v12 = [(MessageListSectionDataSource *)self messageList];
+    messageList = [(MessageListSectionDataSource *)self messageList];
     v14 = objc_opt_new();
     v35 = 0u;
     v36 = 0u;
@@ -3490,13 +3490,13 @@ void __56__MessageListSectionDataSource__reloadItemsWithItemIDs___block_invoke(u
           }
 
           v19 = *(*(&v33 + 1) + 8 * i);
-          if (([v12 containsItemID:v19]& 1) == 0)
+          if (([messageList containsItemID:v19]& 1) == 0)
           {
             v20 = [(MessageListSectionDataSource *)self log];
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218242;
-              v48 = self;
+              selfCopy4 = self;
               v49 = 2114;
               v50 = v19;
               _os_log_impl(&dword_214A5E000, v20, OS_LOG_TYPE_DEFAULT, "%p: %{public}@ is not part of collection - do not attempt recovery", buf, 0x16u);
@@ -3515,10 +3515,10 @@ void __56__MessageListSectionDataSource__reloadItemsWithItemIDs___block_invoke(u
     [v39[5] ef_removeObjectsInArray:v14];
     if ([v39[5] count])
     {
-      if ([v28 count])
+      if ([excludingCopy count])
       {
         v21 = [v39[5] count];
-        [v39[5] ef_removeObjectsInArray:v28];
+        [v39[5] ef_removeObjectsInArray:excludingCopy];
         if ([v39[5] count] != v21)
         {
           v22 = [(MessageListSectionDataSource *)self log];
@@ -3526,7 +3526,7 @@ void __56__MessageListSectionDataSource__reloadItemsWithItemIDs___block_invoke(u
           {
             v23 = [v39[5] count];
             *buf = 134218240;
-            v48 = self;
+            selfCopy4 = self;
             v49 = 2048;
             v50 = v21 - v23;
             _os_log_impl(&dword_214A5E000, v22, OS_LOG_TYPE_DEFAULT, "%p: Skipping reloading of %ld failedItemIDs", buf, 0x16u);
@@ -3555,11 +3555,11 @@ LABEL_28:
       v24 = [(MessageListSectionDataSource *)self log];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v29 ef_publicDescription];
+        ef_publicDescription = [collectionCopy ef_publicDescription];
         *buf = 134218242;
-        v48 = self;
+        selfCopy4 = self;
         v49 = 2114;
-        v50 = v25;
+        v50 = ef_publicDescription;
         _os_log_impl(&dword_214A5E000, v24, OS_LOG_TYPE_DEFAULT, "%p: Skip recovery of collection:%{public}@, no failed item ids", buf, 0x16u);
       }
     }
@@ -3568,15 +3568,15 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v12 = [(MessageListSectionDataSource *)self log];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  messageList = [(MessageListSectionDataSource *)self log];
+  if (os_log_type_enabled(messageList, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v29 ef_publicDescription];
+    ef_publicDescription2 = [collectionCopy ef_publicDescription];
     *buf = 134218242;
-    v48 = self;
+    selfCopy4 = self;
     v49 = 2112;
-    v50 = v13;
-    _os_log_impl(&dword_214A5E000, v12, OS_LOG_TYPE_DEFAULT, "%p: Skip recovery, collection stale:%@", buf, 0x16u);
+    v50 = ef_publicDescription2;
+    _os_log_impl(&dword_214A5E000, messageList, OS_LOG_TYPE_DEFAULT, "%p: Skip recovery, collection stale:%@", buf, 0x16u);
   }
 
 LABEL_29:
@@ -3679,27 +3679,27 @@ id __96__MessageListSectionDataSource__recoverFailedItemIDsIfNeededForCollection
   return v14;
 }
 
-- (void)_updateSelectionStateForItemsWithIDs:(id)a3 inThreadWithItemID:(id)a4 snapshot:(id)a5 shouldDeselectMessages:(BOOL)a6
+- (void)_updateSelectionStateForItemsWithIDs:(id)ds inThreadWithItemID:(id)d snapshot:(id)snapshot shouldDeselectMessages:(BOOL)messages
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dsCopy = ds;
+  dCopy = d;
+  snapshotCopy = snapshot;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __120__MessageListSectionDataSource__updateSelectionStateForItemsWithIDs_inThreadWithItemID_snapshot_shouldDeselectMessages___block_invoke;
   v19[3] = &unk_2781896C0;
-  v23 = a6;
+  messagesCopy = messages;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
+  v20 = dsCopy;
+  v21 = dCopy;
+  v22 = snapshotCopy;
   v13 = v19;
   v14 = MEMORY[0x277D071B8];
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = [v14 mainThreadScheduler];
-  [v18 performBlock:v13];
+  v15 = snapshotCopy;
+  v16 = dCopy;
+  v17 = dsCopy;
+  mainThreadScheduler = [v14 mainThreadScheduler];
+  [mainThreadScheduler performBlock:v13];
 }
 
 void __120__MessageListSectionDataSource__updateSelectionStateForItemsWithIDs_inThreadWithItemID_snapshot_shouldDeselectMessages___block_invoke(uint64_t a1)
@@ -3790,116 +3790,116 @@ void __120__MessageListSectionDataSource__updateSelectionStateForItemsWithIDs_in
   }
 }
 
-- (void)didSelectDisclosureButtonForMessageListItem:(id)a3 disclosureEnabled:(BOOL)a4
+- (void)didSelectDisclosureButtonForMessageListItem:(id)item disclosureEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 itemID];
-  if (v7)
+  itemCopy = item;
+  itemID = [itemCopy itemID];
+  if (itemID)
   {
-    v8 = [(MessageListSectionDataSource *)self messageList];
-    v9 = [v8 expandedThreadItemIDs];
-    v10 = [v9 containsObject:v7];
+    messageList = [(MessageListSectionDataSource *)self messageList];
+    expandedThreadItemIDs = [messageList expandedThreadItemIDs];
+    v10 = [expandedThreadItemIDs containsObject:itemID];
 
-    if (v10 == v4)
+    if (v10 == enabledCopy)
     {
-      v11 = [(MessageListSectionDataSource *)self provider];
-      v12 = [v11 messageListSectionDataSource:self indexPathForItemIdentifier:v7];
-      v13 = [(MessageListSectionDataSource *)self collectionView];
+      provider = [(MessageListSectionDataSource *)self provider];
+      v12 = [provider messageListSectionDataSource:self indexPathForItemIdentifier:itemID];
+      collectionView = [(MessageListSectionDataSource *)self collectionView];
       v29 = v12;
-      v14 = [v13 cellForItemAtIndexPath:v12];
+      v14 = [collectionView cellForItemAtIndexPath:v12];
 
       if ([v14 conformsToProtocol:&unk_2827100B8])
       {
-        [v14 setDisclosureEnabled:v4 ^ 1u animated:1];
+        [v14 setDisclosureEnabled:enabledCopy ^ 1u animated:1];
       }
 
-      v15 = [(MessageListSectionDataSource *)self threadHelper];
-      v16 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
-      v17 = [v6 itemID];
-      v18 = [v11 snapshotForMessageListSectionDataSource:self];
-      v19 = [v15 itemIDBeforeItemID:v17 snapshot:v18];
+      threadHelper = [(MessageListSectionDataSource *)self threadHelper];
+      v16 = [MEMORY[0x277CBEB18] arrayWithObject:itemID];
+      itemID2 = [itemCopy itemID];
+      v18 = [provider snapshotForMessageListSectionDataSource:self];
+      v19 = [threadHelper itemIDBeforeItemID:itemID2 snapshot:v18];
 
       if (v19)
       {
         [v16 addObject:v19];
       }
 
-      [v15 addItemIDsNeedingReloadPostUpdate:v16];
+      [threadHelper addItemIDsNeedingReloadPostUpdate:v16];
       v20 = [(MessageListSectionDataSource *)self log];
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-      if (v4)
+      if (enabledCopy)
       {
         if (v21)
         {
-          v22 = [v6 itemID];
+          itemID3 = [itemCopy itemID];
           *buf = 134218242;
-          v31 = self;
+          selfCopy3 = self;
           v32 = 2112;
-          v33 = v22;
+          v33 = itemID3;
           _os_log_impl(&dword_214A5E000, v20, OS_LOG_TYPE_DEFAULT, "%p: Collapse thread: %@", buf, 0x16u);
         }
 
-        v23 = [(MessageListSectionDataSource *)self selectionModelProvider];
-        v24 = [v23 selectionModelForMessageListSectionDataSource:self];
-        v25 = [v6 itemID];
-        [v24 willCollapseThreadItemID:v25];
+        selectionModelProvider = [(MessageListSectionDataSource *)self selectionModelProvider];
+        v24 = [selectionModelProvider selectionModelForMessageListSectionDataSource:self];
+        itemID4 = [itemCopy itemID];
+        [v24 willCollapseThreadItemID:itemID4];
 
-        [v15 collapseMessageListItem:v6];
+        [threadHelper collapseMessageListItem:itemCopy];
       }
 
       else
       {
         if (v21)
         {
-          v26 = [v6 itemID];
+          itemID5 = [itemCopy itemID];
           *buf = 134218242;
-          v31 = self;
+          selfCopy3 = self;
           v32 = 2112;
-          v33 = v26;
+          v33 = itemID5;
           _os_log_impl(&dword_214A5E000, v20, OS_LOG_TYPE_DEFAULT, "%p: Expand thread: %@", buf, 0x16u);
         }
 
-        v27 = [v6 itemID];
-        [v15 addExpandingThreadWithItemID:v27];
+        itemID6 = [itemCopy itemID];
+        [threadHelper addExpandingThreadWithItemID:itemID6];
 
-        [v15 expandMessageListItem:v6];
+        [threadHelper expandMessageListItem:itemCopy];
       }
     }
 
     else
     {
-      v11 = [(MessageListSectionDataSource *)self log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      provider = [(MessageListSectionDataSource *)self log];
+      if (os_log_type_enabled(provider, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v31 = self;
-        _os_log_impl(&dword_214A5E000, v11, OS_LOG_TYPE_DEFAULT, "%p: Skipping attempting to expand or collapse thread that is already expanded or collapsed", buf, 0xCu);
+        selfCopy3 = self;
+        _os_log_impl(&dword_214A5E000, provider, OS_LOG_TYPE_DEFAULT, "%p: Skipping attempting to expand or collapse thread that is already expanded or collapsed", buf, 0xCu);
       }
     }
   }
 
   else
   {
-    v11 = [(MessageListSectionDataSource *)self log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    provider = [(MessageListSectionDataSource *)self log];
+    if (os_log_type_enabled(provider, OS_LOG_TYPE_ERROR))
     {
-      [MessageListSectionDataSource didSelectDisclosureButtonForMessageListItem:v11 disclosureEnabled:?];
+      [MessageListSectionDataSource didSelectDisclosureButtonForMessageListItem:provider disclosureEnabled:?];
     }
   }
 }
 
-- (id)configuredReusableSupplementaryViewForCollectionView:(id)a3 elementKind:(id)a4 indexPath:(id)a5
+- (id)configuredReusableSupplementaryViewForCollectionView:(id)view elementKind:(id)kind indexPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:*MEMORY[0x277D767D8]] && -[MessageListSectionDataSource _isSectionHeaderAllowed](self, "_isSectionHeaderAllowed"))
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:*MEMORY[0x277D767D8]] && -[MessageListSectionDataSource _isSectionHeaderAllowed](self, "_isSectionHeaderAllowed"))
   {
-    v11 = [(MessageListSectionDataSource *)self headerRegistration];
-    v12 = [v8 dequeueConfiguredReusableSupplementaryViewWithRegistration:v11 forIndexPath:v10];
+    headerRegistration = [(MessageListSectionDataSource *)self headerRegistration];
+    v12 = [viewCopy dequeueConfiguredReusableSupplementaryViewWithRegistration:headerRegistration forIndexPath:pathCopy];
   }
 
   else
@@ -3908,15 +3908,15 @@ void __120__MessageListSectionDataSource__updateSelectionStateForItemsWithIDs_in
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v15 = 134219010;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v8;
+      v18 = viewCopy;
       v19 = 2114;
-      v20 = v9;
+      v20 = kindCopy;
       v21 = 2114;
-      v22 = v10;
+      v22 = pathCopy;
       v23 = 2048;
-      v24 = [(MessageListSectionDataSource *)self headerType];
+      headerType = [(MessageListSectionDataSource *)self headerType];
       _os_log_error_impl(&dword_214A5E000, v13, OS_LOG_TYPE_ERROR, "%p: unable to configure supplementary view for collectionView:%{public}@ of elementKind:%{public}@ at indexPath:%{public}@, headerType:%lu", &v15, 0x34u);
     }
 
@@ -3926,10 +3926,10 @@ void __120__MessageListSectionDataSource__updateSelectionStateForItemsWithIDs_in
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -3939,11 +3939,11 @@ void __120__MessageListSectionDataSource__updateSelectionStateForItemsWithIDs_in
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MessageListSectionDataSource *)self section];
-      v7 = [(MessageListSectionDataSource *)v5 section];
+      v5 = equalCopy;
+      section = [(MessageListSectionDataSource *)self section];
+      section2 = [(MessageListSectionDataSource *)v5 section];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [section isEqualToString:section2];
     }
 
     else
@@ -3955,34 +3955,34 @@ void __120__MessageListSectionDataSource__updateSelectionStateForItemsWithIDs_in
   return v8;
 }
 
-- (void)_recordTailspinForBlankCellWithError:(void *)a1
+- (void)_recordTailspinForBlankCellWithError:(void *)error
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = [a1 state];
-    if ([v4 didRecordTailspin])
+    state = [error state];
+    if ([state didRecordTailspin])
     {
-      v5 = [a1 log];
+      v5 = [error log];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v10 = a1;
+        errorCopy = error;
         _os_log_impl(&dword_214A5E000, v5, OS_LOG_TYPE_DEFAULT, "%p: Tailspin has already been generated in this session", buf, 0xCu);
       }
     }
 
     else
     {
-      [v4 setDidRecordTailspin:1];
+      [state setDidRecordTailspin:1];
       v6 = [MEMORY[0x277CCAB68] stringWithFormat:@"Blank Cell - Error %ld", objc_msgSend(v3, "code")];
-      v7 = [v3 ef_underlyingError];
+      ef_underlyingError = [v3 ef_underlyingError];
 
-      if (v7)
+      if (ef_underlyingError)
       {
-        v8 = [v3 ef_underlyingError];
-        [v6 appendFormat:@" (%ld)", objc_msgSend(v8, "code")];
+        ef_underlyingError2 = [v3 ef_underlyingError];
+        [v6 appendFormat:@" (%ld)", objc_msgSend(ef_underlyingError2, "code")];
       }
 
       EFSaveTailspin();
@@ -3990,52 +3990,52 @@ void __120__MessageListSectionDataSource__updateSelectionStateForItemsWithIDs_in
   }
 }
 
-- (void)_showBlankCellAlertWithItemID:(void *)a3 indexPath:(void *)a4 reason:
+- (void)_showBlankCellAlertWithItemID:(void *)d indexPath:(void *)path reason:
 {
   v18 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  dCopy = d;
+  pathCopy = path;
+  if (self)
   {
-    v10 = [a1 state];
-    if ([v10 didAlertOnBlankCell])
+    state = [self state];
+    if ([state didAlertOnBlankCell])
     {
-      v11 = [a1 log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      delegate = [self log];
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134218498;
-        v13 = a1;
+        selfCopy = self;
         v14 = 2114;
         v15 = v7;
         v16 = 2114;
-        v17 = v8;
-        _os_log_impl(&dword_214A5E000, v11, OS_LOG_TYPE_DEFAULT, "%p: Blank cell alert controller was already visible. Don't show for itemID: %{public}@, indexPath: %{public}@", &v12, 0x20u);
+        v17 = dCopy;
+        _os_log_impl(&dword_214A5E000, delegate, OS_LOG_TYPE_DEFAULT, "%p: Blank cell alert controller was already visible. Don't show for itemID: %{public}@, indexPath: %{public}@", &v12, 0x20u);
       }
     }
 
     else
     {
-      [v10 setDidAlertOnBlankCell:1];
-      v11 = [a1 delegate];
-      [v11 showBlankCellAlertForMessageListSectionDataSource:a1 itemID:v7 indexPath:v8 reason:v9];
+      [state setDidAlertOnBlankCell:1];
+      delegate = [self delegate];
+      [delegate showBlankCellAlertForMessageListSectionDataSource:self itemID:v7 indexPath:dCopy reason:pathCopy];
     }
   }
 }
 
 - (void)_reloadDataSource
 {
-  if (a1)
+  if (self)
   {
-    [a1 stopObserving];
-    v2 = [a1 messageList];
-    v5 = [v2 copy];
+    [self stopObserving];
+    messageList = [self messageList];
+    v5 = [messageList copy];
 
-    v3 = [a1 delegate];
-    v4 = [v3 initialLoadCompletedPromiseForMessageListSectionDataSource:a1];
-    [a1 replaceMessageList:v5 initialLoadCompletedPromise:v4];
+    delegate = [self delegate];
+    v4 = [delegate initialLoadCompletedPromiseForMessageListSectionDataSource:self];
+    [self replaceMessageList:v5 initialLoadCompletedPromise:v4];
 
-    [a1 beginObservingAnimated:1 nextUpdateNeedsCleanSnapshot:1];
+    [self beginObservingAnimated:1 nextUpdateNeedsCleanSnapshot:1];
   }
 }
 

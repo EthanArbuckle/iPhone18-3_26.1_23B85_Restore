@@ -1,20 +1,20 @@
 @interface UseCaseAvailabilityInfo
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UseCaseAvailabilityInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  UseCaseAvailabilityInfo.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  UseCaseAvailabilityInfo.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   UseCaseAvailabilityInfo.description.getter();
 
   v3 = sub_18E44EA8C();

@@ -1,6 +1,6 @@
 @interface POXMLContext
 - (POXMLContext)init;
-- (id)nameSpacePrefixForHref:(id)a3;
+- (id)nameSpacePrefixForHref:(id)href;
 - (void)dealloc;
 @end
 
@@ -32,13 +32,13 @@
   [(POXMLContext *)&v3 dealloc];
 }
 
-- (id)nameSpacePrefixForHref:(id)a3
+- (id)nameSpacePrefixForHref:(id)href
 {
-  v4 = a3;
+  hrefCopy = href;
   RootElement = xmlDocGetRootElement([(POXMLContext *)self xmldoc]);
   if (RootElement)
   {
-    v6 = xmlSearchNsByHref(-[POXMLContext xmldoc](self, "xmldoc"), RootElement, [v4 UTF8String]);
+    v6 = xmlSearchNsByHref(-[POXMLContext xmldoc](self, "xmldoc"), RootElement, [hrefCopy UTF8String]);
     if (v6)
     {
       if (v6->prefix)

@@ -1,17 +1,17 @@
 @interface ButtonView
-- (_TtC16HealthArticlesUI10ButtonView)initWithCoder:(id)a3;
-- (_TtC16HealthArticlesUI10ButtonView)initWithFrame:(CGRect)a3;
-- (void)performActionWithSender:(id)a3;
+- (_TtC16HealthArticlesUI10ButtonView)initWithCoder:(id)coder;
+- (_TtC16HealthArticlesUI10ButtonView)initWithFrame:(CGRect)frame;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation ButtonView
 
-- (_TtC16HealthArticlesUI10ButtonView)initWithFrame:(CGRect)a3
+- (_TtC16HealthArticlesUI10ButtonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_25133F8F4();
   sub_25133F8E4();
   sub_25133F894();
@@ -25,7 +25,7 @@
   return v7;
 }
 
-- (_TtC16HealthArticlesUI10ButtonView)initWithCoder:(id)a3
+- (_TtC16HealthArticlesUI10ButtonView)initWithCoder:(id)coder
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -45,7 +45,7 @@
   return result;
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -59,7 +59,7 @@
   if (v4)
   {
     v5 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC16HealthArticlesUI10ButtonView_buttonAction);
-    v6 = self;
+    selfCopy = self;
     v7 = sub_25131ACF0(v4);
     v4(v7);
 

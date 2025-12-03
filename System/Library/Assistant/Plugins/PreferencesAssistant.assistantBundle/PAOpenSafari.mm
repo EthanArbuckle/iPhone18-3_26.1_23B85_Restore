@@ -1,13 +1,13 @@
 @interface PAOpenSafari
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation PAOpenSafari
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a4;
-  v6 = a3;
+  helperCopy = helper;
+  completionCopy = completion;
   v7 = PALogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,7 +22,7 @@
   if (v9 && (v10 & 1) != 0)
   {
     v12 = +[PSSafariSettingsDetail preferencesURL];
-    [v5 openSensitiveURL:v12];
+    [helperCopy openSensitiveURL:v12];
     v13 = SACommandSucceeded_ptr;
   }
 
@@ -54,8 +54,8 @@
   }
 
   v16 = objc_alloc_init(*v13);
-  v17 = [v16 dictionary];
-  v6[2](v6, v17);
+  dictionary = [v16 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

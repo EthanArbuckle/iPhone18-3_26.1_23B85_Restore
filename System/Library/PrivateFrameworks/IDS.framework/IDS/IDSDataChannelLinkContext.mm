@@ -1,6 +1,6 @@
 @interface IDSDataChannelLinkContext
 - (BOOL)isQUICPod;
-- (IDSDataChannelLinkContext)initWithAttributes:(id *)a3 maxBitrate:(unsigned int)a4 relayServerProvider:(int64_t)a5 relaySessionToken:(id)a6 relaySessionKey:(id)a7 hbhEncryptionkey:(id)a8 hbhDecryptionkey:(id)a9 relayProtocolStackDescription:(id)a10 qrExperiments:(id)a11 featureFlags:(id)a12 linkEngineUniqueID:(id)a13 estimatedPerPacketConstantOverhead:(unsigned __int16)a14;
+- (IDSDataChannelLinkContext)initWithAttributes:(id *)attributes maxBitrate:(unsigned int)bitrate relayServerProvider:(int64_t)provider relaySessionToken:(id)token relaySessionKey:(id)key hbhEncryptionkey:(id)encryptionkey hbhDecryptionkey:(id)decryptionkey relayProtocolStackDescription:(id)self0 qrExperiments:(id)self1 featureFlags:(id)self2 linkEngineUniqueID:(id)self3 estimatedPerPacketConstantOverhead:(unsigned __int16)self4;
 - (IDSDataChannelLinkContext)initWithDummyInformation;
 - (NSString)channelDataBaseProtocolStackDescription;
 - (NSString)interfaceName;
@@ -31,7 +31,7 @@
   {
 LABEL_9:
     self = self;
-    v4 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -60,10 +60,10 @@ LABEL_9:
     self->_internal->_remoteDataSoMask = 0;
     self->_internal->_localRelayLinkID = 4;
     self->_internal->_remoteRelayLinkID = 6;
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v10 = self->_internal;
     uniqueID = v10->_uniqueID;
-    v10->_uniqueID = v9;
+    v10->_uniqueID = uUID;
 
     self->_internal->_channelNumber = 96;
     v12 = [MEMORY[0x1E695DEF0] __imDataWithRandomBytes:32];
@@ -99,23 +99,23 @@ LABEL_9:
   }
 
 LABEL_5:
-  v4 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v4;
+  return selfCopy;
 }
 
-- (IDSDataChannelLinkContext)initWithAttributes:(id *)a3 maxBitrate:(unsigned int)a4 relayServerProvider:(int64_t)a5 relaySessionToken:(id)a6 relaySessionKey:(id)a7 hbhEncryptionkey:(id)a8 hbhDecryptionkey:(id)a9 relayProtocolStackDescription:(id)a10 qrExperiments:(id)a11 featureFlags:(id)a12 linkEngineUniqueID:(id)a13 estimatedPerPacketConstantOverhead:(unsigned __int16)a14
+- (IDSDataChannelLinkContext)initWithAttributes:(id *)attributes maxBitrate:(unsigned int)bitrate relayServerProvider:(int64_t)provider relaySessionToken:(id)token relaySessionKey:(id)key hbhEncryptionkey:(id)encryptionkey hbhDecryptionkey:(id)decryptionkey relayProtocolStackDescription:(id)self0 qrExperiments:(id)self1 featureFlags:(id)self2 linkEngineUniqueID:(id)self3 estimatedPerPacketConstantOverhead:(unsigned __int16)self4
 {
-  v49 = a6;
-  obj = a7;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v51 = a12;
-  v50 = a13;
+  tokenCopy = token;
+  obj = key;
+  keyCopy = key;
+  encryptionkeyCopy = encryptionkey;
+  decryptionkeyCopy = decryptionkey;
+  descriptionCopy = description;
+  experimentsCopy = experiments;
+  flagsCopy = flags;
+  dCopy = d;
   v52.receiver = self;
   v52.super_class = IDSDataChannelLinkContext;
   v23 = [(IDSDataChannelLinkContext *)&v52 init];
@@ -135,77 +135,77 @@ LABEL_10:
     testableLink = v23->_testableLink;
     v23->_testableLink = v26;
 
-    v23->_internal->_linkID = a3->var3;
-    v28 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a3];
+    v23->_internal->_linkID = attributes->var3;
+    v28 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:attributes];
     v29 = v23->_internal;
     uniqueID = v29->_uniqueID;
     v29->_uniqueID = v28;
 
-    objc_storeStrong(&v23->_internal->_linkEngineUniqueID, a13);
-    v31 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a3->var1];
+    objc_storeStrong(&v23->_internal->_linkEngineUniqueID, d);
+    v31 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:attributes->var1];
     v32 = v23->_internal;
     linkUUID = v32->_linkUUID;
     v32->_linkUUID = v31;
 
-    v34 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a3->var2];
+    v34 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:attributes->var2];
     v35 = v23->_internal;
     QRSessionID = v35->_QRSessionID;
     v35->_QRSessionID = v34;
 
-    v23->_internal->_networkType = a3->var4;
-    v23->_internal->_connectionType = a3->var5;
-    v23->_internal->_RATType = a3->var6;
-    v23->_internal->_maxMTU = a3->var16;
-    v23->_internal->_isPartialTLEUPlusOneEnabled = a3->var20;
-    v23->_internal->_isQualityMetadataEnabled = a3->var21;
-    v23->_internal->_relayServerProvider = a5;
-    objc_storeStrong(&v23->_internal->_relaySessionToken, a6);
+    v23->_internal->_networkType = attributes->var4;
+    v23->_internal->_connectionType = attributes->var5;
+    v23->_internal->_RATType = attributes->var6;
+    v23->_internal->_maxMTU = attributes->var16;
+    v23->_internal->_isPartialTLEUPlusOneEnabled = attributes->var20;
+    v23->_internal->_isQualityMetadataEnabled = attributes->var21;
+    v23->_internal->_relayServerProvider = provider;
+    objc_storeStrong(&v23->_internal->_relaySessionToken, token);
     objc_storeStrong(&v23->_internal->_relaySessionKey, obj);
-    v23->_internal->_serverIsDegraded = a3->var10 != 0;
-    v23->_internal->_localLinkFlags |= a3->var11 & 1;
-    v23->_internal->_localLinkFlags |= a3->var11 & 2;
-    v23->_internal->_localLinkFlags |= a3->var11 & 4;
-    v23->_internal->_localLinkFlags |= a3->var11 & 8;
-    v23->_internal->_localLinkFlags |= a3->var11 & 0x10;
-    v23->_internal->_localLinkFlags |= a3->var11 & 0x20;
-    v23->_internal->_localLinkFlags |= a3->var11 & 0x40;
-    v23->_internal->_localLinkFlags |= a3->var11 & 0x80;
-    v23->_internal->_maxBitrate = a4;
-    v23->_internal->_localDataSoMask = a3->var13;
-    v23->_internal->_isVirtualRelayLink = a3->var19;
-    a3->var24[15] = 0;
-    v37 = [MEMORY[0x1E696AEC0] stringWithCString:a3->var24 encoding:4];
+    v23->_internal->_serverIsDegraded = attributes->var10 != 0;
+    v23->_internal->_localLinkFlags |= attributes->var11 & 1;
+    v23->_internal->_localLinkFlags |= attributes->var11 & 2;
+    v23->_internal->_localLinkFlags |= attributes->var11 & 4;
+    v23->_internal->_localLinkFlags |= attributes->var11 & 8;
+    v23->_internal->_localLinkFlags |= attributes->var11 & 0x10;
+    v23->_internal->_localLinkFlags |= attributes->var11 & 0x20;
+    v23->_internal->_localLinkFlags |= attributes->var11 & 0x40;
+    v23->_internal->_localLinkFlags |= attributes->var11 & 0x80;
+    v23->_internal->_maxBitrate = bitrate;
+    v23->_internal->_localDataSoMask = attributes->var13;
+    v23->_internal->_isVirtualRelayLink = attributes->var19;
+    attributes->var24[15] = 0;
+    v37 = [MEMORY[0x1E696AEC0] stringWithCString:attributes->var24 encoding:4];
     v38 = v23->_internal;
     localInterfaceName = v38->_localInterfaceName;
     v38->_localInterfaceName = v37;
 
-    objc_storeStrong(&v23->_internal->_relayProtocolStackDescription, a10);
-    objc_storeStrong(&v23->_internal->_qrExperiments, a11);
-    objc_storeStrong(&v23->_internal->_featureFlags, a12);
-    v23->_internal->_remoteNetworkType = a3->var7;
-    v23->_internal->_remoteConnectionType = a3->var8;
-    v23->_internal->_remoteRATType = a3->var9;
-    v23->_internal->_remoteLinkFlags |= a3->var12 & 1;
-    v23->_internal->_remoteLinkFlags |= a3->var12 & 2;
-    v23->_internal->_remoteLinkFlags |= a3->var12 & 4;
-    v23->_internal->_remoteLinkFlags |= a3->var12 & 8;
-    v23->_internal->_remoteLinkFlags |= a3->var12 & 0x10;
-    v23->_internal->_remoteLinkFlags |= a3->var12 & 0x20;
-    v23->_internal->_remoteLinkFlags |= a3->var12 & 0x40;
-    v23->_internal->_remoteLinkFlags |= a3->var12 & 0x80;
-    v23->_internal->_remoteDataSoMask = a3->var14;
-    v23->_internal->_delegatedLinkID = a3->var23;
-    v23->_internal->_localRelayLinkID = a3->var17;
-    v23->_internal->_remoteRelayLinkID = a3->var18;
-    v23->_internal->_channelNumber = a3->var15;
-    objc_storeStrong(&v23->_internal->_hbhEncryptionkey, a8);
-    objc_storeStrong(&v23->_internal->_hbhDecryptionkey, a9);
+    objc_storeStrong(&v23->_internal->_relayProtocolStackDescription, description);
+    objc_storeStrong(&v23->_internal->_qrExperiments, experiments);
+    objc_storeStrong(&v23->_internal->_featureFlags, flags);
+    v23->_internal->_remoteNetworkType = attributes->var7;
+    v23->_internal->_remoteConnectionType = attributes->var8;
+    v23->_internal->_remoteRATType = attributes->var9;
+    v23->_internal->_remoteLinkFlags |= attributes->var12 & 1;
+    v23->_internal->_remoteLinkFlags |= attributes->var12 & 2;
+    v23->_internal->_remoteLinkFlags |= attributes->var12 & 4;
+    v23->_internal->_remoteLinkFlags |= attributes->var12 & 8;
+    v23->_internal->_remoteLinkFlags |= attributes->var12 & 0x10;
+    v23->_internal->_remoteLinkFlags |= attributes->var12 & 0x20;
+    v23->_internal->_remoteLinkFlags |= attributes->var12 & 0x40;
+    v23->_internal->_remoteLinkFlags |= attributes->var12 & 0x80;
+    v23->_internal->_remoteDataSoMask = attributes->var14;
+    v23->_internal->_delegatedLinkID = attributes->var23;
+    v23->_internal->_localRelayLinkID = attributes->var17;
+    v23->_internal->_remoteRelayLinkID = attributes->var18;
+    v23->_internal->_channelNumber = attributes->var15;
+    objc_storeStrong(&v23->_internal->_hbhEncryptionkey, encryptionkey);
+    objc_storeStrong(&v23->_internal->_hbhDecryptionkey, decryptionkey);
     v40 = objc_alloc_init(_IDSDataChannelLinkConnections);
     v41 = v23->_internal;
     connections = v41->_connections;
     v41->_connections = v40;
 
-    v23->_internal->_estimatedPerPacketConstantOverhead = a14;
+    v23->_internal->_estimatedPerPacketConstantOverhead = overhead;
   }
 
   v43 = v23;
@@ -216,18 +216,18 @@ LABEL_6:
 
 - (BOOL)isQUICPod
 {
-  v2 = [(_IDSDataChannelLinkConnections *)self->_internal->_connections qpod];
-  v3 = v2;
-  v4 = v2 && ([v2 allowOutgoing] & 1) != 0;
+  qpod = [(_IDSDataChannelLinkConnections *)self->_internal->_connections qpod];
+  v3 = qpod;
+  v4 = qpod && ([qpod allowOutgoing] & 1) != 0;
 
   return v4;
 }
 
 - (id)_connection
 {
-  v3 = [(IDSDataChannelLinkContext *)self isQUICPod];
+  isQUICPod = [(IDSDataChannelLinkContext *)self isQUICPod];
   connections = self->_internal->_connections;
-  if (v3)
+  if (isQUICPod)
   {
     [(_IDSDataChannelLinkConnections *)connections qpod];
   }
@@ -243,19 +243,19 @@ LABEL_6:
 
 - (NSString)channelDataBaseProtocolStackDescription
 {
-  v2 = [(IDSDataChannelLinkContext *)self _connection];
-  v3 = v2;
-  if (v2)
+  _connection = [(IDSDataChannelLinkContext *)self _connection];
+  v3 = _connection;
+  if (_connection)
   {
-    v4 = [v2 protocolStack];
+    protocolStack = [_connection protocolStack];
   }
 
   else
   {
-    v4 = @"(unknown)";
+    protocolStack = @"(unknown)";
   }
 
-  return v4;
+  return protocolStack;
 }
 
 - (int64_t)kind

@@ -1,66 +1,66 @@
 @interface CPSWindow
-- (void)addEventObserver:(id)a3;
-- (void)removeEventObserver:(id)a3;
-- (void)sendEvent:(id)a3;
+- (void)addEventObserver:(id)observer;
+- (void)removeEventObserver:(id)observer;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation CPSWindow
 
-- (void)addEventObserver:(id)a3
+- (void)addEventObserver:(id)observer
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [(CPSWindow *)v12 observers];
-  v3 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  if (!v10)
+  objc_storeStrong(location, observer);
+  observers = [(CPSWindow *)selfCopy observers];
+  v3 = MEMORY[0x277D82BD8](observers).n128_u64[0];
+  if (!observers)
   {
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    observers = v12->_observers;
-    v12->_observers = v4;
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    observers = selfCopy->_observers;
+    selfCopy->_observers = weakObjectsHashTable;
     v3 = MEMORY[0x277D82BD8](observers).n128_u64[0];
   }
 
-  v8 = [(CPSWindow *)v12 observers];
-  v9 = [(NSHashTable *)v8 containsObject:location[0]];
-  *&v6 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  observers2 = [(CPSWindow *)selfCopy observers];
+  v9 = [(NSHashTable *)observers2 containsObject:location[0]];
+  *&v6 = MEMORY[0x277D82BD8](observers2).n128_u64[0];
   if (!v9)
   {
-    v7 = [(CPSWindow *)v12 observers];
-    [(NSHashTable *)v7 addObject:location[0]];
-    MEMORY[0x277D82BD8](v7);
+    observers3 = [(CPSWindow *)selfCopy observers];
+    [(NSHashTable *)observers3 addObject:location[0]];
+    MEMORY[0x277D82BD8](observers3);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)removeEventObserver:(id)a3
+- (void)removeEventObserver:(id)observer
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSWindow *)v8 observers];
-  v6 = [(NSHashTable *)v5 containsObject:location[0]];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  objc_storeStrong(location, observer);
+  observers = [(CPSWindow *)selfCopy observers];
+  v6 = [(NSHashTable *)observers containsObject:location[0]];
+  *&v3 = MEMORY[0x277D82BD8](observers).n128_u64[0];
   if (v6)
   {
-    v4 = [(CPSWindow *)v8 observers];
-    [(NSHashTable *)v4 removeObject:location[0]];
-    MEMORY[0x277D82BD8](v4);
+    observers2 = [(CPSWindow *)selfCopy observers];
+    [(NSHashTable *)observers2 removeObject:location[0]];
+    MEMORY[0x277D82BD8](observers2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v24 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v20 = 1;
   v18 = 0;
   v13 = 1;
@@ -69,9 +69,9 @@
     v12 = 0;
     if (![location[0] type])
     {
-      v19 = [location[0] allTouches];
+      allTouches = [location[0] allTouches];
       v18 = 1;
-      v12 = _touchesContainIndirectTouch(v19);
+      v12 = _touchesContainIndirectTouch(allTouches);
     }
 
     v13 = v12;
@@ -79,13 +79,13 @@
 
   if (v18)
   {
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](allTouches);
   }
 
   if (v13)
   {
     memset(__b, 0, sizeof(__b));
-    obj = [(CPSWindow *)v22 observers];
+    obj = [(CPSWindow *)selfCopy observers];
     v11 = [(NSHashTable *)obj countByEnumeratingWithState:__b objects:v23 count:16];
     if (v11)
     {
@@ -101,8 +101,8 @@
         }
 
         v17 = *(__b[1] + 8 * v8);
-        v3 = [location[0] type];
-        v15 = [v5 shouldForwardEventForWindow:v4 eventType:v3];
+        type = [location[0] type];
+        v15 = [v5 shouldForwardEventForWindow:v4 eventType:type];
         if ((v20 & 1) == 1 && (v15 & 1) == 0)
         {
           v20 = 0;
@@ -126,7 +126,7 @@
 
   if (v20)
   {
-    v14.receiver = v22;
+    v14.receiver = selfCopy;
     v14.super_class = CPSWindow;
     [(CPSWindow *)&v14 sendEvent:location[0]];
   }

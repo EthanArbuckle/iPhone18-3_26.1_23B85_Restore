@@ -1,55 +1,55 @@
 @interface THWiOSExpandedMovieViewController
-- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)a3;
-- (CGRect)rectForCompletionAnimationWithRep:(id)a3;
-- (CGSize)curtainSizeForFreeTransformController:(id)a3;
-- (THWiOSExpandedMovieViewController)initWithDocumentRoot:(id)a3 expandableRep:(id)a4 delegate:(id)a5;
+- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)animation;
+- (CGRect)rectForCompletionAnimationWithRep:(id)rep;
+- (CGSize)curtainSizeForFreeTransformController:(id)controller;
+- (THWiOSExpandedMovieViewController)initWithDocumentRoot:(id)root expandableRep:(id)rep delegate:(id)delegate;
 - (id)expandedRepSourceRep;
-- (id)unmovingParentViewForFreeTransformController:(id)a3;
-- (void)animationController:(id)a3 updateWhitePointAdaptivtyStyleWithDuration:(double)a4;
-- (void)animationControllerDidPresent:(id)a3;
-- (void)animationControllerDidPresentPostCommit:(id)a3;
-- (void)animationControllerSetupTarget:(id)a3;
-- (void)animationControllerWillPresent:(id)a3;
-- (void)audioPlaybackWillStart:(id)a3;
-- (void)bookViewDidAnimateRotationToSize:(CGSize)a3 withContext:(id)a4;
-- (void)bookViewWillRotateTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (id)unmovingParentViewForFreeTransformController:(id)controller;
+- (void)animationController:(id)controller updateWhitePointAdaptivtyStyleWithDuration:(double)duration;
+- (void)animationControllerDidPresent:(id)present;
+- (void)animationControllerDidPresentPostCommit:(id)commit;
+- (void)animationControllerSetupTarget:(id)target;
+- (void)animationControllerWillPresent:(id)present;
+- (void)audioPlaybackWillStart:(id)start;
+- (void)bookViewDidAnimateRotationToSize:(CGSize)size withContext:(id)context;
+- (void)bookViewWillRotateTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)dealloc;
-- (void)dismissExpandedAnimatedWithCompletionBlock:(id)a3;
-- (void)freeTransformControllerDidBegin:(id)a3;
-- (void)freeTransformControllerDidFinishFreeTransforming:(id)a3 passedThreshold:(BOOL)a4 completionBlock:(id)a5;
-- (void)freeTransformDidBeginWithRep:(id)a3 expandableRep:(id)a4;
-- (void)handleGesture:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)dismissExpandedAnimatedWithCompletionBlock:(id)block;
+- (void)freeTransformControllerDidBegin:(id)begin;
+- (void)freeTransformControllerDidFinishFreeTransforming:(id)transforming passedThreshold:(BOOL)threshold completionBlock:(id)block;
+- (void)freeTransformDidBeginWithRep:(id)rep expandableRep:(id)expandableRep;
+- (void)handleGesture:(id)gesture;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_addViewToRoot;
 - (void)p_completeDismiss;
-- (void)p_dismissExpandedAnimatedWithCompletionBlock:(id)a3 freeTransformDidEnd:(BOOL)a4;
-- (void)p_dismissExpandedImmediateWithCompletionBlock:(id)a3;
+- (void)p_dismissExpandedAnimatedWithCompletionBlock:(id)block freeTransformDidEnd:(BOOL)end;
+- (void)p_dismissExpandedImmediateWithCompletionBlock:(id)block;
 - (void)p_initializeMoviePlayerController;
-- (void)p_moviePlayerPlaybackDidFinish:(id)a3;
+- (void)p_moviePlayerPlaybackDidFinish:(id)finish;
 - (void)p_removePlaybackNotifications;
-- (void)p_setMoviePlayerBackgroundColor:(id)a3 animated:(BOOL)a4;
+- (void)p_setMoviePlayerBackgroundColor:(id)color animated:(BOOL)animated;
 - (void)p_setupFTC;
 - (void)p_setupFreeTransformController;
 - (void)p_setupPlaybackNotifications;
 - (void)p_unloadMoviePlayer;
 - (void)pauseAndDismissMoviePlayer;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)presentExpandedAnimatedWithCompletionBlock:(id)a3;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)presentExpandedAnimatedWithCompletionBlock:(id)block;
 - (void)teardown;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation THWiOSExpandedMovieViewController
 
-- (THWiOSExpandedMovieViewController)initWithDocumentRoot:(id)a3 expandableRep:(id)a4 delegate:(id)a5
+- (THWiOSExpandedMovieViewController)initWithDocumentRoot:(id)root expandableRep:(id)rep delegate:(id)delegate
 {
   objc_opt_class();
-  [a4 expandedContentDrawableToPresent];
+  [rep expandedContentDrawableToPresent];
   v9 = TSUDynamicCast();
   if (!v9)
   {
     objc_opt_class();
-    [a4 info];
+    [rep info];
     v10 = TSUDynamicCast();
     objc_opt_class();
     [v10 expandedStageDrawable];
@@ -63,8 +63,8 @@
   if (v11)
   {
     [(THWiOSExpandedMovieViewController *)v11 setMovieInfo:v9];
-    [(THWiOSExpandedMovieViewController *)v12 setDelegate:a5];
-    v12->_documentRoot = a3;
+    [(THWiOSExpandedMovieViewController *)v12 setDelegate:delegate];
+    v12->_documentRoot = root;
     [-[THWiOSExpandedMovieViewController view](v12 "view")];
     [-[THWiOSExpandedMovieViewController view](v12 "view")];
     [(THWiOSExpandedMovieViewController *)v12 setModalPresentationStyle:0];
@@ -90,11 +90,11 @@
 {
   v3 = [AVPlayerItem playerItemWithURL:[(THWMovieInfo *)[(THWiOSExpandedMovieViewController *)self movieInfo] movieRemoteURL]];
   v4 = [[AVPlayer alloc] initWithPlayerItem:v3];
-  v5 = [(THWMovieInfo *)[(THWiOSExpandedMovieViewController *)self movieInfo] drmContext];
-  [v4 setAllowsExternalPlayback:{objc_msgSend(v5, "kiUanAfQBD5qIUraolUj") ^ 1}];
-  if ([v5 kiUanAfQBD5qIUraolUj])
+  drmContext = [(THWMovieInfo *)[(THWiOSExpandedMovieViewController *)self movieInfo] drmContext];
+  [v4 setAllowsExternalPlayback:{objc_msgSend(drmContext, "kiUanAfQBD5qIUraolUj") ^ 1}];
+  if ([drmContext kiUanAfQBD5qIUraolUj])
   {
-    [v5 authorizeAVPlayerItemForPlayback:v3];
+    [drmContext authorizeAVPlayerItemForPlayback:v3];
   }
 
   self->_moviePlayerViewController = objc_alloc_init(AVPlayerViewController);
@@ -123,8 +123,8 @@
 
   if ([[(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player] currentItem]&& ![(THWiOSExpandedMovieViewController *)self registeredForNotification])
   {
-    v3 = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player];
-    [(AVPlayer *)v3 addObserver:self forKeyPath:@"status" options:1 context:off_562E18];
+    player = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player];
+    [(AVPlayer *)player addObserver:self forKeyPath:@"status" options:1 context:off_562E18];
     [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:self name:"p_moviePlayerPlaybackDidFinish:" object:AVPlayerItemDidPlayToEndTimeNotification, [[(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player] currentItem]];
     [(THWiOSExpandedMovieViewController *)self setRegisteredForNotification:1];
   }
@@ -149,9 +149,9 @@
   objc_sync_exit(self);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_562E18 == a6 && [a3 isEqualToString:@"status"])
+  if (off_562E18 == context && [path isEqualToString:@"status"])
   {
     if ([[(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player] status]== &dword_0 + 1)
     {
@@ -168,7 +168,7 @@
   {
     v11.receiver = self;
     v11.super_class = THWiOSExpandedMovieViewController;
-    [(THWiOSExpandedMovieViewController *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(THWiOSExpandedMovieViewController *)&v11 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 
@@ -224,10 +224,10 @@
 
 - (id)expandedRepSourceRep
 {
-  v3 = [(THWiOSExpandedMovieViewController *)self delegate];
-  v4 = [(THWiOSExpandedMovieViewController *)self movieInfo];
+  delegate = [(THWiOSExpandedMovieViewController *)self delegate];
+  movieInfo = [(THWiOSExpandedMovieViewController *)self movieInfo];
 
-  return [(THWExpandedViewControllerDelegate *)v3 expandableRepForInfo:v4];
+  return [(THWExpandedViewControllerDelegate *)delegate expandableRepForInfo:movieInfo];
 }
 
 - (void)p_setupFreeTransformController
@@ -238,43 +238,43 @@
     [(THWFreeTransformController *)[(THWiOSExpandedMovieViewController *)self freeTransformController] setDelegate:self];
     [(THWFreeTransformController *)[(THWiOSExpandedMovieViewController *)self freeTransformController] setTransformGR:[(THWiOSExpandedMovieViewController *)self freeTransformGestureRecognizer]];
     [(THWFreeTransformController *)[(THWiOSExpandedMovieViewController *)self freeTransformController] setTargetLayer:[(THWiOSExpandedMovieAnimationDelegate *)self->_animationDelegate animationLayer]];
-    v3 = [(THWiOSExpandedMovieViewController *)self freeTransformController];
+    freeTransformController = [(THWiOSExpandedMovieViewController *)self freeTransformController];
 
-    [(THWFreeTransformController *)v3 setScaleThreshold:0.75];
+    [(THWFreeTransformController *)freeTransformController setScaleThreshold:0.75];
   }
 }
 
-- (void)handleGesture:(id)a3
+- (void)handleGesture:(id)gesture
 {
-  if ([(THWiOSExpandedMovieViewController *)self freeTransformGestureRecognizer]== a3)
+  if ([(THWiOSExpandedMovieViewController *)self freeTransformGestureRecognizer]== gesture)
   {
     [(THWiOSExpandedMovieViewController *)self p_setupFreeTransformController];
-    v4 = [(THWiOSExpandedMovieViewController *)self freeTransformController];
-    v5 = [(THWiOSExpandedMovieViewController *)self freeTransformGestureRecognizer];
+    freeTransformController = [(THWiOSExpandedMovieViewController *)self freeTransformController];
+    freeTransformGestureRecognizer = [(THWiOSExpandedMovieViewController *)self freeTransformGestureRecognizer];
 
-    [(THWFreeTransformController *)v4 transformGRChanged:v5];
+    [(THWFreeTransformController *)freeTransformController transformGRChanged:freeTransformGestureRecognizer];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = THWiOSExpandedMovieViewController;
   [THWiOSExpandedMovieViewController viewWillTransitionToSize:"viewWillTransitionToSize:withTransitionCoordinator:" withTransitionCoordinator:?];
-  if (a4)
+  if (coordinator)
   {
-    [a4 targetTransform];
+    [coordinator targetTransform];
     if (CGAffineTransformIsIdentity(&v14))
     {
-      [(THWiOSExpandedMovieViewController *)self bookViewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+      [(THWiOSExpandedMovieViewController *)self bookViewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
       v8 = 0;
     }
 
     else
     {
-      [(THWiOSExpandedMovieViewController *)self bookViewWillRotateTransitionToSize:a4 withTransitionCoordinator:width, height];
+      [(THWiOSExpandedMovieViewController *)self bookViewWillRotateTransitionToSize:coordinator withTransitionCoordinator:width, height];
       v8 = 1;
     }
 
@@ -300,7 +300,7 @@
     v10[5] = &v14;
     *&v10[6] = width;
     *&v10[7] = height;
-    v9 = [a4 animateAlongsideTransition:v12 completion:v10];
+    v9 = [coordinator animateAlongsideTransition:v12 completion:v10];
     *(*&v14.b + 24) = v9;
     _Block_object_dispose(&v14, 8);
   }
@@ -312,9 +312,9 @@
   }
 }
 
-- (void)bookViewWillRotateTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)bookViewWillRotateTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  [(THWiOSExpandedMovieViewController *)self setRotationScrim:[CALayer layer:a4]];
+  [(THWiOSExpandedMovieViewController *)self setRotationScrim:[CALayer layer:coordinator]];
   -[CALayer setBackgroundColor:]([(THWiOSExpandedMovieViewController *)self rotationScrim], "setBackgroundColor:", [+[UIColor blackColor](UIColor CGColor]);
   [-[THWiOSExpandedMovieViewController view](self "view")];
   v6 = v5;
@@ -333,14 +333,14 @@
   [(CALayer *)[(THWiOSExpandedMovieViewController *)self rotationScrim] setFrame:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
   [(CALayer *)[(THWiOSExpandedMovieViewController *)self rotationScrim] setZPosition:-32000.0];
   v17 = [-[THWiOSExpandedMovieViewController view](self "view")];
-  v18 = [(THWiOSExpandedMovieViewController *)self rotationScrim];
+  rotationScrim = [(THWiOSExpandedMovieViewController *)self rotationScrim];
 
-  [v17 addSublayer:v18];
+  [v17 addSublayer:rotationScrim];
 }
 
-- (void)bookViewDidAnimateRotationToSize:(CGSize)a3 withContext:(id)a4
+- (void)bookViewDidAnimateRotationToSize:(CGSize)size withContext:(id)context
 {
-  [(CALayer *)[(THWiOSExpandedMovieViewController *)self rotationScrim:a4] removeFromSuperlayer];
+  [(CALayer *)[(THWiOSExpandedMovieViewController *)self rotationScrim:context] removeFromSuperlayer];
 
   [(THWiOSExpandedMovieViewController *)self setRotationScrim:0];
 }
@@ -348,31 +348,31 @@
 - (void)pauseAndDismissMoviePlayer
 {
   [[(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player] pause];
-  v3 = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
+  moviePlayerViewController = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
 
-  [(AVPlayerViewController *)v3 setShowsPlaybackControls:0];
+  [(AVPlayerViewController *)moviePlayerViewController setShowsPlaybackControls:0];
 }
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v4 = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController:a3] player];
+  player = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController:controller] player];
 
-  [(AVPlayer *)v4 play];
+  [(AVPlayer *)player play];
 }
 
-- (void)animationControllerWillPresent:(id)a3
+- (void)animationControllerWillPresent:(id)present
 {
-  v4 = [(THWiOSExpandedMovieViewController *)self isDismissing];
-  v5 = [(THWiOSExpandedMovieViewController *)self delegate];
-  if (v4)
+  isDismissing = [(THWiOSExpandedMovieViewController *)self isDismissing];
+  delegate = [(THWiOSExpandedMovieViewController *)self delegate];
+  if (isDismissing)
   {
 
-    [(THWExpandedViewControllerDelegate *)v5 expandedViewControllerWillDismiss:self];
+    [(THWExpandedViewControllerDelegate *)delegate expandedViewControllerWillDismiss:self];
   }
 
   else
   {
-    [(THWExpandedViewControllerDelegate *)v5 expandedViewControllerWillPresent:self];
+    [(THWExpandedViewControllerDelegate *)delegate expandedViewControllerWillPresent:self];
     v6 = [-[THWiOSExpandedMovieViewController p_curtainColor](self "p_curtainColor")];
 
     [(THWiOSExpandedMovieViewController *)self p_setMoviePlayerBackgroundColor:v6 animated:1];
@@ -409,13 +409,13 @@
   [(THWiOSExpandedMovieViewController *)self removeFromParentViewController];
   [-[THWiOSExpandedMovieViewController view](self "view")];
   [-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedMovieViewController delegate](self "delegate")];
-  v5 = self;
-  v6 = [(THWiOSExpandedMovieViewController *)self delegate];
+  selfCopy = self;
+  delegate = [(THWiOSExpandedMovieViewController *)self delegate];
 
-  [(THWExpandedViewControllerDelegate *)v6 expandedViewControllerDidDismiss:self];
+  [(THWExpandedViewControllerDelegate *)delegate expandedViewControllerDidDismiss:self];
 }
 
-- (void)animationControllerDidPresent:(id)a3
+- (void)animationControllerDidPresent:(id)present
 {
   if ([(THWiOSExpandedMovieViewController *)self isDismissing])
   {
@@ -444,13 +444,13 @@
     }
 
     UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
-    v9 = [(THWiOSExpandedMovieViewController *)self view];
+    view = [(THWiOSExpandedMovieViewController *)self view];
 
-    [v9 setNeedsUpdateConstraints];
+    [view setNeedsUpdateConstraints];
   }
 }
 
-- (void)animationControllerDidPresentPostCommit:(id)a3
+- (void)animationControllerDidPresentPostCommit:(id)commit
 {
   [(THWiOSExpandedMovieViewController *)self setIsDismissing:0];
   if ([(THWiOSExpandedMovieViewController *)self expandedRepControllerState]== 1)
@@ -470,7 +470,7 @@
 
   [(THWiOSExpandedMovieViewController *)self setExpandedRepControllerState:v5];
 LABEL_6:
-  [a3 removeObserver:self];
+  [commit removeObserver:self];
   if ([(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] view])
   {
     [-[THWiOSExpandedMovieViewController view](self "view")];
@@ -514,46 +514,46 @@ LABEL_6:
     }
   }
 
-  v38 = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] view];
+  view = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] view];
 
-  [v38 setAutoresizingMask:18];
+  [view setAutoresizingMask:18];
 }
 
-- (void)p_moviePlayerPlaybackDidFinish:(id)a3
+- (void)p_moviePlayerPlaybackDidFinish:(id)finish
 {
-  v5 = [a3 object];
-  if (v5 == -[AVPlayer currentItem](-[AVPlayerViewController player](-[THWiOSExpandedMovieViewController moviePlayerViewController](self, "moviePlayerViewController"), "player"), "currentItem") && [objc_msgSend(a3 "name")])
+  object = [finish object];
+  if (object == -[AVPlayer currentItem](-[AVPlayerViewController player](-[THWiOSExpandedMovieViewController moviePlayerViewController](self, "moviePlayerViewController"), "player"), "currentItem") && [objc_msgSend(finish "name")])
   {
-    v6 = [(THWFreeTransformController *)[(THWiOSExpandedMovieViewController *)self freeTransformController] isFreeTransformInProgress];
-    v7 = [(THWMovieInfo *)[(THWiOSExpandedMovieViewController *)self movieInfo] loopOption];
-    v8 = v7;
-    if (v6)
+    isFreeTransformInProgress = [(THWFreeTransformController *)[(THWiOSExpandedMovieViewController *)self freeTransformController] isFreeTransformInProgress];
+    loopOption = [(THWMovieInfo *)[(THWiOSExpandedMovieViewController *)self movieInfo] loopOption];
+    v8 = loopOption;
+    if (isFreeTransformInProgress)
     {
-      if (!v7)
+      if (!loopOption)
       {
-        v9 = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player];
+        player = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player];
         v12 = *&kCMTimeZero.value;
         epoch = kCMTimeZero.epoch;
-        [(AVPlayer *)v9 seekToTime:&v12];
+        [(AVPlayer *)player seekToTime:&v12];
         [[(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player] pause];
       }
     }
 
     else
     {
-      v10 = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
+      moviePlayerViewController = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
       if (v8 == &dword_0 + 1)
       {
-        v11 = [(AVPlayerViewController *)v10 player];
+        player2 = [(AVPlayerViewController *)moviePlayerViewController player];
         v12 = *&kCMTimeZero.value;
         epoch = kCMTimeZero.epoch;
-        [(AVPlayer *)v11 seekToTime:&v12];
+        [(AVPlayer *)player2 seekToTime:&v12];
         [[(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player] play];
       }
 
       else
       {
-        [(AVPlayerViewController *)v10 setShowsPlaybackControls:0];
+        [(AVPlayerViewController *)moviePlayerViewController setShowsPlaybackControls:0];
 
         [(THWiOSExpandedMovieViewController *)self dismissExpandedAnimatedWithCompletionBlock:0];
       }
@@ -568,12 +568,12 @@ LABEL_6:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v3 = [(THWiOSExpandedMovieViewController *)self view];
+  view = [(THWiOSExpandedMovieViewController *)self view];
   v4 = *&CGAffineTransformIdentity.c;
   v13[0] = *&CGAffineTransformIdentity.a;
   v13[1] = v4;
   v13[2] = *&CGAffineTransformIdentity.tx;
-  [v3 setTransform:v13];
+  [view setTransform:v13];
   [-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedMovieViewController delegate](self "delegate")];
   [-[THWiOSExpandedMovieViewController view](self "view")];
   [-[THWExpandedViewControllerDelegate rootSuperview](-[THWiOSExpandedMovieViewController delegate](self "delegate")];
@@ -604,49 +604,49 @@ LABEL_6:
   [(THWiOSExpandedMovieViewController *)self setFreeTransformGestureRecognizer:[[THWFreeTransformGestureRecognizer alloc] initWithTarget:self action:"handleGesture:"]];
   [-[THWiOSExpandedMovieViewController view](self "view")];
   [(THWFreeTransformGestureRecognizer *)[(THWiOSExpandedMovieViewController *)self freeTransformGestureRecognizer] setUnmovingParentView:[(THWExpandedViewControllerDelegate *)[(THWiOSExpandedMovieViewController *)self delegate] rootSuperview]];
-  v3 = [(THWiOSExpandedMovieViewController *)self freeTransformGestureRecognizer];
+  freeTransformGestureRecognizer = [(THWiOSExpandedMovieViewController *)self freeTransformGestureRecognizer];
 
-  [(THWFreeTransformGestureRecognizer *)v3 setFreeTransformDelegate:self];
+  [(THWFreeTransformGestureRecognizer *)freeTransformGestureRecognizer setFreeTransformDelegate:self];
 }
 
-- (void)animationControllerSetupTarget:(id)a3
+- (void)animationControllerSetupTarget:(id)target
 {
   if (![(THWiOSExpandedMovieViewController *)self isDismissing])
   {
-    v4 = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] view];
+    view = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] view];
 
-    [v4 setAlpha:1.0];
+    [view setAlpha:1.0];
   }
 }
 
-- (void)presentExpandedAnimatedWithCompletionBlock:(id)a3
+- (void)presentExpandedAnimatedWithCompletionBlock:(id)block
 {
   [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] setTransitioningDelegate:self];
   [[(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player] play];
-  v5 = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
+  moviePlayerViewController = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
 
-  [(THWiOSExpandedMovieViewController *)self presentViewController:v5 withTransition:1 completion:a3];
+  [(THWiOSExpandedMovieViewController *)self presentViewController:moviePlayerViewController withTransition:1 completion:block];
 }
 
-- (void)dismissExpandedAnimatedWithCompletionBlock:(id)a3
+- (void)dismissExpandedAnimatedWithCompletionBlock:(id)block
 {
-  v5 = [(THWiOSExpandedMovieViewController *)self presentedViewController];
-  if (v5 == [(THWiOSExpandedMovieViewController *)self moviePlayerViewController])
+  presentedViewController = [(THWiOSExpandedMovieViewController *)self presentedViewController];
+  if (presentedViewController == [(THWiOSExpandedMovieViewController *)self moviePlayerViewController])
   {
-    v7 = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
+    moviePlayerViewController = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
 
-    [(AVPlayerViewController *)v7 dismissViewControllerAnimated:1 completion:a3];
+    [(AVPlayerViewController *)moviePlayerViewController dismissViewControllerAnimated:1 completion:block];
   }
 
-  else if (a3)
+  else if (block)
   {
-    v6 = *(a3 + 2);
+    v6 = *(block + 2);
 
-    v6(a3);
+    v6(block);
   }
 }
 
-- (void)p_dismissExpandedImmediateWithCompletionBlock:(id)a3
+- (void)p_dismissExpandedImmediateWithCompletionBlock:(id)block
 {
   if (![(THWiOSExpandedMovieViewController *)self isDismissing])
   {
@@ -655,9 +655,9 @@ LABEL_6:
     [(THWiOSExpandedMovieViewController *)self refreshStatusBarAppearance];
     [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedMovieViewController *)self delegate] expandedViewControllerWillDismiss:self];
     [(THWiOSExpandedMovieViewController *)self setNeedsWhitePointAdaptivityStyleUpdate];
-    if (a3)
+    if (block)
     {
-      (*(a3 + 2))(a3);
+      (*(block + 2))(block);
     }
 
     [(THWiOSExpandedMovieViewController *)self p_completeDismiss];
@@ -667,16 +667,16 @@ LABEL_6:
   }
 }
 
-- (void)p_dismissExpandedAnimatedWithCompletionBlock:(id)a3 freeTransformDidEnd:(BOOL)a4
+- (void)p_dismissExpandedAnimatedWithCompletionBlock:(id)block freeTransformDidEnd:(BOOL)end
 {
-  v4 = a4;
+  endCopy = end;
   if (![(THWiOSExpandedMovieViewController *)self isDismissing])
   {
     [(THWiOSExpandedMovieViewController *)self setIsDismissing:1];
     [(THWiOSExpandedMovieViewController *)self setExpandedRepControllerState:3];
     [(THWiOSExpandedMovieViewController *)self refreshStatusBarAppearance];
-    v7 = [(THWiOSExpandedMovieViewController *)self expandedRepSourceRep];
-    if (v4)
+    expandedRepSourceRep = [(THWiOSExpandedMovieViewController *)self expandedRepSourceRep];
+    if (endCopy)
     {
       v8 = 0;
       v9 = 0;
@@ -684,7 +684,7 @@ LABEL_6:
 
     else
     {
-      v9 = [objc_msgSend(objc_msgSend(v7 "hostICC")];
+      v9 = [objc_msgSend(objc_msgSend(expandedRepSourceRep "hostICC")];
       v8 = [-[THWiOSExpandedMovieViewController view](self "view")];
       [(THWiOSExpandedMovieViewController *)self p_setMoviePlayerBackgroundColor:+[UIColor animated:"clearColor"], 0];
     }
@@ -697,11 +697,11 @@ LABEL_6:
     [(THAnimationController *)[(THWiOSExpandedMovieViewController *)self animationController] setForegroundLayer:v9];
     [(THAnimationController *)[(THWiOSExpandedMovieViewController *)self animationController] setBackgroundLayer:v8];
     [(THAnimationController *)[(THWiOSExpandedMovieViewController *)self animationController] addObserver:self];
-    [(THAnimationController *)[(THWiOSExpandedMovieViewController *)self animationController:_NSConcreteStackBlock] presentAnimationWithCompletionBlock:&v11 overshoot:v4];
+    [(THAnimationController *)[(THWiOSExpandedMovieViewController *)self animationController:_NSConcreteStackBlock] presentAnimationWithCompletionBlock:&v11 overshoot:endCopy];
   }
 }
 
-- (CGSize)curtainSizeForFreeTransformController:(id)a3
+- (CGSize)curtainSizeForFreeTransformController:(id)controller
 {
   [-[THWiOSExpandedMovieViewController view](self view];
   v4 = v3;
@@ -711,24 +711,24 @@ LABEL_6:
   return result;
 }
 
-- (void)freeTransformControllerDidBegin:(id)a3
+- (void)freeTransformControllerDidBegin:(id)begin
 {
   [(THWiOSExpandedMovieViewController *)self p_setMoviePlayerBackgroundColor:+[UIColor animated:"clearColor"], 1];
   [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] setVideoGravity:AVLayerVideoGravityResizeAspect];
-  v4 = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
+  moviePlayerViewController = [(THWiOSExpandedMovieViewController *)self moviePlayerViewController];
 
-  [(AVPlayerViewController *)v4 setShowsPlaybackControls:0];
+  [(AVPlayerViewController *)moviePlayerViewController setShowsPlaybackControls:0];
 }
 
-- (void)p_setMoviePlayerBackgroundColor:(id)a3 animated:(BOOL)a4
+- (void)p_setMoviePlayerBackgroundColor:(id)color animated:(BOOL)animated
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_13D0CC;
   v4[3] = &unk_45AE58;
   v4[4] = self;
-  v4[5] = a3;
-  if (a4)
+  v4[5] = color;
+  if (animated)
   {
     [UIView animateWithDuration:v4 animations:0.25];
   }
@@ -739,11 +739,11 @@ LABEL_6:
   }
 }
 
-- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)a3
+- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)animation
 {
-  v3 = [-[THWiOSExpandedMovieViewController expandedRepSourceRep](self expandedRepSourceRep];
+  expandedRepSourceRep = [-[THWiOSExpandedMovieViewController expandedRepSourceRep](self expandedRepSourceRep];
 
-  [v3 frameInParent];
+  [expandedRepSourceRep frameInParent];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -751,19 +751,19 @@ LABEL_6:
   return result;
 }
 
-- (void)freeTransformControllerDidFinishFreeTransforming:(id)a3 passedThreshold:(BOOL)a4 completionBlock:(id)a5
+- (void)freeTransformControllerDidFinishFreeTransforming:(id)transforming passedThreshold:(BOOL)threshold completionBlock:(id)block
 {
-  if (a4 || [objc_msgSend(a3 "transformGR")] == &dword_4)
+  if (threshold || [objc_msgSend(transforming "transformGR")] == &dword_4)
   {
     [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedMovieViewController *)self delegate] expandedViewControllerWillBeginDismissing:self];
-    if ([objc_msgSend(a3 "transformGR")] == &dword_4)
+    if ([objc_msgSend(transforming "transformGR")] == &dword_4)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_13D420;
       v10[3] = &unk_45AEA8;
       v10[4] = self;
-      v10[5] = a5;
+      v10[5] = block;
       [(THWiOSExpandedMovieViewController *)self p_dismissExpandedImmediateWithCompletionBlock:v10];
     }
 
@@ -774,7 +774,7 @@ LABEL_6:
       v9[2] = sub_13D48C;
       v9[3] = &unk_45AEA8;
       v9[4] = self;
-      v9[5] = a5;
+      v9[5] = block;
       [(THWiOSExpandedMovieViewController *)self p_dismissExpandedAnimatedWithCompletionBlock:v9 freeTransformDidEnd:1];
     }
   }
@@ -790,18 +790,18 @@ LABEL_6:
   }
 }
 
-- (id)unmovingParentViewForFreeTransformController:(id)a3
+- (id)unmovingParentViewForFreeTransformController:(id)controller
 {
-  v3 = [(THWiOSExpandedMovieViewController *)self delegate];
+  delegate = [(THWiOSExpandedMovieViewController *)self delegate];
 
-  return [(THWExpandedViewControllerDelegate *)v3 rootSuperview];
+  return [(THWExpandedViewControllerDelegate *)delegate rootSuperview];
 }
 
-- (CGRect)rectForCompletionAnimationWithRep:(id)a3
+- (CGRect)rectForCompletionAnimationWithRep:(id)rep
 {
-  v3 = [-[THWiOSExpandedMovieViewController expandedRepSourceRep](self expandedRepSourceRep];
+  expandedRepSourceRep = [-[THWiOSExpandedMovieViewController expandedRepSourceRep](self expandedRepSourceRep];
 
-  [v3 frameInParent];
+  [expandedRepSourceRep frameInParent];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -809,33 +809,33 @@ LABEL_6:
   return result;
 }
 
-- (void)freeTransformDidBeginWithRep:(id)a3 expandableRep:(id)a4
+- (void)freeTransformDidBeginWithRep:(id)rep expandableRep:(id)expandableRep
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_13D690;
   v4[3] = &unk_45AE00;
   v4[4] = self;
-  [UIView animateWithDuration:v4 animations:a4, 0.5];
+  [UIView animateWithDuration:v4 animations:expandableRep, 0.5];
 }
 
-- (void)animationController:(id)a3 updateWhitePointAdaptivtyStyleWithDuration:(double)a4
+- (void)animationController:(id)controller updateWhitePointAdaptivtyStyleWithDuration:(double)duration
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_13D718;
   v4[3] = &unk_45AE00;
   v4[4] = self;
-  [UIView animateWithDuration:v4 animations:a4];
+  [UIView animateWithDuration:v4 animations:duration];
 }
 
-- (void)audioPlaybackWillStart:(id)a3
+- (void)audioPlaybackWillStart:(id)start
 {
-  if (a3 != self)
+  if (start != self)
   {
-    v5 = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player];
+    player = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)self moviePlayerViewController] player];
 
-    [(AVPlayer *)v5 pause];
+    [(AVPlayer *)player pause];
   }
 }
 

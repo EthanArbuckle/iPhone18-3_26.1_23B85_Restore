@@ -6,8 +6,8 @@
 
 - (void)_searchUICommandHandlerClass
 {
-  v1 = [a1 person];
-  if (v1)
+  person = [self person];
+  if (person)
   {
     v2 = objc_opt_class();
   }

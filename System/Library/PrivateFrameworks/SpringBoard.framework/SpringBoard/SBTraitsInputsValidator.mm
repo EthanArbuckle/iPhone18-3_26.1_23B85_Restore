@@ -1,20 +1,20 @@
 @interface SBTraitsInputsValidator
 - (NSString)description;
-- (SBTraitsInputsValidator)initWithValidatorOrder:(id)a3;
-- (id)validateInputs:(id)a3 withContext:(id)a4;
+- (SBTraitsInputsValidator)initWithValidatorOrder:(id)order;
+- (id)validateInputs:(id)inputs withContext:(id)context;
 @end
 
 @implementation SBTraitsInputsValidator
 
-- (SBTraitsInputsValidator)initWithValidatorOrder:(id)a3
+- (SBTraitsInputsValidator)initWithValidatorOrder:(id)order
 {
-  v4 = a3;
+  orderCopy = order;
   v9.receiver = self;
   v9.super_class = SBTraitsInputsValidator;
   v5 = [(SBTraitsInputsValidator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [orderCopy copy];
     validatorOrder = v5->_validatorOrder;
     v5->_validatorOrder = v6;
   }
@@ -30,21 +30,21 @@
   v4 = [(SBTraitsInputsValidator *)&v8 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(NSNumber *)self->_validatorOrder stringValue];
-  [v5 appendFormat:@" order: %@", v6];
+  stringValue = [(NSNumber *)self->_validatorOrder stringValue];
+  [v5 appendFormat:@" order: %@", stringValue];
 
   return v5;
 }
 
-- (id)validateInputs:(id)a3 withContext:(id)a4
+- (id)validateInputs:(id)inputs withContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  inputsCopy = inputs;
+  if (!inputsCopy)
   {
     [SBTraitsInputsValidator validateInputs:a2 withContext:self];
   }
 
-  return v6;
+  return inputsCopy;
 }
 
 - (void)validateInputs:(uint64_t)a1 withContext:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

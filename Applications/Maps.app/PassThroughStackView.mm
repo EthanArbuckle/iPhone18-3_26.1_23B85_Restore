@@ -1,22 +1,22 @@
 @interface PassThroughStackView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PassThroughStackView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [(PassThroughStackView *)self subviews];
-  v9 = [v8 reverseObjectEnumerator];
+  subviews = [(PassThroughStackView *)self subviews];
+  reverseObjectEnumerator = [subviews reverseObjectEnumerator];
 
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -27,7 +27,7 @@
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
@@ -41,9 +41,9 @@
               [v14 convertPoint:self fromView:{x, y}];
               v17 = v16;
               v19 = v18;
-              if ([v14 pointInside:v7 withEvent:?])
+              if ([v14 pointInside:eventCopy withEvent:?])
               {
-                v20 = [v14 hitTest:v7 withEvent:{v17, v19}];
+                v20 = [v14 hitTest:eventCopy withEvent:{v17, v19}];
                 if (v20)
                 {
                   v21 = v20;
@@ -55,7 +55,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v11)
       {
         continue;

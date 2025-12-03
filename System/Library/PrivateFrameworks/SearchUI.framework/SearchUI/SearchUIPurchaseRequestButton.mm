@@ -1,25 +1,25 @@
 @interface SearchUIPurchaseRequestButton
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (id)requestIdentifier;
 - (int)getRequestState;
 - (void)dealloc;
 - (void)setupSubscription;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIPurchaseRequestButton
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 buttonItems];
-  if ([v4 count] == 1 && objc_msgSend(v3, "buttonItemsAreTrailing"))
+  modelCopy = model;
+  buttonItems = [modelCopy buttonItems];
+  if ([buttonItems count] == 1 && objc_msgSend(modelCopy, "buttonItemsAreTrailing"))
   {
-    v5 = [v4 firstObject];
+    firstObject = [buttonItems firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 command];
+      command = [firstObject command];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }
@@ -40,28 +40,28 @@
 
 - (id)requestIdentifier
 {
-  v2 = [(SearchUIRequestButton *)self command];
+  command = [(SearchUIRequestButton *)self command];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 requestIdentifier];
+    requestIdentifier = [command requestIdentifier];
   }
 
   else
   {
-    v3 = 0;
+    requestIdentifier = 0;
   }
 
-  return v3;
+  return requestIdentifier;
 }
 
 - (int)getRequestState
 {
-  v2 = [(SearchUIPurchaseRequestButton *)self requestIdentifier];
-  if (v2)
+  requestIdentifier = [(SearchUIPurchaseRequestButton *)self requestIdentifier];
+  if (requestIdentifier)
   {
     v3 = +[SearchUIPurchaseRequestStatusManager sharedManager];
-    v4 = [v3 statusForRequestID:v2];
+    v4 = [v3 statusForRequestID:requestIdentifier];
 
     if (v4 == 2)
     {
@@ -92,24 +92,24 @@
   return v6;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v13.receiver = self;
   v13.super_class = SearchUIPurchaseRequestButton;
-  v4 = a3;
-  [(SearchUIAccessoryViewController *)&v13 updateWithRowModel:v4];
-  v5 = [v4 buttonItems];
-  v6 = [v5 firstObject];
+  modelCopy = model;
+  [(SearchUIAccessoryViewController *)&v13 updateWithRowModel:modelCopy];
+  buttonItems = [modelCopy buttonItems];
+  firstObject = [buttonItems firstObject];
 
-  v7 = [v6 command];
-  [(SearchUIRequestButton *)self setCommand:v7];
-  v8 = [v6 title];
-  v9 = [(SearchUIRequestButton *)self viewButton];
-  [v9 setTitle:v8];
+  command = [firstObject command];
+  [(SearchUIRequestButton *)self setCommand:command];
+  title = [firstObject title];
+  viewButton = [(SearchUIRequestButton *)self viewButton];
+  [viewButton setTitle:title];
 
-  v10 = [v4 useCompactVersionOfUI];
-  v11 = [(SearchUIRequestButton *)self viewButton];
-  [v11 setUseCompactMode:v10];
+  useCompactVersionOfUI = [modelCopy useCompactVersionOfUI];
+  viewButton2 = [(SearchUIRequestButton *)self viewButton];
+  [viewButton2 setUseCompactMode:useCompactVersionOfUI];
 
   [(SearchUIPurchaseRequestButton *)self setupSubscription];
   v12.receiver = self;
@@ -119,9 +119,9 @@
 
 - (void)setupSubscription
 {
-  v3 = [(SearchUIPurchaseRequestButton *)self purchaseRequestStatusObserver];
+  purchaseRequestStatusObserver = [(SearchUIPurchaseRequestButton *)self purchaseRequestStatusObserver];
 
-  if (!v3)
+  if (!purchaseRequestStatusObserver)
   {
     v4 = +[SearchUIPurchaseRequestStatusManager sharedManager];
     v6[0] = MEMORY[0x1E69E9820];
@@ -155,8 +155,8 @@ id __50__SearchUIPurchaseRequestButton_setupSubscription__block_invoke_2(uint64_
 - (void)dealloc
 {
   v3 = +[SearchUIPurchaseRequestStatusManager sharedManager];
-  v4 = [(SearchUIPurchaseRequestButton *)self purchaseRequestStatusObserver];
-  [v3 removeObserver:v4];
+  purchaseRequestStatusObserver = [(SearchUIPurchaseRequestButton *)self purchaseRequestStatusObserver];
+  [v3 removeObserver:purchaseRequestStatusObserver];
 
   purchaseRequestStatusObserver = self->_purchaseRequestStatusObserver;
   self->_purchaseRequestStatusObserver = 0;

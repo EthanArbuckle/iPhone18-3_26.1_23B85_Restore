@@ -1,30 +1,30 @@
 @interface VSDownloadService
 + (id)downloadQueue;
 + (id)inProgressDownloadVoiceKeys;
-+ (void)addInProgressDownloadVoiceKey:(id)a3;
-+ (void)removeInProgressDownloadVoiceKey:(id)a3;
++ (void)addInProgressDownloadVoiceKey:(id)key;
++ (void)removeInProgressDownloadVoiceKey:(id)key;
 + (void)triggerNeuralCompiling;
-- (VSDownloadService)initWithType:(unint64_t)a3;
-- (VSDownloadService)initWithType:(unint64_t)a3 assetsManager:(id)a4;
-- (void)cancelDownloadForAssets:(id)a3;
-- (void)updateTrialVoiceResourceWithLanguage:(id)a3;
-- (void)updateVoiceIfNeeded:(id)a3;
+- (VSDownloadService)initWithType:(unint64_t)type;
+- (VSDownloadService)initWithType:(unint64_t)type assetsManager:(id)manager;
+- (void)cancelDownloadForAssets:(id)assets;
+- (void)updateTrialVoiceResourceWithLanguage:(id)language;
+- (void)updateVoiceIfNeeded:(id)needed;
 - (void)updateVoicesAndVoiceResources;
 @end
 
 @implementation VSDownloadService
 
-- (void)cancelDownloadForAssets:(id)a3
+- (void)cancelDownloadForAssets:(id)assets
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   [(NSLock *)self->_updateLock lock];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -40,15 +40,15 @@
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 voiceKey];
-        [VSDownloadService removeInProgressDownloadVoiceKey:v12];
+        voiceKey = [v11 voiceKey];
+        [VSDownloadService removeInProgressDownloadVoiceKey:voiceKey];
 
-        v13 = [(VSDownloadService *)self assetsManager];
-        v14 = [v13 preferredDownloadForVoice:v11];
+        assetsManager = [(VSDownloadService *)self assetsManager];
+        v14 = [assetsManager preferredDownloadForVoice:v11];
 
         if (v14)
         {
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -59,14 +59,14 @@
   }
 
   v15 = dispatch_semaphore_create(0);
-  v16 = [(VSDownloadService *)self assetsManager];
+  assetsManager2 = [(VSDownloadService *)self assetsManager];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __45__VSDownloadService_cancelDownloadForAssets___block_invoke;
   v19[3] = &unk_279E4B888;
   v20 = v15;
   v17 = v15;
-  [v16 cancelDownloads:v5 completion:v19];
+  [assetsManager2 cancelDownloads:array completion:v19];
 
   dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
   [(NSLock *)self->_updateLock unlock];
@@ -74,51 +74,51 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTrialVoiceResourceWithLanguage:(id)a3
+- (void)updateTrialVoiceResourceWithLanguage:(id)language
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   v5 = VSGetLogEvent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = languageCopy;
     _os_log_impl(&dword_2727E4000, v5, OS_LOG_TYPE_DEFAULT, "Updating VoiceResource for '%{public}@'", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277D799D8]);
-  v10 = v4;
+  v10 = languageCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   [v6 setLanguages:v7];
 
-  v8 = [(VSDownloadService *)self assetsManager];
-  [v8 downloadVoiceResource:v6 options:0 completion:0];
+  assetsManager = [(VSDownloadService *)self assetsManager];
+  [assetsManager downloadVoiceResource:v6 options:0 completion:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVoiceIfNeeded:(id)a3
+- (void)updateVoiceIfNeeded:(id)needed
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   v5 = VSGetLogEvent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v45 = v4;
+    *v45 = neededCopy;
     _os_log_impl(&dword_2727E4000, v5, OS_LOG_TYPE_DEFAULT, "Updating target voice: %@", buf, 0xCu);
   }
 
-  v6 = [(VSDownloadService *)self assetsManager];
-  v7 = [v4 languages];
-  v8 = [v7 firstObject];
-  v9 = [v4 name];
-  v10 = [v6 selectVoiceForLang:v8 name:v9 type:objc_msgSend(v4 gender:"type") footprint:{objc_msgSend(v4, "gender"), objc_msgSend(v4, "footprint")}];
+  assetsManager = [(VSDownloadService *)self assetsManager];
+  languages = [neededCopy languages];
+  firstObject = [languages firstObject];
+  name = [neededCopy name];
+  v10 = [assetsManager selectVoiceForLang:firstObject name:name type:objc_msgSend(neededCopy gender:"type") footprint:{objc_msgSend(neededCopy, "gender"), objc_msgSend(neededCopy, "footprint")}];
 
   if (v10)
   {
-    v11 = [v10 voiceData];
-    v40 = [v11 footprint] == 1;
+    voiceData = [v10 voiceData];
+    v40 = [voiceData footprint] == 1;
   }
 
   else
@@ -126,13 +126,13 @@
     v40 = 1;
   }
 
-  v12 = [v4 name];
-  if (v12)
+  name2 = [neededCopy name];
+  if (name2)
   {
-    v13 = [v4 name];
-    v14 = [v10 voiceData];
-    v15 = [v14 name];
-    v16 = [v13 isEqual:v15] ^ 1;
+    name3 = [neededCopy name];
+    voiceData2 = [v10 voiceData];
+    name4 = [voiceData2 name];
+    v16 = [name3 isEqual:name4] ^ 1;
   }
 
   else
@@ -140,13 +140,13 @@
     v16 = 0;
   }
 
-  v17 = [(VSDownloadService *)self preferenceInterface];
-  v18 = [v17 lastTTSRequestDate];
+  preferenceInterface = [(VSDownloadService *)self preferenceInterface];
+  lastTTSRequestDate = [preferenceInterface lastTTSRequestDate];
 
-  if (v18)
+  if (lastTTSRequestDate)
   {
-    v19 = [MEMORY[0x277CBEAA8] date];
-    [v19 timeIntervalSinceDate:v18];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:lastTTSRequestDate];
     v21 = v20 < 604800.0;
   }
 
@@ -155,8 +155,8 @@
     v21 = 1;
   }
 
-  v22 = [(VSDownloadService *)self serverConfig];
-  v23 = [v22 shouldDelayVoiceUpdate];
+  serverConfig = [(VSDownloadService *)self serverConfig];
+  shouldDelayVoiceUpdate = [serverConfig shouldDelayVoiceUpdate];
 
   v24 = 0;
   type = self->_type;
@@ -200,7 +200,7 @@
       if (!v40)
       {
         v24 = 0;
-        v26 = v16 | v23 ^ 1;
+        v26 = v16 | shouldDelayVoiceUpdate ^ 1;
         goto LABEL_28;
       }
 
@@ -217,7 +217,7 @@ LABEL_22:
     }
 
     v24 = 0;
-    v26 = (v23 ^ 1) & v21;
+    v26 = (shouldDelayVoiceUpdate ^ 1) & v21;
   }
 
 LABEL_28:
@@ -238,55 +238,55 @@ LABEL_28:
     v52 = 1024;
     v53 = v21;
     v54 = 1024;
-    v55 = v23;
+    v55 = shouldDelayVoiceUpdate;
     _os_log_impl(&dword_2727E4000, v27, OS_LOG_TYPE_DEFAULT, "Voice update decision: shouldDownload:%d, canUseBattery:%d. Reason: triggerType:%d, compactVoiceSelected:%d, mismatchedVoiceName:%d, activeSiriUser:%d, serverExperimentDelay:%d", buf, 0x2Cu);
   }
 
   if (v26)
   {
-    v29 = [v4 voiceKey];
-    [VSDownloadService addInProgressDownloadVoiceKey:v29];
+    voiceKey = [neededCopy voiceKey];
+    [VSDownloadService addInProgressDownloadVoiceKey:voiceKey];
     v30 = [MEMORY[0x277D79950] downloadOptionsWithBattery:v24];
     [v30 setAllowsCellularAccess:0];
-    v31 = [(VSDownloadService *)self assetsManager];
+    assetsManager2 = [(VSDownloadService *)self assetsManager];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __41__VSDownloadService_updateVoiceIfNeeded___block_invoke;
     v41[3] = &unk_279E4B860;
-    v42 = v4;
-    v43 = v29;
-    v32 = v29;
-    [v31 downloadVoiceAsset:v42 options:v30 progressUpdateHandler:v41];
+    v42 = neededCopy;
+    v43 = voiceKey;
+    v32 = voiceKey;
+    [assetsManager2 downloadVoiceAsset:v42 options:v30 progressUpdateHandler:v41];
 
     goto LABEL_37;
   }
 
-  v33 = [v10 voiceData];
-  if ([v33 type] != 4 || !objc_msgSend(MEMORY[0x277D79958], "isANECompilationPlatform"))
+  voiceData3 = [v10 voiceData];
+  if ([voiceData3 type] != 4 || !objc_msgSend(MEMORY[0x277D79958], "isANECompilationPlatform"))
   {
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v34 = [v10 voiceData];
-  if ([v34 isVoiceReadyToUse])
+  voiceData4 = [v10 voiceData];
+  if ([voiceData4 isVoiceReadyToUse])
   {
 
     goto LABEL_36;
   }
 
-  v36 = [MEMORY[0x277D799C0] isWatch];
+  isWatch = [MEMORY[0x277D799C0] isWatch];
 
-  if ((v36 & 1) == 0)
+  if ((isWatch & 1) == 0)
   {
     v37 = VSGetLogDefault();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [v10 voiceData];
-      v39 = [v38 voiceKey];
+      voiceData5 = [v10 voiceData];
+      voiceKey2 = [voiceData5 voiceKey];
       *buf = 138412290;
-      *v45 = v39;
+      *v45 = voiceKey2;
       _os_log_impl(&dword_2727E4000, v37, OS_LOG_TYPE_DEFAULT, "Downloaded voice is not ready to use. Start ANE compiling immediately for voice: %@", buf, 0xCu);
     }
 
@@ -340,10 +340,10 @@ void __41__VSDownloadService_updateVoiceIfNeeded___block_invoke(uint64_t a1, dou
 - (void)updateVoicesAndVoiceResources
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D79998] standardInstance];
-  v5 = [v4 disableAssetUpdate];
+  standardInstance = [MEMORY[0x277D79998] standardInstance];
+  disableAssetUpdate = [standardInstance disableAssetUpdate];
 
-  if (v5)
+  if (disableAssetUpdate)
   {
     v6 = VSGetLogDefault();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -363,9 +363,9 @@ void __41__VSDownloadService_updateVoiceIfNeeded___block_invoke(uint64_t a1, dou
       _os_log_impl(&dword_2727E4000, v7, OS_LOG_TYPE_DEFAULT, "Start updating voice and voice resources.", buf, 2u);
     }
 
-    v43 = self;
-    v8 = [(VSDownloadService *)self preferenceInterface];
-    v9 = [v8 subscribedVoicesForClientID:0 accessoryID:0];
+    selfCopy = self;
+    preferenceInterface = [(VSDownloadService *)self preferenceInterface];
+    v9 = [preferenceInterface subscribedVoicesForClientID:0 accessoryID:0];
 
     v56 = 0u;
     v57 = 0u;
@@ -391,31 +391,31 @@ void __41__VSDownloadService_updateVoiceIfNeeded___block_invoke(uint64_t a1, dou
           v16 = VSGetLogDefault();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v15 clientID];
-            v18 = [v15 accessoryID];
-            if (v18)
+            clientID = [v15 clientID];
+            accessoryID = [v15 accessoryID];
+            if (accessoryID)
             {
               v19 = MEMORY[0x277CCACA8];
-              v2 = [v15 accessoryID];
-              self = [v19 stringWithFormat:@"on accessory %@", v2];
-              v20 = self;
+              accessoryID2 = [v15 accessoryID];
+              self = [v19 stringWithFormat:@"on accessory %@", accessoryID2];
+              selfCopy2 = self;
             }
 
             else
             {
-              v20 = &stru_2881CBD18;
+              selfCopy2 = &stru_2881CBD18;
             }
 
-            v21 = [v15 voice];
+            voice = [v15 voice];
             *buf = 138412802;
-            v61 = v17;
+            v61 = clientID;
             v62 = 2112;
-            v63 = v20;
+            v63 = selfCopy2;
             v64 = 2114;
-            v65 = v21;
+            v65 = voice;
             _os_log_impl(&dword_2727E4000, v16, OS_LOG_TYPE_DEFAULT, "%@ %@ has a subscribed voice: %{public}@", buf, 0x20u);
 
-            if (v18)
+            if (accessoryID)
             {
             }
 
@@ -432,10 +432,10 @@ void __41__VSDownloadService_updateVoiceIfNeeded___block_invoke(uint64_t a1, dou
     v22 = [v10 valueForKey:@"voice"];
     v23 = [v22 sortedArrayUsingComparator:&__block_literal_global_40];
 
-    v24 = [(VSDownloadService *)v43 assetsManager];
-    [v24 resetCache];
+    assetsManager = [(VSDownloadService *)selfCopy assetsManager];
+    [assetsManager resetCache];
 
-    v25 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -456,28 +456,28 @@ void __41__VSDownloadService_updateVoiceIfNeeded___block_invoke(uint64_t a1, dou
           }
 
           v30 = *(*(&v50 + 1) + 8 * j);
-          v31 = [v30 languages];
-          [v25 addObjectsFromArray:v31];
+          languages = [v30 languages];
+          [orderedSet addObjectsFromArray:languages];
 
           v32 = +[VSDownloadService inProgressDownloadVoiceKeys];
-          v33 = [v30 voiceKey];
-          v34 = [v32 containsObject:v33];
+          voiceKey = [v30 voiceKey];
+          v34 = [v32 containsObject:voiceKey];
 
           if (v34)
           {
             v35 = VSGetLogDefault();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
-              v36 = [v30 descriptiveKey];
+              descriptiveKey = [v30 descriptiveKey];
               *buf = 138412290;
-              v61 = v36;
+              v61 = descriptiveKey;
               _os_log_impl(&dword_2727E4000, v35, OS_LOG_TYPE_DEFAULT, "Voice download is in progress, skip new download. %@", buf, 0xCu);
             }
           }
 
           else
           {
-            [(VSDownloadService *)v43 updateVoiceIfNeeded:v30];
+            [(VSDownloadService *)selfCopy updateVoiceIfNeeded:v30];
           }
         }
 
@@ -491,7 +491,7 @@ void __41__VSDownloadService_updateVoiceIfNeeded___block_invoke(uint64_t a1, dou
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v37 = v25;
+    v37 = orderedSet;
     v38 = [v37 countByEnumeratingWithState:&v46 objects:v58 count:16];
     if (v38)
     {
@@ -506,7 +506,7 @@ void __41__VSDownloadService_updateVoiceIfNeeded___block_invoke(uint64_t a1, dou
             objc_enumerationMutation(v37);
           }
 
-          [(VSDownloadService *)v43 updateTrialVoiceResourceWithLanguage:*(*(&v46 + 1) + 8 * k)];
+          [(VSDownloadService *)selfCopy updateTrialVoiceResourceWithLanguage:*(*(&v46 + 1) + 8 * k)];
         }
 
         v39 = [v37 countByEnumeratingWithState:&v46 objects:v58 count:16];
@@ -515,7 +515,7 @@ void __41__VSDownloadService_updateVoiceIfNeeded___block_invoke(uint64_t a1, dou
       while (v39);
     }
 
-    [(NSLock *)v43->_updateLock unlock];
+    [(NSLock *)selfCopy->_updateLock unlock];
     v6 = v44;
   }
 
@@ -538,37 +538,37 @@ uint64_t __50__VSDownloadService_updateVoicesAndVoiceResources__block_invoke(uin
   return v5;
 }
 
-- (VSDownloadService)initWithType:(unint64_t)a3 assetsManager:(id)a4
+- (VSDownloadService)initWithType:(unint64_t)type assetsManager:(id)manager
 {
-  v7 = a4;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = VSDownloadService;
   v8 = [(VSDownloadService *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
+    v8->_type = type;
     v10 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     updateLock = v9->_updateLock;
     v9->_updateLock = v10;
 
-    objc_storeStrong(&v9->_assetsManager, a4);
+    objc_storeStrong(&v9->_assetsManager, manager);
     v12 = +[VSSiriServerConfiguration defaultConfig];
     serverConfig = v9->_serverConfig;
     v9->_serverConfig = v12;
 
-    v14 = [MEMORY[0x277D79978] defaultInstance];
+    defaultInstance = [MEMORY[0x277D79978] defaultInstance];
     preferenceInterface = v9->_preferenceInterface;
-    v9->_preferenceInterface = v14;
+    v9->_preferenceInterface = defaultInstance;
   }
 
   return v9;
 }
 
-- (VSDownloadService)initWithType:(unint64_t)a3
+- (VSDownloadService)initWithType:(unint64_t)type
 {
-  v5 = [MEMORY[0x277D79950] sharedManager];
-  v6 = [(VSDownloadService *)self initWithType:a3 assetsManager:v5];
+  mEMORY[0x277D79950] = [MEMORY[0x277D79950] sharedManager];
+  v6 = [(VSDownloadService *)self initWithType:type assetsManager:mEMORY[0x277D79950]];
 
   return v6;
 }
@@ -624,22 +624,22 @@ void __43__VSDownloadService_triggerNeuralCompiling__block_invoke(uint64_t a1, i
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeInProgressDownloadVoiceKey:(id)a3
++ (void)removeInProgressDownloadVoiceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&__inProgressDownloadVoiceKeysLock);
-  v5 = [a1 inProgressDownloadVoiceKeys];
-  [v5 removeObject:v4];
+  inProgressDownloadVoiceKeys = [self inProgressDownloadVoiceKeys];
+  [inProgressDownloadVoiceKeys removeObject:keyCopy];
 
   pthread_mutex_unlock(&__inProgressDownloadVoiceKeysLock);
 }
 
-+ (void)addInProgressDownloadVoiceKey:(id)a3
++ (void)addInProgressDownloadVoiceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&__inProgressDownloadVoiceKeysLock);
-  v5 = [a1 inProgressDownloadVoiceKeys];
-  [v5 addObject:v4];
+  inProgressDownloadVoiceKeys = [self inProgressDownloadVoiceKeys];
+  [inProgressDownloadVoiceKeys addObject:keyCopy];
 
   pthread_mutex_unlock(&__inProgressDownloadVoiceKeysLock);
 }

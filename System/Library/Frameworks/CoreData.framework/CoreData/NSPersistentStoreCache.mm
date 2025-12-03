@@ -1,19 +1,19 @@
 @interface NSPersistentStoreCache
-- (NSPersistentStoreCache)initWithValueCallbacks:(void *)a3 preserveToManyRelationships:(BOOL)a4;
-- (double)rowForObjectID:(double)a3 afterTimestamp:;
-- (id)ancillaryOrderKeysForSourceObjectID:(void *)a3 forProperty:(double)a4 afterTimestamp:;
-- (id)toManyForSourceObjectID:(void *)a3 forProperty:(double)a4 afterTimestamp:;
+- (NSPersistentStoreCache)initWithValueCallbacks:(void *)callbacks preserveToManyRelationships:(BOOL)relationships;
+- (double)rowForObjectID:(double)d afterTimestamp:;
+- (id)ancillaryOrderKeysForSourceObjectID:(void *)d forProperty:(double)property afterTimestamp:;
+- (id)toManyForSourceObjectID:(void *)d forProperty:(double)property afterTimestamp:;
 - (uint64_t)_createExternalDataDictWithValueCallbacks:(uint64_t)result;
-- (uint64_t)toManyInformationForSourceObjectID:(void *)a3 forProperty:(double)a4 afterTimestamp:;
-- (void)_registerRow:(void *)key forObjectID:(char)a4 options:;
-- (void)_registerToMany:(uint64_t)a1 withOrderKeys:(void *)a2 forSourceObjectID:(void *)a3 forProperty:(void *)key options:(void *)a5 andTimestamp:(double)a6;
+- (uint64_t)toManyInformationForSourceObjectID:(void *)d forProperty:(double)property afterTimestamp:;
+- (void)_registerRow:(void *)key forObjectID:(char)d options:;
+- (void)_registerToMany:(uint64_t)many withOrderKeys:(void *)keys forSourceObjectID:(void *)d forProperty:(void *)key options:(void *)options andTimestamp:(double)timestamp;
 - (void)dealloc;
-- (void)decrementRefCountForObjectID:(uint64_t)a1;
+- (void)decrementRefCountForObjectID:(uint64_t)d;
 - (void)forgetAllExternalData;
-- (void)forgetRowForObjectID:(uint64_t)a1;
-- (void)incrementRefCountForObjectID:(uint64_t)a1;
-- (void)registerRow:(void *)a3 forObjectID:(char)a4 options:;
-- (void)registerToMany:(os_unfair_lock_s *)a1 withOrderKeys:(void *)a2 forSourceObjectID:(void *)a3 forProperty:(void *)a4 options:(void *)a5 andTimestamp:(double)a6;
+- (void)forgetRowForObjectID:(uint64_t)d;
+- (void)incrementRefCountForObjectID:(uint64_t)d;
+- (void)registerRow:(void *)row forObjectID:(char)d options:;
+- (void)registerToMany:(os_unfair_lock_s *)many withOrderKeys:(void *)keys forSourceObjectID:(void *)d forProperty:(void *)property options:(void *)options andTimestamp:(double)timestamp;
 @end
 
 @implementation NSPersistentStoreCache
@@ -58,21 +58,21 @@
   return result;
 }
 
-- (NSPersistentStoreCache)initWithValueCallbacks:(void *)a3 preserveToManyRelationships:(BOOL)a4
+- (NSPersistentStoreCache)initWithValueCallbacks:(void *)callbacks preserveToManyRelationships:(BOOL)relationships
 {
-  v4 = a4;
+  relationshipsCopy = relationships;
   v12.receiver = self;
   v12.super_class = NSPersistentStoreCache;
   v6 = [(NSPersistentStoreCache *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    v6->_persistentStoreCacheFlags = (*&v6->_persistentStoreCacheFlags & 0xFFFFFFFE | v4);
+    v6->_persistentStoreCacheFlags = (*&v6->_persistentStoreCacheFlags & 0xFFFFFFFE | relationshipsCopy);
     v8 = malloc_type_malloc(0x28uLL, 0x1080040EC4B14DAuLL);
     *(v7 + 24) = v8;
-    v9 = *(a3 + 4);
-    v10 = *(a3 + 1);
-    *v8 = *a3;
+    v9 = *(callbacks + 4);
+    v10 = *(callbacks + 1);
+    *v8 = *callbacks;
     v8[1] = v10;
     *(v8 + 4) = v9;
     [(NSPersistentStoreCache *)v7 _createExternalDataDictWithValueCallbacks:?];
@@ -84,51 +84,51 @@
 
 - (void)forgetAllExternalData
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
 
-    [(NSPersistentStoreCache *)a1 _createExternalDataDictWithValueCallbacks:?];
+    [(NSPersistentStoreCache *)self _createExternalDataDictWithValueCallbacks:?];
 
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_unlock((self + 36));
   }
 }
 
-- (void)decrementRefCountForObjectID:(uint64_t)a1
+- (void)decrementRefCountForObjectID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
     os_unfair_lock_lock_with_options();
-    Value = CFDictionaryGetValue(*(a1 + 8), a2);
+    Value = CFDictionaryGetValue(*(d + 8), a2);
     if (Value && atomic_fetch_add_explicit(Value + 3, 0xFFFFFFFF, memory_order_relaxed) <= 1)
     {
-      CFDictionaryRemoveValue(*(a1 + 8), a2);
+      CFDictionaryRemoveValue(*(d + 8), a2);
     }
 
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_unlock((d + 36));
   }
 }
 
-- (void)incrementRefCountForObjectID:(uint64_t)a1
+- (void)incrementRefCountForObjectID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
     os_unfair_lock_lock_with_options();
-    Value = CFDictionaryGetValue(*(a1 + 8), a2);
+    Value = CFDictionaryGetValue(*(d + 8), a2);
     if (Value)
     {
       atomic_fetch_add_explicit(Value + 3, 1u, memory_order_relaxed);
     }
 
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_unlock((d + 36));
   }
 }
 
-- (void)_registerRow:(void *)key forObjectID:(char)a4 options:
+- (void)_registerRow:(void *)key forObjectID:(char)d options:
 {
-  if (a1)
+  if (self)
   {
-    Value = CFDictionaryGetValue(*(a1 + 8), key);
+    Value = CFDictionaryGetValue(*(self + 8), key);
     if (Value != a2)
     {
       v9 = Value;
@@ -140,42 +140,42 @@
           atomic_fetch_add_explicit((a2 + 12), add, memory_order_relaxed);
         }
 
-        if (a4 & 4) == 0 && (*(a1 + 32))
+        if (d & 4) == 0 && (*(self + 32))
         {
-          v11 = [(atomic_uint *)Value version];
-          if (v11 == [a2 version])
+          version = [(atomic_uint *)Value version];
+          if (version == [a2 version])
           {
             [(NSPersistentCacheRow *)a2 copyRelationshipCachesFrom:v9];
           }
         }
       }
 
-      v12 = *(a1 + 8);
+      v12 = *(self + 8);
 
       CFDictionarySetValue(v12, key, a2);
     }
   }
 }
 
-- (void)registerRow:(void *)a3 forObjectID:(char)a4 options:
+- (void)registerRow:(void *)row forObjectID:(char)d options:
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    [(NSPersistentStoreCache *)a1 _registerRow:a2 forObjectID:a3 options:a4];
+    [(NSPersistentStoreCache *)self _registerRow:a2 forObjectID:row options:d];
 
-    os_unfair_lock_unlock(a1 + 9);
+    os_unfair_lock_unlock(self + 9);
   }
 }
 
-- (double)rowForObjectID:(double)a3 afterTimestamp:
+- (double)rowForObjectID:(double)d afterTimestamp:
 {
   if (result)
   {
     v5 = result;
     os_unfair_lock_lock_with_options();
     Value = CFDictionaryGetValue(*(v5 + 1), a2);
-    if (Value && (v7 = Value, Value[4] > a3))
+    if (Value && (v7 = Value, Value[4] > d))
     {
       v8 = Value;
       [v7 knownKeyValuesPointer];
@@ -194,41 +194,41 @@
   return result;
 }
 
-- (void)_registerToMany:(uint64_t)a1 withOrderKeys:(void *)a2 forSourceObjectID:(void *)a3 forProperty:(void *)key options:(void *)a5 andTimestamp:(double)a6
+- (void)_registerToMany:(uint64_t)many withOrderKeys:(void *)keys forSourceObjectID:(void *)d forProperty:(void *)key options:(void *)options andTimestamp:(double)timestamp
 {
-  if (a1)
+  if (many)
   {
-    Value = CFDictionaryGetValue(*(a1 + 8), key);
-    [NSPersistentCacheRow setRelatedObjectIDs:a2 forProperty:a5 options:a6 andTimestamp:?];
-    if (a3)
+    Value = CFDictionaryGetValue(*(many + 8), key);
+    [NSPersistentCacheRow setRelatedObjectIDs:keys forProperty:options options:timestamp andTimestamp:?];
+    if (d)
     {
 
-      [NSPersistentCacheRow setAncillaryOrderKeys:a3 forProperty:a5 options:? andTimestamp:?];
+      [NSPersistentCacheRow setAncillaryOrderKeys:d forProperty:options options:? andTimestamp:?];
     }
   }
 }
 
-- (void)registerToMany:(os_unfair_lock_s *)a1 withOrderKeys:(void *)a2 forSourceObjectID:(void *)a3 forProperty:(void *)a4 options:(void *)a5 andTimestamp:(double)a6
+- (void)registerToMany:(os_unfair_lock_s *)many withOrderKeys:(void *)keys forSourceObjectID:(void *)d forProperty:(void *)property options:(void *)options andTimestamp:(double)timestamp
 {
-  if (a1)
+  if (many)
   {
     os_unfair_lock_lock_with_options();
-    [NSPersistentStoreCache _registerToMany:a1 withOrderKeys:a2 forSourceObjectID:a3 forProperty:a4 options:a5 andTimestamp:a6];
+    [NSPersistentStoreCache _registerToMany:many withOrderKeys:keys forSourceObjectID:d forProperty:property options:options andTimestamp:timestamp];
 
-    os_unfair_lock_unlock(a1 + 9);
+    os_unfair_lock_unlock(many + 9);
   }
 }
 
-- (uint64_t)toManyInformationForSourceObjectID:(void *)a3 forProperty:(double)a4 afterTimestamp:
+- (uint64_t)toManyInformationForSourceObjectID:(void *)d forProperty:(double)property afterTimestamp:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   os_unfair_lock_lock_with_options();
-  Value = CFDictionaryGetValue(*(a1 + 8), a2);
-  if (Value && (v9 = Value, -[NSPersistentCacheRow timestampForProperty:](Value, a3) > a4) && v9[3] && (v10 = *(v9[3] + 24 * -[NSPersistentCacheRow toManyOffsetForProperty:](v9, a3) + 8), v11 = *([objc_msgSend(a3 "entity")] + 144), v12 = objc_msgSend(a3, "_entitysReferenceID"), v10))
+  Value = CFDictionaryGetValue(*(self + 8), a2);
+  if (Value && (v9 = Value, -[NSPersistentCacheRow timestampForProperty:](Value, d) > property) && v9[3] && (v10 = *(v9[3] + 24 * -[NSPersistentCacheRow toManyOffsetForProperty:](v9, d) + 8), v11 = *([objc_msgSend(d "entity")] + 144), v12 = objc_msgSend(d, "_entitysReferenceID"), v10))
   {
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v10, *(v9[3] + 24 * (v12 - v11) + 16), 0}];
   }
@@ -238,23 +238,23 @@
     v13 = 0;
   }
 
-  os_unfair_lock_unlock((a1 + 36));
+  os_unfair_lock_unlock((self + 36));
   return v13;
 }
 
-- (id)toManyForSourceObjectID:(void *)a3 forProperty:(double)a4 afterTimestamp:
+- (id)toManyForSourceObjectID:(void *)d forProperty:(double)property afterTimestamp:
 {
   if (result)
   {
     v7 = result;
     os_unfair_lock_lock_with_options();
     Value = CFDictionaryGetValue(*(v7 + 1), a2);
-    if (Value && (v9 = Value, [(NSPersistentCacheRow *)Value timestampForProperty:a3]> a4))
+    if (Value && (v9 = Value, [(NSPersistentCacheRow *)Value timestampForProperty:d]> property))
     {
       v10 = v9[3];
       if (v10)
       {
-        v10 = *(v9[3] + 24 * [(NSPersistentCacheRow *)v9 toManyOffsetForProperty:a3]+ 8);
+        v10 = *(v9[3] + 24 * [(NSPersistentCacheRow *)v9 toManyOffsetForProperty:d]+ 8);
       }
 
       v11 = v10;
@@ -273,20 +273,20 @@
   return result;
 }
 
-- (id)ancillaryOrderKeysForSourceObjectID:(void *)a3 forProperty:(double)a4 afterTimestamp:
+- (id)ancillaryOrderKeysForSourceObjectID:(void *)d forProperty:(double)property afterTimestamp:
 {
   if (result)
   {
     v7 = result;
     os_unfair_lock_lock_with_options();
     Value = CFDictionaryGetValue(*(v7 + 1), a2);
-    if (Value && (v9 = Value, [(NSPersistentCacheRow *)Value timestampForProperty:a3]> a4))
+    if (Value && (v9 = Value, [(NSPersistentCacheRow *)Value timestampForProperty:d]> property))
     {
       v10 = v9[3];
       if (v10)
       {
-        v11 = *([objc_msgSend(a3 "entity")] + 144);
-        v10 = *(v9[3] + 24 * ([a3 _entitysReferenceID] - v11) + 16);
+        v11 = *([objc_msgSend(d "entity")] + 144);
+        v10 = *(v9[3] + 24 * ([d _entitysReferenceID] - v11) + 16);
       }
 
       v12 = v10;
@@ -305,14 +305,14 @@
   return result;
 }
 
-- (void)forgetRowForObjectID:(uint64_t)a1
+- (void)forgetRowForObjectID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
     os_unfair_lock_lock_with_options();
-    CFDictionaryRemoveValue(*(a1 + 8), a2);
+    CFDictionaryRemoveValue(*(d + 8), a2);
 
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_unlock((d + 36));
   }
 }
 

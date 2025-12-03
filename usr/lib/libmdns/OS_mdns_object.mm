@@ -1,5 +1,5 @@
 @interface OS_mdns_object
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)redactedDescription;
@@ -8,9 +8,9 @@
 
 @implementation OS_mdns_object
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -22,7 +22,7 @@
   }
 
   isa = self[2].super.super.isa;
-  if (isa != *(a3 + 2))
+  if (isa != *(equal + 2))
   {
     return 0;
   }
@@ -33,7 +33,7 @@
     return 0;
   }
 
-  return v7(self, a3);
+  return v7(self, equal);
 }
 
 - (id)redactedDescription

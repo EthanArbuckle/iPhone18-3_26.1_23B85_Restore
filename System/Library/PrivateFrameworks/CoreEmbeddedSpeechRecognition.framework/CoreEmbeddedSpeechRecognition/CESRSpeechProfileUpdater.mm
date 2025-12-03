@@ -1,37 +1,37 @@
 @interface CESRSpeechProfileUpdater
-+ (id)updaterForInstance:(id)a3 atSpeechProfileSite:(id)a4;
-+ (unint64_t)updateModeForSet:(id)a3 speechProfileInstance:(id)a4 isSetNew:(BOOL *)a5;
-+ (unint64_t)updateModeForSets:(id)a3 speechProfileInstance:(id)a4 speechProfileSite:(id)a5 isAnySetNew:(BOOL *)a6;
-- (BOOL)_errorRequiresCleanRebuild:(id)a3;
-- (BOOL)detectCategoriesToRebuild:(id *)a3 error:(id *)a4;
-- (BOOL)rebuildCategoryGroup:(id)a3 withSets:(id)a4 version:(id)a5 error:(id *)a6;
-- (BOOL)removeProfile:(id *)a3;
-- (CESRSpeechProfileUpdater)initWithInstance:(id)a3 speechProfileSite:(id)a4 builder:(id)a5;
-- (id)_versionForCategory:(id)a3 error:(id *)a4;
-- (id)categoriesToRebuildForAllSets:(id)a3;
-- (void)_endSpeechProfileUpdateSignpost:(unint64_t)a3 updateResult:(unsigned __int8)a4 updateType:(unsigned __int8)a5 categoryCount:(unint64_t)a6 itemCount:(unint64_t)a7;
++ (id)updaterForInstance:(id)instance atSpeechProfileSite:(id)site;
++ (unint64_t)updateModeForSet:(id)set speechProfileInstance:(id)instance isSetNew:(BOOL *)new;
++ (unint64_t)updateModeForSets:(id)sets speechProfileInstance:(id)instance speechProfileSite:(id)site isAnySetNew:(BOOL *)new;
+- (BOOL)_errorRequiresCleanRebuild:(id)rebuild;
+- (BOOL)detectCategoriesToRebuild:(id *)rebuild error:(id *)error;
+- (BOOL)rebuildCategoryGroup:(id)group withSets:(id)sets version:(id)version error:(id *)error;
+- (BOOL)removeProfile:(id *)profile;
+- (CESRSpeechProfileUpdater)initWithInstance:(id)instance speechProfileSite:(id)site builder:(id)builder;
+- (id)_versionForCategory:(id)category error:(id *)error;
+- (id)categoriesToRebuildForAllSets:(id)sets;
+- (void)_endSpeechProfileUpdateSignpost:(unint64_t)signpost updateResult:(unsigned __int8)result updateType:(unsigned __int8)type categoryCount:(unint64_t)count itemCount:(unint64_t)itemCount;
 @end
 
 @implementation CESRSpeechProfileUpdater
 
-- (BOOL)removeProfile:(id *)a3
+- (BOOL)removeProfile:(id *)profile
 {
-  v5 = [(CESRSpeechProfileSite *)self->_speechProfileSite speechProfileSiteURL];
-  v6 = [(CESRSpeechProfileInstance *)self->_instance locale];
-  v7 = [(CESRSpeechProfileSite *)self->_speechProfileSite userId];
-  LOBYTE(a3) = [CESRSpeechProfileBuilder deleteProfileAtDirectory:v5 locale:v6 userId:v7 error:a3];
+  speechProfileSiteURL = [(CESRSpeechProfileSite *)self->_speechProfileSite speechProfileSiteURL];
+  locale = [(CESRSpeechProfileInstance *)self->_instance locale];
+  userId = [(CESRSpeechProfileSite *)self->_speechProfileSite userId];
+  LOBYTE(profile) = [CESRSpeechProfileBuilder deleteProfileAtDirectory:speechProfileSiteURL locale:locale userId:userId error:profile];
 
-  return a3;
+  return profile;
 }
 
-- (BOOL)_errorRequiresCleanRebuild:(id)a3
+- (BOOL)_errorRequiresCleanRebuild:(id)rebuild
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = [v3 domain];
+  rebuildCopy = rebuild;
+  code = [rebuildCopy code];
+  domain = [rebuildCopy domain];
 
-  v6 = [v5 isEqual:@"CESRProfileErrorDomain"];
-  v8 = v4 == 6 || (v4 - 1) < 2;
+  v6 = [domain isEqual:@"CESRProfileErrorDomain"];
+  v8 = code == 6 || (code - 1) < 2;
   if (v6)
   {
     v9 = v8;
@@ -45,13 +45,13 @@
   return v9;
 }
 
-- (id)_versionForCategory:(id)a3 error:(id *)a4
+- (id)_versionForCategory:(id)category error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  categoryCopy = category;
   builder = self->_builder;
   v15 = 0;
-  v8 = [(CESRSpeechProfileBuilder *)builder getVersionForCategory:v6 error:&v15];
+  v8 = [(CESRSpeechProfileBuilder *)builder getVersionForCategory:categoryCopy error:&v15];
   v9 = v15;
   if (v9)
   {
@@ -61,22 +61,22 @@
       *buf = 136315650;
       v17 = "[CESRSpeechProfileUpdater _versionForCategory:error:]";
       v18 = 2112;
-      v19 = v6;
+      v19 = categoryCopy;
       v20 = 2112;
       v21 = v9;
       _os_log_error_impl(&dword_225EEB000, v10, OS_LOG_TYPE_ERROR, "%s Checking version for category (%@) produced error: %@", buf, 0x20u);
-      if (a4)
+      if (error)
       {
         goto LABEL_4;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_4:
       v11 = v9;
       v12 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_8;
     }
 
@@ -95,23 +95,23 @@ LABEL_8:
   return v12;
 }
 
-- (id)categoriesToRebuildForAllSets:(id)a3
+- (id)categoriesToRebuildForAllSets:(id)sets
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
+  setsCopy = sets;
+  changeRegistry = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
   v25 = 0;
-  v6 = [v5 cleanupWithAllSets:v4 error:&v25];
+  v6 = [changeRegistry cleanupWithAllSets:setsCopy error:&v25];
   v7 = v25;
 
   if (v6)
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(setsCopy, "count")}];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v4;
+    v9 = setsCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v10)
     {
@@ -175,7 +175,7 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)detectCategoriesToRebuild:(id *)a3 error:(id *)a4
+- (BOOL)detectCategoriesToRebuild:(id *)rebuild error:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CEF0E8];
@@ -194,14 +194,14 @@ LABEL_8:
   v45 = 0u;
   v46 = 0u;
   v8 = +[CESRSpeechProfileCategoryGroup all];
-  v9 = [v8 speechCategories];
+  speechCategories = [v8 speechCategories];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v45 objects:v61 count:16];
+  obj = speechCategories;
+  v10 = [speechCategories countByEnumeratingWithState:&v45 objects:v61 count:16];
   if (v10)
   {
     v11 = v10;
-    v39 = a4;
+    errorCopy = error;
     v12 = 0;
     v13 = 0;
     v42 = *v46;
@@ -217,10 +217,10 @@ LABEL_5:
 
       v16 = *(*(&v45 + 1) + 8 * v14);
       v44 = v15;
-      v17 = [(CESRSpeechProfileUpdater *)self _versionForCategory:v16 error:&v44, v39];
+      errorCopy = [(CESRSpeechProfileUpdater *)self _versionForCategory:v16 error:&v44, errorCopy];
       v13 = v44;
 
-      if (!v17)
+      if (!errorCopy)
       {
         if ([(CESRSpeechProfileUpdater *)self _errorRequiresCleanRebuild:v13])
         {
@@ -257,10 +257,10 @@ LABEL_5:
           }
         }
 
-        if (v39 && v13)
+        if (errorCopy && v13)
         {
           v34 = v13;
-          *v39 = v13;
+          *errorCopy = v13;
         }
 
         v35 = 0;
@@ -280,7 +280,7 @@ LABEL_5:
         v53 = 2112;
         v54 = v16;
         v55 = 2112;
-        v56 = v17;
+        v56 = errorCopy;
         v57 = 2112;
         v58 = v18;
         v59 = 2112;
@@ -288,13 +288,13 @@ LABEL_5:
         _os_log_debug_impl(&dword_225EEB000, v20, OS_LOG_TYPE_DEBUG, "%s (%@) Checking category (%@) built version (%@) last completed update (%@) last registered update (%@)", buf, 0x3Eu);
       }
 
-      if (([v17 isEqual:v18] & 1) == 0)
+      if (([errorCopy isEqual:v18] & 1) == 0)
       {
         break;
       }
 
-      v21 = [v19 longLongValue];
-      if (v21 > [v18 longLongValue])
+      longLongValue = [v19 longLongValue];
+      if (longLongValue > [v18 longLongValue])
       {
         v22 = *MEMORY[0x277CEF0E8];
         if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
@@ -345,7 +345,7 @@ LABEL_21:
       v53 = 2112;
       v54 = v16;
       v55 = 2112;
-      v56 = v17;
+      v56 = errorCopy;
       v57 = 2112;
       v58 = v18;
       v24 = v26;
@@ -368,9 +368,9 @@ LABEL_18:
   v13 = 0;
 LABEL_36:
 
-  if (a3 && [v12 count])
+  if (rebuild && [v12 count])
   {
-    *a3 = [CESRSpeechProfileCategoryGroup groupForSpeechCategories:v12];
+    *rebuild = [CESRSpeechProfileCategoryGroup groupForSpeechCategories:v12];
   }
 
   v35 = 1;
@@ -380,36 +380,36 @@ LABEL_40:
   return v35;
 }
 
-- (void)_endSpeechProfileUpdateSignpost:(unint64_t)a3 updateResult:(unsigned __int8)a4 updateType:(unsigned __int8)a5 categoryCount:(unint64_t)a6 itemCount:(unint64_t)a7
+- (void)_endSpeechProfileUpdateSignpost:(unint64_t)signpost updateResult:(unsigned __int8)result updateType:(unsigned __int8)type categoryCount:(unint64_t)count itemCount:(unint64_t)itemCount
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  itemCountCopy = itemCount;
+  countCopy = count;
+  typeCopy = type;
+  resultCopy = result;
   v27 = *MEMORY[0x277D85DE8];
   v12 = *MEMORY[0x277CEF0E8];
   v13 = v12;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
+  if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    if ((v9 - 1) > 2)
+    if ((typeCopy - 1) > 2)
     {
       v14 = @"Undefined";
     }
 
     else
     {
-      v14 = off_27857F000[(v9 - 1)];
+      v14 = off_27857F000[(typeCopy - 1)];
     }
 
     v15 = v14;
-    if ((v10 - 1) > 5)
+    if ((resultCopy - 1) > 5)
     {
       v16 = @"Undefined";
     }
 
     else
     {
-      v16 = off_27857F040[(v10 - 1)];
+      v16 = off_27857F040[(resultCopy - 1)];
     }
 
     v17 = v16;
@@ -418,21 +418,21 @@ LABEL_40:
     v21 = 2114;
     v22 = v17;
     v23 = 1026;
-    v24 = v7;
+    v24 = itemCountCopy;
     v25 = 1026;
-    v26 = v8;
-    _os_signpost_emit_with_name_impl(&dword_225EEB000, v13, OS_SIGNPOST_INTERVAL_END, a3, "speechProfileUpdate", " updateType=%{public,signpost.telemetry:string1}@  updateResult=%{public,signpost.telemetry:string2}@  itemCount=%{public,signpost.telemetry:number1}d  speechCategoriesCount=%{public,signpost.telemetry:number2}d ", &v19, 0x22u);
+    v26 = countCopy;
+    _os_signpost_emit_with_name_impl(&dword_225EEB000, v13, OS_SIGNPOST_INTERVAL_END, signpost, "speechProfileUpdate", " updateType=%{public,signpost.telemetry:string1}@  updateResult=%{public,signpost.telemetry:string2}@  itemCount=%{public,signpost.telemetry:number1}d  speechCategoriesCount=%{public,signpost.telemetry:number2}d ", &v19, 0x22u);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)rebuildCategoryGroup:(id)a3 withSets:(id)a4 version:(id)a5 error:(id *)a6
+- (BOOL)rebuildCategoryGroup:(id)group withSets:(id)sets version:(id)version error:(id *)error
 {
   v144 = *MEMORY[0x277D85DE8];
-  v98 = a3;
-  v94 = a4;
-  v105 = a5;
+  groupCopy = group;
+  setsCopy = sets;
+  versionCopy = version;
   v9 = MEMORY[0x277CEF0E8];
   v10 = os_signpost_id_generate(*MEMORY[0x277CEF0E8]);
   v11 = *v9;
@@ -446,7 +446,7 @@ LABEL_40:
   v93 = v10;
 
   v13 = +[CESRSpeechProfileCategoryGroup all];
-  if ([v98 isEqual:v13])
+  if ([groupCopy isEqual:v13])
   {
     v14 = 3;
   }
@@ -458,19 +458,19 @@ LABEL_40:
 
   v92 = v14;
 
-  v15 = [v98 speechCategories];
-  v95 = [v15 count];
+  speechCategories = [groupCopy speechCategories];
+  v95 = [speechCategories count];
 
   if (v95)
   {
-    v90 = [CESRSpeechItemRanker rankersForInstance:self->_instance speechProfileSite:self->_speechProfileSite categoryGroup:v98 sets:v94];
+    v90 = [CESRSpeechItemRanker rankersForInstance:self->_instance speechProfileSite:self->_speechProfileSite categoryGroup:groupCopy sets:setsCopy];
     v104 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v95];
     v132 = 0u;
     v133 = 0u;
     v130 = 0u;
     v131 = 0u;
-    v16 = [v98 speechCategories];
-    v17 = [v16 countByEnumeratingWithState:&v130 objects:v143 count:16];
+    speechCategories2 = [groupCopy speechCategories];
+    v17 = [speechCategories2 countByEnumeratingWithState:&v130 objects:v143 count:16];
     if (v17)
     {
       v18 = *v131;
@@ -480,13 +480,13 @@ LABEL_40:
         {
           if (*v131 != v18)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(speechCategories2);
           }
 
-          [v104 setObject:v105 forKey:*(*(&v130 + 1) + 8 * i)];
+          [v104 setObject:versionCopy forKey:*(*(&v130 + 1) + 8 * i)];
         }
 
-        v17 = [v16 countByEnumeratingWithState:&v130 objects:v143 count:16];
+        v17 = [speechCategories2 countByEnumeratingWithState:&v130 objects:v143 count:16];
       }
 
       while (v17);
@@ -497,15 +497,15 @@ LABEL_40:
     {
       instance = self->_instance;
       v22 = v20;
-      v23 = [v98 speechCategoriesDescription];
+      speechCategoriesDescription = [groupCopy speechCategoriesDescription];
       *buf = 136315906;
       v138 = "[CESRSpeechProfileUpdater rebuildCategoryGroup:withSets:version:error:]";
       v139 = 2112;
       *v140 = instance;
       *&v140[8] = 2112;
-      *&v140[10] = v105;
+      *&v140[10] = versionCopy;
       v141 = 2112;
-      v142 = v23;
+      v142 = speechCategoriesDescription;
       _os_log_impl(&dword_225EEB000, v22, OS_LOG_TYPE_INFO, "%s (%@) Updating version: %@ for categories: %@", buf, 0x2Au);
     }
 
@@ -575,11 +575,11 @@ LABEL_40:
                 _os_log_error_impl(&dword_225EEB000, v63, OS_LOG_TYPE_ERROR, "%s (%@) Failed to enumerate and add items from ranker: %@ error: %@", buf, 0x2Au);
               }
 
-              if (a6 && v102)
+              if (error && v102)
               {
                 v65 = v102;
                 v64 = v102;
-                *a6 = v102;
+                *error = v102;
               }
 
               v66 = self->_builder;
@@ -604,8 +604,8 @@ LABEL_40:
                 }
               }
 
-              v69 = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
-              [v69 rollbackAllBookmarkUpdates];
+              changeRegistry = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
+              [changeRegistry rollbackAllBookmarkUpdates];
 
               [(CESRSpeechProfileUpdater *)self _endSpeechProfileUpdateSignpost:v93 updateResult:4 updateType:v92 categoryCount:v95 itemCount:0];
               _Block_object_dispose(&v121, 8);
@@ -617,9 +617,9 @@ LABEL_40:
             v115 = 0u;
             v116 = 0u;
             v117 = 0u;
-            v33 = [v103 getAllCodepathIds];
+            getAllCodepathIds = [v103 getAllCodepathIds];
             v34 = 0;
-            v35 = [v33 countByEnumeratingWithState:&v114 objects:v135 count:16];
+            v35 = [getAllCodepathIds countByEnumeratingWithState:&v114 objects:v135 count:16];
             if (v35)
             {
               v36 = *v115;
@@ -629,7 +629,7 @@ LABEL_40:
                 {
                   if (*v115 != v36)
                   {
-                    objc_enumerationMutation(v33);
+                    objc_enumerationMutation(getAllCodepathIds);
                   }
 
                   v38 = *(*(&v114 + 1) + 8 * j);
@@ -658,7 +658,7 @@ LABEL_40:
                   }
                 }
 
-                v35 = [v33 countByEnumeratingWithState:&v114 objects:v135 count:16];
+                v35 = [getAllCodepathIds countByEnumeratingWithState:&v114 objects:v135 count:16];
               }
 
               while (v35);
@@ -668,8 +668,8 @@ LABEL_40:
             v112 = 0u;
             v109 = 0u;
             v110 = 0u;
-            v44 = [v103 getActivatedCodepathIds];
-            v45 = [v44 countByEnumeratingWithState:&v109 objects:v134 count:16];
+            getActivatedCodepathIds = [v103 getActivatedCodepathIds];
+            v45 = [getActivatedCodepathIds countByEnumeratingWithState:&v109 objects:v134 count:16];
             if (v45)
             {
               v46 = *v110;
@@ -679,7 +679,7 @@ LABEL_40:
                 {
                   if (*v110 != v46)
                   {
-                    objc_enumerationMutation(v44);
+                    objc_enumerationMutation(getActivatedCodepathIds);
                   }
 
                   v48 = *(*(&v109 + 1) + 8 * k);
@@ -721,7 +721,7 @@ LABEL_40:
                   }
                 }
 
-                v45 = [v44 countByEnumeratingWithState:&v109 objects:v134 count:16];
+                v45 = [getActivatedCodepathIds countByEnumeratingWithState:&v109 objects:v134 count:16];
               }
 
               while (v45);
@@ -775,21 +775,21 @@ LABEL_40:
         {
           v77 = self->_instance;
           v78 = v75;
-          v79 = [v98 speechCategoriesDescription];
+          speechCategoriesDescription2 = [groupCopy speechCategoriesDescription];
           *buf = 136315906;
           v138 = "[CESRSpeechProfileUpdater rebuildCategoryGroup:withSets:version:error:]";
           v139 = 2112;
           *v140 = v77;
           *&v140[8] = 2112;
-          *&v140[10] = v105;
+          *&v140[10] = versionCopy;
           v141 = 2112;
-          v142 = v79;
+          v142 = speechCategoriesDescription2;
           _os_log_impl(&dword_225EEB000, v78, OS_LOG_TYPE_INFO, "%s (%@) Completed profile update version: %@ for categories: %@", buf, 0x2Au);
         }
 
-        v80 = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
+        changeRegistry2 = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
         v106 = v74;
-        v81 = [v80 commitAllBookmarkUpdates:&v106];
+        v81 = [changeRegistry2 commitAllBookmarkUpdates:&v106];
         v27 = v106;
 
         if ((v81 & 1) == 0)
@@ -826,14 +826,14 @@ LABEL_40:
           _os_log_error_impl(&dword_225EEB000, v75, OS_LOG_TYPE_ERROR, "%s (%@) Failed to finish profile due to error: %@", buf, 0x20u);
         }
 
-        if (a6 && v74)
+        if (error && v74)
         {
           v83 = v74;
-          *a6 = v74;
+          *error = v74;
         }
 
-        v84 = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
-        [v84 rollbackAllBookmarkUpdates];
+        changeRegistry3 = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
+        [changeRegistry3 rollbackAllBookmarkUpdates];
 
         [(CESRSpeechProfileUpdater *)self _endSpeechProfileUpdateSignpost:v93 updateResult:1 updateType:v92 categoryCount:v95 itemCount:v101];
         v60 = 0;
@@ -858,10 +858,10 @@ LABEL_40:
         _os_log_error_impl(&dword_225EEB000, v61, OS_LOG_TYPE_ERROR, "%s (%@) Failed to begin building categories: %@ error: %@", buf, 0x2Au);
       }
 
-      if (a6 && v27)
+      if (error && v27)
       {
         v62 = v27;
-        *a6 = v27;
+        *error = v27;
       }
 
       [(CESRSpeechProfileUpdater *)self _endSpeechProfileUpdateSignpost:v93 updateResult:3 updateType:v92 categoryCount:v95 itemCount:0];
@@ -881,7 +881,7 @@ LABEL_69:
       v139 = 2112;
       *v140 = v59;
       *&v140[8] = 2112;
-      *&v140[10] = v98;
+      *&v140[10] = groupCopy;
       _os_log_impl(&dword_225EEB000, v58, OS_LOG_TYPE_INFO, "%s (%@) Skipping update for group: %@", buf, 0x20u);
     }
 
@@ -893,30 +893,30 @@ LABEL_69:
   return v60;
 }
 
-- (CESRSpeechProfileUpdater)initWithInstance:(id)a3 speechProfileSite:(id)a4 builder:(id)a5
+- (CESRSpeechProfileUpdater)initWithInstance:(id)instance speechProfileSite:(id)site builder:(id)builder
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  instanceCopy = instance;
+  siteCopy = site;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = CESRSpeechProfileUpdater;
   v12 = [(CESRSpeechProfileUpdater *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_instance, a3);
-    objc_storeStrong(&v13->_speechProfileSite, a4);
-    objc_storeStrong(&v13->_builder, a5);
+    objc_storeStrong(&v12->_instance, instance);
+    objc_storeStrong(&v13->_speechProfileSite, site);
+    objc_storeStrong(&v13->_builder, builder);
   }
 
   return v13;
 }
 
-+ (unint64_t)updateModeForSet:(id)a3 speechProfileInstance:(id)a4 isSetNew:(BOOL *)a5
++ (unint64_t)updateModeForSet:(id)set speechProfileInstance:(id)instance isSetNew:(BOOL *)new
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  instanceCopy = instance;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -927,8 +927,8 @@ LABEL_69:
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v9 = [v8 changeRegistry];
-  v10 = [v9 bookmarkForSet:v7];
+  changeRegistry = [instanceCopy changeRegistry];
+  v10 = [changeRegistry bookmarkForSet:setCopy];
 
   if (!v10)
   {
@@ -941,24 +941,24 @@ LABEL_69:
     *buf = 136315650;
     v40 = "+[CESRSpeechProfileUpdater updateModeForSet:speechProfileInstance:isSetNew:]";
     v41 = 2112;
-    v42 = v8;
+    v42 = instanceCopy;
     v43 = 2112;
-    v44 = v7;
+    v44 = setCopy;
     v15 = "%s (%@) No bookmark found for set: %@";
     v16 = v18;
     v17 = 32;
 LABEL_7:
     _os_log_impl(&dword_225EEB000, v16, OS_LOG_TYPE_INFO, v15, buf, v17);
 LABEL_8:
-    if (a5)
+    if (new)
     {
-      *a5 = 1;
+      *new = 1;
     }
 
     goto LABEL_21;
   }
 
-  v11 = [v7 changePublisherWithUseCase:@"SpeechProfile"];
+  v11 = [setCopy changePublisherWithUseCase:@"SpeechProfile"];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __76__CESRSpeechProfileUpdater_updateModeForSet_speechProfileInstance_isSetNew___block_invoke;
@@ -983,9 +983,9 @@ LABEL_8:
     *buf = 136315906;
     v40 = "+[CESRSpeechProfileUpdater updateModeForSet:speechProfileInstance:isSetNew:]";
     v41 = 2112;
-    v42 = v8;
+    v42 = instanceCopy;
     v43 = 2112;
-    v44 = v7;
+    v44 = setCopy;
     v45 = 2112;
     v46 = v13;
     v15 = "%s (%@) Failed to enumerate set: %@ error: %@";
@@ -1023,9 +1023,9 @@ LABEL_8:
     *buf = 136315906;
     v40 = "+[CESRSpeechProfileUpdater updateModeForSet:speechProfileInstance:isSetNew:]";
     v41 = 2112;
-    v42 = v8;
+    v42 = instanceCopy;
     v43 = 2112;
-    v44 = v7;
+    v44 = setCopy;
     v45 = 2112;
     v46 = v23;
     _os_log_impl(&dword_225EEB000, v19, OS_LOG_TYPE_INFO, "%s (%@) Set %@ has %@ updates since last enumeration", buf, 0x2Au);
@@ -1073,17 +1073,17 @@ LABEL_5:
   return (~*(*(*(a1 + 32) + 8) + 24) & 3) != 0;
 }
 
-+ (unint64_t)updateModeForSets:(id)a3 speechProfileInstance:(id)a4 speechProfileSite:(id)a5 isAnySetNew:(BOOL *)a6
++ (unint64_t)updateModeForSets:(id)sets speechProfileInstance:(id)instance speechProfileSite:(id)site isAnySetNew:(BOOL *)new
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  setsCopy = sets;
+  instanceCopy = instance;
   v22 = 0;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v8;
+  v10 = setsCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v11)
   {
@@ -1099,7 +1099,7 @@ LABEL_3:
         objc_enumerationMutation(v10);
       }
 
-      v13 |= [CESRSpeechProfileUpdater updateModeForSet:*(*(&v18 + 1) + 8 * v15) speechProfileInstance:v9 isSetNew:&v22, v18];
+      v13 |= [CESRSpeechProfileUpdater updateModeForSet:*(*(&v18 + 1) + 8 * v15) speechProfileInstance:instanceCopy isSetNew:&v22, v18];
       if (v22)
       {
         break;
@@ -1123,27 +1123,27 @@ LABEL_3:
     v13 = 0;
   }
 
-  if (a6)
+  if (new)
   {
-    *a6 = v22;
+    *new = v22;
   }
 
   v16 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-+ (id)updaterForInstance:(id)a3 atSpeechProfileSite:(id)a4
++ (id)updaterForInstance:(id)instance atSpeechProfileSite:(id)site
 {
-  v5 = a4;
-  v6 = a3;
+  siteCopy = site;
+  instanceCopy = instance;
   v7 = [CESRSpeechProfileBuilder alloc];
-  v8 = [v5 speechProfileSiteURL];
-  v9 = [v6 locale];
-  v10 = [v5 userId];
-  v11 = [v5 personaId];
-  v12 = -[CESRSpeechProfileBuilder initWithDirectory:locale:userId:personaId:dataProtectionClass:isInUserVault:](v7, "initWithDirectory:locale:userId:personaId:dataProtectionClass:isInUserVault:", v8, v9, v10, v11, [v5 dataProtectionClass], objc_msgSend(v5, "isInUserVault"));
+  speechProfileSiteURL = [siteCopy speechProfileSiteURL];
+  locale = [instanceCopy locale];
+  userId = [siteCopy userId];
+  personaId = [siteCopy personaId];
+  v12 = -[CESRSpeechProfileBuilder initWithDirectory:locale:userId:personaId:dataProtectionClass:isInUserVault:](v7, "initWithDirectory:locale:userId:personaId:dataProtectionClass:isInUserVault:", speechProfileSiteURL, locale, userId, personaId, [siteCopy dataProtectionClass], objc_msgSend(siteCopy, "isInUserVault"));
 
-  v13 = [objc_alloc(objc_opt_class()) initWithInstance:v6 speechProfileSite:v5 builder:v12];
+  v13 = [objc_alloc(objc_opt_class()) initWithInstance:instanceCopy speechProfileSite:siteCopy builder:v12];
 
   return v13;
 }

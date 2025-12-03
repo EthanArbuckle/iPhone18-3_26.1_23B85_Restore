@@ -1,14 +1,14 @@
 @interface NLSessionActivityHeartRateZonesAccumulator
-- (void)updateTargetZone:(id)a3;
+- (void)updateTargetZone:(id)zone;
 @end
 
 @implementation NLSessionActivityHeartRateZonesAccumulator
 
-- (void)updateTargetZone:(id)a3
+- (void)updateTargetZone:(id)zone
 {
-  v4 = a3;
-  v5 = self;
-  HeartRateZonesAccumulator.updateTargetZone(_:)(v4);
+  zoneCopy = zone;
+  selfCopy = self;
+  HeartRateZonesAccumulator.updateTargetZone(_:)(zoneCopy);
 }
 
 @end

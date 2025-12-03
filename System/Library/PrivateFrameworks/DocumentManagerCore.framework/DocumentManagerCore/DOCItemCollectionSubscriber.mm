@@ -1,21 +1,21 @@
 @interface DOCItemCollectionSubscriber
-- (DOCItemCollectionSubscriber)initWithUpdateBlock:(id)a3;
+- (DOCItemCollectionSubscriber)initWithUpdateBlock:(id)block;
 @end
 
 @implementation DOCItemCollectionSubscriber
 
-- (DOCItemCollectionSubscriber)initWithUpdateBlock:(id)a3
+- (DOCItemCollectionSubscriber)initWithUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = DOCItemCollectionSubscriber;
   v5 = [(DOCItemCollectionSubscriber *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    [(DOCItemCollectionSubscriber *)v5 setUUID:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(DOCItemCollectionSubscriber *)v5 setUUID:uUID];
 
-    [(DOCItemCollectionSubscriber *)v5 setUpdateBlock:v4];
+    [(DOCItemCollectionSubscriber *)v5 setUpdateBlock:blockCopy];
   }
 
   return v5;

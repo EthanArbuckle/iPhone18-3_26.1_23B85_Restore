@@ -1,5 +1,5 @@
 @interface DDChatBotAction
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4;
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result;
 - (id)commitURL;
 - (id)menuActions;
 - (id)sheetActions;
@@ -7,23 +7,23 @@
 
 @implementation DDChatBotAction
 
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result
 {
-  v5 = a3;
-  if (!v5)
+  urlCopy = url;
+  if (!urlCopy)
   {
-    if (_DDResultIsURL(a4))
+    if (_DDResultIsURL(result))
     {
-      v5 = _DDURLFromResult(a4);
+      urlCopy = _DDURLFromResult(result);
     }
 
     else
     {
-      v5 = 0;
+      urlCopy = 0;
     }
   }
 
-  v6 = dd_emailFromMailtoScheme(v5);
+  v6 = dd_emailFromMailtoScheme(urlCopy);
   IsChatBot = dd_handleIsChatBot(v6);
 
   if (IsChatBot)
@@ -34,7 +34,7 @@
   else
   {
     v12 = 0;
-    v9 = [(NSURL *)v5 dd_phoneNumberFromTelSchemeAndExtractBody:&v12 serviceID:0 suggestions:?];
+    v9 = [(NSURL *)urlCopy dd_phoneNumberFromTelSchemeAndExtractBody:&v12 serviceID:0 suggestions:?];
     v10 = v12;
     v8 = v10 != 0;
   }
@@ -172,9 +172,9 @@
   }
 
   v5 = [[DDTextMessageAction alloc] initWithURL:v3 result:self->super.super._result context:self->super.super._context];
-  v6 = [(DDTextMessageAction *)v5 notificationURL];
+  notificationURL = [(DDTextMessageAction *)v5 notificationURL];
 
-  return v6;
+  return notificationURL;
 }
 
 @end

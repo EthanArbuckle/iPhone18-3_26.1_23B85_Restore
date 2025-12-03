@@ -1,19 +1,19 @@
 @interface GAXEventProcessor
-- (BOOL)_eventLooksLikeVolumeButtonPress:(id)a3;
-- (BOOL)_handleGAXActiveSystemEvent:(id)a3 gaxState:(id *)a4;
-- (BOOL)_handleGAXWorkspaceSystemEvent:(id)a3 gaxState:(id *)a4;
-- (BOOL)_handleSystemEvent:(id)a3;
-- (BOOL)_prevalidateEvent:(id)a3;
-- (BOOL)_shouldSwallowTouchEvent:(id)a3 gaxState:(id *)a4;
-- (BOOL)_touchEvent:(id)a3 isForWindowWithContextID:(unsigned int)a4 gaxState:(id *)a5;
-- (BOOL)_touchEventIsForAccessibilityFeatures:(id)a3 gaxState:(id *)a4;
-- (BOOL)_touchEventIsForAssistiveTouch:(id)a3 gaxState:(id *)a4;
-- (BOOL)_touchEventIsForTripleClickSheet:(id)a3 gaxState:(id *)a4;
-- (BOOL)_touchEventIsForVoiceOverItemChooser:(id)a3 gaxState:(id *)a4;
+- (BOOL)_eventLooksLikeVolumeButtonPress:(id)press;
+- (BOOL)_handleGAXActiveSystemEvent:(id)event gaxState:(id *)state;
+- (BOOL)_handleGAXWorkspaceSystemEvent:(id)event gaxState:(id *)state;
+- (BOOL)_handleSystemEvent:(id)event;
+- (BOOL)_prevalidateEvent:(id)event;
+- (BOOL)_shouldSwallowTouchEvent:(id)event gaxState:(id *)state;
+- (BOOL)_touchEvent:(id)event isForWindowWithContextID:(unsigned int)d gaxState:(id *)state;
+- (BOOL)_touchEventIsForAccessibilityFeatures:(id)features gaxState:(id *)state;
+- (BOOL)_touchEventIsForAssistiveTouch:(id)touch gaxState:(id *)state;
+- (BOOL)_touchEventIsForTripleClickSheet:(id)sheet gaxState:(id *)state;
+- (BOOL)_touchEventIsForVoiceOverItemChooser:(id)chooser gaxState:(id *)state;
 - (GAXEventProcessor)init;
 - (GAXEventProcessorDelegate)delegate;
-- (void)_postLockButtonPressWithDown:(id)a3 up:(id)a4;
-- (void)_updateLocalEventStateWithEvent:(id)a3;
+- (void)_postLockButtonPressWithDown:(id)down up:(id)up;
+- (void)_updateLocalEventStateWithEvent:(id)event;
 @end
 
 @implementation GAXEventProcessor
@@ -50,18 +50,18 @@
   return v3;
 }
 
-- (BOOL)_handleSystemEvent:(id)a3
+- (BOOL)_handleSystemEvent:(id)event
 {
-  v4 = a3;
-  [(GAXEventProcessor *)self _updateLocalEventStateWithEvent:v4];
-  if ([(GAXEventProcessor *)self _prevalidateEvent:v4])
+  eventCopy = event;
+  [(GAXEventProcessor *)self _updateLocalEventStateWithEvent:eventCopy];
+  if ([(GAXEventProcessor *)self _prevalidateEvent:eventCopy])
   {
     memset(v11, 0, 28);
-    v5 = [(GAXEventProcessor *)self delegate];
-    v6 = v5;
-    if (v5)
+    delegate = [(GAXEventProcessor *)self delegate];
+    v6 = delegate;
+    if (delegate)
     {
-      [v5 gaxStateWithGAXEventProcessor:self];
+      [delegate gaxStateWithGAXEventProcessor:self];
     }
 
     else
@@ -73,7 +73,7 @@
     {
       *v10 = v11[0];
       *&v10[12] = *(v11 + 12);
-      v8 = [(GAXEventProcessor *)self _handleGAXActiveSystemEvent:v4 gaxState:v10];
+      v8 = [(GAXEventProcessor *)self _handleGAXActiveSystemEvent:eventCopy gaxState:v10];
     }
 
     else
@@ -86,7 +86,7 @@
 
       *v10 = v11[0];
       *&v10[12] = *(v11 + 12);
-      v8 = [(GAXEventProcessor *)self _handleGAXWorkspaceSystemEvent:v4 gaxState:v10];
+      v8 = [(GAXEventProcessor *)self _handleGAXWorkspaceSystemEvent:eventCopy gaxState:v10];
     }
 
     v7 = v8;
@@ -103,20 +103,20 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)_handleGAXWorkspaceSystemEvent:(id)a3 gaxState:(id *)a4
+- (BOOL)_handleGAXWorkspaceSystemEvent:(id)event gaxState:(id *)state
 {
-  v5 = [a3 type];
+  type = [event type];
   if ((AXEventTypeIsOrientationChange() & 1) == 0)
   {
-    if (v5 == 1010)
+    if (type == 1010)
     {
       return 1;
     }
 
-    if (v5 == 1011)
+    if (type == 1011)
     {
-      v6 = [(GAXEventProcessor *)self delegate];
-      [v6 eventProcessor:self transitionToMode:0];
+      delegate = [(GAXEventProcessor *)self delegate];
+      [delegate eventProcessor:self transitionToMode:0];
 
       return 1;
     }
@@ -125,10 +125,10 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)_eventLooksLikeVolumeButtonPress:(id)a3
+- (BOOL)_eventLooksLikeVolumeButtonPress:(id)press
 {
-  v3 = a3;
-  [v3 type];
+  pressCopy = press;
+  [pressCopy type];
   if (AXEventTypeIsVolumeButtonPress())
   {
     v4 = 1;
@@ -136,21 +136,21 @@ LABEL_9:
 
   else
   {
-    v5 = [v3 keyInfo];
-    v6 = [v5 usagePage];
+    keyInfo = [pressCopy keyInfo];
+    usagePage = [keyInfo usagePage];
 
-    if (v6 == 7)
+    if (usagePage == 7)
     {
-      v7 = [v3 keyInfo];
-      if ([v7 keyCode] == 68)
+      keyInfo2 = [pressCopy keyInfo];
+      if ([keyInfo2 keyCode] == 68)
       {
         v4 = 1;
       }
 
       else
       {
-        v8 = [v3 keyInfo];
-        v4 = [v8 keyCode] == 69;
+        keyInfo3 = [pressCopy keyInfo];
+        v4 = [keyInfo3 keyCode] == 69;
       }
     }
 
@@ -163,34 +163,34 @@ LABEL_9:
   return v4;
 }
 
-- (void)_postLockButtonPressWithDown:(id)a3 up:(id)a4
+- (void)_postLockButtonPressWithDown:(id)down up:(id)up
 {
-  v5 = a4;
-  v6 = a3;
+  upCopy = up;
+  downCopy = down;
   v7 = +[AXEventTapManager sharedManager];
-  [v7 sendEvent:v6 afterTap:AXEventTapIdentifierGuidedAccess useGSEvent:0 namedTaps:0 options:0];
+  [v7 sendEvent:downCopy afterTap:AXEventTapIdentifierGuidedAccess useGSEvent:0 namedTaps:0 options:0];
 
   v8 = dispatch_time(0, 50000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10D00;
   block[3] = &unk_4C958;
-  v11 = v5;
-  v9 = v5;
+  v11 = upCopy;
+  v9 = upCopy;
   dispatch_after(v8, &_dispatch_main_q, block);
 }
 
-- (BOOL)_handleGAXActiveSystemEvent:(id)a3 gaxState:(id *)a4
+- (BOOL)_handleGAXActiveSystemEvent:(id)event gaxState:(id *)state
 {
-  v7 = a3;
-  v8 = [v7 type];
+  eventCopy = event;
+  type = [eventCopy type];
   if (AXEventTypeIsLockButtonPress())
   {
     v9 = GAXLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a4->var0;
-      v11 = (*(a4 + 6) >> 12) & 1;
+      var0 = state->var0;
+      v11 = (*(state + 6) >> 12) & 1;
       *buf = 67109376;
       *&buf[4] = var0;
       *&buf[8] = 1024;
@@ -211,8 +211,8 @@ LABEL_7:
     v9 = GAXLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = a4->var0;
-      v14 = (*(a4 + 6) >> 12) & 1;
+      v13 = state->var0;
+      v14 = (*(state + 6) >> 12) & 1;
       *buf = 67109376;
       *&buf[4] = v13;
       *&buf[8] = 1024;
@@ -223,16 +223,16 @@ LABEL_7:
   }
 
 LABEL_9:
-  if (a4->var0 != 2)
+  if (state->var0 != 2)
   {
     goto LABEL_25;
   }
 
-  if ((*(a4 + 24) & 8) != 0)
+  if ((*(state + 24) & 8) != 0)
   {
-    if (!AXEventTypeIsTouch() || (var1 = a4->var1, (AX_EventRepresentationContainsOnlyPathsForContextID() & 1) == 0) && (*buf = *&a4->var0, *&buf[12] = *&a4->var3, ![(GAXEventProcessor *)self _touchEventIsForAccessibilityFeatures:v7 gaxState:buf]))
+    if (!AXEventTypeIsTouch() || (var1 = state->var1, (AX_EventRepresentationContainsOnlyPathsForContextID() & 1) == 0) && (*buf = *&state->var0, *&buf[12] = *&state->var3, ![(GAXEventProcessor *)self _touchEventIsForAccessibilityFeatures:eventCopy gaxState:buf]))
     {
-      v17 = v8 != 3200;
+      v17 = type != 3200;
       goto LABEL_26;
     }
 
@@ -243,16 +243,16 @@ LABEL_9:
   {
     if (AXDeviceHasHomeButton())
     {
-      if ((*(a4 + 6) & 0x800) == 0 || self->_forceDisableLockButton)
+      if ((*(state + 6) & 0x800) == 0 || self->_forceDisableLockButton)
       {
-        v15 = [(GAXEventProcessor *)self delegate];
-        [v15 unlockDeviceWithEventProcessor:self];
+        delegate = [(GAXEventProcessor *)self delegate];
+        [delegate unlockDeviceWithEventProcessor:self];
 
-        if ((*(a4 + 25) & 0x10) != 0)
+        if ((*(state + 25) & 0x10) != 0)
         {
-          v16 = [(GAXEventProcessor *)self delegate];
+          delegate2 = [(GAXEventProcessor *)self delegate];
           v17 = 1;
-          [v16 eventProcessor:self showAlertWithType:1];
+          [delegate2 eventProcessor:self showAlertWithType:1];
 
           goto LABEL_26;
         }
@@ -261,17 +261,17 @@ LABEL_9:
       }
     }
 
-    else if ((*(a4 + 6) & 0x1800) != 0x800)
+    else if ((*(state + 6) & 0x1800) != 0x800)
     {
-      if (v8 != 1011)
+      if (type != 1011)
       {
-        objc_storeStrong(&self->_savedSideDown, a3);
+        objc_storeStrong(&self->_savedSideDown, event);
         [(AXDispatchTimer *)self->_sideButtonActionTimer cancel];
         goto LABEL_47;
       }
 
       +[NSDate timeIntervalSinceReferenceDate];
-      if ((*(a4 + 25) & 0x10) != 0)
+      if ((*(state + 25) & 0x10) != 0)
       {
         v22 = v21;
         v23 = v21 - self->_lastD2XSideButtonUpTime;
@@ -283,8 +283,8 @@ LABEL_9:
           self->_lastD2XSideButtonUpTime = v22;
           if (v25 == 3)
           {
-            v26 = [(GAXEventProcessor *)self delegate];
-            [v26 unlockDeviceWithEventProcessor:self];
+            delegate3 = [(GAXEventProcessor *)self delegate];
+            [delegate3 unlockDeviceWithEventProcessor:self];
 
             _AXSHandleTripleClickHomeButtonPress();
             self->_sideButtonPresses = 0;
@@ -307,9 +307,9 @@ LABEL_9:
         v30[2] = sub_111C4;
         v30[3] = &unk_4D428;
         v30[4] = self;
-        v32[0] = *&a4->var0;
-        *(v32 + 12) = *&a4->var3;
-        v31 = v7;
+        v32[0] = *&state->var0;
+        *(v32 + 12) = *&state->var3;
+        v31 = eventCopy;
         [(AXDispatchTimer *)sideButtonActionTimer afterDelay:v30 processBlock:v29];
       }
 
@@ -328,14 +328,14 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if ([(GAXEventProcessor *)self _eventLooksLikeVolumeButtonPress:v7])
+  if ([(GAXEventProcessor *)self _eventLooksLikeVolumeButtonPress:eventCopy])
   {
-    v19 = (*(a4 + 25) & 0x40) == 0;
+    v19 = (*(state + 25) & 0x40) == 0;
   }
 
   else if ((AXEventTypeIsMotion() & 1) != 0 || (AXEventTypeIsShake() & 1) != 0 || AXEventTypeIsOrientationChange())
   {
-    v19 = (*(a4 + 26) & 1) == 0;
+    v19 = (*(state + 26) & 1) == 0;
   }
 
   else
@@ -344,16 +344,16 @@ LABEL_25:
     {
       if (AXEventTypeIsTouch())
       {
-        *buf = *&a4->var0;
-        *&buf[12] = *&a4->var3;
-        v17 = [(GAXEventProcessor *)self _shouldSwallowTouchEvent:v7 gaxState:buf];
+        *buf = *&state->var0;
+        *&buf[12] = *&state->var3;
+        v17 = [(GAXEventProcessor *)self _shouldSwallowTouchEvent:eventCopy gaxState:buf];
         goto LABEL_26;
       }
 
       goto LABEL_25;
     }
 
-    v19 = (*(a4 + 25) & 0x80) == 0;
+    v19 = (*(state + 25) & 0x80) == 0;
   }
 
   v17 = v19;
@@ -362,61 +362,61 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)_touchEventIsForAccessibilityFeatures:(id)a3 gaxState:(id *)a4
+- (BOOL)_touchEventIsForAccessibilityFeatures:(id)features gaxState:(id *)state
 {
-  v6 = a3;
-  *v9 = *&a4->var0;
-  *&v9[12] = *&a4->var3;
-  if ([(GAXEventProcessor *)self _touchEventIsForAssistiveTouch:v6 gaxState:v9]|| (*v9 = *&a4->var0, *&v9[12] = *&a4->var3, [(GAXEventProcessor *)self _touchEventIsForTripleClickSheet:v6 gaxState:v9]))
+  featuresCopy = features;
+  *v9 = *&state->var0;
+  *&v9[12] = *&state->var3;
+  if ([(GAXEventProcessor *)self _touchEventIsForAssistiveTouch:featuresCopy gaxState:v9]|| (*v9 = *&state->var0, *&v9[12] = *&state->var3, [(GAXEventProcessor *)self _touchEventIsForTripleClickSheet:featuresCopy gaxState:v9]))
   {
     v7 = 1;
   }
 
   else
   {
-    *v9 = *&a4->var0;
-    *&v9[12] = *&a4->var3;
-    v7 = [(GAXEventProcessor *)self _touchEventIsForVoiceOverItemChooser:v6 gaxState:v9];
+    *v9 = *&state->var0;
+    *&v9[12] = *&state->var3;
+    v7 = [(GAXEventProcessor *)self _touchEventIsForVoiceOverItemChooser:featuresCopy gaxState:v9];
   }
 
   return v7;
 }
 
-- (BOOL)_touchEventIsForAssistiveTouch:(id)a3 gaxState:(id *)a4
+- (BOOL)_touchEventIsForAssistiveTouch:(id)touch gaxState:(id *)state
 {
-  v6 = a3;
+  touchCopy = touch;
   if (_AXSAssistiveTouchEnabled())
   {
-    v7 = [v6 handInfo];
-    v8 = [v7 paths];
-    v9 = [v8 count];
+    handInfo = [touchCopy handInfo];
+    paths = [handInfo paths];
+    v9 = [paths count];
 
     if (v9 == &dword_0 + 1)
     {
-      sp = a4->var4;
+      sp = state->var4;
       if (!sp)
       {
         bootstrap_look_up(bootstrap_port, "com.apple.assistivetouchd", &sp);
-        v10 = [(GAXEventProcessor *)self delegate];
-        [v10 eventProcessor:self updateAssistiveTouchBootstrapPort:sp];
+        delegate = [(GAXEventProcessor *)self delegate];
+        [delegate eventProcessor:self updateAssistiveTouchBootstrapPort:sp];
       }
 
       v11 = +[CAWindowServer serverIfRunning];
-      v12 = [v11 displays];
-      v13 = [v12 firstObject];
+      displays = [v11 displays];
+      firstObject = [displays firstObject];
 
-      v14 = [v7 paths];
-      v15 = [v14 objectAtIndexedSubscript:0];
+      paths2 = [handInfo paths];
+      v15 = [paths2 objectAtIndexedSubscript:0];
 
       v16 = +[CAWindowServer serverIfRunning];
-      v17 = [v16 displays];
-      v18 = [v17 firstObject];
+      displays2 = [v16 displays];
+      firstObject2 = [displays2 firstObject];
       [v15 pathLocation];
-      v19 = [v18 contextIdAtPosition:?];
+      v19 = [firstObject2 contextIdAtPosition:?];
 
-      v20 = [v15 pathWindowContextID];
-      LODWORD(v17) = sp;
-      if (v17 == [v13 clientPortOfContextId:v19])
+      pathWindowContextID = [v15 pathWindowContextID];
+      LODWORD(displays2) = sp;
+      if (displays2 == [firstObject clientPortOfContextId:v19])
       {
         v21 = 1;
       }
@@ -424,7 +424,7 @@ LABEL_26:
       else
       {
         v22 = sp;
-        v21 = v22 == [v13 clientPortOfContextId:v20];
+        v21 = v22 == [firstObject clientPortOfContextId:pathWindowContextID];
       }
     }
 
@@ -442,16 +442,16 @@ LABEL_26:
   return v21;
 }
 
-- (BOOL)_touchEventIsForTripleClickSheet:(id)a3 gaxState:(id *)a4
+- (BOOL)_touchEventIsForTripleClickSheet:(id)sheet gaxState:(id *)state
 {
-  v6 = a3;
+  sheetCopy = sheet;
   v13 = 0;
-  v7 = [(GAXEventProcessor *)self delegate];
-  [v7 eventProcessor:self shouldAllowTripleClickSheet:&v13 + 1 tripleClickAlertIsVisible:&v13];
+  delegate = [(GAXEventProcessor *)self delegate];
+  [delegate eventProcessor:self shouldAllowTripleClickSheet:&v13 + 1 tripleClickAlertIsVisible:&v13];
 
   if (HIBYTE(v13) == 1 && v13 == 1)
   {
-    var3 = a4->var3;
+    var3 = state->var3;
     if (!var3)
     {
       v9 = GAXLogCommon();
@@ -461,9 +461,9 @@ LABEL_26:
       }
     }
 
-    *v12 = *&a4->var0;
-    *&v12[12] = *&a4->var3;
-    v10 = [(GAXEventProcessor *)self _touchEvent:v6 isForWindowWithContextID:var3 gaxState:v12];
+    *v12 = *&state->var0;
+    *&v12[12] = *&state->var3;
+    v10 = [(GAXEventProcessor *)self _touchEvent:sheetCopy isForWindowWithContextID:var3 gaxState:v12];
   }
 
   else
@@ -474,39 +474,39 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)_touchEventIsForVoiceOverItemChooser:(id)a3 gaxState:(id *)a4
+- (BOOL)_touchEventIsForVoiceOverItemChooser:(id)chooser gaxState:(id *)state
 {
-  var2 = a4->var2;
+  var2 = state->var2;
   if (!var2)
   {
     return 0;
   }
 
-  v7[0] = *&a4->var0;
-  *(v7 + 12) = *&a4->var3;
-  return [(GAXEventProcessor *)self _touchEvent:a3 isForWindowWithContextID:var2 gaxState:v7];
+  v7[0] = *&state->var0;
+  *(v7 + 12) = *&state->var3;
+  return [(GAXEventProcessor *)self _touchEvent:chooser isForWindowWithContextID:var2 gaxState:v7];
 }
 
-- (BOOL)_touchEvent:(id)a3 isForWindowWithContextID:(unsigned int)a4 gaxState:(id *)a5
+- (BOOL)_touchEvent:(id)event isForWindowWithContextID:(unsigned int)d gaxState:(id *)state
 {
-  if (a4)
+  if (d)
   {
-    v6 = [a3 handInfo];
-    v7 = [v6 paths];
-    v8 = [v7 count];
+    handInfo = [event handInfo];
+    paths = [handInfo paths];
+    v8 = [paths count];
 
     if (v8 == &dword_0 + 1)
     {
-      v9 = [v6 paths];
-      v10 = [v9 objectAtIndexedSubscript:0];
+      paths2 = [handInfo paths];
+      v10 = [paths2 objectAtIndexedSubscript:0];
 
       v11 = +[CAWindowServer serverIfRunning];
-      v12 = [v11 displays];
-      v13 = [v12 firstObject];
+      displays = [v11 displays];
+      firstObject = [displays firstObject];
       [v10 pathLocation];
-      v14 = [v13 contextIdAtPosition:?];
+      v14 = [firstObject contextIdAtPosition:?];
 
-      v15 = v14 == a4;
+      v15 = v14 == d;
     }
 
     else
@@ -529,20 +529,20 @@ LABEL_26:
   return v15;
 }
 
-- (BOOL)_shouldSwallowTouchEvent:(id)a3 gaxState:(id *)a4
+- (BOOL)_shouldSwallowTouchEvent:(id)event gaxState:(id *)state
 {
-  v6 = a3;
-  *v16 = *&a4->var0;
-  *&v16[12] = *&a4->var3;
-  if ([(GAXEventProcessor *)self _touchEventIsForAccessibilityFeatures:v6 gaxState:v16]|| (*v16 = *&a4->var0, *&v16[12] = *&a4->var3, [(GAXEventProcessor *)self _allowingAllTouchByOverride:v16]))
+  eventCopy = event;
+  *v16 = *&state->var0;
+  *&v16[12] = *&state->var3;
+  if ([(GAXEventProcessor *)self _touchEventIsForAccessibilityFeatures:eventCopy gaxState:v16]|| (*v16 = *&state->var0, *&v16[12] = *&state->var3, [(GAXEventProcessor *)self _allowingAllTouchByOverride:v16]))
   {
     v7 = 0;
   }
 
   else
   {
-    *v16 = *&a4->var0;
-    *&v16[12] = *&a4->var3;
+    *v16 = *&state->var0;
+    *&v16[12] = *&state->var3;
     if ([(GAXEventProcessor *)self _ignoringAllTouchByOverride:v16])
     {
       v7 = 1;
@@ -550,8 +550,8 @@ LABEL_26:
 
     else
     {
-      v9 = [(GAXEventProcessor *)self delegate];
-      v10 = [v9 ignoredTouchRegionsForEventProcessor:self];
+      delegate = [(GAXEventProcessor *)self delegate];
+      v10 = [delegate ignoredTouchRegionsForEventProcessor:self];
 
       if (v10 && (Count = CFArrayGetCount(v10)) != 0)
       {
@@ -591,7 +591,7 @@ LABEL_16:
 
       else
       {
-        v7 = (*(a4 + 25) & 4) == 0;
+        v7 = (*(state + 25) & 4) == 0;
       }
     }
   }
@@ -599,19 +599,19 @@ LABEL_16:
   return v7;
 }
 
-- (void)_updateLocalEventStateWithEvent:(id)a3
+- (void)_updateLocalEventStateWithEvent:(id)event
 {
-  v4 = [a3 type];
-  if (v4 > 1009)
+  type = [event type];
+  if (type > 1009)
   {
-    if (v4 == 1010)
+    if (type == 1010)
     {
       v5 = 1;
     }
 
     else
     {
-      if (v4 != 1011)
+      if (type != 1011)
       {
         return;
       }
@@ -624,14 +624,14 @@ LABEL_16:
 
   else
   {
-    if (v4 == 1000)
+    if (type == 1000)
     {
       v5 = 1;
     }
 
     else
     {
-      if (v4 != 1001)
+      if (type != 1001)
       {
         return;
       }
@@ -645,19 +645,19 @@ LABEL_16:
   self->AXEventProcessor_opaque[*v6] = v5;
 }
 
-- (BOOL)_prevalidateEvent:(id)a3
+- (BOOL)_prevalidateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   +[NSDate timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = [v4 type];
+  type = [eventCopy type];
 
-  if (v7 == 1011)
+  if (type == 1011)
   {
     return !self->_blockedLastLockButtonDownEvent;
   }
 
-  if (v7 != 1010 || !AXDeviceHasHomeButton())
+  if (type != 1010 || !AXDeviceHasHomeButton())
   {
     return 1;
   }

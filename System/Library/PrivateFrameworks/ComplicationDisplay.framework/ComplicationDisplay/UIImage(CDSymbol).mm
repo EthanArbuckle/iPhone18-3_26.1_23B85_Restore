@@ -6,12 +6,12 @@
 
 - (double)cd_baselineOffsetFromBottom
 {
-  if (![a1 _hasBaseline])
+  if (![self _hasBaseline])
   {
     return 0.0;
   }
 
-  [a1 _baselineOffsetFromBottom];
+  [self _baselineOffsetFromBottom];
   return result;
 }
 

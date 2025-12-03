@@ -1,50 +1,50 @@
 @interface CPUIBarButton
-+ (id)buttonWithTitle:(id)a3 image:(id)a4 style:(int64_t)a5 type:(unint64_t)a6;
++ (id)buttonWithTitle:(id)title image:(id)image style:(int64_t)style type:(unint64_t)type;
 - (BOOL)_showsRoundedBackground;
 - (BOOL)showBackIndicator;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIFont)buttonFont;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_resetAlpha;
 - (void)_setupBackButtonImagesIfNeccessary;
 - (void)_updateBackIndicatorImageView;
-- (void)_updateBackgroundColorWithIsFocused:(BOOL)a3;
-- (void)_updateButtonImage:(id)a3;
-- (void)didAddSubview:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setButtonFont:(id)a3;
-- (void)setFocusedBackgroundColor:(id)a3;
-- (void)setFocusedColor:(id)a3;
-- (void)setNormalBackgroundColor:(id)a3;
-- (void)setNormalColor:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_updateBackgroundColorWithIsFocused:(BOOL)focused;
+- (void)_updateButtonImage:(id)image;
+- (void)didAddSubview:(id)subview;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setButtonFont:(id)font;
+- (void)setFocusedBackgroundColor:(id)color;
+- (void)setFocusedColor:(id)color;
+- (void)setNormalBackgroundColor:(id)color;
+- (void)setNormalColor:(id)color;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPUIBarButton
 
 - (void)_resetAlpha
 {
-  v3 = [(CPUIBarButton *)self backIndicatorImageView];
-  [v3 setAlpha:1.0];
+  backIndicatorImageView = [(CPUIBarButton *)self backIndicatorImageView];
+  [backIndicatorImageView setAlpha:1.0];
 
-  v4 = [(CPUIBarButton *)self backgroundView];
-  [v4 setAlpha:1.0];
+  backgroundView = [(CPUIBarButton *)self backgroundView];
+  [backgroundView setAlpha:1.0];
 }
 
 - (void)_setupBackButtonImagesIfNeccessary
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v19 = [(CPUIBarButton *)self traitCollection];
-  if ([v19 userInterfaceIdiom] == 3 && -[CPUIBarButton showBackIndicator](self, "showBackIndicator"))
+  traitCollection = [(CPUIBarButton *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3 && -[CPUIBarButton showBackIndicator](self, "showBackIndicator"))
   {
-    v3 = [(CPUIBarButton *)self backIndicatorImageView];
-    v4 = [v3 image];
+    backIndicatorImageView = [(CPUIBarButton *)self backIndicatorImageView];
+    image = [backIndicatorImageView image];
 
-    if (!v4)
+    if (!image)
     {
       v5 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] variant:1024];
       v6 = [MEMORY[0x277D755D0] configurationWithFont:v5 scale:2];
@@ -62,17 +62,17 @@
       v9 = [v8 imageWithSymbolConfiguration:v6];
       [(CPUIBarButton *)self setBackIndicatorImage:v9];
 
-      v10 = [(CPUIBarButton *)self backIndicatorImageView];
-      v11 = [(CPUIBarButton *)self backIndicatorImage];
-      [v10 setImage:v11];
+      backIndicatorImageView2 = [(CPUIBarButton *)self backIndicatorImageView];
+      backIndicatorImage = [(CPUIBarButton *)self backIndicatorImage];
+      [backIndicatorImageView2 setImage:backIndicatorImage];
 
-      v12 = [(CPUIBarButton *)self backIndicatorHeightConstraint];
+      backIndicatorHeightConstraint = [(CPUIBarButton *)self backIndicatorHeightConstraint];
 
-      if (!v12)
+      if (!backIndicatorHeightConstraint)
       {
-        v13 = [(CPUIBarButton *)self backIndicatorImageView];
-        v14 = [v13 heightAnchor];
-        v15 = [v14 constraintEqualToConstant:19.0];
+        backIndicatorImageView3 = [(CPUIBarButton *)self backIndicatorImageView];
+        heightAnchor = [backIndicatorImageView3 heightAnchor];
+        v15 = [heightAnchor constraintEqualToConstant:19.0];
 
         v16 = MEMORY[0x277CCAAD0];
         v20[0] = v15;
@@ -82,8 +82,8 @@
         [(CPUIBarButton *)self setBackIndicatorHeightConstraint:v15];
       }
 
-      v18 = [(CPUIBarButton *)self backIndicatorHeightConstraint];
-      [v18 setConstant:19.0];
+      backIndicatorHeightConstraint2 = [(CPUIBarButton *)self backIndicatorHeightConstraint];
+      [backIndicatorHeightConstraint2 setConstant:19.0];
 
       [(CPUIBarButton *)self _updateBackIndicatorImageView];
     }
@@ -96,29 +96,29 @@
 
 - (BOOL)showBackIndicator
 {
-  v3 = [(CPUIBarButton *)self type];
-  if (v3 != 1)
+  type = [(CPUIBarButton *)self type];
+  if (type != 1)
   {
-    LOBYTE(v3) = [(CPUIBarButton *)self type]== 2;
+    LOBYTE(type) = [(CPUIBarButton *)self type]== 2;
   }
 
-  return v3;
+  return type;
 }
 
-+ (id)buttonWithTitle:(id)a3 image:(id)a4 style:(int64_t)a5 type:(unint64_t)a6
++ (id)buttonWithTitle:(id)title image:(id)image style:(int64_t)style type:(unint64_t)type
 {
   v77[5] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v74.receiver = a1;
+  titleCopy = title;
+  imageCopy = image;
+  v74.receiver = self;
   v74.super_class = &OBJC_METACLASS___CPUIBarButton;
   v12 = objc_msgSendSuper2(&v74, sel_buttonWithType_, 0);
   v13 = v12;
   if (v12)
   {
-    [v12 setImage:v11];
-    [v13 setType:a6];
-    [v13 setStyle:a5];
+    [v12 setImage:imageCopy];
+    [v13 setType:type];
+    [v13 setStyle:style];
     if (_UISolariumEnabled())
     {
       [MEMORY[0x277D75348] secondaryLabelColor];
@@ -167,7 +167,7 @@
     v17 = ;
     [v13 setFocusedBackgroundColor:v17];
 
-    if (!v11 && a6 == 3)
+    if (!imageCopy && type == 3)
     {
       [v13 setImageEdgeInsets:{-3.0, 1.0, 0.0, 0.0}];
       [v13 setUsesSystemComposeGlyph:1];
@@ -184,23 +184,23 @@
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:5];
       [v13 setAccessibilityUserInputLabels:v23];
 
-      v24 = [MEMORY[0x277D75C80] _currentTraitCollection];
-      v11 = CPUIMessageComposeGlyph(v24, 17.0);
+      _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+      imageCopy = CPUIMessageComposeGlyph(_currentTraitCollection, 17.0);
     }
 
-    if (v10)
+    if (titleCopy)
     {
-      [v13 setTitle:v10 forState:0];
+      [v13 setTitle:titleCopy forState:0];
     }
 
-    else if (v11)
+    else if (imageCopy)
     {
-      [v13 _updateButtonImage:v11];
+      [v13 _updateButtonImage:imageCopy];
     }
 
     v25 = 0.0;
-    v72 = v11;
-    v73 = v10;
+    v72 = imageCopy;
+    v73 = titleCopy;
     if ([v13 showBackIndicator])
     {
       if (_UISolariumEnabled())
@@ -213,11 +213,11 @@
         v25 = -6.0;
       }
 
-      v26 = [MEMORY[0x277D75128] sharedApplication];
-      v27 = [v26 userInterfaceLayoutDirection];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
       v28 = _UISolariumEnabled();
-      if (v10)
+      if (titleCopy)
       {
         v29 = 10.0;
         if (v28)
@@ -225,7 +225,7 @@
           v29 = 20.0;
         }
 
-        if (v27 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v30 = v29;
         }
@@ -235,7 +235,7 @@
           v30 = 0.0;
         }
 
-        if (v27 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v31 = 0.0;
         }
@@ -256,47 +256,47 @@
       v32 = objc_alloc_init(MEMORY[0x277D755E8]);
       [v13 setBackIndicatorImageView:v32];
 
-      v33 = [v13 backIndicatorImageView];
-      [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+      backIndicatorImageView = [v13 backIndicatorImageView];
+      [backIndicatorImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v34 = [v13 backIndicatorImageView];
-      [v13 addSubview:v34];
+      backIndicatorImageView2 = [v13 backIndicatorImageView];
+      [v13 addSubview:backIndicatorImageView2];
 
       if (_UISolariumEnabled())
       {
-        v35 = [v13 layoutMarginsGuide];
-        v36 = [v35 leadingAnchor];
+        layoutMarginsGuide = [v13 layoutMarginsGuide];
+        leadingAnchor = [layoutMarginsGuide leadingAnchor];
       }
 
       else
       {
-        v36 = [v13 leadingAnchor];
+        leadingAnchor = [v13 leadingAnchor];
       }
 
       if (_UISolariumEnabled())
       {
-        v37 = [v13 layoutMarginsGuide];
-        v38 = [v37 centerYAnchor];
+        layoutMarginsGuide2 = [v13 layoutMarginsGuide];
+        centerYAnchor = [layoutMarginsGuide2 centerYAnchor];
       }
 
       else
       {
-        v38 = [v13 centerYAnchor];
+        centerYAnchor = [v13 centerYAnchor];
       }
 
-      v66 = v38;
-      v70 = [v13 backIndicatorImageView];
-      v39 = [v70 widthAnchor];
-      v40 = [v39 constraintEqualToConstant:19.5];
+      v66 = centerYAnchor;
+      backIndicatorImageView3 = [v13 backIndicatorImageView];
+      widthAnchor = [backIndicatorImageView3 widthAnchor];
+      v40 = [widthAnchor constraintEqualToConstant:19.5];
       v76[0] = v40;
-      v41 = [v13 backIndicatorImageView];
-      v42 = [v41 leadingAnchor];
-      [v42 constraintEqualToAnchor:v36 constant:0.0];
-      v43 = v68 = v36;
+      backIndicatorImageView4 = [v13 backIndicatorImageView];
+      leadingAnchor2 = [backIndicatorImageView4 leadingAnchor];
+      [leadingAnchor2 constraintEqualToAnchor:leadingAnchor constant:0.0];
+      v43 = v68 = leadingAnchor;
       v76[1] = v43;
-      v44 = [v13 backIndicatorImageView];
-      v45 = [v44 centerYAnchor];
-      v46 = [v45 constraintEqualToAnchor:v38 constant:0.5];
+      backIndicatorImageView5 = [v13 backIndicatorImageView];
+      centerYAnchor2 = [backIndicatorImageView5 centerYAnchor];
+      v46 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor constant:0.5];
       v76[2] = v46;
       v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:3];
       [v13 addConstraints:v47];
@@ -306,10 +306,10 @@
 
     v48 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v49 = [v13 _showsRoundedBackground];
-    v50 = [v48 layer];
+    _showsRoundedBackground = [v13 _showsRoundedBackground];
+    layer = [v48 layer];
     v51 = _UISolariumEnabled();
-    if (v49)
+    if (_showsRoundedBackground)
     {
       v52 = 17.0;
       if (v51)
@@ -317,10 +317,10 @@
         v52 = 12.0;
       }
 
-      [v50 setCornerRadius:v52];
+      [layer setCornerRadius:v52];
 
-      v50 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
-      [v48 setBackgroundColor:v50];
+      layer = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
+      [v48 setBackgroundColor:layer];
     }
 
     else
@@ -331,59 +331,59 @@
         v53 = 16.0;
       }
 
-      [v50 setCornerRadius:v53];
+      [layer setCornerRadius:v53];
     }
 
-    v54 = [v48 layer];
-    [v54 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [v48 layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
     [v13 insertSubview:v48 atIndex:0];
     [v13 setBackgroundView:v48];
-    v71 = [v48 topAnchor];
-    v69 = [v13 topAnchor];
-    v67 = [v71 constraintEqualToAnchor:v69];
+    topAnchor = [v48 topAnchor];
+    topAnchor2 = [v13 topAnchor];
+    v67 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v75[0] = v67;
-    v65 = [v48 bottomAnchor];
-    v64 = [v13 bottomAnchor];
-    v55 = [v65 constraintEqualToAnchor:v64];
+    bottomAnchor = [v48 bottomAnchor];
+    bottomAnchor2 = [v13 bottomAnchor];
+    v55 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v75[1] = v55;
-    v56 = [v48 leadingAnchor];
-    v57 = [v13 leadingAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57 constant:v25];
+    leadingAnchor3 = [v48 leadingAnchor];
+    leadingAnchor4 = [v13 leadingAnchor];
+    v58 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v25];
     v75[2] = v58;
-    v59 = [v48 trailingAnchor];
-    v60 = [v13 trailingAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    trailingAnchor = [v48 trailingAnchor];
+    trailingAnchor2 = [v13 trailingAnchor];
+    v61 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v75[3] = v61;
     v62 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:4];
     [v13 addConstraints:v62];
 
     [v13 sizeToFit];
-    v11 = v72;
-    v10 = v73;
+    imageCopy = v72;
+    titleCopy = v73;
   }
 
   return v13;
 }
 
-- (void)_updateButtonImage:(id)a3
+- (void)_updateButtonImage:(id)image
 {
-  v4 = a3;
-  v5 = [(CPUIBarButton *)self normalColor];
-  v8 = [v4 _flatImageWithColor:v5];
+  imageCopy = image;
+  normalColor = [(CPUIBarButton *)self normalColor];
+  v8 = [imageCopy _flatImageWithColor:normalColor];
 
-  v6 = [(CPUIBarButton *)self focusedColor];
-  v7 = [v8 _flatImageWithColor:v6];
+  focusedColor = [(CPUIBarButton *)self focusedColor];
+  v7 = [v8 _flatImageWithColor:focusedColor];
 
-  [(CPUIBarButton *)self setImage:v4];
+  [(CPUIBarButton *)self setImage:imageCopy];
   [(CPUIBarButton *)self setImage:v8 forState:0];
   [(CPUIBarButton *)self setImage:v7 forState:8];
 }
 
 - (BOOL)_showsRoundedBackground
 {
-  v3 = [(CPUIBarButton *)self image];
-  if (v3)
+  image = [(CPUIBarButton *)self image];
+  if (image)
   {
     v4 = [(CPUIBarButton *)self style]== 1;
   }
@@ -396,7 +396,7 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (_UISolariumEnabled())
   {
@@ -408,26 +408,26 @@
     v4 = 34.0;
   }
 
-  v5 = [(CPUIBarButton *)self currentImage];
+  currentImage = [(CPUIBarButton *)self currentImage];
   if (_UISolariumEnabled())
   {
-    if (v5)
+    if (currentImage)
     {
-      [v5 size];
+      [currentImage size];
       v7 = v6 + 0.0;
     }
 
     else
     {
-      v15 = [(CPUIBarButton *)self currentTitle];
+      currentTitle = [(CPUIBarButton *)self currentTitle];
 
-      if (v15)
+      if (currentTitle)
       {
-        v16 = [(CPUIBarButton *)self titleLabel];
-        [v16 sizeToFit];
+        titleLabel = [(CPUIBarButton *)self titleLabel];
+        [titleLabel sizeToFit];
 
-        v17 = [(CPUIBarButton *)self titleLabel];
-        [v17 bounds];
+        titleLabel2 = [(CPUIBarButton *)self titleLabel];
+        [titleLabel2 bounds];
         v7 = v18 + 0.0;
       }
 
@@ -437,9 +437,9 @@
       }
     }
 
-    v30 = [(CPUIBarButton *)self backIndicatorImageView];
+    backIndicatorImageView = [(CPUIBarButton *)self backIndicatorImageView];
 
-    if (v30)
+    if (backIndicatorImageView)
     {
       v31 = _UISolariumEnabled();
       v32 = 32.5;
@@ -458,21 +458,21 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v8 = [(CPUIBarButton *)self backIndicatorImageView];
+  backIndicatorImageView2 = [(CPUIBarButton *)self backIndicatorImageView];
 
   v9 = 30.0;
-  if (v8)
+  if (backIndicatorImageView2)
   {
     goto LABEL_8;
   }
 
   v9 = 0.0;
-  if (!v5 || ![(CPUIBarButton *)self _showsRoundedBackground])
+  if (!currentImage || ![(CPUIBarButton *)self _showsRoundedBackground])
   {
     goto LABEL_8;
   }
 
-  [v5 size];
+  [currentImage size];
   v20 = v19;
   v21 = _UISolariumEnabled();
   v22 = 34.0;
@@ -499,23 +499,23 @@ LABEL_8:
       v9 = v9 - v13;
     }
 
-    if (v5)
+    if (currentImage)
     {
-      [v5 size];
+      [currentImage size];
       v9 = v9 + v14;
     }
 
     else
     {
-      v24 = [(CPUIBarButton *)self currentTitle];
+      currentTitle2 = [(CPUIBarButton *)self currentTitle];
 
-      if (v24)
+      if (currentTitle2)
       {
-        v25 = [(CPUIBarButton *)self titleLabel];
-        [v25 sizeToFit];
+        titleLabel3 = [(CPUIBarButton *)self titleLabel];
+        [titleLabel3 sizeToFit];
 
-        v26 = [(CPUIBarButton *)self titleLabel];
-        [v26 bounds];
+        titleLabel4 = [(CPUIBarButton *)self titleLabel];
+        [titleLabel4 bounds];
         v9 = v9 + v27;
       }
     }
@@ -573,24 +573,24 @@ LABEL_42:
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
+  nextFocusedItem = [context nextFocusedItem];
 
   if (_UISolariumEnabled())
   {
-    if (v5 == self)
+    if (nextFocusedItem == self)
     {
-      v6 = [(CPUIBarButton *)self traitCollection];
-      v7 = [v6 userInterfaceStyle];
-      if (v7 == 1)
+      traitCollection = [(CPUIBarButton *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
+      if (userInterfaceStyle == 1)
       {
         v8 = 2;
       }
 
       else
       {
-        v8 = v7 == 2;
+        v8 = userInterfaceStyle == 2;
       }
 
       [(CPUIBarButton *)self setOverrideUserInterfaceStyle:v8];
@@ -602,43 +602,43 @@ LABEL_42:
     }
   }
 
-  v9 = [(CPUIBarButton *)self backgroundView];
-  [v9 frame];
+  backgroundView = [(CPUIBarButton *)self backgroundView];
+  [backgroundView frame];
   v10 = CGRectGetHeight(v13) * 0.5;
 
-  v11 = [(CPUIBarButton *)self backgroundView];
-  [v11 _setCornerRadius:v10];
+  backgroundView2 = [(CPUIBarButton *)self backgroundView];
+  [backgroundView2 _setCornerRadius:v10];
 
-  [(CPUIBarButton *)self _updateBackgroundColorWithIsFocused:v5 == self];
+  [(CPUIBarButton *)self _updateBackgroundColorWithIsFocused:nextFocusedItem == self];
 
   [(CPUIBarButton *)self _updateBackIndicatorImageView];
 }
 
-- (void)_updateBackgroundColorWithIsFocused:(BOOL)a3
+- (void)_updateBackgroundColorWithIsFocused:(BOOL)focused
 {
-  v3 = a3;
+  focusedCopy = focused;
   if ((_UISolariumEnabled() & 1) == 0)
   {
     if ([(CPUIBarButton *)self _showsRoundedBackground])
     {
-      if (!v3)
+      if (!focusedCopy)
       {
-        v8 = [(CPUIBarButton *)self normalBackgroundColor];
+        normalBackgroundColor = [(CPUIBarButton *)self normalBackgroundColor];
 LABEL_10:
-        v9 = v8;
+        v9 = normalBackgroundColor;
         goto LABEL_12;
       }
     }
 
-    else if (!v3)
+    else if (!focusedCopy)
     {
       v9 = 0;
 LABEL_12:
-      v10 = [(CPUIBarButton *)self backgroundView];
-      [v10 setBackgroundColor:v9];
+      backgroundView = [(CPUIBarButton *)self backgroundView];
+      [backgroundView setBackgroundColor:v9];
 
-      v13 = [(CPUIBarButton *)self imageView];
-      if (v3)
+      imageView = [(CPUIBarButton *)self imageView];
+      if (focusedCopy)
       {
         goto LABEL_13;
       }
@@ -646,69 +646,69 @@ LABEL_12:
       goto LABEL_14;
     }
 
-    v8 = [(CPUIBarButton *)self focusedBackgroundColor];
+    normalBackgroundColor = [(CPUIBarButton *)self focusedBackgroundColor];
     goto LABEL_10;
   }
 
-  v5 = [(CPUIBarButton *)self backgroundView];
-  v6 = v5;
-  if (v3)
+  backgroundView2 = [(CPUIBarButton *)self backgroundView];
+  v6 = backgroundView2;
+  if (focusedCopy)
   {
     v7 = [MEMORY[0x277D75210] effectWithStyle:8];
     [v6 _setBackground:v7];
 
-    v13 = [(CPUIBarButton *)self imageView];
+    imageView = [(CPUIBarButton *)self imageView];
 LABEL_13:
-    v11 = [(CPUIBarButton *)self focusedColor];
+    focusedColor = [(CPUIBarButton *)self focusedColor];
     goto LABEL_15;
   }
 
-  [v5 _setBackground:0];
+  [backgroundView2 _setBackground:0];
 
-  v13 = [(CPUIBarButton *)self imageView];
+  imageView = [(CPUIBarButton *)self imageView];
 LABEL_14:
-  v11 = [(CPUIBarButton *)self normalColor];
+  focusedColor = [(CPUIBarButton *)self normalColor];
 LABEL_15:
-  v12 = v11;
-  [v13 setTintColor:v11];
+  v12 = focusedColor;
+  [imageView setTintColor:focusedColor];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = CPUIBarButton;
-  [(CPUIBarButton *)&v5 didAddSubview:a3];
-  v4 = [(CPUIBarButton *)self backgroundView];
-  [(CPUIBarButton *)self sendSubviewToBack:v4];
+  [(CPUIBarButton *)&v5 didAddSubview:subview];
+  backgroundView = [(CPUIBarButton *)self backgroundView];
+  [(CPUIBarButton *)self sendSubviewToBack:backgroundView];
 }
 
 - (UIFont)buttonFont
 {
-  v2 = [(CPUIBarButton *)self titleLabel];
-  v3 = [v2 font];
+  titleLabel = [(CPUIBarButton *)self titleLabel];
+  font = [titleLabel font];
 
-  return v3;
+  return font;
 }
 
-- (void)setButtonFont:(id)a3
+- (void)setButtonFont:(id)font
 {
-  v4 = a3;
-  v5 = [(CPUIBarButton *)self titleLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  titleLabel = [(CPUIBarButton *)self titleLabel];
+  [titleLabel setFont:fontCopy];
 
-  v6 = [(CPUIBarButton *)self backIndicatorImageView];
-  [v6 setImage:0];
+  backIndicatorImageView = [(CPUIBarButton *)self backIndicatorImageView];
+  [backIndicatorImageView setImage:0];
 
   [(CPUIBarButton *)self _setupBackButtonImagesIfNeccessary];
 }
 
-- (void)setNormalColor:(id)a3
+- (void)setNormalColor:(id)color
 {
-  objc_storeStrong(&self->_normalColor, a3);
-  v5 = a3;
-  [(CPUIBarButton *)self setTitleColor:v5 forState:0];
-  v6 = [(CPUIBarButton *)self image];
-  v7 = [v6 _flatImageWithColor:v5];
+  objc_storeStrong(&self->_normalColor, color);
+  colorCopy = color;
+  [(CPUIBarButton *)self setTitleColor:colorCopy forState:0];
+  image = [(CPUIBarButton *)self image];
+  v7 = [image _flatImageWithColor:colorCopy];
 
   [(CPUIBarButton *)self setImage:v7 forState:0];
   [(CPUIBarButton *)self _updateBackgroundColorWithIsFocused:[(CPUIBarButton *)self isFocused]];
@@ -716,17 +716,17 @@ LABEL_15:
   [(CPUIBarButton *)self _updateBackIndicatorImageView];
 }
 
-- (void)setFocusedColor:(id)a3
+- (void)setFocusedColor:(id)color
 {
-  objc_storeStrong(&self->_focusedColor, a3);
-  v5 = a3;
-  [(CPUIBarButton *)self setTitleColor:v5 forState:1];
-  [(CPUIBarButton *)self setTitleColor:v5 forState:8];
-  v6 = [v5 colorWithAlphaComponent:0.8];
+  objc_storeStrong(&self->_focusedColor, color);
+  colorCopy = color;
+  [(CPUIBarButton *)self setTitleColor:colorCopy forState:1];
+  [(CPUIBarButton *)self setTitleColor:colorCopy forState:8];
+  v6 = [colorCopy colorWithAlphaComponent:0.8];
   [(CPUIBarButton *)self setTitleColor:v6 forState:9];
 
-  v7 = [(CPUIBarButton *)self image];
-  v8 = [v7 _flatImageWithColor:v5];
+  image = [(CPUIBarButton *)self image];
+  v8 = [image _flatImageWithColor:colorCopy];
 
   [(CPUIBarButton *)self setImage:v8 forState:8];
   [(CPUIBarButton *)self _updateBackgroundColorWithIsFocused:[(CPUIBarButton *)self isFocused]];
@@ -734,80 +734,80 @@ LABEL_15:
   [(CPUIBarButton *)self _updateBackIndicatorImageView];
 }
 
-- (void)setNormalBackgroundColor:(id)a3
+- (void)setNormalBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_normalBackgroundColor, a3);
-  v4 = [(CPUIBarButton *)self isFocused];
+  objc_storeStrong(&self->_normalBackgroundColor, color);
+  isFocused = [(CPUIBarButton *)self isFocused];
 
-  [(CPUIBarButton *)self _updateBackgroundColorWithIsFocused:v4];
+  [(CPUIBarButton *)self _updateBackgroundColorWithIsFocused:isFocused];
 }
 
-- (void)setFocusedBackgroundColor:(id)a3
+- (void)setFocusedBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_focusedBackgroundColor, a3);
-  v4 = [(CPUIBarButton *)self isFocused];
+  objc_storeStrong(&self->_focusedBackgroundColor, color);
+  isFocused = [(CPUIBarButton *)self isFocused];
 
-  [(CPUIBarButton *)self _updateBackgroundColorWithIsFocused:v4];
+  [(CPUIBarButton *)self _updateBackgroundColorWithIsFocused:isFocused];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = CPUIBarButton;
-  [(CPUIButton *)&v7 traitCollectionDidChange:a3];
+  [(CPUIButton *)&v7 traitCollectionDidChange:change];
   [(CPUIBarButton *)self _setupBackButtonImagesIfNeccessary];
   if ([(CPUIBarButton *)self usesSystemComposeGlyph])
   {
-    v4 = [(CPUIBarButton *)self traitCollection];
-    v5 = CPUIMessageComposeGlyph(v4, 17.0);
+    traitCollection = [(CPUIBarButton *)self traitCollection];
+    v5 = CPUIMessageComposeGlyph(traitCollection, 17.0);
     [(CPUIBarButton *)self _updateButtonImage:v5];
   }
 
   else
   {
-    v6 = [(CPUIBarButton *)self image];
+    image = [(CPUIBarButton *)self image];
 
-    if (!v6)
+    if (!image)
     {
       return;
     }
 
-    v4 = [(CPUIBarButton *)self image];
-    [(CPUIBarButton *)self _updateButtonImage:v4];
+    traitCollection = [(CPUIBarButton *)self image];
+    [(CPUIBarButton *)self _updateButtonImage:traitCollection];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = CPUIBarButton;
-  v6 = a3;
-  [(CPUIBarButton *)&v9 touchesBegan:v6 withEvent:a4];
-  LODWORD(a4) = _touchesContainDirectTouch(v6);
+  beganCopy = began;
+  [(CPUIBarButton *)&v9 touchesBegan:beganCopy withEvent:event];
+  LODWORD(event) = _touchesContainDirectTouch(beganCopy);
 
-  if (a4)
+  if (event)
   {
     if (([(CPUIBarButton *)self isFocused:v9.receiver]& 1) == 0)
     {
-      v7 = [(CPUIBarButton *)self backIndicatorImageView];
-      [v7 setAlpha:0.2];
+      backIndicatorImageView = [(CPUIBarButton *)self backIndicatorImageView];
+      [backIndicatorImageView setAlpha:0.2];
     }
 
-    v8 = [(CPUIBarButton *)self backgroundView];
-    [v8 setAlpha:0.2];
+    backgroundView = [(CPUIBarButton *)self backgroundView];
+    [backgroundView setAlpha:0.2];
   }
 }
 
 - (void)_updateBackIndicatorImageView
 {
-  v3 = [(CPUIBarButton *)self backIndicatorImageView];
-  v4 = [v3 image];
+  backIndicatorImageView = [(CPUIBarButton *)self backIndicatorImageView];
+  image = [backIndicatorImageView image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [(CPUIBarButton *)self isFocused];
-    v7 = [(CPUIBarButton *)self backIndicatorImageView];
-    if (v5)
+    isFocused = [(CPUIBarButton *)self isFocused];
+    backIndicatorImageView2 = [(CPUIBarButton *)self backIndicatorImageView];
+    if (isFocused)
     {
       [(CPUIBarButton *)self focusedColor];
     }
@@ -817,51 +817,51 @@ LABEL_15:
       [(CPUIBarButton *)self normalColor];
     }
     v6 = ;
-    [v7 setTintColor:v6];
+    [backIndicatorImageView2 setTintColor:v6];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CPUIBarButton;
-  v6 = a3;
-  [(CPUIBarButton *)&v7 touchesEnded:v6 withEvent:a4];
-  LODWORD(a4) = _touchesContainDirectTouch(v6);
+  endedCopy = ended;
+  [(CPUIBarButton *)&v7 touchesEnded:endedCopy withEvent:event];
+  LODWORD(event) = _touchesContainDirectTouch(endedCopy);
 
-  if (a4)
+  if (event)
   {
     [(CPUIBarButton *)self _resetAlpha:v7.receiver];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CPUIBarButton;
-  v6 = a3;
-  [(CPUIBarButton *)&v7 touchesCancelled:v6 withEvent:a4];
-  LODWORD(a4) = _touchesContainDirectTouch(v6);
+  cancelledCopy = cancelled;
+  [(CPUIBarButton *)&v7 touchesCancelled:cancelledCopy withEvent:event];
+  LODWORD(event) = _touchesContainDirectTouch(cancelledCopy);
 
-  if (a4)
+  if (event)
   {
     [(CPUIBarButton *)self _resetAlpha:v7.receiver];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(CPUIBarButton *)self pointInside:a4 withEvent:a3.x, a3.y])
+  if ([(CPUIBarButton *)self pointInside:event withEvent:test.x, test.y])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

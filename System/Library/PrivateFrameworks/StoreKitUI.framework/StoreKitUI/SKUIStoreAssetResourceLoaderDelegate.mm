@@ -1,14 +1,14 @@
 @interface SKUIStoreAssetResourceLoaderDelegate
-+ (id)storeAssetResourceLoaderDelegateForPlayableAsset:(id)a3 clientContext:(id)a4;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
++ (id)storeAssetResourceLoaderDelegateForPlayableAsset:(id)asset clientContext:(id)context;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
 @end
 
 @implementation SKUIStoreAssetResourceLoaderDelegate
 
-+ (id)storeAssetResourceLoaderDelegateForPlayableAsset:(id)a3 clientContext:(id)a4
++ (id)storeAssetResourceLoaderDelegateForPlayableAsset:(id)asset clientContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -21,7 +21,7 @@
     }
   }
 
-  if ([v5 shouldUseITunesStoreSecureKeyDelivery])
+  if ([assetCopy shouldUseITunesStoreSecureKeyDelivery])
   {
     v15 = objc_alloc_init(SKUIStoreAssetResourceLoaderDelegate);
     v16 = v15;
@@ -35,10 +35,10 @@
 
   else
   {
-    clientContext = [v5 keyCertificateURL];
-    v18 = [v5 keyServerURL];
-    v19 = v18;
-    if (!clientContext || !v18 || (v20 = objc_alloc_init(SKUIStoreAssetResourceLoaderDelegate)) == 0)
+    clientContext = [assetCopy keyCertificateURL];
+    keyServerURL = [assetCopy keyServerURL];
+    v19 = keyServerURL;
+    if (!clientContext || !keyServerURL || (v20 = objc_alloc_init(SKUIStoreAssetResourceLoaderDelegate)) == 0)
     {
 
       v16 = 0;
@@ -53,10 +53,10 @@
     keyServerURL = v16->_keyServerURL;
     v16->_keyServerURL = v19;
 
-    v16->_isITunesStream = [v5 isITunesStream];
+    v16->_isITunesStream = [assetCopy isITunesStream];
   }
 
-  v24 = v6;
+  v24 = contextCopy;
   clientContext = v16->_clientContext;
   v16->_clientContext = v24;
 LABEL_14:
@@ -66,10 +66,10 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  resourceCopy = resource;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -118,17 +118,17 @@ LABEL_15:
     v33 = &v46;
     v34 = &v40;
     v35 = &v36;
-    v31 = v7;
-    v32 = self;
+    v31 = resourceCopy;
+    selfCopy = self;
     v19 = _Block_copy(aBlock);
     if (self->_shouldUseITunesStoreSecureKeyDelivery)
     {
       *(v37 + 24) = 1;
-      v20 = [(SKUIClientContext *)self->_clientContext URLBag];
-      v21 = v20;
-      if (v20)
+      uRLBag = [(SKUIClientContext *)self->_clientContext URLBag];
+      v21 = uRLBag;
+      if (uRLBag)
       {
-        v22 = v20;
+        v22 = uRLBag;
       }
 
       else

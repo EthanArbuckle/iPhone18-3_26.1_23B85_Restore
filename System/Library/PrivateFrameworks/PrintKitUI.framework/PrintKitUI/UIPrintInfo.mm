@@ -4,24 +4,24 @@
 - (NSDictionary)dictionaryRepresentation;
 - (UIPrintInfo)init;
 - (UIPrintInfo)initWithCoder:(NSCoder *)coder;
-- (id)_createPrintSettingsForPrinter:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_createPrintSettingsForPrinter:(id)printer;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)numNUpColumns;
 - (int64_t)numNUpRows;
-- (void)_updateWithPrinter:(id)a3;
-- (void)applyPreset:(id)a3;
-- (void)clearPreset:(id)a3 origPrintInfo:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)resetToDefaultSettings:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (void)_updateWithPrinter:(id)printer;
+- (void)applyPreset:(id)preset;
+- (void)clearPreset:(id)preset origPrintInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
+- (void)resetToDefaultSettings:(id)settings;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation UIPrintInfo
 
 + (UIPrintInfo)printInfo
 {
-  v2 = [[a1 alloc] _initWithDictionary:0];
+  v2 = [[self alloc] _initWithDictionary:0];
 
   return v2;
 }
@@ -29,7 +29,7 @@
 + (UIPrintInfo)printInfoWithDictionary:(NSDictionary *)dictionary
 {
   v4 = dictionary;
-  v5 = [[a1 alloc] _initWithDictionary:v4];
+  v5 = [[self alloc] _initWithDictionary:v4];
 
   return v5;
 }
@@ -41,10 +41,10 @@
   return 0;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
   v109[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v108.receiver = self;
   v108.super_class = UIPrintInfo;
   v5 = [(UIPrintInfo *)&v108 init];
@@ -53,44 +53,44 @@
     goto LABEL_82;
   }
 
-  v6 = CopyDictionaryString(v4, @"UIPrintInfoPrinterIDKey", 0);
+  v6 = CopyDictionaryString(dictionaryCopy, @"UIPrintInfoPrinterIDKey", 0);
   printerID = v5->_printerID;
   v5->_printerID = v6;
 
   v8 = GetDefaultJobName();
-  v9 = CopyDictionaryString(v4, @"UIPrintInfoJobNameKey", v8);
+  v9 = CopyDictionaryString(dictionaryCopy, @"UIPrintInfoJobNameKey", v8);
   jobName = v5->_jobName;
   v5->_jobName = v9;
 
-  v11 = v4;
+  v11 = dictionaryCopy;
   v12 = v11;
   if (v11 && ([v11 objectForKey:@"UIPrintInfoOutputTypeKey"], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = v13;
-    v15 = [v13 intValue];
+    intValue = [v13 intValue];
   }
 
   else
   {
-    v15 = 0;
+    intValue = 0;
   }
 
-  v5->_outputType = v15;
+  v5->_outputType = intValue;
   v16 = v12;
   v17 = v16;
   if (v12 && ([v16 objectForKey:@"UIPrintInfoOrientationKey"], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v19 = v18;
-    v20 = [v18 intValue];
+    intValue2 = [v18 intValue];
   }
 
   else
   {
-    v20 = 0;
+    intValue2 = 0;
   }
 
-  v5->_orientation = v20;
-  v21 = (v5->_outputType & 0xFFFFFFFFFFFFFFFDLL) != 1;
+  v5->_orientation = intValue2;
+  intValue3 = (v5->_outputType & 0xFFFFFFFFFFFFFFFDLL) != 1;
   v22 = v17;
   v23 = v22;
   if (v12)
@@ -99,15 +99,15 @@
     if (v24)
     {
       v25 = v24;
-      v21 = [v24 intValue];
+      intValue3 = [v24 intValue];
     }
 
-    v5->_duplex = v21;
+    v5->_duplex = intValue3;
     v26 = [v23 objectForKey:@"UIPrintInfoCopiesKey"];
     if (v26)
     {
       v27 = v26;
-      v28 = [v26 intValue];
+      intValue4 = [v26 intValue];
 
       goto LABEL_17;
     }
@@ -115,13 +115,13 @@
 
   else
   {
-    v5->_duplex = v21;
+    v5->_duplex = intValue3;
   }
 
-  v28 = 1;
+  intValue4 = 1;
 LABEL_17:
 
-  v5->_copies = v28;
+  v5->_copies = intValue4;
   v29 = v23;
   v30 = v29;
   if (v12)
@@ -130,35 +130,35 @@ LABEL_17:
     if (v31)
     {
       v32 = v31;
-      v33 = [v31 BOOLValue];
+      bOOLValue = [v31 BOOLValue];
     }
 
     else
     {
-      v33 = 0;
+      bOOLValue = 0;
     }
 
-    v5->_scaleUp = v33;
+    v5->_scaleUp = bOOLValue;
     v35 = [v30 objectForKey:@"UIPrintInfoStapleKey"];
     if (v35)
     {
       v36 = v35;
-      v34 = [v35 intValue];
+      intValue5 = [v35 intValue];
     }
 
     else
     {
-      v34 = 0;
+      intValue5 = 0;
     }
   }
 
   else
   {
-    v34 = 0;
+    intValue5 = 0;
     v5->_scaleUp = 0;
   }
 
-  v5->_staple = v34;
+  v5->_staple = intValue5;
   v37 = v30;
   v38 = v37;
   if (v12)
@@ -167,42 +167,42 @@ LABEL_17:
     if (v39)
     {
       v40 = v39;
-      v41 = [v39 intValue];
+      intValue6 = [v39 intValue];
     }
 
     else
     {
-      v41 = 0;
+      intValue6 = 0;
     }
 
-    v5->_punch = v41;
+    v5->_punch = intValue6;
     v43 = [v38 objectForKey:@"UIPrintInfoFoldKey"];
     if (v43)
     {
       v44 = v43;
-      v42 = [v43 intValue];
+      intValue7 = [v43 intValue];
     }
 
     else
     {
-      v42 = 0;
+      intValue7 = 0;
     }
   }
 
   else
   {
-    v42 = 0;
+    intValue7 = 0;
     v5->_punch = 0;
   }
 
-  v5->_fold = v42;
+  v5->_fold = intValue7;
   v45 = v38;
   v46 = v45;
   if (!v12)
   {
     v5->_imagePDFAnnotations = 0;
 LABEL_40:
-    v52 = 4;
+    intValue8 = 4;
     goto LABEL_41;
   }
 
@@ -210,15 +210,15 @@ LABEL_40:
   if (v47)
   {
     v48 = v47;
-    v49 = [v47 BOOLValue];
+    bOOLValue2 = [v47 BOOLValue];
   }
 
   else
   {
-    v49 = 0;
+    bOOLValue2 = 0;
   }
 
-  v5->_imagePDFAnnotations = v49;
+  v5->_imagePDFAnnotations = bOOLValue2;
   v50 = [v46 objectForKey:@"UIPrintInfoQualityKey"];
   if (!v50)
   {
@@ -226,10 +226,10 @@ LABEL_40:
   }
 
   v51 = v50;
-  v52 = [v50 intValue];
+  intValue8 = [v50 intValue];
 
 LABEL_41:
-  v5->_quality = v52;
+  v5->_quality = intValue8;
   v53 = v46;
   v54 = v53;
   if (v12)
@@ -238,49 +238,49 @@ LABEL_41:
     if (v55)
     {
       v56 = v55;
-      v57 = [v55 intValue];
+      intValue9 = [v55 intValue];
     }
 
     else
     {
-      v57 = 0;
+      intValue9 = 0;
     }
 
-    v5->_coat = v57;
+    v5->_coat = intValue9;
     v59 = [v54 objectForKey:@"UIPrintInfoLaminateKey"];
     if (v59)
     {
       v60 = v59;
-      v58 = [v59 intValue];
+      intValue10 = [v59 intValue];
     }
 
     else
     {
-      v58 = 0;
+      intValue10 = 0;
     }
   }
 
   else
   {
-    v58 = 0;
+    intValue10 = 0;
     v5->_coat = 0;
   }
 
-  v5->_laminate = v58;
+  v5->_laminate = intValue10;
   v61 = v54;
   v62 = v61;
   if (v12 && ([v61 objectForKey:@"UIPrintInfoTrimKey"], (v63 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v64 = v63;
-    v65 = [v63 intValue];
+    intValue11 = [v63 intValue];
   }
 
   else
   {
-    v65 = 0;
+    intValue11 = 0;
   }
 
-  v5->_trim = v65;
+  v5->_trim = intValue11;
   v66 = CopyDictionaryString(v62, @"UIPrintInfoFinishingTemplateKey", 0);
   finishingTemplate = v5->_finishingTemplate;
   v5->_finishingTemplate = v66;
@@ -352,35 +352,35 @@ LABEL_41:
     if (v87)
     {
       v88 = v87;
-      v89 = [v87 intValue];
+      intValue12 = [v87 intValue];
     }
 
     else
     {
-      v89 = 0;
+      intValue12 = 0;
     }
 
-    v5->_nUpLayoutDirection = v89;
+    v5->_nUpLayoutDirection = intValue12;
     v91 = [v86 objectForKey:@"UIPrintInfoBorderTypeKey"];
     if (v91)
     {
       v92 = v91;
-      v90 = [v91 intValue];
+      intValue13 = [v91 intValue];
     }
 
     else
     {
-      v90 = 0;
+      intValue13 = 0;
     }
   }
 
   else
   {
-    v90 = 0;
+    intValue13 = 0;
     v5->_nUpLayoutDirection = 0;
   }
 
-  v5->_borderType = v90;
+  v5->_borderType = intValue13;
   v93 = v86;
   v94 = v93;
   if (v12)
@@ -389,35 +389,35 @@ LABEL_41:
     if (v95)
     {
       v96 = v95;
-      v97 = [v95 intValue];
+      intValue14 = [v95 intValue];
     }
 
     else
     {
-      v97 = 0;
+      intValue14 = 0;
     }
 
-    v5->_bookletStyle = v97;
+    v5->_bookletStyle = intValue14;
     v99 = [v94 objectForKey:@"UIPrintInfoFipHorizontalKey"];
     if (v99)
     {
       v100 = v99;
-      v98 = [v99 BOOLValue];
+      bOOLValue3 = [v99 BOOLValue];
     }
 
     else
     {
-      v98 = 0;
+      bOOLValue3 = 0;
     }
   }
 
   else
   {
-    v98 = 0;
+    bOOLValue3 = 0;
     v5->_bookletStyle = 0;
   }
 
-  v5->_flipHorizontal = v98;
+  v5->_flipHorizontal = bOOLValue3;
   v101 = v94;
   v102 = v101;
   v103 = 1.0;
@@ -440,13 +440,13 @@ LABEL_82:
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   v5 = (self->_outputType & 0xFFFFFFFFFFFFFFFDLL) != 1;
   printerID = self->_printerID;
   if (printerID)
   {
-    [v3 setObject:printerID forKey:@"UIPrintInfoPrinterIDKey"];
+    [dictionary setObject:printerID forKey:@"UIPrintInfoPrinterIDKey"];
   }
 
   jobName = self->_jobName;
@@ -671,187 +671,187 @@ LABEL_82:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   printerID = self->_printerID;
-  v29 = v4;
+  v29 = coderCopy;
   if (printerID)
   {
-    [v4 encodeObject:printerID forKey:@"UIPrintInfoPrinterIDKey"];
-    v4 = v29;
+    [coderCopy encodeObject:printerID forKey:@"UIPrintInfoPrinterIDKey"];
+    coderCopy = v29;
   }
 
   jobName = self->_jobName;
   if (jobName)
   {
     [v29 encodeObject:jobName forKey:@"UIPrintInfoJobNameKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   outputType = self->_outputType;
   if (outputType)
   {
     [v29 encodeInt:outputType forKey:@"UIPrintInfoOutputTypeKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   orientation = self->_orientation;
   if (orientation)
   {
     [v29 encodeInt:orientation forKey:@"UIPrintInfoOrientationKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   duplex = self->_duplex;
   if (duplex)
   {
     [v29 encodeInt:duplex forKey:@"UIPrintInfoDuplexKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   copies = self->_copies;
   if (copies)
   {
     [v29 encodeInt:copies forKey:@"UIPrintInfoCopiesKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   if (self->_scaleUp)
   {
     [v29 encodeBool:1 forKey:@"UIPrintInfoScaleUpKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   staple = self->_staple;
   if (staple)
   {
     [v29 encodeInt:staple forKey:@"UIPrintInfoStapleKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   punch = self->_punch;
   if (punch)
   {
     [v29 encodeInt:punch forKey:@"UIPrintInfoPunchKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   fold = self->_fold;
   if (fold)
   {
     [v29 encodeInt:fold forKey:@"UIPrintInfoFoldKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   if (self->_imagePDFAnnotations)
   {
     [v29 encodeBool:1 forKey:@"UIPrintInfoImageAnnotationsKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   quality = self->_quality;
   if (quality != 4)
   {
     [v29 encodeInt:quality forKey:@"UIPrintInfoQualityKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   coat = self->_coat;
   if (coat)
   {
     [v29 encodeInt:coat forKey:@"UIPrintInfoCoatKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   laminate = self->_laminate;
   if (laminate)
   {
     [v29 encodeInt:laminate forKey:@"UIPrintInfoLaminateKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   trim = self->_trim;
   if (trim)
   {
     [v29 encodeInt:trim forKey:@"UIPrintInfoTrimKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   finishingTemplate = self->_finishingTemplate;
   if (finishingTemplate)
   {
     [v29 encodeObject:finishingTemplate forKey:@"UIPrintInfoFinishingTemplateKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   outputBin = self->_outputBin;
   if (outputBin)
   {
     [v29 encodeObject:outputBin forKey:@"UIPrintInfoOutputBinKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   pageStackOrder = self->_pageStackOrder;
   if (pageStackOrder)
   {
     [v29 encodeObject:pageStackOrder forKey:@"UIPrintInfoPageStackOrderKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   inputSlot = self->_inputSlot;
   if (inputSlot)
   {
     [v29 encodeObject:inputSlot forKey:@"UIPrintInfoInputSlotKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   mediaType = self->_mediaType;
   if (mediaType)
   {
     [v29 encodeObject:mediaType forKey:@"UIPrintInfoMediaTypeKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   jobPreset = self->_jobPreset;
   if (jobPreset)
   {
     [v29 encodeObject:jobPreset forKey:@"UIPrintInfoJobPresetKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   nUpRowsColumns = self->_nUpRowsColumns;
   if (nUpRowsColumns)
   {
     [v29 encodeObject:nUpRowsColumns forKey:@"UIPrintInfoNUpRowsColumnsKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   nUpLayoutDirection = self->_nUpLayoutDirection;
   if (nUpLayoutDirection)
   {
     [v29 encodeInteger:nUpLayoutDirection forKey:@"UIPrintInfoLayoutDirectionKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   borderType = self->_borderType;
   if (borderType)
   {
     [v29 encodeInteger:borderType forKey:@"UIPrintInfoBorderTypeKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   bookletStyle = self->_bookletStyle;
   if (bookletStyle)
   {
     [v29 encodeInteger:bookletStyle forKey:@"UIPrintInfoBookletStyleKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   if (self->_flipHorizontal)
   {
     [v29 encodeBool:1 forKey:@"UIPrintInfoFipHorizontalKey"];
-    v4 = v29;
+    coderCopy = v29;
   }
 
   scalingFactor = self->_scalingFactor;
@@ -859,18 +859,18 @@ LABEL_82:
   {
     *&scalingFactor = scalingFactor;
     [v29 encodeFloat:@"UIPrintInfoScalingFactorKey" forKey:scalingFactor];
-    v4 = v29;
+    coderCopy = v29;
   }
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __36__UIPrintInfo_updateWithDictionary___block_invoke;
   v3[3] = &unk_279A9C5C0;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __36__UIPrintInfo_updateWithDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1035,36 +1035,36 @@ LABEL_39:
 LABEL_40:
 }
 
-- (void)resetToDefaultSettings:(id)a3
+- (void)resetToDefaultSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   [(UIPrintInfo *)self setJobPreset:0];
   [(UIPrintInfo *)self setAppliedPresetsList:0];
-  -[UIPrintInfo setFinishingOption:](self, "setFinishingOption:", [v4 finishingOption]);
-  v5 = [v4 finishingTemplate];
-  [(UIPrintInfo *)self setFinishingTemplate:v5];
+  -[UIPrintInfo setFinishingOption:](self, "setFinishingOption:", [settingsCopy finishingOption]);
+  finishingTemplate = [settingsCopy finishingTemplate];
+  [(UIPrintInfo *)self setFinishingTemplate:finishingTemplate];
 
-  -[UIPrintInfo setStaple:](self, "setStaple:", [v4 staple]);
-  -[UIPrintInfo setPunch:](self, "setPunch:", [v4 punch]);
-  -[UIPrintInfo setFold:](self, "setFold:", [v4 fold]);
-  -[UIPrintInfo setLaminate:](self, "setLaminate:", [v4 laminate]);
-  -[UIPrintInfo setCoat:](self, "setCoat:", [v4 coat]);
-  -[UIPrintInfo setTrim:](self, "setTrim:", [v4 trim]);
-  v6 = [v4 pageStackOrder];
-  [(UIPrintInfo *)self setPageStackOrder:v6];
+  -[UIPrintInfo setStaple:](self, "setStaple:", [settingsCopy staple]);
+  -[UIPrintInfo setPunch:](self, "setPunch:", [settingsCopy punch]);
+  -[UIPrintInfo setFold:](self, "setFold:", [settingsCopy fold]);
+  -[UIPrintInfo setLaminate:](self, "setLaminate:", [settingsCopy laminate]);
+  -[UIPrintInfo setCoat:](self, "setCoat:", [settingsCopy coat]);
+  -[UIPrintInfo setTrim:](self, "setTrim:", [settingsCopy trim]);
+  pageStackOrder = [settingsCopy pageStackOrder];
+  [(UIPrintInfo *)self setPageStackOrder:pageStackOrder];
 
-  v7 = [v4 outputBin];
+  outputBin = [settingsCopy outputBin];
 
-  [(UIPrintInfo *)self setOutputBin:v7];
-  v9 = [(UIPrintInfo *)self currentPrinter];
-  v8 = [v9 pkPrinter];
-  [(UIPrintInfo *)self _updateWithPrinter:v8];
+  [(UIPrintInfo *)self setOutputBin:outputBin];
+  currentPrinter = [(UIPrintInfo *)self currentPrinter];
+  pkPrinter = [currentPrinter pkPrinter];
+  [(UIPrintInfo *)self _updateWithPrinter:pkPrinter];
 }
 
-- (void)applyPreset:(id)a3
+- (void)applyPreset:(id)preset
 {
   v56 = *MEMORY[0x277D85DE8];
-  [a3 objectForKey:*MEMORY[0x277D41180]];
+  [preset objectForKey:*MEMORY[0x277D41180]];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -1128,10 +1128,10 @@ LABEL_57:
           if ([v10 isEqualToString:v41])
           {
             v13 = [v43 objectForKey:v41];
-            v14 = [v13 integerValue];
+            integerValue = [v13 integerValue];
 
             v6 = v42;
-            v15 = v14;
+            v15 = integerValue;
             v4 = v37;
             [(UIPrintInfo *)self setQuality:v15];
           }
@@ -1190,11 +1190,11 @@ LABEL_57:
                 objc_enumerationMutation(v17);
               }
 
-              v22 = [*(*(&v46 + 1) + 8 * i) integerValue];
-              if (v22 > 15)
+              integerValue2 = [*(*(&v46 + 1) + 8 * i) integerValue];
+              if (integerValue2 > 15)
               {
-                v23 = v22 - 16;
-                if ((v22 - 16) <= 0x3F)
+                v23 = integerValue2 - 16;
+                if ((integerValue2 - 16) <= 0x3F)
                 {
                   if (((1 << v23) & 0xC00033030) != 0)
                   {
@@ -1206,37 +1206,37 @@ LABEL_57:
                     goto LABEL_48;
                   }
 
-                  if (v22 == 16)
+                  if (integerValue2 == 16)
                   {
                     [(UIPrintInfo *)self setLaminate:16];
                     continue;
                   }
                 }
 
-                if ((v22 - 90) < 0xB)
+                if ((integerValue2 - 90) < 0xB)
                 {
                   [(UIPrintInfo *)self setFold:?];
                   continue;
                 }
 
-                if ((v22 - 82) < 2)
+                if ((integerValue2 - 82) < 2)
                 {
 LABEL_48:
-                  [(UIPrintInfo *)self setPunch:v22];
+                  [(UIPrintInfo *)self setPunch:integerValue2];
                   continue;
                 }
               }
 
-              else if (v22 > 7)
+              else if (integerValue2 > 7)
               {
-                if (v22 == 8)
+                if (integerValue2 == 8)
                 {
 LABEL_44:
-                  [(UIPrintInfo *)self setStaple:v22];
+                  [(UIPrintInfo *)self setStaple:integerValue2];
                   continue;
                 }
 
-                if (v22 == 15)
+                if (integerValue2 == 15)
                 {
                   [(UIPrintInfo *)self setCoat:?];
                 }
@@ -1244,12 +1244,12 @@ LABEL_44:
 
               else
               {
-                if (v22 == 4)
+                if (integerValue2 == 4)
                 {
                   goto LABEL_44;
                 }
 
-                if (v22 == 5)
+                if (integerValue2 == 5)
                 {
                   goto LABEL_48;
                 }
@@ -1272,10 +1272,10 @@ LABEL_51:
         if ([v10 isEqualToString:v7])
         {
           v24 = [v43 objectForKey:v7];
-          v25 = [v24 integerValue];
+          integerValue3 = [v24 integerValue];
 
           v4 = v37;
-          v26 = v25;
+          v26 = integerValue3;
           v6 = v42;
           [(UIPrintInfo *)self setCopies:v26];
 LABEL_64:
@@ -1356,70 +1356,70 @@ LABEL_58:
   }
 }
 
-- (void)clearPreset:(id)a3 origPrintInfo:(id)a4
+- (void)clearPreset:(id)preset origPrintInfo:(id)info
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v39 = [a3 objectForKey:*MEMORY[0x277D41180]];
-  -[UIPrintInfo setCopies:](self, "setCopies:", [v6 copies]);
-  v7 = [v6 pageRanges];
-  [(UIPrintInfo *)self setPageRanges:v7];
+  infoCopy = info;
+  v39 = [preset objectForKey:*MEMORY[0x277D41180]];
+  -[UIPrintInfo setCopies:](self, "setCopies:", [infoCopy copies]);
+  pageRanges = [infoCopy pageRanges];
+  [(UIPrintInfo *)self setPageRanges:pageRanges];
 
-  v8 = [(UIPrintInfo *)self currentPrinter];
-  if ([v8 supportsDuplex])
+  currentPrinter = [(UIPrintInfo *)self currentPrinter];
+  if ([currentPrinter supportsDuplex])
   {
-    v9 = [v6 duplex];
+    duplex = [infoCopy duplex];
   }
 
   else
   {
-    v9 = 0;
+    duplex = 0;
   }
 
-  [(UIPrintInfo *)self setDuplex:v9];
+  [(UIPrintInfo *)self setDuplex:duplex];
 
-  -[UIPrintInfo setOutputType:](self, "setOutputType:", [v6 outputType]);
-  v10 = [v6 printPaper];
-  [(UIPrintInfo *)self setPrintPaper:v10];
+  -[UIPrintInfo setOutputType:](self, "setOutputType:", [infoCopy outputType]);
+  printPaper = [infoCopy printPaper];
+  [(UIPrintInfo *)self setPrintPaper:printPaper];
 
-  -[UIPrintInfo setOrientation:](self, "setOrientation:", [v6 orientation]);
-  [v6 scalingFactor];
+  -[UIPrintInfo setOrientation:](self, "setOrientation:", [infoCopy orientation]);
+  [infoCopy scalingFactor];
   [(UIPrintInfo *)self setScalingFactor:?];
-  -[UIPrintInfo setImagePDFAnnotations:](self, "setImagePDFAnnotations:", [v6 imagePDFAnnotations]);
-  v11 = [v6 inputSlot];
-  [(UIPrintInfo *)self setInputSlot:v11];
+  -[UIPrintInfo setImagePDFAnnotations:](self, "setImagePDFAnnotations:", [infoCopy imagePDFAnnotations]);
+  inputSlot = [infoCopy inputSlot];
+  [(UIPrintInfo *)self setInputSlot:inputSlot];
 
-  v12 = [v6 mediaType];
-  [(UIPrintInfo *)self setMediaType:v12];
+  mediaType = [infoCopy mediaType];
+  [(UIPrintInfo *)self setMediaType:mediaType];
 
-  -[UIPrintInfo setQuality:](self, "setQuality:", [v6 quality]);
+  -[UIPrintInfo setQuality:](self, "setQuality:", [infoCopy quality]);
   [(UIPrintInfo *)self setNUpRowsColumns:0];
   [(UIPrintInfo *)self setNUpLayoutDirection:0];
   [(UIPrintInfo *)self setBorderType:0];
   [(UIPrintInfo *)self setBookletStyle:0];
   [(UIPrintInfo *)self setFlipHorizontal:0];
-  -[UIPrintInfo setFinishingOption:](self, "setFinishingOption:", [v6 finishingOption]);
-  v13 = [v6 finishingTemplate];
-  [(UIPrintInfo *)self setFinishingTemplate:v13];
+  -[UIPrintInfo setFinishingOption:](self, "setFinishingOption:", [infoCopy finishingOption]);
+  finishingTemplate = [infoCopy finishingTemplate];
+  [(UIPrintInfo *)self setFinishingTemplate:finishingTemplate];
 
-  -[UIPrintInfo setStaple:](self, "setStaple:", [v6 staple]);
-  -[UIPrintInfo setPunch:](self, "setPunch:", [v6 punch]);
-  -[UIPrintInfo setFold:](self, "setFold:", [v6 fold]);
-  -[UIPrintInfo setLaminate:](self, "setLaminate:", [v6 laminate]);
-  -[UIPrintInfo setCoat:](self, "setCoat:", [v6 coat]);
-  -[UIPrintInfo setTrim:](self, "setTrim:", [v6 trim]);
-  v14 = [v6 pageStackOrder];
-  [(UIPrintInfo *)self setPageStackOrder:v14];
+  -[UIPrintInfo setStaple:](self, "setStaple:", [infoCopy staple]);
+  -[UIPrintInfo setPunch:](self, "setPunch:", [infoCopy punch]);
+  -[UIPrintInfo setFold:](self, "setFold:", [infoCopy fold]);
+  -[UIPrintInfo setLaminate:](self, "setLaminate:", [infoCopy laminate]);
+  -[UIPrintInfo setCoat:](self, "setCoat:", [infoCopy coat]);
+  -[UIPrintInfo setTrim:](self, "setTrim:", [infoCopy trim]);
+  pageStackOrder = [infoCopy pageStackOrder];
+  [(UIPrintInfo *)self setPageStackOrder:pageStackOrder];
 
-  v15 = [v6 outputBin];
-  [(UIPrintInfo *)self setOutputBin:v15];
+  outputBin = [infoCopy outputBin];
+  [(UIPrintInfo *)self setOutputBin:outputBin];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v16 = [v39 allKeys];
-  v43 = [v16 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  allKeys = [v39 allKeys];
+  v43 = [allKeys countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v43)
   {
     v17 = *v49;
@@ -1431,7 +1431,7 @@ LABEL_58:
     v34 = *MEMORY[0x277D41170];
     v35 = *MEMORY[0x277D41178];
     v37 = *v49;
-    v38 = v16;
+    v38 = allKeys;
     v40 = *MEMORY[0x277D410D0];
     do
     {
@@ -1440,36 +1440,36 @@ LABEL_58:
       {
         if (*v49 != v17)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(*(&v48 + 1) + 8 * v20);
         if ([v21 isEqualToString:{v18, v34}])
         {
-          v22 = [(UIPrintInfo *)self currentPrinter];
-          if ([v22 supportsDuplex])
+          currentPrinter2 = [(UIPrintInfo *)self currentPrinter];
+          if ([currentPrinter2 supportsDuplex])
           {
-            v23 = [v6 duplex];
+            duplex2 = [infoCopy duplex];
           }
 
           else
           {
-            v23 = 0;
+            duplex2 = 0;
           }
 
-          [(UIPrintInfo *)self setDuplex:v23];
+          [(UIPrintInfo *)self setDuplex:duplex2];
           goto LABEL_16;
         }
 
         if ([v21 isEqualToString:v42])
         {
-          -[UIPrintInfo setOutputType:](self, "setOutputType:", [v6 outputType]);
+          -[UIPrintInfo setOutputType:](self, "setOutputType:", [infoCopy outputType]);
           goto LABEL_17;
         }
 
         if ([v21 isEqualToString:v41])
         {
-          -[UIPrintInfo setQuality:](self, "setQuality:", [v6 quality]);
+          -[UIPrintInfo setQuality:](self, "setQuality:", [infoCopy quality]);
           goto LABEL_17;
         }
 
@@ -1497,11 +1497,11 @@ LABEL_58:
                 objc_enumerationMutation(v24);
               }
 
-              v29 = [*(*(&v44 + 1) + 8 * i) integerValue];
-              if (v29 > 15)
+              integerValue = [*(*(&v44 + 1) + 8 * i) integerValue];
+              if (integerValue > 15)
               {
-                v30 = v29 - 16;
-                if ((v29 - 16) <= 0x3F)
+                v30 = integerValue - 16;
+                if ((integerValue - 16) <= 0x3F)
                 {
                   if (((1 << v30) & 0xC00033030) != 0)
                   {
@@ -1513,50 +1513,50 @@ LABEL_58:
                     goto LABEL_44;
                   }
 
-                  if (v29 == 16)
+                  if (integerValue == 16)
                   {
-                    -[UIPrintInfo setLaminate:](self, "setLaminate:", [v6 laminate]);
+                    -[UIPrintInfo setLaminate:](self, "setLaminate:", [infoCopy laminate]);
                     continue;
                   }
                 }
 
-                if ((v29 - 90) < 0xB)
+                if ((integerValue - 90) < 0xB)
                 {
-                  -[UIPrintInfo setFold:](self, "setFold:", [v6 fold]);
+                  -[UIPrintInfo setFold:](self, "setFold:", [infoCopy fold]);
                   continue;
                 }
 
-                if ((v29 - 82) < 2)
+                if ((integerValue - 82) < 2)
                 {
 LABEL_44:
-                  -[UIPrintInfo setPunch:](self, "setPunch:", [v6 punch]);
+                  -[UIPrintInfo setPunch:](self, "setPunch:", [infoCopy punch]);
                   continue;
                 }
               }
 
-              else if (v29 > 7)
+              else if (integerValue > 7)
               {
-                if (v29 == 8)
+                if (integerValue == 8)
                 {
 LABEL_40:
-                  -[UIPrintInfo setStaple:](self, "setStaple:", [v6 staple]);
+                  -[UIPrintInfo setStaple:](self, "setStaple:", [infoCopy staple]);
                   continue;
                 }
 
-                if (v29 == 15)
+                if (integerValue == 15)
                 {
-                  -[UIPrintInfo setCoat:](self, "setCoat:", [v6 coat]);
+                  -[UIPrintInfo setCoat:](self, "setCoat:", [infoCopy coat]);
                 }
               }
 
               else
               {
-                if (v29 == 4)
+                if (integerValue == 4)
                 {
                   goto LABEL_40;
                 }
 
-                if (v29 == 5)
+                if (integerValue == 5)
                 {
                   goto LABEL_44;
                 }
@@ -1570,7 +1570,7 @@ LABEL_47:
               [(UIPrintInfo *)self setFinishingOption:2];
 
               v17 = v37;
-              v16 = v38;
+              allKeys = v38;
               goto LABEL_52;
             }
           }
@@ -1578,7 +1578,7 @@ LABEL_47:
 
         if ([v21 isEqualToString:v36])
         {
-          -[UIPrintInfo setCopies:](self, "setCopies:", [v6 copies]);
+          -[UIPrintInfo setCopies:](self, "setCopies:", [infoCopy copies]);
 LABEL_52:
           v18 = v40;
           goto LABEL_17;
@@ -1586,16 +1586,16 @@ LABEL_52:
 
         if ([v21 isEqualToString:v35])
         {
-          v31 = [v6 mediaType];
-          [(UIPrintInfo *)self setMediaType:v31];
+          mediaType2 = [infoCopy mediaType];
+          [(UIPrintInfo *)self setMediaType:mediaType2];
 
           goto LABEL_52;
         }
 
         if ([v21 isEqualToString:v34])
         {
-          v32 = [v6 inputSlot];
-          [(UIPrintInfo *)self setInputSlot:v32];
+          inputSlot2 = [infoCopy inputSlot];
+          [(UIPrintInfo *)self setInputSlot:inputSlot2];
 
           goto LABEL_52;
         }
@@ -1603,8 +1603,8 @@ LABEL_52:
         v18 = v40;
         if ([v21 isEqual:@"UIPrintInfoNUpRowsColumnsKey"])
         {
-          v22 = [v6 nUpRowsColumns];
-          [(UIPrintInfo *)self setNUpRowsColumns:v22];
+          currentPrinter2 = [infoCopy nUpRowsColumns];
+          [(UIPrintInfo *)self setNUpRowsColumns:currentPrinter2];
 LABEL_16:
 
           goto LABEL_17;
@@ -1612,27 +1612,27 @@ LABEL_16:
 
         if ([v21 isEqual:@"UIPrintInfoLayoutDirectionKey"])
         {
-          -[UIPrintInfo setNUpLayoutDirection:](self, "setNUpLayoutDirection:", [v6 nUpLayoutDirection]);
+          -[UIPrintInfo setNUpLayoutDirection:](self, "setNUpLayoutDirection:", [infoCopy nUpLayoutDirection]);
         }
 
         else if ([v21 isEqual:@"UIPrintInfoBorderTypeKey"])
         {
-          -[UIPrintInfo setBorderType:](self, "setBorderType:", [v6 borderType]);
+          -[UIPrintInfo setBorderType:](self, "setBorderType:", [infoCopy borderType]);
         }
 
         else if ([v21 isEqual:@"UIPrintInfoBookletStyleKey"])
         {
-          -[UIPrintInfo setBookletStyle:](self, "setBookletStyle:", [v6 bookletStyle]);
+          -[UIPrintInfo setBookletStyle:](self, "setBookletStyle:", [infoCopy bookletStyle]);
         }
 
         else if ([v21 isEqual:@"UIPrintInfoFipHorizontalKey"])
         {
-          -[UIPrintInfo setFlipHorizontal:](self, "setFlipHorizontal:", [v6 flipHorizontal]);
+          -[UIPrintInfo setFlipHorizontal:](self, "setFlipHorizontal:", [infoCopy flipHorizontal]);
         }
 
         else if ([v21 isEqual:@"UIPrintInfoScalingFactorKey"])
         {
-          [v6 scalingFactor];
+          [infoCopy scalingFactor];
           [(UIPrintInfo *)self setScalingFactor:?];
         }
 
@@ -1641,7 +1641,7 @@ LABEL_17:
       }
 
       while (v20 != v43);
-      v33 = [v16 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v33 = [allKeys countByEnumeratingWithState:&v48 objects:v53 count:16];
       v43 = v33;
     }
 
@@ -1649,30 +1649,30 @@ LABEL_17:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(UIPrintInfo *)self dictionaryRepresentation];
-  v6 = [v4 _initWithDictionary:v5];
+  dictionaryRepresentation = [(UIPrintInfo *)self dictionaryRepresentation];
+  v6 = [v4 _initWithDictionary:dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)_updateWithPrinter:(id)a3
+- (void)_updateWithPrinter:(id)printer
 {
-  v24 = a3;
-  v4 = [v24 name];
-  v5 = [v4 copy];
+  printerCopy = printer;
+  name = [printerCopy name];
+  v5 = [name copy];
   printerID = self->_printerID;
   self->_printerID = v5;
 
-  if ([v24 hasPrintInfoSupported])
+  if ([printerCopy hasPrintInfoSupported])
   {
-    v7 = [v24 printInfoSupported];
-    v8 = v7;
-    if (v7)
+    printInfoSupported = [printerCopy printInfoSupported];
+    v8 = printInfoSupported;
+    if (printInfoSupported)
     {
-      v9 = [v7 objectForKey:*MEMORY[0x277D410D0]];
+      v9 = [printInfoSupported objectForKey:*MEMORY[0x277D410D0]];
       v10 = 0;
       goto LABEL_6;
     }
@@ -1759,9 +1759,9 @@ LABEL_12:
   }
 }
 
-- (id)_createPrintSettingsForPrinter:(id)a3
+- (id)_createPrintSettingsForPrinter:(id)printer
 {
-  v4 = a3;
+  printerCopy = printer;
   v5 = objc_alloc_init(MEMORY[0x277D410A0]);
   if (self->_copies >= 1)
   {
@@ -1791,8 +1791,8 @@ LABEL_12:
     [v5 setObject:*MEMORY[0x277D410D8] forKey:v9];
   }
 
-  v10 = [(UIPrintInfo *)self numNUpRows];
-  v11 = [(UIPrintInfo *)self numNUpColumns]* v10;
+  numNUpRows = [(UIPrintInfo *)self numNUpRows];
+  v11 = [(UIPrintInfo *)self numNUpColumns]* numNUpRows;
   if (v11 < 2)
   {
     if (self->_orientation != 1)
@@ -1800,13 +1800,13 @@ LABEL_12:
       goto LABEL_36;
     }
 
-    v21 = [v4 hasPrintInfoSupported];
+    hasPrintInfoSupported = [printerCopy hasPrintInfoSupported];
     v22 = MEMORY[0x277D411A0];
-    if (v21)
+    if (hasPrintInfoSupported)
     {
-      v23 = [v4 printInfoSupported];
+      printInfoSupported = [printerCopy printInfoSupported];
       v24 = *v22;
-      v17 = [v23 objectForKey:v24];
+      v17 = [printInfoSupported objectForKey:v24];
     }
 
     else
@@ -1899,14 +1899,14 @@ LABEL_36:
     v26 = v27;
   }
 
-  v28 = [(NSString *)v26 precomposedStringWithCanonicalMapping];
-  v29 = [v28 cStringUsingEncoding:4];
+  precomposedStringWithCanonicalMapping = [(NSString *)v26 precomposedStringWithCanonicalMapping];
+  v29 = [precomposedStringWithCanonicalMapping cStringUsingEncoding:4];
   if (v29)
   {
     v30 = v29;
     if (strlen(v29) < 0x100)
     {
-      v32 = v28;
+      v32 = precomposedStringWithCanonicalMapping;
     }
 
     else
@@ -1956,12 +1956,12 @@ LABEL_36:
   [v5 setObject:*v35 forKey:*MEMORY[0x277D411D8]];
   v37 = *MEMORY[0x277D41220];
   [v5 setObject:*v36 forKey:*MEMORY[0x277D41220]];
-  v38 = [v4 hasPrintInfoSupported];
+  hasPrintInfoSupported2 = [printerCopy hasPrintInfoSupported];
   v39 = MEMORY[0x277D41128];
-  if (v38)
+  if (hasPrintInfoSupported2)
   {
-    v40 = [v4 printInfoSupported];
-    v41 = [v40 objectForKey:*v39];
+    printInfoSupported2 = [printerCopy printInfoSupported];
+    v41 = [printInfoSupported2 objectForKey:*v39];
   }
 
   else
@@ -2528,7 +2528,7 @@ LABEL_165:
     [v5 setObject:pageStackOrder forKey:*MEMORY[0x277D41200]];
   }
 
-  if (self->_jobAccountID && [v4 supportsJobAccountID])
+  if (self->_jobAccountID && [printerCopy supportsJobAccountID])
   {
     [v5 setObject:self->_jobAccountID forKey:*MEMORY[0x277D41148]];
   }
@@ -2576,20 +2576,20 @@ LABEL_165:
 
 - (int64_t)numNUpRows
 {
-  v2 = [(UIPrintInfo *)self nUpRowsColumns];
-  v3 = [v2 objectAtIndex:0];
+  nUpRowsColumns = [(UIPrintInfo *)self nUpRowsColumns];
+  v3 = [nUpRowsColumns objectAtIndex:0];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 - (int64_t)numNUpColumns
 {
-  v2 = [(UIPrintInfo *)self nUpRowsColumns];
-  v3 = [v2 objectAtIndex:1];
+  nUpRowsColumns = [(UIPrintInfo *)self nUpRowsColumns];
+  v3 = [nUpRowsColumns objectAtIndex:1];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 @end

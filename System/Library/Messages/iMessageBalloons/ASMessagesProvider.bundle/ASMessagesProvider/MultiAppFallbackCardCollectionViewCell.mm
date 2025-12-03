@@ -22,7 +22,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_A5930();
 }
 
@@ -46,13 +46,13 @@
   if (isa)
   {
     sub_769460();
-    v6 = self;
+    selfCopy = self;
     isa = sub_769450().super.isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

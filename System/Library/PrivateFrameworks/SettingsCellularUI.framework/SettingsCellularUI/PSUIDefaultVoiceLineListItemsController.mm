@@ -13,8 +13,8 @@
   v2 = [(PSUIDefaultVoiceLineListItemsController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_reloadCache name:@"PSUICellularPlanChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reloadCache name:@"PSUICellularPlanChanged" object:0];
   }
 
   return v2;
@@ -56,12 +56,12 @@ void __54__PSUIDefaultVoiceLineListItemsController_reloadCache__block_invoke(uin
   v25 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
   v23.super_class = PSUIDefaultVoiceLineListItemsController;
-  v3 = [(PSListItemsController *)&v23 specifiers];
+  specifiers = [(PSListItemsController *)&v23 specifiers];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v4 = [specifiers countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -75,7 +75,7 @@ void __54__PSUIDefaultVoiceLineListItemsController_reloadCache__block_invoke(uin
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifiers);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
@@ -96,19 +96,19 @@ void __54__PSUIDefaultVoiceLineListItemsController_reloadCache__block_invoke(uin
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v5 = [specifiers countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v5);
   }
 
   v14 = MEMORY[0x277D4D878];
-  v15 = [v3 mutableCopy];
+  v15 = [specifiers mutableCopy];
   [v14 logSpecifiers:v15 origin:@"[PSUIDefaultVoiceLineListItemsController specifiers] end"];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return specifiers;
 }
 
 @end

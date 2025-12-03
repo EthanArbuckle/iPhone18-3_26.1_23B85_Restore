@@ -1,9 +1,9 @@
 @interface PhotosWindowSceneDelegate
 + (void)_showContactsPromptIfNecessary;
 - (BOOL)_canProceedWithPhotoLibraryInGoodState;
-- (BOOL)_isUserActivityExpired:(id)a3;
+- (BOOL)_isUserActivityExpired:(id)expired;
 - (BOOL)finishExtendingStateRestorationForWidgetNavigation;
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4;
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab;
 - (PXImportViewControllerInstanceHost)importViewControllerInstanceHost;
 - (PXLibraryFilterState)libraryFilterState;
 - (PXProgrammaticNavigationDestination)px_navigationDestination;
@@ -11,51 +11,51 @@
 - (UIViewController)rootViewController;
 - (UIWindowScene)sceneExtendingStateRestoration;
 - (double)screenScale;
-- (id)actionMenuElementsForObjects:(id)a3 allowedActionTypes:(id)a4;
-- (id)actionPerformerHostViewControllerForPresentingToast:(id)a3;
-- (id)libraryFilterMenuActionImageNameForItemIndex:(int64_t)a3;
-- (id)libraryFilterMenuActionTitleForItemIndex:(int64_t)a3;
-- (id)nextExistingParticipantOnRouteToDestination:(id)a3;
-- (id)presentationEnvironmentForActionPerformer:(id)a3;
-- (id)shortcutURLForShortcutItem:(id)a3;
-- (id)undoManagerForActionPerformer:(id)a3;
-- (id)userActivityURLForUserActivity:(id)a3;
-- (int64_t)libraryFilterMenuActionStateForItemIndex:(int64_t)a3;
-- (unint64_t)tabBarController:(id)a3 tab:(id)a4 operationForAcceptingItemsFromDropSession:(id)a5;
+- (id)actionMenuElementsForObjects:(id)objects allowedActionTypes:(id)types;
+- (id)actionPerformerHostViewControllerForPresentingToast:(id)toast;
+- (id)libraryFilterMenuActionImageNameForItemIndex:(int64_t)index;
+- (id)libraryFilterMenuActionTitleForItemIndex:(int64_t)index;
+- (id)nextExistingParticipantOnRouteToDestination:(id)destination;
+- (id)presentationEnvironmentForActionPerformer:(id)performer;
+- (id)shortcutURLForShortcutItem:(id)item;
+- (id)undoManagerForActionPerformer:(id)performer;
+- (id)userActivityURLForUserActivity:(id)activity;
+- (int64_t)libraryFilterMenuActionStateForItemIndex:(int64_t)index;
+- (unint64_t)tabBarController:(id)controller tab:(id)tab operationForAcceptingItemsFromDropSession:(id)session;
 - (void)_ensureLemonadeRootViewControllerExists;
 - (void)_ensureSplitViewControllerExistsIfNeeded;
 - (void)_ensureTabbedLibraryViewControllerExists;
 - (void)_executePendingRequestsIfNeeded;
-- (void)_handleFetchedMomentShare:(id)a3 forURL:(id)a4 error:(id)a5;
-- (void)_handleFetchedSharedCollection:(id)a3 forURL:(id)a4 error:(id)a5;
-- (void)_openItemProviderCollections:(id)a3;
-- (void)_openMomentShareWithURL:(id)a3;
-- (void)_openSharedCollectionWithURL:(id)a3;
-- (void)_openSpotlightSearchActivity:(id)a3;
-- (void)_openUniversalLinkActivity:(id)a3;
-- (void)_retryProgrammaticNavigationToDestination:(id)a3;
+- (void)_handleFetchedMomentShare:(id)share forURL:(id)l error:(id)error;
+- (void)_handleFetchedSharedCollection:(id)collection forURL:(id)l error:(id)error;
+- (void)_openItemProviderCollections:(id)collections;
+- (void)_openMomentShareWithURL:(id)l;
+- (void)_openSharedCollectionWithURL:(id)l;
+- (void)_openSpotlightSearchActivity:(id)activity;
+- (void)_openUniversalLinkActivity:(id)activity;
+- (void)_retryProgrammaticNavigationToDestination:(id)destination;
 - (void)beginExtendingStateRestorationForWidgetNavigation;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)openCloudKitShareWithURL:(id)a3;
-- (void)openRoutingURL:(id)a3;
-- (void)openUserActivity:(id)a3;
-- (void)performActionWithType:(id)a3 objects:(id)a4 parameters:(id)a5;
-- (void)performLibraryFilterMenuActionForItemAtIndex:(int64_t)a3;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)openCloudKitShareWithURL:(id)l;
+- (void)openRoutingURL:(id)l;
+- (void)openUserActivity:(id)activity;
+- (void)performActionWithType:(id)type objects:(id)objects parameters:(id)parameters;
+- (void)performLibraryFilterMenuActionForItemAtIndex:(int64_t)index;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)setupAppUI;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
-- (void)tabBarController:(id)a3 displayOrderDidChangeForGroup:(id)a4;
-- (void)tabBarController:(id)a3 tab:(id)a4 acceptItemsFromDropSession:(id)a5;
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
-- (void)windowScene:(id)a3 userDidAcceptCloudKitShareWithMetadata:(id)a4;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
+- (void)tabBarController:(id)controller displayOrderDidChangeForGroup:(id)group;
+- (void)tabBarController:(id)controller tab:(id)tab acceptItemsFromDropSession:(id)session;
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
+- (void)windowScene:(id)scene userDidAcceptCloudKitShareWithMetadata:(id)metadata;
 @end
 
 @implementation PhotosWindowSceneDelegate
@@ -97,8 +97,8 @@
       exit(0);
     }
 
-    v6 = [v5 userInfo];
-    v7 = [v6 objectForKeyedSubscript:NSDebugDescriptionErrorKey];
+    userInfo = [v5 userInfo];
+    v7 = [userInfo objectForKeyedSubscript:NSDebugDescriptionErrorKey];
     v8 = v7;
     if (v7)
     {
@@ -116,12 +116,12 @@
     v12 = dispatch_time(0, 10000000000);
     dispatch_after(v12, &_dispatch_main_q, &stru_10005A010);
     v13 = objc_opt_new();
-    v14 = [(PhotosWindowSceneDelegate *)self mainWindow];
-    [v14 setRootViewController:v13];
+    mainWindow = [(PhotosWindowSceneDelegate *)self mainWindow];
+    [mainWindow setRootViewController:v13];
 
-    v15 = [(PhotosWindowSceneDelegate *)self mainWindow];
-    v16 = [v15 rootViewController];
-    [v16 presentViewController:v11 animated:1 completion:0];
+    mainWindow2 = [(PhotosWindowSceneDelegate *)self mainWindow];
+    rootViewController = [mainWindow2 rootViewController];
+    [rootViewController presentViewController:v11 animated:1 completion:0];
   }
 
   return v4;
@@ -135,9 +135,9 @@
   }
 
   v3 = +[PXLemonadeSettings sharedInstance];
-  v4 = [v3 enableTabs];
+  enableTabs = [v3 enableTabs];
 
-  if (v4)
+  if (enableTabs)
   {
     [(PhotosWindowSceneDelegate *)self _ensureTabbedLibraryViewControllerExists];
   }
@@ -148,31 +148,31 @@
   }
 
   [(PhotosWindowSceneDelegate *)self _ensureSplitViewControllerExistsIfNeeded];
-  v5 = [(PhotosWindowSceneDelegate *)self splitViewController];
+  splitViewController = [(PhotosWindowSceneDelegate *)self splitViewController];
 
-  v6 = v4 ^ 1;
-  if (v5)
+  v6 = enableTabs ^ 1;
+  if (splitViewController)
   {
     v6 = 1;
   }
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
     collectionActionReceiver = self->_collectionActionReceiver;
-    self->_collectionActionReceiver = v7;
+    self->_collectionActionReceiver = tabbedLibraryViewController;
   }
 
-  v9 = [(PhotosWindowSceneDelegate *)self splitViewController];
-  v10 = v9;
-  if (v9)
+  splitViewController2 = [(PhotosWindowSceneDelegate *)self splitViewController];
+  v10 = splitViewController2;
+  if (splitViewController2)
   {
-    v11 = v9;
+    v11 = splitViewController2;
   }
 
   else
   {
-    if (v4)
+    if (enableTabs)
     {
       [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
     }
@@ -193,11 +193,11 @@
   if (v14 - 1 > 0xFFFFFFFFFFFFFFFDLL)
   {
 
-    v20 = [(PhotosWindowSceneDelegate *)self mainWindow];
-    [v20 setRootViewController:v12];
+    mainWindow = [(PhotosWindowSceneDelegate *)self mainWindow];
+    [mainWindow setRootViewController:v12];
 
-    v21 = [(PhotosWindowSceneDelegate *)self mainWindow];
-    [v21 becomeFirstResponder];
+    mainWindow2 = [(PhotosWindowSceneDelegate *)self mainWindow];
+    [mainWindow2 becomeFirstResponder];
 
     v22 = v16;
   }
@@ -210,11 +210,11 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "AddLibraryViewControllerToWindow", "", buf, 2u);
     }
 
-    v17 = [(PhotosWindowSceneDelegate *)self mainWindow];
-    [v17 setRootViewController:v12];
+    mainWindow3 = [(PhotosWindowSceneDelegate *)self mainWindow];
+    [mainWindow3 setRootViewController:v12];
 
-    v18 = [(PhotosWindowSceneDelegate *)self mainWindow];
-    [v18 becomeFirstResponder];
+    mainWindow4 = [(PhotosWindowSceneDelegate *)self mainWindow];
+    [mainWindow4 becomeFirstResponder];
 
     v19 = v16;
     if (os_signpost_enabled(v19))
@@ -227,8 +227,8 @@
   [(PhotosWindowSceneDelegate *)self _executePendingRequestsIfNeeded];
   +[PhotosWindowSceneDelegate _showContactsPromptIfNecessary];
   v23 = +[PXDiagnosticsController sharedController];
-  v24 = [(PhotosWindowSceneDelegate *)self mainWindow];
-  [v23 setupOnInternalDevicesWithWindow:v24];
+  mainWindow5 = [(PhotosWindowSceneDelegate *)self mainWindow];
+  [v23 setupOnInternalDevicesWithWindow:mainWindow5];
 }
 
 - (void)_ensureTabbedLibraryViewControllerExists
@@ -243,18 +243,18 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "CreateMainTabbedLibraryViewController", "", v21, 2u);
   }
 
-  v7 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+  tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
 
-  if (!v7)
+  if (!tabbedLibraryViewController)
   {
     v8 = [PhotosApplication px_photoLibrary]_0();
     v9 = [PUTabbedLibraryViewController alloc];
-    v10 = [(PhotosWindowSceneDelegate *)self libraryFilterState];
-    v11 = [v9 initWithPhotoLibrary:v8 libraryFilterState:v10 actionDelegate:self];
+    libraryFilterState = [(PhotosWindowSceneDelegate *)self libraryFilterState];
+    v11 = [v9 initWithPhotoLibrary:v8 libraryFilterState:libraryFilterState actionDelegate:self];
     [(PhotosWindowSceneDelegate *)self setTabbedLibraryViewController:v11];
 
-    v12 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-    [v12 setDelegate:self];
+    tabbedLibraryViewController2 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    [tabbedLibraryViewController2 setDelegate:self];
 
     if (+[PXPLLibraryContentModeSelection hasPersistedLibraryContentModeSelection])
     {
@@ -284,16 +284,16 @@
       v13 = v13;
     }
 
-    v15 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-    [v15 setSelectedContentMode:v13];
+    tabbedLibraryViewController3 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    [tabbedLibraryViewController3 setSelectedContentMode:v13];
 
-    v16 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-    v17 = [v16 selectedNavigationController];
+    tabbedLibraryViewController4 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    selectedNavigationController = [tabbedLibraryViewController4 selectedNavigationController];
 
-    if (v17)
+    if (selectedNavigationController)
     {
-      v18 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-      [v18 navigateToInitialLocationInNavigationController:v17];
+      tabbedLibraryViewController5 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+      [tabbedLibraryViewController5 navigateToInitialLocationInNavigationController:selectedNavigationController];
     }
   }
 
@@ -337,61 +337,61 @@
   }
 
   v8 = +[PUTabbedLibrarySettings sharedInstance];
-  v9 = [v8 wantsSplitViewController];
+  wantsSplitViewController = [v8 wantsSplitViewController];
 
-  v10 = [(PhotosWindowSceneDelegate *)self splitViewController];
+  splitViewController = [(PhotosWindowSceneDelegate *)self splitViewController];
 
-  if (!v10 && v9)
+  if (!splitViewController && wantsSplitViewController)
   {
     v35 = v4 - 1;
     v36 = v4;
     v11 = [PhotosApplication px_photoLibrary]_0();
     v12 = [PUSidebarViewController alloc];
-    v13 = [(PhotosWindowSceneDelegate *)self libraryFilterState];
-    v14 = [v12 initWithNavigationRoot:self photoLibrary:v11 libraryFilterState:v13];
+    libraryFilterState = [(PhotosWindowSceneDelegate *)self libraryFilterState];
+    v14 = [v12 initWithNavigationRoot:self photoLibrary:v11 libraryFilterState:libraryFilterState];
 
-    v15 = [v14 navigationItem];
-    [v15 setLargeTitleDisplayMode:2];
+    navigationItem = [v14 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
     [v14 setActionProviderDelegate:self];
     objc_storeStrong(&self->_collectionActionReceiver, v14);
-    v16 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
     v17 = +[PXLemonadeSettings sharedInstance];
-    v18 = [v17 enableTabs];
+    enableTabs = [v17 enableTabs];
 
-    if (v18)
+    if (enableTabs)
     {
-      [v16 setSidebarViewController:v14];
-      [v14 setTabBarController:v16];
-      v19 = v16;
+      [tabbedLibraryViewController setSidebarViewController:v14];
+      [v14 setTabBarController:tabbedLibraryViewController];
+      lemonadeRootViewController = tabbedLibraryViewController;
     }
 
     else
     {
-      v19 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
+      lemonadeRootViewController = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
     }
 
-    v22 = v19;
-    v23 = [[PXSplitViewController alloc] initWithSidebarViewController:v14 contentViewController:v19];
+    splitViewController4 = lemonadeRootViewController;
+    v23 = [[PXSplitViewController alloc] initWithSidebarViewController:v14 contentViewController:lemonadeRootViewController];
     [v23 registerChangeObserver:v14];
     [v23 px_enableExtendedTraitCollection];
     [v23 setPreferredPrimaryColumnWidth:275.0];
     objc_storeStrong(&self->_splitViewController, v23);
-    v24 = [(PhotosWindowSceneDelegate *)self splitViewController];
-    v25 = [v24 traitCollection];
-    v26 = [v25 horizontalSizeClass];
+    splitViewController2 = [(PhotosWindowSceneDelegate *)self splitViewController];
+    traitCollection = [splitViewController2 traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v26 != 1)
+    if (horizontalSizeClass != 1)
     {
-      v27 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-      v28 = [v27 selectedContentMode];
+      tabbedLibraryViewController2 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+      selectedContentMode = [tabbedLibraryViewController2 selectedContentMode];
 
-      if (v28 == 13)
+      if (selectedContentMode == 13)
       {
         v29 = [PXProgrammaticNavigationDestination alloc];
-        v30 = [v11 px_virtualCollections];
-        v31 = [v30 allAlbumsCollection];
-        v32 = [v29 initWithObject:v31 revealMode:0];
+        px_virtualCollections = [v11 px_virtualCollections];
+        allAlbumsCollection = [px_virtualCollections allAlbumsCollection];
+        v32 = [v29 initWithObject:allAlbumsCollection revealMode:0];
 
         [v14 navigateToFallbackForDestination:v32];
       }
@@ -402,15 +402,15 @@
     goto LABEL_15;
   }
 
-  v20 = [(PhotosWindowSceneDelegate *)self splitViewController];
-  v21 = (v20 == 0) | v9;
+  splitViewController3 = [(PhotosWindowSceneDelegate *)self splitViewController];
+  v21 = (splitViewController3 == 0) | wantsSplitViewController;
 
   if ((v21 & 1) == 0)
   {
     v11 = objc_alloc_init(UIViewController);
-    v22 = [(PhotosWindowSceneDelegate *)self splitViewController];
-    [v22 setViewController:v11 forColumn:2];
-    [v22 setViewController:v11 forColumn:3];
+    splitViewController4 = [(PhotosWindowSceneDelegate *)self splitViewController];
+    [splitViewController4 setViewController:v11 forColumn:2];
+    [splitViewController4 setViewController:v11 forColumn:3];
     [(PhotosWindowSceneDelegate *)self setSplitViewController:0];
 LABEL_15:
   }
@@ -426,42 +426,42 @@ LABEL_15:
 
 - (void)_executePendingRequestsIfNeeded
 {
-  v8 = [(PhotosWindowSceneDelegate *)self pendingURLToOpen];
-  if (v8)
+  pendingURLToOpen = [(PhotosWindowSceneDelegate *)self pendingURLToOpen];
+  if (pendingURLToOpen)
   {
     [(PhotosWindowSceneDelegate *)self setPendingURLToOpen:0];
-    [(PhotosWindowSceneDelegate *)self openRoutingURL:v8];
+    [(PhotosWindowSceneDelegate *)self openRoutingURL:pendingURLToOpen];
   }
 
-  v3 = [(PhotosWindowSceneDelegate *)self pendingUserActivity];
-  if (v3)
+  pendingUserActivity = [(PhotosWindowSceneDelegate *)self pendingUserActivity];
+  if (pendingUserActivity)
   {
     [(PhotosWindowSceneDelegate *)self setPendingUserActivity:0];
-    [(PhotosWindowSceneDelegate *)self openUserActivity:v3];
+    [(PhotosWindowSceneDelegate *)self openUserActivity:pendingUserActivity];
   }
 
-  v4 = [(PhotosWindowSceneDelegate *)self pendingProgrammaticNavigationRequestToOpen];
-  if (v4)
+  pendingProgrammaticNavigationRequestToOpen = [(PhotosWindowSceneDelegate *)self pendingProgrammaticNavigationRequestToOpen];
+  if (pendingProgrammaticNavigationRequestToOpen)
   {
     [(PhotosWindowSceneDelegate *)self setPendingProgrammaticNavigationRequestToOpen:0];
-    v5 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-    if (v5)
+    tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    if (tabbedLibraryViewController)
     {
       PXProgrammaticNavigationRequestExecute();
     }
 
     else
     {
-      v6 = [(PhotosWindowSceneDelegate *)self rootViewController];
+      rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
       PXProgrammaticNavigationRequestExecute();
     }
   }
 
-  v7 = [(PhotosWindowSceneDelegate *)self pendingCloudKitShareURLToOpen];
-  if (v7)
+  pendingCloudKitShareURLToOpen = [(PhotosWindowSceneDelegate *)self pendingCloudKitShareURLToOpen];
+  if (pendingCloudKitShareURLToOpen)
   {
     [(PhotosWindowSceneDelegate *)self setPendingCloudKitShareURLToOpen:0];
-    [(PhotosWindowSceneDelegate *)self openCloudKitShareWithURL:v7];
+    [(PhotosWindowSceneDelegate *)self openCloudKitShareWithURL:pendingCloudKitShareURLToOpen];
   }
 }
 
@@ -499,33 +499,33 @@ LABEL_15:
   return WeakRetained;
 }
 
-- (void)performLibraryFilterMenuActionForItemAtIndex:(int64_t)a3
+- (void)performLibraryFilterMenuActionForItemAtIndex:(int64_t)index
 {
-  if (a3 <= 2)
+  if (index <= 2)
   {
     v5 = PXLibraryFilterViewModeFromItemTag();
-    v6 = [(PhotosWindowSceneDelegate *)self libraryFilterState];
-    [v6 setViewMode:v5];
+    libraryFilterState = [(PhotosWindowSceneDelegate *)self libraryFilterState];
+    [libraryFilterState setViewMode:v5];
   }
 }
 
-- (int64_t)libraryFilterMenuActionStateForItemIndex:(int64_t)a3
+- (int64_t)libraryFilterMenuActionStateForItemIndex:(int64_t)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
     return 0;
   }
 
-  v3 = a3;
-  v4 = [(PhotosWindowSceneDelegate *)self libraryFilterState];
-  LOBYTE(v3) = [v4 isLibraryFilterActive:v3];
+  indexCopy = index;
+  libraryFilterState = [(PhotosWindowSceneDelegate *)self libraryFilterState];
+  LOBYTE(indexCopy) = [libraryFilterState isLibraryFilterActive:indexCopy];
 
-  return v3 & 1;
+  return indexCopy & 1;
 }
 
-- (id)libraryFilterMenuActionImageNameForItemIndex:(int64_t)a3
+- (id)libraryFilterMenuActionImageNameForItemIndex:(int64_t)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
     v4 = 0;
   }
@@ -538,17 +538,17 @@ LABEL_15:
   return v4;
 }
 
-- (id)libraryFilterMenuActionTitleForItemIndex:(int64_t)a3
+- (id)libraryFilterMenuActionTitleForItemIndex:(int64_t)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [(PhotosWindowSceneDelegate *)self libraryFilterState];
-    v5 = [v4 menuItemTitleForLibraryFilter:a3];
+    libraryFilterState = [(PhotosWindowSceneDelegate *)self libraryFilterState];
+    v5 = [libraryFilterState menuItemTitleForLibraryFilter:index];
   }
 
   return v5;
@@ -556,146 +556,146 @@ LABEL_15:
 
 - (PXImportViewControllerInstanceHost)importViewControllerInstanceHost
 {
-  v3 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___PXImportViewControllerInstanceHost];
+  lemonadeRootViewController = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
+  v4 = [lemonadeRootViewController conformsToProtocol:&OBJC_PROTOCOL___PXImportViewControllerInstanceHost];
 
   if (v4)
   {
-    v5 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
+    lemonadeRootViewController2 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
   }
 
   else
   {
-    v6 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-    v7 = [v6 conformsToProtocol:&OBJC_PROTOCOL___PXImportViewControllerInstanceHost];
+    tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    v7 = [tabbedLibraryViewController conformsToProtocol:&OBJC_PROTOCOL___PXImportViewControllerInstanceHost];
 
     if (v7)
     {
-      v5 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+      lemonadeRootViewController2 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
     }
 
     else
     {
-      v5 = 0;
+      lemonadeRootViewController2 = 0;
     }
   }
 
-  return v5;
+  return lemonadeRootViewController2;
 }
 
 - (PXProgrammaticNavigationDestination)px_navigationDestination
 {
-  v2 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-  v3 = [v2 px_navigationDestination];
+  tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+  px_navigationDestination = [tabbedLibraryViewController px_navigationDestination];
 
-  return v3;
+  return px_navigationDestination;
 }
 
-- (id)nextExistingParticipantOnRouteToDestination:(id)a3
+- (id)nextExistingParticipantOnRouteToDestination:(id)destination
 {
   v4 = +[PXLemonadeSettings sharedInstance];
-  v5 = [v4 enableTabs];
+  enableTabs = [v4 enableTabs];
 
-  v6 = [(PhotosWindowSceneDelegate *)self splitViewController];
-  v7 = v6;
-  if (v5)
+  splitViewController = [(PhotosWindowSceneDelegate *)self splitViewController];
+  v7 = splitViewController;
+  if (enableTabs)
   {
-    if (!v6)
+    if (!splitViewController)
     {
-      v8 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
-      v9 = v8;
-      if (v8)
+      lemonadeRootViewController = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
+      v9 = lemonadeRootViewController;
+      if (lemonadeRootViewController)
       {
-        v10 = v8;
+        tabbedLibraryViewController = lemonadeRootViewController;
       }
 
       else
       {
-        v10 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+        tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
       }
 
-      v12 = v10;
+      v12 = tabbedLibraryViewController;
 
       goto LABEL_9;
     }
   }
 
-  else if (!v6)
+  else if (!splitViewController)
   {
-    v11 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
+    lemonadeRootViewController2 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
     goto LABEL_8;
   }
 
-  v11 = v6;
+  lemonadeRootViewController2 = splitViewController;
 LABEL_8:
-  v12 = v11;
+  v12 = lemonadeRootViewController2;
 LABEL_9:
 
   return v12;
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [(PhotosWindowSceneDelegate *)self nextExistingParticipantOnRouteToDestination:v12];
+  destinationCopy = destination;
+  handlerCopy = handler;
+  v9 = [(PhotosWindowSceneDelegate *)self nextExistingParticipantOnRouteToDestination:destinationCopy];
   v10 = v9;
   if (v9)
   {
-    [v9 navigateToDestination:v12 options:a4 completionHandler:v8];
+    [v9 navigateToDestination:destinationCopy options:options completionHandler:handlerCopy];
   }
 
   else
   {
-    v11 = [[PXProgrammaticNavigationRequest alloc] initWithDestination:v12 options:a4 completionHandler:v8];
+    v11 = [[PXProgrammaticNavigationRequest alloc] initWithDestination:destinationCopy options:options completionHandler:handlerCopy];
     [(PhotosWindowSceneDelegate *)self setPendingProgrammaticNavigationRequestToOpen:v11];
   }
 }
 
-- (id)actionPerformerHostViewControllerForPresentingToast:(id)a3
+- (id)actionPerformerHostViewControllerForPresentingToast:(id)toast
 {
-  v4 = [(PhotosWindowSceneDelegate *)self rootViewController];
-  v5 = [v4 px_topmostPresentedViewController];
-  v6 = v5;
-  if (v5)
+  rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
+  px_topmostPresentedViewController = [rootViewController px_topmostPresentedViewController];
+  v6 = px_topmostPresentedViewController;
+  if (px_topmostPresentedViewController)
   {
-    v7 = v5;
+    rootViewController2 = px_topmostPresentedViewController;
   }
 
   else
   {
-    v7 = [(PhotosWindowSceneDelegate *)self rootViewController];
+    rootViewController2 = [(PhotosWindowSceneDelegate *)self rootViewController];
   }
 
-  v8 = v7;
+  v8 = rootViewController2;
 
   return v8;
 }
 
-- (id)presentationEnvironmentForActionPerformer:(id)a3
+- (id)presentationEnvironmentForActionPerformer:(id)performer
 {
-  v3 = [(PhotosWindowSceneDelegate *)self rootViewController];
-  v4 = [PXViewControllerPresenter defaultPresenterWithViewController:v3];
+  rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
+  v4 = [PXViewControllerPresenter defaultPresenterWithViewController:rootViewController];
 
   return v4;
 }
 
-- (id)undoManagerForActionPerformer:(id)a3
+- (id)undoManagerForActionPerformer:(id)performer
 {
-  v3 = [(PhotosWindowSceneDelegate *)self rootViewController];
-  v4 = [v3 undoManager];
+  rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
+  undoManager = [rootViewController undoManager];
 
-  return v4;
+  return undoManager;
 }
 
-- (void)performActionWithType:(id)a3 objects:(id)a4 parameters:(id)a5
+- (void)performActionWithType:(id)type objects:(id)objects parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [PXActionManagerFactory actionManagerForObjects:a4];
+  typeCopy = type;
+  parametersCopy = parameters;
+  v10 = [PXActionManagerFactory actionManagerForObjects:objects];
   [v10 setPerformerDelegate:self];
-  v11 = [v10 actionTypeForGenericType:v8];
-  if (v11 && ([v10 actionPerformerForActionType:v11 parameters:v9], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  v11 = [v10 actionTypeForGenericType:typeCopy];
+  if (v11 && ([v10 actionPerformerForActionType:v11 parameters:parametersCopy], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
     [v12 performActionWithCompletionHandler:0];
@@ -707,19 +707,19 @@ LABEL_9:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412546;
-      v15 = v8;
+      v15 = typeCopy;
       v16 = 2112;
-      v17 = v9;
+      v17 = parametersCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "unable to get an action performer for type '%@' and parameters %@", &v14, 0x16u);
     }
   }
 }
 
-- (id)actionMenuElementsForObjects:(id)a3 allowedActionTypes:(id)a4
+- (id)actionMenuElementsForObjects:(id)objects allowedActionTypes:(id)types
 {
-  v6 = a4;
-  v7 = [PXActionManagerFactory actionManagerForObjects:a3];
-  [v7 setAllowedActionTypes:v6];
+  typesCopy = types;
+  v7 = [PXActionManagerFactory actionManagerForObjects:objects];
+  [v7 setAllowedActionTypes:typesCopy];
 
   [v7 setPerformerDelegate:self];
   v11[0] = _NSConcreteStackBlock;
@@ -733,14 +733,14 @@ LABEL_9:
   return v9;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v8 = a4;
+  keyCopy = key;
   v5 = +[PUTabbedLibrarySettings sharedInstance];
   if (v5)
   {
     v6 = v5;
-    v7 = [v8 isEqualToString:@"sidebarEnabled"];
+    v7 = [keyCopy isEqualToString:@"sidebarEnabled"];
 
     if (v7)
     {
@@ -749,66 +749,66 @@ LABEL_9:
   }
 }
 
-- (void)tabBarController:(id)a3 tab:(id)a4 acceptItemsFromDropSession:(id)a5
+- (void)tabBarController:(id)controller tab:(id)tab acceptItemsFromDropSession:(id)session
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-  [v9 acceptItemsFromDropSession:v7 tab:v8];
+  sessionCopy = session;
+  tabCopy = tab;
+  tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+  [tabbedLibraryViewController acceptItemsFromDropSession:sessionCopy tab:tabCopy];
 }
 
-- (unint64_t)tabBarController:(id)a3 tab:(id)a4 operationForAcceptingItemsFromDropSession:(id)a5
+- (unint64_t)tabBarController:(id)controller tab:(id)tab operationForAcceptingItemsFromDropSession:(id)session
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-  v10 = [v9 operationForAcceptingItemsFromDropSession:v7 tab:v8];
+  sessionCopy = session;
+  tabCopy = tab;
+  tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+  v10 = [tabbedLibraryViewController operationForAcceptingItemsFromDropSession:sessionCopy tab:tabCopy];
 
   return v10;
 }
 
-- (void)tabBarController:(id)a3 displayOrderDidChangeForGroup:(id)a4
+- (void)tabBarController:(id)controller displayOrderDidChangeForGroup:(id)group
 {
-  v5 = a4;
-  v6 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-  [v6 displayOrderDidChangeForGroup:v5];
+  groupCopy = group;
+  tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+  [tabbedLibraryViewController displayOrderDidChangeForGroup:groupCopy];
 }
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v16 = a4;
-  v7 = a5;
-  v8 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-  [v8 pu_didSelectTab:v16 previousTab:v7];
+  tabCopy = tab;
+  previousTabCopy = previousTab;
+  tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+  [tabbedLibraryViewController pu_didSelectTab:tabCopy previousTab:previousTabCopy];
 
-  LOBYTE(v8) = [v16 isEqual:v7];
-  if ((v8 & 1) == 0)
+  LOBYTE(tabbedLibraryViewController) = [tabCopy isEqual:previousTabCopy];
+  if ((tabbedLibraryViewController & 1) == 0)
   {
-    v9 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-    v10 = [v9 selectedContentMode];
+    tabbedLibraryViewController2 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    selectedContentMode = [tabbedLibraryViewController2 selectedContentMode];
 
-    [PXPLLibraryContentModeSelection setPersistedLibraryContentModeSelection:v10];
+    [PXPLLibraryContentModeSelection setPersistedLibraryContentModeSelection:selectedContentMode];
     v11 = +[NSMutableDictionary dictionary];
-    v12 = [NSNumber numberWithInt:v10];
+    v12 = [NSNumber numberWithInt:selectedContentMode];
     [v11 setObject:v12 forKeyedSubscript:PLLibraryContentModeChangedNotificationKey];
 
-    v13 = [v16 viewController];
-    v14 = [v13 px_navigationDestination];
-    [v11 setObject:v14 forKeyedSubscript:PLLibraryDestinationChangedNotificationKey];
+    viewController = [tabCopy viewController];
+    px_navigationDestination = [viewController px_navigationDestination];
+    [v11 setObject:px_navigationDestination forKeyedSubscript:PLLibraryDestinationChangedNotificationKey];
 
     v15 = +[NSNotificationCenter defaultCenter];
     [v15 postNotificationName:PLLibraryContentModeChangedNotification object:0 userInfo:v11];
   }
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  tabCopy = tab;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 pu_shouldSelectTab:v6];
+    v7 = [controllerCopy pu_shouldSelectTab:tabCopy];
   }
 
   else
@@ -831,17 +831,17 @@ LABEL_9:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "CreateLemonadeRootViewController", "", v16, 2u);
   }
 
-  v7 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
+  lemonadeRootViewController = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
 
-  if (!v7)
+  if (!lemonadeRootViewController)
   {
     v8 = [PhotosApplication px_photoLibrary]_0();
     v9 = PXLemonadeViewControllerFactory();
     v10 = [v9 viewControllerWithPhotoLibrary:v8 destination:0];
     [(PhotosWindowSceneDelegate *)self setLemonadeRootViewController:v10];
 
-    v11 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
-    [v11 setActionProviderDelegate:self];
+    lemonadeRootViewController2 = [(PhotosWindowSceneDelegate *)self lemonadeRootViewController];
+    [lemonadeRootViewController2 setActionProviderDelegate:self];
   }
 
   v12 = v6;
@@ -862,11 +862,11 @@ LABEL_9:
   }
 }
 
-- (id)shortcutURLForShortcutItem:(id)a3
+- (id)shortcutURLForShortcutItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 type];
-  if ([v4 isEqualToString:@"com.apple.photos.shortcuts.recentphoto"])
+  itemCopy = item;
+  type = [itemCopy type];
+  if ([type isEqualToString:@"com.apple.photos.shortcuts.recentphoto"])
   {
     v5 = @"photos://lastasset";
 LABEL_3:
@@ -874,10 +874,10 @@ LABEL_3:
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"com.apple.photos.shortcuts.bulletin"])
+  if ([type isEqualToString:@"com.apple.photos.shortcuts.bulletin"])
   {
-    v7 = [v3 userInfo];
-    v8 = [v7 objectForKeyedSubscript:kNotificationKeyDefaultURL];
+    userInfo = [itemCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:kNotificationKeyDefaultURL];
     if (v8)
     {
       v6 = [NSURL URLWithString:v8];
@@ -891,19 +891,19 @@ LABEL_3:
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"com.apple.photos.shortcuts.search"])
+  if ([type isEqualToString:@"com.apple.photos.shortcuts.search"])
   {
     v5 = @"photos://contentmode?id=search";
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"com.apple.photos.shortcuts.oneyearago"])
+  if ([type isEqualToString:@"com.apple.photos.shortcuts.oneyearago"])
   {
     v5 = @"photos://oneyearago";
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"com.apple.photos.shortcuts.favorites"])
+  if ([type isEqualToString:@"com.apple.photos.shortcuts.favorites"])
   {
     v5 = @"photos://album?name=favorites";
     goto LABEL_3;
@@ -915,17 +915,17 @@ LABEL_13:
   return v6;
 }
 
-- (id)userActivityURLForUserActivity:(id)a3
+- (id)userActivityURLForUserActivity:(id)activity
 {
-  v5 = a3;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"localIdentifier"];
-  v8 = [v5 activityType];
-  v9 = [v8 isEqualToString:CSSearchableItemActionType];
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"localIdentifier"];
+  activityType = [activityCopy activityType];
+  v9 = [activityType isEqualToString:CSSearchableItemActionType];
 
   if (v9)
   {
-    v10 = [v6 objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
+    v10 = [userInfo objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
     v11 = PLPhotosSearchGetLog();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
     if (v10)
@@ -964,18 +964,18 @@ LABEL_13:
     goto LABEL_49;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"contentMode"];
+  v14 = [userInfo objectForKeyedSubscript:@"contentMode"];
   v10 = v14;
   if (v14)
   {
-    v15 = [v14 intValue];
-    if (v15 == 12)
+    intValue = [v14 intValue];
+    if (intValue == 12)
     {
       v16 = @"search";
       goto LABEL_22;
     }
 
-    if (v15 == 10)
+    if (intValue == 10)
     {
       v16 = @"photos";
 LABEL_22:
@@ -991,13 +991,13 @@ LABEL_49:
     goto LABEL_25;
   }
 
-  v17 = [v5 activityType];
-  v18 = [v17 isEqualToString:@"com.apple.mobileslideshow.album"];
+  activityType2 = [activityCopy activityType];
+  v18 = [activityType2 isEqualToString:@"com.apple.mobileslideshow.album"];
 
   if (v18)
   {
-    v19 = [v6 objectForKeyedSubscript:@"collectionSubtype"];
-    v20 = [v6 objectForKeyedSubscript:@"uuid"];
+    v19 = [userInfo objectForKeyedSubscript:@"collectionSubtype"];
+    v20 = [userInfo objectForKeyedSubscript:@"uuid"];
     v21 = v20;
     if (v20 && v19)
     {
@@ -1035,16 +1035,16 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v25 = [v5 activityType];
-  v26 = [v25 isEqualToString:@"com.apple.mobileslideshow.people"];
+  activityType3 = [activityCopy activityType];
+  v26 = [activityType3 isEqualToString:@"com.apple.mobileslideshow.people"];
 
   if (v26)
   {
-    v27 = [v6 objectForKeyedSubscript:@"identifier"];
+    v27 = [userInfo objectForKeyedSubscript:@"identifier"];
 
     if (v27)
     {
-      v28 = [v6 objectForKeyedSubscript:@"identifier"];
+      v28 = [userInfo objectForKeyedSubscript:@"identifier"];
       v29 = [NSString stringWithFormat:@"?identifier=%@", v28];
 
       v22 = [@"photos://people" stringByAppendingString:v29];
@@ -1058,8 +1058,8 @@ LABEL_52:
     goto LABEL_25;
   }
 
-  v30 = [v5 activityType];
-  v31 = [v30 isEqualToString:@"com.apple.mobileslideshow.places"];
+  activityType4 = [activityCopy activityType];
+  v31 = [activityType4 isEqualToString:@"com.apple.mobileslideshow.places"];
 
   if (v31)
   {
@@ -1067,12 +1067,12 @@ LABEL_52:
     goto LABEL_25;
   }
 
-  v33 = [v5 activityType];
-  v34 = [v33 isEqualToString:@"com.apple.mobileslideshow.memory"];
+  activityType5 = [activityCopy activityType];
+  v34 = [activityType5 isEqualToString:@"com.apple.mobileslideshow.memory"];
 
   if (v34)
   {
-    v19 = [v6 objectForKeyedSubscript:@"identifier"];
+    v19 = [userInfo objectForKeyedSubscript:@"identifier"];
     if ([v19 length])
     {
       v22 = [NSString stringWithFormat:@"photos://memory?identifier=%@", v19];
@@ -1086,30 +1086,30 @@ LABEL_52:
 
   else
   {
-    v35 = [v5 activityType];
-    v36 = [v35 isEqualToString:@"com.apple.mobileslideshow.oneUp"];
+    activityType6 = [activityCopy activityType];
+    v36 = [activityType6 isEqualToString:@"com.apple.mobileslideshow.oneUp"];
 
     if (!v36)
     {
       goto LABEL_49;
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"collectionType"];
-    v37 = [v6 objectForKeyedSubscript:@"collectionSubtype"];
-    v38 = [v19 intValue];
-    v39 = [v37 intValue];
-    if (v38 == 1 && (v39 == 101 || v39 == 2))
+    v19 = [userInfo objectForKeyedSubscript:@"collectionType"];
+    v37 = [userInfo objectForKeyedSubscript:@"collectionSubtype"];
+    intValue2 = [v19 intValue];
+    intValue3 = [v37 intValue];
+    if (intValue2 == 1 && (intValue3 == 101 || intValue3 == 2))
     {
-      v40 = [v6 objectForKeyedSubscript:@"selectedUUIDs"];
+      v40 = [userInfo objectForKeyedSubscript:@"selectedUUIDs"];
       v41 = [v40 objectAtIndexedSubscript:0];
-      v42 = [v6 objectForKeyedSubscript:@"albumUUID"];
+      v42 = [userInfo objectForKeyedSubscript:@"albumUUID"];
       [NSString stringWithFormat:@"photos://asset?uuid=%@&albumuuid=%@", v41, v42];
     }
 
     else
     {
-      v40 = [PHAssetCollection px_builtInAlbumNameForSubtype:v39];
-      v41 = [v6 objectForKeyedSubscript:@"selectedUUIDs"];
+      v40 = [PHAssetCollection px_builtInAlbumNameForSubtype:intValue3];
+      v41 = [userInfo objectForKeyedSubscript:@"selectedUUIDs"];
       v43 = [v41 objectAtIndexedSubscript:0];
       v42 = v43;
       if (v40)
@@ -1141,19 +1141,19 @@ LABEL_25:
   return v23;
 }
 
-- (void)_handleFetchedMomentShare:(id)a3 forURL:(id)a4 error:(id)a5
+- (void)_handleFetchedMomentShare:(id)share forURL:(id)l error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  shareCopy = share;
+  lCopy = l;
+  errorCopy = error;
+  if (shareCopy)
   {
-    v11 = [v8 uuid];
+    uuid = [shareCopy uuid];
     v12 = PLSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v29 = v11;
+      v29 = uuid;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Did fetch moment share: %{public}@", buf, 0xCu);
     }
 
@@ -1161,21 +1161,21 @@ LABEL_25:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v29 = v11;
+      v29 = uuid;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Will open iCloud Link with UUID: %{public}@", buf, 0xCu);
     }
 
-    v14 = [[PXProgrammaticNavigationDestination alloc] initWithObject:v8 revealMode:1];
+    v14 = [[PXProgrammaticNavigationDestination alloc] initWithObject:shareCopy revealMode:1];
     v15 = [PXProgrammaticNavigationRequest alloc];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100012C1C;
     v25[3] = &unk_100059F78;
-    v26 = v11;
-    v27 = v9;
-    v16 = v11;
+    v26 = uuid;
+    v27 = lCopy;
+    v16 = uuid;
     v17 = [v15 initWithDestination:v14 options:0 completionHandler:v25];
-    v18 = [(PhotosWindowSceneDelegate *)self rootViewController];
+    rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
     PXProgrammaticNavigationRequestExecute();
   }
 
@@ -1185,25 +1185,25 @@ LABEL_25:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v29 = v10;
+      v29 = errorCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to fetch moment share with error: %@", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v20 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
-    v21 = v20;
-    if (!v20)
+    tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    rootViewController2 = tabbedLibraryViewController;
+    if (!tabbedLibraryViewController)
     {
-      v21 = [(PhotosWindowSceneDelegate *)self rootViewController];
+      rootViewController2 = [(PhotosWindowSceneDelegate *)self rootViewController];
     }
 
-    v22 = [PXViewControllerPresenter defaultPresenterWithViewController:v21];
-    if (!v20)
+    v22 = [PXViewControllerPresenter defaultPresenterWithViewController:rootViewController2];
+    if (!tabbedLibraryViewController)
     {
     }
 
     objc_copyWeak(&v24, buf);
-    v23 = v9;
+    v23 = lCopy;
     PXMomentSharePresentRetryAlertForFetchFailure();
 
     objc_destroyWeak(&v24);
@@ -1211,9 +1211,9 @@ LABEL_25:
   }
 }
 
-- (void)_openItemProviderCollections:(id)a3
+- (void)_openItemProviderCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   v5 = [NSURL URLWithString:@"photos://album?name=camera-roll"];
   [(PhotosWindowSceneDelegate *)self openRoutingURL:v5];
 
@@ -1222,7 +1222,7 @@ LABEL_25:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = collectionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v8)
   {
@@ -1266,55 +1266,55 @@ LABEL_25:
   v16[2] = sub_100012FC0;
   v16[3] = &unk_100059FC8;
   v17 = @"photos://album?name=camera-roll";
-  v18 = self;
+  selfCopy = self;
   v15 = [v14 importItemProviders:v6 completionHandler:v16];
 }
 
-- (void)_openMomentShareWithURL:(id)a3
+- (void)_openMomentShareWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   objc_initWeak(&location, self);
   v5 = PLSharingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will fetch moment share for URL: %@", buf, 0xCu);
   }
 
   objc_copyWeak(&v7, &location);
-  v6 = v4;
+  v6 = lCopy;
   PXFetchMomentShareForURL();
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleFetchedSharedCollection:(id)a3 forURL:(id)a4 error:(id)a5
+- (void)_handleFetchedSharedCollection:(id)collection forURL:(id)l error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  collectionCopy = collection;
+  lCopy = l;
+  errorCopy = error;
+  if (collectionCopy)
   {
-    v11 = [v8 uuid];
+    uuid = [collectionCopy uuid];
     v12 = PLSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v11;
+      v25 = uuid;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Will navigate to shared collection with UUID: %{public}@", buf, 0xCu);
     }
 
-    v13 = [[PXProgrammaticNavigationDestination alloc] initWithObject:v8 revealMode:1];
+    v13 = [[PXProgrammaticNavigationDestination alloc] initWithObject:collectionCopy revealMode:1];
     v14 = [PXProgrammaticNavigationRequest alloc];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_100013578;
     v21 = &unk_100059F78;
-    v22 = v11;
-    v23 = v9;
-    v15 = v11;
+    v22 = uuid;
+    v23 = lCopy;
+    v15 = uuid;
     v16 = [v14 initWithDestination:v13 options:0 completionHandler:&v18];
     v17 = [(PhotosWindowSceneDelegate *)self rootViewController:v18];
     PXProgrammaticNavigationRequestExecute();
@@ -1326,21 +1326,21 @@ LABEL_25:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v25 = v10;
+      v25 = errorCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to fetch shared collection for navigating to, with error: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)_openSharedCollectionWithURL:(id)a3
+- (void)_openSharedCollectionWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   objc_initWeak(&location, self);
   v5 = PLSharingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will fetch shared collection from URL: %@", buf, 0xCu);
   }
 
@@ -1350,7 +1350,7 @@ LABEL_25:
   v8[2] = sub_100013834;
   v8[3] = &unk_100059F50;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = lCopy;
   v9 = v7;
   [PXSharedCollectionsUtilities fetchSharedCollectionWithShareURL:v7 inPhotoLibrary:v6 acceptIfPending:1 completionHandler:v8];
 
@@ -1358,20 +1358,20 @@ LABEL_25:
   objc_destroyWeak(&location);
 }
 
-- (void)openCloudKitShareWithURL:(id)a3
+- (void)openCloudKitShareWithURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
-    v9 = PLSharingGetLog();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    rootViewController = PLSharingGetLog();
+    if (!os_log_type_enabled(rootViewController, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_23;
     }
 
     *buf = 0;
     v10 = "Asked to open a *nil* cloud-kit share URL";
-    v11 = v9;
+    v11 = rootViewController;
     v12 = 2;
 LABEL_6:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, v10, buf, v12);
@@ -1386,7 +1386,7 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  if (([PXSharedCollectionsUtilities isSharedCollectionURL:v5]& 1) != 0)
+  if (([PXSharedCollectionsUtilities isSharedCollectionURL:lCopy]& 1) != 0)
   {
     v8 = 0;
     v7 = 1;
@@ -1395,16 +1395,16 @@ LABEL_6:
 
   if ((PXIsCMMURL() & 1) == 0)
   {
-    v9 = PLSharingGetLog();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    rootViewController = PLSharingGetLog();
+    if (!os_log_type_enabled(rootViewController, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_23;
     }
 
     *buf = 138412290;
-    v21 = v5;
+    v21 = lCopy;
     v10 = "Asked to open an unknown type of cloud-kit share URL: %@";
-    v11 = v9;
+    v11 = rootViewController;
     v12 = 12;
     goto LABEL_6;
   }
@@ -1412,8 +1412,8 @@ LABEL_6:
   v7 = 0;
   v8 = 1;
 LABEL_11:
-  v9 = [(PhotosWindowSceneDelegate *)self rootViewController];
-  if (v9)
+  rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
+  if (rootViewController)
   {
     if (v6)
     {
@@ -1421,7 +1421,7 @@ LABEL_11:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v21 = v5;
+        v21 = lCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Will open Shared Library invitation with URL: %@", buf, 0xCu);
       }
 
@@ -1429,14 +1429,14 @@ LABEL_11:
       v15 = [PhotosApplication px_photoLibrary]_0();
       v16 = [v14 initWithPhotoLibrary:v15];
 
-      v17 = [PXViewControllerPresenter defaultPresenterWithViewController:v9];
-      v19 = v5;
+      v17 = [PXViewControllerPresenter defaultPresenterWithViewController:rootViewController];
+      v19 = lCopy;
       PXSharedLibraryHandleSharedLibraryURL();
     }
 
     else if (v7)
     {
-      [(PhotosWindowSceneDelegate *)self _openSharedCollectionWithURL:v5];
+      [(PhotosWindowSceneDelegate *)self _openSharedCollectionWithURL:lCopy];
     }
 
     else
@@ -1449,13 +1449,13 @@ LABEL_11:
         abort();
       }
 
-      [(PhotosWindowSceneDelegate *)self _openMomentShareWithURL:v5];
+      [(PhotosWindowSceneDelegate *)self _openMomentShareWithURL:lCopy];
     }
   }
 
   else
   {
-    [(PhotosWindowSceneDelegate *)self setPendingCloudKitShareURLToOpen:v5];
+    [(PhotosWindowSceneDelegate *)self setPendingCloudKitShareURLToOpen:lCopy];
   }
 
 LABEL_23:
@@ -1463,34 +1463,34 @@ LABEL_23:
 
 - (BOOL)finishExtendingStateRestorationForWidgetNavigation
 {
-  v3 = [(PhotosWindowSceneDelegate *)self sceneExtendingStateRestoration];
+  sceneExtendingStateRestoration = [(PhotosWindowSceneDelegate *)self sceneExtendingStateRestoration];
 
-  if (v3)
+  if (sceneExtendingStateRestoration)
   {
     [(PhotosWindowSceneDelegate *)self setCanExtendStateRestorationForWidgetNavigation:0];
-    v4 = [(PhotosWindowSceneDelegate *)self sceneExtendingStateRestoration];
-    [v4 completeStateRestoration];
+    sceneExtendingStateRestoration2 = [(PhotosWindowSceneDelegate *)self sceneExtendingStateRestoration];
+    [sceneExtendingStateRestoration2 completeStateRestoration];
 
     [(PhotosWindowSceneDelegate *)self setSceneExtendingStateRestoration:0];
   }
 
-  return v3 != 0;
+  return sceneExtendingStateRestoration != 0;
 }
 
 - (void)beginExtendingStateRestorationForWidgetNavigation
 {
   if ([(PhotosWindowSceneDelegate *)self canExtendStateRestorationForWidgetNavigation])
   {
-    v3 = [(PhotosWindowSceneDelegate *)self sceneExtendingStateRestoration];
+    sceneExtendingStateRestoration = [(PhotosWindowSceneDelegate *)self sceneExtendingStateRestoration];
 
-    if (!v3)
+    if (!sceneExtendingStateRestoration)
     {
-      v4 = [(PhotosWindowSceneDelegate *)self mainWindow];
-      v5 = [v4 windowScene];
-      [(PhotosWindowSceneDelegate *)self setSceneExtendingStateRestoration:v5];
+      mainWindow = [(PhotosWindowSceneDelegate *)self mainWindow];
+      windowScene = [mainWindow windowScene];
+      [(PhotosWindowSceneDelegate *)self setSceneExtendingStateRestoration:windowScene];
 
-      v6 = [(PhotosWindowSceneDelegate *)self sceneExtendingStateRestoration];
-      [v6 extendStateRestoration];
+      sceneExtendingStateRestoration2 = [(PhotosWindowSceneDelegate *)self sceneExtendingStateRestoration];
+      [sceneExtendingStateRestoration2 extendStateRestoration];
 
       v7 = PLUIGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1513,34 +1513,34 @@ LABEL_23:
   }
 }
 
-- (void)openRoutingURL:(id)a3
+- (void)openRoutingURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PhotosWindowSceneDelegate *)self rootViewController];
+  lCopy = l;
+  rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
   v6 = PLUIGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 absoluteString];
+    absoluteString = [lCopy absoluteString];
     *buf = 138412290;
-    v28 = v7;
+    v28 = absoluteString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Open Routing URL: %@", buf, 0xCu);
   }
 
-  v8 = [v4 scheme];
+  scheme = [lCopy scheme];
   v9 = +[NSBundle mainBundle];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v8 caseInsensitiveCompare:v10] == 0;
+  bundleIdentifier = [v9 bundleIdentifier];
+  v11 = [scheme caseInsensitiveCompare:bundleIdentifier] == 0;
 
   if (v11)
   {
     v20 = +[UIApplication sharedApplication];
-    [v20 handleOAuthRedirectURL:v4];
+    [v20 handleOAuthRedirectURL:lCopy];
   }
 
-  else if (v5)
+  else if (rootViewController)
   {
-    v12 = [[PXProgrammaticNavigationDestination alloc] initWithURL:v4];
-    v13 = [v5 px_forwardingNavigationParticipantForDestination:v12];
+    v12 = [[PXProgrammaticNavigationDestination alloc] initWithURL:lCopy];
+    v13 = [rootViewController px_forwardingNavigationParticipantForDestination:v12];
     v14 = v13;
     if (v13)
     {
@@ -1549,7 +1549,7 @@ LABEL_23:
 
     else
     {
-      v15 = v5;
+      v15 = rootViewController;
     }
 
     v16 = v15;
@@ -1557,8 +1557,8 @@ LABEL_23:
     if ([v16 routingOptionsForDestination:v12])
     {
       PXLemonadeAppearanceConfigureIfNeeded();
-      v21 = [v12 source];
-      v22 = [v21 isEqualToString:PXNavigationURLSourceWidget];
+      source = [v12 source];
+      v22 = [source isEqualToString:PXNavigationURLSourceWidget];
 
       if (v22)
       {
@@ -1571,7 +1571,7 @@ LABEL_23:
       v23[2] = sub_100014360;
       v23[3] = &unk_100059F00;
       objc_copyWeak(&v26, buf);
-      v24 = v4;
+      v24 = lCopy;
       v25 = v12;
       [v16 navigateToDestination:v25 options:0 completionHandler:v23];
 
@@ -1579,7 +1579,7 @@ LABEL_23:
       objc_destroyWeak(buf);
     }
 
-    else if (([v8 isEqualToString:@"photos-redirect"] & 1) != 0 || !objc_msgSend(v8, "isEqualToString:", @"photos"))
+    else if (([scheme isEqualToString:@"photos-redirect"] & 1) != 0 || !objc_msgSend(scheme, "isEqualToString:", @"photos"))
     {
       [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_retryProgrammaticNavigationToDestination:" object:v12];
       [(PhotosWindowSceneDelegate *)self performSelector:"_retryProgrammaticNavigationToDestination:" withObject:v12 afterDelay:0.3];
@@ -1587,15 +1587,15 @@ LABEL_23:
 
     else
     {
-      v17 = [v4 resourceSpecifier];
-      if ([v17 containsString:@"show-welcome-cpl"])
+      resourceSpecifier = [lCopy resourceSpecifier];
+      if ([resourceSpecifier containsString:@"show-welcome-cpl"])
       {
-        v18 = [[PXCloudPhotoWelcomeViewController alloc] initWithDefaultTitle];
-        v19 = [[PXCloudPhotoWelcomeNavigationController alloc] initWithWelcomeController:v18];
-        [v5 presentViewController:v19 animated:1 completion:0];
+        initWithDefaultTitle = [[PXCloudPhotoWelcomeViewController alloc] initWithDefaultTitle];
+        v19 = [[PXCloudPhotoWelcomeNavigationController alloc] initWithWelcomeController:initWithDefaultTitle];
+        [rootViewController presentViewController:v19 animated:1 completion:0];
       }
 
-      else if ([v17 containsString:@"edit"])
+      else if ([resourceSpecifier containsString:@"edit"])
       {
         PUPhotoEditHandleURLAction();
       }
@@ -1604,34 +1604,34 @@ LABEL_23:
 
   else
   {
-    [(PhotosWindowSceneDelegate *)self setPendingURLToOpen:v4];
+    [(PhotosWindowSceneDelegate *)self setPendingURLToOpen:lCopy];
   }
 }
 
-- (void)_retryProgrammaticNavigationToDestination:(id)a3
+- (void)_retryProgrammaticNavigationToDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(PhotosWindowSceneDelegate *)self rootViewController];
-  if ([v5 routingOptionsForDestination:v4])
+  destinationCopy = destination;
+  rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
+  if ([rootViewController routingOptionsForDestination:destinationCopy])
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000146DC;
     v6[3] = &unk_10005C168;
-    v7 = v4;
-    [v5 navigateToDestination:v7 options:0 completionHandler:v6];
+    v7 = destinationCopy;
+    [rootViewController navigateToDestination:v7 options:0 completionHandler:v6];
   }
 }
 
-- (void)_openSpotlightSearchActivity:(id)a3
+- (void)_openSpotlightSearchActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [(PhotosWindowSceneDelegate *)self setDidRecieveSpotlightSearchActivity:1];
   v5 = +[PXSearchParsecAnalyticsSession sharedSession];
   [v5 reportPhotosAppLaunchedOrEnteredForegroundWithSpotlightSearchActivity];
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:CSSearchQueryString];
+  userInfo = [activityCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:CSSearchQueryString];
 
   v8 = PLPhotosSearchGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1643,27 +1643,27 @@ LABEL_23:
 
   if (v7 && [v7 length])
   {
-    v9 = [(PhotosWindowSceneDelegate *)self rootViewController];
-    v10 = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
+    rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
+    tabbedLibraryViewController = [(PhotosWindowSceneDelegate *)self tabbedLibraryViewController];
     v11 = [[PXProgrammaticNavigationDestination alloc] initWithSearchText:v7];
-    if (([v9 routingOptionsForDestination:v11]& 1) != 0)
+    if (([rootViewController routingOptionsForDestination:v11]& 1) != 0)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100014AF4;
       v15[3] = &unk_10005C168;
       v16 = v11;
-      [v9 navigateToDestination:v16 options:0 completionHandler:v15];
+      [rootViewController navigateToDestination:v16 options:0 completionHandler:v15];
     }
 
-    else if (v10)
+    else if (tabbedLibraryViewController)
     {
-      v12 = [v10 viewControllers];
-      v13 = [v12 count];
+      viewControllers = [tabbedLibraryViewController viewControllers];
+      v13 = [viewControllers count];
 
       if (!v13)
       {
-        [v10 updateDisplayedTabsAnimated:0];
+        [tabbedLibraryViewController updateDisplayedTabsAnimated:0];
       }
     }
 
@@ -1673,42 +1673,42 @@ LABEL_23:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v4;
+        v18 = activityCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Spotlight Search: Setting pending user activity to open: %@", buf, 0xCu);
       }
 
-      [(PhotosWindowSceneDelegate *)self setPendingUserActivity:v4];
+      [(PhotosWindowSceneDelegate *)self setPendingUserActivity:activityCopy];
     }
   }
 
   else
   {
-    v9 = PXAssertGetLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    rootViewController = PXAssertGetLog();
+    if (os_log_type_enabled(rootViewController, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = v4;
-      _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Spotlight Search: Got unexpected empty string for Spotlight user activity: %@", buf, 0xCu);
+      v18 = activityCopy;
+      _os_log_error_impl(&_mh_execute_header, rootViewController, OS_LOG_TYPE_ERROR, "Spotlight Search: Got unexpected empty string for Spotlight user activity: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)_openUniversalLinkActivity:(id)a3
+- (void)_openUniversalLinkActivity:(id)activity
 {
-  v5 = a3;
-  v6 = [(PhotosWindowSceneDelegate *)self rootViewController];
+  activityCopy = activity;
+  rootViewController = [(PhotosWindowSceneDelegate *)self rootViewController];
   v7 = PLUIGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (rootViewController)
   {
     if (v8)
     {
       *buf = 138412290;
-      v21 = v5;
+      v21 = activityCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PhotosWindowSceneDelegate: Handling NSUserActivityTypeBrowsingWeb: %@", buf, 0xCu);
     }
 
-    v9 = [v5 webpageURL];
+    webpageURL = [activityCopy webpageURL];
     if (PXIsRetailExperienceManagerURL())
     {
       v10 = PLAppIntentsGetLog();
@@ -1734,26 +1734,26 @@ LABEL_23:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v21 = v9;
+          v21 = webpageURL;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "PhotosWindowSceneDelegate: Found shared album invitation URL: %@", buf, 0xCu);
         }
 
-        v14 = v6;
+        v14 = rootViewController;
         if (([v14 conformsToProtocol:&OBJC_PROTOCOL___PXProgrammaticNavigationParticipant]& 1) == 0)
         {
           v18 = +[NSAssertionHandler currentHandler];
-          v19 = [v14 px_descriptionForAssertionMessage];
-          [v18 handleFailureInMethod:a2 object:self file:@"PhotosWindowSceneDelegate.m" lineNumber:371 description:{@"%@ should be nil or conform to protocol %@, but %@ doesn't", @"rootViewController", @"PXProgrammaticNavigationParticipant", v19}];
+          px_descriptionForAssertionMessage = [v14 px_descriptionForAssertionMessage];
+          [v18 handleFailureInMethod:a2 object:self file:@"PhotosWindowSceneDelegate.m" lineNumber:371 description:{@"%@ should be nil or conform to protocol %@, but %@ doesn't", @"rootViewController", @"PXProgrammaticNavigationParticipant", px_descriptionForAssertionMessage}];
 
           v15 = &unk_100049000;
         }
 
-        v16 = [[PhotosURLRedirectRequest alloc] initWithDestinationURL:v9 rootController:v14];
+        v16 = [[PhotosURLRedirectRequest alloc] initWithDestinationURL:webpageURL rootController:v14];
         v17 = PLUIGetLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v15[53];
-          v21 = v9;
+          v21 = webpageURL;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "PhotosWindowSceneDelegate: Handling shared album invitation URL: %@", buf, 0xCu);
         }
 
@@ -1763,7 +1763,7 @@ LABEL_23:
       else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v21 = v9;
+        v21 = webpageURL;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "PhotosWindowSceneDelegate: Ignoring unknown URL: %@", buf, 0xCu);
       }
     }
@@ -1774,18 +1774,18 @@ LABEL_23:
     if (v8)
     {
       *buf = 138412290;
-      v21 = v5;
+      v21 = activityCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PhotosWindowSceneDelegate: Deferring handling of NSUserActivityTypeBrowsingWeb: %@", buf, 0xCu);
     }
 
-    [(PhotosWindowSceneDelegate *)self setPendingUserActivity:v5];
+    [(PhotosWindowSceneDelegate *)self setPendingUserActivity:activityCopy];
   }
 }
 
-- (BOOL)_isUserActivityExpired:(id)a3
+- (BOOL)_isUserActivityExpired:(id)expired
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"timestamp"];
+  userInfo = [expired userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"timestamp"];
 
   v8 = 0;
   if (v4)
@@ -1803,35 +1803,35 @@ LABEL_23:
   return v8;
 }
 
-- (void)openUserActivity:(id)a3
+- (void)openUserActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = activityCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PhotosWindowSceneDelegate: received user activity: %@", &v13, 0xCu);
   }
 
   [(PhotosWindowSceneDelegate *)self setPendingUserActivity:0];
-  v6 = [v4 activityType];
-  if ([v6 isEqualToString:CSQueryContinuationActionType])
+  activityType = [activityCopy activityType];
+  if ([activityType isEqualToString:CSQueryContinuationActionType])
   {
-    [(PhotosWindowSceneDelegate *)self _openSpotlightSearchActivity:v4];
+    [(PhotosWindowSceneDelegate *)self _openSpotlightSearchActivity:activityCopy];
   }
 
-  else if ([v6 isEqualToString:NSUserActivityTypeBrowsingWeb])
+  else if ([activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
   {
-    [(PhotosWindowSceneDelegate *)self _openUniversalLinkActivity:v4];
+    [(PhotosWindowSceneDelegate *)self _openUniversalLinkActivity:activityCopy];
   }
 
   else
   {
-    v7 = [(PhotosWindowSceneDelegate *)self userActivityURLForUserActivity:v4];
+    v7 = [(PhotosWindowSceneDelegate *)self userActivityURLForUserActivity:activityCopy];
     if (v7)
     {
-      v8 = [(PhotosWindowSceneDelegate *)self _isUserActivityExpired:v4];
+      v8 = [(PhotosWindowSceneDelegate *)self _isUserActivityExpired:activityCopy];
       v9 = PLUIGetLog();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
       if (v8)
@@ -1847,9 +1847,9 @@ LABEL_23:
       {
         if (v10)
         {
-          v12 = [v7 absoluteString];
+          absoluteString = [v7 absoluteString];
           v13 = 138412290;
-          v14 = v12;
+          v14 = absoluteString;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PhotosWindowSceneDelegate: will navigate to URL: %@", &v13, 0xCu);
         }
 
@@ -1863,23 +1863,23 @@ LABEL_23:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = activityCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Unable to open user activity (can't convert to URL): %@", &v13, 0xCu);
       }
     }
   }
 }
 
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
-  v6 = a3;
+  sceneCopy = scene;
   v7 = +[NSNotificationCenter defaultCenter];
-  [v7 postNotificationName:PXLemonadeWindowSceneDidUpdateNotification object:v6];
+  [v7 postNotificationName:PXLemonadeWindowSceneDidUpdateNotification object:sceneCopy];
 }
 
-- (void)windowScene:(id)a3 userDidAcceptCloudKitShareWithMetadata:(id)a4
+- (void)windowScene:(id)scene userDidAcceptCloudKitShareWithMetadata:(id)metadata
 {
-  v5 = a4;
+  metadataCopy = metadata;
   v6 = PLUserStatusGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1888,28 +1888,28 @@ LABEL_23:
   }
 
   [(PhotosWindowSceneDelegate *)self setActivationOptions:2];
-  if (v5)
+  if (metadataCopy)
   {
-    v7 = [v5 share];
-    v8 = [v7 URL];
+    share = [metadataCopy share];
+    v8 = [share URL];
     [(PhotosWindowSceneDelegate *)self openCloudKitShareWithURL:v8];
   }
 
   else
   {
-    v7 = PLUIGetLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    share = PLUIGetLog();
+    if (os_log_type_enabled(share, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
       v10 = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Unable to open : Cloud Kit Share Metadata %@", &v9, 0xCu);
+      _os_log_impl(&_mh_execute_header, share, OS_LOG_TYPE_DEFAULT, "Unable to open : Cloud Kit Share Metadata %@", &v9, 0xCu);
     }
   }
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v5 = a4;
+  activityCopy = activity;
   v6 = PLUserStatusGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1918,13 +1918,13 @@ LABEL_23:
   }
 
   [(PhotosWindowSceneDelegate *)self setActivationOptions:2];
-  [(PhotosWindowSceneDelegate *)self openUserActivity:v5];
+  [(PhotosWindowSceneDelegate *)self openUserActivity:activityCopy];
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   v9 = PLUserStatusGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1933,7 +1933,7 @@ LABEL_23:
   }
 
   [(PhotosWindowSceneDelegate *)self setActivationOptions:2];
-  v10 = [(PhotosWindowSceneDelegate *)self shortcutURLForShortcutItem:v7];
+  v10 = [(PhotosWindowSceneDelegate *)self shortcutURLForShortcutItem:itemCopy];
   if (v10)
   {
     [(PhotosWindowSceneDelegate *)self openRoutingURL:v10];
@@ -1945,17 +1945,17 @@ LABEL_23:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v7;
+      v13 = itemCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Unable to open shortcut (can't convert to URL): %@", &v12, 0xCu);
     }
   }
 
-  v8[2](v8, v10 != 0);
+  handlerCopy[2](handlerCopy, v10 != 0);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v5 = a4;
+  contextsCopy = contexts;
   v6 = PLUserStatusGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1964,8 +1964,8 @@ LABEL_23:
   }
 
   [(PhotosWindowSceneDelegate *)self setActivationOptions:2];
-  v7 = [v5 anyObject];
-  v8 = [v7 URL];
+  anyObject = [contextsCopy anyObject];
+  v8 = [anyObject URL];
 
   if (v8)
   {
@@ -1978,13 +1978,13 @@ LABEL_23:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = contextsCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Unable to open URL contexts (can't convert to URL): %@", &v10, 0xCu);
     }
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v4 = +[NSDate date];
   [(PhotosWindowSceneDelegate *)self setLastDidEnterBackgroundDate:v4];
@@ -1993,9 +1993,9 @@ LABEL_23:
   [v5 reportPhotosAppEnteredBackground];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = PLWindowSceneDelegateGetLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -2010,7 +2010,7 @@ LABEL_23:
   {
     [(PhotosWindowSceneDelegate *)self setupAppUI];
     v9 = +[UIApplication sharedApplication];
-    [v9 noteSceneWillEnterForeground:v4];
+    [v9 noteSceneWillEnterForeground:foregroundCopy];
   }
 
   if ([(PhotosWindowSceneDelegate *)self canExtendStateRestorationForWidgetNavigation])
@@ -2025,15 +2025,15 @@ LABEL_23:
     [(PhotosWindowSceneDelegate *)self setCanExtendStateRestorationForWidgetNavigation:0];
   }
 
-  v11 = [(PhotosWindowSceneDelegate *)self lastDidEnterBackgroundDate];
+  lastDidEnterBackgroundDate = [(PhotosWindowSceneDelegate *)self lastDidEnterBackgroundDate];
   v12 = +[PXKitSettings sharedInstance];
   [v12 viewResetTimeoutDuration];
   v14 = v13;
 
-  if (v11)
+  if (lastDidEnterBackgroundDate)
   {
     v15 = +[NSDate date];
-    [v15 timeIntervalSinceDate:v11];
+    [v15 timeIntervalSinceDate:lastDidEnterBackgroundDate];
     v17 = v16;
 
     if (v17 > v14)
@@ -2052,7 +2052,7 @@ LABEL_23:
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v4 = PLUserStatusGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2075,7 +2075,7 @@ LABEL_23:
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = PLWindowSceneDelegateGetLog();
   v5 = os_signpost_id_generate(v4);
@@ -2090,8 +2090,8 @@ LABEL_23:
   v8 = +[PXSearchParsecAnalyticsSession sharedSession];
   [v8 reportPhotosAppQuit];
 
-  v9 = [(PhotosWindowSceneDelegate *)self mainWindow];
-  [v9 setHidden:1];
+  mainWindow = [(PhotosWindowSceneDelegate *)self mainWindow];
+  [mainWindow setHidden:1];
 
   [(PhotosWindowSceneDelegate *)self setMainWindow:0];
   v10 = v7;
@@ -2103,11 +2103,11 @@ LABEL_23:
   }
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  sceneCopy = scene;
+  optionsCopy = options;
+  sessionCopy = session;
   v11 = PLWindowSceneDelegateGetLog();
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
@@ -2122,12 +2122,12 @@ LABEL_23:
   spid = v12;
 
   [(PhotosWindowSceneDelegate *)self setActivationOptions:PXCloudQuotaUpsellSheetManagerActivationOptionsForSceneConnectionOptions()];
-  v15 = [v9 userActivities];
-  v16 = [v15 anyObject];
+  userActivities = [optionsCopy userActivities];
+  anyObject = [userActivities anyObject];
 
-  v17 = [v9 URLContexts];
-  v18 = [v17 anyObject];
-  v19 = [v18 URL];
+  uRLContexts = [optionsCopy URLContexts];
+  anyObject2 = [uRLContexts anyObject];
+  v19 = [anyObject2 URL];
   v20 = v19;
   if (v19)
   {
@@ -2136,33 +2136,33 @@ LABEL_23:
 
   else
   {
-    v21 = [v9 shortcutItem];
-    v52 = [(PhotosWindowSceneDelegate *)self shortcutURLForShortcutItem:v21];
+    shortcutItem = [optionsCopy shortcutItem];
+    v52 = [(PhotosWindowSceneDelegate *)self shortcutURLForShortcutItem:shortcutItem];
   }
 
-  v22 = [v9 _itemProviderCollections];
-  v23 = [v9 cloudKitShareMetadata];
-  v24 = [v10 stateRestorationActivity];
+  _itemProviderCollections = [optionsCopy _itemProviderCollections];
+  cloudKitShareMetadata = [optionsCopy cloudKitShareMetadata];
+  stateRestorationActivity = [sessionCopy stateRestorationActivity];
 
-  if (v16)
+  if (anyObject)
   {
-    v25 = self;
-    v26 = v16;
+    selfCopy2 = self;
+    v26 = anyObject;
 LABEL_9:
-    [(PhotosWindowSceneDelegate *)v25 openUserActivity:v26];
+    [(PhotosWindowSceneDelegate *)selfCopy2 openUserActivity:v26];
     goto LABEL_18;
   }
 
-  if ([v22 count])
+  if ([_itemProviderCollections count])
   {
-    [(PhotosWindowSceneDelegate *)self _openItemProviderCollections:v22];
+    [(PhotosWindowSceneDelegate *)self _openItemProviderCollections:_itemProviderCollections];
   }
 
   else if (v52)
   {
-    v47 = [v52 query];
-    v27 = [v47 queryKeysAndValues];
-    v28 = [v27 objectForKeyedSubscript:@"source"];
+    query = [v52 query];
+    queryKeysAndValues = [query queryKeysAndValues];
+    v28 = [queryKeysAndValues objectForKeyedSubscript:@"source"];
     v45 = [v28 isEqualToString:PXNavigationURLSourceWidget];
 
     if (v45)
@@ -2173,17 +2173,17 @@ LABEL_9:
     [(PhotosWindowSceneDelegate *)self openRoutingURL:v52];
   }
 
-  else if (v23)
+  else if (cloudKitShareMetadata)
   {
-    v29 = [v23 share];
-    v30 = [v29 URL];
+    share = [cloudKitShareMetadata share];
+    v30 = [share URL];
     [(PhotosWindowSceneDelegate *)self openCloudKitShareWithURL:v30];
   }
 
-  else if (v24)
+  else if (stateRestorationActivity)
   {
-    v25 = self;
-    v26 = v24;
+    selfCopy2 = self;
+    v26 = stateRestorationActivity;
     goto LABEL_9;
   }
 
@@ -2193,7 +2193,7 @@ LABEL_18:
   [(PhotosWindowSceneDelegate *)self setSpec:v32];
 
   v33 = [UIWindow alloc];
-  v34 = v8;
+  v34 = sceneCopy;
   if (!v34)
   {
     v39 = +[NSAssertionHandler currentHandler];
@@ -2211,11 +2211,11 @@ LABEL_28:
     v46 = +[NSAssertionHandler currentHandler];
     v41 = objc_opt_class();
     v42 = NSStringFromClass(v41);
-    v44 = [v34 px_descriptionForAssertionMessage];
+    px_descriptionForAssertionMessage = [v34 px_descriptionForAssertionMessage];
     v48 = v42;
     v43 = v42;
     v39 = v46;
-    [v46 handleFailureInMethod:a2 object:self file:@"PhotosWindowSceneDelegate.m" lineNumber:190 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"scene", v43, v44}];
+    [v46 handleFailureInMethod:a2 object:self file:@"PhotosWindowSceneDelegate.m" lineNumber:190 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"scene", v43, px_descriptionForAssertionMessage}];
 
     goto LABEL_28;
   }
@@ -2224,8 +2224,8 @@ LABEL_20:
   v35 = [v33 initWithWindowScene:v34];
   [(PhotosWindowSceneDelegate *)self setMainWindow:v35];
 
-  v36 = [(PhotosWindowSceneDelegate *)self mainWindow];
-  [v36 makeKeyAndVisible];
+  mainWindow = [(PhotosWindowSceneDelegate *)self mainWindow];
+  [mainWindow makeKeyAndVisible];
 
   v37 = v14;
   v38 = v37;
@@ -2238,12 +2238,12 @@ LABEL_20:
 
 - (double)screenScale
 {
-  v2 = [(PhotosWindowSceneDelegate *)self mainWindow];
-  v3 = [v2 screen];
-  v4 = v3;
-  if (v3)
+  mainWindow = [(PhotosWindowSceneDelegate *)self mainWindow];
+  screen = [mainWindow screen];
+  v4 = screen;
+  if (screen)
   {
-    v5 = v3;
+    v5 = screen;
   }
 
   else
@@ -2269,10 +2269,10 @@ LABEL_20:
 
 - (UIViewController)rootViewController
 {
-  v2 = [(PhotosWindowSceneDelegate *)self mainWindow];
-  v3 = [v2 rootViewController];
+  mainWindow = [(PhotosWindowSceneDelegate *)self mainWindow];
+  rootViewController = [mainWindow rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
 @end

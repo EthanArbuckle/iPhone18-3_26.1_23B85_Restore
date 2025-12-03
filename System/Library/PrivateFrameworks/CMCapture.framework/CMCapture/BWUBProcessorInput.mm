@@ -1,5 +1,5 @@
 @interface BWUBProcessorInput
-- (BWUBProcessorInput)initWithSettings:(id)a3 portType:(id)a4;
+- (BWUBProcessorInput)initWithSettings:(id)settings portType:(id)type;
 - (id)stopAdaptiveBracketingNow;
 - (opaqueCMSampleBuffer)errorRecoveryFrame;
 - (opaqueCMSampleBuffer)evMinusReferenceFrame;
@@ -8,20 +8,20 @@
 - (void)_setErrorRecoveryFrame:(void *)result;
 - (void)_setReferenceFrame:(void *)result;
 - (void)adaptiveBracketingParameters;
-- (void)addFrame:(opaqueCMSampleBuffer *)a3;
+- (void)addFrame:(opaqueCMSampleBuffer *)frame;
 - (void)dealloc;
-- (void)setKeepFrames:(BOOL)a3;
-- (void)stopAdaptiveBracketingWithGroup:(int)a3;
-- (void)updateAdaptiveBracketingFrameParametersIfNeededUsingFrame:(int)a3 err:;
+- (void)setKeepFrames:(BOOL)frames;
+- (void)stopAdaptiveBracketingWithGroup:(int)group;
+- (void)updateAdaptiveBracketingFrameParametersIfNeededUsingFrame:(int)frame err:;
 @end
 
 @implementation BWUBProcessorInput
 
-- (BWUBProcessorInput)initWithSettings:(id)a3 portType:(id)a4
+- (BWUBProcessorInput)initWithSettings:(id)settings portType:(id)type
 {
   v6.receiver = self;
   v6.super_class = BWUBProcessorInput;
-  v4 = [(BWStillImageProcessorControllerInput *)&v6 initWithSettings:a3 portType:a4];
+  v4 = [(BWStillImageProcessorControllerInput *)&v6 initWithSettings:settings portType:type];
   if (v4)
   {
     v4->_frames = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -52,28 +52,28 @@
   [(BWStillImageProcessorControllerInput *)&v5 dealloc];
 }
 
-- (void)setKeepFrames:(BOOL)a3
+- (void)setKeepFrames:(BOOL)frames
 {
-  if (self->_keepFrames != a3)
+  if (self->_keepFrames != frames)
   {
-    self->_keepFrames = a3;
-    if (!a3)
+    self->_keepFrames = frames;
+    if (!frames)
     {
       [(NSMutableArray *)self->_frames removeAllObjects];
     }
   }
 }
 
-- (void)addFrame:(opaqueCMSampleBuffer *)a3
+- (void)addFrame:(opaqueCMSampleBuffer *)frame
 {
-  if (!a3)
+  if (!frame)
   {
     [BWUBProcessorInput addFrame:];
     return;
   }
 
   receivedFrames = self->_receivedFrames;
-  v6 = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] referenceFrameIndex];
+  referenceFrameIndex = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] referenceFrameIndex];
   ++self->_receivedFrames;
   if (![(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] adaptiveBracketingParameters])
   {
@@ -85,7 +85,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  AdaptiveBracketingFrame = BWIsLastAdaptiveBracketingFrame(a3);
+  AdaptiveBracketingFrame = BWIsLastAdaptiveBracketingFrame(frame);
   p_receivedAllFrames = &self->_receivedAllFrames;
   self->_receivedAllFrames = AdaptiveBracketingFrame;
   adaptiveBracketingStopFrameCount = self->_adaptiveBracketingStopFrameCount;
@@ -98,12 +98,12 @@ LABEL_8:
 LABEL_9:
   if (self->_keepFrames)
   {
-    [(NSMutableArray *)self->_frames addObject:a3];
+    [(NSMutableArray *)self->_frames addObject:frame];
   }
 
   if ([(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] captureType]== 11)
   {
-    v12 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v12 = CMGetAttachment(frame, *off_1E798A3C8, 0);
     v13 = [v12 objectForKeyedSubscript:*off_1E798B6B8];
     if (v13)
     {
@@ -149,7 +149,7 @@ LABEL_9:
 
   delegate = self->_delegate;
 
-  [(BWUBProcessorInputDelegate *)delegate input:self addFrame:a3 isReferenceFrame:receivedFrames == v6];
+  [(BWUBProcessorInputDelegate *)delegate input:self addFrame:frame isReferenceFrame:receivedFrames == referenceFrameIndex];
 }
 
 - (opaqueCMSampleBuffer)referenceFrame
@@ -188,9 +188,9 @@ LABEL_9:
   }
 
   frames = self->_frames;
-  v6 = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] referenceFrameIndex];
+  referenceFrameIndex = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] referenceFrameIndex];
 
-  return [(NSMutableArray *)frames objectAtIndexedSubscript:v6];
+  return [(NSMutableArray *)frames objectAtIndexedSubscript:referenceFrameIndex];
 }
 
 - (opaqueCMSampleBuffer)evMinusReferenceFrame
@@ -233,14 +233,14 @@ LABEL_9:
   errorRecoveryFrame = self->_errorRecoveryFrame;
   if (!errorRecoveryFrame)
   {
-    v4 = [(BWUBProcessorInput *)self referenceFrame];
+    referenceFrame = [(BWUBProcessorInput *)self referenceFrame];
     if ([(NSMutableArray *)self->_frames count])
     {
       v5 = 0;
       while (1)
       {
         errorRecoveryFrame = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:v5];
-        if ([(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] isUnifiedBracketingErrorRecoveryFrame:errorRecoveryFrame isReferenceFrame:errorRecoveryFrame == v4])
+        if ([(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] isUnifiedBracketingErrorRecoveryFrame:errorRecoveryFrame isReferenceFrame:errorRecoveryFrame == referenceFrame])
         {
           break;
         }
@@ -261,9 +261,9 @@ LABEL_9:
   return errorRecoveryFrame;
 }
 
-- (void)stopAdaptiveBracketingWithGroup:(int)a3
+- (void)stopAdaptiveBracketingWithGroup:(int)group
 {
-  v3 = *&a3;
+  v3 = *&group;
   if ([(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] adaptiveBracketingParameters])
   {
     v5 = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] expectedAdaptiveBracketedFrameCaptureCountUsingGroup:v3];
@@ -414,23 +414,23 @@ LABEL_9:
   return result;
 }
 
-- (void)updateAdaptiveBracketingFrameParametersIfNeededUsingFrame:(int)a3 err:
+- (void)updateAdaptiveBracketingFrameParametersIfNeededUsingFrame:(int)frame err:
 {
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (frame)
     {
-      v5 = [(BWUBProcessorInput *)a1 adaptiveBracketingParameters];
+      adaptiveBracketingParameters = [(BWUBProcessorInput *)self adaptiveBracketingParameters];
 
-      [(BWUBAdaptiveBracketingParameters *)v5 stopAdaptiveBracketing];
+      [(BWUBAdaptiveBracketingParameters *)adaptiveBracketingParameters stopAdaptiveBracketing];
     }
 
-    else if (([objc_msgSend(a1 "captureStreamSettings")] & 1) == 0)
+    else if (([objc_msgSend(self "captureStreamSettings")] & 1) == 0)
     {
       v6 = [objc_msgSend(CMGetAttachment(a2 *off_1E798A3C8];
-      v7 = [(BWUBProcessorInput *)a1 adaptiveBracketingParameters];
+      adaptiveBracketingParameters2 = [(BWUBProcessorInput *)self adaptiveBracketingParameters];
 
-      [(BWUBAdaptiveBracketingParameters *)v7 updateAdaptiveBracketingFrameParametersUsingGroup:?];
+      [(BWUBAdaptiveBracketingParameters *)adaptiveBracketingParameters2 updateAdaptiveBracketingFrameParametersUsingGroup:?];
     }
   }
 }

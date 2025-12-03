@@ -1,23 +1,23 @@
 @interface VCPProtoLivePhotoVariationParams
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLoopPeriod:(BOOL)a3;
-- (void)setHasLoopStart:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLoopPeriod:(BOOL)period;
+- (void)setHasLoopStart:(BOOL)start;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoLivePhotoVariationParams
 
-- (void)setHasLoopPeriod:(BOOL)a3
+- (void)setHasLoopPeriod:(BOOL)period
 {
-  if (a3)
+  if (period)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLoopStart:(BOOL)a3
+- (void)setHasLoopStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 4;
   }
@@ -51,23 +51,23 @@
   v8.receiver = self;
   v8.super_class = VCPProtoLivePhotoVariationParams;
   v4 = [(VCPProtoLivePhotoVariationParams *)&v8 description];
-  v5 = [(VCPProtoLivePhotoVariationParams *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoLivePhotoVariationParams *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_errorCode];
-  [v3 setObject:v4 forKey:@"errorCode"];
+  [dictionary setObject:v4 forKey:@"errorCode"];
 
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_loopFadeLen];
-    [v3 setObject:v8 forKey:@"loopFadeLen"];
+    [dictionary setObject:v8 forKey:@"loopFadeLen"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -88,23 +88,23 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:self->_loopPeriod];
-  [v3 setObject:v9 forKey:@"loopPeriod"];
+  [dictionary setObject:v9 forKey:@"loopPeriod"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_loopStart];
-    [v3 setObject:v6 forKey:@"loopStart"];
+    [dictionary setObject:v6 forKey:@"loopStart"];
   }
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   has = self->_has;
   if (has)
@@ -138,15 +138,15 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[2] = self->_errorCode;
+  toCopy = to;
+  toCopy[2] = self->_errorCode;
   has = self->_has;
   if (has)
   {
-    v4[3] = self->_loopFadeLen;
-    *(v4 + 24) |= 1u;
+    toCopy[3] = self->_loopFadeLen;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -165,21 +165,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_loopPeriod;
-  *(v4 + 24) |= 2u;
+  toCopy[4] = self->_loopPeriod;
+  *(toCopy + 24) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[5] = self->_loopStart;
-    *(v4 + 24) |= 4u;
+    toCopy[5] = self->_loopStart;
+    *(toCopy + 24) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_errorCode;
   has = self->_has;
   if (has)
@@ -217,23 +217,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_errorCode != *(v4 + 2))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_errorCode != *(equalCopy + 2))
   {
     goto LABEL_17;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_loopFadeLen != *(v4 + 3))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_loopFadeLen != *(equalCopy + 3))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_17:
     v5 = 0;
@@ -242,21 +242,21 @@ LABEL_17:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_loopPeriod != *(v4 + 4))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_loopPeriod != *(equalCopy + 4))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_17;
   }
 
-  v5 = (*(v4 + 24) & 4) == 0;
+  v5 = (*(equalCopy + 24) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_loopStart != *(v4 + 5))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_loopStart != *(equalCopy + 5))
     {
       goto LABEL_17;
     }
@@ -304,16 +304,16 @@ LABEL_18:
   return v2 ^ v3 ^ v4 ^ (2654435761 * self->_errorCode);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_errorCode = v4[2];
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  self->_errorCode = fromCopy[2];
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_loopFadeLen = v4[3];
+    self->_loopFadeLen = fromCopy[3];
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -326,31 +326,31 @@ LABEL_3:
     }
   }
 
-  else if ((v4[6] & 2) == 0)
+  else if ((fromCopy[6] & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_loopPeriod = v4[4];
+  self->_loopPeriod = fromCopy[4];
   *&self->_has |= 2u;
-  if ((v4[6] & 4) != 0)
+  if ((fromCopy[6] & 4) != 0)
   {
 LABEL_4:
-    self->_loopStart = v4[5];
+    self->_loopStart = fromCopy[5];
     *&self->_has |= 4u;
   }
 
 LABEL_5:
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v4 = objc_alloc_init(VCPProtoLivePhotoVariationParams);
-    v5 = [v3 objectForKeyedSubscript:@"Params"];
-    v6 = [v3 objectForKeyedSubscript:@"ErrorCode"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"Params"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ErrorCode"];
     -[VCPProtoLivePhotoVariationParams setErrorCode:](v4, "setErrorCode:", [v6 intValue]);
 
     if (![(VCPProtoLivePhotoVariationParams *)v4 errorCode]&& v5)
@@ -377,9 +377,9 @@ LABEL_5:
 - (id)exportToLegacyDictionary
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPProtoLivePhotoVariationParams errorCode](self, "errorCode")}];
-  [v3 setObject:v4 forKeyedSubscript:@"ErrorCode"];
+  [dictionary setObject:v4 forKeyedSubscript:@"ErrorCode"];
 
   if (![(VCPProtoLivePhotoVariationParams *)self errorCode])
   {
@@ -394,10 +394,10 @@ LABEL_5:
     v11[2] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
-    [v3 setObject:v8 forKeyedSubscript:@"Params"];
+    [dictionary setObject:v8 forKeyedSubscript:@"Params"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

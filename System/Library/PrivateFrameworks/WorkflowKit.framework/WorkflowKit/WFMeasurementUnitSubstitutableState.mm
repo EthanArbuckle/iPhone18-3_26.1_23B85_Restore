@@ -1,31 +1,31 @@
 @interface WFMeasurementUnitSubstitutableState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 @end
 
 @implementation WFMeasurementUnitSubstitutableState
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"WFMeasurementUnitSubstitutableState.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[NSUnit class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFMeasurementUnitSubstitutableState.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[NSUnit class]]"}];
   }
 
-  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:0];
 
   return v6;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = representationCopy;
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = getWFGeneralLogObject();

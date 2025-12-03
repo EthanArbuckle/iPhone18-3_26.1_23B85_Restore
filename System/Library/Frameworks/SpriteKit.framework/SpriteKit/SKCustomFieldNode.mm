@@ -1,10 +1,10 @@
 @interface SKCustomFieldNode
 - (SKCustomFieldNode)init;
-- (SKCustomFieldNode)initWithCoder:(id)a3;
+- (SKCustomFieldNode)initWithCoder:(id)coder;
 - (void)_initialize;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBatchBlock:(id)a3;
-- (void)setBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBatchBlock:(id)block;
+- (void)setBlock:(id)block;
 @end
 
 @implementation SKCustomFieldNode
@@ -37,13 +37,13 @@
   return v3;
 }
 
-- (SKCustomFieldNode)initWithCoder:(id)a3
+- (SKCustomFieldNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277D3D0E0] fieldWithCustomBlock:0];
   v8.receiver = self;
   v8.super_class = SKCustomFieldNode;
-  v6 = [(SKFieldNode *)&v8 initWithCoder:v4 field:v5];
+  v6 = [(SKFieldNode *)&v8 initWithCoder:coderCopy field:v5];
 
   if (v6)
   {
@@ -53,16 +53,16 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SKCustomFieldNode;
-  [(SKFieldNode *)&v3 encodeWithCoder:a3];
+  [(SKFieldNode *)&v3 encodeWithCoder:coder];
 }
 
-- (void)setBatchBlock:(id)a3
+- (void)setBatchBlock:(id)block
 {
-  v6 = MEMORY[0x21CF0AB10](a3, a2);
+  v6 = MEMORY[0x21CF0AB10](block, a2);
   v4 = [MEMORY[0x277D3D0E0] fieldWithCustomBatchBlock:?];
   field = self->super._field;
   self->super._field = v4;
@@ -70,9 +70,9 @@
   [(SKFieldNode *)self setPhysicsField:self->super._field];
 }
 
-- (void)setBlock:(id)a3
+- (void)setBlock:(id)block
 {
-  v6 = MEMORY[0x21CF0AB10](a3, a2);
+  v6 = MEMORY[0x21CF0AB10](block, a2);
   v4 = [MEMORY[0x277D3D0E0] fieldWithCustomBlock:?];
   field = self->super._field;
   self->super._field = v4;

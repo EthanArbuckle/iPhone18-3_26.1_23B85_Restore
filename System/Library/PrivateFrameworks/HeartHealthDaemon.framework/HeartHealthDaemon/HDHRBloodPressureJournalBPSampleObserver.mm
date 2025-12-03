@@ -1,30 +1,30 @@
 @interface HDHRBloodPressureJournalBPSampleObserver
-- (BOOL)_regenerateNotificationsIfNecessaryWithJournalSamples:(id)a3;
-- (HDHRBloodPressureJournalBPSampleObserver)initWithProfile:(id)a3;
+- (BOOL)_regenerateNotificationsIfNecessaryWithJournalSamples:(id)samples;
+- (HDHRBloodPressureJournalBPSampleObserver)initWithProfile:(id)profile;
 - (id)_currentActiveJournal;
-- (id)_samplesFromCurrentDeviceIn:(id)a3;
-- (id)_samplesInCurrentActiveJournalPeriodFor:(id)a3 from:(id)a4;
-- (unint64_t)_removeDeliveredNotificationsFromNotificationCenterForSamples:(id)a3 journal:(id)a4;
+- (id)_samplesFromCurrentDeviceIn:(id)in;
+- (id)_samplesInCurrentActiveJournalPeriodFor:(id)for from:(id)from;
+- (unint64_t)_removeDeliveredNotificationsFromNotificationCenterForSamples:(id)samples journal:(id)journal;
 - (void)_currentActiveJournal;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDHRBloodPressureJournalBPSampleObserver
 
-- (HDHRBloodPressureJournalBPSampleObserver)initWithProfile:(id)a3
+- (HDHRBloodPressureJournalBPSampleObserver)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDHRBloodPressureJournalBPSampleObserver;
   v5 = [(HDHRBloodPressureJournalBPSampleObserver *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profile, v4);
-    v8 = [v4 dataManager];
+    v7 = objc_storeWeak(&v5->_profile, profileCopy);
+    dataManager = [profileCopy dataManager];
     v9 = [MEMORY[0x277CCD250] correlationTypeForIdentifier:*MEMORY[0x277CCBBA8]];
-    [v8 addObserver:v6 forDataType:v9];
+    [dataManager addObserver:v6 forDataType:v9];
   }
 
   return v6;
@@ -33,11 +33,11 @@
 - (id)_currentActiveJournal
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained heartHealthProfileExtension];
-  v4 = [v3 bloodPressureJournalManager];
+  heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
   v9 = 0;
-  v5 = [v4 latestActiveBloodPressureJournalWithError:&v9];
+  v5 = [bloodPressureJournalManager latestActiveBloodPressureJournalWithError:&v9];
   v6 = v9;
   if (v6)
   {
@@ -52,18 +52,18 @@
   return v5;
 }
 
-- (id)_samplesInCurrentActiveJournalPeriodFor:(id)a3 from:(id)a4
+- (id)_samplesInCurrentActiveJournalPeriodFor:(id)for from:(id)from
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  forCopy = for;
+  fromCopy = from;
+  if (forCopy)
   {
-    v8 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v9 = [v6 journalStartDayFor:v8];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    v9 = [forCopy journalStartDayFor:hk_gregorianCalendar];
 
-    v10 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v11 = [v6 notificationEndDateForIncompleteJournal:v10];
+    hk_gregorianCalendar2 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    v11 = [forCopy notificationEndDateForIncompleteJournal:hk_gregorianCalendar2];
 
     if (!v11)
     {
@@ -87,7 +87,7 @@
     v14 = v11;
     v15 = v9;
     v16 = [v13 predicateWithBlock:&v20];
-    v17 = [v7 filteredArrayUsingPredicate:{v16, v20, v21, v22, v23}];
+    v17 = [fromCopy filteredArrayUsingPredicate:{v16, v20, v21, v22, v23}];
   }
 
   else
@@ -97,7 +97,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v27 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] There is no current active journal.", buf, 0xCu);
     }
 
@@ -127,22 +127,22 @@ uint64_t __89__HDHRBloodPressureJournalBPSampleObserver__samplesInCurrentActiveJ
   return v6;
 }
 
-- (id)_samplesFromCurrentDeviceIn:(id)a3
+- (id)_samplesFromCurrentDeviceIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained syncIdentityManager];
-  v7 = [v6 currentSyncIdentity];
-  v8 = [v7 entity];
-  v9 = [v8 persistentID];
+  syncIdentityManager = [WeakRetained syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  entity = [currentSyncIdentity entity];
+  persistentID = [entity persistentID];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn___block_invoke;
   v13[3] = &__block_descriptor_40_e35_B24__0__HKSample_8__NSDictionary_16l;
-  v13[4] = v9;
+  v13[4] = persistentID;
   v10 = [MEMORY[0x277CCAC30] predicateWithBlock:v13];
-  v11 = [v4 filteredArrayUsingPredicate:v10];
+  v11 = [inCopy filteredArrayUsingPredicate:v10];
 
   return v11;
 }
@@ -155,17 +155,17 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
   return v4;
 }
 
-- (BOOL)_regenerateNotificationsIfNecessaryWithJournalSamples:(id)a3
+- (BOOL)_regenerateNotificationsIfNecessaryWithJournalSamples:(id)samples
 {
   v15 = *MEMORY[0x277D85DE8];
-  if ([a3 count])
+  if ([samples count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v5 = [WeakRetained heartHealthProfileExtension];
-    v6 = [v5 bloodPressureJournalNotificationManager];
+    heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+    bloodPressureJournalNotificationManager = [heartHealthProfileExtension bloodPressureJournalNotificationManager];
 
     v12 = 0;
-    v7 = [v6 scheduleNotificationsWithReason:2 error:&v12];
+    v7 = [bloodPressureJournalNotificationManager scheduleNotificationsWithReason:2 error:&v12];
     v8 = v12;
     if (v8)
     {
@@ -183,12 +183,12 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
   else
   {
     _HKInitializeLogging();
-    v6 = HKLogBloodPressureJournal();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    bloodPressureJournalNotificationManager = HKLogBloodPressureJournal();
+    if (os_log_type_enabled(bloodPressureJournalNotificationManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Samples do not belong to current active journal.", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_229486000, bloodPressureJournalNotificationManager, OS_LOG_TYPE_DEFAULT, "[%{public}@] Samples do not belong to current active journal.", buf, 0xCu);
     }
 
     v7 = 0;
@@ -198,18 +198,18 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
   return v7;
 }
 
-- (unint64_t)_removeDeliveredNotificationsFromNotificationCenterForSamples:(id)a3 journal:(id)a4
+- (unint64_t)_removeDeliveredNotificationsFromNotificationCenterForSamples:(id)samples journal:(id)journal
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  samplesCopy = samples;
+  journalCopy = journal;
+  if ([samplesCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v9 = [WeakRetained heartHealthProfileExtension];
-    v10 = [v9 bloodPressureJournalNotificationManager];
+    heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+    bloodPressureJournalNotificationManager = [heartHealthProfileExtension bloodPressureJournalNotificationManager];
 
-    v11 = [v10 removeDeliveredNotificationsForSamples:v6 journal:v7];
+    v11 = [bloodPressureJournalNotificationManager removeDeliveredNotificationsForSamples:samplesCopy journal:journalCopy];
   }
 
   else
@@ -219,7 +219,7 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Samples do not belong to current active journal.", &v15, 0xCu);
     }
 
@@ -230,30 +230,30 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
   return v11;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addedCopy = added;
   _HKInitializeLogging();
   v6 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138543618;
-    v26 = self;
+    selfCopy3 = self;
     v27 = 2048;
-    v28 = [v5 count];
+    v28 = [addedCopy count];
     _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Blood Pressure samples added. Number of samples added %lu", &v25, 0x16u);
   }
 
-  v7 = [(HDHRBloodPressureJournalBPSampleObserver *)self _currentActiveJournal];
-  v8 = [(HDHRBloodPressureJournalBPSampleObserver *)self _samplesInCurrentActiveJournalPeriodFor:v7 from:v5];
+  _currentActiveJournal = [(HDHRBloodPressureJournalBPSampleObserver *)self _currentActiveJournal];
+  v8 = [(HDHRBloodPressureJournalBPSampleObserver *)self _samplesInCurrentActiveJournalPeriodFor:_currentActiveJournal from:addedCopy];
   v9 = [(HDHRBloodPressureJournalBPSampleObserver *)self _regenerateNotificationsIfNecessaryWithJournalSamples:v8];
   _HKInitializeLogging();
   v10 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138543618;
-    v26 = self;
+    selfCopy3 = self;
     v27 = 1024;
     LODWORD(v28) = v9;
     _os_log_impl(&dword_229486000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Blood Pressure samples added. Regeneration success state  %{BOOL}d", &v25, 0x12u);
@@ -265,13 +265,13 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
     didRegenerateNotificationsHandler[2](didRegenerateNotificationsHandler, v9);
   }
 
-  v12 = [(HDHRBloodPressureJournalBPSampleObserver *)self _removeDeliveredNotificationsFromNotificationCenterForSamples:v8 journal:v7];
+  v12 = [(HDHRBloodPressureJournalBPSampleObserver *)self _removeDeliveredNotificationsFromNotificationCenterForSamples:v8 journal:_currentActiveJournal];
   _HKInitializeLogging();
   v13 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138543618;
-    v26 = self;
+    selfCopy3 = self;
     v27 = 2048;
     v28 = v12;
     _os_log_impl(&dword_229486000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Blood Pressure samples added. Request sent to remove delivered notifications, requested notification identifier count %lu", &v25, 0x16u);
@@ -288,14 +288,14 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
   if (v16)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v18 = [WeakRetained heartHealthProfileExtension];
-    v19 = [v18 bloodPressureJournalNotificationSyncManager];
+    heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+    bloodPressureJournalNotificationSyncManager = [heartHealthProfileExtension bloodPressureJournalNotificationSyncManager];
 
-    [v19 bloodPressureSamplesAdded:v15 forJournal:v7];
+    [bloodPressureJournalNotificationSyncManager bloodPressureSamplesAdded:v15 forJournal:_currentActiveJournal];
     v20 = objc_loadWeakRetained(&self->_profile);
-    v21 = [v20 heartHealthProfileExtension];
-    v22 = [v21 bloodPressureJournalSyncRequester];
-    [v22 requestStateSyncWithReason:@"Blood Pressure samples added"];
+    heartHealthProfileExtension2 = [v20 heartHealthProfileExtension];
+    bloodPressureJournalSyncRequester = [heartHealthProfileExtension2 bloodPressureJournalSyncRequester];
+    [bloodPressureJournalSyncRequester requestStateSyncWithReason:@"Blood Pressure samples added"];
   }
 
   didTriggerSyncHandler = self->_didTriggerSyncHandler;
@@ -307,11 +307,11 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  anchorCopy = anchor;
   _HKInitializeLogging();
   v8 = HKLogBloodPressureJournal();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -321,28 +321,28 @@ BOOL __72__HDHRBloodPressureJournalBPSampleObserver__samplesFromCurrentDeviceIn_
     v10 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(removedCopy, "count")}];
       v18 = 138544130;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = v17;
       v22 = 2114;
-      v23 = v6;
+      v23 = removedCopy;
       v24 = 2114;
-      v25 = v7;
+      v25 = anchorCopy;
       _os_log_debug_impl(&dword_229486000, v10, OS_LOG_TYPE_DEBUG, "[%{public}@] %{public}@ samples of types removed: %{public}@. anchor: %{public}@", &v18, 0x2Au);
     }
   }
 
-  v11 = [MEMORY[0x277CCD8D8] bloodPressureType];
-  v12 = [v6 containsObject:v11];
+  bloodPressureType = [MEMORY[0x277CCD8D8] bloodPressureType];
+  v12 = [removedCopy containsObject:bloodPressureType];
 
   if (v12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v14 = [WeakRetained heartHealthProfileExtension];
-    v15 = [v14 bloodPressureJournalSyncRequester];
-    [v15 requestStateSyncWithReason:@"Blood Pressure samples removed"];
+    heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+    bloodPressureJournalSyncRequester = [heartHealthProfileExtension bloodPressureJournalSyncRequester];
+    [bloodPressureJournalSyncRequester requestStateSyncWithReason:@"Blood Pressure samples removed"];
   }
 
   v16 = *MEMORY[0x277D85DE8];

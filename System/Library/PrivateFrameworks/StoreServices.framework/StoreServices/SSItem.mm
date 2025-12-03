@@ -11,7 +11,7 @@
 - (NSString)itemKind;
 - (NSString)itemTitle;
 - (NSURL)viewItemURL;
-- (SSItem)initWithItemDictionary:(id)a3;
+- (SSItem)initWithItemDictionary:(id)dictionary;
 - (SSItemImageCollection)imageCollection;
 - (SSItemOffer)defaultItemOffer;
 - (float)averageUserRating;
@@ -19,13 +19,13 @@
 - (id)_tellAFriendDictionary;
 - (id)buyParameters;
 - (id)contentRating;
-- (id)itemOfferForIdentifier:(id)a3;
+- (id)itemOfferForIdentifier:(id)identifier;
 - (id)mediaKind;
 - (id)playableMedia;
 - (id)podcastFeedURL;
 - (id)priceDisplay;
 - (id)rawItemDictionary;
-- (id)relatedItemsForRelationType:(id)a3;
+- (id)relatedItemsForRelationType:(id)type;
 - (id)releaseDate;
 - (id)sendGiftURL;
 - (id)tellAFriendBody;
@@ -34,17 +34,17 @@
 - (id)tellAFriendSubject;
 - (id)tweetInitialText;
 - (id)tweetURL;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 - (id)viewReviewsURL;
 - (int64_t)numberOfPrintedPages;
 - (int64_t)numberOfUserRatings;
-- (void)_finishTellAFriendLoadWithError:(id)a3;
-- (void)_setExpirationDate:(id)a3;
+- (void)_finishTellAFriendLoadWithError:(id)error;
+- (void)_setExpirationDate:(id)date;
 - (void)dealloc;
-- (void)loadTellAFriendMessageWithCompletionHandler:(id)a3;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)requestDidFinish:(id)a3;
-- (void)urlConnectionRequest:(id)a3 didReceiveResponse:(id)a4;
+- (void)loadTellAFriendMessageWithCompletionHandler:(id)handler;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)requestDidFinish:(id)finish;
+- (void)urlConnectionRequest:(id)request didReceiveResponse:(id)response;
 @end
 
 @implementation SSItem
@@ -63,9 +63,9 @@
 
 - (NSArray)allItemOffers
 {
-  v2 = [(SSItem *)self _offers];
+  _offers = [(SSItem *)self _offers];
 
-  return v2;
+  return _offers;
 }
 
 - (NSString)artistName
@@ -137,11 +137,11 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v9 = [(SSItem *)self _offers];
-    result = [v9 count];
+    _offers = [(SSItem *)self _offers];
+    result = [_offers count];
     if (result)
     {
-      return [v9 objectAtIndex:0];
+      return [_offers objectAtIndex:0];
     }
   }
 
@@ -173,7 +173,7 @@ LABEL_9:
 
 - (BOOL)isRestricted
 {
-  v3 = 1000;
+  intValue = 1000;
   v4 = [(SSItem *)self valueForProperty:@"rating"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -181,26 +181,26 @@ LABEL_9:
     v5 = [v4 objectForKey:@"rank"];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v5 intValue];
+      intValue = [v5 intValue];
     }
   }
 
-  v6 = [(SSItem *)self itemKind];
-  if ([(NSString *)v6 isEqualToString:@"software"]|| [(NSString *)v6 isEqualToString:@"newsstand"])
+  itemKind = [(SSItem *)self itemKind];
+  if ([(NSString *)itemKind isEqualToString:@"software"]|| [(NSString *)itemKind isEqualToString:@"newsstand"])
   {
     v7 = 0;
     v8 = @"com.apple.AppStore";
     goto LABEL_7;
   }
 
-  if ([(NSString *)v6 isEqualToString:@"movie"])
+  if ([(NSString *)itemKind isEqualToString:@"movie"])
   {
     v8 = @"com.apple.MobileStore";
     v7 = 1;
     goto LABEL_7;
   }
 
-  if ([(NSString *)v6 isEqualToString:@"tv-episode"]|| [(NSString *)v6 isEqualToString:@"tv-season"])
+  if ([(NSString *)itemKind isEqualToString:@"tv-episode"]|| [(NSString *)itemKind isEqualToString:@"tv-season"])
   {
     v8 = @"com.apple.MobileStore";
     v7 = 2;
@@ -214,7 +214,7 @@ LABEL_7:
       v12 = v11;
       if (v10)
       {
-        v13 = [v11 integerValue] < v3;
+        v13 = [v11 integerValue] < intValue;
       }
 
       else
@@ -231,9 +231,9 @@ LABEL_7:
     return v13 & 1;
   }
 
-  if (![(NSString *)v6 isEqualToString:@"album"]&& ![(NSString *)v6 isEqualToString:@"mix"]&& ![(NSString *)v6 isEqualToString:@"podcast"]&& ![(NSString *)v6 isEqualToString:@"podcast-episode"]&& ![(NSString *)v6 isEqualToString:@"music-video"]&& ![(NSString *)v6 isEqualToString:@"song"])
+  if (![(NSString *)itemKind isEqualToString:@"album"]&& ![(NSString *)itemKind isEqualToString:@"mix"]&& ![(NSString *)itemKind isEqualToString:@"podcast"]&& ![(NSString *)itemKind isEqualToString:@"podcast-episode"]&& ![(NSString *)itemKind isEqualToString:@"music-video"]&& ![(NSString *)itemKind isEqualToString:@"song"])
   {
-    if ([(NSString *)v6 isEqualToString:@"artist"]|| [(NSString *)v6 isEqualToString:@"audiobook"]|| [(NSString *)v6 isEqualToString:@"booklet"])
+    if ([(NSString *)itemKind isEqualToString:@"artist"]|| [(NSString *)itemKind isEqualToString:@"audiobook"]|| [(NSString *)itemKind isEqualToString:@"booklet"])
     {
       v13 = SSApplicationWithIdentifierIsAvailable(@"com.apple.MobileStore") ^ 1;
     }
@@ -249,8 +249,8 @@ LABEL_7:
   v15 = SBSCopyDisplayIdentifiers();
   v16 = [v15 containsObject:@"com.apple.MobileStore"];
 
-  v13 = (v3 == 200) | v16 ^ 1;
-  if (v3 != 200 || (v16 & 1) == 0)
+  v13 = (intValue == 200) | v16 ^ 1;
+  if (intValue != 200 || (v16 & 1) == 0)
   {
     return v13 & 1;
   }
@@ -291,20 +291,20 @@ LABEL_7:
   return v3;
 }
 
-- (id)itemOfferForIdentifier:(id)a3
+- (id)itemOfferForIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Invalid offer identifier"];
   }
 
-  v5 = [(SSItem *)self _offers];
+  _offers = [(SSItem *)self _offers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  result = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  result = [_offers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (result)
   {
     v7 = result;
@@ -316,7 +316,7 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_offers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -329,7 +329,7 @@ LABEL_7:
       }
 
       while (v7 != v9);
-      result = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      result = [_offers countByEnumeratingWithState:&v11 objects:v15 count:16];
       v7 = result;
       if (result)
       {
@@ -363,22 +363,22 @@ LABEL_7:
   return [v2 numberWithUnsignedLongLong:v3];
 }
 
-- (void)loadTellAFriendMessageWithCompletionHandler:(id)a3
+- (void)loadTellAFriendMessageWithCompletionHandler:(id)handler
 {
   if ([(SSItem *)self tellAFriendBody])
   {
-    if (!a3)
+    if (!handler)
     {
       return;
     }
 
-    v5 = self;
-    v6 = *(a3 + 2);
-    v7 = a3;
+    selfCopy = self;
+    v6 = *(handler + 2);
+    handlerCopy2 = handler;
     v8 = 0;
 LABEL_17:
 
-    v6(v7, v8);
+    v6(handlerCopy2, v8);
     return;
   }
 
@@ -386,15 +386,15 @@ LABEL_17:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v9]) == 0)
   {
-    if (!a3)
+    if (!handler)
     {
       return;
     }
 
-    v15 = self;
+    selfCopy2 = self;
     v8 = SSError(@"SSErrorDomain", 106, 0, 0);
-    v6 = *(a3 + 2);
-    v7 = a3;
+    v6 = *(handler + 2);
+    handlerCopy2 = handler;
     goto LABEL_17;
   }
 
@@ -404,7 +404,7 @@ LABEL_17:
     self->_tellAFriendHandlers = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v11 = [a3 copy];
+  v11 = [handler copy];
   if (v11)
   {
     v12 = v11;
@@ -449,7 +449,7 @@ LABEL_17:
   }
 }
 
-- (id)relatedItemsForRelationType:(id)a3
+- (id)relatedItemsForRelationType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = [(NSDictionary *)self->_properties objectForKey:@"related-items"];
@@ -459,14 +459,14 @@ LABEL_17:
     return 0;
   }
 
-  v5 = [v4 objectForKey:a3];
+  v5 = [v4 objectForKey:type];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -493,7 +493,7 @@ LABEL_17:
           if (v12)
           {
             v13 = v12;
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
       }
@@ -504,7 +504,7 @@ LABEL_17:
     while (v8);
   }
 
-  return v6;
+  return array;
 }
 
 - (id)tellAFriendBody
@@ -596,9 +596,9 @@ LABEL_17:
 
 - (NSArray)thumbnailImages
 {
-  v2 = [(SSItem *)self imageCollection];
+  imageCollection = [(SSItem *)self imageCollection];
 
-  return [(SSItemImageCollection *)v2 itemImages];
+  return [(SSItemImageCollection *)imageCollection itemImages];
 }
 
 - (id)tweetInitialText
@@ -651,9 +651,9 @@ LABEL_17:
   return [v4 URLWithString:v3];
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_properties objectForKey:a3];
+  v3 = [(NSDictionary *)self->_properties objectForKey:property];
 
   return v3;
 }
@@ -674,26 +674,26 @@ LABEL_17:
 
 - (id)buyParameters
 {
-  v2 = [(SSItem *)self defaultItemOffer];
+  defaultItemOffer = [(SSItem *)self defaultItemOffer];
 
-  return [(SSItemOffer *)v2 buyParameters];
+  return [(SSItemOffer *)defaultItemOffer buyParameters];
 }
 
 - (id)playableMedia
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(SSItem *)self _offers];
-  if (![v2 count])
+  _offers = [(SSItem *)self _offers];
+  if (![_offers count])
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [_offers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -704,30 +704,30 @@ LABEL_17:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_offers);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) playableMedia];
-        if (v8)
+        playableMedia = [*(*(&v10 + 1) + 8 * i) playableMedia];
+        if (playableMedia)
         {
-          [v3 addObject:v8];
+          [array addObject:playableMedia];
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [_offers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)priceDisplay
 {
-  v2 = [(SSItem *)self defaultItemOffer];
+  defaultItemOffer = [(SSItem *)self defaultItemOffer];
 
-  return [(SSItemOffer *)v2 priceDisplay];
+  return [(SSItemOffer *)defaultItemOffer priceDisplay];
 }
 
 - (NSString)description
@@ -737,14 +737,14 @@ LABEL_17:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@", -[SSItem description](&v3, sel_description), -[NSDictionary description](self->_properties, "description")];
 }
 
-- (SSItem)initWithItemDictionary:(id)a3
+- (SSItem)initWithItemDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = SSItem;
   v4 = [(SSItem *)&v6 init];
   if (v4)
   {
-    v4->_properties = [a3 copy];
+    v4->_properties = [dictionary copy];
   }
 
   return v4;
@@ -777,10 +777,10 @@ LABEL_17:
 
 - (id)mediaKind
 {
-  v3 = [(SSItem *)self itemKind];
-  v4 = [(SSItemOffer *)[(SSItem *)self defaultItemOffer] offerIdentifier];
+  itemKind = [(SSItem *)self itemKind];
+  offerIdentifier = [(SSItemOffer *)[(SSItem *)self defaultItemOffer] offerIdentifier];
 
-  return SSItemMediaKindForItemKind(v3, v4);
+  return SSItemMediaKindForItemKind(itemKind, offerIdentifier);
 }
 
 - (id)podcastFeedURL
@@ -846,13 +846,13 @@ LABEL_17:
   return result;
 }
 
-- (void)_setExpirationDate:(id)a3
+- (void)_setExpirationDate:(id)date
 {
   expirationDate = self->_expirationDate;
-  if (expirationDate != a3)
+  if (expirationDate != date)
   {
 
-    self->_expirationDate = a3;
+    self->_expirationDate = date;
   }
 }
 
@@ -870,37 +870,37 @@ LABEL_17:
   return result;
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  if (self->_tellAFriendRequest == a3)
+  if (self->_tellAFriendRequest == request)
   {
-    if (!a4)
+    if (!error)
     {
-      a4 = SSError(@"SSErrorDomain", 100, 0, 0);
+      error = SSError(@"SSErrorDomain", 100, 0, 0);
     }
 
-    [(SSItem *)self _finishTellAFriendLoadWithError:a4];
+    [(SSItem *)self _finishTellAFriendLoadWithError:error];
   }
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
-  if (self->_tellAFriendRequest == a3)
+  if (self->_tellAFriendRequest == finish)
   {
     [(SSItem *)self _finishTellAFriendLoadWithError:0];
   }
 }
 
-- (void)urlConnectionRequest:(id)a3 didReceiveResponse:(id)a4
+- (void)urlConnectionRequest:(id)request didReceiveResponse:(id)response
 {
-  if (self->_tellAFriendRequest == a3)
+  if (self->_tellAFriendRequest == request)
   {
 
-    self->_tellAFriendBodyMIMEType = [a4 MIMEType];
-    v6 = [a4 textEncodingName];
-    if (v6)
+    self->_tellAFriendBodyMIMEType = [response MIMEType];
+    textEncodingName = [response textEncodingName];
+    if (textEncodingName)
     {
-      v7 = CFStringConvertIANACharSetNameToEncoding(v6);
+      v7 = CFStringConvertIANACharSetNameToEncoding(textEncodingName);
     }
 
     else
@@ -908,11 +908,11 @@ LABEL_17:
       v7 = 134217984;
     }
 
-    self->_tellAFriendBody = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:objc_msgSend(a4 encoding:{"bodyData"), CFStringConvertEncodingToNSStringEncoding(v7)}];
+    self->_tellAFriendBody = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:objc_msgSend(response encoding:{"bodyData"), CFStringConvertEncodingToNSStringEncoding(v7)}];
   }
 }
 
-- (void)_finishTellAFriendLoadWithError:(id)a3
+- (void)_finishTellAFriendLoadWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = [(NSMutableArray *)self->_tellAFriendHandlers copy];
@@ -920,7 +920,7 @@ LABEL_17:
 
   self->_tellAFriendRequest = 0;
   self->_tellAFriendHandlers = 0;
-  v5 = self;
+  selfCopy = self;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;

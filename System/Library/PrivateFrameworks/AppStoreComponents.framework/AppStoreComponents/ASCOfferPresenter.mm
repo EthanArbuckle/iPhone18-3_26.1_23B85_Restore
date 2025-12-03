@@ -1,6 +1,6 @@
 @interface ASCOfferPresenter
-- (ASCOfferPresenter)initWithView:(id)a3;
-- (ASCOfferPresenter)initWithView:(id)a3 context:(id)a4;
+- (ASCOfferPresenter)initWithView:(id)view;
+- (ASCOfferPresenter)initWithView:(id)view context:(id)context;
 - (ASCOfferPresenterObserver)observer;
 - (ASCOfferPresenterView)view;
 - (BOOL)clearConfirmForNewStateIfNeeded;
@@ -8,50 +8,50 @@
 - (BOOL)viewAppForAppDistributionOffer;
 - (NSString)description;
 - (void)confirmOfferActionIfNeeded;
-- (void)offerStateDidChange:(id)a3 withMetadata:(id)a4 isActionable:(BOOL)a5;
-- (void)offerStatusTextDidChange:(id)a3;
+- (void)offerStateDidChange:(id)change withMetadata:(id)metadata isActionable:(BOOL)actionable;
+- (void)offerStatusTextDidChange:(id)change;
 - (void)performOfferAction;
-- (void)setOffer:(id)a3;
-- (void)setOfferStateMachine:(id)a3;
+- (void)setOffer:(id)offer;
+- (void)setOfferStateMachine:(id)machine;
 @end
 
 @implementation ASCOfferPresenter
 
-- (ASCOfferPresenter)initWithView:(id)a3 context:(id)a4
+- (ASCOfferPresenter)initWithView:(id)view context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = ASCOfferPresenter;
   v8 = [(ASCOfferPresenter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_view, v6);
-    objc_storeStrong(&v9->_context, a4);
+    objc_storeWeak(&v8->_view, viewCopy);
+    objc_storeStrong(&v9->_context, context);
     objc_storeStrong(&v9->_mostRecentAppState, @"unknown");
   }
 
   return v9;
 }
 
-- (ASCOfferPresenter)initWithView:(id)a3
+- (ASCOfferPresenter)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[ASCPresenterContext sharedContext];
-  v6 = [(ASCOfferPresenter *)self initWithView:v4 context:v5];
+  v6 = [(ASCOfferPresenter *)self initWithView:viewCopy context:v5];
 
   return v6;
 }
 
-- (void)setOfferStateMachine:(id)a3
+- (void)setOfferStateMachine:(id)machine
 {
-  v8 = a3;
+  machineCopy = machine;
   p_offerStateMachine = &self->_offerStateMachine;
   v6 = self->_offerStateMachine;
-  if (v8 && v6)
+  if (machineCopy && v6)
   {
-    v7 = [(ASCAppOfferStateMachine *)v6 isEqual:v8];
+    v7 = [(ASCAppOfferStateMachine *)v6 isEqual:machineCopy];
 
     if (v7)
     {
@@ -62,7 +62,7 @@
   else
   {
 
-    if (v6 == v8)
+    if (v6 == machineCopy)
     {
       goto LABEL_10;
     }
@@ -73,7 +73,7 @@
     [(ASCAppOfferStateMachine *)*p_offerStateMachine removeDelegate:self];
   }
 
-  objc_storeStrong(&self->_offerStateMachine, a3);
+  objc_storeStrong(&self->_offerStateMachine, machine);
   if (*p_offerStateMachine)
   {
     [(ASCAppOfferStateMachine *)*p_offerStateMachine addDelegate:self];
@@ -82,14 +82,14 @@
 LABEL_10:
 }
 
-- (void)setOffer:(id)a3
+- (void)setOffer:(id)offer
 {
-  v4 = a3;
+  offerCopy = offer;
   offer = self->_offer;
-  v25 = v4;
-  if (!v4 || !offer)
+  v25 = offerCopy;
+  if (!offerCopy || !offer)
   {
-    if (offer == v4)
+    if (offer == offerCopy)
     {
       goto LABEL_14;
     }
@@ -101,13 +101,13 @@ LABEL_6:
     self->_offer = v6;
 
     [(ASCOfferPresenter *)self clearConfirmForNewStateIfNeeded];
-    v8 = [(ASCOfferPresenter *)self view];
-    [v8 setOfferEnabled:1];
+    view = [(ASCOfferPresenter *)self view];
+    [view setOfferEnabled:1];
 
-    v9 = [(ASCOffer *)v25 flags];
-    v10 = [(ASCOfferPresenter *)self view];
-    v11 = v10;
-    if ((v9 & 8) != 0)
+    flags = [(ASCOffer *)v25 flags];
+    view2 = [(ASCOfferPresenter *)self view];
+    v11 = view2;
+    if ((flags & 8) != 0)
     {
       v12 = @" ";
     }
@@ -117,7 +117,7 @@ LABEL_6:
       v12 = 0;
     }
 
-    [v10 setOfferStatus:v12];
+    [view2 setOfferStatus:v12];
 
     if (v25)
     {
@@ -126,36 +126,36 @@ LABEL_6:
       {
         v13 = v25;
         [(ASCOfferPresenter *)self setOfferStateMachine:0];
-        v14 = [(ASCOfferPresenter *)self view];
-        v15 = [(ASCOffer *)v13 action];
-        [v14 setOfferInteractive:v15 != 0];
+        view3 = [(ASCOfferPresenter *)self view];
+        action = [(ASCOffer *)v13 action];
+        [view3 setOfferInteractive:action != 0];
 
-        v16 = [(ASCOfferPresenter *)self view];
-        v17 = [(ASCOffer *)v13 metadata];
+        view4 = [(ASCOfferPresenter *)self view];
+        metadata = [(ASCOffer *)v13 metadata];
 
-        [v16 setOfferMetadata:v17];
+        [view4 setOfferMetadata:metadata];
       }
 
       else
       {
-        v21 = [(ASCOfferPresenter *)self view];
-        [v21 setOfferInteractive:1];
+        view5 = [(ASCOfferPresenter *)self view];
+        [view5 setOfferInteractive:1];
 
-        v22 = [(ASCOfferPresenter *)self context];
-        v23 = [v22 appOfferStateCenter];
-        v24 = [v23 stateMachineForOffer:v25];
+        context = [(ASCOfferPresenter *)self context];
+        appOfferStateCenter = [context appOfferStateCenter];
+        v24 = [appOfferStateCenter stateMachineForOffer:v25];
         [(ASCOfferPresenter *)self setOfferStateMachine:v24];
       }
     }
 
     else
     {
-      v18 = [(ASCOfferPresenter *)self view];
-      [v18 setOfferInteractive:1];
+      view6 = [(ASCOfferPresenter *)self view];
+      [view6 setOfferInteractive:1];
 
-      v19 = [(ASCOfferPresenter *)self view];
+      view7 = [(ASCOfferPresenter *)self view];
       v20 = +[ASCOfferMetadata emptyMetadata];
-      [v19 setOfferMetadata:v20];
+      [view7 setOfferMetadata:v20];
 
       [(ASCOfferPresenter *)self setOfferStateMachine:0];
     }
@@ -163,7 +163,7 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  if (([(ASCOffer *)offer isEqual:v4]& 1) == 0)
+  if (([(ASCOffer *)offer isEqual:offerCopy]& 1) == 0)
   {
     goto LABEL_6;
   }
@@ -173,29 +173,29 @@ LABEL_14:
 
 - (BOOL)clearConfirmForNewStateIfNeeded
 {
-  v3 = [(ASCOfferPresenter *)self savedStateForConfirm];
+  savedStateForConfirm = [(ASCOfferPresenter *)self savedStateForConfirm];
 
-  if (v3)
+  if (savedStateForConfirm)
   {
-    v4 = [(ASCOfferPresenter *)self savedStateForConfirm];
-    v5 = [v4 metadata];
+    savedStateForConfirm2 = [(ASCOfferPresenter *)self savedStateForConfirm];
+    metadata = [savedStateForConfirm2 metadata];
 
-    v6 = [(ASCOfferPresenter *)self view];
-    [v6 setOfferMetadata:v5];
+    view = [(ASCOfferPresenter *)self view];
+    [view setOfferMetadata:metadata];
 
-    v7 = [(ASCOfferPresenter *)self savedStateForConfirm];
-    v8 = [v7 theme];
+    savedStateForConfirm3 = [(ASCOfferPresenter *)self savedStateForConfirm];
+    theme = [savedStateForConfirm3 theme];
 
-    v9 = [(ASCOfferPresenter *)self view];
-    [v9 setOfferTheme:v8];
+    view2 = [(ASCOfferPresenter *)self view];
+    [view2 setOfferTheme:theme];
 
-    v10 = [(ASCOfferPresenter *)self view];
-    [v10 endOfferModalState];
+    view3 = [(ASCOfferPresenter *)self view];
+    [view3 endOfferModalState];
 
     [(ASCOfferPresenter *)self setSavedStateForConfirm:0];
   }
 
-  return v3 != 0;
+  return savedStateForConfirm != 0;
 }
 
 - (BOOL)confirmOfferActionIfNeeded
@@ -205,9 +205,9 @@ LABEL_14:
     return 0;
   }
 
-  v4 = [(ASCOfferPresenter *)self offer];
-  v5 = [v4 titles];
-  v6 = [v5 objectForKeyedSubscript:@"confirmation"];
+  offer = [(ASCOfferPresenter *)self offer];
+  titles = [offer titles];
+  v6 = [titles objectForKeyedSubscript:@"confirmation"];
 
   if (!v6 || (-[ASCOfferPresenter offer](self, "offer"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 flags], v7, (v8 & 4) != 0))
   {
@@ -216,48 +216,48 @@ LABEL_14:
 
   else
   {
-    v9 = [(ASCOfferPresenter *)self mostRecentAppState];
-    if (([v9 isEqualToString:@"buyable"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"unknown"))
+    mostRecentAppState = [(ASCOfferPresenter *)self mostRecentAppState];
+    if (([mostRecentAppState isEqualToString:@"buyable"] & 1) != 0 || objc_msgSend(mostRecentAppState, "isEqualToString:", @"unknown"))
     {
-      v10 = [(ASCOfferPresenter *)self view];
-      v11 = [v10 saveOfferState];
+      view = [(ASCOfferPresenter *)self view];
+      saveOfferState = [view saveOfferState];
 
-      v3 = v11 != 0;
-      if (v11)
+      v3 = saveOfferState != 0;
+      if (saveOfferState)
       {
-        v12 = [v11 metadata];
-        if ([v12 isText])
+        metadata = [saveOfferState metadata];
+        if ([metadata isText])
         {
-          v13 = v12;
-          v14 = [(ASCOfferPresenter *)self view];
-          v15 = [v13 subtitle];
+          v13 = metadata;
+          view2 = [(ASCOfferPresenter *)self view];
+          subtitle = [v13 subtitle];
 
-          v16 = [ASCOfferMetadata textMetadataWithTitle:v6 subtitle:v15];
-          [v14 setOfferMetadata:v16];
+          v16 = [ASCOfferMetadata textMetadataWithTitle:v6 subtitle:subtitle];
+          [view2 setOfferMetadata:v16];
         }
 
         else
         {
-          v14 = [(ASCOfferPresenter *)self view];
-          v15 = [ASCOfferMetadata textMetadataWithTitle:v6 subtitle:0];
-          [v14 setOfferMetadata:v15];
+          view2 = [(ASCOfferPresenter *)self view];
+          subtitle = [ASCOfferMetadata textMetadataWithTitle:v6 subtitle:0];
+          [view2 setOfferMetadata:subtitle];
         }
 
-        v17 = [(ASCOfferPresenter *)self view];
-        v18 = [v11 theme];
-        v19 = [ASCOfferTheme confirmationForTheme:v18];
-        [v17 setOfferTheme:v19];
+        view3 = [(ASCOfferPresenter *)self view];
+        theme = [saveOfferState theme];
+        v19 = [ASCOfferTheme confirmationForTheme:theme];
+        [view3 setOfferTheme:v19];
 
         objc_initWeak(&location, self);
-        v20 = [(ASCOfferPresenter *)self view];
+        view4 = [(ASCOfferPresenter *)self view];
         v22 = MEMORY[0x277D85DD0];
         v23 = 3221225472;
         v24 = __47__ASCOfferPresenter_confirmOfferActionIfNeeded__block_invoke;
         v25 = &unk_2781CBD28;
         objc_copyWeak(&v26, &location);
-        [v20 beginOfferModalStateWithCancelBlock:&v22];
+        [view4 beginOfferModalStateWithCancelBlock:&v22];
 
-        [(ASCOfferPresenter *)self setSavedStateForConfirm:v11, v22, v23, v24, v25];
+        [(ASCOfferPresenter *)self setSavedStateForConfirm:saveOfferState, v22, v23, v24, v25];
         objc_destroyWeak(&v26);
         objc_destroyWeak(&location);
       }
@@ -285,13 +285,13 @@ void __47__ASCOfferPresenter_confirmOfferActionIfNeeded__block_invoke(uint64_t a
 
 - (void)performOfferAction
 {
-  v3 = [(ASCOfferPresenter *)self offerStateMachine];
-  if (v3)
+  offerStateMachine = [(ASCOfferPresenter *)self offerStateMachine];
+  if (offerStateMachine)
   {
     if (![(ASCOfferPresenter *)self confirmOfferActionIfNeeded])
     {
-      v4 = [(ASCOfferPresenter *)self view];
-      [v4 setOfferInteractive:0];
+      view = [(ASCOfferPresenter *)self view];
+      [view setOfferInteractive:0];
 
       objc_initWeak(&location, self);
       v28[0] = MEMORY[0x277D85DD0];
@@ -299,7 +299,7 @@ void __47__ASCOfferPresenter_confirmOfferActionIfNeeded__block_invoke(uint64_t a
       v28[2] = __39__ASCOfferPresenter_performOfferAction__block_invoke;
       v28[3] = &unk_2781CC458;
       objc_copyWeak(&v30, &location);
-      v29 = v3;
+      v29 = offerStateMachine;
       v5 = MEMORY[0x216070C30](v28);
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
@@ -316,19 +316,19 @@ void __47__ASCOfferPresenter_confirmOfferActionIfNeeded__block_invoke(uint64_t a
       v8 = v7;
       v24 = v8;
       v9 = MEMORY[0x216070C30](v23);
-      v10 = [(ASCOfferPresenter *)self observer];
+      observer = [(ASCOfferPresenter *)self observer];
 
-      if (v10)
+      if (observer)
       {
-        v11 = [(ASCOfferPresenter *)self mostRecentAppState];
-        v12 = [(ASCOfferPresenter *)self observer];
-        v13 = [(ASCOfferPresenter *)self offer];
+        mostRecentAppState = [(ASCOfferPresenter *)self mostRecentAppState];
+        observer2 = [(ASCOfferPresenter *)self observer];
+        offer = [(ASCOfferPresenter *)self offer];
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __39__ASCOfferPresenter_performOfferAction__block_invoke_10;
         v21[3] = &unk_2781CBC98;
         v22 = v9;
-        [v12 offerPresenterPreprocessOffer:v13 inState:v11 completionBlock:v21];
+        [observer2 offerPresenterPreprocessOffer:offer inState:mostRecentAppState completionBlock:v21];
       }
 
       else if ([MEMORY[0x277CCACC8] isMainThread])
@@ -349,23 +349,23 @@ void __47__ASCOfferPresenter_confirmOfferActionIfNeeded__block_invoke(uint64_t a
 
   else
   {
-    v14 = [(ASCOfferPresenter *)self offer];
-    if (v14)
+    offer2 = [(ASCOfferPresenter *)self offer];
+    if (offer2)
     {
-      v15 = v14;
-      v16 = [(ASCOfferPresenter *)self offer];
+      v15 = offer2;
+      offer3 = [(ASCOfferPresenter *)self offer];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v18 = [(ASCOfferPresenter *)self offer];
-        v19 = [v18 action];
+        offer4 = [(ASCOfferPresenter *)self offer];
+        action = [offer4 action];
 
-        if (v19)
+        if (action)
         {
-          v20 = [v18 action];
-          v20[2]();
+          action2 = [offer4 action];
+          action2[2]();
         }
       }
     }
@@ -476,49 +476,49 @@ void __39__ASCOfferPresenter_performOfferAction__block_invoke_10(uint64_t a1, vo
 
 - (BOOL)viewAppForAppDistributionOffer
 {
-  v3 = [(ASCOfferPresenter *)self offer];
-  if (v3)
+  offer = [(ASCOfferPresenter *)self offer];
+  if (offer)
   {
-    v4 = v3;
-    v5 = [(ASCOfferPresenter *)self offer];
+    v4 = offer;
+    offer2 = [(ASCOfferPresenter *)self offer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(ASCOfferPresenter *)self offer];
-      v8 = [(ASCOfferPresenter *)self offerStateMachine];
-      [v8 viewAppForAppDistributionOffer:v7];
+      offer3 = [(ASCOfferPresenter *)self offer];
+      offerStateMachine = [(ASCOfferPresenter *)self offerStateMachine];
+      [offerStateMachine viewAppForAppDistributionOffer:offer3];
 
-      LOBYTE(v3) = 1;
+      LOBYTE(offer) = 1;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(offer) = 0;
     }
   }
 
-  return v3;
+  return offer;
 }
 
-- (void)offerStateDidChange:(id)a3 withMetadata:(id)a4 isActionable:(BOOL)a5
+- (void)offerStateDidChange:(id)change withMetadata:(id)metadata isActionable:(BOOL)actionable
 {
-  v5 = a5;
-  v14 = a3;
-  v8 = a4;
+  actionableCopy = actionable;
+  changeCopy = change;
+  metadataCopy = metadata;
   [(ASCOfferPresenter *)self clearConfirmForNewStateIfNeeded];
-  v9 = [(ASCOfferPresenter *)self view];
-  [v9 setOfferEnabled:v5];
+  view = [(ASCOfferPresenter *)self view];
+  [view setOfferEnabled:actionableCopy];
 
-  v10 = [(ASCOfferPresenter *)self view];
-  [v10 setOfferMetadata:v8];
+  view2 = [(ASCOfferPresenter *)self view];
+  [view2 setOfferMetadata:metadataCopy];
 
-  v11 = [(ASCOfferPresenter *)self mostRecentAppState];
-  if (!v14 || !v11)
+  mostRecentAppState = [(ASCOfferPresenter *)self mostRecentAppState];
+  if (!changeCopy || !mostRecentAppState)
   {
 
-    if (v11 == v14)
+    if (mostRecentAppState == changeCopy)
     {
       goto LABEL_7;
     }
@@ -526,36 +526,36 @@ void __39__ASCOfferPresenter_performOfferAction__block_invoke_10(uint64_t a1, vo
     goto LABEL_6;
   }
 
-  v12 = [v14 isEqual:v11];
+  v12 = [changeCopy isEqual:mostRecentAppState];
 
   if ((v12 & 1) == 0)
   {
 LABEL_6:
-    v13 = [(ASCOfferPresenter *)self observer];
-    [v13 offerPresenterDidObserveChangeToState:v14];
+    observer = [(ASCOfferPresenter *)self observer];
+    [observer offerPresenterDidObserveChangeToState:changeCopy];
 
-    [(ASCOfferPresenter *)self setMostRecentAppState:v14];
+    [(ASCOfferPresenter *)self setMostRecentAppState:changeCopy];
   }
 
 LABEL_7:
 }
 
-- (void)offerStatusTextDidChange:(id)a3
+- (void)offerStatusTextDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(ASCOfferPresenter *)self view];
-  [v5 setOfferStatus:v4];
+  changeCopy = change;
+  view = [(ASCOfferPresenter *)self view];
+  [view setOfferStatus:changeCopy];
 }
 
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCOfferPresenter *)self offer];
-  [(ASCDescriber *)v3 addSensitiveObject:v4 withName:@"offer"];
+  offer = [(ASCOfferPresenter *)self offer];
+  [(ASCDescriber *)v3 addSensitiveObject:offer withName:@"offer"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 - (ASCOfferPresenterObserver)observer
@@ -575,9 +575,9 @@ LABEL_7:
 - (void)confirmOfferActionIfNeeded
 {
   v4 = *MEMORY[0x277D85DE8];
-  v1 = [a1 view];
+  view = [self view];
   v2 = 138412290;
-  v3 = v1;
+  v3 = view;
   _os_log_error_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Offer presenter view %@ did not provide offer state for two phase buy", &v2, 0xCu);
 }
 

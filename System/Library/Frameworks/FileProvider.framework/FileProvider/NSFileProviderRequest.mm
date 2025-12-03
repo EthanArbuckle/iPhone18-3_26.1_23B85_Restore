@@ -8,10 +8,10 @@
 - (BOOL)isFileViewerRequest;
 - (BOOL)isSystemRequest;
 - (NSFileProviderRequest)init;
-- (NSFileProviderRequest)initWithCoder:(id)a3;
-- (NSFileProviderRequest)initWithIsSpeculativeDownload:(BOOL)a3;
+- (NSFileProviderRequest)initWithCoder:(id)coder;
+- (NSFileProviderRequest)initWithIsSpeculativeDownload:(BOOL)download;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSFileProviderRequest
@@ -54,9 +54,9 @@
 
   else
   {
-    v4 = [(NSFileProviderRequest *)self isFileViewerRequest];
+    isFileViewerRequest = [(NSFileProviderRequest *)self isFileViewerRequest];
     v3 = "other";
-    if (v4)
+    if (isFileViewerRequest)
     {
       v3 = "viewer";
     }
@@ -77,55 +77,55 @@
 
 - (BOOL)isSystemRequest
 {
-  v2 = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
-  v3 = [objc_opt_class() _fpdIdentifier];
-  v4 = [v2 isEqual:v3];
+  requestingApplicationIdentifier = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
+  _fpdIdentifier = [objc_opt_class() _fpdIdentifier];
+  v4 = [requestingApplicationIdentifier isEqual:_fpdIdentifier];
 
   return v4;
 }
 
-- (NSFileProviderRequest)initWithIsSpeculativeDownload:(BOOL)a3
+- (NSFileProviderRequest)initWithIsSpeculativeDownload:(BOOL)download
 {
   v5.receiver = self;
   v5.super_class = NSFileProviderRequest;
   result = [(NSFileProviderRequest *)&v5 init];
   if (result)
   {
-    result->_speculativeDownload = a3;
+    result->_speculativeDownload = download;
   }
 
   return result;
 }
 
-- (NSFileProviderRequest)initWithCoder:(id)a3
+- (NSFileProviderRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NSFileProviderRequest;
   v5 = [(NSFileProviderRequest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_requestingApplicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_requestingApplicationIdentifier"];
     requestingApplicationIdentifier = v5->_requestingApplicationIdentifier;
     v5->_requestingApplicationIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_domainVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_domainVersion"];
     domainVersion = v5->_domainVersion;
     v5->_domainVersion = v8;
 
-    v5->_speculativeDownload = [v4 decodeBoolForKey:@"_speculativeDownload"];
+    v5->_speculativeDownload = [coderCopy decodeBoolForKey:@"_speculativeDownload"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestingApplicationIdentifier = self->_requestingApplicationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:requestingApplicationIdentifier forKey:@"_requestingApplicationIdentifier"];
-  [v5 encodeObject:self->_domainVersion forKey:@"_domainVersion"];
-  [v5 encodeBool:self->_speculativeDownload forKey:@"_speculativeDownload"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestingApplicationIdentifier forKey:@"_requestingApplicationIdentifier"];
+  [coderCopy encodeObject:self->_domainVersion forKey:@"_domainVersion"];
+  [coderCopy encodeBool:self->_speculativeDownload forKey:@"_speculativeDownload"];
 }
 
 + (NSUUID)_finderIdentifier
@@ -158,36 +158,36 @@
 
 - (BOOL)isFileViewerRequest
 {
-  v3 = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
-  v4 = [objc_opt_class() _finderIdentifier];
-  if ([v3 isEqual:v4])
+  requestingApplicationIdentifier = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
+  _finderIdentifier = [objc_opt_class() _finderIdentifier];
+  if ([requestingApplicationIdentifier isEqual:_finderIdentifier])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
-    v7 = [objc_opt_class() _dsIdentifier];
-    if ([v6 isEqual:v7])
+    requestingApplicationIdentifier2 = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
+    _dsIdentifier = [objc_opt_class() _dsIdentifier];
+    if ([requestingApplicationIdentifier2 isEqual:_dsIdentifier])
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
-      v9 = [objc_opt_class() _dmIdentifier];
-      if ([v8 isEqual:v9])
+      requestingApplicationIdentifier3 = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
+      _dmIdentifier = [objc_opt_class() _dmIdentifier];
+      if ([requestingApplicationIdentifier3 isEqual:_dmIdentifier])
       {
         v5 = 1;
       }
 
       else
       {
-        v10 = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
-        v11 = [objc_opt_class() _filesIdentifier];
-        v5 = [v10 isEqual:v11];
+        requestingApplicationIdentifier4 = [(NSFileProviderRequest *)self requestingApplicationIdentifier];
+        _filesIdentifier = [objc_opt_class() _filesIdentifier];
+        v5 = [requestingApplicationIdentifier4 isEqual:_filesIdentifier];
       }
     }
   }

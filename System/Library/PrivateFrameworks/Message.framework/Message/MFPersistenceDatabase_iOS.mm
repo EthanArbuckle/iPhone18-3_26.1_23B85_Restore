@@ -1,15 +1,15 @@
 @interface MFPersistenceDatabase_iOS
 + (OS_os_log)log;
-- (BOOL)_migrateWithDatabaseConnection:(id)a3 migrator:(id)a4;
-- (BOOL)mailMessageLibraryMigrator:(id)a3 attachProtectedDatabaseWithName:(id)a4 connection:(id)a5 error:(id *)a6;
-- (MFPersistenceDatabase_iOS)initWithBasePath:(id)a3 databaseName:(id)a4 minimumCachedReaderConnections:(unint64_t)a5 schema:(id)a6 protectedSchema:(id)a7 propertyMapper:(id)a8 protectedDatabasePersistence:(id)a9;
-- (id)journalManagerForMailMessageLibraryMigrator:(id)a3;
-- (void)addPostMigrationStep:(Class)a3;
-- (void)checkInConnection:(id)a3;
-- (void)handleExceptionDuringDatabaseBlock:(id)a3;
-- (void)mailMessageLibraryMigrator:(id)a3 detachProtectedDatabaseWithConnection:(id)a4;
-- (void)mailMessageLibraryMigrator:(id)a3 isInitializingDatabaseWithConnection:(id)a4;
-- (void)mailMessageLibraryMigratorScheduleSpotlightReindex:(id)a3;
+- (BOOL)_migrateWithDatabaseConnection:(id)connection migrator:(id)migrator;
+- (BOOL)mailMessageLibraryMigrator:(id)migrator attachProtectedDatabaseWithName:(id)name connection:(id)connection error:(id *)error;
+- (MFPersistenceDatabase_iOS)initWithBasePath:(id)path databaseName:(id)name minimumCachedReaderConnections:(unint64_t)connections schema:(id)schema protectedSchema:(id)protectedSchema propertyMapper:(id)mapper protectedDatabasePersistence:(id)persistence;
+- (id)journalManagerForMailMessageLibraryMigrator:(id)migrator;
+- (void)addPostMigrationStep:(Class)step;
+- (void)checkInConnection:(id)connection;
+- (void)handleExceptionDuringDatabaseBlock:(id)block;
+- (void)mailMessageLibraryMigrator:(id)migrator detachProtectedDatabaseWithConnection:(id)connection;
+- (void)mailMessageLibraryMigrator:(id)migrator isInitializingDatabaseWithConnection:(id)connection;
+- (void)mailMessageLibraryMigratorScheduleSpotlightReindex:(id)reindex;
 @end
 
 @implementation MFPersistenceDatabase_iOS
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __32__MFPersistenceDatabase_iOS_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_28 != -1)
   {
     dispatch_once(&log_onceToken_28, block);
@@ -31,17 +31,17 @@
   return v2;
 }
 
-- (MFPersistenceDatabase_iOS)initWithBasePath:(id)a3 databaseName:(id)a4 minimumCachedReaderConnections:(unint64_t)a5 schema:(id)a6 protectedSchema:(id)a7 propertyMapper:(id)a8 protectedDatabasePersistence:(id)a9
+- (MFPersistenceDatabase_iOS)initWithBasePath:(id)path databaseName:(id)name minimumCachedReaderConnections:(unint64_t)connections schema:(id)schema protectedSchema:(id)protectedSchema propertyMapper:(id)mapper protectedDatabasePersistence:(id)persistence
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  pathCopy = path;
+  nameCopy = name;
+  schemaCopy = schema;
+  protectedSchemaCopy = protectedSchema;
+  mapperCopy = mapper;
+  persistenceCopy = persistence;
   v27.receiver = self;
   v27.super_class = MFPersistenceDatabase_iOS;
-  v21 = [(EDPersistenceDatabase *)&v27 initWithBasePath:v15 databaseName:v16 minimumCachedReaderConnections:a5 schema:v17 protectedSchema:v18 propertyMapper:v19 protectedDatabasePersistence:v20];
+  v21 = [(EDPersistenceDatabase *)&v27 initWithBasePath:pathCopy databaseName:nameCopy minimumCachedReaderConnections:connections schema:schemaCopy protectedSchema:protectedSchemaCopy propertyMapper:mapperCopy protectedDatabasePersistence:persistenceCopy];
   if (v21)
   {
     v22 = objc_opt_new();
@@ -56,29 +56,29 @@
   return v21;
 }
 
-- (void)checkInConnection:(id)a3
+- (void)checkInConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MFPersistenceDatabase_iOS.m" lineNumber:60 description:@"Got wrong type of connection"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFPersistenceDatabase_iOS.m" lineNumber:60 description:@"Got wrong type of connection"];
   }
 
   ECEndDisallowingNetworkActivity();
   v7.receiver = self;
   v7.super_class = MFPersistenceDatabase_iOS;
-  [(EDPersistenceDatabase *)&v7 checkInConnection:v5];
+  [(EDPersistenceDatabase *)&v7 checkInConnection:connectionCopy];
 }
 
-- (BOOL)_migrateWithDatabaseConnection:(id)a3 migrator:(id)a4
+- (BOOL)_migrateWithDatabaseConnection:(id)connection migrator:(id)migrator
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDPersistenceDatabase *)self schema];
-  v9 = [v7 migrateWithDatabaseConnection:v6 schema:v8];
+  connectionCopy = connection;
+  migratorCopy = migrator;
+  schema = [(EDPersistenceDatabase *)self schema];
+  v9 = [migratorCopy migrateWithDatabaseConnection:connectionCopy schema:schema];
 
   if (v9)
   {
@@ -86,8 +86,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [(MFPersistenceDatabase_iOS *)self postMigrationSteps];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    postMigrationSteps = [(MFPersistenceDatabase_iOS *)self postMigrationSteps];
+    v11 = [postMigrationSteps countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = *v19;
@@ -97,14 +97,14 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(postMigrationSteps);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) runWithConnection:v6];
+          v14 = [*(*(&v18 + 1) + 8 * i) runWithConnection:connectionCopy];
         }
 
         v15 = v14;
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [postMigrationSteps countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -121,25 +121,25 @@
   return v9;
 }
 
-- (void)addPostMigrationStep:(Class)a3
+- (void)addPostMigrationStep:(Class)step
 {
-  v4 = [(MFPersistenceDatabase_iOS *)self postMigrationSteps];
-  [v4 addObject:a3];
+  postMigrationSteps = [(MFPersistenceDatabase_iOS *)self postMigrationSteps];
+  [postMigrationSteps addObject:step];
 }
 
-- (void)handleExceptionDuringDatabaseBlock:(id)a3
+- (void)handleExceptionDuringDatabaseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5.receiver = self;
   v5.super_class = MFPersistenceDatabase_iOS;
-  [(EDPersistenceDatabase *)&v5 handleExceptionDuringDatabaseBlock:v4];
-  objc_exception_throw(v4);
+  [(EDPersistenceDatabase *)&v5 handleExceptionDuringDatabaseBlock:blockCopy];
+  objc_exception_throw(blockCopy);
 }
 
-- (BOOL)mailMessageLibraryMigrator:(id)a3 attachProtectedDatabaseWithName:(id)a4 connection:(id)a5 error:(id *)a6
+- (BOOL)mailMessageLibraryMigrator:(id)migrator attachProtectedDatabaseWithName:(id)name connection:(id)connection error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  connectionCopy = connection;
   v11 = [(EDPersistenceDatabase *)self urlFileProtectionTypeForDatabaseType:1];
   if ([v11 isEqualToString:*MEMORY[0x1E695DAD8]])
   {
@@ -148,22 +148,22 @@
     v11 = v12;
   }
 
-  v13 = [(EDPersistenceDatabase *)self protectedDatabasePath];
-  v14 = [(EDPersistenceDatabase *)self urlForDatabasePath:v13 type:1 fileProtection:v11];
+  protectedDatabasePath = [(EDPersistenceDatabase *)self protectedDatabasePath];
+  v14 = [(EDPersistenceDatabase *)self urlForDatabasePath:protectedDatabasePath type:1 fileProtection:v11];
 
-  v15 = [v10 attachProtectedDatabaseWithName:v9 url:v14 error:a6];
+  v15 = [connectionCopy attachProtectedDatabaseWithName:nameCopy url:v14 error:error];
   return v15;
 }
 
-- (void)mailMessageLibraryMigrator:(id)a3 detachProtectedDatabaseWithConnection:(id)a4
+- (void)mailMessageLibraryMigrator:(id)migrator detachProtectedDatabaseWithConnection:(id)connection
 {
   v20 = *MEMORY[0x1E69E9840];
-  [a4 detachProtectedDatabase];
+  [connection detachProtectedDatabase];
   v5 = [(EDPersistenceDatabase *)self urlFileProtectionTypeForDatabaseType:1];
   if (v5)
   {
-    v6 = [(EDPersistenceDatabase *)self protectedDatabasePath];
-    v7 = [(EDPersistenceDatabase *)self urlForDatabasePath:v6 type:1];
+    protectedDatabasePath = [(EDPersistenceDatabase *)self protectedDatabasePath];
+    v7 = [(EDPersistenceDatabase *)self urlForDatabasePath:protectedDatabasePath type:1];
 
     v17 = 0;
     v8 = [MEMORY[0x1E699B8E0] setFileProtection:v5 forDatabaseAtURL:v7 error:&v17];
@@ -176,8 +176,8 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v11 = [v9 domain];
-    if ([v11 isEqualToString:*MEMORY[0x1E699B770]])
+    domain = [v9 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E699B770]])
     {
       v12 = [v10 code] == 23;
 
@@ -186,9 +186,9 @@ LABEL_11:
         v13 = +[MFPersistenceDatabase_iOS log];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [v10 ef_publicDescription];
+          ef_publicDescription = [v10 ef_publicDescription];
           *buf = 138543362;
-          v19 = v14;
+          v19 = ef_publicDescription;
           _os_log_impl(&dword_1B0389000, v13, OS_LOG_TYPE_INFO, "Couldn't reset file protection of protected database. The device is probably locked. %{public}@", buf, 0xCu);
         }
 
@@ -205,8 +205,8 @@ LABEL_10:
     v13 = +[MFPersistenceDatabase_iOS log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v10 ef_publicDescription];
-      [(MFPersistenceDatabase_iOS *)v15 mailMessageLibraryMigrator:buf detachProtectedDatabaseWithConnection:v13];
+      ef_publicDescription2 = [v10 ef_publicDescription];
+      [(MFPersistenceDatabase_iOS *)ef_publicDescription2 mailMessageLibraryMigrator:buf detachProtectedDatabaseWithConnection:v13];
     }
 
     goto LABEL_10;
@@ -217,28 +217,28 @@ LABEL_12:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mailMessageLibraryMigrator:(id)a3 isInitializingDatabaseWithConnection:(id)a4
+- (void)mailMessageLibraryMigrator:(id)migrator isInitializingDatabaseWithConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v4 = +[MFMailMessageLibrary defaultInstance];
-  v5 = [v4 hookRegistry];
-  [v5 persistenceIsInitializingDatabaseWithConnection:v6];
+  hookRegistry = [v4 hookRegistry];
+  [hookRegistry persistenceIsInitializingDatabaseWithConnection:connectionCopy];
 }
 
-- (void)mailMessageLibraryMigratorScheduleSpotlightReindex:(id)a3
+- (void)mailMessageLibraryMigratorScheduleSpotlightReindex:(id)reindex
 {
   v5 = +[MFMailMessageLibrary defaultInstance];
-  v3 = [v5 persistence];
-  v4 = [v3 searchableIndexManager];
-  [v4 setNeedsToRedonate];
+  persistence = [v5 persistence];
+  searchableIndexManager = [persistence searchableIndexManager];
+  [searchableIndexManager setNeedsToRedonate];
 }
 
-- (id)journalManagerForMailMessageLibraryMigrator:(id)a3
+- (id)journalManagerForMailMessageLibraryMigrator:(id)migrator
 {
-  v3 = [(EDPersistenceDatabase *)self protectedDatabasePersistence];
-  v4 = [v3 journalManager];
+  protectedDatabasePersistence = [(EDPersistenceDatabase *)self protectedDatabasePersistence];
+  journalManager = [protectedDatabasePersistence journalManager];
 
-  return v4;
+  return journalManager;
 }
 
 - (void)mailMessageLibraryMigrator:(os_log_t)log detachProtectedDatabaseWithConnection:.cold.1(void *a1, uint8_t *buf, os_log_t log)

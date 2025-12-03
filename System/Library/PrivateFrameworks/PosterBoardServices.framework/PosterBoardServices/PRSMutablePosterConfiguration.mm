@@ -1,7 +1,7 @@
 @interface PRSMutablePosterConfiguration
 + (id)mutableConfiguration;
-+ (id)mutableConfigurationWithProvider:(id)a3 descriptorIdentifier:(id)a4 role:(id)a5;
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4;
++ (id)mutableConfigurationWithProvider:(id)provider descriptorIdentifier:(id)identifier role:(id)role;
+- (BOOL)storeUserInfo:(id)info error:(id *)error;
 @end
 
 @implementation PRSMutablePosterConfiguration
@@ -9,29 +9,29 @@
 + (id)mutableConfiguration
 {
   v3 = PFPosterRoleDefaultRoleForCurrentExtensionProcess();
-  v4 = [a1 mutableConfigurationWithRole:v3];
+  v4 = [self mutableConfigurationWithRole:v3];
 
   return v4;
 }
 
-+ (id)mutableConfigurationWithProvider:(id)a3 descriptorIdentifier:(id)a4 role:(id)a5
++ (id)mutableConfigurationWithProvider:(id)provider descriptorIdentifier:(id)identifier role:(id)role
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  roleCopy = role;
   if ((PFPosterRoleIsValid() & 1) == 0)
   {
-    [PRSMutablePosterConfiguration mutableConfigurationWithProvider:v11 descriptorIdentifier:a2 role:a1];
+    [PRSMutablePosterConfiguration mutableConfigurationWithProvider:roleCopy descriptorIdentifier:a2 role:self];
   }
 
-  if (v9)
+  if (providerCopy)
   {
-    [MEMORY[0x1E69C51E8] temporaryServerPathForProvider:v9 descriptorIdentifier:v10 role:v11];
+    [MEMORY[0x1E69C51E8] temporaryServerPathForProvider:providerCopy descriptorIdentifier:identifierCopy role:roleCopy];
   }
 
   else
   {
-    [MEMORY[0x1E69C5178] temporaryPathForRole:v11];
+    [MEMORY[0x1E69C5178] temporaryPathForRole:roleCopy];
   }
   v12 = ;
   v13 = [(PRSPosterConfiguration *)[PRSMutablePosterConfiguration alloc] _initWithPath:v12];
@@ -40,13 +40,13 @@
   return v13;
 }
 
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4
+- (BOOL)storeUserInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRSPosterConfiguration *)self _path];
-  LOBYTE(a4) = [v7 storeUserInfo:v6 error:a4];
+  infoCopy = info;
+  _path = [(PRSPosterConfiguration *)self _path];
+  LOBYTE(error) = [_path storeUserInfo:infoCopy error:error];
 
-  return a4;
+  return error;
 }
 
 + (void)mutableConfigurationWithProvider:(uint64_t)a1 descriptorIdentifier:(const char *)a2 role:(uint64_t)a3 .cold.1(uint64_t a1, const char *a2, uint64_t a3)

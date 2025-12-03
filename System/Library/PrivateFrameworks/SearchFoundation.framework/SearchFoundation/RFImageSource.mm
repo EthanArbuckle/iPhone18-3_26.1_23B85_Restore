@@ -1,104 +1,104 @@
 @interface RFImageSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFImageSource)initWithCoder:(id)a3;
-- (RFImageSource)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFImageSource)initWithCoder:(id)coder;
+- (RFImageSource)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setApp_icon:(id)a3;
-- (void)setAvatar:(id)a3;
-- (void)setBadged_image:(id)a3;
-- (void)setDefault_browser_app_icon:(id)a3;
-- (void)setMonogram:(id)a3;
-- (void)setSymbol:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setApp_icon:(id)app_icon;
+- (void)setAvatar:(id)avatar;
+- (void)setBadged_image:(id)badged_image;
+- (void)setDefault_browser_app_icon:(id)default_browser_app_icon;
+- (void)setMonogram:(id)monogram;
+- (void)setSymbol:(id)symbol;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RFImageSource
 
-- (RFImageSource)initWithProtobuf:(id)a3
+- (RFImageSource)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v36.receiver = self;
   v36.super_class = RFImageSource;
   v5 = [(RFImageSource *)&v36 init];
   if (v5)
   {
-    v6 = [v4 url];
+    v6 = [protobufCopy url];
 
     if (v6)
     {
       v7 = [RFUrlImage alloc];
-      v8 = [v4 url];
+      v8 = [protobufCopy url];
       v9 = [(RFUrlImage *)v7 initWithProtobuf:v8];
       [(RFImageSource *)v5 setUrl:v9];
     }
 
-    v10 = [v4 symbol];
+    symbol = [protobufCopy symbol];
 
-    if (v10)
+    if (symbol)
     {
       v11 = [RFSymbolImage alloc];
-      v12 = [v4 symbol];
-      v13 = [(RFSymbolImage *)v11 initWithProtobuf:v12];
+      symbol2 = [protobufCopy symbol];
+      v13 = [(RFSymbolImage *)v11 initWithProtobuf:symbol2];
       [(RFImageSource *)v5 setSymbol:v13];
     }
 
-    v14 = [v4 app_icon];
+    app_icon = [protobufCopy app_icon];
 
-    if (v14)
+    if (app_icon)
     {
       v15 = [RFAppIconImage alloc];
-      v16 = [v4 app_icon];
-      v17 = [(RFAppIconImage *)v15 initWithProtobuf:v16];
+      app_icon2 = [protobufCopy app_icon];
+      v17 = [(RFAppIconImage *)v15 initWithProtobuf:app_icon2];
       [(RFImageSource *)v5 setApp_icon:v17];
     }
 
-    v18 = [v4 avatar];
+    avatar = [protobufCopy avatar];
 
-    if (v18)
+    if (avatar)
     {
       v19 = [RFAvatarImage alloc];
-      v20 = [v4 avatar];
-      v21 = [(RFAvatarImage *)v19 initWithProtobuf:v20];
+      avatar2 = [protobufCopy avatar];
+      v21 = [(RFAvatarImage *)v19 initWithProtobuf:avatar2];
       [(RFImageSource *)v5 setAvatar:v21];
     }
 
-    v22 = [v4 monogram];
+    monogram = [protobufCopy monogram];
 
-    if (v22)
+    if (monogram)
     {
       v23 = [RFMonogramImage alloc];
-      v24 = [v4 monogram];
-      v25 = [(RFMonogramImage *)v23 initWithProtobuf:v24];
+      monogram2 = [protobufCopy monogram];
+      v25 = [(RFMonogramImage *)v23 initWithProtobuf:monogram2];
       [(RFImageSource *)v5 setMonogram:v25];
     }
 
-    v26 = [v4 badged_image];
+    badged_image = [protobufCopy badged_image];
 
-    if (v26)
+    if (badged_image)
     {
       v27 = [RFBadgedImage alloc];
-      v28 = [v4 badged_image];
-      v29 = [(RFBadgedImage *)v27 initWithProtobuf:v28];
+      badged_image2 = [protobufCopy badged_image];
+      v29 = [(RFBadgedImage *)v27 initWithProtobuf:badged_image2];
       [(RFImageSource *)v5 setBadged_image:v29];
     }
 
-    v30 = [v4 default_browser_app_icon];
+    default_browser_app_icon = [protobufCopy default_browser_app_icon];
 
-    if (v30)
+    if (default_browser_app_icon)
     {
       v31 = [RFDefaultBrowserAppIconImage alloc];
-      v32 = [v4 default_browser_app_icon];
-      v33 = [(RFDefaultBrowserAppIconImage *)v31 initWithProtobuf:v32];
+      default_browser_app_icon2 = [protobufCopy default_browser_app_icon];
+      v33 = [(RFDefaultBrowserAppIconImage *)v31 initWithProtobuf:default_browser_app_icon2];
       [(RFImageSource *)v5 setDefault_browser_app_icon:v33];
     }
 
-    if ([v4 do_not_show_loading_placeholder])
+    if ([protobufCopy do_not_show_loading_placeholder])
     {
-      -[RFImageSource setDo_not_show_loading_placeholder:](v5, "setDo_not_show_loading_placeholder:", [v4 do_not_show_loading_placeholder]);
+      -[RFImageSource setDo_not_show_loading_placeholder:](v5, "setDo_not_show_loading_placeholder:", [protobufCopy do_not_show_loading_placeholder]);
     }
 
     v34 = v5;
@@ -111,36 +111,36 @@
 {
   v3 = [(RFImageSource *)self url];
   v4 = [v3 hash];
-  v5 = [(RFImageSource *)self symbol];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RFImageSource *)self app_icon];
-  v8 = [v7 hash];
-  v9 = [(RFImageSource *)self avatar];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(RFImageSource *)self monogram];
-  v12 = [v11 hash];
-  v13 = [(RFImageSource *)self badged_image];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(RFImageSource *)self default_browser_app_icon];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(RFImageSource *)self do_not_show_loading_placeholder];
+  symbol = [(RFImageSource *)self symbol];
+  v6 = [symbol hash] ^ v4;
+  app_icon = [(RFImageSource *)self app_icon];
+  v8 = [app_icon hash];
+  avatar = [(RFImageSource *)self avatar];
+  v10 = v6 ^ v8 ^ [avatar hash];
+  monogram = [(RFImageSource *)self monogram];
+  v12 = [monogram hash];
+  badged_image = [(RFImageSource *)self badged_image];
+  v14 = v12 ^ [badged_image hash];
+  default_browser_app_icon = [(RFImageSource *)self default_browser_app_icon];
+  v16 = v10 ^ v14 ^ [default_browser_app_icon hash];
+  do_not_show_loading_placeholder = [(RFImageSource *)self do_not_show_loading_placeholder];
 
-  return v16 ^ v17;
+  return v16 ^ do_not_show_loading_placeholder;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if ([(RFImageSource *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(RFImageSource *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(RFImageSource *)self url];
       v7 = [(RFImageSource *)v5 url];
       if ((v6 != 0) == (v7 == 0))
@@ -168,32 +168,32 @@ LABEL_24:
         v67 = v9;
       }
 
-      v12 = [(RFImageSource *)self symbol];
-      v13 = [(RFImageSource *)v5 symbol];
-      if ((v12 != 0) == (v13 == 0))
+      symbol = [(RFImageSource *)self symbol];
+      symbol2 = [(RFImageSource *)v5 symbol];
+      if ((symbol != 0) == (symbol2 == 0))
       {
         goto LABEL_22;
       }
 
-      v14 = [(RFImageSource *)self symbol];
-      if (v14)
+      symbol3 = [(RFImageSource *)self symbol];
+      if (symbol3)
       {
-        v15 = [(RFImageSource *)self symbol];
-        v63 = [(RFImageSource *)v5 symbol];
-        v64 = v15;
-        if (![v15 isEqual:v63])
+        symbol4 = [(RFImageSource *)self symbol];
+        symbol5 = [(RFImageSource *)v5 symbol];
+        v64 = symbol4;
+        if (![symbol4 isEqual:symbol5])
         {
           goto LABEL_20;
         }
       }
 
-      v65 = v14;
-      v16 = [(RFImageSource *)self app_icon];
-      v17 = [(RFImageSource *)v5 app_icon];
-      if ((v16 != 0) == (v17 == 0))
+      v65 = symbol3;
+      app_icon = [(RFImageSource *)self app_icon];
+      app_icon2 = [(RFImageSource *)v5 app_icon];
+      if ((app_icon != 0) == (app_icon2 == 0))
       {
 
-        if (!v14)
+        if (!symbol3)
         {
 LABEL_21:
 
@@ -214,20 +214,20 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v60 = v16;
-      v61 = v17;
-      v62 = [(RFImageSource *)self app_icon];
-      if (v62)
+      v60 = app_icon;
+      v61 = app_icon2;
+      app_icon3 = [(RFImageSource *)self app_icon];
+      if (app_icon3)
       {
-        v18 = [(RFImageSource *)self app_icon];
+        app_icon4 = [(RFImageSource *)self app_icon];
         [(RFImageSource *)v5 app_icon];
-        v59 = v58 = v18;
-        if (![v18 isEqual:v59])
+        v59 = v58 = app_icon4;
+        if (![app_icon4 isEqual:v59])
         {
 LABEL_49:
 
 LABEL_50:
-          if (!v14)
+          if (!symbol3)
           {
             goto LABEL_21;
           }
@@ -236,69 +236,69 @@ LABEL_50:
         }
       }
 
-      v20 = [(RFImageSource *)self avatar];
-      v21 = [(RFImageSource *)v5 avatar];
-      if ((v20 != 0) == (v21 == 0))
+      avatar = [(RFImageSource *)self avatar];
+      avatar2 = [(RFImageSource *)v5 avatar];
+      if ((avatar != 0) == (avatar2 == 0))
       {
 
         goto LABEL_48;
       }
 
-      v56 = v20;
-      v57 = v21;
-      v22 = [(RFImageSource *)self avatar];
-      if (v22)
+      v56 = avatar;
+      v57 = avatar2;
+      avatar3 = [(RFImageSource *)self avatar];
+      if (avatar3)
       {
-        v20 = [(RFImageSource *)self avatar];
-        v54 = [(RFImageSource *)v5 avatar];
-        if (![v20 isEqual:?])
+        avatar = [(RFImageSource *)self avatar];
+        avatar4 = [(RFImageSource *)v5 avatar];
+        if (![avatar isEqual:?])
         {
           goto LABEL_46;
         }
       }
 
-      v53 = v20;
-      v55 = v22;
-      v23 = [(RFImageSource *)self monogram];
-      v24 = [(RFImageSource *)v5 monogram];
-      if ((v23 != 0) == (v24 == 0))
+      v53 = avatar;
+      v55 = avatar3;
+      monogram = [(RFImageSource *)self monogram];
+      monogram2 = [(RFImageSource *)v5 monogram];
+      if ((monogram != 0) == (monogram2 == 0))
       {
 
         goto LABEL_45;
       }
 
-      v50 = v23;
-      v51 = v24;
-      v52 = [(RFImageSource *)self monogram];
-      if (v52)
+      v50 = monogram;
+      v51 = monogram2;
+      monogram3 = [(RFImageSource *)self monogram];
+      if (monogram3)
       {
-        v25 = [(RFImageSource *)self monogram];
+        monogram4 = [(RFImageSource *)self monogram];
         [(RFImageSource *)v5 monogram];
-        v49 = v48 = v25;
-        if (![v25 isEqual:v49])
+        v49 = v48 = monogram4;
+        if (![monogram4 isEqual:v49])
         {
           goto LABEL_43;
         }
       }
 
-      v26 = [(RFImageSource *)self badged_image];
-      v27 = [(RFImageSource *)v5 badged_image];
-      if ((v26 != 0) == (v27 == 0))
+      badged_image = [(RFImageSource *)self badged_image];
+      badged_image2 = [(RFImageSource *)v5 badged_image];
+      if ((badged_image != 0) == (badged_image2 == 0))
       {
 
-        if (!v52)
+        if (!monogram3)
         {
 LABEL_44:
 
 LABEL_45:
-          v20 = v53;
-          if (!v22)
+          avatar = v53;
+          if (!avatar3)
           {
 LABEL_47:
 
 LABEL_48:
-            v14 = v65;
-            if (!v62)
+            symbol3 = v65;
+            if (!app_icon3)
             {
               goto LABEL_50;
             }
@@ -316,22 +316,22 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v46 = v26;
-      v47 = v27;
-      v28 = [(RFImageSource *)self badged_image];
-      if (v28)
+      v46 = badged_image;
+      v47 = badged_image2;
+      badged_image3 = [(RFImageSource *)self badged_image];
+      if (badged_image3)
       {
-        v29 = [(RFImageSource *)self badged_image];
+        badged_image4 = [(RFImageSource *)self badged_image];
         [(RFImageSource *)v5 badged_image];
-        v45 = v43 = v29;
-        if (![v29 isEqual:?])
+        v45 = v43 = badged_image4;
+        if (![badged_image4 isEqual:?])
         {
           LOBYTE(v11) = 0;
           v36 = v45;
 LABEL_65:
 
 LABEL_66:
-          if (v52)
+          if (monogram3)
           {
           }
 
@@ -339,7 +339,7 @@ LABEL_66:
           {
           }
 
-          if (v62)
+          if (app_icon3)
           {
           }
 
@@ -358,7 +358,7 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v44 = v28;
+        v44 = badged_image3;
       }
 
       else
@@ -366,26 +366,26 @@ LABEL_23:
         v44 = 0;
       }
 
-      v30 = [(RFImageSource *)self default_browser_app_icon];
-      v31 = [(RFImageSource *)v5 default_browser_app_icon];
-      if ((v30 != 0) == (v31 == 0))
+      default_browser_app_icon = [(RFImageSource *)self default_browser_app_icon];
+      default_browser_app_icon2 = [(RFImageSource *)v5 default_browser_app_icon];
+      if ((default_browser_app_icon != 0) == (default_browser_app_icon2 == 0))
       {
 
         LOBYTE(v11) = 0;
         goto LABEL_64;
       }
 
-      v42 = v31;
-      v32 = v30;
-      v33 = [(RFImageSource *)self default_browser_app_icon];
-      v34 = v33;
-      if (v33)
+      v42 = default_browser_app_icon2;
+      v32 = default_browser_app_icon;
+      default_browser_app_icon3 = [(RFImageSource *)self default_browser_app_icon];
+      v34 = default_browser_app_icon3;
+      if (default_browser_app_icon3)
       {
-        v39 = v33;
-        v35 = [(RFImageSource *)self default_browser_app_icon];
-        v40 = [(RFImageSource *)v5 default_browser_app_icon];
-        v41 = v35;
-        if (![v35 isEqual:?])
+        v39 = default_browser_app_icon3;
+        default_browser_app_icon4 = [(RFImageSource *)self default_browser_app_icon];
+        default_browser_app_icon5 = [(RFImageSource *)v5 default_browser_app_icon];
+        v41 = default_browser_app_icon4;
+        if (![default_browser_app_icon4 isEqual:?])
         {
           LOBYTE(v11) = 0;
           v38 = v49;
@@ -396,14 +396,14 @@ LABEL_23:
         v34 = v39;
       }
 
-      v37 = [(RFImageSource *)self do_not_show_loading_placeholder];
-      v11 = v37 ^ [(RFImageSource *)v5 do_not_show_loading_placeholder]^ 1;
+      do_not_show_loading_placeholder = [(RFImageSource *)self do_not_show_loading_placeholder];
+      v11 = do_not_show_loading_placeholder ^ [(RFImageSource *)v5 do_not_show_loading_placeholder]^ 1;
       if (!v34)
       {
 LABEL_63:
 
 LABEL_64:
-        v28 = v44;
+        badged_image3 = v44;
         v36 = v45;
         if (!v44)
         {
@@ -428,9 +428,9 @@ LABEL_27:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([(RFImageSource *)self hasUrl])
   {
     v5 = [(RFImageSource *)self url];
@@ -440,43 +440,43 @@ LABEL_27:
 
   if ([(RFImageSource *)self hasSymbol])
   {
-    v7 = [(RFImageSource *)self symbol];
-    v8 = [v7 copy];
+    symbol = [(RFImageSource *)self symbol];
+    v8 = [symbol copy];
     [v4 setSymbol:v8];
   }
 
   if ([(RFImageSource *)self hasApp_icon])
   {
-    v9 = [(RFImageSource *)self app_icon];
-    v10 = [v9 copy];
+    app_icon = [(RFImageSource *)self app_icon];
+    v10 = [app_icon copy];
     [v4 setApp_icon:v10];
   }
 
   if ([(RFImageSource *)self hasAvatar])
   {
-    v11 = [(RFImageSource *)self avatar];
-    v12 = [v11 copy];
+    avatar = [(RFImageSource *)self avatar];
+    v12 = [avatar copy];
     [v4 setAvatar:v12];
   }
 
   if ([(RFImageSource *)self hasMonogram])
   {
-    v13 = [(RFImageSource *)self monogram];
-    v14 = [v13 copy];
+    monogram = [(RFImageSource *)self monogram];
+    v14 = [monogram copy];
     [v4 setMonogram:v14];
   }
 
   if ([(RFImageSource *)self hasBadged_image])
   {
-    v15 = [(RFImageSource *)self badged_image];
-    v16 = [v15 copy];
+    badged_image = [(RFImageSource *)self badged_image];
+    v16 = [badged_image copy];
     [v4 setBadged_image:v16];
   }
 
   if ([(RFImageSource *)self hasDefault_browser_app_icon])
   {
-    v17 = [(RFImageSource *)self default_browser_app_icon];
-    v18 = [v17 copy];
+    default_browser_app_icon = [(RFImageSource *)self default_browser_app_icon];
+    v18 = [default_browser_app_icon copy];
     [v4 setDefault_browser_app_icon:v18];
   }
 
@@ -487,31 +487,31 @@ LABEL_27:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFImageSource alloc] initWithFacade:self];
-  v3 = [(_SFPBRFImageSource *)v2 jsonData];
+  jsonData = [(_SFPBRFImageSource *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFImageSource alloc] initWithFacade:self];
-  v3 = [(_SFPBRFImageSource *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFImageSource *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFImageSource alloc] initWithFacade:self];
-  v5 = [(_SFPBRFImageSource *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFImageSource *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFImageSource)initWithCoder:(id)a3
+- (RFImageSource)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFImageSource alloc] initWithData:v5];
   v7 = [(RFImageSource *)self initWithProtobuf:v6];
@@ -519,11 +519,11 @@ LABEL_27:
   return v7;
 }
 
-- (void)setDefault_browser_app_icon:(id)a3
+- (void)setDefault_browser_app_icon:(id)default_browser_app_icon
 {
   *&self->_has |= 0x40u;
-  objc_storeStrong(&self->_default_browser_app_icon, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_default_browser_app_icon, default_browser_app_icon);
+  default_browser_app_iconCopy = default_browser_app_icon;
   *&self->_has &= ~1u;
   url = self->_url;
   self->_url = 0;
@@ -549,11 +549,11 @@ LABEL_27:
   self->_badged_image = 0;
 }
 
-- (void)setBadged_image:(id)a3
+- (void)setBadged_image:(id)badged_image
 {
   *&self->_has |= 0x20u;
-  objc_storeStrong(&self->_badged_image, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_badged_image, badged_image);
+  badged_imageCopy = badged_image;
   *&self->_has &= ~1u;
   url = self->_url;
   self->_url = 0;
@@ -579,11 +579,11 @@ LABEL_27:
   self->_default_browser_app_icon = 0;
 }
 
-- (void)setMonogram:(id)a3
+- (void)setMonogram:(id)monogram
 {
   *&self->_has |= 0x10u;
-  objc_storeStrong(&self->_monogram, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_monogram, monogram);
+  monogramCopy = monogram;
   *&self->_has &= ~1u;
   url = self->_url;
   self->_url = 0;
@@ -609,11 +609,11 @@ LABEL_27:
   self->_default_browser_app_icon = 0;
 }
 
-- (void)setAvatar:(id)a3
+- (void)setAvatar:(id)avatar
 {
   *&self->_has |= 8u;
-  objc_storeStrong(&self->_avatar, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_avatar, avatar);
+  avatarCopy = avatar;
   *&self->_has &= ~1u;
   url = self->_url;
   self->_url = 0;
@@ -639,11 +639,11 @@ LABEL_27:
   self->_default_browser_app_icon = 0;
 }
 
-- (void)setApp_icon:(id)a3
+- (void)setApp_icon:(id)app_icon
 {
   *&self->_has |= 4u;
-  objc_storeStrong(&self->_app_icon, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_app_icon, app_icon);
+  app_iconCopy = app_icon;
   *&self->_has &= ~1u;
   url = self->_url;
   self->_url = 0;
@@ -669,11 +669,11 @@ LABEL_27:
   self->_default_browser_app_icon = 0;
 }
 
-- (void)setSymbol:(id)a3
+- (void)setSymbol:(id)symbol
 {
   *&self->_has |= 2u;
-  objc_storeStrong(&self->_symbol, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_symbol, symbol);
+  symbolCopy = symbol;
   *&self->_has &= ~1u;
   url = self->_url;
   self->_url = 0;
@@ -699,11 +699,11 @@ LABEL_27:
   self->_default_browser_app_icon = 0;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   *&self->_has |= 1u;
-  objc_storeStrong(&self->_url, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_url, url);
+  urlCopy = url;
   *&self->_has &= ~2u;
   symbol = self->_symbol;
   self->_symbol = 0;

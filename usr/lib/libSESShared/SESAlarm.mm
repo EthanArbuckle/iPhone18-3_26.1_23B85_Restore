@@ -1,12 +1,12 @@
 @interface SESAlarm
-+ (BOOL)isAlarmSet:(id)a3;
-+ (BOOL)registerAlarm:(id)a3 handler:(id)a4;
++ (BOOL)isAlarmSet:(id)set;
++ (BOOL)registerAlarm:(id)alarm handler:(id)handler;
 + (id)sharedObject;
-+ (void)clearAlarm:(id)a3;
-+ (void)deregisterAlarm:(id)a3;
-+ (void)setAlarm:(id)a3 secondsFromNow:(double)a4;
++ (void)clearAlarm:(id)alarm;
++ (void)deregisterAlarm:(id)alarm;
++ (void)setAlarm:(id)alarm secondsFromNow:(double)now;
 - (SESAlarm)init;
-- (void)_handleAlarmFired:(id)a3;
+- (void)_handleAlarmFired:(id)fired;
 @end
 
 @implementation SESAlarm
@@ -44,9 +44,9 @@ uint64_t __24__SESAlarm_sharedObject__block_invoke()
     queue = v2->queue;
     v2->queue = v5;
 
-    v7 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     registered = v2->registered;
-    v2->registered = v7;
+    v2->registered = strongToWeakObjectsMapTable;
 
     v9 = objc_opt_new();
     pendingAlarms = v2->pendingAlarms;
@@ -64,13 +64,13 @@ uint64_t __24__SESAlarm_sharedObject__block_invoke()
   return v2;
 }
 
-- (void)_handleAlarmFired:(id)a3
+- (void)_handleAlarmFired:(id)fired
 {
   v16 = *MEMORY[0x1E69E9840];
   queue = self->queue;
-  v5 = a3;
+  firedCopy = fired;
   dispatch_assert_queue_V2(queue);
-  string = xpc_dictionary_get_string(v5, *MEMORY[0x1E69E9E40]);
+  string = xpc_dictionary_get_string(firedCopy, *MEMORY[0x1E69E9E40]);
 
   if (string)
   {
@@ -106,11 +106,11 @@ uint64_t __24__SESAlarm_sharedObject__block_invoke()
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)registerAlarm:(id)a3 handler:(id)a4
++ (BOOL)registerAlarm:(id)alarm handler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  alarmCopy = alarm;
+  handlerCopy = handler;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -124,9 +124,9 @@ uint64_t __24__SESAlarm_sharedObject__block_invoke()
   v17[3] = &unk_1E86FFAB0;
   v9 = v7;
   v18 = v9;
-  v10 = v6;
+  v10 = handlerCopy;
   v19 = v10;
-  v11 = v5;
+  v11 = alarmCopy;
   v20 = v11;
   v21 = &v22;
   dispatch_sync(v8, v17);
@@ -161,10 +161,10 @@ uint64_t __34__SESAlarm_registerAlarm_handler___block_invoke(void *a1)
   return result;
 }
 
-+ (void)deregisterAlarm:(id)a3
++ (void)deregisterAlarm:(id)alarm
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  alarmCopy = alarm;
   v4 = +[SESAlarm sharedObject];
   dispatch_assert_queue_not_V2(v4[1]);
   v5 = v4[1];
@@ -172,7 +172,7 @@ uint64_t __34__SESAlarm_registerAlarm_handler___block_invoke(void *a1)
   v10[1] = 3221225472;
   v10[2] = __28__SESAlarm_deregisterAlarm___block_invoke;
   v10[3] = &unk_1E86FFAD8;
-  v6 = v3;
+  v6 = alarmCopy;
   v11 = v6;
   v12 = v4;
   v7 = v4;
@@ -199,10 +199,10 @@ uint64_t __28__SESAlarm_deregisterAlarm___block_invoke(uint64_t a1)
   return [v3 removeObject:v2];
 }
 
-+ (void)clearAlarm:(id)a3
++ (void)clearAlarm:(id)alarm
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  alarmCopy = alarm;
   v4 = +[SESAlarm sharedObject];
   dispatch_assert_queue_not_V2(v4[1]);
   v5 = v4[1];
@@ -210,7 +210,7 @@ uint64_t __28__SESAlarm_deregisterAlarm___block_invoke(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __23__SESAlarm_clearAlarm___block_invoke;
   v10[3] = &unk_1E86FFAD8;
-  v6 = v3;
+  v6 = alarmCopy;
   v11 = v6;
   v12 = v4;
   v7 = v4;
@@ -236,10 +236,10 @@ uint64_t __23__SESAlarm_clearAlarm___block_invoke(uint64_t a1)
   return [v3 removeObject:v2];
 }
 
-+ (void)setAlarm:(id)a3 secondsFromNow:(double)a4
++ (void)setAlarm:(id)alarm secondsFromNow:(double)now
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  alarmCopy = alarm;
   v6 = +[SESAlarm sharedObject];
   dispatch_assert_queue_not_V2(v6[1]);
   v7 = v6[1];
@@ -247,8 +247,8 @@ uint64_t __23__SESAlarm_clearAlarm___block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __36__SESAlarm_setAlarm_secondsFromNow___block_invoke;
   v11[3] = &unk_1E86FFB00;
-  v13 = a4;
-  v8 = v5;
+  nowCopy = now;
+  v8 = alarmCopy;
   v12 = v8;
   dispatch_sync(v7, v11);
   v9 = SESDefaultLogObject();
@@ -257,7 +257,7 @@ uint64_t __23__SESAlarm_clearAlarm___block_invoke(uint64_t a1)
     *buf = 138412546;
     v15 = v8;
     v16 = 2048;
-    v17 = a4;
+    nowCopy2 = now;
     _os_log_impl(&dword_1E0FCB000, v9, OS_LOG_TYPE_INFO, "Event %@ scheduled in %lld seconds", buf, 0x16u);
   }
 
@@ -276,9 +276,9 @@ void __36__SESAlarm_setAlarm_secondsFromNow___block_invoke(uint64_t a1)
   xpc_set_event();
 }
 
-+ (BOOL)isAlarmSet:(id)a3
++ (BOOL)isAlarmSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = +[SESAlarm sharedObject];
   dispatch_assert_queue_not_V2(v4[1]);
   v11 = 0;
@@ -290,9 +290,9 @@ void __36__SESAlarm_setAlarm_secondsFromNow___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __23__SESAlarm_isAlarmSet___block_invoke;
   v8[3] = &unk_1E86FFB28;
-  v9 = v3;
+  v9 = setCopy;
   v10 = &v11;
-  v6 = v3;
+  v6 = setCopy;
   dispatch_sync(v5, v8);
   LOBYTE(v5) = *(v12 + 24);
 

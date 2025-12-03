@@ -1,15 +1,15 @@
 @interface BKHIDDefaultEventProcessor
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 @end
 
 @implementation BKHIDDefaultEventProcessor
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = *a3;
-  v9 = [v7 destinationsForEvent:v8 fromSender:a4];
+  dispatcherCopy = dispatcher;
+  v8 = *event;
+  v9 = [dispatcherCopy destinationsForEvent:v8 fromSender:sender];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -29,7 +29,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [v7 postEvent:v8 toDestination:*(*(&v16 + 1) + 8 * v13++)];
+        [dispatcherCopy postEvent:v8 toDestination:*(*(&v16 + 1) + 8 * v13++)];
       }
 
       while (v11 != v13);

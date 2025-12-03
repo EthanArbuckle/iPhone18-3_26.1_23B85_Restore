@@ -1,19 +1,19 @@
 @interface HKTokenKeychainItem
-+ (BOOL)_deleteTokenIdentifiedByName:(id)a3 error:(id *)a4;
-+ (BOOL)_isTokenPresentIdentifiedByName:(id)a3 error:(id *)a4;
-+ (BOOL)_makeTokenSynchronizableIfNeededIdentifiedByName:(id)a3 error:(id *)a4;
-+ (id)_fetchTokenIdentifiedByName:(id)a3 error:(id *)a4;
-+ (id)_identifyingAttributesForKeyIdentifiedByName:(id)a3;
-+ (id)_keyQueryAttributesForKeyIdentifiedByName:(id)a3;
-+ (id)_storableAttributesForKeyIdentifiedByName:(id)a3 data:(id)a4 modificationDate:(id)a5 synchronizable:(BOOL)a6;
-- (BOOL)deleteWithError:(id *)a3;
-- (BOOL)isPresentWithError:(id *)a3;
-- (BOOL)makeTokenSynchronizableIfNeededWithError:(id *)a3;
-- (BOOL)storeLocalToken:(id)a3 error:(id *)a4;
-- (BOOL)storeSynchronizableToken:(id)a3 error:(id *)a4;
++ (BOOL)_deleteTokenIdentifiedByName:(id)name error:(id *)error;
++ (BOOL)_isTokenPresentIdentifiedByName:(id)name error:(id *)error;
++ (BOOL)_makeTokenSynchronizableIfNeededIdentifiedByName:(id)name error:(id *)error;
++ (id)_fetchTokenIdentifiedByName:(id)name error:(id *)error;
++ (id)_identifyingAttributesForKeyIdentifiedByName:(id)name;
++ (id)_keyQueryAttributesForKeyIdentifiedByName:(id)name;
++ (id)_storableAttributesForKeyIdentifiedByName:(id)name data:(id)data modificationDate:(id)date synchronizable:(BOOL)synchronizable;
+- (BOOL)deleteWithError:(id *)error;
+- (BOOL)isPresentWithError:(id *)error;
+- (BOOL)makeTokenSynchronizableIfNeededWithError:(id *)error;
+- (BOOL)storeLocalToken:(id)token error:(id *)error;
+- (BOOL)storeSynchronizableToken:(id)token error:(id *)error;
 - (HKTokenKeychainItem)init;
-- (HKTokenKeychainItem)initWithName:(id)a3;
-- (id)fetchWithError:(id *)a3;
+- (HKTokenKeychainItem)initWithName:(id)name;
+- (id)fetchWithError:(id *)error;
 @end
 
 @implementation HKTokenKeychainItem
@@ -28,10 +28,10 @@
   return 0;
 }
 
-- (HKTokenKeychainItem)initWithName:(id)a3
+- (HKTokenKeychainItem)initWithName:(id)name
 {
-  v4 = a3;
-  if (![v4 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
     [HKTokenKeychainItem initWithName:];
   }
@@ -41,7 +41,7 @@
   v5 = [(HKTokenKeychainItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -49,25 +49,25 @@
   return v5;
 }
 
-- (BOOL)isPresentWithError:(id *)a3
+- (BOOL)isPresentWithError:(id *)error
 {
   v5 = objc_opt_class();
   name = self->_name;
 
-  return [v5 _isTokenPresentIdentifiedByName:name error:a3];
+  return [v5 _isTokenPresentIdentifiedByName:name error:error];
 }
 
-- (BOOL)makeTokenSynchronizableIfNeededWithError:(id *)a3
+- (BOOL)makeTokenSynchronizableIfNeededWithError:(id *)error
 {
   v5 = objc_opt_class();
   name = self->_name;
 
-  return [v5 _makeTokenSynchronizableIfNeededIdentifiedByName:name error:a3];
+  return [v5 _makeTokenSynchronizableIfNeededIdentifiedByName:name error:error];
 }
 
-- (id)fetchWithError:(id *)a3
+- (id)fetchWithError:(id *)error
 {
-  v3 = [objc_opt_class() _fetchTokenIdentifiedByName:self->_name error:a3];
+  v3 = [objc_opt_class() _fetchTokenIdentifiedByName:self->_name error:error];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
@@ -81,44 +81,44 @@
   return v4;
 }
 
-- (BOOL)storeLocalToken:(id)a3 error:(id *)a4
+- (BOOL)storeLocalToken:(id)token error:(id *)error
 {
-  v6 = [a3 dataUsingEncoding:4];
-  LOBYTE(a4) = [objc_opt_class() _storeTokenIdentifiedByName:self->_name data:v6 synchronizable:0 error:a4];
+  v6 = [token dataUsingEncoding:4];
+  LOBYTE(error) = [objc_opt_class() _storeTokenIdentifiedByName:self->_name data:v6 synchronizable:0 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeSynchronizableToken:(id)a3 error:(id *)a4
+- (BOOL)storeSynchronizableToken:(id)token error:(id *)error
 {
-  v6 = [a3 dataUsingEncoding:4];
-  LOBYTE(a4) = [objc_opt_class() _storeTokenIdentifiedByName:self->_name data:v6 synchronizable:1 error:a4];
+  v6 = [token dataUsingEncoding:4];
+  LOBYTE(error) = [objc_opt_class() _storeTokenIdentifiedByName:self->_name data:v6 synchronizable:1 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
   v5 = objc_opt_class();
   name = self->_name;
 
-  return [v5 _deleteTokenIdentifiedByName:name error:a3];
+  return [v5 _deleteTokenIdentifiedByName:name error:error];
 }
 
-+ (id)_identifyingAttributesForKeyIdentifiedByName:(id)a3
++ (id)_identifyingAttributesForKeyIdentifiedByName:(id)name
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     +[HKTokenKeychainItem _identifyingAttributesForKeyIdentifiedByName:];
   }
 
   v13[0] = *MEMORY[0x277CDC228];
-  v5 = [a1 tokenKeychainItemSecurityClass];
-  v14[0] = v5;
+  tokenKeychainItemSecurityClass = [self tokenKeychainItemSecurityClass];
+  v14[0] = tokenKeychainItemSecurityClass;
   v13[1] = *MEMORY[0x277CDBF20];
-  v6 = [v4 dataUsingEncoding:4];
+  v6 = [nameCopy dataUsingEncoding:4];
   v7 = *MEMORY[0x277CDBED8];
   v8 = *MEMORY[0x277CDBF10];
   v14[1] = v6;
@@ -134,10 +134,10 @@
   return v10;
 }
 
-+ (id)_keyQueryAttributesForKeyIdentifiedByName:(id)a3
++ (id)_keyQueryAttributesForKeyIdentifiedByName:(id)name
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [a1 _identifyingAttributesForKeyIdentifiedByName:a3];
+  v3 = [self _identifyingAttributesForKeyIdentifiedByName:name];
   v4 = [v3 mutableCopy];
 
   v8 = *MEMORY[0x277CDC558];
@@ -150,17 +150,17 @@
   return v4;
 }
 
-+ (id)_storableAttributesForKeyIdentifiedByName:(id)a3 data:(id)a4 modificationDate:(id)a5 synchronizable:(BOOL)a6
++ (id)_storableAttributesForKeyIdentifiedByName:(id)name data:(id)data modificationDate:(id)date synchronizable:(BOOL)synchronizable
 {
-  v6 = a6;
+  synchronizableCopy = synchronizable;
   v28[5] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v11)
+  nameCopy = name;
+  dataCopy = data;
+  dateCopy = date;
+  v13 = dateCopy;
+  if (dataCopy)
   {
-    if (v12)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -177,7 +177,7 @@
 
   +[HKTokenKeychainItem _storableAttributesForKeyIdentifiedByName:data:modificationDate:synchronizable:];
 LABEL_3:
-  v14 = [a1 _identifyingAttributesForKeyIdentifiedByName:v10];
+  v14 = [self _identifyingAttributesForKeyIdentifiedByName:nameCopy];
   v15 = [v14 mutableCopy];
 
   v16 = *MEMORY[0x277CDBFC0];
@@ -186,28 +186,28 @@ LABEL_3:
   v18 = *MEMORY[0x277CDC088];
   v27[0] = v16;
   v27[1] = v18;
-  v19 = v13;
+  date = v13;
   if (!v13)
   {
-    v19 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
   v20 = *MEMORY[0x277CDC0A8];
   v21 = *MEMORY[0x277CDC0C0];
-  v28[1] = v19;
+  v28[1] = date;
   v28[2] = v21;
   v22 = *MEMORY[0x277CDC140];
   v27[2] = v20;
   v27[3] = v22;
   v23 = *MEMORY[0x277CBED10];
-  if (v6)
+  if (synchronizableCopy)
   {
     v23 = v17;
   }
 
   v27[4] = *MEMORY[0x277CDC5E8];
   v28[3] = v23;
-  v28[4] = v11;
+  v28[4] = dataCopy;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:5];
   [v15 addEntriesFromDictionary:v24];
 
@@ -220,10 +220,10 @@ LABEL_3:
   return v15;
 }
 
-+ (BOOL)_isTokenPresentIdentifiedByName:(id)a3 error:(id *)a4
++ (BOOL)_isTokenPresentIdentifiedByName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _identifyingAttributesForKeyIdentifiedByName:v6];
+  nameCopy = name;
+  v7 = [self _identifyingAttributesForKeyIdentifiedByName:nameCopy];
   v8 = SecItemCopyMatching(v7, 0);
   if (v8 == -25308 || v8 == 0)
   {
@@ -237,7 +237,7 @@ LABEL_3:
     {
       v12 = MEMORY[0x277CCA9B8];
       v13 = HKSensitiveLogItem();
-      [v12 hk_assignError:a4 code:3 format:{@"Failed to check for presence of token with name %@, OSStatus: %d", v13, v11}];
+      [v12 hk_assignError:error code:3 format:{@"Failed to check for presence of token with name %@, OSStatus: %d", v13, v11}];
     }
 
     v10 = 0;
@@ -246,11 +246,11 @@ LABEL_3:
   return v10;
 }
 
-+ (BOOL)_makeTokenSynchronizableIfNeededIdentifiedByName:(id)a3 error:(id *)a4
++ (BOOL)_makeTokenSynchronizableIfNeededIdentifiedByName:(id)name error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 _identifyingAttributesForKeyIdentifiedByName:v6];
+  nameCopy = name;
+  v7 = [self _identifyingAttributesForKeyIdentifiedByName:nameCopy];
   v8 = [v7 mutableCopy];
   v26 = *MEMORY[0x277CDC550];
   v9 = *MEMORY[0x277CBED28];
@@ -264,9 +264,9 @@ LABEL_3:
   {
     v12 = *MEMORY[0x277CDC140];
     v13 = [result objectForKeyedSubscript:*MEMORY[0x277CDC140]];
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v14)
+    if (bOOLValue)
     {
       goto LABEL_8;
     }
@@ -280,7 +280,7 @@ LABEL_3:
   {
     v18 = MEMORY[0x277CCA9B8];
     v16 = HKSensitiveLogItem();
-    [v18 hk_assignError:a4 code:6 format:{@"Token is not accessible (device locked?), name: %@", v16, v22}];
+    [v18 hk_assignError:error code:6 format:{@"Token is not accessible (device locked?), name: %@", v16, v22}];
 LABEL_11:
 
     v17 = 0;
@@ -293,14 +293,14 @@ LABEL_11:
     {
       v15 = MEMORY[0x277CCA9B8];
       v16 = HKSensitiveLogItem();
-      [v15 hk_assignError:a4 code:118 format:{@"No token found for name %@", v16, v22}];
+      [v15 hk_assignError:error code:118 format:{@"No token found for name %@", v16, v22}];
     }
 
     else
     {
       v19 = MEMORY[0x277CCA9B8];
       v16 = HKSensitiveLogItem();
-      [v19 hk_assignError:a4 code:3 format:{@"Failed to fetch token for name %@, OSStatus: %d", v16, v11}];
+      [v19 hk_assignError:error code:3 format:{@"Failed to fetch token for name %@, OSStatus: %d", v16, v11}];
     }
 
     goto LABEL_11;
@@ -314,17 +314,17 @@ LABEL_12:
   return v17;
 }
 
-+ (id)_fetchTokenIdentifiedByName:(id)a3 error:(id *)a4
++ (id)_fetchTokenIdentifiedByName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _keyQueryAttributesForKeyIdentifiedByName:v6];
+  nameCopy = name;
+  v7 = [self _keyQueryAttributesForKeyIdentifiedByName:nameCopy];
   result = 0;
   v8 = SecItemCopyMatching(v7, &result);
   if (v8 == -25308)
   {
     v13 = MEMORY[0x277CCA9B8];
     v12 = HKSensitiveLogItem();
-    [v13 hk_assignError:a4 code:6 format:{@"Token is not accessible (device locked?), name: %@", v12}];
+    [v13 hk_assignError:error code:6 format:{@"Token is not accessible (device locked?), name: %@", v12}];
     goto LABEL_7;
   }
 
@@ -333,7 +333,7 @@ LABEL_12:
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = HKSensitiveLogItem();
-    [v11 hk_assignError:a4 code:118 format:{@"No token found for name %@", v12}];
+    [v11 hk_assignError:error code:118 format:{@"No token found for name %@", v12}];
 LABEL_7:
 
     goto LABEL_9;
@@ -347,7 +347,7 @@ LABEL_7:
 
   v14 = MEMORY[0x277CCA9B8];
   v15 = HKSensitiveLogItem();
-  [v14 hk_assignError:a4 code:3 format:{@"Failed to fetch token for name %@, OSStatus: %d", v15, v9}];
+  [v14 hk_assignError:error code:3 format:{@"Failed to fetch token for name %@, OSStatus: %d", v15, v9}];
 
 LABEL_9:
   v10 = 0;
@@ -356,10 +356,10 @@ LABEL_10:
   return v10;
 }
 
-+ (BOOL)_deleteTokenIdentifiedByName:(id)a3 error:(id *)a4
++ (BOOL)_deleteTokenIdentifiedByName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _keyQueryAttributesForKeyIdentifiedByName:v6];
+  nameCopy = name;
+  v7 = [self _keyQueryAttributesForKeyIdentifiedByName:nameCopy];
   v8 = SecItemDelete(v7);
   if (v8 == -25300 || v8 == 0)
   {
@@ -371,7 +371,7 @@ LABEL_10:
     v10 = v8;
     v11 = MEMORY[0x277CCA9B8];
     v12 = HKSensitiveLogItem();
-    [v11 hk_assignError:a4 code:3 format:{@"Failed to delete token for name %@, OSStatus: %d", v12, v10}];
+    [v11 hk_assignError:error code:3 format:{@"Failed to delete token for name %@, OSStatus: %d", v12, v10}];
 
     v13 = 0;
   }

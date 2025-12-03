@@ -6,9 +6,9 @@
 - (NSString)latestReleaseID;
 - (NSString)providerToken;
 - (SKOverlayAppConfiguration)initWithAppIdentifier:(NSString *)appIdentifier position:(SKOverlayPosition)position;
-- (SKOverlayAppConfiguration)initWithBacking:(id)a3;
+- (SKOverlayAppConfiguration)initWithBacking:(id)backing;
 - (SKOverlayPosition)position;
-- (id)_impressionDictFromImpression:(id)a3;
+- (id)_impressionDictFromImpression:(id)impression;
 - (id)_init;
 - (id)additionalValueForKey:(NSString *)key;
 - (void)setAdImpression:(SKAdImpression *)impression;
@@ -28,11 +28,11 @@
 {
   v6 = MEMORY[0x1E698B590];
   v7 = appIdentifier;
-  v8 = [[v6 alloc] initWithAppIdentifier:v7 position:position != SKOverlayPositionBottom];
+  sKOverlayPositionBottom = [[v6 alloc] initWithAppIdentifier:v7 position:position != SKOverlayPositionBottom];
 
   v11.receiver = self;
   v11.super_class = SKOverlayAppConfiguration;
-  v9 = [(SKOverlayConfiguration *)&v11 initWithBacking:v8];
+  v9 = [(SKOverlayConfiguration *)&v11 initWithBacking:sKOverlayPositionBottom];
 
   return v9;
 }
@@ -44,98 +44,98 @@
   return [(SKOverlayConfiguration *)&v3 _init];
 }
 
-- (SKOverlayAppConfiguration)initWithBacking:(id)a3
+- (SKOverlayAppConfiguration)initWithBacking:(id)backing
 {
   v4.receiver = self;
   v4.super_class = SKOverlayAppConfiguration;
-  return [(SKOverlayConfiguration *)&v4 initWithBacking:a3];
+  return [(SKOverlayConfiguration *)&v4 initWithBacking:backing];
 }
 
 - (void)setAppIdentifier:(NSString *)appIdentifier
 {
   v4 = appIdentifier;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setAppIdentifier:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setAppIdentifier:v4];
 }
 
 - (NSString)appIdentifier
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 appIdentifier];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  appIdentifier = [_backing appIdentifier];
 
-  return v3;
+  return appIdentifier;
 }
 
 - (void)setCampaignToken:(NSString *)campaignToken
 {
   v4 = campaignToken;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setCampaignToken:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setCampaignToken:v4];
 }
 
 - (NSString)campaignToken
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 campaignToken];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  campaignToken = [_backing campaignToken];
 
-  return v3;
+  return campaignToken;
 }
 
 - (void)setProviderToken:(NSString *)providerToken
 {
   v4 = providerToken;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setProviderToken:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setProviderToken:v4];
 }
 
 - (NSString)providerToken
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 providerToken];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  providerToken = [_backing providerToken];
 
-  return v3;
+  return providerToken;
 }
 
 - (void)setCustomProductPageIdentifier:(NSString *)customProductPageIdentifier
 {
   v4 = customProductPageIdentifier;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setProductVariantID:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setProductVariantID:v4];
 }
 
 - (NSString)customProductPageIdentifier
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 productVariantID];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  productVariantID = [_backing productVariantID];
 
-  return v3;
+  return productVariantID;
 }
 
 - (void)setLatestReleaseID:(NSString *)latestReleaseID
 {
   v4 = latestReleaseID;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setLatestReleaseID:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setLatestReleaseID:v4];
 }
 
 - (NSString)latestReleaseID
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 latestReleaseID];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  latestReleaseID = [_backing latestReleaseID];
 
-  return v3;
+  return latestReleaseID;
 }
 
 - (void)setPosition:(SKOverlayPosition)position
 {
-  v4 = [(SKOverlayConfiguration *)self _backing];
-  [v4 setPosition:position != SKOverlayPositionBottom];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setPosition:position != SKOverlayPositionBottom];
 }
 
 - (SKOverlayPosition)position
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = ([v2 position] != 0);
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  v3 = ([_backing position] != 0);
 
   return v3;
 }
@@ -143,31 +143,31 @@
 - (void)setUserDismissible:(BOOL)userDismissible
 {
   v3 = userDismissible;
-  v4 = [(SKOverlayConfiguration *)self _backing];
-  [v4 setUserDismissible:v3];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setUserDismissible:v3];
 }
 
 - (BOOL)userDismissible
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 userDismissible];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  userDismissible = [_backing userDismissible];
 
-  return v3;
+  return userDismissible;
 }
 
 - (void)setAdditionalValue:(id)value forKey:(NSString *)key
 {
   v6 = key;
   v7 = value;
-  v8 = [(SKOverlayConfiguration *)self _backing];
-  [v8 setAdditionalValue:v7 forKey:v6];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setAdditionalValue:v7 forKey:v6];
 }
 
 - (id)additionalValueForKey:(NSString *)key
 {
   v4 = key;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  v6 = [v5 additionalValueForKey:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  v6 = [_backing additionalValueForKey:v4];
 
   return v6;
 }
@@ -186,35 +186,35 @@
   }
 }
 
-- (id)_impressionDictFromImpression:(id)a3
+- (id)_impressionDictFromImpression:(id)impression
 {
-  v3 = a3;
+  impressionCopy = impression;
   v4 = objc_opt_new();
-  v5 = [v3 signature];
-  [v4 setObject:v5 forKeyedSubscript:@"adNetworkAttributionSignature"];
+  signature = [impressionCopy signature];
+  [v4 setObject:signature forKeyedSubscript:@"adNetworkAttributionSignature"];
 
-  v6 = [v3 adCampaignIdentifier];
-  [v4 setObject:v6 forKeyedSubscript:@"adNetworkCampaignId"];
+  adCampaignIdentifier = [impressionCopy adCampaignIdentifier];
+  [v4 setObject:adCampaignIdentifier forKeyedSubscript:@"adNetworkCampaignId"];
 
-  v7 = [v3 sourceIdentifier];
-  [v4 setObject:v7 forKeyedSubscript:@"sourceIdentifier"];
+  sourceIdentifier = [impressionCopy sourceIdentifier];
+  [v4 setObject:sourceIdentifier forKeyedSubscript:@"sourceIdentifier"];
 
-  v8 = [v3 adNetworkIdentifier];
-  [v4 setObject:v8 forKeyedSubscript:@"adNetworkId"];
+  adNetworkIdentifier = [impressionCopy adNetworkIdentifier];
+  [v4 setObject:adNetworkIdentifier forKeyedSubscript:@"adNetworkId"];
 
-  v9 = [v3 adImpressionIdentifier];
-  v10 = [v9 lowercaseString];
-  [v4 setObject:v10 forKeyedSubscript:@"adNetworkNonce"];
+  adImpressionIdentifier = [impressionCopy adImpressionIdentifier];
+  lowercaseString = [adImpressionIdentifier lowercaseString];
+  [v4 setObject:lowercaseString forKeyedSubscript:@"adNetworkNonce"];
 
-  v11 = [v3 timestamp];
-  [v4 setObject:v11 forKeyedSubscript:@"adNetworkImpressionTimestamp"];
+  timestamp = [impressionCopy timestamp];
+  [v4 setObject:timestamp forKeyedSubscript:@"adNetworkImpressionTimestamp"];
 
-  v12 = [v3 version];
-  [v4 setObject:v12 forKeyedSubscript:@"adNetworkPayloadVersion"];
+  version = [impressionCopy version];
+  [v4 setObject:version forKeyedSubscript:@"adNetworkPayloadVersion"];
 
-  v13 = [v3 sourceAppStoreItemIdentifier];
+  sourceAppStoreItemIdentifier = [impressionCopy sourceAppStoreItemIdentifier];
 
-  [v4 setObject:v13 forKeyedSubscript:@"adNetworkSourceAppStoreIdentifier"];
+  [v4 setObject:sourceAppStoreItemIdentifier forKeyedSubscript:@"adNetworkSourceAppStoreIdentifier"];
 
   return v4;
 }

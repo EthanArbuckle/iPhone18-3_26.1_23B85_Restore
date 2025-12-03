@@ -1,17 +1,17 @@
 @interface ASCLockupViewGroup
 + (OS_os_log)log;
-+ (void)createConnectionWithCompletionBlock:(id)a3;
-- (ASCLockupViewGroup)initWithName:(id)a3;
-- (ASCLockupViewGroup)initWithName:(id)a3 lockupFetcher:(id)a4;
++ (void)createConnectionWithCompletionBlock:(id)block;
+- (ASCLockupViewGroup)initWithName:(id)name;
+- (ASCLockupViewGroup)initWithName:(id)name lockupFetcher:(id)fetcher;
 - (NSMutableArray)prefetchSpans;
 - (id)description;
-- (id)lockupWithRequest:(id)a3;
-- (void)_cacheLockupsWithCollectionRequest:(id)a3 withCompletionBlock:(id)a4;
-- (void)_cacheLockupsWithRequests:(id)a3 withCompletionBlock:(id)a4;
-- (void)_lockupDictionaryForRequest:(id)a3 includingKeys:(id)a4 withCompletionBlock:(id)a5;
-- (void)_lockupFromMediaAPIResponse:(id)a3 withContext:(id)a4 completionBlock:(id)a5;
-- (void)_lockupRequestForBundleID:(id)a3 withContext:(id)a4 enableAppDistribution:(BOOL)a5 completionBlock:(id)a6;
-- (void)_prefetchLockupsWithRequests:(id)a3 withCompletionBlock:(id)a4;
+- (id)lockupWithRequest:(id)request;
+- (void)_cacheLockupsWithCollectionRequest:(id)request withCompletionBlock:(id)block;
+- (void)_cacheLockupsWithRequests:(id)requests withCompletionBlock:(id)block;
+- (void)_lockupDictionaryForRequest:(id)request includingKeys:(id)keys withCompletionBlock:(id)block;
+- (void)_lockupFromMediaAPIResponse:(id)response withContext:(id)context completionBlock:(id)block;
+- (void)_lockupRequestForBundleID:(id)d withContext:(id)context enableAppDistribution:(BOOL)distribution completionBlock:(id)block;
+- (void)_prefetchLockupsWithRequests:(id)requests withCompletionBlock:(id)block;
 - (void)performBatchRequests;
 - (void)scheduleBatchRequestsIfNeeded;
 @end
@@ -37,21 +37,21 @@ uint64_t __25__ASCLockupViewGroup_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ASCLockupViewGroup)initWithName:(id)a3 lockupFetcher:(id)a4
+- (ASCLockupViewGroup)initWithName:(id)name lockupFetcher:(id)fetcher
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  fetcherCopy = fetcher;
   +[ASCEligibility assertCurrentProcessEligibility];
   v14.receiver = self;
   v14.super_class = ASCLockupViewGroup;
   v8 = [(ASCLockupViewGroup *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeStrong(&v8->_lockupFetcher, a4);
+    objc_storeStrong(&v8->_lockupFetcher, fetcher);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     deferredRequests = v8->_deferredRequests;
     v8->_deferredRequests = v11;
@@ -60,22 +60,22 @@ uint64_t __25__ASCLockupViewGroup_log__block_invoke()
   return v8;
 }
 
-- (ASCLockupViewGroup)initWithName:(id)a3
+- (ASCLockupViewGroup)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[ASCLockupFetcher sharedFetcher];
-  v6 = [(ASCLockupViewGroup *)self initWithName:v4 lockupFetcher:v5];
+  v6 = [(ASCLockupViewGroup *)self initWithName:nameCopy lockupFetcher:v5];
 
   return v6;
 }
 
 - (NSMutableArray)prefetchSpans
 {
-  v3 = [(ASCLockupViewGroup *)self prefetchSpansIfLoaded];
-  v4 = v3;
-  if (v3)
+  prefetchSpansIfLoaded = [(ASCLockupViewGroup *)self prefetchSpansIfLoaded];
+  v4 = prefetchSpansIfLoaded;
+  if (prefetchSpansIfLoaded)
   {
-    v5 = v3;
+    v5 = prefetchSpansIfLoaded;
   }
 
   else
@@ -91,7 +91,7 @@ uint64_t __25__ASCLockupViewGroup_log__block_invoke()
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_21571A000, a2, OS_LOG_TYPE_DEBUG, "%{public}@: Scheduled batch request of deferred lockup requests", &v2, 0xCu);
 }
 
@@ -105,7 +105,7 @@ void __51__ASCLockupViewGroup_scheduleBatchRequestsIfNeeded__block_invoke(uint64
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21571A000, a2, OS_LOG_TYPE_ERROR, "%{public}@: Perform batch request called with no deferred lockup requests", &v2, 0xCu);
 }
 
@@ -122,79 +122,79 @@ void __42__ASCLockupViewGroup_performBatchRequests__block_invoke(uint64_t a1, vo
   [v9 addFinishBlock:v8];
 }
 
-- (id)lockupWithRequest:(id)a3
+- (id)lockupWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(ASCLockupViewGroup *)self lockupFetcher];
-  v6 = [v5 loadedLockupWithRequest:v4];
+  lockupFetcher = [(ASCLockupViewGroup *)self lockupFetcher];
+  v6 = [lockupFetcher loadedLockupWithRequest:requestCopy];
 
   if (v6)
   {
-    v7 = v6;
+    asc_copy = v6;
   }
 
   else
   {
-    v8 = [(ASCLockupViewGroup *)self deferredRequests];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    deferredRequests = [(ASCLockupViewGroup *)self deferredRequests];
+    v9 = [deferredRequests objectForKeyedSubscript:requestCopy];
 
     if (v9)
     {
-      v7 = [v9 asc_copy];
+      asc_copy = [v9 asc_copy];
     }
 
     else
     {
       v10 = objc_alloc_init(MEMORY[0x277CEE600]);
-      v11 = [(ASCLockupViewGroup *)self deferredRequests];
-      [v11 setObject:v10 forKeyedSubscript:v4];
+      deferredRequests2 = [(ASCLockupViewGroup *)self deferredRequests];
+      [deferredRequests2 setObject:v10 forKeyedSubscript:requestCopy];
 
       [(ASCLockupViewGroup *)self scheduleBatchRequestsIfNeeded];
       v12 = +[ASCLockupViewGroup log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        [(ASCLockupViewGroup *)self lockupWithRequest:v4, v12];
+        [(ASCLockupViewGroup *)self lockupWithRequest:requestCopy, v12];
       }
 
-      v7 = [v10 asc_copy];
+      asc_copy = [v10 asc_copy];
     }
   }
 
-  return v7;
+  return asc_copy;
 }
 
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupViewGroup *)self name];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"name"];
+  name = [(ASCLockupViewGroup *)self name];
+  [(ASCDescriber *)v3 addObject:name withName:@"name"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
-- (void)_lockupRequestForBundleID:(id)a3 withContext:(id)a4 enableAppDistribution:(BOOL)a5 completionBlock:(id)a6
+- (void)_lockupRequestForBundleID:(id)d withContext:(id)context enableAppDistribution:(BOOL)distribution completionBlock:(id)block
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  distributionCopy = distribution;
+  dCopy = d;
+  contextCopy = context;
+  blockCopy = block;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v13 = objc_alloc_init(ASCSignpostSpan);
   [(ASCSignpostSpan *)v13 beginEmitting];
   [ASCViewRender modelPrefetchDidBeginWithTag:[(ASCSignpostSpan *)v13 primaryTag]];
-  v14 = [(ASCLockupViewGroup *)self lockupFetcher];
-  v15 = [v14 lockupForBundleID:v10 withContext:v11 enableAppDistribution:v7];
+  lockupFetcher = [(ASCLockupViewGroup *)self lockupFetcher];
+  v15 = [lockupFetcher lockupForBundleID:dCopy withContext:contextCopy enableAppDistribution:distributionCopy];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __108__ASCLockupViewGroup_BundleID___lockupRequestForBundleID_withContext_enableAppDistribution_completionBlock___block_invoke;
   v28[3] = &unk_2781CCB08;
-  v16 = v11;
+  v16 = contextCopy;
   v29 = v16;
-  v30 = v7;
+  v30 = distributionCopy;
   v17 = [v15 thenWithBlock:v28];
   objc_initWeak(&location, self);
   v23[0] = MEMORY[0x277D85DD0];
@@ -204,7 +204,7 @@ void __42__ASCLockupViewGroup_performBatchRequests__block_invoke(uint64_t a1, vo
   v18 = v13;
   v24 = v18;
   objc_copyWeak(&v26, &location);
-  v19 = v12;
+  v19 = blockCopy;
   v25 = v19;
   [v17 addSuccessBlock:v23];
   v21[0] = MEMORY[0x277D85DD0];
@@ -284,10 +284,10 @@ void __108__ASCLockupViewGroup_BundleID___lockupRequestForBundleID_withContext_e
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_cacheLockupsWithRequests:(id)a3 withCompletionBlock:(id)a4
+- (void)_cacheLockupsWithRequests:(id)requests withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  requestsCopy = requests;
   v8 = MEMORY[0x277D85CD0];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v9 = objc_alloc_init(ASCSignpostSpan);
@@ -298,7 +298,7 @@ void __108__ASCLockupViewGroup_BundleID___lockupRequestForBundleID_withContext_e
 
   v12 = dispatch_group_create();
   dispatch_group_enter(v12);
-  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __78__ASCLockupViewGroup_Fetching___cacheLockupsWithRequests_withCompletionBlock___block_invoke;
@@ -306,11 +306,11 @@ void __108__ASCLockupViewGroup_BundleID___lockupRequestForBundleID_withContext_e
   v27 = v12;
   v14 = v13;
   v28 = v14;
-  v29 = self;
+  selfCopy = self;
   v30 = v11;
   v15 = v11;
   v16 = v12;
-  [v7 enumerateObjectsUsingBlock:v26];
+  [requestsCopy enumerateObjectsUsingBlock:v26];
 
   dispatch_group_leave(v16);
   objc_initWeak(&location, self);
@@ -323,8 +323,8 @@ void __108__ASCLockupViewGroup_BundleID___lockupRequestForBundleID_withContext_e
   v17 = v9;
   v18 = v14;
   objc_copyWeak(&v24, &location);
-  v23 = v6;
-  v19 = v6;
+  v23 = blockCopy;
+  v19 = blockCopy;
   dispatch_group_notify(v16, v8, block);
 
   objc_destroyWeak(&v24);
@@ -419,17 +419,17 @@ BOOL __78__ASCLockupViewGroup_Fetching___cacheLockupsWithRequests_withCompletion
   return v4 == v3;
 }
 
-- (void)_lockupDictionaryForRequest:(id)a3 includingKeys:(id)a4 withCompletionBlock:(id)a5
+- (void)_lockupDictionaryForRequest:(id)request includingKeys:(id)keys withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  keysCopy = keys;
+  blockCopy = block;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v11 = objc_alloc_init(ASCSignpostSpan);
   [(ASCSignpostSpan *)v11 beginEmitting];
   [ASCViewRender modelPrefetchDidBeginWithTag:[(ASCSignpostSpan *)v11 primaryTag]];
   objc_initWeak(&location, self);
-  v12 = [(ASCLockupViewGroup *)self lockupWithRequest:v8];
+  v12 = [(ASCLockupViewGroup *)self lockupWithRequest:requestCopy];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __94__ASCLockupViewGroup_Fetching___lockupDictionaryForRequest_includingKeys_withCompletionBlock___block_invoke;
@@ -437,9 +437,9 @@ BOOL __78__ASCLockupViewGroup_Fetching___cacheLockupsWithRequests_withCompletion
   v13 = v11;
   v20 = v13;
   objc_copyWeak(&v23, &location);
-  v14 = v9;
+  v14 = keysCopy;
   v21 = v14;
-  v15 = v10;
+  v15 = blockCopy;
   v22 = v15;
   [v12 addSuccessBlock:v19];
   v17[0] = MEMORY[0x277D85DD0];
@@ -561,17 +561,17 @@ void __94__ASCLockupViewGroup_Fetching___lockupDictionaryForRequest_includingKey
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_cacheLockupsWithCollectionRequest:(id)a3 withCompletionBlock:(id)a4
+- (void)_cacheLockupsWithCollectionRequest:(id)request withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  blockCopy = block;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v8 = objc_alloc_init(ASCSignpostSpan);
   [(ASCSignpostSpan *)v8 beginEmitting];
   [ASCViewRender modelPrefetchDidBeginWithTag:[(ASCSignpostSpan *)v8 primaryTag]];
   objc_initWeak(&location, self);
-  v9 = [(ASCLockupViewGroup *)self lockupFetcher];
-  v10 = [v9 collectionWithRequest:v6];
+  lockupFetcher = [(ASCLockupViewGroup *)self lockupFetcher];
+  v10 = [lockupFetcher collectionWithRequest:requestCopy];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -580,9 +580,9 @@ void __94__ASCLockupViewGroup_Fetching___lockupDictionaryForRequest_includingKey
   v11 = v8;
   v18 = v11;
   objc_copyWeak(&v21, &location);
-  v12 = v6;
+  v12 = requestCopy;
   v19 = v12;
-  v13 = v7;
+  v13 = blockCopy;
   v20 = v13;
   [v10 addSuccessBlock:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -660,10 +660,10 @@ void __87__ASCLockupViewGroup_Fetching___cacheLockupsWithCollectionRequest_withC
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_prefetchLockupsWithRequests:(id)a3 withCompletionBlock:(id)a4
+- (void)_prefetchLockupsWithRequests:(id)requests withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  requestsCopy = requests;
   v8 = MEMORY[0x277D85CD0];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v9 = objc_alloc_init(ASCSignpostSpan);
@@ -674,7 +674,7 @@ void __87__ASCLockupViewGroup_Fetching___cacheLockupsWithCollectionRequest_withC
 
   v12 = dispatch_group_create();
   dispatch_group_enter(v12);
-  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __92__ASCLockupViewGroup_Fetching_Deprecated___prefetchLockupsWithRequests_withCompletionBlock___block_invoke;
@@ -682,11 +682,11 @@ void __87__ASCLockupViewGroup_Fetching___cacheLockupsWithCollectionRequest_withC
   v27 = v12;
   v14 = v13;
   v28 = v14;
-  v29 = self;
+  selfCopy = self;
   v30 = v11;
   v15 = v11;
   v16 = v12;
-  [v7 enumerateObjectsUsingBlock:v26];
+  [requestsCopy enumerateObjectsUsingBlock:v26];
 
   dispatch_group_leave(v16);
   objc_initWeak(&location, self);
@@ -698,9 +698,9 @@ void __87__ASCLockupViewGroup_Fetching___cacheLockupsWithCollectionRequest_withC
   v17 = v9;
   objc_copyWeak(&v24, &location);
   v22 = v14;
-  v23 = v6;
+  v23 = blockCopy;
   v18 = v14;
-  v19 = v6;
+  v19 = blockCopy;
   dispatch_group_notify(v16, v8, block);
 
   objc_destroyWeak(&v24);
@@ -771,36 +771,36 @@ void __92__ASCLockupViewGroup_Fetching_Deprecated___prefetchLockupsWithRequests_
   (*(v4 + 16))(v4, v5);
 }
 
-+ (void)createConnectionWithCompletionBlock:(id)a3
++ (void)createConnectionWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   +[ASCEligibility assertCurrentProcessEligibility];
   v4 = +[ASCServicesConnection sharedConnection];
-  v5 = [v4 testConnection];
+  testConnection = [v4 testConnection];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__ASCLockupViewGroup_ForSpotlight__createConnectionWithCompletionBlock___block_invoke;
   v7[3] = &unk_2781CC578;
-  v8 = v3;
-  v6 = v3;
-  [v5 addFinishBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [testConnection addFinishBlock:v7];
 }
 
-- (void)_lockupFromMediaAPIResponse:(id)a3 withContext:(id)a4 completionBlock:(id)a5
+- (void)_lockupFromMediaAPIResponse:(id)response withContext:(id)context completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  contextCopy = context;
+  responseCopy = response;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v11 = [(ASCLockupViewGroup *)self lockupFetcher];
-  v12 = [v11 lockupFromMediaAPIResponse:v10 withContext:v9];
+  lockupFetcher = [(ASCLockupViewGroup *)self lockupFetcher];
+  v12 = [lockupFetcher lockupFromMediaAPIResponse:responseCopy withContext:contextCopy];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __96__ASCLockupViewGroup_FromMAPIResponse___lockupFromMediaAPIResponse_withContext_completionBlock___block_invoke;
   v17[3] = &unk_2781CCDB0;
-  v13 = v8;
+  v13 = blockCopy;
   v18 = v13;
   [v12 addSuccessBlock:v17];
   v15[0] = MEMORY[0x277D85DD0];

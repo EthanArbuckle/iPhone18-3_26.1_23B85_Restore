@@ -6,8 +6,8 @@
 
 - (uint64_t)an_isLocalDevice
 {
-  v1 = [a1 UUIDString];
-  v2 = [v1 isEqualToString:@"00000000-0000-0000-0000-000000000000"];
+  uUIDString = [self UUIDString];
+  v2 = [uUIDString isEqualToString:@"00000000-0000-0000-0000-000000000000"];
 
   return v2;
 }

@@ -1,30 +1,30 @@
 @interface BKHIDHapticFeedbackController
 + (id)sharedInstance;
-- (BKHIDHapticFeedbackController)initWithHIDHapticFeedbackInterface:(id)a3;
-- (BOOL)_validateHapticFeedbackRequest:(id)a3 forAuditToken:(id *)a4;
-- (void)postHapticFeedbackRequest:(id)a3 forAuditToken:(id *)a4;
+- (BKHIDHapticFeedbackController)initWithHIDHapticFeedbackInterface:(id)interface;
+- (BOOL)_validateHapticFeedbackRequest:(id)request forAuditToken:(id *)token;
+- (void)postHapticFeedbackRequest:(id)request forAuditToken:(id *)token;
 @end
 
 @implementation BKHIDHapticFeedbackController
 
-- (BOOL)_validateHapticFeedbackRequest:(id)a3 forAuditToken:(id *)a4
+- (BOOL)_validateHapticFeedbackRequest:(id)request forAuditToken:(id *)token
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = BSPIDForAuditToken();
-  v8 = [v6 powerSourceID];
-  v9 = [v6 deviceType];
-  v10 = [BKSecurityManager hasEntitlement:BKRequestHapticFeedbackEntitlement forAuditToken:a4];
-  if (!v8)
+  powerSourceID = [requestCopy powerSourceID];
+  deviceType = [requestCopy deviceType];
+  v10 = [BKSecurityManager hasEntitlement:BKRequestHapticFeedbackEntitlement forAuditToken:token];
+  if (!powerSourceID)
   {
-    if (v9)
+    if (deviceType)
     {
-      if (v9 == 1 && [(BKHIDHapticFeedbackController *)self _validateTrackpadHapticFeedbackRequest:v6 forPID:v7])
+      if (deviceType == 1 && [(BKHIDHapticFeedbackController *)self _validateTrackpadHapticFeedbackRequest:requestCopy forPID:v7])
       {
         goto LABEL_3;
       }
     }
 
-    else if ([(BKHIDHapticFeedbackController *)self _validatePencilHapticFeedbackRequest:v6 forPID:v7])
+    else if ([(BKHIDHapticFeedbackController *)self _validatePencilHapticFeedbackRequest:requestCopy forPID:v7])
     {
       goto LABEL_3;
     }
@@ -33,7 +33,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543618;
-      v16 = v6;
+      v16 = requestCopy;
       v17 = 1024;
       v18 = v7;
       v13 = "Haptic feedback request %{public}@ from pid %d could not be validated due to destination mismatch";
@@ -52,7 +52,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543618;
-      v16 = v6;
+      v16 = requestCopy;
       v17 = 1024;
       v18 = v7;
       v13 = "Haptic feedback request %{public}@ from pid %d could not be validated due to missing entitlement";
@@ -71,25 +71,25 @@ LABEL_13:
   return v11;
 }
 
-- (void)postHapticFeedbackRequest:(id)a3 forAuditToken:(id *)a4
+- (void)postHapticFeedbackRequest:(id)request forAuditToken:(id *)token
 {
-  v5 = a3;
+  requestCopy = request;
   if ([BKHIDHapticFeedbackController _validateHapticFeedbackRequest:"_validateHapticFeedbackRequest:forAuditToken:" forAuditToken:?])
   {
-    [(BKHIDHapticFeedbackInterface *)self->_HIDHapticFeedbackInterface playHapticFeedbackRequest:v5];
+    [(BKHIDHapticFeedbackInterface *)self->_HIDHapticFeedbackInterface playHapticFeedbackRequest:requestCopy];
   }
 }
 
-- (BKHIDHapticFeedbackController)initWithHIDHapticFeedbackInterface:(id)a3
+- (BKHIDHapticFeedbackController)initWithHIDHapticFeedbackInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v9.receiver = self;
   v9.super_class = BKHIDHapticFeedbackController;
   v6 = [(BKHIDHapticFeedbackController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_HIDHapticFeedbackInterface, a3);
+    objc_storeStrong(&v6->_HIDHapticFeedbackInterface, interface);
   }
 
   return v7;
@@ -101,7 +101,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_1000691E0;
   block[3] = &unk_1000FC018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100126018 != -1)
   {
     dispatch_once(&qword_100126018, block);

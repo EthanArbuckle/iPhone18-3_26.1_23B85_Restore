@@ -1,6 +1,6 @@
 @interface QLLivePhotoItemTransformer
 + (id)allowedOutputClasses;
-- (id)transformedContentsFromURL:(id)a3 context:(id)a4 error:(id *)a5;
+- (id)transformedContentsFromURL:(id)l context:(id)context error:(id *)error;
 @end
 
 @implementation QLLivePhotoItemTransformer
@@ -13,29 +13,29 @@
   return [v3 setWithObjects:{objc_opt_class(), 0}];
 }
 
-- (id)transformedContentsFromURL:(id)a3 context:(id)a4 error:(id *)a5
+- (id)transformedContentsFromURL:(id)l context:(id)context error:(id *)error
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lCopy = l;
   gotLoadHelper_x8__OBJC_CLASS___PFVideoComplement(v7);
-  v9 = [objc_alloc(*(v8 + 1312)) initWithBundleAtURL:v6];
-  v10 = [v9 imagePath];
+  v9 = [objc_alloc(*(v8 + 1312)) initWithBundleAtURL:lCopy];
+  imagePath = [v9 imagePath];
   v11 = MEMORY[0x277D43EF8];
-  if (v10 && (v12 = v10, [v9 videoPath], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+  if (imagePath && (v12 = imagePath, [v9 videoPath], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
     v14 = MEMORY[0x277CBEBC0];
-    v15 = [v9 imagePath];
-    v16 = [v14 fileURLWithPath:v15];
+    imagePath2 = [v9 imagePath];
+    v16 = [v14 fileURLWithPath:imagePath2];
 
     v17 = MEMORY[0x277CBEBC0];
-    v18 = [v9 videoPath];
-    v19 = [v17 fileURLWithPath:v18];
+    videoPath = [v9 videoPath];
+    v19 = [v17 fileURLWithPath:videoPath];
 
     gotLoadHelper_x24__OBJC_CLASS___PHLivePhoto(v20);
-    v21 = v18[281];
+    v21 = videoPath[281];
     if ((objc_opt_respondsToSelector() & 1) != 0 && _os_feature_enabled_impl())
     {
-      v22 = v18[281];
+      v22 = videoPath[281];
       v42[0] = v16;
       v42[1] = v19;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
@@ -46,7 +46,7 @@
 
     else
     {
-      v32 = v18[281];
+      v32 = videoPath[281];
       v41[0] = v16;
       v41[1] = v19;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:2];
@@ -79,7 +79,7 @@
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v38 = v6;
+      v38 = lCopy;
       _os_log_impl(&dword_23A714000, v26, OS_LOG_TYPE_INFO, "Could not generate a PFVideoComplement from the given url: %@ #PreviewItem", buf, 0xCu);
     }
 
@@ -99,17 +99,17 @@
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v38 = v6;
+    v38 = lCopy;
     v39 = 2112;
     v40 = v27;
     _os_log_impl(&dword_23A714000, v29, OS_LOG_TYPE_ERROR, "Error creating PHLivePhoto for url(%@) error (%@) #PreviewItem", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v30 = v27;
     v31 = 0;
-    *a5 = v27;
+    *error = v27;
   }
 
   else

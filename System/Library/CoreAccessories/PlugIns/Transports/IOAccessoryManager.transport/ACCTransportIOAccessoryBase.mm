@@ -1,5 +1,5 @@
 @interface ACCTransportIOAccessoryBase
-- (BOOL)transmitData:(id)a3;
+- (BOOL)transmitData:(id)data;
 - (void)dealloc;
 - (void)transportClassTerminated;
 @end
@@ -68,9 +68,9 @@
   objc_sync_exit(v2);
 }
 
-- (BOOL)transmitData:(id)a3
+- (BOOL)transmitData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 1;

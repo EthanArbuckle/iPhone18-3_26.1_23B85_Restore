@@ -1,24 +1,24 @@
 @interface ASMigrationDisplayItem
-- (ASMigrationDisplayItem)initWithCoder:(id)a3;
-- (ASMigrationDisplayItem)initWithXPCObject:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (ASMigrationDisplayItem)initWithCoder:(id)coder;
+- (ASMigrationDisplayItem)initWithXPCObject:(id)object error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ASMigrationDisplayItem
 
-- (ASMigrationDisplayItem)initWithCoder:(id)a3
+- (ASMigrationDisplayItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ASMigrationDisplayItem;
-  v5 = [(ASPickerDisplayItem *)&v13 initWithCoder:v4];
+  v5 = [(ASPickerDisplayItem *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -47,57 +47,57 @@
 
   else
   {
-    [ASDiscoveredAccessory initWithCoder:v4];
+    [ASDiscoveredAccessory initWithCoder:coderCopy];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ASMigrationDisplayItem;
-  [(ASPickerDisplayItem *)&v9 encodeWithCoder:v4];
+  [(ASPickerDisplayItem *)&v9 encodeWithCoder:coderCopy];
   accessoryIdentifier = self->_accessoryIdentifier;
   if (accessoryIdentifier)
   {
-    [v4 encodeObject:accessoryIdentifier forKey:@"aSi"];
+    [coderCopy encodeObject:accessoryIdentifier forKey:@"aSi"];
   }
 
   peripheralIdentifier = self->_peripheralIdentifier;
   if (peripheralIdentifier)
   {
-    [v4 encodeObject:peripheralIdentifier forKey:@"mPid"];
+    [coderCopy encodeObject:peripheralIdentifier forKey:@"mPid"];
   }
 
   hotspotSSID = self->_hotspotSSID;
   if (hotspotSSID)
   {
-    [v4 encodeObject:hotspotSSID forKey:@"mHSd"];
+    [coderCopy encodeObject:hotspotSSID forKey:@"mHSd"];
   }
 
   wifiAwarePairedDeviceID = self->_wifiAwarePairedDeviceID;
   if (wifiAwarePairedDeviceID)
   {
-    [v4 encodeInt64:wifiAwarePairedDeviceID forKey:@"mWAID"];
+    [coderCopy encodeInt64:wifiAwarePairedDeviceID forKey:@"mWAID"];
   }
 
   if (self->_upgradeAccessory)
   {
-    [v4 encodeBool:1 forKey:@"mUpg"];
+    [coderCopy encodeBool:1 forKey:@"mUpg"];
   }
 }
 
-- (ASMigrationDisplayItem)initWithXPCObject:(id)a3 error:(id *)a4
+- (ASMigrationDisplayItem)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v17.receiver = self;
   v17.super_class = ASMigrationDisplayItem;
-  v7 = [(ASPickerDisplayItem *)&v17 initWithXPCObject:v6 error:a4];
+  v7 = [(ASPickerDisplayItem *)&v17 initWithXPCObject:objectCopy error:error];
   if (v7)
   {
-    if (MEMORY[0x2383B4C90](v6) == MEMORY[0x277D86468])
+    if (MEMORY[0x2383B4C90](objectCopy) == MEMORY[0x277D86468])
     {
       CUXPCDecodeNSString();
       CUXPCDecodeNSUUID();
@@ -112,10 +112,10 @@
       v14 = v7;
     }
 
-    else if (a4)
+    else if (error)
     {
       ASErrorF(-6756, "XPC non-dict", v8, v9, v10, v11, v12, v13, v16);
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -126,26 +126,26 @@
 
   else
   {
-    [ASPickerDisplayItem initWithXPCObject:a4 error:&v18];
+    [ASPickerDisplayItem initWithXPCObject:error error:&v18];
     v14 = v18;
   }
 
   return v14;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = ASMigrationDisplayItem;
-  [(ASPickerDisplayItem *)&v15 encodeWithXPCObject:v4];
+  [(ASPickerDisplayItem *)&v15 encodeWithXPCObject:objectCopy];
   accessoryIdentifier = self->_accessoryIdentifier;
-  v6 = v4;
-  v7 = [(NSString *)accessoryIdentifier UTF8String];
-  if (v7)
+  v6 = objectCopy;
+  uTF8String = [(NSString *)accessoryIdentifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v6, "aSi", v7);
+    xpc_dictionary_set_string(v6, "aSi", uTF8String);
   }
 
   peripheralIdentifier = self->_peripheralIdentifier;
@@ -158,10 +158,10 @@
 
   hotspotSSID = self->_hotspotSSID;
   v11 = v6;
-  v12 = [(NSString *)hotspotSSID UTF8String];
-  if (v12)
+  uTF8String2 = [(NSString *)hotspotSSID UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v11, "mHSd", v12);
+    xpc_dictionary_set_string(v11, "mHSd", uTF8String2);
   }
 
   wifiAwarePairedDeviceID = self->_wifiAwarePairedDeviceID;
@@ -178,20 +178,20 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = ASMigrationDisplayItem;
   v5 = [(ASPickerDisplayItem *)&v13 copyWithZone:?];
-  v6 = [(NSString *)self->_accessoryIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_accessoryIdentifier copyWithZone:zone];
   v7 = v5[13];
   v5[13] = v6;
 
-  v8 = [(NSUUID *)self->_peripheralIdentifier copyWithZone:a3];
+  v8 = [(NSUUID *)self->_peripheralIdentifier copyWithZone:zone];
   v9 = v5[10];
   v5[10] = v8;
 
-  v10 = [(NSString *)self->_hotspotSSID copyWithZone:a3];
+  v10 = [(NSString *)self->_hotspotSSID copyWithZone:zone];
   v11 = v5[11];
   v5[11] = v10;
 
@@ -200,13 +200,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (![(ASMigrationDisplayItem *)v6 isMemberOfClass:objc_opt_class()])
     {
       v13 = 0;
@@ -216,9 +216,9 @@ LABEL_29:
     }
 
     accessoryIdentifier = self->_accessoryIdentifier;
-    v8 = [(ASMigrationDisplayItem *)v6 accessoryIdentifier];
+    accessoryIdentifier = [(ASMigrationDisplayItem *)v6 accessoryIdentifier];
     p_isa = accessoryIdentifier;
-    v10 = v8;
+    v10 = accessoryIdentifier;
     v11 = v10;
     if (p_isa == v10)
     {
@@ -247,9 +247,9 @@ LABEL_28:
     }
 
     peripheralIdentifier = self->_peripheralIdentifier;
-    v15 = [(ASMigrationDisplayItem *)v6 peripheralIdentifier];
+    peripheralIdentifier = [(ASMigrationDisplayItem *)v6 peripheralIdentifier];
     v16 = peripheralIdentifier;
-    v17 = v15;
+    v17 = peripheralIdentifier;
     p_isa = &v17->super.isa;
     if (v16 == v17)
     {
@@ -275,9 +275,9 @@ LABEL_27:
     }
 
     hotspotSSID = self->_hotspotSSID;
-    v20 = [(ASMigrationDisplayItem *)v6 hotspotSSID];
+    hotspotSSID = [(ASMigrationDisplayItem *)v6 hotspotSSID];
     v21 = hotspotSSID;
-    v22 = v20;
+    v22 = hotspotSSID;
     v16 = v22;
     if (v21 == v22)
     {
@@ -318,7 +318,7 @@ LABEL_30:
   return v13;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   CUAppendF();
   v20 = 0;

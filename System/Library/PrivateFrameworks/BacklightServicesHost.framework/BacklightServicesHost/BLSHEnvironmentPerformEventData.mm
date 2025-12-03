@@ -1,12 +1,12 @@
 @interface BLSHEnvironmentPerformEventData
-- (BLSHEnvironmentPerformEventData)initWithStateMachineOldBacklightState:(int64_t)a3 eventPreviousBacklightState:(int64_t)a4 eventNewBacklightState:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (BLSHEnvironmentPerformEventData)initWithStateMachineOldBacklightState:(int64_t)state eventPreviousBacklightState:(int64_t)backlightState eventNewBacklightState:(int64_t)newBacklightState;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation BLSHEnvironmentPerformEventData
 
-- (BLSHEnvironmentPerformEventData)initWithStateMachineOldBacklightState:(int64_t)a3 eventPreviousBacklightState:(int64_t)a4 eventNewBacklightState:(int64_t)a5
+- (BLSHEnvironmentPerformEventData)initWithStateMachineOldBacklightState:(int64_t)state eventPreviousBacklightState:(int64_t)backlightState eventNewBacklightState:(int64_t)newBacklightState
 {
   v11.receiver = self;
   v11.super_class = BLSHEnvironmentPerformEventData;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_stateMachineOldBacklightState = a3;
-    v8->_eventPreviousBacklightState = a4;
-    v8->_eventNewBacklightState = a5;
+    v8->_stateMachineOldBacklightState = state;
+    v8->_eventPreviousBacklightState = backlightState;
+    v8->_eventNewBacklightState = newBacklightState;
     v8->_startedTime = mach_continuous_time();
   }
 
@@ -34,22 +34,22 @@
   v9 = NSStringFromBLSBacklightState();
   v10 = objc_alloc(MEMORY[0x277CBEAA8]);
   v11 = [v10 bls_initWithMachContinuousTime:self->_startedTime];
-  v12 = [v11 bls_shortLoggingString];
-  v13 = [v3 stringWithFormat:@"event (%@) %@->%@ %@", v5, v7, v9, v12];
+  bls_shortLoggingString = [v11 bls_shortLoggingString];
+  v13 = [v3 stringWithFormat:@"event (%@) %@->%@ %@", v5, v7, v9, bls_shortLoggingString];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   stateMachineOldBacklightState = self->_stateMachineOldBacklightState;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __43__BLSHEnvironmentPerformEventData_isEqual___block_invoke;
   v20[3] = &unk_27841EB18;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendInteger:stateMachineOldBacklightState counterpart:v20];
   eventPreviousBacklightState = self->_eventPreviousBacklightState;

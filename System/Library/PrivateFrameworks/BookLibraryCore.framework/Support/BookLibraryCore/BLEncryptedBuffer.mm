@@ -1,8 +1,8 @@
 @interface BLEncryptedBuffer
-- (BLEncryptedBuffer)initWithFileAtURL:(id)a3 pageSize:(unint64_t)a4 key:(const char *)a5 options:(unsigned __int16)a6;
-- (BLEncryptedBuffer)initWithSize:(unint64_t)a3 pageSize:(unint64_t)a4 key:(const char *)a5 options:(unsigned __int16)a6;
-- (unint64_t)_cachePage:(unsigned int)a3;
-- (unint64_t)_decryptRange:(_NSRange)a3;
+- (BLEncryptedBuffer)initWithFileAtURL:(id)l pageSize:(unint64_t)size key:(const char *)key options:(unsigned __int16)options;
+- (BLEncryptedBuffer)initWithSize:(unint64_t)size pageSize:(unint64_t)pageSize key:(const char *)key options:(unsigned __int16)options;
+- (unint64_t)_cachePage:(unsigned int)page;
+- (unint64_t)_decryptRange:(_NSRange)range;
 - (unint64_t)_writeCurrentCacheBlock;
 - (void)dealloc;
 - (void)decrypt;
@@ -10,7 +10,7 @@
 
 @implementation BLEncryptedBuffer
 
-- (BLEncryptedBuffer)initWithSize:(unint64_t)a3 pageSize:(unint64_t)a4 key:(const char *)a5 options:(unsigned __int16)a6
+- (BLEncryptedBuffer)initWithSize:(unint64_t)size pageSize:(unint64_t)pageSize key:(const char *)key options:(unsigned __int16)options
 {
   v21.receiver = self;
   v21.super_class = BLEncryptedBuffer;
@@ -22,11 +22,11 @@
   }
 
   *(v10 + 2) = 1668446573;
-  *(v10 + 64) = a6;
+  *(v10 + 64) = options;
   *(v10 + 11) = sub_1000A4720;
-  if (a5)
+  if (key)
   {
-    *(v10 + 12) = *a5;
+    *(v10 + 12) = *key;
   }
 
   else
@@ -37,12 +37,12 @@
     }
   }
 
-  if ((a4 & 0xF) != 0 || a4 == 0)
+  if ((pageSize & 0xF) != 0 || pageSize == 0)
   {
-    a4 = 1024;
+    pageSize = 1024;
   }
 
-  if ((*(v11 + 5) = a4, v14 = (a3 + a4 - 1) / a4, *(v11 + 12) = v14, v15 = malloc_type_calloc(1uLL, (v14 + 7) >> 3, 0x100004077774924uLL), (*(v11 + 7) = v15) != 0) && (v16 = malloc_type_calloc(1uLL, a4, 0x100004077774924uLL), (*(v11 + 8) = v16) != 0) && ((*(v11 + 31) = 128, *(v11 + 9) = a3, (a6 & 4) != 0) ? (v17 = a4 << 7, *(v11 + 13) = -1) : (v17 = a4 * *(v11 + 12)), (*(v11 + 4) = v17, (a6 & 8) != 0) || !HIDWORD(v17) && (v18 = malloc_type_calloc(1uLL, v17, 0x100004077774924uLL), (*(v11 + 10) = v18) != 0)))
+  if ((*(v11 + 5) = pageSize, v14 = (size + pageSize - 1) / pageSize, *(v11 + 12) = v14, v15 = malloc_type_calloc(1uLL, (v14 + 7) >> 3, 0x100004077774924uLL), (*(v11 + 7) = v15) != 0) && (v16 = malloc_type_calloc(1uLL, pageSize, 0x100004077774924uLL), (*(v11 + 8) = v16) != 0) && ((*(v11 + 31) = 128, *(v11 + 9) = size, (options & 4) != 0) ? (v17 = pageSize << 7, *(v11 + 13) = -1) : (v17 = pageSize * *(v11 + 12)), (*(v11 + 4) = v17, (options & 8) != 0) || !HIDWORD(v17) && (v18 = malloc_type_calloc(1uLL, v17, 0x100004077774924uLL), (*(v11 + 10) = v18) != 0)))
   {
 LABEL_20:
     v19 = v11;
@@ -56,12 +56,12 @@ LABEL_20:
   return v19;
 }
 
-- (BLEncryptedBuffer)initWithFileAtURL:(id)a3 pageSize:(unint64_t)a4 key:(const char *)a5 options:(unsigned __int16)a6
+- (BLEncryptedBuffer)initWithFileAtURL:(id)l pageSize:(unint64_t)size key:(const char *)key options:(unsigned __int16)options
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = [v10 path];
-  v12 = open([v11 UTF8String], 2);
+  optionsCopy = options;
+  lCopy = l;
+  path = [lCopy path];
+  v12 = open([path UTF8String], 2);
 
   if (v12 == -1)
   {
@@ -75,7 +75,7 @@ LABEL_20:
       v30 = 2160;
       v31 = 1752392040;
       v32 = 2112;
-      v33 = v10;
+      v33 = lCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "[Install-Op-Buffer] open error: %s, url: %{mask.hash}@", buf, 0x20u);
     }
   }
@@ -92,13 +92,13 @@ LABEL_20:
       v30 = 2160;
       v31 = 1752392040;
       v32 = 2112;
-      v33 = v10;
+      v33 = lCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "[Install-Op-Buffer] fstat error: %s, url: %{mask.hash}@", buf, 0x20u);
     }
   }
 
   st_size = v27.st_size;
-  v20 = [(BLEncryptedBuffer *)self initWithSize:v27.st_size pageSize:a4 key:a5 options:v6 | 7u];
+  v20 = [(BLEncryptedBuffer *)self initWithSize:v27.st_size pageSize:size key:key options:optionsCopy | 7u];
   if (v20)
   {
     v21 = fdopen(v12, "w+");
@@ -116,13 +116,13 @@ LABEL_20:
         v30 = 2160;
         v31 = 1752392040;
         v32 = 2112;
-        v33 = v10;
+        v33 = lCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[Install-Op-Buffer] fdopen error: %s, url: %{mask.hash}@", buf, 0x20u);
       }
     }
 
     v25 = 0;
-    if (a5)
+    if (key)
     {
       do
       {
@@ -192,7 +192,7 @@ LABEL_20:
   }
 }
 
-- (unint64_t)_cachePage:(unsigned int)a3
+- (unint64_t)_cachePage:(unsigned int)page
 {
   if (([(BLEncryptedBuffer *)self options]& 4) == 0)
   {
@@ -205,33 +205,33 @@ LABEL_20:
   }
 
   firstPageInBuffer = self->_firstPageInBuffer;
-  if (firstPageInBuffer <= a3 && self->_cachedPageCount + firstPageInBuffer > a3)
+  if (firstPageInBuffer <= page && self->_cachedPageCount + firstPageInBuffer > page)
   {
     return 0;
   }
 
-  v6 = [(BLEncryptedBuffer *)self _writeCurrentCacheBlock];
-  if (!v6)
+  _writeCurrentCacheBlock = [(BLEncryptedBuffer *)self _writeCurrentCacheBlock];
+  if (!_writeCurrentCacheBlock)
   {
-    fseeko(self->_file, self->_pageSize * a3, 0);
+    fseeko(self->_file, self->_pageSize * page, 0);
     v8 = fread(self->_baseAddress, 1uLL, self->_pageSize * self->_cachedPageCount, self->_file);
-    if (v8 == self->_pageSize * self->_cachedPageCount || (v6 = v8, v9 = feof(self->_file), !v6) || v9)
+    if (v8 == self->_pageSize * self->_cachedPageCount || (_writeCurrentCacheBlock = v8, v9 = feof(self->_file), !_writeCurrentCacheBlock) || v9)
     {
-      v6 = 0;
-      self->_firstPageInBuffer = a3;
+      _writeCurrentCacheBlock = 0;
+      self->_firstPageInBuffer = page;
     }
   }
 
-  return v6;
+  return _writeCurrentCacheBlock;
 }
 
-- (unint64_t)_decryptRange:(_NSRange)a3
+- (unint64_t)_decryptRange:(_NSRange)range
 {
   pageSize = self->_pageSize;
-  v5 = a3.location / pageSize;
-  v6 = a3.length + a3.location - 1;
+  v5 = range.location / pageSize;
+  v6 = range.length + range.location - 1;
   v7 = v6 / pageSize;
-  if ((a3.location / pageSize) <= (v6 / pageSize))
+  if ((range.location / pageSize) <= (v6 / pageSize))
   {
     while (1)
     {

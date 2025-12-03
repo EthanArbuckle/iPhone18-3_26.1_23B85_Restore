@@ -1,14 +1,14 @@
 @interface VisualTranslationService
-+ (void)isTranslatable:(id)a3 completion:(id)a4;
-+ (void)translate:(id)a3 sourceLocale:(id)a4 targetLocale:(id)a5 completion:(id)a6;
++ (void)isTranslatable:(id)translatable completion:(id)completion;
++ (void)translate:(id)translate sourceLocale:(id)locale targetLocale:(id)targetLocale completion:(id)completion;
 - (_TtC13TranslationUI24VisualTranslationService)init;
 @end
 
 @implementation VisualTranslationService
 
-+ (void)isTranslatable:(id)a3 completion:(id)a4
++ (void)isTranslatable:(id)translatable completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   sub_26F3B0C24(0, &qword_280F66CC0, 0x277CE2DE0);
   v5 = sub_26F49FAF8();
   v6 = swift_allocObject();
@@ -17,7 +17,7 @@
   static VisualTranslationService.isTranslatable(_:completion:)(v5, sub_26F480C04, v6);
 }
 
-+ (void)translate:(id)a3 sourceLocale:(id)a4 targetLocale:(id)a5 completion:(id)a6
++ (void)translate:(id)translate sourceLocale:(id)locale targetLocale:(id)targetLocale completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2806DEFD8, &qword_26F4A3670);
   v10 = *(*(v9 - 8) + 64);
@@ -25,10 +25,10 @@
   v12 = &v23 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v13);
   v15 = &v23 - v14;
-  v16 = _Block_copy(a6);
+  v16 = _Block_copy(completion);
   sub_26F3B0C24(0, &qword_280F66CC0, 0x277CE2DE0);
   v17 = sub_26F49FAF8();
-  if (a4)
+  if (locale)
   {
     sub_26F49DA18();
     v18 = sub_26F49DAB8();
@@ -41,7 +41,7 @@
     (*(*(v19 - 8) + 56))(v15, 1, 1, v19);
   }
 
-  if (a5)
+  if (targetLocale)
   {
     sub_26F49DA18();
     v20 = 0;

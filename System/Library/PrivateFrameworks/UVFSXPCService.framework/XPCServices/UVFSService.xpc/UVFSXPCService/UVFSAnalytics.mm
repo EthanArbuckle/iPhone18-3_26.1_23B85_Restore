@@ -1,8 +1,8 @@
 @interface UVFSAnalytics
-+ (unsigned)getPartitionsParent:(unsigned int)a3;
++ (unsigned)getPartitionsParent:(unsigned int)parent;
 - (UVFSAnalytics)init;
-- (void)discoverDiskProperties:(unsigned int)a3;
-- (void)discoverTopology:(id)a3;
+- (void)discoverDiskProperties:(unsigned int)properties;
+- (void)discoverTopology:(id)topology;
 - (void)logTopology;
 - (void)sendEvent;
 @end
@@ -31,43 +31,43 @@
 
 - (void)logTopology
 {
-  v3 = [(UVFSAnalytics *)self volume];
-  v4 = [v3 volumeLoadStatus];
-  if (v4 > 3)
+  volume = [(UVFSAnalytics *)self volume];
+  volumeLoadStatus = [volume volumeLoadStatus];
+  if (volumeLoadStatus > 3)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_1000386B0[v4];
+    v5 = off_1000386B0[volumeLoadStatus];
   }
 
   v34 = v5;
 
-  v33 = [(UVFSAnalytics *)self volume];
-  v29 = [v33 fsTypeName];
-  v32 = [(UVFSAnalytics *)self volume];
-  v28 = [v32 volumeCount];
-  v31 = [(UVFSAnalytics *)self volume];
-  v6 = [v31 volumeLoadErrorReason];
-  v30 = [(UVFSAnalytics *)self disk];
-  v7 = [v30 diskType];
-  v8 = [(UVFSAnalytics *)self disk];
-  v9 = [v8 diskSize];
-  v10 = [(UVFSAnalytics *)self disk];
-  v11 = [v10 diskBlockSize];
-  v12 = [(UVFSAnalytics *)self disk];
-  v13 = [v12 partitionTableType];
-  v14 = [(UVFSAnalytics *)self partitions];
-  v35 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Volume analytics of %@:\n  Count: %d\n  LoadStatus: %@\n  LoadErrorReason: %@\n  Disk analytics:\n    Type: %@\n    Size: %lu\n    BlockSize: %lu\n    Partition Table Type: %@\n    Partitions (%lu):\n", v29, v28, v34, v6, v7, v9, v11, v13, [v14 count]);
+  volume2 = [(UVFSAnalytics *)self volume];
+  fsTypeName = [volume2 fsTypeName];
+  volume3 = [(UVFSAnalytics *)self volume];
+  volumeCount = [volume3 volumeCount];
+  volume4 = [(UVFSAnalytics *)self volume];
+  volumeLoadErrorReason = [volume4 volumeLoadErrorReason];
+  disk = [(UVFSAnalytics *)self disk];
+  diskType = [disk diskType];
+  disk2 = [(UVFSAnalytics *)self disk];
+  diskSize = [disk2 diskSize];
+  disk3 = [(UVFSAnalytics *)self disk];
+  diskBlockSize = [disk3 diskBlockSize];
+  disk4 = [(UVFSAnalytics *)self disk];
+  partitionTableType = [disk4 partitionTableType];
+  partitions = [(UVFSAnalytics *)self partitions];
+  v35 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Volume analytics of %@:\n  Count: %d\n  LoadStatus: %@\n  LoadErrorReason: %@\n  Disk analytics:\n    Type: %@\n    Size: %lu\n    BlockSize: %lu\n    Partition Table Type: %@\n    Partitions (%lu):\n", fsTypeName, volumeCount, v34, volumeLoadErrorReason, diskType, diskSize, diskBlockSize, partitionTableType, [partitions count]);
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v15 = [(UVFSAnalytics *)self partitions];
-  v16 = [v15 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  partitions2 = [(UVFSAnalytics *)self partitions];
+  v16 = [partitions2 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v16)
   {
     v17 = v16;
@@ -81,21 +81,21 @@
       {
         if (*v37 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(partitions2);
         }
 
         v22 = *(*(&v36 + 1) + 8 * v20);
         v23 = [(__CFString *)v21 length];
-        v24 = [v22 getLogPartition];
-        v25 = v24;
+        getLogPartition = [v22 getLogPartition];
+        v25 = getLogPartition;
         if (v23)
         {
-          [NSString stringWithFormat:@"%@\n%@", v21, v24];
+          [NSString stringWithFormat:@"%@\n%@", v21, getLogPartition];
         }
 
         else
         {
-          [NSString stringWithFormat:@"%@", v24, v27];
+          [NSString stringWithFormat:@"%@", getLogPartition, v27];
         }
         v19 = ;
 
@@ -104,7 +104,7 @@
       }
 
       while (v17 != v20);
-      v17 = [v15 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v17 = [partitions2 countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v17);
@@ -134,56 +134,56 @@
   }
 
   v4 = [[NSMutableDictionary alloc] initWithCapacity:10];
-  v5 = [(UVFSAnalytics *)self volume];
-  v6 = [v5 fsTypeName];
-  [v4 setValue:v6 forKey:@"FSTypeName"];
+  volume = [(UVFSAnalytics *)self volume];
+  fsTypeName = [volume fsTypeName];
+  [v4 setValue:fsTypeName forKey:@"FSTypeName"];
 
-  v7 = [(UVFSAnalytics *)self volume];
-  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 volumeCount]);
+  volume2 = [(UVFSAnalytics *)self volume];
+  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [volume2 volumeCount]);
   [v4 setValue:v8 forKey:@"VolumeCount"];
 
-  v9 = [(UVFSAnalytics *)self volume];
-  v10 = [v9 volumeLoadStatus];
-  if (v10 > 3)
+  volume3 = [(UVFSAnalytics *)self volume];
+  volumeLoadStatus = [volume3 volumeLoadStatus];
+  if (volumeLoadStatus > 3)
   {
     v11 = @"Unknown";
   }
 
   else
   {
-    v11 = off_1000386B0[v10];
+    v11 = off_1000386B0[volumeLoadStatus];
   }
 
   [v4 setValue:v11 forKey:@"LoadStatus"];
-  v12 = [(UVFSAnalytics *)self volume];
-  v13 = [v12 volumeLoadErrorReason];
-  [v4 setValue:v13 forKey:@"LoadErrorReason"];
+  volume4 = [(UVFSAnalytics *)self volume];
+  volumeLoadErrorReason = [volume4 volumeLoadErrorReason];
+  [v4 setValue:volumeLoadErrorReason forKey:@"LoadErrorReason"];
 
-  v14 = [(UVFSAnalytics *)self disk];
-  v15 = [v14 diskType];
-  [v4 setValue:v15 forKey:@"DiskType"];
+  disk = [(UVFSAnalytics *)self disk];
+  diskType = [disk diskType];
+  [v4 setValue:diskType forKey:@"DiskType"];
 
-  v16 = [(UVFSAnalytics *)self disk];
-  v17 = [v16 partitionTableType];
-  [v4 setValue:v17 forKey:@"PartitionTableType"];
+  disk2 = [(UVFSAnalytics *)self disk];
+  partitionTableType = [disk2 partitionTableType];
+  [v4 setValue:partitionTableType forKey:@"PartitionTableType"];
 
-  v18 = [(UVFSAnalytics *)self disk];
-  v19 = [v18 diskSize];
+  disk3 = [(UVFSAnalytics *)self disk];
+  diskSize = [disk3 diskSize];
 
-  if (v19)
+  if (diskSize)
   {
-    v20 = [(UVFSAnalytics *)self disk];
-    v21 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v20 diskSize]);
+    disk4 = [(UVFSAnalytics *)self disk];
+    v21 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [disk4 diskSize]);
     [v4 setValue:v21 forKey:@"DiskSize"];
   }
 
-  v22 = [(UVFSAnalytics *)self disk];
-  v23 = [v22 diskBlockSize];
+  disk5 = [(UVFSAnalytics *)self disk];
+  diskBlockSize = [disk5 diskBlockSize];
 
-  if (v23)
+  if (diskBlockSize)
   {
-    v24 = [(UVFSAnalytics *)self disk];
-    v25 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v24 diskBlockSize]);
+    disk6 = [(UVFSAnalytics *)self disk];
+    v25 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [disk6 diskBlockSize]);
     [v4 setValue:v25 forKey:@"BlockSize"];
   }
 
@@ -214,30 +214,30 @@
 
         v34 = *(*(&v52 + 1) + 8 * v31);
         v35 = [(__CFString *)v33 length];
-        v36 = [v34 partitionType];
-        v37 = v36;
+        partitionType = [v34 partitionType];
+        v37 = partitionType;
         if (v35)
         {
-          [NSString stringWithFormat:@"%@, %@", v33, v36];
+          [NSString stringWithFormat:@"%@, %@", v33, partitionType];
         }
 
         else
         {
-          [NSString stringWithFormat:@"%@", v36, v49];
+          [NSString stringWithFormat:@"%@", partitionType, v49];
         }
         v30 = ;
 
         v38 = [(__CFString *)v32 length];
-        v39 = [v34 partitionSize];
+        partitionSize = [v34 partitionSize];
         if (v38)
         {
-          v49 = v39;
+          v49 = partitionSize;
           [NSString stringWithFormat:@"%@, %lu", v32];
         }
 
         else
         {
-          [NSString stringWithFormat:@"%lu", v39];
+          [NSString stringWithFormat:@"%lu", partitionSize];
         }
         v28 = ;
 
@@ -283,7 +283,7 @@
   }
 }
 
-+ (unsigned)getPartitionsParent:(unsigned int)a3
++ (unsigned)getPartitionsParent:(unsigned int)parent
 {
   v4 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -293,7 +293,7 @@
 
   parent = 0;
   v12 = 0;
-  if (!IORegistryEntryGetParentEntry(a3, "IOService", &parent))
+  if (!IORegistryEntryGetParentEntry(parent, "IOService", &parent))
   {
     do
     {
@@ -303,11 +303,11 @@
       v12 = Value != 0;
       if (!Value)
       {
-        v15 = parent;
+        parentCopy = parent;
         ParentEntry = IORegistryEntryGetParentEntry(parent, "IOService", &parent);
-        if (v15)
+        if (parentCopy)
         {
-          IOObjectRelease(v15);
+          IOObjectRelease(parentCopy);
         }
       }
 
@@ -343,16 +343,16 @@
   }
 }
 
-- (void)discoverTopology:(id)a3
+- (void)discoverTopology:(id)topology
 {
-  v4 = a3;
+  topologyCopy = topology;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_10001E990();
   }
 
   existing = 0;
-  v5 = IOBSDNameMatching(kIOMainPortDefault, 0, [v4 UTF8String]);
+  v5 = IOBSDNameMatching(kIOMainPortDefault, 0, [topologyCopy UTF8String]);
   if (IOServiceGetMatchingServices(kIOMainPortDefault, v5, &existing))
   {
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
@@ -392,7 +392,7 @@
   }
 }
 
-- (void)discoverDiskProperties:(unsigned int)a3
+- (void)discoverDiskProperties:(unsigned int)properties
 {
   v5 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -401,7 +401,7 @@
   }
 
   parent = 0;
-  if (IORegistryEntryGetParentEntry(a3, "IOService", &parent))
+  if (IORegistryEntryGetParentEntry(properties, "IOService", &parent))
   {
     v13 = userfs_log_default;
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
@@ -418,8 +418,8 @@
       v22 = v21;
       v83 = 0;
       CFNumberGetValue(v21, kCFNumberLongLongType, &v83);
-      v23 = [(UVFSAnalytics *)self disk];
-      [v23 setDiskSize:v83];
+      disk = [(UVFSAnalytics *)self disk];
+      [disk setDiskSize:v83];
 
       CFRelease(v22);
     }
@@ -439,8 +439,8 @@
       v33 = v32;
       v83 = 0;
       CFNumberGetValue(v32, kCFNumberLongLongType, &v83);
-      v34 = [(UVFSAnalytics *)self disk];
-      [v34 setDiskBlockSize:v83];
+      disk2 = [(UVFSAnalytics *)self disk];
+      [disk2 setDiskBlockSize:v83];
 
       CFRelease(v33);
     }
@@ -462,8 +462,8 @@
       if (Value)
       {
         v46 = Value;
-        v47 = [(UVFSAnalytics *)self disk];
-        [v47 setDiskType:v46];
+        disk3 = [(UVFSAnalytics *)self disk];
+        [disk3 setDiskType:v46];
       }
 
       else
@@ -491,8 +491,8 @@
     if (v64)
     {
       v65 = v64;
-      v66 = [(UVFSAnalytics *)self disk];
-      [v66 setPartitionTableType:v65];
+      disk4 = [(UVFSAnalytics *)self disk];
+      [disk4 setPartitionTableType:v65];
 
       CFRelease(v65);
     }

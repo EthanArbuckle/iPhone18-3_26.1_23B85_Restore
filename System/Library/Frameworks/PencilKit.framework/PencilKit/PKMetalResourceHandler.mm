@@ -1,57 +1,57 @@
 @interface PKMetalResourceHandler
-+ (id)generatePipelineDescriptorsForDevice:(id)a3;
-+ (id)sharedResourceHandlerWithDevice:(uint64_t)a1;
++ (id)generatePipelineDescriptorsForDevice:(id)device;
++ (id)sharedResourceHandlerWithDevice:(uint64_t)device;
 + (uint64_t)colorSpaceForExtendedDynamicRange;
 + (uint64_t)inkBundle;
-- (char)_uberShaderForKey:(char *)a1;
+- (char)_uberShaderForKey:(char *)key;
 - (double)paperTextureSize;
 - (id).cxx_construct;
 - (id)_createSDFPenEllipseLookupTexture;
-- (id)_inkTextureNamed:(uint64_t)a3 image:;
+- (id)_inkTextureNamed:(uint64_t)named image:;
 - (id)_preloadUberShaders;
 - (id)_signpostLog;
 - (id)cachedQuadTexCoordBuffer;
 - (id)cachedQuadVertexBuffer;
-- (id)compositeEraseShaderWithMode:(char)a3 clipping:(int)a4 colorAttachmentIndex:(char)a5 secondaryPaintEnabled:(uint64_t)a6 pipelineConfig:;
-- (id)compositeMultiplyShaderWithMode:(char)a3 clipping:(char)a4 targetMultiple:(int)a5 colorAttachmentIndex:(char)a6 renderMask:(char)a7 edgeMask:(char)a8 secondaryPaintEnabled:(uint64_t)a9 pipelineConfig:;
-- (id)compositeOverShaderWithMode:(char)a3 clipping:(int)a4 colorAttachmentIndex:(unsigned __int8)a5 renderMask:(char)a6 edgeMask:(char)a7 secondaryPaintEnabled:(uint64_t)a8 pipelineConfig:;
-- (id)compositePaperShaderWithMode:(int)a3 colorAttachmentIndex:(char)a4 secondaryPaintEnabled:(uint64_t)a5 pipelineConfig:;
-- (id)compositeSoftWhiteShaderWithMode:(char)a3 clipping:(int)a4 colorAttachmentIndex:(unsigned __int8)a5 renderMask:(char)a6 edgeMask:(char)a7 secondaryPaintEnabled:(uint64_t)a8 pipelineConfig:;
-- (id)indexBufferForNumVertices:(void *)a3 outIndexType:;
-- (id)initWithDevice:(char)a3 generatePipelineDescriptors:;
-- (id)initWithDevice:(id)a1;
-- (id)inkTextureNamed:(uint64_t)a3 image:;
-- (id)kernelPipelineStateForKey:(uint64_t)a1;
-- (id)namedShaderForKey:(uint64_t)a1;
-- (id)newBufferWithLength:(uint64_t)a3 bytes:(uint64_t)a4 outOffset:;
-- (id)newGPUBufferWithLength:(uint64_t)a3 outOffset:(void *)a4 commandBuffer:;
-- (id)newPurgeableBufferWithLength:(uint64_t)a3 bytes:(uint64_t)a4 outOffset:;
+- (id)compositeEraseShaderWithMode:(char)mode clipping:(int)clipping colorAttachmentIndex:(char)index secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:;
+- (id)compositeMultiplyShaderWithMode:(char)mode clipping:(char)clipping targetMultiple:(int)multiple colorAttachmentIndex:(char)index renderMask:(char)mask edgeMask:(char)edgeMask secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:;
+- (id)compositeOverShaderWithMode:(char)mode clipping:(int)clipping colorAttachmentIndex:(unsigned __int8)index renderMask:(char)mask edgeMask:(char)edgeMask secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:;
+- (id)compositePaperShaderWithMode:(int)mode colorAttachmentIndex:(char)index secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:;
+- (id)compositeSoftWhiteShaderWithMode:(char)mode clipping:(int)clipping colorAttachmentIndex:(unsigned __int8)index renderMask:(char)mask edgeMask:(char)edgeMask secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:;
+- (id)indexBufferForNumVertices:(void *)vertices outIndexType:;
+- (id)initWithDevice:(char)device generatePipelineDescriptors:;
+- (id)initWithDevice:(id)device;
+- (id)inkTextureNamed:(uint64_t)named image:;
+- (id)kernelPipelineStateForKey:(uint64_t)key;
+- (id)namedShaderForKey:(uint64_t)key;
+- (id)newBufferWithLength:(uint64_t)length bytes:(uint64_t)bytes outOffset:;
+- (id)newGPUBufferWithLength:(uint64_t)length outOffset:(void *)offset commandBuffer:;
+- (id)newPurgeableBufferWithLength:(uint64_t)length bytes:(uint64_t)bytes outOffset:;
 - (id)paintShaderKernelPipelineState;
 - (id)paintShaderKernelPipelineStateWithLiveStrokeMode;
 - (id)paintShaderKernelPipelineStateWithLiveStrokeParticles;
 - (id)paperTexture;
-- (id)particleShaderKernelPipelineStateWithVariableSpacing:(int)a3 particleMasks:;
+- (id)particleShaderKernelPipelineStateWithVariableSpacing:(int)spacing particleMasks:;
 - (id)randomNumberBuffer;
 - (id)sdfPenEllipseLookupTexture;
 - (id)sdfPenMaxHeightLookupTexture;
 - (id)sdfPenShaderKernelPipelineState;
 - (id)shaderLibrary;
-- (id)sixChannelShaderWithMode:(char)a3 clipping:(char)a4 erase:(char)a5 bitmapEraserMask:(char)a6 snapshotImage:(char)a7 renderMask:(char)a8 secondaryPaintEnabled:(uint64_t)a9 colorAttachmentIndex:(uint64_t)a10 multiplyLayerColorAttachmentIndex:(uint64_t)a11 pipelineConfig:;
+- (id)sixChannelShaderWithMode:(char)mode clipping:(char)clipping erase:(char)erase bitmapEraserMask:(char)mask snapshotImage:(char)image renderMask:(char)renderMask secondaryPaintEnabled:(uint64_t)enabled colorAttachmentIndex:(uint64_t)self0 multiplyLayerColorAttachmentIndex:(uint64_t)self1 pipelineConfig:;
 - (id)strokeRenderCache;
-- (id)uberShaderForKey:(uint64_t)a1;
+- (id)uberShaderForKey:(uint64_t)key;
 - (id)uint16IndexBuffer;
-- (uint64_t)_kernelPipelineStateForKey:(uint64_t)a1;
-- (uint64_t)_namedShaderForKey:(int8x8_t *)a1;
-- (uint64_t)_pipelineDescriptorForConfig:(void *)a1;
+- (uint64_t)_kernelPipelineStateForKey:(uint64_t)key;
+- (uint64_t)_namedShaderForKey:(int8x8_t *)key;
+- (uint64_t)_pipelineDescriptorForConfig:(void *)config;
 - (uint64_t)isAppInBackground;
 - (uint64_t)newPaintShaderKernelPipelineState;
 - (uint64_t)randomNumberArray;
-- (void)_paintShaderKernelPipelineStateWithLiveStrokeMode:(void *)a1 particles:(int)a2;
+- (void)_paintShaderKernelPipelineStateWithLiveStrokeMode:(void *)mode particles:(int)particles;
 - (void)_setupPaperTextureIfNecessary;
 - (void)deallocateReusableBuffers;
 - (void)newComputePipelineDescriptor;
-- (void)reloadParticleTexturesIfNecessaryCommandQueue:(uint64_t)a1;
-- (void)replaceInkTexture:(uint64_t)a3 image:;
+- (void)reloadParticleTexturesIfNecessaryCommandQueue:(uint64_t)queue;
+- (void)replaceInkTexture:(uint64_t)texture image:;
 @end
 
 @implementation PKMetalResourceHandler
@@ -94,45 +94,45 @@ void __38__PKMetalResourceHandler__signpostLog__block_invoke()
 
 - (uint64_t)newPaintShaderKernelPipelineState
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E6974060]);
-    v3 = [(PKMetalResourceHandler *)v1 newComputePipelineDescriptor];
-    [v3 setLabel:@"Paint kernel"];
-    v4 = [*(v1 + 296) newFunctionWithName:@"paint_kernel" constantValues:v2 error:0];
-    [v3 setComputeFunction:v4];
+    newComputePipelineDescriptor = [(PKMetalResourceHandler *)selfCopy newComputePipelineDescriptor];
+    [newComputePipelineDescriptor setLabel:@"Paint kernel"];
+    v4 = [*(selfCopy + 296) newFunctionWithName:@"paint_kernel" constantValues:v2 error:0];
+    [newComputePipelineDescriptor setComputeFunction:v4];
 
-    v1 = [*(v1 + 424) newComputePipelineStateWithDescriptor:v3 options:0 reflection:0 error:0];
+    selfCopy = [*(selfCopy + 424) newComputePipelineStateWithDescriptor:newComputePipelineDescriptor options:0 reflection:0 error:0];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_signpostLog
 {
-  if (a1)
+  if (self)
   {
     if (qword_1ED6A53B0 != -1)
     {
       dispatch_once(&qword_1ED6A53B0, &__block_literal_global_155);
     }
 
-    a1 = qword_1ED6A53A8;
+    self = qword_1ED6A53A8;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)newComputePipelineDescriptor
 {
   v2 = objc_opt_new();
-  [v2 setPipelineLibrary:*(a1 + 408)];
+  [v2 setPipelineLibrary:*(self + 408)];
   return v2;
 }
 
-+ (id)sharedResourceHandlerWithDevice:(uint64_t)a1
++ (id)sharedResourceHandlerWithDevice:(uint64_t)device
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -153,18 +153,18 @@ void __38__PKMetalResourceHandler__signpostLog__block_invoke()
   return v7;
 }
 
-- (id)initWithDevice:(char)a3 generatePipelineDescriptors:
+- (id)initWithDevice:(char)device generatePipelineDescriptors:
 {
   v6 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_11;
   }
 
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = PKMetalResourceHandler;
   v7 = objc_msgSendSuper2(&v30, sel_init);
-  a1 = v7;
+  self = v7;
   if (!v7)
   {
     goto LABEL_11;
@@ -174,7 +174,7 @@ void __38__PKMetalResourceHandler__signpostLog__block_invoke()
   v7[418] = [v6 supportsFamily:1001];
   v7[419] = [v6 supportsFamily:2002];
   v7[420] = [PKMetalUtility deviceSupportsFramebufferFetch:v6];
-  v7[416] = a3;
+  v7[416] = device;
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v10 = dispatch_queue_create("com.apple.PencilKit.MetalResourceHandlerAccessQueue", v9);
   v11 = *(v7 + 46);
@@ -183,8 +183,8 @@ void __38__PKMetalResourceHandler__signpostLog__block_invoke()
   objc_storeStrong(v7 + 53, a2);
   *(v7 + 27) = vdupq_n_s64(0x50uLL);
   *(v7 + 56) = 115;
-  v12 = [MEMORY[0x1E69DC938] currentDevice];
-  LODWORD(v9) = [v12 _supportsDeepColor];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  LODWORD(v9) = [currentDevice _supportsDeepColor];
 
   if (v9)
   {
@@ -202,9 +202,9 @@ LABEL_7:
   v13 = *(v7 + 54) != 80;
 LABEL_8:
   v7[421] = v13;
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = *(v7 + 11);
-  *(v7 + 11) = v14;
+  *(v7 + 11) = dictionary;
 
   v16 = objc_alloc_init(PKLRUCache);
   v17 = *(v7 + 41);
@@ -228,20 +228,20 @@ LABEL_8:
   v24 = *(v7 + 50);
   *(v7 + 50) = v23;
 
-  v25 = [(PKMetalResourceHandler *)v7 _signpostLog];
-  *(v7 + 47) = os_signpost_id_make_with_pointer(v25, v7 + 368);
+  _signpostLog = [(PKMetalResourceHandler *)v7 _signpostLog];
+  *(v7 + 47) = os_signpost_id_make_with_pointer(_signpostLog, v7 + 368);
 
   v26 = *(v7 + 46);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__PKMetalResourceHandler_initWithDevice_generatePipelineDescriptors___block_invoke;
   block[3] = &unk_1E82D6388;
-  a1 = a1;
-  v29 = a1;
+  self = self;
+  selfCopy = self;
   dispatch_async(v26, block);
 
 LABEL_11:
-  return a1;
+  return self;
 }
 
 + (uint64_t)colorSpaceForExtendedDynamicRange
@@ -268,15 +268,15 @@ CGColorSpaceRef __59__PKMetalResourceHandler_colorSpaceForExtendedDynamicRange__
   return result;
 }
 
-+ (id)generatePipelineDescriptorsForDevice:(id)a3
++ (id)generatePipelineDescriptorsForDevice:(id)device
 {
-  v3 = a3;
-  [v3 startCollectingPipelineDescriptors];
-  v4 = [[PKMetalResourceHandler alloc] initWithDevice:v3 generatePipelineDescriptors:1];
+  deviceCopy = device;
+  [deviceCopy startCollectingPipelineDescriptors];
+  v4 = [[PKMetalResourceHandler alloc] initWithDevice:deviceCopy generatePipelineDescriptors:1];
   dispatch_sync(v4[46], &__block_literal_global_30_0);
-  v5 = [v3 endCollectingPipelineDescriptors];
+  endCollectingPipelineDescriptors = [deviceCopy endCollectingPipelineDescriptors];
 
-  return v5;
+  return endCollectingPipelineDescriptors;
 }
 
 void __69__PKMetalResourceHandler_initWithDevice_generatePipelineDescriptors___block_invoke(uint64_t a1)
@@ -467,20 +467,20 @@ void __69__PKMetalResourceHandler_initWithDevice_generatePipelineDescriptors___b
   }
 }
 
-- (id)initWithDevice:(id)a1
+- (id)initWithDevice:(id)device
 {
   v3 = a2;
-  if (a1)
+  if (device)
   {
-    a1 = [(PKMetalResourceHandler *)a1 initWithDevice:v3 generatePipelineDescriptors:0];
+    device = [(PKMetalResourceHandler *)device initWithDevice:v3 generatePipelineDescriptors:0];
   }
 
-  return a1;
+  return device;
 }
 
 - (id)shaderLibrary
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -488,12 +488,12 @@ void __69__PKMetalResourceHandler_initWithDevice_generatePipelineDescriptors___b
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __39__PKMetalResourceHandler_shaderLibrary__block_invoke;
     v4[3] = &unk_1E82D6868;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -526,23 +526,23 @@ void __69__PKMetalResourceHandler_initWithDevice_generatePipelineDescriptors___b
 
 - (id)strokeRenderCache
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[41];
+    self = self[41];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_pipelineDescriptorForConfig:(void *)a1
+- (uint64_t)_pipelineDescriptorForConfig:(void *)config
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v27[0] = a2;
-  v4 = a1 + 27;
+  v4 = config + 27;
   v5 = PKHashBytes(v27, 8);
   v6 = v5;
-  v7 = a1[28];
+  v7 = config[28];
   if (!*&v7)
   {
     goto LABEL_17;
@@ -570,7 +570,7 @@ void __69__PKMetalResourceHandler_initWithDevice_generatePipelineDescriptors___b
 LABEL_17:
     v26 = a2;
     v25 = objc_opt_new();
-    [v25 setPipelineLibrary:{a1[51], v26}];
+    [v25 setPipelineLibrary:{config[51], v26}];
     v13 = 0;
     while (1)
     {
@@ -583,7 +583,7 @@ LABEL_17:
             v15 = 554;
             break;
           case 5u:
-            v15 = a1[56];
+            v15 = config[56];
             break;
           case 6u:
             v15 = 115;
@@ -618,16 +618,16 @@ LABEL_17:
         }
       }
 
-      v16 = [v25 colorAttachments];
-      v17 = [v16 objectAtIndexedSubscript:v13];
+      colorAttachments = [v25 colorAttachments];
+      v17 = [colorAttachments objectAtIndexedSubscript:v13];
       [v17 setPixelFormat:v15];
 
       if (++v13 == 8)
       {
 LABEL_34:
         [v25 setStencilAttachmentPixelFormat:0];
-        [v25 setPipelineLibrary:a1[51]];
-        v18 = a1[28];
+        [v25 setPipelineLibrary:config[51]];
+        v18 = config[28];
         if (v18)
         {
           v19 = vcnt_s8(v18);
@@ -734,10 +734,10 @@ LABEL_52:
   return v25;
 }
 
-- (id)sixChannelShaderWithMode:(char)a3 clipping:(char)a4 erase:(char)a5 bitmapEraserMask:(char)a6 snapshotImage:(char)a7 renderMask:(char)a8 secondaryPaintEnabled:(uint64_t)a9 colorAttachmentIndex:(uint64_t)a10 multiplyLayerColorAttachmentIndex:(uint64_t)a11 pipelineConfig:
+- (id)sixChannelShaderWithMode:(char)mode clipping:(char)clipping erase:(char)erase bitmapEraserMask:(char)mask snapshotImage:(char)image renderMask:(char)renderMask secondaryPaintEnabled:(uint64_t)enabled colorAttachmentIndex:(uint64_t)self0 multiplyLayerColorAttachmentIndex:(uint64_t)self1 pipelineConfig:
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v14 = 0;
     v15 = &v14;
@@ -745,22 +745,22 @@ LABEL_52:
     v17 = __Block_byref_object_copy__26;
     v18 = __Block_byref_object_dispose__26;
     v19 = 0;
-    v11 = *(a1 + 368);
+    v11 = *(self + 368);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __200__PKMetalResourceHandler_sixChannelShaderWithMode_clipping_erase_bitmapEraserMask_snapshotImage_renderMask_secondaryPaintEnabled_colorAttachmentIndex_multiplyLayerColorAttachmentIndex_pipelineConfig___block_invoke;
     block[3] = &unk_1E82DB548;
-    v21 = a3;
-    block[6] = a9;
-    block[7] = a10;
-    v22 = a7;
+    modeCopy = mode;
+    block[6] = enabled;
+    block[7] = index;
+    imageCopy = image;
     block[8] = a2;
-    v23 = a4;
-    v24 = a5;
-    v25 = a6;
-    v26 = a8;
-    v27 = a11;
-    block[4] = a1;
+    clippingCopy = clipping;
+    eraseCopy = erase;
+    maskCopy = mask;
+    renderMaskCopy = renderMask;
+    attachmentIndexCopy = attachmentIndex;
+    block[4] = self;
     block[5] = &v14;
     dispatch_sync(v11, block);
     v12 = v15[5];
@@ -1117,18 +1117,18 @@ void __61__PKMetalResourceHandler__createSDFPenMaxHeightLookupTexture__block_inv
 
 - (id)_createSDFPenEllipseLookupTexture
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = [PKInk alloc];
-    v3 = [MEMORY[0x1E69DC888] blackColor];
-    v4 = [(PKInk *)v2 initWithInkType:@"com.apple.ink.fountainpen" color:v3];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v4 = [(PKInk *)v2 initWithInkType:@"com.apple.ink.fountainpen" color:blackColor];
 
-    v5 = [(PKInk *)v4 behavior];
-    v6 = v5;
-    if (v5)
+    behavior = [(PKInk *)v4 behavior];
+    v6 = behavior;
+    if (behavior)
     {
-      [v5 inkTransform];
+      [behavior inkTransform];
       v7 = *(&v12[1] + 1);
     }
 
@@ -1155,14 +1155,14 @@ void __61__PKMetalResourceHandler__createSDFPenMaxHeightLookupTexture__block_inv
       dispatch_once(&qword_1ED6A5390, block);
     }
 
-    v1 = [v1[53] newTextureWithDescriptor:v8];
+    selfCopy = [selfCopy[53] newTextureWithDescriptor:v8];
     memset(v12, 0, 24);
     *(&v12[1] + 8) = xmmword_1C801EA40;
     *(&v12[2] + 1) = 1;
-    [v1 replaceRegion:v12 mipmapLevel:0 withBytes:qword_1ED6A53D0 bytesPerRow:2048];
+    [selfCopy replaceRegion:v12 mipmapLevel:0 withBytes:qword_1ED6A53D0 bytesPerRow:2048];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __59__PKMetalResourceHandler__createSDFPenEllipseLookupTexture__block_invoke(uint64_t a1)
@@ -1208,7 +1208,7 @@ void __59__PKMetalResourceHandler__createSDFPenEllipseLookupTexture__block_invok
 
 - (id)sdfPenMaxHeightLookupTexture
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -1216,12 +1216,12 @@ void __59__PKMetalResourceHandler__createSDFPenEllipseLookupTexture__block_invok
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __54__PKMetalResourceHandler_sdfPenMaxHeightLookupTexture__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -1297,7 +1297,7 @@ void __54__PKMetalResourceHandler_sdfPenMaxHeightLookupTexture__block_invoke(uin
 
 - (id)sdfPenEllipseLookupTexture
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -1305,12 +1305,12 @@ void __54__PKMetalResourceHandler_sdfPenMaxHeightLookupTexture__block_invoke(uin
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __52__PKMetalResourceHandler_sdfPenEllipseLookupTexture__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -1344,9 +1344,9 @@ void __52__PKMetalResourceHandler_sdfPenEllipseLookupTexture__block_invoke(uint6
   objc_storeStrong(v7, v3);
 }
 
-- (id)kernelPipelineStateForKey:(uint64_t)a1
+- (id)kernelPipelineStateForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
     v7 = 0;
     v8 = &v7;
@@ -1354,12 +1354,12 @@ void __52__PKMetalResourceHandler_sdfPenEllipseLookupTexture__block_invoke(uint6
     v10 = __Block_byref_object_copy__26;
     v11 = __Block_byref_object_dispose__26;
     v12 = 0;
-    v2 = *(a1 + 368);
+    v2 = *(key + 368);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__PKMetalResourceHandler_kernelPipelineStateForKey___block_invoke;
     block[3] = &unk_1E82DB590;
-    block[4] = a1;
+    block[4] = key;
     block[5] = &v7;
     v6 = a2;
     dispatch_sync(v2, block);
@@ -1383,15 +1383,15 @@ void __52__PKMetalResourceHandler_kernelPipelineStateForKey___block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (uint64_t)_kernelPipelineStateForKey:(uint64_t)a1
+- (uint64_t)_kernelPipelineStateForKey:(uint64_t)key
 {
   v26 = a2;
-  if (a1)
+  if (key)
   {
-    v4 = (a1 + 256);
+    v4 = (key + 256);
     v5 = PKHashBytes(&v26, 2);
     v6 = v5;
-    v7 = *(a1 + 264);
+    v7 = *(key + 264);
     if (v7)
     {
       v8 = vcnt_s8(v7);
@@ -1449,8 +1449,8 @@ void __52__PKMetalResourceHandler_kernelPipelineStateForKey___block_invoke(uint6
       }
     }
 
-    v13 = [(PKMetalResourceHandler *)a1 newComputePipelineDescriptor];
-    [v13 setLabel:@"Particle kernel with Variable Particle Spacing"];
+    newComputePipelineDescriptor = [(PKMetalResourceHandler *)key newComputePipelineDescriptor];
+    [newComputePipelineDescriptor setLabel:@"Particle kernel with Variable Particle Spacing"];
     v14 = objc_alloc_init(MEMORY[0x1E6974060]);
     v15 = v14;
     LOBYTE(v27) = 1;
@@ -1464,11 +1464,11 @@ void __52__PKMetalResourceHandler_kernelPipelineStateForKey___block_invoke(uint6
       [v15 setConstantValue:&v27 type:53 atIndex:4];
     }
 
-    v16 = [*(a1 + 296) newFunctionWithName:@"particle_kernel" constantValues:v15 error:0];
-    [v13 setComputeFunction:v16];
+    v16 = [*(key + 296) newFunctionWithName:@"particle_kernel" constantValues:v15 error:0];
+    [newComputePipelineDescriptor setComputeFunction:v16];
 
-    v17 = [*(a1 + 424) newComputePipelineStateWithDescriptor:v13 options:0 reflection:0 error:0];
-    v18 = *(a1 + 264);
+    v17 = [*(key + 424) newComputePipelineStateWithDescriptor:newComputePipelineDescriptor options:0 reflection:0 error:0];
+    v18 = *(key + 264);
     if (!*&v18)
     {
       goto LABEL_39;
@@ -1544,26 +1544,26 @@ LABEL_40:
   return v25;
 }
 
-- (id)particleShaderKernelPipelineStateWithVariableSpacing:(int)a3 particleMasks:
+- (id)particleShaderKernelPipelineStateWithVariableSpacing:(int)spacing particleMasks:
 {
-  if (a1)
+  if (self)
   {
     v4 = 256;
-    if (!a3)
+    if (!spacing)
     {
       v4 = 0;
     }
 
-    a1 = [(PKMetalResourceHandler *)a1 kernelPipelineStateForKey:?];
+    self = [(PKMetalResourceHandler *)self kernelPipelineStateForKey:?];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)paintShaderKernelPipelineState
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -1571,12 +1571,12 @@ LABEL_40:
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __56__PKMetalResourceHandler_paintShaderKernelPipelineState__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -1612,7 +1612,7 @@ void __56__PKMetalResourceHandler_paintShaderKernelPipelineState__block_invoke(u
 
 - (id)sdfPenShaderKernelPipelineState
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -1620,12 +1620,12 @@ void __56__PKMetalResourceHandler_paintShaderKernelPipelineState__block_invoke(u
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __57__PKMetalResourceHandler_sdfPenShaderKernelPipelineState__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -1665,39 +1665,39 @@ void __57__PKMetalResourceHandler_sdfPenShaderKernelPipelineState__block_invoke(
   objc_storeStrong(v10, v3);
 }
 
-- (void)_paintShaderKernelPipelineStateWithLiveStrokeMode:(void *)a1 particles:(int)a2
+- (void)_paintShaderKernelPipelineStateWithLiveStrokeMode:(void *)mode particles:(int)particles
 {
-  v2 = a1;
-  if (a1)
+  modeCopy = mode;
+  if (mode)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6974060]);
-    v5 = [(PKMetalResourceHandler *)v2 newComputePipelineDescriptor];
-    [v5 setLabel:@"Paint kernel"];
+    newComputePipelineDescriptor = [(PKMetalResourceHandler *)modeCopy newComputePipelineDescriptor];
+    [newComputePipelineDescriptor setLabel:@"Paint kernel"];
     v14 = 1;
     [v4 setConstantValue:&v14 type:53 atIndex:2];
-    if (a2)
+    if (particles)
     {
       [v4 setConstantValue:&v14 type:53 atIndex:3];
     }
 
-    v6 = v2[37];
+    v6 = modeCopy[37];
     v13 = 0;
     v7 = [v6 newFunctionWithName:@"paint_kernel" constantValues:v4 error:&v13];
     v8 = v13;
-    [v5 setComputeFunction:v7];
+    [newComputePipelineDescriptor setComputeFunction:v7];
 
-    v9 = v2[53];
+    v9 = modeCopy[53];
     v12 = v8;
-    v2 = [v9 newComputePipelineStateWithDescriptor:v5 options:0 reflection:0 error:&v12];
+    modeCopy = [v9 newComputePipelineStateWithDescriptor:newComputePipelineDescriptor options:0 reflection:0 error:&v12];
     v10 = v12;
   }
 
-  return v2;
+  return modeCopy;
 }
 
 - (id)paintShaderKernelPipelineStateWithLiveStrokeParticles
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -1705,12 +1705,12 @@ void __57__PKMetalResourceHandler_sdfPenShaderKernelPipelineState__block_invoke(
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __79__PKMetalResourceHandler_paintShaderKernelPipelineStateWithLiveStrokeParticles__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -1746,7 +1746,7 @@ void __79__PKMetalResourceHandler_paintShaderKernelPipelineStateWithLiveStrokePa
 
 - (id)paintShaderKernelPipelineStateWithLiveStrokeMode
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -1754,12 +1754,12 @@ void __79__PKMetalResourceHandler_paintShaderKernelPipelineStateWithLiveStrokePa
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __74__PKMetalResourceHandler_paintShaderKernelPipelineStateWithLiveStrokeMode__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -1793,10 +1793,10 @@ void __74__PKMetalResourceHandler_paintShaderKernelPipelineStateWithLiveStrokeMo
   objc_storeStrong(v7, v3);
 }
 
-- (id)namedShaderForKey:(uint64_t)a1
+- (id)namedShaderForKey:(uint64_t)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (key)
   {
     v6 = 0;
     v7 = &v6;
@@ -1804,12 +1804,12 @@ void __74__PKMetalResourceHandler_paintShaderKernelPipelineStateWithLiveStrokeMo
     v9 = __Block_byref_object_copy__26;
     v10 = __Block_byref_object_dispose__26;
     v11 = 0;
-    v2 = *(a1 + 368);
+    v2 = *(key + 368);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44__PKMetalResourceHandler_namedShaderForKey___block_invoke;
     block[3] = &unk_1E82DB5B8;
-    block[4] = a1;
+    block[4] = key;
     block[5] = &v6;
     v3 = a2[1];
     v13 = *a2;
@@ -1842,14 +1842,14 @@ void __44__PKMetalResourceHandler_namedShaderForKey___block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (uint64_t)_namedShaderForKey:(int8x8_t *)a1
+- (uint64_t)_namedShaderForKey:(int8x8_t *)key
 {
   v166[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (key)
   {
-    v4 = a1 + 22;
+    v4 = key + 22;
     v5 = PKHashBytes(a2, 40);
-    v6 = a1[23];
+    v6 = key[23];
     if (!*&v6 || ((v7 = v5, v8 = vcnt_s8(v6), v8.i16[0] = vaddlv_u8(v8), v9 = v8.u32[0], v8.u32[0] > 1uLL) ? (v5 >= *&v6 ? (v10 = v5 % v6.i32[0]) : (v10 = v5)) : (v10 = (*&v6 + 0xFFFFFFFFLL) & v5), (v11 = *(*v4 + 8 * v10)) == 0 || (v12 = *v11) == 0))
     {
 LABEL_19:
@@ -1892,11 +1892,11 @@ LABEL_77:
             [v97 setConstantValue:&v164 type:53 atIndex:4];
           }
 
-          v98 = a1[37];
+          v98 = key[37];
           v162 = 0;
           v99 = [v98 newFunctionWithName:@"particle_vertex" constantValues:v97 error:&v162];
           v100 = v162;
-          v101 = a1[37];
+          v101 = key[37];
           v161 = v100;
           v102 = [v101 newFunctionWithName:@"particle_fragment" constantValues:v97 error:&v161];
           v103 = v161;
@@ -1906,7 +1906,7 @@ LABEL_77:
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v104 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v95];
+          v104 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v95];
           v105 = [PKMetalShader alloc];
           v106 = 0;
           if (v96 == 1)
@@ -1940,18 +1940,18 @@ LABEL_77:
           LOBYTE(v161) = 1;
           [v125 setConstantValue:&v161 type:53 atIndex:4];
           [v125 setConstantValue:&v161 type:53 atIndex:2];
-          v126 = a1[37];
+          v126 = key[37];
           v162 = 0;
           v127 = [v126 newFunctionWithName:@"uber_vertex" constantValues:v125 error:&v162];
           v128 = v162;
-          v129 = [*&a1[37] newFunctionWithName:@"paper_fragment"];
+          v129 = [*&key[37] newFunctionWithName:@"paper_fragment"];
           v130 = v129;
           if (!v127 || !v129)
           {
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v131 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v124];
+          v131 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v124];
           v132 = [PKMetalShader alloc];
           for (i = 0; i != 8; ++i)
           {
@@ -1994,11 +1994,11 @@ LABEL_77:
             [v83 setConstantValue:&v164 type:53 atIndex:3];
           }
 
-          v85 = a1[37];
+          v85 = key[37];
           v162 = 0;
           v86 = [v85 newFunctionWithName:@"uber_vertex" constantValues:v84 error:&v162];
           v87 = v162;
-          v88 = a1[37];
+          v88 = key[37];
           v161 = v87;
           v89 = [v88 newFunctionWithName:@"blit_fragment" constantValues:v83 error:&v161];
           v90 = v161;
@@ -2008,7 +2008,7 @@ LABEL_77:
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v91 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v80];
+          v91 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v80];
           for (j = 0; j != 8; ++j)
           {
             if (!*(v166 + j))
@@ -2024,15 +2024,15 @@ LABEL_77:
         case 8:
           v153 = *(a2 + 32);
           v166[0] = v153;
-          v154 = [*&a1[37] newFunctionWithName:@"lines_vertex"];
-          v155 = [*&a1[37] newFunctionWithName:@"lines_fragment"];
+          v154 = [*&key[37] newFunctionWithName:@"lines_vertex"];
+          v155 = [*&key[37] newFunctionWithName:@"lines_fragment"];
           v156 = v155;
           if (!v154 || !v155)
           {
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v157 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v153];
+          v157 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v153];
           for (k = 0; k != 8; ++k)
           {
             if (!*(v166 + k))
@@ -2064,18 +2064,18 @@ LABEL_77:
           v57 = objc_alloc_init(MEMORY[0x1E6974060]);
           LOBYTE(v161) = 1;
           [v57 setConstantValue:&v161 type:53 atIndex:4];
-          v58 = a1[37];
+          v58 = key[37];
           v162 = 0;
           v59 = [v58 newFunctionWithName:@"uber_vertex" constantValues:v57 error:&v162];
           v60 = v162;
-          v61 = [*&a1[37] newFunctionWithName:@"paint_circle_fragment"];
+          v61 = [*&key[37] newFunctionWithName:@"paint_circle_fragment"];
           v62 = v61;
           if (!v59 || !v61)
           {
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v63 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v56];
+          v63 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v56];
           v64 = [PKMetalShader alloc];
           for (m = 0; m != 8; ++m)
           {
@@ -2094,18 +2094,18 @@ LABEL_77:
           v135 = objc_alloc_init(MEMORY[0x1E6974060]);
           LOBYTE(v161) = 1;
           [v135 setConstantValue:&v161 type:53 atIndex:4];
-          v136 = a1[37];
+          v136 = key[37];
           v162 = 0;
           v137 = [v136 newFunctionWithName:@"paint_vertex" constantValues:v135 error:&v162];
           v138 = v162;
-          v139 = [*&a1[37] newFunctionWithName:@"fill_white"];
+          v139 = [*&key[37] newFunctionWithName:@"fill_white"];
           v140 = v139;
           if (!v137 || !v139)
           {
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v141 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v134];
+          v141 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v134];
           v142 = [PKMetalShader alloc];
           for (n = 0; n != 8; ++n)
           {
@@ -2128,11 +2128,11 @@ LABEL_77:
           [v33 setConstantValue:&v165 type:33 atIndex:1];
           LOBYTE(v164) = 1;
           [v32 setConstantValue:&v164 type:53 atIndex:4];
-          v34 = a1[37];
+          v34 = key[37];
           v162 = 0;
           v35 = [v34 newFunctionWithName:@"uber_vertex" constantValues:v32 error:&v162];
           v36 = v162;
-          v37 = a1[37];
+          v37 = key[37];
           v161 = v36;
           v38 = [v37 newFunctionWithName:@"erase_fragment" constantValues:v33 error:&v161];
           v39 = v161;
@@ -2142,7 +2142,7 @@ LABEL_77:
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v40 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v31];
+          v40 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v31];
           v41 = [PKMetalShader alloc];
           for (ii = 0; ii != 8; ++ii)
           {
@@ -2174,11 +2174,11 @@ LABEL_77:
           [v45 setConstantValue:&v164 type:53 atIndex:2];
           v46 = objc_alloc_init(MEMORY[0x1E6974060]);
           [v46 setConstantValue:&v165 type:33 atIndex:1];
-          v47 = a1[37];
+          v47 = key[37];
           v162 = 0;
           v48 = [v47 newFunctionWithName:@"uber_vertex" constantValues:v45 error:&v162];
           v49 = v162;
-          v50 = a1[37];
+          v50 = key[37];
           v161 = v49;
           v51 = [v50 newFunctionWithName:@"fill_color" constantValues:v46 error:&v161];
           v52 = v161;
@@ -2188,7 +2188,7 @@ LABEL_77:
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v53 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v44];
+          v53 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v44];
           for (jj = 0; jj != 8; ++jj)
           {
             if (!*(v166 + jj))
@@ -2234,11 +2234,11 @@ LABEL_77:
             [v113 setConstantValue:&v163 type:53 atIndex:4];
           }
 
-          v115 = a1[37];
+          v115 = key[37];
           v162 = 0;
           v116 = [v115 newFunctionWithName:@"uber_vertex" constantValues:v114 error:&v162];
           v117 = v162;
-          v118 = a1[37];
+          v118 = key[37];
           v161 = v117;
           v119 = [v118 newFunctionWithName:@"copy_framebuffer_fragment" constantValues:v113 error:&v161];
           v120 = v161;
@@ -2248,7 +2248,7 @@ LABEL_77:
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v121 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v110];
+          v121 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v110];
           for (kk = 0; kk != 8; ++kk)
           {
             if (!*(v166 + kk))
@@ -2268,11 +2268,11 @@ LABEL_77:
           v165 = v18;
           v20 = objc_alloc_init(MEMORY[0x1E6974060]);
           [v20 setConstantValue:&v165 type:33 atIndex:1];
-          v21 = a1[37];
+          v21 = key[37];
           v162 = 0;
           v22 = [v21 newFunctionWithName:@"sdfPen_vertex" constantValues:v20 error:&v162];
           v23 = v162;
-          v24 = a1[37];
+          v24 = key[37];
           v161 = v23;
           v25 = [v24 newFunctionWithName:@"sdfPen_fragment" constantValues:v20 error:&v161];
           v26 = v161;
@@ -2282,7 +2282,7 @@ LABEL_77:
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v27 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v19];
+          v27 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v19];
           v28 = [PKMetalShader alloc];
           for (mm = 0; mm != 8; ++mm)
           {
@@ -2332,11 +2332,11 @@ LABEL_53:
 
           [v68 setConstantValue:&v164 type:53 atIndex:v69];
 LABEL_60:
-          v70 = a1[37];
+          v70 = key[37];
           v162 = 0;
           v71 = [v70 newFunctionWithName:@"paint_vertex" constantValues:v68 error:&v162];
           v72 = v162;
-          v73 = a1[37];
+          v73 = key[37];
           v161 = v72;
           v74 = [v73 newFunctionWithName:@"paint_fragment" constantValues:v68 error:&v161];
           v75 = v161;
@@ -2346,7 +2346,7 @@ LABEL_60:
             objc_exception_throw(@"Failed to compile shader");
           }
 
-          v76 = [(PKMetalResourceHandler *)a1 _pipelineDescriptorForConfig:v67];
+          v76 = [(PKMetalResourceHandler *)key _pipelineDescriptorForConfig:v67];
           v77 = [PKMetalShader alloc];
           for (nn = 0; nn != 8; ++nn)
           {
@@ -2367,7 +2367,7 @@ LABEL_113:
 LABEL_114:
           v144 = PKHashBytes(a2, 40);
           v145 = v144;
-          v146 = a1[23];
+          v146 = key[23];
           if (!*&v146)
           {
             goto LABEL_131;
@@ -2499,7 +2499,7 @@ LABEL_140:
 - (id)_preloadUberShaders
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 417);
+  v2 = *(self + 417);
   *v20 = 3;
   if (v2)
   {
@@ -2518,8 +2518,8 @@ LABEL_140:
   *&v20[12] = 0;
   v21 = v3;
   v22 = 0;
-  v4 = [(PKMetalResourceHandler *)a1 _uberShaderForKey:v20];
-  v5 = *(a1 + 417);
+  v4 = [(PKMetalResourceHandler *)self _uberShaderForKey:v20];
+  v5 = *(self + 417);
   if (v5)
   {
     v6 = 16843009;
@@ -2539,21 +2539,21 @@ LABEL_140:
   *&v20[24] = 0;
   v21 = v6;
   v22 = 0;
-  v7 = [(PKMetalResourceHandler *)a1 _uberShaderForKey:v20];
-  if (*(a1 + 417) == 1)
+  v7 = [(PKMetalResourceHandler *)self _uberShaderForKey:v20];
+  if (*(self + 417) == 1)
   {
     *v20 = xmmword_1C801EA50;
     *&v20[16] = 4;
     *&v20[24] = 3;
     v21 = 16843009;
     v22 = 0;
-    v8 = [(PKMetalResourceHandler *)a1 _uberShaderForKey:v20];
+    v8 = [(PKMetalResourceHandler *)self _uberShaderForKey:v20];
     *v20 = xmmword_1C801EA60;
     *&v20[16] = 0;
     *&v20[24] = 3;
     v21 = 16843009;
     v22 = 0;
-    return [(PKMetalResourceHandler *)a1 _uberShaderForKey:v20];
+    return [(PKMetalResourceHandler *)self _uberShaderForKey:v20];
   }
 
   else
@@ -2581,7 +2581,7 @@ LABEL_140:
           *&v20[24] = 3;
           v21 = 33620226;
           v22 = 0;
-          v18 = [(PKMetalResourceHandler *)a1 _uberShaderForKey:v20];
+          v18 = [(PKMetalResourceHandler *)self _uberShaderForKey:v20];
           ++v14;
         }
 
@@ -2595,7 +2595,7 @@ LABEL_140:
         *&v20[24] = 3;
         v21 = 33620226;
         v22 = 0;
-        result = [(PKMetalResourceHandler *)a1 _uberShaderForKey:v20];
+        result = [(PKMetalResourceHandler *)self _uberShaderForKey:v20];
         v13 = 0;
         v12 = 1;
       }
@@ -2611,26 +2611,26 @@ LABEL_140:
   return result;
 }
 
-- (id)_inkTextureNamed:(uint64_t)a3 image:
+- (id)_inkTextureNamed:(uint64_t)named image:
 {
   v56[3] = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (!a1)
+  if (!self)
   {
-    v5 = 0;
+    cGImage = 0;
     goto LABEL_40;
   }
 
-  v5 = [*(a1 + 88) objectForKeyedSubscript:v4];
-  if (v5)
+  cGImage = [*(self + 88) objectForKeyedSubscript:v4];
+  if (cGImage)
   {
     goto LABEL_40;
   }
 
-  v6 = [(PKMetalResourceHandler *)a1 _signpostLog];
-  v7 = v6;
-  v8 = *(a1 + 376);
-  if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+  _signpostLog = [(PKMetalResourceHandler *)self _signpostLog];
+  v7 = _signpostLog;
+  v8 = *(self + 376);
+  if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(_signpostLog))
   {
     *buf = 0;
     _os_signpost_emit_with_name_impl(&dword_1C7CCA000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v8, "LoadInkTexture", "", buf, 2u);
@@ -2645,8 +2645,8 @@ LABEL_140:
   v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v12 = [MEMORY[0x1E69DCAB8] imageNamed:v41 inBundle:v11];
   v13 = v12;
-  v5 = [v12 CGImage];
-  if (v5)
+  cGImage = [v12 CGImage];
+  if (cGImage)
   {
     v14 = *MEMORY[0x1E6974400];
     v56[0] = *MEMORY[0x1E6974408];
@@ -2656,9 +2656,9 @@ LABEL_140:
     v56[2] = *MEMORY[0x1E69743F8];
     *&buf[16] = MEMORY[0x1E695E110];
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:v56 count:3];
-    v16 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:*(a1 + 424)];
+    v16 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:*(self + 424)];
     v43 = 0;
-    v5 = [v16 newTextureWithCGImage:v5 options:v15 error:&v43];
+    cGImage = [v16 newTextureWithCGImage:cGImage options:v15 error:&v43];
     v17 = v43;
     if (v17)
     {
@@ -2672,7 +2672,7 @@ LABEL_140:
     }
   }
 
-  if (!v5)
+  if (!cGImage)
   {
     objc_opt_self();
     v19 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -2684,13 +2684,13 @@ LABEL_140:
     v52[2] = *MEMORY[0x1E69743F8];
     v53[2] = MEMORY[0x1E695E110];
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:3];
-    v22 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:*(a1 + 424)];
+    v22 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:*(self + 424)];
     v42 = 0;
-    v5 = [v22 newTextureWithName:v41 scaleFactor:v19 bundle:v21 options:&v42 error:1.0];
+    cGImage = [v22 newTextureWithName:v41 scaleFactor:v19 bundle:v21 options:&v42 error:1.0];
     v23 = v42;
-    if (v23 || ![v5 width])
+    if (v23 || ![cGImage width])
     {
-      if (!a3)
+      if (!named)
       {
         goto LABEL_16;
       }
@@ -2698,14 +2698,14 @@ LABEL_140:
 
     else
     {
-      v26 = [v5 height];
-      if (!a3 || v26)
+      height = [cGImage height];
+      if (!named || height)
       {
 LABEL_17:
-        if ([v5 width])
+        if ([cGImage width])
         {
           v23 = 0;
-          if ([v5 height])
+          if ([cGImage height])
           {
 LABEL_28:
 
@@ -2737,7 +2737,7 @@ LABEL_25:
     v25 = v23;
 
     v23 = v25;
-    v5 = v24;
+    cGImage = v24;
 LABEL_16:
     if (v23)
     {
@@ -2748,30 +2748,30 @@ LABEL_16:
   }
 
 LABEL_29:
-  v28 = [PKMetalResourceHandler isAppInBackground];
+  isAppInBackground = [PKMetalResourceHandler isAppInBackground];
   v29 = os_log_create("com.apple.pencilkit", "");
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v5 width];
-    v31 = [v5 height];
-    v32 = [v5 depth];
-    v33 = [v5 pixelFormat];
+    width = [cGImage width];
+    height2 = [cGImage height];
+    depth = [cGImage depth];
+    pixelFormat = [cGImage pixelFormat];
     *buf = 138413570;
     *&buf[4] = v41;
     *&buf[12] = 2048;
-    *&buf[14] = v30;
+    *&buf[14] = width;
     *&buf[22] = 2048;
-    v45 = v31;
+    v45 = height2;
     v46 = 2048;
-    v47 = v32;
+    v47 = depth;
     v48 = 2048;
-    v49 = v33;
+    v49 = pixelFormat;
     v50 = 1024;
-    v51 = v28;
+    v51 = isAppInBackground;
     _os_log_impl(&dword_1C7CCA000, v29, OS_LOG_TYPE_DEFAULT, "Loaded ink texture: %@, size: %lu, %lu, %lu, pixelFormat: %lu, inBackground: %d", buf, 0x3Au);
   }
 
-  if (v28)
+  if (isAppInBackground)
   {
     v34 = os_log_create("com.apple.pencilkit", "");
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -2783,13 +2783,13 @@ LABEL_29:
 
   else
   {
-    [*(a1 + 88) setObject:v5 forKeyedSubscript:v39];
+    [*(self + 88) setObject:cGImage forKeyedSubscript:v39];
   }
 
-  v35 = [(PKMetalResourceHandler *)a1 _signpostLog];
-  v36 = v35;
-  v37 = *(a1 + 376);
-  if (v37 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v35))
+  _signpostLog2 = [(PKMetalResourceHandler *)self _signpostLog];
+  v36 = _signpostLog2;
+  v37 = *(self + 376);
+  if (v37 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(_signpostLog2))
   {
     *buf = 0;
     _os_signpost_emit_with_name_impl(&dword_1C7CCA000, v36, OS_SIGNPOST_INTERVAL_END, v37, "LoadInkTexture", "", buf, 2u);
@@ -2797,33 +2797,33 @@ LABEL_29:
 
 LABEL_40:
 
-  return v5;
+  return cGImage;
 }
 
-- (id)compositePaperShaderWithMode:(int)a3 colorAttachmentIndex:(char)a4 secondaryPaintEnabled:(uint64_t)a5 pipelineConfig:
+- (id)compositePaperShaderWithMode:(int)mode colorAttachmentIndex:(char)index secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     HIBYTE(v6) = 0;
     *(&v6 + 13) = 0;
     *&v6 = a2;
     DWORD2(v6) = 0;
-    BYTE12(v6) = a4;
+    BYTE12(v6) = index;
     v7 = 4;
-    v8 = a3;
-    v9 = a5;
+    modeCopy = mode;
+    enabledCopy = enabled;
     v10 = 0;
-    a1 = [(PKMetalResourceHandler *)a1 uberShaderForKey:?];
+    self = [(PKMetalResourceHandler *)self uberShaderForKey:?];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)uberShaderForKey:(uint64_t)a1
+- (id)uberShaderForKey:(uint64_t)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (key)
   {
     v6 = 0;
     v7 = &v6;
@@ -2831,12 +2831,12 @@ LABEL_40:
     v9 = __Block_byref_object_copy__26;
     v10 = __Block_byref_object_dispose__26;
     v11 = 0;
-    v2 = *(a1 + 368);
+    v2 = *(key + 368);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__PKMetalResourceHandler_uberShaderForKey___block_invoke;
     block[3] = &unk_1E82DB5B8;
-    block[4] = a1;
+    block[4] = key;
     block[5] = &v6;
     v3 = a2[1];
     v13 = *a2;
@@ -2855,106 +2855,106 @@ LABEL_40:
   return v4;
 }
 
-- (id)compositeOverShaderWithMode:(char)a3 clipping:(int)a4 colorAttachmentIndex:(unsigned __int8)a5 renderMask:(char)a6 edgeMask:(char)a7 secondaryPaintEnabled:(uint64_t)a8 pipelineConfig:
+- (id)compositeOverShaderWithMode:(char)mode clipping:(int)clipping colorAttachmentIndex:(unsigned __int8)index renderMask:(char)mask edgeMask:(char)edgeMask secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     HIBYTE(v9) = 0;
     *(&v9 + 13) = 0;
     *&v9 = a2;
-    BYTE8(v9) = a3;
-    *(&v9 + 9) = a5;
-    BYTE11(v9) = a6;
-    BYTE12(v9) = a7;
+    BYTE8(v9) = mode;
+    *(&v9 + 9) = index;
+    BYTE11(v9) = mask;
+    BYTE12(v9) = edgeMask;
     v10 = 0;
-    v11 = a4;
-    v12 = a8;
+    clippingCopy = clipping;
+    enabledCopy = enabled;
     v13 = 0;
-    a1 = [(PKMetalResourceHandler *)a1 uberShaderForKey:?];
+    self = [(PKMetalResourceHandler *)self uberShaderForKey:?];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)compositeMultiplyShaderWithMode:(char)a3 clipping:(char)a4 targetMultiple:(int)a5 colorAttachmentIndex:(char)a6 renderMask:(char)a7 edgeMask:(char)a8 secondaryPaintEnabled:(uint64_t)a9 pipelineConfig:
+- (id)compositeMultiplyShaderWithMode:(char)mode clipping:(char)clipping targetMultiple:(int)multiple colorAttachmentIndex:(char)index renderMask:(char)mask edgeMask:(char)edgeMask secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     HIBYTE(v10) = 0;
     *(&v10 + 13) = 0;
     *&v10 = a2;
-    BYTE8(v10) = a3;
-    BYTE9(v10) = a6;
-    BYTE10(v10) = a4;
-    BYTE11(v10) = a7;
-    BYTE12(v10) = a8;
+    BYTE8(v10) = mode;
+    BYTE9(v10) = index;
+    BYTE10(v10) = clipping;
+    BYTE11(v10) = mask;
+    BYTE12(v10) = edgeMask;
     v11 = 1;
-    v12 = a5;
-    v13 = a9;
+    multipleCopy = multiple;
+    enabledCopy = enabled;
     v14 = 0;
-    a1 = [(PKMetalResourceHandler *)a1 uberShaderForKey:?];
+    self = [(PKMetalResourceHandler *)self uberShaderForKey:?];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)compositeSoftWhiteShaderWithMode:(char)a3 clipping:(int)a4 colorAttachmentIndex:(unsigned __int8)a5 renderMask:(char)a6 edgeMask:(char)a7 secondaryPaintEnabled:(uint64_t)a8 pipelineConfig:
+- (id)compositeSoftWhiteShaderWithMode:(char)mode clipping:(int)clipping colorAttachmentIndex:(unsigned __int8)index renderMask:(char)mask edgeMask:(char)edgeMask secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     HIBYTE(v9) = 0;
     *(&v9 + 13) = 0;
     *&v9 = a2;
-    BYTE8(v9) = a3;
-    *(&v9 + 9) = a5;
-    BYTE11(v9) = a6;
-    BYTE12(v9) = a7;
+    BYTE8(v9) = mode;
+    *(&v9 + 9) = index;
+    BYTE11(v9) = mask;
+    BYTE12(v9) = edgeMask;
     v10 = 3;
-    v11 = a4;
-    v12 = a8;
+    clippingCopy = clipping;
+    enabledCopy = enabled;
     v13 = 0;
-    a1 = [(PKMetalResourceHandler *)a1 uberShaderForKey:?];
+    self = [(PKMetalResourceHandler *)self uberShaderForKey:?];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)compositeEraseShaderWithMode:(char)a3 clipping:(int)a4 colorAttachmentIndex:(char)a5 secondaryPaintEnabled:(uint64_t)a6 pipelineConfig:
+- (id)compositeEraseShaderWithMode:(char)mode clipping:(int)clipping colorAttachmentIndex:(char)index secondaryPaintEnabled:(uint64_t)enabled pipelineConfig:
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     HIBYTE(v7) = 0;
     *(&v7 + 13) = 0;
     *&v7 = a2;
-    BYTE8(v7) = a3;
+    BYTE8(v7) = mode;
     *(&v7 + 9) = 0;
     BYTE11(v7) = 0;
-    BYTE12(v7) = a5;
+    BYTE12(v7) = index;
     v8 = 2;
-    v9 = a4;
-    v10 = a6;
+    clippingCopy = clipping;
+    enabledCopy = enabled;
     v11 = 0;
-    a1 = [(PKMetalResourceHandler *)a1 uberShaderForKey:?];
+    self = [(PKMetalResourceHandler *)self uberShaderForKey:?];
   }
 
-  return a1;
+  return self;
 }
 
-- (char)_uberShaderForKey:(char *)a1
+- (char)_uberShaderForKey:(char *)key
 {
-  v2 = a1;
-  if (!a1)
+  keyCopy = key;
+  if (!key)
   {
     goto LABEL_71;
   }
 
-  v4 = a1 + 96;
+  v4 = key + 96;
   v5 = PKHashBytes(a2, 40);
-  v6 = *(v2 + 104);
+  v6 = *(keyCopy + 104);
   if (v6)
   {
     v7 = v5;
@@ -2984,7 +2984,7 @@ LABEL_40:
           {
             if (!memcmp(v12 + 2, a2, 0x28uLL))
             {
-              v2 = v12[7];
+              keyCopy = v12[7];
               goto LABEL_71;
             }
           }
@@ -3018,10 +3018,10 @@ LABEL_40:
     }
   }
 
-  v14 = [(PKMetalResourceHandler *)v2 _signpostLog];
-  v15 = v14;
-  v16 = *(v2 + 47);
-  if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
+  _signpostLog = [(PKMetalResourceHandler *)keyCopy _signpostLog];
+  v15 = _signpostLog;
+  v16 = *(keyCopy + 47);
+  if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(_signpostLog))
   {
     *buf = 0;
     _os_signpost_emit_with_name_impl(&dword_1C7CCA000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v16, "CompileShader", "", buf, 2u);
@@ -3069,7 +3069,7 @@ LABEL_27:
   }
 
   [v22 setConstantValue:buf type:33 atIndex:13];
-  if (v2[420] == 1)
+  if (keyCopy[420] == 1)
   {
     [v22 setConstantValue:&v56 type:53 atIndex:7];
   }
@@ -3091,12 +3091,12 @@ LABEL_27:
     [v22 setConstantValue:&v54 type:53 atIndex:qword_1C801EAF8[v24]];
   }
 
-  v25 = *(v2 + 37);
+  v25 = *(keyCopy + 37);
   v53 = 0;
   v26 = [v25 newFunctionWithName:@"uber_vertex" constantValues:v22 error:&v53];
   v49 = v26;
   v50 = v53;
-  v27 = *(v2 + 37);
+  v27 = *(keyCopy + 37);
   v52 = 0;
   v28 = [v27 newFunctionWithName:@"uber_fragment" constantValues:v22 error:&v52];
   v48 = v52;
@@ -3116,7 +3116,7 @@ LABEL_27:
     v30 = 0;
   }
 
-  v31 = [(PKMetalResourceHandler *)v2 _pipelineDescriptorForConfig:?];
+  v31 = [(PKMetalResourceHandler *)keyCopy _pipelineDescriptorForConfig:?];
   v47 = v31;
   v32 = [PKMetalShader alloc];
   for (i = 0; i != 8; ++i)
@@ -3130,7 +3130,7 @@ LABEL_27:
   v51 = [(PKMetalShader *)v32 initWithVertexFunction:v26 fragmentFunction:v28 blendMode:2 * v29 colorAttachmentIndex:v30 sharedPipelineDescriptor:v31 numColorAttachments:i];
   v34 = PKHashBytes(a2, 40);
   v35 = v34;
-  v36 = *(v2 + 104);
+  v36 = *(keyCopy + 104);
   if (!*&v36)
   {
     goto LABEL_66;
@@ -3199,19 +3199,19 @@ LABEL_65:
     goto LABEL_65;
   }
 
-  v43 = [(PKMetalResourceHandler *)v2 _signpostLog];
-  v44 = v43;
-  v45 = *(v2 + 47);
-  if (v45 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
+  _signpostLog2 = [(PKMetalResourceHandler *)keyCopy _signpostLog];
+  v44 = _signpostLog2;
+  v45 = *(keyCopy + 47);
+  if (v45 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(_signpostLog2))
   {
     *buf = 0;
     _os_signpost_emit_with_name_impl(&dword_1C7CCA000, v44, OS_SIGNPOST_INTERVAL_END, v45, "CompileShader", "", buf, 2u);
   }
 
-  v2 = v51;
+  keyCopy = v51;
 LABEL_71:
 
-  return v2;
+  return keyCopy;
 }
 
 void __43__PKMetalResourceHandler_uberShaderForKey___block_invoke(uint64_t a1)
@@ -3230,7 +3230,7 @@ void __43__PKMetalResourceHandler_uberShaderForKey___block_invoke(uint64_t a1)
 
 - (id)cachedQuadVertexBuffer
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -3238,12 +3238,12 @@ void __43__PKMetalResourceHandler_uberShaderForKey___block_invoke(uint64_t a1)
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __48__PKMetalResourceHandler_cachedQuadVertexBuffer__block_invoke;
     v4[3] = &unk_1E82D6868;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -3260,7 +3260,7 @@ void __43__PKMetalResourceHandler_uberShaderForKey___block_invoke(uint64_t a1)
 
 - (id)cachedQuadTexCoordBuffer
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -3268,12 +3268,12 @@ void __43__PKMetalResourceHandler_uberShaderForKey___block_invoke(uint64_t a1)
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __50__PKMetalResourceHandler_cachedQuadTexCoordBuffer__block_invoke;
     v4[3] = &unk_1E82D6868;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -3288,19 +3288,19 @@ void __43__PKMetalResourceHandler_uberShaderForKey___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)replaceInkTexture:(uint64_t)a3 image:
+- (void)replaceInkTexture:(uint64_t)texture image:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    v7 = *(a1 + 368);
+    v7 = *(self + 368);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__PKMetalResourceHandler_replaceInkTexture_image___block_invoke;
     block[3] = &unk_1E82DB5E0;
-    block[4] = a1;
-    v10 = a3;
+    block[4] = self;
+    textureCopy = texture;
     v9 = v5;
     dispatch_sync(v7, block);
   }
@@ -3340,11 +3340,11 @@ void __50__PKMetalResourceHandler_replaceInkTexture_image___block_invoke(void *a
   }
 }
 
-- (id)inkTextureNamed:(uint64_t)a3 image:
+- (id)inkTextureNamed:(uint64_t)named image:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v14 = 0;
     v15 = &v14;
@@ -3352,15 +3352,15 @@ void __50__PKMetalResourceHandler_replaceInkTexture_image___block_invoke(void *a
     v17 = __Block_byref_object_copy__26;
     v18 = __Block_byref_object_dispose__26;
     v19 = 0;
-    v7 = *(a1 + 368);
+    v7 = *(self + 368);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __48__PKMetalResourceHandler_inkTextureNamed_image___block_invoke;
     v10[3] = &unk_1E82DB608;
     v12 = &v14;
-    v10[4] = a1;
+    v10[4] = self;
     v11 = v5;
-    v13 = a3;
+    namedCopy = named;
     dispatch_sync(v7, v10);
     v8 = v15[5];
 
@@ -3385,12 +3385,12 @@ void __48__PKMetalResourceHandler_inkTextureNamed_image___block_invoke(uint64_t 
 
 - (void)_setupPaperTextureIfNecessary
 {
-  if (a1 && !a1[38])
+  if (self && !self[38])
   {
-    v2 = [(PKMetalResourceHandler *)a1 _signpostLog];
-    v3 = v2;
-    v4 = a1[47];
-    if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
+    _signpostLog = [(PKMetalResourceHandler *)self _signpostLog];
+    v3 = _signpostLog;
+    v4 = self[47];
+    if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(_signpostLog))
     {
       *buf = 0;
       _os_signpost_emit_with_name_impl(&dword_1C7CCA000, v3, OS_SIGNPOST_INTERVAL_BEGIN, v4, "SetupPaperTexture", "", buf, 2u);
@@ -3398,16 +3398,16 @@ void __48__PKMetalResourceHandler_inkTextureNamed_image___block_invoke(uint64_t 
 
     v5 = MEMORY[0x1E69DCAB8];
     v6 = MEMORY[0x1E69DD1B8];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v9 = v8;
 
     v10 = [v6 traitCollectionWithDisplayScale:{fmin(v9, 2.0)}];
     v11 = [v5 _kitImageNamed:@"UITexturedPaperTile" withTrait:v10];
 
     [(UIImage *)v11 size];
-    a1[39] = v12;
-    a1[40] = v13;
+    self[39] = v12;
+    self[40] = v13;
     if (CGImageGetWidth([(UIImage *)v11 CGImage]))
     {
       v30.width = 128.0;
@@ -3420,25 +3420,25 @@ void __48__PKMetalResourceHandler_inkTextureNamed_image___block_invoke(uint64_t 
       UIGraphicsEndImageContext();
     }
 
-    v15 = [(UIImage *)v11 CGImage];
-    if (v15)
+    cGImage = [(UIImage *)v11 CGImage];
+    if (cGImage)
     {
-      v16 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:a1[53]];
+      v16 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:self[53]];
       v28 = 0;
-      v17 = [v16 newTextureWithCGImage:v15 options:0 error:&v28];
+      v17 = [v16 newTextureWithCGImage:cGImage options:0 error:&v28];
       v18 = v28;
-      v19 = a1[38];
-      a1[38] = v17;
+      v19 = self[38];
+      self[38] = v17;
 
-      if (!a1[38])
+      if (!self[38])
       {
         v20 = UIImagePNGRepresentation(v11);
         v27 = v18;
         v21 = [v16 newTextureWithData:v20 options:0 error:&v27];
         v22 = v27;
 
-        v23 = a1[38];
-        a1[38] = v21;
+        v23 = self[38];
+        self[38] = v21;
 
         v18 = v22;
       }
@@ -3454,10 +3454,10 @@ void __48__PKMetalResourceHandler_inkTextureNamed_image___block_invoke(uint64_t 
       }
     }
 
-    v24 = [(PKMetalResourceHandler *)a1 _signpostLog];
-    v25 = v24;
-    v26 = a1[47];
-    if (v26 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
+    _signpostLog2 = [(PKMetalResourceHandler *)self _signpostLog];
+    v25 = _signpostLog2;
+    v26 = self[47];
+    if (v26 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(_signpostLog2))
     {
       *buf = 0;
       _os_signpost_emit_with_name_impl(&dword_1C7CCA000, v25, OS_SIGNPOST_INTERVAL_END, v26, "SetupPaperTexture", "", buf, 2u);
@@ -3467,7 +3467,7 @@ void __48__PKMetalResourceHandler_inkTextureNamed_image___block_invoke(uint64_t 
 
 - (id)paperTexture
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -3475,12 +3475,12 @@ void __48__PKMetalResourceHandler_inkTextureNamed_image___block_invoke(uint64_t 
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __38__PKMetalResourceHandler_paperTexture__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -3506,7 +3506,7 @@ void __38__PKMetalResourceHandler_paperTexture__block_invoke(uint64_t a1)
 
 - (double)paperTextureSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -3517,12 +3517,12 @@ void __38__PKMetalResourceHandler_paperTexture__block_invoke(uint64_t a1)
   v8 = __Block_byref_object_copy__149;
   v9 = __Block_byref_object_dispose__150;
   v10 = "";
-  v1 = *(a1 + 368);
+  v1 = *(self + 368);
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __42__PKMetalResourceHandler_paperTextureSize__block_invoke;
   v4[3] = &unk_1E82D8600;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = &v5;
   dispatch_sync(v1, v4);
   v2 = v6[6];
@@ -3541,7 +3541,7 @@ __n128 __42__PKMetalResourceHandler_paperTextureSize__block_invoke(uint64_t a1)
 
 - (id)randomNumberBuffer
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -3549,12 +3549,12 @@ __n128 __42__PKMetalResourceHandler_paperTextureSize__block_invoke(uint64_t a1)
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __44__PKMetalResourceHandler_randomNumberBuffer__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -3604,7 +3604,7 @@ void __44__PKMetalResourceHandler_randomNumberBuffer__block_invoke(uint64_t a1)
 
 - (id)uint16IndexBuffer
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -3612,12 +3612,12 @@ void __44__PKMetalResourceHandler_randomNumberBuffer__block_invoke(uint64_t a1)
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __43__PKMetalResourceHandler_uint16IndexBuffer__block_invoke;
     v4[3] = &unk_1E82D8600;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -3718,9 +3718,9 @@ void __43__PKMetalResourceHandler_randomNumberArray__block_invoke(uint64_t a1)
   }
 }
 
-- (id)indexBufferForNumVertices:(void *)a3 outIndexType:
+- (id)indexBufferForNumVertices:(void *)vertices outIndexType:
 {
-  if (a1)
+  if (self)
   {
     if (a2 > 0x10000)
     {
@@ -3730,33 +3730,33 @@ void __43__PKMetalResourceHandler_randomNumberArray__block_invoke(uint64_t a1)
       v11 = __Block_byref_object_copy__26;
       v12 = __Block_byref_object_dispose__26;
       v13 = 0;
-      v5 = *(a1 + 368);
+      v5 = *(self + 368);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __65__PKMetalResourceHandler_indexBufferForNumVertices_outIndexType___block_invoke;
       block[3] = &unk_1E82DB630;
       block[5] = &v8;
       block[6] = a2;
-      block[4] = a1;
+      block[4] = self;
       dispatch_sync(v5, block);
-      *a3 = 1;
-      v4 = v9[5];
+      *vertices = 1;
+      uint16IndexBuffer = v9[5];
       _Block_object_dispose(&v8, 8);
     }
 
     else
     {
-      *a3 = 0;
-      v4 = [(PKMetalResourceHandler *)a1 uint16IndexBuffer];
+      *vertices = 0;
+      uint16IndexBuffer = [(PKMetalResourceHandler *)self uint16IndexBuffer];
     }
   }
 
   else
   {
-    v4 = 0;
+    uint16IndexBuffer = 0;
   }
 
-  return v4;
+  return uint16IndexBuffer;
 }
 
 void __65__PKMetalResourceHandler_indexBufferForNumVertices_outIndexType___block_invoke(uint64_t a1)
@@ -3842,14 +3842,14 @@ void __65__PKMetalResourceHandler_indexBufferForNumVertices_outIndexType___block
 
 - (void)deallocateReusableBuffers
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 368);
+    v1 = *(self + 368);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__PKMetalResourceHandler_deallocateReusableBuffers__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -3865,10 +3865,10 @@ uint64_t __51__PKMetalResourceHandler_deallocateReusableBuffers__block_invoke(ui
   return result;
 }
 
-- (void)reloadParticleTexturesIfNecessaryCommandQueue:(uint64_t)a1
+- (void)reloadParticleTexturesIfNecessaryCommandQueue:(uint64_t)queue
 {
   v3 = a2;
-  if (a1)
+  if (queue)
   {
     if ([PKMetalResourceHandler isAppInBackground])
     {
@@ -3882,12 +3882,12 @@ uint64_t __51__PKMetalResourceHandler_deallocateReusableBuffers__block_invoke(ui
 
     else
     {
-      v5 = *(a1 + 368);
+      v5 = *(queue + 368);
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __72__PKMetalResourceHandler_reloadParticleTexturesIfNecessaryCommandQueue___block_invoke;
       v6[3] = &unk_1E82D6890;
-      v6[4] = a1;
+      v6[4] = queue;
       v7 = v3;
       dispatch_async(v5, v6);
     }
@@ -4086,7 +4086,7 @@ void __72__PKMetalResourceHandler_reloadParticleTexturesIfNecessaryCommandQueue_
   }
 }
 
-- (id)newPurgeableBufferWithLength:(uint64_t)a3 bytes:(uint64_t)a4 outOffset:
+- (id)newPurgeableBufferWithLength:(uint64_t)length bytes:(uint64_t)bytes outOffset:
 {
   if (result)
   {
@@ -4104,8 +4104,8 @@ void __72__PKMetalResourceHandler_reloadParticleTexturesIfNecessaryCommandQueue_
     block[4] = result;
     block[5] = &v7;
     block[6] = a2;
-    block[7] = a3;
-    block[8] = a4;
+    block[7] = length;
+    block[8] = bytes;
     dispatch_sync(v4, block);
     v5 = v8[5];
     _Block_object_dispose(&v7, 8);
@@ -4129,7 +4129,7 @@ void __71__PKMetalResourceHandler_newPurgeableBufferWithLength_bytes_outOffset__
   *(v3 + 40) = v2;
 }
 
-- (id)newBufferWithLength:(uint64_t)a3 bytes:(uint64_t)a4 outOffset:
+- (id)newBufferWithLength:(uint64_t)length bytes:(uint64_t)bytes outOffset:
 {
   if (result)
   {
@@ -4147,8 +4147,8 @@ void __71__PKMetalResourceHandler_newPurgeableBufferWithLength_bytes_outOffset__
     block[4] = result;
     block[5] = &v7;
     block[6] = a2;
-    block[7] = a3;
-    block[8] = a4;
+    block[7] = length;
+    block[8] = bytes;
     dispatch_sync(v4, block);
     v5 = v8[5];
     _Block_object_dispose(&v7, 8);
@@ -4177,11 +4177,11 @@ void __62__PKMetalResourceHandler_newBufferWithLength_bytes_outOffset___block_in
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v4);
 }
 
-- (id)newGPUBufferWithLength:(uint64_t)a3 outOffset:(void *)a4 commandBuffer:
+- (id)newGPUBufferWithLength:(uint64_t)length outOffset:(void *)offset commandBuffer:
 {
-  v7 = a4;
-  v8 = v7;
-  if (a1)
+  offsetCopy = offset;
+  v8 = offsetCopy;
+  if (self)
   {
     v17 = 0;
     v18 = &v17;
@@ -4189,16 +4189,16 @@ void __62__PKMetalResourceHandler_newBufferWithLength_bytes_outOffset___block_in
     v20 = __Block_byref_object_copy__26;
     v21 = __Block_byref_object_dispose__26;
     v22 = 0;
-    v9 = *(a1 + 368);
+    v9 = *(self + 368);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__PKMetalResourceHandler_newGPUBufferWithLength_outOffset_commandBuffer___block_invoke;
     block[3] = &unk_1E82DB6A8;
     v14 = &v17;
     v15 = a2;
-    block[4] = a1;
-    v16 = a3;
-    v13 = v7;
+    block[4] = self;
+    lengthCopy = length;
+    v13 = offsetCopy;
     dispatch_sync(v9, block);
     v10 = v18[5];
 

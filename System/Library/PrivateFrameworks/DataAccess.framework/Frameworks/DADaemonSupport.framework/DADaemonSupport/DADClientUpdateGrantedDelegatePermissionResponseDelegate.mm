@@ -1,21 +1,21 @@
 @interface DADClientUpdateGrantedDelegatePermissionResponseDelegate
-- (DADClientUpdateGrantedDelegatePermissionResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 grantedDelegate:(id)a5;
-- (void)finishWithError:(id)a3;
+- (DADClientUpdateGrantedDelegatePermissionResponseDelegate)initWithAccountID:(id)d client:(id)client grantedDelegate:(id)delegate;
+- (void)finishWithError:(id)error;
 - (void)performRequest;
 @end
 
 @implementation DADClientUpdateGrantedDelegatePermissionResponseDelegate
 
-- (DADClientUpdateGrantedDelegatePermissionResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 grantedDelegate:(id)a5
+- (DADClientUpdateGrantedDelegatePermissionResponseDelegate)initWithAccountID:(id)d client:(id)client grantedDelegate:(id)delegate
 {
-  v9 = a5;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = DADClientUpdateGrantedDelegatePermissionResponseDelegate;
-  v10 = [(DADClientDelegate *)&v13 initWithAccountID:a3 client:a4];
+  v10 = [(DADClientDelegate *)&v13 initWithAccountID:d client:client];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_grantedDelegate, a5);
+    objc_storeStrong(&v10->_grantedDelegate, delegate);
   }
 
   return v11;
@@ -27,8 +27,8 @@
   if (![(DADisableableObject *)self isDisabled])
   {
     v3 = +[DADAgentManager sharedManager];
-    v4 = [(DADClientDelegate *)self accountID];
-    v5 = [v3 accountWithAccountID:v4];
+    accountID = [(DADClientDelegate *)self accountID];
+    v5 = [v3 accountWithAccountID:accountID];
 
     if (v5)
     {
@@ -43,9 +43,9 @@
       v9 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v8, v9))
       {
-        v10 = [(DADClientDelegate *)self accountID];
+        accountID2 = [(DADClientDelegate *)self accountID];
         v13 = 138543362;
-        v14 = v10;
+        v14 = accountID2;
         _os_log_impl(&dword_248524000, v8, v9, "Could not get an account with the ID [%{public}@]", &v13, 0xCu);
       }
 
@@ -57,10 +57,10 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(DADClientDelegate *)self finished])
   {
     [(DADClientDelegate *)self setFinished:1];
@@ -72,32 +72,32 @@
       *v26 = 138412546;
       *&v26[4] = objc_opt_class();
       *&v26[12] = 2112;
-      *&v26[14] = v4;
+      *&v26[14] = errorCopy;
       v8 = *&v26[4];
       _os_log_impl(&dword_248524000, v5, v7, "[%@] finished with error %@", v26, 0x16u);
     }
 
     if (self->_requestID)
     {
-      v9 = [v4 domain];
-      if ([v9 isEqualToString:*MEMORY[0x277D038E0]])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:*MEMORY[0x277D038E0]])
       {
-        v10 = [v4 code];
+        code = [errorCopy code];
 
-        if (v10 == -1)
+        if (code == -1)
         {
           v11 = +[DADAgentManager sharedManager];
-          v12 = [(DADClientDelegate *)self accountID];
-          v13 = [v11 accountWithAccountID:v12];
+          accountID = [(DADClientDelegate *)self accountID];
+          rawConnection = [v11 accountWithAccountID:accountID];
 
-          if (v13)
+          if (rawConnection)
           {
-            [v13 cancelUpdateGrantedDelegatePermissionRequestWithID:self->_requestID];
+            [rawConnection cancelUpdateGrantedDelegatePermissionRequestWithID:self->_requestID];
 LABEL_16:
 
-            v19 = [(DADClientDelegate *)self client];
-            v20 = [(DADClientDelegate *)self delegateID];
-            [v19 delegateWithIDIsGoingAway:v20];
+            client = [(DADClientDelegate *)self client];
+            delegateID = [(DADClientDelegate *)self delegateID];
+            [client delegateWithIDIsGoingAway:delegateID];
 
             goto LABEL_17;
           }
@@ -108,11 +108,11 @@ LABEL_16:
           {
             v23 = objc_opt_class();
             v24 = v23;
-            v25 = [(DADClientDelegate *)self accountID];
+            accountID2 = [(DADClientDelegate *)self accountID];
             *v26 = 138412546;
             *&v26[4] = v23;
             *&v26[12] = 2114;
-            *&v26[14] = v25;
+            *&v26[14] = accountID2;
             _os_log_impl(&dword_248524000, v15, v22, "[%@] finished, but could not find an account with the ID %{public}@", v26, 0x16u);
           }
 
@@ -128,26 +128,26 @@ LABEL_15:
     }
 
     v14 = [(DADClientDelegate *)self client:*v26];
-    v13 = [v14 rawConnection];
+    rawConnection = [v14 rawConnection];
 
-    if (!v13)
+    if (!rawConnection)
     {
       goto LABEL_16;
     }
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v15 setObject:*MEMORY[0x277D03EA8] forKeyedSubscript:*MEMORY[0x277D03C88]];
-    v16 = [(DADClientDelegate *)self delegateID];
-    [v15 setObject:v16 forKeyedSubscript:*MEMORY[0x277D03EB0]];
+    delegateID2 = [(DADClientDelegate *)self delegateID];
+    [v15 setObject:delegateID2 forKeyedSubscript:*MEMORY[0x277D03EB0]];
 
-    if (v4)
+    if (errorCopy)
     {
-      v17 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4];
+      v17 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy];
       [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x277D03B40]];
     }
 
     v18 = _CFXPCCreateXPCObjectFromCFObject();
-    xpc_connection_send_message(v13, v18);
+    xpc_connection_send_message(rawConnection, v18);
 
     goto LABEL_15;
   }

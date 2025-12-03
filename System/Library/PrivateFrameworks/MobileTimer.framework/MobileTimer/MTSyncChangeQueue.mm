@@ -1,25 +1,25 @@
 @interface MTSyncChangeQueue
 - (BOOL)hasPendingChanges;
-- (MTSyncChangeQueue)initWithChangeStore:(id)a3;
-- (id)_resolveChange:(id)a3;
-- (id)_resolveChange:(id)a3 resolutionHandler:(id)a4;
+- (MTSyncChangeQueue)initWithChangeStore:(id)store;
+- (id)_resolveChange:(id)change;
+- (id)_resolveChange:(id)change resolutionHandler:(id)handler;
 - (id)pendingChanges;
-- (id)resolveChange:(id)a3;
-- (void)_enqueueAction:(id)a3;
-- (void)_enqueueChange:(id)a3 changeCompareBlock:(id)a4;
-- (void)dequeueChanges:(id)a3;
-- (void)enqueueChange:(id)a3;
+- (id)resolveChange:(id)change;
+- (void)_enqueueAction:(id)action;
+- (void)_enqueueChange:(id)change changeCompareBlock:(id)block;
+- (void)dequeueChanges:(id)changes;
+- (void)enqueueChange:(id)change;
 - (void)loadChanges;
-- (void)performBlockOnceChangesAreLoaded:(id)a3 async:(BOOL)a4;
+- (void)performBlockOnceChangesAreLoaded:(id)loaded async:(BOOL)async;
 - (void)persistChanges;
 - (void)removePendingChanges;
 @end
 
 @implementation MTSyncChangeQueue
 
-- (MTSyncChangeQueue)initWithChangeStore:(id)a3
+- (MTSyncChangeQueue)initWithChangeStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = MTSyncChangeQueue;
   v6 = [(MTSyncChangeQueue *)&v17 init];
@@ -34,7 +34,7 @@
     v11 = *(v6 + 2);
     *(v6 + 2) = v10;
 
-    objc_storeStrong(v6 + 4, a3);
+    objc_storeStrong(v6 + 4, store);
     v12 = objc_opt_new();
     v13 = *(v6 + 5);
     *(v6 + 5) = v12;
@@ -56,17 +56,17 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_INFO, "%{public}@ loading changes", buf, 0xCu);
   }
 
-  v4 = [(MTSyncChangeStore *)self->_changeStore loadChanges];
+  loadChanges = [(MTSyncChangeStore *)self->_changeStore loadChanges];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__MTSyncChangeQueue_loadChanges__block_invoke;
   v7[3] = &unk_1E7B0ECA0;
   v7[4] = self;
-  v5 = [v4 addSuccessBlock:v7];
+  v5 = [loadChanges addSuccessBlock:v7];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -106,19 +106,19 @@ void __32__MTSyncChangeQueue_loadChanges__block_invoke_2(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBlockOnceChangesAreLoaded:(id)a3 async:(BOOL)a4
+- (void)performBlockOnceChangesAreLoaded:(id)loaded async:(BOOL)async
 {
   changesLoaded = self->_changesLoaded;
-  if (a4)
+  if (async)
   {
-    dispatch_group_notify(changesLoaded, self->_serialQueue, a3);
+    dispatch_group_notify(changesLoaded, self->_serialQueue, loaded);
   }
 
   else
   {
-    v6 = a3;
+    loadedCopy = loaded;
     dispatch_group_wait(changesLoaded, 0xFFFFFFFFFFFFFFFFLL);
-    dispatch_sync(self->_serialQueue, v6);
+    dispatch_sync(self->_serialQueue, loadedCopy);
   }
 }
 
@@ -140,16 +140,16 @@ void __35__MTSyncChangeQueue_persistChanges__block_invoke(uint64_t a1)
   [v2 persistChanges:v3];
 }
 
-- (void)enqueueChange:(id)a3
+- (void)enqueueChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__MTSyncChangeQueue_enqueueChange___block_invoke;
   v6[3] = &unk_1E7B0C928;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changeCopy;
+  selfCopy = self;
+  v5 = changeCopy;
   [(MTSyncChangeQueue *)self performBlockOnceChangesAreLoaded:v6 async:1];
 }
 
@@ -173,17 +173,17 @@ uint64_t __35__MTSyncChangeQueue_enqueueChange___block_invoke(uint64_t a1)
   return [*(a1 + 40) persistChanges];
 }
 
-- (void)_enqueueAction:(id)a3
+- (void)_enqueueAction:(id)action
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = MTLogForCategory(6);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = actionCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_INFO, "%{public}@ enqueuing action %{public}@", buf, 0x16u);
   }
 
@@ -191,9 +191,9 @@ uint64_t __35__MTSyncChangeQueue_enqueueChange___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __36__MTSyncChangeQueue__enqueueAction___block_invoke;
   v8[3] = &unk_1E7B10238;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = actionCopy;
+  selfCopy2 = self;
+  v6 = actionCopy;
   [(MTSyncChangeQueue *)self _enqueueChange:v6 changeCompareBlock:v8];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -228,24 +228,24 @@ uint64_t __36__MTSyncChangeQueue__enqueueAction___block_invoke(uint64_t a1, void
   return v7;
 }
 
-- (void)_enqueueChange:(id)a3 changeCompareBlock:(id)a4
+- (void)_enqueueChange:(id)change changeCompareBlock:(id)block
 {
   v54 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v6 = a4;
+  changeCopy = change;
+  blockCopy = block;
   v7 = 0x1E695D000uLL;
   v8 = objc_opt_new();
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v9 = [(NSMutableArray *)self->_changeQueue reverseObjectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v42 objects:v53 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_changeQueue reverseObjectEnumerator];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v42 objects:v53 count:16];
   if (!v10)
   {
 
 LABEL_34:
-    [v8 addObject:{v37, v35}];
+    [v8 addObject:{changeCopy, v35}];
     goto LABEL_35;
   }
 
@@ -257,7 +257,7 @@ LABEL_34:
   v35 = v11;
   do
   {
-    v16 = v9;
+    v16 = reverseObjectEnumerator;
     v17 = 0;
     do
     {
@@ -272,15 +272,15 @@ LABEL_34:
         goto LABEL_21;
       }
 
-      v19 = v6[2](v6, *(*(&v42 + 1) + 8 * v17));
+      v19 = blockCopy[2](blockCopy, *(*(&v42 + 1) + 8 * v17));
       v13 = v19;
       v15 = 1;
       if (v19 <= 2)
       {
         if (!v19)
         {
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v20 handleFailureInMethod:a2 object:self file:@"MTSyncChangeQueue.m" lineNumber:150 description:@"Undetermined enqueue result returned"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"MTSyncChangeQueue.m" lineNumber:150 description:@"Undetermined enqueue result returned"];
 
 LABEL_17:
           v15 = 1;
@@ -298,7 +298,7 @@ LABEL_17:
           goto LABEL_17;
         }
 
-        [v8 addObject:v37];
+        [v8 addObject:changeCopy];
 LABEL_21:
         [v8 addObject:{v18, v35}];
 LABEL_22:
@@ -309,7 +309,7 @@ LABEL_22:
       switch(v19)
       {
         case 3:
-          v21 = [v18 merge:v37];
+          v21 = [v18 merge:changeCopy];
           if (v21)
           {
             v22 = v8;
@@ -322,9 +322,9 @@ LABEL_22:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
               *buf = v35;
-              v48 = self;
+              selfCopy = self;
               v49 = 2114;
-              v50 = v37;
+              v50 = changeCopy;
               v51 = 2114;
               v52 = v18;
               _os_log_error_impl(&dword_1B1F9F000, v24, OS_LOG_TYPE_ERROR, "%{public}@ unable to merge %{public}@ into %{public}@", buf, 0x20u);
@@ -350,7 +350,7 @@ LABEL_23:
     }
 
     while (v12 != v17);
-    v9 = v16;
+    reverseObjectEnumerator = v16;
     v25 = [v16 countByEnumeratingWithState:&v42 objects:v53 count:16];
     v12 = v25;
   }
@@ -373,8 +373,8 @@ LABEL_35:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v29 = [v8 reverseObjectEnumerator];
-  v30 = [v29 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  reverseObjectEnumerator2 = [v8 reverseObjectEnumerator];
+  v30 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v30)
   {
     v31 = v30;
@@ -385,13 +385,13 @@ LABEL_35:
       {
         if (*v39 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(reverseObjectEnumerator2);
         }
 
         [(NSMutableArray *)self->_changeQueue addObject:*(*(&v38 + 1) + 8 * i), v35];
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      v31 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v38 objects:v46 count:16];
     }
 
     while (v31);
@@ -400,16 +400,16 @@ LABEL_35:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dequeueChanges:(id)a3
+- (void)dequeueChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__MTSyncChangeQueue_dequeueChanges___block_invoke;
   v6[3] = &unk_1E7B0C928;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changesCopy;
+  v5 = changesCopy;
   [(MTSyncChangeQueue *)self performBlockOnceChangesAreLoaded:v6 async:1];
 }
 
@@ -508,9 +508,9 @@ uint64_t __41__MTSyncChangeQueue_removePendingChanges__block_invoke(uint64_t a1)
   return [v2 persistChanges];
 }
 
-- (id)resolveChange:(id)a3
+- (id)resolveChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -523,7 +523,7 @@ uint64_t __41__MTSyncChangeQueue_removePendingChanges__block_invoke(uint64_t a1)
   v8[3] = &unk_1E7B0CB10;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = changeCopy;
   v9 = v5;
   [(MTSyncChangeQueue *)self performBlockOnceChangesAreLoaded:v8 async:0];
   v6 = v12[5];
@@ -545,17 +545,17 @@ uint64_t __35__MTSyncChangeQueue_resolveChange___block_invoke(uint64_t a1)
   return [v5 persistChanges];
 }
 
-- (id)_resolveChange:(id)a3
+- (id)_resolveChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = MTLogForCategory(6);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = changeCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_INFO, "%{public}@ resolving incoming change %{public}@", buf, 0x16u);
   }
 
@@ -564,7 +564,7 @@ uint64_t __35__MTSyncChangeQueue_resolveChange___block_invoke(uint64_t a1)
   v9[2] = __36__MTSyncChangeQueue__resolveChange___block_invoke;
   v9[3] = &unk_1E7B10260;
   v9[4] = self;
-  v6 = [(MTSyncChangeQueue *)self _resolveChange:v4 resolutionHandler:v9];
+  v6 = [(MTSyncChangeQueue *)self _resolveChange:changeCopy resolutionHandler:v9];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -634,18 +634,18 @@ uint64_t __36__MTSyncChangeQueue__resolveChange___block_invoke(uint64_t a1, void
   return v13;
 }
 
-- (id)_resolveChange:(id)a3 resolutionHandler:(id)a4
+- (id)_resolveChange:(id)change resolutionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  handlerCopy = handler;
   v8 = objc_opt_new();
-  v9 = v6;
+  v9 = changeCopy;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = self;
+  selfCopy = self;
   v11 = self->_changeQueue;
   v12 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
   v23 = v9;
@@ -670,7 +670,7 @@ LABEL_10:
           continue;
         }
 
-        v17 = v7[2](v7, v9, *(*(&v25 + 1) + 8 * i));
+        v17 = handlerCopy[2](handlerCopy, v9, *(*(&v25 + 1) + 8 * i));
         switch(v17)
         {
           case 5:
@@ -683,8 +683,8 @@ LABEL_10:
           case 2:
             goto LABEL_10;
           default:
-            v18 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v18 handleFailureInMethod:a2 object:v10 file:@"MTSyncChangeQueue.m" lineNumber:262 description:@"Invalid conflict result returned"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MTSyncChangeQueue.m" lineNumber:262 description:@"Invalid conflict result returned"];
 
             break;
         }
@@ -697,8 +697,8 @@ LABEL_10:
   }
 
   v19 = [v8 mutableCopy];
-  changeQueue = v10->_changeQueue;
-  v10->_changeQueue = v19;
+  changeQueue = selfCopy->_changeQueue;
+  selfCopy->_changeQueue = v19;
 
   v21 = *MEMORY[0x1E69E9840];
 

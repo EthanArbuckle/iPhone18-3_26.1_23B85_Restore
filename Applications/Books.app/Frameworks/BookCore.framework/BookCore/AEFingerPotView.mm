@@ -1,18 +1,18 @@
 @interface AEFingerPotView
-- (AEFingerPotView)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (AEFingerPotView)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation AEFingerPotView
 
-- (AEFingerPotView)initWithFrame:(CGRect)a3
+- (AEFingerPotView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = AEFingerPotView;
-  v3 = [(AEFingerPotView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AEFingerPotView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,19 +28,19 @@
   return v4;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(AEFingerPotView *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(AEFingerPotView *)self isSelected]!= selected)
   {
     v15.receiver = self;
     v15.super_class = AEFingerPotView;
-    [(AEFingerPotView *)&v15 setSelected:v3];
-    if (v3)
+    [(AEFingerPotView *)&v15 setSelected:selectedCopy];
+    if (selectedCopy)
     {
-      v5 = [(AEFingerPotView *)self selectedOutline];
+      selectedOutline = [(AEFingerPotView *)self selectedOutline];
 
-      if (!v5)
+      if (!selectedOutline)
       {
         v6 = [UIImageView alloc];
         v7 = IMCommonCoreBundle();
@@ -48,44 +48,44 @@
         v9 = [v6 initWithImage:v8];
         [(AEFingerPotView *)self setSelectedOutline:v9];
 
-        v10 = [(AEFingerPotView *)self selectedOutline];
-        [v10 setContentMode:4];
+        selectedOutline2 = [(AEFingerPotView *)self selectedOutline];
+        [selectedOutline2 setContentMode:4];
 
-        v11 = [(AEFingerPotView *)self selectedOutline];
-        [(AEFingerPotView *)self addSubview:v11];
+        selectedOutline3 = [(AEFingerPotView *)self selectedOutline];
+        [(AEFingerPotView *)self addSubview:selectedOutline3];
 
-        v12 = [(AEFingerPotView *)self highlight];
+        highlight = [(AEFingerPotView *)self highlight];
 
-        if (v12)
+        if (highlight)
         {
-          v13 = [(AEFingerPotView *)self highlight];
-          [(AEFingerPotView *)self bringSubviewToFront:v13];
+          highlight2 = [(AEFingerPotView *)self highlight];
+          [(AEFingerPotView *)self bringSubviewToFront:highlight2];
         }
       }
     }
 
-    v14 = [(AEFingerPotView *)self selectedOutline];
-    [v14 setHidden:v3 ^ 1];
+    selectedOutline4 = [(AEFingerPotView *)self selectedOutline];
+    [selectedOutline4 setHidden:selectedCopy ^ 1];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(AEFingerPotView *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(AEFingerPotView *)self isHighlighted]!= highlighted)
   {
     v16.receiver = self;
     v16.super_class = AEFingerPotView;
-    [(AEFingerPotView *)&v16 setHighlighted:v3];
-    v5 = [(AEFingerPotView *)self highlight];
+    [(AEFingerPotView *)&v16 setHighlighted:highlightedCopy];
+    highlight = [(AEFingerPotView *)self highlight];
 
-    if (v5)
+    if (highlight)
     {
-      if (v3)
+      if (highlightedCopy)
       {
 LABEL_4:
-        v6 = [(AEFingerPotView *)self highlight];
-        [v6 setAlpha:1.0];
+        highlight2 = [(AEFingerPotView *)self highlight];
+        [highlight2 setAlpha:1.0];
 
         return;
       }
@@ -95,21 +95,21 @@ LABEL_4:
     {
       v7 = [UIImageView alloc];
       v8 = IMCommonCoreBundle();
-      v9 = [(AEFingerPotView *)self traitCollection];
-      v10 = [UIImage imageNamed:@"FingerPot_Pressed" inBundle:v8 compatibleWithTraitCollection:v9];
+      traitCollection = [(AEFingerPotView *)self traitCollection];
+      v10 = [UIImage imageNamed:@"FingerPot_Pressed" inBundle:v8 compatibleWithTraitCollection:traitCollection];
       v11 = [v7 initWithImage:v10];
       [(AEFingerPotView *)self setHighlight:v11];
 
-      v12 = [(AEFingerPotView *)self highlight];
-      [v12 setOpaque:0];
+      highlight3 = [(AEFingerPotView *)self highlight];
+      [highlight3 setOpaque:0];
 
-      v13 = [(AEFingerPotView *)self highlight];
-      [v13 setAlpha:0.0];
+      highlight4 = [(AEFingerPotView *)self highlight];
+      [highlight4 setAlpha:0.0];
 
-      v14 = [(AEFingerPotView *)self highlight];
-      [(AEFingerPotView *)self addSubview:v14];
+      highlight5 = [(AEFingerPotView *)self highlight];
+      [(AEFingerPotView *)self addSubview:highlight5];
 
-      if (v3)
+      if (highlightedCopy)
       {
         goto LABEL_4;
       }
@@ -146,8 +146,8 @@ LABEL_4:
     v11 = v15;
   }
 
-  v16 = [(AEFingerPotView *)self selectedOutline];
-  [v16 setFrame:{v8, v9, v10, v11}];
+  selectedOutline = [(AEFingerPotView *)self selectedOutline];
+  [selectedOutline setFrame:{v8, v9, v10, v11}];
 
   v27.origin.x = v8;
   v27.origin.y = v9;
@@ -159,21 +159,21 @@ LABEL_4:
   v28.size.width = v10;
   v28.size.height = v11;
   MidY = CGRectGetMidY(v28);
-  v19 = [(AEFingerPotView *)self highlight];
-  [v19 setCenter:{MidX, MidY}];
+  highlight = [(AEFingerPotView *)self highlight];
+  [highlight setCenter:{MidX, MidY}];
 
-  v20 = [(AEFingerPotView *)self highlight];
-  [v20 frame];
+  highlight2 = [(AEFingerPotView *)self highlight];
+  [highlight2 frame];
   v30 = CGRectIntegral(v29);
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
   height = v30.size.height;
-  v25 = [(AEFingerPotView *)self highlight];
-  [v25 setFrame:{x, y, width, height}];
+  highlight3 = [(AEFingerPotView *)self highlight];
+  [highlight3 setFrame:{x, y, width, height}];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [[UITargetedPreview alloc] initWithView:self];
   v6 = [UIPointerHighlightEffect effectWithPreview:v5];
@@ -182,8 +182,8 @@ LABEL_4:
   v10 = v9 - 6.0;
   v12 = v11 + 0.0;
   v14 = v13 - (-6.0 - 6.0);
-  v15 = [(AEFingerPotView *)self superview];
-  [(AEFingerPotView *)self convertRect:v15 toView:v10, v12, v14, v8];
+  superview = [(AEFingerPotView *)self superview];
+  [(AEFingerPotView *)self convertRect:superview toView:v10, v12, v14, v8];
   v17 = v16;
   v19 = v18;
   v21 = v20;

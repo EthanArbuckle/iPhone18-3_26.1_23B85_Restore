@@ -1,34 +1,34 @@
 @interface AFApplicationContext
-+ (id)newWithBuilder:(id)a3;
-- (AFApplicationContext)initWithAssociatedBundleIdentifier:(id)a3 bulletin:(id)a4 aceContext:(id)a5 contextDictionary:(id)a6 aceContexts:(id)a7;
-- (AFApplicationContext)initWithBuilder:(id)a3;
-- (AFApplicationContext)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFApplicationContext)initWithAssociatedBundleIdentifier:(id)identifier bulletin:(id)bulletin aceContext:(id)context contextDictionary:(id)dictionary aceContexts:(id)contexts;
+- (AFApplicationContext)initWithBuilder:(id)builder;
+- (AFApplicationContext)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFApplicationContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   associatedBundleIdentifier = self->_associatedBundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:associatedBundleIdentifier forKey:@"AFApplicationContext::associatedBundleIdentifier"];
-  [v5 encodeObject:self->_bulletin forKey:@"AFApplicationContext::bulletin"];
-  [v5 encodeObject:self->_aceContext forKey:@"AFApplicationContext::aceContext"];
-  [v5 encodeObject:self->_contextDictionary forKey:@"AFApplicationContext::contextDictionary"];
-  [v5 encodeObject:self->_aceContexts forKey:@"AFApplicationContext::aceContexts"];
+  coderCopy = coder;
+  [coderCopy encodeObject:associatedBundleIdentifier forKey:@"AFApplicationContext::associatedBundleIdentifier"];
+  [coderCopy encodeObject:self->_bulletin forKey:@"AFApplicationContext::bulletin"];
+  [coderCopy encodeObject:self->_aceContext forKey:@"AFApplicationContext::aceContext"];
+  [coderCopy encodeObject:self->_contextDictionary forKey:@"AFApplicationContext::contextDictionary"];
+  [coderCopy encodeObject:self->_aceContexts forKey:@"AFApplicationContext::aceContexts"];
 }
 
-- (AFApplicationContext)initWithCoder:(id)a3
+- (AFApplicationContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFApplicationContext::associatedBundleIdentifier"];
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFApplicationContext::bulletin"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFApplicationContext::aceContext"];
+  coderCopy = coder;
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFApplicationContext::associatedBundleIdentifier"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFApplicationContext::bulletin"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFApplicationContext::aceContext"];
   v22 = MEMORY[0x1E695DFD8];
   v23 = v4;
   v5 = objc_opt_class();
@@ -41,21 +41,21 @@
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v22 setWithObjects:{v5, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-  v15 = [v3 decodeObjectOfClasses:v14 forKey:@"AFApplicationContext::contextDictionary"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"AFApplicationContext::contextDictionary"];
 
   v16 = MEMORY[0x1E695DFD8];
   v17 = objc_opt_class();
   v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-  v19 = [v3 decodeObjectOfClasses:v18 forKey:@"AFApplicationContext::aceContexts"];
+  v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"AFApplicationContext::aceContexts"];
 
   v20 = [(AFApplicationContext *)self initWithAssociatedBundleIdentifier:v25 bulletin:v24 aceContext:v23 contextDictionary:v15 aceContexts:v19];
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -65,26 +65,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFApplicationContext *)v5 associatedBundleIdentifier];
+      v5 = equalCopy;
+      associatedBundleIdentifier = [(AFApplicationContext *)v5 associatedBundleIdentifier];
       associatedBundleIdentifier = self->_associatedBundleIdentifier;
-      if (associatedBundleIdentifier == v6 || [(NSString *)associatedBundleIdentifier isEqual:v6])
+      if (associatedBundleIdentifier == associatedBundleIdentifier || [(NSString *)associatedBundleIdentifier isEqual:associatedBundleIdentifier])
       {
-        v8 = [(AFApplicationContext *)v5 bulletin];
+        bulletin = [(AFApplicationContext *)v5 bulletin];
         bulletin = self->_bulletin;
-        if (bulletin == v8 || [(AFBulletin *)bulletin isEqual:v8])
+        if (bulletin == bulletin || [(AFBulletin *)bulletin isEqual:bulletin])
         {
-          v10 = [(AFApplicationContext *)v5 aceContext];
+          aceContext = [(AFApplicationContext *)v5 aceContext];
           aceContext = self->_aceContext;
-          if (aceContext == v10 || [(AceObject *)aceContext isEqual:v10])
+          if (aceContext == aceContext || [(AceObject *)aceContext isEqual:aceContext])
           {
-            v12 = [(AFApplicationContext *)v5 contextDictionary];
+            contextDictionary = [(AFApplicationContext *)v5 contextDictionary];
             contextDictionary = self->_contextDictionary;
-            if (contextDictionary == v12 || [(NSDictionary *)contextDictionary isEqual:v12])
+            if (contextDictionary == contextDictionary || [(NSDictionary *)contextDictionary isEqual:contextDictionary])
             {
-              v14 = [(AFApplicationContext *)v5 aceContexts];
+              aceContexts = [(AFApplicationContext *)v5 aceContexts];
               aceContexts = self->_aceContexts;
-              v16 = aceContexts == v14 || [(NSArray *)aceContexts isEqual:v14];
+              v16 = aceContexts == aceContexts || [(NSArray *)aceContexts isEqual:aceContexts];
             }
 
             else
@@ -129,7 +129,7 @@
   return v6 ^ [(NSArray *)self->_aceContexts hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -140,27 +140,27 @@
   return v6;
 }
 
-- (AFApplicationContext)initWithAssociatedBundleIdentifier:(id)a3 bulletin:(id)a4 aceContext:(id)a5 contextDictionary:(id)a6 aceContexts:(id)a7
+- (AFApplicationContext)initWithAssociatedBundleIdentifier:(id)identifier bulletin:(id)bulletin aceContext:(id)context contextDictionary:(id)dictionary aceContexts:(id)contexts
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  bulletinCopy = bulletin;
+  contextCopy = context;
+  dictionaryCopy = dictionary;
+  contextsCopy = contexts;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __109__AFApplicationContext_initWithAssociatedBundleIdentifier_bulletin_aceContext_contextDictionary_aceContexts___block_invoke;
   v24[3] = &unk_1E7348110;
-  v25 = v12;
-  v26 = v13;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v25 = identifierCopy;
+  v26 = bulletinCopy;
+  v27 = contextCopy;
+  v28 = dictionaryCopy;
+  v29 = contextsCopy;
+  v17 = contextsCopy;
+  v18 = dictionaryCopy;
+  v19 = contextCopy;
+  v20 = bulletinCopy;
+  v21 = identifierCopy;
   v22 = [(AFApplicationContext *)self initWithBuilder:v24];
 
   return v22;
@@ -177,41 +177,41 @@ void __109__AFApplicationContext_initWithAssociatedBundleIdentifier_bulletin_ace
   [v4 setAceContexts:a1[8]];
 }
 
-- (AFApplicationContext)initWithBuilder:(id)a3
+- (AFApplicationContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v24.receiver = self;
   v24.super_class = AFApplicationContext;
   v5 = [(AFApplicationContext *)&v24 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFApplicationContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFApplicationContextMutation *)v7 isDirty])
     {
-      v8 = [(_AFApplicationContextMutation *)v7 getAssociatedBundleIdentifier];
-      v9 = [v8 copy];
+      getAssociatedBundleIdentifier = [(_AFApplicationContextMutation *)v7 getAssociatedBundleIdentifier];
+      v9 = [getAssociatedBundleIdentifier copy];
       associatedBundleIdentifier = v6->_associatedBundleIdentifier;
       v6->_associatedBundleIdentifier = v9;
 
-      v11 = [(_AFApplicationContextMutation *)v7 getBulletin];
-      v12 = [v11 copy];
+      getBulletin = [(_AFApplicationContextMutation *)v7 getBulletin];
+      v12 = [getBulletin copy];
       bulletin = v6->_bulletin;
       v6->_bulletin = v12;
 
-      v14 = [(_AFApplicationContextMutation *)v7 getAceContext];
-      v15 = [v14 copy];
+      getAceContext = [(_AFApplicationContextMutation *)v7 getAceContext];
+      v15 = [getAceContext copy];
       aceContext = v6->_aceContext;
       v6->_aceContext = v15;
 
-      v17 = [(_AFApplicationContextMutation *)v7 getContextDictionary];
-      v18 = [v17 copy];
+      getContextDictionary = [(_AFApplicationContextMutation *)v7 getContextDictionary];
+      v18 = [getContextDictionary copy];
       contextDictionary = v6->_contextDictionary;
       v6->_contextDictionary = v18;
 
-      v20 = [(_AFApplicationContextMutation *)v7 getAceContexts];
-      v21 = [v20 copy];
+      getAceContexts = [(_AFApplicationContextMutation *)v7 getAceContexts];
+      v21 = [getAceContexts copy];
       aceContexts = v6->_aceContexts;
       v6->_aceContexts = v21;
     }
@@ -220,46 +220,46 @@ void __109__AFApplicationContext_initWithAssociatedBundleIdentifier_bulletin_ace
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFApplicationContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFApplicationContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFApplicationContext);
-      v7 = [(_AFApplicationContextMutation *)v5 getAssociatedBundleIdentifier];
-      v8 = [v7 copy];
+      getAssociatedBundleIdentifier = [(_AFApplicationContextMutation *)v5 getAssociatedBundleIdentifier];
+      v8 = [getAssociatedBundleIdentifier copy];
       associatedBundleIdentifier = v6->_associatedBundleIdentifier;
       v6->_associatedBundleIdentifier = v8;
 
-      v10 = [(_AFApplicationContextMutation *)v5 getBulletin];
-      v11 = [v10 copy];
+      getBulletin = [(_AFApplicationContextMutation *)v5 getBulletin];
+      v11 = [getBulletin copy];
       bulletin = v6->_bulletin;
       v6->_bulletin = v11;
 
-      v13 = [(_AFApplicationContextMutation *)v5 getAceContext];
-      v14 = [v13 copy];
+      getAceContext = [(_AFApplicationContextMutation *)v5 getAceContext];
+      v14 = [getAceContext copy];
       aceContext = v6->_aceContext;
       v6->_aceContext = v14;
 
-      v16 = [(_AFApplicationContextMutation *)v5 getContextDictionary];
-      v17 = [v16 copy];
+      getContextDictionary = [(_AFApplicationContextMutation *)v5 getContextDictionary];
+      v17 = [getContextDictionary copy];
       contextDictionary = v6->_contextDictionary;
       v6->_contextDictionary = v17;
 
-      v19 = [(_AFApplicationContextMutation *)v5 getAceContexts];
-      v20 = [v19 copy];
+      getAceContexts = [(_AFApplicationContextMutation *)v5 getAceContexts];
+      v20 = [getAceContexts copy];
       aceContexts = v6->_aceContexts;
       v6->_aceContexts = v20;
     }

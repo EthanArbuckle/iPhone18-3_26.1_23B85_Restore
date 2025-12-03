@@ -1,12 +1,12 @@
 @interface BBAccessoryIcon
 - (BBAccessoryIcon)init;
-- (BBAccessoryIcon)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BBAccessoryIcon)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addImage:(id)a3 forContentSizeCategory:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setImagesForContentSize:(id)a3;
+- (void)addImage:(id)image forContentSizeCategory:(id)category;
+- (void)encodeWithCoder:(id)coder;
+- (void)setImagesForContentSize:(id)size;
 @end
 
 @implementation BBAccessoryIcon
@@ -26,11 +26,11 @@
   return v2;
 }
 
-- (void)setImagesForContentSize:(id)a3
+- (void)setImagesForContentSize:(id)size
 {
-  if (self->_imagesForContentSize != a3)
+  if (self->_imagesForContentSize != size)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [size mutableCopy];
     imagesForContentSize = self->_imagesForContentSize;
     self->_imagesForContentSize = v5;
 
@@ -38,11 +38,11 @@
   }
 }
 
-- (void)addImage:(id)a3 forContentSizeCategory:(id)a4
+- (void)addImage:(id)image forContentSizeCategory:(id)category
 {
-  if (a3)
+  if (image)
   {
-    if (a4)
+    if (category)
     {
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
@@ -51,16 +51,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(BBAccessoryIcon *)self imagesForContentSize];
-  v3 = [v2 hash];
+  imagesForContentSize = [(BBAccessoryIcon *)self imagesForContentSize];
+  v3 = [imagesForContentSize hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -70,9 +70,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(BBAccessoryIcon *)self imagesForContentSize];
-      v7 = [(BBAccessoryIcon *)v5 imagesForContentSize];
+      v5 = equalCopy;
+      imagesForContentSize = [(BBAccessoryIcon *)self imagesForContentSize];
+      imagesForContentSize2 = [(BBAccessoryIcon *)v5 imagesForContentSize];
 
       v8 = BSEqualObjects();
     }
@@ -86,19 +86,19 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(BBAccessoryIcon *)self imagesForContentSize];
-  [v4 setImagesForContentSize:v5];
+  imagesForContentSize = [(BBAccessoryIcon *)self imagesForContentSize];
+  [v4 setImagesForContentSize:imagesForContentSize];
 
   return v4;
 }
 
-- (BBAccessoryIcon)initWithCoder:(id)a3
+- (BBAccessoryIcon)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BBAccessoryIcon *)self init];
   if (v5)
   {
@@ -109,7 +109,7 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:3];
     v8 = [v6 setWithArray:{v7, v12, v13}];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"imagesForContentSize"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"imagesForContentSize"];
     [(BBAccessoryIcon *)v5 setImagesForContentSize:v9];
   }
 
@@ -117,11 +117,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BBAccessoryIcon *)self imagesForContentSize];
-  [v4 encodeObject:v5 forKey:@"imagesForContentSize"];
+  coderCopy = coder;
+  imagesForContentSize = [(BBAccessoryIcon *)self imagesForContentSize];
+  [coderCopy encodeObject:imagesForContentSize forKey:@"imagesForContentSize"];
 }
 
 @end

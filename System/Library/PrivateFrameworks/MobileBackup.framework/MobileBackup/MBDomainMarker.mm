@@ -1,10 +1,10 @@
 @interface MBDomainMarker
-- (BOOL)isDomainMarkedAsModified:(id)a3;
+- (BOOL)isDomainMarkedAsModified:(id)modified;
 - (MBDomainMarker)init;
 - (NSSet)modifiedDomainNames;
 - (NSSet)unmodifiedDomainNames;
-- (void)markModifiedDomain:(id)a3;
-- (void)markUnmodifiedDomain:(id)a3;
+- (void)markModifiedDomain:(id)domain;
+- (void)markUnmodifiedDomain:(id)domain;
 @end
 
 @implementation MBDomainMarker
@@ -44,31 +44,31 @@
   return v2;
 }
 
-- (void)markModifiedDomain:(id)a3
+- (void)markModifiedDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_unmodifiedDomainNames removeObject:v4];
-  [(NSMutableSet *)self->_modifiedDomainNames addObject:v4];
+  [(NSMutableSet *)self->_unmodifiedDomainNames removeObject:domainCopy];
+  [(NSMutableSet *)self->_modifiedDomainNames addObject:domainCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)markUnmodifiedDomain:(id)a3
+- (void)markUnmodifiedDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_modifiedDomainNames removeObject:v4];
-  [(NSMutableSet *)self->_unmodifiedDomainNames addObject:v4];
+  [(NSMutableSet *)self->_modifiedDomainNames removeObject:domainCopy];
+  [(NSMutableSet *)self->_unmodifiedDomainNames addObject:domainCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isDomainMarkedAsModified:(id)a3
+- (BOOL)isDomainMarkedAsModified:(id)modified
 {
-  v4 = a3;
+  modifiedCopy = modified;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableSet *)self->_modifiedDomainNames containsObject:v4];
+  v5 = [(NSMutableSet *)self->_modifiedDomainNames containsObject:modifiedCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;

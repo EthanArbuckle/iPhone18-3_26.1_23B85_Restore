@@ -4,26 +4,26 @@
 + (id)colorMatrixFilter;
 + (id)reducedTransparencyColor;
 - (AVCABackdropLayerView)groupLeader;
-- (AVCABackdropLayerView)initWithFrame:(CGRect)a3;
+- (AVCABackdropLayerView)initWithFrame:(CGRect)frame;
 - (BOOL)isCaptureOnly;
 - (id)_blurRadiusNSNumberValue;
 - (void)_ensureDependents;
-- (void)_enumerateDependents:(id)a3;
+- (void)_enumerateDependents:(id)dependents;
 - (void)_setUpBlurFilterIfNeeded;
 - (void)_setUpVariableBlurFilterIfNeeded;
 - (void)_updateBlurFilterRadiusIfNeeded;
 - (void)_updateFilters;
 - (void)_updateVariableBlurFilterMaskImageIfNeeded;
-- (void)addDependent:(id)a3;
+- (void)addDependent:(id)dependent;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)removeDependent:(id)a3;
-- (void)setBlurRadius:(double)a3;
-- (void)setCaptureOnly:(BOOL)a3;
-- (void)setCustomBackgroundColor:(id)a3;
-- (void)setGroupLeader:(id)a3;
-- (void)setOverrideBlurOnlyFilter:(BOOL)a3;
-- (void)setVariableBlurMaskImage:(id)a3;
+- (void)removeDependent:(id)dependent;
+- (void)setBlurRadius:(double)radius;
+- (void)setCaptureOnly:(BOOL)only;
+- (void)setCustomBackgroundColor:(id)color;
+- (void)setGroupLeader:(id)leader;
+- (void)setOverrideBlurOnlyFilter:(BOOL)filter;
+- (void)setVariableBlurMaskImage:(id)image;
 - (void)updateActiveBackdropEffectIfGroupLeader;
 - (void)updateGroupLeader;
 @end
@@ -44,10 +44,10 @@
   return [MEMORY[0x1E696AD98] numberWithFloat:blurRadius];
 }
 
-- (void)_enumerateDependents:(id)a3
+- (void)_enumerateDependents:(id)dependents
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dependentsCopy = dependents;
   v5 = [(NSHashTable *)self->_dependents copy];
   v11 = 0u;
   v12 = 0u;
@@ -69,7 +69,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+        dependentsCopy[2](dependentsCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
@@ -84,11 +84,11 @@
 {
   if (!self->_dependents)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     dependents = self->_dependents;
-    self->_dependents = v3;
+    self->_dependents = weakObjectsHashTable;
 
-    MEMORY[0x1EEE66BB8](v3, dependents);
+    MEMORY[0x1EEE66BB8](weakObjectsHashTable, dependents);
   }
 }
 
@@ -99,7 +99,7 @@
   {
     [(AVCABackdropLayerView *)self setBackgroundColor:0];
     variableBlurMaskImage = self->_variableBlurMaskImage;
-    v4 = [(AVCABackdropLayerView *)self layer];
+    layer = [(AVCABackdropLayerView *)self layer];
     if (variableBlurMaskImage)
     {
       variableBlurFilter = self->_variableBlurFilter;
@@ -115,72 +115,72 @@
     }
 
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:p_variableBlurFilter count:1];
-    [v4 setFilters:v25];
+    [layer setFilters:v25];
 
-    v26 = [(AVCABackdropLayerView *)self layer];
-    [v26 setScale:v5];
+    layer2 = [(AVCABackdropLayerView *)self layer];
+    [layer2 setScale:v5];
 
 LABEL_24:
-    v27 = [(AVCABackdropLayerView *)self layer];
-    [v27 setEnabled:1];
+    layer3 = [(AVCABackdropLayerView *)self layer];
+    [layer3 setEnabled:1];
 
     return;
   }
 
-  v7 = [(AVCABackdropLayerView *)self groupLeader];
+  groupLeader = [(AVCABackdropLayerView *)self groupLeader];
 
-  v8 = [(AVCABackdropLayerView *)self groupLeader];
+  groupLeader2 = [(AVCABackdropLayerView *)self groupLeader];
 
-  v9 = [(AVCABackdropLayerView *)self dependents];
-  v10 = [v9 count];
+  dependents = [(AVCABackdropLayerView *)self dependents];
+  v10 = [dependents count];
 
-  if (!v7)
+  if (!groupLeader)
   {
-    v15 = [(AVCABackdropLayerView *)self layer];
-    [v15 setGroupName:0];
+    layer4 = [(AVCABackdropLayerView *)self layer];
+    [layer4 setGroupName:0];
 
-    v55 = [(AVCABackdropLayerView *)self layer];
-    [v55 setFilters:MEMORY[0x1E695E0F0]];
+    layer5 = [(AVCABackdropLayerView *)self layer];
+    [layer5 setFilters:MEMORY[0x1E695E0F0]];
     goto LABEL_11;
   }
 
-  if (v8 == self && (v10 || [(AVCABackdropLayerView *)self isCaptureOnly]))
+  if (groupLeader2 == self && (v10 || [(AVCABackdropLayerView *)self isCaptureOnly]))
   {
-    v16 = [(AVCABackdropLayerView *)self layer];
-    v17 = [v16 groupName];
+    layer6 = [(AVCABackdropLayerView *)self layer];
+    groupName = [layer6 groupName];
 
-    if (!v17)
+    if (!groupName)
     {
-      v18 = [MEMORY[0x1E696AE30] processInfo];
-      v19 = [v18 globallyUniqueString];
-      v20 = [(AVCABackdropLayerView *)self layer];
-      [v20 setGroupName:v19];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      globallyUniqueString = [processInfo globallyUniqueString];
+      layer7 = [(AVCABackdropLayerView *)self layer];
+      [layer7 setGroupName:globallyUniqueString];
     }
 
-    v21 = [(AVCABackdropLayerView *)self activeBackdropEffect];
-    if ((v21 - 2) >= 2)
+    activeBackdropEffect = [(AVCABackdropLayerView *)self activeBackdropEffect];
+    if ((activeBackdropEffect - 2) >= 2)
     {
-      if (v21 == 1)
+      if (activeBackdropEffect == 1)
       {
         [(AVCABackdropLayerView *)self setHidden:0];
-        v38 = [(AVCABackdropLayerView *)self layer];
-        [v38 setEnabled:1];
+        layer8 = [(AVCABackdropLayerView *)self layer];
+        [layer8 setEnabled:1];
 
-        v39 = [(AVCABackdropLayerView *)self layer];
-        [v39 setScale:0.25];
+        layer9 = [(AVCABackdropLayerView *)self layer];
+        [layer9 setScale:0.25];
 
-        v24 = +[AVCABackdropLayerView blurFilter];
-        v58[0] = v24;
+        layer13 = +[AVCABackdropLayerView blurFilter];
+        v58[0] = layer13;
         v40 = +[AVCABackdropLayerView colorMatrixFilter];
         v58[1] = v40;
         v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
-        v42 = [(AVCABackdropLayerView *)self layer];
-        [v42 setFilters:v41];
+        layer10 = [(AVCABackdropLayerView *)self layer];
+        [layer10 setFilters:v41];
 
         goto LABEL_34;
       }
 
-      if (v21)
+      if (activeBackdropEffect)
       {
 LABEL_35:
         [(AVCABackdropLayerView *)self setBackgroundColor:0];
@@ -190,125 +190,125 @@ LABEL_35:
     }
 
     [(AVCABackdropLayerView *)self setHidden:[(AVCABackdropLayerView *)self isCaptureOnly]];
-    v22 = [(AVCABackdropLayerView *)self layer];
-    [v22 setEnabled:0];
+    layer11 = [(AVCABackdropLayerView *)self layer];
+    [layer11 setEnabled:0];
 
-    v23 = [(AVCABackdropLayerView *)self layer];
-    [v23 setScale:0.0];
+    layer12 = [(AVCABackdropLayerView *)self layer];
+    [layer12 setScale:0.0];
 
-    v24 = [(AVCABackdropLayerView *)self layer];
-    [v24 setFilters:MEMORY[0x1E695E0F0]];
+    layer13 = [(AVCABackdropLayerView *)self layer];
+    [layer13 setFilters:MEMORY[0x1E695E0F0]];
 LABEL_34:
 
     goto LABEL_35;
   }
 
-  v11 = [(AVCABackdropLayerView *)self customBackgroundColor];
+  customBackgroundColor = [(AVCABackdropLayerView *)self customBackgroundColor];
 
-  if (v11)
+  if (customBackgroundColor)
   {
-    v12 = [(AVCABackdropLayerView *)self layer];
-    [v12 setGroupName:0];
+    layer14 = [(AVCABackdropLayerView *)self layer];
+    [layer14 setGroupName:0];
 
     [(AVCABackdropLayerView *)self setActiveBackdropEffect:0];
-    v13 = [(AVCABackdropLayerView *)self layer];
-    [v13 setEnabled:0];
+    layer15 = [(AVCABackdropLayerView *)self layer];
+    [layer15 setEnabled:0];
 
-    v14 = [(AVCABackdropLayerView *)self customBackgroundColor];
+    customBackgroundColor2 = [(AVCABackdropLayerView *)self customBackgroundColor];
 LABEL_9:
-    [(AVCABackdropLayerView *)self setBackgroundColor:v14];
+    [(AVCABackdropLayerView *)self setBackgroundColor:customBackgroundColor2];
 LABEL_11:
 
     return;
   }
 
-  v28 = [(AVCABackdropLayerView *)self groupLeader];
-  -[AVCABackdropLayerView setActiveBackdropEffect:](self, "setActiveBackdropEffect:", [v28 activeBackdropEffect]);
+  groupLeader3 = [(AVCABackdropLayerView *)self groupLeader];
+  -[AVCABackdropLayerView setActiveBackdropEffect:](self, "setActiveBackdropEffect:", [groupLeader3 activeBackdropEffect]);
 
-  v29 = [(AVCABackdropLayerView *)self activeBackdropEffect];
-  if (v29 > 1)
+  activeBackdropEffect2 = [(AVCABackdropLayerView *)self activeBackdropEffect];
+  if (activeBackdropEffect2 > 1)
   {
-    if (v29 == 2)
+    if (activeBackdropEffect2 == 2)
     {
       [(AVCABackdropLayerView *)self setBackgroundColor:0];
-      v44 = [(AVCABackdropLayerView *)self layer];
-      [v44 setGroupName:0];
+      layer16 = [(AVCABackdropLayerView *)self layer];
+      [layer16 setGroupName:0];
 
-      v45 = [(AVCABackdropLayerView *)self layer];
-      [v45 setEnabled:1];
+      layer17 = [(AVCABackdropLayerView *)self layer];
+      [layer17 setEnabled:1];
 
-      v46 = [(AVCABackdropLayerView *)self layer];
-      [v46 setScale:0.25];
+      layer18 = [(AVCABackdropLayerView *)self layer];
+      [layer18 setScale:0.25];
 
       v47 = +[AVCABackdropLayerView averageFilter];
       v57[0] = v47;
       v48 = +[AVCABackdropLayerView colorMatrixFilter];
       v57[1] = v48;
       v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
-      v50 = [(AVCABackdropLayerView *)self layer];
-      [v50 setFilters:v49];
+      layer19 = [(AVCABackdropLayerView *)self layer];
+      [layer19 setFilters:v49];
 
       return;
     }
 
-    if (v29 == 3)
+    if (activeBackdropEffect2 == 3)
     {
-      v35 = [(AVCABackdropLayerView *)self layer];
-      [v35 setGroupName:0];
+      layer20 = [(AVCABackdropLayerView *)self layer];
+      [layer20 setGroupName:0];
 
-      v36 = [(AVCABackdropLayerView *)self layer];
-      [v36 setEnabled:0];
+      layer21 = [(AVCABackdropLayerView *)self layer];
+      [layer21 setEnabled:0];
 
-      v37 = [(AVCABackdropLayerView *)self layer];
-      [v37 setFilters:MEMORY[0x1E695E0F0]];
+      layer22 = [(AVCABackdropLayerView *)self layer];
+      [layer22 setFilters:MEMORY[0x1E695E0F0]];
 
-      v14 = +[AVCABackdropLayerView reducedTransparencyColor];
+      customBackgroundColor2 = +[AVCABackdropLayerView reducedTransparencyColor];
       goto LABEL_9;
     }
   }
 
   else
   {
-    if (!v29)
+    if (!activeBackdropEffect2)
     {
       [(AVCABackdropLayerView *)self setBackgroundColor:0];
-      v43 = [(AVCABackdropLayerView *)self layer];
-      [v43 setGroupName:0];
+      layer23 = [(AVCABackdropLayerView *)self layer];
+      [layer23 setGroupName:0];
 
-      v55 = [(AVCABackdropLayerView *)self layer];
-      [v55 setEnabled:0];
+      layer5 = [(AVCABackdropLayerView *)self layer];
+      [layer5 setEnabled:0];
       goto LABEL_11;
     }
 
-    if (v29 == 1)
+    if (activeBackdropEffect2 == 1)
     {
       [(AVCABackdropLayerView *)self setBackgroundColor:0];
-      v30 = [(AVCABackdropLayerView *)self groupLeader];
-      v31 = [v30 layer];
-      v32 = [v31 groupName];
-      v33 = [(AVCABackdropLayerView *)self layer];
-      [v33 setGroupName:v32];
+      groupLeader4 = [(AVCABackdropLayerView *)self groupLeader];
+      layer24 = [groupLeader4 layer];
+      groupName2 = [layer24 groupName];
+      layer25 = [(AVCABackdropLayerView *)self layer];
+      [layer25 setGroupName:groupName2];
 
-      if (v8 == self)
+      if (groupLeader2 == self)
       {
-        v30 = +[AVCABackdropLayerView blurFilter];
-        v56[0] = v30;
-        v31 = +[AVCABackdropLayerView colorMatrixFilter];
-        v56[1] = v31;
-        v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
+        groupLeader4 = +[AVCABackdropLayerView blurFilter];
+        v56[0] = groupLeader4;
+        layer24 = +[AVCABackdropLayerView colorMatrixFilter];
+        v56[1] = layer24;
+        filters = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
       }
 
       else
       {
-        v32 = [(AVCABackdropLayerView *)self groupLeader];
-        v33 = [v32 layer];
-        v34 = [v33 filters];
+        groupName2 = [(AVCABackdropLayerView *)self groupLeader];
+        layer25 = [groupName2 layer];
+        filters = [layer25 filters];
       }
 
-      v51 = [(AVCABackdropLayerView *)self layer];
-      [v51 setFilters:v34];
+      layer26 = [(AVCABackdropLayerView *)self layer];
+      [layer26 setFilters:filters];
 
-      if (v8 == self)
+      if (groupLeader2 == self)
       {
 
         v53 = 0.25;
@@ -317,16 +317,16 @@ LABEL_11:
       else
       {
 
-        v30 = [(AVCABackdropLayerView *)self groupLeader];
-        v31 = [v30 layer];
-        [v31 scale];
+        groupLeader4 = [(AVCABackdropLayerView *)self groupLeader];
+        layer24 = [groupLeader4 layer];
+        [layer24 scale];
         v53 = v52;
       }
 
-      v54 = [(AVCABackdropLayerView *)self layer];
-      [v54 setScale:v53];
+      layer27 = [(AVCABackdropLayerView *)self layer];
+      [layer27 setScale:v53];
 
-      if (v8 != self)
+      if (groupLeader2 != self)
       {
       }
 
@@ -340,8 +340,8 @@ LABEL_11:
   if (self->_overrideBlurOnlyFilter)
   {
     [(CAFilter *)self->_variableBlurFilter setValue:[(UIImage *)self->_variableBlurMaskImage CGImage] forKey:@"inputMaskImage"];
-    v4 = [(AVCABackdropLayerView *)self layer];
-    [v4 setFilters:0];
+    layer = [(AVCABackdropLayerView *)self layer];
+    [layer setFilters:0];
 
     [(AVCABackdropLayerView *)self _updateFilters];
   }
@@ -351,9 +351,9 @@ LABEL_11:
 {
   if (self->_overrideBlurOnlyFilter)
   {
-    v4 = [(AVCABackdropLayerView *)self _blurRadiusNSNumberValue];
-    [(CAFilter *)self->_blurFilter setValue:v4 forKey:@"inputRadius"];
-    [(CAFilter *)self->_variableBlurFilter setValue:v4 forKey:@"inputRadius"];
+    _blurRadiusNSNumberValue = [(AVCABackdropLayerView *)self _blurRadiusNSNumberValue];
+    [(CAFilter *)self->_blurFilter setValue:_blurRadiusNSNumberValue forKey:@"inputRadius"];
+    [(CAFilter *)self->_variableBlurFilter setValue:_blurRadiusNSNumberValue forKey:@"inputRadius"];
   }
 }
 
@@ -374,8 +374,8 @@ LABEL_11:
   if (!self->_blurFilter && self->_overrideBlurOnlyFilter && !self->_variableBlurMaskImage)
   {
     v3 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
-    v4 = [(AVCABackdropLayerView *)self _blurRadiusNSNumberValue];
-    [v3 setValue:v4 forKey:@"inputRadius"];
+    _blurRadiusNSNumberValue = [(AVCABackdropLayerView *)self _blurRadiusNSNumberValue];
+    [v3 setValue:_blurRadiusNSNumberValue forKey:@"inputRadius"];
 
     v5 = MEMORY[0x1E695E118];
     [v3 setValue:MEMORY[0x1E695E118] forKey:@"inputNormalizeEdges"];
@@ -387,28 +387,28 @@ LABEL_11:
   }
 }
 
-- (void)setVariableBlurMaskImage:(id)a3
+- (void)setVariableBlurMaskImage:(id)image
 {
-  v5 = a3;
-  if (self->_variableBlurMaskImage != v5)
+  imageCopy = image;
+  if (self->_variableBlurMaskImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_variableBlurMaskImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_variableBlurMaskImage, image);
     [(AVCABackdropLayerView *)self _setUpVariableBlurFilterIfNeeded];
     [(AVCABackdropLayerView *)self _updateBlurFilterRadiusIfNeeded];
     [(AVCABackdropLayerView *)self _updateVariableBlurFilterMaskImageIfNeeded];
     [(AVCABackdropLayerView *)self _updateFilters];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
   blurRadius = self->_blurRadius;
-  v5 = a3;
-  if (vabds_f32(blurRadius, v5) >= 0.00000011921)
+  radiusCopy = radius;
+  if (vabds_f32(blurRadius, radiusCopy) >= 0.00000011921)
   {
-    self->_blurRadius = a3;
+    self->_blurRadius = radius;
     [(AVCABackdropLayerView *)self _setUpBlurFilterIfNeeded];
     [(AVCABackdropLayerView *)self _setUpVariableBlurFilterIfNeeded];
     [(AVCABackdropLayerView *)self _updateBlurFilterRadiusIfNeeded];
@@ -417,88 +417,88 @@ LABEL_11:
   }
 }
 
-- (void)setOverrideBlurOnlyFilter:(BOOL)a3
+- (void)setOverrideBlurOnlyFilter:(BOOL)filter
 {
-  if (self->_overrideBlurOnlyFilter != a3)
+  if (self->_overrideBlurOnlyFilter != filter)
   {
-    v4 = a3;
-    self->_overrideBlurOnlyFilter = a3;
-    v6 = [(AVCABackdropLayerView *)self layer];
+    filterCopy = filter;
+    self->_overrideBlurOnlyFilter = filter;
+    layer = [(AVCABackdropLayerView *)self layer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(AVCABackdropLayerView *)self layer];
-      [v8 setShouldOverrideScale:!v4];
+      layer2 = [(AVCABackdropLayerView *)self layer];
+      [layer2 setShouldOverrideScale:!filterCopy];
     }
 
     [(AVCABackdropLayerView *)self _setUpBlurFilterIfNeeded];
   }
 }
 
-- (void)removeDependent:(id)a3
+- (void)removeDependent:(id)dependent
 {
-  v4 = a3;
-  if (v4 != self)
+  dependentCopy = dependent;
+  if (dependentCopy != self)
   {
-    v7 = v4;
-    v5 = [(AVCABackdropLayerView *)self groupLeader];
+    v7 = dependentCopy;
+    groupLeader = [(AVCABackdropLayerView *)self groupLeader];
 
-    if (v5 == self)
+    if (groupLeader == self)
     {
       [(AVCABackdropLayerView *)self _ensureDependents];
-      v6 = [(AVCABackdropLayerView *)self dependents];
-      [v6 removeObject:v7];
+      dependents = [(AVCABackdropLayerView *)self dependents];
+      [dependents removeObject:v7];
     }
 
     else
     {
-      v6 = [(AVCABackdropLayerView *)self groupLeader];
-      [v6 removeDependent:v7];
+      dependents = [(AVCABackdropLayerView *)self groupLeader];
+      [dependents removeDependent:v7];
     }
 
-    v4 = v7;
+    dependentCopy = v7;
   }
 }
 
-- (void)addDependent:(id)a3
+- (void)addDependent:(id)dependent
 {
-  v4 = a3;
-  if (v4 != self)
+  dependentCopy = dependent;
+  if (dependentCopy != self)
   {
-    v7 = v4;
-    v5 = [(AVCABackdropLayerView *)self groupLeader];
+    v7 = dependentCopy;
+    groupLeader = [(AVCABackdropLayerView *)self groupLeader];
 
-    if (v5 == self)
+    if (groupLeader == self)
     {
       [(AVCABackdropLayerView *)self _ensureDependents];
-      v6 = [(AVCABackdropLayerView *)self dependents];
-      [v6 addObject:v7];
+      dependents = [(AVCABackdropLayerView *)self dependents];
+      [dependents addObject:v7];
     }
 
     else
     {
-      v6 = [(AVCABackdropLayerView *)self groupLeader];
-      [v6 addDependent:v7];
+      dependents = [(AVCABackdropLayerView *)self groupLeader];
+      [dependents addDependent:v7];
     }
 
-    v4 = v7;
+    dependentCopy = v7;
   }
 }
 
 - (void)updateGroupLeader
 {
-  v3 = [(UIView *)self avkit_backdropGroupLeader];
-  [(AVCABackdropLayerView *)self setGroupLeader:v3];
+  avkit_backdropGroupLeader = [(UIView *)self avkit_backdropGroupLeader];
+  [(AVCABackdropLayerView *)self setGroupLeader:avkit_backdropGroupLeader];
 
-  v4 = [(AVCABackdropLayerView *)self window];
-  if (v4)
+  window = [(AVCABackdropLayerView *)self window];
+  if (window)
   {
-    v5 = v4;
-    v6 = [(AVCABackdropLayerView *)self groupLeader];
+    v5 = window;
+    groupLeader = [(AVCABackdropLayerView *)self groupLeader];
 
-    if (!v6)
+    if (!groupLeader)
     {
 
       [(AVCABackdropLayerView *)self setGroupLeader:self];
@@ -506,9 +506,9 @@ LABEL_11:
   }
 }
 
-- (void)setGroupLeader:(id)a3
+- (void)setGroupLeader:(id)leader
 {
-  obj = a3;
+  obj = leader;
   WeakRetained = objc_loadWeakRetained(&self->_groupLeader);
 
   v5 = obj;
@@ -524,17 +524,17 @@ LABEL_11:
 
     if ((obj == self) == (v6 != self))
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       if (obj == self)
       {
-        [v9 addObserver:self selector:sel_updateActiveBackdropEffectIfGroupLeader name:*MEMORY[0x1E69DD920] object:0];
+        [defaultCenter addObserver:self selector:sel_updateActiveBackdropEffectIfGroupLeader name:*MEMORY[0x1E69DD920] object:0];
 
         [(AVCABackdropLayerView *)self updateActiveBackdropEffectIfGroupLeader];
       }
 
       else
       {
-        [v9 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+        [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
       }
     }
 
@@ -543,37 +543,37 @@ LABEL_11:
   }
 }
 
-- (void)setCustomBackgroundColor:(id)a3
+- (void)setCustomBackgroundColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   customBackgroundColor = self->_customBackgroundColor;
   self->_customBackgroundColor = v4;
 
   [(AVCABackdropLayerView *)self _updateFilters];
 }
 
-- (void)setCaptureOnly:(BOOL)a3
+- (void)setCaptureOnly:(BOOL)only
 {
-  v3 = a3;
-  v4 = [(AVCABackdropLayerView *)self layer];
-  [v4 setCaptureOnly:v3];
+  onlyCopy = only;
+  layer = [(AVCABackdropLayerView *)self layer];
+  [layer setCaptureOnly:onlyCopy];
 }
 
 - (BOOL)isCaptureOnly
 {
-  v2 = [(AVCABackdropLayerView *)self layer];
-  v3 = [v2 captureOnly];
+  layer = [(AVCABackdropLayerView *)self layer];
+  captureOnly = [layer captureOnly];
 
-  return v3;
+  return captureOnly;
 }
 
 - (void)updateActiveBackdropEffectIfGroupLeader
 {
-  v3 = [(AVCABackdropLayerView *)self groupLeader];
+  groupLeader = [(AVCABackdropLayerView *)self groupLeader];
 
-  if (v3 == self)
+  if (groupLeader == self)
   {
-    v4 = [(AVCABackdropLayerView *)self activeBackdropEffect];
+    activeBackdropEffect = [(AVCABackdropLayerView *)self activeBackdropEffect];
     if (UIAccessibilityIsReduceTransparencyEnabled())
     {
       v5 = 3;
@@ -586,8 +586,8 @@ LABEL_11:
 
     else
     {
-      v6 = [(AVCABackdropLayerView *)self dependents];
-      v7 = [v6 count];
+      dependents = [(AVCABackdropLayerView *)self dependents];
+      v7 = [dependents count];
 
       if (v7 < 1)
       {
@@ -630,7 +630,7 @@ LABEL_11:
     }
 
     [(AVCABackdropLayerView *)self setActiveBackdropEffect:v5];
-    if (v4 != [(AVCABackdropLayerView *)self activeBackdropEffect])
+    if (activeBackdropEffect != [(AVCABackdropLayerView *)self activeBackdropEffect])
     {
       [(AVCABackdropLayerView *)self _updateFilters];
     }
@@ -662,11 +662,11 @@ void __64__AVCABackdropLayerView_updateActiveBackdropEffectIfGroupLeader__block_
   [(AVCABackdropLayerView *)self updateGroupLeader];
 }
 
-- (AVCABackdropLayerView)initWithFrame:(CGRect)a3
+- (AVCABackdropLayerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AVCABackdropLayerView;
-  v3 = [(AVCABackdropLayerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVCABackdropLayerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

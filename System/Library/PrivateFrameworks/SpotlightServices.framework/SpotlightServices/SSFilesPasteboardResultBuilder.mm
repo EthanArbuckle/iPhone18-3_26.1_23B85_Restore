@@ -1,10 +1,10 @@
 @interface SSFilesPasteboardResultBuilder
-+ (BOOL)shouldHideExtensionForURL:(id)a3;
-+ (BOOL)supportsResult:(id)a3;
++ (BOOL)shouldHideExtensionForURL:(id)l;
++ (BOOL)supportsResult:(id)result;
 + (id)spotlightPasteboardCacheDirectory;
-+ (id)typeForURL:(id)a3;
-- (SSFilesPasteboardResultBuilder)initWithResult:(id)a3;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
++ (id)typeForURL:(id)l;
+- (SSFilesPasteboardResultBuilder)initWithResult:(id)result;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildCopyItems;
 - (id)buildDeleteCommand;
 - (id)buildPreviewButtonItems;
@@ -16,16 +16,16 @@
 
 @implementation SSFilesPasteboardResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
   v4 = *MEMORY[0x1E6963CA0];
-  v5 = a3;
-  v6 = [v5 valueForAttribute:v4 withType:objc_opt_class()];
+  resultCopy = result;
+  v6 = [resultCopy valueForAttribute:v4 withType:objc_opt_class()];
   v7 = [v6 count];
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___SSFilesPasteboardResultBuilder;
-  v8 = objc_msgSendSuper2(&v10, sel_supportsResult_, v5);
+  v8 = objc_msgSendSuper2(&v10, sel_supportsResult_, resultCopy);
 
   if (v7)
   {
@@ -45,10 +45,10 @@
     +[SSFilesPasteboardResultBuilder spotlightPasteboardCacheDirectory];
   }
 
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v2 fileExistsAtPath:spotlightPasteboardCacheDirectory_spotlightPasteboardCacheDirectory] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:spotlightPasteboardCacheDirectory_spotlightPasteboardCacheDirectory] & 1) == 0)
   {
-    [v2 createDirectoryAtPath:spotlightPasteboardCacheDirectory_spotlightPasteboardCacheDirectory withIntermediateDirectories:1 attributes:0 error:0];
+    [defaultManager createDirectoryAtPath:spotlightPasteboardCacheDirectory_spotlightPasteboardCacheDirectory withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   v3 = spotlightPasteboardCacheDirectory_spotlightPasteboardCacheDirectory;
@@ -65,14 +65,14 @@ void __67__SSFilesPasteboardResultBuilder_spotlightPasteboardCacheDirectory__blo
   spotlightPasteboardCacheDirectory_spotlightPasteboardCacheDirectory = v0;
 }
 
-+ (BOOL)shouldHideExtensionForURL:(id)a3
++ (BOOL)shouldHideExtensionForURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    if ([a1 showAllExtensionsPreference])
+    if ([self showAllExtensionsPreference])
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
 
     else
@@ -80,7 +80,7 @@ void __67__SSFilesPasteboardResultBuilder_spotlightPasteboardCacheDirectory__blo
       v15 = 0;
       v6 = *MEMORY[0x1E695DB60];
       v14 = 0;
-      v7 = [v4 getResourceValue:&v15 forKey:v6 error:&v14];
+      v7 = [lCopy getResourceValue:&v15 forKey:v6 error:&v14];
       v8 = v15;
       v9 = v14;
       v10 = v9;
@@ -105,31 +105,31 @@ void __67__SSFilesPasteboardResultBuilder_spotlightPasteboardCacheDirectory__blo
           }
         }
 
-        v5 = 1;
+        bOOLValue = 1;
       }
 
       else
       {
-        v5 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
       }
     }
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (SSFilesPasteboardResultBuilder)initWithResult:(id)a3
+- (SSFilesPasteboardResultBuilder)initWithResult:(id)result
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v19.receiver = self;
   v19.super_class = SSFilesPasteboardResultBuilder;
-  v5 = [(SSPasteboardResultBuilder *)&v19 initWithResult:v4];
+  v5 = [(SSPasteboardResultBuilder *)&v19 initWithResult:resultCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -137,7 +137,7 @@ void __67__SSFilesPasteboardResultBuilder_spotlightPasteboardCacheDirectory__blo
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6963CA0] withType:{objc_opt_class(), 0}];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6963CA0] withType:{objc_opt_class(), 0}];
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
@@ -178,15 +178,15 @@ void __67__SSFilesPasteboardResultBuilder_spotlightPasteboardCacheDirectory__blo
 
 - (id)buildTitle
 {
-  v3 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
-  v4 = [v3 count];
+  fileURLs = [(SSFilesPasteboardResultBuilder *)self fileURLs];
+  v4 = [fileURLs count];
   if (v4 == 1)
   {
-    v8 = [v3 firstObject];
+    firstObject = [fileURLs firstObject];
     v22 = 0;
     v9 = *MEMORY[0x1E695DC10];
     v21 = 0;
-    v10 = [v8 getResourceValue:&v22 forKey:v9 error:&v21];
+    v10 = [firstObject getResourceValue:&v22 forKey:v9 error:&v21];
     v11 = v22;
     v12 = v21;
     v13 = v12;
@@ -211,18 +211,18 @@ void __67__SSFilesPasteboardResultBuilder_spotlightPasteboardCacheDirectory__blo
         }
       }
 
-      v7 = [v8 lastPathComponent];
-      if ([objc_opt_class() shouldHideExtensionForURL:v8])
+      lastPathComponent = [firstObject lastPathComponent];
+      if ([objc_opt_class() shouldHideExtensionForURL:firstObject])
       {
-        v16 = [(__CFString *)v7 stringByDeletingPathExtension];
+        stringByDeletingPathExtension = [(__CFString *)lastPathComponent stringByDeletingPathExtension];
 
-        v7 = v16;
+        lastPathComponent = stringByDeletingPathExtension;
       }
     }
 
     else
     {
-      v7 = v11;
+      lastPathComponent = v11;
     }
   }
 
@@ -233,30 +233,30 @@ void __67__SSFilesPasteboardResultBuilder_spotlightPasteboardCacheDirectory__blo
     {
       v23.receiver = self;
       v23.super_class = SSFilesPasteboardResultBuilder;
-      v6 = [(SSPasteboardResultBuilder *)&v23 buildTitle];
-      v7 = &stru_1F556FE60;
+      buildTitle = [(SSPasteboardResultBuilder *)&v23 buildTitle];
+      lastPathComponent = &stru_1F556FE60;
       goto LABEL_18;
     }
 
     v17 = MEMORY[0x1E696AEC0];
     v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"%lu Items" value:0 table:0];
-    v7 = [v17 localizedStringWithFormat:v19, v5];
+    lastPathComponent = [v17 localizedStringWithFormat:v19, v5];
   }
 
-  v6 = [MEMORY[0x1E69CA3A0] textWithString:v7];
+  buildTitle = [MEMORY[0x1E69CA3A0] textWithString:lastPathComponent];
 LABEL_18:
 
-  return v6;
+  return buildTitle;
 }
 
-+ (id)typeForURL:(id)a3
++ (id)typeForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v10 = 0;
   v4 = *MEMORY[0x1E695DAA0];
   v9 = 0;
-  [v3 getResourceValue:&v10 forKey:v4 error:&v9];
+  [lCopy getResourceValue:&v10 forKey:v4 error:&v9];
   v5 = v10;
   v6 = v9;
   if (v6)
@@ -264,7 +264,7 @@ LABEL_18:
     v7 = SSGeneralLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SSFilesPasteboardResultBuilder *)v6 typeForURL:v3, v7];
+      [(SSFilesPasteboardResultBuilder *)v6 typeForURL:lCopy, v7];
     }
   }
 
@@ -274,21 +274,21 @@ LABEL_18:
 - (id)pasteboardDescription
 {
   v67[6] = *MEMORY[0x1E69E9840];
-  v2 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
-  v3 = [v2 count];
+  fileURLs = [(SSFilesPasteboardResultBuilder *)self fileURLs];
+  v3 = [fileURLs count];
   if (v3)
   {
     if (v3 == 1)
     {
       v4 = objc_opt_class();
-      v5 = [v2 firstObject];
-      v6 = [v4 typeForURL:v5];
-      v7 = [v6 localizedDescription];
+      firstObject = [fileURLs firstObject];
+      v6 = [v4 typeForURL:firstObject];
+      localizedDescription = [v6 localizedDescription];
     }
 
     else
     {
-      v45 = v2;
+      v45 = fileURLs;
       v10 = *MEMORY[0x1E6982CA8];
       v67[0] = *MEMORY[0x1E6982C80];
       v67[1] = v10;
@@ -402,17 +402,17 @@ LABEL_23:
 
             v33 = *(*(&v51 + 1) + 8 * k);
             v34 = [v13 objectForKeyedSubscript:v33];
-            v35 = [v34 integerValue];
+            integerValue = [v34 integerValue];
 
-            if (v35 >= 1)
+            if (integerValue >= 1)
             {
               v36 = MEMORY[0x1E696AEC0];
               v37 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
               v38 = [v37 localizedStringForKey:@"%ld %@" value:0 table:0];
               v39 = [v13 objectForKeyedSubscript:v33];
-              v40 = [v39 integerValue];
-              v41 = [v33 localizedDescription];
-              v42 = [v36 localizedStringWithFormat:v38, v40, v41];
+              integerValue2 = [v39 integerValue];
+              localizedDescription2 = [v33 localizedDescription];
+              v42 = [v36 localizedStringWithFormat:v38, integerValue2, localizedDescription2];
               [v50 addObject:v42];
             }
           }
@@ -423,39 +423,39 @@ LABEL_23:
         while (v30);
       }
 
-      v7 = [v50 componentsJoinedByString:{@", "}];
+      localizedDescription = [v50 componentsJoinedByString:{@", "}];
 
-      v2 = v45;
+      fileURLs = v45;
     }
 
-    v9 = v7;
-    v8 = v9;
+    v9 = localizedDescription;
+    pasteboardDescription = v9;
   }
 
   else
   {
     v63.receiver = self;
     v63.super_class = SSFilesPasteboardResultBuilder;
-    v8 = [(SSPasteboardResultBuilder *)&v63 pasteboardDescription];
+    pasteboardDescription = [(SSPasteboardResultBuilder *)&v63 pasteboardDescription];
     v9 = &stru_1F556FE60;
   }
 
   v43 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return pasteboardDescription;
 }
 
 - (id)buildThumbnail
 {
-  v3 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
-  v4 = [v3 count];
+  fileURLs = [(SSFilesPasteboardResultBuilder *)self fileURLs];
+  v4 = [fileURLs count];
   if (v4)
   {
     if (v4 == 1)
     {
       v5 = objc_opt_new();
-      v6 = [v3 firstObject];
-      [v5 setFilePath:v6];
+      firstObject = [fileURLs firstObject];
+      [v5 setFilePath:firstObject];
 
       goto LABEL_7;
     }
@@ -473,11 +473,11 @@ LABEL_7:
   return v5;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
   v4 = objc_opt_new();
-  v5 = [(SSResultBuilder *)self relatedAppBundleIdentifier];
-  [v4 setBundleIdentifier:v5];
+  relatedAppBundleIdentifier = [(SSResultBuilder *)self relatedAppBundleIdentifier];
+  [v4 setBundleIdentifier:relatedAppBundleIdentifier];
 
   return v4;
 }
@@ -490,8 +490,8 @@ LABEL_7:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  fileURLs = [(SSFilesPasteboardResultBuilder *)self fileURLs];
+  v5 = [fileURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -502,7 +502,7 @@ LABEL_7:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fileURLs);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -511,7 +511,7 @@ LABEL_7:
         [v3 addObject:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [fileURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -530,8 +530,8 @@ LABEL_7:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  fileURLs = [(SSFilesPasteboardResultBuilder *)self fileURLs];
+  v5 = [fileURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -542,7 +542,7 @@ LABEL_7:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fileURLs);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -551,7 +551,7 @@ LABEL_7:
         [v3 addObject:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [fileURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -566,18 +566,18 @@ LABEL_7:
 {
   v9.receiver = self;
   v9.super_class = SSFilesPasteboardResultBuilder;
-  v3 = [(SSPasteboardResultBuilder *)&v9 buildDeleteCommand];
-  v4 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
+  buildDeleteCommand = [(SSPasteboardResultBuilder *)&v9 buildDeleteCommand];
+  fileURLs = [(SSFilesPasteboardResultBuilder *)self fileURLs];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__SSFilesPasteboardResultBuilder_buildDeleteCommand__block_invoke;
   v8[3] = &unk_1E8595F48;
   v8[4] = self;
   v5 = [MEMORY[0x1E696AE18] predicateWithBlock:v8];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
-  [v3 setFilesToDelete:v6];
+  v6 = [fileURLs filteredArrayUsingPredicate:v5];
+  [buildDeleteCommand setFilesToDelete:v6];
 
-  return v3;
+  return buildDeleteCommand;
 }
 
 uint64_t __52__SSFilesPasteboardResultBuilder_buildDeleteCommand__block_invoke(uint64_t a1, void *a2)
@@ -594,19 +594,19 @@ uint64_t __52__SSFilesPasteboardResultBuilder_buildDeleteCommand__block_invoke(u
 {
   v14.receiver = self;
   v14.super_class = SSFilesPasteboardResultBuilder;
-  v3 = [(SSPasteboardResultBuilder *)&v14 buildPreviewButtonItems];
-  v4 = [v3 mutableCopy];
+  buildPreviewButtonItems = [(SSPasteboardResultBuilder *)&v14 buildPreviewButtonItems];
+  v4 = [buildPreviewButtonItems mutableCopy];
 
-  v5 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
-  v6 = [v5 count];
+  fileURLs = [(SSFilesPasteboardResultBuilder *)self fileURLs];
+  v6 = [fileURLs count];
 
   if (v6)
   {
     v7 = objc_opt_new();
     v8 = MEMORY[0x1E69CA320];
-    v9 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
-    v10 = [v9 firstObject];
-    v11 = [v8 punchoutWithURL:v10];
+    fileURLs2 = [(SSFilesPasteboardResultBuilder *)self fileURLs];
+    firstObject = [fileURLs2 firstObject];
+    v11 = [v8 punchoutWithURL:firstObject];
     [v7 setPunchout:v11];
 
     v12 = objc_opt_new();

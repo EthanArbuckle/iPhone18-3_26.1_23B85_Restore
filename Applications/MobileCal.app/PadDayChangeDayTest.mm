@@ -19,17 +19,17 @@
 
 - (void)runTest
 {
-  v8 = [(ApplicationTest *)self extractInitialDateOption];
-  v3 = [(ApplicationTest *)self model];
-  [v3 setSelectedDate:v8];
+  extractInitialDateOption = [(ApplicationTest *)self extractInitialDateOption];
+  model = [(ApplicationTest *)self model];
+  [model setSelectedDate:extractInitialDateOption];
 
-  v4 = [(ApplicationTest *)self application];
-  v5 = [v4 rootNavigationController];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
 
   self->_daysToScroll = 10;
-  v6 = [v5 resetToDayView];
+  resetToDayView = [rootNavigationController resetToDayView];
   dayViewController = self->_dayViewController;
-  self->_dayViewController = v6;
+  self->_dayViewController = resetToDayView;
 
   [(PadDayChangeDayTest *)self _realTest];
 }
@@ -42,15 +42,15 @@
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"_mainLoop" name:@"NSString *const DayViewController_DayScrollDidEndAnimationNotification" object:0];
 
-  v6 = [objc_opt_class() testName];
+  testName = [objc_opt_class() testName];
   v7 = dispatch_time(0, 200000000);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000744D4;
   v9[3] = &unk_10020EC68;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = testName;
+  v8 = testName;
   dispatch_after(v7, &_dispatch_main_q, v9);
 }
 
@@ -73,9 +73,9 @@
 
   else
   {
-    v7 = [objc_opt_class() testName];
-    v6 = [(ApplicationTest *)self application];
-    [v6 finishedTest:v7 waitForCommit:1 extraResults:0 withTeardownBlock:&stru_10020FCE8];
+    testName = [objc_opt_class() testName];
+    application = [(ApplicationTest *)self application];
+    [application finishedTest:testName waitForCommit:1 extraResults:0 withTeardownBlock:&stru_10020FCE8];
   }
 }
 

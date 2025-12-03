@@ -1,10 +1,10 @@
 @interface HMDAccessoryDiagnosticsSessionInternal
 + (id)logCategory;
 - (HMDAccessory)accessory;
-- (HMDAccessoryDiagnosticsSessionInternal)initWithAccessory:(id)a3;
+- (HMDAccessoryDiagnosticsSessionInternal)initWithAccessory:(id)accessory;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
-- (void)setUpWithOptions:(id)a3 completion:(id)a4;
+- (void)setUpWithOptions:(id)options completion:(id)completion;
 - (void)shutDown;
 @end
 
@@ -19,16 +19,16 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessoryDiagnosticsSessionInternal *)self accessory];
-  v3 = [v2 logIdentifier];
+  accessory = [(HMDAccessoryDiagnosticsSessionInternal *)self accessory];
+  logIdentifier = [accessory logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)setUpWithOptions:(id)a3 completion:(id)a4
+- (void)setUpWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -57,8 +57,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDAccessoryDiagnosticsSessionInternal *)self filePath];
-  v5 = [v3 initWithName:@"filePath" value:v4];
+  filePath = [(HMDAccessoryDiagnosticsSessionInternal *)self filePath];
+  v5 = [v3 initWithName:@"filePath" value:filePath];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -67,19 +67,19 @@
   return v6;
 }
 
-- (HMDAccessoryDiagnosticsSessionInternal)initWithAccessory:(id)a3
+- (HMDAccessoryDiagnosticsSessionInternal)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v10.receiver = self;
   v10.super_class = HMDAccessoryDiagnosticsSessionInternal;
   v5 = [(HMDAccessoryDiagnosticsSessionInternal *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_accessory, v4);
-    v7 = [v4 workQueue];
+    objc_storeWeak(&v5->_accessory, accessoryCopy);
+    workQueue = [accessoryCopy workQueue];
     workQueue = v6->_workQueue;
-    v6->_workQueue = v7;
+    v6->_workQueue = workQueue;
 
     v6->_maxBytes = 5242880;
     v6->_bytesWritten = 0;

@@ -4,9 +4,9 @@
 - (NSString)overlayRequestingBundleIdentifier;
 - (SBSUICameraOverlaySceneClientComponent)init;
 - (int)overlayRequestingPID;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation SBSUICameraOverlaySceneClientComponent
@@ -24,29 +24,29 @@
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   lock_observers = self->_lock_observers;
   if (!lock_observers)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = self->_lock_observers;
-    self->_lock_observers = v5;
+    self->_lock_observers = weakObjectsHashTable;
 
     lock_observers = self->_lock_observers;
   }
 
-  [(NSHashTable *)lock_observers addObject:v7];
+  [(NSHashTable *)lock_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   if (![(NSHashTable *)self->_lock_observers count])
   {
@@ -59,48 +59,48 @@
 
 - (BSAuditToken)overlayRequestingProcessAuditToken
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
-  v4 = [v3 overlayRequestingProcessAuditToken];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
+  overlayRequestingProcessAuditToken = [settings overlayRequestingProcessAuditToken];
 
-  return v4;
+  return overlayRequestingProcessAuditToken;
 }
 
 - (FBSSceneIdentityToken)overlayRequestingSceneIdentityToken
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
-  v4 = [v3 overlayRequestingSceneIdentityToken];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
+  overlayRequestingSceneIdentityToken = [settings overlayRequestingSceneIdentityToken];
 
-  return v4;
+  return overlayRequestingSceneIdentityToken;
 }
 
 - (NSString)overlayRequestingBundleIdentifier
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
-  v4 = [v3 overlayRequestingBundleIdentifier];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
+  overlayRequestingBundleIdentifier = [settings overlayRequestingBundleIdentifier];
 
-  return v4;
+  return overlayRequestingBundleIdentifier;
 }
 
 - (int)overlayRequestingPID
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
-  v4 = [v3 overlayRequestingPID];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
+  overlayRequestingPID = [settings overlayRequestingPID];
 
-  return v4;
+  return overlayRequestingPID;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __66__SBSUICameraOverlaySceneClientComponent_scene_didUpdateSettings___block_invoke;
   v4[3] = &unk_1E789F9E0;
   v4[4] = self;
-  [a4 inspect:v4];
+  [settings inspect:v4];
 }
 
 void __66__SBSUICameraOverlaySceneClientComponent_scene_didUpdateSettings___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)

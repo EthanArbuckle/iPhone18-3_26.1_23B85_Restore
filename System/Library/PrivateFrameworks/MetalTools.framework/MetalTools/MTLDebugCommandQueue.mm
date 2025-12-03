@@ -1,17 +1,17 @@
 @interface MTLDebugCommandQueue
 - (id)commandBuffer;
-- (id)commandBufferWithDescriptor:(id)a3;
+- (id)commandBufferWithDescriptor:(id)descriptor;
 - (id)commandBufferWithUnretainedReferences;
-- (void)addInternalResidencySet:(id)a3;
-- (void)addInternalResidencySets:(id *)a3 count:(unint64_t)a4;
-- (void)addResidencySet:(id)a3;
-- (void)addResidencySets:(const void *)a3 count:(unint64_t)a4;
+- (void)addInternalResidencySet:(id)set;
+- (void)addInternalResidencySets:(id *)sets count:(unint64_t)count;
+- (void)addResidencySet:(id)set;
+- (void)addResidencySets:(const void *)sets count:(unint64_t)count;
 - (void)insertDebugCaptureBoundary;
-- (void)removeInternalResidencySet:(id)a3;
-- (void)removeInternalResidencySets:(id *)a3 count:(unint64_t)a4;
-- (void)removeResidencySet:(id)a3;
-- (void)removeResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)validateDeadlineAwareness:(id)a3;
+- (void)removeInternalResidencySet:(id)set;
+- (void)removeInternalResidencySets:(id *)sets count:(unint64_t)count;
+- (void)removeResidencySet:(id)set;
+- (void)removeResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)validateDeadlineAwareness:(id)awareness;
 @end
 
 @implementation MTLDebugCommandQueue
@@ -66,13 +66,13 @@
   }
 }
 
-- (id)commandBufferWithDescriptor:(id)a3
+- (id)commandBufferWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v7 = [[MTLDebugCommandBuffer alloc] initWithCommandBuffer:v6 commandQueue:self descriptor:a3];
+    v7 = [[MTLDebugCommandBuffer alloc] initWithCommandBuffer:v6 commandQueue:self descriptor:descriptor];
     [(MTLDeadlineProfile *)[(MTLToolsCommandBuffer *)v7 deadlineProfile] validateCommandQueue:self];
     objc_autoreleasePoolPop(v5);
 
@@ -86,13 +86,13 @@
   }
 }
 
-- (void)validateDeadlineAwareness:(id)a3
+- (void)validateDeadlineAwareness:(id)awareness
 {
   p_deadlineAwareState = &self->_deadlineAwareState;
   v5 = atomic_load(&self->_deadlineAwareState);
-  v6 = [a3 deadlineProfile];
-  v7 = v6;
-  if (v6)
+  deadlineProfile = [awareness deadlineProfile];
+  v7 = deadlineProfile;
+  if (deadlineProfile)
   {
     v8 = 1;
   }
@@ -110,7 +110,7 @@
     }
 
 LABEL_9:
-    if (!v6)
+    if (!deadlineProfile)
     {
       return;
     }
@@ -139,25 +139,25 @@ LABEL_10:
   }
 }
 
-- (void)addResidencySet:(id)a3
+- (void)addResidencySet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     [MTLDebugCommandQueue addResidencySet:];
   }
 
   v5.receiver = self;
   v5.super_class = MTLDebugCommandQueue;
-  [(MTLToolsCommandQueue *)&v5 addResidencySet:a3];
+  [(MTLToolsCommandQueue *)&v5 addResidencySet:set];
 }
 
-- (void)addResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)addResidencySets:(const void *)sets count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != count; ++i)
     {
-      if (!a3[i])
+      if (!sets[i])
       {
         [MTLDebugCommandQueue addResidencySets:count:];
       }
@@ -166,28 +166,28 @@ LABEL_10:
 
   v8.receiver = self;
   v8.super_class = MTLDebugCommandQueue;
-  [(MTLToolsCommandQueue *)&v8 addResidencySets:a3 count:a4];
+  [(MTLToolsCommandQueue *)&v8 addResidencySets:sets count:count];
 }
 
-- (void)removeResidencySet:(id)a3
+- (void)removeResidencySet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     [MTLDebugCommandQueue removeResidencySet:];
   }
 
   v5.receiver = self;
   v5.super_class = MTLDebugCommandQueue;
-  [(MTLToolsCommandQueue *)&v5 removeResidencySet:a3];
+  [(MTLToolsCommandQueue *)&v5 removeResidencySet:set];
 }
 
-- (void)removeResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)removeResidencySets:(const void *)sets count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != count; ++i)
     {
-      if (!a3[i])
+      if (!sets[i])
       {
         [MTLDebugCommandQueue removeResidencySets:count:];
       }
@@ -196,28 +196,28 @@ LABEL_10:
 
   v8.receiver = self;
   v8.super_class = MTLDebugCommandQueue;
-  [(MTLToolsCommandQueue *)&v8 removeResidencySets:a3 count:a4];
+  [(MTLToolsCommandQueue *)&v8 removeResidencySets:sets count:count];
 }
 
-- (void)addInternalResidencySet:(id)a3
+- (void)addInternalResidencySet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     [MTLDebugCommandQueue addInternalResidencySet:];
   }
 
   v5.receiver = self;
   v5.super_class = MTLDebugCommandQueue;
-  [(MTLToolsCommandQueue *)&v5 addInternalResidencySet:a3];
+  [(MTLToolsCommandQueue *)&v5 addInternalResidencySet:set];
 }
 
-- (void)addInternalResidencySets:(id *)a3 count:(unint64_t)a4
+- (void)addInternalResidencySets:(id *)sets count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != count; ++i)
     {
-      if (!a3[i])
+      if (!sets[i])
       {
         [MTLDebugCommandQueue addInternalResidencySets:count:];
       }
@@ -226,28 +226,28 @@ LABEL_10:
 
   v8.receiver = self;
   v8.super_class = MTLDebugCommandQueue;
-  [(MTLToolsCommandQueue *)&v8 addInternalResidencySets:a3 count:a4];
+  [(MTLToolsCommandQueue *)&v8 addInternalResidencySets:sets count:count];
 }
 
-- (void)removeInternalResidencySet:(id)a3
+- (void)removeInternalResidencySet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     [MTLDebugCommandQueue removeInternalResidencySet:];
   }
 
   v5.receiver = self;
   v5.super_class = MTLDebugCommandQueue;
-  [(MTLToolsCommandQueue *)&v5 removeInternalResidencySet:a3];
+  [(MTLToolsCommandQueue *)&v5 removeInternalResidencySet:set];
 }
 
-- (void)removeInternalResidencySets:(id *)a3 count:(unint64_t)a4
+- (void)removeInternalResidencySets:(id *)sets count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != count; ++i)
     {
-      if (!a3[i])
+      if (!sets[i])
       {
         [MTLDebugCommandQueue removeInternalResidencySets:count:];
       }
@@ -256,7 +256,7 @@ LABEL_10:
 
   v8.receiver = self;
   v8.super_class = MTLDebugCommandQueue;
-  [(MTLToolsCommandQueue *)&v8 removeInternalResidencySets:a3 count:a4];
+  [(MTLToolsCommandQueue *)&v8 removeInternalResidencySets:sets count:count];
 }
 
 @end

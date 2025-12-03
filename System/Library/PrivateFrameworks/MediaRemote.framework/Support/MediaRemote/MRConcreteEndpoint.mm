@@ -6,11 +6,11 @@
 
 - (BOOL)isNativeEndpoint
 {
-  v3 = [(MRConcreteEndpoint *)self designatedGroupLeader];
-  if ([v3 isPrimaryLocalDevice])
+  designatedGroupLeader = [(MRConcreteEndpoint *)self designatedGroupLeader];
+  if ([designatedGroupLeader isPrimaryLocalDevice])
   {
-    v4 = [(MRConcreteEndpoint *)self outputDevices];
-    v5 = [v4 msv_firstWhere:&stru_1004BA190];
+    outputDevices = [(MRConcreteEndpoint *)self outputDevices];
+    v5 = [outputDevices msv_firstWhere:&stru_1004BA190];
     v6 = v5 != 0;
   }
 

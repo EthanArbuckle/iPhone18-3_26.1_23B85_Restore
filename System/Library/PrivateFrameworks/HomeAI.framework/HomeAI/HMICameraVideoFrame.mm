@@ -1,53 +1,53 @@
 @interface HMICameraVideoFrame
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (HMICameraVideoFrame)initWithCoder:(id)a3;
-- (HMICameraVideoFrame)initWithJPEGData:(id)a3 presentationTime:(id *)a4 frameId:(unint64_t)a5 fragmentSequenceNumber:(unint64_t)a6 size:(CGSize)a7;
-- (HMICameraVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3;
-- (HMICameraVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3 presentationTime:(id *)a4 frameId:(unint64_t)a5 fragmentSequenceNumber:(unint64_t)a6;
+- (HMICameraVideoFrame)initWithCoder:(id)coder;
+- (HMICameraVideoFrame)initWithJPEGData:(id)data presentationTime:(id *)time frameId:(unint64_t)id fragmentSequenceNumber:(unint64_t)number size:(CGSize)size;
+- (HMICameraVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer;
+- (HMICameraVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer presentationTime:(id *)time frameId:(unint64_t)id fragmentSequenceNumber:(unint64_t)number;
 - (NSString)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMICameraVideoFrame
 
-- (HMICameraVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3
+- (HMICameraVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer
 {
   v4 = *MEMORY[0x277CC08F0];
   v5 = *(MEMORY[0x277CC08F0] + 16);
-  return [(HMICameraVideoFrame *)self initWithPixelBuffer:a3 presentationTime:&v4 frameId:0 fragmentSequenceNumber:0];
+  return [(HMICameraVideoFrame *)self initWithPixelBuffer:buffer presentationTime:&v4 frameId:0 fragmentSequenceNumber:0];
 }
 
-- (HMICameraVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3 presentationTime:(id *)a4 frameId:(unint64_t)a5 fragmentSequenceNumber:(unint64_t)a6
+- (HMICameraVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer presentationTime:(id *)time frameId:(unint64_t)id fragmentSequenceNumber:(unint64_t)number
 {
   v15.receiver = self;
   v15.super_class = HMICameraVideoFrame;
   v10 = [(HMICameraVideoFrame *)&v15 init];
   if (v10)
   {
-    v10->_pixelBuffer = CVPixelBufferRetain(a3);
-    var3 = a4->var3;
-    *&v10->_presentationTime.value = *&a4->var0;
+    v10->_pixelBuffer = CVPixelBufferRetain(buffer);
+    var3 = time->var3;
+    *&v10->_presentationTime.value = *&time->var0;
     v10->_presentationTime.epoch = var3;
-    v10->_frameId = a5;
-    v10->_fragmentSequenceNumber = a6;
+    v10->_frameId = id;
+    v10->_fragmentSequenceNumber = number;
     jpegData = v10->_jpegData;
     v10->_jpegData = 0;
 
-    v10->_size.width = HMICVPixelBufferGetSize(a3);
+    v10->_size.width = HMICVPixelBufferGetSize(buffer);
     v10->_size.height = v13;
   }
 
   return v10;
 }
 
-- (HMICameraVideoFrame)initWithJPEGData:(id)a3 presentationTime:(id *)a4 frameId:(unint64_t)a5 fragmentSequenceNumber:(unint64_t)a6 size:(CGSize)a7
+- (HMICameraVideoFrame)initWithJPEGData:(id)data presentationTime:(id *)time frameId:(unint64_t)id fragmentSequenceNumber:(unint64_t)number size:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
-  v14 = a3;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = HMICameraVideoFrame;
   v15 = [(HMICameraVideoFrame *)&v19 init];
@@ -55,12 +55,12 @@
   if (v15)
   {
     v15->_pixelBuffer = 0;
-    v17 = *&a4->var0;
-    v15->_presentationTime.epoch = a4->var3;
+    v17 = *&time->var0;
+    v15->_presentationTime.epoch = time->var3;
     *&v15->_presentationTime.value = v17;
-    v15->_frameId = a5;
-    v15->_fragmentSequenceNumber = a6;
-    objc_storeStrong(&v15->_jpegData, a3);
+    v15->_frameId = id;
+    v15->_fragmentSequenceNumber = number;
+    objc_storeStrong(&v15->_jpegData, data);
     v16->_size.width = width;
     v16->_size.height = height;
   }
@@ -95,20 +95,20 @@
   return result;
 }
 
-- (HMICameraVideoFrame)initWithCoder:(id)a3
+- (HMICameraVideoFrame)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"HMICVF.fi"];
-  v6 = [v4 decodeIntegerForKey:@"HMICVF.fsn"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"HMICVF.fi"];
+  v6 = [coderCopy decodeIntegerForKey:@"HMICVF.fsn"];
   v16 = 0uLL;
   v17 = 0;
-  if (v4)
+  if (coderCopy)
   {
-    [v4 decodeCMTimeForKey:@"HMICVF.pt"];
+    [coderCopy decodeCMTimeForKey:@"HMICVF.pt"];
   }
 
   pixelBufferOut = 0;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMICVF.pb"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMICVF.pb"];
   if (v7)
   {
     CVPixelBufferCreateWithIOSurface(*MEMORY[0x277CBECE8], v7, 0, &pixelBufferOut);
@@ -123,9 +123,9 @@
 
   else
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMICVF.jd"];
-    v10 = [v4 decodeIntForKey:@"HMICVF.jsw"];
-    v11 = [v4 decodeIntForKey:@"HMICVF.jsh"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMICVF.jd"];
+    v10 = [coderCopy decodeIntForKey:@"HMICVF.jsw"];
+    v11 = [coderCopy decodeIntForKey:@"HMICVF.jsh"];
     v13 = v16;
     v14 = v17;
     v8 = [(HMICameraVideoFrame *)self initWithJPEGData:v9 presentationTime:&v13 frameId:v5 fragmentSequenceNumber:v6 size:v10, v11];
@@ -134,13 +134,13 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMICameraVideoFrame frameId](self forKey:{"frameId"), @"HMICVF.fi"}];
-  [v4 encodeInteger:-[HMICameraVideoFrame fragmentSequenceNumber](self forKey:{"fragmentSequenceNumber"), @"HMICVF.fsn"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMICameraVideoFrame frameId](self forKey:{"frameId"), @"HMICVF.fi"}];
+  [coderCopy encodeInteger:-[HMICameraVideoFrame fragmentSequenceNumber](self forKey:{"fragmentSequenceNumber"), @"HMICVF.fsn"}];
   [(HMICameraVideoFrame *)self presentationTime];
-  [v4 encodeCMTime:v11 forKey:@"HMICVF.pt"];
+  [coderCopy encodeCMTime:v11 forKey:@"HMICVF.pt"];
   if ([(HMICameraVideoFrame *)self pixelBuffer])
   {
     v5 = CVPixelBufferGetIOSurface([(HMICameraVideoFrame *)self pixelBuffer]);
@@ -151,25 +151,25 @@
     }
 
     v6 = v5;
-    [v4 encodeObject:v5 forKey:@"HMICVF.pb"];
+    [coderCopy encodeObject:v5 forKey:@"HMICVF.pb"];
   }
 
   else
   {
-    v7 = [(HMICameraVideoFrame *)self jpegData];
-    [v4 encodeObject:v7 forKey:@"HMICVF.jd"];
+    jpegData = [(HMICameraVideoFrame *)self jpegData];
+    [coderCopy encodeObject:jpegData forKey:@"HMICVF.jd"];
 
     [(HMICameraVideoFrame *)self size];
-    [v4 encodeInteger:v8 forKey:@"HMICVF.jsw"];
+    [coderCopy encodeInteger:v8 forKey:@"HMICVF.jsw"];
     [(HMICameraVideoFrame *)self size];
-    [v4 encodeInteger:v9 forKey:@"HMICVF.jsh"];
+    [coderCopy encodeInteger:v9 forKey:@"HMICVF.jsh"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -179,11 +179,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMICameraVideoFrame *)self frameId];
-      v7 = [(HMICameraVideoFrame *)v5 frameId];
-      v8 = [(HMICameraVideoFrame *)self fragmentSequenceNumber];
-      v9 = [(HMICameraVideoFrame *)v5 fragmentSequenceNumber];
+      v5 = equalCopy;
+      frameId = [(HMICameraVideoFrame *)self frameId];
+      frameId2 = [(HMICameraVideoFrame *)v5 frameId];
+      fragmentSequenceNumber = [(HMICameraVideoFrame *)self fragmentSequenceNumber];
+      fragmentSequenceNumber2 = [(HMICameraVideoFrame *)v5 fragmentSequenceNumber];
       [(HMICameraVideoFrame *)self size];
       v11 = v10;
       [(HMICameraVideoFrame *)v5 size];
@@ -192,18 +192,18 @@
       v15 = v14;
       [(HMICameraVideoFrame *)v5 size];
       v17 = 0;
-      if (v6 == v7 && v8 == v9 && v11 == v13 && v15 == v16)
+      if (frameId == frameId2 && fragmentSequenceNumber == fragmentSequenceNumber2 && v11 == v13 && v15 == v16)
       {
-        v18 = [(HMICameraVideoFrame *)self jpegData];
-        if (v18)
+        jpegData = [(HMICameraVideoFrame *)self jpegData];
+        if (jpegData)
         {
         }
 
         else
         {
-          v19 = [(HMICameraVideoFrame *)v5 jpegData];
+          jpegData2 = [(HMICameraVideoFrame *)v5 jpegData];
 
-          if (!v19)
+          if (!jpegData2)
           {
 LABEL_13:
             [(HMICameraVideoFrame *)self presentationTime];
@@ -222,9 +222,9 @@ LABEL_13:
           }
         }
 
-        v20 = [(HMICameraVideoFrame *)self jpegData];
-        v21 = [(HMICameraVideoFrame *)v5 jpegData];
-        v22 = [v20 isEqualToData:v21];
+        jpegData3 = [(HMICameraVideoFrame *)self jpegData];
+        jpegData4 = [(HMICameraVideoFrame *)v5 jpegData];
+        v22 = [jpegData3 isEqualToData:jpegData4];
 
         if (v22)
         {
@@ -249,8 +249,8 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(HMICameraVideoFrame *)self frameId];
-  v4 = [(HMICameraVideoFrame *)self fragmentSequenceNumber];
+  frameId = [(HMICameraVideoFrame *)self frameId];
+  fragmentSequenceNumber = [(HMICameraVideoFrame *)self fragmentSequenceNumber];
   [(HMICameraVideoFrame *)self presentationTime];
   v5 = HMIHashCMTime(v32);
   [(HMICameraVideoFrame *)self size];
@@ -313,30 +313,30 @@ LABEL_19:
     v22 = v20;
   }
 
-  if (v3 >= 0)
+  if (frameId >= 0)
   {
-    v23 = v3;
+    v23 = frameId;
   }
 
   else
   {
-    v23 = -v3;
+    v23 = -frameId;
   }
 
   v24 = 2654435761 * v23;
-  if (v4 >= 0)
+  if (fragmentSequenceNumber >= 0)
   {
-    v25 = v4;
+    v25 = fragmentSequenceNumber;
   }
 
   else
   {
-    v25 = -v4;
+    v25 = -fragmentSequenceNumber;
   }
 
   v26 = (2654435761 * v25) ^ v24 ^ v5 ^ v14;
-  v27 = [(HMICameraVideoFrame *)self jpegData];
-  v28 = v22 ^ [v27 hash];
+  jpegData = [(HMICameraVideoFrame *)self jpegData];
+  v28 = v22 ^ [jpegData hash];
 
   return v26 ^ v28;
 }

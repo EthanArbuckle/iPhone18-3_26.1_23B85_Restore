@@ -1,25 +1,25 @@
 @interface SSVMediaSocialPostAttachment
-- (SSVMediaSocialPostAttachment)initWithXPCEncoding:(id)a3;
-- (id)childAttachmentForRelationship:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVMediaSocialPostAttachment)initWithXPCEncoding:(id)encoding;
+- (id)childAttachmentForRelationship:(id)relationship;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (void)enumerateChildAttachmentsUsingBlock:(id)a3;
-- (void)setChildAttachment:(id)a3 forRelationship:(id)a4;
+- (void)enumerateChildAttachmentsUsingBlock:(id)block;
+- (void)setChildAttachment:(id)attachment forRelationship:(id)relationship;
 @end
 
 @implementation SSVMediaSocialPostAttachment
 
-- (id)childAttachmentForRelationship:(id)a3
+- (id)childAttachmentForRelationship:(id)relationship
 {
-  v3 = [(NSMutableDictionary *)self->_childAttachments objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_childAttachments objectForKey:relationship];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (void)enumerateChildAttachmentsUsingBlock:(id)a3
+- (void)enumerateChildAttachmentsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -29,7 +29,7 @@
   v7[1] = 3221225472;
   v7[2] = __68__SSVMediaSocialPostAttachment_enumerateChildAttachmentsUsingBlock___block_invoke;
   v7[3] = &unk_1E84B28D8;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = v10;
   [(NSMutableDictionary *)childAttachments enumerateKeysAndObjectsUsingBlock:v7];
@@ -46,14 +46,14 @@ void __68__SSVMediaSocialPostAttachment_enumerateChildAttachmentsUsingBlock___bl
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (void)setChildAttachment:(id)a3 forRelationship:(id)a4
+- (void)setChildAttachment:(id)attachment forRelationship:(id)relationship
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v13;
-  v8 = v6;
+  attachmentCopy = attachment;
+  relationshipCopy = relationship;
+  v7 = attachmentCopy;
+  v8 = relationshipCopy;
   childAttachments = self->_childAttachments;
-  if (v13)
+  if (attachmentCopy)
   {
     if (!childAttachments)
     {
@@ -61,7 +61,7 @@ void __68__SSVMediaSocialPostAttachment_enumerateChildAttachmentsUsingBlock___bl
       v11 = self->_childAttachments;
       self->_childAttachments = v10;
 
-      v7 = v13;
+      v7 = attachmentCopy;
     }
 
     v12 = [v7 copy];
@@ -74,16 +74,16 @@ void __68__SSVMediaSocialPostAttachment_enumerateChildAttachmentsUsingBlock___bl
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setAlbumIdentifier:self->_albumIdentifier];
   [v5 setArtists:self->_artists];
   [v5 setAssetData:self->_assetData];
   [v5 setAssetURL:self->_assetURL];
   [v5 setAttachmentDescription:self->_attachmentDescription];
   [v5 setCategoryName:self->_categoryName];
-  v6 = [(NSMutableDictionary *)self->_childAttachments mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_childAttachments mutableCopyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
@@ -96,11 +96,11 @@ void __68__SSVMediaSocialPostAttachment_enumerateChildAttachmentsUsingBlock___bl
   return v5;
 }
 
-- (SSVMediaSocialPostAttachment)initWithXPCEncoding:(id)a3
+- (SSVMediaSocialPostAttachment)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = MEMORY[0x1DA6E0380](v4), v7 = MEMORY[0x1E69E9E80], v6 == MEMORY[0x1E69E9E80]))
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && (v6 = MEMORY[0x1DA6E0380](encodingCopy), v7 = MEMORY[0x1E69E9E80], v6 == MEMORY[0x1E69E9E80]))
   {
     v8 = [(SSVMediaSocialPostAttachment *)self init];
     if (v8)
@@ -205,8 +205,8 @@ uint64_t __52__SSVMediaSocialPostAttachment_initWithXPCEncoding___block_invoke(u
   SSXPCDictionarySetObject(v3, "C", self->_albumIdentifier);
   SSXPCDictionarySetObject(v3, "0", self->_artists);
   SSXPCDictionarySetObject(v3, "1", self->_assetData);
-  v4 = [(NSURL *)self->_assetURL absoluteString];
-  SSXPCDictionarySetObject(v3, "2", v4);
+  absoluteString = [(NSURL *)self->_assetURL absoluteString];
+  SSXPCDictionarySetObject(v3, "2", absoluteString);
 
   SSXPCDictionarySetObject(v3, "4", self->_attachmentDescription);
   SSXPCDictionarySetObject(v3, "3", self->_categoryName);

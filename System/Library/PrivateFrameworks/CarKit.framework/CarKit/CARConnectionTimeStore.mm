@@ -1,17 +1,17 @@
 @interface CARConnectionTimeStore
 + (id)_CARConnectionServiceInterface;
-- (BOOL)_setupConnectionForSystemDaemon:(BOOL)a3;
+- (BOOL)_setupConnectionForSystemDaemon:(BOOL)daemon;
 - (CARConnectionTimeStore)init;
 - (id)initForSystemDaemon;
-- (void)_xpcFetchWithServiceBlock:(id)a3 errorHandler:(id)a4;
-- (void)_xpcFetchWithSynchronousServiceBlock:(id)a3 errorHandler:(id)a4;
-- (void)clearHistoricalConnectionsWithCompletion:(id)a3;
+- (void)_xpcFetchWithServiceBlock:(id)block errorHandler:(id)handler;
+- (void)_xpcFetchWithSynchronousServiceBlock:(id)block errorHandler:(id)handler;
+- (void)clearHistoricalConnectionsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)fetchPreviousSessionConnectionDataWithCompletion:(id)a3;
-- (void)fetchRecentSessions:(id)a3;
-- (void)removeConnectionEventsBefore:(id)a3 completion:(id)a4;
-- (void)sendConnectionEvent:(id)a3 completion:(id)a4;
-- (void)syncSendConnectionEvent:(id)a3 completion:(id)a4;
+- (void)fetchPreviousSessionConnectionDataWithCompletion:(id)completion;
+- (void)fetchRecentSessions:(id)sessions;
+- (void)removeConnectionEventsBefore:(id)before completion:(id)completion;
+- (void)sendConnectionEvent:(id)event completion:(id)completion;
+- (void)syncSendConnectionEvent:(id)event completion:(id)completion;
 @end
 
 @implementation CARConnectionTimeStore
@@ -79,11 +79,11 @@ void __56__CARConnectionTimeStore__CARConnectionServiceInterface__block_invoke()
   [v2 setClasses:v10 forSelector:sel_fetchConnectionSessions_ argumentIndex:0 ofReply:1];
 }
 
-- (BOOL)_setupConnectionForSystemDaemon:(BOOL)a3
+- (BOOL)_setupConnectionForSystemDaemon:(BOOL)daemon
 {
-  v3 = a3;
+  daemonCopy = daemon;
   v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.carkit.reconnectiontime.service" options:0];
-  if (!v3)
+  if (!daemonCopy)
   {
     goto LABEL_7;
   }
@@ -91,12 +91,12 @@ void __56__CARConnectionTimeStore__CARConnectionServiceInterface__block_invoke()
   if (xpc_user_sessions_enabled())
   {
     xpc_user_sessions_get_foreground_uid();
-    v8 = [v5 _xpcConnection];
+    _xpcConnection = [v5 _xpcConnection];
     xpc_connection_set_target_user_session_uid();
 
 LABEL_7:
-    v9 = [objc_opt_class() _CARConnectionServiceInterface];
-    [v5 setRemoteObjectInterface:v9];
+    _CARConnectionServiceInterface = [objc_opt_class() _CARConnectionServiceInterface];
+    [v5 setRemoteObjectInterface:_CARConnectionServiceInterface];
 
     [v5 resume];
     [(CARConnectionTimeStore *)self setConnection:v5];
@@ -124,20 +124,20 @@ LABEL_8:
   [(CARConnectionTimeStore *)&v3 dealloc];
 }
 
-- (void)_xpcFetchWithServiceBlock:(id)a3 errorHandler:(id)a4
+- (void)_xpcFetchWithServiceBlock:(id)block errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CARConnectionTimeStore *)self connection];
+  blockCopy = block;
+  handlerCopy = handler;
+  connection = [(CARConnectionTimeStore *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__CARConnectionTimeStore__xpcFetchWithServiceBlock_errorHandler___block_invoke;
   v13[3] = &unk_1E82FBF48;
-  v14 = v7;
-  v9 = v7;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v13];
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v13];
 
-  if (v6)
+  if (blockCopy)
   {
     v11 = CarConnectionTimeLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -146,7 +146,7 @@ LABEL_8:
       _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_DEFAULT, "CARConnectionTimeStore: Connecting to CarKit Connection Time service", v12, 2u);
     }
 
-    v6[2](v6, v10);
+    blockCopy[2](blockCopy, v10);
   }
 }
 
@@ -166,20 +166,20 @@ void __65__CARConnectionTimeStore__xpcFetchWithServiceBlock_errorHandler___block
   }
 }
 
-- (void)_xpcFetchWithSynchronousServiceBlock:(id)a3 errorHandler:(id)a4
+- (void)_xpcFetchWithSynchronousServiceBlock:(id)block errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CARConnectionTimeStore *)self connection];
+  blockCopy = block;
+  handlerCopy = handler;
+  connection = [(CARConnectionTimeStore *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__CARConnectionTimeStore__xpcFetchWithSynchronousServiceBlock_errorHandler___block_invoke;
   v13[3] = &unk_1E82FBF48;
-  v14 = v7;
-  v9 = v7;
-  v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
-  if (v6)
+  if (blockCopy)
   {
     v11 = CarConnectionTimeLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -188,7 +188,7 @@ void __65__CARConnectionTimeStore__xpcFetchWithServiceBlock_errorHandler___block
       _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_DEFAULT, "CARConnectionTimeStore: Connecting to CarKit Connection Time service", v12, 2u);
     }
 
-    v6[2](v6, v10);
+    blockCopy[2](blockCopy, v10);
   }
 }
 
@@ -208,14 +208,14 @@ void __76__CARConnectionTimeStore__xpcFetchWithSynchronousServiceBlock_errorHand
   }
 }
 
-- (void)fetchRecentSessions:(id)a3
+- (void)fetchRecentSessions:(id)sessions
 {
-  v4 = a3;
+  sessionsCopy = sessions;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__CARConnectionTimeStore_fetchRecentSessions___block_invoke;
   v8[3] = &unk_1E82FC678;
-  v9 = v4;
+  v9 = sessionsCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__CARConnectionTimeStore_fetchRecentSessions___block_invoke_2;
@@ -240,16 +240,16 @@ void __46__CARConnectionTimeStore_fetchRecentSessions___block_invoke_2(uint64_t 
   }
 }
 
-- (void)sendConnectionEvent:(id)a3 completion:(id)a4
+- (void)sendConnectionEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__CARConnectionTimeStore_sendConnectionEvent_completion___block_invoke;
   v13[3] = &unk_1E82FC6A0;
-  v14 = v6;
-  v15 = v7;
+  v14 = eventCopy;
+  v15 = completionCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__CARConnectionTimeStore_sendConnectionEvent_completion___block_invoke_265;
@@ -293,16 +293,16 @@ void __57__CARConnectionTimeStore_sendConnectionEvent_completion___block_invoke_
   }
 }
 
-- (void)syncSendConnectionEvent:(id)a3 completion:(id)a4
+- (void)syncSendConnectionEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__CARConnectionTimeStore_syncSendConnectionEvent_completion___block_invoke;
   v13[3] = &unk_1E82FC6A0;
-  v14 = v6;
-  v15 = v7;
+  v14 = eventCopy;
+  v15 = completionCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__CARConnectionTimeStore_syncSendConnectionEvent_completion___block_invoke_266;
@@ -346,23 +346,23 @@ void __61__CARConnectionTimeStore_syncSendConnectionEvent_completion___block_inv
   }
 }
 
-- (void)removeConnectionEventsBefore:(id)a3 completion:(id)a4
+- (void)removeConnectionEventsBefore:(id)before completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beforeCopy = before;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__CARConnectionTimeStore_removeConnectionEventsBefore_completion___block_invoke;
   v12[3] = &unk_1E82FC6A0;
-  v13 = v6;
-  v14 = v7;
+  v13 = beforeCopy;
+  v14 = completionCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__CARConnectionTimeStore_removeConnectionEventsBefore_completion___block_invoke_267;
   v10[3] = &unk_1E82FBF48;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = beforeCopy;
   [(CARConnectionTimeStore *)self _xpcFetchWithServiceBlock:v12 errorHandler:v10];
 }
 
@@ -395,14 +395,14 @@ void __66__CARConnectionTimeStore_removeConnectionEventsBefore_completion___bloc
   }
 }
 
-- (void)clearHistoricalConnectionsWithCompletion:(id)a3
+- (void)clearHistoricalConnectionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__CARConnectionTimeStore_clearHistoricalConnectionsWithCompletion___block_invoke;
   v8[3] = &unk_1E82FC678;
-  v9 = v4;
+  v9 = completionCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__CARConnectionTimeStore_clearHistoricalConnectionsWithCompletion___block_invoke_2;
@@ -423,14 +423,14 @@ uint64_t __67__CARConnectionTimeStore_clearHistoricalConnectionsWithCompletion__
   return result;
 }
 
-- (void)fetchPreviousSessionConnectionDataWithCompletion:(id)a3
+- (void)fetchPreviousSessionConnectionDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__CARConnectionTimeStore_fetchPreviousSessionConnectionDataWithCompletion___block_invoke;
   v8[3] = &unk_1E82FC678;
-  v9 = v4;
+  v9 = completionCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__CARConnectionTimeStore_fetchPreviousSessionConnectionDataWithCompletion___block_invoke_2;

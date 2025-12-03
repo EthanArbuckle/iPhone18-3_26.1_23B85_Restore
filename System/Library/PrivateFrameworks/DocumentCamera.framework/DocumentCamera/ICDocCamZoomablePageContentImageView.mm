@@ -1,15 +1,15 @@
 @interface ICDocCamZoomablePageContentImageView
 - (ICDocCamZoomablePageContentViewDelegate)pageContentViewDelegate;
-- (id)_accessibilityScrollAncestorForSelector:(SEL)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (id)_accessibilityScrollAncestorForSelector:(SEL)selector;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation ICDocCamZoomablePageContentImageView
 
-- (id)_accessibilityScrollAncestorForSelector:(SEL)a3
+- (id)_accessibilityScrollAncestorForSelector:(SEL)selector
 {
-  v3 = sel_accessibilityScrollRightPage == a3 || sel_accessibilityScrollLeftPage == a3;
+  v3 = sel_accessibilityScrollRightPage == selector || sel_accessibilityScrollLeftPage == selector;
   if (v3 && ([(ICDocCamZoomablePageContentImageView *)self nextResponder], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
@@ -21,10 +21,10 @@
         break;
       }
 
-      v6 = [v5 nextResponder];
+      nextResponder = [v5 nextResponder];
 
-      v5 = v6;
-      if (!v6)
+      v5 = nextResponder;
+      if (!nextResponder)
       {
         goto LABEL_10;
       }
@@ -46,50 +46,50 @@ LABEL_10:
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  v9 = [v8 type];
+  beganCopy = began;
+  eventCopy = event;
+  anyObject = [beganCopy anyObject];
+  type = [anyObject type];
 
-  if (v9 == 2)
+  if (type == 2)
   {
-    v10 = [(ICDocCamZoomablePageContentImageView *)self pageContentViewDelegate];
+    pageContentViewDelegate = [(ICDocCamZoomablePageContentImageView *)self pageContentViewDelegate];
 
-    if (v10)
+    if (pageContentViewDelegate)
     {
-      v11 = [(ICDocCamZoomablePageContentImageView *)self pageContentViewDelegate];
-      [v11 pageContentViewDidPencilDown];
+      pageContentViewDelegate2 = [(ICDocCamZoomablePageContentImageView *)self pageContentViewDelegate];
+      [pageContentViewDelegate2 pageContentViewDidPencilDown];
     }
   }
 
   v12.receiver = self;
   v12.super_class = ICDocCamZoomablePageContentImageView;
-  [(ICDocCamZoomablePageContentImageView *)&v12 touchesBegan:v6 withEvent:v7];
+  [(ICDocCamZoomablePageContentImageView *)&v12 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(ICDocCamZoomablePageContentImageView *)self pageContentViewDelegate];
-  v9 = [v8 isTouchingAnalyzableContentAtPoint:v7 withEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  pageContentViewDelegate = [(ICDocCamZoomablePageContentImageView *)self pageContentViewDelegate];
+  v9 = [pageContentViewDelegate isTouchingAnalyzableContentAtPoint:eventCopy withEvent:{x, y}];
 
   if (v9)
   {
     v13.receiver = self;
     v13.super_class = ICDocCamZoomablePageContentImageView;
-    v10 = [(ICDocCamZoomablePageContentImageView *)&v13 hitTest:v7 withEvent:x, y];
+    selfCopy = [(ICDocCamZoomablePageContentImageView *)&v13 hitTest:eventCopy withEvent:x, y];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  v11 = v10;
+  v11 = selfCopy;
 
   return v11;
 }

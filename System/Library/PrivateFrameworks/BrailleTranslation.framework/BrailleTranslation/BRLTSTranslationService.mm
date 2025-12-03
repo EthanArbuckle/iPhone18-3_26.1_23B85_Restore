@@ -1,8 +1,8 @@
 @interface BRLTSTranslationService
 - (BRLTSTranslationService)init;
-- (void)brailleForText:(id)a3 parameters:(id)a4 withReply:(id)a5;
-- (void)loadBrailleBundleForIdentifier:(id)a3;
-- (void)textForBraille:(id)a3 parameters:(id)a4 withReply:(id)a5;
+- (void)brailleForText:(id)text parameters:(id)parameters withReply:(id)reply;
+- (void)loadBrailleBundleForIdentifier:(id)identifier;
+- (void)textForBraille:(id)braille parameters:(id)parameters withReply:(id)reply;
 @end
 
 @implementation BRLTSTranslationService
@@ -23,24 +23,24 @@
   return v2;
 }
 
-- (void)brailleForText:(id)a3 parameters:(id)a4 withReply:(id)a5
+- (void)brailleForText:(id)text parameters:(id)parameters withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BRLTSTranslationService *)self queue];
+  textCopy = text;
+  parametersCopy = parameters;
+  replyCopy = reply;
+  queue = [(BRLTSTranslationService *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__BRLTSTranslationService_brailleForText_parameters_withReply___block_invoke;
   v15[3] = &unk_278D20AB8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = textCopy;
+  v17 = parametersCopy;
+  v18 = replyCopy;
+  v12 = parametersCopy;
+  v13 = textCopy;
+  v14 = replyCopy;
+  dispatch_async(queue, v15);
 }
 
 void __63__BRLTSTranslationService_brailleForText_parameters_withReply___block_invoke(uint64_t a1)
@@ -58,24 +58,24 @@ void __63__BRLTSTranslationService_brailleForText_parameters_withReply___block_i
   }
 }
 
-- (void)textForBraille:(id)a3 parameters:(id)a4 withReply:(id)a5
+- (void)textForBraille:(id)braille parameters:(id)parameters withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BRLTSTranslationService *)self queue];
+  brailleCopy = braille;
+  parametersCopy = parameters;
+  replyCopy = reply;
+  queue = [(BRLTSTranslationService *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__BRLTSTranslationService_textForBraille_parameters_withReply___block_invoke;
   v15[3] = &unk_278D20AB8;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = parametersCopy;
+  selfCopy = self;
+  v18 = brailleCopy;
+  v19 = replyCopy;
+  v12 = brailleCopy;
+  v13 = parametersCopy;
+  v14 = replyCopy;
+  dispatch_async(queue, v15);
 }
 
 void __63__BRLTSTranslationService_textForBraille_parameters_withReply___block_invoke(uint64_t a1)
@@ -105,18 +105,18 @@ void __63__BRLTSTranslationService_textForBraille_parameters_withReply___block_i
   }
 }
 
-- (void)loadBrailleBundleForIdentifier:(id)a3
+- (void)loadBrailleBundleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BRLTSTranslationService *)self queue];
+  identifierCopy = identifier;
+  queue = [(BRLTSTranslationService *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__BRLTSTranslationService_loadBrailleBundleForIdentifier___block_invoke;
   v7[3] = &unk_278D20AE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 void __58__BRLTSTranslationService_loadBrailleBundleForIdentifier___block_invoke(uint64_t a1)

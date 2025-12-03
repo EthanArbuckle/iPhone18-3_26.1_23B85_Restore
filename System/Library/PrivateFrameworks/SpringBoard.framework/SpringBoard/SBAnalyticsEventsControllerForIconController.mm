@@ -1,24 +1,24 @@
 @interface SBAnalyticsEventsControllerForIconController
-- (SBAnalyticsEventsControllerForIconController)initWithIconModel:(id)a3;
+- (SBAnalyticsEventsControllerForIconController)initWithIconModel:(id)model;
 - (void)_analyticsLoggingForDisplayZoomMode;
 - (void)_analyticsLoggingForFixedIconLocation;
 - (void)_analyticsLoggingForOptimizedHomeScreen;
 - (void)significantTimeChanged;
-- (void)updateIconModel:(id)a3;
+- (void)updateIconModel:(id)model;
 @end
 
 @implementation SBAnalyticsEventsControllerForIconController
 
-- (SBAnalyticsEventsControllerForIconController)initWithIconModel:(id)a3
+- (SBAnalyticsEventsControllerForIconController)initWithIconModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = SBAnalyticsEventsControllerForIconController;
   v6 = [(SBAnalyticsEventsControllerForIconController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconModel, a3);
+    objc_storeStrong(&v6->_iconModel, model);
     v8 = objc_alloc(MEMORY[0x277D66118]);
     v9 = [v8 initWithEventsControllerDomain:*MEMORY[0x277D66498]];
     analyticsEventsController = v7->_analyticsEventsController;
@@ -30,16 +30,16 @@
   return v7;
 }
 
-- (void)updateIconModel:(id)a3
+- (void)updateIconModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   iconModel = self->_iconModel;
   p_iconModel = &self->_iconModel;
-  if (iconModel != v5)
+  if (iconModel != modelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_iconModel, a3);
-    v5 = v8;
+    v8 = modelCopy;
+    objc_storeStrong(p_iconModel, model);
+    modelCopy = v8;
   }
 }
 
@@ -54,32 +54,32 @@
 - (void)_analyticsLoggingForOptimizedHomeScreen
 {
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 homeScreenDefaults];
-  [v4 automaticallyAddsNewApplications];
+  homeScreenDefaults = [v3 homeScreenDefaults];
+  [homeScreenDefaults automaticallyAddsNewApplications];
 
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
   v10[3] = 0;
-  v5 = [(SBAnalyticsEventsControllerForIconController *)self rootFolder];
+  rootFolder = [(SBAnalyticsEventsControllerForIconController *)self rootFolder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __87__SBAnalyticsEventsControllerForIconController__analyticsLoggingForOptimizedHomeScreen__block_invoke;
   v9[3] = &unk_2783B0060;
   v9[4] = v10;
-  [v5 enumerateAllIconsUsingBlock:v9];
+  [rootFolder enumerateAllIconsUsingBlock:v9];
 
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v8[3] = 0;
-  v6 = [(SBAnalyticsEventsControllerForIconController *)self rootFolder];
+  rootFolder2 = [(SBAnalyticsEventsControllerForIconController *)self rootFolder];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__SBAnalyticsEventsControllerForIconController__analyticsLoggingForOptimizedHomeScreen__block_invoke_2;
   v7[3] = &unk_2783B0060;
   v7[4] = v8;
-  [v6 enumerateAllIconsWithOptions:3 usingBlock:v7];
+  [rootFolder2 enumerateAllIconsWithOptions:3 usingBlock:v7];
 
   AnalyticsSendEventLazy();
   _Block_object_dispose(v8, 8);
@@ -150,8 +150,8 @@ id __83__SBAnalyticsEventsControllerForIconController__analyticsLoggingForDispla
 
 - (void)_analyticsLoggingForFixedIconLocation
 {
-  v2 = [(SBAnalyticsEventsControllerForIconController *)self rootFolder];
-  [v2 enumerateListsWithOptions:4 usingBlock:&__block_literal_global_166];
+  rootFolder = [(SBAnalyticsEventsControllerForIconController *)self rootFolder];
+  [rootFolder enumerateListsWithOptions:4 usingBlock:&__block_literal_global_166];
 }
 
 void __85__SBAnalyticsEventsControllerForIconController__analyticsLoggingForFixedIconLocation__block_invoke(uint64_t a1, void *a2)

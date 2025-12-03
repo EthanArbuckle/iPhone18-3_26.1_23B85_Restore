@@ -1,31 +1,31 @@
 @interface PHLivePhotoRequestContext
 - (BOOL)shouldReportProgress;
 - (PHLivePhotoRequestContext)init;
-- (PHLivePhotoRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 displaySpec:(id)a6 options:(id)a7 resultHandler:(id)a8;
+- (PHLivePhotoRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec options:(id)options resultHandler:(id)handler;
 - (id)_lazyImageProgress;
 - (id)_lazyVideoProgress;
 - (id)initialRequests;
-- (id)produceChildRequestsForRequest:(id)a3 reportingIsLocallyAvailable:(BOOL)a4 isDegraded:(BOOL)a5 result:(id)a6;
+- (id)produceChildRequestsForRequest:(id)request reportingIsLocallyAvailable:(BOOL)available isDegraded:(BOOL)degraded result:(id)result;
 - (id)progresses;
-- (void)processMediaResult:(id)a3 forRequest:(id)a4;
+- (void)processMediaResult:(id)result forRequest:(id)request;
 @end
 
 @implementation PHLivePhotoRequestContext
 
-- (void)processMediaResult:(id)a3 forRequest:(id)a4
+- (void)processMediaResult:(id)result forRequest:(id)request
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  resultCopy = result;
+  requestCopy = request;
+  v8 = requestCopy;
   if (!self->super._resultHandler)
   {
     goto LABEL_20;
   }
 
-  if (self->_videoRequest == v7)
+  if (self->_videoRequest == requestCopy)
   {
-    [(PHLivePhotoResult *)self->_livePhotoResult addVideoResult:v6];
+    [(PHLivePhotoResult *)self->_livePhotoResult addVideoResult:resultCopy];
     os_unfair_lock_lock(&self->_lock);
     self->_videoPartCompleted = 1;
     if (self->_imagePartCompleted)
@@ -46,9 +46,9 @@
     goto LABEL_19;
   }
 
-  if (self->_highQualityImageRequest == v7)
+  if (self->_highQualityImageRequest == requestCopy)
   {
-    [(PHLivePhotoResult *)self->_livePhotoResult addImageResult:v6];
+    [(PHLivePhotoResult *)self->_livePhotoResult addImageResult:resultCopy];
     os_unfair_lock_lock(&self->_lock);
     self->_imagePartCompleted = 1;
     videoPartCompleted = self->_videoPartCompleted;
@@ -61,10 +61,10 @@
     goto LABEL_19;
   }
 
-  v9 = [(PHLivePhotoRequestOptions *)self->_livePhotoOptions deliveryMode];
-  if (v9 == PHImageRequestOptionsDeliveryModeFastFormat)
+  deliveryMode = [(PHLivePhotoRequestOptions *)self->_livePhotoOptions deliveryMode];
+  if (deliveryMode == PHImageRequestOptionsDeliveryModeFastFormat)
   {
-    [(PHLivePhotoResult *)self->_livePhotoResult addImageResult:v6];
+    [(PHLivePhotoResult *)self->_livePhotoResult addImageResult:resultCopy];
     [(PHLivePhotoResult *)self->_livePhotoResult setDegraded:1];
     os_unfair_lock_lock(&self->_lock);
     self->_imagePartCompleted = 1;
@@ -80,9 +80,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v9 == PHImageRequestOptionsDeliveryModeOpportunistic && !self->_imagePartCompleted)
+  if (deliveryMode == PHImageRequestOptionsDeliveryModeOpportunistic && !self->_imagePartCompleted)
   {
-    if (v6 && [v6 imageRef])
+    if (resultCopy && [resultCopy imageRef])
     {
       os_unfair_lock_lock(&self->_lock);
       if (!self->_imagePartCompleted)
@@ -90,7 +90,7 @@ LABEL_19:
         os_unfair_lock_unlock(&self->_lock);
 LABEL_26:
         v18 = [(PHCompositeMediaResult *)[PHLivePhotoResult alloc] initWithRequestID:[(PHMediaRequest *)v8 requestID]];
-        [(PHLivePhotoResult *)v18 addImageResult:v6];
+        [(PHLivePhotoResult *)v18 addImageResult:resultCopy];
         [(PHLivePhotoResult *)v18 setDegraded:1];
         (*(self->super._resultHandler + 2))();
 
@@ -110,17 +110,17 @@ LABEL_26:
       v14 = PLImageManagerGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [(PHMediaRequest *)v8 identifierString];
+        identifierString = [(PHMediaRequest *)v8 identifierString];
         *buf = 138412290;
-        v20 = v15;
+        v20 = identifierString;
         _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_DEBUG, "[RM]: %@ opportunistic early-stage request returned no image", buf, 0xCu);
       }
 
       if (PHImageManagerRecordEnabled())
       {
-        v16 = [(PHMediaRequest *)v8 requestID];
-        v17 = [(PHMediaRequest *)v8 identifierString];
-        [PHImageManagerRequestTracer traceMessageForRequestID:v16 message:@"[RM]: %@ opportunistic early-stage request returned no image", v17];
+        requestID = [(PHMediaRequest *)v8 requestID];
+        identifierString2 = [(PHMediaRequest *)v8 identifierString];
+        [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM]: %@ opportunistic early-stage request returned no image", identifierString2];
       }
     }
   }
@@ -133,20 +133,20 @@ LABEL_20:
   v10[2] = *MEMORY[0x1E69E9840];
   if ([(PHLivePhotoRequestContext *)self shouldReportProgress])
   {
-    v3 = [(PHLivePhotoRequestOptions *)self->_livePhotoOptions deliveryMode];
-    v4 = [(PHLivePhotoRequestContext *)self _lazyImageProgress];
-    v5 = v4;
-    if (v3 == PHImageRequestOptionsDeliveryModeFastFormat)
+    deliveryMode = [(PHLivePhotoRequestOptions *)self->_livePhotoOptions deliveryMode];
+    _lazyImageProgress = [(PHLivePhotoRequestContext *)self _lazyImageProgress];
+    v5 = _lazyImageProgress;
+    if (deliveryMode == PHImageRequestOptionsDeliveryModeFastFormat)
     {
-      v9 = v4;
+      v9 = _lazyImageProgress;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
     }
 
     else
     {
-      v10[0] = v4;
-      v7 = [(PHLivePhotoRequestContext *)self _lazyVideoProgress];
-      v10[1] = v7;
+      v10[0] = _lazyImageProgress;
+      _lazyVideoProgress = [(PHLivePhotoRequestContext *)self _lazyVideoProgress];
+      v10[1] = _lazyVideoProgress;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
     }
   }
@@ -163,33 +163,33 @@ LABEL_20:
 {
   v5.receiver = self;
   v5.super_class = PHLivePhotoRequestContext;
-  v3 = [(PHMediaRequestContext *)&v5 shouldReportProgress];
-  if (v3)
+  shouldReportProgress = [(PHMediaRequestContext *)&v5 shouldReportProgress];
+  if (shouldReportProgress)
   {
-    LOBYTE(v3) = [(PHLivePhotoRequestOptions *)self->_livePhotoOptions isNetworkAccessAllowed];
+    LOBYTE(shouldReportProgress) = [(PHLivePhotoRequestOptions *)self->_livePhotoOptions isNetworkAccessAllowed];
   }
 
-  return v3;
+  return shouldReportProgress;
 }
 
-- (id)produceChildRequestsForRequest:(id)a3 reportingIsLocallyAvailable:(BOOL)a4 isDegraded:(BOOL)a5 result:(id)a6
+- (id)produceChildRequestsForRequest:(id)request reportingIsLocallyAvailable:(BOOL)available isDegraded:(BOOL)degraded result:(id)result
 {
-  v6 = a5;
-  v7 = a4;
+  degradedCopy = degraded;
+  availableCopy = available;
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  requestCopy = request;
   if ([(PHLivePhotoRequestOptions *)self->_livePhotoOptions deliveryMode])
   {
     goto LABEL_7;
   }
 
   fastImageRequest = self->_fastImageRequest;
-  if (fastImageRequest != v9 || self->_highQualityImageRequest)
+  if (fastImageRequest != requestCopy || self->_highQualityImageRequest)
   {
     goto LABEL_7;
   }
 
-  if (v7 && !v6)
+  if (availableCopy && !degradedCopy)
   {
     objc_storeStrong(&self->_highQualityImageRequest, fastImageRequest);
 LABEL_7:
@@ -199,13 +199,13 @@ LABEL_7:
 
   v13 = PLImageManagerGetLog();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (degradedCopy)
   {
     if (v14)
     {
-      v15 = [(PHMediaRequest *)v9 identifierString];
+      identifierString = [(PHMediaRequest *)requestCopy identifierString];
       *buf = 138412290;
-      v36 = v15;
+      v36 = identifierString;
       _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEBUG, "[RM]: %@ found degraded result for opp. request, kick off request for best image", buf, 0xCu);
     }
 
@@ -221,9 +221,9 @@ LABEL_7:
   {
     if (v14)
     {
-      v17 = [(PHMediaRequest *)v9 identifierString];
+      identifierString2 = [(PHMediaRequest *)requestCopy identifierString];
       *buf = 138412290;
-      v36 = v17;
+      v36 = identifierString2;
       _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEBUG, "[RM]: %@ no local image for opp. request, kick off request for best image", buf, 0xCu);
     }
 
@@ -235,29 +235,29 @@ LABEL_7:
     v16 = @"[RM]: %@ no local image for opp. request, kick off request for best image";
   }
 
-  v30 = [(PHMediaRequest *)v9 requestID];
-  v31 = [(PHMediaRequest *)v9 identifierString];
-  [PHImageManagerRequestTracer traceMessageForRequestID:v30 message:v16, v31];
+  requestID = [(PHMediaRequest *)requestCopy requestID];
+  identifierString3 = [(PHMediaRequest *)requestCopy identifierString];
+  [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:v16, identifierString3];
 
 LABEL_19:
-  v18 = [(PHImageRequest *)self->_fastImageRequest behaviorSpec];
-  v19 = [PHImageRequestBehaviorSpec livePhotoRequestBestBehaviorSpecWithPreviousBehaviorSpec:v18 options:self->_livePhotoOptions];
+  behaviorSpec = [(PHImageRequest *)self->_fastImageRequest behaviorSpec];
+  v19 = [PHImageRequestBehaviorSpec livePhotoRequestBestBehaviorSpecWithPreviousBehaviorSpec:behaviorSpec options:self->_livePhotoOptions];
 
   v33 = [PHImageRequest alloc];
-  v32 = [(PHMediaRequestContext *)self requestID];
-  v20 = [(PHMediaRequestContext *)self nextRequestIndex];
-  v21 = [(PHLivePhotoRequestContext *)self type];
-  v22 = [(PHMediaRequestContext *)self managerID];
-  v23 = [(PHMediaRequestContext *)self asset];
-  v24 = [(PHMediaRequestContext *)self displaySpec];
-  v25 = [(PHMediaRequestContext *)self imageResourceChooser];
-  v26 = [(PHImageRequest *)v33 initWithRequestID:v32 requestIndex:v20 contextType:v21 managerID:v22 asset:v23 displaySpec:v24 behaviorSpec:v19 chooser:v25 delegate:self];
+  requestID2 = [(PHMediaRequestContext *)self requestID];
+  nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+  type = [(PHLivePhotoRequestContext *)self type];
+  managerID = [(PHMediaRequestContext *)self managerID];
+  asset = [(PHMediaRequestContext *)self asset];
+  displaySpec = [(PHMediaRequestContext *)self displaySpec];
+  imageResourceChooser = [(PHMediaRequestContext *)self imageResourceChooser];
+  v26 = [(PHImageRequest *)v33 initWithRequestID:requestID2 requestIndex:nextRequestIndex contextType:type managerID:managerID asset:asset displaySpec:displaySpec behaviorSpec:v19 chooser:imageResourceChooser delegate:self];
   highQualityImageRequest = self->_highQualityImageRequest;
   self->_highQualityImageRequest = v26;
 
-  v28 = [(PHLivePhotoRequestContext *)self _lazyImageProgress];
-  v29 = [(PHMediaRequest *)self->_highQualityImageRequest identifierString];
-  [(PHMediaRequestContext *)self setProgress:v28 forRequestIdentifier:v29];
+  _lazyImageProgress = [(PHLivePhotoRequestContext *)self _lazyImageProgress];
+  identifierString4 = [(PHMediaRequest *)self->_highQualityImageRequest identifierString];
+  [(PHMediaRequestContext *)self setProgress:_lazyImageProgress forRequestIdentifier:identifierString4];
 
   v34 = self->_highQualityImageRequest;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
@@ -269,25 +269,25 @@ LABEL_8:
 
 - (id)initialRequests
 {
-  v35 = [(PHLivePhotoRequestOptions *)self->_livePhotoOptions deliveryMode];
-  v3 = [(PHLivePhotoRequestContext *)self livePhotoOptions];
-  v4 = [(PHMediaRequestContext *)self asset];
-  v5 = [PHImageRequestBehaviorSpec livePhotoRequestInitialBehaviorSpecWithLivePhotoRequestOptions:v3 asset:v4];
+  deliveryMode = [(PHLivePhotoRequestOptions *)self->_livePhotoOptions deliveryMode];
+  livePhotoOptions = [(PHLivePhotoRequestContext *)self livePhotoOptions];
+  asset = [(PHMediaRequestContext *)self asset];
+  v5 = [PHImageRequestBehaviorSpec livePhotoRequestInitialBehaviorSpecWithLivePhotoRequestOptions:livePhotoOptions asset:asset];
 
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
   v36 = v5;
   if (self->_includeImage)
   {
     v33 = [PHImageRequest alloc];
-    v32 = [(PHMediaRequestContext *)self requestID];
-    v7 = [(PHMediaRequestContext *)self nextRequestIndex];
-    v8 = [(PHLivePhotoRequestContext *)self type];
-    v9 = [(PHMediaRequestContext *)self managerID];
-    v10 = [(PHMediaRequestContext *)self asset];
+    requestID = [(PHMediaRequestContext *)self requestID];
+    nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+    type = [(PHLivePhotoRequestContext *)self type];
+    managerID = [(PHMediaRequestContext *)self managerID];
+    asset2 = [(PHMediaRequestContext *)self asset];
     [(PHMediaRequestContext *)self displaySpec];
     v12 = v11 = v5;
-    v13 = [(PHMediaRequestContext *)self imageResourceChooser];
-    v14 = [(PHImageRequest *)v33 initWithRequestID:v32 requestIndex:v7 contextType:v8 managerID:v9 asset:v10 displaySpec:v12 behaviorSpec:v11 chooser:v13 delegate:self];
+    imageResourceChooser = [(PHMediaRequestContext *)self imageResourceChooser];
+    v14 = [(PHImageRequest *)v33 initWithRequestID:requestID requestIndex:nextRequestIndex contextType:type managerID:managerID asset:asset2 displaySpec:v12 behaviorSpec:v11 chooser:imageResourceChooser delegate:self];
 
     [v6 addObject:v14];
   }
@@ -305,21 +305,21 @@ LABEL_8:
     [(PHVideoRequestBehaviorSpec *)v15 setDownloadIntent:[(PHLivePhotoRequestOptions *)self->_livePhotoOptions downloadIntent]];
     [(PHVideoRequestBehaviorSpec *)v15 setDownloadPriority:[(PHLivePhotoRequestOptions *)self->_livePhotoOptions downloadPriority]];
     v16 = [PHVideoRequest alloc];
-    v17 = [(PHMediaRequestContext *)self requestID];
-    v18 = [(PHMediaRequestContext *)self nextRequestIndex];
-    v19 = [(PHLivePhotoRequestContext *)self type];
-    v20 = [(PHMediaRequestContext *)self managerID];
-    v21 = [(PHMediaRequestContext *)self asset];
+    requestID2 = [(PHMediaRequestContext *)self requestID];
+    nextRequestIndex2 = [(PHMediaRequestContext *)self nextRequestIndex];
+    type2 = [(PHLivePhotoRequestContext *)self type];
+    managerID2 = [(PHMediaRequestContext *)self managerID];
+    asset3 = [(PHMediaRequestContext *)self asset];
     [(PHMediaRequestContext *)self displaySpec];
     v22 = v34 = v14;
-    v23 = [(PHVideoRequest *)v16 initWithRequestID:v17 requestIndex:v18 contextType:v19 managerID:v20 asset:v21 displaySpec:v22 behaviorSpec:v15 delegate:self];
+    v23 = [(PHVideoRequest *)v16 initWithRequestID:requestID2 requestIndex:nextRequestIndex2 contextType:type2 managerID:managerID2 asset:asset3 displaySpec:v22 behaviorSpec:v15 delegate:self];
     videoRequest = self->_videoRequest;
     self->_videoRequest = v23;
 
     [v6 addObject:self->_videoRequest];
-    v25 = [(PHLivePhotoRequestContext *)self _lazyVideoProgress];
-    v26 = [(PHMediaRequest *)self->_videoRequest identifierString];
-    [(PHMediaRequestContext *)self setProgress:v25 forRequestIdentifier:v26];
+    _lazyVideoProgress = [(PHLivePhotoRequestContext *)self _lazyVideoProgress];
+    identifierString = [(PHMediaRequest *)self->_videoRequest identifierString];
+    [(PHMediaRequestContext *)self setProgress:_lazyVideoProgress forRequestIdentifier:identifierString];
 
     v14 = v34;
   }
@@ -331,19 +331,19 @@ LABEL_8:
 
   if (v14)
   {
-    if (v35 != PHImageRequestOptionsDeliveryModeFastFormat)
+    if (deliveryMode != PHImageRequestOptionsDeliveryModeFastFormat)
     {
-      if (v35 == PHImageRequestOptionsDeliveryModeHighQualityFormat)
+      if (deliveryMode == PHImageRequestOptionsDeliveryModeHighQualityFormat)
       {
         objc_storeStrong(&self->_highQualityImageRequest, v14);
         fastImageRequest = [(PHLivePhotoRequestContext *)self _lazyImageProgress];
-        v29 = [(PHMediaRequest *)v14 identifierString];
-        [(PHMediaRequestContext *)self setProgress:fastImageRequest forRequestIdentifier:v29];
+        identifierString2 = [(PHMediaRequest *)v14 identifierString];
+        [(PHMediaRequestContext *)self setProgress:fastImageRequest forRequestIdentifier:identifierString2];
 
         goto LABEL_13;
       }
 
-      if (v35)
+      if (deliveryMode)
       {
         goto LABEL_14;
       }
@@ -391,38 +391,38 @@ LABEL_14:
 
 - (PHLivePhotoRequestContext)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PHLivePhotoRequestContext.m" lineNumber:51 description:@"Unavailable initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHLivePhotoRequestContext.m" lineNumber:51 description:@"Unavailable initializer"];
 
   return 0;
 }
 
-- (PHLivePhotoRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 displaySpec:(id)a6 options:(id)a7 resultHandler:(id)a8
+- (PHLivePhotoRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec options:(id)options resultHandler:(id)handler
 {
-  v13 = *&a3;
-  v15 = a7;
+  v13 = *&d;
+  optionsCopy = options;
   v22.receiver = self;
   v22.super_class = PHLivePhotoRequestContext;
-  v16 = [(PHMediaRequestContext *)&v22 initWithRequestID:v13 managerID:a4 asset:a5 displaySpec:a6 resultHandler:a8];
+  v16 = [(PHMediaRequestContext *)&v22 initWithRequestID:v13 managerID:iD asset:asset displaySpec:spec resultHandler:handler];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_livePhotoOptions, a7);
+    objc_storeStrong(&v16->_livePhotoOptions, options);
     v18 = [(PHCompositeMediaResult *)[PHLivePhotoResult alloc] initWithRequestID:v13];
     livePhotoResult = v17->_livePhotoResult;
     v17->_livePhotoResult = v18;
 
-    if (v15)
+    if (optionsCopy)
     {
-      v20 = [v15 includeImage];
+      includeImage = [optionsCopy includeImage];
     }
 
     else
     {
-      v20 = 1;
+      includeImage = 1;
     }
 
-    v17->_includeImage = v20;
+    v17->_includeImage = includeImage;
     [(PHLivePhotoResult *)v17->_livePhotoResult setRequiresImageResult:?];
     v17->_lock._os_unfair_lock_opaque = 0;
   }

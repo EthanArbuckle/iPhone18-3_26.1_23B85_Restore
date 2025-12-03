@@ -1,36 +1,36 @@
 @interface NetworkUtils
-+ (BOOL)createAndStartListener:(id *)a3 withParameters:(id)a4;
-+ (BOOL)createNWPathEvaluator:(id *)a3 withIPAddress:(id)a4 localPort:(int *)a5 remotePort:(int)a6 shouldRunInProcess:(BOOL)a7 useBackingSocket:(BOOL)a8;
-+ (id)encryptionInfoForKey:(unint64_t)a3;
-+ (id)networkAddressFromEndpoint:(id)a3;
-+ (id)networkEmulationSettings:(id)a3;
-+ (id)networkEmulationSettings:(id)a3 onUplink:(BOOL)a4;
-+ (id)newEncryptionInfoWithMediaKeyIndex:(id)a3 participantID:(id)a4;
-+ (id)newNWConnectionWithIPAddress:(id)a3 srcPort:(signed __int16)a4;
-+ (id)newNetworkEndpointForLocalAddress:(id)a3 preferredPort:(unsigned __int16)a4;
-+ (id)newNetworkEndpointForLocalLoopbackInterface:(unsigned __int16)a3;
-+ (id)newRTPSocketDictionary:(BOOL)a3 rtpSourcePort:(signed __int16)a4;
-+ (id)newRemoteEndpointArrayWithRemotePort:(int)a3 remoteSSRC:(unsigned int)a4;
-+ (id)newRemoteEndpoints:(BOOL)a3;
-+ (id)securityKeyMaterialWithMediaKeyIndex:(id)a3 participantID:(id)a4;
++ (BOOL)createAndStartListener:(id *)listener withParameters:(id)parameters;
++ (BOOL)createNWPathEvaluator:(id *)evaluator withIPAddress:(id)address localPort:(int *)port remotePort:(int)remotePort shouldRunInProcess:(BOOL)process useBackingSocket:(BOOL)socket;
++ (id)encryptionInfoForKey:(unint64_t)key;
++ (id)networkAddressFromEndpoint:(id)endpoint;
++ (id)networkEmulationSettings:(id)settings;
++ (id)networkEmulationSettings:(id)settings onUplink:(BOOL)uplink;
++ (id)newEncryptionInfoWithMediaKeyIndex:(id)index participantID:(id)d;
++ (id)newNWConnectionWithIPAddress:(id)address srcPort:(signed __int16)port;
++ (id)newNetworkEndpointForLocalAddress:(id)address preferredPort:(unsigned __int16)port;
++ (id)newNetworkEndpointForLocalLoopbackInterface:(unsigned __int16)interface;
++ (id)newRTPSocketDictionary:(BOOL)dictionary rtpSourcePort:(signed __int16)port;
++ (id)newRemoteEndpointArrayWithRemotePort:(int)port remoteSSRC:(unsigned int)c;
++ (id)newRemoteEndpoints:(BOOL)endpoints;
++ (id)securityKeyMaterialWithMediaKeyIndex:(id)index participantID:(id)d;
 + (id)securityKeyMaterialWithStaticMediaKeyIndex;
-+ (int)socketWithIPAddress:(id)a3 srcPort:(signed __int16)a4 shouldConnect:(BOOL)a5 error:(id *)a6;
-+ (void)setUniquePIDOnParameters:(id)a3 shouldRunInProcess:(BOOL)a4;
++ (int)socketWithIPAddress:(id)address srcPort:(signed __int16)port shouldConnect:(BOOL)connect error:(id *)error;
++ (void)setUniquePIDOnParameters:(id)parameters shouldRunInProcess:(BOOL)process;
 @end
 
 @implementation NetworkUtils
 
-+ (BOOL)createAndStartListener:(id *)a3 withParameters:(id)a4
++ (BOOL)createAndStartListener:(id *)listener withParameters:(id)parameters
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = nw_listener_create(a4);
+  v5 = nw_listener_create(parameters);
   if (v5 && (global_queue = dispatch_get_global_queue(0, 0), nw_listener_set_queue(v5, global_queue), nw_listener_set_new_connection_handler(v5, &__block_literal_global_99), v7 = dispatch_semaphore_create(0), v11[0] = MEMORY[0x1E69E9820], v11[1] = 3221225472, v11[2] = __54__NetworkUtils_createAndStartListener_withParameters___block_invoke_2, v11[3] = &unk_1E85F9530, v11[5] = v5, v11[6] = &v12, v11[4] = v7, MEMORY[0x1E128C4B0](v5, v11), nw_listener_start(v5), v8 = dispatch_time(0, 5000000000), !dispatch_semaphore_wait(v7, v8)) && *(v13 + 24) == 1)
   {
-    *a3 = v5;
+    *listener = v5;
     v9 = 1;
     v5 = 0;
   }
@@ -81,12 +81,12 @@ LABEL_6:
   dispatch_release(v5);
 }
 
-+ (id)newNetworkEndpointForLocalAddress:(id)a3 preferredPort:(unsigned __int16)a4
++ (id)newNetworkEndpointForLocalAddress:(id)address preferredPort:(unsigned __int16)port
 {
   v8 = *MEMORY[0x1E69E9840];
   *&address.sa_len = 528;
-  *address.sa_data = __rev16(a4);
-  *&address.sa_data[2] = inet_addr([a3 UTF8String]);
+  *address.sa_data = __rev16(port);
+  *&address.sa_data[2] = inet_addr([address UTF8String]);
   *&address.sa_data[6] = 0;
   v4 = nw_endpoint_create_address(&address);
   v5 = nw_interface_create_with_name();
@@ -95,16 +95,16 @@ LABEL_6:
   return v4;
 }
 
-+ (id)newNetworkEndpointForLocalLoopbackInterface:(unsigned __int16)a3
++ (id)newNetworkEndpointForLocalLoopbackInterface:(unsigned __int16)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v9 = *MEMORY[0x1E69E9840];
   *&address.sa_len = 528;
   *&address.sa_data[2] = inet_addr([@"127.0.0.1" UTF8String]);
   *&address.sa_data[6] = 0;
-  if (v3)
+  if (interfaceCopy)
   {
-    *address.sa_data = __rev16(v3);
+    *address.sa_data = __rev16(interfaceCopy);
     [@"127.0.0.1" UTF8String];
     host_with_numeric_port = nw_endpoint_create_host_with_numeric_port();
   }
@@ -121,10 +121,10 @@ LABEL_6:
   return v5;
 }
 
-+ (int)socketWithIPAddress:(id)a3 srcPort:(signed __int16)a4 shouldConnect:(BOOL)a5 error:(id *)a6
++ (int)socketWithIPAddress:(id)address srcPort:(signed __int16)port shouldConnect:(BOOL)connect error:(id *)error
 {
-  v6 = a5;
-  v7 = a4;
+  connectCopy = connect;
+  portCopy = port;
   v15 = *MEMORY[0x1E69E9840];
   *&v14.sa_len = 0;
   *&v14.sa_data[6] = 0;
@@ -139,15 +139,15 @@ LABEL_6:
   v13 = 1;
   setsockopt(v9, 0xFFFF, 512, &v13, 4u);
   v14.sa_family = 2;
-  *&v14.sa_data[2] = inet_addr([a3 UTF8String]);
-  *v14.sa_data = bswap32(v7) >> 16;
+  *&v14.sa_data[2] = inet_addr([address UTF8String]);
+  *v14.sa_data = bswap32(portCopy) >> 16;
   if (bind(v10, &v14, 0x10u) < 0)
   {
     v11 = "bind failed";
     goto LABEL_8;
   }
 
-  if (v6 && connect(v10, &v14, 0x10u) < 0)
+  if (connectCopy && connect(v10, &v14, 0x10u) < 0)
   {
     v11 = "connect failed";
 LABEL_8:
@@ -159,12 +159,12 @@ LABEL_8:
   return v10;
 }
 
-+ (id)newRTPSocketDictionary:(BOOL)a3 rtpSourcePort:(signed __int16)a4
++ (id)newRTPSocketDictionary:(BOOL)dictionary rtpSourcePort:(signed __int16)port
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v12[1] = *MEMORY[0x1E69E9840];
   v12[0] = 0;
-  v6 = [NetworkUtils socketWithIPAddress:@"127.0.0.1" srcPort:a4 error:v12];
+  v6 = [NetworkUtils socketWithIPAddress:@"127.0.0.1" srcPort:port error:v12];
   if (v6 < 0)
   {
     perror("rtp socket creation failed");
@@ -174,9 +174,9 @@ LABEL_8:
   v7 = v6;
   v8 = xpc_dictionary_create(0, 0, 0);
   v9 = v8;
-  if (!v5)
+  if (!dictionaryCopy)
   {
-    v10 = [NetworkUtils socketWithIPAddress:@"127.0.0.1" srcPort:(a4 + 1) error:v12];
+    v10 = [NetworkUtils socketWithIPAddress:@"127.0.0.1" srcPort:(port + 1) error:v12];
     if ((v10 & 0x80000000) == 0)
     {
       xpc_dictionary_set_fd(v9, "avcKeyRTPSocket", v7);
@@ -205,10 +205,10 @@ LABEL_6:
   return [NetworkUtils securityKeyMaterialWithMediaKeyIndex:v2];
 }
 
-+ (id)securityKeyMaterialWithMediaKeyIndex:(id)a3 participantID:(id)a4
++ (id)securityKeyMaterialWithMediaKeyIndex:(id)index participantID:(id)d
 {
   v9[5] = *MEMORY[0x1E69E9840];
-  v4 = [NetworkUtils newEncryptionInfoWithMediaKeyIndex:a3 participantID:a4];
+  v4 = [NetworkUtils newEncryptionInfoWithMediaKeyIndex:index participantID:d];
   v8[0] = @"SecurityKey";
   v9[0] = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A5008]];
   v8[1] = @"SecuritySalt";
@@ -229,7 +229,7 @@ LABEL_6:
   return v5;
 }
 
-+ (id)newEncryptionInfoWithMediaKeyIndex:(id)a3 participantID:(id)a4
++ (id)newEncryptionInfoWithMediaKeyIndex:(id)index participantID:(id)d
 {
   v12[4] = *MEMORY[0x1E69E9840];
   memset(v12, 170, 32);
@@ -238,17 +238,17 @@ LABEL_6:
   v6 = [MEMORY[0x1E695DEF0] dataWithBytes:&v12[2] length:16];
   v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v12 length:16];
   v8 = objc_alloc(MEMORY[0x1E695DF90]);
-  v9 = [v8 initWithObjectsAndKeys:{v6, *MEMORY[0x1E69A5008], v7, *MEMORY[0x1E69A5010], a3, *MEMORY[0x1E69A5000], MEMORY[0x1E695E118], *MEMORY[0x1E69A4FF8], 0}];
+  v9 = [v8 initWithObjectsAndKeys:{v6, *MEMORY[0x1E69A5008], v7, *MEMORY[0x1E69A5010], index, *MEMORY[0x1E69A5000], MEMORY[0x1E695E118], *MEMORY[0x1E69A4FF8], 0}];
   v10 = v9;
-  if (a4)
+  if (d)
   {
-    [v9 setObject:a4 forKeyedSubscript:*MEMORY[0x1E69A5020]];
+    [v9 setObject:d forKeyedSubscript:*MEMORY[0x1E69A5020]];
   }
 
   return v10;
 }
 
-+ (id)encryptionInfoForKey:(unint64_t)a3
++ (id)encryptionInfoForKey:(unint64_t)key
 {
   if (encryptionInfoForKey__once != -1)
   {
@@ -257,7 +257,7 @@ LABEL_6:
 
   v4 = encryptionInfoForKey__testKeys;
 
-  return [v4 objectAtIndexedSubscript:a3 == 1];
+  return [v4 objectAtIndexedSubscript:key == 1];
 }
 
 uint64_t __37__NetworkUtils_encryptionInfoForKey___block_invoke()
@@ -312,14 +312,14 @@ uint64_t __37__NetworkUtils_encryptionInfoForKey___block_invoke()
   return result;
 }
 
-+ (id)networkEmulationSettings:(id)a3 onUplink:(BOOL)a4
++ (id)networkEmulationSettings:(id)settings onUplink:(BOOL)uplink
 {
-  v4 = a4;
+  uplinkCopy = uplink;
   v34 = *MEMORY[0x1E69E9840];
   v7 = [NetworkUtils networkEmulationSettings:?];
   if (!v7)
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -327,7 +327,7 @@ uint64_t __37__NetworkUtils_encryptionInfoForKey___block_invoke()
         v13 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          [(NetworkUtils *)v12 networkEmulationSettings:a3 onUplink:v13];
+          [(NetworkUtils *)v12 networkEmulationSettings:settings onUplink:v13];
         }
       }
 
@@ -336,7 +336,7 @@ uint64_t __37__NetworkUtils_encryptionInfoForKey___block_invoke()
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [a1 performSelector:sel_logPrefix];
+      v10 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -365,16 +365,16 @@ uint64_t __37__NetworkUtils_encryptionInfoForKey___block_invoke()
     v28 = 2112;
     v29 = v10;
     v30 = 2048;
-    v31 = a1;
+    selfCopy2 = self;
     v32 = 2112;
-    v33 = a3;
+    settingsCopy = settings;
     v17 = " [%s] %s:%d %@(%p) Empty network emulation settings path=%@";
     v18 = v16;
     v19 = 58;
     goto LABEL_28;
   }
 
-  if (v4)
+  if (uplinkCopy)
   {
     v8 = @"output";
   }
@@ -387,7 +387,7 @@ uint64_t __37__NetworkUtils_encryptionInfoForKey___block_invoke()
   result = [v7 objectForKeyedSubscript:v8];
   if (!result)
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -403,7 +403,7 @@ uint64_t __37__NetworkUtils_encryptionInfoForKey___block_invoke()
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [a1 performSelector:sel_logPrefix];
+      v11 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -432,9 +432,9 @@ uint64_t __37__NetworkUtils_encryptionInfoForKey___block_invoke()
     v28 = 2112;
     v29 = v11;
     v30 = 2048;
-    v31 = a1;
+    selfCopy2 = self;
     v32 = 1024;
-    LODWORD(v33) = v4;
+    LODWORD(settingsCopy) = uplinkCopy;
     v17 = " [%s] %s:%d %@(%p) Empty network emulation settings for isUplink=%d";
     v18 = v21;
     v19 = 54;
@@ -446,20 +446,20 @@ LABEL_28:
   return result;
 }
 
-+ (id)networkEmulationSettings:(id)a3
++ (id)networkEmulationSettings:(id)settings
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!settings)
   {
-    [(NetworkUtils *)a1 networkEmulationSettings:buf];
+    [(NetworkUtils *)self networkEmulationSettings:buf];
     return *buf;
   }
 
-  result = [a3 length];
+  result = [settings length];
   if (result)
   {
     v18 = 0;
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a3 options:0 error:&v18];
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:settings options:0 error:&v18];
     if (v6)
     {
       result = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:&v18];
@@ -468,11 +468,11 @@ LABEL_28:
         return result;
       }
 
-      if (objc_opt_class() != a1)
+      if (objc_opt_class() != self)
       {
         if (objc_opt_respondsToSelector())
         {
-          v8 = [a1 performSelector:sel_logPrefix];
+          v8 = [self performSelector:sel_logPrefix];
         }
 
         else
@@ -499,11 +499,11 @@ LABEL_28:
         v22 = 1024;
         v23 = 420;
         v24 = 2112;
-        v25 = v8;
+        settingsCopy4 = v8;
         v26 = 2048;
-        v27 = a1;
+        selfCopy2 = self;
         v28 = 2112;
-        v29 = a3;
+        settingsCopy3 = settings;
         v30 = 2112;
         v31 = v18;
         v11 = " [%s] %s:%d %@(%p) Error serializing network emulation settings path=%@ error=%@";
@@ -529,19 +529,19 @@ LABEL_28:
       v22 = 1024;
       v23 = 420;
       v24 = 2112;
-      v25 = a3;
+      settingsCopy4 = settings;
       v26 = 2112;
-      v27 = v18;
+      selfCopy2 = v18;
       v11 = " [%s] %s:%d Error serializing network emulation settings path=%@ error=%@";
     }
 
     else
     {
-      if (objc_opt_class() != a1)
+      if (objc_opt_class() != self)
       {
         if (objc_opt_respondsToSelector())
         {
-          v7 = [a1 performSelector:sel_logPrefix];
+          v7 = [self performSelector:sel_logPrefix];
         }
 
         else
@@ -568,11 +568,11 @@ LABEL_28:
         v22 = 1024;
         v23 = 417;
         v24 = 2112;
-        v25 = v7;
+        settingsCopy4 = v7;
         v26 = 2048;
-        v27 = a1;
+        selfCopy2 = self;
         v28 = 2112;
-        v29 = a3;
+        settingsCopy3 = settings;
         v30 = 2112;
         v31 = v18;
         v11 = " [%s] %s:%d %@(%p) Error loading network emulation data path=%@ error=%@";
@@ -601,9 +601,9 @@ LABEL_29:
       v22 = 1024;
       v23 = 417;
       v24 = 2112;
-      v25 = a3;
+      settingsCopy4 = settings;
       v26 = 2112;
-      v27 = v18;
+      selfCopy2 = v18;
       v11 = " [%s] %s:%d Error loading network emulation data path=%@ error=%@";
     }
 
@@ -617,9 +617,9 @@ LABEL_30:
   return result;
 }
 
-+ (id)newRemoteEndpoints:(BOOL)a3
++ (id)newRemoteEndpoints:(BOOL)endpoints
 {
-  v3 = a3;
+  endpointsCopy = endpoints;
   v4 = objc_opt_new();
   if (v4)
   {
@@ -642,7 +642,7 @@ LABEL_30:
 
       v9 = v8;
       nw_release(v7);
-      if (v3)
+      if (endpointsCopy)
       {
         [(AVCEndpoint *)v9 setRtpSSRC:RTPGenerateSSRC()];
       }
@@ -668,10 +668,10 @@ LABEL_11:
   return 0;
 }
 
-+ (id)newRemoteEndpointArrayWithRemotePort:(int)a3 remoteSSRC:(unsigned int)a4
++ (id)newRemoteEndpointArrayWithRemotePort:(int)port remoteSSRC:(unsigned int)c
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&c;
+  portCopy = port;
   v6 = objc_opt_new();
   if (!v6)
   {
@@ -681,7 +681,7 @@ LABEL_9:
     return 0;
   }
 
-  v7 = [NetworkUtils newNetworkEndpointForLocalLoopbackInterface:v5];
+  v7 = [NetworkUtils newNetworkEndpointForLocalLoopbackInterface:portCopy];
   if (!v7)
   {
     +[NetworkUtils newRemoteEndpointArrayWithRemotePort:remoteSSRC:];
@@ -704,10 +704,10 @@ LABEL_9:
   return v6;
 }
 
-+ (id)networkAddressFromEndpoint:(id)a3
++ (id)networkAddressFromEndpoint:(id)endpoint
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!endpoint)
   {
     [NetworkUtils networkAddressFromEndpoint:v11];
 LABEL_12:
@@ -718,7 +718,7 @@ LABEL_14:
   }
 
   v4 = objc_alloc_init(VCNetworkAddress);
-  v5 = nw_endpoint_copy_address_string(a3);
+  v5 = nw_endpoint_copy_address_string(endpoint);
   if (!v5)
   {
     [(NetworkUtils *)v4 networkAddressFromEndpoint:v11];
@@ -726,7 +726,7 @@ LABEL_14:
   }
 
   v6 = v5;
-  address = nw_endpoint_get_address(a3);
+  address = nw_endpoint_get_address(endpoint);
   if (!address)
   {
     [NetworkUtils networkAddressFromEndpoint:v6];
@@ -735,7 +735,7 @@ LABEL_14:
 
   v8 = address;
   -[VCNetworkAddress setIp:](v4, "setIp:", [MEMORY[0x1E696AEC0] stringWithUTF8String:v6]);
-  [(VCNetworkAddress *)v4 setPort:nw_endpoint_get_port(a3)];
+  [(VCNetworkAddress *)v4 setPort:nw_endpoint_get_port(endpoint)];
   if (v8->sa_family == 30)
   {
     v9 = 6;
@@ -752,10 +752,10 @@ LABEL_14:
   return v4;
 }
 
-+ (void)setUniquePIDOnParameters:(id)a3 shouldRunInProcess:(BOOL)a4
++ (void)setUniquePIDOnParameters:(id)parameters shouldRunInProcess:(BOOL)process
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (process)
   {
     v4 = +[AVCDaemonProcessInfo getDaemonProcessInfo];
     if (!v4)
@@ -777,19 +777,19 @@ LABEL_14:
   nw_parameters_set_delegated_unique_pid();
 }
 
-+ (BOOL)createNWPathEvaluator:(id *)a3 withIPAddress:(id)a4 localPort:(int *)a5 remotePort:(int)a6 shouldRunInProcess:(BOOL)a7 useBackingSocket:(BOOL)a8
++ (BOOL)createNWPathEvaluator:(id *)evaluator withIPAddress:(id)address localPort:(int *)port remotePort:(int)remotePort shouldRunInProcess:(BOOL)process useBackingSocket:(BOOL)socket
 {
-  v8 = a7;
+  processCopy = process;
   v25 = *MEMORY[0x1E69E9840];
   listener = 0;
-  if (a8)
+  if (socket)
   {
     legacy_tcp_socket = nw_parameters_create_legacy_tcp_socket();
   }
 
   else
   {
-    legacy_tcp_socket = MEMORY[0x1E128C540](a1, a2, a3, a4, a5, *&a6);
+    legacy_tcp_socket = MEMORY[0x1E128C540](self, a2, evaluator, address, port, *&remotePort);
   }
 
   v14 = legacy_tcp_socket;
@@ -808,27 +808,27 @@ LABEL_14:
         nw_parameters_set_disable_listener_datapath();
         +[VCVTPWrapper connectionContext];
         nw_parameters_set_context();
-        if (a5 && *a5 != -1)
+        if (port && *port != -1)
         {
           goto LABEL_14;
         }
 
-        if ([a1 createAndStartListener:&listener withParameters:v14])
+        if ([self createAndStartListener:&listener withParameters:v14])
         {
           port = nw_listener_get_port(listener);
-          if (a5 && port)
+          if (port && port)
           {
-            *a5 = port;
+            *port = port;
 LABEL_14:
-            [a4 UTF8String];
+            [address UTF8String];
             host_with_numeric_port = nw_endpoint_create_host_with_numeric_port();
             if (host_with_numeric_port)
             {
               nw_parameters_set_local_endpoint(v14, host_with_numeric_port);
-              [a1 setUniquePIDOnParameters:v14 shouldRunInProcess:v8];
-              if (a5)
+              [self setUniquePIDOnParameters:v14 shouldRunInProcess:processCopy];
+              if (port)
               {
-                [a4 UTF8String];
+                [address UTF8String];
                 v20 = nw_endpoint_create_host_with_numeric_port();
                 if (!v20)
                 {
@@ -846,7 +846,7 @@ LABEL_26:
               evaluator_for_endpoint = nw_path_create_evaluator_for_endpoint();
               if (evaluator_for_endpoint)
               {
-                *a3 = evaluator_for_endpoint;
+                *evaluator = evaluator_for_endpoint;
                 nw_listener_cancel(listener);
                 listener = 0;
                 v22 = 1;
@@ -903,9 +903,9 @@ LABEL_21:
   return v22;
 }
 
-+ (id)newNWConnectionWithIPAddress:(id)a3 srcPort:(signed __int16)a4
++ (id)newNWConnectionWithIPAddress:(id)address srcPort:(signed __int16)port
 {
-  v4 = [a1 connectedSocketWithIPAddress:a3 srcPort:a4 error:0];
+  v4 = [self connectedSocketWithIPAddress:address srcPort:port error:0];
   if (v4 == -1)
   {
     v6 = 0;

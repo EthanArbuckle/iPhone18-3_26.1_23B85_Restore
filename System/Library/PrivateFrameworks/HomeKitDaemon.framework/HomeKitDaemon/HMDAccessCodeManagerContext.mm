@@ -9,8 +9,8 @@
 - (BOOL)isHomeAppForegrounded;
 - (BOOL)isResidentSupported;
 - (BOOL)primaryResidentSupportsAccessCodes;
-- (HMDAccessCodeManagerContext)initWithHome:(id)a3 workQueue:(id)a4;
-- (HMDAccessCodeManagerContext)initWithHome:(id)a3 workQueue:(id)a4 UUID:(id)a5;
+- (HMDAccessCodeManagerContext)initWithHome:(id)home workQueue:(id)queue;
+- (HMDAccessCodeManagerContext)initWithHome:(id)home workQueue:(id)queue UUID:(id)d;
 - (HMDDevice)residentCommunicationHandlerPreferredDevice;
 - (HMDHome)home;
 - (HMDHomeAdministratorHandler)administratorHandler;
@@ -23,18 +23,18 @@
 - (double)dataCleanUpCheckTimerInterval;
 - (double)removedUserAccessCodeTimeToLive;
 - (double)residentDataSyncVerificationRetryTimeInterval;
-- (id)_performMockedReadRequests:(id)a3;
-- (id)_performMockedWriteRequests:(id)a3;
-- (id)hapAccessoryWithUUID:(id)a3;
-- (id)performReadRequests:(id)a3 withRetries:(int64_t)a4 timeInterval:(double)a5 loggingObject:(id)a6 flow:(id)a7;
-- (id)performWriteRequests:(id)a3 withRetries:(int64_t)a4 timeInterval:(double)a5 loggingObject:(id)a6 flow:(id)a7;
-- (id)userForMessage:(id)a3;
-- (id)userWithUUID:(id)a3;
-- (id)uuidsOfAccessoriesSupportingAccessCodesForUser:(id)a3;
+- (id)_performMockedReadRequests:(id)requests;
+- (id)_performMockedWriteRequests:(id)requests;
+- (id)hapAccessoryWithUUID:(id)d;
+- (id)performReadRequests:(id)requests withRetries:(int64_t)retries timeInterval:(double)interval loggingObject:(id)object flow:(id)flow;
+- (id)performWriteRequests:(id)requests withRetries:(int64_t)retries timeInterval:(double)interval loggingObject:(id)object flow:(id)flow;
+- (id)userForMessage:(id)message;
+- (id)userWithUUID:(id)d;
+- (id)uuidsOfAccessoriesSupportingAccessCodesForUser:(id)user;
 - (int64_t)accessoryReadWriteRetries;
 - (int64_t)residentDataSyncVerificationRetries;
-- (void)configureWithMessageDispatcher:(id)a3;
-- (void)redispatchToResidentMessage:(id)a3;
+- (void)configureWithMessageDispatcher:(id)dispatcher;
+- (void)redispatchToResidentMessage:(id)message;
 @end
 
 @implementation HMDAccessCodeManagerContext
@@ -46,18 +46,18 @@
   return WeakRetained;
 }
 
-- (id)hapAccessoryWithUUID:(id)a3
+- (id)hapAccessoryWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDAccessCodeManagerContext *)self home];
-  v6 = [v5 hapAccessories];
+  dCopy = d;
+  home = [(HMDAccessCodeManagerContext *)self home];
+  hapAccessories = [home hapAccessories];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__HMDAccessCodeManagerContext_hapAccessoryWithUUID___block_invoke;
   v10[3] = &unk_2786830C8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = dCopy;
+  v7 = dCopy;
+  v8 = [hapAccessories na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -73,8 +73,8 @@ uint64_t __52__HMDAccessCodeManagerContext_hapAccessoryWithUUID___block_invoke(u
 
 - (NSArray)UUIDsOfMatterAccessoriesSupportingAccessCodes
 {
-  v2 = [(HMDAccessCodeManagerContext *)self accessoriesSupportingAccessCodes];
-  v3 = [v2 na_map:&__block_literal_global_60];
+  accessoriesSupportingAccessCodes = [(HMDAccessCodeManagerContext *)self accessoriesSupportingAccessCodes];
+  v3 = [accessoriesSupportingAccessCodes na_map:&__block_literal_global_60];
 
   return v3;
 }
@@ -97,8 +97,8 @@ id __76__HMDAccessCodeManagerContext_UUIDsOfMatterAccessoriesSupportingAccessCod
 
 - (NSArray)UUIDsOfHAPAccessoriesSupportingAccessCodes
 {
-  v2 = [(HMDAccessCodeManagerContext *)self accessoriesSupportingAccessCodes];
-  v3 = [v2 na_map:&__block_literal_global_58];
+  accessoriesSupportingAccessCodes = [(HMDAccessCodeManagerContext *)self accessoriesSupportingAccessCodes];
+  v3 = [accessoriesSupportingAccessCodes na_map:&__block_literal_global_58];
 
   return v3;
 }
@@ -119,18 +119,18 @@ id __73__HMDAccessCodeManagerContext_UUIDsOfHAPAccessoriesSupportingAccessCodes_
   return v3;
 }
 
-- (id)uuidsOfAccessoriesSupportingAccessCodesForUser:(id)a3
+- (id)uuidsOfAccessoriesSupportingAccessCodesForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HMDAccessCodeManagerContext *)self home];
-  v6 = [v5 hapAccessories];
+  userCopy = user;
+  home = [(HMDAccessCodeManagerContext *)self home];
+  hapAccessories = [home hapAccessories];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__HMDAccessCodeManagerContext_uuidsOfAccessoriesSupportingAccessCodesForUser___block_invoke;
   v10[3] = &unk_27866E0E8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_map:v10];
+  v11 = userCopy;
+  v7 = userCopy;
+  v8 = [hapAccessories na_map:v10];
 
   return v8;
 }
@@ -153,33 +153,33 @@ id __78__HMDAccessCodeManagerContext_uuidsOfAccessoriesSupportingAccessCodesForU
 
 - (NSArray)UUIDsOfAccessoriesSupportingAccessCodes
 {
-  v2 = [(HMDAccessCodeManagerContext *)self accessoriesSupportingAccessCodes];
-  v3 = [v2 na_map:&__block_literal_global_56];
+  accessoriesSupportingAccessCodes = [(HMDAccessCodeManagerContext *)self accessoriesSupportingAccessCodes];
+  v3 = [accessoriesSupportingAccessCodes na_map:&__block_literal_global_56];
 
   return v3;
 }
 
 - (NSArray)accessoriesSupportingAccessCodes
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 hapAccessories];
-  v4 = [v3 na_filter:&__block_literal_global_3415];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  hapAccessories = [home hapAccessories];
+  v4 = [hapAccessories na_filter:&__block_literal_global_3415];
 
   return v4;
 }
 
-- (id)userWithUUID:(id)a3
+- (id)userWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDAccessCodeManagerContext *)self home];
-  v6 = [v5 users];
+  dCopy = d;
+  home = [(HMDAccessCodeManagerContext *)self home];
+  users = [home users];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke;
   v10[3] = &unk_278688680;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = dCopy;
+  v7 = dCopy;
+  v8 = [users na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -193,30 +193,30 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
   return v4;
 }
 
-- (id)userForMessage:(id)a3
+- (id)userForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(HMDAccessCodeManagerContext *)self home];
-  v6 = [v4 userForHome:v5];
+  messageCopy = message;
+  home = [(HMDAccessCodeManagerContext *)self home];
+  v6 = [messageCopy userForHome:home];
 
   return v6;
 }
 
-- (void)redispatchToResidentMessage:(id)a3
+- (void)redispatchToResidentMessage:(id)message
 {
-  v4 = a3;
-  v7 = [(HMDAccessCodeManagerContext *)self home];
-  v5 = [(HMDAccessCodeManagerContext *)self UUID];
-  v6 = [(HMDAccessCodeManagerContext *)self workQueue];
-  [v7 redispatchToResidentMessage:v4 target:v5 responseQueue:v6];
+  messageCopy = message;
+  home = [(HMDAccessCodeManagerContext *)self home];
+  uUID = [(HMDAccessCodeManagerContext *)self UUID];
+  workQueue = [(HMDAccessCodeManagerContext *)self workQueue];
+  [home redispatchToResidentMessage:messageCopy target:uUID responseQueue:workQueue];
 }
 
-- (id)_performMockedReadRequests:(id)a3
+- (id)_performMockedReadRequests:(id)requests
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManagerContext *)self demoDataMocker];
-  v6 = [v5 handleReadRequests:v4];
+  requestsCopy = requests;
+  demoDataMocker = [(HMDAccessCodeManagerContext *)self demoDataMocker];
+  v6 = [demoDataMocker handleReadRequests:requestsCopy];
 
   if (v6)
   {
@@ -226,7 +226,7 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -234,7 +234,7 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
       v16 = 138543618;
       v17 = v11;
       v18 = 2112;
-      v19 = v4;
+      v19 = requestsCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to mock data for write requests: %@", &v16, 0x16u);
     }
 
@@ -249,16 +249,16 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
   return v7;
 }
 
-- (id)performReadRequests:(id)a3 withRetries:(int64_t)a4 timeInterval:(double)a5 loggingObject:(id)a6 flow:(id)a7
+- (id)performReadRequests:(id)requests withRetries:(int64_t)retries timeInterval:(double)interval loggingObject:(id)object flow:(id)flow
 {
   v25 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  requestsCopy = requests;
+  objectCopy = object;
+  flowCopy = flow;
   if ([(HMDAccessCodeManagerContext *)self isDemoDataMockerEnabled])
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -269,13 +269,13 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
     }
 
     objc_autoreleasePoolPop(v15);
-    v19 = [(HMDAccessCodeManagerContext *)v16 _performMockedReadRequests:v12];
+    v19 = [(HMDAccessCodeManagerContext *)selfCopy _performMockedReadRequests:requestsCopy];
   }
 
   else
   {
-    v20 = [(HMDAccessCodeManagerContext *)self home];
-    v19 = [v20 performReadRequests:v12 withRetries:a4 timeInterval:v13 loggingObject:v14 flow:a5];
+    home = [(HMDAccessCodeManagerContext *)self home];
+    v19 = [home performReadRequests:requestsCopy withRetries:retries timeInterval:objectCopy loggingObject:flowCopy flow:interval];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -283,16 +283,16 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
   return v19;
 }
 
-- (id)performWriteRequests:(id)a3 withRetries:(int64_t)a4 timeInterval:(double)a5 loggingObject:(id)a6 flow:(id)a7
+- (id)performWriteRequests:(id)requests withRetries:(int64_t)retries timeInterval:(double)interval loggingObject:(id)object flow:(id)flow
 {
   v25 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  requestsCopy = requests;
+  objectCopy = object;
+  flowCopy = flow;
   if ([(HMDAccessCodeManagerContext *)self isDemoDataMockerEnabled])
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -303,13 +303,13 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
     }
 
     objc_autoreleasePoolPop(v15);
-    v19 = [(HMDAccessCodeManagerContext *)v16 _performMockedWriteRequests:v12];
+    v19 = [(HMDAccessCodeManagerContext *)selfCopy _performMockedWriteRequests:requestsCopy];
   }
 
   else
   {
-    v20 = [(HMDAccessCodeManagerContext *)self home];
-    v19 = [v20 performWriteRequests:v12 withRetries:a4 timeInterval:v13 loggingObject:v14 flow:a5];
+    home = [(HMDAccessCodeManagerContext *)self home];
+    v19 = [home performWriteRequests:requestsCopy withRetries:retries timeInterval:objectCopy loggingObject:flowCopy flow:interval];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -317,12 +317,12 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
   return v19;
 }
 
-- (id)_performMockedWriteRequests:(id)a3
+- (id)_performMockedWriteRequests:(id)requests
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManagerContext *)self demoDataMocker];
-  v6 = [v5 handleWriteRequests:v4];
+  requestsCopy = requests;
+  demoDataMocker = [(HMDAccessCodeManagerContext *)self demoDataMocker];
+  v6 = [demoDataMocker handleWriteRequests:requestsCopy];
 
   if (v6)
   {
@@ -332,7 +332,7 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -340,7 +340,7 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
       v16 = 138543618;
       v17 = v11;
       v18 = 2112;
-      v19 = v4;
+      v19 = requestsCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to mock data for write requests: %@", &v16, 0x16u);
     }
 
@@ -357,209 +357,209 @@ uint64_t __44__HMDAccessCodeManagerContext_userWithUUID___block_invoke(uint64_t 
 
 - (HMDDevice)residentCommunicationHandlerPreferredDevice
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 homeManager];
-  v4 = [v3 messageDispatcher];
-  v5 = [v4 residentCommunicationHandlerForHome:v2];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  homeManager = [home homeManager];
+  messageDispatcher = [homeManager messageDispatcher];
+  v5 = [messageDispatcher residentCommunicationHandlerForHome:home];
 
-  v6 = [v5 preferredDevice];
+  preferredDevice = [v5 preferredDevice];
 
-  return v6;
+  return preferredDevice;
 }
 
 - (BOOL)hasHomeOnboardedForAccessCodes
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 hasOnboardedForAccessCode];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  hasOnboardedForAccessCode = [home hasOnboardedForAccessCode];
 
-  return v3;
+  return hasOnboardedForAccessCode;
 }
 
 - (BOOL)isHomeAppForegrounded
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 hasCharacteristicNotificationRegistrations];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  hasCharacteristicNotificationRegistrations = [home hasCharacteristicNotificationRegistrations];
 
-  return v3;
+  return hasCharacteristicNotificationRegistrations;
 }
 
 - (BOOL)isResidentSupported
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 isResidentSupported];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  isResidentSupported = [home isResidentSupported];
 
-  return v3;
+  return isResidentSupported;
 }
 
 - (BOOL)isCurrentDeviceOwnerController
 {
-  v2 = [(HMDAccessCodeManagerContext *)self isCurrentDeviceOwnerUser];
-  if (v2)
+  isCurrentDeviceOwnerUser = [(HMDAccessCodeManagerContext *)self isCurrentDeviceOwnerUser];
+  if (isCurrentDeviceOwnerUser)
   {
     if (isiOSDevice())
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(isCurrentDeviceOwnerUser) = 1;
     }
 
     else
     {
 
-      LOBYTE(v2) = isMac();
+      LOBYTE(isCurrentDeviceOwnerUser) = isMac();
     }
   }
 
-  return v2;
+  return isCurrentDeviceOwnerUser;
 }
 
 - (BOOL)isCurrentDeviceOwnerUser
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 currentUser];
-  v4 = [v3 isOwner];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  currentUser = [home currentUser];
+  isOwner = [currentUser isOwner];
 
-  return v4;
+  return isOwner;
 }
 
 - (BOOL)isCurrentDeviceResidentCapable
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 isResidentCapable];
+  isResidentCapable = [v2 isResidentCapable];
 
-  return v3;
+  return isResidentCapable;
 }
 
 - (double)residentDataSyncVerificationRetryTimeInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDAccessCodeManagerResidentDataSyncVerificationRetryTimeInterval"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDAccessCodeManagerResidentDataSyncVerificationRetryTimeInterval"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)residentDataSyncVerificationRetries
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDAccessCodeManagerResidentDataSyncVerificationRetries"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDAccessCodeManagerResidentDataSyncVerificationRetries"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (double)dataCleanUpCheckTimerInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDAccessCodeManagerDataCleanUpCheckTimerInterval"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDAccessCodeManagerDataCleanUpCheckTimerInterval"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (double)removedUserAccessCodeTimeToLive
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDAccessCodeManagerRemovedUserAccessCodeTimeToLive"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDAccessCodeManagerRemovedUserAccessCodeTimeToLive"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (double)accessoryReadWriteRetryTimeInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDAccessCodeManagerAccessoryReadWriteRetryTimeIntervalHH2"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDAccessCodeManagerAccessoryReadWriteRetryTimeIntervalHH2"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)accessoryReadWriteRetries
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDAccessCodeManagerAccessoryReadWriteRetriesHH2"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDAccessCodeManagerAccessoryReadWriteRetriesHH2"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (BOOL)isDemoDataMockerEnabled
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"accessCodeDemoDataMockerEnabled"];
-  v4 = [v3 BOOLValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"accessCodeDemoDataMockerEnabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)primaryResidentSupportsAccessCodes
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 residentDeviceManager];
-  v4 = [v3 primaryResidentDevice];
-  v5 = [v4 capabilities];
-  v6 = [v5 supportsAccessCodes];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  residentDeviceManager = [home residentDeviceManager];
+  primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
+  capabilities = [primaryResidentDevice capabilities];
+  supportsAccessCodes = [capabilities supportsAccessCodes];
 
-  return v6;
+  return supportsAccessCodes;
 }
 
 - (BOOL)isCurrentDevicePrimaryResident
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 isCurrentDeviceConfirmedPrimaryResident];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  isCurrentDeviceConfirmedPrimaryResident = [home isCurrentDeviceConfirmedPrimaryResident];
 
-  return v3;
+  return isCurrentDeviceConfirmedPrimaryResident;
 }
 
 - (HMDHomeAdministratorHandler)administratorHandler
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 administratorHandler];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  administratorHandler = [home administratorHandler];
 
-  return v3;
+  return administratorHandler;
 }
 
 - (HMDHomeWalletKeyManager)walletKeyManager
 {
-  v2 = [(HMDAccessCodeManagerContext *)self home];
-  v3 = [v2 walletKeyManager];
+  home = [(HMDAccessCodeManagerContext *)self home];
+  walletKeyManager = [home walletKeyManager];
 
-  return v3;
+  return walletKeyManager;
 }
 
-- (void)configureWithMessageDispatcher:(id)a3
+- (void)configureWithMessageDispatcher:(id)dispatcher
 {
-  objc_storeStrong(&self->_messageDispatcher, a3);
-  v5 = a3;
-  v6 = [(HMDAccessCodeManagerContext *)self remoteMessageForwarder];
-  [v6 configureWithMessageDispatcher:v5];
+  objc_storeStrong(&self->_messageDispatcher, dispatcher);
+  dispatcherCopy = dispatcher;
+  remoteMessageForwarder = [(HMDAccessCodeManagerContext *)self remoteMessageForwarder];
+  [remoteMessageForwarder configureWithMessageDispatcher:dispatcherCopy];
 }
 
-- (HMDAccessCodeManagerContext)initWithHome:(id)a3 workQueue:(id)a4 UUID:(id)a5
+- (HMDAccessCodeManagerContext)initWithHome:(id)home workQueue:(id)queue UUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  homeCopy = home;
+  queueCopy = queue;
+  dCopy = d;
+  if (!homeCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!queueCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = dCopy;
+  if (!dCopy)
   {
 LABEL_9:
     v19 = _HMFPreconditionFailure();
@@ -572,14 +572,14 @@ LABEL_9:
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_home, v8);
-    objc_storeStrong(&v13->_workQueue, a4);
-    objc_storeStrong(&v13->_UUID, a5);
+    objc_storeWeak(&v12->_home, homeCopy);
+    objc_storeStrong(&v13->_workQueue, queue);
+    objc_storeStrong(&v13->_UUID, d);
     v14 = objc_alloc_init(HMDAccessCodeDemoDataMocker);
     demoDataMocker = v13->_demoDataMocker;
     v13->_demoDataMocker = v14;
 
-    v16 = [[HMDRemoteMessageForwarder alloc] initWithHome:v8 UUID:v11 workQueue:v9];
+    v16 = [[HMDRemoteMessageForwarder alloc] initWithHome:homeCopy UUID:v11 workQueue:queueCopy];
     remoteMessageForwarder = v13->_remoteMessageForwarder;
     v13->_remoteMessageForwarder = v16;
 
@@ -589,15 +589,15 @@ LABEL_9:
   return v13;
 }
 
-- (HMDAccessCodeManagerContext)initWithHome:(id)a3 workQueue:(id)a4
+- (HMDAccessCodeManagerContext)initWithHome:(id)home workQueue:(id)queue
 {
   v6 = MEMORY[0x277CD1610];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 uuid];
-  v10 = [v6 accessCodeManagerUUIDFromHomeUUID:v9];
+  queueCopy = queue;
+  homeCopy = home;
+  uuid = [homeCopy uuid];
+  v10 = [v6 accessCodeManagerUUIDFromHomeUUID:uuid];
 
-  v11 = [(HMDAccessCodeManagerContext *)self initWithHome:v8 workQueue:v7 UUID:v10];
+  v11 = [(HMDAccessCodeManagerContext *)self initWithHome:homeCopy workQueue:queueCopy UUID:v10];
   return v11;
 }
 

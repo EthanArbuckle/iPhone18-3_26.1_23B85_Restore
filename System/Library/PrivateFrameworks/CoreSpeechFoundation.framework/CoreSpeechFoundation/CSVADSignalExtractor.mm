@@ -1,8 +1,8 @@
 @interface CSVADSignalExtractor
-- (BOOL)hasSpeechDetectedFromStartSampleCount:(unint64_t)a3 toEndSampleCount:(unint64_t)a4;
-- (CSVADSignalExtractor)initWithToken:(id)a3 delegate:(id)a4;
+- (BOOL)hasSpeechDetectedFromStartSampleCount:(unint64_t)count toEndSampleCount:(unint64_t)sampleCount;
+- (CSVADSignalExtractor)initWithToken:(id)token delegate:(id)delegate;
 - (CSVADSignalExtractorDelegate)delegate;
-- (void)processBufferSampleWithIndex:(unint64_t)a3 startSampleCount:(unint64_t)a4 isSampleRepresentSpeech:(BOOL)a5 vadToSpeechRatio:(unint64_t)a6;
+- (void)processBufferSampleWithIndex:(unint64_t)index startSampleCount:(unint64_t)count isSampleRepresentSpeech:(BOOL)speech vadToSpeechRatio:(unint64_t)ratio;
 - (void)reset;
 @end
 
@@ -15,15 +15,15 @@
   return WeakRetained;
 }
 
-- (void)processBufferSampleWithIndex:(unint64_t)a3 startSampleCount:(unint64_t)a4 isSampleRepresentSpeech:(BOOL)a5 vadToSpeechRatio:(unint64_t)a6
+- (void)processBufferSampleWithIndex:(unint64_t)index startSampleCount:(unint64_t)count isSampleRepresentSpeech:(BOOL)speech vadToSpeechRatio:(unint64_t)ratio
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a5 || self->_isSpeechDetected)
+  if (!speech || self->_isSpeechDetected)
   {
-    if (self->_isSpeechDetected && !a5)
+    if (self->_isSpeechDetected && !speech)
     {
       self->_isSpeechDetected = 0;
-      v13 = a4 + a6 * a3;
+      v13 = count + ratio * index;
       v14 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
       {
@@ -32,7 +32,7 @@
         v22 = 2050;
         v23 = v13;
         v24 = 2050;
-        v25 = a4;
+        countCopy2 = count;
         _os_log_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_DEFAULT, "%s Detected speech end at %{public}llu (startSampleCount = %{public}llu)", &v20, 0x20u);
       }
 
@@ -54,7 +54,7 @@
   else
   {
     *&self->_hasSpeechEverDetected = 257;
-    v8 = a4 + a6 * a3;
+    v8 = count + ratio * index;
     v9 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -63,7 +63,7 @@
       v22 = 2050;
       v23 = v8;
       v24 = 2050;
-      v25 = a4;
+      countCopy2 = count;
       _os_log_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_DEFAULT, "%s Detected speech start at %{public}llu (startSampleCount = %{public}llu)", &v20, 0x20u);
     }
 
@@ -82,10 +82,10 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasSpeechDetectedFromStartSampleCount:(unint64_t)a3 toEndSampleCount:(unint64_t)a4
+- (BOOL)hasSpeechDetectedFromStartSampleCount:(unint64_t)count toEndSampleCount:(unint64_t)sampleCount
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = [[CSFRangeUtils alloc] initWithStartPoint:a3 endPoint:a4];
+  v6 = [[CSFRangeUtils alloc] initWithStartPoint:count endPoint:sampleCount];
   if (!v6)
   {
     goto LABEL_14;
@@ -143,7 +143,7 @@
   }
 
   lastSpeechStartSampleCount = self->_lastSpeechStartSampleCount;
-  if (lastSpeechStartSampleCount - 1 < a4 || !lastSpeechStartSampleCount && ![(NSMutableArray *)self->_speechDetectedRanges count]&& self->_hasSpeechEverDetected)
+  if (lastSpeechStartSampleCount - 1 < sampleCount || !lastSpeechStartSampleCount && ![(NSMutableArray *)self->_speechDetectedRanges count]&& self->_hasSpeechEverDetected)
   {
 LABEL_18:
     v14 = 1;
@@ -176,11 +176,11 @@ LABEL_14:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (CSVADSignalExtractor)initWithToken:(id)a3 delegate:(id)a4
+- (CSVADSignalExtractor)initWithToken:(id)token delegate:(id)delegate
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = CSVADSignalExtractor;
   v8 = [(CSVADSignalExtractor *)&v15 init];
@@ -188,10 +188,10 @@ LABEL_14:
   if (v8)
   {
     *&v8->_hasSpeechEverDetected = 0;
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [MEMORY[0x1E695DF70] array];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    array = [MEMORY[0x1E695DF70] array];
     speechDetectedRanges = v9->_speechDetectedRanges;
-    v9->_speechDetectedRanges = v10;
+    v9->_speechDetectedRanges = array;
 
     v9->_lastSpeechStartSampleCount = 0;
     v12 = CSLogContextFacilityCoreSpeech;
@@ -200,7 +200,7 @@ LABEL_14:
       *buf = 136315394;
       v17 = "[CSVADSignalExtractor initWithToken:delegate:]";
       v18 = 2114;
-      v19 = v6;
+      v19 = tokenCopy;
       _os_log_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_DEFAULT, "%s Token : %{public}@", buf, 0x16u);
     }
   }

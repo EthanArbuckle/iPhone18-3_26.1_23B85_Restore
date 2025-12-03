@@ -1,15 +1,15 @@
 @interface ADWarperMeshLensDistortionModel
-- (ADWarperMeshLensDistortionModel)initWithDictionary:(id)a3;
-- (ADWarperMeshLensDistortionModel)initWithWarperMesh:(id)a3 type:(unint64_t)a4 width:(int64_t)a5 height:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
+- (ADWarperMeshLensDistortionModel)initWithDictionary:(id)dictionary;
+- (ADWarperMeshLensDistortionModel)initWithWarperMesh:(id)mesh type:(unint64_t)type width:(int64_t)width height:(int64_t)height;
+- (BOOL)isEqual:(id)equal;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dictionaryRepresentation:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dictionaryRepresentation:(BOOL)representation;
 - (unint64_t)hash;
-- (void)adjustForImageRotation:(int64_t)a3 forDimensions:(CGSize)a4;
-- (void)crop:(CGRect)a3 fromDimensions:(CGSize)a4;
-- (void)distortPixels:(unint64_t)a3 undistortedPixels:(const CGPoint *)x3_0 withCameraCalibration:(id)a5 outDistortedPixels:(CGPoint *)a6;
-- (void)undistortPixels:(unint64_t)a3 distortedPixels:(const CGPoint *)x3_0 withCameraCalibration:(id)a5 outUndistortedPixels:(CGPoint *)a6;
+- (void)adjustForImageRotation:(int64_t)rotation forDimensions:(CGSize)dimensions;
+- (void)crop:(CGRect)crop fromDimensions:(CGSize)dimensions;
+- (void)distortPixels:(unint64_t)pixels undistortedPixels:(const CGPoint *)x3_0 withCameraCalibration:(id)calibration outDistortedPixels:(CGPoint *)distortedPixels;
+- (void)undistortPixels:(unint64_t)pixels distortedPixels:(const CGPoint *)x3_0 withCameraCalibration:(id)calibration outUndistortedPixels:(CGPoint *)undistortedPixels;
 @end
 
 @implementation ADWarperMeshLensDistortionModel
@@ -23,11 +23,11 @@
   return self;
 }
 
-- (id)dictionaryRepresentation:(BOOL)a3
+- (id)dictionaryRepresentation:(BOOL)representation
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"meshType";
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ADWarperMeshLensDistortionModel type](self, "type", a3)}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ADWarperMeshLensDistortionModel type](self, "type", representation)}];
   v11[0] = v4;
   v10[1] = @"meshWidth";
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ADWarperMeshLensDistortionModel width](self, "width")}];
@@ -36,66 +36,66 @@
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ADWarperMeshLensDistortionModel height](self, "height")}];
   v11[2] = v6;
   v10[3] = @"mesh";
-  v7 = [(ADWarperMeshLensDistortionModel *)self warperMesh];
-  v11[3] = v7;
+  warperMesh = [(ADWarperMeshLensDistortionModel *)self warperMesh];
+  v11[3] = warperMesh;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   return v8;
 }
 
-- (ADWarperMeshLensDistortionModel)initWithDictionary:(id)a3
+- (ADWarperMeshLensDistortionModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"meshType"];
-  v6 = [v4 objectForKeyedSubscript:@"meshWidth"];
-  v7 = [v4 objectForKeyedSubscript:@"meshHeight"];
-  v8 = [v4 objectForKeyedSubscript:@"mesh"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"meshType"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"meshWidth"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"meshHeight"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"mesh"];
   v9 = v8;
-  v10 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7 && v8)
   {
     self = -[ADWarperMeshLensDistortionModel initWithWarperMesh:type:width:height:](self, "initWithWarperMesh:type:width:height:", v8, [v5 unsignedIntValue], objc_msgSend(v6, "integerValue"), objc_msgSend(v7, "integerValue"));
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)adjustForImageRotation:(int64_t)a3 forDimensions:(CGSize)a4
+- (void)adjustForImageRotation:(int64_t)rotation forDimensions:(CGSize)dimensions
 {
-  v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"warper mesh distortion model does not support rotation" userInfo:{0, a4.width, a4.height}];
+  v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"warper mesh distortion model does not support rotation" userInfo:{0, dimensions.width, dimensions.height}];
   objc_exception_throw(v4);
 }
 
-- (void)crop:(CGRect)a3 fromDimensions:(CGSize)a4
+- (void)crop:(CGRect)crop fromDimensions:(CGSize)dimensions
 {
-  y = a3.origin.y;
+  y = crop.origin.y;
   refDimensions = self->_undistortMesh._refDimensions;
-  height = a4.height;
-  *self->_anon_38 = vcvt_f32_f64(vaddq_f64(vdivq_f64(vmulq_f64(a3.origin, refDimensions), a4), vcvtq_f64_f32(*self->_anon_38)));
-  v7 = a3.size.height;
-  v8 = vdivq_f64(a3.size, a4);
+  height = dimensions.height;
+  *self->_anon_38 = vcvt_f32_f64(vaddq_f64(vdivq_f64(vmulq_f64(crop.origin, refDimensions), dimensions), vcvtq_f64_f32(*self->_anon_38)));
+  v7 = crop.size.height;
+  v8 = vdivq_f64(crop.size, dimensions);
   self->_undistortMesh._refDimensions = vmulq_f64(v8, refDimensions);
   v9 = self->_distortMesh._refDimensions;
-  self[1].super.isa = vcvt_f32_f64(vaddq_f64(vdivq_f64(vmulq_f64(a3.origin, v9), a4), vcvtq_f64_f32(self[1].super.isa)));
+  self[1].super.isa = vcvt_f32_f64(vaddq_f64(vdivq_f64(vmulq_f64(crop.origin, v9), dimensions), vcvtq_f64_f32(self[1].super.isa)));
   self->_distortMesh._refDimensions = vmulq_f64(v8, v9);
 }
 
-- (void)undistortPixels:(unint64_t)a3 distortedPixels:(const CGPoint *)x3_0 withCameraCalibration:(id)a5 outUndistortedPixels:(CGPoint *)a6
+- (void)undistortPixels:(unint64_t)pixels distortedPixels:(const CGPoint *)x3_0 withCameraCalibration:(id)calibration outUndistortedPixels:(CGPoint *)undistortedPixels
 {
-  v10 = a5;
-  [v10 referenceDimensions];
-  ADWarperMesh::apply(&self->_undistortMesh, a3, x3_0, v12, a6);
+  calibrationCopy = calibration;
+  [calibrationCopy referenceDimensions];
+  ADWarperMesh::apply(&self->_undistortMesh, pixels, x3_0, v12, undistortedPixels);
 }
 
-- (void)distortPixels:(unint64_t)a3 undistortedPixels:(const CGPoint *)x3_0 withCameraCalibration:(id)a5 outDistortedPixels:(CGPoint *)a6
+- (void)distortPixels:(unint64_t)pixels undistortedPixels:(const CGPoint *)x3_0 withCameraCalibration:(id)calibration outDistortedPixels:(CGPoint *)distortedPixels
 {
-  v10 = a5;
-  [v10 referenceDimensions];
-  ADWarperMesh::apply(&self->_distortMesh, a3, x3_0, v12, a6);
+  calibrationCopy = calibration;
+  [calibrationCopy referenceDimensions];
+  ADWarperMesh::apply(&self->_distortMesh, pixels, x3_0, v12, distortedPixels);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ADWarperMeshLensDistortionModel alloc];
   v5 = [(NSData *)self->_undistortMesh._warperMesh copy];
@@ -115,36 +115,36 @@
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ADWarperMeshLensDistortionModel height](self, "height")}];
   v8 = [v7 hash];
 
-  v9 = [(ADWarperMeshLensDistortionModel *)self warperMesh];
-  v10 = v4 ^ (2 * v6) ^ (3 * v8) ^ (4 * [v9 hash]);
+  warperMesh = [(ADWarperMeshLensDistortionModel *)self warperMesh];
+  v10 = v4 ^ (2 * v6) ^ (3 * v8) ^ (4 * [warperMesh hash]);
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_8;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_12;
   }
 
-  if (([(ADWarperMeshLensDistortionModel *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  if (([(ADWarperMeshLensDistortionModel *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
     v6 = v5;
-    v7 = [(ADWarperMeshLensDistortionModel *)self type];
-    if (v7 == [(ADWarperMeshLensDistortionModel *)v6 type]&& (v8 = [(ADWarperMeshLensDistortionModel *)self width], v8 == [(ADWarperMeshLensDistortionModel *)v6 width]) && (v9 = [(ADWarperMeshLensDistortionModel *)self height], v9 == [(ADWarperMeshLensDistortionModel *)v6 height]))
+    type = [(ADWarperMeshLensDistortionModel *)self type];
+    if (type == [(ADWarperMeshLensDistortionModel *)v6 type]&& (v8 = [(ADWarperMeshLensDistortionModel *)self width], v8 == [(ADWarperMeshLensDistortionModel *)v6 width]) && (v9 = [(ADWarperMeshLensDistortionModel *)self height], v9 == [(ADWarperMeshLensDistortionModel *)v6 height]))
     {
-      v10 = [(ADWarperMeshLensDistortionModel *)self warperMesh];
-      v11 = [(ADWarperMeshLensDistortionModel *)v6 warperMesh];
-      v12 = [v10 isEqualToData:v11];
+      warperMesh = [(ADWarperMeshLensDistortionModel *)self warperMesh];
+      warperMesh2 = [(ADWarperMeshLensDistortionModel *)v6 warperMesh];
+      v12 = [warperMesh isEqualToData:warperMesh2];
     }
 
     else
@@ -164,18 +164,18 @@ LABEL_12:
   return v12;
 }
 
-- (ADWarperMeshLensDistortionModel)initWithWarperMesh:(id)a3 type:(unint64_t)a4 width:(int64_t)a5 height:(int64_t)a6
+- (ADWarperMeshLensDistortionModel)initWithWarperMesh:(id)mesh type:(unint64_t)type width:(int64_t)width height:(int64_t)height
 {
   v106[8] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = v11;
-  if (!v11)
+  meshCopy = mesh;
+  v12 = meshCopy;
+  if (!meshCopy)
   {
     v101 = @"warperMesh cannot be nil";
     goto LABEL_57;
   }
 
-  if ([v11 length] != 8 * a5 * a6)
+  if ([meshCopy length] != 8 * width * height)
   {
     v101 = @"warperMesh length should be width * height * 2 floats";
 LABEL_57:
@@ -189,22 +189,22 @@ LABEL_57:
   if (v13)
   {
     v14 = v12;
-    *(v13 + 1) = a4;
-    objc_storeStrong(v13 + 4, a3);
-    *(v13 + 16) = a5;
-    *(v13 + 17) = a6;
+    *(v13 + 1) = type;
+    objc_storeStrong(v13 + 4, mesh);
+    *(v13 + 16) = width;
+    *(v13 + 17) = height;
     *(v13 + 11) = 0;
     *(v13 + 12) = 0;
-    if (a4 == 1)
+    if (type == 1)
     {
       *(v13 + 10) = 0;
-      LODWORD(a5) = a5 - 1;
-      LODWORD(a6) = a6 - 1;
+      LODWORD(width) = width - 1;
+      LODWORD(height) = height - 1;
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         v103 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"unknown warper mesh type" userInfo:0];
         objc_exception_throw(v103);
@@ -213,8 +213,8 @@ LABEL_57:
       *(v13 + 10) = 1056964608;
     }
 
-    *(v13 + 2) = a5;
-    *(v13 + 3) = a6;
+    *(v13 + 2) = width;
+    *(v13 + 3) = height;
 
     v106[0] = 0;
     v15 = *(v13 + 64);
@@ -236,14 +236,14 @@ LABEL_57:
     v106[6] = v16;
     HIDWORD(v17) = v18 - 1;
     v106[7] = v17;
-    v21 = [*(v13 + 4) bytes];
-    v22 = v21;
+    bytes = [*(v13 + 4) bytes];
+    v22 = bytes;
     v23 = 0;
     v24 = vcvt_f32_s32(v104);
     v25 = 0;
     do
     {
-      v26 = *(v21 + 8 * (v106[v23] + HIDWORD(v106[v23]) * *(v13 + 16)));
+      v26 = *(bytes + 8 * (v106[v23] + HIDWORD(v106[v23]) * *(v13 + 16)));
       v24 = vbsl_s8(vcgt_f32(v24, v26), v26, v24);
       v25 = vbsl_s8(vcgt_f32(v26, v25), v26, v25);
       ++v23;
@@ -262,14 +262,14 @@ LABEL_57:
     v34 = [MEMORY[0x277CBEB28] dataWithLength:{8 * vmul_lane_s32(v33, v33, 1).i32[0]}];
     objc_storeStrong(v13 + 12, v34);
     v35 = v34;
-    v36 = [v34 mutableBytes];
+    mutableBytes = [v34 mutableBytes];
     v39 = *(v13 + 33);
     if (v39 >= 1)
     {
       v40 = 0;
       v41 = *(v13 + 32);
       v42 = vneg_f32(0x3F0000003FLL);
-      v43 = v36;
+      v43 = mutableBytes;
       do
       {
         if (v41 >= 1)
@@ -398,7 +398,7 @@ LABEL_57:
                                 v38.f32[2] = 1.0 - v38.f32[0] - v86;
                                 v88 = vmulq_f32(v68, v38);
                                 v89 = vmulq_f32(v67, v38);
-                                *(v36 + 8 * v76) = vadd_f32(vzip1_s32(*&vextq_s8(v88, v88, 8uLL), *&vextq_s8(v89, v89, 8uLL)), vadd_f32(vzip1_s32(*v88.i8, *v89.i8), vzip2_s32(*v88.i8, *v89.i8)));
+                                *(mutableBytes + 8 * v76) = vadd_f32(vzip1_s32(*&vextq_s8(v88, v88, 8uLL), *&vextq_s8(v89, v89, 8uLL)), vadd_f32(vzip1_s32(*v88.i8, *v89.i8), vzip2_s32(*v88.i8, *v89.i8)));
                                 v78 = v49[1];
                                 v77 = v49[v53];
                                 v80 = v77.f32[1];
@@ -428,7 +428,7 @@ LABEL_57:
                                 v98 = vmulq_f32(v70, v37);
                                 v99 = vadd_f32(vzip1_s32(*v97.i8, *v98.i8), vzip2_s32(*v97.i8, *v98.i8));
                                 v37 = vextq_s8(v98, v98, 8uLL);
-                                *(v36 + 8 * v76) = vadd_f32(vzip1_s32(*&vextq_s8(v97, v97, 8uLL), *v37.f32), v99);
+                                *(mutableBytes + 8 * v76) = vadd_f32(vzip1_s32(*&vextq_s8(v97, v97, 8uLL), *v37.f32), v99);
                               }
                             }
                           }

@@ -1,5 +1,5 @@
 @interface HMDCameraRecordingClipNotificationEvent
-- (HMDCameraRecordingClipNotificationEvent)initWithSessionID:(id)a3 cameraID:(id)a4 sequenceNumber:(unint64_t)a5 recordingEventTriggers:(unint64_t)a6;
+- (HMDCameraRecordingClipNotificationEvent)initWithSessionID:(id)d cameraID:(id)iD sequenceNumber:(unint64_t)number recordingEventTriggers:(unint64_t)triggers;
 - (id)attributeDescriptions;
 @end
 
@@ -9,8 +9,8 @@
 {
   v9.receiver = self;
   v9.super_class = HMDCameraRecordingClipNotificationEvent;
-  v3 = [(HMDCameraRecordingLogEvent *)&v9 attributeDescriptions];
-  v4 = [v3 mutableCopy];
+  attributeDescriptions = [(HMDCameraRecordingLogEvent *)&v9 attributeDescriptions];
+  v4 = [attributeDescriptions mutableCopy];
 
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDCameraRecordingClipNotificationEvent recordingEventTriggers](self, "recordingEventTriggers")}];
@@ -20,14 +20,14 @@
   return v4;
 }
 
-- (HMDCameraRecordingClipNotificationEvent)initWithSessionID:(id)a3 cameraID:(id)a4 sequenceNumber:(unint64_t)a5 recordingEventTriggers:(unint64_t)a6
+- (HMDCameraRecordingClipNotificationEvent)initWithSessionID:(id)d cameraID:(id)iD sequenceNumber:(unint64_t)number recordingEventTriggers:(unint64_t)triggers
 {
   v8.receiver = self;
   v8.super_class = HMDCameraRecordingClipNotificationEvent;
-  result = [(HMDCameraRecordingLogEvent *)&v8 initWithSessionID:a3 cameraID:a4 sequenceNumber:a5];
+  result = [(HMDCameraRecordingLogEvent *)&v8 initWithSessionID:d cameraID:iD sequenceNumber:number];
   if (result)
   {
-    result->_recordingEventTriggers = a6;
+    result->_recordingEventTriggers = triggers;
   }
 
   return result;

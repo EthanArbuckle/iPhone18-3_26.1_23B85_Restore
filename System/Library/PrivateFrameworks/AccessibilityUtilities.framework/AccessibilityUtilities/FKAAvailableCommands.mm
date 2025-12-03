@@ -5,12 +5,12 @@
 - (NSArray)categories;
 - (NSSet)commands;
 - (id)_siriShortcutCommands;
-- (id)registerUpdateBlock:(id)a3;
+- (id)registerUpdateBlock:(id)block;
 - (void)_updateCachedSiriShortcutsCommands;
 - (void)commandMap;
 - (void)dealloc;
-- (void)setCommandMap:(id)a3;
-- (void)unregisterUpdateBlockWithToken:(id)a3;
+- (void)setCommandMap:(id)map;
+- (void)unregisterUpdateBlockWithToken:(id)token;
 @end
 
 @implementation FKAAvailableCommands
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __38__FKAAvailableCommands_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -72,16 +72,16 @@ uint64_t __38__FKAAvailableCommands_sharedInstance__block_invoke()
     v22 = v8;
     [v7 registerUpdateBlock:v21 forRetrieveSelector:sel_fullKeyboardAccessCommandMapData withListener:v2];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = *MEMORY[0x1E69E4D18];
-    v11 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __28__FKAAvailableCommands_init__block_invoke_4;
     v19[3] = &unk_1E71EAF70;
     v12 = v8;
     v20 = v12;
-    v13 = [v9 addObserverForName:v10 object:0 queue:v11 usingBlock:v19];
+    v13 = [defaultCenter addObserverForName:v10 object:0 queue:mainQueue usingBlock:v19];
     forceTouchEnabledDidChangeObserverToken = v2->_forceTouchEnabledDidChangeObserverToken;
     v2->_forceTouchEnabledDidChangeObserverToken = v13;
 
@@ -153,8 +153,8 @@ void __28__FKAAvailableCommands_init__block_invoke_2(uint64_t a1)
   v3 = +[AXSiriShortcutsManager sharedManager];
   [v3 unregisterShortcutsDidChangeBlock:self->_siriShortcutsDidChangeObserverToken];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self->_forceTouchEnabledDidChangeObserverToken];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_forceTouchEnabledDidChangeObserverToken];
 
   v5.receiver = self;
   v5.super_class = FKAAvailableCommands;
@@ -165,14 +165,14 @@ void __28__FKAAvailableCommands_init__block_invoke_2(uint64_t a1)
 {
   v18 = *MEMORY[0x1E69E9840];
   v2 = +[AXSiriShortcutsManager sharedManager];
-  v3 = [v2 shortcuts];
+  shortcuts = [v2 shortcuts];
 
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(shortcuts, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = shortcuts;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -187,8 +187,8 @@ void __28__FKAAvailableCommands_init__block_invoke_2(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) identifier];
-        v11 = [FKASiriShortcutKeyboardCommand commandWithSiriShortcutIdentifier:v10];
+        identifier = [*(*(&v13 + 1) + 8 * i) identifier];
+        v11 = [FKASiriShortcutKeyboardCommand commandWithSiriShortcutIdentifier:identifier];
         [v4 addObject:v11];
       }
 
@@ -203,13 +203,13 @@ void __28__FKAAvailableCommands_init__block_invoke_2(uint64_t a1)
 
 - (void)_updateCachedSiriShortcutsCommands
 {
-  v3 = [(FKAAvailableCommands *)self siriShortcutsQueue];
+  siriShortcutsQueue = [(FKAAvailableCommands *)self siriShortcutsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__FKAAvailableCommands__updateCachedSiriShortcutsCommands__block_invoke;
   block[3] = &unk_1E71E9B98;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(siriShortcutsQueue, block);
 }
 
 void __58__FKAAvailableCommands__updateCachedSiriShortcutsCommands__block_invoke(uint64_t a1)
@@ -385,8 +385,8 @@ void __58__FKAAvailableCommands__updateCachedSiriShortcutsCommands__block_invoke
     while (v34);
   }
 
-  v38 = [(FKAAvailableCommands *)self cachedSiriShortcutsCommands];
-  [v3 addObjectsFromArray:v38];
+  cachedSiriShortcutsCommands = [(FKAAvailableCommands *)self cachedSiriShortcutsCommands];
+  [v3 addObjectsFromArray:cachedSiriShortcutsCommands];
 
   return v3;
 }
@@ -394,16 +394,16 @@ void __58__FKAAvailableCommands__updateCachedSiriShortcutsCommands__block_invoke
 - (NSArray)categories
 {
   v3 = MEMORY[0x1E6989410];
-  v4 = [(FKAAvailableCommands *)self commands];
-  v5 = [v3 allCategoriesForAvailableCommands:v4];
+  commands = [(FKAAvailableCommands *)self commands];
+  v5 = [v3 allCategoriesForAvailableCommands:commands];
 
-  v6 = [(FKAAvailableCommands *)self cachedSiriShortcutsCommands];
-  if ([v6 count])
+  cachedSiriShortcutsCommands = [(FKAAvailableCommands *)self cachedSiriShortcutsCommands];
+  if ([cachedSiriShortcutsCommands count])
   {
     v7 = objc_alloc(MEMORY[0x1E6989410]);
     v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"SIRI_SHORTCUTS_CATEGORY_NAME" value:&stru_1EFE6D570 table:@"FullKeyboardAccess"];
-    v10 = [v7 initWithCommands:v6 localizedName:v9];
+    v10 = [v7 initWithCommands:cachedSiriShortcutsCommands localizedName:v9];
 
     v11 = [v5 arrayByAddingObject:v10];
 
@@ -416,12 +416,12 @@ void __58__FKAAvailableCommands__updateCachedSiriShortcutsCommands__block_invoke
 - (AXSSKeyboardCommandMap)commandMap
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 fullKeyboardAccessCommandMapData];
+  fullKeyboardAccessCommandMapData = [v3 fullKeyboardAccessCommandMapData];
 
-  if (v4)
+  if (fullKeyboardAccessCommandMapData)
   {
     v13 = 0;
-    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v13];
+    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:fullKeyboardAccessCommandMapData error:&v13];
     v6 = v13;
     v7 = v6;
     if (v5)
@@ -446,18 +446,18 @@ void __58__FKAAvailableCommands__updateCachedSiriShortcutsCommands__block_invoke
 
   v5 = objc_opt_new();
 LABEL_10:
-  v10 = [(FKAAvailableCommands *)self commands];
-  [v5 setAvailableCommands:v10];
+  commands = [(FKAAvailableCommands *)self commands];
+  [v5 setAvailableCommands:commands];
 
   return v5;
 }
 
-- (void)setCommandMap:(id)a3
+- (void)setCommandMap:(id)map
 {
-  if (a3)
+  if (map)
   {
     v7 = 0;
-    v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+    v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:map requiringSecureCoding:1 error:&v7];
     v4 = v7;
     if (!v3)
     {
@@ -478,37 +478,37 @@ LABEL_10:
   [v6 setFullKeyboardAccessCommandMapData:v3];
 }
 
-- (id)registerUpdateBlock:(id)a3
+- (id)registerUpdateBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [(FKAAvailableCommands *)self tokensToUpdateBlocks];
+  blockCopy = block;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  tokensToUpdateBlocks = [(FKAAvailableCommands *)self tokensToUpdateBlocks];
 
-  if (!v6)
+  if (!tokensToUpdateBlocks)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [(FKAAvailableCommands *)self setTokensToUpdateBlocks:v7];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(FKAAvailableCommands *)self setTokensToUpdateBlocks:dictionary];
   }
 
-  v8 = _Block_copy(v4);
-  v9 = [(FKAAvailableCommands *)self tokensToUpdateBlocks];
-  [v9 setObject:v8 forKeyedSubscript:v5];
+  v8 = _Block_copy(blockCopy);
+  tokensToUpdateBlocks2 = [(FKAAvailableCommands *)self tokensToUpdateBlocks];
+  [tokensToUpdateBlocks2 setObject:v8 forKeyedSubscript:uUID];
 
-  return v5;
+  return uUID;
 }
 
-- (void)unregisterUpdateBlockWithToken:(id)a3
+- (void)unregisterUpdateBlockWithToken:(id)token
 {
-  v4 = a3;
-  v5 = [(FKAAvailableCommands *)self tokensToUpdateBlocks];
-  [v5 setObject:0 forKeyedSubscript:v4];
+  tokenCopy = token;
+  tokensToUpdateBlocks = [(FKAAvailableCommands *)self tokensToUpdateBlocks];
+  [tokensToUpdateBlocks setObject:0 forKeyedSubscript:tokenCopy];
 }
 
 - (void)commandMap
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_18B15E000, a2, OS_LOG_TYPE_ERROR, "Error unarchiving command map: %@", &v2, 0xCu);
 }
 

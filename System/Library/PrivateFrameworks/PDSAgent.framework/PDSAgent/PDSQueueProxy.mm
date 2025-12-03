@@ -1,21 +1,21 @@
 @interface PDSQueueProxy
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (PDSQueueProxy)initWithTarget:(id)a3 queue:(id)a4 mode:(unint64_t)a5;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (PDSQueueProxy)initWithTarget:(id)target queue:(id)queue mode:(unint64_t)mode;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation PDSQueueProxy
 
-- (PDSQueueProxy)initWithTarget:(id)a3 queue:(id)a4 mode:(unint64_t)a5
+- (PDSQueueProxy)initWithTarget:(id)target queue:(id)queue mode:(unint64_t)mode
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  targetCopy = target;
+  queueCopy = queue;
+  v11 = queueCopy;
+  if (targetCopy)
   {
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -40,9 +40,9 @@ LABEL_3:
   if (self)
   {
 LABEL_4:
-    objc_storeStrong(&self->_target, a3);
-    objc_storeStrong(&self->_queue, a4);
-    self->_mode = a5;
+    objc_storeStrong(&self->_target, target);
+    objc_storeStrong(&self->_queue, queue);
+    self->_mode = mode;
   }
 
 LABEL_5:
@@ -50,61 +50,61 @@ LABEL_5:
   return self;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(PDSQueueProxy *)self target];
-  v6 = [v5 conformsToProtocol:v4];
+  protocolCopy = protocol;
+  target = [(PDSQueueProxy *)self target];
+  v6 = [target conformsToProtocol:protocolCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(PDSQueueProxy *)self target];
+  target = [(PDSQueueProxy *)self target];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(PDSQueueProxy *)self target];
-  v5 = [v4 methodSignatureForSelector:a3];
+  target = [(PDSQueueProxy *)self target];
+  v5 = [target methodSignatureForSelector:selector];
 
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(PDSQueueProxy *)self mode];
-  if (!v5)
+  invocationCopy = invocation;
+  mode = [(PDSQueueProxy *)self mode];
+  if (!mode)
   {
-    v6 = [(PDSQueueProxy *)self queue];
+    queue = [(PDSQueueProxy *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __35__PDSQueueProxy_forwardInvocation___block_invoke_2;
     v8[3] = &unk_2799F8360;
     v7 = v9;
-    v9[0] = v4;
+    v9[0] = invocationCopy;
     v9[1] = self;
-    dispatch_sync(v6, v8);
+    dispatch_sync(queue, v8);
     goto LABEL_5;
   }
 
-  if (v5 == 1)
+  if (mode == 1)
   {
-    [v4 retainArguments];
-    v6 = [(PDSQueueProxy *)self queue];
+    [invocationCopy retainArguments];
+    queue = [(PDSQueueProxy *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__PDSQueueProxy_forwardInvocation___block_invoke;
     block[3] = &unk_2799F8360;
     v7 = v11;
-    v11[0] = v4;
+    v11[0] = invocationCopy;
     v11[1] = self;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
 LABEL_5:
   }
 }

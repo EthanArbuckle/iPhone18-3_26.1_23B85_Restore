@@ -1,21 +1,21 @@
 @interface PGLocationTitleComponent
-- (BOOL)canMergeWithTitleComponent:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canMergeWithTitleComponent:(id)component;
+- (BOOL)isEqual:(id)equal;
 - (PGLocationTitleComponent)init;
 - (unint64_t)hash;
-- (void)updateWithMomentNodes:(id)a3;
+- (void)updateWithMomentNodes:(id)nodes;
 @end
 
 @implementation PGLocationTitleComponent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = PGLocationTitleComponent;
-  if ([(PGLocationTitleComponent *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(PGLocationTitleComponent *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     node = self->_node;
     if ((node == v5[2] || [(MANode *)node isSameNodeAsNode:?]) && ((edge = self->_edge, edge == v5[3]) || [(MAEdge *)edge isSameEdgeAsEdge:?]))
     {
@@ -43,9 +43,9 @@
   return v4 ^ [(NSMutableSet *)self->_addressNodes hash];
 }
 
-- (void)updateWithMomentNodes:(id)a3
+- (void)updateWithMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -54,16 +54,16 @@
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [v4 anyObject];
-  v6 = [v5 graph];
+  anyObject = [nodesCopy anyObject];
+  graph = [anyObject graph];
 
-  if (v6)
+  if (graph)
   {
     v7 = [PGGraphAddressNodeCollection alloc];
-    v8 = [(PGLocationTitleComponent *)self addressNodes];
-    v9 = [(MAElementCollection *)v7 initWithSet:v8 graph:v6];
+    addressNodes = [(PGLocationTitleComponent *)self addressNodes];
+    v9 = [(MAElementCollection *)v7 initWithSet:addressNodes graph:graph];
 
-    v10 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:v4 graph:v6];
+    v10 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:nodesCopy graph:graph];
     v11 = [(PGGraphEdgeCollection *)PGGraphAddressEdgeCollection edgesFromNodes:v10 toNodes:v9];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -97,13 +97,13 @@ void __50__PGLocationTitleComponent_updateWithMomentNodes___block_invoke(uint64_
   }
 }
 
-- (BOOL)canMergeWithTitleComponent:(id)a3
+- (BOOL)canMergeWithTitleComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   node = self->_node;
-  if ((node == v4[2] || [(MANode *)node isSameNodeAsNode:?]) && ((edge = self->_edge, edge == v4[3]) || [(MAEdge *)edge isSameEdgeAsEdge:?]))
+  if ((node == componentCopy[2] || [(MANode *)node isSameNodeAsNode:?]) && ((edge = self->_edge, edge == componentCopy[3]) || [(MAEdge *)edge isSameEdgeAsEdge:?]))
   {
-    v7 = [(NSMutableSet *)self->_addressNodes isEqual:v4[1]];
+    v7 = [(NSMutableSet *)self->_addressNodes isEqual:componentCopy[1]];
   }
 
   else

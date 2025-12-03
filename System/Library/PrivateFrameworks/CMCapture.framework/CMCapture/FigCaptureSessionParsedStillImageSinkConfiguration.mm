@@ -1,16 +1,16 @@
 @interface FigCaptureSessionParsedStillImageSinkConfiguration
 - (FigVideoCaptureConnectionConfiguration)primaryStillImageConnectionConfiguration;
 - (void)dealloc;
-- (void)initWithStillImageConnectionConfigurations:(void *)a3 movieFileVideoConnectionConfiguration:(void *)a4 pointCloudDataConnectionConfiguration:;
+- (void)initWithStillImageConnectionConfigurations:(void *)configurations movieFileVideoConnectionConfiguration:(void *)configuration pointCloudDataConnectionConfiguration:;
 @end
 
 @implementation FigCaptureSessionParsedStillImageSinkConfiguration
 
 - (FigVideoCaptureConnectionConfiguration)primaryStillImageConnectionConfiguration
 {
-  v2 = [(NSArray *)self->_stillImageConnectionConfigurations firstObject];
+  firstObject = [(NSArray *)self->_stillImageConnectionConfigurations firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (void)dealloc
@@ -20,21 +20,21 @@
   [(FigCaptureSessionParsedStillImageSinkConfiguration *)&v3 dealloc];
 }
 
-- (void)initWithStillImageConnectionConfigurations:(void *)a3 movieFileVideoConnectionConfiguration:(void *)a4 pointCloudDataConnectionConfiguration:
+- (void)initWithStillImageConnectionConfigurations:(void *)configurations movieFileVideoConnectionConfiguration:(void *)configuration pointCloudDataConnectionConfiguration:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = FigCaptureSessionParsedStillImageSinkConfiguration;
   v7 = objc_msgSendSuper2(&v9, sel_init);
   if (v7)
   {
     v7[1] = a2;
-    v7[2] = a3;
-    v7[3] = a4;
+    v7[2] = configurations;
+    v7[3] = configuration;
   }
 
   return v7;

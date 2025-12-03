@@ -1,57 +1,57 @@
 @interface CKVibrantBalloonContainerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKVibrantBalloonContainerView)initWithAudioBallonView:(id)a3 frame:(CGRect)a4;
-- (CKVibrantBalloonContainerView)initWithTextBalloonView:(id)a3 frame:(CGRect)a4;
-- (void)_commonInitWithVibrantBalloon:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKVibrantBalloonContainerView)initWithAudioBallonView:(id)view frame:(CGRect)frame;
+- (CKVibrantBalloonContainerView)initWithTextBalloonView:(id)view frame:(CGRect)frame;
+- (void)_commonInitWithVibrantBalloon:(id)balloon;
 - (void)_setupVisualEffectViews;
 - (void)layoutSubviews;
-- (void)setBlurEffect:(id)a3;
+- (void)setBlurEffect:(id)effect;
 @end
 
 @implementation CKVibrantBalloonContainerView
 
-- (CKVibrantBalloonContainerView)initWithTextBalloonView:(id)a3 frame:(CGRect)a4
+- (CKVibrantBalloonContainerView)initWithTextBalloonView:(id)view frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = CKVibrantBalloonContainerView;
-  v10 = [(CKVibrantBalloonContainerView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(CKVibrantBalloonContainerView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(CKVibrantBalloonContainerView *)v10 _commonInitWithVibrantBalloon:v9];
+    [(CKVibrantBalloonContainerView *)height _commonInitWithVibrantBalloon:viewCopy];
   }
 
   return v11;
 }
 
-- (CKVibrantBalloonContainerView)initWithAudioBallonView:(id)a3 frame:(CGRect)a4
+- (CKVibrantBalloonContainerView)initWithAudioBallonView:(id)view frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = CKVibrantBalloonContainerView;
-  v10 = [(CKVibrantBalloonContainerView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(CKVibrantBalloonContainerView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(CKVibrantBalloonContainerView *)v10 _commonInitWithVibrantBalloon:v9];
+    [(CKVibrantBalloonContainerView *)height _commonInitWithVibrantBalloon:viewCopy];
   }
 
   return v11;
 }
 
-- (void)_commonInitWithVibrantBalloon:(id)a3
+- (void)_commonInitWithVibrantBalloon:(id)balloon
 {
-  objc_storeStrong(&self->_vibrantBalloonView, a3);
+  objc_storeStrong(&self->_vibrantBalloonView, balloon);
 
   [(CKVibrantBalloonContainerView *)self _setupVisualEffectViews];
 }
@@ -72,9 +72,9 @@
   [(CKBalloonVibrancy *)vibrantBalloonView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CKBalloonVibrancy *)self->_vibrantBalloonView sizeThatFits:a3.width, a3.height];
+  [(CKBalloonVibrancy *)self->_vibrantBalloonView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -103,16 +103,16 @@
   [v5 setEffect:v6];
 
   objc_storeStrong(&self->_vibrantView, v5);
-  v7 = [(UIVisualEffectView *)self->_blurView contentView];
-  [v7 addSubview:self->_vibrantView];
+  contentView = [(UIVisualEffectView *)self->_blurView contentView];
+  [contentView addSubview:self->_vibrantView];
 
-  v8 = [(CKBalloonVibrancy *)self->_vibrantBalloonView nonVibrantSubViews];
-  [(CKBalloonVibrancy *)self->_vibrantBalloonView vibrantContainerWillReparentNonVibrantSubviews:v8];
+  nonVibrantSubViews = [(CKBalloonVibrancy *)self->_vibrantBalloonView nonVibrantSubViews];
+  [(CKBalloonVibrancy *)self->_vibrantBalloonView vibrantContainerWillReparentNonVibrantSubviews:nonVibrantSubViews];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v8;
+  v9 = nonVibrantSubViews;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -138,18 +138,18 @@
     while (v11);
   }
 
-  v15 = [(UIVisualEffectView *)self->_vibrantView contentView];
-  [v15 addSubview:self->_vibrantBalloonView];
+  contentView2 = [(UIVisualEffectView *)self->_vibrantView contentView];
+  [contentView2 addSubview:self->_vibrantBalloonView];
 
   [(UIVisualEffectView *)self->_blurView setMaskView:self->_vibrantBalloonView];
 }
 
-- (void)setBlurEffect:(id)a3
+- (void)setBlurEffect:(id)effect
 {
   blurView = self->_blurView;
-  v5 = a3;
-  [(UIVisualEffectView *)blurView setEffect:v5];
-  [(UIVisualEffectView *)self->_vibrantView setEffect:v5];
+  effectCopy = effect;
+  [(UIVisualEffectView *)blurView setEffect:effectCopy];
+  [(UIVisualEffectView *)self->_vibrantView setEffect:effectCopy];
 }
 
 @end

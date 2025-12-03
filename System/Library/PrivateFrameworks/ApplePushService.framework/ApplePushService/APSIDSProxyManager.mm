@@ -6,42 +6,42 @@
 - (id)_recipientDevice;
 - (void)__assertWiFiIfPossible;
 - (void)_assertWiFiIfPossible;
-- (void)_checkNearbyDevices:(id)a3;
+- (void)_checkNearbyDevices:(id)devices;
 - (void)_deviceNotFoundTimerFired;
 - (void)_flushDeviceNotFoundMessageQueue;
-- (void)_onQueue_checkNearbyDevices:(id)a3;
+- (void)_onQueue_checkNearbyDevices:(id)devices;
 - (void)_reportProxyMessages;
-- (void)_retrieveAllDevicesAndDo:(id)a3;
+- (void)_retrieveAllDevicesAndDo:(id)do;
 - (void)_scheduleDeviceNotFoundTimer;
 - (void)_sendDaemonAliveMessage;
 - (void)_startPowerLoggingMessages;
 - (void)_stopPowerLoggingMessages;
-- (void)_updateTimerIfNecessaryWithDevices:(id)a3;
+- (void)_updateTimerIfNecessaryWithDevices:(id)devices;
 - (void)dealloc;
 - (void)removeAllPendingAPSMessages;
-- (void)removeListener:(id)a3 environment:(id)a4;
-- (void)sendAppTokenGenerateResponse:(id)a3 error:(id)a4 guid:(id)a5 environmentName:(id)a6;
-- (void)sendExpiredNonceWithServerTime:(id)a3 shouldRollToken:(BOOL)a4 guid:(id)a5 environmentName:(id)a6;
-- (void)sendFilterWithEnvironmentName:(id)a3 guid:(id)a4 enabledTopics:(id)a5 ignoredTopics:(id)a6 opportunisticTopics:(id)a7 nonWakingTopics:(id)a8 topicSalts:(id)a9;
-- (void)sendInactiveWithEnvironmentName:(id)a3 guid:(id)a4;
-- (void)sendLargeMessageSize:(unint64_t)a3 guid:(id)a4 environmentName:(id)a5;
-- (void)sendMessage:(id)a3 guid:(id)a4 environmentName:(id)a5;
-- (void)sendMessageSize:(unint64_t)a3 guid:(id)a4 environmentName:(id)a5;
-- (void)sendPresenceWithEnvironmentName:(id)a3 guid:(id)a4 token:(id)a5 hwVersion:(id)a6 swVersion:(id)a7 swBuild:(id)a8 certificates:(id)a9 nonce:(id)a10 signature:(id)a11 additionalFlags:(int)a12 hostCertificateInfo:(id)a13;
-- (void)sendProxyMessage:(id)a3 forAPSMessage:(id)a4;
-- (void)sendPubSubChannelListRequest:(int64_t)a3 environmentName:(id)a4 guid:(id)a5;
-- (void)sendPubSubChannelListResponse:(id)a3 environmentName:(id)a4 guid:(id)a5;
-- (void)sendPubSubUpdateMessage:(id)a3 connectionType:(int64_t)a4 environmentName:(id)a5 guid:(id)a6;
-- (void)sendPushToken:(id)a3 guid:(id)a4 environmentName:(id)a5;
-- (void)sendReceivedPush:(id)a3 forConnectionType:(int64_t)a4 generation:(unint64_t)a5 guid:(id)a6 environmentName:(id)a7;
-- (void)sendReversePushResponse:(int64_t)a3 messageGUID:(id)a4 messageId:(unint64_t)a5 guid:(id)a6 environmentName:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
-- (void)service:(id)a3 linkedDevicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)setListener:(id)a3 environment:(id)a4;
+- (void)removeListener:(id)listener environment:(id)environment;
+- (void)sendAppTokenGenerateResponse:(id)response error:(id)error guid:(id)guid environmentName:(id)name;
+- (void)sendExpiredNonceWithServerTime:(id)time shouldRollToken:(BOOL)token guid:(id)guid environmentName:(id)name;
+- (void)sendFilterWithEnvironmentName:(id)name guid:(id)guid enabledTopics:(id)topics ignoredTopics:(id)ignoredTopics opportunisticTopics:(id)opportunisticTopics nonWakingTopics:(id)wakingTopics topicSalts:(id)salts;
+- (void)sendInactiveWithEnvironmentName:(id)name guid:(id)guid;
+- (void)sendLargeMessageSize:(unint64_t)size guid:(id)guid environmentName:(id)name;
+- (void)sendMessage:(id)message guid:(id)guid environmentName:(id)name;
+- (void)sendMessageSize:(unint64_t)size guid:(id)guid environmentName:(id)name;
+- (void)sendPresenceWithEnvironmentName:(id)name guid:(id)guid token:(id)token hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)build certificates:(id)certificates nonce:(id)self0 signature:(id)self1 additionalFlags:(int)self2 hostCertificateInfo:(id)self3;
+- (void)sendProxyMessage:(id)message forAPSMessage:(id)sMessage;
+- (void)sendPubSubChannelListRequest:(int64_t)request environmentName:(id)name guid:(id)guid;
+- (void)sendPubSubChannelListResponse:(id)response environmentName:(id)name guid:(id)guid;
+- (void)sendPubSubUpdateMessage:(id)message connectionType:(int64_t)type environmentName:(id)name guid:(id)guid;
+- (void)sendPushToken:(id)token guid:(id)guid environmentName:(id)name;
+- (void)sendReceivedPush:(id)push forConnectionType:(int64_t)type generation:(unint64_t)generation guid:(id)guid environmentName:(id)name;
+- (void)sendReversePushResponse:(int64_t)response messageGUID:(id)d messageId:(unint64_t)id guid:(id)guid environmentName:(id)name;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
+- (void)service:(id)service linkedDevicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)setListener:(id)listener environment:(id)environment;
 @end
 
 @implementation APSIDSProxyManager
@@ -151,7 +151,7 @@ LABEL_11:
       v4 = @"NO";
     }
 
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = @"NO";
     v10 = 2112;
@@ -162,10 +162,10 @@ LABEL_11:
   return 0;
 }
 
-- (void)setListener:(id)a3 environment:(id)a4
+- (void)setListener:(id)listener environment:(id)environment
 {
-  v11 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  environmentCopy = environment;
   environmentToListener = self->_environmentToListener;
   if (!environmentToListener)
   {
@@ -176,23 +176,23 @@ LABEL_11:
     environmentToListener = self->_environmentToListener;
   }
 
-  v10 = [v6 name];
-  [(NSMapTable *)environmentToListener setObject:v11 forKey:v10];
+  name = [environmentCopy name];
+  [(NSMapTable *)environmentToListener setObject:listenerCopy forKey:name];
 }
 
-- (void)removeListener:(id)a3 environment:(id)a4
+- (void)removeListener:(id)listener environment:(id)environment
 {
-  v13 = a4;
+  environmentCopy = environment;
   environmentToListener = self->_environmentToListener;
-  v7 = a3;
-  v8 = [v13 name];
-  v9 = [(NSMapTable *)environmentToListener objectForKey:v8];
+  listenerCopy = listener;
+  name = [environmentCopy name];
+  v9 = [(NSMapTable *)environmentToListener objectForKey:name];
 
-  if (v9 == v7)
+  if (v9 == listenerCopy)
   {
     v10 = self->_environmentToListener;
-    v11 = [v13 name];
-    [(NSMapTable *)v10 removeObjectForKey:v11];
+    name2 = [environmentCopy name];
+    [(NSMapTable *)v10 removeObjectForKey:name2];
 
     if (![(NSMapTable *)self->_environmentToListener count])
     {
@@ -202,14 +202,14 @@ LABEL_11:
   }
 }
 
-- (void)sendProxyMessage:(id)a3 forAPSMessage:(id)a4
+- (void)sendProxyMessage:(id)message forAPSMessage:(id)sMessage
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  sMessageCopy = sMessage;
   v8 = APSEncodeDictionary();
   if (v8)
   {
-    v9 = [v6 objectForKey:@"c"];
+    v9 = [messageCopy objectForKey:@"c"];
     v10 = v9;
     v11 = &off_100197830;
     if (v9)
@@ -219,67 +219,67 @@ LABEL_11:
 
     v12 = v11;
 
-    v13 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    mainQueue_outgoingPowerLogDictionary = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
+    v14 = [mainQueue_outgoingPowerLogDictionary objectForKeyedSubscript:v12];
 
-    v15 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
-    v16 = v15;
+    mainQueue_outgoingPowerLogDictionary2 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
+    v16 = mainQueue_outgoingPowerLogDictionary2;
     if (v14)
     {
-      v17 = [v15 objectForKeyedSubscript:v12];
-      v18 = [v17 integerValue];
+      v17 = [mainQueue_outgoingPowerLogDictionary2 objectForKeyedSubscript:v12];
+      integerValue = [v17 integerValue];
 
-      v16 = [NSNumber numberWithInteger:v18 + 1];
-      v19 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
-      [v19 setObject:v16 forKeyedSubscript:v12];
+      v16 = [NSNumber numberWithInteger:integerValue + 1];
+      mainQueue_outgoingPowerLogDictionary3 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
+      [mainQueue_outgoingPowerLogDictionary3 setObject:v16 forKeyedSubscript:v12];
     }
 
     else
     {
-      [v15 setObject:&off_100197848 forKeyedSubscript:v12];
+      [mainQueue_outgoingPowerLogDictionary2 setObject:&off_100197848 forKeyedSubscript:v12];
     }
 
-    v20 = [objc_opt_class() _idsSendQueue];
+    _idsSendQueue = [objc_opt_class() _idsSendQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100089C78;
     block[3] = &unk_1001886B0;
     block[4] = self;
-    v23 = v6;
+    v23 = messageCopy;
     v24 = v8;
     v25 = v12;
-    v26 = v7;
+    v26 = sMessageCopy;
     v21 = v12;
-    dispatch_async(v20, block);
+    dispatch_async(_idsSendQueue, block);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
-    v30 = v6;
+    v30 = messageCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ got nil data when encoding message %@", buf, 0x16u);
   }
 }
 
 - (void)_scheduleDeviceNotFoundTimer
 {
-  v3 = [(APSIDSProxyManager *)self deviceNotFoundTimer];
+  deviceNotFoundTimer = [(APSIDSProxyManager *)self deviceNotFoundTimer];
 
-  if (!v3)
+  if (!deviceNotFoundTimer)
   {
     v4 = [[PCPersistentTimer alloc] initWithTimeInterval:@"APSIDSProxyManager" serviceIdentifier:self target:"_deviceNotFoundTimerFired" selector:0 userInfo:120.0];
     [(APSIDSProxyManager *)self setDeviceNotFoundTimer:v4];
 
-    v5 = [(APSIDSProxyManager *)self deviceNotFoundTimer];
+    deviceNotFoundTimer2 = [(APSIDSProxyManager *)self deviceNotFoundTimer];
     v6 = +[NSRunLoop mainRunLoop];
-    [v5 scheduleInRunLoop:v6];
+    [deviceNotFoundTimer2 scheduleInRunLoop:v6];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ scheduling timer to clean device not found queue.", &v7, 0xCu);
     }
   }
@@ -287,12 +287,12 @@ LABEL_11:
 
 - (void)_deviceNotFoundTimerFired
 {
-  v3 = [(APSIDSProxyManager *)self deviceNotFoundTimer];
-  [v3 invalidate];
+  deviceNotFoundTimer = [(APSIDSProxyManager *)self deviceNotFoundTimer];
+  [deviceNotFoundTimer invalidate];
 
   [(APSIDSProxyManager *)self setDeviceNotFoundTimer:0];
-  v4 = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
-  v5 = [v4 count];
+  deviceNotFoundMessageQueue = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
+  v5 = [deviceNotFoundMessageQueue count];
 
   if (v5)
   {
@@ -301,8 +301,8 @@ LABEL_11:
       sub_10010C1B8(self);
     }
 
-    v6 = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
-    [v6 removeAllObjects];
+    deviceNotFoundMessageQueue2 = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
+    [deviceNotFoundMessageQueue2 removeAllObjects];
   }
 }
 
@@ -313,17 +313,17 @@ LABEL_11:
   v3 = &_os_log_default;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
+    deviceNotFoundMessageQueue = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
     *buf = 134217984;
-    v20 = [v4 count];
+    v20 = [deviceNotFoundMessageQueue count];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%lu messages to redeliver.", buf, 0xCu);
   }
 
-  v5 = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
-  v6 = [v5 copy];
+  deviceNotFoundMessageQueue2 = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
+  v6 = [deviceNotFoundMessageQueue2 copy];
 
-  v7 = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
-  [v7 removeAllObjects];
+  deviceNotFoundMessageQueue3 = [(APSIDSProxyManager *)self deviceNotFoundMessageQueue];
+  [deviceNotFoundMessageQueue3 removeAllObjects];
 
   v16 = 0u;
   v17 = 0u;
@@ -368,7 +368,7 @@ LABEL_11:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ sending daemonAliveMessage - we need fresh presences", buf, 0xCu);
   }
 
@@ -376,178 +376,178 @@ LABEL_11:
   [(APSIDSProxyManager *)self sendProxyMessage:v3];
 }
 
-- (void)sendPushToken:(id)a3 guid:(id)a4 environmentName:(id)a5
+- (void)sendPushToken:(id)token guid:(id)guid environmentName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  guidCopy = guid;
+  nameCopy = name;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v8;
+    v15 = tokenCopy;
     v16 = 2112;
-    v17 = v10;
+    v17 = nameCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = guidCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send push token %@ with environment %@ and guid %@", buf, 0x2Au);
   }
 
-  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197878, @"c", v9, @"pG", v10, @"e", v8, @"t", 0];
+  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197878, @"c", guidCopy, @"pG", nameCopy, @"e", tokenCopy, @"t", 0];
   [(APSIDSProxyManager *)self sendProxyMessage:v11];
 }
 
-- (void)sendMessageSize:(unint64_t)a3 guid:(id)a4 environmentName:(id)a5
+- (void)sendMessageSize:(unint64_t)size guid:(id)guid environmentName:(id)name
 {
-  v8 = a4;
-  v9 = a5;
+  guidCopy = guid;
+  nameCopy = name;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
-    v15 = a3;
+    sizeCopy = size;
     v16 = 2112;
-    v17 = v9;
+    v17 = nameCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = guidCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send message size %lu with environment %@ and guid %@", buf, 0x2Au);
   }
 
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
-  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197890, @"c", v8, @"pG", v9, @"e", v10, @"mS", 0];
+  v10 = [NSNumber numberWithUnsignedInteger:size];
+  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197890, @"c", guidCopy, @"pG", nameCopy, @"e", v10, @"mS", 0];
 
   [(APSIDSProxyManager *)self sendProxyMessage:v11];
 }
 
-- (void)sendLargeMessageSize:(unint64_t)a3 guid:(id)a4 environmentName:(id)a5
+- (void)sendLargeMessageSize:(unint64_t)size guid:(id)guid environmentName:(id)name
 {
-  v8 = a4;
-  v9 = a5;
+  guidCopy = guid;
+  nameCopy = name;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
-    v15 = a3;
+    sizeCopy = size;
     v16 = 2112;
-    v17 = v9;
+    v17 = nameCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = guidCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send large message size %lu with environment %@ and guid %@", buf, 0x2Au);
   }
 
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
-  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197890, @"c", v8, @"pG", v9, @"e", v10, @"lS", 0];
+  v10 = [NSNumber numberWithUnsignedInteger:size];
+  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197890, @"c", guidCopy, @"pG", nameCopy, @"e", v10, @"lS", 0];
 
   [(APSIDSProxyManager *)self sendProxyMessage:v11];
 }
 
-- (void)sendReceivedPush:(id)a3 forConnectionType:(int64_t)a4 generation:(unint64_t)a5 guid:(id)a6 environmentName:(id)a7
+- (void)sendReceivedPush:(id)push forConnectionType:(int64_t)type generation:(unint64_t)generation guid:(id)guid environmentName:(id)name
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  pushCopy = push;
+  guidCopy = guid;
+  nameCopy = name;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v12;
+    v21 = pushCopy;
     v22 = 2112;
-    v23 = v14;
+    v23 = nameCopy;
     v24 = 2112;
-    v25 = v13;
+    v25 = guidCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send received push %@ with environment %@ and guid %@", buf, 0x2Au);
   }
 
-  v15 = [NSNumber numberWithInteger:a4];
-  v16 = [NSNumber numberWithUnsignedInteger:a5];
-  v17 = [NSDictionary dictionaryWithObjectsAndKeys:&off_1001978A8, @"c", v13, @"pG", v14, @"e", v12, @"p", v15, @"i", v16, @"g", 0];
+  v15 = [NSNumber numberWithInteger:type];
+  v16 = [NSNumber numberWithUnsignedInteger:generation];
+  v17 = [NSDictionary dictionaryWithObjectsAndKeys:&off_1001978A8, @"c", guidCopy, @"pG", nameCopy, @"e", pushCopy, @"p", v15, @"i", v16, @"g", 0];
 
   [(APSIDSProxyManager *)self sendProxyMessage:v17];
 }
 
-- (void)sendPresenceWithEnvironmentName:(id)a3 guid:(id)a4 token:(id)a5 hwVersion:(id)a6 swVersion:(id)a7 swBuild:(id)a8 certificates:(id)a9 nonce:(id)a10 signature:(id)a11 additionalFlags:(int)a12 hostCertificateInfo:(id)a13
+- (void)sendPresenceWithEnvironmentName:(id)name guid:(id)guid token:(id)token hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)build certificates:(id)certificates nonce:(id)self0 signature:(id)self1 additionalFlags:(int)self2 hostCertificateInfo:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v38 = a7;
-  v36 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v35 = a13;
+  nameCopy = name;
+  guidCopy = guid;
+  tokenCopy = token;
+  versionCopy = version;
+  swVersionCopy = swVersion;
+  buildCopy = build;
+  certificatesCopy = certificates;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  infoCopy = info;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v40 = self;
+    selfCopy = self;
     v41 = 2112;
-    v42 = v18;
+    v42 = nameCopy;
     v43 = 2112;
-    v44 = v19;
+    v44 = guidCopy;
     v45 = 2112;
-    v46 = v21;
+    v46 = versionCopy;
     v47 = 2112;
-    v48 = v20;
+    v48 = tokenCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send presence with environment %@ guid %@ hwVersion %@ token %@", buf, 0x34u);
   }
 
-  v25 = [NSNumber numberWithUnsignedInt:a12];
-  v26 = v19;
+  v25 = [NSNumber numberWithUnsignedInt:flags];
+  v26 = guidCopy;
   v27 = v25;
-  v28 = v18;
-  v29 = v23;
-  v34 = v23;
-  v30 = v22;
-  v33 = v22;
+  v28 = nameCopy;
+  v29 = nonceCopy;
+  v34 = nonceCopy;
+  v30 = certificatesCopy;
+  v33 = certificatesCopy;
   v31 = v26;
-  v32 = [NSMutableDictionary dictionaryWithObjectsAndKeys:&off_1001978C0, @"c", v26, @"pG", v33, @"cc", v34, @"no", v24, @"si", v18, @"e", v25, @"aF", 0];
+  v32 = [NSMutableDictionary dictionaryWithObjectsAndKeys:&off_1001978C0, @"c", v26, @"pG", v33, @"cc", v34, @"no", signatureCopy, @"si", nameCopy, @"e", v25, @"aF", 0];
 
-  if (v21)
+  if (versionCopy)
   {
-    [v32 setObject:v21 forKey:@"hw"];
+    [v32 setObject:versionCopy forKey:@"hw"];
   }
 
-  if (v38 && v36)
+  if (swVersionCopy && buildCopy)
   {
-    [v32 setObject:v38 forKey:@"sv"];
-    [v32 setObject:v36 forKey:@"sb"];
+    [v32 setObject:swVersionCopy forKey:@"sv"];
+    [v32 setObject:buildCopy forKey:@"sb"];
   }
 
-  if (v20)
+  if (tokenCopy)
   {
-    [v32 setObject:v20 forKey:@"t"];
+    [v32 setObject:tokenCopy forKey:@"t"];
   }
 
   [(APSIDSProxyManager *)self sendProxyMessage:v32];
 }
 
-- (void)sendFilterWithEnvironmentName:(id)a3 guid:(id)a4 enabledTopics:(id)a5 ignoredTopics:(id)a6 opportunisticTopics:(id)a7 nonWakingTopics:(id)a8 topicSalts:(id)a9
+- (void)sendFilterWithEnvironmentName:(id)name guid:(id)guid enabledTopics:(id)topics ignoredTopics:(id)ignoredTopics opportunisticTopics:(id)opportunisticTopics nonWakingTopics:(id)wakingTopics topicSalts:(id)salts
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  nameCopy = name;
+  guidCopy = guid;
+  topicsCopy = topics;
+  ignoredTopicsCopy = ignoredTopics;
+  opportunisticTopicsCopy = opportunisticTopics;
+  wakingTopicsCopy = wakingTopics;
+  saltsCopy = salts;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v15;
+    v26 = nameCopy;
     v27 = 2112;
-    v28 = v16;
+    v28 = guidCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send filter with environment %@ guid %@", buf, 0x20u);
-    if (v17)
+    if (topicsCopy)
     {
 LABEL_3:
-      if (v18)
+      if (ignoredTopicsCopy)
       {
         goto LABEL_4;
       }
@@ -556,23 +556,23 @@ LABEL_3:
     }
   }
 
-  else if (v17)
+  else if (topicsCopy)
   {
     goto LABEL_3;
   }
 
-  v17 = +[NSArray array];
-  if (v18)
+  topicsCopy = +[NSArray array];
+  if (ignoredTopicsCopy)
   {
 LABEL_4:
-    if (v19)
+    if (opportunisticTopicsCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
-    v19 = +[NSArray array];
-    if (v20)
+    opportunisticTopicsCopy = +[NSArray array];
+    if (wakingTopicsCopy)
     {
       goto LABEL_6;
     }
@@ -581,127 +581,127 @@ LABEL_12:
   }
 
 LABEL_11:
-  v18 = +[NSArray array];
-  if (!v19)
+  ignoredTopicsCopy = +[NSArray array];
+  if (!opportunisticTopicsCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v20)
+  if (wakingTopicsCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_13:
-  v20 = +[NSArray array];
+  wakingTopicsCopy = +[NSArray array];
 LABEL_6:
-  if (!v21)
+  if (!saltsCopy)
   {
-    v21 = +[NSDictionary dictionary];
+    saltsCopy = +[NSDictionary dictionary];
   }
 
-  v22 = [NSDictionary dictionaryWithObjectsAndKeys:&off_1001978D8, @"c", v16, @"pG", v15, @"e", v17, @"eT", v18, @"iT", v19, @"oT", v20, @"nT", v21, @"tSal", 0];
+  v22 = [NSDictionary dictionaryWithObjectsAndKeys:&off_1001978D8, @"c", guidCopy, @"pG", nameCopy, @"e", topicsCopy, @"eT", ignoredTopicsCopy, @"iT", opportunisticTopicsCopy, @"oT", wakingTopicsCopy, @"nT", saltsCopy, @"tSal", 0];
   [(APSIDSProxyManager *)self sendProxyMessage:v22];
 }
 
-- (void)sendPubSubChannelListResponse:(id)a3 environmentName:(id)a4 guid:(id)a5
+- (void)sendPubSubChannelListResponse:(id)response environmentName:(id)name guid:(id)guid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  nameCopy = name;
+  guidCopy = guid;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send pubsub channel list resposne", buf, 0xCu);
   }
 
-  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197908, @"c", v8, @"p", v9, @"e", v10, @"pG", 0];
+  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197908, @"c", responseCopy, @"p", nameCopy, @"e", guidCopy, @"pG", 0];
   [(APSIDSProxyManager *)self sendProxyMessage:v11];
 }
 
-- (void)sendPubSubUpdateMessage:(id)a3 connectionType:(int64_t)a4 environmentName:(id)a5 guid:(id)a6
+- (void)sendPubSubUpdateMessage:(id)message connectionType:(int64_t)type environmentName:(id)name guid:(id)guid
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  messageCopy = message;
+  nameCopy = name;
+  guidCopy = guid;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send pubsub update message", buf, 0xCu);
   }
 
-  v13 = [NSNumber numberWithInteger:a4];
-  v14 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197920, @"c", v10, @"p", v13, @"i", v11, @"e", v12, @"pG", 0];
+  v13 = [NSNumber numberWithInteger:type];
+  v14 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197920, @"c", messageCopy, @"p", v13, @"i", nameCopy, @"e", guidCopy, @"pG", 0];
 
   [(APSIDSProxyManager *)self sendProxyMessage:v14];
 }
 
-- (void)sendPubSubChannelListRequest:(int64_t)a3 environmentName:(id)a4 guid:(id)a5
+- (void)sendPubSubChannelListRequest:(int64_t)request environmentName:(id)name guid:(id)guid
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  guidCopy = guid;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to send pubsub channel request message", buf, 0xCu);
   }
 
-  v10 = [NSNumber numberWithInteger:a3];
-  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197938, @"c", v10, @"i", v8, @"e", v9, @"pG", 0];
+  v10 = [NSNumber numberWithInteger:request];
+  v11 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197938, @"c", v10, @"i", nameCopy, @"e", guidCopy, @"pG", 0];
 
   [(APSIDSProxyManager *)self sendProxyMessage:v11];
 }
 
-- (void)sendInactiveWithEnvironmentName:(id)a3 guid:(id)a4
+- (void)sendInactiveWithEnvironmentName:(id)name guid:(id)guid
 {
-  v5 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197950, @"c", a4, @"pG", a3, @"e", 0];
+  v5 = [NSDictionary dictionaryWithObjectsAndKeys:&off_100197950, @"c", guid, @"pG", name, @"e", 0];
   [(APSIDSProxyManager *)self sendProxyMessage:v5];
 }
 
-- (void)sendMessage:(id)a3 guid:(id)a4 environmentName:(id)a5
+- (void)sendMessage:(id)message guid:(id)guid environmentName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 dictionaryRepresentation];
-  v12 = [NSDictionary dictionaryWithObjectsAndKeys:&off_1001979B0, @"c", v9, @"pG", v8, @"e", v11, @"rP", 0];
+  nameCopy = name;
+  guidCopy = guid;
+  messageCopy = message;
+  dictionaryRepresentation = [messageCopy dictionaryRepresentation];
+  v12 = [NSDictionary dictionaryWithObjectsAndKeys:&off_1001979B0, @"c", guidCopy, @"pG", nameCopy, @"e", dictionaryRepresentation, @"rP", 0];
 
-  [(APSIDSProxyManager *)self sendProxyMessage:v12 forAPSMessage:v10];
+  [(APSIDSProxyManager *)self sendProxyMessage:v12 forAPSMessage:messageCopy];
 }
 
-- (void)sendReversePushResponse:(int64_t)a3 messageGUID:(id)a4 messageId:(unint64_t)a5 guid:(id)a6 environmentName:(id)a7
+- (void)sendReversePushResponse:(int64_t)response messageGUID:(id)d messageId:(unint64_t)id guid:(id)guid environmentName:(id)name
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = [NSNumber numberWithInteger:a3];
-  v16 = [NSNumber numberWithUnsignedInteger:a5];
-  v17 = [NSDictionary dictionaryWithObjectsAndKeys:&off_1001979C8, @"c", v13, @"pG", v12, @"e", v15, @"r", v16, @"mI", v14, @"mG", 0];
+  nameCopy = name;
+  guidCopy = guid;
+  dCopy = d;
+  v15 = [NSNumber numberWithInteger:response];
+  v16 = [NSNumber numberWithUnsignedInteger:id];
+  v17 = [NSDictionary dictionaryWithObjectsAndKeys:&off_1001979C8, @"c", guidCopy, @"pG", nameCopy, @"e", v15, @"r", v16, @"mI", dCopy, @"mG", 0];
 
   [(APSIDSProxyManager *)self sendProxyMessage:v17];
 }
 
-- (void)sendExpiredNonceWithServerTime:(id)a3 shouldRollToken:(BOOL)a4 guid:(id)a5 environmentName:(id)a6
+- (void)sendExpiredNonceWithServerTime:(id)time shouldRollToken:(BOOL)token guid:(id)guid environmentName:(id)name
 {
-  v8 = a4;
-  v14 = a3;
-  v10 = a6;
-  v11 = a5;
+  tokenCopy = token;
+  timeCopy = time;
+  nameCopy = name;
+  guidCopy = guid;
   v12 = objc_opt_new();
   [v12 setObject:&off_1001979E0 forKey:@"c"];
-  [v12 setObject:v11 forKey:@"pG"];
+  [v12 setObject:guidCopy forKey:@"pG"];
 
-  [v12 setObject:v10 forKey:@"e"];
-  if (v14)
+  [v12 setObject:nameCopy forKey:@"e"];
+  if (timeCopy)
   {
-    [v12 setObject:v14 forKey:@"st"];
+    [v12 setObject:timeCopy forKey:@"st"];
   }
 
-  if (v8)
+  if (tokenCopy)
   {
     v13 = [NSNumber numberWithBool:1];
     [v12 setObject:v13 forKey:@"rT"];
@@ -710,26 +710,26 @@ LABEL_6:
   [(APSIDSProxyManager *)self sendProxyMessage:v12];
 }
 
-- (void)sendAppTokenGenerateResponse:(id)a3 error:(id)a4 guid:(id)a5 environmentName:(id)a6
+- (void)sendAppTokenGenerateResponse:(id)response error:(id)error guid:(id)guid environmentName:(id)name
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  responseCopy = response;
+  errorCopy = error;
+  nameCopy = name;
+  guidCopy = guid;
   v13 = objc_opt_new();
   [v13 setObject:&off_1001979F8 forKey:@"c"];
-  [v13 setObject:v12 forKey:@"pG"];
+  [v13 setObject:guidCopy forKey:@"pG"];
 
-  [v13 setObject:v11 forKey:@"e"];
-  if (v10)
+  [v13 setObject:nameCopy forKey:@"e"];
+  if (errorCopy)
   {
-    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 code]);
+    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v13 setObject:v14 forKey:@"er"];
   }
 
-  if (v15)
+  if (responseCopy)
   {
-    [v13 setObject:v15 forKey:@"r"];
+    [v13 setObject:responseCopy forKey:@"r"];
   }
 
   [(APSIDSProxyManager *)self sendProxyMessage:v13];
@@ -741,7 +741,7 @@ LABEL_6:
   {
     apsOutgoingMessageMap = self->_apsOutgoingMessageMap;
     v5 = 138412546;
-    v6 = self;
+    selfCopy = self;
     v7 = 2112;
     v8 = apsOutgoingMessageMap;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ removed all pending messages in APSOutgoingMessageMap %@", &v5, 0x16u);
@@ -759,29 +759,29 @@ LABEL_6:
   v4 = +[NSMutableDictionary dictionary];
   [(APSIDSProxyManager *)self setMainQueue_outgoingPowerLogDictionary:v4];
 
-  v5 = [(APSIDSProxyManager *)self powerLogTimer];
+  powerLogTimer = [(APSIDSProxyManager *)self powerLogTimer];
 
-  if (v5)
+  if (powerLogTimer)
   {
-    v6 = [(APSIDSProxyManager *)self powerLogTimer];
-    dispatch_source_cancel(v6);
+    powerLogTimer2 = [(APSIDSProxyManager *)self powerLogTimer];
+    dispatch_source_cancel(powerLogTimer2);
   }
 
   v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
   [(APSIDSProxyManager *)self setPowerLogTimer:v7];
 
-  v8 = [(APSIDSProxyManager *)self powerLogTimer];
+  powerLogTimer3 = [(APSIDSProxyManager *)self powerLogTimer];
   v9 = dispatch_time(0, 60000000000);
-  dispatch_source_set_timer(v8, v9, 0xDF8475800uLL, 0);
+  dispatch_source_set_timer(powerLogTimer3, v9, 0xDF8475800uLL, 0);
 
   objc_initWeak(&location, self);
-  v10 = [(APSIDSProxyManager *)self powerLogTimer];
+  powerLogTimer4 = [(APSIDSProxyManager *)self powerLogTimer];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_10008C65C;
   v15 = &unk_1001886D8;
   objc_copyWeak(&v16, &location);
-  dispatch_source_set_event_handler(v10, &v12);
+  dispatch_source_set_event_handler(powerLogTimer4, &v12);
 
   v11 = [(APSIDSProxyManager *)self powerLogTimer:v12];
   dispatch_resume(v11);
@@ -792,115 +792,115 @@ LABEL_6:
 
 - (void)_reportProxyMessages
 {
-  v3 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
-  v4 = [v3 count];
+  mainQueue_incomingPowerLogDictionary = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
+  v4 = [mainQueue_incomingPowerLogDictionary count];
 
   if (v4)
   {
-    v5 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
-    v6 = [v5 copy];
+    mainQueue_incomingPowerLogDictionary2 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
+    v6 = [mainQueue_incomingPowerLogDictionary2 copy];
     APSPowerLog();
 
-    v7 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
-    [v7 removeAllObjects];
+    mainQueue_incomingPowerLogDictionary3 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
+    [mainQueue_incomingPowerLogDictionary3 removeAllObjects];
   }
 
-  v8 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
-  v9 = [v8 count];
+  mainQueue_outgoingPowerLogDictionary = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
+  v9 = [mainQueue_outgoingPowerLogDictionary count];
 
   if (v9)
   {
-    v10 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
-    v11 = [v10 copy];
+    mainQueue_outgoingPowerLogDictionary2 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
+    v11 = [mainQueue_outgoingPowerLogDictionary2 copy];
     APSPowerLog();
 
-    v12 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
-    [v12 removeAllObjects];
+    mainQueue_outgoingPowerLogDictionary3 = [(APSIDSProxyManager *)self mainQueue_outgoingPowerLogDictionary];
+    [mainQueue_outgoingPowerLogDictionary3 removeAllObjects];
   }
 }
 
 - (void)_stopPowerLoggingMessages
 {
-  v3 = [(APSIDSProxyManager *)self powerLogTimer];
-  dispatch_source_cancel(v3);
+  powerLogTimer = [(APSIDSProxyManager *)self powerLogTimer];
+  dispatch_source_cancel(powerLogTimer);
 
   [(APSIDSProxyManager *)self setMainQueue_incomingPowerLogDictionary:0];
 
   [(APSIDSProxyManager *)self setMainQueue_outgoingPowerLogDictionary:0];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  successCopy = success;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v16 = @"NO";
     *buf = 138413058;
-    v22 = self;
-    if (v8)
+    selfCopy2 = self;
+    if (successCopy)
     {
       v16 = @"YES";
     }
 
     v23 = 2112;
-    v24 = v14;
+    v24 = identifierCopy;
     v25 = 2112;
     v26 = v16;
     v27 = 2112;
-    v28 = v15;
+    v28 = errorCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ identifier %@ didSendWithSuccess %@ error %@", buf, 0x2Au);
   }
 
-  if (!v8 && self->_nearby && [(NSString *)self->_recentDaemonAliveGuid isEqualToString:v14])
+  if (!successCopy && self->_nearby && [(NSString *)self->_recentDaemonAliveGuid isEqualToString:identifierCopy])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ previous daemonAlive failed, resending one now", buf, 0xCu);
     }
 
     [(APSIDSProxyManager *)self _sendDaemonAliveMessage];
   }
 
-  v17 = [(NSMutableDictionary *)self->_apsOutgoingMessageMap objectForKey:v14];
+  v17 = [(NSMutableDictionary *)self->_apsOutgoingMessageMap objectForKey:identifierCopy];
   v18 = v17;
   if (v17)
   {
-    if (!v8)
+    if (!successCopy)
     {
-      v19 = [v17 originator];
+      originator = [v17 originator];
       v20 = APSError();
-      [v19 handleResult:v20 forSendingOutgoingMessageWithID:{objc_msgSend(v18, "messageID", v15)}];
+      [originator handleResult:v20 forSendingOutgoingMessageWithID:{objc_msgSend(v18, "messageID", errorCopy)}];
     }
 
-    [(NSMutableDictionary *)self->_apsOutgoingMessageMap removeObjectForKey:v14];
+    [(NSMutableDictionary *)self->_apsOutgoingMessageMap removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v104 = a3;
-  v105 = a4;
-  v12 = a5;
-  v109 = a6;
-  v107 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v118 = self;
+    selfCopy4 = self;
     v119 = 2112;
-    v120 = v12;
+    v120 = dataCopy;
     v121 = 2112;
-    v122 = v109;
+    v122 = dCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ incomingData %@ fromID %@", buf, 0x20u);
   }
 
-  v106 = v12;
+  v106 = dataCopy;
   v13 = APSDecodeDictionary();
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -916,7 +916,7 @@ LABEL_6:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v118 = self;
+    selfCopy4 = self;
     v119 = 2112;
     v120 = v13;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ received dictionary %@", buf, 0x16u);
@@ -934,25 +934,25 @@ LABEL_6:
 
   v108 = [v13 objectForKey:@"pG"];
   v110 = [v13 objectForKey:@"e"];
-  v18 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
-  v19 = [v18 objectForKeyedSubscript:v17];
+  mainQueue_incomingPowerLogDictionary = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
+  v19 = [mainQueue_incomingPowerLogDictionary objectForKeyedSubscript:v17];
   v20 = v19 == 0;
 
-  v21 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
-  v22 = v21;
+  mainQueue_incomingPowerLogDictionary2 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
+  v22 = mainQueue_incomingPowerLogDictionary2;
   if (v20)
   {
-    [v21 setObject:&off_100197848 forKeyedSubscript:v17];
+    [mainQueue_incomingPowerLogDictionary2 setObject:&off_100197848 forKeyedSubscript:v17];
   }
 
   else
   {
-    v23 = [v21 objectForKeyedSubscript:v17];
-    v24 = [v23 integerValue];
+    v23 = [mainQueue_incomingPowerLogDictionary2 objectForKeyedSubscript:v17];
+    integerValue = [v23 integerValue];
 
-    v22 = [NSNumber numberWithInteger:v24 + 1];
-    v25 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
-    [v25 setObject:v22 forKeyedSubscript:v17];
+    v22 = [NSNumber numberWithInteger:integerValue + 1];
+    mainQueue_incomingPowerLogDictionary3 = [(APSIDSProxyManager *)self mainQueue_incomingPowerLogDictionary];
+    [mainQueue_incomingPowerLogDictionary3 setObject:v22 forKeyedSubscript:v17];
   }
 
   switch([v17 integerValue])
@@ -974,19 +974,19 @@ LABEL_6:
       v99 = [v13 objectForKey:@"sv"];
       v29 = [v13 objectForKey:@"sb"];
       v30 = [v13 objectForKey:@"aF"];
-      v31 = [v30 unsignedIntValue];
+      unsignedIntValue = [v30 unsignedIntValue];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         *buf = 138412546;
-        v118 = self;
+        selfCopy4 = self;
         v119 = 2112;
         v120 = WeakRetained;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ sending presence request to delegate %@", buf, 0x16u);
       }
 
       v33 = objc_loadWeakRetained(&self->_delegate);
-      LODWORD(v98) = v31;
+      LODWORD(v98) = unsignedIntValue;
       [v33 proxyManager:self incomingPresenceWithGuid:v108 token:v101 hwVersion:v100 swVersion:v99 swBuild:v29 certificates:v26 nonce:v103 signature:v102 additionalFlags:v98 environmentName:v110];
 
       goto LABEL_157;
@@ -1136,9 +1136,9 @@ LABEL_6:
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v96 = [v83 integerValue];
+        integerValue2 = [v83 integerValue];
         *buf = 134217984;
-        v118 = v96;
+        selfCopy4 = integerValue2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Invalid value for interface: %ld, failed to deliver", buf, 0xCu);
       }
 
@@ -1276,7 +1276,7 @@ LABEL_111:
       goto LABEL_157;
     case 0xEuLL:
       v79 = [v13 objectForKey:@"cS"];
-      v80 = [v79 BOOLValue];
+      bOOLValue = [v79 BOOLValue];
 
       if (v110)
       {
@@ -1290,13 +1290,13 @@ LABEL_111:
 
       if (objc_opt_respondsToSelector())
       {
-        [v81 proxyManager:self isConnected:v80 guid:v108 environmentName:v110];
+        [v81 proxyManager:self isConnected:bOOLValue guid:v108 environmentName:v110];
       }
 
       goto LABEL_157;
     case 0xFuLL:
       v36 = [v13 objectForKey:@"r"];
-      v37 = [v36 intValue];
+      intValue = [v36 intValue];
 
       v38 = [v13 objectForKey:@"tS"];
       v39 = [v13 objectForKey:@"u"];
@@ -1313,14 +1313,14 @@ LABEL_111:
 
       if (objc_opt_respondsToSelector())
       {
-        [v41 proxyManager:self messageTracingWithStatus:v37 topic:v38 tracingUUID:v39 token:v40 guid:v108 environmentName:v110];
+        [v41 proxyManager:self messageTracingWithStatus:intValue topic:v38 tracingUUID:v39 token:v40 guid:v108 environmentName:v110];
       }
 
       goto LABEL_157;
     case 0x10uLL:
       v64 = [v13 objectForKey:@"cl"];
       v65 = [v13 objectForKey:@"mI"];
-      v66 = [v65 unsignedIntValue];
+      unsignedIntValue2 = [v65 unsignedIntValue];
 
       v67 = [v13 objectForKey:@"t"];
       v68 = [v13 objectForKey:@"i"];
@@ -1338,15 +1338,15 @@ LABEL_111:
 
         if (objc_opt_respondsToSelector())
         {
-          [v69 proxyManager:self sendPubSubChannelList:v64 messageID:v66 token:v67 connectionType:objc_msgSend(v68 environmentName:"integerValue") guid:{v110, v108}];
+          [v69 proxyManager:self sendPubSubChannelList:v64 messageID:unsignedIntValue2 token:v67 connectionType:objc_msgSend(v68 environmentName:"integerValue") guid:{v110, v108}];
         }
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v97 = [v68 integerValue];
+        integerValue3 = [v68 integerValue];
         *buf = 134217984;
-        v118 = v97;
+        selfCopy4 = integerValue3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Invalid value for channel list interface: %ld, failed to deliver", buf, 0xCu);
       }
 
@@ -1393,9 +1393,9 @@ LABEL_111:
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_79:
-        v95 = [v35 integerValue];
+        integerValue4 = [v35 integerValue];
         *buf = 134218242;
-        v118 = v95;
+        selfCopy4 = integerValue4;
         v119 = 2112;
         v120 = v34;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Invalid value for interface: %ld message parameters %@, failed to deliver", buf, 0x16u);
@@ -1427,9 +1427,9 @@ LABEL_157:
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v94 = [v52 integerValue];
+        integerValue5 = [v52 integerValue];
         *buf = 134217984;
-        v118 = v94;
+        selfCopy4 = integerValue5;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Invalid value for interface: %ld, failed to deliver", buf, 0xCu);
       }
 
@@ -1439,13 +1439,13 @@ LABEL_87:
     default:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v93 = [v17 integerValue];
+        integerValue6 = [v17 integerValue];
         *buf = 138412802;
-        v118 = self;
+        selfCopy4 = self;
         v119 = 2112;
         v120 = v13;
         v121 = 2048;
-        v122 = v93;
+        v122 = integerValue6;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ received message %@ with unknown command %ld", buf, 0x20u);
       }
 
@@ -1525,29 +1525,29 @@ LABEL_87:
   }
 }
 
-- (void)_checkNearbyDevices:(id)a3
+- (void)_checkNearbyDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _idsSendQueue];
+  devicesCopy = devices;
+  _idsSendQueue = [objc_opt_class() _idsSendQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008E0A8;
   v7[3] = &unk_1001864D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = devicesCopy;
+  v6 = devicesCopy;
+  dispatch_async(_idsSendQueue, v7);
 }
 
-- (void)_onQueue_checkNearbyDevices:(id)a3
+- (void)_onQueue_checkNearbyDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   dispatch_assert_queue_not_V2(&_dispatch_main_q);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = devicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1590,76 +1590,76 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, v10);
 }
 
-- (void)_retrieveAllDevicesAndDo:(id)a3
+- (void)_retrieveAllDevicesAndDo:(id)do
 {
-  v4 = a3;
+  doCopy = do;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008E5A4;
   v7[3] = &unk_1001872B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = doCopy;
+  v6 = doCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_updateTimerIfNecessaryWithDevices:(id)a3
+- (void)_updateTimerIfNecessaryWithDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _idsSendQueue];
+  devicesCopy = devices;
+  _idsSendQueue = [objc_opt_class() _idsSendQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008E72C;
   v7[3] = &unk_1001864D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = devicesCopy;
+  v6 = devicesCopy;
+  dispatch_async(_idsSendQueue, v7);
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008E7A8;
   v4[3] = &unk_100188750;
   v4[4] = self;
-  [(APSIDSProxyManager *)self _retrieveAllDevicesAndDo:v4, a4];
+  [(APSIDSProxyManager *)self _retrieveAllDevicesAndDo:v4, changed];
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008E878;
   v4[3] = &unk_100188750;
   v4[4] = self;
-  [(APSIDSProxyManager *)self _retrieveAllDevicesAndDo:v4, a4];
+  [(APSIDSProxyManager *)self _retrieveAllDevicesAndDo:v4, changed];
 }
 
-- (void)service:(id)a3 linkedDevicesChanged:(id)a4
+- (void)service:(id)service linkedDevicesChanged:(id)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008E8F0;
   v4[3] = &unk_100188750;
   v4[4] = self;
-  [(APSIDSProxyManager *)self _retrieveAllDevicesAndDo:v4, a4];
+  [(APSIDSProxyManager *)self _retrieveAllDevicesAndDo:v4, changed];
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v6 = a5;
-  v7 = [objc_opt_class() _idsSendQueue];
+  blockCopy = block;
+  _idsSendQueue = [objc_opt_class() _idsSendQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008EA08;
   v9[3] = &unk_100188728;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = blockCopy;
+  v8 = blockCopy;
+  dispatch_async(_idsSendQueue, v9);
 }
 
 - (APSIDSProxyManagerDelegate)delegate

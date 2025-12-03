@@ -4,21 +4,21 @@
 - (BOOL)isAwakeOrAbortingSleep;
 - (BOOL)isSleepImminent;
 - (NSString)description;
-- (SWSystemSleepMonitor)initWithIdentifier:(id)a3 queue:(id)a4;
-- (SWSystemSleepMonitor)initWithIdentifier:(id)a3 queue:(id)a4 allowsInvalidation:(BOOL)a5 monitorProvider:(id)a6 sleepAssertionProvider:(id)a7 activeSystemActivityRegistry:(id)a8;
+- (SWSystemSleepMonitor)initWithIdentifier:(id)identifier queue:(id)queue;
+- (SWSystemSleepMonitor)initWithIdentifier:(id)identifier queue:(id)queue allowsInvalidation:(BOOL)invalidation monitorProvider:(id)provider sleepAssertionProvider:(id)assertionProvider activeSystemActivityRegistry:(id)registry;
 - (SWSystemSleepMonitorAggregateState)aggregateState;
-- (id)observersRespondingToSelector:(uint64_t)a1;
+- (id)observersRespondingToSelector:(uint64_t)selector;
 - (void)_lock_setSleepSlateAbortingSleepForSystemActivity;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observersOfSelector:(void *)a3 performObserverBlock:(void *)a4 completion:;
-- (void)removeObserver:(id)a3;
-- (void)setSleepSlate:(uint64_t)a1 forPowerManagementNotificationID:(uint64_t)a2 notificationTimestamp:(__CFString *)a3;
-- (void)setSleepSlate:(uint64_t)a3 powerManagementPhase:(uint64_t)a4 notificationID:;
-- (void)systemActivityRegistryCountDidDecrementToZero:(id)a3;
-- (void)systemActivityRegistryCountDidIncrementToOne:(id)a3;
-- (void)systemPowerChanged:(unsigned int)a3 notificationID:(void *)a4;
+- (void)observersOfSelector:(void *)selector performObserverBlock:(void *)block completion:;
+- (void)removeObserver:(id)observer;
+- (void)setSleepSlate:(uint64_t)slate forPowerManagementNotificationID:(uint64_t)d notificationTimestamp:(__CFString *)timestamp;
+- (void)setSleepSlate:(uint64_t)slate powerManagementPhase:(uint64_t)phase notificationID:;
+- (void)systemActivityRegistryCountDidDecrementToZero:(id)zero;
+- (void)systemActivityRegistryCountDidIncrementToOne:(id)one;
+- (void)systemPowerChanged:(unsigned int)changed notificationID:(void *)d;
 @end
 
 @implementation SWSystemSleepMonitor
@@ -73,44 +73,44 @@ void __45__SWSystemSleepMonitor_monitorUsingMainQueue__block_invoke()
   v7 = MEMORY[0x277D85CD0];
 }
 
-- (SWSystemSleepMonitor)initWithIdentifier:(id)a3 queue:(id)a4
+- (SWSystemSleepMonitor)initWithIdentifier:(id)identifier queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v8 = objc_alloc_init(SWSystemSleepMonitorProvider);
   v9 = +[SWSystemSleepAssertionProvider sharedProvider];
   v10 = +[SWActiveSystemActivityRegistry sharedRegistry];
-  v11 = [(SWSystemSleepMonitor *)self initWithIdentifier:v6 queue:v7 allowsInvalidation:1 monitorProvider:v8 sleepAssertionProvider:v9 activeSystemActivityRegistry:v10];
+  v11 = [(SWSystemSleepMonitor *)self initWithIdentifier:identifierCopy queue:queueCopy allowsInvalidation:1 monitorProvider:v8 sleepAssertionProvider:v9 activeSystemActivityRegistry:v10];
 
   return v11;
 }
 
-- (SWSystemSleepMonitor)initWithIdentifier:(id)a3 queue:(id)a4 allowsInvalidation:(BOOL)a5 monitorProvider:(id)a6 sleepAssertionProvider:(id)a7 activeSystemActivityRegistry:(id)a8
+- (SWSystemSleepMonitor)initWithIdentifier:(id)identifier queue:(id)queue allowsInvalidation:(BOOL)invalidation monitorProvider:(id)provider sleepAssertionProvider:(id)assertionProvider activeSystemActivityRegistry:(id)registry
 {
-  v26 = a3;
-  v15 = a4;
-  v16 = a6;
-  v25 = a7;
-  v24 = a8;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  providerCopy = provider;
+  assertionProviderCopy = assertionProvider;
+  registryCopy = registry;
   v29.receiver = self;
   v29.super_class = SWSystemSleepMonitor;
   v17 = [(SWSystemSleepMonitor *)&v29 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_identifier, a3);
-    v18->_allowsInvalidation = a5;
-    objc_storeStrong(&v18->_queue, a4);
+    objc_storeStrong(&v17->_identifier, identifier);
+    v18->_allowsInvalidation = invalidation;
+    objc_storeStrong(&v18->_queue, queue);
     v18->_lock._os_unfair_lock_opaque = 0;
     v19 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     lock_observers = v18->_lock_observers;
     v18->_lock_observers = v19;
 
-    objc_storeStrong(&v18->_sleepAssertionProvider, a7);
-    objc_storeStrong(&v18->_monitorProvider, a6);
-    objc_storeStrong(&v18->_activeSystemActivityRegistry, a8);
+    objc_storeStrong(&v18->_sleepAssertionProvider, assertionProvider);
+    objc_storeStrong(&v18->_monitorProvider, provider);
+    objc_storeStrong(&v18->_activeSystemActivityRegistry, registry);
     [(SWActiveSystemActivityRegistry *)v18->_activeSystemActivityRegistry addObserver:v18];
-    [v16 registerForSystemPowerOnQueue:v15 withDelegate:v18];
+    [providerCopy registerForSystemPowerOnQueue:queueCopy withDelegate:v18];
     objc_initWeak(&location, v18);
     objc_copyWeak(&v27, &location);
     v21 = BSLogAddStateCaptureBlockWithTitle();
@@ -190,12 +190,12 @@ id __136__SWSystemSleepMonitor_initWithIdentifier_queue_allowsInvalidation_monit
   [v3 appendString:v13 withName:@"systemActivityAborting"];
   v14 = [v3 appendUnsignedInteger:-[NSHashTable count](self->_lock_observers withName:{"count"), @"observerCount"}];
   os_unfair_lock_unlock(&self->_lock);
-  v15 = [v3 build];
+  build = [v3 build];
 
-  return v15;
+  return build;
 }
 
-- (void)systemActivityRegistryCountDidIncrementToOne:(id)a3
+- (void)systemActivityRegistryCountDidIncrementToOne:(id)one
 {
   v45 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -247,7 +247,7 @@ id __136__SWSystemSleepMonitor_initWithIdentifier_queue_allowsInvalidation_monit
       }
 
       v31 = 134219522;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = v6;
       v35 = 2048;
@@ -316,7 +316,7 @@ LABEL_18:
       }
 
       v31 = 134219522;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = v14;
       v35 = 2048;
@@ -344,10 +344,10 @@ LABEL_19:
 - (void)_lock_setSleepSlateAbortingSleepForSystemActivity
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = mach_continuous_time();
-    v3 = a1[11];
+    v3 = self[11];
     v4 = SWLogPower();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -361,9 +361,9 @@ LABEL_19:
         v5 = off_279D43230[v3 - 1];
       }
 
-      v6 = a1[9];
+      v6 = self[9];
       BSTimeDifferenceFromMachTimeToMachTime();
-      v8 = a1[14] - 1;
+      v8 = self[14] - 1;
       if (v8 > 2)
       {
         v9 = @"idle";
@@ -375,7 +375,7 @@ LABEL_19:
       }
 
       v11 = 134219010;
-      v12 = a1;
+      selfCopy = self;
       v13 = 2114;
       v14 = v5;
       v15 = 2114;
@@ -387,15 +387,15 @@ LABEL_19:
       _os_log_impl(&dword_26C657000, v4, OS_LOG_TYPE_DEFAULT, "%p state:%{public}@->%{public}@ elapsed:%.3lfs systemActivityAborting:%{public}@->aborting", &v11, 0x34u);
     }
 
-    a1[11] = 2;
-    a1[9] = v2;
-    a1[14] = 3;
+    self[11] = 2;
+    self[9] = v2;
+    self[14] = 3;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemActivityRegistryCountDidDecrementToZero:(id)a3
+- (void)systemActivityRegistryCountDidDecrementToZero:(id)zero
 {
   v38 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -463,7 +463,7 @@ LABEL_19:
     }
 
     v22 = 134219778;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
     v25 = v9;
     v26 = 2048;
@@ -511,7 +511,7 @@ LABEL_19:
       v14 = 2114;
       v15 = v10;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"SWSystemSleepMonitor.m";
       v20 = 1024;
@@ -539,31 +539,31 @@ LABEL_19:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSleepSlate:(uint64_t)a3 powerManagementPhase:(uint64_t)a4 notificationID:
+- (void)setSleepSlate:(uint64_t)slate powerManagementPhase:(uint64_t)phase notificationID:
 {
   v70 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_79;
   }
 
-  os_unfair_lock_lock((a1 + 40));
+  os_unfair_lock_lock((self + 40));
   v8 = mach_continuous_time();
-  v9 = *(a1 + 80);
+  v9 = *(self + 80);
   BSTimeDifferenceFromMachTimeToMachTime();
   v11 = v10;
-  v12 = *(a1 + 72);
+  v12 = *(self + 72);
   BSTimeDifferenceFromMachTimeToMachTime();
   v14 = v13;
-  v15 = *(a1 + 88);
-  v16 = *(a1 + 96);
-  v17 = *(a1 + 112);
+  v15 = *(self + 88);
+  v16 = *(self + 96);
+  v17 = *(self + 112);
   if (!v17)
   {
     v20 = SWLogPower();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = __ROR8__(a3 - 3758097008, 4);
+      v21 = __ROR8__(slate - 3758097008, 4);
       if (v21 > 0xB)
       {
         v22 = @"initialized";
@@ -606,11 +606,11 @@ LABEL_19:
       }
 
       *buf = 134220290;
-      v54 = a1;
+      selfCopy3 = self;
       v55 = 2114;
       v56 = v22;
       v57 = 1024;
-      *v58 = a3;
+      *v58 = slate;
       *&v58[4] = 2114;
       *&v58[6] = v26;
       *&v58[14] = 1024;
@@ -624,7 +624,7 @@ LABEL_19:
       v62 = 2048;
       v63 = v14;
       v64 = 2048;
-      v65 = a4;
+      phaseCopy3 = phase;
       _os_log_impl(&dword_26C657000, v20, OS_LOG_TYPE_DEFAULT, "%p systemPowerChanged:%{public}@(%u) previous:%{public}@(%u) elapsedPhase:%.3lfs state:%{public}@->%{public}@ elapsedState:%.3lfs notificationID:%ld", buf, 0x5Eu);
     }
 
@@ -633,11 +633,11 @@ LABEL_19:
   }
 
   v18 = 0;
-  if (a3 <= 3758097039)
+  if (slate <= 3758097039)
   {
-    if (a3 != 3758097008 && a3 != 3758097024)
+    if (slate != 3758097008 && slate != 3758097024)
     {
-      if (!a3)
+      if (!slate)
       {
         v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"powerManagementPhase != SWSystemSleepPowerManagementPhaseInitialized"];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -646,11 +646,11 @@ LABEL_19:
           v31 = objc_opt_class();
           v32 = NSStringFromClass(v31);
           *buf = 138544642;
-          v54 = v30;
+          selfCopy3 = v30;
           v55 = 2114;
           v56 = v32;
           v57 = 2048;
-          *v58 = a1;
+          *v58 = self;
           *&v58[8] = 2114;
           *&v58[10] = @"SWSystemSleepMonitor.m";
           *&v58[18] = 1024;
@@ -693,7 +693,7 @@ LABEL_19:
 
   else
   {
-    if (a3 != 3758097040 && a3 != 3758097152 && a3 != 3758097184)
+    if (slate != 3758097040 && slate != 3758097152 && slate != 3758097184)
     {
       goto LABEL_42;
     }
@@ -708,14 +708,14 @@ LABEL_19:
   }
 
   v18 = 0;
-  *(a1 + 112) = v19;
+  *(self + 112) = v19;
 LABEL_20:
   if (v19 != v17)
   {
     v20 = SWLogPower();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = __ROR8__(a3 - 3758097008, 4);
+      v23 = __ROR8__(slate - 3758097008, 4);
       if (v23 > 0xB)
       {
         v24 = @"initialized";
@@ -758,7 +758,7 @@ LABEL_20:
       }
 
       v49 = off_279D431F8[v17 - 1];
-      v50 = *(a1 + 112) - 1;
+      v50 = *(self + 112) - 1;
       if (v50 > 2)
       {
         v51 = @"idle";
@@ -770,11 +770,11 @@ LABEL_20:
       }
 
       *buf = 134220802;
-      v54 = a1;
+      selfCopy3 = self;
       v55 = 2114;
       v56 = v24;
       v57 = 1024;
-      *v58 = a3;
+      *v58 = slate;
       *&v58[4] = 2114;
       *&v58[6] = v46;
       *&v58[14] = 1024;
@@ -788,7 +788,7 @@ LABEL_20:
       v62 = 2048;
       v63 = v14;
       v64 = 2048;
-      v65 = a4;
+      phaseCopy3 = phase;
       v66 = 2114;
       v67 = v49;
       v68 = 2114;
@@ -808,7 +808,7 @@ LABEL_42:
   v20 = SWLogPower();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = __ROR8__(a3 - 3758097008, 4);
+    v34 = __ROR8__(slate - 3758097008, 4);
     if (v34 > 0xB)
     {
       v35 = @"initialized";
@@ -850,7 +850,7 @@ LABEL_42:
       v39 = off_279D431D8[a2 - 1];
     }
 
-    v40 = *(a1 + 112) - 1;
+    v40 = *(self + 112) - 1;
     if (v40 > 2)
     {
       v41 = @"idle";
@@ -862,11 +862,11 @@ LABEL_42:
     }
 
     *buf = 134220546;
-    v54 = a1;
+    selfCopy3 = self;
     v55 = 2114;
     v56 = v35;
     v57 = 1024;
-    *v58 = a3;
+    *v58 = slate;
     *&v58[4] = 2114;
     *&v58[6] = v37;
     *&v58[14] = 1024;
@@ -880,7 +880,7 @@ LABEL_42:
     v62 = 2048;
     v63 = v14;
     v64 = 2048;
-    v65 = a4;
+    phaseCopy3 = phase;
     v66 = 2114;
     v67 = v41;
     v42 = "%p systemPowerChanged:%{public}@(%u) previous:%{public}@(%u) elapsedPhase:%.3lfs state:%{public}@->%{public}@ elapsedState:%.3lfs notificationID:%ld systemActivityAborting:%{public}@";
@@ -891,41 +891,41 @@ LABEL_42:
 
 LABEL_74:
 
-  *(a1 + 96) = a3;
-  *(a1 + 104) = a4;
+  *(self + 96) = slate;
+  *(self + 104) = phase;
   if (a2 != v15)
   {
-    *(a1 + 88) = a2;
-    *(a1 + 72) = v8;
+    *(self + 88) = a2;
+    *(self + 72) = v8;
   }
 
-  *(a1 + 80) = v8;
+  *(self + 80) = v8;
   if (v18)
   {
-    [(SWSystemSleepMonitor *)a1 _lock_setSleepSlateAbortingSleepForSystemActivity];
+    [(SWSystemSleepMonitor *)self _lock_setSleepSlateAbortingSleepForSystemActivity];
   }
 
-  os_unfair_lock_unlock((a1 + 40));
+  os_unfair_lock_unlock((self + 40));
 LABEL_79:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSleepSlate:(uint64_t)a1 forPowerManagementNotificationID:(uint64_t)a2 notificationTimestamp:(__CFString *)a3
+- (void)setSleepSlate:(uint64_t)slate forPowerManagementNotificationID:(uint64_t)d notificationTimestamp:(__CFString *)timestamp
 {
   v43 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (slate)
   {
-    os_unfair_lock_lock((a1 + 40));
+    os_unfair_lock_lock((slate + 40));
     v6 = mach_continuous_time();
-    v7 = *(a1 + 72);
+    v7 = *(slate + 72);
     BSTimeDifferenceFromMachTimeToMachTime();
     v9 = v8;
     BSTimeDifferenceFromMachTimeToMachTime();
     v11 = v10;
-    v12 = *(a1 + 88);
-    v14 = *(a1 + 104);
-    v13 = *(a1 + 112);
-    if (v14 == a3)
+    v12 = *(slate + 88);
+    v14 = *(slate + 104);
+    v13 = *(slate + 112);
+    if (v14 == timestamp)
     {
       v15 = SWLogPower();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -943,7 +943,7 @@ LABEL_79:
             v19 = off_279D43230[v12 - 1];
           }
 
-          v20 = off_279D43210[a2 - 2];
+          v20 = off_279D43210[d - 2];
           v21 = @"idle";
           if (v13 == 1)
           {
@@ -957,11 +957,11 @@ LABEL_79:
 
           v22 = v21;
           v27 = 134219266;
-          v28 = a1;
+          slateCopy3 = slate;
           v29 = 2114;
           v30 = v19;
           v31 = 2114;
-          v32 = v20;
+          timestampCopy3 = v20;
           v33 = 2048;
           v34 = v9;
           v35 = 2048;
@@ -971,14 +971,14 @@ LABEL_79:
           _os_log_impl(&dword_26C657000, v15, OS_LOG_TYPE_DEFAULT, "%p state:%{public}@->%{public}@ elapsed:%.3lfs(%.3lfs) systemActivityAborting:%{public}@", &v27, 0x3Eu);
         }
 
-        *(a1 + 88) = a2;
-        *(a1 + 72) = v6;
+        *(slate + 88) = d;
+        *(slate + 72) = v6;
         goto LABEL_22;
       }
 
       if (v16)
       {
-        v17 = off_279D43210[a2 - 2];
+        v17 = off_279D43210[d - 2];
         if ((v12 - 1) > 4)
         {
           v18 = @"waking";
@@ -990,11 +990,11 @@ LABEL_79:
         }
 
         v27 = 134219778;
-        v28 = a1;
+        slateCopy3 = slate;
         v29 = 2114;
         v30 = v17;
         v31 = 2048;
-        v32 = a3;
+        timestampCopy3 = timestamp;
         v33 = 2048;
         v34 = v11;
         v35 = 2114;
@@ -1002,7 +1002,7 @@ LABEL_79:
         v37 = 2048;
         v38 = v9;
         v39 = 2048;
-        v40 = a3;
+        timestampCopy2 = timestamp;
         v41 = 2114;
         v42 = @"aborting";
         _os_log_impl(&dword_26C657000, v15, OS_LOG_TYPE_DEFAULT, "%p obsolete request to update to state:%{public}@ forID:%ld elapsed:%.3lfs – currentState:%{public}@ elapsed:%.3lfs currentID:%ld systemActivityAborting:%{public}@", &v27, 0x52u);
@@ -1024,7 +1024,7 @@ LABEL_79:
           v24 = off_279D43230[v12 - 1];
         }
 
-        v25 = off_279D43210[a2 - 2];
+        v25 = off_279D43210[d - 2];
         if ((v13 - 1) > 2)
         {
           v26 = @"idle";
@@ -1036,11 +1036,11 @@ LABEL_79:
         }
 
         v27 = 134219778;
-        v28 = a1;
+        slateCopy3 = slate;
         v29 = 2114;
         v30 = v25;
         v31 = 2048;
-        v32 = a3;
+        timestampCopy3 = timestamp;
         v33 = 2048;
         v34 = v11;
         v35 = 2114;
@@ -1048,7 +1048,7 @@ LABEL_79:
         v37 = 2048;
         v38 = v9;
         v39 = 2048;
-        v40 = v14;
+        timestampCopy2 = v14;
         v41 = 2114;
         v42 = v26;
         _os_log_error_impl(&dword_26C657000, v15, OS_LOG_TYPE_ERROR, "%p stale request to update to state:%{public}@ forID:%ld elapsed:%.3lfs – currentState:%{public}@ elapsed:%.3lfs currentID:%ld systemActivityAborting:%{public}@", &v27, 0x52u);
@@ -1056,23 +1056,23 @@ LABEL_79:
     }
 
 LABEL_22:
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_unlock((slate + 40));
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemPowerChanged:(unsigned int)a3 notificationID:(void *)a4
+- (void)systemPowerChanged:(unsigned int)changed notificationID:(void *)d
 {
   v33 = *MEMORY[0x277D85DE8];
-  HIDWORD(v8) = a3 + 536870288;
-  LODWORD(v8) = a3 + 536870288;
+  HIDWORD(v8) = changed + 536870288;
+  LODWORD(v8) = changed + 536870288;
   v7 = v8 >> 4;
   if (v7 <= 1)
   {
     if (!v7)
     {
-      [(SWSystemSleepMonitor *)self setSleepSlate:a3 powerManagementPhase:a4 notificationID:?];
+      [(SWSystemSleepMonitor *)self setSleepSlate:changed powerManagementPhase:d notificationID:?];
       if (self)
       {
         v21 = SWLogPower();
@@ -1081,7 +1081,7 @@ LABEL_22:
           *buf = 134218240;
           *&buf[4] = self;
           *&buf[12] = 2048;
-          *&buf[14] = a4;
+          *&buf[14] = d;
           _os_log_debug_impl(&dword_26C657000, v21, OS_LOG_TYPE_DEBUG, "%p sleepRequestedWithNotificationID:%ld", buf, 0x16u);
         }
 
@@ -1091,13 +1091,13 @@ LABEL_22:
         *&v26 = __57__SWSystemSleepMonitor_sleepRequestedWithNotificationID___block_invoke;
         *(&v26 + 1) = &unk_279D42FC8;
         *&v27 = self;
-        *(&v27 + 1) = a4;
+        *(&v27 + 1) = d;
         *buf = MEMORY[0x277D85DD0];
         *&buf[8] = 3221225472;
         *&buf[16] = __57__SWSystemSleepMonitor_sleepRequestedWithNotificationID___block_invoke_55;
         *&buf[24] = &unk_279D42FF0;
-        v30 = self;
-        v31 = a4;
+        selfCopy2 = self;
+        dCopy2 = d;
         v32 = v22;
         [(SWSystemSleepMonitor *)self observersOfSelector:&v25 performObserverBlock:buf completion:?];
       }
@@ -1107,7 +1107,7 @@ LABEL_22:
 
     if (v7 == 1)
     {
-      [(SWSystemSleepMonitor *)self setSleepSlate:a3 powerManagementPhase:a4 notificationID:?];
+      [(SWSystemSleepMonitor *)self setSleepSlate:changed powerManagementPhase:d notificationID:?];
       if (self)
       {
         v13 = SWLogPower();
@@ -1116,7 +1116,7 @@ LABEL_22:
           *buf = 134218240;
           *&buf[4] = self;
           *&buf[12] = 2048;
-          *&buf[14] = a4;
+          *&buf[14] = d;
           _os_log_debug_impl(&dword_26C657000, v13, OS_LOG_TYPE_DEBUG, "%p prepareForSleepWithNotificationID:%ld", buf, 0x16u);
         }
 
@@ -1126,13 +1126,13 @@ LABEL_22:
         *&v26 = __58__SWSystemSleepMonitor_prepareForSleepWithNotificationID___block_invoke;
         *(&v26 + 1) = &unk_279D42FC8;
         *&v27 = self;
-        *(&v27 + 1) = a4;
+        *(&v27 + 1) = d;
         *buf = MEMORY[0x277D85DD0];
         *&buf[8] = 3221225472;
         *&buf[16] = __58__SWSystemSleepMonitor_prepareForSleepWithNotificationID___block_invoke_60;
         *&buf[24] = &unk_279D42FF0;
-        v30 = self;
-        v31 = a4;
+        selfCopy2 = self;
+        dCopy2 = d;
         v32 = v14;
         [(SWSystemSleepMonitor *)self observersOfSelector:&v25 performObserverBlock:buf completion:?];
       }
@@ -1145,7 +1145,7 @@ LABEL_22:
 
   if (v7 == 2)
   {
-    [(SWSystemSleepMonitor *)self setSleepSlate:a3 powerManagementPhase:a4 notificationID:?];
+    [(SWSystemSleepMonitor *)self setSleepSlate:changed powerManagementPhase:d notificationID:?];
     if (self)
     {
       [(SWSystemSleepMonitor *)self observersRespondingToSelector:?];
@@ -1185,7 +1185,7 @@ LABEL_22:
   {
     if (v7 == 11)
     {
-      [(SWSystemSleepMonitor *)self setSleepSlate:a3 powerManagementPhase:a4 notificationID:?];
+      [(SWSystemSleepMonitor *)self setSleepSlate:changed powerManagementPhase:d notificationID:?];
       if (self)
       {
         [(SWSystemSleepMonitor *)self observersRespondingToSelector:?];
@@ -1230,16 +1230,16 @@ LABEL_42:
       *buf = 134218496;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = a3;
+      *&buf[14] = changed;
       *&buf[18] = 2048;
-      *&buf[20] = a4;
+      *&buf[20] = d;
       _os_log_error_impl(&dword_26C657000, v23, OS_LOG_TYPE_ERROR, "%p unexpected powerChangedMessage:%u notificationID:%p", buf, 0x1Cu);
     }
 
     goto LABEL_45;
   }
 
-  [(SWSystemSleepMonitor *)self setSleepSlate:a3 powerManagementPhase:a4 notificationID:?];
+  [(SWSystemSleepMonitor *)self setSleepSlate:changed powerManagementPhase:d notificationID:?];
   if (self)
   {
     [(SWSystemSleepMonitor *)self observersRespondingToSelector:?];
@@ -1402,15 +1402,15 @@ uint64_t __57__SWSystemSleepMonitor_sleepRequestedWithNotificationID___block_inv
   return result;
 }
 
-- (void)observersOfSelector:(void *)a3 performObserverBlock:(void *)a4 completion:
+- (void)observersOfSelector:(void *)selector performObserverBlock:(void *)block completion:
 {
   v56 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v7 = a4;
-  os_unfair_lock_lock((a1 + 40));
-  v8 = *(a1 + 64) + 1;
-  *(a1 + 64) = v8;
-  os_unfair_lock_unlock((a1 + 40));
+  selectorCopy = selector;
+  blockCopy = block;
+  os_unfair_lock_lock((self + 40));
+  v8 = *(self + 64) + 1;
+  *(self + 64) = v8;
+  os_unfair_lock_unlock((self + 40));
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -1421,24 +1421,24 @@ uint64_t __57__SWSystemSleepMonitor_sleepRequestedWithNotificationID___block_inv
   v45[2] = __76__SWSystemSleepMonitor_observersOfSelector_performObserverBlock_completion___block_invoke;
   v45[3] = &unk_279D43040;
   v26 = v8;
-  v27 = a1;
-  v45[4] = a1;
+  selfCopy = self;
+  v45[4] = self;
   v47 = v8;
-  v22 = v7;
+  v22 = blockCopy;
   v46 = v22;
   v48 = a2;
   v54 = MEMORY[0x26D6A63C0](v45);
-  v23 = [(SWSystemSleepMonitor *)a1 observersRespondingToSelector:a2];
+  v23 = [(SWSystemSleepMonitor *)self observersRespondingToSelector:a2];
   if ([v23 count])
   {
     v9 = MEMORY[0x277CF0BA0];
-    v10 = *(a1 + 8);
+    v10 = *(self + 8);
     v11 = [v23 count];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __76__SWSystemSleepMonitor_observersOfSelector_performObserverBlock_completion___block_invoke_64;
     v44[3] = &unk_279D43068;
-    v44[4] = a1;
+    v44[4] = self;
     v44[5] = &v49;
     v44[6] = v8;
     v44[7] = a2;
@@ -1477,14 +1477,14 @@ uint64_t __57__SWSystemSleepMonitor_sleepRequestedWithNotificationID___block_inv
           v29[3] = &unk_279D430B0;
           v20 = v19;
           v30 = v20;
-          v31 = v27;
+          v31 = selfCopy;
           v35 = sel_observersOfSelector_performObserverBlock_completion_;
           v36 = v26;
           v37 = a2;
           v34 = v38;
           v32 = v15;
           v33 = v25;
-          v28[2](v28, v15, v29);
+          selectorCopy[2](selectorCopy, v15, v29);
 
           _Block_object_dispose(v38, 8);
         }
@@ -1625,18 +1625,18 @@ void __76__SWSystemSleepMonitor_observersOfSelector_performObserverBlock_complet
   }
 }
 
-- (id)observersRespondingToSelector:(uint64_t)a1
+- (id)observersRespondingToSelector:(uint64_t)selector
 {
-  os_unfair_lock_lock((a1 + 40));
-  v4 = [*(a1 + 48) allObjects];
-  os_unfair_lock_unlock((a1 + 40));
+  os_unfair_lock_lock((selector + 40));
+  allObjects = [*(selector + 48) allObjects];
+  os_unfair_lock_unlock((selector + 40));
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__SWSystemSleepMonitor_observersRespondingToSelector___block_invoke;
   v8[3] = &__block_descriptor_40_e40_B32__0___SWSystemSleepObserver__8Q16_B24l;
   v8[4] = a2;
-  v5 = [v4 indexesOfObjectsPassingTest:v8];
-  v6 = [v4 objectsAtIndexes:v5];
+  v5 = [allObjects indexesOfObjectsPassingTest:v8];
+  v6 = [allObjects objectsAtIndexes:v5];
 
   return v6;
 }
@@ -1776,11 +1776,11 @@ uint64_t __76__SWSystemSleepMonitor_observersOfSelector_performObserverBlock_com
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"observer != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -1793,7 +1793,7 @@ uint64_t __76__SWSystemSleepMonitor_observersOfSelector_performObserverBlock_com
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"SWSystemSleepMonitor.m";
       v20 = 1024;
@@ -1811,16 +1811,16 @@ uint64_t __76__SWSystemSleepMonitor_observersOfSelector_performObserverBlock_com
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v11];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"observer != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -1833,7 +1833,7 @@ uint64_t __76__SWSystemSleepMonitor_observersOfSelector_performObserverBlock_com
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"SWSystemSleepMonitor.m";
       v20 = 1024;
@@ -1851,7 +1851,7 @@ uint64_t __76__SWSystemSleepMonitor_observersOfSelector_performObserverBlock_com
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v11];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   v5 = *MEMORY[0x277D85DE8];
 }

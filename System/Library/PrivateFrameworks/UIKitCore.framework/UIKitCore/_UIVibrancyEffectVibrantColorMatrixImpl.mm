@@ -1,27 +1,27 @@
 @interface _UIVibrancyEffectVibrantColorMatrixImpl
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithCAColorMatrix:(CAColorMatrix *)a3 alpha:(double)a4;
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightCAColorMatrix:(CAColorMatrix *)a3 darkCAColorMatrix:(CAColorMatrix *)a4 alpha:(double)a5;
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightCAColorMatrix:(CAColorMatrix *)a3 darkCAColorMatrix:(CAColorMatrix *)a4 tintColor:(id)a5;
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightConfiguration:(id)a3 darkConfiguration:(id)a4 alpha:(double)a5;
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightConfiguration:(id)a3 darkConfiguration:(id)a4 tintColor:(id)a5;
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithSystemName:(int64_t)a3;
-- (id)implementationReplacingTintColor:(id)a3;
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage;
+- (BOOL)isEqual:(id)equal;
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithCAColorMatrix:(CAColorMatrix *)matrix alpha:(double)alpha;
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightCAColorMatrix:(CAColorMatrix *)matrix darkCAColorMatrix:(CAColorMatrix *)colorMatrix alpha:(double)alpha;
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightCAColorMatrix:(CAColorMatrix *)matrix darkCAColorMatrix:(CAColorMatrix *)colorMatrix tintColor:(id)color;
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightConfiguration:(id)configuration darkConfiguration:(id)darkConfiguration alpha:(double)alpha;
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightConfiguration:(id)configuration darkConfiguration:(id)darkConfiguration tintColor:(id)color;
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithSystemName:(int64_t)name;
+- (id)implementationReplacingTintColor:(id)color;
 - (unint64_t)hash;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
-- (void)appendDescriptionTo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
+- (void)appendDescriptionTo:(id)to;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIVibrancyEffectVibrantColorMatrixImpl
 
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithSystemName:(int64_t)a3
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithSystemName:(int64_t)name
 {
-  if (!a3)
+  if (!name)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"UIVibrancyEffect.m" lineNumber:855 description:@"Cannot initialize custom vibrant color matrix effect without a matix"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIVibrancyEffect.m" lineNumber:855 description:@"Cannot initialize custom vibrant color matrix effect without a matix"];
   }
 
   v28.receiver = self;
@@ -30,8 +30,8 @@
   v6 = v5;
   if (v5)
   {
-    v5->_systemName = a3;
-    if (a3 == 3)
+    v5->_systemName = name;
+    if (name == 3)
     {
       v25 = xmmword_18A678330;
       v26 = unk_18A678340;
@@ -60,12 +60,12 @@
 
     else
     {
-      if (a3 == 2)
+      if (name == 2)
       {
         v7 = &xmmword_18A6782C0;
       }
 
-      else if (a3 == 1)
+      else if (name == 1)
       {
         v7 = &xmmword_18A678270;
       }
@@ -98,102 +98,102 @@
   return v6;
 }
 
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithCAColorMatrix:(CAColorMatrix *)a3 alpha:(double)a4
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithCAColorMatrix:(CAColorMatrix *)matrix alpha:(double)alpha
 {
-  v4 = *&a3->m15;
-  v5 = *&a3->m33;
-  v11 = *&a3->m24;
+  v4 = *&matrix->m15;
+  v5 = *&matrix->m33;
+  v11 = *&matrix->m24;
   v12 = v5;
-  v6 = *&a3->m33;
-  v13 = *&a3->m42;
-  v7 = *&a3->m15;
-  v10[0] = *&a3->m11;
+  v6 = *&matrix->m33;
+  v13 = *&matrix->m42;
+  v7 = *&matrix->m15;
+  v10[0] = *&matrix->m11;
   v10[1] = v7;
   v9[2] = v11;
   v9[3] = v6;
-  v9[4] = *&a3->m42;
+  v9[4] = *&matrix->m42;
   v9[0] = v10[0];
   v9[1] = v4;
-  return [(_UIVibrancyEffectVibrantColorMatrixImpl *)self initWithLightCAColorMatrix:v10 darkCAColorMatrix:v9 alpha:a4];
+  return [(_UIVibrancyEffectVibrantColorMatrixImpl *)self initWithLightCAColorMatrix:v10 darkCAColorMatrix:v9 alpha:alpha];
 }
 
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightCAColorMatrix:(CAColorMatrix *)a3 darkCAColorMatrix:(CAColorMatrix *)a4 alpha:(double)a5
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightCAColorMatrix:(CAColorMatrix *)matrix darkCAColorMatrix:(CAColorMatrix *)colorMatrix alpha:(double)alpha
 {
   v9 = +[UIColor whiteColor];
-  v10 = [v9 colorWithAlphaComponent:{fmax(fmin(a5, 1.0), 0.0)}];
-  v11 = *&a3->m33;
-  v18[2] = *&a3->m24;
+  v10 = [v9 colorWithAlphaComponent:{fmax(fmin(alpha, 1.0), 0.0)}];
+  v11 = *&matrix->m33;
+  v18[2] = *&matrix->m24;
   v18[3] = v11;
-  v18[4] = *&a3->m42;
-  v12 = *&a3->m15;
-  v18[0] = *&a3->m11;
+  v18[4] = *&matrix->m42;
+  v12 = *&matrix->m15;
+  v18[0] = *&matrix->m11;
   v18[1] = v12;
-  v13 = *&a4->m33;
-  v17[2] = *&a4->m24;
+  v13 = *&colorMatrix->m33;
+  v17[2] = *&colorMatrix->m24;
   v17[3] = v13;
-  v17[4] = *&a4->m42;
-  v14 = *&a4->m15;
-  v17[0] = *&a4->m11;
+  v17[4] = *&colorMatrix->m42;
+  v14 = *&colorMatrix->m15;
+  v17[0] = *&colorMatrix->m11;
   v17[1] = v14;
   v15 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)self initWithLightCAColorMatrix:v18 darkCAColorMatrix:v17 tintColor:v10];
 
   return v15;
 }
 
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightCAColorMatrix:(CAColorMatrix *)a3 darkCAColorMatrix:(CAColorMatrix *)a4 tintColor:(id)a5
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightCAColorMatrix:(CAColorMatrix *)matrix darkCAColorMatrix:(CAColorMatrix *)colorMatrix tintColor:(id)color
 {
-  v7 = *&a3->m33;
-  v18 = *&a3->m24;
+  v7 = *&matrix->m33;
+  v18 = *&matrix->m24;
   v19 = v7;
-  v20 = *&a3->m42;
-  v8 = *&a3->m15;
-  v16 = *&a3->m11;
+  v20 = *&matrix->m42;
+  v8 = *&matrix->m15;
+  v16 = *&matrix->m11;
   v17 = v8;
-  v9 = a5;
+  colorCopy = color;
   v10 = [_UIVibrantColorMatrixConfiguration _vibrantColorMatrixConfigurationWithColorMatrix:&v16 maxColorComponent:0 preservesHue:0.0];
-  v11 = *&a4->m33;
-  v18 = *&a4->m24;
+  v11 = *&colorMatrix->m33;
+  v18 = *&colorMatrix->m24;
   v19 = v11;
-  v20 = *&a4->m42;
-  v12 = *&a4->m15;
-  v16 = *&a4->m11;
+  v20 = *&colorMatrix->m42;
+  v12 = *&colorMatrix->m15;
+  v16 = *&colorMatrix->m11;
   v17 = v12;
   v13 = [_UIVibrantColorMatrixConfiguration _vibrantColorMatrixConfigurationWithColorMatrix:&v16 maxColorComponent:0 preservesHue:0.0];
-  v14 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)self initWithLightConfiguration:v10 darkConfiguration:v13 tintColor:v9];
+  v14 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)self initWithLightConfiguration:v10 darkConfiguration:v13 tintColor:colorCopy];
 
   return v14;
 }
 
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightConfiguration:(id)a3 darkConfiguration:(id)a4 alpha:(double)a5
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightConfiguration:(id)configuration darkConfiguration:(id)darkConfiguration alpha:(double)alpha
 {
-  v8 = a4;
-  v9 = a3;
+  darkConfigurationCopy = darkConfiguration;
+  configurationCopy = configuration;
   v10 = +[UIColor whiteColor];
-  v11 = [v10 colorWithAlphaComponent:{fmax(fmin(a5, 1.0), 0.0)}];
-  v12 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)self initWithLightConfiguration:v9 darkConfiguration:v8 tintColor:v11];
+  v11 = [v10 colorWithAlphaComponent:{fmax(fmin(alpha, 1.0), 0.0)}];
+  v12 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)self initWithLightConfiguration:configurationCopy darkConfiguration:darkConfigurationCopy tintColor:v11];
 
   return v12;
 }
 
-- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightConfiguration:(id)a3 darkConfiguration:(id)a4 tintColor:(id)a5
+- (_UIVibrancyEffectVibrantColorMatrixImpl)initWithLightConfiguration:(id)configuration darkConfiguration:(id)darkConfiguration tintColor:(id)color
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  darkConfigurationCopy = darkConfiguration;
+  colorCopy = color;
   v21.receiver = self;
   v21.super_class = _UIVibrancyEffectVibrantColorMatrixImpl;
   v12 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_lightConfiguration, a3);
-    objc_storeStrong(&v13->_darkConfiguration, a4);
-    objc_storeStrong(&v13->_tintColor, a5);
+    objc_storeStrong(&v12->_lightConfiguration, configuration);
+    objc_storeStrong(&v13->_darkConfiguration, darkConfiguration);
+    objc_storeStrong(&v13->_tintColor, color);
     darkConfiguration = v13->_darkConfiguration;
     v15 = v13->_lightConfiguration;
-    v16 = darkConfiguration;
-    v17 = v16;
-    if (v15 == v16)
+    darkConfigurationCopy2 = darkConfiguration;
+    v17 = darkConfigurationCopy2;
+    if (v15 == darkConfigurationCopy2)
     {
       v19 = 0;
     }
@@ -202,7 +202,7 @@
     {
       if (v15)
       {
-        v18 = v16 == 0;
+        v18 = darkConfigurationCopy2 == 0;
       }
 
       else
@@ -217,7 +217,7 @@
 
       else
       {
-        v19 = ![(_UIVibrantColorMatrixConfiguration *)v15 isEqual:v16];
+        v19 = ![(_UIVibrantColorMatrixConfiguration *)v15 isEqual:darkConfigurationCopy2];
       }
     }
 
@@ -227,11 +227,11 @@
   return v13;
 }
 
-- (id)implementationReplacingTintColor:(id)a3
+- (id)implementationReplacingTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   tintColor = self->_tintColor;
-  v7 = v5;
+  v7 = colorCopy;
   v8 = tintColor;
   v9 = v8;
   if (v8 == v7)
@@ -250,21 +250,21 @@
     }
 
 LABEL_7:
-    v11 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v11 = objc_opt_new();
-  v11->_systemName = self->_systemName;
-  objc_storeStrong(&v11->_lightConfiguration, self->_lightConfiguration);
-  objc_storeStrong(&v11->_darkConfiguration, self->_darkConfiguration);
-  objc_storeStrong(&v11->_reducedTransperancyColor, self->_reducedTransperancyColor);
-  v11->_hasDarkVariant = self->_hasDarkVariant;
-  objc_storeStrong(&v11->_tintColor, a3);
+  selfCopy = objc_opt_new();
+  selfCopy->_systemName = self->_systemName;
+  objc_storeStrong(&selfCopy->_lightConfiguration, self->_lightConfiguration);
+  objc_storeStrong(&selfCopy->_darkConfiguration, self->_darkConfiguration);
+  objc_storeStrong(&selfCopy->_reducedTransperancyColor, self->_reducedTransperancyColor);
+  selfCopy->_hasDarkVariant = self->_hasDarkVariant;
+  objc_storeStrong(&selfCopy->_tintColor, color);
 LABEL_10:
 
-  return v11;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -279,12 +279,12 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     systemName = self->_systemName;
     if (systemName != v5[1])
@@ -388,10 +388,10 @@ LABEL_28:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_systemName forKey:@"UIVibrancyColorMatrixType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_systemName forKey:@"UIVibrancyColorMatrixType"];
   if (!self->_systemName)
   {
     lightConfiguration = self->_lightConfiguration;
@@ -411,12 +411,12 @@ LABEL_28:
     }
 
     v7 = _UIVisualEffectModelEncodeCAColorMatrix(&v13, v6);
-    [v4 encodeObject:v7 forKey:@"UIVibrancyEffectColorMatrixLight"];
+    [coderCopy encodeObject:v7 forKey:@"UIVibrancyEffectColorMatrixLight"];
 
     [(_UIVibrantColorMatrixConfiguration *)self->_lightConfiguration maxColorComponent];
     *&v8 = v8;
-    [v4 encodeFloat:@"UIVibrancyEffectColorMatrixLightClamp" forKey:v8];
-    [v4 encodeBool:-[_UIVibrantColorMatrixConfiguration preservesHue](self->_lightConfiguration forKey:{"preservesHue"), @"UIVibrancyEffectColorMatrixLightClampPreserveHue"}];
+    [coderCopy encodeFloat:@"UIVibrancyEffectColorMatrixLightClamp" forKey:v8];
+    [coderCopy encodeBool:-[_UIVibrantColorMatrixConfiguration preservesHue](self->_lightConfiguration forKey:{"preservesHue"), @"UIVibrancyEffectColorMatrixLightClampPreserveHue"}];
     if (self->_hasDarkVariant)
     {
       darkConfiguration = self->_darkConfiguration;
@@ -436,21 +436,21 @@ LABEL_28:
       }
 
       v11 = _UIVisualEffectModelEncodeCAColorMatrix(&v13, v10);
-      [v4 encodeObject:v11 forKey:@"UIVibrancyEffectColorMatrixDark"];
+      [coderCopy encodeObject:v11 forKey:@"UIVibrancyEffectColorMatrixDark"];
 
       [(_UIVibrantColorMatrixConfiguration *)self->_darkConfiguration maxColorComponent];
       *&v12 = v12;
-      [v4 encodeFloat:@"UIVibrancyEffectColorMatrixDarkClamp" forKey:v12];
-      [v4 encodeBool:-[_UIVibrantColorMatrixConfiguration preservesHue](self->_darkConfiguration forKey:{"preservesHue"), @"UIVibrancyEffectColorMatrixDarkClampPreserveHue"}];
+      [coderCopy encodeFloat:@"UIVibrancyEffectColorMatrixDarkClamp" forKey:v12];
+      [coderCopy encodeBool:-[_UIVibrantColorMatrixConfiguration preservesHue](self->_darkConfiguration forKey:{"preservesHue"), @"UIVibrancyEffectColorMatrixDarkClampPreserveHue"}];
     }
   }
 }
 
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage
 {
-  v8 = a3;
-  v9 = a4;
-  if (self->_hasDarkVariant && ([v8 traitCollection], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "userInterfaceStyle"), objc_msgSend(v9, "traitCollection"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "userInterfaceStyle"), v12, v10, v11 != v13))
+  environmentCopy = environment;
+  toEnvironmentCopy = toEnvironment;
+  if (self->_hasDarkVariant && ([environmentCopy traitCollection], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "userInterfaceStyle"), objc_msgSend(toEnvironmentCopy, "traitCollection"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "userInterfaceStyle"), v12, v10, v11 != v13))
   {
     v14 = 1;
   }
@@ -459,28 +459,28 @@ LABEL_28:
   {
     v16.receiver = self;
     v16.super_class = _UIVibrancyEffectVibrantColorMatrixImpl;
-    v14 = [(_UIVibrancyEffectImpl *)&v16 _needsUpdateForTransitionFromEnvironment:v8 toEnvironment:v9 usage:a5];
+    v14 = [(_UIVibrancyEffectImpl *)&v16 _needsUpdateForTransitionFromEnvironment:environmentCopy toEnvironment:toEnvironmentCopy usage:usage];
   }
 
   return v14;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (self->_reducedTransperancyColor && [v9 reducedTransperancy])
+  descriptorCopy = descriptor;
+  environmentCopy = environment;
+  v10 = environmentCopy;
+  if (self->_reducedTransperancyColor && [environmentCopy reducedTransperancy])
   {
     v11 = objc_alloc_init(_UITintColorViewEntry);
     [(_UITintColorViewEntry *)v11 setTintColor:self->_reducedTransperancyColor];
-    [v8 addViewEffect:v11];
+    [descriptorCopy addViewEffect:v11];
   }
 
   else
   {
-    v32 = a5;
+    usageCopy = usage;
     if (self->_hasDarkVariant && ([v10 traitCollection], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "userInterfaceStyle"), v12, v13 == 2))
     {
       v14 = &OBJC_IVAR____UIVibrancyEffectVibrantColorMatrixImpl__darkConfiguration;
@@ -495,8 +495,8 @@ LABEL_28:
     v16 = v15;
     v17 = MEMORY[0x1E696B098];
     v33 = v10;
-    v34 = v8;
-    v31 = self;
+    v34 = descriptorCopy;
+    selfCopy = self;
     if (v15)
     {
       [v15 colorMatrix];
@@ -535,31 +535,31 @@ LABEL_28:
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:3];
     v27 = [(_UIVisualEffectFilterEntry *)v30 initWithFilterType:v29 configurationValues:v23 requestedValues:v25 identityValues:v26];
 
-    v8 = v34;
+    descriptorCopy = v34;
     [v34 addFilterEntry:v27];
-    if (v32 == 1)
+    if (usageCopy == 1)
     {
       v28 = objc_alloc_init(_UIBackgroundColorViewEntry);
-      [(_UIBackgroundColorViewEntry *)v28 setColor:v31->_tintColor];
+      [(_UIBackgroundColorViewEntry *)v28 setColor:selfCopy->_tintColor];
     }
 
     else
     {
       v28 = objc_alloc_init(_UITintColorViewEntry);
-      [(_UIBackgroundColorViewEntry *)v28 setTintColor:v31->_tintColor];
+      [(_UIBackgroundColorViewEntry *)v28 setTintColor:selfCopy->_tintColor];
     }
 
     v10 = v33;
     [v34 addViewEffect:v28];
   }
 
-  [v8 setTextShouldRenderWithTintColor:1];
+  [descriptorCopy setTextShouldRenderWithTintColor:1];
 }
 
-- (void)appendDescriptionTo:(id)a3
+- (void)appendDescriptionTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   systemName = self->_systemName;
   switch(systemName)
   {
@@ -572,7 +572,7 @@ LABEL_28:
     case 1:
       v7 = @" style=lowIntensityShadow";
 LABEL_7:
-      [v4 appendString:v7];
+      [toCopy appendString:v7];
       goto LABEL_21;
   }
 

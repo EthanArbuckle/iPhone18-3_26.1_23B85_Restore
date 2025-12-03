@@ -1,15 +1,15 @@
 @interface SFUFileInputStream
-- (BOOL)p_configureWithFileDescriptor:(int)a3 offset:(int64_t)a4 length:(int64_t)a5;
-- (BOOL)p_configureWithPath:(id)a3 offset:(int64_t)a4 length:(int64_t)a5;
-- (SFUFileInputStream)initWithPath:(id)a3 offset:(int64_t)a4;
-- (SFUFileInputStream)initWithPath:(id)a3 offset:(int64_t)a4 length:(int64_t)a5;
+- (BOOL)p_configureWithFileDescriptor:(int)descriptor offset:(int64_t)offset length:(int64_t)length;
+- (BOOL)p_configureWithPath:(id)path offset:(int64_t)offset length:(int64_t)length;
+- (SFUFileInputStream)initWithPath:(id)path offset:(int64_t)offset;
+- (SFUFileInputStream)initWithPath:(id)path offset:(int64_t)offset length:(int64_t)length;
 - (id)p_init;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
 - (void)disableSystemCaching;
 - (void)enableSystemCaching;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation SFUFileInputStream
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (SFUFileInputStream)initWithPath:(id)a3 offset:(int64_t)a4 length:(int64_t)a5
+- (SFUFileInputStream)initWithPath:(id)path offset:(int64_t)offset length:(int64_t)length
 {
-  v8 = [(SFUFileInputStream *)self p_init];
-  v9 = v8;
-  if (v8 && ![(SFUFileInputStream *)v8 p_configureWithPath:a3 offset:a4 length:a5])
+  p_init = [(SFUFileInputStream *)self p_init];
+  v9 = p_init;
+  if (p_init && ![(SFUFileInputStream *)p_init p_configureWithPath:path offset:offset length:length])
   {
 
     return 0;
@@ -40,25 +40,25 @@
   return v9;
 }
 
-- (SFUFileInputStream)initWithPath:(id)a3 offset:(int64_t)a4
+- (SFUFileInputStream)initWithPath:(id)path offset:(int64_t)offset
 {
-  v6 = [(SFUFileInputStream *)self p_init];
-  if (v6)
+  p_init = [(SFUFileInputStream *)self p_init];
+  if (p_init)
   {
-    v7 = [+[NSFileManager defaultManager](NSFileManager attributesOfItemAtPath:"attributesOfItemAtPath:error:" error:a3, 0];
-    if (!v7 || (v8 = -[NSDictionary objectForKey:](v7, "objectForKey:", NSFileSize)) == 0 || (v9 = [v8 unsignedLongLongValue], v9 < a4) || !-[SFUFileInputStream p_configureWithPath:offset:length:](v6, "p_configureWithPath:offset:length:", a3, a4, &v9[-a4]))
+    v7 = [+[NSFileManager defaultManager](NSFileManager attributesOfItemAtPath:"attributesOfItemAtPath:error:" error:path, 0];
+    if (!v7 || (v8 = -[NSDictionary objectForKey:](v7, "objectForKey:", NSFileSize)) == 0 || (v9 = [v8 unsignedLongLongValue], v9 < offset) || !-[SFUFileInputStream p_configureWithPath:offset:length:](p_init, "p_configureWithPath:offset:length:", path, offset, &v9[-offset]))
     {
 
       return 0;
     }
   }
 
-  return v6;
+  return p_init;
 }
 
-- (BOOL)p_configureWithFileDescriptor:(int)a3 offset:(int64_t)a4 length:(int64_t)a5
+- (BOOL)p_configureWithFileDescriptor:(int)descriptor offset:(int64_t)offset length:(int64_t)length
 {
-  v5 = (a5 | a4) < 0 || (a5 ^ 0x7FFFFFFFFFFFFFFFLL) < a4;
+  v5 = (length | offset) < 0 || (length ^ 0x7FFFFFFFFFFFFFFFLL) < offset;
   v6 = !v5;
   if (v5)
   {
@@ -67,25 +67,25 @@
 
   else
   {
-    self->mFd = a3;
-    self->mStartOffset = a4;
-    self->mCurrentOffset = a4;
-    self->mEndOffset = a5 + a4;
+    self->mFd = descriptor;
+    self->mStartOffset = offset;
+    self->mCurrentOffset = offset;
+    self->mEndOffset = length + offset;
   }
 
   return v6;
 }
 
-- (BOOL)p_configureWithPath:(id)a3 offset:(int64_t)a4 length:(int64_t)a5
+- (BOOL)p_configureWithPath:(id)path offset:(int64_t)offset length:(int64_t)length
 {
-  if (!a3 || ![+[NSFileManager isReadableFileAtPath:"isReadableFileAtPath:"]
+  if (!path || ![+[NSFileManager isReadableFileAtPath:"isReadableFileAtPath:"]
   {
     return 0;
   }
 
-  v9 = SFUOpen(a3, 0, 0);
+  v9 = SFUOpen(path, 0, 0);
 
-  return [(SFUFileInputStream *)self p_configureWithFileDescriptor:v9 offset:a4 length:a5];
+  return [(SFUFileInputStream *)self p_configureWithFileDescriptor:v9 offset:offset length:length];
 }
 
 - (void)dealloc
@@ -96,7 +96,7 @@
   [(SFUFileInputStream *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   mFd = self->mFd;
   if (mFd == -1)
@@ -118,32 +118,32 @@
   }
 
   mCurrentOffset = self->mCurrentOffset;
-  if (self->mEndOffset - mCurrentOffset < a4)
+  if (self->mEndOffset - mCurrentOffset < size)
   {
-    a4 = self->mEndOffset - mCurrentOffset;
+    size = self->mEndOffset - mCurrentOffset;
   }
 
-  v9 = a4;
+  sizeCopy = size;
   do
   {
-    v10 = pread(mFd, a3, v9, mCurrentOffset);
+    v10 = pread(mFd, buffer, sizeCopy, mCurrentOffset);
     v11 = v10;
-    if (v10 < 0 || v9 && !v10)
+    if (v10 < 0 || sizeCopy && !v10)
     {
       [NSException sfu_errnoRaise:@"SFUPReadError" format:@"Could not pread"];
     }
 
     mCurrentOffset += v11;
-    a3 += v11;
-    v9 -= v11;
+    buffer += v11;
+    sizeCopy -= v11;
   }
 
-  while (v9);
-  self->mCurrentOffset += a4;
-  return a4;
+  while (sizeCopy);
+  self->mCurrentOffset += size;
+  return size;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
   if (self->mFd == -1)
   {
@@ -162,7 +162,7 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v5 = self->mStartOffset + a3;
+  v5 = self->mStartOffset + offset;
   mEndOffset = self->mEndOffset;
   if (v5 > mEndOffset)
   {
@@ -252,7 +252,7 @@
         v14 = 1024;
         v15 = 178;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 1024;
         v19 = v6;
         v20 = 1024;

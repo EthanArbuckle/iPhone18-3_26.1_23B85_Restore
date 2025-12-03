@@ -1,16 +1,16 @@
 @interface HMMBufferingLogEventSubmitter
-- (HMMBufferingLogEventSubmitter)initWithBufferSize:(int64_t)a3;
-- (void)processLogEventsWithSubmitter:(id)a3;
-- (void)submitLogEvent:(id)a3;
-- (void)submitLogEvent:(id)a3 error:(id)a4;
+- (HMMBufferingLogEventSubmitter)initWithBufferSize:(int64_t)size;
+- (void)processLogEventsWithSubmitter:(id)submitter;
+- (void)submitLogEvent:(id)event;
+- (void)submitLogEvent:(id)event error:(id)error;
 @end
 
 @implementation HMMBufferingLogEventSubmitter
 
-- (void)processLogEventsWithSubmitter:(id)a3
+- (void)processLogEventsWithSubmitter:(id)submitter
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  submitterCopy = submitter;
   os_unfair_lock_lock_with_options();
   v14 = 0u;
   v15 = 0u;
@@ -31,7 +31,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [v4 submitLogEvent:{*(*(&v12 + 1) + 8 * v8++), v12}];
+        [submitterCopy submitLogEvent:{*(*(&v12 + 1) + 8 * v8++), v12}];
       }
 
       while (v6 != v8);
@@ -45,34 +45,34 @@
   self->_bufferedLogEvents = 0;
 
   submitter = self->_submitter;
-  self->_submitter = v4;
+  self->_submitter = submitterCopy;
 
   os_unfair_lock_unlock(&self->_lock);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitLogEvent:(id)a3 error:(id)a4
+- (void)submitLogEvent:(id)event error:(id)error
 {
-  v6 = a3;
-  [v6 setError:a4];
-  [(HMMBufferingLogEventSubmitter *)self submitLogEvent:v6];
+  eventCopy = event;
+  [eventCopy setError:error];
+  [(HMMBufferingLogEventSubmitter *)self submitLogEvent:eventCopy];
 }
 
-- (void)submitLogEvent:(id)a3
+- (void)submitLogEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
   submitter = self->_submitter;
   if (submitter)
   {
-    [(HMMLogEventSubmitting *)submitter submitLogEvent:v4];
+    [(HMMLogEventSubmitting *)submitter submitLogEvent:eventCopy];
   }
 
   else if ([(NSMutableArray *)self->_bufferedLogEvents count]>= self->_bufferSize)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -90,7 +90,7 @@
 
   else
   {
-    [(NSMutableArray *)self->_bufferedLogEvents addObject:v4];
+    [(NSMutableArray *)self->_bufferedLogEvents addObject:eventCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -98,7 +98,7 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMBufferingLogEventSubmitter)initWithBufferSize:(int64_t)a3
+- (HMMBufferingLogEventSubmitter)initWithBufferSize:(int64_t)size
 {
   v10.receiver = self;
   v10.super_class = HMMBufferingLogEventSubmitter;
@@ -106,8 +106,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_bufferSize = a3;
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v4->_bufferSize = size;
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:size];
     bufferedLogEvents = v5->_bufferedLogEvents;
     v5->_bufferedLogEvents = v6;
 

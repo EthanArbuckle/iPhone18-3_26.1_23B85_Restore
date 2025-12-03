@@ -1,10 +1,10 @@
 @interface HMDServiceTransaction
-+ (id)cd_createMKFCharacteristicFromDictionary:(id)a3 context:(id)a4;
-+ (id)cd_modelTypeForCharacteristicFormat:(id)a3;
++ (id)cd_createMKFCharacteristicFromDictionary:(id)dictionary context:(id)context;
++ (id)cd_modelTypeForCharacteristicFormat:(id)format;
 + (id)properties;
-- (BOOL)cd_updateManagedObjectInContext:(id)a3 error:(id *)a4;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (BOOL)cd_updateManagedObjectInContext:(id)context error:(id *)error;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDServiceTransaction
@@ -94,13 +94,13 @@ void __35__HMDServiceTransaction_properties__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"serviceType"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"serviceType"])
   {
     v11 = @"serviceType";
 LABEL_7:
@@ -110,33 +110,33 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v9 isEqualToString:@"serviceSubtype"])
+  if ([fieldCopy isEqualToString:@"serviceSubtype"])
   {
     v11 = @"serviceSubtype";
     goto LABEL_7;
   }
 
-  if ([v9 isEqualToString:@"associatedServiceType"])
+  if ([fieldCopy isEqualToString:@"associatedServiceType"])
   {
     v11 = @"associatedServiceType";
     goto LABEL_7;
   }
 
-  if (![v9 isEqualToString:@"characteristics_"])
+  if (![fieldCopy isEqualToString:@"characteristics_"])
   {
     v36.receiver = self;
     v36.super_class = HMDServiceTransaction;
-    v12 = [(HMDBackingStoreModelObject *)&v36 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v12 = [(HMDBackingStoreModelObject *)&v36 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
     goto LABEL_8;
   }
 
   if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"characteristics"])
   {
-    v16 = [(HMDBackingStoreModelObject *)self managedObject];
+    managedObject = [(HMDBackingStoreModelObject *)self managedObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = managedObject;
     }
 
     else
@@ -152,25 +152,25 @@ LABEL_8:
     }
 
     v19 = MEMORY[0x277CBEB58];
-    v20 = [(HMDServiceTransaction *)self characteristics];
-    v21 = [v19 setWithCapacity:{objc_msgSend(v20, "count")}];
+    characteristics = [(HMDServiceTransaction *)self characteristics];
+    v21 = [v19 setWithCapacity:{objc_msgSend(characteristics, "count")}];
 
-    v22 = [(HMDServiceTransaction *)self characteristics];
+    characteristics2 = [(HMDServiceTransaction *)self characteristics];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __90__HMDServiceTransaction_CoreData__cd_generateValueForProperty_managedObjectField_context___block_invoke;
     v39[3] = &unk_278689DE8;
     v23 = v18;
     v40 = v23;
-    v24 = v10;
+    v24 = contextCopy;
     v41 = v24;
-    v42 = self;
+    selfCopy = self;
     v25 = v21;
     v43 = v25;
-    [v22 hmf_enumerateWithAutoreleasePoolUsingBlock:v39];
+    [characteristics2 hmf_enumerateWithAutoreleasePoolUsingBlock:v39];
 
-    v26 = [v23 characteristics];
-    v27 = [v26 mutableCopy];
+    characteristics3 = [v23 characteristics];
+    v27 = [characteristics3 mutableCopy];
 
     [v27 minusSet:v25];
     v37[0] = MEMORY[0x277D85DD0];
@@ -180,7 +180,7 @@ LABEL_8:
     v38 = v24;
     [v27 hmf_enumerateWithAutoreleasePoolUsingBlock:v37];
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy2 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
@@ -275,52 +275,52 @@ void __90__HMDServiceTransaction_CoreData__cd_generateValueForProperty_managedOb
 LABEL_12:
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"primary"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"hidden"))
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"primary"] & 1) != 0 || (objc_msgSend(fieldCopy, "isEqualToString:", @"hidden"))
   {
     v11 = 0;
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:@"instanceID"])
+  if ([fieldCopy isEqualToString:@"instanceID"])
   {
-    v12 = [v8 instanceID];
-    v13 = HAPInstanceIDFromValue();
+    instanceID = [objectCopy instanceID];
+    uUIDString = HAPInstanceIDFromValue();
 LABEL_11:
-    v11 = v13;
+    v11 = uUIDString;
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:@"serviceType"])
+  if ([fieldCopy isEqualToString:@"serviceType"])
   {
-    v14 = [v8 serviceType];
+    serviceType = [objectCopy serviceType];
 LABEL_10:
-    v12 = v14;
-    v13 = [v14 UUIDString];
+    instanceID = serviceType;
+    uUIDString = [serviceType UUIDString];
     goto LABEL_11;
   }
 
-  if ([v9 isEqualToString:@"serviceSubtype"])
+  if ([fieldCopy isEqualToString:@"serviceSubtype"])
   {
-    v14 = [v8 serviceSubtype];
+    serviceType = [objectCopy serviceSubtype];
     goto LABEL_10;
   }
 
-  if ([v9 isEqualToString:@"associatedServiceType"])
+  if ([fieldCopy isEqualToString:@"associatedServiceType"])
   {
-    v12 = [v8 associatedServiceType];
-    v16 = [v12 UUIDString];
-    v17 = v16;
+    instanceID = [objectCopy associatedServiceType];
+    uUIDString2 = [instanceID UUIDString];
+    v17 = uUIDString2;
     v18 = *MEMORY[0x277CBEEE8];
-    if (v16)
+    if (uUIDString2)
     {
-      v18 = v16;
+      v18 = uUIDString2;
     }
 
     v11 = v18;
@@ -328,20 +328,20 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if ([v9 isEqualToString:@"characteristics"])
+  if ([fieldCopy isEqualToString:@"characteristics"])
   {
     v19 = MEMORY[0x277CBEB18];
-    v20 = [v8 characteristics];
-    v21 = [v19 arrayWithCapacity:{objc_msgSend(v20, "count")}];
+    characteristics = [objectCopy characteristics];
+    v21 = [v19 arrayWithCapacity:{objc_msgSend(characteristics, "count")}];
 
-    v22 = [v8 characteristics];
+    characteristics2 = [objectCopy characteristics];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __115__HMDServiceTransaction_CoreData__cd_generateValueForModelObjectFromManagedObject_modelObjectField_modelFieldInfo___block_invoke;
     v25[3] = &unk_278686720;
     v26 = v21;
     v23 = v21;
-    [v22 hmf_enumerateWithAutoreleasePoolUsingBlock:v25];
+    [characteristics2 hmf_enumerateWithAutoreleasePoolUsingBlock:v25];
 
     v11 = [v23 copy];
   }
@@ -350,7 +350,7 @@ LABEL_10:
   {
     v24.receiver = self;
     v24.super_class = HMDServiceTransaction;
-    v11 = [(HMDBackingStoreModelObject *)&v24 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+    v11 = [(HMDBackingStoreModelObject *)&v24 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
 LABEL_13:
@@ -365,31 +365,31 @@ void __115__HMDServiceTransaction_CoreData__cd_generateValueForModelObjectFromMa
   [v2 addObject:v3];
 }
 
-- (BOOL)cd_updateManagedObjectInContext:(id)a3 error:(id *)a4
+- (BOOL)cd_updateManagedObjectInContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = HMDServiceTransaction;
-  v7 = [(HMDBackingStoreModelObject *)&v11 cd_updateManagedObjectInContext:v6 error:a4];
+  v7 = [(HMDBackingStoreModelObject *)&v11 cd_updateManagedObjectInContext:contextCopy error:error];
   if (v7)
   {
-    v8 = [(HMDBackingStoreModelObject *)self managedObject];
-    if ([v8 hasPersistentChangedValues])
+    managedObject = [(HMDBackingStoreModelObject *)self managedObject];
+    if ([managedObject hasPersistentChangedValues])
     {
-      v9 = [v8 accessory];
-      [v9 maybeFixUpCharacteristicWriteActionsInContext:v6];
+      accessory = [managedObject accessory];
+      [accessory maybeFixUpCharacteristicWriteActionsInContext:contextCopy];
     }
   }
 
   return v7;
 }
 
-+ (id)cd_createMKFCharacteristicFromDictionary:(id)a3 context:(id)a4
++ (id)cd_createMKFCharacteristicFromDictionary:(id)dictionary context:(id)context
 {
   v5 = *MEMORY[0x277CD2148];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:v5];
+  contextCopy = context;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKeyedSubscript:v5];
   v9 = [v8 objectForKeyedSubscript:@"metadataFormat"];
   v10 = v9;
   v11 = @"unknown";
@@ -403,12 +403,12 @@ void __115__HMDServiceTransaction_CoreData__cd_generateValueForModelObjectFromMa
   v13 = [objc_opt_class() cd_modelTypeForCharacteristicFormat:v12];
 
   v14 = [(objc_class *)[HMCContext managedObjectClassFromProtocol:?]];
-  v15 = [objc_alloc(MEMORY[0x277CBE438]) initWithEntity:v14 insertIntoManagedObjectContext:v6];
+  v15 = [objc_alloc(MEMORY[0x277CBE438]) initWithEntity:v14 insertIntoManagedObjectContext:contextCopy];
 
-  v16 = [v7 objectForKeyedSubscript:*MEMORY[0x277CD2138]];
+  v16 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CD2138]];
   [v15 setInstanceID:v16];
 
-  [v15 pr_updateWithDictionary:v7];
+  [v15 pr_updateWithDictionary:dictionaryCopy];
   v17 = v15;
   if ([v17 conformsToProtocol:&unk_283EEC2D0])
   {
@@ -425,7 +425,7 @@ void __115__HMDServiceTransaction_CoreData__cd_generateValueForModelObjectFromMa
   return v18;
 }
 
-+ (id)cd_modelTypeForCharacteristicFormat:(id)a3
++ (id)cd_modelTypeForCharacteristicFormat:(id)format
 {
   v3 = HAPCharacteristicFormatFromString();
   v4 = &unk_283EEC2D0;

@@ -1,16 +1,16 @@
 @interface NTKCNavigationController
-- (NTKCNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (NTKCNavigationController)initWithRootViewController:(id)a3;
+- (NTKCNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (NTKCNavigationController)initWithRootViewController:(id)controller;
 - (void)_commonInit;
 @end
 
 @implementation NTKCNavigationController
 
-- (NTKCNavigationController)initWithRootViewController:(id)a3
+- (NTKCNavigationController)initWithRootViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = NTKCNavigationController;
-  v3 = [(NTKCNavigationController *)&v6 initWithRootViewController:a3];
+  v3 = [(NTKCNavigationController *)&v6 initWithRootViewController:controller];
   v4 = v3;
   if (v3)
   {
@@ -20,11 +20,11 @@
   return v4;
 }
 
-- (NTKCNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (NTKCNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = NTKCNavigationController;
-  v4 = [(NTKCNavigationController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(NTKCNavigationController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -36,10 +36,10 @@
 
 - (void)_commonInit
 {
-  v3 = [(NTKCNavigationController *)self navigationBar];
+  navigationBar = [(NTKCNavigationController *)self navigationBar];
   BPSApplyStyleToNavBarOptions();
 
-  v4 = [(NTKCNavigationController *)self toolbar];
+  toolbar = [(NTKCNavigationController *)self toolbar];
   BPSApplyStyleToToolbar();
 }
 

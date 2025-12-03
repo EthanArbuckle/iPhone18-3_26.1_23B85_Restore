@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneStoreIOContext
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -52,21 +52,21 @@
   return (v9 - v8 + 32 * v8);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
     return v6;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_6;
   }
 
-  v5 = [(OrgApacheLuceneStoreIOContext *)self getClass];
-  if (v5 != [a3 getClass])
+  getClass = [(OrgApacheLuceneStoreIOContext *)self getClass];
+  if (getClass != [equal getClass])
   {
     goto LABEL_6;
   }
@@ -77,13 +77,13 @@
     JreThrowClassCastException();
   }
 
-  if (self->context_ != *(a3 + 1))
+  if (self->context_ != *(equal + 1))
   {
     goto LABEL_6;
   }
 
   flushInfo = self->flushInfo_;
-  v8 = *(a3 + 3);
+  v8 = *(equal + 3);
   if (flushInfo)
   {
     v6 = [(OrgApacheLuceneStoreFlushInfo *)flushInfo isEqual:v8];
@@ -99,7 +99,7 @@
   }
 
   mergeInfo = self->mergeInfo_;
-  v10 = *(a3 + 2);
+  v10 = *(equal + 2);
   if (mergeInfo)
   {
     v6 = [(OrgApacheLuceneStoreMergeInfo *)mergeInfo isEqual:v10];
@@ -114,7 +114,7 @@
   if (!v10)
   {
 LABEL_17:
-    LOBYTE(v6) = self->readOnce_ == *(a3 + 32);
+    LOBYTE(v6) = self->readOnce_ == *(equal + 32);
     return v6;
   }
 
@@ -141,7 +141,7 @@ LABEL_6:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(OrgApacheLuceneStoreIOContext_ContextEnum__initialized, memory_order_acquire) & 1) == 0)
     {

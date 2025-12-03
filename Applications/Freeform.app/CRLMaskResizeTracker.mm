@@ -2,18 +2,18 @@
 - (BOOL)traceIfDesiredForBeginOperation;
 - (BOOL)traceIfDesiredForEndOperation;
 - (CGAffineTransform)p_currentResizeTransform;
-- (CRLMaskResizeTracker)initWithImageRep:(id)a3;
-- (void)changeDynamicLayoutsForReps:(id)a3;
-- (void)commitChangesForReps:(id)a3;
-- (void)willBeginDynamicOperationForReps:(id)a3;
+- (CRLMaskResizeTracker)initWithImageRep:(id)rep;
+- (void)changeDynamicLayoutsForReps:(id)reps;
+- (void)commitChangesForReps:(id)reps;
+- (void)willBeginDynamicOperationForReps:(id)reps;
 @end
 
 @implementation CRLMaskResizeTracker
 
-- (CRLMaskResizeTracker)initWithImageRep:(id)a3
+- (CRLMaskResizeTracker)initWithImageRep:(id)rep
 {
-  v5 = a3;
-  if (!v5)
+  repCopy = rep;
+  if (!repCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -48,10 +48,10 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mImageRep, a3);
-    v11 = [v5 imageLayout];
-    v12 = [v11 imageGeometry];
-    [v12 frame];
+    objc_storeStrong(&v9->mImageRep, rep);
+    imageLayout = [repCopy imageLayout];
+    imageGeometry = [imageLayout imageGeometry];
+    [imageGeometry frame];
     v17 = sub_100120414(v13, v14, v15, v16);
     v19 = v18;
 
@@ -74,10 +74,10 @@
   return sub_100139EB4(&v10, retstr, v7, v8);
 }
 
-- (void)willBeginDynamicOperationForReps:(id)a3
+- (void)willBeginDynamicOperationForReps:(id)reps
 {
-  v4 = a3;
-  if ([v4 count] != 1 || (objc_msgSend(v4, "anyObject"), v5 = objc_claimAutoreleasedReturnValue(), mImageRep = self->mImageRep, v5, v5 != mImageRep))
+  repsCopy = reps;
+  if ([repsCopy count] != 1 || (objc_msgSend(repsCopy, "anyObject"), v5 = objc_claimAutoreleasedReturnValue(), mImageRep = self->mImageRep, v5, v5 != mImageRep))
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -88,7 +88,7 @@
     v8 = off_1019EDA68;
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_10132CE70(v4, v7, v8);
+      sub_10132CE70(repsCopy, v7, v8);
     }
 
     if (qword_101AD5A10 != -1)
@@ -104,14 +104,14 @@
 
     v10 = [NSString stringWithUTF8String:"[CRLMaskResizeTracker willBeginDynamicOperationForReps:]"];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLMaskResizeTracker.m"];
-    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:68 isFatal:0 description:"Unexpected rep(s) for transformation %@", v4];
+    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:68 isFatal:0 description:"Unexpected rep(s) for transformation %@", repsCopy];
   }
 }
 
-- (void)changeDynamicLayoutsForReps:(id)a3
+- (void)changeDynamicLayoutsForReps:(id)reps
 {
-  v4 = a3;
-  if ([v4 count] != 1 || (objc_msgSend(v4, "anyObject"), v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) == 0))
+  repsCopy = reps;
+  if ([repsCopy count] != 1 || (objc_msgSend(repsCopy, "anyObject"), v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) == 0))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -140,75 +140,75 @@
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:80 isFatal:0 description:"image mask editor not given correct reps for resize"];
   }
 
-  v10 = [(CRLImageRep *)self->mImageRep imageLayout];
-  v11 = [v10 isInMaskScaleMode];
+  imageLayout = [(CRLImageRep *)self->mImageRep imageLayout];
+  isInMaskScaleMode = [imageLayout isInMaskScaleMode];
 
-  if ((v11 & 1) == 0)
+  if ((isInMaskScaleMode & 1) == 0)
   {
     [(CRLImageRep *)self->mImageRep beginDynamicallyChangingMaskScale];
   }
 
-  v12 = [(CRLImageRep *)self->mImageRep imageLayout];
+  imageLayout2 = [(CRLImageRep *)self->mImageRep imageLayout];
   [(CRLMaskResizeTracker *)self p_currentResizeTransform];
-  [v12 resizeWithTransform:&v15];
+  [imageLayout2 resizeWithTransform:&v15];
 
-  v13 = [(CRLImageRep *)self->mImageRep imageLayout];
-  v14 = [v13 maskEditMode];
+  imageLayout3 = [(CRLImageRep *)self->mImageRep imageLayout];
+  maskEditMode = [imageLayout3 maskEditMode];
 
-  if (v14 == 3)
+  if (maskEditMode == 3)
   {
     [(CRLCanvasRep *)self->mImageRep invalidateKnobPositions];
   }
 }
 
-- (void)commitChangesForReps:(id)a3
+- (void)commitChangesForReps:(id)reps
 {
   v4 = self->mImageRep;
-  v5 = [(CRLCanvasRep *)v4 interactiveCanvasController];
-  v6 = [v5 commandController];
+  interactiveCanvasController = [(CRLCanvasRep *)v4 interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v7 = [CRLCanvasCommandSelectionBehavior alloc];
-  v8 = [v5 canvasEditor];
-  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:v8 type:2];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:canvasEditor type:2];
 
   v41 = v9;
-  [v6 openGroupWithSelectionBehavior:v9];
-  v10 = [(CRLImageRep *)v4 actionStringForResize];
-  [v6 setCurrentGroupActionString:v10];
+  [commandController openGroupWithSelectionBehavior:v9];
+  actionStringForResize = [(CRLImageRep *)v4 actionStringForResize];
+  [commandController setCurrentGroupActionString:actionStringForResize];
 
   [(CRLMaskResizeTracker *)self p_currentResizeTransform];
   v11 = [(CRLImageRep *)v4 resizedGeometryForTransform:v42];
-  v12 = [(CRLImageRep *)v4 imageLayout];
-  v13 = [v12 maskLayout];
-  v14 = [v13 infoGeometry];
+  imageLayout = [(CRLImageRep *)v4 imageLayout];
+  maskLayout = [imageLayout maskLayout];
+  infoGeometry = [maskLayout infoGeometry];
 
-  v15 = [(CRLImageRep *)v4 imageLayout];
-  v16 = [v15 maskLayout];
-  v17 = [v16 pathSource];
+  imageLayout2 = [(CRLImageRep *)v4 imageLayout];
+  maskLayout2 = [imageLayout2 maskLayout];
+  pathSource = [maskLayout2 pathSource];
 
-  v18 = [(CRLImageRep *)v4 imageInfo];
-  v39 = v14;
+  imageInfo = [(CRLImageRep *)v4 imageInfo];
+  v39 = infoGeometry;
   v40 = v11;
-  v19 = [[_TtC8Freeform30CRLCommandSetImageItemGeometry alloc] initWithImageItem:v18 imageGeometry:v11 maskGeometry:v14 maskPathSource:v17];
-  [v6 enqueueCommand:v19];
-  [v6 closeGroup];
+  v19 = [[_TtC8Freeform30CRLCommandSetImageItemGeometry alloc] initWithImageItem:imageInfo imageGeometry:v11 maskGeometry:infoGeometry maskPathSource:pathSource];
+  [commandController enqueueCommand:v19];
+  [commandController closeGroup];
   [(CRLImageRep *)v4 endDynamicallyChangingMaskScale:self->mSliderValue];
-  v20 = [(CRLImageRep *)v4 imageLayout];
-  v21 = [v20 maskEditMode];
+  imageLayout3 = [(CRLImageRep *)v4 imageLayout];
+  maskEditMode = [imageLayout3 maskEditMode];
 
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v22 = [v5 layerHost];
-  v23 = [v22 imageHUDController];
-  [v23 setNotAllowedToHideHUD:1];
+  layerHost = [interactiveCanvasController layerHost];
+  imageHUDController = [layerHost imageHUDController];
+  [imageHUDController setNotAllowedToHideHUD:1];
 
-  [v5 layoutIfNeeded];
-  v24 = [(CRLCanvasRep *)self->mImageRep info];
-  v25 = [v5 repsForInfo:v24];
+  [interactiveCanvasController layoutIfNeeded];
+  info = [(CRLCanvasRep *)self->mImageRep info];
+  v25 = [interactiveCanvasController repsForInfo:info];
 
   if (v25 && [v25 count] && (objc_msgSend(v25, "containsObject:", self->mImageRep) & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
-    v38 = v21;
+    v38 = maskEditMode;
     if (qword_101AD5A10 != -1)
     {
       sub_10132D024();
@@ -234,15 +234,15 @@
     v28 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLMaskResizeTracker.m"];
     [CRLAssertionHandler handleFailureInFunction:v27 file:v28 lineNumber:135 isFatal:0 description:"Image rep was moved to floating to manipulate it. This will probably do something bad for template objects."];
 
-    v29 = [v25 anyObject];
+    anyObject = [v25 anyObject];
     v30 = objc_opt_class();
-    v37 = v29;
-    v31 = sub_100014370(v30, v29);
+    v37 = anyObject;
+    v31 = sub_100014370(v30, anyObject);
     [v31 editMaskWithHUD:1];
-    v32 = [v31 imageLayout];
-    v33 = [v32 maskEditMode];
+    imageLayout4 = [v31 imageLayout];
+    maskEditMode2 = [imageLayout4 maskEditMode];
 
-    if (v33 != v38)
+    if (maskEditMode2 != v38)
     {
       if (v38 == 3)
       {
@@ -258,9 +258,9 @@
     }
   }
 
-  v35 = [v5 layerHost];
-  v36 = [v35 imageHUDController];
-  [v36 setNotAllowedToHideHUD:0];
+  layerHost2 = [interactiveCanvasController layerHost];
+  imageHUDController2 = [layerHost2 imageHUDController];
+  [imageHUDController2 setNotAllowedToHideHUD:0];
 
   +[CATransaction commit];
 }

@@ -1,19 +1,19 @@
 @interface _UISelectionInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isHinting;
 - (UITapGestureRecognizer)selectGestureRecognizer;
 - (UIView)view;
 - (_UIFocusSelectObserverGestureRecognizer)selectHighlightRecognizer;
 - (_UISelectionInteraction)init;
 - (_UISelectionInteractionDelegate)delegate;
-- (void)didMoveToView:(id)a3;
-- (void)highlightGestureHandler:(id)a3;
-- (void)selectGestureHandler:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)highlightGestureHandler:(id)handler;
+- (void)selectGestureHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setEnabled:(BOOL)enabled;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UISelectionInteraction
@@ -76,19 +76,19 @@
 
 - (BOOL)isHinting
 {
-  v3 = [(UIGestureRecognizer *)self->_selectHighlightRecognizer state];
-  if (v3 != UIGestureRecognizerStateBegan)
+  state = [(UIGestureRecognizer *)self->_selectHighlightRecognizer state];
+  if (state != UIGestureRecognizerStateBegan)
   {
-    LOBYTE(v3) = [(UIGestureRecognizer *)self->_selectHighlightRecognizer state]== UIGestureRecognizerStateChanged;
+    LOBYTE(state) = [(UIGestureRecognizer *)self->_selectHighlightRecognizer state]== UIGestureRecognizerStateChanged;
   }
 
-  return v3;
+  return state;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   *&self->_flags = *&self->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -116,123 +116,123 @@
   *&self->_flags = *&self->_flags & 0xFB | v7;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     [(UIGestureRecognizer *)self->_selectGestureRecognizer setEnabled:?];
     selectHighlightRecognizer = self->_selectHighlightRecognizer;
 
-    [(UIGestureRecognizer *)selectHighlightRecognizer setEnabled:v4];
+    [(UIGestureRecognizer *)selectHighlightRecognizer setEnabled:enabledCopy];
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = [(_UISelectionInteraction *)self view];
-  if (v4)
+  view = [(_UISelectionInteraction *)self view];
+  if (view)
   {
     if (self->_selectHighlightRecognizer)
     {
-      [v4 removeGestureRecognizer:?];
+      [view removeGestureRecognizer:?];
     }
 
     if (self->_selectGestureRecognizer)
     {
-      [v4 removeGestureRecognizer:?];
+      [view removeGestureRecognizer:?];
     }
   }
 
   [(_UISelectionInteraction *)self setView:0];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v4 = [(_UISelectionInteraction *)self selectGestureRecognizer];
-    [v6 addGestureRecognizer:v4];
+    selectGestureRecognizer = [(_UISelectionInteraction *)self selectGestureRecognizer];
+    [viewCopy addGestureRecognizer:selectGestureRecognizer];
 
-    v5 = [(_UISelectionInteraction *)self selectHighlightRecognizer];
-    [v6 addGestureRecognizer:v5];
+    selectHighlightRecognizer = [(_UISelectionInteraction *)self selectHighlightRecognizer];
+    [viewCopy addGestureRecognizer:selectHighlightRecognizer];
   }
 
-  [(_UISelectionInteraction *)self setView:v6];
+  [(_UISelectionInteraction *)self setView:viewCopy];
 }
 
-- (void)selectGestureHandler:(id)a3
+- (void)selectGestureHandler:(id)handler
 {
-  v8 = a3;
-  v4 = [(_UISelectionInteraction *)self selectGestureRecognizer];
+  handlerCopy = handler;
+  selectGestureRecognizer = [(_UISelectionInteraction *)self selectGestureRecognizer];
 
-  v5 = v8;
-  if (v4 == v8)
+  v5 = handlerCopy;
+  if (selectGestureRecognizer == handlerCopy)
   {
-    v6 = [v8 state] == 3;
-    v5 = v8;
+    v6 = [handlerCopy state] == 3;
+    v5 = handlerCopy;
     if (v6)
     {
-      v7 = [(_UISelectionInteraction *)self delegate];
-      [v7 _selectionInteractionDidSelect:self];
+      delegate = [(_UISelectionInteraction *)self delegate];
+      [delegate _selectionInteractionDidSelect:self];
 
-      v5 = v8;
+      v5 = handlerCopy;
     }
   }
 }
 
-- (void)highlightGestureHandler:(id)a3
+- (void)highlightGestureHandler:(id)handler
 {
-  v11 = a3;
-  v4 = [(_UISelectionInteraction *)self selectHighlightRecognizer];
+  handlerCopy = handler;
+  selectHighlightRecognizer = [(_UISelectionInteraction *)self selectHighlightRecognizer];
 
-  v5 = v11;
-  if (v4 == v11)
+  v5 = handlerCopy;
+  if (selectHighlightRecognizer == handlerCopy)
   {
-    v6 = [v11 state];
-    if ((v6 - 3) >= 2)
+    state = [handlerCopy state];
+    if ((state - 3) >= 2)
     {
-      v10 = v6 == 1;
-      v5 = v11;
+      v10 = state == 1;
+      v5 = handlerCopy;
       if (!v10 || (*&self->_flags & 1) == 0)
       {
         goto LABEL_2;
       }
 
-      v9 = [(_UISelectionInteraction *)self delegate];
-      [v9 _selectionInteractionDidBeginHinting:self];
+      delegate = [(_UISelectionInteraction *)self delegate];
+      [delegate _selectionInteractionDidBeginHinting:self];
     }
 
     else
     {
-      v5 = v11;
+      v5 = handlerCopy;
       if ((*&self->_flags & 2) == 0)
       {
         goto LABEL_2;
       }
 
-      v7 = [(_UISelectionInteraction *)self selectGestureRecognizer];
-      v8 = [v7 state];
+      selectGestureRecognizer = [(_UISelectionInteraction *)self selectGestureRecognizer];
+      state2 = [selectGestureRecognizer state];
 
-      v5 = v11;
-      if (v8 == 3)
+      v5 = handlerCopy;
+      if (state2 == 3)
       {
         goto LABEL_2;
       }
 
-      v9 = [(_UISelectionInteraction *)self delegate];
-      [v9 _selectionInteractionDidCancelHinting:self];
+      delegate = [(_UISelectionInteraction *)self delegate];
+      [delegate _selectionInteractionDidCancelHinting:self];
     }
 
-    v5 = v11;
+    v5 = handlerCopy;
   }
 
 LABEL_2:
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   selectGestureRecognizer = self->_selectGestureRecognizer;
   if (selectGestureRecognizer && ([(UIGestureRecognizer *)selectGestureRecognizer _state]- 1) < 3)
@@ -254,21 +254,21 @@ LABEL_2:
     }
   }
 
-  v7 = self->_selectGestureRecognizer;
-  if ([(UIGestureRecognizer *)v7 state]== UIGestureRecognizerStateCancelled)
+  delegate = self->_selectGestureRecognizer;
+  if ([(UIGestureRecognizer *)delegate state]== UIGestureRecognizerStateCancelled)
   {
     goto LABEL_7;
   }
 
-  v9 = [(UIGestureRecognizer *)v7 state];
+  state = [(UIGestureRecognizer *)delegate state];
 
-  if (v9 == 5)
+  if (state == 5)
   {
     return 0;
   }
 
-  v7 = self->_selectHighlightRecognizer;
-  if ([(UIGestureRecognizer *)v7 state]== UIGestureRecognizerStateCancelled)
+  delegate = self->_selectHighlightRecognizer;
+  if ([(UIGestureRecognizer *)delegate state]== UIGestureRecognizerStateCancelled)
   {
 LABEL_7:
     v8 = 0;
@@ -276,9 +276,9 @@ LABEL_7:
 
   else
   {
-    v11 = [(UIGestureRecognizer *)v7 state];
-    v8 = v11 != 5;
-    v12 = v11 == 5;
+    state2 = [(UIGestureRecognizer *)delegate state];
+    v8 = state2 != 5;
+    v12 = state2 == 5;
 
     if (v12 || v5)
     {
@@ -290,36 +290,36 @@ LABEL_7:
       return 1;
     }
 
-    v7 = [(_UISelectionInteraction *)self delegate];
-    v8 = [(UITapGestureRecognizer *)v7 _selectionInteractionShouldBegin:self];
+    delegate = [(_UISelectionInteraction *)self delegate];
+    v8 = [(UITapGestureRecognizer *)delegate _selectionInteractionShouldBegin:self];
   }
 
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_selectGestureRecognizer != a3)
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_selectGestureRecognizer != recognizer)
   {
     goto LABEL_2;
   }
 
-  v8 = self;
-  v9 = v6;
-  if ((dyld_program_sdk_at_least() & 1) != 0 || ![(_UISelectionInteraction *)v8 simulatePressesCallbacksForLegacyBehavior])
+  selfCopy = self;
+  v9 = gestureRecognizerCopy;
+  if ((dyld_program_sdk_at_least() & 1) != 0 || ![(_UISelectionInteraction *)selfCopy simulatePressesCallbacksForLegacyBehavior])
   {
 
     v7 = 0;
     goto LABEL_8;
   }
 
-  v10 = [v9 cancelsTouchesInView];
+  cancelsTouchesInView = [v9 cancelsTouchesInView];
 
-  if (v10)
+  if (cancelsTouchesInView)
   {
-    v8 = [v9 allowedPressTypes];
-    v7 = [(_UISelectionInteraction *)v8 containsObject:&unk_1EFE30A18];
+    selfCopy = [v9 allowedPressTypes];
+    v7 = [(_UISelectionInteraction *)selfCopy containsObject:&unk_1EFE30A18];
 LABEL_8:
 
     goto LABEL_9;
@@ -332,13 +332,13 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_selectGestureRecognizer == a3 && ((dyld_program_sdk_at_least() & 1) != 0 || -[_UISelectionInteraction simulatePressesCallbacksForLegacyBehavior](self, "simulatePressesCallbacksForLegacyBehavior")) && [v6 _isGestureType:0])
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_selectGestureRecognizer == recognizer && ((dyld_program_sdk_at_least() & 1) != 0 || -[_UISelectionInteraction simulatePressesCallbacksForLegacyBehavior](self, "simulatePressesCallbacksForLegacyBehavior")) && [gestureRecognizerCopy _isGestureType:0])
   {
-    v9 = [v6 allowedPressTypes];
-    v7 = [v9 containsObject:&unk_1EFE30A18];
+    allowedPressTypes = [gestureRecognizerCopy allowedPressTypes];
+    v7 = [allowedPressTypes containsObject:&unk_1EFE30A18];
   }
 
   else

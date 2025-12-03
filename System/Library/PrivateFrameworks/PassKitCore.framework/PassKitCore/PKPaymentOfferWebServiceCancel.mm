@@ -1,13 +1,13 @@
 @interface PKPaymentOfferWebServiceCancel
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentOfferWebServiceCancel
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -49,7 +49,7 @@ LABEL_21:
   v22[0] = self->_criteriaIdentifier;
   v22[1] = @"cancel";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
-  v7 = [(PKPaymentOfferWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v6 queryParameters:0 appleAccountInformation:v4];
+  v7 = [(PKPaymentOfferWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v6 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v7 setHTTPMethod:@"POST"];
   [v7 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

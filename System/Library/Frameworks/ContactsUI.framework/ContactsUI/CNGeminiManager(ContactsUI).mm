@@ -8,25 +8,25 @@
 + (id)badgeForSenderIdentity:()ContactsUI
 {
   v3 = a3;
-  v4 = [v3 localizedShortName];
+  localizedShortName = [v3 localizedShortName];
   v5 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v4))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], localizedShortName))
   {
-    v6 = [v3 localizedName];
-    if ((*(v5 + 16))(v5, v6))
+    localizedName = [v3 localizedName];
+    if ((*(v5 + 16))(v5, localizedName))
     {
       v7 = @"?";
     }
 
     else
     {
-      v7 = [v6 _cn_take:1];
+      v7 = [localizedName _cn_take:1];
     }
 
-    v4 = v7;
+    localizedShortName = v7;
   }
 
-  v8 = [CNGeminiBadge geminiBadgeWithText:v4];
+  v8 = [CNGeminiBadge geminiBadgeWithText:localizedShortName];
 
   return v8;
 }

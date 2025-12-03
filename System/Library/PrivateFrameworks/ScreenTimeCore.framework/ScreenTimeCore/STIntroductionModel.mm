@@ -1,82 +1,82 @@
 @interface STIntroductionModel
-- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)a3 downtimeStartTime:(id)a4 downtimeEndTime:(id)a5 restrictions:(id)a6 passcode:(id)a7 communicationSafetyEnabled:(id)a8 eyeReliefEnabled:(id)a9;
-- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)a3 downtimeStartTime:(id)a4 downtimeEndTime:(id)a5 restrictions:(id)a6 passcode:(id)a7 communicationSafetyEnabled:(id)a8 eyeReliefEnabled:(id)a9 imageGenerationRestriction:(int64_t)a10;
-- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)a3 downtimeStartTime:(id)a4 downtimeEndTime:(id)a5 restrictions:(id)a6 passcode:(id)a7 communicationSafetyEnabled:(id)a8 eyeReliefEnabled:(id)a9 imageGenerationRestriction:(int64_t)a10 communicationPolicy:(int64_t)a11 communicationWhileLimitedPolicy:(int64_t)a12 contactEditingDisabled:(id)a13 contactManagementEnabled:(id)a14;
-- (STIntroductionModel)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)enabled downtimeStartTime:(id)time downtimeEndTime:(id)endTime restrictions:(id)restrictions passcode:(id)passcode communicationSafetyEnabled:(id)safetyEnabled eyeReliefEnabled:(id)reliefEnabled;
+- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)enabled downtimeStartTime:(id)time downtimeEndTime:(id)endTime restrictions:(id)restrictions passcode:(id)passcode communicationSafetyEnabled:(id)safetyEnabled eyeReliefEnabled:(id)reliefEnabled imageGenerationRestriction:(int64_t)self0;
+- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)enabled downtimeStartTime:(id)time downtimeEndTime:(id)endTime restrictions:(id)restrictions passcode:(id)passcode communicationSafetyEnabled:(id)safetyEnabled eyeReliefEnabled:(id)reliefEnabled imageGenerationRestriction:(int64_t)self0 communicationPolicy:(int64_t)self1 communicationWhileLimitedPolicy:(int64_t)self2 contactEditingDisabled:(id)self3 contactManagementEnabled:(id)self4;
+- (STIntroductionModel)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STIntroductionModel
 
-- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)a3 downtimeStartTime:(id)a4 downtimeEndTime:(id)a5 restrictions:(id)a6 passcode:(id)a7 communicationSafetyEnabled:(id)a8 eyeReliefEnabled:(id)a9 imageGenerationRestriction:(int64_t)a10
+- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)enabled downtimeStartTime:(id)time downtimeEndTime:(id)endTime restrictions:(id)restrictions passcode:(id)passcode communicationSafetyEnabled:(id)safetyEnabled eyeReliefEnabled:(id)reliefEnabled imageGenerationRestriction:(int64_t)self0
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
+  enabledCopy = enabled;
+  safetyEnabledCopy = safetyEnabled;
+  reliefEnabledCopy = reliefEnabled;
   v38.receiver = self;
   v38.super_class = STIntroductionModel;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
+  passcodeCopy = passcode;
+  restrictionsCopy = restrictions;
+  endTimeCopy = endTime;
+  timeCopy = time;
   v23 = [(STIntroductionModel *)&v38 init];
   isAppAndWebsiteActivityEnabled = v23->_isAppAndWebsiteActivityEnabled;
-  v23->_isAppAndWebsiteActivityEnabled = v16;
-  v25 = v16;
+  v23->_isAppAndWebsiteActivityEnabled = enabledCopy;
+  v25 = enabledCopy;
 
-  v26 = [v22 copy];
+  v26 = [timeCopy copy];
   downtimeStartTime = v23->_downtimeStartTime;
   v23->_downtimeStartTime = v26;
 
-  v28 = [v21 copy];
+  v28 = [endTimeCopy copy];
   downtimeEndTime = v23->_downtimeEndTime;
   v23->_downtimeEndTime = v28;
 
-  v30 = [v20 copy];
+  v30 = [restrictionsCopy copy];
   restrictions = v23->_restrictions;
   v23->_restrictions = v30;
 
-  v32 = [v19 copy];
+  v32 = [passcodeCopy copy];
   passcode = v23->_passcode;
   v23->_passcode = v32;
 
   isCommunicationSafetyEnabled = v23->_isCommunicationSafetyEnabled;
-  v23->_isCommunicationSafetyEnabled = v17;
-  v35 = v17;
+  v23->_isCommunicationSafetyEnabled = safetyEnabledCopy;
+  v35 = safetyEnabledCopy;
 
   isEyeReliefEnabled = v23->_isEyeReliefEnabled;
-  v23->_isEyeReliefEnabled = v18;
+  v23->_isEyeReliefEnabled = reliefEnabledCopy;
 
-  v23->_imageGenerationRestriction = a10;
+  v23->_imageGenerationRestriction = restriction;
   return v23;
 }
 
-- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)a3 downtimeStartTime:(id)a4 downtimeEndTime:(id)a5 restrictions:(id)a6 passcode:(id)a7 communicationSafetyEnabled:(id)a8 eyeReliefEnabled:(id)a9 imageGenerationRestriction:(int64_t)a10 communicationPolicy:(int64_t)a11 communicationWhileLimitedPolicy:(int64_t)a12 contactEditingDisabled:(id)a13 contactManagementEnabled:(id)a14
+- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)enabled downtimeStartTime:(id)time downtimeEndTime:(id)endTime restrictions:(id)restrictions passcode:(id)passcode communicationSafetyEnabled:(id)safetyEnabled eyeReliefEnabled:(id)reliefEnabled imageGenerationRestriction:(int64_t)self0 communicationPolicy:(int64_t)self1 communicationWhileLimitedPolicy:(int64_t)self2 contactEditingDisabled:(id)self3 contactManagementEnabled:(id)self4
 {
-  v19 = a13;
-  v20 = a14;
-  v21 = [(STIntroductionModel *)self initWithAppAndWebsiteActivityEnabled:a3 downtimeStartTime:a4 downtimeEndTime:a5 restrictions:a6 passcode:a7 communicationSafetyEnabled:a8 eyeReliefEnabled:a9 imageGenerationRestriction:a10];
-  v21->_communicationPolicy = a11;
-  v21->_communicationWhileLimitedPolicy = a12;
+  disabledCopy = disabled;
+  managementEnabledCopy = managementEnabled;
+  v21 = [(STIntroductionModel *)self initWithAppAndWebsiteActivityEnabled:enabled downtimeStartTime:time downtimeEndTime:endTime restrictions:restrictions passcode:passcode communicationSafetyEnabled:safetyEnabled eyeReliefEnabled:reliefEnabled imageGenerationRestriction:restriction];
+  v21->_communicationPolicy = policy;
+  v21->_communicationWhileLimitedPolicy = limitedPolicy;
   isContactEditingDisabled = v21->_isContactEditingDisabled;
-  v21->_isContactEditingDisabled = v19;
-  v23 = v19;
+  v21->_isContactEditingDisabled = disabledCopy;
+  v23 = disabledCopy;
 
   isContactManagementEnabled = v21->_isContactManagementEnabled;
-  v21->_isContactManagementEnabled = v20;
+  v21->_isContactManagementEnabled = managementEnabledCopy;
 
   return v21;
 }
 
-- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)a3 downtimeStartTime:(id)a4 downtimeEndTime:(id)a5 restrictions:(id)a6 passcode:(id)a7 communicationSafetyEnabled:(id)a8 eyeReliefEnabled:(id)a9
+- (STIntroductionModel)initWithAppAndWebsiteActivityEnabled:(id)enabled downtimeStartTime:(id)time downtimeEndTime:(id)endTime restrictions:(id)restrictions passcode:(id)passcode communicationSafetyEnabled:(id)safetyEnabled eyeReliefEnabled:(id)reliefEnabled
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  reliefEnabledCopy = reliefEnabled;
+  safetyEnabledCopy = safetyEnabled;
+  passcodeCopy = passcode;
+  restrictionsCopy = restrictions;
+  endTimeCopy = endTime;
+  timeCopy = time;
+  enabledCopy = enabled;
   v23 = +[STLog persistence];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
@@ -84,26 +84,26 @@
     _os_log_impl(&dword_1B831F000, v23, OS_LOG_TYPE_INFO, "Deprecated API called. Using unspecified restriction case for imageGenerationRestriction.", buf, 2u);
   }
 
-  v24 = [(STIntroductionModel *)self initWithAppAndWebsiteActivityEnabled:v22 downtimeStartTime:v21 downtimeEndTime:v20 restrictions:v19 passcode:v18 communicationSafetyEnabled:v17 eyeReliefEnabled:v16 imageGenerationRestriction:0];
+  v24 = [(STIntroductionModel *)self initWithAppAndWebsiteActivityEnabled:enabledCopy downtimeStartTime:timeCopy downtimeEndTime:endTimeCopy restrictions:restrictionsCopy passcode:passcodeCopy communicationSafetyEnabled:safetyEnabledCopy eyeReliefEnabled:reliefEnabledCopy imageGenerationRestriction:0];
   return v24;
 }
 
-- (STIntroductionModel)initWithCoder:(id)a3
+- (STIntroductionModel)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AppAndWebsiteActivity"];
-  v33 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"DowntimeStartTime"];
-  v34 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"DowntimeEndTime"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppAndWebsiteActivity"];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DowntimeStartTime"];
+  v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DowntimeEndTime"];
   v5 = objc_alloc(MEMORY[0x1E695DFD8]);
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v37 = [v5 initWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v30 = [v3 decodeObjectOfClasses:v37 forKey:@"Restrictions"];
-  v31 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Passcode"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ContactEditingDisabled"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ContactManagementEnabled"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CommunicationSafety"];
-  v32 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"EyeRelief"];
+  v30 = [coderCopy decodeObjectOfClasses:v37 forKey:@"Restrictions"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Passcode"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactEditingDisabled"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactManagementEnabled"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CommunicationSafety"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EyeRelief"];
   v38.receiver = self;
   v38.super_class = STIntroductionModel;
   v11 = [(STIntroductionModel *)&v38 init];
@@ -123,13 +123,13 @@
   restrictions = v11->_restrictions;
   v11->_restrictions = v17;
 
-  v11->_imageGenerationRestriction = [v3 decodeInt64ForKey:@"ImageGenerationRestriction"];
+  v11->_imageGenerationRestriction = [coderCopy decodeInt64ForKey:@"ImageGenerationRestriction"];
   v19 = [v31 copy];
   passcode = v11->_passcode;
   v11->_passcode = v19;
 
-  v11->_communicationPolicy = [v3 decodeInt64ForKey:@"CommunicationPolicy"];
-  v21 = [v3 decodeInt64ForKey:@"CommunicationWhileLimitedPolicy"];
+  v11->_communicationPolicy = [coderCopy decodeInt64ForKey:@"CommunicationPolicy"];
+  v21 = [coderCopy decodeInt64ForKey:@"CommunicationWhileLimitedPolicy"];
 
   isContactEditingDisabled = v11->_isContactEditingDisabled;
   v11->_communicationWhileLimitedPolicy = v21;
@@ -150,22 +150,22 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isAppAndWebsiteActivityEnabled = self->_isAppAndWebsiteActivityEnabled;
-  v5 = a3;
-  [v5 encodeObject:isAppAndWebsiteActivityEnabled forKey:@"AppAndWebsiteActivity"];
-  [v5 encodeObject:self->_downtimeStartTime forKey:@"DowntimeStartTime"];
-  [v5 encodeObject:self->_downtimeEndTime forKey:@"DowntimeEndTime"];
-  [v5 encodeObject:self->_restrictions forKey:@"Restrictions"];
-  [v5 encodeInt64:self->_imageGenerationRestriction forKey:@"ImageGenerationRestriction"];
-  [v5 encodeObject:self->_passcode forKey:@"Passcode"];
-  [v5 encodeInt64:self->_communicationPolicy forKey:@"CommunicationPolicy"];
-  [v5 encodeInt64:self->_communicationWhileLimitedPolicy forKey:@"CommunicationWhileLimitedPolicy"];
-  [v5 encodeObject:self->_isContactEditingDisabled forKey:@"ContactEditingDisabled"];
-  [v5 encodeObject:self->_isContactManagementEnabled forKey:@"ContactManagementEnabled"];
-  [v5 encodeObject:self->_isCommunicationSafetyEnabled forKey:@"CommunicationSafety"];
-  [v5 encodeObject:self->_isEyeReliefEnabled forKey:@"EyeRelief"];
+  coderCopy = coder;
+  [coderCopy encodeObject:isAppAndWebsiteActivityEnabled forKey:@"AppAndWebsiteActivity"];
+  [coderCopy encodeObject:self->_downtimeStartTime forKey:@"DowntimeStartTime"];
+  [coderCopy encodeObject:self->_downtimeEndTime forKey:@"DowntimeEndTime"];
+  [coderCopy encodeObject:self->_restrictions forKey:@"Restrictions"];
+  [coderCopy encodeInt64:self->_imageGenerationRestriction forKey:@"ImageGenerationRestriction"];
+  [coderCopy encodeObject:self->_passcode forKey:@"Passcode"];
+  [coderCopy encodeInt64:self->_communicationPolicy forKey:@"CommunicationPolicy"];
+  [coderCopy encodeInt64:self->_communicationWhileLimitedPolicy forKey:@"CommunicationWhileLimitedPolicy"];
+  [coderCopy encodeObject:self->_isContactEditingDisabled forKey:@"ContactEditingDisabled"];
+  [coderCopy encodeObject:self->_isContactManagementEnabled forKey:@"ContactManagementEnabled"];
+  [coderCopy encodeObject:self->_isCommunicationSafetyEnabled forKey:@"CommunicationSafety"];
+  [coderCopy encodeObject:self->_isEyeReliefEnabled forKey:@"EyeRelief"];
 }
 
 @end

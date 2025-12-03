@@ -1,14 +1,14 @@
 @interface SKUIEditorTemplateViewElement
-- (SKUIEditorTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIEditorTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SKUIEditorTemplateViewElement
 
-- (SKUIEditorTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIEditorTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEditorTemplateViewElement initWithDOMElement:parent:elementFactory:];
@@ -16,15 +16,15 @@
 
   v18.receiver = self;
   v18.super_class = SKUIEditorTemplateViewElement;
-  v11 = [(SKUIViewElement *)&v18 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v18 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"contentId"];
+    v12 = [elementCopy getAttribute:@"contentId"];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 longLongValue];
-      v15 = [MEMORY[0x277CCABB0] numberWithLongLong:v14];
+      longLongValue = [v12 longLongValue];
+      v15 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
       contentId = v11->_contentId;
       v11->_contentId = v15;
     }

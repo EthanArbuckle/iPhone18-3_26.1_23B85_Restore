@@ -1,23 +1,23 @@
 @interface VCSessionMediaStreamConfigurationProvider
-+ (BOOL)audioConfig:(_VCMediaStreamConfigurationProviderAudio *)a3 supportsDeviceClass:(int64_t)a4;
-+ (BOOL)isAudioStreamOnDemand:(_VCMediaStreamConfigurationProviderAudio *)a3 isLowestQualityAudio:(BOOL)a4;
-+ (BOOL)isVideoStreamOnDemand:(_VCMediaStreamConfigurationProviderVideo *)a3;
-+ (unsigned)maxStreamIDCountFromStreamIndex:(unsigned int)a3;
-+ (void)addCodecConfigurationToStreamConfig:(id)a3 codecType:(int64_t)a4 preferredMode:(int)a5 isV2Codec:(BOOL)a6;
-+ (void)configureAudioStreams:(id)a3 withCodecConfiguration:(_VCMediaStreamConfigurationProviderAudio *)a4 payloadsVersion:(unsigned int)a5;
++ (BOOL)audioConfig:(_VCMediaStreamConfigurationProviderAudio *)config supportsDeviceClass:(int64_t)class;
++ (BOOL)isAudioStreamOnDemand:(_VCMediaStreamConfigurationProviderAudio *)demand isLowestQualityAudio:(BOOL)audio;
++ (BOOL)isVideoStreamOnDemand:(_VCMediaStreamConfigurationProviderVideo *)demand;
++ (unsigned)maxStreamIDCountFromStreamIndex:(unsigned int)index;
++ (void)addCodecConfigurationToStreamConfig:(id)config codecType:(int64_t)type preferredMode:(int)mode isV2Codec:(BOOL)codec;
++ (void)configureAudioStreams:(id)streams withCodecConfiguration:(_VCMediaStreamConfigurationProviderAudio *)configuration payloadsVersion:(unsigned int)version;
 + (void)fixAudioStreamConfigurations;
-+ (void)setUpCodecConfig:(id)a3 payload:(int)a4 preferredMode:(int)a5;
-+ (void)setUpV2CodecConfig:(id)a3 payload:(int)a4 preferredMode:(int)a5;
-- (BOOL)initializeAudioStreamWithConfig:(_VCMediaStreamConfigurationProviderAudio *)a3 maxIDSStreamIDCount:(unsigned int)a4 supportedAudioRules:(id)a5 isLowestQualityAudio:(BOOL)a6;
-- (BOOL)initializeAudioStreamsWithSupportedRules:(id)a3;
-- (BOOL)initializeStreamsWithSupportedAudioRules:(id)a3;
-- (BOOL)initializeVideoStreamWithConfig:(_VCMediaStreamConfigurationProviderVideo *)a3 streamIndex:(unsigned int)a4;
++ (void)setUpCodecConfig:(id)config payload:(int)payload preferredMode:(int)mode;
++ (void)setUpV2CodecConfig:(id)config payload:(int)payload preferredMode:(int)mode;
+- (BOOL)initializeAudioStreamWithConfig:(_VCMediaStreamConfigurationProviderAudio *)config maxIDSStreamIDCount:(unsigned int)count supportedAudioRules:(id)rules isLowestQualityAudio:(BOOL)audio;
+- (BOOL)initializeAudioStreamsWithSupportedRules:(id)rules;
+- (BOOL)initializeStreamsWithSupportedAudioRules:(id)rules;
+- (BOOL)initializeVideoStreamWithConfig:(_VCMediaStreamConfigurationProviderVideo *)config streamIndex:(unsigned int)index;
 - (BOOL)initializeVideoStreamWithDefaults;
 - (BOOL)initializeVideoStreams;
-- (VCSessionMediaStreamConfigurationProvider)initWithStreamIDGenerator:(id)a3 sessionMode:(int64_t)a4 supportedAudioRules:(id)a5;
-- (id)audioRuleCollectionWithAudioConfig:(_VCMediaStreamConfigurationProviderAudio *)a3 supportedAudioRules:(id)a4;
-- (int)streamPayloadFromProviderConfig:(_VCMediaStreamConfigurationProviderVideo *)a3;
-- (void)audioStreamConfigs:(_VCMediaStreamConfigurationProviderAudio *)a3 configCount:(unsigned int *)a4;
+- (VCSessionMediaStreamConfigurationProvider)initWithStreamIDGenerator:(id)generator sessionMode:(int64_t)mode supportedAudioRules:(id)rules;
+- (id)audioRuleCollectionWithAudioConfig:(_VCMediaStreamConfigurationProviderAudio *)config supportedAudioRules:(id)rules;
+- (int)streamPayloadFromProviderConfig:(_VCMediaStreamConfigurationProviderVideo *)config;
+- (void)audioStreamConfigs:(_VCMediaStreamConfigurationProviderAudio *)configs configCount:(unsigned int *)count;
 - (void)dealloc;
 - (void)initializeVideoStreamWithDefaults;
 - (void)initializeVideoStreams;
@@ -25,7 +25,7 @@
 
 @implementation VCSessionMediaStreamConfigurationProvider
 
-- (VCSessionMediaStreamConfigurationProvider)initWithStreamIDGenerator:(id)a3 sessionMode:(int64_t)a4 supportedAudioRules:(id)a5
+- (VCSessionMediaStreamConfigurationProvider)initWithStreamIDGenerator:(id)generator sessionMode:(int64_t)mode supportedAudioRules:(id)rules
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -35,10 +35,10 @@
   if (v8)
   {
     _audioStreamConfigurationsCount = 0;
-    v8->_sessionMode = a4;
-    v10 = a3;
-    v9->_streamIDGenerator = v10;
-    if (v10)
+    v8->_sessionMode = mode;
+    generatorCopy = generator;
+    v9->_streamIDGenerator = generatorCopy;
+    if (generatorCopy)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v9->_audioStreamConfigurations = v11;
@@ -48,7 +48,7 @@
         v9->_videoStreamConfigurations = v12;
         if (v12)
         {
-          if ([(VCSessionMediaStreamConfigurationProvider *)v9 initializeStreamsWithSupportedAudioRules:a5])
+          if ([(VCSessionMediaStreamConfigurationProvider *)v9 initializeStreamsWithSupportedAudioRules:rules])
           {
             return v9;
           }
@@ -88,10 +88,10 @@
   [(VCSessionMediaStreamConfigurationProvider *)&v3 dealloc];
 }
 
-- (BOOL)initializeStreamsWithSupportedAudioRules:(id)a3
+- (BOOL)initializeStreamsWithSupportedAudioRules:(id)rules
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (![(VCSessionMediaStreamConfigurationProvider *)self initializeAudioStreamsWithSupportedRules:a3])
+  if (![(VCSessionMediaStreamConfigurationProvider *)self initializeAudioStreamsWithSupportedRules:rules])
   {
     if (objc_opt_class() != self)
     {
@@ -127,7 +127,7 @@
       v18 = 2112;
       v19 = v5;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v9 = " [%s] %s:%d %@(%p) Audio Stream initialization failed";
 LABEL_24:
       _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, v9, &v12, 0x30u);
@@ -187,7 +187,7 @@ LABEL_25:
       v18 = 2112;
       v19 = v6;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v9 = " [%s] %s:%d %@(%p) Video Stream initialization failed";
       goto LABEL_24;
     }
@@ -284,7 +284,7 @@ LABEL_25:
           v17 = 2112;
           v18 = v7;
           v19 = 2048;
-          v20 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to initialize video multiway stream", &v11, 0x30u);
         }
       }
@@ -302,13 +302,13 @@ LABEL_9:
   return v3;
 }
 
-- (int)streamPayloadFromProviderConfig:(_VCMediaStreamConfigurationProviderVideo *)a3
+- (int)streamPayloadFromProviderConfig:(_VCMediaStreamConfigurationProviderVideo *)config
 {
   v4 = +[VCVideoRuleCollectionsCamera sharedInstance];
   for (i = 1; ; ++i)
   {
     v6 = i;
-    v7 = [[VCVideoRuleCollectionKey alloc] initWithPayload:a3->var6 transportType:i encodingType:1];
+    v7 = [[VCVideoRuleCollectionKey alloc] initWithPayload:config->var6 transportType:i encodingType:1];
     v8 = [(NSMutableDictionary *)[(VCVideoRuleCollections *)v4 rules] objectForKeyedSubscript:v7];
 
     if (v8)
@@ -325,21 +325,21 @@ LABEL_9:
     }
   }
 
-  return a3->var6;
+  return config->var6;
 }
 
-- (BOOL)initializeVideoStreamWithConfig:(_VCMediaStreamConfigurationProviderVideo *)a3 streamIndex:(unsigned int)a4
+- (BOOL)initializeVideoStreamWithConfig:(_VCMediaStreamConfigurationProviderVideo *)config streamIndex:(unsigned int)index
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = [(VCSessionMediaStreamConfigurationProvider *)self streamPayloadFromProviderConfig:a3, *&a4];
-  var1 = a3->var1;
+  v6 = [(VCSessionMediaStreamConfigurationProvider *)self streamPayloadFromProviderConfig:config, *&index];
+  var1 = config->var1;
   if (var1 >= +[VCHardwareSettings maxMultiwayFramerateSupported])
   {
     var1 = +[VCHardwareSettings maxMultiwayFramerateSupported];
   }
 
-  var0 = a3->var0;
-  if (a3->var0 == 16)
+  var0 = config->var0;
+  if (config->var0 == 16)
   {
     if (!+[VCHardwareSettings supportsMultiway720pStream])
     {
@@ -365,7 +365,7 @@ LABEL_9:
       goto LABEL_39;
     }
 
-    var0 = a3->var0;
+    var0 = config->var0;
   }
 
   if (var0 == 20 && !+[VCHardwareSettings supportsMultiway1080pStream])
@@ -394,7 +394,7 @@ LABEL_39:
     return 1;
   }
 
-  v11 = a3->var6 == 100 && v6 == 123 && var1 > 0xF;
+  v11 = config->var6 == 100 && v6 == 123 && var1 > 0xF;
   v12 = objc_alloc_init(VCMediaStreamMultiwayConfigVideo);
   if (!v12)
   {
@@ -443,7 +443,7 @@ LABEL_39:
     v55 = 2112;
     v56 = v35;
     v57 = 2048;
-    v58 = self;
+    selfCopy4 = self;
     v41 = " [%s] %s:%d %@(%p) Failed to create video multiway config";
     goto LABEL_85;
   }
@@ -492,7 +492,7 @@ LABEL_73:
     v55 = 2112;
     v56 = v36;
     v57 = 2048;
-    v58 = self;
+    selfCopy4 = self;
     v41 = " [%s] %s:%d %@(%p) Failed to create video stream config";
 LABEL_85:
     _os_log_error_impl(&dword_1DB56E000, v40, OS_LOG_TYPE_ERROR, v41, buf, 0x30u);
@@ -505,36 +505,36 @@ LABEL_85:
   {
     v16 = v15;
     v17 = var1 >> v11;
-    v18 = [(VCIDSStreamIDGenerator *)self->_streamIDGenerator generateSSRC:1 streamID:1 repairStreamID:a3->var7 != 0 v2StreamID:0];
+    v18 = [(VCIDSStreamIDGenerator *)self->_streamIDGenerator generateSSRC:1 streamID:1 repairStreamID:config->var7 != 0 v2StreamID:0];
     [(VCMediaStreamMultiwayConfig *)v12 setSsrc:v18];
-    [(VCMediaStreamMultiwayConfig *)v12 setMaxNetworkBitrate:a3->var3];
-    [(VCMediaStreamMultiwayConfig *)v12 setMaxMediaBitrate:a3->var4];
-    [(VCMediaStreamMultiwayConfig *)v12 setQualityIndex:a3->var5];
+    [(VCMediaStreamMultiwayConfig *)v12 setMaxNetworkBitrate:config->var3];
+    [(VCMediaStreamMultiwayConfig *)v12 setMaxMediaBitrate:config->var4];
+    [(VCMediaStreamMultiwayConfig *)v12 setQualityIndex:config->var5];
     [(VCMediaStreamMultiwayConfig *)v12 setIdsStreamID:WORD2(v18)];
-    if (a3->var7)
+    if (config->var7)
     {
       [(VCMediaStreamMultiwayConfig *)v12 setRepairedStreamID:HIWORD(v18)];
-      [(VCMediaStreamMultiwayConfig *)v12 setRepairedMaxNetworkBitrate:a3->var7];
+      [(VCMediaStreamMultiwayConfig *)v12 setRepairedMaxNetworkBitrate:config->var7];
     }
 
-    [(VCMediaStreamMultiwayConfigVideo *)v12 setResolution:a3->var0];
+    [(VCMediaStreamMultiwayConfigVideo *)v12 setResolution:config->var0];
     [(VCMediaStreamMultiwayConfigVideo *)v12 setFramerate:v17];
-    [(VCMediaStreamMultiwayConfigVideo *)v12 setKeyFrameInterval:a3->var2];
-    [(VCMediaStreamMultiwayConfig *)v12 setStartOnDemand:[VCSessionMediaStreamConfigurationProvider isVideoStreamOnDemand:a3]];
-    [(VCMediaStreamMultiwayConfig *)v12 setNegotiationProtocolMask:a3->var9];
-    [(VCMediaStreamMultiwayConfig *)v12 setRepairedFECLevel:a3->var10];
+    [(VCMediaStreamMultiwayConfigVideo *)v12 setKeyFrameInterval:config->var2];
+    [(VCMediaStreamMultiwayConfig *)v12 setStartOnDemand:[VCSessionMediaStreamConfigurationProvider isVideoStreamOnDemand:config]];
+    [(VCMediaStreamMultiwayConfig *)v12 setNegotiationProtocolMask:config->var9];
+    [(VCMediaStreamMultiwayConfig *)v12 setRepairedFECLevel:config->var10];
     [(VCMediaStreamMultiwayConfigVideo *)v12 addPayload:v6];
-    var3 = a3->var3;
-    var4 = a3->var4;
+    var3 = config->var3;
+    var4 = config->var4;
     [(VCMediaStreamConfig *)v14 setMultiwayConfig:v12];
     [(VCMediaStreamConfig *)v14 setDirection:1];
-    [(VCVideoStreamConfig *)v14 setVideoResolution:a3->var0];
+    [(VCVideoStreamConfig *)v14 setVideoResolution:config->var0];
     [(VCVideoStreamConfig *)v14 setFramerate:v17];
-    [(VCVideoStreamConfig *)v14 setKeyFrameInterval:a3->var2];
+    [(VCVideoStreamConfig *)v14 setKeyFrameInterval:config->var2];
     [(VCVideoStreamConfig *)v14 setTxMinBitrate:var4];
-    [(VCVideoStreamConfig *)v14 setTxMaxBitrate:a3->var4];
+    [(VCVideoStreamConfig *)v14 setTxMaxBitrate:config->var4];
     [(VCVideoStreamConfig *)v14 setRxMinBitrate:var3];
-    [(VCVideoStreamConfig *)v14 setRxMaxBitrate:a3->var3];
+    [(VCVideoStreamConfig *)v14 setRxMaxBitrate:config->var3];
     [(VCVideoStreamConfig *)v14 setType:3];
     [(VCVideoStreamConfig *)v14 setSourceFramerate:30];
     [(VCVideoStreamConfig *)v14 setRemoteVideoInitialOrientation:0];
@@ -565,7 +565,7 @@ LABEL_85:
       -[VCSessionParticipantVideoStreamConfig setupTxPayloads:featureStrings:](v14, "setupTxPayloads:featureStrings:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1], v23);
 
       [(NSMutableArray *)self->_videoStreamConfigurations addObject:v14];
-      [VideoUtil sizeForVideoResolution:a3->var0];
+      [VideoUtil sizeForVideoResolution:config->var0];
       if (v26 == v25)
       {
         self->_isEncodingSqaures = 1;
@@ -579,7 +579,7 @@ LABEL_85:
           v31 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v32 = a3->var0;
+            v32 = config->var0;
             *buf = 136315906;
             v50 = v30;
             v51 = 2080;
@@ -637,7 +637,7 @@ LABEL_85:
           v55 = 2112;
           v56 = v38;
           v57 = 2048;
-          v58 = self;
+          selfCopy4 = self;
           _os_log_error_impl(&dword_1DB56E000, v46, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create featureStrings", buf, 0x30u);
         }
       }
@@ -685,7 +685,7 @@ LABEL_85:
           v55 = 2112;
           v56 = v37;
           v57 = 2048;
-          v58 = self;
+          selfCopy4 = self;
           _os_log_error_impl(&dword_1DB56E000, v44, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create rate control config", buf, 0x30u);
         }
       }
@@ -744,12 +744,12 @@ LABEL_35:
   }
 
   v36 = v3;
-  v37 = [+[VCDefaults sharedInstance](VCDefaults forceFramerate];
-  v38 = [+[VCDefaults sharedInstance](VCDefaults forceKeyFrameInterval];
+  forceFramerate = [+[VCDefaults sharedInstance](VCDefaults forceFramerate];
+  forceKeyFrameInterval = [+[VCDefaults sharedInstance](VCDefaults forceKeyFrameInterval];
   v39 = ((1000 * [+[VCDefaults forceBitrate] sharedInstance]* 1.2);
   v40 = 1000 * [+[VCDefaults sharedInstance](VCDefaults forceBitrate];
   v41 = 125;
-  v42 = [+[VCDefaults sharedInstance](VCDefaults forceVideoPayload];
+  forceVideoPayload = [+[VCDefaults sharedInstance](VCDefaults forceVideoPayload];
   v43 = 0xAAAAAA0000000000;
   v44 = 0;
   [VideoUtil sizeForVideoResolution:v3];
@@ -771,12 +771,12 @@ LABEL_35:
         v15 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [+[VCDefaults sharedInstance](VCDefaults forceVideoPayload];
-          v17 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeWidth];
-          v18 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeHeight];
-          v19 = [+[VCDefaults sharedInstance](VCDefaults forceFramerate];
-          v20 = [+[VCDefaults sharedInstance](VCDefaults forceBitrate];
-          v21 = [+[VCDefaults sharedInstance](VCDefaults forceKeyFrameInterval];
+          forceVideoPayload2 = [+[VCDefaults sharedInstance](VCDefaults forceVideoPayload];
+          forceEncodeWidth = [+[VCDefaults sharedInstance](VCDefaults forceEncodeWidth];
+          forceEncodeHeight = [+[VCDefaults sharedInstance](VCDefaults forceEncodeHeight];
+          forceFramerate2 = [+[VCDefaults sharedInstance](VCDefaults forceFramerate];
+          forceBitrate = [+[VCDefaults sharedInstance](VCDefaults forceBitrate];
+          forceKeyFrameInterval2 = [+[VCDefaults sharedInstance](VCDefaults forceKeyFrameInterval];
           *buf = 136317186;
           v46 = v14;
           v47 = 2080;
@@ -784,17 +784,17 @@ LABEL_35:
           v49 = 1024;
           v50 = 591;
           v51 = 1024;
-          *v52 = v16;
+          *v52 = forceVideoPayload2;
           *&v52[4] = 1024;
-          *&v52[6] = v17;
-          LOWORD(v53) = 1024;
-          *(&v53 + 2) = v18;
-          HIWORD(v53) = 1024;
-          *v54 = v19;
+          *&v52[6] = forceEncodeWidth;
+          LOWORD(selfCopy2) = 1024;
+          *(&selfCopy2 + 2) = forceEncodeHeight;
+          HIWORD(selfCopy2) = 1024;
+          *v54 = forceFramerate2;
           *&v54[4] = 1024;
-          *v55 = v20;
+          *v55 = forceBitrate;
           *&v55[4] = 1024;
-          *v56 = v21;
+          *v56 = forceKeyFrameInterval2;
           v22 = " [%s] %s:%d Created video stream config with forceHWI to initialize video a multiway stream. Stream[Codec=%d,W=%d,H=%d,fps=%d,%xkbps, %dIDR/sec]";
           v23 = v15;
           v24 = 64;
@@ -822,12 +822,12 @@ LABEL_26:
         v26 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [+[VCDefaults sharedInstance](VCDefaults forceVideoPayload];
-          v27 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeWidth];
-          v28 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeHeight];
-          v29 = [+[VCDefaults sharedInstance](VCDefaults forceFramerate];
-          v30 = [+[VCDefaults sharedInstance](VCDefaults forceBitrate];
-          v31 = [+[VCDefaults sharedInstance](VCDefaults forceKeyFrameInterval];
+          forceVideoPayload3 = [+[VCDefaults sharedInstance](VCDefaults forceVideoPayload];
+          forceEncodeWidth2 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeWidth];
+          forceEncodeHeight2 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeHeight];
+          forceFramerate3 = [+[VCDefaults sharedInstance](VCDefaults forceFramerate];
+          forceBitrate2 = [+[VCDefaults sharedInstance](VCDefaults forceBitrate];
+          forceKeyFrameInterval3 = [+[VCDefaults sharedInstance](VCDefaults forceKeyFrameInterval];
           *buf = 136317698;
           v46 = v25;
           v47 = 2080;
@@ -837,19 +837,19 @@ LABEL_26:
           v51 = 2112;
           *v52 = v12;
           *&v52[8] = 2048;
-          v53 = self;
+          selfCopy2 = self;
           *v54 = 1024;
-          *&v54[2] = v35;
+          *&v54[2] = forceVideoPayload3;
           *v55 = 1024;
-          *&v55[2] = v27;
+          *&v55[2] = forceEncodeWidth2;
           *v56 = 1024;
-          *&v56[2] = v28;
+          *&v56[2] = forceEncodeHeight2;
           v57 = 1024;
-          v58 = v29;
+          v58 = forceFramerate3;
           v59 = 1024;
-          v60 = v30;
+          v60 = forceBitrate2;
           v61 = 1024;
-          v62 = v31;
+          v62 = forceKeyFrameInterval3;
           v22 = " [%s] %s:%d %@(%p) Created video stream config with forceHWI to initialize video a multiway stream. Stream[Codec=%d,W=%d,H=%d,fps=%d,%xkbps, %dIDR/sec]";
           v23 = v26;
           v24 = 84;
@@ -898,7 +898,7 @@ LABEL_26:
         v51 = 2112;
         *v52 = v13;
         *&v52[8] = 2048;
-        v53 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v33, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to forceHWI initialize video multiway stream", buf, 0x30u);
       }
     }
@@ -935,7 +935,7 @@ LABEL_26:
   _audioStreamConfigurationsCount = v2 != 8;
 }
 
-- (void)audioStreamConfigs:(_VCMediaStreamConfigurationProviderAudio *)a3 configCount:(unsigned int *)a4
+- (void)audioStreamConfigs:(_VCMediaStreamConfigurationProviderAudio *)configs configCount:(unsigned int *)count
 {
   +[VCSessionMediaStreamConfigurationProvider fixAudioStreamConfigurations];
   v7 = &_audioStreamConfigs;
@@ -954,24 +954,24 @@ LABEL_26:
     v8 = 3;
   }
 
-  *a3 = v7;
-  *a4 = v8;
+  *configs = v7;
+  *count = v8;
 }
 
-+ (BOOL)audioConfig:(_VCMediaStreamConfigurationProviderAudio *)a3 supportsDeviceClass:(int64_t)a4
++ (BOOL)audioConfig:(_VCMediaStreamConfigurationProviderAudio *)config supportsDeviceClass:(int64_t)class
 {
-  var11 = a3->var11;
+  var11 = config->var11;
   if (!var11)
   {
     return 0;
   }
 
-  if (a3->var12[0] == a4)
+  if (config->var12[0] == class)
   {
     return 1;
   }
 
-  v6 = &a3->var12[1];
+  v6 = &config->var12[1];
   v7 = 1;
   do
   {
@@ -985,17 +985,17 @@ LABEL_26:
     ++v7;
   }
 
-  while (v9 != a4);
+  while (v9 != class);
   return v8 < var11;
 }
 
-- (BOOL)initializeAudioStreamsWithSupportedRules:(id)a3
+- (BOOL)initializeAudioStreamsWithSupportedRules:(id)rules
 {
   v15 = *MEMORY[0x1E69E9840];
   v13 = 0;
   v12 = 0;
   [(VCSessionMediaStreamConfigurationProvider *)self audioStreamConfigs:&v13 configCount:&v12];
-  if (a3)
+  if (rules)
   {
     v5 = +[VCHardwareSettings deviceClass];
     if (v12)
@@ -1006,7 +1006,7 @@ LABEL_26:
       v9 = 0;
       while ([VCSessionMediaStreamConfigurationProvider audioConfig:v13 + v7 supportsDeviceClass:v6])
       {
-        if (*(v13 + v7 + 208) && [a3 isACC24ForGFTEnabled])
+        if (*(v13 + v7 + 208) && [rules isACC24ForGFTEnabled])
         {
           v10 = 2 * (v8 + v12);
         }
@@ -1016,7 +1016,7 @@ LABEL_26:
           v10 = v8 + v12;
         }
 
-        if (![(VCSessionMediaStreamConfigurationProvider *)self initializeAudioStreamWithConfig:v13 + v7 maxIDSStreamIDCount:v10 supportedAudioRules:a3 isLowestQualityAudio:v8 == 0])
+        if (![(VCSessionMediaStreamConfigurationProvider *)self initializeAudioStreamWithConfig:v13 + v7 maxIDSStreamIDCount:v10 supportedAudioRules:rules isLowestQualityAudio:v8 == 0])
         {
           [(VCSessionMediaStreamConfigurationProvider *)self initializeAudioStreamsWithSupportedRules:?];
           return v14;
@@ -1042,7 +1042,7 @@ LABEL_26:
   }
 }
 
-+ (unsigned)maxStreamIDCountFromStreamIndex:(unsigned int)a3
++ (unsigned)maxStreamIDCountFromStreamIndex:(unsigned int)index
 {
   v4 = +[VCHardwareSettings deviceClass];
   +[VCSessionMediaStreamConfigurationProvider fixAudioStreamConfigurations];
@@ -1061,9 +1061,9 @@ LABEL_26:
   }
 
   while (v5 < v7);
-  if (v5 >= a3)
+  if (v5 >= index)
   {
-    return v5 - a3;
+    return v5 - index;
   }
 
   else
@@ -1072,11 +1072,11 @@ LABEL_26:
   }
 }
 
-+ (BOOL)isAudioStreamOnDemand:(_VCMediaStreamConfigurationProviderAudio *)a3 isLowestQualityAudio:(BOOL)a4
++ (BOOL)isAudioStreamOnDemand:(_VCMediaStreamConfigurationProviderAudio *)demand isLowestQualityAudio:(BOOL)audio
 {
-  v4 = a4;
-  BoolValueForKey = VCDefaults_GetBoolValueForKey(@"forceAudioOnDemand", a3->var8);
-  if (v4)
+  audioCopy = audio;
+  BoolValueForKey = VCDefaults_GetBoolValueForKey(@"forceAudioOnDemand", demand->var8);
+  if (audioCopy)
   {
     v6 = +[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings, "getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:", @"vc-low-quality-audio-stream-on-demand", @"lowQualityAudioOnDemand", [MEMORY[0x1E696AD98] numberWithBool:BoolValueForKey], 0);
 
@@ -1086,10 +1086,10 @@ LABEL_26:
   return BoolValueForKey;
 }
 
-+ (BOOL)isVideoStreamOnDemand:(_VCMediaStreamConfigurationProviderVideo *)a3
++ (BOOL)isVideoStreamOnDemand:(_VCMediaStreamConfigurationProviderVideo *)demand
 {
-  BoolValueForKey = VCDefaults_GetBoolValueForKey(@"forceVideoOnDemand", a3->var8);
-  if (a3->var5 == dword_1ECC72058)
+  BoolValueForKey = VCDefaults_GetBoolValueForKey(@"forceVideoOnDemand", demand->var8);
+  if (demand->var5 == dword_1ECC72058)
   {
     v5 = +[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings, "getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:", @"vc-low-quality-video-stream-on-demand", @"lowQualityVideoOnDemand", [MEMORY[0x1E696AD98] numberWithBool:BoolValueForKey], 0);
 
@@ -1099,20 +1099,20 @@ LABEL_26:
   return BoolValueForKey;
 }
 
-+ (void)setUpCodecConfig:(id)a3 payload:(int)a4 preferredMode:(int)a5
++ (void)setUpCodecConfig:(id)config payload:(int)payload preferredMode:(int)mode
 {
-  v5 = *&a5;
-  if ((a4 - 107) < 2)
+  v5 = *&mode;
+  if ((payload - 107) < 2)
   {
 LABEL_4:
-    [a3 setDtxEnabled:1];
-    [a3 setSupportedModes:&unk_1F579D2A8];
+    [config setDtxEnabled:1];
+    [config setSupportedModes:&unk_1F579D2A8];
     goto LABEL_6;
   }
 
-  if (a4 != 101)
+  if (payload != 101)
   {
-    if (a4 != 111)
+    if (payload != 111)
     {
       goto LABEL_6;
     }
@@ -1120,27 +1120,27 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  [a3 setPTime:10];
+  [config setPTime:10];
 LABEL_6:
 
-  [a3 setPreferredMode:v5];
+  [config setPreferredMode:v5];
 }
 
-+ (void)setUpV2CodecConfig:(id)a3 payload:(int)a4 preferredMode:(int)a5
++ (void)setUpV2CodecConfig:(id)config payload:(int)payload preferredMode:(int)mode
 {
-  v5 = *&a5;
-  if (a4 == 113)
+  v5 = *&mode;
+  if (payload == 113)
   {
-    [a3 setNetworkPayload:113];
-    [a3 setSupportedModes:&unk_1F579D2C0];
+    [config setNetworkPayload:113];
+    [config setSupportedModes:&unk_1F579D2C0];
   }
 
-  [a3 setPreferredMode:v5];
+  [config setPreferredMode:v5];
 }
 
-+ (void)configureAudioStreams:(id)a3 withCodecConfiguration:(_VCMediaStreamConfigurationProviderAudio *)a4 payloadsVersion:(unsigned int)a5
++ (void)configureAudioStreams:(id)streams withCodecConfiguration:(_VCMediaStreamConfigurationProviderAudio *)configuration payloadsVersion:(unsigned int)version
 {
-  if (a5 == 1)
+  if (version == 1)
   {
     v6 = 0;
     v7 = 32;
@@ -1149,7 +1149,7 @@ LABEL_6:
 
   else
   {
-    if (a5 != 3)
+    if (version != 3)
     {
       return;
     }
@@ -1159,16 +1159,16 @@ LABEL_6:
     v8 = 208;
   }
 
-  v9 = *(&a4->var0 + v8);
+  v9 = *(&configuration->var0 + v8);
   if (v9)
   {
-    v10 = (&a4->var2.var0 + v7);
+    v10 = (&configuration->var2.var0 + v7);
     do
     {
       v11 = *(v10 - 1);
       v12 = *v10;
       v10 += 4;
-      [VCSessionMediaStreamConfigurationProvider addCodecConfigurationToStreamConfig:a3 codecType:v11 preferredMode:v12 isV2Codec:v6];
+      [VCSessionMediaStreamConfigurationProvider addCodecConfigurationToStreamConfig:streams codecType:v11 preferredMode:v12 isV2Codec:v6];
       --v9;
     }
 
@@ -1176,10 +1176,10 @@ LABEL_6:
   }
 }
 
-- (BOOL)initializeAudioStreamWithConfig:(_VCMediaStreamConfigurationProviderAudio *)a3 maxIDSStreamIDCount:(unsigned int)a4 supportedAudioRules:(id)a5 isLowestQualityAudio:(BOOL)a6
+- (BOOL)initializeAudioStreamWithConfig:(_VCMediaStreamConfigurationProviderAudio *)config maxIDSStreamIDCount:(unsigned int)count supportedAudioRules:(id)rules isLowestQualityAudio:(BOOL)audio
 {
-  v6 = a6;
-  v8 = *&a4;
+  audioCopy = audio;
+  v8 = *&count;
   v52 = *MEMORY[0x1E69E9840];
   v11 = objc_alloc_init(VCMediaStreamMultiwayConfigAudio);
   if (!v11)
@@ -1229,7 +1229,7 @@ LABEL_6:
     v48 = 2112;
     v49 = v29;
     v50 = 2048;
-    v51 = self;
+    selfCopy4 = self;
     v35 = " [%s] %s:%d %@(%p) Failed to create video multiway config";
     goto LABEL_63;
   }
@@ -1281,7 +1281,7 @@ LABEL_53:
     v48 = 2112;
     v49 = v30;
     v50 = 2048;
-    v51 = self;
+    selfCopy4 = self;
     v35 = " [%s] %s:%d %@(%p) Failed to create rate control config";
 LABEL_63:
     _os_log_error_impl(&dword_1DB56E000, v34, OS_LOG_TYPE_ERROR, v35, buf, 0x30u);
@@ -1331,7 +1331,7 @@ LABEL_63:
           v48 = 2112;
           v49 = v31;
           v50 = 2048;
-          v51 = self;
+          selfCopy4 = self;
           _os_log_error_impl(&dword_1DB56E000, v38, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create video stream config", buf, 0x30u);
         }
       }
@@ -1342,7 +1342,7 @@ LABEL_63:
 
   v15 = v14;
   [(VCMediaStreamConfig *)v14 setJitterBufferMode:1];
-  v16 = [(VCSessionMediaStreamConfigurationProvider *)self audioRuleCollectionWithAudioConfig:a3 supportedAudioRules:a5];
+  v16 = [(VCSessionMediaStreamConfigurationProvider *)self audioRuleCollectionWithAudioConfig:config supportedAudioRules:rules];
   if (!v16)
   {
     if (objc_opt_class() == self)
@@ -1384,7 +1384,7 @@ LABEL_63:
           v48 = 2112;
           v49 = v32;
           v50 = 2048;
-          v51 = self;
+          selfCopy4 = self;
           _os_log_error_impl(&dword_1DB56E000, v40, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create audio rules multiway config", buf, 0x30u);
         }
       }
@@ -1395,66 +1395,66 @@ LABEL_63:
 
   v17 = v16;
   v41 = v13;
-  [VCSessionMediaStreamConfigurationProvider configureAudioStreams:v15 withCodecConfiguration:a3 payloadsVersion:1];
-  var7 = a3->var7;
+  [VCSessionMediaStreamConfigurationProvider configureAudioStreams:v15 withCodecConfiguration:config payloadsVersion:1];
+  var7 = config->var7;
   if (var7 != 128)
   {
-    [(VCAudioStreamConfig *)v15 setupRedWithRxPayload:var7 txPayload:a3->var7];
+    [(VCAudioStreamConfig *)v15 setupRedWithRxPayload:var7 txPayload:config->var7];
   }
 
-  if (a3->var5)
+  if (config->var5)
   {
     v19 = 0;
     do
     {
-      [(VCAudioStreamConfig *)v15 addSupportedNumRedundantPayload:a3->var6[v19++]];
+      [(VCAudioStreamConfig *)v15 addSupportedNumRedundantPayload:config->var6[v19++]];
     }
 
-    while (v19 < a3->var5);
+    while (v19 < config->var5);
   }
 
   [(VCSessionParticipantAudioStreamConfig *)v15 setAudioRules:v17];
   [(VCMediaStreamConfig *)v15 setDirection:1];
-  [(VCAudioStreamConfig *)v15 setNumRedundantPayloads:LOBYTE(a3->var6[0])];
+  [(VCAudioStreamConfig *)v15 setNumRedundantPayloads:LOBYTE(config->var6[0])];
   [(VCAudioStreamConfig *)v15 setSupportsAdaptation:1];
   [(VCAudioStreamConfig *)v15 setBundlingScheme:1];
   [(VCAudioStreamConfig *)v15 setChannelCount:1];
   [(VCMediaStreamConfig *)v15 setRtpTimestampRate:24000];
-  -[VCAudioStreamConfig setIsACC24ForU1Enabled:](v15, "setIsACC24ForU1Enabled:", [a5 isACC24ForU1Enabled]);
-  -[VCAudioStreamConfig setIsACC24ForGFTEnabled:](v15, "setIsACC24ForGFTEnabled:", [a5 isACC24ForGFTEnabled]);
-  if (a3->var13)
+  -[VCAudioStreamConfig setIsACC24ForU1Enabled:](v15, "setIsACC24ForU1Enabled:", [rules isACC24ForU1Enabled]);
+  -[VCAudioStreamConfig setIsACC24ForGFTEnabled:](v15, "setIsACC24ForGFTEnabled:", [rules isACC24ForGFTEnabled]);
+  if (config->var13)
   {
-    v20 = [a5 isACC24ForGFTEnabled];
+    isACC24ForGFTEnabled = [rules isACC24ForGFTEnabled];
   }
 
   else
   {
-    v20 = 0;
+    isACC24ForGFTEnabled = 0;
   }
 
-  v21 = [(VCIDSStreamIDGenerator *)self->_streamIDGenerator generateSSRC:1 streamID:1 repairStreamID:0 v2StreamID:v20];
+  v21 = [(VCIDSStreamIDGenerator *)self->_streamIDGenerator generateSSRC:1 streamID:1 repairStreamID:0 v2StreamID:isACC24ForGFTEnabled];
   v23 = v22;
-  -[VCAudioStreamConfig setIsHigherAudioREDCutoverU1Enabled:](v15, "setIsHigherAudioREDCutoverU1Enabled:", [a5 isHigherAudioREDCutoverU1Enabled]);
+  -[VCAudioStreamConfig setIsHigherAudioREDCutoverU1Enabled:](v15, "setIsHigherAudioREDCutoverU1Enabled:", [rules isHigherAudioREDCutoverU1Enabled]);
   [(VCMediaStreamMultiwayConfig *)v11 setSsrc:v21];
   [(VCMediaStreamMultiwayConfig *)v11 setIdsStreamID:WORD2(v21)];
   v24 = v23;
   [(VCMediaStreamMultiwayConfig *)v11 setV2StreamID:v23];
-  [(VCMediaStreamMultiwayConfig *)v11 setMaxNetworkBitrate:a3->var0];
-  [(VCMediaStreamMultiwayConfig *)v11 setMaxMediaBitrate:a3->var2.var1];
-  *&v25 = a3->var9;
+  [(VCMediaStreamMultiwayConfig *)v11 setMaxNetworkBitrate:config->var0];
+  [(VCMediaStreamMultiwayConfig *)v11 setMaxMediaBitrate:config->var2.var1];
+  *&v25 = config->var9;
   [(VCMediaStreamMultiwayConfig *)v11 setMaxPacketsPerSecond:v25];
-  [(VCMediaStreamMultiwayConfig *)v11 setQualityIndex:a3->var1];
+  [(VCMediaStreamMultiwayConfig *)v11 setQualityIndex:config->var1];
   [(VCMediaStreamMultiwayConfig *)v11 setMaxIDSStreamIdCount:v8];
   [(VCMediaStreamMultiwayConfigAudio *)v11 setAudioRules:v17];
-  [(VCMediaStreamMultiwayConfig *)v11 setRepairedMaxNetworkBitrate:a3->var0];
-  [(VCMediaStreamMultiwayConfig *)v11 setStartOnDemand:[VCSessionMediaStreamConfigurationProvider isAudioStreamOnDemand:a3 isLowestQualityAudio:v6]];
-  [(VCMediaStreamMultiwayConfig *)v11 setNegotiationProtocolMask:a3->var10];
+  [(VCMediaStreamMultiwayConfig *)v11 setRepairedMaxNetworkBitrate:config->var0];
+  [(VCMediaStreamMultiwayConfig *)v11 setStartOnDemand:[VCSessionMediaStreamConfigurationProvider isAudioStreamOnDemand:config isLowestQualityAudio:audioCopy]];
+  [(VCMediaStreamMultiwayConfig *)v11 setNegotiationProtocolMask:config->var10];
   [(VCMediaStreamConfig *)v15 setMultiwayConfig:v11];
   v13 = v41;
   [(VCMediaStreamConfig *)v15 setRateControlConfig:v41];
   if (v24)
   {
-    [VCSessionMediaStreamConfigurationProvider configureAudioStreams:v15 withCodecConfiguration:a3 payloadsVersion:3];
+    [VCSessionMediaStreamConfigurationProvider configureAudioStreams:v15 withCodecConfiguration:config payloadsVersion:3];
   }
 
   if ([+[VCDefaults forceDisableMediaEncryption] sharedInstance]
@@ -1475,24 +1475,24 @@ LABEL_19:
   return v27;
 }
 
-- (id)audioRuleCollectionWithAudioConfig:(_VCMediaStreamConfigurationProviderAudio *)a3 supportedAudioRules:(id)a4
+- (id)audioRuleCollectionWithAudioConfig:(_VCMediaStreamConfigurationProviderAudio *)config supportedAudioRules:(id)rules
 {
   v33 = *MEMORY[0x1E69E9840];
   v22 = objc_alloc_init(VCAudioRuleCollection);
   if (v22)
   {
-    if (a3->var3)
+    if (config->var3)
     {
       v7 = 0;
       do
       {
-        v8 = [VCPayloadUtils payloadForCodecType:a3->var4[v7].var0];
+        v8 = [VCPayloadUtils payloadForCodecType:config->var4[v7].var0];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v9 = [a4 rules];
-        v10 = [v9 countByEnumeratingWithState:&v29 objects:v28 count:16];
+        rules = [rules rules];
+        v10 = [rules countByEnumeratingWithState:&v29 objects:v28 count:16];
         if (v10)
         {
           v11 = v10;
@@ -1503,7 +1503,7 @@ LABEL_19:
             {
               if (*v30 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(rules);
               }
 
               v14 = *(*(&v29 + 1) + 8 * i);
@@ -1514,7 +1514,7 @@ LABEL_19:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v29 objects:v28 count:16];
+            v11 = [rules countByEnumeratingWithState:&v29 objects:v28 count:16];
             if (v11)
             {
               continue;
@@ -1528,17 +1528,17 @@ LABEL_14:
         ++v7;
       }
 
-      while (v7 < a3->var3);
+      while (v7 < config->var3);
     }
 
-    if (a3->var7 != 128)
+    if (config->var7 != 128)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v15 = [a4 rules];
-      v16 = [v15 countByEnumeratingWithState:&v24 objects:v23 count:16];
+      rules2 = [rules rules];
+      v16 = [rules2 countByEnumeratingWithState:&v24 objects:v23 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1549,18 +1549,18 @@ LABEL_14:
           {
             if (*v25 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(rules2);
             }
 
             v20 = *(*(&v24 + 1) + 8 * j);
-            if ([v20 payload] == a3->var7)
+            if ([v20 payload] == config->var7)
             {
               [(VCAudioRuleCollection *)v22 addAudioRule:v20];
               return v22;
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v24 objects:v23 count:16];
+          v17 = [rules2 countByEnumeratingWithState:&v24 objects:v23 count:16];
           if (v17)
           {
             continue;
@@ -1580,35 +1580,35 @@ LABEL_14:
   return v22;
 }
 
-+ (void)addCodecConfigurationToStreamConfig:(id)a3 codecType:(int64_t)a4 preferredMode:(int)a5 isV2Codec:(BOOL)a6
++ (void)addCodecConfigurationToStreamConfig:(id)config codecType:(int64_t)type preferredMode:(int)mode isV2Codec:(BOOL)codec
 {
-  v6 = a6;
+  codecCopy = codec;
   v32 = *MEMORY[0x1E69E9840];
-  v10 = [VCPayloadUtils payloadForCodecType:a4];
-  v11 = [[VCAudioStreamCodecConfig alloc] initWithCodecType:a4];
+  v10 = [VCPayloadUtils payloadForCodecType:type];
+  v11 = [[VCAudioStreamCodecConfig alloc] initWithCodecType:type];
   if (v11)
   {
     [OUTLINED_FUNCTION_15_12() setUpCodecConfig:? payload:? preferredMode:?];
-    if (v6)
+    if (codecCopy)
     {
-      if ([a3 isACC24ForGFTEnabled])
+      if ([config isACC24ForGFTEnabled])
       {
         [OUTLINED_FUNCTION_15_12() setUpV2CodecConfig:? payload:? preferredMode:?];
-        v12 = [a3 multiwayConfig];
-        [v12 setEnableACC24ForGFT:1];
-        [v12 addV2CodecConfiguration:v11];
+        multiwayConfig = [config multiwayConfig];
+        [multiwayConfig setEnableACC24ForGFT:1];
+        [multiwayConfig addV2CodecConfiguration:v11];
       }
     }
 
     else
     {
-      [a3 addCodecConfiguration:v11];
+      [config addCodecConfiguration:v11];
     }
 
     goto LABEL_6;
   }
 
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -1637,7 +1637,7 @@ LABEL_17:
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [a1 performSelector:sel_logPrefix];
+    v13 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -1658,7 +1658,7 @@ LABEL_17:
       v26 = 2112;
       v27 = v13;
       v28 = 2048;
-      v29 = a1;
+      selfCopy = self;
       v30 = v22;
       v31 = v10;
       v17 = " [%s] %s:%d %@(%p) Failed to allocate codec config for payload=%d";

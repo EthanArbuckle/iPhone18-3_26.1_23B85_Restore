@@ -4,7 +4,7 @@
 + (id)availableStreams;
 + (id)biomeStoreConfig;
 + (id)getBaseLocalPath;
-+ (id)getDataFromBase64EncodedStr:(id)a3;
++ (id)getDataFromBase64EncodedStr:(id)str;
 + (id)getStreamPath;
 + (id)getStreamURL;
 + (unint64_t)biomeMaxStreamSizeInBytes;
@@ -44,9 +44,9 @@
   }
 
   v3 = +[FSFCallKitUtil sharedInstance];
-  v4 = [v3 isOnCall];
+  isOnCall = [v3 isOnCall];
 
-  if (v4)
+  if (isOnCall)
   {
     v2 = 1;
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -66,11 +66,11 @@ LABEL_9:
   return 0;
 }
 
-+ (id)getDataFromBase64EncodedStr:(id)a3
++ (id)getDataFromBase64EncodedStr:(id)str
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBase64EncodedString:v4 options:0];
+  strCopy = str;
+  v5 = [[v3 alloc] initWithBase64EncodedString:strCopy options:0];
 
   return v5;
 }
@@ -134,18 +134,18 @@ LABEL_9:
 + (id)availableStreams
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [a1 getStreamPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  getStreamPath = [self getStreamPath];
   v11 = 0;
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:&v11];
+  v5 = [defaultManager contentsOfDirectoryAtPath:getStreamPath error:&v11];
   v6 = v11;
 
   if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v7 = [a1 getStreamPath];
+    getStreamPath2 = [self getStreamPath];
     v8 = [v6 debugDescription];
     *buf = 138412546;
-    v13 = v7;
+    v13 = getStreamPath2;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&dword_223066000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cannot get contents of stream path: %@ error: %@", buf, 0x16u);
@@ -163,16 +163,16 @@ LABEL_9:
     return 52428800;
   }
 
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"FeatureStoreMaxStreamSizeInMB"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"FeatureStoreMaxStreamSizeInMB"];
 
   if (!v3)
   {
     return 52428800;
   }
 
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 integerForKey:@"FeatureStoreMaxStreamSizeInMB"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults2 integerForKey:@"FeatureStoreMaxStreamSizeInMB"];
 
   return v5 << 20;
 }
@@ -180,10 +180,10 @@ LABEL_9:
 + (id)biomeStoreConfig
 {
   v3 = MEMORY[0x277CF17F8];
-  v4 = [a1 getStreamPath];
-  v5 = [v3 newPrivateStreamDefaultConfigurationWithStoreBasePath:v4];
+  getStreamPath = [self getStreamPath];
+  v5 = [v3 newPrivateStreamDefaultConfigurationWithStoreBasePath:getStreamPath];
 
-  v6 = [objc_alloc(MEMORY[0x277CF17E8]) initPruneOnAccess:1 filterByAgeOnRead:1 maxAge:objc_msgSend(a1 maxStreamSize:{"biomeMaxStreamSizeInBytes"), 1209600.0}];
+  v6 = [objc_alloc(MEMORY[0x277CF17E8]) initPruneOnAccess:1 filterByAgeOnRead:1 maxAge:objc_msgSend(self maxStreamSize:{"biomeMaxStreamSizeInBytes"), 1209600.0}];
   [v5 setPruningPolicy:v6];
 
   return v5;
@@ -193,7 +193,7 @@ LABEL_9:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_223066000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Could not get user dir. Returning %@", &v2, 0xCu);
   v1 = *MEMORY[0x277D85DE8];
 }

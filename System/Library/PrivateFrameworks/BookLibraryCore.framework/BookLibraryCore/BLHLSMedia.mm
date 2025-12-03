@@ -1,22 +1,22 @@
 @interface BLHLSMedia
 - (id)description;
-- (void)setPropertiesFromAttributeList:(id)a3;
+- (void)setPropertiesFromAttributeList:(id)list;
 @end
 
 @implementation BLHLSMedia
 
-- (void)setPropertiesFromAttributeList:(id)a3
+- (void)setPropertiesFromAttributeList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"TYPE"];
+  listCopy = list;
+  v5 = [listCopy objectForKeyedSubscript:@"TYPE"];
   type = self->_type;
   self->_type = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"URI"];
+  v7 = [listCopy objectForKeyedSubscript:@"URI"];
   url = self->_url;
   self->_url = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"NAME"];
+  v9 = [listCopy objectForKeyedSubscript:@"NAME"];
 
   name = self->_name;
   self->_name = v9;
@@ -25,10 +25,10 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BLHLSMedia *)self name];
-  v5 = [(BLHLSMedia *)self type];
+  name = [(BLHLSMedia *)self name];
+  type = [(BLHLSMedia *)self type];
   v6 = [(BLHLSMedia *)self url];
-  v7 = [v3 stringWithFormat:@"%@(%@): %@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@(%@): %@", name, type, v6];
 
   return v7;
 }

@@ -1,14 +1,14 @@
 @interface FPAggregateProgress
-- (void)addChild:(id)a3;
+- (void)addChild:(id)child;
 - (void)cancel;
 - (void)startReportingProgress;
 @end
 
 @implementation FPAggregateProgress
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v9 = a3;
+  childCopy = child;
   if ([(FPAggregateProgress *)self totalUnitCount]&& [(FPAggregateProgress *)self totalUnitCount])
   {
     [(FPAggregateProgress *)a2 addChild:?];
@@ -16,20 +16,20 @@
 
   if ([(FPAggregateProgress *)self isCancelled])
   {
-    [v9 cancel];
+    [childCopy cancel];
   }
 
   else
   {
     childProgresses = self->_childProgresses;
-    v6 = v9;
+    v6 = childCopy;
     if (!childProgresses)
     {
       v7 = objc_opt_new();
       v8 = self->_childProgresses;
       self->_childProgresses = v7;
 
-      v6 = v9;
+      v6 = childCopy;
       childProgresses = self->_childProgresses;
     }
 

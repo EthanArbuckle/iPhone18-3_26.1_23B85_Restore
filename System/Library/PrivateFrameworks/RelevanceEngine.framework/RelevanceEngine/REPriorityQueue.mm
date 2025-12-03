@@ -1,8 +1,8 @@
 @interface REPriorityQueue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)allObjects;
-- (REPriorityQueue)initWithComparator:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (REPriorityQueue)initWithComparator:(id)comparator;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)minimumObject;
 - (void)dealloc;
@@ -10,15 +10,15 @@
 
 @implementation REPriorityQueue
 
-- (REPriorityQueue)initWithComparator:(id)a3
+- (REPriorityQueue)initWithComparator:(id)comparator
 {
-  v4 = a3;
+  comparatorCopy = comparator;
   v11.receiver = self;
   v11.super_class = REPriorityQueue;
   v5 = [(REPriorityQueue *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [comparatorCopy copy];
     comparator = v5->_comparator;
     v5->_comparator = v6;
 
@@ -34,10 +34,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -47,7 +47,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(REPriorityQueue *)self count];
       if (v6 == [(REPriorityQueue *)v5 count])
       {
@@ -100,7 +100,7 @@ uint64_t __27__REPriorityQueue_isEqual___block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[REPriorityQueue allocWithZone:?], "initWithComparator:", self->_comparator];
   v7[0] = MEMORY[0x277D85DD0];

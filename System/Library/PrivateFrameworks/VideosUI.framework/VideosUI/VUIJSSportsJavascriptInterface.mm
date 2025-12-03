@@ -1,8 +1,8 @@
 @interface VUIJSSportsJavascriptInterface
 - (JSContext)context;
 - (NSString)storefrontId;
-- (id)isSportsFeatureEnabledWithLeagueId:(id)a3 featureName:(id)a4;
-- (void)setContext:(id)a3;
+- (id)isSportsFeatureEnabledWithLeagueId:(id)id featureName:(id)name;
+- (void)setContext:(id)context;
 @end
 
 @implementation VUIJSSportsJavascriptInterface
@@ -14,16 +14,16 @@
   return v2;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E3F673E8(a3);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1E3F673E8(context);
 }
 
 - (NSString)storefrontId
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3F6759C();
 
   v3 = sub_1E4205ED4();
@@ -31,13 +31,13 @@
   return v3;
 }
 
-- (id)isSportsFeatureEnabledWithLeagueId:(id)a3 featureName:(id)a4
+- (id)isSportsFeatureEnabledWithLeagueId:(id)id featureName:(id)name
 {
   v5 = sub_1E4205F14();
   v7 = v6;
   v8 = sub_1E4205F14();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;

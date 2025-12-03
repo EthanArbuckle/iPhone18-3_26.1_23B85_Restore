@@ -1,19 +1,19 @@
 @interface EPDeviceInfo
 - (BOOL)isPairing;
 - (EPDevice)device;
-- (EPDeviceInfo)initWithPeer:(id)a3;
+- (EPDeviceInfo)initWithPeer:(id)peer;
 - (EPDeviceInfoDelegate)delegate;
 - (EPPeripheralObserverFactory)peripheralFactory;
 - (id)initBase;
 - (id)newCentralDevice;
 - (id)newClassicDevice;
-- (id)newConnectorWithDelegate:(id)a3;
-- (id)newPeripheralDeviceWithAdvertisementData:(id)a3 withRSSI:(id)a4;
+- (id)newConnectorWithDelegate:(id)delegate;
+- (id)newPeripheralDeviceWithAdvertisementData:(id)data withRSSI:(id)i;
 - (void)dealloc;
-- (void)device:(id)a3 peerDidInvalidate:(id)a4;
-- (void)deviceDidDeallocate:(id)a3;
-- (void)devicePairingFailure:(id)a3;
-- (void)devicePairingSuccess:(id)a3;
+- (void)device:(id)device peerDidInvalidate:(id)invalidate;
+- (void)deviceDidDeallocate:(id)deallocate;
+- (void)devicePairingFailure:(id)failure;
+- (void)devicePairingSuccess:(id)success;
 - (void)reset;
 @end
 
@@ -33,26 +33,26 @@
   [(EPDeviceInfo *)&v2 dealloc];
 }
 
-- (EPDeviceInfo)initWithPeer:(id)a3
+- (EPDeviceInfo)initWithPeer:(id)peer
 {
-  v5 = a3;
-  v6 = [(EPDeviceInfo *)self initBase];
-  v7 = v6;
-  if (v6)
+  peerCopy = peer;
+  initBase = [(EPDeviceInfo *)self initBase];
+  v7 = initBase;
+  if (initBase)
   {
-    objc_storeStrong(v6 + 4, a3);
-    v8 = [v5 identifier];
+    objc_storeStrong(initBase + 4, peer);
+    identifier = [peerCopy identifier];
     uuid = v7->_uuid;
-    v7->_uuid = v8;
+    v7->_uuid = identifier;
   }
 
   return v7;
 }
 
-- (id)newPeripheralDeviceWithAdvertisementData:(id)a3 withRSSI:(id)a4
+- (id)newPeripheralDeviceWithAdvertisementData:(id)data withRSSI:(id)i
 {
   self->_deviceWasHere = 1;
-  v5 = [EPDevice newDeviceWithInfo:self withAdvertisementData:a3 withRSSI:a4];
+  v5 = [EPDevice newDeviceWithInfo:self withAdvertisementData:data withRSSI:i];
   objc_storeWeak(&self->_device, v5);
   return v5;
 }
@@ -88,12 +88,12 @@
 - (BOOL)isPairing
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v3 = [WeakRetained isPairing];
+  isPairing = [WeakRetained isPairing];
 
-  return v3;
+  return isPairing;
 }
 
-- (void)deviceDidDeallocate:(id)a3
+- (void)deviceDidDeallocate:(id)deallocate
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained deviceInfoDeviceDidDeallocate:self];
@@ -101,19 +101,19 @@
   [(EPDeviceInfo *)self reset];
 }
 
-- (void)device:(id)a3 peerDidInvalidate:(id)a4
+- (void)device:(id)device peerDidInvalidate:(id)invalidate
 {
-  v6 = a4;
+  invalidateCopy = invalidate;
   if (self->_peer)
   {
     [(EPDeviceInfo *)self reset];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained deviceInfo:self peerDidInvalidate:v6];
+  [WeakRetained deviceInfo:self peerDidInvalidate:invalidateCopy];
 }
 
-- (void)devicePairingFailure:(id)a3
+- (void)devicePairingFailure:(id)failure
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -125,7 +125,7 @@
   }
 }
 
-- (void)devicePairingSuccess:(id)a3
+- (void)devicePairingSuccess:(id)success
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -157,9 +157,9 @@
   return v7;
 }
 
-- (id)newConnectorWithDelegate:(id)a3
+- (id)newConnectorWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_device);
 
   if (WeakRetained)
@@ -170,22 +170,22 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(EPDeviceInfo *)self peripheralFactory];
-        v8 = [v7 connectorManager];
+        peripheralFactory = [(EPDeviceInfo *)self peripheralFactory];
+        connectorManager = [peripheralFactory connectorManager];
       }
 
       else
       {
         v10 = [EPNullResourceManager alloc];
-        v7 = +[EPFactory queue];
-        v8 = [(EPResourceManager *)v10 initWithQueue:v7];
+        peripheralFactory = +[EPFactory queue];
+        connectorManager = [(EPResourceManager *)v10 initWithQueue:peripheralFactory];
       }
 
       connectors = self->_connectors;
-      self->_connectors = v8;
+      self->_connectors = connectorManager;
     }
 
-    v9 = [(EPResourceManagerProtocol *)self->_connectors newResourceWithDelegate:v4];
+    v9 = [(EPResourceManagerProtocol *)self->_connectors newResourceWithDelegate:delegateCopy];
   }
 
   else

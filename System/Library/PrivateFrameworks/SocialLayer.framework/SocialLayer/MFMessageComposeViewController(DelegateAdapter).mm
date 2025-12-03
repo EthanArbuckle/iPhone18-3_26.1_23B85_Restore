@@ -7,10 +7,10 @@
 
 - (id)sl_messageComposeResultHandler
 {
-  v1 = objc_getAssociatedObject(a1, sel_sl_messageComposeResultHandler);
-  v2 = [v1 resultHandler];
+  v1 = objc_getAssociatedObject(self, sel_sl_messageComposeResultHandler);
+  resultHandler = [v1 resultHandler];
 
-  return v2;
+  return resultHandler;
 }
 
 - (void)setSl_messageComposeResultHandler:()DelegateAdapter
@@ -27,8 +27,8 @@
     value = 0;
   }
 
-  [a1 setMessageComposeDelegate:value];
-  objc_setAssociatedObject(a1, sel_sl_messageComposeResultHandler, value, 1);
+  [self setMessageComposeDelegate:value];
+  objc_setAssociatedObject(self, sel_sl_messageComposeResultHandler, value, 1);
 }
 
 @end

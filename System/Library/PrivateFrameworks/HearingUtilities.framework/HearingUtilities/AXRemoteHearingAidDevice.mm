@@ -1,10 +1,10 @@
 @interface AXRemoteHearingAidDevice
 - (AXHARemoteUpdateProtocol)updateDelegate;
 - (AXRemoteHearingAidDevice)init;
-- (AXRemoteHearingAidDevice)initWithPersistentRepresentation:(id)a3;
-- (AXRemoteHearingAidDevice)initWithRemoteRepresentation:(id)a3 andDeviceID:(id)a4;
-- (BOOL)checkDidLoadProperties:(unint64_t)a3;
-- (BOOL)containsPeripheralWithUUID:(id)a3;
+- (AXRemoteHearingAidDevice)initWithPersistentRepresentation:(id)representation;
+- (AXRemoteHearingAidDevice)initWithRemoteRepresentation:(id)representation andDeviceID:(id)d;
+- (BOOL)checkDidLoadProperties:(unint64_t)properties;
+- (BOOL)containsPeripheralWithUUID:(id)d;
 - (BOOL)didLoadRequiredPeerProperties;
 - (BOOL)didLoadRequiredProperties;
 - (BOOL)hasConnection;
@@ -12,43 +12,43 @@
 - (BOOL)isLeftConnected;
 - (BOOL)isRightConnected;
 - (BOOL)programsListsAreEqual;
-- (BOOL)propertyIsAvailable:(unint64_t)a3 forEar:(int)a4;
+- (BOOL)propertyIsAvailable:(unint64_t)available forEar:(int)ear;
 - (BOOL)shouldDisplayCombinedVolume;
-- (BOOL)shouldOnlyShowIndividualVolumesForProperty:(unint64_t)a3;
+- (BOOL)shouldOnlyShowIndividualVolumesForProperty:(unint64_t)property;
 - (BOOL)showCombinedPrograms;
-- (BOOL)supportsCombinedVolumesForProperty:(unint64_t)a3;
+- (BOOL)supportsCombinedVolumesForProperty:(unint64_t)property;
 - (NSString)description;
-- (double)combinedVolumeForProperty:(unint64_t)a3;
-- (id)_valueForProperty:(unint64_t)a3;
+- (double)combinedVolumeForProperty:(unint64_t)property;
+- (id)_valueForProperty:(unint64_t)property;
 - (id)combinedPrograms;
-- (id)programAtIndex:(unsigned __int8)a3 forEar:(int)a4;
+- (id)programAtIndex:(unsigned __int8)index forEar:(int)ear;
 - (id)programs;
 - (id)selectedProgramIndexes;
 - (id)selectedPrograms;
-- (id)valueForProperty:(unint64_t)a3;
+- (id)valueForProperty:(unint64_t)property;
 - (void)_delayWriteProperties;
 - (void)_updateSelectedProgramsProperties;
 - (void)_writeAllProgramSelectionsToPeripheral;
 - (void)connect;
 - (void)dealloc;
-- (void)disconnectAndUnpair:(BOOL)a3;
+- (void)disconnectAndUnpair:(BOOL)unpair;
 - (void)loadRequiredProperties;
-- (void)selectProgram:(id)a3 forEar:(int)a4;
-- (void)setKeepInSync:(BOOL)a3;
-- (void)setLeftBass:(char)a3;
-- (void)setLeftMicrophoneVolume:(double)a3;
-- (void)setLeftMixedVolume:(double)a3;
-- (void)setLeftSensitivity:(double)a3;
-- (void)setLeftStreamVolume:(double)a3;
-- (void)setLeftTreble:(char)a3;
-- (void)setRightBass:(char)a3;
-- (void)setRightMicrophoneVolume:(double)a3;
-- (void)setRightMixedVolume:(double)a3;
-- (void)setRightSensitivity:(double)a3;
-- (void)setRightStreamVolume:(double)a3;
-- (void)setRightTreble:(char)a3;
-- (void)setValue:(id)a3 forProperty:(unint64_t)a4;
-- (void)writeVolumesForProperty:(unint64_t)a3;
+- (void)selectProgram:(id)program forEar:(int)ear;
+- (void)setKeepInSync:(BOOL)sync;
+- (void)setLeftBass:(char)bass;
+- (void)setLeftMicrophoneVolume:(double)volume;
+- (void)setLeftMixedVolume:(double)volume;
+- (void)setLeftSensitivity:(double)sensitivity;
+- (void)setLeftStreamVolume:(double)volume;
+- (void)setLeftTreble:(char)treble;
+- (void)setRightBass:(char)bass;
+- (void)setRightMicrophoneVolume:(double)volume;
+- (void)setRightMixedVolume:(double)volume;
+- (void)setRightSensitivity:(double)sensitivity;
+- (void)setRightStreamVolume:(double)volume;
+- (void)setRightTreble:(char)treble;
+- (void)setValue:(id)value forProperty:(unint64_t)property;
+- (void)writeVolumesForProperty:(unint64_t)property;
 @end
 
 @implementation AXRemoteHearingAidDevice
@@ -82,21 +82,21 @@
   return v3;
 }
 
-- (AXRemoteHearingAidDevice)initWithRemoteRepresentation:(id)a3 andDeviceID:(id)a4
+- (AXRemoteHearingAidDevice)initWithRemoteRepresentation:(id)representation andDeviceID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  dCopy = d;
   v8 = [(AXRemoteHearingAidDevice *)self init];
   v9 = v8;
   if (v8)
   {
-    [(AXRemoteHearingAidDevice *)v8 setDeviceUUID:v7];
+    [(AXRemoteHearingAidDevice *)v8 setDeviceUUID:dCopy];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __69__AXRemoteHearingAidDevice_initWithRemoteRepresentation_andDeviceID___block_invoke;
     v11[3] = &unk_1E85CA558;
     v12 = v9;
-    [v6 enumerateKeysAndObjectsUsingBlock:v11];
+    [representationCopy enumerateKeysAndObjectsUsingBlock:v11];
   }
 
   return v9;
@@ -108,9 +108,9 @@ void __69__AXRemoteHearingAidDevice_initWithRemoteRepresentation_andDeviceID___b
   [*(a1 + 32) setValue:v5 forProperty:{objc_msgSend(a2, "unsignedLongLongValue")}];
 }
 
-- (AXRemoteHearingAidDevice)initWithPersistentRepresentation:(id)a3
+- (AXRemoteHearingAidDevice)initWithPersistentRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(AXRemoteHearingAidDevice *)self init];
   v6 = v5;
   if (v5)
@@ -121,7 +121,7 @@ void __69__AXRemoteHearingAidDevice_initWithRemoteRepresentation_andDeviceID___b
     v9[3] = &unk_1E85CA558;
     v7 = v5;
     v10 = v7;
-    [v4 enumerateKeysAndObjectsUsingBlock:v9];
+    [representationCopy enumerateKeysAndObjectsUsingBlock:v9];
     [(AXRemoteHearingAidDevice *)v7 setIsPaired:1];
   }
 
@@ -318,45 +318,45 @@ LABEL_44:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1DA5E2000, v3, OS_LOG_TYPE_DEFAULT, "Requesting connect: %@", &v7, 0xCu);
   }
 
-  v4 = [(AXRemoteHearingAidDevice *)self updateDelegate];
-  v5 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-  [v4 writeValue:&unk_1F5623F08 forProperty:0x200000 andDeviceID:v5];
+  updateDelegate = [(AXRemoteHearingAidDevice *)self updateDelegate];
+  deviceUUID = [(AXRemoteHearingAidDevice *)self deviceUUID];
+  [updateDelegate writeValue:&unk_1F5623F08 forProperty:0x200000 andDeviceID:deviceUUID];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disconnectAndUnpair:(BOOL)a3
+- (void)disconnectAndUnpair:(BOOL)unpair
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = HCLogHearingAids();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "Requesting disconnect: %@", &v8, 0xCu);
   }
 
-  v5 = [(AXRemoteHearingAidDevice *)self updateDelegate];
-  v6 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-  [v5 writeValue:&unk_1F5623F20 forProperty:0x200000 andDeviceID:v6];
+  updateDelegate = [(AXRemoteHearingAidDevice *)self updateDelegate];
+  deviceUUID = [(AXRemoteHearingAidDevice *)self deviceUUID];
+  [updateDelegate writeValue:&unk_1F5623F20 forProperty:0x200000 andDeviceID:deviceUUID];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
 - (BOOL)isConnected
 {
-  v3 = [(AXRemoteHearingAidDevice *)self leftAvailable];
-  if (v3 != [(AXRemoteHearingAidDevice *)self leftConnected])
+  leftAvailable = [(AXRemoteHearingAidDevice *)self leftAvailable];
+  if (leftAvailable != [(AXRemoteHearingAidDevice *)self leftConnected])
   {
     return 0;
   }
 
-  v5 = [(AXRemoteHearingAidDevice *)self rightAvailable];
-  return v5 ^ [(AXRemoteHearingAidDevice *)self rightConnected]^ 1;
+  rightAvailable = [(AXRemoteHearingAidDevice *)self rightAvailable];
+  return rightAvailable ^ [(AXRemoteHearingAidDevice *)self rightConnected]^ 1;
 }
 
 - (BOOL)hasConnection
@@ -433,14 +433,14 @@ LABEL_44:
   return v3;
 }
 
-- (BOOL)containsPeripheralWithUUID:(id)a3
+- (BOOL)containsPeripheralWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-  if ([v5 rangeOfString:v4] == 0x7FFFFFFFFFFFFFFFLL)
+  dCopy = d;
+  deviceUUID = [(AXRemoteHearingAidDevice *)self deviceUUID];
+  if ([deviceUUID rangeOfString:dCopy] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-    v7 = [v4 rangeOfString:v6] != 0x7FFFFFFFFFFFFFFFLL;
+    deviceUUID2 = [(AXRemoteHearingAidDevice *)self deviceUUID];
+    v7 = [dCopy rangeOfString:deviceUUID2] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -460,32 +460,32 @@ LABEL_44:
 
 - (BOOL)didLoadRequiredProperties
 {
-  v3 = [(AXRemoteHearingAidDevice *)self requiredProperties];
+  requiredProperties = [(AXRemoteHearingAidDevice *)self requiredProperties];
 
-  return [(AXRemoteHearingAidDevice *)self checkDidLoadProperties:v3];
+  return [(AXRemoteHearingAidDevice *)self checkDidLoadProperties:requiredProperties];
 }
 
-- (BOOL)checkDidLoadProperties:(unint64_t)a3
+- (BOOL)checkDidLoadProperties:(unint64_t)properties
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(AXRemoteHearingAidDevice *)self didLoadProperty:a3];
+  v4 = [(AXRemoteHearingAidDevice *)self didLoadProperty:properties];
   if (!v4 && [MEMORY[0x1E69A4560] isInternalInstall])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [(AXRemoteHearingAidDevice *)self requiredProperties];
+    array = [MEMORY[0x1E695DF70] array];
+    requiredProperties = [(AXRemoteHearingAidDevice *)self requiredProperties];
     for (i = 0; i != 64; ++i)
     {
-      if (((1 << i) & v6) != 0 && ![(AXRemoteHearingAidDevice *)self didLoadProperty:1 << i])
+      if (((1 << i) & requiredProperties) != 0 && ![(AXRemoteHearingAidDevice *)self didLoadProperty:1 << i])
       {
         v8 = hearingPropertyDescription(1 << i);
-        [v5 addObject:v8];
+        [array addObject:v8];
       }
     }
 
     v9 = HCLogHearingAids();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 componentsJoinedByString:@" and "];
+      v10 = [array componentsJoinedByString:@" and "];
       v13 = 138412290;
       v14 = v10;
       _os_log_impl(&dword_1DA5E2000, v9, OS_LOG_TYPE_DEFAULT, "Haven't loaded %@", &v13, 0xCu);
@@ -498,18 +498,18 @@ LABEL_44:
 
 - (void)loadRequiredProperties
 {
-  v5 = [(AXRemoteHearingAidDevice *)self updateDelegate];
-  v3 = [(AXRemoteHearingAidDevice *)self requiredProperties];
-  v4 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-  [v5 updateProperty:v3 | 0xFF800105C4 forDeviceID:v4];
+  updateDelegate = [(AXRemoteHearingAidDevice *)self updateDelegate];
+  requiredProperties = [(AXRemoteHearingAidDevice *)self requiredProperties];
+  deviceUUID = [(AXRemoteHearingAidDevice *)self deviceUUID];
+  [updateDelegate updateProperty:requiredProperties | 0xFF800105C4 forDeviceID:deviceUUID];
 }
 
-- (BOOL)propertyIsAvailable:(unint64_t)a3 forEar:(int)a4
+- (BOOL)propertyIsAvailable:(unint64_t)available forEar:(int)ear
 {
-  switch(a4)
+  switch(ear)
   {
     case 6:
-      if ((a3 & ~[(AXRemoteHearingAidDevice *)self leftAvailableProperties]) == 0)
+      if ((available & ~[(AXRemoteHearingAidDevice *)self leftAvailableProperties]) == 0)
       {
         return 1;
       }
@@ -517,11 +517,11 @@ LABEL_44:
       goto LABEL_7;
     case 4:
 LABEL_7:
-      v6 = [(AXRemoteHearingAidDevice *)self rightAvailableProperties];
-      return (a3 & ~v6) == 0;
+      rightAvailableProperties = [(AXRemoteHearingAidDevice *)self rightAvailableProperties];
+      return (available & ~rightAvailableProperties) == 0;
     case 2:
-      v6 = [(AXRemoteHearingAidDevice *)self leftAvailableProperties];
-      return (a3 & ~v6) == 0;
+      rightAvailableProperties = [(AXRemoteHearingAidDevice *)self leftAvailableProperties];
+      return (available & ~rightAvailableProperties) == 0;
   }
 
   return 0;
@@ -532,78 +532,78 @@ LABEL_7:
   self->_delayWritePending = 1;
   if (([(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0x40) != 0)
   {
-    v3 = [(AXRemoteHearingAidDevice *)self updateDelegate];
+    updateDelegate = [(AXRemoteHearingAidDevice *)self updateDelegate];
     v4 = MEMORY[0x1E695DEC8];
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_leftMicrophoneVolume];
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_rightMicrophoneVolume];
     v7 = [v4 arrayWithObjects:{v5, v6, 0}];
-    v8 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-    [v3 writeValue:v7 forProperty:64 andDeviceID:v8];
+    deviceUUID = [(AXRemoteHearingAidDevice *)self deviceUUID];
+    [updateDelegate writeValue:v7 forProperty:64 andDeviceID:deviceUUID];
 
     [(AXRemoteHearingAidDevice *)self setPendingPropertyWrites:[(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0xFFFFFFFFFFFFFFBFLL];
   }
 
   if (([(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0x80) != 0)
   {
-    v9 = [(AXRemoteHearingAidDevice *)self updateDelegate];
+    updateDelegate2 = [(AXRemoteHearingAidDevice *)self updateDelegate];
     v10 = MEMORY[0x1E695DEC8];
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_leftStreamVolume];
     v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_rightStreamVolume];
     v13 = [v10 arrayWithObjects:{v11, v12, 0}];
-    v14 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-    [v9 writeValue:v13 forProperty:128 andDeviceID:v14];
+    deviceUUID2 = [(AXRemoteHearingAidDevice *)self deviceUUID];
+    [updateDelegate2 writeValue:v13 forProperty:128 andDeviceID:deviceUUID2];
 
     [(AXRemoteHearingAidDevice *)self setPendingPropertyWrites:[(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0xFFFFFFFFFFFFFF7FLL];
   }
 
   if (([(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0x80000000) != 0)
   {
-    v15 = [(AXRemoteHearingAidDevice *)self updateDelegate];
+    updateDelegate3 = [(AXRemoteHearingAidDevice *)self updateDelegate];
     v16 = MEMORY[0x1E695DEC8];
     v17 = [MEMORY[0x1E696AD98] numberWithDouble:self->_leftSensitivity];
     v18 = [MEMORY[0x1E696AD98] numberWithDouble:self->_rightSensitivity];
     v19 = [v16 arrayWithObjects:{v17, v18, 0}];
-    v20 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-    [v15 writeValue:v19 forProperty:0x80000000 andDeviceID:v20];
+    deviceUUID3 = [(AXRemoteHearingAidDevice *)self deviceUUID];
+    [updateDelegate3 writeValue:v19 forProperty:0x80000000 andDeviceID:deviceUUID3];
 
     [(AXRemoteHearingAidDevice *)self setPendingPropertyWrites:[(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0xFFFFFFFF7FFFFFFFLL];
   }
 
   if (([(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0x2000000000) != 0)
   {
-    v21 = [(AXRemoteHearingAidDevice *)self updateDelegate];
+    updateDelegate4 = [(AXRemoteHearingAidDevice *)self updateDelegate];
     v22 = MEMORY[0x1E695DEC8];
     v23 = [MEMORY[0x1E696AD98] numberWithChar:self->_leftTreble];
     v24 = [MEMORY[0x1E696AD98] numberWithChar:self->_rightTreble];
     v25 = [v22 arrayWithObjects:{v23, v24, 0}];
-    v26 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-    [v21 writeValue:v25 forProperty:0x2000000000 andDeviceID:v26];
+    deviceUUID4 = [(AXRemoteHearingAidDevice *)self deviceUUID];
+    [updateDelegate4 writeValue:v25 forProperty:0x2000000000 andDeviceID:deviceUUID4];
 
     [(AXRemoteHearingAidDevice *)self setPendingPropertyWrites:[(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0xFFFFFFDFFFFFFFFFLL];
   }
 
   if (([(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0x1000000000) != 0)
   {
-    v27 = [(AXRemoteHearingAidDevice *)self updateDelegate];
+    updateDelegate5 = [(AXRemoteHearingAidDevice *)self updateDelegate];
     v28 = MEMORY[0x1E695DEC8];
     v29 = [MEMORY[0x1E696AD98] numberWithChar:self->_leftBass];
     v30 = [MEMORY[0x1E696AD98] numberWithChar:self->_rightBass];
     v31 = [v28 arrayWithObjects:{v29, v30, 0}];
-    v32 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-    [v27 writeValue:v31 forProperty:0x1000000000 andDeviceID:v32];
+    deviceUUID5 = [(AXRemoteHearingAidDevice *)self deviceUUID];
+    [updateDelegate5 writeValue:v31 forProperty:0x1000000000 andDeviceID:deviceUUID5];
 
     [(AXRemoteHearingAidDevice *)self setPendingPropertyWrites:[(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0xFFFFFFEFFFFFFFFFLL];
   }
 
   if (([(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0x4000000000) != 0)
   {
-    v33 = [(AXRemoteHearingAidDevice *)self updateDelegate];
+    updateDelegate6 = [(AXRemoteHearingAidDevice *)self updateDelegate];
     v34 = MEMORY[0x1E695DEC8];
     v35 = [MEMORY[0x1E696AD98] numberWithDouble:self->_leftMixedVolume];
     v36 = [MEMORY[0x1E696AD98] numberWithDouble:self->_rightMixedVolume];
     v37 = [v34 arrayWithObjects:{v35, v36, 0}];
-    v38 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-    [v33 writeValue:v37 forProperty:0x4000000000 andDeviceID:v38];
+    deviceUUID6 = [(AXRemoteHearingAidDevice *)self deviceUUID];
+    [updateDelegate6 writeValue:v37 forProperty:0x4000000000 andDeviceID:deviceUUID6];
 
     [(AXRemoteHearingAidDevice *)self setPendingPropertyWrites:[(AXRemoteHearingAidDevice *)self pendingPropertyWrites]& 0xFFFFFFBFFFFFFFFFLL];
   }
@@ -618,23 +618,23 @@ LABEL_7:
   dispatch_after(v39, v40, block);
 }
 
-- (void)writeVolumesForProperty:(unint64_t)a3
+- (void)writeVolumesForProperty:(unint64_t)property
 {
-  [(AXRemoteHearingAidDevice *)self setPendingPropertyWrites:[(AXRemoteHearingAidDevice *)self pendingPropertyWrites]| a3];
-  if (a3 > 0xFFFFFFFFFLL)
+  [(AXRemoteHearingAidDevice *)self setPendingPropertyWrites:[(AXRemoteHearingAidDevice *)self pendingPropertyWrites]| property];
+  if (property > 0xFFFFFFFFFLL)
   {
-    if (a3 != 0x1000000000 && a3 != 0x4000000000)
+    if (property != 0x1000000000 && property != 0x4000000000)
     {
       v5 = 0x2000000000;
 LABEL_8:
-      if (a3 != v5)
+      if (property != v5)
       {
         return;
       }
     }
   }
 
-  else if (a3 != 64 && a3 != 128)
+  else if (property != 64 && property != 128)
   {
     v5 = 0x80000000;
     goto LABEL_8;
@@ -647,17 +647,17 @@ LABEL_8:
   }
 }
 
-- (void)setLeftMicrophoneVolume:(double)a3
+- (void)setLeftMicrophoneVolume:(double)volume
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  volumeCopy = 0.0;
+  if (volume >= 0.0)
   {
-    v3 = a3;
+    volumeCopy = volume;
   }
 
-  if (a3 <= 1.0)
+  if (volume <= 1.0)
   {
-    v4 = v3;
+    v4 = volumeCopy;
   }
 
   else
@@ -672,17 +672,17 @@ LABEL_8:
   }
 }
 
-- (void)setRightMicrophoneVolume:(double)a3
+- (void)setRightMicrophoneVolume:(double)volume
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  volumeCopy = 0.0;
+  if (volume >= 0.0)
   {
-    v3 = a3;
+    volumeCopy = volume;
   }
 
-  if (a3 <= 1.0)
+  if (volume <= 1.0)
   {
-    v4 = v3;
+    v4 = volumeCopy;
   }
 
   else
@@ -697,17 +697,17 @@ LABEL_8:
   }
 }
 
-- (void)setLeftStreamVolume:(double)a3
+- (void)setLeftStreamVolume:(double)volume
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  volumeCopy = 0.0;
+  if (volume >= 0.0)
   {
-    v3 = a3;
+    volumeCopy = volume;
   }
 
-  if (a3 <= 1.0)
+  if (volume <= 1.0)
   {
-    v4 = v3;
+    v4 = volumeCopy;
   }
 
   else
@@ -722,17 +722,17 @@ LABEL_8:
   }
 }
 
-- (void)setRightStreamVolume:(double)a3
+- (void)setRightStreamVolume:(double)volume
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  volumeCopy = 0.0;
+  if (volume >= 0.0)
   {
-    v3 = a3;
+    volumeCopy = volume;
   }
 
-  if (a3 <= 1.0)
+  if (volume <= 1.0)
   {
-    v4 = v3;
+    v4 = volumeCopy;
   }
 
   else
@@ -747,17 +747,17 @@ LABEL_8:
   }
 }
 
-- (void)setLeftSensitivity:(double)a3
+- (void)setLeftSensitivity:(double)sensitivity
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  sensitivityCopy = 0.0;
+  if (sensitivity >= 0.0)
   {
-    v3 = a3;
+    sensitivityCopy = sensitivity;
   }
 
-  if (a3 <= 1.0)
+  if (sensitivity <= 1.0)
   {
-    v4 = v3;
+    v4 = sensitivityCopy;
   }
 
   else
@@ -772,17 +772,17 @@ LABEL_8:
   }
 }
 
-- (void)setRightSensitivity:(double)a3
+- (void)setRightSensitivity:(double)sensitivity
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  sensitivityCopy = 0.0;
+  if (sensitivity >= 0.0)
   {
-    v3 = a3;
+    sensitivityCopy = sensitivity;
   }
 
-  if (a3 <= 1.0)
+  if (sensitivity <= 1.0)
   {
-    v4 = v3;
+    v4 = sensitivityCopy;
   }
 
   else
@@ -797,93 +797,93 @@ LABEL_8:
   }
 }
 
-- (void)setLeftTreble:(char)a3
+- (void)setLeftTreble:(char)treble
 {
-  if (a3 <= -127)
+  if (treble <= -127)
   {
-    v3 = -127;
+    trebleCopy = -127;
   }
 
   else
   {
-    v3 = a3;
+    trebleCopy = treble;
   }
 
-  if (self->_leftTreble != v3)
+  if (self->_leftTreble != trebleCopy)
   {
-    self->_leftTreble = v3;
+    self->_leftTreble = trebleCopy;
     [(AXRemoteHearingAidDevice *)self writeVolumesForProperty:0x2000000000];
   }
 }
 
-- (void)setRightTreble:(char)a3
+- (void)setRightTreble:(char)treble
 {
-  if (a3 <= -127)
+  if (treble <= -127)
   {
-    v3 = -127;
+    trebleCopy = -127;
   }
 
   else
   {
-    v3 = a3;
+    trebleCopy = treble;
   }
 
-  if (self->_rightTreble != v3)
+  if (self->_rightTreble != trebleCopy)
   {
-    self->_rightTreble = v3;
+    self->_rightTreble = trebleCopy;
     [(AXRemoteHearingAidDevice *)self writeVolumesForProperty:0x2000000000];
   }
 }
 
-- (void)setLeftBass:(char)a3
+- (void)setLeftBass:(char)bass
 {
-  if (a3 <= -127)
+  if (bass <= -127)
   {
-    v3 = -127;
+    bassCopy = -127;
   }
 
   else
   {
-    v3 = a3;
+    bassCopy = bass;
   }
 
-  if (self->_leftBass != v3)
+  if (self->_leftBass != bassCopy)
   {
-    self->_leftBass = v3;
+    self->_leftBass = bassCopy;
     [(AXRemoteHearingAidDevice *)self writeVolumesForProperty:0x1000000000];
   }
 }
 
-- (void)setRightBass:(char)a3
+- (void)setRightBass:(char)bass
 {
-  if (a3 <= -127)
+  if (bass <= -127)
   {
-    v3 = -127;
+    bassCopy = -127;
   }
 
   else
   {
-    v3 = a3;
+    bassCopy = bass;
   }
 
-  if (self->_rightBass != v3)
+  if (self->_rightBass != bassCopy)
   {
-    self->_rightBass = v3;
+    self->_rightBass = bassCopy;
     [(AXRemoteHearingAidDevice *)self writeVolumesForProperty:0x1000000000];
   }
 }
 
-- (void)setLeftMixedVolume:(double)a3
+- (void)setLeftMixedVolume:(double)volume
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  volumeCopy = 0.0;
+  if (volume >= 0.0)
   {
-    v3 = a3;
+    volumeCopy = volume;
   }
 
-  if (a3 <= 1.0)
+  if (volume <= 1.0)
   {
-    v4 = v3;
+    v4 = volumeCopy;
   }
 
   else
@@ -898,17 +898,17 @@ LABEL_8:
   }
 }
 
-- (void)setRightMixedVolume:(double)a3
+- (void)setRightMixedVolume:(double)volume
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  volumeCopy = 0.0;
+  if (volume >= 0.0)
   {
-    v3 = a3;
+    volumeCopy = volume;
   }
 
-  if (a3 <= 1.0)
+  if (volume <= 1.0)
   {
-    v4 = v3;
+    v4 = volumeCopy;
   }
 
   else
@@ -923,7 +923,7 @@ LABEL_8:
   }
 }
 
-- (id)programAtIndex:(unsigned __int8)a3 forEar:(int)a4
+- (id)programAtIndex:(unsigned __int8)index forEar:(int)ear
 {
   v10 = 0;
   v11 = &v10;
@@ -931,7 +931,7 @@ LABEL_8:
   v13 = __Block_byref_object_copy__8;
   v14 = __Block_byref_object_dispose__8;
   v15 = 0;
-  if (a4 == 2)
+  if (ear == 2)
   {
     [(AXRemoteHearingAidDevice *)self leftPrograms];
   }
@@ -945,7 +945,7 @@ LABEL_8:
   v8[1] = 3221225472;
   v8[2] = __50__AXRemoteHearingAidDevice_programAtIndex_forEar___block_invoke;
   v8[3] = &unk_1E85CC9C0;
-  v9 = a3;
+  indexCopy = index;
   v8[4] = &v10;
   [v5 enumerateObjectsUsingBlock:v8];
   v6 = v11[5];
@@ -965,21 +965,21 @@ void __50__AXRemoteHearingAidDevice_programAtIndex_forEar___block_invoke(uint64_
   }
 }
 
-- (BOOL)supportsCombinedVolumesForProperty:(unint64_t)a3
+- (BOOL)supportsCombinedVolumesForProperty:(unint64_t)property
 {
-  v5 = [(AXRemoteHearingAidDevice *)self leftAvailable];
-  if (v5 != [(AXRemoteHearingAidDevice *)self rightAvailable])
+  leftAvailable = [(AXRemoteHearingAidDevice *)self leftAvailable];
+  if (leftAvailable != [(AXRemoteHearingAidDevice *)self rightAvailable])
   {
     return 1;
   }
 
   result = 0;
-  if (a3 > 0x7FFFFFFF)
+  if (property > 0x7FFFFFFF)
   {
-    if (a3 == 0x80000000)
+    if (property == 0x80000000)
     {
-      v15 = [(AXRemoteHearingAidDevice *)self leftSensitivitySteps];
-      if (v15 == [(AXRemoteHearingAidDevice *)self rightSensitivitySteps])
+      leftSensitivitySteps = [(AXRemoteHearingAidDevice *)self leftSensitivitySteps];
+      if (leftSensitivitySteps == [(AXRemoteHearingAidDevice *)self rightSensitivitySteps])
       {
         [(AXRemoteHearingAidDevice *)self leftSensitivity];
         v9 = v16;
@@ -990,13 +990,13 @@ void __50__AXRemoteHearingAidDevice_programAtIndex_forEar___block_invoke(uint64_
 
     else
     {
-      if (a3 != 0x4000000000)
+      if (property != 0x4000000000)
       {
         return result;
       }
 
-      v11 = [(AXRemoteHearingAidDevice *)self leftMixedVolumeSteps];
-      if (v11 == [(AXRemoteHearingAidDevice *)self rightMixedVolumeSteps])
+      leftMixedVolumeSteps = [(AXRemoteHearingAidDevice *)self leftMixedVolumeSteps];
+      if (leftMixedVolumeSteps == [(AXRemoteHearingAidDevice *)self rightMixedVolumeSteps])
       {
         [(AXRemoteHearingAidDevice *)self leftMixedVolume];
         v9 = v12;
@@ -1006,10 +1006,10 @@ void __50__AXRemoteHearingAidDevice_programAtIndex_forEar___block_invoke(uint64_
     }
   }
 
-  else if (a3 == 64)
+  else if (property == 64)
   {
-    v13 = [(AXRemoteHearingAidDevice *)self leftMicrophoneVolumeSteps];
-    if (v13 == [(AXRemoteHearingAidDevice *)self rightMicrophoneVolumeSteps])
+    leftMicrophoneVolumeSteps = [(AXRemoteHearingAidDevice *)self leftMicrophoneVolumeSteps];
+    if (leftMicrophoneVolumeSteps == [(AXRemoteHearingAidDevice *)self rightMicrophoneVolumeSteps])
     {
       [(AXRemoteHearingAidDevice *)self leftMicrophoneVolume];
       v9 = v14;
@@ -1020,13 +1020,13 @@ void __50__AXRemoteHearingAidDevice_programAtIndex_forEar___block_invoke(uint64_
 
   else
   {
-    if (a3 != 128)
+    if (property != 128)
     {
       return result;
     }
 
-    v7 = [(AXRemoteHearingAidDevice *)self leftStreamVolumeSteps];
-    if (v7 == [(AXRemoteHearingAidDevice *)self rightStreamVolumeSteps])
+    leftStreamVolumeSteps = [(AXRemoteHearingAidDevice *)self leftStreamVolumeSteps];
+    if (leftStreamVolumeSteps == [(AXRemoteHearingAidDevice *)self rightStreamVolumeSteps])
     {
       [(AXRemoteHearingAidDevice *)self leftStreamVolume];
       v9 = v8;
@@ -1046,12 +1046,12 @@ void __50__AXRemoteHearingAidDevice_programAtIndex_forEar___block_invoke(uint64_
   return v4;
 }
 
-- (BOOL)shouldOnlyShowIndividualVolumesForProperty:(unint64_t)a3
+- (BOOL)shouldOnlyShowIndividualVolumesForProperty:(unint64_t)property
 {
   v5 = +[HUHearingAidSettings sharedInstance];
   if ((![v5 independentHearingAidSettings] || -[AXRemoteHearingAidDevice requiresCombinedVolumes](self, "requiresCombinedVolumes") || !-[AXRemoteHearingAidDevice isLeftConnected](self, "isLeftConnected") || !-[AXRemoteHearingAidDevice isRightConnected](self, "isRightConnected")) && -[AXRemoteHearingAidDevice supportsCombinedVolumes](self, "supportsCombinedVolumes") && (v6 = -[AXRemoteHearingAidDevice isLeftConnected](self, "isLeftConnected"), v6 == -[AXRemoteHearingAidDevice isRightConnected](self, "isRightConnected")))
   {
-    v7 = ![(AXRemoteHearingAidDevice *)self supportsCombinedVolumesForProperty:a3];
+    v7 = ![(AXRemoteHearingAidDevice *)self supportsCombinedVolumesForProperty:property];
   }
 
   else
@@ -1067,10 +1067,10 @@ void __50__AXRemoteHearingAidDevice_programAtIndex_forEar___block_invoke(uint64_
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v3 = [(AXRemoteHearingAidDevice *)self leftPrograms];
-  v4 = [v3 count];
-  v5 = [(AXRemoteHearingAidDevice *)self rightPrograms];
-  LOBYTE(v4) = v4 == [v5 count];
+  leftPrograms = [(AXRemoteHearingAidDevice *)self leftPrograms];
+  v4 = [leftPrograms count];
+  rightPrograms = [(AXRemoteHearingAidDevice *)self rightPrograms];
+  LOBYTE(v4) = v4 == [rightPrograms count];
 
   v18 = v4;
   if (*(v16 + 24) != 1)
@@ -1078,24 +1078,24 @@ void __50__AXRemoteHearingAidDevice_programAtIndex_forEar___block_invoke(uint64_
     goto LABEL_5;
   }
 
-  v6 = [(AXRemoteHearingAidDevice *)self leftPrograms];
+  leftPrograms2 = [(AXRemoteHearingAidDevice *)self leftPrograms];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __49__AXRemoteHearingAidDevice_programsListsAreEqual__block_invoke;
   v14[3] = &unk_1E85CC948;
   v14[4] = self;
   v14[5] = &v15;
-  [v6 enumerateObjectsUsingBlock:v14];
+  [leftPrograms2 enumerateObjectsUsingBlock:v14];
 
   if (v16[3])
   {
-    v7 = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
-    v8 = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
-    if ([v7 isEqual:v8])
+    leftSelectedProgram = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
+    rightSelectedProgram = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
+    if ([leftSelectedProgram isEqual:rightSelectedProgram])
     {
-      v9 = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
-      v10 = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
-      v11 = [v9 isEqual:v10];
+      leftSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
+      rightSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
+      v11 = [leftSelectedStreamingProgram isEqual:rightSelectedStreamingProgram];
       *(v16 + 24) = v11;
     }
 
@@ -1146,9 +1146,9 @@ void __49__AXRemoteHearingAidDevice_programsListsAreEqual__block_invoke(uint64_t
 
 - (id)programs
 {
-  v3 = [(AXRemoteHearingAidDevice *)self leftPrograms];
-  v4 = [(AXRemoteHearingAidDevice *)self rightPrograms];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  leftPrograms = [(AXRemoteHearingAidDevice *)self leftPrograms];
+  rightPrograms = [(AXRemoteHearingAidDevice *)self rightPrograms];
+  v5 = [leftPrograms arrayByAddingObjectsFromArray:rightPrograms];
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_20];
 
   return v6;
@@ -1184,13 +1184,13 @@ uint64_t __36__AXRemoteHearingAidDevice_programs__block_invoke(uint64_t a1, void
 - (id)combinedPrograms
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(AXRemoteHearingAidDevice *)self programs];
-  v3 = [MEMORY[0x1E695DF70] array];
+  programs = [(AXRemoteHearingAidDevice *)self programs];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v2;
+  obj = programs;
   v4 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
@@ -1211,14 +1211,14 @@ uint64_t __36__AXRemoteHearingAidDevice_programs__block_invoke(uint64_t a1, void
         v14[2] = __44__AXRemoteHearingAidDevice_combinedPrograms__block_invoke;
         v14[3] = &unk_1E85CC9E8;
         v14[4] = v8;
-        if ([v3 indexOfObjectPassingTest:v14] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([array indexOfObjectPassingTest:v14] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v9 = [v8 name];
-          v10 = [v9 length];
+          name = [v8 name];
+          v10 = [name length];
 
           if (v10)
           {
-            [v3 addObject:v8];
+            [array addObject:v8];
           }
         }
       }
@@ -1231,7 +1231,7 @@ uint64_t __36__AXRemoteHearingAidDevice_programs__block_invoke(uint64_t a1, void
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 BOOL __44__AXRemoteHearingAidDevice_combinedPrograms__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1252,9 +1252,9 @@ BOOL __44__AXRemoteHearingAidDevice_combinedPrograms__block_invoke(uint64_t a1, 
   v3 = HCLogHearingAids();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(AXRemoteHearingAidDevice *)self programs];
+    programs = [(AXRemoteHearingAidDevice *)self programs];
     *buf = 138412290;
-    v19 = v4;
+    v19 = programs;
     _os_log_impl(&dword_1DA5E2000, v3, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
@@ -1262,52 +1262,52 @@ BOOL __44__AXRemoteHearingAidDevice_combinedPrograms__block_invoke(uint64_t a1, 
   [(AXRemoteHearingAidDevice *)self setRightSelectedStreamingProgram:0];
   [(AXRemoteHearingAidDevice *)self setRightSelectedProgram:0];
   [(AXRemoteHearingAidDevice *)self setLeftSelectedProgram:0];
-  v5 = [(AXRemoteHearingAidDevice *)self leftPrograms];
+  leftPrograms = [(AXRemoteHearingAidDevice *)self leftPrograms];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __61__AXRemoteHearingAidDevice__updateSelectedProgramsProperties__block_invoke;
   v17[3] = &unk_1E85CAC60;
   v17[4] = self;
-  [v5 enumerateObjectsUsingBlock:v17];
+  [leftPrograms enumerateObjectsUsingBlock:v17];
 
-  v6 = [(AXRemoteHearingAidDevice *)self rightPrograms];
+  rightPrograms = [(AXRemoteHearingAidDevice *)self rightPrograms];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__AXRemoteHearingAidDevice__updateSelectedProgramsProperties__block_invoke_2;
   v16[3] = &unk_1E85CAC60;
   v16[4] = self;
-  [v6 enumerateObjectsUsingBlock:v16];
+  [rightPrograms enumerateObjectsUsingBlock:v16];
 
-  v7 = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
+  leftSelectedProgram = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
 
-  if (!v7)
+  if (!leftSelectedProgram)
   {
-    v8 = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
-    [(AXRemoteHearingAidDevice *)self setLeftSelectedProgram:v8];
+    leftSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
+    [(AXRemoteHearingAidDevice *)self setLeftSelectedProgram:leftSelectedStreamingProgram];
   }
 
-  v9 = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
+  leftSelectedStreamingProgram2 = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
 
-  if (!v9)
+  if (!leftSelectedStreamingProgram2)
   {
-    v10 = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
-    [(AXRemoteHearingAidDevice *)self setLeftSelectedStreamingProgram:v10];
+    leftSelectedProgram2 = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
+    [(AXRemoteHearingAidDevice *)self setLeftSelectedStreamingProgram:leftSelectedProgram2];
   }
 
-  v11 = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
+  rightSelectedProgram = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
 
-  if (!v11)
+  if (!rightSelectedProgram)
   {
-    v12 = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
-    [(AXRemoteHearingAidDevice *)self setRightSelectedProgram:v12];
+    rightSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
+    [(AXRemoteHearingAidDevice *)self setRightSelectedProgram:rightSelectedStreamingProgram];
   }
 
-  v13 = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
+  rightSelectedStreamingProgram2 = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
 
-  if (!v13)
+  if (!rightSelectedStreamingProgram2)
   {
-    v14 = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
-    [(AXRemoteHearingAidDevice *)self setRightSelectedStreamingProgram:v14];
+    rightSelectedProgram2 = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
+    [(AXRemoteHearingAidDevice *)self setRightSelectedStreamingProgram:rightSelectedProgram2];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1353,79 +1353,79 @@ void __61__AXRemoteHearingAidDevice__updateSelectedProgramsProperties__block_inv
 
 - (void)_writeAllProgramSelectionsToPeripheral
 {
-  v3 = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
-  v4 = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
-  v5 = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
-  v6 = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
+  leftSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
+  leftSelectedProgram = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
+  rightSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
+  rightSelectedProgram = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
   v7 = 0x1E695D000;
   if ([(AXRemoteHearingAidDevice *)self propertyIsAvailable:0x800000000 forEar:2]|| [(AXRemoteHearingAidDevice *)self propertyIsAvailable:0x800000000 forEar:4])
   {
-    v8 = [(AXRemoteHearingAidDevice *)self updateDelegate];
+    updateDelegate = [(AXRemoteHearingAidDevice *)self updateDelegate];
     v9 = MEMORY[0x1E695DEC8];
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "index")}];
-    v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v5, "index")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(leftSelectedStreamingProgram, "index")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(rightSelectedStreamingProgram, "index")}];
     v12 = [v9 arrayWithObjects:{v10, v11, 0}];
     [(AXRemoteHearingAidDevice *)self deviceUUID];
-    v13 = v6;
-    v14 = v4;
-    v15 = v5;
-    v17 = v16 = v3;
-    [v8 writeValue:v12 forProperty:0x800000000 andDeviceID:v17];
+    v13 = rightSelectedProgram;
+    v14 = leftSelectedProgram;
+    v15 = rightSelectedStreamingProgram;
+    v17 = v16 = leftSelectedStreamingProgram;
+    [updateDelegate writeValue:v12 forProperty:0x800000000 andDeviceID:v17];
 
-    v3 = v16;
-    v5 = v15;
-    v4 = v14;
-    v6 = v13;
+    leftSelectedStreamingProgram = v16;
+    rightSelectedStreamingProgram = v15;
+    leftSelectedProgram = v14;
+    rightSelectedProgram = v13;
 
     v7 = 0x1E695D000uLL;
   }
 
   else
   {
-    v8 = HCLogHearingAids();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    updateDelegate = HCLogHearingAids();
+    if (os_log_type_enabled(updateDelegate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "AXHearingPropertyStreamingProgramActive not available", buf, 2u);
+      _os_log_impl(&dword_1DA5E2000, updateDelegate, OS_LOG_TYPE_DEFAULT, "AXHearingPropertyStreamingProgramActive not available", buf, 2u);
     }
   }
 
-  v18 = [(AXRemoteHearingAidDevice *)self updateDelegate];
+  updateDelegate2 = [(AXRemoteHearingAidDevice *)self updateDelegate];
   v19 = *(v7 + 3784);
-  v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "index")}];
-  v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "index")}];
+  v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(leftSelectedProgram, "index")}];
+  v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(rightSelectedProgram, "index")}];
   v22 = [v19 arrayWithObjects:{v20, v21, 0}];
-  v23 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-  [v18 writeValue:v22 forProperty:1024 andDeviceID:v23];
+  deviceUUID = [(AXRemoteHearingAidDevice *)self deviceUUID];
+  [updateDelegate2 writeValue:v22 forProperty:1024 andDeviceID:deviceUUID];
 }
 
-- (void)selectProgram:(id)a3 forEar:(int)a4
+- (void)selectProgram:(id)program forEar:(int)ear
 {
-  v11 = a3;
+  programCopy = program;
   if ([(AXRemoteHearingAidDevice *)self showCombinedPrograms])
   {
-    v6 = [(AXRemoteHearingAidDevice *)self leftPrograms];
-    [v6 setProgram:v11 withOtherSidePrograms:0 selected:{objc_msgSend(v11, "isSelected")}];
+    leftPrograms = [(AXRemoteHearingAidDevice *)self leftPrograms];
+    [leftPrograms setProgram:programCopy withOtherSidePrograms:0 selected:{objc_msgSend(programCopy, "isSelected")}];
 
-    v7 = [(AXRemoteHearingAidDevice *)self rightPrograms];
-    [v7 setProgram:v11 withOtherSidePrograms:0 selected:{objc_msgSend(v11, "isSelected")}];
+    rightPrograms = [(AXRemoteHearingAidDevice *)self rightPrograms];
+    [rightPrograms setProgram:programCopy withOtherSidePrograms:0 selected:{objc_msgSend(programCopy, "isSelected")}];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if ((a4 & [v11 ear] & 2) != 0)
+  if ((ear & [programCopy ear] & 2) != 0)
   {
-    v8 = [(AXRemoteHearingAidDevice *)self leftPrograms];
-    v9 = [(AXRemoteHearingAidDevice *)self rightPrograms];
-    [v8 setProgram:v11 withOtherSidePrograms:v9 selected:{objc_msgSend(v11, "isSelected")}];
+    leftPrograms2 = [(AXRemoteHearingAidDevice *)self leftPrograms];
+    rightPrograms2 = [(AXRemoteHearingAidDevice *)self rightPrograms];
+    [leftPrograms2 setProgram:programCopy withOtherSidePrograms:rightPrograms2 selected:{objc_msgSend(programCopy, "isSelected")}];
   }
 
-  if ((a4 & [v11 ear] & 4) != 0)
+  if ((ear & [programCopy ear] & 4) != 0)
   {
-    v7 = [(AXRemoteHearingAidDevice *)self rightPrograms];
-    v10 = [(AXRemoteHearingAidDevice *)self leftPrograms];
-    [v7 setProgram:v11 withOtherSidePrograms:v10 selected:{objc_msgSend(v11, "isSelected")}];
+    rightPrograms = [(AXRemoteHearingAidDevice *)self rightPrograms];
+    leftPrograms3 = [(AXRemoteHearingAidDevice *)self leftPrograms];
+    [rightPrograms setProgram:programCopy withOtherSidePrograms:leftPrograms3 selected:{objc_msgSend(programCopy, "isSelected")}];
 
     goto LABEL_7;
   }
@@ -1438,11 +1438,11 @@ LABEL_8:
 - (id)selectedPrograms
 {
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
-  v5 = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
-  v6 = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
-  v7 = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
-  v8 = [v3 arrayWithObjects:{v4, v5, v6, v7, 0}];
+  leftSelectedProgram = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
+  rightSelectedProgram = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
+  leftSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
+  rightSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
+  v8 = [v3 arrayWithObjects:{leftSelectedProgram, rightSelectedProgram, leftSelectedStreamingProgram, rightSelectedStreamingProgram, 0}];
 
   v9 = [v8 indexesOfObjectsPassingTest:&__block_literal_global_65];
   v10 = [v8 objectsAtIndexes:v9];
@@ -1452,24 +1452,24 @@ LABEL_8:
 
 - (id)selectedProgramIndexes
 {
-  v2 = [(AXRemoteHearingAidDevice *)self programs];
-  v3 = [v2 indexesOfObjectsPassingTest:&__block_literal_global_68];
+  programs = [(AXRemoteHearingAidDevice *)self programs];
+  v3 = [programs indexesOfObjectsPassingTest:&__block_literal_global_68];
 
   return v3;
 }
 
-- (void)setKeepInSync:(BOOL)a3
+- (void)setKeepInSync:(BOOL)sync
 {
-  if (self->_keepInSync != a3)
+  if (self->_keepInSync != sync)
   {
-    self->_keepInSync = a3;
-    if (a3)
+    self->_keepInSync = sync;
+    if (sync)
     {
       if ([(AXRemoteHearingAidDevice *)self didLoadRequiredProperties])
       {
-        v6 = [(AXRemoteHearingAidDevice *)self updateDelegate];
-        v4 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-        [v6 updateProperty:0xFF800105C4 forDeviceID:v4];
+        updateDelegate = [(AXRemoteHearingAidDevice *)self updateDelegate];
+        deviceUUID = [(AXRemoteHearingAidDevice *)self deviceUUID];
+        [updateDelegate updateProperty:0xFF800105C4 forDeviceID:deviceUUID];
       }
 
       else
@@ -1487,51 +1487,51 @@ LABEL_8:
   }
 }
 
-- (void)setValue:(id)a3 forProperty:(unint64_t)a4
+- (void)setValue:(id)value forProperty:(unint64_t)property
 {
   v113 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  valueCopy = value;
   v7 = HCLogHearingAids();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = hearingPropertyDescription(a4);
+    v8 = hearingPropertyDescription(property);
     *buf = 134218498;
-    v108 = self;
+    propertyCopy = self;
     v109 = 2112;
     v110 = v8;
     v111 = 2112;
-    v112 = v6;
+    v112 = valueCopy;
     _os_log_impl(&dword_1DA5E2000, v7, OS_LOG_TYPE_DEFAULT, "%p = property:%@ - value:%@", buf, 0x20u);
   }
 
-  if (a4 > 0xFFFFFFF)
+  if (property > 0xFFFFFFF)
   {
-    if (a4 > 0x1FFFFFFFFFLL)
+    if (property > 0x1FFFFFFFFFLL)
     {
-      if (a4 <= 0x1FFFFFFFFFFLL)
+      if (property <= 0x1FFFFFFFFFFLL)
       {
-        if (a4 > 0x7FFFFFFFFFLL)
+        if (property > 0x7FFFFFFFFFLL)
         {
-          if (a4 == 0x8000000000)
+          if (property == 0x8000000000)
           {
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
             {
               goto LABEL_180;
             }
 
-            v55 = [v6 firstObject];
-            -[AXRemoteHearingAidDevice setLeftMixedVolumeSteps:](self, "setLeftMixedVolumeSteps:", [v55 shortValue]);
+            firstObject = [valueCopy firstObject];
+            -[AXRemoteHearingAidDevice setLeftMixedVolumeSteps:](self, "setLeftMixedVolumeSteps:", [firstObject shortValue]);
 
-            v56 = [v6 lastObject];
-            -[AXRemoteHearingAidDevice setRightMixedVolumeSteps:](self, "setRightMixedVolumeSteps:", [v56 shortValue]);
+            lastObject = [valueCopy lastObject];
+            -[AXRemoteHearingAidDevice setRightMixedVolumeSteps:](self, "setRightMixedVolumeSteps:", [lastObject shortValue]);
 
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x8000000000;
           }
 
           else
           {
-            if (a4 != 0x10000000000)
+            if (property != 0x10000000000)
             {
               goto LABEL_167;
             }
@@ -1542,46 +1542,46 @@ LABEL_8:
               goto LABEL_180;
             }
 
-            -[AXRemoteHearingAidDevice setAvailableInputEars:](self, "setAvailableInputEars:", [v6 intValue]);
+            -[AXRemoteHearingAidDevice setAvailableInputEars:](self, "setAvailableInputEars:", [valueCopy intValue]);
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x10000000000;
           }
         }
 
         else
         {
-          if (a4 == 0x2000000000)
+          if (property == 0x2000000000)
           {
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
             {
               goto LABEL_180;
             }
 
-            v50 = [v6 firstObject];
-            -[AXRemoteHearingAidDevice setLeftTreble:](self, "setLeftTreble:", [v50 charValue]);
+            firstObject2 = [valueCopy firstObject];
+            -[AXRemoteHearingAidDevice setLeftTreble:](self, "setLeftTreble:", [firstObject2 charValue]);
 
-            v17 = [v6 lastObject];
-            -[AXRemoteHearingAidDevice setRightTreble:](self, "setRightTreble:", [v17 charValue]);
+            lastObject2 = [valueCopy lastObject];
+            -[AXRemoteHearingAidDevice setRightTreble:](self, "setRightTreble:", [lastObject2 charValue]);
             goto LABEL_179;
           }
 
-          if (a4 != 0x4000000000)
+          if (property != 0x4000000000)
           {
             goto LABEL_167;
           }
 
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
           {
             goto LABEL_180;
           }
 
-          v20 = [v6 firstObject];
-          [v20 doubleValue];
+          firstObject3 = [valueCopy firstObject];
+          [firstObject3 doubleValue];
           self->_leftMixedVolume = v21;
 
-          v22 = [v6 lastObject];
-          [v22 doubleValue];
+          lastObject3 = [valueCopy lastObject];
+          [lastObject3 doubleValue];
           self->_rightMixedVolume = v23;
 
           v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x4000000000;
@@ -1590,40 +1590,40 @@ LABEL_8:
         goto LABEL_166;
       }
 
-      if (a4 > 0x7FFFFFFFFFFLL)
+      if (property > 0x7FFFFFFFFFFLL)
       {
-        switch(a4)
+        switch(property)
         {
           case 0x80000000000uLL:
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 4)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 4)
             {
               goto LABEL_180;
             }
 
-            v86 = [v6 objectAtIndex:1];
+            v86 = [valueCopy objectAtIndex:1];
             -[AXRemoteHearingAidDevice setRequiresCombinedPresets:](self, "setRequiresCombinedPresets:", [v86 BOOLValue]);
 
-            v87 = [v6 objectAtIndex:2];
+            v87 = [valueCopy objectAtIndex:2];
             -[AXRemoteHearingAidDevice setRequiresCombinedVolumes:](self, "setRequiresCombinedVolumes:", [v87 BOOLValue]);
 
-            v88 = [v6 objectAtIndex:3];
+            v88 = [valueCopy objectAtIndex:3];
             -[AXRemoteHearingAidDevice setRequiresBinauralStreaming:](self, "setRequiresBinauralStreaming:", [v88 BOOLValue]);
 
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x80000000000;
             break;
           case 0x100000000000uLL:
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
             {
               goto LABEL_180;
             }
 
-            v73 = [v6 firstObject];
-            [(AXRemoteHearingAidDevice *)self setLeftPeripheralUUID:v73];
+            firstObject4 = [valueCopy firstObject];
+            [(AXRemoteHearingAidDevice *)self setLeftPeripheralUUID:firstObject4];
 
-            v74 = [v6 lastObject];
-            [(AXRemoteHearingAidDevice *)self setRightPeripheralUUID:v74];
+            lastObject4 = [valueCopy lastObject];
+            [(AXRemoteHearingAidDevice *)self setRightPeripheralUUID:lastObject4];
 
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x100000000000;
             break;
@@ -1634,7 +1634,7 @@ LABEL_8:
               goto LABEL_180;
             }
 
-            [(AXRemoteHearingAidDevice *)self setRSSI:v6];
+            [(AXRemoteHearingAidDevice *)self setRSSI:valueCopy];
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x200000000000;
             break;
           default:
@@ -1644,18 +1644,18 @@ LABEL_8:
         goto LABEL_166;
       }
 
-      if (a4 == 0x20000000000)
+      if (property == 0x20000000000)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          -[AXRemoteHearingAidDevice setDeviceProtocol:](self, "setDeviceProtocol:", [v6 unsignedIntegerValue]);
+          -[AXRemoteHearingAidDevice setDeviceProtocol:](self, "setDeviceProtocol:", [valueCopy unsignedIntegerValue]);
         }
 
         goto LABEL_180;
       }
 
-      if (a4 == 0x40000000000)
+      if (property == 0x40000000000)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1663,7 +1663,7 @@ LABEL_8:
           goto LABEL_180;
         }
 
-        -[AXRemoteHearingAidDevice setEarsSupportingWatch:](self, "setEarsSupportingWatch:", [v6 intValue]);
+        -[AXRemoteHearingAidDevice setEarsSupportingWatch:](self, "setEarsSupportingWatch:", [valueCopy intValue]);
         v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x40000000000;
         goto LABEL_166;
       }
@@ -1671,25 +1671,25 @@ LABEL_8:
 
     else
     {
-      if (a4 <= 0xFFFFFFFFLL)
+      if (property <= 0xFFFFFFFFLL)
       {
-        if (a4 > 0x3FFFFFFF)
+        if (property > 0x3FFFFFFF)
         {
-          if (a4 == 0x40000000)
+          if (property == 0x40000000)
           {
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 4)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 4)
             {
               goto LABEL_180;
             }
 
-            v51 = [v6 objectAtIndex:1];
+            v51 = [valueCopy objectAtIndex:1];
             -[AXRemoteHearingAidDevice setSupportsCombinedPresets:](self, "setSupportsCombinedPresets:", [v51 BOOLValue]);
 
-            v52 = [v6 objectAtIndex:2];
+            v52 = [valueCopy objectAtIndex:2];
             -[AXRemoteHearingAidDevice setSupportsCombinedVolumes:](self, "setSupportsCombinedVolumes:", [v52 BOOLValue]);
 
-            v53 = [v6 objectAtIndex:3];
+            v53 = [valueCopy objectAtIndex:3];
             -[AXRemoteHearingAidDevice setSupportsBinauralStreaming:](self, "setSupportsBinauralStreaming:", [v53 BOOLValue]);
 
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x40000000;
@@ -1697,30 +1697,30 @@ LABEL_8:
 
           else
           {
-            if (a4 != 0x80000000)
+            if (property != 0x80000000)
             {
               goto LABEL_167;
             }
 
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
             {
               goto LABEL_180;
             }
 
-            v33 = [v6 firstObject];
-            [v33 doubleValue];
+            firstObject5 = [valueCopy firstObject];
+            [firstObject5 doubleValue];
             self->_leftSensitivity = v34;
 
-            v35 = [v6 lastObject];
-            [v35 doubleValue];
+            lastObject5 = [valueCopy lastObject];
+            [lastObject5 doubleValue];
             self->_rightSensitivity = v36;
 
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x80000000;
           }
         }
 
-        else if (a4 == 0x10000000)
+        else if (property == 0x10000000)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1733,7 +1733,7 @@ LABEL_8:
 
         else
         {
-          if (a4 != 0x20000000)
+          if (property != 0x20000000)
           {
             goto LABEL_167;
           }
@@ -1744,50 +1744,50 @@ LABEL_8:
             goto LABEL_180;
           }
 
-          -[AXRemoteHearingAidDevice setIsBluetoothPaired:](self, "setIsBluetoothPaired:", [v6 BOOLValue]);
+          -[AXRemoteHearingAidDevice setIsBluetoothPaired:](self, "setIsBluetoothPaired:", [valueCopy BOOLValue]);
           v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x20000000;
         }
 
         goto LABEL_166;
       }
 
-      if (a4 <= 0x3FFFFFFFFLL)
+      if (property <= 0x3FFFFFFFFLL)
       {
-        if (a4 == 0x100000000)
+        if (property == 0x100000000)
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
           {
             goto LABEL_180;
           }
 
-          v61 = [v6 firstObject];
-          -[AXRemoteHearingAidDevice setLeftMicrophoneVolumeSteps:](self, "setLeftMicrophoneVolumeSteps:", [v61 shortValue]);
+          firstObject6 = [valueCopy firstObject];
+          -[AXRemoteHearingAidDevice setLeftMicrophoneVolumeSteps:](self, "setLeftMicrophoneVolumeSteps:", [firstObject6 shortValue]);
 
-          v62 = [v6 lastObject];
-          -[AXRemoteHearingAidDevice setRightMicrophoneVolumeSteps:](self, "setRightMicrophoneVolumeSteps:", [v62 shortValue]);
+          lastObject6 = [valueCopy lastObject];
+          -[AXRemoteHearingAidDevice setRightMicrophoneVolumeSteps:](self, "setRightMicrophoneVolumeSteps:", [lastObject6 shortValue]);
 
           v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x100000000;
         }
 
         else
         {
-          if (a4 != 0x200000000)
+          if (property != 0x200000000)
           {
             goto LABEL_167;
           }
 
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
           {
             goto LABEL_180;
           }
 
-          v42 = [v6 firstObject];
-          -[AXRemoteHearingAidDevice setLeftStreamVolumeSteps:](self, "setLeftStreamVolumeSteps:", [v42 shortValue]);
+          firstObject7 = [valueCopy firstObject];
+          -[AXRemoteHearingAidDevice setLeftStreamVolumeSteps:](self, "setLeftStreamVolumeSteps:", [firstObject7 shortValue]);
 
-          v43 = [v6 lastObject];
-          -[AXRemoteHearingAidDevice setRightStreamVolumeSteps:](self, "setRightStreamVolumeSteps:", [v43 shortValue]);
+          lastObject7 = [valueCopy lastObject];
+          -[AXRemoteHearingAidDevice setRightStreamVolumeSteps:](self, "setRightStreamVolumeSteps:", [lastObject7 shortValue]);
 
           v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x200000000;
         }
@@ -1795,55 +1795,55 @@ LABEL_8:
         goto LABEL_166;
       }
 
-      switch(a4)
+      switch(property)
       {
         case 0x400000000uLL:
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
           {
             goto LABEL_180;
           }
 
-          v82 = [v6 firstObject];
-          -[AXRemoteHearingAidDevice setLeftSensitivitySteps:](self, "setLeftSensitivitySteps:", [v82 shortValue]);
+          firstObject8 = [valueCopy firstObject];
+          -[AXRemoteHearingAidDevice setLeftSensitivitySteps:](self, "setLeftSensitivitySteps:", [firstObject8 shortValue]);
 
-          v83 = [v6 lastObject];
-          -[AXRemoteHearingAidDevice setRightSensitivitySteps:](self, "setRightSensitivitySteps:", [v83 shortValue]);
+          lastObject8 = [valueCopy lastObject];
+          -[AXRemoteHearingAidDevice setRightSensitivitySteps:](self, "setRightSensitivitySteps:", [lastObject8 shortValue]);
 
           v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x400000000;
           goto LABEL_166;
         case 0x800000000uLL:
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count] == 2)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy count] == 2)
           {
-            v67 = [v6 firstObject];
-            v68 = [v67 intValue];
+            firstObject9 = [valueCopy firstObject];
+            intValue = [firstObject9 intValue];
 
-            v69 = [v6 lastObject];
-            v70 = [v69 intValue];
+            lastObject9 = [valueCopy lastObject];
+            intValue2 = [lastObject9 intValue];
 
-            if (v68 != -1)
+            if (intValue != -1)
             {
-              v71 = [(AXRemoteHearingAidDevice *)self leftPrograms];
+              leftPrograms = [(AXRemoteHearingAidDevice *)self leftPrograms];
               v95[0] = MEMORY[0x1E69E9820];
               v95[1] = 3221225472;
               v95[2] = __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_7;
               v95[3] = &unk_1E85CACA8;
-              v96 = v68;
+              v96 = intValue;
               v95[4] = self;
-              [v71 enumerateObjectsUsingBlock:v95];
+              [leftPrograms enumerateObjectsUsingBlock:v95];
             }
 
-            if (v70 != -1)
+            if (intValue2 != -1)
             {
-              v72 = [(AXRemoteHearingAidDevice *)self rightPrograms];
+              rightPrograms = [(AXRemoteHearingAidDevice *)self rightPrograms];
               v93[0] = MEMORY[0x1E69E9820];
               v93[1] = 3221225472;
               v93[2] = __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_8;
               v93[3] = &unk_1E85CACA8;
-              v94 = v70;
+              v94 = intValue2;
               v93[4] = self;
-              [v72 enumerateObjectsUsingBlock:v93];
+              [rightPrograms enumerateObjectsUsingBlock:v93];
             }
 
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x800000000;
@@ -1853,16 +1853,16 @@ LABEL_8:
           goto LABEL_180;
         case 0x1000000000uLL:
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
           {
             goto LABEL_180;
           }
 
-          v16 = [v6 firstObject];
-          -[AXRemoteHearingAidDevice setLeftBass:](self, "setLeftBass:", [v16 charValue]);
+          firstObject10 = [valueCopy firstObject];
+          -[AXRemoteHearingAidDevice setLeftBass:](self, "setLeftBass:", [firstObject10 charValue]);
 
-          v17 = [v6 lastObject];
-          -[AXRemoteHearingAidDevice setRightBass:](self, "setRightBass:", [v17 charValue]);
+          lastObject2 = [valueCopy lastObject];
+          -[AXRemoteHearingAidDevice setRightBass:](self, "setRightBass:", [lastObject2 charValue]);
           goto LABEL_179;
       }
     }
@@ -1876,61 +1876,61 @@ LABEL_167:
       v92[2] = __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_72;
       v92[3] = &unk_1E85CA558;
       v92[4] = self;
-      [v6 enumerateKeysAndObjectsUsingBlock:v92];
+      [valueCopy enumerateKeysAndObjectsUsingBlock:v92];
     }
 
     v89 = HCLogHearingAids();
     if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v108 = a4;
+      propertyCopy = property;
       _os_log_impl(&dword_1DA5E2000, v89, OS_LOG_TYPE_DEFAULT, "Unknown property: %lld", buf, 0xCu);
     }
 
     goto LABEL_180;
   }
 
-  if (a4 >= 0x10000)
+  if (property >= 0x10000)
   {
-    if (a4 >= 0x200000)
+    if (property >= 0x200000)
     {
-      if (a4 < 0x800000)
+      if (property < 0x800000)
       {
-        if (a4 == 0x200000)
+        if (property == 0x200000)
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
           {
             goto LABEL_180;
           }
 
-          v63 = [v6 firstObject];
-          -[AXRemoteHearingAidDevice setLeftConnected:](self, "setLeftConnected:", [v63 intValue] == 2);
+          firstObject11 = [valueCopy firstObject];
+          -[AXRemoteHearingAidDevice setLeftConnected:](self, "setLeftConnected:", [firstObject11 intValue] == 2);
 
-          v64 = [v6 lastObject];
-          -[AXRemoteHearingAidDevice setRightConnected:](self, "setRightConnected:", [v64 intValue] == 2);
+          lastObject10 = [valueCopy lastObject];
+          -[AXRemoteHearingAidDevice setRightConnected:](self, "setRightConnected:", [lastObject10 intValue] == 2);
 
           v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x200000;
         }
 
         else
         {
-          if (a4 != 0x400000)
+          if (property != 0x400000)
           {
             goto LABEL_167;
           }
 
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
           {
             goto LABEL_180;
           }
 
-          v44 = [v6 firstObject];
-          [(AXRemoteHearingAidDevice *)self setLeftFirmwareVersion:v44];
+          firstObject12 = [valueCopy firstObject];
+          [(AXRemoteHearingAidDevice *)self setLeftFirmwareVersion:firstObject12];
 
-          v45 = [v6 lastObject];
-          [(AXRemoteHearingAidDevice *)self setRightFirmwareVersion:v45];
+          lastObject11 = [valueCopy lastObject];
+          [(AXRemoteHearingAidDevice *)self setRightFirmwareVersion:lastObject11];
 
           v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x400000;
         }
@@ -1938,20 +1938,20 @@ LABEL_167:
 
       else
       {
-        switch(a4)
+        switch(property)
         {
           case 0x800000uLL:
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+            if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
             {
               goto LABEL_180;
             }
 
-            v84 = [v6 firstObject];
-            [(AXRemoteHearingAidDevice *)self setLeftHardwareVersion:v84];
+            firstObject13 = [valueCopy firstObject];
+            [(AXRemoteHearingAidDevice *)self setLeftHardwareVersion:firstObject13];
 
-            v85 = [v6 lastObject];
-            [(AXRemoteHearingAidDevice *)self setRightHardwareVersion:v85];
+            lastObject12 = [valueCopy lastObject];
+            [(AXRemoteHearingAidDevice *)self setRightHardwareVersion:lastObject12];
 
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x800000;
             break;
@@ -1962,7 +1962,7 @@ LABEL_167:
               goto LABEL_180;
             }
 
-            [(AXRemoteHearingAidDevice *)self setDeviceUUID:v6];
+            [(AXRemoteHearingAidDevice *)self setDeviceUUID:valueCopy];
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x1000000;
             break;
           case 0x4000000uLL:
@@ -1970,11 +1970,11 @@ LABEL_167:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v108 = v6;
+              propertyCopy = valueCopy;
               _os_log_impl(&dword_1DA5E2000, v18, OS_LOG_TYPE_DEFAULT, "RemoteDevice Paired %@", buf, 0xCu);
             }
 
-            -[AXRemoteHearingAidDevice setIsPaired:](self, "setIsPaired:", [v6 BOOLValue]);
+            -[AXRemoteHearingAidDevice setIsPaired:](self, "setIsPaired:", [valueCopy BOOLValue]);
             v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x4000000;
             goto LABEL_166;
           default:
@@ -1985,17 +1985,17 @@ LABEL_167:
       goto LABEL_166;
     }
 
-    if (a4 >= 0x80000)
+    if (property >= 0x80000)
     {
-      if (a4 == 0x80000)
+      if (property == 0x80000)
       {
-        v54 = [(AXRemoteHearingAidDevice *)self manufacturer];
-        v17 = [v54 mutableCopy];
+        manufacturer = [(AXRemoteHearingAidDevice *)self manufacturer];
+        lastObject2 = [manufacturer mutableCopy];
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count] == 2)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy count] == 2)
         {
-          [v17 setArray:v6];
+          [lastObject2 setArray:valueCopy];
         }
 
         else
@@ -2003,28 +2003,28 @@ LABEL_167:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v17 replaceObjectAtIndex:0 withObject:v6];
+            [lastObject2 replaceObjectAtIndex:0 withObject:valueCopy];
           }
         }
 
-        [(AXRemoteHearingAidDevice *)self setManufacturer:v17];
+        [(AXRemoteHearingAidDevice *)self setManufacturer:lastObject2];
         v90 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x80000;
       }
 
       else
       {
-        if (a4 != 0x100000)
+        if (property != 0x100000)
         {
           goto LABEL_167;
         }
 
-        v37 = [(AXRemoteHearingAidDevice *)self model];
-        v17 = [v37 mutableCopy];
+        model = [(AXRemoteHearingAidDevice *)self model];
+        lastObject2 = [model mutableCopy];
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count] == 2)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy count] == 2)
         {
-          [v17 setArray:v6];
+          [lastObject2 setArray:valueCopy];
         }
 
         else
@@ -2032,11 +2032,11 @@ LABEL_167:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v17 replaceObjectAtIndex:0 withObject:v6];
+            [lastObject2 replaceObjectAtIndex:0 withObject:valueCopy];
           }
         }
 
-        [(AXRemoteHearingAidDevice *)self setModel:v17];
+        [(AXRemoteHearingAidDevice *)self setModel:lastObject2];
         v90 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x100000;
       }
 
@@ -2044,31 +2044,31 @@ LABEL_167:
       goto LABEL_179;
     }
 
-    if (a4 == 0x10000)
+    if (property == 0x10000)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+      if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
       {
         goto LABEL_180;
       }
 
-      v48 = [v6 firstObject];
-      -[AXRemoteHearingAidDevice setLeftAvailableProperties:](self, "setLeftAvailableProperties:", [v48 unsignedLongLongValue]);
+      firstObject14 = [valueCopy firstObject];
+      -[AXRemoteHearingAidDevice setLeftAvailableProperties:](self, "setLeftAvailableProperties:", [firstObject14 unsignedLongLongValue]);
 
-      v49 = [v6 lastObject];
-      -[AXRemoteHearingAidDevice setRightAvailableProperties:](self, "setRightAvailableProperties:", [v49 unsignedLongLongValue]);
+      lastObject13 = [valueCopy lastObject];
+      -[AXRemoteHearingAidDevice setRightAvailableProperties:](self, "setRightAvailableProperties:", [lastObject13 unsignedLongLongValue]);
 
       v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x10000;
     }
 
     else
     {
-      if (a4 != 0x40000)
+      if (property != 0x40000)
       {
         goto LABEL_167;
       }
 
-      [(AXRemoteHearingAidDevice *)self setName:v6];
+      [(AXRemoteHearingAidDevice *)self setName:valueCopy];
       v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x40000;
     }
 
@@ -2077,21 +2077,21 @@ LABEL_166:
     goto LABEL_180;
   }
 
-  if (a4 <= 63)
+  if (property <= 63)
   {
-    if (a4 <= 15)
+    if (property <= 15)
     {
-      if (a4 != 4)
+      if (property != 4)
       {
-        if (a4 == 8)
+        if (property == 8)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v19 = [(AXRemoteHearingAidDevice *)self availableEars];
-            if (v19 != [v6 intValue] && objc_msgSend(v6, "intValue") >= 1)
+            availableEars = [(AXRemoteHearingAidDevice *)self availableEars];
+            if (availableEars != [valueCopy intValue] && objc_msgSend(valueCopy, "intValue") >= 1)
             {
-              -[AXRemoteHearingAidDevice setAvailableEars:](self, "setAvailableEars:", [v6 intValue]);
+              -[AXRemoteHearingAidDevice setAvailableEars:](self, "setAvailableEars:", [valueCopy intValue]);
             }
           }
 
@@ -2103,86 +2103,86 @@ LABEL_166:
       }
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+      if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
       {
         goto LABEL_180;
       }
 
-      v46 = [v6 firstObject];
-      [v46 doubleValue];
+      firstObject15 = [valueCopy firstObject];
+      [firstObject15 doubleValue];
       [(AXRemoteHearingAidDevice *)self setLeftBatteryLevel:?];
 
-      v47 = [v6 lastObject];
-      [v47 doubleValue];
+      lastObject14 = [valueCopy lastObject];
+      [lastObject14 doubleValue];
       [(AXRemoteHearingAidDevice *)self setRightBatteryLevel:?];
 
       v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 4;
       goto LABEL_166;
     }
 
-    if (a4 != 16 && a4 != 32)
+    if (property != 16 && property != 32)
     {
       goto LABEL_167;
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
     {
       goto LABEL_180;
     }
 
-    v24 = [v6 firstObject];
-    [(AXRemoteHearingAidDevice *)self setLeftUUID:v24];
+    firstObject16 = [valueCopy firstObject];
+    [(AXRemoteHearingAidDevice *)self setLeftUUID:firstObject16];
 
-    v25 = [v6 lastObject];
-    [(AXRemoteHearingAidDevice *)self setRightUUID:v25];
+    lastObject15 = [valueCopy lastObject];
+    [(AXRemoteHearingAidDevice *)self setRightUUID:lastObject15];
 
-    [(AXRemoteHearingAidDevice *)self setLoadedProperties:[(AXRemoteHearingAidDevice *)self loadedProperties]| a4];
-    v26 = [(AXRemoteHearingAidDevice *)self leftUUID];
-    v27 = [v26 length];
+    [(AXRemoteHearingAidDevice *)self setLoadedProperties:[(AXRemoteHearingAidDevice *)self loadedProperties]| property];
+    leftUUID = [(AXRemoteHearingAidDevice *)self leftUUID];
+    v27 = [leftUUID length];
 
-    v28 = [(AXRemoteHearingAidDevice *)self rightUUID];
-    v17 = v28;
+    rightUUID = [(AXRemoteHearingAidDevice *)self rightUUID];
+    lastObject2 = rightUUID;
     if (v27)
     {
-      v29 = [v28 length];
+      v29 = [rightUUID length];
 
       if (v29)
       {
         v30 = MEMORY[0x1E696AEC0];
-        v31 = [(AXRemoteHearingAidDevice *)self leftUUID];
-        v32 = [(AXRemoteHearingAidDevice *)self rightUUID];
-        v17 = [v30 stringWithFormat:@"%@_%@", v31, v32];
+        leftUUID2 = [(AXRemoteHearingAidDevice *)self leftUUID];
+        rightUUID2 = [(AXRemoteHearingAidDevice *)self rightUUID];
+        lastObject2 = [v30 stringWithFormat:@"%@_%@", leftUUID2, rightUUID2];
       }
 
       else
       {
-        v17 = [(AXRemoteHearingAidDevice *)self leftUUID];
+        lastObject2 = [(AXRemoteHearingAidDevice *)self leftUUID];
       }
     }
 
-    [(AXRemoteHearingAidDevice *)self setDeviceUUID:v17];
+    [(AXRemoteHearingAidDevice *)self setDeviceUUID:lastObject2];
 LABEL_179:
 
     goto LABEL_180;
   }
 
-  if (a4 <= 255)
+  if (property <= 255)
   {
-    if (a4 == 64)
+    if (property == 64)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+      if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
       {
         goto LABEL_180;
       }
 
-      v57 = [v6 firstObject];
-      [v57 doubleValue];
+      firstObject17 = [valueCopy firstObject];
+      [firstObject17 doubleValue];
       self->_leftMicrophoneVolume = v58;
 
-      v59 = [v6 lastObject];
-      [v59 doubleValue];
+      lastObject16 = [valueCopy lastObject];
+      [lastObject16 doubleValue];
       self->_rightMicrophoneVolume = v60;
 
       v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x40;
@@ -2190,23 +2190,23 @@ LABEL_179:
 
     else
     {
-      if (a4 != 128)
+      if (property != 128)
       {
         goto LABEL_167;
       }
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+      if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
       {
         goto LABEL_180;
       }
 
-      v38 = [v6 firstObject];
-      [v38 doubleValue];
+      firstObject18 = [valueCopy firstObject];
+      [firstObject18 doubleValue];
       self->_leftStreamVolume = v39;
 
-      v40 = [v6 lastObject];
-      [v40 doubleValue];
+      lastObject17 = [valueCopy lastObject];
+      [lastObject17 doubleValue];
       self->_rightStreamVolume = v41;
 
       v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x80;
@@ -2215,36 +2215,36 @@ LABEL_179:
     goto LABEL_166;
   }
 
-  if (a4 == 256)
+  if (property == 256)
   {
     v75 = HCLogHearingAids();
     if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
     {
-      v76 = [(AXRemoteHearingAidDevice *)self programs];
+      programs = [(AXRemoteHearingAidDevice *)self programs];
       *buf = 138412290;
-      v108 = v76;
+      propertyCopy = programs;
       _os_log_impl(&dword_1DA5E2000, v75, OS_LOG_TYPE_DEFAULT, "AXHearingPropertyProgramsAvailable %@", buf, 0xCu);
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 count] != 2)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
     {
       goto LABEL_180;
     }
 
-    v17 = [v6 firstObject];
-    v77 = [v6 lastObject];
+    lastObject2 = [valueCopy firstObject];
+    lastObject18 = [valueCopy lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v78 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v105[0] = MEMORY[0x1E69E9820];
       v105[1] = 3221225472;
       v105[2] = __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke;
       v105[3] = &unk_1E85CCA30;
-      v106 = v78;
-      v79 = v78;
-      [v17 enumerateObjectsUsingBlock:v105];
+      v106 = array;
+      v79 = array;
+      [lastObject2 enumerateObjectsUsingBlock:v105];
       [(AXRemoteHearingAidDevice *)self setLeftPrograms:v79];
       v104[0] = MEMORY[0x1E69E9820];
       v104[1] = 3221225472;
@@ -2257,14 +2257,14 @@ LABEL_179:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v80 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v102[0] = MEMORY[0x1E69E9820];
       v102[1] = 3221225472;
       v102[2] = __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_3;
       v102[3] = &unk_1E85CCA30;
-      v103 = v80;
-      v81 = v80;
-      [v77 enumerateObjectsUsingBlock:v102];
+      v103 = array2;
+      v81 = array2;
+      [lastObject18 enumerateObjectsUsingBlock:v102];
       [(AXRemoteHearingAidDevice *)self setRightPrograms:v81];
       v101[0] = MEMORY[0x1E69E9820];
       v101[1] = 3221225472;
@@ -2280,54 +2280,54 @@ LABEL_179:
     goto LABEL_179;
   }
 
-  if (a4 == 512)
+  if (property == 512)
   {
-    v65 = [v6 objectForKey:&unk_1F5623ED8];
+    v65 = [valueCopy objectForKey:&unk_1F5623ED8];
     [(AXRemoteHearingAidDevice *)self setValue:v65 forProperty:0x80000];
 
-    v66 = [v6 objectForKey:&unk_1F5623EF0];
+    v66 = [valueCopy objectForKey:&unk_1F5623EF0];
     [(AXRemoteHearingAidDevice *)self setValue:v66 forProperty:0x100000];
 
     v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x200;
     goto LABEL_166;
   }
 
-  if (a4 != 1024)
+  if (property != 1024)
   {
     goto LABEL_167;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count] == 2)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy count] == 2)
   {
-    v9 = [v6 firstObject];
-    v10 = [v9 intValue];
+    firstObject19 = [valueCopy firstObject];
+    intValue3 = [firstObject19 intValue];
 
-    if (v10 != -1)
+    if (intValue3 != -1)
     {
-      v11 = [(AXRemoteHearingAidDevice *)self leftPrograms];
+      leftPrograms2 = [(AXRemoteHearingAidDevice *)self leftPrograms];
       v99[0] = MEMORY[0x1E69E9820];
       v99[1] = 3221225472;
       v99[2] = __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_5;
       v99[3] = &unk_1E85CACA8;
-      v100 = v10;
+      v100 = intValue3;
       v99[4] = self;
-      [v11 enumerateObjectsUsingBlock:v99];
+      [leftPrograms2 enumerateObjectsUsingBlock:v99];
     }
 
-    v12 = [v6 lastObject];
-    v13 = [v12 intValue];
+    lastObject19 = [valueCopy lastObject];
+    intValue4 = [lastObject19 intValue];
 
-    if (v13 != -1)
+    if (intValue4 != -1)
     {
-      v14 = [(AXRemoteHearingAidDevice *)self rightPrograms];
+      rightPrograms2 = [(AXRemoteHearingAidDevice *)self rightPrograms];
       v97[0] = MEMORY[0x1E69E9820];
       v97[1] = 3221225472;
       v97[2] = __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_6;
       v97[3] = &unk_1E85CACA8;
-      v98 = v13;
+      v98 = intValue4;
       v97[4] = self;
-      [v14 enumerateObjectsUsingBlock:v97];
+      [rightPrograms2 enumerateObjectsUsingBlock:v97];
     }
 
     v15 = [(AXRemoteHearingAidDevice *)self loadedProperties]| 0x400;
@@ -2490,18 +2490,18 @@ void __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_72(uint6
   [v4 setValue:v5 forProperty:{objc_msgSend(a2, "unsignedLongLongValue")}];
 }
 
-- (id)_valueForProperty:(unint64_t)a3
+- (id)_valueForProperty:(unint64_t)property
 {
   v80[2] = *MEMORY[0x1E69E9840];
-  if (a3 > 0x3FFFFFF)
+  if (property > 0x3FFFFFF)
   {
-    if (a3 <= 0xFFFFFFFFFLL)
+    if (property <= 0xFFFFFFFFFLL)
     {
-      if (a3 > 0x7FFFFFFF)
+      if (property > 0x7FFFFFFF)
       {
-        if (a3 <= 0x1FFFFFFFFLL)
+        if (property <= 0x1FFFFFFFFLL)
         {
-          if (a3 == 0x80000000)
+          if (property == 0x80000000)
           {
             v29 = MEMORY[0x1E695DEC8];
             v46 = MEMORY[0x1E696AD98];
@@ -2512,7 +2512,7 @@ void __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_72(uint6
             goto LABEL_93;
           }
 
-          if (a3 != 0x100000000)
+          if (property != 0x100000000)
           {
             goto LABEL_114;
           }
@@ -2520,32 +2520,32 @@ void __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_72(uint6
           v29 = MEMORY[0x1E695DEC8];
           v30 = [MEMORY[0x1E696AD98] numberWithShort:{-[AXRemoteHearingAidDevice leftMicrophoneVolumeSteps](self, "leftMicrophoneVolumeSteps")}];
           v31 = MEMORY[0x1E696AD98];
-          v32 = [(AXRemoteHearingAidDevice *)self rightMicrophoneVolumeSteps];
+          rightMicrophoneVolumeSteps = [(AXRemoteHearingAidDevice *)self rightMicrophoneVolumeSteps];
         }
 
         else
         {
-          switch(a3)
+          switch(property)
           {
             case 0x200000000uLL:
               v29 = MEMORY[0x1E695DEC8];
               v30 = [MEMORY[0x1E696AD98] numberWithShort:{-[AXRemoteHearingAidDevice leftStreamVolumeSteps](self, "leftStreamVolumeSteps")}];
               v31 = MEMORY[0x1E696AD98];
-              v32 = [(AXRemoteHearingAidDevice *)self rightStreamVolumeSteps];
+              rightMicrophoneVolumeSteps = [(AXRemoteHearingAidDevice *)self rightStreamVolumeSteps];
               break;
             case 0x400000000uLL:
               v29 = MEMORY[0x1E695DEC8];
               v30 = [MEMORY[0x1E696AD98] numberWithShort:{-[AXRemoteHearingAidDevice leftSensitivitySteps](self, "leftSensitivitySteps")}];
               v31 = MEMORY[0x1E696AD98];
-              v32 = [(AXRemoteHearingAidDevice *)self rightSensitivitySteps];
+              rightMicrophoneVolumeSteps = [(AXRemoteHearingAidDevice *)self rightSensitivitySteps];
               break;
             case 0x800000000uLL:
               v5 = MEMORY[0x1E695DEC8];
               v11 = MEMORY[0x1E696AD98];
-              v7 = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
-              v8 = [v11 numberWithInt:{objc_msgSend(v7, "index")}];
+              leftSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self leftSelectedStreamingProgram];
+              v8 = [v11 numberWithInt:{objc_msgSend(leftSelectedStreamingProgram, "index")}];
               v9 = MEMORY[0x1E696AD98];
-              v10 = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
+              rightSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self rightSelectedStreamingProgram];
               goto LABEL_16;
             default:
               goto LABEL_114;
@@ -2555,11 +2555,11 @@ void __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_72(uint6
         goto LABEL_106;
       }
 
-      if (a3 <= 0x1FFFFFFF)
+      if (property <= 0x1FFFFFFF)
       {
-        if (a3 != 0x4000000)
+        if (property != 0x4000000)
         {
-          if (a3 == 0x10000000)
+          if (property == 0x10000000)
           {
             v14 = MEMORY[0x1E695E118];
             goto LABEL_134;
@@ -2569,29 +2569,29 @@ void __49__AXRemoteHearingAidDevice_setValue_forProperty___block_invoke_72(uint6
         }
 
         v41 = MEMORY[0x1E696AD98];
-        v42 = [(AXRemoteHearingAidDevice *)self isPaired];
+        isPaired = [(AXRemoteHearingAidDevice *)self isPaired];
         goto LABEL_88;
       }
 
-      if (a3 == 0x20000000)
+      if (property == 0x20000000)
       {
         v41 = MEMORY[0x1E696AD98];
-        v42 = [(AXRemoteHearingAidDevice *)self isBluetoothPaired];
+        isPaired = [(AXRemoteHearingAidDevice *)self isBluetoothPaired];
 LABEL_88:
-        v15 = [v41 numberWithBool:v42];
+        model = [v41 numberWithBool:isPaired];
         goto LABEL_113;
       }
 
-      if (a3 != 0x40000000)
+      if (property != 0x40000000)
       {
         goto LABEL_114;
       }
 
       v78[0] = &unk_1F5623F20;
-      v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice supportsCombinedPresets](self, "supportsCombinedPresets")}];
-      v78[1] = v7;
-      v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice supportsCombinedVolumes](self, "supportsCombinedVolumes")}];
-      v78[2] = v21;
+      leftSelectedStreamingProgram = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice supportsCombinedPresets](self, "supportsCombinedPresets")}];
+      v78[1] = leftSelectedStreamingProgram;
+      model2 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice supportsCombinedVolumes](self, "supportsCombinedVolumes")}];
+      v78[2] = model2;
       v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice supportsBinauralStreaming](self, "supportsBinauralStreaming")}];
       v78[3] = v26;
       v27 = MEMORY[0x1E695DEC8];
@@ -2602,31 +2602,31 @@ LABEL_102:
       goto LABEL_103;
     }
 
-    if (a3 <= 0xFFFFFFFFFFLL)
+    if (property <= 0xFFFFFFFFFFLL)
     {
-      if (a3 <= 0x3FFFFFFFFFLL)
+      if (property <= 0x3FFFFFFFFFLL)
       {
-        if (a3 == 0x1000000000)
+        if (property == 0x1000000000)
         {
-          v7 = [MEMORY[0x1E696AD98] numberWithChar:self->_leftBass];
-          v76[0] = v7;
-          v21 = [MEMORY[0x1E696AD98] numberWithChar:self->_rightBass];
-          v76[1] = v21;
+          leftSelectedStreamingProgram = [MEMORY[0x1E696AD98] numberWithChar:self->_leftBass];
+          v76[0] = leftSelectedStreamingProgram;
+          model2 = [MEMORY[0x1E696AD98] numberWithChar:self->_rightBass];
+          v76[1] = model2;
           v22 = MEMORY[0x1E695DEC8];
           v23 = v76;
         }
 
         else
         {
-          if (a3 != 0x2000000000)
+          if (property != 0x2000000000)
           {
             goto LABEL_114;
           }
 
-          v7 = [MEMORY[0x1E696AD98] numberWithChar:self->_leftTreble];
-          v77[0] = v7;
-          v21 = [MEMORY[0x1E696AD98] numberWithChar:self->_rightTreble];
-          v77[1] = v21;
+          leftSelectedStreamingProgram = [MEMORY[0x1E696AD98] numberWithChar:self->_leftTreble];
+          v77[0] = leftSelectedStreamingProgram;
+          model2 = [MEMORY[0x1E696AD98] numberWithChar:self->_rightTreble];
+          v77[1] = model2;
           v22 = MEMORY[0x1E695DEC8];
           v23 = v77;
         }
@@ -2634,7 +2634,7 @@ LABEL_102:
         goto LABEL_86;
       }
 
-      if (a3 == 0x4000000000)
+      if (property == 0x4000000000)
       {
         v29 = MEMORY[0x1E695DEC8];
         v44 = MEMORY[0x1E696AD98];
@@ -2645,7 +2645,7 @@ LABEL_102:
         goto LABEL_93;
       }
 
-      if (a3 != 0x8000000000)
+      if (property != 0x8000000000)
       {
         goto LABEL_114;
       }
@@ -2653,57 +2653,57 @@ LABEL_102:
       v29 = MEMORY[0x1E695DEC8];
       v30 = [MEMORY[0x1E696AD98] numberWithShort:{-[AXRemoteHearingAidDevice leftMixedVolumeSteps](self, "leftMixedVolumeSteps")}];
       v31 = MEMORY[0x1E696AD98];
-      v32 = [(AXRemoteHearingAidDevice *)self rightMixedVolumeSteps];
+      rightMicrophoneVolumeSteps = [(AXRemoteHearingAidDevice *)self rightMixedVolumeSteps];
 LABEL_106:
-      v39 = [v31 numberWithShort:v32];
+      v39 = [v31 numberWithShort:rightMicrophoneVolumeSteps];
       goto LABEL_107;
     }
 
-    if (a3 <= 0x3FFFFFFFFFFLL)
+    if (property <= 0x3FFFFFFFFFFLL)
     {
-      if (a3 != 0x10000000000)
+      if (property != 0x10000000000)
       {
-        if (a3 != 0x20000000000)
+        if (property != 0x20000000000)
         {
           goto LABEL_114;
         }
 
-        v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AXRemoteHearingAidDevice deviceProtocol](self, "deviceProtocol")}];
+        model = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AXRemoteHearingAidDevice deviceProtocol](self, "deviceProtocol")}];
         goto LABEL_113;
       }
 
       v47 = MEMORY[0x1E696AD98];
-      v48 = [(AXRemoteHearingAidDevice *)self availableInputEars];
+      availableInputEars = [(AXRemoteHearingAidDevice *)self availableInputEars];
     }
 
     else
     {
-      if (a3 != 0x40000000000)
+      if (property != 0x40000000000)
       {
-        if (a3 != 0x80000000000)
+        if (property != 0x80000000000)
         {
-          if (a3 != 0x100000000000)
+          if (property != 0x100000000000)
           {
             goto LABEL_114;
           }
 
-          v7 = [MEMORY[0x1E695DF70] array];
-          v16 = [(AXRemoteHearingAidDevice *)self leftPeripheralUUID];
-          if (v16)
+          leftSelectedStreamingProgram = [MEMORY[0x1E695DF70] array];
+          leftPeripheralUUID = [(AXRemoteHearingAidDevice *)self leftPeripheralUUID];
+          if (leftPeripheralUUID)
           {
-            v17 = [(AXRemoteHearingAidDevice *)self leftPeripheralUUID];
-            [v7 addObject:v17];
+            leftPeripheralUUID2 = [(AXRemoteHearingAidDevice *)self leftPeripheralUUID];
+            [leftSelectedStreamingProgram addObject:leftPeripheralUUID2];
           }
 
           else
           {
-            [v7 addObject:&stru_1F5614A78];
+            [leftSelectedStreamingProgram addObject:&stru_1F5614A78];
           }
 
-          v60 = [(AXRemoteHearingAidDevice *)self rightPeripheralUUID];
-          if (v60)
+          rightPeripheralUUID = [(AXRemoteHearingAidDevice *)self rightPeripheralUUID];
+          if (rightPeripheralUUID)
           {
-            v61 = [(AXRemoteHearingAidDevice *)self rightPeripheralUUID];
+            rightPeripheralUUID2 = [(AXRemoteHearingAidDevice *)self rightPeripheralUUID];
             goto LABEL_130;
           }
 
@@ -2711,10 +2711,10 @@ LABEL_106:
         }
 
         v74[0] = &unk_1F5623F20;
-        v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice requiresCombinedPresets](self, "requiresCombinedPresets")}];
-        v74[1] = v7;
-        v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice requiresCombinedVolumes](self, "requiresCombinedVolumes")}];
-        v74[2] = v21;
+        leftSelectedStreamingProgram = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice requiresCombinedPresets](self, "requiresCombinedPresets")}];
+        v74[1] = leftSelectedStreamingProgram;
+        model2 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice requiresCombinedVolumes](self, "requiresCombinedVolumes")}];
+        v74[2] = model2;
         v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXRemoteHearingAidDevice requiresBinauralStreaming](self, "requiresBinauralStreaming")}];
         v74[3] = v26;
         v27 = MEMORY[0x1E695DEC8];
@@ -2723,25 +2723,25 @@ LABEL_106:
       }
 
       v47 = MEMORY[0x1E696AD98];
-      v48 = [(AXRemoteHearingAidDevice *)self earsSupportingWatch];
+      availableInputEars = [(AXRemoteHearingAidDevice *)self earsSupportingWatch];
     }
 
-    v19 = v48;
+    v19 = availableInputEars;
     v20 = v47;
 LABEL_112:
-    v15 = [v20 numberWithUnsignedInt:v19];
+    model = [v20 numberWithUnsignedInt:v19];
     goto LABEL_113;
   }
 
-  if (a3 > 4095)
+  if (property > 4095)
   {
-    if (a3 >= 0x100000)
+    if (property >= 0x100000)
     {
-      if (a3 < 0x400000)
+      if (property < 0x400000)
       {
-        if (a3 != 0x100000)
+        if (property != 0x100000)
         {
-          if (a3 != 0x200000)
+          if (property != 0x200000)
           {
             goto LABEL_114;
           }
@@ -2778,121 +2778,121 @@ LABEL_107:
           goto LABEL_134;
         }
 
-        v15 = [(AXRemoteHearingAidDevice *)self model];
+        model = [(AXRemoteHearingAidDevice *)self model];
       }
 
       else
       {
-        if (a3 == 0x400000)
+        if (property == 0x400000)
         {
-          v7 = [MEMORY[0x1E695DF70] array];
-          v57 = [(AXRemoteHearingAidDevice *)self leftFirmwareVersion];
-          if (v57)
+          leftSelectedStreamingProgram = [MEMORY[0x1E695DF70] array];
+          leftFirmwareVersion = [(AXRemoteHearingAidDevice *)self leftFirmwareVersion];
+          if (leftFirmwareVersion)
           {
-            v58 = [(AXRemoteHearingAidDevice *)self leftFirmwareVersion];
-            [v7 addObject:v58];
+            leftFirmwareVersion2 = [(AXRemoteHearingAidDevice *)self leftFirmwareVersion];
+            [leftSelectedStreamingProgram addObject:leftFirmwareVersion2];
           }
 
           else
           {
-            [v7 addObject:&stru_1F5614A78];
+            [leftSelectedStreamingProgram addObject:&stru_1F5614A78];
           }
 
-          v60 = [(AXRemoteHearingAidDevice *)self rightFirmwareVersion];
-          if (v60)
+          rightPeripheralUUID = [(AXRemoteHearingAidDevice *)self rightFirmwareVersion];
+          if (rightPeripheralUUID)
           {
-            v61 = [(AXRemoteHearingAidDevice *)self rightFirmwareVersion];
+            rightPeripheralUUID2 = [(AXRemoteHearingAidDevice *)self rightFirmwareVersion];
             goto LABEL_130;
           }
 
           goto LABEL_131;
         }
 
-        if (a3 == 0x800000)
+        if (property == 0x800000)
         {
-          v7 = [MEMORY[0x1E695DF70] array];
-          v49 = [(AXRemoteHearingAidDevice *)self leftHardwareVersion];
-          if (v49)
+          leftSelectedStreamingProgram = [MEMORY[0x1E695DF70] array];
+          leftHardwareVersion = [(AXRemoteHearingAidDevice *)self leftHardwareVersion];
+          if (leftHardwareVersion)
           {
-            v50 = [(AXRemoteHearingAidDevice *)self leftHardwareVersion];
-            [v7 addObject:v50];
+            leftHardwareVersion2 = [(AXRemoteHearingAidDevice *)self leftHardwareVersion];
+            [leftSelectedStreamingProgram addObject:leftHardwareVersion2];
           }
 
           else
           {
-            [v7 addObject:&stru_1F5614A78];
+            [leftSelectedStreamingProgram addObject:&stru_1F5614A78];
           }
 
-          v60 = [(AXRemoteHearingAidDevice *)self rightHardwareVersion];
-          if (v60)
+          rightPeripheralUUID = [(AXRemoteHearingAidDevice *)self rightHardwareVersion];
+          if (rightPeripheralUUID)
           {
-            v61 = [(AXRemoteHearingAidDevice *)self rightHardwareVersion];
+            rightPeripheralUUID2 = [(AXRemoteHearingAidDevice *)self rightHardwareVersion];
             goto LABEL_130;
           }
 
 LABEL_131:
-          [v7 addObject:&stru_1F5614A78];
+          [leftSelectedStreamingProgram addObject:&stru_1F5614A78];
           goto LABEL_132;
         }
 
-        if (a3 != 0x1000000)
+        if (property != 0x1000000)
         {
           goto LABEL_114;
         }
 
-        v15 = [(AXRemoteHearingAidDevice *)self deviceUUID];
+        model = [(AXRemoteHearingAidDevice *)self deviceUUID];
       }
 
 LABEL_113:
-      v14 = v15;
+      v14 = model;
       goto LABEL_134;
     }
 
-    if (a3 >= 0x40000)
+    if (property >= 0x40000)
     {
-      if (a3 == 0x40000)
+      if (property == 0x40000)
       {
-        v15 = [(AXRemoteHearingAidDevice *)self name];
+        model = [(AXRemoteHearingAidDevice *)self name];
       }
 
       else
       {
-        if (a3 != 0x80000)
+        if (property != 0x80000)
         {
           goto LABEL_114;
         }
 
-        v15 = [(AXRemoteHearingAidDevice *)self manufacturer];
+        model = [(AXRemoteHearingAidDevice *)self manufacturer];
       }
 
       goto LABEL_113;
     }
 
-    if (a3 == 4096)
+    if (property == 4096)
     {
 LABEL_117:
       v14 = 0;
       goto LABEL_134;
     }
 
-    if (a3 != 0x10000)
+    if (property != 0x10000)
     {
 LABEL_114:
       v59 = HCLogHearingAids();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v73 = a3;
+        propertyCopy = property;
         _os_log_impl(&dword_1DA5E2000, v59, OS_LOG_TYPE_DEFAULT, "Unknown property: %ld", buf, 0xCu);
       }
 
       goto LABEL_117;
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_leftAvailableProperties];
-    v75[0] = v7;
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_rightAvailableProperties];
-    v75[1] = v21;
+    leftSelectedStreamingProgram = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_leftAvailableProperties];
+    v75[0] = leftSelectedStreamingProgram;
+    model2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_rightAvailableProperties];
+    v75[1] = model2;
     v22 = MEMORY[0x1E695DEC8];
     v23 = v75;
 LABEL_86:
@@ -2904,13 +2904,13 @@ LABEL_103:
     goto LABEL_133;
   }
 
-  if (a3 <= 63)
+  if (property <= 63)
   {
-    if (a3 <= 15)
+    if (property <= 15)
     {
-      if (a3 != 4)
+      if (property != 4)
       {
-        if (a3 != 8)
+        if (property != 8)
         {
           goto LABEL_114;
         }
@@ -2950,43 +2950,43 @@ LABEL_93:
       goto LABEL_107;
     }
 
-    if (a3 != 16 && a3 != 32)
+    if (property != 16 && property != 32)
     {
       goto LABEL_114;
     }
 
-    v7 = [MEMORY[0x1E695DF70] array];
-    v24 = [(AXRemoteHearingAidDevice *)self leftUUID];
-    if (v24)
+    leftSelectedStreamingProgram = [MEMORY[0x1E695DF70] array];
+    leftUUID = [(AXRemoteHearingAidDevice *)self leftUUID];
+    if (leftUUID)
     {
-      v25 = [(AXRemoteHearingAidDevice *)self leftUUID];
-      [v7 addObject:v25];
+      leftUUID2 = [(AXRemoteHearingAidDevice *)self leftUUID];
+      [leftSelectedStreamingProgram addObject:leftUUID2];
     }
 
     else
     {
-      [v7 addObject:&stru_1F5614A78];
+      [leftSelectedStreamingProgram addObject:&stru_1F5614A78];
     }
 
-    v60 = [(AXRemoteHearingAidDevice *)self rightUUID];
-    if (v60)
+    rightPeripheralUUID = [(AXRemoteHearingAidDevice *)self rightUUID];
+    if (rightPeripheralUUID)
     {
-      v61 = [(AXRemoteHearingAidDevice *)self rightUUID];
+      rightPeripheralUUID2 = [(AXRemoteHearingAidDevice *)self rightUUID];
 LABEL_130:
-      v62 = v61;
-      [v7 addObject:v61];
+      v62 = rightPeripheralUUID2;
+      [leftSelectedStreamingProgram addObject:rightPeripheralUUID2];
 
 LABEL_132:
-      v14 = [MEMORY[0x1E695DEC8] arrayWithArray:v7];
+      v14 = [MEMORY[0x1E695DEC8] arrayWithArray:leftSelectedStreamingProgram];
       goto LABEL_133;
     }
 
     goto LABEL_131;
   }
 
-  if (a3 <= 255)
+  if (property <= 255)
   {
-    if (a3 == 64)
+    if (property == 64)
     {
       v29 = MEMORY[0x1E695DEC8];
       v45 = MEMORY[0x1E696AD98];
@@ -2998,7 +2998,7 @@ LABEL_132:
 
     else
     {
-      if (a3 != 128)
+      if (property != 128)
       {
         goto LABEL_114;
       }
@@ -3014,59 +3014,59 @@ LABEL_132:
     goto LABEL_93;
   }
 
-  if (a3 == 256)
+  if (property == 256)
   {
-    v51 = [MEMORY[0x1E695DF70] array];
-    v52 = [(AXRemoteHearingAidDevice *)self leftPrograms];
+    array = [MEMORY[0x1E695DF70] array];
+    leftPrograms = [(AXRemoteHearingAidDevice *)self leftPrograms];
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __46__AXRemoteHearingAidDevice__valueForProperty___block_invoke;
     v70[3] = &unk_1E85CAC60;
-    v71 = v51;
-    v7 = v51;
-    [v52 enumerateObjectsUsingBlock:v70];
+    v71 = array;
+    leftSelectedStreamingProgram = array;
+    [leftPrograms enumerateObjectsUsingBlock:v70];
 
-    v53 = [MEMORY[0x1E695DF70] array];
-    v54 = [(AXRemoteHearingAidDevice *)self rightPrograms];
+    array2 = [MEMORY[0x1E695DF70] array];
+    rightPrograms = [(AXRemoteHearingAidDevice *)self rightPrograms];
     v65 = MEMORY[0x1E69E9820];
     v66 = 3221225472;
     v67 = __46__AXRemoteHearingAidDevice__valueForProperty___block_invoke_2;
     v68 = &unk_1E85CAC60;
-    v69 = v53;
-    v55 = v53;
-    [v54 enumerateObjectsUsingBlock:&v65];
+    v69 = array2;
+    v55 = array2;
+    [rightPrograms enumerateObjectsUsingBlock:&v65];
 
-    v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v7, v55, 0, v65, v66, v67, v68}];
+    v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:{leftSelectedStreamingProgram, v55, 0, v65, v66, v67, v68}];
 
     goto LABEL_133;
   }
 
-  if (a3 == 512)
+  if (property == 512)
   {
     v79[0] = &unk_1F5623ED8;
-    v7 = [(AXRemoteHearingAidDevice *)self manufacturer];
+    leftSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self manufacturer];
     v79[1] = &unk_1F5623EF0;
-    v80[0] = v7;
-    v21 = [(AXRemoteHearingAidDevice *)self model];
-    v80[1] = v21;
+    v80[0] = leftSelectedStreamingProgram;
+    model2 = [(AXRemoteHearingAidDevice *)self model];
+    v80[1] = model2;
     v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:v79 count:2];
     goto LABEL_97;
   }
 
-  if (a3 != 1024)
+  if (property != 1024)
   {
     goto LABEL_114;
   }
 
   v5 = MEMORY[0x1E695DEC8];
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
-  v8 = [v6 numberWithInt:{objc_msgSend(v7, "index")}];
+  leftSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self leftSelectedProgram];
+  v8 = [v6 numberWithInt:{objc_msgSend(leftSelectedStreamingProgram, "index")}];
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
+  rightSelectedStreamingProgram = [(AXRemoteHearingAidDevice *)self rightSelectedProgram];
 LABEL_16:
-  v12 = v10;
-  v13 = [v9 numberWithInt:{objc_msgSend(v10, "index")}];
+  v12 = rightSelectedStreamingProgram;
+  v13 = [v9 numberWithInt:{objc_msgSend(rightSelectedStreamingProgram, "index")}];
   v14 = [v5 arrayWithObjects:{v8, v13, 0}];
 
 LABEL_133:
@@ -3090,63 +3090,63 @@ void __46__AXRemoteHearingAidDevice__valueForProperty___block_invoke_2(uint64_t 
   [v2 addObject:v3];
 }
 
-- (id)valueForProperty:(unint64_t)a3
+- (id)valueForProperty:(unint64_t)property
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   for (i = 0; i != 64; ++i)
   {
-    if (((1 << i) & a3) != 0)
+    if (((1 << i) & property) != 0)
     {
       v7 = [(AXRemoteHearingAidDevice *)self _valueForProperty:1 << i];
       if (v7)
       {
         v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:1 << i];
-        [v5 setObject:v7 forKey:v8];
+        [dictionary setObject:v7 forKey:v8];
       }
     }
   }
 
-  if ([v5 count] < 2)
+  if ([dictionary count] < 2)
   {
-    if ([v5 count] == 1)
+    if ([dictionary count] == 1)
     {
-      v10 = [v5 allValues];
-      v9 = [v10 firstObject];
+      allValues = [dictionary allValues];
+      firstObject = [allValues firstObject];
     }
 
     else
     {
-      v9 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v5];
+    firstObject = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (double)combinedVolumeForProperty:(unint64_t)a3
+- (double)combinedVolumeForProperty:(unint64_t)property
 {
-  if (propertyContainsProperty(0x40800000C0, a3))
+  if (propertyContainsProperty(0x40800000C0, property))
   {
-    v5 = [(AXRemoteHearingAidDevice *)self _valueForProperty:a3];
+    v5 = [(AXRemoteHearingAidDevice *)self _valueForProperty:property];
     objc_opt_class();
     v6 = 0.0;
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 count] == 2)
     {
-      v7 = [v5 firstObject];
-      [v7 doubleValue];
+      firstObject = [v5 firstObject];
+      [firstObject doubleValue];
       v9 = v8;
 
-      v10 = [v5 lastObject];
-      [v10 doubleValue];
+      lastObject = [v5 lastObject];
+      [lastObject doubleValue];
       v12 = v11;
 
-      v13 = [(AXRemoteHearingAidDevice *)self leftAvailable];
-      if (v13)
+      leftAvailable = [(AXRemoteHearingAidDevice *)self leftAvailable];
+      if (leftAvailable)
       {
         v14 = v9 + 0.0;
       }
@@ -3156,7 +3156,7 @@ void __46__AXRemoteHearingAidDevice__valueForProperty___block_invoke_2(uint64_t 
         v14 = 0.0;
       }
 
-      if (v13)
+      if (leftAvailable)
       {
         v15 = 1.0;
       }
@@ -3166,10 +3166,10 @@ void __46__AXRemoteHearingAidDevice__valueForProperty___block_invoke_2(uint64_t 
         v15 = 0.0;
       }
 
-      v16 = [(AXRemoteHearingAidDevice *)self rightAvailable];
+      rightAvailable = [(AXRemoteHearingAidDevice *)self rightAvailable];
       v17 = v15 + 1.0;
       v18 = v12 + v14;
-      if (!v16)
+      if (!rightAvailable)
       {
         v18 = v14;
         v17 = v15;
@@ -3183,27 +3183,27 @@ LABEL_24:
     return v6;
   }
 
-  if (a3 == 0x2000000000 || (v6 = 0.0, a3 == 0x1000000000))
+  if (property == 0x2000000000 || (v6 = 0.0, property == 0x1000000000))
   {
-    v5 = [(AXRemoteHearingAidDevice *)self _valueForProperty:a3];
+    v5 = [(AXRemoteHearingAidDevice *)self _valueForProperty:property];
     objc_opt_class();
     v6 = 0.0;
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 count] == 2)
     {
-      v19 = [v5 firstObject];
-      v20 = [v19 charValue];
+      firstObject2 = [v5 firstObject];
+      charValue = [firstObject2 charValue];
 
-      v21 = [v5 lastObject];
-      v22 = [v21 charValue];
+      lastObject2 = [v5 lastObject];
+      charValue2 = [lastObject2 charValue];
 
-      if (v20 != v22 && v20 == 0)
+      if (charValue != charValue2 && charValue == 0)
       {
-        v24 = v22;
+        v24 = charValue2;
       }
 
       else
       {
-        v24 = v20;
+        v24 = charValue;
       }
 
       v6 = v24 / 255.0 + 0.5;
@@ -3218,12 +3218,12 @@ LABEL_24:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXRemoteHearingAidDevice *)self name];
-  v5 = [(AXRemoteHearingAidDevice *)self manufacturer];
-  v6 = [(AXRemoteHearingAidDevice *)self model];
-  v7 = [(AXRemoteHearingAidDevice *)self availableEars];
-  v8 = [(AXRemoteHearingAidDevice *)self deviceUUID];
-  v9 = [v3 stringWithFormat:@"AXRemoteHearingAidDevice:%p:[%@] [%@, %@] [%d] {%@}", self, v4, v5, v6, v7, v8];
+  name = [(AXRemoteHearingAidDevice *)self name];
+  manufacturer = [(AXRemoteHearingAidDevice *)self manufacturer];
+  model = [(AXRemoteHearingAidDevice *)self model];
+  availableEars = [(AXRemoteHearingAidDevice *)self availableEars];
+  deviceUUID = [(AXRemoteHearingAidDevice *)self deviceUUID];
+  v9 = [v3 stringWithFormat:@"AXRemoteHearingAidDevice:%p:[%@] [%@, %@] [%d] {%@}", self, name, manufacturer, model, availableEars, deviceUUID];
 
   return v9;
 }

@@ -1,27 +1,27 @@
 @interface DirectionsStepTableViewCell
-+ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)a3;
-+ (double)heightForWidth:(double)a3 route:(id)a4 step:(id)a5 idiom:(int64_t)a6;
++ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)idiom;
++ (double)heightForWidth:(double)width route:(id)route step:(id)step idiom:(int64_t)idiom;
 + (id)reuseIdentifier;
 + (unint64_t)signViewIconSize;
 - (CGRect)_separatorFrame;
-- (DirectionsStepTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (DirectionsStepTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)_trailingGuideToContentViewDistance;
-- (void)setAccessoryType:(int64_t)a3;
-- (void)setAlignSeparatorWithLeadingText:(BOOL)a3;
+- (void)setAccessoryType:(int64_t)type;
+- (void)setAlignSeparatorWithLeadingText:(BOOL)text;
 - (void)updateTheme;
 @end
 
 @implementation DirectionsStepTableViewCell
 
-- (void)setAlignSeparatorWithLeadingText:(BOOL)a3
+- (void)setAlignSeparatorWithLeadingText:(BOOL)text
 {
-  if (self->_alignSeparatorWithLeadingText != a3)
+  if (self->_alignSeparatorWithLeadingText != text)
   {
-    self->_alignSeparatorWithLeadingText = a3;
-    v5 = [(DirectionsStepTableViewCell *)self separatorStyle];
+    self->_alignSeparatorWithLeadingText = text;
+    separatorStyle = [(DirectionsStepTableViewCell *)self separatorStyle];
     [(DirectionsStepTableViewCell *)self setSeparatorStyle:([(DirectionsStepTableViewCell *)self separatorStyle]+ 1) % 3];
 
-    [(DirectionsStepTableViewCell *)self setSeparatorStyle:v5];
+    [(DirectionsStepTableViewCell *)self setSeparatorStyle:separatorStyle];
   }
 }
 
@@ -39,10 +39,10 @@
     v22 = 0u;
     v11 = objc_opt_class();
     v12 = [(DirectionsStepTableViewCell *)self traitCollection:0];
-    v13 = [v12 userInterfaceIdiom];
+    userInterfaceIdiom = [v12 userInterfaceIdiom];
     if (v11)
     {
-      [v11 cellMetricsForIdiom:v13];
+      [v11 cellMetricsForIdiom:userInterfaceIdiom];
     }
 
     else
@@ -52,8 +52,8 @@
 
     if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:[(DirectionsStepTableViewCell *)self semanticContentAttribute]])
     {
-      v14 = [(DirectionsStepTableViewCell *)self contentView];
-      [v14 bounds];
+      contentView = [(DirectionsStepTableViewCell *)self contentView];
+      [contentView bounds];
       MaxX = CGRectGetMaxX(v24);
       v25.origin.x = v4;
       v25.origin.y = v6;
@@ -91,16 +91,16 @@
 - (double)_trailingGuideToContentViewDistance
 {
   v3 = objc_opt_class();
-  v4 = [(DirectionsStepTableViewCell *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  traitCollection = [(DirectionsStepTableViewCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   if (v3)
   {
-    [v3 cellMetricsForIdiom:v5];
+    [v3 cellMetricsForIdiom:userInterfaceIdiom];
   }
 
-  v6 = [(DirectionsStepTableViewCell *)self accessoryType];
+  accessoryType = [(DirectionsStepTableViewCell *)self accessoryType];
   result = 0.0;
-  if (v6)
+  if (accessoryType)
   {
     return 0.0;
   }
@@ -108,11 +108,11 @@
   return result;
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = DirectionsStepTableViewCell;
-  [(DirectionsStepTableViewCell *)&v5 setAccessoryType:a3];
+  [(DirectionsStepTableViewCell *)&v5 setAccessoryType:type];
   stepView = self->_stepView;
   [(DirectionsStepTableViewCell *)self _trailingGuideToContentViewDistance];
   [(DirectionsStepView *)stepView _updateTrailingGuideToContentViewConstraintWithConstant:?];
@@ -123,59 +123,59 @@
   v9.receiver = self;
   v9.super_class = DirectionsStepTableViewCell;
   [(MapsThemeTableViewCell *)&v9 updateTheme];
-  v3 = [(DirectionsStepTableViewCell *)self backgroundView];
+  backgroundView = [(DirectionsStepTableViewCell *)self backgroundView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(DirectionsStepTableViewCell *)self backgroundView];
-    [v5 setHighlightedColor:{-[DirectionsStepTableViewCell isSelectedRow](self, "isSelectedRow")}];
+    backgroundView2 = [(DirectionsStepTableViewCell *)self backgroundView];
+    [backgroundView2 setHighlightedColor:{-[DirectionsStepTableViewCell isSelectedRow](self, "isSelectedRow")}];
   }
 
-  v6 = [(DirectionsStepTableViewCell *)self theme];
-  v7 = [v6 tableViewCellHighlightedOverlayColor];
-  v8 = [(DirectionsStepTableViewCell *)self selectedBackgroundView];
-  [v8 setBackgroundColor:v7];
+  theme = [(DirectionsStepTableViewCell *)self theme];
+  tableViewCellHighlightedOverlayColor = [theme tableViewCellHighlightedOverlayColor];
+  selectedBackgroundView = [(DirectionsStepTableViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:tableViewCellHighlightedOverlayColor];
 }
 
-- (DirectionsStepTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (DirectionsStepTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = DirectionsStepTableViewCell;
-  v4 = [(MapsThemeTableViewCell *)&v17 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MapsThemeTableViewCell *)&v17 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(DirectionsStepTableViewCell *)v4 setAccessibilityIdentifier:@"DirectionsStepCell"];
     v6 = objc_alloc([objc_opt_class() stepViewClass]);
-    v7 = [(DirectionsStepTableViewCell *)v5 contentView];
-    [v7 bounds];
+    contentView = [(DirectionsStepTableViewCell *)v5 contentView];
+    [contentView bounds];
     v8 = [v6 initWithFrame:?];
     stepView = v5->_stepView;
     v5->_stepView = v8;
 
     [(DirectionsStepView *)v5->_stepView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(DirectionsStepView *)v5->_stepView setAccessibilityIdentifier:@"DirectionsStep"];
-    v10 = [(DirectionsStepTableViewCell *)v5 contentView];
-    [v10 addSubview:v5->_stepView];
+    contentView2 = [(DirectionsStepTableViewCell *)v5 contentView];
+    [contentView2 addSubview:v5->_stepView];
 
     v11 = v5->_stepView;
-    v12 = [(DirectionsStepTableViewCell *)v5 contentView];
+    contentView3 = [(DirectionsStepTableViewCell *)v5 contentView];
     LODWORD(v13) = 1148846080;
-    v14 = [(DirectionsStepView *)v11 _maps_constraintsEqualToEdgesOfView:v12 priority:v13];
-    v15 = [v14 allConstraints];
-    [NSLayoutConstraint activateConstraints:v15];
+    v14 = [(DirectionsStepView *)v11 _maps_constraintsEqualToEdgesOfView:contentView3 priority:v13];
+    allConstraints = [v14 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 
   return v5;
 }
 
-+ (double)heightForWidth:(double)a3 route:(id)a4 step:(id)a5 idiom:(int64_t)a6
++ (double)heightForWidth:(double)width route:(id)route step:(id)step idiom:(int64_t)idiom
 {
-  v10 = a5;
-  v11 = a4;
-  [objc_msgSend(a1 "stepViewClass")];
+  stepCopy = step;
+  routeCopy = route;
+  [objc_msgSend(self "stepViewClass")];
   v13 = v12;
 
   return v13;
@@ -183,12 +183,12 @@
 
 + (unint64_t)signViewIconSize
 {
-  v2 = [a1 stepViewClass];
+  stepViewClass = [self stepViewClass];
 
-  return [v2 signViewIconSize];
+  return [stepViewClass signViewIconSize];
 }
 
-+ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)a3
++ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)idiom
 {
   result = [a2 stepViewClass];
   if (result)

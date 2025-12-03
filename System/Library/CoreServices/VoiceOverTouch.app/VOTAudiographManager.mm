@@ -1,46 +1,46 @@
 @interface VOTAudiographManager
-- (BOOL)willPlayheadPositionChangePassGridline:(double)a3;
+- (BOOL)willPlayheadPositionChangePassGridline:(double)gridline;
 - (void)announceValueForPlayheadPosition;
-- (void)dataSonifierPlaybackDidBeginAtPosition:(double)a3;
-- (void)dataSonifierPlaybackDidEndAtPosition:(double)a3;
-- (void)dataSonifierPlaybackDidPauseAtPosition:(double)a3;
-- (void)dataSonifierPlaybackDidResumeAtPosition:(double)a3;
-- (void)dataSonifierPlaybackProgressDidChange:(double)a3;
-- (void)dataSonifierScrubbingDidBeginAtPosition:(double)a3;
-- (void)dataSonifierScrubbingDidEndAtPosition:(double)a3;
-- (void)notifyElementOfPlaybackProgress:(double)a3;
+- (void)dataSonifierPlaybackDidBeginAtPosition:(double)position;
+- (void)dataSonifierPlaybackDidEndAtPosition:(double)position;
+- (void)dataSonifierPlaybackDidPauseAtPosition:(double)position;
+- (void)dataSonifierPlaybackDidResumeAtPosition:(double)position;
+- (void)dataSonifierPlaybackProgressDidChange:(double)change;
+- (void)dataSonifierScrubbingDidBeginAtPosition:(double)position;
+- (void)dataSonifierScrubbingDidEndAtPosition:(double)position;
+- (void)notifyElementOfPlaybackProgress:(double)progress;
 - (void)notifyElementOfPlaybackStatusChange;
-- (void)playHapticWithType:(int64_t)a3;
-- (void)scrubToPosition:(double)a3;
-- (void)setCurrentChartElement:(id)a3;
+- (void)playHapticWithType:(int64_t)type;
+- (void)scrubToPosition:(double)position;
+- (void)setCurrentChartElement:(id)element;
 - (void)stopSpeaking;
 @end
 
 @implementation VOTAudiographManager
 
-- (void)setCurrentChartElement:(id)a3
+- (void)setCurrentChartElement:(id)element
 {
-  v9 = a3;
-  v5 = [(VOTAudiographManager *)self currentChartElement];
+  elementCopy = element;
+  currentChartElement = [(VOTAudiographManager *)self currentChartElement];
 
-  v6 = v9;
-  if (v5 != v9)
+  v6 = elementCopy;
+  if (currentChartElement != elementCopy)
   {
-    v7 = [v9 chartDescriptor];
+    chartDescriptor = [elementCopy chartDescriptor];
     v8 = +[AXMDataSonifier sharedInstance];
-    [v8 setCurrentChartDescriptor:v7];
+    [v8 setCurrentChartDescriptor:chartDescriptor];
 
-    objc_storeStrong(&self->_currentChartElement, a3);
-    v6 = v9;
+    objc_storeStrong(&self->_currentChartElement, element);
+    v6 = elementCopy;
   }
 }
 
-- (void)scrubToPosition:(double)a3
+- (void)scrubToPosition:(double)position
 {
   v5.receiver = self;
   v5.super_class = VOTAudiographManager;
   [(VOTAudiographManager *)&v5 scrubToPosition:?];
-  if ([(VOTAudiographManager *)self willPlayheadPositionChangePassGridline:a3])
+  if ([(VOTAudiographManager *)self willPlayheadPositionChangePassGridline:position])
   {
     [(VOTAudiographManager *)self playHapticWithType:19];
   }
@@ -48,11 +48,11 @@
 
 - (void)announceValueForPlayheadPosition
 {
-  v4 = [(VOTAudiographManager *)self valueDescriptionForPlayheadPosition];
-  if ([v4 length])
+  valueDescriptionForPlayheadPosition = [(VOTAudiographManager *)self valueDescriptionForPlayheadPosition];
+  if ([valueDescriptionForPlayheadPosition length])
   {
     v2 = +[VOTOutputManager outputManager];
-    v3 = [v4 copy];
+    v3 = [valueDescriptionForPlayheadPosition copy];
     [v2 speakSimpleString:v3];
   }
 }
@@ -63,34 +63,34 @@
   [v2 stopSpeakingAtBoundary:0];
 }
 
-- (void)dataSonifierPlaybackDidBeginAtPosition:(double)a3
+- (void)dataSonifierPlaybackDidBeginAtPosition:(double)position
 {
-  [(VOTAudiographManager *)self playHapticWithType:18, a3];
+  [(VOTAudiographManager *)self playHapticWithType:18, position];
 
   [(VOTAudiographManager *)self notifyElementOfPlaybackStatusChange];
 }
 
-- (void)dataSonifierPlaybackDidPauseAtPosition:(double)a3
+- (void)dataSonifierPlaybackDidPauseAtPosition:(double)position
 {
-  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:a3];
+  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:position];
 
   [(VOTAudiographManager *)self notifyElementOfPlaybackStatusChange];
 }
 
-- (void)dataSonifierPlaybackDidResumeAtPosition:(double)a3
+- (void)dataSonifierPlaybackDidResumeAtPosition:(double)position
 {
-  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:a3];
+  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:position];
 
   [(VOTAudiographManager *)self notifyElementOfPlaybackStatusChange];
 }
 
-- (void)dataSonifierPlaybackDidEndAtPosition:(double)a3
+- (void)dataSonifierPlaybackDidEndAtPosition:(double)position
 {
-  [(VOTAudiographManager *)self playHapticWithType:18, a3];
+  [(VOTAudiographManager *)self playHapticWithType:18, position];
   v4 = off_1001FDDD0;
-  v5 = [(VOTAudiographManager *)self currentChartElement];
-  v6 = [v5 language];
-  v8 = sub_1000511CC(v4, @"search.rotor.audiograph.completed.sonification", v6);
+  currentChartElement = [(VOTAudiographManager *)self currentChartElement];
+  language = [currentChartElement language];
+  v8 = sub_1000511CC(v4, @"search.rotor.audiograph.completed.sonification", language);
 
   v7 = +[VOTOutputManager outputManager];
   [v7 speakSimpleString:v8];
@@ -98,42 +98,42 @@
   [(VOTAudiographManager *)self notifyElementOfPlaybackStatusChange];
 }
 
-- (void)dataSonifierPlaybackProgressDidChange:(double)a3
+- (void)dataSonifierPlaybackProgressDidChange:(double)change
 {
   if ([(VOTAudiographManager *)self willPlayheadPositionChangePassGridline:?])
   {
     [(VOTAudiographManager *)self playHapticWithType:19];
   }
 
-  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:a3];
+  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:change];
 
-  [(VOTAudiographManager *)self setLastPlayheadPosition:a3];
+  [(VOTAudiographManager *)self setLastPlayheadPosition:change];
 }
 
-- (void)dataSonifierScrubbingDidBeginAtPosition:(double)a3
+- (void)dataSonifierScrubbingDidBeginAtPosition:(double)position
 {
-  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:a3];
+  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:position];
 
   [(VOTAudiographManager *)self notifyElementOfPlaybackStatusChange];
 }
 
-- (void)dataSonifierScrubbingDidEndAtPosition:(double)a3
+- (void)dataSonifierScrubbingDidEndAtPosition:(double)position
 {
-  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:a3];
+  [(VOTAudiographManager *)self notifyElementOfPlaybackProgress:position];
 
   [(VOTAudiographManager *)self notifyElementOfPlaybackStatusChange];
 }
 
-- (void)notifyElementOfPlaybackProgress:(double)a3
+- (void)notifyElementOfPlaybackProgress:(double)progress
 {
   Current = CFAbsoluteTimeGetCurrent();
   [(VOTAudiographManager *)self lastProgressNotificationTime];
   if (Current > v6 + 0.01)
   {
-    v7 = [(VOTAudiographManager *)self currentChartElement];
-    v8 = [v7 uiElement];
-    *&v9 = a3;
-    [v8 setAXAttribute:2708 withFloat:v9];
+    currentChartElement = [(VOTAudiographManager *)self currentChartElement];
+    uiElement = [currentChartElement uiElement];
+    *&v9 = progress;
+    [uiElement setAXAttribute:2708 withFloat:v9];
 
     [(VOTAudiographManager *)self setLastProgressNotificationTime:Current];
   }
@@ -142,18 +142,18 @@
 - (void)notifyElementOfPlaybackStatusChange
 {
   v3 = +[VOTAudiographManager sharedManager];
-  v4 = [v3 playbackStatus];
+  playbackStatus = [v3 playbackStatus];
 
-  v7 = [(VOTAudiographManager *)self currentChartElement];
-  v5 = [v7 uiElement];
-  v6 = [NSNumber numberWithUnsignedInteger:v4];
-  [v5 setAXAttribute:2716 withNumber:v6];
+  currentChartElement = [(VOTAudiographManager *)self currentChartElement];
+  uiElement = [currentChartElement uiElement];
+  v6 = [NSNumber numberWithUnsignedInteger:playbackStatus];
+  [uiElement setAXAttribute:2716 withNumber:v6];
 }
 
-- (BOOL)willPlayheadPositionChangePassGridline:(double)a3
+- (BOOL)willPlayheadPositionChangePassGridline:(double)gridline
 {
-  v5 = [(VOTAudiographManager *)self xGridlinePositions];
-  v6 = [v5 count];
+  xGridlinePositions = [(VOTAudiographManager *)self xGridlinePositions];
+  v6 = [xGridlinePositions count];
 
   if (v6)
   {
@@ -165,13 +165,13 @@
       if (v9 != 0.0 && v9 != 1.0)
       {
         [(VOTAudiographManager *)self lastPlayheadPosition];
-        if (v9 <= a3 && v11 <= v9)
+        if (v9 <= gridline && v11 <= v9)
         {
           break;
         }
 
         [(VOTAudiographManager *)self lastPlayheadPosition];
-        if (v9 >= a3 && v13 >= v9)
+        if (v9 >= gridline && v13 >= v9)
         {
           break;
         }
@@ -191,12 +191,12 @@
   return v8;
 }
 
-- (void)playHapticWithType:(int64_t)a3
+- (void)playHapticWithType:(int64_t)type
 {
   if ([(VOTAudiographManager *)self hapticsEnabled])
   {
     v4 = +[AXHapticFeedbackManager sharedManager];
-    [v4 playHapticFeedbackForType:a3];
+    [v4 playHapticFeedbackForType:type];
   }
 }
 

@@ -2,8 +2,8 @@
 + (id)outputDeviceDiscoverySessionFactory;
 + (void)initialize;
 - (AVAudioSession)targetAudioSession;
-- (AVOutputDeviceDiscoverySession)initWithDeviceFeatures:(unint64_t)a3;
-- (AVOutputDeviceDiscoverySession)initWithOutputDeviceDiscoverySessionImpl:(id)a3;
+- (AVOutputDeviceDiscoverySession)initWithDeviceFeatures:(unint64_t)features;
+- (AVOutputDeviceDiscoverySession)initWithOutputDeviceDiscoverySessionImpl:(id)impl;
 - (AVOutputDeviceDiscoverySessionAvailableOutputDevices)availableOutputDevicesObject;
 - (BOOL)cachedDiscoveryEnabled;
 - (BOOL)devicePresenceDetected;
@@ -14,14 +14,14 @@
 - (id)impl;
 - (int64_t)discoveryMode;
 - (void)dealloc;
-- (void)outputDeviceDiscoverySessionImpl:(id)a3 didExpireWithReplacement:(id)a4;
-- (void)outputDeviceDiscoverySessionImplDidChangeAvailableOutputDeviceGroups:(id)a3;
-- (void)outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:(id)a3;
-- (void)setCachedDiscoveryEnabled:(BOOL)a3;
-- (void)setDiscoveryMode:(int64_t)a3 forClientIdentifiers:(id)a4;
-- (void)setFastDiscoveryEnabled:(BOOL)a3;
-- (void)setOnlyDiscoversBluetoothDevices:(BOOL)a3;
-- (void)setTargetAudioSession:(id)a3;
+- (void)outputDeviceDiscoverySessionImpl:(id)impl didExpireWithReplacement:(id)replacement;
+- (void)outputDeviceDiscoverySessionImplDidChangeAvailableOutputDeviceGroups:(id)groups;
+- (void)outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:(id)devices;
+- (void)setCachedDiscoveryEnabled:(BOOL)enabled;
+- (void)setDiscoveryMode:(int64_t)mode forClientIdentifiers:(id)identifiers;
+- (void)setFastDiscoveryEnabled:(BOOL)enabled;
+- (void)setOnlyDiscoversBluetoothDevices:(BOOL)devices;
+- (void)setTargetAudioSession:(id)session;
 @end
 
 @implementation AVOutputDeviceDiscoverySession
@@ -55,7 +55,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -124,24 +124,24 @@ id __38__AVOutputDeviceDiscoverySession_impl__block_invoke(uint64_t a1)
 
 - (NSArray)availableOutputDevices
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVOutputDeviceDiscoverySession *)self availableOutputDevicesObject];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  availableOutputDevicesObject = [(AVOutputDeviceDiscoverySession *)self availableOutputDevicesObject];
+  if (availableOutputDevicesObject)
   {
-    v5 = v4;
-    [(NSArray *)v3 addObjectsFromArray:[(AVOutputDeviceDiscoverySessionAvailableOutputDevices *)v4 recentlyUsedDevices]];
-    [(NSArray *)v3 addObjectsFromArray:[(AVOutputDeviceDiscoverySessionAvailableOutputDevices *)v5 otherDevices]];
-    [(NSArray *)v3 sortUsingComparator:&__block_literal_global_10];
+    v5 = availableOutputDevicesObject;
+    [(NSArray *)array addObjectsFromArray:[(AVOutputDeviceDiscoverySessionAvailableOutputDevices *)availableOutputDevicesObject recentlyUsedDevices]];
+    [(NSArray *)array addObjectsFromArray:[(AVOutputDeviceDiscoverySessionAvailableOutputDevices *)v5 otherDevices]];
+    [(NSArray *)array sortUsingComparator:&__block_literal_global_10];
   }
 
-  return v3;
+  return array;
 }
 
 - (AVOutputDeviceDiscoverySessionAvailableOutputDevices)availableOutputDevicesObject
 {
-  v2 = [(AVOutputDeviceDiscoverySession *)self impl];
+  impl = [(AVOutputDeviceDiscoverySession *)self impl];
 
-  return [v2 availableOutputDevicesObject];
+  return [impl availableOutputDevicesObject];
 }
 
 - (int64_t)discoveryMode
@@ -173,38 +173,38 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
 
 - (OpaqueFigRouteDiscoverer)routeDiscoverer
 {
-  v2 = [(AVOutputDeviceDiscoverySession *)self impl];
+  impl = [(AVOutputDeviceDiscoverySession *)self impl];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  return [v2 routeDiscoverer];
+  return [impl routeDiscoverer];
 }
 
-- (AVOutputDeviceDiscoverySession)initWithDeviceFeatures:(unint64_t)a3
+- (AVOutputDeviceDiscoverySession)initWithDeviceFeatures:(unint64_t)features
 {
-  v5 = [objc_opt_class() outputDeviceDiscoverySessionFactory];
+  outputDeviceDiscoverySessionFactory = [objc_opt_class() outputDeviceDiscoverySessionFactory];
   v6 = objc_opt_class();
 
-  v7 = [v5 outputDeviceDiscoverySessionOfClass:v6 withDeviceFeatures:a3];
+  v7 = [outputDeviceDiscoverySessionFactory outputDeviceDiscoverySessionOfClass:v6 withDeviceFeatures:features];
 
   return v7;
 }
 
 - (AVAudioSession)targetAudioSession
 {
-  v2 = [(AVOutputDeviceDiscoverySession *)self impl];
+  impl = [(AVOutputDeviceDiscoverySession *)self impl];
 
-  return [v2 targetAudioSession];
+  return [impl targetAudioSession];
 }
 
-- (void)setTargetAudioSession:(id)a3
+- (void)setTargetAudioSession:(id)session
 {
-  v4 = [(AVOutputDeviceDiscoverySession *)self impl];
+  impl = [(AVOutputDeviceDiscoverySession *)self impl];
 
-  [v4 setTargetAudioSession:a3];
+  [impl setTargetAudioSession:session];
 }
 
 - (BOOL)onlyDiscoversBluetoothDevices
@@ -226,7 +226,7 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
   return v3;
 }
 
-- (void)setOnlyDiscoversBluetoothDevices:(BOOL)a3
+- (void)setOnlyDiscoversBluetoothDevices:(BOOL)devices
 {
   v12 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6BC8)
@@ -244,13 +244,13 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
   block[2] = __67__AVOutputDeviceDiscoverySession_setOnlyDiscoversBluetoothDevices___block_invoke;
   block[3] = &unk_1E794EF70;
   block[4] = self;
-  v9 = a3;
+  devicesCopy = devices;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [-[AVOutputDeviceDiscoverySession impl](self "impl")];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCachedDiscoveryEnabled:(BOOL)a3
+- (void)setCachedDiscoveryEnabled:(BOOL)enabled
 {
   v12 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6BC8)
@@ -268,7 +268,7 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
   block[2] = __60__AVOutputDeviceDiscoverySession_setCachedDiscoveryEnabled___block_invoke;
   block[3] = &unk_1E794EF70;
   block[4] = self;
-  v9 = a3;
+  enabledCopy = enabled;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [-[AVOutputDeviceDiscoverySession impl](self "impl")];
   v7 = *MEMORY[0x1E69E9840];
@@ -293,7 +293,7 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
   return v3;
 }
 
-- (void)setFastDiscoveryEnabled:(BOOL)a3
+- (void)setFastDiscoveryEnabled:(BOOL)enabled
 {
   v12 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6BC8)
@@ -311,13 +311,13 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
   block[2] = __58__AVOutputDeviceDiscoverySession_setFastDiscoveryEnabled___block_invoke;
   block[3] = &unk_1E794EF70;
   block[4] = self;
-  v9 = a3;
+  enabledCopy = enabled;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [-[AVOutputDeviceDiscoverySession impl](self "impl")];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDiscoveryMode:(int64_t)a3 forClientIdentifiers:(id)a4
+- (void)setDiscoveryMode:(int64_t)mode forClientIdentifiers:(id)identifiers
 {
   v13 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6BC8)
@@ -335,7 +335,7 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
   block[2] = __72__AVOutputDeviceDiscoverySession_setDiscoveryMode_forClientIdentifiers___block_invoke;
   block[3] = &unk_1E794ED50;
   block[4] = self;
-  block[5] = a3;
+  block[5] = mode;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [-[AVOutputDeviceDiscoverySession impl](self "impl")];
   v9 = *MEMORY[0x1E69E9840];
@@ -343,20 +343,20 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
 
 - (BOOL)devicePresenceDetected
 {
-  v2 = [(AVOutputDeviceDiscoverySession *)self impl];
+  impl = [(AVOutputDeviceDiscoverySession *)self impl];
 
-  return [v2 devicePresenceDetected];
+  return [impl devicePresenceDetected];
 }
 
-- (void)outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:(id)a3
+- (void)outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:(id)devices
 {
   v3 = [MEMORY[0x1E696AD80] notificationWithName:@"AVOutputDeviceDiscoverySessionAvailableOutputDevicesDidChangeNotification" object:self userInfo:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v4 postNotification:v3];
+  [defaultCenter postNotification:v3];
 }
 
-- (void)outputDeviceDiscoverySessionImpl:(id)a3 didExpireWithReplacement:(id)a4
+- (void)outputDeviceDiscoverySessionImpl:(id)impl didExpireWithReplacement:(id)replacement
 {
   v9 = 0;
   v10 = &v9;
@@ -369,15 +369,15 @@ uint64_t __56__AVOutputDeviceDiscoverySession_availableOutputDevices__block_invo
   block[1] = 3221225472;
   block[2] = __92__AVOutputDeviceDiscoverySession_outputDeviceDiscoverySessionImpl_didExpireWithReplacement___block_invoke;
   block[3] = &unk_1E794EE90;
-  block[5] = a4;
+  block[5] = replacement;
   block[6] = &v9;
   block[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [v10[5] setParentOutputDeviceDiscoverySession:0];
-  [a4 setParentOutputDeviceDiscoverySession:self];
+  [replacement setParentOutputDeviceDiscoverySession:self];
   [(AVOutputDeviceDiscoverySession *)self outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:[(AVOutputDeviceDiscoverySession *)self impl]];
-  v7 = [(AVOutputDeviceDiscoverySession *)self impl];
-  [v7 outputDeviceDiscoverySessionDidChangeDiscoveryMode:self forClientIdentifiers:MEMORY[0x1E695E0F0]];
+  impl = [(AVOutputDeviceDiscoverySession *)self impl];
+  [impl outputDeviceDiscoverySessionDidChangeDiscoveryMode:self forClientIdentifiers:MEMORY[0x1E695E0F0]];
   [-[AVOutputDeviceDiscoverySession impl](self "impl")];
   [-[AVOutputDeviceDiscoverySession impl](self "impl")];
   [-[AVOutputDeviceDiscoverySession impl](self "impl")];
@@ -394,20 +394,20 @@ id __92__AVOutputDeviceDiscoverySession_outputDeviceDiscoverySessionImpl_didExpi
   return result;
 }
 
-- (void)outputDeviceDiscoverySessionImplDidChangeAvailableOutputDeviceGroups:(id)a3
+- (void)outputDeviceDiscoverySessionImplDidChangeAvailableOutputDeviceGroups:(id)groups
 {
   v3 = [MEMORY[0x1E696AD80] notificationWithName:@"AVOutputDeviceDiscoverySessionAvailableOutputDeviceGroupsDidChangeNotification" object:self userInfo:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v4 postNotification:v3];
+  [defaultCenter postNotification:v3];
 }
 
-- (AVOutputDeviceDiscoverySession)initWithOutputDeviceDiscoverySessionImpl:(id)a3
+- (AVOutputDeviceDiscoverySession)initWithOutputDeviceDiscoverySessionImpl:(id)impl
 {
   v9.receiver = self;
   v9.super_class = AVOutputDeviceDiscoverySession;
   v4 = [(AVOutputDeviceDiscoverySession *)&v9 init];
-  if (v4 && (v5 = objc_alloc_init(AVOutputDeviceDiscoverySessionInternal), (v4->_outputDeviceDiscoverySession = v5) != 0) && (v4->_outputDeviceDiscoverySession->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avodds.ivars"), v4->_outputDeviceDiscoverySession->discoveryMode = 0, v4->_outputDeviceDiscoverySession->fastDiscoveryEnabled = 1, v4->_outputDeviceDiscoverySession->impl = a3, (impl = v4->_outputDeviceDiscoverySession->impl) != 0))
+  if (v4 && (v5 = objc_alloc_init(AVOutputDeviceDiscoverySessionInternal), (v4->_outputDeviceDiscoverySession = v5) != 0) && (v4->_outputDeviceDiscoverySession->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avodds.ivars"), v4->_outputDeviceDiscoverySession->discoveryMode = 0, v4->_outputDeviceDiscoverySession->fastDiscoveryEnabled = 1, v4->_outputDeviceDiscoverySession->impl = impl, (impl = v4->_outputDeviceDiscoverySession->impl) != 0))
   {
     [(AVOutputDeviceDiscoverySessionImpl *)impl setParentOutputDeviceDiscoverySession:v4];
     v7 = v4;

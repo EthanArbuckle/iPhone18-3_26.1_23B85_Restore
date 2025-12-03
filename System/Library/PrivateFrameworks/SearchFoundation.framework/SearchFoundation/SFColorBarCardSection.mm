@@ -1,61 +1,61 @@
 @interface SFColorBarCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFColorBarCardSection)initWithCoder:(id)a3;
-- (SFColorBarCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFColorBarCardSection)initWithCoder:(id)coder;
+- (SFColorBarCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFColorBarCardSection
 
-- (SFColorBarCardSection)initWithProtobuf:(id)a3
+- (SFColorBarCardSection)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v24.receiver = self;
   v24.super_class = SFColorBarCardSection;
   v5 = [(SFCardSection *)&v24 init];
   if (v5)
   {
-    v6 = [v4 barColor];
+    barColor = [protobufCopy barColor];
 
-    if (v6)
+    if (barColor)
     {
       v7 = [SFColor alloc];
-      v8 = [v4 barColor];
-      v9 = [(SFColor *)v7 initWithProtobuf:v8];
+      barColor2 = [protobufCopy barColor];
+      v9 = [(SFColor *)v7 initWithProtobuf:barColor2];
       [(SFColorBarCardSection *)v5 setBarColor:v9];
     }
 
-    v10 = [v4 topText];
+    topText = [protobufCopy topText];
 
-    if (v10)
+    if (topText)
     {
       v11 = [SFRichText alloc];
-      v12 = [v4 topText];
-      v13 = [(SFRichText *)v11 initWithProtobuf:v12];
+      topText2 = [protobufCopy topText];
+      v13 = [(SFRichText *)v11 initWithProtobuf:topText2];
       [(SFColorBarCardSection *)v5 setTopText:v13];
     }
 
-    v14 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v14)
+    if (title)
     {
       v15 = [SFRichText alloc];
-      v16 = [v4 title];
-      v17 = [(SFRichText *)v15 initWithProtobuf:v16];
+      title2 = [protobufCopy title];
+      v17 = [(SFRichText *)v15 initWithProtobuf:title2];
       [(SFColorBarCardSection *)v5 setTitle:v17];
     }
 
-    v18 = [v4 subtitle];
+    subtitle = [protobufCopy subtitle];
 
-    if (v18)
+    if (subtitle)
     {
       v19 = [SFRichText alloc];
-      v20 = [v4 subtitle];
-      v21 = [(SFRichText *)v19 initWithProtobuf:v20];
+      subtitle2 = [protobufCopy subtitle];
+      v21 = [(SFRichText *)v19 initWithProtobuf:subtitle2];
       [(SFColorBarCardSection *)v5 setSubtitle:v21];
     }
 
@@ -70,38 +70,38 @@
   v13.receiver = self;
   v13.super_class = SFColorBarCardSection;
   v3 = [(SFCardSection *)&v13 hash];
-  v4 = [(SFColorBarCardSection *)self barColor];
-  v5 = [v4 hash];
-  v6 = [(SFColorBarCardSection *)self topText];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFColorBarCardSection *)self title];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(SFColorBarCardSection *)self subtitle];
-  v11 = v9 ^ [v10 hash];
+  barColor = [(SFColorBarCardSection *)self barColor];
+  v5 = [barColor hash];
+  topText = [(SFColorBarCardSection *)self topText];
+  v7 = v5 ^ [topText hash];
+  title = [(SFColorBarCardSection *)self title];
+  v9 = v7 ^ [title hash];
+  subtitle = [(SFColorBarCardSection *)self subtitle];
+  v11 = v9 ^ [subtitle hash];
 
   return v11 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFColorBarCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFColorBarCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v42.receiver = self;
       v42.super_class = SFColorBarCardSection;
-      if ([(SFCardSection *)&v42 isEqual:v5])
+      if ([(SFCardSection *)&v42 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFColorBarCardSection *)self barColor];
-        v8 = [(SFColorBarCardSection *)v6 barColor];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        barColor = [(SFColorBarCardSection *)self barColor];
+        barColor2 = [(SFColorBarCardSection *)v6 barColor];
+        if ((barColor != 0) == (barColor2 == 0))
         {
           v11 = 0;
 LABEL_38:
@@ -109,65 +109,65 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v9 = [(SFColorBarCardSection *)self barColor];
-        if (v9)
+        barColor3 = [(SFColorBarCardSection *)self barColor];
+        if (barColor3)
         {
-          v10 = [(SFColorBarCardSection *)self barColor];
-          v3 = [(SFColorBarCardSection *)v6 barColor];
-          if (![v10 isEqual:v3])
+          barColor4 = [(SFColorBarCardSection *)self barColor];
+          barColor5 = [(SFColorBarCardSection *)v6 barColor];
+          if (![barColor4 isEqual:barColor5])
           {
             v11 = 0;
             goto LABEL_36;
           }
 
-          v41 = v10;
+          v41 = barColor4;
         }
 
-        v12 = [(SFColorBarCardSection *)self topText];
-        v13 = [(SFColorBarCardSection *)v6 topText];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        topText = [(SFColorBarCardSection *)self topText];
+        topText2 = [(SFColorBarCardSection *)v6 topText];
+        v14 = topText2;
+        if ((topText != 0) == (topText2 == 0))
         {
 
           v11 = 0;
           goto LABEL_35;
         }
 
-        v15 = [(SFColorBarCardSection *)self topText];
-        v40 = v15;
-        if (v15)
+        topText3 = [(SFColorBarCardSection *)self topText];
+        v40 = topText3;
+        if (topText3)
         {
-          v16 = v15;
+          v16 = topText3;
           v35 = v14;
-          v17 = v12;
-          v18 = [(SFColorBarCardSection *)self topText];
-          v37 = [(SFColorBarCardSection *)v6 topText];
-          v38 = v18;
-          if (![v18 isEqual:?])
+          v17 = topText;
+          topText4 = [(SFColorBarCardSection *)self topText];
+          topText5 = [(SFColorBarCardSection *)v6 topText];
+          v38 = topText4;
+          if (![topText4 isEqual:?])
           {
             v11 = 0;
-            v12 = v17;
+            topText = v17;
             v14 = v35;
             goto LABEL_33;
           }
 
-          v39 = v3;
-          v12 = v17;
+          v39 = barColor5;
+          topText = v17;
           v14 = v35;
         }
 
         else
         {
-          v39 = v3;
+          v39 = barColor5;
         }
 
-        v19 = [(SFColorBarCardSection *)self title];
-        v20 = [(SFColorBarCardSection *)v6 title];
-        if ((v19 != 0) == (v20 == 0))
+        title = [(SFColorBarCardSection *)self title];
+        title2 = [(SFColorBarCardSection *)v6 title];
+        if ((title != 0) == (title2 == 0))
         {
 
           v11 = 0;
-          v3 = v39;
+          barColor5 = v39;
           v16 = v40;
           if (!v40)
           {
@@ -177,15 +177,15 @@ LABEL_38:
           goto LABEL_33;
         }
 
-        v33 = v20;
-        v34 = v19;
+        v33 = title2;
+        v34 = title;
         [(SFColorBarCardSection *)self title];
         v36 = v16 = v40;
         if (!v36 || (-[SFColorBarCardSection title](self, "title"), v21 = objc_claimAutoreleasedReturnValue(), -[SFColorBarCardSection title](v6, "title"), v31 = objc_claimAutoreleasedReturnValue(), v32 = v21, [v21 isEqual:?]))
         {
-          v22 = [(SFColorBarCardSection *)self subtitle];
-          v23 = [(SFColorBarCardSection *)v6 subtitle];
-          if ((v22 != 0) == (v23 == 0))
+          subtitle = [(SFColorBarCardSection *)self subtitle];
+          subtitle2 = [(SFColorBarCardSection *)v6 subtitle];
+          if ((subtitle != 0) == (subtitle2 == 0))
           {
 
             v11 = 0;
@@ -194,16 +194,16 @@ LABEL_38:
 
           else
           {
-            v29 = v22;
-            v30 = v23;
-            v24 = [(SFColorBarCardSection *)self subtitle];
+            v29 = subtitle;
+            v30 = subtitle2;
+            subtitle3 = [(SFColorBarCardSection *)self subtitle];
             v16 = v40;
-            if (v24)
+            if (subtitle3)
             {
-              v28 = v24;
-              v27 = [(SFColorBarCardSection *)self subtitle];
-              v25 = [(SFColorBarCardSection *)v6 subtitle];
-              v11 = [v27 isEqual:?];
+              v28 = subtitle3;
+              subtitle4 = [(SFColorBarCardSection *)self subtitle];
+              subtitle5 = [(SFColorBarCardSection *)v6 subtitle];
+              v11 = [subtitle4 isEqual:?];
             }
 
             else
@@ -213,7 +213,7 @@ LABEL_38:
             }
           }
 
-          v3 = v39;
+          barColor5 = v39;
           if (!v36)
           {
 LABEL_32:
@@ -223,8 +223,8 @@ LABEL_32:
 LABEL_34:
 
 LABEL_35:
-              v10 = v41;
-              if (!v9)
+              barColor4 = v41;
+              if (!barColor3)
               {
 LABEL_37:
 
@@ -245,7 +245,7 @@ LABEL_33:
         else
         {
           v11 = 0;
-          v3 = v39;
+          barColor5 = v39;
         }
 
         goto LABEL_32;
@@ -260,25 +260,25 @@ LABEL_39:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = SFColorBarCardSection;
-  v4 = [(SFCardSection *)&v14 copyWithZone:a3];
-  v5 = [(SFColorBarCardSection *)self barColor];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v14 copyWithZone:zone];
+  barColor = [(SFColorBarCardSection *)self barColor];
+  v6 = [barColor copy];
   [v4 setBarColor:v6];
 
-  v7 = [(SFColorBarCardSection *)self topText];
-  v8 = [v7 copy];
+  topText = [(SFColorBarCardSection *)self topText];
+  v8 = [topText copy];
   [v4 setTopText:v8];
 
-  v9 = [(SFColorBarCardSection *)self title];
-  v10 = [v9 copy];
+  title = [(SFColorBarCardSection *)self title];
+  v10 = [title copy];
   [v4 setTitle:v10];
 
-  v11 = [(SFColorBarCardSection *)self subtitle];
-  v12 = [v11 copy];
+  subtitle = [(SFColorBarCardSection *)self subtitle];
+  v12 = [subtitle copy];
   [v4 setSubtitle:v12];
 
   return v4;
@@ -287,132 +287,132 @@ LABEL_39:
 - (NSData)jsonData
 {
   v2 = [[_SFPBColorBarCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBColorBarCardSection *)v2 jsonData];
+  jsonData = [(_SFPBColorBarCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBColorBarCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBColorBarCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBColorBarCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFColorBarCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFColorBarCardSection)initWithCoder:(id)a3
+- (SFColorBarCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 barColor];
-    [(SFColorBarCardSection *)v5 setBarColor:v9];
+    barColor = [(SFCardSection *)v8 barColor];
+    [(SFColorBarCardSection *)v5 setBarColor:barColor];
 
-    v10 = [(SFCardSection *)v8 topText];
-    [(SFColorBarCardSection *)v5 setTopText:v10];
+    topText = [(SFCardSection *)v8 topText];
+    [(SFColorBarCardSection *)v5 setTopText:topText];
 
-    v11 = [(SFCardSection *)v8 title];
-    [(SFColorBarCardSection *)v5 setTitle:v11];
+    title = [(SFCardSection *)v8 title];
+    [(SFColorBarCardSection *)v5 setTitle:title];
 
-    v12 = [(SFCardSection *)v8 subtitle];
-    [(SFColorBarCardSection *)v5 setSubtitle:v12];
+    subtitle = [(SFCardSection *)v8 subtitle];
+    [(SFColorBarCardSection *)v5 setSubtitle:subtitle];
 
-    v13 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v13];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v14 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v14];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v15 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v15];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v16 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v16];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v17 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v17];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v18 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v18];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v19 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v19];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v20 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v20];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v21 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v21];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v22 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v22];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v23 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v23];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v24 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v24];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v25 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v25];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v26 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v26];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v27 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v27];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v28 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v28];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v29 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v29];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v30 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v30];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v31 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v31];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v32 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v32];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v33 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v33];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v34 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v34];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v35 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v35];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v36 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v36];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v37 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v37];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;

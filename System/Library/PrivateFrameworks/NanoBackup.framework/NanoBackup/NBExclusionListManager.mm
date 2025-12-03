@@ -1,6 +1,6 @@
 @interface NBExclusionListManager
 - (NSSet)excludedPerGizmoDomains;
-- (id)excludedKeysInDomain:(id)a3;
+- (id)excludedKeysInDomain:(id)domain;
 - (void)purgeCache;
 - (void)readConfigurationIfNeeded;
 @end
@@ -15,11 +15,11 @@
   return excludedPerGizmoDomains;
 }
 
-- (id)excludedKeysInDomain:(id)a3
+- (id)excludedKeysInDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   [(NBExclusionListManager *)self readConfigurationIfNeeded];
-  v5 = [(NSMutableDictionary *)self->_excludedPerGizmoDomainSettings objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_excludedPerGizmoDomainSettings objectForKeyedSubscript:domainCopy];
 
   return v5;
 }
@@ -40,8 +40,8 @@
   if (!self->_hasReadConfiguration)
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = [v3 bundlePath];
-    v5 = [v4 stringByAppendingPathComponent:@"PerGizmoSettingsExclusionList.plist"];
+    bundlePath = [v3 bundlePath];
+    v5 = [bundlePath stringByAppendingPathComponent:@"PerGizmoSettingsExclusionList.plist"];
 
     v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v5];
     if (v6)

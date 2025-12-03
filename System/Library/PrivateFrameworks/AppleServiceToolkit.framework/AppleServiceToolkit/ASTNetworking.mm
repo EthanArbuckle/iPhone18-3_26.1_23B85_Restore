@@ -1,88 +1,88 @@
 @interface ASTNetworking
-- (ASTNetworking)initWithSOCKSProxyServer:(id)a3 port:(id)a4;
+- (ASTNetworking)initWithSOCKSProxyServer:(id)server port:(id)port;
 - (BOOL)_didRefetchProxyServer;
 - (BOOL)_isValidEasyRider;
-- (BOOL)_verifyMD5ForFileHandle:(id)a3 task:(id)a4;
-- (BOOL)_verifyResultOfTask:(id)a3 connection:(id)a4;
-- (id)_downloadTaskWithDownloadConnection:(id)a3 error:(id *)a4;
-- (id)_sessionConfigurationWithSOCKSProxyServer:(id)a3 port:(id)a4;
-- (id)_taskWithConnection:(id)a3 error:(id *)a4;
+- (BOOL)_verifyMD5ForFileHandle:(id)handle task:(id)task;
+- (BOOL)_verifyResultOfTask:(id)task connection:(id)connection;
+- (id)_downloadTaskWithDownloadConnection:(id)connection error:(id *)error;
+- (id)_sessionConfigurationWithSOCKSProxyServer:(id)server port:(id)port;
+- (id)_taskWithConnection:(id)connection error:(id *)error;
 - (int)_requestTimeInterval;
 - (int)networkDisconnectRetryCount;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity;
 - (void)_resetSessionToNewProxyServer;
-- (void)addConnection:(id)a3;
-- (void)cancelConnectionsOfClass:(Class)a3;
+- (void)addConnection:(id)connection;
+- (void)cancelConnectionsOfClass:(Class)class;
 - (void)invalidate;
-- (void)updateConnectionState:(id)a3 newState:(int64_t)a4;
+- (void)updateConnectionState:(id)state newState:(int64_t)newState;
 @end
 
 @implementation ASTNetworking
 
-- (ASTNetworking)initWithSOCKSProxyServer:(id)a3 port:(id)a4
+- (ASTNetworking)initWithSOCKSProxyServer:(id)server port:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  portCopy = port;
   v18.receiver = self;
   v18.super_class = ASTNetworking;
   v8 = [(ASTNetworking *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    v10 = [(ASTNetworking *)v8 _sessionConfigurationWithSOCKSProxyServer:v6 port:v7];
+    v10 = [(ASTNetworking *)v8 _sessionConfigurationWithSOCKSProxyServer:serverCopy port:portCopy];
     v11 = MEMORY[0x277CCAD30];
     v12 = objc_alloc_init(MEMORY[0x277CCABD8]);
     v13 = [v11 sessionWithConfiguration:v10 delegate:v9 delegateQueue:v12];
     session = v9->_session;
     v9->_session = v13;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     networkStorage = v9->_networkStorage;
-    v9->_networkStorage = v15;
+    v9->_networkStorage = dictionary;
   }
 
   return v9;
 }
 
-- (id)_sessionConfigurationWithSOCKSProxyServer:(id)a3 port:(id)a4
+- (id)_sessionConfigurationWithSOCKSProxyServer:(id)server port:(id)port
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-  [v8 setWaitsForConnectivity:1];
-  [v8 setTimeoutIntervalForRequest:{-[ASTNetworking _requestTimeInterval](self, "_requestTimeInterval")}];
-  if (v6 && v7)
+  serverCopy = server;
+  portCopy = port;
+  ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+  [ephemeralSessionConfiguration setWaitsForConnectivity:1];
+  [ephemeralSessionConfiguration setTimeoutIntervalForRequest:{-[ASTNetworking _requestTimeInterval](self, "_requestTimeInterval")}];
+  if (serverCopy && portCopy)
   {
-    [v8 setWaitsForConnectivity:0];
+    [ephemeralSessionConfiguration setWaitsForConnectivity:0];
     v16[0] = @"SOCKSEnable";
     v16[1] = @"SOCKSPort";
     v17[0] = MEMORY[0x277CBEC38];
-    v17[1] = v7;
+    v17[1] = portCopy;
     v16[2] = @"SOCKSProxy";
-    v17[2] = v6;
+    v17[2] = serverCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
-    [v8 setConnectionProxyDictionary:v9];
+    [ephemeralSessionConfiguration setConnectionProxyDictionary:v9];
 
     v10 = ASTLogHandleForCategory(1);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 connectionProxyDictionary];
+      connectionProxyDictionary = [ephemeralSessionConfiguration connectionProxyDictionary];
       v14 = 138412290;
-      v15 = v11;
+      v15 = connectionProxyDictionary;
       _os_log_impl(&dword_240F3C000, v10, OS_LOG_TYPE_DEFAULT, "Configuring SOCKS proxy: %@", &v14, 0xCu);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return ephemeralSessionConfiguration;
 }
 
 - (int)_requestTimeInterval
@@ -103,23 +103,23 @@
   }
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_alloc_init(ASTNetworkObject);
-  [(ASTNetworkObject *)v5 setConnection:v4];
+  [(ASTNetworkObject *)v5 setConnection:connectionCopy];
   v6 = ASTLogHandleForCategory(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v4 request];
-    v10 = [v9 allHTTPHeaderFields];
+    request = [connectionCopy request];
+    allHTTPHeaderFields = [request allHTTPHeaderFields];
     *buf = 138412546;
     v26 = v7;
     v27 = 2112;
-    v28 = v10;
+    v28 = allHTTPHeaderFields;
     _os_log_impl(&dword_240F3C000, v6, OS_LOG_TYPE_DEFAULT, "[%@] Request Headers: %@", buf, 0x16u);
   }
 
@@ -128,8 +128,8 @@
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [v4 request];
-    v15 = [v14 URL];
+    request2 = [connectionCopy request];
+    v15 = [request2 URL];
     *buf = 138412546;
     v26 = v12;
     v27 = 2112;
@@ -137,27 +137,27 @@
     _os_log_impl(&dword_240F3C000, v11, OS_LOG_TYPE_DEFAULT, "[%@] Request URL: %@", buf, 0x16u);
   }
 
-  v16 = self;
-  objc_sync_enter(v16);
-  v17 = [(ASTNetworking *)v16 session];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  session = [(ASTNetworking *)selfCopy session];
 
-  if (v17)
+  if (session)
   {
     v24 = 0;
-    v18 = [(ASTNetworking *)v16 _taskWithConnection:v4 error:&v24];
+    v18 = [(ASTNetworking *)selfCopy _taskWithConnection:connectionCopy error:&v24];
     v19 = v24;
     if (v18)
     {
-      v20 = [(ASTNetworking *)v16 networkStorage];
-      [v20 setObject:v5 forKeyedSubscript:v18];
+      networkStorage = [(ASTNetworking *)selfCopy networkStorage];
+      [networkStorage setObject:v5 forKeyedSubscript:v18];
 
       [v18 resume];
     }
 
     else
     {
-      v21 = [v4 didReceiveResponse];
-      (v21)[2](v21, 0, v19);
+      didReceiveResponse = [connectionCopy didReceiveResponse];
+      (didReceiveResponse)[2](didReceiveResponse, 0, v19);
 
       v22 = ASTLogHandleForCategory(1);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -167,21 +167,21 @@
     }
   }
 
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelConnectionsOfClass:(Class)a3
+- (void)cancelConnectionsOfClass:(Class)class
 {
-  v5 = [(ASTNetworking *)self session];
+  session = [(ASTNetworking *)self session];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__ASTNetworking_cancelConnectionsOfClass___block_invoke;
   v6[3] = &unk_278CBD0D0;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 getAllTasksWithCompletionHandler:v6];
+  v6[5] = class;
+  [session getAllTasksWithCompletionHandler:v6];
 }
 
 void __42__ASTNetworking_cancelConnectionsOfClass___block_invoke(uint64_t a1, void *a2)
@@ -233,19 +233,19 @@ void __42__ASTNetworking_cancelConnectionsOfClass___block_invoke(uint64_t a1, vo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v9 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [ASTNetworking URLSession:v8 task:v9 didCompleteWithError:?];
+    [ASTNetworking URLSession:errorCopy task:v9 didCompleteWithError:?];
   }
 
-  v10 = [(ASTNetworking *)self networkStorage];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  networkStorage = [(ASTNetworking *)self networkStorage];
+  v11 = [networkStorage objectForKeyedSubscript:taskCopy];
 
   if (!v11)
   {
@@ -253,36 +253,36 @@ void __42__ASTNetworking_cancelConnectionsOfClass___block_invoke(uint64_t a1, vo
     goto LABEL_36;
   }
 
-  v12 = [v11 connection];
-  v13 = [v7 response];
-  if (v13)
+  connection = [v11 connection];
+  response = [taskCopy response];
+  if (response)
   {
-    v14 = v13;
-    v15 = [v7 response];
-    v16 = [v15 statusCode];
+    v14 = response;
+    response2 = [taskCopy response];
+    statusCode = [response2 statusCode];
 
-    if (v16 == 200)
+    if (statusCode == 200)
     {
-      [(ASTNetworking *)self updateConnectionState:v12 newState:0];
+      [(ASTNetworking *)self updateConnectionState:connection newState:0];
       v17 = ASTLogHandleForCategory(2);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v7 response];
-        v19 = [v18 allHeaderFields];
+        response3 = [taskCopy response];
+        allHeaderFields = [response3 allHeaderFields];
         *buf = 138412290;
-        v47 = v19;
+        v47 = allHeaderFields;
         _os_log_impl(&dword_240F3C000, v17, OS_LOG_TYPE_DEFAULT, "Response Headers: %@", buf, 0xCu);
       }
 
-      v20 = [v11 receivedData];
-      if (v20)
+      receivedData = [v11 receivedData];
+      if (receivedData)
       {
-        v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v20 encoding:4];
+        v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:receivedData encoding:4];
         v22 = ASTLogHandleForCategory(3);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v7 currentRequest];
-          v24 = [v23 URL];
+          currentRequest = [taskCopy currentRequest];
+          v24 = [currentRequest URL];
           *buf = 138412546;
           v47 = v24;
           v48 = 2112;
@@ -291,9 +291,9 @@ void __42__ASTNetworking_cancelConnectionsOfClass___block_invoke(uint64_t a1, vo
         }
 
         v25 = +[ASTTestAutomation sharedInstance];
-        v26 = [v25 testAutomationEnabled];
+        testAutomationEnabled = [v25 testAutomationEnabled];
 
-        if (v26)
+        if (testAutomationEnabled)
         {
           v52 = @"payload";
           v53[0] = v21;
@@ -301,8 +301,8 @@ void __42__ASTNetworking_cancelConnectionsOfClass___block_invoke(uint64_t a1, vo
           [ASTTestAutomation postServerResponse:v27];
         }
 
-        v45 = v8;
-        v28 = [ASTEncodingUtilities parseJSONResponseWithData:v20 error:&v45];
+        v45 = errorCopy;
+        v28 = [ASTEncodingUtilities parseJSONResponseWithData:receivedData error:&v45];
         v29 = v45;
 
         if (v28 && ![ASTConnectionUtilities isValidResponse:v28])
@@ -316,7 +316,7 @@ void __42__ASTNetworking_cancelConnectionsOfClass___block_invoke(uint64_t a1, vo
           v28 = 0;
         }
 
-        v8 = v29;
+        errorCopy = v29;
       }
 
       else
@@ -328,24 +328,24 @@ void __42__ASTNetworking_cancelConnectionsOfClass___block_invoke(uint64_t a1, vo
     }
   }
 
-  v31 = [v7 response];
-  v32 = [v31 statusCode];
+  response4 = [taskCopy response];
+  statusCode2 = [response4 statusCode];
 
   v33 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
-    v41 = [v7 originalRequest];
-    v42 = [v41 URL];
+    originalRequest = [taskCopy originalRequest];
+    v42 = [originalRequest URL];
     *buf = 138412802;
     v47 = v42;
     v48 = 2048;
-    v49 = v32;
+    v49 = statusCode2;
     v50 = 2112;
-    v51 = v8;
+    v51 = errorCopy;
     _os_log_error_impl(&dword_240F3C000, v33, OS_LOG_TYPE_ERROR, "%@ responded with status code %ld, error: %@", buf, 0x20u);
   }
 
-  if (!+[ASTConnectionUtilities didEncounterNetworkDisconnectionError:](ASTConnectionUtilities, "didEncounterNetworkDisconnectionError:", v8) || (-[ASTNetworking updateConnectionState:newState:](self, "updateConnectionState:newState:", v12, 1), ![v12 retryOnNetworkDisconnected]))
+  if (!+[ASTConnectionUtilities didEncounterNetworkDisconnectionError:](ASTConnectionUtilities, "didEncounterNetworkDisconnectionError:", errorCopy) || (-[ASTNetworking updateConnectionState:newState:](self, "updateConnectionState:newState:", connection, 1), ![connection retryOnNetworkDisconnected]))
   {
     v28 = 0;
 LABEL_28:
@@ -353,14 +353,14 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  [v12 setNetworkDisconnectedRetryCount:{objc_msgSend(v12, "networkDisconnectedRetryCount") + 1}];
-  v34 = [v12 networkDisconnectedRetryCount];
+  [connection setNetworkDisconnectedRetryCount:{objc_msgSend(connection, "networkDisconnectedRetryCount") + 1}];
+  networkDisconnectedRetryCount = [connection networkDisconnectedRetryCount];
   v28 = 0;
-  v35 = v34 < [(ASTNetworking *)self networkDisconnectRetryCount];
+  v35 = networkDisconnectedRetryCount < [(ASTNetworking *)self networkDisconnectRetryCount];
 LABEL_29:
-  [(ASTNetworking *)self _verifyResultOfTask:v7 connection:v12];
-  v36 = [(ASTNetworking *)self networkStorage];
-  [v36 removeObjectForKey:v7];
+  [(ASTNetworking *)self _verifyResultOfTask:taskCopy connection:connection];
+  networkStorage2 = [(ASTNetworking *)self networkStorage];
+  [networkStorage2 removeObjectForKey:taskCopy];
 
   if (v35)
   {
@@ -376,62 +376,62 @@ LABEL_29:
     block[2] = __54__ASTNetworking_URLSession_task_didCompleteWithError___block_invoke;
     block[3] = &unk_278CBCF18;
     block[4] = self;
-    v44 = v12;
+    v44 = connection;
     dispatch_after(v37, v38, block);
   }
 
   else
   {
-    v39 = [v12 didReceiveResponse];
-    (v39)[2](v39, v28, v8);
+    didReceiveResponse = [connection didReceiveResponse];
+    (didReceiveResponse)[2](didReceiveResponse, v28, errorCopy);
   }
 
 LABEL_36:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  taskCopy = task;
   v12 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [(ASTNetworking *)v12 URLSession:v13 task:v14 didReceiveChallenge:v15 completionHandler:v16, v17, v18, v19];
   }
 
-  v20 = [(ASTNetworking *)self networkStorage];
-  v21 = [v20 objectForKeyedSubscript:v11];
+  networkStorage = [(ASTNetworking *)self networkStorage];
+  v21 = [networkStorage objectForKeyedSubscript:taskCopy];
 
   if (!v21)
   {
     goto LABEL_8;
   }
 
-  v22 = [v21 connection];
-  v23 = [v9 protectionSpace];
-  v24 = [v23 authenticationMethod];
-  v25 = [v24 isEqualToString:*MEMORY[0x277CCA720]];
+  connection = [v21 connection];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v25 = [authenticationMethod isEqualToString:*MEMORY[0x277CCA720]];
 
   if (!v25)
   {
 
 LABEL_8:
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_13;
   }
 
-  v26 = [v9 protectionSpace];
-  v27 = +[ASTConnectionUtilities trustIsValidWithProtectionSpace:rootOfTrust:](ASTConnectionUtilities, "trustIsValidWithProtectionSpace:rootOfTrust:", v26, [v22 rootOfTrust]);
+  protectionSpace2 = [challengeCopy protectionSpace];
+  v27 = +[ASTConnectionUtilities trustIsValidWithProtectionSpace:rootOfTrust:](ASTConnectionUtilities, "trustIsValidWithProtectionSpace:rootOfTrust:", protectionSpace2, [connection rootOfTrust]);
 
   if (v27)
   {
     v28 = MEMORY[0x277CCACF0];
-    v29 = [v9 protectionSpace];
-    v30 = [v28 credentialForTrust:{objc_msgSend(v29, "serverTrust")}];
+    protectionSpace3 = [challengeCopy protectionSpace];
+    v30 = [v28 credentialForTrust:{objc_msgSend(protectionSpace3, "serverTrust")}];
 
-    (v10)[2](v10, 0, v30);
+    (handlerCopy)[2](handlerCopy, 0, v30);
   }
 
   else
@@ -442,60 +442,60 @@ LABEL_8:
       [ASTNetworking URLSession:task:didReceiveChallenge:completionHandler:];
     }
 
-    v10[2](v10, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
   }
 
 LABEL_13:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
-  v11 = a4;
+  taskCopy = task;
   v12 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [(ASTNetworking *)v12 URLSession:v13 task:v14 didSendBodyData:v15 totalBytesSent:v16 totalBytesExpectedToSend:v17, v18, v19];
   }
 
-  v20 = [(ASTNetworking *)self networkStorage];
-  v21 = [v20 objectForKeyedSubscript:v11];
+  networkStorage = [(ASTNetworking *)self networkStorage];
+  v21 = [networkStorage objectForKeyedSubscript:taskCopy];
 
   if (v21)
   {
-    v22 = [v21 connection];
-    [(ASTNetworking *)self updateConnectionState:v22 newState:0];
-    v23 = [v22 delegate];
+    connection = [v21 connection];
+    [(ASTNetworking *)self updateConnectionState:connection newState:0];
+    delegate = [connection delegate];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
-      v25 = [v22 delegate];
-      [v25 connection:v22 didSendBodyData:a5 totalBytesSent:a6 totalBytesExpected:a7];
+      delegate2 = [connection delegate];
+      [delegate2 connection:connection didSendBodyData:data totalBytesSent:sent totalBytesExpected:send];
     }
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
-  v7 = a5;
-  v8 = a4;
+  streamCopy = stream;
+  taskCopy = task;
   v9 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [(ASTNetworking *)v9 URLSession:v10 task:v11 needNewBodyStream:v12, v13, v14, v15, v16];
   }
 
-  v17 = [(ASTNetworking *)self networkStorage];
-  v18 = [v17 objectForKeyedSubscript:v8];
+  networkStorage = [(ASTNetworking *)self networkStorage];
+  v18 = [networkStorage objectForKeyedSubscript:taskCopy];
 
   if (v18)
   {
-    v19 = [v18 connection];
-    if ([v19 conformsToProtocol:&unk_2852DC4E0])
+    connection = [v18 connection];
+    if ([connection conformsToProtocol:&unk_2852DC4E0])
     {
       v20 = MEMORY[0x277CBEAE0];
-      v21 = [v19 fileSteamLocationURL];
-      v22 = [v20 inputStreamWithURL:v21];
+      fileSteamLocationURL = [connection fileSteamLocationURL];
+      v22 = [v20 inputStreamWithURL:fileSteamLocationURL];
     }
 
     else
@@ -509,124 +509,124 @@ LABEL_13:
     v22 = 0;
   }
 
-  v7[2](v7, v22);
+  streamCopy[2](streamCopy, v22);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a7;
+  requestCopy = request;
+  handlerCopy = handler;
   v11 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [(ASTNetworking *)v11 URLSession:v12 task:v13 willPerformHTTPRedirection:v14 newRequest:v15 completionHandler:v16, v17, v18];
   }
 
-  v19 = v9;
+  v19 = requestCopy;
   v20 = v19;
   v21 = v19;
-  if (a5)
+  if (redirection)
   {
 
     v21 = 0;
   }
 
-  v10[2](v10, v21);
+  handlerCopy[2](handlerCopy, v21);
 }
 
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectivityCopy = connectivity;
   v6 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [(ASTNetworking *)v6 URLSession:v7 taskIsWaitingForConnectivity:v8, v9, v10, v11, v12, v13];
   }
 
-  v14 = [(ASTNetworking *)self networkStorage];
-  v15 = [v14 objectForKeyedSubscript:v5];
+  networkStorage = [(ASTNetworking *)self networkStorage];
+  v15 = [networkStorage objectForKeyedSubscript:connectivityCopy];
 
   if (v15)
   {
-    v16 = [v15 connection];
+    connection = [v15 connection];
 
-    if (v16)
+    if (connection)
     {
       v17 = ASTLogHandleForCategory(1);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v15 connection];
+        connection2 = [v15 connection];
         v21 = 138412546;
         v22 = v15;
         v23 = 2112;
-        v24 = v18;
+        v24 = connection2;
         _os_log_impl(&dword_240F3C000, v17, OS_LOG_TYPE_DEFAULT, "Setting connection state to disconnected for network object {%@} with connection {%@}", &v21, 0x16u);
       }
 
-      v19 = [v15 connection];
-      [(ASTNetworking *)self updateConnectionState:v19 newState:1];
+      connection3 = [v15 connection];
+      [(ASTNetworking *)self updateConnectionState:connection3 newState:1];
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
   v11 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [(ASTNetworking *)v11 URLSession:v12 dataTask:v13 didReceiveData:v14, v15, v16, v17, v18];
   }
 
-  v19 = [(ASTNetworking *)self networkStorage];
-  v20 = [v19 objectForKeyedSubscript:v9];
+  networkStorage = [(ASTNetworking *)self networkStorage];
+  v20 = [networkStorage objectForKeyedSubscript:taskCopy];
 
   if (v20)
   {
-    v21 = [v20 connection];
-    [(ASTNetworking *)self updateConnectionState:v21 newState:0];
-    if ([v21 conformsToProtocol:&unk_2852DACF0])
+    connection = [v20 connection];
+    [(ASTNetworking *)self updateConnectionState:connection newState:0];
+    if ([connection conformsToProtocol:&unk_2852DACF0])
     {
-      v22 = v21;
-      v23 = [v22 destinationFileHandle];
-      [v23 writeData:v10];
+      receivedData2 = connection;
+      destinationFileHandle = [receivedData2 destinationFileHandle];
+      [destinationFileHandle writeData:dataCopy];
     }
 
     else
     {
-      v24 = [v20 receivedData];
+      receivedData = [v20 receivedData];
 
-      if (!v24)
+      if (!receivedData)
       {
-        v25 = [MEMORY[0x277CBEB28] data];
-        [v20 setReceivedData:v25];
+        data = [MEMORY[0x277CBEB28] data];
+        [v20 setReceivedData:data];
       }
 
-      v22 = [v20 receivedData];
-      [v22 appendData:v10];
+      receivedData2 = [v20 receivedData];
+      [receivedData2 appendData:dataCopy];
     }
   }
 }
 
-- (void)updateConnectionState:(id)a3 newState:(int64_t)a4
+- (void)updateConnectionState:(id)state newState:(int64_t)newState
 {
-  v9 = a3;
-  v5 = [v9 state];
-  [v9 setState:a4];
-  if (v5 != [v9 state])
+  stateCopy = state;
+  state = [stateCopy state];
+  [stateCopy setState:newState];
+  if (state != [stateCopy state])
   {
-    v6 = [v9 delegate];
+    delegate = [stateCopy delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [v9 delegate];
-      [v8 connection:v9 connectionStateChanged:{objc_msgSend(v9, "state")}];
+      delegate2 = [stateCopy delegate];
+      [delegate2 connection:stateCopy connectionStateChanged:{objc_msgSend(stateCopy, "state")}];
     }
   }
 }
@@ -640,36 +640,36 @@ LABEL_13:
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "Invalidate current NSURLSession.", v6, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ASTNetworking *)v4 session];
-  [v5 finishTasksAndInvalidate];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  session = [(ASTNetworking *)selfCopy session];
+  [session finishTasksAndInvalidate];
 
-  [(ASTNetworking *)v4 setSession:0];
-  objc_sync_exit(v4);
+  [(ASTNetworking *)selfCopy setSession:0];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_taskWithConnection:(id)a3 error:(id *)a4
+- (id)_taskWithConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
-  if ([v6 conformsToProtocol:&unk_2852DACF0])
+  connectionCopy = connection;
+  if ([connectionCopy conformsToProtocol:&unk_2852DACF0])
   {
-    v7 = [(ASTNetworking *)self _downloadTaskWithDownloadConnection:v6 error:a4];
+    v7 = [(ASTNetworking *)self _downloadTaskWithDownloadConnection:connectionCopy error:error];
   }
 
   else
   {
-    v8 = [v6 conformsToProtocol:&unk_2852DC4E0];
-    v9 = [(ASTNetworking *)self session];
-    v10 = [v6 request];
+    v8 = [connectionCopy conformsToProtocol:&unk_2852DC4E0];
+    session = [(ASTNetworking *)self session];
+    request = [connectionCopy request];
     if (v8)
     {
-      [v9 uploadTaskWithStreamedRequest:v10];
+      [session uploadTaskWithStreamedRequest:request];
     }
 
     else
     {
-      [v9 dataTaskWithRequest:v10];
+      [session dataTaskWithRequest:request];
     }
     v7 = ;
   }
@@ -677,32 +677,32 @@ LABEL_13:
   return v7;
 }
 
-- (id)_downloadTaskWithDownloadConnection:(id)a3 error:(id *)a4
+- (id)_downloadTaskWithDownloadConnection:(id)connection error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 destinationFileHandle];
+  connectionCopy = connection;
+  destinationFileHandle = [connectionCopy destinationFileHandle];
 
-  if (v7)
+  if (destinationFileHandle)
   {
-    v8 = [v6 destinationFileHandle];
-    v9 = [v8 isOpenForUpdating];
+    destinationFileHandle2 = [connectionCopy destinationFileHandle];
+    isOpenForUpdating = [destinationFileHandle2 isOpenForUpdating];
 
-    if (v9)
+    if (isOpenForUpdating)
     {
-      v10 = [v6 destinationFileHandle];
-      [v10 truncateFileAtOffset:0];
+      destinationFileHandle3 = [connectionCopy destinationFileHandle];
+      [destinationFileHandle3 truncateFileAtOffset:0];
 
-      v11 = [(ASTNetworking *)self session];
-      v12 = [v6 request];
-      v13 = [v11 dataTaskWithRequest:v12];
+      session = [(ASTNetworking *)self session];
+      request = [connectionCopy request];
+      v13 = [session dataTaskWithRequest:request];
 
       goto LABEL_12;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-3000 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-3000 userInfo:0];
     }
 
     v14 = ASTLogHandleForCategory(1);
@@ -729,14 +729,14 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_verifyResultOfTask:(id)a3 connection:(id)a4
+- (BOOL)_verifyResultOfTask:(id)task connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 conformsToProtocol:&unk_2852DACF0])
+  taskCopy = task;
+  connectionCopy = connection;
+  if ([connectionCopy conformsToProtocol:&unk_2852DACF0])
   {
-    v8 = [v7 destinationFileHandle];
-    v9 = [(ASTNetworking *)self _verifyMD5ForFileHandle:v8 task:v6];
+    destinationFileHandle = [connectionCopy destinationFileHandle];
+    v9 = [(ASTNetworking *)self _verifyMD5ForFileHandle:destinationFileHandle task:taskCopy];
   }
 
   else
@@ -747,15 +747,15 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_verifyMD5ForFileHandle:(id)a3 task:(id)a4
+- (BOOL)_verifyMD5ForFileHandle:(id)handle task:(id)task
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 synchronizeFile];
-  v7 = [ASTConnectionUtilities MD5HeaderValueForTask:v6];
+  handleCopy = handle;
+  taskCopy = task;
+  [handleCopy synchronizeFile];
+  v7 = [ASTConnectionUtilities MD5HeaderValueForTask:taskCopy];
   if (v7)
   {
-    v8 = [ASTEncodingUtilities MD5ForFileHandle:v5];
+    v8 = [ASTEncodingUtilities MD5ForFileHandle:handleCopy];
     if (![v8 caseInsensitiveCompare:v7])
     {
 
@@ -779,7 +779,7 @@ LABEL_12:
     }
   }
 
-  [v5 truncateFileAtOffset:0];
+  [handleCopy truncateFileAtOffset:0];
   v10 = 0;
 LABEL_10:
 
@@ -840,13 +840,13 @@ void __34__ASTNetworking__isValidEasyRider__block_invoke()
   v23 = *MEMORY[0x277D85DE8];
   if (+[ASTLinking isCheckerBoardServicesFrameworkAvailable](ASTLinking, "isCheckerBoardServicesFrameworkAvailable") && [MEMORY[0x277CF97E8] isCheckerBoardActive])
   {
-    v2 = [MEMORY[0x277CF97E8] proxyServer];
-    v3 = [v2 server];
-    v4 = [v2 port];
-    v5 = v4;
-    if (v3)
+    proxyServer = [MEMORY[0x277CF97E8] proxyServer];
+    server = [proxyServer server];
+    port = [proxyServer port];
+    v5 = port;
+    if (server)
     {
-      v6 = v4 == 0;
+      v6 = port == 0;
     }
 
     else
@@ -863,11 +863,11 @@ LABEL_18:
     }
 
     v8 = +[ASTEnvironment currentEnvironment];
-    v9 = [v8 SOCKSProxyServer];
-    if ([v9 isEqualToString:v3])
+    sOCKSProxyServer = [v8 SOCKSProxyServer];
+    if ([sOCKSProxyServer isEqualToString:server])
     {
-      v10 = [v8 SOCKSProxyPort];
-      v11 = [v10 isEqualToNumber:v5];
+      sOCKSProxyPort = [v8 SOCKSProxyPort];
+      v11 = [sOCKSProxyPort isEqualToNumber:v5];
 
       if (v11)
       {
@@ -882,19 +882,19 @@ LABEL_17:
     {
     }
 
-    [v8 setSOCKSProxyServer:v3];
+    [v8 setSOCKSProxyServer:server];
     [v8 setSOCKSProxyPort:v5];
     v12 = ASTLogHandleForCategory(1);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = +[ASTEnvironment currentEnvironment];
-      v14 = [v13 SOCKSProxyServer];
+      sOCKSProxyServer2 = [v13 SOCKSProxyServer];
       v15 = +[ASTEnvironment currentEnvironment];
-      v16 = [v15 SOCKSProxyPort];
+      sOCKSProxyPort2 = [v15 SOCKSProxyPort];
       v19 = 138412546;
-      v20 = v14;
+      v20 = sOCKSProxyServer2;
       v21 = 2112;
-      v22 = v16;
+      v22 = sOCKSProxyPort2;
       _os_log_impl(&dword_240F3C000, v12, OS_LOG_TYPE_DEFAULT, "Refetch ASTEnvironment to %@, %@", &v19, 0x16u);
     }
 
@@ -920,33 +920,33 @@ LABEL_19:
 
   [(ASTNetworking *)self invalidate];
   v4 = +[ASTEnvironment currentEnvironment];
-  v5 = [v4 SOCKSProxyServer];
+  sOCKSProxyServer = [v4 SOCKSProxyServer];
 
   v6 = +[ASTEnvironment currentEnvironment];
-  v7 = [v6 SOCKSProxyPort];
+  sOCKSProxyPort = [v6 SOCKSProxyPort];
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(ASTNetworking *)v8 _sessionConfigurationWithSOCKSProxyServer:v5 port:v7];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(ASTNetworking *)selfCopy _sessionConfigurationWithSOCKSProxyServer:sOCKSProxyServer port:sOCKSProxyPort];
   v10 = MEMORY[0x277CCAD30];
   v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
-  v12 = [v10 sessionWithConfiguration:v9 delegate:v8 delegateQueue:v11];
-  [(ASTNetworking *)v8 setSession:v12];
+  v12 = [v10 sessionWithConfiguration:v9 delegate:selfCopy delegateQueue:v11];
+  [(ASTNetworking *)selfCopy setSession:v12];
 
   v13 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(ASTNetworking *)v8 session];
+    session = [(ASTNetworking *)selfCopy session];
     v16 = 138412802;
-    v17 = v14;
+    v17 = session;
     v18 = 2112;
-    v19 = v5;
+    v19 = sOCKSProxyServer;
     v20 = 2112;
-    v21 = v7;
+    v21 = sOCKSProxyPort;
     _os_log_impl(&dword_240F3C000, v13, OS_LOG_TYPE_DEFAULT, "New session[%@] is created with proxy server %@, %@ ", &v16, 0x20u);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x277D85DE8];
 }
 

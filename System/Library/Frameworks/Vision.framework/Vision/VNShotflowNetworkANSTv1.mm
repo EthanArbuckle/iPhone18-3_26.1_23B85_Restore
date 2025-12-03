@@ -2,8 +2,8 @@
 + (CGSize)inputImageSize;
 + (const)importantClasses;
 + (tuple<float,)inputBiasRGB;
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4;
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r;
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height;
 - (void)initializeBuffers;
 @end
 
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r
 {
-  v4 = a4;
-  height = a3->height;
-  width = a3->width;
+  rCopy = r;
+  height = image->height;
+  width = image->width;
   if ([(VNShotflowNetworkANSTv1 *)self setInputShape:width height:height])
   {
     exception = __cxa_allocate_exception(8uLL);
@@ -51,10 +51,10 @@
     __cxa_throw(exception, MEMORY[0x1E69E54B0], 0);
   }
 
-  v9 = *&a3->width;
-  v49[0] = *&a3->data;
+  v9 = *&image->width;
+  v49[0] = *&image->data;
   v49[1] = v9;
-  [(VNShotflowNetwork *)self runNetwork:v49 inputIsBGR:v4];
+  [(VNShotflowNetwork *)self runNetwork:v49 inputIsBGR:rCopy];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(VNShotflowNetwork *)self threshold];
   if (v11 == 1.0)
@@ -95,11 +95,11 @@
       if (v23 >= 0.3)
       {
         v24 = *v15;
-        v25 = [v12 hasPose];
+        hasPose = [v12 hasPose];
         v26 = (v24 + 1.0);
         if (v26 == 1)
         {
-          v27 = v25;
+          v27 = hasPose;
         }
 
         else
@@ -123,13 +123,13 @@
         v34 = *v22;
         v35 = v22[1];
         v36 = [VNShotflowDetection alloc];
-        v37 = [v12 importantClasses];
+        importantClasses = [v12 importantClasses];
         v38 = (v33 / v48);
         v39 = (v32 / v47);
         v40 = (v34 / v48) - v38;
         v41 = (v35 / v47) - v39;
         v42 = 1.0 - (v41 * 0.5 + v39) - v41 * 0.5;
-        v43 = [(VNShotflowDetection *)v36 initWithBox:0 defaultBox:v37[1] - *v37 > 8uLL confidence:v26 scale:v40 * 0.5 + v38 - v40 * 0.5 rotationAngle:v42 yawAngle:v40 pitchAngle:v41 hasLabel:v40 * 0.5 + v38 - v40 * 0.5 label:v42, v40, v41, __PAIR64__(LODWORD(v30), LODWORD(v23)), __PAIR64__(LODWORD(v28), LODWORD(v29))];
+        v43 = [(VNShotflowDetection *)v36 initWithBox:0 defaultBox:importantClasses[1] - *importantClasses > 8uLL confidence:v26 scale:v40 * 0.5 + v38 - v40 * 0.5 rotationAngle:v42 yawAngle:v40 pitchAngle:v41 hasLabel:v40 * 0.5 + v38 - v40 * 0.5 label:v42, v40, v41, __PAIR64__(LODWORD(v30), LODWORD(v23)), __PAIR64__(LODWORD(v28), LODWORD(v29))];
         [v10 addObject:v43];
       }
 
@@ -146,20 +146,20 @@
   return v10;
 }
 
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height
 {
-  v4 = a4;
-  v5 = a3;
-  if (*&self->super.super._currentNetworkWidth == __PAIR128__(a4, a3))
+  heightCopy = height;
+  shapeCopy = shape;
+  if (*&self->super.super._currentNetworkWidth == __PAIR128__(height, shape))
   {
     return 0;
   }
 
-  v8 = [objc_opt_class() inputLayerName];
-  [v8 UTF8String];
+  inputLayerName = [objc_opt_class() inputLayerName];
+  [inputLayerName UTF8String];
 
   [objc_opt_class() inputImageSize];
-  if (v10 != v4 || v9 != v5)
+  if (v10 != heightCopy || v9 != shapeCopy)
   {
     exception = __cxa_allocate_exception(8uLL);
     *exception = 6005;
@@ -189,8 +189,8 @@
   v3 = objc_opt_class();
   v7 = 0;
   std::vector<unsigned long>::vector[abi:ne200100](&__p, 4uLL);
-  v4 = [v3 inputLayerName];
-  [v4 UTF8String];
+  inputLayerName = [v3 inputLayerName];
+  [inputLayerName UTF8String];
   blob_dimensions = espresso_network_query_blob_dimensions();
 
   if (!blob_dimensions)

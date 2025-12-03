@@ -1,13 +1,13 @@
 @interface THBorderAgentFinder
 - (THBorderAgentFinder)init;
 - (THBorderAgentListener)delegate;
-- (id)getAgentDescription:(unint64_t)a3;
-- (id)getBorderAgentAtIndex:(unint64_t)a3;
-- (void)netService:(id)a3 didNotResolve:(id)a4;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceDidResolveAddress:(id)a3;
-- (void)netServiceWillResolve:(id)a3;
+- (id)getAgentDescription:(unint64_t)description;
+- (id)getBorderAgentAtIndex:(unint64_t)index;
+- (void)netService:(id)service didNotResolve:(id)resolve;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceDidResolveAddress:(id)address;
+- (void)netServiceWillResolve:(id)resolve;
 - (void)start;
 - (void)stop;
 @end
@@ -51,25 +51,25 @@
   [(NSNetServiceBrowser *)browser stop];
 }
 
-- (id)getAgentDescription:(unint64_t)a3
+- (id)getAgentDescription:(unint64_t)description
 {
-  if ([(NSMutableArray *)self->_borderAgents count]<= a3)
+  if ([(NSMutableArray *)self->_borderAgents count]<= description)
   {
     v12 = @"Out of Bounds";
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_borderAgents objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_borderAgents objectAtIndex:description];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 name];
-      v8 = [v6 hostName];
-      v9 = v8;
-      if (v8)
+      name = [v5 name];
+      hostName = [v6 hostName];
+      v9 = hostName;
+      if (hostName)
       {
-        v10 = v8;
+        v10 = hostName;
       }
 
       else
@@ -77,7 +77,7 @@
         v10 = @"Unknown";
       }
 
-      v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ - %@ (%ld)", v7, v10, [v6 port]);
+      v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ - %@ (%ld)", name, v10, [v6 port]);
     }
 
     else
@@ -91,75 +91,75 @@
   return v12;
 }
 
-- (id)getBorderAgentAtIndex:(unint64_t)a3
+- (id)getBorderAgentAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_borderAgents count]<= a3)
+  if ([(NSMutableArray *)self->_borderAgents count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_borderAgents objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_borderAgents objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
-  v7 = a4;
-  NSLog(@"Service %@ added", v7);
-  [(NSMutableArray *)self->_borderAgents addObject:v7];
-  [v7 setDelegate:self];
+  serviceCopy = service;
+  NSLog(@"Service %@ added", serviceCopy);
+  [(NSMutableArray *)self->_borderAgents addObject:serviceCopy];
+  [serviceCopy setDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained agentChanged];
 
-  [v7 resolveWithTimeout:1.0];
+  [serviceCopy resolveWithTimeout:1.0];
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
-  v6 = a4;
-  NSLog(@"Service %@ removed", v6);
-  [(NSMutableArray *)self->_borderAgents removeObject:v6];
+  serviceCopy = service;
+  NSLog(@"Service %@ removed", serviceCopy);
+  [(NSMutableArray *)self->_borderAgents removeObject:serviceCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained agentChanged];
 }
 
-- (void)netServiceWillResolve:(id)a3
+- (void)netServiceWillResolve:(id)resolve
 {
-  v3 = [a3 description];
+  v3 = [resolve description];
   NSLog(@"Resolving %@", v3);
 }
 
-- (void)netService:(id)a3 didNotResolve:(id)a4
+- (void)netService:(id)service didNotResolve:(id)resolve
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [v10 description];
+  serviceCopy = service;
+  resolveCopy = resolve;
+  v6 = [serviceCopy description];
   NSLog(@"Failed resolve %@", v6);
 
-  v7 = [v5 objectForKeyedSubscript:NSNetServicesErrorCode];
+  v7 = [resolveCopy objectForKeyedSubscript:NSNetServicesErrorCode];
 
   v8 = [NSNumber numberWithInt:4294895289];
   v9 = [v7 isEqualToNumber:v8];
 
   if (v9)
   {
-    [v10 resolveWithTimeout:2.0];
+    [serviceCopy resolveWithTimeout:2.0];
   }
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
-  v4 = a3;
-  v5 = [v4 description];
+  addressCopy = address;
+  v5 = [addressCopy description];
   NSLog(@"Resolved %@", v5);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained agentResolved:v4];
+  [WeakRetained agentResolved:addressCopy];
 }
 
 - (THBorderAgentListener)delegate

@@ -1,11 +1,11 @@
 @interface PDTimeNode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PDTimeNode)init;
 - (double)duration;
 - (id)description;
 - (int)repeatDuration;
 - (unint64_t)hash;
-- (void)setGroupIdValue:(int)a3;
+- (void)setGroupIdValue:(int)value;
 @end
 
 @implementation PDTimeNode
@@ -41,19 +41,19 @@
   return result;
 }
 
-- (void)setGroupIdValue:(int)a3
+- (void)setGroupIdValue:(int)value
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
-  v5 = [v4 stringValue];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&value];
+  stringValue = [v4 stringValue];
 
-  [(PDTimeNode *)self setGroupId:v5];
+  [(PDTimeNode *)self setGroupId:stringValue];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v4);
+  v6 = TSUDynamicCast(v5, equalCopy);
   v7 = v6;
   if (v6
     && (mType = self->mType, mType == [v6 type])
@@ -84,8 +84,8 @@
     mIterate = self->mIterate;
     if (mIterate)
     {
-      v58 = [v7 iterate];
-      v59 = [(PDIterate *)mIterate isEqual:v58];
+      iterate = [v7 iterate];
+      v59 = [(PDIterate *)mIterate isEqual:iterate];
     }
 
     else

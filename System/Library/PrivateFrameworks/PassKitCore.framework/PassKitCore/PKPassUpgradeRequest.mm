@@ -1,18 +1,18 @@
 @interface PKPassUpgradeRequest
-+ (id)passUpgradeRequestFromDictionary:(id)a3;
-- (PKPassUpgradeRequest)initWithCoder:(id)a3;
-- (PKPassUpgradeRequest)initWithDictionary:(id)a3;
++ (id)passUpgradeRequestFromDictionary:(id)dictionary;
+- (PKPassUpgradeRequest)initWithCoder:(id)coder;
+- (PKPassUpgradeRequest)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
-- (void)_dictionaryRepresentationInto:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_dictionaryRepresentationInto:(id)into;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpgradeRequest
 
-+ (id)passUpgradeRequestFromDictionary:(id)a3
++ (id)passUpgradeRequestFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"type"];
   v5 = v4;
   if (v4)
   {
@@ -35,7 +35,7 @@
       v7 = PKPassUpgradeRequest;
     }
 
-    v9 = [[v7 alloc] initWithDictionary:v3];
+    v9 = [[v7 alloc] initWithDictionary:dictionaryCopy];
   }
 
   else
@@ -53,15 +53,15 @@
   return v9;
 }
 
-- (PKPassUpgradeRequest)initWithDictionary:(id)a3
+- (PKPassUpgradeRequest)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = PKPassUpgradeRequest;
   v6 = [(PKPassUpgradeRequest *)&v28 init];
   if (v6)
   {
-    v7 = [v5 PKStringForKey:@"type"];
+    v7 = [dictionaryCopy PKStringForKey:@"type"];
     v8 = v7;
     if (v7)
     {
@@ -70,7 +70,7 @@
       if (v9)
       {
         v10 = [PKOSVersionRequirementRange alloc];
-        v11 = [v5 PKDictionaryForKey:@"osVersionRange"];
+        v11 = [dictionaryCopy PKDictionaryForKey:@"osVersionRange"];
         v12 = [(PKOSVersionRequirementRange *)v10 initWithDictionary:v11];
         osVersionRange = v6->_osVersionRange;
         v6->_osVersionRange = v12;
@@ -78,7 +78,7 @@
         if (!v6->_osVersionRange)
         {
           v14 = [PKOSVersionRequirement alloc];
-          v15 = [v5 PKDictionaryForKey:@"minimumOSVersion"];
+          v15 = [dictionaryCopy PKDictionaryForKey:@"minimumOSVersion"];
           v16 = [(PKOSVersionRequirement *)v14 initWithDictionary:v15];
 
           if (v16)
@@ -89,15 +89,15 @@
           }
         }
 
-        v19 = [v5 PKStringForKey:@"secureElementIdentifier"];
+        v19 = [dictionaryCopy PKStringForKey:@"secureElementIdentifier"];
         secureElementIdentifier = v6->_secureElementIdentifier;
         v6->_secureElementIdentifier = v19;
 
-        v21 = [v5 PKArrayContaining:objc_opt_class() forKey:@"paymentApplicationIdentifiers"];
+        v21 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"paymentApplicationIdentifiers"];
         paymentApplicationIdentifiers = v6->_paymentApplicationIdentifiers;
         v6->_paymentApplicationIdentifiers = v21;
 
-        objc_storeStrong(&v6->_fields, a3);
+        objc_storeStrong(&v6->_fields, dictionary);
         goto LABEL_9;
       }
 
@@ -142,9 +142,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)_dictionaryRepresentationInto:(id)a3
+- (void)_dictionaryRepresentationInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   type = self->_type;
   v6 = @"unknown";
   if (type == 2)
@@ -162,21 +162,21 @@ LABEL_16:
     v7 = v6;
   }
 
-  v14 = v4;
-  [v4 setObject:v7 forKeyedSubscript:@"type"];
-  v8 = [(PKOSVersionRequirementRange *)self->_osVersionRange minimum];
-  v9 = v8;
-  if (v8)
+  v14 = intoCopy;
+  [intoCopy setObject:v7 forKeyedSubscript:@"type"];
+  minimum = [(PKOSVersionRequirementRange *)self->_osVersionRange minimum];
+  v9 = minimum;
+  if (minimum)
   {
-    v10 = [v8 asDictionary];
-    [v14 setObject:v10 forKeyedSubscript:@"minimumOSVersion"];
+    asDictionary = [minimum asDictionary];
+    [v14 setObject:asDictionary forKeyedSubscript:@"minimumOSVersion"];
   }
 
   osVersionRange = self->_osVersionRange;
   if (osVersionRange)
   {
-    v12 = [(PKOSVersionRequirementRange *)osVersionRange asDictionary];
-    [v14 setObject:v12 forKeyedSubscript:@"osVersionRange"];
+    asDictionary2 = [(PKOSVersionRequirementRange *)osVersionRange asDictionary];
+    [v14 setObject:asDictionary2 forKeyedSubscript:@"osVersionRange"];
   }
 
   secureElementIdentifier = self->_secureElementIdentifier;
@@ -191,24 +191,24 @@ LABEL_16:
   }
 }
 
-- (PKPassUpgradeRequest)initWithCoder:(id)a3
+- (PKPassUpgradeRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PKPassUpgradeRequest;
   v5 = [(PKPassUpgradeRequest *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"osVersionRange"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"osVersionRange"];
     osVersionRange = v5->_osVersionRange;
     v5->_osVersionRange = v7;
 
     if (!v5->_osVersionRange)
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumOSVersion"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumOSVersion"];
       if (v9)
       {
         v10 = [[PKOSVersionRequirementRange alloc] initWithMinimumVersion:v9 maximumVersion:0];
@@ -217,18 +217,18 @@ LABEL_16:
       }
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureElementIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureElementIdentifier"];
     secureElementIdentifier = v5->_secureElementIdentifier;
     v5->_secureElementIdentifier = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"paymentApplicationIdentifiers"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"paymentApplicationIdentifiers"];
     paymentApplicationIdentifiers = v5->_paymentApplicationIdentifiers;
     v5->_paymentApplicationIdentifiers = v17;
 
-    v19 = [v4 decodePropertyListForKey:@"fields"];
+    v19 = [coderCopy decodePropertyListForKey:@"fields"];
     fields = v5->_fields;
     v5->_fields = v19;
   }
@@ -236,21 +236,21 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   type = self->_type;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:type];
-  [v8 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 
-  v7 = [(PKOSVersionRequirementRange *)self->_osVersionRange minimum];
-  [v8 encodeObject:v7 forKey:@"minimumOSVersion"];
+  minimum = [(PKOSVersionRequirementRange *)self->_osVersionRange minimum];
+  [coderCopy encodeObject:minimum forKey:@"minimumOSVersion"];
 
-  [v8 encodeObject:self->_osVersionRange forKey:@"osVersionRange"];
-  [v8 encodeObject:self->_secureElementIdentifier forKey:@"secureElementIdentifier"];
-  [v8 encodeObject:self->_paymentApplicationIdentifiers forKey:@"paymentApplicationIdentifiers"];
-  [v8 encodeObject:self->_fields forKey:@"fields"];
+  [coderCopy encodeObject:self->_osVersionRange forKey:@"osVersionRange"];
+  [coderCopy encodeObject:self->_secureElementIdentifier forKey:@"secureElementIdentifier"];
+  [coderCopy encodeObject:self->_paymentApplicationIdentifiers forKey:@"paymentApplicationIdentifiers"];
+  [coderCopy encodeObject:self->_fields forKey:@"fields"];
 }
 
 @end

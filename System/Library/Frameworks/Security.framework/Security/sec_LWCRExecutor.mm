@@ -1,20 +1,20 @@
 @interface sec_LWCRExecutor
 + (id)executor;
-- (BOOL)evaluateRequirements:(id)a3 withFacts:(id)a4;
+- (BOOL)evaluateRequirements:(id)requirements withFacts:(id)facts;
 @end
 
 @implementation sec_LWCRExecutor
 
-- (BOOL)evaluateRequirements:(id)a3 withFacts:(id)a4
+- (BOOL)evaluateRequirements:(id)requirements withFacts:(id)facts
 {
-  v5 = a3;
-  v6 = a4;
+  requirementsCopy = requirements;
+  factsCopy = facts;
   memset(&v28[1], 170, 24);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__sec_LWCRExecutor_evaluateRequirements_withFacts___block_invoke;
   aBlock[3] = &unk_1E70D7110;
-  v27 = v6;
+  v27 = factsCopy;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __51__sec_LWCRExecutor_evaluateRequirements_withFacts___block_invoke_2;
@@ -39,18 +39,18 @@
   v21[0] = v28;
   v21[1] = 0;
   *(&v20 + 1) = 0xAAAAAAAAAAAAAAAALL;
-  v12 = *(v5 + 4);
-  *&v32.runtime = *(v5 + 3);
+  v12 = *(requirementsCopy + 4);
+  *&v32.runtime = *(requirementsCopy + 3);
   *&v32.lookup.index_count = v12;
-  *&v32.sorted = *(v5 + 5);
-  v32.var0.ccstate.der_end = *(v5 + 12);
+  *&v32.sorted = *(requirementsCopy + 5);
+  v32.var0.ccstate.der_end = *(requirementsCopy + 12);
   if (der_vm_context_is_valid())
   {
-    v13 = *(v5 + 4);
-    *&v32.runtime = *(v5 + 3);
+    v13 = *(requirementsCopy + 4);
+    *&v32.runtime = *(requirementsCopy + 3);
     *&v32.lookup.index_count = v13;
-    *&v32.sorted = *(v5 + 5);
-    v32.var0.ccstate.der_end = *(v5 + 12);
+    *&v32.sorted = *(requirementsCopy + 5);
+    v32.var0.ccstate.der_end = *(requirementsCopy + 12);
     v35 = 0;
     v33 = 0u;
     v34 = 0u;

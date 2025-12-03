@@ -1,18 +1,18 @@
 @interface ATXTimeTrigger
-- (ATXTimeTrigger)initWithCoder:(id)a3;
+- (ATXTimeTrigger)initWithCoder:(id)coder;
 @end
 
 @implementation ATXTimeTrigger
 
-- (ATXTimeTrigger)initWithCoder:(id)a3
+- (ATXTimeTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ATXTimeTrigger;
   v5 = [(ATXTimeTrigger *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeComponents"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeComponents"];
     timeComponents = v5->_timeComponents;
     v5->_timeComponents = v6;
 

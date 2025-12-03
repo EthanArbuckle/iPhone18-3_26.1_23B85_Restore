@@ -1,20 +1,20 @@
 @interface PKTextInputDebugTargetsView
-- (PKTextInputDebugTargetsView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setVisualizationElements:(id)a3;
+- (PKTextInputDebugTargetsView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setVisualizationElements:(id)elements;
 @end
 
 @implementation PKTextInputDebugTargetsView
 
-- (PKTextInputDebugTargetsView)initWithFrame:(CGRect)a3
+- (PKTextInputDebugTargetsView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKTextInputDebugTargetsView;
-  v3 = [(PKTextInputDebugTargetsView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKTextInputDebugTargetsView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKTextInputDebugTargetsView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKTextInputDebugTargetsView *)v3 setBackgroundColor:clearColor];
 
     [(PKTextInputDebugTargetsView *)v3 setUserInteractionEnabled:0];
     visualizationElements = v3->_visualizationElements;
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (void)setVisualizationElements:(id)a3
+- (void)setVisualizationElements:(id)elements
 {
-  if (self->_visualizationElements != a3)
+  if (self->_visualizationElements != elements)
   {
-    v4 = [a3 copy];
+    v4 = [elements copy];
     visualizationElements = self->_visualizationElements;
     self->_visualizationElements = v4;
 
@@ -38,12 +38,12 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v38 = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = PKTextInputDebugTargetsView;
-  [(PKTextInputDebugTargetsView *)&v35 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PKTextInputDebugTargetsView *)&v35 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   CurrentContext = UIGraphicsGetCurrentContext();
   v5 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.8 blue:0.0 alpha:0.15];
   v6 = [v5 colorWithAlphaComponent:0.3];
@@ -51,8 +51,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [(PKTextInputDebugTargetsView *)self visualizationElements];
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  visualizationElements = [(PKTextInputDebugTargetsView *)self visualizationElements];
+  v8 = [visualizationElements countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v8)
   {
     v9 = v8;
@@ -63,20 +63,20 @@
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(visualizationElements);
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [(PKTextInputElement *)v12 coordinateSpace];
+        coordinateSpace = [(PKTextInputElement *)v12 coordinateSpace];
 
-        if (v13)
+        if (coordinateSpace)
         {
-          v14 = [(PKTextInputElement *)v12 frame];
+          frame = [(PKTextInputElement *)v12 frame];
           v16 = v15;
           v18 = v17;
           v20 = v19;
-          v21 = [(PKTextInputElement *)v12 coordinateSpace];
-          v22 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v21, self, v14, v16, v18, v20);
+          coordinateSpace2 = [(PKTextInputElement *)v12 coordinateSpace];
+          v22 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace2, self, frame, v16, v18, v20);
           v24 = v23;
           v26 = v25;
           v28 = v27;
@@ -106,7 +106,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      v9 = [visualizationElements countByEnumeratingWithState:&v31 objects:v37 count:16];
     }
 
     while (v9);

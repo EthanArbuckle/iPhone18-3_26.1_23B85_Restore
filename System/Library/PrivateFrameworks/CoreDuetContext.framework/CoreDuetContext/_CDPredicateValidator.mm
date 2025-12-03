@@ -1,112 +1,112 @@
 @interface _CDPredicateValidator
-+ (BOOL)validatePredicate:(id)a3 allowedKeys:(id)a4 error:(id *)a5;
-- (BOOL)validateWithError:(id *)a3;
-- (_CDPredicateValidator)initWithPredicate:(id)a3 allowedKeys:(id)a4;
-- (void)_cd_validateKeypath:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
++ (BOOL)validatePredicate:(id)predicate allowedKeys:(id)keys error:(id *)error;
+- (BOOL)validateWithError:(id *)error;
+- (_CDPredicateValidator)initWithPredicate:(id)predicate allowedKeys:(id)keys;
+- (void)_cd_validateKeypath:(id)keypath;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation _CDPredicateValidator
 
-+ (BOOL)validatePredicate:(id)a3 allowedKeys:(id)a4 error:(id *)a5
++ (BOOL)validatePredicate:(id)predicate allowedKeys:(id)keys error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPredicate:v9 allowedKeys:v8];
+  keysCopy = keys;
+  predicateCopy = predicate;
+  v10 = [[self alloc] initWithPredicate:predicateCopy allowedKeys:keysCopy];
 
   if (v10)
   {
-    LOBYTE(a5) = [v10 validateWithError:a5];
+    LOBYTE(error) = [v10 validateWithError:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     v14 = *MEMORY[0x1E696A578];
     v15[0] = @"Predicate was invalid because it was nil.";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6997A18] code:*MEMORY[0x1E6997A28] userInfo:v11];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6997A18] code:*MEMORY[0x1E6997A28] userInfo:v11];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (_CDPredicateValidator)initWithPredicate:(id)a3 allowedKeys:(id)a4
+- (_CDPredicateValidator)initWithPredicate:(id)predicate allowedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  predicateCopy = predicate;
+  keysCopy = keys;
+  if (predicateCopy)
   {
     v15.receiver = self;
     v15.super_class = _CDPredicateValidator;
     v8 = [(_CDPredicateValidator *)&v15 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [predicateCopy copy];
       predicate = v8->_predicate;
       v8->_predicate = v9;
 
-      if (v7)
+      if (keysCopy)
       {
-        v11 = [MEMORY[0x1E695DFD8] setWithArray:v7];
+        v11 = [MEMORY[0x1E695DFD8] setWithArray:keysCopy];
         allowedKeys = v8->_allowedKeys;
         v8->_allowedKeys = v11;
       }
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   [(_CDPredicateValidator *)self setValidated:1];
-  v5 = [(_CDPredicateValidator *)self predicate];
+  predicate = [(_CDPredicateValidator *)self predicate];
 
-  if (v5)
+  if (predicate)
   {
-    v6 = [(_CDPredicateValidator *)self predicate];
-    [v6 acceptVisitor:self flags:3];
+    predicate2 = [(_CDPredicateValidator *)self predicate];
+    [predicate2 acceptVisitor:self flags:3];
 
-    if (a3)
+    if (error)
     {
-      v7 = [(_CDPredicateValidator *)self error];
+      error = [(_CDPredicateValidator *)self error];
 
-      if (v7)
+      if (error)
       {
-        *a3 = [(_CDPredicateValidator *)self error];
+        *error = [(_CDPredicateValidator *)self error];
       }
     }
   }
 
   if (![(_CDPredicateValidator *)self validated])
   {
-    v8 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    contextChannel = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_ERROR))
     {
-      [(_CDPredicateValidator *)self validateWithError:v8];
+      [(_CDPredicateValidator *)self validateWithError:contextChannel];
     }
   }
 
   return [(_CDPredicateValidator *)self validated];
 }
 
-- (void)_cd_validateKeypath:(id)a3
+- (void)_cd_validateKeypath:(id)keypath
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keypathCopy = keypath;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -128,8 +128,8 @@
 
   v5 = objc_alloc(MEMORY[0x1E695DFD8]);
   v34 = [v5 initWithObjects:{*MEMORY[0x1E696A240], *MEMORY[0x1E696A258], *MEMORY[0x1E696A288], *MEMORY[0x1E696A290], *MEMORY[0x1E696A298], *MEMORY[0x1E696A5B0], *MEMORY[0x1E696A748], *MEMORY[0x1E696A900], *MEMORY[0x1E696AA50], *MEMORY[0x1E696AA58], *MEMORY[0x1E696AA60], 0}];
-  v32 = v4;
-  v6 = [v4 componentsSeparatedByString:@"."];
+  v32 = keypathCopy;
+  v6 = [keypathCopy componentsSeparatedByString:@"."];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -178,13 +178,13 @@
           goto LABEL_20;
         }
 
-        v15 = [(_CDPredicateValidator *)self allowedKeys];
-        if (v15)
+        allowedKeys = [(_CDPredicateValidator *)self allowedKeys];
+        if (allowedKeys)
         {
-          v16 = v15;
+          v16 = allowedKeys;
           [(_CDPredicateValidator *)self allowedKeys];
           v17 = v10;
-          v18 = self;
+          selfCopy = self;
           v19 = v11;
           v20 = v6;
           v22 = v21 = v9;
@@ -193,7 +193,7 @@
           v9 = v21;
           v6 = v20;
           v11 = v19;
-          self = v18;
+          self = selfCopy;
           v10 = v17;
           v8 = v33;
 
@@ -237,52 +237,52 @@ LABEL_25:
     v9 = v24;
   }
 
-  v4 = v32;
+  keypathCopy = v32;
 LABEL_29:
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  expressionCopy = expression;
   if (![(_CDPredicateValidator *)self validated])
   {
     goto LABEL_34;
   }
 
-  v5 = [v4 expressionType];
-  switch(v5)
+  expressionType = [expressionCopy expressionType];
+  switch(expressionType)
   {
     case 10:
 LABEL_5:
-      v6 = [v4 keyPath];
-      [(_CDPredicateValidator *)self _cd_validateKeypath:v6];
+      keyPath = [expressionCopy keyPath];
+      [(_CDPredicateValidator *)self _cd_validateKeypath:keyPath];
 
       break;
     case 4:
-      v7 = [v4 function];
-      if ([v7 isEqual:@"objectFrom:withIndex:"])
+      function = [expressionCopy function];
+      if ([function isEqual:@"objectFrom:withIndex:"])
       {
 LABEL_33:
 
         break;
       }
 
-      if ([v7 isEqual:@"castObject:toType:"])
+      if ([function isEqual:@"castObject:toType:"])
       {
-        v8 = [v4 arguments];
-        if ([v8 count] == 2)
+        arguments = [expressionCopy arguments];
+        if ([arguments count] == 2)
         {
-          v9 = [v4 arguments];
-          v10 = [v9 objectAtIndexedSubscript:1];
+          arguments2 = [expressionCopy arguments];
+          v10 = [arguments2 objectAtIndexedSubscript:1];
           if (![v10 expressionType])
           {
-            v28 = [v4 arguments];
-            v29 = [v28 objectAtIndexedSubscript:1];
-            v30 = [v29 constantValue];
-            v31 = [v30 isEqual:@"NSDate"];
+            arguments3 = [expressionCopy arguments];
+            v29 = [arguments3 objectAtIndexedSubscript:1];
+            constantValue = [v29 constantValue];
+            v31 = [constantValue isEqual:@"NSDate"];
 
             if (v31)
             {
@@ -307,15 +307,15 @@ LABEL_32:
       }
 
       v12 = [MEMORY[0x1E695DFD8] setWithObjects:{@"valueForKey:", @"valueForKeyPath:", 0}];
-      if (![v12 containsObject:v7])
+      if (![v12 containsObject:function])
       {
         v16 = MEMORY[0x1E696ABC8];
-        v17 = [v4 function];
-        v18 = [v4 arguments];
-        v19 = v18;
-        if (v18)
+        function2 = [expressionCopy function];
+        arguments4 = [expressionCopy arguments];
+        v19 = arguments4;
+        if (arguments4)
         {
-          v20 = v18;
+          v20 = arguments4;
         }
 
         else
@@ -323,7 +323,7 @@ LABEL_32:
           v20 = MEMORY[0x1E695E0F0];
         }
 
-        v21 = [v16 expressionForFunction:v17 arguments:v20];
+        v21 = [v16 expressionForFunction:function2 arguments:v20];
 
         if (!v21)
         {
@@ -344,11 +344,11 @@ LABEL_32:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v4 pathExpression];
-        if (![v14 expressionType] || objc_msgSend(v14, "expressionType") == 10)
+        pathExpression = [expressionCopy pathExpression];
+        if (![pathExpression expressionType] || objc_msgSend(pathExpression, "expressionType") == 10)
         {
-          v15 = [v14 constantValue];
-          [(_CDPredicateValidator *)self _cd_validateKeypath:v15];
+          constantValue2 = [pathExpression constantValue];
+          [(_CDPredicateValidator *)self _cd_validateKeypath:constantValue2];
 LABEL_27:
 
           goto LABEL_32;
@@ -360,15 +360,15 @@ LABEL_27:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = [v4 arguments];
-          v26 = [v25 count];
+          arguments5 = [expressionCopy arguments];
+          v26 = [arguments5 count];
 
           if (v26 == 1)
           {
-            v14 = [v4 arguments];
-            v15 = [v14 firstObject];
-            v27 = [v15 constantValue];
-            [(_CDPredicateValidator *)self _cd_validateKeypath:v27];
+            pathExpression = [expressionCopy arguments];
+            constantValue2 = [pathExpression firstObject];
+            v15ConstantValue = [constantValue2 constantValue];
+            [(_CDPredicateValidator *)self _cd_validateKeypath:v15ConstantValue];
 
             goto LABEL_27;
           }
@@ -393,13 +393,13 @@ LABEL_34:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 operatorType];
-  if (v4 >= 0xB && v4 - 99 >= 2)
+  operatorType = [operator operatorType];
+  if (operatorType >= 0xB && operatorType - 99 >= 2)
   {
-    if (v4 == 11)
+    if (operatorType == 11)
     {
       [(_CDPredicateValidator *)self setValidated:0];
       v6 = MEMORY[0x1E696ABC0];

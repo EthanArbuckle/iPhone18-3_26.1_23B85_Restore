@@ -1,14 +1,14 @@
 @interface UIKeyboardDockItemButton
-- (BOOL)pointInsideTapActionRegion:(CGPoint)a3;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)rectWithSize:(CGSize)a3 forContentRect:(CGRect)a4 withAlignmentRectInsets:(UIEdgeInsets)a5;
+- (BOOL)pointInsideTapActionRegion:(CGPoint)region;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)rectWithSize:(CGSize)size forContentRect:(CGRect)rect withAlignmentRectInsets:(UIEdgeInsets)insets;
 - (CGRect)tapActionRegion;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (void)addAnimatitionIfNeeded;
 - (void)didMoveToSuperview;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 - (void)setupDictationAnimationButtonIfNeeded;
 - (void)updateFillColor;
 @end
@@ -20,22 +20,22 @@
   v28.receiver = self;
   v28.super_class = UIKeyboardDockItemButton;
   [(UIButton *)&v28 layoutSubviews];
-  v3 = [(UIKeyboardDockItemButton *)self identifier];
-  v4 = [v3 isEqualToString:@"dictationRunning"];
+  identifier = [(UIKeyboardDockItemButton *)self identifier];
+  v4 = [identifier isEqualToString:@"dictationRunning"];
 
   if (v4)
   {
-    v5 = [(UIButton *)self imageView];
-    v6 = [v5 layer];
-    [v6 setCompositingFilter:*MEMORY[0x1E6979D98]];
+    imageView = [(UIButton *)self imageView];
+    layer = [imageView layer];
+    [layer setCompositingFilter:*MEMORY[0x1E6979D98]];
   }
 
-  v7 = [(UIKeyboardDockItemButton *)self debugHitLayer];
+  debugHitLayer = [(UIKeyboardDockItemButton *)self debugHitLayer];
 
-  if (v7)
+  if (debugHitLayer)
   {
-    v8 = [(UIKeyboardDockItemButton *)self debugHitLayer];
-    [v8 removeFromSuperlayer];
+    debugHitLayer2 = [(UIKeyboardDockItemButton *)self debugHitLayer];
+    [debugHitLayer2 removeFromSuperlayer];
 
     [(UIKeyboardDockItemButton *)self setDebugHitLayer:0];
   }
@@ -49,34 +49,34 @@
 
     if (_MergedGlobals_17_3 == 1)
     {
-      v9 = [MEMORY[0x1E69794A0] layer];
-      [(UIKeyboardDockItemButton *)self setDebugHitLayer:v9];
+      layer2 = [MEMORY[0x1E69794A0] layer];
+      [(UIKeyboardDockItemButton *)self setDebugHitLayer:layer2];
 
       [(UIKeyboardDockItemButton *)self tapActionRegion];
       v10 = [UIBezierPath bezierPathWithOvalInRect:?];
-      v11 = [v10 CGPath];
-      v12 = [(UIKeyboardDockItemButton *)self debugHitLayer];
-      [v12 setPath:v11];
+      cGPath = [v10 CGPath];
+      debugHitLayer3 = [(UIKeyboardDockItemButton *)self debugHitLayer];
+      [debugHitLayer3 setPath:cGPath];
 
       [(UIKeyboardDockItemButton *)self tapActionRegion];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(UIKeyboardDockItemButton *)self debugHitLayer];
-      [v21 setBounds:{v14, v16, v18, v20}];
+      debugHitLayer4 = [(UIKeyboardDockItemButton *)self debugHitLayer];
+      [debugHitLayer4 setBounds:{v14, v16, v18, v20}];
 
       [(UIKeyboardDockItemButton *)self tapActionRegion];
       MidX = CGRectGetMidX(v29);
       [(UIKeyboardDockItemButton *)self tapActionRegion];
       MidY = CGRectGetMidY(v30);
-      v24 = [(UIKeyboardDockItemButton *)self debugHitLayer];
-      [v24 setPosition:{MidX, MidY}];
+      debugHitLayer5 = [(UIKeyboardDockItemButton *)self debugHitLayer];
+      [debugHitLayer5 setPosition:{MidX, MidY}];
 
-      v25 = [(UIView *)self layer];
-      v26 = [(UIKeyboardDockItemButton *)self debugHitLayer];
-      v27 = [(UIView *)self layer];
-      [v25 insertSublayer:v26 below:v27];
+      layer3 = [(UIView *)self layer];
+      debugHitLayer6 = [(UIKeyboardDockItemButton *)self debugHitLayer];
+      layer4 = [(UIView *)self layer];
+      [layer3 insertSublayer:debugHitLayer6 below:layer4];
 
       [(UIKeyboardDockItemButton *)self updateFillColor];
     }
@@ -85,12 +85,12 @@
 
 - (void)updateFillColor
 {
-  v3 = [(UIView *)self _lightStyleRenderConfig];
-  v4 = [(UIKeyboardDockItemButton *)self shapeLayer];
+  _lightStyleRenderConfig = [(UIView *)self _lightStyleRenderConfig];
+  shapeLayer = [(UIKeyboardDockItemButton *)self shapeLayer];
 
-  if (v4)
+  if (shapeLayer)
   {
-    if (v3)
+    if (_lightStyleRenderConfig)
     {
       +[UIKeyboardDockItem _standardGlyphColor];
     }
@@ -100,9 +100,9 @@
       +[UIKeyboardDockItem _darkStyleGlyphColor];
     }
     v5 = ;
-    v6 = [v5 CGColor];
-    v7 = [(UIKeyboardDockItemButton *)self shapeLayer];
-    [v7 setFillColor:v6];
+    cGColor = [v5 CGColor];
+    shapeLayer2 = [(UIKeyboardDockItemButton *)self shapeLayer];
+    [shapeLayer2 setFillColor:cGColor];
   }
 
   if (qword_1ED499F00 != -1)
@@ -114,57 +114,57 @@
   {
     v11 = [UIColor colorWithRed:1.0 green:1.0 blue:0.0 alpha:0.4];
     v8 = v11;
-    v9 = [v11 CGColor];
-    v10 = [(UIKeyboardDockItemButton *)self debugHitLayer];
-    [v10 setFillColor:v9];
+    cGColor2 = [v11 CGColor];
+    debugHitLayer = [(UIKeyboardDockItemButton *)self debugHitLayer];
+    [debugHitLayer setFillColor:cGColor2];
   }
 }
 
 - (void)setupDictationAnimationButtonIfNeeded
 {
-  v32 = [(UIKeyboardDockItemButton *)self identifier];
-  if (![v32 isEqualToString:@"dictationRunning"] || ((-[UIView frame](self, "frame"), v4 = *MEMORY[0x1E695F060], v5 = *(MEMORY[0x1E695F060] + 8), v6 == *MEMORY[0x1E695F060]) ? (v7 = v3 == v5) : (v7 = 0), v7))
+  identifier = [(UIKeyboardDockItemButton *)self identifier];
+  if (![identifier isEqualToString:@"dictationRunning"] || ((-[UIView frame](self, "frame"), v4 = *MEMORY[0x1E695F060], v5 = *(MEMORY[0x1E695F060] + 8), v6 == *MEMORY[0x1E695F060]) ? (v7 = v3 == v5) : (v7 = 0), v7))
   {
   }
 
   else
   {
-    v8 = [(UIButton *)self imageView];
-    [v8 frame];
+    imageView = [(UIButton *)self imageView];
+    [imageView frame];
     v10 = v9;
     v12 = v11;
 
     if (v10 != v4 || v12 != v5)
     {
-      v14 = [(UIKeyboardDockItemButton *)self shapeLayer];
+      shapeLayer = [(UIKeyboardDockItemButton *)self shapeLayer];
 
-      if (!v14)
+      if (!shapeLayer)
       {
         v15 = *MEMORY[0x1E695EFF8];
         v16 = *(MEMORY[0x1E695EFF8] + 8);
-        v17 = [MEMORY[0x1E69794A0] layer];
-        [(UIKeyboardDockItemButton *)self setShapeLayer:v17];
+        layer = [MEMORY[0x1E69794A0] layer];
+        [(UIKeyboardDockItemButton *)self setShapeLayer:layer];
 
         v18 = [UIBezierPath bezierPathWithOvalInRect:v15, v16, 48.0, 48.0];
-        v19 = [v18 CGPath];
-        v20 = [(UIKeyboardDockItemButton *)self shapeLayer];
-        [v20 setPath:v19];
+        cGPath = [v18 CGPath];
+        shapeLayer2 = [(UIKeyboardDockItemButton *)self shapeLayer];
+        [shapeLayer2 setPath:cGPath];
 
-        v21 = [(UIKeyboardDockItemButton *)self shapeLayer];
-        [v21 setBounds:{v15, v16, 48.0, 48.0}];
+        shapeLayer3 = [(UIKeyboardDockItemButton *)self shapeLayer];
+        [shapeLayer3 setBounds:{v15, v16, 48.0, 48.0}];
 
-        v22 = [(UIButton *)self imageView];
-        [v22 center];
+        imageView2 = [(UIButton *)self imageView];
+        [imageView2 center];
         v24 = v23;
         v26 = v25;
-        v27 = [(UIKeyboardDockItemButton *)self shapeLayer];
-        [v27 setPosition:{v24, v26}];
+        shapeLayer4 = [(UIKeyboardDockItemButton *)self shapeLayer];
+        [shapeLayer4 setPosition:{v24, v26}];
 
-        v28 = [(UIView *)self layer];
-        v29 = [(UIKeyboardDockItemButton *)self shapeLayer];
-        v30 = [(UIButton *)self imageView];
-        v31 = [v30 layer];
-        [v28 insertSublayer:v29 below:v31];
+        layer2 = [(UIView *)self layer];
+        shapeLayer5 = [(UIKeyboardDockItemButton *)self shapeLayer];
+        imageView3 = [(UIButton *)self imageView];
+        layer3 = [imageView3 layer];
+        [layer2 insertSublayer:shapeLayer5 below:layer3];
 
         [(UIKeyboardDockItemButton *)self updateFillColor];
       }
@@ -180,13 +180,13 @@
   [(UIKeyboardDockItemButton *)self setupDictationAnimationButtonIfNeeded];
 }
 
-- (CGRect)rectWithSize:(CGSize)a3 forContentRect:(CGRect)a4 withAlignmentRectInsets:(UIEdgeInsets)a5
+- (CGRect)rectWithSize:(CGSize)size forContentRect:(CGRect)rect withAlignmentRectInsets:(UIEdgeInsets)insets
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v7 = a3.height;
-  v8 = a3.width;
-  if ([(UIView *)self contentMode:a3.width]== UIViewContentModeLeft)
+  height = rect.size.height;
+  width = rect.size.width;
+  v7 = size.height;
+  v8 = size.width;
+  if ([(UIView *)self contentMode:size.width]== UIViewContentModeLeft)
   {
     [(UIButton *)self imageEdgeInsets];
     v11 = 0.0 - v10;
@@ -221,18 +221,18 @@
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIButton *)self currentImage];
-  [v8 size];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  currentImage = [(UIButton *)self currentImage];
+  [currentImage size];
   v10 = v9;
   v12 = v11;
-  v13 = [(UIButton *)self currentImage];
-  [v13 alignmentRectInsets];
+  currentImage2 = [(UIButton *)self currentImage];
+  [currentImage2 alignmentRectInsets];
   [(UIKeyboardDockItemButton *)self rectWithSize:v10 forContentRect:v12 withAlignmentRectInsets:x, y, width, height, v14, v15, v16, v17];
   v19 = v18;
   v21 = v20;
@@ -250,15 +250,15 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = [(UIButton *)self currentTitle];
+  currentTitle = [(UIButton *)self currentTitle];
   v19 = *off_1E70EC918;
   v5 = [off_1E70ECC18 systemFontOfSize:16.0];
   v20[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  [v4 sizeWithAttributes:v6];
+  [currentTitle sizeWithAttributes:v6];
   [(UIKeyboardDockItemButton *)self rectWithSize:0 forContentRect:0 withAlignmentRectInsets:0, 0];
   v8 = v7;
   v10 = v9;
@@ -276,12 +276,12 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     if (qword_1ED499F00 != -1)
@@ -315,18 +315,18 @@
   [(UIView *)&v11 drawRect:x, y, width, height];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = UIKeyboardDockItemButton;
-  [(UIButton *)&v4 setTintColor:a3];
+  [(UIButton *)&v4 setTintColor:color];
   [(UIKeyboardDockItemButton *)self updateFillColor];
 }
 
-- (BOOL)pointInsideTapActionRegion:(CGPoint)a3
+- (BOOL)pointInsideTapActionRegion:(CGPoint)region
 {
-  y = a3.y;
-  x = a3.x;
+  y = region.y;
+  x = region.x;
   if (_os_feature_enabled_impl())
   {
     [(UIKeyboardDockItemButton *)self tapActionRegion];
@@ -348,10 +348,10 @@
 
 - (void)addAnimatitionIfNeeded
 {
-  v3 = [(UIKeyboardDockItemButton *)self shapeLayer];
-  v14 = [v3 animationKeys];
+  shapeLayer = [(UIKeyboardDockItemButton *)self shapeLayer];
+  animationKeys = [shapeLayer animationKeys];
 
-  v4 = [v14 containsObject:@"opacityAnimation"];
+  v4 = [animationKeys containsObject:@"opacityAnimation"];
   v5 = MEMORY[0x1E6979EB8];
   if ((v4 & 1) == 0)
   {
@@ -365,11 +365,11 @@
     v8 = [MEMORY[0x1E69793D0] functionWithName:*v5];
     [v6 setTimingFunction:v8];
 
-    v9 = [(UIKeyboardDockItemButton *)self shapeLayer];
-    [v9 addAnimation:v6 forKey:@"opacityAnimation"];
+    shapeLayer2 = [(UIKeyboardDockItemButton *)self shapeLayer];
+    [shapeLayer2 addAnimation:v6 forKey:@"opacityAnimation"];
   }
 
-  if (([v14 containsObject:@"scaleXYanimation"] & 1) == 0)
+  if (([animationKeys containsObject:@"scaleXYanimation"] & 1) == 0)
   {
     v10 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.scale.xy"];
     [v10 setFromValue:&unk_1EFE31C00];
@@ -381,8 +381,8 @@
     v12 = [MEMORY[0x1E69793D0] functionWithName:*v5];
     [v10 setTimingFunction:v12];
 
-    v13 = [(UIKeyboardDockItemButton *)self shapeLayer];
-    [v13 addAnimation:v10 forKey:@"scaleXYanimation"];
+    shapeLayer3 = [(UIKeyboardDockItemButton *)self shapeLayer];
+    [shapeLayer3 addAnimation:v10 forKey:@"scaleXYanimation"];
   }
 }
 

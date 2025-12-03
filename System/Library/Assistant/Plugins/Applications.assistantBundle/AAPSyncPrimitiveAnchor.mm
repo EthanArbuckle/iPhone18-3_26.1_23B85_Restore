@@ -1,22 +1,22 @@
 @interface AAPSyncPrimitiveAnchor
-+ (id)anchorFromIndex:(unint64_t)a3;
-- (AAPSyncPrimitiveAnchor)anchorWithSubIndex:(unint64_t)a3;
++ (id)anchorFromIndex:(unint64_t)index;
+- (AAPSyncPrimitiveAnchor)anchorWithSubIndex:(unint64_t)index;
 @end
 
 @implementation AAPSyncPrimitiveAnchor
 
-+ (id)anchorFromIndex:(unint64_t)a3
++ (id)anchorFromIndex:(unint64_t)index
 {
-  v3 = [[a1 alloc] _initWithMainIndex:a3 subIndex:0];
+  v3 = [[self alloc] _initWithMainIndex:index subIndex:0];
 
   return v3;
 }
 
-- (AAPSyncPrimitiveAnchor)anchorWithSubIndex:(unint64_t)a3
+- (AAPSyncPrimitiveAnchor)anchorWithSubIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v3 = [[AAPSyncAnchor alloc] _initWithMainIndex:self->super._mainIndex subIndex:a3];
+    v3 = [[AAPSyncAnchor alloc] _initWithMainIndex:self->super._mainIndex subIndex:index];
 
     return v3;
   }

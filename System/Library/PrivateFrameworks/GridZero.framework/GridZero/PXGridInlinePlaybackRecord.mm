@@ -1,18 +1,18 @@
 @interface PXGridInlinePlaybackRecord
 - ($34D5C35368F688BCCD66CCEA543B57DA)bestVideoTimeRange;
 - (NSString)diagnosticScoresDescription;
-- (PXGridInlinePlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5;
+- (PXGridInlinePlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference;
 - (id)description;
-- (void)setBestVideoTimeRange:(id *)a3;
+- (void)setBestVideoTimeRange:(id *)range;
 @end
 
 @implementation PXGridInlinePlaybackRecord
 
-- (void)setBestVideoTimeRange:(id *)a3
+- (void)setBestVideoTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_bestVideoTimeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_bestVideoTimeRange.start.epoch = *&range->var0.var3;
   *&self->_bestVideoTimeRange.duration.timescale = v4;
   *&self->_bestVideoTimeRange.start.value = v3;
 }
@@ -31,10 +31,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGridInlinePlaybackRecord *)self displayAsset];
-  v7 = [(PXGridInlinePlaybackRecord *)self geometryReference];
-  v8 = [(PXGridInlinePlaybackRecord *)self diagnosticScoresDescription];
-  v9 = [v3 stringWithFormat:@"<%@: %p, displayAsset=%@, geometryReference=%@, %@>", v5, self, v6, v7, v8];
+  displayAsset = [(PXGridInlinePlaybackRecord *)self displayAsset];
+  geometryReference = [(PXGridInlinePlaybackRecord *)self geometryReference];
+  diagnosticScoresDescription = [(PXGridInlinePlaybackRecord *)self diagnosticScoresDescription];
+  v9 = [v3 stringWithFormat:@"<%@: %p, displayAsset=%@, geometryReference=%@, %@>", v5, self, displayAsset, geometryReference, diagnosticScoresDescription];
 
   return v9;
 }
@@ -42,7 +42,7 @@
 - (NSString)diagnosticScoresDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PXGridInlinePlaybackRecord *)self visibilityScore];
+  visibilityScore = [(PXGridInlinePlaybackRecord *)self visibilityScore];
   [(PXGridInlinePlaybackRecord *)self cellSizeScore];
   v6 = v5;
   [(PXGridInlinePlaybackRecord *)self distanceToCenterScore];
@@ -56,25 +56,25 @@
   [(PXGridInlinePlaybackRecord *)self videoStickerSuggestionScore];
   v15 = v14;
   [(PXGridInlinePlaybackRecord *)self stickerConfidenceScore];
-  v17 = [v3 stringWithFormat:@"visibilityScore=%lu, cellSizeScore=%f, distanceToCenterScore=%f, videoScore=%f, curationScore=%f, bestVideoTimeRange=%@, videoStickerSuggestionScore=%f, stickerConfidenceScore=%f", v4, v6, v8, *&v10, *&v12, v13, *&v15, v16];
+  v17 = [v3 stringWithFormat:@"visibilityScore=%lu, cellSizeScore=%f, distanceToCenterScore=%f, videoScore=%f, curationScore=%f, bestVideoTimeRange=%@, videoStickerSuggestionScore=%f, stickerConfidenceScore=%f", visibilityScore, v6, v8, *&v10, *&v12, v13, *&v15, v16];
 
   return v17;
 }
 
-- (PXGridInlinePlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5
+- (PXGridInlinePlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  providerCopy = provider;
+  referenceCopy = reference;
   v15.receiver = self;
   v15.super_class = PXGridInlinePlaybackRecord;
   v12 = [(PXGridInlinePlaybackRecord *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_displayAsset, a3);
-    objc_storeStrong(&v13->_mediaProvider, a4);
-    objc_storeStrong(&v13->_geometryReference, a5);
+    objc_storeStrong(&v12->_displayAsset, asset);
+    objc_storeStrong(&v13->_mediaProvider, provider);
+    objc_storeStrong(&v13->_geometryReference, reference);
   }
 
   return v13;

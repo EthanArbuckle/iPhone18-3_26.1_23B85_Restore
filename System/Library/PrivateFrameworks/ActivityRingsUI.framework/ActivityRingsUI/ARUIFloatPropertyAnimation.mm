@@ -1,31 +1,31 @@
 @interface ARUIFloatPropertyAnimation
-+ (id)animationWithEndingFloatValue:(float)a3 duration:(double)a4 customTimingFunction:(id)a5 completion:(id)a6;
-+ (id)animationWithEndingFloatValue:(float)a3 duration:(double)a4 timingFunction:(id)a5 completion:(id)a6;
-- (id)valueByAddingCurrentValueToValue:(id)a3;
++ (id)animationWithEndingFloatValue:(float)value duration:(double)duration customTimingFunction:(id)function completion:(id)completion;
++ (id)animationWithEndingFloatValue:(float)value duration:(double)duration timingFunction:(id)function completion:(id)completion;
+- (id)valueByAddingCurrentValueToValue:(id)value;
 @end
 
 @implementation ARUIFloatPropertyAnimation
 
-+ (id)animationWithEndingFloatValue:(float)a3 duration:(double)a4 timingFunction:(id)a5 completion:(id)a6
++ (id)animationWithEndingFloatValue:(float)value duration:(double)duration timingFunction:(id)function completion:(id)completion
 {
-  v10 = a6;
-  v11 = [a1 timingFunctionForMediaTimingFunction:a5];
-  *&v12 = a3;
-  v13 = [a1 animationWithEndingFloatValue:v11 duration:v10 customTimingFunction:v12 completion:a4];
+  completionCopy = completion;
+  v11 = [self timingFunctionForMediaTimingFunction:function];
+  *&v12 = value;
+  v13 = [self animationWithEndingFloatValue:v11 duration:completionCopy customTimingFunction:v12 completion:duration];
 
   return v13;
 }
 
-+ (id)animationWithEndingFloatValue:(float)a3 duration:(double)a4 customTimingFunction:(id)a5 completion:(id)a6
++ (id)animationWithEndingFloatValue:(float)value duration:(double)duration customTimingFunction:(id)function completion:(id)completion
 {
-  result = [(ARUIAnimatableObjectPropertyAnimation *)ARUIFloatPropertyAnimation animationWithDuration:a5 timingFunction:a6 completion:a4];
-  *(result + 11) = a3;
+  result = [(ARUIAnimatableObjectPropertyAnimation *)ARUIFloatPropertyAnimation animationWithDuration:function timingFunction:completion completion:duration];
+  *(result + 11) = value;
   return result;
 }
 
-- (id)valueByAddingCurrentValueToValue:(id)a3
+- (id)valueByAddingCurrentValueToValue:(id)value
 {
-  [a3 floatValue];
+  [value floatValue];
   *&v4 = (*&v4 + self->_currentValue) - self->_startValue;
   v5 = MEMORY[0x1E696AD98];
 

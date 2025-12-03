@@ -1,31 +1,31 @@
 @interface FCKeyValueStore
-- (double)maxForKey:(id)a3;
-- (double)minForKey:(id)a3;
-- (id)ringBufferForKey:(id)a3;
-- (id)ringBufferForKey:(id)a3 capacity:(unint64_t)a4;
-- (void)setRingBuffers:(id)a3;
+- (double)maxForKey:(id)key;
+- (double)minForKey:(id)key;
+- (id)ringBufferForKey:(id)key;
+- (id)ringBufferForKey:(id)key capacity:(unint64_t)capacity;
+- (void)setRingBuffers:(id)buffers;
 @end
 
 @implementation FCKeyValueStore
 
-- (id)ringBufferForKey:(id)a3 capacity:(unint64_t)a4
+- (id)ringBufferForKey:(id)key capacity:(unint64_t)capacity
 {
-  v6 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v7 = [(FCKeyValueStore *)self objectForKeyedSubscript:v6];
+  v7 = [(FCKeyValueStore *)self objectForKeyedSubscript:keyCopy];
 
   v8 = FCDynamicCast();
 
-  v9 = [[FRRingBuffer alloc] initWithCapacity:a4 dictionary:v8];
+  v9 = [[FRRingBuffer alloc] initWithCapacity:capacity dictionary:v8];
 
   return v9;
 }
 
-- (id)ringBufferForKey:(id)a3
+- (id)ringBufferForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(FCKeyValueStore *)self objectForKeyedSubscript:v4];
+  v5 = [(FCKeyValueStore *)self objectForKeyedSubscript:keyCopy];
 
   v6 = FCDynamicCast();
 
@@ -34,21 +34,21 @@
   return v7;
 }
 
-- (void)setRingBuffers:(id)a3
+- (void)setRingBuffers:(id)buffers
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10005C0E8;
   v3[3] = &unk_1000C5C88;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [buffers enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (double)minForKey:(id)a3
+- (double)minForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(FCKeyValueStore *)self objectForKeyedSubscript:v4];
+  v5 = [(FCKeyValueStore *)self objectForKeyedSubscript:keyCopy];
 
   v6 = FCDynamicCast();
 
@@ -70,11 +70,11 @@
   return v10;
 }
 
-- (double)maxForKey:(id)a3
+- (double)maxForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(FCKeyValueStore *)self objectForKeyedSubscript:v4];
+  v5 = [(FCKeyValueStore *)self objectForKeyedSubscript:keyCopy];
 
   v6 = FCDynamicCast();
 

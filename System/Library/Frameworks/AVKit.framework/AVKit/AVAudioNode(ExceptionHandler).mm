@@ -8,7 +8,7 @@
 {
   v11 = a5;
   v12 = a7;
-  [a1 installTapOnBus:a3 bufferSize:a4 format:v11 block:v12];
+  [self installTapOnBus:a3 bufferSize:a4 format:v11 block:v12];
 }
 
 @end

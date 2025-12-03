@@ -1,12 +1,12 @@
 @interface NSPPvDConfigurationFetcher
-- (BOOL)configurationValidated:(id)a3 withURL:(id)a4;
-- (BOOL)isIdentifier:(id)a3 presentIn:(id)a4;
-- (id)formatExpirationDateFrom:(id)a3;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4;
+- (BOOL)configurationValidated:(id)validated withURL:(id)l;
+- (BOOL)isIdentifier:(id)identifier presentIn:(id)in;
+- (id)formatExpirationDateFrom:(id)from;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity;
 - (void)dealloc;
-- (void)didReceiveProxyConfig:(id)a3 from:(id)a4;
-- (void)fetchIndividualProxyConfig:(id)a3 completionHander:(id)a4;
+- (void)didReceiveProxyConfig:(id)config from:(id)from;
+- (void)fetchIndividualProxyConfig:(id)config completionHander:(id)hander;
 @end
 
 @implementation NSPPvDConfigurationFetcher
@@ -30,13 +30,13 @@
   [(NSPPvDConfigurationFetcher *)&v4 dealloc];
 }
 
-- (BOOL)isIdentifier:(id)a3 presentIn:(id)a4
+- (BOOL)isIdentifier:(id)identifier presentIn:(id)in
 {
-  v5 = a3;
-  v6 = [a4 host];
-  if (v6)
+  identifierCopy = identifier;
+  host = [in host];
+  if (host)
   {
-    v7 = [v5 isEqualToString:v6];
+    v7 = [identifierCopy isEqualToString:host];
   }
 
   else
@@ -47,9 +47,9 @@
   return v7;
 }
 
-- (id)formatExpirationDateFrom:(id)a3
+- (id)formatExpirationDateFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(NSDateFormatter);
   v5 = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v4 setLocale:v5];
@@ -58,16 +58,16 @@
   v6 = [NSTimeZone timeZoneForSecondsFromGMT:0];
   [v4 setTimeZone:v6];
 
-  v7 = [v4 dateFromString:v3];
+  v7 = [v4 dateFromString:fromCopy];
 
   return v7;
 }
 
-- (BOOL)configurationValidated:(id)a3 withURL:(id)a4
+- (BOOL)configurationValidated:(id)validated withURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"expires"];
+  validatedCopy = validated;
+  lCopy = l;
+  v8 = [validatedCopy objectForKey:@"expires"];
   v9 = [(NSPPvDConfigurationFetcher *)self formatExpirationDateFrom:v8];
   v10 = +[NSDate now];
   v11 = [v10 compare:v9];
@@ -83,8 +83,8 @@
     }
   }
 
-  v14 = [v6 objectForKey:@"identifier"];
-  v15 = [(NSPPvDConfigurationFetcher *)self isIdentifier:v14 presentIn:v7];
+  v14 = [validatedCopy objectForKey:@"identifier"];
+  v15 = [(NSPPvDConfigurationFetcher *)self isIdentifier:v14 presentIn:lCopy];
 
   if ((v15 & 1) == 0)
   {
@@ -102,36 +102,36 @@
   return v12;
 }
 
-- (void)didReceiveProxyConfig:(id)a3 from:(id)a4
+- (void)didReceiveProxyConfig:(id)config from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  configCopy = config;
+  fromCopy = from;
+  if (!configCopy)
   {
     goto LABEL_67;
   }
 
-  v8 = [v6 objectForKey:@"identifier"];
+  v8 = [configCopy objectForKey:@"identifier"];
   if (!v8)
   {
     goto LABEL_67;
   }
 
   v9 = v8;
-  v10 = [v6 objectForKey:@"expires"];
+  v10 = [configCopy objectForKey:@"expires"];
 
   if (!v10)
   {
     goto LABEL_67;
   }
 
-  v11 = [v6 objectForKey:@"identifier"];
-  if (![(NSPPvDConfigurationFetcher *)self configurationValidated:v6 withURL:v7])
+  v11 = [configCopy objectForKey:@"identifier"];
+  if (![(NSPPvDConfigurationFetcher *)self configurationValidated:configCopy withURL:fromCopy])
   {
     goto LABEL_66;
   }
 
-  [v6 objectForKey:@"proxies"];
+  [configCopy objectForKey:@"proxies"];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
@@ -153,8 +153,8 @@ LABEL_37:
   }
 
   v14 = v13;
-  v54 = self;
-  v55 = v6;
+  selfCopy = self;
+  v55 = configCopy;
   v57 = 0;
   v56 = 0;
   v15 = *v63;
@@ -184,20 +184,20 @@ LABEL_37:
         v18 = v28;
         if (v28)
         {
-          v19 = [v28 host];
-          if (![v19 isEqualToString:v11])
+          host = [v28 host];
+          if (![host isEqualToString:v11])
           {
             goto LABEL_30;
           }
 
-          v29 = [v18 path];
-          v30 = [v29 containsString:@"/.well-known/masque/udp"];
+          path = [v18 path];
+          v30 = [path containsString:@"/.well-known/masque/udp"];
 
           if (v30)
           {
             v31 = v18;
 
-            v6 = v55;
+            configCopy = v55;
             goto LABEL_40;
           }
 
@@ -210,9 +210,9 @@ LABEL_31:
       }
 
       v18 = v17;
-      v19 = [v18 objectForKeyedSubscript:@"protocol"];
+      host = [v18 objectForKeyedSubscript:@"protocol"];
       v20 = [v18 objectForKeyedSubscript:@"proxy"];
-      if (!v19)
+      if (!host)
       {
         goto LABEL_30;
       }
@@ -238,16 +238,16 @@ LABEL_31:
       v22 = v21;
       if (v21)
       {
-        v23 = [v21 host];
+        host2 = [v21 host];
         v24 = v11;
-        v25 = v23;
-        if (![v23 isEqualToString:v24])
+        v25 = host2;
+        if (![host2 isEqualToString:v24])
         {
           goto LABEL_28;
         }
 
-        v26 = [v22 path];
-        if (([v26 containsString:@"masque"] & 1) == 0)
+        path2 = [v22 path];
+        if (([path2 containsString:@"masque"] & 1) == 0)
         {
 
           v12 = v61;
@@ -260,7 +260,7 @@ LABEL_30:
           goto LABEL_31;
         }
 
-        v58 = [v19 isEqualToString:@"connect-udp"];
+        v58 = [host isEqualToString:@"connect-udp"];
 
         v12 = v61;
         if (!v58)
@@ -293,7 +293,7 @@ LABEL_30:
 
 LABEL_34:
 
-  v6 = v55;
+  configCopy = v55;
   v31 = v57;
   if ((v56 & 1) == 0)
   {
@@ -302,12 +302,12 @@ LABEL_34:
 
 LABEL_40:
   v32 = [NSString stringWithFormat:@"https://%@:443", v11];
-  v33 = [v7 port];
+  port = [fromCopy port];
 
-  if (v33)
+  if (port)
   {
-    v34 = [v7 port];
-    v35 = [NSString stringWithFormat:@"https://%@:%@", v11, v34];
+    port2 = [fromCopy port];
+    v35 = [NSString stringWithFormat:@"https://%@:%@", v11, port2];
 
     v32 = v35;
   }
@@ -329,19 +329,19 @@ LABEL_40:
   }
 
   v37 = v11;
-  if (v54)
+  if (selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(&v54->_serverDelegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_serverDelegate);
     if (WeakRetained)
     {
       v39 = WeakRetained;
-      v40 = objc_loadWeakRetained(&v54->_serverDelegate);
+      v40 = objc_loadWeakRetained(&selfCopy->_serverDelegate);
       v41 = objc_opt_respondsToSelector();
 
       v12 = v61;
       if (v41)
       {
-        v42 = objc_loadWeakRetained(&v54->_serverDelegate);
+        v42 = objc_loadWeakRetained(&selfCopy->_serverDelegate);
         v43 = [v42 networkDiscoveredProxyInTrustedProxyList:v36];
 
         v44 = nplog_obj();
@@ -356,9 +356,9 @@ LABEL_40:
             _os_log_debug_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEBUG, "proxyURL found, setting up configuration", buf, 2u);
           }
 
-          v46 = [v31 path];
-          v45 = v46;
-          if (v46 && (([v46 containsString:@"/.well-known/masque/udp"]& 1) != 0 || [v45 containsString:@"masque"]))
+          path3 = [v31 path];
+          v45 = path3;
+          if (path3 && (([path3 containsString:@"/.well-known/masque/udp"]& 1) != 0 || [v45 containsString:@"masque"]))
           {
             v47 = objc_alloc_init(NSPPrivacyProxyProxyInfo);
             [v47 setProxyURL:v32];
@@ -370,16 +370,16 @@ LABEL_40:
             v48 = +[NSData data];
             [v47 setTokenKeyInfo:v48];
 
-            v49 = objc_loadWeakRetained(&v54->_delegate);
+            v49 = objc_loadWeakRetained(&selfCopy->_delegate);
             if (v49)
             {
               v50 = v49;
-              v51 = objc_loadWeakRetained(&v54->_delegate);
+              v51 = objc_loadWeakRetained(&selfCopy->_delegate);
               v59 = objc_opt_respondsToSelector();
 
               if (v59)
               {
-                v52 = objc_loadWeakRetained(&v54->_delegate);
+                v52 = objc_loadWeakRetained(&selfCopy->_delegate);
                 [v52 setupMasqueProxyWith:v47];
               }
             }
@@ -425,17 +425,17 @@ LABEL_66:
 LABEL_67:
 }
 
-- (void)fetchIndividualProxyConfig:(id)a3 completionHander:(id)a4
+- (void)fetchIndividualProxyConfig:(id)config completionHander:(id)hander
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  handerCopy = hander;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
   v18[3] = sub_100001F34;
   v18[4] = sub_1000490D0;
   v19 = 0;
-  v8 = [NSURLRequest requestWithURL:v6 cachePolicy:1 timeoutInterval:30.0];
+  v8 = [NSURLRequest requestWithURL:configCopy cachePolicy:1 timeoutInterval:30.0];
   if (self)
   {
     session = self->_session;
@@ -451,10 +451,10 @@ LABEL_67:
   v14[1] = 3221225472;
   v14[2] = sub_1000490D8;
   v14[3] = &unk_100109CA8;
-  v11 = v6;
+  v11 = configCopy;
   v15 = v11;
   v17 = v18;
-  v12 = v7;
+  v12 = handerCopy;
   v16 = v12;
   v13 = [(NSURLSession *)v10 dataTaskWithRequest:v8 completionHandler:v14];
 
@@ -462,13 +462,13 @@ LABEL_67:
   _Block_object_dispose(v18, 8);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v19 = a5;
-  v8 = a6;
-  v9 = [v19 protectionSpace];
-  v10 = [v9 authenticationMethod];
-  if ([v10 isEqualToString:NSURLAuthenticationMethodServerTrust])
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
   {
     v11 = self == 0;
   }
@@ -499,23 +499,23 @@ LABEL_10:
   }
 
   v15 = objc_loadWeakRetained(&self->_serverDelegate);
-  v16 = [v15 canIgnoreInvalidCertsOnInternalBuild];
+  canIgnoreInvalidCertsOnInternalBuild = [v15 canIgnoreInvalidCertsOnInternalBuild];
 
-  if (v16)
+  if (canIgnoreInvalidCertsOnInternalBuild)
   {
-    v17 = [v19 protectionSpace];
-    v18 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v17 serverTrust]);
-    v8[2](v8, 0, v18);
+    protectionSpace2 = [challengeCopy protectionSpace];
+    v18 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace2 serverTrust]);
+    handlerCopy[2](handlerCopy, 0, v18);
 
     goto LABEL_12;
   }
 
 LABEL_11:
-  v8[2](v8, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 LABEL_12:
 }
 
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

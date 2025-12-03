@@ -1,11 +1,11 @@
 @interface RoutePickerAllSpeakersButton
 - (CGSize)intrinsicContentSize;
-- (_TtC13MediaControls28RoutePickerAllSpeakersButton)initWithCoder:(id)a3;
+- (_TtC13MediaControls28RoutePickerAllSpeakersButton)initWithCoder:(id)coder;
 @end
 
 @implementation RoutePickerAllSpeakersButton
 
-- (_TtC13MediaControls28RoutePickerAllSpeakersButton)initWithCoder:(id)a3
+- (_TtC13MediaControls28RoutePickerAllSpeakersButton)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC13MediaControls28RoutePickerAllSpeakersButton_style;
   v4 = *MEMORY[0x1E69DDD08];

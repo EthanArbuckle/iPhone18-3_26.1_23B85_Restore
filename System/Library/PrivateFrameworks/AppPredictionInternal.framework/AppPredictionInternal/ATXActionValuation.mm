@@ -1,13 +1,13 @@
 @interface ATXActionValuation
 - (ATXActionValuation)init;
-- (ATXActionValuation)initWithIntentCache:(id)a3;
-- (BOOL)shouldPredictCreateEventIntent:(id)a3;
-- (BOOL)shouldPredictIntent:(id)a3;
-- (BOOL)shouldPredictRequestRideIntent:(id)a3;
-- (BOOL)shouldPredictSendMessageIntent:(id)a3;
+- (ATXActionValuation)initWithIntentCache:(id)cache;
+- (BOOL)shouldPredictCreateEventIntent:(id)intent;
+- (BOOL)shouldPredictIntent:(id)intent;
+- (BOOL)shouldPredictRequestRideIntent:(id)intent;
+- (BOOL)shouldPredictSendMessageIntent:(id)intent;
 - (id)getCurrentLocation;
-- (void)scoreActions:(id)a3 scoreLogger:(id)a4 consumerSubType:(unsigned __int8)a5;
-- (void)setFeatureValuesAndFilterPredictableActions:(id)a3 actionStatistics:(id)a4;
+- (void)scoreActions:(id)actions scoreLogger:(id)logger consumerSubType:(unsigned __int8)type;
+- (void)setFeatureValuesAndFilterPredictableActions:(id)actions actionStatistics:(id)statistics;
 @end
 
 @implementation ATXActionValuation
@@ -20,29 +20,29 @@
   return v4;
 }
 
-- (ATXActionValuation)initWithIntentCache:(id)a3
+- (ATXActionValuation)initWithIntentCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v9.receiver = self;
   v9.super_class = ATXActionValuation;
   v6 = [(ATXActionValuation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_intentCache, a3);
+    objc_storeStrong(&v6->_intentCache, cache);
   }
 
   return v7;
 }
 
-- (BOOL)shouldPredictSendMessageIntent:(id)a3
+- (BOOL)shouldPredictSendMessageIntent:(id)intent
 {
-  v3 = a3;
-  v4 = [_ATXActionUtils recipientFromMessageIntent:v3];
+  intentCopy = intent;
+  v4 = [_ATXActionUtils recipientFromMessageIntent:intentCopy];
   if (v4)
   {
-    v5 = [v3 content];
-    if (!v5)
+    content = [intentCopy content];
+    if (!content)
     {
       v10 = 1;
 LABEL_11:
@@ -56,7 +56,7 @@ LABEL_11:
     v8 = objc_opt_new();
     if ([_ATXActionUtils shouldPredictRecipient:v4 withDate:v8 andRecipientDate:v7])
     {
-      v9 = [v5 isEqualToString:&stru_2839A6058];
+      v9 = [content isEqualToString:&stru_2839A6058];
 
       if ((v9 & 1) == 0)
       {
@@ -81,11 +81,11 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)shouldPredictCreateEventIntent:(id)a3
+- (BOOL)shouldPredictCreateEventIntent:(id)intent
 {
-  v3 = [a3 atx_nonNilParametersByName];
-  v4 = [v3 objectForKey:@"startDate"];
-  v5 = [v3 objectForKey:@"endDate"];
+  atx_nonNilParametersByName = [intent atx_nonNilParametersByName];
+  v4 = [atx_nonNilParametersByName objectForKey:@"startDate"];
+  v5 = [atx_nonNilParametersByName objectForKey:@"endDate"];
   v6 = (v4 | v5) == 0;
 
   return v6;
@@ -93,24 +93,24 @@ LABEL_12:
 
 - (id)getCurrentLocation
 {
-  v2 = [MEMORY[0x277D41BF8] sharedInstance];
-  v3 = [v2 getCurrentLocation];
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+  getCurrentLocation = [mEMORY[0x277D41BF8] getCurrentLocation];
 
-  return v3;
+  return getCurrentLocation;
 }
 
-- (BOOL)shouldPredictRequestRideIntent:(id)a3
+- (BOOL)shouldPredictRequestRideIntent:(id)intent
 {
-  v4 = [a3 dropOffLocation];
-  v5 = [v4 location];
+  dropOffLocation = [intent dropOffLocation];
+  location = [dropOffLocation location];
 
-  if (v5)
+  if (location)
   {
-    v6 = [(ATXActionValuation *)self getCurrentLocation];
-    v7 = v6;
-    if (v6)
+    getCurrentLocation = [(ATXActionValuation *)self getCurrentLocation];
+    v7 = getCurrentLocation;
+    if (getCurrentLocation)
     {
-      [v6 distanceFromLocation:v5];
+      [getCurrentLocation distanceFromLocation:location];
       v9 = v8;
       v10 = +[_ATXGlobals sharedInstance];
       v11 = v9 >= [v10 minDistanceToDropOffLocationInMetersForRequestRideIntent] && v9 <= objc_msgSend(v10, "maxDistanceToDropOffLocationInMetersForRequestRideIntent");
@@ -130,13 +130,13 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)shouldPredictIntent:(id)a3
+- (BOOL)shouldPredictIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ATXActionValuation *)self shouldPredictSendMessageIntent:v4];
+    v5 = [(ATXActionValuation *)self shouldPredictSendMessageIntent:intentCopy];
   }
 
   else
@@ -144,7 +144,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ATXActionValuation *)self shouldPredictRequestRideIntent:v4];
+      v5 = [(ATXActionValuation *)self shouldPredictRequestRideIntent:intentCopy];
     }
 
     else
@@ -156,7 +156,7 @@ LABEL_12:
         goto LABEL_8;
       }
 
-      v5 = [(ATXActionValuation *)self shouldPredictCreateEventIntent:v4];
+      v5 = [(ATXActionValuation *)self shouldPredictCreateEventIntent:intentCopy];
     }
   }
 
@@ -166,7 +166,7 @@ LABEL_8:
   return v6;
 }
 
-- (void)setFeatureValuesAndFilterPredictableActions:(id)a3 actionStatistics:(id)a4
+- (void)setFeatureValuesAndFilterPredictableActions:(id)actions actionStatistics:(id)statistics
 {
   MEMORY[0x28223BE20](self, a2);
   v5 = v4;
@@ -182,10 +182,10 @@ LABEL_8:
   {
     v12 = objc_autoreleasePoolPush();
     v13 = [v67 objectAtIndexedSubscript:v10];
-    v14 = [v13 scoredAction];
-    v15 = [v14 predictedItem];
+    scoredAction = [v13 scoredAction];
+    predictedItem = [scoredAction predictedItem];
 
-    if (!v15)
+    if (!predictedItem)
     {
       v20 = __atxlog_handle_default();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -196,7 +196,7 @@ LABEL_8:
       goto LABEL_14;
     }
 
-    if (([v15 hasActionTitle] & 1) == 0)
+    if (([predictedItem hasActionTitle] & 1) == 0)
     {
       v20 = __atxlog_handle_default();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -210,15 +210,15 @@ LABEL_14:
       goto LABEL_45;
     }
 
-    v66 = [v15 intent];
-    if (v66 && ([v64 shouldPredictIntent:v66] & 1) == 0)
+    intent = [predictedItem intent];
+    if (intent && ([v64 shouldPredictIntent:intent] & 1) == 0)
     {
       v21 = __atxlog_handle_default();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [v66 _className];
+        _className = [intent _className];
         LODWORD(buf[0]) = v63;
-        *(buf + 4) = v22;
+        *(buf + 4) = _className;
         _os_log_impl(&dword_2263AA000, v21, OS_LOG_TYPE_INFO, "Removed intent of class %@ because of special logic for the intent class", buf, 0xCu);
       }
 
@@ -227,8 +227,8 @@ LABEL_14:
     }
 
     v16 = [ATXMinimalSlotResolutionParameters alloc];
-    v17 = [v13 slotSet];
-    v65 = [(ATXMinimalSlotResolutionParameters *)v16 initWithAction:v15 slots:v17];
+    slotSet = [v13 slotSet];
+    v65 = [(ATXMinimalSlotResolutionParameters *)v16 initWithAction:predictedItem slots:slotSet];
 
     v18 = [*(v8 + 1) objectForKeyedSubscript:v65];
     if (!v13)
@@ -357,18 +357,18 @@ LABEL_19:
     }
 
 LABEL_20:
-    v48 = [v15 actionType];
-    if (v48 <= 4)
+    actionType = [predictedItem actionType];
+    if (actionType <= 4)
     {
-      if (!v48)
+      if (!actionType)
       {
         v52 = 1.0;
         goto LABEL_32;
       }
 
-      if (v48 != 1)
+      if (actionType != 1)
       {
-        if (v48 != 2)
+        if (actionType != 2)
         {
           goto LABEL_35;
         }
@@ -388,7 +388,7 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    switch(v48)
+    switch(actionType)
     {
       case 5:
         goto LABEL_29;
@@ -406,18 +406,18 @@ LABEL_33:
     }
 
 LABEL_35:
-    *&v53 = ATXSetInput(buf, 0x176uLL, [v15 isFutureMedia]);
-    v54 = [v15 intent];
-    ATXSetInput(buf, 0x87uLL, [v54 _intentCategory]);
+    *&v53 = ATXSetInput(buf, 0x176uLL, [predictedItem isFutureMedia]);
+    intent2 = [predictedItem intent];
+    ATXSetInput(buf, 0x87uLL, [intent2 _intentCategory]);
 
     v55 = objc_autoreleasePoolPush();
-    v56 = [v15 intent];
-    if (v56)
+    intent3 = [predictedItem intent];
+    if (intent3)
     {
       v57 = v64[1];
-      v58 = [v15 intent];
+      intent4 = [predictedItem intent];
       v59 = v57;
-      v5 = v58;
+      v5 = intent4;
       v60 = [v59 supportsBackgroundExecutionForIntent:?];
     }
 
@@ -427,7 +427,7 @@ LABEL_35:
     }
 
     ATXSetInput(buf, 0x177uLL, v60);
-    if (v56)
+    if (intent3)
     {
     }
 
@@ -456,7 +456,7 @@ LABEL_45:
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scoreActions:(id)a3 scoreLogger:(id)a4 consumerSubType:(unsigned __int8)a5
+- (void)scoreActions:(id)actions scoreLogger:(id)logger consumerSubType:(unsigned __int8)type
 {
   MEMORY[0x28223BE20](self, a2);
   v6 = v5;
@@ -474,15 +474,15 @@ LABEL_45:
   {
     v13 = objc_autoreleasePoolPush();
     v14 = [v10 objectAtIndexedSubscript:v12];
-    v15 = [v14 scoredAction];
-    v16 = [v15 predictedItem];
+    scoredAction = [v14 scoredAction];
+    predictedItem = [scoredAction predictedItem];
 
     v17 = [ATXMinimalSlotResolutionParameters alloc];
-    v18 = [v14 slotSet];
+    slotSet = [v14 slotSet];
     context = v13;
-    v49 = [(ATXMinimalSlotResolutionParameters *)v17 initWithAction:v16 slots:v18];
+    v49 = [(ATXMinimalSlotResolutionParameters *)v17 initWithAction:predictedItem slots:slotSet];
 
-    v19 = [v16 actionKey];
+    actionKey = [predictedItem actionKey];
     if (!v50)
     {
       goto LABEL_9;
@@ -492,13 +492,13 @@ LABEL_45:
     if (objc_opt_isKindOfClass())
     {
       v20 = MEMORY[0x277CCACA8];
-      v21 = [v16 actionKey];
-      v22 = [v14 slotSet];
-      v23 = [v22 description];
-      v24 = [v16 description];
-      v25 = [v20 stringWithFormat:@"ActionKey: %@\nSlotSet: %@\n%@", v21, v23, v24];
+      actionKey2 = [predictedItem actionKey];
+      slotSet2 = [v14 slotSet];
+      v23 = [slotSet2 description];
+      v24 = [predictedItem description];
+      v25 = [v20 stringWithFormat:@"ActionKey: %@\nSlotSet: %@\n%@", actionKey2, v23, v24];
 
-      v19 = v25;
+      actionKey = v25;
     }
 
     else
@@ -510,9 +510,9 @@ LABEL_45:
       }
 
       v26 = MEMORY[0x277CCACA8];
-      v21 = [v16 actionKey];
-      [v26 stringWithFormat:@"%@:%tu", v21, -[ATXMinimalSlotResolutionParameters hash](v49, "hash")];
-      v19 = v22 = v19;
+      actionKey2 = [predictedItem actionKey];
+      [v26 stringWithFormat:@"%@:%tu", actionKey2, -[ATXMinimalSlotResolutionParameters hash](v49, "hash")];
+      actionKey = slotSet2 = actionKey;
     }
 
 LABEL_9:
@@ -526,7 +526,7 @@ LABEL_9:
       bzero(&location, 0xD08uLL);
     }
 
-    objc_storeStrong(&location, v19);
+    objc_storeStrong(&location, actionKey);
     v54[0] = [(ATXMinimalSlotResolutionParameters *)v49 hash];
     v27 = +[_ATXAppPredictor sharedInstance];
     [v27 setupScoreLogger:v50 forConsumerSubType:v6];
@@ -538,8 +538,8 @@ LABEL_9:
     if ([MEMORY[0x277D42590] isInternalBuild])
     {
       v31 = objc_alloc(MEMORY[0x277CCACA8]);
-      v32 = [v16 bundleId];
-      v33 = [v31 initWithFormat:@"ActionValuationScoreOverride-%@", v32];
+      bundleId = [predictedItem bundleId];
+      v33 = [v31 initWithFormat:@"ActionValuationScoreOverride-%@", bundleId];
 
       v34 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v45];
       v35 = [v34 objectForKey:v33];
@@ -574,9 +574,9 @@ LABEL_9:
 
     v41 = v30;
     *&v54[415] = v41;
-    v42 = [v14 scoredAction];
+    scoredAction2 = [v14 scoredAction];
     *&v43 = v41;
-    [v42 setScore:v43];
+    [scoredAction2 setScore:v43];
 
     v44 = location;
     v51 = v44;
@@ -595,7 +595,7 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v50 storeMetaDataFromActionContainerForKey:v19 actionContainer:v14];
+        [v50 storeMetaDataFromActionContainerForKey:actionKey actionContainer:v14];
       }
     }
 

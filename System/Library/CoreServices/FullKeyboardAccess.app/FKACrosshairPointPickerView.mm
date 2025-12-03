@@ -1,7 +1,7 @@
 @interface FKACrosshairPointPickerView
 - (CGPoint)selectedPoint;
 - (CGPoint)selectedScreenPoint;
-- (FKACrosshairPointPickerView)initWithFrame:(CGRect)a3;
+- (FKACrosshairPointPickerView)initWithFrame:(CGRect)frame;
 - (void)decreaseXPrecision;
 - (void)decreaseYPrecision;
 - (void)increaseXPrecision;
@@ -11,16 +11,16 @@
 - (void)moveLeft;
 - (void)moveRight;
 - (void)moveUp;
-- (void)setSelectedPoint:(CGPoint)a3;
+- (void)setSelectedPoint:(CGPoint)point;
 @end
 
 @implementation FKACrosshairPointPickerView
 
-- (FKACrosshairPointPickerView)initWithFrame:(CGRect)a3
+- (FKACrosshairPointPickerView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = FKACrosshairPointPickerView;
-  v3 = [(FKACrosshairPointPickerView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FKACrosshairPointPickerView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -137,11 +137,11 @@
   return result;
 }
 
-- (void)setSelectedPoint:(CGPoint)a3
+- (void)setSelectedPoint:(CGPoint)point
 {
-  if (self->_selectedPoint.x != a3.x || self->_selectedPoint.y != a3.y)
+  if (self->_selectedPoint.x != point.x || self->_selectedPoint.y != point.y)
   {
-    self->_selectedPoint = a3;
+    self->_selectedPoint = point;
     [(FKACrosshairPointPickerView *)self setNeedsLayout];
   }
 }
@@ -240,9 +240,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(FKACrosshairPointPickerView *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v12))
+  traitCollection = [(FKACrosshairPointPickerView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v13 = 8.0;
   }
@@ -294,12 +294,12 @@
     v18 = v21;
   }
 
-  v22 = [(FKACrosshairPointPickerView *)self verticalLineView];
-  [v22 setFrame:{v18, v6, v13, v10}];
+  verticalLineView = [(FKACrosshairPointPickerView *)self verticalLineView];
+  [verticalLineView setFrame:{v18, v6, v13, v10}];
 
-  v23 = [(FKACrosshairPointPickerView *)self traitCollection];
-  v24 = [v23 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v24))
+  traitCollection2 = [(FKACrosshairPointPickerView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2))
   {
     v25 = 8.0;
   }
@@ -356,8 +356,8 @@
     v34 = v30;
   }
 
-  v35 = [(FKACrosshairPointPickerView *)self horizontalLineView];
-  [v35 setFrame:{v4, v34, v8, v25}];
+  horizontalLineView = [(FKACrosshairPointPickerView *)self horizontalLineView];
+  [horizontalLineView setFrame:{v4, v34, v8, v25}];
 }
 
 - (CGPoint)selectedPoint

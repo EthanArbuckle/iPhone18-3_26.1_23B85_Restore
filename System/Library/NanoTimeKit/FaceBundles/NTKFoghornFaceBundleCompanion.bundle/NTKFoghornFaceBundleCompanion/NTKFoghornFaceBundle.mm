@@ -1,48 +1,48 @@
 @interface NTKFoghornFaceBundle
-+ (id)_faceWithBezelStyle:(int64_t)a3 layoutStyle:(unint64_t)a4 nightMode:(unint64_t)a5 complications:(id)a6 forDevice:(id)a7;
-+ (id)_galleryFacesForDevice:(id)a3;
-+ (id)defaultFaceForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
++ (id)_faceWithBezelStyle:(int64_t)style layoutStyle:(unint64_t)layoutStyle nightMode:(unint64_t)mode complications:(id)complications forDevice:(id)device;
++ (id)_galleryFacesForDevice:(id)device;
++ (id)defaultFaceForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKFoghornFaceBundle
 
-+ (id)defaultFaceForDevice:(id)a3
++ (id)defaultFaceForDevice:(id)device
 {
-  v4 = a3;
-  v8 = objc_msgSend_identifier(a1, v5, v6, v7);
-  v12 = objc_msgSend_analyticsIdentifier(a1, v9, v10, v11);
-  v14 = objc_msgSend_bundledFaceWithIdentifier_analyticsIdentifier_forDevice_initCustomization_(NTKFoghornFace, v13, v8, v12, v4, 0);
+  deviceCopy = device;
+  v8 = objc_msgSend_identifier(self, v5, v6, v7);
+  v12 = objc_msgSend_analyticsIdentifier(self, v9, v10, v11);
+  v14 = objc_msgSend_bundledFaceWithIdentifier_analyticsIdentifier_forDevice_initCustomization_(NTKFoghornFace, v13, v8, v12, deviceCopy, 0);
 
   return v14;
 }
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_opt_class();
-  v7 = objc_msgSend_defaultFaceForDevice_(v4, v5, v3, v6);
+  v7 = objc_msgSend_defaultFaceForDevice_(v4, v5, deviceCopy, v6);
 
   return v7;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_supportsPDRCapability_(v4, v5, 3669496134, v6))
+  deviceCopy = device;
+  if (objc_msgSend_supportsPDRCapability_(deviceCopy, v5, 3669496134, v6))
   {
     v9 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v10 = objc_msgSend_defaultFaceForDevice_(self, v7, v4, v8);
+    v10 = objc_msgSend_defaultFaceForDevice_(self, v7, deviceCopy, v8);
     v11 = objc_alloc(MEMORY[0x277D2C018]);
     v13 = objc_msgSend_initWithFace_priority_(v11, v12, v10, 600);
     v16[0] = v13;
@@ -52,42 +52,42 @@
   return v9;
 }
 
-+ (id)_faceWithBezelStyle:(int64_t)a3 layoutStyle:(unint64_t)a4 nightMode:(unint64_t)a5 complications:(id)a6 forDevice:(id)a7
++ (id)_faceWithBezelStyle:(int64_t)style layoutStyle:(unint64_t)layoutStyle nightMode:(unint64_t)mode complications:(id)complications forDevice:(id)device
 {
-  v12 = a6;
-  v13 = a7;
-  v16 = objc_msgSend_defaultFaceForDevice_(a1, v14, v13, v15);
-  v18 = objc_msgSend_optionWithBezelStyle_forDevice_(NTKFoghornFaceBezelStyleEditOption, v17, a3, v13);
+  complicationsCopy = complications;
+  deviceCopy = device;
+  v16 = objc_msgSend_defaultFaceForDevice_(self, v14, deviceCopy, v15);
+  v18 = objc_msgSend_optionWithBezelStyle_forDevice_(NTKFoghornFaceBezelStyleEditOption, v17, style, deviceCopy);
   objc_msgSend_selectOption_forCustomEditMode_slot_(v16, v19, v18, 12, 0);
-  v21 = objc_msgSend_optionWithLayoutStyle_forDevice_(NTKFoghornFaceLayoutStyleEditOption, v20, a4, v13);
+  v21 = objc_msgSend_optionWithLayoutStyle_forDevice_(NTKFoghornFaceLayoutStyleEditOption, v20, layoutStyle, deviceCopy);
   objc_msgSend_selectOption_forCustomEditMode_slot_(v16, v22, v21, 15, 0);
-  v24 = objc_msgSend_optionWithFoghornNightMode_forDevice_(NTKFoghornNightModeEditOption, v23, a5, v13);
+  v24 = objc_msgSend_optionWithFoghornNightMode_forDevice_(NTKFoghornNightModeEditOption, v23, mode, deviceCopy);
   objc_msgSend_selectOption_forCustomEditMode_slot_(v16, v25, v24, 18, 0);
   v28 = objc_msgSend_pigmentNamed_(MEMORY[0x277D2C0B0], v26, *MEMORY[0x277D2C6C8], v27);
   objc_msgSend_selectOption_forCustomEditMode_slot_(v16, v29, v28, 10, 0);
-  if (v12)
+  if (complicationsCopy)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = sub_23BE71AB4;
     v34[3] = &unk_278B9CA40;
     v35 = v16;
-    objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v12, v31, v34, v32);
+    objc_msgSend_enumerateKeysAndObjectsUsingBlock_(complicationsCopy, v31, v34, v32);
   }
 
   else
   {
-    objc_msgSend__applyInitialDefaultComplicationsForBezelStyle_toFace_forDevice_(NTKFoghornFace, v30, a3, v16, v13);
+    objc_msgSend__applyInitialDefaultComplicationsForBezelStyle_toFace_forDevice_(NTKFoghornFace, v30, style, v16, deviceCopy);
   }
 
   return v16;
 }
 
-+ (id)_galleryFacesForDevice:(id)a3
++ (id)_galleryFacesForDevice:(id)device
 {
   v363[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_supportsPDRCapability_(v4, v5, 3669496134, v6))
+  deviceCopy = device;
+  if (objc_msgSend_supportsPDRCapability_(deviceCopy, v5, 3669496134, v6))
   {
     v298 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v7, 12, v9);
     v10 = objc_alloc(MEMORY[0x277CBBBD0]);
@@ -136,7 +136,7 @@
     v55 = objc_msgSend_anyComplicationOfType_(MEMORY[0x277D2BFB0], v53, 18, v54);
     v285 = _complicationOrDie(v55);
 
-    if (objc_msgSend_supportsUrsa(v4, v56, v57, v58))
+    if (objc_msgSend_supportsUrsa(deviceCopy, v56, v57, v58))
     {
       v60 = objc_msgSend_bundledComplicationWithBundleIdentifier_appBundleIdentifier_complicationDescriptor_(MEMORY[0x277D2BF68], v59, *MEMORY[0x277D2BEA8], *MEMORY[0x277D2BE70], 0);
       v296 = _complicationOrDie(v60);
@@ -150,7 +150,7 @@
     v83 = objc_msgSend_anyComplicationOfType_(MEMORY[0x277D2BFB0], v61, 17, v62);
     v284 = _complicationOrDie(v83);
 
-    if (objc_msgSend_supportsUrsa(v4, v84, v85, v86))
+    if (objc_msgSend_supportsUrsa(deviceCopy, v84, v85, v86))
     {
       v88 = objc_msgSend_bundledComplicationWithBundleIdentifier_appBundleIdentifier_complicationDescriptor_(MEMORY[0x277D2BF68], v87, *MEMORY[0x277D2BE88], *MEMORY[0x277D2BE70], 0);
       v283 = _complicationOrDie(v88);
@@ -161,7 +161,7 @@
       v283 = _complicationOrDie(0);
     }
 
-    if (objc_msgSend_supportsUrsa(v4, v89, v90, v91))
+    if (objc_msgSend_supportsUrsa(deviceCopy, v89, v90, v91))
     {
       v93 = objc_msgSend_bundledComplicationWithBundleIdentifier_appBundleIdentifier_complicationDescriptor_(MEMORY[0x277D2BF68], v92, *MEMORY[0x277D2BE80], *MEMORY[0x277D2BE70], 0);
       v290 = _complicationOrDie(v93);
@@ -172,7 +172,7 @@
       v290 = _complicationOrDie(0);
     }
 
-    if (objc_msgSend_supportsUrsa(v4, v94, v95, v96))
+    if (objc_msgSend_supportsUrsa(deviceCopy, v94, v95, v96))
     {
       v98 = objc_msgSend_bundledComplicationWithBundleIdentifier_appBundleIdentifier_complicationDescriptor_(MEMORY[0x277D2BF68], v97, *MEMORY[0x277D2BE78], *MEMORY[0x277D2BE70], 0);
       v264 = _complicationOrDie(v98);
@@ -201,7 +201,7 @@
     v116 = objc_msgSend_complicationWithDescriptor_(MEMORY[0x277D2C140], v114, v273, v115);
     v262 = _complicationOrDie(v116);
 
-    if (objc_msgSend_supportsUrsa(v4, v117, v118, v119))
+    if (objc_msgSend_supportsUrsa(deviceCopy, v117, v118, v119))
     {
       v121 = objc_msgSend_bundledComplicationWithBundleIdentifier_appBundleIdentifier_complicationDescriptor_(MEMORY[0x277D2BF68], v120, @"com.apple.NanoCompass.complications.altitude", *MEMORY[0x277D2BE70], 0);
       v288 = _complicationOrDie(v121);
@@ -495,7 +495,7 @@
     v334 = v242 = 0;
     do
     {
-      v244 = objc_msgSend__faceWithBezelStyle_layoutStyle_nightMode_complications_forDevice_(a1, v243, *(&v299 + v242), *(&v299 + v242 + 8), *(&v299 + v242 + 16), *(&v301 + v242), v4);
+      v244 = objc_msgSend__faceWithBezelStyle_layoutStyle_nightMode_complications_forDevice_(self, v243, *(&v299 + v242), *(&v299 + v242 + 8), *(&v299 + v242 + 16), *(&v301 + v242), deviceCopy);
       objc_msgSend_addObject_(v298, v245, v244, v246);
 
       v242 += 32;
@@ -521,7 +521,7 @@
         {
           v70 = objc_msgSend_objectAtIndexedSubscript_(&unk_284EA14B8, v63, v68, v65);
           v74 = objc_msgSend_integerValue(v70, v71, v72, v73);
-          v76 = objc_msgSend__faceWithBezelStyle_layoutStyle_nightMode_complications_forDevice_(a1, v75, v74, v69, 2, 0, v4);
+          v76 = objc_msgSend__faceWithBezelStyle_layoutStyle_nightMode_complications_forDevice_(self, v75, v74, v69, 2, 0, deviceCopy);
           objc_msgSend_addObject_(v66, v77, v76, v78);
 
           ++v68;
@@ -537,7 +537,7 @@
   return v82;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = &unk_284EA10C8;
@@ -547,36 +547,36 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (objc_msgSend_isRunningNapiliGMOrLater(v4, v5, v6, v7))
+  deviceCopy = device;
+  if (objc_msgSend_isRunningNapiliGMOrLater(deviceCopy, v5, v6, v7))
   {
     v17.receiver = self;
     v17.super_class = NTKFoghornFaceBundle;
-    v8 = [(NTKFaceBundle *)&v17 galleryFacesForDevice:v4];
+    v8 = [(NTKFaceBundle *)&v17 galleryFacesForDevice:deviceCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_23BE73104;
     v15[3] = &unk_278B9CA68;
     v15[4] = self;
-    v16 = v4;
+    v16 = deviceCopy;
     objc_msgSend_enumerateObjectsUsingBlock_(v8, v9, v15, v10);
   }
 
   else
   {
     v11 = objc_opt_class();
-    v8 = objc_msgSend__galleryFacesForDevice_(v11, v12, v4, v13);
+    v8 = objc_msgSend__galleryFacesForDevice_(v11, v12, deviceCopy, v13);
   }
 
   return v8;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_isRunningNapiliGMOrLater(a3, a2, a3, v3))
+  if (objc_msgSend_isRunningNapiliGMOrLater(device, a2, device, v3))
   {
     v7[0] = &unk_284EA10F8;
     v7[1] = &unk_284EA1170;
@@ -595,10 +595,10 @@
   return v5;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
   v7[6] = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_isRunningNapiliGMOrLater(a3, a2, a3, v3))
+  if (objc_msgSend_isRunningNapiliGMOrLater(device, a2, device, v3))
   {
     v7[0] = *MEMORY[0x277D2C6C8];
     v7[1] = v7[0];

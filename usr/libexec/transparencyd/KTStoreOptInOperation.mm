@@ -7,7 +7,7 @@
 
 - (void)groupStart
 {
-  v2 = self;
+  selfCopy = self;
   KTStoreOptInOperation.groupStart()();
 }
 

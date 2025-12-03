@@ -10,26 +10,26 @@
   v5.receiver = self;
   v5.super_class = SBPIPFluidTransitionsSettings;
   [(PTSettings *)&v5 setDefaultValues];
-  v3 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v3 setName:@"Source clipping behavior"];
-  [v3 setBehaviorType:2];
-  [v3 setRetargetImpulse:0.0];
-  [v3 setTrackingRetargetImpulse:0.0];
-  [v3 setDampingRatio:1.0];
-  [v3 setResponse:0.336];
-  [v3 setTrackingDampingRatio:1.0];
-  [v3 setTrackingResponse:0.08];
-  [(SBPIPFluidTransitionsSettings *)self setSourceClippingFluidBehavior:v3];
-  v4 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v4 setName:@"Target clipping Behavior"];
-  [v4 setBehaviorType:2];
-  [v4 setRetargetImpulse:0.0];
-  [v4 setTrackingRetargetImpulse:0.0];
-  [v4 setDampingRatio:1.0];
-  [v4 setResponse:0.35];
-  [v4 setTrackingDampingRatio:1.0];
-  [v4 setTrackingResponse:0.08];
-  [(SBPIPFluidTransitionsSettings *)self setTargetClippingFluidBehavior:v4];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues setName:@"Source clipping behavior"];
+  [initWithDefaultValues setBehaviorType:2];
+  [initWithDefaultValues setRetargetImpulse:0.0];
+  [initWithDefaultValues setTrackingRetargetImpulse:0.0];
+  [initWithDefaultValues setDampingRatio:1.0];
+  [initWithDefaultValues setResponse:0.336];
+  [initWithDefaultValues setTrackingDampingRatio:1.0];
+  [initWithDefaultValues setTrackingResponse:0.08];
+  [(SBPIPFluidTransitionsSettings *)self setSourceClippingFluidBehavior:initWithDefaultValues];
+  initWithDefaultValues2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues2 setName:@"Target clipping Behavior"];
+  [initWithDefaultValues2 setBehaviorType:2];
+  [initWithDefaultValues2 setRetargetImpulse:0.0];
+  [initWithDefaultValues2 setTrackingRetargetImpulse:0.0];
+  [initWithDefaultValues2 setDampingRatio:1.0];
+  [initWithDefaultValues2 setResponse:0.35];
+  [initWithDefaultValues2 setTrackingDampingRatio:1.0];
+  [initWithDefaultValues2 setTrackingResponse:0.08];
+  [(SBPIPFluidTransitionsSettings *)self setTargetClippingFluidBehavior:initWithDefaultValues2];
 }
 
 + (id)settingsControllerModule

@@ -1,18 +1,18 @@
 @interface AMSUIMessageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AMSUIMessageViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AMSUIMessageViewAccessibility)initWithFrame:(CGRect)frame;
 - (id)accessibilityCustomActions;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AMSUIMessageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AMSUIMessageView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AMSUIMessageView" hasInstanceMethod:@"accessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AMSUIMessageView" hasInstanceMethod:@"accessorySecondaryView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AMSUIMessageView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AMSUIMessageView" hasInstanceMethod:@"accessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AMSUIMessageView" hasInstanceMethod:@"accessorySecondaryView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,11 +26,11 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v21.receiver = self;
   v21.super_class = AMSUIMessageViewAccessibility;
-  v4 = [(AMSUIMessageViewAccessibility *)&v21 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(AMSUIMessageViewAccessibility *)&v21 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   LOBYTE(location) = 0;
   objc_opt_class();
@@ -41,16 +41,16 @@
   {
     objc_initWeak(&location, v6);
     v7 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v8 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
     v18[0] = MEMORY[0x29EDCA5F8];
     v18[1] = 3221225472;
     v18[2] = __59__AMSUIMessageViewAccessibility_accessibilityCustomActions__block_invoke;
     v18[3] = &unk_29F2A06C8;
     objc_copyWeak(&v19, &location);
-    v9 = [v7 initWithName:v8 actionHandler:v18];
+    v9 = [v7 initWithName:accessibilityLabel actionHandler:v18];
 
     [v6 setAccessibilityElementsHidden:1];
-    [v3 axSafelyAddObject:v9];
+    [array axSafelyAddObject:v9];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -70,22 +70,22 @@
   {
     objc_initWeak(&location, v11);
     v12 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v13 = [v11 accessibilityLabel];
+    accessibilityLabel2 = [v11 accessibilityLabel];
     v16[0] = MEMORY[0x29EDCA5F8];
     v16[1] = 3221225472;
     v16[2] = __59__AMSUIMessageViewAccessibility_accessibilityCustomActions__block_invoke_2;
     v16[3] = &unk_29F2A06C8;
     objc_copyWeak(&v17, &location);
-    v14 = [v12 initWithName:v13 actionHandler:v16];
+    v14 = [v12 initWithName:accessibilityLabel2 actionHandler:v16];
 
     [v11 setAccessibilityElementsHidden:1];
-    [v3 axSafelyAddObject:v14];
+    [array axSafelyAddObject:v14];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __59__AMSUIMessageViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)
@@ -104,11 +104,11 @@ uint64_t __59__AMSUIMessageViewAccessibility_accessibilityCustomActions__block_i
   return 1;
 }
 
-- (AMSUIMessageViewAccessibility)initWithFrame:(CGRect)a3
+- (AMSUIMessageViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AMSUIMessageViewAccessibility;
-  v3 = [(AMSUIMessageViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AMSUIMessageViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AMSUIMessageViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

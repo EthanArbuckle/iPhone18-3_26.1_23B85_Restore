@@ -1,11 +1,11 @@
 @interface UtilitySubscriptionInformation
 - (_TtC19HomeUtilityServices30UtilitySubscriptionInformation)init;
-- (_TtC19HomeUtilityServices30UtilitySubscriptionInformation)initWithSubscriptionID:(id)a3 state:(id)a4 startDate:(id)a5 serviceLocation:(id)a6 customerAgreements:(id)a7;
+- (_TtC19HomeUtilityServices30UtilitySubscriptionInformation)initWithSubscriptionID:(id)d state:(id)state startDate:(id)date serviceLocation:(id)location customerAgreements:(id)agreements;
 @end
 
 @implementation UtilitySubscriptionInformation
 
-- (_TtC19HomeUtilityServices30UtilitySubscriptionInformation)initWithSubscriptionID:(id)a3 state:(id)a4 startDate:(id)a5 serviceLocation:(id)a6 customerAgreements:(id)a7
+- (_TtC19HomeUtilityServices30UtilitySubscriptionInformation)initWithSubscriptionID:(id)d state:(id)state startDate:(id)date serviceLocation:(id)location customerAgreements:(id)agreements
 {
   v9 = sub_20E0091D4();
   v11 = v10;
@@ -24,11 +24,11 @@
   v21 = (self + OBJC_IVAR____TtC19HomeUtilityServices30UtilitySubscriptionInformation_startDate);
   *v21 = v15;
   v21[1] = v17;
-  *(self + OBJC_IVAR____TtC19HomeUtilityServices30UtilitySubscriptionInformation_serviceLocation) = a6;
+  *(self + OBJC_IVAR____TtC19HomeUtilityServices30UtilitySubscriptionInformation_serviceLocation) = location;
   *(self + OBJC_IVAR____TtC19HomeUtilityServices30UtilitySubscriptionInformation_customerAgreements) = v18;
   v24.receiver = self;
   v24.super_class = type metadata accessor for UtilitySubscriptionInformation();
-  v22 = a6;
+  locationCopy = location;
   return [(UtilitySubscriptionInformation *)&v24 init];
 }
 

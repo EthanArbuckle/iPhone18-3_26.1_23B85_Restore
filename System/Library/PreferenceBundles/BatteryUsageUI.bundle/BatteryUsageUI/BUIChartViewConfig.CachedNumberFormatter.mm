@@ -1,14 +1,14 @@
 @interface BUIChartViewConfig.CachedNumberFormatter
-- (id)stringFromNumber:(id)a3;
+- (id)stringFromNumber:(id)number;
 @end
 
 @implementation BUIChartViewConfig.CachedNumberFormatter
 
-- (id)stringFromNumber:(id)a3
+- (id)stringFromNumber:(id)number
 {
-  v4 = a3;
-  v5 = self;
-  sub_58CE4(v4);
+  numberCopy = number;
+  selfCopy = self;
+  sub_58CE4(numberCopy);
   v7 = v6;
 
   if (v7)

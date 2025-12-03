@@ -1,15 +1,15 @@
 @interface WFAppIntentExecutionAction
 - (BOOL)actionIsExecutedFromAnotherDevice;
 - (BOOL)defaultParameterSummaryContainsRequiredParameters;
-- (BOOL)enumeration:(id)a3 shouldStripSenstitiveContentFromValue:(id)a4;
+- (BOOL)enumeration:(id)enumeration shouldStripSenstitiveContentFromValue:(id)value;
 - (BOOL)isApprovedForPublicShortcutsDrawer;
 - (BOOL)opensWhenRun;
-- (BOOL)progressIsPersistentInSystemApertureForExecutor:(id)a3;
+- (BOOL)progressIsPersistentInSystemApertureForExecutor:(id)executor;
 - (BOOL)requiresUnlock;
-- (BOOL)shouldLoadDefaultStateAsynchronouslyForEnumeration:(id)a3;
-- (BOOL)valueShouldStripSensitiveContent:(id)a3;
-- (BOOL)visibleForUse:(int64_t)a3;
-- (Class)toolkitValueClassForParameter:(id)a3;
+- (BOOL)shouldLoadDefaultStateAsynchronouslyForEnumeration:(id)enumeration;
+- (BOOL)valueShouldStripSensitiveContent:(id)content;
+- (BOOL)visibleForUse:(int64_t)use;
+- (Class)toolkitValueClassForParameter:(id)parameter;
 - (LNActionConfigurationContext)actionConfigurationContext;
 - (LNActionExecutorOptions)executorOptions;
 - (LNAppIntentConnectionPolicy)connectionPolicy;
@@ -17,61 +17,61 @@
 - (LNConnectionPolicySignals)connectionPolicySignals;
 - (NSNumber)opensWhenRunIfApplicable;
 - (NSString)displayableAppBundleIdentifier;
-- (WFAppIntentExecutionAction)initWithIdentifier:(id)a3 metadata:(id)a4 definition:(id)a5 serializedParameters:(id)a6 appIntentDescriptor:(id)a7 fullyQualifiedActionIdentifier:(id)a8;
+- (WFAppIntentExecutionAction)initWithIdentifier:(id)identifier metadata:(id)metadata definition:(id)definition serializedParameters:(id)parameters appIntentDescriptor:(id)descriptor fullyQualifiedActionIdentifier:(id)actionIdentifier;
 - (id)actionArchivingQueue;
-- (id)alertForLinkActionConfirmationWithActionMetadata:(id)a3 dialogString:(id)a4 request:(id)a5 encodedSnippetActionToolInvocation:(id)a6;
-- (id)alertForLinkConfirmationDialogRequest:(id)a3 preferredStyle:(int64_t)a4 handler:(id)a5;
+- (id)alertForLinkActionConfirmationWithActionMetadata:(id)metadata dialogString:(id)string request:(id)request encodedSnippetActionToolInvocation:(id)invocation;
+- (id)alertForLinkConfirmationDialogRequest:(id)request preferredStyle:(int64_t)style handler:(id)handler;
 - (id)backingActionIdentifiers;
 - (id)bundleIdentifier;
 - (id)copyForProcessing;
-- (id)copyWithSerializedParameters:(id)a3;
-- (id)createStateForParameter:(id)a3 fromSerializedRepresentation:(id)a4;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3 result:(id)a4;
+- (id)copyWithSerializedParameters:(id)parameters;
+- (id)createStateForParameter:(id)parameter fromSerializedRepresentation:(id)representation;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration result:(id)result;
 - (id)displayableAppDescriptor;
-- (id)entityMetadataForIdentifier:(id)a3;
-- (id)enumeration:(id)a3 accessoryImageForPossibleState:(id)a4;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)linkActionWithParameterStates:(id)a3 usingConnectionPolicy:(BOOL)a4;
-- (id)linkActionWithParameters:(id)a3;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
+- (id)entityMetadataForIdentifier:(id)identifier;
+- (id)enumeration:(id)enumeration accessoryImageForPossibleState:(id)state;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)linkActionWithParameterStates:(id)states usingConnectionPolicy:(BOOL)policy;
+- (id)linkActionWithParameters:(id)parameters;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
 - (id)outputDictionary;
-- (id)parameterMetadataForIdentifier:(id)a3;
+- (id)parameterMetadataForIdentifier:(id)identifier;
 - (id)parametersNeedingDisplayRepresentation;
 - (id)sessionKitSessionInvocationType;
-- (id)valueForParameterData:(id)a3 withParameterState:(id)a4;
+- (id)valueForParameterData:(id)data withParameterState:(id)state;
 - (int64_t)runKind;
 - (unsigned)runSource;
-- (void)alertForLinkActionConfirmationWithParameterMetadata:(id)a3 dialogString:(id)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)askForParameterValueForParameterName:(id)a3 request:(id)a4 dialogString:(id)a5;
-- (void)completeLoadingPossibleStatesForEnumerationParameter:(id)a3 result:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)configureParameter:(id)a3;
-- (void)confirmActionWithRequest:(id)a3 dialogString:(id)a4;
-- (void)confirmContinueInAppWithRequest:(id)a3 dialogString:(id)a4;
-- (void)confirmParameterValueForParameterName:(id)a3 request:(id)a4 dialogString:(id)a5;
-- (void)disambiguateParameterForParameterName:(id)a3 request:(id)a4 dialogString:(id)a5;
-- (void)executor:(id)a3 environmentForViewSnippetWithCompletion:(id)a4;
-- (void)executor:(id)a3 needsActionConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsContinueInAppWithRequest:(id)a4;
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4;
-- (void)executor:(id)a3 preferredContentSizeForViewSnippetWithCompletion:(id)a4;
-- (void)executorWillLaunchApplicationInForeground:(id)a3;
-- (void)fetchMissingDisplayRepresentationValuesWithCompletionHandler:(id)a3;
-- (void)finishRunningWithError:(id)a3;
-- (void)generateShortcutRepresentation:(id)a3;
-- (void)generateStandaloneShortcutRepresentation:(id)a3;
-- (void)getLinkActionWithProcessedParameters:(id)a3 forFocusConfiguration:(BOOL)a4 fallingBackToDefaultValue:(BOOL)a5 completionHandler:(id)a6;
-- (void)loadDefaultResultForEnumeration:(id)a3 completionHandler:(id)a4;
-- (void)loadDefaultSerializedRepresentationForEnumeration:(id)a3 completionHandler:(id)a4;
-- (void)loadDynamicResultForEnumeration:(id)a3 searchTerm:(id)a4 optionsProviderReference:(id)a5 completionHandler:(id)a6;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 optionsProviderReference:(id)a5 completionHandler:(id)a6;
-- (void)postProcessToolKitProcessedValue:(id)a3 forParameter:(id)a4 completionHandler:(id)a5;
-- (void)processEncodedValue:(id)a3 withToolKitInvocation:(id)a4 forParameter:(id)a5 completionHandler:(id)a6;
-- (void)processValueForParameter:(id)a3 withToolKitInvocation:(id)a4 completionHandler:(id)a5;
-- (void)showChronoControlIfPossibleForIntent:(id)a3 completionHandler:(id)a4;
+- (void)alertForLinkActionConfirmationWithParameterMetadata:(id)metadata dialogString:(id)string request:(id)request completionHandler:(id)handler;
+- (void)askForParameterValueForParameterName:(id)name request:(id)request dialogString:(id)string;
+- (void)completeLoadingPossibleStatesForEnumerationParameter:(id)parameter result:(id)result error:(id)error completionHandler:(id)handler;
+- (void)configureParameter:(id)parameter;
+- (void)confirmActionWithRequest:(id)request dialogString:(id)string;
+- (void)confirmContinueInAppWithRequest:(id)request dialogString:(id)string;
+- (void)confirmParameterValueForParameterName:(id)name request:(id)request dialogString:(id)string;
+- (void)disambiguateParameterForParameterName:(id)name request:(id)request dialogString:(id)string;
+- (void)executor:(id)executor environmentForViewSnippetWithCompletion:(id)completion;
+- (void)executor:(id)executor needsActionConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsContinueInAppWithRequest:(id)request;
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request;
+- (void)executor:(id)executor needsValueWithRequest:(id)request;
+- (void)executor:(id)executor preferredContentSizeForViewSnippetWithCompletion:(id)completion;
+- (void)executorWillLaunchApplicationInForeground:(id)foreground;
+- (void)fetchMissingDisplayRepresentationValuesWithCompletionHandler:(id)handler;
+- (void)finishRunningWithError:(id)error;
+- (void)generateShortcutRepresentation:(id)representation;
+- (void)generateStandaloneShortcutRepresentation:(id)representation;
+- (void)getLinkActionWithProcessedParameters:(id)parameters forFocusConfiguration:(BOOL)configuration fallingBackToDefaultValue:(BOOL)value completionHandler:(id)handler;
+- (void)loadDefaultResultForEnumeration:(id)enumeration completionHandler:(id)handler;
+- (void)loadDefaultSerializedRepresentationForEnumeration:(id)enumeration completionHandler:(id)handler;
+- (void)loadDynamicResultForEnumeration:(id)enumeration searchTerm:(id)term optionsProviderReference:(id)reference completionHandler:(id)handler;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term optionsProviderReference:(id)reference completionHandler:(id)handler;
+- (void)postProcessToolKitProcessedValue:(id)value forParameter:(id)parameter completionHandler:(id)handler;
+- (void)processEncodedValue:(id)value withToolKitInvocation:(id)invocation forParameter:(id)parameter completionHandler:(id)handler;
+- (void)processValueForParameter:(id)parameter withToolKitInvocation:(id)invocation completionHandler:(id)handler;
+- (void)showChronoControlIfPossibleForIntent:(id)intent completionHandler:(id)handler;
 - (void)willBeginProcessingParameterStates;
 @end
 
@@ -104,31 +104,31 @@
   actionArchivingQueue = self->_actionArchivingQueue;
   if (actionArchivingQueue)
   {
-    v5 = actionArchivingQueue;
+    executionQueue = actionArchivingQueue;
   }
 
   else
   {
-    v6 = [(WFAction *)self runningDelegate];
-    if (v6 && ([(WFAction *)self runningDelegate], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) != 0))
+    runningDelegate = [(WFAction *)self runningDelegate];
+    if (runningDelegate && ([(WFAction *)self runningDelegate], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, runningDelegate, (isKindOfClass & 1) != 0))
     {
-      v9 = [(WFAction *)self runningDelegate];
-      v5 = [v9 executionQueue];
+      runningDelegate2 = [(WFAction *)self runningDelegate];
+      executionQueue = [runningDelegate2 executionQueue];
     }
 
     else
     {
-      v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_DEFAULT, 0);
-      v5 = dispatch_queue_create("com.apple.shortcuts.WFAppIntentExecutionAction.archiving-link-action-outside-of-shortcut-run", v10);
+      runningDelegate2 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+      v10 = dispatch_queue_attr_make_with_qos_class(runningDelegate2, QOS_CLASS_DEFAULT, 0);
+      executionQueue = dispatch_queue_create("com.apple.shortcuts.WFAppIntentExecutionAction.archiving-link-action-outside-of-shortcut-run", v10);
     }
 
-    objc_storeStrong(&self->_actionArchivingQueue, v5);
+    objc_storeStrong(&self->_actionArchivingQueue, executionQueue);
   }
 
   v3[2](v3);
 
-  return v5;
+  return executionQueue;
 }
 
 - (LNAppIntentConnectionPolicy)connectionPolicy
@@ -140,27 +140,27 @@
   aBlock[3] = &unk_1E837FA70;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(WFAppIntentExecutionAction *)self metadata];
-  v5 = [v4 effectiveBundleIdentifiers];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  effectiveBundleIdentifiers = [metadata effectiveBundleIdentifiers];
   v6 = &OBJC_IVAR___WFAppIntentExecutionAction__policyLock;
-  if ([v5 count] != 1)
+  if ([effectiveBundleIdentifiers count] != 1)
   {
     goto LABEL_40;
   }
 
-  v7 = [(WFAppIntentExecutionAction *)self metadata];
-  v8 = [v7 effectiveBundleIdentifiers];
-  v9 = [v8 firstObject];
-  v10 = [v9 type];
+  metadata2 = [(WFAppIntentExecutionAction *)self metadata];
+  effectiveBundleIdentifiers2 = [metadata2 effectiveBundleIdentifiers];
+  firstObject = [effectiveBundleIdentifiers2 firstObject];
+  type = [firstObject type];
 
   v6 = &OBJC_IVAR___WFAppIntentExecutionAction__policyLock;
-  if (v10 != 3)
+  if (type != 3)
   {
     goto LABEL_41;
   }
 
-  v4 = [(WFAction *)self parameterValueForKey:@"app" ofClass:objc_opt_class()];
-  if (!v4)
+  metadata = [(WFAction *)self parameterValueForKey:@"app" ofClass:objc_opt_class()];
+  if (!metadata)
   {
     v11 = [(WFAction *)self parameterStateForKey:@"app"];
     if (v11)
@@ -184,17 +184,17 @@
 
     v13 = v12;
 
-    v14 = [v13 value];
-    v4 = [v14 value];
+    value = [v13 value];
+    metadata = [value value];
   }
 
-  v15 = [v4 value];
-  if (v15)
+  value2 = [metadata value];
+  if (value2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = value2;
     }
 
     else
@@ -211,8 +211,8 @@
   v17 = v16;
 
   v44 = [(WFAction *)self parameterValueForKey:@"processInstanceIdentifier" ofClass:objc_opt_class()];
-  v18 = [v44 value];
-  if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  value3 = [v44 value];
+  if (!value3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
     v19 = [(WFAction *)self parameterStateForKey:@"processInstanceIdentifier"];
@@ -237,23 +237,23 @@
 
     v21 = v20;
 
-    v22 = [v21 variableString];
-    v18 = [v22 stringByRemovingVariables];
+    variableString = [v21 variableString];
+    value3 = [variableString stringByRemovingVariables];
   }
 
-  v23 = [(WFAppIntentExecutionAction *)self connectionPolicySignals];
-  v24 = [v23 preferredBundleIdentifier];
+  connectionPolicySignals = [(WFAppIntentExecutionAction *)self connectionPolicySignals];
+  preferredBundleIdentifier = [connectionPolicySignals preferredBundleIdentifier];
   v25 = v17;
-  v5 = v25;
-  if (v24 == v25)
+  effectiveBundleIdentifiers = v25;
+  if (preferredBundleIdentifier == v25)
   {
   }
 
   else
   {
-    v26 = v25;
-    v27 = v24;
-    if (!v25 || (v26 = v25, (v27 = v24) == 0))
+    processInstanceIdentifier = v25;
+    connectionPolicySignals2 = preferredBundleIdentifier;
+    if (!v25 || (processInstanceIdentifier = v25, (connectionPolicySignals2 = preferredBundleIdentifier) == 0))
     {
 LABEL_36:
 
@@ -266,12 +266,12 @@ LABEL_38:
       connectionPolicySignals = self->_connectionPolicySignals;
       self->_connectionPolicySignals = v32;
 
-      [(LNConnectionPolicySignals *)self->_connectionPolicySignals setPreferredBundleIdentifier:v5];
-      [(LNConnectionPolicySignals *)self->_connectionPolicySignals setProcessInstanceIdentifier:v18];
+      [(LNConnectionPolicySignals *)self->_connectionPolicySignals setPreferredBundleIdentifier:effectiveBundleIdentifiers];
+      [(LNConnectionPolicySignals *)self->_connectionPolicySignals setProcessInstanceIdentifier:value3];
       goto LABEL_39;
     }
 
-    v28 = [v24 isEqual:v25];
+    v28 = [preferredBundleIdentifier isEqual:v25];
 
     if (!v28)
     {
@@ -279,15 +279,15 @@ LABEL_38:
     }
   }
 
-  v27 = [(WFAppIntentExecutionAction *)self connectionPolicySignals];
-  v26 = [v27 processInstanceIdentifier];
-  v29 = v18;
+  connectionPolicySignals2 = [(WFAppIntentExecutionAction *)self connectionPolicySignals];
+  processInstanceIdentifier = [connectionPolicySignals2 processInstanceIdentifier];
+  v29 = value3;
   v30 = v29;
-  if (v26 != v29)
+  if (processInstanceIdentifier != v29)
   {
-    if (v29 && v26)
+    if (v29 && processInstanceIdentifier)
     {
-      v43 = [v26 isEqual:v29];
+      v43 = [processInstanceIdentifier isEqual:v29];
 
       if (v43)
       {
@@ -310,9 +310,9 @@ LABEL_41:
   if (!v35)
   {
     v36 = MEMORY[0x1E69ACE60];
-    v37 = [(WFAppIntentExecutionAction *)self metadata];
-    v38 = [(WFAppIntentExecutionAction *)self connectionPolicySignals];
-    v39 = [v36 policyWithActionMetadata:v37 signals:v38];
+    metadata3 = [(WFAppIntentExecutionAction *)self metadata];
+    connectionPolicySignals3 = [(WFAppIntentExecutionAction *)self connectionPolicySignals];
+    v39 = [v36 policyWithActionMetadata:metadata3 signals:connectionPolicySignals3];
     v40 = *(&self->super.super.isa + v34);
     *(&self->super.super.isa + v34) = v39;
 
@@ -341,8 +341,8 @@ LABEL_41:
     v6 = self->_connectionPolicySignals;
     self->_connectionPolicySignals = v5;
 
-    v7 = [(WFAppIntentExecutionAction *)self preferredExtensionBundleIdentifier];
-    [(LNConnectionPolicySignals *)self->_connectionPolicySignals setPreferredBundleIdentifier:v7];
+    preferredExtensionBundleIdentifier = [(WFAppIntentExecutionAction *)self preferredExtensionBundleIdentifier];
+    [(LNConnectionPolicySignals *)self->_connectionPolicySignals setPreferredBundleIdentifier:preferredExtensionBundleIdentifier];
 
     connectionPolicySignals = self->_connectionPolicySignals;
   }
@@ -363,9 +363,9 @@ LABEL_41:
   aBlock[3] = &unk_1E837FA70;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(WFAppIntentExecutionAction *)self connectionPolicy];
+  connectionPolicy = [(WFAppIntentExecutionAction *)self connectionPolicy];
   v10 = 0;
-  v5 = [v4 connectionWithError:&v10];
+  v5 = [connectionPolicy connectionWithError:&v10];
   v6 = v10;
 
   if (!v5)
@@ -387,30 +387,30 @@ LABEL_41:
   return v5;
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3 result:(id)a4
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  enumerationCopy = enumeration;
+  resultCopy = result;
+  v8 = resultCopy;
+  if (resultCopy)
   {
-    v9 = [v7 value];
-    v10 = [v9 valueType];
+    value = [resultCopy value];
+    valueType = [value valueType];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v12 = [v8 value];
-    v13 = v12;
+    value2 = [v8 value];
+    v13 = value2;
     if (isKindOfClass)
     {
-      v14 = [v12 value];
+      v12Value = [value2 value];
 
-      if (v14)
+      if (v12Value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = v14;
+          v15 = v12Value;
         }
 
         else
@@ -438,26 +438,26 @@ LABEL_41:
       v23[1] = 3221225472;
       v23[2] = __83__WFAppIntentExecutionAction_defaultSerializedRepresentationForEnumeration_result___block_invoke;
       v23[3] = &unk_1E837CEF0;
-      v24 = v6;
-      v17 = [v21 if_map:v23];
+      v24 = enumerationCopy;
+      serializedDefaultParameterOption = [v21 if_map:v23];
     }
 
     else
     {
-      [v8 setContainsSensitiveContent:{-[WFAppIntentExecutionAction valueShouldStripSensitiveContent:](self, "valueShouldStripSensitiveContent:", v12)}];
+      [v8 setContainsSensitiveContent:{-[WFAppIntentExecutionAction valueShouldStripSensitiveContent:](self, "valueShouldStripSensitiveContent:", value2)}];
 
-      v17 = [objc_msgSend(v6 "singleStateClass")];
+      serializedDefaultParameterOption = [objc_msgSend(enumerationCopy "singleStateClass")];
     }
   }
 
   else
   {
-    if (v6)
+    if (enumerationCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v6;
+        v16 = enumerationCopy;
       }
 
       else
@@ -472,15 +472,15 @@ LABEL_41:
     }
 
     v18 = v16;
-    v17 = [v18 serializedDefaultParameterOption];
+    serializedDefaultParameterOption = [v18 serializedDefaultParameterOption];
 
-    if (v17)
+    if (serializedDefaultParameterOption)
     {
-      v17 = [v18 serializedDefaultParameterOption];
+      serializedDefaultParameterOption = [v18 serializedDefaultParameterOption];
     }
   }
 
-  return v17;
+  return serializedDefaultParameterOption;
 }
 
 id __83__WFAppIntentExecutionAction_defaultSerializedRepresentationForEnumeration_result___block_invoke(uint64_t a1, void *a2)
@@ -495,13 +495,13 @@ id __83__WFAppIntentExecutionAction_defaultSerializedRepresentationForEnumeratio
   return v6;
 }
 
-- (void)loadDefaultResultForEnumeration:(id)a3 completionHandler:(id)a4
+- (void)loadDefaultResultForEnumeration:(id)enumeration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  enumerationCopy = enumeration;
+  handlerCopy = handler;
   if ([(WFAction *)self shouldSkipLoadingAsynchronousDefaultValue]|| [(WFAction *)self isRunning])
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -510,9 +510,9 @@ id __83__WFAppIntentExecutionAction_defaultSerializedRepresentationForEnumeratio
     v8[1] = 3221225472;
     v8[2] = __80__WFAppIntentExecutionAction_loadDefaultResultForEnumeration_completionHandler___block_invoke;
     v8[3] = &unk_1E837CEC8;
-    v10 = v7;
+    v10 = handlerCopy;
     v8[4] = self;
-    v9 = v6;
+    v9 = enumerationCopy;
     [(WFAppIntentExecutionAction *)self getLinkActionForArchivingWithCompletionHandler:v8];
   }
 }
@@ -538,19 +538,19 @@ void __80__WFAppIntentExecutionAction_loadDefaultResultForEnumeration_completion
   [v8 fetchDefaultValueForAction:v5 actionMetadata:v9 parameterIdentifier:v10 completionHandler:v11];
 }
 
-- (void)loadDefaultSerializedRepresentationForEnumeration:(id)a3 completionHandler:(id)a4
+- (void)loadDefaultSerializedRepresentationForEnumeration:(id)enumeration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  enumerationCopy = enumeration;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __98__WFAppIntentExecutionAction_loadDefaultSerializedRepresentationForEnumeration_completionHandler___block_invoke;
   v10[3] = &unk_1E837CE78;
-  v11 = v6;
-  v12 = v7;
+  v11 = enumerationCopy;
+  v12 = handlerCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = enumerationCopy;
+  v9 = handlerCopy;
   [(WFAppIntentExecutionAction *)self loadDefaultResultForEnumeration:v8 completionHandler:v10];
 }
 
@@ -564,49 +564,49 @@ void __98__WFAppIntentExecutionAction_loadDefaultSerializedRepresentationForEnum
   (*(v4 + 16))(v4, v8, v7);
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = [v4 key];
+  enumerationCopy = enumeration;
+  v5 = [enumerationCopy key];
   v6 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v5];
 
-  v7 = [v6 valueType];
-  v8 = [v7 wf_parameterDefinitionWithParameterMetadata:v6];
-  v9 = [v6 typeSpecificMetadata];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69AC590]];
+  valueType = [v6 valueType];
+  v8 = [valueType wf_parameterDefinitionWithParameterMetadata:v6];
+  typeSpecificMetadata = [v6 typeSpecificMetadata];
+  v10 = [typeSpecificMetadata objectForKeyedSubscript:*MEMORY[0x1E69AC590]];
   v11 = [v8 linkValueWithValue:v10];
 
   v12 = [objc_alloc(MEMORY[0x1E69ACEC8]) initWithValue:v11 indentationLevel:0];
-  v13 = [(WFAppIntentExecutionAction *)self defaultSerializedRepresentationForEnumeration:v4 result:v12];
+  v13 = [(WFAppIntentExecutionAction *)self defaultSerializedRepresentationForEnumeration:enumerationCopy result:v12];
 
   return v13;
 }
 
-- (BOOL)shouldLoadDefaultStateAsynchronouslyForEnumeration:(id)a3
+- (BOOL)shouldLoadDefaultStateAsynchronouslyForEnumeration:(id)enumeration
 {
-  v4 = [a3 key];
+  v4 = [enumeration key];
   v5 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v4];
 
-  v6 = [v5 valueType];
-  v7 = [v6 wf_parameterDefinitionWithParameterMetadata:v5];
-  v8 = [v5 typeSpecificMetadata];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69AC590]];
+  valueType = [v5 valueType];
+  v7 = [valueType wf_parameterDefinitionWithParameterMetadata:v5];
+  typeSpecificMetadata = [v5 typeSpecificMetadata];
+  v9 = [typeSpecificMetadata objectForKeyedSubscript:*MEMORY[0x1E69AC590]];
   v10 = [v7 linkValueWithValue:v9];
 
   v12 = ([v5 capabilities] & 1) == 0 || v10 == 0;
   return v12;
 }
 
-- (id)createStateForParameter:(id)a3 fromSerializedRepresentation:(id)a4
+- (id)createStateForParameter:(id)parameter fromSerializedRepresentation:(id)representation
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  parameterCopy = parameter;
+  representationCopy = representation;
+  if (parameterCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = parameterCopy;
     }
 
     else
@@ -625,17 +625,17 @@ void __98__WFAppIntentExecutionAction_loadDefaultSerializedRepresentationForEnum
 
   v12.receiver = self;
   v12.super_class = WFAppIntentExecutionAction;
-  v10 = [(WFAction *)&v12 createStateForParameter:v6 fromSerializedRepresentation:v7];
+  v10 = [(WFAction *)&v12 createStateForParameter:parameterCopy fromSerializedRepresentation:representationCopy];
 
   return v10;
 }
 
-- (BOOL)valueShouldStripSensitiveContent:(id)a3
+- (BOOL)valueShouldStripSensitiveContent:(id)content
 {
-  v4 = a3;
-  if (-[WFAppIntentExecutionAction shouldStripSensitiveContentFromParameterSerialization](self, "shouldStripSensitiveContentFromParameterSerialization") && ([v4 valueType], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "wf_entityValueType"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  contentCopy = content;
+  if (-[WFAppIntentExecutionAction shouldStripSensitiveContentFromParameterSerialization](self, "shouldStripSensitiveContentFromParameterSerialization") && ([contentCopy valueType], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "wf_entityValueType"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [v4 valueType];
+    valueType = [contentCopy valueType];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -645,13 +645,13 @@ void __98__WFAppIntentExecutionAction_loadDefaultSerializedRepresentationForEnum
       v20 = &v19;
       v21 = 0x2020000000;
       v22 = 0;
-      v9 = [v4 value];
-      if (v9)
+      value = [contentCopy value];
+      if (value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = v9;
+          v10 = value;
         }
 
         else
@@ -680,13 +680,13 @@ void __98__WFAppIntentExecutionAction_loadDefaultSerializedRepresentationForEnum
 
     else
     {
-      v13 = [v4 value];
-      if (v13)
+      value2 = [contentCopy value];
+      if (value2)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v13;
+          v14 = value2;
         }
 
         else
@@ -702,8 +702,8 @@ void __98__WFAppIntentExecutionAction_loadDefaultSerializedRepresentationForEnum
 
       v15 = v14;
 
-      v16 = [v15 isTransient];
-      v11 = v16 ^ 1;
+      isTransient = [v15 isTransient];
+      v11 = isTransient ^ 1;
     }
   }
 
@@ -744,14 +744,14 @@ void __63__WFAppIntentExecutionAction_valueShouldStripSensitiveContent___block_i
   *a4 = *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (BOOL)enumeration:(id)a3 shouldStripSenstitiveContentFromValue:(id)a4
+- (BOOL)enumeration:(id)enumeration shouldStripSenstitiveContentFromValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  enumerationCopy = enumeration;
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 value];
-    v9 = [(WFAppIntentExecutionAction *)self valueShouldStripSensitiveContent:v8];
+    value = [valueCopy value];
+    v9 = [(WFAppIntentExecutionAction *)self valueShouldStripSensitiveContent:value];
   }
 
   else
@@ -762,27 +762,27 @@ void __63__WFAppIntentExecutionAction_valueShouldStripSensitiveContent___block_i
   return v9;
 }
 
-- (id)enumeration:(id)a3 accessoryImageForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration accessoryImageForPossibleState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  if (stateCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 image];
+    image = [stateCopy image];
   }
 
   else
   {
-    v7 = 0;
+    image = 0;
   }
 
-  return v7;
+  return image;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v5 = a4;
-  if ([v5 valueNeedsDisplayRepresentation])
+  stateCopy = state;
+  if ([stateCopy valueNeedsDisplayRepresentation])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -790,15 +790,15 @@ void __63__WFAppIntentExecutionAction_valueShouldStripSensitiveContent___block_i
     v8[3] = &unk_1E837CE28;
     v8[4] = self;
     [(WFAppIntentExecutionAction *)self fetchMissingDisplayRepresentationValuesWithCompletionHandler:v8];
-    v6 = 0;
+    localizedTitle = 0;
   }
 
   else
   {
-    v6 = [v5 localizedTitle];
+    localizedTitle = [stateCopy localizedTitle];
   }
 
-  return v6;
+  return localizedTitle;
 }
 
 void __73__WFAppIntentExecutionAction_enumeration_localizedLabelForPossibleState___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -863,48 +863,48 @@ void __73__WFAppIntentExecutionAction_enumeration_localizedLabelForPossibleState
   [*(a1 + 32) setParameterState:v8 forKey:v5];
 }
 
-- (void)completeLoadingPossibleStatesForEnumerationParameter:(id)a3 result:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)completeLoadingPossibleStatesForEnumerationParameter:(id)parameter result:(id)result error:(id)error completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  parameterCopy = parameter;
+  resultCopy = result;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (!resultCopy)
   {
-    v24 = [(WFAction *)self localizedErrorWithLinkError:v12];
-    v13[2](v13, 0, v24);
+    v24 = [(WFAction *)self localizedErrorWithLinkError:errorCopy];
+    handlerCopy[2](handlerCopy, 0, v24);
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v14 = [v11 dependentParameterIdentifiers];
-  v15 = [(WFAppIntentExecutionAction *)self dependentParameterIdentifiers];
-  v16 = [v10 key];
-  [v15 setObject:v14 forKeyedSubscript:v16];
+  dependentParameterIdentifiers = [resultCopy dependentParameterIdentifiers];
+  dependentParameterIdentifiers2 = [(WFAppIntentExecutionAction *)self dependentParameterIdentifiers];
+  v16 = [parameterCopy key];
+  [dependentParameterIdentifiers2 setObject:dependentParameterIdentifiers forKeyedSubscript:v16];
 
   v17 = getWFAppIntentsLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v10 key];
+    v18 = [parameterCopy key];
     *buf = 136315650;
     v35 = "[WFAppIntentExecutionAction completeLoadingPossibleStatesForEnumerationParameter:result:error:completionHandler:]";
     v36 = 2112;
     v37 = v18;
     v38 = 2112;
-    v39 = v11;
+    v39 = resultCopy;
     _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_DEFAULT, "%s Completing loading possible states for parameter: %@ with result: %@.", buf, 0x20u);
   }
 
-  v19 = [v11 usesIndexedCollation];
-  v20 = [v11 promptLabel];
-  v21 = [v20 localizedStringForLocaleIdentifier:0];
-  [v10 setLocalizedPrompt:v21];
+  usesIndexedCollation = [resultCopy usesIndexedCollation];
+  promptLabel = [resultCopy promptLabel];
+  v21 = [promptLabel localizedStringForLocaleIdentifier:0];
+  [parameterCopy setLocalizedPrompt:v21];
 
-  v22 = [v11 sections];
+  sections = [resultCopy sections];
 
-  if (!v22)
+  if (!sections)
   {
     v25 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -916,25 +916,25 @@ LABEL_10:
 
     v26 = objc_alloc(MEMORY[0x1E696E918]);
     v24 = [v26 initWithItems:MEMORY[0x1E695E0F0]];
-    (v13)[2](v13, v24, 0);
+    (handlerCopy)[2](handlerCopy, v24, 0);
     goto LABEL_10;
   }
 
-  v23 = [v11 sections];
+  sections2 = [resultCopy sections];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __114__WFAppIntentExecutionAction_completeLoadingPossibleStatesForEnumerationParameter_result_error_completionHandler___block_invoke;
   v32[3] = &unk_1E837CDB0;
   v32[4] = self;
-  v33 = v10;
+  v33 = parameterCopy;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __114__WFAppIntentExecutionAction_completeLoadingPossibleStatesForEnumerationParameter_result_error_completionHandler___block_invoke_3;
   v28[3] = &unk_1E837CDD8;
-  v31 = v19;
+  v31 = usesIndexedCollation;
   v29 = v33;
-  v30 = v13;
-  [v23 if_mapAsynchronously:v32 completionHandler:v28];
+  v30 = handlerCopy;
+  [sections2 if_mapAsynchronously:v32 completionHandler:v28];
 
 LABEL_11:
   v27 = *MEMORY[0x1E69E9840];
@@ -1058,19 +1058,19 @@ void __114__WFAppIntentExecutionAction_completeLoadingPossibleStatesForEnumerati
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)loadDynamicResultForEnumeration:(id)a3 searchTerm:(id)a4 optionsProviderReference:(id)a5 completionHandler:(id)a6
+- (void)loadDynamicResultForEnumeration:(id)enumeration searchTerm:(id)term optionsProviderReference:(id)reference completionHandler:(id)handler
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  enumerationCopy = enumeration;
+  termCopy = term;
+  referenceCopy = reference;
+  handlerCopy = handler;
+  if (enumerationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v10;
+      v14 = enumerationCopy;
     }
 
     else
@@ -1085,43 +1085,43 @@ void __114__WFAppIntentExecutionAction_completeLoadingPossibleStatesForEnumerati
   }
 
   v15 = v14;
-  v16 = [v15 parameterMetadata];
-  v17 = [v15 searchType];
+  parameterMetadata = [v15 parameterMetadata];
+  searchType = [v15 searchType];
 
-  if (v17 == 2 && [v11 length])
+  if (searchType == 2 && [termCopy length])
   {
-    v18 = [v16 typeSpecificMetadata];
-    v19 = [v18 objectForKeyedSubscript:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata"];
+    typeSpecificMetadata = [parameterMetadata typeSpecificMetadata];
+    v19 = [typeSpecificMetadata objectForKeyedSubscript:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata"];
 
-    v20 = [(WFAppIntentExecutionAction *)self connection];
-    v21 = v20;
-    if (v19 && v20)
+    connection = [(WFAppIntentExecutionAction *)self connection];
+    v21 = connection;
+    if (v19 && connection)
     {
-      v43 = v12;
-      v44 = [_TtC11WorkflowKit25WFSpotlightQueryCondition searchTerm:v11];
+      v43 = referenceCopy;
+      v44 = [_TtC11WorkflowKit25WFSpotlightQueryCondition searchTerm:termCopy];
       v22 = [_TtC11WorkflowKit25WFSpotlightQueryCondition alloc];
       v23 = *MEMORY[0x1E69ACCD8];
       v42 = v21;
-      v24 = [v19 identifier];
-      v25 = [_TtC11WorkflowKit21WFSpotlightQueryValue string:v24];
+      identifier = [v19 identifier];
+      v25 = [_TtC11WorkflowKit21WFSpotlightQueryValue string:identifier];
       v41 = [(WFSpotlightQueryCondition *)v22 initWithKey:v23 operator:4 value:v25];
 
       v26 = [[_TtC11WorkflowKit23WFSpotlightQueryBuilder alloc] initWithOperator:0];
       v27 = [(WFSpotlightQueryBuilder *)v26 addCondition:v41];
       v28 = [v27 addCondition:v44];
-      v29 = [v28 buildQueryString];
+      buildQueryString = [v28 buildQueryString];
 
       v30 = objc_alloc_init(MEMORY[0x1E6964E70]);
       [v30 setMaxCount:30];
       [v30 setDisableSemanticSearch:0];
-      v31 = [(WFAppIntentExecutionAction *)self connection];
-      v32 = [v31 bundleIdentifier];
-      v58[0] = v32;
+      connection2 = [(WFAppIntentExecutionAction *)self connection];
+      bundleIdentifier = [connection2 bundleIdentifier];
+      v58[0] = bundleIdentifier;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:1];
       [v30 setBundleIDs:v33];
 
       [v30 setFetchAttributes:&unk_1F4A9B740];
-      v34 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:v29 queryContext:v30];
+      v34 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:buildQueryString queryContext:v30];
       v35 = objc_opt_new();
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
@@ -1141,17 +1141,17 @@ void __114__WFAppIntentExecutionAction_completeLoadingPossibleStatesForEnumerati
       v21 = v42;
       v52 = v38;
       v53 = v42;
-      v54 = v13;
+      v54 = handlerCopy;
       v39 = v36;
       [v34 setCompletionHandler:v50];
       [v34 start];
 
-      v12 = v43;
+      referenceCopy = v43;
     }
 
     else
     {
-      (*(v13 + 2))(v13, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -1161,11 +1161,11 @@ void __114__WFAppIntentExecutionAction_completeLoadingPossibleStatesForEnumerati
     v45[1] = 3221225472;
     v45[2] = __116__WFAppIntentExecutionAction_loadDynamicResultForEnumeration_searchTerm_optionsProviderReference_completionHandler___block_invoke_5;
     v45[3] = &unk_1E837CD10;
-    v49 = v13;
+    v49 = handlerCopy;
     v45[4] = self;
-    v46 = v16;
-    v47 = v12;
-    v48 = v11;
+    v46 = parameterMetadata;
+    v47 = referenceCopy;
+    v48 = termCopy;
     [(WFAppIntentExecutionAction *)self getLinkActionForArchivingWithCompletionHandler:v45];
 
     v19 = v49;
@@ -1340,23 +1340,23 @@ id __116__WFAppIntentExecutionAction_loadDynamicResultForEnumeration_searchTerm_
   return v4;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 optionsProviderReference:(id)a5 completionHandler:(id)a6
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term optionsProviderReference:(id)reference completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  enumerationCopy = enumeration;
+  termCopy = term;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTerm_optionsProviderReference_completionHandler___block_invoke;
   v16[3] = &unk_1E837CC78;
-  v17 = v10;
-  v18 = v11;
-  v19 = self;
-  v20 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
-  [(WFAppIntentExecutionAction *)self loadDynamicResultForEnumeration:v15 searchTerm:v14 optionsProviderReference:a5 completionHandler:v16];
+  v17 = enumerationCopy;
+  v18 = termCopy;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = termCopy;
+  v15 = enumerationCopy;
+  [(WFAppIntentExecutionAction *)self loadDynamicResultForEnumeration:v15 searchTerm:v14 optionsProviderReference:reference completionHandler:v16];
 }
 
 void __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTerm_optionsProviderReference_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1382,32 +1382,32 @@ void __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTe
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  enumerationCopy = enumeration;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke;
   v12[3] = &unk_1E837CC50;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(WFAppIntentExecutionAction *)self loadDynamicResultForEnumeration:v11 searchTerm:a4 completionHandler:v12];
+  v13 = enumerationCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = enumerationCopy;
+  [(WFAppIntentExecutionAction *)self loadDynamicResultForEnumeration:v11 searchTerm:term completionHandler:v12];
 }
 
-- (void)fetchMissingDisplayRepresentationValuesWithCompletionHandler:(id)a3
+- (void)fetchMissingDisplayRepresentationValuesWithCompletionHandler:(id)handler
 {
   v80 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFAppIntentExecutionAction *)self parametersNeedingDisplayRepresentation];
-  if ([v5 count])
+  handlerCopy = handler;
+  parametersNeedingDisplayRepresentation = [(WFAppIntentExecutionAction *)self parametersNeedingDisplayRepresentation];
+  if ([parametersNeedingDisplayRepresentation count])
   {
-    v45 = v4;
+    v45 = handlerCopy;
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [v5 valueForKey:@"name"];
+    v7 = [parametersNeedingDisplayRepresentation valueForKey:@"name"];
     v8 = [v6 setWithArray:v7];
     [(WFAppIntentExecutionAction *)self setFetchingDisplayRepresentationParameterKeys:v8];
 
@@ -1417,12 +1417,12 @@ void __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTe
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    obj = v5;
+    obj = parametersNeedingDisplayRepresentation;
     v49 = [obj countByEnumeratingWithState:&v71 objects:v79 count:16];
     if (v49)
     {
       v47 = *v72;
-      v48 = v5;
+      v48 = parametersNeedingDisplayRepresentation;
       v10 = 0x1E695D000uLL;
       do
       {
@@ -1435,20 +1435,20 @@ void __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTe
           }
 
           v12 = *(*(&v71 + 1) + 8 * v11);
-          v13 = [v12 typeSpecificMetadata];
-          v54 = [v13 objectForKey:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata"];
+          typeSpecificMetadata = [v12 typeSpecificMetadata];
+          v54 = [typeSpecificMetadata objectForKey:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata"];
 
           v53 = v12;
-          v14 = [v12 name];
-          v15 = [(WFAction *)self parameterStateForKey:v14 fallingBackToDefaultValue:0];
+          name = [v12 name];
+          v15 = [(WFAction *)self parameterStateForKey:name fallingBackToDefaultValue:0];
 
           objc_opt_class();
           v50 = v15;
           v51 = v11;
           if (objc_opt_isKindOfClass())
           {
-            v16 = [v15 parameterStates];
-            v17 = [v16 if_compactMap:&__block_literal_global_359];
+            parameterStates = [v15 parameterStates];
+            v17 = [parameterStates if_compactMap:&__block_literal_global_359];
           }
 
           else
@@ -1484,20 +1484,20 @@ void __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTe
                   objc_enumerationMutation(v52);
                 }
 
-                v19 = [*(*(&v67 + 1) + 8 * i) value];
-                v20 = [v19 value];
-                v21 = WFSerializedIdentifierFromLinkValue(v20);
+                value = [*(*(&v67 + 1) + 8 * i) value];
+                v19Value = [value value];
+                v21 = WFSerializedIdentifierFromLinkValue(v19Value);
 
                 if (v21)
                 {
                   v22 = objc_alloc(MEMORY[0x1E69AC7D8]);
-                  v23 = [v54 identifier];
-                  v24 = [v22 initWithTypeIdentifier:v23 instanceIdentifier:v21];
+                  identifier = [v54 identifier];
+                  v24 = [v22 initWithTypeIdentifier:identifier instanceIdentifier:v21];
 
-                  v25 = self;
-                  v26 = [(WFAppIntentExecutionAction *)self connection];
-                  v27 = [v26 bundleIdentifier];
-                  v28 = [v54 mangledTypeNameForBundleIdentifier:v27];
+                  selfCopy = self;
+                  connection = [(WFAppIntentExecutionAction *)self connection];
+                  bundleIdentifier = [connection bundleIdentifier];
+                  v28 = [v54 mangledTypeNameForBundleIdentifier:bundleIdentifier];
 
                   v29 = [v9 objectForKey:v28];
                   if (v29 && (v30 = *(v10 + 3784), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1521,23 +1521,23 @@ void __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTe
                   v34 = [v57 objectForKey:v24];
                   if (v34 && (v35 = *(v10 + 3784), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
-                    v36 = [v34 mutableCopy];
-                    v37 = [v53 name];
-                    [v36 addObject:v37];
+                    name3 = [v34 mutableCopy];
+                    name2 = [v53 name];
+                    [name3 addObject:name2];
 
-                    v38 = [v36 copy];
+                    v38 = [name3 copy];
                   }
 
                   else
                   {
 
-                    v36 = [v53 name];
-                    v75 = v36;
+                    name3 = [v53 name];
+                    v75 = name3;
                     v38 = [*(v10 + 3784) arrayWithObjects:&v75 count:1];
                   }
 
                   [v57 setObject:v38 forKey:v24];
-                  self = v25;
+                  self = selfCopy;
                   v9 = v33;
                   v10 = 0x1E695D000;
                 }
@@ -1550,7 +1550,7 @@ void __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTe
           }
 
           v11 = v51 + 1;
-          v5 = v48;
+          parametersNeedingDisplayRepresentation = v48;
         }
 
         while (v51 + 1 != v49);
@@ -1561,33 +1561,33 @@ void __117__WFAppIntentExecutionAction_loadPossibleStatesForEnumeration_searchTe
     }
 
     v39 = objc_opt_new();
-    v40 = [v9 allKeys];
+    allKeys = [v9 allKeys];
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __91__WFAppIntentExecutionAction_fetchMissingDisplayRepresentationValuesWithCompletionHandler___block_invoke_2;
     v62[3] = &unk_1E837CC28;
     v63 = v9;
-    v64 = self;
+    selfCopy2 = self;
     v65 = v57;
     v66 = v39;
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __91__WFAppIntentExecutionAction_fetchMissingDisplayRepresentationValuesWithCompletionHandler___block_invoke_3_376;
     v58[3] = &unk_1E837ECB8;
-    v60 = self;
+    selfCopy3 = self;
     v61 = v45;
     v59 = v66;
     v41 = v9;
     v42 = v57;
     v43 = v66;
-    [v40 if_enumerateAsynchronouslyInSequence:v62 completionHandler:v58];
+    [allKeys if_enumerateAsynchronouslyInSequence:v62 completionHandler:v58];
 
-    v4 = v45;
+    handlerCopy = v45;
   }
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x1E695E0F8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], 0);
   }
 
   v44 = *MEMORY[0x1E69E9840];
@@ -2205,14 +2205,14 @@ void *__91__WFAppIntentExecutionAction_fetchMissingDisplayRepresentationValuesWi
 
 - (id)parametersNeedingDisplayRepresentation
 {
-  v3 = [(WFAppIntentExecutionAction *)self metadata];
-  v4 = [v3 parameters];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  parameters = [metadata parameters];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__WFAppIntentExecutionAction_parametersNeedingDisplayRepresentation__block_invoke;
   v7[3] = &unk_1E837CB40;
   v7[4] = self;
-  v5 = [v4 if_objectsPassingTest:v7];
+  v5 = [parameters if_objectsPassingTest:v7];
 
   return v5;
 }
@@ -2281,37 +2281,37 @@ void __68__WFAppIntentExecutionAction_parametersNeedingDisplayRepresentation__bl
   *a4 = *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (id)alertForLinkConfirmationDialogRequest:(id)a3 preferredStyle:(int64_t)a4 handler:(id)a5
+- (id)alertForLinkConfirmationDialogRequest:(id)request preferredStyle:(int64_t)style handler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E6996C70];
-  v9 = a3;
-  v10 = [v8 alertWithPreferredStyle:a4];
-  v11 = [v9 title];
-  [v10 setTitle:v11];
+  requestCopy = request;
+  v10 = [v8 alertWithPreferredStyle:style];
+  title = [requestCopy title];
+  [v10 setTitle:title];
 
   v12 = MEMORY[0x1E6996C78];
-  v13 = [v9 yesButton];
-  v14 = [v13 title];
+  yesButton = [requestCopy yesButton];
+  title2 = [yesButton title];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __91__WFAppIntentExecutionAction_alertForLinkConfirmationDialogRequest_preferredStyle_handler___block_invoke;
   v28[3] = &unk_1E837F4E8;
-  v15 = v7;
+  v15 = handlerCopy;
   v29 = v15;
-  v16 = [v12 buttonWithTitle:v14 style:0 handler:v28];
+  v16 = [v12 buttonWithTitle:title2 style:0 handler:v28];
 
   v17 = MEMORY[0x1E6996C78];
-  v18 = [v9 noButton];
+  noButton = [requestCopy noButton];
 
-  v19 = [v18 title];
+  title3 = [noButton title];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __91__WFAppIntentExecutionAction_alertForLinkConfirmationDialogRequest_preferredStyle_handler___block_invoke_2;
   v26 = &unk_1E837F4E8;
   v27 = v15;
   v20 = v15;
-  v21 = [v17 buttonWithTitle:v19 style:1 handler:&v23];
+  v21 = [v17 buttonWithTitle:title3 style:1 handler:&v23];
 
   [v10 addButton:{v16, v23, v24, v25, v26}];
   [v10 addButton:v21];
@@ -2319,25 +2319,25 @@ void __68__WFAppIntentExecutionAction_parametersNeedingDisplayRepresentation__bl
   return v10;
 }
 
-- (void)alertForLinkActionConfirmationWithParameterMetadata:(id)a3 dialogString:(id)a4 request:(id)a5 completionHandler:(id)a6
+- (void)alertForLinkActionConfirmationWithParameterMetadata:(id)metadata dialogString:(id)string request:(id)request completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  stringCopy = string;
+  requestCopy = request;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __121__WFAppIntentExecutionAction_alertForLinkActionConfirmationWithParameterMetadata_dialogString_request_completionHandler___block_invoke;
   block[3] = &unk_1E837CAF0;
-  v19 = v12;
-  v20 = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v13;
-  v14 = v13;
-  v15 = v11;
-  v16 = v10;
-  v17 = v12;
+  v19 = requestCopy;
+  selfCopy = self;
+  v21 = metadataCopy;
+  v22 = stringCopy;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = stringCopy;
+  v16 = metadataCopy;
+  v17 = requestCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -2388,40 +2388,40 @@ void __121__WFAppIntentExecutionAction_alertForLinkActionConfirmationWithParamet
   (*(*(a1 + 64) + 16))();
 }
 
-- (id)alertForLinkActionConfirmationWithActionMetadata:(id)a3 dialogString:(id)a4 request:(id)a5 encodedSnippetActionToolInvocation:(id)a6
+- (id)alertForLinkActionConfirmationWithActionMetadata:(id)metadata dialogString:(id)string request:(id)request encodedSnippetActionToolInvocation:(id)invocation
 {
-  v9 = a5;
+  requestCopy = request;
   v10 = MEMORY[0x1E695DF58];
-  v39 = a6;
-  v37 = a4;
-  v11 = a3;
-  v12 = [v10 currentLocale];
-  v13 = [v12 localeIdentifier];
+  invocationCopy = invocation;
+  stringCopy = string;
+  metadataCopy = metadata;
+  currentLocale = [v10 currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v14 = [v9 result];
-  v15 = [v14 output];
-  v16 = [v15 confirmationActionName];
+  result = [requestCopy result];
+  output = [result output];
+  confirmationActionName = [output confirmationActionName];
 
   v17 = objc_alloc(MEMORY[0x1E69E0BB0]);
-  v41 = [v9 result];
-  v38 = [v41 output];
-  v18 = [v38 shouldShowPrompt];
-  v32 = v9;
-  v36 = [v9 result];
-  v35 = [v36 output];
-  v30 = [v35 viewSnippet];
-  v34 = [v9 result];
-  v33 = [v34 output];
-  v19 = [v33 snippetAction];
-  v20 = [v16 acceptLabel];
-  v40 = v13;
-  v21 = [v20 localizedStringForLocaleIdentifier:v13];
-  v22 = [v16 denyLabel];
-  v23 = [v22 localizedStringForLocaleIdentifier:v13];
+  result2 = [requestCopy result];
+  output2 = [result2 output];
+  shouldShowPrompt = [output2 shouldShowPrompt];
+  v32 = requestCopy;
+  result3 = [requestCopy result];
+  output3 = [result3 output];
+  viewSnippet = [output3 viewSnippet];
+  result4 = [requestCopy result];
+  output4 = [result4 output];
+  snippetAction = [output4 snippetAction];
+  acceptLabel = [confirmationActionName acceptLabel];
+  v40 = localeIdentifier;
+  v21 = [acceptLabel localizedStringForLocaleIdentifier:localeIdentifier];
+  denyLabel = [confirmationActionName denyLabel];
+  v23 = [denyLabel localizedStringForLocaleIdentifier:localeIdentifier];
   v24 = [objc_alloc(MEMORY[0x1E69E0A98]) initWithTitle:0 icon:0];
-  LOBYTE(v29) = [v16 destructive];
+  LOBYTE(v29) = [confirmationActionName destructive];
   LOBYTE(v28) = 0;
-  v31 = [v17 initWithActionMetadata:v11 showPrompt:v18 dialogString:v37 viewSnippet:v30 snippetAction:v19 encodedSnippetActionToolInvocation:v39 yesText:v21 noText:v23 attribution:v24 parameterInfo:0 isContinueInAppRequest:v28 systemStyle:0 destructive:v29];
+  v31 = [v17 initWithActionMetadata:metadataCopy showPrompt:shouldShowPrompt dialogString:stringCopy viewSnippet:viewSnippet snippetAction:snippetAction encodedSnippetActionToolInvocation:invocationCopy yesText:v21 noText:v23 attribution:v24 parameterInfo:0 isContinueInAppRequest:v28 systemStyle:0 destructive:v29];
 
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
@@ -2434,27 +2434,27 @@ void __121__WFAppIntentExecutionAction_alertForLinkActionConfirmationWithParamet
   return v26;
 }
 
-- (void)confirmContinueInAppWithRequest:(id)a3 dialogString:(id)a4
+- (void)confirmContinueInAppWithRequest:(id)request dialogString:(id)string
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = MEMORY[0x1E695DFF8];
-  v8 = a4;
+  stringCopy = string;
   v9 = [v7 fileURLWithPath:@"/System/Library/Frameworks/AppIntents.framework"];
   v10 = [objc_alloc(MEMORY[0x1E69AC9E0]) initWithKey:@"Continue" table:0 bundleURL:v9];
   v11 = [objc_alloc(MEMORY[0x1E69AC9E0]) initWithKey:@"Cancel" table:0 bundleURL:v9];
   v12 = objc_alloc(MEMORY[0x1E69ACE18]);
   v13 = [v12 initWithType:0 destructive:0 acceptLabel:v10 acceptAlternatives:MEMORY[0x1E695E0F0] denyLabel:v11 denyAlternatives:MEMORY[0x1E695E0F0]];
-  v14 = [(WFAction *)self userInterface];
-  v15 = [(WFAppIntentExecutionAction *)self metadata];
-  v16 = [v6 dialog];
+  userInterface = [(WFAction *)self userInterface];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  dialog = [requestCopy dialog];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __75__WFAppIntentExecutionAction_confirmContinueInAppWithRequest_dialogString___block_invoke;
   v19[3] = &unk_1E837CA00;
-  v20 = v6;
-  v17 = v6;
+  v20 = requestCopy;
+  v17 = requestCopy;
   LOBYTE(v18) = 1;
-  [v14 showLinkActionConfirmationWithActionMetadata:v15 showPrompt:1 dialog:v16 dialogString:v8 viewSnippet:0 snippetAction:0 encodedSnippetActionToolInvocation:0 confirmationActionName:v13 isContinueInAppRequest:v18 systemStyle:0 completionHandler:v19];
+  [userInterface showLinkActionConfirmationWithActionMetadata:metadata showPrompt:1 dialog:dialog dialogString:stringCopy viewSnippet:0 snippetAction:0 encodedSnippetActionToolInvocation:0 confirmationActionName:v13 isContinueInAppRequest:v18 systemStyle:0 completionHandler:v19];
 }
 
 void __75__WFAppIntentExecutionAction_confirmContinueInAppWithRequest_dialogString___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -2482,44 +2482,44 @@ void __75__WFAppIntentExecutionAction_confirmContinueInAppWithRequest_dialogStri
 LABEL_7:
 }
 
-- (BOOL)progressIsPersistentInSystemApertureForExecutor:(id)a3
+- (BOOL)progressIsPersistentInSystemApertureForExecutor:(id)executor
 {
-  v4 = [(WFAction *)self userInterface];
+  userInterface = [(WFAction *)self userInterface];
 
-  if (!v4)
+  if (!userInterface)
   {
     return 0;
   }
 
-  v5 = [(WFAction *)self userInterface];
-  v6 = [v5 progressIsPersistentInSystemAperture];
+  userInterface2 = [(WFAction *)self userInterface];
+  progressIsPersistentInSystemAperture = [userInterface2 progressIsPersistentInSystemAperture];
 
-  return v6;
+  return progressIsPersistentInSystemAperture;
 }
 
-- (void)executorWillLaunchApplicationInForeground:(id)a3
+- (void)executorWillLaunchApplicationInForeground:(id)foreground
 {
-  v4 = [(WFAction *)self userInterface];
+  userInterface = [(WFAction *)self userInterface];
 
-  if (v4)
+  if (userInterface)
   {
-    v5 = [(WFAction *)self userInterface];
-    [v5 applicationWillLaunchInForeground];
+    userInterface2 = [(WFAction *)self userInterface];
+    [userInterface2 applicationWillLaunchInForeground];
   }
 }
 
-- (void)executor:(id)a3 needsContinueInAppWithRequest:(id)a4
+- (void)executor:(id)executor needsContinueInAppWithRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 dialog];
+  requestCopy = request;
+  dialog = [requestCopy dialog];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__WFAppIntentExecutionAction_executor_needsContinueInAppWithRequest___block_invoke;
   v8[3] = &unk_1E837CA78;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 getResultWithCompletionHandler:v8];
+  v9 = requestCopy;
+  v7 = requestCopy;
+  [dialog getResultWithCompletionHandler:v8];
 }
 
 void __69__WFAppIntentExecutionAction_executor_needsContinueInAppWithRequest___block_invoke(uint64_t a1, void *a2)
@@ -2531,72 +2531,72 @@ void __69__WFAppIntentExecutionAction_executor_needsContinueInAppWithRequest___b
   [v2 confirmContinueInAppWithRequest:v3 dialogString:v4];
 }
 
-- (void)executor:(id)a3 preferredContentSizeForViewSnippetWithCompletion:(id)a4
+- (void)executor:(id)executor preferredContentSizeForViewSnippetWithCompletion:(id)completion
 {
-  v10 = a4;
-  v5 = [(WFAction *)self userInterface];
+  completionCopy = completion;
+  userInterface = [(WFAction *)self userInterface];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFAppIntentExecutionAction *)self metadata];
-    v8 = ([v7 outputFlags] >> 2) & 1;
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    v8 = ([metadata outputFlags] >> 2) & 1;
 
-    v9 = [(WFAction *)self userInterface];
-    [v9 getPreferredSizeForLinkViewSnippetWithDialog:v8 completion:v10];
+    userInterface2 = [(WFAction *)self userInterface];
+    [userInterface2 getPreferredSizeForLinkViewSnippetWithDialog:v8 completion:completionCopy];
   }
 
   else
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)executor:(id)a3 environmentForViewSnippetWithCompletion:(id)a4
+- (void)executor:(id)executor environmentForViewSnippetWithCompletion:(id)completion
 {
-  v10 = a4;
-  v5 = [(WFAction *)self userInterface];
+  completionCopy = completion;
+  userInterface = [(WFAction *)self userInterface];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFAppIntentExecutionAction *)self metadata];
-    v8 = ([v7 outputFlags] >> 2) & 1;
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    v8 = ([metadata outputFlags] >> 2) & 1;
 
-    v9 = [(WFAction *)self userInterface];
-    [v9 getEnvironmentForLinkViewSnippetWithDialog:v8 completion:v10];
+    userInterface2 = [(WFAction *)self userInterface];
+    [userInterface2 getEnvironmentForLinkViewSnippetWithDialog:v8 completion:completionCopy];
   }
 
   else
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)executor:(id)a3 needsActionConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsActionConfirmationWithRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 result];
-  v7 = [v6 output];
-  v8 = [v7 dialog];
+  requestCopy = request;
+  result = [requestCopy result];
+  output = [result output];
+  dialog = [output dialog];
 
-  if (v8)
+  if (dialog)
   {
-    v9 = [v5 result];
-    v10 = [v9 output];
-    v11 = [v10 dialog];
+    result2 = [requestCopy result];
+    output2 = [result2 output];
+    dialog2 = [output2 dialog];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __74__WFAppIntentExecutionAction_executor_needsActionConfirmationWithRequest___block_invoke;
     v12[3] = &unk_1E837CA78;
     v12[4] = self;
-    v13 = v5;
-    [v11 getResultWithCompletionHandler:v12];
+    v13 = requestCopy;
+    [dialog2 getResultWithCompletionHandler:v12];
   }
 
   else
   {
-    [(WFAppIntentExecutionAction *)self confirmActionWithRequest:v5 dialogString:0];
+    [(WFAppIntentExecutionAction *)self confirmActionWithRequest:requestCopy dialogString:0];
   }
 }
 
@@ -2609,61 +2609,61 @@ void __74__WFAppIntentExecutionAction_executor_needsActionConfirmationWithReques
   [v2 confirmActionWithRequest:v3 dialogString:v4];
 }
 
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  executorCopy = executor;
+  requestCopy = request;
   [MEMORY[0x1E695DF30] raise:@"Subclass must override" format:@"Subclasses must override executor:needsDisambiguationWithRequest:"];
   __break(1u);
 }
 
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  executorCopy = executor;
+  requestCopy = request;
   [MEMORY[0x1E695DF30] raise:@"Subclass must override" format:@"Subclasses must override executor:needsConfirmationWithRequest:"];
   __break(1u);
 }
 
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4
+- (void)executor:(id)executor needsValueWithRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  executorCopy = executor;
+  requestCopy = request;
   [MEMORY[0x1E695DF30] raise:@"Subclass must override" format:@"Subclasses must override executor:needsValueWithRequest:"];
   __break(1u);
 }
 
-- (void)confirmActionWithRequest:(id)a3 dialogString:(id)a4
+- (void)confirmActionWithRequest:(id)request dialogString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  stringCopy = string;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__WFAppIntentExecutionAction_confirmActionWithRequest_dialogString___block_invoke;
   aBlock[3] = &unk_1E837CA28;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = stringCopy;
   v22 = v8;
-  v9 = v6;
+  v9 = requestCopy;
   v23 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [v9 result];
-  v12 = [v11 output];
-  v13 = [v12 snippetAction];
+  result = [v9 result];
+  output = [result output];
+  snippetAction = [output snippetAction];
 
-  if (v13)
+  if (snippetAction)
   {
-    v14 = [v9 result];
-    v15 = [v14 output];
-    v16 = [v15 snippetAction];
-    v17 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-    v18 = [v17 bundleIdentifier];
+    result2 = [v9 result];
+    output2 = [result2 output];
+    snippetAction2 = [output2 snippetAction];
+    fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+    bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __68__WFAppIntentExecutionAction_confirmActionWithRequest_dialogString___block_invoke_3;
     v19[3] = &unk_1E837CA50;
     v20 = v10;
-    [WFToolInvocation invocationFrom:v16 bundleIdentifier:v18 deviceIdentifier:0 completionHandler:v19];
+    [WFToolInvocation invocationFrom:snippetAction2 bundleIdentifier:bundleIdentifier deviceIdentifier:0 completionHandler:v19];
   }
 
   else
@@ -2756,52 +2756,52 @@ void __68__WFAppIntentExecutionAction_confirmActionWithRequest_dialogString___bl
 LABEL_7:
 }
 
-- (void)disambiguateParameterForParameterName:(id)a3 request:(id)a4 dialogString:(id)a5
+- (void)disambiguateParameterForParameterName:(id)name request:(id)request dialogString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  requestCopy = request;
+  stringCopy = string;
+  if (nameCopy)
   {
-    v11 = v8;
+    parameterName = nameCopy;
   }
 
   else
   {
-    v11 = [v9 parameterName];
+    parameterName = [requestCopy parameterName];
   }
 
-  v12 = v11;
-  v13 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v11];
+  v12 = parameterName;
+  v13 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:parameterName];
   if (v13)
   {
     v14 = [MEMORY[0x1E6996C70] alertWithPreferredStyle:1];
-    if ([v10 length])
+    if ([stringCopy length])
     {
-      [v14 setTitle:v10];
+      [v14 setTitle:stringCopy];
     }
 
     else
     {
-      v16 = [(WFAction *)self localizedDefaultDisambiguationPrompt];
-      [v14 setTitle:v16];
+      localizedDefaultDisambiguationPrompt = [(WFAction *)self localizedDefaultDisambiguationPrompt];
+      [v14 setTitle:localizedDefaultDisambiguationPrompt];
     }
 
-    v17 = [v9 providedValues];
+    providedValues = [requestCopy providedValues];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __89__WFAppIntentExecutionAction_disambiguateParameterForParameterName_request_dialogString___block_invoke;
     v35[3] = &unk_1E837C960;
     v36 = v13;
-    v37 = self;
-    v18 = [v17 if_compactMap:v35];
+    selfCopy = self;
+    v18 = [providedValues if_compactMap:v35];
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __89__WFAppIntentExecutionAction_disambiguateParameterForParameterName_request_dialogString___block_invoke_2;
     v32[3] = &unk_1E837C9B0;
     v33 = v14;
-    v19 = v9;
+    v19 = requestCopy;
     v34 = v19;
     v20 = v14;
     [v18 enumerateObjectsUsingBlock:v32];
@@ -2818,11 +2818,11 @@ LABEL_7:
     v24 = [v12 copy];
     [v20 setAssociatedParameterKey:v24];
 
-    v25 = [v22 dialog];
-    [v20 setLinkDialog:v25];
+    dialog = [v22 dialog];
+    [v20 setLinkDialog:dialog];
 
-    v26 = [(WFAction *)self userInterface];
-    [v26 presentAlert:v20];
+    userInterface = [(WFAction *)self userInterface];
+    [userInterface presentAlert:v20];
   }
 
   else
@@ -2880,37 +2880,37 @@ void __89__WFAppIntentExecutionAction_disambiguateParameterForParameterName_requ
   [v5 respondWithSelectedIndex:*(a1 + 40)];
 }
 
-- (void)askForParameterValueForParameterName:(id)a3 request:(id)a4 dialogString:(id)a5
+- (void)askForParameterValueForParameterName:(id)name request:(id)request dialogString:(id)string
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  requestCopy = request;
+  stringCopy = string;
+  if (nameCopy)
   {
-    v11 = v8;
+    parameterName = nameCopy;
   }
 
   else
   {
-    v11 = [v9 parameterName];
+    parameterName = [requestCopy parameterName];
   }
 
-  v12 = v11;
-  v13 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v11];
+  v12 = parameterName;
+  v13 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:parameterName];
   if (v13)
   {
     v14 = [(WFAction *)self parameterForKey:v12];
-    v15 = [(WFAction *)self runningDelegate];
-    v16 = [v15 action:self canProvideInputForParameter:v14];
+    runningDelegate = [(WFAction *)self runningDelegate];
+    v16 = [runningDelegate action:self canProvideInputForParameter:v14];
 
     if (v16)
     {
       v17 = [v14 key];
       v18 = [(WFAction *)self parameterStateForKey:v17];
 
-      v19 = [(WFAction *)self processedParameters];
-      v20 = [v19 mutableCopy];
+      processedParameters = [(WFAction *)self processedParameters];
+      v20 = [processedParameters mutableCopy];
 
       v21 = [v14 key];
       [v20 setObject:0 forKeyedSubscript:v21];
@@ -2934,19 +2934,19 @@ void __89__WFAppIntentExecutionAction_disambiguateParameterForParameterName_requ
       v35 = [v14 key];
       v42 = v35;
       v24 = [WFParameterPrompt alloc];
-      v25 = v10;
-      v34 = v10;
-      if (!v10)
+      localizedPrompt = stringCopy;
+      v34 = stringCopy;
+      if (!stringCopy)
       {
-        v25 = [v14 localizedPrompt];
+        localizedPrompt = [v14 localizedPrompt];
       }
 
-      [v9 dialog];
-      v33 = v32 = v25;
-      v26 = [(WFParameterPrompt *)v24 initWithPrompt:v25 linkDialog:v33];
+      [requestCopy dialog];
+      v33 = v32 = localizedPrompt;
+      v26 = [(WFParameterPrompt *)v24 initWithPrompt:localizedPrompt linkDialog:v33];
       v43 = v26;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      v28 = [(WFAction *)self input];
+      input = [(WFAction *)self input];
       v29 = dispatch_get_global_queue(0, 0);
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
@@ -2954,10 +2954,10 @@ void __89__WFAppIntentExecutionAction_disambiguateParameterForParameterName_requ
       v39[3] = &unk_1E837C938;
       v39[4] = self;
       v40 = v13;
-      v41 = v9;
-      [(WFAction *)self askForValuesOfParameters:v37 withDefaultStates:v36 prompts:v27 input:v28 workQueue:v29 completionHandler:v39];
+      v41 = requestCopy;
+      [(WFAction *)self askForValuesOfParameters:v37 withDefaultStates:v36 prompts:v27 input:input workQueue:v29 completionHandler:v39];
 
-      v10 = v34;
+      stringCopy = v34;
       if (!v34)
       {
       }
@@ -2969,8 +2969,8 @@ void __89__WFAppIntentExecutionAction_disambiguateParameterForParameterName_requ
 
     else
     {
-      v23 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-      [(WFAppIntentExecutionAction *)self finishRunningWithError:v23];
+      wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+      [(WFAppIntentExecutionAction *)self finishRunningWithError:wfUnsupportedUserInterfaceError];
     }
   }
 
@@ -3094,23 +3094,23 @@ void __88__WFAppIntentExecutionAction_askForParameterValueForParameterName_reque
   }
 }
 
-- (void)confirmParameterValueForParameterName:(id)a3 request:(id)a4 dialogString:(id)a5
+- (void)confirmParameterValueForParameterName:(id)name request:(id)request dialogString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  requestCopy = request;
+  stringCopy = string;
+  if (nameCopy)
   {
-    v11 = v8;
+    parameterName = nameCopy;
   }
 
   else
   {
-    v11 = [v9 parameterName];
+    parameterName = [requestCopy parameterName];
   }
 
-  v12 = v11;
-  v13 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v11];
+  v12 = parameterName;
+  v13 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:parameterName];
   if (v13)
   {
     if ([(WFAppIntentExecutionAction *)self actionIsExecutedFromAnotherDevice])
@@ -3120,31 +3120,31 @@ void __88__WFAppIntentExecutionAction_askForParameterValueForParameterName_reque
       v29[2] = __89__WFAppIntentExecutionAction_confirmParameterValueForParameterName_request_dialogString___block_invoke;
       v29[3] = &unk_1E837C898;
       v29[4] = self;
-      [(WFAppIntentExecutionAction *)self alertForLinkActionConfirmationWithParameterMetadata:v13 dialogString:v10 request:v9 completionHandler:v29];
+      [(WFAppIntentExecutionAction *)self alertForLinkActionConfirmationWithParameterMetadata:v13 dialogString:stringCopy request:requestCopy completionHandler:v29];
     }
 
     else
     {
-      v24 = [v9 value];
-      v15 = [v24 valueType];
-      v16 = [v9 value];
-      v17 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-      [v17 bundleIdentifier];
+      value = [requestCopy value];
+      valueType = [value valueType];
+      value2 = [requestCopy value];
+      fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+      [fullyQualifiedLinkActionIdentifier bundleIdentifier];
       v18 = v26 = v12;
       [(WFAppIntentExecutionAction *)self displayableAppBundleIdentifier];
-      v20 = v19 = v10;
-      v25 = [v15 wf_contentItemFromLinkValue:v16 appBundleIdentifier:v18 displayedBundleIdentifier:v20 teamIdentifier:0 disclosureLevel:1];
+      v20 = v19 = stringCopy;
+      v25 = [valueType wf_contentItemFromLinkValue:value2 appBundleIdentifier:v18 displayedBundleIdentifier:v20 teamIdentifier:0 disclosureLevel:1];
 
-      v10 = v19;
-      v21 = [(WFAction *)self userInterface];
-      v22 = [v9 dialog];
-      v23 = [v9 viewSnippet];
+      stringCopy = v19;
+      userInterface = [(WFAction *)self userInterface];
+      dialog = [requestCopy dialog];
+      viewSnippet = [requestCopy viewSnippet];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __89__WFAppIntentExecutionAction_confirmParameterValueForParameterName_request_dialogString___block_invoke_2;
       v27[3] = &unk_1E837C8C0;
-      v28 = v9;
-      [v21 showLinkParameterConfirmationWithActionMetadata:v13 dialog:v22 dialogString:v19 viewSnippet:v23 parameterValue:v25 completionHandler:v27];
+      v28 = requestCopy;
+      [userInterface showLinkParameterConfirmationWithActionMetadata:v13 dialog:dialog dialogString:v19 viewSnippet:viewSnippet parameterValue:v25 completionHandler:v27];
 
       v12 = v26;
     }
@@ -3214,40 +3214,40 @@ uint64_t __99__WFAppIntentExecutionAction_getLinkActionForArchivingFallingBackTo
   }
 }
 
-- (id)valueForParameterData:(id)a3 withParameterState:(id)a4
+- (id)valueForParameterData:(id)data withParameterState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dataCopy = data;
+  stateCopy = state;
+  if (!dataCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFAppIntentExecutionAction.m" lineNumber:828 description:{@"Invalid parameter not satisfying: %@", @"parameterMetadata"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAppIntentExecutionAction.m" lineNumber:828 description:{@"Invalid parameter not satisfying: %@", @"parameterMetadata"}];
   }
 
-  v9 = [v7 valueType];
-  v10 = [(WFAction *)self identifier];
-  v11 = [v9 wf_parameterDefinitionWithParameterMetadata:v7 actionIdentifier:v10];
-  v12 = [v11 linkValueFromParameterState:v8 action:self];
+  valueType = [dataCopy valueType];
+  identifier = [(WFAction *)self identifier];
+  v11 = [valueType wf_parameterDefinitionWithParameterMetadata:dataCopy actionIdentifier:identifier];
+  v12 = [v11 linkValueFromParameterState:stateCopy action:self];
 
   return v12;
 }
 
-- (id)linkActionWithParameterStates:(id)a3 usingConnectionPolicy:(BOOL)a4
+- (id)linkActionWithParameterStates:(id)states usingConnectionPolicy:(BOOL)policy
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(WFAppIntentExecutionAction *)self metadata];
-  v8 = [v7 parameters];
+  policyCopy = policy;
+  statesCopy = states;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  parameters = [metadata parameters];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __82__WFAppIntentExecutionAction_linkActionWithParameterStates_usingConnectionPolicy___block_invoke;
   v22 = &unk_1E837C848;
-  v9 = v6;
+  v9 = statesCopy;
   v23 = v9;
-  v24 = self;
-  v10 = [v8 if_map:&v19];
+  selfCopy = self;
+  v10 = [parameters if_map:&v19];
 
-  if (v4)
+  if (policyCopy)
   {
     v11 = [(WFAppIntentExecutionAction *)self linkActionWithParameters:v10, v19, v20, v21, v22];
   }
@@ -3256,11 +3256,11 @@ uint64_t __99__WFAppIntentExecutionAction_getLinkActionForArchivingFallingBackTo
   {
     v12 = objc_alloc(MEMORY[0x1E69AC648]);
     v13 = [(WFAppIntentExecutionAction *)self metadata:v19];
-    v14 = [(WFAppIntentExecutionAction *)self metadata];
-    v15 = [v14 effectiveBundleIdentifiers];
-    v16 = [v15 firstObject];
-    v17 = [v16 bundleIdentifier];
-    v11 = [v12 initWithMetadata:v13 bundleIdentifier:v17 parameters:v10];
+    metadata2 = [(WFAppIntentExecutionAction *)self metadata];
+    effectiveBundleIdentifiers = [metadata2 effectiveBundleIdentifiers];
+    firstObject = [effectiveBundleIdentifiers firstObject];
+    bundleIdentifier = [firstObject bundleIdentifier];
+    v11 = [v12 initWithMetadata:v13 bundleIdentifier:bundleIdentifier parameters:v10];
   }
 
   return v11;
@@ -3284,7 +3284,7 @@ id __82__WFAppIntentExecutionAction_linkActionWithParameterStates_usingConnectio
 
 - (unsigned)runSource
 {
-  v3 = [(WFAction *)self runningDelegate];
+  runningDelegate = [(WFAction *)self runningDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -3292,19 +3292,19 @@ id __82__WFAppIntentExecutionAction_linkActionWithParameterStates_usingConnectio
     return 4;
   }
 
-  v5 = [(WFAction *)self runningDelegate];
-  v6 = [v5 currentRunningContextForAction:self];
+  runningDelegate2 = [(WFAction *)self runningDelegate];
+  v6 = [runningDelegate2 currentRunningContextForAction:self];
 
-  v7 = [v6 runSource];
-  if (([v7 isEqualToString:*MEMORY[0x1E69E13E8]] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69E1380]) & 1) == 0)
+  runSource = [v6 runSource];
+  if (([runSource isEqualToString:*MEMORY[0x1E69E13E8]] & 1) == 0 && (objc_msgSend(runSource, "isEqualToString:", *MEMORY[0x1E69E1380]) & 1) == 0)
   {
-    if ([v7 isEqualToString:*MEMORY[0x1E69E1368]])
+    if ([runSource isEqualToString:*MEMORY[0x1E69E1368]])
     {
       v8 = 6;
       goto LABEL_5;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x1E69E13E0]])
+    if ([runSource isEqualToString:*MEMORY[0x1E69E13E0]])
     {
       v8 = 8;
       goto LABEL_5;
@@ -3328,7 +3328,7 @@ LABEL_5:
 
 - (int64_t)runKind
 {
-  v3 = [(WFAction *)self runningDelegate];
+  runningDelegate = [(WFAction *)self runningDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -3336,16 +3336,16 @@ LABEL_5:
     return 0;
   }
 
-  v5 = [(WFAction *)self runningDelegate];
-  v6 = [v5 currentRunningContextForAction:self];
+  runningDelegate2 = [(WFAction *)self runningDelegate];
+  v6 = [runningDelegate2 currentRunningContextForAction:self];
 
-  v7 = [v6 runKind];
-  if ([v7 isEqualToString:*MEMORY[0x1E69E1360]] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69E1358]))
+  runKind = [v6 runKind];
+  if ([runKind isEqualToString:*MEMORY[0x1E69E1360]] & 1) != 0 || (objc_msgSend(runKind, "isEqualToString:", *MEMORY[0x1E69E1358]))
   {
     v8 = 1;
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x1E69E1348]])
+  else if ([runKind isEqualToString:*MEMORY[0x1E69E1348]])
   {
     v8 = 2;
   }
@@ -3362,9 +3362,9 @@ LABEL_5:
 {
   v3 = objc_opt_new();
   v4 = objc_alloc(MEMORY[0x1E69ACF10]);
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [v5 localeIdentifier];
-  v7 = [v4 initWithLocaleIdentifier:v6];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v7 = [v4 initWithLocaleIdentifier:localeIdentifier];
   [v3 setEnvironment:v7];
 
   [v3 setClientLabel:@"Shortcuts"];
@@ -3376,11 +3376,11 @@ LABEL_5:
     [v3 setConnectionOperationTimeout:*MEMORY[0x1E69ACB68]];
   }
 
-  v8 = [(WFAction *)self runningDelegate];
-  v9 = [v8 currentRunningContextForAction:self];
+  runningDelegate = [(WFAction *)self runningDelegate];
+  v9 = [runningDelegate currentRunningContextForAction:self];
 
-  v10 = [v9 automationType];
-  if (v10)
+  automationType = [v9 automationType];
+  if (automationType)
   {
     v11 = 1;
   }
@@ -3392,39 +3392,39 @@ LABEL_5:
 
   [v3 setPriority:v11];
 
-  v12 = [v9 runSource];
+  runSource = [v9 runSource];
   if (WFRunSourceIsToolKit())
   {
-    v13 = [(WFAppIntentExecutionAction *)self linkSystemContext];
+    linkSystemContext = [(WFAppIntentExecutionAction *)self linkSystemContext];
 
-    if (!v13)
+    if (!linkSystemContext)
     {
       v14 = objc_alloc_init(MEMORY[0x1E69AD048]);
       [(WFAppIntentExecutionAction *)self setLinkSystemContext:v14];
     }
 
-    v15 = [(WFAction *)self toolInvocation];
-    v16 = [v15 options];
+    toolInvocation = [(WFAction *)self toolInvocation];
+    options = [toolInvocation options];
 
     v17 = objc_alloc(MEMORY[0x1E69ACD78]);
-    v18 = [v9 identifier];
-    v19 = [v16 requestIdentifier];
-    v20 = [v16 locale];
-    v21 = [v17 initWithSessionIdentifier:v18 requestIdentifier:v19 locale:v20];
-    v22 = [(WFAppIntentExecutionAction *)self linkSystemContext];
-    [v22 setAssistantContext:v21];
+    identifier = [v9 identifier];
+    requestIdentifier = [options requestIdentifier];
+    locale = [options locale];
+    v21 = [v17 initWithSessionIdentifier:identifier requestIdentifier:requestIdentifier locale:locale];
+    linkSystemContext2 = [(WFAppIntentExecutionAction *)self linkSystemContext];
+    [linkSystemContext2 setAssistantContext:v21];
 
-    [v3 setInteractionMode:{objc_msgSend(v16, "lnInteractionMode")}];
-    v23 = [v16 lnInterfaceIdiom];
-    v24 = [(WFAppIntentExecutionAction *)self linkSystemContext];
-    [v24 setInterfaceIdiom:v23];
+    [v3 setInteractionMode:{objc_msgSend(options, "lnInteractionMode")}];
+    lnInterfaceIdiom = [options lnInterfaceIdiom];
+    linkSystemContext3 = [(WFAppIntentExecutionAction *)self linkSystemContext];
+    [linkSystemContext3 setInterfaceIdiom:lnInterfaceIdiom];
   }
 
   else
   {
-    v25 = [(WFAppIntentExecutionAction *)self opensWhenRunIfApplicable];
+    opensWhenRunIfApplicable = [(WFAppIntentExecutionAction *)self opensWhenRunIfApplicable];
 
-    if (v25)
+    if (opensWhenRunIfApplicable)
     {
       if ([(WFAppIntentExecutionAction *)self opensWhenRun])
       {
@@ -3440,25 +3440,25 @@ LABEL_5:
     }
   }
 
-  v27 = [(WFAppIntentExecutionAction *)self linkSystemContext];
+  linkSystemContext4 = [(WFAppIntentExecutionAction *)self linkSystemContext];
 
-  if (v27)
+  if (linkSystemContext4)
   {
-    v28 = [(WFAppIntentExecutionAction *)self linkSystemContext];
-    [v3 setSystemContext:v28];
+    linkSystemContext5 = [(WFAppIntentExecutionAction *)self linkSystemContext];
+    [v3 setSystemContext:linkSystemContext5];
   }
 
   return v3;
 }
 
-- (Class)toolkitValueClassForParameter:(id)a3
+- (Class)toolkitValueClassForParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = [v4 key];
+  parameterCopy = parameter;
+  v5 = [parameterCopy key];
   v6 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v5];
 
-  v7 = [v6 valueType];
-  v8 = [v7 wf_parameterDefinitionWithParameterMetadata:v6];
+  valueType = [v6 valueType];
+  v8 = [valueType wf_parameterDefinitionWithParameterMetadata:v6];
 
   v9 = v8;
   if (!v9)
@@ -3470,16 +3470,16 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 memberParameterDefinition];
+    memberParameterDefinition = [v9 memberParameterDefinition];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     v12 = v9;
     if (isKindOfClass)
     {
-      v13 = [v9 memberParameterDefinition];
-      v14 = [v13 valueType];
-      v15 = [v14 wf_objectClass];
+      memberParameterDefinition2 = [v9 memberParameterDefinition];
+      valueType2 = [memberParameterDefinition2 valueType];
+      wf_objectClass = [valueType2 wf_objectClass];
 
       v12 = v9;
       goto LABEL_14;
@@ -3517,7 +3517,7 @@ LABEL_5:
   if (v22 & 1) != 0 || (v23 = v21, objc_opt_class(), v24 = objc_opt_isKindOfClass(), v23, (v24))
   {
 LABEL_12:
-    v16 = objc_opt_class();
+    toolkitValueClass = objc_opt_class();
     goto LABEL_13;
   }
 
@@ -3528,9 +3528,9 @@ LABEL_12:
   if ((v27 & 1) == 0)
   {
 LABEL_6:
-    v16 = [v4 toolkitValueClass];
+    toolkitValueClass = [parameterCopy toolkitValueClass];
 LABEL_13:
-    v15 = v16;
+    wf_objectClass = toolkitValueClass;
     goto LABEL_14;
   }
 
@@ -3548,56 +3548,56 @@ LABEL_13:
 
   v30 = v29;
 
-  v31 = [v30 parameterMetadata];
+  parameterMetadata = [v30 parameterMetadata];
 
-  v32 = [v31 valueType];
-  v33 = [MEMORY[0x1E69AC888] applicationValueType];
-  v34 = [v32 isEqual:v33];
+  valueType3 = [parameterMetadata valueType];
+  applicationValueType = [MEMORY[0x1E69AC888] applicationValueType];
+  v34 = [valueType3 isEqual:applicationValueType];
 
   if (v34)
   {
-    v15 = objc_opt_class();
+    wf_objectClass = objc_opt_class();
   }
 
   else
   {
-    v35 = [v31 valueType];
-    v36 = [v35 wf_enumValueType];
+    valueType4 = [parameterMetadata valueType];
+    wf_enumValueType = [valueType4 wf_enumValueType];
 
     v37 = 0x1E69ACA90;
-    if (v36)
+    if (wf_enumValueType)
     {
       v37 = off_1E836E810;
     }
 
     v38 = *v37;
-    v15 = objc_opt_class();
+    wf_objectClass = objc_opt_class();
   }
 
 LABEL_14:
 
-  return v15;
+  return wf_objectClass;
 }
 
-- (void)showChronoControlIfPossibleForIntent:(id)a3 completionHandler:(id)a4
+- (void)showChronoControlIfPossibleForIntent:(id)intent completionHandler:(id)handler
 {
-  v8 = a4;
-  v6 = [a3 associatedControl];
-  if (v6)
+  handlerCopy = handler;
+  associatedControl = [intent associatedControl];
+  if (associatedControl)
   {
-    v7 = [(WFAction *)self userInterface];
-    [v6 presentIfPossibleInUserInterface:v7 completionBlock:v8];
+    userInterface = [(WFAction *)self userInterface];
+    [associatedControl presentIfPossibleInUserInterface:userInterface completionBlock:handlerCopy];
   }
 
   else
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)finishRunningWithError:(id)a3
+- (void)finishRunningWithError:(id)error
 {
-  v4 = [(WFAction *)self localizedErrorWithLinkError:a3];
+  v4 = [(WFAction *)self localizedErrorWithLinkError:error];
   connectionPolicy = self->_connectionPolicy;
   self->_connectionPolicy = 0;
 
@@ -3608,10 +3608,10 @@ LABEL_14:
 
 - (BOOL)requiresUnlock
 {
-  v3 = [(WFAction *)self userInterface];
-  v4 = [v3 isRunningWithToolKitClient];
+  userInterface = [(WFAction *)self userInterface];
+  isRunningWithToolKitClient = [userInterface isRunningWithToolKitClient];
 
-  if (v4)
+  if (isRunningWithToolKitClient)
   {
     goto LABEL_2;
   }
@@ -3628,76 +3628,76 @@ LABEL_4:
     goto LABEL_2;
   }
 
-  v7 = [(WFAppIntentExecutionAction *)self metadata];
-  v8 = [v7 authenticationPolicy];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  authenticationPolicy = [metadata authenticationPolicy];
 
-  if (v8 == 2)
+  if (authenticationPolicy == 2)
   {
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!authenticationPolicy)
   {
 LABEL_2:
     v5 = 0;
     return v5 & 1;
   }
 
-  v9 = [(WFAction *)self userInterface];
+  userInterface2 = [(WFAction *)self userInterface];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(WFAction *)self userInterface];
-    v11 = [v10 requestedFromAnotherDevice];
+    userInterface3 = [(WFAction *)self userInterface];
+    requestedFromAnotherDevice = [userInterface3 requestedFromAnotherDevice];
   }
 
   else
   {
-    v11 = 0;
+    requestedFromAnotherDevice = 0;
   }
 
-  v12 = [(WFAction *)self userInterface];
+  userInterface4 = [(WFAction *)self userInterface];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(WFAction *)self userInterface];
-    v14 = [v13 requestedInHomeResident];
+    userInterface5 = [(WFAction *)self userInterface];
+    requestedInHomeResident = [userInterface5 requestedInHomeResident];
   }
 
   else
   {
-    v14 = 0;
+    requestedInHomeResident = 0;
   }
 
-  v5 = (v11 | v14) ^ 1;
+  v5 = (requestedFromAnotherDevice | requestedInHomeResident) ^ 1;
   return v5 & 1;
 }
 
 - (id)sessionKitSessionInvocationType
 {
-  v3 = [(WFAppIntentExecutionAction *)self metadata];
-  v4 = [v3 systemProtocols];
-  v5 = [MEMORY[0x1E69ACA50] sessionStartingProtocol];
-  if ([v4 containsObject:v5])
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  systemProtocols = [metadata systemProtocols];
+  sessionStartingProtocol = [MEMORY[0x1E69ACA50] sessionStartingProtocol];
+  if ([systemProtocols containsObject:sessionStartingProtocol])
   {
     goto LABEL_4;
   }
 
-  v6 = [(WFAppIntentExecutionAction *)self metadata];
-  v7 = [v6 systemProtocols];
-  v8 = [MEMORY[0x1E69ACA50] audioStartingProtocol];
-  if ([v7 containsObject:v8])
+  metadata2 = [(WFAppIntentExecutionAction *)self metadata];
+  systemProtocols2 = [metadata2 systemProtocols];
+  audioStartingProtocol = [MEMORY[0x1E69ACA50] audioStartingProtocol];
+  if ([systemProtocols2 containsObject:audioStartingProtocol])
   {
 
 LABEL_4:
 LABEL_5:
-    v9 = @"Manual";
+    sessionKitSessionInvocationType = @"Manual";
     v10 = @"Manual";
     goto LABEL_6;
   }
 
-  v12 = [(WFAppIntentExecutionAction *)self metadata];
-  v13 = [v12 systemProtocols];
-  v14 = [MEMORY[0x1E69ACA50] audioRecordingProtocol];
-  v15 = [v13 containsObject:v14];
+  metadata3 = [(WFAppIntentExecutionAction *)self metadata];
+  systemProtocols3 = [metadata3 systemProtocols];
+  audioRecordingProtocol = [MEMORY[0x1E69ACA50] audioRecordingProtocol];
+  v15 = [systemProtocols3 containsObject:audioRecordingProtocol];
 
   if (v15)
   {
@@ -3706,45 +3706,45 @@ LABEL_5:
 
   v16.receiver = self;
   v16.super_class = WFAppIntentExecutionAction;
-  v9 = [(WFAction *)&v16 sessionKitSessionInvocationType];
+  sessionKitSessionInvocationType = [(WFAction *)&v16 sessionKitSessionInvocationType];
 LABEL_6:
 
-  return v9;
+  return sessionKitSessionInvocationType;
 }
 
 - (id)bundleIdentifier
 {
-  v2 = [(WFAppIntentExecutionAction *)self appDescriptor];
-  v3 = [v2 bundleIdentifier];
+  appDescriptor = [(WFAppIntentExecutionAction *)self appDescriptor];
+  bundleIdentifier = [appDescriptor bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)processValueForParameter:(id)a3 withToolKitInvocation:(id)a4 completionHandler:(id)a5
+- (void)processValueForParameter:(id)parameter withToolKitInvocation:(id)invocation completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 key];
+  parameterCopy = parameter;
+  invocationCopy = invocation;
+  handlerCopy = handler;
+  v11 = [parameterCopy key];
   v12 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v11];
 
-  v13 = [v12 valueType];
-  v14 = [v13 wf_unionValueType];
+  valueType = [v12 valueType];
+  wf_unionValueType = [valueType wf_unionValueType];
 
-  if (v14)
+  if (wf_unionValueType)
   {
-    v15 = [(WFAction *)self variableSource];
+    variableSource = [(WFAction *)self variableSource];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __95__WFAppIntentExecutionAction_processValueForParameter_withToolKitInvocation_completionHandler___block_invoke;
     v24[3] = &unk_1E837C818;
     v16 = &v25;
     v24[4] = self;
-    v25 = v8;
+    v25 = parameterCopy;
     v17 = &v26;
-    v26 = v10;
-    v18 = v10;
-    [v9 processUnionWithParameter:v8 variableSource:v15 completionHandler:v24];
+    v26 = handlerCopy;
+    v18 = handlerCopy;
+    [invocationCopy processUnionWithParameter:parameterCopy variableSource:variableSource completionHandler:v24];
   }
 
   else
@@ -3755,13 +3755,13 @@ LABEL_6:
     v21[3] = &unk_1E837C818;
     v16 = &v22;
     v21[4] = self;
-    v22 = v8;
+    v22 = parameterCopy;
     v17 = &v23;
-    v23 = v10;
+    v23 = handlerCopy;
     v20.receiver = self;
     v20.super_class = WFAppIntentExecutionAction;
-    v19 = v10;
-    [(WFAction *)&v20 processValueForParameter:v8 withToolKitInvocation:v9 completionHandler:v21];
+    v19 = handlerCopy;
+    [(WFAction *)&v20 processValueForParameter:parameterCopy withToolKitInvocation:invocationCopy completionHandler:v21];
   }
 }
 
@@ -3797,22 +3797,22 @@ void __95__WFAppIntentExecutionAction_processValueForParameter_withToolKitInvoca
   [v6 postProcessToolKitProcessedValue:a2 forParameter:v7 completionHandler:v10];
 }
 
-- (void)processEncodedValue:(id)a3 withToolKitInvocation:(id)a4 forParameter:(id)a5 completionHandler:(id)a6
+- (void)processEncodedValue:(id)value withToolKitInvocation:(id)invocation forParameter:(id)parameter completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  parameterCopy = parameter;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __103__WFAppIntentExecutionAction_processEncodedValue_withToolKitInvocation_forParameter_completionHandler___block_invoke;
   v15[3] = &unk_1E837C818;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
+  v16 = parameterCopy;
+  v17 = handlerCopy;
   v14.receiver = self;
   v14.super_class = WFAppIntentExecutionAction;
-  v12 = v11;
-  v13 = v10;
-  [(WFAction *)&v14 processEncodedValue:a3 withToolKitInvocation:a4 forParameter:v13 completionHandler:v15];
+  v12 = handlerCopy;
+  v13 = parameterCopy;
+  [(WFAction *)&v14 processEncodedValue:value withToolKitInvocation:invocation forParameter:v13 completionHandler:v15];
 }
 
 void __103__WFAppIntentExecutionAction_processEncodedValue_withToolKitInvocation_forParameter_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3831,21 +3831,21 @@ void __103__WFAppIntentExecutionAction_processEncodedValue_withToolKitInvocation
   [v6 postProcessToolKitProcessedValue:a2 forParameter:v7 completionHandler:v10];
 }
 
-- (void)postProcessToolKitProcessedValue:(id)a3 forParameter:(id)a4 completionHandler:(id)a5
+- (void)postProcessToolKitProcessedValue:(id)value forParameter:(id)parameter completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 key];
+  valueCopy = value;
+  parameterCopy = parameter;
+  handlerCopy = handler;
+  v11 = [parameterCopy key];
   v12 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v11];
 
-  v13 = [v12 valueType];
-  v14 = [v13 wf_parameterDefinitionWithParameterMetadata:v12];
+  valueType = [v12 valueType];
+  v14 = [valueType wf_parameterDefinitionWithParameterMetadata:v12];
 
   v15 = v14;
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v16 = [v15 memberParameterDefinition];
+    memberParameterDefinition = [v15 memberParameterDefinition];
     v17 = 1;
     v42 = v15;
   }
@@ -3854,10 +3854,10 @@ void __103__WFAppIntentExecutionAction_processEncodedValue_withToolKitInvocation
   {
     v17 = 0;
     v42 = 0;
-    v16 = v15;
+    memberParameterDefinition = v15;
   }
 
-  v18 = v16;
+  v18 = memberParameterDefinition;
   if (v18)
   {
     objc_opt_class();
@@ -3896,15 +3896,15 @@ void __103__WFAppIntentExecutionAction_processEncodedValue_withToolKitInvocation
 
   if (v20 | v23)
   {
-    v41 = v9;
+    v41 = parameterCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forParameter_completionHandler___block_invoke;
     aBlock[3] = &unk_1E837C7C8;
     v50 = v23;
     v38 = _Block_copy(aBlock);
-    v40 = v8;
-    v24 = v8;
+    v40 = valueCopy;
+    v24 = valueCopy;
     if (v24)
     {
       objc_opt_class();
@@ -3923,25 +3923,25 @@ void __103__WFAppIntentExecutionAction_processEncodedValue_withToolKitInvocation
 
       if ((v25 & v17) == 1)
       {
-        v28 = [v12 valueType];
-        v29 = [v28 wf_objectValueType];
+        valueType2 = [v12 valueType];
+        wf_objectValueType = [valueType2 wf_objectValueType];
 
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forParameter_completionHandler___block_invoke_245;
         v46[3] = &unk_1E837C7F0;
         v30 = v38;
-        v47 = v29;
+        v47 = wf_objectValueType;
         v48 = v38;
-        v31 = v29;
+        v31 = wf_objectValueType;
         v32 = [v27 if_map:v46];
-        v10[2](v10, v32);
+        handlerCopy[2](handlerCopy, v32);
 
         v27 = v24;
 LABEL_26:
 
-        v8 = v40;
-        v9 = v41;
+        valueCopy = v40;
+        parameterCopy = v41;
         goto LABEL_27;
       }
     }
@@ -3953,15 +3953,15 @@ LABEL_26:
 
     if (v20 && ([v12 valueType], v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v33, "wf_unionValueType"), v34 = objc_claimAutoreleasedReturnValue(), v34, v33, v34))
     {
-      v35 = [(WFAction *)self toolInvocation];
+      toolInvocation = [(WFAction *)self toolInvocation];
       v36 = [v41 key];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forParameter_completionHandler___block_invoke_2_247;
       v43[3] = &unk_1E837F560;
-      v45 = v10;
+      v45 = handlerCopy;
       v44 = v24;
-      [v35 valueTypeForParameterWithKey:v36 completionHandler:v43];
+      [toolInvocation valueTypeForParameterWithKey:v36 completionHandler:v43];
 
       v31 = v45;
       v30 = v38;
@@ -3969,17 +3969,17 @@ LABEL_26:
 
     else
     {
-      v37 = [v18 valueType];
-      v31 = v39[2](v39, v24, v37);
+      valueType3 = [v18 valueType];
+      v31 = v39[2](v39, v24, valueType3);
 
       v30 = v39;
-      v10[2](v10, v31);
+      handlerCopy[2](handlerCopy, v31);
     }
 
     goto LABEL_26;
   }
 
-  v10[2](v10, v8);
+  handlerCopy[2](handlerCopy, valueCopy);
 LABEL_27:
 }
 
@@ -4140,9 +4140,9 @@ uint64_t __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forPa
         v9 = [v8 key];
         v10 = [(WFAction *)self parameterStateForKey:v9];
 
-        v11 = [v10 containedVariables];
+        containedVariables = [v10 containedVariables];
         v12 = NSStringFromSelector(sel_type);
-        v13 = [v11 filteredArrayForKey:v12 value:@"Ask"];
+        v13 = [containedVariables filteredArrayForKey:v12 value:@"Ask"];
 
         v14 = [v8 key];
         v15 = [(WFAction *)self canOfferSuggestionsForParameterWithKey:v14];
@@ -4152,9 +4152,9 @@ uint64_t __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forPa
           v16 = [v8 key];
           [(WFAction *)self setParameterState:0 forKey:v16];
 
-          v17 = [(WFAppIntentExecutionAction *)self parameterIdentifiersNeedingValues];
+          parameterIdentifiersNeedingValues = [(WFAppIntentExecutionAction *)self parameterIdentifiersNeedingValues];
           v18 = [v8 key];
-          [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v18];
+          [parameterIdentifiersNeedingValues setObject:MEMORY[0x1E695E118] forKeyedSubscript:v18];
         }
       }
 
@@ -4167,14 +4167,14 @@ uint64_t __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forPa
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureParameter:(id)a3
+- (void)configureParameter:(id)parameter
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  parameterCopy = parameter;
   v24.receiver = self;
   v24.super_class = WFAppIntentExecutionAction;
-  [(WFAction *)&v24 configureParameter:v4];
-  v5 = v4;
+  [(WFAction *)&v24 configureParameter:parameterCopy];
+  v5 = parameterCopy;
   if (v5)
   {
     objc_opt_class();
@@ -4197,19 +4197,19 @@ uint64_t __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forPa
       v8 = [v7 key];
       v9 = [(WFAppIntentExecutionAction *)self parameterMetadataForIdentifier:v8];
 
-      v10 = [v9 valueType];
+      valueType = [v9 valueType];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v12 = [v7 definition];
-        v13 = [v12 objectForKey:@"LinkUnionSubparameterMetadata"];
+        definition = [v7 definition];
+        v13 = [definition objectForKey:@"LinkUnionSubparameterMetadata"];
 
         if (v13)
         {
-          v14 = [v7 definition];
-          v15 = [v14 objectForKey:@"LinkUnionSubparameterMetadata"];
+          definition2 = [v7 definition];
+          v15 = [definition2 objectForKey:@"LinkUnionSubparameterMetadata"];
 
           v9 = v15;
         }
@@ -4220,8 +4220,8 @@ uint64_t __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forPa
         [v7 setAction:self];
         [v7 setDataSource:self];
         [v7 setParameterMetadata:v9];
-        v16 = [v9 valueType];
-        v17 = [v16 wf_parameterDefinitionWithParameterMetadata:v9 dynamicOptionsSupport:0];
+        valueType2 = [v9 valueType];
+        v17 = [valueType2 wf_parameterDefinitionWithParameterMetadata:v9 dynamicOptionsSupport:0];
 
         if (v17)
         {
@@ -4244,8 +4244,8 @@ uint64_t __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forPa
 
         v21 = v18;
 
-        v22 = [v21 isUniqueEntity];
-        if (v22)
+        isUniqueEntity = [v21 isUniqueEntity];
+        if (isUniqueEntity)
         {
           [v7 setHidden:1];
         }
@@ -4277,17 +4277,17 @@ uint64_t __94__WFAppIntentExecutionAction_postProcessToolKitProcessedValue_forPa
 
 - (BOOL)isApprovedForPublicShortcutsDrawer
 {
-  v3 = [(WFAppIntentExecutionAction *)self metadata];
-  v4 = [v3 assistantDefinedSchemas];
-  v5 = [v4 if_firstObjectPassingTest:&__block_literal_global_225_60212];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  assistantDefinedSchemas = [metadata assistantDefinedSchemas];
+  v5 = [assistantDefinedSchemas if_firstObjectPassingTest:&__block_literal_global_225_60212];
 
   if (v5)
   {
     return 0;
   }
 
-  v7 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-  v8 = [WFLinkActionProvider approvedForPublicDrawerToDisplayActionIdentifier:v7];
+  fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+  v8 = [WFLinkActionProvider approvedForPublicDrawerToDisplayActionIdentifier:fullyQualifiedLinkActionIdentifier];
 
   return v8;
 }
@@ -4300,7 +4300,7 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
   return v3;
 }
 
-- (BOOL)visibleForUse:(int64_t)a3
+- (BOOL)visibleForUse:(int64_t)use
 {
   v8.receiver = self;
   v8.super_class = WFAppIntentExecutionAction;
@@ -4309,18 +4309,18 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
     return 0;
   }
 
-  v5 = [(WFAppIntentExecutionAction *)self metadata];
-  v6 = [v5 visibleForUse:a3];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  v6 = [metadata visibleForUse:use];
 
   return v6;
 }
 
 - (BOOL)opensWhenRun
 {
-  v2 = [(WFAppIntentExecutionAction *)self opensWhenRunIfApplicable];
-  v3 = [v2 BOOLValue];
+  opensWhenRunIfApplicable = [(WFAppIntentExecutionAction *)self opensWhenRunIfApplicable];
+  bOOLValue = [opensWhenRunIfApplicable BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)opensWhenRunIfApplicable
@@ -4342,17 +4342,17 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
 
 - (NSString)displayableAppBundleIdentifier
 {
-  v2 = [(WFAppIntentExecutionAction *)self displayableAppDescriptor];
-  v3 = [v2 bundleIdentifier];
+  displayableAppDescriptor = [(WFAppIntentExecutionAction *)self displayableAppDescriptor];
+  bundleIdentifier = [displayableAppDescriptor bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)displayableAppDescriptor
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(WFAction *)self definition];
-  v4 = [v3 objectForKey:@"LinkActionDisableDisplayedAppDescriptor"];
+  definition = [(WFAction *)self definition];
+  v4 = [definition objectForKey:@"LinkActionDisableDisplayedAppDescriptor"];
 
   if (v4)
   {
@@ -4375,21 +4375,21 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  if (v7)
+  bOOLValue = [v6 BOOLValue];
+  if (bOOLValue)
   {
-    v8 = 0;
+    displayableAppDescriptor = 0;
   }
 
   else
   {
-    v9 = [(WFAction *)self definition];
-    v10 = [v9 objectForKey:@"LinkActionDisplayedAppDescriptor"];
+    definition2 = [(WFAction *)self definition];
+    v10 = [definition2 objectForKey:@"LinkActionDisplayedAppDescriptor"];
 
     if (v10)
     {
       v11 = [objc_alloc(MEMORY[0x1E696E720]) initWithSerializedRepresentation:v10];
-      v8 = v11;
+      displayableAppDescriptor = v11;
       if (v11)
       {
         v12 = v11;
@@ -4411,18 +4411,18 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
     {
       v16.receiver = self;
       v16.super_class = WFAppIntentExecutionAction;
-      v8 = [(WFAction *)&v16 displayableAppDescriptor];
+      displayableAppDescriptor = [(WFAction *)&v16 displayableAppDescriptor];
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return displayableAppDescriptor;
 }
 
-- (id)linkActionWithParameters:(id)a3
+- (id)linkActionWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   os_unfair_lock_lock(&self->_connectionLock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -4430,8 +4430,8 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
   aBlock[3] = &unk_1E837FA70;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(WFAppIntentExecutionAction *)self connectionPolicy];
-  v7 = [v6 actionWithParameters:v4];
+  connectionPolicy = [(WFAppIntentExecutionAction *)self connectionPolicy];
+  v7 = [connectionPolicy actionWithParameters:parametersCopy];
 
   v5[2](v5);
 
@@ -4440,29 +4440,29 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
 
 - (BOOL)actionIsExecutedFromAnotherDevice
 {
-  v3 = [(WFAction *)self userInterface];
+  userInterface = [(WFAction *)self userInterface];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(WFAction *)self userInterface];
-    v5 = [v4 requestedFromAnotherDevice];
+    userInterface2 = [(WFAction *)self userInterface];
+    requestedFromAnotherDevice = [userInterface2 requestedFromAnotherDevice];
   }
 
   else
   {
-    v5 = 0;
+    requestedFromAnotherDevice = 0;
   }
 
-  return v5;
+  return requestedFromAnotherDevice;
 }
 
-- (id)entityMetadataForIdentifier:(id)a3
+- (id)entityMetadataForIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69E0970];
-  v5 = a3;
-  v6 = [v4 sharedProvider];
-  v7 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v6 entityWithIdentifier:v5 fromBundleIdentifier:v8];
+  identifierCopy = identifier;
+  sharedProvider = [v4 sharedProvider];
+  fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+  bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+  v9 = [sharedProvider entityWithIdentifier:identifierCopy fromBundleIdentifier:bundleIdentifier];
 
   return v9;
 }
@@ -4470,8 +4470,8 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
 - (id)backingActionIdentifiers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(WFAction *)self identifier];
-  v6[0] = v2;
+  identifier = [(WFAction *)self identifier];
+  v6[0] = identifier;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -4479,31 +4479,31 @@ uint64_t __64__WFAppIntentExecutionAction_isApprovedForPublicShortcutsDrawer__bl
   return v3;
 }
 
-- (id)parameterMetadataForIdentifier:(id)a3
+- (id)parameterMetadataForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"~"];
-  v6 = [(WFAppIntentExecutionAction *)self metadata];
-  v7 = [v6 parameters];
-  v8 = [v5 firstObject];
-  v9 = [v7 if_firstObjectWithValue:v8 forKey:@"name"];
+  identifierCopy = identifier;
+  v5 = [identifierCopy componentsSeparatedByString:@"~"];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  parameters = [metadata parameters];
+  firstObject = [v5 firstObject];
+  v9 = [parameters if_firstObjectWithValue:firstObject forKey:@"name"];
 
-  v10 = [v9 valueType];
-  v11 = [v10 wf_unionValueType];
+  valueType = [v9 valueType];
+  wf_unionValueType = [valueType wf_unionValueType];
 
-  if (v11)
+  if (wf_unionValueType)
   {
     v12 = [WFLinkActionUnionParameterDefinition alloc];
-    v13 = [v9 valueType];
-    v14 = [v13 wf_unionValueType];
-    v15 = [(WFLinkActionUnionParameterDefinition *)v12 initWithValueType:v14 parameterMetadata:v9];
+    valueType2 = [v9 valueType];
+    wf_unionValueType2 = [valueType2 wf_unionValueType];
+    v15 = [(WFLinkActionUnionParameterDefinition *)v12 initWithValueType:wf_unionValueType2 parameterMetadata:v9];
 
     if (v15)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [(WFLinkActionUnionParameterDefinition *)v15 parameterMetadataForIdentifier:v4];
+        v16 = [(WFLinkActionUnionParameterDefinition *)v15 parameterMetadataForIdentifier:identifierCopy];
 
         goto LABEL_7;
       }
@@ -4516,29 +4516,29 @@ LABEL_7:
   return v16;
 }
 
-- (void)getLinkActionWithProcessedParameters:(id)a3 forFocusConfiguration:(BOOL)a4 fallingBackToDefaultValue:(BOOL)a5 completionHandler:(id)a6
+- (void)getLinkActionWithProcessedParameters:(id)parameters forFocusConfiguration:(BOOL)configuration fallingBackToDefaultValue:(BOOL)value completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(WFAppIntentExecutionAction *)self metadata];
-  v13 = [v12 parameters];
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  parameters = [metadata parameters];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFocusConfiguration_fallingBackToDefaultValue_completionHandler___block_invoke;
   v18[3] = &unk_1E837C780;
   v18[4] = self;
-  v19 = v10;
-  v20 = a5;
-  v21 = a4;
+  v19 = parametersCopy;
+  valueCopy = value;
+  configurationCopy = configuration;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFocusConfiguration_fallingBackToDefaultValue_completionHandler___block_invoke_5;
   v16[3] = &unk_1E837F020;
   v16[4] = self;
-  v17 = v11;
-  v14 = v11;
-  v15 = v10;
-  [v13 if_mapAsynchronously:v18 completionHandler:v16];
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = parametersCopy;
+  [parameters if_mapAsynchronously:v18 completionHandler:v16];
 }
 
 void __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFocusConfiguration_fallingBackToDefaultValue_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -4683,27 +4683,27 @@ id __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFoc
   return v8;
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFAppIntentExecutionAction *)self metadata];
-  v6 = [v5 descriptionMetadata];
+  contextCopy = context;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  descriptionMetadata = [metadata descriptionMetadata];
 
-  v7 = [v6 resultValueName];
+  resultValueName = [descriptionMetadata resultValueName];
 
-  if (v7)
+  if (resultValueName)
   {
-    v8 = [v6 resultValueName];
-    v9 = [v4 locale];
-    v10 = [v9 localeIdentifier];
-    v11 = [v8 localizedStringForLocaleIdentifier:v10];
+    resultValueName2 = [descriptionMetadata resultValueName];
+    locale = [contextCopy locale];
+    localeIdentifier = [locale localeIdentifier];
+    v11 = [resultValueName2 localizedStringForLocaleIdentifier:localeIdentifier];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = WFAppIntentExecutionAction;
-    v11 = [(WFAction *)&v13 localizedDefaultOutputNameWithContext:v4];
+    v11 = [(WFAction *)&v13 localizedDefaultOutputNameWithContext:contextCopy];
   }
 
   return v11;
@@ -4711,23 +4711,23 @@ id __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFoc
 
 - (BOOL)defaultParameterSummaryContainsRequiredParameters
 {
-  v2 = self;
+  selfCopy = self;
   v75 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(WFAppIntentExecutionAction *)self actionSummary];
-  v5 = [v4 summaryString];
-  v6 = [v5 parameterIdentifiers];
-  v55 = [v3 setWithArray:v6];
+  actionSummary = [(WFAppIntentExecutionAction *)self actionSummary];
+  summaryString = [actionSummary summaryString];
+  parameterIdentifiers = [summaryString parameterIdentifiers];
+  v55 = [v3 setWithArray:parameterIdentifiers];
 
   v7 = MEMORY[0x1E695DFD8];
-  v8 = [(WFAppIntentExecutionAction *)v2 metadata];
-  v9 = [v8 parameters];
-  v10 = [v9 if_map:&__block_literal_global_189_60235];
+  metadata = [(WFAppIntentExecutionAction *)selfCopy metadata];
+  parameters = [metadata parameters];
+  v10 = [parameters if_map:&__block_literal_global_189_60235];
   v11 = [v7 setWithArray:v10];
 
-  v12 = [(WFAppIntentExecutionAction *)v2 actionSummary];
+  actionSummary2 = [(WFAppIntentExecutionAction *)selfCopy actionSummary];
 
-  if (v12)
+  if (actionSummary2)
   {
     v65 = 0uLL;
     v66 = 0uLL;
@@ -4740,7 +4740,7 @@ id __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFoc
       v51 = v11;
       v57 = *v64;
       v52 = *MEMORY[0x1E69AC590];
-      v53 = v2;
+      v53 = selfCopy;
       while (2)
       {
         for (i = 0; i != v58; ++i)
@@ -4751,19 +4751,19 @@ id __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFoc
           }
 
           v14 = *(*(&v63 + 1) + 8 * i);
-          v15 = [(WFAppIntentExecutionAction *)v2 parameterMetadataForIdentifier:v14];
+          v15 = [(WFAppIntentExecutionAction *)selfCopy parameterMetadataForIdentifier:v14];
           if (v15)
           {
             v16 = v15;
             v17 = [v55 containsObject:v14];
-            v18 = [v16 isOptional];
+            isOptional = [v16 isOptional];
             v19 = [v16 capabilities]& 3;
-            v20 = [v16 typeSpecificMetadata];
-            v21 = [v20 objectForKey:v52];
+            typeSpecificMetadata = [v16 typeSpecificMetadata];
+            v21 = [typeSpecificMetadata objectForKey:v52];
 
             v22 = [v16 dynamicOptionsSupport]& 3;
-            v23 = [v16 typeSpecificMetadata];
-            v24 = [v23 objectForKey:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata"];
+            typeSpecificMetadata2 = [v16 typeSpecificMetadata];
+            v24 = [typeSpecificMetadata2 objectForKey:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata"];
 
             if (v24 && [v24 isTransient])
             {
@@ -4774,7 +4774,7 @@ id __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFoc
 
               else
               {
-                v25 = v18;
+                v25 = isOptional;
               }
 
               if ((v25 & 1) == 0 && !v21 && !v22)
@@ -4782,14 +4782,14 @@ id __133__WFAppIntentExecutionAction_getLinkActionWithProcessedParameters_forFoc
                 v46 = getWFActionsLogObject();
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                 {
-                  v45 = [(WFAction *)v53 identifier];
-                  v48 = [(WFAction *)v53 identifier];
+                  identifier = [(WFAction *)v53 identifier];
+                  identifier2 = [(WFAction *)v53 identifier];
                   *buf = 136315650;
                   v69 = "[WFAppIntentExecutionAction defaultParameterSummaryContainsRequiredParameters]";
                   v70 = 2112;
-                  v71 = v45;
+                  v71 = identifier;
                   v72 = 2112;
-                  v73 = v48;
+                  v73 = identifier2;
                   _os_log_impl(&dword_1CA256000, v46, OS_LOG_TYPE_DEFAULT, "%s Action %@ has transient parameter (%@) without a DOP, parameter is non optional or has no default", buf, 0x20u);
 
 LABEL_53:
@@ -4801,17 +4801,17 @@ LABEL_53:
 
             else if ((v17 & 1) == 0)
             {
-              v26 = v19 ? 1 : v18;
+              v26 = v19 ? 1 : isOptional;
               if ((v26 & 1) == 0 && !v21 && !v22)
               {
                 v46 = getWFActionsLogObject();
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                 {
-                  v45 = [(WFAction *)v53 identifier];
+                  identifier = [(WFAction *)v53 identifier];
                   *buf = 136315650;
                   v69 = "[WFAppIntentExecutionAction defaultParameterSummaryContainsRequiredParameters]";
                   v70 = 2112;
-                  v71 = v45;
+                  v71 = identifier;
                   v72 = 2112;
                   v73 = v14;
                   _os_log_impl(&dword_1CA256000, v46, OS_LOG_TYPE_DEFAULT, "%s Action %@ does not have all required parameters (%@) in summary", buf, 0x20u);
@@ -4825,7 +4825,7 @@ LABEL_54:
               }
             }
 
-            v2 = v53;
+            selfCopy = v53;
           }
 
           else
@@ -4863,18 +4863,18 @@ LABEL_46:
   v62 = 0uLL;
   v59 = 0uLL;
   v60 = 0uLL;
-  v28 = [(WFAppIntentExecutionAction *)v2 metadata];
-  v29 = [v28 parameters];
+  metadata2 = [(WFAppIntentExecutionAction *)selfCopy metadata];
+  parameters2 = [metadata2 parameters];
 
-  obj = v29;
-  v30 = [v29 countByEnumeratingWithState:&v59 objects:v67 count:16];
+  obj = parameters2;
+  v30 = [parameters2 countByEnumeratingWithState:&v59 objects:v67 count:16];
   if (!v30)
   {
     goto LABEL_46;
   }
 
   v31 = v30;
-  v54 = v2;
+  v54 = selfCopy;
   v32 = v11;
   v33 = *v60;
   v34 = *MEMORY[0x1E69AC590];
@@ -4888,26 +4888,26 @@ LABEL_46:
       }
 
       v36 = *(*(&v59 + 1) + 8 * j);
-      v37 = [v36 isOptional];
-      v38 = [v36 capabilities];
-      v39 = [v36 typeSpecificMetadata];
-      v40 = [v39 objectForKey:v34];
+      isOptional2 = [v36 isOptional];
+      capabilities = [v36 capabilities];
+      typeSpecificMetadata3 = [v36 typeSpecificMetadata];
+      v40 = [typeSpecificMetadata3 objectForKey:v34];
 
-      v41 = [v36 dynamicOptionsSupport];
-      if ((v37 & 1) == 0)
+      dynamicOptionsSupport = [v36 dynamicOptionsSupport];
+      if ((isOptional2 & 1) == 0)
       {
-        v42 = (v38 & 3) == 0 && v40 == 0;
-        if (v42 && (v41 & 3) == 0)
+        v42 = (capabilities & 3) == 0 && v40 == 0;
+        if (v42 && (dynamicOptionsSupport & 3) == 0)
         {
           v16 = getWFActionsLogObject();
           v11 = v32;
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v44 = [(WFAction *)v54 identifier];
+            identifier3 = [(WFAction *)v54 identifier];
             *buf = 136315394;
             v69 = "[WFAppIntentExecutionAction defaultParameterSummaryContainsRequiredParameters]";
             v70 = 2112;
-            v71 = v44;
+            v71 = identifier3;
             _os_log_impl(&dword_1CA256000, v16, OS_LOG_TYPE_DEFAULT, "%s Action %@ has a parameter without a DOP, parameter is non optional or has no default", buf, 0x16u);
           }
 
@@ -4940,46 +4940,46 @@ LABEL_56:
 {
   v26[2] = *MEMORY[0x1E69E9840];
   outputDictionary = self->_outputDictionary;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (outputDictionary == v4)
+  if (outputDictionary == null)
   {
-    v5 = 0;
+    outputDictionary = 0;
   }
 
   else if (outputDictionary)
   {
     outputDictionary = outputDictionary;
-    v5 = outputDictionary;
+    outputDictionary = outputDictionary;
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = WFAppIntentExecutionAction;
-    v5 = [(WFAction *)&v24 outputDictionary];
-    v6 = [(WFAppIntentExecutionAction *)self metadata];
-    v7 = [v6 outputType];
+    outputDictionary = [(WFAction *)&v24 outputDictionary];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    outputType = [metadata outputType];
 
-    if (!v7)
+    if (!outputType)
     {
       goto LABEL_7;
     }
 
-    v8 = [v5 objectForKeyedSubscript:@"Types"];
+    v8 = [outputDictionary objectForKeyedSubscript:@"Types"];
 
     if (v8)
     {
       goto LABEL_7;
     }
 
-    v11 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-    v12 = [v11 bundleIdentifier];
-    v13 = [v7 wf_contentItemClassesWithAppBundleIdentifier:v12];
+    fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+    bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+    v13 = [outputType wf_contentItemClassesWithAppBundleIdentifier:bundleIdentifier];
 
     if (v13)
     {
-      v14 = [v5 mutableCopy];
+      v14 = [outputDictionary mutableCopy];
       v15 = v14;
       if (v14)
       {
@@ -5007,17 +5007,17 @@ LABEL_56:
       v22 = [v17 copy];
       if (v22)
       {
-        v23 = v22;
+        null2 = v22;
       }
 
       else
       {
-        v23 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
       outputDictionary = self->_outputDictionary;
-      self->_outputDictionary = v23;
-      v5 = v22;
+      self->_outputDictionary = null2;
+      outputDictionary = v22;
     }
 
     else
@@ -5030,68 +5030,68 @@ LABEL_7:
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return outputDictionary;
 }
 
 - (id)copyForProcessing
 {
   v7.receiver = self;
   v7.super_class = WFAppIntentExecutionAction;
-  v3 = [(WFAction *)&v7 copyForProcessing];
-  v4 = v3;
-  if (v3)
+  copyForProcessing = [(WFAction *)&v7 copyForProcessing];
+  v4 = copyForProcessing;
+  if (copyForProcessing)
   {
-    [v3 setShouldSkipLoadingAsynchronousDefaultValue:1];
-    v5 = [(WFAction *)self processedParameters];
-    [v4 setProcessedParameters:v5];
+    [copyForProcessing setShouldSkipLoadingAsynchronousDefaultValue:1];
+    processedParameters = [(WFAction *)self processedParameters];
+    [v4 setProcessedParameters:processedParameters];
   }
 
   return v4;
 }
 
-- (id)copyWithSerializedParameters:(id)a3
+- (id)copyWithSerializedParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(WFAction *)self identifier];
-  v7 = [(WFAppIntentExecutionAction *)self metadata];
-  v8 = [(WFAction *)self definition];
-  v9 = [(WFAppIntentExecutionAction *)self appIntentDescriptor];
-  v10 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-  v11 = [v5 initWithIdentifier:v6 metadata:v7 definition:v8 serializedParameters:v4 appIntentDescriptor:v9 fullyQualifiedActionIdentifier:v10];
+  identifier = [(WFAction *)self identifier];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  definition = [(WFAction *)self definition];
+  appIntentDescriptor = [(WFAppIntentExecutionAction *)self appIntentDescriptor];
+  fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+  v11 = [v5 initWithIdentifier:identifier metadata:metadata definition:definition serializedParameters:parametersCopy appIntentDescriptor:appIntentDescriptor fullyQualifiedActionIdentifier:fullyQualifiedLinkActionIdentifier];
 
   return v11;
 }
 
-- (WFAppIntentExecutionAction)initWithIdentifier:(id)a3 metadata:(id)a4 definition:(id)a5 serializedParameters:(id)a6 appIntentDescriptor:(id)a7 fullyQualifiedActionIdentifier:(id)a8
+- (WFAppIntentExecutionAction)initWithIdentifier:(id)identifier metadata:(id)metadata definition:(id)definition serializedParameters:(id)parameters appIntentDescriptor:(id)descriptor fullyQualifiedActionIdentifier:(id)actionIdentifier
 {
-  v15 = a4;
-  v35 = a7;
-  v16 = a8;
-  v17 = a5;
-  v18 = a3;
-  v19 = [a6 mutableCopy];
+  metadataCopy = metadata;
+  descriptorCopy = descriptor;
+  actionIdentifierCopy = actionIdentifier;
+  definitionCopy = definition;
+  identifierCopy = identifier;
+  v19 = [parameters mutableCopy];
   v36.receiver = self;
   v36.super_class = WFAppIntentExecutionAction;
-  v20 = [(WFAction *)&v36 initWithIdentifier:v18 definition:v17 serializedParameters:v19];
+  v20 = [(WFAction *)&v36 initWithIdentifier:identifierCopy definition:definitionCopy serializedParameters:v19];
 
   if (v20)
   {
-    objc_storeStrong(&v20->_metadata, a4);
-    objc_storeStrong(&v20->_appIntentDescriptor, a7);
+    objc_storeStrong(&v20->_metadata, metadata);
+    objc_storeStrong(&v20->_appIntentDescriptor, descriptor);
     v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
     dependentParameterIdentifiers = v20->_dependentParameterIdentifiers;
     v20->_dependentParameterIdentifiers = v21;
 
-    objc_storeStrong(&v20->_fullyQualifiedLinkActionIdentifier, a8);
+    objc_storeStrong(&v20->_fullyQualifiedLinkActionIdentifier, actionIdentifier);
     v20->_connectionLock._os_unfair_lock_opaque = 0;
     v20->_policyLock._os_unfair_lock_opaque = 0;
     v20->_signalsLock._os_unfair_lock_opaque = 0;
     v20->_actionArchivingQueueLock._os_unfair_lock_opaque = 0;
-    v23 = [v15 actionConfiguration];
+    actionConfiguration = [metadataCopy actionConfiguration];
     v24 = [(WFAppIntentExecutionAction *)v20 linkActionWithParameterStates:MEMORY[0x1E695E0F8] usingConnectionPolicy:0];
-    v25 = [(WFAppIntentExecutionAction *)v20 actionConfigurationContext];
-    v26 = [v23 actionConfigurationByEvaluatingAction:v24 context:v25];
+    actionConfigurationContext = [(WFAppIntentExecutionAction *)v20 actionConfigurationContext];
+    v26 = [actionConfiguration actionConfigurationByEvaluatingAction:v24 context:actionConfigurationContext];
 
     if (v26)
     {
@@ -5131,43 +5131,43 @@ LABEL_7:
   return v20;
 }
 
-- (void)generateShortcutRepresentation:(id)a3
+- (void)generateShortcutRepresentation:(id)representation
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = *MEMORY[0x1E696EAF8];
-  v6 = a3;
-  v7 = [(WFAction *)self identifier];
-  v12 = [v4 stringWithFormat:@"%@%@", v5, v7];
+  representationCopy = representation;
+  identifier = [(WFAction *)self identifier];
+  v12 = [v4 stringWithFormat:@"%@%@", v5, identifier];
 
   v8 = [WFHandleCustomIntentAction alloc];
-  v9 = [(WFAction *)self definition];
-  v10 = [(WFAction *)self serializedParameters];
-  v11 = [(WFHandleIntentAction *)v8 initWithIdentifier:v12 definition:v9 serializedParameters:v10];
+  definition = [(WFAction *)self definition];
+  serializedParameters = [(WFAction *)self serializedParameters];
+  v11 = [(WFHandleIntentAction *)v8 initWithIdentifier:v12 definition:definition serializedParameters:serializedParameters];
 
   if (v11)
   {
-    [(WFHandleIntentAction *)v11 generateShortcutRepresentation:v6];
+    [(WFHandleIntentAction *)v11 generateShortcutRepresentation:representationCopy];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(representationCopy + 2))(representationCopy, 0, 0);
   }
 }
 
-- (void)generateStandaloneShortcutRepresentation:(id)a3
+- (void)generateStandaloneShortcutRepresentation:(id)representation
 {
-  v6 = a3;
-  v4 = [(WFAppIntentExecutionAction *)self associatedAppBundleIdentifier];
-  if (v4)
+  representationCopy = representation;
+  associatedAppBundleIdentifier = [(WFAppIntentExecutionAction *)self associatedAppBundleIdentifier];
+  if (associatedAppBundleIdentifier)
   {
-    v5 = [[WFStandaloneShortcutRepresentation alloc] initWithBundleIdentifier:v4];
-    v6[2](v6, v5);
+    v5 = [[WFStandaloneShortcutRepresentation alloc] initWithBundleIdentifier:associatedAppBundleIdentifier];
+    representationCopy[2](representationCopy, v5);
   }
 
   else
   {
-    v6[2](v6, 0);
+    representationCopy[2](representationCopy, 0);
   }
 }
 

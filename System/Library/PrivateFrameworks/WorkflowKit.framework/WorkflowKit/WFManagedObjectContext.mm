@@ -1,7 +1,7 @@
 @interface WFManagedObjectContext
 - (WFDatabase)database;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (void)logFaultForIncompatibleSortDescriptorsInFetchRequest:(id)a3;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (void)logFaultForIncompatibleSortDescriptorsInFetchRequest:(id)request;
 @end
 
 @implementation WFManagedObjectContext
@@ -13,21 +13,21 @@
   return WeakRetained;
 }
 
-- (void)logFaultForIncompatibleSortDescriptorsInFetchRequest:(id)a3
+- (void)logFaultForIncompatibleSortDescriptorsInFetchRequest:(id)request
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 includesPendingChanges] && objc_msgSend(v4, "resultType") != 2 && -[WFManagedObjectContext hasChanges](self, "hasChanges"))
+  requestCopy = request;
+  if ([requestCopy includesPendingChanges] && objc_msgSend(requestCopy, "resultType") != 2 && -[WFManagedObjectContext hasChanges](self, "hasChanges"))
   {
-    v5 = [v4 sortDescriptors];
+    sortDescriptors = [requestCopy sortDescriptors];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __79__WFManagedObjectContext_logFaultForIncompatibleSortDescriptorsInFetchRequest___block_invoke;
     v16 = &unk_1E837FF68;
-    v6 = v4;
+    v6 = requestCopy;
     v17 = v6;
-    v18 = self;
-    v7 = [v5 if_firstObjectPassingTest:&v13];
+    selfCopy = self;
+    v7 = [sortDescriptors if_firstObjectPassingTest:&v13];
 
     if (v7)
     {
@@ -35,8 +35,8 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
         v9 = [(WFManagedObjectContext *)self insertedObjects:v13];
-        v10 = [(WFManagedObjectContext *)self deletedObjects];
-        v11 = [(WFManagedObjectContext *)self updatedObjects];
+        deletedObjects = [(WFManagedObjectContext *)self deletedObjects];
+        updatedObjects = [(WFManagedObjectContext *)self updatedObjects];
         *buf = 136316162;
         v20 = "[WFManagedObjectContext logFaultForIncompatibleSortDescriptorsInFetchRequest:]";
         v21 = 2114;
@@ -44,9 +44,9 @@
         v23 = 2114;
         v24 = v9;
         v25 = 2114;
-        v26 = v10;
+        v26 = deletedObjects;
         v27 = 2114;
-        v28 = v11;
+        v28 = updatedObjects;
         _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_FAULT, "%s Fetch requests with sort descriptors referencing parent entity cannot be run on dirty contexts. Fetch request: %{public}@, inserted: %{public}@, deleted: %{public}@, updated: %{public}@", buf, 0x34u);
       }
     }
@@ -90,13 +90,13 @@ uint64_t __79__WFManagedObjectContext_logFaultForIncompatibleSortDescriptorsInFe
   return v12;
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  [(WFManagedObjectContext *)self logFaultForIncompatibleSortDescriptorsInFetchRequest:v6];
+  requestCopy = request;
+  [(WFManagedObjectContext *)self logFaultForIncompatibleSortDescriptorsInFetchRequest:requestCopy];
   v9.receiver = self;
   v9.super_class = WFManagedObjectContext;
-  v7 = [(WFManagedObjectContext *)&v9 executeFetchRequest:v6 error:a4];
+  v7 = [(WFManagedObjectContext *)&v9 executeFetchRequest:requestCopy error:error];
 
   return v7;
 }

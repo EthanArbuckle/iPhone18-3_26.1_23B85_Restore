@@ -1,59 +1,59 @@
 @interface AMSPaymentSheetTask
 - (AKAppleIDAuthenticationContext)authenticationContext;
-- (AMSPaymentSheetTask)initWithRequest:(id)a3 bag:(id)a4;
+- (AMSPaymentSheetTask)initWithRequest:(id)request bag:(id)bag;
 - (BOOL)cancel;
-- (id)_authorizePaymentWithAuthKitResults:(id)a3;
-- (id)_authorizePaymentWithBiometricsRequest:(id)a3 payment:(id)a4;
+- (id)_authorizePaymentWithAuthKitResults:(id)results;
+- (id)_authorizePaymentWithBiometricsRequest:(id)request payment:(id)payment;
 - (id)_buildPaymentRequest;
 - (id)_metricsEvent;
 - (id)_performInProcessTask;
-- (id)_presentPaymentSheetWithPaymentRequest:(id)a3;
-- (id)presentationSceneBundleIdentifierForPaymentAuthorizationController:(id)a3;
-- (id)presentationSceneIdentifierForPaymentAuthorizationController:(id)a3;
-- (id)presentationWindowForPaymentAuthorizationController:(id)a3;
-- (void)_configureAttachSelectedCard:(id)a3;
-- (void)_configureBasicsForPaymentRequest:(id)a3 amsPaymentRequest:(id)a4;
-- (void)_configureConfirmationScreenForPaymentRequest:(id)a3 amsPaymentRequest:(id)a4;
-- (void)_configureContentItemsForPaymentRequest:(id)a3 amsPaymentRequest:(id)a4;
-- (void)_configureCustomUIForPaymentRequest:(id)a3 amsPaymentRequest:(id)a4;
-- (void)_configureLanguage:(id)a3 completion:(id)a4;
-- (void)_configureMerchantSessionForPaymentRequest:(id)a3;
-- (void)_configurePSD2Decoration:(id)a3 completion:(id)a4;
-- (void)_configurePaymentSummaryForPaymentRequest:(id)a3;
-- (void)_dismissPaymentAuthorizationController:(id)a3;
-- (void)_presentCompanionAuthenticationSheetWithPaymentRequest:(id)a3 purchaseResult:(id)a4;
-- (void)_presentPaymentConfirmationWithPaymentRequest:(id)a3 purchaseResult:(id)a4;
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationController:(id)a3 didEncounterAuthorizationEvent:(unint64_t)a4;
-- (void)paymentAuthorizationController:(id)a3 didSelectPaymentMethod:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationController:(id)a3 willFinishWithError:(id)a4;
-- (void)paymentAuthorizationControllerDidFinish:(id)a3;
+- (id)_presentPaymentSheetWithPaymentRequest:(id)request;
+- (id)presentationSceneBundleIdentifierForPaymentAuthorizationController:(id)controller;
+- (id)presentationSceneIdentifierForPaymentAuthorizationController:(id)controller;
+- (id)presentationWindowForPaymentAuthorizationController:(id)controller;
+- (void)_configureAttachSelectedCard:(id)card;
+- (void)_configureBasicsForPaymentRequest:(id)request amsPaymentRequest:(id)paymentRequest;
+- (void)_configureConfirmationScreenForPaymentRequest:(id)request amsPaymentRequest:(id)paymentRequest;
+- (void)_configureContentItemsForPaymentRequest:(id)request amsPaymentRequest:(id)paymentRequest;
+- (void)_configureCustomUIForPaymentRequest:(id)request amsPaymentRequest:(id)paymentRequest;
+- (void)_configureLanguage:(id)language completion:(id)completion;
+- (void)_configureMerchantSessionForPaymentRequest:(id)request;
+- (void)_configurePSD2Decoration:(id)decoration completion:(id)completion;
+- (void)_configurePaymentSummaryForPaymentRequest:(id)request;
+- (void)_dismissPaymentAuthorizationController:(id)controller;
+- (void)_presentCompanionAuthenticationSheetWithPaymentRequest:(id)request purchaseResult:(id)result;
+- (void)_presentPaymentConfirmationWithPaymentRequest:(id)request purchaseResult:(id)result;
+- (void)paymentAuthorizationController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationController:(id)controller didEncounterAuthorizationEvent:(unint64_t)event;
+- (void)paymentAuthorizationController:(id)controller didSelectPaymentMethod:(id)method handler:(id)handler;
+- (void)paymentAuthorizationController:(id)controller willFinishWithError:(id)error;
+- (void)paymentAuthorizationControllerDidFinish:(id)finish;
 @end
 
 @implementation AMSPaymentSheetTask
 
-- (AMSPaymentSheetTask)initWithRequest:(id)a3 bag:(id)a4
+- (AMSPaymentSheetTask)initWithRequest:(id)request bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  bagCopy = bag;
   v19.receiver = self;
   v19.super_class = AMSPaymentSheetTask;
   v9 = [(AMSTask *)&v19 init];
   if (v9)
   {
-    v10 = [v7 logKey];
+    logKey = [requestCopy logKey];
 
-    if (v10)
+    if (logKey)
     {
-      v11 = [v7 logKey];
-      v12 = AMSSetLogKey(v11);
+      logKey2 = [requestCopy logKey];
+      v12 = AMSSetLogKey(logKey2);
     }
 
     assetCache = v9->_assetCache;
     v9->_assetCache = 0;
 
-    objc_storeStrong(&v9->_bag, a4);
-    objc_storeStrong(&v9->_request, a3);
+    objc_storeStrong(&v9->_bag, bag);
+    objc_storeStrong(&v9->_request, request);
     v14 = objc_alloc_init(_PaymentSheetState);
     state = v9->_state;
     v9->_state = v14;
@@ -75,8 +75,8 @@
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = AMSLogKey();
     v8 = MEMORY[0x1E696AEC0];
@@ -95,7 +95,7 @@
     v11 = ;
     *buf = 138543362;
     v29 = v11;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@Cancelling payment sheet task", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Cancelling payment sheet task", buf, 0xCu);
     if (v7)
     {
 
@@ -103,8 +103,8 @@
     }
   }
 
-  v12 = [(AMSPaymentSheetTask *)self paymentSheetPromise];
-  [v12 cancel];
+  paymentSheetPromise = [(AMSPaymentSheetTask *)self paymentSheetPromise];
+  [paymentSheetPromise cancel];
 
   v13 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v13)
@@ -112,45 +112,45 @@
     v13 = +[AMSLogConfig sharedConfig];
   }
 
-  v14 = [v13 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(AMSPaymentSheetTask *)self request];
-    v16 = [v15 logKey];
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v17 = MEMORY[0x1E696AEC0];
     v18 = objc_opt_class();
-    if (v16)
+    if (logKey)
     {
-      v19 = [(AMSPaymentSheetTask *)self request];
-      v20 = [v19 logKey];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
       a2 = NSStringFromSelector(a2);
-      v26 = v20;
-      [v17 stringWithFormat:@"%@: [%@] %@ ", v18, v20, a2];
+      v26 = logKey2;
+      [v17 stringWithFormat:@"%@: [%@] %@ ", v18, logKey2, a2];
     }
 
     else
     {
-      v19 = NSStringFromSelector(a2);
-      [v17 stringWithFormat:@"%@: %@ ", v18, v19];
+      request2 = NSStringFromSelector(a2);
+      [v17 stringWithFormat:@"%@: %@ ", v18, request2];
     }
     v21 = ;
-    v22 = [(AMSPaymentSheetTask *)self paymentAuthorizationController];
-    v23 = AMSHashIfNeeded(v22);
+    paymentAuthorizationController = [(AMSPaymentSheetTask *)self paymentAuthorizationController];
+    v23 = AMSHashIfNeeded(paymentAuthorizationController);
     *buf = 138543618;
     v29 = v21;
     v30 = 2114;
     v31 = v23;
-    _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@Cancelling payment authorization controller: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Cancelling payment authorization controller: %{public}@", buf, 0x16u);
 
-    if (v16)
+    if (logKey)
     {
 
       v21 = v26;
     }
   }
 
-  v24 = [(AMSPaymentSheetTask *)self paymentAuthorizationController];
-  [(AMSPaymentSheetTask *)self _dismissPaymentAuthorizationController:v24];
+  paymentAuthorizationController2 = [(AMSPaymentSheetTask *)self paymentAuthorizationController];
+  [(AMSPaymentSheetTask *)self _dismissPaymentAuthorizationController:paymentAuthorizationController2];
 
   v27.receiver = self;
   v27.super_class = AMSPaymentSheetTask;
@@ -514,12 +514,12 @@ id __44__AMSPaymentSheetTask__performInProcessTask__block_invoke_2(uint64_t a1, 
   authenticationContext = self->_authenticationContext;
   if (!authenticationContext)
   {
-    v4 = [(AMSPurchaseInfo *)self->_purchaseInfo purchase];
+    purchase = [(AMSPurchaseInfo *)self->_purchaseInfo purchase];
 
-    if (v4)
+    if (purchase)
     {
-      v5 = [(AMSPurchaseInfo *)self->_purchaseInfo purchase];
-      v6 = [v5 authenticationContextForRequest:self->_request];
+      purchase2 = [(AMSPurchaseInfo *)self->_purchaseInfo purchase];
+      v6 = [purchase2 authenticationContextForRequest:self->_request];
       v7 = self->_authenticationContext;
       self->_authenticationContext = v6;
 
@@ -532,7 +532,7 @@ LABEL_4:
     if (!authenticationContext)
     {
       v9 = [AMSPurchase defaultAuthenticationContextForRequest:self->_request];
-      v5 = self->_authenticationContext;
+      purchase2 = self->_authenticationContext;
       self->_authenticationContext = v9;
       goto LABEL_4;
     }
@@ -543,12 +543,12 @@ LABEL_6:
   return authenticationContext;
 }
 
-- (id)_authorizePaymentWithAuthKitResults:(id)a3
+- (id)_authorizePaymentWithAuthKitResults:(id)results
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
-  v7 = 0x1E696A000;
+  resultsCopy = results;
+  v6 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
+  logKey4 = 0x1E696A000;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -556,21 +556,21 @@ LABEL_6:
 
     if (v8)
     {
-      v9 = [(AMSPaymentSheetTask *)self state];
-      v10 = +[AMSPaymentSheetMetricsEvent dictionaryForUserAction:didBiometricsLockout:](AMSPaymentSheetMetricsEvent, "dictionaryForUserAction:didBiometricsLockout:", 6, [v9 didBiometricsLockout]);
+      state = [(AMSPaymentSheetTask *)self state];
+      v10 = +[AMSPaymentSheetMetricsEvent dictionaryForUserAction:didBiometricsLockout:](AMSPaymentSheetMetricsEvent, "dictionaryForUserAction:didBiometricsLockout:", 6, [state didBiometricsLockout]);
 
       if (v10)
       {
-        v11 = [(AMSPaymentSheetTask *)self userActions];
-        [v11 addObject:v10];
+        userActions = [(AMSPaymentSheetTask *)self userActions];
+        [userActions addObject:v10];
       }
 
-      v12 = [(AMSPaymentSheetTask *)self purchaseInfo];
-      v13 = [v12 idmsTokens];
+      purchaseInfo = [(AMSPaymentSheetTask *)self purchaseInfo];
+      idmsTokens = [purchaseInfo idmsTokens];
 
-      if (!v13)
+      if (!idmsTokens)
       {
-        v14 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DB98]];
+        v14 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB98]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -582,12 +582,12 @@ LABEL_6:
           v15 = 0;
         }
 
-        v32 = [(AMSPaymentSheetTask *)self purchaseInfo];
-        [v32 setIdmsTokens:v15];
+        purchaseInfo2 = [(AMSPaymentSheetTask *)self purchaseInfo];
+        [purchaseInfo2 setIdmsTokens:v15];
       }
 
-      v33 = [(AMSPaymentSheetTask *)self state];
-      [v33 setPasswordEquivalentToken:v8];
+      state2 = [(AMSPaymentSheetTask *)self state];
+      [state2 setPasswordEquivalentToken:v8];
 
       v34 = +[AMSLogConfig sharedPurchaseConfig];
       if (!v34)
@@ -595,19 +595,19 @@ LABEL_6:
         v34 = +[AMSLogConfig sharedConfig];
       }
 
-      v35 = [v34 OSLogObject];
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v34 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [(AMSPaymentSheetTask *)self request];
-        v36 = [v45 logKey];
+        request = [(AMSPaymentSheetTask *)self request];
+        logKey = [request logKey];
         v37 = MEMORY[0x1E696AEC0];
         v38 = objc_opt_class();
         v39 = v38;
-        if (v36)
+        if (logKey)
         {
-          v43 = [(AMSPaymentSheetTask *)self request];
-          v3 = [v43 logKey];
-          [v37 stringWithFormat:@"%@: [%@] ", v39, v3];
+          request2 = [(AMSPaymentSheetTask *)self request];
+          logKey2 = [request2 logKey];
+          [v37 stringWithFormat:@"%@: [%@] ", v39, logKey2];
         }
 
         else
@@ -617,16 +617,16 @@ LABEL_6:
         v40 = ;
         *buf = 138543362;
         v47 = v40;
-        _os_log_impl(&dword_192869000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@Payment authorized with PET from AuthKit", buf, 0xCu);
-        if (v36)
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Payment authorized with PET from AuthKit", buf, 0xCu);
+        if (logKey)
         {
 
-          v40 = v43;
+          v40 = request2;
         }
       }
 
-      v41 = [(AMSPaymentSheetTask *)self state];
-      [v41 setDidAuthorizePayment:1];
+      state3 = [(AMSPaymentSheetTask *)self state];
+      [state3 setDidAuthorizePayment:1];
 
       v31 = [AMSPromise promiseWithResult:&unk_1F07798F8];
 
@@ -638,10 +638,10 @@ LABEL_6:
   {
   }
 
-  v16 = [(AMSPaymentSheetTask *)self request];
-  v17 = [v16 requiresAuthorization];
+  request3 = [(AMSPaymentSheetTask *)self request];
+  requiresAuthorization = [request3 requiresAuthorization];
 
-  if (v17)
+  if (requiresAuthorization)
   {
     v18 = AMSError(100, @"Payment Sheet Failed", @"AuthKit authorization failed", 0);
     v19 = [AMSPromise promiseWithError:v18];
@@ -649,13 +649,13 @@ LABEL_6:
 
   else
   {
-    v20 = [(AMSPaymentSheetTask *)self state];
-    v18 = +[AMSPaymentSheetMetricsEvent dictionaryForUserAction:didBiometricsLockout:](AMSPaymentSheetMetricsEvent, "dictionaryForUserAction:didBiometricsLockout:", 1, [v20 didBiometricsLockout]);
+    state4 = [(AMSPaymentSheetTask *)self state];
+    v18 = +[AMSPaymentSheetMetricsEvent dictionaryForUserAction:didBiometricsLockout:](AMSPaymentSheetMetricsEvent, "dictionaryForUserAction:didBiometricsLockout:", 1, [state4 didBiometricsLockout]);
 
     if (v18)
     {
-      v21 = [(AMSPaymentSheetTask *)self userActions];
-      [v21 addObject:v18];
+      userActions2 = [(AMSPaymentSheetTask *)self userActions];
+      [userActions2 addObject:v18];
     }
 
     v22 = +[AMSLogConfig sharedPurchaseConfig];
@@ -664,19 +664,19 @@ LABEL_6:
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(AMSPaymentSheetTask *)self request];
-      v25 = [v24 logKey];
+      request4 = [(AMSPaymentSheetTask *)self request];
+      logKey3 = [request4 logKey];
       v26 = MEMORY[0x1E696AEC0];
       v27 = objc_opt_class();
       v28 = v27;
-      if (v25)
+      if (logKey3)
       {
-        v44 = [(AMSPaymentSheetTask *)self request];
-        v7 = [v44 logKey];
-        [v26 stringWithFormat:@"%@: [%@] ", v28, v7];
+        request5 = [(AMSPaymentSheetTask *)self request];
+        logKey4 = [request5 logKey];
+        [v26 stringWithFormat:@"%@: [%@] ", v28, logKey4];
       }
 
       else
@@ -686,16 +686,16 @@ LABEL_6:
       v29 = ;
       *buf = 138543362;
       v47 = v29;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Payment authorized without authentication (confirmation only)", buf, 0xCu);
-      if (v25)
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Payment authorized without authentication (confirmation only)", buf, 0xCu);
+      if (logKey3)
       {
 
-        v29 = v44;
+        v29 = request5;
       }
     }
 
-    v30 = [(AMSPaymentSheetTask *)self state];
-    [v30 setDidAuthorizePayment:1];
+    state5 = [(AMSPaymentSheetTask *)self state];
+    [state5 setDidAuthorizePayment:1];
 
     v19 = [AMSPromise promiseWithResult:&unk_1F07798F8];
   }
@@ -708,31 +708,31 @@ LABEL_36:
   return v31;
 }
 
-- (id)_authorizePaymentWithBiometricsRequest:(id)a3 payment:(id)a4
+- (id)_authorizePaymentWithBiometricsRequest:(id)request payment:(id)payment
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  paymentCopy = payment;
+  requestCopy = request;
   v10 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v10)
   {
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = v8;
-    v12 = [(AMSPaymentSheetTask *)self request];
-    v13 = [v12 logKey];
+    v39 = paymentCopy;
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v14 = MEMORY[0x1E696AEC0];
     v15 = objc_opt_class();
     v16 = v15;
-    if (v13)
+    if (logKey)
     {
-      v4 = [(AMSPaymentSheetTask *)self request];
-      v5 = [v4 logKey];
-      [v14 stringWithFormat:@"%@: [%@] ", v16, v5];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
+      [v14 stringWithFormat:@"%@: [%@] ", v16, logKey2];
     }
 
     else
@@ -742,35 +742,35 @@ LABEL_36:
     v17 = ;
     *buf = 138543362;
     v46 = v17;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Signing biometrics challenge", buf, 0xCu);
-    if (v13)
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Signing biometrics challenge", buf, 0xCu);
+    if (logKey)
     {
 
-      v17 = v4;
+      v17 = request2;
     }
 
-    v8 = v39;
+    paymentCopy = v39;
   }
 
-  v18 = [(AMSPaymentSheetTask *)self state];
-  v19 = +[AMSPaymentSheetMetricsEvent dictionaryForBiometricMatchState:didBiometricsLockout:biometricsType:](AMSPaymentSheetMetricsEvent, "dictionaryForBiometricMatchState:didBiometricsLockout:biometricsType:", 1, [v18 didBiometricsLockout], +[AMSBiometrics type](AMSBiometrics, "type"));
+  state = [(AMSPaymentSheetTask *)self state];
+  v19 = +[AMSPaymentSheetMetricsEvent dictionaryForBiometricMatchState:didBiometricsLockout:biometricsType:](AMSPaymentSheetMetricsEvent, "dictionaryForBiometricMatchState:didBiometricsLockout:biometricsType:", 1, [state didBiometricsLockout], +[AMSBiometrics type](AMSBiometrics, "type"));
 
   if (v19)
   {
-    v20 = [(AMSPaymentSheetTask *)self userActions];
-    [v20 addObject:v19];
+    userActions = [(AMSPaymentSheetTask *)self userActions];
+    [userActions addObject:v19];
   }
 
-  v21 = [(AMSPaymentSheetTask *)self request];
-  v22 = [v21 biometricsRequest];
-  v23 = [v22 localAuthContext];
-  v24 = [(AMSPaymentSheetTask *)self purchaseInfo];
-  [v24 setLocalAuthContext:v23];
+  request3 = [(AMSPaymentSheetTask *)self request];
+  biometricsRequest = [request3 biometricsRequest];
+  localAuthContext = [biometricsRequest localAuthContext];
+  purchaseInfo = [(AMSPaymentSheetTask *)self purchaseInfo];
+  [purchaseInfo setLocalAuthContext:localAuthContext];
 
-  v25 = [[AMSBiometricsSignatureTask alloc] initWithRequest:v9];
+  v25 = [[AMSBiometricsSignatureTask alloc] initWithRequest:requestCopy];
   v26 = [(AMSPaymentSheetTask *)self bag];
-  v27 = [(AMSBiometricsSignatureTask *)v25 request];
-  [v27 setBag:v26];
+  request4 = [(AMSBiometricsSignatureTask *)v25 request];
+  [request4 setBag:v26];
 
   if (+[AMSBiometrics type]== 2)
   {
@@ -791,10 +791,10 @@ LABEL_36:
     v31 = +[AMSBinaryPromise promiseWithSuccess];
   }
 
-  v32 = [(AMSBiometricsSignatureTask *)v25 performSignature];
-  v44[0] = v32;
-  v33 = [(AMSBinaryPromise *)v31 promiseAdapter];
-  v44[1] = v33;
+  performSignature = [(AMSBiometricsSignatureTask *)v25 performSignature];
+  v44[0] = performSignature;
+  promiseAdapter = [(AMSBinaryPromise *)v31 promiseAdapter];
+  v44[1] = promiseAdapter;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
   v35 = [AMSPromise promiseWithAll:v34];
   v40[0] = MEMORY[0x1E69E9820];
@@ -802,8 +802,8 @@ LABEL_36:
   v40[2] = __70__AMSPaymentSheetTask__authorizePaymentWithBiometricsRequest_payment___block_invoke_3;
   v40[3] = &unk_1E73BA9E0;
   v40[4] = self;
-  v41 = v8;
-  v36 = v8;
+  v41 = paymentCopy;
+  v36 = paymentCopy;
   v37 = [v35 continueWithBlock:v40];
 
   return v37;
@@ -1068,48 +1068,48 @@ id __70__AMSPaymentSheetTask__authorizePaymentWithBiometricsRequest_payment___bl
 {
   v63 = *MEMORY[0x1E69E9840];
   v5 = [AMSPaymentSheetMetricsEvent alloc];
-  v6 = [(AMSPaymentSheetTask *)self metricsDictionary];
-  v7 = [(AMSMetricsEvent *)v5 initWithUnderlyingDictionary:v6];
+  metricsDictionary = [(AMSPaymentSheetTask *)self metricsDictionary];
+  v7 = [(AMSMetricsEvent *)v5 initWithUnderlyingDictionary:metricsDictionary];
 
-  v8 = [(AMSPaymentSheetTask *)self request];
-  v9 = [v8 biometricsRequest];
+  request = [(AMSPaymentSheetTask *)self request];
+  biometricsRequest = [request biometricsRequest];
 
-  v10 = [(AMSPaymentSheetTask *)self state];
-  v11 = [v10 didAuthorizePayment];
+  state = [(AMSPaymentSheetTask *)self state];
+  didAuthorizePayment = [state didAuthorizePayment];
 
-  if (v9)
+  if (biometricsRequest)
   {
-    v12 = [(AMSPaymentSheetTask *)self state];
-    v13 = v12;
-    if (!v11)
+    state2 = [(AMSPaymentSheetTask *)self state];
+    v13 = state2;
+    if (!didAuthorizePayment)
     {
-      v20 = [v12 cancellationType];
+      cancellationType = [state2 cancellationType];
 
-      if (!v20)
+      if (!cancellationType)
       {
-        v21 = [(AMSPaymentSheetTask *)self state];
-        [v21 setCancellationType:2];
+        state3 = [(AMSPaymentSheetTask *)self state];
+        [state3 setCancellationType:2];
       }
 
       [(AMSPaymentSheetMetricsEvent *)v7 addBiometricMatchState:3];
-      v22 = [(AMSPaymentSheetTask *)self state];
-      v23 = [v22 cancellationType];
-      v24 = [(AMSPaymentSheetTask *)self state];
-      v25 = +[AMSPaymentSheetMetricsEvent dictionaryForCancellationEvent:didBiometricsLockout:biometricsType:](AMSPaymentSheetMetricsEvent, "dictionaryForCancellationEvent:didBiometricsLockout:biometricsType:", v23, [v24 didBiometricsLockout], +[AMSBiometrics type](AMSBiometrics, "type"));
+      state4 = [(AMSPaymentSheetTask *)self state];
+      cancellationType2 = [state4 cancellationType];
+      state5 = [(AMSPaymentSheetTask *)self state];
+      v25 = +[AMSPaymentSheetMetricsEvent dictionaryForCancellationEvent:didBiometricsLockout:biometricsType:](AMSPaymentSheetMetricsEvent, "dictionaryForCancellationEvent:didBiometricsLockout:biometricsType:", cancellationType2, [state5 didBiometricsLockout], +[AMSBiometrics type](AMSBiometrics, "type"));
 
       if (v25)
       {
-        v26 = [(AMSPaymentSheetTask *)self userActions];
-        [v26 addObject:v25];
+        userActions = [(AMSPaymentSheetTask *)self userActions];
+        [userActions addObject:v25];
       }
 
       goto LABEL_20;
     }
 
-    v14 = [v12 signatureResult];
-    v15 = [v14 signature];
+    signatureResult = [state2 signatureResult];
+    signature = [signatureResult signature];
 
-    if (v15)
+    if (signature)
     {
       v16 = v7;
       v17 = 1;
@@ -1117,11 +1117,11 @@ id __70__AMSPaymentSheetTask__authorizePaymentWithBiometricsRequest_payment___bl
 
     else
     {
-      v35 = [(AMSPaymentSheetTask *)self state];
-      v36 = [v35 passwordEquivalentToken];
+      state6 = [(AMSPaymentSheetTask *)self state];
+      passwordEquivalentToken = [state6 passwordEquivalentToken];
 
       v16 = v7;
-      if (!v36)
+      if (!passwordEquivalentToken)
       {
         [(AMSPaymentSheetMetricsEvent *)v7 addBiometricMatchState:0];
         v51 = +[AMSLogConfig sharedPurchaseConfig];
@@ -1130,34 +1130,34 @@ id __70__AMSPaymentSheetTask__authorizePaymentWithBiometricsRequest_payment___bl
           v51 = +[AMSLogConfig sharedConfig];
         }
 
-        v52 = [v51 OSLogObject];
-        if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v51 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
-          v58 = [(AMSPaymentSheetTask *)self request];
-          v53 = [v58 logKey];
+          request2 = [(AMSPaymentSheetTask *)self request];
+          logKey = [request2 logKey];
           v54 = MEMORY[0x1E696AEC0];
           v55 = objc_opt_class();
-          if (v53)
+          if (logKey)
           {
-            v56 = [(AMSPaymentSheetTask *)self request];
-            v2 = [v56 logKey];
+            request3 = [(AMSPaymentSheetTask *)self request];
+            logKey2 = [request3 logKey];
             a2 = NSStringFromSelector(a2);
-            [v54 stringWithFormat:@"%@: [%@] %@ ", v55, v2, a2];
+            [v54 stringWithFormat:@"%@: [%@] %@ ", v55, logKey2, a2];
           }
 
           else
           {
-            v56 = NSStringFromSelector(a2);
-            [v54 stringWithFormat:@"%@: %@ ", v55, v56];
+            request3 = NSStringFromSelector(a2);
+            [v54 stringWithFormat:@"%@: %@ ", v55, request3];
           }
           v57 = ;
           *buf = 138543362;
           v62 = v57;
-          _os_log_impl(&dword_192869000, v52, OS_LOG_TYPE_ERROR, "%{public}@Recording metrics for a successful biometric authorization that is neither Signature- nor PET-based", buf, 0xCu);
-          if (v53)
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Recording metrics for a successful biometric authorization that is neither Signature- nor PET-based", buf, 0xCu);
+          if (logKey)
           {
 
-            v57 = v2;
+            v57 = logKey2;
           }
         }
 
@@ -1169,85 +1169,85 @@ id __70__AMSPaymentSheetTask__authorizePaymentWithBiometricsRequest_payment___bl
 
     [(AMSPaymentSheetMetricsEvent *)v16 addBiometricMatchState:v17];
 LABEL_20:
-    v37 = [(AMSPaymentSheetTask *)self request];
-    v38 = [v37 biometricsRequest];
-    v39 = [v38 isDualAction];
+    request4 = [(AMSPaymentSheetTask *)self request];
+    biometricsRequest2 = [request4 biometricsRequest];
+    isDualAction = [biometricsRequest2 isDualAction];
 
-    if (!v39)
+    if (!isDualAction)
     {
       goto LABEL_24;
     }
 
-    v33 = [(AMSPaymentSheetTask *)self state];
-    v34 = [v33 paymentToken];
-    [(AMSPaymentSheetMetricsEvent *)v7 addDualActionSuccess:v34 != 0];
+    state7 = [(AMSPaymentSheetTask *)self state];
+    paymentToken = [state7 paymentToken];
+    [(AMSPaymentSheetMetricsEvent *)v7 addDualActionSuccess:paymentToken != 0];
     goto LABEL_22;
   }
 
-  if ((v11 & 1) == 0)
+  if ((didAuthorizePayment & 1) == 0)
   {
-    v27 = [(AMSPaymentSheetTask *)self state];
-    v28 = [v27 cancellationType];
+    state8 = [(AMSPaymentSheetTask *)self state];
+    cancellationType3 = [state8 cancellationType];
 
-    if (!v28)
+    if (!cancellationType3)
     {
-      v29 = [(AMSPaymentSheetTask *)self state];
-      [v29 setCancellationType:2];
+      state9 = [(AMSPaymentSheetTask *)self state];
+      [state9 setCancellationType:2];
     }
 
     [(AMSPaymentSheetMetricsEvent *)v7 addBiometricMatchState:3];
-    v30 = [(AMSPaymentSheetTask *)self state];
-    v31 = [v30 cancellationType];
-    v32 = [(AMSPaymentSheetTask *)self state];
-    v33 = +[AMSPaymentSheetMetricsEvent dictionaryForCancellationEvent:didBiometricsLockout:biometricsType:](AMSPaymentSheetMetricsEvent, "dictionaryForCancellationEvent:didBiometricsLockout:biometricsType:", v31, [v32 didBiometricsLockout], 1);
+    state10 = [(AMSPaymentSheetTask *)self state];
+    cancellationType4 = [state10 cancellationType];
+    state11 = [(AMSPaymentSheetTask *)self state];
+    state7 = +[AMSPaymentSheetMetricsEvent dictionaryForCancellationEvent:didBiometricsLockout:biometricsType:](AMSPaymentSheetMetricsEvent, "dictionaryForCancellationEvent:didBiometricsLockout:biometricsType:", cancellationType4, [state11 didBiometricsLockout], 1);
 
-    if (!v33)
+    if (!state7)
     {
       goto LABEL_23;
     }
 
-    v34 = [(AMSPaymentSheetTask *)self userActions];
-    [v34 addObject:v33];
+    paymentToken = [(AMSPaymentSheetTask *)self userActions];
+    [paymentToken addObject:state7];
 LABEL_22:
 
 LABEL_23:
     goto LABEL_24;
   }
 
-  v18 = [(AMSPaymentSheetTask *)self request];
-  v19 = [v18 requiresAuthorization];
+  request5 = [(AMSPaymentSheetTask *)self request];
+  requiresAuthorization = [request5 requiresAuthorization];
 
-  if (v19)
+  if (requiresAuthorization)
   {
     [(AMSPaymentSheetMetricsEvent *)v7 addBiometricMatchState:2];
   }
 
 LABEL_24:
-  v40 = [(AMSPaymentSheetTask *)self purchaseInfo];
-  v41 = [v40 purchase];
-  v42 = [v41 metricsOverlay];
+  purchaseInfo = [(AMSPaymentSheetTask *)self purchaseInfo];
+  purchase = [purchaseInfo purchase];
+  metricsOverlay = [purchase metricsOverlay];
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = __36__AMSPaymentSheetTask__metricsEvent__block_invoke;
   v59[3] = &unk_1E73B55D8;
   v43 = v7;
   v60 = v43;
-  [v42 enumerateKeysAndObjectsUsingBlock:v59];
+  [metricsOverlay enumerateKeysAndObjectsUsingBlock:v59];
 
-  v44 = [(AMSPaymentSheetTask *)self request];
-  [(AMSPaymentSheetMetricsEvent *)v43 addClientMetadataForPaymentSheetRequest:v44];
+  request6 = [(AMSPaymentSheetTask *)self request];
+  [(AMSPaymentSheetMetricsEvent *)v43 addClientMetadataForPaymentSheetRequest:request6];
 
-  v45 = [(AMSPaymentSheetTask *)self purchaseInfo];
-  v46 = [(AMSPaymentSheetTask *)self metricsDictionary];
-  [(AMSPaymentSheetMetricsEvent *)v43 addClientMetadataForPurchaseInfo:v45 metricsDictionary:v46];
+  purchaseInfo2 = [(AMSPaymentSheetTask *)self purchaseInfo];
+  metricsDictionary2 = [(AMSPaymentSheetTask *)self metricsDictionary];
+  [(AMSPaymentSheetMetricsEvent *)v43 addClientMetadataForPurchaseInfo:purchaseInfo2 metricsDictionary:metricsDictionary2];
 
   [(AMSPaymentSheetMetricsEvent *)v43 addBiometricsState:+[AMSDefaults deviceBiometricsState]];
-  v47 = [(AMSPaymentSheetTask *)self userActions];
-  [(AMSPaymentSheetMetricsEvent *)v43 addUserActions:v47];
+  userActions2 = [(AMSPaymentSheetTask *)self userActions];
+  [(AMSPaymentSheetMetricsEvent *)v43 addUserActions:userActions2];
 
-  v48 = [(AMSPaymentSheetTask *)self request];
-  v49 = [v48 account];
-  [(AMSMetricsEvent *)v43 setAccount:v49];
+  request7 = [(AMSPaymentSheetTask *)self request];
+  account = [request7 account];
+  [(AMSMetricsEvent *)v43 setAccount:account];
 
   return v43;
 }
@@ -1363,99 +1363,99 @@ uint64_t __43__AMSPaymentSheetTask__buildPaymentRequest__block_invoke_3(uint64_t
   return [v2 finishWithResult:v3];
 }
 
-- (void)_configureBasicsForPaymentRequest:(id)a3 amsPaymentRequest:(id)a4
+- (void)_configureBasicsForPaymentRequest:(id)request amsPaymentRequest:(id)paymentRequest
 {
-  v27 = a3;
-  v6 = a4;
-  v7 = [(AMSPaymentSheetTask *)self request];
-  v8 = [v7 biometricsRequest];
-  [v27 setAccesssControlRef:{objc_msgSend(v8, "localAuthAccessControlRef")}];
+  requestCopy = request;
+  paymentRequestCopy = paymentRequest;
+  request = [(AMSPaymentSheetTask *)self request];
+  biometricsRequest = [request biometricsRequest];
+  [requestCopy setAccesssControlRef:{objc_msgSend(biometricsRequest, "localAuthAccessControlRef")}];
 
-  v9 = [(AMSPaymentSheetTask *)self request];
-  v10 = [v9 biometricsRequest];
-  v11 = [v10 localAuthContext];
-  v12 = [v11 externalizedContext];
+  request2 = [(AMSPaymentSheetTask *)self request];
+  biometricsRequest2 = [request2 biometricsRequest];
+  localAuthContext = [biometricsRequest2 localAuthContext];
+  externalizedContext = [localAuthContext externalizedContext];
 
-  v13 = [(AMSPaymentSheetTask *)self request];
-  LOBYTE(v10) = [v13 requiresAuthorization];
+  request3 = [(AMSPaymentSheetTask *)self request];
+  LOBYTE(biometricsRequest2) = [request3 requiresAuthorization];
 
-  if ((v10 & 1) != 0 || v12)
+  if ((biometricsRequest2 & 1) != 0 || externalizedContext)
   {
-    v14 = [(AMSPaymentSheetTask *)self authenticationContext];
-    [v27 setAppleIDAuthenticationContext:v14];
+    authenticationContext = [(AMSPaymentSheetTask *)self authenticationContext];
+    [requestCopy setAppleIDAuthenticationContext:authenticationContext];
   }
 
-  [v27 setExternalizedContext:v12];
-  [v27 setRequestType:1];
-  v15 = [(AMSPaymentSheetTask *)self request];
-  v16 = [v15 currencyCode];
-  [v27 setCurrencyCode:v16];
+  [requestCopy setExternalizedContext:externalizedContext];
+  [requestCopy setRequestType:1];
+  request4 = [(AMSPaymentSheetTask *)self request];
+  currencyCode = [request4 currencyCode];
+  [requestCopy setCurrencyCode:currencyCode];
 
-  v17 = [(AMSPaymentSheetTask *)self request];
-  LODWORD(v16) = [v17 disablePasscodeFallback];
+  request5 = [(AMSPaymentSheetTask *)self request];
+  LODWORD(currencyCode) = [request5 disablePasscodeFallback];
 
-  if (v16)
+  if (currencyCode)
   {
-    [v27 setDisablePasscodeFallback:1];
+    [requestCopy setDisablePasscodeFallback:1];
   }
 
-  v18 = [(AMSPaymentSheetTask *)self request];
-  v19 = [v18 countryCode];
-  AMSSetCountryCodeOnPaymentRequest(v19, v27);
+  request6 = [(AMSPaymentSheetTask *)self request];
+  countryCode = [request6 countryCode];
+  AMSSetCountryCodeOnPaymentRequest(countryCode, requestCopy);
 
-  v20 = [(AMSPaymentSheetTask *)self request];
-  v21 = [v20 titleType];
+  request7 = [(AMSPaymentSheetTask *)self request];
+  titleType = [request7 titleType];
 
-  if (v21 == 2)
+  if (titleType == 2)
   {
-    [v27 setRequestor:0];
+    [requestCopy setRequestor:0];
   }
 
   else
   {
-    v22 = [(AMSPaymentSheetTask *)self request];
-    if ([v22 titleType])
+    request8 = [(AMSPaymentSheetTask *)self request];
+    if ([request8 titleType])
     {
-      [v6 setLocalizedNavigationTitle:0];
+      [paymentRequestCopy setLocalizedNavigationTitle:0];
     }
 
     else
     {
-      v23 = [(AMSPaymentSheetTask *)self request];
-      v24 = [v23 title];
-      [v6 setLocalizedNavigationTitle:v24];
+      request9 = [(AMSPaymentSheetTask *)self request];
+      title = [request9 title];
+      [paymentRequestCopy setLocalizedNavigationTitle:title];
     }
   }
 
-  v25 = [(AMSPaymentSheetTask *)self purchaseInfo];
-  v26 = [v25 hostProcessIdentifier];
-  [v27 setHostProcessIdentifier:v26];
+  purchaseInfo = [(AMSPaymentSheetTask *)self purchaseInfo];
+  hostProcessIdentifier = [purchaseInfo hostProcessIdentifier];
+  [requestCopy setHostProcessIdentifier:hostProcessIdentifier];
 }
 
-- (void)_configureConfirmationScreenForPaymentRequest:(id)a3 amsPaymentRequest:(id)a4
+- (void)_configureConfirmationScreenForPaymentRequest:(id)request amsPaymentRequest:(id)paymentRequest
 {
-  v5 = a3;
-  v6 = [(AMSPaymentSheetTask *)self request];
-  [v5 setConfirmationStyle:{objc_msgSend(v6, "ams_confirmationStyle")}];
+  requestCopy = request;
+  request = [(AMSPaymentSheetTask *)self request];
+  [requestCopy setConfirmationStyle:{objc_msgSend(request, "ams_confirmationStyle")}];
 }
 
-- (void)_configureMerchantSessionForPaymentRequest:(id)a3
+- (void)_configureMerchantSessionForPaymentRequest:(id)request
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSPaymentSheetTask *)self request];
-  v6 = [v5 merchantSession];
+  requestCopy = request;
+  request = [(AMSPaymentSheetTask *)self request];
+  merchantSession = [request merchantSession];
 
-  if (v6)
+  if (merchantSession)
   {
-    v7 = [(AMSPaymentSheetTask *)self request];
-    v8 = [v7 biometricsRequest];
-    v9 = [v8 localAuthAccessControlRef];
+    request2 = [(AMSPaymentSheetTask *)self request];
+    biometricsRequest = [request2 biometricsRequest];
+    localAuthAccessControlRef = [biometricsRequest localAuthAccessControlRef];
 
     v10 = [(AMSPaymentSheetTask *)self bag];
-    LODWORD(v8) = [AMSCardEnrollment shouldUseApplePayClassicWithBag:v10];
+    LODWORD(biometricsRequest) = [AMSCardEnrollment shouldUseApplePayClassicWithBag:v10];
 
-    if (v8)
+    if (biometricsRequest)
     {
       v11 = 4;
     }
@@ -1468,27 +1468,27 @@ uint64_t __43__AMSPaymentSheetTask__buildPaymentRequest__block_invoke_3(uint64_t
       if (!v19)
       {
 LABEL_25:
-        v12 = [AMSBiometrics ACLVersionForAccessControl:v9];
+        v12 = [AMSBiometrics ACLVersionForAccessControl:localAuthAccessControlRef];
         v38 = +[AMSLogConfig sharedPurchaseConfig];
         if (!v38)
         {
           v38 = +[AMSLogConfig sharedConfig];
         }
 
-        v39 = [v38 OSLogObject];
-        if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+        oSLogObject = [v38 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v40 = objc_opt_class();
           v41 = v40;
-          v42 = [(AMSPaymentSheetTask *)self request];
-          v43 = [v42 logKey];
+          request3 = [(AMSPaymentSheetTask *)self request];
+          logKey = [request3 logKey];
           *buf = 138543874;
           *&buf[4] = v40;
           *&buf[12] = 2114;
-          *&buf[14] = v43;
+          *&buf[14] = logKey;
           *&buf[22] = 2114;
           v54 = v12;
-          _os_log_impl(&dword_192869000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping dual-action buy for insufficient ACL version: %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping dual-action buy for insufficient ACL version: %{public}@", buf, 0x20u);
         }
 
         goto LABEL_30;
@@ -1497,7 +1497,7 @@ LABEL_25:
       v11 = 3;
     }
 
-    if ([AMSBiometrics isActionSupported:v11 withAccessControl:v9])
+    if ([AMSBiometrics isActionSupported:v11 withAccessControl:localAuthAccessControlRef])
     {
       v49 = 0;
       v50 = &v49;
@@ -1518,7 +1518,7 @@ LABEL_25:
       v21 = v20;
       _Block_object_dispose(&v49, 8);
       v22 = [v20 alloc];
-      v12 = [v22 initWithDictionary:{v6, v49}];
+      v12 = [v22 initWithDictionary:{merchantSession, v49}];
       v23 = +[AMSLogConfig sharedPurchaseConfig];
       v24 = v23;
       if (v12)
@@ -1528,26 +1528,26 @@ LABEL_25:
           v24 = +[AMSLogConfig sharedConfig];
         }
 
-        v25 = [v24 OSLogObject];
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        oSLogObject2 = [v24 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
           v26 = objc_opt_class();
           v27 = v26;
-          v28 = [(AMSPaymentSheetTask *)self request];
-          v29 = [v28 logKey];
+          request4 = [(AMSPaymentSheetTask *)self request];
+          logKey2 = [request4 logKey];
           *buf = 138543618;
           *&buf[4] = v26;
           *&buf[12] = 2114;
-          *&buf[14] = v29;
-          _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attaching merchant session", buf, 0x16u);
+          *&buf[14] = logKey2;
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attaching merchant session", buf, 0x16u);
         }
 
-        [v4 setMerchantSession:v12];
-        [v4 setMerchantCapabilities:13];
-        v30 = [(AMSPaymentSheetTask *)self request];
-        v31 = [v30 isApplePayClassic];
+        [requestCopy setMerchantSession:v12];
+        [requestCopy setMerchantCapabilities:13];
+        request5 = [(AMSPaymentSheetTask *)self request];
+        isApplePayClassic = [request5 isApplePayClassic];
 
-        if (v31)
+        if (isApplePayClassic)
         {
           v32 = +[AMSLogConfig sharedPurchaseConfig];
           if (!v32)
@@ -1555,21 +1555,21 @@ LABEL_25:
             v32 = +[AMSLogConfig sharedConfig];
           }
 
-          v33 = [v32 OSLogObject];
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+          oSLogObject3 = [v32 OSLogObject];
+          if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
           {
             v34 = objc_opt_class();
             v35 = v34;
-            v36 = [(AMSPaymentSheetTask *)self request];
-            v37 = [v36 logKey];
+            request6 = [(AMSPaymentSheetTask *)self request];
+            logKey3 = [request6 logKey];
             *buf = 138543618;
             *&buf[4] = v34;
             *&buf[12] = 2114;
-            *&buf[14] = v37;
-            _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Setting apple-pay-classic flag", buf, 0x16u);
+            *&buf[14] = logKey3;
+            _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Setting apple-pay-classic flag", buf, 0x16u);
           }
 
-          [v4 setRequestType:0];
+          [requestCopy setRequestType:0];
         }
       }
 
@@ -1580,18 +1580,18 @@ LABEL_25:
           v24 = +[AMSLogConfig sharedConfig];
         }
 
-        v44 = [v24 OSLogObject];
-        if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+        oSLogObject4 = [v24 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
         {
           v45 = objc_opt_class();
           v46 = v45;
-          v47 = [(AMSPaymentSheetTask *)self request];
-          v48 = [v47 logKey];
+          request7 = [(AMSPaymentSheetTask *)self request];
+          logKey4 = [request7 logKey];
           *buf = 138543618;
           *&buf[4] = v45;
           *&buf[12] = 2114;
-          *&buf[14] = v48;
-          _os_log_impl(&dword_192869000, v44, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to instantiate PKPaymentMerchantSession object", buf, 0x16u);
+          *&buf[14] = logKey4;
+          _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to instantiate PKPaymentMerchantSession object", buf, 0x16u);
         }
 
         v12 = 0;
@@ -1609,31 +1609,31 @@ LABEL_25:
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject5 = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v15 = v14;
-    v16 = [(AMSPaymentSheetTask *)self request];
-    v17 = [v16 logKey];
+    request8 = [(AMSPaymentSheetTask *)self request];
+    logKey5 = [request8 logKey];
     *buf = 138543618;
     *&buf[4] = v14;
     *&buf[12] = 2114;
-    *&buf[14] = v17;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping dual-action buy for no merchant session", buf, 0x16u);
+    *&buf[14] = logKey5;
+    _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping dual-action buy for no merchant session", buf, 0x16u);
   }
 
 LABEL_30:
 }
 
-- (void)_configureAttachSelectedCard:(id)a3
+- (void)_configureAttachSelectedCard:(id)card
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSPaymentSheetTask *)self request];
-  v6 = [v5 selectedCard];
+  cardCopy = card;
+  request = [(AMSPaymentSheetTask *)self request];
+  selectedCard = [request selectedCard];
 
-  if (v6)
+  if (selectedCard)
   {
     v7 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v7)
@@ -1641,50 +1641,50 @@ LABEL_30:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [(AMSPaymentSheetTask *)self request];
-      v12 = [v11 logKey];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey = [request2 logKey];
       v19 = 138543618;
       v20 = v9;
       v21 = 2114;
-      v22 = v12;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attaching selected card info", &v19, 0x16u);
+      v22 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attaching selected card info", &v19, 0x16u);
     }
 
-    v13 = [(AMSPaymentSheetTask *)self request];
-    v14 = [v13 selectedCard];
-    v15 = [v14 passSerialNumber];
-    [v4 setPassSerialNumber:v15];
+    request3 = [(AMSPaymentSheetTask *)self request];
+    selectedCard2 = [request3 selectedCard];
+    passSerialNumber = [selectedCard2 passSerialNumber];
+    [cardCopy setPassSerialNumber:passSerialNumber];
 
-    v16 = [(AMSPaymentSheetTask *)self request];
-    v17 = [v16 selectedCard];
-    v18 = [v17 passTypeIdentifier];
-    [v4 setPassTypeIdentifier:v18];
+    request4 = [(AMSPaymentSheetTask *)self request];
+    selectedCard3 = [request4 selectedCard];
+    passTypeIdentifier = [selectedCard3 passTypeIdentifier];
+    [cardCopy setPassTypeIdentifier:passTypeIdentifier];
 
-    [v4 setRequestType:1];
-    [v4 setAPIType:0];
+    [cardCopy setRequestType:1];
+    [cardCopy setAPIType:0];
   }
 }
 
-- (void)_configureLanguage:(id)a3 completion:(id)a4
+- (void)_configureLanguage:(id)language completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   v8 = [(AMSPaymentSheetTask *)self bag];
   v9 = [v8 stringForKey:@"language"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__AMSPaymentSheetTask__configureLanguage_completion___block_invoke;
   v12[3] = &unk_1E73BAA58;
-  v13 = v6;
-  v14 = v7;
+  v13 = languageCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = languageCopy;
+  v11 = completionCopy;
   [v9 valueWithCompletion:v12];
 }
 
@@ -1727,14 +1727,14 @@ void __53__AMSPaymentSheetTask__configureLanguage_completion___block_invoke(uint
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_configurePSD2Decoration:(id)a3 completion:(id)a4
+- (void)_configurePSD2Decoration:(id)decoration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSPaymentSheetTask *)self request];
-  v9 = [v8 isApplePayClassic];
+  decorationCopy = decoration;
+  completionCopy = completion;
+  request = [(AMSPaymentSheetTask *)self request];
+  isApplePayClassic = [request isApplePayClassic];
 
-  if (v9)
+  if (isApplePayClassic)
   {
     v10 = [(AMSPaymentSheetTask *)self bag];
     v11 = [v10 stringForKey:@"countryCode"];
@@ -1743,14 +1743,14 @@ void __53__AMSPaymentSheetTask__configureLanguage_completion___block_invoke(uint
     v12[2] = __59__AMSPaymentSheetTask__configurePSD2Decoration_completion___block_invoke;
     v12[3] = &unk_1E73BAA58;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = decorationCopy;
+    v14 = completionCopy;
     [v11 valueWithCompletion:v12];
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1844,20 +1844,20 @@ void __59__AMSPaymentSheetTask__configurePSD2Decoration_completion___block_invok
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_configureCustomUIForPaymentRequest:(id)a3 amsPaymentRequest:(id)a4
+- (void)_configureCustomUIForPaymentRequest:(id)request amsPaymentRequest:(id)paymentRequest
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSPaymentSheetTask *)self request];
-  v9 = [v8 designVersion];
-  v10 = [v9 isEqualToNumber:&unk_1F07798E0];
+  requestCopy = request;
+  paymentRequestCopy = paymentRequest;
+  request = [(AMSPaymentSheetTask *)self request];
+  designVersion = [request designVersion];
+  v10 = [designVersion isEqualToNumber:&unk_1F07798E0];
 
   if (v10)
   {
-    [v6 setClientViewSourceIdentifier:@"AMSUIPaymentSheetViewProvider"];
+    [requestCopy setClientViewSourceIdentifier:@"AMSUIPaymentSheetViewProvider"];
     v37 = 0;
-    v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v37];
+    v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:requestCopy requiringSecureCoding:1 error:&v37];
     v12 = v37;
     if (v12)
     {
@@ -1867,19 +1867,19 @@ void __59__AMSPaymentSheetTask__configurePSD2Decoration_completion___block_invok
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v15 = objc_opt_class();
-        v16 = [(AMSPaymentSheetTask *)self request];
-        v17 = [v16 logKey];
+        request2 = [(AMSPaymentSheetTask *)self request];
+        logKey = [request2 logKey];
         *buf = 138543874;
         v43 = v15;
         v44 = 2114;
-        v45 = v17;
+        v45 = logKey;
         v46 = 2114;
         v47 = v12;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to serialize payment request: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to serialize payment request: %{public}@", buf, 0x20u);
       }
     }
 
@@ -1896,25 +1896,25 @@ LABEL_18:
       v32 = objc_alloc(MEMORY[0x1E695DF90]);
       v40[0] = @"AMSPaymentSheetPaymentRequestMetadataKeyPayee";
       v18 = MEMORY[0x1E696AD98];
-      v34 = [(AMSPaymentSheetTask *)self request];
-      v33 = [v18 numberWithInteger:{objc_msgSend(v34, "payee")}];
+      request3 = [(AMSPaymentSheetTask *)self request];
+      v33 = [v18 numberWithInteger:{objc_msgSend(request3, "payee")}];
       v41[0] = v33;
       v40[1] = @"AMSPaymentSheetPaymentRequestMetadataKeyDesignVersion";
-      v19 = [(AMSPaymentSheetTask *)self request];
-      v20 = [v19 designVersion];
-      v41[1] = v20;
+      request4 = [(AMSPaymentSheetTask *)self request];
+      designVersion2 = [request4 designVersion];
+      v41[1] = designVersion2;
       v40[2] = @"AMSPaymentSheetPaymentRequestMetadataKeySalableIconType";
       v21 = MEMORY[0x1E696AD98];
-      v22 = [(AMSPaymentSheetTask *)self request];
-      v23 = [v21 numberWithInteger:{objc_msgSend(v22, "salableIcon")}];
+      request5 = [(AMSPaymentSheetTask *)self request];
+      v23 = [v21 numberWithInteger:{objc_msgSend(request5, "salableIcon")}];
       v41[2] = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:3];
       v13 = [v32 initWithDictionary:v24];
 
       v36 = 0;
-      v25 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v36];
-      v14 = v36;
-      if (v14)
+      v25 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:paymentRequestCopy requiringSecureCoding:1 error:&v36];
+      oSLogObject = v36;
+      if (oSLogObject)
       {
         v26 = +[AMSLogConfig sharedPurchaseOversizeConfig];
         if (!v26)
@@ -1922,8 +1922,8 @@ LABEL_18:
           v26 = +[AMSLogConfig sharedConfig];
         }
 
-        v27 = [v26 OSLogObject];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [v26 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v28 = objc_opt_class();
           v29 = AMSLogKey();
@@ -1932,8 +1932,8 @@ LABEL_18:
           v44 = 2114;
           v45 = v29;
           v46 = 2114;
-          v47 = v14;
-          _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to serialize payment request metadata: %{public}@", buf, 0x20u);
+          v47 = oSLogObject;
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to serialize payment request metadata: %{public}@", buf, 0x20u);
         }
       }
 
@@ -1949,7 +1949,7 @@ LABEL_18:
       v30 = [v13 copy];
       v39[1] = v30;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
-      [v6 setClientViewSourceParameter:v31];
+      [requestCopy setClientViewSourceParameter:v31];
     }
 
     goto LABEL_18;
@@ -1958,102 +1958,102 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_configurePaymentSummaryForPaymentRequest:(id)a3
+- (void)_configurePaymentSummaryForPaymentRequest:(id)request
 {
-  v19 = a3;
-  v4 = [(AMSPaymentSheetTask *)self request];
-  v5 = [(AMSPaymentSheetTask *)self assetCache];
+  requestCopy = request;
+  request = [(AMSPaymentSheetTask *)self request];
+  assetCache = [(AMSPaymentSheetTask *)self assetCache];
   v6 = [(AMSPaymentSheetTask *)self bag];
-  v7 = [v4 ams_createSummaryItemsForAttributedListWithAssetCache:v5 bag:v6];
+  v7 = [request ams_createSummaryItemsForAttributedListWithAssetCache:assetCache bag:v6];
 
   if ([v7 count])
   {
-    [v19 setPaymentSummaryItems:v7];
-    [v19 setPaymentSummaryPinned:1];
-    [v19 setSuppressTotal:1];
+    [requestCopy setPaymentSummaryItems:v7];
+    [requestCopy setPaymentSummaryPinned:1];
+    [requestCopy setSuppressTotal:1];
     goto LABEL_10;
   }
 
-  v8 = [(AMSPaymentSheetTask *)self request];
-  v9 = [v8 ams_createSummaryItems];
+  request2 = [(AMSPaymentSheetTask *)self request];
+  ams_createSummaryItems = [request2 ams_createSummaryItems];
 
-  [v19 setPaymentSummaryItems:v9];
-  v10 = [(AMSPaymentSheetTask *)self request];
-  v11 = [v10 paymentSummary];
-  if (!v11)
+  [requestCopy setPaymentSummaryItems:ams_createSummaryItems];
+  request3 = [(AMSPaymentSheetTask *)self request];
+  paymentSummary = [request3 paymentSummary];
+  if (!paymentSummary)
   {
     goto LABEL_6;
   }
 
-  v12 = v11;
-  v13 = [(AMSPaymentSheetTask *)self request];
-  v14 = [v13 priceSectionItems];
-  v15 = [v14 count];
+  v12 = paymentSummary;
+  request4 = [(AMSPaymentSheetTask *)self request];
+  priceSectionItems = [request4 priceSectionItems];
+  v15 = [priceSectionItems count];
 
   if (v15)
   {
-    v10 = [(AMSPaymentSheetTask *)self request];
-    v16 = [v10 paymentSummary];
-    [v19 setLocalizedSummaryItemsTitle:v16];
+    request3 = [(AMSPaymentSheetTask *)self request];
+    paymentSummary2 = [request3 paymentSummary];
+    [requestCopy setLocalizedSummaryItemsTitle:paymentSummary2];
 
 LABEL_6:
   }
 
-  v17 = [(AMSPaymentSheetTask *)self request];
-  v18 = [v17 price];
+  request5 = [(AMSPaymentSheetTask *)self request];
+  price = [request5 price];
 
-  if (!v18)
+  if (!price)
   {
-    [v19 setSuppressTotal:1];
+    [requestCopy setSuppressTotal:1];
   }
 
 LABEL_10:
 }
 
-- (void)_configureContentItemsForPaymentRequest:(id)a3 amsPaymentRequest:(id)a4
+- (void)_configureContentItemsForPaymentRequest:(id)request amsPaymentRequest:(id)paymentRequest
 {
-  v76 = a3;
-  v6 = a4;
-  v7 = [(AMSPaymentSheetTask *)self request];
-  [v6 setDrawBackground:{objc_msgSend(v7, "drawBackground")}];
+  requestCopy = request;
+  paymentRequestCopy = paymentRequest;
+  request = [(AMSPaymentSheetTask *)self request];
+  [paymentRequestCopy setDrawBackground:{objc_msgSend(request, "drawBackground")}];
 
-  v8 = [(AMSPaymentSheetTask *)self request];
-  [v6 setDrawBottomDivider:{objc_msgSend(v8, "drawBottomDivider")}];
+  request2 = [(AMSPaymentSheetTask *)self request];
+  [paymentRequestCopy setDrawBottomDivider:{objc_msgSend(request2, "drawBottomDivider")}];
 
   v9 = objc_opt_new();
   v10 = objc_opt_new();
-  v11 = [(AMSPaymentSheetTask *)self request];
-  v12 = [(AMSPaymentSheetTask *)self assetCache];
-  v13 = [(AMSPaymentSheetTask *)self request];
-  v14 = [v13 designVersion];
+  request3 = [(AMSPaymentSheetTask *)self request];
+  assetCache = [(AMSPaymentSheetTask *)self assetCache];
+  request4 = [(AMSPaymentSheetTask *)self request];
+  designVersion = [request4 designVersion];
   v15 = [(AMSPaymentSheetTask *)self bag];
-  v16 = [v11 ams_createAMSContentItemForSalableInfoWithAssetCache:v12 designVersion:v14 bag:v15];
+  v16 = [request3 ams_createAMSContentItemForSalableInfoWithAssetCache:assetCache designVersion:designVersion bag:v15];
 
   v74 = v16;
-  v75 = v6;
-  [v6 setSalableInfo:v16];
-  v17 = [(AMSPaymentSheetTask *)self request];
-  v18 = [(AMSPaymentSheetTask *)self assetCache];
-  v19 = [(AMSPaymentSheetTask *)self request];
-  v20 = [v19 designVersion];
+  v75 = paymentRequestCopy;
+  [paymentRequestCopy setSalableInfo:v16];
+  request5 = [(AMSPaymentSheetTask *)self request];
+  assetCache2 = [(AMSPaymentSheetTask *)self assetCache];
+  request6 = [(AMSPaymentSheetTask *)self request];
+  designVersion2 = [request6 designVersion];
   v21 = [(AMSPaymentSheetTask *)self bag];
-  v22 = [v17 ams_createAMSContentItemsForPreScreenDialogWithAssetCache:v18 designVersion:v20 bag:v21];
+  v22 = [request5 ams_createAMSContentItemsForPreScreenDialogWithAssetCache:assetCache2 designVersion:designVersion2 bag:v21];
 
   if ([v22 count])
   {
     [v10 addObjectsFromArray:v22];
   }
 
-  v23 = [(AMSPaymentSheetTask *)self request];
-  v24 = [v23 ams_createAMSContentItemForRating];
-  [v10 ams_addNullableObject:v24];
+  request7 = [(AMSPaymentSheetTask *)self request];
+  ams_createAMSContentItemForRating = [request7 ams_createAMSContentItemForRating];
+  [v10 ams_addNullableObject:ams_createAMSContentItemForRating];
 
-  v25 = [(AMSPaymentSheetTask *)self request];
-  v26 = [(AMSPaymentSheetTask *)self assetCache];
-  v27 = [(AMSPaymentSheetTask *)self request];
-  v28 = [v27 designVersion];
+  request8 = [(AMSPaymentSheetTask *)self request];
+  assetCache3 = [(AMSPaymentSheetTask *)self assetCache];
+  request9 = [(AMSPaymentSheetTask *)self request];
+  designVersion3 = [request9 designVersion];
   v29 = [(AMSPaymentSheetTask *)self bag];
-  v30 = [v25 ams_createAMSContentItemsForFlexibleListWithAssetCache:v26 designVersion:v28 bag:v29];
+  v30 = [request8 ams_createAMSContentItemsForFlexibleListWithAssetCache:assetCache3 designVersion:designVersion3 bag:v29];
 
   if ([v30 count])
   {
@@ -2062,21 +2062,21 @@ LABEL_10:
 
   v72 = v30;
   v73 = v22;
-  v31 = [(AMSPaymentSheetTask *)self request];
-  v32 = [(AMSPaymentSheetTask *)self assetCache];
-  v33 = [(AMSPaymentSheetTask *)self request];
-  v34 = [v33 designVersion];
+  request10 = [(AMSPaymentSheetTask *)self request];
+  assetCache4 = [(AMSPaymentSheetTask *)self assetCache];
+  request11 = [(AMSPaymentSheetTask *)self request];
+  designVersion4 = [request11 designVersion];
   v35 = [(AMSPaymentSheetTask *)self bag];
-  v36 = [v31 ams_createContentItemForSalableInfoWithAssetCache:v32 designVersion:v34 bag:v35];
+  v36 = [request10 ams_createContentItemForSalableInfoWithAssetCache:assetCache4 designVersion:designVersion4 bag:v35];
 
   v71 = v36;
   [v9 ams_addNullableObject:v36];
-  v37 = [(AMSPaymentSheetTask *)self request];
-  v38 = [(AMSPaymentSheetTask *)self assetCache];
-  v39 = [(AMSPaymentSheetTask *)self request];
-  v40 = [v39 designVersion];
+  request12 = [(AMSPaymentSheetTask *)self request];
+  assetCache5 = [(AMSPaymentSheetTask *)self assetCache];
+  request13 = [(AMSPaymentSheetTask *)self request];
+  designVersion5 = [request13 designVersion];
   v41 = [(AMSPaymentSheetTask *)self bag];
-  v42 = [v37 ams_createContentItemsForPreScreenDialogWithAssetCache:v38 designVersion:v40 bag:v41];
+  v42 = [request12 ams_createContentItemsForPreScreenDialogWithAssetCache:assetCache5 designVersion:designVersion5 bag:v41];
 
   if ([v42 count])
   {
@@ -2084,57 +2084,57 @@ LABEL_10:
   }
 
   v70 = v42;
-  v43 = [(AMSPaymentSheetTask *)self request];
-  v44 = [v43 ams_createContentItemForRating];
-  [v9 ams_addNullableObject:v44];
+  request14 = [(AMSPaymentSheetTask *)self request];
+  ams_createContentItemForRating = [request14 ams_createContentItemForRating];
+  [v9 ams_addNullableObject:ams_createContentItemForRating];
 
-  v45 = [(AMSPaymentSheetTask *)self request];
-  v46 = [(AMSPaymentSheetTask *)self assetCache];
-  v47 = [(AMSPaymentSheetTask *)self request];
-  v48 = [v47 designVersion];
+  request15 = [(AMSPaymentSheetTask *)self request];
+  assetCache6 = [(AMSPaymentSheetTask *)self assetCache];
+  request16 = [(AMSPaymentSheetTask *)self request];
+  designVersion6 = [request16 designVersion];
   v49 = [(AMSPaymentSheetTask *)self bag];
-  v50 = [v45 ams_createContentItemsForFlexibleListWithAssetCache:v46 designVersion:v48 bag:v49];
+  v50 = [request15 ams_createContentItemsForFlexibleListWithAssetCache:assetCache6 designVersion:designVersion6 bag:v49];
 
   if ([v50 count])
   {
     [v9 addObjectsFromArray:v50];
   }
 
-  v51 = [(AMSPaymentSheetTask *)self request];
-  v52 = [v51 isDesignVersionLessThan:&unk_1F07798E0];
+  request17 = [(AMSPaymentSheetTask *)self request];
+  v52 = [request17 isDesignVersionLessThan:&unk_1F07798E0];
 
   if (v52)
   {
-    v53 = [(AMSPaymentSheetTask *)self request];
-    v54 = [v53 ams_createContentItemForAccount];
+    request18 = [(AMSPaymentSheetTask *)self request];
+    ams_createContentItemForAccount = [request18 ams_createContentItemForAccount];
 
-    [v9 ams_addNullableObject:v54];
+    [v9 ams_addNullableObject:ams_createContentItemForAccount];
   }
 
   v55 = v10;
-  v56 = [(AMSPaymentSheetTask *)self request];
-  v57 = [v56 isDesignVersionEqualOrGreaterThan:&unk_1F07798E0];
+  request19 = [(AMSPaymentSheetTask *)self request];
+  v57 = [request19 isDesignVersionEqualOrGreaterThan:&unk_1F07798E0];
 
   if (v57)
   {
-    v58 = [(AMSPaymentSheetTask *)self request];
-    v59 = [(AMSPaymentSheetTask *)self assetCache];
-    v60 = [(AMSPaymentSheetTask *)self request];
-    v61 = [v60 designVersion];
+    request20 = [(AMSPaymentSheetTask *)self request];
+    assetCache7 = [(AMSPaymentSheetTask *)self assetCache];
+    request21 = [(AMSPaymentSheetTask *)self request];
+    designVersion7 = [request21 designVersion];
     v62 = [(AMSPaymentSheetTask *)self bag];
-    v63 = [v58 ams_createSecondaryContentItemForSalableInfoWithAssetCache:v59 designVersion:v61 bag:v62];
+    v63 = [request20 ams_createSecondaryContentItemForSalableInfoWithAssetCache:assetCache7 designVersion:designVersion7 bag:v62];
 
     if (v63)
     {
       [v75 setSecondarySalableInfo:v63];
     }
 
-    v64 = [(AMSPaymentSheetTask *)self request];
-    v65 = [(AMSPaymentSheetTask *)self assetCache];
-    v66 = [(AMSPaymentSheetTask *)self request];
-    v67 = [v66 designVersion];
+    request22 = [(AMSPaymentSheetTask *)self request];
+    assetCache8 = [(AMSPaymentSheetTask *)self assetCache];
+    request23 = [(AMSPaymentSheetTask *)self request];
+    designVersion8 = [request23 designVersion];
     v68 = [(AMSPaymentSheetTask *)self bag];
-    v69 = [v64 ams_createSecondaryContentItemsForFlexibleListWithAssetCache:v65 designVersion:v67 bag:v68];
+    v69 = [request22 ams_createSecondaryContentItemsForFlexibleListWithAssetCache:assetCache8 designVersion:designVersion8 bag:v68];
 
     if ([v69 count])
     {
@@ -2142,36 +2142,36 @@ LABEL_10:
     }
   }
 
-  [v76 setPaymentContentItems:v9];
+  [requestCopy setPaymentContentItems:v9];
   [v75 setPaymentContentItems:v55];
 }
 
-- (void)_dismissPaymentAuthorizationController:(id)a3
+- (void)_dismissPaymentAuthorizationController:(id)controller
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(AMSPaymentSheetTask *)self request];
-  v7 = [v6 logKey];
+  controllerCopy = controller;
+  request = [(AMSPaymentSheetTask *)self request];
+  logKey = [request logKey];
 
   v8 = +[AMSLogConfig sharedPurchaseConfig];
   v9 = v8;
-  if (v5)
+  if (controllerCopy)
   {
     if (!v8)
     {
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = MEMORY[0x1E696AEC0];
       v12 = objc_opt_class();
       v13 = NSStringFromSelector(a2);
       v14 = v13;
-      if (v7)
+      if (logKey)
       {
-        [v11 stringWithFormat:@"%@: [%@] %@ ", v12, v7, v13];
+        [v11 stringWithFormat:@"%@: [%@] %@ ", v12, logKey, v13];
       }
 
       else
@@ -2179,12 +2179,12 @@ LABEL_10:
         [v11 stringWithFormat:@"%@: %@ ", v12, v13, v28];
       }
       v20 = ;
-      v21 = AMSHashIfNeeded(v5);
+      v21 = AMSHashIfNeeded(controllerCopy);
       *buf = 138543618;
       *&buf[4] = v20;
       *&buf[12] = 2114;
       *&buf[14] = v21;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Dismissing authorization controller: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Dismissing authorization controller: %{public}@", buf, 0x16u);
     }
 
     v29[0] = MEMORY[0x1E69E9820];
@@ -2193,8 +2193,8 @@ LABEL_10:
     v29[3] = &unk_1E73B92F0;
     v29[4] = self;
     v32 = a2;
-    v30 = v5;
-    v31 = v7;
+    v30 = controllerCopy;
+    v31 = logKey;
     v22 = v29;
     v23 = AMSLogKey();
     *buf = MEMORY[0x1E69E9820];
@@ -2214,16 +2214,16 @@ LABEL_10:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v9 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v16 = MEMORY[0x1E696AEC0];
       v17 = objc_opt_class();
       v18 = NSStringFromSelector(a2);
       v19 = v18;
-      if (v7)
+      if (logKey)
       {
-        [v16 stringWithFormat:@"%@: [%@] %@ ", v17, v7, v18];
+        [v16 stringWithFormat:@"%@: [%@] %@ ", v17, logKey, v18];
       }
 
       else
@@ -2233,12 +2233,12 @@ LABEL_10:
       v25 = ;
       *buf = 138543362;
       *&buf[4] = v25;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@Attempting to dismiss nil controller", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Attempting to dismiss nil controller", buf, 0xCu);
     }
 
     v26 = AMSError(509, @"Authorization Controller Missing", @"We attempted to dismiss a nil controller.", 0);
-    v27 = [(AMSPaymentSheetTask *)self paymentSheetPromise];
-    [v27 finishWithError:v26];
+    paymentSheetPromise = [(AMSPaymentSheetTask *)self paymentSheetPromise];
+    [paymentSheetPromise finishWithError:v26];
   }
 }
 
@@ -2508,23 +2508,23 @@ LABEL_13:
   return v27;
 }
 
-- (void)_presentPaymentConfirmationWithPaymentRequest:(id)a3 purchaseResult:(id)a4
+- (void)_presentPaymentConfirmationWithPaymentRequest:(id)request purchaseResult:(id)result
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(AMSPaymentSheetTask *)self request:a3];
-  v6 = [v5 logKey];
+  v5 = [(AMSPaymentSheetTask *)self request:request];
+  logKey = [v5 logKey];
 
-  v7 = [(AMSPaymentSheetTask *)self request];
-  if ([v7 requiresAuthorization])
+  request = [(AMSPaymentSheetTask *)self request];
+  if ([request requiresAuthorization])
   {
   }
 
   else
   {
-    v8 = [(AMSPaymentSheetTask *)self request];
-    v9 = [v8 requiresDelegateAuthentication];
+    request2 = [(AMSPaymentSheetTask *)self request];
+    requiresDelegateAuthentication = [request2 requiresDelegateAuthentication];
 
-    if (!v9)
+    if (!requiresDelegateAuthentication)
     {
       goto LABEL_9;
     }
@@ -2536,14 +2536,14 @@ LABEL_13:
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v15 = 138543618;
     v16 = objc_opt_class();
     v17 = 2114;
-    v18 = v6;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to present payment presentation confirmation for request that is not confirmation only.", &v15, 0x16u);
+    v18 = logKey;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to present payment presentation confirmation for request that is not confirmation only.", &v15, 0x16u);
   }
 
 LABEL_9:
@@ -2553,23 +2553,23 @@ LABEL_9:
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v14 = objc_opt_class();
     v15 = 138543618;
     v16 = v14;
     v17 = 2114;
-    v18 = v6;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Platform not supported", &v15, 0x16u);
+    v18 = logKey;
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Platform not supported", &v15, 0x16u);
   }
 }
 
-- (void)_presentCompanionAuthenticationSheetWithPaymentRequest:(id)a3 purchaseResult:(id)a4
+- (void)_presentCompanionAuthenticationSheetWithPaymentRequest:(id)request purchaseResult:(id)result
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [(AMSPaymentSheetTask *)self request:a3];
-  v6 = [v5 logKey];
+  v5 = [(AMSPaymentSheetTask *)self request:request];
+  logKey = [v5 logKey];
 
   v7 = objc_alloc_init(AMSMutablePromise);
   v8 = +[AMSLogConfig sharedPurchaseConfig];
@@ -2578,14 +2578,14 @@ LABEL_9:
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
     v14 = objc_opt_class();
     v15 = 2114;
-    v16 = v6;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Platform not supported", buf, 0x16u);
+    v16 = logKey;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Platform not supported", buf, 0x16u);
   }
 
   v10 = AMSError(5, @"Companion Auth Error", @"Platform not supported", 0);
@@ -2624,20 +2624,20 @@ void __93__AMSPaymentSheetTask__presentCompanionAuthenticationSheetWithPaymentRe
   [v4 finishWithError:v3];
 }
 
-- (id)_presentPaymentSheetWithPaymentRequest:(id)a3
+- (id)_presentPaymentSheetWithPaymentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(AMSMutableBinaryPromise);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__AMSPaymentSheetTask__presentPaymentSheetWithPaymentRequest___block_invoke;
   v13[3] = &unk_1E73B71B0;
-  v14 = v4;
+  v14 = requestCopy;
   v6 = v5;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v7 = v13;
-  v8 = v4;
+  v8 = requestCopy;
   v9 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2810,45 +2810,45 @@ void __62__AMSPaymentSheetTask__presentPaymentSheetWithPaymentRequest___block_in
   [v22 enqueueMetricsEventWithOverlay:v25];
 }
 
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  paymentCopy = payment;
+  handlerCopy = handler;
   v11 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
+  oSLogObject = [v11 OSLogObject];
   v13 = 0x1E696A000;
-  v45 = v9;
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  v45 = paymentCopy;
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v40 = [(AMSPaymentSheetTask *)self request];
-    v14 = [v40 logKey];
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v15 = MEMORY[0x1E696AEC0];
     v16 = objc_opt_class();
-    v42 = v10;
-    if (v14)
+    v42 = handlerCopy;
+    if (logKey)
     {
-      v17 = [(AMSPaymentSheetTask *)self request];
-      v18 = [v17 logKey];
-      v9 = NSStringFromSelector(a2);
-      v38 = v18;
-      [v15 stringWithFormat:@"%@: [%@] %@ ", v16, v18, v9];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
+      paymentCopy = NSStringFromSelector(a2);
+      v38 = logKey2;
+      [v15 stringWithFormat:@"%@: [%@] %@ ", v16, logKey2, paymentCopy];
     }
 
     else
     {
-      v17 = NSStringFromSelector(a2);
-      [v15 stringWithFormat:@"%@: %@ ", v16, v17];
+      request2 = NSStringFromSelector(a2);
+      [v15 stringWithFormat:@"%@: %@ ", v16, request2];
     }
     v19 = ;
-    v20 = v8;
-    v21 = AMSHashIfNeeded(v8);
+    v20 = controllerCopy;
+    v21 = AMSHashIfNeeded(controllerCopy);
     v22 = AMSHashIfNeeded(v45);
     *buf = 138543874;
     v50 = v19;
@@ -2856,17 +2856,17 @@ void __62__AMSPaymentSheetTask__presentPaymentSheetWithPaymentRequest___block_in
     v52 = v21;
     v53 = 2114;
     v54 = v22;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@ | payment: %{public}@", buf, 0x20u);
-    if (v14)
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@ | payment: %{public}@", buf, 0x20u);
+    if (logKey)
     {
 
       v19 = v38;
     }
 
-    v8 = v20;
-    v9 = v45;
+    controllerCopy = v20;
+    paymentCopy = v45;
     v13 = 0x1E696A000;
-    v10 = v42;
+    handlerCopy = v42;
   }
 
   v23 = objc_alloc_init(AMSMutablePromise);
@@ -2880,7 +2880,7 @@ void __62__AMSPaymentSheetTask__presentPaymentSheetWithPaymentRequest___block_in
   v46[1] = 3221225472;
   v46[2] = __82__AMSPaymentSheetTask_paymentAuthorizationController_didAuthorizePayment_handler___block_invoke_320;
   v46[3] = &unk_1E73B4F28;
-  v24 = v10;
+  v24 = handlerCopy;
   v47 = v24;
   [(AMSPromise *)v23 addFinishBlock:v46];
   v25 = +[AMSLogConfig sharedPurchaseConfig];
@@ -2889,67 +2889,67 @@ void __62__AMSPaymentSheetTask__presentPaymentSheetWithPaymentRequest___block_in
     v25 = +[AMSLogConfig sharedConfig];
   }
 
-  v26 = [v25 OSLogObject];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v25 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v41 = v24;
-    v43 = v8;
-    v39 = [(AMSPaymentSheetTask *)self request];
-    v27 = [v39 logKey];
+    v43 = controllerCopy;
+    request3 = [(AMSPaymentSheetTask *)self request];
+    logKey3 = [request3 logKey];
     v28 = MEMORY[0x1E696AEC0];
     v29 = objc_opt_class();
-    if (v27)
+    if (logKey3)
     {
-      v30 = [(AMSPaymentSheetTask *)self request];
-      v8 = [v30 logKey];
+      request4 = [(AMSPaymentSheetTask *)self request];
+      controllerCopy = [request4 logKey];
       v13 = NSStringFromSelector(a2);
-      [v28 stringWithFormat:@"%@: [%@] %@ ", v29, v8, v13];
+      [v28 stringWithFormat:@"%@: [%@] %@ ", v29, controllerCopy, v13];
     }
 
     else
     {
-      v30 = NSStringFromSelector(a2);
-      [v28 stringWithFormat:@"%@: %@ ", v29, v30];
+      request4 = NSStringFromSelector(a2);
+      [v28 stringWithFormat:@"%@: %@ ", v29, request4];
     }
     v31 = ;
     *buf = 138543362;
     v50 = v31;
-    _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@Authorizing payment…", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Authorizing payment…", buf, 0xCu);
     v24 = v41;
-    if (v27)
+    if (logKey3)
     {
 
-      v31 = v8;
+      v31 = controllerCopy;
     }
 
-    v8 = v43;
-    v9 = v45;
+    controllerCopy = v43;
+    paymentCopy = v45;
   }
 
-  v32 = [v9 authKitAuthenticationResults];
+  authKitAuthenticationResults = [paymentCopy authKitAuthenticationResults];
 
-  if (v32)
+  if (authKitAuthenticationResults)
   {
-    v33 = [v9 authKitAuthenticationResults];
-    v34 = [(AMSPaymentSheetTask *)self _authorizePaymentWithAuthKitResults:v33];
-    [(AMSMutablePromise *)v23 finishWithPromise:v34];
+    authKitAuthenticationResults2 = [paymentCopy authKitAuthenticationResults];
+    biometricsRequest2 = [(AMSPaymentSheetTask *)self _authorizePaymentWithAuthKitResults:authKitAuthenticationResults2];
+    [(AMSMutablePromise *)v23 finishWithPromise:biometricsRequest2];
   }
 
   else
   {
-    v35 = [(AMSPaymentSheetTask *)self request];
-    v36 = [v35 biometricsRequest];
+    request5 = [(AMSPaymentSheetTask *)self request];
+    biometricsRequest = [request5 biometricsRequest];
 
-    if (!v36)
+    if (!biometricsRequest)
     {
-      v33 = AMSError(0, @"Payment Sheet Failed", @"Unknown error occurred during authorization", 0);
-      [(AMSMutablePromise *)v23 finishWithError:v33];
+      authKitAuthenticationResults2 = AMSError(0, @"Payment Sheet Failed", @"Unknown error occurred during authorization", 0);
+      [(AMSMutablePromise *)v23 finishWithError:authKitAuthenticationResults2];
       goto LABEL_24;
     }
 
-    v33 = [(AMSPaymentSheetTask *)self request];
-    v34 = [v33 biometricsRequest];
-    v37 = [(AMSPaymentSheetTask *)self _authorizePaymentWithBiometricsRequest:v34 payment:v9];
+    authKitAuthenticationResults2 = [(AMSPaymentSheetTask *)self request];
+    biometricsRequest2 = [authKitAuthenticationResults2 biometricsRequest];
+    v37 = [(AMSPaymentSheetTask *)self _authorizePaymentWithBiometricsRequest:biometricsRequest2 payment:paymentCopy];
     [(AMSMutablePromise *)v23 finishWithPromise:v37];
   }
 
@@ -3046,143 +3046,143 @@ LABEL_6:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)paymentAuthorizationControllerDidFinish:(id)a3
+- (void)paymentAuthorizationControllerDidFinish:(id)finish
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  finishCopy = finish;
   v7 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(AMSPaymentSheetTask *)self request];
-    v9 = [v15 logKey];
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v10 = MEMORY[0x1E696AEC0];
     v11 = objc_opt_class();
-    if (v9)
+    if (logKey)
     {
-      v12 = [(AMSPaymentSheetTask *)self request];
-      v3 = [v12 logKey];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
       a2 = NSStringFromSelector(a2);
-      [v10 stringWithFormat:@"%@: [%@] %@ ", v11, v3, a2];
+      [v10 stringWithFormat:@"%@: [%@] %@ ", v11, logKey2, a2];
     }
 
     else
     {
-      v12 = NSStringFromSelector(a2);
-      [v10 stringWithFormat:@"%@: %@ ", v11, v12];
+      request2 = NSStringFromSelector(a2);
+      [v10 stringWithFormat:@"%@: %@ ", v11, request2];
     }
     v13 = ;
-    v14 = AMSHashIfNeeded(v6);
+    v14 = AMSHashIfNeeded(finishCopy);
     *buf = 138543618;
     v17 = v13;
     v18 = 2114;
     v19 = v14;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@", buf, 0x16u);
-    if (v9)
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v13 = v3;
+      v13 = logKey2;
     }
   }
 
-  [(AMSPaymentSheetTask *)self _dismissPaymentAuthorizationController:v6];
+  [(AMSPaymentSheetTask *)self _dismissPaymentAuthorizationController:finishCopy];
 }
 
-- (id)presentationWindowForPaymentAuthorizationController:(id)a3
+- (id)presentationWindowForPaymentAuthorizationController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AMSPaymentSheetTask *)self request];
-    v10 = [v9 logKey];
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
-    if (v10)
+    if (logKey)
     {
-      v13 = [(AMSPaymentSheetTask *)self request];
-      v3 = [v13 logKey];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
       a2 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, v3, a2];
+      [v11 stringWithFormat:@"%@: [%@] %@ ", v12, logKey2, a2];
     }
 
     else
     {
-      v13 = NSStringFromSelector(a2);
-      [v11 stringWithFormat:@"%@: %@ ", v12, v13];
+      request2 = NSStringFromSelector(a2);
+      [v11 stringWithFormat:@"%@: %@ ", v12, request2];
     }
     v14 = ;
-    v15 = AMSHashIfNeeded(v6);
+    v15 = AMSHashIfNeeded(controllerCopy);
     *buf = 138543618;
     v18 = v14;
     v19 = 2114;
     v20 = v15;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@", buf, 0x16u);
-    if (v10)
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v14 = v3;
+      v14 = logKey2;
     }
   }
 
   return 0;
 }
 
-- (void)paymentAuthorizationController:(id)a3 didSelectPaymentMethod:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationController:(id)controller didSelectPaymentMethod:(id)method handler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  methodCopy = method;
+  handlerCopy = handler;
   v12 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v12)
   {
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(AMSPaymentSheetTask *)self request];
-    v14 = [v33 logKey];
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v15 = MEMORY[0x1E696AEC0];
     v16 = objc_opt_class();
-    v34 = v11;
+    v34 = handlerCopy;
     v35 = a2;
-    v32 = v14;
-    if (v14)
+    v32 = logKey;
+    if (logKey)
     {
-      v31 = [(AMSPaymentSheetTask *)self request];
-      v17 = [v31 logKey];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
       v29 = NSStringFromSelector(a2);
-      v30 = v17;
-      [v15 stringWithFormat:@"%@: [%@] %@ ", v16, v17, v29];
+      v30 = logKey2;
+      [v15 stringWithFormat:@"%@: [%@] %@ ", v16, logKey2, v29];
     }
 
     else
     {
-      v31 = NSStringFromSelector(a2);
-      [v15 stringWithFormat:@"%@: %@ ", v16, v31];
+      request2 = NSStringFromSelector(a2);
+      [v15 stringWithFormat:@"%@: %@ ", v16, request2];
     }
     v18 = ;
-    v36 = v9;
-    v19 = AMSHashIfNeeded(v9);
-    v20 = [v10 displayName];
-    v21 = AMSHashIfNeeded(v20);
-    v22 = [v10 network];
-    v23 = AMSHashIfNeeded(v22);
+    v36 = controllerCopy;
+    v19 = AMSHashIfNeeded(controllerCopy);
+    displayName = [methodCopy displayName];
+    v21 = AMSHashIfNeeded(displayName);
+    network = [methodCopy network];
+    v23 = AMSHashIfNeeded(network);
     *buf = 138544386;
     v42 = v18;
     v43 = 2114;
@@ -3192,8 +3192,8 @@ LABEL_6:
     v47 = 2114;
     v48 = v23;
     v49 = 2048;
-    v50 = [v10 type];
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@ | displayName: %{public}@ | network: %{public}@ | type: %lu", buf, 0x34u);
+    type = [methodCopy type];
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@ | displayName: %{public}@ | network: %{public}@ | type: %lu", buf, 0x34u);
 
     if (v32)
     {
@@ -3202,25 +3202,25 @@ LABEL_6:
     }
 
     a2 = v35;
-    v9 = v36;
-    v11 = v34;
+    controllerCopy = v36;
+    handlerCopy = v34;
   }
 
   v24 = [(AMSPaymentSheetTask *)self bag];
   v25 = [v24 BOOLForKey:@"applePayPaymentMethodTypeBuyParamEnabled"];
-  v26 = [v25 valuePromise];
+  valuePromise = [v25 valuePromise];
 
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __85__AMSPaymentSheetTask_paymentAuthorizationController_didSelectPaymentMethod_handler___block_invoke;
   v37[3] = &unk_1E73BAAD0;
   v37[4] = self;
-  v38 = v10;
-  v39 = v11;
+  v38 = methodCopy;
+  v39 = handlerCopy;
   v40 = a2;
-  v27 = v11;
-  v28 = v10;
-  [v26 addFinishBlock:v37];
+  v27 = handlerCopy;
+  v28 = methodCopy;
+  [valuePromise addFinishBlock:v37];
 }
 
 void __85__AMSPaymentSheetTask_paymentAuthorizationController_didSelectPaymentMethod_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3343,38 +3343,38 @@ void __85__AMSPaymentSheetTask_paymentAuthorizationController_didSelectPaymentMe
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)paymentAuthorizationController:(id)a3 didEncounterAuthorizationEvent:(unint64_t)a4
+- (void)paymentAuthorizationController:(id)controller didEncounterAuthorizationEvent:(unint64_t)event
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  controllerCopy = controller;
   v9 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v45 = v8;
-    v11 = [(AMSPaymentSheetTask *)self request];
-    v12 = [v11 logKey];
+    v45 = controllerCopy;
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
     v42 = a2;
-    v43 = self;
-    if (v12)
+    selfCopy = self;
+    if (logKey)
     {
-      v15 = [(AMSPaymentSheetTask *)self request];
-      v4 = [v15 logKey];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
       a2 = NSStringFromSelector(a2);
-      [v13 stringWithFormat:@"%@: [%@] %@ ", v14, v4, a2];
+      [v13 stringWithFormat:@"%@: [%@] %@ ", v14, logKey2, a2];
     }
 
     else
     {
-      v15 = NSStringFromSelector(a2);
-      [v13 stringWithFormat:@"%@: %@ ", v14, v15];
+      request2 = NSStringFromSelector(a2);
+      [v13 stringWithFormat:@"%@: %@ ", v14, request2];
     }
     v16 = ;
     v17 = AMSHashIfNeeded(v45);
@@ -3383,38 +3383,38 @@ void __85__AMSPaymentSheetTask_paymentAuthorizationController_didSelectPaymentMe
     v48 = 2114;
     v49 = v17;
     v50 = 2048;
-    v51 = a4;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@ | event: %lu", buf, 0x20u);
-    if (v12)
+    eventCopy = event;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@ | event: %lu", buf, 0x20u);
+    if (logKey)
     {
 
-      v16 = v4;
+      v16 = logKey2;
     }
 
-    self = v43;
-    v8 = v45;
+    self = selfCopy;
+    controllerCopy = v45;
     a2 = v42;
   }
 
-  if (a4 > 5)
+  if (event > 5)
   {
-    if (a4 > 8)
+    if (event > 8)
     {
-      switch(a4)
+      switch(event)
       {
         case 9uLL:
-          v21 = [(AMSPaymentSheetTask *)self state];
-          v22 = v21;
+          state = [(AMSPaymentSheetTask *)self state];
+          paymentAuthorizationController = state;
           v23 = 1;
           break;
         case 0xAuLL:
-          v21 = [(AMSPaymentSheetTask *)self state];
-          v22 = v21;
+          state = [(AMSPaymentSheetTask *)self state];
+          paymentAuthorizationController = state;
           v23 = 5;
           break;
         case 0xBuLL:
-          v21 = [(AMSPaymentSheetTask *)self state];
-          v22 = v21;
+          state = [(AMSPaymentSheetTask *)self state];
+          paymentAuthorizationController = state;
           v23 = 4;
           break;
         default:
@@ -3424,11 +3424,11 @@ void __85__AMSPaymentSheetTask_paymentAuthorizationController_didSelectPaymentMe
 
     else
     {
-      if (a4 != 6)
+      if (event != 6)
       {
-        v18 = [(AMSPaymentSheetTask *)self state];
-        v19 = [v18 didBiometricsLockout];
-        if (a4 == 7)
+        state2 = [(AMSPaymentSheetTask *)self state];
+        didBiometricsLockout = [state2 didBiometricsLockout];
+        if (event == 7)
         {
           v20 = 8;
         }
@@ -3439,33 +3439,33 @@ void __85__AMSPaymentSheetTask_paymentAuthorizationController_didSelectPaymentMe
         }
 
 LABEL_36:
-        v38 = [AMSPaymentSheetMetricsEvent dictionaryForUserAction:v20 didBiometricsLockout:v19];
+        v38 = [AMSPaymentSheetMetricsEvent dictionaryForUserAction:v20 didBiometricsLockout:didBiometricsLockout];
         goto LABEL_37;
       }
 
-      v21 = [(AMSPaymentSheetTask *)self state];
-      v22 = v21;
+      state = [(AMSPaymentSheetTask *)self state];
+      paymentAuthorizationController = state;
       v23 = 3;
     }
 
-    [v21 setCancellationType:v23];
+    [state setCancellationType:v23];
     goto LABEL_42;
   }
 
-  if (a4 > 2)
+  if (event > 2)
   {
-    if (a4 == 3)
+    if (event == 3)
     {
-      v18 = [(AMSPaymentSheetTask *)self state];
-      v19 = [v18 didBiometricsLockout];
+      state2 = [(AMSPaymentSheetTask *)self state];
+      didBiometricsLockout = [state2 didBiometricsLockout];
       v20 = 3;
     }
 
     else
     {
-      v18 = [(AMSPaymentSheetTask *)self state];
-      v19 = [v18 didBiometricsLockout];
-      if (a4 == 4)
+      state2 = [(AMSPaymentSheetTask *)self state];
+      didBiometricsLockout = [state2 didBiometricsLockout];
+      if (event == 4)
       {
         v20 = 2;
       }
@@ -3479,18 +3479,18 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (a4 != 1)
+  if (event != 1)
   {
-    if (a4 == 2)
+    if (event == 2)
     {
       v24 = a2;
-      v25 = [(AMSPaymentSheetTask *)self state];
-      [v25 setDidBiometricsLockout:1];
+      state3 = [(AMSPaymentSheetTask *)self state];
+      [state3 setDidBiometricsLockout:1];
 
-      v26 = [(AMSPaymentSheetTask *)self request];
-      v27 = [v26 disablePasscodeFallback];
+      request3 = [(AMSPaymentSheetTask *)self request];
+      disablePasscodeFallback = [request3 disablePasscodeFallback];
 
-      if (v27)
+      if (disablePasscodeFallback)
       {
         v28 = +[AMSLogConfig sharedPurchaseConfig];
         if (!v28)
@@ -3498,48 +3498,48 @@ LABEL_36:
           v28 = +[AMSLogConfig sharedConfig];
         }
 
-        v29 = [v28 OSLogObject];
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+        oSLogObject2 = [v28 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(AMSPaymentSheetTask *)self request];
-          v31 = [v30 logKey];
+          request4 = [(AMSPaymentSheetTask *)self request];
+          logKey3 = [request4 logKey];
           v32 = MEMORY[0x1E696AEC0];
           v33 = objc_opt_class();
-          v34 = self;
+          selfCopy2 = self;
           v35 = v33;
-          v44 = v34;
-          if (v31)
+          v44 = selfCopy2;
+          if (logKey3)
           {
-            v36 = [(AMSPaymentSheetTask *)v34 request];
-            v26 = [v36 logKey];
+            request5 = [(AMSPaymentSheetTask *)selfCopy2 request];
+            request3 = [request5 logKey];
             v24 = NSStringFromSelector(v24);
-            [v32 stringWithFormat:@"%@: [%@] %@ ", v35, v26, v24];
+            [v32 stringWithFormat:@"%@: [%@] %@ ", v35, request3, v24];
           }
 
           else
           {
-            v36 = NSStringFromSelector(v24);
-            [v32 stringWithFormat:@"%@: %@ ", v35, v36];
+            request5 = NSStringFromSelector(v24);
+            [v32 stringWithFormat:@"%@: %@ ", v35, request5];
           }
           v37 = ;
           *buf = 138543362;
           v47 = v37;
-          _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@Dismissing Payment Sheet due to biometric lockout and no password fallback", buf, 0xCu);
-          if (v31)
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Dismissing Payment Sheet due to biometric lockout and no password fallback", buf, 0xCu);
+          if (logKey3)
           {
 
-            v37 = v26;
+            v37 = request3;
           }
 
           self = v44;
         }
 
         v40 = AMSError(509, @"Payment Sheet Failed", @"Device is in biometric lockout and password fallback is disabled", 0);
-        v41 = [(AMSPaymentSheetTask *)self state];
-        [v41 setError:v40];
+        state4 = [(AMSPaymentSheetTask *)self state];
+        [state4 setError:v40];
 
-        v22 = [(AMSPaymentSheetTask *)self paymentAuthorizationController];
-        [(AMSPaymentSheetTask *)self _dismissPaymentAuthorizationController:v22];
+        paymentAuthorizationController = [(AMSPaymentSheetTask *)self paymentAuthorizationController];
+        [(AMSPaymentSheetTask *)self _dismissPaymentAuthorizationController:paymentAuthorizationController];
         goto LABEL_42;
       }
     }
@@ -3547,15 +3547,15 @@ LABEL_36:
     goto LABEL_43;
   }
 
-  v18 = [(AMSPaymentSheetTask *)self state];
-  v38 = +[AMSPaymentSheetMetricsEvent dictionaryForBiometricMatchState:didBiometricsLockout:biometricsType:](AMSPaymentSheetMetricsEvent, "dictionaryForBiometricMatchState:didBiometricsLockout:biometricsType:", 100, [v18 didBiometricsLockout], +[AMSBiometrics type](AMSBiometrics, "type"));
+  state2 = [(AMSPaymentSheetTask *)self state];
+  v38 = +[AMSPaymentSheetMetricsEvent dictionaryForBiometricMatchState:didBiometricsLockout:biometricsType:](AMSPaymentSheetMetricsEvent, "dictionaryForBiometricMatchState:didBiometricsLockout:biometricsType:", 100, [state2 didBiometricsLockout], +[AMSBiometrics type](AMSBiometrics, "type"));
 LABEL_37:
-  v22 = v38;
+  paymentAuthorizationController = v38;
 
-  if (v22)
+  if (paymentAuthorizationController)
   {
-    v39 = [(AMSPaymentSheetTask *)self userActions];
-    [v39 addObject:v22];
+    userActions = [(AMSPaymentSheetTask *)self userActions];
+    [userActions addObject:paymentAuthorizationController];
 
 LABEL_42:
   }
@@ -3563,61 +3563,61 @@ LABEL_42:
 LABEL_43:
 }
 
-- (void)paymentAuthorizationController:(id)a3 willFinishWithError:(id)a4
+- (void)paymentAuthorizationController:(id)controller willFinishWithError:(id)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v7 = a4;
-  v8 = 0x1E73B0000uLL;
+  controllerCopy = controller;
+  errorCopy = error;
+  logKey2 = 0x1E73B0000uLL;
   v9 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [(AMSPaymentSheetTask *)self request];
-    v11 = [v30 logKey];
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v12 = MEMORY[0x1E696AEC0];
     v13 = objc_opt_class();
     v31 = a2;
-    v32 = self;
-    if (v11)
+    selfCopy = self;
+    if (logKey)
     {
-      v14 = [(AMSPaymentSheetTask *)self request];
-      v8 = [v14 logKey];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
       self = NSStringFromSelector(a2);
-      [v12 stringWithFormat:@"%@: [%@] %@ ", v13, v8, self];
+      [v12 stringWithFormat:@"%@: [%@] %@ ", v13, logKey2, self];
     }
 
     else
     {
-      v14 = NSStringFromSelector(a2);
-      [v12 stringWithFormat:@"%@: %@ ", v13, v14];
+      request2 = NSStringFromSelector(a2);
+      [v12 stringWithFormat:@"%@: %@ ", v13, request2];
     }
     v15 = ;
-    v16 = AMSHashIfNeeded(v34);
-    v17 = AMSLogableError(v7);
+    v16 = AMSHashIfNeeded(controllerCopy);
+    v17 = AMSLogableError(errorCopy);
     *buf = 138543874;
     v36 = v15;
     v37 = 2114;
     v38 = v16;
     v39 = 2114;
     v40 = v17;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@ | error: %{public}@", buf, 0x20u);
-    if (v11)
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@ | error: %{public}@", buf, 0x20u);
+    if (logKey)
     {
 
-      v15 = v8;
+      v15 = logKey2;
     }
 
     a2 = v31;
-    self = v32;
+    self = selfCopy;
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v18 = +[AMSLogConfig sharedPurchaseOversizeConfig];
     if (!v18)
@@ -3625,56 +3625,56 @@ LABEL_43:
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v20 = a2;
-      v21 = [(AMSPaymentSheetTask *)self request];
-      v22 = [v21 logKey];
+      request3 = [(AMSPaymentSheetTask *)self request];
+      logKey3 = [request3 logKey];
       v23 = MEMORY[0x1E696AEC0];
       v24 = objc_opt_class();
-      v33 = self;
-      if (v22)
+      selfCopy2 = self;
+      if (logKey3)
       {
-        v25 = [(AMSPaymentSheetTask *)self request];
-        self = [v25 logKey];
+        request4 = [(AMSPaymentSheetTask *)self request];
+        self = [request4 logKey];
         v20 = NSStringFromSelector(v20);
         [v23 stringWithFormat:@"%@: [%@] %@ ", v24, self, v20];
       }
 
       else
       {
-        v25 = NSStringFromSelector(v20);
-        [v23 stringWithFormat:@"%@: %@ ", v24, v25];
+        request4 = NSStringFromSelector(v20);
+        [v23 stringWithFormat:@"%@: %@ ", v24, request4];
       }
-      v26 = ;
-      v27 = AMSLogableError(v7);
+      selfCopy3 = ;
+      v27 = AMSLogableError(errorCopy);
       *buf = 138543618;
-      v36 = v26;
+      v36 = selfCopy3;
       v37 = 2114;
       v38 = v27;
-      _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@Payment sheet will finish with error: %{public}@", buf, 0x16u);
-      if (v22)
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Payment sheet will finish with error: %{public}@", buf, 0x16u);
+      if (logKey3)
       {
 
-        v26 = self;
+        selfCopy3 = self;
       }
 
-      self = v33;
+      self = selfCopy2;
     }
 
-    v28 = AMSError(509, @"Payment Sheet Failed", @"There was an error in the payment authorization controller.", v7);
-    v29 = [(AMSPaymentSheetTask *)self state];
-    [v29 setError:v28];
+    v28 = AMSError(509, @"Payment Sheet Failed", @"There was an error in the payment authorization controller.", errorCopy);
+    state = [(AMSPaymentSheetTask *)self state];
+    [state setError:v28];
   }
 
-  [v34 setPrivateDelegate:0];
+  [controllerCopy setPrivateDelegate:0];
 }
 
-- (id)presentationSceneIdentifierForPaymentAuthorizationController:(id)a3
+- (id)presentationSceneIdentifierForPaymentAuthorizationController:(id)controller
 {
   v44 = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  controllerCopy = controller;
   v8 = 0x1E73B0000uLL;
   v9 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v9)
@@ -3682,94 +3682,94 @@ LABEL_43:
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(AMSPaymentSheetTask *)self request];
-    v12 = [v11 logKey];
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
-    if (v12)
+    if (logKey)
     {
-      v15 = [(AMSPaymentSheetTask *)self request];
-      v3 = [v15 logKey];
-      v6 = NSStringFromSelector(a2);
-      [v13 stringWithFormat:@"%@: [%@] %@ ", v14, v3, v6];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
+      logKey5 = NSStringFromSelector(a2);
+      [v13 stringWithFormat:@"%@: [%@] %@ ", v14, logKey2, logKey5];
     }
 
     else
     {
-      v15 = NSStringFromSelector(a2);
-      [v13 stringWithFormat:@"%@: %@ ", v14, v15];
+      request2 = NSStringFromSelector(a2);
+      [v13 stringWithFormat:@"%@: %@ ", v14, request2];
     }
-    v5 = ;
-    v4 = AMSHashIfNeeded(v39);
+    request4 = ;
+    logKey4 = AMSHashIfNeeded(controllerCopy);
     *buf = 138543618;
-    v41 = v5;
+    v41 = request4;
     v42 = 2114;
-    v43 = v4;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@", buf, 0x16u);
-    if (v12)
+    v43 = logKey4;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v5 = v3;
+      request4 = logKey2;
     }
 
     v8 = 0x1E73B0000uLL;
   }
 
-  v16 = [(AMSPaymentSheetTask *)self presentingSceneIdentifier];
-  if (v16)
+  presentingSceneIdentifier = [(AMSPaymentSheetTask *)self presentingSceneIdentifier];
+  if (presentingSceneIdentifier)
   {
-    v17 = v16;
+    presentingSceneIdentifier2 = presentingSceneIdentifier;
     v18 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v18)
     {
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v18 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_31;
     }
 
-    v37 = [(AMSPaymentSheetTask *)self request];
-    v20 = [v37 logKey];
+    request3 = [(AMSPaymentSheetTask *)self request];
+    logKey3 = [request3 logKey];
     v21 = MEMORY[0x1E696AEC0];
     v22 = objc_opt_class();
-    if (v20)
+    if (logKey3)
     {
-      v5 = [(AMSPaymentSheetTask *)self request];
-      v4 = [v5 logKey];
-      v3 = NSStringFromSelector(a2);
-      [v21 stringWithFormat:@"%@: [%@] %@ ", v22, v4, v3];
+      request4 = [(AMSPaymentSheetTask *)self request];
+      logKey4 = [request4 logKey];
+      logKey2 = NSStringFromSelector(a2);
+      [v21 stringWithFormat:@"%@: [%@] %@ ", v22, logKey4, logKey2];
     }
 
     else
     {
-      v5 = NSStringFromSelector(a2);
-      [v21 stringWithFormat:@"%@: %@ ", v22, v5];
+      request4 = NSStringFromSelector(a2);
+      [v21 stringWithFormat:@"%@: %@ ", v22, request4];
     }
     v23 = ;
     *buf = 138543362;
     v41 = v23;
-    _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEBUG, "%{public}@Using self.presentingSceneIdentifier", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@Using self.presentingSceneIdentifier", buf, 0xCu);
     v8 = 0x1E73B0000;
-    if (v20)
+    if (logKey3)
     {
 
-      v23 = v4;
+      v23 = logKey4;
     }
 
     goto LABEL_30;
   }
 
-  v24 = [(AMSPaymentSheetTask *)self purchaseInfo];
-  v4 = [v24 purchase];
-  v17 = [v4 presentingSceneIdentifier];
+  purchaseInfo = [(AMSPaymentSheetTask *)self purchaseInfo];
+  logKey4 = [purchaseInfo purchase];
+  presentingSceneIdentifier2 = [logKey4 presentingSceneIdentifier];
 
-  if (!v17)
+  if (!presentingSceneIdentifier2)
   {
     goto LABEL_32;
   }
@@ -3780,35 +3780,35 @@ LABEL_43:
     v18 = +[AMSLogConfig sharedConfig];
   }
 
-  v19 = [v18 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
-    v37 = [(AMSPaymentSheetTask *)self request];
-    v20 = [v37 logKey];
+    request3 = [(AMSPaymentSheetTask *)self request];
+    logKey3 = [request3 logKey];
     v25 = MEMORY[0x1E696AEC0];
     v26 = objc_opt_class();
-    if (v20)
+    if (logKey3)
     {
-      v5 = [(AMSPaymentSheetTask *)self request];
-      v6 = [v5 logKey];
-      v24 = NSStringFromSelector(a2);
-      [v25 stringWithFormat:@"%@: [%@] %@ ", v26, v6, v24];
+      request4 = [(AMSPaymentSheetTask *)self request];
+      logKey5 = [request4 logKey];
+      purchaseInfo = NSStringFromSelector(a2);
+      [v25 stringWithFormat:@"%@: [%@] %@ ", v26, logKey5, purchaseInfo];
     }
 
     else
     {
-      v5 = NSStringFromSelector(a2);
-      [v25 stringWithFormat:@"%@: %@ ", v26, v5];
+      request4 = NSStringFromSelector(a2);
+      [v25 stringWithFormat:@"%@: %@ ", v26, request4];
     }
-    v4 = ;
+    logKey4 = ;
     *buf = 138543362;
-    v41 = v4;
-    _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEBUG, "%{public}@Using self.purchaseInfo.purchase.presentingSceneIdentifier", buf, 0xCu);
+    v41 = logKey4;
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@Using self.purchaseInfo.purchase.presentingSceneIdentifier", buf, 0xCu);
     v8 = 0x1E73B0000uLL;
-    if (v20)
+    if (logKey3)
     {
 
-      v4 = v6;
+      logKey4 = logKey5;
     }
 
 LABEL_30:
@@ -3817,146 +3817,146 @@ LABEL_30:
 LABEL_31:
 
 LABEL_32:
-  v27 = [*(v8 + 3552) sharedPurchaseConfig];
-  if (!v27)
+  sharedPurchaseConfig = [*(v8 + 3552) sharedPurchaseConfig];
+  if (!sharedPurchaseConfig)
   {
-    v27 = [*(v8 + 3552) sharedConfig];
+    sharedPurchaseConfig = [*(v8 + 3552) sharedConfig];
   }
 
-  v28 = [v27 OSLogObject];
-  if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+  oSLogObject3 = [sharedPurchaseConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
   {
-    v29 = [(AMSPaymentSheetTask *)self request];
-    v30 = [v29 logKey];
+    request5 = [(AMSPaymentSheetTask *)self request];
+    logKey6 = [request5 logKey];
     v31 = MEMORY[0x1E696AEC0];
     v32 = objc_opt_class();
-    if (v30)
+    if (logKey6)
     {
-      v33 = [(AMSPaymentSheetTask *)self request];
-      v5 = [v33 logKey];
-      v4 = NSStringFromSelector(a2);
-      [v31 stringWithFormat:@"%@: [%@] %@ ", v32, v5, v4];
+      request6 = [(AMSPaymentSheetTask *)self request];
+      request4 = [request6 logKey];
+      logKey4 = NSStringFromSelector(a2);
+      [v31 stringWithFormat:@"%@: [%@] %@ ", v32, request4, logKey4];
     }
 
     else
     {
-      v33 = NSStringFromSelector(a2);
-      [v31 stringWithFormat:@"%@: %@ ", v32, v33];
+      request6 = NSStringFromSelector(a2);
+      [v31 stringWithFormat:@"%@: %@ ", v32, request6];
     }
     v34 = ;
-    v35 = AMSHashIfNeeded(v17);
+    v35 = AMSHashIfNeeded(presentingSceneIdentifier2);
     *buf = 138543618;
     v41 = v34;
     v42 = 2114;
     v43 = v35;
-    _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_DEBUG, "%{public}@ returning scene identifier %{public}@", buf, 0x16u);
-    if (v30)
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@ returning scene identifier %{public}@", buf, 0x16u);
+    if (logKey6)
     {
 
-      v34 = v5;
+      v34 = request4;
     }
   }
 
-  return v17;
+  return presentingSceneIdentifier2;
 }
 
-- (id)presentationSceneBundleIdentifierForPaymentAuthorizationController:(id)a3
+- (id)presentationSceneBundleIdentifierForPaymentAuthorizationController:(id)controller
 {
   v51 = *MEMORY[0x1E69E9840];
-  v46 = a3;
+  controllerCopy = controller;
   v8 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(AMSPaymentSheetTask *)self request];
-    v11 = [v10 logKey];
+    request = [(AMSPaymentSheetTask *)self request];
+    logKey = [request logKey];
     v12 = MEMORY[0x1E696AEC0];
     v13 = objc_opt_class();
-    if (v11)
+    if (logKey)
     {
-      v14 = [(AMSPaymentSheetTask *)self request];
-      v3 = [v14 logKey];
-      v6 = NSStringFromSelector(a2);
-      [v12 stringWithFormat:@"%@: [%@] %@ ", v13, v3, v6];
+      request2 = [(AMSPaymentSheetTask *)self request];
+      logKey2 = [request2 logKey];
+      logKey5 = NSStringFromSelector(a2);
+      [v12 stringWithFormat:@"%@: [%@] %@ ", v13, logKey2, logKey5];
     }
 
     else
     {
-      v14 = NSStringFromSelector(a2);
-      [v12 stringWithFormat:@"%@: %@ ", v13, v14];
+      request2 = NSStringFromSelector(a2);
+      [v12 stringWithFormat:@"%@: %@ ", v13, request2];
     }
-    v5 = ;
-    v4 = AMSHashIfNeeded(v46);
+    request4 = ;
+    logKey4 = AMSHashIfNeeded(controllerCopy);
     *buf = 138543618;
-    v48 = v5;
+    v48 = request4;
     v49 = 2114;
-    v50 = v4;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@", buf, 0x16u);
-    if (v11)
+    v50 = logKey4;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@controller: %{public}@", buf, 0x16u);
+    if (logKey)
     {
 
-      v5 = v3;
+      request4 = logKey2;
     }
   }
 
-  v15 = [(AMSPaymentSheetTask *)self presentingSceneBundleIdentifier];
-  if (v15)
+  presentingSceneBundleIdentifier = [(AMSPaymentSheetTask *)self presentingSceneBundleIdentifier];
+  if (presentingSceneBundleIdentifier)
   {
-    v16 = v15;
+    presentingSceneBundleIdentifier2 = presentingSceneBundleIdentifier;
     v17 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v17)
     {
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_48;
     }
 
-    v43 = v16;
-    v19 = [(AMSPaymentSheetTask *)self request];
-    v20 = [v19 logKey];
+    v43 = presentingSceneBundleIdentifier2;
+    request3 = [(AMSPaymentSheetTask *)self request];
+    logKey3 = [request3 logKey];
     v21 = MEMORY[0x1E696AEC0];
     v22 = objc_opt_class();
-    if (v20)
+    if (logKey3)
     {
-      v5 = [(AMSPaymentSheetTask *)self request];
-      v4 = [v5 logKey];
-      v3 = NSStringFromSelector(a2);
-      [v21 stringWithFormat:@"%@: [%@] %@ ", v22, v4, v3];
+      request4 = [(AMSPaymentSheetTask *)self request];
+      logKey4 = [request4 logKey];
+      logKey2 = NSStringFromSelector(a2);
+      [v21 stringWithFormat:@"%@: [%@] %@ ", v22, logKey4, logKey2];
     }
 
     else
     {
-      v5 = NSStringFromSelector(a2);
-      [v21 stringWithFormat:@"%@: %@ ", v22, v5];
+      request4 = NSStringFromSelector(a2);
+      [v21 stringWithFormat:@"%@: %@ ", v22, request4];
     }
     v23 = ;
     *buf = 138543362;
     v48 = v23;
-    _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEBUG, "%{public}@Using self.presentingSceneBundleIdentifier", buf, 0xCu);
-    v16 = v43;
-    if (v20)
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@Using self.presentingSceneBundleIdentifier", buf, 0xCu);
+    presentingSceneBundleIdentifier2 = v43;
+    if (logKey3)
     {
 
-      v23 = v4;
+      v23 = logKey4;
     }
 
     goto LABEL_47;
   }
 
-  v24 = [(AMSPaymentSheetTask *)self purchaseInfo];
-  v4 = [v24 purchase];
-  v16 = [v4 presentingSceneBundleIdentifier];
+  purchaseInfo = [(AMSPaymentSheetTask *)self purchaseInfo];
+  logKey4 = [purchaseInfo purchase];
+  presentingSceneBundleIdentifier2 = [logKey4 presentingSceneBundleIdentifier];
 
-  if (v16)
+  if (presentingSceneBundleIdentifier2)
   {
     v17 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v17)
@@ -3964,42 +3964,42 @@ LABEL_32:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_48;
     }
 
-    v44 = v16;
-    v19 = [(AMSPaymentSheetTask *)self request];
-    v20 = [v19 logKey];
+    v44 = presentingSceneBundleIdentifier2;
+    request3 = [(AMSPaymentSheetTask *)self request];
+    logKey3 = [request3 logKey];
     v25 = MEMORY[0x1E696AEC0];
     v26 = objc_opt_class();
-    if (v20)
+    if (logKey3)
     {
-      v5 = [(AMSPaymentSheetTask *)self request];
-      v6 = [v5 logKey];
-      v24 = NSStringFromSelector(a2);
-      [v25 stringWithFormat:@"%@: [%@] %@ ", v26, v6, v24];
+      request4 = [(AMSPaymentSheetTask *)self request];
+      logKey5 = [request4 logKey];
+      purchaseInfo = NSStringFromSelector(a2);
+      [v25 stringWithFormat:@"%@: [%@] %@ ", v26, logKey5, purchaseInfo];
     }
 
     else
     {
-      v5 = NSStringFromSelector(a2);
-      [v25 stringWithFormat:@"%@: %@ ", v26, v5];
+      request4 = NSStringFromSelector(a2);
+      [v25 stringWithFormat:@"%@: %@ ", v26, request4];
     }
-    v4 = ;
+    logKey4 = ;
     *buf = 138543362;
-    v48 = v4;
+    v48 = logKey4;
     v31 = "%{public}@Using self.purchaseInfo.purchase.presentingSceneBundleIdentifier";
     goto LABEL_44;
   }
 
-  v24 = [(AMSPaymentSheetTask *)self purchaseInfo];
-  v4 = [v24 clientInfo];
-  v16 = [v4 proxyAppBundleID];
+  purchaseInfo = [(AMSPaymentSheetTask *)self purchaseInfo];
+  logKey4 = [purchaseInfo clientInfo];
+  presentingSceneBundleIdentifier2 = [logKey4 proxyAppBundleID];
 
-  if (v16)
+  if (presentingSceneBundleIdentifier2)
   {
     v17 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v17)
@@ -4007,42 +4007,42 @@ LABEL_32:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_48;
     }
 
-    v44 = v16;
-    v19 = [(AMSPaymentSheetTask *)self request];
-    v20 = [v19 logKey];
+    v44 = presentingSceneBundleIdentifier2;
+    request3 = [(AMSPaymentSheetTask *)self request];
+    logKey3 = [request3 logKey];
     v27 = MEMORY[0x1E696AEC0];
     v28 = objc_opt_class();
-    if (v20)
+    if (logKey3)
     {
-      v5 = [(AMSPaymentSheetTask *)self request];
-      v6 = [v5 logKey];
-      v24 = NSStringFromSelector(a2);
-      [v27 stringWithFormat:@"%@: [%@] %@ ", v28, v6, v24];
+      request4 = [(AMSPaymentSheetTask *)self request];
+      logKey5 = [request4 logKey];
+      purchaseInfo = NSStringFromSelector(a2);
+      [v27 stringWithFormat:@"%@: [%@] %@ ", v28, logKey5, purchaseInfo];
     }
 
     else
     {
-      v5 = NSStringFromSelector(a2);
-      [v27 stringWithFormat:@"%@: %@ ", v28, v5];
+      request4 = NSStringFromSelector(a2);
+      [v27 stringWithFormat:@"%@: %@ ", v28, request4];
     }
-    v4 = ;
+    logKey4 = ;
     *buf = 138543362;
-    v48 = v4;
+    v48 = logKey4;
     v31 = "%{public}@Using self.purchaseInfo.clientInfo.proxyAppBundleID";
     goto LABEL_44;
   }
 
-  v24 = [(AMSPaymentSheetTask *)self purchaseInfo];
-  v4 = [v24 clientInfo];
-  v16 = [v4 bundleIdentifier];
+  purchaseInfo = [(AMSPaymentSheetTask *)self purchaseInfo];
+  logKey4 = [purchaseInfo clientInfo];
+  presentingSceneBundleIdentifier2 = [logKey4 bundleIdentifier];
 
-  if (!v16)
+  if (!presentingSceneBundleIdentifier2)
   {
     goto LABEL_49;
   }
@@ -4053,38 +4053,38 @@ LABEL_32:
     v17 = +[AMSLogConfig sharedConfig];
   }
 
-  v18 = [v17 OSLogObject];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [v17 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
-    v44 = v16;
-    v19 = [(AMSPaymentSheetTask *)self request];
-    v20 = [v19 logKey];
+    v44 = presentingSceneBundleIdentifier2;
+    request3 = [(AMSPaymentSheetTask *)self request];
+    logKey3 = [request3 logKey];
     v29 = MEMORY[0x1E696AEC0];
     v30 = objc_opt_class();
-    if (v20)
+    if (logKey3)
     {
-      v5 = [(AMSPaymentSheetTask *)self request];
-      v6 = [v5 logKey];
-      v24 = NSStringFromSelector(a2);
-      [v29 stringWithFormat:@"%@: [%@] %@ ", v30, v6, v24];
+      request4 = [(AMSPaymentSheetTask *)self request];
+      logKey5 = [request4 logKey];
+      purchaseInfo = NSStringFromSelector(a2);
+      [v29 stringWithFormat:@"%@: [%@] %@ ", v30, logKey5, purchaseInfo];
     }
 
     else
     {
-      v5 = NSStringFromSelector(a2);
-      [v29 stringWithFormat:@"%@: %@ ", v30, v5];
+      request4 = NSStringFromSelector(a2);
+      [v29 stringWithFormat:@"%@: %@ ", v30, request4];
     }
-    v4 = ;
+    logKey4 = ;
     *buf = 138543362;
-    v48 = v4;
+    v48 = logKey4;
     v31 = "%{public}@Using self.purchaseInfo.clientInfo.bundleIdentifier";
 LABEL_44:
-    _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEBUG, v31, buf, 0xCu);
-    v16 = v44;
-    if (v20)
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, v31, buf, 0xCu);
+    presentingSceneBundleIdentifier2 = v44;
+    if (logKey3)
     {
 
-      v4 = v6;
+      logKey4 = logKey5;
     }
 
 LABEL_47:
@@ -4099,43 +4099,43 @@ LABEL_49:
     v32 = +[AMSLogConfig sharedConfig];
   }
 
-  v33 = [v32 OSLogObject];
-  if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
+  oSLogObject3 = [v32 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
   {
-    v34 = v16;
-    v35 = [(AMSPaymentSheetTask *)self request];
-    v36 = [v35 logKey];
+    v34 = presentingSceneBundleIdentifier2;
+    request5 = [(AMSPaymentSheetTask *)self request];
+    logKey6 = [request5 logKey];
     v37 = MEMORY[0x1E696AEC0];
     v38 = objc_opt_class();
-    if (v36)
+    if (logKey6)
     {
-      v39 = [(AMSPaymentSheetTask *)self request];
-      v5 = [v39 logKey];
-      v4 = NSStringFromSelector(a2);
-      [v37 stringWithFormat:@"%@: [%@] %@ ", v38, v5, v4];
+      request6 = [(AMSPaymentSheetTask *)self request];
+      request4 = [request6 logKey];
+      logKey4 = NSStringFromSelector(a2);
+      [v37 stringWithFormat:@"%@: [%@] %@ ", v38, request4, logKey4];
     }
 
     else
     {
-      v39 = NSStringFromSelector(a2);
-      [v37 stringWithFormat:@"%@: %@ ", v38, v39];
+      request6 = NSStringFromSelector(a2);
+      [v37 stringWithFormat:@"%@: %@ ", v38, request6];
     }
     v40 = ;
-    v16 = v34;
+    presentingSceneBundleIdentifier2 = v34;
     v41 = AMSHashIfNeeded(v34);
     *buf = 138543618;
     v48 = v40;
     v49 = 2114;
     v50 = v41;
-    _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_DEBUG, "%{public}@ returning bundle identifier %{public}@", buf, 0x16u);
-    if (v36)
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@ returning bundle identifier %{public}@", buf, 0x16u);
+    if (logKey6)
     {
 
-      v40 = v5;
+      v40 = request4;
     }
   }
 
-  return v16;
+  return presentingSceneBundleIdentifier2;
 }
 
 @end

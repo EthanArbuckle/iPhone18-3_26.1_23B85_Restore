@@ -1,21 +1,21 @@
 @interface PLBatteryUIResponseTypeAutoBrightnessSuggestion
 - (BOOL)shouldShowSuggestionThroughOverrides;
 - (id)result;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)run;
 @end
 
 @implementation PLBatteryUIResponseTypeAutoBrightnessSuggestion
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
   v8 = [MEMORY[0x277D3F180] objectForKey:@"BKEnableALS" forApplicationID:@"com.apple.backboardd" synchronize:1];
   [(PLBatteryUIResponseTypeAutoBrightnessSuggestion *)self setHasALSPowerSaved:+[PLDisplayAgent shouldLogALSPowerSaved]];
   -[PLBatteryUIResponseTypeAutoBrightnessSuggestion setIsALSEnabled:](self, "setIsALSEnabled:", [v8 BOOLValue]);
-  v4 = [(PLBatteryUIResponseTypeAutoBrightnessSuggestion *)self responderService];
-  v5 = [v4 storage];
+  responderService = [(PLBatteryUIResponseTypeAutoBrightnessSuggestion *)self responderService];
+  storage = [responderService storage];
   v6 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"ALSPowerSaved"];
-  v7 = [v5 entriesForKey:v6];
+  v7 = [storage entriesForKey:v6];
   [(PLBatteryUIResponseTypeAutoBrightnessSuggestion *)self setAlsPowerSavedEntries:v7];
 }
 
@@ -23,7 +23,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v4[0] = 67109120;
-  v4[1] = [a1 isALSEnabled];
+  v4[1] = [self isALSEnabled];
   _os_log_debug_impl(&dword_25EE51000, a2, OS_LOG_TYPE_DEBUG, "Auto Brightness Suggestion: ALS is %d", v4, 8u);
   v3 = *MEMORY[0x277D85DE8];
 }
@@ -68,9 +68,9 @@
   if (v2)
   {
     v3 = [PLUtilities powerlogDefaultForKey:@"BUI_AUTOBRIGHTNESS_SUGGESTION_SHOW"];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;

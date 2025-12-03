@@ -1,15 +1,15 @@
 @interface _ATXAppLaunchSequence
-- (_ATXAppLaunchSequence)initWithPreviousLaunch:(id)a3 subsequentLaunchCounts:(id)a4 dataStore:(id)a5 allowSimulatedCrashes:(BOOL)a6 launchType:(int)a7;
-- (double)launchCount:(id)a3;
-- (double)likelihoodForLaunch:(id)a3;
-- (void)_deleteDataForLaunchLocked:(id)a3;
-- (void)addSubsequentLaunch:(id)a3;
+- (_ATXAppLaunchSequence)initWithPreviousLaunch:(id)launch subsequentLaunchCounts:(id)counts dataStore:(id)store allowSimulatedCrashes:(BOOL)crashes launchType:(int)type;
+- (double)launchCount:(id)count;
+- (double)likelihoodForLaunch:(id)launch;
+- (void)_deleteDataForLaunchLocked:(id)locked;
+- (void)addSubsequentLaunch:(id)launch;
 - (void)dealloc;
-- (void)decayByFactor:(double)a3;
-- (void)decayWithHalfLifeInDays:(double)a3;
+- (void)decayByFactor:(double)factor;
+- (void)decayWithHalfLifeInDays:(double)days;
 - (void)deleteAllInformation;
-- (void)deleteDataForLaunch:(id)a3;
-- (void)deleteDataForLaunches:(id)a3;
+- (void)deleteDataForLaunch:(id)launch;
+- (void)deleteDataForLaunches:(id)launches;
 - (void)save;
 @end
 
@@ -42,13 +42,13 @@
   [(_ATXAppLaunchSequence *)&v3 dealloc];
 }
 
-- (_ATXAppLaunchSequence)initWithPreviousLaunch:(id)a3 subsequentLaunchCounts:(id)a4 dataStore:(id)a5 allowSimulatedCrashes:(BOOL)a6 launchType:(int)a7
+- (_ATXAppLaunchSequence)initWithPreviousLaunch:(id)launch subsequentLaunchCounts:(id)counts dataStore:(id)store allowSimulatedCrashes:(BOOL)crashes launchType:(int)type
 {
-  v8 = a6;
+  crashesCopy = crashes;
   v42 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  launchCopy = launch;
+  countsCopy = counts;
+  storeCopy = store;
   v40.receiver = self;
   v40.super_class = _ATXAppLaunchSequence;
   v16 = [(_ATXAppLaunchSequence *)&v40 init];
@@ -58,12 +58,12 @@
     goto LABEL_17;
   }
 
-  v34 = v15;
-  v16->_launchType = a7;
-  objc_storeStrong(&v16->_previousLaunch, a3);
-  objc_storeStrong(&v17->_datastore, a5);
-  v35 = v14;
-  v18 = [v14 mutableCopy];
+  v34 = storeCopy;
+  v16->_launchType = type;
+  objc_storeStrong(&v16->_previousLaunch, launch);
+  objc_storeStrong(&v17->_datastore, store);
+  v35 = countsCopy;
+  v18 = [countsCopy mutableCopy];
   subsequentLaunchCountMap = v17->_subsequentLaunchCountMap;
   v17->_subsequentLaunchCountMap = v18;
 
@@ -106,7 +106,7 @@
       else
       {
         [v20 addObject:v26];
-        if (!v8)
+        if (!crashesCopy)
         {
           goto LABEL_12;
         }
@@ -127,31 +127,31 @@ LABEL_14:
   if ([v20 count])
   {
     v30 = v17->_subsequentLaunchCountMap;
-    v31 = [v20 allObjects];
-    [(NSMutableDictionary *)v30 removeObjectsForKeys:v31];
+    allObjects = [v20 allObjects];
+    [(NSMutableDictionary *)v30 removeObjectsForKeys:allObjects];
 
     [(_ATXAppLaunchSequence *)v17 save];
   }
 
-  v14 = v35;
-  v15 = v34;
+  countsCopy = v35;
+  storeCopy = v34;
 LABEL_17:
 
   v32 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (void)addSubsequentLaunch:(id)a3
+- (void)addSubsequentLaunch:(id)launch
 {
-  v8 = a3;
+  launchCopy = launch;
   pthread_rwlock_wrlock(&self->_rwlock);
   if (!self->_previousAppDeleted)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(NSMutableDictionary *)self->_subsequentLaunchCountMap objectForKeyedSubscript:v8];
+    v5 = [(NSMutableDictionary *)self->_subsequentLaunchCountMap objectForKeyedSubscript:launchCopy];
     [v5 doubleValue];
     v7 = [v4 numberWithDouble:v6 + 1.0];
-    [(NSMutableDictionary *)self->_subsequentLaunchCountMap setObject:v7 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_subsequentLaunchCountMap setObject:v7 forKeyedSubscript:launchCopy];
 
     self->_subsequentLaunchTotalCount = self->_subsequentLaunchTotalCount + 1.0;
     [(_ATXAppLaunchSequence *)self save];
@@ -160,29 +160,29 @@ LABEL_17:
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)deleteDataForLaunch:(id)a3
+- (void)deleteDataForLaunch:(id)launch
 {
-  v4 = a3;
+  launchCopy = launch;
   pthread_rwlock_wrlock(&self->_rwlock);
   if (!self->_previousAppDeleted)
   {
-    [(_ATXAppLaunchSequence *)self _deleteDataForLaunchLocked:v4];
+    [(_ATXAppLaunchSequence *)self _deleteDataForLaunchLocked:launchCopy];
     [(_ATXAppLaunchSequence *)self save];
   }
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)deleteDataForLaunches:(id)a3
+- (void)deleteDataForLaunches:(id)launches
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  launchesCopy = launches;
   pthread_rwlock_wrlock(&self->_rwlock);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = launchesCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -214,21 +214,21 @@ LABEL_17:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteDataForLaunchLocked:(id)a3
+- (void)_deleteDataForLaunchLocked:(id)locked
 {
   subsequentLaunchCountMap = self->_subsequentLaunchCountMap;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)subsequentLaunchCountMap objectForKeyedSubscript:v5];
+  lockedCopy = locked;
+  v6 = [(NSMutableDictionary *)subsequentLaunchCountMap objectForKeyedSubscript:lockedCopy];
   [v6 doubleValue];
   v8 = v7;
 
-  [(NSMutableDictionary *)self->_subsequentLaunchCountMap removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_subsequentLaunchCountMap removeObjectForKey:lockedCopy];
   self->_subsequentLaunchTotalCount = self->_subsequentLaunchTotalCount - v8;
 }
 
-- (double)launchCount:(id)a3
+- (double)launchCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   pthread_rwlock_rdlock(&self->_rwlock);
   if (self->_previousAppDeleted)
   {
@@ -237,7 +237,7 @@ LABEL_17:
 
   else
   {
-    v5 = [(NSMutableDictionary *)self->_subsequentLaunchCountMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_subsequentLaunchCountMap objectForKeyedSubscript:countCopy];
   }
 
   pthread_rwlock_unlock(&self->_rwlock);
@@ -247,14 +247,14 @@ LABEL_17:
   return v7;
 }
 
-- (double)likelihoodForLaunch:(id)a3
+- (double)likelihoodForLaunch:(id)launch
 {
-  v4 = a3;
+  launchCopy = launch;
   pthread_rwlock_rdlock(&self->_rwlock);
   v5 = 0.0;
   if (!self->_previousAppDeleted && self->_subsequentLaunchTotalCount != 0.0)
   {
-    v6 = [(NSMutableDictionary *)self->_subsequentLaunchCountMap objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_subsequentLaunchCountMap objectForKeyedSubscript:launchCopy];
     [v6 doubleValue];
     v5 = v7 / self->_subsequentLaunchTotalCount;
   }
@@ -264,7 +264,7 @@ LABEL_17:
   return v5;
 }
 
-- (void)decayByFactor:(double)a3
+- (void)decayByFactor:(double)factor
 {
   v22 = *MEMORY[0x277D85DE8];
   pthread_rwlock_wrlock(&self->_rwlock);
@@ -275,8 +275,8 @@ LABEL_17:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(NSMutableDictionary *)self->_subsequentLaunchCountMap allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allKeys = [(NSMutableDictionary *)self->_subsequentLaunchCountMap allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -287,7 +287,7 @@ LABEL_17:
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
@@ -295,17 +295,17 @@ LABEL_17:
           [v12 doubleValue];
           v14 = v13;
 
-          v15 = [MEMORY[0x277CCABB0] numberWithDouble:v14 * a3];
-          [(NSMutableDictionary *)self->_subsequentLaunchCountMap setObject:v15 forKeyedSubscript:v11];
+          factor = [MEMORY[0x277CCABB0] numberWithDouble:v14 * factor];
+          [(NSMutableDictionary *)self->_subsequentLaunchCountMap setObject:factor forKeyedSubscript:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);
     }
 
-    self->_subsequentLaunchTotalCount = self->_subsequentLaunchTotalCount * a3;
+    self->_subsequentLaunchTotalCount = self->_subsequentLaunchTotalCount * factor;
     [(_ATXAppLaunchSequence *)self save];
     objc_autoreleasePoolPop(v5);
   }
@@ -314,9 +314,9 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)decayWithHalfLifeInDays:(double)a3
+- (void)decayWithHalfLifeInDays:(double)days
 {
-  v4 = exp2(-1.0 / a3);
+  v4 = exp2(-1.0 / days);
 
   [(_ATXAppLaunchSequence *)self decayByFactor:v4];
 }

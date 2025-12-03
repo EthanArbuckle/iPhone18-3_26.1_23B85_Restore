@@ -1,20 +1,20 @@
 @interface PKSecureElementPassFieldCollection
-- (PKSecureElementPassFieldCollection)initWithBalanceFieldsFromPass:(id)a3;
-- (PKSecureElementPassFieldCollection)initWithFieldsDictionary:(id)a3;
-- (PKSecureElementPassFieldCollection)initWithPassDictionary:(id)a3;
+- (PKSecureElementPassFieldCollection)initWithBalanceFieldsFromPass:(id)pass;
+- (PKSecureElementPassFieldCollection)initWithFieldsDictionary:(id)dictionary;
+- (PKSecureElementPassFieldCollection)initWithPassDictionary:(id)dictionary;
 @end
 
 @implementation PKSecureElementPassFieldCollection
 
-- (PKSecureElementPassFieldCollection)initWithPassDictionary:(id)a3
+- (PKSecureElementPassFieldCollection)initWithPassDictionary:(id)dictionary
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v34[0] = @"balanceFields";
   v34[1] = @"commutePlans";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
-  v18 = v3;
-  v22 = [v3 PKDictionaryForKey:@"paymentCard"];
+  v18 = dictionaryCopy;
+  v22 = [dictionaryCopy PKDictionaryForKey:@"paymentCard"];
   v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v28 = 0u;
   v29 = 0u;
@@ -90,15 +90,15 @@
   return v15;
 }
 
-- (PKSecureElementPassFieldCollection)initWithFieldsDictionary:(id)a3
+- (PKSecureElementPassFieldCollection)initWithFieldsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKSecureElementPassFieldCollection;
   v5 = [(PKSecureElementPassFieldCollection *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     fieldsDictionary = v5->_fieldsDictionary;
     v5->_fieldsDictionary = v6;
   }
@@ -106,10 +106,10 @@
   return v5;
 }
 
-- (PKSecureElementPassFieldCollection)initWithBalanceFieldsFromPass:(id)a3
+- (PKSecureElementPassFieldCollection)initWithBalanceFieldsFromPass:(id)pass
 {
-  v4 = [a3 balanceFields];
-  v5 = [v4 pk_arrayBySafelyApplyingBlock:&__block_literal_global_161];
+  balanceFields = [pass balanceFields];
+  v5 = [balanceFields pk_arrayBySafelyApplyingBlock:&__block_literal_global_161];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = v6;

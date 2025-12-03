@@ -1,11 +1,11 @@
 @interface AssistantIntentsController
 - (AssistantIntentsController)init;
 - (id)specifiers;
-- (void)_fetchIntentsSpecifiersWithCompletion:(id)a3;
+- (void)_fetchIntentsSpecifiersWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)setAccess:(id)a3 forSpecifier:(id)a4;
+- (void)setAccess:(id)access forSpecifier:(id)specifier;
 - (void)tccPreferencesChanged;
-- (void)viewDidTapLearnMore:(id)a3;
+- (void)viewDidTapLearnMore:(id)more;
 @end
 
 @implementation AssistantIntentsController
@@ -123,8 +123,8 @@ LABEL_11:
 
     else
     {
-      v8 = [*(&self->super.super.super.super.super.isa + v3) lastObject];
-      objc_initWeak(&location, v8);
+      lastObject = [*(&self->super.super.super.super.super.isa + v3) lastObject];
+      objc_initWeak(&location, lastObject);
 
       objc_initWeak(&from, self);
       v11[0] = MEMORY[0x277D85DD0];
@@ -177,16 +177,16 @@ void __40__AssistantIntentsController_specifiers__block_invoke_2(uint64_t a1)
   [WeakRetained insertContiguousSpecifiers:*(a1 + 32) afterSpecifier:*(a1 + 40) animated:0];
 }
 
-- (void)_fetchIntentsSpecifiersWithCompletion:(id)a3
+- (void)_fetchIntentsSpecifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__AssistantIntentsController__fetchIntentsSpecifiersWithCompletion___block_invoke;
   v6[3] = &unk_278CD15E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [IntentsUtilities intentsAppsWithCompletion:v6];
 }
 
@@ -259,23 +259,23 @@ void __68__AssistantIntentsController__fetchIntentsSpecifiersWithCompletion___bl
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAccess:(id)a3 forSpecifier:(id)a4
+- (void)setAccess:(id)access forSpecifier:(id)specifier
 {
-  v10 = a3;
-  v5 = a4;
+  accessCopy = access;
+  specifierCopy = specifier;
   v6 = *MEMORY[0x277D401A8];
-  v7 = [v5 propertyForKey:*MEMORY[0x277D401A8]];
-  v8 = [v10 isEqual:v7];
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D401A8]];
+  v8 = [accessCopy isEqual:v7];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [v5 propertyForKey:@"intentsAppID"];
-    +[IntentsUtilities setAccess:appID:](IntentsUtilities, "setAccess:appID:", [v10 BOOLValue], v9);
-    [v5 setProperty:v10 forKey:v6];
+    v9 = [specifierCopy propertyForKey:@"intentsAppID"];
+    +[IntentsUtilities setAccess:appID:](IntentsUtilities, "setAccess:appID:", [accessCopy BOOLValue], v9);
+    [specifierCopy setProperty:accessCopy forKey:v6];
   }
 }
 
-- (void)viewDidTapLearnMore:(id)a3
+- (void)viewDidTapLearnMore:(id)more
 {
   v4 = objc_alloc_init(SiriAboutAssistantModalViewController);
   [(SiriModalTextViewController *)v4 presentFromParentViewController:self];

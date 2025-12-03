@@ -1,34 +1,34 @@
 @interface TSCH3DGeometryArrays
-+ (TSCH3DGeometryArrays)arraysWithOffset:(unsigned int)a3 count:(unsigned int)a4 capoffset:(unsigned int)a5 capcount:(unsigned int)a6;
-- (TSCH3DGeometryArrays)initWithOffset:(unsigned int)a3 count:(unsigned int)a4 capoffset:(unsigned int)a5 capcount:(unsigned int)a6;
++ (TSCH3DGeometryArrays)arraysWithOffset:(unsigned int)offset count:(unsigned int)count capoffset:(unsigned int)capoffset capcount:(unsigned int)capcount;
+- (TSCH3DGeometryArrays)initWithOffset:(unsigned int)offset count:(unsigned int)count capoffset:(unsigned int)capoffset capcount:(unsigned int)capcount;
 - (range<unsigned)wholeRange;
 @end
 
 @implementation TSCH3DGeometryArrays
 
-+ (TSCH3DGeometryArrays)arraysWithOffset:(unsigned int)a3 count:(unsigned int)a4 capoffset:(unsigned int)a5 capcount:(unsigned int)a6
++ (TSCH3DGeometryArrays)arraysWithOffset:(unsigned int)offset count:(unsigned int)count capoffset:(unsigned int)capoffset capcount:(unsigned int)capcount
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = *&a3;
-  v10 = [a1 alloc];
+  v6 = *&capcount;
+  v7 = *&capoffset;
+  v8 = *&count;
+  v9 = *&offset;
+  v10 = [self alloc];
   v15 = objc_msgSend_initWithOffset_count_capoffset_capcount_(v10, v11, v12, v13, v14, v9, v8, v7, v6);
 
   return v15;
 }
 
-- (TSCH3DGeometryArrays)initWithOffset:(unsigned int)a3 count:(unsigned int)a4 capoffset:(unsigned int)a5 capcount:(unsigned int)a6
+- (TSCH3DGeometryArrays)initWithOffset:(unsigned int)offset count:(unsigned int)count capoffset:(unsigned int)capoffset capcount:(unsigned int)capcount
 {
   v11.receiver = self;
   v11.super_class = TSCH3DGeometryArrays;
   result = [(TSCH3DGeometryArrays *)&v11 init];
   if (result)
   {
-    result->_offset = a3;
-    result->_count = a4;
-    result->_capoffset = a5;
-    result->_capcount = a6;
+    result->_offset = offset;
+    result->_count = count;
+    result->_capoffset = capoffset;
+    result->_capcount = capcount;
   }
 
   return result;

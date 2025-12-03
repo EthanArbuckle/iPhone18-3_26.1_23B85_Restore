@@ -1,6 +1,6 @@
 @interface PDHomeShareManagementService
 - (PDHomeShareManagementService)init;
-- (void)createShareInvitationFromShare:(id)a3 forPass:(id)a4 authorization:(id)a5 completion:(id)a6;
+- (void)createShareInvitationFromShare:(id)share forPass:(id)pass authorization:(id)authorization completion:(id)completion;
 @end
 
 @implementation PDHomeShareManagementService
@@ -12,13 +12,13 @@
   return [(PDHomeShareManagementService *)&v3 init];
 }
 
-- (void)createShareInvitationFromShare:(id)a3 forPass:(id)a4 authorization:(id)a5 completion:(id)a6
+- (void)createShareInvitationFromShare:(id)share forPass:(id)pass authorization:(id)authorization completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 homeInvite];
+  shareCopy = share;
+  passCopy = pass;
+  authorizationCopy = authorization;
+  completionCopy = completion;
+  homeInvite = [shareCopy homeInvite];
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -29,12 +29,12 @@
   v14 = objc_opt_class();
   v15 = v47;
   v45 = v47[5];
-  v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:v14 fromData:v13 error:&v45];
+  v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:v14 fromData:homeInvite error:&v45];
   objc_storeStrong(v15 + 5, v45);
   if (!v16 || v47[5])
   {
     v17 = PDBasicError();
-    (*(v12 + 2))(v12, 0, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v17);
   }
 
   else
@@ -80,7 +80,7 @@
     v27[2] = sub_10004CA08;
     v27[3] = &unk_10083ECE0;
     v29 = v31;
-    v28 = v9;
+    v28 = shareCopy;
     v30 = v38;
     [v17 addOperation:v27];
     v19 = +[NSNull null];
@@ -90,7 +90,7 @@
     v22[3] = &unk_10083ED08;
     v25 = &v46;
     v26 = v31;
-    v24 = v12;
+    v24 = completionCopy;
     v20 = v18;
     v23 = v20;
     v21 = [v17 evaluateWithInput:v19 completion:v22];

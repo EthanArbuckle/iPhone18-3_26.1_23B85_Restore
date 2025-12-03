@@ -1,8 +1,8 @@
 @interface PKExternalDeviceMigrationManifest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExternalDeviceMigrationManifest:(id)a3;
-- (PKExternalDeviceMigrationManifest)initWithCoder:(id)a3;
-- (PKExternalDeviceMigrationManifest)initWithEntries:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExternalDeviceMigrationManifest:(id)manifest;
+- (PKExternalDeviceMigrationManifest)initWithCoder:(id)coder;
+- (PKExternalDeviceMigrationManifest)initWithEntries:(id)entries;
 - (id)description;
 - (id)redactedDescription;
 - (unint64_t)estimatedOnDiskSize;
@@ -11,16 +11,16 @@
 
 @implementation PKExternalDeviceMigrationManifest
 
-- (PKExternalDeviceMigrationManifest)initWithEntries:(id)a3
+- (PKExternalDeviceMigrationManifest)initWithEntries:(id)entries
 {
-  v5 = a3;
+  entriesCopy = entries;
   v9.receiver = self;
   v9.super_class = PKExternalDeviceMigrationManifest;
   v6 = [(PKExternalDeviceMigrationManifest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entries, a3);
+    objc_storeStrong(&v6->_entries, entries);
   }
 
   return v7;
@@ -106,9 +106,9 @@
   return v5;
 }
 
-- (PKExternalDeviceMigrationManifest)initWithCoder:(id)a3
+- (PKExternalDeviceMigrationManifest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKExternalDeviceMigrationManifest;
   v5 = [(PKExternalDeviceMigrationManifest *)&v12 init];
@@ -117,7 +117,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"entries"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"entries"];
     entries = v5->_entries;
     v5->_entries = v9;
   }
@@ -161,27 +161,27 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDeviceMigrationManifest *)self isEqualToExternalDeviceMigrationManifest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDeviceMigrationManifest *)self isEqualToExternalDeviceMigrationManifest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToExternalDeviceMigrationManifest:(id)a3
+- (BOOL)isEqualToExternalDeviceMigrationManifest:(id)manifest
 {
   entries = self->_entries;
-  v4 = *(a3 + 1);
+  v4 = *(manifest + 1);
   if (entries)
   {
     v5 = v4 == 0;

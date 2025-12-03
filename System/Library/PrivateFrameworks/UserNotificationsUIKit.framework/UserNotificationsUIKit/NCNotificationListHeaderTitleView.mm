@@ -1,29 +1,29 @@
 @interface NCNotificationListHeaderTitleView
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BSUIFontProvider)_fontProvider;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)preferredContentSizeCategory;
 - (id)_labelFont;
 - (void)_configureTitleLabelIfNecessary;
 - (void)_invalidateTitleLabel;
 - (void)_layoutTitleLabel;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
+- (void)adjustForLegibilitySettingsChange:(id)change;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setPrimary:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setPrimary:(BOOL)primary;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCNotificationListHeaderTitleView
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = a3;
-  v5 = [(SBUILegibilityLabel *)self->_titleLabel string];
-  v6 = [(SBUILegibilityLabel *)self->_titleLabel superview];
-  v7 = v6;
-  if (v6 == self)
+  titleCopy = title;
+  string = [(SBUILegibilityLabel *)self->_titleLabel string];
+  superview = [(SBUILegibilityLabel *)self->_titleLabel superview];
+  v7 = superview;
+  if (superview == self)
   {
     v8 = BSEqualStrings();
 
@@ -37,16 +37,16 @@
   {
   }
 
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
   [(NCNotificationListHeaderTitleView *)self _invalidateTitleLabel];
 LABEL_5:
 }
 
-- (void)setPrimary:(BOOL)a3
+- (void)setPrimary:(BOOL)primary
 {
-  if (self->_primary != a3)
+  if (self->_primary != primary)
   {
-    self->_primary = a3;
+    self->_primary = primary;
     [(NCNotificationListHeaderTitleView *)self _invalidateTitleLabel];
   }
 }
@@ -60,10 +60,10 @@ LABEL_5:
   [(NCNotificationListHeaderTitleView *)self _layoutTitleLabel];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(NCNotificationListHeaderTitleView *)self _configureTitleLabelIfNecessary];
   [(SBUILegibilityLabel *)self->_titleLabel sizeThatFits:width, height];
   v7 = fmin(v6, height);
@@ -73,22 +73,22 @@ LABEL_5:
   return result;
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_legibilitySettings] & 1) == 0)
+  changeCopy = change;
+  if (([changeCopy isEqual:self->_legibilitySettings] & 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    [(SBUILegibilityLabel *)self->_titleLabel setLegibilitySettings:v5];
+    objc_storeStrong(&self->_legibilitySettings, change);
+    [(SBUILegibilityLabel *)self->_titleLabel setLegibilitySettings:changeCopy];
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
-    if (a3)
+    self->_adjustsFontForContentSizeCategory = category;
+    if (category)
     {
       [(NCNotificationListHeaderTitleView *)self adjustForContentSizeCategoryChange];
     }
@@ -109,15 +109,15 @@ LABEL_5:
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  if (-[NCNotificationListHeaderTitleView adjustsFontForContentSizeCategory](self, "adjustsFontForContentSizeCategory") && (-[NCNotificationListHeaderTitleView preferredContentSizeCategory](self, "preferredContentSizeCategory"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 isEqualToString:v5], v5, (v6 & 1) == 0))
+  if (-[NCNotificationListHeaderTitleView adjustsFontForContentSizeCategory](self, "adjustsFontForContentSizeCategory") && (-[NCNotificationListHeaderTitleView preferredContentSizeCategory](self, "preferredContentSizeCategory"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [preferredContentSizeCategory isEqualToString:v5], v5, (v6 & 1) == 0))
   {
     fontProvider = self->_fontProvider;
     self->_fontProvider = 0;
 
-    [(NCNotificationListHeaderTitleView *)self setPreferredContentSizeCategory:v4];
+    [(NCNotificationListHeaderTitleView *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
     [(NCNotificationListHeaderTitleView *)self _invalidateTitleLabel];
     v7 = 1;
   }
@@ -130,23 +130,23 @@ LABEL_5:
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = NCNotificationListHeaderTitleView;
-  v4 = a3;
-  [(NCNotificationListHeaderTitleView *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NCNotificationListHeaderTitleView *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(NCNotificationListHeaderTitleView *)self traitCollection:v10.receiver];
-  v6 = [v5 legibilityWeight];
-  v7 = [v4 legibilityWeight];
+  legibilityWeight = [v5 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v6 != v7)
+  if (legibilityWeight != legibilityWeight2)
   {
     titleLabel = self->_titleLabel;
     if (titleLabel)
     {
-      v9 = [(NCNotificationListHeaderTitleView *)self _labelFont];
-      [(SBUILegibilityLabel *)titleLabel setFont:v9];
+      _labelFont = [(NCNotificationListHeaderTitleView *)self _labelFont];
+      [(SBUILegibilityLabel *)titleLabel setFont:_labelFont];
     }
 
     [(NCNotificationListHeaderTitleView *)self setNeedsLayout];
@@ -178,8 +178,8 @@ LABEL_5:
 
 - (id)_labelFont
 {
-  v3 = [(NCNotificationListHeaderTitleView *)self _fontProvider];
-  v4 = v3;
+  _fontProvider = [(NCNotificationListHeaderTitleView *)self _fontProvider];
+  v4 = _fontProvider;
   if (self->_primary)
   {
     v5 = MEMORY[0x277D76A08];
@@ -190,16 +190,16 @@ LABEL_5:
     v5 = MEMORY[0x277D76A20];
   }
 
-  v6 = [v3 preferredFontForTextStyle:*v5 hiFontStyle:1];
+  v6 = [_fontProvider preferredFontForTextStyle:*v5 hiFontStyle:1];
 
   return v6;
 }
 
 - (void)_invalidateTitleLabel
 {
-  v3 = [(SBUILegibilityLabel *)self->_titleLabel superview];
+  superview = [(SBUILegibilityLabel *)self->_titleLabel superview];
 
-  if (v3 == self)
+  if (superview == self)
   {
     [(SBUILegibilityLabel *)self->_titleLabel removeFromSuperview];
   }
@@ -214,10 +214,10 @@ LABEL_5:
 {
   if (!self->_titleLabel && self->_title)
   {
-    v9 = [(NCNotificationListHeaderTitleView *)self _labelFont];
+    _labelFont = [(NCNotificationListHeaderTitleView *)self _labelFont];
     v3 = +[NCNotificationListLegibilityLabelCache sharedInstance];
-    v4 = [(NCNotificationListHeaderTitleView *)self title];
-    v5 = [v3 legibilityLabelForTitle:v4 forSuperview:self font:v9];
+    title = [(NCNotificationListHeaderTitleView *)self title];
+    v5 = [v3 legibilityLabelForTitle:title forSuperview:self font:_labelFont];
     titleLabel = self->_titleLabel;
     self->_titleLabel = v5;
 
@@ -226,9 +226,9 @@ LABEL_5:
     LODWORD(v7) = 1036831949;
     [(SBUILegibilityLabel *)self->_titleLabel setHyphenationFactor:v7];
     [(SBUILegibilityLabel *)self->_titleLabel setOptions:2];
-    v8 = [(SBUILegibilityLabel *)self->_titleLabel superview];
+    superview = [(SBUILegibilityLabel *)self->_titleLabel superview];
 
-    if (v8 == self)
+    if (superview == self)
     {
       [(SBUILegibilityLabel *)self->_titleLabel removeFromSuperview];
     }

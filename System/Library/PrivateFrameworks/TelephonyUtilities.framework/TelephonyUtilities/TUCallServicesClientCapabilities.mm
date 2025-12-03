@@ -1,8 +1,8 @@
 @interface TUCallServicesClientCapabilities
-- (TUCallServicesClientCapabilities)initWithCoder:(id)a3;
+- (TUCallServicesClientCapabilities)initWithCoder:(id)coder;
 - (TUCallServicesClientCapabilitiesActions)delegate;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)save;
 @end
 
@@ -10,8 +10,8 @@
 
 - (void)save
 {
-  v3 = [(TUCallServicesClientCapabilities *)self delegate];
-  [v3 setClientCapabilities:self];
+  delegate = [(TUCallServicesClientCapabilities *)self delegate];
+  [delegate setClientCapabilities:self];
 }
 
 - (TUCallServicesClientCapabilitiesActions)delegate
@@ -21,35 +21,35 @@
   return WeakRetained;
 }
 
-- (TUCallServicesClientCapabilities)initWithCoder:(id)a3
+- (TUCallServicesClientCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TUCallServicesClientCapabilities;
   v5 = [(TUCallServicesClientCapabilities *)&v7 init];
   if (v5)
   {
-    v5->_wantsCallDisconnectionOnInvalidation = [v4 decodeBoolForKey:@"wantsCallDisconnectionOnInvalidation"];
-    v5->_wantsCallStopStreamingOnInvalidation = [v4 decodeBoolForKey:@"wantsCallStopStreamingOnInvalidation"];
-    v5->_wantsFrequencyChangeNotifications = [v4 decodeBoolForKey:@"wantsFrequencyChangeNotifications"];
-    v5->_wantsCallNotificationsDisabledWhileSuspended = [v4 decodeBoolForKey:@"wantsCallNotificationsDisabledWhileSuspended"];
-    v5->_wantsToScreenCalls = [v4 decodeBoolForKey:@"wantsToScreenCalls"];
-    v5->_excludeFullNearbyCalls = [v4 decodeBoolForKey:@"excludeFullNearbyCalls"];
+    v5->_wantsCallDisconnectionOnInvalidation = [coderCopy decodeBoolForKey:@"wantsCallDisconnectionOnInvalidation"];
+    v5->_wantsCallStopStreamingOnInvalidation = [coderCopy decodeBoolForKey:@"wantsCallStopStreamingOnInvalidation"];
+    v5->_wantsFrequencyChangeNotifications = [coderCopy decodeBoolForKey:@"wantsFrequencyChangeNotifications"];
+    v5->_wantsCallNotificationsDisabledWhileSuspended = [coderCopy decodeBoolForKey:@"wantsCallNotificationsDisabledWhileSuspended"];
+    v5->_wantsToScreenCalls = [coderCopy decodeBoolForKey:@"wantsToScreenCalls"];
+    v5->_excludeFullNearbyCalls = [coderCopy decodeBoolForKey:@"excludeFullNearbyCalls"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   wantsCallDisconnectionOnInvalidation = self->_wantsCallDisconnectionOnInvalidation;
-  v5 = a3;
-  [v5 encodeBool:wantsCallDisconnectionOnInvalidation forKey:@"wantsCallDisconnectionOnInvalidation"];
-  [v5 encodeBool:self->_wantsCallStopStreamingOnInvalidation forKey:@"wantsCallStopStreamingOnInvalidation"];
-  [v5 encodeBool:self->_wantsFrequencyChangeNotifications forKey:@"wantsFrequencyChangeNotifications"];
-  [v5 encodeBool:self->_wantsCallNotificationsDisabledWhileSuspended forKey:@"wantsCallNotificationsDisabledWhileSuspended"];
-  [v5 encodeBool:self->_wantsToScreenCalls forKey:@"wantsToScreenCalls"];
-  [v5 encodeBool:self->_excludeFullNearbyCalls forKey:@"excludeFullNearbyCalls"];
+  coderCopy = coder;
+  [coderCopy encodeBool:wantsCallDisconnectionOnInvalidation forKey:@"wantsCallDisconnectionOnInvalidation"];
+  [coderCopy encodeBool:self->_wantsCallStopStreamingOnInvalidation forKey:@"wantsCallStopStreamingOnInvalidation"];
+  [coderCopy encodeBool:self->_wantsFrequencyChangeNotifications forKey:@"wantsFrequencyChangeNotifications"];
+  [coderCopy encodeBool:self->_wantsCallNotificationsDisabledWhileSuspended forKey:@"wantsCallNotificationsDisabledWhileSuspended"];
+  [coderCopy encodeBool:self->_wantsToScreenCalls forKey:@"wantsToScreenCalls"];
+  [coderCopy encodeBool:self->_excludeFullNearbyCalls forKey:@"excludeFullNearbyCalls"];
 }
 
 - (id)description

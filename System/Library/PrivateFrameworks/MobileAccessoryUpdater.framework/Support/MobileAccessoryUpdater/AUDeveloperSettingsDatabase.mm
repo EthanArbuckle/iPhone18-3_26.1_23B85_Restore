@@ -1,20 +1,20 @@
 @interface AUDeveloperSettingsDatabase
 + (id)sharedDatabase;
 - (AUDeveloperSettingsDatabase)init;
-- (BOOL)isSeedParticipationEnabled:(id)a3;
-- (BOOL)isValidLocationType:(unint64_t)a3;
+- (BOOL)isSeedParticipationEnabled:(id)enabled;
+- (BOOL)isValidLocationType:(unint64_t)type;
 - (NSDictionary)accessoriesDictionary;
 - (id)accessoryList;
-- (id)copyAccessoryForSignature:(id)a3 modelNumber:(id)a4 fusingType:(id)a5 partnerSerialNumbers:(id)a6;
-- (id)copyAccessoryWithSerialNumber:(id)a3;
-- (unint64_t)urlLocationTypeForAccessory:(id)a3;
-- (void)addAccessoryWithSerialNumber:(id)a3 info:(id)a4;
-- (void)removeAccessory:(id)a3;
-- (void)removeAccessoryWithSerialNumber:(id)a3;
-- (void)setAccessoriesDictionary:(id)a3;
-- (void)updateAccessory:(id)a3;
-- (void)updateAccessory:(id)a3 locationType:(unint64_t)a4;
-- (void)updateAccessoryWithSerialNumber:(id)a3 info:(id)a4;
+- (id)copyAccessoryForSignature:(id)signature modelNumber:(id)number fusingType:(id)type partnerSerialNumbers:(id)numbers;
+- (id)copyAccessoryWithSerialNumber:(id)number;
+- (unint64_t)urlLocationTypeForAccessory:(id)accessory;
+- (void)addAccessoryWithSerialNumber:(id)number info:(id)info;
+- (void)removeAccessory:(id)accessory;
+- (void)removeAccessoryWithSerialNumber:(id)number;
+- (void)setAccessoriesDictionary:(id)dictionary;
+- (void)updateAccessory:(id)accessory;
+- (void)updateAccessory:(id)accessory locationType:(unint64_t)type;
+- (void)updateAccessoryWithSerialNumber:(id)number info:(id)info;
 @end
 
 @implementation AUDeveloperSettingsDatabase
@@ -49,40 +49,40 @@
 - (id)accessoryList
 {
   v3 = objc_opt_new();
-  v4 = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
+  accessoriesDictionary = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100004374;
   v11 = &unk_100081198;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v8];
-  v6 = [NSArray arrayWithArray:v5, v8, v9, v10, v11, v12];
+  [accessoriesDictionary enumerateKeysAndObjectsUsingBlock:&v8];
+  selfCopy = [NSArray arrayWithArray:v5, v8, v9, v10, v11, selfCopy];
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)removeAccessory:(id)a3
+- (void)removeAccessory:(id)accessory
 {
-  v4 = [a3 serialNumber];
-  [(AUDeveloperSettingsDatabase *)self removeAccessoryWithSerialNumber:v4];
+  serialNumber = [accessory serialNumber];
+  [(AUDeveloperSettingsDatabase *)self removeAccessoryWithSerialNumber:serialNumber];
 }
 
-- (void)updateAccessory:(id)a3
+- (void)updateAccessory:(id)accessory
 {
-  v6 = a3;
-  v4 = [v6 encodeAsChangedDictionary];
-  if (v4)
+  accessoryCopy = accessory;
+  encodeAsChangedDictionary = [accessoryCopy encodeAsChangedDictionary];
+  if (encodeAsChangedDictionary)
   {
-    v5 = [v6 serialNumber];
-    [(AUDeveloperSettingsDatabase *)self updateAccessoryWithSerialNumber:v5 info:v4];
+    serialNumber = [accessoryCopy serialNumber];
+    [(AUDeveloperSettingsDatabase *)self updateAccessoryWithSerialNumber:serialNumber info:encodeAsChangedDictionary];
   }
 }
 
-- (id)copyAccessoryWithSerialNumber:(id)a3
+- (id)copyAccessoryWithSerialNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   [(AUDeveloperSettingsDatabase *)self accessoryList];
   v17 = 0u;
   v18 = 0u;
@@ -103,18 +103,18 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 serialNumber];
-        v12 = [v11 isEqualToString:v4];
+        serialNumber = [v10 serialNumber];
+        v12 = [serialNumber isEqualToString:numberCopy];
 
         if (v12)
         {
           v15 = [v10 copy];
-          [v15 setSerialNumber:v4];
+          [v15 setSerialNumber:numberCopy];
           goto LABEL_14;
         }
 
-        v13 = [v10 partnerSerialNumbers];
-        v14 = [v13 containsObject:v4];
+        partnerSerialNumbers = [v10 partnerSerialNumbers];
+        v14 = [partnerSerialNumbers containsObject:numberCopy];
 
         if (v14)
         {
@@ -144,9 +144,9 @@ LABEL_14:
   return v15;
 }
 
-- (id)copyAccessoryForSignature:(id)a3 modelNumber:(id)a4 fusingType:(id)a5 partnerSerialNumbers:(id)a6
+- (id)copyAccessoryForSignature:(id)signature modelNumber:(id)number fusingType:(id)type partnerSerialNumbers:(id)numbers
 {
-  v7 = sub_100005CC0(a3, a4, a5, a6);
+  v7 = sub_100005CC0(signature, number, type, numbers);
   if (v7)
   {
     v8 = [(AUDeveloperSettingsDatabase *)self copyAccessoryWithSerialNumber:v7];
@@ -160,15 +160,15 @@ LABEL_14:
   return v8;
 }
 
-- (void)setAccessoriesDictionary:(id)a3
+- (void)setAccessoriesDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_100047BC4();
   }
 
-  [NSUserDefaults AUDeveloperSettingsSetObject:v4 withKey:@"accessories"];
+  [NSUserDefaults AUDeveloperSettingsSetObject:dictionaryCopy withKey:@"accessories"];
 }
 
 - (NSDictionary)accessoriesDictionary
@@ -197,19 +197,19 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isSeedParticipationEnabled:(id)a3
+- (BOOL)isSeedParticipationEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(AUDeveloperSettingsDatabase *)self urlLocationTypeForAccessory:v4]== 3 || [(AUDeveloperSettingsDatabase *)self urlLocationTypeForAccessory:v4]== 8;
+  enabledCopy = enabled;
+  v5 = [(AUDeveloperSettingsDatabase *)self urlLocationTypeForAccessory:enabledCopy]== 3 || [(AUDeveloperSettingsDatabase *)self urlLocationTypeForAccessory:enabledCopy]== 8;
 
   return v5;
 }
 
-- (unint64_t)urlLocationTypeForAccessory:(id)a3
+- (unint64_t)urlLocationTypeForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  accessoryCopy = accessory;
+  accessoriesDictionary = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
+  v6 = [accessoriesDictionary objectForKeyedSubscript:accessoryCopy];
 
   v7 = [v6 objectForKeyedSubscript:@"assetLocation"];
   v8 = sub_100005020(v7);
@@ -217,23 +217,23 @@ LABEL_8:
   return v8;
 }
 
-- (void)updateAccessory:(id)a3 locationType:(unint64_t)a4
+- (void)updateAccessory:(id)accessory locationType:(unint64_t)type
 {
-  v6 = a3;
-  if ([(AUDeveloperSettingsDatabase *)self isValidLocationType:a4])
+  accessoryCopy = accessory;
+  if ([(AUDeveloperSettingsDatabase *)self isValidLocationType:type])
   {
-    v7 = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    accessoriesDictionary = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
+    v8 = [accessoriesDictionary objectForKeyedSubscript:accessoryCopy];
     v9 = [v8 mutableCopy];
 
-    v10 = [NSString stringWithUTF8String:sub_100004FFC(a4)];
+    v10 = [NSString stringWithUTF8String:sub_100004FFC(type)];
     [v9 setObject:v10 forKeyedSubscript:@"assetLocation"];
 
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v12 = log;
-      v13 = sub_100004FFC(a4);
+      v13 = sub_100004FFC(type);
       v14 = [v9 objectForKeyedSubscript:@"name"];
       v16 = 136315650;
       v17 = "[AUDeveloperSettingsDatabase updateAccessory:locationType:]";
@@ -245,20 +245,20 @@ LABEL_8:
     }
 
     v15 = [NSDictionary dictionaryWithDictionary:v9];
-    [(AUDeveloperSettingsDatabase *)self addAccessoryWithSerialNumber:v6 info:v15];
+    [(AUDeveloperSettingsDatabase *)self addAccessoryWithSerialNumber:accessoryCopy info:v15];
   }
 }
 
-- (void)addAccessoryWithSerialNumber:(id)a3 info:(id)a4
+- (void)addAccessoryWithSerialNumber:(id)number info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  numberCopy = number;
+  infoCopy = info;
+  if ([numberCopy length])
   {
-    v8 = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
-    v9 = [v8 mutableCopy];
+    accessoriesDictionary = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
+    v9 = [accessoriesDictionary mutableCopy];
 
-    [v9 setObject:v7 forKeyedSubscript:v6];
+    [v9 setObject:infoCopy forKeyedSubscript:numberCopy];
     [(AUDeveloperSettingsDatabase *)self setAccessoriesDictionary:v9];
   }
 
@@ -270,47 +270,47 @@ LABEL_8:
       v11 = 136315394;
       v12 = "[AUDeveloperSettingsDatabase addAccessoryWithSerialNumber:info:]";
       v13 = 2112;
-      v14 = v7;
+      v14 = infoCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: Not adding empty serial number with info = %@", &v11, 0x16u);
     }
   }
 }
 
-- (void)removeAccessoryWithSerialNumber:(id)a3
+- (void)removeAccessoryWithSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
-  v6 = [v5 mutableCopy];
+  numberCopy = number;
+  accessoriesDictionary = [(AUDeveloperSettingsDatabase *)self accessoriesDictionary];
+  v6 = [accessoriesDictionary mutableCopy];
 
-  [v6 removeObjectForKey:v4];
+  [v6 removeObjectForKey:numberCopy];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = numberCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Removing accessory from database %@", &v8, 0xCu);
   }
 
   [(AUDeveloperSettingsDatabase *)self setAccessoriesDictionary:v6];
 }
 
-- (void)updateAccessoryWithSerialNumber:(id)a3 info:(id)a4
+- (void)updateAccessoryWithSerialNumber:(id)number info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "count"))
+  numberCopy = number;
+  infoCopy = info;
+  if ([numberCopy length] && objc_msgSend(infoCopy, "count"))
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v10 = 138412546;
-      v11 = v6;
+      v11 = numberCopy;
       v12 = 2112;
-      v13 = v7;
+      v13 = infoCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Updating database with %@ / %@", &v10, 0x16u);
     }
 
-    [NSUserDefaults AUDeveloperSettingsUpdateAccessory:v7 withKey:v6];
+    [NSUserDefaults AUDeveloperSettingsUpdateAccessory:infoCopy withKey:numberCopy];
   }
 
   else
@@ -321,23 +321,23 @@ LABEL_8:
       v10 = 136315650;
       v11 = "[AUDeveloperSettingsDatabase updateAccessoryWithSerialNumber:info:]";
       v12 = 2112;
-      v13 = v6;
+      v13 = numberCopy;
       v14 = 2112;
-      v15 = v7;
+      v15 = infoCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Invalid key value / pair = %@ / %@", &v10, 0x20u);
     }
   }
 }
 
-- (BOOL)isValidLocationType:(unint64_t)a3
+- (BOOL)isValidLocationType:(unint64_t)type
 {
-  v4 = (a3 & 0xFFFFFFFFFFFFFFFCLL) == 4 || a3 == 8;
-  if (a3 < 3)
+  v4 = (type & 0xFFFFFFFFFFFFFFFCLL) == 4 || type == 8;
+  if (type < 3)
   {
     v4 = 1;
   }
 
-  return a3 == 3 || v4;
+  return type == 3 || v4;
 }
 
 @end

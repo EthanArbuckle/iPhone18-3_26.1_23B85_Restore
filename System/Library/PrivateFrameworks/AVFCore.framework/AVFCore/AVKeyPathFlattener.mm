@@ -3,18 +3,18 @@
 - (id)dependentProperty;
 - (id)topLevelDependencyProperty;
 - (void)dealloc;
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3;
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry;
 @end
 
 @implementation AVKeyPathFlattener
 
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry
 {
-  v5 = [(AVTwoPartKeyPath *)self->_dependencyKeyPath topLevelPropertyKey];
-  [a3 valueForKey:@"dependentProperty" dependsOnValueAtKeyPath:{-[AVTwoPartKeyPath initWithTopLevelPropertyKey:secondLevelPropertyKey:]([AVTwoPartKeyPath alloc], "initWithTopLevelPropertyKey:secondLevelPropertyKey:", @"topLevelDependencyProperty", -[AVTwoPartKeyPath secondLevelPropertyKey](self->_dependencyKeyPath, "secondLevelPropertyKey"))}];
-  v6 = [[AVTwoPartKeyPath alloc] initWithTopLevelPropertyKey:@"observedObject" secondLevelPropertyKey:v5];
+  topLevelPropertyKey = [(AVTwoPartKeyPath *)self->_dependencyKeyPath topLevelPropertyKey];
+  [registry valueForKey:@"dependentProperty" dependsOnValueAtKeyPath:{-[AVTwoPartKeyPath initWithTopLevelPropertyKey:secondLevelPropertyKey:]([AVTwoPartKeyPath alloc], "initWithTopLevelPropertyKey:secondLevelPropertyKey:", @"topLevelDependencyProperty", -[AVTwoPartKeyPath secondLevelPropertyKey](self->_dependencyKeyPath, "secondLevelPropertyKey"))}];
+  v6 = [[AVTwoPartKeyPath alloc] initWithTopLevelPropertyKey:@"observedObject" secondLevelPropertyKey:topLevelPropertyKey];
 
-  [a3 valueForKey:@"topLevelDependencyProperty" dependsOnValueAtKeyPath:v6];
+  [registry valueForKey:@"topLevelDependencyProperty" dependsOnValueAtKeyPath:v6];
 }
 
 - (AVKeyPathFlattener)init
@@ -37,36 +37,36 @@
 
 - (id)topLevelDependencyProperty
 {
-  v3 = [(AVTwoPartKeyPath *)self->_dependencyKeyPath topLevelPropertyKey];
+  topLevelPropertyKey = [(AVTwoPartKeyPath *)self->_dependencyKeyPath topLevelPropertyKey];
   v4 = objc_opt_respondsToSelector();
   observedObject = self->_observedObject;
   if (v4)
   {
 
-    return [observedObject valueForKeyForKVO:v3];
+    return [observedObject valueForKeyForKVO:topLevelPropertyKey];
   }
 
   else
   {
 
-    return [observedObject valueForKey:v3];
+    return [observedObject valueForKey:topLevelPropertyKey];
   }
 }
 
 - (id)dependentProperty
 {
-  v3 = [(AVTwoPartKeyPath *)self->_dependencyKeyPath secondLevelPropertyKey];
-  v4 = [(AVKeyPathFlattener *)self topLevelDependencyProperty];
+  secondLevelPropertyKey = [(AVTwoPartKeyPath *)self->_dependencyKeyPath secondLevelPropertyKey];
+  topLevelDependencyProperty = [(AVKeyPathFlattener *)self topLevelDependencyProperty];
   if (objc_opt_respondsToSelector())
   {
 
-    return [v4 valueForKeyForKVO:v3];
+    return [topLevelDependencyProperty valueForKeyForKVO:secondLevelPropertyKey];
   }
 
   else
   {
 
-    return [v4 valueForKey:v3];
+    return [topLevelDependencyProperty valueForKey:secondLevelPropertyKey];
   }
 }
 

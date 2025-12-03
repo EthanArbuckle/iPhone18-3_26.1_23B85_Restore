@@ -1,12 +1,12 @@
 @interface CPLNetworkWatcher
-- (BOOL)_isRestrictedPath:(id)a3 policies:(id)a4;
-- (CPLNetworkWatcher)initWithQueue:(id)a3;
+- (BOOL)_isRestrictedPath:(id)path policies:(id)policies;
+- (CPLNetworkWatcher)initWithQueue:(id)queue;
 - (CPLNetworkWatcherDelegate)delegate;
-- (void)_getCellularPolicyWithClient:(network_usage_policy_client_s *)a3;
+- (void)_getCellularPolicyWithClient:(network_usage_policy_client_s *)client;
 - (void)_updateAirplaneMode;
-- (void)_updateCellularPolicy:(id)a3;
-- (void)_updateCellularPolicyFromPolicies:(id)a3;
-- (void)_updateNetworkState:(id)a3;
+- (void)_updateCellularPolicy:(id)policy;
+- (void)_updateCellularPolicyFromPolicies:(id)policies;
+- (void)_updateNetworkState:(id)state;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -99,16 +99,16 @@ void __25__CPLNetworkWatcher_stop__block_invoke(uint64_t a1)
       }
     }
 
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLNetworkWatcher.m"];
     v7 = @"Network watcher has not been stopped before deallocation";
-    v8 = v5;
+    v8 = currentHandler;
     v9 = a2;
-    v10 = self;
+    selfCopy2 = self;
     v11 = v6;
     v12 = 199;
 LABEL_14:
-    [v8 handleFailureInMethod:v9 object:v10 file:v11 lineNumber:v12 description:v7];
+    [v8 handleFailureInMethod:v9 object:selfCopy2 file:v11 lineNumber:v12 description:v7];
 
     abort();
   }
@@ -125,12 +125,12 @@ LABEL_14:
       }
     }
 
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLNetworkWatcher.m"];
     v7 = @"Radios preferences was not nullified before deallocation";
-    v8 = v5;
+    v8 = currentHandler;
     v9 = a2;
-    v10 = self;
+    selfCopy2 = self;
     v11 = v6;
     v12 = 200;
     goto LABEL_14;
@@ -225,14 +225,14 @@ void *__26__CPLNetworkWatcher_start__block_invoke_7(uint64_t a1, uint64_t a2)
 - (void)_updateAirplaneMode
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
+  airplaneMode = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v4 = __CPLNetworkOSLogDomain();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = "not in airplane mode";
-      if (v3)
+      if (airplaneMode)
       {
         v5 = "in airplane mode";
       }
@@ -244,14 +244,14 @@ void *__26__CPLNetworkWatcher_start__block_invoke_7(uint64_t a1, uint64_t a2)
   }
 
   v6 = [CPLNetworkState alloc];
-  v7 = [(CPLNetworkState *)self->_networkState networkPath];
-  v8 = [(CPLNetworkState *)v6 initWithNetworkPath:v7 cellularRestricted:[(CPLNetworkState *)self->_networkState isCellularRestricted] inAirplaneMode:v3];
+  networkPath = [(CPLNetworkState *)self->_networkState networkPath];
+  v8 = [(CPLNetworkState *)v6 initWithNetworkPath:networkPath cellularRestricted:[(CPLNetworkState *)self->_networkState isCellularRestricted] inAirplaneMode:airplaneMode];
 
   [(CPLNetworkWatcher *)self _updateNetworkState:v8];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_getCellularPolicyWithClient:(network_usage_policy_client_s *)a3
+- (void)_getCellularPolicyWithClient:(network_usage_policy_client_s *)client
 {
   if ((_CPLSilentLogging & 1) == 0)
   {
@@ -295,9 +295,9 @@ uint64_t __50__CPLNetworkWatcher__getCellularPolicyWithClient___block_invoke(uin
   return MEMORY[0x1EEE66BB8](count, v4);
 }
 
-- (void)_updateCellularPolicyFromPolicies:(id)a3
+- (void)_updateCellularPolicyFromPolicies:(id)policies
 {
-  xarray = a3;
+  xarray = policies;
   v4 = objc_autoreleasePoolPush();
   if (xarray)
   {
@@ -337,10 +337,10 @@ LABEL_3:
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_updateCellularPolicy:(id)a3
+- (void)_updateCellularPolicy:(id)policy
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  policyCopy = policy;
   bundle_from_policy = network_usage_policy_get_bundle_from_policy();
   cell_data_allowed_from_policy = network_usage_policy_get_cell_data_allowed_from_policy();
 
@@ -364,19 +364,19 @@ LABEL_3:
   }
 
   v9 = [CPLNetworkState alloc];
-  v10 = [(CPLNetworkState *)self->_networkState networkPath];
-  v11 = [(CPLNetworkState *)v9 initWithNetworkPath:v10 cellularRestricted:cell_data_allowed_from_policy ^ 1u inAirplaneMode:[(CPLNetworkState *)self->_networkState isInAirplaneMode]];
+  networkPath = [(CPLNetworkState *)self->_networkState networkPath];
+  v11 = [(CPLNetworkState *)v9 initWithNetworkPath:networkPath cellularRestricted:cell_data_allowed_from_policy ^ 1u inAirplaneMode:[(CPLNetworkState *)self->_networkState isInAirplaneMode]];
 
   [(CPLNetworkWatcher *)self _updateNetworkState:v11];
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateNetworkState:(id)a3
+- (void)_updateNetworkState:(id)state
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 isFunctionallyEqual:self->_networkState];
-  objc_storeStrong(&self->_networkState, a3);
+  stateCopy = state;
+  v6 = [stateCopy isFunctionallyEqual:self->_networkState];
+  objc_storeStrong(&self->_networkState, state);
   if ((v6 & 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -398,24 +398,24 @@ LABEL_3:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isRestrictedPath:(id)a3 policies:(id)a4
+- (BOOL)_isRestrictedPath:(id)path policies:(id)policies
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  pathCopy = path;
+  policiesCopy = policies;
+  if (!pathCopy)
   {
 LABEL_5:
     cell_data_allowed_from_policy = 0;
     goto LABEL_6;
   }
 
-  v7 = MEMORY[0x1E128E8D0](v5, 2);
+  v7 = MEMORY[0x1E128E8D0](pathCopy, 2);
   cell_data_allowed_from_policy = 0;
-  if (v6 && v7)
+  if (policiesCopy && v7)
   {
-    if (MEMORY[0x1E128EF20](v6) == MEMORY[0x1E69E9E50] && xpc_array_get_count(v6))
+    if (MEMORY[0x1E128EF20](policiesCopy) == MEMORY[0x1E69E9E50] && xpc_array_get_count(policiesCopy))
     {
-      v10 = xpc_array_get_value(v6, 0);
+      v10 = xpc_array_get_value(policiesCopy, 0);
       cell_data_allowed_from_policy = network_usage_policy_get_cell_data_allowed_from_policy();
 
       goto LABEL_6;
@@ -429,16 +429,16 @@ LABEL_6:
   return cell_data_allowed_from_policy;
 }
 
-- (CPLNetworkWatcher)initWithQueue:(id)a3
+- (CPLNetworkWatcher)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CPLNetworkWatcher;
   v6 = [(CPLNetworkWatcher *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = [[CPLNetworkState alloc] initWithNetworkPath:0 cellularRestricted:0 inAirplaneMode:0];
     networkState = v7->_networkState;
     v7->_networkState = v8;

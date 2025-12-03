@@ -1,13 +1,13 @@
 @interface UIKBResizingKeyplaneCoordinator
 + (double)savedResizingOffset;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIKBResizingKeyplaneCoordinator)init;
 - (UIKBResizingKeyplaneCoordinatorCoordinatorDelegate)delegate;
-- (void)dimKeys:(id)a3;
-- (void)handleResizeGesture:(id)a3;
+- (void)dimKeys:(id)keys;
+- (void)handleResizeGesture:(id)gesture;
 - (void)reloadResizingOffset;
-- (void)resizeKeyplaneWithOffset:(double)a3 andRedraw:(BOOL)a4;
-- (void)setRenderConfig:(id)a3;
+- (void)resizeKeyplaneWithOffset:(double)offset andRedraw:(BOOL)redraw;
+- (void)setRenderConfig:(id)config;
 - (void)stopResizing;
 - (void)uninstallGestureRecognizers;
 - (void)updateGestureRecognizers;
@@ -18,15 +18,15 @@
 
 - (void)updateGrabber
 {
-  v3 = [objc_opt_self() mainScreen];
-  [v3 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
-  v6 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
-  v7 = [v6 keyplaneSupportsResizingGesture];
+  delegate = [(UIKBResizingKeyplaneCoordinator *)self delegate];
+  keyplaneSupportsResizingGesture = [delegate keyplaneSupportsResizingGesture];
 
   grabber = self->_grabber;
-  if (!grabber && v7)
+  if (!grabber && keyplaneSupportsResizingGesture)
   {
     v9 = objc_alloc_init(_UIGrabber);
     [(_UIGrabber *)v9 _setBlurEnabled:0];
@@ -36,25 +36,25 @@
 
     [(UIView *)self->_grabber sizeToFit];
     [(UIView *)self->_grabber setUserInteractionEnabled:0];
-    v12 = [objc_opt_self() mainScreen];
-    [v12 scale];
+    mainScreen2 = [objc_opt_self() mainScreen];
+    [mainScreen2 scale];
     v14 = v13;
-    v15 = [(UIView *)self->_grabber layer];
-    [v15 setRasterizationScale:v14];
+    layer = [(UIView *)self->_grabber layer];
+    [layer setRasterizationScale:v14];
 
-    v16 = [(UIView *)self->_grabber layer];
+    layer2 = [(UIView *)self->_grabber layer];
 
-    [v16 setShouldRasterize:1];
+    [layer2 setShouldRasterize:1];
     grabber = self->_grabber;
   }
 
   [(UIView *)grabber setBackgroundColor:self->_grabberColor];
-  if (v7)
+  if (keyplaneSupportsResizingGesture)
   {
     v17 = fmax(v5, 1.0);
     [(UIView *)self->_grabber setAlpha:self->_foregroundOpacity];
-    v18 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
-    v23 = [v18 hostViewForResizingKeyplane:self];
+    delegate2 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
+    v23 = [delegate2 hostViewForResizingKeyplane:self];
 
     [(UIView *)self->_grabber center];
     [v23 frame];
@@ -101,8 +101,8 @@
 
 + (double)savedResizingOffset
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -119,11 +119,11 @@
   return kSnapStops[_resizingStopIndex != 0] * v7;
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v4 = [a3 lightKeyboard];
+  lightKeyboard = [config lightKeyboard];
   v5 = 1.0;
-  if (v4)
+  if (lightKeyboard)
   {
     v5 = 0.0;
   }
@@ -135,16 +135,16 @@
   [(UIKBResizingKeyplaneCoordinator *)self updateGrabber];
 }
 
-- (void)dimKeys:(id)a3
+- (void)dimKeys:(id)keys
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [keysCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -155,11 +155,11 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [keysCopy objectForKeyedSubscript:v10];
         if (([v10 integerValue] & 4) != 0)
         {
           [v11 doubleValue];
@@ -167,7 +167,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -178,11 +178,11 @@
 
 - (void)updateGestureRecognizers
 {
-  v3 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
-  v4 = [v3 keyplaneSupportsResizingGesture];
+  delegate = [(UIKBResizingKeyplaneCoordinator *)self delegate];
+  keyplaneSupportsResizingGesture = [delegate keyplaneSupportsResizingGesture];
 
   gestureRecognizer = self->_gestureRecognizer;
-  if (v4)
+  if (keyplaneSupportsResizingGesture)
   {
     if (!gestureRecognizer)
     {
@@ -196,8 +196,8 @@
       [(UIGestureRecognizer *)self->_gestureRecognizer addTarget:self action:sel_handleResizeGesture_];
     }
 
-    v8 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
-    v11 = [v8 hostViewForResizingKeyplane:self];
+    delegate2 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
+    v11 = [delegate2 hostViewForResizingKeyplane:self];
 
     [v11 addGestureRecognizer:self->_gestureRecognizer];
     [(UIPanGestureRecognizer *)self->_gestureRecognizer setDelegate:self];
@@ -205,8 +205,8 @@
 
   else
   {
-    v9 = [(UIGestureRecognizer *)gestureRecognizer view];
-    [v9 removeGestureRecognizer:self->_gestureRecognizer];
+    view = [(UIGestureRecognizer *)gestureRecognizer view];
+    [view removeGestureRecognizer:self->_gestureRecognizer];
 
     v10 = self->_gestureRecognizer;
 
@@ -219,8 +219,8 @@
   gestureRecognizer = self->_gestureRecognizer;
   if (gestureRecognizer)
   {
-    v4 = [(UIGestureRecognizer *)gestureRecognizer view];
-    [v4 removeGestureRecognizer:self->_gestureRecognizer];
+    view = [(UIGestureRecognizer *)gestureRecognizer view];
+    [view removeGestureRecognizer:self->_gestureRecognizer];
 
     v5 = self->_gestureRecognizer;
     self->_gestureRecognizer = 0;
@@ -239,19 +239,19 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_gestureRecognizer == v4)
+  beginCopy = begin;
+  if (self->_gestureRecognizer == beginCopy)
   {
-    v6 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
-    v7 = [v6 hostViewForResizingKeyplane:self];
+    delegate = [(UIKBResizingKeyplaneCoordinator *)self delegate];
+    v7 = [delegate hostViewForResizingKeyplane:self];
 
     [v7 frame];
     if (v8 >= 1.0)
     {
       v9 = v8;
-      [(UIPanGestureRecognizer *)v4 locationInView:v7];
+      [(UIPanGestureRecognizer *)beginCopy locationInView:v7];
       v5 = (v10 - v9 * 0.5) / (v9 * 0.5) * ((v10 - v9 * 0.5) / (v9 * 0.5)) + (v11 + 47.0) / 94.0 * ((v11 + 47.0) / 94.0) <= 1.0;
     }
 
@@ -269,11 +269,11 @@
   return v5;
 }
 
-- (void)handleResizeGesture:(id)a3
+- (void)handleResizeGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [objc_opt_self() mainScreen];
-  [v5 bounds];
+  gestureCopy = gesture;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v7 = v6;
   v9 = v8;
 
@@ -287,19 +287,19 @@
     v10 = v9;
   }
 
-  v11 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
-  v12 = [v11 hostViewForResizingKeyplane:self];
+  delegate = [(UIKBResizingKeyplaneCoordinator *)self delegate];
+  v12 = [delegate hostViewForResizingKeyplane:self];
 
   if (v12)
   {
     v13 = v10 * 0.0;
     v14 = v10 * 0.242610837 - v10 * 0.0;
-    v15 = [v12 window];
-    [v4 translationInView:v15];
+    window = [v12 window];
+    [gestureCopy translationInView:window];
     v17 = v16;
 
-    v18 = [v12 window];
-    [v4 velocityInView:v18];
+    window2 = [v12 window];
+    [gestureCopy velocityInView:window2];
     v20 = v19;
 
     v21 = self->_prevResizingOffset - v17;
@@ -316,7 +316,7 @@
       v21 = v10 * 0.242610837 + v14 * (1.0 - 1.0 / ((v21 - v10 * 0.242610837) / v14 * 0.55 + 1.0));
     }
 
-    if ([v4 state] == 1)
+    if ([gestureCopy state] == 1)
     {
       resizingAnimationGroup = self->_resizingAnimationGroup;
       if (resizingAnimationGroup)
@@ -330,12 +330,12 @@
     else
     {
       v23 = round(v21);
-      if ([v4 state] == 2)
+      if ([gestureCopy state] == 2)
       {
         [(UIKBResizingKeyplaneCoordinator *)self resizeKeyplaneWithOffset:0 andRedraw:v23];
       }
 
-      else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+      else if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
       {
         v24 = 0;
         v25 = 0;
@@ -453,15 +453,15 @@ void __55__UIKBResizingKeyplaneCoordinator_handleResizeGesture___block_invoke_2(
   *(*(a1 + 32) + 56) = 0;
 }
 
-- (void)resizeKeyplaneWithOffset:(double)a3 andRedraw:(BOOL)a4
+- (void)resizeKeyplaneWithOffset:(double)offset andRedraw:(BOOL)redraw
 {
-  v5 = round(a3);
+  v5 = round(offset);
   if (v5 != self->_resizingOffset)
   {
-    v6 = a4;
+    redrawCopy = redraw;
     self->_resizingOffset = v5;
-    v7 = [(UIKBResizingKeyplaneCoordinator *)self delegate];
-    [v7 resizeKeyplaneAndRedraw:v6];
+    delegate = [(UIKBResizingKeyplaneCoordinator *)self delegate];
+    [delegate resizeKeyplaneAndRedraw:redrawCopy];
   }
 }
 

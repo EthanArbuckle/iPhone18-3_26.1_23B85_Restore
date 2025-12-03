@@ -1,9 +1,9 @@
 @interface ARParentImageSensorSettings
 - (ARParentImageSensorSettings)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)settings;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setSettings:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setSettings:(id)settings;
 @end
 
 @implementation ARParentImageSensorSettings
@@ -30,31 +30,31 @@
   return v2;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5 copyItems:1];
+  settingsCopy = settings;
+  v6 = [[v4 alloc] initWithArray:settingsCopy copyItems:1];
 
   settings = self->_settings;
   self->_settings = v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if ([v6 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v7 = v6;
-    v8 = [(ARParentImageSensorSettings *)self internalSettings];
-    v9 = [v7 internalSettings];
-    if (v8 == v9 || (-[ARParentImageSensorSettings internalSettings](self, "internalSettings"), v3 = objc_claimAutoreleasedReturnValue(), [v7 internalSettings], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    v7 = equalCopy;
+    internalSettings = [(ARParentImageSensorSettings *)self internalSettings];
+    internalSettings2 = [v7 internalSettings];
+    if (internalSettings == internalSettings2 || (-[ARParentImageSensorSettings internalSettings](self, "internalSettings"), v3 = objc_claimAutoreleasedReturnValue(), [v7 internalSettings], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v11 = [(ARParentImageSensorSettings *)self allowCameraInMultipleForegroundAppLayout];
-      if (v11 == [v7 allowCameraInMultipleForegroundAppLayout])
+      allowCameraInMultipleForegroundAppLayout = [(ARParentImageSensorSettings *)self allowCameraInMultipleForegroundAppLayout];
+      if (allowCameraInMultipleForegroundAppLayout == [v7 allowCameraInMultipleForegroundAppLayout])
       {
-        v12 = [(ARParentImageSensorSettings *)self audioCaptureEnabled];
-        v10 = v12 ^ [v7 audioCaptureEnabled] ^ 1;
+        audioCaptureEnabled = [(ARParentImageSensorSettings *)self audioCaptureEnabled];
+        v10 = audioCaptureEnabled ^ [v7 audioCaptureEnabled] ^ 1;
       }
 
       else
@@ -62,7 +62,7 @@
         LOBYTE(v10) = 0;
       }
 
-      if (v8 == v9)
+      if (internalSettings == internalSettings2)
       {
         goto LABEL_11;
       }
@@ -83,9 +83,9 @@ LABEL_12:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSettings:self->_settings];
   v4[8] = self->_audioCaptureEnabled;
   v4[9] = self->_allowCameraInMultipleForegroundAppLayout;

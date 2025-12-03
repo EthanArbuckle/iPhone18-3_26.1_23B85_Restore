@@ -1,13 +1,13 @@
 @interface ASOKeepAlive
 - (ASOKeepAlive)init;
-- (ASOKeepAlive)initWithName:(id)a3 explanation:(id)a4;
+- (ASOKeepAlive)initWithName:(id)name explanation:(id)explanation;
 - (void)acquire;
 - (void)invalidate;
 @end
 
 @implementation ASOKeepAlive
 
-- (ASOKeepAlive)initWithName:(id)a3 explanation:(id)a4
+- (ASOKeepAlive)initWithName:(id)name explanation:(id)explanation
 {
   v5 = sub_100018458();
   v7 = v6;
@@ -26,15 +26,15 @@
 - (void)acquire
 {
   type metadata accessor for KeepAliveManager();
-  v3 = self;
-  sub_10000C158(v3, sub_10000C71C);
+  selfCopy = self;
+  sub_10000C158(selfCopy, sub_10000C71C);
 }
 
 - (void)invalidate
 {
   type metadata accessor for KeepAliveManager();
-  v3 = self;
-  sub_10000C158(v3, sub_10000CA48);
+  selfCopy = self;
+  sub_10000C158(selfCopy, sub_10000CA48);
 }
 
 - (ASOKeepAlive)init

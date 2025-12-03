@@ -1,121 +1,121 @@
 @interface _TUIVBoxDynamicArrayLayout
-- (_TUIVBoxDynamicArrayLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
-- (_TUIVBoxItemLayoutSummary)summaryForRange:(_NSRange)a3;
+- (_TUIVBoxDynamicArrayLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
+- (_TUIVBoxItemLayoutSummary)summaryForRange:(_NSRange)range;
 - (id).cxx_construct;
-- (void)_updateIndex:(unint64_t)a3 width:(double)a4 height:(double)a5;
-- (void)enumerateChildren:(id)a3;
-- (void)layoutDeleteAtIndex:(unint64_t)a3;
-- (void)layoutInsertAtIndex:(unint64_t)a3;
-- (void)layoutMoveFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)layoutUpdateWindowRange:(_NSRange)a3;
+- (void)_updateIndex:(unint64_t)index width:(double)width height:(double)height;
+- (void)enumerateChildren:(id)children;
+- (void)layoutDeleteAtIndex:(unint64_t)index;
+- (void)layoutInsertAtIndex:(unint64_t)index;
+- (void)layoutMoveFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)layoutUpdateWindowRange:(_NSRange)range;
 - (void)updateSummariesFromChildren;
 @end
 
 @implementation _TUIVBoxDynamicArrayLayout
 
-- (_TUIVBoxDynamicArrayLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (_TUIVBoxDynamicArrayLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  parentCopy = parent;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = _TUIVBoxDynamicArrayLayout;
-  v11 = [(TUILayoutContainer *)&v23 initWithModel:v8 parent:v9 controller:v10];
+  v11 = [(TUILayoutContainer *)&v23 initWithModel:modelCopy parent:parentCopy controller:controllerCopy];
   if (v11)
   {
-    [v8 estimatedWidth];
-    [v8 estimatedHeight];
+    [modelCopy estimatedWidth];
+    [modelCopy estimatedHeight];
     v22.n128_u64[1] = v13;
-    for (i = [v8 windowCount]; i; --i)
+    for (i = [modelCopy windowCount]; i; --i)
     {
       sub_57480(v11 + 6, *(v11 + 7), &v22);
     }
 
-    v15 = [(TUILayout *)[_TUIVBoxDynamicSpacerLayout alloc] initWithModel:0 parent:v11 controller:v10];
+    v15 = [(TUILayout *)[_TUIVBoxDynamicSpacerLayout alloc] initWithModel:0 parent:v11 controller:controllerCopy];
     v16 = *(v11 + 11);
     *(v11 + 11) = v15;
 
-    v17 = [(TUILayout *)[_TUIVBoxDynamicSpacerLayout alloc] initWithModel:0 parent:v11 controller:v10];
+    v17 = [(TUILayout *)[_TUIVBoxDynamicSpacerLayout alloc] initWithModel:0 parent:v11 controller:controllerCopy];
     v18 = *(v11 + 12);
     *(v11 + 12) = v17;
 
-    v19 = [v8 windowRange];
-    [v11 layoutUpdateWindowRange:{v19, v20}];
+    windowRange = [modelCopy windowRange];
+    [v11 layoutUpdateWindowRange:{windowRange, v20}];
   }
 
   return v11;
 }
 
-- (void)enumerateChildren:(id)a3
+- (void)enumerateChildren:(id)children
 {
-  v4 = a3;
-  v4[2](v4, self->_preRangeSpacer);
+  childrenCopy = children;
+  childrenCopy[2](childrenCopy, self->_preRangeSpacer);
   v5.receiver = self;
   v5.super_class = _TUIVBoxDynamicArrayLayout;
-  [(TUILayoutContainer *)&v5 enumerateChildren:v4];
-  v4[2](v4, self->_postRangeSpacer);
+  [(TUILayoutContainer *)&v5 enumerateChildren:childrenCopy];
+  childrenCopy[2](childrenCopy, self->_postRangeSpacer);
 }
 
-- (void)_updateIndex:(unint64_t)a3 width:(double)a4 height:(double)a5
+- (void)_updateIndex:(unint64_t)index width:(double)width height:(double)height
 {
-  v5 = &self->_summaries.__begin_[a3];
-  v5->width = a4;
-  v5->height = a5;
+  v5 = &self->_summaries.__begin_[index];
+  v5->width = width;
+  v5->height = height;
 }
 
-- (void)layoutUpdateWindowRange:(_NSRange)a3
+- (void)layoutUpdateWindowRange:(_NSRange)range
 {
-  self->_windowRange = a3;
-  [(_TUIVBoxDynamicSpacerLayout *)self->_preRangeSpacer setRange:0, a3.location];
+  self->_windowRange = range;
+  [(_TUIVBoxDynamicSpacerLayout *)self->_preRangeSpacer setRange:0, range.location];
   postRangeSpacer = self->_postRangeSpacer;
 
   [(_TUIVBoxDynamicSpacerLayout *)postRangeSpacer setRange:?];
 }
 
-- (void)layoutDeleteAtIndex:(unint64_t)a3
+- (void)layoutDeleteAtIndex:(unint64_t)index
 {
   p_summaries = &self->_summaries;
   begin = self->_summaries.__begin_;
   end = self->_summaries.__end_;
-  v6 = &begin[a3];
+  v6 = &begin[index];
   v7 = (end - &v6[1]);
   if (end != &v6[1])
   {
-    memmove(&begin[a3], &v6[1], end - &v6[1]);
+    memmove(&begin[index], &v6[1], end - &v6[1]);
   }
 
   p_summaries->__end_ = &v7[v6];
 }
 
-- (void)layoutInsertAtIndex:(unint64_t)a3
+- (void)layoutInsertAtIndex:(unint64_t)index
 {
-  v5 = [(TUILayoutContainer *)self model];
-  [v5 estimatedWidth];
+  model = [(TUILayoutContainer *)self model];
+  [model estimatedWidth];
   v9.n128_u64[0] = v6;
 
-  v7 = [(TUILayoutContainer *)self model];
-  [v7 estimatedHeight];
+  model2 = [(TUILayoutContainer *)self model];
+  [model2 estimatedHeight];
   v9.n128_u64[1] = v8;
 
-  sub_57480(&self->_summaries.__begin_, &self->_summaries.__begin_[a3], &v9);
+  sub_57480(&self->_summaries.__begin_, &self->_summaries.__begin_[index], &v9);
 }
 
-- (void)layoutMoveFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)layoutMoveFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   p_summaries = &self->_summaries;
   begin = self->_summaries.__begin_;
   end = self->_summaries.__end_;
-  v8 = &begin[a3];
+  v8 = &begin[index];
   v10 = *v8;
   v9 = end - &v8[1];
   if (end != &v8[1])
   {
-    memmove(&begin[a3], &v8[1], end - &v8[1]);
+    memmove(&begin[index], &v8[1], end - &v8[1]);
     begin = p_summaries->__begin_;
   }
 
   p_summaries->__end_ = (v8 + v9);
-  sub_57480(p_summaries, &begin[a4], &v10);
+  sub_57480(p_summaries, &begin[toIndex], &v10);
 }
 
 - (void)updateSummariesFromChildren
@@ -126,8 +126,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(TUILayoutContainer *)self containers];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  containers = [(TUILayoutContainer *)self containers];
+  v5 = [containers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     p_width = &begin[location].width;
@@ -139,7 +139,7 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(containers);
         }
 
         v9 = *(*(&v19 + 1) + 8 * v8);
@@ -167,21 +167,21 @@
       }
 
       while (v5 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [containers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
   }
 }
 
-- (_TUIVBoxItemLayoutSummary)summaryForRange:(_NSRange)a3
+- (_TUIVBoxItemLayoutSummary)summaryForRange:(_NSRange)range
 {
   v3 = 0.0;
   v4 = 0.0;
-  if (16 * a3.location != 16 * (a3.location + a3.length))
+  if (16 * range.location != 16 * (range.location + range.length))
   {
     begin = self->_summaries.__begin_;
-    v6 = &begin[a3.location];
+    v6 = &begin[range.location];
     do
     {
       width = v6->width;
@@ -191,7 +191,7 @@
       v4 = fmax(v4, width);
     }
 
-    while (v6 != &begin[a3.location + a3.length]);
+    while (v6 != &begin[range.location + range.length]);
   }
 
   result.height = v3;

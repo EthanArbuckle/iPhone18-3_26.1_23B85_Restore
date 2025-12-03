@@ -1,51 +1,51 @@
 @interface SIRINLUEXTERNALAsrTokenInformation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAddSpaceAfter:(BOOL)a3;
-- (void)setHasBeginIndex:(BOOL)a3;
-- (void)setHasEndIndex:(BOOL)a3;
-- (void)setHasEndMilliSeconds:(BOOL)a3;
-- (void)setHasRemoveSpaceAfter:(BOOL)a3;
-- (void)setHasRemoveSpaceBefore:(BOOL)a3;
-- (void)setHasStartMilliSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAddSpaceAfter:(BOOL)after;
+- (void)setHasBeginIndex:(BOOL)index;
+- (void)setHasEndIndex:(BOOL)index;
+- (void)setHasEndMilliSeconds:(BOOL)seconds;
+- (void)setHasRemoveSpaceAfter:(BOOL)after;
+- (void)setHasRemoveSpaceBefore:(BOOL)before;
+- (void)setHasStartMilliSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALAsrTokenInformation
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(SIRINLUEXTERNALAsrTokenInformation *)self setPostItnText:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SIRINLUEXTERNALAsrTokenInformation *)self setPhoneSequence:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SIRINLUEXTERNALAsrTokenInformation *)self setIpaPhoneSequence:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 0x20) != 0)
   {
-    self->_addSpaceAfter = *(v4 + 60);
+    self->_addSpaceAfter = *(fromCopy + 60);
     *&self->_has |= 0x20u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
     if ((v5 & 0x40) == 0)
     {
 LABEL_9:
@@ -58,14 +58,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 64) & 0x40) == 0)
+  else if ((*(fromCopy + 64) & 0x40) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_removeSpaceAfter = *(v4 + 61);
+  self->_removeSpaceAfter = *(fromCopy + 61);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 0x80) == 0)
   {
 LABEL_10:
@@ -78,9 +78,9 @@ LABEL_10:
   }
 
 LABEL_21:
-  self->_removeSpaceBefore = *(v4 + 62);
+  self->_removeSpaceBefore = *(fromCopy + 62);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 1) == 0)
   {
 LABEL_11:
@@ -93,9 +93,9 @@ LABEL_11:
   }
 
 LABEL_22:
-  self->_confidenceScore = *(v4 + 1);
+  self->_confidenceScore = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 2) == 0)
   {
 LABEL_12:
@@ -108,9 +108,9 @@ LABEL_12:
   }
 
 LABEL_23:
-  self->_beginIndex = *(v4 + 4);
+  self->_beginIndex = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 4) == 0)
   {
 LABEL_13:
@@ -123,9 +123,9 @@ LABEL_13:
   }
 
 LABEL_24:
-  self->_endIndex = *(v4 + 5);
+  self->_endIndex = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 0x10) == 0)
   {
 LABEL_14:
@@ -138,12 +138,12 @@ LABEL_14:
   }
 
 LABEL_25:
-  self->_startMilliSeconds = *(v4 + 14);
+  self->_startMilliSeconds = *(fromCopy + 14);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 64) & 8) != 0)
+  if ((*(fromCopy + 64) & 8) != 0)
   {
 LABEL_15:
-    self->_endMilliSeconds = *(v4 + 6);
+    self->_endMilliSeconds = *(fromCopy + 6);
     *&self->_has |= 8u;
   }
 
@@ -281,16 +281,16 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v8 ^ v9 ^ v10 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
   postItnText = self->_postItnText;
-  if (postItnText | *(v4 + 6))
+  if (postItnText | *(equalCopy + 6))
   {
     if (![(NSString *)postItnText isEqual:?])
     {
@@ -299,7 +299,7 @@ LABEL_17:
   }
 
   phoneSequence = self->_phoneSequence;
-  if (phoneSequence | *(v4 + 5))
+  if (phoneSequence | *(equalCopy + 5))
   {
     if (![(NSString *)phoneSequence isEqual:?])
     {
@@ -308,7 +308,7 @@ LABEL_17:
   }
 
   ipaPhoneSequence = self->_ipaPhoneSequence;
-  if (ipaPhoneSequence | *(v4 + 4))
+  if (ipaPhoneSequence | *(equalCopy + 4))
   {
     if (![(NSString *)ipaPhoneSequence isEqual:?])
     {
@@ -318,61 +318,61 @@ LABEL_17:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 64) & 0x20) == 0)
+    if ((*(equalCopy + 64) & 0x20) == 0)
     {
       goto LABEL_56;
     }
 
-    v8 = *(v4 + 60);
+    v8 = *(equalCopy + 60);
     if (self->_addSpaceAfter)
     {
-      if ((*(v4 + 60) & 1) == 0)
+      if ((*(equalCopy + 60) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 60))
+    else if (*(equalCopy + 60))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 64) & 0x20) != 0)
+  else if ((*(equalCopy + 64) & 0x20) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 64) & 0x40) == 0)
+    if ((*(equalCopy + 64) & 0x40) == 0)
     {
       goto LABEL_56;
     }
 
-    v9 = *(v4 + 61);
+    v9 = *(equalCopy + 61);
     if (self->_removeSpaceAfter)
     {
-      if ((*(v4 + 61) & 1) == 0)
+      if ((*(equalCopy + 61) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 61))
+    else if (*(equalCopy + 61))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 64) & 0x40) != 0)
+  else if ((*(equalCopy + 64) & 0x40) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x80) == 0)
   {
-    if ((*(v4 + 64) & 0x80) == 0)
+    if ((*(equalCopy + 64) & 0x80) == 0)
     {
       goto LABEL_14;
     }
@@ -382,21 +382,21 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if ((*(v4 + 64) & 0x80) == 0)
+  if ((*(equalCopy + 64) & 0x80) == 0)
   {
     goto LABEL_56;
   }
 
-  v10 = *(v4 + 62);
+  v10 = *(equalCopy + 62);
   if (self->_removeSpaceBefore)
   {
-    if ((*(v4 + 62) & 1) == 0)
+    if ((*(equalCopy + 62) & 1) == 0)
     {
       goto LABEL_56;
     }
   }
 
-  else if (*(v4 + 62))
+  else if (*(equalCopy + 62))
   {
     goto LABEL_56;
   }
@@ -404,60 +404,60 @@ LABEL_56:
 LABEL_14:
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_confidenceScore != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_confidenceScore != *(equalCopy + 1))
     {
       goto LABEL_56;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_beginIndex != *(v4 + 4))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_beginIndex != *(equalCopy + 4))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_endIndex != *(v4 + 5))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_endIndex != *(equalCopy + 5))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_startMilliSeconds != *(v4 + 14))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_startMilliSeconds != *(equalCopy + 14))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
     goto LABEL_56;
   }
 
-  v11 = (*(v4 + 64) & 8) == 0;
+  v11 = (*(equalCopy + 64) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_endMilliSeconds != *(v4 + 6))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_endMilliSeconds != *(equalCopy + 6))
     {
       goto LABEL_56;
     }
@@ -470,18 +470,18 @@ LABEL_57:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_postItnText copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_postItnText copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_phoneSequence copyWithZone:a3];
+  v8 = [(NSString *)self->_phoneSequence copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSString *)self->_ipaPhoneSequence copyWithZone:a3];
+  v10 = [(NSString *)self->_ipaPhoneSequence copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -595,33 +595,33 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_postItnText)
   {
-    [v4 setPostItnText:?];
-    v4 = v6;
+    [toCopy setPostItnText:?];
+    toCopy = v6;
   }
 
   if (self->_phoneSequence)
   {
     [v6 setPhoneSequence:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_ipaPhoneSequence)
   {
     [v6 setIpaPhoneSequence:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v4 + 60) = self->_addSpaceAfter;
-    *(v4 + 64) |= 0x20u;
+    *(toCopy + 60) = self->_addSpaceAfter;
+    *(toCopy + 64) |= 0x20u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -640,8 +640,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 61) = self->_removeSpaceAfter;
-  *(v4 + 64) |= 0x40u;
+  *(toCopy + 61) = self->_removeSpaceAfter;
+  *(toCopy + 64) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -655,8 +655,8 @@ LABEL_10:
   }
 
 LABEL_21:
-  *(v4 + 62) = self->_removeSpaceBefore;
-  *(v4 + 64) |= 0x80u;
+  *(toCopy + 62) = self->_removeSpaceBefore;
+  *(toCopy + 64) |= 0x80u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -670,8 +670,8 @@ LABEL_11:
   }
 
 LABEL_22:
-  *(v4 + 1) = *&self->_confidenceScore;
-  *(v4 + 64) |= 1u;
+  *(toCopy + 1) = *&self->_confidenceScore;
+  *(toCopy + 64) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -685,8 +685,8 @@ LABEL_12:
   }
 
 LABEL_23:
-  *(v4 + 4) = self->_beginIndex;
-  *(v4 + 64) |= 2u;
+  *(toCopy + 4) = self->_beginIndex;
+  *(toCopy + 64) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -700,8 +700,8 @@ LABEL_13:
   }
 
 LABEL_24:
-  *(v4 + 5) = self->_endIndex;
-  *(v4 + 64) |= 4u;
+  *(toCopy + 5) = self->_endIndex;
+  *(toCopy + 64) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -715,38 +715,38 @@ LABEL_14:
   }
 
 LABEL_25:
-  *(v4 + 14) = self->_startMilliSeconds;
-  *(v4 + 64) |= 0x10u;
+  *(toCopy + 14) = self->_startMilliSeconds;
+  *(toCopy + 64) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_15:
-    *(v4 + 6) = self->_endMilliSeconds;
-    *(v4 + 64) |= 8u;
+    *(toCopy + 6) = self->_endMilliSeconds;
+    *(toCopy + 64) |= 8u;
   }
 
 LABEL_16:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_postItnText)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_phoneSequence)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_ipaPhoneSequence)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   has = self->_has;
@@ -754,7 +754,7 @@ LABEL_16:
   {
     addSpaceAfter = self->_addSpaceAfter;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -775,7 +775,7 @@ LABEL_9:
 
   removeSpaceAfter = self->_removeSpaceAfter;
   PBDataWriterWriteBOOLField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -791,7 +791,7 @@ LABEL_10:
 LABEL_21:
   removeSpaceBefore = self->_removeSpaceBefore;
   PBDataWriterWriteBOOLField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -807,7 +807,7 @@ LABEL_11:
 LABEL_22:
   confidenceScore = self->_confidenceScore;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -823,7 +823,7 @@ LABEL_12:
 LABEL_23:
   beginIndex = self->_beginIndex;
   PBDataWriterWriteUint32Field();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -839,7 +839,7 @@ LABEL_13:
 LABEL_24:
   endIndex = self->_endIndex;
   PBDataWriterWriteUint32Field();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -855,13 +855,13 @@ LABEL_14:
 LABEL_25:
   startMilliSeconds = self->_startMilliSeconds;
   PBDataWriterWriteInt32Field();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_15:
     endMilliSeconds = self->_endMilliSeconds;
     PBDataWriterWriteInt32Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_16:
@@ -869,12 +869,12 @@ LABEL_16:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   postItnText = self->_postItnText;
   if (postItnText)
   {
-    [v3 setObject:postItnText forKey:@"post_itn_text"];
+    [dictionary setObject:postItnText forKey:@"post_itn_text"];
   }
 
   phoneSequence = self->_phoneSequence;
@@ -1014,15 +1014,15 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALAsrTokenInformation;
   v4 = [(SIRINLUEXTERNALAsrTokenInformation *)&v8 description];
-  v5 = [(SIRINLUEXTERNALAsrTokenInformation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALAsrTokenInformation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasEndMilliSeconds:(BOOL)a3
+- (void)setHasEndMilliSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 8;
   }
@@ -1035,9 +1035,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasStartMilliSeconds:(BOOL)a3
+- (void)setHasStartMilliSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 16;
   }
@@ -1050,9 +1050,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEndIndex:(BOOL)a3
+- (void)setHasEndIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }
@@ -1065,9 +1065,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBeginIndex:(BOOL)a3
+- (void)setHasBeginIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -1080,9 +1080,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRemoveSpaceBefore:(BOOL)a3
+- (void)setHasRemoveSpaceBefore:(BOOL)before
 {
-  if (a3)
+  if (before)
   {
     v3 = 0x80;
   }
@@ -1095,9 +1095,9 @@ LABEL_16:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasRemoveSpaceAfter:(BOOL)a3
+- (void)setHasRemoveSpaceAfter:(BOOL)after
 {
-  if (a3)
+  if (after)
   {
     v3 = 64;
   }
@@ -1110,9 +1110,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasAddSpaceAfter:(BOOL)a3
+- (void)setHasAddSpaceAfter:(BOOL)after
 {
-  if (a3)
+  if (after)
   {
     v3 = 32;
   }

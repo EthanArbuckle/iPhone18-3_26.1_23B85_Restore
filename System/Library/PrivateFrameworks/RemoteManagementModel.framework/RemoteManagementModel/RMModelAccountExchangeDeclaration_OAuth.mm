@@ -1,10 +1,10 @@
 @interface RMModelAccountExchangeDeclaration_OAuth
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithEnabled:(id)a3;
-+ (id)buildWithEnabled:(id)a3 signInURL:(id)a4 tokenRequestURL:(id)a5;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithEnabled:(id)enabled;
++ (id)buildWithEnabled:(id)enabled signInURL:(id)l tokenRequestURL:(id)rL;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountExchangeDeclaration_OAuth
@@ -24,35 +24,35 @@
   return v4;
 }
 
-+ (id)buildWithEnabled:(id)a3 signInURL:(id)a4 tokenRequestURL:(id)a5
++ (id)buildWithEnabled:(id)enabled signInURL:(id)l tokenRequestURL:(id)rL
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  rLCopy = rL;
+  lCopy = l;
+  enabledCopy = enabled;
   v10 = objc_opt_new();
-  [v10 setPayloadEnabled:v9];
+  [v10 setPayloadEnabled:enabledCopy];
 
-  [v10 setPayloadSignInURL:v8];
-  [v10 setPayloadTokenRequestURL:v7];
+  [v10 setPayloadSignInURL:lCopy];
+  [v10 setPayloadTokenRequestURL:rLCopy];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithEnabled:(id)a3
++ (id)buildRequiredOnlyWithEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_opt_new();
-  [v4 setPayloadEnabled:v3];
+  [v4 setPayloadEnabled:enabledCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountExchangeDeclaration_OAuth allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -60,32 +60,32 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"SignInURL" forKeyPath:@"payloadSignInURL" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"TokenRequestURL" forKeyPath:@"payloadTokenRequestURL" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"SignInURL" forKeyPath:@"payloadSignInURL" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"TokenRequestURL" forKeyPath:@"payloadTokenRequestURL" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountExchangeDeclaration_OAuth *)self payloadEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:v5 isRequired:1 defaultValue:0];
+  payloadEnabled = [(RMModelAccountExchangeDeclaration_OAuth *)self payloadEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:payloadEnabled isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelAccountExchangeDeclaration_OAuth *)self payloadSignInURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"SignInURL" value:v6 isRequired:0 defaultValue:0];
+  payloadSignInURL = [(RMModelAccountExchangeDeclaration_OAuth *)self payloadSignInURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"SignInURL" value:payloadSignInURL isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAccountExchangeDeclaration_OAuth *)self payloadTokenRequestURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"TokenRequestURL" value:v7 isRequired:0 defaultValue:0];
+  payloadTokenRequestURL = [(RMModelAccountExchangeDeclaration_OAuth *)self payloadTokenRequestURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"TokenRequestURL" value:payloadTokenRequestURL isRequired:0 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelAccountExchangeDeclaration_OAuth;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadEnabled copy];
   v6 = v4[2];
   v4[2] = v5;

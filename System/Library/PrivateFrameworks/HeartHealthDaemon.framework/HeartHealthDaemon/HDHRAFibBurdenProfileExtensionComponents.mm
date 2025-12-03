@@ -1,9 +1,9 @@
 @interface HDHRAFibBurdenProfileExtensionComponents
 + (id)determineDeviceCapability;
-+ (id)makeComponentsForProfile:(id)a3;
++ (id)makeComponentsForProfile:(id)profile;
 + (id)makeComponentsForTesting;
 - (HDHRAFibBurdenProfileExtensionComponents)init;
-- (HDHRAFibBurdenProfileExtensionComponents)initWithProfile:(id)a3;
+- (HDHRAFibBurdenProfileExtensionComponents)initWithProfile:(id)profile;
 - (id)_initForTesting;
 - (void)dealloc;
 @end
@@ -20,10 +20,10 @@
   return 0;
 }
 
-- (HDHRAFibBurdenProfileExtensionComponents)initWithProfile:(id)a3
+- (HDHRAFibBurdenProfileExtensionComponents)initWithProfile:(id)profile
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v58.receiver = self;
   v58.super_class = HDHRAFibBurdenProfileExtensionComponents;
   v5 = [(HDHRAFibBurdenProfileExtensionComponents *)&v58 init];
@@ -31,11 +31,11 @@
   {
     v6 = HKHRAFibBurdenLogForCategory();
     v7 = *MEMORY[0x277CCBFF0];
-    v8 = [MEMORY[0x277CCD260] localAvailabilityForAFibBurden];
+    localAvailabilityForAFibBurden = [MEMORY[0x277CCD260] localAvailabilityForAFibBurden];
     v9 = objc_alloc(MEMORY[0x277D10728]);
-    v10 = [v4 daemon];
-    v55 = v8;
-    v11 = [v9 initWithFeatureIdentifier:v7 defaultCountrySet:v8 healthDaemon:v10];
+    daemon = [profileCopy daemon];
+    v55 = localAvailabilityForAFibBurden;
+    v11 = [v9 initWithFeatureIdentifier:v7 defaultCountrySet:localAvailabilityForAFibBurden healthDaemon:daemon];
 
     v12 = objc_alloc(MEMORY[0x277D107D8]);
     v13 = HKHRAFibBurdenLocalFeatureAttributes();
@@ -43,16 +43,16 @@
     v52 = [v12 initWithFeatureIdentifier:v7 localFeatureAttributes:v13 localCountrySetAvailabilityProvider:v11];
 
     v14 = objc_alloc(MEMORY[0x277D107C0]);
-    v15 = [v4 daemon];
-    v16 = [v14 initWithDaemon:v15 featureIdentifier:v7];
+    daemon2 = [profileCopy daemon];
+    v16 = [v14 initWithDaemon:daemon2 featureIdentifier:v7];
 
     v17 = +[HDHRAFibBurdenProfileExtensionComponents determineDeviceCapability];
     v56 = v6;
-    v18 = [objc_alloc(MEMORY[0x277D10968]) initWithAllowedCountriesDataSource:v52 profile:v4 featureCapability:v17 loggingCategory:v6];
+    v18 = [objc_alloc(MEMORY[0x277D10968]) initWithAllowedCountriesDataSource:v52 profile:profileCopy featureCapability:v17 loggingCategory:v6];
     v19 = objc_alloc(MEMORY[0x277D106E0]);
-    v20 = [v4 daemon];
-    v21 = [v20 nanoRegistryDeviceCapabilityProvider];
-    v22 = [v19 initWithFeatureIdentifier:v7 currentOnboardingVersion:1 pairedDeviceCapability:v17 pairedDeviceCapabilityProvider:v21 regionAvailabilityProvider:v18 disableAndExpiryProvider:v16 loggingCategory:v6];
+    daemon3 = [profileCopy daemon];
+    nanoRegistryDeviceCapabilityProvider = [daemon3 nanoRegistryDeviceCapabilityProvider];
+    v22 = [v19 initWithFeatureIdentifier:v7 currentOnboardingVersion:1 pairedDeviceCapability:v17 pairedDeviceCapabilityProvider:nanoRegistryDeviceCapabilityProvider regionAvailabilityProvider:v18 disableAndExpiryProvider:v16 loggingCategory:v6];
 
     v23 = objc_alloc(MEMORY[0x277D10830]);
     v59[0] = *MEMORY[0x277CCC120];
@@ -60,19 +60,19 @@
     v25 = [v23 initWithRequiredSettingsKeys:v24];
 
     v26 = objc_alloc(MEMORY[0x277D106D8]);
-    v27 = [MEMORY[0x277D12F38] requirementSet];
+    requirementSet = [MEMORY[0x277D12F38] requirementSet];
     v53 = v25;
-    v28 = [v26 initWithProfile:v4 featureIdentifier:v7 availabilityRequirements:v27 currentOnboardingVersion:1 pairedDeviceCapability:v17 pairedFeatureAttributesProvider:v52 regionAvailabilityProvider:v18 disableAndExpiryProvider:v16 onboardingEligibilityDeterminer:v22 featureSettingsAtOnboardingTimeValidator:v25 loggingCategory:v56];
+    v28 = [v26 initWithProfile:profileCopy featureIdentifier:v7 availabilityRequirements:requirementSet currentOnboardingVersion:1 pairedDeviceCapability:v17 pairedFeatureAttributesProvider:v52 regionAvailabilityProvider:v18 disableAndExpiryProvider:v16 onboardingEligibilityDeterminer:v22 featureSettingsAtOnboardingTimeValidator:v25 loggingCategory:v56];
     featureAvailabilityManager = v5->_featureAvailabilityManager;
     v5->_featureAvailabilityManager = v28;
 
     [v52 synchronizeLocalProperties];
-    v30 = [MEMORY[0x277CCDD30] sharedBehavior];
-    LOBYTE(v27) = [v30 isAppleWatch];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    LOBYTE(requirementSet) = [mEMORY[0x277CCDD30] isAppleWatch];
 
-    if ((v27 & 1) == 0)
+    if ((requirementSet & 1) == 0)
     {
-      v31 = [[HKHRAFibBurdenAnalyzer alloc] initWithProfile:v4];
+      v31 = [[HKHRAFibBurdenAnalyzer alloc] initWithProfile:profileCopy];
       analyzer = v5->_analyzer;
       v5->_analyzer = v31;
 
@@ -80,7 +80,7 @@
       if (objc_opt_isKindOfClass())
       {
         v33 = MEMORY[0x277CCD460];
-        v34 = v4;
+        v34 = profileCopy;
         v35 = [[v33 alloc] initWithFeatureAvailabilityProviding:v5->_featureAvailabilityManager healthDataSource:v34];
         featureStatusManager = v5->_featureStatusManager;
         v5->_featureStatusManager = v35;
@@ -218,13 +218,13 @@ id __60__HDHRAFibBurdenProfileExtensionComponents_initWithProfile___block_invoke
   [(HDHRAFibBurdenProfileExtensionComponents *)&v3 dealloc];
 }
 
-+ (id)makeComponentsForProfile:(id)a3
++ (id)makeComponentsForProfile:(id)profile
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 profileType] == 1 || objc_msgSend(MEMORY[0x277CCDD30], "isAppleInternalInstall") && objc_msgSend(v4, "profileType") == 100)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1 || objc_msgSend(MEMORY[0x277CCDD30], "isAppleInternalInstall") && objc_msgSend(profileCopy, "profileType") == 100)
   {
-    v5 = [[HDHRAFibBurdenProfileExtensionComponents alloc] initWithProfile:v4];
+    v5 = [[HDHRAFibBurdenProfileExtensionComponents alloc] initWithProfile:profileCopy];
   }
 
   else
@@ -234,9 +234,9 @@ id __60__HDHRAFibBurdenProfileExtensionComponents_initWithProfile___block_invoke
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = a1;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v4;
+      v12 = profileCopy;
       _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Not creating AFib Burden components for profile %{public}@", &v9, 0x16u);
     }
 
@@ -250,15 +250,15 @@ id __60__HDHRAFibBurdenProfileExtensionComponents_initWithProfile___block_invoke
 
 + (id)makeComponentsForTesting
 {
-  v2 = [[HDHRAFibBurdenProfileExtensionComponents alloc] _initForTesting];
+  _initForTesting = [[HDHRAFibBurdenProfileExtensionComponents alloc] _initForTesting];
 
-  return v2;
+  return _initForTesting;
 }
 
 + (id)determineDeviceCapability
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if ([v2 isAppleWatch])
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  if ([mEMORY[0x277CCDD30] isAppleWatch])
   {
     v3 = 0;
   }

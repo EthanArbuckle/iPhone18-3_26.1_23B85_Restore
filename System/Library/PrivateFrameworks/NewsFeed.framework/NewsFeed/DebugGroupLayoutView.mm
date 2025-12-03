@@ -1,11 +1,11 @@
 @interface DebugGroupLayoutView
-- (_TtC8NewsFeed20DebugGroupLayoutView)initWithCoder:(id)a3;
+- (_TtC8NewsFeed20DebugGroupLayoutView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugGroupLayoutView
 
-- (_TtC8NewsFeed20DebugGroupLayoutView)initWithCoder:(id)a3
+- (_TtC8NewsFeed20DebugGroupLayoutView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8NewsFeed20DebugGroupLayoutView_contentView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DCEF8]) initWithFrame_];

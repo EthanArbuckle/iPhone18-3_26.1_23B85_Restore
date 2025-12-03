@@ -1,62 +1,62 @@
 @interface SBPIPPegasusContainerAdapter
 - (BOOL)handleDoubleTapGesture;
 - (BOOL)handleTapWhileStashedGesture;
-- (BOOL)shouldPointerInteractionBeginForInteractionController:(id)a3 atLocation:(CGPoint)a4 inView:(id)a5;
+- (BOOL)shouldPointerInteractionBeginForInteractionController:(id)controller atLocation:(CGPoint)location inView:(id)view;
 - (BOOL)shouldSuppressAssociatedElementsInSystemAperture;
 - (NSNumber)overrideResourcesUsageReductionTimeout;
-- (SBPIPPegasusContainerAdapter)initWithPictureInPictureViewController:(id)a3;
-- (UIEdgeInsets)interactionController:(id)a3 edgeInsetsForWindowScene:(id)a4;
-- (UIEdgeInsets)interactionController:(id)a3 stashedPaddingForWindowScene:(id)a4;
-- (id)bundleIdentifierForContainerViewController:(id)a3;
+- (SBPIPPegasusContainerAdapter)initWithPictureInPictureViewController:(id)controller;
+- (UIEdgeInsets)interactionController:(id)controller edgeInsetsForWindowScene:(id)scene;
+- (UIEdgeInsets)interactionController:(id)controller stashedPaddingForWindowScene:(id)scene;
+- (id)bundleIdentifierForContainerViewController:(id)controller;
 - (id)debugName;
 - (id)defaultPositionHyperregionComposers;
-- (id)interactionControllerConnectedWindowScenes:(id)a3;
+- (id)interactionControllerConnectedWindowScenes:(id)scenes;
 - (id)layoutSettings;
-- (id)systemPointerInteractionManagerForInteractionController:(id)a3;
-- (int)processIdentifierForContainerViewController:(id)a3;
+- (id)systemPointerInteractionManagerForInteractionController:(id)controller;
+- (int)processIdentifierForContainerViewController:(id)controller;
 - (void)_acquireVisibilityAssertionIfNeeded;
 - (void)_createOrInvalidateStashTabVisibilityPolicyProvider;
 - (void)_invalidateVisibilityAssertion;
-- (void)_performStopAnimationWithFinalInterfaceOrientation:(int64_t)a3 finalLayerFrame:(CGRect)a4 completionHandler:(id)a5;
+- (void)_performStopAnimationWithFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler;
 - (void)_reloadMenuButton;
 - (void)acquireInterfaceOrientationLock;
-- (void)containerViewController:(id)a3 didUpdateStashState:(BOOL)a4 springSettings:(id)a5;
-- (void)containerViewController:(id)a3 wantsStashTabHidden:(BOOL)a4 left:(BOOL)a5 springSettings:(id)a6 completion:(id)a7;
-- (void)containerViewControllerDidEndSizeChange:(id)a3;
-- (void)containerViewControllerWillBeginSizeChange:(id)a3 behavior:(int)a4;
+- (void)containerViewController:(id)controller didUpdateStashState:(BOOL)state springSettings:(id)settings;
+- (void)containerViewController:(id)controller wantsStashTabHidden:(BOOL)hidden left:(BOOL)left springSettings:(id)settings completion:(id)completion;
+- (void)containerViewControllerDidEndSizeChange:(id)change;
+- (void)containerViewControllerWillBeginSizeChange:(id)change behavior:(int)behavior;
 - (void)dealloc;
 - (void)invalidate;
-- (void)layoutSubviewsForContainerViewController:(id)a3;
-- (void)loadSubviewsForContainerViewController:(id)a3;
+- (void)layoutSubviewsForContainerViewController:(id)controller;
+- (void)loadSubviewsForContainerViewController:(id)controller;
 - (void)notePictureInPictureViewControllerPrefersHiddenFromClonedDisplayDidChange;
 - (void)notePictureInPictureViewControllerTetheringDidUpdate;
-- (void)performRotateAnimationWithRotation:(int64_t)a3 completionHandler:(id)a4;
-- (void)performStartAnimationWithCompletionHandler:(id)a3;
-- (void)performStartInIsolationWithCompletionHandler:(id)a3;
-- (void)performStopAnimationWithFinalInterfaceOrientation:(int64_t)a3 finalLayerFrame:(CGRect)a4 completionHandler:(id)a5;
-- (void)performStopInIsolationWithCompletionHandler:(id)a3;
+- (void)performRotateAnimationWithRotation:(int64_t)rotation completionHandler:(id)handler;
+- (void)performStartAnimationWithCompletionHandler:(id)handler;
+- (void)performStartInIsolationWithCompletionHandler:(id)handler;
+- (void)performStopAnimationWithFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler;
+- (void)performStopInIsolationWithCompletionHandler:(id)handler;
 - (void)pictureInPictureClientDidRequestStashing;
 - (void)preferredContentSizeDidChangeForPictureInPictureViewController;
-- (void)prepareStartAnimationWithInitialInterfaceOrientation:(int64_t)a3 initialLayerFrame:(CGRect)a4 completionHandler:(id)a5;
+- (void)prepareStartAnimationWithInitialInterfaceOrientation:(int64_t)orientation initialLayerFrame:(CGRect)frame completionHandler:(id)handler;
 - (void)relinquishInterfaceOrientationLock;
-- (void)setContainerViewController:(id)a3;
-- (void)stashTabVisibilityPolicyProviderDidUpdatePolicy:(id)a3;
+- (void)setContainerViewController:(id)controller;
+- (void)stashTabVisibilityPolicyProviderDidUpdatePolicy:(id)policy;
 @end
 
 @implementation SBPIPPegasusContainerAdapter
 
-- (SBPIPPegasusContainerAdapter)initWithPictureInPictureViewController:(id)a3
+- (SBPIPPegasusContainerAdapter)initWithPictureInPictureViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SBPIPPegasusContainerAdapter;
   v6 = [(SBPIPPegasusContainerAdapter *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pictureInPictureViewController, a3);
+    objc_storeStrong(&v6->_pictureInPictureViewController, controller);
     [(PGPictureInPictureViewController *)v7->_pictureInPictureViewController setContentContainer:v7];
-    v8 = +[SBPIPContentViewLayoutMetrics pegasusMetricsForContentType:](SBPIPContentViewLayoutMetrics, "pegasusMetricsForContentType:", [v5 contentType]);
+    v8 = +[SBPIPContentViewLayoutMetrics pegasusMetricsForContentType:](SBPIPContentViewLayoutMetrics, "pegasusMetricsForContentType:", [controllerCopy contentType]);
     [v8 minimumStashedTabSize];
     v7->_minimumStashTabSize.width = v9;
     v7->_minimumStashTabSize.height = v10;
@@ -67,19 +67,19 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBPIPPegasusContainerAdapter.m" lineNumber:94 description:{@"Attempting to dealloc %@ without invalidating.", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBPIPPegasusContainerAdapter.m" lineNumber:94 description:{@"Attempting to dealloc %@ without invalidating.", a2}];
 }
 
 - (void)invalidate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBPIPPegasusContainerAdapter.m" lineNumber:101 description:@"Attempting to -invalidate twice; this is unsupported."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBPIPPegasusContainerAdapter.m" lineNumber:101 description:@"Attempting to -invalidate twice; this is unsupported."];
 }
 
-- (void)setContainerViewController:(id)a3
+- (void)setContainerViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
 
   if (WeakRetained != obj)
@@ -92,27 +92,27 @@
   }
 }
 
-- (void)loadSubviewsForContainerViewController:(id)a3
+- (void)loadSubviewsForContainerViewController:(id)controller
 {
-  [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setMinimumStashTabSize:a3, self->_minimumStashTabSize.width, self->_minimumStashTabSize.height];
+  [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setMinimumStashTabSize:controller, self->_minimumStashTabSize.width, self->_minimumStashTabSize.height];
 
   [(SBPIPPegasusContainerAdapter *)self _reloadMenuButton];
 }
 
-- (void)layoutSubviewsForContainerViewController:(id)a3
+- (void)layoutSubviewsForContainerViewController:(id)controller
 {
-  v17 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController tetheringViewController];
-  v4 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController tetheringMode];
-  v5 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController view];
-  [v5 bounds];
+  tetheringViewController = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController tetheringViewController];
+  tetheringMode = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController tetheringMode];
+  view = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  if (v17)
+  if (tetheringViewController)
   {
-    if (v4 != 1)
+    if (tetheringMode != 1)
     {
       goto LABEL_8;
     }
@@ -144,36 +144,36 @@
 LABEL_8:
 }
 
-- (id)bundleIdentifierForContainerViewController:(id)a3
+- (id)bundleIdentifierForContainerViewController:(id)controller
 {
-  v3 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController application];
-  v4 = [v3 bundleIdentifier];
+  application = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  return v4;
+  return bundleIdentifier;
 }
 
-- (int)processIdentifierForContainerViewController:(id)a3
+- (int)processIdentifierForContainerViewController:(id)controller
 {
-  v3 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController application];
-  v4 = [v3 processIdentifier];
+  application = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController application];
+  processIdentifier = [application processIdentifier];
 
-  return v4;
+  return processIdentifier;
 }
 
-- (void)containerViewController:(id)a3 didUpdateStashState:(BOOL)a4 springSettings:(id)a5
+- (void)containerViewController:(id)controller didUpdateStashState:(BOOL)state springSettings:(id)settings
 {
-  v5 = a4;
-  v7 = a5;
-  [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setStashed:v5];
-  if (!v5)
+  stateCopy = state;
+  settingsCopy = settings;
+  [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setStashed:stateCopy];
+  if (!stateCopy)
   {
-    [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setStashTabHidden:1 left:0 withSpringBehavior:v7];
+    [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setStashTabHidden:1 left:0 withSpringBehavior:settingsCopy];
   }
 
   [(SBPIPPegasusContainerAdapter *)self _createOrInvalidateStashTabVisibilityPolicyProvider];
 }
 
-- (void)containerViewControllerWillBeginSizeChange:(id)a3 behavior:(int)a4
+- (void)containerViewControllerWillBeginSizeChange:(id)change behavior:(int)behavior
 {
   if (!self->_isChangingSize)
   {
@@ -181,19 +181,19 @@ LABEL_8:
     [(PGPictureInPictureViewController *)self->_pictureInPictureViewController hostedWindowSizeChangeBegan];
     pictureInPictureViewController = self->_pictureInPictureViewController;
 
-    [(PGPictureInPictureViewController *)pictureInPictureViewController setInteractivelyResizing:a4 != 0];
+    [(PGPictureInPictureViewController *)pictureInPictureViewController setInteractivelyResizing:behavior != 0];
   }
 }
 
-- (void)containerViewControllerDidEndSizeChange:(id)a3
+- (void)containerViewControllerDidEndSizeChange:(id)change
 {
   if (self->_isChangingSize)
   {
     self->_isChangingSize = 0;
     [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setInteractivelyResizing:0];
     pictureInPictureViewController = self->_pictureInPictureViewController;
-    v6 = [(PGPictureInPictureViewController *)pictureInPictureViewController view];
-    [v6 bounds];
+    view = [(PGPictureInPictureViewController *)pictureInPictureViewController view];
+    [view bounds];
     [(PGPictureInPictureViewController *)pictureInPictureViewController updateHostedWindowSize:v7, v8];
 
     v9 = self->_pictureInPictureViewController;
@@ -202,24 +202,24 @@ LABEL_8:
   }
 }
 
-- (void)containerViewController:(id)a3 wantsStashTabHidden:(BOOL)a4 left:(BOOL)a5 springSettings:(id)a6 completion:(id)a7
+- (void)containerViewController:(id)controller wantsStashTabHidden:(BOOL)hidden left:(BOOL)left springSettings:(id)settings completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
-  [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setStashTabHidden:v9 left:v8 withSpringBehavior:a6];
-  v11 = v12;
-  if (v12)
+  leftCopy = left;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setStashTabHidden:hiddenCopy left:leftCopy withSpringBehavior:settings];
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    (*(v12 + 2))(v12);
-    v11 = v12;
+    (*(completionCopy + 2))(completionCopy);
+    v11 = completionCopy;
   }
 }
 
 - (void)notePictureInPictureViewControllerTetheringDidUpdate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBPIPPegasusContainerAdapter.m" lineNumber:258 description:@"SBPIPController was expected"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBPIPPegasusContainerAdapter.m" lineNumber:258 description:@"SBPIPController was expected"];
 }
 
 - (void)preferredContentSizeDidChangeForPictureInPictureViewController
@@ -229,27 +229,27 @@ LABEL_8:
   [WeakRetained updatePreferredContentSize:?];
 }
 
-- (void)prepareStartAnimationWithInitialInterfaceOrientation:(int64_t)a3 initialLayerFrame:(CGRect)a4 completionHandler:(id)a5
+- (void)prepareStartAnimationWithInitialInterfaceOrientation:(int64_t)orientation initialLayerFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained startAnimationWillBeginWithInitialInterfaceOrientation:a3 initialFrame:{x, y, width, height}];
+  [WeakRetained startAnimationWillBeginWithInitialInterfaceOrientation:orientation initialFrame:{x, y, width, height}];
 
-  v11[2](v11);
+  handlerCopy[2](handlerCopy);
 
   [(SBPIPPegasusContainerAdapter *)self _acquireVisibilityAssertionIfNeeded];
 }
 
-- (void)performStartAnimationWithCompletionHandler:(id)a3
+- (void)performStartAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(SBPIPPegasusContainerAdapter *)self _acquireVisibilityAssertionIfNeeded];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v6 = [WeakRetained windowInterfaceOrientation];
+  windowInterfaceOrientation = [WeakRetained windowInterfaceOrientation];
   [WeakRetained startShowingContentWithAnimationSettings:0 parameters:0 completion:{0.0, 0.0, 0.0}];
   v7 = MEMORY[0x277D38BF0];
   v14[0] = MEMORY[0x277D85DD0];
@@ -257,16 +257,16 @@ LABEL_8:
   v14[2] = __75__SBPIPPegasusContainerAdapter_performStartAnimationWithCompletionHandler___block_invoke;
   v14[3] = &unk_2783A8BC8;
   v15 = WeakRetained;
-  v16 = v6;
+  v16 = windowInterfaceOrientation;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__SBPIPPegasusContainerAdapter_performStartAnimationWithCompletionHandler___block_invoke_2;
   v10[3] = &unk_2783C1938;
   v11 = v15;
-  v12 = v4;
-  v13 = v6;
+  v12 = handlerCopy;
+  v13 = windowInterfaceOrientation;
   v8 = v15;
-  v9 = v4;
+  v9 = handlerCopy;
   [v7 animateViewWithAnimationType:0 initialSpringVelocity:v14 animations:v10 completion:0.0];
 }
 
@@ -279,36 +279,36 @@ uint64_t __75__SBPIPPegasusContainerAdapter_performStartAnimationWithCompletionH
   return [v2 startAnimationDidCompleteWithInitialInterfaceOrientation:v3];
 }
 
-- (void)performStartInIsolationWithCompletionHandler:(id)a3
+- (void)performStartInIsolationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(SBPIPPegasusContainerAdapter *)self _acquireVisibilityAssertionIfNeeded];
   [(PGPictureInPictureViewController *)self->_pictureInPictureViewController showChrome:1 animated:0];
   v5 = +[SBPIPSettingsDomain rootSettings];
-  v6 = [v5 fadeInOutSettings];
-  v16 = [v6 fadeInOutAnimationSettings];
+  fadeInOutSettings = [v5 fadeInOutSettings];
+  fadeInOutAnimationSettings = [fadeInOutSettings fadeInOutAnimationSettings];
 
   v7 = +[SBPIPSettingsDomain rootSettings];
-  v8 = [v7 fadeInOutSettings];
-  [v8 fadeInInitialValues];
+  fadeInOutSettings2 = [v7 fadeInOutSettings];
+  [fadeInOutSettings2 fadeInInitialValues];
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained startShowingContentWithAnimationSettings:v16 parameters:v4 completion:{v10, v12, v14}];
+  [WeakRetained startShowingContentWithAnimationSettings:fadeInOutAnimationSettings parameters:handlerCopy completion:{v10, v12, v14}];
 }
 
-- (void)performStopInIsolationWithCompletionHandler:(id)a3
+- (void)performStopInIsolationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[SBPIPSettingsDomain rootSettings];
-  v6 = [v5 fadeInOutSettings];
-  v7 = [v6 fadeInOutAnimationSettings];
+  fadeInOutSettings = [v5 fadeInOutSettings];
+  fadeInOutAnimationSettings = [fadeInOutSettings fadeInOutAnimationSettings];
 
   v8 = +[SBPIPSettingsDomain rootSettings];
-  v9 = [v8 fadeInOutSettings];
-  [v9 fadeOutFinalValues];
+  fadeInOutSettings2 = [v8 fadeInOutSettings];
+  [fadeInOutSettings2 fadeOutFinalValues];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -319,9 +319,9 @@ uint64_t __75__SBPIPPegasusContainerAdapter_performStartAnimationWithCompletionH
   v18[2] = __76__SBPIPPegasusContainerAdapter_performStopInIsolationWithCompletionHandler___block_invoke;
   v18[3] = &unk_2783A9878;
   v18[4] = self;
-  v19 = v4;
-  v17 = v4;
-  [WeakRetained stopShowingContentWithAnimationSettings:v7 parameters:v18 completion:{v11, v13, v15}];
+  v19 = handlerCopy;
+  v17 = handlerCopy;
+  [WeakRetained stopShowingContentWithAnimationSettings:fadeInOutAnimationSettings parameters:v18 completion:{v11, v13, v15}];
 }
 
 uint64_t __76__SBPIPPegasusContainerAdapter_performStopInIsolationWithCompletionHandler___block_invoke(uint64_t a1)
@@ -337,51 +337,51 @@ uint64_t __76__SBPIPPegasusContainerAdapter_performStopInIsolationWithCompletion
   return [v3 _invalidateVisibilityAssertion];
 }
 
-- (void)performStopAnimationWithFinalInterfaceOrientation:(int64_t)a3 finalLayerFrame:(CGRect)a4 completionHandler:(id)a5
+- (void)performStopAnimationWithFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v12 = [WeakRetained _sbWindowScene];
+  _sbWindowScene = [WeakRetained _sbWindowScene];
   objc_initWeak(location, self);
   v13 = self->_pictureInPictureViewController;
   v14 = +[SBSceneManagerCoordinator sharedInstance];
-  v15 = [(PGPictureInPictureViewController *)v13 sourceSceneSessionPersistentIdentifier];
-  v16 = [v14 sceneManagerForPersistenceIdentifier:v15];
-  v44 = v12;
-  v45 = v10;
+  sourceSceneSessionPersistentIdentifier = [(PGPictureInPictureViewController *)v13 sourceSceneSessionPersistentIdentifier];
+  v16 = [v14 sceneManagerForPersistenceIdentifier:sourceSceneSessionPersistentIdentifier];
+  v44 = _sbWindowScene;
+  v45 = handlerCopy;
 
-  v17 = [(PGPictureInPictureViewController *)v13 sourceSceneSessionPersistentIdentifier];
-  v18 = [v16 existingSceneHandleForPersistenceIdentifier:v17];
+  sourceSceneSessionPersistentIdentifier2 = [(PGPictureInPictureViewController *)v13 sourceSceneSessionPersistentIdentifier];
+  v18 = [v16 existingSceneHandleForPersistenceIdentifier:sourceSceneSessionPersistentIdentifier2];
   v43 = v16;
 
-  v19 = [v18 sceneIfExists];
-  v20 = [v19 settings];
-  if ([v20 isForeground])
+  sceneIfExists = [v18 sceneIfExists];
+  settings = [sceneIfExists settings];
+  if ([settings isForeground])
   {
-    v21 = [SBApp windowSceneManager];
-    v22 = [v20 displayIdentity];
-    v23 = [v21 windowSceneForDisplayIdentity:v22];
+    windowSceneManager = [SBApp windowSceneManager];
+    displayIdentity = [settings displayIdentity];
+    v23 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-    v42 = [v23 switcherController];
-    v24 = [v18 application];
-    if (([v24 isMedusaCapable] & 1) == 0)
+    switcherController = [v23 switcherController];
+    application = [v18 application];
+    if (([application isMedusaCapable] & 1) == 0)
     {
-      v25 = [v42 windowManagementContext];
-      v26 = [v25 isChamoisOrFlexibleWindowing];
+      windowManagementContext = [switcherController windowManagementContext];
+      isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-      if (!v26)
+      if (!isChamoisOrFlexibleWindowing)
       {
 LABEL_12:
 
         goto LABEL_13;
       }
 
-      v24 = [v42 layoutState];
-      v27 = [v24 appLayout];
+      application = [switcherController layoutState];
+      appLayout = [application appLayout];
       v56 = 0;
       v57 = &v56;
       v58 = 0x2020000000;
@@ -392,23 +392,23 @@ LABEL_12:
       v53[3] = &unk_2783B19C0;
       v54 = v18;
       v55 = &v56;
-      [v27 enumerate:v53];
-      v28 = v27;
+      [appLayout enumerate:v53];
+      v28 = appLayout;
       if (v57[3])
       {
-        v41 = v27;
-        v29 = [(PGPictureInPictureViewController *)v13 view];
-        v30 = [v29 window];
+        v41 = appLayout;
+        view = [(PGPictureInPictureViewController *)v13 view];
+        window = [view window];
 
-        v31 = a3;
-        v32 = v30;
+        orientationCopy = orientation;
+        v32 = window;
         v28 = v41;
-        if (!a3)
+        if (!orientation)
         {
-          v31 = [v32 interfaceOrientation];
+          orientationCopy = [v32 interfaceOrientation];
         }
 
-        [v42 frameForItemWithRole:v57[3] inMainAppLayout:v41 interfaceOrientation:v31];
+        [switcherController frameForItemWithRole:v57[3] inMainAppLayout:v41 interfaceOrientation:orientationCopy];
         [v32 _convertRectToSceneReferenceSpace:?];
         x = v33;
         y = v34;
@@ -435,7 +435,7 @@ LABEL_13:
   v39 = WeakRetained;
   v50 = v39;
   objc_copyWeak(v52, location);
-  v52[1] = a3;
+  v52[1] = orientation;
   v52[2] = *&x;
   v52[3] = *&y;
   v52[4] = *&width;
@@ -494,15 +494,15 @@ void __116__SBPIPPegasusContainerAdapter_performStopAnimationWithFinalInterfaceO
   [WeakRetained _invalidateVisibilityAssertion];
 }
 
-- (void)_performStopAnimationWithFinalInterfaceOrientation:(int64_t)a3 finalLayerFrame:(CGRect)a4 completionHandler:(id)a5
+- (void)_performStopAnimationWithFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained stopAnimationWillBeginWithFinalInterfaceOrientation:a3 finalFrame:{x, y, width, height}];
+  [WeakRetained stopAnimationWillBeginWithFinalInterfaceOrientation:orientation finalFrame:{x, y, width, height}];
   objc_initWeak(&location, self);
   v13 = MEMORY[0x277D38BF0];
   v20[0] = MEMORY[0x277D85DD0];
@@ -510,7 +510,7 @@ void __116__SBPIPPegasusContainerAdapter_performStopAnimationWithFinalInterfaceO
   v20[2] = __117__SBPIPPegasusContainerAdapter__performStopAnimationWithFinalInterfaceOrientation_finalLayerFrame_completionHandler___block_invoke;
   v20[3] = &unk_2783AE700;
   v21 = WeakRetained;
-  v22 = a3;
+  orientationCopy = orientation;
   v23 = x;
   v24 = y;
   v25 = width;
@@ -519,11 +519,11 @@ void __116__SBPIPPegasusContainerAdapter_performStopAnimationWithFinalInterfaceO
   v16[1] = 3221225472;
   v16[2] = __117__SBPIPPegasusContainerAdapter__performStopAnimationWithFinalInterfaceOrientation_finalLayerFrame_completionHandler___block_invoke_2;
   v16[3] = &unk_2783C19B0;
-  v14 = v11;
+  v14 = handlerCopy;
   v18 = v14;
   v15 = v21;
   v17 = v15;
-  v19[1] = a3;
+  v19[1] = orientation;
   objc_copyWeak(v19, &location);
   [v13 animateViewWithAnimationType:0 initialSpringVelocity:v20 animations:v16 completion:0.0];
   objc_destroyWeak(v19);
@@ -542,31 +542,31 @@ void __117__SBPIPPegasusContainerAdapter__performStopAnimationWithFinalInterface
   }
 }
 
-- (void)performRotateAnimationWithRotation:(int64_t)a3 completionHandler:(id)a4
+- (void)performRotateAnimationWithRotation:(int64_t)rotation completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  if ((a3 - 1) >= 3)
+  if ((rotation - 1) >= 3)
   {
-    v8 = 0;
+    rotationCopy = 0;
   }
 
   else
   {
-    v8 = a3;
+    rotationCopy = rotation;
   }
 
-  v9 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController view];
-  [v9 frame];
+  view = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController view];
+  [view frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  [WeakRetained rotationAnimationWillBeginToRotation:v8 contentViewFrame:{v11, v13, v15, v17}];
+  [WeakRetained rotationAnimationWillBeginToRotation:rotationCopy contentViewFrame:{v11, v13, v15, v17}];
   v18 = +[SBPIPSettingsDomain rootSettings];
-  v19 = [v18 interactionSettings];
-  v20 = [v19 rotationFluidBehavior];
+  interactionSettings = [v18 interactionSettings];
+  rotationFluidBehavior = [interactionSettings rotationFluidBehavior];
 
   v21 = MEMORY[0x277D75D18];
   v32[0] = MEMORY[0x277D85DD0];
@@ -574,7 +574,7 @@ void __117__SBPIPPegasusContainerAdapter__performStopAnimationWithFinalInterface
   v32[2] = __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_completionHandler___block_invoke;
   v32[3] = &unk_2783AE700;
   v33 = WeakRetained;
-  v34 = v8;
+  v34 = rotationCopy;
   v35 = v11;
   v36 = v13;
   v37 = v15;
@@ -583,16 +583,16 @@ void __117__SBPIPPegasusContainerAdapter__performStopAnimationWithFinalInterface
   v24[1] = 3221225472;
   v24[2] = __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_completionHandler___block_invoke_3;
   v24[3] = &unk_2783C19D8;
-  v26 = v6;
-  v27 = v8;
+  v26 = handlerCopy;
+  v27 = rotationCopy;
   v28 = v11;
   v29 = v13;
   v30 = v15;
   v31 = v17;
   v25 = v33;
-  v22 = v6;
+  v22 = handlerCopy;
   v23 = v33;
-  [v21 _animateUsingSpringBehavior:v20 tracking:1 animations:v32 completion:v24];
+  [v21 _animateUsingSpringBehavior:rotationFluidBehavior tracking:1 animations:v32 completion:v24];
 }
 
 void __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_completionHandler___block_invoke(uint64_t a1)
@@ -647,18 +647,18 @@ uint64_t __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_c
 - (BOOL)handleDoubleTapGesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained toggleUserPreferredScale];
+  toggleUserPreferredScale = [WeakRetained toggleUserPreferredScale];
 
-  return v3;
+  return toggleUserPreferredScale;
 }
 
 - (BOOL)handleTapWhileStashedGesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained setStashed:0];
-  v3 = [WeakRetained isStashed];
+  isStashed = [WeakRetained isStashed];
 
-  return v3 ^ 1;
+  return isStashed ^ 1;
 }
 
 - (void)notePictureInPictureViewControllerPrefersHiddenFromClonedDisplayDidChange
@@ -696,8 +696,8 @@ uint64_t __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_c
 
   else if ([(PGPictureInPictureViewController *)self->_pictureInPictureViewController contentType]== 4)
   {
-    v5 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController application];
-    v6 = [v5 bundleIdentifier];
+    application = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController application];
+    bundleIdentifier = [application bundleIdentifier];
     v3 = BSEqualStrings() ^ 1;
   }
 
@@ -711,9 +711,9 @@ uint64_t __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_c
 
 - (id)debugName
 {
-  v2 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController contentType];
+  contentType = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController contentType];
 
-  return SBStringFromPGPlaybackStateContentType(v2);
+  return SBStringFromPGPlaybackStateContentType(contentType);
 }
 
 - (id)defaultPositionHyperregionComposers
@@ -745,19 +745,19 @@ uint64_t __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_c
   return v5;
 }
 
-- (id)systemPointerInteractionManagerForInteractionController:(id)a3
+- (id)systemPointerInteractionManagerForInteractionController:(id)controller
 {
-  v3 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController _sbWindowScene];
-  v4 = [v3 systemPointerInteractionManager];
+  _sbWindowScene = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController _sbWindowScene];
+  systemPointerInteractionManager = [_sbWindowScene systemPointerInteractionManager];
 
-  return v4;
+  return systemPointerInteractionManager;
 }
 
-- (UIEdgeInsets)interactionController:(id)a3 edgeInsetsForWindowScene:(id)a4
+- (UIEdgeInsets)interactionController:(id)controller edgeInsetsForWindowScene:(id)scene
 {
-  v5 = a4;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained effectiveEdgeInsetsForWindowScene:v5];
+  [WeakRetained effectiveEdgeInsetsForWindowScene:sceneCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -774,7 +774,7 @@ uint64_t __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_c
   return result;
 }
 
-- (UIEdgeInsets)interactionController:(id)a3 stashedPaddingForWindowScene:(id)a4
+- (UIEdgeInsets)interactionController:(id)controller stashedPaddingForWindowScene:(id)scene
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained stashedPadding];
@@ -794,31 +794,31 @@ uint64_t __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_c
   return result;
 }
 
-- (id)interactionControllerConnectedWindowScenes:(id)a3
+- (id)interactionControllerConnectedWindowScenes:(id)scenes
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [WeakRetained connectedWindowScenes];
+  connectedWindowScenes = [WeakRetained connectedWindowScenes];
 
-  return v4;
+  return connectedWindowScenes;
 }
 
-- (BOOL)shouldPointerInteractionBeginForInteractionController:(id)a3 atLocation:(CGPoint)a4 inView:(id)a5
+- (BOOL)shouldPointerInteractionBeginForInteractionController:(id)controller atLocation:(CGPoint)location inView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController _sbWindowScene];
-  v10 = [v9 pictureInPictureManager];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  _sbWindowScene = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController _sbWindowScene];
+  pictureInPictureManager = [_sbWindowScene pictureInPictureManager];
 
-  if ([v10 isZStackForegroundActive])
+  if ([pictureInPictureManager isZStackForegroundActive])
   {
-    v11 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController view];
-    [v8 convertPoint:v11 toView:{x, y}];
+    view = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController view];
+    [viewCopy convertPoint:view toView:{x, y}];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController view];
-    v17 = [v16 hitTest:0 withEvent:{v13, v15}];
+    view2 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController view];
+    v17 = [view2 hitTest:0 withEvent:{v13, v15}];
     v18 = objc_opt_class();
     v19 = v17;
     if (v18)
@@ -860,25 +860,25 @@ uint64_t __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_c
   return v21;
 }
 
-- (void)stashTabVisibilityPolicyProviderDidUpdatePolicy:(id)a3
+- (void)stashTabVisibilityPolicyProviderDidUpdatePolicy:(id)policy
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  policyCopy = policy;
   v5 = SBLogPIP();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = [v4 stashTabCanBeHidden];
+    v6[1] = [policyCopy stashTabCanBeHidden];
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[provider stashTabCanBeHidden] %{BOOL}u", v6, 8u);
   }
 
-  -[PGPictureInPictureViewController setPrefersStashTabSuppressed:](self->_pictureInPictureViewController, "setPrefersStashTabSuppressed:", [v4 stashTabCanBeHidden]);
+  -[PGPictureInPictureViewController setPrefersStashTabSuppressed:](self->_pictureInPictureViewController, "setPrefersStashTabSuppressed:", [policyCopy stashTabCanBeHidden]);
 }
 
 - (void)_reloadMenuButton
 {
-  v3 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController menuItems];
-  v4 = [v3 count];
+  menuItems = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController menuItems];
+  v4 = [menuItems count];
 
   menuButton = self->_menuButton;
   if (v4)
@@ -890,8 +890,8 @@ uint64_t __85__SBPIPPegasusContainerAdapter_performRotateAnimationWithRotation_c
       self->_menuButton = v6;
     }
 
-    v8 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController menuItems];
-    v12 = [v8 bs_map:&__block_literal_global_395];
+    menuItems2 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController menuItems];
+    v12 = [menuItems2 bs_map:&__block_literal_global_395];
 
     v9 = self->_menuButton;
     v10 = [MEMORY[0x277D75710] menuWithChildren:v12];
@@ -947,16 +947,16 @@ void __49__SBPIPPegasusContainerAdapter__reloadMenuButton__block_invoke_2(uint64
   {
     if (!self->_stashTabVisibilityPolicyProvider)
     {
-      v13 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController _sbWindowScene];
-      v5 = [v13 sceneManager];
-      v6 = [v13 pictureInPictureManager];
-      v7 = v6;
-      if (v5 && v6)
+      _sbWindowScene = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController _sbWindowScene];
+      sceneManager = [_sbWindowScene sceneManager];
+      pictureInPictureManager = [_sbWindowScene pictureInPictureManager];
+      v7 = pictureInPictureManager;
+      if (sceneManager && pictureInPictureManager)
       {
         v8 = [SBPIPStashTabSuppressionPolicyProvider alloc];
-        v9 = [SBApp bannerManager];
-        v10 = [v13 pictureInPictureManager];
-        v11 = [(SBPIPStashTabSuppressionPolicyProvider *)v8 initWithObserver:self bannerManager:v9 windowScene:v13 pipManager:v10];
+        bannerManager = [SBApp bannerManager];
+        pictureInPictureManager2 = [_sbWindowScene pictureInPictureManager];
+        v11 = [(SBPIPStashTabSuppressionPolicyProvider *)v8 initWithObserver:self bannerManager:bannerManager windowScene:_sbWindowScene pipManager:pictureInPictureManager2];
         stashTabVisibilityPolicyProvider = self->_stashTabVisibilityPolicyProvider;
         self->_stashTabVisibilityPolicyProvider = v11;
       }
@@ -981,19 +981,19 @@ void __49__SBPIPPegasusContainerAdapter__reloadMenuButton__block_invoke_2(uint64
   {
     v4 = self->_pictureInPictureViewController;
     v5 = +[SBSceneManagerCoordinator sharedInstance];
-    v6 = [(PGPictureInPictureViewController *)v4 sourceSceneSessionPersistentIdentifier];
-    v17 = [v5 sceneManagerForPersistenceIdentifier:v6];
+    sourceSceneSessionPersistentIdentifier = [(PGPictureInPictureViewController *)v4 sourceSceneSessionPersistentIdentifier];
+    v17 = [v5 sceneManagerForPersistenceIdentifier:sourceSceneSessionPersistentIdentifier];
 
-    v7 = [(PGPictureInPictureViewController *)v4 sourceSceneSessionPersistentIdentifier];
-    v8 = [v17 existingSceneHandleForPersistenceIdentifier:v7];
+    sourceSceneSessionPersistentIdentifier2 = [(PGPictureInPictureViewController *)v4 sourceSceneSessionPersistentIdentifier];
+    v8 = [v17 existingSceneHandleForPersistenceIdentifier:sourceSceneSessionPersistentIdentifier2];
 
-    v9 = [v8 application];
-    v10 = [v9 appProtectionAssistant];
+    application = [v8 application];
+    appProtectionAssistant = [application appProtectionAssistant];
     v11 = MEMORY[0x277CCACA8];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = [v11 stringWithFormat:@"%@ - p", v13, v4];
-    v15 = [v10 acquireVisibilityAssertionForReason:v14];
+    v15 = [appProtectionAssistant acquireVisibilityAssertionForReason:v14];
     visibilityAssertion = self->_visibilityAssertion;
     self->_visibilityAssertion = v15;
   }

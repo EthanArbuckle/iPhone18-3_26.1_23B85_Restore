@@ -1,23 +1,23 @@
 @interface MLPLearningRateDecayHandler
-- (MLPLearningRateDecayHandler)initWithLearningRate:(float)a3 decaySteps:(unint64_t)a4 decayRate:(float)a5 stairCase:(BOOL)a6;
+- (MLPLearningRateDecayHandler)initWithLearningRate:(float)rate decaySteps:(unint64_t)steps decayRate:(float)decayRate stairCase:(BOOL)case;
 - (MLPLearningRateDecayHandlerDelegate)delegate;
 - (void)updateGlobalStep;
 @end
 
 @implementation MLPLearningRateDecayHandler
 
-- (MLPLearningRateDecayHandler)initWithLearningRate:(float)a3 decaySteps:(unint64_t)a4 decayRate:(float)a5 stairCase:(BOOL)a6
+- (MLPLearningRateDecayHandler)initWithLearningRate:(float)rate decaySteps:(unint64_t)steps decayRate:(float)decayRate stairCase:(BOOL)case
 {
   v11.receiver = self;
   v11.super_class = MLPLearningRateDecayHandler;
   result = [(MLPLearningRateDecayHandler *)&v11 init];
   if (result)
   {
-    result->_decaySteps = a4;
-    result->_learningRate = a3;
-    result->_decayRate = a5;
-    result->_stairCase = a6;
-    result->_decayedLearningRate = a3;
+    result->_decaySteps = steps;
+    result->_learningRate = rate;
+    result->_decayRate = decayRate;
+    result->_stairCase = case;
+    result->_decayedLearningRate = rate;
   }
 
   return result;

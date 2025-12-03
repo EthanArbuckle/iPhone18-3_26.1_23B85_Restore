@@ -1,7 +1,7 @@
 @interface MPSGraphExecutionDescriptor
 - (MPSGraphExecutionDescriptor)init;
 - (void)signalEvent:(id)event atExecutionEvent:(MPSGraphExecutionStage)executionStage value:(uint64_t)value;
-- (void)waitForANEPrePowerUpEvent:(id)a3 value:(unint64_t)a4;
+- (void)waitForANEPrePowerUpEvent:(id)event value:(unint64_t)value;
 - (void)waitForEvent:(id)event value:(uint64_t)value;
 @end
 
@@ -45,16 +45,16 @@
   [(NSMutableArray *)self->_waitEvents addObject:v6];
 }
 
-- (void)waitForANEPrePowerUpEvent:(id)a3 value:(unint64_t)a4
+- (void)waitForANEPrePowerUpEvent:(id)event value:(unint64_t)value
 {
-  v7 = a3;
+  eventCopy = event;
   [(NSMutableArray *)self->_anePowerWaitEvents count];
   if ([(NSMutableArray *)self->_anePowerWaitEvents count]&& MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v6 = [[MPSGraphWaitEvent alloc] initWithEvent:v7 value:a4];
+  v6 = [[MPSGraphWaitEvent alloc] initWithEvent:eventCopy value:value];
   [(NSMutableArray *)self->_anePowerWaitEvents addObject:v6];
 }
 

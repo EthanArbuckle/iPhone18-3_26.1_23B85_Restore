@@ -1,6 +1,6 @@
 @interface TSCH3DChartType
 + (NSSet)allAnimationFilters;
-+ (tvec3<float>)adjustedScaleForInfoChartScale:(void *)a3 chartType:(id)a4 barShape:(int)a5;
++ (tvec3<float>)adjustedScaleForInfoChartScale:(void *)scale chartType:(id)type barShape:(int)shape;
 - (BOOL)needsRefinementForInwardLayout;
 - (BOOL)supportsColumnShape;
 - (BOOL)supportsInterSetDepthGap;
@@ -14,24 +14,24 @@
 - (double)minDepthRatio;
 - (double)sageMaxDepthRatio;
 - (double)spiceMaxDepthRatio;
-- (id)animationDeliveryStylesForFilter:(id)a3;
-- (id)animationFiltersWithDefaultFilters:(id)a3;
-- (id)sceneWithChartInfo:(id)a3 layoutSettings:(id *)a4 styleProvidingSource:(id)a5;
+- (id)animationDeliveryStylesForFilter:(id)filter;
+- (id)animationFiltersWithDefaultFilters:(id)filters;
+- (id)sceneWithChartInfo:(id)info layoutSettings:(id *)settings styleProvidingSource:(id)source;
 - (int)deprecated3DBevelEdgesSpecificProperty;
 - (int)deprecated3DShadowSpecificProperty;
 - (int)labelOrientation;
-- (tvec3<float>)adjustedScaleForInfoChartScale:(void *)a3 barShape:(int)a4;
+- (tvec3<float>)adjustedScaleForInfoChartScale:(void *)scale barShape:(int)shape;
 - (unint64_t)depthRatioDimension;
 @end
 
 @implementation TSCH3DChartType
 
-+ (tvec3<float>)adjustedScaleForInfoChartScale:(void *)a3 chartType:(id)a4 barShape:(int)a5
++ (tvec3<float>)adjustedScaleForInfoChartScale:(void *)scale chartType:(id)type barShape:(int)shape
 {
-  v6 = *&a5;
+  v6 = *&shape;
   v8 = v5;
-  v10 = a4;
-  if (!v10)
+  typeCopy = type;
+  if (!typeCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, "+[TSCH3DChartType adjustedScaleForInfoChartScale:chartType:barShape:]");
@@ -41,14 +41,14 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  *v8 = *a3;
-  *(v8 + 8) = *(a3 + 2);
+  *v8 = *scale;
+  *(v8 + 8) = *(scale + 2);
   objc_opt_class();
   v29 = TSUDynamicCast();
   v34 = v29;
   if (v29)
   {
-    objc_msgSend_adjustedScaleForInfoChartScale_barShape_(v29, v30, v31, v32, v33, a3, v6);
+    objc_msgSend_adjustedScaleForInfoChartScale_barShape_(v29, v30, v31, v32, v33, scale, v6);
     *v8 = v37;
     *(v8 + 8) = v38;
   }
@@ -59,15 +59,15 @@
   return result;
 }
 
-- (tvec3<float>)adjustedScaleForInfoChartScale:(void *)a3 barShape:(int)a4
+- (tvec3<float>)adjustedScaleForInfoChartScale:(void *)scale barShape:(int)shape
 {
   v9 = v4;
-  v10 = *a3;
-  *v4 = *a3;
-  LODWORD(v10) = *(a3 + 2);
+  v10 = *scale;
+  *v4 = *scale;
+  LODWORD(v10) = *(scale + 2);
   *(v4 + 8) = LODWORD(v10);
   v11 = objc_msgSend_supportsColumnShape(self, a2, v10, v5, v6);
-  if (a4 == 1 && v11)
+  if (shape == 1 && v11)
   {
     v11 = objc_msgSend_depthRatioDimension(self, v12, v13, v14, v15);
     *(v9 + 8) = *(v9 + 4 * v11);
@@ -79,15 +79,15 @@
   return result;
 }
 
-- (id)animationDeliveryStylesForFilter:(id)a3
+- (id)animationDeliveryStylesForFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v36.receiver = self;
   v36.super_class = TSCH3DChartType;
-  v5 = [(TSCH2DChartType *)&v36 animationDeliveryStylesForFilter:v4];
+  v5 = [(TSCH2DChartType *)&v36 animationDeliveryStylesForFilter:filterCopy];
   v10 = objc_msgSend_mutableCopy(v5, v6, v7, v8, v9);
 
-  if (objc_msgSend_isEqualToString_(v4, v11, v12, v13, v14, *MEMORY[0x277D805A0]))
+  if (objc_msgSend_isEqualToString_(filterCopy, v11, v12, v13, v14, *MEMORY[0x277D805A0]))
   {
     v19 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAB58], v15, v16, v17, v18, 0);
 
@@ -96,7 +96,7 @@
 
   v20 = objc_opt_class();
   v25 = objc_msgSend_allAnimationFilters(v20, v21, v22, v23, v24);
-  v30 = objc_msgSend_containsObject_(v25, v26, v27, v28, v29, v4);
+  v30 = objc_msgSend_containsObject_(v25, v26, v27, v28, v29, filterCopy);
 
   if (v30)
   {
@@ -138,29 +138,29 @@
   return v10;
 }
 
-- (id)sceneWithChartInfo:(id)a3 layoutSettings:(id *)a4 styleProvidingSource:(id)a5
+- (id)sceneWithChartInfo:(id)info layoutSettings:(id *)settings styleProvidingSource:(id)source
 {
-  v8 = a3;
-  v9 = a5;
+  infoCopy = info;
+  sourceCopy = source;
   v14 = objc_msgSend_feature(self, v10, v11, v12, v13);
-  v38 = *a4;
-  v18 = objc_msgSend_initialSceneWithChartInfo_layoutSettings_(v14, v15, *&v38.var0, v16, v17, v8, &v38);
+  v38 = *settings;
+  v18 = objc_msgSend_initialSceneWithChartInfo_layoutSettings_(v14, v15, *&v38.var0, v16, v17, infoCopy, &v38);
 
   v23 = objc_msgSend_defaultSeriesType_(self, v19, v20, v21, v22, 0);
-  v38 = *a4;
-  v27 = objc_msgSend_infoWithScene_chartInfo_chartType_seriesType_layoutSettings_styleProvidingSource_(TSCH3DChartSceneInfo, v24, *&v38.var0, v25, v26, v18, v8, self, v23, &v38, v9);
+  v38 = *settings;
+  v27 = objc_msgSend_infoWithScene_chartInfo_chartType_seriesType_layoutSettings_styleProvidingSource_(TSCH3DChartSceneInfo, v24, *&v38.var0, v25, v26, v18, infoCopy, self, v23, &v38, sourceCopy);
   v32 = objc_msgSend_stageClass(self, v28, v29, v30, v31);
   objc_msgSend_addObjectsToSceneWithSceneInfo_(v32, v33, v34, v35, v36, v27);
 
   return v18;
 }
 
-- (id)animationFiltersWithDefaultFilters:(id)a3
+- (id)animationFiltersWithDefaultFilters:(id)filters
 {
   v4 = MEMORY[0x277CBEB58];
   v21.receiver = self;
   v21.super_class = TSCH3DChartType;
-  v5 = [(TSCHChartType *)&v21 animationFiltersWithDefaultFilters:a3];
+  v5 = [(TSCHChartType *)&v21 animationFiltersWithDefaultFilters:filters];
   v10 = objc_msgSend_setWithSet_(v4, v6, v7, v8, v9, v5);
 
   v15 = objc_msgSend_animationFilters(self, v11, v12, v13, v14);
@@ -175,7 +175,7 @@
   block[1] = 3221225472;
   block[2] = sub_27624C5D8;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A47178 != -1)
   {
     dispatch_once(&qword_280A47178, block);

@@ -1,5 +1,5 @@
 @interface NSCalendar
-+ (NSCalendar)allocWithZone:(_NSZone *)a3;
++ (NSCalendar)allocWithZone:(_NSZone *)zone;
 + (NSCalendar)calendarWithIdentifier:(NSCalendarIdentifier)calendarIdentifierConstant;
 - (BOOL)date:(NSDate *)date matchesComponents:(NSDateComponents *)components;
 - (BOOL)isDate:(NSDate *)date1 equalToDate:(NSDate *)date2 toUnitGranularity:(NSCalendarUnit)unit;
@@ -8,7 +8,7 @@
 - (BOOL)isDateInTomorrow:(NSDate *)date;
 - (BOOL)isDateInWeekend:(NSDate *)date;
 - (BOOL)isDateInYesterday:(NSDate *)date;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)nextWeekendStartDate:(NSDate *)datep interval:(NSTimeInterval *)tip options:(NSCalendarOptions)options afterDate:(NSDate *)date;
 - (BOOL)rangeOfWeekendStartDate:(NSDate *)datep interval:(NSTimeInterval *)tip containingDate:(NSDate *)date;
 - (NSArray)eraSymbols;
@@ -57,7 +57,7 @@
 - (NSUInteger)firstWeekday;
 - (NSUInteger)minimumDaysInFirstWeek;
 - (NSUInteger)ordinalityOfUnit:(NSCalendarUnit)smaller inUnit:(NSCalendarUnit)larger forDate:(NSDate *)date;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)enumerateDatesStartingAfterDate:(NSDate *)start matchingComponents:(NSDateComponents *)comps options:(NSCalendarOptions)opts usingBlock:(void *)block;
 - (void)getEra:(NSInteger *)eraValuePointer year:(NSInteger *)yearValuePointer month:(NSInteger *)monthValuePointer day:(NSInteger *)dayValuePointer fromDate:(NSDate *)date;
@@ -73,36 +73,36 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSCalendar *)self calendarIdentifier];
+  calendarIdentifier = [(NSCalendar *)self calendarIdentifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)calendarIdentifier hash];
 }
 
-+ (NSCalendar)allocWithZone:(_NSZone *)a3
++ (NSCalendar)allocWithZone:(_NSZone *)zone
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (NSCalendar == a1)
+  if (NSCalendar == self)
   {
     v6 = objc_lookUpClass("_NSSwiftCalendar");
     v7 = *MEMORY[0x1E69E9840];
 
-    return [(objc_class *)v6 allocWithZone:a3];
+    return [(objc_class *)v6 allocWithZone:zone];
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NSCalendar;
-    result = objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    result = objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
     v5 = *MEMORY[0x1E69E9840];
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v11) = 1;
   }
@@ -112,33 +112,33 @@
     v15 = v5;
     v16 = v4;
     v17 = v3;
-    if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+    if (!equal || (objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_19;
     }
 
-    LODWORD(v11) = -[NSString isEqual:](-[NSCalendar calendarIdentifier](self, "calendarIdentifier"), "isEqual:", [a3 calendarIdentifier]);
+    LODWORD(v11) = -[NSString isEqual:](-[NSCalendar calendarIdentifier](self, "calendarIdentifier"), "isEqual:", [equal calendarIdentifier]);
     if (v11)
     {
-      LODWORD(v11) = -[NSTimeZone isEqual:](-[NSCalendar timeZone](self, "timeZone"), "isEqual:", [a3 timeZone]);
+      LODWORD(v11) = -[NSTimeZone isEqual:](-[NSCalendar timeZone](self, "timeZone"), "isEqual:", [equal timeZone]);
       if (v11)
       {
-        LODWORD(v11) = -[NSLocale isEqual:](-[NSCalendar locale](self, "locale"), "isEqual:", [a3 locale]);
+        LODWORD(v11) = -[NSLocale isEqual:](-[NSCalendar locale](self, "locale"), "isEqual:", [equal locale]);
         if (v11)
         {
-          v12 = [(NSCalendar *)self firstWeekday];
-          if (v12 != [a3 firstWeekday])
+          firstWeekday = [(NSCalendar *)self firstWeekday];
+          if (firstWeekday != [equal firstWeekday])
           {
             goto LABEL_19;
           }
 
-          v13 = [(NSCalendar *)self minimumDaysInFirstWeek];
-          if (v13 != [a3 minimumDaysInFirstWeek])
+          minimumDaysInFirstWeek = [(NSCalendar *)self minimumDaysInFirstWeek];
+          if (minimumDaysInFirstWeek != [equal minimumDaysInFirstWeek])
           {
             goto LABEL_19;
           }
 
-          if (-[NSCalendar gregorianStartDate](self, "gregorianStartDate") && [a3 gregorianStartDate])
+          if (-[NSCalendar gregorianStartDate](self, "gregorianStartDate") && [equal gregorianStartDate])
           {
             if (([-[NSCalendar gregorianStartDate](self "gregorianStartDate")] & 1) == 0)
             {
@@ -150,9 +150,9 @@ LABEL_19:
             goto LABEL_17;
           }
 
-          if (!-[NSCalendar gregorianStartDate](self, "gregorianStartDate", v6, v15, v16, v17, v7, v8) || (v11 = [a3 gregorianStartDate]) != 0)
+          if (!-[NSCalendar gregorianStartDate](self, "gregorianStartDate", v6, v15, v16, v17, v7, v8) || (v11 = [equal gregorianStartDate]) != 0)
           {
-            if (!-[NSCalendar gregorianStartDate](self, "gregorianStartDate") && [a3 gregorianStartDate])
+            if (!-[NSCalendar gregorianStartDate](self, "gregorianStartDate") && [equal gregorianStartDate])
             {
               goto LABEL_19;
             }
@@ -168,9 +168,9 @@ LABEL_17:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithCalendarIdentifier:", -[NSCalendar calendarIdentifier](self, "calendarIdentifier")}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithCalendarIdentifier:", -[NSCalendar calendarIdentifier](self, "calendarIdentifier")}];
   [v4 setLocale:{-[NSCalendar locale](self, "locale")}];
   [v4 setTimeZone:{-[NSCalendar timeZone](self, "timeZone")}];
   [v4 setFirstWeekday:{-[NSCalendar firstWeekday](self, "firstWeekday")}];
@@ -181,7 +181,7 @@ LABEL_17:
 
 + (NSCalendar)calendarWithIdentifier:(NSCalendarIdentifier)calendarIdentifierConstant
 {
-  v3 = [[a1 alloc] initWithCalendarIdentifier:calendarIdentifierConstant];
+  v3 = [[self alloc] initWithCalendarIdentifier:calendarIdentifierConstant];
 
   return v3;
 }
@@ -376,10 +376,10 @@ LABEL_17:
 
 - (NSDateComponents)componentsInTimeZone:(NSTimeZone *)timezone fromDate:(NSDate *)date
 {
-  v7 = [(NSCalendar *)self timeZone];
+  timeZone = [(NSCalendar *)self timeZone];
   [(NSCalendar *)self setTimeZone:timezone];
   v8 = [(NSCalendar *)self components:3276542 fromDate:date];
-  [(NSCalendar *)self setTimeZone:v7];
+  [(NSCalendar *)self setTimeZone:timeZone];
   return v8;
 }
 
@@ -467,16 +467,16 @@ LABEL_56:
 
               if (*v22 == 8 && [(NSString *)[(NSCalendar *)self calendarIdentifier] isEqualToString:@"chinese"])
               {
-                v37 = [(NSDateComponents *)v31 isLeapMonth];
-                v38 = [(NSDateComponents *)v32 isLeapMonth];
-                if (!v37 && v38)
+                isLeapMonth = [(NSDateComponents *)v31 isLeapMonth];
+                isLeapMonth2 = [(NSDateComponents *)v32 isLeapMonth];
+                if (!isLeapMonth && isLeapMonth2)
                 {
 LABEL_57:
                   result = NSOrderedAscending;
                   goto LABEL_23;
                 }
 
-                if (!v38 && v37)
+                if (!isLeapMonth2 && isLeapMonth)
                 {
                   goto LABEL_56;
                 }
@@ -806,20 +806,20 @@ LABEL_23:
 
 - (NSDateComponents)components:(NSCalendarUnit)unitFlags fromDateComponents:(NSDateComponents *)startingDateComp toDateComponents:(NSDateComponents *)resultDateComp options:(NSCalendarOptions)options
 {
-  v11 = [(NSDateComponents *)startingDateComp calendar];
-  if (!v11)
+  selfCopy = [(NSDateComponents *)startingDateComp calendar];
+  if (!selfCopy)
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  v12 = [(NSCalendar *)v11 dateFromComponents:startingDateComp];
-  v13 = [(NSDateComponents *)resultDateComp calendar];
-  if (!v13)
+  v12 = [(NSCalendar *)selfCopy dateFromComponents:startingDateComp];
+  selfCopy2 = [(NSDateComponents *)resultDateComp calendar];
+  if (!selfCopy2)
   {
-    v13 = self;
+    selfCopy2 = self;
   }
 
-  v14 = [(NSCalendar *)v13 dateFromComponents:resultDateComp];
+  v14 = [(NSCalendar *)selfCopy2 dateFromComponents:resultDateComp];
 
   return [(NSCalendar *)self components:unitFlags fromDate:v12 toDate:v14 options:options];
 }

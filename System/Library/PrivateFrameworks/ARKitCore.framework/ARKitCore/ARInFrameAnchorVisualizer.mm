@@ -1,6 +1,6 @@
 @interface ARInFrameAnchorVisualizer
 - (ARInFrameAnchorVisualizer)init;
-- (void)drawOriginAndAnchorsOnFrame:(id)a3;
+- (void)drawOriginAndAnchorsOnFrame:(id)frame;
 @end
 
 @implementation ARInFrameAnchorVisualizer
@@ -24,12 +24,12 @@
   return v2;
 }
 
-- (void)drawOriginAndAnchorsOnFrame:(id)a3
+- (void)drawOriginAndAnchorsOnFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 capturedImage];
-  v6 = [(PixelBufferConverter *)self->_inputFormatToBGRAConverter convertPixelBuffer:v5 toFormat:1111970369];
+  capturedImage = [frameCopy capturedImage];
+  v6 = [(PixelBufferConverter *)self->_inputFormatToBGRAConverter convertPixelBuffer:capturedImage toFormat:1111970369];
   v7 = v6;
   if (v6)
   {
@@ -38,17 +38,17 @@
     v16 = __57__ARInFrameAnchorVisualizer_drawOriginAndAnchorsOnFrame___block_invoke;
     v17 = &__block_descriptor_40_e5_v8__0l;
     v18 = v6;
-    v8 = CreateDrawDatasFromFrame(v4);
-    v9 = [v4 camera];
-    DrawOntoPixelBufferBGRA(v7, v8, v9);
+    v8 = CreateDrawDatasFromFrame(frameCopy);
+    camera = [frameCopy camera];
+    DrawOntoPixelBufferBGRA(v7, v8, camera);
 
-    v10 = [(PixelBufferConverter *)self->_bgraToInputFormatConverter convertPixelBuffer:v7 toFormat:CVPixelBufferGetPixelFormatType(v5)];
+    v10 = [(PixelBufferConverter *)self->_bgraToInputFormatConverter convertPixelBuffer:v7 toFormat:CVPixelBufferGetPixelFormatType(capturedImage)];
     if (v10)
     {
       v12 = __57__ARInFrameAnchorVisualizer_drawOriginAndAnchorsOnFrame___block_invoke_2;
       v13 = &__block_descriptor_40_e5_v8__0l;
       v14 = v10;
-      [v4 setCapturedImage:{MEMORY[0x1E69E9820], 3221225472}];
+      [frameCopy setCapturedImage:{MEMORY[0x1E69E9820], 3221225472}];
       v12(&v11);
     }
 

@@ -1,34 +1,34 @@
 @interface FAProfileViewTableViewDecorator
-+ (BOOL)_shouldShowInSection:(id)a3;
-+ (BOOL)shouldShowInPage:(id)a3;
-- (FAProfileViewTableViewDecorator)initWithTableView:(id)a3 ruiTableView:(id)a4 forPerson:(id)a5 pictureStore:(id)a6;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_getOrCreateProfileViewForCell:(id)a3;
-- (id)_profileViewForCell:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_addProfileViewToCell:(id)a3;
-- (void)_removeProfileViewFromCell:(id)a3;
++ (BOOL)_shouldShowInSection:(id)section;
++ (BOOL)shouldShowInPage:(id)page;
+- (FAProfileViewTableViewDecorator)initWithTableView:(id)view ruiTableView:(id)tableView forPerson:(id)person pictureStore:(id)store;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_getOrCreateProfileViewForCell:(id)cell;
+- (id)_profileViewForCell:(id)cell;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_addProfileViewToCell:(id)cell;
+- (void)_removeProfileViewFromCell:(id)cell;
 @end
 
 @implementation FAProfileViewTableViewDecorator
 
-- (FAProfileViewTableViewDecorator)initWithTableView:(id)a3 ruiTableView:(id)a4 forPerson:(id)a5 pictureStore:(id)a6
+- (FAProfileViewTableViewDecorator)initWithTableView:(id)view ruiTableView:(id)tableView forPerson:(id)person pictureStore:(id)store
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tableViewCopy = tableView;
+  personCopy = person;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = FAProfileViewTableViewDecorator;
-  v14 = [(FATableViewDecorator *)&v19 initWithTableView:a3];
+  v14 = [(FATableViewDecorator *)&v19 initWithTableView:view];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pictureStore, a6);
-    objc_storeStrong(&v15->_familyMember, a5);
-    objc_storeStrong(&v15->_remoteTableViewController, a4);
+    objc_storeStrong(&v14->_pictureStore, store);
+    objc_storeStrong(&v15->_familyMember, person);
+    objc_storeStrong(&v15->_remoteTableViewController, tableView);
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
     profileViewForCells = v15->_profileViewForCells;
     v15->_profileViewForCells = v16;
@@ -37,20 +37,20 @@
   return v15;
 }
 
-+ (BOOL)shouldShowInPage:(id)a3
++ (BOOL)shouldShowInPage:(id)page
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasTableView])
+  pageCopy = page;
+  if ([pageCopy hasTableView])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v4 tableViewOM];
-    v6 = [v5 sections];
+    tableViewOM = [pageCopy tableViewOM];
+    sections = [tableViewOM sections];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [sections countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -61,17 +61,17 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(sections);
           }
 
-          if ([a1 _shouldShowInSection:*(*(&v14 + 1) + 8 * i)])
+          if ([self _shouldShowInSection:*(*(&v14 + 1) + 8 * i)])
           {
             v11 = 1;
             goto LABEL_13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [sections countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -94,15 +94,15 @@ LABEL_13:
   return v11;
 }
 
-+ (BOOL)_shouldShowInSection:(id)a3
++ (BOOL)_shouldShowInSection:(id)section
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 rows];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  rows = [section rows];
+  v4 = [rows countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -113,11 +113,11 @@ LABEL_13:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rows);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * i) attributes];
-        v9 = [v8 objectForKeyedSubscript:@"familyAction"];
+        attributes = [*(*(&v14 + 1) + 8 * i) attributes];
+        v9 = [attributes objectForKeyedSubscript:@"familyAction"];
         v10 = [v9 isEqual:@"InjectProfileView"];
 
         if (v10)
@@ -127,7 +127,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [rows countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -144,44 +144,44 @@ LABEL_11:
   return v11;
 }
 
-- (id)_profileViewForCell:(id)a3
+- (id)_profileViewForCell:(id)cell
 {
-  v4 = [(FAProfileViewTableViewDecorator *)self _keyForCell:a3];
+  v4 = [(FAProfileViewTableViewDecorator *)self _keyForCell:cell];
   v5 = [(NSMutableDictionary *)self->_profileViewForCells objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)_getOrCreateProfileViewForCell:(id)a3
+- (id)_getOrCreateProfileViewForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(FAProfileViewTableViewDecorator *)self _profileViewForCell:v4];
+  cellCopy = cell;
+  v5 = [(FAProfileViewTableViewDecorator *)self _profileViewForCell:cellCopy];
 
   if (v5)
   {
-    v6 = [(FAProfileViewTableViewDecorator *)self _profileViewForCell:v4];
+    v6 = [(FAProfileViewTableViewDecorator *)self _profileViewForCell:cellCopy];
     goto LABEL_18;
   }
 
   v7 = MEMORY[0x277D755B8];
   v8 = [(FAProfilePictureStore *)self->_pictureStore profilePictureForFamilyMember:self->_familyMember pictureDiameter:60.0];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v10 = [v7 imageWithData:v8 scale:?];
 
-  v11 = [(FAFamilyMember *)self->_familyMember fullName];
-  v12 = v11;
-  if (v11)
+  fullName = [(FAFamilyMember *)self->_familyMember fullName];
+  v12 = fullName;
+  if (fullName)
   {
-    v13 = v11;
+    v13 = fullName;
   }
 
   else
   {
-    v14 = [(FAFamilyMember *)self->_familyMember appleID];
+    appleID = [(FAFamilyMember *)self->_familyMember appleID];
 
     familyMember = self->_familyMember;
-    if (v14)
+    if (appleID)
     {
       [(FAFamilyMember *)familyMember appleID];
     }
@@ -194,18 +194,18 @@ LABEL_11:
   }
 
   v16 = v13;
-  v17 = [MEMORY[0x277CCA968] fa_standardFormatter];
-  [v17 setFormattingContext:5];
-  v18 = [(FAFamilyMember *)self->_familyMember joinedDate];
+  fa_standardFormatter = [MEMORY[0x277CCA968] fa_standardFormatter];
+  [fa_standardFormatter setFormattingContext:5];
+  joinedDate = [(FAFamilyMember *)self->_familyMember joinedDate];
 
   v19 = self->_familyMember;
-  if (v18)
+  if (joinedDate)
   {
-    v20 = [(FAFamilyMember *)v19 joinedDate];
-    v21 = [v17 stringFromDate:v20];
+    joinedDate2 = [(FAFamilyMember *)v19 joinedDate];
+    v21 = [fa_standardFormatter stringFromDate:joinedDate2];
 
-    v22 = [(FAFamilyMember *)self->_familyMember joinedDate];
-    v23 = [v22 isDateRelative];
+    joinedDate3 = [(FAFamilyMember *)self->_familyMember joinedDate];
+    isDateRelative = [joinedDate3 isDateRelative];
 
     v24 = MEMORY[0x277CCACA8];
     v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -213,7 +213,7 @@ LABEL_11:
     v27 = @"JOINED_DATE_ABSOLUTE";
     v28 = @"JOINED_DATE_RELATIVE";
 LABEL_13:
-    if (v23)
+    if (isDateRelative)
     {
       v32 = v28;
     }
@@ -229,15 +229,15 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v29 = [(FAFamilyMember *)v19 invitationDate];
+  invitationDate = [(FAFamilyMember *)v19 invitationDate];
 
-  if (v29)
+  if (invitationDate)
   {
-    v30 = [(FAFamilyMember *)self->_familyMember invitationDate];
-    v21 = [v17 stringFromDate:v30];
+    invitationDate2 = [(FAFamilyMember *)self->_familyMember invitationDate];
+    v21 = [fa_standardFormatter stringFromDate:invitationDate2];
 
-    v31 = [(FAFamilyMember *)self->_familyMember invitationDate];
-    v23 = [v31 isDateRelative];
+    invitationDate3 = [(FAFamilyMember *)self->_familyMember invitationDate];
+    isDateRelative = [invitationDate3 isDateRelative];
 
     v24 = MEMORY[0x277CCACA8];
     v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -252,7 +252,7 @@ LABEL_13:
 LABEL_17:
 
   v6 = [objc_alloc(MEMORY[0x277CECA98]) initWithName:v16 email:v34 image:v10];
-  v35 = [(FAProfileViewTableViewDecorator *)self _keyForCell:v4];
+  v35 = [(FAProfileViewTableViewDecorator *)self _keyForCell:cellCopy];
   [(NSMutableDictionary *)self->_profileViewForCells setObject:v6 forKeyedSubscript:v35];
 
 LABEL_18:
@@ -260,11 +260,11 @@ LABEL_18:
   return v6;
 }
 
-- (void)_addProfileViewToCell:(id)a3
+- (void)_addProfileViewToCell:(id)cell
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FAProfileViewTableViewDecorator *)self _profileViewForCell:v4];
+  cellCopy = cell;
+  v5 = [(FAProfileViewTableViewDecorator *)self _profileViewForCell:cellCopy];
   v6 = _FALogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
   if (v5)
@@ -282,31 +282,31 @@ LABEL_18:
       [FAProfileViewTableViewDecorator _addProfileViewToCell:v6];
     }
 
-    v6 = [(FAProfileViewTableViewDecorator *)self _getOrCreateProfileViewForCell:v4];
-    v8 = [v4 contentView];
-    [v8 addSubview:v6];
+    v6 = [(FAProfileViewTableViewDecorator *)self _getOrCreateProfileViewForCell:cellCopy];
+    contentView = [cellCopy contentView];
+    [contentView addSubview:v6];
 
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     v20 = MEMORY[0x277CCAAD0];
-    v27 = [v4 contentView];
-    v26 = [v27 topAnchor];
-    v25 = [v6 topAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    contentView2 = [cellCopy contentView];
+    topAnchor = [contentView2 topAnchor];
+    topAnchor2 = [v6 topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[0] = v24;
-    v23 = [v4 contentView];
-    v22 = [v23 leftAnchor];
-    v21 = [v6 leftAnchor];
-    v19 = [v22 constraintEqualToAnchor:v21];
+    contentView3 = [cellCopy contentView];
+    leftAnchor = [contentView3 leftAnchor];
+    leftAnchor2 = [v6 leftAnchor];
+    v19 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v28[1] = v19;
-    v18 = [v4 contentView];
-    v17 = [v18 rightAnchor];
-    v9 = [v6 rightAnchor];
-    v10 = [v17 constraintEqualToAnchor:v9];
+    contentView4 = [cellCopy contentView];
+    rightAnchor = [contentView4 rightAnchor];
+    rightAnchor2 = [v6 rightAnchor];
+    v10 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v28[2] = v10;
-    v11 = [v4 contentView];
-    v12 = [v11 bottomAnchor];
-    v13 = [v6 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    contentView5 = [cellCopy contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    bottomAnchor2 = [v6 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[3] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
     [v20 activateConstraints:v15];
@@ -315,26 +315,26 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeProfileViewFromCell:(id)a3
+- (void)_removeProfileViewFromCell:(id)cell
 {
-  v4 = a3;
-  v6 = [(FAProfileViewTableViewDecorator *)self _profileViewForCell:v4];
-  v5 = [(FAProfileViewTableViewDecorator *)self _keyForCell:v4];
+  cellCopy = cell;
+  v6 = [(FAProfileViewTableViewDecorator *)self _profileViewForCell:cellCopy];
+  v5 = [(FAProfileViewTableViewDecorator *)self _keyForCell:cellCopy];
 
   [v6 removeFromSuperview];
   [(NSMutableDictionary *)self->_profileViewForCells setObject:0 forKeyedSubscript:v5];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(FATableViewDecorator *)self delegate];
+  viewCopy = view;
+  delegate = [(FATableViewDecorator *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(FATableViewDecorator *)self delegate];
-    v10 = [v9 tableView:v6 viewForHeaderInSection:a4];
+    delegate2 = [(FATableViewDecorator *)self delegate];
+    v10 = [delegate2 tableView:viewCopy viewForHeaderInSection:section];
   }
 
   else
@@ -345,42 +345,42 @@ LABEL_18:
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(FATableViewDecorator *)self delegate];
+  viewCopy = view;
+  delegate = [(FATableViewDecorator *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(FATableViewDecorator *)self delegate];
-    [v9 tableView:v6 heightForHeaderInSection:a4];
+    delegate2 = [(FATableViewDecorator *)self delegate];
+    [delegate2 tableView:viewCopy heightForHeaderInSection:section];
     v11 = v10;
   }
 
   else
   {
-    [v6 rowHeight];
+    [viewCopy rowHeight];
     v11 = v12;
   }
 
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 || [v6 numberOfRowsInSection:0])
+  viewCopy = view;
+  v7 = viewCopy;
+  if (section || [viewCopy numberOfRowsInSection:0])
   {
-    v8 = [(FATableViewDecorator *)self delegate];
+    delegate = [(FATableViewDecorator *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     v10 = 0.0;
     if (v9)
     {
-      v11 = [(FATableViewDecorator *)self delegate];
-      [v11 tableView:v7 heightForFooterInSection:a4];
+      delegate2 = [(FATableViewDecorator *)self delegate];
+      [delegate2 tableView:v7 heightForFooterInSection:section];
       v10 = v12;
     }
   }
@@ -404,17 +404,17 @@ LABEL_18:
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FATableViewDecorator *)self dataSource];
-  v9 = [v8 tableView:v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(FATableViewDecorator *)self dataSource];
+  v9 = [dataSource tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v10 = [(RUITableView *)self->_remoteTableViewController objectModelRowForIndexPath:v6];
+  v10 = [(RUITableView *)self->_remoteTableViewController objectModelRowForIndexPath:pathCopy];
 
-  v11 = [v10 attributes];
-  v12 = [v11 objectForKeyedSubscript:@"familyAction"];
+  attributes = [v10 attributes];
+  v12 = [attributes objectForKeyedSubscript:@"familyAction"];
 
   if ([v12 isEqualToString:@"InjectProfileView"])
   {
@@ -429,13 +429,13 @@ LABEL_18:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RUITableView *)self->_remoteTableViewController objectModelRowForIndexPath:v7];
-  v9 = [v8 attributes];
-  v10 = [v9 objectForKeyedSubscript:@"familyAction"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(RUITableView *)self->_remoteTableViewController objectModelRowForIndexPath:pathCopy];
+  attributes = [v8 attributes];
+  v10 = [attributes objectForKeyedSubscript:@"familyAction"];
 
   if ([v10 isEqualToString:@"InjectProfileView"])
   {
@@ -445,17 +445,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [(FATableViewDecorator *)self delegate];
+  delegate = [(FATableViewDecorator *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if ((v13 & 1) == 0)
   {
-    [v6 rowHeight];
+    [viewCopy rowHeight];
     goto LABEL_6;
   }
 
-  v14 = [(FATableViewDecorator *)self delegate];
-  [v14 tableView:v6 heightForRowAtIndexPath:v7];
+  delegate2 = [(FATableViewDecorator *)self delegate];
+  [delegate2 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
   v16 = v15;
 
 LABEL_7:

@@ -1,31 +1,31 @@
 @interface DIAudioPowerController
-- (DIAudioPowerController)initWithConnectionManager:(id)a3;
+- (DIAudioPowerController)initWithConnectionManager:(id)manager;
 - (DIAudioPowerControllerDelegate)delegate;
 - (DIXPCConnectionManager)connectionManager;
 - (void)dealloc;
-- (void)didUpdateAudioPower:(float)a3;
-- (void)setDelegate:(id)a3;
-- (void)xpcManagerDidPerformDaemonCheckIn:(id)a3;
+- (void)didUpdateAudioPower:(float)power;
+- (void)setDelegate:(id)delegate;
+- (void)xpcManagerDidPerformDaemonCheckIn:(id)in;
 @end
 
 @implementation DIAudioPowerController
 
-- (DIAudioPowerController)initWithConnectionManager:(id)a3
+- (DIAudioPowerController)initWithConnectionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = DIAudioPowerController;
   v5 = [(DIAudioPowerController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_connectionManager, v4);
-    v8 = [v4 dispatcher];
-    [v8 setAudioPowerDelegate:v6];
+    v7 = objc_storeWeak(&v5->_connectionManager, managerCopy);
+    dispatcher = [managerCopy dispatcher];
+    [dispatcher setAudioPowerDelegate:v6];
 
     WeakRetained = objc_loadWeakRetained(&v6->_connectionManager);
-    v10 = [WeakRetained manager];
-    [v10 addCheckInObserver:v6];
+    manager = [WeakRetained manager];
+    [manager addCheckInObserver:v6];
   }
 
   return v6;
@@ -48,20 +48,20 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v17 = *MEMORY[0x277D85DE8];
-  objc_storeWeak(&self->_delegate, a3);
-  if (a3)
+  objc_storeWeak(&self->_delegate, delegate);
+  if (delegate)
   {
-    v14 = [(DIAudioPowerController *)self connectionManager];
-    v5 = [v14 manager];
-    v6 = [v5 connection];
-    v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
-    v8 = [(DIAudioPowerController *)self connectionManager];
-    v9 = [v8 manager];
-    v10 = [v9 clientContext];
-    [v7 registerAudioPowerWithContext:v10 completionHandler:&__block_literal_global_6];
+    connectionManager = [(DIAudioPowerController *)self connectionManager];
+    manager = [connectionManager manager];
+    connection = [manager connection];
+    v7 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
+    connectionManager2 = [(DIAudioPowerController *)self connectionManager];
+    manager2 = [connectionManager2 manager];
+    clientContext = [manager2 clientContext];
+    [v7 registerAudioPowerWithContext:clientContext completionHandler:&__block_literal_global_6];
 
     v11 = *MEMORY[0x277D85DE8];
   }
@@ -119,40 +119,40 @@ void __38__DIAudioPowerController_setDelegate___block_invoke_4(uint64_t a1, void
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateAudioPower:(float)a3
+- (void)didUpdateAudioPower:(float)power
 {
-  v5 = [(DIAudioPowerController *)self delegate];
+  delegate = [(DIAudioPowerController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DIAudioPowerController *)self connectionManager];
-    v8 = [v7 manager];
-    v9 = [v8 clientQueue];
+    connectionManager = [(DIAudioPowerController *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __46__DIAudioPowerController_didUpdateAudioPower___block_invoke;
     v17[3] = &unk_278FB9098;
     v17[4] = self;
-    v18 = a3;
-    [DIUtilities onQueue:v9 block:v17];
+    powerCopy = power;
+    [DIUtilities onQueue:clientQueue block:v17];
   }
 
-  v10 = [(DIAudioPowerController *)self delegate];
+  delegate2 = [(DIAudioPowerController *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(DIAudioPowerController *)self connectionManager];
-    v13 = [v12 manager];
-    v14 = [v13 clientQueue];
+    connectionManager2 = [(DIAudioPowerController *)self connectionManager];
+    manager2 = [connectionManager2 manager];
+    clientQueue2 = [manager2 clientQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __46__DIAudioPowerController_didUpdateAudioPower___block_invoke_2;
     v15[3] = &unk_278FB9098;
     v15[4] = self;
-    v16 = a3;
-    [DIUtilities onQueue:v14 block:v15];
+    powerCopy2 = power;
+    [DIUtilities onQueue:clientQueue2 block:v15];
   }
 }
 
@@ -170,7 +170,7 @@ void __46__DIAudioPowerController_didUpdateAudioPower___block_invoke_2(uint64_t 
   [v3 controller:*(a1 + 32) didUpdateDownlinkAudioPower:v2];
 }
 
-- (void)xpcManagerDidPerformDaemonCheckIn:(id)a3
+- (void)xpcManagerDidPerformDaemonCheckIn:(id)in
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [(DIAudioPowerController *)self setDelegate:WeakRetained];

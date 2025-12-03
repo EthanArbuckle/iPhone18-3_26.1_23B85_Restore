@@ -1,7 +1,7 @@
 @interface FlexMarker
 - (FlexMarker)init;
-- (FlexMarker)initWithDictionary:(id)a3;
-- (FlexMarker)initWithName:(id)a3 markerID:(int64_t)a4 position:(int64_t)a5;
+- (FlexMarker)initWithDictionary:(id)dictionary;
+- (FlexMarker)initWithName:(id)name markerID:(int64_t)d position:(int64_t)position;
 - (id)description;
 - (id)encodeAsDictionary;
 - (unint64_t)_decodeTypeAndBarsFromName;
@@ -9,14 +9,14 @@
 
 @implementation FlexMarker
 
-- (FlexMarker)initWithName:(id)a3 markerID:(int64_t)a4 position:(int64_t)a5
+- (FlexMarker)initWithName:(id)name markerID:(int64_t)d position:(int64_t)position
 {
-  v9 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = FlexMarker;
   v10 = [(FlexMarker *)&v18 init];
   v11 = v10;
-  if (v10 && (objc_storeStrong(&v10->_name, a3), v11->_markerID = a4, v11->_position = a5, !objc_msgSend__decodeTypeAndBarsFromName(v11, v12, v13, v14, v15)))
+  if (v10 && (objc_storeStrong(&v10->_name, name), v11->_markerID = d, v11->_position = position, !objc_msgSend__decodeTypeAndBarsFromName(v11, v12, v13, v14, v15)))
   {
     v16 = 0;
   }
@@ -29,22 +29,22 @@
   return v16;
 }
 
-- (FlexMarker)initWithDictionary:(id)a3
+- (FlexMarker)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = FlexMarker;
   v8 = [(FlexMarker *)&v32 init];
   if (v8)
   {
-    v9 = objc_msgSend_objectForKey_(v4, v5, @"name", v6, v7);
+    v9 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"name", v6, v7);
     name = v8->_name;
     v8->_name = v9;
 
-    v14 = objc_msgSend_objectForKey_(v4, v11, @"id", v12, v13);
+    v14 = objc_msgSend_objectForKey_(dictionaryCopy, v11, @"id", v12, v13);
     v8->_markerID = objc_msgSend_integerValue(v14, v15, v16, v17, v18);
 
-    v22 = objc_msgSend_objectForKey_(v4, v19, @"position", v20, v21);
+    v22 = objc_msgSend_objectForKey_(dictionaryCopy, v19, @"position", v20, v21);
     v8->_position = objc_msgSend_longLongValue(v22, v23, v24, v25, v26);
 
     objc_msgSend__decodeTypeAndBarsFromName(v8, v27, v28, v29, v30);

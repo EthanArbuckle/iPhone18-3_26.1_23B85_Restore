@@ -11,11 +11,11 @@
 + (id)selectedEffects;
 + (id)selectedEffectsForARDarkStyle;
 + (id)selectedEffectsForDarkModeStyle;
-- (ARCoachingControlBlurredBackgroundView)initWithFrame:(CGRect)a3 backgroundStyle:(int64_t)a4 controlStyle:(int64_t)a5;
-- (void)setControlStyle:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (ARCoachingControlBlurredBackgroundView)initWithFrame:(CGRect)frame backgroundStyle:(int64_t)style controlStyle:(int64_t)controlStyle;
+- (void)setControlStyle:(int64_t)style;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 - (void)updateBackgroundEffects;
 @end
 
@@ -427,57 +427,57 @@ void __73__ARCoachingControlBlurredBackgroundView_selectedEffectsForDarkModeStyl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (ARCoachingControlBlurredBackgroundView)initWithFrame:(CGRect)a3 backgroundStyle:(int64_t)a4 controlStyle:(int64_t)a5
+- (ARCoachingControlBlurredBackgroundView)initWithFrame:(CGRect)frame backgroundStyle:(int64_t)style controlStyle:(int64_t)controlStyle
 {
   v10.receiver = self;
   v10.super_class = ARCoachingControlBlurredBackgroundView;
-  v7 = [(ARCoachingControlBlurredBackgroundView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(ARCoachingControlBlurredBackgroundView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
     v7->_enabled = 1;
     v7->_selected = 0;
     v7->_highlighted = 0;
-    v7->_backgroundStyle = a4;
-    v7->_controlStyle = a5;
+    v7->_backgroundStyle = style;
+    v7->_controlStyle = controlStyle;
     [(ARCoachingControlBlurredBackgroundView *)v7 updateBackgroundEffects];
   }
 
   return v8;
 }
 
-- (void)setControlStyle:(int64_t)a3
+- (void)setControlStyle:(int64_t)style
 {
-  if (self->_controlStyle != a3)
+  if (self->_controlStyle != style)
   {
-    self->_controlStyle = a3;
+    self->_controlStyle = style;
     [(ARCoachingControlBlurredBackgroundView *)self updateBackgroundEffects];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(ARCoachingControlBlurredBackgroundView *)self updateBackgroundEffects];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(ARCoachingControlBlurredBackgroundView *)self updateBackgroundEffects];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(ARCoachingControlBlurredBackgroundView *)self updateBackgroundEffects];
   }
 }
@@ -488,12 +488,12 @@ void __73__ARCoachingControlBlurredBackgroundView_selectedEffectsForDarkModeStyl
   {
     if ([(ARCoachingControlBlurredBackgroundView *)self isHighlighted]|| [(ARCoachingControlBlurredBackgroundView *)self isSelected])
     {
-      v3 = [objc_opt_class() selectedEffectsForARDarkStyle];
+      selectedEffectsForARDarkStyle = [objc_opt_class() selectedEffectsForARDarkStyle];
     }
 
     else
     {
-      v3 = [objc_opt_class() normalEffectsForARDarkStyle];
+      selectedEffectsForARDarkStyle = [objc_opt_class() normalEffectsForARDarkStyle];
     }
   }
 
@@ -501,12 +501,12 @@ void __73__ARCoachingControlBlurredBackgroundView_selectedEffectsForDarkModeStyl
   {
     if ([(ARCoachingControlBlurredBackgroundView *)self isHighlighted]|| [(ARCoachingControlBlurredBackgroundView *)self isSelected])
     {
-      v3 = [objc_opt_class() selectedEffectsForDarkModeStyle];
+      selectedEffectsForARDarkStyle = [objc_opt_class() selectedEffectsForDarkModeStyle];
     }
 
     else
     {
-      v3 = [objc_opt_class() normalEffectsForDarkModeStyle];
+      selectedEffectsForARDarkStyle = [objc_opt_class() normalEffectsForDarkModeStyle];
     }
   }
 
@@ -514,9 +514,9 @@ void __73__ARCoachingControlBlurredBackgroundView_selectedEffectsForDarkModeStyl
   {
     if ([(ARCoachingControlBlurredBackgroundView *)self isSelected]|| [(ARCoachingControlBlurredBackgroundView *)self backgroundStyle]== 1)
     {
-      v4 = [(ARCoachingControlBlurredBackgroundView *)self isEnabled];
+      isEnabled = [(ARCoachingControlBlurredBackgroundView *)self isEnabled];
       v5 = objc_opt_class();
-      if (v4)
+      if (isEnabled)
       {
         [v5 selectedEffects];
       }
@@ -529,12 +529,12 @@ void __73__ARCoachingControlBlurredBackgroundView_selectedEffectsForDarkModeStyl
 
     else if ([(ARCoachingControlBlurredBackgroundView *)self isEnabled])
     {
-      v6 = [(ARCoachingControlBlurredBackgroundView *)self isHighlighted];
-      v7 = [(ARCoachingControlBlurredBackgroundView *)self controlStyle];
+      isHighlighted = [(ARCoachingControlBlurredBackgroundView *)self isHighlighted];
+      controlStyle = [(ARCoachingControlBlurredBackgroundView *)self controlStyle];
       v8 = objc_opt_class();
-      if (v6)
+      if (isHighlighted)
       {
-        if (v7)
+        if (controlStyle)
         {
           [v8 highlightedEffectsForARStyle];
         }
@@ -545,7 +545,7 @@ void __73__ARCoachingControlBlurredBackgroundView_selectedEffectsForDarkModeStyl
         }
       }
 
-      else if (v7)
+      else if (controlStyle)
       {
         [v8 normalEffectsForARStyle];
       }
@@ -558,9 +558,9 @@ void __73__ARCoachingControlBlurredBackgroundView_selectedEffectsForDarkModeStyl
 
     else
     {
-      v9 = [(ARCoachingControlBlurredBackgroundView *)self controlStyle];
+      controlStyle2 = [(ARCoachingControlBlurredBackgroundView *)self controlStyle];
       v10 = objc_opt_class();
-      if (v9)
+      if (controlStyle2)
       {
         [v10 disabledEffectsForARStyle];
       }
@@ -570,11 +570,11 @@ void __73__ARCoachingControlBlurredBackgroundView_selectedEffectsForDarkModeStyl
         [v10 disabledEffectsForStudioStyle];
       }
     }
-    v3 = ;
+    selectedEffectsForARDarkStyle = ;
   }
 
-  v11 = v3;
-  [(ARCoachingControlBlurredBackgroundView *)self setBackgroundEffects:v3];
+  v11 = selectedEffectsForARDarkStyle;
+  [(ARCoachingControlBlurredBackgroundView *)self setBackgroundEffects:selectedEffectsForARDarkStyle];
 }
 
 @end

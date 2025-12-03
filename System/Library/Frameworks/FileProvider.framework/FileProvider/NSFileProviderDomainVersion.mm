@@ -1,37 +1,37 @@
 @interface NSFileProviderDomainVersion
-+ (NSFileProviderDomainVersion)domainVersionWithVersion:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (NSFileProviderDomainVersion)domainVersionWithVersion:(int64_t)version;
+- (BOOL)isEqual:(id)equal;
 - (NSComparisonResult)compare:(NSFileProviderDomainVersion *)otherVersion;
-- (NSFileProviderDomainVersion)initWithCoder:(id)a3;
-- (NSFileProviderDomainVersion)initWithVersion:(int64_t)a3;
+- (NSFileProviderDomainVersion)initWithCoder:(id)coder;
+- (NSFileProviderDomainVersion)initWithVersion:(int64_t)version;
 - (NSFileProviderDomainVersion)next;
 - (unint64_t)hash;
 @end
 
 @implementation NSFileProviderDomainVersion
 
-- (NSFileProviderDomainVersion)initWithVersion:(int64_t)a3
+- (NSFileProviderDomainVersion)initWithVersion:(int64_t)version
 {
   v8.receiver = self;
   v8.super_class = NSFileProviderDomainVersion;
   v5 = [(NSFileProviderDomainVersion *)&v8 init];
   if (v5)
   {
-    if (!a3)
+    if (!version)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:v5 file:@"NSFileProviderDomain.m" lineNumber:44 description:@"Never build a NSFileProviderDomainVersion with version 0"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"NSFileProviderDomain.m" lineNumber:44 description:@"Never build a NSFileProviderDomainVersion with version 0"];
     }
 
-    v5->_version = a3;
+    v5->_version = version;
   }
 
   return v5;
 }
 
-+ (NSFileProviderDomainVersion)domainVersionWithVersion:(int64_t)a3
++ (NSFileProviderDomainVersion)domainVersionWithVersion:(int64_t)version
 {
-  v3 = [[a1 alloc] initWithVersion:a3];
+  v3 = [[self alloc] initWithVersion:version];
 
   return v3;
 }
@@ -103,25 +103,25 @@
   return v10;
 }
 
-- (NSFileProviderDomainVersion)initWithCoder:(id)a3
+- (NSFileProviderDomainVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NSFileProviderDomainVersion;
   v5 = [(NSFileProviderDomainVersion *)&v7 init];
   if (v5)
   {
-    v5->_version = [v4 decodeIntegerForKey:@"_version"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"_version"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_version == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_version == equalCopy[1];
 
   return v5;
 }

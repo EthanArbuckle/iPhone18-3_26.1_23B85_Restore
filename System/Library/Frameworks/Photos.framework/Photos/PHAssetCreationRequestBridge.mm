@@ -1,37 +1,37 @@
 @interface PHAssetCreationRequestBridge
-+ (id)buildAdjustmentsPlistPathForPhotoKitIngestJob:(id)a3 withSourcePath:(id)a4;
-- (BOOL)_executeCreationRequestWithImageJobDict:(id)a3 error:(id *)a4;
-- (BOOL)_executeCreationRequestWithVideoJobDict:(id)a3 error:(id *)a4;
-- (BOOL)_finalizeBurstImage:(id)a3;
-- (BOOL)_handleVideoPreviewImageOnlyJob:(id)a3 previewImageSurface:(__IOSurface *)a4 error:(id *)a5;
-- (id)executeCreationRequestWithBatchJobDictionaries:(id)a3;
-- (id)executeCreationRequestWithJobDict:(id)a3 previewImageSurface:(__IOSurface *)a4;
-- (void)_deleteImageJobFilesWithJobDictionary:(id)a3;
-- (void)_deleteJobFileAtPath:(id)a3 withJobDict:(id)a4;
++ (id)buildAdjustmentsPlistPathForPhotoKitIngestJob:(id)job withSourcePath:(id)path;
+- (BOOL)_executeCreationRequestWithImageJobDict:(id)dict error:(id *)error;
+- (BOOL)_executeCreationRequestWithVideoJobDict:(id)dict error:(id *)error;
+- (BOOL)_finalizeBurstImage:(id)image;
+- (BOOL)_handleVideoPreviewImageOnlyJob:(id)job previewImageSurface:(__IOSurface *)surface error:(id *)error;
+- (id)executeCreationRequestWithBatchJobDictionaries:(id)dictionaries;
+- (id)executeCreationRequestWithJobDict:(id)dict previewImageSurface:(__IOSurface *)surface;
+- (void)_deleteImageJobFilesWithJobDictionary:(id)dictionary;
+- (void)_deleteJobFileAtPath:(id)path withJobDict:(id)dict;
 @end
 
 @implementation PHAssetCreationRequestBridge
 
-- (void)_deleteJobFileAtPath:(id)a3 withJobDict:(id)a4
+- (void)_deleteJobFileAtPath:(id)path withJobDict:(id)dict
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = v7;
-  if (v5)
+  pathCopy = path;
+  dictCopy = dict;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = defaultManager;
+  if (pathCopy)
   {
     v13 = 0;
-    v9 = [v7 removeItemAtPath:v5 error:&v13];
+    v9 = [defaultManager removeItemAtPath:pathCopy error:&v13];
     v10 = v13;
     if ((v9 & 1) == 0 && (PLIsErrorFileNotFound() & 1) == 0)
     {
       v11 = PLPhotoKitIngestGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
+        v12 = [dictCopy objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
         *buf = 138412802;
-        v15 = v5;
+        v15 = pathCopy;
         v16 = 2112;
         v17 = v12;
         v18 = 2112;
@@ -47,50 +47,50 @@
   }
 }
 
-- (void)_deleteImageJobFilesWithJobDictionary:(id)a3
+- (void)_deleteImageJobFilesWithJobDictionary:(id)dictionary
 {
-  v13 = a3;
+  dictionaryCopy = dictionary;
   v4 = *MEMORY[0x1E69C0518];
-  v5 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69C0518]];
-  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v5 withJobDict:v13];
+  v5 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69C0518]];
+  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v5 withJobDict:dictionaryCopy];
 
-  v6 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69C0378]];
-  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v6 withJobDict:v13];
+  v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69C0378]];
+  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v6 withJobDict:dictionaryCopy];
 
-  v7 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69C04B8]];
-  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v7 withJobDict:v13];
+  v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69C04B8]];
+  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v7 withJobDict:dictionaryCopy];
 
-  v8 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69C04D8]];
-  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v8 withJobDict:v13];
+  v8 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69C04D8]];
+  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v8 withJobDict:dictionaryCopy];
 
-  v9 = [v13 objectForKey:*MEMORY[0x1E69C0350]];
+  v9 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0350]];
 
   if (v9)
   {
-    v10 = [v13 objectForKeyedSubscript:v4];
-    v11 = [PHAssetCreationRequestBridge buildAdjustmentsPlistPathForPhotoKitIngestJob:v13 withSourcePath:v10];
-    [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v11 withJobDict:v13];
+    v10 = [dictionaryCopy objectForKeyedSubscript:v4];
+    v11 = [PHAssetCreationRequestBridge buildAdjustmentsPlistPathForPhotoKitIngestJob:dictionaryCopy withSourcePath:v10];
+    [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v11 withJobDict:dictionaryCopy];
   }
 
-  v12 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69C04D0]];
-  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v12 withJobDict:v13];
+  v12 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69C04D0]];
+  [(PHAssetCreationRequestBridge *)self _deleteJobFileAtPath:v12 withJobDict:dictionaryCopy];
 }
 
-- (BOOL)_finalizeBurstImage:(id)a3
+- (BOOL)_finalizeBurstImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v4 = [MEMORY[0x1E69BE670] systemPhotoLibrary];
+  systemPhotoLibrary = [MEMORY[0x1E69BE670] systemPhotoLibrary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__PHAssetCreationRequestBridge__finalizeBurstImage___block_invoke;
   v9[3] = &unk_1E75AA3F8;
-  v5 = v3;
+  v5 = imageCopy;
   v10 = v5;
-  v6 = v4;
+  v6 = systemPhotoLibrary;
   v11 = v6;
   v12 = &v13;
   [v6 performTransactionAndWait:v9];
@@ -135,14 +135,14 @@ void __52__PHAssetCreationRequestBridge__finalizeBurstImage___block_invoke(uint6
   }
 }
 
-- (BOOL)_handleVideoPreviewImageOnlyJob:(id)a3 previewImageSurface:(__IOSurface *)a4 error:(id *)a5
+- (BOOL)_handleVideoPreviewImageOnlyJob:(id)job previewImageSurface:(__IOSurface *)surface error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  jobCopy = job;
   v8 = PLPhotoKitIngestGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
+    v9 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v9;
     _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_DEFAULT, "PhotoKit Ingest Bridge: Beginning timelapse video placeholder job dictionary request creation for asset with UUID: %@", &buf, 0xCu);
@@ -163,11 +163,11 @@ void __52__PHAssetCreationRequestBridge__finalizeBurstImage___block_invoke(uint6
   v21[1] = 3221225472;
   v21[2] = __90__PHAssetCreationRequestBridge__handleVideoPreviewImageOnlyJob_previewImageSurface_error___block_invoke;
   v21[3] = &unk_1E75A60D8;
-  v11 = v7;
+  v11 = jobCopy;
   v22 = v11;
   p_buf = &buf;
   v24 = &v26;
-  v25 = a4;
+  surfaceCopy = surface;
   v12 = *(&buf + 1);
   obj = *(*(&buf + 1) + 40);
   v13 = [v10 performChangesAndWait:v21 error:&obj];
@@ -195,11 +195,11 @@ void __52__PHAssetCreationRequestBridge__finalizeBurstImage___block_invoke(uint6
     }
 
     v14 = *(*(&buf + 1) + 40);
-    if (a5)
+    if (error)
     {
       v14 = v14;
       v15 = 0;
-      *a5 = v14;
+      *error = v14;
     }
 
     else
@@ -237,15 +237,15 @@ void __90__PHAssetCreationRequestBridge__handleVideoPreviewImageOnlyJob_previewI
   }
 }
 
-- (BOOL)_executeCreationRequestWithVideoJobDict:(id)a3 error:(id *)a4
+- (BOOL)_executeCreationRequestWithVideoJobDict:(id)dict error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictCopy = dict;
   v7 = PLPhotoKitIngestGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 objectForKeyedSubscript:@"captureLogID"];
-    v9 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
+    v8 = [dictCopy objectForKeyedSubscript:@"captureLogID"];
+    v9 = [dictCopy objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2114;
@@ -268,7 +268,7 @@ void __90__PHAssetCreationRequestBridge__handleVideoPreviewImageOnlyJob_previewI
   v28[1] = 3221225472;
   v28[2] = __78__PHAssetCreationRequestBridge__executeCreationRequestWithVideoJobDict_error___block_invoke;
   v28[3] = &unk_1E75AA678;
-  v11 = v6;
+  v11 = dictCopy;
   v29 = v11;
   v30 = buf;
   v31 = &v32;
@@ -318,11 +318,11 @@ void __90__PHAssetCreationRequestBridge__handleVideoPreviewImageOnlyJob_previewI
     }
 
     v20 = *(*&buf[8] + 40);
-    if (a4)
+    if (error)
     {
       v20 = v20;
       v21 = 0;
-      *a4 = v20;
+      *error = v20;
     }
 
     else
@@ -360,15 +360,15 @@ void __78__PHAssetCreationRequestBridge__executeCreationRequestWithVideoJobDict_
   }
 }
 
-- (BOOL)_executeCreationRequestWithImageJobDict:(id)a3 error:(id *)a4
+- (BOOL)_executeCreationRequestWithImageJobDict:(id)dict error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictCopy = dict;
   v7 = PLPhotoKitIngestGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 objectForKeyedSubscript:@"captureLogID"];
-    v9 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
+    v8 = [dictCopy objectForKeyedSubscript:@"captureLogID"];
+    v9 = [dictCopy objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2114;
@@ -391,7 +391,7 @@ void __78__PHAssetCreationRequestBridge__executeCreationRequestWithVideoJobDict_
   v22[1] = 3221225472;
   v22[2] = __78__PHAssetCreationRequestBridge__executeCreationRequestWithImageJobDict_error___block_invoke;
   v22[3] = &unk_1E75AA678;
-  v11 = v6;
+  v11 = dictCopy;
   v23 = v11;
   v24 = buf;
   v25 = &v26;
@@ -426,11 +426,11 @@ void __78__PHAssetCreationRequestBridge__executeCreationRequestWithVideoJobDict_
     }
 
     v14 = *(*&buf[8] + 40);
-    if (a4)
+    if (error)
     {
       v14 = v14;
       v15 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else
@@ -468,26 +468,26 @@ void __78__PHAssetCreationRequestBridge__executeCreationRequestWithImageJobDict_
   }
 }
 
-- (id)executeCreationRequestWithJobDict:(id)a3 previewImageSurface:(__IOSurface *)a4
+- (id)executeCreationRequestWithJobDict:(id)dict previewImageSurface:(__IOSurface *)surface
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictCopy = dict;
   v7 = *MEMORY[0x1E69C0390];
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
+  v8 = [dictCopy objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
   if (v8)
   {
   }
 
   else
   {
-    v9 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0328]];
+    v9 = [dictCopy objectForKeyedSubscript:*MEMORY[0x1E69C0328]];
 
     if (!v9)
     {
       v37 = PLPhotoKitIngestGetLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        v38 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+        v38 = [dictCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
         *buf = 138543362;
         v59 = v38;
         _os_log_impl(&dword_19C86F000, v37, OS_LOG_TYPE_ERROR, "PhotoKit Ingest Bridge: Asset UUID(s) for job %{public}@ nil.", buf, 0xCu);
@@ -498,26 +498,26 @@ void __78__PHAssetCreationRequestBridge__executeCreationRequestWithImageJobDict_
       v41 = *MEMORY[0x1E69BFF48];
       v66 = *MEMORY[0x1E696A278];
       v67[0] = @"The asset UUID(s) for job dictionaries cannot be nil";
-      v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:&v66 count:1];
-      v25 = [v40 errorWithDomain:v41 code:41005 userInfo:v17];
-      v26 = [v39 failureWithError:v25];
+      dictCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:&v66 count:1];
+      null = [v40 errorWithDomain:v41 code:41005 userInfo:dictCopy];
+      v26 = [v39 failureWithError:null];
       goto LABEL_27;
     }
   }
 
   v10 = *MEMORY[0x1E69C0410];
-  v11 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+  v11 = [dictCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
   if ([v11 isEqualToString:*MEMORY[0x1E69C0478]])
   {
 
 LABEL_7:
     v55 = 0;
-    v14 = [(PHAssetCreationRequestBridge *)self _executeCreationRequestWithVideoJobDict:v6 error:&v55];
+    v14 = [(PHAssetCreationRequestBridge *)self _executeCreationRequestWithVideoJobDict:dictCopy error:&v55];
     v15 = v55;
     goto LABEL_8;
   }
 
-  v12 = [v6 objectForKeyedSubscript:v10];
+  v12 = [dictCopy objectForKeyedSubscript:v10];
   v13 = [v12 isEqualToString:*MEMORY[0x1E69C0470]];
 
   if (v13)
@@ -525,33 +525,33 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v35 = [v6 objectForKeyedSubscript:v10];
+  v35 = [dictCopy objectForKeyedSubscript:v10];
   v36 = [v35 isEqualToString:*MEMORY[0x1E69C0458]];
 
   if (v36)
   {
     v54 = 0;
-    v14 = [(PHAssetCreationRequestBridge *)self _executeCreationRequestWithImageJobDict:v6 error:&v54];
+    v14 = [(PHAssetCreationRequestBridge *)self _executeCreationRequestWithImageJobDict:dictCopy error:&v54];
     v15 = v54;
     goto LABEL_8;
   }
 
-  v43 = [v6 objectForKeyedSubscript:v10];
+  v43 = [dictCopy objectForKeyedSubscript:v10];
   v44 = [v43 isEqualToString:*MEMORY[0x1E69C0420]];
 
   if ((v44 & 1) == 0)
   {
-    v45 = [v6 objectForKeyedSubscript:v10];
+    v45 = [dictCopy objectForKeyedSubscript:v10];
     v46 = [v45 isEqualToString:*MEMORY[0x1E69C0480]];
 
     if (!v46)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not start processing the asset with job dictionary: %@", v6];
+      dictCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not start processing the asset with job dictionary: %@", dictCopy];
       v48 = MEMORY[0x1E69BF2D0];
       v49 = MEMORY[0x1E696ABC0];
       v50 = *MEMORY[0x1E69BFF48];
       v56 = *MEMORY[0x1E696A278];
-      v57 = v17;
+      v57 = dictCopy;
       v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
       v52 = [v49 errorWithDomain:v50 code:41005 userInfo:v51];
       v34 = [v48 failureWithError:v52];
@@ -562,18 +562,18 @@ LABEL_7:
     if (!MEMORY[0x19EAF1D50]())
     {
       v53 = 0;
-      v14 = [(PHAssetCreationRequestBridge *)self _handleVideoPreviewImageOnlyJob:v6 previewImageSurface:a4 error:&v53];
+      v14 = [(PHAssetCreationRequestBridge *)self _handleVideoPreviewImageOnlyJob:dictCopy previewImageSurface:surface error:&v53];
       v15 = v53;
 LABEL_8:
       v16 = v15;
-      v17 = v16;
+      dictCopy = v16;
       if (v14)
       {
 LABEL_9:
         v18 = PLPhotoKitIngestGetLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v6 objectForKeyedSubscript:@"captureLogID"];
+          v19 = [dictCopy objectForKeyedSubscript:@"captureLogID"];
           v20 = v19;
           if (v19)
           {
@@ -585,8 +585,8 @@ LABEL_9:
             v21 = @"(unkown capture ID)";
           }
 
-          v22 = [v6 objectForKeyedSubscript:v10];
-          v23 = [v6 objectForKeyedSubscript:v7];
+          v22 = [dictCopy objectForKeyedSubscript:v10];
+          v23 = [dictCopy objectForKeyedSubscript:v7];
           *buf = 138543874;
           v59 = v21;
           v60 = 2114;
@@ -597,8 +597,8 @@ LABEL_9:
         }
 
         v24 = MEMORY[0x1E69BF2D0];
-        v25 = [MEMORY[0x1E695DFB0] null];
-        v26 = [v24 successWithResult:v25];
+        null = [MEMORY[0x1E695DFB0] null];
+        v26 = [v24 successWithResult:null];
 LABEL_27:
         v34 = v26;
 
@@ -621,11 +621,11 @@ LABEL_27:
     }
 
 LABEL_39:
-    v17 = 0;
+    dictCopy = 0;
     goto LABEL_9;
   }
 
-  if ([(PHAssetCreationRequestBridge *)self _finalizeBurstImage:v6])
+  if ([(PHAssetCreationRequestBridge *)self _finalizeBurstImage:dictCopy])
   {
     goto LABEL_39;
   }
@@ -636,13 +636,13 @@ LABEL_16:
   v64 = *MEMORY[0x1E696A278];
   v65 = @"Failure during creation of the asset.";
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-  v17 = [v27 errorWithDomain:v28 code:41005 userInfo:v29];
+  dictCopy = [v27 errorWithDomain:v28 code:41005 userInfo:v29];
 
 LABEL_17:
   v30 = PLPhotoKitIngestGetLog();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
-    v31 = [v6 objectForKeyedSubscript:@"captureLogID"];
+    v31 = [dictCopy objectForKeyedSubscript:@"captureLogID"];
     v32 = v31;
     v33 = @"(unkown capture ID)";
     *buf = 138543874;
@@ -653,23 +653,23 @@ LABEL_17:
 
     v59 = v33;
     v60 = 2112;
-    v61 = v6;
+    v61 = dictCopy;
     v62 = 2112;
-    v63 = v17;
+    v63 = dictCopy;
     _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_ERROR, "PhotoKit Ingest Bridge: %{public}@  Failed to create asset with job dictionary %@ \nError: %@", buf, 0x20u);
   }
 
-  v34 = [MEMORY[0x1E69BF2D0] failureWithError:v17];
+  v34 = [MEMORY[0x1E69BF2D0] failureWithError:dictCopy];
 LABEL_28:
 
   return v34;
 }
 
-- (id)executeCreationRequestWithBatchJobDictionaries:(id)a3
+- (id)executeCreationRequestWithBatchJobDictionaries:(id)dictionaries
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  dictionariesCopy = dictionaries;
+  if ([dictionariesCopy count])
   {
     v43 = 0;
     v44 = &v43;
@@ -682,7 +682,7 @@ LABEL_28:
     v41 = __Block_byref_object_dispose__17573;
     v42 = 0;
     v5 = +[PHPhotoLibrary sharedPhotoLibrary];
-    v6 = [v4 objectAtIndexedSubscript:0];
+    v6 = [dictionariesCopy objectAtIndexedSubscript:0];
     v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0360]];
 
     v8 = PLPhotoKitIngestGetLog();
@@ -697,7 +697,7 @@ LABEL_28:
     v33[1] = 3221225472;
     v33[2] = __79__PHAssetCreationRequestBridge_executeCreationRequestWithBatchJobDictionaries___block_invoke;
     v33[3] = &unk_1E75AA678;
-    v9 = v4;
+    v9 = dictionariesCopy;
     v34 = v9;
     v35 = v37;
     v36 = &v43;
@@ -708,8 +708,8 @@ LABEL_28:
     v12 = MEMORY[0x1E69BF2D0];
     if (v44[3] & v11)
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      v14 = [v12 successWithResult:v13];
+      null = [MEMORY[0x1E695DFB0] null];
+      v14 = [v12 successWithResult:null];
     }
 
     else
@@ -874,19 +874,19 @@ void __79__PHAssetCreationRequestBridge_executeCreationRequestWithBatchJobDictio
   }
 }
 
-+ (id)buildAdjustmentsPlistPathForPhotoKitIngestJob:(id)a3 withSourcePath:(id)a4
++ (id)buildAdjustmentsPlistPathForPhotoKitIngestJob:(id)job withSourcePath:(id)path
 {
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:a4];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:path];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v4 pathExtension];
-  v7 = [v5 stringWithFormat:@".%@", v6];
+  pathExtension = [v4 pathExtension];
+  v7 = [v5 stringWithFormat:@".%@", pathExtension];
 
-  v8 = [v4 URLByDeletingLastPathComponent];
-  v9 = [v8 absoluteString];
-  v10 = [v9 stringByReplacingOccurrencesOfString:@"file://" withString:&stru_1F0FC60C8];
+  uRLByDeletingLastPathComponent = [v4 URLByDeletingLastPathComponent];
+  absoluteString = [uRLByDeletingLastPathComponent absoluteString];
+  v10 = [absoluteString stringByReplacingOccurrencesOfString:@"file://" withString:&stru_1F0FC60C8];
 
-  v11 = [v4 lastPathComponent];
-  v12 = [v11 stringByReplacingOccurrencesOfString:v7 withString:&stru_1F0FC60C8];
+  lastPathComponent = [v4 lastPathComponent];
+  v12 = [lastPathComponent stringByReplacingOccurrencesOfString:v7 withString:&stru_1F0FC60C8];
 
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@_Adjustments.plist", v10, v12];
 

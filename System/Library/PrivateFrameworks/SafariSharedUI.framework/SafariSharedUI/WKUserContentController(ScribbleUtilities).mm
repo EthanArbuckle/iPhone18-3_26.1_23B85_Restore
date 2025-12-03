@@ -16,8 +16,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = [a1 _userStyleSheets];
-  v12 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  _userStyleSheets = [self _userStyleSheets];
+  v12 = [_userStyleSheets countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v12)
   {
     v13 = v12;
@@ -28,18 +28,18 @@
       {
         if (*v32 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(_userStyleSheets);
         }
 
         v16 = *(*(&v31 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [v16 webView];
-          v18 = v17;
-          if (v17)
+          webView = [v16 webView];
+          v18 = webView;
+          if (webView)
           {
-            v19 = v17 == v8;
+            v19 = webView == v8;
           }
 
           else
@@ -54,7 +54,7 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v13 = [_userStyleSheets countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v13);
@@ -62,7 +62,7 @@
 
   if (v25)
   {
-    [a1 _addUserStyleSheet:v25];
+    [self _addUserStyleSheet:v25];
   }
 
   v29 = 0u;
@@ -84,7 +84,7 @@
           objc_enumerationMutation(v20);
         }
 
-        [a1 _removeUserStyleSheet:*(*(&v27 + 1) + 8 * j)];
+        [self _removeUserStyleSheet:*(*(&v27 + 1) + 8 * j)];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v27 objects:v35 count:16];

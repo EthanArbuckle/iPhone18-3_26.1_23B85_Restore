@@ -1,12 +1,12 @@
 @interface MetadataRibbonStarRatingView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC8AppStore28MetadataRibbonStarRatingView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC8AppStore28MetadataRibbonStarRatingView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation MetadataRibbonStarRatingView
 
-- (_TtC8AppStore28MetadataRibbonStarRatingView)initWithCoder:(id)a3
+- (_TtC8AppStore28MetadataRibbonStarRatingView)initWithCoder:(id)coder
 {
   static MetadataRibbonStarRatingViewLayout.Metrics.standard.getter();
   v4 = self + OBJC_IVAR____TtC8AppStore28MetadataRibbonStarRatingView_id;
@@ -30,15 +30,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005E331C();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_1005E3618(a4);
+  selfCopy = self;
+  v7 = sub_1005E3618(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;

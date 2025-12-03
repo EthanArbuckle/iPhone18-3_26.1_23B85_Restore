@@ -1,33 +1,33 @@
 @interface PXImportImageCache
 + (PXImportImageCache)sharedInstance;
 - (PXImportImageCache)init;
-- (id)cacheTableForIdentifier:(id)a3;
-- (id)imageForIdentifier:(id)a3;
-- (id)imageForModel:(id)a3 ofSize:(unint64_t)a4 allowLowerResolutions:(BOOL)a5 foundSize:(unint64_t *)a6;
-- (void)accessImageTableForIdentifier:(id)a3 withChangeBlock:(id)a4;
-- (void)imageForIdentifier:(id)a3 completion:(id)a4;
-- (void)imageForModel:(id)a3 ofSize:(unint64_t)a4 allowLowerResolutions:(BOOL)a5 completion:(id)a6;
-- (void)removeCacheForIdentifiers:(id)a3;
-- (void)setImage:(id)a3 forIdentifier:(id)a4 completion:(id)a5;
+- (id)cacheTableForIdentifier:(id)identifier;
+- (id)imageForIdentifier:(id)identifier;
+- (id)imageForModel:(id)model ofSize:(unint64_t)size allowLowerResolutions:(BOOL)resolutions foundSize:(unint64_t *)foundSize;
+- (void)accessImageTableForIdentifier:(id)identifier withChangeBlock:(id)block;
+- (void)imageForIdentifier:(id)identifier completion:(id)completion;
+- (void)imageForModel:(id)model ofSize:(unint64_t)size allowLowerResolutions:(BOOL)resolutions completion:(id)completion;
+- (void)removeCacheForIdentifiers:(id)identifiers;
+- (void)setImage:(id)image forIdentifier:(id)identifier completion:(id)completion;
 - (void)tearDown;
 @end
 
 @implementation PXImportImageCache
 
-- (void)accessImageTableForIdentifier:(id)a3 withChangeBlock:(id)a4
+- (void)accessImageTableForIdentifier:(id)identifier withChangeBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   cacheTableQueue = self->_cacheTableQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__PXImportImageCache_accessImageTableForIdentifier_withChangeBlock___block_invoke;
   block[3] = &unk_1E774A0E0;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = blockCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = blockCopy;
   dispatch_async(cacheTableQueue, block);
 }
 
@@ -40,11 +40,11 @@ void __68__PXImportImageCache_accessImageTableForIdentifier_withChangeBlock___bl
   }
 }
 
-- (id)cacheTableForIdentifier:(id)a3
+- (id)cacheTableForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   caches = self->_caches;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "sizeType")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(identifierCopy, "sizeType")}];
   v7 = [(NSMutableDictionary *)caches objectForKey:v6];
 
   if (!v7)
@@ -56,10 +56,10 @@ void __68__PXImportImageCache_accessImageTableForIdentifier_withChangeBlock___bl
 
     v8 = NSTemporaryDirectory();
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "sizeType")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(identifierCopy, "sizeType")}];
     v11 = [v9 stringWithFormat:@"%@/import-%@.ithmb", v8, v10];
 
-    if ([v4 sizeType])
+    if ([identifierCopy sizeType])
     {
       v12 = objc_opt_new();
     }
@@ -71,7 +71,7 @@ void __68__PXImportImageCache_accessImageTableForIdentifier_withChangeBlock___bl
 
     v7 = v12;
     v13 = self->_caches;
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "sizeType")}];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(identifierCopy, "sizeType")}];
     [(NSMutableDictionary *)v13 setObject:v7 forKey:v14];
 
     if (!v7)
@@ -83,15 +83,15 @@ void __68__PXImportImageCache_accessImageTableForIdentifier_withChangeBlock___bl
   return v7;
 }
 
-- (void)removeCacheForIdentifiers:(id)a3
+- (void)removeCacheForIdentifiers:(id)identifiers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -102,7 +102,7 @@ void __68__PXImportImageCache_accessImageTableForIdentifier_withChangeBlock___bl
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -110,25 +110,25 @@ void __68__PXImportImageCache_accessImageTableForIdentifier_withChangeBlock___bl
         [v10 removeItemAtIndex:{objc_msgSend(v9, "cacheIndex")}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)imageForModel:(id)a3 ofSize:(unint64_t)a4 allowLowerResolutions:(BOOL)a5 completion:(id)a6
+- (void)imageForModel:(id)model ofSize:(unint64_t)size allowLowerResolutions:(BOOL)resolutions completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  if (v10)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = [a3 imageRepresentations];
-    v12 = v11;
-    if (a5)
+    imageRepresentations = [model imageRepresentations];
+    v12 = imageRepresentations;
+    if (resolutions)
     {
-      v13 = [v11 allKeys];
-      v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_56_242654];
+      allKeys = [imageRepresentations allKeys];
+      v14 = [allKeys sortedArrayUsingComparator:&__block_literal_global_56_242654];
 
       v27 = 0u;
       v28 = 0u;
@@ -150,7 +150,7 @@ LABEL_5:
           }
 
           v20 = *(*(&v25 + 1) + 8 * v19);
-          if ([v20 integerValue] <= a4)
+          if ([v20 integerValue] <= size)
           {
             break;
           }
@@ -189,7 +189,7 @@ LABEL_15:
 
     else
     {
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
       v21 = [v12 objectForKeyedSubscript:v15];
     }
 
@@ -199,29 +199,29 @@ LABEL_15:
       v23[1] = 3221225472;
       v23[2] = __76__PXImportImageCache_imageForModel_ofSize_allowLowerResolutions_completion___block_invoke_2;
       v23[3] = &unk_1E774A0B8;
-      v24 = v10;
+      v24 = completionCopy;
       [(PXImportImageCache *)self imageForIdentifier:v21 completion:v23];
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 4);
+      (*(completionCopy + 2))(completionCopy, 0, 4);
     }
   }
 }
 
-- (void)imageForIdentifier:(id)a3 completion:(id)a4
+- (void)imageForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__PXImportImageCache_imageForIdentifier_completion___block_invoke;
   v10[3] = &unk_1E774A070;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = identifierCopy;
+  v9 = completionCopy;
   [(PXImportImageCache *)self accessImageTableForIdentifier:v8 withChangeBlock:v10];
 }
 
@@ -237,19 +237,19 @@ void __52__PXImportImageCache_imageForIdentifier_completion___block_invoke(uint6
   }
 }
 
-- (id)imageForModel:(id)a3 ofSize:(unint64_t)a4 allowLowerResolutions:(BOOL)a5 foundSize:(unint64_t *)a6
+- (id)imageForModel:(id)model ofSize:(unint64_t)size allowLowerResolutions:(BOOL)resolutions foundSize:(unint64_t *)foundSize
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [v10 imageRepresentations];
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  modelCopy = model;
+  imageRepresentations = [modelCopy imageRepresentations];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+  v13 = [imageRepresentations objectForKeyedSubscript:v12];
 
-  if (a5)
+  if (resolutions)
   {
-    v14 = [v10 imageRepresentations];
-    v15 = [v14 allValues];
-    v16 = [v15 sortedArrayUsingSelector:sel_compare_];
+    imageRepresentations2 = [modelCopy imageRepresentations];
+    allValues = [imageRepresentations2 allValues];
+    v16 = [allValues sortedArrayUsingSelector:sel_compare_];
 
     v31 = 0u;
     v32 = 0u;
@@ -261,9 +261,9 @@ void __52__PXImportImageCache_imageForIdentifier_completion___block_invoke(uint6
     {
       v19 = v18;
       v27 = v13;
-      v28 = a6;
+      foundSizeCopy = foundSize;
       v20 = *v30;
-      v21 = 4;
+      sizeType = 4;
       while (2)
       {
         for (i = 0; i != v19; ++i)
@@ -274,13 +274,13 @@ void __52__PXImportImageCache_imageForIdentifier_completion___block_invoke(uint6
           }
 
           v23 = *(*(&v29 + 1) + 8 * i);
-          if ([v23 sizeType] <= a4)
+          if ([v23 sizeType] <= size)
           {
             v24 = [(PXImportImageCache *)self imageForIdentifier:v23];
             if (v24)
             {
               v25 = v24;
-              v21 = [v23 sizeType];
+              sizeType = [v23 sizeType];
               goto LABEL_15;
             }
           }
@@ -298,16 +298,16 @@ void __52__PXImportImageCache_imageForIdentifier_completion___block_invoke(uint6
       v25 = 0;
 LABEL_15:
       v13 = v27;
-      a6 = v28;
+      foundSize = foundSizeCopy;
     }
 
     else
     {
       v25 = 0;
-      v21 = 4;
+      sizeType = 4;
     }
 
-    if (a6)
+    if (foundSize)
     {
       goto LABEL_18;
     }
@@ -316,42 +316,42 @@ LABEL_15:
   else
   {
     v25 = [(PXImportImageCache *)self imageForIdentifier:v13];
-    v21 = [v13 sizeType];
-    if (a6)
+    sizeType = [v13 sizeType];
+    if (foundSize)
     {
 LABEL_18:
-      *a6 = v21;
+      *foundSize = sizeType;
     }
   }
 
   return v25;
 }
 
-- (id)imageForIdentifier:(id)a3
+- (id)imageForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PXImportImageCache *)self cacheTableForIdentifier:v4];
-  v6 = [v4 cacheIndex];
+  identifierCopy = identifier;
+  v5 = [(PXImportImageCache *)self cacheTableForIdentifier:identifierCopy];
+  cacheIndex = [identifierCopy cacheIndex];
 
-  v7 = [v5 imageForItemAtIndex:v6];
+  v7 = [v5 imageForItemAtIndex:cacheIndex];
 
   return v7;
 }
 
-- (void)setImage:(id)a3 forIdentifier:(id)a4 completion:(id)a5
+- (void)setImage:(id)image forIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  imageCopy = image;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (imageCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __56__PXImportImageCache_setImage_forIdentifier_completion___block_invoke;
     v11[3] = &unk_1E774A048;
-    v12 = v8;
-    v13 = v9;
-    v14 = v10;
+    v12 = imageCopy;
+    v13 = identifierCopy;
+    v14 = completionCopy;
     [(PXImportImageCache *)self accessImageTableForIdentifier:v13 withChangeBlock:v11];
   }
 }
@@ -410,7 +410,7 @@ uint64_t __56__PXImportImageCache_setImage_forIdentifier_completion___block_invo
 
 - (PXImportImageCache)init
 {
-  v2 = self;
+  selfCopy = self;
   if (sharedInstance)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"use singleton access %@", objc_opt_class()}];
@@ -436,8 +436,8 @@ uint64_t __56__PXImportImageCache_setImage_forIdentifier_completion___block_invo
       v4->_cacheTableQueue = v9;
     }
 
-    v2 = v4;
-    v3 = v2;
+    selfCopy = v4;
+    v3 = selfCopy;
   }
 
   return v3;

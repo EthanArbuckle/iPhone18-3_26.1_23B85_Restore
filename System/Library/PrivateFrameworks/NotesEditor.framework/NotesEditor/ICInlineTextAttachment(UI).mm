@@ -13,11 +13,11 @@
   v9 = a4;
   v10 = a3;
   objc_opt_class();
-  v11 = [v8 textLayoutManager];
+  textLayoutManager = [v8 textLayoutManager];
 
   v12 = ICDynamicCast();
 
-  v13 = [v12 viewProviderForTextAttachment:a1 parentView:v10 location:v9];
+  v13 = [v12 viewProviderForTextAttachment:self parentView:v10 location:v9];
 
   return v13;
 }
@@ -25,32 +25,32 @@
 - (double)attachmentBoundsForAttributes:()UI location:textContainer:proposedLineFragment:position:
 {
   v20 = a11;
-  v41.receiver = a1;
+  v41.receiver = self;
   v41.super_class = &off_282809A50;
   v21 = a10;
   v22 = a9;
   objc_msgSendSuper2(&v41, sel_attachmentBoundsForAttributes_location_textContainer_proposedLineFragment_position_, v22, v21, v20, a2, a3, a4, a5, a6, a7);
   v24 = v23;
-  v25 = [v20 textView];
-  v26 = [a1 viewProviderForParentView:v25 location:v21 textContainer:v20];
+  textView = [v20 textView];
+  v26 = [self viewProviderForParentView:textView location:v21 textContainer:v20];
 
-  v27 = [v26 view];
+  view = [v26 view];
   objc_opt_class();
   v28 = ICDynamicCast();
   objc_opt_class();
   v29 = ICDynamicCast();
-  v30 = [v29 tk2TextView];
+  tk2TextView = [v29 tk2TextView];
 
   objc_opt_class();
-  v31 = [v30 textStorage];
+  textStorage = [tk2TextView textStorage];
   v32 = ICDynamicCast();
 
   objc_opt_class();
-  v33 = [v32 styler];
+  styler = [v32 styler];
   v34 = ICDynamicCast();
 
-  v35 = [v34 authorHighlightsController];
-  v36 = [v35 isPerformingHighlightUpdatesForTextStorage:v32];
+  authorHighlightsController = [v34 authorHighlightsController];
+  v36 = [authorHighlightsController isPerformingHighlightUpdatesForTextStorage:v32];
 
   if (v36)
   {
@@ -84,7 +84,7 @@
   objc_opt_class();
   v10 = ICDynamicCast();
 
-  v11 = [v10 viewProviderForTextAttachment:a1 parentView:v9 characterIndex:a4];
+  v11 = [v10 viewProviderForTextAttachment:self parentView:v9 characterIndex:a4];
 
   return v11;
 }
@@ -93,12 +93,12 @@
 {
   v18 = a9;
   objc_opt_class();
-  v19 = [v18 layoutManager];
+  layoutManager = [v18 layoutManager];
   v20 = ICDynamicCast();
 
   if (v20)
   {
-    v21 = [v20 viewForTextAttachment:a1 initialCharacterIndex:a10];
+    v21 = [v20 viewForTextAttachment:self initialCharacterIndex:a10];
     objc_opt_class();
     v22 = ICDynamicCast();
     [v18 size];
@@ -117,7 +117,7 @@
 
   else
   {
-    v29.receiver = a1;
+    v29.receiver = self;
     v29.super_class = &off_282809A50;
     objc_msgSendSuper2(&v29, sel_attachmentBoundsForTextContainer_proposedLineFragment_glyphPosition_characterIndex_, v18, a10, a2, a3, a4, a5, a6, a7);
     v26 = v27;

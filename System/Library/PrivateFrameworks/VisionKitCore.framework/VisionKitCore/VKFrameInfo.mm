@@ -4,9 +4,9 @@
 - (CGAffineTransform)visionToLayerTransform;
 - (CGRect)regionOfInterest;
 - (CGSize)dimensions;
-- (void)setImageToLayerTransform:(CGAffineTransform *)a3;
-- (void)setVisionToCroppedImageTransform:(CGAffineTransform *)a3;
-- (void)setVisionToLayerTransform:(CGAffineTransform *)a3;
+- (void)setImageToLayerTransform:(CGAffineTransform *)transform;
+- (void)setVisionToCroppedImageTransform:(CGAffineTransform *)transform;
+- (void)setVisionToLayerTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation VKFrameInfo
@@ -42,11 +42,11 @@
   return self;
 }
 
-- (void)setVisionToLayerTransform:(CGAffineTransform *)a3
+- (void)setVisionToLayerTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_visionToLayerTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_visionToLayerTransform.tx = *&transform->tx;
   *&self->_visionToLayerTransform.c = v4;
   *&self->_visionToLayerTransform.a = v3;
 }
@@ -60,11 +60,11 @@
   return self;
 }
 
-- (void)setVisionToCroppedImageTransform:(CGAffineTransform *)a3
+- (void)setVisionToCroppedImageTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_visionToCroppedImageTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_visionToCroppedImageTransform.tx = *&transform->tx;
   *&self->_visionToCroppedImageTransform.c = v4;
   *&self->_visionToCroppedImageTransform.a = v3;
 }
@@ -78,11 +78,11 @@
   return self;
 }
 
-- (void)setImageToLayerTransform:(CGAffineTransform *)a3
+- (void)setImageToLayerTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_imageToLayerTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_imageToLayerTransform.tx = *&transform->tx;
   *&self->_imageToLayerTransform.c = v4;
   *&self->_imageToLayerTransform.a = v3;
 }

@@ -1,42 +1,42 @@
 @interface NMUMetricsReporter
-+ (id)_actionNameFromAlertAction:(unint64_t)a3;
-+ (id)_actionNameFromMoreActionType:(unint64_t)a3;
-+ (id)_alertReasonFromDownloadWaitingReason:(unint64_t)a3;
-+ (id)_alertReasonFromKeepLocalErrorAlertReason:(unint64_t)a3;
-+ (id)_contextNameFromMoreActionContextType:(unint64_t)a3;
-+ (id)_launcherNameForLaunchURLType:(unint64_t)a3;
++ (id)_actionNameFromAlertAction:(unint64_t)action;
++ (id)_actionNameFromMoreActionType:(unint64_t)type;
++ (id)_alertReasonFromDownloadWaitingReason:(unint64_t)reason;
++ (id)_alertReasonFromKeepLocalErrorAlertReason:(unint64_t)reason;
++ (id)_contextNameFromMoreActionContextType:(unint64_t)type;
++ (id)_launcherNameForLaunchURLType:(unint64_t)type;
 + (id)_processName;
-+ (id)_stringForRoutePickingResult:(unint64_t)a3;
-+ (id)_stringFromSuggestionsContextType:(unint64_t)a3;
-+ (id)_stringFromSuggestionsMediaType:(unint64_t)a3;
-+ (id)_viewNameForViewType:(unint64_t)a3;
-+ (void)incrementAutoPlayChangeCountWithEndpointType:(unint64_t)a3;
-+ (void)incrementBrowsingCountForViewType:(unint64_t)a3;
-+ (void)incrementBrowsingCountForViewType:(unint64_t)a3 endpointType:(unint64_t)a4;
-+ (void)incrementCrownBasedVolumeControlCountWithEndpointType:(unint64_t)a3;
-+ (void)incrementLaunchCountForLaunchURLType:(unint64_t)a3;
-+ (void)incrementMediaSuggestionsTappedWithEndpointType:(unint64_t)a3 contextType:(unint64_t)a4 mediaType:(unint64_t)a5;
++ (id)_stringForRoutePickingResult:(unint64_t)result;
++ (id)_stringFromSuggestionsContextType:(unint64_t)type;
++ (id)_stringFromSuggestionsMediaType:(unint64_t)type;
++ (id)_viewNameForViewType:(unint64_t)type;
++ (void)incrementAutoPlayChangeCountWithEndpointType:(unint64_t)type;
++ (void)incrementBrowsingCountForViewType:(unint64_t)type;
++ (void)incrementBrowsingCountForViewType:(unint64_t)type endpointType:(unint64_t)endpointType;
++ (void)incrementCrownBasedVolumeControlCountWithEndpointType:(unint64_t)type;
++ (void)incrementLaunchCountForLaunchURLType:(unint64_t)type;
++ (void)incrementMediaSuggestionsTappedWithEndpointType:(unint64_t)type contextType:(unint64_t)contextType mediaType:(unint64_t)mediaType;
 + (void)incrementPlaybackRoutePickerPresentationCount;
-+ (void)incrementPlaybackShuffleAllCountFromViewType:(unint64_t)a3 endpointType:(unint64_t)a4;
-+ (void)incrementPlaybackStartCountFromViewType:(unint64_t)a3 endpointType:(unint64_t)a4;
-+ (void)incrementPlaybackStartCountFromViewType:(unint64_t)a3 index:(int64_t)a4 endpointType:(unint64_t)a5 playerBundleID:(id)a6;
-+ (void)incrementPlaybackStartCountWithPath:(id)a3 shuffled:(BOOL)a4 endpointType:(unint64_t)a5;
-+ (void)incrementRepeatModeChangeCountWithEndpointType:(unint64_t)a3;
-+ (void)incrementRouteAutoSelectionResult:(unint64_t)a3;
-+ (void)incrementRouteChangeCountWithEndpointType:(unint64_t)a3;
-+ (void)incrementRouteSelectCountWithEndpointType:(unint64_t)a3;
-+ (void)incrementRouteSelectionResult:(unint64_t)a3 endpointType:(unint64_t)a4;
-+ (void)incrementShuffleModeChangeCountWithEndpointType:(unint64_t)a3;
-+ (void)incrementTapCountForDownloadWaitingReason:(unint64_t)a3 action:(unint64_t)a4;
-+ (void)incrementTapCountForKeepLocalErrorAlertReason:(unint64_t)a3 action:(unint64_t)a4;
-+ (void)incrementTapCountForMoreActionType:(unint64_t)a3 context:(unint64_t)a4;
-+ (void)incrementTrackListTrackSelectionCountWithEndpointType:(unint64_t)a3;
-+ (void)updatePinnedAlbumsCount:(int64_t)a3;
-+ (void)updatePinnedPlaylistsCount:(int64_t)a3;
-+ (void)updatePinnedRecommendationsCount:(int64_t)a3;
-+ (void)updateTopLevelContainersCount:(int64_t)a3;
++ (void)incrementPlaybackShuffleAllCountFromViewType:(unint64_t)type endpointType:(unint64_t)endpointType;
++ (void)incrementPlaybackStartCountFromViewType:(unint64_t)type endpointType:(unint64_t)endpointType;
++ (void)incrementPlaybackStartCountFromViewType:(unint64_t)type index:(int64_t)index endpointType:(unint64_t)endpointType playerBundleID:(id)d;
++ (void)incrementPlaybackStartCountWithPath:(id)path shuffled:(BOOL)shuffled endpointType:(unint64_t)type;
++ (void)incrementRepeatModeChangeCountWithEndpointType:(unint64_t)type;
++ (void)incrementRouteAutoSelectionResult:(unint64_t)result;
++ (void)incrementRouteChangeCountWithEndpointType:(unint64_t)type;
++ (void)incrementRouteSelectCountWithEndpointType:(unint64_t)type;
++ (void)incrementRouteSelectionResult:(unint64_t)result endpointType:(unint64_t)type;
++ (void)incrementShuffleModeChangeCountWithEndpointType:(unint64_t)type;
++ (void)incrementTapCountForDownloadWaitingReason:(unint64_t)reason action:(unint64_t)action;
++ (void)incrementTapCountForKeepLocalErrorAlertReason:(unint64_t)reason action:(unint64_t)action;
++ (void)incrementTapCountForMoreActionType:(unint64_t)type context:(unint64_t)context;
++ (void)incrementTrackListTrackSelectionCountWithEndpointType:(unint64_t)type;
++ (void)updatePinnedAlbumsCount:(int64_t)count;
++ (void)updatePinnedPlaylistsCount:(int64_t)count;
++ (void)updatePinnedRecommendationsCount:(int64_t)count;
++ (void)updateTopLevelContainersCount:(int64_t)count;
 - (NMUMetricsReporter)init;
-- (void)_sendEvent:(id)a3 payload:(id)a4;
+- (void)_sendEvent:(id)event payload:(id)payload;
 @end
 
 @implementation NMUMetricsReporter
@@ -79,97 +79,97 @@ void __34__NMUMetricsReporter__processName__block_invoke()
   return v2;
 }
 
-+ (void)incrementLaunchCountForLaunchURLType:(unint64_t)a3
++ (void)incrementLaunchCountForLaunchURLType:(unint64_t)type
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = [a1 _launcherNameForLaunchURLType:a3];
+  v4 = [self _launcherNameForLaunchURLType:type];
   v7 = @"launchURLType";
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"LaunchURL" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"LaunchURL" payload:v5];
 }
 
-+ (void)updateTopLevelContainersCount:(int64_t)a3
++ (void)updateTopLevelContainersCount:(int64_t)count
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"nmu_view";
   v7[1] = @"nmu_count";
   v8[0] = @"TopLevelContainers";
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"PinningSettings" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"PinningSettings" payload:v5];
 }
 
-+ (void)updatePinnedPlaylistsCount:(int64_t)a3
++ (void)updatePinnedPlaylistsCount:(int64_t)count
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"nmu_view";
   v7[1] = @"nmu_count";
   v8[0] = @"PinnedPlaylists";
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"PinningSettings" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"PinningSettings" payload:v5];
 }
 
-+ (void)updatePinnedAlbumsCount:(int64_t)a3
++ (void)updatePinnedAlbumsCount:(int64_t)count
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"nmu_view";
   v7[1] = @"nmu_count";
   v8[0] = @"PinnedAlbums";
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"PinningSettings" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"PinningSettings" payload:v5];
 }
 
-+ (void)updatePinnedRecommendationsCount:(int64_t)a3
++ (void)updatePinnedRecommendationsCount:(int64_t)count
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"nmu_view";
   v7[1] = @"nmu_count";
   v8[0] = @"PinnedRecommendations";
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"PinningSettings" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"PinningSettings" payload:v5];
 }
 
-+ (void)incrementBrowsingCountForViewType:(unint64_t)a3
++ (void)incrementBrowsingCountForViewType:(unint64_t)type
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = [a1 _viewNameForViewType:a3];
+  v4 = [self _viewNameForViewType:type];
   v7 = @"view";
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"Browsing" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"Browsing" payload:v5];
 }
 
-+ (void)incrementPlaybackStartCountWithPath:(id)a3 shuffled:(BOOL)a4 endpointType:(unint64_t)a5
++ (void)incrementPlaybackStartCountWithPath:(id)path shuffled:(BOOL)shuffled endpointType:(unint64_t)type
 {
-  v6 = a4;
+  shuffledCopy = shuffled;
   v20[4] = *MEMORY[0x277D85DE8];
   v19[0] = @"view";
-  v8 = a3;
-  v9 = [(__CFString *)v8 componentsSeparatedByString:@"/"];
-  v10 = [v9 lastObject];
-  v11 = v10;
+  pathCopy = path;
+  v9 = [(__CFString *)pathCopy componentsSeparatedByString:@"/"];
+  lastObject = [v9 lastObject];
+  v11 = lastObject;
   v12 = @"unknown";
-  if (v10)
+  if (lastObject)
   {
-    v13 = v10;
+    v13 = lastObject;
   }
 
   else
@@ -177,20 +177,20 @@ void __34__NMUMetricsReporter__processName__block_invoke()
     v13 = @"unknown";
   }
 
-  if (v8)
+  if (pathCopy)
   {
-    v12 = v8;
+    v12 = pathCopy;
   }
 
   v20[0] = v13;
   v20[1] = v12;
   v19[1] = @"path";
   v19[2] = @"origin";
-  v14 = NSStringFromNMUMetricsEndpointType(a5);
+  v14 = NSStringFromNMUMetricsEndpointType(type);
   v15 = v14;
   v19[3] = @"action";
   v16 = @"Play";
-  if (v6)
+  if (shuffledCopy)
   {
     v16 = @"Shuffle";
   }
@@ -199,15 +199,15 @@ void __34__NMUMetricsReporter__processName__block_invoke()
   v20[3] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:4];
 
-  v18 = [a1 sharedMetricsReporter];
-  [v18 _sendEvent:@"Playback" payload:v17];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"Playback" payload:v17];
 }
 
-+ (void)incrementPlaybackStartCountFromViewType:(unint64_t)a3 endpointType:(unint64_t)a4
++ (void)incrementPlaybackStartCountFromViewType:(unint64_t)type endpointType:(unint64_t)endpointType
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v6 = [a1 _viewNameForViewType:a3];
-  v7 = NSStringFromNMUMetricsEndpointType(a4);
+  v6 = [self _viewNameForViewType:type];
+  v7 = NSStringFromNMUMetricsEndpointType(endpointType);
   v10[0] = @"view";
   v10[1] = @"origin";
   v11[0] = v6;
@@ -215,16 +215,16 @@ void __34__NMUMetricsReporter__processName__block_invoke()
   v10[2] = @"action";
   v11[2] = @"Play";
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
-  v9 = [a1 sharedMetricsReporter];
-  [v9 _sendEvent:@"Playback" payload:v8];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"Playback" payload:v8];
 }
 
-+ (void)incrementPlaybackStartCountFromViewType:(unint64_t)a3 index:(int64_t)a4 endpointType:(unint64_t)a5 playerBundleID:(id)a6
++ (void)incrementPlaybackStartCountFromViewType:(unint64_t)type index:(int64_t)index endpointType:(unint64_t)endpointType playerBundleID:(id)d
 {
   v17[5] = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = [a1 _viewNameForViewType:a3];
-  v12 = NSStringFromNMUMetricsEndpointType(a5);
+  dCopy = d;
+  v11 = [self _viewNameForViewType:type];
+  v12 = NSStringFromNMUMetricsEndpointType(endpointType);
   v16[0] = @"view";
   v16[1] = @"origin";
   v17[0] = v11;
@@ -232,21 +232,21 @@ void __34__NMUMetricsReporter__processName__block_invoke()
   v17[2] = @"PlayItem";
   v16[2] = @"action";
   v16[3] = @"index";
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v16[4] = @"bundle";
   v17[3] = v13;
-  v17[4] = v10;
+  v17[4] = dCopy;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:5];
 
-  v15 = [a1 sharedMetricsReporter];
-  [v15 _sendEvent:@"Playback" payload:v14];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"Playback" payload:v14];
 }
 
-+ (void)incrementPlaybackShuffleAllCountFromViewType:(unint64_t)a3 endpointType:(unint64_t)a4
++ (void)incrementPlaybackShuffleAllCountFromViewType:(unint64_t)type endpointType:(unint64_t)endpointType
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v6 = [a1 _viewNameForViewType:a3];
-  v7 = NSStringFromNMUMetricsEndpointType(a4);
+  v6 = [self _viewNameForViewType:type];
+  v7 = NSStringFromNMUMetricsEndpointType(endpointType);
   v10[0] = @"view";
   v10[1] = @"origin";
   v11[0] = v6;
@@ -254,60 +254,60 @@ void __34__NMUMetricsReporter__processName__block_invoke()
   v10[2] = @"action";
   v11[2] = @"Shuffle";
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
-  v9 = [a1 sharedMetricsReporter];
-  [v9 _sendEvent:@"Playback" payload:v8];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"Playback" payload:v8];
 }
 
 + (void)incrementPlaybackRoutePickerPresentationCount
 {
-  v2 = [a1 sharedMetricsReporter];
-  [v2 _sendEvent:@"Playback" payload:&unk_286C82888];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"Playback" payload:&unk_286C82888];
 }
 
-+ (void)incrementCrownBasedVolumeControlCountWithEndpointType:(unint64_t)a3
++ (void)incrementCrownBasedVolumeControlCountWithEndpointType:(unint64_t)type
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromNMUMetricsEndpointType(a3);
+  v4 = NSStringFromNMUMetricsEndpointType(type);
   v7[0] = @"action";
   v7[1] = @"origin";
   v8[0] = @"Crown";
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"VolumeControl" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"VolumeControl" payload:v5];
 }
 
-+ (void)incrementRouteSelectCountWithEndpointType:(unint64_t)a3
++ (void)incrementRouteSelectCountWithEndpointType:(unint64_t)type
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromNMUMetricsEndpointType(a3);
+  v4 = NSStringFromNMUMetricsEndpointType(type);
   v7[0] = @"action";
   v7[1] = @"origin";
   v8[0] = @"RouteSelect";
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"RoutePicking" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"RoutePicking" payload:v5];
 }
 
-+ (void)incrementRouteChangeCountWithEndpointType:(unint64_t)a3
++ (void)incrementRouteChangeCountWithEndpointType:(unint64_t)type
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromNMUMetricsEndpointType(a3);
+  v4 = NSStringFromNMUMetricsEndpointType(type);
   v7[0] = @"action";
   v7[1] = @"origin";
   v8[0] = @"RouteChange";
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"RoutePicking" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"RoutePicking" payload:v5];
 }
 
-+ (void)incrementRouteSelectionResult:(unint64_t)a3 endpointType:(unint64_t)a4
++ (void)incrementRouteSelectionResult:(unint64_t)result endpointType:(unint64_t)type
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v6 = [a1 _stringForRoutePickingResult:a3];
-  v7 = NSStringFromNMUMetricsEndpointType(a4);
+  v6 = [self _stringForRoutePickingResult:result];
+  v7 = NSStringFromNMUMetricsEndpointType(type);
   v10[0] = @"action";
   v10[1] = @"result";
   v11[0] = @"Result";
@@ -315,95 +315,95 @@ void __34__NMUMetricsReporter__processName__block_invoke()
   v10[2] = @"origin";
   v11[2] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
-  v9 = [a1 sharedMetricsReporter];
-  [v9 _sendEvent:@"RoutePicking" payload:v8];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"RoutePicking" payload:v8];
 }
 
-+ (void)incrementRouteAutoSelectionResult:(unint64_t)a3
++ (void)incrementRouteAutoSelectionResult:(unint64_t)result
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = [a1 _stringForRoutePickingResult:a3];
+  v4 = [self _stringForRoutePickingResult:result];
   v7[0] = @"action";
   v7[1] = @"result";
   v8[0] = @"W1RouteAutoSelect";
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"RoutePicking" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"RoutePicking" payload:v5];
 }
 
-+ (void)incrementShuffleModeChangeCountWithEndpointType:(unint64_t)a3
++ (void)incrementShuffleModeChangeCountWithEndpointType:(unint64_t)type
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromNMUMetricsEndpointType(a3);
+  v4 = NSStringFromNMUMetricsEndpointType(type);
   v7[0] = @"action";
   v7[1] = @"origin";
   v8[0] = @"ChangeShuffleMode";
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"TrackList" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"TrackList" payload:v5];
 }
 
-+ (void)incrementRepeatModeChangeCountWithEndpointType:(unint64_t)a3
++ (void)incrementRepeatModeChangeCountWithEndpointType:(unint64_t)type
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromNMUMetricsEndpointType(a3);
+  v4 = NSStringFromNMUMetricsEndpointType(type);
   v7[0] = @"action";
   v7[1] = @"origin";
   v8[0] = @"ChangeRepeatMode";
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"TrackList" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"TrackList" payload:v5];
 }
 
-+ (void)incrementAutoPlayChangeCountWithEndpointType:(unint64_t)a3
++ (void)incrementAutoPlayChangeCountWithEndpointType:(unint64_t)type
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromNMUMetricsEndpointType(a3);
+  v4 = NSStringFromNMUMetricsEndpointType(type);
   v7[0] = @"action";
   v7[1] = @"origin";
   v8[0] = @"ChangeQueueEndAction";
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"TrackList" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"TrackList" payload:v5];
 }
 
-+ (void)incrementTrackListTrackSelectionCountWithEndpointType:(unint64_t)a3
++ (void)incrementTrackListTrackSelectionCountWithEndpointType:(unint64_t)type
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromNMUMetricsEndpointType(a3);
+  v4 = NSStringFromNMUMetricsEndpointType(type);
   v7[0] = @"action";
   v7[1] = @"origin";
   v8[0] = @"SelectTrack";
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [a1 sharedMetricsReporter];
-  [v6 _sendEvent:@"TrackList" payload:v5];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"TrackList" payload:v5];
 }
 
-+ (void)incrementTapCountForMoreActionType:(unint64_t)a3 context:(unint64_t)a4
++ (void)incrementTapCountForMoreActionType:(unint64_t)type context:(unint64_t)context
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v6 = [a1 _actionNameFromMoreActionType:a3];
-  v7 = [a1 _contextNameFromMoreActionContextType:a4];
+  v6 = [self _actionNameFromMoreActionType:type];
+  v7 = [self _contextNameFromMoreActionContextType:context];
   v10[0] = @"action";
   v10[1] = @"context";
   v11[0] = v6;
   v11[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  v9 = [a1 sharedMetricsReporter];
-  [v9 _sendEvent:@"MoreMenu" payload:v8];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"MoreMenu" payload:v8];
 }
 
-+ (void)incrementMediaSuggestionsTappedWithEndpointType:(unint64_t)a3 contextType:(unint64_t)a4 mediaType:(unint64_t)a5
++ (void)incrementMediaSuggestionsTappedWithEndpointType:(unint64_t)type contextType:(unint64_t)contextType mediaType:(unint64_t)mediaType
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v8 = NSStringFromNMUMetricsEndpointType(a3);
-  v9 = [a1 _stringFromSuggestionsContextType:a4];
-  v10 = [a1 _stringFromSuggestionsMediaType:a5];
+  v8 = NSStringFromNMUMetricsEndpointType(type);
+  v9 = [self _stringFromSuggestionsContextType:contextType];
+  v10 = [self _stringFromSuggestionsMediaType:mediaType];
   v13[0] = @"view";
   v13[1] = @"endpoint";
   v14[0] = @"MediaSuggestions_SuggestionTapped";
@@ -413,65 +413,65 @@ void __34__NMUMetricsReporter__processName__block_invoke()
   v14[2] = v9;
   v14[3] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:4];
-  v12 = [a1 sharedMetricsReporter];
-  [v12 _sendEvent:@"SuggestionTapped" payload:v11];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"SuggestionTapped" payload:v11];
 }
 
-+ (void)incrementBrowsingCountForViewType:(unint64_t)a3 endpointType:(unint64_t)a4
++ (void)incrementBrowsingCountForViewType:(unint64_t)type endpointType:(unint64_t)endpointType
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v6 = [a1 _viewNameForViewType:a3];
-  v7 = NSStringFromNMUMetricsEndpointType(a4);
+  v6 = [self _viewNameForViewType:type];
+  v7 = NSStringFromNMUMetricsEndpointType(endpointType);
   v10[0] = @"view";
   v10[1] = @"origin";
   v11[0] = v6;
   v11[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  v9 = [a1 sharedMetricsReporter];
-  [v9 _sendEvent:@"Browsing" payload:v8];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"Browsing" payload:v8];
 }
 
-+ (void)incrementTapCountForKeepLocalErrorAlertReason:(unint64_t)a3 action:(unint64_t)a4
++ (void)incrementTapCountForKeepLocalErrorAlertReason:(unint64_t)reason action:(unint64_t)action
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v6 = [a1 _alertReasonFromKeepLocalErrorAlertReason:a3];
-  v7 = [a1 _actionNameFromAlertAction:a4];
+  v6 = [self _alertReasonFromKeepLocalErrorAlertReason:reason];
+  v7 = [self _actionNameFromAlertAction:action];
   v10[0] = @"action";
   v10[1] = @"reason";
   v11[0] = v7;
   v11[1] = v6;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  v9 = [a1 sharedMetricsReporter];
-  [v9 _sendEvent:@"KeepLocalErrorAlert" payload:v8];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"KeepLocalErrorAlert" payload:v8];
 }
 
-+ (void)incrementTapCountForDownloadWaitingReason:(unint64_t)a3 action:(unint64_t)a4
++ (void)incrementTapCountForDownloadWaitingReason:(unint64_t)reason action:(unint64_t)action
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v6 = [a1 _alertReasonFromDownloadWaitingReason:a3];
-  v7 = [a1 _actionNameFromAlertAction:a4];
+  v6 = [self _alertReasonFromDownloadWaitingReason:reason];
+  v7 = [self _actionNameFromAlertAction:action];
   v10[0] = @"action";
   v10[1] = @"reason";
   v11[0] = v7;
   v11[1] = v6;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  v9 = [a1 sharedMetricsReporter];
-  [v9 _sendEvent:@"DownloadWaitingAlert" payload:v8];
+  sharedMetricsReporter = [self sharedMetricsReporter];
+  [sharedMetricsReporter _sendEvent:@"DownloadWaitingAlert" payload:v8];
 }
 
-- (void)_sendEvent:(id)a3 payload:(id)a4
+- (void)_sendEvent:(id)event payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__NMUMetricsReporter__sendEvent_payload___block_invoke;
   v11[3] = &unk_27993BF58;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = payloadCopy;
+  v9 = payloadCopy;
+  v10 = eventCopy;
   dispatch_async(queue, v11);
 }
 
@@ -491,132 +491,132 @@ id __41__NMUMetricsReporter__sendEvent_payload___block_invoke_2(uint64_t a1)
   return v1;
 }
 
-+ (id)_launcherNameForLaunchURLType:(unint64_t)a3
++ (id)_launcherNameForLaunchURLType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27993BFA8[a3];
+    return off_27993BFA8[type];
   }
 }
 
-+ (id)_viewNameForViewType:(unint64_t)a3
++ (id)_viewNameForViewType:(unint64_t)type
 {
-  if (a3 > 0x2A)
+  if (type > 0x2A)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27993BFC8[a3];
+    return off_27993BFC8[type];
   }
 }
 
-+ (id)_actionNameFromMoreActionType:(unint64_t)a3
++ (id)_actionNameFromMoreActionType:(unint64_t)type
 {
-  if (a3 > 0x14)
+  if (type > 0x14)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27993C120[a3];
+    return off_27993C120[type];
   }
 }
 
-+ (id)_actionNameFromAlertAction:(unint64_t)a3
++ (id)_actionNameFromAlertAction:(unint64_t)action
 {
-  if (a3 > 6)
+  if (action > 6)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27993C1C8[a3];
+    return off_27993C1C8[action];
   }
 }
 
-+ (id)_alertReasonFromKeepLocalErrorAlertReason:(unint64_t)a3
++ (id)_alertReasonFromKeepLocalErrorAlertReason:(unint64_t)reason
 {
-  if (a3 > 7)
+  if (reason > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27993C200[a3];
+    return off_27993C200[reason];
   }
 }
 
-+ (id)_alertReasonFromDownloadWaitingReason:(unint64_t)a3
++ (id)_alertReasonFromDownloadWaitingReason:(unint64_t)reason
 {
-  if (a3 > 0xA)
+  if (reason > 0xA)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27993C240[a3];
+    return off_27993C240[reason];
   }
 }
 
-+ (id)_stringForRoutePickingResult:(unint64_t)a3
++ (id)_stringForRoutePickingResult:(unint64_t)result
 {
-  if (a3 > 2)
+  if (result > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_27993C298[a3];
+    return off_27993C298[result];
   }
 }
 
-+ (id)_contextNameFromMoreActionContextType:(unint64_t)a3
++ (id)_contextNameFromMoreActionContextType:(unint64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_27993C2B0[a3];
+    return off_27993C2B0[type];
   }
 }
 
-+ (id)_stringFromSuggestionsContextType:(unint64_t)a3
++ (id)_stringFromSuggestionsContextType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return @"Unspecified";
   }
 
   else
   {
-    return off_27993C2E8[a3 - 1];
+    return off_27993C2E8[type - 1];
   }
 }
 
-+ (id)_stringFromSuggestionsMediaType:(unint64_t)a3
++ (id)_stringFromSuggestionsMediaType:(unint64_t)type
 {
   v3 = @"Unspecified";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"Music";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"Podcast";
   }

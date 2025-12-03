@@ -3,25 +3,25 @@
 - (id)maxYValue;
 - (id)minYValue;
 - (id)yValue;
-- (void)setChartPoint:(id)a3 forType:(id)a4;
+- (void)setChartPoint:(id)point forType:(id)type;
 @end
 
 @implementation HKBloodPressureChartPoint
 
-- (void)setChartPoint:(id)a3 forType:(id)a4
+- (void)setChartPoint:(id)point forType:(id)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 code] == 16)
+  pointCopy = point;
+  typeCopy = type;
+  if ([typeCopy code] == 16)
   {
     p_systolicChartPoint = &self->_systolicChartPoint;
 LABEL_5:
-    objc_storeStrong(p_systolicChartPoint, a3);
+    objc_storeStrong(p_systolicChartPoint, point);
     goto LABEL_6;
   }
 
-  if ([v8 code] == 17)
+  if ([typeCopy code] == 17)
   {
     p_systolicChartPoint = &self->_diastolicChartPoint;
     goto LABEL_5;
@@ -33,9 +33,9 @@ LABEL_5:
   {
     v11 = v10;
     v12 = 138412546;
-    v13 = v7;
+    v13 = pointCopy;
     v14 = 2048;
-    v15 = [v8 code];
+    code = [typeCopy code];
     _os_log_impl(&dword_1C3942000, v11, OS_LOG_TYPE_DEFAULT, "Attempt to insert chart point %@ for type %ld, this is probably a mistake", &v12, 0x16u);
   }
 
@@ -59,15 +59,15 @@ LABEL_6:
   systolicChartPoint = self->_systolicChartPoint;
   if (systolicChartPoint)
   {
-    v5 = [(HKHealthChartPoint *)systolicChartPoint yValue];
-    [v3 addObject:v5];
+    yValue = [(HKHealthChartPoint *)systolicChartPoint yValue];
+    [v3 addObject:yValue];
   }
 
   diastolicChartPoint = self->_diastolicChartPoint;
   if (diastolicChartPoint)
   {
-    v7 = [(HKHealthChartPoint *)diastolicChartPoint yValue];
-    [v3 addObject:v7];
+    yValue2 = [(HKHealthChartPoint *)diastolicChartPoint yValue];
+    [v3 addObject:yValue2];
   }
 
   return v3;

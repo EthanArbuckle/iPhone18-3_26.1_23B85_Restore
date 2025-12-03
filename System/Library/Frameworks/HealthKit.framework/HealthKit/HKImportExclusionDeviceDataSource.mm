@@ -1,24 +1,24 @@
 @interface HKImportExclusionDeviceDataSource
-+ (BOOL)isDeviceSerialNumberOnAllowedListForHKFeatureIdentifierOxygenSaturationRecording:(id)a3;
-+ (BOOL)isDeviceSerialNumberOnTIBListForHKFeatureIdentifierOxygenSaturationRecording:(id)a3;
-- (BOOL)isDeviceSerialNumberOnPreImportExclusionList:(id)a3 featureIdentifier:(id)a4;
-- (BOOL)isDeviceSerialNumberOnTIBList:(id)a3 featureIdentifier:(id)a4;
-- (BOOL)isDeviceTypeNotOnImportExclusionList:(id)a3 featureIdentifier:(id)a4;
-- (HKImportExclusionDeviceDataSource)initWithPairedDeviceRegistry:(id)a3;
++ (BOOL)isDeviceSerialNumberOnAllowedListForHKFeatureIdentifierOxygenSaturationRecording:(id)recording;
++ (BOOL)isDeviceSerialNumberOnTIBListForHKFeatureIdentifierOxygenSaturationRecording:(id)recording;
+- (BOOL)isDeviceSerialNumberOnPreImportExclusionList:(id)list featureIdentifier:(id)identifier;
+- (BOOL)isDeviceSerialNumberOnTIBList:(id)list featureIdentifier:(id)identifier;
+- (BOOL)isDeviceTypeNotOnImportExclusionList:(id)list featureIdentifier:(id)identifier;
+- (HKImportExclusionDeviceDataSource)initWithPairedDeviceRegistry:(id)registry;
 - (NRPairedDeviceRegistry)pairedDeviceRegistry;
 - (id)activePairedDevice;
-- (id)isActiveWatchProdFusedWithBehavior:(id)a3;
-- (id)isHKFeatureIdentifierOxygenSaturationRecordingCompanionAnalysisImportAllowedForActiveWatchWithDeviceType:(id)a3 prodFused:(BOOL)a4 serialNumber:(id)a5 regionCode:(id)a6;
-- (id)isHKFeatureIdentifierOxygenSaturationRecordingImportAllowedForActiveWatchWithDeviceType:(id)a3 serialNumber:(id)a4 regionCode:(id)a5;
-- (id)isImportAllowedForActiveWatchWithBehavior:(id)a3 featureIdentifier:(id)a4;
+- (id)isActiveWatchProdFusedWithBehavior:(id)behavior;
+- (id)isHKFeatureIdentifierOxygenSaturationRecordingCompanionAnalysisImportAllowedForActiveWatchWithDeviceType:(id)type prodFused:(BOOL)fused serialNumber:(id)number regionCode:(id)code;
+- (id)isHKFeatureIdentifierOxygenSaturationRecordingImportAllowedForActiveWatchWithDeviceType:(id)type serialNumber:(id)number regionCode:(id)code;
+- (id)isImportAllowedForActiveWatchWithBehavior:(id)behavior featureIdentifier:(id)identifier;
 @end
 
 @implementation HKImportExclusionDeviceDataSource
 
-+ (BOOL)isDeviceSerialNumberOnAllowedListForHKFeatureIdentifierOxygenSaturationRecording:(id)a3
++ (BOOL)isDeviceSerialNumberOnAllowedListForHKFeatureIdentifierOxygenSaturationRecording:(id)recording
 {
-  v3 = a3;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+  recordingCopy = recording;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [recordingCopy UTF8String]);
   v4 = v33;
   v5 = v33;
   v6 = __p;
@@ -142,7 +142,7 @@ LABEL_25:
 
   else
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&__p, [recordingCopy UTF8String]);
     LOBYTE(v36) = 0;
     v22 = std::__lower_bound_bisecting[abi:ne200100]<std::_ClassicAlgPolicy,std::string_view const*,std::string,std::__identity,std::__less<void,void>>(&hk_HKFeatureIdentifierOxygenSaturationRecording::additional_allowed_serial_numbers, &__p, 0x44uLL);
     if (v22 == &__block_descriptor_32_e35_v24__0__NSString_8__NSDictionary_16l)
@@ -187,33 +187,33 @@ LABEL_44:
   return v21;
 }
 
-- (HKImportExclusionDeviceDataSource)initWithPairedDeviceRegistry:(id)a3
+- (HKImportExclusionDeviceDataSource)initWithPairedDeviceRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v9.receiver = self;
   v9.super_class = HKImportExclusionDeviceDataSource;
   v6 = [(HKImportExclusionDeviceDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pairedDeviceRegistry, a3);
+    objc_storeStrong(&v6->_pairedDeviceRegistry, registry);
   }
 
   return v7;
 }
 
-- (id)isActiveWatchProdFusedWithBehavior:(id)a3
+- (id)isActiveWatchProdFusedWithBehavior:(id)behavior
 {
-  v4 = a3;
-  if ([v4 isAppleWatch])
+  behaviorCopy = behavior;
+  if ([behaviorCopy isAppleWatch])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isProdFused")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(behaviorCopy, "isProdFused")}];
   }
 
   else
   {
-    v6 = [(HKImportExclusionDeviceDataSource *)self activePairedDevice];
-    if (v6)
+    activePairedDevice = [(HKImportExclusionDeviceDataSource *)self activePairedDevice];
+    if (activePairedDevice)
     {
       v10 = 0;
       v11 = &v10;
@@ -234,7 +234,7 @@ LABEL_44:
         [HKImportExclusionDeviceDataSource isActiveWatchProdFusedWithBehavior:];
       }
 
-      v5 = [v6 valueForProperty:*v7];
+      v5 = [activePairedDevice valueForProperty:*v7];
     }
 
     else
@@ -248,12 +248,12 @@ LABEL_44:
 
 - (id)activePairedDevice
 {
-  v2 = [(HKImportExclusionDeviceDataSource *)self pairedDeviceRegistry];
-  v3 = [getNRPairedDeviceRegistryClass_0() activeDeviceSelectorBlock];
-  v4 = [v2 getDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  pairedDeviceRegistry = [(HKImportExclusionDeviceDataSource *)self pairedDeviceRegistry];
+  activeDeviceSelectorBlock = [getNRPairedDeviceRegistryClass_0() activeDeviceSelectorBlock];
+  v4 = [pairedDeviceRegistry getDevicesMatching:activeDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (NRPairedDeviceRegistry)pairedDeviceRegistry
@@ -261,32 +261,32 @@ LABEL_44:
   pairedDeviceRegistry = self->_pairedDeviceRegistry;
   if (pairedDeviceRegistry)
   {
-    v3 = pairedDeviceRegistry;
+    sharedInstance = pairedDeviceRegistry;
   }
 
   else
   {
-    v3 = [getNRPairedDeviceRegistryClass_0() sharedInstance];
+    sharedInstance = [getNRPairedDeviceRegistryClass_0() sharedInstance];
   }
 
-  return v3;
+  return sharedInstance;
 }
 
-- (id)isImportAllowedForActiveWatchWithBehavior:(id)a3 featureIdentifier:(id)a4
+- (id)isImportAllowedForActiveWatchWithBehavior:(id)behavior featureIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isAppleWatch])
+  behaviorCopy = behavior;
+  identifierCopy = identifier;
+  if ([behaviorCopy isAppleWatch])
   {
-    v8 = [v6 currentDeviceProductType];
-    v9 = [v6 currentDeviceSerialNumber];
-    v10 = [v6 currentDeviceRegionCode];
+    currentDeviceProductType = [behaviorCopy currentDeviceProductType];
+    currentDeviceSerialNumber = [behaviorCopy currentDeviceSerialNumber];
+    currentDeviceRegionCode = [behaviorCopy currentDeviceRegionCode];
   }
 
   else
   {
-    v11 = [(HKImportExclusionDeviceDataSource *)self activePairedDevice];
-    if (!v11)
+    activePairedDevice = [(HKImportExclusionDeviceDataSource *)self activePairedDevice];
+    if (!activePairedDevice)
     {
       goto LABEL_24;
     }
@@ -310,7 +310,7 @@ LABEL_44:
       [HKImportExclusionDeviceDataSource isImportAllowedForActiveWatchWithBehavior:featureIdentifier:];
     }
 
-    v8 = [v11 valueForProperty:*v12];
+    currentDeviceProductType = [activePairedDevice valueForProperty:*v12];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
@@ -330,7 +330,7 @@ LABEL_44:
       [HKImportExclusionDeviceDataSource isImportAllowedForActiveWatchWithBehavior:featureIdentifier:];
     }
 
-    v9 = [v11 valueForProperty:*v14];
+    currentDeviceSerialNumber = [activePairedDevice valueForProperty:*v14];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
@@ -350,51 +350,51 @@ LABEL_44:
       [HKImportExclusionDeviceDataSource isImportAllowedForActiveWatchWithBehavior:featureIdentifier:];
     }
 
-    v10 = [v11 valueForProperty:*v16];
+    currentDeviceRegionCode = [activePairedDevice valueForProperty:*v16];
   }
 
-  v11 = MEMORY[0x1E695E110];
-  if (v8 && v9 && v10)
+  activePairedDevice = MEMORY[0x1E695E110];
+  if (currentDeviceProductType && currentDeviceSerialNumber && currentDeviceRegionCode)
   {
-    if ([v7 isEqualToString:@"OxygenSaturationRecording"])
+    if ([identifierCopy isEqualToString:@"OxygenSaturationRecording"])
     {
-      v18 = [(HKImportExclusionDeviceDataSource *)self isHKFeatureIdentifierOxygenSaturationRecordingImportAllowedForActiveWatchWithDeviceType:v8 serialNumber:v9 regionCode:v10];
+      v18 = [(HKImportExclusionDeviceDataSource *)self isHKFeatureIdentifierOxygenSaturationRecordingImportAllowedForActiveWatchWithDeviceType:currentDeviceProductType serialNumber:currentDeviceSerialNumber regionCode:currentDeviceRegionCode];
     }
 
     else
     {
-      if (![v7 isEqualToString:@"OxygenSaturationRecordingCompanionAnalysis"])
+      if (![identifierCopy isEqualToString:@"OxygenSaturationRecordingCompanionAnalysis"])
       {
-        v11 = MEMORY[0x1E695E118];
+        activePairedDevice = MEMORY[0x1E695E118];
         goto LABEL_23;
       }
 
-      v18 = -[HKImportExclusionDeviceDataSource isHKFeatureIdentifierOxygenSaturationRecordingCompanionAnalysisImportAllowedForActiveWatchWithDeviceType:prodFused:serialNumber:regionCode:](self, "isHKFeatureIdentifierOxygenSaturationRecordingCompanionAnalysisImportAllowedForActiveWatchWithDeviceType:prodFused:serialNumber:regionCode:", v8, [v6 isProdFused], v9, v10);
+      v18 = -[HKImportExclusionDeviceDataSource isHKFeatureIdentifierOxygenSaturationRecordingCompanionAnalysisImportAllowedForActiveWatchWithDeviceType:prodFused:serialNumber:regionCode:](self, "isHKFeatureIdentifierOxygenSaturationRecordingCompanionAnalysisImportAllowedForActiveWatchWithDeviceType:prodFused:serialNumber:regionCode:", currentDeviceProductType, [behaviorCopy isProdFused], currentDeviceSerialNumber, currentDeviceRegionCode);
     }
 
-    v11 = v18;
+    activePairedDevice = v18;
   }
 
 LABEL_23:
 
 LABEL_24:
 
-  return v11;
+  return activePairedDevice;
 }
 
-- (id)isHKFeatureIdentifierOxygenSaturationRecordingImportAllowedForActiveWatchWithDeviceType:(id)a3 serialNumber:(id)a4 regionCode:(id)a5
+- (id)isHKFeatureIdentifierOxygenSaturationRecordingImportAllowedForActiveWatchWithDeviceType:(id)type serialNumber:(id)number regionCode:(id)code
 {
-  v7 = a4;
-  if ([(HKImportExclusionDeviceDataSource *)self isDeviceTypeNotOnImportExclusionList:a3 featureIdentifier:@"OxygenSaturationRecording"])
+  numberCopy = number;
+  if ([(HKImportExclusionDeviceDataSource *)self isDeviceTypeNotOnImportExclusionList:type featureIdentifier:@"OxygenSaturationRecording"])
   {
     v8 = MEMORY[0x1E695E118];
   }
 
   else
   {
-    v9 = [(HKImportExclusionDeviceDataSource *)self isDeviceSerialNumberOnTIBList:v7 featureIdentifier:@"OxygenSaturationRecording"];
+    v9 = [(HKImportExclusionDeviceDataSource *)self isDeviceSerialNumberOnTIBList:numberCopy featureIdentifier:@"OxygenSaturationRecording"];
     v8 = MEMORY[0x1E695E118];
-    if (!v9 && ![(HKImportExclusionDeviceDataSource *)self isDeviceSerialNumberOnPreImportExclusionList:v7 featureIdentifier:@"OxygenSaturationRecording"])
+    if (!v9 && ![(HKImportExclusionDeviceDataSource *)self isDeviceSerialNumberOnPreImportExclusionList:numberCopy featureIdentifier:@"OxygenSaturationRecording"])
     {
       v8 = MEMORY[0x1E695E110];
     }
@@ -403,27 +403,27 @@ LABEL_24:
   return v8;
 }
 
-- (id)isHKFeatureIdentifierOxygenSaturationRecordingCompanionAnalysisImportAllowedForActiveWatchWithDeviceType:(id)a3 prodFused:(BOOL)a4 serialNumber:(id)a5 regionCode:(id)a6
+- (id)isHKFeatureIdentifierOxygenSaturationRecordingCompanionAnalysisImportAllowedForActiveWatchWithDeviceType:(id)type prodFused:(BOOL)fused serialNumber:(id)number regionCode:(id)code
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v8 && ([v12 isEqualToString:@"LW"] & 1) == 0 && !objc_msgSend(v13, "isEqualToString:", @"LM") || -[HKImportExclusionDeviceDataSource isDeviceTypeNotOnImportExclusionList:featureIdentifier:](self, "isDeviceTypeNotOnImportExclusionList:featureIdentifier:", v10, @"OxygenSaturationRecordingCompanionAnalysis"))
+  fusedCopy = fused;
+  typeCopy = type;
+  numberCopy = number;
+  codeCopy = code;
+  v13 = codeCopy;
+  if (fusedCopy && ([codeCopy isEqualToString:@"LW"] & 1) == 0 && !objc_msgSend(v13, "isEqualToString:", @"LM") || -[HKImportExclusionDeviceDataSource isDeviceTypeNotOnImportExclusionList:featureIdentifier:](self, "isDeviceTypeNotOnImportExclusionList:featureIdentifier:", typeCopy, @"OxygenSaturationRecordingCompanionAnalysis"))
   {
     v14 = MEMORY[0x1E695E118];
     goto LABEL_15;
   }
 
-  v15 = [(HKImportExclusionDeviceDataSource *)self isDeviceSerialNumberOnTIBList:v11 featureIdentifier:@"OxygenSaturationRecordingCompanionAnalysis"];
+  v15 = [(HKImportExclusionDeviceDataSource *)self isDeviceSerialNumberOnTIBList:numberCopy featureIdentifier:@"OxygenSaturationRecordingCompanionAnalysis"];
   v14 = MEMORY[0x1E695E118];
   if (v15)
   {
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!fusedCopy)
   {
     v16 = v13;
     if ([v16 isEqualToString:@"LW"])
@@ -445,7 +445,7 @@ LABEL_24:
   }
 
 LABEL_8:
-  if (![(HKImportExclusionDeviceDataSource *)self isDeviceSerialNumberOnPreImportExclusionList:v11 featureIdentifier:@"OxygenSaturationRecordingCompanionAnalysis"])
+  if (![(HKImportExclusionDeviceDataSource *)self isDeviceSerialNumberOnPreImportExclusionList:numberCopy featureIdentifier:@"OxygenSaturationRecordingCompanionAnalysis"])
   {
     v14 = MEMORY[0x1E695E110];
   }
@@ -455,13 +455,13 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)isDeviceTypeNotOnImportExclusionList:(id)a3 featureIdentifier:(id)a4
+- (BOOL)isDeviceTypeNotOnImportExclusionList:(id)list featureIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:@"OxygenSaturationRecording"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"OxygenSaturationRecordingCompanionAnalysis"))
+  listCopy = list;
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"OxygenSaturationRecording"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"OxygenSaturationRecordingCompanionAnalysis"))
   {
-    v7 = [objc_opt_class() isDeviceTypeAllowedForHKFeatureIdentifierOxygenSaturationRecording:v5];
+    v7 = [objc_opt_class() isDeviceTypeAllowedForHKFeatureIdentifierOxygenSaturationRecording:listCopy];
   }
 
   else
@@ -472,13 +472,13 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)isDeviceSerialNumberOnTIBList:(id)a3 featureIdentifier:(id)a4
+- (BOOL)isDeviceSerialNumberOnTIBList:(id)list featureIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:@"OxygenSaturationRecording"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"OxygenSaturationRecordingCompanionAnalysis"))
+  listCopy = list;
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"OxygenSaturationRecording"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"OxygenSaturationRecordingCompanionAnalysis"))
   {
-    v7 = [objc_opt_class() isDeviceSerialNumberOnTIBListForHKFeatureIdentifierOxygenSaturationRecording:v5];
+    v7 = [objc_opt_class() isDeviceSerialNumberOnTIBListForHKFeatureIdentifierOxygenSaturationRecording:listCopy];
   }
 
   else
@@ -489,13 +489,13 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)isDeviceSerialNumberOnPreImportExclusionList:(id)a3 featureIdentifier:(id)a4
+- (BOOL)isDeviceSerialNumberOnPreImportExclusionList:(id)list featureIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:@"OxygenSaturationRecording"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"OxygenSaturationRecordingCompanionAnalysis"))
+  listCopy = list;
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"OxygenSaturationRecording"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"OxygenSaturationRecordingCompanionAnalysis"))
   {
-    v7 = [objc_opt_class() isDeviceSerialNumberOnAllowedListForHKFeatureIdentifierOxygenSaturationRecording:v5];
+    v7 = [objc_opt_class() isDeviceSerialNumberOnAllowedListForHKFeatureIdentifierOxygenSaturationRecording:listCopy];
   }
 
   else
@@ -506,10 +506,10 @@ LABEL_15:
   return v7;
 }
 
-+ (BOOL)isDeviceSerialNumberOnTIBListForHKFeatureIdentifierOxygenSaturationRecording:(id)a3
++ (BOOL)isDeviceSerialNumberOnTIBListForHKFeatureIdentifierOxygenSaturationRecording:(id)recording
 {
-  v3 = a3;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+  recordingCopy = recording;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [recordingCopy UTF8String]);
   v4 = v33;
   v5 = v33;
   v6 = __p;
@@ -633,7 +633,7 @@ LABEL_25:
 
   else
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&__p, [recordingCopy UTF8String]);
     LOBYTE(v36) = 0;
     v22 = std::__lower_bound_bisecting[abi:ne200100]<std::_ClassicAlgPolicy,std::string_view const*,std::string,std::__identity,std::__less<void,void>>(&hk_HKFeatureIdentifierOxygenSaturationRecording::additional_allowed_serial_numbers_tib, &__p, 1uLL);
     if (v22 == HKConceptAttributeValueTrue)

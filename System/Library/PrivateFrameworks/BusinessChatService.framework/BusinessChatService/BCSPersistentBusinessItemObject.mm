@@ -1,23 +1,23 @@
 @interface BCSPersistentBusinessItemObject
-- (BCSPersistentBusinessItemObject)initWithBusinessItem:(id)a3 lastRetrievedDate:(id)a4 TTLDate:(id)a5;
+- (BCSPersistentBusinessItemObject)initWithBusinessItem:(id)item lastRetrievedDate:(id)date TTLDate:(id)lDate;
 @end
 
 @implementation BCSPersistentBusinessItemObject
 
-- (BCSPersistentBusinessItemObject)initWithBusinessItem:(id)a3 lastRetrievedDate:(id)a4 TTLDate:(id)a5
+- (BCSPersistentBusinessItemObject)initWithBusinessItem:(id)item lastRetrievedDate:(id)date TTLDate:(id)lDate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  dateCopy = date;
+  lDateCopy = lDate;
   v15.receiver = self;
   v15.super_class = BCSPersistentBusinessItemObject;
   v12 = [(BCSPersistentBusinessItemObject *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_businessItem, a3);
-    objc_storeStrong(&v13->_lastRetrievedDate, a4);
-    objc_storeStrong(&v13->_TTLDate, a5);
+    objc_storeStrong(&v12->_businessItem, item);
+    objc_storeStrong(&v13->_lastRetrievedDate, date);
+    objc_storeStrong(&v13->_TTLDate, lDate);
   }
 
   return v13;

@@ -1,140 +1,140 @@
 @interface RTTripClusterMetadata
-- (BOOL)isEqual:(id)a3;
-- (RTTripClusterMetadata)initWithCoder:(id)a3;
-- (RTTripClusterMetadata)initWithTripClusterId:(id)a3 dateOfMostRecentTrip:(id)a4 modeOfTransport:(int64_t)a5 countOfTraversal:(int)a6 originLatitude:(double)a7 originLongitude:(double)a8 destinationLatitude:(double)a9 destinationLongitude:(double)a10 averageTripTime:(double)a11 averageTripDistance:(double)a12 minimumTripTime:(double)a13 maximumTripTime:(double)a14 minimumTripDistance:(double)a15 maximumTripDistance:(double)a16 commuteID:(id)a17 isLocked:(BOOL)a18 avgBikeDistance:(double)a19 avgBikeTime:(double)a20 avgWalkDistance:(double)a21 avgWalkTime:(double)a22 bikeTraversalCount:(int)a23 walkTraversalCount:(int)a24 clusterOrder:(signed __int16)a25;
+- (BOOL)isEqual:(id)equal;
+- (RTTripClusterMetadata)initWithCoder:(id)coder;
+- (RTTripClusterMetadata)initWithTripClusterId:(id)id dateOfMostRecentTrip:(id)trip modeOfTransport:(int64_t)transport countOfTraversal:(int)traversal originLatitude:(double)latitude originLongitude:(double)longitude destinationLatitude:(double)destinationLatitude destinationLongitude:(double)self0 averageTripTime:(double)self1 averageTripDistance:(double)self2 minimumTripTime:(double)self3 maximumTripTime:(double)self4 minimumTripDistance:(double)self5 maximumTripDistance:(double)self6 commuteID:(id)self7 isLocked:(BOOL)self8 avgBikeDistance:(double)self9 avgBikeTime:(double)bikeTime avgWalkDistance:(double)walkDistance avgWalkTime:(double)walkTime bikeTraversalCount:(int)count walkTraversalCount:(int)traversalCount clusterOrder:(signed __int16)order;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripClusterMetadata
 
-- (RTTripClusterMetadata)initWithTripClusterId:(id)a3 dateOfMostRecentTrip:(id)a4 modeOfTransport:(int64_t)a5 countOfTraversal:(int)a6 originLatitude:(double)a7 originLongitude:(double)a8 destinationLatitude:(double)a9 destinationLongitude:(double)a10 averageTripTime:(double)a11 averageTripDistance:(double)a12 minimumTripTime:(double)a13 maximumTripTime:(double)a14 minimumTripDistance:(double)a15 maximumTripDistance:(double)a16 commuteID:(id)a17 isLocked:(BOOL)a18 avgBikeDistance:(double)a19 avgBikeTime:(double)a20 avgWalkDistance:(double)a21 avgWalkTime:(double)a22 bikeTraversalCount:(int)a23 walkTraversalCount:(int)a24 clusterOrder:(signed __int16)a25
+- (RTTripClusterMetadata)initWithTripClusterId:(id)id dateOfMostRecentTrip:(id)trip modeOfTransport:(int64_t)transport countOfTraversal:(int)traversal originLatitude:(double)latitude originLongitude:(double)longitude destinationLatitude:(double)destinationLatitude destinationLongitude:(double)self0 averageTripTime:(double)self1 averageTripDistance:(double)self2 minimumTripTime:(double)self3 maximumTripTime:(double)self4 minimumTripDistance:(double)self5 maximumTripDistance:(double)self6 commuteID:(id)self7 isLocked:(BOOL)self8 avgBikeDistance:(double)self9 avgBikeTime:(double)bikeTime avgWalkDistance:(double)walkDistance avgWalkTime:(double)walkTime bikeTraversalCount:(int)count walkTraversalCount:(int)traversalCount clusterOrder:(signed __int16)order
 {
-  v40 = a3;
-  v41 = a4;
-  v42 = a17;
+  idCopy = id;
+  tripCopy = trip;
+  dCopy = d;
   v46.receiver = self;
   v46.super_class = RTTripClusterMetadata;
   v43 = [(RTTripClusterMetadata *)&v46 init];
   v44 = v43;
   if (v43)
   {
-    objc_storeStrong(&v43->_clusterID, a3);
-    objc_storeStrong(&v44->_dateOfMostRecentTrip, a4);
-    v44->_modeOfTransport = a5;
-    v44->_countOfTraversal = a6;
-    v44->_originLatitude = a7;
-    v44->_originLongitude = a8;
-    v44->_destinationLatitude = a9;
-    v44->_destinationLongitude = a10;
-    v44->_averageTripTime = a11;
-    v44->_averageTripDistance = a12;
-    v44->_minimumTripTime = a13;
-    v44->_maximumTripTime = a14;
-    v44->_minimumTripDistance = a15;
-    v44->_maximumTripDistance = a16;
-    objc_storeStrong(&v44->_commuteID, a17);
-    v44->_isLocked = a18;
-    v44->_avgBikeDistance = a19;
-    v44->_avgBikeTime = a20;
-    v44->_avgWalkDistance = a21;
-    v44->_avgWalkTime = a22;
-    v44->_bikeTraversalCount = a23;
-    v44->_walkTraversalCount = a24;
-    v44->_clusterOrder = a25;
+    objc_storeStrong(&v43->_clusterID, id);
+    objc_storeStrong(&v44->_dateOfMostRecentTrip, trip);
+    v44->_modeOfTransport = transport;
+    v44->_countOfTraversal = traversal;
+    v44->_originLatitude = latitude;
+    v44->_originLongitude = longitude;
+    v44->_destinationLatitude = destinationLatitude;
+    v44->_destinationLongitude = destinationLongitude;
+    v44->_averageTripTime = time;
+    v44->_averageTripDistance = distance;
+    v44->_minimumTripTime = tripTime;
+    v44->_maximumTripTime = maximumTripTime;
+    v44->_minimumTripDistance = tripDistance;
+    v44->_maximumTripDistance = maximumTripDistance;
+    objc_storeStrong(&v44->_commuteID, d);
+    v44->_isLocked = locked;
+    v44->_avgBikeDistance = bikeDistance;
+    v44->_avgBikeTime = bikeTime;
+    v44->_avgWalkDistance = walkDistance;
+    v44->_avgWalkTime = walkTime;
+    v44->_bikeTraversalCount = count;
+    v44->_walkTraversalCount = traversalCount;
+    v44->_clusterOrder = order;
   }
 
   return v44;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(RTTripClusterMetadata *)self clusterID];
-  [v7 encodeObject:v4 forKey:@"clusterId"];
+  coderCopy = coder;
+  clusterID = [(RTTripClusterMetadata *)self clusterID];
+  [coderCopy encodeObject:clusterID forKey:@"clusterId"];
 
-  v5 = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
-  [v7 encodeObject:v5 forKey:@"mostRecentDate"];
+  dateOfMostRecentTrip = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
+  [coderCopy encodeObject:dateOfMostRecentTrip forKey:@"mostRecentDate"];
 
-  [v7 encodeInteger:-[RTTripClusterMetadata modeOfTransport](self forKey:{"modeOfTransport"), @"modeOfTransport"}];
-  [v7 encodeInt:-[RTTripClusterMetadata countOfTraversal](self forKey:{"countOfTraversal"), @"countOfTravel"}];
+  [coderCopy encodeInteger:-[RTTripClusterMetadata modeOfTransport](self forKey:{"modeOfTransport"), @"modeOfTransport"}];
+  [coderCopy encodeInt:-[RTTripClusterMetadata countOfTraversal](self forKey:{"countOfTraversal"), @"countOfTravel"}];
   [(RTTripClusterMetadata *)self originLatitude];
-  [v7 encodeDouble:@"originLatitude" forKey:?];
+  [coderCopy encodeDouble:@"originLatitude" forKey:?];
   [(RTTripClusterMetadata *)self originLongitude];
-  [v7 encodeDouble:@"originLongitude" forKey:?];
+  [coderCopy encodeDouble:@"originLongitude" forKey:?];
   [(RTTripClusterMetadata *)self destinationLatitude];
-  [v7 encodeDouble:@"destinationLatitude" forKey:?];
+  [coderCopy encodeDouble:@"destinationLatitude" forKey:?];
   [(RTTripClusterMetadata *)self destinationLongitude];
-  [v7 encodeDouble:@"destinationLongitude" forKey:?];
+  [coderCopy encodeDouble:@"destinationLongitude" forKey:?];
   [(RTTripClusterMetadata *)self averageTripTime];
-  [v7 encodeDouble:@"avgTripTime" forKey:?];
+  [coderCopy encodeDouble:@"avgTripTime" forKey:?];
   [(RTTripClusterMetadata *)self averageTripDistance];
-  [v7 encodeDouble:@"avgTripDistance" forKey:?];
+  [coderCopy encodeDouble:@"avgTripDistance" forKey:?];
   [(RTTripClusterMetadata *)self minimumTripTime];
-  [v7 encodeDouble:@"minTripTime" forKey:?];
+  [coderCopy encodeDouble:@"minTripTime" forKey:?];
   [(RTTripClusterMetadata *)self minimumTripDistance];
-  [v7 encodeDouble:@"minTripDistance" forKey:?];
+  [coderCopy encodeDouble:@"minTripDistance" forKey:?];
   [(RTTripClusterMetadata *)self maximumTripTime];
-  [v7 encodeDouble:@"maxTripTime" forKey:?];
+  [coderCopy encodeDouble:@"maxTripTime" forKey:?];
   [(RTTripClusterMetadata *)self maximumTripDistance];
-  [v7 encodeDouble:@"maxTripDistance" forKey:?];
-  v6 = [(RTTripClusterMetadata *)self commuteID];
-  [v7 encodeObject:v6 forKey:@"commuteID"];
+  [coderCopy encodeDouble:@"maxTripDistance" forKey:?];
+  commuteID = [(RTTripClusterMetadata *)self commuteID];
+  [coderCopy encodeObject:commuteID forKey:@"commuteID"];
 
-  [v7 encodeBool:-[RTTripClusterMetadata isLocked](self forKey:{"isLocked"), @"isLocked"}];
+  [coderCopy encodeBool:-[RTTripClusterMetadata isLocked](self forKey:{"isLocked"), @"isLocked"}];
   [(RTTripClusterMetadata *)self avgBikeTime];
-  [v7 encodeDouble:@"avgBikeTime" forKey:?];
+  [coderCopy encodeDouble:@"avgBikeTime" forKey:?];
   [(RTTripClusterMetadata *)self avgBikeDistance];
-  [v7 encodeDouble:@"avgBikeDistance" forKey:?];
+  [coderCopy encodeDouble:@"avgBikeDistance" forKey:?];
   [(RTTripClusterMetadata *)self avgWalkTime];
-  [v7 encodeDouble:@"avgWalkTime" forKey:?];
+  [coderCopy encodeDouble:@"avgWalkTime" forKey:?];
   [(RTTripClusterMetadata *)self avgWalkDistance];
-  [v7 encodeDouble:@"avgWalkDistance" forKey:?];
-  [v7 encodeInt:-[RTTripClusterMetadata bikeTraversalCount](self forKey:{"bikeTraversalCount"), @"bikeTraversalCount"}];
-  [v7 encodeInt:-[RTTripClusterMetadata walkTraversalCount](self forKey:{"walkTraversalCount"), @"walkTraversalCount"}];
-  [v7 encodeInt:-[RTTripClusterMetadata clusterOrder](self forKey:{"clusterOrder"), @"clusterOrder"}];
+  [coderCopy encodeDouble:@"avgWalkDistance" forKey:?];
+  [coderCopy encodeInt:-[RTTripClusterMetadata bikeTraversalCount](self forKey:{"bikeTraversalCount"), @"bikeTraversalCount"}];
+  [coderCopy encodeInt:-[RTTripClusterMetadata walkTraversalCount](self forKey:{"walkTraversalCount"), @"walkTraversalCount"}];
+  [coderCopy encodeInt:-[RTTripClusterMetadata clusterOrder](self forKey:{"clusterOrder"), @"clusterOrder"}];
 }
 
-- (RTTripClusterMetadata)initWithCoder:(id)a3
+- (RTTripClusterMetadata)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"clusterId"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentDate"];
-  v6 = [v3 decodeIntegerForKey:@"modeOfTransport"];
-  v7 = [v3 decodeIntForKey:@"countOfTravel"];
-  [v3 decodeDoubleForKey:@"originLatitude"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterId"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentDate"];
+  v6 = [coderCopy decodeIntegerForKey:@"modeOfTransport"];
+  v7 = [coderCopy decodeIntForKey:@"countOfTravel"];
+  [coderCopy decodeDoubleForKey:@"originLatitude"];
   v43 = v8;
-  [v3 decodeDoubleForKey:@"originLongitude"];
+  [coderCopy decodeDoubleForKey:@"originLongitude"];
   v42 = v9;
-  [v3 decodeDoubleForKey:@"destinationLatitude"];
+  [coderCopy decodeDoubleForKey:@"destinationLatitude"];
   v41 = v10;
-  [v3 decodeDoubleForKey:@"destinationLongitude"];
+  [coderCopy decodeDoubleForKey:@"destinationLongitude"];
   v40 = v11;
-  [v3 decodeDoubleForKey:@"avgTripTime"];
+  [coderCopy decodeDoubleForKey:@"avgTripTime"];
   v39 = v12;
-  [v3 decodeDoubleForKey:@"avgTripDistance"];
+  [coderCopy decodeDoubleForKey:@"avgTripDistance"];
   v38 = v13;
-  [v3 decodeDoubleForKey:@"minTripTime"];
+  [coderCopy decodeDoubleForKey:@"minTripTime"];
   v15 = v14;
-  [v3 decodeDoubleForKey:@"maxTripTime"];
+  [coderCopy decodeDoubleForKey:@"maxTripTime"];
   v17 = v16;
-  [v3 decodeDoubleForKey:@"minTripDistance"];
+  [coderCopy decodeDoubleForKey:@"minTripDistance"];
   v19 = v18;
-  [v3 decodeDoubleForKey:@"maxTripDistance"];
+  [coderCopy decodeDoubleForKey:@"maxTripDistance"];
   v21 = v20;
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"commuteID"];
-  v23 = [v3 decodeBoolForKey:@"isLocked"];
-  [v3 decodeDoubleForKey:@"avgBikeTime"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"commuteID"];
+  v23 = [coderCopy decodeBoolForKey:@"isLocked"];
+  [coderCopy decodeDoubleForKey:@"avgBikeTime"];
   v25 = v24;
-  [v3 decodeDoubleForKey:@"avgBikeDistance"];
+  [coderCopy decodeDoubleForKey:@"avgBikeDistance"];
   v27 = v26;
-  [v3 decodeDoubleForKey:@"avgWalkTime"];
+  [coderCopy decodeDoubleForKey:@"avgWalkTime"];
   v29 = v28;
-  [v3 decodeDoubleForKey:@"avgWalkDistance"];
+  [coderCopy decodeDoubleForKey:@"avgWalkDistance"];
   v31 = v30;
-  v32 = [v3 decodeIntForKey:@"bikeTraversalCount"];
-  v33 = [v3 decodeIntForKey:@"walkTraversalCount"];
-  v34 = [v3 decodeIntForKey:@"clusterOrder"];
+  v32 = [coderCopy decodeIntForKey:@"bikeTraversalCount"];
+  v33 = [coderCopy decodeIntForKey:@"walkTraversalCount"];
+  v34 = [coderCopy decodeIntForKey:@"clusterOrder"];
 
   LOWORD(v37) = v34;
   v35 = [(RTTripClusterMetadata *)self initWithTripClusterId:v4 dateOfMostRecentTrip:v5 modeOfTransport:v6 countOfTraversal:v7 originLatitude:v22 originLongitude:v23 destinationLatitude:v43 destinationLongitude:v42 averageTripTime:v41 averageTripDistance:v40 minimumTripTime:v39 maximumTripTime:v38 minimumTripDistance:v15 maximumTripDistance:v17 commuteID:v19 isLocked:v21 avgBikeDistance:v27 avgBikeTime:v25 avgWalkDistance:v31 avgWalkTime:v29 bikeTraversalCount:__PAIR64__(v33 walkTraversalCount:v32) clusterOrder:v37];
@@ -142,25 +142,25 @@
   return v35;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (!(self | v5))
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (!(self | equalCopy))
   {
     v7 = 1;
     goto LABEL_3;
   }
 
   v7 = 0;
-  if (self && v5)
+  if (self && equalCopy)
   {
-    v102 = [v5 isMemberOfClass:objc_opt_class()];
-    v9 = [(RTTripClusterMetadata *)self clusterID];
-    if (!v9)
+    v102 = [equalCopy isMemberOfClass:objc_opt_class()];
+    clusterID = [(RTTripClusterMetadata *)self clusterID];
+    if (!clusterID)
     {
-      v3 = [v6 clusterID];
-      if (!v3)
+      clusterID2 = [v6 clusterID];
+      if (!clusterID2)
       {
         v101 = 1;
 LABEL_16:
@@ -169,30 +169,30 @@ LABEL_16:
       }
     }
 
-    v10 = [(RTTripClusterMetadata *)self clusterID];
-    if (v10)
+    clusterID3 = [(RTTripClusterMetadata *)self clusterID];
+    if (clusterID3)
     {
-      v11 = v10;
-      v12 = [v6 clusterID];
-      if (v12)
+      v11 = clusterID3;
+      clusterID4 = [v6 clusterID];
+      if (clusterID4)
       {
-        v13 = v12;
-        v14 = [(RTTripClusterMetadata *)self clusterID];
-        v15 = [v6 clusterID];
-        v101 = [v14 isEqual:v15];
+        v13 = clusterID4;
+        clusterID5 = [(RTTripClusterMetadata *)self clusterID];
+        clusterID6 = [v6 clusterID];
+        v101 = [clusterID5 isEqual:clusterID6];
 
-        if (!v9)
+        if (!clusterID)
         {
           goto LABEL_16;
         }
 
 LABEL_17:
 
-        v16 = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
-        if (!v16)
+        dateOfMostRecentTrip = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
+        if (!dateOfMostRecentTrip)
         {
-          v3 = [v6 dateOfMostRecentTrip];
-          if (!v3)
+          clusterID2 = [v6 dateOfMostRecentTrip];
+          if (!clusterID2)
           {
             v100 = 1;
 LABEL_27:
@@ -201,29 +201,29 @@ LABEL_27:
           }
         }
 
-        v17 = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
-        if (v17)
+        dateOfMostRecentTrip2 = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
+        if (dateOfMostRecentTrip2)
         {
-          v18 = v17;
-          v19 = [v6 dateOfMostRecentTrip];
-          if (v19)
+          v18 = dateOfMostRecentTrip2;
+          dateOfMostRecentTrip3 = [v6 dateOfMostRecentTrip];
+          if (dateOfMostRecentTrip3)
           {
-            v20 = v19;
-            v21 = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
-            v22 = [v6 dateOfMostRecentTrip];
-            v100 = [v21 isEqual:v22];
+            v20 = dateOfMostRecentTrip3;
+            dateOfMostRecentTrip4 = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
+            dateOfMostRecentTrip5 = [v6 dateOfMostRecentTrip];
+            v100 = [dateOfMostRecentTrip4 isEqual:dateOfMostRecentTrip5];
 
-            if (!v16)
+            if (!dateOfMostRecentTrip)
             {
               goto LABEL_27;
             }
 
 LABEL_28:
 
-            v99 = [(RTTripClusterMetadata *)self modeOfTransport];
-            v98 = [v6 modeOfTransport];
-            v97 = [(RTTripClusterMetadata *)self countOfTraversal];
-            v96 = [v6 countOfTraversal];
+            modeOfTransport = [(RTTripClusterMetadata *)self modeOfTransport];
+            modeOfTransport2 = [v6 modeOfTransport];
+            countOfTraversal = [(RTTripClusterMetadata *)self countOfTraversal];
+            countOfTraversal2 = [v6 countOfTraversal];
             [(RTTripClusterMetadata *)self originLatitude];
             v95 = v23;
             [v6 originLatitude];
@@ -264,11 +264,11 @@ LABEL_28:
             v77 = v41;
             [v6 maximumTripDistance];
             v76 = v42;
-            v43 = [(RTTripClusterMetadata *)self commuteID];
-            if (!v43)
+            commuteID = [(RTTripClusterMetadata *)self commuteID];
+            if (!commuteID)
             {
-              v3 = [v6 commuteID];
-              if (!v3)
+              clusterID2 = [v6 commuteID];
+              if (!clusterID2)
               {
                 v50 = 1;
 LABEL_38:
@@ -277,27 +277,27 @@ LABEL_38:
               }
             }
 
-            v44 = [(RTTripClusterMetadata *)self commuteID];
-            if (v44)
+            commuteID2 = [(RTTripClusterMetadata *)self commuteID];
+            if (commuteID2)
             {
-              v45 = v44;
-              v46 = [v6 commuteID];
-              if (v46)
+              v45 = commuteID2;
+              commuteID3 = [v6 commuteID];
+              if (commuteID3)
               {
-                v47 = v46;
-                v48 = [(RTTripClusterMetadata *)self commuteID];
-                v49 = [v6 commuteID];
-                v50 = [v48 isEqual:v49];
+                v47 = commuteID3;
+                commuteID4 = [(RTTripClusterMetadata *)self commuteID];
+                commuteID5 = [v6 commuteID];
+                v50 = [commuteID4 isEqual:commuteID5];
 
-                if (!v43)
+                if (!commuteID)
                 {
                   goto LABEL_38;
                 }
 
 LABEL_39:
 
-                v51 = [(RTTripClusterMetadata *)self isLocked];
-                v52 = [v6 isLocked];
+                isLocked = [(RTTripClusterMetadata *)self isLocked];
+                isLocked2 = [v6 isLocked];
                 [(RTTripClusterMetadata *)self avgBikeTime];
                 v54 = v53;
                 [v6 avgBikeTime];
@@ -314,16 +314,16 @@ LABEL_39:
                 v66 = v65;
                 [v6 avgWalkDistance];
                 v68 = v67;
-                v69 = [(RTTripClusterMetadata *)self bikeTraversalCount];
-                v70 = [v6 bikeTraversalCount];
-                v71 = [(RTTripClusterMetadata *)self walkTraversalCount];
-                v72 = [v6 walkTraversalCount];
-                v73 = [(RTTripClusterMetadata *)self clusterOrder];
-                v74 = [v6 clusterOrder];
+                bikeTraversalCount = [(RTTripClusterMetadata *)self bikeTraversalCount];
+                bikeTraversalCount2 = [v6 bikeTraversalCount];
+                walkTraversalCount = [(RTTripClusterMetadata *)self walkTraversalCount];
+                walkTraversalCount2 = [v6 walkTraversalCount];
+                clusterOrder = [(RTTripClusterMetadata *)self clusterOrder];
+                clusterOrder2 = [v6 clusterOrder];
                 v7 = 0;
-                if ((v102 & v101 & v100) == 1 && v99 == v98 && v97 == v96 && vabdd_f64(v95, v94) < 0.0000001 && vabdd_f64(v93, v92) < 0.0000001 && vabdd_f64(v91, v90) < 0.0000001 && vabdd_f64(v89, v88) < 0.0000001 && vabdd_f64(v87, v86) < 0.0000001 && vabdd_f64(v85, v84) < 0.0000001 && vabdd_f64(v83, v82) < 0.0000001 && vabdd_f64(v81, v80) < 0.0000001 && vabdd_f64(v79, v78) < 0.0000001 && vabdd_f64(v77, v76) < 0.0000001 && v50 && ((v51 ^ v52) & 1) == 0 && vabdd_f64(v54, v56) < 0.0000001 && vabdd_f64(v58, v60) < 0.0000001 && vabdd_f64(v62, v64) < 0.0000001 && vabdd_f64(v66, v68) < 0.0000001 && v69 == v70)
+                if ((v102 & v101 & v100) == 1 && modeOfTransport == modeOfTransport2 && countOfTraversal == countOfTraversal2 && vabdd_f64(v95, v94) < 0.0000001 && vabdd_f64(v93, v92) < 0.0000001 && vabdd_f64(v91, v90) < 0.0000001 && vabdd_f64(v89, v88) < 0.0000001 && vabdd_f64(v87, v86) < 0.0000001 && vabdd_f64(v85, v84) < 0.0000001 && vabdd_f64(v83, v82) < 0.0000001 && vabdd_f64(v81, v80) < 0.0000001 && vabdd_f64(v79, v78) < 0.0000001 && vabdd_f64(v77, v76) < 0.0000001 && v50 && ((isLocked ^ isLocked2) & 1) == 0 && vabdd_f64(v54, v56) < 0.0000001 && vabdd_f64(v58, v60) < 0.0000001 && vabdd_f64(v62, v64) < 0.0000001 && vabdd_f64(v66, v68) < 0.0000001 && bikeTraversalCount == bikeTraversalCount2)
                 {
-                  v7 = v71 == v72 && v73 == v74;
+                  v7 = walkTraversalCount == walkTraversalCount2 && clusterOrder == clusterOrder2;
                 }
 
                 goto LABEL_3;
@@ -331,7 +331,7 @@ LABEL_39:
             }
 
             v50 = 0;
-            if (!v43)
+            if (!commuteID)
             {
               goto LABEL_38;
             }
@@ -341,7 +341,7 @@ LABEL_39:
         }
 
         v100 = 0;
-        if (!v16)
+        if (!dateOfMostRecentTrip)
         {
           goto LABEL_27;
         }
@@ -351,7 +351,7 @@ LABEL_39:
     }
 
     v101 = 0;
-    if (!v9)
+    if (!clusterID)
     {
       goto LABEL_16;
     }
@@ -367,10 +367,10 @@ LABEL_3:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTTripClusterMetadata *)self clusterID];
-  v5 = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
-  v6 = [(RTTripClusterMetadata *)self modeOfTransport];
-  v7 = [(RTTripClusterMetadata *)self countOfTraversal];
+  clusterID = [(RTTripClusterMetadata *)self clusterID];
+  dateOfMostRecentTrip = [(RTTripClusterMetadata *)self dateOfMostRecentTrip];
+  modeOfTransport = [(RTTripClusterMetadata *)self modeOfTransport];
+  countOfTraversal = [(RTTripClusterMetadata *)self countOfTraversal];
   [(RTTripClusterMetadata *)self originLatitude];
   v38 = v8;
   [(RTTripClusterMetadata *)self originLongitude];
@@ -391,8 +391,8 @@ LABEL_3:
   v19 = v18;
   [(RTTripClusterMetadata *)self maximumTripDistance];
   v21 = v20;
-  v22 = [(RTTripClusterMetadata *)self commuteID];
-  v23 = [(RTTripClusterMetadata *)self isLocked];
+  commuteID = [(RTTripClusterMetadata *)self commuteID];
+  isLocked = [(RTTripClusterMetadata *)self isLocked];
   [(RTTripClusterMetadata *)self avgBikeTime];
   v25 = v24;
   [(RTTripClusterMetadata *)self avgBikeDistance];
@@ -400,7 +400,7 @@ LABEL_3:
   [(RTTripClusterMetadata *)self avgWalkTime];
   v29 = v28;
   [(RTTripClusterMetadata *)self avgWalkDistance];
-  v31 = [v3 stringWithFormat:@"clusterId, %@, mostRecentTripDate, %@, modeOfTransport, %d, countOfTraversal, %d, originLat, %0.6f, originLon, %0.6f, destLat, %0.6f, destLon, %0.6f, avgTripTime, %0.2f, avgTripDistance, %0.2f, minTripTime, %0.2f, maxTripTime, %0.2f, minTripDistance, %0.2f, maxTripDistance, %0.2f, commuteID, %@, isLocked, %d, bikeTime, %0.2f, bikeDist, %02.f, walkTime, %0.2f, walkDist, %0.2f, cntBikeTravel, %d, cntWalkTravel, %d, clusterOrder, %d", v4, v5, v6, v7, v38, v37, v36, v35, v34, v33, v15, v17, v19, v21, v22, v23, v25, v27, v29, v30, -[RTTripClusterMetadata bikeTraversalCount](self, "bikeTraversalCount"), -[RTTripClusterMetadata walkTraversalCount](self, "walkTraversalCount"), -[RTTripClusterMetadata clusterOrder](self, "clusterOrder")];
+  v31 = [v3 stringWithFormat:@"clusterId, %@, mostRecentTripDate, %@, modeOfTransport, %d, countOfTraversal, %d, originLat, %0.6f, originLon, %0.6f, destLat, %0.6f, destLon, %0.6f, avgTripTime, %0.2f, avgTripDistance, %0.2f, minTripTime, %0.2f, maxTripTime, %0.2f, minTripDistance, %0.2f, maxTripDistance, %0.2f, commuteID, %@, isLocked, %d, bikeTime, %0.2f, bikeDist, %02.f, walkTime, %0.2f, walkDist, %0.2f, cntBikeTravel, %d, cntWalkTravel, %d, clusterOrder, %d", clusterID, dateOfMostRecentTrip, modeOfTransport, countOfTraversal, v38, v37, v36, v35, v34, v33, v15, v17, v19, v21, commuteID, isLocked, v25, v27, v29, v30, -[RTTripClusterMetadata bikeTraversalCount](self, "bikeTraversalCount"), -[RTTripClusterMetadata walkTraversalCount](self, "walkTraversalCount"), -[RTTripClusterMetadata clusterOrder](self, "clusterOrder")];
 
   return v31;
 }

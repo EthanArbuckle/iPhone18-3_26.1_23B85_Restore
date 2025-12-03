@@ -1,19 +1,19 @@
 @interface GTServiceProperties
-+ (id)protocolMethods:(id)a3;
-- (GTServiceProperties)initWithCoder:(id)a3;
-- (GTServiceProperties)initWithProtocol:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protocolMethods:(id)methods;
+- (GTServiceProperties)initWithCoder:(id)coder;
+- (GTServiceProperties)initWithProtocol:(id)protocol;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTServiceProperties
 
-+ (id)protocolMethods:(id)a3
++ (id)protocolMethods:(id)methods
 {
-  v3 = a3;
+  methodsCopy = methods;
   outCount = 0;
-  v4 = protocol_copyMethodDescriptionList(v3, 1, 1, &outCount);
+  v4 = protocol_copyMethodDescriptionList(methodsCopy, 1, 1, &outCount);
   v5 = [NSMutableArray alloc];
   v6 = [v5 initWithCapacity:outCount];
   if (outCount)
@@ -34,7 +34,7 @@
   }
 
   free(v4);
-  v11 = protocol_copyProtocolList(v3, &outCount);
+  v11 = protocol_copyProtocolList(methodsCopy, &outCount);
   if (outCount)
   {
     for (i = 0; i < outCount; ++i)
@@ -50,19 +50,19 @@
   return v14;
 }
 
-- (GTServiceProperties)initWithProtocol:(id)a3
+- (GTServiceProperties)initWithProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v12.receiver = self;
   v12.super_class = GTServiceProperties;
   v5 = [(GTServiceProperties *)&v12 init];
   if (v5)
   {
-    v6 = NSStringFromProtocol(v4);
+    v6 = NSStringFromProtocol(protocolCopy);
     protocolName = v5->_protocolName;
     v5->_protocolName = v6;
 
-    v8 = [GTServiceProperties protocolMethods:v4];
+    v8 = [GTServiceProperties protocolMethods:protocolCopy];
     protocolMethods = v5->_protocolMethods;
     v5->_protocolMethods = v8;
 
@@ -76,15 +76,15 @@
   return v5;
 }
 
-- (GTServiceProperties)initWithCoder:(id)a3
+- (GTServiceProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = GTServiceProperties;
   v5 = [(GTServiceProperties *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protocolName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protocolName"];
     protocolName = v5->_protocolName;
     v5->_protocolName = v6;
 
@@ -98,7 +98,7 @@
       }
     }
 
-    v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"protocolMethods"];
+    v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"protocolMethods"];
     protocolMethods = v5->_protocolMethods;
     v5->_protocolMethods = v9;
 
@@ -157,7 +157,7 @@
 LABEL_18:
     }
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceUDID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceUDID"];
     deviceUDID = v5->_deviceUDID;
     v5->_deviceUDID = v18;
 
@@ -171,27 +171,27 @@ LABEL_18:
       }
     }
 
-    v5->_servicePort = [v4 decodeInt64ForKey:{@"servicePort", v22}];
-    v5->_platform = [v4 decodeInt64ForKey:@"platform"];
-    v5->_version = [v4 decodeInt64ForKey:@"version"];
+    v5->_servicePort = [coderCopy decodeInt64ForKey:{@"servicePort", v22}];
+    v5->_platform = [coderCopy decodeInt64ForKey:@"platform"];
+    v5->_version = [coderCopy decodeInt64ForKey:@"version"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   protocolName = self->_protocolName;
-  v5 = a3;
-  [v5 encodeObject:protocolName forKey:@"protocolName"];
-  [v5 encodeObject:self->_protocolMethods forKey:@"protocolMethods"];
-  [v5 encodeInt64:self->_servicePort forKey:@"servicePort"];
-  [v5 encodeInt64:self->_platform forKey:@"platform"];
-  [v5 encodeObject:self->_deviceUDID forKey:@"deviceUDID"];
-  [v5 encodeInt64:self->_version forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeObject:protocolName forKey:@"protocolName"];
+  [coderCopy encodeObject:self->_protocolMethods forKey:@"protocolMethods"];
+  [coderCopy encodeInt64:self->_servicePort forKey:@"servicePort"];
+  [coderCopy encodeInt64:self->_platform forKey:@"platform"];
+  [coderCopy encodeObject:self->_deviceUDID forKey:@"deviceUDID"];
+  [coderCopy encodeInt64:self->_version forKey:@"version"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GTServiceProperties);
   [(GTServiceProperties *)v4 setProtocolName:self->_protocolName];

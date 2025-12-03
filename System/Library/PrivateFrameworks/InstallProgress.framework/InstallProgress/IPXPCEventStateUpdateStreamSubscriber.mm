@@ -1,13 +1,13 @@
 @interface IPXPCEventStateUpdateStreamSubscriber
-- (IPXPCEventStateUpdateStreamSubscriber)initWithToken:(unint64_t)a3;
+- (IPXPCEventStateUpdateStreamSubscriber)initWithToken:(unint64_t)token;
 - (IPXPCEventStateUpdateStreamSubscriberDelegate)delegate;
 - (void)beginHandshake;
-- (void)sendOrEnqueueUpdateMessage:(id)a3;
+- (void)sendOrEnqueueUpdateMessage:(id)message;
 @end
 
 @implementation IPXPCEventStateUpdateStreamSubscriber
 
-- (IPXPCEventStateUpdateStreamSubscriber)initWithToken:(unint64_t)a3
+- (IPXPCEventStateUpdateStreamSubscriber)initWithToken:(unint64_t)token
 {
   v9.receiver = self;
   v9.super_class = IPXPCEventStateUpdateStreamSubscriber;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_token = a3;
+    v4->_token = token;
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     queuedMessages = v5->_queuedMessages;
     v5->_queuedMessages = v6;
@@ -127,21 +127,21 @@ void __55__IPXPCEventStateUpdateStreamSubscriber_beginHandshake__block_invoke(ui
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendOrEnqueueUpdateMessage:(id)a3
+- (void)sendOrEnqueueUpdateMessage:(id)message
 {
   if (self->_completedHandshake)
   {
-    v4 = a3;
+    messageCopy = message;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v4 XPCDictionaryRepresentation];
+    xPCDictionaryRepresentation = [messageCopy XPCDictionaryRepresentation];
 
-    [WeakRetained subscriber:self firePayload:v5];
+    [WeakRetained subscriber:self firePayload:xPCDictionaryRepresentation];
   }
 
   else
   {
     queuedMessages = self->_queuedMessages;
-    WeakRetained = a3;
+    WeakRetained = message;
     [(NSMutableArray *)queuedMessages addObject:?];
   }
 }

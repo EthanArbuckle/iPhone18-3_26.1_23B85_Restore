@@ -1,60 +1,60 @@
 @interface SWSetupManager
-- (SWSetupManager)initWithLogger:(id)a3;
-- (void)addTask:(id)a3;
+- (SWSetupManager)initWithLogger:(id)logger;
+- (void)addTask:(id)task;
 - (void)performTasks;
 @end
 
 @implementation SWSetupManager
 
-- (SWSetupManager)initWithLogger:(id)a3
+- (SWSetupManager)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v11.receiver = self;
   v11.super_class = SWSetupManager;
   v6 = [(SWSetupManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logger, a3);
-    v8 = [MEMORY[0x1E695DFA0] orderedSet];
+    objc_storeStrong(&v6->_logger, logger);
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     tasks = v7->_tasks;
-    v7->_tasks = v8;
+    v7->_tasks = orderedSet;
   }
 
   return v7;
 }
 
-- (void)addTask:(id)a3
+- (void)addTask:(id)task
 {
-  v9 = a3;
-  v4 = [(SWSetupManager *)self logger];
+  taskCopy = task;
+  logger = [(SWSetupManager *)self logger];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v9 identifier];
-  v7 = [v5 stringWithFormat:@"Adding setup task with identifier %@", v6];
-  [v4 log:v7];
+  identifier = [taskCopy identifier];
+  v7 = [v5 stringWithFormat:@"Adding setup task with identifier %@", identifier];
+  [logger log:v7];
 
-  if (v9)
+  if (taskCopy)
   {
-    v8 = [(SWSetupManager *)self tasks];
-    [v8 addObject:v9];
+    tasks = [(SWSetupManager *)self tasks];
+    [tasks addObject:taskCopy];
   }
 }
 
 - (void)performTasks
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(SWSetupManager *)self logger];
+  logger = [(SWSetupManager *)self logger];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(SWSetupManager *)self tasks];
-  v6 = [v4 stringWithFormat:@"Performing %li setup tasks", objc_msgSend(v5, "count")];
-  [v3 log:v6];
+  tasks = [(SWSetupManager *)self tasks];
+  v6 = [v4 stringWithFormat:@"Performing %li setup tasks", objc_msgSend(tasks, "count")];
+  [logger log:v6];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(SWSetupManager *)self tasks];
-  v8 = [v7 copy];
+  tasks2 = [(SWSetupManager *)self tasks];
+  v8 = [tasks2 copy];
 
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
@@ -72,11 +72,11 @@
         }
 
         v13 = *(*(&v20 + 1) + 8 * v12);
-        v14 = [(SWSetupManager *)self logger];
+        logger2 = [(SWSetupManager *)self logger];
         v15 = MEMORY[0x1E696AEC0];
-        v16 = [v13 identifier];
-        v17 = [v15 stringWithFormat:@"Performing setup task: %@", v16];
-        [v14 log:v17];
+        identifier = [v13 identifier];
+        v17 = [v15 stringWithFormat:@"Performing setup task: %@", identifier];
+        [logger2 log:v17];
 
         [v13 performSetup];
         ++v12;
@@ -89,8 +89,8 @@
     while (v10);
   }
 
-  v18 = [(SWSetupManager *)self tasks];
-  [v18 removeAllObjects];
+  tasks3 = [(SWSetupManager *)self tasks];
+  [tasks3 removeAllObjects];
 
   v19 = *MEMORY[0x1E69E9840];
 }

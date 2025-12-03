@@ -1,32 +1,32 @@
 @interface MobileCalDAVAccountRefreshActorAttachmentDownloadDelegate
-- (MobileCalDAVAccountRefreshActorAttachmentDownloadDelegate)initWithAttachmentUUID:(id)a3;
-- (void)downloadFinishedError:(id)a3;
+- (MobileCalDAVAccountRefreshActorAttachmentDownloadDelegate)initWithAttachmentUUID:(id)d;
+- (void)downloadFinishedError:(id)error;
 @end
 
 @implementation MobileCalDAVAccountRefreshActorAttachmentDownloadDelegate
 
-- (MobileCalDAVAccountRefreshActorAttachmentDownloadDelegate)initWithAttachmentUUID:(id)a3
+- (MobileCalDAVAccountRefreshActorAttachmentDownloadDelegate)initWithAttachmentUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MobileCalDAVAccountRefreshActorAttachmentDownloadDelegate;
   v6 = [(MobileCalDAVAccountRefreshActorAttachmentDownloadDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, d);
   }
 
   return v7;
 }
 
-- (void)downloadFinishedError:(id)a3
+- (void)downloadFinishedError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DALoggingwithCategory();
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     v7 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v5, v7))
@@ -35,7 +35,7 @@
       v18 = 138543618;
       v19 = uuid;
       v20 = 2112;
-      v21 = v4;
+      v21 = errorCopy;
       v9 = "Error downloading an attachment %{public}@: %@";
       v10 = v6;
       v11 = v7;

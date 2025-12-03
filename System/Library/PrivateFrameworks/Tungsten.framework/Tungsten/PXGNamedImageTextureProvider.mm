@@ -1,30 +1,30 @@
 @interface PXGNamedImageTextureProvider
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestTextureForImageWithName:(id)a3 inBundle:(id)a4 isSystemImage:(BOOL)a5 tintColor:(id)a6 imageConfiguration:(id)a7 userInterfaceDirection:(unint64_t)a8 screenScale:(double)a9 requestID:(int)a10;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestTextureForImageWithName:(id)name inBundle:(id)bundle isSystemImage:(BOOL)image tintColor:(id)color imageConfiguration:(id)configuration userInterfaceDirection:(unint64_t)direction screenScale:(double)scale requestID:(int)self0;
 @end
 
 @implementation PXGNamedImageTextureProvider
 
-- (void)_requestTextureForImageWithName:(id)a3 inBundle:(id)a4 isSystemImage:(BOOL)a5 tintColor:(id)a6 imageConfiguration:(id)a7 userInterfaceDirection:(unint64_t)a8 screenScale:(double)a9 requestID:(int)a10
+- (void)_requestTextureForImageWithName:(id)name inBundle:(id)bundle isSystemImage:(BOOL)image tintColor:(id)color imageConfiguration:(id)configuration userInterfaceDirection:(unint64_t)direction screenScale:(double)scale requestID:(int)self0
 {
-  v13 = a5;
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
+  imageCopy = image;
+  nameCopy = name;
+  bundleCopy = bundle;
+  colorCopy = color;
+  configurationCopy = configuration;
   objc_initWeak(location, self);
   v20 = objc_alloc(MEMORY[0x277CBEB18]);
-  v21 = [MEMORY[0x277CCABB0] numberWithBool:v13];
-  v22 = [MEMORY[0x277CCABB0] numberWithDouble:a9];
-  v23 = [v20 initWithObjects:{v16, v21, v22, 0}];
+  v21 = [MEMORY[0x277CCABB0] numberWithBool:imageCopy];
+  v22 = [MEMORY[0x277CCABB0] numberWithDouble:scale];
+  v23 = [v20 initWithObjects:{nameCopy, v21, v22, 0}];
 
-  if (v18)
+  if (colorCopy)
   {
     v48 = 0;
     v49 = 0;
     v46 = 0;
     v47 = 0;
-    if ([v18 getRed:&v49 green:&v48 blue:&v47 alpha:&v46])
+    if ([colorCopy getRed:&v49 green:&v48 blue:&v47 alpha:&v46])
     {
       v24 = objc_alloc(MEMORY[0x277CCACA8]);
       v25 = [v24 initWithFormat:@"%.2f-%.2f-%.2f-%.2f", v49, v48, v47, v46];
@@ -32,9 +32,9 @@
     }
   }
 
-  if (v19)
+  if (configurationCopy)
   {
-    [v23 addObject:v19];
+    [v23 addObject:configurationCopy];
   }
 
   v26 = [objc_alloc(MEMORY[0x277D3CE08]) initWithObjects:v23];
@@ -42,29 +42,29 @@
   v37[1] = 3221225472;
   v37[2] = __161__PXGNamedImageTextureProvider__requestTextureForImageWithName_inBundle_isSystemImage_tintColor_imageConfiguration_userInterfaceDirection_screenScale_requestID___block_invoke;
   v37[3] = &unk_2782AA540;
-  v27 = v16;
+  v27 = nameCopy;
   v38 = v27;
-  v28 = v17;
+  v28 = bundleCopy;
   v39 = v28;
-  v45 = v13;
-  v29 = v18;
+  v45 = imageCopy;
+  v29 = colorCopy;
   v40 = v29;
-  v30 = v19;
+  v30 = configurationCopy;
   v41 = v30;
-  v44[1] = *&a9;
-  v44[2] = a8;
+  v44[1] = *&scale;
+  v44[2] = direction;
   objc_copyWeak(v44, location);
   v31 = v26;
   v44[3] = a2;
   v42 = v31;
-  v43 = self;
+  selfCopy = self;
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __161__PXGNamedImageTextureProvider__requestTextureForImageWithName_inBundle_isSystemImage_tintColor_imageConfiguration_userInterfaceDirection_screenScale_requestID___block_invoke_16;
   v34[3] = &unk_2782AA568;
-  v35[1] = a8;
+  v35[1] = direction;
   objc_copyWeak(v35, location);
-  v36 = a10;
+  dCopy = d;
   [(PXGCGImageTextureProvider *)self requestCGImageAndAdditionalInfoWithCacheKey:v31 imageProvider:v37 resultHandler:v34];
   objc_destroyWeak(v35);
 
@@ -147,21 +147,21 @@ void __161__PXGNamedImageTextureProvider__requestTextureForImageWithName_inBundl
   [WeakRetained provideCGImage:a2 options:&v11 forRequestID:v9];
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v10 = a3;
-  length = a3.length;
-  v13 = a7;
+  rangeCopy = range;
+  length = range.length;
+  layoutCopy = layout;
   v54.receiver = self;
   v54.super_class = PXGNamedImageTextureProvider;
-  v14 = [(PXGTextureProvider *)&v54 requestTexturesForSpritesInRange:v10 geometries:a4 styles:a5 infos:a6 inLayout:v13];
+  v14 = [(PXGTextureProvider *)&v54 requestTexturesForSpritesInRange:rangeCopy geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v37 = v15;
   v38 = v14;
-  v40 = [v13 contentSource];
+  contentSource = [layoutCopy contentSource];
   val = self;
-  v39 = [(PXGNamedImageTextureProvider *)self bundle];
-  v41 = v13;
-  [v13 displayScale];
+  bundle = [(PXGNamedImageTextureProvider *)self bundle];
+  v41 = layoutCopy;
+  [layoutCopy displayScale];
   if (length)
   {
     v17 = v16;
@@ -169,54 +169,54 @@ void __161__PXGNamedImageTextureProvider__requestTextureForImageWithName_inBundl
     do
     {
       v43 = length;
-      v19 = [v40 imageConfigurationAtIndex:v10 inLayout:v41];
-      v20 = [v19 imageConfiguration];
-      v21 = [v41 userInterfaceDirection];
-      v22 = [v19 imageName];
-      v23 = [v19 isSystemImage];
-      v24 = [v19 tintColor];
-      v25 = [(PXGTextureProvider *)val viewEnvironment];
-      v26 = [v25 traitCollection];
+      v19 = [contentSource imageConfigurationAtIndex:rangeCopy inLayout:v41];
+      imageConfiguration = [v19 imageConfiguration];
+      userInterfaceDirection = [v41 userInterfaceDirection];
+      imageName = [v19 imageName];
+      isSystemImage = [v19 isSystemImage];
+      tintColor = [v19 tintColor];
+      viewEnvironment = [(PXGTextureProvider *)val viewEnvironment];
+      traitCollection = [viewEnvironment traitCollection];
 
-      v42 = v26;
-      length = [v24 resolvedColorWithTraitCollection:v26];
+      v42 = traitCollection;
+      length = [tintColor resolvedColorWithTraitCollection:traitCollection];
 
-      v27 = v39;
-      v28 = [v19 bundle];
+      v27 = bundle;
+      bundle2 = [v19 bundle];
 
-      if (v28)
+      if (bundle2)
       {
-        v29 = [v19 bundle];
+        bundle3 = [v19 bundle];
 
-        v27 = v29;
+        v27 = bundle3;
       }
 
       objc_initWeak(&location, val);
-      v30 = [(PXGTextureProvider *)val requestQueue];
+      requestQueue = [(PXGTextureProvider *)val requestQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __98__PXGNamedImageTextureProvider_requestTexturesForSpritesInRange_geometries_styles_infos_inLayout___block_invoke;
       block[3] = &unk_2782AA518;
       objc_copyWeak(v50, &location);
-      v46 = v22;
+      v46 = imageName;
       v47 = v27;
-      v52 = v23;
+      v52 = isSystemImage;
       v48 = length;
-      v49 = v20;
-      v50[1] = v21;
+      v49 = imageConfiguration;
+      v50[1] = userInterfaceDirection;
       v50[2] = v17;
       v51 = v18;
-      v31 = v20;
+      v31 = imageConfiguration;
       v32 = length;
       v33 = v27;
-      v34 = v22;
-      dispatch_async(v30, block);
+      v34 = imageName;
+      dispatch_async(requestQueue, block);
 
       objc_destroyWeak(v50);
       objc_destroyWeak(&location);
 
       ++v18;
-      v10 = (v10.location + 1);
+      rangeCopy = (rangeCopy.location + 1);
       LODWORD(length) = v43 - 1;
     }
 

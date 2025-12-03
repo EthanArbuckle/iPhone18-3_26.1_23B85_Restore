@@ -7,7 +7,7 @@
 - (double)appleExerciseTimeCompletionPercentage;
 - (double)appleMoveTimeCompletionPercentage;
 - (double)appleStandHourCompletionPercentage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)loggingString;
 @end
@@ -61,18 +61,18 @@ uint64_t __39__FIUIActivityDataModel_idealizedModel__block_invoke()
 
 - (id)debugDescription
 {
-  v3 = [(FIUIActivityDataModel *)self activeEnergyGoal];
+  activeEnergyGoal = [(FIUIActivityDataModel *)self activeEnergyGoal];
   v4 = _kilocalorieUnit();
-  [v3 doubleValueForUnit:v4];
+  [activeEnergyGoal doubleValueForUnit:v4];
   v6 = v5;
 
-  v7 = [(FIUIActivityDataModel *)self activeEnergyTotal];
+  activeEnergyTotal = [(FIUIActivityDataModel *)self activeEnergyTotal];
   v8 = _kilocalorieUnit();
-  [v7 doubleValueForUnit:v8];
+  [activeEnergyTotal doubleValueForUnit:v8];
   v10 = v9;
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(FIUIActivityDataModel *)self date];
+  date = [(FIUIActivityDataModel *)self date];
   [(FIUIActivityDataModel *)self appleMoveTimeGoal];
   v14 = v13;
   [(FIUIActivityDataModel *)self appleMoveTimeTotal];
@@ -80,7 +80,7 @@ uint64_t __39__FIUIActivityDataModel_idealizedModel__block_invoke()
   [(FIUIActivityDataModel *)self appleExerciseTimeGoal];
   v18 = v17;
   [(FIUIActivityDataModel *)self appleExerciseTimeTotal];
-  v20 = [v11 stringWithFormat:@"Date: %@, Active Energy Goal: %f, Active Energy Total: %f, Apple Move Time Goal: %f, Apple Move Time Total: %f, Apple Exercise Time Goal: %f, Apple Exercise Time Total: %f, Apple Stand Hours Goal: %ld, Apple Stand Hours Total: %ld, databaseLoading %i, userHasDoneActivitySetup %i, deviceLocked %i, privacy %i areFitnessAppsRestricted %i paused %i", v12, v6, v10, v14, v16, v18, v19, -[FIUIActivityDataModel appleStandHoursGoal](self, "appleStandHoursGoal"), -[FIUIActivityDataModel appleStandHoursTotal](self, "appleStandHoursTotal"), self->_databaseLoading, -[FIUIActivityDataModel userHasDoneActivitySetup](self, "userHasDoneActivitySetup"), self->_deviceLocked, 0, self->_areFitnessAppsRestricted, self->_paused];
+  v20 = [v11 stringWithFormat:@"Date: %@, Active Energy Goal: %f, Active Energy Total: %f, Apple Move Time Goal: %f, Apple Move Time Total: %f, Apple Exercise Time Goal: %f, Apple Exercise Time Total: %f, Apple Stand Hours Goal: %ld, Apple Stand Hours Total: %ld, databaseLoading %i, userHasDoneActivitySetup %i, deviceLocked %i, privacy %i areFitnessAppsRestricted %i paused %i", date, v6, v10, v14, v16, v18, v19, -[FIUIActivityDataModel appleStandHoursGoal](self, "appleStandHoursGoal"), -[FIUIActivityDataModel appleStandHoursTotal](self, "appleStandHoursTotal"), self->_databaseLoading, -[FIUIActivityDataModel userHasDoneActivitySetup](self, "userHasDoneActivitySetup"), self->_deviceLocked, 0, self->_areFitnessAppsRestricted, self->_paused];
 
   return v20;
 }
@@ -95,9 +95,9 @@ uint64_t __39__FIUIActivityDataModel_idealizedModel__block_invoke()
 
   else
   {
-    v5 = [(FIUIActivityDataModel *)self activeEnergyGoal];
+    activeEnergyGoal = [(FIUIActivityDataModel *)self activeEnergyGoal];
     v6 = _kilocalorieUnit();
-    [v5 doubleValueForUnit:v6];
+    [activeEnergyGoal doubleValueForUnit:v6];
     v4 = v7;
   }
 
@@ -116,11 +116,11 @@ uint64_t __39__FIUIActivityDataModel_idealizedModel__block_invoke()
       v4 = v3;
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [(FIUIActivityDataModel *)self loggingString];
+      loggingString = [(FIUIActivityDataModel *)self loggingString];
       v17 = 138412546;
       v18 = v6;
       v19 = 2112;
-      v20 = v7;
+      v20 = loggingString;
       _os_log_impl(&dword_1E5D0F000, v4, OS_LOG_TYPE_DEFAULT, "%@ %@", &v17, 0x16u);
     }
 
@@ -129,14 +129,14 @@ uint64_t __39__FIUIActivityDataModel_idealizedModel__block_invoke()
 
   else
   {
-    v9 = [(FIUIActivityDataModel *)self activeEnergyGoal];
+    activeEnergyGoal = [(FIUIActivityDataModel *)self activeEnergyGoal];
     v10 = _kilocalorieUnit();
-    [v9 doubleValueForUnit:v10];
+    [activeEnergyGoal doubleValueForUnit:v10];
     v12 = v11;
 
-    v13 = [(FIUIActivityDataModel *)self activeEnergyTotal];
+    activeEnergyTotal = [(FIUIActivityDataModel *)self activeEnergyTotal];
     v14 = _kilocalorieUnit();
-    [v13 doubleValueForUnit:v14];
+    [activeEnergyTotal doubleValueForUnit:v14];
     v16 = v15;
 
     result = v16 / v12;
@@ -161,11 +161,11 @@ uint64_t __39__FIUIActivityDataModel_idealizedModel__block_invoke()
       v4 = v3;
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [(FIUIActivityDataModel *)self loggingString];
+      loggingString = [(FIUIActivityDataModel *)self loggingString];
       v14 = 138412546;
       v15 = v6;
       v16 = 2112;
-      v17 = v7;
+      v17 = loggingString;
       _os_log_impl(&dword_1E5D0F000, v4, OS_LOG_TYPE_DEFAULT, "%@ %@", &v14, 0x16u);
     }
 
@@ -201,11 +201,11 @@ uint64_t __39__FIUIActivityDataModel_idealizedModel__block_invoke()
       v4 = v3;
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [(FIUIActivityDataModel *)self loggingString];
+      loggingString = [(FIUIActivityDataModel *)self loggingString];
       v14 = 138412546;
       v15 = v6;
       v16 = 2112;
-      v17 = v7;
+      v17 = loggingString;
       _os_log_impl(&dword_1E5D0F000, v4, OS_LOG_TYPE_DEFAULT, "%@ %@", &v14, 0x16u);
     }
 
@@ -241,11 +241,11 @@ uint64_t __39__FIUIActivityDataModel_idealizedModel__block_invoke()
     return 0.0;
   }
 
-  v4 = [(FIUIActivityDataModel *)self appleStandHoursTotal];
-  return v4 / [(FIUIActivityDataModel *)self appleStandHoursGoal];
+  appleStandHoursTotal = [(FIUIActivityDataModel *)self appleStandHoursTotal];
+  return appleStandHoursTotal / [(FIUIActivityDataModel *)self appleStandHoursGoal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setActivityMoveMode:self->_activityMoveMode];

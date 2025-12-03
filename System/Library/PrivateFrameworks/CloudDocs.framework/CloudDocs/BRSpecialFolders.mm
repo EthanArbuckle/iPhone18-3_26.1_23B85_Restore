@@ -3,7 +3,7 @@
 + (id)applicationSupportDirForCurrentPersona;
 + (id)cachesDirForCurrentPersona;
 + (id)homeDirForCurrentPersona;
-+ (id)volumeUUIDForPersona:(id)a3;
++ (id)volumeUUIDForPersona:(id)persona;
 + (void)homeDirForCurrentPersona;
 @end
 
@@ -21,13 +21,13 @@
   objc_sync_enter(v3);
   v13 = 0;
   v4 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:&v13];
-  v5 = [homeDirForCurrentPersona_pathByPersonaID objectForKeyedSubscript:v4];
-  if (!v5)
+  br_realpath = [homeDirForCurrentPersona_pathByPersonaID objectForKeyedSubscript:v4];
+  if (!br_realpath)
   {
     if (v13 == 1)
     {
-      v6 = [a1 _br_containerPathForDataSeparatedPersona];
-      if (!v6)
+      _br_containerPathForDataSeparatedPersona = [self _br_containerPathForDataSeparatedPersona];
+      if (!_br_containerPathForDataSeparatedPersona)
       {
         goto LABEL_11;
       }
@@ -36,8 +36,8 @@
     else
     {
       v7 = geteuid();
-      v6 = getHomeDirectoryForUser(v7);
-      if (!v6)
+      _br_containerPathForDataSeparatedPersona = getHomeDirectoryForUser(v7);
+      if (!_br_containerPathForDataSeparatedPersona)
       {
         if (!v7)
         {
@@ -62,16 +62,16 @@ LABEL_11:
         }
 
 LABEL_13:
-        v5 = 0;
+        br_realpath = 0;
 LABEL_14:
 
         goto LABEL_15;
       }
     }
 
-    v5 = [v6 br_realpath];
+    br_realpath = [_br_containerPathForDataSeparatedPersona br_realpath];
 
-    [homeDirForCurrentPersona_pathByPersonaID setObject:v5 forKeyedSubscript:v4];
+    [homeDirForCurrentPersona_pathByPersonaID setObject:br_realpath forKeyedSubscript:v4];
     v8 = brc_bread_crumbs("+[BRSpecialFolders homeDirForCurrentPersona]", 193);
     v9 = brc_default_log(1, 0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -79,7 +79,7 @@ LABEL_14:
       *buf = 138412802;
       v15 = v4;
       v16 = 2112;
-      v17 = v5;
+      v17 = br_realpath;
       v18 = 2112;
       v19 = v8;
       _os_log_debug_impl(&dword_1AE2A9000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] Base path for persona %@ is %@%@", buf, 0x20u);
@@ -89,7 +89,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  v10 = v5;
+  v10 = br_realpath;
 
   objc_sync_exit(v3);
   v11 = *MEMORY[0x1E69E9840];
@@ -120,8 +120,8 @@ LABEL_15:
       if (v4)
       {
 LABEL_6:
-        v6 = [v4 br_realpath];
-        [cachesDirForCurrentPersona_pathByPersonaID setObject:v6 forKeyedSubscript:v3];
+        br_realpath = [v4 br_realpath];
+        [cachesDirForCurrentPersona_pathByPersonaID setObject:br_realpath forKeyedSubscript:v3];
 LABEL_11:
 
         goto LABEL_12;
@@ -137,12 +137,12 @@ LABEL_11:
       }
     }
 
-    v6 = brc_bread_crumbs("+[BRSpecialFolders cachesDirForCurrentPersona]", 48);
+    br_realpath = brc_bread_crumbs("+[BRSpecialFolders cachesDirForCurrentPersona]", 48);
     v7 = brc_default_log(1, 0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v6;
+      v13 = br_realpath;
       _os_log_impl(&dword_1AE2A9000, v7, OS_LOG_TYPE_DEFAULT, "[WARNING] No path for Caches directory%@", buf, 0xCu);
     }
 
@@ -189,12 +189,12 @@ uint64_t __46__BRSpecialFolders_cachesDirForCurrentPersona__block_invoke()
     else
     {
       v5 = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, 1uLL, 1);
-      v7 = [v5 firstObject];
-      v6 = [v7 stringByAppendingPathComponent:@"CloudDocs"];
+      firstObject = [v5 firstObject];
+      v6 = [firstObject stringByAppendingPathComponent:@"CloudDocs"];
     }
 
-    v8 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v4 = [v6 stringByTrimmingCharactersInSet:v8];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v4 = [v6 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if ([v4 length])
     {
@@ -213,8 +213,8 @@ uint64_t __46__BRSpecialFolders_cachesDirForCurrentPersona__block_invoke()
           _os_log_debug_impl(&dword_1AE2A9000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] Caching directory path %@ for persona %@%@", buf, 0x20u);
         }
 
-        v11 = [v4 br_realpath];
-        [applicationSupportDirForCurrentPersona_pathByPersonaID setObject:v11 forKeyedSubscript:v2];
+        br_realpath = [v4 br_realpath];
+        [applicationSupportDirForCurrentPersona_pathByPersonaID setObject:br_realpath forKeyedSubscript:v2];
 LABEL_16:
 
         goto LABEL_17;
@@ -225,12 +225,12 @@ LABEL_16:
     {
     }
 
-    v11 = brc_bread_crumbs("+[BRSpecialFolders applicationSupportDirForCurrentPersona]", 89);
+    br_realpath = brc_bread_crumbs("+[BRSpecialFolders applicationSupportDirForCurrentPersona]", 89);
     v12 = brc_default_log(1, 0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v11;
+      v18 = br_realpath;
       _os_log_impl(&dword_1AE2A9000, v12, OS_LOG_TYPE_DEFAULT, "[WARNING] No path for support directory%@", buf, 0xCu);
     }
 
@@ -262,27 +262,27 @@ uint64_t __58__BRSpecialFolders_applicationSupportDirForCurrentPersona__block_in
     goto LABEL_3;
   }
 
-  v2 = [[BRDaemonConnection alloc] initUsingUserLocalDaemonTokenService];
-  v3 = [v2 newSyncTokenProxy];
+  initUsingUserLocalDaemonTokenService = [[BRDaemonConnection alloc] initUsingUserLocalDaemonTokenService];
+  newSyncTokenProxy = [initUsingUserLocalDaemonTokenService newSyncTokenProxy];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __60__BRSpecialFolders__br_containerPathForDataSeparatedPersona__block_invoke;
   v19 = &unk_1E7A14CF8;
-  v20 = v3;
-  v4 = v3;
+  v20 = newSyncTokenProxy;
+  v4 = newSyncTokenProxy;
   [v4 fetchContainerPathForCurrentPersonaWithReply:&v16];
-  v5 = [v4 result];
+  result = [v4 result];
 
-  if (!v5)
+  if (!result)
   {
 LABEL_3:
     v6 = container_create_or_lookup_path_for_current_user();
     if (v6)
     {
       v7 = v6;
-      v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v6];
+      result = [MEMORY[0x1E696AEC0] stringWithUTF8String:v6];
       free(v7);
-      if (v5)
+      if (result)
       {
         goto LABEL_12;
       }
@@ -302,23 +302,23 @@ LABEL_3:
       }
     }
 
-    v10 = [MEMORY[0x1E69DF068] sharedManager];
-    v11 = [v10 currentPersona];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
     v12 = brc_bread_crumbs("+[BRSpecialFolders _br_containerPathForDataSeparatedPersona]", 122);
     v13 = brc_default_log(0, 0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      +[(NSURL(BRCPathAdditions) *)v11];
+      +[(NSURL(BRCPathAdditions) *)currentPersona];
     }
 
-    v5 = 0;
+    result = 0;
   }
 
 LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return result;
 }
 
 uint64_t __44__BRSpecialFolders_homeDirForCurrentPersona__block_invoke()
@@ -328,9 +328,9 @@ uint64_t __44__BRSpecialFolders_homeDirForCurrentPersona__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)volumeUUIDForPersona:(id)a3
++ (id)volumeUUIDForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -342,8 +342,8 @@ uint64_t __44__BRSpecialFolders_homeDirForCurrentPersona__block_invoke()
   v7[2] = __41__BRSpecialFolders_volumeUUIDForPersona___block_invoke;
   v7[3] = &unk_1E7A155B8;
   v7[4] = &v8;
-  v7[5] = a1;
-  [BRPersonaUtils performWithPersonaID:v4 block:v7];
+  v7[5] = self;
+  [BRPersonaUtils performWithPersonaID:personaCopy block:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -377,7 +377,7 @@ void __41__BRSpecialFolders_volumeUUIDForPersona___block_invoke(uint64_t a1, uin
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1AE2A9000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] No path for home directory because we're running as root%@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -1,31 +1,31 @@
 @interface ASSettingsHotmailAccountsUIController
 - (id)accountSpecifiers;
-- (void)beginAccountCreationWithSpecifier:(id)a3 fromViewController:(id)a4 completion:(id)a5;
+- (void)beginAccountCreationWithSpecifier:(id)specifier fromViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation ASSettingsHotmailAccountsUIController
 
-- (void)beginAccountCreationWithSpecifier:(id)a3 fromViewController:(id)a4 completion:(id)a5
+- (void)beginAccountCreationWithSpecifier:(id)specifier fromViewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_storeStrong((&self->_completion + 2), a4);
-  [(ASSettingsHotmailAccountsUIController *)self setCompletion:v10];
-  v11 = [(ASSettingsAccountsUIController *)self accountFromSpecifier:v8];
-  v12 = [v11 backingAccountInfo];
+  specifierCopy = specifier;
+  controllerCopy = controller;
+  completionCopy = completion;
+  objc_storeStrong((&self->_completion + 2), controller);
+  [(ASSettingsHotmailAccountsUIController *)self setCompletion:completionCopy];
+  v11 = [(ASSettingsAccountsUIController *)self accountFromSpecifier:specifierCopy];
+  backingAccountInfo = [v11 backingAccountInfo];
 
   v13 = [DAEASOAuthWebViewController alloc];
   v14 = v13;
-  if (v12)
+  if (backingAccountInfo)
   {
-    v15 = [v11 backingAccountInfo];
+    backingAccountInfo2 = [v11 backingAccountInfo];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1B58C;
     v23[3] = &unk_30C38;
     v23[4] = self;
-    v16 = [v14 initWithAccount:v15 isFirstTimeSetup:1 accountStore:0 presentationBlock:v23];
+    v16 = [v14 initWithAccount:backingAccountInfo2 isFirstTimeSetup:1 accountStore:0 presentationBlock:v23];
     v17 = *(&self->super._backgroundTaskID + 2);
     *(&self->super._backgroundTaskID + 2) = v16;
   }
@@ -38,7 +38,7 @@
     v22[3] = &unk_30C38;
     v22[4] = self;
     v18 = [v13 initWithAccountDescription:@"Outlook" presentationBlock:v22];
-    v15 = *(&self->super._backgroundTaskID + 2);
+    backingAccountInfo2 = *(&self->super._backgroundTaskID + 2);
     *(&self->super._backgroundTaskID + 2) = v18;
   }
 
@@ -57,9 +57,9 @@
 {
   v4.receiver = self;
   v4.super_class = ASSettingsHotmailAccountsUIController;
-  v2 = [(ASSettingsAccountsUIController *)&v4 accountSpecifiers];
+  accountSpecifiers = [(ASSettingsAccountsUIController *)&v4 accountSpecifiers];
 
-  return v2;
+  return accountSpecifiers;
 }
 
 @end

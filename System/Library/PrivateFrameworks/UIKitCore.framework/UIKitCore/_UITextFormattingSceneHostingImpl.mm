@@ -1,13 +1,13 @@
 @interface _UITextFormattingSceneHostingImpl
 - (UITextFormattingViewController)delegateTextFormattingViewController;
-- (void)_presentColorPicker:(CGRect)a3 selectedColor:(id)a4;
-- (void)_presentFontPickerWithConfiguration:(id)a3 selectedFonts:(id)a4;
-- (void)_presentTypographySettingsForFont:(id)a3;
-- (void)_textFormattingDidChangeValue:(id)a3 textAttributesData:(id)a4;
+- (void)_presentColorPicker:(CGRect)picker selectedColor:(id)color;
+- (void)_presentFontPickerWithConfiguration:(id)configuration selectedFonts:(id)fonts;
+- (void)_presentTypographySettingsForFont:(id)font;
+- (void)_textFormattingDidChangeValue:(id)value textAttributesData:(id)data;
 - (void)_textFormattingDidFinish;
 - (void)clientIsReady;
-- (void)setRemoteConfiguration:(id)a3;
-- (void)setRemoteFormattingDescriptor:(id)a3;
+- (void)setRemoteConfiguration:(id)configuration;
+- (void)setRemoteFormattingDescriptor:(id)descriptor;
 - (void)setupRemoteHosting;
 - (void)setupSceneHosting;
 @end
@@ -18,24 +18,24 @@
 {
   if (!self->_hostingController)
   {
-    v4 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-    [v4 _beginDelayingPresentation:&__block_literal_global_572 cancellationHandler:3.0];
+    delegateTextFormattingViewController = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+    [delegateTextFormattingViewController _beginDelayingPresentation:&__block_literal_global_572 cancellationHandler:3.0];
 
     [(_UITextFormattingSceneHostingImpl *)self setupSceneHosting];
   }
 }
 
-- (void)setRemoteConfiguration:(id)a3
+- (void)setRemoteConfiguration:(id)configuration
 {
   hostingController = self->_hostingController;
-  v4 = [_UITextFormattingActionHostToClient actionForConfiguration:a3];
+  v4 = [_UITextFormattingActionHostToClient actionForConfiguration:configuration];
   [(_UISceneHostingController *)hostingController sendAction:v4];
 }
 
-- (void)setRemoteFormattingDescriptor:(id)a3
+- (void)setRemoteFormattingDescriptor:(id)descriptor
 {
   hostingController = self->_hostingController;
-  v4 = [_UITextFormattingActionHostToClient actionForFormattingDescriptor:a3];
+  v4 = [_UITextFormattingActionHostToClient actionForFormattingDescriptor:descriptor];
   [(_UISceneHostingController *)hostingController sendAction:v4];
 }
 
@@ -51,60 +51,60 @@
     self->_hostingController = v6;
 
     [(_UISceneHostingController *)self->_hostingController setDelegate:self];
-    v8 = [(_UISceneHostingController *)self->_hostingController sceneViewController];
-    v9 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-    [v9 _setChildViewController:v8];
+    sceneViewController = [(_UISceneHostingController *)self->_hostingController sceneViewController];
+    delegateTextFormattingViewController = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+    [delegateTextFormattingViewController _setChildViewController:sceneViewController];
 
-    v10 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-    v11 = [v10 configuration];
-    [(_UITextFormattingSceneHostingImpl *)self setRemoteConfiguration:v11];
+    delegateTextFormattingViewController2 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+    configuration = [delegateTextFormattingViewController2 configuration];
+    [(_UITextFormattingSceneHostingImpl *)self setRemoteConfiguration:configuration];
   }
 }
 
 - (void)clientIsReady
 {
-  v2 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-  [v2 _endDelayingPresentation];
+  delegateTextFormattingViewController = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+  [delegateTextFormattingViewController _endDelayingPresentation];
 }
 
-- (void)_textFormattingDidChangeValue:(id)a3 textAttributesData:(id)a4
+- (void)_textFormattingDidChangeValue:(id)value textAttributesData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-  [v8 _textFormattingDidChangeValue:v7 textAttributesData:v6];
+  dataCopy = data;
+  valueCopy = value;
+  delegateTextFormattingViewController = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+  [delegateTextFormattingViewController _textFormattingDidChangeValue:valueCopy textAttributesData:dataCopy];
 }
 
 - (void)_textFormattingDidFinish
 {
-  v2 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-  [v2 _textFormattingDidFinish];
+  delegateTextFormattingViewController = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+  [delegateTextFormattingViewController _textFormattingDidFinish];
 }
 
-- (void)_presentColorPicker:(CGRect)a3 selectedColor:(id)a4
+- (void)_presentColorPicker:(CGRect)picker selectedColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-  [v10 _presentColorPicker:v9 selectedColor:{x, y, width, height}];
+  height = picker.size.height;
+  width = picker.size.width;
+  y = picker.origin.y;
+  x = picker.origin.x;
+  colorCopy = color;
+  delegateTextFormattingViewController = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+  [delegateTextFormattingViewController _presentColorPicker:colorCopy selectedColor:{x, y, width, height}];
 }
 
-- (void)_presentFontPickerWithConfiguration:(id)a3 selectedFonts:(id)a4
+- (void)_presentFontPickerWithConfiguration:(id)configuration selectedFonts:(id)fonts
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-  [v8 _presentFontPickerWithConfiguration:v7 selectedFonts:v6];
+  fontsCopy = fonts;
+  configurationCopy = configuration;
+  delegateTextFormattingViewController = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+  [delegateTextFormattingViewController _presentFontPickerWithConfiguration:configurationCopy selectedFonts:fontsCopy];
 }
 
-- (void)_presentTypographySettingsForFont:(id)a3
+- (void)_presentTypographySettingsForFont:(id)font
 {
-  v4 = a3;
-  v5 = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
-  [v5 _presentTypographySettingsForFont:v4];
+  fontCopy = font;
+  delegateTextFormattingViewController = [(_UITextFormattingSceneHostingImpl *)self delegateTextFormattingViewController];
+  [delegateTextFormattingViewController _presentTypographySettingsForFont:fontCopy];
 }
 
 - (UITextFormattingViewController)delegateTextFormattingViewController

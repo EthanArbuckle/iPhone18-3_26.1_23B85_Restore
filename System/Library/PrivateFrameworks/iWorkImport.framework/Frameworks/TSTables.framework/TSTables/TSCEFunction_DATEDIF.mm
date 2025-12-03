@@ -1,39 +1,39 @@
 @interface TSCEFunction_DATEDIF
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_DATEDIF
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v148[0] = 0;
-  v10 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, v148);
+  v10 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, v148);
   v11 = v148[0];
   if (v11)
   {
     v16 = v11;
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v12, v11, v14, v15);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v12, v11, v14, v15);
     goto LABEL_32;
   }
 
   v18 = objc_msgSend_gregorianCalendar(TSCECalendar, v12, v13, v14, v15);
   v22 = objc_msgSend_clearOffTime_(v18, v19, v10, v20, v21);
-  v23 = *(*a5 + 8);
+  v23 = *(*arguments + 8);
   v147 = 0;
-  v25 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v23, v24, a3, a4, 1, &v147);
+  v25 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v23, v24, context, spec, 1, &v147);
   v26 = v147;
   if (!v26)
   {
     v137 = objc_msgSend_clearOffTime_(v18, v27, v25, v28, v29);
-    v30 = *(*a5 + 16);
+    v30 = *(*arguments + 16);
     v146 = 0;
     v135 = v30;
-    v136 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v30, v31, a3, a4, 2, &v146);
+    v136 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v30, v31, context, spec, 2, &v146);
     v16 = v146;
     if (v16)
     {
-      v17 = objc_msgSend_raiseErrorOrConvert_(a3, v32, v16, v33, v34);
+      v17 = objc_msgSend_raiseErrorOrConvert_(context, v32, v16, v33, v34);
 LABEL_30:
 
       goto LABEL_31;
@@ -41,9 +41,9 @@ LABEL_30:
 
     if (objc_msgSend_compare_(v22, v32, v137, v33, v34) == 1)
     {
-      v134 = objc_msgSend_functionName(a4, v35, v36, v37, v38);
+      v134 = objc_msgSend_functionName(spec, v35, v36, v37, v38);
       v40 = objc_msgSend_invalidArgumentRelationshipErrorForFunctionName_argIndex1_argIndex2_argsAscending_equalityPermitted_(TSCEError, v39, v134, 1, 2, 1, 1);
-      v17 = objc_msgSend_raiseErrorOrConvert_(a3, v41, v40, v42, v43);
+      v17 = objc_msgSend_raiseErrorOrConvert_(context, v41, v40, v42, v43);
 LABEL_9:
 
 LABEL_29:
@@ -79,9 +79,9 @@ LABEL_27:
       {
         if (objc_msgSend_caseInsensitiveCompare_(v136, v68, @"YD", v69, v70))
         {
-          v40 = objc_msgSend_functionName(a4, v71, v72, v73, v74);
+          v40 = objc_msgSend_functionName(spec, v71, v72, v73, v74);
           v77 = objc_msgSend_invalidArgumentsErrorForFunctionName_argumentIndex_(TSCEError, v75, v40, 3, v76);
-          v17 = objc_msgSend_raiseErrorOrConvert_(a3, v78, v77, v79, v80);
+          v17 = objc_msgSend_raiseErrorOrConvert_(context, v78, v77, v79, v80);
 
           goto LABEL_9;
         }
@@ -166,7 +166,7 @@ LABEL_18:
   }
 
   v16 = v26;
-  v17 = objc_msgSend_raiseErrorOrConvert_(a3, v27, v26, v28, v29);
+  v17 = objc_msgSend_raiseErrorOrConvert_(context, v27, v26, v28, v29);
 LABEL_31:
 
 LABEL_32:

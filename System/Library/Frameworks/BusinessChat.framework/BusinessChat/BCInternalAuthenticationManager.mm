@@ -1,5 +1,5 @@
 @interface BCInternalAuthenticationManager
-- (BCInternalAuthenticationManager)initWithAuthenticationRequest:(id)a3;
+- (BCInternalAuthenticationManager)initWithAuthenticationRequest:(id)request;
 - (BOOL)isUserSignedIn;
 - (NSString)action;
 - (NSString)firstName;
@@ -10,19 +10,19 @@
 - (NSString)username;
 - (id)labelCategory;
 - (int64_t)state;
-- (void)fetchCredentials:(id)a3;
+- (void)fetchCredentials:(id)credentials;
 @end
 
 @implementation BCInternalAuthenticationManager
 
-- (BCInternalAuthenticationManager)initWithAuthenticationRequest:(id)a3
+- (BCInternalAuthenticationManager)initWithAuthenticationRequest:(id)request
 {
   v5 = MEMORY[0x277CB8F48];
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(v5);
-  v8 = [v7 aa_primaryAppleAccount];
-  v9 = v6;
-  v10 = v8;
+  aa_primaryAppleAccount = [v7 aa_primaryAppleAccount];
+  v9 = requestCopy;
+  v10 = aa_primaryAppleAccount;
   v11 = v7;
   if (self)
   {
@@ -33,29 +33,29 @@
     if (v12)
     {
       objc_storeStrong(&v12->_accountStore, v7);
-      objc_storeStrong(&self->_account, v8);
-      objc_storeStrong(&self->_authenticationRequest, a3);
+      objc_storeStrong(&self->_account, aa_primaryAppleAccount);
+      objc_storeStrong(&self->_authenticationRequest, request);
     }
   }
 
   return self;
 }
 
-- (void)fetchCredentials:(id)a3
+- (void)fetchCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   v5 = objc_alloc(MEMORY[0x277CF0188]);
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v5 initWithIdentifier:v7];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [v5 initWithIdentifier:bundleIdentifier];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__BCInternalAuthenticationManager_fetchCredentials___block_invoke;
   v10[3] = &unk_278A0E918;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = credentialsCopy;
+  v9 = credentialsCopy;
   [v8 appleIDHeadersForRequest:0 completion:v10];
 }
 
@@ -322,24 +322,24 @@ LABEL_54:
     self = self->_account;
   }
 
-  v2 = [(BCInternalAuthenticationManager *)self username];
-  v3 = v2 != 0;
+  username = [(BCInternalAuthenticationManager *)self username];
+  v3 = username != 0;
 
   return v3;
 }
 
 - (NSString)title
 {
-  v3 = [(BCInternalAuthenticationManager *)self authenticationRequest];
-  v4 = [v3 labels];
-  v5 = [(BCInternalAuthenticationManager *)self labelCategory];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  authenticationRequest = [(BCInternalAuthenticationManager *)self authenticationRequest];
+  labels = [authenticationRequest labels];
+  labelCategory = [(BCInternalAuthenticationManager *)self labelCategory];
+  v6 = [labels objectForKeyedSubscript:labelCategory];
 
-  v7 = [(BCInternalAuthenticationManager *)self state];
-  if (v7 == 3)
+  state = [(BCInternalAuthenticationManager *)self state];
+  if (state == 3)
   {
-    v8 = [v6 title];
-    if (!v8)
+    title = [v6 title];
+    if (!title)
     {
       v9 = +[BCShared classBundle];
       v10 = v9;
@@ -350,21 +350,21 @@ LABEL_54:
     goto LABEL_6;
   }
 
-  if (v7 != 2)
+  if (state != 2)
   {
     v12 = +[BCShared classBundle];
-    v13 = [v12 localizedStringForKey:@"DEFAULT_ERROR_TITLE" value:&stru_2849DDCD8 table:0];
+    title2 = [v12 localizedStringForKey:@"DEFAULT_ERROR_TITLE" value:&stru_2849DDCD8 table:0];
     goto LABEL_8;
   }
 
-  v8 = [v6 title];
-  if (v8)
+  title = [v6 title];
+  if (title)
   {
 LABEL_6:
-    v12 = v8;
-    v13 = [v6 title];
+    v12 = title;
+    title2 = [v6 title];
 LABEL_8:
-    v14 = v13;
+    v14 = title2;
     goto LABEL_11;
   }
 
@@ -382,43 +382,43 @@ LABEL_11:
 
 - (id)labelCategory
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 state];
+    state = [self state];
     v3 = BCLabelCategoryAuthenticate;
     v4 = BCLabelCategorySignIn;
-    if (v2 != 3)
+    if (state != 3)
     {
       v4 = BCLabelCategoryFailure;
     }
 
-    if (v2 != 2)
+    if (state != 2)
     {
       v3 = v4;
     }
 
-    a1 = *v3;
+    self = *v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NSString)subtitle
 {
-  v3 = [(BCInternalAuthenticationManager *)self authenticationRequest];
-  v4 = [v3 labels];
-  v5 = [(BCInternalAuthenticationManager *)self labelCategory];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  authenticationRequest = [(BCInternalAuthenticationManager *)self authenticationRequest];
+  labels = [authenticationRequest labels];
+  labelCategory = [(BCInternalAuthenticationManager *)self labelCategory];
+  v6 = [labels objectForKeyedSubscript:labelCategory];
 
-  v7 = [(BCInternalAuthenticationManager *)self state];
-  if (v7 == 3)
+  state = [(BCInternalAuthenticationManager *)self state];
+  if (state == 3)
   {
-    v8 = [v6 subtitle];
-    if (!v8)
+    subtitle = [v6 subtitle];
+    if (!subtitle)
     {
       v15 = +[BCShared classBundle];
-      v13 = [v15 localizedStringForKey:@"SIGN_IN_MESSAGE" value:&stru_2849DDCD8 table:0];
+      subtitle2 = [v15 localizedStringForKey:@"SIGN_IN_MESSAGE" value:&stru_2849DDCD8 table:0];
 
       goto LABEL_9;
     }
@@ -426,20 +426,20 @@ LABEL_11:
 
   else
   {
-    if (v7 != 2)
+    if (state != 2)
     {
-      v13 = 0;
+      subtitle2 = 0;
       goto LABEL_11;
     }
 
-    v8 = [v6 subtitle];
-    if (!v8)
+    subtitle = [v6 subtitle];
+    if (!subtitle)
     {
       v9 = MEMORY[0x277CCACA8];
       v10 = +[BCShared classBundle];
       v11 = [v10 localizedStringForKey:@"CONFIRM_SUBTITLE" value:&stru_2849DDCD8 table:0];
-      v12 = [(BCInternalAuthenticationManager *)self username];
-      v13 = [v9 stringWithFormat:v11, v12];
+      username = [(BCInternalAuthenticationManager *)self username];
+      subtitle2 = [v9 stringWithFormat:v11, username];
 
 LABEL_9:
       v14 = 0;
@@ -447,27 +447,27 @@ LABEL_9:
     }
   }
 
-  v14 = v8;
-  v13 = [v6 subtitle];
+  v14 = subtitle;
+  subtitle2 = [v6 subtitle];
 LABEL_10:
 
 LABEL_11:
 
-  return v13;
+  return subtitle2;
 }
 
 - (NSString)action
 {
-  v3 = [(BCInternalAuthenticationManager *)self authenticationRequest];
-  v4 = [v3 labels];
-  v5 = [(BCInternalAuthenticationManager *)self labelCategory];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  authenticationRequest = [(BCInternalAuthenticationManager *)self authenticationRequest];
+  labels = [authenticationRequest labels];
+  labelCategory = [(BCInternalAuthenticationManager *)self labelCategory];
+  v6 = [labels objectForKeyedSubscript:labelCategory];
 
-  v7 = [(BCInternalAuthenticationManager *)self state];
-  if (v7 == 3)
+  state = [(BCInternalAuthenticationManager *)self state];
+  if (state == 3)
   {
-    v8 = [v6 action];
-    if (!v8)
+    action = [v6 action];
+    if (!action)
     {
       v9 = +[BCShared classBundle];
       v10 = v9;
@@ -478,33 +478,33 @@ LABEL_11:
 
   else
   {
-    if (v7 != 2)
+    if (state != 2)
     {
-      v13 = 0;
+      action2 = 0;
       goto LABEL_11;
     }
 
-    v8 = [v6 action];
-    if (!v8)
+    action = [v6 action];
+    if (!action)
     {
       v9 = +[BCShared classBundle];
       v10 = v9;
       v11 = @"CONFIRM_BUTTON";
 LABEL_9:
-      v13 = [v9 localizedStringForKey:v11 value:&stru_2849DDCD8 table:0];
+      action2 = [v9 localizedStringForKey:v11 value:&stru_2849DDCD8 table:0];
 
       v12 = 0;
       goto LABEL_10;
     }
   }
 
-  v12 = v8;
-  v13 = [v6 action];
+  v12 = action;
+  action2 = [v6 action];
 LABEL_10:
 
 LABEL_11:
 
-  return v13;
+  return action2;
 }
 
 - (int64_t)state

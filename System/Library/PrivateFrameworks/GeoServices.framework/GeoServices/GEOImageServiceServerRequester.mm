@@ -1,20 +1,20 @@
 @interface GEOImageServiceServerRequester
 + (GEOImageServiceServerRequester)sharedRequester;
-- (void)startSimpleImageServiceRequest:(id)a3 auditToken:(id)a4 finished:(id)a5 networkActivity:(id)a6 error:(id)a7;
+- (void)startSimpleImageServiceRequest:(id)request auditToken:(id)token finished:(id)finished networkActivity:(id)activity error:(id)error;
 @end
 
 @implementation GEOImageServiceServerRequester
 
-- (void)startSimpleImageServiceRequest:(id)a3 auditToken:(id)a4 finished:(id)a5 networkActivity:(id)a6 error:(id)a7
+- (void)startSimpleImageServiceRequest:(id)request auditToken:(id)token finished:(id)finished networkActivity:(id)activity error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v15)
+  requestCopy = request;
+  tokenCopy = token;
+  finishedCopy = finished;
+  activityCopy = activity;
+  errorCopy = error;
+  if (activityCopy)
   {
-    v15[2](v15, 1);
+    activityCopy[2](activityCopy, 1);
   }
 
   v17 = +[_GEOImageServiceRequestConfig standardConfig];
@@ -22,13 +22,13 @@
   v21[1] = 3221225472;
   v21[2] = sub_100043334;
   v21[3] = &unk_100083DD0;
-  v22 = v15;
-  v23 = v14;
-  v24 = v16;
-  v18 = v16;
-  v19 = v14;
-  v20 = v15;
-  [(GEOImageServiceServerRequester *)self _startWithRequest:v12 traits:0 auditToken:v13 config:v17 throttleToken:0 options:0 completionHandler:v21];
+  v22 = activityCopy;
+  v23 = finishedCopy;
+  v24 = errorCopy;
+  v18 = errorCopy;
+  v19 = finishedCopy;
+  v20 = activityCopy;
+  [(GEOImageServiceServerRequester *)self _startWithRequest:requestCopy traits:0 auditToken:tokenCopy config:v17 throttleToken:0 options:0 completionHandler:v21];
 }
 
 + (GEOImageServiceServerRequester)sharedRequester

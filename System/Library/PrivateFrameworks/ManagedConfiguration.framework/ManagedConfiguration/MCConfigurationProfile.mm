@@ -1,25 +1,25 @@
 @interface MCConfigurationProfile
 - (BOOL)isManagedByMDM;
-- (__SecCertificate)copyCertificateFromPayloadWithUUID:(id)a3;
-- (__SecCertificate)copyCertificateWithPersistentID:(id)a3;
-- (id)_localizedPayloadSummaryByType:(id)a3;
-- (id)_sortPayloads:(id)a3;
-- (id)_subjectSummaryFromCertificate:(__SecCertificate *)a3;
+- (__SecCertificate)copyCertificateFromPayloadWithUUID:(id)d;
+- (__SecCertificate)copyCertificateWithPersistentID:(id)d;
+- (id)_localizedPayloadSummaryByType:(id)type;
+- (id)_sortPayloads:(id)payloads;
+- (id)_subjectSummaryFromCertificate:(__SecCertificate *)certificate;
 - (id)description;
 - (id)earliestCertificateExpiryDate;
 - (id)localizedManagedPayloadSummaryByType;
 - (id)localizedManagedProfileConsentTexts;
 - (id)localizedPayloadSummaryByType;
 - (id)managedPayloads;
-- (id)payloadWithUUID:(id)a3;
+- (id)payloadWithUUID:(id)d;
 - (id)serializedDictionary;
 - (id)stubDictionary;
-- (id)subjectSummaryFromCertificatePayloadWithUUID:(id)a3;
-- (id)subjectSummaryFromCertificateWithPersistentID:(id)a3;
+- (id)subjectSummaryFromCertificatePayloadWithUUID:(id)d;
+- (id)subjectSummaryFromCertificateWithPersistentID:(id)d;
 - (id)verboseDescription;
-- (void)_addObjectsOfClass:(Class)a3 fromArray:(id)a4 toArray:(id)a5;
+- (void)_addObjectsOfClass:(Class)class fromArray:(id)array toArray:(id)toArray;
 - (void)_sortPayloads;
-- (void)replacePayloadWithUUID:(id)a3 withPayload:(id)a4;
+- (void)replacePayloadWithUUID:(id)d withPayload:(id)payload;
 @end
 
 @implementation MCConfigurationProfile
@@ -33,42 +33,42 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_addObjectsOfClass:(Class)a3 fromArray:(id)a4 toArray:(id)a5
+- (void)_addObjectsOfClass:(Class)class fromArray:(id)array toArray:(id)toArray
 {
-  v10 = a4;
-  v7 = a5;
-  if ([v10 count] && objc_msgSend(v10, "count"))
+  arrayCopy = array;
+  toArrayCopy = toArray;
+  if ([arrayCopy count] && objc_msgSend(arrayCopy, "count"))
   {
     v8 = 0;
     do
     {
-      if (v8 >= [v10 count])
+      if (v8 >= [arrayCopy count])
       {
         break;
       }
 
-      v9 = [v10 objectAtIndex:v8];
-      if (objc_opt_isKindOfClass() & 1) == 0 || objc_opt_class() == a3 && (objc_opt_class(), (objc_opt_isKindOfClass()))
+      v9 = [arrayCopy objectAtIndex:v8];
+      if (objc_opt_isKindOfClass() & 1) == 0 || objc_opt_class() == class && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
         ++v8;
       }
 
       else
       {
-        [v7 addObject:v9];
-        [v10 removeObjectAtIndex:v8];
+        [toArrayCopy addObject:v9];
+        [arrayCopy removeObjectAtIndex:v8];
       }
     }
 
-    while ([v10 count]);
+    while ([arrayCopy count]);
   }
 }
 
-- (id)_sortPayloads:(id)a3
+- (id)_sortPayloads:(id)payloads
 {
   v24[9] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  payloadsCopy = payloads;
+  if ([payloadsCopy count])
   {
     if (!_sortPayloads__classSortOrder)
     {
@@ -86,8 +86,8 @@
       _sortPayloads__classSortOrder = v5;
     }
 
-    v7 = [v4 mutableCopy];
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [payloadsCopy mutableCopy];
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(payloadsCopy, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -129,7 +129,7 @@
 
   else
   {
-    v16 = v4;
+    v16 = payloadsCopy;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -142,8 +142,8 @@
   v22 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF70] arrayWithArray:self->_payloads];
   v4 = +[MCDependencyReader sharedReader];
-  v5 = [(MCProfile *)self identifier];
-  v6 = [v4 dependentsOfParent:v5 inDomain:@"ManagingProfileToManagedProfile"];
+  identifier = [(MCProfile *)self identifier];
+  v6 = [v4 dependentsOfParent:identifier inDomain:@"ManagingProfileToManagedProfile"];
 
   v19 = 0u;
   v20 = 0u;
@@ -165,8 +165,8 @@
         }
 
         v12 = [MCManifest installedProfileWithIdentifier:*(*(&v17 + 1) + 8 * i), v17];
-        v13 = [v12 payloads];
-        [v3 addObjectsFromArray:v13];
+        payloads = [v12 payloads];
+        [v3 addObjectsFromArray:payloads];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -182,10 +182,10 @@
   return v14;
 }
 
-- (id)payloadWithUUID:(id)a3
+- (id)payloadWithUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -205,8 +205,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 UUID];
-        v11 = [v10 isEqualToString:v4];
+        uUID = [v9 UUID];
+        v11 = [uUID isEqualToString:dCopy];
 
         if (v11)
         {
@@ -232,11 +232,11 @@ LABEL_11:
   return v6;
 }
 
-- (id)_subjectSummaryFromCertificate:(__SecCertificate *)a3
+- (id)_subjectSummaryFromCertificate:(__SecCertificate *)certificate
 {
-  if (a3)
+  if (certificate)
   {
-    v4 = SecCertificateCopySubjectSummary(a3);
+    v4 = SecCertificateCopySubjectSummary(certificate);
   }
 
   else
@@ -247,26 +247,26 @@ LABEL_11:
   return v4;
 }
 
-- (__SecCertificate)copyCertificateFromPayloadWithUUID:(id)a3
+- (__SecCertificate)copyCertificateFromPayloadWithUUID:(id)d
 {
-  v3 = [(MCConfigurationProfile *)self payloadWithUUID:a3];
+  v3 = [(MCConfigurationProfile *)self payloadWithUUID:d];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 copyCertificate];
+    copyCertificate = [v3 copyCertificate];
   }
 
   else
   {
-    v4 = 0;
+    copyCertificate = 0;
   }
 
-  return v4;
+  return copyCertificate;
 }
 
-- (id)subjectSummaryFromCertificatePayloadWithUUID:(id)a3
+- (id)subjectSummaryFromCertificatePayloadWithUUID:(id)d
 {
-  v4 = [(MCConfigurationProfile *)self copyCertificateFromPayloadWithUUID:a3];
+  v4 = [(MCConfigurationProfile *)self copyCertificateFromPayloadWithUUID:d];
   if (v4)
   {
     v5 = v4;
@@ -282,22 +282,22 @@ LABEL_11:
   return v6;
 }
 
-- (__SecCertificate)copyCertificateWithPersistentID:(id)a3
+- (__SecCertificate)copyCertificateWithPersistentID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v5 = self->_payloads;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v6)
+  copyCertificate = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (copyCertificate)
   {
     v7 = *v16;
     while (2)
     {
-      for (i = 0; i != v6; i = (i + 1))
+      for (i = 0; i != copyCertificate; i = (i + 1))
       {
         if (*v16 != v7)
         {
@@ -309,20 +309,20 @@ LABEL_11:
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [v10 certificatePersistentID];
-          v12 = [v11 isEqualToData:v4];
+          certificatePersistentID = [v10 certificatePersistentID];
+          v12 = [certificatePersistentID isEqualToData:dCopy];
 
           if (v12)
           {
-            v6 = [v10 copyCertificate];
+            copyCertificate = [v10 copyCertificate];
 
             goto LABEL_13;
           }
         }
       }
 
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v6)
+      copyCertificate = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (copyCertificate)
       {
         continue;
       }
@@ -334,12 +334,12 @@ LABEL_11:
 LABEL_13:
 
   v13 = *MEMORY[0x1E69E9840];
-  return v6;
+  return copyCertificate;
 }
 
-- (id)subjectSummaryFromCertificateWithPersistentID:(id)a3
+- (id)subjectSummaryFromCertificateWithPersistentID:(id)d
 {
-  v4 = [(MCConfigurationProfile *)self copyCertificateWithPersistentID:a3];
+  v4 = [(MCConfigurationProfile *)self copyCertificateWithPersistentID:d];
   if (v4)
   {
     v5 = v4;
@@ -435,8 +435,8 @@ LABEL_13:
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = MCConfigurationProfile;
-  v3 = [(MCProfile *)&v17 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCProfile *)&v17 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if ([(NSArray *)self->_payloads count])
   {
@@ -460,8 +460,8 @@ LABEL_13:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) verboseDescription];
-          [v4 appendFormat:@"%@\n", v10];
+          verboseDescription2 = [*(*(&v13 + 1) + 8 * i) verboseDescription];
+          [v4 appendFormat:@"%@\n", verboseDescription2];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
@@ -496,8 +496,8 @@ LABEL_13:
   v22 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = MCConfigurationProfile;
-  v3 = [(MCProfile *)&v20 serializedDictionary];
-  v4 = [v3 mutableCopy];
+  serializedDictionary = [(MCProfile *)&v20 serializedDictionary];
+  v4 = [serializedDictionary mutableCopy];
 
   if ([(NSArray *)self->_payloads count])
   {
@@ -521,8 +521,8 @@ LABEL_13:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) serializedDictionary];
-          [v5 addObject:v11];
+          serializedDictionary2 = [*(*(&v16 + 1) + 8 * i) serializedDictionary];
+          [v5 addObject:serializedDictionary2];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -547,8 +547,8 @@ LABEL_13:
   OTAProfile = self->_OTAProfile;
   if (OTAProfile)
   {
-    v13 = [(MCProfileServiceProfile *)OTAProfile serializedDictionary];
-    [v4 setObject:v13 forKeyedSubscript:@"OTA Profile"];
+    serializedDictionary3 = [(MCProfileServiceProfile *)OTAProfile serializedDictionary];
+    [v4 setObject:serializedDictionary3 forKeyedSubscript:@"OTA Profile"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -561,13 +561,13 @@ LABEL_13:
   v23 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = MCConfigurationProfile;
-  v3 = [(MCProfile *)&v21 stubDictionary];
-  [v3 setObject:@"Configuration" forKeyedSubscript:@"PayloadType"];
-  v4 = [(MCConfigurationProfile *)self isCloudProfileNum];
-  [v3 setObject:v4 forKeyedSubscript:@"IsCloudProfile"];
+  stubDictionary = [(MCProfile *)&v21 stubDictionary];
+  [stubDictionary setObject:@"Configuration" forKeyedSubscript:@"PayloadType"];
+  isCloudProfileNum = [(MCConfigurationProfile *)self isCloudProfileNum];
+  [stubDictionary setObject:isCloudProfileNum forKeyedSubscript:@"IsCloudProfile"];
 
-  v5 = [(MCConfigurationProfile *)self isCloudLockedNum];
-  [v3 setObject:v5 forKeyedSubscript:@"IsCloudLocked"];
+  isCloudLockedNum = [(MCConfigurationProfile *)self isCloudLockedNum];
+  [stubDictionary setObject:isCloudLockedNum forKeyedSubscript:@"IsCloudLocked"];
 
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](self->_payloads, "count")}];
   v17 = 0u;
@@ -589,8 +589,8 @@ LABEL_13:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) stubDictionary];
-        [v6 addObject:v12];
+        stubDictionary2 = [*(*(&v17 + 1) + 8 * i) stubDictionary];
+        [v6 addObject:stubDictionary2];
       }
 
       v9 = [(NSArray *)v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
@@ -599,29 +599,29 @@ LABEL_13:
     while (v9);
   }
 
-  [v3 setObject:v6 forKey:@"PayloadContent"];
+  [stubDictionary setObject:v6 forKey:@"PayloadContent"];
   OTAProfile = self->_OTAProfile;
   if (OTAProfile)
   {
-    v14 = [(MCProfileServiceProfile *)OTAProfile stubDictionary];
-    [v3 setObject:v14 forKey:@"OTAProfileStub"];
+    stubDictionary3 = [(MCProfileServiceProfile *)OTAProfile stubDictionary];
+    [stubDictionary setObject:stubDictionary3 forKey:@"OTAProfileStub"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return stubDictionary;
 }
 
-- (id)_localizedPayloadSummaryByType:(id)a3
+- (id)_localizedPayloadSummaryByType:(id)type
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  typeCopy = type;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(typeCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = typeCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   v7 = v5;
   if (!v6)
@@ -684,16 +684,16 @@ LABEL_18:
 
 - (id)localizedPayloadSummaryByType
 {
-  v3 = [(MCConfigurationProfile *)self payloads];
-  v4 = [(MCConfigurationProfile *)self _localizedPayloadSummaryByType:v3];
+  payloads = [(MCConfigurationProfile *)self payloads];
+  v4 = [(MCConfigurationProfile *)self _localizedPayloadSummaryByType:payloads];
 
   return v4;
 }
 
 - (id)localizedManagedPayloadSummaryByType
 {
-  v3 = [(MCConfigurationProfile *)self managedPayloads];
-  v4 = [(MCConfigurationProfile *)self _localizedPayloadSummaryByType:v3];
+  managedPayloads = [(MCConfigurationProfile *)self managedPayloads];
+  v4 = [(MCConfigurationProfile *)self _localizedPayloadSummaryByType:managedPayloads];
 
   return v4;
 }
@@ -703,12 +703,12 @@ LABEL_18:
   v27 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = MCConfigurationProfile;
-  v3 = [(MCProfile *)&v25 localizedManagedProfileConsentTexts];
-  v4 = [v3 mutableCopy];
+  localizedManagedProfileConsentTexts = [(MCProfile *)&v25 localizedManagedProfileConsentTexts];
+  v4 = [localizedManagedProfileConsentTexts mutableCopy];
 
   v5 = +[MCDependencyReader sharedReader];
-  v6 = [(MCProfile *)self identifier];
-  v7 = [v5 dependentsOfParent:v6 inDomain:@"ManagingProfileToManagedProfile"];
+  identifier = [(MCProfile *)self identifier];
+  v7 = [v5 dependentsOfParent:identifier inDomain:@"ManagingProfileToManagedProfile"];
 
   v23 = 0u;
   v24 = 0u;
@@ -730,14 +730,14 @@ LABEL_18:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [(MCProfile *)self identifier];
-        v15 = [v13 isEqualToString:v14];
+        identifier2 = [(MCProfile *)self identifier];
+        v15 = [v13 isEqualToString:identifier2];
 
         if ((v15 & 1) == 0)
         {
           v16 = [MCManifest installedProfileWithIdentifier:v13];
-          v17 = [v16 localizedManagedProfileConsentTexts];
-          [v4 addEntriesFromDictionary:v17];
+          localizedManagedProfileConsentTexts2 = [v16 localizedManagedProfileConsentTexts];
+          [v4 addEntriesFromDictionary:localizedManagedProfileConsentTexts2];
         }
       }
 
@@ -765,7 +765,7 @@ LABEL_18:
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__4;
   v26 = __Block_byref_object_dispose__4;
-  v27 = [MEMORY[0x1E695DF00] distantFuture];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v20 = 0u;
   v21 = 0u;
@@ -789,23 +789,23 @@ LABEL_18:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 expiry];
-          v10 = [v8 SMIMEEmailAddress];
-          if (v10)
+          expiry = [v8 expiry];
+          sMIMEEmailAddress = [v8 SMIMEEmailAddress];
+          if (sMIMEEmailAddress)
           {
-            v11 = [v3 objectForKeyedSubscript:v10];
-            if (!v11 || ([v9 timeIntervalSinceDate:v11], v12 > 0.0))
+            v11 = [v3 objectForKeyedSubscript:sMIMEEmailAddress];
+            if (!v11 || ([expiry timeIntervalSinceDate:v11], v12 > 0.0))
             {
-              [v3 setObject:v9 forKeyedSubscript:v10];
+              [v3 setObject:expiry forKeyedSubscript:sMIMEEmailAddress];
             }
           }
 
           else
           {
-            [v9 timeIntervalSinceDate:v23[5]];
+            [expiry timeIntervalSinceDate:v23[5]];
             if (v13 < 0.0)
             {
-              objc_storeStrong(v23 + 5, v9);
+              objc_storeStrong(v23 + 5, expiry);
               *(v29 + 24) = 1;
             }
           }
@@ -853,10 +853,10 @@ void __55__MCConfigurationProfile_earliestCertificateExpiryDate__block_invoke(ui
   }
 }
 
-- (void)replacePayloadWithUUID:(id)a3 withPayload:(id)a4
+- (void)replacePayloadWithUUID:(id)d withPayload:(id)payload
 {
-  v16 = a3;
-  v6 = a4;
+  dCopy = d;
+  payloadCopy = payload;
   v7 = [(NSArray *)self->_payloads mutableCopy];
   if ([v7 count])
   {
@@ -865,8 +865,8 @@ void __55__MCConfigurationProfile_earliestCertificateExpiryDate__block_invoke(ui
     while (1)
     {
       v10 = [v7 objectAtIndexedSubscript:v8];
-      v11 = [v10 UUID];
-      v12 = [v11 isEqualToString:v16];
+      uUID = [v10 UUID];
+      v12 = [uUID isEqualToString:dCopy];
 
       if (v12)
       {
@@ -880,7 +880,7 @@ void __55__MCConfigurationProfile_earliestCertificateExpiryDate__block_invoke(ui
       }
     }
 
-    [v7 setObject:v6 atIndexedSubscript:v8];
+    [v7 setObject:payloadCopy atIndexedSubscript:v8];
   }
 
 LABEL_7:

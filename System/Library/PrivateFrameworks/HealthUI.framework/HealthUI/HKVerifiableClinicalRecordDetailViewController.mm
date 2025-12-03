@@ -1,25 +1,25 @@
 @interface HKVerifiableClinicalRecordDetailViewController
-- (HKVerifiableClinicalRecordDetailViewController)initWithSignedRecord:(id)a3 medicalRecords:(id)a4;
-- (id)configureSubtitleCellForItem:(id)a3 tableView:(id)a4;
-- (id)configureValueCellForItem:(id)a3 tableView:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (HKVerifiableClinicalRecordDetailViewController)initWithSignedRecord:(id)record medicalRecords:(id)records;
+- (id)configureSubtitleCellForItem:(id)item tableView:(id)view;
+- (id)configureValueCellForItem:(id)item tableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_setUpTableView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HKVerifiableClinicalRecordDetailViewController
 
-- (HKVerifiableClinicalRecordDetailViewController)initWithSignedRecord:(id)a3 medicalRecords:(id)a4
+- (HKVerifiableClinicalRecordDetailViewController)initWithSignedRecord:(id)record medicalRecords:(id)records
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  recordsCopy = records;
   v12.receiver = self;
   v12.super_class = HKVerifiableClinicalRecordDetailViewController;
   v8 = [(HKTableViewController *)&v12 initWithUsingInsetStyling:1];
   if (v8)
   {
-    v9 = [[HKVerifiableClinicalRecordDetailDataProvider alloc] initWithSignedRecord:v6 medicalRecords:v7];
+    v9 = [[HKVerifiableClinicalRecordDetailDataProvider alloc] initWithSignedRecord:recordCopy medicalRecords:recordsCopy];
     dataProvider = v8->_dataProvider;
     v8->_dataProvider = v9;
   }
@@ -40,54 +40,54 @@
   [(HKVerifiableClinicalRecordDetailViewController *)self _setUpTableView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = HKVerifiableClinicalRecordDetailViewController;
   [(HKVerifiableClinicalRecordDetailViewController *)&v8 viewWillAppear:?];
-  v5 = [(HKVerifiableClinicalRecordDetailViewController *)self navigationController];
-  v6 = [v5 isNavigationBarHidden];
+  navigationController = [(HKVerifiableClinicalRecordDetailViewController *)self navigationController];
+  isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-  if (v6)
+  if (isNavigationBarHidden)
   {
-    v7 = [(HKVerifiableClinicalRecordDetailViewController *)self navigationController];
-    [v7 setNavigationBarHidden:0 animated:v3];
+    navigationController2 = [(HKVerifiableClinicalRecordDetailViewController *)self navigationController];
+    [navigationController2 setNavigationBarHidden:0 animated:appearCopy];
   }
 }
 
 - (void)_setUpTableView
 {
   v3 = *MEMORY[0x1E69DE3D0];
-  v4 = [(HKVerifiableClinicalRecordDetailViewController *)self tableView];
-  [v4 setRowHeight:v3];
+  tableView = [(HKVerifiableClinicalRecordDetailViewController *)self tableView];
+  [tableView setRowHeight:v3];
 
-  v5 = [(HKVerifiableClinicalRecordDetailViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"SubtitleCell"];
+  tableView2 = [(HKVerifiableClinicalRecordDetailViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"SubtitleCell"];
 
-  v6 = [(HKVerifiableClinicalRecordDetailViewController *)self tableView];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"ValueCell"];
+  tableView3 = [(HKVerifiableClinicalRecordDetailViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"ValueCell"];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   dataProvider = self->_dataProvider;
-  v8 = a4;
-  v9 = [v8 section];
-  v10 = [v8 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v10 = [pathCopy row];
 
-  v11 = [(HKVerifiableClinicalRecordDetailDataProvider *)dataProvider displayItemForSection:v9 row:v10];
-  v12 = [v11 type];
-  if (v12 == 1)
+  v11 = [(HKVerifiableClinicalRecordDetailDataProvider *)dataProvider displayItemForSection:section row:v10];
+  type = [v11 type];
+  if (type == 1)
   {
-    v13 = [(HKVerifiableClinicalRecordDetailViewController *)self configureValueCellForItem:v11 tableView:v6];
+    v13 = [(HKVerifiableClinicalRecordDetailViewController *)self configureValueCellForItem:v11 tableView:viewCopy];
     goto LABEL_5;
   }
 
-  if (!v12)
+  if (!type)
   {
-    v13 = [(HKVerifiableClinicalRecordDetailViewController *)self configureSubtitleCellForItem:v11 tableView:v6];
+    v13 = [(HKVerifiableClinicalRecordDetailViewController *)self configureSubtitleCellForItem:v11 tableView:viewCopy];
 LABEL_5:
     v14 = v13;
     goto LABEL_7;
@@ -102,102 +102,102 @@ LABEL_7:
   return v14;
 }
 
-- (id)configureSubtitleCellForItem:(id)a3 tableView:(id)a4
+- (id)configureSubtitleCellForItem:(id)item tableView:(id)view
 {
-  v5 = a3;
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"SubtitleCell"];
+  itemCopy = item;
+  v6 = [view dequeueReusableCellWithIdentifier:@"SubtitleCell"];
   [v6 setSelectionStyle:0];
-  v7 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-  v8 = [v5 titleText];
-  [v7 setText:v8];
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  titleText = [itemCopy titleText];
+  [subtitleCellConfiguration setText:titleText];
 
-  v9 = [v5 detailText];
-  [v7 setSecondaryText:v9];
+  detailText = [itemCopy detailText];
+  [subtitleCellConfiguration setSecondaryText:detailText];
 
-  [v7 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
-  [v7 setTextToSecondaryTextVerticalPadding:5.0];
-  v10 = [v5 subtitleStyle];
+  [subtitleCellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
+  [subtitleCellConfiguration setTextToSecondaryTextVerticalPadding:5.0];
+  subtitleStyle = [itemCopy subtitleStyle];
 
-  if (v10 == 1)
+  if (subtitleStyle == 1)
   {
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v18 = [v7 textProperties];
-    [v18 setColor:v17];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    textProperties = [subtitleCellConfiguration textProperties];
+    [textProperties setColor:secondaryLabelColor];
 
     v19 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-    v20 = [v7 textProperties];
-    [v20 setFont:v19];
+    textProperties2 = [subtitleCellConfiguration textProperties];
+    [textProperties2 setFont:v19];
 
-    v15 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v16 = MEMORY[0x1E69DDCF8];
   }
 
   else
   {
-    if (v10)
+    if (subtitleStyle)
     {
       goto LABEL_6;
     }
 
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    v12 = [v7 textProperties];
-    [v12 setColor:v11];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    textProperties3 = [subtitleCellConfiguration textProperties];
+    [textProperties3 setColor:labelColor2];
 
     v13 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] variant:1024];
-    v14 = [v7 textProperties];
-    [v14 setFont:v13];
+    textProperties4 = [subtitleCellConfiguration textProperties];
+    [textProperties4 setFont:v13];
 
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    labelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v16 = MEMORY[0x1E69DDD80];
   }
 
-  v21 = [v7 secondaryTextProperties];
-  [v21 setColor:v15];
+  secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:labelColor];
 
   v22 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*v16];
-  v23 = [v7 secondaryTextProperties];
-  [v23 setFont:v22];
+  secondaryTextProperties2 = [subtitleCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties2 setFont:v22];
 
 LABEL_6:
-  [v6 setContentConfiguration:v7];
+  [v6 setContentConfiguration:subtitleCellConfiguration];
 
   return v6;
 }
 
-- (id)configureValueCellForItem:(id)a3 tableView:(id)a4
+- (id)configureValueCellForItem:(id)item tableView:(id)view
 {
-  v5 = a3;
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"ValueCell"];
+  itemCopy = item;
+  v6 = [view dequeueReusableCellWithIdentifier:@"ValueCell"];
   [v6 setSelectionStyle:0];
-  v7 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  [v7 setTextToSecondaryTextHorizontalPadding:10.0];
-  v8 = [v5 titleText];
-  [v7 setText:v8];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  [valueCellConfiguration setTextToSecondaryTextHorizontalPadding:10.0];
+  titleText = [itemCopy titleText];
+  [valueCellConfiguration setText:titleText];
 
-  v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v10 = [v7 textProperties];
-  [v10 setColor:v9];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  textProperties = [valueCellConfiguration textProperties];
+  [textProperties setColor:secondaryLabelColor];
 
   v11 = *MEMORY[0x1E69DDCF8];
   v12 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v13 = [v7 textProperties];
-  [v13 setFont:v12];
+  textProperties2 = [valueCellConfiguration textProperties];
+  [textProperties2 setFont:v12];
 
-  v14 = [v5 detailText];
-  [v7 setSecondaryText:v14];
+  detailText = [itemCopy detailText];
+  [valueCellConfiguration setSecondaryText:detailText];
 
-  v15 = [v5 attributedDetailText];
+  attributedDetailText = [itemCopy attributedDetailText];
 
-  [v7 setSecondaryAttributedText:v15];
-  v16 = [MEMORY[0x1E69DC888] labelColor];
-  v17 = [v7 secondaryTextProperties];
-  [v17 setColor:v16];
+  [valueCellConfiguration setSecondaryAttributedText:attributedDetailText];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:labelColor];
 
   v18 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v11];
-  v19 = [v7 secondaryTextProperties];
-  [v19 setFont:v18];
+  secondaryTextProperties2 = [valueCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties2 setFont:v18];
 
-  [v6 setContentConfiguration:v7];
+  [v6 setContentConfiguration:valueCellConfiguration];
 
   return v6;
 }

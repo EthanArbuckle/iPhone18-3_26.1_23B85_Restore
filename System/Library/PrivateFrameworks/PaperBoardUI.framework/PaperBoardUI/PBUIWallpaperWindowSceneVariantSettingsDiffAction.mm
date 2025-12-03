@@ -1,18 +1,18 @@
 @interface PBUIWallpaperWindowSceneVariantSettingsDiffAction
 - (id)_wallpaperVariantSceneSettingsDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation PBUIWallpaperWindowSceneVariantSettingsDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
+  sceneCopy = scene;
+  contextCopy = context;
+  diffCopy = diff;
+  sSceneCopy = sScene;
   v17 = objc_opt_class();
-  v18 = v13;
+  v18 = sceneCopy;
   if (v17)
   {
     if (objc_opt_isKindOfClass())
@@ -33,10 +33,10 @@
 
   v20 = v19;
 
-  v21 = [v16 settings];
+  settings = [sSceneCopy settings];
 
   v22 = objc_opt_class();
-  v23 = v21;
+  v23 = settings;
   if (v22)
   {
     if (objc_opt_isKindOfClass())
@@ -77,16 +77,16 @@
   [PBUIWallpaperWindowSceneVariantSettingsDiffAction _performActionsForUIScene:a2 withUpdatedFBSScene:self settingsDiff:? fromSettings:? transitionContext:? lifecycleActionType:?];
 LABEL_13:
   v34 = 0;
-  v26 = [(PBUIWallpaperWindowSceneVariantSettingsDiffAction *)self _wallpaperVariantSceneSettingsDiffInspector];
-  [v26 inspectDiff:v15 withContext:&v34];
+  _wallpaperVariantSceneSettingsDiffInspector = [(PBUIWallpaperWindowSceneVariantSettingsDiffAction *)self _wallpaperVariantSceneSettingsDiffInspector];
+  [_wallpaperVariantSceneSettingsDiffInspector inspectDiff:diffCopy withContext:&v34];
 
   if (v34)
   {
-    v27 = [v14 animationFence];
-    [v20 _synchronizeDrawingWithFence:v27];
+    animationFence = [contextCopy animationFence];
+    [v20 _synchronizeDrawingWithFence:animationFence];
 
     v28 = objc_opt_class();
-    v29 = v14;
+    v29 = contextCopy;
     if (v28)
     {
       if (objc_opt_isKindOfClass())
@@ -109,18 +109,18 @@ LABEL_13:
 
     if (v31)
     {
-      v32 = [v31 inAnimationSettings];
+      inAnimationSettings = [v31 inAnimationSettings];
       [v31 outAnimationSettings];
     }
 
     else
     {
-      v32 = [v29 animationSettings];
+      inAnimationSettings = [v29 animationSettings];
       [v29 animationSettings];
     }
     v33 = ;
 
-    [v20 _updateWallpaperVariant:objc_msgSend(v25 inAnimationSettings:"wallpaperVariant") outAnimationSettings:{v32, v33}];
+    [v20 _updateWallpaperVariant:objc_msgSend(v25 inAnimationSettings:"wallpaperVariant") outAnimationSettings:{inAnimationSettings, v33}];
   }
 }
 

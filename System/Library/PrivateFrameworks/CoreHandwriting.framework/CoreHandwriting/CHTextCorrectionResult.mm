@@ -1,35 +1,35 @@
 @interface CHTextCorrectionResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTextCorrectionResult:(id)a3;
-- (CHTextCorrectionResult)initWithCoder:(id)a3;
-- (CHTextCorrectionResult)initWithInputTarget:(id)a3 affectedRange:(_NSRange)a4 textResult:(id)a5 resultType:(int64_t)a6 isCharacterLevel:(BOOL)a7 error:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTextCorrectionResult:(id)result;
+- (CHTextCorrectionResult)initWithCoder:(id)coder;
+- (CHTextCorrectionResult)initWithInputTarget:(id)target affectedRange:(_NSRange)range textResult:(id)result resultType:(int64_t)type isCharacterLevel:(BOOL)level error:(id)error;
 - (_NSRange)affectedRange;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHTextCorrectionResult
 
-- (CHTextCorrectionResult)initWithInputTarget:(id)a3 affectedRange:(_NSRange)a4 textResult:(id)a5 resultType:(int64_t)a6 isCharacterLevel:(BOOL)a7 error:(id)a8
+- (CHTextCorrectionResult)initWithInputTarget:(id)target affectedRange:(_NSRange)range textResult:(id)result resultType:(int64_t)type isCharacterLevel:(BOOL)level error:(id)error
 {
-  length = a4.length;
-  location = a4.location;
-  v14 = a3;
-  v15 = a5;
-  v16 = a8;
+  length = range.length;
+  location = range.location;
+  targetCopy = target;
+  resultCopy = result;
+  errorCopy = error;
   v21.receiver = self;
   v21.super_class = CHTextCorrectionResult;
   v17 = [(CHTextCorrectionResult *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_inputTarget, a3);
+    objc_storeStrong(&v17->_inputTarget, target);
     v18->_affectedRange.location = location;
     v18->_affectedRange.length = length;
-    objc_storeStrong(&v18->_textResult, a5);
-    v18->_resultType = a6;
-    v18->_characterLevel = a7;
-    objc_storeStrong(&v18->_error, a8);
+    objc_storeStrong(&v18->_textResult, result);
+    v18->_resultType = type;
+    v18->_characterLevel = level;
+    objc_storeStrong(&v18->_error, error);
   }
 
   return v18;
@@ -90,34 +90,34 @@
   return v82;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   inputTarget = self->_inputTarget;
-  v24 = a3;
-  objc_msgSend_encodeObject_forKey_(v24, v5, inputTarget, @"inputTarget", v6, v7);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, inputTarget, @"inputTarget", v6, v7);
   v8 = NSStringFromRange(self->_affectedRange);
-  objc_msgSend_encodeObject_forKey_(v24, v9, v8, @"affectedRange", v10, v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"affectedRange", v10, v11);
 
-  objc_msgSend_encodeObject_forKey_(v24, v12, self->_textResult, @"textResult", v13, v14);
-  objc_msgSend_encodeInteger_forKey_(v24, v15, self->_resultType, @"resultType", v16, v17);
-  objc_msgSend_encodeBool_forKey_(v24, v18, self->_characterLevel, @"isCharacterLevel", v19, v20);
-  objc_msgSend_encodeObject_forKey_(v24, v21, self->_error, @"error", v22, v23);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, self->_textResult, @"textResult", v13, v14);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v15, self->_resultType, @"resultType", v16, v17);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v18, self->_characterLevel, @"isCharacterLevel", v19, v20);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v21, self->_error, @"error", v22, v23);
 }
 
-- (CHTextCorrectionResult)initWithCoder:(id)a3
+- (CHTextCorrectionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"inputTarget", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"inputTarget", v7, v8);
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"affectedRange", v12, v13);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"affectedRange", v12, v13);
   v15 = NSRangeFromString(v14);
   v16 = objc_opt_class();
-  v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v17, v16, @"textResult", v18, v19);
-  v25 = objc_msgSend_decodeIntegerForKey_(v4, v21, @"resultType", v22, v23, v24);
-  v30 = objc_msgSend_decodeBoolForKey_(v4, v26, @"isCharacterLevel", v27, v28, v29);
+  v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v17, v16, @"textResult", v18, v19);
+  v25 = objc_msgSend_decodeIntegerForKey_(coderCopy, v21, @"resultType", v22, v23, v24);
+  v30 = objc_msgSend_decodeBoolForKey_(coderCopy, v26, @"isCharacterLevel", v27, v28, v29);
   v31 = objc_opt_class();
-  v35 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v32, v31, @"error", v33, v34);
+  v35 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v32, v31, @"error", v33, v34);
 
   if (v9)
   {
@@ -127,14 +127,14 @@
   return self;
 }
 
-- (BOOL)isEqualToTextCorrectionResult:(id)a3
+- (BOOL)isEqualToTextCorrectionResult:(id)result
 {
-  v4 = a3;
-  v10 = v4;
-  if (self != v4)
+  resultCopy = result;
+  v10 = resultCopy;
+  if (self != resultCopy)
   {
     inputTarget = self->_inputTarget;
-    v12 = objc_msgSend_inputTarget(v4, v5, v6, v7, v8, v9);
+    v12 = objc_msgSend_inputTarget(resultCopy, v5, v6, v7, v8, v9);
     v18 = v12;
     if (inputTarget == v12)
     {
@@ -235,13 +235,13 @@ LABEL_23:
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToTextCorrectionResult = objc_msgSend_isEqualToTextCorrectionResult_(self, v5, v4, v6, v7, v8);
+    isEqualToTextCorrectionResult = objc_msgSend_isEqualToTextCorrectionResult_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToTextCorrectionResult;
   }

@@ -1,20 +1,20 @@
 @interface DownloadInfo
-- (BOOL)addNewRateDataPoint:(double)a3;
-- (DownloadInfo)initWithUrl:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 clientName:(id)a6 options:(id)a7;
+- (BOOL)addNewRateDataPoint:(double)point;
+- (DownloadInfo)initWithUrl:(id)url forAssetType:(id)type withPurpose:(id)purpose clientName:(id)name options:(id)options;
 - (double)currentEstimate;
 - (id)_taskState;
 - (id)description;
-- (void)addNewDownloadInfo:(id)a3;
-- (void)determineDownloadUrl:(id)a3 callback:(id)a4;
-- (void)updateDownloadData:(int64_t)a3;
+- (void)addNewDownloadInfo:(id)info;
+- (void)determineDownloadUrl:(id)url callback:(id)callback;
+- (void)updateDownloadData:(int64_t)data;
 @end
 
 @implementation DownloadInfo
 
 - (double)currentEstimate
 {
-  v3 = [(DownloadInfo *)self taskDescriptor];
-  v4 = getAssetTypeFromTaskDescriptor(v3);
+  taskDescriptor = [(DownloadInfo *)self taskDescriptor];
+  v4 = getAssetTypeFromTaskDescriptor(taskDescriptor);
 
   if (isSoftwareUpdateType(v4))
   {
@@ -81,24 +81,24 @@ LABEL_17:
 
 - (id)description
 {
-  v3 = [(NSURLSessionTask *)self->_task response];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  response = [(NSURLSessionTask *)self->_task response];
+  if (response && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v24 = [v3 statusCode];
+    statusCode = [response statusCode];
   }
 
   else
   {
-    v24 = -1;
+    statusCode = -1;
   }
 
-  v4 = [(NSURLSessionTask *)self->_task error];
+  error = [(NSURLSessionTask *)self->_task error];
   taskDescriptor = self->_taskDescriptor;
   task = self->_task;
-  v19 = [(DownloadInfo *)self _taskState];
+  _taskState = [(DownloadInfo *)self _taskState];
   downloadSize = self->_downloadSize;
   v21 = *&self->_startingAt != 0;
-  v25 = v3;
+  v25 = response;
   if (*&self->_startingAt == 0)
   {
     v5 = &stru_4BD3F0;
@@ -155,9 +155,9 @@ LABEL_17:
   }
 
   v14 = @" error: ";
-  if (v4)
+  if (error)
   {
-    v15 = v4;
+    v15 = error;
   }
 
   else
@@ -166,7 +166,7 @@ LABEL_17:
     v15 = &stru_4BD3F0;
   }
 
-  v16 = [NSString stringWithFormat:@"DownloadInfo taskDescriptor: %@ . task: %@ taskState: %@ statusCode: %lld downloadSize: %lld%@ progress: %lld / %lld isStalled: %@ numStalls: %lld numNoLongerStalls: %lld backtracks: %lld callbackCount: %lld hasExtractor: %@ extractorRequired: %@ originalUrl: %@ cacheServerUrl: %@ assetType: %@ purpose: %@ shouldRetry: %@ ifModifiedDate: %@ options: %@%@%@", taskDescriptor, task, v19, v24, downloadSize, v5, currentTotalWritten, totalExpectedBytes, v8, v18, backtracks, v10, v11, v12, *&self->_originalUrl, self->_assetType, self->_purpose, v13, self->_date, self->_options, v14, v15];
+  v16 = [NSString stringWithFormat:@"DownloadInfo taskDescriptor: %@ . task: %@ taskState: %@ statusCode: %lld downloadSize: %lld%@ progress: %lld / %lld isStalled: %@ numStalls: %lld numNoLongerStalls: %lld backtracks: %lld callbackCount: %lld hasExtractor: %@ extractorRequired: %@ originalUrl: %@ cacheServerUrl: %@ assetType: %@ purpose: %@ shouldRetry: %@ ifModifiedDate: %@ options: %@%@%@", taskDescriptor, task, _taskState, statusCode, downloadSize, v5, currentTotalWritten, totalExpectedBytes, v8, v18, backtracks, v10, v11, v12, *&self->_originalUrl, self->_assetType, self->_purpose, v13, self->_date, self->_options, v14, v15];
   if (v21)
   {
   }
@@ -179,15 +179,15 @@ LABEL_17:
   task = self->_task;
   if (task)
   {
-    v4 = [(NSURLSessionTask *)task state];
-    if (v4 >= 4)
+    state = [(NSURLSessionTask *)task state];
+    if (state >= 4)
     {
       v5 = [NSString stringWithFormat:@"%lld", [(NSURLSessionTask *)self->_task state]];
     }
 
     else
     {
-      v5 = off_4B3D60[v4];
+      v5 = off_4B3D60[state];
     }
   }
 
@@ -199,13 +199,13 @@ LABEL_17:
   return v5;
 }
 
-- (DownloadInfo)initWithUrl:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 clientName:(id)a6 options:(id)a7
+- (DownloadInfo)initWithUrl:(id)url forAssetType:(id)type withPurpose:(id)purpose clientName:(id)name options:(id)options
 {
-  v13 = a3;
-  v14 = a4;
-  v44 = a5;
-  v15 = a6;
-  v16 = a7;
+  urlCopy = url;
+  typeCopy = type;
+  purposeCopy = purpose;
+  nameCopy = name;
+  optionsCopy = options;
   v45.receiver = self;
   v45.super_class = DownloadInfo;
   v17 = [(DownloadInfo *)&v45 init];
@@ -236,8 +236,8 @@ LABEL_17:
     date = v18->_date;
     v18->_date = 0;
 
-    objc_storeStrong(&v18->_options, a7);
-    objc_storeStrong(&v18->_originalUrl, a3);
+    objc_storeStrong(&v18->_options, options);
+    objc_storeStrong(&v18->_originalUrl, url);
     v27 = objc_opt_new();
     callbacks = v18->_callbacks;
     v18->_callbacks = v27;
@@ -245,9 +245,9 @@ LABEL_17:
     cacheServerUrl = v18->_cacheServerUrl;
     v18->_cacheServerUrl = 0;
 
-    objc_storeStrong(&v18->_assetType, a4);
-    objc_storeStrong(&v18->_purpose, a5);
-    objc_storeStrong(&v18->_firstClientName, a6);
+    objc_storeStrong(&v18->_assetType, type);
+    objc_storeStrong(&v18->_purpose, purpose);
+    objc_storeStrong(&v18->_firstClientName, name);
     v18->_downloadSize = 0;
     v18->_backtracks = 0;
     v18->_totalBytesThisSlice = 0;
@@ -264,29 +264,29 @@ LABEL_17:
     relativePath = v18->_relativePath;
     v18->_relativePath = 0;
 
-    if (v13)
+    if (urlCopy)
     {
-      v32 = [v13 host];
-      v33 = [v32 copy];
+      host = [urlCopy host];
+      v33 = [host copy];
       v34 = v18->_baseUrlNoACS;
       v18->_baseUrlNoACS = v33;
 
-      v35 = [v13 path];
-      v36 = [v35 copy];
+      path = [urlCopy path];
+      v36 = [path copy];
       v37 = v18->_relativePath;
       v18->_relativePath = v36;
     }
 
     v18->_isPallas = 0;
-    if (v16)
+    if (optionsCopy)
     {
-      if ([v16 liveServerCatalogOnly])
+      if ([optionsCopy liveServerCatalogOnly])
       {
         v18->_isPallas = 1;
       }
 
       v18->_isDiscretionary = 1;
-      if (([v16 discretionary] & 1) == 0)
+      if (([optionsCopy discretionary] & 1) == 0)
       {
         v18->_isDiscretionary = 0;
       }
@@ -316,10 +316,10 @@ LABEL_17:
   return v18;
 }
 
-- (void)determineDownloadUrl:(id)a3 callback:(id)a4
+- (void)determineDownloadUrl:(id)url callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  urlCopy = url;
+  callbackCopy = callback;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -358,7 +358,7 @@ LABEL_17:
 
 LABEL_11:
 
-    v7[2](v7, self->_originalUrl, *(v18 + 24));
+    callbackCopy[2](callbackCopy, self->_originalUrl, *(v18 + 24));
     goto LABEL_12;
   }
 
@@ -371,7 +371,7 @@ LABEL_11:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@\n[DOWNLOAD_INFO] {determineDownloadUrl} Attempting to get cache server url", buf, 0xCu);
   }
 
-  v16 = v7;
+  v16 = callbackCopy;
   ACSLocateCachingServer();
 
 LABEL_12:
@@ -489,16 +489,16 @@ void __46__DownloadInfo_determineDownloadUrl_callback___block_invoke(uint64_t a1
   (*(v19 + 16))(v19, v20, *(*(*(a1 + 48) + 8) + 24));
 }
 
-- (BOOL)addNewRateDataPoint:(double)a3
+- (BOOL)addNewRateDataPoint:(double)point
 {
   previousTotalDownloaded = self->_previousTotalDownloaded;
   totalExpectedBytes = self->_totalExpectedBytes;
   rateHistory = self->_rateHistory;
-  if (a3 > 0.0 && self->_isStalled)
+  if (point > 0.0 && self->_isStalled)
   {
     [(NSMutableArray *)rateHistory removeAllObjects];
     v8 = self->_rateHistory;
-    v9 = [NSNumber numberWithDouble:a3];
+    v9 = [NSNumber numberWithDouble:point];
     [(NSMutableArray *)v8 addObject:v9];
 
     v10 = 0;
@@ -515,7 +515,7 @@ LABEL_4:
   }
 
   v12 = self->_rateHistory;
-  v13 = [NSNumber numberWithDouble:a3];
+  v13 = [NSNumber numberWithDouble:point];
   [(NSMutableArray *)v12 addObject:v13];
 
   self->_isStalled = 0;
@@ -558,15 +558,15 @@ LABEL_17:
   return self->_isStalled;
 }
 
-- (void)updateDownloadData:(int64_t)a3
+- (void)updateDownloadData:(int64_t)data
 {
-  self->_currentTotalWritten = a3;
+  self->_currentTotalWritten = data;
   previousTotalDownloaded = self->_previousTotalDownloaded;
-  v6 = previousTotalDownloaded - a3;
-  if (previousTotalDownloaded <= a3)
+  v6 = previousTotalDownloaded - data;
+  if (previousTotalDownloaded <= data)
   {
-    *&self->_transferredBytesEst = vaddq_s64(*&self->_transferredBytesEst, vdupq_n_s64(a3 - previousTotalDownloaded));
-    self->_previousTotalDownloaded = a3;
+    *&self->_transferredBytesEst = vaddq_s64(*&self->_transferredBytesEst, vdupq_n_s64(data - previousTotalDownloaded));
+    self->_previousTotalDownloaded = data;
     self->_changingConfig = 0;
   }
 
@@ -580,45 +580,45 @@ LABEL_17:
       {
         v8 = [(DownloadInfo *)self description];
         v9 = self->_previousTotalDownloaded;
-        v10 = [(DownloadInfo *)self taskDescriptor];
-        v11 = [(DownloadInfo *)self task];
+        taskDescriptor = [(DownloadInfo *)self taskDescriptor];
+        task = [(DownloadInfo *)self task];
         v13 = 138544386;
         v14 = v8;
         v15 = 2048;
-        v16 = a3;
+        dataCopy = data;
         v17 = 2048;
         v18 = v9;
         v19 = 2114;
-        v20 = v10;
+        v20 = taskDescriptor;
         v21 = 2114;
-        v22 = v11;
+        v22 = task;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "%{public}@\n[DOWNLOAD_INFO] {updateDownloadData} In progress and totalWritten is less than previous total (%lld < %lld), nsurl is backtracking significantly for %{public}@. task %{public}@", &v13, 0x34u);
       }
     }
 
-    if (self->_totalExpectedBytes / 5 <= a3)
+    if (self->_totalExpectedBytes / 5 <= data)
     {
-      v12 = 0;
+      dataCopy2 = 0;
     }
 
     else
     {
-      v12 = 0;
+      dataCopy2 = 0;
       if (self->_previousTotalDownloaded > self->_totalExpectedBytes / 4 && v6 > 0x10000)
       {
-        self->_transferredBytesEst += a3;
-        v12 = a3;
+        self->_transferredBytesEst += data;
+        dataCopy2 = data;
       }
     }
 
-    self->_totalBytesThisSlice = v12;
-    self->_previousTotalDownloaded = a3;
+    self->_totalBytesThisSlice = dataCopy2;
+    self->_previousTotalDownloaded = data;
   }
 }
 
-- (void)addNewDownloadInfo:(id)a3
+- (void)addNewDownloadInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     [(NSMutableArray *)self->_callbacks addObject:?];
   }

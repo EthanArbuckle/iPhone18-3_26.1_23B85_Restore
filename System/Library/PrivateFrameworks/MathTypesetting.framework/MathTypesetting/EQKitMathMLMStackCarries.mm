@@ -1,13 +1,13 @@
 @interface EQKitMathMLMStackCarries
 - (BOOL)isBaseFontNameUsed;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMStackCarries
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v26 = *MEMORY[0x277D85DE8];
   v24.receiver = self;
@@ -15,7 +15,7 @@
   v6 = [(EQKitMathMLMStackCarries *)&v24 init];
   if (v6)
   {
-    v7 = [a4 parseChildrenAsArrayFromXMLNode:a3];
+    v7 = [parser parseChildrenAsArrayFromXMLNode:node];
     v8 = [v7 count];
     if (v8)
     {

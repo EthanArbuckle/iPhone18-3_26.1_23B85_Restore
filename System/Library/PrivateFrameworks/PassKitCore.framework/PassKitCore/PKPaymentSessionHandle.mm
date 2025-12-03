@@ -1,16 +1,16 @@
 @interface PKPaymentSessionHandle
 - (BOOL)isFirstInQueue;
-- (id)_initWithQueue:(void *)a1;
-- (id)initWithInternalNFSessionHandle:(void *)a3 targetQueue:;
-- (void)invalidateSessionWithCompletion:(id)a3;
+- (id)_initWithQueue:(void *)queue;
+- (id)initWithInternalNFSessionHandle:(void *)handle targetQueue:;
+- (void)invalidateSessionWithCompletion:(id)completion;
 @end
 
 @implementation PKPaymentSessionHandle
 
-- (id)_initWithQueue:(void *)a1
+- (id)_initWithQueue:(void *)queue
 {
   v3 = a2;
-  v10.receiver = a1;
+  v10.receiver = queue;
   v10.super_class = PKPaymentSessionHandle;
   v4 = objc_msgSendSuper2(&v10, sel_init);
   if (v4)
@@ -33,13 +33,13 @@
   return v4;
 }
 
-- (id)initWithInternalNFSessionHandle:(void *)a3 targetQueue:
+- (id)initWithInternalNFSessionHandle:(void *)handle targetQueue:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1 && v6)
+  handleCopy = handle;
+  if (self && v6)
   {
-    v8 = [(PKPaymentSessionHandle *)a1 _initWithQueue:v7];
+    v8 = [(PKPaymentSessionHandle *)self _initWithQueue:handleCopy];
     v9 = v8;
     if (v8)
     {
@@ -51,16 +51,16 @@
       [v6 endSession];
     }
 
-    a1 = v9;
-    v10 = a1;
+    self = v9;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (BOOL)isFirstInQueue
@@ -79,11 +79,11 @@
   return STSSession & 1;
 }
 
-- (void)invalidateSessionWithCompletion:(id)a3
+- (void)invalidateSessionWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   NFSessionHandle = self->_NFSessionHandle;
   if (NFSessionHandle)
   {
@@ -91,7 +91,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2048;
       v18 = NFSessionHandle;
       _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKPaymentSessionHandle (%p): invalidating NFSession handle %p.", buf, 0x16u);
@@ -114,7 +114,7 @@ LABEL_8:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2048;
         v18 = STSSession;
         _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKPaymentSessionHandle (%p): invalidating STSSession %p.", buf, 0x16u);
@@ -142,9 +142,9 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4);
+      (*(completionCopy + 2))(completionCopy);
 LABEL_11:
     }
   }

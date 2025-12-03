@@ -9,43 +9,43 @@
 - (CGSize)_inputVideoSize;
 - (CGSize)_outputImageSize;
 - (CGSize)_outputVideoSize;
-- (CGSize)_outputVideoSizeForScale:(double)a3;
+- (CGSize)_outputVideoSizeForScale:(double)scale;
 - (CGSize)outputImageSize;
 - (CGSize)outputVideoSize;
 - (CIImage)inputImage;
-- (PFLivePhotoEditSession)initWithPhotoURL:(id)a3 videoURL:(id)a4 photoTime:(id *)a5 photoOrientation:(unsigned int)a6;
+- (PFLivePhotoEditSession)initWithPhotoURL:(id)l videoURL:(id)rL photoTime:(id *)time photoOrientation:(unsigned int)orientation;
 - (double)_inputVideoScale;
-- (double)_targetScaleForTargetSize:(CGSize)a3;
+- (double)_targetScaleForTargetSize:(CGSize)size;
 - (id)_inputImage;
 - (id)_inputImageProperties;
 - (id)_inputVideoTrack;
 - (id)_loadInputImageProperties;
-- (id)_loadInputImageWithSubsampleFactor:(int64_t)a3;
+- (id)_loadInputImageWithSubsampleFactor:(int64_t)factor;
 - (id)_outputImage;
 - (id)_outputImageProperties;
 - (id)_outputVideoMetadata;
-- (id)_processImage:(id)a3 scale:(double)a4 error:(id *)a5;
-- (id)_scaledInputImageForTargetScale:(double)a3;
-- (id)_temporaryURLOfType:(id)a3;
-- (id)_videoCompositionForTargetSize:(CGSize)a3;
+- (id)_processImage:(id)image scale:(double)scale error:(id *)error;
+- (id)_scaledInputImageForTargetScale:(double)scale;
+- (id)_temporaryURLOfType:(id)type;
+- (id)_videoCompositionForTargetSize:(CGSize)size;
 - (id)frameProcessor;
 - (id)imageProperties;
-- (id)inputImageForRenderScale:(double)a3;
+- (id)inputImageForRenderScale:(double)scale;
 - (id)outputImage;
 - (unsigned)_inputOrientation;
 - (unsigned)_loadInputImageOrientation;
 - (unsigned)orientation;
 - (void)_cancelCurrentExportIfNeeded;
-- (void)_exportToDestination:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)_prepareForPlaybackWithTargetSize:(CGSize)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)_renderImageToURL:(id)a3 fileType:(id)a4 targetSize:(CGSize)a5 completionHandler:(id)a6;
-- (void)_renderImageWithTargetSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)_renderVideoToURL:(id)a3 fileType:(id)a4 targetSize:(CGSize)a5 volume:(float)a6 completionHandler:(id)a7;
+- (void)_exportToDestination:(id)destination options:(id)options completionHandler:(id)handler;
+- (void)_prepareForPlaybackWithTargetSize:(CGSize)size options:(id)options completionHandler:(id)handler;
+- (void)_renderImageToURL:(id)l fileType:(id)type targetSize:(CGSize)size completionHandler:(id)handler;
+- (void)_renderImageWithTargetSize:(CGSize)size completionHandler:(id)handler;
+- (void)_renderVideoToURL:(id)l fileType:(id)type targetSize:(CGSize)size volume:(float)volume completionHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
-- (void)exportToDestination:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)prepareForPlaybackWithTargetSize:(CGSize)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)setFrameProcessor:(id)a3;
+- (void)exportToDestination:(id)destination options:(id)options completionHandler:(id)handler;
+- (void)prepareForPlaybackWithTargetSize:(CGSize)size options:(id)options completionHandler:(id)handler;
+- (void)setFrameProcessor:(id)processor;
 @end
 
 @implementation PFLivePhotoEditSession
@@ -61,17 +61,17 @@
   dispatch_async(stateQueue, block);
 }
 
-- (void)_exportToDestination:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)_exportToDestination:(id)destination options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = dispatch_group_create();
   self->_isExporting = 1;
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   uniqueIdentifier = self->_uniqueIdentifier;
-  self->_uniqueIdentifier = v13;
+  self->_uniqueIdentifier = uUIDString;
 
   dispatch_group_enter(v11);
   v46[0] = 0;
@@ -84,8 +84,8 @@
   v44[3] = __Block_byref_object_copy__80;
   v44[4] = __Block_byref_object_dispose__81;
   v45 = 0;
-  v15 = [v8 photoURL];
-  v16 = [*MEMORY[0x1E6982E58] identifier];
+  photoURL = [destinationCopy photoURL];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __73__PFLivePhotoEditSession__exportToDestination_options_completionHandler___block_invoke;
@@ -96,7 +96,7 @@
   v41 = v17;
   v18 = *MEMORY[0x1E695F060];
   v19 = *(MEMORY[0x1E695F060] + 8);
-  [(PFLivePhotoEditSession *)self _renderImageToURL:v15 fileType:v16 targetSize:v40 completionHandler:*MEMORY[0x1E695F060], v19];
+  [(PFLivePhotoEditSession *)self _renderImageToURL:photoURL fileType:identifier targetSize:v40 completionHandler:*MEMORY[0x1E695F060], v19];
 
   dispatch_group_enter(v17);
   v38[0] = 0;
@@ -109,7 +109,7 @@
   v36[3] = __Block_byref_object_copy__80;
   v36[4] = __Block_byref_object_dispose__81;
   v37 = 0;
-  v20 = [v8 videoURL];
+  videoURL = [destinationCopy videoURL];
   v21 = *MEMORY[0x1E69874C0];
   audioVolume = self->_audioVolume;
   v32[0] = MEMORY[0x1E69E9820];
@@ -121,7 +121,7 @@
   v23 = v17;
   v33 = v23;
   *&v24 = audioVolume;
-  [(PFLivePhotoEditSession *)self _renderVideoToURL:v20 fileType:v21 targetSize:v32 volume:v18 completionHandler:v19, v24];
+  [(PFLivePhotoEditSession *)self _renderVideoToURL:videoURL fileType:v21 targetSize:v32 volume:v18 completionHandler:v19, v24];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -132,8 +132,8 @@
   v30 = v44;
   v31 = v36;
   block[4] = self;
-  v27 = v10;
-  v25 = v10;
+  v27 = handlerCopy;
+  v25 = handlerCopy;
   dispatch_group_notify(v23, MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(v36, 8);
@@ -212,23 +212,23 @@ void __73__PFLivePhotoEditSession__exportToDestination_options_completionHandler
   *(v1 + 112) = 0;
 }
 
-- (void)exportToDestination:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)exportToDestination:(id)destination options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  optionsCopy = options;
+  handlerCopy = handler;
   stateQueue = self->_stateQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__PFLivePhotoEditSession_exportToDestination_options_completionHandler___block_invoke;
   v15[3] = &unk_1E7B64F48;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = destinationCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = destinationCopy;
   dispatch_async(stateQueue, v15);
 }
 
@@ -243,17 +243,17 @@ uint64_t __72__PFLivePhotoEditSession_exportToDestination_options_completionHand
   return [v2 _exportToDestination:v3 options:v4 completionHandler:v5];
 }
 
-- (id)_temporaryURLOfType:(id)a3
+- (id)_temporaryURLOfType:(id)type
 {
-  v3 = [MEMORY[0x1E6982C40] typeWithIdentifier:a3];
-  v4 = [v3 preferredFilenameExtension];
+  v3 = [MEMORY[0x1E6982C40] typeWithIdentifier:type];
+  preferredFilenameExtension = [v3 preferredFilenameExtension];
 
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v6 stringByAppendingPathExtension:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [uUIDString stringByAppendingPathExtension:preferredFilenameExtension];
 
-  v8 = [objc_opt_class() temporaryDirectory];
-  v9 = [v8 stringByAppendingPathComponent:v7];
+  temporaryDirectory = [objc_opt_class() temporaryDirectory];
+  v9 = [temporaryDirectory stringByAppendingPathComponent:v7];
   v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
 
   return v10;
@@ -261,8 +261,8 @@ uint64_t __72__PFLivePhotoEditSession_exportToDestination_options_completionHand
 
 - (id)_outputVideoMetadata
 {
-  v3 = [(AVAsset *)self->_videoAsset metadata];
-  v4 = [v3 mutableCopy];
+  metadata = [(AVAsset *)self->_videoAsset metadata];
+  v4 = [metadata mutableCopy];
 
   v5 = [v4 indexOfObjectPassingTest:&__block_literal_global_4014];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -270,10 +270,10 @@ uint64_t __72__PFLivePhotoEditSession_exportToDestination_options_completionHand
     [v4 removeObjectAtIndex:v5];
   }
 
-  v6 = [MEMORY[0x1E6988050] metadataItem];
-  [v6 setIdentifier:*MEMORY[0x1E6987798]];
-  [v6 setValue:self->_uniqueIdentifier];
-  [v4 addObject:v6];
+  metadataItem = [MEMORY[0x1E6988050] metadataItem];
+  [metadataItem setIdentifier:*MEMORY[0x1E6987798]];
+  [metadataItem setValue:self->_uniqueIdentifier];
+  [v4 addObject:metadataItem];
 
   return v4;
 }
@@ -286,34 +286,34 @@ uint64_t __46__PFLivePhotoEditSession__outputVideoMetadata__block_invoke(uint64_
   return v3;
 }
 
-- (void)_renderVideoToURL:(id)a3 fileType:(id)a4 targetSize:(CGSize)a5 volume:(float)a6 completionHandler:(id)a7
+- (void)_renderVideoToURL:(id)l fileType:(id)type targetSize:(CGSize)size volume:(float)volume completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v66 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  lCopy = l;
+  typeCopy = type;
+  handlerCopy = handler;
   v16 = self->_videoAsset;
-  if (a6 > 0.0)
+  if (volume > 0.0)
   {
 LABEL_14:
     v27 = objc_alloc(MEMORY[0x1E6987E60]);
     v28 = [v27 initWithAsset:v16 presetName:*MEMORY[0x1E69872E0]];
-    [v28 setOutputURL:v13];
-    [v28 setOutputFileType:v14];
-    v21 = [(PFLivePhotoEditSession *)self _videoCompositionForTargetSize:width, height];
-    [v28 setVideoComposition:v21];
-    v29 = [(PFLivePhotoEditSession *)self _outputVideoMetadata];
-    [v28 setMetadata:v29];
+    [v28 setOutputURL:lCopy];
+    [v28 setOutputFileType:typeCopy];
+    height = [(PFLivePhotoEditSession *)self _videoCompositionForTargetSize:width, height];
+    [v28 setVideoComposition:height];
+    _outputVideoMetadata = [(PFLivePhotoEditSession *)self _outputVideoMetadata];
+    [v28 setMetadata:_outputVideoMetadata];
 
-    if (a6 > 0.0 && a6 < 1.0)
+    if (volume > 0.0 && volume < 1.0)
     {
-      v44 = v13;
-      v46 = v21;
-      v43 = v15;
-      v41 = [MEMORY[0x1E6988038] audioMix];
-      v30 = [MEMORY[0x1E695DF70] array];
+      v44 = lCopy;
+      v46 = height;
+      v43 = handlerCopy;
+      audioMix = [MEMORY[0x1E6988038] audioMix];
+      array = [MEMORY[0x1E695DF70] array];
       v52 = 0u;
       v53 = 0u;
       v54 = 0u;
@@ -341,7 +341,7 @@ LABEL_14:
             *&v65.start.value = v48;
             v65.start.epoch = v35;
             [v37 setVolume:&v65 atTime:v38];
-            [v30 addObject:v37];
+            [array addObject:v37];
           }
 
           v33 = [v31 countByEnumeratingWithState:&v52 objects:v63 count:16];
@@ -350,13 +350,13 @@ LABEL_14:
         while (v33);
       }
 
-      [v41 setInputParameters:v30];
-      [v28 setAudioMix:v41];
+      [audioMix setInputParameters:array];
+      [v28 setAudioMix:audioMix];
 
-      v13 = v44;
+      lCopy = v44;
       v16 = v42;
-      v15 = v43;
-      v21 = v46;
+      handlerCopy = v43;
+      height = v46;
     }
 
     v49[0] = MEMORY[0x1E69E9820];
@@ -365,16 +365,16 @@ LABEL_14:
     v49[3] = &unk_1E7B668D0;
     v39 = v28;
     v50 = v39;
-    v51 = v15;
+    v51 = handlerCopy;
     [(AVAssetExportSession *)v39 exportAsynchronouslyWithCompletionHandler:v49];
     exportSession = self->_exportSession;
     self->_exportSession = v39;
-    v17 = v39;
+    composition = v39;
 
     goto LABEL_28;
   }
 
-  v17 = [MEMORY[0x1E6988048] composition];
+  composition = [MEMORY[0x1E6988048] composition];
   if (v16)
   {
     [(AVAsset *)v16 duration];
@@ -392,9 +392,9 @@ LABEL_14:
   v60 = 0;
   *&duration.value = v47;
   duration.epoch = epoch;
-  v19 = [PFMediaUtilities insertTimeRange:&v65 ofAsset:v16 atTime:&duration intoMutableComposition:v17 error:&v60];
+  v19 = [PFMediaUtilities insertTimeRange:&v65 ofAsset:v16 atTime:&duration intoMutableComposition:composition error:&v60];
   v20 = v60;
-  v21 = v20;
+  height = v20;
   if (v19)
   {
     v45 = v20;
@@ -402,7 +402,7 @@ LABEL_14:
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v22 = [(AVAssetExportSession *)v17 tracksWithMediaType:*MEMORY[0x1E69875A0]];
+    v22 = [(AVAssetExportSession *)composition tracksWithMediaType:*MEMORY[0x1E69875A0]];
     v23 = [v22 countByEnumeratingWithState:&v56 objects:v64 count:16];
     if (v23)
     {
@@ -417,7 +417,7 @@ LABEL_14:
             objc_enumerationMutation(v22);
           }
 
-          [(AVAssetExportSession *)v17 removeTrack:*(*(&v56 + 1) + 8 * j)];
+          [(AVAssetExportSession *)composition removeTrack:*(*(&v56 + 1) + 8 * j)];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v56 objects:v64 count:16];
@@ -426,7 +426,7 @@ LABEL_14:
       while (v24);
     }
 
-    v16 = v17;
+    v16 = composition;
     goto LABEL_14;
   }
 
@@ -435,11 +435,11 @@ LABEL_14:
     LODWORD(v65.start.value) = 138412546;
     *(&v65.start.value + 4) = v16;
     LOWORD(v65.start.flags) = 2112;
-    *(&v65.start.flags + 2) = v21;
+    *(&v65.start.flags + 2) = height;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failed to insert tracks of asset: %@, error: %@", &v65, 0x16u);
   }
 
-  (*(v15 + 2))(v15, 0, v21);
+  (*(handlerCopy + 2))(handlerCopy, 0, height);
 LABEL_28:
 }
 
@@ -477,8 +477,8 @@ LABEL_8:
 
 - (id)_outputImageProperties
 {
-  v3 = [(PFLivePhotoEditSession *)self _inputImageProperties];
-  v4 = [v3 mutableCopy];
+  _inputImageProperties = [(PFLivePhotoEditSession *)self _inputImageProperties];
+  v4 = [_inputImageProperties mutableCopy];
 
   v5 = *MEMORY[0x1E696DE30];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
@@ -497,20 +497,20 @@ LABEL_8:
   return v4;
 }
 
-- (double)_targetScaleForTargetSize:(CGSize)a3
+- (double)_targetScaleForTargetSize:(CGSize)size
 {
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
     return 1.0;
   }
 
-  height = a3.height;
-  if (a3.height <= 0.0)
+  height = size.height;
+  if (size.height <= 0.0)
   {
     return 1.0;
   }
 
-  width = a3.width;
+  width = size.width;
   [(PFLivePhotoEditSession *)self _outputImageSize];
   if (v5 <= 0.0 || v6 <= 0.0)
   {
@@ -523,11 +523,11 @@ LABEL_8:
   }
 }
 
-- (void)_renderImageWithTargetSize:(CGSize)a3 completionHandler:(id)a4
+- (void)_renderImageWithTargetSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   [(PFLivePhotoEditSession *)self _targetScaleForTargetSize:width, height];
   v9 = v8;
   v10 = [(PFLivePhotoEditSession *)self _scaledInputImageForTargetScale:?];
@@ -544,14 +544,14 @@ LABEL_8:
     block[3] = &unk_1E7B661F0;
     block[4] = self;
     v16 = v11;
-    v17 = v7;
+    v17 = handlerCopy;
     dispatch_async(renderQueue, block);
   }
 
   else
   {
     NSLog(&cfstr_FailedToProces_0.isa, v10, v12);
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
@@ -576,26 +576,26 @@ void __71__PFLivePhotoEditSession__renderImageWithTargetSize_completionHandler__
   CGImageRelease(v5);
 }
 
-- (void)_renderImageToURL:(id)a3 fileType:(id)a4 targetSize:(CGSize)a5 completionHandler:(id)a6
+- (void)_renderImageToURL:(id)l fileType:(id)type targetSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [(PFLivePhotoEditSession *)self _outputImageProperties];
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  typeCopy = type;
+  handlerCopy = handler;
+  _outputImageProperties = [(PFLivePhotoEditSession *)self _outputImageProperties];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __82__PFLivePhotoEditSession__renderImageToURL_fileType_targetSize_completionHandler___block_invoke;
   v19[3] = &unk_1E7B64F00;
-  v20 = v11;
-  v21 = v12;
-  v22 = v14;
-  v23 = v13;
-  v15 = v13;
-  v16 = v14;
-  v17 = v12;
-  v18 = v11;
+  v20 = lCopy;
+  v21 = typeCopy;
+  v22 = _outputImageProperties;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = _outputImageProperties;
+  v17 = typeCopy;
+  v18 = lCopy;
   [(PFLivePhotoEditSession *)self _renderImageWithTargetSize:v19 completionHandler:width, height];
 }
 
@@ -636,31 +636,31 @@ void __82__PFLivePhotoEditSession__renderImageToURL_fileType_targetSize_completi
   }
 }
 
-- (void)_prepareForPlaybackWithTargetSize:(CGSize)a3 options:(id)a4 completionHandler:(id)a5
+- (void)_prepareForPlaybackWithTargetSize:(CGSize)size options:(id)options completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = dispatch_group_create();
-  v12 = [v9 objectForKeyedSubscript:@"LivePhotoShouldRenderAtPlaybackTime"];
-  v13 = [v12 BOOLValue];
+  v12 = [optionsCopy objectForKeyedSubscript:@"LivePhotoShouldRenderAtPlaybackTime"];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
-    v14 = [(PFLivePhotoEditSession *)self _canRenderAtPlaybackTime];
+    _canRenderAtPlaybackTime = [(PFLivePhotoEditSession *)self _canRenderAtPlaybackTime];
   }
 
   else
   {
-    v14 = 0;
+    _canRenderAtPlaybackTime = 0;
   }
 
   self->_isExporting = 1;
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v16 = [v15 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   uniqueIdentifier = self->_uniqueIdentifier;
-  self->_uniqueIdentifier = v16;
+  self->_uniqueIdentifier = uUIDString;
 
   v56[0] = 0;
   v56[1] = v56;
@@ -691,10 +691,10 @@ void __82__PFLivePhotoEditSession__renderImageToURL_fileType_targetSize_completi
   v19 = v11;
   v44 = v19;
   [(PFLivePhotoEditSession *)self _renderImageWithTargetSize:v43 completionHandler:width, height];
-  if (v14)
+  if (_canRenderAtPlaybackTime)
   {
     objc_storeStrong(v50 + 5, self->_videoAsset);
-    v20 = [(PFLivePhotoEditSession *)self _videoCompositionForTargetSize:width, height];
+    height = [(PFLivePhotoEditSession *)self _videoCompositionForTargetSize:width, height];
   }
 
   else
@@ -711,11 +711,11 @@ void __82__PFLivePhotoEditSession__renderImageToURL_fileType_targetSize_completi
     v38 = v23;
     v42 = v56;
     v39 = v19;
-    v40 = self;
+    selfCopy = self;
     LODWORD(v24) = 1.0;
     [(PFLivePhotoEditSession *)self _renderVideoToURL:v23 fileType:v21 targetSize:v37 volume:width completionHandler:height, v24];
 
-    v20 = 0;
+    height = 0;
   }
 
   v27[0] = MEMORY[0x1E69E9820];
@@ -727,12 +727,12 @@ void __82__PFLivePhotoEditSession__renderImageToURL_fileType_targetSize_completi
   v34 = v47;
   v35 = epoch;
   v36 = audioVolume;
-  v28 = v20;
-  v29 = self;
-  v30 = v10;
+  v28 = height;
+  selfCopy2 = self;
+  v30 = handlerCopy;
   v31 = v56;
-  v25 = v10;
-  v26 = v20;
+  v25 = handlerCopy;
+  v26 = height;
   dispatch_group_notify(v19, MEMORY[0x1E69E96A0], v27);
 
   _Block_object_dispose(&v49, 8);
@@ -968,10 +968,10 @@ void __86__PFLivePhotoEditSession__prepareForPlaybackWithTargetSize_options_comp
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v3 = [(AVAssetExportSession *)self->_exportSession outputURL];
-      v4 = [v3 path];
+      outputURL = [(AVAssetExportSession *)self->_exportSession outputURL];
+      path = [outputURL path];
       v6 = 138412290;
-      v7 = v4;
+      v7 = path;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "aborting export session at path %@", &v6, 0xCu);
     }
 
@@ -984,12 +984,12 @@ void __86__PFLivePhotoEditSession__prepareForPlaybackWithTargetSize_options_comp
   }
 }
 
-- (void)prepareForPlaybackWithTargetSize:(CGSize)a3 options:(id)a4 completionHandler:(id)a5
+- (void)prepareForPlaybackWithTargetSize:(CGSize)size options:(id)options completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  handlerCopy = handler;
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -998,10 +998,10 @@ void __86__PFLivePhotoEditSession__prepareForPlaybackWithTargetSize_options_comp
   v17 = width;
   v18 = height;
   block[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = optionsCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
   dispatch_async(stateQueue, block);
 }
 
@@ -1017,21 +1017,21 @@ uint64_t __85__PFLivePhotoEditSession_prepareForPlaybackWithTargetSize_options_c
   return [v2 _prepareForPlaybackWithTargetSize:v3 options:v4 completionHandler:{v5, v6}];
 }
 
-- (id)_processImage:(id)a3 scale:(double)a4 error:(id *)a5
+- (id)_processImage:(id)image scale:(double)scale error:(id *)error
 {
-  v8 = a3;
+  imageCopy = image;
   v9 = objc_alloc_init(PFLivePhotoFrameProcessingRequest);
-  v10 = [v8 imageByApplyingOrientation:{-[PFLivePhotoEditSession _inputOrientation](self, "_inputOrientation")}];
+  v10 = [imageCopy imageByApplyingOrientation:{-[PFLivePhotoEditSession _inputOrientation](self, "_inputOrientation")}];
 
   [(PFLivePhotoFrameProcessingRequest *)v9 setImage:v10];
   photoTime = self->_photoTime;
   [(PFLivePhotoFrameProcessingRequest *)v9 setTime:&photoTime];
-  [(PFLivePhotoFrameProcessingRequest *)v9 setRenderScale:a4];
+  [(PFLivePhotoFrameProcessingRequest *)v9 setRenderScale:scale];
   [(PFLivePhotoFrameProcessingRequest *)v9 setType:0];
   frameProcessor = self->_frameProcessor;
   if (frameProcessor)
   {
-    frameProcessor[2](frameProcessor, v9, a5);
+    frameProcessor[2](frameProcessor, v9, error);
   }
 
   else
@@ -1043,15 +1043,15 @@ uint64_t __85__PFLivePhotoEditSession_prepareForPlaybackWithTargetSize_options_c
   return v12;
 }
 
-- (CGSize)_outputVideoSizeForScale:(double)a3
+- (CGSize)_outputVideoSizeForScale:(double)scale
 {
   [(PFLivePhotoEditSession *)self _inputVideoScale];
   v6 = v5;
   [(PFLivePhotoEditSession *)self _outputVideoSize];
-  if (v6 > a3)
+  if (v6 > scale)
   {
-    v7 = round(a3 / v6 * v7);
-    v8 = round(a3 / v6 * v8);
+    v7 = round(scale / v6 * v7);
+    v8 = round(scale / v6 * v8);
   }
 
   result.height = v8;
@@ -1059,10 +1059,10 @@ uint64_t __85__PFLivePhotoEditSession_prepareForPlaybackWithTargetSize_options_c
   return result;
 }
 
-- (id)_videoCompositionForTargetSize:(CGSize)a3
+- (id)_videoCompositionForTargetSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PFLivePhotoEditSession *)self _inputVideoScale];
   v7 = v6;
   [(PFLivePhotoEditSession *)self _targetScaleForTargetSize:width, height];
@@ -1077,7 +1077,7 @@ uint64_t __85__PFLivePhotoEditSession_prepareForPlaybackWithTargetSize_options_c
   v25[3] = &unk_1E7B64DE8;
   v29 = v9;
   v30 = v7;
-  v27 = self;
+  selfCopy = self;
   v28 = v11;
   v26 = v10;
   v14 = v11;
@@ -1089,11 +1089,11 @@ uint64_t __85__PFLivePhotoEditSession_prepareForPlaybackWithTargetSize_options_c
     [v16 setRenderSize:?];
   }
 
-  v19 = [(PFLivePhotoEditSession *)self _inputVideoTrack];
-  [v16 setSourceTrackIDForFrameTiming:{objc_msgSend(v19, "trackID")}];
-  if (v19)
+  _inputVideoTrack = [(PFLivePhotoEditSession *)self _inputVideoTrack];
+  [v16 setSourceTrackIDForFrameTiming:{objc_msgSend(_inputVideoTrack, "trackID")}];
+  if (_inputVideoTrack)
   {
-    [v19 minFrameDuration];
+    [_inputVideoTrack minFrameDuration];
   }
 
   else
@@ -1247,11 +1247,11 @@ uint64_t __41__PFLivePhotoEditSession_outputVideoSize__block_invoke(uint64_t a1)
 
 - (CGSize)_outputImageSize
 {
-  v3 = [(PFLivePhotoEditSession *)self _outputImage];
-  v4 = v3;
-  if (v3)
+  _outputImage = [(PFLivePhotoEditSession *)self _outputImage];
+  v4 = _outputImage;
+  if (_outputImage)
   {
-    [v3 extent];
+    [_outputImage extent];
     v6 = v5;
     v8 = v7;
   }
@@ -1310,11 +1310,11 @@ uint64_t __41__PFLivePhotoEditSession_outputImageSize__block_invoke(uint64_t a1)
   outputImage = self->_outputImage;
   if (!outputImage)
   {
-    v4 = [(PFLivePhotoEditSession *)self _inputImage];
-    if (v4)
+    _inputImage = [(PFLivePhotoEditSession *)self _inputImage];
+    if (_inputImage)
     {
       v9 = 0;
-      v5 = [(PFLivePhotoEditSession *)self _processImage:v4 scale:&v9 error:1.0];
+      v5 = [(PFLivePhotoEditSession *)self _processImage:_inputImage scale:&v9 error:1.0];
       v6 = v9;
       v7 = self->_outputImage;
       self->_outputImage = v5;
@@ -1409,12 +1409,12 @@ uint64_t __37__PFLivePhotoEditSession_outputImage__block_invoke(uint64_t a1)
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v4 = [(PFLivePhotoEditSession *)self _inputVideoTrack];
-  if (v4)
+  _inputVideoTrack = [(PFLivePhotoEditSession *)self _inputVideoTrack];
+  if (_inputVideoTrack)
   {
-    v6 = v4;
-    [v4 preferredTransform];
-    v4 = v6;
+    v6 = _inputVideoTrack;
+    [_inputVideoTrack preferredTransform];
+    _inputVideoTrack = v6;
   }
 
   else
@@ -1429,8 +1429,8 @@ uint64_t __37__PFLivePhotoEditSession_outputImage__block_invoke(uint64_t a1)
 
 - (CGSize)_inputVideoSize
 {
-  v2 = [(PFLivePhotoEditSession *)self _inputVideoTrack];
-  [v2 dimensions];
+  _inputVideoTrack = [(PFLivePhotoEditSession *)self _inputVideoTrack];
+  [_inputVideoTrack dimensions];
   v4 = v3;
   v6 = v5;
 
@@ -1444,15 +1444,15 @@ uint64_t __37__PFLivePhotoEditSession_outputImage__block_invoke(uint64_t a1)
 - (id)_inputVideoTrack
 {
   v2 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:self->_videoAsset];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (CGSize)_inputImageSize
 {
-  v2 = [(PFLivePhotoEditSession *)self _inputImage];
-  [v2 extent];
+  _inputImage = [(PFLivePhotoEditSession *)self _inputImage];
+  [_inputImage extent];
   v4 = v3;
   v6 = v5;
 
@@ -1463,7 +1463,7 @@ uint64_t __37__PFLivePhotoEditSession_outputImage__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)inputImageForRenderScale:(double)a3
+- (id)inputImageForRenderScale:(double)scale
 {
   v7 = 0;
   v8 = &v7;
@@ -1478,7 +1478,7 @@ uint64_t __37__PFLivePhotoEditSession_outputImage__block_invoke(uint64_t a1)
   block[3] = &unk_1E7B64D98;
   block[4] = self;
   block[5] = &v7;
-  *&block[6] = a3;
+  *&block[6] = scale;
   dispatch_sync(stateQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1493,12 +1493,12 @@ uint64_t __51__PFLivePhotoEditSession_inputImageForRenderScale___block_invoke(ui
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_scaledInputImageForTargetScale:(double)a3
+- (id)_scaledInputImageForTargetScale:(double)scale
 {
   v5 = 1;
-  if (a3 < 1.0)
+  if (scale < 1.0)
   {
-    v6 = vcvtmd_s64_f64(log2(1.0 / a3));
+    v6 = vcvtmd_s64_f64(log2(1.0 / scale));
     if (v6 >= 3)
     {
       LOBYTE(v6) = 3;
@@ -1527,18 +1527,18 @@ uint64_t __51__PFLivePhotoEditSession_inputImageForRenderScale___block_invoke(ui
     subsampledInputImage = self->_subsampledInputImage;
   }
 
-  CGAffineTransformMakeScale(&v12, a3 / (1.0 / v5), a3 / (1.0 / v5));
+  CGAffineTransformMakeScale(&v12, scale / (1.0 / v5), scale / (1.0 / v5));
   v10 = [(CIImage *)subsampledInputImage imageByApplyingTransform:&v12];
 
   return v10;
 }
 
-- (id)_loadInputImageWithSubsampleFactor:(int64_t)a3
+- (id)_loadInputImageWithSubsampleFactor:(int64_t)factor
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a3 >= 2)
+  if (factor >= 2)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:factor];
     [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696E0F8]];
   }
 
@@ -1563,9 +1563,9 @@ uint64_t __51__PFLivePhotoEditSession_inputImageForRenderScale___block_invoke(ui
   inputImage = self->_inputImage;
   if (!inputImage)
   {
-    v4 = [(PFLivePhotoEditSession *)self _loadInputImage];
+    _loadInputImage = [(PFLivePhotoEditSession *)self _loadInputImage];
     v5 = self->_inputImage;
-    self->_inputImage = v4;
+    self->_inputImage = _loadInputImage;
 
     inputImage = self->_inputImage;
   }
@@ -1614,9 +1614,9 @@ uint64_t __36__PFLivePhotoEditSession_inputImage__block_invoke(uint64_t a1)
   inputImageProperties = self->_inputImageProperties;
   if (!inputImageProperties)
   {
-    v4 = [(PFLivePhotoEditSession *)self _loadInputImageProperties];
+    _loadInputImageProperties = [(PFLivePhotoEditSession *)self _loadInputImageProperties];
     v5 = self->_inputImageProperties;
-    self->_inputImageProperties = v4;
+    self->_inputImageProperties = _loadInputImageProperties;
 
     inputImageProperties = self->_inputImageProperties;
   }
@@ -1653,17 +1653,17 @@ uint64_t __41__PFLivePhotoEditSession_imageProperties__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFrameProcessor:(id)a3
+- (void)setFrameProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PFLivePhotoEditSession_setFrameProcessor___block_invoke;
   v7[3] = &unk_1E7B668D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = processorCopy;
+  v6 = processorCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -1714,20 +1714,20 @@ uint64_t __40__PFLivePhotoEditSession_frameProcessor__block_invoke(uint64_t a1)
 
 - (unsigned)_loadInputImageOrientation
 {
-  v2 = [(PFLivePhotoEditSession *)self _inputImageProperties];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
+  _inputImageProperties = [(PFLivePhotoEditSession *)self _inputImageProperties];
+  v3 = [_inputImageProperties objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  return v5;
+  return intValue;
 }
 
 - (unsigned)_inputOrientation
@@ -1784,16 +1784,16 @@ uint64_t __37__PFLivePhotoEditSession_orientation__block_invoke(uint64_t a1)
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)_inputVideoDuration
 {
-  v3 = self;
+  selfCopy = self;
   if ((self[1].var3 & 0x100000000) == 0)
   {
     self = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)self _loadInputVideoDuration];
-    *&v3[1].var1 = v5;
-    v3[2].var0 = v6;
+    *&selfCopy[1].var1 = v5;
+    selfCopy[2].var0 = v6;
   }
 
-  *&retstr->var0 = *&v3[1].var1;
-  retstr->var3 = v3[2].var0;
+  *&retstr->var0 = *&selfCopy[1].var1;
+  retstr->var3 = selfCopy[2].var0;
   return self;
 }
 
@@ -1842,25 +1842,25 @@ double __34__PFLivePhotoEditSession_duration__block_invoke(uint64_t a1)
   [(PFLivePhotoEditSession *)&v4 dealloc];
 }
 
-- (PFLivePhotoEditSession)initWithPhotoURL:(id)a3 videoURL:(id)a4 photoTime:(id *)a5 photoOrientation:(unsigned int)a6
+- (PFLivePhotoEditSession)initWithPhotoURL:(id)l videoURL:(id)rL photoTime:(id *)time photoOrientation:(unsigned int)orientation
 {
   v25.receiver = self;
   v25.super_class = PFLivePhotoEditSession;
-  v9 = a4;
-  v10 = a3;
+  rLCopy = rL;
+  lCopy = l;
   v11 = [(PFLivePhotoEditSession *)&v25 init];
-  v12 = CGImageSourceCreateWithURL(v10, 0);
+  v12 = CGImageSourceCreateWithURL(lCopy, 0);
 
   *(v11 + 10) = v12;
-  v13 = [MEMORY[0x1E6987E28] assetWithURL:{v9, v25.receiver, v25.super_class}];
+  v13 = [MEMORY[0x1E6987E28] assetWithURL:{rLCopy, v25.receiver, v25.super_class}];
 
   v14 = *(v11 + 3);
   *(v11 + 3) = v13;
 
-  v15 = *&a5->var0;
-  *(v11 + 9) = a5->var3;
+  v15 = *&time->var0;
+  *(v11 + 9) = time->var3;
   *(v11 + 56) = v15;
-  *(v11 + 22) = a6;
+  *(v11 + 22) = orientation;
   v16 = dispatch_queue_create("PFLivePhotoEditSession.state", 0);
   v17 = *(v11 + 1);
   *(v11 + 1) = v16;
@@ -1956,7 +1956,7 @@ double __34__PFLivePhotoEditSession_duration__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__PFLivePhotoEditSession_temporaryDirectory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (temporaryDirectory_onceToken != -1)
   {
     dispatch_once(&temporaryDirectory_onceToken, block);

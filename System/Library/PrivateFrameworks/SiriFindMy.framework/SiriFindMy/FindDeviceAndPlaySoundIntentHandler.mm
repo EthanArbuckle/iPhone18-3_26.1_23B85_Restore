@@ -1,10 +1,10 @@
 @interface FindDeviceAndPlaySoundIntentHandler
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation FindDeviceAndPlaySoundIntentHandler
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
   sub_266D111E4(v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);

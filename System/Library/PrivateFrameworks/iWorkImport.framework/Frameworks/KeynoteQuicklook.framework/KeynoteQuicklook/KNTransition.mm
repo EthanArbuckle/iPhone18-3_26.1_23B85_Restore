@@ -1,8 +1,8 @@
 @interface KNTransition
-+ (id)attributeKeyForBindingKeyPath:(id)a3;
-+ (id)bindingKeyPathForAttributeKey:(id)a3;
++ (id)attributeKeyForBindingKeyPath:(id)path;
++ (id)bindingKeyPathForAttributeKey:(id)key;
 + (id)bindingMap;
-+ (unint64_t)directionTypeForEffect:(id)a3;
++ (unint64_t)directionTypeForEffect:(id)effect;
 - (BOOL)customBounce;
 - (BOOL)customMagicMoveFadeUnmatchedObjects;
 - (BOOL)customMotionBlur;
@@ -11,7 +11,7 @@
 - (BOOL)isAutomaticTransition;
 - (BOOL)isMagicMove;
 - (BOOL)isMagicMoveBased;
-- (BOOL)p_supportsCustomEffectTimingCurveForLayoutStyles:(id)a3;
+- (BOOL)p_supportsCustomEffectTimingCurveForLayoutStyles:(id)styles;
 - (BOOL)supportsBounce;
 - (BOOL)supportsColor;
 - (BOOL)supportsCustomEffectTimingCurve1;
@@ -24,8 +24,8 @@
 - (BOOL)supportsTwist;
 - (KNAnimationInfo)animationInfo;
 - (KNAnimationPluginMenu)directionMenu;
-- (KNTransition)initWithArchive:(const void *)a3 unarchiver:(id)a4 owner:(id)a5;
-- (KNTransition)initWithOwner:(id)a3 attributes:(id)a4;
+- (KNTransition)initWithArchive:(const void *)archive unarchiver:(id)unarchiver owner:(id)owner;
+- (KNTransition)initWithOwner:(id)owner attributes:(id)attributes;
 - (NSArray)localizedEventTriggerNames;
 - (NSSet)inspectableAttributes;
 - (NSString)customEffectTimingCurveThemeName1;
@@ -40,7 +40,7 @@
 - (double)duration;
 - (float)customTravelDistance;
 - (float)customTwist;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)customMosaicSize;
 - (int64_t)customMosaicType;
 - (int64_t)customTextDelivery;
@@ -48,18 +48,18 @@
 - (int64_t)randomNumberSeed;
 - (unint64_t)direction;
 - (unint64_t)directionType;
-- (unint64_t)p_keynoteVersionFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setAttributes:(id)a3;
+- (unint64_t)p_keynoteVersionFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setAttributes:(id)attributes;
 @end
 
 @implementation KNTransition
 
-+ (unint64_t)directionTypeForEffect:(id)a3
++ (unint64_t)directionTypeForEffect:(id)effect
 {
-  v3 = a3;
+  effectCopy = effect;
   v6 = objc_msgSend_instance(KNAnimationRegistry, v4, v5);
-  v8 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(v6, v7, v3, 3);
+  v8 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(v6, v7, effectCopy, 3);
 
   v11 = objc_msgSend_directionType(v8, v9, v10);
   return v11;
@@ -77,18 +77,18 @@
   return v3;
 }
 
-+ (id)bindingKeyPathForAttributeKey:(id)a3
++ (id)bindingKeyPathForAttributeKey:(id)key
 {
-  v4 = a3;
-  v7 = objc_msgSend_bindingMap(a1, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  keyCopy = key;
+  v7 = objc_msgSend_bindingMap(self, v5, v6);
+  v9 = objc_msgSend_objectForKey_(v7, v8, keyCopy);
 
   if (!v9)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "+[KNTransition bindingKeyPathForAttributeKey:]");
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNTransition.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 106, 0, "cannot find binding key path for attribute key %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 106, 0, "cannot find binding key path for attribute key %@", keyCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
@@ -96,11 +96,11 @@
   return v9;
 }
 
-+ (id)attributeKeyForBindingKeyPath:(id)a3
++ (id)attributeKeyForBindingKeyPath:(id)path
 {
-  v4 = a3;
-  v7 = objc_msgSend_bindingMap(a1, v5, v6);
-  v9 = objc_msgSend_allKeysForObject_(v7, v8, v4);
+  pathCopy = path;
+  v7 = objc_msgSend_bindingMap(self, v5, v6);
+  v9 = objc_msgSend_allKeysForObject_(v7, v8, pathCopy);
   v12 = objc_msgSend_lastObject(v9, v10, v11);
 
   if (!v12)
@@ -108,7 +108,7 @@
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "+[KNTransition attributeKeyForBindingKeyPath:]");
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNTransition.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v18, v15, v17, 112, 0, "cannot find attribute key for binding key path %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v18, v15, v17, 112, 0, "cannot find attribute key for binding key path %@", pathCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
   }
@@ -116,24 +116,24 @@
   return v12;
 }
 
-- (KNTransition)initWithOwner:(id)a3 attributes:(id)a4
+- (KNTransition)initWithOwner:(id)owner attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  attributesCopy = attributes;
   v19.receiver = self;
   v19.super_class = KNTransition;
-  v10 = [(KNTransition *)&v19 initWithOwner:v6];
+  v10 = [(KNTransition *)&v19 initWithOwner:ownerCopy];
   if (v10)
   {
-    if (!v7)
+    if (!attributesCopy)
     {
-      v7 = objc_msgSend_defaultAttributesForEffect_(KNTransitionAttributes, v8, *MEMORY[0x277D80160]);
+      attributesCopy = objc_msgSend_defaultAttributesForEffect_(KNTransitionAttributes, v8, *MEMORY[0x277D80160]);
     }
 
     v11 = MEMORY[0x277CCABB0];
-    IsRTL = objc_msgSend_documentIsRTL(v6, v8, v9);
+    IsRTL = objc_msgSend_documentIsRTL(ownerCopy, v8, v9);
     v14 = objc_msgSend_numberWithBool_(v11, v13, IsRTL);
-    v16 = objc_msgSend_attributesBySettingValue_forAttributeKey_(v7, v15, v14, @"WritingDirectionIsRTL");
+    v16 = objc_msgSend_attributesBySettingValue_forAttributeKey_(attributesCopy, v15, v14, @"WritingDirectionIsRTL");
     attributes = v10->_attributes;
     v10->_attributes = v16;
   }
@@ -141,7 +141,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_owner(self, v5, v6);
@@ -151,17 +151,17 @@
   return v12;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  v4 = a3;
-  if (self->_attributes != v4)
+  attributesCopy = attributes;
+  if (self->_attributes != attributesCopy)
   {
-    v10 = v4;
+    v10 = attributesCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->_attributes, v9);
-    v4 = v9;
+    attributesCopy = v9;
   }
 }
 
@@ -632,9 +632,9 @@ LABEL_7:
   return self;
 }
 
-- (BOOL)p_supportsCustomEffectTimingCurveForLayoutStyles:(id)a3
+- (BOOL)p_supportsCustomEffectTimingCurveForLayoutStyles:(id)styles
 {
-  v4 = a3;
+  stylesCopy = styles;
   isCustomEffectTimingCurveEditingEnabled = objc_msgSend_isCustomEffectTimingCurveEditingEnabled(KNAnimationUtils, v5, v6);
   v10 = objc_msgSend_animationInfo(self, v8, v9);
   v13 = objc_msgSend_attributes(self, v11, v12);
@@ -642,7 +642,7 @@ LABEL_7:
   v18 = objc_msgSend_customEffectTimingCurveDisplayParametersForAttributes_layoutStyleOnly_(v10, v17, v16, 1);
 
   v20 = objc_msgSend_objectForKeyedSubscript_(v18, v19, &unk_2884F3AC8);
-  LOBYTE(v10) = objc_msgSend_containsObject_(v4, v21, v20);
+  LOBYTE(v10) = objc_msgSend_containsObject_(stylesCopy, v21, v20);
 
   return isCustomEffectTimingCurveEditingEnabled & v10;
 }
@@ -663,17 +663,17 @@ LABEL_7:
   return v5;
 }
 
-- (unint64_t)p_keynoteVersionFromUnarchiver:(id)a3
+- (unint64_t)p_keynoteVersionFromUnarchiver:(id)unarchiver
 {
-  v3 = a3;
-  if (objc_msgSend_hasPreUFFVersion(v3, v4, v5))
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_hasPreUFFVersion(unarchiverCopy, v4, v5))
   {
-    v8 = objc_msgSend_preUFFVersion(v3, v6, v7);
+    v8 = objc_msgSend_preUFFVersion(unarchiverCopy, v6, v7);
   }
 
   else
   {
-    v9 = objc_msgSend_fileFormatVersion(v3, v6, v7);
+    v9 = objc_msgSend_fileFormatVersion(unarchiverCopy, v6, v7);
     if (v9 >= *MEMORY[0x277D80958])
     {
       if (v9 >= *MEMORY[0x277D80988])
@@ -706,19 +706,19 @@ LABEL_7:
   return v8;
 }
 
-- (KNTransition)initWithArchive:(const void *)a3 unarchiver:(id)a4 owner:(id)a5
+- (KNTransition)initWithArchive:(const void *)archive unarchiver:(id)unarchiver owner:(id)owner
 {
-  v8 = a4;
-  v9 = a5;
+  unarchiverCopy = unarchiver;
+  ownerCopy = owner;
   v68.receiver = self;
   v68.super_class = KNTransition;
-  v10 = [(KNTransition *)&v68 initWithOwner:v9];
+  v10 = [(KNTransition *)&v68 initWithOwner:ownerCopy];
   if (v10)
   {
     v11 = [KNTransitionAttributes alloc];
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      v13 = objc_msgSend_initFromTransitionAttributesArchive_(v11, v12, *(a3 + 3));
+      v13 = objc_msgSend_initFromTransitionAttributesArchive_(v11, v12, *(archive + 3));
     }
 
     else
@@ -732,7 +732,7 @@ LABEL_7:
     if (!v16)
     {
       v19 = MEMORY[0x277CCABB0];
-      IsRTL = objc_msgSend_documentIsRTL(v9, v17, v18);
+      IsRTL = objc_msgSend_documentIsRTL(ownerCopy, v17, v18);
       v22 = objc_msgSend_numberWithBool_(v19, v21, IsRTL);
       v24 = objc_msgSend_attributesBySettingValue_forAttributeKey_(v15, v23, v22, @"WritingDirectionIsRTL");
 
@@ -765,8 +765,8 @@ LABEL_7:
 
     if (objc_msgSend_conformsToProtocol_(v39, v45, &unk_28852EB30))
     {
-      v66 = v8;
-      v53 = objc_msgSend_p_keynoteVersionFromUnarchiver_(v10, v51, v8);
+      v66 = unarchiverCopy;
+      v53 = objc_msgSend_p_keynoteVersionFromUnarchiver_(v10, v51, unarchiverCopy);
       v56 = objc_msgSend_attributes(v15, v54, v55);
       v67 = v56;
       objc_msgSend_upgradeAttributes_animationName_oldAnimationName_warning_type_isFromClassic_version_(v39, v57, &v67, v47, v40, 0, 3, 0, v53);
@@ -780,7 +780,7 @@ LABEL_7:
         v15 = v62;
       }
 
-      v8 = v66;
+      unarchiverCopy = v66;
     }
 
     v63 = objc_msgSend_copy(v15, v51, v52);
@@ -791,22 +791,22 @@ LABEL_7:
   return v10;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v12 = a4;
+  archiverCopy = archiver;
   v9 = objc_msgSend_attributes(self, v6, v7);
-  *(a3 + 4) |= 1u;
-  v10 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v10 = *(archive + 3);
   if (!v10)
   {
-    v11 = *(a3 + 1);
+    v11 = *(archive + 1);
     if (v11)
     {
       v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v10 = sub_275E1F66C(v11);
-    *(a3 + 3) = v10;
+    *(archive + 3) = v10;
   }
 
   objc_msgSend_encodeToArchive_(v9, v8, v10);

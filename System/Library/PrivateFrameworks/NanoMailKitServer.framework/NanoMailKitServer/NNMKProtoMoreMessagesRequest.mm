@@ -1,20 +1,20 @@
 @interface NNMKProtoMoreMessagesRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFullSyncVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFullSyncVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoMoreMessagesRequest
 
-- (void)setHasFullSyncVersion:(BOOL)a3
+- (void)setHasFullSyncVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -33,45 +33,45 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoMoreMessagesRequest;
   v4 = [(NNMKProtoMoreMessagesRequest *)&v8 description];
-  v5 = [(NNMKProtoMoreMessagesRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoMoreMessagesRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_fullSyncVersion];
-    [v3 setObject:v4 forKey:@"fullSyncVersion"];
+    [dictionary setObject:v4 forKey:@"fullSyncVersion"];
   }
 
   beforeDateReceived = self->_beforeDateReceived;
   if (beforeDateReceived)
   {
-    [v3 setObject:beforeDateReceived forKey:@"beforeDateReceived"];
+    [dictionary setObject:beforeDateReceived forKey:@"beforeDateReceived"];
   }
 
   mailboxId = self->_mailboxId;
   if (mailboxId)
   {
-    [v3 setObject:mailboxId forKey:@"mailboxId"];
+    [dictionary setObject:mailboxId forKey:@"mailboxId"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_filterType];
-    [v3 setObject:v7 forKey:@"filterType"];
+    [dictionary setObject:v7 forKey:@"filterType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     fullSyncVersion = self->_fullSyncVersion;
@@ -95,38 +95,38 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[5] = self->_fullSyncVersion;
-    *(v4 + 32) |= 2u;
+    toCopy[5] = self->_fullSyncVersion;
+    *(toCopy + 32) |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_beforeDateReceived)
   {
-    [v4 setBeforeDateReceived:?];
-    v4 = v5;
+    [toCopy setBeforeDateReceived:?];
+    toCopy = v5;
   }
 
   if (self->_mailboxId)
   {
     [v5 setMailboxId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[4] = self->_filterType;
-    *(v4 + 32) |= 1u;
+    toCopy[4] = self->_filterType;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -134,11 +134,11 @@
     *(v5 + 32) |= 2u;
   }
 
-  v7 = [(NSData *)self->_beforeDateReceived copyWithZone:a3];
+  v7 = [(NSData *)self->_beforeDateReceived copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
-  v9 = [(NSString *)self->_mailboxId copyWithZone:a3];
+  v9 = [(NSString *)self->_mailboxId copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
@@ -151,24 +151,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_fullSyncVersion != *(v4 + 5))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_fullSyncVersion != *(equalCopy + 5))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_15:
     v8 = 0;
@@ -176,13 +176,13 @@ LABEL_15:
   }
 
   beforeDateReceived = self->_beforeDateReceived;
-  if (beforeDateReceived | *(v4 + 1) && ![(NSData *)beforeDateReceived isEqual:?])
+  if (beforeDateReceived | *(equalCopy + 1) && ![(NSData *)beforeDateReceived isEqual:?])
   {
     goto LABEL_15;
   }
 
   mailboxId = self->_mailboxId;
-  if (mailboxId | *(v4 + 3))
+  if (mailboxId | *(equalCopy + 3))
   {
     if (![(NSString *)mailboxId isEqual:?])
     {
@@ -190,10 +190,10 @@ LABEL_15:
     }
   }
 
-  v8 = (*(v4 + 32) & 1) == 0;
+  v8 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_filterType != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_filterType != *(equalCopy + 4))
     {
       goto LABEL_15;
     }
@@ -233,31 +233,31 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[8] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[8] & 2) != 0)
   {
-    self->_fullSyncVersion = v4[5];
+    self->_fullSyncVersion = fromCopy[5];
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (*(v4 + 1))
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoMoreMessagesRequest *)self setBeforeDateReceived:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NNMKProtoMoreMessagesRequest *)self setMailboxId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_filterType = v4[4];
+    self->_filterType = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

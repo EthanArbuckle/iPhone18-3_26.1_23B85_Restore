@@ -1,5 +1,5 @@
 @interface CKNicknameUpdate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_updatedName;
 - (id)condensedSubtitleText;
 - (id)contactWithUpdatedInformation;
@@ -13,54 +13,54 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CKNicknameUpdate *)self handle];
-  v5 = [v4 ID];
-  v6 = [(CKNicknameUpdate *)self updateType];
-  v7 = [(CKNicknameUpdate *)self nickname];
-  v8 = [(CKNicknameUpdate *)self contact];
-  v9 = [v3 stringWithFormat:@"Update for ID %@ is %lu nickname %@ contact %@", v5, v6, v7, v8];
+  handle = [(CKNicknameUpdate *)self handle];
+  v5 = [handle ID];
+  updateType = [(CKNicknameUpdate *)self updateType];
+  nickname = [(CKNicknameUpdate *)self nickname];
+  contact = [(CKNicknameUpdate *)self contact];
+  v9 = [v3 stringWithFormat:@"Update for ID %@ is %lu nickname %@ contact %@", v5, updateType, nickname, contact];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKNicknameUpdate *)self handle];
-    v7 = [v5 handle];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    handle = [(CKNicknameUpdate *)self handle];
+    handle2 = [v5 handle];
+    if ([handle isEqual:handle2])
     {
       v8 = 0;
     }
 
     else
     {
-      v10 = [(CKNicknameUpdate *)self handle];
-      if (v10)
+      handle3 = [(CKNicknameUpdate *)self handle];
+      if (handle3)
       {
         v8 = 1;
       }
 
       else
       {
-        v11 = [v5 handle];
-        v8 = v11 != 0;
+        handle4 = [v5 handle];
+        v8 = handle4 != 0;
       }
     }
 
-    v12 = [(CKNicknameUpdate *)self nickname];
-    v13 = [v5 nickname];
-    v14 = [v12 isEqual:v13];
+    nickname = [(CKNicknameUpdate *)self nickname];
+    nickname2 = [v5 nickname];
+    v14 = [nickname isEqual:nickname2];
 
-    v15 = [(CKNicknameUpdate *)self contact];
-    v16 = [v15 identifier];
-    v17 = [v5 contact];
-    v18 = [v17 identifier];
-    if ([v16 isEqualToString:v18])
+    contact = [(CKNicknameUpdate *)self contact];
+    identifier = [contact identifier];
+    contact2 = [v5 contact];
+    identifier2 = [contact2 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
       v19 = 1;
     }
@@ -69,25 +69,25 @@
     {
       v26 = v14;
       v20 = v8;
-      v21 = [(CKNicknameUpdate *)self contact];
-      if (v21)
+      contact3 = [(CKNicknameUpdate *)self contact];
+      if (contact3)
       {
         v19 = 0;
       }
 
       else
       {
-        v22 = [v5 contact];
-        v19 = v22 == 0;
+        contact4 = [v5 contact];
+        v19 = contact4 == 0;
       }
 
       v8 = v20;
       v14 = v26;
     }
 
-    v23 = [(CKNicknameUpdate *)self updateType];
-    v24 = [v5 updateType];
-    v9 = !v8 && (v14 & 1) != 0 && v23 == v24 && v19;
+    updateType = [(CKNicknameUpdate *)self updateType];
+    updateType2 = [v5 updateType];
+    v9 = !v8 && (v14 & 1) != 0 && updateType == updateType2 && v19;
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)listTitleText
 {
-  v3 = [(CKNicknameUpdate *)self contact];
-  v4 = [v3 givenName];
+  contact = [(CKNicknameUpdate *)self contact];
+  givenName = [contact givenName];
 
-  v5 = [(CKNicknameUpdate *)self contact];
+  contact2 = [(CKNicknameUpdate *)self contact];
 
-  if (!v5)
+  if (!contact2)
   {
     v10 = MEMORY[0x1E696AEC0];
     v11 = CKFrameworkBundle();
@@ -113,10 +113,10 @@
 LABEL_12:
     v8 = [v10 stringWithFormat:v12, v20];
 
-    v16 = [MEMORY[0x1E69DC668] sharedApplication];
-    v17 = [v16 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v17 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v18 = @"\u200F";
     }
@@ -130,11 +130,11 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v6 = [(CKNicknameUpdate *)self updateType];
-  v7 = [(CKNicknameUpdate *)self updateType];
-  if ((v6 & 2) == 0 || (v7 & 4) == 0)
+  updateType = [(CKNicknameUpdate *)self updateType];
+  updateType2 = [(CKNicknameUpdate *)self updateType];
+  if ((updateType & 2) == 0 || (updateType2 & 4) == 0)
   {
-    if ((v6 & 2) != 0)
+    if ((updateType & 2) != 0)
     {
       v10 = MEMORY[0x1E696AEC0];
       v14 = CKFrameworkBundle();
@@ -144,7 +144,7 @@ LABEL_12:
 
     else
     {
-      if ((v7 & 4) == 0)
+      if ((updateType2 & 4) == 0)
       {
         v13 = 0;
         goto LABEL_17;
@@ -157,7 +157,7 @@ LABEL_12:
     }
 
     v12 = [v14 localizedStringForKey:v15 value:&stru_1F04268F8 table:@"ChatKit"];
-    v20 = v4;
+    v20 = givenName;
     goto LABEL_12;
   }
 
@@ -174,25 +174,25 @@ LABEL_17:
 - (id)listSubtitleText
 {
   v3 = MEMORY[0x1E695CD80];
-  v4 = [(CKNicknameUpdate *)self contact];
-  v5 = [v3 stringFromContact:v4 style:0];
+  contact = [(CKNicknameUpdate *)self contact];
+  v5 = [v3 stringFromContact:contact style:0];
 
-  v6 = [(CKNicknameUpdate *)self contact];
+  contact2 = [(CKNicknameUpdate *)self contact];
 
-  if (v6)
+  if (contact2)
   {
     if (([(CKNicknameUpdate *)self updateType]& 2) != 0)
     {
       v8 = MEMORY[0x1E696AEC0];
       v9 = CKFrameworkBundle();
       v10 = [v9 localizedStringForKey:@"NAME_CHANGED_FROM_%@_TO_%@" value:&stru_1F04268F8 table:@"ChatKit"];
-      v11 = [(CKNicknameUpdate *)self _updatedName];
-      v12 = [v8 stringWithFormat:v10, v5, v11];
+      _updatedName = [(CKNicknameUpdate *)self _updatedName];
+      v12 = [v8 stringWithFormat:v10, v5, _updatedName];
 
-      v13 = [MEMORY[0x1E69DC668] sharedApplication];
-      v14 = [v13 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-      if (v14 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v15 = @"\u200F";
       }
@@ -202,28 +202,28 @@ LABEL_17:
         v15 = @"\u200E";
       }
 
-      v7 = [(__CFString *)v15 stringByAppendingString:v12];
+      _updatedName2 = [(__CFString *)v15 stringByAppendingString:v12];
     }
 
     else
     {
-      v7 = 0;
+      _updatedName2 = 0;
     }
   }
 
   else
   {
-    v7 = [(CKNicknameUpdate *)self _updatedName];
+    _updatedName2 = [(CKNicknameUpdate *)self _updatedName];
   }
 
-  return v7;
+  return _updatedName2;
 }
 
 - (id)condensedSubtitleText
 {
-  v3 = [(CKNicknameUpdate *)self updateType];
-  v4 = [(CKNicknameUpdate *)self updateType];
-  if ((v3 & 2) != 0 && (v4 & 4) != 0)
+  updateType = [(CKNicknameUpdate *)self updateType];
+  updateType2 = [(CKNicknameUpdate *)self updateType];
+  if ((updateType & 2) != 0 && (updateType2 & 4) != 0)
   {
     v5 = CKFrameworkBundle();
     v6 = v5;
@@ -233,7 +233,7 @@ LABEL_17:
 
   else
   {
-    if ((v3 & 2) != 0)
+    if ((updateType & 2) != 0)
     {
       v5 = CKFrameworkBundle();
       v6 = v5;
@@ -242,7 +242,7 @@ LABEL_17:
 
     else
     {
-      if ((v4 & 4) == 0)
+      if ((updateType2 & 4) == 0)
       {
         v9 = 0;
         goto LABEL_11;
@@ -266,21 +266,21 @@ LABEL_11:
 - (id)contactWithUpdatedInformation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  v4 = [(CKNicknameUpdate *)self nickname];
-  v5 = [v4 firstName];
-  [v3 setGivenName:v5];
+  nickname = [(CKNicknameUpdate *)self nickname];
+  firstName = [nickname firstName];
+  [v3 setGivenName:firstName];
 
-  v6 = [(CKNicknameUpdate *)self nickname];
-  v7 = [v6 lastName];
-  [v3 setFamilyName:v7];
+  nickname2 = [(CKNicknameUpdate *)self nickname];
+  lastName = [nickname2 lastName];
+  [v3 setFamilyName:lastName];
 
-  v8 = [(CKNicknameUpdate *)self nickname];
-  v9 = [v8 avatar];
-  v10 = [v9 imageData];
+  nickname3 = [(CKNicknameUpdate *)self nickname];
+  avatar = [nickname3 avatar];
+  imageData = [avatar imageData];
 
-  if (v10)
+  if (imageData)
   {
-    [v3 setImageData:v10];
+    [v3 setImageData:imageData];
   }
 
   return v3;
@@ -289,8 +289,8 @@ LABEL_11:
 - (id)_updatedName
 {
   v2 = MEMORY[0x1E695CD80];
-  v3 = [(CKNicknameUpdate *)self contactWithUpdatedInformation];
-  v4 = [v2 stringFromContact:v3 style:0];
+  contactWithUpdatedInformation = [(CKNicknameUpdate *)self contactWithUpdatedInformation];
+  v4 = [v2 stringFromContact:contactWithUpdatedInformation style:0];
 
   return v4;
 }

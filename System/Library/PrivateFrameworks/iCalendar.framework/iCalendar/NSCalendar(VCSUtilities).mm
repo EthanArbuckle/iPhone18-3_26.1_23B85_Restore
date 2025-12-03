@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __52__NSCalendar_VCSUtilities__VCS_gregorianGMTCalendar__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (VCS_gregorianGMTCalendar_onceToken != -1)
   {
     dispatch_once(&VCS_gregorianGMTCalendar_onceToken, block);

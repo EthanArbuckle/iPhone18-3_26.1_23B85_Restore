@@ -1,10 +1,10 @@
 @interface WFTimeTriggerDayOfWeekCell
-- (WFTimeTriggerDayOfWeekCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFTimeTriggerDayOfWeekCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (WFTimeTriggerDayOfWeekCellDelegate)delegate;
-- (void)setSelectedRecurrences:(id)a3;
+- (void)setSelectedRecurrences:(id)recurrences;
 - (void)setupConstraints;
 - (void)tintColorDidChange;
-- (void)toggleWeekdayButton:(id)a3;
+- (void)toggleWeekdayButton:(id)button;
 - (void)updateSelectedDays;
 @end
 
@@ -20,13 +20,13 @@
 - (void)setupConstraints
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(WFTimeTriggerDayOfWeekCell *)self buttons];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  buttons = [(WFTimeTriggerDayOfWeekCell *)self buttons];
+  v5 = [buttons countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -37,56 +37,56 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttons);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 widthAnchor];
-        v11 = [v10 constraintEqualToConstant:48.0];
+        widthAnchor = [v9 widthAnchor];
+        v11 = [widthAnchor constraintEqualToConstant:48.0];
 
         LODWORD(v12) = 1144733696;
         [v11 setPriority:v12];
-        [v3 addObject:v11];
-        v13 = [v9 heightAnchor];
-        v14 = [v9 widthAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
-        [v3 addObject:v15];
+        [array addObject:v11];
+        heightAnchor = [v9 heightAnchor];
+        widthAnchor2 = [v9 widthAnchor];
+        v15 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
+        [array addObject:v15];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [buttons countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
   }
 
-  v16 = [(WFTimeTriggerDayOfWeekCell *)self stackView];
-  v17 = [(WFTimeTriggerDayOfWeekCell *)self contentView];
-  v18 = [v17 layoutMarginsGuide];
-  v19 = [v16 wf_addConstraintsToFillLayoutGuide:v18];
+  stackView = [(WFTimeTriggerDayOfWeekCell *)self stackView];
+  contentView = [(WFTimeTriggerDayOfWeekCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  v19 = [stackView wf_addConstraintsToFillLayoutGuide:layoutMarginsGuide];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v3];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
-- (void)toggleWeekdayButton:(id)a3
+- (void)toggleWeekdayButton:(id)button
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 tag] <= 0)
+  buttonCopy = button;
+  if ([buttonCopy tag] <= 0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFTimeTriggerDayOfWeekCell.m" lineNumber:107 description:{@"Button tag was not setup: %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTimeTriggerDayOfWeekCell.m" lineNumber:107 description:{@"Button tag was not setup: %@", buttonCopy}];
   }
 
   else
   {
-    v6 = [v5 tag];
-    v7 = [v5 isSelected];
-    v8 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v8 setWeekday:v6];
-    v9 = [(WFTimeTriggerDayOfWeekCell *)self selectedRecurrences];
-    v10 = [v9 mutableCopy];
+    v6 = [buttonCopy tag];
+    isSelected = [buttonCopy isSelected];
+    currentHandler = objc_alloc_init(MEMORY[0x277CBEAB8]);
+    [currentHandler setWeekday:v6];
+    selectedRecurrences = [(WFTimeTriggerDayOfWeekCell *)self selectedRecurrences];
+    v10 = [selectedRecurrences mutableCopy];
 
-    if (v7)
+    if (isSelected)
     {
       v21 = a2;
       v24 = 0u;
@@ -139,8 +139,8 @@ LABEL_5:
 LABEL_11:
 
 LABEL_12:
-        v17 = [MEMORY[0x277CCA890] currentHandler];
-        [v17 handleFailureInMethod:v21 object:self file:@"WFTimeTriggerDayOfWeekCell.m" lineNumber:129 description:{@"Asked to deselect date components (%@), which isn't in the set of currently-selected date components (%@)", v8, v11}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:v21 object:self file:@"WFTimeTriggerDayOfWeekCell.m" lineNumber:129 description:{@"Asked to deselect date components (%@), which isn't in the set of currently-selected date components (%@)", currentHandler, v11}];
 
         v18 = 0;
       }
@@ -150,28 +150,28 @@ LABEL_12:
 
     else
     {
-      [v10 addObject:v8];
+      [v10 addObject:currentHandler];
     }
 
     [(WFTimeTriggerDayOfWeekCell *)self setSelectedRecurrences:v10];
-    v19 = [(WFTimeTriggerDayOfWeekCell *)self delegate];
-    v20 = [(WFTimeTriggerDayOfWeekCell *)self selectedRecurrences];
-    [v19 dayOfWeekPickerCell:self didChangeSelectedRecurrences:v20];
+    delegate = [(WFTimeTriggerDayOfWeekCell *)self delegate];
+    selectedRecurrences2 = [(WFTimeTriggerDayOfWeekCell *)self selectedRecurrences];
+    [delegate dayOfWeekPickerCell:self didChangeSelectedRecurrences:selectedRecurrences2];
   }
 }
 
 - (void)updateSelectedDays
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(WFTimeTriggerDayOfWeekCell *)self selectedRecurrences];
-  v4 = [v3 if_compactMap:&__block_literal_global_11535];
+  selectedRecurrences = [(WFTimeTriggerDayOfWeekCell *)self selectedRecurrences];
+  v4 = [selectedRecurrences if_compactMap:&__block_literal_global_11535];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(WFTimeTriggerDayOfWeekCell *)self buttons];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  buttons = [(WFTimeTriggerDayOfWeekCell *)self buttons];
+  v6 = [buttons countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -182,7 +182,7 @@ LABEL_12:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(buttons);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -201,11 +201,11 @@ LABEL_12:
         v12 = ;
         [v10 setBackgroundColor:v12];
 
-        v13 = [MEMORY[0x277D75348] whiteColor];
-        [v10 setTitleColor:v13 forState:0];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        [v10 setTitleColor:whiteColor forState:0];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [buttons countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -228,9 +228,9 @@ id __48__WFTimeTriggerDayOfWeekCell_updateSelectedDays__block_invoke(uint64_t a1
   return v3;
 }
 
-- (void)setSelectedRecurrences:(id)a3
+- (void)setSelectedRecurrences:(id)recurrences
 {
-  objc_storeStrong(&self->_selectedRecurrences, a3);
+  objc_storeStrong(&self->_selectedRecurrences, recurrences);
 
   [(WFTimeTriggerDayOfWeekCell *)self updateSelectedDays];
 }
@@ -243,11 +243,11 @@ id __48__WFTimeTriggerDayOfWeekCell_updateSelectedDays__block_invoke(uint64_t a1
   [(WFTimeTriggerDayOfWeekCell *)self updateSelectedDays];
 }
 
-- (WFTimeTriggerDayOfWeekCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFTimeTriggerDayOfWeekCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v26.receiver = self;
   v26.super_class = WFTimeTriggerDayOfWeekCell;
-  v4 = [(WFTimeTriggerDayOfWeekCell *)&v26 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(WFTimeTriggerDayOfWeekCell *)&v26 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -259,15 +259,15 @@ id __48__WFTimeTriggerDayOfWeekCell_updateSelectedDays__block_invoke(uint64_t a1
     [(UIStackView *)v5->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v5->_stackView setSpacing:14.0];
     [(UIStackView *)v5->_stackView setDistribution:1];
-    v8 = [(WFTimeTriggerDayOfWeekCell *)v5 contentView];
-    [v8 addSubview:v5->_stackView];
+    contentView = [(WFTimeTriggerDayOfWeekCell *)v5 contentView];
+    [contentView addSubview:v5->_stackView];
 
     v9 = objc_opt_new();
-    v10 = [MEMORY[0x277CBEA80] currentCalendar];
-    v11 = [v10 veryShortWeekdaySymbols];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    veryShortWeekdaySymbols = [currentCalendar veryShortWeekdaySymbols];
 
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [v12 firstWeekday];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    firstWeekday = [currentCalendar2 firstWeekday];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -275,17 +275,17 @@ id __48__WFTimeTriggerDayOfWeekCell_updateSelectedDays__block_invoke(uint64_t a1
     v22[3] = &unk_279EE7EF8;
     v14 = v5;
     v24 = v9;
-    v25 = v13;
+    v25 = firstWeekday;
     v23 = v14;
     v15 = v9;
-    [v11 enumerateObjectsUsingBlock:v22];
+    [veryShortWeekdaySymbols enumerateObjectsUsingBlock:v22];
     [(WFTimeTriggerDayOfWeekCell *)v14 setButtons:v15];
     [(WFTimeTriggerDayOfWeekCell *)v14 setupConstraints];
     [(WFTimeTriggerDayOfWeekCell *)v14 updateSelectedDays];
-    v16 = [(WFTimeTriggerDayOfWeekCell *)v14 stackView];
-    v17 = [(WFTimeTriggerDayOfWeekCell *)v14 contentView];
-    v18 = [v17 layoutMarginsGuide];
-    v19 = [v16 wf_addConstraintsToFillLayoutGuide:v18];
+    stackView = [(WFTimeTriggerDayOfWeekCell *)v14 stackView];
+    contentView2 = [(WFTimeTriggerDayOfWeekCell *)v14 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    v19 = [stackView wf_addConstraintsToFillLayoutGuide:layoutMarginsGuide];
 
     v20 = v14;
   }

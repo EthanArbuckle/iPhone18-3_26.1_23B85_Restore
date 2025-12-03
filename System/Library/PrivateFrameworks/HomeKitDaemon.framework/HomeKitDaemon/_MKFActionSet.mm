@@ -1,12 +1,12 @@
 @interface _MKFActionSet
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFActionSetDatabaseID)databaseID;
 - (NSArray)actions;
 - (NSArray)notificationRegistrations;
 - (NSArray)triggers;
-- (id)createActionsRelationOfType:(id)a3 modelID:(id)a4;
-- (id)materializeOrCreateActionsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
+- (id)createActionsRelationOfType:(id)type modelID:(id)d;
+- (id)materializeOrCreateActionsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
 @end
 
 @implementation _MKFActionSet
@@ -23,9 +23,9 @@
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -40,33 +40,33 @@
 - (NSArray)triggers
 {
   v2 = [(_MKFActionSet *)self valueForKey:@"triggers_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)notificationRegistrations
 {
   v2 = [(_MKFActionSet *)self valueForKey:@"notificationRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (id)createActionsRelationOfType:(id)a3 modelID:(id)a4
+- (id)createActionsRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"actions_" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"actions_" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateActionsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateActionsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"actions_" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"actions_" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
@@ -74,9 +74,9 @@
 - (NSArray)actions
 {
   v2 = [(_MKFActionSet *)self valueForKey:@"actions_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFActionSetDatabaseID)databaseID

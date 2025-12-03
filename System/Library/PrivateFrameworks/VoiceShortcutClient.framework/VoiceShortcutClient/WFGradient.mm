@@ -1,51 +1,51 @@
 @interface WFGradient
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGGradient)CGGradient;
-- (WFGradient)initWithBaseColor:(id)a3 darkBaseColor:(id)a4 accessibilityBaseColor:(id)a5 darkAccessibilityBaseColor:(id)a6 startColor:(id)a7 endColor:(id)a8;
-- (WFGradient)initWithCoder:(id)a3;
-- (WFGradient)initWithColor:(id)a3;
-- (WFGradient)initWithStartColor:(id)a3 endColor:(id)a4;
+- (WFGradient)initWithBaseColor:(id)color darkBaseColor:(id)baseColor accessibilityBaseColor:(id)accessibilityBaseColor darkAccessibilityBaseColor:(id)darkAccessibilityBaseColor startColor:(id)startColor endColor:(id)endColor;
+- (WFGradient)initWithCoder:(id)coder;
+- (WFGradient)initWithColor:(id)color;
+- (WFGradient)initWithStartColor:(id)color endColor:(id)endColor;
 - (double)perceivedBrightness;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFGradient
 
 - (double)perceivedBrightness
 {
-  v3 = [(WFGradient *)self endColor];
-  [v3 red];
+  endColor = [(WFGradient *)self endColor];
+  [endColor red];
   v5 = v4;
-  v6 = [(WFGradient *)self startColor];
-  [v6 red];
+  startColor = [(WFGradient *)self startColor];
+  [startColor red];
   v8 = vabdd_f64(v5, v7) * 0.5;
 
-  v9 = [(WFGradient *)self endColor];
-  [v9 green];
+  endColor2 = [(WFGradient *)self endColor];
+  [endColor2 green];
   v11 = v10;
-  v12 = [(WFGradient *)self startColor];
-  [v12 green];
+  startColor2 = [(WFGradient *)self startColor];
+  [startColor2 green];
   v14 = vabdd_f64(v11, v13) * 0.5;
 
-  v15 = [(WFGradient *)self endColor];
-  [v15 blue];
+  endColor3 = [(WFGradient *)self endColor];
+  [endColor3 blue];
   v17 = v16;
-  v18 = [(WFGradient *)self startColor];
-  [v18 blue];
+  startColor3 = [(WFGradient *)self startColor];
+  [startColor3 blue];
   v20 = vabdd_f64(v17, v19) * 0.5;
 
-  v21 = [(WFGradient *)self endColor];
-  [v21 red];
+  endColor4 = [(WFGradient *)self endColor];
+  [endColor4 red];
   v23 = v8 + v22;
 
-  v24 = [(WFGradient *)self endColor];
-  [v24 green];
+  endColor5 = [(WFGradient *)self endColor];
+  [endColor5 green];
   v26 = v14 + v25;
 
-  v27 = [(WFGradient *)self endColor];
-  [v27 blue];
+  endColor6 = [(WFGradient *)self endColor];
+  [endColor6 blue];
   v29 = v20 + v28;
 
   return v26 * 0.7152 + v23 * 0.2126 + v29 * 0.0722;
@@ -59,46 +59,46 @@
   [(WFGradient *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFGradient *)self baseColor];
-  [v4 encodeObject:v5 forKey:@"baseColor"];
+  coderCopy = coder;
+  baseColor = [(WFGradient *)self baseColor];
+  [coderCopy encodeObject:baseColor forKey:@"baseColor"];
 
-  v6 = [(WFGradient *)self darkBaseColor];
-  [v4 encodeObject:v6 forKey:@"darkBaseColor"];
+  darkBaseColor = [(WFGradient *)self darkBaseColor];
+  [coderCopy encodeObject:darkBaseColor forKey:@"darkBaseColor"];
 
-  v7 = [(WFGradient *)self accessibilityBaseColor];
-  [v4 encodeObject:v7 forKey:@"accessibilityBaseColor"];
+  accessibilityBaseColor = [(WFGradient *)self accessibilityBaseColor];
+  [coderCopy encodeObject:accessibilityBaseColor forKey:@"accessibilityBaseColor"];
 
-  v8 = [(WFGradient *)self darkAccessibilityBaseColor];
-  [v4 encodeObject:v8 forKey:@"darkAccessibilityBaseColor"];
+  darkAccessibilityBaseColor = [(WFGradient *)self darkAccessibilityBaseColor];
+  [coderCopy encodeObject:darkAccessibilityBaseColor forKey:@"darkAccessibilityBaseColor"];
 
-  v9 = [(WFGradient *)self startColor];
-  [v4 encodeObject:v9 forKey:@"startColor"];
+  startColor = [(WFGradient *)self startColor];
+  [coderCopy encodeObject:startColor forKey:@"startColor"];
 
-  v10 = [(WFGradient *)self endColor];
-  [v4 encodeObject:v10 forKey:@"endColor"];
+  endColor = [(WFGradient *)self endColor];
+  [coderCopy encodeObject:endColor forKey:@"endColor"];
 }
 
-- (WFGradient)initWithCoder:(id)a3
+- (WFGradient)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseColor"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"darkBaseColor"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityBaseColor"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"darkAccessibilityBaseColor"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startColor"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endColor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseColor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"darkBaseColor"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityBaseColor"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"darkAccessibilityBaseColor"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startColor"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endColor"];
 
-  v11 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7 && v8 && v9 && v10)
   {
     self = [(WFGradient *)self initWithBaseColor:v5 darkBaseColor:v6 accessibilityBaseColor:v7 darkAccessibilityBaseColor:v8 startColor:v9 endColor:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)debugDescription
@@ -153,10 +153,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -166,10 +166,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFGradient *)self baseColor];
-      v6 = [(WFGradient *)v4 baseColor];
-      v7 = v5;
-      v8 = v6;
+      baseColor = [(WFGradient *)self baseColor];
+      baseColor2 = [(WFGradient *)equalCopy baseColor];
+      v7 = baseColor;
+      v8 = baseColor2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -196,10 +196,10 @@ LABEL_32:
         }
       }
 
-      v14 = [(WFGradient *)self darkBaseColor];
-      v15 = [(WFGradient *)v4 darkBaseColor];
-      v12 = v14;
-      v16 = v15;
+      darkBaseColor = [(WFGradient *)self darkBaseColor];
+      darkBaseColor2 = [(WFGradient *)equalCopy darkBaseColor];
+      v12 = darkBaseColor;
+      v16 = darkBaseColor2;
       v11 = v16;
       if (v12 == v16)
       {
@@ -226,10 +226,10 @@ LABEL_31:
         }
       }
 
-      v20 = [(WFGradient *)self startColor];
-      v21 = [(WFGradient *)v4 startColor];
-      v18 = v20;
-      v22 = v21;
+      startColor = [(WFGradient *)self startColor];
+      startColor2 = [(WFGradient *)equalCopy startColor];
+      v18 = startColor;
+      v22 = startColor2;
       v17 = v22;
       v29 = v18;
       if (v18 == v22)
@@ -259,10 +259,10 @@ LABEL_30:
         }
       }
 
-      v25 = [(WFGradient *)self endColor];
-      v26 = [(WFGradient *)v4 endColor];
-      v18 = v25;
-      v27 = v26;
+      endColor = [(WFGradient *)self endColor];
+      endColor2 = [(WFGradient *)equalCopy endColor];
+      v18 = endColor;
+      v27 = endColor2;
       v23 = v27;
       if (v18 == v27)
       {
@@ -306,20 +306,20 @@ LABEL_33:
   return result;
 }
 
-- (WFGradient)initWithBaseColor:(id)a3 darkBaseColor:(id)a4 accessibilityBaseColor:(id)a5 darkAccessibilityBaseColor:(id)a6 startColor:(id)a7 endColor:(id)a8
+- (WFGradient)initWithBaseColor:(id)color darkBaseColor:(id)baseColor accessibilityBaseColor:(id)accessibilityBaseColor darkAccessibilityBaseColor:(id)darkAccessibilityBaseColor startColor:(id)startColor endColor:(id)endColor
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  obj = a6;
-  v17 = a6;
-  v32 = a7;
-  v18 = a7;
-  v33 = a8;
-  v19 = a8;
-  if (v14)
+  colorCopy = color;
+  baseColorCopy = baseColor;
+  accessibilityBaseColorCopy = accessibilityBaseColor;
+  obj = darkAccessibilityBaseColor;
+  darkAccessibilityBaseColorCopy = darkAccessibilityBaseColor;
+  startColorCopy = startColor;
+  startColorCopy2 = startColor;
+  endColorCopy = endColor;
+  endColorCopy2 = endColor;
+  if (colorCopy)
   {
-    if (v15)
+    if (baseColorCopy)
     {
       goto LABEL_3;
     }
@@ -327,13 +327,13 @@ LABEL_33:
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"baseColor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"baseColor"}];
 
-    if (v15)
+    if (baseColorCopy)
     {
 LABEL_3:
-      if (v16)
+      if (accessibilityBaseColorCopy)
       {
         goto LABEL_4;
       }
@@ -342,13 +342,13 @@ LABEL_3:
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"darkBaseColor"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"darkBaseColor"}];
 
-  if (v16)
+  if (accessibilityBaseColorCopy)
   {
 LABEL_4:
-    if (v17)
+    if (darkAccessibilityBaseColorCopy)
     {
       goto LABEL_5;
     }
@@ -357,22 +357,22 @@ LABEL_4:
   }
 
 LABEL_12:
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"accessibilityBaseColor"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"accessibilityBaseColor"}];
 
-  if (v17)
+  if (darkAccessibilityBaseColorCopy)
   {
 LABEL_5:
-    if (v18)
+    if (startColorCopy2)
     {
       goto LABEL_6;
     }
 
 LABEL_14:
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"startColor"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"startColor"}];
 
-    if (v19)
+    if (endColorCopy2)
     {
       goto LABEL_7;
     }
@@ -381,23 +381,23 @@ LABEL_14:
   }
 
 LABEL_13:
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"darkAccessibilityBaseColor"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"darkAccessibilityBaseColor"}];
 
-  if (!v18)
+  if (!startColorCopy2)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
-  if (v19)
+  if (endColorCopy2)
   {
     goto LABEL_7;
   }
 
 LABEL_15:
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"endColor"}];
+  currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler6 handleFailureInMethod:a2 object:self file:@"WFGradient.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"endColor"}];
 
 LABEL_7:
   v35.receiver = self;
@@ -406,24 +406,24 @@ LABEL_7:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_baseColor, a3);
-    objc_storeStrong(&v21->_darkBaseColor, a4);
-    objc_storeStrong(&v21->_accessibilityBaseColor, a5);
+    objc_storeStrong(&v20->_baseColor, color);
+    objc_storeStrong(&v21->_darkBaseColor, baseColor);
+    objc_storeStrong(&v21->_accessibilityBaseColor, accessibilityBaseColor);
     objc_storeStrong(&v21->_darkAccessibilityBaseColor, obj);
-    objc_storeStrong(&v21->_startColor, v32);
-    objc_storeStrong(&v21->_endColor, v33);
+    objc_storeStrong(&v21->_startColor, startColorCopy);
+    objc_storeStrong(&v21->_endColor, endColorCopy);
     v22 = v21;
   }
 
   return v21;
 }
 
-- (WFGradient)initWithStartColor:(id)a3 endColor:(id)a4
+- (WFGradient)initWithStartColor:(id)color endColor:(id)endColor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  if ([v8 isEqual:v7])
+  colorCopy = color;
+  endColorCopy = endColor;
+  v8 = colorCopy;
+  if ([v8 isEqual:endColorCopy])
   {
     v9 = v8;
   }
@@ -439,22 +439,22 @@ LABEL_7:
     v16 = 0.0;
     v13 = 0.0;
     v14 = 0.0;
-    [v7 getRed:&v16 green:&v15 blue:&v14 alpha:&v13];
+    [endColorCopy getRed:&v16 green:&v15 blue:&v14 alpha:&v13];
     v9 = [WFColor colorWithRed:(v20 + v16) * 0.5 green:(v19 + v15) * 0.5 blue:(v18 + v14) * 0.5 alpha:(v17 + v13) * 0.5];
   }
 
   v10 = v9;
 
-  v11 = [(WFGradient *)self initWithBaseColor:v10 startColor:v8 endColor:v7];
+  v11 = [(WFGradient *)self initWithBaseColor:v10 startColor:v8 endColor:endColorCopy];
   return v11;
 }
 
-- (WFGradient)initWithColor:(id)a3
+- (WFGradient)initWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = +[WFColor clearColor];
   v6 = +[WFColor clearColor];
-  v7 = [(WFGradient *)self initWithBaseColor:v4 startColor:v5 endColor:v6];
+  v7 = [(WFGradient *)self initWithBaseColor:colorCopy startColor:v5 endColor:v6];
 
   return v7;
 }

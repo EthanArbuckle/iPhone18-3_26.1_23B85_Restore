@@ -1,26 +1,26 @@
 @interface _IDSDeviceConnection
-- (BOOL)updateConnectionWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)updateConnectionWithOptions:(id)options error:(id *)error;
 - (NSDictionary)metrics;
-- (_IDSDeviceConnection)initWithDevice:(id)a3 options:(id)a4 completionHandler:(id)a5 queue:(id)a6;
+- (_IDSDeviceConnection)initWithDevice:(id)device options:(id)options completionHandler:(id)handler queue:(id)queue;
 - (void)_cleanupCompletionBlock;
 - (void)_close;
 - (void)_connect;
-- (void)_daemonDied:(id)a3;
+- (void)_daemonDied:(id)died;
 - (void)close;
 - (void)dealloc;
-- (void)setStreamPairWithInputStream:(id)a3 outputStream:(id)a4;
-- (void)xpcObject:(id)a3 objectContext:(id)a4;
+- (void)setStreamPairWithInputStream:(id)stream outputStream:(id)outputStream;
+- (void)xpcObject:(id)object objectContext:(id)context;
 @end
 
 @implementation _IDSDeviceConnection
 
-- (_IDSDeviceConnection)initWithDevice:(id)a3 options:(id)a4 completionHandler:(id)a5 queue:(id)a6
+- (_IDSDeviceConnection)initWithDevice:(id)device options:(id)options completionHandler:(id)handler queue:(id)queue
 {
   v117 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  queue = a6;
+  deviceCopy = device;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = queue;
   if (_IDSRunningInDaemon())
   {
     v13 = +[IDSLogging IDSDeviceConnection];
@@ -34,19 +34,19 @@
 
   kdebug_trace();
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v14 assertQueueIsCurrent];
 
-  if (v15)
+  if (assertQueueIsCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B30DA8();
     }
   }
 
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v17 addObserver:self selector:sel__daemonDied_ name:@"__kIDSDaemonDidDisconnectNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__daemonDied_ name:@"__kIDSDaemonDidDisconnectNotification" object:0];
 
   v104.receiver = self;
   v104.super_class = _IDSDeviceConnection;
@@ -63,12 +63,12 @@
     }
 
     v22 = +[_IDSDeviceConnectionActiveMap sharedInstance];
-    v97 = [v22 getActiveConnectionCount];
+    getActiveConnectionCount = [v22 getActiveConnectionCount];
 
-    self = [v12 copy];
+    self = [handlerCopy copy];
     if (queue)
     {
-      if (!v10)
+      if (!deviceCopy)
       {
         goto LABEL_20;
       }
@@ -78,18 +78,18 @@
     {
       queue = MEMORY[0x1E69E96A0];
       v23 = MEMORY[0x1E69E96A0];
-      if (!v10)
+      if (!deviceCopy)
       {
         goto LABEL_20;
       }
     }
 
-    v24 = [v10 _internal];
-    v25 = [v24 service];
+    _internal = [deviceCopy _internal];
+    service = [_internal service];
 
-    if (v25)
+    if (service)
     {
-      if (v97 < 31)
+      if (getActiveConnectionCount < 31)
       {
         goto LABEL_28;
       }
@@ -97,7 +97,7 @@
       v26 = +[IDSLogging IDSDeviceConnection];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        sub_195B30E48(v10);
+        sub_195B30E48(deviceCopy);
       }
 
       v27 = @"Too many active connections. Client is leaking sockets.";
@@ -115,7 +115,7 @@ LABEL_23:
         block[2] = sub_195A8641C;
         block[3] = &unk_1E743F110;
         v102 = v19;
-        v103 = self;
+        selfCopy = self;
         v13 = v19;
         self = self;
         dispatch_async(queue, block);
@@ -128,36 +128,36 @@ LABEL_26:
       }
 
 LABEL_28:
-      v96 = v12;
-      v33 = [MEMORY[0x1E696AEC0] stringGUID];
+      v96 = handlerCopy;
+      stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
       openSocketCompletionHandlerID = v19->_openSocketCompletionHandlerID;
-      v19->_openSocketCompletionHandlerID = v33;
+      v19->_openSocketCompletionHandlerID = stringGUID;
 
-      v35 = [v10 _internal];
-      v36 = [v35 nsuuid];
-      v37 = [v36 UUIDString];
+      _internal2 = [deviceCopy _internal];
+      nsuuid = [_internal2 nsuuid];
+      uUIDString = [nsuuid UUIDString];
       nsuuid = v19->_nsuuid;
-      v19->_nsuuid = v37;
+      v19->_nsuuid = uUIDString;
 
-      v39 = [v10 _internal];
-      v19->_isDefaultPairedDevice = [v39 isDefaultPairedDevice];
+      _internal3 = [deviceCopy _internal];
+      v19->_isDefaultPairedDevice = [_internal3 isDefaultPairedDevice];
 
-      v40 = [v10 _internal];
-      v41 = [v40 service];
+      _internal4 = [deviceCopy _internal];
+      service2 = [_internal4 service];
       service = v19->_service;
-      v19->_service = v41;
+      v19->_service = service2;
 
-      v43 = [MEMORY[0x1E696AE30] processInfo];
-      v44 = [v43 processName];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
       clientName = v19->_clientName;
-      v19->_clientName = v44;
+      v19->_clientName = processName;
 
       v46 = *MEMORY[0x1E69A4F18];
-      v47 = [v11 objectForKey:*MEMORY[0x1E69A4F18]];
+      v47 = [optionsCopy objectForKey:*MEMORY[0x1E69A4F18]];
 
       if (v47)
       {
-        v48 = [v11 objectForKey:v46];
+        v48 = [optionsCopy objectForKey:v46];
         v49 = [v48 copy];
         connectionUUID = v19->_connectionUUID;
         v19->_connectionUUID = v49;
@@ -165,13 +165,13 @@ LABEL_28:
 
       else
       {
-        v51 = [MEMORY[0x1E696AEC0] stringGUID];
+        stringGUID2 = [MEMORY[0x1E696AEC0] stringGUID];
         v48 = v19->_connectionUUID;
-        v19->_connectionUUID = v51;
+        v19->_connectionUUID = stringGUID2;
       }
 
       key = *MEMORY[0x1E69A4F60];
-      v13 = [v11 objectForKey:?];
+      v13 = [optionsCopy objectForKey:?];
       v95 = v46;
       if (v13)
       {
@@ -186,16 +186,16 @@ LABEL_28:
       streamName = v19->_streamName;
       v19->_streamName = v52;
 
-      v54 = [MEMORY[0x1E696AEC0] stringGUID];
+      stringGUID3 = [MEMORY[0x1E696AEC0] stringGUID];
       serviceToken = v19->_serviceToken;
-      v19->_serviceToken = v54;
+      v19->_serviceToken = stringGUID3;
 
       v56 = *MEMORY[0x1E69A4F10];
-      v57 = [v11 objectForKey:*MEMORY[0x1E69A4F10]];
+      v57 = [optionsCopy objectForKey:*MEMORY[0x1E69A4F10]];
 
       if (v57)
       {
-        v58 = [v11 objectForKey:v56];
+        v58 = [optionsCopy objectForKey:v56];
         v59 = [v58 copy];
         p_clientTimeout = &v19->_clientTimeout;
         clientTimeout = v19->_clientTimeout;
@@ -206,8 +206,8 @@ LABEL_28:
 LABEL_41:
           v65 = +[_IDSDeviceConnectionActiveMap sharedInstance];
           v66 = v19->_connectionUUID;
-          v67 = [(_IDSDeviceConnection *)v19 deviceConnectionKey];
-          [v65 setActiveConnection:v66 forKey:v67];
+          deviceConnectionKey = [(_IDSDeviceConnection *)v19 deviceConnectionKey];
+          [v65 setActiveConnection:v66 forKey:deviceConnectionKey];
 
           v68 = +[IDSLogging IDSDeviceConnection];
           if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
@@ -215,27 +215,27 @@ LABEL_41:
             socket = v19->_socket;
             v70 = v19->_streamName;
             v71 = v19->_connectionUUID;
-            v72 = [v10 uniqueID];
+            uniqueID = [deviceCopy uniqueID];
             *buf = 134219522;
             v106 = v19;
             v107 = 1024;
             *v108 = socket;
             *&v108[4] = 2112;
-            *&v108[6] = v11;
+            *&v108[6] = optionsCopy;
             v109 = 2112;
             v110 = v70;
             v111 = 2112;
             v112 = v71;
             v113 = 1024;
-            v114 = v97;
+            v114 = getActiveConnectionCount;
             v115 = 2112;
-            v116 = v72;
+            v116 = uniqueID;
             _os_log_impl(&dword_1959FF000, v68, OS_LOG_TYPE_DEFAULT, "<%p> Init connection socket %d with options: %@ (streamName:%@, connectionUUID:%@ active connections:%d), device: %@", buf, 0x40u);
           }
 
           v73 = +[IDSDaemonController sharedInstance];
-          v74 = [v73 listener];
-          [v74 addHandler:v19];
+          listener = [v73 listener];
+          [listener addHandler:v19];
 
           [(_IDSDeviceConnection *)v19 _connect];
           v75 = MEMORY[0x19A8BBEF0](self);
@@ -243,8 +243,8 @@ LABEL_41:
           v19->_openSocketCompletionHandler = v75;
 
           objc_storeStrong(&v19->_openSocketCompletionHandlerQueue, queue);
-          v77 = [v11 objectForKey:*MEMORY[0x1E69A4F68]];
-          v78 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v11];
+          v77 = [optionsCopy objectForKey:*MEMORY[0x1E69A4F68]];
+          v78 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
           v79 = v78;
           v80 = v19->_openSocketCompletionHandlerID;
           if (v80)
@@ -269,20 +269,20 @@ LABEL_41:
             CFDictionarySetValue(v79, key, v82);
           }
 
-          v83 = [v10 _internal];
-          v84 = [v83 uniqueID];
+          _internal5 = [deviceCopy _internal];
+          uniqueID2 = [_internal5 uniqueID];
 
-          if (v84)
+          if (uniqueID2)
           {
-            CFDictionarySetValue(v79, *MEMORY[0x1E69A4F28], v84);
+            CFDictionarySetValue(v79, *MEMORY[0x1E69A4F28], uniqueID2);
           }
 
           v85 = +[IDSDaemonController sharedInstance];
-          v86 = [v85 listenerID];
+          listenerID = [v85 listenerID];
 
-          if (v86)
+          if (listenerID)
           {
-            CFDictionarySetValue(v79, *MEMORY[0x1E69A4F00], v86);
+            CFDictionarySetValue(v79, *MEMORY[0x1E69A4F00], listenerID);
           }
 
           v87 = v19->_clientName;
@@ -315,16 +315,16 @@ LABEL_41:
 
           v91 = dispatch_time(0, 1000000000 * [(NSNumber *)v19->_clientTimeout intValue]);
           v92 = +[IDSInternalQueueController sharedInstance];
-          v93 = [v92 queue];
+          queue = [v92 queue];
           v99[0] = MEMORY[0x1E69E9820];
           v99[1] = 3221225472;
           v99[2] = sub_195A86434;
           v99[3] = &unk_1E743E878;
           v19 = v19;
           v100 = v19;
-          dispatch_after(v91, v93, v99);
+          dispatch_after(v91, queue, v99);
 
-          v12 = v96;
+          handlerCopy = v96;
           goto LABEL_26;
         }
 
@@ -355,7 +355,7 @@ LABEL_20:
     v26 = +[IDSLogging IDSDeviceConnection];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      sub_195B30F00(v10, v19);
+      sub_195B30F00(deviceCopy, v19);
     }
 
     v27 = @"Bad parameters. No valid IDSDevice found.";
@@ -371,16 +371,16 @@ LABEL_27:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0 object:0];
 
   [(_IDSDeviceConnection *)self _close];
   v4 = +[IDSDaemonController sharedInstance];
   [v4 removeListenerID:self->_serviceToken];
 
   v5 = +[IDSDaemonController sharedInstance];
-  v6 = [v5 listener];
-  [v6 removeHandler:self];
+  listener = [v5 listener];
+  [listener removeHandler:self];
 
   [(_IDSDeviceConnection *)self _cleanupCompletionBlock];
   v7.receiver = self;
@@ -391,12 +391,12 @@ LABEL_27:
 - (void)_connect
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B30F9C();
     }
@@ -430,7 +430,7 @@ LABEL_27:
   {
     v41 = [(NSMutableDictionary *)awdMetrics objectForKeyedSubscript:*MEMORY[0x1E69A4B80]];
     v4 = [(NSMutableDictionary *)self->_awdMetrics objectForKeyedSubscript:*MEMORY[0x1E69A4B88]];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
     v6 = [(NSMutableDictionary *)self->_awdMetrics objectForKeyedSubscript:*MEMORY[0x1E69A4B60]];
     v7 = [(NSMutableDictionary *)self->_awdMetrics objectForKeyedSubscript:*MEMORY[0x1E69A4B68]];
@@ -456,7 +456,7 @@ LABEL_27:
     v24 = llround((v22 - v23) * 1000.0);
     v37 = MEMORY[0x1E695DF20];
     v36 = *MEMORY[0x1E69A4BB0];
-    v25 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v25 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
     v26 = *MEMORY[0x1E69A4BB8];
     v27 = [MEMORY[0x1E696AD98] numberWithLongLong:v12];
     v28 = *MEMORY[0x1E69A4B98];
@@ -476,18 +476,18 @@ LABEL_27:
   return v34;
 }
 
-- (void)setStreamPairWithInputStream:(id)a3 outputStream:(id)a4
+- (void)setStreamPairWithInputStream:(id)stream outputStream:(id)outputStream
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v9 = +[IDSInternalQueueController sharedInstance];
-  v10 = [v9 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v9 assertQueueIsCurrent];
 
-  if (v10)
+  if (assertQueueIsCurrent)
   {
-    v11 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B310B8();
     }
@@ -497,44 +497,44 @@ LABEL_27:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 134218498;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v7;
+    v21 = streamCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = outputStreamCopy;
     _os_log_impl(&dword_1959FF000, v12, OS_LOG_TYPE_DEFAULT, "<%p> Updating stream pair: %@:%@", &v18, 0x20u);
   }
 
   inputStreamForSocket = self->_inputStreamForSocket;
-  if (inputStreamForSocket != v7)
+  if (inputStreamForSocket != streamCopy)
   {
     [(NSInputStream *)inputStreamForSocket close];
-    objc_storeStrong(&self->_inputStreamForSocket, a3);
+    objc_storeStrong(&self->_inputStreamForSocket, stream);
   }
 
   outputStreamForSocket = self->_outputStreamForSocket;
   p_outputStreamForSocket = &self->_outputStreamForSocket;
   v14 = outputStreamForSocket;
-  if (outputStreamForSocket != v8)
+  if (outputStreamForSocket != outputStreamCopy)
   {
     [(NSOutputStream *)v14 close];
-    objc_storeStrong(p_outputStreamForSocket, a4);
+    objc_storeStrong(p_outputStreamForSocket, outputStream);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateConnectionWithOptions:(id)a3 error:(id *)a4
+- (BOOL)updateConnectionWithOptions:(id)options error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v7 = +[IDSInternalQueueController sharedInstance];
-  v8 = [v7 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v7 assertQueueIsCurrent];
 
-  if (v8)
+  if (assertQueueIsCurrent)
   {
-    v9 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B31158();
     }
@@ -544,10 +544,10 @@ LABEL_27:
   {
     v17 = objc_alloc(MEMORY[0x1E695DF20]);
     v11 = [v17 initWithObjectsAndKeys:{@"Cannot change priority when not connected", *MEMORY[0x1E696A578], 0}];
-    if (a4)
+    if (error)
     {
       v14 = 0;
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:20 userInfo:v11];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:20 userInfo:v11];
       goto LABEL_24;
     }
 
@@ -556,7 +556,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v10 = [v6 objectForKey:*MEMORY[0x1E69A4BC0]];
+  v10 = [optionsCopy objectForKey:*MEMORY[0x1E69A4BC0]];
   v11 = v10;
   if (!v10)
   {
@@ -564,16 +564,16 @@ LABEL_23:
     v19 = [v18 initWithObjectsAndKeys:{@"Options dictionary contains no valid options", *MEMORY[0x1E696A578], 0}];
 LABEL_20:
     v21 = v19;
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:29 userInfo:v19];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:29 userInfo:v19];
     }
 
     goto LABEL_23;
   }
 
-  v12 = [v10 integerValue];
-  if (v12 != 100 && v12 != 300 && v12 != 200)
+  integerValue = [v10 integerValue];
+  if (integerValue != 100 && integerValue != 300 && integerValue != 200)
   {
     v20 = objc_alloc(MEMORY[0x1E695DF20]);
     v19 = [v20 initWithObjectsAndKeys:{@"Invalid priority level specified", *MEMORY[0x1E696A578], 0}];
@@ -587,9 +587,9 @@ LABEL_20:
   {
     v15 = objc_alloc(MEMORY[0x1E695DF20]);
     v16 = [v15 initWithObjectsAndKeys:{@"Could not set traffic class for underlying socket", *MEMORY[0x1E696A578], 0}];
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:20 userInfo:v16];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:20 userInfo:v16];
     }
   }
 
@@ -599,7 +599,7 @@ LABEL_20:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v26 = self;
+      selfCopy = self;
       v27 = 1024;
       v28 = v24;
       _os_log_impl(&dword_1959FF000, v16, OS_LOG_TYPE_DEFAULT, "<%p> Updated socket traffic class: %d", buf, 0x12u);
@@ -614,12 +614,12 @@ LABEL_24:
 - (void)close
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B311F8();
     }
@@ -636,9 +636,9 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v3 = [(_IDSDeviceConnection *)self deviceConnectionKey];
+  deviceConnectionKey = [(_IDSDeviceConnection *)self deviceConnectionKey];
   v4 = +[_IDSDeviceConnectionActiveMap sharedInstance];
-  v5 = [v4 hasActiveConnection:self->_connectionUUID forKey:v3];
+  v5 = [v4 hasActiveConnection:self->_connectionUUID forKey:deviceConnectionKey];
 
   v6 = +[IDSTransportLog IDSDeviceConnection];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -649,7 +649,7 @@ LABEL_24:
       socket = self->_socket;
       streamName = self->_streamName;
       *buf = 134218498;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 1024;
       *v36 = socket;
       v36[2] = 2112;
@@ -711,18 +711,18 @@ LABEL_24:
     v25 = +[IDSDaemonController sharedInstance];
     [v25 closeSocketWithOptions:v6];
 
-    v26 = +[_IDSDeviceConnectionActiveMap sharedInstance];
-    [v26 removeActiveConnection:self->_connectionUUID forKey:v3];
+    deviceConnectionKey2 = +[_IDSDeviceConnectionActiveMap sharedInstance];
+    [deviceConnectionKey2 removeActiveConnection:self->_connectionUUID forKey:deviceConnectionKey];
     goto LABEL_19;
   }
 
   if (v7)
   {
-    v26 = [(_IDSDeviceConnection *)self deviceConnectionKey];
+    deviceConnectionKey2 = [(_IDSDeviceConnection *)self deviceConnectionKey];
     *buf = 134218242;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2112;
-    *v36 = v26;
+    *v36 = deviceConnectionKey2;
     _os_log_impl(&dword_1959FF000, v6, OS_LOG_TYPE_DEFAULT, "<%p> Closing socket: skipped, a new connection for this %@", buf, 0x16u);
 LABEL_19:
   }
@@ -753,18 +753,18 @@ LABEL_24:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)xpcObject:(id)a3 objectContext:(id)a4
+- (void)xpcObject:(id)object objectContext:(id)context
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:@"object-type"];
+  objectCopy = object;
+  contextCopy = context;
+  v8 = [contextCopy objectForKey:@"object-type"];
   v9 = [v8 isEqualToIgnoringCase:@"device-socket"];
 
   if (v9)
   {
-    v10 = [v7 objectForKey:@"completionHandlerID"];
-    v11 = [v7 objectForKey:@"metrics"];
+    v10 = [contextCopy objectForKey:@"completionHandlerID"];
+    v11 = [contextCopy objectForKey:@"metrics"];
     v12 = +[IDSLogging IDSDeviceConnection];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -789,15 +789,15 @@ LABEL_24:
       *buf = 134218498;
       *v52 = self;
       *&v52[8] = 2112;
-      *&v52[10] = v6;
+      *&v52[10] = objectCopy;
       *&v52[18] = 2112;
-      *&v52[20] = v7;
+      *&v52[20] = contextCopy;
       _os_log_impl(&dword_1959FF000, v14, OS_LOG_TYPE_DEFAULT, "<%p> xpc object: [%@] context: [%@]", buf, 0x20u);
     }
 
-    if (v6)
+    if (objectCopy)
     {
-      v15 = xpc_fd_dup(v6);
+      v15 = xpc_fd_dup(objectCopy);
     }
 
     else
@@ -806,7 +806,7 @@ LABEL_24:
     }
 
     self->_socket = v15;
-    v16 = [v7 objectForKey:@"error"];
+    v16 = [contextCopy objectForKey:@"error"];
     v17 = +[IDSLogging IDSDeviceConnection];
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
     if (v16)
@@ -954,8 +954,8 @@ LABEL_35:
           {
             v42 = +[_IDSDeviceConnectionActiveMap sharedInstance];
             connectionUUID = self->_connectionUUID;
-            v44 = [(_IDSDeviceConnection *)self deviceConnectionKey];
-            [v42 removeActiveConnection:connectionUUID forKey:v44];
+            deviceConnectionKey = [(_IDSDeviceConnection *)self deviceConnectionKey];
+            [v42 removeActiveConnection:connectionUUID forKey:deviceConnectionKey];
           }
         }
 
@@ -995,7 +995,7 @@ LABEL_44:
   }
 }
 
-- (void)_daemonDied:(id)a3
+- (void)_daemonDied:(id)died
 {
   v4 = +[IDSInternalQueueController sharedInstance];
   v5[0] = MEMORY[0x1E69E9820];

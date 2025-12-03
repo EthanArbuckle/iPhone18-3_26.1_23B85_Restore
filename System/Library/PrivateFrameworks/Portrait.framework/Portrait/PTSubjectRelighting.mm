@@ -1,13 +1,13 @@
 @interface PTSubjectRelighting
-- (PTSubjectRelighting)initWithMetalContext:(id)a3 effectUtil:(id)a4 prewarmOnly:(BOOL)a5;
-- (int)runSRLForLivePhotosWithInputBuffer:(id)a3 lumaTexture:(id)a4 chromaTexture:(id)a5 skinMaskTexture:(id)a6 personMaskTexture:(id)a7 skinToneClassification:(id)a8 validROI:(CGRect)a9 expBias:(float)a10 faceExpRatio:(float)a11 transform:(CGAffineTransform *)a12;
+- (PTSubjectRelighting)initWithMetalContext:(id)context effectUtil:(id)util prewarmOnly:(BOOL)only;
+- (int)runSRLForLivePhotosWithInputBuffer:(id)buffer lumaTexture:(id)texture chromaTexture:(id)chromaTexture skinMaskTexture:(id)maskTexture personMaskTexture:(id)personMaskTexture skinToneClassification:(id)classification validROI:(CGRect)i expBias:(float)self0 faceExpRatio:(float)self1 transform:(CGAffineTransform *)self2;
 @end
 
 @implementation PTSubjectRelighting
 
-- (PTSubjectRelighting)initWithMetalContext:(id)a3 effectUtil:(id)a4 prewarmOnly:(BOOL)a5
+- (PTSubjectRelighting)initWithMetalContext:(id)context effectUtil:(id)util prewarmOnly:(BOOL)only
 {
-  v7 = a3;
+  contextCopy = context;
   v82.receiver = self;
   v82.super_class = PTSubjectRelighting;
   v8 = [(PTSubjectRelighting *)&v82 init];
@@ -16,7 +16,7 @@
     goto LABEL_30;
   }
 
-  v9 = [v7 computePipelineStateFor:@"srlV2GlobalSparseHistogramLivePhotos" withConstants:0];
+  v9 = [contextCopy computePipelineStateFor:@"srlV2GlobalSparseHistogramLivePhotos" withConstants:0];
   srlV2GlobalHistogramLivePhotos = v8->_srlV2GlobalHistogramLivePhotos;
   v8->_srlV2GlobalHistogramLivePhotos = v9;
 
@@ -31,7 +31,7 @@
     goto LABEL_29;
   }
 
-  v11 = [v7 computePipelineStateFor:@"srlV2FaceSparseHistogramLivePhotos" withConstants:0];
+  v11 = [contextCopy computePipelineStateFor:@"srlV2FaceSparseHistogramLivePhotos" withConstants:0];
   srlV2FaceHistogramLivePhotos = v8->_srlV2FaceHistogramLivePhotos;
   v8->_srlV2FaceHistogramLivePhotos = v11;
 
@@ -46,7 +46,7 @@
     goto LABEL_29;
   }
 
-  v13 = [v7 computePipelineStateFor:@"srlV2CalcCoefficientsLivePhotos" withConstants:0];
+  v13 = [contextCopy computePipelineStateFor:@"srlV2CalcCoefficientsLivePhotos" withConstants:0];
   srlV2CalcCoefficientsLivePhotos = v8->_srlV2CalcCoefficientsLivePhotos;
   v8->_srlV2CalcCoefficientsLivePhotos = v13;
 
@@ -61,8 +61,8 @@
     goto LABEL_29;
   }
 
-  v15 = [v7 device];
-  v16 = [v15 newBufferWithLength:8460 options:0];
+  device = [contextCopy device];
+  v16 = [device newBufferWithLength:8460 options:0];
   srlV2GlobalStatsBuffer = v8->_srlV2GlobalStatsBuffer;
   v8->_srlV2GlobalStatsBuffer = v16;
 
@@ -77,8 +77,8 @@
     goto LABEL_29;
   }
 
-  v18 = [v7 device];
-  v19 = [v18 newBufferWithLength:271680 options:0];
+  device2 = [contextCopy device];
+  v19 = [device2 newBufferWithLength:271680 options:0];
   srlV2FaceStatsBuffer = v8->_srlV2FaceStatsBuffer;
   v8->_srlV2FaceStatsBuffer = v19;
 
@@ -93,8 +93,8 @@
     goto LABEL_29;
   }
 
-  v21 = [v7 device];
-  v22 = [v21 newBufferWithLength:100 options:0];
+  device3 = [contextCopy device];
+  v22 = [device3 newBufferWithLength:100 options:0];
   srlV2CoeffsBuffer = v8->_srlV2CoeffsBuffer;
   v8->_srlV2CoeffsBuffer = v22;
 
@@ -126,7 +126,7 @@
   srlV2Plist = v8->_srlV2Plist;
   v8->_srlV2Plist = v25;
 
-  if (a5)
+  if (only)
   {
 LABEL_33:
     v80 = v8;
@@ -167,17 +167,17 @@ LABEL_31:
   return v80;
 }
 
-- (int)runSRLForLivePhotosWithInputBuffer:(id)a3 lumaTexture:(id)a4 chromaTexture:(id)a5 skinMaskTexture:(id)a6 personMaskTexture:(id)a7 skinToneClassification:(id)a8 validROI:(CGRect)a9 expBias:(float)a10 faceExpRatio:(float)a11 transform:(CGAffineTransform *)a12
+- (int)runSRLForLivePhotosWithInputBuffer:(id)buffer lumaTexture:(id)texture chromaTexture:(id)chromaTexture skinMaskTexture:(id)maskTexture personMaskTexture:(id)personMaskTexture skinToneClassification:(id)classification validROI:(CGRect)i expBias:(float)self0 faceExpRatio:(float)self1 transform:(CGAffineTransform *)self2
 {
-  v69 = a3;
-  v68 = a4;
-  v67 = a5;
-  v66 = a6;
-  v65 = a7;
-  v86 = a11;
-  v87[0] = a10;
-  v70 = a8;
-  v20 = [v70 count];
+  bufferCopy = buffer;
+  textureCopy = texture;
+  chromaTextureCopy = chromaTexture;
+  maskTextureCopy = maskTexture;
+  personMaskTextureCopy = personMaskTexture;
+  ratioCopy = ratio;
+  v87[0] = bias;
+  classificationCopy = classification;
+  v20 = [classificationCopy count];
   v21 = 4;
   if (v20 < 4)
   {
@@ -218,14 +218,14 @@ LABEL_31:
     p_srlV2FaceHistogramLivePhotos = &self[1]._srlV2FaceHistogramLivePhotos;
     do
     {
-      v30 = [v70 objectAtIndexedSubscript:v28];
-      v31 = [v30 faceAttributes];
+      v30 = [classificationCopy objectAtIndexedSubscript:v28];
+      faceAttributes = [v30 faceAttributes];
       [v30 boundingBox];
       v33 = v32;
-      v34 = [v31 facemaskCategory];
-      v35 = [v34 label];
-      v36 = [v35 identifier];
-      v37 = [v36 isEqualToString:@"UNKNOWN_17_unknown0"];
+      facemaskCategory = [faceAttributes facemaskCategory];
+      label = [facemaskCategory label];
+      identifier = [label identifier];
+      v37 = [identifier isEqualToString:@"UNKNOWN_17_unknown0"];
 
       [v30 boundingBox];
       v39 = v38;
@@ -239,10 +239,10 @@ LABEL_31:
 
       [v30 boundingBox];
       [v30 boundingBox];
-      v43 = *&a12->c;
-      *v74 = *&a12->a;
+      v43 = *&transform->c;
+      *v74 = *&transform->a;
       *&v74[16] = v43;
-      v75 = *&a12->tx;
+      v75 = *&transform->tx;
       [PTEffectUtil rotateNormalizedRect:v74 transform:1 inverse:v33, v39];
       v45.f64[1] = v44;
       v46 = (&self[1] + 48 * v28);
@@ -254,12 +254,12 @@ LABEL_31:
       v51 = (v50 * 3.0) / 1.57079633;
       v46[5].f32[0] = v51;
 
-      v52 = [v31 VN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq];
-      v53 = [v52 allLabelsWithConfidences];
+      vN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq = [faceAttributes VN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq];
+      allLabelsWithConfidences = [vN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq allLabelsWithConfidences];
 
-      for (i = 0; i < [v53 count]; ++i)
+      for (i = 0; i < [allLabelsWithConfidences count]; ++i)
       {
-        v55 = [v53 objectAtIndexedSubscript:i];
+        v55 = [allLabelsWithConfidences objectAtIndexedSubscript:i];
         [v55 confidence];
         *(p_srlV2FaceHistogramLivePhotos + i) = v56;
       }
@@ -271,17 +271,17 @@ LABEL_31:
     while (v28 != v71);
   }
 
-  v57 = [v69 computeCommandEncoder];
-  v58 = [(MTLComputePipelineState *)self->_srlV2GlobalHistogramLivePhotos maxTotalThreadsPerThreadgroup];
-  v59 = [(MTLComputePipelineState *)self->_srlV2FaceHistogramLivePhotos maxTotalThreadsPerThreadgroup];
-  if (v58 >= v59)
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_srlV2GlobalHistogramLivePhotos maxTotalThreadsPerThreadgroup];
+  maxTotalThreadsPerThreadgroup2 = [(MTLComputePipelineState *)self->_srlV2FaceHistogramLivePhotos maxTotalThreadsPerThreadgroup];
+  if (maxTotalThreadsPerThreadgroup >= maxTotalThreadsPerThreadgroup2)
   {
-    v60 = v59;
+    v60 = maxTotalThreadsPerThreadgroup2;
   }
 
   else
   {
-    v60 = v58;
+    v60 = maxTotalThreadsPerThreadgroup;
   }
 
   v61 = log2f((v60 >> 6));
@@ -296,38 +296,38 @@ LABEL_31:
     v63 = v62;
   }
 
-  [v57 setTexture:v68 atIndex:1];
-  [v57 setTexture:v67 atIndex:2];
-  [v57 setTexture:v66 atIndex:5];
-  [v57 setTexture:v65 atIndex:6];
-  [v57 setBytes:v76 length:128 atIndex:0];
-  [v57 setBytes:&self[1] length:48 * v71 atIndex:1];
-  [v57 setBytes:v87 length:4 atIndex:7];
-  [v57 setBytes:&v86 length:4 atIndex:8];
-  [v57 setBuffer:self->_srlV2GlobalStatsBuffer offset:0 atIndex:2];
-  [v57 setBuffer:self->_srlV2FaceStatsBuffer offset:0 atIndex:3];
-  [v57 setBuffer:self->_srlV2CoeffsBuffer offset:0 atIndex:4];
-  [v57 setComputePipelineState:self->_srlV2GlobalHistogramLivePhotos];
+  [computeCommandEncoder setTexture:textureCopy atIndex:1];
+  [computeCommandEncoder setTexture:chromaTextureCopy atIndex:2];
+  [computeCommandEncoder setTexture:maskTextureCopy atIndex:5];
+  [computeCommandEncoder setTexture:personMaskTextureCopy atIndex:6];
+  [computeCommandEncoder setBytes:v76 length:128 atIndex:0];
+  [computeCommandEncoder setBytes:&self[1] length:48 * v71 atIndex:1];
+  [computeCommandEncoder setBytes:v87 length:4 atIndex:7];
+  [computeCommandEncoder setBytes:&ratioCopy length:4 atIndex:8];
+  [computeCommandEncoder setBuffer:self->_srlV2GlobalStatsBuffer offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:self->_srlV2FaceStatsBuffer offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:self->_srlV2CoeffsBuffer offset:0 atIndex:4];
+  [computeCommandEncoder setComputePipelineState:self->_srlV2GlobalHistogramLivePhotos];
   *v74 = vdupq_n_s64(1uLL);
   *&v74[16] = 1;
-  v72 = 64;
+  threadExecutionWidth = 64;
   v73.i64[0] = v63;
   v73.i64[1] = 1;
-  [v57 dispatchThreadgroups:v74 threadsPerThreadgroup:&v72];
-  [v57 setComputePipelineState:self->_srlV2FaceHistogramLivePhotos];
+  [computeCommandEncoder dispatchThreadgroups:v74 threadsPerThreadgroup:&threadExecutionWidth];
+  [computeCommandEncoder setComputePipelineState:self->_srlV2FaceHistogramLivePhotos];
   v73.i64[1] = 1;
   *v74 = v71;
   *&v74[8] = vdupq_n_s64(1uLL);
-  v72 = 64;
+  threadExecutionWidth = 64;
   v73.i64[0] = v63;
-  [v57 dispatchThreadgroups:v74 threadsPerThreadgroup:&v72];
-  [v57 setComputePipelineState:self->_srlV2CalcCoefficientsLivePhotos];
+  [computeCommandEncoder dispatchThreadgroups:v74 threadsPerThreadgroup:&threadExecutionWidth];
+  [computeCommandEncoder setComputePipelineState:self->_srlV2CalcCoefficientsLivePhotos];
   *v74 = vdupq_n_s64(1uLL);
   *&v74[16] = 1;
-  v72 = [(MTLComputePipelineState *)self->_srlV2CalcCoefficientsLivePhotos threadExecutionWidth];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_srlV2CalcCoefficientsLivePhotos threadExecutionWidth];
   v73 = vdupq_n_s64(1uLL);
-  [v57 dispatchThreadgroups:v74 threadsPerThreadgroup:&v72];
-  [v57 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v74 threadsPerThreadgroup:&threadExecutionWidth];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }

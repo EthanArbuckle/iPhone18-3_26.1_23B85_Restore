@@ -1,24 +1,24 @@
 @interface MapsSuggestionsFinanceKit
 - (NSString)uniqueName;
 - (_TtC15MapsSuggestions25MapsSuggestionsFinanceKit)init;
-- (_TtC15MapsSuggestions25MapsSuggestionsFinanceKit)initWithConnector:(id)a3 requester:(id)a4;
-- (id)initFromResourceDepot:(id)a3;
-- (void)setUniqueName:(id)a3;
-- (void)startObservingForOrdersWithPeriod:(double)a3;
+- (_TtC15MapsSuggestions25MapsSuggestionsFinanceKit)initWithConnector:(id)connector requester:(id)requester;
+- (id)initFromResourceDepot:(id)depot;
+- (void)setUniqueName:(id)name;
+- (void)startObservingForOrdersWithPeriod:(double)period;
 - (void)stopObservingForOrders;
-- (void)updateOrdersWithOrders:(id)a3;
+- (void)updateOrdersWithOrders:(id)orders;
 @end
 
 @implementation MapsSuggestionsFinanceKit
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   swift_unknownObjectRetain();
-  result = [a3 oneFinanceKitConnector];
+  result = [depot oneFinanceKitConnector];
   if (result)
   {
     v6 = result;
-    result = [a3 oneNetworkRequester];
+    result = [depot oneNetworkRequester];
     if (result)
     {
       v7 = [(MapsSuggestionsFinanceKit *)self initWithConnector:v6 requester:result];
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (_TtC15MapsSuggestions25MapsSuggestionsFinanceKit)initWithConnector:(id)a3 requester:(id)a4
+- (_TtC15MapsSuggestions25MapsSuggestionsFinanceKit)initWithConnector:(id)connector requester:(id)requester
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return MapsSuggestionsFinanceKit.init(connector:requester:)(a3, a4);
+  return MapsSuggestionsFinanceKit.init(connector:requester:)(connector, requester);
 }
 
 - (NSString)uniqueName
@@ -54,7 +54,7 @@
   return v2;
 }
 
-- (void)setUniqueName:(id)a3
+- (void)setUniqueName:(id)name
 {
   v4 = sub_1C529D72C();
   v6 = v5;
@@ -64,23 +64,23 @@
   v7[1] = v6;
 }
 
-- (void)updateOrdersWithOrders:(id)a3
+- (void)updateOrdersWithOrders:(id)orders
 {
   type metadata accessor for MapsSuggestionsOrderPickup();
   v4 = sub_1C529D7DC();
-  v5 = self;
+  selfCopy = self;
   sub_1C5141FA0(v4);
 }
 
-- (void)startObservingForOrdersWithPeriod:(double)a3
+- (void)startObservingForOrdersWithPeriod:(double)period
 {
-  v4 = self;
-  sub_1C513A1F8(a3);
+  selfCopy = self;
+  sub_1C513A1F8(period);
 }
 
 - (void)stopObservingForOrders
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5289308();
 }
 

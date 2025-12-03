@@ -1,11 +1,11 @@
 @interface CKGenerateButtonBackground
-- (_TtC7ChatKitP33_48E4CE588C5118AF31EDCFDBF5B7EAE826CKGenerateButtonBackground)initWithCoder:(id)a3;
+- (_TtC7ChatKitP33_48E4CE588C5118AF31EDCFDBF5B7EAE826CKGenerateButtonBackground)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation CKGenerateButtonBackground
 
-- (_TtC7ChatKitP33_48E4CE588C5118AF31EDCFDBF5B7EAE826CKGenerateButtonBackground)initWithCoder:(id)a3
+- (_TtC7ChatKitP33_48E4CE588C5118AF31EDCFDBF5B7EAE826CKGenerateButtonBackground)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKitP33_48E4CE588C5118AF31EDCFDBF5B7EAE826CKGenerateButtonBackground_illuminated) = 0;
   v4 = OBJC_IVAR____TtC7ChatKitP33_48E4CE588C5118AF31EDCFDBF5B7EAE826CKGenerateButtonBackground_defaultBackdropFilters;
@@ -41,7 +41,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190A0B7F4();
 }
 

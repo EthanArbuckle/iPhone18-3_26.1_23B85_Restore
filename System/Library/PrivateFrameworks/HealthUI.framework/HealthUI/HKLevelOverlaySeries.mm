@@ -1,46 +1,46 @@
 @interface HKLevelOverlaySeries
-+ (id)levelOverlaySeriesWithDisplayType:(id)a3 dataSource:(id)a4 options:(unint64_t)a5;
-+ (id)presentationStyleWithColor:(id)a3 options:(unint64_t)a4;
-- (HKLevelOverlaySeries)initWithDisplayType:(id)a3 dataSource:(id)a4 options:(unint64_t)a5;
-- (id)_visibleBlockCoordinatesFromBlockCoordinates:(id)a3 pointTransform:(CGAffineTransform *)a4 screenRect:(CGRect)a5 strict:(BOOL)a6;
-- (void)_configureOverlaySeriesWithDisplayType:(id)a3 dataSource:(id)a4 options:(unint64_t)a5;
-- (void)_drawBoundAnnotationsWithCoordinates:(id)a3 displayUpperBound:(BOOL)a4 displayLowerBound:(BOOL)a5 axisAnnotationDelegate:(id)a6;
-- (void)_drawLevelBoundsInContext:(CGContext *)a3 coordinates:(id)a4 pointTransform:(CGAffineTransform *)a5 seriesRect:(CGRect)a6 visibleValueRange:(id)a7 extendFirstPoint:(BOOL)a8 displayUpperBound:(BOOL)a9 displayUpperBoundPath:(BOOL)a10 displayLowerBound:(BOOL)a11 displayLowerBoundPath:(BOOL)a12 strokeStyle:(id)a13 seriesRenderingDelegate:(id)a14;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)drawSeriesWithVisibleCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9 axisAnnotationDelegate:(id)a10 shouldExtendFirstPoint:(BOOL)a11;
++ (id)levelOverlaySeriesWithDisplayType:(id)type dataSource:(id)source options:(unint64_t)options;
++ (id)presentationStyleWithColor:(id)color options:(unint64_t)options;
+- (HKLevelOverlaySeries)initWithDisplayType:(id)type dataSource:(id)source options:(unint64_t)options;
+- (id)_visibleBlockCoordinatesFromBlockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform screenRect:(CGRect)rect strict:(BOOL)strict;
+- (void)_configureOverlaySeriesWithDisplayType:(id)type dataSource:(id)source options:(unint64_t)options;
+- (void)_drawBoundAnnotationsWithCoordinates:(id)coordinates displayUpperBound:(BOOL)bound displayLowerBound:(BOOL)lowerBound axisAnnotationDelegate:(id)delegate;
+- (void)_drawLevelBoundsInContext:(CGContext *)context coordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform seriesRect:(CGRect)rect visibleValueRange:(id)range extendFirstPoint:(BOOL)point displayUpperBound:(BOOL)bound displayUpperBoundPath:(BOOL)self0 displayLowerBound:(BOOL)self1 displayLowerBoundPath:(BOOL)self2 strokeStyle:(id)self3 seriesRenderingDelegate:(id)self4;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)drawSeriesWithVisibleCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate axisAnnotationDelegate:(id)self0 shouldExtendFirstPoint:(BOOL)self1;
 @end
 
 @implementation HKLevelOverlaySeries
 
-- (HKLevelOverlaySeries)initWithDisplayType:(id)a3 dataSource:(id)a4 options:(unint64_t)a5
+- (HKLevelOverlaySeries)initWithDisplayType:(id)type dataSource:(id)source options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = HKLevelOverlaySeries;
   v10 = [(HKLineSeries *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(HKLevelOverlaySeries *)v10 _configureOverlaySeriesWithDisplayType:v8 dataSource:v9 options:a5];
+    [(HKLevelOverlaySeries *)v10 _configureOverlaySeriesWithDisplayType:typeCopy dataSource:sourceCopy options:options];
   }
 
   return v11;
 }
 
-- (void)_configureOverlaySeriesWithDisplayType:(id)a3 dataSource:(id)a4 options:(unint64_t)a5
+- (void)_configureOverlaySeriesWithDisplayType:(id)type dataSource:(id)source options:(unint64_t)options
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  self->_options = a5;
-  v8 = a3;
-  [(HKGraphSeries *)self setDataSource:a4];
+  self->_options = options;
+  typeCopy = type;
+  [(HKGraphSeries *)self setDataSource:source];
   [(HKGraphSeries *)self setAllowsSelection:0];
   v9 = [HKNumericAxis standardNumericYAxisWithConfigurationOverrides:0];
   [(HKGraphSeries *)self setYAxis:v9];
   v10 = objc_opt_class();
-  v11 = [v8 displayCategory];
-  v12 = [v11 color];
-  v13 = [v10 presentationStyleWithColor:v12 options:a5];
+  displayCategory = [typeCopy displayCategory];
+  color = [displayCategory color];
+  v13 = [v10 presentationStyleWithColor:color options:options];
 
   v19[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -51,33 +51,33 @@
   [(HKLineSeries *)self setHighlightedPresentationStyles:v15];
 
   [(HKLineSeries *)self setInactivePresentationStyle:v13];
-  v16 = [v8 chartingRules];
+  chartingRules = [typeCopy chartingRules];
 
-  v17 = [v16 axisScalingRule];
-  [(HKGraphSeries *)self setAxisScalingRule:v17];
+  axisScalingRule = [chartingRules axisScalingRule];
+  [(HKGraphSeries *)self setAxisScalingRule:axisScalingRule];
 }
 
-+ (id)levelOverlaySeriesWithDisplayType:(id)a3 dataSource:(id)a4 options:(unint64_t)a5
++ (id)levelOverlaySeriesWithDisplayType:(id)type dataSource:(id)source options:(unint64_t)options
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[HKLevelOverlaySeries alloc] initWithDisplayType:v8 dataSource:v7 options:a5];
+  sourceCopy = source;
+  typeCopy = type;
+  v9 = [[HKLevelOverlaySeries alloc] initWithDisplayType:typeCopy dataSource:sourceCopy options:options];
 
   return v9;
 }
 
-+ (id)presentationStyleWithColor:(id)a3 options:(unint64_t)a4
++ (id)presentationStyleWithColor:(id)color options:(unint64_t)options
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = HKUICeilToScreenScale(1.0);
-  v7 = v5;
+  v7 = colorCopy;
   v8 = [HKStrokeStyle strokeStyleWithColor:v7 lineWidth:v6];
   [v8 setDashStyle:4];
   [v8 setLineCap:1];
   v9 = objc_alloc_init(HKLineSeriesPresentationStyle);
   [(HKLineSeriesPresentationStyle *)v9 setStrokeStyle:v8];
   [(HKLineSeriesPresentationStyle *)v9 setWaveForm:0];
-  [(HKLineSeriesPresentationStyle *)v9 setShouldNegateAnnotationValue:(a4 >> 2) & 1];
+  [(HKLineSeriesPresentationStyle *)v9 setShouldNegateAnnotationValue:(options >> 2) & 1];
   v10 = [MEMORY[0x1E69DB878] hk_roundedSystemFontWithSize:18.0 weight:*MEMORY[0x1E69DB970]];
   v11 = HKIntegerFormatter();
   v12 = [HKAxisLabelStyle labelStyleWithColor:v7 font:v10 horizontalAlignment:0 verticalAlignment:2 numberFormatter:v11];
@@ -87,169 +87,169 @@
   return v9;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a9;
-  v19 = a8;
-  v20 = a5;
-  v21 = a3;
-  v22 = [v18 axisAnnotationDelegateForSeries:self];
-  if (([v18 seriesDrawingDuringScrolling] & 1) != 0 || (objc_msgSend(v18, "seriesDrawingDuringTiling") & 1) != 0 || objc_msgSend(v18, "seriesDrawingDuringAutoscale"))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegateCopy = delegate;
+  renderContextCopy = renderContext;
+  configurationCopy = configuration;
+  coordinatesCopy = coordinates;
+  v22 = [delegateCopy axisAnnotationDelegateForSeries:self];
+  if (([delegateCopy seriesDrawingDuringScrolling] & 1) != 0 || (objc_msgSend(delegateCopy, "seriesDrawingDuringTiling") & 1) != 0 || objc_msgSend(delegateCopy, "seriesDrawingDuringAutoscale"))
   {
     [v22 clearAxisAnnotations];
   }
 
-  v23 = [v21 coordinates];
-  v24 = *&a6->c;
-  v36 = *&a6->a;
+  coordinates = [coordinatesCopy coordinates];
+  v24 = *&transform->c;
+  v36 = *&transform->a;
   v37 = v24;
-  v38 = *&a6->tx;
-  v25 = [(HKLevelOverlaySeries *)self _visibleBlockCoordinatesFromBlockCoordinates:v23 pointTransform:&v36 screenRect:0 strict:x, y, width, height];
+  v38 = *&transform->tx;
+  height = [(HKLevelOverlaySeries *)self _visibleBlockCoordinatesFromBlockCoordinates:coordinates pointTransform:&v36 screenRect:0 strict:x, y, width, height];
 
   v26 = *(MEMORY[0x1E695EFD0] + 16);
   v36 = *MEMORY[0x1E695EFD0];
   v37 = v26;
   v38 = *(MEMORY[0x1E695EFD0] + 32);
-  v27 = [v21 firstCoordinateWithTransform:&v36 roundToViewScale:0];
+  v27 = [coordinatesCopy firstCoordinateWithTransform:&v36 roundToViewScale:0];
 
-  v28 = [v25 firstObject];
-  [v28 startXValue];
+  firstObject = [height firstObject];
+  [firstObject startXValue];
   v30 = v29;
   [v27 startXValue];
   v32 = v30 != v31;
 
-  v33 = *&a6->c;
-  v36 = *&a6->a;
+  v33 = *&transform->c;
+  v36 = *&transform->a;
   v37 = v33;
-  v38 = *&a6->tx;
+  v38 = *&transform->tx;
   LOBYTE(v34) = v32;
-  [(HKLevelOverlaySeries *)self drawSeriesWithVisibleCoordinates:v25 axisRect:v20 zoomLevelConfiguration:&v36 pointTransform:a7 renderContext:v19 secondaryRenderContext:v18 seriesRenderingDelegate:x axisAnnotationDelegate:y shouldExtendFirstPoint:width, height, v22, v34];
+  [(HKLevelOverlaySeries *)self drawSeriesWithVisibleCoordinates:height axisRect:configurationCopy zoomLevelConfiguration:&v36 pointTransform:context renderContext:renderContextCopy secondaryRenderContext:delegateCopy seriesRenderingDelegate:x axisAnnotationDelegate:y shouldExtendFirstPoint:width, height, v22, v34];
 }
 
-- (void)drawSeriesWithVisibleCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9 axisAnnotationDelegate:(id)a10 shouldExtendFirstPoint:(BOOL)a11
+- (void)drawSeriesWithVisibleCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate axisAnnotationDelegate:(id)self0 shouldExtendFirstPoint:(BOOL)self1
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v19 = a10;
-  v31 = a9;
-  v20 = a3;
-  [(HKLevelOverlaySeries *)self _drawBoundAnnotationsWithCoordinates:v20 displayUpperBound:[(HKLevelOverlaySeries *)self shouldDisplayUpperBound] displayLowerBound:[(HKLevelOverlaySeries *)self shouldDisplayLowerBound] axisAnnotationDelegate:v19];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  annotationDelegateCopy = annotationDelegate;
+  delegateCopy = delegate;
+  coordinatesCopy = coordinates;
+  [(HKLevelOverlaySeries *)self _drawBoundAnnotationsWithCoordinates:coordinatesCopy displayUpperBound:[(HKLevelOverlaySeries *)self shouldDisplayUpperBound] displayLowerBound:[(HKLevelOverlaySeries *)self shouldDisplayLowerBound] axisAnnotationDelegate:annotationDelegateCopy];
 
-  v21 = [(HKGraphSeries *)self visibleValueRange];
-  v30 = [(HKLevelOverlaySeries *)self shouldDisplayUpperBound];
-  v22 = [(HKLevelOverlaySeries *)self shouldDisplayUpperBound];
-  v23 = [(HKLevelOverlaySeries *)self shouldDisplayLowerBound];
-  v24 = [(HKLevelOverlaySeries *)self shouldDisplayLowerBound];
-  v25 = [(HKLineSeries *)self unhighlightedPresentationStyles];
-  v26 = [v25 firstObject];
-  v27 = [v26 strokeStyle];
-  v28 = *&a6->c;
-  v33[0] = *&a6->a;
+  visibleValueRange = [(HKGraphSeries *)self visibleValueRange];
+  shouldDisplayUpperBound = [(HKLevelOverlaySeries *)self shouldDisplayUpperBound];
+  shouldDisplayUpperBound2 = [(HKLevelOverlaySeries *)self shouldDisplayUpperBound];
+  shouldDisplayLowerBound = [(HKLevelOverlaySeries *)self shouldDisplayLowerBound];
+  shouldDisplayLowerBound2 = [(HKLevelOverlaySeries *)self shouldDisplayLowerBound];
+  unhighlightedPresentationStyles = [(HKLineSeries *)self unhighlightedPresentationStyles];
+  firstObject = [unhighlightedPresentationStyles firstObject];
+  strokeStyle = [firstObject strokeStyle];
+  v28 = *&transform->c;
+  v33[0] = *&transform->a;
   v33[1] = v28;
-  v33[2] = *&a6->tx;
-  BYTE2(v29) = v24;
-  BYTE1(v29) = v23;
-  LOBYTE(v29) = v22;
-  [(HKLevelOverlaySeries *)self _drawLevelBoundsInContext:a7 coordinates:v20 pointTransform:v33 seriesRect:v21 visibleValueRange:a11 extendFirstPoint:v30 displayUpperBound:x displayUpperBoundPath:y displayLowerBound:width displayLowerBoundPath:height strokeStyle:v29 seriesRenderingDelegate:v27, v31];
+  v33[2] = *&transform->tx;
+  BYTE2(v29) = shouldDisplayLowerBound2;
+  BYTE1(v29) = shouldDisplayLowerBound;
+  LOBYTE(v29) = shouldDisplayUpperBound2;
+  [(HKLevelOverlaySeries *)self _drawLevelBoundsInContext:context coordinates:coordinatesCopy pointTransform:v33 seriesRect:visibleValueRange visibleValueRange:point extendFirstPoint:shouldDisplayUpperBound displayUpperBound:x displayUpperBoundPath:y displayLowerBound:width displayLowerBoundPath:height strokeStyle:v29 seriesRenderingDelegate:strokeStyle, delegateCopy];
 }
 
-- (void)_drawBoundAnnotationsWithCoordinates:(id)a3 displayUpperBound:(BOOL)a4 displayLowerBound:(BOOL)a5 axisAnnotationDelegate:(id)a6
+- (void)_drawBoundAnnotationsWithCoordinates:(id)coordinates displayUpperBound:(BOOL)bound displayLowerBound:(BOOL)lowerBound axisAnnotationDelegate:(id)delegate
 {
-  v6 = a5;
-  v7 = a4;
-  v13 = a6;
-  v10 = [(HKLevelOverlaySeries *)self _chartDataFromBlockCoordinates:a3];
+  lowerBoundCopy = lowerBound;
+  boundCopy = bound;
+  delegateCopy = delegate;
+  v10 = [(HKLevelOverlaySeries *)self _chartDataFromBlockCoordinates:coordinates];
   if ([v10 count])
   {
-    v11 = [v10 lastObject];
-    v12 = v11;
-    if (v7)
+    lastObject = [v10 lastObject];
+    v12 = lastObject;
+    if (boundCopy)
     {
-      [v11 maxValue];
-      [(HKLineSeries *)self addAxisAnnotationForValue:v13 axisAnnotationDelegate:?];
+      [lastObject maxValue];
+      [(HKLineSeries *)self addAxisAnnotationForValue:delegateCopy axisAnnotationDelegate:?];
     }
 
-    if (v6)
+    if (lowerBoundCopy)
     {
       [v12 minValue];
-      [(HKLineSeries *)self addAxisAnnotationForValue:v13 axisAnnotationDelegate:?];
+      [(HKLineSeries *)self addAxisAnnotationForValue:delegateCopy axisAnnotationDelegate:?];
     }
   }
 }
 
-- (void)_drawLevelBoundsInContext:(CGContext *)a3 coordinates:(id)a4 pointTransform:(CGAffineTransform *)a5 seriesRect:(CGRect)a6 visibleValueRange:(id)a7 extendFirstPoint:(BOOL)a8 displayUpperBound:(BOOL)a9 displayUpperBoundPath:(BOOL)a10 displayLowerBound:(BOOL)a11 displayLowerBoundPath:(BOOL)a12 strokeStyle:(id)a13 seriesRenderingDelegate:(id)a14
+- (void)_drawLevelBoundsInContext:(CGContext *)context coordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform seriesRect:(CGRect)rect visibleValueRange:(id)range extendFirstPoint:(BOOL)point displayUpperBound:(BOOL)bound displayUpperBoundPath:(BOOL)self0 displayLowerBound:(BOOL)self1 displayLowerBoundPath:(BOOL)self2 strokeStyle:(id)self3 seriesRenderingDelegate:(id)self4
 {
-  path = a9;
-  v107 = a8;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  path = bound;
+  pointCopy = point;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v117 = *MEMORY[0x1E69E9840];
-  v20 = a4;
-  v21 = a7;
-  v22 = a13;
-  v23 = a14;
-  if (![v20 count])
+  coordinatesCopy = coordinates;
+  rangeCopy = range;
+  styleCopy = style;
+  delegateCopy = delegate;
+  if (![coordinatesCopy count])
   {
     goto LABEL_68;
   }
 
-  v99 = v23;
-  [v23 seriesContentOffset];
+  v99 = delegateCopy;
+  [delegateCopy seriesContentOffset];
   v25 = v24;
-  v26 = malloc_type_calloc([v20 count] + 2, 0x10uLL, 0x1000040451B5BE8uLL);
-  v27 = malloc_type_calloc([v20 count] + 2, 0x10uLL, 0x1000040451B5BE8uLL);
-  v28 = [v20 count];
+  v26 = malloc_type_calloc([coordinatesCopy count] + 2, 0x10uLL, 0x1000040451B5BE8uLL);
+  v27 = malloc_type_calloc([coordinatesCopy count] + 2, 0x10uLL, 0x1000040451B5BE8uLL);
+  v28 = [coordinatesCopy count];
   v118.origin.x = x;
   v118.origin.y = y;
   v118.size.width = width;
   v118.size.height = height;
   MinY = CGRectGetMinY(v118);
-  [v22 lineWidth];
+  [styleCopy lineWidth];
   v109 = MinY - v30;
   v119.origin.x = x;
   v119.origin.y = y;
   v119.size.width = width;
   v119.size.height = height;
   MaxY = CGRectGetMaxY(v119);
-  [v22 lineWidth];
+  [styleCopy lineWidth];
   v108 = MaxY + v32;
-  v33 = [v21 minValue];
-  v34 = [v21 maxValue];
+  minValue = [rangeCopy minValue];
+  maxValue = [rangeCopy maxValue];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v34 floatValue];
+      [maxValue floatValue];
       v36 = v35;
-      [v33 floatValue];
-      b = a5->b;
-      d = a5->d;
-      ty = a5->ty;
+      [minValue floatValue];
+      b = transform->b;
+      d = transform->d;
+      ty = transform->ty;
       v108 = ty + d * v37 + b * 0.0;
       v109 = ty + d * v36 + b * 0.0;
     }
   }
 
-  v97 = v34;
-  v98 = v33;
-  v100 = v22;
-  v101 = v21;
+  v97 = maxValue;
+  v98 = minValue;
+  v100 = styleCopy;
+  v101 = rangeCopy;
   v114 = 0u;
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v102 = v20;
-  obj = v20;
+  v102 = coordinatesCopy;
+  obj = coordinatesCopy;
   v41 = [obj countByEnumeratingWithState:&v112 objects:v116 count:16];
   v105 = v25;
   if (!v41)
@@ -275,17 +275,17 @@
       }
 
       v47 = *(*(&v112 + 1) + 8 * v46);
-      v48 = [v47 userInfo];
+      userInfo = [v47 userInfo];
       [v47 endXValue];
       v50 = v49;
-      [v48 maxValue];
-      v52 = a5->tx + v51 * a5->c + a5->a * v50;
-      v53 = a5->ty + v51 * a5->d + a5->b * v50;
+      [userInfo maxValue];
+      v52 = transform->tx + v51 * transform->c + transform->a * v50;
+      v53 = transform->ty + v51 * transform->d + transform->b * v50;
       [v47 endXValue];
       v55 = v54;
-      [v48 minValue];
-      v57 = a5->tx + v56 * a5->c + a5->a * v55;
-      v58 = a5->ty + v56 * a5->d + a5->b * v55;
+      [userInfo minValue];
+      v57 = transform->tx + v56 * transform->c + transform->a * v55;
+      v58 = transform->ty + v56 * transform->d + transform->b * v55;
       if (path)
       {
         v59 = v53;
@@ -296,7 +296,7 @@
         v59 = v109;
       }
 
-      if (a11)
+      if (lowerBound)
       {
         v60 = v58;
       }
@@ -311,7 +311,7 @@
       v120.size.width = width;
       v120.size.height = height;
       MinX = CGRectGetMinX(v120);
-      if (v43 || !v107 || v52 <= MinX)
+      if (v43 || !pointCopy || v52 <= MinX)
       {
         if (v43 == 1)
         {
@@ -493,54 +493,54 @@ LABEL_60:
   }
 
   CGPathCloseSubpath(v91);
-  v93 = [v100 strokeColor];
-  v94 = [v93 colorWithAlphaComponent:0.1];
-  v95 = [v93 colorWithAlphaComponent:0.3];
+  strokeColor = [v100 strokeColor];
+  v94 = [strokeColor colorWithAlphaComponent:0.1];
+  v95 = [strokeColor colorWithAlphaComponent:0.3];
   v96 = HKUIDynamicColorWithColors(v94, v95);
 
-  v22 = v100;
-  CGContextSetFillColorWithColor(a3, [v96 CGColor]);
-  CGContextSetStrokeColorWithColor(a3, [v93 CGColor]);
-  if (a10)
+  styleCopy = v100;
+  CGContextSetFillColorWithColor(context, [v96 CGColor]);
+  CGContextSetStrokeColorWithColor(context, [strokeColor CGColor]);
+  if (path)
   {
-    CGContextAddPath(a3, Mutable);
-    [v100 applyToContext:a3 dashPhase:v104];
-    CGContextStrokePath(a3);
+    CGContextAddPath(context, Mutable);
+    [v100 applyToContext:context dashPhase:v104];
+    CGContextStrokePath(context);
   }
 
-  v21 = v101;
-  v23 = v99;
-  if (a12)
+  rangeCopy = v101;
+  delegateCopy = v99;
+  if (boundPath)
   {
-    CGContextAddPath(a3, v90);
-    [v100 applyToContext:a3 dashPhase:v105];
-    CGContextStrokePath(a3);
+    CGContextAddPath(context, v90);
+    [v100 applyToContext:context dashPhase:v105];
+    CGContextStrokePath(context);
   }
 
-  CGContextAddPath(a3, v91);
-  CGContextFillPath(a3);
+  CGContextAddPath(context, v91);
+  CGContextFillPath(context);
   CGPathRelease(patha);
   CGPathRelease(v90);
   CGPathRelease(v91);
   free(v26);
   free(v27);
 
-  v20 = v102;
+  coordinatesCopy = v102;
 LABEL_68:
 }
 
-- (id)_visibleBlockCoordinatesFromBlockCoordinates:(id)a3 pointTransform:(CGAffineTransform *)a4 screenRect:(CGRect)a5 strict:(BOOL)a6
+- (id)_visibleBlockCoordinatesFromBlockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform screenRect:(CGRect)rect strict:(BOOL)strict
 {
-  width = a5.size.width;
-  x = a5.origin.x;
+  width = rect.size.width;
+  x = rect.origin.x;
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  coordinatesCopy = coordinates;
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = v9;
+  v10 = coordinatesCopy;
   v11 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v11)
   {
@@ -563,17 +563,17 @@ LABEL_68:
 
         v18 = *(*(&v36 + 1) + 8 * v17);
         [v18 startXValue];
-        v20 = a4->tx + a4->c * 0.0 + a4->a * v19;
+        v20 = transform->tx + transform->c * 0.0 + transform->a * v19;
         if (v20 >= x && v20 <= v15)
         {
-          v22 = [v18 userInfo];
+          userInfo = [v18 userInfo];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
             [v32 addObject:v18];
-            if (!a6)
+            if (!strict)
             {
               if (v16 == 0x7FFFFFFFFFFFFFFFLL)
               {

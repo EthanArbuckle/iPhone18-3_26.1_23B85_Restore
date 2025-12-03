@@ -1,31 +1,31 @@
 @interface CKImportStatusManager
-- (int64_t)importStateForAsset:(id)a3;
+- (int64_t)importStateForAsset:(id)asset;
 @end
 
 @implementation CKImportStatusManager
 
-- (int64_t)importStateForAsset:(id)a3
+- (int64_t)importStateForAsset:(id)asset
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v4 = a3;
-  v5 = [v4 mediaObject];
-  v6 = v5;
-  if (v5)
+  assetCopy = asset;
+  mediaObject = [assetCopy mediaObject];
+  v6 = mediaObject;
+  if (mediaObject)
   {
-    v7 = [v5 syndicationIdentifier];
-    if (v7)
+    syndicationIdentifier = [mediaObject syndicationIdentifier];
+    if (syndicationIdentifier)
     {
       v8 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v33[0] = v7;
+      v33[0] = syndicationIdentifier;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
       v10 = [v8 initWithArray:v9];
 
       v11 = dispatch_semaphore_create(0);
-      v12 = [MEMORY[0x1E69A5C30] sharedInstance];
+      mEMORY[0x1E69A5C30] = [MEMORY[0x1E69A5C30] sharedInstance];
       v22 = MEMORY[0x1E69E9820];
       v23 = 3221225472;
       v24 = __45__CKImportStatusManager_importStateForAsset___block_invoke;
@@ -33,7 +33,7 @@
       v27 = &v28;
       v13 = v11;
       v26 = v13;
-      [v12 fetchInfoForSyndicationIdentifiersSavedToSystemPhotoLibrary:v10 completion:&v22];
+      [mEMORY[0x1E69A5C30] fetchInfoForSyndicationIdentifiersSavedToSystemPhotoLibrary:v10 completion:&v22];
 
       v14 = dispatch_time(0, 1000000000);
       if (dispatch_semaphore_wait(v13, v14))
@@ -42,8 +42,8 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           v16 = NSStringFromSelector(a2);
-          v17 = [v6 syndicationIdentifier];
-          [(CKImportStatusManager *)v16 importStateForAsset:v17, buf, v15];
+          syndicationIdentifier2 = [v6 syndicationIdentifier];
+          [(CKImportStatusManager *)v16 importStateForAsset:syndicationIdentifier2, buf, v15];
         }
       }
     }
@@ -61,11 +61,11 @@
 
   else
   {
-    v7 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    syndicationIdentifier = IMLogHandleForCategory();
+    if (os_log_type_enabled(syndicationIdentifier, OS_LOG_TYPE_ERROR))
     {
       v18 = NSStringFromSelector(a2);
-      [(CKImportStatusManager *)v18 importStateForAsset:buf, v7];
+      [(CKImportStatusManager *)v18 importStateForAsset:buf, syndicationIdentifier];
     }
   }
 

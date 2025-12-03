@@ -1,20 +1,20 @@
 @interface SCRCMathRowFormatter
-- (SCRCMathRowFormatter)initWithIsNumberOverride:(BOOL)a3;
+- (SCRCMathRowFormatter)initWithIsNumberOverride:(BOOL)override;
 - (id)mathEquation;
-- (void)_addDictionary:(id)a3;
-- (void)addCloseParenthesis:(BOOL)a3;
-- (void)addIdentifier:(id)a3;
-- (void)addNumber:(id)a3 implicit:(BOOL)a4;
+- (void)_addDictionary:(id)dictionary;
+- (void)addCloseParenthesis:(BOOL)parenthesis;
+- (void)addIdentifier:(id)identifier;
+- (void)addNumber:(id)number implicit:(BOOL)implicit;
 - (void)addOpenParenthesis;
-- (void)addOperator:(id)a3 implicit:(BOOL)a4;
-- (void)addRadicalWithRootIndex:(id)a3;
-- (void)addSubscript:(id)a3 superscript:(id)a4;
-- (void)appendMathEquation:(id)a3;
+- (void)addOperator:(id)operator implicit:(BOOL)implicit;
+- (void)addRadicalWithRootIndex:(id)index;
+- (void)addSubscript:(id)subscript superscript:(id)superscript;
+- (void)appendMathEquation:(id)equation;
 @end
 
 @implementation SCRCMathRowFormatter
 
-- (SCRCMathRowFormatter)initWithIsNumberOverride:(BOOL)a3
+- (SCRCMathRowFormatter)initWithIsNumberOverride:(BOOL)override
 {
   v10.receiver = self;
   v10.super_class = SCRCMathRowFormatter;
@@ -29,28 +29,28 @@
     v8 = objc_opt_new();
     [(NSMutableArray *)v7 addObject:v8];
 
-    v4->_isNumberOverride = a3;
+    v4->_isNumberOverride = override;
   }
 
   return v4;
 }
 
-- (void)addNumber:(id)a3 implicit:(BOOL)a4
+- (void)addNumber:(id)number implicit:(BOOL)implicit
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (number)
   {
-    v4 = a4;
+    implicitCopy = implicit;
     v10[0] = @"AXMType";
     v10[1] = @"AXMContent";
     v11[0] = @"Number";
-    v11[1] = a3;
+    v11[1] = number;
     v6 = MEMORY[0x277CBEAC0];
-    v7 = a3;
+    numberCopy = number;
     v8 = [v6 dictionaryWithObjects:v11 forKeys:v10 count:2];
 
     v9 = [v8 mutableCopy];
-    if (v4)
+    if (implicitCopy)
     {
       [v9 setObject:MEMORY[0x277CBEC38] forKey:@"AXMIsImplicit"];
     }
@@ -59,15 +59,15 @@
   }
 }
 
-- (void)addOperator:(id)a3 implicit:(BOOL)a4
+- (void)addOperator:(id)operator implicit:(BOOL)implicit
 {
-  v4 = a4;
+  implicitCopy = implicit;
   v14[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  operatorCopy = operator;
+  v7 = operatorCopy;
+  if (operatorCopy)
   {
-    if ([v6 length] == 1)
+    if ([operatorCopy length] == 1)
     {
       v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v7, "characterAtIndex:", 0)}];
       v13[0] = @"AXMType";
@@ -90,7 +90,7 @@
       v10 = [v8 mutableCopy];
     }
 
-    if (v4)
+    if (implicitCopy)
     {
       [v10 setObject:MEMORY[0x277CBEC38] forKey:@"AXMIsImplicit"];
     }
@@ -104,17 +104,17 @@
   }
 }
 
-- (void)addIdentifier:(id)a3
+- (void)addIdentifier:(id)identifier
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (identifier)
   {
     v8[0] = @"AXMType";
     v8[1] = @"AXMContent";
     v9[0] = @"Identifier";
-    v9[1] = a3;
+    v9[1] = identifier;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = a3;
+    identifierCopy = identifier;
     v6 = [v4 dictionaryWithObjects:v9 forKeys:v8 count:2];
 
     v7 = [v6 mutableCopy];
@@ -127,17 +127,17 @@
   }
 }
 
-- (void)addRadicalWithRootIndex:(id)a3
+- (void)addRadicalWithRootIndex:(id)index
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (index)
   {
     v8[0] = @"AXMType";
     v8[1] = @"AXMRootIndexObject";
     v9[0] = @"RootOperation";
-    v9[1] = a3;
+    v9[1] = index;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = a3;
+    indexCopy = index;
     v6 = [v4 dictionaryWithObjects:v9 forKeys:v8 count:2];
 
     v7 = [v6 mutableCopy];
@@ -152,30 +152,30 @@
 
 - (void)addOpenParenthesis
 {
-  v3 = [(SCRCMathRowFormatter *)self childrenStack];
+  childrenStack = [(SCRCMathRowFormatter *)self childrenStack];
   v2 = objc_opt_new();
-  [v3 addObject:v2];
+  [childrenStack addObject:v2];
 }
 
-- (void)addCloseParenthesis:(BOOL)a3
+- (void)addCloseParenthesis:(BOOL)parenthesis
 {
-  v3 = a3;
+  parenthesisCopy = parenthesis;
   v13[4] = *MEMORY[0x277D85DE8];
-  v5 = [(SCRCMathRowFormatter *)self childrenStack];
-  v6 = [v5 count];
+  childrenStack = [(SCRCMathRowFormatter *)self childrenStack];
+  v6 = [childrenStack count];
 
   if (v6 >= 2)
   {
-    v7 = [(SCRCMathRowFormatter *)self childrenStack];
-    v8 = [v7 lastObject];
+    childrenStack2 = [(SCRCMathRowFormatter *)self childrenStack];
+    lastObject = [childrenStack2 lastObject];
 
-    v9 = [(SCRCMathRowFormatter *)self childrenStack];
-    [v9 removeLastObject];
+    childrenStack3 = [(SCRCMathRowFormatter *)self childrenStack];
+    [childrenStack3 removeLastObject];
 
     v12[0] = @"AXMType";
     v12[1] = @"AXMChildren";
     v13[0] = @"Fenced";
-    v13[1] = v8;
+    v13[1] = lastObject;
     v12[2] = @"AXMOpenOperator";
     v12[3] = @"AXMCloseOperator";
     v13[2] = CFSTR("(");
@@ -183,7 +183,7 @@
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:4];
     v11 = [v10 mutableCopy];
 
-    if (v3)
+    if (parenthesisCopy)
     {
       [v11 setObject:MEMORY[0x277CBEC38] forKey:@"AXMIsImplicit"];
     }
@@ -197,24 +197,24 @@
   }
 }
 
-- (void)addSubscript:(id)a3 superscript:(id)a4
+- (void)addSubscript:(id)subscript superscript:(id)superscript
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SCRCMathRowFormatter *)self childrenStack];
-  v8 = [v7 count];
+  subscriptCopy = subscript;
+  superscriptCopy = superscript;
+  childrenStack = [(SCRCMathRowFormatter *)self childrenStack];
+  v8 = [childrenStack count];
 
   if (v8)
   {
     v9 = [MEMORY[0x277CBEB38] dictionaryWithObject:@"SubSuperScript" forKey:@"AXMType"];
-    if (v10)
+    if (subscriptCopy)
     {
-      [v9 setObject:v10 forKey:@"AXMSubscriptObject"];
+      [v9 setObject:subscriptCopy forKey:@"AXMSubscriptObject"];
     }
 
-    if (v6)
+    if (superscriptCopy)
     {
-      [v9 setObject:v6 forKey:@"AXMSuperscriptObject"];
+      [v9 setObject:superscriptCopy forKey:@"AXMSuperscriptObject"];
     }
 
     if ([(SCRCMathRowFormatter *)self isNumberOverride])
@@ -226,67 +226,67 @@
   }
 }
 
-- (void)appendMathEquation:(id)a3
+- (void)appendMathEquation:(id)equation
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SCRCMathRowFormatter *)self childrenStack];
-  v6 = [v5 count];
+  equationCopy = equation;
+  childrenStack = [(SCRCMathRowFormatter *)self childrenStack];
+  v6 = [childrenStack count];
 
   if (v6)
   {
-    v7 = [v4 objectForKey:@"AXMType"];
+    v7 = [equationCopy objectForKey:@"AXMType"];
     v8 = [v7 isEqualToString:@"Row"];
 
     if (v8)
     {
-      v9 = [v4 objectForKey:@"AXMChildren"];
+      v9 = [equationCopy objectForKey:@"AXMChildren"];
     }
 
     else
     {
-      v13[0] = v4;
+      v13[0] = equationCopy;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     }
 
     v10 = v9;
-    v11 = [(SCRCMathRowFormatter *)self childrenStack];
-    v12 = [v11 lastObject];
+    childrenStack2 = [(SCRCMathRowFormatter *)self childrenStack];
+    lastObject = [childrenStack2 lastObject];
 
-    [v12 addObjectsFromArray:v10];
+    [lastObject addObjectsFromArray:v10];
   }
 }
 
-- (void)_addDictionary:(id)a3
+- (void)_addDictionary:(id)dictionary
 {
-  v20 = a3;
-  if (v20)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v4 = [(SCRCMathRowFormatter *)self childrenStack];
-    v5 = [v4 count];
+    childrenStack = [(SCRCMathRowFormatter *)self childrenStack];
+    v5 = [childrenStack count];
 
     if (v5)
     {
-      v6 = [(SCRCMathRowFormatter *)self childrenStack];
-      v7 = [v6 lastObject];
+      childrenStack2 = [(SCRCMathRowFormatter *)self childrenStack];
+      lastObject = [childrenStack2 lastObject];
 
-      if ([v7 count])
+      if ([lastObject count])
       {
-        v8 = [v7 lastObject];
-        v9 = [v8 objectForKeyedSubscript:@"AXMType"];
+        v7LastObject = [lastObject lastObject];
+        v9 = [v7LastObject objectForKeyedSubscript:@"AXMType"];
         if ([v9 isEqualToString:@"RootOperation"])
         {
-          v10 = [v7 lastObject];
-          v11 = [v10 objectForKeyedSubscript:@"AXMRadicandObject"];
+          v7LastObject2 = [lastObject lastObject];
+          v11 = [v7LastObject2 objectForKeyedSubscript:@"AXMRadicandObject"];
 
           if (!v11)
           {
-            v12 = [v7 lastObject];
-            v13 = [v12 mutableCopy];
+            v7LastObject3 = [lastObject lastObject];
+            v13 = [v7LastObject3 mutableCopy];
 
-            [v13 setObject:v20 forKeyedSubscript:@"AXMRadicandObject"];
-            [v7 removeLastObject];
-            [v7 addObject:v13];
+            [v13 setObject:dictionaryCopy forKeyedSubscript:@"AXMRadicandObject"];
+            [lastObject removeLastObject];
+            [lastObject addObject:v13];
 
 LABEL_12:
             goto LABEL_13;
@@ -298,21 +298,21 @@ LABEL_12:
         }
       }
 
-      v14 = [v7 count];
-      v15 = v20;
-      if (v14 && ([v20 objectForKeyedSubscript:@"AXMType"], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"SubSuperScript"), v16, v15 = v20, v17))
+      v14 = [lastObject count];
+      v15 = dictionaryCopy;
+      if (v14 && ([dictionaryCopy objectForKeyedSubscript:@"AXMType"], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"SubSuperScript"), v16, v15 = dictionaryCopy, v17))
       {
-        v18 = [v20 mutableCopy];
-        v19 = [v7 lastObject];
-        [v18 setObject:v19 forKey:@"AXMBaseObject"];
+        v18 = [dictionaryCopy mutableCopy];
+        v7LastObject4 = [lastObject lastObject];
+        [v18 setObject:v7LastObject4 forKey:@"AXMBaseObject"];
 
-        [v7 removeLastObject];
-        [v7 addObject:v18];
+        [lastObject removeLastObject];
+        [lastObject addObject:v18];
       }
 
       else
       {
-        [v7 addObject:v15];
+        [lastObject addObject:v15];
       }
 
       goto LABEL_12;
@@ -325,17 +325,17 @@ LABEL_13:
 - (id)mathEquation
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v3 = [(SCRCMathRowFormatter *)self childrenStack];
-  v4 = [v3 count];
+  childrenStack = [(SCRCMathRowFormatter *)self childrenStack];
+  v4 = [childrenStack count];
 
   if (v4)
   {
-    v5 = [(SCRCMathRowFormatter *)self childrenStack];
-    v6 = [v5 firstObject];
+    childrenStack2 = [(SCRCMathRowFormatter *)self childrenStack];
+    firstObject = [childrenStack2 firstObject];
 
-    if ([v6 count] == 1)
+    if ([firstObject count] == 1)
     {
-      v7 = [v6 firstObject];
+      v6FirstObject = [firstObject firstObject];
     }
 
     else
@@ -345,7 +345,7 @@ LABEL_13:
         v16[0] = @"AXMType";
         v16[1] = @"AXMChildren";
         v17[0] = @"Row";
-        v17[1] = v6;
+        v17[1] = firstObject;
         v16[2] = @"AXMIsNumberOverride";
         v17[2] = MEMORY[0x277CBEC38];
         v9 = MEMORY[0x277CBEAC0];
@@ -359,17 +359,17 @@ LABEL_13:
         v14[0] = @"AXMType";
         v14[1] = @"AXMChildren";
         v15[0] = @"Row";
-        v15[1] = v6;
+        v15[1] = firstObject;
         v9 = MEMORY[0x277CBEAC0];
         v10 = v15;
         v11 = v14;
         v12 = 2;
       }
 
-      v7 = [v9 dictionaryWithObjects:v10 forKeys:v11 count:v12];
+      v6FirstObject = [v9 dictionaryWithObjects:v10 forKeys:v11 count:v12];
     }
 
-    v8 = v7;
+    v8 = v6FirstObject;
   }
 
   else

@@ -1,15 +1,15 @@
 @interface mountTable
-- (id)list:(BOOL)a3;
-- (id)lookupByPath:(id)a3;
-- (id)lookupName:(id)a3 provider:(id)a4;
-- (id)preflightMountWithName:(id)a3 displayName:(id)a4 storageName:(id)a5 provider:(id)a6 path:(id)a7 error:(id *)a8;
+- (id)list:(BOOL)list;
+- (id)lookupByPath:(id)path;
+- (id)lookupName:(id)name provider:(id)provider;
+- (id)preflightMountWithName:(id)name displayName:(id)displayName storageName:(id)storageName provider:(id)provider path:(id)path error:(id *)error;
 - (mountTable)init;
-- (void)add:(id)a3;
-- (void)performExclusive:(id)a3;
-- (void)performShared:(id)a3;
-- (void)remove:(id)a3;
+- (void)add:(id)add;
+- (void)performExclusive:(id)exclusive;
+- (void)performShared:(id)shared;
+- (void)remove:(id)remove;
 - (void)resetIndex;
-- (void)tearDownDaemon:(BOOL)a3 withPath:(id)a4;
+- (void)tearDownDaemon:(BOOL)daemon withPath:(id)path;
 @end
 
 @implementation mountTable
@@ -48,10 +48,10 @@ LABEL_7:
   return v5;
 }
 
-- (void)tearDownDaemon:(BOOL)a3 withPath:(id)a4
+- (void)tearDownDaemon:(BOOL)daemon withPath:(id)path
 {
-  v4 = a4;
-  if (unmount([v4 fileSystemRepresentation], 0x80000))
+  pathCopy = path;
+  if (unmount([pathCopy fileSystemRepresentation], 0x80000))
   {
     v5 = livefs_std_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -61,25 +61,25 @@ LABEL_7:
   }
 }
 
-- (void)performExclusive:(id)a3
+- (void)performExclusive:(id)exclusive
 {
-  v4 = a3;
+  exclusiveCopy = exclusive;
   pthread_rwlock_wrlock(&self->opLock);
-  v4[2](v4);
+  exclusiveCopy[2](exclusiveCopy);
 
   pthread_rwlock_unlock(&self->opLock);
 }
 
-- (void)performShared:(id)a3
+- (void)performShared:(id)shared
 {
-  v4 = a3;
+  sharedCopy = shared;
   pthread_rwlock_rdlock(&self->opLock);
-  v4[2](v4);
+  sharedCopy[2](sharedCopy);
 
   pthread_rwlock_unlock(&self->opLock);
 }
 
-- (id)lookupByPath:(id)a3
+- (id)lookupByPath:(id)path
 {
   v10 = 0;
   v11 = &v10;
@@ -91,11 +91,11 @@ LABEL_7:
   v6[1] = 3221225472;
   v6[2] = sub_10003FF2C;
   v6[3] = &unk_100061FD0;
-  v7 = self;
+  selfCopy = self;
   v9 = &v10;
-  v3 = a3;
-  v8 = v3;
-  [(mountTable *)v7 performShared:v6];
+  pathCopy = path;
+  v8 = pathCopy;
+  [(mountTable *)selfCopy performShared:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -103,10 +103,10 @@ LABEL_7:
   return v4;
 }
 
-- (id)lookupName:(id)a3 provider:(id)a4
+- (id)lookupName:(id)name provider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  providerCopy = provider;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -119,9 +119,9 @@ LABEL_7:
   v12[3] = &unk_100061FF8;
   v12[4] = self;
   v15 = &v16;
-  v8 = v6;
+  v8 = nameCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = providerCopy;
   v14 = v9;
   [(mountTable *)self performShared:v12];
   v10 = v17[5];
@@ -131,13 +131,13 @@ LABEL_7:
   return v10;
 }
 
-- (id)preflightMountWithName:(id)a3 displayName:(id)a4 storageName:(id)a5 provider:(id)a6 path:(id)a7 error:(id *)a8
+- (id)preflightMountWithName:(id)name displayName:(id)displayName storageName:(id)storageName provider:(id)provider path:(id)path error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  storageNameCopy = storageName;
+  providerCopy = provider;
+  pathCopy = path;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -153,22 +153,22 @@ LABEL_7:
   v29[2] = sub_10004051C;
   v29[3] = &unk_100062070;
   v29[4] = self;
-  v19 = v17;
+  v19 = providerCopy;
   v30 = v19;
-  v20 = v14;
+  v20 = nameCopy;
   v31 = v20;
   v34 = &v40;
-  v21 = v16;
+  v21 = storageNameCopy;
   v32 = v21;
-  v22 = v18;
+  v22 = pathCopy;
   v33 = v22;
   v35 = &v36;
   [(mountTable *)self performShared:v29];
   if (*(v37 + 24) == 1)
   {
-    if (a8)
+    if (error)
     {
-      *a8 = [NSError errorWithDomain:NSCocoaErrorDomain code:516 userInfo:0];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:516 userInfo:0];
     }
 
     v23 = v41[5];
@@ -179,9 +179,9 @@ LABEL_7:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     v27 = v41[5];
-    if (a8)
+    if (error)
     {
-      v28 = *a8;
+      v28 = *error;
     }
 
     else
@@ -205,13 +205,13 @@ LABEL_7:
   return v25;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  addCopy = add;
+  v5 = addCopy;
+  if (addCopy)
   {
-    v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 midx]);
+    v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [addCopy midx]);
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100040970;
@@ -233,9 +233,9 @@ LABEL_7:
   }
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
-  +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [a3 midx]);
+  +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [remove midx]);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100040A34;
@@ -245,7 +245,7 @@ LABEL_7:
   [(mountTable *)self performExclusive:v5];
 }
 
-- (id)list:(BOOL)a3
+- (id)list:(BOOL)list
 {
   v7 = 0;
   v8 = &v7;
@@ -257,7 +257,7 @@ LABEL_7:
   v5[1] = 3221225472;
   v5[2] = sub_100040B44;
   v5[3] = &unk_100062098;
-  v6 = a3;
+  listCopy = list;
   v5[4] = self;
   v5[5] = &v7;
   [(mountTable *)self performShared:v5];

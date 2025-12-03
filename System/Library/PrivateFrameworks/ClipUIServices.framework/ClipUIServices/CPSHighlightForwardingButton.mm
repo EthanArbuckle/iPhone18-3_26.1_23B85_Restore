@@ -1,14 +1,14 @@
 @interface CPSHighlightForwardingButton
 - (CPSHighlightable)highlightForwardingTarget;
-- (void)setHighlightForwardingTarget:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlightForwardingTarget:(id)target;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CPSHighlightForwardingButton
 
-- (void)setHighlightForwardingTarget:(id)a3
+- (void)setHighlightForwardingTarget:(id)target
 {
-  obj = a3;
+  obj = target;
   WeakRetained = objc_loadWeakRetained(&self->_highlightForwardingTarget);
 
   if (WeakRetained != obj)
@@ -21,11 +21,11 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = CPSHighlightForwardingButton;
-  [(CPSHighlightForwardingButton *)&v5 setHighlighted:a3];
+  [(CPSHighlightForwardingButton *)&v5 setHighlighted:highlighted];
   WeakRetained = objc_loadWeakRetained(&self->_highlightForwardingTarget);
   [WeakRetained setHighlighted:{-[CPSHighlightForwardingButton isHighlighted](self, "isHighlighted")}];
 }

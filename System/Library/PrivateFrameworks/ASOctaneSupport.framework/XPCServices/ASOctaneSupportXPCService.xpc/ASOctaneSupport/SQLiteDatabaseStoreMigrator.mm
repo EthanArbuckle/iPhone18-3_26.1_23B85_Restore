@@ -1,38 +1,38 @@
 @interface SQLiteDatabaseStoreMigrator
-- (SQLiteDatabaseStoreMigrator)initWithConnection:(id)a3;
-- (void)_executeQuery:(id)a3 canFailMigration:(BOOL)a4 withResults:(id)a5;
-- (void)_executeStatement:(id)a3 canFailMigration:(BOOL)a4 bindings:(id)a5;
+- (SQLiteDatabaseStoreMigrator)initWithConnection:(id)connection;
+- (void)_executeQuery:(id)query canFailMigration:(BOOL)migration withResults:(id)results;
+- (void)_executeStatement:(id)statement canFailMigration:(BOOL)migration bindings:(id)bindings;
 @end
 
 @implementation SQLiteDatabaseStoreMigrator
 
-- (SQLiteDatabaseStoreMigrator)initWithConnection:(id)a3
+- (SQLiteDatabaseStoreMigrator)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = SQLiteDatabaseStoreMigrator;
   v6 = [(SQLiteDatabaseStoreMigrator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v7->_success = 1;
   }
 
   return v7;
 }
 
-- (void)_executeStatement:(id)a3 canFailMigration:(BOOL)a4 bindings:(id)a5
+- (void)_executeStatement:(id)statement canFailMigration:(BOOL)migration bindings:(id)bindings
 {
   if (self->_success)
   {
-    v5 = a4;
+    migrationCopy = migration;
     connection = self->_connection;
     v11 = 0;
-    v8 = [(SQLiteConnection *)connection executeStatement:a3 error:&v11 bindings:a5];
+    v8 = [(SQLiteConnection *)connection executeStatement:statement error:&v11 bindings:bindings];
     v9 = v11;
     v10 = v11;
-    if (v5)
+    if (migrationCopy)
     {
       self->_success &= v8;
     }
@@ -49,10 +49,10 @@
   }
 }
 
-- (void)_executeQuery:(id)a3 canFailMigration:(BOOL)a4 withResults:(id)a5
+- (void)_executeQuery:(id)query canFailMigration:(BOOL)migration withResults:(id)results
 {
-  v8 = a5;
-  v9 = v8;
+  resultsCopy = results;
+  v9 = resultsCopy;
   if (self->_success)
   {
     connection = self->_connection;
@@ -60,10 +60,10 @@
     v11[1] = 3221225472;
     v11[2] = sub_100006848;
     v11[3] = &unk_100278118;
-    v13 = a4;
+    migrationCopy = migration;
     v11[4] = self;
-    v12 = v8;
-    [(SQLiteConnection *)connection executeQuery:a3 withResults:v11];
+    v12 = resultsCopy;
+    [(SQLiteConnection *)connection executeQuery:query withResults:v11];
   }
 }
 

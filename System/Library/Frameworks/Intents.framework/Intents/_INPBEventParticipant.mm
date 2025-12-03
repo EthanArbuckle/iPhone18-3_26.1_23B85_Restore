@@ -1,55 +1,55 @@
 @interface _INPBEventParticipant
-- (BOOL)isEqual:(id)a3;
-- (_INPBEventParticipant)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBEventParticipant)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsStatus:(id)status;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasIsUser:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setStatus:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasIsUser:(BOOL)user;
+- (void)setHasStatus:(BOOL)status;
+- (void)setStatus:(int)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBEventParticipant
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBEventParticipant *)self hasIsEventOrganizer])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBEventParticipant isEventOrganizer](self, "isEventOrganizer")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isEventOrganizer"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isEventOrganizer"];
   }
 
   if ([(_INPBEventParticipant *)self hasIsUser])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBEventParticipant isUser](self, "isUser")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isUser"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isUser"];
   }
 
-  v6 = [(_INPBEventParticipant *)self person];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"person"];
+  person = [(_INPBEventParticipant *)self person];
+  dictionaryRepresentation = [person dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"person"];
 
   if ([(_INPBEventParticipant *)self hasStatus])
   {
-    v8 = [(_INPBEventParticipant *)self status];
-    if ((v8 - 1) >= 8)
+    status = [(_INPBEventParticipant *)self status];
+    if ((status - 1) >= 8)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", status];
     }
 
     else
     {
-      v9 = off_1E7281178[(v8 - 1)];
+      v9 = off_1E7281178[(status - 1)];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"status"];
+    [dictionary setObject:v9 forKeyedSubscript:@"status"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -88,62 +88,62 @@
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBEventParticipant *)self hasIsEventOrganizer];
-  if (v5 != [v4 hasIsEventOrganizer])
+  hasIsEventOrganizer = [(_INPBEventParticipant *)self hasIsEventOrganizer];
+  if (hasIsEventOrganizer != [equalCopy hasIsEventOrganizer])
   {
     goto LABEL_17;
   }
 
   if ([(_INPBEventParticipant *)self hasIsEventOrganizer])
   {
-    if ([v4 hasIsEventOrganizer])
+    if ([equalCopy hasIsEventOrganizer])
     {
       isEventOrganizer = self->_isEventOrganizer;
-      if (isEventOrganizer != [v4 isEventOrganizer])
+      if (isEventOrganizer != [equalCopy isEventOrganizer])
       {
         goto LABEL_17;
       }
     }
   }
 
-  v7 = [(_INPBEventParticipant *)self hasIsUser];
-  if (v7 != [v4 hasIsUser])
+  hasIsUser = [(_INPBEventParticipant *)self hasIsUser];
+  if (hasIsUser != [equalCopy hasIsUser])
   {
     goto LABEL_17;
   }
 
   if ([(_INPBEventParticipant *)self hasIsUser])
   {
-    if ([v4 hasIsUser])
+    if ([equalCopy hasIsUser])
     {
       isUser = self->_isUser;
-      if (isUser != [v4 isUser])
+      if (isUser != [equalCopy isUser])
       {
         goto LABEL_17;
       }
     }
   }
 
-  v9 = [(_INPBEventParticipant *)self person];
-  v10 = [v4 person];
-  v11 = v10;
-  if ((v9 != 0) != (v10 == 0))
+  person = [(_INPBEventParticipant *)self person];
+  person2 = [equalCopy person];
+  v11 = person2;
+  if ((person != 0) != (person2 == 0))
   {
-    v12 = [(_INPBEventParticipant *)self person];
-    if (v12)
+    person3 = [(_INPBEventParticipant *)self person];
+    if (person3)
     {
-      v13 = v12;
-      v14 = [(_INPBEventParticipant *)self person];
-      v15 = [v4 person];
-      v16 = [v14 isEqual:v15];
+      v13 = person3;
+      person4 = [(_INPBEventParticipant *)self person];
+      person5 = [equalCopy person];
+      v16 = [person4 isEqual:person5];
 
       if (!v16)
       {
@@ -155,10 +155,10 @@
     {
     }
 
-    v17 = [(_INPBEventParticipant *)self hasStatus];
-    if (v17 == [v4 hasStatus])
+    hasStatus = [(_INPBEventParticipant *)self hasStatus];
+    if (hasStatus == [equalCopy hasStatus])
     {
-      if (!-[_INPBEventParticipant hasStatus](self, "hasStatus") || ![v4 hasStatus] || (status = self->_status, status == objc_msgSend(v4, "status")))
+      if (!-[_INPBEventParticipant hasStatus](self, "hasStatus") || ![equalCopy hasStatus] || (status = self->_status, status == objc_msgSend(equalCopy, "status")))
       {
         v18 = 1;
         goto LABEL_18;
@@ -177,7 +177,7 @@ LABEL_18:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBEventParticipant allocWithZone:](_INPBEventParticipant init];
   if ([(_INPBEventParticipant *)self hasIsEventOrganizer])
@@ -190,7 +190,7 @@ LABEL_18:
     [(_INPBEventParticipant *)v5 setIsUser:[(_INPBEventParticipant *)self isUser]];
   }
 
-  v6 = [(_INPBContact *)self->_person copyWithZone:a3];
+  v6 = [(_INPBContact *)self->_person copyWithZone:zone];
   [(_INPBEventParticipant *)v5 setPerson:v6];
 
   if ([(_INPBEventParticipant *)self hasStatus])
@@ -201,33 +201,33 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBEventParticipant *)self data];
+  coderCopy = coder;
+  data = [(_INPBEventParticipant *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBEventParticipant)initWithCoder:(id)a3
+- (_INPBEventParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBEventParticipant *)self initWithData:v6];
+    self = [(_INPBEventParticipant *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_INPBEventParticipant *)self hasIsEventOrganizer])
   {
     isEventOrganizer = self->_isEventOrganizer;
@@ -240,11 +240,11 @@ LABEL_18:
     PBDataWriterWriteBOOLField();
   }
 
-  v6 = [(_INPBEventParticipant *)self person];
+  person = [(_INPBEventParticipant *)self person];
 
-  if (v6)
+  if (person)
   {
-    v7 = [(_INPBEventParticipant *)self person];
+    person2 = [(_INPBEventParticipant *)self person];
     PBDataWriterWriteSubmessage();
   }
 
@@ -255,45 +255,45 @@ LABEL_18:
   }
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_STATUS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_STATUS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PENDING"])
+  else if ([statusCopy isEqualToString:@"PENDING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ACCEPTED"])
+  else if ([statusCopy isEqualToString:@"ACCEPTED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"DECLINED"])
+  else if ([statusCopy isEqualToString:@"DECLINED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TENTATIVE"])
+  else if ([statusCopy isEqualToString:@"TENTATIVE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"DELEGATED"])
+  else if ([statusCopy isEqualToString:@"DELEGATED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([statusCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROCESS"])
+  else if ([statusCopy isEqualToString:@"IN_PROCESS"])
   {
     v4 = 8;
   }
@@ -306,9 +306,9 @@ LABEL_18:
   return v4;
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -321,10 +321,10 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setStatus:(int)a3
+- (void)setStatus:(int)status
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (status == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -332,13 +332,13 @@ LABEL_18:
   else
   {
     *&self->_has = has | 4;
-    self->_status = a3;
+    self->_status = status;
   }
 }
 
-- (void)setHasIsUser:(BOOL)a3
+- (void)setHasIsUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 2;
   }

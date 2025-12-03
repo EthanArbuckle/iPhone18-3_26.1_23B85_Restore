@@ -1,41 +1,41 @@
 @interface CNUICoreMainWhitelistedContactsController
-+ (id)controllerWithOptions:(id)a3 schedulerProvider:(id)a4;
++ (id)controllerWithOptions:(id)options schedulerProvider:(id)provider;
 - (BOOL)hasDowntimeWhitelistContainer;
 - (CNScheduler)backgroundOrImmediateScheduler;
 - (CNUICoreFamilyMemberContactsObserver)observer;
 - (CNUICoreMainWhitelistedContactsController)init;
-- (CNUICoreMainWhitelistedContactsController)initWithModelFetcher:(id)a3 mainContactStoreFacade:(id)a4 downtimeContainerFetcher:(id)a5 schedulerProvider:(id)a6;
-- (CNUICoreMainWhitelistedContactsController)initWiththOptions:(id)a3 mainContactStoreFacade:(id)a4 schedulerProvider:(id)a5;
+- (CNUICoreMainWhitelistedContactsController)initWithModelFetcher:(id)fetcher mainContactStoreFacade:(id)facade downtimeContainerFetcher:(id)containerFetcher schedulerProvider:(id)provider;
+- (CNUICoreMainWhitelistedContactsController)initWiththOptions:(id)options mainContactStoreFacade:(id)facade schedulerProvider:(id)provider;
 - (NSArray)familyMemberContactItems;
 - (id)contactItemFutureFromFetcher;
-- (id)contactRepresentingItem:(id)a3;
+- (id)contactRepresentingItem:(id)item;
 - (int64_t)fetchStatus;
 - (void)cancelContactItemsFetch;
 - (void)dealloc;
-- (void)setFamilyMemberContactItems:(id)a3;
+- (void)setFamilyMemberContactItems:(id)items;
 - (void)setupChangeNotificationResponse;
 - (void)triggerContactItemsFetch;
-- (void)updateWhitelistByAddingContacts:(id)a3;
-- (void)updateWhitelistByRemovingContacts:(id)a3;
-- (void)updateWhitelistByUpdatingContacts:(id)a3;
+- (void)updateWhitelistByAddingContacts:(id)contacts;
+- (void)updateWhitelistByRemovingContacts:(id)contacts;
+- (void)updateWhitelistByUpdatingContacts:(id)contacts;
 @end
 
 @implementation CNUICoreMainWhitelistedContactsController
 
-+ (id)controllerWithOptions:(id)a3 schedulerProvider:(id)a4
++ (id)controllerWithOptions:(id)options schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  optionsCopy = options;
   v8 = [CNUICoreContactStoreProductionFacade alloc];
   v9 = objc_alloc_init(MEMORY[0x1E695CE18]);
   v10 = [(CNUICoreContactStoreProductionFacade *)v8 initWithContactStore:v9];
 
-  v11 = [[a1 alloc] initWiththOptions:v7 mainContactStoreFacade:v10 schedulerProvider:v6];
-  LODWORD(v9) = [v7 shouldRequireConfirmationOfChanges];
+  v11 = [[self alloc] initWiththOptions:optionsCopy mainContactStoreFacade:v10 schedulerProvider:providerCopy];
+  LODWORD(v9) = [optionsCopy shouldRequireConfirmationOfChanges];
 
   if (v9)
   {
-    v12 = [[CNUICoreInMemoryWhitelistedContactsDataSourceDecorator alloc] initWithDataSource:v11 schedulerProvider:v6];
+    v12 = [[CNUICoreInMemoryWhitelistedContactsDataSourceDecorator alloc] initWithDataSource:v11 schedulerProvider:providerCopy];
 
     v11 = v12;
   }
@@ -45,41 +45,41 @@
 
 - (CNUICoreMainWhitelistedContactsController)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreMainWhitelistedContactsController)initWiththOptions:(id)a3 mainContactStoreFacade:(id)a4 schedulerProvider:(id)a5
+- (CNUICoreMainWhitelistedContactsController)initWiththOptions:(id)options mainContactStoreFacade:(id)facade schedulerProvider:(id)provider
 {
-  v8 = a4;
-  v9 = a5;
+  facadeCopy = facade;
+  providerCopy = provider;
   v10 = MEMORY[0x1E695CE78];
-  v11 = a3;
+  optionsCopy = options;
   v12 = objc_alloc_init(v10);
-  v13 = [[CNUICoreFamilyMemberContactsModelRetriever alloc] initWithDowntimeContainerFetcher:v12 schedulerProvider:v9];
-  v14 = [v11 shouldPrepopulateEmptyWhitelist];
+  v13 = [[CNUICoreFamilyMemberContactsModelRetriever alloc] initWithDowntimeContainerFetcher:v12 schedulerProvider:providerCopy];
+  shouldPrepopulateEmptyWhitelist = [optionsCopy shouldPrepopulateEmptyWhitelist];
 
-  if (v14)
+  if (shouldPrepopulateEmptyWhitelist)
   {
-    v15 = [[CNUICoreFamilyInfoRetriever alloc] initWithMainContactStoreFacade:v8 matchFamilyMembersWithContacts:1 schedulerProvider:v9];
-    v16 = [[CNUICoreProposedContactsFetchingDecorator alloc] initWithModelFetcher:v13 familyInfoFetcher:v15 schedulerProvider:v9];
+    v15 = [[CNUICoreFamilyInfoRetriever alloc] initWithMainContactStoreFacade:facadeCopy matchFamilyMembersWithContacts:1 schedulerProvider:providerCopy];
+    v16 = [[CNUICoreProposedContactsFetchingDecorator alloc] initWithModelFetcher:v13 familyInfoFetcher:v15 schedulerProvider:providerCopy];
 
     v13 = v16;
   }
 
-  v17 = [(CNUICoreMainWhitelistedContactsController *)self initWithModelFetcher:v13 mainContactStoreFacade:v8 downtimeContainerFetcher:v12 schedulerProvider:v9];
+  v17 = [(CNUICoreMainWhitelistedContactsController *)self initWithModelFetcher:v13 mainContactStoreFacade:facadeCopy downtimeContainerFetcher:v12 schedulerProvider:providerCopy];
 
   return v17;
 }
 
-- (CNUICoreMainWhitelistedContactsController)initWithModelFetcher:(id)a3 mainContactStoreFacade:(id)a4 downtimeContainerFetcher:(id)a5 schedulerProvider:(id)a6
+- (CNUICoreMainWhitelistedContactsController)initWithModelFetcher:(id)fetcher mainContactStoreFacade:(id)facade downtimeContainerFetcher:(id)containerFetcher schedulerProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  fetcherCopy = fetcher;
+  facadeCopy = facade;
+  containerFetcherCopy = containerFetcher;
+  providerCopy = provider;
+  if (fetcherCopy)
   {
     goto LABEL_5;
   }
@@ -92,7 +92,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_19, OS_LOG_TYPE_FAULT))
   {
     [CNUICoreFamilyMemberWhitelistedContactsController initWithModelFetcher:familyMemberContactsUpdator:familyMemberScopedContactStoreFacade:mainContactStoreFacade:schedulerProvider:];
-    if (v12)
+    if (facadeCopy)
     {
       goto LABEL_10;
     }
@@ -101,7 +101,7 @@
   else
   {
 LABEL_5:
-    if (v12)
+    if (facadeCopy)
     {
       goto LABEL_10;
     }
@@ -117,7 +117,7 @@ LABEL_5:
     [CNUICoreMainWhitelistedContactsController initWithModelFetcher:mainContactStoreFacade:downtimeContainerFetcher:schedulerProvider:];
   }
 
-  if (v13)
+  if (containerFetcherCopy)
   {
     goto LABEL_14;
   }
@@ -131,7 +131,7 @@ LABEL_10:
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_19, OS_LOG_TYPE_FAULT))
   {
     [CNUICoreMainWhitelistedContactsController initWithModelFetcher:mainContactStoreFacade:downtimeContainerFetcher:schedulerProvider:];
-    if (v14)
+    if (providerCopy)
     {
       goto LABEL_19;
     }
@@ -140,7 +140,7 @@ LABEL_10:
   else
   {
 LABEL_14:
-    if (v14)
+    if (providerCopy)
     {
       goto LABEL_19;
     }
@@ -163,10 +163,10 @@ LABEL_19:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_modelFetcher, a3);
-    objc_storeStrong(&v16->_mainContactStoreFacade, a4);
-    objc_storeStrong(&v16->_downtimeContainerFetcher, a5);
-    objc_storeStrong(&v16->_schedulerProvider, a6);
+    objc_storeStrong(&v15->_modelFetcher, fetcher);
+    objc_storeStrong(&v16->_mainContactStoreFacade, facade);
+    objc_storeStrong(&v16->_downtimeContainerFetcher, containerFetcher);
+    objc_storeStrong(&v16->_schedulerProvider, provider);
     familyMemberContactItems = v16->_familyMemberContactItems;
     v16->_familyMemberContactItems = MEMORY[0x1E695E0F0];
 
@@ -180,11 +180,11 @@ LABEL_19:
 - (void)setupChangeNotificationResponse
 {
   v3 = MEMORY[0x1E6996798];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v5 = [v3 observableOnNotificationCenter:v4 withName:*MEMORY[0x1E695C3D8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v5 = [v3 observableOnNotificationCenter:defaultCenter withName:*MEMORY[0x1E695C3D8] object:0];
 
-  v6 = [(CNSchedulerProvider *)self->_schedulerProvider mainThreadScheduler];
-  v7 = [v5 observeOn:v6];
+  mainThreadScheduler = [(CNSchedulerProvider *)self->_schedulerProvider mainThreadScheduler];
+  v7 = [v5 observeOn:mainThreadScheduler];
 
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69967A0];
@@ -222,17 +222,17 @@ void __76__CNUICoreMainWhitelistedContactsController_setupChangeNotificationResp
 
 - (CNScheduler)backgroundOrImmediateScheduler
 {
-  v3 = [MEMORY[0x1E696AF00] isMainThread];
-  v4 = [(CNUICoreMainWhitelistedContactsController *)self schedulerProvider];
-  v5 = v4;
-  if (v3)
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  schedulerProvider = [(CNUICoreMainWhitelistedContactsController *)self schedulerProvider];
+  v5 = schedulerProvider;
+  if (isMainThread)
   {
-    [v4 backgroundScheduler];
+    [schedulerProvider backgroundScheduler];
   }
 
   else
   {
-    [v4 immediateScheduler];
+    [schedulerProvider immediateScheduler];
   }
   v6 = ;
 
@@ -241,25 +241,25 @@ void __76__CNUICoreMainWhitelistedContactsController_setupChangeNotificationResp
 
 - (int64_t)fetchStatus
 {
-  v3 = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
+  familyMemberContactItemsFuture = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
 
-  if (!v3)
+  if (!familyMemberContactItemsFuture)
   {
     return 0;
   }
 
-  v4 = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
-  v5 = [v4 isFinished];
+  familyMemberContactItemsFuture2 = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
+  isFinished = [familyMemberContactItemsFuture2 isFinished];
 
-  if (!v5)
+  if (!isFinished)
   {
     return 2;
   }
 
-  v6 = [(CNUICoreMainWhitelistedContactsController *)self downtimeContainerFetcher];
-  v7 = [v6 downtimeWhitelistContainer];
+  downtimeContainerFetcher = [(CNUICoreMainWhitelistedContactsController *)self downtimeContainerFetcher];
+  downtimeWhitelistContainer = [downtimeContainerFetcher downtimeWhitelistContainer];
 
-  if (v7)
+  if (downtimeWhitelistContainer)
   {
     return 3;
   }
@@ -272,9 +272,9 @@ void __76__CNUICoreMainWhitelistedContactsController_setupChangeNotificationResp
 
 - (NSArray)familyMemberContactItems
 {
-  v3 = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
+  familyMemberContactItemsFuture = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
 
-  if (!v3)
+  if (!familyMemberContactItemsFuture)
   {
     [(CNUICoreMainWhitelistedContactsController *)self triggerContactItemsFetch];
   }
@@ -286,33 +286,33 @@ void __76__CNUICoreMainWhitelistedContactsController_setupChangeNotificationResp
 
 - (BOOL)hasDowntimeWhitelistContainer
 {
-  v2 = [(CNUICoreMainWhitelistedContactsController *)self downtimeContainerFetcher];
-  v3 = [v2 downtimeWhitelistContainer];
-  v4 = v3 != 0;
+  downtimeContainerFetcher = [(CNUICoreMainWhitelistedContactsController *)self downtimeContainerFetcher];
+  downtimeWhitelistContainer = [downtimeContainerFetcher downtimeWhitelistContainer];
+  v4 = downtimeWhitelistContainer != 0;
 
   return v4;
 }
 
-- (void)setFamilyMemberContactItems:(id)a3
+- (void)setFamilyMemberContactItems:(id)items
 {
-  objc_storeStrong(&self->_familyMemberContactItems, a3);
-  v4 = [(CNUICoreMainWhitelistedContactsController *)self observer];
-  [v4 familyMemberContactItemsDidChange];
+  objc_storeStrong(&self->_familyMemberContactItems, items);
+  observer = [(CNUICoreMainWhitelistedContactsController *)self observer];
+  [observer familyMemberContactItemsDidChange];
 }
 
 - (void)triggerContactItemsFetch
 {
   [(CNUICoreMainWhitelistedContactsController *)self cancelContactItemsFetch];
-  v3 = [(CNUICoreMainWhitelistedContactsController *)self contactItemFutureFromFetcher];
-  [(CNUICoreMainWhitelistedContactsController *)self setFamilyMemberContactItemsFuture:v3];
+  contactItemFutureFromFetcher = [(CNUICoreMainWhitelistedContactsController *)self contactItemFutureFromFetcher];
+  [(CNUICoreMainWhitelistedContactsController *)self setFamilyMemberContactItemsFuture:contactItemFutureFromFetcher];
 
   objc_initWeak(&location, self);
-  v4 = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
+  familyMemberContactItemsFuture = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
   v7 = MEMORY[0x1E69E9820];
   objc_copyWeak(&v8, &location);
   v5 = [(CNUICoreMainWhitelistedContactsController *)self schedulerProvider:v7];
-  v6 = [v5 mainThreadScheduler];
-  [v4 addSuccessBlock:&v7 scheduler:v6];
+  mainThreadScheduler = [v5 mainThreadScheduler];
+  [familyMemberContactItemsFuture addSuccessBlock:&v7 scheduler:mainThreadScheduler];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -327,18 +327,18 @@ void __69__CNUICoreMainWhitelistedContactsController_triggerContactItemsFetch__b
 
 - (void)cancelContactItemsFetch
 {
-  v3 = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
-  [v3 cancel];
+  familyMemberContactItemsFuture = [(CNUICoreMainWhitelistedContactsController *)self familyMemberContactItemsFuture];
+  [familyMemberContactItemsFuture cancel];
 
   [(CNUICoreMainWhitelistedContactsController *)self setFamilyMemberContactItemsFuture:0];
 }
 
 - (id)contactItemFutureFromFetcher
 {
-  v3 = [(CNUICoreMainWhitelistedContactsController *)self modelFetcher];
-  v4 = [v3 whitelistedContactsModel];
-  v5 = [(CNUICoreMainWhitelistedContactsController *)self schedulerProvider];
-  v6 = [v4 flatMap:&__block_literal_global_71 schedulerProvider:v5];
+  modelFetcher = [(CNUICoreMainWhitelistedContactsController *)self modelFetcher];
+  whitelistedContactsModel = [modelFetcher whitelistedContactsModel];
+  schedulerProvider = [(CNUICoreMainWhitelistedContactsController *)self schedulerProvider];
+  v6 = [whitelistedContactsModel flatMap:&__block_literal_global_71 schedulerProvider:schedulerProvider];
 
   return v6;
 }
@@ -352,17 +352,17 @@ id __73__CNUICoreMainWhitelistedContactsController_contactItemFutureFromFetcher_
   return v4;
 }
 
-- (void)updateWhitelistByAddingContacts:(id)a3
+- (void)updateWhitelistByAddingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    v5 = [(CNUICoreMainWhitelistedContactsController *)self addContactsToWhitelistFuture];
-    [v5 cancel];
+    addContactsToWhitelistFuture = [(CNUICoreMainWhitelistedContactsController *)self addContactsToWhitelistFuture];
+    [addContactsToWhitelistFuture cancel];
 
     v6 = MEMORY[0x1E6996720];
     v9 = MEMORY[0x1E69E9820];
-    v10 = v4;
+    v10 = contactsCopy;
     v7 = [(CNUICoreMainWhitelistedContactsController *)self backgroundOrImmediateScheduler:v9];
     v8 = [v6 futureWithBlock:&v9 scheduler:v7];
     [(CNUICoreMainWhitelistedContactsController *)self setAddContactsToWhitelistFuture:v8];
@@ -434,17 +434,17 @@ LABEL_18:
   return v16;
 }
 
-- (void)updateWhitelistByUpdatingContacts:(id)a3
+- (void)updateWhitelistByUpdatingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    v5 = [(CNUICoreMainWhitelistedContactsController *)self updateContactsInWhitelistFuture];
-    [v5 cancel];
+    updateContactsInWhitelistFuture = [(CNUICoreMainWhitelistedContactsController *)self updateContactsInWhitelistFuture];
+    [updateContactsInWhitelistFuture cancel];
 
     v6 = MEMORY[0x1E6996720];
     v9 = MEMORY[0x1E69E9820];
-    v10 = v4;
+    v10 = contactsCopy;
     v7 = [(CNUICoreMainWhitelistedContactsController *)self backgroundOrImmediateScheduler:v9];
     v8 = [v6 futureWithBlock:&v9 scheduler:v7];
     [(CNUICoreMainWhitelistedContactsController *)self setUpdateContactsInWhitelistFuture:v8];
@@ -484,17 +484,17 @@ LABEL_7:
   return v9;
 }
 
-- (void)updateWhitelistByRemovingContacts:(id)a3
+- (void)updateWhitelistByRemovingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    v5 = [(CNUICoreMainWhitelistedContactsController *)self deleteContactsFromWhitelistFuture];
-    [v5 cancel];
+    deleteContactsFromWhitelistFuture = [(CNUICoreMainWhitelistedContactsController *)self deleteContactsFromWhitelistFuture];
+    [deleteContactsFromWhitelistFuture cancel];
 
     v6 = MEMORY[0x1E6996720];
     v9 = MEMORY[0x1E69E9820];
-    v10 = v4;
+    v10 = contactsCopy;
     v7 = [(CNUICoreMainWhitelistedContactsController *)self backgroundOrImmediateScheduler:v9];
     v8 = [v6 futureWithBlock:&v9 scheduler:v7];
     [(CNUICoreMainWhitelistedContactsController *)self setDeleteContactsFromWhitelistFuture:v8];
@@ -534,41 +534,41 @@ LABEL_7:
   return v9;
 }
 
-- (id)contactRepresentingItem:(id)a3
+- (id)contactRepresentingItem:(id)item
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695CD78];
-  v5 = a3;
+  itemCopy = item;
   v6 = [v4 alloc];
-  v7 = [MEMORY[0x1E695CDB8] keyVectorWithAllKeys];
-  v20[0] = v7;
+  keyVectorWithAllKeys = [MEMORY[0x1E695CDB8] keyVectorWithAllKeys];
+  v20[0] = keyVectorWithAllKeys;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v9 = [v6 initWithKeysToFetch:v8];
 
   v10 = MEMORY[0x1E695CD58];
-  v11 = [v5 contactIdentifier];
+  contactIdentifier = [itemCopy contactIdentifier];
 
-  v19 = v11;
+  v19 = contactIdentifier;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
   v13 = [v10 predicateForContactsWithIdentifiers:v12];
   [v9 setPredicate:v13];
 
   [v9 setUnifyResults:0];
-  v14 = [(CNUICoreMainWhitelistedContactsController *)self mainContactStoreFacade];
-  v15 = [CNUICoreContactFetchRequestAccumulator resultOfFetchRequest:v9 fromStore:v14];
+  mainContactStoreFacade = [(CNUICoreMainWhitelistedContactsController *)self mainContactStoreFacade];
+  v15 = [CNUICoreContactFetchRequestAccumulator resultOfFetchRequest:v9 fromStore:mainContactStoreFacade];
 
   if ([v15 isSuccess])
   {
-    v16 = [v15 value];
-    v17 = [v16 firstObject];
+    value = [v15 value];
+    firstObject = [value firstObject];
   }
 
   else
   {
-    v17 = 0;
+    firstObject = 0;
   }
 
-  return v17;
+  return firstObject;
 }
 
 - (CNUICoreFamilyMemberContactsObserver)observer

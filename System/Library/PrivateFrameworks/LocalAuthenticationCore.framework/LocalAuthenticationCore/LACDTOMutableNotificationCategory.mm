@@ -8,7 +8,7 @@
 + (id)newSecurityDelayRequiredCategory
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[LACDTOMutableNotificationAction startNewDelayAction];
   v9[0] = v3;
   v4 = +[LACDTOMutableNotificationAction doNotStartNewDelayAction];
@@ -22,7 +22,7 @@
 
 + (id)securityDelayEndedCategory
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithIdentifier:@"com.apple.coreauthd.notifications.category.securityDelay.ended" actions:MEMORY[0x1E695E0F0] hiddenPreviewShowsTitle:1];
 
   return v3;

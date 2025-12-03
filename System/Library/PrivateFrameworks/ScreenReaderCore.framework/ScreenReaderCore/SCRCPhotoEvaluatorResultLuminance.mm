@@ -1,11 +1,11 @@
 @interface SCRCPhotoEvaluatorResultLuminance
-- (SCRCPhotoEvaluatorResultLuminance)initWithDarknessLevel:(double)a3 brightnessLevel:(double)a4 averageLevel:(double)a5;
+- (SCRCPhotoEvaluatorResultLuminance)initWithDarknessLevel:(double)level brightnessLevel:(double)brightnessLevel averageLevel:(double)averageLevel;
 - (id)humanReadableResult;
 @end
 
 @implementation SCRCPhotoEvaluatorResultLuminance
 
-- (SCRCPhotoEvaluatorResultLuminance)initWithDarknessLevel:(double)a3 brightnessLevel:(double)a4 averageLevel:(double)a5
+- (SCRCPhotoEvaluatorResultLuminance)initWithDarknessLevel:(double)level brightnessLevel:(double)brightnessLevel averageLevel:(double)averageLevel
 {
   v12.receiver = self;
   v12.super_class = SCRCPhotoEvaluatorResultLuminance;
@@ -13,9 +13,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_darknessLevel = a3;
-    v8->_brightnessLevel = a4;
-    v8->_averageLevel = a5;
+    v8->_darknessLevel = level;
+    v8->_brightnessLevel = brightnessLevel;
+    v8->_averageLevel = averageLevel;
     v10 = v8;
   }
 

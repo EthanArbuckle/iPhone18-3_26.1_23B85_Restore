@@ -1,9 +1,9 @@
 @interface _HDRequiredShardItem
 - (_HDRequiredShardItem)init;
-- (_HDRequiredShardItem)initWithCoder:(id)a3;
+- (_HDRequiredShardItem)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithShardIdentfier:(uint64_t)a3 options:;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithShardIdentfier:(uint64_t)identfier options:;
 @end
 
 @implementation _HDRequiredShardItem
@@ -29,51 +29,51 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_options forKey:@"options"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
 }
 
-- (_HDRequiredShardItem)initWithCoder:(id)a3
+- (_HDRequiredShardItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _HDRequiredShardItem;
   v5 = [(_HDRequiredShardItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_options = [v4 decodeIntegerForKey:@"options"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"options"];
   }
 
   return v5;
 }
 
-- (void)initWithShardIdentfier:(uint64_t)a3 options:
+- (void)initWithShardIdentfier:(uint64_t)identfier options:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = _HDRequiredShardItem;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v9, sel_init);
+    if (self)
     {
       v6 = [v5 copy];
-      v7 = a1[1];
-      a1[1] = v6;
+      v7 = self[1];
+      self[1] = v6;
 
-      a1[2] = a3;
+      self[2] = identfier;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

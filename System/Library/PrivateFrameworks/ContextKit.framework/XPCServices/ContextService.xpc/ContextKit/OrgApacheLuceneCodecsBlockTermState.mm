@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneCodecsBlockTermState
 - (OrgApacheLuceneCodecsBlockTermState)init;
 - (id)description;
-- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)a3;
+- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)state;
 @end
 
 @implementation OrgApacheLuceneCodecsBlockTermState
@@ -13,22 +13,22 @@
   return self;
 }
 
-- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)a3
+- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)state
 {
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (state && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
   v5.receiver = self;
   v5.super_class = OrgApacheLuceneCodecsBlockTermState;
-  [(OrgApacheLuceneIndexOrdTermState *)&v5 copyFromWithOrgApacheLuceneIndexTermState:a3];
-  self->docFreq_ = *(a3 + 4);
-  self->totalTermFreq_ = *(a3 + 3);
-  self->termBlockOrd_ = *(a3 + 8);
-  self->blockFilePointer_ = *(a3 + 5);
-  self->isRealTerm_ = *(a3 + 48);
+  [(OrgApacheLuceneIndexOrdTermState *)&v5 copyFromWithOrgApacheLuceneIndexTermState:state];
+  self->docFreq_ = *(state + 4);
+  self->totalTermFreq_ = *(state + 3);
+  self->termBlockOrd_ = *(state + 8);
+  self->blockFilePointer_ = *(state + 5);
+  self->isRealTerm_ = *(state + 48);
 }
 
 - (id)description

@@ -1,6 +1,6 @@
 @interface SCATCustomizeGesturesMenuController
 - (id)itemsFromPreferences;
-- (void)updateItemsInPreferences:(id)a3;
+- (void)updateItemsInPreferences:(id)preferences;
 @end
 
 @implementation SCATCustomizeGesturesMenuController
@@ -8,16 +8,16 @@
 - (id)itemsFromPreferences
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlGesturesMenuItems];
+  switchControlGesturesMenuItems = [v2 switchControlGesturesMenuItems];
 
-  return v3;
+  return switchControlGesturesMenuItems;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = +[AXSettings sharedInstance];
-  [v4 setSwitchControlGesturesMenuItems:v3];
+  [v4 setSwitchControlGesturesMenuItems:preferencesCopy];
 }
 
 @end

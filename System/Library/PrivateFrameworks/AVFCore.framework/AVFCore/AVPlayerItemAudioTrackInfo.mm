@@ -1,7 +1,7 @@
 @interface AVPlayerItemAudioTrackInfo
-+ (id)playerItemTrackInfoForTrack:(id)a3;
++ (id)playerItemTrackInfoForTrack:(id)track;
 - (AVPlayerItemAudioTrackInfo)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation AVPlayerItemAudioTrackInfo
@@ -19,12 +19,12 @@
   return result;
 }
 
-+ (id)playerItemTrackInfoForTrack:(id)a3
++ (id)playerItemTrackInfoForTrack:(id)track
 {
-  if (a3)
+  if (track)
   {
     v4 = objc_alloc_init(AVPlayerItemAudioTrackInfo);
-    v4->trackID = [a3 trackID];
+    v4->trackID = [track trackID];
   }
 
   else
@@ -35,19 +35,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return self->trackID == *(a3 + 2);
+      return self->trackID == *(equal + 2);
     }
   }
 

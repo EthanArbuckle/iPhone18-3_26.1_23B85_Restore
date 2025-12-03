@@ -15,11 +15,11 @@
     xpcListener = v2->_xpcListener;
     v2->_xpcListener = v3;
 
-    v5 = [(RSUDaemonServiceManager *)v2 xpcListener];
-    [v5 setDelegate:v2];
+    xpcListener = [(RSUDaemonServiceManager *)v2 xpcListener];
+    [xpcListener setDelegate:v2];
 
-    v6 = [(RSUDaemonServiceManager *)v2 xpcListener];
-    [v6 resume];
+    xpcListener2 = [(RSUDaemonServiceManager *)v2 xpcListener];
+    [xpcListener2 resume];
   }
 
   return v2;

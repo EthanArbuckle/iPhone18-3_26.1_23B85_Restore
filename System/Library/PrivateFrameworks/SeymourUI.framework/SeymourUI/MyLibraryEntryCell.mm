@@ -1,11 +1,11 @@
 @interface MyLibraryEntryCell
-- (_TtC9SeymourUI18MyLibraryEntryCell)initWithCoder:(id)a3;
+- (_TtC9SeymourUI18MyLibraryEntryCell)initWithCoder:(id)coder;
 - (void)prepareForReuse;
 @end
 
 @implementation MyLibraryEntryCell
 
-- (_TtC9SeymourUI18MyLibraryEntryCell)initWithCoder:(id)a3
+- (_TtC9SeymourUI18MyLibraryEntryCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI18MyLibraryEntryCell_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -25,13 +25,13 @@
   v6 = type metadata accessor for MyLibraryEntryCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(MyLibraryEntryCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI18MyLibraryEntryCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 

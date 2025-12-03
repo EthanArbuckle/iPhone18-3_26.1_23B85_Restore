@@ -1,13 +1,13 @@
 @interface PUCollectionsCollectionViewDropDelegate
 - (BOOL)_allowDrop;
-- (BOOL)_canHandleDropSession:(id)a3;
-- (BOOL)collectionView:(id)a3 canHandleDropSesson:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
+- (BOOL)_canHandleDropSession:(id)session;
+- (BOOL)collectionView:(id)view canHandleDropSesson:(id)sesson;
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
 - (PUCollectionsCollectionViewDropDataProvider)dropDataProvider;
-- (id)_collectionAtIndexPath:(id)a3;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (void)_handleDrop:(id)a3 forItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
+- (id)_collectionAtIndexPath:(id)path;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (void)_handleDrop:(id)drop forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
 @end
 
 @implementation PUCollectionsCollectionViewDropDelegate
@@ -19,47 +19,47 @@
   return WeakRetained;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   v8 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = viewCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = coordinatorCopy;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEBUG, "_collectionView: %@ performDropWithCoordinator: %@", &v11, 0x16u);
   }
 
-  v9 = [v7 session];
-  v10 = [v7 destinationIndexPath];
-  [(PUCollectionsCollectionViewDropDelegate *)self _handleDrop:v9 forItemAtIndexPath:v10];
+  session = [coordinatorCopy session];
+  destinationIndexPath = [coordinatorCopy destinationIndexPath];
+  [(PUCollectionsCollectionViewDropDelegate *)self _handleDrop:session forItemAtIndexPath:destinationIndexPath];
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  updateCopy = update;
+  pathCopy = path;
   v11 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v19 = 138412802;
-    v20 = v8;
+    v20 = viewCopy;
     v21 = 2112;
-    v22 = v9;
+    v22 = updateCopy;
     v23 = 2112;
-    v24 = v10;
+    v24 = pathCopy;
     _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_DEBUG, "_collectionView: %@ dropSessionDidUpdate:%@ withDestinationIndexPath: %@", &v19, 0x20u);
   }
 
-  v12 = [(PUCollectionsCollectionViewDropDelegate *)self _collectionAtIndexPath:v10];
-  v13 = [v12 px_assetsDropMode];
-  if (v13 == 1 || v13 == 2 && PXDropSessionHasItemsNeedingImport())
+  v12 = [(PUCollectionsCollectionViewDropDelegate *)self _collectionAtIndexPath:pathCopy];
+  px_assetsDropMode = [v12 px_assetsDropMode];
+  if (px_assetsDropMode == 1 || px_assetsDropMode == 2 && PXDropSessionHasItemsNeedingImport())
   {
     v14 = objc_alloc(MEMORY[0x1E69DC838]);
     v15 = 2;
@@ -78,75 +78,75 @@
   return v17;
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSesson:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSesson:(id)sesson
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  sessonCopy = sesson;
   v8 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = viewCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = sessonCopy;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEBUG, "_collectionView: %@ canHandleDropSesson: %@ ", &v11, 0x16u);
   }
 
-  v9 = [(PUCollectionsCollectionViewDropDelegate *)self _canHandleDropSession:v7];
+  v9 = [(PUCollectionsCollectionViewDropDelegate *)self _canHandleDropSession:sessonCopy];
   return v9;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
-  v6 = [(PUCollectionsCollectionViewDropDelegate *)self _collectionAtIndexPath:a4];
-  v7 = [(PUCollectionsCollectionViewDropDelegate *)self _allowDrop];
-  v8 = [MEMORY[0x1E69C3498] sharedInstance];
-  v9 = [v8 springLoadingEnabled];
+  v6 = [(PUCollectionsCollectionViewDropDelegate *)self _collectionAtIndexPath:path];
+  _allowDrop = [(PUCollectionsCollectionViewDropDelegate *)self _allowDrop];
+  mEMORY[0x1E69C3498] = [MEMORY[0x1E69C3498] sharedInstance];
+  springLoadingEnabled = [mEMORY[0x1E69C3498] springLoadingEnabled];
 
-  v10 = 0;
-  if (v7 && v9)
+  px_allowsSpringLoading = 0;
+  if (_allowDrop && springLoadingEnabled)
   {
-    v10 = [v6 px_allowsSpringLoading];
+    px_allowsSpringLoading = [v6 px_allowsSpringLoading];
   }
 
-  return v10;
+  return px_allowsSpringLoading;
 }
 
-- (void)_handleDrop:(id)a3 forItemAtIndexPath:(id)a4
+- (void)_handleDrop:(id)drop forItemAtIndexPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dropCopy = drop;
+  pathCopy = path;
   v8 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = dropCopy;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEBUG, "_handleDrop: %@", &v13, 0xCu);
   }
 
-  v9 = [(PUCollectionsCollectionViewDropDelegate *)self _collectionAtIndexPath:v7];
+  v9 = [(PUCollectionsCollectionViewDropDelegate *)self _collectionAtIndexPath:pathCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && v9)
   {
-    v10 = [MEMORY[0x1E69C37B0] dropAssetsActionPerformerForAssetCollection:v9 dropSession:v6];
-    v11 = [(PUCollectionsCollectionViewDropDelegate *)self dropDataProvider];
-    v12 = [v11 actionPerformerDelegateForCollectionViewDropDelegate:self];
+    v10 = [MEMORY[0x1E69C37B0] dropAssetsActionPerformerForAssetCollection:v9 dropSession:dropCopy];
+    dropDataProvider = [(PUCollectionsCollectionViewDropDelegate *)self dropDataProvider];
+    v12 = [dropDataProvider actionPerformerDelegateForCollectionViewDropDelegate:self];
     [v10 setDelegate:v12];
 
     [v10 performActionWithCompletionHandler:0];
   }
 }
 
-- (BOOL)_canHandleDropSession:(id)a3
+- (BOOL)_canHandleDropSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if ([(PUCollectionsCollectionViewDropDelegate *)self _allowDrop])
   {
-    v5 = [MEMORY[0x1E69C3618] supportedTypeIdentifiers];
-    v6 = [v4 hasItemsConformingToTypeIdentifiers:v5];
+    supportedTypeIdentifiers = [MEMORY[0x1E69C3618] supportedTypeIdentifiers];
+    v6 = [sessionCopy hasItemsConformingToTypeIdentifiers:supportedTypeIdentifiers];
   }
 
   else
@@ -157,27 +157,27 @@
   return v6;
 }
 
-- (id)_collectionAtIndexPath:(id)a3
+- (id)_collectionAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUCollectionsCollectionViewDropDelegate *)self dropDataProvider];
-  v6 = [v5 collectionViewDropDelegate:self collectionAtIndexPath:v4];
+  pathCopy = path;
+  dropDataProvider = [(PUCollectionsCollectionViewDropDelegate *)self dropDataProvider];
+  v6 = [dropDataProvider collectionViewDropDelegate:self collectionAtIndexPath:pathCopy];
 
   return v6;
 }
 
 - (BOOL)_allowDrop
 {
-  v3 = [(PUCollectionsCollectionViewDropDelegate *)self dropDataProvider];
-  v4 = v3;
-  if (!self->_dataProviderImplementsAllowDrop || v3 == 0)
+  dropDataProvider = [(PUCollectionsCollectionViewDropDelegate *)self dropDataProvider];
+  v4 = dropDataProvider;
+  if (!self->_dataProviderImplementsAllowDrop || dropDataProvider == 0)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v3 allowDropForCollectionViewDropDelegate:self];
+    v6 = [dropDataProvider allowDropForCollectionViewDropDelegate:self];
   }
 
   return v6;

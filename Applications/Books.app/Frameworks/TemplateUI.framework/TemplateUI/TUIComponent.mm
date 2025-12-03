@@ -1,23 +1,23 @@
 @interface TUIComponent
-- (BOOL)hasUpdatesForTransactionGroup:(id)a3;
-- (BOOL)needsValidationForTransactionGroup:(id)a3;
-- (TUIComponent)initWithModel:(shared_ptr<const TUI:(id)a4 :Model::Component>)a3 identifier:;
+- (BOOL)hasUpdatesForTransactionGroup:(id)group;
+- (BOOL)needsValidationForTransactionGroup:(id)group;
+- (TUIComponent)initWithModel:(shared_ptr<const TUI:(id)model :Model::Component>)a3 identifier:;
 - (TUIModelContaining)parentModel;
 - (id).cxx_construct;
-- (id)describeWithContext:(id)a3;
-- (id)validateInstantiationWithContext:(id)a3 transactionGroup:(id)a4 layout:(id)a5;
+- (id)describeWithContext:(id)context;
+- (id)validateInstantiationWithContext:(id)context transactionGroup:(id)group layout:(id)layout;
 - (shared_ptr<const)model;
-- (void)appendLayoutChildrenToArray:(id)a3;
-- (void)appendLayoutModelsToArray:(id)a3;
-- (void)dynamicChanged:(id)a3 transaction:(id)a4;
+- (void)appendLayoutChildrenToArray:(id)array;
+- (void)appendLayoutModelsToArray:(id)array;
+- (void)dynamicChanged:(id)changed transaction:(id)transaction;
 - (void)onContainedModelsChanged;
-- (void)updateModel:(shared_ptr<const TUI::Model::Component>)a3;
-- (void)updateModelChildren:(id)a3;
+- (void)updateModel:(shared_ptr<const TUI::Model::Component>)model;
+- (void)updateModelChildren:(id)children;
 @end
 
 @implementation TUIComponent
 
-- (TUIComponent)initWithModel:(shared_ptr<const TUI:(id)a4 :Model::Component>)a3 identifier:
+- (TUIComponent)initWithModel:(shared_ptr<const TUI:(id)model :Model::Component>)a3 identifier:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -65,10 +65,10 @@
   return result;
 }
 
-- (void)updateModel:(shared_ptr<const TUI::Model::Component>)a3
+- (void)updateModel:(shared_ptr<const TUI::Model::Component>)model
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *model.__ptr_;
+  v3 = *(model.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -83,19 +83,19 @@
   }
 }
 
-- (id)describeWithContext:(id)a3
+- (id)describeWithContext:(id)context
 {
-  v4 = [a3 package];
-  LODWORD(self) = TUI::Package::Buffer::nameForComponent([v4 packageBuffer], *(self->_model.__ptr_ + 5));
-  v5 = TUI::Symbol::Tab::string([v4 symtab], self);
+  package = [context package];
+  LODWORD(self) = TUI::Package::Buffer::nameForComponent([package packageBuffer], *(self->_model.__ptr_ + 5));
+  v5 = TUI::Symbol::Tab::string([package symtab], self);
 
   return v5;
 }
 
-- (void)dynamicChanged:(id)a3 transaction:(id)a4
+- (void)dynamicChanged:(id)changed transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  transactionCopy = transaction;
   ptr = self->_model.__ptr_;
   v9 = ptr[13];
   v10 = ptr[14];
@@ -111,40 +111,40 @@
     WeakRetained = objc_loadWeakRetained(v9);
   }
 
-  v12 = [WeakRetained transactionCoordinator];
+  transactionCoordinator = [WeakRetained transactionCoordinator];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_CFB98;
   v14[3] = &unk_261598;
   v13 = WeakRetained;
   v15 = v13;
-  v16 = self;
-  [v12 scheduleLayoutUpdateWithTransaction:v7 block:v14];
+  selfCopy = self;
+  [transactionCoordinator scheduleLayoutUpdateWithTransaction:transactionCopy block:v14];
 }
 
-- (void)appendLayoutChildrenToArray:(id)a3
+- (void)appendLayoutChildrenToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   children = self->_children;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_CFCB4;
   v7[3] = &unk_2615C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSArray *)children enumerateObjectsUsingBlock:v7];
 }
 
-- (void)appendLayoutModelsToArray:(id)a3
+- (void)appendLayoutModelsToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   children = self->_children;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_CFD70;
   v7[3] = &unk_2615C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSArray *)children enumerateObjectsUsingBlock:v7];
 }
 
@@ -154,11 +154,11 @@
   [WeakRetained onContainedModelsChanged];
 }
 
-- (void)updateModelChildren:(id)a3
+- (void)updateModelChildren:(id)children
 {
-  v5 = a3;
+  childrenCopy = children;
   [(NSArray *)self->_children enumerateObjectsUsingBlock:&stru_2615E0];
-  objc_storeStrong(&self->_children, a3);
+  objc_storeStrong(&self->_children, children);
   children = self->_children;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -169,9 +169,9 @@
   [(TUIComponent *)self onContainedModelsChanged];
 }
 
-- (BOOL)needsValidationForTransactionGroup:(id)a3
+- (BOOL)needsValidationForTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -192,7 +192,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v6 |= [*(*(&v11 + 1) + 8 * v9) optimizeUpdatesForTransactionGroup:{v4, v11}];
+        v6 |= [*(*(&v11 + 1) + 8 * v9) optimizeUpdatesForTransactionGroup:{groupCopy, v11}];
         v9 = v9 + 1;
       }
 
@@ -206,9 +206,9 @@
   return v6 & 1;
 }
 
-- (BOOL)hasUpdatesForTransactionGroup:(id)a3
+- (BOOL)hasUpdatesForTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -229,7 +229,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v6 |= [*(*(&v11 + 1) + 8 * v9) hasUpdatesForTransactionGroup:{v4, v11}];
+        v6 |= [*(*(&v11 + 1) + 8 * v9) hasUpdatesForTransactionGroup:{groupCopy, v11}];
         v9 = v9 + 1;
       }
 
@@ -243,10 +243,10 @@
   return v6 & 1;
 }
 
-- (id)validateInstantiationWithContext:(id)a3 transactionGroup:(id)a4 layout:(id)a5
+- (id)validateInstantiationWithContext:(id)context transactionGroup:(id)group layout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  groupCopy = group;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -280,7 +280,7 @@
     while (v10);
   }
 
-  [v7 updateComponentBody:self];
+  [contextCopy updateComponentBody:self];
   return self;
 }
 

@@ -1,18 +1,18 @@
 @interface SBUIBannerClientContainerViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldBeginWithTouches:(id)a4 event:(id)a5;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeginWithTouches:(id)touches event:(id)event;
 - (BOOL)isAccessibilityIgnoringSmartInvertColors;
-- (SBUIBannerClientContainerViewController)initWithScene:(id)a3 presentable:(id)a4 context:(id)a5;
-- (id)_buttonEventsActionForButtonEvent:(int64_t)a3;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (SBUIBannerClientContainerViewController)initWithScene:(id)scene presentable:(id)presentable context:(id)context;
+- (id)_buttonEventsActionForButtonEvent:(int64_t)event;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 - (id)_transitionCoordinator;
-- (id)acquireAssertionForButtonEvent:(int64_t)a3 reason:(id)a4;
-- (id)acquireGestureRecognizerDefaultPriorityAssertionForReason:(id)a3;
-- (id)acquireTransitionDismissalPreventionAssertionForReason:(id)a3;
-- (void)_handleCancelSystemBannerDragGestureRecognizer:(id)a3;
-- (void)_removeButtonEventsActionForButtonEvent:(int64_t)a3;
-- (void)_setButtonEventAction:(id)a3 forButtonEvent:(int64_t)a4;
-- (void)setWantsHomeGesture:(BOOL)a3;
-- (void)systemApertureElementContextPresentationDidBecomePossible:(id)a3;
+- (id)acquireAssertionForButtonEvent:(int64_t)event reason:(id)reason;
+- (id)acquireGestureRecognizerDefaultPriorityAssertionForReason:(id)reason;
+- (id)acquireTransitionDismissalPreventionAssertionForReason:(id)reason;
+- (void)_handleCancelSystemBannerDragGestureRecognizer:(id)recognizer;
+- (void)_removeButtonEventsActionForButtonEvent:(int64_t)event;
+- (void)_setButtonEventAction:(id)action forButtonEvent:(int64_t)event;
+- (void)setWantsHomeGesture:(BOOL)gesture;
+- (void)systemApertureElementContextPresentationDidBecomePossible:(id)possible;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -21,33 +21,33 @@
 
 - (id)_transitionCoordinator
 {
-  v3 = [self systemApertureElementContextPrivate];
-  v4 = [v3 transitionContext];
-  v5 = [v4 transitionCoordinator];
-  v6 = v5;
-  if (v5)
+  systemApertureElementContextPrivate = [self systemApertureElementContextPrivate];
+  transitionContext = [systemApertureElementContextPrivate transitionContext];
+  transitionCoordinator = [transitionContext transitionCoordinator];
+  v6 = transitionCoordinator;
+  if (transitionCoordinator)
   {
-    v7 = v5;
+    _transitionCoordinator = transitionCoordinator;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SBUIBannerClientContainerViewController;
-    v7 = [(SBUIBannerClientContainerViewController *)&v10 _transitionCoordinator];
+    _transitionCoordinator = [(SBUIBannerClientContainerViewController *)&v10 _transitionCoordinator];
   }
 
-  v8 = v7;
+  v8 = _transitionCoordinator;
 
   return v8;
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [self systemApertureElementContextPrivate];
-  v4 = [v3 isPresentationPossible];
+  systemApertureElementContextPrivate = [self systemApertureElementContextPrivate];
+  isPresentationPossible = [systemApertureElementContextPrivate isPresentationPossible];
 
-  if ((v4 & 1) == 0)
+  if ((isPresentationPossible & 1) == 0)
   {
     v5.receiver = self;
     v5.super_class = SBUIBannerClientContainerViewController;
@@ -55,29 +55,29 @@
   }
 }
 
-- (SBUIBannerClientContainerViewController)initWithScene:(id)a3 presentable:(id)a4 context:(id)a5
+- (SBUIBannerClientContainerViewController)initWithScene:(id)scene presentable:(id)presentable context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
+  sceneCopy = scene;
+  presentableCopy = presentable;
   v17.receiver = self;
   v17.super_class = SBUIBannerClientContainerViewController;
-  v10 = [(BNBannerClientContainerViewController *)&v17 initWithScene:v8 presentable:v9 context:a5];
+  v10 = [(BNBannerClientContainerViewController *)&v17 initWithScene:sceneCopy presentable:presentableCopy context:context];
   if (v10)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v9 setBannerHomeGestureContext:v10];
+      [presentableCopy setBannerHomeGestureContext:v10];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v9 setBannerDismissalPreventionContext:v10];
+      [presentableCopy setBannerDismissalPreventionContext:v10];
     }
 
     if (objc_opt_respondsToSelector())
     {
       v11 = objc_opt_class();
-      v12 = v8;
+      v12 = sceneCopy;
       if (v11)
       {
         if (objc_opt_isKindOfClass())
@@ -98,16 +98,16 @@
 
       v14 = v13;
 
-      v15 = [v14 systemApertureElementContextPrivate];
+      systemApertureElementContextPrivate = [v14 systemApertureElementContextPrivate];
 
-      if ([v15 isPresentationPossible])
+      if ([systemApertureElementContextPrivate isPresentationPossible])
       {
-        [(SBUIBannerClientContainerViewController *)v10 systemApertureElementContextPresentationDidBecomePossible:v15];
+        [(SBUIBannerClientContainerViewController *)v10 systemApertureElementContextPresentationDidBecomePossible:systemApertureElementContextPrivate];
       }
 
       else
       {
-        [v15 addObserver:v10];
+        [systemApertureElementContextPrivate addObserver:v10];
       }
     }
   }
@@ -120,52 +120,52 @@
   v12.receiver = self;
   v12.super_class = SBUIBannerClientContainerViewController;
   [(BNBannerClientContainerViewController *)&v12 viewDidLoad];
-  v3 = [(BNBannerClientContainerViewController *)self presentable];
+  presentable = [(BNBannerClientContainerViewController *)self presentable];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     v5 = [[SBUIPresentableCancelSystemDragGestureRecognizer alloc] initWithTarget:self action:sel__handleCancelSystemBannerDragGestureRecognizer_];
     [(SBUIPresentableCancelSystemDragGestureRecognizer *)v5 setDelegate:self];
-    v6 = [(SBUIBannerClientContainerViewController *)self view];
-    [v6 addGestureRecognizer:v5];
+    view = [(SBUIBannerClientContainerViewController *)self view];
+    [view addGestureRecognizer:v5];
 
-    v7 = [(BNBannerClientContainerViewController *)self scene];
-    v8 = [v7 _FBSScene];
+    scene = [(BNBannerClientContainerViewController *)self scene];
+    _FBSScene = [scene _FBSScene];
     v9 = MEMORY[0x1E695DFD8];
     v10 = [[SBUIPresentableSupportsCancellingSystemDragAction alloc] initWithInfo:0 responder:0];
     v11 = [v9 setWithObject:v10];
-    [v8 sendActions:v11];
+    [_FBSScene sendActions:v11];
   }
 }
 
 - (BOOL)isAccessibilityIgnoringSmartInvertColors
 {
-  v2 = [(BNBannerClientContainerViewController *)self presentable];
+  presentable = [(BNBannerClientContainerViewController *)self presentable];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
 }
 
-- (void)setWantsHomeGesture:(BOOL)a3
+- (void)setWantsHomeGesture:(BOOL)gesture
 {
-  if (self->_ownsHomeGesture != a3)
+  if (self->_ownsHomeGesture != gesture)
   {
     v14 = v3;
     v15 = v4;
-    v5 = a3;
+    gestureCopy = gesture;
     v7 = [SBUIPresentableWantsHomeGestureAction alloc];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __63__SBUIBannerClientContainerViewController_setWantsHomeGesture___block_invoke;
     v12[3] = &unk_1E789E2F8;
     v12[4] = self;
-    v13 = v5;
-    v8 = [(SBUIPresentableWantsHomeGestureAction *)v7 initWithWantsHomeGesture:v5 handler:v12];
-    v9 = [(BNBannerClientContainerViewController *)self scene];
-    v10 = [v9 _FBSScene];
+    v13 = gestureCopy;
+    v8 = [(SBUIPresentableWantsHomeGestureAction *)v7 initWithWantsHomeGesture:gestureCopy handler:v12];
+    scene = [(BNBannerClientContainerViewController *)self scene];
+    _FBSScene = [scene _FBSScene];
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v8, 0}];
-    [v10 sendActions:v11];
+    [_FBSScene sendActions:v11];
   }
 }
 
@@ -192,16 +192,16 @@ void __63__SBUIBannerClientContainerViewController_setWantsHomeGesture___block_i
   }
 }
 
-- (id)acquireTransitionDismissalPreventionAssertionForReason:(id)a3
+- (id)acquireTransitionDismissalPreventionAssertionForReason:(id)reason
 {
-  v4 = a3;
-  if (!v4)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBUIBannerClientContainerViewController acquireTransitionDismissalPreventionAssertionForReason:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_transitionDismissalPreventionAssertion);
-  v6 = [(BNBannerClientContainerViewController *)self scene];
+  scene = [(BNBannerClientContainerViewController *)self scene];
   if (WeakRetained)
   {
     v7 = SBLogBanners();
@@ -217,9 +217,9 @@ void __63__SBUIBannerClientContainerViewController_setWantsHomeGesture___block_i
     v20[1] = 3221225472;
     v20[2] = __98__SBUIBannerClientContainerViewController_acquireTransitionDismissalPreventionAssertionForReason___block_invoke;
     v20[3] = &unk_1E789E770;
-    v14 = v4;
+    v14 = reasonCopy;
     v21 = v14;
-    [v6 _updateUIClientSettingsWithBlock:v20];
+    [scene _updateUIClientSettingsWithBlock:v20];
     objc_initWeak(&location, self);
     v15 = [_SBUIPresentableDismissalPreventionAssertion alloc];
     v17[0] = MEMORY[0x1E69E9820];
@@ -262,16 +262,16 @@ void __98__SBUIBannerClientContainerViewController_acquireTransitionDismissalPre
   }
 }
 
-- (id)acquireGestureRecognizerDefaultPriorityAssertionForReason:(id)a3
+- (id)acquireGestureRecognizerDefaultPriorityAssertionForReason:(id)reason
 {
-  v4 = a3;
-  if (!v4)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBUIBannerClientContainerViewController acquireGestureRecognizerDefaultPriorityAssertionForReason:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_gestureRecognizerPriorityAssertion);
-  v6 = [(BNBannerClientContainerViewController *)self scene];
+  scene = [(BNBannerClientContainerViewController *)self scene];
   if (WeakRetained)
   {
     v7 = SBLogBanners();
@@ -287,9 +287,9 @@ void __98__SBUIBannerClientContainerViewController_acquireTransitionDismissalPre
     v20[1] = 3221225472;
     v20[2] = __101__SBUIBannerClientContainerViewController_acquireGestureRecognizerDefaultPriorityAssertionForReason___block_invoke;
     v20[3] = &unk_1E789E770;
-    v14 = v4;
+    v14 = reasonCopy;
     v21 = v14;
-    [v6 _updateUIClientSettingsWithBlock:v20];
+    [scene _updateUIClientSettingsWithBlock:v20];
     objc_initWeak(&location, self);
     v15 = [_SBUIPresentableGestureRecognizerPriorityAssertion alloc];
     v17[0] = MEMORY[0x1E69E9820];
@@ -332,17 +332,17 @@ void __101__SBUIBannerClientContainerViewController_acquireGestureRecognizerDefa
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeginWithTouches:(id)a4 event:(id)a5
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeginWithTouches:(id)touches event:(id)event
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(BNBannerClientContainerViewController *)self presentable];
+  touchesCopy = touches;
+  eventCopy = event;
+  presentable = [(BNBannerClientContainerViewController *)self presentable];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(BNBannerClientContainerViewController *)self presentable];
-    v12 = [v11 shouldCancelSystemDragGestureWithTouches:v7 event:v8];
+    presentable2 = [(BNBannerClientContainerViewController *)self presentable];
+    v12 = [presentable2 shouldCancelSystemDragGestureWithTouches:touchesCopy event:eventCopy];
   }
 
   else
@@ -353,26 +353,26 @@ void __101__SBUIBannerClientContainerViewController_acquireGestureRecognizerDefa
   return v12;
 }
 
-- (void)_handleCancelSystemBannerDragGestureRecognizer:(id)a3
+- (void)_handleCancelSystemBannerDragGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3)
+  if ([recognizer state] == 3)
   {
-    v8 = [(BNBannerClientContainerViewController *)self scene];
-    v4 = [v8 _FBSScene];
+    scene = [(BNBannerClientContainerViewController *)self scene];
+    _FBSScene = [scene _FBSScene];
     v5 = MEMORY[0x1E695DFD8];
     v6 = [[SBUIPresentableCancelSystemDragAction alloc] initWithInfo:0 responder:0];
     v7 = [v5 setWithObject:v6];
-    [v4 sendActions:v7];
+    [_FBSScene sendActions:v7];
   }
 }
 
-- (id)acquireAssertionForButtonEvent:(int64_t)a3 reason:(id)a4
+- (id)acquireAssertionForButtonEvent:(int64_t)event reason:(id)reason
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 == 1)
+  reasonCopy = reason;
+  v8 = reasonCopy;
+  if (event == 1)
   {
-    if (v7)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -380,7 +380,7 @@ void __101__SBUIBannerClientContainerViewController_acquireGestureRecognizerDefa
 
   else
   {
-    [(SBUIBannerClientContainerViewController *)a2 acquireAssertionForButtonEvent:a3 reason:?];
+    [(SBUIBannerClientContainerViewController *)a2 acquireAssertionForButtonEvent:event reason:?];
     if (v8)
     {
       goto LABEL_3;
@@ -394,7 +394,7 @@ LABEL_3:
   v34[1] = 0x3032000000;
   v34[2] = __Block_byref_object_copy__0;
   v34[3] = __Block_byref_object_dispose__0;
-  v35 = [(SBUIBannerClientContainerViewController *)self _buttonEventsActionForButtonEvent:a3];
+  v35 = [(SBUIBannerClientContainerViewController *)self _buttonEventsActionForButtonEvent:event];
   if (([*(v34[0] + 40) isValid] & 1) == 0)
   {
     v9 = *(v34[0] + 40);
@@ -420,17 +420,17 @@ LABEL_3:
     v29 = &unk_1E789ED48;
     objc_copyWeak(&v31, &location);
     v30 = &v33;
-    v18 = [(SBUIPresentableButtonEventsAction *)v17 initWithButtonEvent:a3 reason:v8 handler:&v26];
+    v18 = [(SBUIPresentableButtonEventsAction *)v17 initWithButtonEvent:event reason:v8 handler:&v26];
     v19 = *(v34[0] + 40);
     *(v34[0] + 40) = v18;
 
-    v20 = [(BNBannerClientContainerViewController *)self scene];
-    v21 = [v20 _FBSScene];
+    scene = [(BNBannerClientContainerViewController *)self scene];
+    _FBSScene = [scene _FBSScene];
     v22 = objc_alloc(MEMORY[0x1E695DFD8]);
     v23 = [v22 initWithObjects:{*(v34[0] + 40), 0, v26, v27, v28, v29}];
-    [v21 sendActions:v23];
+    [_FBSScene sendActions:v23];
 
-    [(SBUIBannerClientContainerViewController *)self _setButtonEventAction:*(v34[0] + 40) forButtonEvent:a3];
+    [(SBUIBannerClientContainerViewController *)self _setButtonEventAction:*(v34[0] + 40) forButtonEvent:event];
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
   }
@@ -467,20 +467,20 @@ void __81__SBUIBannerClientContainerViewController_acquireAssertionForButtonEven
   }
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  actionsCopy = actions;
   v30.receiver = self;
   v30.super_class = SBUIBannerClientContainerViewController;
-  v11 = [(BNBannerClientContainerViewController *)&v30 _respondToActions:v10 forFBSScene:a4 inUIScene:a5 fromTransitionContext:a6];
+  v11 = [(BNBannerClientContainerViewController *)&v30 _respondToActions:actionsCopy forFBSScene:scene inUIScene:iScene fromTransitionContext:context];
   v12 = [v11 mutableCopy];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = v10;
+  v13 = actionsCopy;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v14)
   {
@@ -521,18 +521,18 @@ void __81__SBUIBannerClientContainerViewController_acquireAssertionForButtonEven
         if (v22)
         {
           [v12 removeObject:{v22, v26}];
-          v23 = [(BNBannerClientContainerViewController *)self presentable];
+          presentable = [(BNBannerClientContainerViewController *)self presentable];
           if (objc_opt_respondsToSelector())
           {
-            v24 = [v23 homeAffordanceDidCrossThreshold];
+            homeAffordanceDidCrossThreshold = [presentable homeAffordanceDidCrossThreshold];
           }
 
           else
           {
-            v24 = 1;
+            homeAffordanceDidCrossThreshold = 1;
           }
 
-          [v22 setSuccessful:v24];
+          [v22 setSuccessful:homeAffordanceDidCrossThreshold];
         }
       }
 
@@ -545,20 +545,20 @@ void __81__SBUIBannerClientContainerViewController_acquireAssertionForButtonEven
   return v12;
 }
 
-- (void)systemApertureElementContextPresentationDidBecomePossible:(id)a3
+- (void)systemApertureElementContextPresentationDidBecomePossible:(id)possible
 {
-  v11 = a3;
-  v4 = [(BNBannerClientContainerViewController *)self presentable];
+  possibleCopy = possible;
+  presentable = [(BNBannerClientContainerViewController *)self presentable];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(BNBannerClientContainerViewController *)self presentable];
-    [v11 setSystemApertureElementViewControllerProvider:v6];
-    v7 = [v6 systemApertureElementViewController];
-    v8 = [(BNBannerClientContainerViewController *)self presentable];
+    presentable2 = [(BNBannerClientContainerViewController *)self presentable];
+    [possibleCopy setSystemApertureElementViewControllerProvider:presentable2];
+    systemApertureElementViewController = [presentable2 systemApertureElementViewController];
+    presentable3 = [(BNBannerClientContainerViewController *)self presentable];
     v9 = UIViewControllerFromPresentable();
-    v10 = [v7 isEqual:v9];
+    v10 = [systemApertureElementViewController isEqual:v9];
 
     if ((v10 & 1) == 0)
     {
@@ -566,54 +566,54 @@ void __81__SBUIBannerClientContainerViewController_acquireAssertionForButtonEven
     }
   }
 
-  [v11 removeObserver:self];
+  [possibleCopy removeObserver:self];
 }
 
-- (id)_buttonEventsActionForButtonEvent:(int64_t)a3
+- (id)_buttonEventsActionForButtonEvent:(int64_t)event
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  buttonEventsToActions = v4->_buttonEventsToActions;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  buttonEventsToActions = selfCopy->_buttonEventsToActions;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:event];
   v7 = [(NSMapTable *)buttonEventsToActions objectForKey:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)_setButtonEventAction:(id)a3 forButtonEvent:(int64_t)a4
+- (void)_setButtonEventAction:(id)action forButtonEvent:(int64_t)event
 {
-  v6 = a3;
-  if (v6)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v12 = v6;
-    v7 = self;
-    objc_sync_enter(v7);
-    buttonEventsToActions = v7->_buttonEventsToActions;
+    v12 = actionCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    buttonEventsToActions = selfCopy->_buttonEventsToActions;
     if (!buttonEventsToActions)
     {
-      v9 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-      v10 = v7->_buttonEventsToActions;
-      v7->_buttonEventsToActions = v9;
+      strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+      v10 = selfCopy->_buttonEventsToActions;
+      selfCopy->_buttonEventsToActions = strongToWeakObjectsMapTable;
 
-      buttonEventsToActions = v7->_buttonEventsToActions;
+      buttonEventsToActions = selfCopy->_buttonEventsToActions;
     }
 
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:event];
     [(NSMapTable *)buttonEventsToActions setObject:v12 forKey:v11];
 
-    objc_sync_exit(v7);
-    v6 = v12;
+    objc_sync_exit(selfCopy);
+    actionCopy = v12;
   }
 }
 
-- (void)_removeButtonEventsActionForButtonEvent:(int64_t)a3
+- (void)_removeButtonEventsActionForButtonEvent:(int64_t)event
 {
   obj = self;
   objc_sync_enter(obj);
   buttonEventsToActions = obj->_buttonEventsToActions;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:event];
   [(NSMapTable *)buttonEventsToActions removeObjectForKey:v5];
 
   if (![(NSMapTable *)obj->_buttonEventsToActions count])

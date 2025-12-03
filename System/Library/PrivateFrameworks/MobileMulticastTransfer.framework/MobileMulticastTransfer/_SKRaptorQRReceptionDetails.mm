@@ -1,7 +1,7 @@
 @interface _SKRaptorQRReceptionDetails
 - (_SKRaptorQRReceptionDetails)init;
-- (unsigned)symbolsShouldHaveReceived:(unint64_t)a3;
-- (void)updateWithESI:(unsigned int)a3;
+- (unsigned)symbolsShouldHaveReceived:(unint64_t)received;
+- (void)updateWithESI:(unsigned int)i;
 @end
 
 @implementation _SKRaptorQRReceptionDetails
@@ -20,14 +20,14 @@
   return result;
 }
 
-- (void)updateWithESI:(unsigned int)a3
+- (void)updateWithESI:(unsigned int)i
 {
-  self->_lastESI = a3;
+  self->_lastESI = i;
   if (self->_firstESI == -1)
   {
-    self->_firstESI = a3;
+    self->_firstESI = i;
     largestESI = self->_largestESI;
-    if (largestESI == -1 || largestESI < a3)
+    if (largestESI == -1 || largestESI < i)
     {
       goto LABEL_12;
     }
@@ -36,15 +36,15 @@
   else
   {
     v3 = self->_largestESI;
-    if (v3 == -1 || v3 < a3)
+    if (v3 == -1 || v3 < i)
     {
 LABEL_12:
-      self->_largestESI = a3;
+      self->_largestESI = i;
     }
   }
 }
 
-- (unsigned)symbolsShouldHaveReceived:(unint64_t)a3
+- (unsigned)symbolsShouldHaveReceived:(unint64_t)received
 {
   v20 = *MEMORY[0x277D85DE8];
   firstESI = self->_firstESI;
@@ -64,11 +64,11 @@ LABEL_12:
     else
     {
       largestESI = self->_largestESI;
-      v6 = largestESI / a3;
+      v6 = largestESI / received;
       v7 = ceil(v6);
       if (v7 - v6 <= 0.1)
       {
-        largestESI = (v7 * a3);
+        largestESI = (v7 * received);
       }
 
       else
@@ -87,7 +87,7 @@ LABEL_12:
           v16 = 1024;
           v17 = v11;
           v18 = 2048;
-          v19 = a3;
+          receivedCopy = received;
           _os_log_impl(&dword_259B04000, v10, OS_LOG_TYPE_DEFAULT, "_largestESI / symbolCount = %lf (%u / %lu), not close to an integer. Using a non-integer repair factor, or a lot of packets get lost while host sends packets with largest esi?", &v14, 0x1Cu);
         }
 

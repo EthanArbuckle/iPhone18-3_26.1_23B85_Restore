@@ -42,20 +42,20 @@
   v14 = v13;
   v22 = v14;
   v15 = MEMORY[0x23EE78590](v21);
-  v16 = [(MTRWiFiNetworkDiagnosticsClusterResetCountsParams *)v10 timedInvokeTimeoutMs];
-  v17 = [(MTRGenericCluster *)self device];
-  v18 = [(MTRCluster *)self endpointID];
-  v19 = [(MTRWiFiNetworkDiagnosticsClusterResetCountsParams *)v10 serverSideProcessingTimeout];
-  v20 = [(MTRCluster *)self callbackQueue];
-  [v17 _invokeKnownCommandWithEndpointID:v18 clusterID:&unk_284C42008 commandID:&unk_284C41660 commandPayload:v10 expectedValues:v11 expectedValueInterval:v12 timedInvokeTimeout:v16 serverSideProcessingTimeout:v19 responseClass:0 queue:v20 completion:v15];
+  timedInvokeTimeoutMs = [(MTRWiFiNetworkDiagnosticsClusterResetCountsParams *)v10 timedInvokeTimeoutMs];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  serverSideProcessingTimeout = [(MTRWiFiNetworkDiagnosticsClusterResetCountsParams *)v10 serverSideProcessingTimeout];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _invokeKnownCommandWithEndpointID:endpointID clusterID:&unk_284C42008 commandID:&unk_284C41660 commandPayload:v10 expectedValues:v11 expectedValueInterval:v12 timedInvokeTimeout:timedInvokeTimeoutMs serverSideProcessingTimeout:serverSideProcessingTimeout responseClass:0 queue:callbackQueue completion:v15];
 }
 
 - (NSDictionary)readAttributeBSSIDWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C416A8 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C416A8 params:v4];
 
   return v7;
 }
@@ -63,9 +63,9 @@
 - (NSDictionary)readAttributeSecurityTypeWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C416C0 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C416C0 params:v4];
 
   return v7;
 }
@@ -73,9 +73,9 @@
 - (NSDictionary)readAttributeWiFiVersionWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41930 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41930 params:v4];
 
   return v7;
 }
@@ -83,9 +83,9 @@
 - (NSDictionary)readAttributeChannelNumberWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41690 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41690 params:v4];
 
   return v7;
 }
@@ -93,9 +93,9 @@
 - (NSDictionary)readAttributeRSSIWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C417E0 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C417E0 params:v4];
 
   return v7;
 }
@@ -103,9 +103,9 @@
 - (NSDictionary)readAttributeBeaconLostCountWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41948 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41948 params:v4];
 
   return v7;
 }
@@ -113,9 +113,9 @@
 - (NSDictionary)readAttributeBeaconRxCountWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41840 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41840 params:v4];
 
   return v7;
 }
@@ -123,9 +123,9 @@
 - (NSDictionary)readAttributePacketMulticastRxCountWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41B10 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41B10 params:v4];
 
   return v7;
 }
@@ -133,9 +133,9 @@
 - (NSDictionary)readAttributePacketMulticastTxCountWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41918 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41918 params:v4];
 
   return v7;
 }
@@ -143,9 +143,9 @@
 - (NSDictionary)readAttributePacketUnicastRxCountWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41B28 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41B28 params:v4];
 
   return v7;
 }
@@ -153,9 +153,9 @@
 - (NSDictionary)readAttributePacketUnicastTxCountWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41B40 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41B40 params:v4];
 
   return v7;
 }
@@ -163,9 +163,9 @@
 - (NSDictionary)readAttributeCurrentMaxRateWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41B58 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41B58 params:v4];
 
   return v7;
 }
@@ -173,9 +173,9 @@
 - (NSDictionary)readAttributeOverrunCountWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41B70 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41B70 params:v4];
 
   return v7;
 }
@@ -183,9 +183,9 @@
 - (NSDictionary)readAttributeGeneratedCommandListWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C416D8 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C416D8 params:v4];
 
   return v7;
 }
@@ -193,9 +193,9 @@
 - (NSDictionary)readAttributeAcceptedCommandListWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C416F0 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C416F0 params:v4];
 
   return v7;
 }
@@ -203,9 +203,9 @@
 - (NSDictionary)readAttributeAttributeListWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41708 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41708 params:v4];
 
   return v7;
 }
@@ -213,9 +213,9 @@
 - (NSDictionary)readAttributeFeatureMapWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41720 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41720 params:v4];
 
   return v7;
 }
@@ -223,9 +223,9 @@
 - (NSDictionary)readAttributeClusterRevisionWithParams:(MTRReadParams *)params
 {
   v4 = params;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C41F00 attributeID:&unk_284C41738 params:v4];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C41F00 attributeID:&unk_284C41738 params:v4];
 
   return v7;
 }

@@ -8,18 +8,18 @@
 - (id)accessibilityLabel
 {
   v3 = [(StocksAssistantStockListCellAccessibility *)self safeValueForKey:@"_companyNameLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(StocksAssistantStockListCellAccessibility *)self safeValueForKey:@"_tickerLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = [(StocksAssistantStockListCellAccessibility *)self safeValueForKey:@"_attributeTitle"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
 
   v9 = [(StocksAssistantStockListCellAccessibility *)self safeValueForKey:@"_attributeValue"];
-  v10 = [v9 accessibilityLabel];
+  accessibilityLabel4 = [v9 accessibilityLabel];
 
-  if ([v8 length] && objc_msgSend(v10, "length"))
+  if ([accessibilityLabel3 length] && objc_msgSend(accessibilityLabel4, "length"))
   {
     v11 = __UIAXStringForVariables();
   }

@@ -1,6 +1,6 @@
 @interface AppEntityAssociator
 - (AppEntityAssociator)init;
-- (void)associateAppEntityFromHeadline:(id)a3 with:(id)a4;
+- (void)associateAppEntityFromHeadline:(id)headline with:(id)with;
 @end
 
 @implementation AppEntityAssociator
@@ -12,7 +12,7 @@
   return [(AppEntityAssociator *)&v3 init];
 }
 
-- (void)associateAppEntityFromHeadline:(id)a3 with:(id)a4
+- (void)associateAppEntityFromHeadline:(id)headline with:(id)with
 {
   sub_218AC1C94(0);
   MEMORY[0x28223BE20](v5 - 8);
@@ -22,7 +22,7 @@
   MEMORY[0x28223BE20](v8);
   v11 = &v13 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   swift_unknownObjectRetain_n();
-  v12 = a4;
+  withCopy = with;
   sub_219BF1624();
   if ((*(v9 + 48))(v7, 1, v8) == 1)
   {

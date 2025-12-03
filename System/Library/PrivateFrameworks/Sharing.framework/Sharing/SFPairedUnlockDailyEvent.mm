@@ -24,11 +24,11 @@
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SFPairedUnlockDailyEvent totalUnlocks](self, "totalUnlocks")}];
   v19[4] = v7;
   v18[5] = @"phoneSoftwareVersion";
-  v8 = [(SFPairedUnlockDailyEvent *)self phoneSoftwareVersion];
-  v9 = v8;
-  if (v8)
+  phoneSoftwareVersion = [(SFPairedUnlockDailyEvent *)self phoneSoftwareVersion];
+  v9 = phoneSoftwareVersion;
+  if (phoneSoftwareVersion)
   {
-    v10 = v8;
+    v10 = phoneSoftwareVersion;
   }
 
   else
@@ -38,11 +38,11 @@
 
   v19[5] = v10;
   v18[6] = @"phoneHardwareModel";
-  v11 = [(SFPairedUnlockDailyEvent *)self phoneHardwareModel];
-  v12 = v11;
-  if (v11)
+  phoneHardwareModel = [(SFPairedUnlockDailyEvent *)self phoneHardwareModel];
+  v12 = phoneHardwareModel;
+  if (phoneHardwareModel)
   {
-    v13 = v11;
+    v13 = phoneHardwareModel;
   }
 
   else
@@ -64,8 +64,8 @@
 - (void)submitEvent
 {
   v4 = +[SFPairedUnlockDailyEvent eventName];
-  v3 = [(SFPairedUnlockDailyEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFPairedUnlockDailyEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

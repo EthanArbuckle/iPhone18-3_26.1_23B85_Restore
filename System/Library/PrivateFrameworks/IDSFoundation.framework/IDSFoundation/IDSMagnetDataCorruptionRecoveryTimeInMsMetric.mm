@@ -1,5 +1,5 @@
 @interface IDSMagnetDataCorruptionRecoveryTimeInMsMetric
-- (IDSMagnetDataCorruptionRecoveryTimeInMsMetric)initWithRecoveryTime:(int64_t)a3;
+- (IDSMagnetDataCorruptionRecoveryTimeInMsMetric)initWithRecoveryTime:(int64_t)time;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (IDSMagnetDataCorruptionRecoveryTimeInMsMetric)initWithRecoveryTime:(int64_t)a3
+- (IDSMagnetDataCorruptionRecoveryTimeInMsMetric)initWithRecoveryTime:(int64_t)time
 {
   v5.receiver = self;
   v5.super_class = IDSMagnetDataCorruptionRecoveryTimeInMsMetric;
   result = [(IDSMagnetDataCorruptionRecoveryTimeInMsMetric *)&v5 init];
   if (result)
   {
-    result->_recoveryTime = a3;
+    result->_recoveryTime = time;
   }
 
   return result;

@@ -1,17 +1,17 @@
 @interface PKPaymentSetupProductRegionDataComplexPolygon
-- (BOOL)containsPoint:(CGPoint)a3 inExclusionaryRegion:(BOOL *)a4;
-- (PKPaymentSetupProductRegionDataComplexPolygon)initWithInclusionaryZones:(id)a3 exclusionaryZones:(id)a4;
-- (double)closestDistanceToPoint:(CGPoint)a3;
+- (BOOL)containsPoint:(CGPoint)point inExclusionaryRegion:(BOOL *)region;
+- (PKPaymentSetupProductRegionDataComplexPolygon)initWithInclusionaryZones:(id)zones exclusionaryZones:(id)exclusionaryZones;
+- (double)closestDistanceToPoint:(CGPoint)point;
 - (void)dealloc;
 @end
 
 @implementation PKPaymentSetupProductRegionDataComplexPolygon
 
-- (PKPaymentSetupProductRegionDataComplexPolygon)initWithInclusionaryZones:(id)a3 exclusionaryZones:(id)a4
+- (PKPaymentSetupProductRegionDataComplexPolygon)initWithInclusionaryZones:(id)zones exclusionaryZones:(id)exclusionaryZones
 {
-  v6 = a4;
-  v7 = CreateSanitizedZonesList(a3);
-  v8 = CreateSanitizedZonesList(v6);
+  exclusionaryZonesCopy = exclusionaryZones;
+  v7 = CreateSanitizedZonesList(zones);
+  v8 = CreateSanitizedZonesList(exclusionaryZonesCopy);
   if ((v7 && [v7 count] || v8 && objc_msgSend(v8, "count")) && (v9 = objc_msgSend(v7, "count"), v10 = objc_msgSend(v8, "count"), v9 | v10))
   {
     v12 = v10;
@@ -69,15 +69,15 @@
     }
 
     self = v14;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -129,10 +129,10 @@
   [(PKPaymentSetupProductRegionDataComplexPolygon *)&v9 dealloc];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 inExclusionaryRegion:(BOOL *)a4
+- (BOOL)containsPoint:(CGPoint)point inExclusionaryRegion:(BOOL *)region
 {
-  v6 = (a3.x + 180.0) * 10000.0 / 360.0;
-  v7 = tan(a3.y * 3.14159265 / 180.0 * 0.5 + 0.785398163);
+  v6 = (point.x + 180.0) * 10000.0 / 360.0;
+  v7 = tan(point.y * 3.14159265 / 180.0 * 0.5 + 0.785398163);
   v8 = log(v7) * 10000.0 / -6.28318531 + 2500.0;
   exclusionaryPolygonCount = self->_exclusionaryPolygonCount;
   if (exclusionaryPolygonCount)
@@ -148,7 +148,7 @@
     }
 
     result = 0;
-    *a4 = 1;
+    *region = 1;
   }
 
   else
@@ -184,16 +184,16 @@ LABEL_5:
   return result;
 }
 
-- (double)closestDistanceToPoint:(CGPoint)a3
+- (double)closestDistanceToPoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   inclusionaryPolygonCount = self->_inclusionaryPolygonCount;
   if (!inclusionaryPolygonCount)
   {
     return 1.79769313e308;
   }
 
-  x = a3.x;
+  x = point.x;
   v5 = 0;
   inclusionaryPolygons = self->_inclusionaryPolygons;
   result = 1.79769313e308;

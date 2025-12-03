@@ -1,26 +1,26 @@
 @interface BKZoomingScrollView
-- (BKZoomingScrollView)initWithCoder:(id)a3;
-- (BKZoomingScrollView)initWithFrame:(CGRect)a3;
+- (BKZoomingScrollView)initWithCoder:(id)coder;
+- (BKZoomingScrollView)initWithFrame:(CGRect)frame;
 - (CGPoint)maximumContentOffset;
 - (CGPoint)minimumContentOffset;
 - (CGPoint)pointToCenterAfterRotation;
 - (double)scaleToRestoreAfterRotation;
 - (void)centerContent;
-- (void)configureForImageSize:(CGSize)a3;
-- (void)configureForNewBoundsAndRestoreCenterPoint:(CGPoint)a3 andScale:(double)a4;
+- (void)configureForImageSize:(CGSize)size;
+- (void)configureForNewBoundsAndRestoreCenterPoint:(CGPoint)point andScale:(double)scale;
 - (void)layoutSubviews;
-- (void)setZoomScale:(double)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)setZoomScale:(double)scale animated:(BOOL)animated completionBlock:(id)block;
 - (void)simulateZoomScaleByResizingView;
-- (void)zoomToRect:(CGRect)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated completionBlock:(id)block;
 @end
 
 @implementation BKZoomingScrollView
 
-- (BKZoomingScrollView)initWithFrame:(CGRect)a3
+- (BKZoomingScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BKZoomingScrollView;
-  v3 = [(BKZoomingScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKZoomingScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (BKZoomingScrollView)initWithCoder:(id)a3
+- (BKZoomingScrollView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BKZoomingScrollView;
-  v3 = [(BKZoomingScrollView *)&v6 initWithCoder:a3];
+  v3 = [(BKZoomingScrollView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -54,8 +54,8 @@
 
 - (void)centerContent
 {
-  v3 = [(BKZoomingScrollView *)self delegate];
-  v13 = [v3 viewForZoomingInScrollView:self];
+  delegate = [(BKZoomingScrollView *)self delegate];
+  v13 = [delegate viewForZoomingInScrollView:self];
 
   if (v13)
   {
@@ -77,10 +77,10 @@
   }
 }
 
-- (void)configureForImageSize:(CGSize)a3
+- (void)configureForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(BKZoomingScrollView *)self frame];
   v8 = v7 / width;
   v9 = 0.0;
@@ -142,8 +142,8 @@
   MidX = CGRectGetMidX(v14);
   [(BKZoomingScrollView *)self bounds];
   MidY = CGRectGetMidY(v15);
-  v5 = [(BKZoomingScrollView *)self delegate];
-  v6 = [v5 viewForZoomingInScrollView:self];
+  delegate = [(BKZoomingScrollView *)self delegate];
+  v6 = [delegate viewForZoomingInScrollView:self];
 
   [(BKZoomingScrollView *)self convertPoint:v6 toView:MidX, MidY];
   v8 = v7;
@@ -171,29 +171,29 @@
   return result;
 }
 
-- (void)configureForNewBoundsAndRestoreCenterPoint:(CGPoint)a3 andScale:(double)a4
+- (void)configureForNewBoundsAndRestoreCenterPoint:(CGPoint)point andScale:(double)scale
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(BKZoomingScrollView *)self delegate];
-  v30 = [v8 viewForZoomingInScrollView:self];
+  y = point.y;
+  x = point.x;
+  delegate = [(BKZoomingScrollView *)self delegate];
+  v30 = [delegate viewForZoomingInScrollView:self];
 
   [v30 bounds];
   [(BKZoomingScrollView *)self configureForImageSize:v9, v10];
   [(BKZoomingScrollView *)self maximumZoomScale];
   v12 = v11;
   [(BKZoomingScrollView *)self minimumZoomScale];
-  if (v13 < a4)
+  if (scaleCopy < scale)
   {
-    v13 = a4;
+    scaleCopy = scale;
   }
 
-  if (v12 < v13)
+  if (v12 < scaleCopy)
   {
-    v13 = v12;
+    scaleCopy = v12;
   }
 
-  [(BKZoomingScrollView *)self setZoomScale:v13];
+  [(BKZoomingScrollView *)self setZoomScale:scaleCopy];
   [(BKZoomingScrollView *)self convertPoint:v30 fromView:x, y];
   v15 = v14;
   v17 = v16;
@@ -258,30 +258,30 @@
   [(BKZoomingScrollView *)self setContentOffset:v26, v27];
 }
 
-- (void)setZoomScale:(double)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)setZoomScale:(double)scale animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v5)
+  animatedCopy = animated;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (animatedCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_B849C;
     v12[3] = &unk_1E4548;
     v12[4] = self;
-    *&v12[5] = a3;
+    *&v12[5] = scale;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_B84E0;
     v10[3] = &unk_1E3FA0;
-    v11 = v8;
+    v11 = blockCopy;
     [UIView animateWithDuration:4 delay:v12 options:v10 animations:0.2 completion:0.0];
   }
 
   else
   {
-    [(BKZoomingScrollView *)self setZoomScale:0 animated:a3];
+    [(BKZoomingScrollView *)self setZoomScale:0 animated:scale];
     if (v9)
     {
       v9[2](v9);
@@ -289,16 +289,16 @@
   }
 }
 
-- (void)zoomToRect:(CGRect)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
-  v12 = v11;
-  if (v5)
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (animatedCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -313,7 +313,7 @@
     v13[1] = 3221225472;
     v13[2] = sub_B869C;
     v13[3] = &unk_1E3FA0;
-    v14 = v11;
+    v14 = blockCopy;
     [UIView animateWithDuration:4 delay:v15 options:v13 animations:0.2 completion:0.0];
   }
 
@@ -333,8 +333,8 @@
   v4 = fmin(v3, self->_maxSimulatedZoomScale / self->_simulatedZoomScale);
   if (v4 != 1.0)
   {
-    v5 = [(BKZoomingScrollView *)self delegate];
-    v6 = [v5 viewForZoomingInScrollView:self];
+    delegate = [(BKZoomingScrollView *)self delegate];
+    v6 = [delegate viewForZoomingInScrollView:self];
 
     self->_simulatedZoomScale = v4 * self->_simulatedZoomScale;
     memset(&v16, 0, sizeof(v16));
@@ -362,13 +362,13 @@
     [(BKZoomingScrollView *)self setMinimumZoomScale:v7 / v4];
     [(BKZoomingScrollView *)self maximumZoomScale];
     [(BKZoomingScrollView *)self setMaximumZoomScale:v8 / v4];
-    v9 = [(BKZoomingScrollView *)self delegate];
-    v10 = [v9 conformsToProtocol:&OBJC_PROTOCOL___BKZoomingScrollViewDelegate];
+    delegate2 = [(BKZoomingScrollView *)self delegate];
+    v10 = [delegate2 conformsToProtocol:&OBJC_PROTOCOL___BKZoomingScrollViewDelegate];
 
     if (v10)
     {
-      v11 = [(BKZoomingScrollView *)self delegate];
-      [v11 zoomingScrollView:self didSimulateZoomScale:v6 onView:self->_simulatedZoomScale];
+      delegate3 = [(BKZoomingScrollView *)self delegate];
+      [delegate3 zoomingScrollView:self didSimulateZoomScale:v6 onView:self->_simulatedZoomScale];
     }
   }
 }

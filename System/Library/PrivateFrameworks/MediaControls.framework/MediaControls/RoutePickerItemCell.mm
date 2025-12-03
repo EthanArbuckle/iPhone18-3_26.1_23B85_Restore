@@ -1,8 +1,8 @@
 @interface RoutePickerItemCell
 - (BOOL)isHighlighted;
-- (_TtC13MediaControls19RoutePickerItemCell)initWithCoder:(id)a3;
+- (_TtC13MediaControls19RoutePickerItemCell)initWithCoder:(id)coder;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation RoutePickerItemCell
@@ -14,19 +14,19 @@
   return [(RoutePickerItemCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = type metadata accessor for RoutePickerItemCell();
   v4 = v7.receiver;
-  [(RoutePickerItemCell *)&v7 setHighlighted:v3];
+  [(RoutePickerItemCell *)&v7 setHighlighted:highlightedCopy];
   v5 = *&v4[OBJC_IVAR____TtC13MediaControls19RoutePickerItemCell_itemView];
-  v6 = [v4 isHighlighted];
-  (*((*MEMORY[0x1E69E7D40] & *v5) + 0xD0))(v6);
+  isHighlighted = [v4 isHighlighted];
+  (*((*MEMORY[0x1E69E7D40] & *v5) + 0xD0))(isHighlighted);
 }
 
-- (_TtC13MediaControls19RoutePickerItemCell)initWithCoder:(id)a3
+- (_TtC13MediaControls19RoutePickerItemCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC13MediaControls19RoutePickerItemCell_viewModel;
   v5 = type metadata accessor for RoutePickerItemView.ViewModel(0);
@@ -48,8 +48,8 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for RoutePickerItemCell();
   v2 = v4.receiver;
-  v3 = [(RoutePickerItemCell *)&v4 prepareForReuse];
-  (*((*MEMORY[0x1E69E7D40] & **&v2[OBJC_IVAR____TtC13MediaControls19RoutePickerItemCell_itemView]) + 0x128))(v3);
+  prepareForReuse = [(RoutePickerItemCell *)&v4 prepareForReuse];
+  (*((*MEMORY[0x1E69E7D40] & **&v2[OBJC_IVAR____TtC13MediaControls19RoutePickerItemCell_itemView]) + 0x128))(prepareForReuse);
 }
 
 @end

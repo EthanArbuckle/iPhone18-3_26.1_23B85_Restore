@@ -1,7 +1,7 @@
 @interface PSYWatchSyncState
-- (BOOL)isEqual:(id)a3;
-- (PSYWatchSyncState)initWithActivityLabel:(id)a3 globalProgress:(int64_t)a4 syncProgressState:(unint64_t)a5;
-- (PSYWatchSyncState)initWithPlistRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PSYWatchSyncState)initWithActivityLabel:(id)label globalProgress:(int64_t)progress syncProgressState:(unint64_t)state;
+- (PSYWatchSyncState)initWithPlistRepresentation:(id)representation;
 - (id)description;
 - (id)plistRepresentation;
 - (unint64_t)hash;
@@ -9,43 +9,43 @@
 
 @implementation PSYWatchSyncState
 
-- (PSYWatchSyncState)initWithActivityLabel:(id)a3 globalProgress:(int64_t)a4 syncProgressState:(unint64_t)a5
+- (PSYWatchSyncState)initWithActivityLabel:(id)label globalProgress:(int64_t)progress syncProgressState:(unint64_t)state
 {
-  v9 = a3;
+  labelCopy = label;
   v13.receiver = self;
   v13.super_class = PSYWatchSyncState;
   v10 = [(PSYWatchSyncState *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_activityLabel, a3);
-    v11->_globalProgress = a4;
-    v11->_syncProgressState = a5;
+    objc_storeStrong(&v10->_activityLabel, label);
+    v11->_globalProgress = progress;
+    v11->_syncProgressState = state;
     v11->_version = 1;
   }
 
   return v11;
 }
 
-- (PSYWatchSyncState)initWithPlistRepresentation:(id)a3
+- (PSYWatchSyncState)initWithPlistRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v12.receiver = self;
   v12.super_class = PSYWatchSyncState;
   v5 = [(PSYWatchSyncState *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"activityLabel"];
+    v6 = [representationCopy objectForKeyedSubscript:@"activityLabel"];
     activityLabel = v5->_activityLabel;
     v5->_activityLabel = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"version"];
+    v8 = [representationCopy objectForKeyedSubscript:@"version"];
     v5->_version = [v8 unsignedIntegerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"syncProgressState"];
+    v9 = [representationCopy objectForKeyedSubscript:@"syncProgressState"];
     v5->_syncProgressState = [v9 unsignedIntegerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"globalProgress"];
+    v10 = [representationCopy objectForKeyedSubscript:@"globalProgress"];
     v5->_globalProgress = [v10 integerValue];
   }
 
@@ -64,12 +64,12 @@
   v6 = [NSNumber numberWithInteger:[(PSYWatchSyncState *)self globalProgress]];
   [v3 setObject:v6 forKeyedSubscript:@"globalProgress"];
 
-  v7 = [(PSYWatchSyncState *)self activityLabel];
+  activityLabel = [(PSYWatchSyncState *)self activityLabel];
 
-  if (v7)
+  if (activityLabel)
   {
-    v8 = [(PSYWatchSyncState *)self activityLabel];
-    [v3 setObject:v8 forKeyedSubscript:@"activityLabel"];
+    activityLabel2 = [(PSYWatchSyncState *)self activityLabel];
+    [v3 setObject:activityLabel2 forKeyedSubscript:@"activityLabel"];
   }
 
   return v3;
@@ -77,36 +77,36 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PSYWatchSyncState *)self syncProgressState];
-  v4 = [(PSYWatchSyncState *)self globalProgress]^ v3;
-  v5 = [(PSYWatchSyncState *)self activityLabel];
-  v6 = [v5 hash];
+  syncProgressState = [(PSYWatchSyncState *)self syncProgressState];
+  v4 = [(PSYWatchSyncState *)self globalProgress]^ syncProgressState;
+  activityLabel = [(PSYWatchSyncState *)self activityLabel];
+  v6 = [activityLabel hash];
 
   return v4 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PSYWatchSyncState *)self globalProgress];
-    if (v6 == [v5 globalProgress] && (v7 = -[PSYWatchSyncState syncProgressState](self, "syncProgressState"), v7 == objc_msgSend(v5, "syncProgressState")))
+    v5 = equalCopy;
+    globalProgress = [(PSYWatchSyncState *)self globalProgress];
+    if (globalProgress == [v5 globalProgress] && (v7 = -[PSYWatchSyncState syncProgressState](self, "syncProgressState"), v7 == objc_msgSend(v5, "syncProgressState")))
     {
-      v8 = [(PSYWatchSyncState *)self activityLabel];
-      v9 = [v5 activityLabel];
-      if (v8 == v9)
+      activityLabel = [(PSYWatchSyncState *)self activityLabel];
+      activityLabel2 = [v5 activityLabel];
+      if (activityLabel == activityLabel2)
       {
         v12 = 1;
       }
 
       else
       {
-        v10 = [(PSYWatchSyncState *)self activityLabel];
-        v11 = [v5 activityLabel];
-        v12 = [v10 isEqualToString:v11];
+        activityLabel3 = [(PSYWatchSyncState *)self activityLabel];
+        activityLabel4 = [v5 activityLabel];
+        v12 = [activityLabel3 isEqualToString:activityLabel4];
       }
     }
 
@@ -128,20 +128,20 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PSYWatchSyncState *)self activityLabel];
-  v6 = [(PSYWatchSyncState *)self syncProgressState];
-  if (v6 > 3)
+  activityLabel = [(PSYWatchSyncState *)self activityLabel];
+  syncProgressState = [(PSYWatchSyncState *)self syncProgressState];
+  if (syncProgressState > 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = *(&off_10002CE20 + v6);
+    v7 = *(&off_10002CE20 + syncProgressState);
   }
 
   v8 = [NSNumber numberWithInteger:[(PSYWatchSyncState *)self globalProgress]];
-  v9 = [NSString stringWithFormat:@"<%@ %p activityLabel=%@ syncProgressState=%@; globalProgress=%@>", v4, self, v5, v7, v8];;
+  v9 = [NSString stringWithFormat:@"<%@ %p activityLabel=%@ syncProgressState=%@; globalProgress=%@>", v4, self, activityLabel, v7, v8];;
 
   return v9;
 }

@@ -54,16 +54,16 @@
 + (NSSet)interactionItemTypes;
 + (NSSet)temporalItemTypes;
 + (id)allItemTypesDictionary;
-+ (id)taskSpecificItemWithIdentifier:(id)a3 valueClass:(Class)a4;
-+ (void)registerItemType:(id)a3;
-+ (void)unregisterItemType:(id)a3;
-- (BMItemType)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)taskSpecificItemWithIdentifier:(id)identifier valueClass:(Class)class;
++ (void)registerItemType:(id)type;
++ (void)unregisterItemType:(id)type;
+- (BMItemType)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)extractEventFromDKEvent:(id)a3;
-- (id)extractItemFromDKEvent:(id)a3;
-- (id)extractValueFromDKEvent:(id)a3;
+- (id)extractEventFromDKEvent:(id)event;
+- (id)extractItemFromDKEvent:(id)event;
+- (id)extractValueFromDKEvent:(id)event;
 - (unint64_t)hash;
 @end
 
@@ -75,8 +75,8 @@
   [(BMItemType *)v2 setIdentifier:@"ToggledDoNotDisturb"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] doNotDisturbStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  doNotDisturbStream = [MEMORY[0x277CFE298] doNotDisturbStream];
+  [(BMItemType *)v2 setEventStream:doNotDisturbStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global];
 
@@ -97,8 +97,8 @@ uint64_t __47__BMItemType_DoNotDisturb__toggledDoNotDisturb__block_invoke(uint64
   [(BMItemType *)v2 setIdentifier:@"AppIntentClass"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appIntentsStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appIntentsStream = [MEMORY[0x277CFE298] appIntentsStream];
+  [(BMItemType *)v2 setEventStream:appIntentsStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_0];
 
@@ -134,8 +134,8 @@ id __37__BMItemType_Intents__appIntentClass__block_invoke(uint64_t a1, void *a2)
   [(BMItemType *)v2 setIdentifier:@"AppIntentAutomationHash"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appIntentsStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appIntentsStream = [MEMORY[0x277CFE298] appIntentsStream];
+  [(BMItemType *)v2 setEventStream:appIntentsStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_15];
 
@@ -348,8 +348,8 @@ void __46__BMItemType_Intents__appIntentAutomationHash__block_invoke_17(uint64_t
   [(BMItemType *)v2 setIdentifier:@"RelevanceIntentHash"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appIntentsStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appIntentsStream = [MEMORY[0x277CFE298] appIntentsStream];
+  [(BMItemType *)v2 setEventStream:appIntentsStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_31];
 
@@ -381,8 +381,8 @@ id __42__BMItemType_Intents__relevanceIntentHash__block_invoke(uint64_t a1, void
   [(BMItemType *)v2 setIdentifier:@"RelevanceCoarseIntentHash"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appIntentsStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appIntentsStream = [MEMORY[0x277CFE298] appIntentsStream];
+  [(BMItemType *)v2 setEventStream:appIntentsStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_36];
 
@@ -414,8 +414,8 @@ id __48__BMItemType_Intents__relevanceCoarseIntentHash__block_invoke(uint64_t a1
   [(BMItemType *)v2 setIdentifier:@"AppActivityType"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appActivityStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appActivityStream = [MEMORY[0x277CFE298] appActivityStream];
+  [(BMItemType *)v2 setEventStream:appActivityStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_1];
 
@@ -471,8 +471,8 @@ LABEL_11:
   [(BMItemType *)v2 setIdentifier:@"RelevanceAppActivityHash"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appActivityStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appActivityStream = [MEMORY[0x277CFE298] appActivityStream];
+  [(BMItemType *)v2 setEventStream:appActivityStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_18];
 
@@ -507,8 +507,8 @@ id __51__BMItemType_AppActivity__relevanceAppActivityHash__block_invoke(uint64_t
   [(BMItemType *)v2 setIdentifier:@"RelevanceCoarseAppActivityHash"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appActivityStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appActivityStream = [MEMORY[0x277CFE298] appActivityStream];
+  [(BMItemType *)v2 setEventStream:appActivityStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_23];
 
@@ -543,8 +543,8 @@ id __57__BMItemType_AppActivity__relevanceCoarseAppActivityHash__block_invoke(ui
   [(BMItemType *)v2 setIdentifier:@"ToggledLowPowerMode"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] deviceLowPowerModeStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  deviceLowPowerModeStream = [MEMORY[0x277CFE298] deviceLowPowerModeStream];
+  [(BMItemType *)v2 setEventStream:deviceLowPowerModeStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_2];
 
@@ -565,8 +565,8 @@ uint64_t __47__BMItemType_LowPowerMode__toggledLowPowerMode__block_invoke(uint64
   [(BMItemType *)v2 setIdentifier:@"FirstBacklightAfterWakeup"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] userIsFirstBacklightOnAfterWakeup];
-  [(BMItemType *)v2 setEventStream:v3];
+  userIsFirstBacklightOnAfterWakeup = [MEMORY[0x277CFE298] userIsFirstBacklightOnAfterWakeup];
+  [(BMItemType *)v2 setEventStream:userIsFirstBacklightOnAfterWakeup];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_3];
 
@@ -594,8 +594,8 @@ id __45__BMItemType_User__firstBacklightAfterWakeup__block_invoke(uint64_t a1, v
   [(BMItemType *)v2 setIdentifier:@"BluetoothConnectedToDevice"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] bluetoothIsConnectedStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  bluetoothIsConnectedStream = [MEMORY[0x277CFE298] bluetoothIsConnectedStream];
+  [(BMItemType *)v2 setEventStream:bluetoothIsConnectedStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_4];
 
@@ -617,8 +617,8 @@ id __51__BMItemType_Bluetooth__bluetoothConnectedToDevice__block_invoke(uint64_t
   [(BMItemType *)v2 setIdentifier:@"BluetoothConnectedToDeviceWithName"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] bluetoothIsConnectedStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  bluetoothIsConnectedStream = [MEMORY[0x277CFE298] bluetoothIsConnectedStream];
+  [(BMItemType *)v2 setEventStream:bluetoothIsConnectedStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_11];
 
@@ -640,8 +640,8 @@ id __59__BMItemType_Bluetooth__bluetoothConnectedToDeviceWithName__block_invoke(
   [(BMItemType *)v2 setIdentifier:@"BluetoothConnectedToDeviceWithAddress"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] bluetoothIsConnectedStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  bluetoothIsConnectedStream = [MEMORY[0x277CFE298] bluetoothIsConnectedStream];
+  [(BMItemType *)v2 setEventStream:bluetoothIsConnectedStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_16];
 
@@ -663,8 +663,8 @@ id __62__BMItemType_Bluetooth__bluetoothConnectedToDeviceWithAddress__block_invo
   [(BMItemType *)v2 setIdentifier:@"MediaIsPlaying"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:1];
-  v3 = [MEMORY[0x277CFE298] nowPlayingStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  nowPlayingStream = [MEMORY[0x277CFE298] nowPlayingStream];
+  [(BMItemType *)v2 setEventStream:nowPlayingStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_5];
 
@@ -695,8 +695,8 @@ uint64_t __35__BMItemType_Media__mediaIsPlaying__block_invoke(uint64_t a1, void 
   [(BMItemType *)v2 setIdentifier:@"MediaGenreStartedPlaying"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] nowPlayingStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  nowPlayingStream = [MEMORY[0x277CFE298] nowPlayingStream];
+  [(BMItemType *)v2 setEventStream:nowPlayingStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_11_0];
 
@@ -770,8 +770,8 @@ id __45__BMItemType_Media__mediaGenreStartedPlaying__block_invoke(uint64_t a1, v
   [(BMItemType *)v2 setIdentifier:@"AppOpened"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appInFocusStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appInFocusStream = [MEMORY[0x277CFE298] appInFocusStream];
+  [(BMItemType *)v2 setEventStream:appInFocusStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_6];
 
@@ -801,8 +801,8 @@ id __35__BMItemType_AppInFocus__appOpened__block_invoke(uint64_t a1, void *a2)
   [(BMItemType *)v2 setIdentifier:@"AppLaunchedReason"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appInFocusStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appInFocusStream = [MEMORY[0x277CFE298] appInFocusStream];
+  [(BMItemType *)v2 setEventStream:appInFocusStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_9];
 
@@ -833,8 +833,8 @@ id __43__BMItemType_AppInFocus__appLaunchedReason__block_invoke(uint64_t a1, voi
   [(BMItemType *)v2 setIdentifier:@"AppInFocus"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:1];
-  v3 = [MEMORY[0x277CFE298] appInFocusStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appInFocusStream = [MEMORY[0x277CFE298] appInFocusStream];
+  [(BMItemType *)v2 setEventStream:appInFocusStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_14];
 
@@ -864,8 +864,8 @@ id __36__BMItemType_AppInFocus__appInFocus__block_invoke(uint64_t a1, void *a2)
   [(BMItemType *)v2 setIdentifier:@"ShareExtensionOpened"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appInFocusStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appInFocusStream = [MEMORY[0x277CFE298] appInFocusStream];
+  [(BMItemType *)v2 setEventStream:appInFocusStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_19];
 
@@ -894,8 +894,8 @@ id __56__BMItemType_AppInFocus__bundleIdOfShareExtensionOpened__block_invoke(uin
   [(BMItemType *)v2 setIdentifier:@"AppHostOpenedShareExtension"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] appInFocusStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  appInFocusStream = [MEMORY[0x277CFE298] appInFocusStream];
+  [(BMItemType *)v2 setEventStream:appInFocusStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_24];
 
@@ -926,8 +926,8 @@ id __60__BMItemType_AppInFocus__bundleIdOfHostOpenedShareExtension__block_invoke
   [(BMItemType *)v2 setIdentifier:@"AlarmSnoozedAny"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] alarmStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  alarmStream = [MEMORY[0x277CFE298] alarmStream];
+  [(BMItemType *)v2 setEventStream:alarmStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_7];
 
@@ -959,8 +959,8 @@ __CFString *__36__BMItemType_Alarm__alarmSnoozedAny__block_invoke(uint64_t a1, v
   [(BMItemType *)v2 setIdentifier:@"AlarmStoppedAny"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] alarmStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  alarmStream = [MEMORY[0x277CFE298] alarmStream];
+  [(BMItemType *)v2 setEventStream:alarmStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_12];
 
@@ -992,8 +992,8 @@ __CFString *__36__BMItemType_Alarm__alarmStoppedAny__block_invoke(uint64_t a1, v
   [(BMItemType *)v2 setIdentifier:@"AlarmSnoozedWithID"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] alarmStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  alarmStream = [MEMORY[0x277CFE298] alarmStream];
+  [(BMItemType *)v2 setEventStream:alarmStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_17];
 
@@ -1044,8 +1044,8 @@ void *__39__BMItemType_Alarm__alarmSnoozedWithID__block_invoke(uint64_t a1, void
   [(BMItemType *)v2 setIdentifier:@"AlarmStoppedWithID"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] alarmStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  alarmStream = [MEMORY[0x277CFE298] alarmStream];
+  [(BMItemType *)v2 setEventStream:alarmStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_32];
 
@@ -1096,8 +1096,8 @@ void *__39__BMItemType_Alarm__alarmStoppedWithID__block_invoke(uint64_t a1, void
   [(BMItemType *)v2 setIdentifier:@"ConnectedToCarPlay"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] carPlayIsConnectedStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  carPlayIsConnectedStream = [MEMORY[0x277CFE298] carPlayIsConnectedStream];
+  [(BMItemType *)v2 setEventStream:carPlayIsConnectedStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_8];
 
@@ -1307,20 +1307,20 @@ uint64_t __41__BMItemType_CarPlay__connectedToCarPlay__block_invoke(uint64_t a1,
 + (NSSet)interactionItemTypes
 {
   v15 = MEMORY[0x277CBEB98];
-  v18 = [a1 interactionMechanism];
-  v17 = [a1 interactionDirection];
-  v3 = [a1 interactionContentURL];
-  v14 = [a1 interactionSender];
-  v13 = [a1 interactionRecipients];
-  v4 = [a1 interactionPhotoScene];
-  v5 = [a1 interactionPhotoContact];
-  v6 = [a1 interactionPhotoLocation];
-  v7 = [a1 interactionUTIType];
-  v8 = [a1 interactionTextTopic];
-  v9 = [a1 interactionSharingSourceBundleID];
-  v10 = [a1 interactionTargetBundleID];
-  v11 = [a1 interactionExtractedTopicFromAttachment];
-  v16 = [v15 setWithObjects:{v18, v17, v3, v14, v13, v4, v5, v6, v7, v8, v9, v10, v11, 0}];
+  interactionMechanism = [self interactionMechanism];
+  interactionDirection = [self interactionDirection];
+  interactionContentURL = [self interactionContentURL];
+  interactionSender = [self interactionSender];
+  interactionRecipients = [self interactionRecipients];
+  interactionPhotoScene = [self interactionPhotoScene];
+  interactionPhotoContact = [self interactionPhotoContact];
+  interactionPhotoLocation = [self interactionPhotoLocation];
+  interactionUTIType = [self interactionUTIType];
+  interactionTextTopic = [self interactionTextTopic];
+  interactionSharingSourceBundleID = [self interactionSharingSourceBundleID];
+  interactionTargetBundleID = [self interactionTargetBundleID];
+  interactionExtractedTopicFromAttachment = [self interactionExtractedTopicFromAttachment];
+  v16 = [v15 setWithObjects:{interactionMechanism, interactionDirection, interactionContentURL, interactionSender, interactionRecipients, interactionPhotoScene, interactionPhotoContact, interactionPhotoLocation, interactionUTIType, interactionTextTopic, interactionSharingSourceBundleID, interactionTargetBundleID, interactionExtractedTopicFromAttachment, 0}];
 
   return v16;
 }
@@ -1331,8 +1331,8 @@ uint64_t __41__BMItemType_CarPlay__connectedToCarPlay__block_invoke(uint64_t a1,
   [(BMItemType *)v2 setIdentifier:@"ConnectedToExternalAudioOutput"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] audioOutputRouteStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  audioOutputRouteStream = [MEMORY[0x277CFE298] audioOutputRouteStream];
+  [(BMItemType *)v2 setEventStream:audioOutputRouteStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_10];
 
@@ -1358,13 +1358,13 @@ void *__51__BMItemType_Audio__connectedToExternalAudioOutput__block_invoke(uint6
   return v4;
 }
 
-+ (id)taskSpecificItemWithIdentifier:(id)a3 valueClass:(Class)a4
++ (id)taskSpecificItemWithIdentifier:(id)identifier valueClass:(Class)class
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(BMItemType);
-  [(BMItemType *)v6 setIdentifier:v5];
+  [(BMItemType *)v6 setIdentifier:identifierCopy];
 
-  [(BMItemType *)v6 setValueClass:a4];
+  [(BMItemType *)v6 setValueClass:class];
   [(BMItemType *)v6 setEdge:1];
   [(BMItemType *)v6 setEventStream:0];
   [(BMItemType *)v6 setValueExtractBlock:0];
@@ -1372,27 +1372,27 @@ void *__51__BMItemType_Audio__connectedToExternalAudioOutput__block_invoke(uint6
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BMItemType);
-  v5 = [(BMItemType *)self identifier];
-  [(BMItemType *)v4 setIdentifier:v5];
+  identifier = [(BMItemType *)self identifier];
+  [(BMItemType *)v4 setIdentifier:identifier];
 
   [(BMItemType *)v4 setValueClass:[(BMItemType *)self valueClass]];
   [(BMItemType *)v4 setEdge:[(BMItemType *)self edge]];
-  v6 = [(BMItemType *)self eventStream];
-  [(BMItemType *)v4 setEventStream:v6];
+  eventStream = [(BMItemType *)self eventStream];
+  [(BMItemType *)v4 setEventStream:eventStream];
 
-  v7 = [(BMItemType *)self valueExtractBlock];
-  [(BMItemType *)v4 setValueExtractBlock:v7];
+  valueExtractBlock = [(BMItemType *)self valueExtractBlock];
+  [(BMItemType *)v4 setValueExtractBlock:valueExtractBlock];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -1402,11 +1402,11 @@ void *__51__BMItemType_Audio__connectedToExternalAudioOutput__block_invoke(uint6
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BMItemType *)self identifier];
-      v7 = [(BMItemType *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(BMItemType *)self identifier];
+      identifier2 = [(BMItemType *)v5 identifier];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -1420,8 +1420,8 @@ void *__51__BMItemType_Audio__connectedToExternalAudioOutput__block_invoke(uint6
 
 - (unint64_t)hash
 {
-  v2 = [(BMItemType *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(BMItemType *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -1430,30 +1430,30 @@ void *__51__BMItemType_Audio__connectedToExternalAudioOutput__block_invoke(uint6
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(BMItemType *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p> identifier: %@", v4, self, v5];
+  identifier = [(BMItemType *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p> identifier: %@", v4, self, identifier];
 
   return v6;
 }
 
-- (id)extractValueFromDKEvent:(id)a3
+- (id)extractValueFromDKEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(BMItemType *)self eventStream];
-  v6 = [v4 stream];
-  if (([v5 isEqual:v6] & 1) == 0)
+  eventCopy = event;
+  eventStream = [(BMItemType *)self eventStream];
+  stream = [eventCopy stream];
+  if (([eventStream isEqual:stream] & 1) == 0)
   {
 
     v8 = 0;
     goto LABEL_5;
   }
 
-  v7 = [(BMItemType *)self valueExtractBlock];
+  valueExtractBlock = [(BMItemType *)self valueExtractBlock];
 
-  if (v7)
+  if (valueExtractBlock)
   {
-    v5 = [(BMItemType *)self valueExtractBlock];
-    v8 = (v5)[2](v5, v4);
+    eventStream = [(BMItemType *)self valueExtractBlock];
+    v8 = (eventStream)[2](eventStream, eventCopy);
 LABEL_5:
 
     goto LABEL_6;
@@ -1465,9 +1465,9 @@ LABEL_6:
   return v8;
 }
 
-- (id)extractItemFromDKEvent:(id)a3
+- (id)extractItemFromDKEvent:(id)event
 {
-  v4 = [(BMItemType *)self extractValueFromDKEvent:a3];
+  v4 = [(BMItemType *)self extractValueFromDKEvent:event];
   if (v4)
   {
     v5 = [[BMItem alloc] initWithType:self value:v4];
@@ -1481,36 +1481,36 @@ LABEL_6:
   return v5;
 }
 
-- (id)extractEventFromDKEvent:(id)a3
+- (id)extractEventFromDKEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(BMItemType *)self extractItemFromDKEvent:v4];
+  eventCopy = event;
+  v5 = [(BMItemType *)self extractItemFromDKEvent:eventCopy];
   if (!v5)
   {
     v10 = 0;
     goto LABEL_9;
   }
 
-  v6 = [v4 startDate];
-  v7 = [v4 endDate];
-  v8 = [(BMItemType *)self edge];
-  if (!v8)
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
+  edge = [(BMItemType *)self edge];
+  if (!edge)
   {
-    v9 = v6;
-    v6 = v7;
+    v9 = startDate;
+    startDate = endDate;
     goto LABEL_7;
   }
 
-  if (v8 == 2)
+  if (edge == 2)
   {
-    v9 = v7;
+    v9 = endDate;
 LABEL_7:
-    v7 = v9;
+    endDate = v9;
 
-    v6 = v7;
+    startDate = endDate;
   }
 
-  v10 = [[BMEvent alloc] initWithStartDate:v6 endDate:v7 item:v5];
+  v10 = [[BMEvent alloc] initWithStartDate:startDate endDate:endDate item:v5];
 
 LABEL_9:
 
@@ -1519,8 +1519,8 @@ LABEL_9:
 
 + (NSMutableSet)allRegisteredItemTypes
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _allRegisteredItemTypes;
   if (!_allRegisteredItemTypes)
   {
@@ -1532,37 +1532,37 @@ LABEL_9:
   }
 
   v6 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (void)registerItemType:(id)a3
++ (void)registerItemType:(id)type
 {
-  v6 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  if (v6)
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (typeCopy)
   {
-    v5 = [v4 allRegisteredItemTypes];
-    [v5 addObject:v6];
+    allRegisteredItemTypes = [selfCopy allRegisteredItemTypes];
+    [allRegisteredItemTypes addObject:typeCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-+ (void)unregisterItemType:(id)a3
++ (void)unregisterItemType:(id)type
 {
-  v6 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  if (v6)
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (typeCopy)
   {
-    v5 = [v4 allRegisteredItemTypes];
-    [v5 removeObject:v6];
+    allRegisteredItemTypes = [selfCopy allRegisteredItemTypes];
+    [allRegisteredItemTypes removeObject:typeCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 + (NSSet)allItemTypes
@@ -1571,14 +1571,14 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __26__BMItemType_allItemTypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allItemTypes_onceToken != -1)
   {
     dispatch_once(&allItemTypes_onceToken, block);
   }
 
-  v3 = [a1 allRegisteredItemTypes];
-  v4 = [v3 copy];
+  allRegisteredItemTypes = [self allRegisteredItemTypes];
+  v4 = [allRegisteredItemTypes copy];
 
   return v4;
 }
@@ -1773,8 +1773,8 @@ void __26__BMItemType_allItemTypes__block_invoke(uint64_t a1)
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a1 allItemTypes];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allItemTypes = [self allItemTypes];
+  v5 = [allItemTypes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1785,15 +1785,15 @@ void __26__BMItemType_allItemTypes__block_invoke(uint64_t a1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allItemTypes);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        [v3 setObject:v9 forKeyedSubscript:v10];
+        identifier = [v9 identifier];
+        [v3 setObject:v9 forKeyedSubscript:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allItemTypes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1805,13 +1805,13 @@ void __26__BMItemType_allItemTypes__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (BMItemType)initWithCoder:(id)a3
+- (BMItemType)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
-  v6 = [objc_opt_class() allItemTypesDictionary];
-  v7 = [v6 objectForKey:v5];
+  allItemTypesDictionary = [objc_opt_class() allItemTypesDictionary];
+  v7 = [allItemTypesDictionary objectForKey:v5];
 
   return v7;
 }
@@ -1822,8 +1822,8 @@ void __26__BMItemType_allItemTypes__block_invoke(uint64_t a1)
   [(BMItemType *)v2 setIdentifier:@"ToggledAirplaneMode"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] airplaneModeStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  airplaneModeStream = [MEMORY[0x277CFE298] airplaneModeStream];
+  [(BMItemType *)v2 setEventStream:airplaneModeStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_11];
 
@@ -1844,8 +1844,8 @@ uint64_t __47__BMItemType_AirplaneMode__toggledAirplaneMode__block_invoke(uint64
   [(BMItemType *)v2 setIdentifier:@"WiFiConnectedToSSID"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:0];
-  v3 = [MEMORY[0x277CFE298] wifiConnectionStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  wifiConnectionStream = [MEMORY[0x277CFE298] wifiConnectionStream];
+  [(BMItemType *)v2 setEventStream:wifiConnectionStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_13];
 
@@ -1866,8 +1866,8 @@ id __39__BMItemType_WiFi__wifiConnectedToSSID__block_invoke(uint64_t a1, void *a
   [(BMItemType *)v2 setIdentifier:@"WiFiDisconnectedFromSSID"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:2];
-  v3 = [MEMORY[0x277CFE298] wifiConnectionStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  wifiConnectionStream = [MEMORY[0x277CFE298] wifiConnectionStream];
+  [(BMItemType *)v2 setEventStream:wifiConnectionStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_8];
 
@@ -1888,8 +1888,8 @@ id __44__BMItemType_WiFi__wifiDisconnectedFromSSID__block_invoke(uint64_t a1, vo
   [(BMItemType *)v2 setIdentifier:@"WiFiIsConnectedToSSID"];
   [(BMItemType *)v2 setValueClass:objc_opt_class()];
   [(BMItemType *)v2 setEdge:1];
-  v3 = [MEMORY[0x277CFE298] wifiConnectionStream];
-  [(BMItemType *)v2 setEventStream:v3];
+  wifiConnectionStream = [MEMORY[0x277CFE298] wifiConnectionStream];
+  [(BMItemType *)v2 setEventStream:wifiConnectionStream];
 
   [(BMItemType *)v2 setValueExtractBlock:&__block_literal_global_13];
 

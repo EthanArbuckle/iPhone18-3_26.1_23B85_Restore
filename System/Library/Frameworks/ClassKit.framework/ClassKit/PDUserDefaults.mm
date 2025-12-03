@@ -3,17 +3,17 @@
 + (id)configurationDictionary;
 + (id)sharedDefaults;
 + (void)removeSharedDefaults;
-- (BOOL)setValue:(id)a3 forDefaultNamed:(id)a4 error:(id *)a5;
-- (BOOL)unprotected_BOOLForKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)setValue:(id)value forDefaultNamed:(id)named error:(id *)error;
+- (BOOL)unprotected_BOOLForKey:(id)key defaultValue:(BOOL)value;
 - (PDUserDefaults)init;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)valueForDefaultNamed:(id)a3;
+- (id)valueForDefaultNamed:(id)named;
 - (void)resetUserDefaultsIfAllowed;
-- (void)restoreFromDictionaryRepresentation:(id)a3;
-- (void)setEnableResponseStreaming:(BOOL)a3;
-- (void)setEnableVerboseLogging:(BOOL)a3;
-- (void)setRestoreCurrentDefaults:(BOOL)a3;
+- (void)restoreFromDictionaryRepresentation:(id)representation;
+- (void)setEnableResponseStreaming:(BOOL)streaming;
+- (void)setEnableVerboseLogging:(BOOL)logging;
+- (void)setRestoreCurrentDefaults:(BOOL)defaults;
 - (void)unprotected_writeToBackingStore;
 - (void)updateFromBackingStore;
 @end
@@ -164,9 +164,9 @@
     {
       v38 = v3->_defaultsFileURL;
       v39 = v35;
-      v40 = [(NSURL *)v38 path];
+      path = [(NSURL *)v38 path];
       *buf = 138412546;
-      v54 = v40;
+      v54 = path;
       v55 = 2112;
       v56 = v20;
       _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "Failed to write backing store data to: %@. Cannot init PDUserDefaults. Error: %@", buf, 0x16u);
@@ -246,17 +246,17 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)restoreFromDictionaryRepresentation:(id)a3
+- (void)restoreFromDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = +[PDUserDefaults configurationDictionary];
   os_unfair_lock_lock(&self->_lock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  keyEnumerator = [representationCopy keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -267,21 +267,21 @@ LABEL_17:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [v5 objectForKeyedSubscript:v11];
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
 
-        if (v13)
+        if (bOOLValue)
         {
-          v14 = [v4 objectForKeyedSubscript:v11];
+          v14 = [representationCopy objectForKeyedSubscript:v11];
           -[PDUserDefaults unprotected_setBool:forKey:](self, "unprotected_setBool:forKey:", [v14 BOOLValue], v11);
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -290,20 +290,20 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)unprotected_BOOLForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)unprotected_BOOLForKey:(id)key defaultValue:(BOOL)value
 {
   backingStoreDictionary = self->_backingStoreDictionary;
   if (backingStoreDictionary)
   {
-    v6 = [(NSMutableDictionary *)backingStoreDictionary objectForKeyedSubscript:a3];
+    v6 = [(NSMutableDictionary *)backingStoreDictionary objectForKeyedSubscript:key];
     v7 = v6;
     if (v6)
     {
-      a4 = [v6 BOOLValue];
+      value = [v6 BOOLValue];
     }
   }
 
-  return a4;
+  return value;
 }
 
 - (void)unprotected_writeToBackingStore
@@ -330,9 +330,9 @@ LABEL_17:
         {
           v13 = self->_defaultsFileURL;
           v14 = v10;
-          v15 = [(NSURL *)v13 path];
+          path = [(NSURL *)v13 path];
           *buf = 138412546;
-          v19 = v15;
+          v19 = path;
           v20 = 2112;
           v21 = v9;
           _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to write backing store data to: %@. Error: %@", buf, 0x16u);
@@ -359,29 +359,29 @@ LABEL_17:
   }
 }
 
-- (void)setRestoreCurrentDefaults:(BOOL)a3
+- (void)setRestoreCurrentDefaults:(BOOL)defaults
 {
-  if (self->_restoreCurrentDefaults != a3)
+  if (self->_restoreCurrentDefaults != defaults)
   {
-    self->_restoreCurrentDefaults = a3;
+    self->_restoreCurrentDefaults = defaults;
     [PDUserDefaults setBool:"setBool:forKey:" forKey:?];
   }
 }
 
-- (void)setEnableVerboseLogging:(BOOL)a3
+- (void)setEnableVerboseLogging:(BOOL)logging
 {
-  if (self->_enableVerboseLogging != a3)
+  if (self->_enableVerboseLogging != logging)
   {
-    self->_enableVerboseLogging = a3;
+    self->_enableVerboseLogging = logging;
     [PDUserDefaults setBool:"setBool:forKey:" forKey:?];
   }
 }
 
-- (void)setEnableResponseStreaming:(BOOL)a3
+- (void)setEnableResponseStreaming:(BOOL)streaming
 {
-  if (self->_enableResponseStreaming != a3)
+  if (self->_enableResponseStreaming != streaming)
   {
-    self->_enableResponseStreaming = a3;
+    self->_enableResponseStreaming = streaming;
     [PDUserDefaults setBool:"setBool:forKey:" forKey:?];
   }
 }
@@ -457,16 +457,16 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)setValue:(id)a3 forDefaultNamed:(id)a4 error:(id *)a5
+- (BOOL)setValue:(id)value forDefaultNamed:(id)named error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_opt_class() configurationDictionary];
-  v11 = [v10 valueForKey:v9];
+  valueCopy = value;
+  namedCopy = named;
+  configurationDictionary = [objc_opt_class() configurationDictionary];
+  v11 = [configurationDictionary valueForKey:namedCopy];
   v12 = v11;
   if (!v11)
   {
-    if (a5)
+    if (error)
     {
       v16 = @"invalid key";
 LABEL_11:
@@ -481,25 +481,25 @@ LABEL_13:
 
   if (([v11 BOOLValue] & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v16 = @"value for key is not mutable";
       v17 = 3;
 LABEL_12:
       [NSError cls_createErrorWithCode:v17 description:v16];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_14;
     }
 
     goto LABEL_13;
   }
 
-  v13 = [(NSDictionary *)self->_setterNames objectForKeyedSubscript:v9];
+  v13 = [(NSDictionary *)self->_setterNames objectForKeyedSubscript:namedCopy];
   v14 = NSSelectorFromString(v13);
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v16 = @"cannot find setter for key";
       goto LABEL_11;
@@ -515,9 +515,9 @@ LABEL_14:
   return v15;
 }
 
-- (id)valueForDefaultNamed:(id)a3
+- (id)valueForDefaultNamed:(id)named
 {
-  v4 = [(NSDictionary *)self->_getterNames objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_getterNames objectForKeyedSubscript:named];
   v5 = NSSelectorFromString(v4);
 
   if (objc_opt_respondsToSelector())

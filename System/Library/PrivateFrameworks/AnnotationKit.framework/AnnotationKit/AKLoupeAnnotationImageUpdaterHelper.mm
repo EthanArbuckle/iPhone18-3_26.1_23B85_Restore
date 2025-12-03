@@ -1,20 +1,20 @@
 @interface AKLoupeAnnotationImageUpdaterHelper
-+ (CGAffineTransform)transformForFastPathLayer:(SEL)a3 ofLoupeAnnotation:(id)a4 onPageController:(id)a5;
-+ (CGRect)magnifiedRectForUnmagnifiedRect:(CGRect)a3 ofLoupeAnnotation:(id)a4 onPageController:(id)a5;
-+ (CGRect)unmagnifiedRectForMagnifiedRect:(CGRect)a3 ofLoupeAnnotation:(id)a4;
-+ (void)updateFastPathImageOnLoupeAnnotation:(id)a3 withFastPathLayer:(id)a4 onPageController:(id)a5;
-+ (void)updateModelImageOnLoupeAnnotation:(id)a3 onPageController:(id)a4;
++ (CGAffineTransform)transformForFastPathLayer:(SEL)layer ofLoupeAnnotation:(id)annotation onPageController:(id)controller;
++ (CGRect)magnifiedRectForUnmagnifiedRect:(CGRect)rect ofLoupeAnnotation:(id)annotation onPageController:(id)controller;
++ (CGRect)unmagnifiedRectForMagnifiedRect:(CGRect)rect ofLoupeAnnotation:(id)annotation;
++ (void)updateFastPathImageOnLoupeAnnotation:(id)annotation withFastPathLayer:(id)layer onPageController:(id)controller;
++ (void)updateModelImageOnLoupeAnnotation:(id)annotation onPageController:(id)controller;
 @end
 
 @implementation AKLoupeAnnotationImageUpdaterHelper
 
-+ (CGRect)magnifiedRectForUnmagnifiedRect:(CGRect)a3 ofLoupeAnnotation:(id)a4 onPageController:(id)a5
++ (CGRect)magnifiedRectForUnmagnifiedRect:(CGRect)rect ofLoupeAnnotation:(id)annotation onPageController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 magnification];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [annotation magnification];
   v10 = v9;
   v17.origin.x = x;
   v17.origin.y = y;
@@ -37,13 +37,13 @@
   return result;
 }
 
-+ (CGRect)unmagnifiedRectForMagnifiedRect:(CGRect)a3 ofLoupeAnnotation:(id)a4
++ (CGRect)unmagnifiedRectForMagnifiedRect:(CGRect)rect ofLoupeAnnotation:(id)annotation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 magnification];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [annotation magnification];
   v9 = v8;
   v16.origin.x = x;
   v16.origin.y = y;
@@ -66,55 +66,55 @@
   return result;
 }
 
-+ (void)updateModelImageOnLoupeAnnotation:(id)a3 onPageController:(id)a4
++ (void)updateModelImageOnLoupeAnnotation:(id)annotation onPageController:(id)controller
 {
   v6 = off_27E398E98;
-  v7 = a4;
-  v8 = a3;
-  objc_setAssociatedObject(v8, v6, 0, 0x301);
-  [v8 rectangle];
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  objc_setAssociatedObject(annotationCopy, v6, 0, 0x301);
+  [annotationCopy rectangle];
   v10 = v9;
-  [a1 magnifiedRectForUnmagnifiedRect:v8 ofLoupeAnnotation:v7 onPageController:?];
+  [self magnifiedRectForUnmagnifiedRect:annotationCopy ofLoupeAnnotation:controllerCopy onPageController:?];
   v12 = v10 / v11;
-  [v7 convertRectFromModelToOverlay:?];
-  v17 = [v7 newContentSnapshotPDFDataAtScale:v8 inRect:v12 forLoupeAnnotation:{v13, v14, v15, v16}];
+  [controllerCopy convertRectFromModelToOverlay:?];
+  v17 = [controllerCopy newContentSnapshotPDFDataAtScale:annotationCopy inRect:v12 forLoupeAnnotation:{v13, v14, v15, v16}];
 
-  [v8 setImageData:v17];
+  [annotationCopy setImageData:v17];
 }
 
-+ (void)updateFastPathImageOnLoupeAnnotation:(id)a3 withFastPathLayer:(id)a4 onPageController:(id)a5
++ (void)updateFastPathImageOnLoupeAnnotation:(id)annotation withFastPathLayer:(id)layer onPageController:(id)controller
 {
   v175 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 delegate];
+  annotationCopy = annotation;
+  layerCopy = layer;
+  controllerCopy = controller;
+  delegate = [controllerCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10 pageIndex];
-    v13 = [v10 controller];
-    v14 = [v11 layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:v12 forAnnotationController:v13];
+    pageIndex = [controllerCopy pageIndex];
+    controller = [controllerCopy controller];
+    v14 = [delegate layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:pageIndex forAnnotationController:controller];
 
-    if (v14 && v9)
+    if (v14 && layerCopy)
     {
-      v15 = [v10 overlayView];
-      [v8 rectangle];
+      overlayView = [controllerCopy overlayView];
+      [annotationCopy rectangle];
       v17 = v16;
       v158 = v19;
       v159 = v18;
       v157 = v20;
-      [a1 magnifiedRectForUnmagnifiedRect:v8 ofLoupeAnnotation:v10 onPageController:?];
+      [self magnifiedRectForUnmagnifiedRect:annotationCopy ofLoupeAnnotation:controllerCopy onPageController:?];
       v22 = v21;
       v24 = v23;
       v149 = v26;
       v150 = v25;
-      [v10 convertRectFromModelToOverlay:?];
+      [controllerCopy convertRectFromModelToOverlay:?];
       v28 = v27;
       v30 = v29;
       v32 = v31;
       v34 = v33;
-      v35 = [v15 layer];
-      [v14 convertRect:v35 fromLayer:{v28, v30, v32, v34}];
+      layer = [overlayView layer];
+      [v14 convertRect:layer fromLayer:{v28, v30, v32, v34}];
       v37 = v36;
       v39 = v38;
       v41 = v40;
@@ -136,29 +136,29 @@
         v51 = v44;
       }
 
-      [v10 currentModelToScreenScaleFactor];
+      [controllerCopy currentModelToScreenScaleFactor];
       v147 = v52;
-      v53 = [v15 window];
-      v54 = [v53 screen];
+      window = [overlayView window];
+      screen = [window screen];
 
-      if (v54)
+      if (screen)
       {
-        v55 = [v15 window];
-        v56 = [v55 screen];
-        [v56 scale];
+        window2 = [overlayView window];
+        screen2 = [window2 screen];
+        [screen2 scale];
         v146 = v57;
       }
 
       else
       {
-        v55 = [MEMORY[0x277D759A0] mainScreen];
-        [v55 scale];
+        window2 = [MEMORY[0x277D759A0] mainScreen];
+        [window2 scale];
         v146 = v58;
       }
 
-      v59 = [v10 geometryHelper];
+      geometryHelper = [controllerCopy geometryHelper];
       v151 = v17;
-      [v59 screenPixelAlignedRectForRect:{v17, v159, v158, v157}];
+      [geometryHelper screenPixelAlignedRectForRect:{v17, v159, v158, v157}];
       v144 = v61;
       v145 = v60;
 
@@ -166,25 +166,25 @@
       v172 = *MEMORY[0x277CBF398];
       v173 = v62;
       v63 = [AKFastLayerSnapshotHelper newFastSnapshotFromLayer:v14 withSourceRect:&v172 acutalSnapshotRect:v47, v49, v50, v51];
-      v160 = v15;
-      v64 = [v15 layer];
-      [v64 convertRect:v14 fromLayer:{v172, v173}];
+      v160 = overlayView;
+      layer2 = [overlayView layer];
+      [layer2 convertRect:v14 fromLayer:{v172, v173}];
       v66 = v65;
       v68 = v67;
       v70 = v69;
       v72 = v71;
 
-      [v10 convertRectFromOverlayToModel:{v66, v68, v70, v72}];
+      [controllerCopy convertRectFromOverlayToModel:{v66, v68, v70, v72}];
       v74 = v73;
       v76 = v75;
       v154 = v78;
       v155 = v77;
-      [v8 rectangle];
+      [annotationCopy rectangle];
       v80 = v79;
       v82 = v81;
       v84 = v83;
       v86 = v85;
-      [v8 magnification];
+      [annotationCopy magnification];
       v88 = v87;
       v177.origin.x = v80;
       v177.origin.y = v82;
@@ -220,50 +220,50 @@
       v179.size.height = v154;
       v179.size.width = v155;
       v180 = CGRectApplyAffineTransform(v179, &t2);
-      [v10 convertRectFromModelToOverlay:{v180.origin.x, v180.origin.y, v180.size.width, v180.size.height}];
+      [controllerCopy convertRectFromModelToOverlay:{v180.origin.x, v180.origin.y, v180.size.width, v180.size.height}];
       v92 = v91;
       v94 = v93;
       v96 = v95;
       v98 = v97;
-      v99 = [v10 overlayView];
-      v100 = [v99 layer];
-      v101 = [v9 superlayer];
-      [v100 convertRect:v101 toLayer:{v92, v94, v96, v98}];
+      overlayView2 = [controllerCopy overlayView];
+      layer3 = [overlayView2 layer];
+      superlayer = [layerCopy superlayer];
+      [layer3 convertRect:superlayer toLayer:{v92, v94, v96, v98}];
       v103 = v102;
       v105 = v104;
       v107 = v106;
       v109 = v108;
 
-      [v9 setFrame:{v103, v105, v107, v109}];
-      v110 = [v9 mask];
-      [v9 bounds];
-      [v110 setFrame:?];
-      [AKLoupeAnnotationRenderer innerClipRect:v8];
-      [v10 convertRectFromModelToOverlay:?];
+      [layerCopy setFrame:{v103, v105, v107, v109}];
+      mask = [layerCopy mask];
+      [layerCopy bounds];
+      [mask setFrame:?];
+      [AKLoupeAnnotationRenderer innerClipRect:annotationCopy];
+      [controllerCopy convertRectFromModelToOverlay:?];
       v112 = v111;
       v114 = v113;
       v116 = v115;
       v118 = v117;
       v119 = v160;
-      v120 = [v160 layer];
-      [v120 convertRect:v9 toLayer:{v112, v114, v116, v118}];
+      layer4 = [v160 layer];
+      [layer4 convertRect:layerCopy toLayer:{v112, v114, v116, v118}];
       v122 = v121;
       v124 = v123;
       v126 = v125;
       v128 = v127;
 
-      [v9 convertRect:v110 toLayer:{v122, v124, v126, v128}];
+      [layerCopy convertRect:mask toLayer:{v122, v124, v126, v128}];
       v129 = CGPathCreateWithEllipseInRect(v181, 0);
-      [v110 setPath:v129];
+      [mask setPath:v129];
       CGPathRelease(v129);
 
       if (v63)
       {
-        v156 = v9;
+        v156 = layerCopy;
         v130 = v147 * v146 * v144;
         v148 = round(v147 * v146 * v145);
         v131 = round(v130);
-        [v9 setContents:v63];
+        [layerCopy setContents:v63];
         CGImageRelease(v63);
         v176.width = v148;
         v176.height = v131;
@@ -300,7 +300,7 @@
         CGAffineTransformConcat(&t2, &v168, &t1);
         v171 = t2;
         CGContextConcatCTM(CurrentContext, &t2);
-        v135 = [v10 annotationsBeneathLoupe:v8];
+        v135 = [controllerCopy annotationsBeneathLoupe:annotationCopy];
         v164 = 0u;
         v165 = 0u;
         v166 = 0u;
@@ -341,31 +341,31 @@
 
         v143 = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        objc_setAssociatedObject(v8, off_27E398E98, v143, 0x301);
+        objc_setAssociatedObject(annotationCopy, off_27E398E98, v143, 0x301);
 
-        v9 = v156;
+        layerCopy = v156;
         v119 = v160;
       }
 
       else
       {
-        [a1 updateModelImageOnLoupeAnnotation:v8 onPageController:v10];
+        [self updateModelImageOnLoupeAnnotation:annotationCopy onPageController:controllerCopy];
       }
     }
 
     else
     {
-      [a1 updateModelImageOnLoupeAnnotation:v8 onPageController:v10];
+      [self updateModelImageOnLoupeAnnotation:annotationCopy onPageController:controllerCopy];
     }
   }
 
   else
   {
-    [a1 updateModelImageOnLoupeAnnotation:v8 onPageController:v10];
+    [self updateModelImageOnLoupeAnnotation:annotationCopy onPageController:controllerCopy];
   }
 }
 
-+ (CGAffineTransform)transformForFastPathLayer:(SEL)a3 ofLoupeAnnotation:(id)a4 onPageController:(id)a5
++ (CGAffineTransform)transformForFastPathLayer:(SEL)layer ofLoupeAnnotation:(id)annotation onPageController:(id)controller
 {
   v8 = a6;
   v22[0] = MEMORY[0x277D85DD0];
@@ -374,14 +374,14 @@
   v22[3] = &unk_278C7BDC8;
   v23 = v8;
   v9 = v8;
-  v10 = a4;
+  annotationCopy = annotation;
   v11 = [AKGeometryHelper exifOrientationWithConversionBlock:v22];
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  [v10 frame];
+  [annotationCopy frame];
   MidX = CGRectGetMidX(v24);
-  [v10 frame];
+  [annotationCopy frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;

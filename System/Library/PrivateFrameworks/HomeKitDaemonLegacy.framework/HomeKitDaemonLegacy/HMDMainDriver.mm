@@ -1,23 +1,23 @@
 @interface HMDMainDriver
 + (id)driver;
-+ (id)getLocalStoreFrom:(id)a3;
-+ (id)loadHomeDataFromDemoModeStore:(id *)a3;
-+ (id)loadHomeDataFromLocalStore:(id *)a3 decryptionFailed:(BOOL *)a4;
-+ (id)loadSQLArchiveWithDecryptionFail:(BOOL *)a3 fromLocation:(id)a4 forHH2Migration:(BOOL)a5 error:(id *)a6;
++ (id)getLocalStoreFrom:(id)from;
++ (id)loadHomeDataFromDemoModeStore:(id *)store;
++ (id)loadHomeDataFromLocalStore:(id *)store decryptionFailed:(BOOL *)failed;
++ (id)loadSQLArchiveWithDecryptionFail:(BOOL *)fail fromLocation:(id)location forHH2Migration:(BOOL)migration error:(id *)error;
 + (id)logCategory;
 - (HMDMainDriver)init;
 - (NSString)cachedLocaleIdentifier;
 - (id)currentWiFiNetworkInfo;
 - (id)currentWiFiNetworkRSSI;
-- (void)detectNearbyAccessoriesOnMismatchNetworkWithCompletionHandler:(id)a3;
+- (void)detectNearbyAccessoriesOnMismatchNetworkWithCompletionHandler:(id)handler;
 - (void)initiateLocaleMonitoring;
 - (void)localeChanged;
 - (void)registerXPCEventStreamHandlers;
 - (void)relaunch;
-- (void)relaunchAfterDelay:(double)a3;
+- (void)relaunchAfterDelay:(double)delay;
 - (void)relaunchHomed;
 - (void)removeCurrentAccessorySetupMetricDispatcherIfNeeded;
-- (void)setCachedLocaleIdentifier:(id)a3;
+- (void)setCachedLocaleIdentifier:(id)identifier;
 - (void)start;
 @end
 
@@ -25,23 +25,23 @@
 
 - (void)registerXPCEventStreamHandlers
 {
-  v2 = self;
+  selfCopy = self;
   sub_253276E48();
 }
 
-- (void)detectNearbyAccessoriesOnMismatchNetworkWithCompletionHandler:(id)a3
+- (void)detectNearbyAccessoriesOnMismatchNetworkWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDMainDriver *)self homeManager];
-  v6 = [(HMDMainDriver *)self currentWiFiNetworkInfo];
+  handlerCopy = handler;
+  homeManager = [(HMDMainDriver *)self homeManager];
+  currentWiFiNetworkInfo = [(HMDMainDriver *)self currentWiFiNetworkInfo];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionHandler___block_invoke;
   v8[3] = &unk_279721A88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 findAccessoriesNotOnWiFiWithCurrentWiFi:v6 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [homeManager findAccessoriesNotOnWiFiWithCurrentWiFi:currentWiFiNetworkInfo completionHandler:v8];
 }
 
 void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -69,25 +69,25 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
 
 - (id)currentWiFiNetworkRSSI
 {
-  v2 = [MEMORY[0x277D0F950] sharedManager];
-  v3 = [v2 currentNetworkRSSI];
+  mEMORY[0x277D0F950] = [MEMORY[0x277D0F950] sharedManager];
+  currentNetworkRSSI = [mEMORY[0x277D0F950] currentNetworkRSSI];
 
-  return v3;
+  return currentNetworkRSSI;
 }
 
 - (id)currentWiFiNetworkInfo
 {
-  v2 = [MEMORY[0x277D0F950] sharedManager];
-  v3 = [v2 MACAddress];
-  v4 = [v2 currentNetworkSSID];
-  v5 = [v2 currentNetworkAssociation];
+  mEMORY[0x277D0F950] = [MEMORY[0x277D0F950] sharedManager];
+  mACAddress = [mEMORY[0x277D0F950] MACAddress];
+  currentNetworkSSID = [mEMORY[0x277D0F950] currentNetworkSSID];
+  currentNetworkAssociation = [mEMORY[0x277D0F950] currentNetworkAssociation];
   v6 = objc_alloc(MEMORY[0x277D0F958]);
-  v7 = [v5 BSSID];
-  v8 = [v7 formattedString];
-  v9 = [v5 gatewayIPAddress];
-  v10 = [v5 gatewayMACAddress];
-  v11 = [v10 formattedString];
-  v12 = [v6 initWithMACAddress:v3 SSID:v4 BSSID:v8 gatewayIPAddress:v9 gatewayMACAddress:v11];
+  bSSID = [currentNetworkAssociation BSSID];
+  formattedString = [bSSID formattedString];
+  gatewayIPAddress = [currentNetworkAssociation gatewayIPAddress];
+  gatewayMACAddress = [currentNetworkAssociation gatewayMACAddress];
+  formattedString2 = [gatewayMACAddress formattedString];
+  v12 = [v6 initWithMACAddress:mACAddress SSID:currentNetworkSSID BSSID:formattedString gatewayIPAddress:gatewayIPAddress gatewayMACAddress:formattedString2];
 
   return v12;
 }
@@ -95,13 +95,13 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
 - (void)removeCurrentAccessorySetupMetricDispatcherIfNeeded
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMainDriver *)self homeManager];
-  v4 = [v3 currentAccessorySetupMetricDispatcher];
+  homeManager = [(HMDMainDriver *)self homeManager];
+  currentAccessorySetupMetricDispatcher = [homeManager currentAccessorySetupMetricDispatcher];
 
-  if (v4)
+  if (currentAccessorySetupMetricDispatcher)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -112,16 +112,16 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [(HMDMainDriver *)v6 homeManager];
-    [v9 setCurrentAccessorySetupMetricDispatcher:0];
+    homeManager2 = [(HMDMainDriver *)selfCopy homeManager];
+    [homeManager2 setCurrentAccessorySetupMetricDispatcher:0];
   }
 
-  v10 = [(HMDMainDriver *)self currentAccessorySetupMetricDispatcher];
+  currentAccessorySetupMetricDispatcher2 = [(HMDMainDriver *)self currentAccessorySetupMetricDispatcher];
 
-  if (v10)
+  if (currentAccessorySetupMetricDispatcher2)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -132,40 +132,40 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
     }
 
     objc_autoreleasePoolPop(v11);
-    [(HMDMainDriver *)v12 setCurrentAccessorySetupMetricDispatcher:0];
+    [(HMDMainDriver *)selfCopy2 setCurrentAccessorySetupMetricDispatcher:0];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relaunchAfterDelay:(double)a3
+- (void)relaunchAfterDelay:(double)delay
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
-  v5 = [(HMDMainDriver *)self workQueue];
+  v4 = dispatch_time(0, (delay * 1000000000.0));
+  workQueue = [(HMDMainDriver *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__HMDMainDriver_relaunchAfterDelay___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_after(v4, v5, block);
+  dispatch_after(v4, workQueue, block);
 }
 
 - (void)relaunch
 {
-  v3 = [(HMDMainDriver *)self workQueue];
+  workQueue = [(HMDMainDriver *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__HMDMainDriver_relaunch__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
 - (void)relaunchHomed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMainDriver *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDMainDriver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = +[HMDLaunchHandler sharedHandler];
   v5 = objc_alloc(MEMORY[0x277CCAD78]);
@@ -173,7 +173,7 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
   [v4 registerRelaunchClientWithUUID:v6];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -198,7 +198,7 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
 
   v343 = [[HMDLaunchEvent alloc] initWithFirstLaunchAfterBoot:isFirstLaunchAfterBoot_firstLaunchAfterBoot];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -210,7 +210,7 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
 
   objc_autoreleasePoolPop(v3);
   v7 = objc_autoreleasePoolPush();
-  v8 = v4;
+  v8 = selfCopy;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -239,14 +239,14 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
   v14 = objc_alloc(MEMORY[0x277D17DF8]);
   v15 = HMFBooleanToString();
   v16 = HMFBooleanToString();
   v17 = HMDTaggedLoggingCreateDictionary();
   v18 = [v14 initWithTag:@"mainDriverStart" data:{v17, @"state", @"start", @"isHH2", v15, @"isFirstLaunchAfterBoot", v16}];
-  v19 = [v346 tagProcessorList];
-  [v13 submitTaggedEvent:v18 processorList:v19];
+  tagProcessorList = [v346 tagProcessorList];
+  [mEMORY[0x277D17DE8] submitTaggedEvent:v18 processorList:tagProcessorList];
 
   v20 = v8[1];
   if (os_signpost_enabled(v20))
@@ -280,9 +280,9 @@ void __79__HMDMainDriver_detectNearbyAccessoriesOnMismatchNetworkWithCompletionH
   if (v24)
   {
     v25 = CFPreferencesCopyValue(@"demoModeRequiresCloudKit", @"com.apple.homed", @"mobile", v22);
-    v26 = [v25 BOOLValue];
+    bOOLValue = [v25 BOOLValue];
 
-    v27 = v26 ^ 1;
+    v27 = bOOLValue ^ 1;
   }
 
   else
@@ -320,14 +320,14 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v31);
-  v35 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8]2 = [MEMORY[0x277D17DE8] sharedInstance];
   v36 = objc_alloc(MEMORY[0x277D17DF8]);
   v391 = @"state";
   v392[0] = @"mainDriverConfigCleanup";
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v392 forKeys:&v391 count:1];
   v38 = [v36 initWithTag:@"mainDriverStart" data:v37];
-  v39 = [v346 tagProcessorList];
-  [v35 submitTaggedEvent:v38 processorList:v39];
+  tagProcessorList2 = [v346 tagProcessorList];
+  [mEMORY[0x277D17DE8]2 submitTaggedEvent:v38 processorList:tagProcessorList2];
 
   +[HMDResetConfigPostCleanup performAnyPostCleanupStepsIfNecessary];
   v40 = objc_autoreleasePoolPush();
@@ -357,15 +357,15 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v40);
-  v47 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8]3 = [MEMORY[0x277D17DE8] sharedInstance];
   v48 = objc_alloc(MEMORY[0x277D17DF8]);
   v49 = MEMORY[0x277CCACA8];
   HMFUptime();
   v51 = [v49 stringWithFormat:@"%.3f", v50 - v30];
   v52 = HMDTaggedLoggingCreateDictionary();
   v53 = [v48 initWithTag:@"mainDriverStart" data:{v52, @"state", @"mainDriverConfigCleanupDone", @"duration", v51}];
-  v54 = [v346 tagProcessorList];
-  [v47 submitTaggedEvent:v53 processorList:v54];
+  tagProcessorList3 = [v346 tagProcessorList];
+  [mEMORY[0x277D17DE8]3 submitTaggedEvent:v53 processorList:tagProcessorList3];
 
   objc_autoreleasePoolPop(v28);
   HMFUptime();
@@ -390,14 +390,14 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v57);
-  v61 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8]4 = [MEMORY[0x277D17DE8] sharedInstance];
   v62 = objc_alloc(MEMORY[0x277D17DF8]);
   v389 = @"state";
   v390 = @"mainDriverSetupPaths";
   v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v390 forKeys:&v389 count:1];
   v64 = [v62 initWithTag:@"mainDriverStart" data:v63];
-  v65 = [v346 tagProcessorList];
-  [v61 submitTaggedEvent:v64 processorList:v65];
+  tagProcessorList4 = [v346 tagProcessorList];
+  [mEMORY[0x277D17DE8]4 submitTaggedEvent:v64 processorList:tagProcessorList4];
 
   [v58 registerXPCEventStreamHandlers];
   v66 = +[HMDBackgroundTaskManager sharedManager];
@@ -468,15 +468,15 @@ LABEL_27:
     }
 
     objc_autoreleasePoolPop(v77);
-    v84 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]5 = [MEMORY[0x277D17DE8] sharedInstance];
     v85 = objc_alloc(MEMORY[0x277D17DF8]);
     v86 = MEMORY[0x277CCACA8];
     HMFUptime();
     v88 = [v86 stringWithFormat:@"%.3f", v87 - v56];
     v89 = HMDTaggedLoggingCreateDictionary();
     v90 = [v85 initWithTag:@"mainDriverStart" data:{v89, @"state", @"mainDriverSetupPathsDone", @"duration", v88}];
-    v91 = [v346 tagProcessorList];
-    [v84 submitTaggedEvent:v90 processorList:v91];
+    tagProcessorList5 = [v346 tagProcessorList];
+    [mEMORY[0x277D17DE8]5 submitTaggedEvent:v90 processorList:tagProcessorList5];
 
     HMFUptime();
     v93 = v92;
@@ -500,14 +500,14 @@ LABEL_27:
     }
 
     objc_autoreleasePoolPop(v94);
-    v98 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]6 = [MEMORY[0x277D17DE8] sharedInstance];
     v99 = objc_alloc(MEMORY[0x277D17DF8]);
     v385 = @"state";
     v386 = @"mainDriverSetupCapabilities";
     v100 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v386 forKeys:&v385 count:1];
     v101 = [v99 initWithTag:@"mainDriverStart" data:v100];
-    v102 = [v346 tagProcessorList];
-    [v98 submitTaggedEvent:v101 processorList:v102];
+    tagProcessorList6 = [v346 tagProcessorList];
+    [mEMORY[0x277D17DE8]6 submitTaggedEvent:v101 processorList:tagProcessorList6];
 
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
@@ -548,15 +548,15 @@ LABEL_27:
     }
 
     objc_autoreleasePoolPop(v104);
-    v111 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]7 = [MEMORY[0x277D17DE8] sharedInstance];
     v112 = objc_alloc(MEMORY[0x277D17DF8]);
     v113 = MEMORY[0x277CCACA8];
     HMFUptime();
     v115 = [v113 stringWithFormat:@"%.3f", v114 - v93];
     v116 = HMDTaggedLoggingCreateDictionary();
     v117 = [v112 initWithTag:@"mainDriverStart" data:{v116, @"state", @"mainDriverSetupCapabilitiesDone", @"duration", v115}];
-    v118 = [v346 tagProcessorList];
-    [v111 submitTaggedEvent:v117 processorList:v118];
+    tagProcessorList7 = [v346 tagProcessorList];
+    [mEMORY[0x277D17DE8]7 submitTaggedEvent:v117 processorList:tagProcessorList7];
 
     v119 = objc_autoreleasePoolPush();
     v120 = v105;
@@ -564,11 +564,11 @@ LABEL_27:
     if (os_log_type_enabled(v121, OS_LOG_TYPE_DEBUG))
     {
       v122 = HMFGetLogIdentifier();
-      v123 = [MEMORY[0x277D0F8D0] sharedPreferences];
+      mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
       *buf = 138543618;
       *&buf[4] = v122;
       *&buf[12] = 2112;
-      *&buf[14] = v123;
+      *&buf[14] = mEMORY[0x277D0F8D0];
       _os_log_impl(&dword_2531F8000, v121, OS_LOG_TYPE_DEBUG, "%{public}@Preferences: %@", buf, 0x16u);
     }
 
@@ -596,20 +596,20 @@ LABEL_27:
     }
 
     objc_autoreleasePoolPop(v126);
-    v130 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]8 = [MEMORY[0x277D17DE8] sharedInstance];
     v131 = objc_alloc(MEMORY[0x277D17DF8]);
     v383 = @"state";
     v384 = @"mainDriverSetupAccountManagers";
     v132 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v384 forKeys:&v383 count:1];
     v133 = [v131 initWithTag:@"mainDriverStart" data:v132];
-    v134 = [v346 tagProcessorList];
-    [v130 submitTaggedEvent:v133 processorList:v134];
+    tagProcessorList8 = [v346 tagProcessorList];
+    [mEMORY[0x277D17DE8]8 submitTaggedEvent:v133 processorList:tagProcessorList8];
 
-    v332 = [v341 idsServiceManager];
-    v338 = [v341 appleAccountManager];
+    idsServiceManager = [v341 idsServiceManager];
+    appleAccountManager = [v341 appleAccountManager];
     [v341 remoteAccountManager];
 
-    v336 = [v341 accountRegistry];
+    accountRegistry = [v341 accountRegistry];
     [v346 markWithReason:@"Creating Message Transports"];
     v329 = +[HMDXPCMessageTransport defaultTransport];
     v328 = +[HMDSecureRemoteMessageTransport defaultTransport];
@@ -617,16 +617,16 @@ LABEL_27:
     v334 = +[HMDBulletinBoard sharedBulletinBoard];
     [v346 markWithReason:@"Initialize Metrics Manager"];
     v135 = [HMDMetricsManager alloc];
-    v136 = [v334 notificationCenterSettingsProvider];
-    v137 = [(HMDMetricsManager *)v135 initWithMessageDispatcher:v342 accountManager:v338 notificationSettingsProvider:v136];
+    notificationCenterSettingsProvider = [v334 notificationCenterSettingsProvider];
+    v137 = [(HMDMetricsManager *)v135 initWithMessageDispatcher:v342 accountManager:appleAccountManager notificationSettingsProvider:notificationCenterSettingsProvider];
     [v127 setMetricsManager:v137];
 
-    v138 = [v127 metricsManager];
-    [v138 start];
+    metricsManager = [v127 metricsManager];
+    [metricsManager start];
 
-    v139 = [v127 metricsManager];
-    v140 = [v139 logEventSubmitter];
-    [v140 submitLogEvent:v343];
+    metricsManager2 = [v127 metricsManager];
+    logEventSubmitter = [metricsManager2 logEventSubmitter];
+    [logEventSubmitter submitLogEvent:v343];
 
     v141 = [HMDHelper alloc];
     v142 = objc_alloc_init(HMDHelperExternalProtocolImpl);
@@ -641,7 +641,7 @@ LABEL_27:
       v146 = HMFGetLogIdentifier();
       v147 = MEMORY[0x277CCACA8];
       HMFUptime();
-      v149 = [v147 stringWithFormat:@"%.3f", v148 - v125];
+      v125 = [v147 stringWithFormat:@"%.3f", v148 - v125];
       *buf = 138544898;
       *&buf[4] = v146;
       *&buf[12] = 2114;
@@ -655,20 +655,20 @@ LABEL_27:
       v369 = 2114;
       v370 = @"duration";
       v371 = 2112;
-      v372 = v149;
+      v372 = v125;
       _os_log_impl(&dword_2531F8000, v145, OS_LOG_TYPE_INFO, "%{public}@tag=%{public}@ desc=%@ %{public}@=%@ %{public}@=%@", buf, 0x48u);
     }
 
     objc_autoreleasePoolPop(v143);
-    v150 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]9 = [MEMORY[0x277D17DE8] sharedInstance];
     v151 = objc_alloc(MEMORY[0x277D17DF8]);
     v152 = MEMORY[0x277CCACA8];
     HMFUptime();
-    v154 = [v152 stringWithFormat:@"%.3f", v153 - v125];
+    v1252 = [v152 stringWithFormat:@"%.3f", v153 - v125];
     v155 = HMDTaggedLoggingCreateDictionary();
-    v156 = [v151 initWithTag:@"mainDriverStart" data:{v155, @"state", @"mainDriverSetupAccountManagersDone", @"duration", v154}];
-    v157 = [v346 tagProcessorList];
-    [v150 submitTaggedEvent:v156 processorList:v157];
+    v156 = [v151 initWithTag:@"mainDriverStart" data:{v155, @"state", @"mainDriverSetupAccountManagersDone", @"duration", v1252}];
+    tagProcessorList9 = [v346 tagProcessorList];
+    [mEMORY[0x277D17DE8]9 submitTaggedEvent:v156 processorList:tagProcessorList9];
 
     [v346 markWithReason:@"Initiating Backing Store"];
     +[HMDBackingStore start];
@@ -724,14 +724,14 @@ LABEL_27:
     }
 
     objc_autoreleasePoolPop(v169);
-    v173 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]10 = [MEMORY[0x277D17DE8] sharedInstance];
     v174 = objc_alloc(MEMORY[0x277D17DF8]);
     v381 = @"state";
     v382 = @"mainDriverLoadPersistentStore";
     v175 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v382 forKeys:&v381 count:1];
     v176 = [v174 initWithTag:@"mainDriverStart" data:v175];
-    v177 = [v346 tagProcessorList];
-    [v173 submitTaggedEvent:v176 processorList:v177];
+    tagProcessorList10 = [v346 tagProcessorList];
+    [mEMORY[0x277D17DE8]10 submitTaggedEvent:v176 processorList:tagProcessorList10];
 
     v178 = objc_autoreleasePoolPush();
     +[HMDPersistentStore removeTransactionJournal];
@@ -764,8 +764,8 @@ LABEL_62:
           v186 = HMFGetLogIdentifier();
           v187 = MEMORY[0x277CCACA8];
           HMFUptime();
-          v189 = [v187 stringWithFormat:@"%.3f", v188 - v168];
-          v190 = [v181 domain];
+          v168 = [v187 stringWithFormat:@"%.3f", v188 - v168];
+          domain = [v181 domain];
           v191 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v181, "code")}];
           *buf = 138545922;
           *&buf[4] = v186;
@@ -780,11 +780,11 @@ LABEL_62:
           v369 = 2114;
           v370 = @"duration";
           v371 = 2112;
-          v372 = v189;
+          v372 = v168;
           v373 = 2114;
           v374 = @"errorDomain";
           v375 = 2112;
-          v376 = v190;
+          v376 = domain;
           v377 = 2114;
           v378 = @"errorCode";
           v379 = 2112;
@@ -793,17 +793,17 @@ LABEL_62:
         }
 
         objc_autoreleasePoolPop(v183);
-        v192 = [MEMORY[0x277D17DE8] sharedInstance];
+        mEMORY[0x277D17DE8]11 = [MEMORY[0x277D17DE8] sharedInstance];
         v193 = objc_alloc(MEMORY[0x277D17DF8]);
         v194 = MEMORY[0x277CCACA8];
         HMFUptime();
-        v196 = [v194 stringWithFormat:@"%.3f", v195 - v168];
-        v197 = [v181 domain];
+        v1682 = [v194 stringWithFormat:@"%.3f", v195 - v168];
+        domain2 = [v181 domain];
         v198 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v181, "code")}];
         v199 = HMDTaggedLoggingCreateDictionary();
-        v200 = [v193 initWithTag:@"mainDriverStart" data:{v199, @"state", @"mainDriverLoadedPersistentStore", @"duration", v196, @"errorDomain", v197, @"errorCode", v198}];
-        v201 = [v346 tagProcessorList];
-        [v192 submitTaggedEvent:v200 processorList:v201];
+        v200 = [v193 initWithTag:@"mainDriverStart" data:{v199, @"state", @"mainDriverLoadedPersistentStore", @"duration", v1682, @"errorDomain", domain2, @"errorCode", v198}];
+        tagProcessorList11 = [v346 tagProcessorList];
+        [mEMORY[0x277D17DE8]11 submitTaggedEvent:v200 processorList:tagProcessorList11];
 
         if (v181)
         {
@@ -825,22 +825,22 @@ LABEL_62:
 
         else if ((v387[0] & 1) == 0 && v345 && (v339 & 1) == 0)
         {
-          v206 = [MEMORY[0x277CFEC78] systemStore];
-          [v206 ensureControllerKeyExistsForAllViews];
+          systemStore = [MEMORY[0x277CFEC78] systemStore];
+          [systemStore ensureControllerKeyExistsForAllViews];
         }
 
         objc_autoreleasePoolPop(v178);
         v207 = objc_alloc_init(HMDDeviceSetupConfiguringController);
         [v184 setConfiguringStateController:v207];
 
-        v208 = [v184 configuringStateController];
-        [v208 setupRPClient];
+        configuringStateController = [v184 configuringStateController];
+        [configuringStateController setupRPClient];
 
         v209 = objc_alloc_init(HMDNetworkInfoController);
         [v184 setNetworkInfoController:v209];
 
-        v210 = [v184 networkInfoController];
-        [v210 start];
+        networkInfoController = [v184 networkInfoController];
+        [networkInfoController start];
 
         v337 = [[HMDDiscoveryController alloc] initWithDiscoveryNeedsAssertion:1];
         [v184 setDiscoveryController:v337];
@@ -849,42 +849,42 @@ LABEL_62:
         [v184 setSymptomManager:v211];
 
         [v346 markWithReason:@"Loading Accounts"];
-        v212 = [v345 account];
-        if (v212)
+        account = [v345 account];
+        if (account)
         {
-          v213 = [v345 account];
-          v214 = [v213 isCurrentAccount];
+          account2 = [v345 account];
+          isCurrentAccount = [account2 isCurrentAccount];
 
-          if (v214)
+          if (isCurrentAccount)
           {
-            v215 = [v345 account];
-            [v338 setAccount:v215];
+            account3 = [v345 account];
+            [appleAccountManager setAccount:account3];
           }
         }
 
         v330 = +[HMDRemoteAccountManager sharedManager];
-        v216 = [v345 remoteAccounts];
-        v217 = [v216 count];
+        remoteAccounts = [v345 remoteAccounts];
+        v217 = [remoteAccounts count];
 
         if (v217)
         {
-          v218 = [v345 remoteAccounts];
-          [v330 setAccounts:v218];
+          remoteAccounts2 = [v345 remoteAccounts];
+          [v330 setAccounts:remoteAccounts2];
         }
 
-        v219 = [v184 metricsManager];
-        v220 = [v219 logEventSubmitter];
+        metricsManager3 = [v184 metricsManager];
+        logEventSubmitter2 = [metricsManager3 logEventSubmitter];
         v221 = objc_alloc_init(HMDDeviceAccountResolvedLogEvent);
-        [v220 submitLogEvent:v221 error:0];
+        [logEventSubmitter2 submitLogEvent:v221 error:0];
 
-        v222 = [v345 pendingUserManagementOperations];
+        pendingUserManagementOperations = [v345 pendingUserManagementOperations];
 
-        if (v222)
+        if (pendingUserManagementOperations)
         {
           [v346 markWithReason:@"Loading User Management Operations"];
           v223 = [HMDUserManagementOperationManager alloc];
-          v224 = [v345 pendingUserManagementOperations];
-          v225 = [(HMDUserManagementOperationManager *)v223 initWithOperations:v224];
+          pendingUserManagementOperations2 = [v345 pendingUserManagementOperations];
+          v225 = [(HMDUserManagementOperationManager *)v223 initWithOperations:pendingUserManagementOperations2];
 
           [HMDUserManagementOperationManager setSharedManager:v225];
         }
@@ -893,23 +893,23 @@ LABEL_62:
         v226 = [[HMDAccessoryBrowser alloc] initWithMessageDispatcher:v342];
         [v184 setAccessoryBrowser:v226];
 
-        v227 = [v184 metricsManager];
-        v228 = [MEMORY[0x277CFEBB8] sharedInstance];
-        [v227 configureHAPMetricsDispatcher:v228];
+        metricsManager4 = [v184 metricsManager];
+        mEMORY[0x277CFEBB8] = [MEMORY[0x277CFEBB8] sharedInstance];
+        [metricsManager4 configureHAPMetricsDispatcher:mEMORY[0x277CFEBB8]];
 
         if ((enableRetailDemoSetup & 1) != 0 || [v345 demoFinalized])
         {
           [v346 markWithReason:@"Loading Demo Mode V1"];
-          v229 = [v184 accessoryBrowser];
-          v230 = [v345 demoAccessories];
-          [v229 configureDemoBrowserWithDemoAccessories:v230 finalized:{objc_msgSend(v345, "demoFinalized")}];
+          accessoryBrowser = [v184 accessoryBrowser];
+          demoAccessories = [v345 demoAccessories];
+          [accessoryBrowser configureDemoBrowserWithDemoAccessories:demoAccessories finalized:{objc_msgSend(v345, "demoFinalized")}];
         }
 
-        v335 = [MEMORY[0x277CBEA60] array];
+        array = [MEMORY[0x277CBEA60] array];
         v231 = +[HMDBackingStoreSingleton sharedInstance];
-        v340 = [v231 local];
+        local = [v231 local];
 
-        if (v340)
+        if (local)
         {
           v232 = objc_autoreleasePoolPush();
           v233 = v184;
@@ -923,10 +923,10 @@ LABEL_62:
           }
 
           objc_autoreleasePoolPop(v232);
-          v236 = [v340 _numUncommittedTransactions];
-          if (v236 < 1)
+          _numUncommittedTransactions = [local _numUncommittedTransactions];
+          if (_numUncommittedTransactions < 1)
           {
-            v242 = 0;
+            _numUncommittedTransactions2 = 0;
           }
 
           else
@@ -943,17 +943,17 @@ LABEL_62:
             }
 
             objc_autoreleasePoolPop(v237);
-            v241 = [v340 _dropUncommittedUnpushedTransactions];
-            v242 = [v340 _numUncommittedTransactions];
-            if (v242 >= 1)
+            _dropUncommittedUnpushedTransactions = [local _dropUncommittedUnpushedTransactions];
+            _numUncommittedTransactions2 = [local _numUncommittedTransactions];
+            if (_numUncommittedTransactions2 >= 1)
             {
-              v243 = [MEMORY[0x277D0F8D0] sharedPreferences];
-              v244 = [v243 preferenceForKey:@"shouldRunUncommittedTransactions"];
-              v245 = [v244 BOOLValue];
+              mEMORY[0x277D0F8D0]2 = [MEMORY[0x277D0F8D0] sharedPreferences];
+              v244 = [mEMORY[0x277D0F8D0]2 preferenceForKey:@"shouldRunUncommittedTransactions"];
+              bOOLValue2 = [v244 BOOLValue];
 
-              if (v245)
+              if (bOOLValue2)
               {
-                v246 = [v340 _fetchUncommittedAndPushedTransactions];
+                _fetchUncommittedAndPushedTransactions = [local _fetchUncommittedAndPushedTransactions];
 
                 v247 = objc_autoreleasePoolPush();
                 v248 = v238;
@@ -962,10 +962,10 @@ LABEL_62:
                 {
                   v250 = HMFGetLogIdentifier();
                   v251 = isInternalBuild();
-                  v252 = v246;
+                  v252 = _fetchUncommittedAndPushedTransactions;
                   if ((v251 & 1) == 0)
                   {
-                    v252 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v246, "count")}];
+                    v252 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(_fetchUncommittedAndPushedTransactions, "count")}];
                   }
 
                   *buf = 138543618;
@@ -992,25 +992,25 @@ LABEL_62:
                   _os_log_impl(&dword_2531F8000, v249, OS_LOG_TYPE_ERROR, "%{public}@Ignoring uncommitted transactions, in data loss state", buf, 0xCu);
                 }
 
-                v246 = v335;
+                _fetchUncommittedAndPushedTransactions = array;
               }
 
               objc_autoreleasePoolPop(v247);
-              v335 = v246;
+              array = _fetchUncommittedAndPushedTransactions;
             }
           }
         }
 
         else
         {
-          v242 = 0;
-          v236 = 0;
+          _numUncommittedTransactions2 = 0;
+          _numUncommittedTransactions = 0;
         }
 
-        v331 = [[HMDTransactionArchiveReplayLogEvent alloc] initWithNumUncommittedRecords:v236 numUncommittedAndPushedRecords:v242];
-        v255 = [v184 metricsManager];
-        v256 = [v255 logEventSubmitter];
-        [v256 submitLogEvent:v331];
+        v331 = [[HMDTransactionArchiveReplayLogEvent alloc] initWithNumUncommittedRecords:_numUncommittedTransactions numUncommittedAndPushedRecords:_numUncommittedTransactions2];
+        metricsManager5 = [v184 metricsManager];
+        logEventSubmitter3 = [metricsManager5 logEventSubmitter];
+        [logEventSubmitter3 submitLogEvent:v331];
 
         HMFUptime();
         v258 = v257;
@@ -1034,25 +1034,25 @@ LABEL_62:
         }
 
         objc_autoreleasePoolPop(v259);
-        v263 = [MEMORY[0x277D17DE8] sharedInstance];
+        mEMORY[0x277D17DE8]12 = [MEMORY[0x277D17DE8] sharedInstance];
         v264 = objc_alloc(MEMORY[0x277D17DF8]);
         v362 = @"state";
         v363 = @"mainDriverInitHomeManager";
         v265 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v363 forKeys:&v362 count:1];
         v266 = [v264 initWithTag:@"mainDriverStart" data:v265];
-        v267 = [v346 tagProcessorList];
-        [v263 submitTaggedEvent:v266 processorList:v267];
+        tagProcessorList12 = [v346 tagProcessorList];
+        [mEMORY[0x277D17DE8]12 submitTaggedEvent:v266 processorList:tagProcessorList12];
 
         v268 = [HMDHomeManager alloc];
-        v269 = [v260 accessoryBrowser];
-        v270 = [v342 messageFilterChain];
+        accessoryBrowser2 = [v260 accessoryBrowser];
+        messageFilterChain = [v342 messageFilterChain];
         v271 = v387[0];
         v272 = +[HMDIdentityRegistry sharedRegistry];
-        v273 = [v260 metricsManager];
-        v274 = [v260 configuringStateController];
-        v275 = [v260 appleMediaAccessoryDiagnosticInfoController];
-        v276 = [v260 currentAccessorySetupMetricDispatcher];
-        v277 = [(HMDHomeManager *)v268 initWithMessageDispatcher:v342 accessoryBrowser:v269 messageFilterChain:v270 homeData:v345 localDataDecryptionFailed:v271 & 1 identityRegistry:v272 accountRegistry:v336 metricsManager:v273 configuringStateController:v274 diagnosticInfoController:v275 currentAccessorySetupMetricDispatcher:v276 uncommittedTransactions:v335 featuresDataSource:v344];
+        metricsManager6 = [v260 metricsManager];
+        configuringStateController2 = [v260 configuringStateController];
+        appleMediaAccessoryDiagnosticInfoController = [v260 appleMediaAccessoryDiagnosticInfoController];
+        currentAccessorySetupMetricDispatcher = [v260 currentAccessorySetupMetricDispatcher];
+        v277 = [(HMDHomeManager *)v268 initWithMessageDispatcher:v342 accessoryBrowser:accessoryBrowser2 messageFilterChain:messageFilterChain homeData:v345 localDataDecryptionFailed:v271 & 1 identityRegistry:v272 accountRegistry:accountRegistry metricsManager:metricsManager6 configuringStateController:configuringStateController2 diagnosticInfoController:appleMediaAccessoryDiagnosticInfoController currentAccessorySetupMetricDispatcher:currentAccessorySetupMetricDispatcher uncommittedTransactions:array featuresDataSource:v344];
         [v260 setHomeManager:v277];
 
         v278 = objc_autoreleasePoolPush();
@@ -1063,7 +1063,7 @@ LABEL_62:
           v281 = HMFGetLogIdentifier();
           v282 = MEMORY[0x277CCACA8];
           HMFUptime();
-          v284 = [v282 stringWithFormat:@"%.3f", v283 - v258];
+          v258 = [v282 stringWithFormat:@"%.3f", v283 - v258];
           *buf = 138544898;
           *&buf[4] = v281;
           *&buf[12] = 2114;
@@ -1077,29 +1077,29 @@ LABEL_62:
           v369 = 2114;
           v370 = @"duration";
           v371 = 2112;
-          v372 = v284;
+          v372 = v258;
           _os_log_impl(&dword_2531F8000, v280, OS_LOG_TYPE_INFO, "%{public}@tag=%{public}@ desc=%@ %{public}@=%@ %{public}@=%@", buf, 0x48u);
         }
 
         objc_autoreleasePoolPop(v278);
-        v285 = [MEMORY[0x277D17DE8] sharedInstance];
+        mEMORY[0x277D17DE8]13 = [MEMORY[0x277D17DE8] sharedInstance];
         v286 = objc_alloc(MEMORY[0x277D17DF8]);
         v287 = MEMORY[0x277CCACA8];
         HMFUptime();
-        v289 = [v287 stringWithFormat:@"%.3f", v288 - v258];
+        v2582 = [v287 stringWithFormat:@"%.3f", v288 - v258];
         v290 = HMDTaggedLoggingCreateDictionary();
-        v291 = [v286 initWithTag:@"mainDriverStart" data:{v290, @"state", @"mainDriverInitializedHomeManager", @"duration", v289}];
-        v292 = [v346 tagProcessorList];
-        [v285 submitTaggedEvent:v291 processorList:v292];
+        v291 = [v286 initWithTag:@"mainDriverStart" data:{v290, @"state", @"mainDriverInitializedHomeManager", @"duration", v2582}];
+        tagProcessorList13 = [v346 tagProcessorList];
+        [mEMORY[0x277D17DE8]13 submitTaggedEvent:v291 processorList:tagProcessorList13];
 
         [v346 markWithReason:@"Starting Account registry and managers"];
-        [v336 start];
+        [accountRegistry start];
         [v346 markWithReason:@"Initialize Presence Monitor"];
         v293 = [HMDIDSActivityMonitorHomeManagerDataSource alloc];
-        v294 = [v279 homeManager];
-        v295 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v293 initWithHomeManager:v294 appleAccountManager:v338];
+        homeManager = [v279 homeManager];
+        v295 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v293 initWithHomeManager:homeManager appleAccountManager:appleAccountManager];
 
-        [v332 setActivityMonitorDataSource:v295];
+        [idsServiceManager setActivityMonitorDataSource:v295];
         if (isInternalBuild() && enableRetailDemoSetup == 1)
         {
           [v346 markWithReason:@"Creating Retail Demo Mode Request Handler"];
@@ -1116,12 +1116,12 @@ LABEL_62:
 
           objc_autoreleasePoolPop(v296);
           v300 = [HMDRetailDemoModeRequestHandler alloc];
-          v301 = [v297 homeManager];
-          v302 = [(HMDRetailDemoModeRequestHandler *)v300 initWithHomeManager:v301 messageDispatcher:v342 relaunchHandler:v297];
+          homeManager2 = [v297 homeManager];
+          v302 = [(HMDRetailDemoModeRequestHandler *)v300 initWithHomeManager:homeManager2 messageDispatcher:v342 relaunchHandler:v297];
           [v297 setRetailDemoModeRequestHandler:v302];
 
-          v303 = [v297 retailDemoModeRequestHandler];
-          [v303 configure];
+          retailDemoModeRequestHandler = [v297 retailDemoModeRequestHandler];
+          [retailDemoModeRequestHandler configure];
         }
 
         if ([v344 isPlannerSupportEnabled])
@@ -1165,16 +1165,16 @@ LABEL_62:
         }
 
         objc_autoreleasePoolPop(v312);
-        v316 = [MEMORY[0x277D17DE8] sharedInstance];
+        mEMORY[0x277D17DE8]14 = [MEMORY[0x277D17DE8] sharedInstance];
         v317 = objc_alloc(MEMORY[0x277D17DF8]);
         v360 = @"state";
         v361 = @"mainDriverStartHomeManager";
         v318 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v361 forKeys:&v360 count:1];
         v319 = [v317 initWithTag:@"mainDriverStart" data:v318];
-        v320 = [v346 tagProcessorList];
-        [v316 submitTaggedEvent:v319 processorList:v320];
+        tagProcessorList14 = [v346 tagProcessorList];
+        [mEMORY[0x277D17DE8]14 submitTaggedEvent:v319 processorList:tagProcessorList14];
 
-        v321 = [v313 homeManager];
+        homeManager3 = [v313 homeManager];
         v347[0] = MEMORY[0x277D85DD0];
         v347[1] = 3221225472;
         v347[2] = __22__HMDMainDriver_start__block_invoke_307;
@@ -1192,7 +1192,7 @@ LABEL_62:
         v353 = v325;
         v326 = v295;
         v354 = v326;
-        [v321 startWithCompletionHandler:v347];
+        [homeManager3 startWithCompletionHandler:v347];
 
         goto LABEL_118;
       }
@@ -1591,13 +1591,13 @@ void __22__HMDMainDriver_start__block_invoke_2_331(uint64_t a1)
 
 - (void)localeChanged
 {
-  v3 = [(HMDMainDriver *)self workQueue];
+  workQueue = [(HMDMainDriver *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__HMDMainDriver_localeChanged__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __30__HMDMainDriver_localeChanged__block_invoke(uint64_t a1)
@@ -1687,9 +1687,9 @@ void __30__HMDMainDriver_localeChanged__block_invoke_169(uint64_t a1, uint64_t a
 {
   if (+[HMDDeviceCapabilities supportsLocalization])
   {
-    v3 = [MEMORY[0x277CBEAF8] currentLocale];
-    v4 = [v3 localeIdentifier];
-    [(HMDMainDriver *)self setCachedLocaleIdentifier:v4];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    [(HMDMainDriver *)self setCachedLocaleIdentifier:localeIdentifier];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -1697,14 +1697,14 @@ void __30__HMDMainDriver_localeChanged__block_invoke_169(uint64_t a1, uint64_t a
   }
 }
 
-- (void)setCachedLocaleIdentifier:(id)a3
+- (void)setCachedLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(NSLock *)self->_lock lock];
   lock = self->_lock;
   cachedLocaleIdentifier = self->_cachedLocaleIdentifier;
-  self->_cachedLocaleIdentifier = v4;
-  v7 = v4;
+  self->_cachedLocaleIdentifier = identifierCopy;
+  v7 = identifierCopy;
 
   [(NSLock *)lock unlock];
 }
@@ -1782,21 +1782,21 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)getLocalStoreFrom:(id)a3
++ (id)getLocalStoreFrom:(id)from
 {
   v3 = +[HMDBackingStoreSingleton sharedInstance];
-  v4 = [v3 local];
+  local = [v3 local];
 
-  return v4;
+  return local;
 }
 
-+ (id)loadSQLArchiveWithDecryptionFail:(BOOL *)a3 fromLocation:(id)a4 forHH2Migration:(BOOL)a5 error:(id *)a6
++ (id)loadSQLArchiveWithDecryptionFail:(BOOL *)fail fromLocation:(id)location forHH2Migration:(BOOL)migration error:(id *)error
 {
-  v64 = a5;
+  migrationCopy = migration;
   v76 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  locationCopy = location;
   v8 = objc_autoreleasePoolPush();
-  v9 = a1;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1807,7 +1807,7 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [objc_opt_class() getLocalStoreFrom:v7];
+  v12 = [objc_opt_class() getLocalStoreFrom:locationCopy];
   v70 = 0;
   v71 = 0;
   v69 = 0;
@@ -1817,7 +1817,7 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
   v16 = v69;
 
   v17 = objc_autoreleasePoolPush();
-  v18 = v9;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -1879,21 +1879,21 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
       }
 
       objc_autoreleasePoolPop(v31);
-      v35 = [MEMORY[0x277CFEC78] systemStore];
-      [v35 updateActiveControllerPairingIdentifier:v15];
+      systemStore = [MEMORY[0x277CFEC78] systemStore];
+      [systemStore updateActiveControllerPairingIdentifier:v15];
 
       v67 = 0;
-      [HMDPersistentStore deserializeHomeData:&v67 usingLocalStorage:1 fromData:v14 forHH2Migration:v64];
+      [HMDPersistentStore deserializeHomeData:&v67 usingLocalStorage:1 fromData:v14 forHH2Migration:migrationCopy];
       v36 = v67;
       if (v36)
       {
         v21 = v36;
         v37 = v23;
-        v38 = [*(v23 + 2256) sharedPreferences];
-        v39 = [v38 preferenceForKey:@"CreateArchiveShadowCopy"];
-        v40 = [v39 BOOLValue];
+        sharedPreferences = [*(v23 + 2256) sharedPreferences];
+        v39 = [sharedPreferences preferenceForKey:@"CreateArchiveShadowCopy"];
+        bOOLValue = [v39 BOOLValue];
 
-        if (v40 && isInternalBuild())
+        if (bOOLValue && isInternalBuild())
         {
           v41 = [HMDPersistentStore archiveHomeDataLegacy:v21 toLocation:@"/tmp/legacyhomedatashadow.data"];
         }
@@ -1918,7 +1918,7 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
         v51 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
 
         v21 = 0;
-        *a3 = 1;
+        *fail = 1;
         v30 = v51;
         v23 = 0x277D0F000uLL;
       }
@@ -1946,7 +1946,7 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
       }
 
       v21 = 0;
-      *a3 = 1;
+      *fail = 1;
     }
   }
 
@@ -1955,11 +1955,11 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
     v30 = v16;
   }
 
-  v52 = [*(v23 + 2256) sharedPreferences];
-  v53 = [v52 preferenceForKey:@"ForceDecryptionFailed"];
-  v54 = [v53 BOOLValue];
+  sharedPreferences2 = [*(v23 + 2256) sharedPreferences];
+  v53 = [sharedPreferences2 preferenceForKey:@"ForceDecryptionFailed"];
+  bOOLValue2 = [v53 BOOLValue];
 
-  if (v54 && isInternalBuild())
+  if (bOOLValue2 && isInternalBuild())
   {
     v55 = objc_autoreleasePoolPush();
     v56 = v18;
@@ -1976,19 +1976,19 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
     v59 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
 
     v21 = 0;
-    *a3 = 1;
+    *fail = 1;
     v30 = v59;
   }
 
   v60 = v30;
-  *a6 = v30;
+  *error = v30;
   v61 = v21;
 
   v62 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-+ (id)loadHomeDataFromDemoModeStore:(id *)a3
++ (id)loadHomeDataFromDemoModeStore:(id *)store
 {
   v34[4] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEA90];
@@ -2000,7 +2000,7 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2028,7 +2028,7 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
     v17 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v16 fromData:v7 error:&v28];
     v13 = v28;
     v18 = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     v21 = v20;
     if (v13 || !v17)
@@ -2060,7 +2060,7 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
       objc_autoreleasePoolPop(v18);
       v23 = objc_alloc_init(HMDMutableHomeData);
       [(HMDHomeData *)v23 setDemoAccessories:v17];
-      *a3 = [(HMDMutableHomeData *)v23 copy];
+      *store = [(HMDMutableHomeData *)v23 copy];
     }
   }
 
@@ -2069,11 +2069,11 @@ uint64_t __23__HMDMainDriver_driver__block_invoke()
   return v13;
 }
 
-+ (id)loadHomeDataFromLocalStore:(id *)a3 decryptionFailed:(BOOL *)a4
++ (id)loadHomeDataFromLocalStore:(id *)store decryptionFailed:(BOOL *)failed
 {
   v6 = objc_opt_class();
 
-  return [v6 loadHomeDataFromLocalStore:a3 fromLocation:0 decryptionFailed:a4 forHH2Migration:0];
+  return [v6 loadHomeDataFromLocalStore:store fromLocation:0 decryptionFailed:failed forHH2Migration:0];
 }
 
 @end

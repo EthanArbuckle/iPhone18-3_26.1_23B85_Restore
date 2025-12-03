@@ -1,7 +1,7 @@
 @interface DSTableView
 - (DSTableView)init;
 - (void)constrainTableView;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation DSTableView
@@ -14,14 +14,14 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(DSTableView *)v2 heightAnchor];
+    heightAnchor = [(DSTableView *)v2 heightAnchor];
     [(DSTableView *)v3 contentSize];
-    v6 = [v4 constraintEqualToConstant:v5];
+    v6 = [heightAnchor constraintEqualToConstant:v5];
     heightConstraint = v3->_heightConstraint;
     v3->_heightConstraint = v6;
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(DSTableView *)v3 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(DSTableView *)v3 setBackgroundColor:clearColor];
 
     [(DSTableView *)v3 setAllowsMultipleSelection:1];
     [(DSTableView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -30,11 +30,11 @@
   return v3;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = DSTableView;
-  [(DSTableView *)&v4 setContentSize:a3.width, a3.height];
+  [(DSTableView *)&v4 setContentSize:size.width, size.height];
   [(DSTableView *)self constrainTableView];
 }
 
@@ -42,11 +42,11 @@
 {
   [(DSTableView *)self contentSize];
   v4 = v3 + 10.0;
-  v5 = [(DSTableView *)self heightConstraint];
-  [v5 setConstant:v4];
+  heightConstraint = [(DSTableView *)self heightConstraint];
+  [heightConstraint setConstant:v4];
 
-  v6 = [(DSTableView *)self heightConstraint];
-  [v6 setActive:1];
+  heightConstraint2 = [(DSTableView *)self heightConstraint];
+  [heightConstraint2 setActive:1];
 }
 
 @end

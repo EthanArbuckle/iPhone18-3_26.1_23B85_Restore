@@ -1,16 +1,16 @@
 @interface PXStoryTransitionTimeline
 - ($0AC6E346AE4835514AAA8AC86D8F4844)transitionInfo;
-- ($E9652187ED52268AF32221FF65D551B7)_transitionClipInfoWithIdentifier:(SEL)a3 fromOriginalClipInfo:(int64_t)a4;
-- (CGPoint)_offsetBetweenSegmentWithIdentifier:(int64_t)a3 andSegmentWithIdentifier:(int64_t)a4;
-- (PXStoryTransitionTimeline)initWithOriginalTimeline:(id)a3;
-- (PXStoryTransitionTimeline)initWithOriginalTimeline:(id)a3 transitionInfo:(id)a4;
-- (id)clipWithIdentifier:(int64_t)a3;
+- ($E9652187ED52268AF32221FF65D551B7)_transitionClipInfoWithIdentifier:(SEL)identifier fromOriginalClipInfo:(int64_t)info;
+- (CGPoint)_offsetBetweenSegmentWithIdentifier:(int64_t)identifier andSegmentWithIdentifier:(int64_t)withIdentifier;
+- (PXStoryTransitionTimeline)initWithOriginalTimeline:(id)timeline;
+- (PXStoryTransitionTimeline)initWithOriginalTimeline:(id)timeline transitionInfo:(id)info;
+- (id)clipWithIdentifier:(int64_t)identifier;
 - (int64_t)numberOfSegments;
-- (void)_modifyClipsIfNeeded:(id *)a3 frames:(const CGRect *)a4 infos:(id *)a5 count:(int64_t)a6 resultHandler:(id)a7;
-- (void)_modifySegmentsIfNeeded:(id *)a3 infos:(id *)a4 count:(int64_t)a5 resultHandler:(id)a6;
-- (void)_prepareForTransitionInfo:(id)a3;
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
-- (void)enumerateSegmentsInTimeRange:(id *)a3 usingBlock:(id)a4;
+- (void)_modifyClipsIfNeeded:(id *)needed frames:(const CGRect *)frames infos:(id *)infos count:(int64_t)count resultHandler:(id)handler;
+- (void)_modifySegmentsIfNeeded:(id *)needed infos:(id *)infos count:(int64_t)count resultHandler:(id)handler;
+- (void)_prepareForTransitionInfo:(id)info;
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateSegmentsInTimeRange:(id *)range usingBlock:(id)block;
 @end
 
 @implementation PXStoryTransitionTimeline
@@ -25,7 +25,7 @@
   return result;
 }
 
-- ($E9652187ED52268AF32221FF65D551B7)_transitionClipInfoWithIdentifier:(SEL)a3 fromOriginalClipInfo:(int64_t)a4
+- ($E9652187ED52268AF32221FF65D551B7)_transitionClipInfoWithIdentifier:(SEL)identifier fromOriginalClipInfo:(int64_t)info
 {
   if ((a5->var5 - 3) < 3)
   {
@@ -38,12 +38,12 @@
   }
 
   result = memcpy(retstr, a5, 0x300uLL);
-  retstr->var0 = a4;
+  retstr->var0 = info;
   retstr->var5 = var5;
   return result;
 }
 
-- (id)clipWithIdentifier:(int64_t)a3
+- (id)clipWithIdentifier:(int64_t)identifier
 {
   originalClipIdentifiersByDuplicateClipIdentifiers = self->_originalClipIdentifiersByDuplicateClipIdentifiers;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -66,7 +66,7 @@
       bzero(__dst, 0x300uLL);
     }
 
-    [(PXStoryTransitionTimeline *)self _transitionClipInfoWithIdentifier:a3 fromOriginalClipInfo:__dst];
+    [(PXStoryTransitionTimeline *)self _transitionClipInfoWithIdentifier:identifier fromOriginalClipInfo:__dst];
     v11 = [PXStoryTransitionClip alloc];
     memcpy(__dst, __src, sizeof(__dst));
     v10 = [(PXStoryTransitionClip *)v11 initWithClipInfo:__dst originalClip:v9];
@@ -76,32 +76,32 @@
   {
     v13.receiver = self;
     v13.super_class = PXStoryTransitionTimeline;
-    v10 = [(PXStoryDerivedTimeline *)&v13 clipWithIdentifier:a3];
+    v10 = [(PXStoryDerivedTimeline *)&v13 clipWithIdentifier:identifier];
   }
 
   return v10;
 }
 
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = [(PXStoryDerivedTimeline *)self originalTimeline];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __71__PXStoryTransitionTimeline_enumerateClipsInTimeRange_rect_usingBlock___block_invoke;
   v16[3] = &unk_1E77380E8;
   v16[4] = self;
-  v17 = v11;
-  v13 = *&a3->var0.var3;
-  v15[0] = *&a3->var0.var0;
+  v17 = blockCopy;
+  v13 = *&range->var0.var3;
+  v15[0] = *&range->var0.var0;
   v15[1] = v13;
-  v15[2] = *&a3->var1.var1;
-  v14 = v11;
-  [v12 enumerateClipsInTimeRange:v15 rect:v16 usingBlock:{x, y, width, height}];
+  v15[2] = *&range->var1.var1;
+  v14 = blockCopy;
+  [originalTimeline enumerateClipsInTimeRange:v15 rect:v16 usingBlock:{x, y, width, height}];
 }
 
 void __71__PXStoryTransitionTimeline_enumerateClipsInTimeRange_rect_usingBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
@@ -116,22 +116,22 @@ void __71__PXStoryTransitionTimeline_enumerateClipsInTimeRange_rect_usingBlock__
   [v11 _modifyClipsIfNeeded:a3 frames:a4 infos:a5 count:a2 resultHandler:v12];
 }
 
-- (void)enumerateSegmentsInTimeRange:(id *)a3 usingBlock:(id)a4
+- (void)enumerateSegmentsInTimeRange:(id *)range usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PXStoryDerivedTimeline *)self originalTimeline];
+  blockCopy = block;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__PXStoryTransitionTimeline_enumerateSegmentsInTimeRange_usingBlock___block_invoke;
   v11[3] = &unk_1E77326F0;
   v11[4] = self;
-  v12 = v6;
-  v8 = *&a3->var0.var3;
-  v10[0] = *&a3->var0.var0;
+  v12 = blockCopy;
+  v8 = *&range->var0.var3;
+  v10[0] = *&range->var0.var0;
   v10[1] = v8;
-  v10[2] = *&a3->var1.var1;
-  v9 = v6;
-  [v7 enumerateSegmentsInTimeRange:v10 usingBlock:v11];
+  v10[2] = *&range->var1.var1;
+  v9 = blockCopy;
+  [originalTimeline enumerateSegmentsInTimeRange:v10 usingBlock:v11];
 }
 
 void __69__PXStoryTransitionTimeline_enumerateSegmentsInTimeRange_usingBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5)
@@ -148,38 +148,38 @@ void __69__PXStoryTransitionTimeline_enumerateSegmentsInTimeRange_usingBlock___b
 
 - (int64_t)numberOfSegments
 {
-  v3 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v4 = [v3 numberOfSegments];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  numberOfSegments = [originalTimeline numberOfSegments];
 
   if (self->_duplicateSegmentIdentifier)
   {
-    return v4 + 1;
+    return numberOfSegments + 1;
   }
 
   else
   {
-    return v4;
+    return numberOfSegments;
   }
 }
 
-- (void)_modifyClipsIfNeeded:(id *)a3 frames:(const CGRect *)a4 infos:(id *)a5 count:(int64_t)a6 resultHandler:(id)a7
+- (void)_modifyClipsIfNeeded:(id *)needed frames:(const CGRect *)frames infos:(id *)infos count:(int64_t)count resultHandler:(id)handler
 {
-  v12 = a7;
-  v13 = [(NSMutableIndexSet *)self->_clipIdentifiersInTransition count]+ a6;
-  v14 = [(PXStoryTransitionTimeline *)self clipTimeRanges];
+  handlerCopy = handler;
+  v13 = [(NSMutableIndexSet *)self->_clipIdentifiersInTransition count]+ count;
+  clipTimeRanges = [(PXStoryTransitionTimeline *)self clipTimeRanges];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __83__PXStoryTransitionTimeline__modifyClipsIfNeeded_frames_infos_count_resultHandler___block_invoke;
   v16[3] = &unk_1E7732678;
   v18 = v13;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  countCopy = count;
+  infosCopy = infos;
+  framesCopy = frames;
+  neededCopy = needed;
   v16[4] = self;
-  v17 = v12;
-  v15 = v12;
-  [v14 accessArrayWithElementsCount:v13 accessBlock:v16];
+  v17 = handlerCopy;
+  v15 = handlerCopy;
+  [clipTimeRanges accessArrayWithElementsCount:v13 accessBlock:v16];
 }
 
 void __83__PXStoryTransitionTimeline__modifyClipsIfNeeded_frames_infos_count_resultHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -263,25 +263,25 @@ uint64_t __83__PXStoryTransitionTimeline__modifyClipsIfNeeded_frames_infos_count
   return (*(a1[5] + 16))();
 }
 
-- (void)_modifySegmentsIfNeeded:(id *)a3 infos:(id *)a4 count:(int64_t)a5 resultHandler:(id)a6
+- (void)_modifySegmentsIfNeeded:(id *)needed infos:(id *)infos count:(int64_t)count resultHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5 + 1;
-  v12 = [(PXStoryTransitionTimeline *)self transitionInfo];
-  v13 = [(PXStoryTransitionTimeline *)self segmentTimeRanges];
+  handlerCopy = handler;
+  v11 = count + 1;
+  transitionInfo = [(PXStoryTransitionTimeline *)self transitionInfo];
+  segmentTimeRanges = [(PXStoryTransitionTimeline *)self segmentTimeRanges];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__PXStoryTransitionTimeline__modifySegmentsIfNeeded_infos_count_resultHandler___block_invoke;
   v15[3] = &unk_1E7732678;
-  v17 = a5 + 1;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = v12;
+  v17 = count + 1;
+  countCopy = count;
+  infosCopy = infos;
+  neededCopy = needed;
+  v21 = transitionInfo;
   v15[4] = self;
-  v16 = v10;
-  v14 = v10;
-  [v13 accessArrayWithElementsCount:v11 accessBlock:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [segmentTimeRanges accessArrayWithElementsCount:v11 accessBlock:v15];
 }
 
 void __79__PXStoryTransitionTimeline__modifySegmentsIfNeeded_infos_count_resultHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -399,15 +399,15 @@ uint64_t __79__PXStoryTransitionTimeline__modifySegmentsIfNeeded_infos_count_res
   return (*(a1[5] + 16))(a1[5], a1[8], a2);
 }
 
-- (CGPoint)_offsetBetweenSegmentWithIdentifier:(int64_t)a3 andSegmentWithIdentifier:(int64_t)a4
+- (CGPoint)_offsetBetweenSegmentWithIdentifier:(int64_t)identifier andSegmentWithIdentifier:(int64_t)withIdentifier
 {
-  v6 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  [v6 frameForSegmentWithIdentifier:a3];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  [originalTimeline frameForSegmentWithIdentifier:identifier];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 frameForSegmentWithIdentifier:a4];
+  [originalTimeline frameForSegmentWithIdentifier:withIdentifier];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -435,22 +435,22 @@ uint64_t __79__PXStoryTransitionTimeline__modifySegmentsIfNeeded_infos_count_res
   PXPointSubtract();
 }
 
-- (void)_prepareForTransitionInfo:(id)a3
+- (void)_prepareForTransitionInfo:(id)info
 {
-  if (a3.var0 | a3.var1)
+  if (info.var0 | info.var1)
   {
-    v4 = [(PXStoryDerivedTimeline *)self originalTimeline];
-    v5 = [(PXStoryTransitionTimeline *)self transitionInfo];
+    originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+    transitionInfo = [(PXStoryTransitionTimeline *)self transitionInfo];
     v7 = v6;
-    [v4 frameForSegmentWithIdentifier:v5];
+    [originalTimeline frameForSegmentWithIdentifier:transitionInfo];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
     p_fromSegmentTimeRange = &self->_fromSegmentTimeRange;
-    if (v4)
+    if (originalTimeline)
     {
-      [v4 timeRangeForSegmentWithIdentifier:v5];
+      [originalTimeline timeRangeForSegmentWithIdentifier:transitionInfo];
     }
 
     else
@@ -473,11 +473,11 @@ uint64_t __79__PXStoryTransitionTimeline__modifySegmentsIfNeeded_infos_count_res
     v22 = *&p_fromSegmentTimeRange->start.value;
     v23 = v18;
     v24 = *&self->_fromSegmentTimeRange.duration.timescale;
-    [v4 enumerateClipsInTimeRange:&v22 rect:v21 usingBlock:{v9, v11, v13, v15}];
-    [(PXStoryTransitionTimeline *)self _offsetBetweenSegmentWithIdentifier:v5 andSegmentWithIdentifier:v7];
+    [originalTimeline enumerateClipsInTimeRange:&v22 rect:v21 usingBlock:{v9, v11, v13, v15}];
+    [(PXStoryTransitionTimeline *)self _offsetBetweenSegmentWithIdentifier:transitionInfo andSegmentWithIdentifier:v7];
     self->_fromSegmentClipOffset.x = v19;
     self->_fromSegmentClipOffset.y = v20;
-    self->_duplicateSegmentIdentifier = v5 + 1000000;
+    self->_duplicateSegmentIdentifier = transitionInfo + 1000000;
   }
 }
 
@@ -520,13 +520,13 @@ void __55__PXStoryTransitionTimeline__prepareForTransitionInfo___block_invoke(ui
   }
 }
 
-- (PXStoryTransitionTimeline)initWithOriginalTimeline:(id)a3 transitionInfo:(id)a4
+- (PXStoryTransitionTimeline)initWithOriginalTimeline:(id)timeline transitionInfo:(id)info
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = info.var1;
+  var0 = info.var0;
   v24.receiver = self;
   v24.super_class = PXStoryTransitionTimeline;
-  v6 = [(PXStoryDerivedTimeline *)&v24 initWithOriginalTimeline:a3];
+  v6 = [(PXStoryDerivedTimeline *)&v24 initWithOriginalTimeline:timeline];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -570,11 +570,11 @@ void __55__PXStoryTransitionTimeline__prepareForTransitionInfo___block_invoke(ui
   return v6;
 }
 
-- (PXStoryTransitionTimeline)initWithOriginalTimeline:(id)a3
+- (PXStoryTransitionTimeline)initWithOriginalTimeline:(id)timeline
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryTransitionTimeline.m" lineNumber:53 description:{@"%s is not available as initializer", "-[PXStoryTransitionTimeline initWithOriginalTimeline:]"}];
+  timelineCopy = timeline;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransitionTimeline.m" lineNumber:53 description:{@"%s is not available as initializer", "-[PXStoryTransitionTimeline initWithOriginalTimeline:]"}];
 
   abort();
 }

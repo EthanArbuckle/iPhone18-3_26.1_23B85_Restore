@@ -1,29 +1,29 @@
 @interface LibraryHomeTipkitCollectionViewCell
-- (_TtC4Maps35LibraryHomeTipkitCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC4Maps35LibraryHomeTipkitCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC4Maps35LibraryHomeTipkitCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC4Maps35LibraryHomeTipkitCollectionViewCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation LibraryHomeTipkitCollectionViewCell
 
-- (_TtC4Maps35LibraryHomeTipkitCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps35LibraryHomeTipkitCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps35LibraryHomeTipkitCollectionViewCell_actionButtonHandler);
   *v7 = 0;
   v7[1] = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps35LibraryHomeTipkitCollectionViewCell____lazy_storage___tipkitView) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for LibraryHomeTipkitCollectionViewCell();
-  v8 = [(LibraryHomeTipkitCollectionViewCell *)&v10 initWithFrame:x, y, width, height];
+  height = [(LibraryHomeTipkitCollectionViewCell *)&v10 initWithFrame:x, y, width, height];
   sub_100384AF4();
 
-  return v8;
+  return height;
 }
 
-- (_TtC4Maps35LibraryHomeTipkitCollectionViewCell)initWithCoder:(id)a3
+- (_TtC4Maps35LibraryHomeTipkitCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps35LibraryHomeTipkitCollectionViewCell_actionButtonHandler);
   *v4 = 0;
@@ -31,8 +31,8 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps35LibraryHomeTipkitCollectionViewCell____lazy_storage___tipkitView) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for LibraryHomeTipkitCollectionViewCell();
-  v5 = a3;
-  v6 = [(LibraryHomeTipkitCollectionViewCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(LibraryHomeTipkitCollectionViewCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

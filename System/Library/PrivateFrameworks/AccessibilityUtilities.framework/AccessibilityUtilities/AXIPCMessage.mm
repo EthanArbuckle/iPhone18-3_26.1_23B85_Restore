@@ -1,14 +1,14 @@
 @interface AXIPCMessage
-+ (id)archivedMessageFromData:(id)a3;
++ (id)archivedMessageFromData:(id)data;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (AXIPCMessage)initWithCoder:(id)a3;
-- (AXIPCMessage)initWithKey:(int)a3 payload:(id)a4;
+- (AXIPCMessage)initWithCoder:(id)coder;
+- (AXIPCMessage)initWithKey:(int)key payload:(id)payload;
 - (NSString)senderBundleId;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAuditToken:(id *)a3;
-- (void)setClientPort:(unsigned int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAuditToken:(id *)token;
+- (void)setClientPort:(unsigned int)port;
 @end
 
 @implementation AXIPCMessage
@@ -33,10 +33,10 @@
   [(AXIPCMessage *)&v8 dealloc:v5];
 }
 
-- (AXIPCMessage)initWithKey:(int)a3 payload:(id)a4
+- (AXIPCMessage)initWithKey:(int)key payload:(id)payload
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&key;
+  payloadCopy = payload;
   v11.receiver = self;
   v11.super_class = AXIPCMessage;
   v7 = [(AXIPCMessage *)&v11 init];
@@ -44,9 +44,9 @@
   if (v7)
   {
     [(AXIPCMessage *)v7 setKey:v4];
-    if (v6)
+    if (payloadCopy)
     {
-      v9 = [v6 copy];
+      v9 = [payloadCopy copy];
       [(AXIPCMessage *)v8 setPayload:v9];
     }
 
@@ -63,23 +63,23 @@
   return v8;
 }
 
-+ (id)archivedMessageFromData:(id)a3
++ (id)archivedMessageFromData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v18 = 0;
-    v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:&v18];
+    v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v18];
     v5 = v18;
     if (v5)
     {
-      v6 = [MEMORY[0x1E69887F8] sharedInstance];
-      v7 = [v6 ignoreLogging];
+      mEMORY[0x1E69887F8] = [MEMORY[0x1E69887F8] sharedInstance];
+      ignoreLogging = [mEMORY[0x1E69887F8] ignoreLogging];
 
-      if ((v7 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
-        v8 = [MEMORY[0x1E69887F8] identifier];
+        identifier = [MEMORY[0x1E69887F8] identifier];
         v9 = AXLoggerForFacility();
 
         v10 = AXOSLogLevelFromAXLogLevel();
@@ -111,15 +111,15 @@
   return v16;
 }
 
-- (AXIPCMessage)initWithCoder:(id)a3
+- (AXIPCMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = AXIPCMessage;
   v5 = [(AXIPCMessage *)&v22 init];
   if (v5)
   {
-    -[AXIPCMessage setKey:](v5, "setKey:", [v4 decodeInt32ForKey:@"key"]);
+    -[AXIPCMessage setKey:](v5, "setKey:", [coderCopy decodeInt32ForKey:@"key"]);
     if (!AllowedClasses)
     {
       v21 = MEMORY[0x1E695DFA8];
@@ -143,7 +143,7 @@
       [AllowedClasses addObject:v15];
     }
 
-    v16 = [v4 decodeObjectOfClasses:AllowedClasses forKey:@"payload"];
+    v16 = [coderCopy decodeObjectOfClasses:AllowedClasses forKey:@"payload"];
     if (v16)
     {
       v17 = v16;
@@ -162,19 +162,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(AXIPCMessage *)self payload];
-  if (v4 && ![objc_opt_class() supportsSecureCoding])
+  coderCopy = coder;
+  payload = [(AXIPCMessage *)self payload];
+  if (payload && ![objc_opt_class() supportsSecureCoding])
   {
     _AXLogWithFacility();
   }
 
   else
   {
-    [v5 encodeObject:v4 forKey:@"payload"];
-    [v5 encodeInt32:-[AXIPCMessage key](self forKey:{"key"), @"key"}];
+    [coderCopy encodeObject:payload forKey:@"payload"];
+    [coderCopy encodeInt32:-[AXIPCMessage key](self forKey:{"key"), @"key"}];
   }
 }
 
@@ -191,32 +191,32 @@
     if (v5)
     {
       v6 = objc_alloc(MEMORY[0x1E696AAE8]);
-      v7 = [v5 path];
-      v8 = [v6 initWithPath:v7];
+      path = [v5 path];
+      v8 = [v6 initWithPath:path];
 
       if (v8)
       {
-        v9 = [v8 bundleIdentifier];
+        bundleIdentifier = [v8 bundleIdentifier];
       }
 
       else
       {
-        v9 = 0;
+        bundleIdentifier = 0;
       }
     }
 
     else
     {
-      v9 = 0;
+      bundleIdentifier = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v9;
+  return bundleIdentifier;
 }
 
 - (id)description
@@ -225,18 +225,18 @@
   v11.receiver = self;
   v11.super_class = AXIPCMessage;
   v4 = [(AXIPCMessage *)&v11 description];
-  v5 = [(AXIPCMessage *)self clientPort];
+  clientPort = [(AXIPCMessage *)self clientPort];
   v6 = [(AXIPCMessage *)self key];
-  v7 = [(AXIPCMessage *)self payload];
+  payload = [(AXIPCMessage *)self payload];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AXIPCMessage uniqueID](self, "uniqueID")}];
-  v9 = [v3 stringWithFormat:@"%@. Client port: %ld. Key: %d. Payload: %@ (%@)", v4, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"%@. Client port: %ld. Key: %d. Payload: %@ (%@)", v4, clientPort, v6, payload, v8];
 
   return v9;
 }
 
-- (void)setClientPort:(unsigned int)a3
+- (void)setClientPort:(unsigned int)port
 {
-  v5 = AXIncrefSendRight(a3);
+  v5 = AXIncrefSendRight(port);
   clientPort = self->_clientPort;
   if (clientPort)
   {
@@ -245,7 +245,7 @@
 
   if (v5)
   {
-    self->_clientPort = a3;
+    self->_clientPort = port;
   }
 }
 
@@ -257,10 +257,10 @@
   return self;
 }
 
-- (void)setAuditToken:(id *)a3
+- (void)setAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_auditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_auditToken.val[4] = *&token->var0[4];
   *self->_auditToken.val = v3;
 }
 

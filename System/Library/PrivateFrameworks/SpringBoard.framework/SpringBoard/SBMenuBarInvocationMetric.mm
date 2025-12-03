@@ -1,17 +1,17 @@
 @interface SBMenuBarInvocationMetric
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
 @end
 
 @implementation SBMenuBarInvocationMetric
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
-  if (a3 == 69)
+  if (event == 69)
   {
     AnalyticsSendEventLazy();
   }
 
-  return a3 == 69;
+  return event == 69;
 }
 
 @end

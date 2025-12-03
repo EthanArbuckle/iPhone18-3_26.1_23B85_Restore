@@ -2,16 +2,16 @@
 + (id)defaultAudioSystemProperties;
 + (id)defaultPlaybackDeviceProperties;
 + (id)defaultTVProperties;
-- (BOOL)errorIsNack:(id)a3;
-- (CECFakeInterface)initWithInterfaceListener:(id)a3 properties:(id)a4;
-- (CECFrame)lastReceivedFrameWithOpcode:(SEL)a3 andHeader:(unsigned __int8)a4;
+- (BOOL)errorIsNack:(id)nack;
+- (CECFakeInterface)initWithInterfaceListener:(id)listener properties:(id)properties;
+- (CECFrame)lastReceivedFrameWithOpcode:(SEL)opcode andHeader:(unsigned __int8)header;
 - (void)dealloc;
-- (void)fakePropertiesChanged:(id)a3;
+- (void)fakePropertiesChanged:(id)changed;
 - (void)fakeTerminated;
-- (void)receivedFrame:(CECFrame *)a3;
-- (void)scheduleWithDispatchQueue:(id)a3;
-- (void)setBlockedMessages:(id)a3;
-- (void)unscheduleFromDispatchQueue:(id)a3;
+- (void)receivedFrame:(CECFrame *)frame;
+- (void)scheduleWithDispatchQueue:(id)queue;
+- (void)setBlockedMessages:(id)messages;
+- (void)unscheduleFromDispatchQueue:(id)queue;
 @end
 
 @implementation CECFakeInterface
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (CECFakeInterface)initWithInterfaceListener:(id)a3 properties:(id)a4
+- (CECFakeInterface)initWithInterfaceListener:(id)listener properties:(id)properties
 {
   v11.receiver = self;
   v11.super_class = CECFakeInterface;
@@ -66,8 +66,8 @@
   v7 = v6;
   if (v6)
   {
-    [(CoreRCInterface *)v6 setListener:a3];
-    v7->_properties = [a4 mutableCopy];
+    [(CoreRCInterface *)v6 setListener:listener];
+    v7->_properties = [properties mutableCopy];
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:10];
     v7->_receivedFrames = v8;
     if (v7->_properties)
@@ -97,58 +97,58 @@
   [(CoreRCInterface *)&v3 dealloc];
 }
 
-- (BOOL)errorIsNack:(id)a3
+- (BOOL)errorIsNack:(id)nack
 {
-  v4 = [objc_msgSend(a3 "domain")];
+  v4 = [objc_msgSend(nack "domain")];
   if (v4)
   {
-    LOBYTE(v4) = [a3 code] == 2;
+    LOBYTE(v4) = [nack code] == 2;
   }
 
   return v4;
 }
 
-- (void)receivedFrame:(CECFrame *)a3
+- (void)receivedFrame:(CECFrame *)frame
 {
   v10 = *MEMORY[0x277D85DE8];
   if ([(CECInterface *)self snoopingMode])
   {
 LABEL_7:
-    v6 = [(CECInterface *)self delegate];
-    v8 = *a3->blocks;
-    v9 = *(a3 + 4);
-    [(CECInterfaceDelegate *)v6 interface:self receivedFrame:&v8];
+    delegate = [(CECInterface *)self delegate];
+    v8 = *frame->blocks;
+    v9 = *(frame + 4);
+    [(CECInterfaceDelegate *)delegate interface:self receivedFrame:&v8];
     goto LABEL_8;
   }
 
-  if (~a3->blocks[0] & 0xF) == 0 || (([(CECInterface *)self addressMask]>> (a3->blocks[0] & 0xF)))
+  if (~frame->blocks[0] & 0xF) == 0 || (([(CECInterface *)self addressMask]>> (frame->blocks[0] & 0xF)))
   {
-    v8 = *a3->blocks;
-    v9 = *(a3 + 4);
+    v8 = *frame->blocks;
+    v9 = *(frame + 4);
     [(CECInterface *)self setLastReceivedFrame:&v8];
     if ([-[CECFakeInterface receivedFrames](self "receivedFrames")] >= 0x15)
     {
       [-[CECFakeInterface receivedFrames](self "receivedFrames")];
     }
 
-    v5 = [(CECFakeInterface *)self receivedFrames];
-    [v5 addObject:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", a3, 20)}];
+    receivedFrames = [(CECFakeInterface *)self receivedFrames];
+    [receivedFrames addObject:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", frame, 20)}];
     goto LABEL_7;
   }
 
   if (gLogCategory_CoreRCInterface <= 90 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
-    [CECFakeInterface receivedFrame:a3];
+    [CECFakeInterface receivedFrame:frame];
   }
 
 LABEL_8:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (CECFrame)lastReceivedFrameWithOpcode:(SEL)a3 andHeader:(unsigned __int8)a4
+- (CECFrame)lastReceivedFrameWithOpcode:(SEL)opcode andHeader:(unsigned __int8)header
 {
   v5 = a5;
-  v6 = a4;
+  headerCopy = header;
   v15 = *MEMORY[0x277D85DE8];
   *retstr->blocks = 0;
   *&retstr->blocks[8] = 0;
@@ -156,10 +156,10 @@ LABEL_8:
   result = [(NSMutableArray *)self->_receivedFrames count];
   if (result)
   {
-    v10 = [(NSMutableArray *)self->_receivedFrames reverseObjectEnumerator];
-    for (i = v10; ; v10 = i)
+    reverseObjectEnumerator = [(NSMutableArray *)self->_receivedFrames reverseObjectEnumerator];
+    for (i = reverseObjectEnumerator; ; reverseObjectEnumerator = i)
     {
-      result = [v10 nextObject];
+      result = [reverseObjectEnumerator nextObject];
       if (!result)
       {
         break;
@@ -168,7 +168,7 @@ LABEL_8:
       v13 = 0uLL;
       v14 = 0;
       result = [(CECFrame *)result getBytes:&v13 length:20];
-      if (BYTE1(v13) == v6 && (v5 == 255 || v13 == v5))
+      if (BYTE1(v13) == headerCopy && (v5 == 255 || v13 == v5))
       {
         *retstr->blocks = v13;
         *(retstr + 4) = v14;
@@ -181,42 +181,42 @@ LABEL_8:
   return result;
 }
 
-- (void)fakePropertiesChanged:(id)a3
+- (void)fakePropertiesChanged:(id)changed
 {
-  self->_properties = [a3 mutableCopy];
-  v5 = [(CECInterface *)self delegate];
+  self->_properties = [changed mutableCopy];
+  delegate = [(CECInterface *)self delegate];
 
-  [(CECInterfaceDelegate *)v5 interfacePropertiesChanged:self];
+  [(CECInterfaceDelegate *)delegate interfacePropertiesChanged:self];
 }
 
 - (void)fakeTerminated
 {
-  v3 = [(CoreRCInterface *)self listener];
+  listener = [(CoreRCInterface *)self listener];
 
-  [(CoreRCInterfaceListener *)v3 removeInterface:self];
+  [(CoreRCInterfaceListener *)listener removeInterface:self];
 }
 
-- (void)setBlockedMessages:(id)a3
+- (void)setBlockedMessages:(id)messages
 {
   blockedMessages = self->_blockedMessages;
   if (blockedMessages)
   {
-    v5 = a3;
+    messagesCopy = messages;
 
-    a3 = v5;
+    messages = messagesCopy;
   }
 
-  self->_blockedMessages = a3;
+  self->_blockedMessages = messages;
 
   MEMORY[0x2821F9888]();
 }
 
-- (void)scheduleWithDispatchQueue:(id)a3
+- (void)scheduleWithDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
-    v6 = a3;
-    v7 = self;
+    queueCopy = queue;
+    selfCopy = self;
     v5 = "[CECFakeInterface scheduleWithDispatchQueue:]";
     LogPrintF();
   }
@@ -224,21 +224,21 @@ LABEL_8:
   if (![(CoreRCInterface *)self serialQueue:v5])
   {
 
-    [(CoreRCInterface *)self setSerialQueue:a3];
+    [(CoreRCInterface *)self setSerialQueue:queue];
   }
 }
 
-- (void)unscheduleFromDispatchQueue:(id)a3
+- (void)unscheduleFromDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
-    v6 = a3;
-    v7 = self;
+    queueCopy = queue;
+    selfCopy = self;
     v5 = "[CECFakeInterface unscheduleFromDispatchQueue:]";
     LogPrintF();
   }
 
-  if ([(CoreRCInterface *)self serialQueue:v5]== a3)
+  if ([(CoreRCInterface *)self serialQueue:v5]== queue)
   {
 
     [(CoreRCInterface *)self setSerialQueue:0];

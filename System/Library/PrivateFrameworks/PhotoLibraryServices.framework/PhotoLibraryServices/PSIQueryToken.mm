@@ -1,11 +1,11 @@
 @interface PSIQueryToken
-- (PSIQueryToken)initWithIdentifier:(id)a3 userCategory:(unint64_t)a4;
-- (PSIQueryToken)initWithText:(id)a3 userCategory:(unint64_t)a4 matchType:(unint64_t)a5;
+- (PSIQueryToken)initWithIdentifier:(id)identifier userCategory:(unint64_t)category;
+- (PSIQueryToken)initWithText:(id)text userCategory:(unint64_t)category matchType:(unint64_t)type;
 @end
 
 @implementation PSIQueryToken
 
-- (PSIQueryToken)initWithIdentifier:(id)a3 userCategory:(unint64_t)a4
+- (PSIQueryToken)initWithIdentifier:(id)identifier userCategory:(unint64_t)category
 {
   v5 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -17,7 +17,7 @@
   return [(PSIQueryToken *)self init];
 }
 
-- (PSIQueryToken)initWithText:(id)a3 userCategory:(unint64_t)a4 matchType:(unint64_t)a5
+- (PSIQueryToken)initWithText:(id)text userCategory:(unint64_t)category matchType:(unint64_t)type
 {
   v6 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))

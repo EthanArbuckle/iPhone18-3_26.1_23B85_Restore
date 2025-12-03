@@ -1,32 +1,32 @@
 @interface UITapRecognizer
 - (BOOL)activeTouchesExceedAllowableSeparation;
 - (CGPoint)_locationInSceneReferenceSpace;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)locationInView:(id)a3 focusSystem:(id)a4;
-- (CGPoint)locationInViewNotTrackingTouches:(id)a3;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)locationInView:(id)view focusSystem:(id)system;
+- (CGPoint)locationInViewNotTrackingTouches:(id)touches;
 - (UITapRecognizer)init;
-- (UITapRecognizer)initWithCoder:(id)a3;
+- (UITapRecognizer)initWithCoder:(id)coder;
 - (UITapRecognizerDelegate)delegate;
 - (double)_effectiveAllowableMovement;
 - (void)_beginInteraction;
-- (void)_interactionEndedTouch:(BOOL)a3;
+- (void)_interactionEndedTouch:(BOOL)touch;
 - (void)_reset;
 - (void)clearMultitouchTimer;
 - (void)clearTapTimer;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)multitouchExpired:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)startMultitouchTimer:(double)a3;
-- (void)startTapTimer:(double)a3;
-- (void)tooSlow:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)multitouchExpired:(id)expired;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)startMultitouchTimer:(double)timer;
+- (void)startTapTimer:(double)timer;
+- (void)tooSlow:(id)slow;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UITapRecognizer
@@ -109,8 +109,8 @@
   v5 = v4;
   v7 = v6;
   allowableSeparation = self->_allowableSeparation;
-  v9 = [(UITapRecognizer *)self delegate];
-  [v9 _touchSloppinessFactor];
+  delegate = [(UITapRecognizer *)self delegate];
+  [delegate _touchSloppinessFactor];
   v11 = allowableSeparation * v10 < sqrt(v5 * v5 + v7 * v7);
 
   return v11;
@@ -152,14 +152,14 @@
 - (double)_effectiveAllowableMovement
 {
   allowableMovement = self->_allowableMovement;
-  v3 = [(UITapRecognizer *)self delegate];
-  [v3 _touchSloppinessFactor];
+  delegate = [(UITapRecognizer *)self delegate];
+  [delegate _touchSloppinessFactor];
   v5 = allowableMovement * v4;
 
   return v5;
 }
 
-- (UITapRecognizer)initWithCoder:(id)a3
+- (UITapRecognizer)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = UITapRecognizer;
@@ -179,41 +179,41 @@
     *(v4 + 17) = -1;
     *(v4 + 18) = 0;
     *(v4 + 22) = -1;
-    if ([a3 containsValueForKey:@"UITapRecognizer.numberOfTapsRequired"])
+    if ([coder containsValueForKey:@"UITapRecognizer.numberOfTapsRequired"])
     {
-      v5->_numberOfTapsRequired = [a3 decodeIntegerForKey:@"UITapRecognizer.numberOfTapsRequired"];
+      v5->_numberOfTapsRequired = [coder decodeIntegerForKey:@"UITapRecognizer.numberOfTapsRequired"];
     }
 
-    if ([a3 containsValueForKey:@"UITapRecognizer.continuousTapRecognition"])
+    if ([coder containsValueForKey:@"UITapRecognizer.continuousTapRecognition"])
     {
-      v5->_continuousTapRecognition = [a3 decodeBoolForKey:@"UITapRecognizer.continuousTapRecognition"];
+      v5->_continuousTapRecognition = [coder decodeBoolForKey:@"UITapRecognizer.continuousTapRecognition"];
     }
 
-    if ([a3 containsValueForKey:@"UITapRecognizer.numberOfTouchesRequired"])
+    if ([coder containsValueForKey:@"UITapRecognizer.numberOfTouchesRequired"])
     {
-      v5->_numberOfTouchesRequired = [a3 decodeIntegerForKey:@"UITapRecognizer.numberOfTouchesRequired"];
+      v5->_numberOfTouchesRequired = [coder decodeIntegerForKey:@"UITapRecognizer.numberOfTouchesRequired"];
     }
 
-    if ([a3 containsValueForKey:@"UITapRecognizer.buttonMaskRequired"])
+    if ([coder containsValueForKey:@"UITapRecognizer.buttonMaskRequired"])
     {
-      v5->_buttonMaskRequired = [a3 decodeIntegerForKey:@"UITapRecognizer.buttonMaskRequired"];
+      v5->_buttonMaskRequired = [coder decodeIntegerForKey:@"UITapRecognizer.buttonMaskRequired"];
     }
 
-    if ([a3 containsValueForKey:@"UITapRecognizer.allowableMovement"])
+    if ([coder containsValueForKey:@"UITapRecognizer.allowableMovement"])
     {
-      [a3 decodeFloatForKey:@"UITapRecognizer.allowableMovement"];
+      [coder decodeFloatForKey:@"UITapRecognizer.allowableMovement"];
       v5->_allowableMovement = v6;
     }
 
-    if ([a3 containsValueForKey:@"UITapRecognizer.allowableSeparation"])
+    if ([coder containsValueForKey:@"UITapRecognizer.allowableSeparation"])
     {
-      [a3 decodeFloatForKey:@"UITapRecognizer.allowableSeparation"];
+      [coder decodeFloatForKey:@"UITapRecognizer.allowableSeparation"];
       v5->_allowableSeparation = v7;
     }
 
-    if ([a3 containsValueForKey:@"UITapRecognizer.maximumIntervalBetweenSuccessiveTaps"])
+    if ([coder containsValueForKey:@"UITapRecognizer.maximumIntervalBetweenSuccessiveTaps"])
     {
-      [a3 decodeFloatForKey:@"UITapRecognizer.maximumIntervalBetweenSuccessiveTaps"];
+      [coder decodeFloatForKey:@"UITapRecognizer.maximumIntervalBetweenSuccessiveTaps"];
       v5->_maximumIntervalBetweenSuccessiveTaps = v8;
     }
 
@@ -223,43 +223,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   numberOfTapsRequired = self->_numberOfTapsRequired;
   if (numberOfTapsRequired != 1)
   {
-    [a3 encodeInteger:numberOfTapsRequired forKey:@"UITapRecognizer.numberOfTapsRequired"];
+    [coder encodeInteger:numberOfTapsRequired forKey:@"UITapRecognizer.numberOfTapsRequired"];
   }
 
   if (self->_continuousTapRecognition)
   {
-    [a3 encodeBool:1 forKey:@"UITapRecognizer.continuousTapRecognition"];
+    [coder encodeBool:1 forKey:@"UITapRecognizer.continuousTapRecognition"];
   }
 
   numberOfTouchesRequired = self->_numberOfTouchesRequired;
   if (numberOfTouchesRequired != 1)
   {
-    [a3 encodeInteger:numberOfTouchesRequired forKey:@"UITapRecognizer.numberOfTouchesRequired"];
+    [coder encodeInteger:numberOfTouchesRequired forKey:@"UITapRecognizer.numberOfTouchesRequired"];
   }
 
   buttonMaskRequired = self->_buttonMaskRequired;
   if (buttonMaskRequired != 1)
   {
-    [a3 encodeInteger:buttonMaskRequired forKey:@"UITapRecognizer.buttonMaskRequired"];
+    [coder encodeInteger:buttonMaskRequired forKey:@"UITapRecognizer.buttonMaskRequired"];
   }
 
   allowableMovement = self->_allowableMovement;
   if (allowableMovement != 45.0)
   {
     *&allowableMovement = allowableMovement;
-    [a3 encodeFloat:@"UITapRecognizer.allowableMovement" forKey:allowableMovement];
+    [coder encodeFloat:@"UITapRecognizer.allowableMovement" forKey:allowableMovement];
   }
 
   allowableSeparation = self->_allowableSeparation;
   if (allowableSeparation != 1.79769313e308)
   {
     *&allowableSeparation = allowableSeparation;
-    [a3 encodeFloat:@"UITapRecognizer.allowableSeparation" forKey:allowableSeparation];
+    [coder encodeFloat:@"UITapRecognizer.allowableSeparation" forKey:allowableSeparation];
   }
 
   maximumIntervalBetweenSuccessiveTaps = self->_maximumIntervalBetweenSuccessiveTaps;
@@ -267,19 +267,19 @@
   {
     *&maximumIntervalBetweenSuccessiveTaps = maximumIntervalBetweenSuccessiveTaps;
 
-    [a3 encodeFloat:@"UITapRecognizer.maximumIntervalBetweenSuccessiveTaps" forKey:maximumIntervalBetweenSuccessiveTaps];
+    [coder encodeFloat:@"UITapRecognizer.maximumIntervalBetweenSuccessiveTaps" forKey:maximumIntervalBetweenSuccessiveTaps];
   }
 }
 
-- (void)startTapTimer:(double)a3
+- (void)startTapTimer:(double)timer
 {
   [(UITapRecognizer *)self clearTapTimer];
   *(self + 164) |= 1u;
 
-  [(UITapRecognizer *)self performSelector:sel_tooSlow_ withObject:0 afterDelay:a3];
+  [(UITapRecognizer *)self performSelector:sel_tooSlow_ withObject:0 afterDelay:timer];
 }
 
-- (void)tooSlow:(id)a3
+- (void)tooSlow:(id)slow
 {
   [(UITapRecognizer *)self clearTapTimer];
   [(UITapRecognizer *)self clearMultitouchTimer];
@@ -287,15 +287,15 @@
   [WeakRetained tapRecognizerFailedToRecognizeTap:self];
 }
 
-- (void)startMultitouchTimer:(double)a3
+- (void)startMultitouchTimer:(double)timer
 {
   [(UITapRecognizer *)self clearMultitouchTimer];
   *(self + 164) |= 2u;
 
-  [(UITapRecognizer *)self performSelector:sel_multitouchExpired_ withObject:0 afterDelay:a3];
+  [(UITapRecognizer *)self performSelector:sel_multitouchExpired_ withObject:0 afterDelay:timer];
 }
 
-- (void)multitouchExpired:(id)a3
+- (void)multitouchExpired:(id)expired
 {
   numberOfTouchesForCurrentTap = self->_numberOfTouchesForCurrentTap;
   if ([(UITapRecognizer *)self numberOfTouchesRequired]> numberOfTouchesForCurrentTap)
@@ -307,11 +307,11 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v50 = *MEMORY[0x1E69E9840];
   self->_startTime = CACurrentMediaTime();
-  [a4 _digitizerLocation];
+  [event _digitizerLocation];
   self->_digitizerLocation.x = v7;
   self->_digitizerLocation.y = v8;
   activeTouches = self->_activeTouches;
@@ -324,12 +324,12 @@
     activeTouches = self->_activeTouches;
   }
 
-  [(NSMutableSet *)activeTouches unionSet:a3];
+  [(NSMutableSet *)activeTouches unionSet:began];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!self->_countsOnlyActiveTouches)
   {
-    v13 = [a4 allTouches];
-    v14 = [v13 count];
+    allTouches = [event allTouches];
+    v14 = [allTouches count];
     numberOfTouchesRequired = self->_numberOfTouchesRequired;
 
     if (v14 <= numberOfTouchesRequired)
@@ -402,12 +402,12 @@ LABEL_22:
   if ((*(self + 164) & 4) != 0)
   {
 LABEL_23:
-    v21 = [a4 _buttonMask];
-    v22 = [a4 _modifierFlags];
-    v23 = v21 & 0xFFFFFFFFFFFFFFFCLL | 2;
-    if ((v22 & 0x40000) == 0)
+    _buttonMask = [event _buttonMask];
+    _modifierFlags = [event _modifierFlags];
+    v23 = _buttonMask & 0xFFFFFFFFFFFFFFFCLL | 2;
+    if ((_modifierFlags & 0x40000) == 0)
     {
-      v23 = v21;
+      v23 = _buttonMask;
     }
 
     if ((v23 & self->_buttonMaskRequired) == 0)
@@ -426,7 +426,7 @@ LABEL_23:
     }
 
     self->_currentNumberOfTouches = [(NSMutableSet *)self->_activeTouches count];
-    self->_numberOfTouchesForCurrentTap += [a3 count];
+    self->_numberOfTouchesForCurrentTap += [began count];
     if (self->_numberOfTouchesRequired == self->_currentNumberOfTouches)
     {
       [(NSMutableArray *)self->_touches removeAllObjects];
@@ -510,14 +510,14 @@ LABEL_47:
 LABEL_48:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  WeakRetained = a3;
+  WeakRetained = moved;
   v7 = [WeakRetained countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -554,7 +554,7 @@ LABEL_3:
       }
     }
 
-    [a4 _digitizerLocation];
+    [event _digitizerLocation];
     self->_digitizerLocation.x = v18;
     self->_digitizerLocation.y = v19;
     if (self->_allowableMovement != 1.79769313e308)
@@ -578,12 +578,12 @@ LABEL_13:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [a4 _digitizerLocation];
+  [event _digitizerLocation];
   self->_digitizerLocation.x = v6;
   self->_digitizerLocation.y = v7;
-  [(NSMutableSet *)self->_activeTouches minusSet:a3];
+  [(NSMutableSet *)self->_activeTouches minusSet:ended];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained tapIsPossibleForTapRecognizer:self])
   {
@@ -604,7 +604,7 @@ LABEL_13:
   }
 }
 
-- (void)_interactionEndedTouch:(BOOL)a3
+- (void)_interactionEndedTouch:(BOOL)touch
 {
   v4 = self->_currentNumberOfTaps + 1;
   self->_currentNumberOfTaps = v4;
@@ -633,7 +633,7 @@ LABEL_13:
       }
     }
 
-    else if (a3)
+    else if (touch)
     {
       self->_currentNumberOfTouches = 0;
       self->_numberOfTouchesForCurrentTap = 0;
@@ -651,15 +651,15 @@ LABEL_13:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  self->_numberOfTouchesForCurrentTap -= [a3 count];
-  [(NSMutableSet *)self->_activeTouches minusSet:a3];
+  self->_numberOfTouchesForCurrentTap -= [cancelled count];
+  [(NSMutableSet *)self->_activeTouches minusSet:cancelled];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tapRecognizerFailedToRecognizeTap:self];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained tapIsPossibleForTapRecognizer:self];
@@ -671,22 +671,22 @@ LABEL_13:
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
   if (self->_exclusiveDirectionalAxis != -1)
   {
-    v8 = [a4 _directionalPressWithStrongestForce];
-    [v8 force];
+    _directionalPressWithStrongestForce = [event _directionalPressWithStrongestForce];
+    [_directionalPressWithStrongestForce force];
     if (v6 > self->_strongestDirectionalForce)
     {
-      [v8 force];
+      [_directionalPressWithStrongestForce force];
       self->_strongestDirectionalForce = v7;
-      self->_strongestDirectionalAxis = [v8 type];
+      self->_strongestDirectionalAxis = [_directionalPressWithStrongestForce type];
     }
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained tapIsPossibleForTapRecognizer:self];
@@ -698,28 +698,28 @@ LABEL_13:
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tapRecognizerFailedToRecognizeTap:self];
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   x = self->_startPoint.x;
   y = self->_startPoint.y;
   if (![(NSMutableArray *)self->_touches count])
   {
-    [(UITapRecognizer *)self locationInViewNotTrackingTouches:a3];
+    [(UITapRecognizer *)self locationInViewNotTrackingTouches:view];
     x = v7;
     y = v8;
   }
 
-  if (a3)
+  if (view)
   {
-    v9 = [a3 _window];
-    [v9 _convertPointFromSceneReferenceSpace:{x, y}];
-    [a3 convertPoint:0 fromView:?];
+    _window = [view _window];
+    [_window _convertPointFromSceneReferenceSpace:{x, y}];
+    [view convertPoint:0 fromView:?];
     x = v10;
     y = v11;
   }
@@ -731,15 +731,15 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)locationInViewNotTrackingTouches:(id)a3
+- (CGPoint)locationInViewNotTrackingTouches:(id)touches
 {
-  v4 = [(UITapRecognizer *)self delegate];
-  v5 = [v4 view];
+  delegate = [(UITapRecognizer *)self delegate];
+  view = [delegate view];
 
-  v6 = [v5 _window];
-  if (v5)
+  _window = [view _window];
+  if (view)
   {
-    v7 = [UIFocusSystem focusSystemForEnvironment:v5];
+    v7 = [UIFocusSystem focusSystemForEnvironment:view];
   }
 
   else
@@ -747,36 +747,36 @@ LABEL_13:
     v7 = 0;
   }
 
-  v8 = [v7 focusedItem];
-  if (v8)
+  focusedItem = [v7 focusedItem];
+  if (focusedItem)
   {
-    v9 = [_UIFocusItemInfo infoWithItem:v8];
-    [v9 focusedRectInCoordinateSpace:v6];
+    _window3 = [_UIFocusItemInfo infoWithItem:focusedItem];
+    [_window3 focusedRectInCoordinateSpace:_window];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v5 _window];
-    [v18 _convertPointToSceneReferenceSpace:{v11 + v15 * 0.5, v13 + v17 * 0.5}];
+    _window2 = [view _window];
+    [_window2 _convertPointToSceneReferenceSpace:{v11 + v15 * 0.5, v13 + v17 * 0.5}];
     v20 = v19;
     v22 = v21;
   }
 
   else
   {
-    if (v5)
+    if (view)
     {
-      [v5 bounds];
-      [v5 convertPoint:v6 toView:{v24 + v23 * 0.5, v26 + v25 * 0.5}];
-      [v6 _convertPointToSceneReferenceSpace:?];
+      [view bounds];
+      [view convertPoint:_window toView:{v24 + v23 * 0.5, v26 + v25 * 0.5}];
+      [_window _convertPointToSceneReferenceSpace:?];
       v20 = v27;
       v22 = v28;
       goto LABEL_9;
     }
 
-    v9 = [a3 _window];
-    [v9 center];
-    [v9 _convertPointToSceneReferenceSpace:?];
+    _window3 = [touches _window];
+    [_window3 center];
+    [_window3 _convertPointToSceneReferenceSpace:?];
     v20 = v31;
     v22 = v32;
   }
@@ -789,21 +789,21 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)locationInView:(id)a3 focusSystem:(id)a4
+- (CGPoint)locationInView:(id)view focusSystem:(id)system
 {
-  v5 = [a4 focusedItem];
-  if (v5)
+  focusedItem = [system focusedItem];
+  if (focusedItem)
   {
-    v6 = [_UIFocusItemInfo infoWithItem:v5];
-    [v6 focusedRectInCoordinateSpace:a3];
+    _window = [_UIFocusItemInfo infoWithItem:focusedItem];
+    [_window focusedRectInCoordinateSpace:view];
     v9 = v8 + v7 * 0.5;
     v12 = v11 + v10 * 0.5;
   }
 
   else
   {
-    v6 = [a3 _window];
-    [v6 center];
+    _window = [view _window];
+    [_window center];
     v9 = v13;
     v12 = v14;
   }

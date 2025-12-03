@@ -1,37 +1,37 @@
 @interface THWPopUpContentProvider
-- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)a3;
+- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)controller;
 - (CGSize)unscaledContentSizeForFillScreen;
-- (THWPopUpContentProvider)initWithPopUpInfo:(id)a3 scale:(double)a4 documentRoot:(id)a5 scrollableCanvasHost:(id)a6 bookNavigator:(id)a7 documentNavigator:(id)a8;
+- (THWPopUpContentProvider)initWithPopUpInfo:(id)info scale:(double)scale documentRoot:(id)root scrollableCanvasHost:(id)host bookNavigator:(id)navigator documentNavigator:(id)documentNavigator;
 - (TSWPopoverTheme)popoverTheme;
-- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)a3;
-- (UIEdgeInsets)p_scaledEdgeInsets:(UIEdgeInsets)a3;
-- (UIEdgeInsets)scrollViewContentInsetForScrollableCanvasController:(id)a3;
+- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)controller;
+- (UIEdgeInsets)p_scaledEdgeInsets:(UIEdgeInsets)insets;
+- (UIEdgeInsets)scrollViewContentInsetForScrollableCanvasController:(id)controller;
 - (UIView)popoverContentView;
-- (id)scrollableCanvasController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6;
-- (id)scrollableCanvasController:(id)a3 infosToDisplayForViewport:(CGRect)a4;
+- (id)scrollableCanvasController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
+- (id)scrollableCanvasController:(id)controller infosToDisplayForViewport:(CGRect)viewport;
 - (void)dealloc;
 - (void)disableCanvasInteraction;
-- (void)displayModeDidChange:(int)a3;
-- (void)p_updateWithSettings:(id)a3;
+- (void)displayModeDidChange:(int)change;
+- (void)p_updateWithSettings:(id)settings;
 - (void)teardown;
 @end
 
 @implementation THWPopUpContentProvider
 
-- (THWPopUpContentProvider)initWithPopUpInfo:(id)a3 scale:(double)a4 documentRoot:(id)a5 scrollableCanvasHost:(id)a6 bookNavigator:(id)a7 documentNavigator:(id)a8
+- (THWPopUpContentProvider)initWithPopUpInfo:(id)info scale:(double)scale documentRoot:(id)root scrollableCanvasHost:(id)host bookNavigator:(id)navigator documentNavigator:(id)documentNavigator
 {
   v16.receiver = self;
   v16.super_class = THWPopUpContentProvider;
   v14 = [(THWPopUpContentProvider *)&v16 init];
   if (v14)
   {
-    v14->_popupInfo = a3;
-    v14->_documentRoot = a5;
-    v14->_scrollableCanvasHost = a6;
-    v14->_scale = a4;
-    v14->_bookNavigator = a7;
-    v14->_documentNavigator = a8;
-    v14->_scrollableCanvasController = [[THWScrollableCanvasController alloc] initWithDocumentRoot:a5];
+    v14->_popupInfo = info;
+    v14->_documentRoot = root;
+    v14->_scrollableCanvasHost = host;
+    v14->_scale = scale;
+    v14->_bookNavigator = navigator;
+    v14->_documentNavigator = documentNavigator;
+    v14->_scrollableCanvasController = [[THWScrollableCanvasController alloc] initWithDocumentRoot:root];
     [(THWScrollableCanvasController *)[(THWPopUpContentProvider *)v14 scrollableCanvasController] setDelegate:v14];
     [(THWPopUpContentProvider *)v14 p_updateWithSettings:[(TSWPopUpInfo *)[(THWPopUpContentProvider *)v14 popupInfo] frameViewSettings]];
   }
@@ -46,9 +46,9 @@
   [(THWPopUpContentProvider *)&v3 dealloc];
 }
 
-- (void)p_updateWithSettings:(id)a3
+- (void)p_updateWithSettings:(id)settings
 {
-  [(THWScrollableCanvasController *)self->_scrollableCanvasController createViewIfNeededWithFrame:a3 viewScale:0.0, 0.0, 100.0, 100.0, 1.0];
+  [(THWScrollableCanvasController *)self->_scrollableCanvasController createViewIfNeededWithFrame:settings viewScale:0.0, 0.0, 100.0, 100.0, 1.0];
   [(TSKScrollView *)[(THWScrollableCanvasController *)self->_scrollableCanvasController scrollView] setMayPassScrollEventsToNextResponder:0];
   if ([(THWScrollableCanvasController *)self->_scrollableCanvasController mainView])
   {
@@ -72,47 +72,47 @@
   v21 = v20;
   [(UIView *)[(THWScrollableCanvasController *)self->_scrollableCanvasController mainView] bounds];
   [(TSKScrollView *)[(THWScrollableCanvasController *)self->_scrollableCanvasController scrollView] setFrame:v17 + v22, v15 + v23, v24 - (v17 + v21), v25 - (v15 + v19)];
-  v26 = [(THWScrollableCanvasController *)self->_scrollableCanvasController scrollView];
+  scrollView = [(THWScrollableCanvasController *)self->_scrollableCanvasController scrollView];
 
-  [(TSKScrollView *)v26 setScrollIndicatorInsets:4.0, 0.0, 0.0, 2.0 - v21];
+  [(TSKScrollView *)scrollView setScrollIndicatorInsets:4.0, 0.0, 0.0, 2.0 - v21];
 }
 
 - (UIView)popoverContentView
 {
-  v2 = [(THWPopUpContentProvider *)self scrollableCanvasController];
+  scrollableCanvasController = [(THWPopUpContentProvider *)self scrollableCanvasController];
 
-  return [(THWScrollableCanvasController *)v2 mainView];
+  return [(THWScrollableCanvasController *)scrollableCanvasController mainView];
 }
 
 - (TSWPopoverTheme)popoverTheme
 {
-  v2 = [(THWPopUpContentProvider *)self popupInfo];
+  popupInfo = [(THWPopUpContentProvider *)self popupInfo];
 
-  return [(TSWPopUpInfo *)v2 popoverTheme];
+  return [(TSWPopUpInfo *)popupInfo popoverTheme];
 }
 
 - (void)teardown
 {
   [(THWScrollableCanvasController *)[(THWPopUpContentProvider *)self scrollableCanvasController] teardownController];
   [(THWScrollableCanvasController *)[(THWPopUpContentProvider *)self scrollableCanvasController] teardownView];
-  v3 = [(THWPopUpContentProvider *)self scrollableCanvasController];
+  scrollableCanvasController = [(THWPopUpContentProvider *)self scrollableCanvasController];
 
-  [(THWScrollableCanvasController *)v3 setDelegate:0];
+  [(THWScrollableCanvasController *)scrollableCanvasController setDelegate:0];
 }
 
-- (void)displayModeDidChange:(int)a3
+- (void)displayModeDidChange:(int)change
 {
-  v3 = *&a3;
-  v4 = [(THWPopUpContentProvider *)self scrollableCanvasController];
+  v3 = *&change;
+  scrollableCanvasController = [(THWPopUpContentProvider *)self scrollableCanvasController];
 
-  [(THWScrollableCanvasController *)v4 displayModeDidChange:v3];
+  [(THWScrollableCanvasController *)scrollableCanvasController displayModeDidChange:v3];
 }
 
 - (CGSize)unscaledContentSizeForFillScreen
 {
-  v2 = [(THWPopUpContentProvider *)self scrollableCanvasController];
+  scrollableCanvasController = [(THWPopUpContentProvider *)self scrollableCanvasController];
 
-  [(THWScrollableCanvasController *)v2 unscaledContentSizeForFillScreen];
+  [(THWScrollableCanvasController *)scrollableCanvasController unscaledContentSizeForFillScreen];
   result.height = v4;
   result.width = v3;
   return result;
@@ -120,34 +120,34 @@
 
 - (void)disableCanvasInteraction
 {
-  v2 = [(THWPopUpContentProvider *)self scrollableCanvasController];
+  scrollableCanvasController = [(THWPopUpContentProvider *)self scrollableCanvasController];
 
-  [(THWScrollableCanvasController *)v2 disableCanvasInteraction];
+  [(THWScrollableCanvasController *)scrollableCanvasController disableCanvasInteraction];
 }
 
-- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)a3
+- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)controller
 {
-  v3 = [(TSWPopUpInfo *)[(THWPopUpContentProvider *)self popupInfo] frameViewSettings];
+  frameViewSettings = [(TSWPopUpInfo *)[(THWPopUpContentProvider *)self popupInfo] frameViewSettings];
 
-  [v3 frameCanvasSize];
+  [frameViewSettings frameCanvasSize];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (id)scrollableCanvasController:(id)a3 infosToDisplayForViewport:(CGRect)a4
+- (id)scrollableCanvasController:(id)controller infosToDisplayForViewport:(CGRect)viewport
 {
-  v4 = [(TSWPopUpInfo *)[(THWPopUpContentProvider *)self popupInfo:a3] frameViewSettings];
+  frameViewSettings = [(TSWPopUpInfo *)[(THWPopUpContentProvider *)self popupInfo:controller] frameViewSettings];
 
-  return [v4 frameCanvasInfos];
+  return [frameViewSettings frameCanvasInfos];
 }
 
-- (UIEdgeInsets)p_scaledEdgeInsets:(UIEdgeInsets)a3
+- (UIEdgeInsets)p_scaledEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(THWPopUpContentProvider *)self scale];
   v9 = top * v8;
   [(THWPopUpContentProvider *)self scale];
@@ -166,7 +166,7 @@
   return result;
 }
 
-- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)a3
+- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)controller
 {
   [-[TSWPopUpInfo frameViewSettings](-[THWPopUpContentProvider popupInfo](self popupInfo];
 
@@ -178,15 +178,15 @@
   return result;
 }
 
-- (id)scrollableCanvasController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6
+- (id)scrollableCanvasController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
   [(THWPopUpContentProvider *)self scrollableCanvasHost];
   v9 = TSUProtocolCast();
 
-  return [v9 actionForHyperlink:a4 inRep:a5 gesture:a6];
+  return [v9 actionForHyperlink:hyperlink inRep:rep gesture:gesture];
 }
 
-- (UIEdgeInsets)scrollViewContentInsetForScrollableCanvasController:(id)a3
+- (UIEdgeInsets)scrollViewContentInsetForScrollableCanvasController:(id)controller
 {
   v3 = 4.0;
   v4 = 0.0;

@@ -1,10 +1,10 @@
 @interface AXAccessQueueTimer
 + (id)timerTargettingMainAccessQueue;
-- (AXAccessQueueTimer)initWithTargetAccessQueue:(id)a3;
+- (AXAccessQueueTimer)initWithTargetAccessQueue:(id)queue;
 - (NSString)description;
-- (void)_afterDelay:(double)a3 processBlock:(id)a4 shouldTreatAsWritingBlock:(BOOL)a5;
+- (void)_afterDelay:(double)delay processBlock:(id)block shouldTreatAsWritingBlock:(BOOL)writingBlock;
 - (void)_didFinishProcessingBlock;
-- (void)_performEnqueuedWritingBlock:(id)a3 asynchronousExecutionWarningHandler:(SEL)a4;
+- (void)_performEnqueuedWritingBlock:(id)block asynchronousExecutionWarningHandler:(SEL)handler;
 - (void)_reallyCancel;
 - (void)_warnAboutAsynchronousCancelling;
 - (void)_warnAboutAsynchronousScheduling;
@@ -16,16 +16,16 @@
 
 + (id)timerTargettingMainAccessQueue
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[AXAccessQueue mainAccessQueue];
   v4 = [v2 initWithTargetAccessQueue:v3];
 
   return v4;
 }
 
-- (AXAccessQueueTimer)initWithTargetAccessQueue:(id)a3
+- (AXAccessQueueTimer)initWithTargetAccessQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = AXAccessQueueTimer;
   v5 = [(AXAccessQueueTimer *)&v9 init];
@@ -33,9 +33,9 @@
   if (v5)
   {
     [(AXAccessQueueTimer *)v5 setState:0];
-    if (v4)
+    if (queueCopy)
     {
-      [(AXAccessQueueTimer *)v6 setAccessQueue:v4];
+      [(AXAccessQueueTimer *)v6 setAccessQueue:queueCopy];
       [(AXAccessQueueTimer *)v6 setAccessQueueIsExternal:1];
     }
 
@@ -60,63 +60,63 @@
 
 - (void)dealloc
 {
-  v3 = [(AXAccessQueueTimer *)self accessQueue];
+  accessQueue = [(AXAccessQueueTimer *)self accessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __29__AXAccessQueueTimer_dealloc__block_invoke;
   v5[3] = &unk_1E735AD18;
   v5[4] = self;
-  [v3 performSynchronousWritingBlock:v5];
+  [accessQueue performSynchronousWritingBlock:v5];
 
   v4.receiver = self;
   v4.super_class = AXAccessQueueTimer;
   [(AXAccessQueueTimer *)&v4 dealloc];
 }
 
-- (void)_performEnqueuedWritingBlock:(id)a3 asynchronousExecutionWarningHandler:(SEL)a4
+- (void)_performEnqueuedWritingBlock:(id)block asynchronousExecutionWarningHandler:(SEL)handler
 {
-  v7 = a3;
-  v6 = [(AXAccessQueueTimer *)self accessQueue];
-  if ([v6 canOnlyReadInCurrentExecutionThread])
+  blockCopy = block;
+  accessQueue = [(AXAccessQueueTimer *)self accessQueue];
+  if ([accessQueue canOnlyReadInCurrentExecutionThread])
   {
     if (objc_opt_respondsToSelector())
     {
-      ([(AXAccessQueueTimer *)self methodForSelector:a4])(self, a4);
+      ([(AXAccessQueueTimer *)self methodForSelector:handler])(self, handler);
     }
 
-    [v6 performAsynchronousWritingBlock:v7];
+    [accessQueue performAsynchronousWritingBlock:blockCopy];
   }
 
   else
   {
-    [v6 performSynchronousWritingBlock:v7];
+    [accessQueue performSynchronousWritingBlock:blockCopy];
   }
 }
 
-- (void)_afterDelay:(double)a3 processBlock:(id)a4 shouldTreatAsWritingBlock:(BOOL)a5
+- (void)_afterDelay:(double)delay processBlock:(id)block shouldTreatAsWritingBlock:(BOOL)writingBlock
 {
-  v8 = a4;
+  blockCopy = block;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy_;
   v13[4] = __Block_byref_object_dispose_;
-  v14 = [v8 copy];
+  v14 = [blockCopy copy];
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__4;
   v11[4] = __Block_byref_object_dispose__5;
-  v12 = self;
+  selfCopy = self;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock___block_invoke;
   v9[3] = &unk_1E735AEB0;
-  *&v9[6] = a3;
-  v10 = a5;
+  *&v9[6] = delay;
+  writingBlockCopy = writingBlock;
   v9[4] = v11;
   v9[5] = v13;
-  [(AXAccessQueueTimer *)v12 _performEnqueuedWritingBlock:v9 asynchronousExecutionWarningHandler:sel__warnAboutAsynchronousScheduling];
+  [(AXAccessQueueTimer *)selfCopy _performEnqueuedWritingBlock:v9 asynchronousExecutionWarningHandler:sel__warnAboutAsynchronousScheduling];
   _Block_object_dispose(v11, 8);
 
   _Block_object_dispose(v13, 8);
@@ -274,7 +274,7 @@ void __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock
 - (void)_didFinishProcessingBlock
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 accessQueue];
+  accessQueue = [self accessQueue];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_fault_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -288,7 +288,7 @@ void __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   sel_getName(a2);
-  v6 = [a1 accessQueue];
+  accessQueue = [self accessQueue];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_3(&dword_19159B000, v7, v8, "Can't schedule timer %@ synchronously; scheduling it asynchronously instead. To avoid this, break on [%@ %s], find the call site initiating a reading block onto %@, and change that to a writing block.", v9, v10, v11, v12, v14);
 
@@ -308,7 +308,7 @@ void __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock
 - (void)_reallyCancel
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 accessQueue];
+  accessQueue = [self accessQueue];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_fault_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -322,7 +322,7 @@ void __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   sel_getName(a2);
-  v6 = [a1 accessQueue];
+  accessQueue = [self accessQueue];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_3(&dword_19159B000, v7, v8, "Can't cancel timer %@ synchronously; cancelling it asynchronously instead. To avoid this, break on [%@ %s], find the call site initiating a reading block onto %@, and change that to a writing block.", v9, v10, v11, v12, v14);
 
@@ -331,22 +331,22 @@ void __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock
 
 - (NSString)description
 {
-  v3 = [(AXAccessQueueTimer *)self state];
-  if (v3 > 3)
+  state = [(AXAccessQueueTimer *)self state];
+  if (state > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E735AED0[v3];
+    v4 = off_1E735AED0[state];
   }
 
-  v5 = [(AXAccessQueueTimer *)self label];
+  label = [(AXAccessQueueTimer *)self label];
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  if (v5)
+  if (label)
   {
     v9 = @"; label = ";
   }
@@ -356,9 +356,9 @@ void __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock
     v9 = &stru_1F0579798;
   }
 
-  if (v5)
+  if (label)
   {
-    v10 = v5;
+    v10 = label;
   }
 
   else
@@ -366,7 +366,7 @@ void __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock
     v10 = &stru_1F0579798;
   }
 
-  if (v5)
+  if (label)
   {
     v11 = @"";
   }
@@ -386,9 +386,9 @@ void __73__AXAccessQueueTimer__afterDelay_processBlock_shouldTreatAsWritingBlock
     v12 = @"NO";
   }
 
-  v13 = [(AXAccessQueueTimer *)self automaticallyCancelPendingBlockUponSchedulingNewBlock];
+  automaticallyCancelPendingBlockUponSchedulingNewBlock = [(AXAccessQueueTimer *)self automaticallyCancelPendingBlockUponSchedulingNewBlock];
   v14 = @"; automaticallyCancelPendingBlockUponSchedulingNewBlock = YES";
-  if (!v13)
+  if (!automaticallyCancelPendingBlockUponSchedulingNewBlock)
   {
     v14 = &stru_1F0579798;
   }

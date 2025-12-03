@@ -1,8 +1,8 @@
 @interface NUWrappedBufferStorage
-- (NUWrappedBufferStorage)initWithSize:(id)a3 format:(id)a4 bytes:(void *)a5 rowBytes:(int64_t)a6 length:(int64_t)a7;
+- (NUWrappedBufferStorage)initWithSize:(id)size format:(id)format bytes:(void *)bytes rowBytes:(int64_t)rowBytes length:(int64_t)length;
 - (id)newRenderDestination;
-- (int64_t)readBufferInRegion:(id)a3 block:(id)a4;
-- (int64_t)writeBufferInRegion:(id)a3 block:(id)a4;
+- (int64_t)readBufferInRegion:(id)region block:(id)block;
+- (int64_t)writeBufferInRegion:(id)region block:(id)block;
 @end
 
 @implementation NUWrappedBufferStorage
@@ -10,49 +10,49 @@
 - (id)newRenderDestination
 {
   v3 = objc_alloc(MEMORY[0x1E695F678]);
-  v4 = [(NUWrappedBufferStorage *)self mutableBytes];
+  mutableBytes = [(NUWrappedBufferStorage *)self mutableBytes];
   v5 = [(_NUAbstractStorage *)self size];
   [(_NUAbstractStorage *)self size];
   v7 = v6;
-  v8 = [(NUWrappedBufferStorage *)self rowBytes];
-  v9 = [(_NUAbstractStorage *)self format];
-  v10 = [v3 initWithBitmapData:v4 width:v5 height:v7 bytesPerRow:v8 format:{objc_msgSend(v9, "CIFormat")}];
+  rowBytes = [(NUWrappedBufferStorage *)self rowBytes];
+  format = [(_NUAbstractStorage *)self format];
+  v10 = [v3 initWithBitmapData:mutableBytes width:v5 height:v7 bytesPerRow:rowBytes format:{objc_msgSend(format, "CIFormat")}];
 
   [v10 setLabel:@"NUWrappedBufferStorage-new"];
   return v10;
 }
 
-- (int64_t)writeBufferInRegion:(id)a3 block:(id)a4
+- (int64_t)writeBufferInRegion:(id)region block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  regionCopy = region;
   v8 = [[NUMutableBufferAdapter alloc] initWithMutableBuffer:self];
-  v6[2](v6, v8);
+  blockCopy[2](blockCopy, v8);
 
   [(NUBufferAdapter *)v8 invalidate];
-  [(_NUAbstractStorage *)self validateRegion:v7];
+  [(_NUAbstractStorage *)self validateRegion:regionCopy];
 
   return 1;
 }
 
-- (int64_t)readBufferInRegion:(id)a3 block:(id)a4
+- (int64_t)readBufferInRegion:(id)region block:(id)block
 {
-  v6 = a4;
-  [(_NUAbstractStorage *)self assertIsValidInRegion:a3];
+  blockCopy = block;
+  [(_NUAbstractStorage *)self assertIsValidInRegion:region];
   v7 = [[NUBufferAdapter alloc] initWithBuffer:self];
-  v6[2](v6, v7);
+  blockCopy[2](blockCopy, v7);
 
   [(NUBufferAdapter *)v7 invalidate];
   return 1;
 }
 
-- (NUWrappedBufferStorage)initWithSize:(id)a3 format:(id)a4 bytes:(void *)a5 rowBytes:(int64_t)a6 length:(int64_t)a7
+- (NUWrappedBufferStorage)initWithSize:(id)size format:(id)format bytes:(void *)bytes rowBytes:(int64_t)rowBytes length:(int64_t)length
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v102 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  if (!v13)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v17 = NUAssertLogger_10319();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@
         v52 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v53 = MEMORY[0x1E696AF00];
         v54 = v52;
-        v55 = [v53 callStackSymbols];
-        v56 = [v55 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v53 callStackSymbols];
+        v56 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v52;
         v100 = 2114;
@@ -85,8 +85,8 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -95,7 +95,7 @@
     _NUAssertFailHandler("[NUWrappedBufferStorage initWithSize:format:bytes:rowBytes:length:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUBufferStorage.m", 353, @"Invalid parameter not satisfying: %s", v57, v58, v59, v60, "pixelFormat != nil");
   }
 
-  if (!a5)
+  if (!bytes)
   {
     v24 = NUAssertLogger_10319();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -116,8 +116,8 @@
         v61 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v62 = MEMORY[0x1E696AF00];
         v63 = v61;
-        v64 = [v62 callStackSymbols];
-        v65 = [v64 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v62 callStackSymbols];
+        v65 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v61;
         v100 = 2114;
@@ -128,8 +128,8 @@
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -138,7 +138,7 @@
     _NUAssertFailHandler("[NUWrappedBufferStorage initWithSize:format:bytes:rowBytes:length:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUBufferStorage.m", 354, @"Invalid parameter not satisfying: %s", v66, v67, v68, v69, "bytes != nil");
   }
 
-  if (!a6)
+  if (!rowBytes)
   {
     v31 = NUAssertLogger_10319();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -159,8 +159,8 @@
         v70 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v71 = MEMORY[0x1E696AF00];
         v72 = v70;
-        v73 = [v71 callStackSymbols];
-        v74 = [v73 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v71 callStackSymbols];
+        v74 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v70;
         v100 = 2114;
@@ -171,8 +171,8 @@
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -181,7 +181,7 @@
     _NUAssertFailHandler("[NUWrappedBufferStorage initWithSize:format:bytes:rowBytes:length:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUBufferStorage.m", 355, @"Invalid parameter not satisfying: %s", v75, v76, v77, v78, "rowBytes != 0");
   }
 
-  if (!a7)
+  if (!length)
   {
     v38 = NUAssertLogger_10319();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -202,8 +202,8 @@
         v79 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v80 = MEMORY[0x1E696AF00];
         v81 = v79;
-        v82 = [v80 callStackSymbols];
-        v83 = [v82 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v80 callStackSymbols];
+        v83 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v79;
         v100 = 2114;
@@ -214,8 +214,8 @@
 
     else if (v42)
     {
-      v43 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v44 = [v43 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v44 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v44;
       _os_log_error_impl(&dword_1C0184000, v41, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -224,7 +224,7 @@
     _NUAssertFailHandler("[NUWrappedBufferStorage initWithSize:format:bytes:rowBytes:length:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUBufferStorage.m", 356, @"Invalid parameter not satisfying: %s", v84, v85, v86, v87, "length != 0");
   }
 
-  if (var1 * a6 > a7)
+  if (var1 * rowBytes > length)
   {
     v45 = NUAssertLogger_10319();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -245,8 +245,8 @@
         v88 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v89 = MEMORY[0x1E696AF00];
         v90 = v88;
-        v91 = [v89 callStackSymbols];
-        v92 = [v91 componentsJoinedByString:@"\n"];
+        callStackSymbols9 = [v89 callStackSymbols];
+        v92 = [callStackSymbols9 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v88;
         v100 = 2114;
@@ -257,8 +257,8 @@
 
     else if (v49)
     {
-      v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v51 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols10 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v51 = [callStackSymbols10 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v51;
       _os_log_error_impl(&dword_1C0184000, v48, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -267,13 +267,13 @@
     _NUAssertFailHandler("[NUWrappedBufferStorage initWithSize:format:bytes:rowBytes:length:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUBufferStorage.m", 357, @"Invalid parameter not satisfying: %s", v93, v94, v95, v96, "length >= size.height * rowBytes");
   }
 
-  v14 = v13;
+  v14 = formatCopy;
   v97.receiver = self;
   v97.super_class = NUWrappedBufferStorage;
   v15 = [(_NUAbstractStorage *)&v97 init];
-  v15->_rowBytes = a6;
-  v15->_length = a7;
-  v15->_bytes = a5;
+  v15->_rowBytes = rowBytes;
+  v15->_length = length;
+  v15->_bytes = bytes;
   [(_NUAbstractStorage *)v15 _resetSize:var0 format:var1, v14];
 
   return v15;

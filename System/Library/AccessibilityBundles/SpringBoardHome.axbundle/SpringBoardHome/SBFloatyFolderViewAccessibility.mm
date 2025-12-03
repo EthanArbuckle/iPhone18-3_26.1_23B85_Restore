@@ -1,17 +1,17 @@
 @interface SBFloatyFolderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_currentPageIndexDidChange;
 @end
 
 @implementation SBFloatyFolderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFloatyFolderView" isKindOfClass:@"SBFolderView"];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"minimumPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceVariable:@"_iconListViews" withType:"NSMutableArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFloatyFolderView" isKindOfClass:@"SBFolderView"];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"minimumPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceVariable:@"_iconListViews" withType:"NSMutableArray"];
 }
 
 - (void)_currentPageIndexDidChange

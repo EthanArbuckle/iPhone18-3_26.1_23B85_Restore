@@ -1,39 +1,39 @@
 @interface BMSiriVoiceTriggerStatistics
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriVoiceTriggerStatistics)initWithAbsoluteTimestamp:(id)a3 firstPassPeakScoreHS:(id)a4 firstPassPeakScoreJS:(id)a5 firstPassTriggerSource:(id)a6 recognizerScoreHS:(id)a7 recognizerScoreJS:(id)a8 triggerScoreHS:(id)a9 triggerScoreJS:(id)a10 mitigationScore:(id)a11 invocationTypeID:(id)a12 repetitionSimilarityScore:(id)a13 tdSpeakerRecognizerCombinedScore:(id)a14 hwSampleRate:(id)a15 configVersion:(id)a16 keywordThresholdHS:(id)a17 keywordThresholdJS:(id)a18 tdSpeakerRecognizerCombinedThresholdHS:(id)a19 tdSpeakerRecognizerCombinedThresholdJS:(id)a20;
-- (BMSiriVoiceTriggerStatistics)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriVoiceTriggerStatistics)initWithAbsoluteTimestamp:(id)timestamp firstPassPeakScoreHS:(id)s firstPassPeakScoreJS:(id)jS firstPassTriggerSource:(id)source recognizerScoreHS:(id)hS recognizerScoreJS:(id)scoreJS triggerScoreHS:(id)scoreHS triggerScoreJS:(id)self0 mitigationScore:(id)self1 invocationTypeID:(id)self2 repetitionSimilarityScore:(id)self3 tdSpeakerRecognizerCombinedScore:(id)self4 hwSampleRate:(id)self5 configVersion:(id)self6 keywordThresholdHS:(id)self7 keywordThresholdJS:(id)self8 tdSpeakerRecognizerCombinedThresholdHS:(id)self9 tdSpeakerRecognizerCombinedThresholdJS:(id)combinedThresholdJS;
+- (BMSiriVoiceTriggerStatistics)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriVoiceTriggerStatistics
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -95,8 +95,8 @@
         goto LABEL_91;
       }
 
-      v19 = [(BMSiriVoiceTriggerStatistics *)self firstPassTriggerSource];
-      if (v19 != [v5 firstPassTriggerSource])
+      firstPassTriggerSource = [(BMSiriVoiceTriggerStatistics *)self firstPassTriggerSource];
+      if (firstPassTriggerSource != [v5 firstPassTriggerSource])
       {
         goto LABEL_91;
       }
@@ -219,8 +219,8 @@
         goto LABEL_91;
       }
 
-      v35 = [(BMSiriVoiceTriggerStatistics *)self invocationTypeID];
-      if (v35 != [v5 invocationTypeID])
+      invocationTypeID = [(BMSiriVoiceTriggerStatistics *)self invocationTypeID];
+      if (invocationTypeID != [v5 invocationTypeID])
       {
         goto LABEL_91;
       }
@@ -289,18 +289,18 @@
       }
     }
 
-    v45 = [(BMSiriVoiceTriggerStatistics *)self configVersion];
-    v46 = [v5 configVersion];
-    v47 = v46;
-    if (v45 == v46)
+    configVersion = [(BMSiriVoiceTriggerStatistics *)self configVersion];
+    configVersion2 = [v5 configVersion];
+    v47 = configVersion2;
+    if (configVersion == configVersion2)
     {
     }
 
     else
     {
-      v48 = [(BMSiriVoiceTriggerStatistics *)self configVersion];
-      v49 = [v5 configVersion];
-      v50 = [v48 isEqual:v49];
+      configVersion3 = [(BMSiriVoiceTriggerStatistics *)self configVersion];
+      configVersion4 = [v5 configVersion];
+      v50 = [configVersion3 isEqual:configVersion4];
 
       if (!v50)
       {
@@ -365,12 +365,12 @@ LABEL_93:
 - (id)jsonDictionary
 {
   v94[18] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
-    [v5 timeIntervalSince1970];
+    absoluteTimestamp2 = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -529,7 +529,7 @@ LABEL_93:
     v87 = [v32 numberWithDouble:?];
   }
 
-  v86 = [(BMSiriVoiceTriggerStatistics *)self configVersion];
+  configVersion = [(BMSiriVoiceTriggerStatistics *)self configVersion];
   if (![(BMSiriVoiceTriggerStatistics *)self hasKeywordThresholdHS]|| ([(BMSiriVoiceTriggerStatistics *)self keywordThresholdHS], fabs(v33) == INFINITY))
   {
     v85 = 0;
@@ -583,168 +583,168 @@ LABEL_93:
   }
 
   v93[0] = @"absoluteTimestamp";
-  v42 = v6;
+  null = v6;
   if (!v6)
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v75 = v42;
-  v94[0] = v42;
+  v75 = null;
+  v94[0] = null;
   v93[1] = @"firstPassPeakScoreHS";
-  v43 = v9;
+  null2 = v9;
   if (!v9)
   {
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v74 = v43;
-  v94[1] = v43;
+  v74 = null2;
+  v94[1] = null2;
   v93[2] = @"firstPassPeakScoreJS";
-  v44 = v12;
+  null3 = v12;
   if (!v12)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v73 = v44;
-  v94[2] = v44;
+  v73 = null3;
+  v94[2] = null3;
   v93[3] = @"firstPassTriggerSource";
-  v45 = v13;
+  null4 = v13;
   if (!v13)
   {
-    v45 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v72 = v45;
-  v94[3] = v45;
+  v72 = null4;
+  v94[3] = null4;
   v93[4] = @"recognizerScoreHS";
-  v46 = v16;
+  null5 = v16;
   if (!v16)
   {
-    v46 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v71 = v46;
-  v94[4] = v46;
+  v71 = null5;
+  v94[4] = null5;
   v93[5] = @"recognizerScoreJS";
-  v47 = v19;
+  null6 = v19;
   if (!v19)
   {
-    v47 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v70 = v47;
-  v94[5] = v47;
+  v70 = null6;
+  v94[5] = null6;
   v93[6] = @"triggerScoreHS";
-  v48 = v22;
+  null7 = v22;
   if (!v22)
   {
-    v48 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v69 = v48;
-  v94[6] = v48;
+  v69 = null7;
+  v94[6] = null7;
   v93[7] = @"triggerScoreJS";
-  v49 = v92;
+  null8 = v92;
   if (!v92)
   {
-    v49 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v94[7] = v49;
+  v94[7] = null8;
   v93[8] = @"mitigationScore";
-  v50 = v91;
+  null9 = v91;
   if (!v91)
   {
-    v50 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v94[8] = v50;
+  v94[8] = null9;
   v93[9] = @"invocationTypeID";
-  v51 = v90;
+  null10 = v90;
   if (!v90)
   {
-    v51 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
   v79 = v22;
-  v78 = v51;
-  v94[9] = v51;
+  v78 = null10;
+  v94[9] = null10;
   v93[10] = @"repetitionSimilarityScore";
-  v52 = v89;
+  null11 = v89;
   if (!v89)
   {
-    v52 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
   v81 = v13;
-  v94[10] = v52;
+  v94[10] = null11;
   v93[11] = @"tdSpeakerRecognizerCombinedScore";
-  v53 = v88;
+  null12 = v88;
   if (!v88)
   {
-    v53 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
   v82 = v6;
-  v65 = v53;
-  v94[11] = v53;
+  v65 = null12;
+  v94[11] = null12;
   v93[12] = @"hwSampleRate";
-  v54 = v87;
+  null13 = v87;
   if (!v87)
   {
-    v54 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v67 = v50;
-  v68 = v49;
+  v67 = null9;
+  v68 = null8;
   v80 = v9;
-  v94[12] = v54;
+  v94[12] = null13;
   v93[13] = @"configVersion";
-  v55 = v86;
-  if (!v86)
+  null14 = configVersion;
+  if (!configVersion)
   {
-    v55 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
   v77 = v19;
   v56 = v12;
-  v94[13] = v55;
+  v94[13] = null14;
   v93[14] = @"keywordThresholdHS";
-  v57 = v85;
+  null15 = v85;
   if (!v85)
   {
-    v57 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
   v58 = v16;
-  v94[14] = v57;
+  v94[14] = null15;
   v93[15] = @"keywordThresholdJS";
-  v59 = v84;
+  null16 = v84;
   if (!v84)
   {
-    v59 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v60 = v52;
-  v94[15] = v59;
+  v60 = null11;
+  v94[15] = null16;
   v93[16] = @"tdSpeakerRecognizerCombinedThresholdHS";
-  v61 = v83;
+  null17 = v83;
   if (!v83)
   {
-    v61 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v94[16] = v61;
+  v94[16] = null17;
   v93[17] = @"tdSpeakerRecognizerCombinedThresholdJS";
-  v62 = v41;
+  null18 = v41;
   if (!v41)
   {
-    v62 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v94[17] = v62;
+  v94[17] = null18;
   v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:{18, v65}];
   if (!v41)
   {
@@ -762,7 +762,7 @@ LABEL_93:
   {
   }
 
-  if (!v86)
+  if (!configVersion)
   {
   }
 
@@ -887,11 +887,11 @@ LABEL_130:
   return v76;
 }
 
-- (BMSiriVoiceTriggerStatistics)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriVoiceTriggerStatistics)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v218[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v182 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v182 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (!v182 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = 0;
@@ -919,7 +919,7 @@ LABEL_6:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v6 = 0;
         v46 = 0;
@@ -935,7 +935,7 @@ LABEL_6:
       v94 = [v92 initWithDomain:v93 code:2 userInfo:v14];
       v6 = 0;
       v46 = 0;
-      *a4 = v94;
+      *error = v94;
       goto LABEL_143;
     }
 
@@ -947,7 +947,7 @@ LABEL_6:
   v6 = [v13 dateFromString:v182];
 
 LABEL_9:
-  v14 = [v5 objectForKeyedSubscript:@"firstPassPeakScoreHS"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"firstPassPeakScoreHS"];
   if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v180 = 0;
@@ -959,7 +959,7 @@ LABEL_9:
   {
     v180 = v14;
 LABEL_12:
-    v15 = [v5 objectForKeyedSubscript:@"firstPassPeakScoreJS"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"firstPassPeakScoreJS"];
     if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v179 = 0;
@@ -971,7 +971,7 @@ LABEL_12:
     {
       v179 = v15;
 LABEL_15:
-      v16 = [v5 objectForKeyedSubscript:@"firstPassTriggerSource"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"firstPassTriggerSource"];
       if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v176 = v16;
@@ -985,7 +985,7 @@ LABEL_15:
         v176 = v16;
         v178 = v16;
 LABEL_18:
-        v17 = [v5 objectForKeyedSubscript:@"recognizerScoreHS"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"recognizerScoreHS"];
         if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v18 = 0;
@@ -997,7 +997,7 @@ LABEL_18:
         {
           v18 = v17;
 LABEL_21:
-          v19 = [v5 objectForKeyedSubscript:@"recognizerScoreJS"];
+          v19 = [dictionaryCopy objectForKeyedSubscript:@"recognizerScoreJS"];
           if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v171 = v19;
@@ -1011,7 +1011,7 @@ LABEL_21:
             v171 = v19;
             v175 = v19;
 LABEL_24:
-            v20 = [v5 objectForKeyedSubscript:@"triggerScoreHS"];
+            v20 = [dictionaryCopy objectForKeyedSubscript:@"triggerScoreHS"];
             v173 = v20;
             if (!v20 || (v21 = v20, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -1024,7 +1024,7 @@ LABEL_24:
             {
               v174 = v21;
 LABEL_27:
-              v22 = [v5 objectForKeyedSubscript:@"triggerScoreJS"];
+              v22 = [dictionaryCopy objectForKeyedSubscript:@"triggerScoreJS"];
               v170 = v22;
               if (!v22 || (v23 = v22, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -1037,7 +1037,7 @@ LABEL_27:
               {
                 v172 = v23;
 LABEL_30:
-                v24 = [v5 objectForKeyedSubscript:@"mitigationScore"];
+                v24 = [dictionaryCopy objectForKeyedSubscript:@"mitigationScore"];
                 v168 = v24;
                 if (!v24 || (v25 = v24, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -1050,7 +1050,7 @@ LABEL_30:
                 {
                   v169 = v25;
 LABEL_33:
-                  v26 = [v5 objectForKeyedSubscript:@"invocationTypeID"];
+                  v26 = [dictionaryCopy objectForKeyedSubscript:@"invocationTypeID"];
                   v164 = v26;
                   if (!v26 || (v27 = v26, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
@@ -1063,7 +1063,7 @@ LABEL_33:
                   {
                     v165 = v27;
 LABEL_36:
-                    v28 = [v5 objectForKeyedSubscript:@"repetitionSimilarityScore"];
+                    v28 = [dictionaryCopy objectForKeyedSubscript:@"repetitionSimilarityScore"];
                     v159 = v28;
                     if (!v28 || (v29 = v28, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
@@ -1076,7 +1076,7 @@ LABEL_36:
                     {
                       v160 = v29;
 LABEL_39:
-                      v30 = [v5 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
+                      v30 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
                       v157 = v30;
                       if (!v30 || (v31 = v30, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
@@ -1089,7 +1089,7 @@ LABEL_39:
                       {
                         v158 = v31;
 LABEL_42:
-                        v32 = [v5 objectForKeyedSubscript:@"hwSampleRate"];
+                        v32 = [dictionaryCopy objectForKeyedSubscript:@"hwSampleRate"];
                         v155 = v32;
                         if (!v32 || (v33 = v32, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
@@ -1102,7 +1102,7 @@ LABEL_42:
                         {
                           v156 = v33;
 LABEL_45:
-                          v34 = [v5 objectForKeyedSubscript:@"configVersion"];
+                          v34 = [dictionaryCopy objectForKeyedSubscript:@"configVersion"];
                           v152 = v34;
                           if (!v34 || (v35 = v34, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                           {
@@ -1115,7 +1115,7 @@ LABEL_45:
                           {
                             v153 = v35;
 LABEL_48:
-                            v36 = [v5 objectForKeyedSubscript:@"keywordThresholdHS"];
+                            v36 = [dictionaryCopy objectForKeyedSubscript:@"keywordThresholdHS"];
                             v166 = v17;
                             v149 = v36;
                             if (!v36 || (v37 = v36, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1129,7 +1129,7 @@ LABEL_48:
                             {
                               v151 = v37;
 LABEL_51:
-                              v38 = [v5 objectForKeyedSubscript:@"keywordThresholdJS"];
+                              v38 = [dictionaryCopy objectForKeyedSubscript:@"keywordThresholdJS"];
                               v148 = v38;
                               if (!v38 || (v39 = v38, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                               {
@@ -1142,7 +1142,7 @@ LABEL_51:
                               {
                                 v150 = v39;
 LABEL_54:
-                                v40 = [v5 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdHS"];
+                                v40 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdHS"];
                                 v161 = v40;
                                 if (v40)
                                 {
@@ -1158,7 +1158,7 @@ LABEL_54:
                                     objc_opt_class();
                                     if ((objc_opt_isKindOfClass() & 1) == 0)
                                     {
-                                      if (!a4)
+                                      if (!error)
                                       {
                                         v40 = 0;
                                         v46 = 0;
@@ -1176,7 +1176,7 @@ LABEL_54:
                                       v142 = [v140 initWithDomain:v141 code:2 userInfo:v113];
                                       v40 = 0;
                                       v46 = 0;
-                                      *a4 = v142;
+                                      *error = v142;
                                       goto LABEL_126;
                                     }
 
@@ -1190,13 +1190,13 @@ LABEL_54:
                                   v41 = v6;
                                 }
 
-                                v113 = [v5 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdJS"];
+                                v113 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThresholdJS"];
                                 if (v113 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                 {
                                   objc_opt_class();
                                   if ((objc_opt_isKindOfClass() & 1) == 0)
                                   {
-                                    if (a4)
+                                    if (error)
                                     {
                                       v147 = objc_alloc(MEMORY[0x1E696ABC0]);
                                       v146 = *MEMORY[0x1E698F240];
@@ -1204,7 +1204,7 @@ LABEL_54:
                                       v143 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"tdSpeakerRecognizerCombinedThresholdJS"];
                                       v184 = v143;
                                       v144 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v184 forKeys:&v183 count:1];
-                                      *a4 = [v147 initWithDomain:v146 code:2 userInfo:v144];
+                                      *error = [v147 initWithDomain:v146 code:2 userInfo:v144];
                                     }
 
                                     v114 = 0;
@@ -1249,7 +1249,7 @@ LABEL_137:
                                 goto LABEL_138;
                               }
 
-                              if (a4)
+                              if (error)
                               {
                                 v163 = v18;
                                 v132 = v14;
@@ -1270,7 +1270,7 @@ LABEL_137:
                                 v139 = [v138 initWithDomain:v136 code:2 userInfo:v115];
                                 v150 = 0;
                                 v46 = 0;
-                                *a4 = v139;
+                                *error = v139;
                                 v62 = v171;
                                 goto LABEL_128;
                               }
@@ -1283,7 +1283,7 @@ LABEL_178:
                               goto LABEL_129;
                             }
 
-                            if (a4)
+                            if (error)
                             {
                               v126 = v6;
                               v127 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1298,7 +1298,7 @@ LABEL_178:
                               v131 = [v130 initWithDomain:v128 code:2 userInfo:?];
                               v151 = 0;
                               v46 = 0;
-                              *a4 = v131;
+                              *error = v131;
                               goto LABEL_178;
                             }
 
@@ -1310,7 +1310,7 @@ LABEL_176:
                             goto LABEL_130;
                           }
 
-                          if (a4)
+                          if (error)
                           {
                             v154 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v124 = *MEMORY[0x1E698F240];
@@ -1321,7 +1321,7 @@ LABEL_176:
                             v125 = [v154 initWithDomain:v124 code:2 userInfo:?];
                             v153 = 0;
                             v46 = 0;
-                            *a4 = v125;
+                            *error = v125;
                             v16 = v176;
                             goto LABEL_176;
                           }
@@ -1334,7 +1334,7 @@ LABEL_174:
                           goto LABEL_131;
                         }
 
-                        if (a4)
+                        if (error)
                         {
                           v118 = v6;
                           v119 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1349,7 +1349,7 @@ LABEL_174:
                           v123 = [v122 initWithDomain:v120 code:2 userInfo:?];
                           v156 = 0;
                           v46 = 0;
-                          *a4 = v123;
+                          *error = v123;
                           v16 = v176;
                           goto LABEL_174;
                         }
@@ -1362,7 +1362,7 @@ LABEL_172:
                         goto LABEL_132;
                       }
 
-                      if (a4)
+                      if (error)
                       {
                         v107 = v6;
                         v108 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1377,7 +1377,7 @@ LABEL_172:
                         v112 = [v111 initWithDomain:v109 code:2 userInfo:?];
                         v158 = 0;
                         v46 = 0;
-                        *a4 = v112;
+                        *error = v112;
                         goto LABEL_172;
                       }
 
@@ -1389,7 +1389,7 @@ LABEL_167:
                       goto LABEL_133;
                     }
 
-                    if (a4)
+                    if (error)
                     {
                       v101 = v6;
                       v102 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1404,7 +1404,7 @@ LABEL_167:
                       v106 = [v105 initWithDomain:v103 code:2 userInfo:?];
                       v160 = 0;
                       v46 = 0;
-                      *a4 = v106;
+                      *error = v106;
                       goto LABEL_167;
                     }
 
@@ -1416,7 +1416,7 @@ LABEL_163:
                     goto LABEL_134;
                   }
 
-                  if (a4)
+                  if (error)
                   {
                     v95 = v6;
                     v96 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1431,7 +1431,7 @@ LABEL_163:
                     v100 = [v99 initWithDomain:v97 code:2 userInfo:?];
                     v165 = 0;
                     v46 = 0;
-                    *a4 = v100;
+                    *error = v100;
                     goto LABEL_163;
                   }
 
@@ -1443,7 +1443,7 @@ LABEL_159:
                   goto LABEL_135;
                 }
 
-                if (a4)
+                if (error)
                 {
                   v86 = v6;
                   v87 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1458,7 +1458,7 @@ LABEL_159:
                   v91 = [v90 initWithDomain:v88 code:2 userInfo:?];
                   v169 = 0;
                   v46 = 0;
-                  *a4 = v91;
+                  *error = v91;
                   goto LABEL_159;
                 }
 
@@ -1470,7 +1470,7 @@ LABEL_154:
                 goto LABEL_136;
               }
 
-              if (a4)
+              if (error)
               {
                 v80 = v6;
                 v81 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1485,7 +1485,7 @@ LABEL_154:
                 v85 = [v84 initWithDomain:v82 code:2 userInfo:?];
                 v172 = 0;
                 v46 = 0;
-                *a4 = v85;
+                *error = v85;
                 goto LABEL_154;
               }
 
@@ -1497,7 +1497,7 @@ LABEL_148:
               goto LABEL_137;
             }
 
-            if (a4)
+            if (error)
             {
               v74 = v6;
               v75 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1512,7 +1512,7 @@ LABEL_148:
               v79 = [v78 initWithDomain:v76 code:2 userInfo:?];
               v174 = 0;
               v46 = 0;
-              *a4 = v79;
+              *error = v79;
               goto LABEL_148;
             }
 
@@ -1525,7 +1525,7 @@ LABEL_138:
             goto LABEL_139;
           }
 
-          if (a4)
+          if (error)
           {
             v162 = v18;
             v65 = v6;
@@ -1533,7 +1533,7 @@ LABEL_138:
             v67 = *MEMORY[0x1E698F240];
             v207 = *MEMORY[0x1E696A578];
             v167 = v17;
-            v68 = a4;
+            errorCopy = error;
             v69 = objc_alloc(MEMORY[0x1E696AEC0]);
             v145 = objc_opt_class();
             v70 = v69;
@@ -1548,7 +1548,7 @@ LABEL_138:
             v73 = [v72 initWithDomain:v67 code:2 userInfo:?];
             v175 = 0;
             v46 = 0;
-            *v68 = v73;
+            *errorCopy = v73;
             v17 = v167;
             v16 = v176;
             goto LABEL_138;
@@ -1563,13 +1563,13 @@ LABEL_139:
           goto LABEL_140;
         }
 
-        if (a4)
+        if (error)
         {
           v58 = v6;
           v59 = objc_alloc(MEMORY[0x1E696ABC0]);
           v60 = *MEMORY[0x1E698F240];
           v209 = *MEMORY[0x1E696A578];
-          v61 = a4;
+          errorCopy2 = error;
           v175 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"recognizerScoreHS"];
           v210 = v175;
           v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v210 forKeys:&v209 count:1];
@@ -1577,7 +1577,7 @@ LABEL_139:
           v6 = v58;
           v64 = [v63 initWithDomain:v60 code:2 userInfo:v62];
           v46 = 0;
-          *v61 = v64;
+          *errorCopy2 = v64;
           v18 = 0;
           v16 = v176;
           goto LABEL_139;
@@ -1592,9 +1592,9 @@ LABEL_140:
         goto LABEL_141;
       }
 
-      if (a4)
+      if (error)
       {
-        v177 = a4;
+        errorCopy3 = error;
         v54 = objc_alloc(MEMORY[0x1E696ABC0]);
         v55 = v6;
         v56 = *MEMORY[0x1E698F240];
@@ -1606,7 +1606,7 @@ LABEL_140:
         v6 = v55;
         v178 = 0;
         v46 = 0;
-        *v177 = [v54 initWithDomain:v57 code:2 userInfo:v17];
+        *errorCopy3 = [v54 initWithDomain:v57 code:2 userInfo:v17];
         goto LABEL_140;
       }
 
@@ -1617,7 +1617,7 @@ LABEL_141:
       goto LABEL_142;
     }
 
-    if (a4)
+    if (error)
     {
       v47 = objc_alloc(MEMORY[0x1E696ABC0]);
       v48 = v6;
@@ -1632,7 +1632,7 @@ LABEL_141:
       v6 = v48;
       v179 = 0;
       v46 = 0;
-      *a4 = [v52 initWithDomain:v53 code:2 userInfo:v51];
+      *error = [v52 initWithDomain:v53 code:2 userInfo:v51];
       goto LABEL_141;
     }
 
@@ -1643,7 +1643,7 @@ LABEL_142:
     goto LABEL_143;
   }
 
-  if (a4)
+  if (error)
   {
     v42 = objc_alloc(MEMORY[0x1E696ABC0]);
     v43 = v6;
@@ -1656,7 +1656,7 @@ LABEL_142:
     v6 = v43;
     v180 = 0;
     v46 = 0;
-    *a4 = [v42 initWithDomain:v45 code:2 userInfo:v15];
+    *error = [v42 initWithDomain:v45 code:2 userInfo:v15];
     goto LABEL_142;
   }
 
@@ -1673,14 +1673,14 @@ LABEL_144:
 {
   v3 = objc_opt_new();
   [(BMSiriVoiceTriggerStatistics *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
@@ -1789,9 +1789,9 @@ LABEL_144:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v81.receiver = self;
   v81.super_class = BMSiriVoiceTriggerStatistics;
   v5 = [(BMEventBase *)&v81 init];
@@ -1800,12 +1800,12 @@ LABEL_144:
     goto LABEL_128;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1816,18 +1816,18 @@ LABEL_144:
       while (1)
       {
         LOBYTE(v82) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v82) & 0x7F) << v7;
@@ -1845,9 +1845,9 @@ LABEL_144:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1857,18 +1857,18 @@ LABEL_16:
         case 1u:
           v5->_hasRaw_absoluteTimestamp = 1;
           v82 = 0.0;
-          v15 = [v4 position] + 8;
-          if (v15 >= [v4 position] && (v16 = objc_msgSend(v4, "position") + 8, v16 <= objc_msgSend(v4, "length")))
+          v15 = [fromCopy position] + 8;
+          if (v15 >= [fromCopy position] && (v16 = objc_msgSend(fromCopy, "position") + 8, v16 <= objc_msgSend(fromCopy, "length")))
           {
-            v71 = [v4 data];
-            [v71 getBytes:&v82 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = v82;
@@ -1877,18 +1877,18 @@ LABEL_16:
         case 2u:
           v5->_hasFirstPassPeakScoreHS = 1;
           LODWORD(v82) = 0;
-          v46 = [v4 position] + 4;
-          if (v46 >= [v4 position] && (v47 = objc_msgSend(v4, "position") + 4, v47 <= objc_msgSend(v4, "length")))
+          v46 = [fromCopy position] + 4;
+          if (v46 >= [fromCopy position] && (v47 = objc_msgSend(fromCopy, "position") + 4, v47 <= objc_msgSend(fromCopy, "length")))
           {
-            v72 = [v4 data];
-            [v72 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -1897,18 +1897,18 @@ LABEL_16:
         case 3u:
           v5->_hasFirstPassPeakScoreJS = 1;
           LODWORD(v82) = 0;
-          v34 = [v4 position] + 4;
-          if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 4, v35 <= objc_msgSend(v4, "length")))
+          v34 = [fromCopy position] + 4;
+          if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 4, v35 <= objc_msgSend(fromCopy, "length")))
           {
-            v68 = [v4 data];
-            [v68 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -1922,18 +1922,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v82) = 0;
-            v41 = [v4 position] + 1;
-            if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+            v41 = [fromCopy position] + 1;
+            if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
             {
-              v43 = [v4 data];
-              [v43 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v40 |= (LOBYTE(v82) & 0x7F) << v38;
@@ -1951,7 +1951,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v33 = 0;
           }
@@ -1967,18 +1967,18 @@ LABEL_92:
         case 5u:
           v5->_hasRecognizerScoreHS = 1;
           LODWORD(v82) = 0;
-          v23 = [v4 position] + 4;
-          if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 4, v24 <= objc_msgSend(v4, "length")))
+          v23 = [fromCopy position] + 4;
+          if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 4, v24 <= objc_msgSend(fromCopy, "length")))
           {
-            v66 = [v4 data];
-            [v66 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -1987,18 +1987,18 @@ LABEL_92:
         case 6u:
           v5->_hasRecognizerScoreJS = 1;
           LODWORD(v82) = 0;
-          v50 = [v4 position] + 4;
-          if (v50 >= [v4 position] && (v51 = objc_msgSend(v4, "position") + 4, v51 <= objc_msgSend(v4, "length")))
+          v50 = [fromCopy position] + 4;
+          if (v50 >= [fromCopy position] && (v51 = objc_msgSend(fromCopy, "position") + 4, v51 <= objc_msgSend(fromCopy, "length")))
           {
-            v74 = [v4 data];
-            [v74 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2007,18 +2007,18 @@ LABEL_92:
         case 7u:
           v5->_hasTriggerScoreHS = 1;
           LODWORD(v82) = 0;
-          v54 = [v4 position] + 4;
-          if (v54 >= [v4 position] && (v55 = objc_msgSend(v4, "position") + 4, v55 <= objc_msgSend(v4, "length")))
+          v54 = [fromCopy position] + 4;
+          if (v54 >= [fromCopy position] && (v55 = objc_msgSend(fromCopy, "position") + 4, v55 <= objc_msgSend(fromCopy, "length")))
           {
-            v75 = [v4 data];
-            [v75 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data8 = [fromCopy data];
+            [data8 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2027,18 +2027,18 @@ LABEL_92:
         case 8u:
           v5->_hasTriggerScoreJS = 1;
           LODWORD(v82) = 0;
-          v44 = [v4 position] + 4;
-          if (v44 >= [v4 position] && (v45 = objc_msgSend(v4, "position") + 4, v45 <= objc_msgSend(v4, "length")))
+          v44 = [fromCopy position] + 4;
+          if (v44 >= [fromCopy position] && (v45 = objc_msgSend(fromCopy, "position") + 4, v45 <= objc_msgSend(fromCopy, "length")))
           {
-            v70 = [v4 data];
-            [v70 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data9 = [fromCopy data];
+            [data9 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2047,18 +2047,18 @@ LABEL_92:
         case 9u:
           v5->_hasMitigationScore = 1;
           LODWORD(v82) = 0;
-          v58 = [v4 position] + 4;
-          if (v58 >= [v4 position] && (v59 = objc_msgSend(v4, "position") + 4, v59 <= objc_msgSend(v4, "length")))
+          v58 = [fromCopy position] + 4;
+          if (v58 >= [fromCopy position] && (v59 = objc_msgSend(fromCopy, "position") + 4, v59 <= objc_msgSend(fromCopy, "length")))
           {
-            v77 = [v4 data];
-            [v77 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data10 = [fromCopy data];
+            [data10 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2073,18 +2073,18 @@ LABEL_92:
         case 0xBu:
           v5->_hasRepetitionSimilarityScore = 1;
           LODWORD(v82) = 0;
-          v56 = [v4 position] + 4;
-          if (v56 >= [v4 position] && (v57 = objc_msgSend(v4, "position") + 4, v57 <= objc_msgSend(v4, "length")))
+          v56 = [fromCopy position] + 4;
+          if (v56 >= [fromCopy position] && (v57 = objc_msgSend(fromCopy, "position") + 4, v57 <= objc_msgSend(fromCopy, "length")))
           {
-            v76 = [v4 data];
-            [v76 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data11 = [fromCopy data];
+            [data11 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2093,18 +2093,18 @@ LABEL_92:
         case 0xCu:
           v5->_hasTdSpeakerRecognizerCombinedScore = 1;
           LODWORD(v82) = 0;
-          v21 = [v4 position] + 4;
-          if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 4, v22 <= objc_msgSend(v4, "length")))
+          v21 = [fromCopy position] + 4;
+          if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 4, v22 <= objc_msgSend(fromCopy, "length")))
           {
-            v65 = [v4 data];
-            [v65 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data12 = [fromCopy data];
+            [data12 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2113,18 +2113,18 @@ LABEL_92:
         case 0xDu:
           v5->_hasHwSampleRate = 1;
           LODWORD(v82) = 0;
-          v25 = [v4 position] + 4;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 4, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 4;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 4, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v67 = [v4 data];
-            [v67 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data13 = [fromCopy data];
+            [data13 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2139,18 +2139,18 @@ LABEL_92:
         case 0xFu:
           v5->_hasKeywordThresholdHS = 1;
           LODWORD(v82) = 0;
-          v19 = [v4 position] + 4;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 4, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 4;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 4, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v64 = [v4 data];
-            [v64 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data14 = [fromCopy data];
+            [data14 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2159,18 +2159,18 @@ LABEL_92:
         case 0x10u:
           v5->_hasKeywordThresholdJS = 1;
           LODWORD(v82) = 0;
-          v36 = [v4 position] + 4;
-          if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 4, v37 <= objc_msgSend(v4, "length")))
+          v36 = [fromCopy position] + 4;
+          if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 4, v37 <= objc_msgSend(fromCopy, "length")))
           {
-            v69 = [v4 data];
-            [v69 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data15 = [fromCopy data];
+            [data15 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2179,18 +2179,18 @@ LABEL_92:
         case 0x11u:
           v5->_hasTdSpeakerRecognizerCombinedThresholdHS = 1;
           LODWORD(v82) = 0;
-          v17 = [v4 position] + 4;
-          if (v17 >= [v4 position] && (v18 = objc_msgSend(v4, "position") + 4, v18 <= objc_msgSend(v4, "length")))
+          v17 = [fromCopy position] + 4;
+          if (v17 >= [fromCopy position] && (v18 = objc_msgSend(fromCopy, "position") + 4, v18 <= objc_msgSend(fromCopy, "length")))
           {
-            v61 = [v4 data];
-            [v61 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data16 = [fromCopy data];
+            [data16 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2199,18 +2199,18 @@ LABEL_92:
         case 0x12u:
           v5->_hasTdSpeakerRecognizerCombinedThresholdJS = 1;
           LODWORD(v82) = 0;
-          v48 = [v4 position] + 4;
-          if (v48 >= [v4 position] && (v49 = objc_msgSend(v4, "position") + 4, v49 <= objc_msgSend(v4, "length")))
+          v48 = [fromCopy position] + 4;
+          if (v48 >= [fromCopy position] && (v49 = objc_msgSend(fromCopy, "position") + 4, v49 <= objc_msgSend(fromCopy, "length")))
           {
-            v73 = [v4 data];
-            [v73 getBytes:&v82 range:{objc_msgSend(v4, "position"), 4}];
+            data17 = [fromCopy data];
+            [data17 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = *&v82;
@@ -2230,18 +2230,18 @@ LABEL_124:
       while (1)
       {
         LOBYTE(v82) = 0;
-        v30 = [v4 position] + 1;
-        if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+        v30 = [fromCopy position] + 1;
+        if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
         {
-          v32 = [v4 data];
-          [v32 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+          data18 = [fromCopy data];
+          [data18 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v29 |= (LOBYTE(v82) & 0x7F) << v27;
@@ -2259,19 +2259,19 @@ LABEL_124:
         }
       }
 
-      v33 = [v4 hasError] ? 0 : v29;
+      v33 = [fromCopy hasError] ? 0 : v29;
 LABEL_88:
       v60 = 56;
 LABEL_93:
       *(&v5->super.super.isa + v60) = v33;
 LABEL_125:
-      v78 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v78 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_127:
     v79 = 0;
@@ -2289,7 +2289,7 @@ LABEL_128:
 - (NSString)description
 {
   v31 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v37 = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
+  absoluteTimestamp = [(BMSiriVoiceTriggerStatistics *)self absoluteTimestamp];
   v3 = MEMORY[0x1E696AD98];
   [(BMSiriVoiceTriggerStatistics *)self firstPassPeakScoreHS];
   v36 = [v3 numberWithDouble:?];
@@ -2322,7 +2322,7 @@ LABEL_128:
   v12 = MEMORY[0x1E696AD98];
   [(BMSiriVoiceTriggerStatistics *)self hwSampleRate];
   v23 = [v12 numberWithDouble:?];
-  v13 = [(BMSiriVoiceTriggerStatistics *)self configVersion];
+  configVersion = [(BMSiriVoiceTriggerStatistics *)self configVersion];
   v14 = MEMORY[0x1E696AD98];
   [(BMSiriVoiceTriggerStatistics *)self keywordThresholdHS];
   v15 = [v14 numberWithDouble:?];
@@ -2335,42 +2335,42 @@ LABEL_128:
   v20 = MEMORY[0x1E696AD98];
   [(BMSiriVoiceTriggerStatistics *)self tdSpeakerRecognizerCombinedThresholdJS];
   v21 = [v20 numberWithDouble:?];
-  v32 = [v31 initWithFormat:@"BMSiriVoiceTriggerStatistics with absoluteTimestamp: %@, firstPassPeakScoreHS: %@, firstPassPeakScoreJS: %@, firstPassTriggerSource: %@, recognizerScoreHS: %@, recognizerScoreJS: %@, triggerScoreHS: %@, triggerScoreJS: %@, mitigationScore: %@, invocationTypeID: %@, repetitionSimilarityScore: %@, tdSpeakerRecognizerCombinedScore: %@, hwSampleRate: %@, configVersion: %@, keywordThresholdHS: %@, keywordThresholdJS: %@, tdSpeakerRecognizerCombinedThresholdHS: %@, tdSpeakerRecognizerCombinedThresholdJS: %@", v37, v36, v35, v30, v29, v28, v34, v27, v26, v33, v25, v24, v23, v13, v15, v17, v19, v21];
+  v32 = [v31 initWithFormat:@"BMSiriVoiceTriggerStatistics with absoluteTimestamp: %@, firstPassPeakScoreHS: %@, firstPassPeakScoreJS: %@, firstPassTriggerSource: %@, recognizerScoreHS: %@, recognizerScoreJS: %@, triggerScoreHS: %@, triggerScoreJS: %@, mitigationScore: %@, invocationTypeID: %@, repetitionSimilarityScore: %@, tdSpeakerRecognizerCombinedScore: %@, hwSampleRate: %@, configVersion: %@, keywordThresholdHS: %@, keywordThresholdJS: %@, tdSpeakerRecognizerCombinedThresholdHS: %@, tdSpeakerRecognizerCombinedThresholdJS: %@", absoluteTimestamp, v36, v35, v30, v29, v28, v34, v27, v26, v33, v25, v24, v23, configVersion, v15, v17, v19, v21];
 
   return v32;
 }
 
-- (BMSiriVoiceTriggerStatistics)initWithAbsoluteTimestamp:(id)a3 firstPassPeakScoreHS:(id)a4 firstPassPeakScoreJS:(id)a5 firstPassTriggerSource:(id)a6 recognizerScoreHS:(id)a7 recognizerScoreJS:(id)a8 triggerScoreHS:(id)a9 triggerScoreJS:(id)a10 mitigationScore:(id)a11 invocationTypeID:(id)a12 repetitionSimilarityScore:(id)a13 tdSpeakerRecognizerCombinedScore:(id)a14 hwSampleRate:(id)a15 configVersion:(id)a16 keywordThresholdHS:(id)a17 keywordThresholdJS:(id)a18 tdSpeakerRecognizerCombinedThresholdHS:(id)a19 tdSpeakerRecognizerCombinedThresholdJS:(id)a20
+- (BMSiriVoiceTriggerStatistics)initWithAbsoluteTimestamp:(id)timestamp firstPassPeakScoreHS:(id)s firstPassPeakScoreJS:(id)jS firstPassTriggerSource:(id)source recognizerScoreHS:(id)hS recognizerScoreJS:(id)scoreJS triggerScoreHS:(id)scoreHS triggerScoreJS:(id)self0 mitigationScore:(id)self1 invocationTypeID:(id)self2 repetitionSimilarityScore:(id)self3 tdSpeakerRecognizerCombinedScore:(id)self4 hwSampleRate:(id)self5 configVersion:(id)self6 keywordThresholdHS:(id)self7 keywordThresholdJS:(id)self8 tdSpeakerRecognizerCombinedThresholdHS:(id)self9 tdSpeakerRecognizerCombinedThresholdJS:(id)combinedThresholdJS
 {
-  v25 = a3;
-  v26 = a4;
-  v77 = a5;
-  v76 = a6;
-  v75 = a7;
-  v74 = a8;
-  v73 = a9;
-  v72 = a10;
-  v27 = v26;
-  v71 = a11;
-  v70 = a12;
-  v28 = a13;
-  v29 = a14;
-  v30 = a15;
-  v69 = a16;
-  v31 = a17;
-  v32 = a18;
-  v33 = a19;
-  v34 = a20;
+  timestampCopy = timestamp;
+  sCopy = s;
+  jSCopy = jS;
+  sourceCopy = source;
+  hSCopy = hS;
+  scoreJSCopy = scoreJS;
+  scoreHSCopy = scoreHS;
+  triggerScoreJSCopy = triggerScoreJS;
+  v27 = sCopy;
+  scoreCopy = score;
+  dCopy = d;
+  similarityScoreCopy = similarityScore;
+  combinedScoreCopy = combinedScore;
+  rateCopy = rate;
+  versionCopy = version;
+  thresholdHSCopy = thresholdHS;
+  thresholdJSCopy = thresholdJS;
+  combinedThresholdHSCopy = combinedThresholdHS;
+  combinedThresholdJSCopy = combinedThresholdJS;
   v78.receiver = self;
   v78.super_class = BMSiriVoiceTriggerStatistics;
   v35 = [(BMEventBase *)&v78 init];
   if (v35)
   {
     v35->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v25)
+    if (timestampCopy)
     {
       v35->_hasRaw_absoluteTimestamp = 1;
-      [v25 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -2394,10 +2394,10 @@ LABEL_128:
     }
 
     v35->_firstPassPeakScoreHS = v38;
-    if (v77)
+    if (jSCopy)
     {
       v35->_hasFirstPassPeakScoreJS = 1;
-      [v77 floatValue];
+      [jSCopy floatValue];
       v40 = v39;
     }
 
@@ -2408,23 +2408,23 @@ LABEL_128:
     }
 
     v35->_firstPassPeakScoreJS = v40;
-    if (v76)
+    if (sourceCopy)
     {
       v35->_hasFirstPassTriggerSource = 1;
-      v41 = [v76 intValue];
+      intValue = [sourceCopy intValue];
     }
 
     else
     {
       v35->_hasFirstPassTriggerSource = 0;
-      v41 = -1;
+      intValue = -1;
     }
 
-    v35->_firstPassTriggerSource = v41;
-    if (v75)
+    v35->_firstPassTriggerSource = intValue;
+    if (hSCopy)
     {
       v35->_hasRecognizerScoreHS = 1;
-      [v75 floatValue];
+      [hSCopy floatValue];
       v43 = v42;
     }
 
@@ -2435,10 +2435,10 @@ LABEL_128:
     }
 
     v35->_recognizerScoreHS = v43;
-    if (v74)
+    if (scoreJSCopy)
     {
       v35->_hasRecognizerScoreJS = 1;
-      [v74 floatValue];
+      [scoreJSCopy floatValue];
       v45 = v44;
     }
 
@@ -2449,10 +2449,10 @@ LABEL_128:
     }
 
     v35->_recognizerScoreJS = v45;
-    if (v73)
+    if (scoreHSCopy)
     {
       v35->_hasTriggerScoreHS = 1;
-      [v73 floatValue];
+      [scoreHSCopy floatValue];
       v47 = v46;
     }
 
@@ -2463,10 +2463,10 @@ LABEL_128:
     }
 
     v35->_triggerScoreHS = v47;
-    if (v72)
+    if (triggerScoreJSCopy)
     {
       v35->_hasTriggerScoreJS = 1;
-      [v72 floatValue];
+      [triggerScoreJSCopy floatValue];
       v49 = v48;
     }
 
@@ -2477,10 +2477,10 @@ LABEL_128:
     }
 
     v35->_triggerScoreJS = v49;
-    if (v71)
+    if (scoreCopy)
     {
       v35->_hasMitigationScore = 1;
-      [v71 floatValue];
+      [scoreCopy floatValue];
       v51 = v50;
     }
 
@@ -2491,23 +2491,23 @@ LABEL_128:
     }
 
     v35->_mitigationScore = v51;
-    if (v70)
+    if (dCopy)
     {
       v35->_hasInvocationTypeID = 1;
-      v52 = [v70 intValue];
+      intValue2 = [dCopy intValue];
     }
 
     else
     {
       v35->_hasInvocationTypeID = 0;
-      v52 = -1;
+      intValue2 = -1;
     }
 
-    v35->_invocationTypeID = v52;
-    if (v28)
+    v35->_invocationTypeID = intValue2;
+    if (similarityScoreCopy)
     {
       v35->_hasRepetitionSimilarityScore = 1;
-      [v28 floatValue];
+      [similarityScoreCopy floatValue];
       v54 = v53;
     }
 
@@ -2518,10 +2518,10 @@ LABEL_128:
     }
 
     v35->_repetitionSimilarityScore = v54;
-    if (v29)
+    if (combinedScoreCopy)
     {
       v35->_hasTdSpeakerRecognizerCombinedScore = 1;
-      [v29 floatValue];
+      [combinedScoreCopy floatValue];
       v56 = v55;
     }
 
@@ -2532,10 +2532,10 @@ LABEL_128:
     }
 
     v35->_tdSpeakerRecognizerCombinedScore = v56;
-    if (v30)
+    if (rateCopy)
     {
       v35->_hasHwSampleRate = 1;
-      [v30 floatValue];
+      [rateCopy floatValue];
       v58 = v57;
     }
 
@@ -2546,11 +2546,11 @@ LABEL_128:
     }
 
     v35->_hwSampleRate = v58;
-    objc_storeStrong(&v35->_configVersion, a16);
-    if (v31)
+    objc_storeStrong(&v35->_configVersion, version);
+    if (thresholdHSCopy)
     {
       v35->_hasKeywordThresholdHS = 1;
-      [v31 floatValue];
+      [thresholdHSCopy floatValue];
       v60 = v59;
     }
 
@@ -2561,10 +2561,10 @@ LABEL_128:
     }
 
     v35->_keywordThresholdHS = v60;
-    if (v32)
+    if (thresholdJSCopy)
     {
       v35->_hasKeywordThresholdJS = 1;
-      [v32 floatValue];
+      [thresholdJSCopy floatValue];
       v62 = v61;
     }
 
@@ -2575,10 +2575,10 @@ LABEL_128:
     }
 
     v35->_keywordThresholdJS = v62;
-    if (v33)
+    if (combinedThresholdHSCopy)
     {
       v35->_hasTdSpeakerRecognizerCombinedThresholdHS = 1;
-      [v33 floatValue];
+      [combinedThresholdHSCopy floatValue];
       v64 = v63;
     }
 
@@ -2589,10 +2589,10 @@ LABEL_128:
     }
 
     v35->_tdSpeakerRecognizerCombinedThresholdHS = v64;
-    if (v34)
+    if (combinedThresholdJSCopy)
     {
       v35->_hasTdSpeakerRecognizerCombinedThresholdJS = 1;
-      [v34 floatValue];
+      [combinedThresholdJSCopy floatValue];
       v66 = v65;
     }
 
@@ -2700,9 +2700,9 @@ LABEL_128:
   return v12;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -2710,8 +2710,8 @@ LABEL_128:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriVoiceTriggerStatistics alloc] initByReadFrom:v7];
     v4 = v8;

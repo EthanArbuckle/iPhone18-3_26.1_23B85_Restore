@@ -1,60 +1,60 @@
 @interface MFAutocompleteResultsTableViewController
 - (BOOL)confirmSelectedRecipient;
-- (BOOL)containsRecipient:(id)a3;
-- (MFAutocompleteResultsTableViewController)initWithStyle:(int64_t)a3;
+- (BOOL)containsRecipient:(id)recipient;
+- (MFAutocompleteResultsTableViewController)initWithStyle:(int64_t)style;
 - (MFAutocompleteResultsTableViewControllerDelegate)delegate;
 - (NSArray)allRecipients;
 - (double)_tableViewHeaderHeight;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_combinedResults;
 - (id)_flattenedIndexPaths;
-- (id)_indexPathForRecipient:(id)a3;
-- (id)_recipientAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_indexPathForRecipient:(id)recipient;
+- (id)_recipientAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)numberOfResults;
-- (void)_selectSearchResultsRecipientAtIndexPath:(id)a3;
-- (void)_updateTableViewModelAnimated:(BOOL)a3;
+- (void)_selectSearchResultsRecipientAtIndexPath:(id)path;
+- (void)_updateTableViewModelAnimated:(BOOL)animated;
 - (void)clear;
 - (void)dealloc;
-- (void)invalidateSearchResultRecipient:(id)a3;
+- (void)invalidateSearchResultRecipient:(id)recipient;
 - (void)loadView;
-- (void)presentSearchResults:(id)a3;
+- (void)presentSearchResults:(id)results;
 - (void)resetScrollPosition;
 - (void)selectNextSearchResult;
 - (void)selectPreviousSearchResult;
-- (void)setCellBackgroundColor:(id)a3;
-- (void)setDeferTableViewUpdates:(BOOL)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setCellBackgroundColor:(id)color;
+- (void)setDeferTableViewUpdates:(BOOL)updates;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation MFAutocompleteResultsTableViewController
 
 - (void)dealloc
 {
-  v3 = [(MFAutocompleteResultsTableViewController *)self tableView];
-  [v3 setDataSource:0];
+  tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+  [tableView setDataSource:0];
 
-  v4 = [(MFAutocompleteResultsTableViewController *)self tableView];
-  [v4 setDelegate:0];
+  tableView2 = [(MFAutocompleteResultsTableViewController *)self tableView];
+  [tableView2 setDelegate:0];
 
   v5.receiver = self;
   v5.super_class = MFAutocompleteResultsTableViewController;
   [(MFAutocompleteResultsTableViewController *)&v5 dealloc];
 }
 
-- (MFAutocompleteResultsTableViewController)initWithStyle:(int64_t)a3
+- (MFAutocompleteResultsTableViewController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = MFAutocompleteResultsTableViewController;
-  v3 = [(MFAutocompleteResultsTableViewController *)&v6 initWithStyle:a3];
+  v3 = [(MFAutocompleteResultsTableViewController *)&v6 initWithStyle:style];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] mailAutoCompleteTableViewCellBackgroundColorForPopoverDisplay];
-    [(MFAutocompleteResultsTableViewController *)v3 setCellBackgroundColor:v4];
+    mailAutoCompleteTableViewCellBackgroundColorForPopoverDisplay = [MEMORY[0x1E69DC888] mailAutoCompleteTableViewCellBackgroundColorForPopoverDisplay];
+    [(MFAutocompleteResultsTableViewController *)v3 setCellBackgroundColor:mailAutoCompleteTableViewCellBackgroundColorForPopoverDisplay];
 
     [(MFAutocompleteResultsTableViewController *)v3 setShouldDimIrrelevantInformation:1];
     [(MFAutocompleteResultsTableViewController *)v3 setShouldHighlightCompleteMatches:1];
@@ -81,7 +81,7 @@
   [(MFAutocompleteResultsTableViewController *)self setView:v4];
 }
 
-- (void)_updateTableViewModelAnimated:(BOOL)a3
+- (void)_updateTableViewModelAnimated:(BOOL)animated
 {
   if (self->_deferTableViewUpdates)
   {
@@ -90,7 +90,7 @@
 
   else
   {
-    v4 = a3;
+    animatedCopy = animated;
     tableViewModel = self->_tableViewModel;
     if (!tableViewModel)
     {
@@ -106,60 +106,60 @@
     [(_MFAutocompleteResultsTableViewModel *)v8 setObject:self->_searchResults atIndexedSubscript:0];
     [(_MFAutocompleteResultsTableViewModel *)v8 setObject:self->_suggestedSearchResults atIndexedSubscript:1];
     [(_MFAutocompleteResultsTableViewModel *)v8 setObject:self->_serverSearchResults atIndexedSubscript:2];
-    if (v4)
+    if (animatedCopy)
     {
-      v9 = [(_MFAutocompleteResultsTableViewModel *)v24 computeDiffForModel:v8];
+      tableView6 = [(_MFAutocompleteResultsTableViewModel *)v24 computeDiffForModel:v8];
       objc_storeStrong(&self->_tableViewModel, v8);
-      v10 = [(MFAutocompleteResultsTableViewController *)self tableView];
-      [v10 beginUpdates];
+      tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+      [tableView beginUpdates];
 
-      v11 = [v9 insertedRows];
-      v12 = [v11 count];
+      insertedRows = [tableView6 insertedRows];
+      v12 = [insertedRows count];
 
       if (v12)
       {
-        v13 = [(MFAutocompleteResultsTableViewController *)self tableView];
-        v14 = [v9 insertedRows];
-        [v13 insertSections:v14 withRowAnimation:100];
+        tableView2 = [(MFAutocompleteResultsTableViewController *)self tableView];
+        insertedRows2 = [tableView6 insertedRows];
+        [tableView2 insertSections:insertedRows2 withRowAnimation:100];
       }
 
-      v15 = [v9 deletedRows];
-      v16 = [v15 count];
+      deletedRows = [tableView6 deletedRows];
+      v16 = [deletedRows count];
 
       if (v16)
       {
-        v17 = [(MFAutocompleteResultsTableViewController *)self tableView];
-        v18 = [v9 deletedRows];
-        [v17 deleteSections:v18 withRowAnimation:3];
+        tableView3 = [(MFAutocompleteResultsTableViewController *)self tableView];
+        deletedRows2 = [tableView6 deletedRows];
+        [tableView3 deleteSections:deletedRows2 withRowAnimation:3];
       }
 
-      v19 = [v9 changedRows];
-      v20 = [v19 count];
+      changedRows = [tableView6 changedRows];
+      v20 = [changedRows count];
 
       if (v20)
       {
-        v21 = [(MFAutocompleteResultsTableViewController *)self tableView];
-        v22 = [v9 changedRows];
-        [v21 reloadSections:v22 withRowAnimation:0];
+        tableView4 = [(MFAutocompleteResultsTableViewController *)self tableView];
+        changedRows2 = [tableView6 changedRows];
+        [tableView4 reloadSections:changedRows2 withRowAnimation:0];
       }
 
-      v23 = [(MFAutocompleteResultsTableViewController *)self tableView];
-      [v23 endUpdates];
+      tableView5 = [(MFAutocompleteResultsTableViewController *)self tableView];
+      [tableView5 endUpdates];
     }
 
     else
     {
       objc_storeStrong(&self->_tableViewModel, v8);
-      v9 = [(MFAutocompleteResultsTableViewController *)self tableView];
-      [v9 reloadData];
+      tableView6 = [(MFAutocompleteResultsTableViewController *)self tableView];
+      [tableView6 reloadData];
     }
   }
 }
 
-- (void)setDeferTableViewUpdates:(BOOL)a3
+- (void)setDeferTableViewUpdates:(BOOL)updates
 {
   deferTableViewUpdates = self->_deferTableViewUpdates;
-  if (deferTableViewUpdates == a3)
+  if (deferTableViewUpdates == updates)
   {
     if (deferTableViewUpdates)
     {
@@ -169,8 +169,8 @@
 
   else
   {
-    self->_deferTableViewUpdates = a3;
-    if (a3)
+    self->_deferTableViewUpdates = updates;
+    if (updates)
     {
       return;
     }
@@ -183,24 +183,24 @@
   }
 }
 
-- (void)presentSearchResults:(id)a3
+- (void)presentSearchResults:(id)results
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultsCopy = results;
   if (pthread_main_np() != 1)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"MFAutocompleteResultsTableViewController.m" lineNumber:240 description:@"Current thread must be main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFAutocompleteResultsTableViewController.m" lineNumber:240 description:@"Current thread must be main"];
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v5;
+  v9 = resultsCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -215,18 +215,18 @@
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 isSuggestedRecipient];
-        v15 = v7;
-        if ((v14 & 1) == 0)
+        isSuggestedRecipient = [v13 isSuggestedRecipient];
+        v15 = array2;
+        if ((isSuggestedRecipient & 1) == 0)
         {
           if ([v13 isDirectoryServerResult])
           {
-            v15 = v8;
+            v15 = array3;
           }
 
           else
           {
-            v15 = v6;
+            v15 = array;
           }
         }
 
@@ -239,17 +239,17 @@
     while (v10);
   }
 
-  objc_storeStrong(&self->_searchResults, v6);
-  objc_storeStrong(&self->_suggestedSearchResults, v7);
-  objc_storeStrong(&self->_serverSearchResults, v8);
-  v16 = [(MFAutocompleteResultsTableViewController *)self tableView];
-  v17 = [v16 indexPathForSelectedRow];
+  objc_storeStrong(&self->_searchResults, array);
+  objc_storeStrong(&self->_suggestedSearchResults, array2);
+  objc_storeStrong(&self->_serverSearchResults, array3);
+  tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
   cellAnimationsEnabled = self->_cellAnimationsEnabled;
   if (cellAnimationsEnabled)
   {
-    v16 = [(MFAutocompleteResultsTableViewController *)self _combinedResults];
-    v19 = [v16 count] != 0;
+    tableView = [(MFAutocompleteResultsTableViewController *)self _combinedResults];
+    v19 = [tableView count] != 0;
   }
 
   else
@@ -262,13 +262,13 @@
   {
   }
 
-  if (v17)
+  if (indexPathForSelectedRow)
   {
-    v20 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v20 scrollToRowAtIndexPath:v17 atScrollPosition:0 animated:1];
+    tableView2 = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView2 scrollToRowAtIndexPath:indexPathForSelectedRow atScrollPosition:0 animated:1];
 
-    v21 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v21 selectRowAtIndexPath:v17 animated:0 scrollPosition:0];
+    tableView3 = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView3 selectRowAtIndexPath:indexPathForSelectedRow animated:0 scrollPosition:0];
   }
 }
 
@@ -279,7 +279,7 @@
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   tableViewModel = self->_tableViewModel;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -309,37 +309,37 @@ void __64__MFAutocompleteResultsTableViewController__flattenedIndexPaths__block_
 
 - (void)selectNextSearchResult
 {
-  v9 = [(MFAutocompleteResultsTableViewController *)self _flattenedIndexPaths];
-  if ([v9 count])
+  _flattenedIndexPaths = [(MFAutocompleteResultsTableViewController *)self _flattenedIndexPaths];
+  if ([_flattenedIndexPaths count])
   {
-    v3 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    v4 = [v3 indexPathForSelectedRow];
+    tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+    indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-    if (v4)
+    if (indexPathForSelectedRow)
     {
-      v5 = [v9 indexOfObject:v4];
-      if (v5 + 1 >= [v9 count])
+      v5 = [_flattenedIndexPaths indexOfObject:indexPathForSelectedRow];
+      if (v5 + 1 >= [_flattenedIndexPaths count])
       {
 LABEL_7:
 
         goto LABEL_8;
       }
 
-      v6 = [v9 objectAtIndex:?];
+      v6 = [_flattenedIndexPaths objectAtIndex:?];
 
-      v4 = v6;
+      indexPathForSelectedRow = v6;
     }
 
     else
     {
-      v4 = [v9 firstObject];
+      indexPathForSelectedRow = [_flattenedIndexPaths firstObject];
     }
 
-    v7 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v7 scrollToRowAtIndexPath:v4 atScrollPosition:0 animated:1];
+    tableView2 = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView2 scrollToRowAtIndexPath:indexPathForSelectedRow atScrollPosition:0 animated:1];
 
-    v8 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v8 selectRowAtIndexPath:v4 animated:0 scrollPosition:0];
+    tableView3 = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView3 selectRowAtIndexPath:indexPathForSelectedRow animated:0 scrollPosition:0];
 
     goto LABEL_7;
   }
@@ -349,15 +349,15 @@ LABEL_8:
 
 - (void)selectPreviousSearchResult
 {
-  v9 = [(MFAutocompleteResultsTableViewController *)self _flattenedIndexPaths];
-  if ([v9 count])
+  _flattenedIndexPaths = [(MFAutocompleteResultsTableViewController *)self _flattenedIndexPaths];
+  if ([_flattenedIndexPaths count])
   {
-    v3 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    v4 = [v3 indexPathForSelectedRow];
+    tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+    indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-    if (v4)
+    if (indexPathForSelectedRow)
     {
-      v5 = [v9 indexOfObject:v4];
+      v5 = [_flattenedIndexPaths indexOfObject:indexPathForSelectedRow];
       if (!v5)
       {
 LABEL_7:
@@ -365,21 +365,21 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v6 = [v9 objectAtIndex:v5 - 1];
+      v6 = [_flattenedIndexPaths objectAtIndex:v5 - 1];
 
-      v4 = v6;
+      indexPathForSelectedRow = v6;
     }
 
     else
     {
-      v4 = [v9 lastObject];
+      indexPathForSelectedRow = [_flattenedIndexPaths lastObject];
     }
 
-    v7 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v7 scrollToRowAtIndexPath:v4 atScrollPosition:0 animated:1];
+    tableView2 = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView2 scrollToRowAtIndexPath:indexPathForSelectedRow atScrollPosition:0 animated:1];
 
-    v8 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v8 selectRowAtIndexPath:v4 animated:0 scrollPosition:0];
+    tableView3 = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView3 selectRowAtIndexPath:indexPathForSelectedRow animated:0 scrollPosition:0];
 
     goto LABEL_7;
   }
@@ -389,21 +389,21 @@ LABEL_8:
 
 - (BOOL)confirmSelectedRecipient
 {
-  v3 = [(MFAutocompleteResultsTableViewController *)self tableView];
-  v4 = [v3 indexPathForSelectedRow];
+  tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v4)
+  if (indexPathForSelectedRow)
   {
-    [(MFAutocompleteResultsTableViewController *)self _selectSearchResultsRecipientAtIndexPath:v4];
+    [(MFAutocompleteResultsTableViewController *)self _selectSearchResultsRecipientAtIndexPath:indexPathForSelectedRow];
   }
 
-  return v4 != 0;
+  return indexPathForSelectedRow != 0;
 }
 
 - (void)resetScrollPosition
 {
-  v2 = [(MFAutocompleteResultsTableViewController *)self tableView];
-  [v2 setContentOffset:0 animated:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+  [tableView setContentOffset:0 animated:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 }
 
 - (void)clear
@@ -456,23 +456,23 @@ LABEL_8:
 
 - (NSArray)allRecipients
 {
-  v2 = [(MFAutocompleteResultsTableViewController *)self _combinedResults];
-  v3 = [v2 ef_flatten];
+  _combinedResults = [(MFAutocompleteResultsTableViewController *)self _combinedResults];
+  ef_flatten = [_combinedResults ef_flatten];
 
-  return v3;
+  return ef_flatten;
 }
 
-- (BOOL)containsRecipient:(id)a3
+- (BOOL)containsRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(MFAutocompleteResultsTableViewController *)self _combinedResults];
+  recipientCopy = recipient;
+  _combinedResults = [(MFAutocompleteResultsTableViewController *)self _combinedResults];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__MFAutocompleteResultsTableViewController_containsRecipient___block_invoke;
   v9[3] = &unk_1E806CB00;
-  v6 = v4;
+  v6 = recipientCopy;
   v10 = v6;
-  v7 = [v5 ef_any:v9];
+  v7 = [_combinedResults ef_any:v9];
 
   return v7;
 }
@@ -483,13 +483,13 @@ LABEL_8:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(MFAutocompleteResultsTableViewController *)self _combinedResults];
+  _combinedResults = [(MFAutocompleteResultsTableViewController *)self _combinedResults];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__MFAutocompleteResultsTableViewController_numberOfResults__block_invoke;
   v5[3] = &unk_1E806CB28;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [_combinedResults enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -502,9 +502,9 @@ void __59__MFAutocompleteResultsTableViewController_numberOfResults__block_invok
   *(*(*(a1 + 32) + 8) + 24) += [v3 count];
 }
 
-- (id)_indexPathForRecipient:(id)a3
+- (id)_indexPathForRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -519,7 +519,7 @@ void __59__MFAutocompleteResultsTableViewController_numberOfResults__block_invok
   v9[2] = __67__MFAutocompleteResultsTableViewController__indexPathForRecipient___block_invoke;
   v9[3] = &unk_1E806CB50;
   v11 = &v17;
-  v6 = v4;
+  v6 = recipientCopy;
   v10 = v6;
   v12 = &v13;
   [(_MFAutocompleteResultsTableViewModel *)tableViewModel enumerateSections:v9];
@@ -542,23 +542,23 @@ void __67__MFAutocompleteResultsTableViewController__indexPathForRecipient___blo
   }
 }
 
-- (id)_recipientAtIndexPath:(id)a3
+- (id)_recipientAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[_MFAutocompleteResultsTableViewModel objectAtIndexedSubscript:](self->_tableViewModel, "objectAtIndexedSubscript:", [v4 section]);
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+  pathCopy = path;
+  v5 = -[_MFAutocompleteResultsTableViewModel objectAtIndexedSubscript:](self->_tableViewModel, "objectAtIndexedSubscript:", [pathCopy section]);
+  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   return v6;
 }
 
-- (void)_selectSearchResultsRecipientAtIndexPath:(id)a3
+- (void)_selectSearchResultsRecipientAtIndexPath:(id)path
 {
-  v6 = a3;
+  pathCopy = path;
   v4 = [(MFAutocompleteResultsTableViewController *)self _recipientAtIndexPath:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained autocompleteResultsController:self didSelectRecipient:v4 atIndex:{objc_msgSend(v6, "row")}];
+    [WeakRetained autocompleteResultsController:self didSelectRecipient:v4 atIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   else if (objc_opt_respondsToSelector())
@@ -567,40 +567,40 @@ void __67__MFAutocompleteResultsTableViewController__indexPathForRecipient___blo
   }
 }
 
-- (void)invalidateSearchResultRecipient:(id)a3
+- (void)invalidateSearchResultRecipient:(id)recipient
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MFAutocompleteResultsTableViewController *)self _indexPathForRecipient:v4];
+  recipientCopy = recipient;
+  v5 = [(MFAutocompleteResultsTableViewController *)self _indexPathForRecipient:recipientCopy];
   if ([v5 row] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v6 beginUpdates];
+    tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView beginUpdates];
 
-    v7 = [(MFAutocompleteResultsTableViewController *)self tableView];
+    tableView2 = [(MFAutocompleteResultsTableViewController *)self tableView];
     v11[0] = v5;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v7 deleteRowsAtIndexPaths:v8 withRowAnimation:2];
+    [tableView2 deleteRowsAtIndexPaths:v8 withRowAnimation:2];
 
     v9 = -[_MFAutocompleteResultsTableViewModel sectionAtIndex:](self->_tableViewModel, "sectionAtIndex:", [v5 section]);
     [v9 removeObjectAtIndex:{objc_msgSend(v5, "row")}];
 
-    v10 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v10 endUpdates];
+    tableView3 = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView3 endUpdates];
   }
 }
 
-- (void)setCellBackgroundColor:(id)a3
+- (void)setCellBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_cellBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_cellBackgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_cellBackgroundColor, a3);
-    v6 = [(MFAutocompleteResultsTableViewController *)self tableView];
-    [v6 setBackgroundColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_cellBackgroundColor, color);
+    tableView = [(MFAutocompleteResultsTableViewController *)self tableView];
+    [tableView setBackgroundColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
@@ -613,16 +613,16 @@ void __67__MFAutocompleteResultsTableViewController__indexPathForRecipient___blo
   return v4 * 0.444444444 + v4 * 2.44444444;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 < 1 || (-[_MFAutocompleteResultsTableViewModel sectionAtIndex:](self->_tableViewModel, "sectionAtIndex:", a4), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, !v8))
+  viewCopy = view;
+  if (section < 1 || (-[_MFAutocompleteResultsTableViewModel sectionAtIndex:](self->_tableViewModel, "sectionAtIndex:", section), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, !v8))
   {
     v11 = 0;
     goto LABEL_13;
   }
 
-  if (a4 == 2)
+  if (section == 2)
   {
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"FOUND_ON_SERVERS" value:&stru_1F3CF3758 table:@"Main"];
@@ -630,7 +630,7 @@ void __67__MFAutocompleteResultsTableViewController__indexPathForRecipient___blo
 
   else
   {
-    if (a4 != 1)
+    if (section != 1)
     {
       v12 = 0;
       goto LABEL_10;
@@ -643,7 +643,7 @@ void __67__MFAutocompleteResultsTableViewController__indexPathForRecipient___blo
   v12 = v10;
 
 LABEL_10:
-  [v6 frame];
+  [viewCopy frame];
   v14 = v13;
   [(MFAutocompleteResultsTableViewController *)self _tableViewHeaderHeight];
   v16 = v15;
@@ -654,8 +654,8 @@ LABEL_10:
   v11 = [v17 initWithFrame:{*MEMORY[0x1E695F058], v20, v14, v16}];
   v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v22 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v19, v20, *(v18 + 16), *(v18 + 24)}];
-  v23 = [v12 localizedUppercaseString];
-  [v22 setText:v23];
+  localizedUppercaseString = [v12 localizedUppercaseString];
+  [v22 setText:localizedUppercaseString];
 
   [v22 setFont:v21];
   v24 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:1.0];
@@ -668,11 +668,11 @@ LABEL_10:
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  [v6 layoutMargins];
+  [viewCopy layoutMargins];
   v34 = v33;
-  if ([MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(v6, "semanticContentAttribute")}] == 1)
+  if ([MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(viewCopy, "semanticContentAttribute")}] == 1)
   {
-    [v6 bounds];
+    [viewCopy bounds];
     MaxX = CGRectGetMaxX(v40);
     v41.origin.x = v34;
     v41.origin.y = v28;
@@ -695,10 +695,10 @@ LABEL_13:
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 && (-[_MFAutocompleteResultsTableViewModel sectionAtIndex:](self->_tableViewModel, "sectionAtIndex:", a4), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v8))
+  viewCopy = view;
+  if (section && (-[_MFAutocompleteResultsTableViewModel sectionAtIndex:](self->_tableViewModel, "sectionAtIndex:", section), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v8))
   {
     [(MFAutocompleteResultsTableViewController *)self _tableViewHeaderHeight];
     v10 = v9;
@@ -712,30 +712,30 @@ LABEL_13:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(_MFAutocompleteResultsTableViewModel *)self->_tableViewModel objectAtIndexedSubscript:a4];
+  v4 = [(_MFAutocompleteResultsTableViewModel *)self->_tableViewModel objectAtIndexedSubscript:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  [v5 _setShouldHaveFullLengthTopSeparator:0];
-  [v5 _setShouldHaveFullLengthBottomSeparator:0];
+  cellCopy = cell;
+  [cellCopy _setShouldHaveFullLengthTopSeparator:0];
+  [cellCopy _setShouldHaveFullLengthBottomSeparator:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[_MFAutocompleteResultsTableViewModel objectAtIndexedSubscript:](self->_tableViewModel, "objectAtIndexedSubscript:", [v7 section]);
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[_MFAutocompleteResultsTableViewModel objectAtIndexedSubscript:](self->_tableViewModel, "objectAtIndexedSubscript:", [pathCopy section]);
+  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v10 = +[MFRecipientTableViewCell identifier];
-  v11 = [v6 dequeueReusableCellWithIdentifier:v10];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10];
 
   if (!v11)
   {
@@ -758,9 +758,9 @@ LABEL_13:
   }
 
   [v11 setAccessoryType:v14];
-  v15 = [v11 recipient];
+  recipient = [v11 recipient];
 
-  if (v15 != v9)
+  if (recipient != v9)
   {
     [v11 setRecipient:v9];
   }
@@ -768,11 +768,11 @@ LABEL_13:
   return v11;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v8 = a4;
-  v5 = -[_MFAutocompleteResultsTableViewModel objectAtIndexedSubscript:](self->_tableViewModel, "objectAtIndexedSubscript:", [v8 section]);
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
+  pathCopy = path;
+  v5 = -[_MFAutocompleteResultsTableViewModel objectAtIndexedSubscript:](self->_tableViewModel, "objectAtIndexedSubscript:", [pathCopy section]);
+  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -781,12 +781,12 @@ LABEL_13:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  [(MFAutocompleteResultsTableViewController *)self _selectSearchResultsRecipientAtIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  [(MFAutocompleteResultsTableViewController *)self _selectSearchResultsRecipientAtIndexPath:pathCopy];
 }
 
 - (MFAutocompleteResultsTableViewControllerDelegate)delegate

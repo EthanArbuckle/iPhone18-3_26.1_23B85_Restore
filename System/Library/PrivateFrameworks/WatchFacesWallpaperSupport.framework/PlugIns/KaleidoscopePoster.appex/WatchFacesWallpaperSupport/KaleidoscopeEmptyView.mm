@@ -1,11 +1,11 @@
 @interface KaleidoscopeEmptyView
-- (_TtC18KaleidoscopePoster21KaleidoscopeEmptyView)initWithCoder:(id)a3;
+- (_TtC18KaleidoscopePoster21KaleidoscopeEmptyView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation KaleidoscopeEmptyView
 
-- (_TtC18KaleidoscopePoster21KaleidoscopeEmptyView)initWithCoder:(id)a3
+- (_TtC18KaleidoscopePoster21KaleidoscopeEmptyView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC18KaleidoscopePoster21KaleidoscopeEmptyView_emptyPosterLabel;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UILabel) init];

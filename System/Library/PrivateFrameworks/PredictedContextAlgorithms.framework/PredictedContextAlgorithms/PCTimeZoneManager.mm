@@ -1,10 +1,10 @@
 @interface PCTimeZoneManager
 - (PCTimeZoneManager)init;
-- (id)condensedRecordsFromRecords:(id)a3;
+- (id)condensedRecordsFromRecords:(id)records;
 - (id)description;
-- (id)keywordForDate:(id)a3;
-- (id)timeZoneAtDate:(id)a3;
-- (void)processTimeZoneEvents:(id)a3;
+- (id)keywordForDate:(id)date;
+- (id)timeZoneAtDate:(id)date;
+- (void)processTimeZoneEvents:(id)events;
 @end
 
 @implementation PCTimeZoneManager
@@ -16,13 +16,13 @@
   return [(PCTimeZoneManager *)&v3 init];
 }
 
-- (void)processTimeZoneEvents:(id)a3
+- (void)processTimeZoneEvents:(id)events
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventsCopy = events;
   v43 = [MEMORY[0x1E696AE18] predicateWithFormat:@"timeZone != nil"];
-  v44 = v4;
-  v5 = [v4 filteredArrayUsingPredicate:v43];
+  v44 = eventsCopy;
+  v5 = [eventsCopy filteredArrayUsingPredicate:v43];
   v42 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"endDate" ascending:1];
   v61[0] = v42;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:1];
@@ -52,12 +52,12 @@
         }
 
         v14 = *(*(&v48 + 1) + 8 * v13);
-        v15 = [v14 endDate];
-        v16 = [(PCTimeZoneManager *)self keywordForDate:v15];
+        endDate = [v14 endDate];
+        v16 = [(PCTimeZoneManager *)self keywordForDate:endDate];
 
-        v17 = [v14 timeZone];
-        v18 = [v17 name];
-        [v8 setObject:v18 forKey:v16];
+        timeZone = [v14 timeZone];
+        name = [timeZone name];
+        [v8 setObject:name forKey:v16];
 
         v19 = _plc_log_get_normal_handle(v12);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -68,7 +68,7 @@
           v22 = v12;
           v23 = v8;
           v25 = v24 = self;
-          v26 = [v14 timeZone];
+          timeZone2 = [v14 timeZone];
           *buf = 138413058;
           v53 = v20;
           v54 = 2112;
@@ -76,7 +76,7 @@
           v56 = 2112;
           v57 = v16;
           v58 = 2112;
-          v59 = v26;
+          v59 = timeZone2;
           _os_log_impl(&dword_1CEE74000, v19, OS_LOG_TYPE_DEBUG, "%@, raw timeZone, date %@, keyword, %@, event.timeZone, %@", buf, 0x2Au);
 
           self = v24;
@@ -98,12 +98,12 @@
 
   if (![v8 count])
   {
-    v27 = [MEMORY[0x1E695DF00] date];
-    v28 = [(PCTimeZoneManager *)self keywordForDate:v27];
+    date = [MEMORY[0x1E695DF00] date];
+    v28 = [(PCTimeZoneManager *)self keywordForDate:date];
 
-    v29 = [MEMORY[0x1E695DFE8] systemTimeZone];
-    v30 = [v29 name];
-    [v8 setObject:v30 forKey:v28];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+    name2 = [systemTimeZone name];
+    [v8 setObject:name2 forKey:v28];
   }
 
   v31 = [v8 copy];
@@ -121,16 +121,16 @@
     _os_log_impl(&dword_1CEE74000, v32, OS_LOG_TYPE_DEBUG, "%@, TimeZoneManager.timeZoneRecords, %lu", buf, 0x16u);
   }
 
-  v35 = [(PCTimeZoneManager *)self timeZoneRecords];
-  v36 = [(PCTimeZoneManager *)self condensedRecordsFromRecords:v35];
+  timeZoneRecords = [(PCTimeZoneManager *)self timeZoneRecords];
+  v36 = [(PCTimeZoneManager *)self condensedRecordsFromRecords:timeZoneRecords];
   [(PCTimeZoneManager *)self setCondensedRecords:v36];
 
   v37 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
   {
     v38 = NSStringFromSelector(a2);
-    v39 = [(PCTimeZoneManager *)self condensedRecords];
-    v40 = [v39 count];
+    condensedRecords = [(PCTimeZoneManager *)self condensedRecords];
+    v40 = [condensedRecords count];
     *buf = 138412546;
     v53 = v38;
     v54 = 2048;
@@ -141,13 +141,13 @@
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (id)condensedRecordsFromRecords:(id)a3
+- (id)condensedRecordsFromRecords:(id)records
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  recordsCopy = records;
   v4 = objc_opt_new();
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [recordsCopy allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v35 = 0u;
   v36 = 0u;
@@ -176,7 +176,7 @@
         }
 
         v16 = *(*(&v33 + 1) + 8 * i);
-        v10 = [v3 objectForKey:{v16, v29}];
+        v10 = [recordsCopy objectForKey:{v16, v29}];
         if (v14 && ([v15 isEqualToString:v10] & 1) == 0)
         {
           v17 = [v4 objectForKey:v14];
@@ -262,19 +262,19 @@
   return v26;
 }
 
-- (id)timeZoneAtDate:(id)a3
+- (id)timeZoneAtDate:(id)date
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PCTimeZoneManager *)self keywordForDate:v5];
-  v7 = [(PCTimeZoneManager *)self condensedRecords];
-  v8 = [v7 objectForKey:v6];
+  dateCopy = date;
+  v6 = [(PCTimeZoneManager *)self keywordForDate:dateCopy];
+  condensedRecords = [(PCTimeZoneManager *)self condensedRecords];
+  v8 = [condensedRecords objectForKey:v6];
 
   if (!v8)
   {
     aSelector = a2;
-    v12 = [(PCTimeZoneManager *)self condensedRecords];
-    v13 = [v12 keysSortedByValueUsingSelector:sel_compare_];
+    condensedRecords2 = [(PCTimeZoneManager *)self condensedRecords];
+    v13 = [condensedRecords2 keysSortedByValueUsingSelector:sel_compare_];
 
     v40 = 0u;
     v41 = 0u;
@@ -285,7 +285,7 @@
     if (v15)
     {
       v16 = v15;
-      v36 = v5;
+      v36 = dateCopy;
       v17 = 0;
       v18 = *v39;
       v19 = 1.79769313e308;
@@ -299,8 +299,8 @@
           }
 
           v21 = *(*(&v38 + 1) + 8 * i);
-          v22 = [(PCTimeZoneManager *)self condensedRecords];
-          v23 = [v22 objectForKey:v21];
+          condensedRecords3 = [(PCTimeZoneManager *)self condensedRecords];
+          v23 = [condensedRecords3 objectForKey:v21];
 
           [v6 doubleValue];
           v25 = v24;
@@ -321,7 +321,7 @@
       while (v16);
 
       v8 = 0;
-      v5 = v36;
+      dateCopy = v36;
       if (v17)
       {
         v29 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
@@ -339,7 +339,7 @@
           _os_log_impl(&dword_1CEE74000, v29, OS_LOG_TYPE_DEBUG, "%@, date %@, keyword, %@, timeZone, %@, source, interpolated", buf, 0x2Au);
         }
 
-        v11 = [MEMORY[0x1E695DFE8] timeZoneWithName:v17];
+        systemTimeZone2 = [MEMORY[0x1E695DFE8] timeZoneWithName:v17];
 
 LABEL_22:
         goto LABEL_23;
@@ -354,19 +354,19 @@ LABEL_22:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
       v32 = NSStringFromSelector(aSelector);
-      v33 = [MEMORY[0x1E695DFE8] systemTimeZone];
+      systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
       *buf = 138413058;
       v44 = v32;
       v45 = 2112;
-      v46 = v5;
+      v46 = dateCopy;
       v47 = 2112;
       v48 = v6;
       v49 = 2112;
-      v50 = v33;
+      v50 = systemTimeZone;
       _os_log_impl(&dword_1CEE74000, v31, OS_LOG_TYPE_DEBUG, "%@, date %@, keyword, %@, timeZone, %@, source, system", buf, 0x2Au);
     }
 
-    v11 = [MEMORY[0x1E695DFE8] systemTimeZone];
+    systemTimeZone2 = [MEMORY[0x1E695DFE8] systemTimeZone];
     goto LABEL_22;
   }
 
@@ -377,7 +377,7 @@ LABEL_22:
     *buf = 138413058;
     v44 = v10;
     v45 = 2112;
-    v46 = v5;
+    v46 = dateCopy;
     v47 = 2112;
     v48 = v6;
     v49 = 2112;
@@ -385,17 +385,17 @@ LABEL_22:
     _os_log_impl(&dword_1CEE74000, v9, OS_LOG_TYPE_DEBUG, "%@, date %@, keyword, %@, timeZone, %@, source, lookup", buf, 0x2Au);
   }
 
-  v11 = [MEMORY[0x1E695DFE8] timeZoneWithName:v8];
+  systemTimeZone2 = [MEMORY[0x1E695DFE8] timeZoneWithName:v8];
 LABEL_23:
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return systemTimeZone2;
 }
 
-- (id)keywordForDate:(id)a3
+- (id)keywordForDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v4 = MEMORY[0x1E696AD98];
 
   return [v4 numberWithUnsignedInteger:(v3 / 3600.0)];
@@ -405,9 +405,9 @@ LABEL_23:
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"TimeZone records:"];
-  v4 = [(PCTimeZoneManager *)self condensedRecords];
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  condensedRecords = [(PCTimeZoneManager *)self condensedRecords];
+  allKeys = [condensedRecords allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v20 = 0u;
   v21 = 0u;
@@ -429,8 +429,8 @@ LABEL_23:
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [(PCTimeZoneManager *)self condensedRecords];
-        v14 = [v13 objectForKey:v12];
+        condensedRecords2 = [(PCTimeZoneManager *)self condensedRecords];
+        v14 = [condensedRecords2 objectForKey:v12];
 
         [v3 appendFormat:@"<%@:%@>", v12, v14, v18];
       }

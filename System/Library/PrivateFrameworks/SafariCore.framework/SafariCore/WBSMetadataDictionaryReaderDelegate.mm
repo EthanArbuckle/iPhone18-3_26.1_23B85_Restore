@@ -1,8 +1,8 @@
 @interface WBSMetadataDictionaryReaderDelegate
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4;
-- (BOOL)jsonReaderBeginArray:(id)a3;
-- (BOOL)jsonReaderBeginObject:(id)a3;
-- (BOOL)jsonReaderEndObject:(id)a3;
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value;
+- (BOOL)jsonReaderBeginArray:(id)array;
+- (BOOL)jsonReaderBeginObject:(id)object;
+- (BOOL)jsonReaderEndObject:(id)object;
 - (WBSMetadataDictionaryReaderDelegate)init;
 @end
 
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  readerCopy = reader;
+  valueCopy = value;
   if (self->_level != 2 || !self->_insideMetadata || ![(NSSet *)self->_validKeys containsObject:self->_lastKey])
   {
     goto LABEL_9;
@@ -88,7 +88,7 @@ LABEL_13:
     }
   }
 
-  [(NSMutableDictionary *)self->_metadataDictionary setObject:v7 forKeyedSubscript:self->_lastKey];
+  [(NSMutableDictionary *)self->_metadataDictionary setObject:valueCopy forKeyedSubscript:self->_lastKey];
 LABEL_9:
   v8 = 1;
 LABEL_10:
@@ -97,7 +97,7 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)jsonReaderBeginObject:(id)a3
+- (BOOL)jsonReaderBeginObject:(id)object
 {
   v3 = self->_level + 1;
   self->_level = v3;
@@ -109,7 +109,7 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)jsonReaderEndObject:(id)a3
+- (BOOL)jsonReaderEndObject:(id)object
 {
   insideMetadata = self->_insideMetadata;
   if (!insideMetadata)
@@ -120,7 +120,7 @@ LABEL_10:
   return !insideMetadata;
 }
 
-- (BOOL)jsonReaderBeginArray:(id)a3
+- (BOOL)jsonReaderBeginArray:(id)array
 {
   v3 = self->_level + 1;
   self->_level = v3;

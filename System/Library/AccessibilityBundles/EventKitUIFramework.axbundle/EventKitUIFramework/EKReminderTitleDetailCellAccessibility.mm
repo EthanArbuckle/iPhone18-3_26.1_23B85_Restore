@@ -1,5 +1,5 @@
 @interface EKReminderTitleDetailCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -7,13 +7,13 @@
 
 @implementation EKReminderTitleDetailCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKReminderTitleDetailCell" hasInstanceVariable:@"_circle" withType:"UIButton"];
-  [v3 validateClass:@"EKReminderTitleDetailCell" hasInstanceVariable:@"_title" withType:"UILabel"];
-  [v3 validateClass:@"EKReminderTitleDetailCell" hasInstanceVariable:@"_subtitle" withType:"UILabel"];
-  [v3 validateClass:@"EKReminderTitleDetailCell" isKindOfClass:@"EKEventDetailCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKReminderTitleDetailCell" hasInstanceVariable:@"_circle" withType:"UIButton"];
+  [validationsCopy validateClass:@"EKReminderTitleDetailCell" hasInstanceVariable:@"_title" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKReminderTitleDetailCell" hasInstanceVariable:@"_subtitle" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKReminderTitleDetailCell" isKindOfClass:@"EKEventDetailCell"];
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -33,9 +33,9 @@
 - (id)accessibilityLabel
 {
   v3 = [(EKReminderTitleDetailCellAccessibility *)self safeUIViewForKey:@"_title"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(EKReminderTitleDetailCellAccessibility *)self safeUIViewForKey:@"_subtitle"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __AXStringForVariables();
 
   return v6;
@@ -45,11 +45,11 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 event];
+  event = [v2 event];
 
-  if ([v3 CUIK_reminderShouldBeEditable])
+  if ([event CUIK_reminderShouldBeEditable])
   {
-    if ([v3 completed])
+    if ([event completed])
     {
       v4 = @"reminder.mark.incomplete.hint";
     }

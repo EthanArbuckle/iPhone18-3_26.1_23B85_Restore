@@ -1,14 +1,14 @@
 @interface MiniPlayerHostViewController
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_TtC23ShelfKitCollectionViews28MiniPlayerHostViewController)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews28MiniPlayerHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC23ShelfKitCollectionViews28MiniPlayerHostViewController)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews28MiniPlayerHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation MiniPlayerHostViewController
 
-- (_TtC23ShelfKitCollectionViews28MiniPlayerHostViewController)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews28MiniPlayerHostViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews28MiniPlayerHostViewController_playerHeight) = 0x4057400000000000;
   result = sub_30D648();
@@ -27,7 +27,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MiniPlayerHostViewController.viewDidLayoutSubviews()();
 }
 
@@ -38,7 +38,7 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (_TtC23ShelfKitCollectionViews28MiniPlayerHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews28MiniPlayerHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

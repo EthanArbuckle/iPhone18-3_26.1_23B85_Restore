@@ -1,9 +1,9 @@
 @interface KmlOwnerSharingSession
 - (void)dealloc;
-- (void)handleCrossPlatformSharingMessage:(id)a3 fromMailboxIdentifier:(id)a4;
-- (void)handleIncomingMessage:(id)a3 metaData:(id)a4 bindingAttestation:(id)a5 keyIdentifier:(id)a6 uuid:(id)a7 messageType:(int64_t)a8 targetDeviceType:(int64_t)a9 remoteIdsIdentifier:(id)a10;
-- (void)handleSendMessageResult:(id)a3;
-- (void)handleTransportSetupResult:(id)a3;
+- (void)handleCrossPlatformSharingMessage:(id)message fromMailboxIdentifier:(id)identifier;
+- (void)handleIncomingMessage:(id)message metaData:(id)data bindingAttestation:(id)attestation keyIdentifier:(id)identifier uuid:(id)uuid messageType:(int64_t)type targetDeviceType:(int64_t)deviceType remoteIdsIdentifier:(id)self0;
+- (void)handleSendMessageResult:(id)result;
+- (void)handleTransportSetupResult:(id)result;
 @end
 
 @implementation KmlOwnerSharingSession
@@ -23,75 +23,75 @@
   [(KmlOwnerSharingSession *)&v5 dealloc];
 }
 
-- (void)handleIncomingMessage:(id)a3 metaData:(id)a4 bindingAttestation:(id)a5 keyIdentifier:(id)a6 uuid:(id)a7 messageType:(int64_t)a8 targetDeviceType:(int64_t)a9 remoteIdsIdentifier:(id)a10
+- (void)handleIncomingMessage:(id)message metaData:(id)data bindingAttestation:(id)attestation keyIdentifier:(id)identifier uuid:(id)uuid messageType:(int64_t)type targetDeviceType:(int64_t)deviceType remoteIdsIdentifier:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a10;
+  messageCopy = message;
+  attestationCopy = attestation;
+  identifierCopy = identifier;
+  uuidCopy = uuid;
+  idsIdentifierCopy = idsIdentifier;
   sessionQueue = self->_sessionQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100366A10;
   block[3] = &unk_1004D1A90;
   block[4] = self;
-  v27 = v15;
-  v31 = v16;
-  v32 = a8;
-  v28 = v18;
-  v29 = v19;
-  v30 = v17;
-  v21 = v16;
-  v22 = v17;
-  v23 = v19;
-  v24 = v18;
-  v25 = v15;
+  v27 = messageCopy;
+  v31 = attestationCopy;
+  typeCopy = type;
+  v28 = uuidCopy;
+  v29 = idsIdentifierCopy;
+  v30 = identifierCopy;
+  v21 = attestationCopy;
+  v22 = identifierCopy;
+  v23 = idsIdentifierCopy;
+  v24 = uuidCopy;
+  v25 = messageCopy;
   dispatch_async(sessionQueue, block);
 }
 
-- (void)handleTransportSetupResult:(id)a3
+- (void)handleTransportSetupResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   sessionQueue = self->_sessionQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100366AC0;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(sessionQueue, v7);
 }
 
-- (void)handleSendMessageResult:(id)a3
+- (void)handleSendMessageResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   sessionQueue = self->_sessionQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100366C34;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(sessionQueue, v7);
 }
 
-- (void)handleCrossPlatformSharingMessage:(id)a3 fromMailboxIdentifier:(id)a4
+- (void)handleCrossPlatformSharingMessage:(id)message fromMailboxIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   sessionQueue = self->_sessionQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100367590;
   block[3] = &unk_1004C24A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = messageCopy;
   dispatch_async(sessionQueue, block);
 }
 

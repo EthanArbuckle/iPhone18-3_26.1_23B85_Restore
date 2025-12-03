@@ -1,5 +1,5 @@
 @interface ADSynchronizedUserAnalyticsIds
-- (ADSynchronizedUserAnalyticsIds)initWithUserEphemeralSeeds:(id)a3 andUserAggregationIds:(id)a4;
+- (ADSynchronizedUserAnalyticsIds)initWithUserEphemeralSeeds:(id)seeds andUserAggregationIds:(id)ids;
 - (id)description;
 @end
 
@@ -7,18 +7,18 @@
 
 - (id)description
 {
-  v3 = [(ADSynchronizedIds *)self ephemeralSeeds];
-  v4 = [(ADSynchronizedIds *)self aggregationIds];
-  v5 = [NSString stringWithFormat:@"userEphemeralSeeds:(%@) userAggregationIds:(%@)", v3, v4];
+  ephemeralSeeds = [(ADSynchronizedIds *)self ephemeralSeeds];
+  aggregationIds = [(ADSynchronizedIds *)self aggregationIds];
+  v5 = [NSString stringWithFormat:@"userEphemeralSeeds:(%@) userAggregationIds:(%@)", ephemeralSeeds, aggregationIds];
 
   return v5;
 }
 
-- (ADSynchronizedUserAnalyticsIds)initWithUserEphemeralSeeds:(id)a3 andUserAggregationIds:(id)a4
+- (ADSynchronizedUserAnalyticsIds)initWithUserEphemeralSeeds:(id)seeds andUserAggregationIds:(id)ids
 {
   v5.receiver = self;
   v5.super_class = ADSynchronizedUserAnalyticsIds;
-  return [(ADSynchronizedIds *)&v5 initWithEphemeralSeeds:a3 andAggregationIds:a4];
+  return [(ADSynchronizedIds *)&v5 initWithEphemeralSeeds:seeds andAggregationIds:ids];
 }
 
 @end

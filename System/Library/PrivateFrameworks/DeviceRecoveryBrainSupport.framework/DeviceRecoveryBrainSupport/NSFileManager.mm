@@ -1,15 +1,15 @@
 @interface NSFileManager
-- (BOOL)fileAtPathIsSymlink:(id)a3;
+- (BOOL)fileAtPathIsSymlink:(id)symlink;
 @end
 
 @implementation NSFileManager
 
-- (BOOL)fileAtPathIsSymlink:(id)a3
+- (BOOL)fileAtPathIsSymlink:(id)symlink
 {
-  v3 = a3;
+  symlinkCopy = symlink;
   v4 = +[NSFileManager defaultManager];
   v11[0] = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:v11];
+  v5 = [v4 attributesOfItemAtPath:symlinkCopy error:v11];
   v6 = v11[0];
 
   if (!v5)

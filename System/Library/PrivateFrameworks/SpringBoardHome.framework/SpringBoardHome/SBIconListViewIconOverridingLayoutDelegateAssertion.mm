@@ -1,8 +1,8 @@
 @interface SBIconListViewIconOverridingLayoutDelegateAssertion
 - (SBIconListLayoutDelegate)layoutDelegate;
-- (SBIconListViewIconOverridingLayoutDelegateAssertion)initWithListView:(id)a3 layoutDelegate:(id)a4 reason:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIconListViewIconOverridingLayoutDelegateAssertion)initWithListView:(id)view layoutDelegate:(id)delegate reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -17,20 +17,20 @@
   return WeakRetained;
 }
 
-- (SBIconListViewIconOverridingLayoutDelegateAssertion)initWithListView:(id)a3 layoutDelegate:(id)a4 reason:(id)a5
+- (SBIconListViewIconOverridingLayoutDelegateAssertion)initWithListView:(id)view layoutDelegate:(id)delegate reason:(id)reason
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  delegateCopy = delegate;
+  reasonCopy = reason;
   v17.receiver = self;
   v17.super_class = SBIconListViewIconOverridingLayoutDelegateAssertion;
   v12 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_listView, a3);
-    objc_storeWeak(&v13->_layoutDelegate, v10);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_listView, view);
+    objc_storeWeak(&v13->_layoutDelegate, delegateCopy);
+    v14 = [reasonCopy copy];
     reason = v13->_reason;
     v13->_reason = v14;
   }
@@ -41,7 +41,7 @@
 - (void)dealloc
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 24);
+  v2 = *(self + 24);
   v3 = 138543362;
   v4 = v2;
   _os_log_fault_impl(&dword_1BEB18000, a2, OS_LOG_TYPE_FAULT, "SBIconListViewIconOverridingLayoutDelegateAssertion deallocated but not invalidated! Reason: %{public}@", &v3, 0xCu);
@@ -51,8 +51,8 @@
 {
   if (![(SBIconListViewIconOverridingLayoutDelegateAssertion *)self isInvalidated])
   {
-    v3 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self listView];
-    [v3 removeOverridingLayoutDelegateAssertion:self];
+    listView = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self listView];
+    [listView removeOverridingLayoutDelegateAssertion:self];
 
     [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self setInvalidated:1];
   }
@@ -60,33 +60,33 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self succinctDescriptionBuilder];
-  v5 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self layoutDelegate];
-  v6 = [v4 appendObject:v5 withName:@"layoutDelegate"];
+  succinctDescriptionBuilder = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self succinctDescriptionBuilder];
+  layoutDelegate = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self layoutDelegate];
+  v6 = [succinctDescriptionBuilder appendObject:layoutDelegate withName:@"layoutDelegate"];
 
-  v7 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self reason];
-  v8 = [v4 appendObject:v7 withName:@"reason"];
+  reason = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self reason];
+  v8 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v9 = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self listView];
-  v10 = [v4 appendPointer:v9 withName:@"listView"];
+  listView = [(SBIconListViewIconOverridingLayoutDelegateAssertion *)self listView];
+  v10 = [succinctDescriptionBuilder appendPointer:listView withName:@"listView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

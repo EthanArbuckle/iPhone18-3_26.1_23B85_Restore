@@ -1,48 +1,48 @@
 @interface AMPUserNotificationContentViewController
 - (AMPUserNotificationContentDelegate)delegate;
-- (AMPUserNotificationContentViewController)initWithNotification:(id)a3 delegate:(id)a4;
+- (AMPUserNotificationContentViewController)initWithNotification:(id)notification delegate:(id)delegate;
 - (CGSize)expectedContentSize;
-- (void)imageViewTapped:(id)a3;
+- (void)imageViewTapped:(id)tapped;
 - (void)loadView;
 - (void)mediaPause;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPreferredContentSize:(CGSize)size;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AMPUserNotificationContentViewController
 
-- (AMPUserNotificationContentViewController)initWithNotification:(id)a3 delegate:(id)a4
+- (AMPUserNotificationContentViewController)initWithNotification:(id)notification delegate:(id)delegate
 {
   v72 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  notificationCopy = notification;
+  delegateCopy = delegate;
   v64.receiver = self;
   v64.super_class = AMPUserNotificationContentViewController;
   v9 = [(AMPUserNotificationContentViewController *)&v64 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v10->_userNotification, a3);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_userNotification, notification);
     v11 = MEMORY[0x277CEE408];
-    v12 = [MEMORY[0x277CEE598] bagKeySet];
-    v13 = [MEMORY[0x277CEE598] bagSubProfile];
-    v14 = [MEMORY[0x277CEE598] bagSubProfileVersion];
-    [v11 registerBagKeySet:v12 forProfile:v13 profileVersion:v14];
+    bagKeySet = [MEMORY[0x277CEE598] bagKeySet];
+    bagSubProfile = [MEMORY[0x277CEE598] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x277CEE598] bagSubProfileVersion];
+    [v11 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
     v15 = MEMORY[0x277CEE3F8];
-    v16 = [MEMORY[0x277CEE598] bagSubProfile];
-    v17 = [MEMORY[0x277CEE598] bagSubProfileVersion];
-    v18 = [v15 bagForProfile:v16 profileVersion:v17];
+    bagSubProfile2 = [MEMORY[0x277CEE598] bagSubProfile];
+    bagSubProfileVersion2 = [MEMORY[0x277CEE598] bagSubProfileVersion];
+    v18 = [v15 bagForProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
     v19 = [objc_alloc(MEMORY[0x277CEE598]) initWithContainerID:@"com.apple.AppleMediaServices" bag:v18];
     metrics = v10->_metrics;
     v10->_metrics = v19;
 
-    v21 = [v7 artworkUrl];
+    artworkUrl = [notificationCopy artworkUrl];
 
-    if (v21)
+    if (artworkUrl)
     {
       v22 = objc_alloc(MEMORY[0x277D755E8]);
       v23 = [v22 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -54,14 +54,14 @@
       v59 = 3221225472;
       v60 = __74__AMPUserNotificationContentViewController_initWithNotification_delegate___block_invoke;
       v61 = &unk_278BC2018;
-      v62 = v7;
+      v62 = notificationCopy;
       v63 = v10;
       dispatch_async(v25, &v58);
     }
 
-    v26 = [v7 videoUrl];
+    videoUrl = [notificationCopy videoUrl];
 
-    if (v26)
+    if (videoUrl)
     {
       v65 = 0;
       v66 = &v65;
@@ -81,8 +81,8 @@
 
       v28 = v27;
       _Block_object_dispose(&v65, 8);
-      v29 = [v7 videoUrl];
-      v30 = [v27 playerItemWithURL:v29];
+      videoUrl2 = [notificationCopy videoUrl];
+      v30 = [v27 playerItemWithURL:videoUrl2];
 
       v65 = 0;
       v66 = &v65;
@@ -127,33 +127,33 @@
       v37 = [v35 playerWithPlayerItem:v30];
       [(AVPlayerViewController *)v10->_videoPlayerController setPlayer:v37];
 
-      v38 = [(AVPlayerViewController *)v10->_videoPlayerController player];
-      [v38 addObserver:v10 forKeyPath:@"status" options:1 context:0];
+      player = [(AVPlayerViewController *)v10->_videoPlayerController player];
+      [player addObserver:v10 forKeyPath:@"status" options:1 context:0];
 
-      v39 = [(AVPlayerViewController *)v10->_videoPlayerController player];
-      [v39 addObserver:v10 forKeyPath:@"timeControlStatus" options:1 context:0];
+      player2 = [(AVPlayerViewController *)v10->_videoPlayerController player];
+      [player2 addObserver:v10 forKeyPath:@"timeControlStatus" options:1 context:0];
 
-      v40 = [(AVPlayerViewController *)v10->_videoPlayerController player];
-      [v40 replaceCurrentItemWithPlayerItem:v30];
+      player3 = [(AVPlayerViewController *)v10->_videoPlayerController player];
+      [player3 replaceCurrentItemWithPlayerItem:v30];
 
       [(AVPlayerViewController *)v10->_videoPlayerController setUpdatesNowPlayingInfoCenter:0];
-      v41 = [MEMORY[0x277CEE508] sharedConfig];
-      if (!v41)
+      mEMORY[0x277CEE508] = [MEMORY[0x277CEE508] sharedConfig];
+      if (!mEMORY[0x277CEE508])
       {
-        v41 = [MEMORY[0x277CEE508] sharedConfig];
+        mEMORY[0x277CEE508] = [MEMORY[0x277CEE508] sharedConfig];
       }
 
-      v42 = [v41 OSLogObject];
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
+      oSLogObject = [mEMORY[0x277CEE508] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v43 = objc_opt_class();
         v44 = v43;
-        v45 = [v7 logKey];
+        logKey = [notificationCopy logKey];
         *buf = 138543618;
         *&buf[4] = v43;
         *&buf[12] = 2114;
-        *&buf[14] = v45;
-        _os_log_impl(&dword_23C90D000, v42, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Loading rich notification video", buf, 0x16u);
+        *&buf[14] = logKey;
+        _os_log_impl(&dword_23C90D000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Loading rich notification video", buf, 0x16u);
       }
     }
 
@@ -168,11 +168,11 @@
     v48 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
     [(UILabel *)v10->_titleLabel setFont:v48];
 
-    v49 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v10->_titleLabel setBackgroundColor:v49];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v10->_titleLabel setBackgroundColor:clearColor];
 
-    v50 = [v7 title];
-    [(UILabel *)v10->_titleLabel setText:v50];
+    title = [notificationCopy title];
+    [(UILabel *)v10->_titleLabel setText:title];
 
     v51 = objc_alloc_init(MEMORY[0x277D756B8]);
     textLabel = v10->_textLabel;
@@ -185,11 +185,11 @@
     v53 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)v10->_textLabel setFont:v53];
 
-    v54 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v10->_textLabel setBackgroundColor:v54];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v10->_textLabel setBackgroundColor:clearColor2];
 
-    v55 = [v7 informativeText];
-    [(UILabel *)v10->_textLabel setText:v55];
+    informativeText = [notificationCopy informativeText];
+    [(UILabel *)v10->_textLabel setText:informativeText];
   }
 
   v56 = *MEMORY[0x277D85DE8];
@@ -272,118 +272,118 @@ void __74__AMPUserNotificationContentViewController_initWithNotification_delegat
   v23.receiver = self;
   v23.super_class = AMPUserNotificationContentViewController;
   [(AMPUserNotificationContentViewController *)&v23 loadView];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(AMPUserNotificationContentViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(AMPUserNotificationContentViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(AMPUserNotificationContentViewController *)self view];
-  v6 = [(AMPUserNotificationContentViewController *)self titleLabel];
-  [v5 addSubview:v6];
+  view2 = [(AMPUserNotificationContentViewController *)self view];
+  titleLabel = [(AMPUserNotificationContentViewController *)self titleLabel];
+  [view2 addSubview:titleLabel];
 
-  v7 = [(AMPUserNotificationContentViewController *)self view];
-  v8 = [(AMPUserNotificationContentViewController *)self textLabel];
-  [v7 addSubview:v8];
+  view3 = [(AMPUserNotificationContentViewController *)self view];
+  textLabel = [(AMPUserNotificationContentViewController *)self textLabel];
+  [view3 addSubview:textLabel];
 
-  v9 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+  videoPlayerController = [(AMPUserNotificationContentViewController *)self videoPlayerController];
 
-  if (v9)
+  if (videoPlayerController)
   {
-    v10 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-    [(AMPUserNotificationContentViewController *)self addChildViewController:v10];
+    videoPlayerController2 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+    [(AMPUserNotificationContentViewController *)self addChildViewController:videoPlayerController2];
 
-    v11 = [(AMPUserNotificationContentViewController *)self view];
-    v12 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-    v13 = [v12 view];
-    [v11 addSubview:v13];
+    view4 = [(AMPUserNotificationContentViewController *)self view];
+    videoPlayerController3 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+    view5 = [videoPlayerController3 view];
+    [view4 addSubview:view5];
 
-    v14 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-    [v14 didMoveToParentViewController:self];
+    videoPlayerController4 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+    [videoPlayerController4 didMoveToParentViewController:self];
 
-    v15 = [(AMPUserNotificationContentViewController *)self imageView];
+    imageView = [(AMPUserNotificationContentViewController *)self imageView];
 
-    if (!v15)
+    if (!imageView)
     {
       return;
     }
 
-    v16 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-    v17 = [v16 contentOverlayView];
-    v18 = [(AMPUserNotificationContentViewController *)self imageView];
-    [v17 addSubview:v18];
+    videoPlayerController5 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+    contentOverlayView = [videoPlayerController5 contentOverlayView];
+    imageView2 = [(AMPUserNotificationContentViewController *)self imageView];
+    [contentOverlayView addSubview:imageView2];
   }
 
   else
   {
-    v19 = [(AMPUserNotificationContentViewController *)self imageView];
+    imageView3 = [(AMPUserNotificationContentViewController *)self imageView];
 
-    if (!v19)
+    if (!imageView3)
     {
       return;
     }
 
-    v20 = [(AMPUserNotificationContentViewController *)self view];
-    v21 = [(AMPUserNotificationContentViewController *)self imageView];
-    [v20 addSubview:v21];
+    view6 = [(AMPUserNotificationContentViewController *)self view];
+    imageView4 = [(AMPUserNotificationContentViewController *)self imageView];
+    [view6 addSubview:imageView4];
 
-    v16 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_imageViewTapped_];
-    v22 = [(AMPUserNotificationContentViewController *)self imageView];
-    [v22 addGestureRecognizer:v16];
+    videoPlayerController5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_imageViewTapped_];
+    imageView5 = [(AMPUserNotificationContentViewController *)self imageView];
+    [imageView5 addGestureRecognizer:videoPlayerController5];
 
-    v17 = [(AMPUserNotificationContentViewController *)self imageView];
-    [v17 setUserInteractionEnabled:1];
+    contentOverlayView = [(AMPUserNotificationContentViewController *)self imageView];
+    [contentOverlayView setUserInteractionEnabled:1];
   }
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7.receiver = self;
   v7.super_class = AMPUserNotificationContentViewController;
   [(AMPUserNotificationContentViewController *)&v7 setPreferredContentSize:?];
-  v6 = [(AMPUserNotificationContentViewController *)self delegate];
-  [v6 viewController:self didUpdatePreferredContentSize:{width, height}];
+  delegate = [(AMPUserNotificationContentViewController *)self delegate];
+  [delegate viewController:self didUpdatePreferredContentSize:{width, height}];
 }
 
 - (CGSize)expectedContentSize
 {
-  v3 = [(AMPUserNotificationContentViewController *)self view];
-  [v3 frame];
+  view = [(AMPUserNotificationContentViewController *)self view];
+  [view frame];
   v5 = v4;
 
-  v6 = [(AMPUserNotificationContentViewController *)self titleLabel];
-  [v6 sizeThatFits:{v5 + -32.0, 3.40282347e38}];
+  titleLabel = [(AMPUserNotificationContentViewController *)self titleLabel];
+  [titleLabel sizeThatFits:{v5 + -32.0, 3.40282347e38}];
   v8 = v7;
 
-  v9 = [(AMPUserNotificationContentViewController *)self textLabel];
-  [v9 sizeThatFits:{v5 + -32.0, 3.40282347e38}];
+  textLabel = [(AMPUserNotificationContentViewController *)self textLabel];
+  [textLabel sizeThatFits:{v5 + -32.0, 3.40282347e38}];
   v11 = v10;
 
-  v12 = [(AMPUserNotificationContentViewController *)self imageView];
-  v13 = [v12 image];
+  imageView = [(AMPUserNotificationContentViewController *)self imageView];
+  image = [imageView image];
 
   v14 = 0.0;
   v15 = 0.0;
-  if (v13)
+  if (image)
   {
-    v16 = [(AMPUserNotificationContentViewController *)self imageView];
-    v17 = [v16 image];
-    [v17 size];
+    imageView2 = [(AMPUserNotificationContentViewController *)self imageView];
+    image2 = [imageView2 image];
+    [image2 size];
     v19 = v18;
-    v20 = [(AMPUserNotificationContentViewController *)self imageView];
-    v21 = [v20 image];
-    [v21 size];
+    imageView3 = [(AMPUserNotificationContentViewController *)self imageView];
+    image3 = [imageView3 image];
+    [image3 size];
     v23 = v19 / v22;
 
     v15 = v5 * v23;
   }
 
-  v24 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+  videoPlayerController = [(AMPUserNotificationContentViewController *)self videoPlayerController];
 
-  if (v24)
+  if (videoPlayerController)
   {
-    v25 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-    [v25 videoBounds];
+    videoPlayerController2 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+    [videoPlayerController2 videoBounds];
     v27 = v26;
     v29 = v28;
 
@@ -412,25 +412,25 @@ void __74__AMPUserNotificationContentViewController_initWithNotification_delegat
   v53.receiver = self;
   v53.super_class = AMPUserNotificationContentViewController;
   [(AMPUserNotificationContentViewController *)&v53 viewWillLayoutSubviews];
-  v3 = [(AMPUserNotificationContentViewController *)self view];
-  [v3 frame];
+  view = [(AMPUserNotificationContentViewController *)self view];
+  [view frame];
   v5 = v4;
 
   v6 = v5 + -32.0;
-  v7 = [(AMPUserNotificationContentViewController *)self titleLabel];
-  [v7 sizeThatFits:{v5 + -32.0, 3.40282347e38}];
+  titleLabel = [(AMPUserNotificationContentViewController *)self titleLabel];
+  [titleLabel sizeThatFits:{v5 + -32.0, 3.40282347e38}];
   v9 = v8;
 
-  v10 = [(AMPUserNotificationContentViewController *)self textLabel];
-  [v10 sizeThatFits:{v5 + -32.0, 3.40282347e38}];
+  textLabel = [(AMPUserNotificationContentViewController *)self textLabel];
+  [textLabel sizeThatFits:{v5 + -32.0, 3.40282347e38}];
   v12 = v11;
 
-  v13 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+  videoPlayerController = [(AMPUserNotificationContentViewController *)self videoPlayerController];
 
-  if (v13)
+  if (videoPlayerController)
   {
-    v14 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-    [v14 videoBounds];
+    videoPlayerController2 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+    [videoPlayerController2 videoBounds];
     v16 = v15;
     v18 = v17;
 
@@ -444,28 +444,28 @@ void __74__AMPUserNotificationContentViewController_initWithNotification_delegat
       v19 = v5 * v18 / v16;
     }
 
-    v31 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-    v32 = [v31 view];
-    [v32 setFrame:{0.0, 0.0, v5, v19}];
+    videoPlayerController3 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+    view2 = [videoPlayerController3 view];
+    [view2 setFrame:{0.0, 0.0, v5, v19}];
 
-    v33 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-    v34 = [v33 view];
-    [v34 frame];
+    videoPlayerController4 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+    view3 = [videoPlayerController4 view];
+    [view3 frame];
     v35 = CGRectGetMaxY(v54) + 16.0;
 
-    v36 = [(AMPUserNotificationContentViewController *)self imageView];
+    imageView = [(AMPUserNotificationContentViewController *)self imageView];
 
-    if (v36)
+    if (imageView)
     {
-      v37 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-      v38 = [v37 view];
-      [v38 bounds];
+      videoPlayerController5 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+      view4 = [videoPlayerController5 view];
+      [view4 bounds];
       v40 = v39;
       v42 = v41;
       v44 = v43;
       v46 = v45;
-      v47 = [(AMPUserNotificationContentViewController *)self imageView];
-      [v47 setFrame:{v40, v42, v44, v46}];
+      imageView2 = [(AMPUserNotificationContentViewController *)self imageView];
+      [imageView2 setFrame:{v40, v42, v44, v46}];
 
 LABEL_13:
     }
@@ -473,21 +473,21 @@ LABEL_13:
 
   else
   {
-    v20 = [(AMPUserNotificationContentViewController *)self imageView];
+    imageView3 = [(AMPUserNotificationContentViewController *)self imageView];
 
-    if (v20)
+    if (imageView3)
     {
-      v21 = [(AMPUserNotificationContentViewController *)self imageView];
-      v22 = [v21 image];
-      if (v22)
+      imageView4 = [(AMPUserNotificationContentViewController *)self imageView];
+      image = [imageView4 image];
+      if (image)
       {
-        v23 = [(AMPUserNotificationContentViewController *)self imageView];
-        v24 = [v23 image];
-        [v24 size];
+        imageView5 = [(AMPUserNotificationContentViewController *)self imageView];
+        image2 = [imageView5 image];
+        [image2 size];
         v26 = v25;
-        v27 = [(AMPUserNotificationContentViewController *)self imageView];
-        v28 = [v27 image];
-        [v28 size];
+        imageView6 = [(AMPUserNotificationContentViewController *)self imageView];
+        image3 = [imageView6 image];
+        [image3 size];
         v30 = v26 / v29;
       }
 
@@ -496,11 +496,11 @@ LABEL_13:
         v30 = 0.0;
       }
 
-      v48 = [(AMPUserNotificationContentViewController *)self imageView];
-      [v48 setFrame:{0.0, 0.0, v5, v5 * v30}];
+      imageView7 = [(AMPUserNotificationContentViewController *)self imageView];
+      [imageView7 setFrame:{0.0, 0.0, v5, v5 * v30}];
 
-      v37 = [(AMPUserNotificationContentViewController *)self imageView];
-      [v37 frame];
+      videoPlayerController5 = [(AMPUserNotificationContentViewController *)self imageView];
+      [videoPlayerController5 frame];
       v35 = CGRectGetMaxY(v55) + 16.0;
       goto LABEL_13;
     }
@@ -508,136 +508,136 @@ LABEL_13:
     v35 = 16.0;
   }
 
-  v49 = [(AMPUserNotificationContentViewController *)self titleLabel];
-  [v49 setFrame:{16.0, v35, v6, v9}];
+  titleLabel2 = [(AMPUserNotificationContentViewController *)self titleLabel];
+  [titleLabel2 setFrame:{16.0, v35, v6, v9}];
 
-  v50 = [(AMPUserNotificationContentViewController *)self titleLabel];
-  [v50 frame];
+  titleLabel3 = [(AMPUserNotificationContentViewController *)self titleLabel];
+  [titleLabel3 frame];
   MaxY = CGRectGetMaxY(v56);
-  v52 = [(AMPUserNotificationContentViewController *)self textLabel];
-  [v52 setFrame:{16.0, MaxY, v6, v12}];
+  textLabel2 = [(AMPUserNotificationContentViewController *)self textLabel];
+  [textLabel2 setFrame:{16.0, MaxY, v6, v12}];
 
   [(AMPUserNotificationContentViewController *)self expectedContentSize];
   [(AMPUserNotificationContentViewController *)self setPreferredContentSize:?];
 }
 
-- (void)imageViewTapped:(id)a3
+- (void)imageViewTapped:(id)tapped
 {
-  v3 = [(AMPUserNotificationContentViewController *)self delegate];
-  [v3 openNotification];
+  delegate = [(AMPUserNotificationContentViewController *)self delegate];
+  [delegate openNotification];
 }
 
 - (void)mediaPause
 {
-  v3 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-  v4 = [v3 player];
-  [v4 pause];
+  videoPlayerController = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+  player = [videoPlayerController player];
+  [player pause];
 
-  v6 = [getAVAudioSessionClass() sharedInstance];
-  v5 = [(AMPUserNotificationContentViewController *)self audioSessionCategory];
-  [v6 setCategory:v5 withOptions:-[AMPUserNotificationContentViewController audioSessionCategoryOptions](self error:{"audioSessionCategoryOptions"), 0}];
+  sharedInstance = [getAVAudioSessionClass() sharedInstance];
+  audioSessionCategory = [(AMPUserNotificationContentViewController *)self audioSessionCategory];
+  [sharedInstance setCategory:audioSessionCategory withOptions:-[AMPUserNotificationContentViewController audioSessionCategoryOptions](self error:{"audioSessionCategoryOptions"), 0}];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v60 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-  v13 = [v12 player];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  videoPlayerController = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+  player = [videoPlayerController player];
 
-  if (v13 == v10)
+  if (player == objectCopy)
   {
-    if ([v9 isEqualToString:@"status"])
+    if ([pathCopy isEqualToString:@"status"])
     {
-      v14 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-      v15 = [v14 player];
-      v16 = [v15 status];
+      videoPlayerController2 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+      player2 = [videoPlayerController2 player];
+      status = [player2 status];
 
-      if (v16 == 1)
+      if (status == 1)
       {
-        v17 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-        v18 = [v17 player];
-        [v18 setMuted:0];
+        videoPlayerController3 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+        player3 = [videoPlayerController3 player];
+        [player3 setMuted:0];
 
-        v19 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-        [v19 setAllowsEnteringFullScreen:0];
+        videoPlayerController4 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+        [videoPlayerController4 setAllowsEnteringFullScreen:0];
 
-        v20 = [getAVAudioSessionClass() sharedInstance];
-        v21 = [v20 category];
-        [(AMPUserNotificationContentViewController *)self setAudioSessionCategory:v21];
+        sharedInstance = [getAVAudioSessionClass() sharedInstance];
+        category = [sharedInstance category];
+        [(AMPUserNotificationContentViewController *)self setAudioSessionCategory:category];
 
-        v22 = [getAVAudioSessionClass() sharedInstance];
-        -[AMPUserNotificationContentViewController setAudioSessionCategoryOptions:](self, "setAudioSessionCategoryOptions:", [v22 categoryOptions]);
+        sharedInstance2 = [getAVAudioSessionClass() sharedInstance];
+        -[AMPUserNotificationContentViewController setAudioSessionCategoryOptions:](self, "setAudioSessionCategoryOptions:", [sharedInstance2 categoryOptions]);
 
-        v23 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-        v24 = [v23 player];
-        [v24 setAllowsExternalPlayback:0];
+        videoPlayerController5 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+        player4 = [videoPlayerController5 player];
+        [player4 setAllowsExternalPlayback:0];
 
         [(AMPUserNotificationContentViewController *)self expectedContentSize];
         [(AMPUserNotificationContentViewController *)self setPreferredContentSize:?];
-        v25 = [MEMORY[0x277CEE508] sharedConfig];
-        if (!v25)
+        mEMORY[0x277CEE508] = [MEMORY[0x277CEE508] sharedConfig];
+        if (!mEMORY[0x277CEE508])
         {
-          v25 = [MEMORY[0x277CEE508] sharedConfig];
+          mEMORY[0x277CEE508] = [MEMORY[0x277CEE508] sharedConfig];
         }
 
-        v26 = [v25 OSLogObject];
-        if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+        oSLogObject = [mEMORY[0x277CEE508] OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
           v27 = objc_opt_class();
           v28 = v27;
-          v29 = [(AMPUserNotificationContentViewController *)self userNotification];
-          v30 = [v29 logKey];
+          userNotification = [(AMPUserNotificationContentViewController *)self userNotification];
+          logKey = [userNotification logKey];
           *buf = 138543618;
           *&buf[4] = v27;
           *&buf[12] = 2114;
-          *&buf[14] = v30;
-          _os_log_impl(&dword_23C90D000, v26, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Ready to play rich notification video", buf, 0x16u);
+          *&buf[14] = logKey;
+          _os_log_impl(&dword_23C90D000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Ready to play rich notification video", buf, 0x16u);
         }
       }
 
-      v31 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-      v32 = [v31 player];
-      v33 = [v32 status] == 2;
+      videoPlayerController6 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+      player5 = [videoPlayerController6 player];
+      v33 = [player5 status] == 2;
 
       if (v33)
       {
-        v34 = [MEMORY[0x277CEE508] sharedConfig];
-        if (!v34)
+        mEMORY[0x277CEE508]2 = [MEMORY[0x277CEE508] sharedConfig];
+        if (!mEMORY[0x277CEE508]2)
         {
-          v34 = [MEMORY[0x277CEE508] sharedConfig];
+          mEMORY[0x277CEE508]2 = [MEMORY[0x277CEE508] sharedConfig];
         }
 
-        v35 = [v34 OSLogObject];
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [mEMORY[0x277CEE508]2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v36 = objc_opt_class();
           v37 = v36;
-          v38 = [(AMPUserNotificationContentViewController *)self userNotification];
-          v39 = [v38 logKey];
+          userNotification2 = [(AMPUserNotificationContentViewController *)self userNotification];
+          logKey2 = [userNotification2 logKey];
           *buf = 138543618;
           *&buf[4] = v36;
           *&buf[12] = 2114;
-          *&buf[14] = v39;
-          _os_log_impl(&dword_23C90D000, v35, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to load video at url", buf, 0x16u);
+          *&buf[14] = logKey2;
+          _os_log_impl(&dword_23C90D000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to load video at url", buf, 0x16u);
         }
       }
     }
 
-    if ([v9 isEqualToString:@"timeControlStatus"])
+    if ([pathCopy isEqualToString:@"timeControlStatus"])
     {
-      v40 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
-      v41 = [v40 player];
-      v42 = [v41 timeControlStatus] == 2;
+      videoPlayerController7 = [(AMPUserNotificationContentViewController *)self videoPlayerController];
+      player6 = [videoPlayerController7 player];
+      v42 = [player6 timeControlStatus] == 2;
 
       if (v42)
       {
-        v43 = [(AMPUserNotificationContentViewController *)self imageView];
-        [v43 removeFromSuperview];
+        imageView = [(AMPUserNotificationContentViewController *)self imageView];
+        [imageView removeFromSuperview];
 
-        v44 = [getAVAudioSessionClass() sharedInstance];
+        sharedInstance3 = [getAVAudioSessionClass() sharedInstance];
         v53 = 0;
         v54 = &v53;
         v55 = 0x2020000000;
@@ -664,16 +664,16 @@ LABEL_13:
           __break(1u);
         }
 
-        [v44 setCategory:*v45 withOptions:1 error:{0, v53}];
+        [sharedInstance3 setCategory:*v45 withOptions:1 error:{0, v53}];
 
         if (![(AMPUserNotificationContentViewController *)self hasPlayedVideo])
         {
           v48 = MEMORY[0x277CEE728];
-          v49 = [(AMPUserNotificationContentViewController *)self userNotification];
-          v50 = [v48 eventForVideoPlaybackForNotification:v49];
+          userNotification3 = [(AMPUserNotificationContentViewController *)self userNotification];
+          v50 = [v48 eventForVideoPlaybackForNotification:userNotification3];
 
-          v51 = [(AMPUserNotificationContentViewController *)self metrics];
-          [v51 enqueueEvent:v50];
+          metrics = [(AMPUserNotificationContentViewController *)self metrics];
+          [metrics enqueueEvent:v50];
         }
 
         [(AMPUserNotificationContentViewController *)self setHasPlayedVideo:1];

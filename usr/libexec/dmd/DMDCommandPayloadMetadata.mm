@@ -1,24 +1,24 @@
 @interface DMDCommandPayloadMetadata
-+ (id)commandsWithPayloadDictionaries:(id)a3 organizationIdentifier:(id)a4 context:(id)a5 error:(id *)a6;
-+ (id)fetchRequestForCommandsFromOrganizationWithIdentifier:(id)a3 matchingPredicate:(id)a4;
-+ (id)fetchRequestForCommandsPendingDeleteFromOrganizationWithIdentifier:(id)a3;
-+ (id)fetchRequestForCommandsPendingExecutionFromOrganizationWithIdentifier:(id)a3;
-+ (id)fetchRequestForCommandsPendingRemovalFromOrganizationWithIdentifier:(id)a3;
++ (id)commandsWithPayloadDictionaries:(id)dictionaries organizationIdentifier:(id)identifier context:(id)context error:(id *)error;
++ (id)fetchRequestForCommandsFromOrganizationWithIdentifier:(id)identifier matchingPredicate:(id)predicate;
++ (id)fetchRequestForCommandsPendingDeleteFromOrganizationWithIdentifier:(id)identifier;
++ (id)fetchRequestForCommandsPendingExecutionFromOrganizationWithIdentifier:(id)identifier;
++ (id)fetchRequestForCommandsPendingRemovalFromOrganizationWithIdentifier:(id)identifier;
 @end
 
 @implementation DMDCommandPayloadMetadata
 
-+ (id)commandsWithPayloadDictionaries:(id)a3 organizationIdentifier:(id)a4 context:(id)a5 error:(id *)a6
++ (id)commandsWithPayloadDictionaries:(id)dictionaries organizationIdentifier:(id)identifier context:(id)context error:(id *)error
 {
-  v9 = a3;
-  v30 = a4;
-  v29 = a5;
+  dictionariesCopy = dictionaries;
+  identifierCopy = identifier;
+  contextCopy = context;
   v10 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v9;
+  v11 = dictionariesCopy;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v12)
   {
@@ -36,25 +36,25 @@
           objc_enumerationMutation(obj);
         }
 
-        v18 = [(DMDPayloadMetadata *)DMDCommandPayloadMetadata metadataWithPayloadDictionary:*(*(&v31 + 1) + 8 * i) organizationIdentifier:v30 context:v29 error:a6];
+        v18 = [(DMDPayloadMetadata *)DMDCommandPayloadMetadata metadataWithPayloadDictionary:*(*(&v31 + 1) + 8 * i) organizationIdentifier:identifierCopy context:contextCopy error:error];
         v19 = v18;
         if (!v18)
         {
           goto LABEL_13;
         }
 
-        v20 = [v18 identifier];
-        v21 = [v10 objectForKeyedSubscript:v20];
+        identifier = [v18 identifier];
+        v21 = [v10 objectForKeyedSubscript:identifier];
 
         if (v21)
         {
-          if (a6)
+          if (error)
           {
             v37 = DMFConfigurationPayloadIdentifierErrorKey;
-            v25 = [v19 identifier];
-            v38 = v25;
+            identifier2 = [v19 identifier];
+            v38 = identifier2;
             v26 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-            *a6 = DMFErrorWithCodeAndUserInfo();
+            *error = DMFErrorWithCodeAndUserInfo();
           }
 
 LABEL_13:
@@ -69,8 +69,8 @@ LABEL_13:
         v22 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
         [v19 setStateDictionary:v22];
 
-        v23 = [v19 identifier];
-        [v10 setObject:v19 forKeyedSubscript:v23];
+        identifier3 = [v19 identifier];
+        [v10 setObject:v19 forKeyedSubscript:identifier3];
       }
 
       v11 = obj;
@@ -90,67 +90,67 @@ LABEL_14:
   return v24;
 }
 
-+ (id)fetchRequestForCommandsFromOrganizationWithIdentifier:(id)a3 matchingPredicate:(id)a4
++ (id)fetchRequestForCommandsFromOrganizationWithIdentifier:(id)identifier matchingPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
   v8 = objc_opt_new();
-  if (v6)
+  if (identifierCopy)
   {
-    v9 = [NSPredicate predicateWithFormat:@"%K = %@", @"organization.identifier", v6];
-    [v8 addObject:v9];
+    identifierCopy = [NSPredicate predicateWithFormat:@"%K = %@", @"organization.identifier", identifierCopy];
+    [v8 addObject:identifierCopy];
   }
 
-  if (v7)
+  if (predicateCopy)
   {
-    [v8 addObject:v7];
+    [v8 addObject:predicateCopy];
   }
 
-  v10 = [a1 fetchRequest];
+  fetchRequest = [self fetchRequest];
   v11 = [NSCompoundPredicate andPredicateWithSubpredicates:v8];
-  [v10 setPredicate:v11];
+  [fetchRequest setPredicate:v11];
 
-  return v10;
+  return fetchRequest;
 }
 
-+ (id)fetchRequestForCommandsPendingExecutionFromOrganizationWithIdentifier:(id)a3
++ (id)fetchRequestForCommandsPendingExecutionFromOrganizationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [NSPredicate predicateWithFormat:@"%K = %@", @"available", &__kCFBooleanTrue];
   v11[0] = v5;
   v6 = [NSPredicate predicateWithFormat:@"%K = %@", @"installed", &__kCFBooleanFalse];
   v11[1] = v6;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [NSCompoundPredicate andPredicateWithSubpredicates:v7];
-  v9 = [a1 fetchRequestForCommandsFromOrganizationWithIdentifier:v4 matchingPredicate:v8];
+  v9 = [self fetchRequestForCommandsFromOrganizationWithIdentifier:identifierCopy matchingPredicate:v8];
 
   return v9;
 }
 
-+ (id)fetchRequestForCommandsPendingRemovalFromOrganizationWithIdentifier:(id)a3
++ (id)fetchRequestForCommandsPendingRemovalFromOrganizationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [NSPredicate predicateWithFormat:@"%K = %@", @"available", &__kCFBooleanFalse];
   v11[0] = v5;
   v6 = [NSPredicate predicateWithFormat:@"%K = %@", @"installed", &__kCFBooleanFalse];
   v11[1] = v6;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [NSCompoundPredicate andPredicateWithSubpredicates:v7];
-  v9 = [a1 fetchRequestForCommandsFromOrganizationWithIdentifier:v4 matchingPredicate:v8];
+  v9 = [self fetchRequestForCommandsFromOrganizationWithIdentifier:identifierCopy matchingPredicate:v8];
 
   return v9;
 }
 
-+ (id)fetchRequestForCommandsPendingDeleteFromOrganizationWithIdentifier:(id)a3
++ (id)fetchRequestForCommandsPendingDeleteFromOrganizationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [NSPredicate predicateWithFormat:@"%K = %@", @"installed", &__kCFBooleanTrue];
   v11[0] = v5;
   v6 = [NSPredicate predicateWithFormat:@"%K = %@", @"pendingStatusUpdate", &__kCFBooleanFalse];
   v11[1] = v6;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [NSCompoundPredicate andPredicateWithSubpredicates:v7];
-  v9 = [a1 fetchRequestForCommandsFromOrganizationWithIdentifier:v4 matchingPredicate:v8];
+  v9 = [self fetchRequestForCommandsFromOrganizationWithIdentifier:identifierCopy matchingPredicate:v8];
 
   return v9;
 }

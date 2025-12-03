@@ -1,7 +1,7 @@
 @interface ANSTPixelBuffer
 + (ANSTPixelBuffer)new;
 - (ANSTPixelBuffer)init;
-- (ANSTPixelBuffer)initWithDescriptor:(id)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 error:(id *)a6;
+- (ANSTPixelBuffer)initWithDescriptor:(id)descriptor pixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -16,15 +16,15 @@
 
 + (ANSTPixelBuffer)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTPixelBuffer)initWithDescriptor:(id)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 error:(id *)a6
+- (ANSTPixelBuffer)initWithDescriptor:(id)descriptor pixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation error:(id *)error
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  descriptorCopy = descriptor;
   v29.receiver = self;
   v29.super_class = ANSTPixelBuffer;
   v13 = [(ANSTPixelBuffer *)&v29 init];
@@ -33,12 +33,12 @@
     goto LABEL_5;
   }
 
-  v14 = objc_msgSend_copy(v10, v11, v12);
+  v14 = objc_msgSend_copy(descriptorCopy, v11, v12);
   pixelBufferDescriptor = v13->_pixelBufferDescriptor;
   v13->_pixelBufferDescriptor = v14;
 
-  v13->_pixelBuffer = CVPixelBufferRetain(a4);
-  v13->_orientation = a5;
+  v13->_pixelBuffer = CVPixelBufferRetain(buffer);
+  v13->_orientation = orientation;
   v18 = objc_msgSend_width(v13->_pixelBufferDescriptor, v16, v17);
   if (v18 != CVPixelBufferGetWidth(v13->_pixelBuffer))
   {
@@ -49,26 +49,26 @@
   if (v21 == CVPixelBufferGetHeight(v13->_pixelBuffer) && (v23 = objc_msgSend_pixelFormatType(v13->_pixelBufferDescriptor, v19, v22), v23 == CVPixelBufferGetPixelFormatType(v13->_pixelBuffer)))
   {
 LABEL_5:
-    a6 = v13;
+    error = v13;
   }
 
   else
   {
 LABEL_6:
-    if (a6)
+    if (error)
     {
       v24 = MEMORY[0x277CCA9B8];
       v30 = *MEMORY[0x277CCA068];
       v31[0] = @"Pixel buffer's width, height, and pixel format type must match its designated descriptor.";
       v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, v31, &v30, 1);
-      *a6 = objc_msgSend_errorWithDomain_code_userInfo_(v24, v26, @"ANSTErrorDomain", 13, v25);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v24, v26, @"ANSTErrorDomain", 13, v25);
 
-      a6 = 0;
+      error = 0;
     }
   }
 
   v27 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 - (void)dealloc

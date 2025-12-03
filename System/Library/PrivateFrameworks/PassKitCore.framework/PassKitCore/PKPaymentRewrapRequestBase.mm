@@ -1,36 +1,36 @@
 @interface PKPaymentRewrapRequestBase
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 rewrapData:(id)a5 appleAccountInformation:(id)a6;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier rewrapData:(id)data appleAccountInformation:(id)information;
 - (id)bodyDictionary;
 @end
 
 @implementation PKPaymentRewrapRequestBase
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 rewrapData:(id)a5 appleAccountInformation:(id)a6
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier rewrapData:(id)data appleAccountInformation:(id)information
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(PKPaymentRewrapRequestBase *)self pass];
-  v15 = [v14 passTypeIdentifier];
-  v16 = [v14 serialNumber];
-  v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{@"devices", v12, 0}];
+  dataCopy = data;
+  informationCopy = information;
+  identifierCopy = identifier;
+  lCopy = l;
+  pass = [(PKPaymentRewrapRequestBase *)self pass];
+  passTypeIdentifier = [pass passTypeIdentifier];
+  serialNumber = [pass serialNumber];
+  v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{@"devices", identifierCopy, 0}];
 
   if (self->_type <= 4uLL)
   {
     [v17 addObject:@"passes"];
-    [v17 addObject:v15];
-    [v17 addObject:v16];
+    [v17 addObject:passTypeIdentifier];
+    [v17 addObject:serialNumber];
   }
 
-  v33 = v16;
-  v18 = [(PKPaymentRewrapRequestBase *)self endpointComponents];
-  if ([v18 count])
+  v33 = serialNumber;
+  endpointComponents = [(PKPaymentRewrapRequestBase *)self endpointComponents];
+  if ([endpointComponents count])
   {
-    [v17 addObjectsFromArray:v18];
+    [v17 addObjectsFromArray:endpointComponents];
   }
 
-  v19 = v15;
+  v19 = passTypeIdentifier;
   type = self->_type;
   if (type > 4)
   {
@@ -43,23 +43,23 @@
   }
 
   v22 = [v17 copy];
-  v23 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v13 version:v21 endpointComponents:v22 queryParameters:0 appleAccountInformation:v11];
+  v23 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy version:v21 endpointComponents:v22 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v23 setHTTPMethod:@"POST"];
   v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v10)
+  if (dataCopy)
   {
-    v25 = [v10 platformData];
-    v26 = [v25 hexEncoding];
-    [v24 setValue:v26 forKey:@"pairedSEP"];
+    platformData = [dataCopy platformData];
+    hexEncoding = [platformData hexEncoding];
+    [v24 setValue:hexEncoding forKey:@"pairedSEP"];
 
-    v27 = [v10 platformDataSignature];
-    v28 = [v27 hexEncoding];
-    [v24 setValue:v28 forKey:@"pairedSEPSignature"];
+    platformDataSignature = [dataCopy platformDataSignature];
+    hexEncoding2 = [platformDataSignature hexEncoding];
+    [v24 setValue:hexEncoding2 forKey:@"pairedSEPSignature"];
   }
 
-  v29 = [(PKPaymentRewrapRequestBase *)self bodyDictionary];
-  [v24 addEntriesFromDictionary:v29];
+  bodyDictionary = [(PKPaymentRewrapRequestBase *)self bodyDictionary];
+  [v24 addEntriesFromDictionary:bodyDictionary];
 
   v30 = [objc_opt_class() _HTTPBodyWithDictionary:v24];
   [v23 setHTTPBody:v30];
@@ -71,136 +71,136 @@
 
 - (id)bodyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PKWrappedPayment *)self->_wrappedPayment transactionData];
-  v5 = v4;
-  if (v4)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  transactionData = [(PKWrappedPayment *)self->_wrappedPayment transactionData];
+  v5 = transactionData;
+  if (transactionData)
   {
-    v6 = [v4 hexEncoding];
-    [v3 setValue:v6 forKey:@"paymentData"];
+    hexEncoding = [transactionData hexEncoding];
+    [dictionary setValue:hexEncoding forKey:@"paymentData"];
   }
 
-  v7 = [(PKWrappedPayment *)self->_wrappedPayment certificates];
-  v8 = [v7 dictionary];
+  certificates = [(PKWrappedPayment *)self->_wrappedPayment certificates];
+  dictionary2 = [certificates dictionary];
 
-  if (v8)
+  if (dictionary2)
   {
-    [v3 setValue:v8 forKey:@"casdCertificate"];
+    [dictionary setValue:dictionary2 forKey:@"casdCertificate"];
   }
 
-  v41 = v8;
-  v9 = [(PKWrappedPayment *)self->_wrappedPayment transactionInstructionsSignature];
-  v10 = v9;
-  if (v9)
+  v41 = dictionary2;
+  transactionInstructionsSignature = [(PKWrappedPayment *)self->_wrappedPayment transactionInstructionsSignature];
+  v10 = transactionInstructionsSignature;
+  if (transactionInstructionsSignature)
   {
-    v11 = [v9 hexEncoding];
-    [v3 setValue:v11 forKey:@"transactionInstructionsSignature"];
+    hexEncoding2 = [transactionInstructionsSignature hexEncoding];
+    [dictionary setValue:hexEncoding2 forKey:@"transactionInstructionsSignature"];
   }
 
   v40 = v10;
-  v12 = [(PKPaymentRewrapRequestBase *)self applicationData];
-  if (v12)
+  applicationData = [(PKPaymentRewrapRequestBase *)self applicationData];
+  if (applicationData)
   {
-    v13 = v12;
-    v14 = [(PKPaymentRewrapRequestBase *)self applicationData];
-    v15 = [v14 SHA256Hash];
-    v16 = [v15 hexEncoding];
+    v13 = applicationData;
+    applicationData2 = [(PKPaymentRewrapRequestBase *)self applicationData];
+    sHA256Hash = [applicationData2 SHA256Hash];
+    hexEncoding3 = [sHA256Hash hexEncoding];
 
-    if (v16)
+    if (hexEncoding3)
     {
-      [v3 setValue:v16 forKey:@"applicationData"];
+      [dictionary setValue:hexEncoding3 forKey:@"applicationData"];
     }
   }
 
-  v17 = [(PKWrappedPayment *)self->_wrappedPayment kextBlacklistVersion];
-  if ([v17 length])
+  kextBlacklistVersion = [(PKWrappedPayment *)self->_wrappedPayment kextBlacklistVersion];
+  if ([kextBlacklistVersion length])
   {
-    [v3 setValue:v17 forKey:@"kextBlacklistVersion"];
+    [dictionary setValue:kextBlacklistVersion forKey:@"kextBlacklistVersion"];
   }
 
-  v18 = [(PKWrappedPayment *)self->_wrappedPayment merchantCountryCode];
-  if (v18)
+  merchantCountryCode = [(PKWrappedPayment *)self->_wrappedPayment merchantCountryCode];
+  if (merchantCountryCode)
   {
-    [v3 setValue:v18 forKey:@"merchantCountryCode"];
+    [dictionary setValue:merchantCountryCode forKey:@"merchantCountryCode"];
   }
 
-  v19 = [(PKSecureElementPass *)self->_pass issuerCountryCode];
-  if (v19)
+  issuerCountryCode = [(PKSecureElementPass *)self->_pass issuerCountryCode];
+  if (issuerCountryCode)
   {
-    [v3 setValue:v19 forKey:@"issuerCountryCode"];
+    [dictionary setValue:issuerCountryCode forKey:@"issuerCountryCode"];
   }
 
-  v20 = [(PKSecureElementPass *)self->_pass primaryAccountIdentifier];
-  if (v20)
+  primaryAccountIdentifier = [(PKSecureElementPass *)self->_pass primaryAccountIdentifier];
+  if (primaryAccountIdentifier)
   {
-    [v3 setValue:v20 forKey:@"primaryAccountIdentifier"];
+    [dictionary setValue:primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
   }
 
   v42 = v5;
-  v21 = [(PKPaymentApplication *)self->_paymentApplication dpanIdentifier];
-  if (v21)
+  dpanIdentifier = [(PKPaymentApplication *)self->_paymentApplication dpanIdentifier];
+  if (dpanIdentifier)
   {
-    [v3 setValue:v21 forKey:@"devicePrimaryAccountIdentifier"];
+    [dictionary setValue:dpanIdentifier forKey:@"devicePrimaryAccountIdentifier"];
   }
 
   v22 = PKPaymentCryptogramTypeToString(self->_cryptogramType);
-  [v3 setValue:v22 forKey:@"cryptogramType"];
+  [dictionary setValue:v22 forKey:@"cryptogramType"];
 
   serviceProviderData = self->_serviceProviderData;
   if (serviceProviderData)
   {
-    [v3 setObject:serviceProviderData forKey:@"serviceProviderData"];
+    [dictionary setObject:serviceProviderData forKey:@"serviceProviderData"];
   }
 
   paymentHash = self->_paymentHash;
   if (paymentHash)
   {
-    [v3 setObject:paymentHash forKey:@"paymentHash"];
+    [dictionary setObject:paymentHash forKey:@"paymentHash"];
   }
 
   fundingSourceDetails = self->_fundingSourceDetails;
   if (fundingSourceDetails)
   {
-    [v3 setObject:fundingSourceDetails forKey:@"fundingSourceMetadata"];
+    [dictionary setObject:fundingSourceDetails forKey:@"fundingSourceMetadata"];
   }
 
   initiative = self->_initiative;
   if (initiative)
   {
-    [v3 setObject:initiative forKey:@"initiative"];
+    [dictionary setObject:initiative forKey:@"initiative"];
     if ([(NSString *)self->_initiative isEqualToString:@"merchant_token"])
     {
-      [v3 setObject:self->_merchantTokenUseCase forKey:@"merchantTokenUseCase"];
+      [dictionary setObject:self->_merchantTokenUseCase forKey:@"merchantTokenUseCase"];
     }
   }
 
   initiativeContext = self->_initiativeContext;
   if (initiativeContext)
   {
-    [v3 setObject:initiativeContext forKey:@"initiativeContext"];
+    [dictionary setObject:initiativeContext forKey:@"initiativeContext"];
   }
 
   merchantTokenManagementURL = self->_merchantTokenManagementURL;
   if (merchantTokenManagementURL)
   {
-    [v3 setObject:merchantTokenManagementURL forKey:@"merchantTokenManagementURL"];
+    [dictionary setObject:merchantTokenManagementURL forKey:@"merchantTokenManagementURL"];
   }
 
   remoteDeviceModel = self->_remoteDeviceModel;
   if (remoteDeviceModel)
   {
-    [v3 setObject:remoteDeviceModel forKey:@"remoteDeviceModel"];
+    [dictionary setObject:remoteDeviceModel forKey:@"remoteDeviceModel"];
   }
 
   if (self->_isDeferredPayment)
   {
-    [v3 setObject:&unk_1F23B6300 forKey:@"tokenRequestAttributes"];
+    [dictionary setObject:&unk_1F23B6300 forKey:@"tokenRequestAttributes"];
   }
 
   userAgent = self->_userAgent;
   if (userAgent)
   {
-    [v3 setObject:userAgent forKey:@"webViewUserAgent"];
+    [dictionary setObject:userAgent forKey:@"webViewUserAgent"];
   }
 
   if ([(NSString *)self->_remoteNetworkRequestPaymentTopicID length]|| [(NSString *)self->_remoteNetworkRequestInitiatingUserAgent length])
@@ -217,7 +217,7 @@
     }
 
     v32 = [v31 copy];
-    [v3 setObject:v32 forKeyedSubscript:@"remoteRequestData"];
+    [dictionary setObject:v32 forKeyedSubscript:@"remoteRequestData"];
   }
 
   if ([(NSArray *)self->_multiTokenContexts count])
@@ -229,30 +229,30 @@
     aBlock[4] = self;
     v33 = _Block_copy(aBlock);
     v34 = [(NSArray *)self->_multiTokenContexts pk_arrayByApplyingBlock:v33];
-    [v3 setObject:v34 forKeyedSubscript:@"paymentDataContext"];
+    [dictionary setObject:v34 forKeyedSubscript:@"paymentDataContext"];
   }
 
   if (self->_type == 2)
   {
-    v35 = [(PKPaymentApplication *)self->_paymentApplication virtualCardIdentifier];
-    [v3 setObject:v35 forKeyedSubscript:@"virtualCardNumberIdentifier"];
+    virtualCardIdentifier = [(PKPaymentApplication *)self->_paymentApplication virtualCardIdentifier];
+    [dictionary setObject:virtualCardIdentifier forKeyedSubscript:@"virtualCardNumberIdentifier"];
 
-    [v3 setObject:@"virtual_card_refresh" forKeyedSubscript:@"initiative"];
+    [dictionary setObject:@"virtual_card_refresh" forKeyedSubscript:@"initiative"];
   }
 
   shippingAddressHash = self->_shippingAddressHash;
   if (shippingAddressHash)
   {
-    [v3 setObject:shippingAddressHash forKey:@"shippingAddressHash"];
+    [dictionary setObject:shippingAddressHash forKey:@"shippingAddressHash"];
   }
 
   deviceAssessments = self->_deviceAssessments;
   if (deviceAssessments)
   {
-    [v3 setObject:deviceAssessments forKey:@"deviceAssessments"];
+    [dictionary setObject:deviceAssessments forKey:@"deviceAssessments"];
   }
 
-  v38 = [v3 copy];
+  v38 = [dictionary copy];
 
   return v38;
 }

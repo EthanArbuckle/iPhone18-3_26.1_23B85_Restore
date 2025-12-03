@@ -1,19 +1,19 @@
 @interface PCDelegateInfo
-- (void)setQueue:(id)a3;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation PCDelegateInfo
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   queue = self->_queue;
   p_queue = &self->_queue;
-  if (queue != v5)
+  if (queue != queueCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_queue, a3);
-    v5 = v8;
+    v8 = queueCopy;
+    objc_storeStrong(p_queue, queue);
+    queueCopy = v8;
   }
 }
 

@@ -1,17 +1,17 @@
 @interface MUHikingTipCoordinator
 - (MUHikingTipCoordinator)init;
-- (MUHikingTipCoordinator)initWithMapService:(id)a3 locationDelegate:(id)a4 mapAccessProvider:(id)a5 presenter:(id)a6;
+- (MUHikingTipCoordinator)initWithMapService:(id)service locationDelegate:(id)delegate mapAccessProvider:(id)provider presenter:(id)presenter;
 @end
 
 @implementation MUHikingTipCoordinator
 
-- (MUHikingTipCoordinator)initWithMapService:(id)a3 locationDelegate:(id)a4 mapAccessProvider:(id)a5 presenter:(id)a6
+- (MUHikingTipCoordinator)initWithMapService:(id)service locationDelegate:(id)delegate mapAccessProvider:(id)provider presenter:(id)presenter
 {
-  v6 = a3;
+  serviceCopy = service;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = sub_1C571371C(v6);
+  v7 = sub_1C571371C(serviceCopy);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

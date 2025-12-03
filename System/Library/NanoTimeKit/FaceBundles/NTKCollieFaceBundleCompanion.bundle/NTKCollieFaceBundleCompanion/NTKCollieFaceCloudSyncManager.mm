@@ -3,8 +3,8 @@
 + (unint64_t)status;
 - (BOOL)_currentProcessNeedsToMonitorCloudSyncStatus;
 - (NTKCollieFaceCloudSyncManager)init;
-- (void)_async_refreshStatus:(id)a3;
-- (void)_fetchCloudSyncStatus:(id)a3;
+- (void)_async_refreshStatus:(id)status;
+- (void)_fetchCloudSyncStatus:(id)status;
 - (void)_removeObservers;
 - (void)dealloc;
 @end
@@ -13,10 +13,10 @@
 
 + (unint64_t)status
 {
-  v2 = [a1 _sharedInstance];
-  v3 = [v2 _status];
+  _sharedInstance = [self _sharedInstance];
+  _status = [_sharedInstance _status];
 
-  return v3;
+  return _status;
 }
 
 + (id)_sharedInstance
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = sub_1E7C;
   block[3] = &unk_2C718;
-  block[4] = a1;
+  block[4] = self;
   if (qword_331D8 != -1)
   {
     dispatch_once(&qword_331D8, block);
@@ -94,26 +94,26 @@
   [(NTKCollieFaceCloudSyncManager *)&v3 dealloc];
 }
 
-- (void)_async_refreshStatus:(id)a3
+- (void)_async_refreshStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (statusCopy)
     {
-      v6 = [v4 name];
+      name = [statusCopy name];
     }
 
     else
     {
-      v6 = @"init";
+      name = @"init";
     }
 
     *buf = 138412290;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Refreshing Collie Face cloud sync status for %@", buf, 0xCu);
-    if (v4)
+    if (statusCopy)
     {
     }
   }
@@ -132,21 +132,21 @@
   if (v2)
   {
     v3 = +[CLKDevice currentDevice];
-    v4 = [v3 isTinker];
+    isTinker = [v3 isTinker];
 
-    LOBYTE(v2) = v4 ^ 1;
+    LOBYTE(v2) = isTinker ^ 1;
   }
 
   return v2;
 }
 
-- (void)_fetchCloudSyncStatus:(id)a3
+- (void)_fetchCloudSyncStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = +[CLKDevice currentDevice];
-  v6 = [v5 isTinker];
+  isTinker = [v5 isTinker];
 
-  if (v6)
+  if (isTinker)
   {
     v7 = +[NTKCollieFaceBundle logObject];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -156,21 +156,21 @@
     }
 
     [(NTKCollieFaceCloudSyncManager *)self _removeObservers];
-    v4[2](v4, 4);
+    statusCopy[2](statusCopy, 4);
   }
 
   else
   {
     v8 = objc_alloc_init(ACAccountStore);
-    v9 = [v8 aa_primaryAppleAccount];
-    if (v9)
+    aa_primaryAppleAccount = [v8 aa_primaryAppleAccount];
+    if (aa_primaryAppleAccount)
     {
       v10 = [CKContainer containerWithIdentifier:@"com.apple.Avatars"];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_2600;
       v12[3] = &unk_2C790;
-      v13 = v4;
+      v13 = statusCopy;
       [v10 accountInfoWithCompletionHandler:v12];
     }
 
@@ -182,7 +182,7 @@
         sub_17E18();
       }
 
-      v4[2](v4, 1);
+      statusCopy[2](statusCopy, 1);
     }
   }
 }

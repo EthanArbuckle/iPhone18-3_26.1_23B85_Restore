@@ -1,22 +1,22 @@
 @interface ADDevicePropertiesUtils
-+ (int)_SISchemaAppleMediaProductsSubscriptionFrom:(id)a3;
-+ (void)fetchActiveSubscriptionsWithQueue:(id)a3 completion:(id)a4;
++ (int)_SISchemaAppleMediaProductsSubscriptionFrom:(id)from;
++ (void)fetchActiveSubscriptionsWithQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation ADDevicePropertiesUtils
 
-+ (int)_SISchemaAppleMediaProductsSubscriptionFrom:(id)a3
++ (int)_SISchemaAppleMediaProductsSubscriptionFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 statusType];
-  if (v4 == 1)
+  fromCopy = from;
+  statusType = [fromCopy statusType];
+  if (statusType == 1)
   {
     v5 = 5;
   }
 
-  else if (v4 == 2)
+  else if (statusType == 2)
   {
-    if ([v3 isMatchEnabled])
+    if ([fromCopy isMatchEnabled])
     {
       v5 = 8;
     }
@@ -35,10 +35,10 @@
   return v5;
 }
 
-+ (void)fetchActiveSubscriptionsWithQueue:(id)a3 completion:(id)a4
++ (void)fetchActiveSubscriptionsWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -58,10 +58,10 @@
   v26[1] = 3221225472;
   v26[2] = sub_1002FAEF0;
   v26[3] = &unk_10051B350;
-  v10 = v6;
+  v10 = queueCopy;
   v27 = v10;
   p_buf = &buf;
-  v11 = v7;
+  v11 = completionCopy;
   v28 = v11;
   v12 = [v9 initWithBlock:v26];
   v31 = 0;
@@ -82,15 +82,15 @@
 
   v14 = v13;
   _Block_object_dispose(&v31, 8);
-  v15 = [v13 sharedStatusController];
+  sharedStatusController = [v13 sharedStatusController];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1002FB1A0;
   v23[3] = &unk_10051B378;
-  v25 = a1;
+  selfCopy = self;
   v16 = v12;
   v24 = v16;
-  [v15 getSubscriptionStatusWithCompletionHandler:v23];
+  [sharedStatusController getSubscriptionStatusWithCompletionHandler:v23];
   v17 = [AFWatchdogTimer alloc];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;

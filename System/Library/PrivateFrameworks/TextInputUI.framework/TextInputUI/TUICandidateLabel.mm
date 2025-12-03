@@ -1,25 +1,25 @@
 @interface TUICandidateLabel
-+ (double)lineWidthForText:(id)a3 font:(id)a4 layoutOrientation:(int64_t)a5;
-- (TUICandidateLabel)initWithCoder:(id)a3;
-- (TUICandidateLabel)initWithFrame:(CGRect)a3;
-- (__CTLine)createLineFromAttributedText:(id)a3;
++ (double)lineWidthForText:(id)text font:(id)font layoutOrientation:(int64_t)orientation;
+- (TUICandidateLabel)initWithCoder:(id)coder;
+- (TUICandidateLabel)initWithFrame:(CGRect)frame;
+- (__CTLine)createLineFromAttributedText:(id)text;
 - (unsigned)lineTruncationType;
 - (void)commonInit;
-- (void)drawRect:(CGRect)a3;
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setLayoutOrientation:(int64_t)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setMinimumScaleFactor:(double)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setFont:(id)font;
+- (void)setLayoutOrientation:(int64_t)orientation;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setMinimumScaleFactor:(double)factor;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation TUICandidateLabel
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(TUICandidateLabel *)self font:a3.origin.x];
+  v4 = [(TUICandidateLabel *)self font:rect.origin.x];
   v5 = v4;
   if (v4)
   {
@@ -36,29 +36,29 @@
   [(TUICandidateLabel *)self bounds];
   v9 = v8;
   v11 = v10;
-  v12 = [(TUICandidateLabel *)self text];
+  text = [(TUICandidateLabel *)self text];
 
-  if (v12)
+  if (text)
   {
-    v13 = [(TUICandidateLabel *)self text];
-    v14 = [v13 length];
+    text2 = [(TUICandidateLabel *)self text];
+    v14 = [text2 length];
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v16 = objc_alloc(MEMORY[0x1E696AD40]);
-    v17 = [(TUICandidateLabel *)self text];
-    v18 = [v16 initWithString:v17];
+    text3 = [(TUICandidateLabel *)self text];
+    v18 = [v16 initWithString:text3];
 
     v19 = *MEMORY[0x1E69DB648];
-    [v15 setValue:v7 forKey:*MEMORY[0x1E69DB648]];
-    v20 = [(TUICandidateLabel *)self textColor];
+    [dictionary setValue:v7 forKey:*MEMORY[0x1E69DB648]];
+    textColor = [(TUICandidateLabel *)self textColor];
 
-    if (v20)
+    if (textColor)
     {
-      v21 = [(TUICandidateLabel *)self textColor];
-      [v15 setValue:v21 forKey:*MEMORY[0x1E69DB650]];
+      textColor2 = [(TUICandidateLabel *)self textColor];
+      [dictionary setValue:textColor2 forKey:*MEMORY[0x1E69DB650]];
     }
 
-    [v18 setAttributes:v15 range:{0, v14}];
+    [v18 setAttributes:dictionary range:{0, v14}];
     CapHeight = CTFontGetCapHeight(v7);
     v23 = [(TUICandidateLabel *)self createLineFromAttributedText:v18];
     if (v23)
@@ -84,15 +84,15 @@
         {
           [(TUICandidateLabel *)self minimumScaleFactor];
           v28 = v29 >= v28 * (v26 / (width + 1.0)) ? v29 : v28 * (v26 / (width + 1.0));
-          v30 = [(TUICandidateLabel *)self font];
-          [v30 pointSize];
+          font = [(TUICandidateLabel *)self font];
+          [font pointSize];
           v32 = v28 * v31;
 
-          v33 = [(TUICandidateLabel *)self font];
-          v34 = [v33 fontWithSize:v32];
+          font2 = [(TUICandidateLabel *)self font];
+          v34 = [font2 fontWithSize:v32];
 
-          [v15 setValue:v34 forKey:v19];
-          [v18 setAttributes:v15 range:{0, v14}];
+          [dictionary setValue:v34 forKey:v19];
+          [v18 setAttributes:dictionary range:{0, v14}];
           CFRelease(v24);
           v35 = [(TUICandidateLabel *)self createLineFromAttributedText:v18];
           if (!v35)
@@ -127,7 +127,7 @@
         }
 
 LABEL_25:
-        v38 = CFAttributedStringCreate(*MEMORY[0x1E695E480], @"…", v15);
+        v38 = CFAttributedStringCreate(*MEMORY[0x1E695E480], @"…", dictionary);
         v39 = CTLineCreateWithAttributedString(v38);
         TruncatedLine = CTLineCreateTruncatedLine(v24, v26, [(TUICandidateLabel *)self lineTruncationType], v39);
         if (v39)
@@ -155,11 +155,11 @@ LABEL_30:
         *&v59.tx = v52;
         if ([(TUICandidateLabel *)self layoutOrientation]== 1)
         {
-          v41 = [(TUICandidateLabel *)self text];
-          v42 = [v41 _containsEmoji];
+          text4 = [(TUICandidateLabel *)self text];
+          _containsEmoji = [text4 _containsEmoji];
 
           v43 = 0.0;
-          if (v42)
+          if (_containsEmoji)
           {
             [(__CTFont *)v7 pointSize];
             if (v44 <= 16.0)
@@ -204,9 +204,9 @@ LABEL_30:
         v57 = transform;
         CGAffineTransformInvert(&transform, &v57);
         xa = vaddq_f64(*&transform.tx, vmlaq_n_f64(vmulq_n_f64(*&transform.c, x), *&transform.a, v51));
-        v47 = [(TUICandidateLabel *)self window];
-        v48 = [v47 screen];
-        [v48 scale];
+        window = [(TUICandidateLabel *)self window];
+        screen = [window screen];
+        [screen scale];
         if (*&v49 > 1.0)
         {
           xa = vdivq_f64(vrndmq_f64(vmulq_n_f64(xa, *&v49)), vdupq_lane_s64(v49, 0));
@@ -225,16 +225,16 @@ LABEL_30:
   }
 }
 
-- (__CTLine)createLineFromAttributedText:(id)a3
+- (__CTLine)createLineFromAttributedText:(id)text
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11 = *MEMORY[0x1E6965AA8];
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  textCopy = text;
   v6 = [v4 numberWithInt:{-[TUICandidateLabel layoutOrientation](self, "layoutOrientation") == 1}];
   v12[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v8 = CTTypesetterCreateWithAttributedStringAndOptions(v5, v7);
+  v8 = CTTypesetterCreateWithAttributedStringAndOptions(textCopy, v7);
 
   if (!v8)
   {
@@ -272,30 +272,30 @@ LABEL_30:
   }
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
-  if (self->_lineBreakMode != a3)
+  if (self->_lineBreakMode != mode)
   {
-    self->_lineBreakMode = a3;
+    self->_lineBreakMode = mode;
     [(TUICandidateLabel *)self setNeedsDisplay];
   }
 }
 
-- (void)setLayoutOrientation:(int64_t)a3
+- (void)setLayoutOrientation:(int64_t)orientation
 {
-  if (self->_layoutOrientation != a3)
+  if (self->_layoutOrientation != orientation)
   {
-    self->_layoutOrientation = a3;
+    self->_layoutOrientation = orientation;
     [(TUICandidateLabel *)self setNeedsDisplay];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_textColor isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     textColor = self->_textColor;
     self->_textColor = v4;
 
@@ -303,20 +303,20 @@ LABEL_30:
   }
 }
 
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width
 {
-  if (self->_adjustsFontSizeToFitWidth != a3)
+  if (self->_adjustsFontSizeToFitWidth != width)
   {
-    self->_adjustsFontSizeToFitWidth = a3;
+    self->_adjustsFontSizeToFitWidth = width;
     [(TUICandidateLabel *)self setNeedsDisplay];
   }
 }
 
-- (void)setMinimumScaleFactor:(double)a3
+- (void)setMinimumScaleFactor:(double)factor
 {
-  if (self->_minimumScaleFactor != a3)
+  if (self->_minimumScaleFactor != factor)
   {
-    self->_minimumScaleFactor = a3;
+    self->_minimumScaleFactor = factor;
     if ([(TUICandidateLabel *)self adjustsFontSizeToFitWidth])
     {
 
@@ -325,22 +325,22 @@ LABEL_30:
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_font isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
+    objc_storeStrong(&self->_font, font);
     [(TUICandidateLabel *)self setNeedsDisplay];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_text isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     text = self->_text;
     self->_text = v4;
 
@@ -348,11 +348,11 @@ LABEL_30:
   }
 }
 
-- (TUICandidateLabel)initWithCoder:(id)a3
+- (TUICandidateLabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TUICandidateLabel;
-  v3 = [(TUICandidateLabel *)&v6 initWithCoder:a3];
+  v3 = [(TUICandidateLabel *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -362,11 +362,11 @@ LABEL_30:
   return v4;
 }
 
-- (TUICandidateLabel)initWithFrame:(CGRect)a3
+- (TUICandidateLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUICandidateLabel;
-  v3 = [(TUICandidateLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUICandidateLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -384,19 +384,19 @@ LABEL_30:
   [(TUICandidateLabel *)self setLineBreakMode:4];
 }
 
-+ (double)lineWidthForText:(id)a3 font:(id)a4 layoutOrientation:(int64_t)a5
++ (double)lineWidthForText:(id)text font:(id)font layoutOrientation:(int64_t)orientation
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  textCopy = text;
+  fontCopy = font;
+  if (textCopy)
   {
-    v9 = [v7 length];
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v7];
-    [v10 setValue:v8 forKey:*MEMORY[0x1E69DB648]];
-    [v11 setAttributes:v10 range:{0, v9}];
-    if (a5 == 1)
+    v9 = [textCopy length];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy];
+    [dictionary setValue:fontCopy forKey:*MEMORY[0x1E69DB648]];
+    [v11 setAttributes:dictionary range:{0, v9}];
+    if (orientation == 1)
     {
       v20 = *MEMORY[0x1E6965AA8];
       v21[0] = MEMORY[0x1E695E118];
@@ -434,9 +434,9 @@ LABEL_15:
     BoundsWithOptions = CTLineGetBoundsWithOptions(Line, 0);
     v15 = ceil(BoundsWithOptions.size.width);
     CFRelease(Line);
-    if ([v7 _containsEmoji])
+    if ([textCopy _containsEmoji])
     {
-      [v8 pointSize];
+      [fontCopy pointSize];
       v17 = 0.0;
       if (v16 < 24.0)
       {

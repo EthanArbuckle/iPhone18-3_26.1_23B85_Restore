@@ -1,9 +1,9 @@
 @interface VNAnimalBodyPoseDetector
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNAnimalBodyPoseDetector
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __65__VNAnimalBodyPoseDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNAnimalBodyPoseDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNAnimalBodyPoseDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -38,28 +38,28 @@ void __65__VNAnimalBodyPoseDetector_configurationOptionKeysForDetectorKey__block
   +[VNAnimalBodyPoseDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v23 = [(VCPPetsPoseImageRequest *)self->_animalBodyPoseDetector processImage:a4 withOptions:0 error:a8];
+  optionsCopy = options;
+  v23 = [(VCPPetsPoseImageRequest *)self->_animalBodyPoseDetector processImage:buffer withOptions:0 error:error];
   if (v23)
   {
-    v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 error:a8];
+    v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
     if (v13)
     {
-      v22 = a8;
+      errorCopy = error;
       v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v23, "count")}];
       v26 = 0u;
       v27 = 0u;
@@ -82,16 +82,16 @@ void __65__VNAnimalBodyPoseDetector_configurationOptionKeysForDetectorKey__block
             v19 = [(VNRecognizedPointsObservation *)[VNAnimalBodyPoseObservation alloc] initWithOriginatingRequestSpecifier:v13 keypointReturningObservation:*(*(&v24 + 1) + 8 * i)];
             if (!v19)
             {
-              if (v22)
+              if (errorCopy)
               {
-                *v22 = [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to create observation"];
+                *errorCopy = [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to create observation"];
               }
 
               v20 = 0;
               goto LABEL_16;
             }
 
-            [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:v12 toObservation:v19];
+            [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:optionsCopy toObservation:v19];
             [v14 addObject:v19];
           }
 
@@ -123,23 +123,23 @@ LABEL_16:
   return v20;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 width];
-    v20 = [v18 height];
-    v30.origin.x = x * v19;
-    v30.size.width = width * v19;
-    v30.origin.y = y * v20;
-    v30.size.height = height * v20;
+    width = [v17 width];
+    height = [v18 height];
+    v30.origin.x = x * width;
+    v30.size.width = width * width;
+    v30.origin.y = y * height;
+    v30.size.height = height * height;
     v31 = CGRectIntegral(v30);
     v21 = v31.origin.x;
     v22 = v31.origin.y;
@@ -147,13 +147,13 @@ LABEL_16:
     v24 = v31.size.height;
     [VNError VNAssert:self->_animalBodyPoseDetector != 0 log:@"VCP Animal Pose Detector must be initialized"];
     v29 = 0;
-    v25 = [v18 createCroppedBufferWithMaxSideLengthOf:580 cropRect:1111970369 pixelFormat:v16 options:a8 error:&v29 pixelBufferRepsCacheKey:v21, v22, v23, v24];
+    v25 = [v18 createCroppedBufferWithMaxSideLengthOf:580 cropRect:1111970369 pixelFormat:optionsCopy options:error error:&v29 pixelBufferRepsCacheKey:v21, v22, v23, v24];
     v26 = v29;
-    *a7 = v25;
+    *buffer = v25;
     v27 = v25 != 0;
     if (v25)
     {
-      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:v16 cacheKey:v26 imageBuffer:v18];
+      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:optionsCopy cacheKey:v26 imageBuffer:v18];
     }
   }
 
@@ -165,12 +165,12 @@ LABEL_16:
   return v27;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = VNAnimalBodyPoseDetector;
-  if (![(VNDetector *)&v13 completeInitializationForSession:v6 error:a4])
+  if (![(VNDetector *)&v13 completeInitializationForSession:sessionCopy error:error])
   {
     goto LABEL_8;
   }
@@ -199,10 +199,10 @@ LABEL_16:
 
   if (!self->_animalBodyPoseDetector)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to initialize VCP Animal Pose Detector"];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_9;
     }
 

@@ -1,5 +1,5 @@
 @interface NavigationBarTransitionContainer
-- (_TtC5UIKit32NavigationBarTransitionContainer)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit32NavigationBarTransitionContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B54F2C();
 }
 
-- (_TtC5UIKit32NavigationBarTransitionContainer)initWithFrame:(CGRect)a3
+- (_TtC5UIKit32NavigationBarTransitionContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

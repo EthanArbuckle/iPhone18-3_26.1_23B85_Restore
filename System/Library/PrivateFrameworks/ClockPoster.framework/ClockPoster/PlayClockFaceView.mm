@@ -1,11 +1,11 @@
 @interface PlayClockFaceView
-- (_TtC11ClockPoster17PlayClockFaceView)initWithCoder:(id)a3;
+- (_TtC11ClockPoster17PlayClockFaceView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PlayClockFaceView
 
-- (_TtC11ClockPoster17PlayClockFaceView)initWithCoder:(id)a3
+- (_TtC11ClockPoster17PlayClockFaceView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster17PlayClockFaceView_tintColors) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster17PlayClockFaceView_alarmComplicationView) = 0;
@@ -19,7 +19,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4995B00();
 }
 

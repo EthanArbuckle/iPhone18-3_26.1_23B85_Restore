@@ -1,142 +1,142 @@
 @interface STUIStatusBarLockItem
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
 - (STUIStatusBarLockView)lockView;
 - (_UIExpandingGlyphsView)stringView;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_lockView;
 - (void)_create_stringView;
 @end
 
 @implementation STUIStatusBarLockItem
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
   v8.receiver = self;
   v8.super_class = STUIStatusBarLockItem;
-  if (![(STUIStatusBarItem *)&v8 canEnableDisplayItem:a3 fromData:a4])
+  if (![(STUIStatusBarItem *)&v8 canEnableDisplayItem:item fromData:data])
   {
     return [(STUIStatusBarLockItem *)self showsLock];
   }
 
   v5 = 1;
   [(STUIStatusBarLockItem *)self setShowsLock:1];
-  v6 = [(STUIStatusBarLockItem *)self lockDisappearanceTimer];
-  [v6 invalidate];
+  lockDisappearanceTimer = [(STUIStatusBarLockItem *)self lockDisappearanceTimer];
+  [lockDisappearanceTimer invalidate];
 
   [(STUIStatusBarLockItem *)self setLockDisappearanceTimer:0];
   return v5;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v37.receiver = self;
   v37.super_class = STUIStatusBarLockItem;
-  v8 = [(STUIStatusBarItem *)&v37 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v6 data];
-  v10 = [v9 lockEntry];
+  v8 = [(STUIStatusBarItem *)&v37 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  data = [updateCopy data];
+  lockEntry = [data lockEntry];
 
-  v11 = [v7 identifier];
-  v12 = [objc_opt_class() defaultDisplayIdentifier];
+  identifier = [itemCopy identifier];
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
 
-  if (v11 != v12)
+  if (identifier != defaultDisplayIdentifier)
   {
-    v13 = [v7 identifier];
-    v14 = [objc_opt_class() textDisplayIdentifier];
+    identifier2 = [itemCopy identifier];
+    textDisplayIdentifier = [objc_opt_class() textDisplayIdentifier];
 
-    if (v13 != v14)
+    if (identifier2 != textDisplayIdentifier)
     {
       goto LABEL_22;
     }
 
-    v15 = -[STUIStatusBarLockItem showsLock](self, "showsLock") ? [v10 isEnabled] ^ 1 : 0;
-    [v7 setEnabled:v15];
-    if (![v7 isEnabled])
+    v15 = -[STUIStatusBarLockItem showsLock](self, "showsLock") ? [lockEntry isEnabled] ^ 1 : 0;
+    [itemCopy setEnabled:v15];
+    if (![itemCopy isEnabled])
     {
       goto LABEL_22;
     }
 
-    v35 = [(STUIStatusBarLockItem *)self stringView];
+    stringView = [(STUIStatusBarLockItem *)self stringView];
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v34 = [v22 localizedStringForKey:@"UIStatusBar: Unlocked" value:@"Unlocked" table:0];
 
     v33 = objc_alloc(MEMORY[0x277CCA898]);
     v38[0] = *MEMORY[0x277D740A8];
-    v23 = [v6 styleAttributes];
-    v24 = [v23 font];
-    v39[0] = v24;
+    styleAttributes = [updateCopy styleAttributes];
+    font = [styleAttributes font];
+    v39[0] = font;
     v38[1] = *MEMORY[0x277D740C0];
-    v25 = [v6 styleAttributes];
-    v26 = [v25 textColor];
-    v39[1] = v26;
+    styleAttributes2 = [updateCopy styleAttributes];
+    textColor = [styleAttributes2 textColor];
+    v39[1] = textColor;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
     v28 = [v33 initWithString:v34 attributes:v27];
 
-    v21 = v35;
-    [v35 setAttributedString:v28];
-    [v35 baselineOffset];
+    lockView2 = stringView;
+    [stringView setAttributedString:v28];
+    [stringView baselineOffset];
     v30 = v29;
-    [v35 intrinsicContentSize];
-    [v7 setBaselineOffset:v30 - v31];
+    [stringView intrinsicContentSize];
+    [itemCopy setBaselineOffset:v30 - v31];
 
     goto LABEL_21;
   }
 
-  if (![v6 dataChanged])
+  if (![updateCopy dataChanged])
   {
     goto LABEL_22;
   }
 
-  if (([v10 isEnabled] & 1) == 0 && -[STUIStatusBarLockItem showsLock](self, "showsLock"))
+  if (([lockEntry isEnabled] & 1) == 0 && -[STUIStatusBarLockItem showsLock](self, "showsLock"))
   {
-    v16 = [(STUIStatusBarItem *)self statusBar];
-    v17 = [v16 areAnimationsEnabled];
+    statusBar = [(STUIStatusBarItem *)self statusBar];
+    areAnimationsEnabled = [statusBar areAnimationsEnabled];
 
-    if (!v17)
+    if (!areAnimationsEnabled)
     {
       [(STUIStatusBarLockItem *)self setShowsLock:0];
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
       goto LABEL_13;
     }
 
-    v18 = [(STUIStatusBarLockItem *)self lockView];
+    lockView = [(STUIStatusBarLockItem *)self lockView];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __51__STUIStatusBarLockItem_applyUpdate_toDisplayItem___block_invoke;
     v36[3] = &unk_279D386A0;
     v36[4] = self;
-    [v18 animateUnlockWithCompletionBlock:v36];
+    [lockView animateUnlockWithCompletionBlock:v36];
     goto LABEL_12;
   }
 
-  if ([v10 isEnabled])
+  if ([lockEntry isEnabled])
   {
-    v18 = [(STUIStatusBarLockItem *)self lockView];
-    [v18 resetLock];
+    lockView = [(STUIStatusBarLockItem *)self lockView];
+    [lockView resetLock];
 LABEL_12:
   }
 
 LABEL_13:
-  if ([v10 unlockFailureCount] != self->_unlockFailureCount)
+  if ([lockEntry unlockFailureCount] != self->_unlockFailureCount)
   {
-    self->_unlockFailureCount = [v10 unlockFailureCount];
-    if (([v6 enablementChanged] & 1) == 0)
+    self->_unlockFailureCount = [lockEntry unlockFailureCount];
+    if (([updateCopy enablementChanged] & 1) == 0)
     {
-      if ([v7 isEnabled])
+      if ([itemCopy isEnabled])
       {
-        v19 = [(STUIStatusBarItem *)self statusBar];
-        v20 = [v19 areAnimationsEnabled];
+        statusBar2 = [(STUIStatusBarItem *)self statusBar];
+        areAnimationsEnabled2 = [statusBar2 areAnimationsEnabled];
 
-        if (v20)
+        if (areAnimationsEnabled2)
         {
-          v21 = [(STUIStatusBarLockItem *)self lockView];
-          [v21 jiggleWithCompletionBlock:0];
+          lockView2 = [(STUIStatusBarLockItem *)self lockView];
+          [lockView2 jiggleWithCompletionBlock:0];
 LABEL_21:
         }
       }
@@ -176,15 +176,15 @@ void __51__STUIStatusBarLockItem_applyUpdate_toDisplayItem___block_invoke_2(uint
   [v2 updateWithAnimations:MEMORY[0x277CBEBF8]];
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = STUIStatusBarLockItem;
-  v4 = a3;
-  v5 = [(STUIStatusBarItem *)&v19 additionAnimationForDisplayItemWithIdentifier:v4];
-  v6 = [objc_opt_class() textDisplayIdentifier];
+  identifierCopy = identifier;
+  v5 = [(STUIStatusBarItem *)&v19 additionAnimationForDisplayItemWithIdentifier:identifierCopy];
+  textDisplayIdentifier = [objc_opt_class() textDisplayIdentifier];
 
-  if (v6 == v4)
+  if (textDisplayIdentifier == identifierCopy)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -193,8 +193,8 @@ void __51__STUIStatusBarLockItem_applyUpdate_toDisplayItem___block_invoke_2(uint
     v18[4] = self;
     v7 = [STUIStatusBarAnimation animationWithBlock:v18];
 
-    v8 = [objc_opt_class() defaultDisplayIdentifier];
-    v9 = [(STUIStatusBarItem *)self displayItemForIdentifier:v8];
+    defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
+    v9 = [(STUIStatusBarItem *)self displayItemForIdentifier:defaultDisplayIdentifier];
 
     [v9 absoluteFrame];
     v17[0] = MEMORY[0x277D85DD0];
@@ -207,8 +207,8 @@ void __51__STUIStatusBarLockItem_applyUpdate_toDisplayItem___block_invoke_2(uint
     v17[8] = v13;
     v17[4] = self;
     v14 = [STUIStatusBarAnimation animationWithBlock:v17];
-    v15 = [v9 identifier];
-    [v7 addSubAnimation:v14 forDisplayItemWithIdentifier:v15];
+    identifier = [v9 identifier];
+    [v7 addSubAnimation:v14 forDisplayItemWithIdentifier:identifier];
 
     v5 = v7;
   }
@@ -310,9 +310,9 @@ uint64_t __71__STUIStatusBarLockItem_additionAnimationForDisplayItemWithIdentifi
   return [v2 setFloating:0];
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v4 = [MEMORY[0x277CD9FA0] animationWithKeyPath:a4];
+  v4 = [MEMORY[0x277CD9FA0] animationWithKeyPath:path];
   [v4 setMass:2.0];
   [v4 setStiffness:300.0];
   [v4 setDamping:400.0];
@@ -328,24 +328,24 @@ uint64_t __71__STUIStatusBarLockItem_additionAnimationForDisplayItemWithIdentifi
   return v4;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() textDisplayIdentifier];
+  identifierCopy = identifier;
+  textDisplayIdentifier = [objc_opt_class() textDisplayIdentifier];
 
-  if (v5 == v4)
+  if (textDisplayIdentifier == identifierCopy)
   {
-    v7 = [(STUIStatusBarLockItem *)self showsLock];
+    showsLock = [(STUIStatusBarLockItem *)self showsLock];
 
-    if (v7)
+    if (showsLock)
     {
       v6 = 0;
       goto LABEL_7;
     }
 
     v6 = [STUIStatusBarAnimationFactory fadeAnimationWithDuration:0.25];
-    v5 = [objc_opt_class() defaultDisplayIdentifier];
-    [v6 addSubAnimation:v6 forDisplayItemWithIdentifier:v5];
+    textDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
+    [v6 addSubAnimation:v6 forDisplayItemWithIdentifier:textDisplayIdentifier];
   }
 
   else
@@ -404,34 +404,34 @@ LABEL_7:
   [(_UIExpandingGlyphsView *)v6 setFadesOut:0];
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultDisplayIdentifier];
+  identifierCopy = identifier;
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
 
-  if (v5 == v4)
+  if (defaultDisplayIdentifier == identifierCopy)
   {
-    v7 = [(STUIStatusBarLockItem *)self lockView];
+    lockView = [(STUIStatusBarLockItem *)self lockView];
   }
 
   else
   {
-    v6 = [objc_opt_class() textDisplayIdentifier];
+    textDisplayIdentifier = [objc_opt_class() textDisplayIdentifier];
 
-    if (v6 == v4)
+    if (textDisplayIdentifier == identifierCopy)
     {
-      v7 = [(STUIStatusBarLockItem *)self stringView];
+      lockView = [(STUIStatusBarLockItem *)self stringView];
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = STUIStatusBarLockItem;
-      v7 = [(STUIStatusBarItem *)&v10 viewForIdentifier:v4];
+      lockView = [(STUIStatusBarItem *)&v10 viewForIdentifier:identifierCopy];
     }
   }
 
-  v8 = v7;
+  v8 = lockView;
 
   return v8;
 }

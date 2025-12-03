@@ -1,7 +1,7 @@
 @interface _UIBarCustomizationCustomViewPortalSourceContainer
 + (id)sharedContainer;
 - (_UIBarCustomizationCustomViewPortalSourceContainer)init;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation _UIBarCustomizationCustomViewPortalSourceContainer
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v3.receiver = self;
   v3.super_class = _UIBarCustomizationCustomViewPortalSourceContainer;

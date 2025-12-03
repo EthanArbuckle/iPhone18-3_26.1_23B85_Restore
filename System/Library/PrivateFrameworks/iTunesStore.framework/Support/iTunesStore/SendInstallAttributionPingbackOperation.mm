@@ -1,19 +1,19 @@
 @interface SendInstallAttributionPingbackOperation
-- (SendInstallAttributionPingbackOperation)initWithAdamId:(id)a3;
+- (SendInstallAttributionPingbackOperation)initWithAdamId:(id)id;
 - (void)run;
 @end
 
 @implementation SendInstallAttributionPingbackOperation
 
-- (SendInstallAttributionPingbackOperation)initWithAdamId:(id)a3
+- (SendInstallAttributionPingbackOperation)initWithAdamId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v9.receiver = self;
   v9.super_class = SendInstallAttributionPingbackOperation;
   v5 = [(SendInstallAttributionPingbackOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     appAdamId = v5->_appAdamId;
     v5->_appAdamId = v6;
   }

@@ -1,33 +1,33 @@
 @interface PLPersistentHistoryUtilities
-+ (BOOL)deleteHistoryBeforeDate:(id)a3 whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)a4 withContext:(id)a5 error:(id *)a6;
-+ (BOOL)deleteHistoryBeforeDate:(id)a3 withContext:(id)a4 error:(id *)a5;
-+ (BOOL)deleteHistoryBeforeToken:(id)a3 withContext:(id)a4 error:(id *)a5;
-+ (id)_executePersistentHistoryChangeRequest:(id)a3 withContext:(id)a4;
-+ (id)_fetchSingleTransactionWithContext:(id)a3 sortAscending:(BOOL)a4;
-+ (id)archivedDataWithToken:(id)a3;
-+ (id)fetchTransactionCountSinceToken:(id)a3 withContext:(id)a4 error:(id *)a5;
-+ (id)fetchTransactionsSinceMarker:(id)a3 withFetchRequest:(id)a4 batchSize:(unint64_t)a5 context:(id)a6 error:(id *)a7;
-+ (id)newestTransactionWithContext:(id)a3;
-+ (id)oldestTransactionWithContext:(id)a3;
-+ (id)transactionNumberFromToken:(id)a3;
-+ (id)unarchiveTokenWithData:(id)a3;
-+ (int64_t)_fetchApproximateRowCountWithPathManager:(id)a3 tableName:(id)a4 error:(id *)a5;
++ (BOOL)deleteHistoryBeforeDate:(id)date whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)than withContext:(id)context error:(id *)error;
++ (BOOL)deleteHistoryBeforeDate:(id)date withContext:(id)context error:(id *)error;
++ (BOOL)deleteHistoryBeforeToken:(id)token withContext:(id)context error:(id *)error;
++ (id)_executePersistentHistoryChangeRequest:(id)request withContext:(id)context;
++ (id)_fetchSingleTransactionWithContext:(id)context sortAscending:(BOOL)ascending;
++ (id)archivedDataWithToken:(id)token;
++ (id)fetchTransactionCountSinceToken:(id)token withContext:(id)context error:(id *)error;
++ (id)fetchTransactionsSinceMarker:(id)marker withFetchRequest:(id)request batchSize:(unint64_t)size context:(id)context error:(id *)error;
++ (id)newestTransactionWithContext:(id)context;
++ (id)oldestTransactionWithContext:(id)context;
++ (id)transactionNumberFromToken:(id)token;
++ (id)unarchiveTokenWithData:(id)data;
++ (int64_t)_fetchApproximateRowCountWithPathManager:(id)manager tableName:(id)name error:(id *)error;
 @end
 
 @implementation PLPersistentHistoryUtilities
 
-+ (id)transactionNumberFromToken:(id)a3
++ (id)transactionNumberFromToken:(id)token
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  tokenCopy = token;
+  v4 = tokenCopy;
+  if (tokenCopy)
   {
-    v5 = [v3 storeTokens];
-    if ([v5 count] == 1)
+    storeTokens = [tokenCopy storeTokens];
+    if ([storeTokens count] == 1)
     {
-      v6 = [v5 allValues];
-      v7 = [v6 firstObject];
+      allValues = [storeTokens allValues];
+      firstObject = [allValues firstObject];
     }
 
     else
@@ -40,25 +40,25 @@
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_FAULT, "unexpected number of stores in token: %@", &v10, 0xCu);
       }
 
-      v7 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-+ (id)unarchiveTokenWithData:(id)a3
++ (id)unarchiveTokenWithData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy)
   {
-    v7 = v3;
+    v7 = dataCopy;
     v5 = pl_result_with_autoreleasepool();
   }
 
@@ -93,13 +93,13 @@ id __55__PLPersistentHistoryUtilities_unarchiveTokenWithData___block_invoke(uint
   return v5;
 }
 
-+ (id)archivedDataWithToken:(id)a3
++ (id)archivedDataWithToken:(id)token
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  tokenCopy = token;
+  v4 = tokenCopy;
+  if (tokenCopy)
   {
-    v7 = v3;
+    v7 = tokenCopy;
     v5 = pl_result_with_autoreleasepool();
   }
 
@@ -132,15 +132,15 @@ id __54__PLPersistentHistoryUtilities_archivedDataWithToken___block_invoke(uint6
   return v2;
 }
 
-+ (int64_t)_fetchApproximateRowCountWithPathManager:(id)a3 tableName:(id)a4 error:(id *)a5
++ (int64_t)_fetchApproximateRowCountWithPathManager:(id)manager tableName:(id)name error:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  managerCopy = manager;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (managerCopy)
   {
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -148,8 +148,8 @@ id __54__PLPersistentHistoryUtilities_archivedDataWithToken___block_invoke(uint6
 
   else
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
     if (v11)
     {
@@ -157,14 +157,14 @@ id __54__PLPersistentHistoryUtilities_archivedDataWithToken___block_invoke(uint6
     }
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
 
 LABEL_3:
   v12 = MEMORY[0x1E69BF2D8];
-  v13 = [v9 photosDatabasePath];
-  v14 = [v9 capabilities];
-  v15 = [v12 openDatabaseAtPath:v13 capabilities:v14];
+  photosDatabasePath = [managerCopy photosDatabasePath];
+  capabilities = [managerCopy capabilities];
+  v15 = [v12 openDatabaseAtPath:photosDatabasePath capabilities:capabilities];
 
   if (v15)
   {
@@ -233,10 +233,10 @@ LABEL_10:
 
   v23 = v22;
 LABEL_11:
-  if (a5)
+  if (error)
   {
     v26 = v23;
-    *a5 = v23;
+    *error = v23;
   }
 
   v19 = -1;
@@ -259,13 +259,13 @@ sqlite3_int64 __89__PLPersistentHistoryUtilities__fetchApproximateRowCountWithPa
   return result;
 }
 
-+ (id)_executePersistentHistoryChangeRequest:(id)a3 withContext:(id)a4
++ (id)_executePersistentHistoryChangeRequest:(id)request withContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v15 = 0;
-  v7 = [v6 executeRequest:v5 error:&v15];
+  v7 = [contextCopy executeRequest:requestCopy error:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
@@ -280,13 +280,13 @@ sqlite3_int64 __89__PLPersistentHistoryUtilities__fetchApproximateRowCountWithPa
       v11 = PLChangeHandlingGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
-        v12 = [v6 persistentStoreCoordinator];
+        persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
         *buf = 138543874;
-        v17 = v6;
+        v17 = contextCopy;
         v18 = 2114;
-        v19 = v12;
+        v19 = persistentStoreCoordinator;
         v20 = 2112;
-        v21 = v5;
+        v21 = requestCopy;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_FAULT, "Unexepcted nil error when feching persistent history, context: %{public}@, PSC: %{public}@, changeRequest: %{pubic}@", buf, 0x20u);
       }
 
@@ -301,15 +301,15 @@ sqlite3_int64 __89__PLPersistentHistoryUtilities__fetchApproximateRowCountWithPa
   return v13;
 }
 
-+ (BOOL)deleteHistoryBeforeDate:(id)a3 whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)a4 withContext:(id)a5 error:(id *)a6
++ (BOOL)deleteHistoryBeforeDate:(id)date whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)than withContext:(id)context error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = v12;
-  if (!v11)
+  dateCopy = date;
+  contextCopy = context;
+  v13 = contextCopy;
+  if (!dateCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
     if (v13)
     {
@@ -317,13 +317,13 @@ sqlite3_int64 __89__PLPersistentHistoryUtilities__fetchApproximateRowCountWithPa
     }
 
 LABEL_5:
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
     goto LABEL_3;
   }
 
-  if (!v12)
+  if (!contextCopy)
   {
     goto LABEL_5;
   }
@@ -333,13 +333,13 @@ LABEL_3:
   v21[1] = 3221225472;
   v21[2] = __116__PLPersistentHistoryUtilities_deleteHistoryBeforeDate_whenHistoryPercentageOfStoreIsGreaterThan_withContext_error___block_invoke;
   v21[3] = &unk_1E75723F0;
-  v24 = a4;
-  v25 = a1;
-  v22 = v11;
+  thanCopy = than;
+  selfCopy = self;
+  v22 = dateCopy;
   v23 = v13;
   v14 = v13;
-  v15 = v11;
-  v16 = [v14 pl_resultWithError:a6 block:v21];
+  v15 = dateCopy;
+  v16 = [v14 pl_resultWithError:error block:v21];
   v17 = v16 != 0;
 
   return v17;
@@ -353,15 +353,15 @@ id __116__PLPersistentHistoryUtilities_deleteHistoryBeforeDate_whenHistoryPercen
   return v3;
 }
 
-+ (BOOL)deleteHistoryBeforeDate:(id)a3 withContext:(id)a4 error:(id *)a5
++ (BOOL)deleteHistoryBeforeDate:(id)date withContext:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  dateCopy = date;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (!dateCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
     if (v11)
     {
@@ -369,13 +369,13 @@ id __116__PLPersistentHistoryUtilities_deleteHistoryBeforeDate_whenHistoryPercen
     }
 
 LABEL_5:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!contextCopy)
   {
     goto LABEL_5;
   }
@@ -386,11 +386,11 @@ LABEL_3:
   v19[2] = __74__PLPersistentHistoryUtilities_deleteHistoryBeforeDate_withContext_error___block_invoke;
   v19[3] = &unk_1E75723A0;
   v21 = v11;
-  v22 = a1;
-  v20 = v9;
+  selfCopy = self;
+  v20 = dateCopy;
   v12 = v11;
-  v13 = v9;
-  v14 = [v12 pl_resultWithError:a5 block:v19];
+  v13 = dateCopy;
+  v14 = [v12 pl_resultWithError:error block:v19];
   v15 = v14 != 0;
 
   return v15;
@@ -404,26 +404,26 @@ id __74__PLPersistentHistoryUtilities_deleteHistoryBeforeDate_withContext_error_
   return v3;
 }
 
-+ (BOOL)deleteHistoryBeforeToken:(id)a3 withContext:(id)a4 error:(id *)a5
++ (BOOL)deleteHistoryBeforeToken:(id)token withContext:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  tokenCopy = token;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__PLPersistentHistoryUtilities_deleteHistoryBeforeToken_withContext_error___block_invoke;
   v17[3] = &unk_1E75723A0;
-  v19 = v10;
-  v20 = a1;
-  v18 = v9;
-  v11 = v10;
-  v12 = v9;
-  v13 = [v11 pl_resultWithError:a5 block:v17];
+  v19 = contextCopy;
+  selfCopy = self;
+  v18 = tokenCopy;
+  v11 = contextCopy;
+  v12 = tokenCopy;
+  v13 = [v11 pl_resultWithError:error block:v17];
   v14 = v13 != 0;
 
   return v14;
@@ -437,28 +437,28 @@ id __75__PLPersistentHistoryUtilities_deleteHistoryBeforeToken_withContext_error
   return v3;
 }
 
-+ (id)_fetchSingleTransactionWithContext:(id)a3 sortAscending:(BOOL)a4
++ (id)_fetchSingleTransactionWithContext:(id)context sortAscending:(BOOL)ascending
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v22 = 0;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __81__PLPersistentHistoryUtilities__fetchSingleTransactionWithContext_sortAscending___block_invoke;
   v18 = &unk_1E75723C8;
-  v21 = a4;
-  v20 = a1;
-  v7 = v6;
+  ascendingCopy = ascending;
+  selfCopy = self;
+  v7 = contextCopy;
   v19 = v7;
   v8 = [v7 pl_resultWithError:&v22 block:&v15];
   v9 = v22;
   if (v8)
   {
-    v10 = [v8 result];
-    if (v10)
+    result = [v8 result];
+    if (result)
     {
-      v11 = v10;
-      v12 = [v10 firstObject];
+      v11 = result;
+      firstObject = [result firstObject];
       goto LABEL_10;
     }
 
@@ -483,10 +483,10 @@ id __75__PLPersistentHistoryUtilities_deleteHistoryBeforeToken_withContext_error
     }
   }
 
-  v12 = 0;
+  firstObject = 0;
 LABEL_10:
 
-  return v12;
+  return firstObject;
 }
 
 id __81__PLPersistentHistoryUtilities__fetchSingleTransactionWithContext_sortAscending___block_invoke(uint64_t a1)
@@ -506,57 +506,57 @@ id __81__PLPersistentHistoryUtilities__fetchSingleTransactionWithContext_sortAsc
   return v6;
 }
 
-+ (id)newestTransactionWithContext:(id)a3
++ (id)newestTransactionWithContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v6 = [a1 _fetchSingleTransactionWithContext:v5 sortAscending:0];
+  v6 = [self _fetchSingleTransactionWithContext:contextCopy sortAscending:0];
 
   return v6;
 }
 
-+ (id)oldestTransactionWithContext:(id)a3
++ (id)oldestTransactionWithContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v6 = [a1 _fetchSingleTransactionWithContext:v5 sortAscending:1];
+  v6 = [self _fetchSingleTransactionWithContext:contextCopy sortAscending:1];
 
   return v6;
 }
 
-+ (id)fetchTransactionCountSinceToken:(id)a3 withContext:(id)a4 error:(id *)a5
++ (id)fetchTransactionCountSinceToken:(id)token withContext:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  tokenCopy = token;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __82__PLPersistentHistoryUtilities_fetchTransactionCountSinceToken_withContext_error___block_invoke;
   v17[3] = &unk_1E75723A0;
-  v19 = v10;
-  v20 = a1;
-  v18 = v9;
-  v11 = v10;
-  v12 = v9;
-  v13 = [v11 pl_resultWithError:a5 block:v17];
-  v14 = [v13 result];
+  v19 = contextCopy;
+  selfCopy = self;
+  v18 = tokenCopy;
+  v11 = contextCopy;
+  v12 = tokenCopy;
+  v13 = [v11 pl_resultWithError:error block:v17];
+  result = [v13 result];
 
-  return v14;
+  return result;
 }
 
 id __82__PLPersistentHistoryUtilities_fetchTransactionCountSinceToken_withContext_error___block_invoke(uint64_t a1)
@@ -568,15 +568,15 @@ id __82__PLPersistentHistoryUtilities_fetchTransactionCountSinceToken_withContex
   return v3;
 }
 
-+ (id)fetchTransactionsSinceMarker:(id)a3 withFetchRequest:(id)a4 batchSize:(unint64_t)a5 context:(id)a6 error:(id *)a7
++ (id)fetchTransactionsSinceMarker:(id)marker withFetchRequest:(id)request batchSize:(unint64_t)size context:(id)context error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = v15;
-  if (v13)
+  markerCopy = marker;
+  requestCopy = request;
+  contextCopy = context;
+  v16 = contextCopy;
+  if (markerCopy)
   {
-    if (v15)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -584,8 +584,8 @@ id __82__PLPersistentHistoryUtilities_fetchTransactionCountSinceToken_withContex
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"marker"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"marker"}];
 
     if (v16)
     {
@@ -593,26 +593,26 @@ id __82__PLPersistentHistoryUtilities_fetchTransactionCountSinceToken_withContex
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:a1 file:@"PLPersistentHistoryUtilities.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryUtilities.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_3:
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __102__PLPersistentHistoryUtilities_fetchTransactionsSinceMarker_withFetchRequest_batchSize_context_error___block_invoke;
   v25[3] = &unk_1E7572378;
-  v26 = v13;
-  v27 = v14;
-  v29 = a5;
-  v30 = a1;
+  v26 = markerCopy;
+  v27 = requestCopy;
+  sizeCopy = size;
+  selfCopy = self;
   v28 = v16;
   v17 = v16;
-  v18 = v14;
-  v19 = v13;
-  v20 = [v17 pl_resultWithError:a7 block:v25];
-  v21 = [v20 result];
+  v18 = requestCopy;
+  v19 = markerCopy;
+  v20 = [v17 pl_resultWithError:error block:v25];
+  result = [v20 result];
 
-  return v21;
+  return result;
 }
 
 id __102__PLPersistentHistoryUtilities_fetchTransactionsSinceMarker_withFetchRequest_batchSize_context_error___block_invoke(uint64_t a1)

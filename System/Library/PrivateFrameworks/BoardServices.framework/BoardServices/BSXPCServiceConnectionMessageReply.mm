@@ -1,16 +1,16 @@
 @interface BSXPCServiceConnectionMessageReply
-- (BSXPCServiceConnectionMessageReply)initWithMessage:(id)a3;
+- (BSXPCServiceConnectionMessageReply)initWithMessage:(id)message;
 @end
 
 @implementation BSXPCServiceConnectionMessageReply
 
-- (BSXPCServiceConnectionMessageReply)initWithMessage:(id)a3
+- (BSXPCServiceConnectionMessageReply)initWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    reply = xpc_dictionary_create_reply(v4);
+    reply = xpc_dictionary_create_reply(messageCopy);
     if (reply)
     {
       v8.receiver = self;

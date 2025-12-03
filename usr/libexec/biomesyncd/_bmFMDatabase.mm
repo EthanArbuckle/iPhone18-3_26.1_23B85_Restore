@@ -1,79 +1,79 @@
 @interface _bmFMDatabase
-+ (_bmFMDatabase)databaseWithPath:(id)a3;
-+ (_bmFMDatabase)databaseWithURL:(id)a3;
++ (_bmFMDatabase)databaseWithPath:(id)path;
++ (_bmFMDatabase)databaseWithURL:(id)l;
 + (id)sqliteLibVersion;
-+ (id)storeableDateFormat:(id)a3;
++ (id)storeableDateFormat:(id)format;
 + (int)FMDBVersion;
-- (BOOL)BOOLForQuery:(id)a3;
-- (BOOL)DELETE_FROM:(id)a3 WHERE:(id)a4;
-- (BOOL)INSERT_INTO:(id)a3 VALUES:(id)a4;
-- (BOOL)UPDATE:(id)a3 SET:(id)a4 WHERE:(id)a5;
+- (BOOL)BOOLForQuery:(id)query;
+- (BOOL)DELETE_FROM:(id)m WHERE:(id)e;
+- (BOOL)INSERT_INTO:(id)o VALUES:(id)s;
+- (BOOL)UPDATE:(id)e SET:(id)t WHERE:(id)rE;
 - (BOOL)beginDeferredTransaction;
 - (BOOL)beginExclusiveTransaction;
 - (BOOL)beginImmediateTransaction;
 - (BOOL)beginTransaction;
-- (BOOL)bindStatement:(sqlite3_stmt *)a3 WithArgumentsInArray:(id)a4 orDictionary:(id)a5 orVAList:(char *)a6;
-- (BOOL)checkpoint:(int)a3 name:(id)a4 logFrameCount:(int *)a5 checkpointCount:(int *)a6 error:(id *)a7;
+- (BOOL)bindStatement:(sqlite3_stmt *)statement WithArgumentsInArray:(id)array orDictionary:(id)dictionary orVAList:(char *)list;
+- (BOOL)checkpoint:(int)checkpoint name:(id)name logFrameCount:(int *)count checkpointCount:(int *)checkpointCount error:(id *)error;
 - (BOOL)close;
-- (BOOL)columnExists:(id)a3 inTableWithName:(id)a4;
+- (BOOL)columnExists:(id)exists inTableWithName:(id)name;
 - (BOOL)commit;
 - (BOOL)databaseExists;
-- (BOOL)executeStatements:(id)a3 withResultBlock:(id)a4;
-- (BOOL)executeUpdate:(id)a3 error:(id *)a4 withArgumentsInArray:(id)a5 orDictionary:(id)a6 orVAList:(char *)a7;
-- (BOOL)executeUpdateWithFormat:(id)a3;
+- (BOOL)executeStatements:(id)statements withResultBlock:(id)block;
+- (BOOL)executeUpdate:(id)update error:(id *)error withArgumentsInArray:(id)array orDictionary:(id)dictionary orVAList:(char *)list;
+- (BOOL)executeUpdateWithFormat:(id)format;
 - (BOOL)goodConnection;
 - (BOOL)interrupt;
 - (BOOL)open;
-- (BOOL)openWithFlags:(int)a3 vfs:(id)a4;
-- (BOOL)rekey:(id)a3;
-- (BOOL)releaseSavePointWithName:(id)a3 error:(id *)a4;
+- (BOOL)openWithFlags:(int)flags vfs:(id)vfs;
+- (BOOL)rekey:(id)rekey;
+- (BOOL)releaseSavePointWithName:(id)name error:(id *)error;
 - (BOOL)rollback;
-- (BOOL)rollbackToSavePointWithName:(id)a3 error:(id *)a4;
-- (BOOL)setKey:(id)a3;
-- (BOOL)startSavePointWithName:(id)a3 error:(id *)a4;
-- (BOOL)tableExists:(id)a3;
-- (BOOL)validateSQL:(id)a3 error:(id *)a4;
+- (BOOL)rollbackToSavePointWithName:(id)name error:(id *)error;
+- (BOOL)setKey:(id)key;
+- (BOOL)startSavePointWithName:(id)name error:(id *)error;
+- (BOOL)tableExists:(id)exists;
+- (BOOL)validateSQL:(id)l error:(id *)error;
 - (NSURL)databaseURL;
-- (_bmFMDatabase)initWithPath:(id)a3;
-- (_bmFMDatabase)initWithURL:(id)a3;
+- (_bmFMDatabase)initWithPath:(id)path;
+- (_bmFMDatabase)initWithURL:(id)l;
 - (const)sqlitePath;
-- (double)doubleForQuery:(id)a3;
-- (id)SELECT_FROM:(id)a3 COLUMNS:(id)a4 JOIN:(id)a5 WHERE:(id)a6 GROUP_BY:(id)a7 HAVING:(id)a8 ORDER_BY:(id)a9 LIMIT:(id)a10;
-- (id)_SELECT_FROM:(id)a3 COLUMNS:(id)a4 JOIN:(id)a5 WHERE:(id)a6 GROUP_BY:(id)a7 ORDER_BY:(id)a8 LIMIT:(id)a9;
-- (id)cachedStatementForQuery:(id)a3;
-- (id)dataForQuery:(id)a3;
-- (id)dateForQuery:(id)a3;
-- (id)errorWithMessage:(id)a3;
-- (id)executeQuery:(id)a3;
-- (id)executeQuery:(id)a3 values:(id)a4 error:(id *)a5;
-- (id)executeQueryWithFormat:(id)a3;
-- (id)getTableSchema:(id)a3;
-- (id)inSavePoint:(id)a3;
+- (double)doubleForQuery:(id)query;
+- (id)SELECT_FROM:(id)m COLUMNS:(id)s JOIN:(id)n WHERE:(id)e GROUP_BY:(id)y HAVING:(id)g ORDER_BY:(id)bY LIMIT:(id)self0;
+- (id)_SELECT_FROM:(id)m COLUMNS:(id)s JOIN:(id)n WHERE:(id)e GROUP_BY:(id)y ORDER_BY:(id)bY LIMIT:(id)t;
+- (id)cachedStatementForQuery:(id)query;
+- (id)dataForQuery:(id)query;
+- (id)dateForQuery:(id)query;
+- (id)errorWithMessage:(id)message;
+- (id)executeQuery:(id)query;
+- (id)executeQuery:(id)query values:(id)values error:(id *)error;
+- (id)executeQueryWithFormat:(id)format;
+- (id)getTableSchema:(id)schema;
+- (id)inSavePoint:(id)point;
 - (id)lastError;
 - (id)lastErrorMessage;
-- (id)stringForQuery:(id)a3;
-- (id)valueData:(void *)a3;
-- (id)valueString:(void *)a3;
-- (int)bindObject:(id)a3 toColumn:(int)a4 inStatement:(sqlite3_stmt *)a5;
+- (id)stringForQuery:(id)query;
+- (id)valueData:(void *)data;
+- (id)valueString:(void *)string;
+- (int)bindObject:(id)object toColumn:(int)column inStatement:(sqlite3_stmt *)statement;
 - (int)busyRetryTimeout;
 - (int)changes;
-- (int)intForQuery:(id)a3;
+- (int)intForQuery:(id)query;
 - (int64_t)lastInsertRowId;
-- (int64_t)longForQuery:(id)a3;
+- (int64_t)longForQuery:(id)query;
 - (unsigned)applicationID;
 - (unsigned)userVersion;
 - (void)clearCachedStatements;
 - (void)closeOpenResultSets;
 - (void)dealloc;
-- (void)extractSQL:(id)a3 argumentsList:(char *)a4 intoString:(id)a5 arguments:(id)a6;
-- (void)makeFunctionNamed:(id)a3 arguments:(int)a4 block:(id)a5;
-- (void)resultData:(id)a3 context:(void *)a4;
-- (void)resultError:(id)a3 context:(void *)a4;
-- (void)resultSetDidClose:(id)a3;
-- (void)resultString:(id)a3 context:(void *)a4;
-- (void)setCachedStatement:(id)a3 forQuery:(id)a4;
-- (void)setMaxBusyRetryTimeInterval:(double)a3;
-- (void)setShouldCacheStatements:(BOOL)a3;
+- (void)extractSQL:(id)l argumentsList:(char *)list intoString:(id)string arguments:(id)arguments;
+- (void)makeFunctionNamed:(id)named arguments:(int)arguments block:(id)block;
+- (void)resultData:(id)data context:(void *)context;
+- (void)resultError:(id)error context:(void *)context;
+- (void)resultSetDidClose:(id)close;
+- (void)resultString:(id)string context:(void *)context;
+- (void)setCachedStatement:(id)statement forQuery:(id)query;
+- (void)setMaxBusyRetryTimeInterval:(double)interval;
+- (void)setShouldCacheStatements:(BOOL)statements;
 - (void)warnInUse;
 @end
 
@@ -94,22 +94,22 @@
   return isOpen;
 }
 
-- (id)_SELECT_FROM:(id)a3 COLUMNS:(id)a4 JOIN:(id)a5 WHERE:(id)a6 GROUP_BY:(id)a7 ORDER_BY:(id)a8 LIMIT:(id)a9
+- (id)_SELECT_FROM:(id)m COLUMNS:(id)s JOIN:(id)n WHERE:(id)e GROUP_BY:(id)y ORDER_BY:(id)bY LIMIT:(id)t
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v41 = a9;
-  v20 = [a4 componentsJoinedByString:{@", "}];
-  v21 = [NSMutableString stringWithFormat:@"SELECT %@ FROM %@", v20, v15];
+  mCopy = m;
+  nCopy = n;
+  eCopy = e;
+  yCopy = y;
+  bYCopy = bY;
+  tCopy = t;
+  v20 = [s componentsJoinedByString:{@", "}];
+  mCopy = [NSMutableString stringWithFormat:@"SELECT %@ FROM %@", v20, mCopy];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v22 = v16;
+  v22 = nCopy;
   v23 = [v22 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v23)
   {
@@ -124,7 +124,7 @@
           objc_enumerationMutation(v22);
         }
 
-        [v21 appendString:*(*(&v42 + 1) + 8 * i)];
+        [mCopy appendString:*(*(&v42 + 1) + 8 * i)];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v42 objects:v46 count:16];
@@ -133,32 +133,32 @@
     while (v24);
   }
 
-  if (v17)
+  if (eCopy)
   {
-    v40 = self;
-    v27 = v19;
-    v28 = v18;
-    v29 = v15;
-    v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count] >> 1);
-    [v21 appendString:@" WHERE "];
-    v31 = [v17 count];
+    selfCopy = self;
+    v27 = bYCopy;
+    v28 = yCopy;
+    v29 = mCopy;
+    v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [eCopy count] >> 1);
+    [mCopy appendString:@" WHERE "];
+    v31 = [eCopy count];
     if (v31)
     {
       v32 = v31;
       for (j = 0; j < v32; j += 2)
       {
-        v34 = [v17 objectAtIndexedSubscript:j];
-        [v21 appendString:v34];
+        v34 = [eCopy objectAtIndexedSubscript:j];
+        [mCopy appendString:v34];
 
-        v35 = [v17 objectAtIndexedSubscript:j + 1];
+        v35 = [eCopy objectAtIndexedSubscript:j + 1];
         [v30 addObject:v35];
       }
     }
 
-    v15 = v29;
-    v18 = v28;
-    v19 = v27;
-    self = v40;
+    mCopy = v29;
+    yCopy = v28;
+    bYCopy = v27;
+    self = selfCopy;
   }
 
   else
@@ -166,56 +166,56 @@
     v30 = 0;
   }
 
-  if ([v18 count])
+  if ([yCopy count])
   {
-    v36 = [v18 componentsJoinedByString:{@", "}];
-    [v21 appendFormat:@" GROUP BY %@", v36];
+    v36 = [yCopy componentsJoinedByString:{@", "}];
+    [mCopy appendFormat:@" GROUP BY %@", v36];
   }
 
-  if ([v19 count])
+  if ([bYCopy count])
   {
-    v37 = [v19 componentsJoinedByString:{@", "}];
-    [v21 appendFormat:@" ORDER BY %@", v37];
+    v37 = [bYCopy componentsJoinedByString:{@", "}];
+    [mCopy appendFormat:@" ORDER BY %@", v37];
   }
 
-  if ([v41 integerValue] >= 1)
+  if ([tCopy integerValue] >= 1)
   {
-    [v21 appendFormat:@" LIMIT %@", v41];
+    [mCopy appendFormat:@" LIMIT %@", tCopy];
   }
 
-  [v21 appendString:@";"];
+  [mCopy appendString:@";"];
   if (v30)
   {
-    [(_bmFMDatabase *)self executeQuery:v21 withArgumentsInArray:v30];
+    [(_bmFMDatabase *)self executeQuery:mCopy withArgumentsInArray:v30];
   }
 
   else
   {
-    [(_bmFMDatabase *)self executeQuery:v21];
+    [(_bmFMDatabase *)self executeQuery:mCopy];
   }
   v38 = ;
 
   return v38;
 }
 
-- (id)SELECT_FROM:(id)a3 COLUMNS:(id)a4 JOIN:(id)a5 WHERE:(id)a6 GROUP_BY:(id)a7 HAVING:(id)a8 ORDER_BY:(id)a9 LIMIT:(id)a10
+- (id)SELECT_FROM:(id)m COLUMNS:(id)s JOIN:(id)n WHERE:(id)e GROUP_BY:(id)y HAVING:(id)g ORDER_BY:(id)bY LIMIT:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v46 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = [a4 componentsJoinedByString:{@", "}];
-  v45 = v15;
-  v22 = [NSMutableString stringWithFormat:@"SELECT %@ FROM %@", v21, v15];
+  mCopy = m;
+  nCopy = n;
+  eCopy = e;
+  yCopy = y;
+  gCopy = g;
+  bYCopy = bY;
+  tCopy = t;
+  v21 = [s componentsJoinedByString:{@", "}];
+  v45 = mCopy;
+  mCopy = [NSMutableString stringWithFormat:@"SELECT %@ FROM %@", v21, mCopy];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v23 = v16;
+  v23 = nCopy;
   v24 = [v23 countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v24)
   {
@@ -230,7 +230,7 @@
           objc_enumerationMutation(v23);
         }
 
-        [v22 appendString:*(*(&v47 + 1) + 8 * i)];
+        [mCopy appendString:*(*(&v47 + 1) + 8 * i)];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v47 objects:v51 count:16];
@@ -239,20 +239,20 @@
     while (v25);
   }
 
-  if (v17)
+  if (eCopy)
   {
-    v28 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count] >> 1);
-    [v22 appendString:@" WHERE "];
-    v29 = [v17 count];
+    v28 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [eCopy count] >> 1);
+    [mCopy appendString:@" WHERE "];
+    v29 = [eCopy count];
     if (v29)
     {
       v30 = v29;
       for (j = 0; j < v30; j += 2)
       {
-        v32 = [v17 objectAtIndexedSubscript:j];
-        [v22 appendString:v32];
+        v32 = [eCopy objectAtIndexedSubscript:j];
+        [mCopy appendString:v32];
 
-        v33 = [v17 objectAtIndexedSubscript:j + 1];
+        v33 = [eCopy objectAtIndexedSubscript:j + 1];
         [v28 addObject:v33];
       }
     }
@@ -263,73 +263,73 @@
     v28 = 0;
   }
 
-  v34 = v46;
-  if ([v46 count])
+  v34 = yCopy;
+  if ([yCopy count])
   {
-    v35 = [v46 componentsJoinedByString:{@", "}];
-    [v22 appendFormat:@" GROUP BY %@", v35];
+    v35 = [yCopy componentsJoinedByString:{@", "}];
+    [mCopy appendFormat:@" GROUP BY %@", v35];
   }
 
-  if (v18)
+  if (gCopy)
   {
     if (!v28)
     {
-      v28 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count] >> 1);
+      v28 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [eCopy count] >> 1);
     }
 
-    [v22 appendString:@" HAVING "];
-    v36 = [v18 count];
+    [mCopy appendString:@" HAVING "];
+    v36 = [gCopy count];
     if (v36)
     {
       v37 = v36;
       for (k = 0; k < v37; k += 2)
       {
-        v39 = [v18 objectAtIndexedSubscript:k];
-        [v22 appendString:v39];
+        v39 = [gCopy objectAtIndexedSubscript:k];
+        [mCopy appendString:v39];
 
-        v40 = [v18 objectAtIndexedSubscript:k + 1];
+        v40 = [gCopy objectAtIndexedSubscript:k + 1];
         [v28 addObject:v40];
       }
 
-      v34 = v46;
+      v34 = yCopy;
     }
   }
 
-  if ([v19 count])
+  if ([bYCopy count])
   {
-    v41 = [v19 componentsJoinedByString:{@", "}];
-    [v22 appendFormat:@" ORDER BY %@", v41];
+    v41 = [bYCopy componentsJoinedByString:{@", "}];
+    [mCopy appendFormat:@" ORDER BY %@", v41];
   }
 
-  if ([v20 integerValue] >= 1)
+  if ([tCopy integerValue] >= 1)
   {
-    [v22 appendFormat:@" LIMIT %@", v20];
+    [mCopy appendFormat:@" LIMIT %@", tCopy];
   }
 
-  [v22 appendString:@";"];
+  [mCopy appendString:@";"];
   if (v28)
   {
-    [(_bmFMDatabase *)self executeQuery:v22 withArgumentsInArray:v28];
+    [(_bmFMDatabase *)self executeQuery:mCopy withArgumentsInArray:v28];
   }
 
   else
   {
-    [(_bmFMDatabase *)self executeQuery:v22];
+    [(_bmFMDatabase *)self executeQuery:mCopy];
   }
   v42 = ;
 
   return v42;
 }
 
-- (BOOL)UPDATE:(id)a3 SET:(id)a4 WHERE:(id)a5
+- (BOOL)UPDATE:(id)e SET:(id)t WHERE:(id)rE
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [NSMutableString stringWithFormat:@"UPDATE OR FAIL %@ SET ", a3];
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count] + (objc_msgSend(v8, "count") >> 1));
-  v27 = v7;
-  v11 = [v7 allKeys];
-  v12 = [v11 count];
+  tCopy = t;
+  rECopy = rE;
+  v9 = [NSMutableString stringWithFormat:@"UPDATE OR FAIL %@ SET ", e];
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [tCopy count] + (objc_msgSend(rECopy, "count") >> 1));
+  v27 = tCopy;
+  allKeys = [tCopy allKeys];
+  v12 = [allKeys count];
   if (v12)
   {
     v13 = v12;
@@ -337,7 +337,7 @@
     v15 = v12 - 1;
     do
     {
-      v16 = [v11 objectAtIndexedSubscript:v14];
+      v16 = [allKeys objectAtIndexedSubscript:v14];
       [v9 appendString:v16];
       if (([v16 containsString:@"?"] & 1) == 0)
       {
@@ -364,16 +364,16 @@
   }
 
   [v9 appendString:@" WHERE "];
-  v19 = [v8 count];
+  v19 = [rECopy count];
   if (v19)
   {
     v20 = v19;
     for (i = 0; i < v20; i += 2)
     {
-      v22 = [v8 objectAtIndexedSubscript:i];
+      v22 = [rECopy objectAtIndexedSubscript:i];
       [v9 appendString:v22];
 
-      v23 = [v8 objectAtIndexedSubscript:i + 1];
+      v23 = [rECopy objectAtIndexedSubscript:i + 1];
       [v10 addObject:v23];
     }
   }
@@ -384,18 +384,18 @@
   return v24;
 }
 
-- (BOOL)INSERT_INTO:(id)a3 VALUES:(id)a4
+- (BOOL)INSERT_INTO:(id)o VALUES:(id)s
 {
-  v5 = a4;
-  v6 = [NSMutableString stringWithFormat:@"INSERT INTO %@", a3];
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  sCopy = s;
+  v6 = [NSMutableString stringWithFormat:@"INSERT INTO %@", o];
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [sCopy count]);
   objc_msgSend(v6, "appendString:", @"(");
-  v8 = [v5 count];
+  v8 = [sCopy count];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v5;
+  v9 = sCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -461,22 +461,22 @@
   return v20;
 }
 
-- (BOOL)DELETE_FROM:(id)a3 WHERE:(id)a4
+- (BOOL)DELETE_FROM:(id)m WHERE:(id)e
 {
-  v6 = a4;
-  v7 = [NSMutableString stringWithFormat:@"DELETE FROM %@", a3];
-  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count] >> 1);
+  eCopy = e;
+  v7 = [NSMutableString stringWithFormat:@"DELETE FROM %@", m];
+  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [eCopy count] >> 1);
   [v7 appendString:@" WHERE "];
-  v9 = [v6 count];
+  v9 = [eCopy count];
   if (v9)
   {
     v10 = v9;
     for (i = 0; i < v10; i += 2)
     {
-      v12 = [v6 objectAtIndexedSubscript:i];
+      v12 = [eCopy objectAtIndexedSubscript:i];
       [v7 appendString:v12];
 
-      v13 = [v6 objectAtIndexedSubscript:i + 1];
+      v13 = [eCopy objectAtIndexedSubscript:i + 1];
       [v8 addObject:v13];
     }
   }
@@ -487,33 +487,33 @@
   return v14;
 }
 
-+ (_bmFMDatabase)databaseWithPath:(id)a3
++ (_bmFMDatabase)databaseWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPath:v4];
+  pathCopy = path;
+  v5 = [[self alloc] initWithPath:pathCopy];
 
   return v5;
 }
 
-+ (_bmFMDatabase)databaseWithURL:(id)a3
++ (_bmFMDatabase)databaseWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy];
 
   return v5;
 }
 
-- (_bmFMDatabase)initWithURL:(id)a3
+- (_bmFMDatabase)initWithURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(_bmFMDatabase *)self initWithPath:v4];
+  path = [l path];
+  v5 = [(_bmFMDatabase *)self initWithPath:path];
 
   return v5;
 }
 
-- (_bmFMDatabase)initWithPath:(id)a3
+- (_bmFMDatabase)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (!sqlite3_threadsafe())
   {
     sub_100043618();
@@ -524,7 +524,7 @@
   v5 = [(_bmFMDatabase *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     v7 = *(v5 + 10);
     *(v5 + 10) = v6;
 
@@ -570,7 +570,7 @@
   block[1] = 3221225472;
   block[2] = sub_100040498;
   block[3] = &unk_100079A50;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10008BD90 != -1)
   {
     dispatch_once(&qword_10008BD90, block);
@@ -638,9 +638,9 @@
   return result;
 }
 
-- (BOOL)openWithFlags:(int)a3 vfs:(id)a4
+- (BOOL)openWithFlags:(int)flags vfs:(id)vfs
 {
-  v6 = a4;
+  vfsCopy = vfs;
   if (self->_isOpen)
   {
     v7 = 1;
@@ -653,7 +653,7 @@
       [(_bmFMDatabase *)self close];
     }
 
-    v8 = sqlite3_open_v2(-[_bmFMDatabase sqlitePath](self, "sqlitePath"), &self->_db, a3, [v6 UTF8String]);
+    v8 = sqlite3_open_v2(-[_bmFMDatabase sqlitePath](self, "sqlitePath"), &self->_db, flags, [vfsCopy UTF8String]);
     if (v8)
     {
       NSLog(@"error opening!: %d", v8);
@@ -718,17 +718,17 @@ LABEL_7:
   return 1;
 }
 
-- (void)setMaxBusyRetryTimeInterval:(double)a3
+- (void)setMaxBusyRetryTimeInterval:(double)interval
 {
-  v3 = self;
-  self->_maxBusyRetryTimeInterval = a3;
+  selfCopy = self;
+  self->_maxBusyRetryTimeInterval = interval;
   db = self->_db;
   if (db)
   {
-    if (a3 <= 0.0)
+    if (interval <= 0.0)
     {
       v5 = 0;
-      v3 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -736,7 +736,7 @@ LABEL_7:
       v5 = sub_100040960;
     }
 
-    sqlite3_busy_handler(db, v5, v3);
+    sqlite3_busy_handler(db, v5, selfCopy);
   }
 }
 
@@ -770,9 +770,9 @@ LABEL_7:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 pointerValue];
-        [v10 setParentDB:0];
-        [v10 close];
+        pointerValue = [v9 pointerValue];
+        [pointerValue setParentDB:0];
+        [pointerValue close];
         [(NSMutableSet *)self->_openResultSets removeObject:v9];
       }
 
@@ -783,9 +783,9 @@ LABEL_7:
   }
 }
 
-- (void)resultSetDidClose:(id)a3
+- (void)resultSetDidClose:(id)close
 {
-  v4 = [NSValue valueWithNonretainedObject:a3];
+  v4 = [NSValue valueWithNonretainedObject:close];
   [(NSMutableSet *)self->_openResultSets removeObject:v4];
 }
 
@@ -795,8 +795,8 @@ LABEL_7:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(NSMutableDictionary *)self->_cachedStatements objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_cachedStatements objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -808,7 +808,7 @@ LABEL_7:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v18 + 1) + 8 * v7);
@@ -816,8 +816,8 @@ LABEL_7:
         v15 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v9 = [v8 allObjects];
-        v10 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        allObjects = [v8 allObjects];
+        v10 = [allObjects countByEnumeratingWithState:&v14 objects:v22 count:16];
         if (v10)
         {
           v11 = v10;
@@ -829,7 +829,7 @@ LABEL_7:
             {
               if (*v15 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(allObjects);
               }
 
               [*(*(&v14 + 1) + 8 * v13) close];
@@ -837,7 +837,7 @@ LABEL_7:
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+            v11 = [allObjects countByEnumeratingWithState:&v14 objects:v22 count:16];
           }
 
           while (v11);
@@ -847,7 +847,7 @@ LABEL_7:
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);
@@ -856,32 +856,32 @@ LABEL_7:
   [(NSMutableDictionary *)self->_cachedStatements removeAllObjects];
 }
 
-- (id)cachedStatementForQuery:(id)a3
+- (id)cachedStatementForQuery:(id)query
 {
-  v3 = [(NSMutableDictionary *)self->_cachedStatements objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_cachedStatements objectForKey:query];
   v4 = [v3 objectsPassingTest:&stru_100079A90];
-  v5 = [v4 anyObject];
+  anyObject = [v4 anyObject];
 
-  return v5;
+  return anyObject;
 }
 
-- (void)setCachedStatement:(id)a3 forQuery:(id)a4
+- (void)setCachedStatement:(id)statement forQuery:(id)query
 {
-  v11 = a3;
-  v7 = a4;
-  if (v7)
+  statementCopy = statement;
+  queryCopy = query;
+  if (queryCopy)
   {
-    v8 = v7;
-    v9 = [v7 copy];
+    v8 = queryCopy;
+    v9 = [queryCopy copy];
 
-    [v11 setQuery:v9];
+    [statementCopy setQuery:v9];
     v10 = [(NSMutableDictionary *)self->_cachedStatements objectForKey:v9];
     if (!v10)
     {
       v10 = +[NSMutableSet set];
     }
 
-    [v10 addObject:v11];
+    [v10 addObject:statementCopy];
     [(NSMutableDictionary *)self->_cachedStatements setObject:v10 forKey:v9];
   }
 
@@ -891,37 +891,37 @@ LABEL_7:
   }
 }
 
-- (BOOL)rekey:(id)a3
+- (BOOL)rekey:(id)rekey
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  v8 = [v6 UTF8String];
+  rekeyCopy = rekey;
+  rekeyCopy2 = rekey;
+  uTF8String = [rekeyCopy2 UTF8String];
+  uTF8String2 = [rekeyCopy2 UTF8String];
 
-  v9 = [NSData dataWithBytes:v7 length:strlen(v8)];
+  v9 = [NSData dataWithBytes:uTF8String length:strlen(uTF8String2)];
   LOBYTE(self) = [(_bmFMDatabase *)self rekeyWithData:v9];
 
   return self;
 }
 
-- (BOOL)setKey:(id)a3
+- (BOOL)setKey:(id)key
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  v8 = [v6 UTF8String];
+  keyCopy = key;
+  keyCopy2 = key;
+  uTF8String = [keyCopy2 UTF8String];
+  uTF8String2 = [keyCopy2 UTF8String];
 
-  v9 = [NSData dataWithBytes:v7 length:strlen(v8)];
+  v9 = [NSData dataWithBytes:uTF8String length:strlen(uTF8String2)];
   LOBYTE(self) = [(_bmFMDatabase *)self setKeyWithData:v9];
 
   return self;
 }
 
-+ (id)storeableDateFormat:(id)a3
++ (id)storeableDateFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   v4 = objc_alloc_init(NSDateFormatter);
-  [v4 setDateFormat:v3];
+  [v4 setDateFormat:formatCopy];
 
   v5 = [NSTimeZone timeZoneForSecondsFromGMT:0];
   [v4 setTimeZone:v5];
@@ -966,9 +966,9 @@ LABEL_7:
   return [NSString stringWithUTF8String:v2];
 }
 
-- (id)errorWithMessage:(id)a3
+- (id)errorWithMessage:(id)message
 {
-  v4 = [NSDictionary dictionaryWithObject:a3 forKey:NSLocalizedDescriptionKey];
+  v4 = [NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey];
   v5 = [NSError errorWithDomain:@"_bmFMDatabase" code:sqlite3_errcode(self->_db) userInfo:v4];
 
   return v5;
@@ -976,8 +976,8 @@ LABEL_7:
 
 - (id)lastError
 {
-  v3 = [(_bmFMDatabase *)self lastErrorMessage];
-  v4 = [(_bmFMDatabase *)self errorWithMessage:v3];
+  lastErrorMessage = [(_bmFMDatabase *)self lastErrorMessage];
+  v4 = [(_bmFMDatabase *)self errorWithMessage:lastErrorMessage];
 
   return v4;
 }
@@ -1018,22 +1018,22 @@ LABEL_7:
   return result;
 }
 
-- (int)bindObject:(id)a3 toColumn:(int)a4 inStatement:(sqlite3_stmt *)a5
+- (int)bindObject:(id)object toColumn:(int)column inStatement:(sqlite3_stmt *)statement
 {
-  v8 = a3;
-  if (v8)
+  objectCopy = object;
+  if (objectCopy)
   {
     v9 = +[NSNull null];
 
-    if (v9 != v8)
+    if (v9 != objectCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v8 bytes];
-        if (v10)
+        bytes = [objectCopy bytes];
+        if (bytes)
         {
-          v11 = v10;
+          v11 = bytes;
         }
 
         else
@@ -1041,7 +1041,7 @@ LABEL_7:
           v11 = "";
         }
 
-        v12 = sqlite3_bind_blob(a5, a4, v11, [v8 length], 0xFFFFFFFFFFFFFFFFLL);
+        v12 = sqlite3_bind_blob(statement, column, v11, [objectCopy length], 0xFFFFFFFFFFFFFFFFLL);
         goto LABEL_9;
       }
 
@@ -1050,15 +1050,15 @@ LABEL_7:
       {
         if ([(_bmFMDatabase *)self hasDateFormatter])
         {
-          v15 = [(_bmFMDatabase *)self stringFromDate:v8];
+          v15 = [(_bmFMDatabase *)self stringFromDate:objectCopy];
 LABEL_42:
           v29 = v15;
-          v13 = sqlite3_bind_text(a5, a4, [v15 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+          v13 = sqlite3_bind_text(statement, column, [v15 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
           goto LABEL_10;
         }
 
-        [v8 timeIntervalSince1970];
+        [objectCopy timeIntervalSince1970];
         goto LABEL_44;
       }
 
@@ -1066,126 +1066,126 @@ LABEL_42:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_41:
-        v15 = [v8 description];
+        v15 = [objectCopy description];
         goto LABEL_42;
       }
 
-      v16 = [v8 objCType];
-      if (*v16 != 99 || v16[1])
+      objCType = [objectCopy objCType];
+      if (*objCType != 99 || objCType[1])
       {
-        v17 = [v8 objCType];
-        if (*v17 == 67 && !v17[1])
+        objCType2 = [objectCopy objCType];
+        if (*objCType2 == 67 && !objCType2[1])
         {
-          v31 = [v8 unsignedCharValue];
+          unsignedCharValue = [objectCopy unsignedCharValue];
           goto LABEL_50;
         }
 
-        v18 = [v8 objCType];
-        if (*v18 == 115 && !v18[1])
+        objCType3 = [objectCopy objCType];
+        if (*objCType3 == 115 && !objCType3[1])
         {
-          v31 = [v8 shortValue];
+          unsignedCharValue = [objectCopy shortValue];
           goto LABEL_50;
         }
 
-        v19 = [v8 objCType];
-        if (*v19 == 83 && !v19[1])
+        objCType4 = [objectCopy objCType];
+        if (*objCType4 == 83 && !objCType4[1])
         {
-          v31 = [v8 unsignedShortValue];
+          unsignedCharValue = [objectCopy unsignedShortValue];
           goto LABEL_50;
         }
 
-        v20 = [v8 objCType];
-        if (*v20 == 105 && !v20[1])
+        objCType5 = [objectCopy objCType];
+        if (*objCType5 == 105 && !objCType5[1])
         {
-          v31 = [v8 intValue];
+          unsignedCharValue = [objectCopy intValue];
           goto LABEL_50;
         }
 
-        v21 = [v8 objCType];
-        if (*v21 == 73 && !v21[1])
+        objCType6 = [objectCopy objCType];
+        if (*objCType6 == 73 && !objCType6[1])
         {
-          v32 = [v8 unsignedIntValue];
+          unsignedIntValue = [objectCopy unsignedIntValue];
         }
 
         else
         {
-          v22 = [v8 objCType];
-          if (*v22 == 113 && !v22[1])
+          objCType7 = [objectCopy objCType];
+          if (*objCType7 == 113 && !objCType7[1])
           {
-            v33 = [v8 longValue];
+            longValue = [objectCopy longValue];
           }
 
           else
           {
-            v23 = [v8 objCType];
-            if (*v23 == 81 && !v23[1])
+            objCType8 = [objectCopy objCType];
+            if (*objCType8 == 81 && !objCType8[1])
             {
-              v33 = [v8 unsignedLongValue];
+              longValue = [objectCopy unsignedLongValue];
             }
 
             else
             {
-              v24 = [v8 objCType];
-              if (*v24 == 113 && !v24[1])
+              objCType9 = [objectCopy objCType];
+              if (*objCType9 == 113 && !objCType9[1])
               {
-                v33 = [v8 longLongValue];
+                longValue = [objectCopy longLongValue];
               }
 
               else
               {
-                v25 = [v8 objCType];
-                if (*v25 != 81 || v25[1])
+                objCType10 = [objectCopy objCType];
+                if (*objCType10 != 81 || objCType10[1])
                 {
-                  v26 = [v8 objCType];
-                  if (*v26 == 102 && !v26[1])
+                  objCType11 = [objectCopy objCType];
+                  if (*objCType11 == 102 && !objCType11[1])
                   {
-                    [v8 floatValue];
+                    [objectCopy floatValue];
                     v30 = v34;
                   }
 
                   else
                   {
-                    v27 = [v8 objCType];
-                    if (*v27 != 100 || v27[1])
+                    objCType12 = [objectCopy objCType];
+                    if (*objCType12 != 100 || objCType12[1])
                     {
-                      v28 = [v8 objCType];
-                      if (*v28 != 66 || v28[1])
+                      objCType13 = [objectCopy objCType];
+                      if (*objCType13 != 66 || objCType13[1])
                       {
                         goto LABEL_41;
                       }
 
-                      v31 = [v8 BOOLValue];
+                      unsignedCharValue = [objectCopy BOOLValue];
 LABEL_50:
-                      v12 = sqlite3_bind_int(a5, a4, v31);
+                      v12 = sqlite3_bind_int(statement, column, unsignedCharValue);
                       goto LABEL_9;
                     }
 
-                    [v8 doubleValue];
+                    [objectCopy doubleValue];
                   }
 
 LABEL_44:
-                  v12 = sqlite3_bind_double(a5, a4, v30);
+                  v12 = sqlite3_bind_double(statement, column, v30);
                   goto LABEL_9;
                 }
 
-                v33 = [v8 unsignedLongLongValue];
+                longValue = [objectCopy unsignedLongLongValue];
               }
             }
           }
 
-          v32 = v33;
+          unsignedIntValue = longValue;
         }
 
-        v12 = sqlite3_bind_int64(a5, a4, v32);
+        v12 = sqlite3_bind_int64(statement, column, unsignedIntValue);
         goto LABEL_9;
       }
 
-      v31 = [v8 charValue];
+      unsignedCharValue = [objectCopy charValue];
       goto LABEL_50;
     }
   }
 
-  v12 = sqlite3_bind_null(a5, a4);
+  v12 = sqlite3_bind_null(statement, column);
 LABEL_9:
   v13 = v12;
 LABEL_10:
@@ -1193,13 +1193,13 @@ LABEL_10:
   return v13;
 }
 
-- (void)extractSQL:(id)a3 argumentsList:(char *)a4 intoString:(id)a5 arguments:(id)a6
+- (void)extractSQL:(id)l argumentsList:(char *)list intoString:(id)string arguments:(id)arguments
 {
-  v9 = a3;
-  v45 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 length];
+  lCopy = l;
+  listCopy = list;
+  stringCopy = string;
+  argumentsCopy = arguments;
+  v12 = [lCopy length];
   if (v12)
   {
     v13 = v12;
@@ -1207,7 +1207,7 @@ LABEL_10:
     for (i = 0; i < v13; ++i)
     {
       v16 = v14;
-      v17 = [v9 characterAtIndex:i];
+      v17 = [lCopy characterAtIndex:i];
       v14 = v17;
       if (v16 != 37)
       {
@@ -1227,8 +1227,8 @@ LABEL_10:
           {
             case 'c':
               v33 = [NSString alloc];
-              v34 = v45;
-              v45 += 8;
+              v34 = listCopy;
+              listCopy += 8;
               v22 = [v33 initWithFormat:@"%c", *v34];
 LABEL_45:
               v35 = v22;
@@ -1241,8 +1241,8 @@ LABEL_45:
             case 'd':
               goto LABEL_27;
             case 'f':
-              v21 = v45;
-              v45 += 8;
+              v21 = listCopy;
+              listCopy += 8;
               v22 = [NSNumber numberWithDouble:*v21];
               goto LABEL_45;
           }
@@ -1253,16 +1253,16 @@ LABEL_45:
           switch(v17)
           {
             case '@':
-              v32 = v45;
-              v45 += 8;
+              v32 = listCopy;
+              listCopy += 8;
               v22 = *v32;
               goto LABEL_45;
             case 'D':
               goto LABEL_27;
             case 'U':
 LABEL_30:
-              v24 = v45;
-              v45 += 8;
+              v24 = listCopy;
+              listCopy += 8;
               v22 = [NSNumber numberWithUnsignedInt:*v24];
               goto LABEL_45;
           }
@@ -1274,8 +1274,8 @@ LABEL_30:
         switch(v17)
         {
           case 'g':
-            v29 = v45;
-            v45 += 8;
+            v29 = listCopy;
+            listCopy += 8;
             v30 = *v29;
             *&v30 = *v29;
             v22 = [NSNumber numberWithFloat:v30];
@@ -1287,24 +1287,24 @@ LABEL_30:
               goto LABEL_53;
             }
 
-            if ([v9 characterAtIndex:i + 1] == 105)
+            if ([lCopy characterAtIndex:i + 1] == 105)
             {
-              v31 = v45;
-              v45 += 8;
+              v31 = listCopy;
+              listCopy += 8;
               v20 = [NSNumber numberWithShort:*v31];
             }
 
             else
             {
-              if ([v9 characterAtIndex:i + 1] != 117)
+              if ([lCopy characterAtIndex:i + 1] != 117)
               {
 LABEL_53:
                 v36 = 104;
                 goto LABEL_61;
               }
 
-              v38 = v45;
-              v45 += 8;
+              v38 = listCopy;
+              listCopy += 8;
               v20 = [NSNumber numberWithUnsignedShort:*v38];
             }
 
@@ -1315,8 +1315,8 @@ LABEL_57:
             if (v35)
             {
 LABEL_46:
-              [v10 appendString:@"?"];
-              [v11 addObject:v35];
+              [stringCopy appendString:@"?"];
+              [argumentsCopy addObject:v35];
 
               continue;
             }
@@ -1324,8 +1324,8 @@ LABEL_46:
             break;
           case 'i':
 LABEL_27:
-            v23 = v45;
-            v45 += 8;
+            v23 = listCopy;
+            listCopy += 8;
             v22 = [NSNumber numberWithInt:*v23];
             goto LABEL_45;
         }
@@ -1335,8 +1335,8 @@ LABEL_27:
       {
         if (v17 == 115)
         {
-          v28 = v45;
-          v45 += 8;
+          v28 = listCopy;
+          listCopy += 8;
           v22 = [NSString stringWithUTF8String:*v28];
           goto LABEL_45;
         }
@@ -1357,19 +1357,19 @@ LABEL_27:
             goto LABEL_47;
           }
 
-          v25 = [v9 characterAtIndex:i + 1];
+          v25 = [lCopy characterAtIndex:i + 1];
           if (v25 == 100)
           {
-            v40 = v45;
-            v45 += 8;
+            v40 = listCopy;
+            listCopy += 8;
             v20 = [NSNumber numberWithLong:*v40];
             goto LABEL_56;
           }
 
           if (v25 == 117)
           {
-            v39 = v45;
-            v45 += 8;
+            v39 = listCopy;
+            listCopy += 8;
             v20 = [NSNumber numberWithUnsignedLong:*v39];
             goto LABEL_56;
           }
@@ -1387,31 +1387,31 @@ LABEL_47:
             goto LABEL_68;
           }
 
-          if ([v9 characterAtIndex:i] == 100)
+          if ([lCopy characterAtIndex:i] == 100)
           {
-            v26 = v45;
-            v45 += 8;
+            v26 = listCopy;
+            listCopy += 8;
             v27 = [NSNumber numberWithLongLong:*v26];
           }
 
           else
           {
-            if ([v9 characterAtIndex:i] != 117)
+            if ([lCopy characterAtIndex:i] != 117)
             {
 LABEL_68:
               v36 = 108;
               i = v18;
 LABEL_61:
               v44 = v36;
-              v41 = v10;
+              v41 = stringCopy;
               v42 = @"%C";
 LABEL_62:
               [v41 appendFormat:v42, v44];
               continue;
             }
 
-            v43 = v45;
-            v45 += 8;
+            v43 = listCopy;
+            listCopy += 8;
             v27 = [NSNumber numberWithUnsignedLongLong:*v43];
           }
 
@@ -1427,24 +1427,24 @@ LABEL_62:
             goto LABEL_50;
           }
 
-          if ([v9 characterAtIndex:i + 1] == 105)
+          if ([lCopy characterAtIndex:i + 1] == 105)
           {
-            v19 = v45;
-            v45 += 8;
+            v19 = listCopy;
+            listCopy += 8;
             v20 = [NSNumber numberWithLongLong:*v19];
           }
 
           else
           {
-            if ([v9 characterAtIndex:i + 1] != 117)
+            if ([lCopy characterAtIndex:i + 1] != 117)
             {
 LABEL_50:
               v36 = 113;
               goto LABEL_61;
             }
 
-            v37 = v45;
-            v45 += 8;
+            v37 = listCopy;
+            listCopy += 8;
             v20 = [NSNumber numberWithUnsignedLongLong:*v37];
           }
 
@@ -1454,7 +1454,7 @@ LABEL_50:
 
       if (v14 == 64)
       {
-        v41 = v10;
+        v41 = stringCopy;
         v42 = @"NULL";
         goto LABEL_62;
       }
@@ -1469,20 +1469,20 @@ LABEL_60:
   }
 }
 
-- (BOOL)bindStatement:(sqlite3_stmt *)a3 WithArgumentsInArray:(id)a4 orDictionary:(id)a5 orVAList:(char *)a6
+- (BOOL)bindStatement:(sqlite3_stmt *)statement WithArgumentsInArray:(id)array orDictionary:(id)dictionary orVAList:(char *)list
 {
-  v36 = a4;
-  v10 = a5;
-  v43 = a6;
-  v11 = sqlite3_bind_parameter_count(a3);
+  arrayCopy = array;
+  dictionaryCopy = dictionary;
+  listCopy = list;
+  v11 = sqlite3_bind_parameter_count(statement);
   v35 = v11;
-  if (v10)
+  if (dictionaryCopy)
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = [v10 allKeys];
+    obj = [dictionaryCopy allKeys];
     v12 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v12)
     {
@@ -1502,11 +1502,11 @@ LABEL_60:
           v17 = [[NSString alloc] initWithFormat:@":%@", v16];
           if (self->_traceExecution)
           {
-            v18 = [v10 objectForKey:v16];
+            v18 = [dictionaryCopy objectForKey:v16];
             NSLog(@"%@ = %@", v17, v18);
           }
 
-          v19 = sqlite3_bind_parameter_index(a3, [v17 UTF8String]);
+          v19 = sqlite3_bind_parameter_index(statement, [v17 UTF8String]);
           if (v19 < 1)
           {
             NSLog(@"Could not find index for %@", v16);
@@ -1515,25 +1515,25 @@ LABEL_60:
           else
           {
             v20 = v19;
-            v21 = v10;
-            v22 = [v10 objectForKey:v16];
-            v23 = [(_bmFMDatabase *)self bindObject:v22 toColumn:v20 inStatement:a3];
+            v21 = dictionaryCopy;
+            v22 = [dictionaryCopy objectForKey:v16];
+            v23 = [(_bmFMDatabase *)self bindObject:v22 toColumn:v20 inStatement:statement];
 
             if (v23)
             {
               v33 = sqlite3_errmsg(self->_db);
               NSLog(@"Error: unable to bind (%d, %s"), v23, v33;
-              sqlite3_finalize(a3);
+              sqlite3_finalize(statement);
               self->_isExecutingStatement = 0;
 
               v25 = 0;
               v32 = 0;
-              v10 = v21;
+              dictionaryCopy = v21;
               goto LABEL_38;
             }
 
             LODWORD(v38) = v38 + 1;
-            v10 = v21;
+            dictionaryCopy = v21;
           }
         }
 
@@ -1568,21 +1568,21 @@ LABEL_60:
         break;
       }
 
-      if (v36 && v24 < [v36 count])
+      if (arrayCopy && v24 < [arrayCopy count])
       {
-        v27 = [v36 objectAtIndex:v24];
+        v27 = [arrayCopy objectAtIndex:v24];
       }
 
       else
       {
-        if (!v43)
+        if (!listCopy)
         {
           LODWORD(v38) = v24;
           break;
         }
 
-        v28 = v43;
-        v43 += 8;
+        v28 = listCopy;
+        listCopy += 8;
         v27 = *v28;
       }
 
@@ -1602,21 +1602,21 @@ LABEL_60:
         }
       }
 
-      v29 = [(_bmFMDatabase *)self bindObject:v25 toColumn:++v24 inStatement:a3];
+      v29 = [(_bmFMDatabase *)self bindObject:v25 toColumn:++v24 inStatement:statement];
       if (v29)
       {
         v30 = v29;
         v31 = sqlite3_errmsg(self->_db);
         NSLog(@"Error: unable to bind (%d, %s"), v30, v31;
-        sqlite3_finalize(a3);
+        sqlite3_finalize(statement);
         v32 = 0;
         self->_isExecutingStatement = 0;
-        v10 = 0;
+        dictionaryCopy = 0;
         goto LABEL_38;
       }
     }
 
-    v10 = 0;
+    dictionaryCopy = 0;
   }
 
   if (v38 == v35)
@@ -1627,7 +1627,7 @@ LABEL_60:
   else
   {
     NSLog(@"Error: the bind count is not correct for the # of variables (executeQuery)");
-    sqlite3_finalize(a3);
+    sqlite3_finalize(statement);
     v32 = 0;
     self->_isExecutingStatement = 0;
   }
@@ -1638,50 +1638,50 @@ LABEL_38:
   return v32;
 }
 
-- (id)executeQuery:(id)a3
+- (id)executeQuery:(id)query
 {
-  v3 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:0 orDictionary:0 orVAList:&v6 shouldBind:1];
+  v3 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:0 orDictionary:0 orVAList:&v6 shouldBind:1];
 
   return v3;
 }
 
-- (id)executeQueryWithFormat:(id)a3
+- (id)executeQueryWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", [v4 length]);
+  formatCopy = format;
+  v5 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", [formatCopy length]);
   v6 = +[NSMutableArray array];
-  [(_bmFMDatabase *)self extractSQL:v4 argumentsList:&v10 intoString:v5 arguments:v6];
+  [(_bmFMDatabase *)self extractSQL:formatCopy argumentsList:&v10 intoString:v5 arguments:v6];
 
   v7 = [(_bmFMDatabase *)self executeQuery:v5 withArgumentsInArray:v6];
 
   return v7;
 }
 
-- (id)executeQuery:(id)a3 values:(id)a4 error:(id *)a5
+- (id)executeQuery:(id)query values:(id)values error:(id *)error
 {
-  v7 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:a4 orDictionary:0 orVAList:0 shouldBind:1];
+  v7 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:values orDictionary:0 orVAList:0 shouldBind:1];
   v8 = v7;
-  if (a5 && !v7)
+  if (error && !v7)
   {
-    *a5 = [(_bmFMDatabase *)self lastError];
+    *error = [(_bmFMDatabase *)self lastError];
   }
 
   return v8;
 }
 
-- (BOOL)executeUpdate:(id)a3 error:(id *)a4 withArgumentsInArray:(id)a5 orDictionary:(id)a6 orVAList:(char *)a7
+- (BOOL)executeUpdate:(id)update error:(id *)error withArgumentsInArray:(id)array orDictionary:(id)dictionary orVAList:(char *)list
 {
-  v9 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:a5 orDictionary:a6 orVAList:a7 shouldBind:1];
+  v9 = [(_bmFMDatabase *)self executeQuery:update withArgumentsInArray:array orDictionary:dictionary orVAList:list shouldBind:1];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 internalStepWithError:a4] == 101;
+    v11 = [v9 internalStepWithError:error] == 101;
   }
 
-  else if (a4)
+  else if (error)
   {
     [(_bmFMDatabase *)self lastError];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1692,26 +1692,26 @@ LABEL_38:
   return v11;
 }
 
-- (BOOL)executeUpdateWithFormat:(id)a3
+- (BOOL)executeUpdateWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", [v4 length]);
+  formatCopy = format;
+  v5 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", [formatCopy length]);
   v6 = +[NSMutableArray array];
-  [(_bmFMDatabase *)self extractSQL:v4 argumentsList:&v8 intoString:v5 arguments:v6];
+  [(_bmFMDatabase *)self extractSQL:formatCopy argumentsList:&v8 intoString:v5 arguments:v6];
 
   LOBYTE(self) = [(_bmFMDatabase *)self executeUpdate:v5 withArgumentsInArray:v6];
   return self;
 }
 
-- (BOOL)executeStatements:(id)a3 withResultBlock:(id)a4
+- (BOOL)executeStatements:(id)statements withResultBlock:(id)block
 {
   errmsg = 0;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_bmFMDatabase *)self sqliteHandle];
-  v9 = [v7 UTF8String];
+  blockCopy = block;
+  statementsCopy = statements;
+  sqliteHandle = [(_bmFMDatabase *)self sqliteHandle];
+  uTF8String = [statementsCopy UTF8String];
 
-  if (v6)
+  if (blockCopy)
   {
     v10 = sub_100042704;
   }
@@ -1721,7 +1721,7 @@ LABEL_38:
     v10 = 0;
   }
 
-  v11 = sqlite3_exec(v8, v9, v10, v6, &errmsg);
+  v11 = sqlite3_exec(sqliteHandle, uTF8String, v10, blockCopy, &errmsg);
 
   if (errmsg)
   {
@@ -1816,57 +1816,57 @@ LABEL_38:
   return db != 0;
 }
 
-- (BOOL)startSavePointWithName:(id)a3 error:(id *)a4
+- (BOOL)startSavePointWithName:(id)name error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  nameCopy = name;
+  if (!nameCopy)
   {
     sub_100043810(a2, self);
   }
 
   v8 = [NSString alloc];
-  v9 = [v7 stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+  v9 = [nameCopy stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
   v10 = [v8 initWithFormat:@"savepoint '%@';", v9];
 
-  v11 = [(_bmFMDatabase *)self executeUpdate:v10 error:a4 withArgumentsInArray:0 orDictionary:0 orVAList:0];
+  v11 = [(_bmFMDatabase *)self executeUpdate:v10 error:error withArgumentsInArray:0 orDictionary:0 orVAList:0];
   return v11;
 }
 
-- (BOOL)releaseSavePointWithName:(id)a3 error:(id *)a4
+- (BOOL)releaseSavePointWithName:(id)name error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  nameCopy = name;
+  if (!nameCopy)
   {
     sub_10004388C(a2, self);
   }
 
   v8 = [NSString alloc];
-  v9 = [v7 stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+  v9 = [nameCopy stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
   v10 = [v8 initWithFormat:@"release savepoint '%@';", v9];
 
-  v11 = [(_bmFMDatabase *)self executeUpdate:v10 error:a4 withArgumentsInArray:0 orDictionary:0 orVAList:0];
+  v11 = [(_bmFMDatabase *)self executeUpdate:v10 error:error withArgumentsInArray:0 orDictionary:0 orVAList:0];
   return v11;
 }
 
-- (BOOL)rollbackToSavePointWithName:(id)a3 error:(id *)a4
+- (BOOL)rollbackToSavePointWithName:(id)name error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  nameCopy = name;
+  if (!nameCopy)
   {
     sub_100043908(a2, self);
   }
 
   v8 = [NSString alloc];
-  v9 = [v7 stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+  v9 = [nameCopy stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
   v10 = [v8 initWithFormat:@"rollback transaction to savepoint '%@';", v9];
 
-  v11 = [(_bmFMDatabase *)self executeUpdate:v10 error:a4 withArgumentsInArray:0 orDictionary:0 orVAList:0];
+  v11 = [(_bmFMDatabase *)self executeUpdate:v10 error:error withArgumentsInArray:0 orDictionary:0 orVAList:0];
   return v11;
 }
 
-- (id)inSavePoint:(id)a3
+- (id)inSavePoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = [NSString alloc];
   v6 = qword_10008BDA0++;
   v7 = [v5 initWithFormat:@"dbSavePoint%ld", v6];
@@ -1876,9 +1876,9 @@ LABEL_38:
   v9 = v16;
   if (v8)
   {
-    if (v4)
+    if (pointCopy)
     {
-      v4[2](v4, &v17);
+      pointCopy[2](pointCopy, &v17);
       if (v17)
       {
         v15 = v9;
@@ -1901,21 +1901,21 @@ LABEL_38:
   return v12;
 }
 
-- (BOOL)checkpoint:(int)a3 name:(id)a4 logFrameCount:(int *)a5 checkpointCount:(int *)a6 error:(id *)a7
+- (BOOL)checkpoint:(int)checkpoint name:(id)name logFrameCount:(int *)count checkpointCount:(int *)checkpointCount error:(id *)error
 {
-  v13 = a4;
-  v14 = sqlite3_wal_checkpoint_v2(self->_db, [v13 UTF8String], a3, a5, a6);
+  nameCopy = name;
+  v14 = sqlite3_wal_checkpoint_v2(self->_db, [nameCopy UTF8String], checkpoint, count, checkpointCount);
   if (v14)
   {
-    if (a7)
+    if (error)
     {
-      *a7 = [(_bmFMDatabase *)self lastError];
+      *error = [(_bmFMDatabase *)self lastError];
     }
 
     if ([(_bmFMDatabase *)self logsErrors])
     {
-      v15 = [(_bmFMDatabase *)self lastErrorMessage];
-      NSLog(@"%@", v15);
+      lastErrorMessage = [(_bmFMDatabase *)self lastErrorMessage];
+      NSLog(@"%@", lastErrorMessage);
     }
 
     if ([(_bmFMDatabase *)self crashOnErrors])
@@ -1927,20 +1927,20 @@ LABEL_38:
   return v14 == 0;
 }
 
-- (void)setShouldCacheStatements:(BOOL)a3
+- (void)setShouldCacheStatements:(BOOL)statements
 {
-  self->_shouldCacheStatements = a3;
-  if (!a3 || !self->_cachedStatements && (+[NSMutableDictionary dictionary], v4 = objc_claimAutoreleasedReturnValue(), [(_bmFMDatabase *)self setCachedStatements:v4], v4, !self->_shouldCacheStatements))
+  self->_shouldCacheStatements = statements;
+  if (!statements || !self->_cachedStatements && (+[NSMutableDictionary dictionary], v4 = objc_claimAutoreleasedReturnValue(), [(_bmFMDatabase *)self setCachedStatements:v4], v4, !self->_shouldCacheStatements))
   {
 
     [(_bmFMDatabase *)self setCachedStatements:0];
   }
 }
 
-- (void)makeFunctionNamed:(id)a3 arguments:(int)a4 block:(id)a5
+- (void)makeFunctionNamed:(id)named arguments:(int)arguments block:(id)block
 {
-  v14 = a3;
-  v8 = a5;
+  namedCopy = named;
+  blockCopy = block;
   if (!self->_openFunctions)
   {
     v9 = objc_opt_new();
@@ -1948,17 +1948,17 @@ LABEL_38:
     self->_openFunctions = v9;
   }
 
-  v11 = [v8 copy];
+  v11 = [blockCopy copy];
   [(NSMutableSet *)self->_openFunctions addObject:v11];
-  v12 = [(_bmFMDatabase *)self sqliteHandle];
-  v13 = v14;
-  sqlite3_create_function(v12, [v14 UTF8String], a4, 1, v11, sub_100043058, 0, 0);
+  sqliteHandle = [(_bmFMDatabase *)self sqliteHandle];
+  v13 = namedCopy;
+  sqlite3_create_function(sqliteHandle, [namedCopy UTF8String], arguments, 1, v11, sub_100043058, 0, 0);
 }
 
-- (id)valueData:(void *)a3
+- (id)valueData:(void *)data
 {
-  v4 = sqlite3_value_blob(a3);
-  v5 = sqlite3_value_bytes(a3);
+  v4 = sqlite3_value_blob(data);
+  v5 = sqlite3_value_bytes(data);
   if (v4)
   {
     v6 = [NSData dataWithBytes:v4 length:v5];
@@ -1972,9 +1972,9 @@ LABEL_38:
   return v6;
 }
 
-- (id)valueString:(void *)a3
+- (id)valueString:(void *)string
 {
-  v3 = sqlite3_value_text(a3);
+  v3 = sqlite3_value_text(string);
   if (v3)
   {
     v3 = [NSString stringWithUTF8String:v3];
@@ -1983,32 +1983,32 @@ LABEL_38:
   return v3;
 }
 
-- (void)resultData:(id)a3 context:(void *)a4
+- (void)resultData:(id)data context:(void *)context
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v7 = [dataCopy length];
 
-  sqlite3_result_blob(a4, v6, v7, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_result_blob(context, bytes, v7, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)resultString:(id)a3 context:(void *)a4
+- (void)resultString:(id)string context:(void *)context
 {
-  v5 = [a3 UTF8String];
+  uTF8String = [string UTF8String];
 
-  sqlite3_result_text(a4, v5, -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_result_text(context, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)resultError:(id)a3 context:(void *)a4
+- (void)resultError:(id)error context:(void *)context
 {
-  v5 = [a3 UTF8String];
+  uTF8String = [error UTF8String];
 
-  sqlite3_result_error(a4, v5, -1);
+  sqlite3_result_error(context, uTF8String, -1);
 }
 
-- (id)stringForQuery:(id)a3
+- (id)stringForQuery:(id)query
 {
-  v3 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:0 orDictionary:0 orVAList:&v7 shouldBind:1];
+  v3 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:0 orDictionary:0 orVAList:&v7 shouldBind:1];
   v4 = 0;
   if ([v3 next])
   {
@@ -2020,9 +2020,9 @@ LABEL_38:
   return v4;
 }
 
-- (int)intForQuery:(id)a3
+- (int)intForQuery:(id)query
 {
-  v3 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:0 orDictionary:0 orVAList:&v6 shouldBind:1];
+  v3 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:0 orDictionary:0 orVAList:&v6 shouldBind:1];
   if ([v3 next])
   {
     v4 = [v3 intForColumnIndex:0];
@@ -2038,9 +2038,9 @@ LABEL_38:
   return v4;
 }
 
-- (int64_t)longForQuery:(id)a3
+- (int64_t)longForQuery:(id)query
 {
-  v3 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:0 orDictionary:0 orVAList:&v6 shouldBind:1];
+  v3 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:0 orDictionary:0 orVAList:&v6 shouldBind:1];
   v4 = 0;
   if ([v3 next])
   {
@@ -2052,9 +2052,9 @@ LABEL_38:
   return v4;
 }
 
-- (BOOL)BOOLForQuery:(id)a3
+- (BOOL)BOOLForQuery:(id)query
 {
-  v3 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:0 orDictionary:0 orVAList:&v6 shouldBind:1];
+  v3 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:0 orDictionary:0 orVAList:&v6 shouldBind:1];
   if ([v3 next])
   {
     v4 = [v3 BOOLForColumnIndex:0];
@@ -2070,9 +2070,9 @@ LABEL_38:
   return v4;
 }
 
-- (double)doubleForQuery:(id)a3
+- (double)doubleForQuery:(id)query
 {
-  v3 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:0 orDictionary:0 orVAList:&v7 shouldBind:1];
+  v3 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:0 orDictionary:0 orVAList:&v7 shouldBind:1];
   v4 = 0.0;
   if ([v3 next])
   {
@@ -2085,9 +2085,9 @@ LABEL_38:
   return v4;
 }
 
-- (id)dataForQuery:(id)a3
+- (id)dataForQuery:(id)query
 {
-  v3 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:0 orDictionary:0 orVAList:&v7 shouldBind:1];
+  v3 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:0 orDictionary:0 orVAList:&v7 shouldBind:1];
   v4 = 0;
   if ([v3 next])
   {
@@ -2099,9 +2099,9 @@ LABEL_38:
   return v4;
 }
 
-- (id)dateForQuery:(id)a3
+- (id)dateForQuery:(id)query
 {
-  v3 = [(_bmFMDatabase *)self executeQuery:a3 withArgumentsInArray:0 orDictionary:0 orVAList:&v7 shouldBind:1];
+  v3 = [(_bmFMDatabase *)self executeQuery:query withArgumentsInArray:0 orDictionary:0 orVAList:&v7 shouldBind:1];
   v4 = 0;
   if ([v3 next])
   {
@@ -2113,50 +2113,50 @@ LABEL_38:
   return v4;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
-  v4 = [a3 lowercaseString];
-  v5 = [(_bmFMDatabase *)self executeQuery:@"select [sql] from sqlite_master where [type] = 'table' and lower(name) = ?", v4];
-  v6 = [v5 next];
+  lowercaseString = [exists lowercaseString];
+  v5 = [(_bmFMDatabase *)self executeQuery:@"select [sql] from sqlite_master where [type] = 'table' and lower(name) = ?", lowercaseString];
+  next = [v5 next];
   [v5 close];
 
+  return next;
+}
+
+- (id)getTableSchema:(id)schema
+{
+  schemaCopy = schema;
+  schemaCopy = [[NSString alloc] initWithFormat:@"pragma table_info('%@')", schemaCopy];
+
+  v6 = [(_bmFMDatabase *)self executeQuery:schemaCopy];
+
   return v6;
 }
 
-- (id)getTableSchema:(id)a3
+- (BOOL)columnExists:(id)exists inTableWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithFormat:@"pragma table_info('%@')", v4];
+  existsCopy = exists;
+  lowercaseString = [name lowercaseString];
+  lowercaseString2 = [existsCopy lowercaseString];
 
-  v6 = [(_bmFMDatabase *)self executeQuery:v5];
-
-  return v6;
-}
-
-- (BOOL)columnExists:(id)a3 inTableWithName:(id)a4
-{
-  v6 = a3;
-  v7 = [a4 lowercaseString];
-  v8 = [v6 lowercaseString];
-
-  v9 = [(_bmFMDatabase *)self getTableSchema:v7];
+  v9 = [(_bmFMDatabase *)self getTableSchema:lowercaseString];
   do
   {
-    v10 = [v9 next];
-    if (!v10)
+    next = [v9 next];
+    if (!next)
     {
       break;
     }
 
     v11 = [v9 stringForColumn:@"name"];
-    v12 = [v11 lowercaseString];
-    v13 = [v12 isEqualToString:v8];
+    lowercaseString3 = [v11 lowercaseString];
+    v13 = [lowercaseString3 isEqualToString:lowercaseString2];
   }
 
   while (!v13);
   [v9 close];
 
-  return v10;
+  return next;
 }
 
 - (unsigned)applicationID
@@ -2195,21 +2195,21 @@ LABEL_38:
   return v3;
 }
 
-- (BOOL)validateSQL:(id)a3 error:(id *)a4
+- (BOOL)validateSQL:(id)l error:(id *)error
 {
   ppStmt = 0;
-  v6 = a3;
-  v7 = [(_bmFMDatabase *)self sqliteHandle];
-  v8 = [v6 UTF8String];
+  lCopy = l;
+  sqliteHandle = [(_bmFMDatabase *)self sqliteHandle];
+  uTF8String = [lCopy UTF8String];
 
-  v9 = sqlite3_prepare_v2(v7, v8, -1, &ppStmt, 0);
+  v9 = sqlite3_prepare_v2(sqliteHandle, uTF8String, -1, &ppStmt, 0);
   v10 = v9;
-  if (a4 && v9)
+  if (error && v9)
   {
-    v11 = [(_bmFMDatabase *)self lastErrorCode];
-    v12 = [(_bmFMDatabase *)self lastErrorMessage];
-    v13 = [NSDictionary dictionaryWithObject:v12 forKey:NSLocalizedDescriptionKey];
-    *a4 = [NSError errorWithDomain:NSCocoaErrorDomain code:v11 userInfo:v13];
+    lastErrorCode = [(_bmFMDatabase *)self lastErrorCode];
+    lastErrorMessage = [(_bmFMDatabase *)self lastErrorMessage];
+    v13 = [NSDictionary dictionaryWithObject:lastErrorMessage forKey:NSLocalizedDescriptionKey];
+    *error = [NSError errorWithDomain:NSCocoaErrorDomain code:lastErrorCode userInfo:v13];
   }
 
   sqlite3_finalize(ppStmt);

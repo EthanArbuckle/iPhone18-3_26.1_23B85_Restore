@@ -1,16 +1,16 @@
 @interface SKUISearchFieldTableViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityElements;
 @end
 
 @implementation SKUISearchFieldTableViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUISearchFieldTableView" hasInstanceMethod:@"trendingSearchesVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SKUISearchFieldTableView" hasInstanceVariable:@"_pageView" withType:"SKUITrendingSearchPageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUISearchFieldTableView" hasInstanceMethod:@"trendingSearchesVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SKUISearchFieldTableView" hasInstanceVariable:@"_pageView" withType:"SKUITrendingSearchPageView"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -31,17 +31,17 @@
   {
     v3 = MEMORY[0x29EDB8D80];
     v4 = [(SKUISearchFieldTableViewAccessibility *)self safeValueForKey:@"_pageView"];
-    v5 = [v3 axArrayByIgnoringNilElementsWithCount:{1, v4}];
+    accessibilityElements = [v3 axArrayByIgnoringNilElementsWithCount:{1, v4}];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SKUISearchFieldTableViewAccessibility;
-    v5 = [(SKUISearchFieldTableViewAccessibility *)&v7 accessibilityElements];
+    accessibilityElements = [(SKUISearchFieldTableViewAccessibility *)&v7 accessibilityElements];
   }
 
-  return v5;
+  return accessibilityElements;
 }
 
 @end

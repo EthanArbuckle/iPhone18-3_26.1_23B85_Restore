@@ -1,14 +1,14 @@
 @interface SKBitmapFont
-+ (id)_fontForFileNamed:(id)a3;
-+ (id)fontForFileNamed:(id)a3;
-+ (id)fontWithTexture:(id)a3 fontDataString:(id)a4;
-- (BOOL)loadFontWithTexture:(id)a3 fontDataString:(id)a4;
++ (id)_fontForFileNamed:(id)named;
++ (id)fontForFileNamed:(id)named;
++ (id)fontWithTexture:(id)texture fontDataString:(id)string;
+- (BOOL)loadFontWithTexture:(id)texture fontDataString:(id)string;
 - (SKBitmapFont)init;
-- (SKBitmapFont)initWithCoder:(id)a3;
-- (double)advanceForCharacterNamed:(unsigned __int16)a3;
-- (double)kerningForCharacterNamed:(unsigned __int16)a3 followedBy:(unsigned __int16)a4;
+- (SKBitmapFont)initWithCoder:(id)coder;
+- (double)advanceForCharacterNamed:(unsigned __int16)named;
+- (double)kerningForCharacterNamed:(unsigned __int16)named followedBy:(unsigned __int16)by;
 - (id).cxx_construct;
-- (id)spriteForCharacterNamed:(unsigned __int16)a3;
+- (id)spriteForCharacterNamed:(unsigned __int16)named;
 @end
 
 @implementation SKBitmapFont
@@ -115,9 +115,9 @@ void __20__SKBitmapFont_init__block_invoke()
   _fontDict = v1;
 }
 
-- (SKBitmapFont)initWithCoder:(id)a3
+- (SKBitmapFont)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = SKBitmapFont;
   v5 = [(SKBitmapFont *)&v26 init];
@@ -205,7 +205,7 @@ void __20__SKBitmapFont_init__block_invoke()
       [SKBitmapFont initWithCoder:];
     }
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fileName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fileName"];
     fileName = v6->_fileName;
     v6->_fileName = v16;
 
@@ -230,11 +230,11 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
   _fontDict = v1;
 }
 
-- (BOOL)loadFontWithTexture:(id)a3 fontDataString:(id)a4
+- (BOOL)loadFontWithTexture:(id)texture fontDataString:(id)string
 {
-  v176 = a3;
-  v170 = a4;
-  v177 = self;
+  textureCopy = texture;
+  stringCopy = string;
+  selfCopy = self;
   obj = objc_opt_new();
   v184[0] = 0;
   v184[1] = 0;
@@ -246,7 +246,7 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
   v180[1] = 0;
   v179 = v180;
   v175 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
-  v6 = v170;
+  v6 = stringCopy;
   if (v6)
   {
     v168 = v6;
@@ -256,7 +256,7 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
     v11 = [v8 substringFromIndex:v9 + v10];
 
     v167 = [v11 substringToIndex:{objc_msgSend(v11, "rangeOfString:", @""}];
-    objc_storeStrong(&v177->_fontName, v167);
+    objc_storeStrong(&selfCopy->_fontName, v167);
     v12 = [v7 objectAtIndex:1];
 
     v13 = [v12 rangeOfString:@"common lineHeight="];
@@ -264,14 +264,14 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
 
     v16 = [v15 substringToIndex:{objc_msgSend(v15, "rangeOfString:", @" "}];
     [v16 doubleValue];
-    v177->_lineHeight = v17;
+    selfCopy->_lineHeight = v17;
 
     v18 = [v15 rangeOfString:@"base="];
     v20 = [v15 substringFromIndex:v18 + v19];
 
     v21 = [v20 substringToIndex:{objc_msgSend(v20, "rangeOfString:", @" "}];
     [v21 doubleValue];
-    v177->_baseLine = v22;
+    selfCopy->_baseLine = v22;
 
     v23 = [v7 objectAtIndex:2];
 
@@ -279,9 +279,9 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
     v26 = [v23 substringFromIndex:v24 + v25];
 
     v169 = [v26 substringToIndex:{objc_msgSend(v26, "rangeOfString:", @""}];
-    if (!v176)
+    if (!textureCopy)
     {
-      if (v177->_internal)
+      if (selfCopy->_internal)
       {
         [SKTexture _textureWithImageNamed:v169];
       }
@@ -290,7 +290,7 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
       {
         [SKTexture textureWithImageNamed:v169];
       }
-      v176 = ;
+      textureCopy = ;
     }
 
     v28 = [v7 objectAtIndex:3];
@@ -298,19 +298,19 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
     v29 = [v28 rangeOfString:@"chars count="];
     v31 = [v28 substringFromIndex:v29 + v30];
 
-    v32 = [v31 intValue];
+    intValue = [v31 intValue];
     v27 = 0;
-    if (v32 >= 1 && v176)
+    if (intValue >= 1 && textureCopy)
     {
-      if ([v7 count] >= (v32 + 4))
+      if ([v7 count] >= (intValue + 4))
       {
-        v166 = (v32 + 4);
+        v166 = (intValue + 4);
         v173 = v7;
-        [v176 pixelSize];
+        [textureCopy pixelSize];
         v172 = v33;
         v35 = v34;
-        v165 = v32;
-        v171 = -v32;
+        v165 = intValue;
+        v171 = -intValue;
         v36 = 4;
         do
         {
@@ -323,7 +323,7 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
           v41 = [v40 rangeOfString:@" "];
           v43 = v42;
           v44 = [v40 substringToIndex:v41];
-          v45 = [v44 intValue];
+          intValue2 = [v44 intValue];
 
           v46 = [v40 substringFromIndex:v41 + v43];
 
@@ -391,23 +391,23 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
           [v103 doubleValue];
           v105 = v104;
 
-          v106 = [v99 substringFromIndex:v100 + v102];
+          v102 = [v99 substringFromIndex:v100 + v102];
 
-          v107 = [v106 rangeOfString:@"xadvance="];
-          v109 = [v106 substringFromIndex:v107 + v108];
+          v107 = [v102 rangeOfString:@"xadvance="];
+          v108 = [v102 substringFromIndex:v107 + v108];
 
-          v110 = [v109 rangeOfString:@" "];
+          v110 = [v108 rangeOfString:@" "];
           v112 = v111;
-          v113 = [v109 substringToIndex:v110];
+          v113 = [v108 substringToIndex:v110];
           [v113 doubleValue];
           v115 = v114;
 
-          v116 = [v109 substringFromIndex:v110 + v112];
+          v112 = [v108 substringFromIndex:v110 + v112];
 
-          v117 = [v116 rangeOfString:@"letter="];
-          v119 = [v116 substringFromIndex:v117 + v118];
+          v117 = [v112 rangeOfString:@"letter="];
+          v118 = [v112 substringFromIndex:v117 + v118];
 
-          v120 = [v119 substringToIndex:{objc_msgSend(v119, "rangeOfString:", @""}];
+          v120 = [v118 substringToIndex:{objc_msgSend(v118, "rangeOfString:", @""}];
           if ([(__CFString *)v120 isEqualToString:@"space"])
           {
             LOWORD(v178) = 32;
@@ -425,13 +425,13 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
             LOWORD(v178) = 0;
           }
 
-          v121 = [SKTexture textureWithRect:v176 inTexture:v55 / v172, (v35 - (v65 + v85)) / v35, v75 / v172, v85 / v35];
+          v121 = [SKTexture textureWithRect:textureCopy inTexture:v55 / v172, (v35 - (v65 + v85)) / v35, v75 / v172, v85 / v35];
           if (SKGetGlobalFlippedFlag())
           {
             v122 = [SKSpriteNode spriteNodeWithTexture:v121];
             [v122 setAnchorPoint:{0.0, 0.0}];
             v123 = v122;
-            [v122 setPosition:{v95, v105 - v177->_lineHeight}];
+            [v122 setPosition:{v95, v105 - selfCopy->_lineHeight}];
           }
 
           else
@@ -439,7 +439,7 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
             v124 = [SKSpriteNode spriteNodeWithTexture:v121];
             [v124 setAnchorPoint:{0.0, 1.0}];
             v123 = v124;
-            [v124 setPosition:{v95, v177->_lineHeight - v105}];
+            [v124 setPosition:{v95, selfCopy->_lineHeight - v105}];
           }
 
           [obj addObject:v123];
@@ -448,11 +448,11 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
           objc_storeStrong(v125 + 5, v123);
           v185 = &v178;
           std::__tree<std::__value_type<unsigned short,double>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,double>,std::less<unsigned short>,true>,std::allocator<std::__value_type<unsigned short,double>>>::__emplace_unique_key_args<unsigned short,std::piecewise_construct_t const&,std::tuple<unsigned short const&>,std::tuple<>>(&v181, &v178)[5] = v115;
-          v126 = [MEMORY[0x277CCABB0] numberWithInt:v45];
+          v126 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
           [v175 setObject:v120 forKey:v126];
 
           ++v36;
-          v31 = v119;
+          v31 = v118;
         }
 
         while (v171 + v36 != 4);
@@ -463,58 +463,58 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
           v128 = [v127 rangeOfString:@"kernings count="];
           if (v128 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v119 = v127;
+            v118 = v127;
           }
 
           else
           {
-            v130 = [v127 substringFromIndex:v128 + v129];
+            v129 = [v127 substringFromIndex:v128 + v129];
 
-            v131 = [v130 intValue];
-            if ([v173 count] <= (v131 + v166) || v131 < 1)
+            intValue3 = [v129 intValue];
+            if ([v173 count] <= (intValue3 + v166) || intValue3 < 1)
             {
-              v119 = v130;
+              v118 = v129;
             }
 
             else
             {
-              v132 = v131;
+              v132 = intValue3;
               v133 = (v165 + 5);
-              v119 = v130;
+              v118 = v129;
               do
               {
                 v134 = [v173 objectAtIndex:v133];
 
                 v135 = [v134 rangeOfString:@"first="];
-                v137 = [v134 substringFromIndex:v135 + v136];
+                v136 = [v134 substringFromIndex:v135 + v136];
 
-                v138 = [v137 rangeOfString:@" "];
+                v138 = [v136 rangeOfString:@" "];
                 v140 = v139;
-                v141 = [v137 substringToIndex:v138];
-                v142 = [v141 intValue];
+                v141 = [v136 substringToIndex:v138];
+                intValue4 = [v141 intValue];
 
-                v143 = [v137 substringFromIndex:v138 + v140];
+                v140 = [v136 substringFromIndex:v138 + v140];
 
-                v144 = [v143 rangeOfString:@"second="];
-                v146 = [v143 substringFromIndex:v144 + v145];
+                v144 = [v140 rangeOfString:@"second="];
+                v145 = [v140 substringFromIndex:v144 + v145];
 
-                v147 = [v146 rangeOfString:@" "];
+                v147 = [v145 rangeOfString:@" "];
                 v149 = v148;
-                v150 = [v146 substringToIndex:v147];
-                v151 = [v150 intValue];
+                v150 = [v145 substringToIndex:v147];
+                intValue5 = [v150 intValue];
 
-                v152 = [v146 substringFromIndex:v147 + v149];
+                v149 = [v145 substringFromIndex:v147 + v149];
 
-                v153 = [v152 rangeOfString:@"amount="];
-                v119 = [v152 substringFromIndex:v153 + v154];
+                v153 = [v149 rangeOfString:@"amount="];
+                v118 = [v149 substringFromIndex:v153 + v154];
 
-                [v119 doubleValue];
+                [v118 doubleValue];
                 v156 = v155;
-                v157 = [MEMORY[0x277CCABB0] numberWithInt:v142];
+                v157 = [MEMORY[0x277CCABB0] numberWithInt:intValue4];
                 v158 = [v175 objectForKey:v157];
                 v159 = [v158 characterAtIndex:0];
 
-                v160 = [MEMORY[0x277CCABB0] numberWithInt:v151];
+                v160 = [MEMORY[0x277CCABB0] numberWithInt:intValue5];
                 v161 = [v175 objectForKey:v160];
                 v162 = [v161 characterAtIndex:0];
 
@@ -534,30 +534,30 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
           }
         }
 
-        objc_storeStrong(&v177->_characterSprites, obj);
+        objc_storeStrong(&selfCopy->_characterSprites, obj);
         v7 = v173;
-        if (&v177->_characterSpriteByChar != &v183)
+        if (&selfCopy->_characterSpriteByChar != &v183)
         {
-          std::__tree<std::__value_type<unsigned short,SKSpriteNode * {__strong}>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,SKSpriteNode * {__strong}>,std::less<unsigned short>,true>,std::allocator<std::__value_type<unsigned short,SKSpriteNode * {__strong}>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<unsigned short,SKSpriteNode * {__strong}>,std::__tree_node<std::__value_type<unsigned short,SKSpriteNode * {__strong}>,void *> *,long>>(&v177->_characterSpriteByChar, v183, v184);
+          std::__tree<std::__value_type<unsigned short,SKSpriteNode * {__strong}>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,SKSpriteNode * {__strong}>,std::less<unsigned short>,true>,std::allocator<std::__value_type<unsigned short,SKSpriteNode * {__strong}>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<unsigned short,SKSpriteNode * {__strong}>,std::__tree_node<std::__value_type<unsigned short,SKSpriteNode * {__strong}>,void *> *,long>>(&selfCopy->_characterSpriteByChar, v183, v184);
         }
 
-        if (&v177->_characterAdvanceByChar != &v181)
+        if (&selfCopy->_characterAdvanceByChar != &v181)
         {
-          std::__tree<std::__value_type<unsigned short,double>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,double>,std::less<unsigned short>,true>,std::allocator<std::__value_type<unsigned short,double>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<unsigned short,double>,std::__tree_node<std::__value_type<unsigned short,double>,void *> *,long>>(&v177->_characterAdvanceByChar, v181, v182);
+          std::__tree<std::__value_type<unsigned short,double>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,double>,std::less<unsigned short>,true>,std::allocator<std::__value_type<unsigned short,double>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<unsigned short,double>,std::__tree_node<std::__value_type<unsigned short,double>,void *> *,long>>(&selfCopy->_characterAdvanceByChar, v181, v182);
         }
 
-        if (&v177->_characterKerningByCharPair != &v179)
+        if (&selfCopy->_characterKerningByCharPair != &v179)
         {
-          std::__tree<std::__value_type<unsigned int,double>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,double>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,double>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<unsigned int,double>,std::__tree_node<std::__value_type<unsigned int,double>,void *> *,long>>(&v177->_characterKerningByCharPair, v179, v180);
+          std::__tree<std::__value_type<unsigned int,double>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,double>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,double>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<unsigned int,double>,std::__tree_node<std::__value_type<unsigned int,double>,void *> *,long>>(&selfCopy->_characterKerningByCharPair, v179, v180);
         }
 
-        if (v177->_fileName)
+        if (selfCopy->_fileName)
         {
           [_fontDict setObject:? forKey:?];
         }
 
         v27 = 1;
-        v31 = v119;
+        v31 = v118;
       }
 
       else
@@ -583,12 +583,12 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
   return v27;
 }
 
-+ (id)fontForFileNamed:(id)a3
++ (id)fontForFileNamed:(id)named
 {
-  v4 = a3;
-  if (v4)
+  namedCopy = named;
+  if (namedCopy)
   {
-    v5 = [_fontDict objectForKey:v4];
+    v5 = [_fontDict objectForKey:namedCopy];
     v6 = v5;
     if (v5)
     {
@@ -598,12 +598,12 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
     else
     {
       v8 = SKGetResourceBundle();
-      v9 = [v8 pathForResource:v4 ofType:@"fnt"];
+      v9 = [v8 pathForResource:namedCopy ofType:@"fnt"];
 
       if (v9)
       {
         v10 = objc_alloc_init(SKBitmapFont);
-        objc_storeStrong(&v10->_fileName, a3);
+        objc_storeStrong(&v10->_fileName, named);
         objc_storeStrong(&v10->_filePath, v9);
         v11 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v10->_filePath encoding:4 error:0];
         v12 = [(SKBitmapFont *)v10 loadFontWithTexture:0 fontDataString:v11];
@@ -634,37 +634,37 @@ void __30__SKBitmapFont_initWithCoder___block_invoke()
   return v7;
 }
 
-- (id)spriteForCharacterNamed:(unsigned __int16)a3
+- (id)spriteForCharacterNamed:(unsigned __int16)named
 {
-  v5 = a3;
-  v6 = &v5;
-  v3 = [std::__tree<std::__value_type<unsigned short SKSpriteNode * {:std::__map_value_compare<unsigned short :{std::__value_type<unsigned short, SKSpriteNode * {__strong}>, std::less<unsigned short>, true>, std::allocator<std::__value_type<unsigned short, SKSpriteNode * {__strong}>>>::__emplace_unique_key_args<unsigned short, std::piecewise_construct_t const&, std::tuple<unsigned short const&>, std::tuple<>>(&self->_characterSpriteByChar, &v5)[5], "copy"}strong}>];
+  namedCopy = named;
+  v6 = &namedCopy;
+  v3 = [std::__tree<std::__value_type<unsigned short SKSpriteNode * {:std::__map_value_compare<unsigned short :{std::__value_type<unsigned short, SKSpriteNode * {__strong}>, std::less<unsigned short>, true>, std::allocator<std::__value_type<unsigned short, SKSpriteNode * {__strong}>>>::__emplace_unique_key_args<unsigned short, std::piecewise_construct_t const&, std::tuple<unsigned short const&>, std::tuple<>>(&self->_characterSpriteByChar, &namedCopy)[5], "copy"}strong}>];
 
   return v3;
 }
 
-- (double)advanceForCharacterNamed:(unsigned __int16)a3
+- (double)advanceForCharacterNamed:(unsigned __int16)named
 {
-  v4 = a3;
-  v5 = &v4;
-  return *(std::__tree<std::__value_type<unsigned short,double>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,double>,std::less<unsigned short>,true>,std::allocator<std::__value_type<unsigned short,double>>>::__emplace_unique_key_args<unsigned short,std::piecewise_construct_t const&,std::tuple<unsigned short const&>,std::tuple<>>(&self->_characterAdvanceByChar, &v4) + 5);
+  namedCopy = named;
+  v5 = &namedCopy;
+  return *(std::__tree<std::__value_type<unsigned short,double>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,double>,std::less<unsigned short>,true>,std::allocator<std::__value_type<unsigned short,double>>>::__emplace_unique_key_args<unsigned short,std::piecewise_construct_t const&,std::tuple<unsigned short const&>,std::tuple<>>(&self->_characterAdvanceByChar, &namedCopy) + 5);
 }
 
-- (double)kerningForCharacterNamed:(unsigned __int16)a3 followedBy:(unsigned __int16)a4
+- (double)kerningForCharacterNamed:(unsigned __int16)named followedBy:(unsigned __int16)by
 {
-  v5 = a4 | (a3 << 16);
+  v5 = by | (named << 16);
   v6 = &v5;
   return *(std::__tree<std::__value_type<unsigned int,double>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,double>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,double>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(&self->_characterKerningByCharPair, &v5) + 5);
 }
 
-+ (id)fontWithTexture:(id)a3 fontDataString:(id)a4
++ (id)fontWithTexture:(id)texture fontDataString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  textureCopy = texture;
+  stringCopy = string;
+  if (stringCopy)
   {
     v7 = objc_alloc_init(SKBitmapFont);
-    if ([(SKBitmapFont *)v7 loadFontWithTexture:v5 fontDataString:v6])
+    if ([(SKBitmapFont *)v7 loadFontWithTexture:textureCopy fontDataString:stringCopy])
     {
       goto LABEL_5;
     }
@@ -690,12 +690,12 @@ LABEL_5:
   return self;
 }
 
-+ (id)_fontForFileNamed:(id)a3
++ (id)_fontForFileNamed:(id)named
 {
-  v3 = a3;
-  if (v3)
+  namedCopy = named;
+  if (namedCopy)
   {
-    v4 = v3;
+    v4 = namedCopy;
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 pathForResource:v4 ofType:@"fnt"];
 

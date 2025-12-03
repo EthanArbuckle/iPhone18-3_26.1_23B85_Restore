@@ -1,107 +1,107 @@
 @interface VSVoiceAsset
-+ (id)compatibilityVersionFromMobileAssetAttributes:(id)a3;
-+ (id)footprintStringFromFootprint:(int64_t)a3;
-+ (id)genderStringFromGender:(int64_t)a3;
-+ (id)languagesFromMobileAssetAttributes:(id)a3;
-+ (id)typeStringFromType:(int64_t)a3;
-+ (int64_t)footprintFromString:(id)a3;
-+ (int64_t)genderFromString:(id)a3;
-+ (int64_t)typeFromString:(id)a3;
-- (VSVoiceAsset)initWithCoder:(id)a3;
-- (VSVoiceAsset)initWithDictionaryRepresentation:(id)a3;
++ (id)compatibilityVersionFromMobileAssetAttributes:(id)attributes;
++ (id)footprintStringFromFootprint:(int64_t)footprint;
++ (id)genderStringFromGender:(int64_t)gender;
++ (id)languagesFromMobileAssetAttributes:(id)attributes;
++ (id)typeStringFromType:(int64_t)type;
++ (int64_t)footprintFromString:(id)string;
++ (int64_t)genderFromString:(id)string;
++ (int64_t)typeFromString:(id)string;
+- (VSVoiceAsset)initWithCoder:(id)coder;
+- (VSVoiceAsset)initWithDictionaryRepresentation:(id)representation;
 - (id)description;
 - (id)descriptiveKey;
 - (id)dictionaryRepresentation;
-- (id)initFromMobileAssetAttributes:(id)a3;
+- (id)initFromMobileAssetAttributes:(id)attributes;
 - (id)nameKey;
 - (id)voiceKey;
-- (void)amendNameVersionAndSizeWithMobileAssetAttributes:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)amendNameVersionAndSizeWithMobileAssetAttributes:(id)attributes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSVoiceAsset
 
-- (void)amendNameVersionAndSizeWithMobileAssetAttributes:(id)a3
+- (void)amendNameVersionAndSizeWithMobileAssetAttributes:(id)attributes
 {
-  v16 = a3;
-  v4 = [(VSVoiceAsset *)self name];
-  v5 = [v4 length];
+  attributesCopy = attributes;
+  name = [(VSVoiceAsset *)self name];
+  v5 = [name length];
 
   if (!v5)
   {
-    v6 = [v16 objectForKeyedSubscript:@"Name"];
+    v6 = [attributesCopy objectForKeyedSubscript:@"Name"];
     [(VSVoiceAsset *)self setName:v6];
   }
 
-  v7 = [(VSAssetBase *)self masteredVersion];
-  v8 = [v7 length];
+  masteredVersion = [(VSAssetBase *)self masteredVersion];
+  v8 = [masteredVersion length];
 
   if (!v8)
   {
-    v9 = [v16 objectForKeyedSubscript:*MEMORY[0x277D28918]];
+    v9 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D28918]];
     [(VSAssetBase *)self setMasteredVersion:v9];
   }
 
-  v10 = [(VSAssetBase *)self contentVersion];
+  contentVersion = [(VSAssetBase *)self contentVersion];
 
-  if (!v10)
+  if (!contentVersion)
   {
-    v11 = [v16 objectForKeyedSubscript:*MEMORY[0x277D28900]];
+    v11 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D28900]];
     [(VSAssetBase *)self setContentVersion:v11];
   }
 
-  v12 = [(VSAssetBase *)self compatibilityVersion];
+  compatibilityVersion = [(VSAssetBase *)self compatibilityVersion];
 
-  if (!v12)
+  if (!compatibilityVersion)
   {
-    v13 = [VSVoiceAsset compatibilityVersionFromMobileAssetAttributes:v16];
+    v13 = [VSVoiceAsset compatibilityVersionFromMobileAssetAttributes:attributesCopy];
     [(VSAssetBase *)self setCompatibilityVersion:v13];
   }
 
-  v14 = [(VSAssetBase *)self downloadSize];
+  downloadSize = [(VSAssetBase *)self downloadSize];
 
-  if (!v14)
+  if (!downloadSize)
   {
-    v15 = [v16 objectForKeyedSubscript:*MEMORY[0x277D28908]];
+    v15 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D28908]];
     [(VSAssetBase *)self setDownloadSize:v15];
   }
 }
 
-- (id)initFromMobileAssetAttributes:(id)a3
+- (id)initFromMobileAssetAttributes:(id)attributes
 {
   v10.receiver = self;
   v10.super_class = VSVoiceAsset;
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = [(VSVoiceAsset *)&v10 init];
-  v5 = [VSVoiceAsset languagesFromMobileAssetAttributes:v3, v10.receiver, v10.super_class];
+  v5 = [VSVoiceAsset languagesFromMobileAssetAttributes:attributesCopy, v10.receiver, v10.super_class];
   [(VSVoiceAsset *)v4 setLanguages:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"Gender"];
+  v6 = [attributesCopy objectForKeyedSubscript:@"Gender"];
   [(VSVoiceAsset *)v4 setGender:[VSVoiceAsset genderFromString:v6]];
 
-  v7 = [v3 objectForKeyedSubscript:@"Type"];
+  v7 = [attributesCopy objectForKeyedSubscript:@"Type"];
   [(VSVoiceAsset *)v4 setType:[VSVoiceAsset typeFromString:v7]];
 
-  v8 = [v3 objectForKeyedSubscript:@"Footprint"];
+  v8 = [attributesCopy objectForKeyedSubscript:@"Footprint"];
   [(VSVoiceAsset *)v4 setFootprint:[VSVoiceAsset footprintFromString:v8]];
 
-  [(VSVoiceAsset *)v4 amendNameVersionAndSizeWithMobileAssetAttributes:v3];
+  [(VSVoiceAsset *)v4 amendNameVersionAndSizeWithMobileAssetAttributes:attributesCopy];
   return v4;
 }
 
-+ (id)compatibilityVersionFromMobileAssetAttributes:(id)a3
++ (id)compatibilityVersionFromMobileAssetAttributes:(id)attributes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D288E8]];
+  attributesCopy = attributes;
+  v4 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D288E8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = VSGetLogDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v3 objectForKeyedSubscript:@"Name"];
-      v11 = [v3 objectForKeyedSubscript:*MEMORY[0x277D28900]];
+      v10 = [attributesCopy objectForKeyedSubscript:@"Name"];
+      v11 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D28900]];
       v12 = 138412802;
       v13 = v10;
       v14 = 2112;
@@ -126,15 +126,15 @@
   return v7;
 }
 
-+ (id)languagesFromMobileAssetAttributes:(id)a3
++ (id)languagesFromMobileAssetAttributes:(id)attributes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"LanguagesCompatibility"];
+  attributesCopy = attributes;
+  v4 = [attributesCopy objectForKeyedSubscript:@"LanguagesCompatibility"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"LanguagesCompatibility"];
+    v5 = [attributesCopy objectForKeyedSubscript:@"LanguagesCompatibility"];
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
     v17 = 0u;
     v18 = 0u;
@@ -168,7 +168,7 @@
 
   else
   {
-    v13 = [v3 objectForKeyedSubscript:@"Languages"];
+    v13 = [attributesCopy objectForKeyedSubscript:@"Languages"];
     if (v13)
     {
       v7 = v13;
@@ -177,7 +177,7 @@
 
     else
     {
-      v14 = [v3 objectForKeyedSubscript:@"Language"];
+      v14 = [attributesCopy objectForKeyedSubscript:@"Language"];
       v21 = v14;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
 
@@ -215,34 +215,34 @@
     [v4 setObject:v8 forKey:@"Type"];
   }
 
-  v9 = [(VSAssetBase *)self masteredVersion];
+  masteredVersion = [(VSAssetBase *)self masteredVersion];
 
-  if (v9)
+  if (masteredVersion)
   {
-    v10 = [(VSAssetBase *)self masteredVersion];
-    [v4 setObject:v10 forKey:@"MasteredVersion"];
+    masteredVersion2 = [(VSAssetBase *)self masteredVersion];
+    [v4 setObject:masteredVersion2 forKey:@"MasteredVersion"];
   }
 
-  v11 = [(VSAssetBase *)self contentVersion];
+  contentVersion = [(VSAssetBase *)self contentVersion];
 
-  if (v11)
+  if (contentVersion)
   {
-    v12 = [(VSAssetBase *)self contentVersion];
-    [v4 setObject:v12 forKey:@"ContentVersion"];
+    contentVersion2 = [(VSAssetBase *)self contentVersion];
+    [v4 setObject:contentVersion2 forKey:@"ContentVersion"];
   }
 
   return v4;
 }
 
-- (VSVoiceAsset)initWithDictionaryRepresentation:(id)a3
+- (VSVoiceAsset)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v21.receiver = self;
   v21.super_class = VSVoiceAsset;
   v5 = [(VSVoiceAsset *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"Name"];
+    v6 = [representationCopy objectForKey:@"Name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -255,7 +255,7 @@
     }
 
     [(VSVoiceAsset *)v5 setName:v7];
-    v8 = [v4 objectForKey:@"Languages"];
+    v8 = [representationCopy objectForKey:@"Languages"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -269,33 +269,33 @@
       [(VSVoiceAsset *)v5 setLanguages:0];
     }
 
-    v11 = [v4 objectForKey:@"Gender"];
+    v11 = [representationCopy objectForKey:@"Gender"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
     }
 
     else
     {
-      v12 = 0;
+      integerValue = 0;
     }
 
-    [(VSVoiceAsset *)v5 setGender:v12];
-    v13 = [v4 objectForKey:@"Type"];
+    [(VSVoiceAsset *)v5 setGender:integerValue];
+    v13 = [representationCopy objectForKey:@"Type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 integerValue];
+      integerValue2 = [v13 integerValue];
     }
 
     else
     {
-      v14 = 0;
+      integerValue2 = 0;
     }
 
-    [(VSVoiceAsset *)v5 setType:v14];
-    v15 = [v4 objectForKey:@"MasteredVersion"];
+    [(VSVoiceAsset *)v5 setType:integerValue2];
+    v15 = [representationCopy objectForKey:@"MasteredVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -308,7 +308,7 @@
     }
 
     [(VSAssetBase *)v5 setMasteredVersion:v16];
-    v17 = [v4 objectForKey:@"ContentVersion"];
+    v17 = [representationCopy objectForKey:@"ContentVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -336,16 +336,16 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
   return isKindOfClass & 1;
 }
 
-- (VSVoiceAsset)initWithCoder:(id)a3
+- (VSVoiceAsset)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VSVoiceAsset;
-  v5 = [(VSAssetBase *)&v15 initWithCoder:v4];
+  v5 = [(VSAssetBase *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
 
@@ -354,36 +354,36 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
     v16[1] = objc_opt_class();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_languages"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_languages"];
     languages = v5->_languages;
     v5->_languages = v11;
 
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v5->_gender = [v4 decodeIntegerForKey:@"_gender"];
-    v5->_footprint = [v4 decodeIntegerForKey:@"_footprint"];
-    v5->_isInstalled = [v4 decodeBoolForKey:@"_isInstalled"];
-    v5->_isBuiltInVoice = [v4 decodeBoolForKey:@"_isBuiltInVoice"];
-    v5->_isVoiceReadyToUse = [v4 decodeBoolForKey:@"_isVoiceReadyToUse"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v5->_gender = [coderCopy decodeIntegerForKey:@"_gender"];
+    v5->_footprint = [coderCopy decodeIntegerForKey:@"_footprint"];
+    v5->_isInstalled = [coderCopy decodeBoolForKey:@"_isInstalled"];
+    v5->_isBuiltInVoice = [coderCopy decodeBoolForKey:@"_isBuiltInVoice"];
+    v5->_isVoiceReadyToUse = [coderCopy decodeBoolForKey:@"_isVoiceReadyToUse"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VSVoiceAsset;
-  v4 = a3;
-  [(VSAssetBase *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_name forKey:{@"_name", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_languages forKey:@"_languages"];
-  [v4 encodeInteger:self->_type forKey:@"_type"];
-  [v4 encodeInteger:self->_gender forKey:@"_gender"];
-  [v4 encodeInteger:self->_footprint forKey:@"_footprint"];
-  [v4 encodeBool:self->_isInstalled forKey:@"_isInstalled"];
-  [v4 encodeBool:self->_isBuiltInVoice forKey:@"_isBuiltInVoice"];
-  [v4 encodeBool:self->_isVoiceReadyToUse forKey:@"_isVoiceReadyToUse"];
+  coderCopy = coder;
+  [(VSAssetBase *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_name forKey:{@"_name", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_languages forKey:@"_languages"];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
+  [coderCopy encodeInteger:self->_gender forKey:@"_gender"];
+  [coderCopy encodeInteger:self->_footprint forKey:@"_footprint"];
+  [coderCopy encodeBool:self->_isInstalled forKey:@"_isInstalled"];
+  [coderCopy encodeBool:self->_isBuiltInVoice forKey:@"_isBuiltInVoice"];
+  [coderCopy encodeBool:self->_isVoiceReadyToUse forKey:@"_isVoiceReadyToUse"];
 }
 
 - (id)description
@@ -395,11 +395,11 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
   v5 = [VSVoiceAsset genderStringFromGender:[(VSVoiceAsset *)self gender]];
   v6 = [VSVoiceAsset footprintStringFromFootprint:[(VSVoiceAsset *)self footprint]];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_isInstalled];
-  v8 = [(VSAssetBase *)self contentVersion];
-  v9 = [(VSAssetBase *)self masteredVersion];
-  v10 = [(VSAssetBase *)self downloadSize];
+  contentVersion = [(VSAssetBase *)self contentVersion];
+  masteredVersion = [(VSAssetBase *)self masteredVersion];
+  downloadSize = [(VSAssetBase *)self downloadSize];
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_isBuiltInVoice];
-  v12 = [v15 stringWithFormat:@"Type:%@, Name: %@, Languages: %@, Gender: %@, Footprint: %@, Installed: %@, ContentVersion: %@, MasteredVersion: %@, downloadSize: %@, isBuiltIn: %@", v3, name, v4, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v15 stringWithFormat:@"Type:%@, Name: %@, Languages: %@, Gender: %@, Footprint: %@, Installed: %@, ContentVersion: %@, MasteredVersion: %@, downloadSize: %@, isBuiltIn: %@", v3, name, v4, v5, v6, v7, contentVersion, masteredVersion, downloadSize, v11];
 
   return v12;
 }
@@ -410,12 +410,12 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
   v4 = [(NSArray *)self->_languages componentsJoinedByString:@", "];
   v5 = [VSVoiceAsset typeStringFromType:[(VSVoiceAsset *)self type]];
   v6 = [VSVoiceAsset genderStringFromGender:[(VSVoiceAsset *)self gender]];
-  v7 = [(VSVoiceAsset *)self nameKey];
+  nameKey = [(VSVoiceAsset *)self nameKey];
   v8 = [VSVoiceAsset footprintStringFromFootprint:[(VSVoiceAsset *)self footprint]];
-  v9 = [(VSAssetBase *)self contentVersion];
-  v10 = [(VSAssetBase *)self masteredVersion];
-  v11 = [(VSAssetBase *)self compatibilityVersion];
-  v12 = [v3 stringWithFormat:@"%@:%@:%@:%@:%@:CV%@:MV%@:Compatibility%@", v4, v5, v6, v7, v8, v9, v10, v11];
+  contentVersion = [(VSAssetBase *)self contentVersion];
+  masteredVersion = [(VSAssetBase *)self masteredVersion];
+  compatibilityVersion = [(VSAssetBase *)self compatibilityVersion];
+  v12 = [v3 stringWithFormat:@"%@:%@:%@:%@:%@:CV%@:MV%@:Compatibility%@", v4, v5, v6, nameKey, v8, contentVersion, masteredVersion, compatibilityVersion];
 
   return v12;
 }
@@ -423,13 +423,13 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 - (id)voiceKey
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSArray *)self->_languages firstObject];
+  firstObject = [(NSArray *)self->_languages firstObject];
   v5 = [VSVoiceAsset typeStringFromType:self->_type];
   v6 = [VSVoiceAsset genderStringFromGender:self->_gender];
-  v7 = [(VSVoiceAsset *)self nameKey];
+  nameKey = [(VSVoiceAsset *)self nameKey];
   v8 = [VSVoiceAsset footprintStringFromFootprint:self->_footprint];
-  v9 = [(VSAssetBase *)self contentVersion];
-  v10 = [v3 stringWithFormat:@"%@:%@:%@:%@:%@:%@", v4, v5, v6, v7, v8, v9];
+  contentVersion = [(VSAssetBase *)self contentVersion];
+  v10 = [v3 stringWithFormat:@"%@:%@:%@:%@:%@:%@", firstObject, v5, v6, nameKey, v8, contentVersion];
 
   return v10;
 }
@@ -450,11 +450,11 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
   return name;
 }
 
-+ (int64_t)typeFromString:(id)a3
++ (int64_t)typeFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  v4 = [@"vocalizer" lowercaseString];
-  v5 = [v3 isEqualToString:v4];
+  lowercaseString = [string lowercaseString];
+  lowercaseString2 = [@"vocalizer" lowercaseString];
+  v5 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v5)
   {
@@ -463,8 +463,8 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 
   else
   {
-    v7 = [@"custom" lowercaseString];
-    v8 = [v3 isEqualToString:v7];
+    lowercaseString3 = [@"custom" lowercaseString];
+    v8 = [lowercaseString isEqualToString:lowercaseString3];
 
     if (v8)
     {
@@ -473,8 +473,8 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 
     else
     {
-      v9 = [@"gryphon" lowercaseString];
-      v10 = [v3 isEqualToString:v9];
+      lowercaseString4 = [@"gryphon" lowercaseString];
+      v10 = [lowercaseString isEqualToString:lowercaseString4];
 
       if (v10)
       {
@@ -483,8 +483,8 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 
       else
       {
-        v11 = [@"neural" lowercaseString];
-        v12 = [v3 isEqualToString:v11];
+        lowercaseString5 = [@"neural" lowercaseString];
+        v12 = [lowercaseString isEqualToString:lowercaseString5];
 
         if (v12)
         {
@@ -502,24 +502,24 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
   return v6;
 }
 
-+ (id)typeStringFromType:(int64_t)a3
++ (id)typeStringFromType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E4F9F0[a3];
+    return off_279E4F9F0[type];
   }
 }
 
-+ (int64_t)footprintFromString:(id)a3
++ (int64_t)footprintFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  v4 = [@"compact" lowercaseString];
-  v5 = [v3 isEqualToString:v4];
+  lowercaseString = [string lowercaseString];
+  lowercaseString2 = [@"compact" lowercaseString];
+  v5 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v5)
   {
@@ -528,8 +528,8 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 
   else
   {
-    v7 = [@"premium" lowercaseString];
-    v8 = [v3 isEqualToString:v7];
+    lowercaseString3 = [@"premium" lowercaseString];
+    v8 = [lowercaseString isEqualToString:lowercaseString3];
 
     if (v8)
     {
@@ -538,8 +538,8 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 
     else
     {
-      v9 = [@"premiumhigh" lowercaseString];
-      v10 = [v3 isEqualToString:v9];
+      lowercaseString4 = [@"premiumhigh" lowercaseString];
+      v10 = [lowercaseString isEqualToString:lowercaseString4];
 
       if (v10)
       {
@@ -548,8 +548,8 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 
       else
       {
-        v11 = [@"beta" lowercaseString];
-        v12 = [v3 isEqualToString:v11];
+        lowercaseString5 = [@"beta" lowercaseString];
+        v12 = [lowercaseString isEqualToString:lowercaseString5];
 
         v6 = v12 << 63 >> 63;
       }
@@ -559,24 +559,24 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
   return v6;
 }
 
-+ (id)footprintStringFromFootprint:(int64_t)a3
++ (id)footprintStringFromFootprint:(int64_t)footprint
 {
-  if ((a3 + 1) > 4)
+  if ((footprint + 1) > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E4F9C8[a3 + 1];
+    return off_279E4F9C8[footprint + 1];
   }
 }
 
-+ (int64_t)genderFromString:(id)a3
++ (int64_t)genderFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  v4 = [@"male" lowercaseString];
-  v5 = [v3 isEqualToString:v4];
+  lowercaseString = [string lowercaseString];
+  lowercaseString2 = [@"male" lowercaseString];
+  v5 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v5)
   {
@@ -585,8 +585,8 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 
   else
   {
-    v7 = [@"female" lowercaseString];
-    v8 = [v3 isEqualToString:v7];
+    lowercaseString3 = [@"female" lowercaseString];
+    v8 = [lowercaseString isEqualToString:lowercaseString3];
 
     if (v8)
     {
@@ -595,8 +595,8 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
 
     else
     {
-      v9 = [@"neutral" lowercaseString];
-      v10 = [v3 isEqualToString:v9];
+      lowercaseString4 = [@"neutral" lowercaseString];
+      v10 = [lowercaseString isEqualToString:lowercaseString4];
 
       if (v10)
       {
@@ -613,16 +613,16 @@ uint64_t __49__VSVoiceAsset_initWithDictionaryRepresentation___block_invoke(uint
   return v6;
 }
 
-+ (id)genderStringFromGender:(int64_t)a3
++ (id)genderStringFromGender:(int64_t)gender
 {
-  if (a3 > 3)
+  if (gender > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E4F9A8[a3];
+    return off_279E4F9A8[gender];
   }
 }
 

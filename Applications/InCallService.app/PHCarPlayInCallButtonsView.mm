@@ -1,18 +1,18 @@
 @interface PHCarPlayInCallButtonsView
-- (PHCarPlayInCallButtonsView)initWithFrame:(CGRect)a3;
-- (float)distributedFractionForUndistributedFraction:(float)a3;
-- (id)buttonForButtonType:(int)a3 createIfNecessary:(BOOL)a4 createWithHorizontalPositionFraction:(float)a5;
-- (id)existingButtonsNotInArray:(id)a3;
-- (id)keyForButtonType:(int)a3;
+- (PHCarPlayInCallButtonsView)initWithFrame:(CGRect)frame;
+- (float)distributedFractionForUndistributedFraction:(float)fraction;
+- (id)buttonForButtonType:(int)type createIfNecessary:(BOOL)necessary createWithHorizontalPositionFraction:(float)fraction;
+- (id)existingButtonsNotInArray:(id)array;
+- (id)keyForButtonType:(int)type;
 - (id)preferredFocusEnvironments;
 - (int64_t)numberOfControls;
-- (void)applyHorizontalPositioningConstraintWithFraction:(float)a3 forButton:(id)a4;
-- (void)applyHorizontalPositioningConstraintWithFraction:(float)a3 forDividerView:(id)a4;
-- (void)buttonWasTapped:(id)a3;
+- (void)applyHorizontalPositioningConstraintWithFraction:(float)fraction forButton:(id)button;
+- (void)applyHorizontalPositioningConstraintWithFraction:(float)fraction forDividerView:(id)view;
+- (void)buttonWasTapped:(id)tapped;
 - (void)dealloc;
-- (void)removeButtons:(id)a3;
-- (void)setButtonsMode:(int)a3 animated:(BOOL)a4;
-- (void)setMuted:(BOOL)a3;
+- (void)removeButtons:(id)buttons;
+- (void)setButtonsMode:(int)mode animated:(BOOL)animated;
+- (void)setMuted:(BOOL)muted;
 - (void)updateButtonsForCallModelState;
 @end
 
@@ -23,36 +23,36 @@
   v12 = [(PHCarPlayInCallButtonsView *)self buttonForButtonType:3 createIfNecessary:0 createWithHorizontalPositionFraction:0.0];
   if (v12)
   {
-    v3 = [(PHCarPlayInCallButtonsView *)self delegate];
-    [v12 setEnabled:{objc_msgSend(v3, "isAddCallAllowed")}];
+    delegate = [(PHCarPlayInCallButtonsView *)self delegate];
+    [v12 setEnabled:{objc_msgSend(delegate, "isAddCallAllowed")}];
   }
 
   v4 = [(PHCarPlayInCallButtonsView *)self buttonForButtonType:5 createIfNecessary:0 createWithHorizontalPositionFraction:0.0];
   if (v4)
   {
-    v5 = [(PHCarPlayInCallButtonsView *)self delegate];
-    [v4 setEnabled:{objc_msgSend(v5, "isMergeCallsAllowed")}];
+    delegate2 = [(PHCarPlayInCallButtonsView *)self delegate];
+    [v4 setEnabled:{objc_msgSend(delegate2, "isMergeCallsAllowed")}];
   }
 
   v6 = [(PHCarPlayInCallButtonsView *)self buttonForButtonType:6 createIfNecessary:0 createWithHorizontalPositionFraction:0.0];
   if (v6)
   {
-    v7 = [(PHCarPlayInCallButtonsView *)self delegate];
-    [v6 setEnabled:{objc_msgSend(v7, "isSwapCallsAllowed")}];
+    delegate3 = [(PHCarPlayInCallButtonsView *)self delegate];
+    [v6 setEnabled:{objc_msgSend(delegate3, "isSwapCallsAllowed")}];
   }
 
   v8 = [(PHCarPlayInCallButtonsView *)self buttonForButtonType:2 createIfNecessary:0 createWithHorizontalPositionFraction:0.0];
   if (v8)
   {
-    v9 = [(PHCarPlayInCallButtonsView *)self delegate];
-    [v8 setEnabled:{objc_msgSend(v9, "isKeypadEnabled")}];
+    delegate4 = [(PHCarPlayInCallButtonsView *)self delegate];
+    [v8 setEnabled:{objc_msgSend(delegate4, "isKeypadEnabled")}];
   }
 
   v10 = [(PHCarPlayInCallButtonsView *)self buttonForButtonType:18 createIfNecessary:0 createWithHorizontalPositionFraction:0.0];
   if (v10)
   {
-    v11 = [(PHCarPlayInCallButtonsView *)self delegate];
-    [v10 setToggledOn:{objc_msgSend(v11, "isHoldEnabled")}];
+    delegate5 = [(PHCarPlayInCallButtonsView *)self delegate];
+    [v10 setToggledOn:{objc_msgSend(delegate5, "isHoldEnabled")}];
   }
 }
 
@@ -62,8 +62,8 @@
   if (buttonsMode == 5)
   {
 LABEL_4:
-    v3 = [(PHCarPlayInCallButtonsView *)self buttonsArray];
-    v4 = [v3 objectAtIndex:0];
+    buttonsArray = [(PHCarPlayInCallButtonsView *)self buttonsArray];
+    lastObject = [buttonsArray objectAtIndex:0];
     goto LABEL_6;
   }
 
@@ -77,10 +77,10 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v3 = [(PHCarPlayInCallButtonsView *)self buttonsArray];
-  v4 = [v3 lastObject];
+  buttonsArray = [(PHCarPlayInCallButtonsView *)self buttonsArray];
+  lastObject = [buttonsArray lastObject];
 LABEL_6:
-  v5 = v4;
+  v5 = lastObject;
 
   if (v5)
   {
@@ -109,11 +109,11 @@ LABEL_9:
   [(PHCarPlayInCallButtonsView *)&v4 dealloc];
 }
 
-- (PHCarPlayInCallButtonsView)initWithFrame:(CGRect)a3
+- (PHCarPlayInCallButtonsView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = PHCarPlayInCallButtonsView;
-  v3 = [(PHCarPlayInCallButtonsView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHCarPlayInCallButtonsView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v3;
   if (v3)
   {
@@ -151,73 +151,73 @@ LABEL_9:
 
 - (int64_t)numberOfControls
 {
-  v2 = [(PHCarPlayInCallButtonsView *)self buttonsArray];
-  v3 = [v2 count];
+  buttonsArray = [(PHCarPlayInCallButtonsView *)self buttonsArray];
+  v3 = [buttonsArray count];
 
   return v3;
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v4 = [(PHCarPlayInCallButtonsView *)self buttonForButtonType:1 createIfNecessary:0 createWithHorizontalPositionFraction:0.0];
-  [v4 setToggledOn:v3];
+  [v4 setToggledOn:mutedCopy];
 }
 
-- (void)setButtonsMode:(int)a3 animated:(BOOL)a4
+- (void)setButtonsMode:(int)mode animated:(BOOL)animated
 {
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v71 = a3;
+    modeCopy = mode;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "buttonsMode: %d", buf, 8u);
   }
 
   LODWORD(v7) = 1066779279;
   [(PHCarPlayInCallButtonsView *)self setButtonDistributionScalingFactor:v7];
   v8 = 0;
-  if (a3 > 3)
+  if (mode > 3)
   {
-    if (a3 > 5)
+    if (mode > 5)
     {
-      if (a3 == 6)
+      if (mode == 6)
       {
         v8 = &off_10036AEB0;
         goto LABEL_28;
       }
 
-      if (a3 != 7)
+      if (mode != 7)
       {
         goto LABEL_28;
       }
 
-      v25 = [(PHCarPlayInCallButtonsView *)self delegate];
-      v10 = [v25 isKeypadAllowed];
+      delegate = [(PHCarPlayInCallButtonsView *)self delegate];
+      isKeypadAllowed = [delegate isKeypadAllowed];
 
       v11 = &off_10036AF10;
       v12 = &off_10036AEF8;
       goto LABEL_25;
     }
 
-    if (a3 == 4)
+    if (mode == 4)
     {
       v8 = &off_10036AE68;
       goto LABEL_28;
     }
 
     v13 = +[TUCallCenter sharedInstance];
-    v14 = [v13 isHoldAndAnswerAllowed];
+    isHoldAndAnswerAllowed = [v13 isHoldAndAnswerAllowed];
 
-    if (!v14)
+    if (!isHoldAndAnswerAllowed)
     {
-      v27 = [(PHCarPlayInCallButtonsView *)self delegate];
-      v10 = [v27 canSendMessage];
+      delegate2 = [(PHCarPlayInCallButtonsView *)self delegate];
+      isKeypadAllowed = [delegate2 canSendMessage];
 
       v11 = &off_10036AEE0;
       v12 = &off_10036AEC8;
 LABEL_25:
-      if (v10)
+      if (isKeypadAllowed)
       {
         v8 = v12;
       }
@@ -244,8 +244,8 @@ LABEL_25:
         v20 = &off_10036A4C0;
         v21 = &v69;
 LABEL_41:
-        v43 = [(PHCarPlayInCallButtonsView *)self delegate];
-        if ([v43 isSendToVoicemailAllowed])
+        delegate3 = [(PHCarPlayInCallButtonsView *)self delegate];
+        if ([delegate3 isSendToVoicemailAllowed])
         {
           v44 = 17;
         }
@@ -276,17 +276,17 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (a3 <= 1)
+  if (mode <= 1)
   {
-    if (a3)
+    if (mode)
     {
-      if (a3 != 1)
+      if (mode != 1)
       {
         goto LABEL_28;
       }
 
-      v9 = [(PHCarPlayInCallButtonsView *)self delegate];
-      v10 = [v9 isKeypadAllowed];
+      delegate4 = [(PHCarPlayInCallButtonsView *)self delegate];
+      isKeypadAllowed = [delegate4 isKeypadAllowed];
 
       v11 = &off_10036AE38;
       v12 = &off_10036AE20;
@@ -294,8 +294,8 @@ LABEL_41:
 
     else
     {
-      v26 = [(PHCarPlayInCallButtonsView *)self delegate];
-      v10 = [v26 isKeypadAllowed];
+      delegate5 = [(PHCarPlayInCallButtonsView *)self delegate];
+      isKeypadAllowed = [delegate5 isKeypadAllowed];
 
       v11 = &off_10036AE08;
       v12 = &off_10036ADF0;
@@ -304,17 +304,17 @@ LABEL_41:
     goto LABEL_25;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v8 = &off_10036AE50;
   }
 
   else
   {
-    v22 = [(PHCarPlayInCallButtonsView *)self delegate];
-    v23 = [v22 canSendMessage];
+    delegate6 = [(PHCarPlayInCallButtonsView *)self delegate];
+    canSendMessage = [delegate6 canSendMessage];
 
-    if (v23)
+    if (canSendMessage)
     {
       LODWORD(v24) = 1.25;
       [(PHCarPlayInCallButtonsView *)self setButtonDistributionScalingFactor:v24];
@@ -378,7 +378,7 @@ LABEL_28:
   v55[2] = sub_1001038DC;
   v55[3] = &unk_1003572C8;
   v56 = v29;
-  v57 = self;
+  selfCopy = self;
   v36 = v31;
   v58 = v36;
   v37 = v30;
@@ -389,107 +389,107 @@ LABEL_28:
   v48 = 3221225472;
   v49 = sub_100103BFC;
   v50 = &unk_1003597E0;
-  v54 = a3;
-  v51 = self;
+  modeCopy2 = mode;
+  selfCopy2 = self;
   v52 = v36;
   v53 = v37;
   v40 = v37;
   v41 = v36;
   v42 = objc_retainBlock(&v47);
-  [UIView animateWithDuration:v39 animations:v42 completion:0.349999994, v47, v48, v49, v50, v51];
+  [UIView animateWithDuration:v39 animations:v42 completion:0.349999994, v47, v48, v49, v50, selfCopy2];
   [(PHCarPlayInCallButtonsView *)self updateButtonsForCallModelState];
-  self->_buttonsMode = a3;
+  self->_buttonsMode = mode;
 }
 
-- (void)removeButtons:(id)a3
+- (void)removeButtons:(id)buttons
 {
-  v13 = a3;
-  v4 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
-  v5 = [v4 keyEnumerator];
+  buttonsCopy = buttons;
+  buttonsDictionary = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
+  keyEnumerator = [buttonsDictionary keyEnumerator];
 
   v6 = +[NSMutableArray array];
-  v7 = [v5 nextObject];
-  if (v7)
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    v8 = nextObject;
     do
     {
-      v9 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
-      v10 = [v9 objectForKey:v8];
+      buttonsDictionary2 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
+      v10 = [buttonsDictionary2 objectForKey:v8];
 
-      if ([v13 containsObject:v10])
+      if ([buttonsCopy containsObject:v10])
       {
         [v10 removeFromSuperview];
         [v6 addObject:v8];
       }
 
-      v11 = [v5 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v8 = v11;
+      v8 = nextObject2;
     }
 
-    while (v11);
+    while (nextObject2);
   }
 
-  v12 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
-  [v12 removeObjectsForKeys:v6];
+  buttonsDictionary3 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
+  [buttonsDictionary3 removeObjectsForKeys:v6];
 }
 
-- (void)applyHorizontalPositioningConstraintWithFraction:(float)a3 forButton:(id)a4
+- (void)applyHorizontalPositioningConstraintWithFraction:(float)fraction forButton:(id)button
 {
-  v11 = a4;
-  v6 = [v11 horizontalPositioningConstraint];
+  buttonCopy = button;
+  horizontalPositioningConstraint = [buttonCopy horizontalPositioningConstraint];
 
-  if (v6)
+  if (horizontalPositioningConstraint)
   {
-    v8 = [v11 horizontalPositioningConstraint];
-    [(PHCarPlayInCallButtonsView *)self removeConstraint:v8];
+    horizontalPositioningConstraint2 = [buttonCopy horizontalPositioningConstraint];
+    [(PHCarPlayInCallButtonsView *)self removeConstraint:horizontalPositioningConstraint2];
   }
 
-  *&v7 = a3;
+  *&v7 = fraction;
   [(PHCarPlayInCallButtonsView *)self distributedFractionForUndistributedFraction:v7];
-  v10 = [NSLayoutConstraint constraintWithItem:v11 attribute:9 relatedBy:0 toItem:self attribute:2 multiplier:v9 constant:0.0];
+  v10 = [NSLayoutConstraint constraintWithItem:buttonCopy attribute:9 relatedBy:0 toItem:self attribute:2 multiplier:v9 constant:0.0];
   [(PHCarPlayInCallButtonsView *)self addConstraint:v10];
-  [v11 setHorizontalPositioningConstraint:v10];
+  [buttonCopy setHorizontalPositioningConstraint:v10];
 }
 
-- (void)applyHorizontalPositioningConstraintWithFraction:(float)a3 forDividerView:(id)a4
+- (void)applyHorizontalPositioningConstraintWithFraction:(float)fraction forDividerView:(id)view
 {
-  v11 = a4;
-  v6 = [v11 horizontalPositioningConstraint];
+  viewCopy = view;
+  horizontalPositioningConstraint = [viewCopy horizontalPositioningConstraint];
 
-  if (v6)
+  if (horizontalPositioningConstraint)
   {
-    v8 = [v11 horizontalPositioningConstraint];
-    [(PHCarPlayInCallButtonsView *)self removeConstraint:v8];
+    horizontalPositioningConstraint2 = [viewCopy horizontalPositioningConstraint];
+    [(PHCarPlayInCallButtonsView *)self removeConstraint:horizontalPositioningConstraint2];
   }
 
-  *&v7 = a3;
+  *&v7 = fraction;
   [(PHCarPlayInCallButtonsView *)self distributedFractionForUndistributedFraction:v7];
-  v10 = [NSLayoutConstraint constraintWithItem:v11 attribute:9 relatedBy:0 toItem:self attribute:2 multiplier:v9 constant:0.0];
+  v10 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:9 relatedBy:0 toItem:self attribute:2 multiplier:v9 constant:0.0];
   [(PHCarPlayInCallButtonsView *)self addConstraint:v10];
-  [v11 setHorizontalPositioningConstraint:v10];
+  [viewCopy setHorizontalPositioningConstraint:v10];
 }
 
-- (float)distributedFractionForUndistributedFraction:(float)a3
+- (float)distributedFractionForUndistributedFraction:(float)fraction
 {
-  v3 = a3 + -0.5;
+  v3 = fraction + -0.5;
   [(PHCarPlayInCallButtonsView *)self buttonDistributionScalingFactor];
   return (v3 * v4) + 0.5;
 }
 
-- (id)buttonForButtonType:(int)a3 createIfNecessary:(BOOL)a4 createWithHorizontalPositionFraction:(float)a5
+- (id)buttonForButtonType:(int)type createIfNecessary:(BOOL)necessary createWithHorizontalPositionFraction:(float)fraction
 {
-  v6 = a4;
-  v7 = *&a3;
-  v9 = [(PHCarPlayInCallButtonsView *)self delegate];
-  v10 = [v9 currentCallState];
+  necessaryCopy = necessary;
+  v7 = *&type;
+  delegate = [(PHCarPlayInCallButtonsView *)self delegate];
+  currentCallState = [delegate currentCallState];
 
   v11 = [(PHCarPlayInCallButtonsView *)self keyForButtonType:v7];
-  v12 = [NSString stringWithFormat:@"%@%ld", v11, v10];
+  v12 = [NSString stringWithFormat:@"%@%ld", v11, currentCallState];
 
-  v13 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
-  v14 = [v13 objectForKeyedSubscript:v12];
+  buttonsDictionary = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
+  v14 = [buttonsDictionary objectForKeyedSubscript:v12];
 
   if (v14)
   {
@@ -498,14 +498,14 @@ LABEL_28:
 
   else
   {
-    v15 = !v6;
+    v15 = !necessaryCopy;
   }
 
   if (!v15)
   {
     v16 = [PHCarPlayInCallButton alloc];
-    v17 = [(PHCarPlayInCallButtonsView *)self delegate];
-    v14 = -[PHCarPlayInCallButton initForButtonType:callState:](v16, "initForButtonType:callState:", v7, [v17 currentCallState]);
+    delegate2 = [(PHCarPlayInCallButtonsView *)self delegate];
+    v14 = -[PHCarPlayInCallButton initForButtonType:callState:](v16, "initForButtonType:callState:", v7, [delegate2 currentCallState]);
 
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v14 addTarget:self action:"buttonWasTapped:" forControlEvents:64];
@@ -517,52 +517,52 @@ LABEL_28:
     LODWORD(v20) = 1148846080;
     v21 = [NSLayoutConstraint constraintWithItem:v14 attribute:12 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:58.0 priority:v20];
     [(PHCarPlayInCallButtonsView *)self addConstraint:v21];
-    *&v22 = a5;
+    *&v22 = fraction;
     [(PHCarPlayInCallButtonsView *)self applyHorizontalPositioningConstraintWithFraction:v14 forButton:v22];
     [v14 setAlpha:0.0];
-    v23 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
-    [v23 setObject:v14 forKeyedSubscript:v12];
+    buttonsDictionary2 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
+    [buttonsDictionary2 setObject:v14 forKeyedSubscript:v12];
 
     if (v7 == 1)
     {
-      v24 = [(PHCarPlayInCallButtonsView *)self delegate];
-      -[PHCarPlayInCallButtonsView setMuted:](self, "setMuted:", [v24 isMuted]);
+      delegate3 = [(PHCarPlayInCallButtonsView *)self delegate];
+      -[PHCarPlayInCallButtonsView setMuted:](self, "setMuted:", [delegate3 isMuted]);
     }
   }
 
   return v14;
 }
 
-- (id)existingButtonsNotInArray:(id)a3
+- (id)existingButtonsNotInArray:(id)array
 {
-  v4 = a3;
-  v5 = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
-  v6 = [v5 allValues];
-  v7 = [v6 mutableCopy];
+  arrayCopy = array;
+  buttonsDictionary = [(PHCarPlayInCallButtonsView *)self buttonsDictionary];
+  allValues = [buttonsDictionary allValues];
+  v7 = [allValues mutableCopy];
 
-  [v7 removeObjectsInArray:v4];
+  [v7 removeObjectsInArray:arrayCopy];
 
   return v7;
 }
 
-- (id)keyForButtonType:(int)a3
+- (id)keyForButtonType:(int)type
 {
-  if (a3 > 0x13)
+  if (type > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return off_100359800[a3];
+    return off_100359800[type];
   }
 }
 
-- (void)buttonWasTapped:(id)a3
+- (void)buttonWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(PHCarPlayInCallButtonsView *)self delegate];
-  [v5 inCallButtonWasTapped:v4];
+  tappedCopy = tapped;
+  delegate = [(PHCarPlayInCallButtonsView *)self delegate];
+  [delegate inCallButtonWasTapped:tappedCopy];
 }
 
 @end

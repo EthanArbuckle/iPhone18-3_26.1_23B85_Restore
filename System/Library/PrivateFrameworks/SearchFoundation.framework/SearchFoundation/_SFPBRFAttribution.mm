@@ -1,94 +1,94 @@
 @interface _SFPBRFAttribution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFAttribution)initWithDictionary:(id)a3;
-- (_SFPBRFAttribution)initWithFacade:(id)a3;
-- (_SFPBRFAttribution)initWithJSON:(id)a3;
+- (_SFPBRFAttribution)initWithDictionary:(id)dictionary;
+- (_SFPBRFAttribution)initWithFacade:(id)facade;
+- (_SFPBRFAttribution)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setLocale:(id)a3;
-- (void)setLocalized_index:(id)a3;
-- (void)setLocalized_separator:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLocale:(id)locale;
+- (void)setLocalized_index:(id)localized_index;
+- (void)setLocalized_separator:(id)localized_separator;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFAttribution
 
-- (_SFPBRFAttribution)initWithFacade:(id)a3
+- (_SFPBRFAttribution)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFAttribution *)self init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v6)
+    if (title)
     {
       v7 = [_SFPBRFTextProperty alloc];
-      v8 = [v4 title];
-      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:v8];
+      title2 = [facadeCopy title];
+      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:title2];
       [(_SFPBRFAttribution *)v5 setTitle:v9];
     }
 
-    v10 = [v4 subtitle];
+    subtitle = [facadeCopy subtitle];
 
-    if (v10)
+    if (subtitle)
     {
       v11 = [_SFPBRFTextProperty alloc];
-      v12 = [v4 subtitle];
-      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:v12];
+      subtitle2 = [facadeCopy subtitle];
+      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:subtitle2];
       [(_SFPBRFAttribution *)v5 setSubtitle:v13];
     }
 
-    v14 = [v4 image];
+    image = [facadeCopy image];
 
-    if (v14)
+    if (image)
     {
       v15 = [_SFPBRFVisualProperty alloc];
-      v16 = [v4 image];
-      v17 = [(_SFPBRFVisualProperty *)v15 initWithFacade:v16];
+      image2 = [facadeCopy image];
+      v17 = [(_SFPBRFVisualProperty *)v15 initWithFacade:image2];
       [(_SFPBRFAttribution *)v5 setImage:v17];
     }
 
-    v18 = [v4 index];
+    index = [facadeCopy index];
 
-    if (v18)
+    if (index)
     {
-      v19 = [v4 index];
-      -[_SFPBRFAttribution setIndex:](v5, "setIndex:", [v19 intValue]);
+      index2 = [facadeCopy index];
+      -[_SFPBRFAttribution setIndex:](v5, "setIndex:", [index2 intValue]);
     }
 
-    v20 = [v4 localized_index];
+    localized_index = [facadeCopy localized_index];
 
-    if (v20)
+    if (localized_index)
     {
-      v21 = [v4 localized_index];
-      [(_SFPBRFAttribution *)v5 setLocalized_index:v21];
+      localized_index2 = [facadeCopy localized_index];
+      [(_SFPBRFAttribution *)v5 setLocalized_index:localized_index2];
     }
 
-    v22 = [v4 localized_separator];
+    localized_separator = [facadeCopy localized_separator];
 
-    if (v22)
+    if (localized_separator)
     {
-      v23 = [v4 localized_separator];
-      [(_SFPBRFAttribution *)v5 setLocalized_separator:v23];
+      localized_separator2 = [facadeCopy localized_separator];
+      [(_SFPBRFAttribution *)v5 setLocalized_separator:localized_separator2];
     }
 
-    v24 = [v4 locale];
+    locale = [facadeCopy locale];
 
-    if (v24)
+    if (locale)
     {
-      v25 = [v4 locale];
-      [(_SFPBRFAttribution *)v5 setLocale:v25];
+      locale2 = [facadeCopy locale];
+      [(_SFPBRFAttribution *)v5 setLocale:locale2];
     }
 
-    v26 = [v4 commandReference];
+    commandReference = [facadeCopy commandReference];
 
-    if (v26)
+    if (commandReference)
     {
       v27 = [_SFPBCommandReference alloc];
-      v28 = [v4 commandReference];
-      v29 = [(_SFPBCommandReference *)v27 initWithFacade:v28];
+      commandReference2 = [facadeCopy commandReference];
+      v29 = [(_SFPBCommandReference *)v27 initWithFacade:commandReference2];
       [(_SFPBRFAttribution *)v5 setCommandReference:v29];
     }
 
@@ -98,15 +98,15 @@
   return v5;
 }
 
-- (_SFPBRFAttribution)initWithDictionary:(id)a3
+- (_SFPBRFAttribution)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = _SFPBRFAttribution;
   v5 = [(_SFPBRFAttribution *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,7 +115,7 @@
     }
 
     v23 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"subtitle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,7 +123,7 @@
       [(_SFPBRFAttribution *)v5 setSubtitle:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"image"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"image"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,14 +131,14 @@
       [(_SFPBRFAttribution *)v5 setImage:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"index"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFAttribution setIndex:](v5, "setIndex:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"localizedIndex"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"localizedIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,7 +146,7 @@
       [(_SFPBRFAttribution *)v5 setLocalized_index:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"localizedSeparator"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"localizedSeparator"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,7 +154,7 @@
       [(_SFPBRFAttribution *)v5 setLocalized_separator:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"locale"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -162,7 +162,7 @@
       [(_SFPBRFAttribution *)v5 setLocale:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"commandReference"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"commandReference"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -176,30 +176,30 @@
   return v5;
 }
 
-- (_SFPBRFAttribution)initWithJSON:(id)a3
+- (_SFPBRFAttribution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFAttribution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFAttribution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFAttribution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -212,99 +212,99 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_commandReference)
   {
-    v4 = [(_SFPBRFAttribution *)self commandReference];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    commandReference = [(_SFPBRFAttribution *)self commandReference];
+    dictionaryRepresentation = [commandReference dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"commandReference"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"commandReference"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"commandReference"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"commandReference"];
     }
   }
 
   if (self->_image)
   {
-    v7 = [(_SFPBRFAttribution *)self image];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    image = [(_SFPBRFAttribution *)self image];
+    dictionaryRepresentation2 = [image dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"image"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"image"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"image"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"image"];
     }
   }
 
   if (self->_index)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBRFAttribution index](self, "index")}];
-    [v3 setObject:v10 forKeyedSubscript:@"index"];
+    [dictionary setObject:v10 forKeyedSubscript:@"index"];
   }
 
   if (self->_locale)
   {
-    v11 = [(_SFPBRFAttribution *)self locale];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"locale"];
+    locale = [(_SFPBRFAttribution *)self locale];
+    v12 = [locale copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"locale"];
   }
 
   if (self->_localized_index)
   {
-    v13 = [(_SFPBRFAttribution *)self localized_index];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"localizedIndex"];
+    localized_index = [(_SFPBRFAttribution *)self localized_index];
+    v14 = [localized_index copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"localizedIndex"];
   }
 
   if (self->_localized_separator)
   {
-    v15 = [(_SFPBRFAttribution *)self localized_separator];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"localizedSeparator"];
+    localized_separator = [(_SFPBRFAttribution *)self localized_separator];
+    v16 = [localized_separator copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"localizedSeparator"];
   }
 
   if (self->_subtitle)
   {
-    v17 = [(_SFPBRFAttribution *)self subtitle];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    subtitle = [(_SFPBRFAttribution *)self subtitle];
+    dictionaryRepresentation3 = [subtitle dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"subtitle"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"subtitle"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"subtitle"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"subtitle"];
     }
   }
 
   if (self->_title)
   {
-    v20 = [(_SFPBRFAttribution *)self title];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    title = [(_SFPBRFAttribution *)self title];
+    dictionaryRepresentation4 = [title dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"title"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"title"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"title"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"title"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -319,28 +319,28 @@
   return v8 ^ v9 ^ [(_SFPBCommandReference *)self->_commandReference hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
-  v5 = [(_SFPBRFAttribution *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBRFAttribution *)self title];
+  title2 = [equalCopy title];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_37;
   }
 
-  v7 = [(_SFPBRFAttribution *)self title];
-  if (v7)
+  title3 = [(_SFPBRFAttribution *)self title];
+  if (title3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFAttribution *)self title];
-    v10 = [v4 title];
-    v11 = [v9 isEqual:v10];
+    v8 = title3;
+    title4 = [(_SFPBRFAttribution *)self title];
+    title5 = [equalCopy title];
+    v11 = [title4 isEqual:title5];
 
     if (!v11)
     {
@@ -352,20 +352,20 @@
   {
   }
 
-  v5 = [(_SFPBRFAttribution *)self subtitle];
-  v6 = [v4 subtitle];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBRFAttribution *)self subtitle];
+  title2 = [equalCopy subtitle];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_37;
   }
 
-  v12 = [(_SFPBRFAttribution *)self subtitle];
-  if (v12)
+  subtitle = [(_SFPBRFAttribution *)self subtitle];
+  if (subtitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFAttribution *)self subtitle];
-    v15 = [v4 subtitle];
-    v16 = [v14 isEqual:v15];
+    v13 = subtitle;
+    subtitle2 = [(_SFPBRFAttribution *)self subtitle];
+    subtitle3 = [equalCopy subtitle];
+    v16 = [subtitle2 isEqual:subtitle3];
 
     if (!v16)
     {
@@ -377,20 +377,20 @@
   {
   }
 
-  v5 = [(_SFPBRFAttribution *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBRFAttribution *)self image];
+  title2 = [equalCopy image];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_37;
   }
 
-  v17 = [(_SFPBRFAttribution *)self image];
-  if (v17)
+  image = [(_SFPBRFAttribution *)self image];
+  if (image)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFAttribution *)self image];
-    v20 = [v4 image];
-    v21 = [v19 isEqual:v20];
+    v18 = image;
+    image2 = [(_SFPBRFAttribution *)self image];
+    image3 = [equalCopy image];
+    v21 = [image2 isEqual:image3];
 
     if (!v21)
     {
@@ -403,25 +403,25 @@
   }
 
   index = self->_index;
-  if (index != [v4 index])
+  if (index != [equalCopy index])
   {
     goto LABEL_38;
   }
 
-  v5 = [(_SFPBRFAttribution *)self localized_index];
-  v6 = [v4 localized_index];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBRFAttribution *)self localized_index];
+  title2 = [equalCopy localized_index];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_37;
   }
 
-  v23 = [(_SFPBRFAttribution *)self localized_index];
-  if (v23)
+  localized_index = [(_SFPBRFAttribution *)self localized_index];
+  if (localized_index)
   {
-    v24 = v23;
-    v25 = [(_SFPBRFAttribution *)self localized_index];
-    v26 = [v4 localized_index];
-    v27 = [v25 isEqual:v26];
+    v24 = localized_index;
+    localized_index2 = [(_SFPBRFAttribution *)self localized_index];
+    localized_index3 = [equalCopy localized_index];
+    v27 = [localized_index2 isEqual:localized_index3];
 
     if (!v27)
     {
@@ -433,20 +433,20 @@
   {
   }
 
-  v5 = [(_SFPBRFAttribution *)self localized_separator];
-  v6 = [v4 localized_separator];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBRFAttribution *)self localized_separator];
+  title2 = [equalCopy localized_separator];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_37;
   }
 
-  v28 = [(_SFPBRFAttribution *)self localized_separator];
-  if (v28)
+  localized_separator = [(_SFPBRFAttribution *)self localized_separator];
+  if (localized_separator)
   {
-    v29 = v28;
-    v30 = [(_SFPBRFAttribution *)self localized_separator];
-    v31 = [v4 localized_separator];
-    v32 = [v30 isEqual:v31];
+    v29 = localized_separator;
+    localized_separator2 = [(_SFPBRFAttribution *)self localized_separator];
+    localized_separator3 = [equalCopy localized_separator];
+    v32 = [localized_separator2 isEqual:localized_separator3];
 
     if (!v32)
     {
@@ -458,20 +458,20 @@
   {
   }
 
-  v5 = [(_SFPBRFAttribution *)self locale];
-  v6 = [v4 locale];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBRFAttribution *)self locale];
+  title2 = [equalCopy locale];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_37;
   }
 
-  v33 = [(_SFPBRFAttribution *)self locale];
-  if (v33)
+  locale = [(_SFPBRFAttribution *)self locale];
+  if (locale)
   {
-    v34 = v33;
-    v35 = [(_SFPBRFAttribution *)self locale];
-    v36 = [v4 locale];
-    v37 = [v35 isEqual:v36];
+    v34 = locale;
+    locale2 = [(_SFPBRFAttribution *)self locale];
+    locale3 = [equalCopy locale];
+    v37 = [locale2 isEqual:locale3];
 
     if (!v37)
     {
@@ -483,17 +483,17 @@
   {
   }
 
-  v5 = [(_SFPBRFAttribution *)self commandReference];
-  v6 = [v4 commandReference];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBRFAttribution *)self commandReference];
+  title2 = [equalCopy commandReference];
+  if ((title != 0) == (title2 == 0))
   {
 LABEL_37:
 
     goto LABEL_38;
   }
 
-  v38 = [(_SFPBRFAttribution *)self commandReference];
-  if (!v38)
+  commandReference = [(_SFPBRFAttribution *)self commandReference];
+  if (!commandReference)
   {
 
 LABEL_41:
@@ -501,10 +501,10 @@ LABEL_41:
     goto LABEL_39;
   }
 
-  v39 = v38;
-  v40 = [(_SFPBRFAttribution *)self commandReference];
-  v41 = [v4 commandReference];
-  v42 = [v40 isEqual:v41];
+  v39 = commandReference;
+  commandReference2 = [(_SFPBRFAttribution *)self commandReference];
+  commandReference3 = [equalCopy commandReference];
+  v42 = [commandReference2 isEqual:commandReference3];
 
   if (v42)
   {
@@ -518,23 +518,23 @@ LABEL_39:
   return v43;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_SFPBRFAttribution *)self title];
-  if (v4)
+  toCopy = to;
+  title = [(_SFPBRFAttribution *)self title];
+  if (title)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFAttribution *)self subtitle];
-  if (v5)
+  subtitle = [(_SFPBRFAttribution *)self subtitle];
+  if (subtitle)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFAttribution *)self image];
-  if (v6)
+  image = [(_SFPBRFAttribution *)self image];
+  if (image)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -544,52 +544,52 @@ LABEL_39:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_SFPBRFAttribution *)self localized_index];
-  if (v7)
+  localized_index = [(_SFPBRFAttribution *)self localized_index];
+  if (localized_index)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBRFAttribution *)self localized_separator];
-  if (v8)
+  localized_separator = [(_SFPBRFAttribution *)self localized_separator];
+  if (localized_separator)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_SFPBRFAttribution *)self locale];
-  if (v9)
+  locale = [(_SFPBRFAttribution *)self locale];
+  if (locale)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_SFPBRFAttribution *)self commandReference];
-  if (v10)
+  commandReference = [(_SFPBRFAttribution *)self commandReference];
+  if (commandReference)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v4 = [a3 copy];
+  v4 = [locale copy];
   locale = self->_locale;
   self->_locale = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setLocalized_separator:(id)a3
+- (void)setLocalized_separator:(id)localized_separator
 {
-  v4 = [a3 copy];
+  v4 = [localized_separator copy];
   localized_separator = self->_localized_separator;
   self->_localized_separator = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setLocalized_index:(id)a3
+- (void)setLocalized_index:(id)localized_index
 {
-  v4 = [a3 copy];
+  v4 = [localized_index copy];
   localized_index = self->_localized_index;
   self->_localized_index = v4;
 

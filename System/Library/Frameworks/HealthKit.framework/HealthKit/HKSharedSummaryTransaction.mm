@@ -1,33 +1,33 @@
 @interface HKSharedSummaryTransaction
-- (BOOL)isEqual:(id)a3;
-- (HKSharedSummaryTransaction)initWithCoder:(id)a3;
-- (HKSharedSummaryTransaction)initWithUUID:(id)a3 sourceDeviceIdentifier:(id)a4 metadata:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HKSharedSummaryTransaction)initWithCoder:(id)coder;
+- (HKSharedSummaryTransaction)initWithUUID:(id)d sourceDeviceIdentifier:(id)identifier metadata:(id)metadata;
 - (id)description;
-- (void)_setCreationDate:(id)a3;
-- (void)_setSourceDeviceIdentifier:(id)a3;
-- (void)addMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setCreationDate:(id)date;
+- (void)_setSourceDeviceIdentifier:(id)identifier;
+- (void)addMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSharedSummaryTransaction
 
-- (HKSharedSummaryTransaction)initWithUUID:(id)a3 sourceDeviceIdentifier:(id)a4 metadata:(id)a5
+- (HKSharedSummaryTransaction)initWithUUID:(id)d sourceDeviceIdentifier:(id)identifier metadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
   v19.receiver = self;
   v19.super_class = HKSharedSummaryTransaction;
   v12 = [(HKSharedSummaryTransaction *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_UUID, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_UUID, d);
+    v14 = [identifierCopy copy];
     sourceDeviceIdentifier = v13->_sourceDeviceIdentifier;
     v13->_sourceDeviceIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [metadataCopy copy];
     metadata = v13->_metadata;
     v13->_metadata = v16;
   }
@@ -35,29 +35,29 @@
   return v13;
 }
 
-- (void)addMetadata:(id)a3
+- (void)addMetadata:(id)metadata
 {
   metadata = self->_metadata;
-  v5 = a3;
+  metadataCopy = metadata;
   v6 = [(NSDictionary *)metadata mutableCopy];
-  [(NSDictionary *)v6 addEntriesFromDictionary:v5];
+  [(NSDictionary *)v6 addEntriesFromDictionary:metadataCopy];
 
   v7 = self->_metadata;
   self->_metadata = v6;
 }
 
-- (void)_setSourceDeviceIdentifier:(id)a3
+- (void)_setSourceDeviceIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   sourceDeviceIdentifier = self->_sourceDeviceIdentifier;
   self->_sourceDeviceIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, sourceDeviceIdentifier);
 }
 
-- (void)_setCreationDate:(id)a3
+- (void)_setCreationDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   creationDate = self->_creationDate;
   self->_creationDate = v4;
 
@@ -104,10 +104,10 @@ uint64_t __41__HKSharedSummaryTransaction_description__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -118,8 +118,8 @@ uint64_t __41__HKSharedSummaryTransaction_description__block_invoke()
     if (objc_opt_isKindOfClass())
     {
       UUID = self->_UUID;
-      v6 = [(HKSharedSummaryTransaction *)v4 UUID];
-      v7 = [(NSUUID *)UUID isEqual:v6];
+      uUID = [(HKSharedSummaryTransaction *)equalCopy UUID];
+      v7 = [(NSUUID *)UUID isEqual:uUID];
     }
 
     else
@@ -131,23 +131,23 @@ uint64_t __41__HKSharedSummaryTransaction_description__block_invoke()
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_sourceDeviceIdentifier forKey:@"SourceDeviceIdentifier"];
-  [v5 encodeObject:self->_creationDate forKey:@"CreationDate"];
-  [v5 encodeObject:self->_metadata forKey:@"Metadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_sourceDeviceIdentifier forKey:@"SourceDeviceIdentifier"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"CreationDate"];
+  [coderCopy encodeObject:self->_metadata forKey:@"Metadata"];
 }
 
-- (HKSharedSummaryTransaction)initWithCoder:(id)a3
+- (HKSharedSummaryTransaction)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceDeviceIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceDeviceIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
   v8 = MEMORY[0x1E695DFD8];
   v16 = objc_opt_class();
   v17 = objc_opt_class();
@@ -157,7 +157,7 @@ uint64_t __41__HKSharedSummaryTransaction_description__block_invoke()
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:5];
   v10 = [v8 setWithArray:{v9, v16, v17, v18, v19}];
 
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Metadata"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Metadata"];
 
   v12 = [(HKSharedSummaryTransaction *)self initWithUUID:v5 sourceDeviceIdentifier:v6 metadata:v11];
   v13 = v12;

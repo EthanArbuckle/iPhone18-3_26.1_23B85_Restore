@@ -1,18 +1,18 @@
 @interface GAXAFSiriActivationListenerOverride
-- (void)_activateWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5;
+- (void)_activateWithRequestInfo:(id)info context:(id)context completion:(id)completion;
 @end
 
 @implementation GAXAFSiriActivationListenerOverride
 
-- (void)_activateWithRequestInfo:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_activateWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v12 = +[GAXSpringboard sharedInstance];
-  v13 = [v12 isActive];
+  isActive = [v12 isActive];
 
-  if (!v13)
+  if (!isActive)
   {
     goto LABEL_10;
   }
@@ -29,13 +29,13 @@
   v29 = buf;
   v30 = 0x2020000000;
   v31 = 0;
-  if (v11)
+  if (completionCopy)
   {
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_14B80;
     v24 = &unk_2CCB8;
-    v26 = v11;
+    v26 = completionCopy;
     v16 = v15;
     v25 = v16;
     v27 = buf;
@@ -64,7 +64,7 @@
 LABEL_10:
     v20.receiver = self;
     v20.super_class = GAXAFSiriActivationListenerOverride;
-    [(GAXAFSiriActivationListenerOverride *)&v20 _activateWithRequestInfo:v9 context:v10 completion:v11];
+    [(GAXAFSiriActivationListenerOverride *)&v20 _activateWithRequestInfo:infoCopy context:contextCopy completion:completionCopy];
   }
 
 LABEL_11:

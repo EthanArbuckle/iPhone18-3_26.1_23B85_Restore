@@ -1,32 +1,32 @@
 @interface SUUILockupMetadataView
-+ (double)maximumHeightWithVisibleFields:(unint64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUILockupMetadataView)initWithFrame:(CGRect)a3;
++ (double)maximumHeightWithVisibleFields:(unint64_t)fields;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUILockupMetadataView)initWithFrame:(CGRect)frame;
 - (id)_decimalNumberFormatter;
 - (id)_newDefaultLabel;
 - (void)_reloadUserRatingViews;
-- (void)drawRect:(CGRect)a3;
-- (void)setArtistName:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCategoryString:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setEditorialBadgeString:(id)a3;
-- (void)setItemCountString:(id)a3;
-- (void)setItemOfferString:(id)a3;
-- (void)setNumberOfUserRatings:(int64_t)a3;
-- (void)setReleaseDateString:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserRating:(float)a3;
-- (void)setVisibleFields:(unint64_t)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setArtistName:(id)name;
+- (void)setBackgroundColor:(id)color;
+- (void)setCategoryString:(id)string;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setEditorialBadgeString:(id)string;
+- (void)setItemCountString:(id)string;
+- (void)setItemOfferString:(id)string;
+- (void)setNumberOfUserRatings:(int64_t)ratings;
+- (void)setReleaseDateString:(id)string;
+- (void)setTitle:(id)title;
+- (void)setUserRating:(float)rating;
+- (void)setVisibleFields:(unint64_t)fields;
 @end
 
 @implementation SUUILockupMetadataView
 
-- (SUUILockupMetadataView)initWithFrame:(CGRect)a3
+- (SUUILockupMetadataView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SUUILockupMetadataView;
-  v3 = [(SUUILockupMetadataView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUILockupMetadataView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,40 +36,40 @@
   return v4;
 }
 
-+ (double)maximumHeightWithVisibleFields:(unint64_t)a3
++ (double)maximumHeightWithVisibleFields:(unint64_t)fields
 {
   result = 37.0;
-  if ((a3 & 0x10) == 0)
+  if ((fields & 0x10) == 0)
   {
     result = 0.0;
   }
 
-  if ((a3 & 8) != 0)
+  if ((fields & 8) != 0)
   {
     result = result + 15.0;
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((fields & 0x80) != 0)
   {
     result = result + 15.0;
   }
 
-  if (a3)
+  if (fields)
   {
     result = result + 15.0;
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((fields & 0x20) != 0)
   {
     result = result + 15.0;
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((fields & 0x100) != 0)
   {
     result = result + 15.0;
   }
 
-  v4 = (a3 & 1) + ((a3 & 0x80) >> 7) + ((a3 & 8) >> 3) + ((a3 & 0x20) >> 5) + ((a3 & 0x100) >> 8);
+  v4 = (fields & 1) + ((fields & 0x80) >> 7) + ((fields & 8) >> 3) + ((fields & 0x20) >> 5) + ((fields & 0x100) >> 8);
   v5 = v4 > 1;
   v6 = v4 - 1;
   if (v5)
@@ -77,7 +77,7 @@
     result = result + v6;
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((fields & 0x40) != 0)
   {
     return result + 14.0;
   }
@@ -85,20 +85,20 @@
   return result;
 }
 
-- (void)setArtistName:(id)a3
+- (void)setArtistName:(id)name
 {
-  v8 = a3;
-  v4 = [(UILabel *)self->_artistNameLabel text];
-  if (v4 != v8 && ([v4 isEqualToString:v8] & 1) == 0)
+  nameCopy = name;
+  text = [(UILabel *)self->_artistNameLabel text];
+  if (text != nameCopy && ([text isEqualToString:nameCopy] & 1) == 0)
   {
     artistNameLabel = self->_artistNameLabel;
-    if (v8)
+    if (nameCopy)
     {
       if (!artistNameLabel)
       {
-        v6 = [(SUUILockupMetadataView *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupMetadataView *)self _newDefaultLabel];
         v7 = self->_artistNameLabel;
-        self->_artistNameLabel = v6;
+        self->_artistNameLabel = _newDefaultLabel;
 
         artistNameLabel = self->_artistNameLabel;
       }
@@ -116,14 +116,14 @@
   }
 }
 
-- (void)setEditorialBadgeString:(id)a3
+- (void)setEditorialBadgeString:(id)string
 {
-  v13 = a3;
-  v4 = [(SUUIBadgeLabel *)self->_editorialBadgeLabel text];
-  if (v4 != v13 && ([v4 isEqualToString:v13] & 1) == 0)
+  stringCopy = string;
+  text = [(SUUIBadgeLabel *)self->_editorialBadgeLabel text];
+  if (text != stringCopy && ([text isEqualToString:stringCopy] & 1) == 0)
   {
     editorialBadgeLabel = self->_editorialBadgeLabel;
-    if (v13)
+    if (stringCopy)
     {
       if (!editorialBadgeLabel)
       {
@@ -132,10 +132,10 @@
         self->_editorialBadgeLabel = v6;
 
         v8 = self->_editorialBadgeLabel;
-        v9 = [(SUUILockupMetadataView *)self backgroundColor];
-        if (v9)
+        backgroundColor = [(SUUILockupMetadataView *)self backgroundColor];
+        if (backgroundColor)
         {
-          [(SUUIBadgeLabel *)v8 setTextColor:v9];
+          [(SUUIBadgeLabel *)v8 setTextColor:backgroundColor];
         }
 
         else
@@ -170,20 +170,20 @@
   }
 }
 
-- (void)setCategoryString:(id)a3
+- (void)setCategoryString:(id)string
 {
-  v8 = a3;
-  v4 = [(UILabel *)self->_categoryLabel text];
-  if (v4 != v8 && ([v4 isEqualToString:v8] & 1) == 0)
+  stringCopy = string;
+  text = [(UILabel *)self->_categoryLabel text];
+  if (text != stringCopy && ([text isEqualToString:stringCopy] & 1) == 0)
   {
     categoryLabel = self->_categoryLabel;
-    if (v8)
+    if (stringCopy)
     {
       if (!categoryLabel)
       {
-        v6 = [(SUUILockupMetadataView *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupMetadataView *)self _newDefaultLabel];
         v7 = self->_categoryLabel;
-        self->_categoryLabel = v6;
+        self->_categoryLabel = _newDefaultLabel;
 
         categoryLabel = self->_categoryLabel;
       }
@@ -201,14 +201,14 @@
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v18 = a3;
-  v4 = [v18 primaryTextColor];
+  schemeCopy = scheme;
+  primaryTextColor = [schemeCopy primaryTextColor];
   textColor = self->_textColor;
-  if (textColor != v4 && ([(UIColor *)textColor isEqual:v4]& 1) == 0)
+  if (textColor != primaryTextColor && ([(UIColor *)textColor isEqual:primaryTextColor]& 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, v4);
+    objc_storeStrong(&self->_textColor, primaryTextColor);
     categoryLabel = self->_categoryLabel;
     if (self->_textColor)
     {
@@ -258,11 +258,11 @@
     }
   }
 
-  v14 = [v18 secondaryTextColor];
+  secondaryTextColor = [schemeCopy secondaryTextColor];
   titleColor = self->_titleColor;
-  if (titleColor != v14 && ([(UIColor *)titleColor isEqual:v14]& 1) == 0)
+  if (titleColor != secondaryTextColor && ([(UIColor *)titleColor isEqual:secondaryTextColor]& 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, v14);
+    objc_storeStrong(&self->_titleColor, secondaryTextColor);
     titleLabel = self->_titleLabel;
     if (self->_titleColor)
     {
@@ -271,26 +271,26 @@
 
     else
     {
-      v17 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)titleLabel setTextColor:v17];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)titleLabel setTextColor:blackColor];
     }
   }
 }
 
-- (void)setItemCountString:(id)a3
+- (void)setItemCountString:(id)string
 {
-  v8 = a3;
-  v4 = [(UILabel *)self->_itemCountLabel text];
-  if (v4 != v8 && ([v4 isEqualToString:v8] & 1) == 0)
+  stringCopy = string;
+  text = [(UILabel *)self->_itemCountLabel text];
+  if (text != stringCopy && ([text isEqualToString:stringCopy] & 1) == 0)
   {
     itemCountLabel = self->_itemCountLabel;
-    if (v8)
+    if (stringCopy)
     {
       if (!itemCountLabel)
       {
-        v6 = [(SUUILockupMetadataView *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupMetadataView *)self _newDefaultLabel];
         v7 = self->_itemCountLabel;
-        self->_itemCountLabel = v6;
+        self->_itemCountLabel = _newDefaultLabel;
 
         itemCountLabel = self->_itemCountLabel;
       }
@@ -308,20 +308,20 @@
   }
 }
 
-- (void)setItemOfferString:(id)a3
+- (void)setItemOfferString:(id)string
 {
-  v8 = a3;
-  v4 = [(UILabel *)self->_itemOfferLabel text];
-  if (v4 != v8 && ([v4 isEqualToString:v8] & 1) == 0)
+  stringCopy = string;
+  text = [(UILabel *)self->_itemOfferLabel text];
+  if (text != stringCopy && ([text isEqualToString:stringCopy] & 1) == 0)
   {
     itemOfferLabel = self->_itemOfferLabel;
-    if (v8)
+    if (stringCopy)
     {
       if (!itemOfferLabel)
       {
-        v6 = [(SUUILockupMetadataView *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupMetadataView *)self _newDefaultLabel];
         v7 = self->_itemOfferLabel;
-        self->_itemOfferLabel = v6;
+        self->_itemOfferLabel = _newDefaultLabel;
 
         itemOfferLabel = self->_itemOfferLabel;
       }
@@ -339,29 +339,29 @@
   }
 }
 
-- (void)setNumberOfUserRatings:(int64_t)a3
+- (void)setNumberOfUserRatings:(int64_t)ratings
 {
-  if (self->_numberOfUserRatings != a3 || !self->_userRatingLabel)
+  if (self->_numberOfUserRatings != ratings || !self->_userRatingLabel)
   {
-    self->_numberOfUserRatings = a3;
+    self->_numberOfUserRatings = ratings;
     [(SUUILockupMetadataView *)self _reloadUserRatingViews];
   }
 }
 
-- (void)setReleaseDateString:(id)a3
+- (void)setReleaseDateString:(id)string
 {
-  v8 = a3;
-  v4 = [(UILabel *)self->_releaseDateLabel text];
-  if (v4 != v8 && ([v4 isEqualToString:v8] & 1) == 0)
+  stringCopy = string;
+  text = [(UILabel *)self->_releaseDateLabel text];
+  if (text != stringCopy && ([text isEqualToString:stringCopy] & 1) == 0)
   {
     releaseDateLabel = self->_releaseDateLabel;
-    if (v8)
+    if (stringCopy)
     {
       if (!releaseDateLabel)
       {
-        v6 = [(SUUILockupMetadataView *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupMetadataView *)self _newDefaultLabel];
         v7 = self->_releaseDateLabel;
-        self->_releaseDateLabel = v6;
+        self->_releaseDateLabel = _newDefaultLabel;
 
         releaseDateLabel = self->_releaseDateLabel;
       }
@@ -379,14 +379,14 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v14 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  if (v4 != v14 && ([v4 isEqualToString:v14] & 1) == 0)
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v14)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -395,8 +395,8 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SUUILockupMetadataView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SUUILockupMetadataView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -411,8 +411,8 @@
 
         else
         {
-          v13 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v12 setTextColor:v13];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v12 setTextColor:blackColor];
         }
       }
 
@@ -428,28 +428,28 @@
   }
 }
 
-- (void)setUserRating:(float)a3
+- (void)setUserRating:(float)rating
 {
-  if (self->_userRating != a3 || !self->_userRatingImageView)
+  if (self->_userRating != rating || !self->_userRatingImageView)
   {
-    self->_userRating = a3;
+    self->_userRating = rating;
     [(SUUILockupMetadataView *)self _reloadUserRatingViews];
   }
 }
 
-- (void)setVisibleFields:(unint64_t)a3
+- (void)setVisibleFields:(unint64_t)fields
 {
-  if (self->_visibleFields != a3)
+  if (self->_visibleFields != fields)
   {
-    self->_visibleFields = a3;
+    self->_visibleFields = fields;
     [(SUUILockupMetadataView *)self setNeedsLayout];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v50[8] = *MEMORY[0x277D85DE8];
-  [(SUUILockupMetadataView *)self bounds:a3.origin.x];
+  [(SUUILockupMetadataView *)self bounds:rect.origin.x];
   v5 = v4;
   titleLabel = self->_titleLabel;
   if ((self->_visibleFields & 0x10) == 0)
@@ -731,9 +731,9 @@ LABEL_46:
   v46 = v45;
   if (v45 && ([(UIImageView *)v45 isHidden]& 1) == 0)
   {
-    v47 = [(UIImageView *)v46 image];
+    image = [(UIImageView *)v46 image];
     [(UIImageView *)v46 frame];
-    [v47 drawInRect:?];
+    [image drawInRect:?];
   }
 
   for (i = 7; i != -1; --i)
@@ -741,12 +741,12 @@ LABEL_46:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   editorialBadgeLabel = self->_editorialBadgeLabel;
-  if (a3)
+  if (color)
   {
-    [(SUUIBadgeLabel *)editorialBadgeLabel setTextColor:a3];
+    [(SUUIBadgeLabel *)editorialBadgeLabel setTextColor:color];
   }
 
   else
@@ -756,20 +756,20 @@ LABEL_46:
     [(SUUIBadgeLabel *)editorialBadgeLabel setTextColor:v7];
   }
 
-  [(UILabel *)self->_artistNameLabel setBackgroundColor:a3];
-  [(UILabel *)self->_categoryLabel setBackgroundColor:a3];
-  [(UILabel *)self->_itemCountLabel setBackgroundColor:a3];
-  [(UILabel *)self->_titleLabel setBackgroundColor:a3];
-  [(UIImageView *)self->_userRatingImageView setBackgroundColor:a3];
-  [(UILabel *)self->_userRatingLabel setBackgroundColor:a3];
+  [(UILabel *)self->_artistNameLabel setBackgroundColor:color];
+  [(UILabel *)self->_categoryLabel setBackgroundColor:color];
+  [(UILabel *)self->_itemCountLabel setBackgroundColor:color];
+  [(UILabel *)self->_titleLabel setBackgroundColor:color];
+  [(UIImageView *)self->_userRatingImageView setBackgroundColor:color];
+  [(UILabel *)self->_userRatingLabel setBackgroundColor:color];
   v8.receiver = self;
   v8.super_class = SUUILockupMetadataView;
-  [(SUUILockupMetadataView *)&v8 setBackgroundColor:a3];
+  [(SUUILockupMetadataView *)&v8 setBackgroundColor:color];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   titleLabel = self->_titleLabel;
   v6 = 0.0;
   if (titleLabel && (self->_visibleFields & 0x10) != 0)
@@ -794,7 +794,7 @@ LABEL_46:
       v8 = 1;
     }
 
-    [(UILabel *)titleLabel setNumberOfLines:v8, a3.width, a3.height];
+    [(UILabel *)titleLabel setNumberOfLines:v8, fits.width, fits.height];
     [(UILabel *)self->_titleLabel sizeThatFits:width, 1.79769313e308];
     v6 = v9 + 0.0 + 1.0;
   }
@@ -920,8 +920,8 @@ uint64_t __49__SUUILockupMetadataView__decimalNumberFormatter__block_invoke()
 - (id)_newDefaultLabel
 {
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v4 = [(SUUILockupMetadataView *)self backgroundColor];
-  [v3 setBackgroundColor:v4];
+  backgroundColor = [(SUUILockupMetadataView *)self backgroundColor];
+  [v3 setBackgroundColor:backgroundColor];
 
   v5 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
   [v3 setFont:v5];
@@ -949,8 +949,8 @@ uint64_t __49__SUUILockupMetadataView__decimalNumberFormatter__block_invoke()
     self->_userRatingLabel = v3;
 
     v5 = self->_userRatingLabel;
-    v6 = [(SUUILockupMetadataView *)self backgroundColor];
-    [(UILabel *)v5 setBackgroundColor:v6];
+    backgroundColor = [(SUUILockupMetadataView *)self backgroundColor];
+    [(UILabel *)v5 setBackgroundColor:backgroundColor];
 
     v7 = self->_userRatingLabel;
     v8 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
@@ -971,11 +971,11 @@ uint64_t __49__SUUILockupMetadataView__decimalNumberFormatter__block_invoke()
 
   if (self->_numberOfUserRatings)
   {
-    v11 = [(SUUILockupMetadataView *)self _decimalNumberFormatter];
+    _decimalNumberFormatter = [(SUUILockupMetadataView *)self _decimalNumberFormatter];
     v12 = self->_userRatingLabel;
     v13 = MEMORY[0x277CCACA8];
     v14 = [MEMORY[0x277CCABB0] numberWithInteger:self->_numberOfUserRatings];
-    v15 = [v11 stringFromNumber:v14];
+    v15 = [_decimalNumberFormatter stringFromNumber:v14];
     v16 = [v13 stringWithFormat:@"(%@)", v15];
     [(UILabel *)v12 setText:v16];
 
@@ -986,8 +986,8 @@ uint64_t __49__SUUILockupMetadataView__decimalNumberFormatter__block_invoke()
       self->_userRatingImageView = v17;
 
       v19 = self->_userRatingImageView;
-      v20 = [(SUUILockupMetadataView *)self backgroundColor];
-      [(UIImageView *)v19 setBackgroundColor:v20];
+      backgroundColor2 = [(SUUILockupMetadataView *)self backgroundColor];
+      [(UIImageView *)v19 setBackgroundColor:backgroundColor2];
     }
 
     v21 = [SUUIRatingStarsCache cacheWithProperties:1];
@@ -1003,11 +1003,11 @@ uint64_t __49__SUUILockupMetadataView__decimalNumberFormatter__block_invoke()
   {
     [(UIImageView *)self->_userRatingImageView setHidden:1];
     v24 = self->_userRatingLabel;
-    v25 = [(SUUILockupMetadataView *)self clientContext];
-    v11 = v25;
-    if (v25)
+    clientContext = [(SUUILockupMetadataView *)self clientContext];
+    _decimalNumberFormatter = clientContext;
+    if (clientContext)
     {
-      [v25 localizedStringForKey:@"NO_RATINGS"];
+      [clientContext localizedStringForKey:@"NO_RATINGS"];
     }
 
     else

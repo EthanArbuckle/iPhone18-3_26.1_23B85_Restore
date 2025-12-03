@@ -1,33 +1,33 @@
 @interface GVRank
 - (CGSize)sizeForDummy;
-- (GVRank)initWithRank:(int64_t)a3 separation:(CGSize)a4 graph:(id)a5;
+- (GVRank)initWithRank:(int64_t)rank separation:(CGSize)separation graph:(id)graph;
 - (id)debugDescription;
-- (id)neighborsOfNode:(id)a3;
+- (id)neighborsOfNode:(id)node;
 - (unint64_t)inCrossings;
 - (unint64_t)outCrossings;
-- (void)addNode:(id)a3;
+- (void)addNode:(id)node;
 - (void)buildNodeIterators;
 - (void)dealloc;
-- (void)exchangeNodeAtIndex:(unint64_t)a3 withNodeAtIndex:(unint64_t)a4;
-- (void)removeNode:(id)a3;
+- (void)exchangeNodeAtIndex:(unint64_t)index withNodeAtIndex:(unint64_t)atIndex;
+- (void)removeNode:(id)node;
 - (void)sortByIndex;
 @end
 
 @implementation GVRank
 
-- (GVRank)initWithRank:(int64_t)a3 separation:(CGSize)a4 graph:(id)a5
+- (GVRank)initWithRank:(int64_t)rank separation:(CGSize)separation graph:(id)graph
 {
   v10.receiver = self;
   v10.super_class = GVRank;
-  v7 = [(GVRank *)&v10 init:a4.width];
+  v7 = [(GVRank *)&v10 init:separation.width];
   v8 = v7;
   if (v7)
   {
-    [(GVRank *)v7 setGraph:a5];
+    [(GVRank *)v7 setGraph:graph];
     v8->nodes = objc_alloc_init(MEMORY[0x277CBEB18]);
     v8->prevRank = 0;
     v8->nextRank = 0;
-    v8->rank = a3;
+    v8->rank = rank;
   }
 
   return v8;
@@ -83,13 +83,13 @@
   return v3;
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
   [(NSMutableArray *)self->nodes addObject:?];
-  [a3 setIndex:{-[NSMutableArray count](self->nodes, "count") - 1}];
-  if ([a3 index])
+  [node setIndex:{-[NSMutableArray count](self->nodes, "count") - 1}];
+  if ([node index])
   {
-    v5 = -[NSMutableArray objectAtIndexedSubscript:](self->nodes, "objectAtIndexedSubscript:", [a3 index] - 1);
+    v5 = -[NSMutableArray objectAtIndexedSubscript:](self->nodes, "objectAtIndexedSubscript:", [node index] - 1);
   }
 
   else
@@ -97,26 +97,26 @@
     v5 = 0;
   }
 
-  [a3 setPrev:v5];
+  [node setPrev:v5];
 
-  [a3 setNext:0];
+  [node setNext:0];
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
   [(NSMutableArray *)self->nodes removeObject:?];
-  if ([a3 prev])
+  if ([node prev])
   {
-    [objc_msgSend(a3 "prev")];
+    [objc_msgSend(node "prev")];
   }
 
-  if ([a3 next])
+  if ([node next])
   {
-    [objc_msgSend(a3 "next")];
+    [objc_msgSend(node "next")];
   }
 
-  [a3 setPrev:0];
-  [a3 setNext:0];
+  [node setPrev:0];
+  [node setNext:0];
   if ([(NSMutableArray *)self->nodes count])
   {
     v5 = 0;
@@ -130,10 +130,10 @@
   }
 }
 
-- (id)neighborsOfNode:(id)a3
+- (id)neighborsOfNode:(id)node
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -156,7 +156,7 @@
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([(GVGraph *)self->graph hasEdgeBetween:v11])
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -167,7 +167,7 @@
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v5;
+  return array;
 }
 
 - (void)sortByIndex
@@ -198,16 +198,16 @@ uint64_t __21__GVRank_sortByIndex__block_invoke(uint64_t a1, void *a2, void *a3)
   return v7 > [a3 index];
 }
 
-- (void)exchangeNodeAtIndex:(unint64_t)a3 withNodeAtIndex:(unint64_t)a4
+- (void)exchangeNodeAtIndex:(unint64_t)index withNodeAtIndex:(unint64_t)atIndex
 {
   v7 = [(NSMutableArray *)self->nodes objectAtIndexedSubscript:?];
-  v8 = [(NSMutableArray *)self->nodes objectAtIndexedSubscript:a4];
-  [v7 setIndex:a4];
-  [(NSMutableArray *)self->nodes setObject:v7 atIndexedSubscript:a4];
-  [v8 setIndex:a3];
+  v8 = [(NSMutableArray *)self->nodes objectAtIndexedSubscript:atIndex];
+  [v7 setIndex:atIndex];
+  [(NSMutableArray *)self->nodes setObject:v7 atIndexedSubscript:atIndex];
+  [v8 setIndex:index];
   nodes = self->nodes;
 
-  [(NSMutableArray *)nodes setObject:v8 atIndexedSubscript:a3];
+  [(NSMutableArray *)nodes setObject:v8 atIndexedSubscript:index];
 }
 
 - (void)buildNodeIterators
@@ -260,24 +260,24 @@ uint64_t __21__GVRank_sortByIndex__block_invoke(uint64_t a1, void *a2, void *a3)
 
 - (unint64_t)inCrossings
 {
-  v2 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x277D85DE8];
-  if ([(GVRank *)self count]>= 2 && [(GVRank *)v2 count])
+  if ([(GVRank *)self count]>= 2 && [(GVRank *)selfCopy count])
   {
     v3 = 0;
     v4 = 0;
-    v22 = v2;
+    v22 = selfCopy;
     do
     {
-      obj = [(GVGraph *)v2->graph inNodesOf:[(NSMutableArray *)v2->nodes objectAtIndexedSubscript:v4]];
+      obj = [(GVGraph *)selfCopy->graph inNodesOf:[(NSMutableArray *)selfCopy->nodes objectAtIndexedSubscript:v4]];
       v5 = v4 + 1;
       v20 = v5;
-      if (v5 < [(GVRank *)v2 count])
+      if (v5 < [(GVRank *)selfCopy count])
       {
         do
         {
           v23 = v5;
-          v6 = [(GVGraph *)v2->graph inNodesOf:[(NSMutableArray *)v2->nodes objectAtIndexedSubscript:v5, v20]];
+          v6 = [(GVGraph *)selfCopy->graph inNodesOf:[(NSMutableArray *)selfCopy->nodes objectAtIndexedSubscript:v5, v20]];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
@@ -317,8 +317,8 @@ uint64_t __21__GVRank_sortByIndex__block_invoke(uint64_t a1, void *a2, void *a3)
                         objc_enumerationMutation(v6);
                       }
 
-                      v16 = [*(*(&v25 + 1) + 8 * v15) index];
-                      if (v16 < [v11 index])
+                      index = [*(*(&v25 + 1) + 8 * v15) index];
+                      if (index < [v11 index])
                       {
                         ++v3;
                       }
@@ -343,14 +343,14 @@ uint64_t __21__GVRank_sortByIndex__block_invoke(uint64_t a1, void *a2, void *a3)
             while (v8);
           }
 
-          v2 = v22;
+          selfCopy = v22;
           v5 = v23 + 1;
         }
 
         while (v23 + 1 < [(GVRank *)v22 count]);
       }
 
-      v17 = [(GVRank *)v2 count];
+      v17 = [(GVRank *)selfCopy count];
       v4 = v21;
     }
 
@@ -368,24 +368,24 @@ uint64_t __21__GVRank_sortByIndex__block_invoke(uint64_t a1, void *a2, void *a3)
 
 - (unint64_t)outCrossings
 {
-  v2 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x277D85DE8];
-  if ([(GVRank *)self count]>= 2 && [(GVRank *)v2 count])
+  if ([(GVRank *)self count]>= 2 && [(GVRank *)selfCopy count])
   {
     v3 = 0;
     v4 = 0;
-    v22 = v2;
+    v22 = selfCopy;
     do
     {
-      obj = [(GVGraph *)v2->graph outNodesOf:[(NSMutableArray *)v2->nodes objectAtIndexedSubscript:v4]];
+      obj = [(GVGraph *)selfCopy->graph outNodesOf:[(NSMutableArray *)selfCopy->nodes objectAtIndexedSubscript:v4]];
       v5 = v4 + 1;
       v20 = v5;
-      if (v5 < [(GVRank *)v2 count])
+      if (v5 < [(GVRank *)selfCopy count])
       {
         do
         {
           v23 = v5;
-          v6 = [(GVGraph *)v2->graph outNodesOf:[(NSMutableArray *)v2->nodes objectAtIndexedSubscript:v5, v20]];
+          v6 = [(GVGraph *)selfCopy->graph outNodesOf:[(NSMutableArray *)selfCopy->nodes objectAtIndexedSubscript:v5, v20]];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
@@ -425,8 +425,8 @@ uint64_t __21__GVRank_sortByIndex__block_invoke(uint64_t a1, void *a2, void *a3)
                         objc_enumerationMutation(v6);
                       }
 
-                      v16 = [*(*(&v25 + 1) + 8 * v15) index];
-                      if (v16 < [v11 index])
+                      index = [*(*(&v25 + 1) + 8 * v15) index];
+                      if (index < [v11 index])
                       {
                         ++v3;
                       }
@@ -451,14 +451,14 @@ uint64_t __21__GVRank_sortByIndex__block_invoke(uint64_t a1, void *a2, void *a3)
             while (v8);
           }
 
-          v2 = v22;
+          selfCopy = v22;
           v5 = v23 + 1;
         }
 
         while (v23 + 1 < [(GVRank *)v22 count]);
       }
 
-      v17 = [(GVRank *)v2 count];
+      v17 = [(GVRank *)selfCopy count];
       v4 = v21;
     }
 

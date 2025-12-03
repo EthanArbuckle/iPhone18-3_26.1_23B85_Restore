@@ -1,78 +1,78 @@
 @interface CLKComplicationTemplateGraphicRectangularTextMeteredGauge
-+ (id)templateWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 body1TextProvider:(id)a5 gaugeProvider:(id)a6;
-+ (id)templateWithHeaderTextProvider:(id)a3 body1TextProvider:(id)a4 gaugeProvider:(id)a5;
-- (CLKComplicationTemplateGraphicRectangularTextMeteredGauge)initWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 body1TextProvider:(id)a5 gaugeProvider:(id)a6;
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
++ (id)templateWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider body1TextProvider:(id)body1TextProvider gaugeProvider:(id)gaugeProvider;
++ (id)templateWithHeaderTextProvider:(id)provider body1TextProvider:(id)textProvider gaugeProvider:(id)gaugeProvider;
+- (CLKComplicationTemplateGraphicRectangularTextMeteredGauge)initWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider body1TextProvider:(id)body1TextProvider gaugeProvider:(id)gaugeProvider;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicRectangularTextMeteredGauge
 
-- (CLKComplicationTemplateGraphicRectangularTextMeteredGauge)initWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 body1TextProvider:(id)a5 gaugeProvider:(id)a6
+- (CLKComplicationTemplateGraphicRectangularTextMeteredGauge)initWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider body1TextProvider:(id)body1TextProvider gaugeProvider:(id)gaugeProvider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  textProviderCopy = textProvider;
+  body1TextProviderCopy = body1TextProvider;
+  gaugeProviderCopy = gaugeProvider;
   v17.receiver = self;
   v17.super_class = CLKComplicationTemplateGraphicRectangularTextMeteredGauge;
-  v14 = [(CLKComplicationTemplate *)&v17 initPrivate];
-  v15 = v14;
-  if (v14)
+  initPrivate = [(CLKComplicationTemplate *)&v17 initPrivate];
+  v15 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicRectangularTextMeteredGauge *)v14 setHeaderImageProvider:v10];
-    [(CLKComplicationTemplateGraphicRectangularTextMeteredGauge *)v15 setHeaderTextProvider:v11];
-    [(CLKComplicationTemplateGraphicRectangularTextMeteredGauge *)v15 setBody1TextProvider:v12];
-    [(CLKComplicationTemplateGraphicRectangularTextMeteredGauge *)v15 setGaugeProvider:v13];
+    [(CLKComplicationTemplateGraphicRectangularTextMeteredGauge *)initPrivate setHeaderImageProvider:providerCopy];
+    [(CLKComplicationTemplateGraphicRectangularTextMeteredGauge *)v15 setHeaderTextProvider:textProviderCopy];
+    [(CLKComplicationTemplateGraphicRectangularTextMeteredGauge *)v15 setBody1TextProvider:body1TextProviderCopy];
+    [(CLKComplicationTemplateGraphicRectangularTextMeteredGauge *)v15 setGaugeProvider:gaugeProviderCopy];
   }
 
   return v15;
 }
 
-+ (id)templateWithHeaderTextProvider:(id)a3 body1TextProvider:(id)a4 gaugeProvider:(id)a5
++ (id)templateWithHeaderTextProvider:(id)provider body1TextProvider:(id)textProvider gaugeProvider:(id)gaugeProvider
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithHeaderTextProvider:v10 body1TextProvider:v9 gaugeProvider:v8];
+  gaugeProviderCopy = gaugeProvider;
+  textProviderCopy = textProvider;
+  providerCopy = provider;
+  v11 = [[self alloc] initWithHeaderTextProvider:providerCopy body1TextProvider:textProviderCopy gaugeProvider:gaugeProviderCopy];
 
   return v11;
 }
 
-+ (id)templateWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 body1TextProvider:(id)a5 gaugeProvider:(id)a6
++ (id)templateWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider body1TextProvider:(id)body1TextProvider gaugeProvider:(id)gaugeProvider
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithHeaderImageProvider:v13 headerTextProvider:v12 body1TextProvider:v11 gaugeProvider:v10];
+  gaugeProviderCopy = gaugeProvider;
+  body1TextProviderCopy = body1TextProvider;
+  textProviderCopy = textProvider;
+  providerCopy = provider;
+  v14 = [[self alloc] initWithHeaderImageProvider:providerCopy headerTextProvider:textProviderCopy body1TextProvider:body1TextProviderCopy gaugeProvider:gaugeProviderCopy];
 
   return v14;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"headerTextProvider", 0, 1, &v4);
+  blockCopy[2](blockCopy, @"headerTextProvider", 0, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"body1TextProvider", 0, 1, &v4);
+    blockCopy[2](blockCopy, @"body1TextProvider", 0, 1, &v4);
   }
 }
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __107__CLKComplicationTemplateGraphicRectangularTextMeteredGauge__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __107__CLKComplicationTemplateGraphicRectangularTextMeteredGauge__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE91D50;
   v9 = *&_enumerateFullColorImageProviderKeysWithBlock___imageDiameter_1594[[(CLKComplicationTemplate *)self sdkVersion]];
   v11 = 0;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&_enumerateFullColorImageProviderKeysWithBlock___pointSize_1595];
-  v4[2](v4, @"headerImageProvider", 1, 1, v10, 6, &v11, v9, v9, v8, v8, 0.0);
+  blockCopy[2](blockCopy, @"headerImageProvider", 1, 1, v10, 6, &v11, v9, v9, v8, v8, 0.0);
 }
 
 uint64_t __107__CLKComplicationTemplateGraphicRectangularTextMeteredGauge__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

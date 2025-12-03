@@ -1,18 +1,18 @@
 @interface CRLoggingFileReceiver
-- (CRLoggingFileReceiver)initWithSession:(id)a3;
-- (id)urlForSavingLogsForFileReceiverSession:(id)a3;
+- (CRLoggingFileReceiver)initWithSession:(id)session;
+- (id)urlForSavingLogsForFileReceiverSession:(id)session;
 - (void)dealloc;
-- (void)fileReceiver:(id)a3 didReceiveStatistics:(id)a4;
-- (void)fileReceiverSession:(id)a3 didSaveLogsAtURL:(id)a4;
+- (void)fileReceiver:(id)receiver didReceiveStatistics:(id)statistics;
+- (void)fileReceiverSession:(id)session didSaveLogsAtURL:(id)l;
 - (void)invalidate;
-- (void)requestLogsWithCompletion:(id)a3;
+- (void)requestLogsWithCompletion:(id)completion;
 @end
 
 @implementation CRLoggingFileReceiver
 
-- (CRLoggingFileReceiver)initWithSession:(id)a3
+- (CRLoggingFileReceiver)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v19.receiver = self;
   v19.super_class = CRLoggingFileReceiver;
   v6 = [(CRLoggingFileReceiver *)&v19 init];
@@ -28,9 +28,9 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "opening logging file channel", v18, 2u);
     }
 
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v9 = [CARSessionChannel alloc];
-    v10 = [v9 initWithSession:v5 channelType:kFigEndpointRemoteControlSessionClientTypeUUIDKey_CarPlayLoggingData];
+    v10 = [v9 initWithSession:sessionCopy channelType:kFigEndpointRemoteControlSessionClientTypeUUIDKey_CarPlayLoggingData];
     channel = v6->_channel;
     v6->_channel = v10;
 
@@ -47,8 +47,8 @@
 
     [(CRFileReceiver *)v14 setLogArchiveReceiver:v6];
     [(CRFileReceiver *)v6->_fileReceiver setStatisticsReceiver:v6];
-    v15 = [(CRLoggingFileReceiver *)v6 fileReceiver];
-    [v15 requestStartStatisticsOnInterval:10];
+    fileReceiver = [(CRLoggingFileReceiver *)v6 fileReceiver];
+    [fileReceiver requestStartStatisticsOnInterval:10];
   }
 
   v16 = v6;
@@ -67,72 +67,72 @@ LABEL_8:
 
 - (void)invalidate
 {
-  v5 = [(CRLoggingFileReceiver *)self currentCompletion];
-  if (v5)
+  currentCompletion = [(CRLoggingFileReceiver *)self currentCompletion];
+  if (currentCompletion)
   {
-    v5[2](v5, 0);
+    currentCompletion[2](currentCompletion, 0);
     currentCompletion = self->_currentCompletion;
     self->_currentCompletion = 0;
   }
 
-  v4 = [(CRLoggingFileReceiver *)self fileReceiver];
-  [v4 invalidate];
+  fileReceiver = [(CRLoggingFileReceiver *)self fileReceiver];
+  [fileReceiver invalidate];
 
   [(CRLoggingFileReceiver *)self setTransaction:0];
 }
 
-- (void)requestLogsWithCompletion:(id)a3
+- (void)requestLogsWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v4 = [(CRLoggingFileReceiver *)self currentCompletion];
-  v5 = v4;
-  if (v4)
+  currentCompletion = [(CRLoggingFileReceiver *)self currentCompletion];
+  v5 = currentCompletion;
+  if (currentCompletion)
   {
-    (*(v4 + 16))(v4, 0);
+    (*(currentCompletion + 16))(currentCompletion, 0);
   }
 
-  [(CRLoggingFileReceiver *)self setCurrentCompletion:v7];
-  v6 = [(CRLoggingFileReceiver *)self fileReceiver];
-  [v6 requestLogArchive];
+  [(CRLoggingFileReceiver *)self setCurrentCompletion:completionCopy];
+  fileReceiver = [(CRLoggingFileReceiver *)self fileReceiver];
+  [fileReceiver requestLogArchive];
 }
 
-- (id)urlForSavingLogsForFileReceiverSession:(id)a3
+- (id)urlForSavingLogsForFileReceiverSession:(id)session
 {
   v3 = +[NSFileManager defaultManager];
   v4 = [v3 URLsForDirectory:5 inDomains:1];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
   v6 = +[NSFileManager defaultManager];
   v10 = 0;
-  v7 = [v6 URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:&v10];
+  v7 = [v6 URLForDirectory:99 inDomain:1 appropriateForURL:firstObject create:1 error:&v10];
 
   v8 = [v7 URLByAppendingPathComponent:@"VehicleLogs.tar.gz"];
 
   return v8;
 }
 
-- (void)fileReceiverSession:(id)a3 didSaveLogsAtURL:(id)a4
+- (void)fileReceiverSession:(id)session didSaveLogsAtURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100041FB0;
   block[3] = &unk_1000DD580;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = lCopy;
+  selfCopy = self;
+  v6 = lCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&location);
 }
 
-- (void)fileReceiver:(id)a3 didReceiveStatistics:(id)a4
+- (void)fileReceiver:(id)receiver didReceiveStatistics:(id)statistics
 {
-  v4 = a4;
+  statisticsCopy = statistics;
   objc_opt_class();
-  v5 = [v4 objectForKey:@"CommStats"];
+  v5 = [statisticsCopy objectForKey:@"CommStats"];
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -186,7 +186,7 @@ LABEL_8:
     v7 = sub_100002A68(5uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100086B54(v4, v7);
+      sub_100086B54(statisticsCopy, v7);
     }
   }
 }

@@ -1,14 +1,14 @@
 @interface ContextualSuggestionProvider
-- (void)serviceDidUpdateWithSnapshot:(id)a3;
+- (void)serviceDidUpdateWithSnapshot:(id)snapshot;
 @end
 
 @implementation ContextualSuggestionProvider
 
-- (void)serviceDidUpdateWithSnapshot:(id)a3
+- (void)serviceDidUpdateWithSnapshot:(id)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
 
-  sub_244199110(v3);
+  sub_244199110(snapshotCopy);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PSYSyncSessionObserver
 - (PSYSyncSessionObserver)init;
 - (PSYSyncSessionObserverDelegate)delegate;
-- (id)providerWithErrorHandler:(id)a3;
-- (void)_checkin:(BOOL)a3;
+- (id)providerWithErrorHandler:(id)handler;
+- (void)_checkin:(BOOL)_checkin;
 - (void)_connectionInvalidated;
 - (void)_disconnectFromPairedSync;
-- (void)_queue_invalidateSyncSession:(id)a3;
+- (void)_queue_invalidateSyncSession:(id)session;
 - (void)_queue_loadConnectionIfNeeded;
 - (void)dealloc;
-- (void)didBecomeActive:(id)a3;
-- (void)invalidateSyncSession:(id)a3;
-- (void)setCurrentSyncSession:(id)a3;
-- (void)startObservingSyncSessionsWithCompletion:(id)a3;
-- (void)syncSessionWillStart:(id)a3;
-- (void)updateSyncSession:(id)a3;
-- (void)willResignActive:(id)a3;
+- (void)didBecomeActive:(id)active;
+- (void)invalidateSyncSession:(id)session;
+- (void)setCurrentSyncSession:(id)session;
+- (void)startObservingSyncSessionsWithCompletion:(id)completion;
+- (void)syncSessionWillStart:(id)start;
+- (void)updateSyncSession:(id)session;
+- (void)willResignActive:(id)active;
 @end
 
 @implementation PSYSyncSessionObserver
@@ -89,25 +89,25 @@ void __48__PSYSyncSessionObserver__connectionInvalidated__block_invoke(uint64_t 
     v2->_queue = v4;
 
     objc_initWeak(&location, v2);
-    v6 = [@"com.apple.pairedsyncd.launched" UTF8String];
+    uTF8String = [@"com.apple.pairedsyncd.launched" UTF8String];
     v7 = v2->_queue;
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __30__PSYSyncSessionObserver_init__block_invoke;
     v16 = &unk_2799FB538;
     objc_copyWeak(&v17, &location);
-    notify_register_dispatch(v6, &v2->_daemonDidLaunchNotifyToken, v7, &v13);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel_willResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
+    notify_register_dispatch(uTF8String, &v2->_daemonDidLaunchNotifyToken, v7, &v13);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel_willResignActive_ name:*MEMORY[0x277CCA0D8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_willResignActive_ name:*MEMORY[0x277CCA0D8] object:0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel_didBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_didBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v2 selector:sel_didBecomeActive_ name:*MEMORY[0x277CCA0C0] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel_didBecomeActive_ name:*MEMORY[0x277CCA0C0] object:0];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -185,8 +185,8 @@ void __55__PSYSyncSessionObserver__queue_loadConnectionIfNeeded__block_invoke(ui
 - (void)dealloc
 {
   [(NSXPCConnection *)self->_connection invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   daemonDidLaunchNotifyToken = self->_daemonDidLaunchNotifyToken;
   if (daemonDidLaunchNotifyToken != -1)
@@ -218,7 +218,7 @@ void __30__PSYSyncSessionObserver_init__block_invoke(uint64_t a1)
   [WeakRetained _handleDaemonStarted];
 }
 
-- (void)willResignActive:(id)a3
+- (void)willResignActive:(id)active
 {
   v4 = psy_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -242,7 +242,7 @@ void __30__PSYSyncSessionObserver_init__block_invoke(uint64_t a1)
   dispatch_sync(queue, block);
 }
 
-- (void)didBecomeActive:(id)a3
+- (void)didBecomeActive:(id)active
 {
   v4 = psy_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -290,21 +290,21 @@ void __42__PSYSyncSessionObserver_didBecomeActive___block_invoke(uint64_t a1)
   self->_connection = 0;
 }
 
-- (void)setCurrentSyncSession:(id)a3
+- (void)setCurrentSyncSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   currentSyncSession = self->_currentSyncSession;
-  if (currentSyncSession != v4)
+  if (currentSyncSession != sessionCopy)
   {
-    v9 = v4;
-    currentSyncSession = [currentSyncSession isEqual:v4];
-    v4 = v9;
+    v9 = sessionCopy;
+    currentSyncSession = [currentSyncSession isEqual:sessionCopy];
+    sessionCopy = v9;
     if ((currentSyncSession & 1) == 0)
     {
       v6 = self->_currentSyncSession;
       if (v9)
       {
-        v7 = self;
+        selfCopy2 = self;
         if (!v6)
         {
           currentSyncSession = [(PSYSyncSessionObserver *)self syncSessionWillStart:v9];
@@ -317,23 +317,23 @@ void __42__PSYSyncSessionObserver_didBecomeActive___block_invoke(uint64_t a1)
       else
       {
         [(PSYSyncSessionObserver *)self invalidateSyncSession:v6];
-        v7 = self;
+        selfCopy2 = self;
         v8 = 0;
       }
 
-      currentSyncSession = [(PSYSyncSessionObserver *)v7 updateSyncSession:v8];
+      currentSyncSession = [(PSYSyncSessionObserver *)selfCopy2 updateSyncSession:v8];
 LABEL_9:
-      v4 = v9;
+      sessionCopy = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](currentSyncSession, v4);
+  MEMORY[0x2821F96F8](currentSyncSession, sessionCopy);
 }
 
-- (void)startObservingSyncSessionsWithCompletion:(id)a3
+- (void)startObservingSyncSessionsWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = psy_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -342,7 +342,7 @@ LABEL_9:
     v7 = psy_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = MEMORY[0x25F8A84D0](v4);
+      v8 = MEMORY[0x25F8A84D0](completionCopy);
       *buf = 134217984;
       v15 = v8;
       _os_log_impl(&dword_25DF25000, v7, OS_LOG_TYPE_DEFAULT, "PairedSync Client: Starting to observe sync session, completion=%p", buf, 0xCu);
@@ -355,8 +355,8 @@ LABEL_9:
   v12[2] = __67__PSYSyncSessionObserver_startObservingSyncSessionsWithCompletion___block_invoke;
   v12[3] = &unk_2799FB818;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(queue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -441,7 +441,7 @@ void __67__PSYSyncSessionObserver_startObservingSyncSessionsWithCompletion___blo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkin:(BOOL)a3
+- (void)_checkin:(BOOL)_checkin
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -449,7 +449,7 @@ void __67__PSYSyncSessionObserver_startObservingSyncSessionsWithCompletion___blo
   v4[2] = __35__PSYSyncSessionObserver__checkin___block_invoke;
   v4[3] = &unk_2799FB9B8;
   v4[4] = self;
-  v5 = a3;
+  _checkinCopy = _checkin;
   dispatch_async(queue, v4);
 }
 
@@ -508,16 +508,16 @@ void __35__PSYSyncSessionObserver__checkin___block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (void)_queue_invalidateSyncSession:(id)a3
+- (void)_queue_invalidateSyncSession:(id)session
 {
-  v4 = a3;
-  v5 = [(PSYSyncSessionObserver *)self delegate];
-  [v5 syncSessionObserver:self didInvalidateSyncSession:v4];
+  sessionCopy = session;
+  delegate = [(PSYSyncSessionObserver *)self delegate];
+  [delegate syncSessionObserver:self didInvalidateSyncSession:sessionCopy];
 
-  v6 = [v4 sessionIdentifier];
+  sessionIdentifier = [sessionCopy sessionIdentifier];
 
-  v7 = [(PSYSyncSession *)self->_currentSyncSession sessionIdentifier];
-  v8 = [v6 isEqual:v7];
+  sessionIdentifier2 = [(PSYSyncSession *)self->_currentSyncSession sessionIdentifier];
+  v8 = [sessionIdentifier isEqual:sessionIdentifier2];
 
   if (v8)
   {
@@ -526,26 +526,26 @@ void __35__PSYSyncSessionObserver__checkin___block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (id)providerWithErrorHandler:(id)a3
+- (id)providerWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(PSYSyncSessionObserver *)self _queue_loadConnectionIfNeeded];
-  v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v5;
 }
 
-- (void)syncSessionWillStart:(id)a3
+- (void)syncSessionWillStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__PSYSyncSessionObserver_syncSessionWillStart___block_invoke;
   v7[3] = &unk_2799FB588;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = startCopy;
+  selfCopy = self;
+  v6 = startCopy;
   dispatch_async(queue, v7);
 }
 
@@ -581,17 +581,17 @@ void __47__PSYSyncSessionObserver_syncSessionWillStart___block_invoke(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSyncSession:(id)a3
+- (void)updateSyncSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__PSYSyncSessionObserver_updateSyncSession___block_invoke;
   v7[3] = &unk_2799FB588;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sessionCopy;
+  selfCopy = self;
+  v6 = sessionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -617,17 +617,17 @@ void __44__PSYSyncSessionObserver_updateSyncSession___block_invoke(uint64_t a1)
   }
 }
 
-- (void)invalidateSyncSession:(id)a3
+- (void)invalidateSyncSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__PSYSyncSessionObserver_invalidateSyncSession___block_invoke;
   v7[3] = &unk_2799FB588;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sessionCopy;
+  selfCopy = self;
+  v6 = sessionCopy;
   dispatch_async(queue, v7);
 }
 

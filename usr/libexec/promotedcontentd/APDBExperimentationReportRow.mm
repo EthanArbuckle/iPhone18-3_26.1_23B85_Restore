@@ -1,27 +1,27 @@
 @interface APDBExperimentationReportRow
-- (APDBExperimentationReportRow)initWithTriggerRowId:(id)a3 day:(id)a4 source:(id)a5 adFormatType:(id)a6 slot:(id)a7 table:(id)a8;
+- (APDBExperimentationReportRow)initWithTriggerRowId:(id)id day:(id)day source:(id)source adFormatType:(id)type slot:(id)slot table:(id)table;
 @end
 
 @implementation APDBExperimentationReportRow
 
-- (APDBExperimentationReportRow)initWithTriggerRowId:(id)a3 day:(id)a4 source:(id)a5 adFormatType:(id)a6 slot:(id)a7 table:(id)a8
+- (APDBExperimentationReportRow)initWithTriggerRowId:(id)id day:(id)day source:(id)source adFormatType:(id)type slot:(id)slot table:(id)table
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  idCopy = id;
+  dayCopy = day;
+  sourceCopy = source;
+  typeCopy = type;
+  slotCopy = slot;
   v22.receiver = self;
   v22.super_class = APDBExperimentationReportRow;
-  v19 = [(APDBExperimentationReportRow *)&v22 initAsNewObjectWithTable:a8];
+  v19 = [(APDBExperimentationReportRow *)&v22 initAsNewObjectWithTable:table];
   v20 = v19;
   if (v19)
   {
-    [(APDBExperimentationReportRow *)v19 setValue:v14 forColumnName:@"triggerRowId"];
-    [(APDBExperimentationReportRow *)v20 setValue:v15 forColumnName:@"day"];
-    [(APDBExperimentationReportRow *)v20 setValue:v16 forColumnName:@"source"];
-    [(APDBExperimentationReportRow *)v20 setValue:v17 forColumnName:@"adFormatType"];
-    [(APDBExperimentationReportRow *)v20 setValue:v18 forColumnName:@"slot"];
+    [(APDBExperimentationReportRow *)v19 setValue:idCopy forColumnName:@"triggerRowId"];
+    [(APDBExperimentationReportRow *)v20 setValue:dayCopy forColumnName:@"day"];
+    [(APDBExperimentationReportRow *)v20 setValue:sourceCopy forColumnName:@"source"];
+    [(APDBExperimentationReportRow *)v20 setValue:typeCopy forColumnName:@"adFormatType"];
+    [(APDBExperimentationReportRow *)v20 setValue:slotCopy forColumnName:@"slot"];
     [(APDBExperimentationReportRow *)v20 setValue:&off_100491EC0 forColumnName:@"slotVisibleAdCount"];
     [(APDBExperimentationReportRow *)v20 setValue:&off_100491EC0 forColumnName:@"slotVisibleNoAdCount"];
     [(APDBExperimentationReportRow *)v20 setValue:&off_100491EC0 forColumnName:@"impressionCount"];

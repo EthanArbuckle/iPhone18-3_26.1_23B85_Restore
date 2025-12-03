@@ -1,27 +1,27 @@
 @interface NCNotificationListCache
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)invalidateCachedHeightIfNecessaryForNotificationRequest:(id)a3 updatedHeight:(double)a4 isContentRevealed:(BOOL)a5 traits:(id)a6;
-- (BOOL)recycleNotificationListCell:(id)a3;
+- (BOOL)invalidateCachedHeightIfNecessaryForNotificationRequest:(id)request updatedHeight:(double)height isContentRevealed:(BOOL)revealed traits:(id)traits;
+- (BOOL)recycleNotificationListCell:(id)cell;
 - (NCNotificationListCache)init;
 - (NCNotificationListCacheDelegate)delegate;
-- (double)heightForNotificationRequest:(id)a3 contentProvider:(id)a4 withFrameWidth:(double)a5 isContentRevealed:(BOOL)a6 shouldCalculateHeight:(BOOL)a7 traits:(id)a8;
-- (id)_cachedHeaderCellWithTitle:(id)a3;
-- (id)_cachedNotificationListCellForRequest:(id)a3 viewControllerDelegate:(id)a4 shouldConfigure:(BOOL)a5;
-- (id)_cachedRequestMatchingRequest:(id)a3;
-- (id)_newCellForNotificationRequest:(id)a3 viewControllerDelegate:(id)a4;
-- (id)coalescingControlsCellWithWidth:(double)a3;
-- (id)coalescingHeaderCellWithTitle:(id)a3 clearAllText:(id)a4 width:(double)a5;
-- (id)contentConfigurationForContentProvider:(id)a3 isContentRevealed:(BOOL)a4 traits:(id)a5;
-- (id)contentConfigurationForListCell:(id)a3 isContentRevealed:(BOOL)a4;
-- (id)listCellForNotificationRequest:(id)a3 viewControllerDelegate:(id)a4 createNewIfNecessary:(BOOL)a5 shouldConfigure:(BOOL)a6;
+- (double)heightForNotificationRequest:(id)request contentProvider:(id)provider withFrameWidth:(double)width isContentRevealed:(BOOL)revealed shouldCalculateHeight:(BOOL)height traits:(id)traits;
+- (id)_cachedHeaderCellWithTitle:(id)title;
+- (id)_cachedNotificationListCellForRequest:(id)request viewControllerDelegate:(id)delegate shouldConfigure:(BOOL)configure;
+- (id)_cachedRequestMatchingRequest:(id)request;
+- (id)_newCellForNotificationRequest:(id)request viewControllerDelegate:(id)delegate;
+- (id)coalescingControlsCellWithWidth:(double)width;
+- (id)coalescingHeaderCellWithTitle:(id)title clearAllText:(id)text width:(double)width;
+- (id)contentConfigurationForContentProvider:(id)provider isContentRevealed:(BOOL)revealed traits:(id)traits;
+- (id)contentConfigurationForListCell:(id)cell isContentRevealed:(BOOL)revealed;
+- (id)listCellForNotificationRequest:(id)request viewControllerDelegate:(id)delegate createNewIfNecessary:(BOOL)necessary shouldConfigure:(BOOL)configure;
 - (unint64_t)currentCellHeightCacheCount;
 - (void)_clearAllHeightCaches;
-- (void)clearCacheForNotificationRequest:(id)a3;
-- (void)clearCachedHeightsForNotificationRequest:(id)a3;
-- (void)recycleNotificationListCoalescingControlsCell:(id)a3;
-- (void)recycleNotificationListCoalescingHeaderCell:(id)a3;
-- (void)removeNotificationRequest:(id)a3;
-- (void)updateNotificationRequest:(id)a3;
+- (void)clearCacheForNotificationRequest:(id)request;
+- (void)clearCachedHeightsForNotificationRequest:(id)request;
+- (void)recycleNotificationListCoalescingControlsCell:(id)cell;
+- (void)recycleNotificationListCoalescingHeaderCell:(id)cell;
+- (void)removeNotificationRequest:(id)request;
+- (void)updateNotificationRequest:(id)request;
 @end
 
 @implementation NCNotificationListCache
@@ -57,39 +57,39 @@
   return v2;
 }
 
-- (void)clearCacheForNotificationRequest:(id)a3
+- (void)clearCacheForNotificationRequest:(id)request
 {
-  v4 = [(NCNotificationListCache *)self _cachedRequestMatchingRequest:a3];
+  v4 = [(NCNotificationListCache *)self _cachedRequestMatchingRequest:request];
   if (v4)
   {
     v6 = v4;
     [(NCNotificationListCache *)self clearCachedHeightsForNotificationRequest:v4];
-    v5 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-    [v5 removeObjectForKey:v6];
+    notificationListCellsForRequests = [(NCNotificationListCache *)self notificationListCellsForRequests];
+    [notificationListCellsForRequests removeObjectForKey:v6];
   }
 
   MEMORY[0x2821F96F8](v4);
 }
 
-- (void)clearCachedHeightsForNotificationRequest:(id)a3
+- (void)clearCachedHeightsForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCNotificationListCache *)self cellHeightCache];
-  [v5 removeAllHeightsForRequest:v4];
+  requestCopy = request;
+  cellHeightCache = [(NCNotificationListCache *)self cellHeightCache];
+  [cellHeightCache removeAllHeightsForRequest:requestCopy];
 }
 
-- (void)removeNotificationRequest:(id)a3
+- (void)removeNotificationRequest:(id)request
 {
-  v4 = [(NCNotificationListCache *)self _cachedRequestMatchingRequest:a3];
+  v4 = [(NCNotificationListCache *)self _cachedRequestMatchingRequest:request];
   if (v4)
   {
     v8 = v4;
     [(NCNotificationListCache *)self clearCacheForNotificationRequest:v4];
-    v5 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-    v6 = [v5 objectForKey:v8];
+    notificationListCellsForRequests = [(NCNotificationListCache *)self notificationListCellsForRequests];
+    v6 = [notificationListCellsForRequests objectForKey:v8];
 
-    v7 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-    [v7 removeObjectForKey:v8];
+    notificationListCellsForRequests2 = [(NCNotificationListCache *)self notificationListCellsForRequests];
+    [notificationListCellsForRequests2 removeObjectForKey:v8];
 
     [(NCNotificationListCache *)self recycleNotificationListCell:v6];
   }
@@ -97,144 +97,144 @@
   MEMORY[0x2821F96F8](v4);
 }
 
-- (void)updateNotificationRequest:(id)a3
+- (void)updateNotificationRequest:(id)request
 {
-  v9 = a3;
+  requestCopy = request;
   v4 = [(NCNotificationListCache *)self _cachedRequestMatchingRequest:?];
   if (v4)
   {
-    v5 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-    v6 = [v5 objectForKey:v4];
+    notificationListCellsForRequests = [(NCNotificationListCache *)self notificationListCellsForRequests];
+    v6 = [notificationListCellsForRequests objectForKey:v4];
 
     [(NCNotificationListCache *)self clearCachedHeightsForNotificationRequest:v4];
-    v7 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-    [v7 removeObjectForKey:v4];
+    notificationListCellsForRequests2 = [(NCNotificationListCache *)self notificationListCellsForRequests];
+    [notificationListCellsForRequests2 removeObjectForKey:v4];
 
-    v8 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-    [v8 setObject:v6 forKey:v9];
+    notificationListCellsForRequests3 = [(NCNotificationListCache *)self notificationListCellsForRequests];
+    [notificationListCellsForRequests3 setObject:v6 forKey:requestCopy];
   }
 }
 
-- (id)contentConfigurationForListCell:(id)a3 isContentRevealed:(BOOL)a4
+- (id)contentConfigurationForListCell:(id)cell isContentRevealed:(BOOL)revealed
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 notificationViewController];
+  revealedCopy = revealed;
+  cellCopy = cell;
+  notificationViewController = [cellCopy notificationViewController];
   v7 = objc_opt_new();
-  [v7 setRevealed:v4];
-  [v7 setHighlighted:{objc_msgSend(v6, "isHighlighted")}];
-  [v7 setDateHidden:{objc_msgSend(v5, "hideDate")}];
-  v8 = [v5 currentTraits];
+  [v7 setRevealed:revealedCopy];
+  [v7 setHighlighted:{objc_msgSend(notificationViewController, "isHighlighted")}];
+  [v7 setDateHidden:{objc_msgSend(cellCopy, "hideDate")}];
+  currentTraits = [cellCopy currentTraits];
 
-  LOBYTE(v5) = [v8 alignContentToBottom];
-  v9 = [v6 staticContentProvider];
-  v10 = v9;
-  if (v5)
+  LOBYTE(cellCopy) = [currentTraits alignContentToBottom];
+  staticContentProvider = [notificationViewController staticContentProvider];
+  v10 = staticContentProvider;
+  if (cellCopy)
   {
-    [v9 secondaryTextCompact];
+    [staticContentProvider secondaryTextCompact];
   }
 
   else
   {
-    [v9 secondaryText];
+    [staticContentProvider secondaryText];
   }
   v11 = ;
 
   [v7 setBodyContentType:{objc_msgSend(v11, "nc_contentType")}];
-  [v7 setTraits:v8];
+  [v7 setTraits:currentTraits];
 
   return v7;
 }
 
-- (id)contentConfigurationForContentProvider:(id)a3 isContentRevealed:(BOOL)a4 traits:(id)a5
+- (id)contentConfigurationForContentProvider:(id)provider isContentRevealed:(BOOL)revealed traits:(id)traits
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
+  revealedCopy = revealed;
+  traitsCopy = traits;
+  providerCopy = provider;
   v9 = objc_opt_new();
-  [v9 setRevealed:v5];
-  [v9 setHighlighted:{objc_msgSend(v8, "isHighlighted")}];
-  v10 = [v8 date];
-  [v9 setDateHidden:v10 != 0];
+  [v9 setRevealed:revealedCopy];
+  [v9 setHighlighted:{objc_msgSend(providerCopy, "isHighlighted")}];
+  date = [providerCopy date];
+  [v9 setDateHidden:date != 0];
 
-  if ([v7 alignContentToBottom])
+  if ([traitsCopy alignContentToBottom])
   {
-    [v8 secondaryTextCompact];
+    [providerCopy secondaryTextCompact];
   }
 
   else
   {
-    [v8 secondaryText];
+    [providerCopy secondaryText];
   }
   v11 = ;
 
   [v9 setBodyContentType:{objc_msgSend(v11, "nc_contentType")}];
-  [v9 setTraits:v7];
+  [v9 setTraits:traitsCopy];
 
   return v9;
 }
 
-- (double)heightForNotificationRequest:(id)a3 contentProvider:(id)a4 withFrameWidth:(double)a5 isContentRevealed:(BOOL)a6 shouldCalculateHeight:(BOOL)a7 traits:(id)a8
+- (double)heightForNotificationRequest:(id)request contentProvider:(id)provider withFrameWidth:(double)width isContentRevealed:(BOOL)revealed shouldCalculateHeight:(BOOL)height traits:(id)traits
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = [(NCNotificationListCache *)self listCellForNotificationRequest:v14 viewControllerDelegate:0 createNewIfNecessary:0 shouldConfigure:0];
-  v18 = [v17 notificationViewController];
-  v19 = [v17 notificationViewController];
-  v20 = [v19 staticContentProvider];
+  heightCopy = height;
+  revealedCopy = revealed;
+  requestCopy = request;
+  providerCopy = provider;
+  traitsCopy = traits;
+  v17 = [(NCNotificationListCache *)self listCellForNotificationRequest:requestCopy viewControllerDelegate:0 createNewIfNecessary:0 shouldConfigure:0];
+  notificationViewController = [v17 notificationViewController];
+  notificationViewController2 = [v17 notificationViewController];
+  staticContentProvider = [notificationViewController2 staticContentProvider];
 
-  if (!v20)
+  if (!staticContentProvider)
   {
-    [v18 _setupStaticContentProvider];
+    [notificationViewController _setupStaticContentProvider];
   }
 
-  v21 = [v18 staticContentProvider];
-  v22 = v21;
-  if (v21)
+  staticContentProvider2 = [notificationViewController staticContentProvider];
+  v22 = staticContentProvider2;
+  if (staticContentProvider2)
   {
-    v23 = v21;
+    v23 = staticContentProvider2;
   }
 
   else
   {
-    v23 = v15;
+    v23 = providerCopy;
   }
 
   v24 = v23;
 
-  v25 = [(NCNotificationListCache *)self contentConfigurationForContentProvider:v24 isContentRevealed:v10 traits:v16];
+  v25 = [(NCNotificationListCache *)self contentConfigurationForContentProvider:v24 isContentRevealed:revealedCopy traits:traitsCopy];
 
-  [v25 setTraits:v16];
-  v26 = [(NCNotificationListCache *)self cellHeightCache];
-  v27 = [v26 heightForRequest:v14 withContentConfiguration:v25];
+  [v25 setTraits:traitsCopy];
+  cellHeightCache = [(NCNotificationListCache *)self cellHeightCache];
+  v27 = [cellHeightCache heightForRequest:requestCopy withContentConfiguration:v25];
 
   if (!v27)
   {
     v27 = &unk_2830158A0;
     if (v17)
     {
-      if (v9)
+      if (heightCopy)
       {
-        if (v18)
+        if (notificationViewController)
         {
-          v31 = [v18 notificationRequest];
-          v32 = [v31 matchesRequest:v14];
+          notificationRequest = [notificationViewController notificationRequest];
+          v32 = [notificationRequest matchesRequest:requestCopy];
 
           v27 = &unk_2830158A0;
-          if (a5 > 0.0)
+          if (width > 0.0)
           {
             if (v32)
             {
-              [v18 setHasUpdatedContent];
-              [v18 updateContent];
-              [v17 sizeThatFits:v16 withTraits:{a5, 1.79769313e308}];
+              [notificationViewController setHasUpdatedContent];
+              [notificationViewController updateContent];
+              [v17 sizeThatFits:traitsCopy withTraits:{width, 1.79769313e308}];
               v34 = v33;
               v27 = [MEMORY[0x277CCABB0] numberWithDouble:v33];
-              v35 = [(NCNotificationListCache *)self cellHeightCache];
-              [v35 setHeight:v14 forRequest:v25 withContentConfiguration:v34];
+              cellHeightCache2 = [(NCNotificationListCache *)self cellHeightCache];
+              [cellHeightCache2 setHeight:requestCopy forRequest:v25 withContentConfiguration:v34];
             }
           }
         }
@@ -248,18 +248,18 @@
   return v29;
 }
 
-- (BOOL)invalidateCachedHeightIfNecessaryForNotificationRequest:(id)a3 updatedHeight:(double)a4 isContentRevealed:(BOOL)a5 traits:(id)a6
+- (BOOL)invalidateCachedHeightIfNecessaryForNotificationRequest:(id)request updatedHeight:(double)height isContentRevealed:(BOOL)revealed traits:(id)traits
 {
-  v7 = a5;
+  revealedCopy = revealed;
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(NCNotificationListCache *)self listCellForNotificationRequest:v10 viewControllerDelegate:0 createNewIfNecessary:0 shouldConfigure:0];
-  v13 = [(NCNotificationListCache *)self contentConfigurationForListCell:v12 isContentRevealed:v7];
-  [v13 setTraits:v11];
+  requestCopy = request;
+  traitsCopy = traits;
+  v12 = [(NCNotificationListCache *)self listCellForNotificationRequest:requestCopy viewControllerDelegate:0 createNewIfNecessary:0 shouldConfigure:0];
+  v13 = [(NCNotificationListCache *)self contentConfigurationForListCell:v12 isContentRevealed:revealedCopy];
+  [v13 setTraits:traitsCopy];
 
-  v14 = [(NCNotificationListCache *)self cellHeightCache];
-  v15 = [v14 heightForRequest:v10 withContentConfiguration:v13];
+  cellHeightCache = [(NCNotificationListCache *)self cellHeightCache];
+  v15 = [cellHeightCache heightForRequest:requestCopy withContentConfiguration:v13];
 
   if (v15 && ([v15 floatValue], (BSFloatApproximatelyEqualToFloat() & 1) == 0))
   {
@@ -267,62 +267,62 @@
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEBUG))
     {
       v33 = v17;
-      v34 = [v10 notificationIdentifier];
-      v35 = [v34 un_logDigest];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       [v15 floatValue];
       *buf = 138544130;
-      v44 = v35;
+      v44 = un_logDigest;
       v45 = 2048;
       v46 = v36;
       v47 = 2048;
-      v48 = a4;
+      heightCopy = height;
       v49 = 2112;
       v50 = v13;
       _os_log_debug_impl(&dword_21E77E000, v33, OS_LOG_TYPE_DEBUG, "Notification list invalidating cached height for request %{public}@ [cachedHeight=%.2f, updatedHeight=%.2f, cellContentConfiguration=%@]", buf, 0x2Au);
     }
 
-    v18 = [v12 notificationViewController];
-    v19 = [v18 staticContentProvider];
+    notificationViewController = [v12 notificationViewController];
+    staticContentProvider = [notificationViewController staticContentProvider];
 
-    v20 = [(NCNotificationListCache *)self cellHeightCache];
-    v21 = v20;
-    if (v19)
+    cellHeightCache2 = [(NCNotificationListCache *)self cellHeightCache];
+    v21 = cellHeightCache2;
+    if (staticContentProvider)
     {
-      [v20 removeHeightForContentConfiguration:v13 forRequest:v10];
+      [cellHeightCache2 removeHeightForContentConfiguration:v13 forRequest:requestCopy];
     }
 
     else
     {
-      [v20 removeAllHeightsForRequest:v10];
+      [cellHeightCache2 removeAllHeightsForRequest:requestCopy];
     }
 
-    v22 = [v12 notificationViewController];
-    v23 = [v22 staticContentProvider];
+    notificationViewController2 = [v12 notificationViewController];
+    staticContentProvider2 = [notificationViewController2 staticContentProvider];
 
-    if (v23)
+    if (staticContentProvider2)
     {
-      v24 = [(NCNotificationListCache *)self cellHeightCache];
-      v25 = [v24 cellHeightDictionary];
-      v26 = [v10 identifiersString];
-      v27 = [v25 objectForKey:v26];
+      cellHeightCache3 = [(NCNotificationListCache *)self cellHeightCache];
+      cellHeightDictionary = [cellHeightCache3 cellHeightDictionary];
+      identifiersString = [requestCopy identifiersString];
+      v27 = [cellHeightDictionary objectForKey:identifiersString];
 
       if (v27)
       {
-        v28 = [v27 cellHeightForConfigurationDictionary];
-        v29 = [v28 allKeys];
-        v30 = [v29 copy];
+        cellHeightForConfigurationDictionary = [v27 cellHeightForConfigurationDictionary];
+        allKeys = [cellHeightForConfigurationDictionary allKeys];
+        v30 = [allKeys copy];
 
         v37 = MEMORY[0x277D85DD0];
         v38 = 3221225472;
         v39 = __122__NCNotificationListCache_invalidateCachedHeightIfNecessaryForNotificationRequest_updatedHeight_isContentRevealed_traits___block_invoke;
         v40 = &unk_278372328;
-        v42 = v7;
+        v42 = revealedCopy;
         v41 = v27;
         [v30 enumerateObjectsUsingBlock:&v37];
         if (![v30 count])
         {
-          v31 = [(NCNotificationListCache *)self cellHeightCache];
-          [v31 removeAllHeightsForRequest:v10];
+          cellHeightCache4 = [(NCNotificationListCache *)self cellHeightCache];
+          [cellHeightCache4 removeAllHeightsForRequest:requestCopy];
         }
       }
     }
@@ -350,21 +350,21 @@ void __122__NCNotificationListCache_invalidateCachedHeightIfNecessaryForNotifica
   }
 }
 
-- (id)listCellForNotificationRequest:(id)a3 viewControllerDelegate:(id)a4 createNewIfNecessary:(BOOL)a5 shouldConfigure:(BOOL)a6
+- (id)listCellForNotificationRequest:(id)request viewControllerDelegate:(id)delegate createNewIfNecessary:(BOOL)necessary shouldConfigure:(BOOL)configure
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-  v13 = [v12 objectForKey:v10];
+  configureCopy = configure;
+  necessaryCopy = necessary;
+  requestCopy = request;
+  delegateCopy = delegate;
+  notificationListCellsForRequests = [(NCNotificationListCache *)self notificationListCellsForRequests];
+  v13 = [notificationListCellsForRequests objectForKey:requestCopy];
 
-  if (!v13 && v7)
+  if (!v13 && necessaryCopy)
   {
-    v13 = [(NCNotificationListCache *)self _cachedNotificationListCellForRequest:v10 viewControllerDelegate:v11 shouldConfigure:v6];
+    v13 = [(NCNotificationListCache *)self _cachedNotificationListCellForRequest:requestCopy viewControllerDelegate:delegateCopy shouldConfigure:configureCopy];
     if (!v13)
     {
-      v13 = [(NCNotificationListCache *)self _newCellForNotificationRequest:v10 viewControllerDelegate:v11];
+      v13 = [(NCNotificationListCache *)self _newCellForNotificationRequest:requestCopy viewControllerDelegate:delegateCopy];
     }
 
     v14 = *(MEMORY[0x277CBF2C0] + 16);
@@ -373,31 +373,31 @@ void __122__NCNotificationListCache_invalidateCachedHeightIfNecessaryForNotifica
     v17[2] = *(MEMORY[0x277CBF2C0] + 32);
     [v13 setTransform:v17];
     [v13 setAlpha:1.0];
-    v15 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-    [v15 setObject:v13 forKey:v10];
+    notificationListCellsForRequests2 = [(NCNotificationListCache *)self notificationListCellsForRequests];
+    [notificationListCellsForRequests2 setObject:v13 forKey:requestCopy];
   }
 
   return v13;
 }
 
-- (BOOL)recycleNotificationListCell:(id)a3
+- (BOOL)recycleNotificationListCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__9;
   v24 = __Block_byref_object_dispose__9;
   v25 = 0;
-  v5 = [(NCNotificationListCache *)self notificationListCellsForRequests];
+  notificationListCellsForRequests = [(NCNotificationListCache *)self notificationListCellsForRequests];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __55__NCNotificationListCache_recycleNotificationListCell___block_invoke;
   v17 = &unk_278372350;
-  v6 = v4;
+  v6 = cellCopy;
   v18 = v6;
   v19 = &v20;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v14];
+  [notificationListCellsForRequests enumerateKeysAndObjectsUsingBlock:&v14];
 
   if (v21[5])
   {
@@ -422,8 +422,8 @@ void __122__NCNotificationListCache_invalidateCachedHeightIfNecessaryForNotifica
   if (v11)
   {
     [v6 prepareForReuse];
-    v12 = [(NCNotificationListCache *)self notificationListCellCache];
-    [v12 addObject:v6];
+    notificationListCellCache = [(NCNotificationListCache *)self notificationListCellCache];
+    [notificationListCellCache addObject:v6];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -442,22 +442,22 @@ void __55__NCNotificationListCache_recycleNotificationListCell___block_invoke(ui
   }
 }
 
-- (id)coalescingHeaderCellWithTitle:(id)a3 clearAllText:(id)a4 width:(double)a5
+- (id)coalescingHeaderCellWithTitle:(id)title clearAllText:(id)text width:(double)width
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(NCNotificationListCache *)self _cachedHeaderCellWithTitle:v9];
+  textCopy = text;
+  titleCopy = title;
+  v10 = [(NCNotificationListCache *)self _cachedHeaderCellWithTitle:titleCopy];
   if (!v10)
   {
     v11 = [NCNotificationListCoalescingHeaderCell alloc];
     v10 = [(NCNotificationListCoalescingHeaderCell *)v11 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   }
 
-  [NCNotificationListCoalescingHeaderCell coalescingHeaderCellHeightForWidth:v9 title:a5];
-  [(NCNotificationListCoalescingHeaderCell *)v10 setFrame:0.0, 0.0, a5, v12];
-  [(NCNotificationListCoalescingHeaderCell *)v10 setTitle:v9];
+  [NCNotificationListCoalescingHeaderCell coalescingHeaderCellHeightForWidth:titleCopy title:width];
+  [(NCNotificationListCoalescingHeaderCell *)v10 setFrame:0.0, 0.0, width, v12];
+  [(NCNotificationListCoalescingHeaderCell *)v10 setTitle:titleCopy];
 
-  [(NCNotificationListCoalescingHeaderCell *)v10 setClearAllText:v8];
+  [(NCNotificationListCoalescingHeaderCell *)v10 setClearAllText:textCopy];
   [(NCNotificationListCoalescingHeaderCell *)v10 resetClearButtonStateAnimated:0];
   [(NCNotificationListCoalescingHeaderCell *)v10 setAdjustsFontForContentSizeCategory:1];
   [(NCNotificationListCoalescingHeaderCell *)v10 setNeedsLayout];
@@ -465,71 +465,71 @@ void __55__NCNotificationListCache_recycleNotificationListCell___block_invoke(ui
   return v10;
 }
 
-- (void)recycleNotificationListCoalescingHeaderCell:(id)a3
+- (void)recycleNotificationListCoalescingHeaderCell:(id)cell
 {
-  v7 = a3;
-  v4 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
-  v5 = [v4 count];
+  cellCopy = cell;
+  notificationListCoalescingHeaderCache = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
+  v5 = [notificationListCoalescingHeaderCache count];
 
   if (v5 <= 0x13)
   {
-    v6 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
-    [v6 addObject:v7];
+    notificationListCoalescingHeaderCache2 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
+    [notificationListCoalescingHeaderCache2 addObject:cellCopy];
   }
 }
 
-- (id)coalescingControlsCellWithWidth:(double)a3
+- (id)coalescingControlsCellWithWidth:(double)width
 {
-  v5 = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
-  v6 = [v5 anyObject];
+  notificationListCoalescingControlsCache = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
+  anyObject = [notificationListCoalescingControlsCache anyObject];
 
-  if (v6)
+  if (anyObject)
   {
-    v7 = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
-    [v7 removeObject:v6];
+    notificationListCoalescingControlsCache2 = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
+    [notificationListCoalescingControlsCache2 removeObject:anyObject];
   }
 
   else
   {
     v8 = [NCNotificationListCoalescingControlsCell alloc];
-    v6 = [(NCNotificationListCoalescingControlsCell *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    anyObject = [(NCNotificationListCoalescingControlsCell *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   }
 
   [NCNotificationListCoalescingControlsCell coalescingControlsCellHeightShowingCoalescingControls:1];
-  [(NCNotificationListCoalescingControlsCell *)v6 setFrame:0.0, 0.0, a3, v9];
-  [(NCNotificationListCoalescingControlsCell *)v6 setAdjustsFontForContentSizeCategory:1];
+  [(NCNotificationListCoalescingControlsCell *)anyObject setFrame:0.0, 0.0, width, v9];
+  [(NCNotificationListCoalescingControlsCell *)anyObject setAdjustsFontForContentSizeCategory:1];
 
-  return v6;
+  return anyObject;
 }
 
-- (void)recycleNotificationListCoalescingControlsCell:(id)a3
+- (void)recycleNotificationListCoalescingControlsCell:(id)cell
 {
-  v7 = a3;
-  v4 = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
-  v5 = [v4 count];
+  cellCopy = cell;
+  notificationListCoalescingControlsCache = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
+  v5 = [notificationListCoalescingControlsCache count];
 
   if (v5 <= 0x13)
   {
-    v6 = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
-    [v6 addObject:v7];
+    notificationListCoalescingControlsCache2 = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
+    [notificationListCoalescingControlsCache2 addObject:cellCopy];
   }
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
   [(NCNotificationListCache *)self _clearAllHeightCaches];
-  v3 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-  v4 = [v3 allValues];
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global_34];
+  notificationListCellsForRequests = [(NCNotificationListCache *)self notificationListCellsForRequests];
+  allValues = [notificationListCellsForRequests allValues];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_34];
 
-  v5 = [(NCNotificationListCache *)self notificationListCellCache];
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_106];
+  notificationListCellCache = [(NCNotificationListCache *)self notificationListCellCache];
+  [notificationListCellCache enumerateObjectsUsingBlock:&__block_literal_global_106];
 
-  v6 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
-  [v6 enumerateObjectsUsingBlock:&__block_literal_global_109];
+  notificationListCoalescingHeaderCache = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
+  [notificationListCoalescingHeaderCache enumerateObjectsUsingBlock:&__block_literal_global_109];
 
-  v7 = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
-  [v7 enumerateObjectsUsingBlock:&__block_literal_global_112_0];
+  notificationListCoalescingControlsCache = [(NCNotificationListCache *)self notificationListCoalescingControlsCache];
+  [notificationListCoalescingControlsCache enumerateObjectsUsingBlock:&__block_literal_global_112_0];
 
   return 1;
 }
@@ -546,10 +546,10 @@ void __61__NCNotificationListCache_adjustForContentSizeCategoryChange__block_inv
   [v2 adjustForContentSizeCategoryChange];
 }
 
-- (id)_newCellForNotificationRequest:(id)a3 viewControllerDelegate:(id)a4
+- (id)_newCellForNotificationRequest:(id)request viewControllerDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  requestCopy = request;
   v8 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -561,9 +561,9 @@ void __61__NCNotificationListCache_adjustForContentSizeCategoryChange__block_inv
     }
   }
 
-  v11 = [[v8 alloc] initWithNotificationRequest:v7];
+  v11 = [[v8 alloc] initWithNotificationRequest:requestCopy];
 
-  [v11 setDelegate:v6];
+  [v11 setDelegate:delegateCopy];
   v12 = [NCNotificationListCell alloc];
   v13 = [(NCNotificationListCell *)v12 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(NCNotificationListCell *)v13 setContentViewController:v11];
@@ -572,42 +572,42 @@ void __61__NCNotificationListCache_adjustForContentSizeCategoryChange__block_inv
   return v13;
 }
 
-- (id)_cachedHeaderCellWithTitle:(id)a3
+- (id)_cachedHeaderCellWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
-  v6 = [v5 count];
+  titleCopy = title;
+  notificationListCoalescingHeaderCache = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
+  v6 = [notificationListCoalescingHeaderCache count];
 
   if (v6)
   {
-    v7 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
+    notificationListCoalescingHeaderCache2 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __54__NCNotificationListCache__cachedHeaderCellWithTitle___block_invoke;
     v14[3] = &unk_2783723F8;
-    v15 = v4;
-    v8 = [v7 objectsPassingTest:v14];
-    v9 = [v8 anyObject];
+    v15 = titleCopy;
+    v8 = [notificationListCoalescingHeaderCache2 objectsPassingTest:v14];
+    anyObject = [v8 anyObject];
 
-    if (!v9)
+    if (!anyObject)
     {
-      v10 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
-      v9 = [v10 anyObject];
+      notificationListCoalescingHeaderCache3 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
+      anyObject = [notificationListCoalescingHeaderCache3 anyObject];
 
-      v11 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
-      [v11 removeObject:v9];
+      notificationListCoalescingHeaderCache4 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
+      [notificationListCoalescingHeaderCache4 removeObject:anyObject];
     }
 
-    v12 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
-    [v12 removeObject:v9];
+    notificationListCoalescingHeaderCache5 = [(NCNotificationListCache *)self notificationListCoalescingHeaderCache];
+    [notificationListCoalescingHeaderCache5 removeObject:anyObject];
   }
 
   else
   {
-    v9 = 0;
+    anyObject = 0;
   }
 
-  return v9;
+  return anyObject;
 }
 
 uint64_t __54__NCNotificationListCache__cachedHeaderCellWithTitle___block_invoke(uint64_t a1, void *a2)
@@ -618,46 +618,46 @@ uint64_t __54__NCNotificationListCache__cachedHeaderCellWithTitle___block_invoke
   return v4;
 }
 
-- (id)_cachedNotificationListCellForRequest:(id)a3 viewControllerDelegate:(id)a4 shouldConfigure:(BOOL)a5
+- (id)_cachedNotificationListCellForRequest:(id)request viewControllerDelegate:(id)delegate shouldConfigure:(BOOL)configure
 {
-  v5 = a5;
+  configureCopy = configure;
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NCNotificationListCache *)self notificationListCellCache];
-  v11 = [v10 count];
+  requestCopy = request;
+  delegateCopy = delegate;
+  notificationListCellCache = [(NCNotificationListCache *)self notificationListCellCache];
+  v11 = [notificationListCellCache count];
 
   if (v11)
   {
-    v12 = [(NCNotificationListCache *)self notificationListCellCache];
+    notificationListCellCache2 = [(NCNotificationListCache *)self notificationListCellCache];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __104__NCNotificationListCache__cachedNotificationListCellForRequest_viewControllerDelegate_shouldConfigure___block_invoke;
     v34[3] = &unk_278372420;
-    v13 = v8;
+    v13 = requestCopy;
     v35 = v13;
-    v14 = [v12 objectsPassingTest:v34];
-    v15 = [v14 anyObject];
+    v14 = [notificationListCellCache2 objectsPassingTest:v34];
+    anyObject = [v14 anyObject];
 
-    if (v15)
+    if (anyObject)
     {
-      v16 = [(NCNotificationListCache *)self notificationListCellCache];
-      [v16 removeObject:v15];
+      notificationListCellCache3 = [(NCNotificationListCache *)self notificationListCellCache];
+      [notificationListCellCache3 removeObject:anyObject];
 
-      v17 = [v15 notificationViewController];
-      v18 = v17;
-      if (v5)
+      notificationViewController = [anyObject notificationViewController];
+      notificationListCellCache4 = notificationViewController;
+      if (configureCopy)
       {
-        v19 = [v17 delegate];
+        delegate = [notificationViewController delegate];
 
-        if (v19 == v9)
+        if (delegate == delegateCopy)
         {
-          [v18 invalidateContentProviders];
+          [notificationListCellCache4 invalidateContentProviders];
         }
 
         else
         {
-          [v18 setDelegate:v9];
+          [notificationListCellCache4 setDelegate:delegateCopy];
         }
       }
     }
@@ -668,12 +668,12 @@ uint64_t __54__NCNotificationListCache__cachedHeaderCellWithTitle___block_invoke
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v18 = [(NCNotificationListCache *)self notificationListCellCache];
-      v15 = [v18 countByEnumeratingWithState:&v30 objects:v36 count:16];
-      if (v15)
+      notificationListCellCache4 = [(NCNotificationListCache *)self notificationListCellCache];
+      anyObject = [notificationListCellCache4 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      if (anyObject)
       {
         v28 = v13;
-        v29 = v5;
+        v29 = configureCopy;
         v20 = *v31;
 LABEL_9:
         v21 = 0;
@@ -681,22 +681,22 @@ LABEL_9:
         {
           if (*v31 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(notificationListCellCache4);
           }
 
           v22 = *(*(&v30 + 1) + 8 * v21);
-          v23 = [v22 notificationViewController];
-          v24 = [v23 hasCommittedToPresentingCustomContentProvidingViewController];
+          notificationViewController2 = [v22 notificationViewController];
+          hasCommittedToPresentingCustomContentProvidingViewController = [notificationViewController2 hasCommittedToPresentingCustomContentProvidingViewController];
 
-          if (!v24)
+          if (!hasCommittedToPresentingCustomContentProvidingViewController)
           {
             break;
           }
 
-          if (v15 == ++v21)
+          if (anyObject == ++v21)
           {
-            v15 = [v18 countByEnumeratingWithState:&v30 objects:v36 count:16];
-            if (v15)
+            anyObject = [notificationListCellCache4 countByEnumeratingWithState:&v30 objects:v36 count:16];
+            if (anyObject)
             {
               goto LABEL_9;
             }
@@ -705,28 +705,28 @@ LABEL_9:
           }
         }
 
-        v15 = v22;
+        anyObject = v22;
 
-        if (!v15)
+        if (!anyObject)
         {
           goto LABEL_22;
         }
 
-        v25 = [(NCNotificationListCache *)self notificationListCellCache];
-        [v25 removeObject:v15];
+        notificationListCellCache5 = [(NCNotificationListCache *)self notificationListCellCache];
+        [notificationListCellCache5 removeObject:anyObject];
 
-        v26 = [v15 notificationViewController];
-        v18 = v26;
+        notificationViewController3 = [anyObject notificationViewController];
+        notificationListCellCache4 = notificationViewController3;
         if (v29)
         {
-          [v26 setDelegate:v9];
-          [v18 setNotificationContentViewHidden:0];
-          [v18 setNotificationRequest:v28];
+          [notificationViewController3 setDelegate:delegateCopy];
+          [notificationListCellCache4 setNotificationContentViewHidden:0];
+          [notificationListCellCache4 setNotificationRequest:v28];
         }
 
         else
         {
-          [v26 setNotificationContentViewHidden:1];
+          [notificationViewController3 setNotificationContentViewHidden:1];
         }
       }
     }
@@ -738,10 +738,10 @@ LABEL_22:
 
   else
   {
-    v15 = 0;
+    anyObject = 0;
   }
 
-  return v15;
+  return anyObject;
 }
 
 BOOL __104__NCNotificationListCache__cachedNotificationListCellForRequest_viewControllerDelegate_shouldConfigure___block_invoke(uint64_t a1, void *a2)
@@ -755,30 +755,30 @@ BOOL __104__NCNotificationListCache__cachedNotificationListCellForRequest_viewCo
 
 - (void)_clearAllHeightCaches
 {
-  v3 = [(NCNotificationListCache *)self cellHeightCache];
-  v2 = [v3 cellHeightDictionary];
-  [v2 removeAllObjects];
+  cellHeightCache = [(NCNotificationListCache *)self cellHeightCache];
+  cellHeightDictionary = [cellHeightCache cellHeightDictionary];
+  [cellHeightDictionary removeAllObjects];
 }
 
-- (id)_cachedRequestMatchingRequest:(id)a3
+- (id)_cachedRequestMatchingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__9;
   v17 = __Block_byref_object_dispose__9;
   v18 = 0;
-  v5 = [(NCNotificationListCache *)self notificationListCellsForRequests];
-  v6 = [v5 allKeys];
+  notificationListCellsForRequests = [(NCNotificationListCache *)self notificationListCellsForRequests];
+  allKeys = [notificationListCellsForRequests allKeys];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__NCNotificationListCache__cachedRequestMatchingRequest___block_invoke;
   v10[3] = &unk_278372448;
-  v7 = v4;
+  v7 = requestCopy;
   v11 = v7;
   v12 = &v13;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [allKeys enumerateObjectsUsingBlock:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -805,8 +805,8 @@ void __57__NCNotificationListCache__cachedRequestMatchingRequest___block_invoke(
 
 - (unint64_t)currentCellHeightCacheCount
 {
-  v2 = [(NCNotificationCellHeightDictionary *)self->_cellHeightCache cellHeightDictionary];
-  v3 = [v2 count];
+  cellHeightDictionary = [(NCNotificationCellHeightDictionary *)self->_cellHeightCache cellHeightDictionary];
+  v3 = [cellHeightDictionary count];
 
   return v3;
 }

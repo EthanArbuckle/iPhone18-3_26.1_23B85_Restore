@@ -1,18 +1,18 @@
 @interface _PUIFBSSceneSnapshot
 - (BOOL)hasProtectedContent;
-- (CGAffineTransform)_baseTransformForSnapshotContext:(SEL)a3 rootContext:(id)a4;
+- (CGAffineTransform)_baseTransformForSnapshotContext:(SEL)context rootContext:(id)rootContext;
 - (_PUIFBSSceneSnapshot)init;
-- (_PUIFBSSceneSnapshot)initWithScene:(id)a3 snapshotContext:(id)a4 layers:(id)a5;
-- (id)_collectLayersWithSnapshotContext:(id)a3 rootContext:(id)a4;
+- (_PUIFBSSceneSnapshot)initWithScene:(id)scene snapshotContext:(id)context layers:(id)layers;
+- (id)_collectLayersWithSnapshotContext:(id)context rootContext:(id)rootContext;
 @end
 
 @implementation _PUIFBSSceneSnapshot
 
-- (_PUIFBSSceneSnapshot)initWithScene:(id)a3 snapshotContext:(id)a4 layers:(id)a5
+- (_PUIFBSSceneSnapshot)initWithScene:(id)scene snapshotContext:(id)context layers:(id)layers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  contextCopy = context;
+  layersCopy = layers;
   BSDispatchQueueAssertMain();
   v33.receiver = self;
   v33.super_class = _PUIFBSSceneSnapshot;
@@ -20,34 +20,34 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_scene, a3);
-    objc_storeStrong(&v13->_context, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_scene, scene);
+    objc_storeStrong(&v13->_context, context);
+    v14 = [layersCopy copy];
     layers = v13->_layers;
     v13->_layers = v14;
 
-    v16 = [(_PUIFBSSceneSnapshot *)v13 _collectLayersWithSnapshotContext:v10 rootContext:v10];
+    v16 = [(_PUIFBSSceneSnapshot *)v13 _collectLayersWithSnapshotContext:contextCopy rootContext:contextCopy];
     layersToSnapshot = v13->_layersToSnapshot;
     v13->_layersToSnapshot = v16;
 
     v18 = objc_alloc(MEMORY[0x1E699FD08]);
-    v19 = [v9 settings];
-    v20 = [v19 displayConfiguration];
-    v21 = [v18 initWithDisplayConfiguration:v20 layers:v13->_layersToSnapshot];
+    settings = [sceneCopy settings];
+    displayConfiguration = [settings displayConfiguration];
+    v21 = [v18 initWithDisplayConfiguration:displayConfiguration layers:v13->_layersToSnapshot];
 
-    [v21 setOpaque:{objc_msgSend(v10, "isOpaque")}];
-    [v10 scale];
+    [v21 setOpaque:{objc_msgSend(contextCopy, "isOpaque")}];
+    [contextCopy scale];
     [v21 setScale:?];
-    v22 = [v10 clientExtendedData];
-    [v21 setAllowsProtectedContent:{objc_msgSend(v22, "BOOLForSetting:", 281330800)}];
+    clientExtendedData = [contextCopy clientExtendedData];
+    [v21 setAllowsProtectedContent:{objc_msgSend(clientExtendedData, "BOOLForSetting:", 281330800)}];
 
-    [v10 frame];
+    [contextCopy frame];
     v24 = v23;
     v26 = v25;
-    if (![v10 orientation])
+    if (![contextCopy orientation])
     {
-      v27 = [v10 settings];
-      [v27 interfaceOrientation];
+      settings2 = [contextCopy settings];
+      [settings2 interfaceOrientation];
       IsLandscape = BSInterfaceOrientationIsLandscape();
 
       if (IsLandscape)
@@ -86,24 +86,24 @@
 
 - (BOOL)hasProtectedContent
 {
-  v2 = [(_PUIFBSSceneSnapshot *)self fallbackIOSurface];
-  v3 = v2 != 0;
+  fallbackIOSurface = [(_PUIFBSSceneSnapshot *)self fallbackIOSurface];
+  v3 = fallbackIOSurface != 0;
 
   return v3;
 }
 
-- (id)_collectLayersWithSnapshotContext:(id)a3 rootContext:(id)a4
+- (id)_collectLayersWithSnapshotContext:(id)context rootContext:(id)rootContext
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  rootContextCopy = rootContext;
   v8 = [MEMORY[0x1E695DFA0] orderedSetWithOrderedSet:self->_layers];
-  v9 = [v6 layersToExclude];
-  [v8 minusSet:v9];
+  layersToExclude = [contextCopy layersToExclude];
+  [v8 minusSet:layersToExclude];
 
-  v10 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   memset(&v32, 0, sizeof(v32));
-  [(_PUIFBSSceneSnapshot *)self _baseTransformForSnapshotContext:v6 rootContext:v7];
+  [(_PUIFBSSceneSnapshot *)self _baseTransformForSnapshotContext:contextCopy rootContext:rootContextCopy];
   memset(&v31, 0, sizeof(v31));
   v21 = v32;
   CATransform3DMakeAffineTransform(&v31, &v21);
@@ -126,10 +126,10 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v27 + 1) + 8 * i) contextID];
-        if (v16)
+        contextID = [*(*(&v27 + 1) + 8 * i) contextID];
+        if (contextID)
         {
-          v17 = v16;
+          v17 = contextID;
           v18 = objc_alloc(MEMORY[0x1E699FD10]);
           v23 = *&v31.m31;
           v24 = *&v31.m33;
@@ -142,7 +142,7 @@
           v19 = [v18 initWithContextID:v17 baseTransform:&v21];
           if (v19)
           {
-            [v10 addObject:v19];
+            [orderedSet addObject:v19];
           }
         }
       }
@@ -153,12 +153,12 @@
     while (v13);
   }
 
-  return v10;
+  return orderedSet;
 }
 
-- (CGAffineTransform)_baseTransformForSnapshotContext:(SEL)a3 rootContext:(id)a4
+- (CGAffineTransform)_baseTransformForSnapshotContext:(SEL)context rootContext:(id)rootContext
 {
-  v8 = a4;
+  rootContextCopy = rootContext;
   v9 = a5;
   v10 = MEMORY[0x1E695EFD0];
   v46 = *(MEMORY[0x1E695EFD0] + 16);
@@ -167,12 +167,12 @@
   *&retstr->c = v46;
   v45 = *(v10 + 32);
   *&retstr->tx = v45;
-  v11 = [v8 settings];
-  v12 = [v11 interfaceOrientation];
+  settings = [rootContextCopy settings];
+  interfaceOrientation = [settings interfaceOrientation];
 
   if (BSInterfaceOrientationIsValid())
   {
-    v13 = v12;
+    v13 = interfaceOrientation;
   }
 
   else
@@ -180,13 +180,13 @@
     v13 = 1;
   }
 
-  v14 = [v9 settings];
-  v15 = [v14 interfaceOrientation];
+  settings2 = [v9 settings];
+  interfaceOrientation2 = [settings2 interfaceOrientation];
 
   IsValid = BSInterfaceOrientationIsValid();
-  v17 = [(FBSScene *)self->_scene settings];
-  v18 = [v17 displayConfiguration];
-  [v18 bounds];
+  settings3 = [(FBSScene *)self->_scene settings];
+  displayConfiguration = [settings3 displayConfiguration];
+  [displayConfiguration bounds];
 
   [v9 frame];
   v20 = v19;
@@ -200,7 +200,7 @@
   {
     if (IsValid)
     {
-      v23 = v15;
+      v23 = interfaceOrientation2;
     }
 
     else
@@ -229,8 +229,8 @@
 
   if (v13 != v23)
   {
-    v26 = [v8 settings];
-    [v26 frame];
+    settings4 = [rootContextCopy settings];
+    [settings4 frame];
 
     if (v13 != 1)
     {

@@ -1,18 +1,18 @@
 @interface CTClientDelegate
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
 - (void)dealloc;
 @end
 
 @implementation CTClientDelegate
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
-  v8 = a3;
-  v6 = a4;
+  updateCopy = update;
+  infoCopy = info;
   fOnCellMonitorUpdateCb = self->_fOnCellMonitorUpdateCb;
   if (fOnCellMonitorUpdateCb)
   {
-    fOnCellMonitorUpdateCb[2](fOnCellMonitorUpdateCb, v8, v6);
+    fOnCellMonitorUpdateCb[2](fOnCellMonitorUpdateCb, updateCopy, infoCopy);
   }
 }
 

@@ -19,7 +19,7 @@
 
 - (id)nextObject
 {
-  v2 = self;
+  selfCopy = self;
   currentSensorDirectoryIndex = self->_currentSensorDirectoryIndex;
   sensorsCache = self->_sensorsCache;
   if (sensorsCache)
@@ -39,45 +39,45 @@
     return 0;
   }
 
-  if (v2->_descriptionFileEnumerator)
+  if (selfCopy->_descriptionFileEnumerator)
   {
     v7 = NSURLIsDirectoryKey;
   }
 
   else
   {
-    Property = v2->_sensorsCache;
+    Property = selfCopy->_sensorsCache;
     if (Property)
     {
       Property = objc_getProperty(Property, v5, 16, 1);
     }
 
-    v10 = [Property objectAtIndexedSubscript:v2->_currentSensorDirectoryIndex];
+    v10 = [Property objectAtIndexedSubscript:selfCopy->_currentSensorDirectoryIndex];
     v7 = NSURLIsDirectoryKey;
     v54 = NSURLIsDirectoryKey;
     v11 = [+[NSFileManager defaultManager](NSFileManager enumeratorAtURL:"enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:" includingPropertiesForKeys:v10 options:[NSArray errorHandler:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 4, 0];
-    objc_setProperty_atomic(v2, v12, v11, 24);
+    objc_setProperty_atomic(selfCopy, v12, v11, 24);
   }
 
   *&v6 = 138543362;
   v45 = v6;
   v47 = v7;
-  v46 = v2;
+  v46 = selfCopy;
   while (1)
   {
-    v13 = [(NSDirectoryEnumerator *)v2->_descriptionFileEnumerator nextObject];
+    nextObject = [(NSDirectoryEnumerator *)selfCopy->_descriptionFileEnumerator nextObject];
     v48 = 0;
-    [v13 getResourceValue:&v48 forKey:v7 error:0];
+    [nextObject getResourceValue:&v48 forKey:v7 error:0];
     if ([v48 BOOLValue])
     {
       goto LABEL_13;
     }
 
-    if (!v13)
+    if (!nextObject)
     {
-      v16 = v2->_currentSensorDirectoryIndex + 1;
-      v2->_currentSensorDirectoryIndex = v16;
-      v17 = v2->_sensorsCache;
+      v16 = selfCopy->_currentSensorDirectoryIndex + 1;
+      selfCopy->_currentSensorDirectoryIndex = v16;
+      v17 = selfCopy->_sensorsCache;
       if (v17)
       {
         v17 = objc_getProperty(v17, v14, 16, 1);
@@ -90,29 +90,29 @@
         break;
       }
 
-      v20 = v2->_sensorsCache;
+      v20 = selfCopy->_sensorsCache;
       if (v20)
       {
         v20 = objc_getProperty(v20, v19, 16, 1);
       }
 
-      v21 = -[NSFileManager enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:", [v20 objectAtIndexedSubscript:v2->_currentSensorDirectoryIndex], 0, 4, 0);
-      objc_setProperty_atomic(v2, v22, v21, 24);
-      v13 = [(NSDirectoryEnumerator *)v2->_descriptionFileEnumerator nextObject];
-      if (!v13)
+      v21 = -[NSFileManager enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:", [v20 objectAtIndexedSubscript:selfCopy->_currentSensorDirectoryIndex], 0, 4, 0);
+      objc_setProperty_atomic(selfCopy, v22, v21, 24);
+      nextObject = [(NSDirectoryEnumerator *)selfCopy->_descriptionFileEnumerator nextObject];
+      if (!nextObject)
       {
         break;
       }
     }
 
-    v23 = [objc_msgSend(v13 "URLByDeletingPathExtension")];
-    v24 = v2->_sensorsCache;
+    v23 = [objc_msgSend(nextObject "URLByDeletingPathExtension")];
+    v24 = selfCopy->_sensorsCache;
     if (v24)
     {
       v25 = v23;
-      v26 = [v23 sr_sensorByDeletingDeletionRecord];
-      v27 = [(NSURL *)v26 isEqualToString:v25];
-      v15 = [(NSCache *)v24->_sensorsCache objectForKey:v26];
+      sr_sensorByDeletingDeletionRecord = [v23 sr_sensorByDeletingDeletionRecord];
+      v27 = [(NSURL *)sr_sensorByDeletingDeletionRecord isEqualToString:v25];
+      v15 = [(NSCache *)v24->_sensorsCache objectForKey:sr_sensorByDeletingDeletionRecord];
       if (!v15)
       {
         v51 = 0u;
@@ -136,7 +136,7 @@ LABEL_25:
             }
 
             v34 = *(*(&v49 + 1) + 8 * v33);
-            v35 = [(NSURL *)v26 stringByAppendingPathExtension:@"plist"];
+            v35 = [(NSURL *)sr_sensorByDeletingDeletionRecord stringByAppendingPathExtension:@"plist"];
             if (!v35)
             {
               break;
@@ -148,8 +148,8 @@ LABEL_25:
             if (v37)
             {
               v15 = [[SRSensorDescription alloc] initWithDictionary:v37];
-              v38 = [(NSArray *)v15 name];
-              [(NSCache *)v24->_sensorsCache setObject:v15 forKey:v38];
+              name = [(NSArray *)v15 name];
+              [(NSCache *)v24->_sensorsCache setObject:v15 forKey:name];
               if ([(NSArray *)v15 legacyName])
               {
                 [(NSCache *)v24->_sensorsCache setObject:v15 forKey:[(NSArray *)v15 legacyName]];
@@ -159,7 +159,7 @@ LABEL_25:
               if (os_log_type_enabled(qword_11008, OS_LOG_TYPE_INFO))
               {
                 *v56 = 138543618;
-                v57 = v38;
+                v57 = name;
                 v58 = 2114;
                 v59 = v15;
                 _os_log_impl(&dword_0, v39, OS_LOG_TYPE_INFO, "Cached description for %{public}@, %{public}@", v56, 0x16u);
@@ -222,7 +222,7 @@ LABEL_45:
           {
             v43 = v24->_sensorDescriptionsDirs;
             *v56 = 138543618;
-            v57 = v26;
+            v57 = sr_sensorByDeletingDeletionRecord;
             v58 = 2114;
             v59 = v43;
             _os_log_error_impl(&dword_0, v42, OS_LOG_TYPE_ERROR, "Failed to find description for %{public}@ in %{public}@", v56, 0x16u);
@@ -231,7 +231,7 @@ LABEL_45:
 
         v15 = 0;
 LABEL_48:
-        v2 = v46;
+        selfCopy = v46;
         v7 = v47;
       }
 
@@ -252,7 +252,7 @@ LABEL_51:
     }
   }
 
-  objc_setProperty_atomic(v2, v19, 0, 24);
+  objc_setProperty_atomic(selfCopy, v19, 0, 24);
   return 0;
 }
 

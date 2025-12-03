@@ -1,19 +1,19 @@
 @interface SBHLibraryViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SBHLibraryViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHLibraryViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBHLibraryViewController" hasInstanceMethod:@"libraryPodFolderControllerRequestsDismissal:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHLibraryViewController" hasInstanceVariable:@"_podFolderViewController" withType:"SBHLibraryPodFolderController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHLibraryViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBHLibraryViewController" hasInstanceMethod:@"libraryPodFolderControllerRequestsDismissal:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHLibraryViewController" hasInstanceVariable:@"_podFolderViewController" withType:"SBHLibraryPodFolderController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,13 +25,13 @@
   [v3 setAccessibilityViewIsModal:1];
 
   objc_initWeak(&location, self);
-  v4 = [(SBHLibraryViewControllerAccessibility *)self view];
+  view = [(SBHLibraryViewControllerAccessibility *)self view];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __83__SBHLibraryViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v5[3] = &unk_29F300190;
   objc_copyWeak(&v6, &location);
-  [v4 setAccessibilityElementsHiddenBlock:v5];
+  [view setAccessibilityElementsHiddenBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -67,22 +67,22 @@ void __67__SBHLibraryViewControllerAccessibility_accessibilityPerformEscape__blo
   UIAccessibilityPostNotification(v3, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = SBHLibraryViewControllerAccessibility;
-  [(SBHLibraryViewControllerAccessibility *)&v3 viewDidAppear:a3];
+  [(SBHLibraryViewControllerAccessibility *)&v3 viewDidAppear:appear];
   if (AXDeviceIsPad())
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = SBHLibraryViewControllerAccessibility;
-  [(SBHLibraryViewControllerAccessibility *)&v3 viewDidDisappear:a3];
+  [(SBHLibraryViewControllerAccessibility *)&v3 viewDidDisappear:disappear];
   if (AXDeviceIsPad())
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);

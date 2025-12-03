@@ -1,19 +1,19 @@
 @interface DuetDiagnosticExtension
-- (id)activitySummaryForActivityName:(id)a3 withExtractor:(id)a4;
-- (id)attachmentsForParameters:(id)a3;
-- (id)writeDiagnosisStringToFile:(id)a3 forActivity:(id)a4;
+- (id)activitySummaryForActivityName:(id)name withExtractor:(id)extractor;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)writeDiagnosisStringToFile:(id)file forActivity:(id)activity;
 - (void)cleanUpDocumentsDirectory;
 @end
 
 @implementation DuetDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   [(DuetDiagnosticExtension *)self cleanUpDocumentsDirectory];
-  if (v4)
+  if (parametersCopy)
   {
-    v5 = [v4 objectForKey:@"kDuetActivityNames"];
+    v5 = [parametersCopy objectForKey:@"kDuetActivityNames"];
     v6 = v5;
     if (v5)
     {
@@ -78,22 +78,22 @@
   return v9;
 }
 
-- (id)activitySummaryForActivityName:(id)a3 withExtractor:(id)a4
+- (id)activitySummaryForActivityName:(id)name withExtractor:(id)extractor
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  extractorCopy = extractor;
   v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (nameCopy)
   {
     if (v8)
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = nameCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Getting summary for %@", buf, 0xCu);
     }
 
     v20 = 0;
-    v9 = [v7 copyActivitySummary:v6 startDate:0 endDate:0 detail:1 error:&v20];
+    v9 = [extractorCopy copyActivitySummary:nameCopy startDate:0 endDate:0 detail:1 error:&v20];
     v10 = v9;
     if (v20)
     {
@@ -130,14 +130,14 @@ LABEL_7:
         if (v16)
         {
           *buf = 138412546;
-          v22 = v6;
+          v22 = nameCopy;
           v23 = 2112;
           v24 = v10;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Summary for %@:\n%@", buf, 0x16u);
         }
 
-        v17 = [NSString stringWithFormat:@"Activity Name:\n%@%@", v6, v10];
-        v18 = [(DuetDiagnosticExtension *)self writeDiagnosisStringToFile:v17 forActivity:v6];
+        v17 = [NSString stringWithFormat:@"Activity Name:\n%@%@", nameCopy, v10];
+        v18 = [(DuetDiagnosticExtension *)self writeDiagnosisStringToFile:v17 forActivity:nameCopy];
         if (v18)
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -156,7 +156,7 @@ LABEL_7:
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
-            sub_100001668(v6);
+            sub_100001668(nameCopy);
           }
 
           v13 = 0;
@@ -168,7 +168,7 @@ LABEL_7:
       if (v16)
       {
         *buf = 138412290;
-        v22 = v6;
+        v22 = nameCopy;
         v11 = "Summary for %@ is empty, skipping";
         v12 = 12;
         goto LABEL_7;
@@ -194,12 +194,12 @@ LABEL_13:
   return v13;
 }
 
-- (id)writeDiagnosisStringToFile:(id)a3 forActivity:(id)a4
+- (id)writeDiagnosisStringToFile:(id)file forActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  fileCopy = file;
+  activityCopy = activity;
+  v7 = activityCopy;
+  if (!fileCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -214,7 +214,7 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  if (!v6)
+  if (!activityCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -230,12 +230,12 @@ LABEL_15:
   v9 = v8;
   if (v8 && [v8 count])
   {
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     v11 = [NSString stringWithFormat:@"%@.txt", v7];
-    v12 = [v10 stringByAppendingPathComponent:v11];
+    v12 = [firstObject stringByAppendingPathComponent:v11];
 
     v18 = 0;
-    v13 = [v5 writeToFile:v12 atomically:1 encoding:4 error:&v18];
+    v13 = [fileCopy writeToFile:v12 atomically:1 encoding:4 error:&v18];
     v14 = v18;
     if (v13)
     {
@@ -277,14 +277,14 @@ LABEL_21:
   v3 = v2;
   if (v2 && [v2 count])
   {
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v5 = +[NSFileManager defaultManager];
     v17 = 0;
-    v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v17];
+    v6 = [v5 contentsOfDirectoryAtPath:firstObject error:&v17];
     v7 = v17;
 
     v8 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -306,7 +306,7 @@ LABEL_21:
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v23 = v4;
+              v23 = firstObject;
               v24 = 2112;
               v25 = v7;
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Encountered error while enumerating directory %@: %@", buf, 0x16u);
@@ -315,7 +315,7 @@ LABEL_21:
             goto LABEL_19;
           }
 
-          v12 = [v4 stringByAppendingPathComponent:*(*(&v18 + 1) + 8 * i)];
+          v12 = [firstObject stringByAppendingPathComponent:*(*(&v18 + 1) + 8 * i)];
           v13 = +[NSFileManager defaultManager];
           v16 = 0;
           [v13 removeItemAtPath:v12 error:&v16];

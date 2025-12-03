@@ -1,19 +1,19 @@
 @interface NSPersistentStoreCoordinator
-- (BOOL)hasStoreInCommonWith:(id)a3;
+- (BOOL)hasStoreInCommonWith:(id)with;
 @end
 
 @implementation NSPersistentStoreCoordinator
 
-- (BOOL)hasStoreInCommonWith:(id)a3
+- (BOOL)hasStoreInCommonWith:(id)with
 {
-  v4 = a3;
-  v5 = [(NSPersistentStoreCoordinator *)self persistentStores];
-  v6 = [v5 valueForKey:@"URL"];
+  withCopy = with;
+  persistentStores = [(NSPersistentStoreCoordinator *)self persistentStores];
+  v6 = [persistentStores valueForKey:@"URL"];
   v7 = [NSSet setWithArray:v6];
 
-  v8 = [v4 persistentStores];
+  persistentStores2 = [withCopy persistentStores];
 
-  v9 = [v8 valueForKey:@"URL"];
+  v9 = [persistentStores2 valueForKey:@"URL"];
   v10 = [NSSet setWithArray:v9];
 
   LOBYTE(v9) = [v7 intersectsSet:v10];

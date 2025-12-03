@@ -1,15 +1,15 @@
 @interface AFCommandExecutionInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFCommandExecutionInfo)initWithBuilder:(id)a3;
-- (AFCommandExecutionInfo)initWithCoder:(id)a3;
-- (AFCommandExecutionInfo)initWithDictionaryRepresentation:(id)a3;
-- (AFCommandExecutionInfo)initWithExecutionID:(id)a3 requestID:(id)a4 turnId:(id)a5 originPeerInfo:(id)a6 currentHomeInfo:(id)a7 endpointInfo:(id)a8 instanceInfo:(id)a9 speechInfo:(id)a10 requestHandlingContextSnapshot:(id)a11 deviceRestrictions:(id)a12 userInfo:(id)a13;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFCommandExecutionInfo)initWithBuilder:(id)builder;
+- (AFCommandExecutionInfo)initWithCoder:(id)coder;
+- (AFCommandExecutionInfo)initWithDictionaryRepresentation:(id)representation;
+- (AFCommandExecutionInfo)initWithExecutionID:(id)d requestID:(id)iD turnId:(id)id originPeerInfo:(id)info currentHomeInfo:(id)homeInfo endpointInfo:(id)endpointInfo instanceInfo:(id)instanceInfo speechInfo:(id)self0 requestHandlingContextSnapshot:(id)self1 deviceRestrictions:(id)self2 userInfo:(id)self3;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFCommandExecutionInfo
@@ -40,43 +40,43 @@
   originPeerInfo = self->_originPeerInfo;
   if (originPeerInfo)
   {
-    v9 = [(AFPeerInfo *)originPeerInfo buildDictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"originPeerInfo"];
+    buildDictionaryRepresentation = [(AFPeerInfo *)originPeerInfo buildDictionaryRepresentation];
+    [v4 setObject:buildDictionaryRepresentation forKey:@"originPeerInfo"];
   }
 
   currentHomeInfo = self->_currentHomeInfo;
   if (currentHomeInfo)
   {
-    v11 = [(AFHomeInfo *)currentHomeInfo buildDictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"currentHomeInfo"];
+    buildDictionaryRepresentation2 = [(AFHomeInfo *)currentHomeInfo buildDictionaryRepresentation];
+    [v4 setObject:buildDictionaryRepresentation2 forKey:@"currentHomeInfo"];
   }
 
   endpointInfo = self->_endpointInfo;
   if (endpointInfo)
   {
-    v13 = [(AFEndpointInfo *)endpointInfo buildDictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"endpointInfo"];
+    buildDictionaryRepresentation3 = [(AFEndpointInfo *)endpointInfo buildDictionaryRepresentation];
+    [v4 setObject:buildDictionaryRepresentation3 forKey:@"endpointInfo"];
   }
 
   instanceInfo = self->_instanceInfo;
   if (instanceInfo)
   {
-    v15 = [(AFInstanceInfo *)instanceInfo buildDictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"instanceInfo"];
+    buildDictionaryRepresentation4 = [(AFInstanceInfo *)instanceInfo buildDictionaryRepresentation];
+    [v4 setObject:buildDictionaryRepresentation4 forKey:@"instanceInfo"];
   }
 
   speechInfo = self->_speechInfo;
   if (speechInfo)
   {
-    v17 = [(AFSpeechInfo *)speechInfo buildDictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"speechInfo"];
+    buildDictionaryRepresentation5 = [(AFSpeechInfo *)speechInfo buildDictionaryRepresentation];
+    [v4 setObject:buildDictionaryRepresentation5 forKey:@"speechInfo"];
   }
 
   requestHandlingContextSnapshot = self->_requestHandlingContextSnapshot;
   if (requestHandlingContextSnapshot)
   {
-    v19 = [(AFRequestHandlingContext *)requestHandlingContextSnapshot buildDictionaryRepresentation];
-    [v4 setObject:v19 forKey:@"requestHandlingContextSnapshot"];
+    buildDictionaryRepresentation6 = [(AFRequestHandlingContext *)requestHandlingContextSnapshot buildDictionaryRepresentation];
+    [v4 setObject:buildDictionaryRepresentation6 forKey:@"requestHandlingContextSnapshot"];
   }
 
   if (self->_deviceRestrictions)
@@ -127,14 +127,14 @@
   return v28;
 }
 
-- (AFCommandExecutionInfo)initWithDictionaryRepresentation:(id)a3
+- (AFCommandExecutionInfo)initWithDictionaryRepresentation:(id)representation
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"executionID"];
+    v6 = [representationCopy objectForKey:@"executionID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -220,7 +220,7 @@
 
     v16 = [v5 objectForKey:@"speechInfo"];
     objc_opt_class();
-    v52 = self;
+    selfCopy = self;
     if (objc_opt_isKindOfClass())
     {
       v44 = [[AFSpeechInfo alloc] initWithDictionaryRepresentation:v16];
@@ -345,7 +345,7 @@
 
       v36 = [v28 copy];
       v38 = v51;
-      v37 = v52;
+      v37 = selfCopy;
       v39 = v50;
     }
 
@@ -353,7 +353,7 @@
     {
       v39 = v10;
       v36 = 0;
-      v37 = v52;
+      v37 = selfCopy;
       v38 = v7;
     }
 
@@ -372,53 +372,53 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   executionID = self->_executionID;
-  v5 = a3;
-  [v5 encodeObject:executionID forKey:@"AFCommandExecutionInfo::executionID"];
-  [v5 encodeObject:self->_requestID forKey:@"AFCommandExecutionInfo::requestID"];
-  [v5 encodeObject:self->_turnId forKey:@"AFCommandExecutionInfo::turnId"];
-  [v5 encodeObject:self->_originPeerInfo forKey:@"AFCommandExecutionInfo::originPeerInfo"];
-  [v5 encodeObject:self->_currentHomeInfo forKey:@"AFCommandExecutionInfo::currentHomeInfo"];
-  [v5 encodeObject:self->_endpointInfo forKey:@"AFCommandExecutionInfo::endpointInfo"];
-  [v5 encodeObject:self->_instanceInfo forKey:@"AFCommandExecutionInfo::instanceInfo"];
-  [v5 encodeObject:self->_speechInfo forKey:@"AFCommandExecutionInfo::speechInfo"];
-  [v5 encodeObject:self->_requestHandlingContextSnapshot forKey:@"AFCommandExecutionInfo::requestHandlingContextSnapshot"];
-  [v5 encodeObject:self->_deviceRestrictions forKey:@"AFCommandExecutionInfo::deviceRestrictions"];
-  [v5 encodeObject:self->_userInfo forKey:@"AFCommandExecutionInfo::userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:executionID forKey:@"AFCommandExecutionInfo::executionID"];
+  [coderCopy encodeObject:self->_requestID forKey:@"AFCommandExecutionInfo::requestID"];
+  [coderCopy encodeObject:self->_turnId forKey:@"AFCommandExecutionInfo::turnId"];
+  [coderCopy encodeObject:self->_originPeerInfo forKey:@"AFCommandExecutionInfo::originPeerInfo"];
+  [coderCopy encodeObject:self->_currentHomeInfo forKey:@"AFCommandExecutionInfo::currentHomeInfo"];
+  [coderCopy encodeObject:self->_endpointInfo forKey:@"AFCommandExecutionInfo::endpointInfo"];
+  [coderCopy encodeObject:self->_instanceInfo forKey:@"AFCommandExecutionInfo::instanceInfo"];
+  [coderCopy encodeObject:self->_speechInfo forKey:@"AFCommandExecutionInfo::speechInfo"];
+  [coderCopy encodeObject:self->_requestHandlingContextSnapshot forKey:@"AFCommandExecutionInfo::requestHandlingContextSnapshot"];
+  [coderCopy encodeObject:self->_deviceRestrictions forKey:@"AFCommandExecutionInfo::deviceRestrictions"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"AFCommandExecutionInfo::userInfo"];
 }
 
-- (AFCommandExecutionInfo)initWithCoder:(id)a3
+- (AFCommandExecutionInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::executionID"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::requestID"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::turnId"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::originPeerInfo"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::currentHomeInfo"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::endpointInfo"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::instanceInfo"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::speechInfo"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::requestHandlingContextSnapshot"];
+  coderCopy = coder;
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::executionID"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::requestID"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::turnId"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::originPeerInfo"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::currentHomeInfo"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::endpointInfo"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::instanceInfo"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::speechInfo"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCommandExecutionInfo::requestHandlingContextSnapshot"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v3 decodeObjectOfClasses:v11 forKey:@"AFCommandExecutionInfo::deviceRestrictions"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"AFCommandExecutionInfo::deviceRestrictions"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v3 decodeObjectOfClasses:v15 forKey:@"AFCommandExecutionInfo::userInfo"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"AFCommandExecutionInfo::userInfo"];
 
   v22 = [(AFCommandExecutionInfo *)self initWithExecutionID:v23 requestID:v18 turnId:v4 originPeerInfo:v20 currentHomeInfo:v5 endpointInfo:v19 instanceInfo:v6 speechInfo:v7 requestHandlingContextSnapshot:v8 deviceRestrictions:v12 userInfo:v16];
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v30 = 1;
   }
@@ -428,58 +428,58 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFCommandExecutionInfo *)v5 executionID];
+      v5 = equalCopy;
+      executionID = [(AFCommandExecutionInfo *)v5 executionID];
       executionID = self->_executionID;
-      if (executionID == v6 || [(NSString *)executionID isEqual:v6])
+      if (executionID == executionID || [(NSString *)executionID isEqual:executionID])
       {
-        v8 = [(AFCommandExecutionInfo *)v5 requestID];
+        requestID = [(AFCommandExecutionInfo *)v5 requestID];
         requestID = self->_requestID;
-        if (requestID == v8 || [(NSString *)requestID isEqual:v8])
+        if (requestID == requestID || [(NSString *)requestID isEqual:requestID])
         {
-          v10 = [(AFCommandExecutionInfo *)v5 turnId];
+          turnId = [(AFCommandExecutionInfo *)v5 turnId];
           turnId = self->_turnId;
-          if (turnId == v10 || [(NSUUID *)turnId isEqual:v10])
+          if (turnId == turnId || [(NSUUID *)turnId isEqual:turnId])
           {
-            v12 = [(AFCommandExecutionInfo *)v5 originPeerInfo];
+            originPeerInfo = [(AFCommandExecutionInfo *)v5 originPeerInfo];
             originPeerInfo = self->_originPeerInfo;
-            if (originPeerInfo == v12 || [(AFPeerInfo *)originPeerInfo isEqual:v12])
+            if (originPeerInfo == originPeerInfo || [(AFPeerInfo *)originPeerInfo isEqual:originPeerInfo])
             {
-              v14 = [(AFCommandExecutionInfo *)v5 currentHomeInfo];
+              currentHomeInfo = [(AFCommandExecutionInfo *)v5 currentHomeInfo];
               currentHomeInfo = self->_currentHomeInfo;
-              if (currentHomeInfo == v14 || [(AFHomeInfo *)currentHomeInfo isEqual:v14])
+              if (currentHomeInfo == currentHomeInfo || [(AFHomeInfo *)currentHomeInfo isEqual:currentHomeInfo])
               {
-                v16 = [(AFCommandExecutionInfo *)v5 endpointInfo];
+                endpointInfo = [(AFCommandExecutionInfo *)v5 endpointInfo];
                 endpointInfo = self->_endpointInfo;
-                if (endpointInfo == v16 || [(AFEndpointInfo *)endpointInfo isEqual:v16])
+                if (endpointInfo == endpointInfo || [(AFEndpointInfo *)endpointInfo isEqual:endpointInfo])
                 {
-                  v18 = [(AFCommandExecutionInfo *)v5 instanceInfo];
+                  instanceInfo = [(AFCommandExecutionInfo *)v5 instanceInfo];
                   instanceInfo = self->_instanceInfo;
-                  if (instanceInfo == v18 || [(AFInstanceInfo *)instanceInfo isEqual:v18])
+                  if (instanceInfo == instanceInfo || [(AFInstanceInfo *)instanceInfo isEqual:instanceInfo])
                   {
-                    v34 = v18;
-                    v20 = [(AFCommandExecutionInfo *)v5 speechInfo];
+                    v34 = instanceInfo;
+                    speechInfo = [(AFCommandExecutionInfo *)v5 speechInfo];
                     speechInfo = self->_speechInfo;
-                    if (speechInfo == v20 || [(AFSpeechInfo *)speechInfo isEqual:v20])
+                    if (speechInfo == speechInfo || [(AFSpeechInfo *)speechInfo isEqual:speechInfo])
                     {
-                      v33 = v20;
-                      v22 = [(AFCommandExecutionInfo *)v5 requestHandlingContextSnapshot];
+                      v33 = speechInfo;
+                      requestHandlingContextSnapshot = [(AFCommandExecutionInfo *)v5 requestHandlingContextSnapshot];
                       requestHandlingContextSnapshot = self->_requestHandlingContextSnapshot;
-                      if (requestHandlingContextSnapshot == v22 || [(AFRequestHandlingContext *)requestHandlingContextSnapshot isEqual:v22])
+                      if (requestHandlingContextSnapshot == requestHandlingContextSnapshot || [(AFRequestHandlingContext *)requestHandlingContextSnapshot isEqual:requestHandlingContextSnapshot])
                       {
-                        v32 = v22;
-                        v24 = [(AFCommandExecutionInfo *)v5 deviceRestrictions];
+                        v32 = requestHandlingContextSnapshot;
+                        deviceRestrictions = [(AFCommandExecutionInfo *)v5 deviceRestrictions];
                         deviceRestrictions = self->_deviceRestrictions;
-                        if (deviceRestrictions == v24 || [(NSArray *)deviceRestrictions isEqual:v24])
+                        if (deviceRestrictions == deviceRestrictions || [(NSArray *)deviceRestrictions isEqual:deviceRestrictions])
                         {
-                          v26 = [(AFCommandExecutionInfo *)v5 userInfo];
+                          userInfo = [(AFCommandExecutionInfo *)v5 userInfo];
                           userInfo = self->_userInfo;
                           v30 = 1;
-                          if (userInfo != v26)
+                          if (userInfo != userInfo)
                           {
-                            v28 = v26;
-                            v29 = [(NSDictionary *)userInfo isEqual:v26];
-                            v26 = v28;
+                            v28 = userInfo;
+                            v29 = [(NSDictionary *)userInfo isEqual:userInfo];
+                            userInfo = v28;
                             if (!v29)
                             {
                               v30 = 0;
@@ -492,7 +492,7 @@
                           v30 = 0;
                         }
 
-                        v22 = v32;
+                        requestHandlingContextSnapshot = v32;
                       }
 
                       else
@@ -500,7 +500,7 @@
                         v30 = 0;
                       }
 
-                      v20 = v33;
+                      speechInfo = v33;
                     }
 
                     else
@@ -508,7 +508,7 @@
                       v30 = 0;
                     }
 
-                    v18 = v34;
+                    instanceInfo = v34;
                   }
 
                   else
@@ -577,7 +577,7 @@
   return v9 ^ v12 ^ [(NSDictionary *)self->_userInfo hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -588,45 +588,45 @@
   return v6;
 }
 
-- (AFCommandExecutionInfo)initWithExecutionID:(id)a3 requestID:(id)a4 turnId:(id)a5 originPeerInfo:(id)a6 currentHomeInfo:(id)a7 endpointInfo:(id)a8 instanceInfo:(id)a9 speechInfo:(id)a10 requestHandlingContextSnapshot:(id)a11 deviceRestrictions:(id)a12 userInfo:(id)a13
+- (AFCommandExecutionInfo)initWithExecutionID:(id)d requestID:(id)iD turnId:(id)id originPeerInfo:(id)info currentHomeInfo:(id)homeInfo endpointInfo:(id)endpointInfo instanceInfo:(id)instanceInfo speechInfo:(id)self0 requestHandlingContextSnapshot:(id)self1 deviceRestrictions:(id)self2 userInfo:(id)self3
 {
-  v39 = a3;
-  v18 = a4;
-  v38 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
+  dCopy = d;
+  iDCopy = iD;
+  idCopy = id;
+  infoCopy = info;
+  homeInfoCopy = homeInfo;
+  endpointInfoCopy = endpointInfo;
+  instanceInfoCopy = instanceInfo;
+  speechInfoCopy = speechInfo;
+  snapshotCopy = snapshot;
+  restrictionsCopy = restrictions;
+  userInfoCopy = userInfo;
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __190__AFCommandExecutionInfo_initWithExecutionID_requestID_turnId_originPeerInfo_currentHomeInfo_endpointInfo_instanceInfo_speechInfo_requestHandlingContextSnapshot_deviceRestrictions_userInfo___block_invoke;
   v43[3] = &unk_1E7348F38;
-  v44 = v39;
-  v45 = v18;
-  v46 = v38;
-  v47 = v19;
-  v48 = v20;
-  v49 = v21;
-  v50 = v22;
-  v51 = v23;
-  v52 = v24;
-  v53 = v25;
-  v54 = v26;
-  v41 = v26;
-  v40 = v25;
-  v27 = v24;
-  v28 = v23;
-  v29 = v22;
-  v30 = v21;
-  v31 = v20;
-  v32 = v19;
-  v33 = v38;
-  v34 = v18;
-  v35 = v39;
+  v44 = dCopy;
+  v45 = iDCopy;
+  v46 = idCopy;
+  v47 = infoCopy;
+  v48 = homeInfoCopy;
+  v49 = endpointInfoCopy;
+  v50 = instanceInfoCopy;
+  v51 = speechInfoCopy;
+  v52 = snapshotCopy;
+  v53 = restrictionsCopy;
+  v54 = userInfoCopy;
+  v41 = userInfoCopy;
+  v40 = restrictionsCopy;
+  v27 = snapshotCopy;
+  v28 = speechInfoCopy;
+  v29 = instanceInfoCopy;
+  v30 = endpointInfoCopy;
+  v31 = homeInfoCopy;
+  v32 = infoCopy;
+  v33 = idCopy;
+  v34 = iDCopy;
+  v35 = dCopy;
   v36 = [(AFCommandExecutionInfo *)self initWithBuilder:v43];
 
   return v36;
@@ -649,71 +649,71 @@ void __190__AFCommandExecutionInfo_initWithExecutionID_requestID_turnId_originPe
   [v4 setUserInfo:a1[14]];
 }
 
-- (AFCommandExecutionInfo)initWithBuilder:(id)a3
+- (AFCommandExecutionInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v42.receiver = self;
   v42.super_class = AFCommandExecutionInfo;
   v5 = [(AFCommandExecutionInfo *)&v42 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFCommandExecutionInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFCommandExecutionInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFCommandExecutionInfoMutation *)v7 getExecutionID];
-      v9 = [v8 copy];
+      getExecutionID = [(_AFCommandExecutionInfoMutation *)v7 getExecutionID];
+      v9 = [getExecutionID copy];
       executionID = v6->_executionID;
       v6->_executionID = v9;
 
-      v11 = [(_AFCommandExecutionInfoMutation *)v7 getRequestID];
-      v12 = [v11 copy];
+      getRequestID = [(_AFCommandExecutionInfoMutation *)v7 getRequestID];
+      v12 = [getRequestID copy];
       requestID = v6->_requestID;
       v6->_requestID = v12;
 
-      v14 = [(_AFCommandExecutionInfoMutation *)v7 getTurnId];
-      v15 = [v14 copy];
+      getTurnId = [(_AFCommandExecutionInfoMutation *)v7 getTurnId];
+      v15 = [getTurnId copy];
       turnId = v6->_turnId;
       v6->_turnId = v15;
 
-      v17 = [(_AFCommandExecutionInfoMutation *)v7 getOriginPeerInfo];
-      v18 = [v17 copy];
+      getOriginPeerInfo = [(_AFCommandExecutionInfoMutation *)v7 getOriginPeerInfo];
+      v18 = [getOriginPeerInfo copy];
       originPeerInfo = v6->_originPeerInfo;
       v6->_originPeerInfo = v18;
 
-      v20 = [(_AFCommandExecutionInfoMutation *)v7 getCurrentHomeInfo];
-      v21 = [v20 copy];
+      getCurrentHomeInfo = [(_AFCommandExecutionInfoMutation *)v7 getCurrentHomeInfo];
+      v21 = [getCurrentHomeInfo copy];
       currentHomeInfo = v6->_currentHomeInfo;
       v6->_currentHomeInfo = v21;
 
-      v23 = [(_AFCommandExecutionInfoMutation *)v7 getEndpointInfo];
-      v24 = [v23 copy];
+      getEndpointInfo = [(_AFCommandExecutionInfoMutation *)v7 getEndpointInfo];
+      v24 = [getEndpointInfo copy];
       endpointInfo = v6->_endpointInfo;
       v6->_endpointInfo = v24;
 
-      v26 = [(_AFCommandExecutionInfoMutation *)v7 getInstanceInfo];
-      v27 = [v26 copy];
+      getInstanceInfo = [(_AFCommandExecutionInfoMutation *)v7 getInstanceInfo];
+      v27 = [getInstanceInfo copy];
       instanceInfo = v6->_instanceInfo;
       v6->_instanceInfo = v27;
 
-      v29 = [(_AFCommandExecutionInfoMutation *)v7 getSpeechInfo];
-      v30 = [v29 copy];
+      getSpeechInfo = [(_AFCommandExecutionInfoMutation *)v7 getSpeechInfo];
+      v30 = [getSpeechInfo copy];
       speechInfo = v6->_speechInfo;
       v6->_speechInfo = v30;
 
-      v32 = [(_AFCommandExecutionInfoMutation *)v7 getRequestHandlingContextSnapshot];
-      v33 = [v32 copy];
+      getRequestHandlingContextSnapshot = [(_AFCommandExecutionInfoMutation *)v7 getRequestHandlingContextSnapshot];
+      v33 = [getRequestHandlingContextSnapshot copy];
       requestHandlingContextSnapshot = v6->_requestHandlingContextSnapshot;
       v6->_requestHandlingContextSnapshot = v33;
 
-      v35 = [(_AFCommandExecutionInfoMutation *)v7 getDeviceRestrictions];
-      v36 = [v35 copy];
+      getDeviceRestrictions = [(_AFCommandExecutionInfoMutation *)v7 getDeviceRestrictions];
+      v36 = [getDeviceRestrictions copy];
       deviceRestrictions = v6->_deviceRestrictions;
       v6->_deviceRestrictions = v36;
 
-      v38 = [(_AFCommandExecutionInfoMutation *)v7 getUserInfo];
-      v39 = [v38 copy];
+      getUserInfo = [(_AFCommandExecutionInfoMutation *)v7 getUserInfo];
+      v39 = [getUserInfo copy];
       userInfo = v6->_userInfo;
       v6->_userInfo = v39;
     }
@@ -722,76 +722,76 @@ void __190__AFCommandExecutionInfo_initWithExecutionID_requestID_turnId_originPe
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFCommandExecutionInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFCommandExecutionInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFCommandExecutionInfo);
-      v7 = [(_AFCommandExecutionInfoMutation *)v5 getExecutionID];
-      v8 = [v7 copy];
+      getExecutionID = [(_AFCommandExecutionInfoMutation *)v5 getExecutionID];
+      v8 = [getExecutionID copy];
       executionID = v6->_executionID;
       v6->_executionID = v8;
 
-      v10 = [(_AFCommandExecutionInfoMutation *)v5 getRequestID];
-      v11 = [v10 copy];
+      getRequestID = [(_AFCommandExecutionInfoMutation *)v5 getRequestID];
+      v11 = [getRequestID copy];
       requestID = v6->_requestID;
       v6->_requestID = v11;
 
-      v13 = [(_AFCommandExecutionInfoMutation *)v5 getTurnId];
-      v14 = [v13 copy];
+      getTurnId = [(_AFCommandExecutionInfoMutation *)v5 getTurnId];
+      v14 = [getTurnId copy];
       turnId = v6->_turnId;
       v6->_turnId = v14;
 
-      v16 = [(_AFCommandExecutionInfoMutation *)v5 getOriginPeerInfo];
-      v17 = [v16 copy];
+      getOriginPeerInfo = [(_AFCommandExecutionInfoMutation *)v5 getOriginPeerInfo];
+      v17 = [getOriginPeerInfo copy];
       originPeerInfo = v6->_originPeerInfo;
       v6->_originPeerInfo = v17;
 
-      v19 = [(_AFCommandExecutionInfoMutation *)v5 getCurrentHomeInfo];
-      v20 = [v19 copy];
+      getCurrentHomeInfo = [(_AFCommandExecutionInfoMutation *)v5 getCurrentHomeInfo];
+      v20 = [getCurrentHomeInfo copy];
       currentHomeInfo = v6->_currentHomeInfo;
       v6->_currentHomeInfo = v20;
 
-      v22 = [(_AFCommandExecutionInfoMutation *)v5 getEndpointInfo];
-      v23 = [v22 copy];
+      getEndpointInfo = [(_AFCommandExecutionInfoMutation *)v5 getEndpointInfo];
+      v23 = [getEndpointInfo copy];
       endpointInfo = v6->_endpointInfo;
       v6->_endpointInfo = v23;
 
-      v25 = [(_AFCommandExecutionInfoMutation *)v5 getInstanceInfo];
-      v26 = [v25 copy];
+      getInstanceInfo = [(_AFCommandExecutionInfoMutation *)v5 getInstanceInfo];
+      v26 = [getInstanceInfo copy];
       instanceInfo = v6->_instanceInfo;
       v6->_instanceInfo = v26;
 
-      v28 = [(_AFCommandExecutionInfoMutation *)v5 getSpeechInfo];
-      v29 = [v28 copy];
+      getSpeechInfo = [(_AFCommandExecutionInfoMutation *)v5 getSpeechInfo];
+      v29 = [getSpeechInfo copy];
       speechInfo = v6->_speechInfo;
       v6->_speechInfo = v29;
 
-      v31 = [(_AFCommandExecutionInfoMutation *)v5 getRequestHandlingContextSnapshot];
-      v32 = [v31 copy];
+      getRequestHandlingContextSnapshot = [(_AFCommandExecutionInfoMutation *)v5 getRequestHandlingContextSnapshot];
+      v32 = [getRequestHandlingContextSnapshot copy];
       requestHandlingContextSnapshot = v6->_requestHandlingContextSnapshot;
       v6->_requestHandlingContextSnapshot = v32;
 
-      v34 = [(_AFCommandExecutionInfoMutation *)v5 getDeviceRestrictions];
-      v35 = [v34 copy];
+      getDeviceRestrictions = [(_AFCommandExecutionInfoMutation *)v5 getDeviceRestrictions];
+      v35 = [getDeviceRestrictions copy];
       deviceRestrictions = v6->_deviceRestrictions;
       v6->_deviceRestrictions = v35;
 
-      v37 = [(_AFCommandExecutionInfoMutation *)v5 getUserInfo];
-      v38 = [v37 copy];
+      getUserInfo = [(_AFCommandExecutionInfoMutation *)v5 getUserInfo];
+      v38 = [getUserInfo copy];
       userInfo = v6->_userInfo;
       v6->_userInfo = v38;
     }

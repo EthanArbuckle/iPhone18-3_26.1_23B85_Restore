@@ -1,29 +1,29 @@
 @interface INFERENCESchemaINFERENCESimpleTaskInfoGenerated
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCESimpleTaskInfoGenerated)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCESimpleTaskInfoGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCESimpleTaskInfoGenerated)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCESimpleTaskInfoGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsExecuted:(BOOL)a3;
-- (void)setHasIsSuccess:(BOOL)a3;
-- (void)setHasIsSuccessfulDirectExecution:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsExecuted:(BOOL)executed;
+- (void)setHasIsSuccess:(BOOL)success;
+- (void)setHasIsSuccessfulDirectExecution:(BOOL)execution;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCESimpleTaskInfoGenerated
 
-- (INFERENCESchemaINFERENCESimpleTaskInfoGenerated)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCESimpleTaskInfoGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = INFERENCESchemaINFERENCESimpleTaskInfoGenerated;
   v5 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalResolutionContextId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalResolutionContextId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,35 +31,35 @@
       [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)v5 setOriginalResolutionContextId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"taskSuccessType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"taskSuccessType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESimpleTaskInfoGenerated setTaskSuccessType:](v5, "setTaskSuccessType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isSuccess"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isSuccess"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESimpleTaskInfoGenerated setIsSuccess:](v5, "setIsSuccess:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isExecuted"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isExecuted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESimpleTaskInfoGenerated setIsExecuted:](v5, "setIsExecuted:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isSuccessfulDirectExecution"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isSuccessfulDirectExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESimpleTaskInfoGenerated setIsSuccessfulDirectExecution:](v5, "setIsSuccessfulDirectExecution:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"taskSpecificInfo"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"taskSpecificInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCESimpleTaskInfoGenerated)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCESimpleTaskInfoGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,12 +109,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCESimpleTaskInfoGenerated isExecuted](self, "isExecuted")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isExecuted"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isExecuted"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -135,45 +135,45 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCESimpleTaskInfoGenerated isSuccess](self, "isSuccess")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isSuccess"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isSuccess"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCESimpleTaskInfoGenerated isSuccessfulDirectExecution](self, "isSuccessfulDirectExecution")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isSuccessfulDirectExecution"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isSuccessfulDirectExecution"];
   }
 
 LABEL_5:
   if (self->_originalResolutionContextId)
   {
-    v6 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    originalResolutionContextId = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
+    dictionaryRepresentation = [originalResolutionContextId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"originalResolutionContextId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalResolutionContextId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"originalResolutionContextId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalResolutionContextId"];
     }
   }
 
   if (self->_taskSpecificInfo)
   {
-    v11 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    taskSpecificInfo = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
+    dictionaryRepresentation2 = [taskSpecificInfo dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"taskSpecificInfo"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"taskSpecificInfo"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"taskSpecificInfo"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"taskSpecificInfo"];
     }
   }
 
@@ -190,12 +190,12 @@ LABEL_5:
       v15 = off_1E78D8B50[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"taskSuccessType"];
+    [dictionary setObject:v15 forKeyedSubscript:@"taskSuccessType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -253,28 +253,28 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(INFERENCESchemaINFERENCETaskSpecificInfo *)self->_taskSpecificInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
-  v6 = [v4 originalResolutionContextId];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
+  originalResolutionContextId2 = [equalCopy originalResolutionContextId];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
-  if (v7)
+  originalResolutionContextId3 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
+  if (originalResolutionContextId3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
-    v10 = [v4 originalResolutionContextId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalResolutionContextId3;
+    originalResolutionContextId4 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
+    originalResolutionContextId5 = [equalCopy originalResolutionContextId];
+    v11 = [originalResolutionContextId4 isEqual:originalResolutionContextId5];
 
     if (!v11)
     {
@@ -287,7 +287,7 @@ LABEL_5:
   }
 
   has = self->_has;
-  v13 = v4[32];
+  v13 = equalCopy[32];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_27;
@@ -296,13 +296,13 @@ LABEL_5:
   if (*&has)
   {
     taskSuccessType = self->_taskSuccessType;
-    if (taskSuccessType != [v4 taskSuccessType])
+    if (taskSuccessType != [equalCopy taskSuccessType])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -314,13 +314,13 @@ LABEL_5:
   if (v15)
   {
     isSuccess = self->_isSuccess;
-    if (isSuccess != [v4 isSuccess])
+    if (isSuccess != [equalCopy isSuccess])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -332,13 +332,13 @@ LABEL_5:
   if (v17)
   {
     isExecuted = self->_isExecuted;
-    if (isExecuted != [v4 isExecuted])
+    if (isExecuted != [equalCopy isExecuted])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v19 = (*&has >> 3) & 1;
@@ -350,23 +350,23 @@ LABEL_5:
   if (v19)
   {
     isSuccessfulDirectExecution = self->_isSuccessfulDirectExecution;
-    if (isSuccessfulDirectExecution != [v4 isSuccessfulDirectExecution])
+    if (isSuccessfulDirectExecution != [equalCopy isSuccessfulDirectExecution])
     {
       goto LABEL_27;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
-  v6 = [v4 taskSpecificInfo];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
+  originalResolutionContextId2 = [equalCopy taskSpecificInfo];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v21 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
-  if (!v21)
+  taskSpecificInfo = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
+  if (!taskSpecificInfo)
   {
 
 LABEL_30:
@@ -374,10 +374,10 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  v22 = v21;
-  v23 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
-  v24 = [v4 taskSpecificInfo];
-  v25 = [v23 isEqual:v24];
+  v22 = taskSpecificInfo;
+  taskSpecificInfo2 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
+  taskSpecificInfo3 = [equalCopy taskSpecificInfo];
+  v25 = [taskSpecificInfo2 isEqual:taskSpecificInfo3];
 
   if (v25)
   {
@@ -391,14 +391,14 @@ LABEL_28:
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
+  toCopy = to;
+  originalResolutionContextId = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
 
-  if (v4)
+  if (originalResolutionContextId)
   {
-    v5 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
+    originalResolutionContextId2 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -446,21 +446,21 @@ LABEL_7:
   }
 
 LABEL_8:
-  v7 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
+  taskSpecificInfo = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (taskSpecificInfo)
   {
-    v9 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
+    taskSpecificInfo2 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasIsSuccessfulDirectExecution:(BOOL)a3
+- (void)setHasIsSuccessfulDirectExecution:(BOOL)execution
 {
-  if (a3)
+  if (execution)
   {
     v3 = 8;
   }
@@ -473,9 +473,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsExecuted:(BOOL)a3
+- (void)setHasIsExecuted:(BOOL)executed
 {
-  if (a3)
+  if (executed)
   {
     v3 = 4;
   }
@@ -488,9 +488,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsSuccess:(BOOL)a3
+- (void)setHasIsSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }
@@ -503,26 +503,26 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCESimpleTaskInfoGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  originalResolutionContextId = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self originalResolutionContextId];
+  v7 = [originalResolutionContextId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self deleteOriginalResolutionContextId];
   }
 
-  v9 = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  taskSpecificInfo = [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self taskSpecificInfo];
+  v10 = [taskSpecificInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCESimpleTaskInfoGenerated *)self deleteTaskSpecificInfo];
   }

@@ -1,12 +1,12 @@
 @interface PKDashboardFinanceKitTransactionPresenter
 + (NSString)cellReuseIdentifier;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (Class)itemClass;
 - (_TtC9PassKitUI41PKDashboardFinanceKitTransactionPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKDashboardFinanceKitTransactionPresenter
@@ -50,7 +50,7 @@
   return v3;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
   v8 = sub_1BE04B414();
   v9 = *(v8 - 8);
@@ -58,9 +58,9 @@
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BE04B3D4();
   swift_unknownObjectRetain();
-  v13 = a4;
-  v14 = self;
-  v15 = sub_1BD9A29BC(a3, v13);
+  viewCopy = view;
+  selfCopy = self;
+  v15 = sub_1BD9A29BC(item, viewCopy);
   swift_unknownObjectRelease();
 
   (*(v9 + 8))(v12, v8);
@@ -68,7 +68,7 @@
   return v15;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
   v6 = sub_1BE04B414();
   v7 = *(v6 - 8);
@@ -78,13 +78,13 @@
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
   v12 = sub_1BE04B414();
   v13 = *(v12 - 8);
   MEMORY[0x1EEE9AC00](v12, v14);
   v16 = &v21 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(present);
   sub_1BE04B3D4();
   if (v17)
   {
@@ -93,17 +93,17 @@
   }
 
   swift_unknownObjectRetain();
-  v18 = a4;
-  v19 = a6;
-  v20 = self;
-  sub_1BD9A2AFC(a3, v16, v19, v17);
+  viewCopy = view;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1BD9A2AFC(item, v16, controllerCopy, v17);
   sub_1BD0D4744(v17);
   swift_unknownObjectRelease();
 
   (*(v13 + 8))(v16, v12);
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
   v6 = sub_1BE04B414();
   v7 = *(v6 - 8);

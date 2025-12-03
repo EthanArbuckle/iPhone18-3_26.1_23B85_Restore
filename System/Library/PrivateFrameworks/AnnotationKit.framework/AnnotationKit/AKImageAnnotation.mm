@@ -1,17 +1,17 @@
 @interface AKImageAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKImageAnnotation)initWithCoder:(id)a3;
+- (AKImageAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (CGRect)rectangle;
 - (id)displayName;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
 - (void)adjustModelToCompensateForOriginalExif;
-- (void)encodeWithCoder:(id)a3;
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4;
-- (void)translateBy:(CGPoint)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size;
+- (void)translateBy:(CGPoint)by;
 @end
 
 @implementation AKImageAnnotation
@@ -19,7 +19,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKImageAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -32,7 +32,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKImageAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -42,28 +42,28 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"rectangle"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"rectangle"])
   {
     goto LABEL_2;
   }
 
-  if ([v4 isEqualToString:@"hasShadow"])
+  if ([keyCopy isEqualToString:@"hasShadow"])
   {
     v5 = @"Shadow";
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"horizontallyFlipped"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"verticallyFlipped"))
+  if ([keyCopy isEqualToString:@"horizontallyFlipped"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"verticallyFlipped"))
   {
 LABEL_2:
     v5 = @"Bounds";
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"image"])
+  if ([keyCopy isEqualToString:@"image"])
   {
     v5 = @"Image";
 LABEL_5:
@@ -76,9 +76,9 @@ LABEL_5:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKImageAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_7:
 
   return v7;
@@ -97,8 +97,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKImageAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BADA0];
 
@@ -110,8 +110,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKImageAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BADB8];
 
@@ -154,18 +154,18 @@ LABEL_7:
   [(AKImageAnnotation *)self setRectangle:?];
 }
 
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:a3];
+  height = size.height;
+  width = size.width;
+  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:orientation];
   [(AKImageAnnotation *)self rectangle];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   memset(&v16[1], 0, sizeof(CGAffineTransform));
-  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:a3 withOriginalModelSize:width, height];
+  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:orientation withOriginalModelSize:width, height];
   v16[0] = v16[1];
   v17.origin.x = v9;
   v17.origin.y = v11;
@@ -175,64 +175,64 @@ LABEL_7:
   [(AKImageAnnotation *)self setRectangle:v18.origin.x, v18.origin.y, v18.size.width, v18.size.height];
 }
 
-- (void)translateBy:(CGPoint)a3
+- (void)translateBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(AKAnnotation *)self isTranslating];
+    isTranslating = [(AKAnnotation *)self isTranslating];
     [(AKAnnotation *)self setIsTranslating:1];
     [(AKImageAnnotation *)self rectangle];
     [(AKImageAnnotation *)self setRectangle:x + v8, y + v9];
 
-    [(AKAnnotation *)self setIsTranslating:v7];
+    [(AKAnnotation *)self setIsTranslating:isTranslating];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = AKImageAnnotation;
-  v4 = a3;
-  [(AKAnnotation *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKAnnotation *)&v7 encodeWithCoder:coderCopy];
   [(AKImageAnnotation *)self rectangle:v7.receiver];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v8);
-  [v4 encodeObject:DictionaryRepresentation forKey:@"rectangle"];
-  [v4 encodeBool:-[AKImageAnnotation hasShadow](self forKey:{"hasShadow"), @"hasShadow"}];
-  [v4 encodeBool:-[AKImageAnnotation verticallyFlipped](self forKey:{"verticallyFlipped"), @"verticallyFlipped"}];
-  [v4 encodeBool:-[AKImageAnnotation horizontallyFlipped](self forKey:{"horizontallyFlipped"), @"horizontallyFlipped"}];
-  v6 = [(AKImageAnnotation *)self image];
-  [v4 akEncodeImage:v6 forKey:@"imageAsData"];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"rectangle"];
+  [coderCopy encodeBool:-[AKImageAnnotation hasShadow](self forKey:{"hasShadow"), @"hasShadow"}];
+  [coderCopy encodeBool:-[AKImageAnnotation verticallyFlipped](self forKey:{"verticallyFlipped"), @"verticallyFlipped"}];
+  [coderCopy encodeBool:-[AKImageAnnotation horizontallyFlipped](self forKey:{"horizontallyFlipped"), @"horizontallyFlipped"}];
+  image = [(AKImageAnnotation *)self image];
+  [coderCopy akEncodeImage:image forKey:@"imageAsData"];
 }
 
-- (AKImageAnnotation)initWithCoder:(id)a3
+- (AKImageAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = AKImageAnnotation;
-  v5 = [(AKAnnotation *)&v13 initWithCoder:v4];
+  v5 = [(AKAnnotation *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"rectangle"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"rectangle"];
 
     CGRectMakeWithDictionaryRepresentation(v10, &v5->_rectangle);
-    -[AKImageAnnotation setHasShadow:](v5, "setHasShadow:", [v4 decodeBoolForKey:@"hasShadow"]);
-    -[AKImageAnnotation setVerticallyFlipped:](v5, "setVerticallyFlipped:", [v4 decodeBoolForKey:@"verticallyFlipped"]);
-    -[AKImageAnnotation setHorizontallyFlipped:](v5, "setHorizontallyFlipped:", [v4 decodeBoolForKey:@"horizontallyFlipped"]);
-    if ([v4 containsValueForKey:@"imageAsData"])
+    -[AKImageAnnotation setHasShadow:](v5, "setHasShadow:", [coderCopy decodeBoolForKey:@"hasShadow"]);
+    -[AKImageAnnotation setVerticallyFlipped:](v5, "setVerticallyFlipped:", [coderCopy decodeBoolForKey:@"verticallyFlipped"]);
+    -[AKImageAnnotation setHorizontallyFlipped:](v5, "setHorizontallyFlipped:", [coderCopy decodeBoolForKey:@"horizontallyFlipped"]);
+    if ([coderCopy containsValueForKey:@"imageAsData"])
     {
-      v11 = [v4 akDecodeImageForKey:@"imageAsData"];
+      v11 = [coderCopy akDecodeImageForKey:@"imageAsData"];
       [(AKImageAnnotation *)v5 setImage:v11];
     }
 
     else
     {
-      if (![v4 containsValueForKey:@"image"])
+      if (![coderCopy containsValueForKey:@"image"])
       {
 LABEL_8:
 

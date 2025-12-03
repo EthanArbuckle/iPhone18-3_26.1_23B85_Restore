@@ -1,18 +1,18 @@
 @interface PKScrollViewDelegateEventsHandler
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
 @end
 
 @implementation PKScrollViewDelegateEventsHandler
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v6 = a3;
-  v4 = [(PKScrollViewDelegateEventsHandler *)self scrollViewDidEndScrollingAnimationHandler];
+  animationCopy = animation;
+  scrollViewDidEndScrollingAnimationHandler = [(PKScrollViewDelegateEventsHandler *)self scrollViewDidEndScrollingAnimationHandler];
 
-  if (v4)
+  if (scrollViewDidEndScrollingAnimationHandler)
   {
-    v5 = [(PKScrollViewDelegateEventsHandler *)self scrollViewDidEndScrollingAnimationHandler];
-    (v5)[2](v5, self, v6);
+    scrollViewDidEndScrollingAnimationHandler2 = [(PKScrollViewDelegateEventsHandler *)self scrollViewDidEndScrollingAnimationHandler];
+    (scrollViewDidEndScrollingAnimationHandler2)[2](scrollViewDidEndScrollingAnimationHandler2, self, animationCopy);
   }
 }
 

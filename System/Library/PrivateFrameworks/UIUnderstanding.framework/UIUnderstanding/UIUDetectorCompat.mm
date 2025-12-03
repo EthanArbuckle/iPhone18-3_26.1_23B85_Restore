@@ -1,18 +1,18 @@
 @interface UIUDetectorCompat
 - (UIUDetectorCompat)init;
-- (UIUDetectorCompat)initWithPlatform:(int64_t)a3 elementConfidenceThresholds:(id)a4 clickabilityConfidenceThresholds:(id)a5 elementConfig:(id)a6 clickabilityConfig:(id)a7 error:(id *)a8;
-- (id)getUIObjectsInScreen:(CGImage *)a3 addOCR:(BOOL)a4 addIconRecognition:(BOOL)a5 addClickability:(BOOL)a6 addFocusElements:(BOOL)a7 nmsThreshold:(float)a8 useAccurateOCR:(BOOL)a9 error:(id *)a10;
+- (UIUDetectorCompat)initWithPlatform:(int64_t)platform elementConfidenceThresholds:(id)thresholds clickabilityConfidenceThresholds:(id)confidenceThresholds elementConfig:(id)config clickabilityConfig:(id)clickabilityConfig error:(id *)error;
+- (id)getUIObjectsInScreen:(CGImage *)screen addOCR:(BOOL)r addIconRecognition:(BOOL)recognition addClickability:(BOOL)clickability addFocusElements:(BOOL)elements nmsThreshold:(float)threshold useAccurateOCR:(BOOL)cR error:(id *)self0;
 @end
 
 @implementation UIUDetectorCompat
 
-- (UIUDetectorCompat)initWithPlatform:(int64_t)a3 elementConfidenceThresholds:(id)a4 clickabilityConfidenceThresholds:(id)a5 elementConfig:(id)a6 clickabilityConfig:(id)a7 error:(id *)a8
+- (UIUDetectorCompat)initWithPlatform:(int64_t)platform elementConfidenceThresholds:(id)thresholds clickabilityConfidenceThresholds:(id)confidenceThresholds elementConfig:(id)config clickabilityConfig:(id)clickabilityConfig error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  return UIUDetector.init(platform:elementConfidenceThresholds:clickabilityConfidenceThresholds:elementConfig:clickabilityConfig:)(a3, a4, a5, a6, a7);
+  thresholdsCopy = thresholds;
+  confidenceThresholdsCopy = confidenceThresholds;
+  configCopy = config;
+  clickabilityConfigCopy = clickabilityConfig;
+  return UIUDetector.init(platform:elementConfidenceThresholds:clickabilityConfidenceThresholds:elementConfig:clickabilityConfig:)(platform, thresholds, confidenceThresholds, config, clickabilityConfig);
 }
 
 - (UIUDetectorCompat)init
@@ -22,19 +22,19 @@
   return result;
 }
 
-- (id)getUIObjectsInScreen:(CGImage *)a3 addOCR:(BOOL)a4 addIconRecognition:(BOOL)a5 addClickability:(BOOL)a6 addFocusElements:(BOOL)a7 nmsThreshold:(float)a8 useAccurateOCR:(BOOL)a9 error:(id *)a10
+- (id)getUIObjectsInScreen:(CGImage *)screen addOCR:(BOOL)r addIconRecognition:(BOOL)recognition addClickability:(BOOL)clickability addFocusElements:(BOOL)elements nmsThreshold:(float)threshold useAccurateOCR:(BOOL)cR error:(id *)self0
 {
-  v10 = a9;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  cRCopy = cR;
+  elementsCopy = elements;
+  clickabilityCopy = clickability;
+  recognitionCopy = recognition;
+  rCopy = r;
   v18 = type metadata accessor for UIUDetectorResult();
   MEMORY[0x28223BE20](v18 - 8);
   v20 = &v25 - ((v19 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v21 = a3;
-  v22 = self;
-  UIUDetector.getUIDetectionsInScreen(_:addOCR:addIconRecognition:addClickability:addFocusElements:nmsThreshold:useAccurateOCR:)(v21, v15, v14, v13, v12, v10, v20, a8);
+  screenCopy = screen;
+  selfCopy = self;
+  UIUDetector.getUIDetectionsInScreen(_:addOCR:addIconRecognition:addClickability:addFocusElements:nmsThreshold:useAccurateOCR:)(screenCopy, rCopy, recognitionCopy, clickabilityCopy, elementsCopy, cRCopy, v20, threshold);
 
   sub_27025C4E4(v20);
   type metadata accessor for UIObject();

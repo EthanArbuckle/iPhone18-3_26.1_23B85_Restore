@@ -1,5 +1,5 @@
 @interface SBMainScreenActiveInterfaceOrientationWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityWindowVisible;
 - (BOOL)_axIsFloatingDockWindow;
 - (BOOL)accessibilityElementsHidden;
@@ -9,31 +9,31 @@
 
 @implementation SBMainScreenActiveInterfaceOrientationWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconController"];
-  [v3 validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBWindowScene" hasInstanceMethod:@"floatingDockController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"floatingDockWindow" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"isPresentingFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"dismissPresentedFolderAnimated:completion:" withFullSignature:{"v", "B", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconController"];
+  [validationsCopy validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBWindowScene" hasInstanceMethod:@"floatingDockController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"floatingDockWindow" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"isPresentingFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"dismissPresentedFolderAnimated:completion:" withFullSignature:{"v", "B", "@?", 0}];
 }
 
 - (BOOL)accessibilityElementsHidden
 {
   if ([(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)self _axIsFloatingDockWindow])
   {
-    v3 = [MEMORY[0x29EDBDFA8] server];
-    if ([v3 isDockVisible])
+    server = [MEMORY[0x29EDBDFA8] server];
+    if ([server isDockVisible])
     {
-      v4 = [MEMORY[0x29EDBDFA8] server];
-      v5 = [v4 isControlCenterVisible];
+      server2 = [MEMORY[0x29EDBDFA8] server];
+      isControlCenterVisible = [server2 isControlCenterVisible];
     }
 
     else
     {
-      v5 = 1;
+      isControlCenterVisible = 1;
     }
   }
 
@@ -44,17 +44,17 @@
     return [(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)&v7 accessibilityElementsHidden];
   }
 
-  return v5;
+  return isControlCenterVisible;
 }
 
 - (BOOL)_accessibilityWindowVisible
 {
   if ([(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)self _axIsFloatingDockWindow])
   {
-    v3 = [MEMORY[0x29EDBDFA8] server];
-    v4 = [v3 isDockVisible];
+    server = [MEMORY[0x29EDBDFA8] server];
+    isDockVisible = [server isDockVisible];
 
-    return v4;
+    return isDockVisible;
   }
 
   else
@@ -69,24 +69,24 @@
 {
   if ([(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)self _axIsFloatingDockWindow])
   {
-    v3 = [(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)self _axFloatingDockController];
-    if ([v3 safeBoolForKey:@"isPresentingFolder"])
+    _axFloatingDockController = [(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)self _axFloatingDockController];
+    if ([_axFloatingDockController safeBoolForKey:@"isPresentingFolder"])
     {
       v7 = MEMORY[0x29EDCA5F8];
       v8 = 3221225472;
       v9 = __87__SBMainScreenActiveInterfaceOrientationWindowAccessibility_accessibilityPerformEscape__block_invoke;
       v10 = &unk_29F2FBA40;
-      v11 = v3;
+      v11 = _axFloatingDockController;
       AXPerformSafeBlock();
 
-      v4 = 1;
+      accessibilityPerformEscape = 1;
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = SBMainScreenActiveInterfaceOrientationWindowAccessibility;
-      v4 = [(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)&v6 accessibilityPerformEscape];
+      accessibilityPerformEscape = [(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)&v6 accessibilityPerformEscape];
     }
   }
 
@@ -97,7 +97,7 @@
     return [(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)&v12 accessibilityPerformEscape];
   }
 
-  return v4;
+  return accessibilityPerformEscape;
 }
 
 - (BOOL)_axIsFloatingDockWindow
@@ -107,8 +107,8 @@
     return 0;
   }
 
-  v3 = [(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)self _axFloatingDockController];
-  v4 = [v3 safeValueForKey:@"floatingDockWindow"];
+  _axFloatingDockController = [(SBMainScreenActiveInterfaceOrientationWindowAccessibility *)self _axFloatingDockController];
+  v4 = [_axFloatingDockController safeValueForKey:@"floatingDockWindow"];
   v5 = v4 == self;
 
   return v5;

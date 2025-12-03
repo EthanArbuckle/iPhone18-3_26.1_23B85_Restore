@@ -1,5 +1,5 @@
 @interface MSStreamsProtocol
-- (MSStreamsProtocol)initWithPersonID:(id)a3 baseURL:(id)a4;
+- (MSStreamsProtocol)initWithPersonID:(id)d baseURL:(id)l;
 - (NSURL)deleteURL;
 - (NSURL)getURL;
 - (NSURL)putURL;
@@ -7,33 +7,33 @@
 - (NSURL)resetURL;
 - (NSURL)uploadCompleteURL;
 - (id)deviceInfoDict;
-- (void)_didFindServerSideConfigurationVersion:(id)a3;
-- (void)_didReceiveRetryAfterDate:(id)a3;
-- (void)_refreshAuthTokenForContext:(__MSSPCContext *)a3;
+- (void)_didFindServerSideConfigurationVersion:(id)version;
+- (void)_didReceiveRetryAfterDate:(id)date;
+- (void)_refreshAuthTokenForContext:(__MSSPCContext *)context;
 @end
 
 @implementation MSStreamsProtocol
 
-- (void)_refreshAuthTokenForContext:(__MSSPCContext *)a3
+- (void)_refreshAuthTokenForContext:(__MSSPCContext *)context
 {
-  authToken = a3->authToken;
+  authToken = context->authToken;
   if (authToken)
   {
     CFRelease(authToken);
   }
 
   v6 = MSPlatform();
-  a3->authToken = [v6 authTokenForPersonID:self->_personID];
+  context->authToken = [v6 authTokenForPersonID:self->_personID];
 }
 
-- (void)_didReceiveRetryAfterDate:(id)a3
+- (void)_didReceiveRetryAfterDate:(id)date
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(MSStreamsProtocolDelegate *)self->_delegate protocol:self didReceiveRetryAfterDate:v4];
+    [(MSStreamsProtocolDelegate *)self->_delegate protocol:self didReceiveRetryAfterDate:dateCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -47,19 +47,19 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didFindServerSideConfigurationVersion:(id)a3
+- (void)_didFindServerSideConfigurationVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v7 = MSPlatform();
-  v5 = [v7 theDaemon];
-  v6 = [(MSStreamsProtocol *)self personID];
-  [v5 didReceiveServerSideConfigurationVersion:v4 forPersonID:v6];
+  theDaemon = [v7 theDaemon];
+  personID = [(MSStreamsProtocol *)self personID];
+  [theDaemon didReceiveServerSideConfigurationVersion:versionCopy forPersonID:personID];
 }
 
 - (id)deviceInfoDict
 {
-  v2 = [(MSStreamsProtocol *)self personID];
-  v3 = [MSProtocolUtilities deviceInfoDictForPersonID:v2];
+  personID = [(MSStreamsProtocol *)self personID];
+  v3 = [MSProtocolUtilities deviceInfoDictForPersonID:personID];
 
   return v3;
 }
@@ -130,9 +130,9 @@
   return v7;
 }
 
-- (MSStreamsProtocol)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSStreamsProtocol)initWithPersonID:(id)d baseURL:(id)l
 {
-  v6 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = MSStreamsProtocol;
   v7 = [(MSStreamsProtocol *)&v13 init];
@@ -142,7 +142,7 @@
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v7->_personID, a3);
+  objc_storeStrong(&v7->_personID, d);
   v9 = MSPlatform();
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {

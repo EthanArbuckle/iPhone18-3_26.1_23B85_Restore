@@ -1,31 +1,31 @@
 @interface ATXShadowMetricsComputer
-- (ATXShadowMetricsComputer)initWithDataSource:(id)a3;
-- (id)computeResultAsTrendPlotFromStartDate:(id)a3 toEndDate:(id)a4 resultGranularity:(int64_t)a5;
-- (id)computeResultFromStartDate:(id)a3 toEndDate:(id)a4;
+- (ATXShadowMetricsComputer)initWithDataSource:(id)source;
+- (id)computeResultAsTrendPlotFromStartDate:(id)date toEndDate:(id)endDate resultGranularity:(int64_t)granularity;
+- (id)computeResultFromStartDate:(id)date toEndDate:(id)endDate;
 @end
 
 @implementation ATXShadowMetricsComputer
 
-- (ATXShadowMetricsComputer)initWithDataSource:(id)a3
+- (ATXShadowMetricsComputer)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = ATXShadowMetricsComputer;
   v6 = [(ATXShadowMetricsComputer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
 }
 
-- (id)computeResultAsTrendPlotFromStartDate:(id)a3 toEndDate:(id)a4 resultGranularity:(int64_t)a5
+- (id)computeResultAsTrendPlotFromStartDate:(id)date toEndDate:(id)endDate resultGranularity:(int64_t)granularity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[ATXTrendPlot alloc] initWithStartDate:v8 endDate:v9 granularity:a5 binInitialDataProvider:&__block_literal_global_18];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = [[ATXTrendPlot alloc] initWithStartDate:dateCopy endDate:endDateCopy granularity:granularity binInitialDataProvider:&__block_literal_global_18];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -43,8 +43,8 @@
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__8;
   v22[4] = __Block_byref_object_dispose__8;
-  v11 = [(ATXTrendPlot *)v10 bins];
-  v23 = [v11 firstObject];
+  bins = [(ATXTrendPlot *)v10 bins];
+  firstObject = [bins firstObject];
 
   dataSource = self->_dataSource;
   v17[0] = MEMORY[0x1E69E9820];
@@ -65,7 +65,7 @@
   v16[5] = v22;
   v16[6] = v26;
   v16[7] = v24;
-  [(ATXShadowMetricsDataSource *)dataSource replayHistoryBetweenStartDate:v8 endDate:v9 shadowEventHandler:v17 predictionCacheHandler:v16];
+  [(ATXShadowMetricsDataSource *)dataSource replayHistoryBetweenStartDate:dateCopy endDate:endDateCopy shadowEventHandler:v17 predictionCacheHandler:v16];
   v14 = v13;
 
   _Block_object_dispose(v22, 8);
@@ -526,14 +526,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)computeResultFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)computeResultFromStartDate:(id)date toEndDate:(id)endDate
 {
-  v4 = [(ATXShadowMetricsComputer *)self computeResultAsTrendPlotFromStartDate:a3 toEndDate:a4 resultGranularity:0];
-  v5 = [v4 bins];
-  v6 = [v5 firstObject];
-  v7 = [v6 data];
+  v4 = [(ATXShadowMetricsComputer *)self computeResultAsTrendPlotFromStartDate:date toEndDate:endDate resultGranularity:0];
+  bins = [v4 bins];
+  firstObject = [bins firstObject];
+  data = [firstObject data];
 
-  return v7;
+  return data;
 }
 
 @end

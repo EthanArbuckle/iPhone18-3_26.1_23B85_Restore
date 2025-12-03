@@ -1,32 +1,60 @@
 @interface EMInstantAnswerHotel
-- (EMInstantAnswerHotel)initWithCSInstantAnswers:(id)a3;
-- (EMInstantAnswerHotel)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EMInstantAnswerHotel)initWithCSInstantAnswers:(id)answers;
+- (EMInstantAnswerHotel)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMInstantAnswerHotel
 
-- (EMInstantAnswerHotel)initWithCSInstantAnswers:(id)a3
+- (EMInstantAnswerHotel)initWithCSInstantAnswers:(id)answers
 {
-  v4 = a3;
+  answersCopy = answers;
   v15.receiver = self;
   v15.super_class = EMInstantAnswerHotel;
   v5 = [(EMInstantAnswerHotel *)&v15 init];
   if (v5)
   {
-    v6 = [v4 hotelCheckinDateComponents];
+    hotelCheckinDateComponents = [answersCopy hotelCheckinDateComponents];
+    checkInDateComponents = v5->_checkInDateComponents;
+    v5->_checkInDateComponents = hotelCheckinDateComponents;
+
+    hotelReservationForName = [answersCopy hotelReservationForName];
+    name = v5->_name;
+    v5->_name = hotelReservationForName;
+
+    hotelReservationForAddress = [answersCopy hotelReservationForAddress];
+    address = v5->_address;
+    v5->_address = hotelReservationForAddress;
+
+    hotelReservationForAddressLocality = [answersCopy hotelReservationForAddressLocality];
+    city = v5->_city;
+    v5->_city = hotelReservationForAddressLocality;
+  }
+
+  return v5;
+}
+
+- (EMInstantAnswerHotel)initWithCoder:(id)coder
+{
+  coderCopy = coder;
+  v15.receiver = self;
+  v15.super_class = EMInstantAnswerHotel;
+  v5 = [(EMInstantAnswerHotel *)&v15 init];
+  if (v5)
+  {
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_checkInDateComponents"];
     checkInDateComponents = v5->_checkInDateComponents;
     v5->_checkInDateComponents = v6;
 
-    v8 = [v4 hotelReservationForName];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 hotelReservationForAddress];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_address"];
     address = v5->_address;
     v5->_address = v10;
 
-    v12 = [v4 hotelReservationForAddressLocality];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_city"];
     city = v5->_city;
     v5->_city = v12;
   }
@@ -34,48 +62,20 @@
   return v5;
 }
 
-- (EMInstantAnswerHotel)initWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v15.receiver = self;
-  v15.super_class = EMInstantAnswerHotel;
-  v5 = [(EMInstantAnswerHotel *)&v15 init];
-  if (v5)
-  {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_checkInDateComponents"];
-    checkInDateComponents = v5->_checkInDateComponents;
-    v5->_checkInDateComponents = v6;
+  coderCopy = coder;
+  checkInDateComponents = [(EMInstantAnswerHotel *)self checkInDateComponents];
+  [coderCopy encodeObject:checkInDateComponents forKey:@"EFPropertyKey_checkInDateComponents"];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_name"];
-    name = v5->_name;
-    v5->_name = v8;
+  name = [(EMInstantAnswerHotel *)self name];
+  [coderCopy encodeObject:name forKey:@"EFPropertyKey_name"];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_address"];
-    address = v5->_address;
-    v5->_address = v10;
+  address = [(EMInstantAnswerHotel *)self address];
+  [coderCopy encodeObject:address forKey:@"EFPropertyKey_address"];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_city"];
-    city = v5->_city;
-    v5->_city = v12;
-  }
-
-  return v5;
-}
-
-- (void)encodeWithCoder:(id)a3
-{
-  v8 = a3;
-  v4 = [(EMInstantAnswerHotel *)self checkInDateComponents];
-  [v8 encodeObject:v4 forKey:@"EFPropertyKey_checkInDateComponents"];
-
-  v5 = [(EMInstantAnswerHotel *)self name];
-  [v8 encodeObject:v5 forKey:@"EFPropertyKey_name"];
-
-  v6 = [(EMInstantAnswerHotel *)self address];
-  [v8 encodeObject:v6 forKey:@"EFPropertyKey_address"];
-
-  v7 = [(EMInstantAnswerHotel *)self city];
-  [v8 encodeObject:v7 forKey:@"EFPropertyKey_city"];
+  city = [(EMInstantAnswerHotel *)self city];
+  [coderCopy encodeObject:city forKey:@"EFPropertyKey_city"];
 }
 
 @end

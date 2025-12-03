@@ -1,32 +1,32 @@
 @interface HKAccountNotificationPluginController
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation HKAccountNotificationPluginController
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
   v67 = *MEMORY[0x29EDCA608];
-  v9 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (a4 != 4)
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
+  v11 = oldAccountCopy;
+  if (type != 4)
   {
-    if (v9)
+    if (accountCopy)
     {
-      v12 = v9;
+      v12 = accountCopy;
     }
 
     else
     {
-      v12 = v10;
+      v12 = oldAccountCopy;
     }
 
     v13 = v12;
-    v14 = [v13 accountType];
-    v15 = [v14 identifier];
+    accountType = [v13 accountType];
+    identifier = [accountType identifier];
 
-    if (![v15 isEqualToString:*MEMORY[0x29EDB81C8]])
+    if (![identifier isEqualToString:*MEMORY[0x29EDB81C8]])
     {
       goto LABEL_34;
     }
@@ -52,7 +52,7 @@
       }
 
       *buf = 138543362;
-      v62 = self;
+      selfCopy6 = self;
       v23 = "%{public}@: Standard primary account save.";
       v24 = v21;
       v25 = OS_LOG_TYPE_INFO;
@@ -66,7 +66,7 @@
       }
 
       *buf = 138543362;
-      v62 = self;
+      selfCopy6 = self;
       v23 = "%{public}@: Primary account added or promoted.";
       v24 = v21;
       v25 = OS_LOG_TYPE_DEFAULT;
@@ -93,7 +93,7 @@ LABEL_13:
       }
 
       *buf = 138543874;
-      v62 = self;
+      selfCopy6 = self;
       v64 = v31;
       v63 = 2112;
       if (v28)
@@ -116,7 +116,7 @@ LABEL_13:
     if (os_log_type_enabled(*v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v62 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_29C8CF000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ Handle account changes after dataclass enabled", buf, 0xCu);
     }
 
@@ -128,10 +128,10 @@ LABEL_13:
     v60[3] = &unk_29F32FF18;
     v60[4] = self;
     [v34 accountConfigurationDidChangeWithCompletion:v60];
-    v35 = [MEMORY[0x29EDBAEC0] sharedBehavior];
-    v36 = [v35 isiPad];
+    mEMORY[0x29EDBAEC0] = [MEMORY[0x29EDBAEC0] sharedBehavior];
+    isiPad = [mEMORY[0x29EDBAEC0] isiPad];
 
-    if (!v36)
+    if (!isiPad)
     {
       goto LABEL_33;
     }
@@ -140,10 +140,10 @@ LABEL_13:
     v37 = objc_alloc(MEMORY[0x29EDBAC18]);
     v38 = [v37 initWithCategory:3 domainName:*MEMORY[0x29EDBB018] healthStore:v33];
     v39 = *MEMORY[0x29EDBB010];
-    v40 = [MEMORY[0x29EDB8DB0] date];
+    date = [MEMORY[0x29EDB8DB0] date];
     v59 = 0;
     v54 = v39;
-    LOBYTE(v39) = [(__CFString *)v38 setDate:v40 forKey:v39 error:&v59];
+    LOBYTE(v39) = [(__CFString *)v38 setDate:date forKey:v39 error:&v59];
     v53 = v59;
 
     if ((v39 & 1) == 0)
@@ -153,7 +153,7 @@ LABEL_13:
       if (os_log_type_enabled(*v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v62 = self;
+        selfCopy6 = self;
         v63 = 2114;
         v64 = v54;
         v65 = 2114;
@@ -202,7 +202,7 @@ LABEL_13:
       if (os_log_type_enabled(*MEMORY[0x29EDBA7B0], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_29C8CF000, v49, OS_LOG_TYPE_DEFAULT, "%{public}@: User previously notified of this device. Not doing anything", buf, 0xCu);
       }
     }

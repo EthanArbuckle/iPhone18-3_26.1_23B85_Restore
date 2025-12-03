@@ -1,6 +1,6 @@
 @interface UAUserActivityDefaults
 + (id)sharedDefaults;
-- (BOOL)BOOLValueForKey:(id)a3 default:(BOOL)a4;
+- (BOOL)BOOLValueForKey:(id)key default:(BOOL)default;
 - (BOOL)activityAdvertisingAllowed;
 - (BOOL)activityContinuationAllowed;
 - (BOOL)activityReceivingAllowed;
@@ -33,8 +33,8 @@
 - (double)pasteboardUITimeRemainingDelay;
 - (double)payloadFetchResponseDelay;
 - (double)remotePasteboardAvailableTimeout;
-- (double)timeIntervalForKey:(id)a3 default:(double)a4;
-- (id)defaults:(BOOL)a3;
+- (double)timeIntervalForKey:(id)key default:(double)default;
+- (id)defaults:(BOOL)defaults;
 - (id)rendevousPairingType;
 - (id)statusString;
 - (int)networkControlListenerPort;
@@ -42,10 +42,10 @@
 - (int64_t)debugUserActivityTimeOffset;
 - (int64_t)debugValidateSampleResponseMaximumActivityPayloadSizeInBytes;
 - (int64_t)debugValidateSampleResponseMinimumActivityPayloadSizeInBytes;
-- (int64_t)integerValueForKey:(id)a3 default:(int64_t)a4;
+- (int64_t)integerValueForKey:(id)key default:(int64_t)default;
 - (int64_t)maximumActivityPayloadSizeInBytes;
 - (int64_t)pasteboardEmbeddedPayloadSizeLimitInBytes;
-- (void)setDefault:(id)a3 value:(id)a4;
+- (void)setDefault:(id)default value:(id)value;
 @end
 
 @implementation UAUserActivityDefaults
@@ -64,16 +64,16 @@
 
 - (BOOL)debugCrossoverAllActivities
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"DEBUGCrossoverAllActivities"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"DEBUGCrossoverAllActivities"];
 
   return v3;
 }
 
 - (BOOL)debugEnablePinging
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"DEBUGEnablePinging"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"DEBUGEnablePinging"];
 
   return v3;
 }
@@ -96,9 +96,9 @@
   }
 
   v5 = +[MCProfileConnection sharedConnection];
-  v4 = [v5 isActivityContinuationAllowed];
+  isActivityContinuationAllowed = [v5 isActivityContinuationAllowed];
 
-  return v4;
+  return isActivityContinuationAllowed;
 }
 
 - (BOOL)activityReceivingAllowed
@@ -119,9 +119,9 @@
   }
 
   v5 = +[MCProfileConnection sharedConnection];
-  v4 = [v5 isActivityContinuationAllowed];
+  isActivityContinuationAllowed = [v5 isActivityContinuationAllowed];
 
-  return v4;
+  return isActivityContinuationAllowed;
 }
 
 - (UAUserActivityDefaults)init
@@ -136,57 +136,57 @@
     v2->_userDefaults = v3;
 
     v5 = v2->_userDefaults;
-    v6 = [(UAUserActivityDefaults *)v2 cornerActionItemDefaults];
-    [(NSUserDefaults *)v5 registerDefaults:v6];
+    cornerActionItemDefaults = [(UAUserActivityDefaults *)v2 cornerActionItemDefaults];
+    [(NSUserDefaults *)v5 registerDefaults:cornerActionItemDefaults];
   }
 
   return v2;
 }
 
-- (BOOL)BOOLValueForKey:(id)a3 default:(BOOL)a4
+- (BOOL)BOOLValueForKey:(id)key default:(BOOL)default
 {
-  v6 = a3;
-  v7 = [(UAUserActivityDefaults *)self userDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v8 = [userDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    v9 = [(UAUserActivityDefaults *)self userDefaults];
-    a4 = [v9 BOOLForKey:v6];
+    userDefaults2 = [(UAUserActivityDefaults *)self userDefaults];
+    default = [userDefaults2 BOOLForKey:keyCopy];
   }
 
-  return a4;
+  return default;
 }
 
-- (int64_t)integerValueForKey:(id)a3 default:(int64_t)a4
+- (int64_t)integerValueForKey:(id)key default:(int64_t)default
 {
-  v6 = a3;
-  v7 = [(UAUserActivityDefaults *)self userDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v8 = [userDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    v9 = [(UAUserActivityDefaults *)self userDefaults];
-    a4 = [v9 integerForKey:v6];
+    userDefaults2 = [(UAUserActivityDefaults *)self userDefaults];
+    default = [userDefaults2 integerForKey:keyCopy];
   }
 
-  return a4;
+  return default;
 }
 
-- (double)timeIntervalForKey:(id)a3 default:(double)a4
+- (double)timeIntervalForKey:(id)key default:(double)default
 {
-  v6 = a3;
-  v7 = [(UAUserActivityDefaults *)self userDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v8 = [userDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    v9 = [(UAUserActivityDefaults *)self userDefaults];
-    [v9 doubleForKey:v6];
-    a4 = v10;
+    userDefaults2 = [(UAUserActivityDefaults *)self userDefaults];
+    [userDefaults2 doubleForKey:keyCopy];
+    default = v10;
   }
 
-  return a4;
+  return default;
 }
 
 - (BOOL)isBatterySaverModeEnabled
@@ -224,9 +224,9 @@
   }
 
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 isActivityContinuationAllowed];
+  isActivityContinuationAllowed = [v3 isActivityContinuationAllowed];
 
-  return v4;
+  return isActivityContinuationAllowed;
 }
 
 - (BOOL)clipboardSharingEnabled
@@ -243,176 +243,176 @@
 
 - (int64_t)maximumActivityPayloadSizeInBytes
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"MaximumActivityPayloadSizeInBytes"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"MaximumActivityPayloadSizeInBytes"];
 
   return v3;
 }
 
 - (BOOL)enableNetworkControlListener
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"EnableNetworkControlListener"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"EnableNetworkControlListener"];
 
   return v3;
 }
 
 - (BOOL)enableAutomaticRendevousPairing
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"EnableAutomaticRendevousPairing"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"EnableAutomaticRendevousPairing"];
 
   return v3;
 }
 
 - (id)rendevousPairingType
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 stringForKey:@"RendevousPairingType"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults stringForKey:@"RendevousPairingType"];
 
   return v3;
 }
 
 - (int)networkControlListenerPort
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"NetworkControlListenerPort"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"NetworkControlListenerPort"];
 
   return v3;
 }
 
 - (int64_t)activityPayloadWarningSizeInBytes
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"ActivityPayloadWarningSizeInBytes"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"ActivityPayloadWarningSizeInBytes"];
 
   return v3;
 }
 
 - (int64_t)debugValidateSampleResponseMinimumActivityPayloadSizeInBytes
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"DEBUGValidateSampleResponseMinimumActivityPayloadSizeInBytes"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"DEBUGValidateSampleResponseMinimumActivityPayloadSizeInBytes"];
 
   return v3;
 }
 
 - (int64_t)debugValidateSampleResponseMaximumActivityPayloadSizeInBytes
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"DEBUGValidateSampleResponseMaximumActivityPayloadSizeInBytes"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"DEBUGValidateSampleResponseMaximumActivityPayloadSizeInBytes"];
 
   return v3;
 }
 
 - (int64_t)debugUserActivityTimeOffset
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"DEBUGUserActivityTimeOffset"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"DEBUGUserActivityTimeOffset"];
 
   return v3;
 }
 
 - (BOOL)debugForceNewPayloadEncoder
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"DEBUGForceNewPayloadEncoder"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"DEBUGForceNewPayloadEncoder"];
 
   return v3;
 }
 
 - (BOOL)debugForceOldPayloadEncoder
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"DEBUGForceOldPayloadEncoder"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"DEBUGForceOldPayloadEncoder"];
 
   return v3;
 }
 
 - (BOOL)dontSendActivityTitle
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"DEBUGDontSendActivityTitle"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"DEBUGDontSendActivityTitle"];
 
   return v3;
 }
 
 - (BOOL)debugReadvertiseImmediately
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"DEBUGReadvertiseImmediately"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"DEBUGReadvertiseImmediately"];
 
   return v3;
 }
 
 - (BOOL)debugEnablePrefetch
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"DEBUGEnablePrefetch"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"DEBUGEnablePrefetch"];
 
   return v3;
 }
 
 - (BOOL)debugIgnoreAppsUsedForDevelopment
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"DEBUGIgnoreAppsUsedForDevelopment"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"DEBUGIgnoreAppsUsedForDevelopment"];
 
   return v3;
 }
 
 - (BOOL)enableSharingFramework
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"EnableSharingFramework"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"EnableSharingFramework"];
 
   return v3;
 }
 
 - (double)localPasteboardAvalibilityTimeout
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"UASharedPboardLocalAdvertisementTime"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"UASharedPboardLocalAdvertisementTime"];
 
   return v3;
 }
 
 - (double)localPasteboardAvalibilityClearedTimeout
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"UASharedPboardLocalClearedAdvertisementTime"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"UASharedPboardLocalClearedAdvertisementTime"];
 
   return v3;
 }
 
 - (double)remotePasteboardAvailableTimeout
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"UASharedPboardRemoteAvailableTimeout"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"UASharedPboardRemoteAvailableTimeout"];
 
   return v3;
 }
 
 - (BOOL)localPasteboardRefection
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"UASharedPboardLocalReflection"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"UASharedPboardLocalReflection"];
 
   return v3;
 }
 
 - (int64_t)pasteboardEmbeddedPayloadSizeLimitInBytes
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"UASharedPboardEmbeddedPayloadSizeLimitInBytes"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"UASharedPboardEmbeddedPayloadSizeLimitInBytes"];
 
   return v3;
 }
 
 - (double)pasteboardUITimeRemainingDelay
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"TimeRemainingDelay"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"TimeRemainingDelay"];
   v4 = v3;
 
   return v4;
@@ -420,8 +420,8 @@
 
 - (double)pasteboardShowUIDelay
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"UASharedPboardShowUIDelayInSec"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"UASharedPboardShowUIDelayInSec"];
   v4 = v3;
 
   return v4;
@@ -429,8 +429,8 @@
 
 - (double)pasteboardUIMinimumDurration
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"UASharedPboardUIMinimumDurrationInSec"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"UASharedPboardUIMinimumDurrationInSec"];
   v4 = v3;
 
   return v4;
@@ -438,8 +438,8 @@
 
 - (double)pasteboardHideUIDelay
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"UASharedPboardHideUIDelayInSec"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"UASharedPboardHideUIDelayInSec"];
   v4 = v3;
 
   return v4;
@@ -447,8 +447,8 @@
 
 - (double)pasteboardTypeRequestTimeout
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"TypeRequestTimeout"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"TypeRequestTimeout"];
   v4 = v3;
 
   return v4;
@@ -456,8 +456,8 @@
 
 - (double)pasteboardPasteRequestTimeout
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"PasteRequestTimeout"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"PasteRequestTimeout"];
   v4 = v3;
 
   return v4;
@@ -465,8 +465,8 @@
 
 - (double)pasteboardStreamWatchdogTimeout
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"PasteboardStreamWatchdogTimeout"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"PasteboardStreamWatchdogTimeout"];
   v4 = v3;
 
   return v4;
@@ -474,8 +474,8 @@
 
 - (double)handoffPayloadRequestTimout
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"HandoffRequestTimeout"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"HandoffRequestTimeout"];
   v4 = v3;
 
   return v4;
@@ -483,8 +483,8 @@
 
 - (double)payloadFetchResponseDelay
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  [v2 doubleForKey:@"PayloadFetchResponseDelay"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  [userDefaults doubleForKey:@"PayloadFetchResponseDelay"];
   v4 = v3;
 
   return v4;
@@ -492,16 +492,16 @@
 
 - (BOOL)shouldIgnoreBluetoothDisabled
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"IgnoreBluetoothDisabled"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"IgnoreBluetoothDisabled"];
 
   return v3;
 }
 
 - (BOOL)ignoreLostDevice
 {
-  v2 = [(UAUserActivityDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"IgnoreLostDevice"];
+  userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"IgnoreLostDevice"];
 
   return v3;
 }
@@ -509,16 +509,16 @@
 - (id)statusString
 {
   v22 = +[NSMutableString string];
-  v27 = [(NSUserDefaults *)self->_userDefaults dictionaryRepresentation];
+  dictionaryRepresentation = [(NSUserDefaults *)self->_userDefaults dictionaryRepresentation];
   v24 = objc_alloc_init(NSMutableString);
   v23 = objc_alloc_init(NSMutableString);
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v2 = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
-  v3 = [v2 allKeys];
-  v4 = [v3 sortedArrayUsingSelector:"compare:"];
+  cornerActionItemDefaults = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
+  allKeys = [cornerActionItemDefaults allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   obj = v4;
   v5 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -535,9 +535,9 @@
         }
 
         v7 = *(*(&v29 + 1) + 8 * i);
-        v8 = [v27 valueForKey:v7];
-        v9 = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
-        v10 = [v9 valueForKey:v7];
+        v8 = [dictionaryRepresentation valueForKey:v7];
+        cornerActionItemDefaults2 = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
+        v10 = [cornerActionItemDefaults2 valueForKey:v7];
         v11 = [v8 isEqual:v10];
 
         v12 = [v8 description];
@@ -549,8 +549,8 @@
 
         else
           v13 = {;
-          v14 = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
-          v15 = [v14 valueForKey:v7];
+          cornerActionItemDefaults3 = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
+          v15 = [cornerActionItemDefaults3 valueForKey:v7];
           v16 = [v15 description];
           v17 = sub_100009684(v16);
           [v24 appendFormat:@" %@=%@ (%@)", v7, v13, v17];
@@ -564,26 +564,26 @@
   }
 
   v18 = +[NSBundle mainBundle];
-  v19 = [v18 bundleIdentifier];
-  [v22 appendFormat:@"\nDefaults: (domain=%@) %@\n", v19, v24];
+  bundleIdentifier = [v18 bundleIdentifier];
+  [v22 appendFormat:@"\nDefaults: (domain=%@) %@\n", bundleIdentifier, v24];
 
   v20 = [v22 copy];
 
   return v20;
 }
 
-- (id)defaults:(BOOL)a3
+- (id)defaults:(BOOL)defaults
 {
   v20 = +[NSMutableDictionary dictionary];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
-  v5 = [v4 allKeys];
+  cornerActionItemDefaults = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
+  allKeys = [cornerActionItemDefaults allKeys];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  obj = allKeys;
+  v6 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = *v23;
@@ -597,22 +597,22 @@
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        if (a3)
+        if (defaults)
         {
           goto LABEL_8;
         }
 
-        v10 = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
-        v11 = [v10 objectForKey:v9];
-        v12 = [(UAUserActivityDefaults *)self userDefaults];
-        v13 = [v12 valueForKey:v9];
+        cornerActionItemDefaults2 = [(UAUserActivityDefaults *)self cornerActionItemDefaults];
+        v11 = [cornerActionItemDefaults2 objectForKey:v9];
+        userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+        v13 = [userDefaults valueForKey:v9];
         v14 = [v11 isEqual:v13];
 
         if ((v14 & 1) == 0)
         {
 LABEL_8:
-          v15 = [(UAUserActivityDefaults *)self userDefaults];
-          v16 = [v15 valueForKey:v9];
+          userDefaults2 = [(UAUserActivityDefaults *)self userDefaults];
+          v16 = [userDefaults2 valueForKey:v9];
           [v20 setValue:v16 forKey:v9];
         }
       }
@@ -628,25 +628,25 @@ LABEL_8:
   return v17;
 }
 
-- (void)setDefault:(id)a3 value:(id)a4
+- (void)setDefault:(id)default value:(id)value
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && v6)
+  defaultCopy = default;
+  valueCopy = value;
+  if (defaultCopy && valueCopy)
   {
-    v7 = [(UAUserActivityDefaults *)self userDefaults];
-    [v7 setObject:v6 forKey:v8];
+    userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+    [userDefaults setObject:valueCopy forKey:defaultCopy];
   }
 
   else
   {
-    if (!v8)
+    if (!defaultCopy)
     {
       goto LABEL_7;
     }
 
-    v7 = [(UAUserActivityDefaults *)self userDefaults];
-    [v7 removeObjectForKey:v8];
+    userDefaults = [(UAUserActivityDefaults *)self userDefaults];
+    [userDefaults removeObjectForKey:defaultCopy];
   }
 
 LABEL_7:

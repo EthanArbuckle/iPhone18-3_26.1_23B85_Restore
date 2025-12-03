@@ -1,34 +1,34 @@
 @interface ISMachineDataActionOperation
 - (BOOL)_eraseProvisioning;
-- (BOOL)_provisionWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)_shouldRetryAfterError:(id)a3;
-- (BOOL)_syncMachineWithRequest:(id)a3 error:(id *)a4;
+- (BOOL)_provisionWithRequest:(id)request error:(id *)error;
+- (BOOL)_shouldRetryAfterError:(id)error;
+- (BOOL)_syncMachineWithRequest:(id)request error:(id *)error;
 - (BOOL)blocksPurchaseRequests;
 - (BOOL)hidesServerDrivenDialogs;
-- (ISMachineDataActionOperation)initWithMachineDataRequest:(id)a3;
+- (ISMachineDataActionOperation)initWithMachineDataRequest:(id)request;
 - (NSString)syncState;
 - (NSString)userAgent;
 - (id)resultBlock;
 - (id)uniqueKey;
 - (void)run;
-- (void)setBlocksPurchaseRequests:(BOOL)a3;
-- (void)setHidesServerDrivenDialogs:(BOOL)a3;
-- (void)setResultBlock:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setBlocksPurchaseRequests:(BOOL)requests;
+- (void)setHidesServerDrivenDialogs:(BOOL)dialogs;
+- (void)setResultBlock:(id)block;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation ISMachineDataActionOperation
 
-- (ISMachineDataActionOperation)initWithMachineDataRequest:(id)a3
+- (ISMachineDataActionOperation)initWithMachineDataRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = ISMachineDataActionOperation;
   v6 = [(ISOperation *)&v8 init];
   if (v6)
   {
-    *(v6 + 331) = [v5 waitsForPurchaseOperations];
-    objc_storeStrong(v6 + 42, a3);
+    *(v6 + 331) = [requestCopy waitsForPurchaseOperations];
+    objc_storeStrong(v6 + 42, request);
   }
 
   return v6;
@@ -60,29 +60,29 @@
   return v4;
 }
 
-- (void)setBlocksPurchaseRequests:(BOOL)a3
+- (void)setBlocksPurchaseRequests:(BOOL)requests
 {
   [(ISOperation *)self lock];
-  *(&self->super._success + 1) = a3;
+  *(&self->super._success + 1) = requests;
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setHidesServerDrivenDialogs:(BOOL)a3
+- (void)setHidesServerDrivenDialogs:(BOOL)dialogs
 {
   [(ISOperation *)self lock];
-  *(&self->super._success + 2) = a3;
+  *(&self->super._success + 2) = dialogs;
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setResultBlock:(id)a3
+- (void)setResultBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(ISOperation *)self lock];
-  if (self->_request != v6)
+  if (self->_request != blockCopy)
   {
-    v4 = [(SSMachineDataRequest *)v6 copy];
+    v4 = [(SSMachineDataRequest *)blockCopy copy];
     request = self->_request;
     self->_request = v4;
   }
@@ -90,13 +90,13 @@
   [(ISOperation *)self unlock];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  v6 = a3;
+  agentCopy = agent;
   [(ISOperation *)self lock];
-  if (self->_syncState != v6)
+  if (self->_syncState != agentCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)agentCopy copy];
     syncState = self->_syncState;
     self->_syncState = v4;
   }
@@ -125,25 +125,25 @@
 - (void)run
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D69B38] sharedFairPlayAnisetteConfig];
-  if (!v3)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedFairPlayAnisetteConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v3 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -166,60 +166,60 @@
       goto LABEL_12;
     }
 
-    v6 = [MEMORY[0x277CCACA8] stringWithCString:v10 encoding:{4, &v32, v29}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v10 encoding:{4, &v32, v29}];
     free(v10);
-    v28 = v6;
+    v28 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
-  v11 = [*&self->_blocksPurchaseRequests actionName];
-  if ([v11 isEqualToString:@"SP"])
+  actionName = [*&self->_blocksPurchaseRequests actionName];
+  if ([actionName isEqualToString:@"SP"])
   {
     v12 = *&self->_blocksPurchaseRequests;
     v31 = 0;
-    v13 = [(ISMachineDataActionOperation *)self _provisionWithRequest:v12 error:&v31];
+    _eraseProvisioning = [(ISMachineDataActionOperation *)self _provisionWithRequest:v12 error:&v31];
     v14 = v31;
 LABEL_16:
     v16 = v14;
     goto LABEL_17;
   }
 
-  if ([v11 isEqualToString:@"SM"])
+  if ([actionName isEqualToString:@"SM"])
   {
     v15 = *&self->_blocksPurchaseRequests;
     v30 = 0;
-    v13 = [(ISMachineDataActionOperation *)self _syncMachineWithRequest:v15 error:&v30];
+    _eraseProvisioning = [(ISMachineDataActionOperation *)self _syncMachineWithRequest:v15 error:&v30];
     v14 = v30;
     goto LABEL_16;
   }
 
-  if ([v11 isEqualToString:@"RP"])
+  if ([actionName isEqualToString:@"RP"])
   {
-    v13 = [(ISMachineDataActionOperation *)self _eraseProvisioning];
+    _eraseProvisioning = [(ISMachineDataActionOperation *)self _eraseProvisioning];
     v16 = 0;
     goto LABEL_17;
   }
 
-  v20 = [MEMORY[0x277D69B38] sharedFairPlayAnisetteConfig];
-  if (!v20)
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedFairPlayAnisetteConfig];
+  if (!mEMORY[0x277D69B38]2)
   {
-    v20 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v21 = [v20 shouldLog];
-  if ([v20 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v22 = v21 | 2;
+    v22 = shouldLog2 | 2;
   }
 
   else
   {
-    v22 = v21;
+    v22 = shouldLog2;
   }
 
-  v23 = [v20 OSLogObject];
-  if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v22 &= 2u;
   }
@@ -233,7 +233,7 @@ LABEL_16:
   v32 = 138543618;
   v33 = v24;
   v34 = 2114;
-  v35 = v11;
+  v35 = actionName;
   v25 = v24;
   LODWORD(v29) = 22;
   v28 = &v32;
@@ -241,24 +241,24 @@ LABEL_16:
 
   if (v26)
   {
-    v23 = [MEMORY[0x277CCACA8] stringWithCString:v26 encoding:{4, &v32, v29}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v26 encoding:{4, &v32, v29}];
     free(v26);
-    v28 = v23;
+    v28 = oSLogObject2;
     SSFileLog();
 LABEL_32:
   }
 
   v27 = *MEMORY[0x277D6A110];
   v16 = SSError();
-  v13 = 0;
+  _eraseProvisioning = 0;
 LABEL_17:
   [(ISOperation *)self setError:v16, v28];
-  [(ISOperation *)self setSuccess:v13];
-  v17 = [(ISMachineDataActionOperation *)self resultBlock];
-  if (v17)
+  [(ISOperation *)self setSuccess:_eraseProvisioning];
+  resultBlock = [(ISMachineDataActionOperation *)self resultBlock];
+  if (resultBlock)
   {
-    v18 = [(ISMachineDataActionOperation *)self syncState];
-    (v17)[2](v17, v13, v16, v18);
+    syncState = [(ISMachineDataActionOperation *)self syncState];
+    (resultBlock)[2](resultBlock, _eraseProvisioning, v16, syncState);
 
     [(ISMachineDataActionOperation *)self setResultBlock:0];
   }
@@ -284,25 +284,25 @@ LABEL_17:
   v24 = *MEMORY[0x277D85DE8];
   if ([*&self->_blocksPurchaseRequests protocolVersion] == 1)
   {
-    v3 = [MEMORY[0x277D69B38] sharedFairPlayAnisetteConfig];
-    if (!v3)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedFairPlayAnisetteConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v3 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
-    if ([v3 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v5 &= 2u;
     }
@@ -318,11 +318,11 @@ LABEL_17:
       if (!v8)
       {
 LABEL_13:
-        v9 = -1;
+        unsignedLongLongValue = -1;
         goto LABEL_25;
       }
 
-      v6 = [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:{4, v23, v22, *v23}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:{4, v23, v22, *v23}];
       free(v8);
       SSFileLog();
     }
@@ -330,28 +330,28 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = [*&self->_blocksPurchaseRequests accountIdentifier];
-  v9 = [v10 unsignedLongLongValue];
+  accountIdentifier = [*&self->_blocksPurchaseRequests accountIdentifier];
+  unsignedLongLongValue = [accountIdentifier unsignedLongLongValue];
 
-  v3 = [MEMORY[0x277D69B38] sharedFairPlayAnisetteConfig];
-  if (!v3)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedFairPlayAnisetteConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v3 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v11 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog2 | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog2;
   }
 
-  v13 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v12 &= 2u;
   }
@@ -361,7 +361,7 @@ LABEL_13:
     v14 = objc_opt_class();
     v15 = MEMORY[0x277CCACA8];
     v16 = v14;
-    v17 = [v15 stringWithFormat:@"%llu", v9];
+    v17 = [v15 stringWithFormat:@"%llu", unsignedLongLongValue];
     SSHashIfNeeded();
     *v23 = 138543618;
     *&v23[4] = v14;
@@ -383,29 +383,29 @@ LABEL_13:
 
 LABEL_25:
 
-  result = MEMORY[0x277C8BA50](v9) == 0;
+  result = MEMORY[0x277C8BA50](unsignedLongLongValue) == 0;
   v21 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)_provisionWithRequest:(id)a3 error:(id *)a4
+- (BOOL)_provisionWithRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 accountIdentifier];
-  v7 = [v6 unsignedLongLongValue];
+  requestCopy = request;
+  accountIdentifier = [requestCopy accountIdentifier];
+  unsignedLongLongValue = [accountIdentifier unsignedLongLongValue];
 
-  v8 = [v5 actionData];
-  v9 = [(ISMachineDataActionOperation *)self hidesServerDrivenDialogs];
+  actionData = [requestCopy actionData];
+  hidesServerDrivenDialogs = [(ISMachineDataActionOperation *)self hidesServerDrivenDialogs];
   v10 = 0;
   v11 = 5;
   while (1)
   {
-    v12 = [[ISMachineDataProvisioningOperation alloc] initWithAccountIdentifier:v7 provisioningData:v8];
-    -[ISMachineDataProvisioningOperation setAllowsBootstrapCellularData:](v12, "setAllowsBootstrapCellularData:", [v5 allowsBootstrapCellularData]);
-    [(ISMachineDataProvisioningOperation *)v12 setHidesServerDrivenDialogs:v9];
-    -[ISMachineDataProvisioningOperation setProtocolVersion:](v12, "setProtocolVersion:", [v5 protocolVersion]);
-    v13 = [(ISMachineDataActionOperation *)self userAgent];
-    [(ISMachineDataProvisioningOperation *)v12 setUserAgent:v13];
+    v12 = [[ISMachineDataProvisioningOperation alloc] initWithAccountIdentifier:unsignedLongLongValue provisioningData:actionData];
+    -[ISMachineDataProvisioningOperation setAllowsBootstrapCellularData:](v12, "setAllowsBootstrapCellularData:", [requestCopy allowsBootstrapCellularData]);
+    [(ISMachineDataProvisioningOperation *)v12 setHidesServerDrivenDialogs:hidesServerDrivenDialogs];
+    -[ISMachineDataProvisioningOperation setProtocolVersion:](v12, "setProtocolVersion:", [requestCopy protocolVersion]);
+    userAgent = [(ISMachineDataActionOperation *)self userAgent];
+    [(ISMachineDataProvisioningOperation *)v12 setUserAgent:userAgent];
 
     v19 = 0;
     v14 = [(ISOperation *)self runSubOperation:v12 returningError:&v19];
@@ -422,7 +422,7 @@ LABEL_25:
   }
 
 LABEL_7:
-  if (a4)
+  if (error)
   {
     v15 = v14;
   }
@@ -435,24 +435,24 @@ LABEL_7:
   if ((v15 & 1) == 0)
   {
     v16 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v14;
 }
 
-- (BOOL)_shouldRetryAfterError:(id)a3
+- (BOOL)_shouldRetryAfterError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CCA738]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA738]])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x277D6A110]])
+  else if ([domain isEqualToString:*MEMORY[0x277D6A110]])
   {
-    v5 = [v3 code] == 109;
+    v5 = [errorCopy code] == 109;
   }
 
   else
@@ -463,23 +463,23 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_syncMachineWithRequest:(id)a3 error:(id *)a4
+- (BOOL)_syncMachineWithRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 accountIdentifier];
-  v7 = [v6 unsignedLongLongValue];
+  requestCopy = request;
+  accountIdentifier = [requestCopy accountIdentifier];
+  unsignedLongLongValue = [accountIdentifier unsignedLongLongValue];
 
-  v8 = [v5 actionData];
-  v9 = [(ISMachineDataActionOperation *)self hidesServerDrivenDialogs];
+  actionData = [requestCopy actionData];
+  hidesServerDrivenDialogs = [(ISMachineDataActionOperation *)self hidesServerDrivenDialogs];
   v10 = 0;
   v11 = 5;
   while (1)
   {
-    v12 = [[ISMachineDataSyncOperation alloc] initWithAccountIdentifier:v7 syncData:v8];
-    [(ISMachineDataSyncOperation *)v12 setHidesServerDrivenDialogs:v9];
-    -[ISMachineDataSyncOperation setProtocolVersion:](v12, "setProtocolVersion:", [v5 protocolVersion]);
-    v13 = [(ISMachineDataActionOperation *)self userAgent];
-    [(ISMachineDataSyncOperation *)v12 setUserAgent:v13];
+    v12 = [[ISMachineDataSyncOperation alloc] initWithAccountIdentifier:unsignedLongLongValue syncData:actionData];
+    [(ISMachineDataSyncOperation *)v12 setHidesServerDrivenDialogs:hidesServerDrivenDialogs];
+    -[ISMachineDataSyncOperation setProtocolVersion:](v12, "setProtocolVersion:", [requestCopy protocolVersion]);
+    userAgent = [(ISMachineDataActionOperation *)self userAgent];
+    [(ISMachineDataSyncOperation *)v12 setUserAgent:userAgent];
 
     v21 = 0;
     v14 = [(ISOperation *)self runSubOperation:v12 returningError:&v21];
@@ -501,15 +501,15 @@ LABEL_7:
   }
 
   [(NSLock *)self->super._lock lock];
-  v15 = [(ISMachineDataSyncOperation *)v12 syncState];
+  syncState = [(ISMachineDataSyncOperation *)v12 syncState];
   resultBlock = self->_resultBlock;
-  self->_resultBlock = v15;
+  self->_resultBlock = syncState;
 
   [(NSLock *)self->super._lock unlock];
 LABEL_7:
 
 LABEL_8:
-  if (a4)
+  if (error)
   {
     v17 = v14;
   }
@@ -522,7 +522,7 @@ LABEL_8:
   if ((v17 & 1) == 0)
   {
     v18 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v14;

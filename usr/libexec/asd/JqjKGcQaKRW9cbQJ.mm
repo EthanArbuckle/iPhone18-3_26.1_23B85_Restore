@@ -1,6 +1,6 @@
 @interface JqjKGcQaKRW9cbQJ
 - (JqjKGcQaKRW9cbQJ)init;
-- (id)WnJ3gJFPRgsreXQi:(id)a3;
+- (id)WnJ3gJFPRgsreXQi:(id)qi;
 @end
 
 @implementation JqjKGcQaKRW9cbQJ
@@ -12,16 +12,16 @@
   return [(JqjKGcQaKRW9cbQJ *)&v3 init];
 }
 
-- (id)WnJ3gJFPRgsreXQi:(id)a3
+- (id)WnJ3gJFPRgsreXQi:(id)qi
 {
-  v3 = a3;
-  v4 = [v3 value];
-  if (![v4 length])
+  qiCopy = qi;
+  value = [qiCopy value];
+  if (![value length])
   {
     v5 = +[FnfDbwO2lFcwJMJU sharedInstance];
-    v6 = [v5 N6iJbZh5ycxf9a3z];
+    n6iJbZh5ycxf9a3z = [v5 N6iJbZh5ycxf9a3z];
 
-    v4 = v6;
+    value = n6iJbZh5ycxf9a3z;
   }
 
   v41 = 0;
@@ -32,7 +32,7 @@
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0;
-  if ([v4 length])
+  if ([value length])
   {
     v7 = +[C7RiKwi0qHUD3RW9 sharedInstance];
     v8 = dispatch_group_create();
@@ -47,7 +47,7 @@
     v35 = &v37;
     v10 = v8;
     v34 = v10;
-    [v7 YMeSiVAJwqHb7P3U:v4 completion:v33];
+    [v7 YMeSiVAJwqHb7P3U:value completion:v33];
     dispatch_group_enter(v10);
     v27 = _NSConcreteStackBlock;
     v28 = 3221225472;
@@ -56,7 +56,7 @@
     v32 = &v41;
     v11 = v10;
     v31 = v11;
-    [v7 KqWH25SjlYcX4wo6:v4 completion:&v27];
+    [v7 KqWH25SjlYcX4wo6:value completion:&v27];
     v12 = dispatch_time(0, 1800000000);
     if (dispatch_group_wait(v11, v12))
     {
@@ -74,7 +74,7 @@
   }
 
   v45[0] = &off_1006BA6D0;
-  v15 = [v4 length];
+  v15 = [value length];
   v17 = &off_1006BA700;
   if (!v15)
   {

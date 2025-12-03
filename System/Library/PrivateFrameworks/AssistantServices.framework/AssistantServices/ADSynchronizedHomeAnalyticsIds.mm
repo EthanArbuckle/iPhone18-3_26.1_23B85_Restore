@@ -1,5 +1,5 @@
 @interface ADSynchronizedHomeAnalyticsIds
-- (ADSynchronizedHomeAnalyticsIds)initWithHomeEphemeralSeeds:(id)a3;
+- (ADSynchronizedHomeAnalyticsIds)initWithHomeEphemeralSeeds:(id)seeds;
 - (id)description;
 @end
 
@@ -7,17 +7,17 @@
 
 - (id)description
 {
-  v2 = [(ADSynchronizedIds *)self ephemeralSeeds];
-  v3 = [NSString stringWithFormat:@"homeEphemeralSeeds:(%@)", v2];
+  ephemeralSeeds = [(ADSynchronizedIds *)self ephemeralSeeds];
+  v3 = [NSString stringWithFormat:@"homeEphemeralSeeds:(%@)", ephemeralSeeds];
 
   return v3;
 }
 
-- (ADSynchronizedHomeAnalyticsIds)initWithHomeEphemeralSeeds:(id)a3
+- (ADSynchronizedHomeAnalyticsIds)initWithHomeEphemeralSeeds:(id)seeds
 {
   v4.receiver = self;
   v4.super_class = ADSynchronizedHomeAnalyticsIds;
-  return [(ADSynchronizedIds *)&v4 initWithEphemeralSeeds:a3 andAggregationIds:0];
+  return [(ADSynchronizedIds *)&v4 initWithEphemeralSeeds:seeds andAggregationIds:0];
 }
 
 @end

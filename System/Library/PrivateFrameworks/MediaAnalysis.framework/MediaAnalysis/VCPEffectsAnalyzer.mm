@@ -2,23 +2,23 @@
 + (BOOL)isAutoLoopFramworkAvailable;
 + (id)gatingResultKeyToIndex;
 + (id)gatingTypeKeys;
-+ (id)getResultIndex:(id)a3;
-- (VCPEffectsAnalyzer)initWithAnalysisResults:(id)a3;
-- (VCPEffectsAnalyzer)initWithFlagHasFaceOrPet:(BOOL)a3;
-- (id)matchingNodeForSceneClassification:(id)a3 inSceneNames:(id)a4;
-- (id)performanSceneClassificationOfImageFileAtURL:(id)a3;
-- (int)analyzeAsset:(id)a3 onDemand:(BOOL)a4 cancel:(id)a5 statsFlags:(unint64_t *)a6 results:(id *)a7;
-- (int)enumerateMatchingScenesOfAsset:(id)a3 forLongExposureUsingBlock:(id)a4;
-- (unint64_t)generateStatsToBeCollectedFrom:(id)a3;
-- (void)reportLivePhotoEffectAnalysisResults:(id)a3;
++ (id)getResultIndex:(id)index;
+- (VCPEffectsAnalyzer)initWithAnalysisResults:(id)results;
+- (VCPEffectsAnalyzer)initWithFlagHasFaceOrPet:(BOOL)pet;
+- (id)matchingNodeForSceneClassification:(id)classification inSceneNames:(id)names;
+- (id)performanSceneClassificationOfImageFileAtURL:(id)l;
+- (int)analyzeAsset:(id)asset onDemand:(BOOL)demand cancel:(id)cancel statsFlags:(unint64_t *)flags results:(id *)results;
+- (int)enumerateMatchingScenesOfAsset:(id)asset forLongExposureUsingBlock:(id)block;
+- (unint64_t)generateStatsToBeCollectedFrom:(id)from;
+- (void)reportLivePhotoEffectAnalysisResults:(id)results;
 @end
 
 @implementation VCPEffectsAnalyzer
 
-- (VCPEffectsAnalyzer)initWithAnalysisResults:(id)a3
+- (VCPEffectsAnalyzer)initWithAnalysisResults:(id)results
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FaceResults"];
+  resultsCopy = results;
+  v5 = [resultsCopy objectForKeyedSubscript:@"FaceResults"];
   if (v5)
   {
     v6 = 1;
@@ -26,7 +26,7 @@
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:@"PetsResults"];
+    v7 = [resultsCopy objectForKeyedSubscript:@"PetsResults"];
     v6 = v7 != 0;
   }
 
@@ -34,7 +34,7 @@
   return v8;
 }
 
-- (VCPEffectsAnalyzer)initWithFlagHasFaceOrPet:(BOOL)a3
+- (VCPEffectsAnalyzer)initWithFlagHasFaceOrPet:(BOOL)pet
 {
   v8.receiver = self;
   v8.super_class = VCPEffectsAnalyzer;
@@ -42,7 +42,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hasFaceOrPet = a3;
+    v4->_hasFaceOrPet = pet;
     v6 = v4;
   }
 
@@ -74,18 +74,18 @@ void __49__VCPEffectsAnalyzer_isAutoLoopFramworkAvailable__block_invoke()
   }
 }
 
-- (int)analyzeAsset:(id)a3 onDemand:(BOOL)a4 cancel:(id)a5 statsFlags:(unint64_t *)a6 results:(id *)a7
+- (int)analyzeAsset:(id)asset onDemand:(BOOL)demand cancel:(id)cancel statsFlags:(unint64_t *)flags results:(id *)results
 {
-  v10 = a4;
+  demandCopy = demand;
   v119[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
+  assetCopy = asset;
+  cancelCopy = cancel;
   if (+[VCPEffectsAnalyzer isAutoLoopFramworkAvailable])
   {
-    if ([v12 isLivePhoto])
+    if ([assetCopy isLivePhoto])
     {
-      v14 = [v12 originalMovie];
-      if (!v14)
+      originalMovie = [assetCopy originalMovie];
+      if (!originalMovie)
       {
         v118 = @"LivePhotoEffectsResults";
         v115 = @"attributes";
@@ -101,7 +101,7 @@ void __49__VCPEffectsAnalyzer_isAutoLoopFramworkAvailable__block_invoke()
         v117 = v28;
         v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v117 count:1];
         v119[0] = v29;
-        *a7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v119 forKeys:&v118 count:1];
+        *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:v119 forKeys:&v118 count:1];
 
         v24 = 0;
 LABEL_84:
@@ -109,15 +109,15 @@ LABEL_84:
         goto LABEL_85;
       }
 
-      v88 = a7;
-      v92 = [MEMORY[0x1E695DF90] dictionary];
+      resultsCopy = results;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v106 = 0;
       v105 = 0;
       AutoLoopSettingsForAsset = createAutoLoopSettingsForAsset();
       v15 = MEMORY[0x1E696AEC0];
-      v16 = [MEMORY[0x1E696AFB0] UUID];
-      v17 = [v16 UUIDString];
-      v18 = [v15 stringWithFormat:@"autoloop-tmp-%@", v17];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v18 = [v15 stringWithFormat:@"autoloop-tmp-%@", uUIDString];
 
       v19 = NSTemporaryDirectory();
       v91 = v18;
@@ -125,32 +125,32 @@ LABEL_84:
 
       v94 = [MEMORY[0x1E695DFF8] fileURLWithPath:v20];
       BundleDefaultGatingClassifierURL = createBundleDefaultGatingClassifierURL();
-      v22 = [v12 mainFileURL];
-      if (v22)
+      mainFileURL = [assetCopy mainFileURL];
+      if (mainFileURL)
       {
-        v23 = [v12 mainFileURL];
+        mainFileURL2 = [assetCopy mainFileURL];
       }
 
       else
       {
-        v23 = 0;
+        mainFileURL2 = 0;
       }
 
-      v89 = v23;
+      v89 = mainFileURL2;
       cf = BundleDefaultGatingClassifierURL;
       autoloopSettingsSetGating();
-      if (!v10)
+      if (!demandCopy)
       {
         autoloopSettingsSetOptimizeForMemoryUse();
         autoloopSettingsSetDisableStabilizationGPU();
       }
 
-      v30 = [MEMORY[0x1E696AC08] defaultManager];
-      if (![v30 fileExistsAtPath:v20])
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      if (![defaultManager fileExistsAtPath:v20])
       {
 LABEL_22:
         v103 = 0;
-        v39 = [v30 createDirectoryAtURL:v94 withIntermediateDirectories:1 attributes:0 error:&v103];
+        v39 = [defaultManager createDirectoryAtURL:v94 withIntermediateDirectories:1 attributes:0 error:&v103];
         v40 = v103;
         v41 = v40;
         if (!v39)
@@ -170,7 +170,7 @@ LABEL_22:
         aBlock[1] = 3221225472;
         aBlock[2] = __70__VCPEffectsAnalyzer_analyzeAsset_onDemand_cancel_statsFlags_results___block_invoke;
         aBlock[3] = &unk_1E8350A98;
-        v102 = v13;
+        v102 = cancelCopy;
         v42 = _Block_copy(aBlock);
         *buf = xmmword_1C9F63320;
         v86 = v42;
@@ -233,7 +233,7 @@ LABEL_22:
               v96[3] = &unk_1E8350AC0;
               v51 = v50;
               v97 = v51;
-              [(VCPEffectsAnalyzer *)self enumerateMatchingScenesOfAsset:v12 forLongExposureUsingBlock:v96];
+              [(VCPEffectsAnalyzer *)self enumerateMatchingScenesOfAsset:assetCopy forLongExposureUsingBlock:v96];
               v52 = [v51 count];
               v53 = 1;
               if (!v52)
@@ -242,64 +242,64 @@ LABEL_22:
               }
 
               v79 = v53;
-              if (v52 && v10)
+              if (v52 && demandCopy)
               {
                 [v51 allObjects];
-                v76 = v30;
-                v55 = v54 = v14;
-                [v92 setObject:v55 forKeyedSubscript:@"livePhotoEffectsMatchingScenes"];
+                v76 = defaultManager;
+                v55 = v54 = originalMovie;
+                [dictionary setObject:v55 forKeyedSubscript:@"livePhotoEffectsMatchingScenes"];
 
-                v14 = v54;
-                v30 = v76;
+                originalMovie = v54;
+                defaultManager = v76;
               }
             }
           }
 
-          v78 = v14;
-          if (v10)
+          v78 = originalMovie;
+          if (demandCopy)
           {
             v95[1] = 0;
             getGatingResult();
             v77 = 0;
-            v56 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary2 = [MEMORY[0x1E695DF90] dictionary];
             if (v81)
             {
-              v57 = [&unk_1F49BDEB8 stringValue];
-              [v56 setObject:v81 forKeyedSubscript:v57];
+              stringValue = [&unk_1F49BDEB8 stringValue];
+              [dictionary2 setObject:v81 forKeyedSubscript:stringValue];
             }
 
             if (v77)
             {
-              v58 = [&unk_1F49BDED0 stringValue];
-              [v56 setObject:v77 forKeyedSubscript:v58];
+              stringValue2 = [&unk_1F49BDED0 stringValue];
+              [dictionary2 setObject:v77 forKeyedSubscript:stringValue2];
             }
 
             if (v80)
             {
-              v59 = [&unk_1F49BDEE8 stringValue];
-              [v56 setObject:v80 forKeyedSubscript:v59];
+              stringValue3 = [&unk_1F49BDEE8 stringValue];
+              [dictionary2 setObject:v80 forKeyedSubscript:stringValue3];
             }
 
-            [v92 setObject:v56 forKeyedSubscript:@"livePhotoEffectsGatingDescriptions"];
+            [dictionary setObject:dictionary2 forKeyedSubscript:@"livePhotoEffectsGatingDescriptions"];
           }
 
           v60 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v83];
-          [v92 setObject:v60 forKey:@"loopSuggestionState"];
+          [dictionary setObject:v60 forKey:@"loopSuggestionState"];
 
           v61 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v79];
-          [v92 setObject:v61 forKey:@"longExposureSuggestionState"];
+          [dictionary setObject:v61 forKey:@"longExposureSuggestionState"];
 
           v62 = liveAnalysisResultToDictionary();
           v41 = v87;
-          if (v62 && (v10 || v83 == 1 || v79 == 1))
+          if (v62 && (demandCopy || v83 == 1 || v79 == 1))
           {
             v63 = [VCPProtoLivePhotoEffectsRecipe resultFromLegacyDictionary:v62];
-            v64 = [v63 data];
-            if (!v64)
+            data = [v63 data];
+            if (!data)
             {
 
               v24 = -50;
-              v14 = v78;
+              originalMovie = v78;
 LABEL_64:
 
 LABEL_65:
@@ -323,13 +323,13 @@ LABEL_65:
                 autoloopSettingsDestroy();
               }
 
-              if (![v30 fileExistsAtPath:v20])
+              if (![defaultManager fileExistsAtPath:v20])
               {
                 goto LABEL_83;
               }
 
               v95[0] = 0;
-              v68 = [v30 removeItemAtPath:v20 error:v95];
+              v68 = [defaultManager removeItemAtPath:v20 error:v95];
               v69 = v95[0];
               v70 = MediaAnalysisLogLevel();
               if (v68)
@@ -365,30 +365,30 @@ LABEL_65:
 LABEL_82:
 
 LABEL_83:
-              v25 = v92;
+              v25 = dictionary;
               goto LABEL_84;
             }
 
-            v65 = v64;
-            [v92 setObject:v64 forKey:@"livePhotoEffectsRecipe"];
+            v65 = data;
+            [dictionary setObject:data forKey:@"livePhotoEffectsRecipe"];
           }
 
-          v14 = v78;
+          originalMovie = v78;
           v44 = v82;
         }
 
-        *a6 |= [(VCPEffectsAnalyzer *)self generateStatsToBeCollectedFrom:v44];
+        *flags |= [(VCPEffectsAnalyzer *)self generateStatsToBeCollectedFrom:v44];
         [(VCPEffectsAnalyzer *)self reportLivePhotoEffectAnalysisResults:v44];
-        if ([v92 count])
+        if ([dictionary count])
         {
           v110 = @"LivePhotoEffectsResults";
           v107 = @"attributes";
-          v108 = v92;
+          v108 = dictionary;
           v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
           v109 = v66;
           v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v109 count:1];
           v111 = v67;
-          *v88 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
+          *resultsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
         }
 
         v24 = 0;
@@ -396,9 +396,9 @@ LABEL_83:
         goto LABEL_64;
       }
 
-      v31 = v14;
+      v31 = originalMovie;
       v104 = 0;
-      v32 = [v30 removeItemAtPath:v20 error:&v104];
+      v32 = [defaultManager removeItemAtPath:v20 error:&v104];
       v33 = v104;
       v34 = MediaAnalysisLogLevel();
       if (v32)
@@ -433,7 +433,7 @@ LABEL_83:
       _os_log_impl(&dword_1C9B70000, v35, v37, v36, buf, v38);
 LABEL_21:
 
-      v14 = v31;
+      originalMovie = v31;
       goto LABEL_22;
     }
 
@@ -457,26 +457,26 @@ uint64_t __70__VCPEffectsAnalyzer_analyzeAsset_onDemand_cancel_statsFlags_result
   return result;
 }
 
-- (id)matchingNodeForSceneClassification:(id)a3 inSceneNames:(id)a4
+- (id)matchingNodeForSceneClassification:(id)classification inSceneNames:(id)names
 {
-  v5 = a3;
-  v6 = a4;
+  classificationCopy = classification;
+  namesCopy = names;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__52;
   v21 = __Block_byref_object_dispose__52;
   v22 = 0;
-  v7 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-  v8 = [v7 nodeForSceneClassId:{objc_msgSend(v5, "sceneIdentifier")}];
+  vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+  v8 = [vcp_sharedTaxonomy nodeForSceneClassId:{objc_msgSend(classificationCopy, "sceneIdentifier")}];
 
-  if (v8 && ([v5 confidence], v10 = v9, objc_msgSend(v8, "searchThreshold"), v10 >= v11))
+  if (v8 && ([classificationCopy confidence], v10 = v9, objc_msgSend(v8, "searchThreshold"), v10 >= v11))
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __70__VCPEffectsAnalyzer_matchingNodeForSceneClassification_inSceneNames___block_invoke;
     v14[3] = &unk_1E8350AE8;
-    v15 = v6;
+    v15 = namesCopy;
     v16 = &v17;
     [v8 traverse:0 visitor:v14];
     v12 = v18[5];
@@ -507,14 +507,14 @@ uint64_t __70__VCPEffectsAnalyzer_matchingNodeForSceneClassification_inSceneName
   return v7;
 }
 
-- (id)performanSceneClassificationOfImageFileAtURL:(id)a3
+- (id)performanSceneClassificationOfImageFileAtURL:(id)l
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v30 = [MEMORY[0x1E695DF70] array];
+  lCopy = l;
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc(MEMORY[0x1E69845B8]);
-  v6 = [v5 initWithURL:v3 options:MEMORY[0x1E695E0F8]];
+  v6 = [v5 initWithURL:lCopy options:MEMORY[0x1E695E0F8]];
   if (!v6)
   {
     goto LABEL_13;
@@ -533,13 +533,13 @@ LABEL_13:
   }
 
   context = v4;
-  v29 = v3;
+  v29 = lCopy;
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = [v9 results];
-  v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  results = [v9 results];
+  v13 = [results countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v13)
   {
     v14 = v13;
@@ -550,52 +550,52 @@ LABEL_13:
       {
         if (*v32 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(results);
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
-        v18 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-        v19 = [v17 identifier];
-        v20 = [v18 nodeForName:v19];
+        vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+        identifier = [v17 identifier];
+        v20 = [vcp_sharedTaxonomy nodeForName:identifier];
 
         v21 = MEMORY[0x1E6978A30];
-        v22 = [v20 extendedSceneClassId];
+        extendedSceneClassId = [v20 extendedSceneClassId];
         [v17 confidence];
-        v24 = [v21 vcp_instanceWithExtendedSceneIdentifier:v22 confidence:v23];
-        [v30 addObject:v24];
+        v24 = [v21 vcp_instanceWithExtendedSceneIdentifier:extendedSceneClassId confidence:v23];
+        [array addObject:v24];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v14 = [results countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v14);
   }
 
   objc_autoreleasePoolPop(context);
-  v3 = v29;
-  v25 = v30;
+  lCopy = v29;
+  v25 = array;
 LABEL_14:
   v26 = v25;
 
   return v25;
 }
 
-- (int)enumerateMatchingScenesOfAsset:(id)a3 forLongExposureUsingBlock:(id)a4
+- (int)enumerateMatchingScenesOfAsset:(id)asset forLongExposureUsingBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  assetCopy = asset;
+  blockCopy = block;
+  if (blockCopy)
   {
     v8 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F49BEFB0];
-    v9 = [v6 localIdentifier];
-    if (!v9 || (v10 = v9, v11 = +[VCPEffectsAnalyzer usePHAssetScene](VCPEffectsAnalyzer, "usePHAssetScene"), v10, !v11) || ([v6 allScenes], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+    localIdentifier = [assetCopy localIdentifier];
+    if (!localIdentifier || (v10 = localIdentifier, v11 = +[VCPEffectsAnalyzer usePHAssetScene](VCPEffectsAnalyzer, "usePHAssetScene"), v10, !v11) || ([assetCopy allScenes], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v13 = [v6 mainFileURL];
-      v12 = [(VCPEffectsAnalyzer *)self performanSceneClassificationOfImageFileAtURL:v13];
+      mainFileURL = [assetCopy mainFileURL];
+      v12 = [(VCPEffectsAnalyzer *)self performanSceneClassificationOfImageFileAtURL:mainFileURL];
     }
 
-    v24 = v6;
+    v24 = assetCopy;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
@@ -620,8 +620,8 @@ LABEL_14:
           if (v19)
           {
             v25 = 0;
-            v21 = [v19 name];
-            v7[2](v7, v21, &v25);
+            name = [v19 name];
+            blockCopy[2](blockCopy, name, &v25);
 
             if (v25)
             {
@@ -644,7 +644,7 @@ LABEL_14:
 LABEL_18:
 
     v22 = 0;
-    v6 = v24;
+    assetCopy = v24;
   }
 
   else
@@ -715,14 +715,14 @@ void __44__VCPEffectsAnalyzer_gatingResultKeyToIndex__block_invoke()
   gatingResultKeyToIndex_gatingResultKeyToIndex = v0;
 }
 
-+ (id)getResultIndex:(id)a3
++ (id)getResultIndex:(id)index
 {
   v3 = &unk_1F49BDF60;
-  if (a3)
+  if (index)
   {
-    v4 = a3;
+    indexCopy = index;
     v5 = +[VCPEffectsAnalyzer gatingResultKeyToIndex];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v6 = [v5 objectForKeyedSubscript:indexCopy];
 
     if (v6)
     {
@@ -740,19 +740,19 @@ void __44__VCPEffectsAnalyzer_gatingResultKeyToIndex__block_invoke()
   return v3;
 }
 
-- (void)reportLivePhotoEffectAnalysisResults:(id)a3
+- (void)reportLivePhotoEffectAnalysisResults:(id)results
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  resultsCopy = results;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__VCPEffectsAnalyzer_reportLivePhotoEffectAnalysisResults___block_invoke;
   aBlock[3] = &unk_1E8350B10;
-  v12 = v5;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
-  v7 = v5;
+  v12 = dictionary;
+  selfCopy = self;
+  v14 = resultsCopy;
+  v6 = resultsCopy;
+  v7 = dictionary;
   v8 = _Block_copy(aBlock);
   v9 = [v6 objectForKeyedSubscript:@"stabilizeResult"];
   [v7 setObject:v9 forKeyedSubscript:@"LivePhotoEffectsStabilizeResult"];
@@ -783,9 +783,9 @@ void __59__VCPEffectsAnalyzer_reportLivePhotoEffectAnalysisResults___block_invok
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v6];
 }
 
-- (unint64_t)generateStatsToBeCollectedFrom:(id)a3
+- (unint64_t)generateStatsToBeCollectedFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = +[VCPEffectsAnalyzer gatingTypeKeys];
   v17 = +[VCPEffectsAnalyzer gatingResultKeyToIndex];
   if ([v4 count])
@@ -800,14 +800,14 @@ void __59__VCPEffectsAnalyzer_reportLivePhotoEffectAnalysisResults___block_invok
       {
         v9 = v8;
         v10 = [v7 isEqualToString:@"stabilizeResult"];
-        v11 = [v3 objectForKeyedSubscript:v7];
+        v11 = [fromCopy objectForKeyedSubscript:v7];
         v12 = v11;
         if (v10)
         {
-          v13 = [v11 integerValue];
+          integerValue = [v11 integerValue];
 
-          v14 = v13 + 3;
-          if (v14 >= 8)
+          integerValue2 = integerValue + 3;
+          if (integerValue2 >= 8)
           {
             goto LABEL_12;
           }
@@ -816,9 +816,9 @@ void __59__VCPEffectsAnalyzer_reportLivePhotoEffectAnalysisResults___block_invok
         else
         {
           v15 = [v17 objectForKeyedSubscript:v11];
-          v14 = [v15 integerValue];
+          integerValue2 = [v15 integerValue];
 
-          if (v14 > 3)
+          if (integerValue2 > 3)
           {
 LABEL_12:
 
@@ -827,7 +827,7 @@ LABEL_12:
           }
         }
 
-        v6 |= 1 << v9 << v14;
+        v6 |= 1 << v9 << integerValue2;
       }
 
       if ([v4 count] <= ++v5)

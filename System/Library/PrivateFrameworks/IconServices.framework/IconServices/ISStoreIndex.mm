@@ -1,11 +1,11 @@
 @interface ISStoreIndex
 - (BOOL)validate;
-- (ISStoreIndex)initWithStoreFileURL:(id)a3;
+- (ISStoreIndex)initWithStoreFileURL:(id)l;
 - (NSData)data;
 - (id)description;
 - (void)data;
-- (void)enumerateValuesForUUID:(unsigned __int8)a3[16] bock:(id)a4;
-- (void)enumerateValuesWithBock:(id)a3;
+- (void)enumerateValuesForUUID:(unsigned __int8)d[16] bock:(id)bock;
+- (void)enumerateValuesWithBock:(id)bock;
 - (void)invalidate;
 @end
 
@@ -17,8 +17,8 @@
   if (![(NSData *)self->_data _ISStoreIndex_isValid])
   {
     v3 = MEMORY[0x1E695DEF0];
-    v4 = [(ISStoreIndex *)self indexFileURL];
-    v5 = [v3 _ISStoreIndex_mappedDataWithURL:v4];
+    indexFileURL = [(ISStoreIndex *)self indexFileURL];
+    v5 = [v3 _ISStoreIndex_mappedDataWithURL:indexFileURL];
     data = self->_data;
     self->_data = v5;
 
@@ -45,12 +45,12 @@
   return v10;
 }
 
-- (ISStoreIndex)initWithStoreFileURL:(id)a3
+- (ISStoreIndex)initWithStoreFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if (self)
   {
-    objc_storeStrong(&self->_indexFileURL, a3);
+    objc_storeStrong(&self->_indexFileURL, l);
     self->_dataLock._os_unfair_lock_opaque = 0;
   }
 
@@ -63,22 +63,22 @@
   data = self->_data;
   self->_data = 0;
 
-  v4 = [(ISStoreIndex *)self dataLock];
+  dataLock = [(ISStoreIndex *)self dataLock];
 
-  os_unfair_lock_unlock(v4);
+  os_unfair_lock_unlock(dataLock);
 }
 
-- (void)enumerateValuesWithBock:(id)a3
+- (void)enumerateValuesWithBock:(id)bock
 {
-  v4 = a3;
-  v5 = [(ISStoreIndex *)self data];
+  bockCopy = bock;
+  data = [(ISStoreIndex *)self data];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__ISStoreIndex_enumerateValuesWithBock___block_invoke;
   v7[3] = &unk_1E77C6810;
-  v8 = v4;
-  v6 = v4;
-  [v5 _ISStoreIndex_enumerateValuesWithBock:v7];
+  v8 = bockCopy;
+  v6 = bockCopy;
+  [data _ISStoreIndex_enumerateValuesWithBock:v7];
 }
 
 uint64_t __40__ISStoreIndex_enumerateValuesWithBock___block_invoke(uint64_t a1, uint64_t a2)
@@ -94,21 +94,21 @@ uint64_t __40__ISStoreIndex_enumerateValuesWithBock___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)enumerateValuesForUUID:(unsigned __int8)a3[16] bock:(id)a4
+- (void)enumerateValuesForUUID:(unsigned __int8)d[16] bock:(id)bock
 {
-  v6 = a4;
+  bockCopy = bock;
   v7 = 0;
   do
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [(ISStoreIndex *)self data];
+    data = [(ISStoreIndex *)self data];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __44__ISStoreIndex_enumerateValuesForUUID_bock___block_invoke;
     v14[3] = &unk_1E77C6810;
-    v10 = v6;
+    v10 = bockCopy;
     v15 = v10;
-    v11 = [v9 _ISStoreIndex_enumerateValuesForUUID:a3 bock:v14];
+    v11 = [data _ISStoreIndex_enumerateValuesForUUID:d bock:v14];
     if ((v11 & 1) == 0)
     {
       os_unfair_lock_lock([(ISStoreIndex *)self dataLock]);
@@ -141,7 +141,7 @@ uint64_t __44__ISStoreIndex_enumerateValuesForUUID_bock___block_invoke(uint64_t 
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -150,7 +150,7 @@ uint64_t __44__ISStoreIndex_enumerateValuesForUUID_bock___block_invoke(uint64_t 
   v8 = 3221225472;
   v9 = __27__ISStoreIndex_description__block_invoke;
   v10 = &unk_1E77C6858;
-  v4 = v3;
+  v4 = string;
   v11 = v4;
   v12 = v13;
   [(ISStoreIndex *)self enumerateValuesWithBock:&v7];
@@ -186,13 +186,13 @@ void __27__ISStoreIndex_description__block_invoke(uint64_t a1, uint64_t a2)
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v2 = [(ISStoreIndex *)self data];
+  data = [(ISStoreIndex *)self data];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__ISStoreIndex_validate__block_invoke_7;
   v6[3] = &unk_1E77C68A0;
   v8 = &__block_literal_global_6;
-  v3 = v2;
+  v3 = data;
   v7 = v3;
   v9 = &v10;
   [v3 _ISStoreIndex_enumerateValuesWithBock:v6];
@@ -287,9 +287,9 @@ uint64_t __24__ISStoreIndex_validate__block_invoke_7(void *a1, uint64_t *a2, _BY
 - (void)data
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 indexFileURL];
+  indexFileURL = [self indexFileURL];
   v5 = 138412290;
-  v6 = v3;
+  v6 = indexFileURL;
   _os_log_debug_impl(&dword_1A77B8000, a2, OS_LOG_TYPE_DEBUG, "Store index at URL: %@ is not valid.", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];

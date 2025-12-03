@@ -1,13 +1,13 @@
 @interface PPFeatureRedactor
-- (PPFeatureRedactor)initWithTrialWrapper:(id)a3 namespaceName:(id)a4;
-- (void)transformFeaturesInPlace:(id)a3;
+- (PPFeatureRedactor)initWithTrialWrapper:(id)wrapper namespaceName:(id)name;
+- (void)transformFeaturesInPlace:(id)place;
 @end
 
 @implementation PPFeatureRedactor
 
-- (void)transformFeaturesInPlace:(id)a3
+- (void)transformFeaturesInPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -17,7 +17,7 @@
   v7[1] = 3221225472;
   v7[2] = __46__PPFeatureRedactor_transformFeaturesInPlace___block_invoke;
   v7[3] = &unk_2789775D8;
-  v6 = v4;
+  v6 = placeCopy;
   v8 = v6;
   v9 = v10;
   [(_PASLock *)lock runWithLockAcquired:v7];
@@ -106,10 +106,10 @@ LABEL_18:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (PPFeatureRedactor)initWithTrialWrapper:(id)a3 namespaceName:(id)a4
+- (PPFeatureRedactor)initWithTrialWrapper:(id)wrapper namespaceName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  wrapperCopy = wrapper;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = PPFeatureRedactor;
   v9 = [(PPFeatureRedactor *)&v21 init];
@@ -121,8 +121,8 @@ LABEL_18:
     lock = v9->_lock;
     v9->_lock = v12;
 
-    objc_storeStrong(&v9->_trialWrapper, a3);
-    v14 = [(PPTrialWrapper *)v9->_trialWrapper plistForFactorName:@"FeatureRedactorConfiguration.plist" namespaceName:v8];
+    objc_storeStrong(&v9->_trialWrapper, wrapper);
+    v14 = [(PPTrialWrapper *)v9->_trialWrapper plistForFactorName:@"FeatureRedactorConfiguration.plist" namespaceName:nameCopy];
     v15 = v14;
     if (v14)
     {

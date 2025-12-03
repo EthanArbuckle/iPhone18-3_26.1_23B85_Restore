@@ -1,23 +1,23 @@
 @interface MRURouteRecommendationPlatterView
-- (MRURouteRecommendationPlatterView)initWithFrame:(CGRect)a3;
+- (MRURouteRecommendationPlatterView)initWithFrame:(CGRect)frame;
 - (void)_addLayoutConstraints;
-- (void)setActionType:(unint64_t)a3;
+- (void)setActionType:(unint64_t)type;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRURouteRecommendationPlatterView
 
-- (MRURouteRecommendationPlatterView)initWithFrame:(CGRect)a3
+- (MRURouteRecommendationPlatterView)initWithFrame:(CGRect)frame
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = MRURouteRecommendationPlatterView;
-  v3 = [(MRURouteRecommendationPlatterView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRURouteRecommendationPlatterView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MRURouteRecommendationPlatterView *)v3 layer];
-    [v5 setHitTestsAsOpaque:1];
+    layer = [(MRURouteRecommendationPlatterView *)v3 layer];
+    [layer setHitTestsAsOpaque:1];
 
     v6 = +[MRUVisualStylingProvider stylingProviderForLockScreenPlatters];
     stylingProvider = v4->_stylingProvider;
@@ -47,7 +47,7 @@
     actionButton = v4->_actionButton;
     v4->_actionButton = v14;
 
-    v16 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+    borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
     objc_initWeak(&location, v4);
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
@@ -55,7 +55,7 @@
     v23 = &unk_1E76639A8;
     objc_copyWeak(&v24, &location);
     [(UIButton *)v4->_actionButton setConfigurationUpdateHandler:&v20];
-    [(UIButton *)v4->_actionButton setConfiguration:v16, v20, v21, v22, v23];
+    [(UIButton *)v4->_actionButton setConfiguration:borderlessButtonConfiguration, v20, v21, v22, v23];
     [(UIButton *)v4->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v17) = 1148846080;
     [(UIButton *)v4->_actionButton setContentHuggingPriority:0 forAxis:v17];
@@ -93,10 +93,10 @@ void __51__MRURouteRecommendationPlatterView_initWithFrame___block_invoke(uint64
   [v7 setConfiguration:v3];
 }
 
-- (void)setActionType:(unint64_t)a3
+- (void)setActionType:(unint64_t)type
 {
-  self->_actionType = a3;
-  if (a3 == 1)
+  self->_actionType = type;
+  if (type == 1)
   {
     v4 = +[MRUAssetsProvider suggestedRouteTVRemote];
     v5 = 25.0;
@@ -104,7 +104,7 @@ void __51__MRURouteRecommendationPlatterView_initWithFrame___block_invoke(uint64
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_6;
     }
@@ -126,53 +126,53 @@ LABEL_6:
 {
   v44[9] = *MEMORY[0x1E69E9840];
   v27 = MEMORY[0x1E696ACD8];
-  v43 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
-  v42 = [v43 topAnchor];
-  v41 = [(MRURouteRecommendationPlatterView *)self topAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41 constant:10.0];
+  activityRouteView = [(MRURouteRecommendationPlatterView *)self activityRouteView];
+  topAnchor = [activityRouteView topAnchor];
+  topAnchor2 = [(MRURouteRecommendationPlatterView *)self topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v44[0] = v40;
-  v39 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
-  v38 = [v39 leadingAnchor];
-  v37 = [(MRURouteRecommendationPlatterView *)self leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:10.0];
+  activityRouteView2 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
+  leadingAnchor = [activityRouteView2 leadingAnchor];
+  leadingAnchor2 = [(MRURouteRecommendationPlatterView *)self leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v44[1] = v36;
-  v35 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
-  v34 = [v35 bottomAnchor];
-  v33 = [(MRURouteRecommendationPlatterView *)self bottomAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:-10.0];
+  activityRouteView3 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
+  bottomAnchor = [activityRouteView3 bottomAnchor];
+  bottomAnchor2 = [(MRURouteRecommendationPlatterView *)self bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v44[2] = v32;
-  v31 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
-  v29 = [v31 widthAnchor];
-  v30 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
-  v28 = [v30 heightAnchor];
-  v26 = [v29 constraintEqualToAnchor:v28];
+  activityRouteView4 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
+  widthAnchor = [activityRouteView4 widthAnchor];
+  activityRouteView5 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
+  heightAnchor = [activityRouteView5 heightAnchor];
+  v26 = [widthAnchor constraintEqualToAnchor:heightAnchor];
   v44[3] = v26;
-  v25 = [(MRURouteRecommendationPlatterView *)self labelView];
-  v23 = [v25 leadingAnchor];
-  v24 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
-  v22 = [v24 trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:10.0];
+  labelView = [(MRURouteRecommendationPlatterView *)self labelView];
+  leadingAnchor3 = [labelView leadingAnchor];
+  activityRouteView6 = [(MRURouteRecommendationPlatterView *)self activityRouteView];
+  trailingAnchor = [activityRouteView6 trailingAnchor];
+  v21 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
   v44[4] = v21;
-  v20 = [(MRURouteRecommendationPlatterView *)self labelView];
-  v19 = [v20 centerYAnchor];
-  v18 = [(MRURouteRecommendationPlatterView *)self centerYAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  labelView2 = [(MRURouteRecommendationPlatterView *)self labelView];
+  centerYAnchor = [labelView2 centerYAnchor];
+  centerYAnchor2 = [(MRURouteRecommendationPlatterView *)self centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v44[5] = v17;
-  v16 = [(MRURouteRecommendationPlatterView *)self actionButton];
-  v15 = [v16 trailingAnchor];
-  v14 = [(MRURouteRecommendationPlatterView *)self trailingAnchor];
-  v13 = [v15 constraintEqualToAnchor:v14 constant:-22.0];
+  actionButton = [(MRURouteRecommendationPlatterView *)self actionButton];
+  trailingAnchor2 = [actionButton trailingAnchor];
+  trailingAnchor3 = [(MRURouteRecommendationPlatterView *)self trailingAnchor];
+  v13 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-22.0];
   v44[6] = v13;
-  v3 = [(MRURouteRecommendationPlatterView *)self actionButton];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MRURouteRecommendationPlatterView *)self labelView];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:22.0];
+  actionButton2 = [(MRURouteRecommendationPlatterView *)self actionButton];
+  leadingAnchor4 = [actionButton2 leadingAnchor];
+  labelView3 = [(MRURouteRecommendationPlatterView *)self labelView];
+  trailingAnchor4 = [labelView3 trailingAnchor];
+  v7 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:22.0];
   v44[7] = v7;
-  v8 = [(MRURouteRecommendationPlatterView *)self actionButton];
-  v9 = [v8 centerYAnchor];
-  v10 = [(MRURouteRecommendationPlatterView *)self centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  actionButton3 = [(MRURouteRecommendationPlatterView *)self actionButton];
+  centerYAnchor3 = [actionButton3 centerYAnchor];
+  centerYAnchor4 = [(MRURouteRecommendationPlatterView *)self centerYAnchor];
+  v11 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v44[8] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:9];
   [v27 activateConstraints:v12];

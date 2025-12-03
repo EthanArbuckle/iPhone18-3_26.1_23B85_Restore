@@ -1,19 +1,19 @@
 @interface TPSNRDeviceCapability
-- (TPSNRDeviceCapability)initWithDictionary:(id)a3;
+- (TPSNRDeviceCapability)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 @end
 
 @implementation TPSNRDeviceCapability
 
-- (TPSNRDeviceCapability)initWithDictionary:(id)a3
+- (TPSNRDeviceCapability)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = TPSNRDeviceCapability;
-  v5 = [(TPSCapability *)&v7 initWithDictionary:v4];
+  v5 = [(TPSCapability *)&v7 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v5->_type = [v4 TPSSafeIntegerForKey:@"type"];
+    v5->_type = [dictionaryCopy TPSSafeIntegerForKey:@"type"];
   }
 
   return v5;

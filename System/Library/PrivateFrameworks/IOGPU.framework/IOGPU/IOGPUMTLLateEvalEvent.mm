@@ -1,13 +1,13 @@
 @interface IOGPUMTLLateEvalEvent
-- (IOGPUMTLLateEvalEvent)initWithDevice:(__IOGPUDevice *)a3;
+- (IOGPUMTLLateEvalEvent)initWithDevice:(__IOGPUDevice *)device;
 - (unint64_t)signaledValue;
 - (void)dealloc;
-- (void)setSignaledValue:(unint64_t)a3;
+- (void)setSignaledValue:(unint64_t)value;
 @end
 
 @implementation IOGPUMTLLateEvalEvent
 
-- (IOGPUMTLLateEvalEvent)initWithDevice:(__IOGPUDevice *)a3
+- (IOGPUMTLLateEvalEvent)initWithDevice:(__IOGPUDevice *)device
 {
   output[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -16,8 +16,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_deviceRef = a3;
-    CFRetain(a3);
+    v4->_deviceRef = device;
+    CFRetain(device);
     outputCnt = 2;
     if (IOConnectCallMethod(v5->_deviceRef->var2, 0x1Cu, 0, 0, 0, 0, output, &outputCnt, 0, 0))
     {
@@ -57,11 +57,11 @@
   [(IOGPUMTLLateEvalEvent *)&v4 dealloc];
 }
 
-- (void)setSignaledValue:(unint64_t)a3
+- (void)setSignaledValue:(unint64_t)value
 {
   input[2] = *MEMORY[0x1E69E9840];
   input[0] = self->_eventName;
-  input[1] = a3;
+  input[1] = value;
   IOConnectCallMethod(self->_deviceRef->var2, 0x1Eu, input, 2u, 0, 0, 0, 0, 0, 0);
   v3 = *MEMORY[0x1E69E9840];
 }

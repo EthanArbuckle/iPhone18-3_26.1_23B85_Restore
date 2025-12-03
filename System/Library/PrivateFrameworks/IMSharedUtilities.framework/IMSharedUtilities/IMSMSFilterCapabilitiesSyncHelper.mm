@@ -1,20 +1,20 @@
 @interface IMSMSFilterCapabilitiesSyncHelper
 + (BOOL)isSMSFilteringEnabledInSMSFilterCapabilitiesOptions;
-+ (BOOL)shouldUpdateSMSFilterSyncDeviceParamsForDeviceID:(id)a3 smsFilterCapabilitiesOptions:(unint64_t)a4 filterExtensionName:(id)a5;
-+ (id)fetchFilterExtensionNameForDeviceID:(id)a3;
++ (BOOL)shouldUpdateSMSFilterSyncDeviceParamsForDeviceID:(id)d smsFilterCapabilitiesOptions:(unint64_t)options filterExtensionName:(id)name;
++ (id)fetchFilterExtensionNameForDeviceID:(id)d;
 + (id)fetchSMSFilterSyncDeviceParams;
-+ (unint64_t)IMSMSFilterCapabilitiesOptionForFilterSubAction:(int64_t)a3 action:(int64_t)a4;
++ (unint64_t)IMSMSFilterCapabilitiesOptionForFilterSubAction:(int64_t)action action:(int64_t)a4;
 + (unint64_t)fetchSMSFilterCapabilitiesOptions;
-+ (unint64_t)fetchSMSFilterCapabilitiesOptionsForDeviceID:(id)a3;
-+ (void)storeSMSFilterCapabilitiesOptions:(unint64_t)a3;
-+ (void)storeSMSFilterSyncDeviceParams:(id)a3;
++ (unint64_t)fetchSMSFilterCapabilitiesOptionsForDeviceID:(id)d;
++ (void)storeSMSFilterCapabilitiesOptions:(unint64_t)options;
++ (void)storeSMSFilterSyncDeviceParams:(id)params;
 + (void)updateFilterExtensionName;
 + (void)updateSMSFilterCapabilitiesOptions;
 + (void)updateSMSFilterCapabilitiesOptionsCache;
-+ (void)updateSMSFilterCapabilitiesOptionsForDeviceID:(id)a3 smsFilterCapabilitiesOptions:(unint64_t)a4 filterExtensionName:(id)a5;
++ (void)updateSMSFilterCapabilitiesOptionsForDeviceID:(id)d smsFilterCapabilitiesOptions:(unint64_t)options filterExtensionName:(id)name;
 + (void)updateSMSFilterCapabilitiesOptionsForSelf;
 + (void)updateSMSFilterSyncDeviceParamsCache;
-+ (void)verifyCurrentRelayDevicesActive:(id)a3;
++ (void)verifyCurrentRelayDevicesActive:(id)active;
 @end
 
 @implementation IMSMSFilterCapabilitiesSyncHelper
@@ -26,7 +26,7 @@
     v3 = qword_1EB3095A8;
     if (!qword_1EB3095A8)
     {
-      [a1 updateSMSFilterSyncDeviceParamsCache];
+      [self updateSMSFilterSyncDeviceParamsCache];
       v3 = qword_1EB3095A8;
     }
 
@@ -41,19 +41,19 @@
   return v4;
 }
 
-+ (BOOL)shouldUpdateSMSFilterSyncDeviceParamsForDeviceID:(id)a3 smsFilterCapabilitiesOptions:(unint64_t)a4 filterExtensionName:(id)a5
++ (BOOL)shouldUpdateSMSFilterSyncDeviceParamsForDeviceID:(id)d smsFilterCapabilitiesOptions:(unint64_t)options filterExtensionName:(id)name
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  nameCopy = name;
   if (+[IMSMSFilterHelper supportsIncomingSMSRelayFiltering])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [a1 fetchSMSFilterSyncDeviceParams];
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    fetchSMSFilterSyncDeviceParams = [self fetchSMSFilterSyncDeviceParams];
+    v11 = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -64,15 +64,15 @@
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(fetchSMSFilterSyncDeviceParams);
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [v15 deviceUniqueID];
-          if ([v16 isEqualToString:v8] && objc_msgSend(v15, "smsFilterCapabilitiesOptions") == a4)
+          deviceUniqueID = [v15 deviceUniqueID];
+          if ([deviceUniqueID isEqualToString:dCopy] && objc_msgSend(v15, "smsFilterCapabilitiesOptions") == options)
           {
-            v17 = [v15 filterExtensionName];
-            v18 = [v17 isEqualToString:v9];
+            filterExtensionName = [v15 filterExtensionName];
+            v18 = [filterExtensionName isEqualToString:nameCopy];
 
             if (v18)
             {
@@ -86,7 +86,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v12);
@@ -104,24 +104,24 @@ LABEL_16:
   return v19;
 }
 
-+ (void)updateSMSFilterCapabilitiesOptionsForDeviceID:(id)a3 smsFilterCapabilitiesOptions:(unint64_t)a4 filterExtensionName:(id)a5
++ (void)updateSMSFilterCapabilitiesOptionsForDeviceID:(id)d smsFilterCapabilitiesOptions:(unint64_t)options filterExtensionName:(id)name
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  nameCopy = name;
   if (+[IMSMSFilterHelper supportsIncomingSMSRelayFiltering])
   {
-    v29 = a1;
-    v10 = [a1 fetchSMSFilterSyncDeviceParams];
+    selfCopy = self;
+    fetchSMSFilterSyncDeviceParams = [self fetchSMSFilterSyncDeviceParams];
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v12 = objc_alloc_init(SMSFilterSyncDeviceParams);
     v13 = v12;
-    v32 = a4;
-    if (a4)
+    optionsCopy = options;
+    if (options)
     {
-      [(SMSFilterSyncDeviceParams *)v12 setDeviceUniqueID:v8];
-      [(SMSFilterSyncDeviceParams *)v13 setSmsFilterCapabilitiesOptions:a4];
-      [(SMSFilterSyncDeviceParams *)v13 setFilterExtensionName:v9];
+      [(SMSFilterSyncDeviceParams *)v12 setDeviceUniqueID:dCopy];
+      [(SMSFilterSyncDeviceParams *)v13 setSmsFilterCapabilitiesOptions:options];
+      [(SMSFilterSyncDeviceParams *)v13 setFilterExtensionName:nameCopy];
       v14 = v11;
       [v11 addObject:v13];
       v15 = 1;
@@ -134,12 +134,12 @@ LABEL_16:
     }
 
     v30 = v13;
-    v31 = v9;
+    v31 = nameCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v10;
+    obj = fetchSMSFilterSyncDeviceParams;
     v16 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v16)
     {
@@ -156,17 +156,17 @@ LABEL_16:
           }
 
           v21 = *(*(&v34 + 1) + 8 * i);
-          v22 = [v21 deviceUniqueID];
-          v23 = [v22 isEqualToString:v8];
+          deviceUniqueID = [v21 deviceUniqueID];
+          v23 = [deviceUniqueID isEqualToString:dCopy];
 
           if (v23)
           {
-            if (v32)
+            if (optionsCopy)
             {
               v15 = 3;
             }
 
-            v18 |= v32 == 0;
+            v18 |= optionsCopy == 0;
           }
 
           else
@@ -187,9 +187,9 @@ LABEL_16:
     }
 
     v24 = v14;
-    if (v32 || (v18 & 1) != 0)
+    if (optionsCopy || (v18 & 1) != 0)
     {
-      [v29 storeSMSFilterSyncDeviceParams:v14];
+      [selfCopy storeSMSFilterSyncDeviceParams:v14];
       CFPreferencesSetAppValue(@"sForceDisableSMSFilteringIpadCompleted", *MEMORY[0x1E695E4D0], @"com.apple.MobileSMS");
       v38[0] = @"IMMetricsCollectorEventSMSFilterSyncDeviceCount";
       v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
@@ -203,7 +203,7 @@ LABEL_16:
       [v28 trackEvent:@"com.apple.Messages.IMMetricsCollectorEventSMSFilterSyncStateChanged" withDictionary:v27];
     }
 
-    v9 = v31;
+    nameCopy = v31;
   }
 }
 
@@ -217,8 +217,8 @@ LABEL_16:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [a1 fetchSMSFilterSyncDeviceParams];
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    fetchSMSFilterSyncDeviceParams = [self fetchSMSFilterSyncDeviceParams];
+    v5 = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -229,21 +229,21 @@ LABEL_16:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(fetchSMSFilterSyncDeviceParams);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          v10 = [v9 filterExtensionName];
-          v11 = [v10 length];
+          filterExtensionName = [v9 filterExtensionName];
+          v11 = [filterExtensionName length];
 
           if (v11)
           {
-            v12 = [v9 filterExtensionName];
-            [v3 addObject:v12];
+            filterExtensionName2 = [v9 filterExtensionName];
+            [v3 addObject:filterExtensionName2];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v6);
@@ -254,32 +254,32 @@ LABEL_16:
     {
       if (v13 == 1)
       {
-        v14 = [v3 anyObject];
+        anyObject = [v3 anyObject];
       }
 
       else
       {
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v13];
-        v14 = [v15 stringByAppendingString:@" filters"];
+        anyObject = [v15 stringByAppendingString:@" filters"];
       }
     }
 
     else
     {
-      v14 = 0;
+      anyObject = 0;
     }
 
-    CFPreferencesSetAppValue(@"spamFiltrationExtensionName", v14, @"com.apple.MobileSMS");
+    CFPreferencesSetAppValue(@"spamFiltrationExtensionName", anyObject, @"com.apple.MobileSMS");
   }
 }
 
-+ (void)storeSMSFilterSyncDeviceParams:(id)a3
++ (void)storeSMSFilterSyncDeviceParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   if (+[IMSMSFilterHelper supportsIncomingSMSRelayFiltering])
   {
-    v5 = [a1 fetchSMSFilterSyncDeviceParams];
-    v6 = [v4 isEqualToArray:v5];
+    fetchSMSFilterSyncDeviceParams = [self fetchSMSFilterSyncDeviceParams];
+    v6 = [paramsCopy isEqualToArray:fetchSMSFilterSyncDeviceParams];
 
     if ((v6 & 1) == 0)
     {
@@ -287,10 +287,10 @@ LABEL_16:
       v7 = qword_1EB3095A8;
       qword_1EB3095A8 = 0;
 
-      if ([v4 count])
+      if ([paramsCopy count])
       {
         v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v9 = [v4 copy];
+        v9 = [paramsCopy copy];
         v14 = 0;
         v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v14];
         v11 = v14;
@@ -314,9 +314,9 @@ LABEL_10:
       v13 = *MEMORY[0x1E695E8B8];
       CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
       CFPreferencesSynchronize(@"com.apple.MobileSMS", v13, *MEMORY[0x1E695E898]);
-      [a1 updateFilterExtensionName];
-      [a1 updateSMSFilterCapabilitiesOptions];
-      if ([a1 isSMSFilteringEnabledInSMSFilterCapabilitiesOptions])
+      [self updateFilterExtensionName];
+      [self updateSMSFilterCapabilitiesOptions];
+      if ([self isSMSFilteringEnabledInSMSFilterCapabilitiesOptions])
       {
         +[IMSMSFilterCapabilitiesBinder handleSMSFilterCapabilitiesOptionsChange];
       }
@@ -354,43 +354,43 @@ LABEL_11:
   }
 }
 
-+ (id)fetchFilterExtensionNameForDeviceID:(id)a3
++ (id)fetchFilterExtensionNameForDeviceID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (+[IMSMSFilterHelper supportsIncomingSMSRelayFiltering])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [a1 fetchSMSFilterSyncDeviceParams];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-    if (v6)
+    fetchSMSFilterSyncDeviceParams = [self fetchSMSFilterSyncDeviceParams];
+    filterExtensionName = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v13 objects:v17 count:16];
+    if (filterExtensionName)
     {
       v7 = *v14;
       while (2)
       {
-        for (i = 0; i != v6; i = i + 1)
+        for (i = 0; i != filterExtensionName; i = i + 1)
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(fetchSMSFilterSyncDeviceParams);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 deviceUniqueID];
-          v11 = [v10 isEqualToString:v4];
+          deviceUniqueID = [v9 deviceUniqueID];
+          v11 = [deviceUniqueID isEqualToString:dCopy];
 
           if (v11)
           {
-            v6 = [v9 filterExtensionName];
+            filterExtensionName = [v9 filterExtensionName];
             goto LABEL_13;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-        if (v6)
+        filterExtensionName = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v13 objects:v17 count:16];
+        if (filterExtensionName)
         {
           continue;
         }
@@ -404,49 +404,49 @@ LABEL_13:
 
   else
   {
-    v6 = 0;
+    filterExtensionName = 0;
   }
 
-  return v6;
+  return filterExtensionName;
 }
 
-+ (unint64_t)fetchSMSFilterCapabilitiesOptionsForDeviceID:(id)a3
++ (unint64_t)fetchSMSFilterCapabilitiesOptionsForDeviceID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (+[IMSMSFilterHelper supportsIncomingSMSRelayFiltering])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [a1 fetchSMSFilterSyncDeviceParams];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-    if (v6)
+    fetchSMSFilterSyncDeviceParams = [self fetchSMSFilterSyncDeviceParams];
+    smsFilterCapabilitiesOptions = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v13 objects:v17 count:16];
+    if (smsFilterCapabilitiesOptions)
     {
       v7 = *v14;
       while (2)
       {
-        for (i = 0; i != v6; ++i)
+        for (i = 0; i != smsFilterCapabilitiesOptions; ++i)
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(fetchSMSFilterSyncDeviceParams);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 deviceUniqueID];
-          v11 = [v10 isEqualToString:v4];
+          deviceUniqueID = [v9 deviceUniqueID];
+          v11 = [deviceUniqueID isEqualToString:dCopy];
 
           if (v11)
           {
-            v6 = [v9 smsFilterCapabilitiesOptions];
+            smsFilterCapabilitiesOptions = [v9 smsFilterCapabilitiesOptions];
             goto LABEL_13;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-        if (v6)
+        smsFilterCapabilitiesOptions = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v13 objects:v17 count:16];
+        if (smsFilterCapabilitiesOptions)
         {
           continue;
         }
@@ -460,16 +460,16 @@ LABEL_13:
 
   else
   {
-    v6 = 0;
+    smsFilterCapabilitiesOptions = 0;
   }
 
-  return v6;
+  return smsFilterCapabilitiesOptions;
 }
 
-+ (void)verifyCurrentRelayDevicesActive:(id)a3
++ (void)verifyCurrentRelayDevicesActive:(id)active
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activeCopy = active;
   if (+[IMSMSFilterHelper supportsIncomingSMSRelayFiltering])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -477,8 +477,8 @@ LABEL_13:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [a1 fetchSMSFilterSyncDeviceParams];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    fetchSMSFilterSyncDeviceParams = [self fetchSMSFilterSyncDeviceParams];
+    v7 = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -489,12 +489,12 @@ LABEL_13:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(fetchSMSFilterSyncDeviceParams);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 deviceUniqueID];
-          v13 = [v4 containsObject:v12];
+          deviceUniqueID = [v11 deviceUniqueID];
+          v13 = [activeCopy containsObject:deviceUniqueID];
 
           if (v13)
           {
@@ -502,13 +502,13 @@ LABEL_13:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
     }
 
-    [a1 storeSMSFilterSyncDeviceParams:v5];
+    [self storeSMSFilterSyncDeviceParams:v5];
   }
 }
 
@@ -517,7 +517,7 @@ LABEL_13:
   LODWORD(v3) = +[IMSMSFilterHelper supportsIncomingSMSRelayFiltering];
   if (v3)
   {
-    return ([a1 fetchSMSFilterCapabilitiesOptions] >> 1) & 1;
+    return ([self fetchSMSFilterCapabilitiesOptions] >> 1) & 1;
   }
 
   return v3;
@@ -528,7 +528,7 @@ LABEL_13:
   result = qword_1ED8C8810;
   if (qword_1ED8C8810 == -1)
   {
-    [a1 updateSMSFilterCapabilitiesOptionsCache];
+    [self updateSMSFilterCapabilitiesOptionsCache];
     return qword_1ED8C8810;
   }
 
@@ -566,7 +566,7 @@ LABEL_13:
             v10 = *(*(&v11 + 1) + 8 * i);
             if ([v10 subAction])
             {
-              v8 |= [a1 IMSMSFilterCapabilitiesOptionForFilterSubAction:objc_msgSend(v10 action:{"subAction"), objc_msgSend(v10, "action")}];
+              v8 |= [self IMSMSFilterCapabilitiesOptionForFilterSubAction:objc_msgSend(v10 action:{"subAction"), objc_msgSend(v10, "action")}];
             }
           }
 
@@ -587,7 +587,7 @@ LABEL_13:
       v8 = 1;
     }
 
-    [a1 storeSMSFilterCapabilitiesOptions:{v8, v11}];
+    [self storeSMSFilterCapabilitiesOptions:{v8, v11}];
   }
 }
 
@@ -598,8 +598,8 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a1 fetchSMSFilterSyncDeviceParams];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  fetchSMSFilterSyncDeviceParams = [self fetchSMSFilterSyncDeviceParams];
+  v4 = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -611,13 +611,13 @@ LABEL_13:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(fetchSMSFilterSyncDeviceParams);
         }
 
         v7 |= [*(*(&v9 + 1) + 8 * i) smsFilterCapabilitiesOptions];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [fetchSMSFilterSyncDeviceParams countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -628,13 +628,13 @@ LABEL_13:
     v7 = 1;
   }
 
-  [a1 storeSMSFilterCapabilitiesOptions:v7];
+  [self storeSMSFilterCapabilitiesOptions:v7];
 }
 
-+ (void)storeSMSFilterCapabilitiesOptions:(unint64_t)a3
++ (void)storeSMSFilterCapabilitiesOptions:(unint64_t)options
 {
   qword_1ED8C8810 = -1;
-  CFPreferencesSetAppValue(@"spamFilterExtensionCapabilitiesOptions", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3], @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(@"spamFilterExtensionCapabilitiesOptions", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options], @"com.apple.MobileSMS");
   v3 = *MEMORY[0x1E695E8B8];
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
   v4 = *MEMORY[0x1E695E898];
@@ -645,23 +645,23 @@ LABEL_13:
 + (void)updateSMSFilterCapabilitiesOptionsCache
 {
   v3 = IMGetCachedDomainValueForKey();
-  if (v3 || ([a1 updateSMSFilterCapabilitiesOptionsForSelf], IMGetCachedDomainValueForKey(), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v3 || ([self updateSMSFilterCapabilitiesOptionsForSelf], IMGetCachedDomainValueForKey(), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  qword_1ED8C8810 = v5;
+  qword_1ED8C8810 = unsignedIntegerValue;
 }
 
-+ (unint64_t)IMSMSFilterCapabilitiesOptionForFilterSubAction:(int64_t)a3 action:(int64_t)a4
++ (unint64_t)IMSMSFilterCapabilitiesOptionForFilterSubAction:(int64_t)action action:(int64_t)a4
 {
-  v4 = 1 << (a3 + 1);
+  v4 = 1 << (action + 1);
   if (a4 != 4)
   {
     v4 = 0;
@@ -669,7 +669,7 @@ LABEL_13:
 
   if (a4 == 3)
   {
-    return 1 << (a3 + 7);
+    return 1 << (action + 7);
   }
 
   else

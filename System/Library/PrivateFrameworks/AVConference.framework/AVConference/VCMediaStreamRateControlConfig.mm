@@ -1,8 +1,8 @@
 @interface VCMediaStreamRateControlConfig
 - (VCMediaStreamRateControlConfig)init;
 - (void)dealloc;
-- (void)setMediaControlInfoGenerator:(void *)a3;
-- (void)setVcMediaQueue:(tagVCMediaQueue *)a3;
+- (void)setMediaControlInfoGenerator:(void *)generator;
+- (void)setVcMediaQueue:(tagVCMediaQueue *)queue;
 @end
 
 @implementation VCMediaStreamRateControlConfig
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (void)setMediaControlInfoGenerator:(void *)a3
+- (void)setMediaControlInfoGenerator:(void *)generator
 {
   mediaControlInfoGenerator = self->_mediaControlInfoGenerator;
   if (mediaControlInfoGenerator)
@@ -29,9 +29,9 @@
     CFRelease(mediaControlInfoGenerator);
   }
 
-  if (a3)
+  if (generator)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(generator);
   }
 
   else
@@ -42,19 +42,19 @@
   self->_mediaControlInfoGenerator = v6;
 }
 
-- (void)setVcMediaQueue:(tagVCMediaQueue *)a3
+- (void)setVcMediaQueue:(tagVCMediaQueue *)queue
 {
   vcMediaQueue = self->_vcMediaQueue;
-  if (vcMediaQueue != a3)
+  if (vcMediaQueue != queue)
   {
     if (vcMediaQueue)
     {
       CFRelease(vcMediaQueue);
     }
 
-    if (a3)
+    if (queue)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(queue);
     }
 
     else

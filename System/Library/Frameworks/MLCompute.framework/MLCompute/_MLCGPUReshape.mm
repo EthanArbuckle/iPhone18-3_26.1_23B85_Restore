@@ -1,20 +1,20 @@
 @interface _MLCGPUReshape
-+ (id)layerWithDevice:(id)a3;
-- (_MLCGPUReshape)initWithDevice:(id)a3;
++ (id)layerWithDevice:(id)device;
+- (_MLCGPUReshape)initWithDevice:(id)device;
 @end
 
 @implementation _MLCGPUReshape
 
-- (_MLCGPUReshape)initWithDevice:(id)a3
+- (_MLCGPUReshape)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = _MLCGPUReshape;
   v5 = [(_MLCGPUReshape *)&v14 init];
   if (v5)
   {
-    v6 = [v4 deviceList];
-    v7 = [v6 count];
+    deviceList = [deviceCopy deviceList];
+    v7 = [deviceList count];
 
     for (i = [MEMORY[0x277CBEBF8] mutableCopy]; v7; --v7)
     {
@@ -37,10 +37,10 @@
   return v5;
 }
 
-+ (id)layerWithDevice:(id)a3
++ (id)layerWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDevice:v4];
+  deviceCopy = device;
+  v5 = [[self alloc] initWithDevice:deviceCopy];
 
   return v5;
 }

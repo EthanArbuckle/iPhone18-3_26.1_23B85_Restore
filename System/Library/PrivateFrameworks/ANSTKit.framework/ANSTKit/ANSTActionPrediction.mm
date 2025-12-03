@@ -1,18 +1,18 @@
 @interface ANSTActionPrediction
-- (ANSTActionPrediction)initWithAction:(unint64_t)a3;
+- (ANSTActionPrediction)initWithAction:(unint64_t)action;
 - (id)description;
 @end
 
 @implementation ANSTActionPrediction
 
-- (ANSTActionPrediction)initWithAction:(unint64_t)a3
+- (ANSTActionPrediction)initWithAction:(unint64_t)action
 {
   v5.receiver = self;
   v5.super_class = ANSTActionPrediction;
   result = [(ANSTActionPrediction *)&v5 init];
   if (result)
   {
-    result->_action = a3;
+    result->_action = action;
     result->_confidence = 0.0;
   }
 

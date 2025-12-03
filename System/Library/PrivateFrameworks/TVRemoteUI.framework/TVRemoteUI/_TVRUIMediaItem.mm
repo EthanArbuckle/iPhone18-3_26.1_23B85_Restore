@@ -1,50 +1,50 @@
 @interface _TVRUIMediaItem
-+ (id)itemWithFactoidItem:(id)a3;
-+ (id)itemWithRole:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)itemWithFactoidItem:(id)item;
++ (id)itemWithRole:(id)role;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpandable;
 - (BOOL)isFactoid;
 - (BOOL)isRole;
-- (_TVRUIMediaItem)initWithFactoidItem:(id)a3 role:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_TVRUIMediaItem)initWithFactoidItem:(id)item role:(id)role;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _TVRUIMediaItem
 
-- (_TVRUIMediaItem)initWithFactoidItem:(id)a3 role:(id)a4
+- (_TVRUIMediaItem)initWithFactoidItem:(id)item role:(id)role
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  roleCopy = role;
   v14.receiver = self;
   v14.super_class = _TVRUIMediaItem;
   v9 = [(_TVRUIMediaItem *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_factoidItem, a3);
-    objc_storeStrong(&v10->_role, a4);
-    v11 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v9->_factoidItem, item);
+    objc_storeStrong(&v10->_role, role);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v10->_identifier;
-    v10->_identifier = v11;
+    v10->_identifier = uUID;
   }
 
   return v10;
 }
 
-+ (id)itemWithFactoidItem:(id)a3
++ (id)itemWithFactoidItem:(id)item
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFactoidItem:v4 role:0];
+  itemCopy = item;
+  v5 = [[self alloc] initWithFactoidItem:itemCopy role:0];
 
   return v5;
 }
 
-+ (id)itemWithRole:(id)a3
++ (id)itemWithRole:(id)role
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFactoidItem:0 role:v4];
+  roleCopy = role;
+  v5 = [[self alloc] initWithFactoidItem:0 role:roleCopy];
 
   return v5;
 }
@@ -55,21 +55,21 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[_TVRUIMediaItem isFactoid](self, "isFactoid")}];
-  v7 = [(_TVRUIMediaItem *)self factoidItem];
-  v8 = [(_TVRUIMediaItem *)self role];
-  v9 = [v3 stringWithFormat:@"<%@ %p: isFactoid=%@ factoid=%@; role=%@>", v5, self, v6, v7, v8];;
+  factoidItem = [(_TVRUIMediaItem *)self factoidItem];
+  role = [(_TVRUIMediaItem *)self role];
+  v9 = [v3 stringWithFormat:@"<%@ %p: isFactoid=%@ factoid=%@; role=%@>", v5, self, v6, factoidItem, role];;
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(_TVRUIMediaItem *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(_TVRUIMediaItem *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -82,42 +82,42 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_TVRUIMediaItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(_TVRUIMediaItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (BOOL)isFactoid
 {
-  v2 = [(_TVRUIMediaItem *)self factoidItem];
-  v3 = v2 != 0;
+  factoidItem = [(_TVRUIMediaItem *)self factoidItem];
+  v3 = factoidItem != 0;
 
   return v3;
 }
 
 - (BOOL)isRole
 {
-  v2 = [(_TVRUIMediaItem *)self role];
-  v3 = v2 != 0;
+  role = [(_TVRUIMediaItem *)self role];
+  v3 = role != 0;
 
   return v3;
 }
 
 - (BOOL)isExpandable
 {
-  v2 = [(_TVRUIMediaItem *)self factoidItem];
-  v3 = ([v2 factoidOptions] >> 2) & 1;
+  factoidItem = [(_TVRUIMediaItem *)self factoidItem];
+  v3 = ([factoidItem factoidOptions] >> 2) & 1;
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(_TVRUIMediaItem *)self factoidItem];
-  v6 = [(_TVRUIMediaItem *)self role];
-  v7 = [v4 initWithFactoidItem:v5 role:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  factoidItem = [(_TVRUIMediaItem *)self factoidItem];
+  role = [(_TVRUIMediaItem *)self role];
+  v7 = [v4 initWithFactoidItem:factoidItem role:role];
 
   return v7;
 }

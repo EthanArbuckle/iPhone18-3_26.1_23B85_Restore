@@ -1,69 +1,69 @@
 @interface PUAlbumListCell
-- (PUAlbumListCell)initWithFrame:(CGRect)a3;
+- (PUAlbumListCell)initWithFrame:(CGRect)frame;
 - (id)focusEffect;
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3;
-- (void)didTransitionFromLayout:(id)a3 toLayout:(id)a4;
-- (void)setBackgroundCornerRadius:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)willTransitionFromLayout:(id)a3 toLayout:(id)a4;
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates;
+- (void)didTransitionFromLayout:(id)layout toLayout:(id)toLayout;
+- (void)setBackgroundCornerRadius:(double)radius;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)willTransitionFromLayout:(id)layout toLayout:(id)toLayout;
 @end
 
 @implementation PUAlbumListCell
 
 - (id)focusEffect
 {
-  v3 = [(PUAlbumListCell *)self albumListCellContentView];
-  v4 = [v3 focusInfo];
-  v5 = [v4 makeHaloEffectForSourceView:self];
+  albumListCellContentView = [(PUAlbumListCell *)self albumListCellContentView];
+  focusInfo = [albumListCellContentView focusInfo];
+  v5 = [focusInfo makeHaloEffectForSourceView:self];
 
   return v5;
 }
 
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates
 {
-  v3 = a3;
-  v5 = [(PUAlbumListCell *)self albumListCellContentView];
-  v6 = [v5 showsDeleteButtonWhenEditing];
-  [v5 setShowsDeleteButtonWhenEditing:0];
+  updatesCopy = updates;
+  albumListCellContentView = [(PUAlbumListCell *)self albumListCellContentView];
+  showsDeleteButtonWhenEditing = [albumListCellContentView showsDeleteButtonWhenEditing];
+  [albumListCellContentView setShowsDeleteButtonWhenEditing:0];
   v9.receiver = self;
   v9.super_class = PUAlbumListCell;
-  v7 = [(PUAlbumListCell *)&v9 snapshotViewAfterScreenUpdates:v3];
-  [v5 setShowsDeleteButtonWhenEditing:v6];
+  v7 = [(PUAlbumListCell *)&v9 snapshotViewAfterScreenUpdates:updatesCopy];
+  [albumListCellContentView setShowsDeleteButtonWhenEditing:showsDeleteButtonWhenEditing];
 
   return v7;
 }
 
-- (void)setBackgroundCornerRadius:(double)a3
+- (void)setBackgroundCornerRadius:(double)radius
 {
-  v5 = [(PUAlbumListCell *)self backgroundConfiguration];
-  [v5 cornerRadius];
+  backgroundConfiguration = [(PUAlbumListCell *)self backgroundConfiguration];
+  [backgroundConfiguration cornerRadius];
   v7 = v6;
 
-  if (v7 != a3)
+  if (v7 != radius)
   {
-    v8 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-    [v8 setCornerRadius:a3];
-    [(PUAlbumListCell *)self setBackgroundConfiguration:v8];
+    clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    [clearConfiguration setCornerRadius:radius];
+    [(PUAlbumListCell *)self setBackgroundConfiguration:clearConfiguration];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(PUAlbumListCell *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(PUAlbumListCell *)self isHighlighted];
   v7.receiver = self;
   v7.super_class = PUAlbumListCell;
-  [(PUAlbumListCell *)&v7 setHighlighted:v3];
-  if (v5 != [(PUAlbumListCell *)self isHighlighted])
+  [(PUAlbumListCell *)&v7 setHighlighted:highlightedCopy];
+  if (isHighlighted != [(PUAlbumListCell *)self isHighlighted])
   {
-    v6 = [(PUAlbumListCell *)self albumListCellContentView];
-    [v6 setHighlighted:v3];
+    albumListCellContentView = [(PUAlbumListCell *)self albumListCellContentView];
+    [albumListCellContentView setHighlighted:highlightedCopy];
   }
 }
 
-- (void)didTransitionFromLayout:(id)a3 toLayout:(id)a4
+- (void)didTransitionFromLayout:(id)layout toLayout:(id)toLayout
 {
-  v5 = a4;
+  toLayoutCopy = toLayout;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -84,9 +84,9 @@ void __52__PUAlbumListCell_didTransitionFromLayout_toLayout___block_invoke(uint6
   [v1 setShowsTitle:1 animated:1];
 }
 
-- (void)willTransitionFromLayout:(id)a3 toLayout:(id)a4
+- (void)willTransitionFromLayout:(id)layout toLayout:(id)toLayout
 {
-  v5 = a3;
+  layoutCopy = layout;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -123,22 +123,22 @@ void __53__PUAlbumListCell_willTransitionFromLayout_toLayout___block_invoke_2(ui
   [v1 setShowsTitle:0 animated:0];
 }
 
-- (PUAlbumListCell)initWithFrame:(CGRect)a3
+- (PUAlbumListCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PUAlbumListCell;
-  v3 = [(PUAlbumListCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUAlbumListCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PUAlbumListCell *)v3 contentView];
+    contentView = [(PUAlbumListCell *)v3 contentView];
     v6 = [PUAlbumListCellContentView alloc];
-    [v5 bounds];
+    [contentView bounds];
     v7 = [(PUAlbumListCellContentView *)v6 initWithFrame:?];
     [(PUAlbumListCellContentView *)v7 setTag:236897];
     [(PUAlbumListCellContentView *)v7 setAutoresizingMask:18];
     [(PUAlbumListCellContentView *)v7 setTopInsetEnabled:1];
-    [v5 addSubview:v7];
+    [contentView addSubview:v7];
   }
 
   return v4;

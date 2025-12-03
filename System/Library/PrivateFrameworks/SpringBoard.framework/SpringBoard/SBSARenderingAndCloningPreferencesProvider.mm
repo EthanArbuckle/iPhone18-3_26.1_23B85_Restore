@@ -1,17 +1,17 @@
 @interface SBSARenderingAndCloningPreferencesProvider
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSARenderingAndCloningPreferencesProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
-    v6 = v4;
+    v6 = contextCopy;
     v7 = objc_opt_self();
     v8 = v5;
     if (v7)
@@ -54,9 +54,9 @@
   v78 = 0x3032000000;
   v79 = __Block_byref_object_copy__15;
   v80 = __Block_byref_object_dispose__15;
-  v11 = [v10 preferences];
+  preferences = [v10 preferences];
   v12 = objc_opt_class();
-  v13 = v11;
+  v13 = preferences;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -79,29 +79,29 @@
 
   v81 = v15;
   v16 = SBSAContextAndPreferencesRepresentAnyContentVisible(v10, v77[5]);
-  v17 = [v10 isAnimatedTransitionInProgress];
-  v18 = [v10 activeDisplay];
-  v19 = [v10 cloningStyle];
-  v20 = [v10 defaultsContext];
-  v21 = [v20 alwaysRenderSystemApertureFillOnGPU];
+  isAnimatedTransitionInProgress = [v10 isAnimatedTransitionInProgress];
+  activeDisplay = [v10 activeDisplay];
+  cloningStyle = [v10 cloningStyle];
+  defaultsContext = [v10 defaultsContext];
+  alwaysRenderSystemApertureFillOnGPU = [defaultsContext alwaysRenderSystemApertureFillOnGPU];
 
-  v22 = [v10 defaultsContext];
-  v23 = [v22 neverRenderSystemApertureFillOnGPU];
+  defaultsContext2 = [v10 defaultsContext];
+  neverRenderSystemApertureFillOnGPU = [defaultsContext2 neverRenderSystemApertureFillOnGPU];
 
   v24 = MGGetBoolAnswer();
   v25 = 0;
-  if (((v16 | v17) & 1) == 0 && ((v23 ^ 1) & v21 & 1) == 0)
+  if (((v16 | isAnimatedTransitionInProgress) & 1) == 0 && ((neverRenderSystemApertureFillOnGPU ^ 1) & alwaysRenderSystemApertureFillOnGPU & 1) == 0)
   {
     v26 = v24;
-    v27 = [v10 isKeyLineRequiredForTransition];
-    if (v18 == 1)
+    isKeyLineRequiredForTransition = [v10 isKeyLineRequiredForTransition];
+    if (activeDisplay == 1)
     {
       v28 = 1;
     }
 
     else
     {
-      v28 = v27;
+      v28 = isKeyLineRequiredForTransition;
     }
 
     v29 = 1;
@@ -121,20 +121,20 @@
     }
   }
 
-  v30 = [v10 overrideRenderingStyle];
-  if (v30 != -1)
+  overrideRenderingStyle = [v10 overrideRenderingStyle];
+  if (overrideRenderingStyle != -1)
   {
-    v25 = v30;
+    v25 = overrideRenderingStyle;
   }
 
-  v31 = [v10 defaultsContext];
-  v32 = [v31 alwaysShowSystemApertureInSnapshots];
+  defaultsContext3 = [v10 defaultsContext];
+  alwaysShowSystemApertureInSnapshots = [defaultsContext3 alwaysShowSystemApertureInSnapshots];
 
-  v33 = [v10 isClearModeEnabled];
+  isClearModeEnabled = [v10 isClearModeEnabled];
   if (([v10 isReachabilityActiveOrAnimating] & 1) != 0 || objc_msgSend(v10, "isAccessibilityZoomActiveAndEnabled"))
   {
-    v34 = [v10 secureFlipBookElementContexts];
-    v58 = [v34 count] != 0;
+    secureFlipBookElementContexts = [v10 secureFlipBookElementContexts];
+    v58 = [secureFlipBookElementContexts count] != 0;
 
     v35 = 3;
   }
@@ -145,7 +145,7 @@
     v35 = v25;
   }
 
-  if (v33)
+  if (isClearModeEnabled)
   {
     v36 = 4;
   }
@@ -155,7 +155,7 @@
     v36 = v35;
   }
 
-  if (v33)
+  if (isClearModeEnabled)
   {
     v37 = 4;
   }
@@ -167,19 +167,19 @@
 
   v74 = 0uLL;
   v75 = 0;
-  SBSystemApertureContainerRenderingConfigurationMake(v36, v19, v32, &v74);
+  SBSystemApertureContainerRenderingConfigurationMake(v36, cloningStyle, alwaysShowSystemApertureInSnapshots, &v74);
   v72 = 0uLL;
   v73 = 0;
-  SBSystemApertureContainerRenderingConfigurationMake(v36, v19, v32, &v72);
+  SBSystemApertureContainerRenderingConfigurationMake(v36, cloningStyle, alwaysShowSystemApertureInSnapshots, &v72);
   v70 = 0uLL;
   v71 = 0;
-  SBSystemApertureContainerRenderingConfigurationMake(v37, v19, v32, &v70);
-  if (v33)
+  SBSystemApertureContainerRenderingConfigurationMake(v37, cloningStyle, alwaysShowSystemApertureInSnapshots, &v70);
+  if (isClearModeEnabled)
   {
-    v19 = 0;
+    cloningStyle = 0;
   }
 
-  if (self->_previousCloningStyle != v19 || self->_previousCurtainRenderingStyle != v37 || self->_previousContainerRenderingStyle != v36)
+  if (self->_previousCloningStyle != cloningStyle || self->_previousCurtainRenderingStyle != v37 || self->_previousContainerRenderingStyle != v36)
   {
     if (v36 == v37)
     {
@@ -187,7 +187,7 @@
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         v39 = SBStringFromSystemApertureContainerRenderingStyle(v36);
-        v40 = SBStringFromSystemApertureContainerCloningStyle(v19);
+        v40 = SBStringFromSystemApertureContainerCloningStyle(cloningStyle);
         *buf = 138543618;
         v83 = v39;
         v84 = 2114;
@@ -202,7 +202,7 @@
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         v42 = SBStringFromSystemApertureContainerRenderingStyle(v37);
-        v43 = SBStringFromSystemApertureContainerCloningStyle(v19);
+        v43 = SBStringFromSystemApertureContainerCloningStyle(cloningStyle);
         *buf = 138543618;
         v83 = v42;
         v84 = 2114;
@@ -214,7 +214,7 @@
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         v44 = SBStringFromSystemApertureContainerRenderingStyle(v36);
-        v45 = SBStringFromSystemApertureContainerCloningStyle(v19);
+        v45 = SBStringFromSystemApertureContainerCloningStyle(cloningStyle);
         *buf = 138543618;
         v83 = v44;
         v84 = 2114;
@@ -226,7 +226,7 @@
 
   self->_previousContainerRenderingStyle = v36;
   self->_previousCurtainRenderingStyle = v37;
-  self->_previousCloningStyle = v19;
+  self->_previousCloningStyle = cloningStyle;
   v46 = v77[5];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;

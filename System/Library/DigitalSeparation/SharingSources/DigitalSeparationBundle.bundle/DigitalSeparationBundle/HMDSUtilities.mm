@@ -1,21 +1,21 @@
 @interface HMDSUtilities
-+ (BOOL)canRemoveParticipantObject:(id)a3 fromHome:(id)a4 accessCodes:(id)a5;
-+ (id)_combineAllFuturesWithNoResult:(id)a3;
-+ (id)combineAllFuturesFlatteningArrayResults:(id)a3;
-+ (id)identityForAccessCode:(id)a3;
-+ (id)identityForUser:(id)a3;
++ (BOOL)canRemoveParticipantObject:(id)object fromHome:(id)home accessCodes:(id)codes;
++ (id)_combineAllFuturesWithNoResult:(id)result;
++ (id)combineAllFuturesFlatteningArrayResults:(id)results;
++ (id)identityForAccessCode:(id)code;
++ (id)identityForUser:(id)user;
 + (id)logCategory;
-+ (id)outgoingInvitationForUserID:(id)a3 inHome:(id)a4;
-+ (id)participantForAccessCode:(id)a3 inHome:(id)a4;
-+ (id)participantForOutgoingInvitation:(id)a3 inHome:(id)a4;
-+ (id)participantForUser:(id)a3 inHome:(id)a4;
-+ (id)participantObjectForParticipant:(id)a3 inHome:(id)a4 accessCodes:(id)a5;
-+ (id)removeParticipantObject:(id)a3 fromHome:(id)a4 accessCodes:(id)a5 context:(id)a6;
-+ (id)sharedResourceForHome:(id)a3 context:(id)a4;
-+ (id)sharedResourcesForContext:(id)a3;
-+ (id)stopSharingHome:(id)a3 withParticipant:(id)a4 context:(id)a5;
-+ (id)stopSharingResource:(id)a3 context:(id)a4;
-+ (id)stopSharingWithParticipant:(id)a3 context:(id)a4;
++ (id)outgoingInvitationForUserID:(id)d inHome:(id)home;
++ (id)participantForAccessCode:(id)code inHome:(id)home;
++ (id)participantForOutgoingInvitation:(id)invitation inHome:(id)home;
++ (id)participantForUser:(id)user inHome:(id)home;
++ (id)participantObjectForParticipant:(id)participant inHome:(id)home accessCodes:(id)codes;
++ (id)removeParticipantObject:(id)object fromHome:(id)home accessCodes:(id)codes context:(id)context;
++ (id)sharedResourceForHome:(id)home context:(id)context;
++ (id)sharedResourcesForContext:(id)context;
++ (id)stopSharingHome:(id)home withParticipant:(id)participant context:(id)context;
++ (id)stopSharingResource:(id)resource context:(id)context;
++ (id)stopSharingWithParticipant:(id)participant context:(id)context;
 @end
 
 @implementation HMDSUtilities
@@ -32,53 +32,53 @@
   return v3;
 }
 
-+ (id)sharedResourcesForContext:(id)a3
++ (id)sharedResourcesForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 homes];
+    homes = [contextCopy homes];
     *buf = 138543618;
     v18 = v8;
     v19 = 2112;
-    v20 = v9;
+    v20 = homes;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "%{public}@Found homes: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [v4 homes];
+  homes2 = [contextCopy homes];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1298;
   v15[3] = &unk_C478;
-  v16 = v4;
-  v11 = v4;
-  v12 = [v10 na_map:v15];
+  v16 = contextCopy;
+  v11 = contextCopy;
+  v12 = [homes2 na_map:v15];
   v13 = [HMDSUtilities combineAllFuturesFlatteningArrayResults:v12];
 
   return v13;
 }
 
-+ (id)combineAllFuturesFlatteningArrayResults:(id)a3
++ (id)combineAllFuturesFlatteningArrayResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = +[NAScheduler immediateScheduler];
-  v5 = [NAFuture combineAllFutures:v3 scheduler:v4];
+  v5 = [NAFuture combineAllFutures:resultsCopy scheduler:v4];
 
   v6 = [v5 flatMap:&stru_C410];
 
   return v6;
 }
 
-+ (id)stopSharingWithParticipant:(id)a3 context:(id)a4
++ (id)stopSharingWithParticipant:(id)participant context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  participantCopy = participant;
+  contextCopy = context;
+  v8 = participantCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -94,33 +94,33 @@
 
   if (v10)
   {
-    v11 = [v7 homes];
+    homes = [contextCopy homes];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_177C;
     v27[3] = &unk_C3C8;
     v12 = v10;
     v28 = v12;
-    v13 = [v11 na_firstObjectPassingTest:v27];
+    v13 = [homes na_firstObjectPassingTest:v27];
 
     if (v13)
     {
-      v14 = [HMDSUtilities stopSharingHome:v13 withParticipant:v8 context:v7];
+      v14 = [HMDSUtilities stopSharingHome:v13 withParticipant:v8 context:contextCopy];
     }
 
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = a1;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         v24 = HMFGetLogIdentifier();
-        v25 = [v12 homeUniqueIdentifier];
+        homeUniqueIdentifier = [v12 homeUniqueIdentifier];
         *buf = 138543618;
         v30 = v24;
         v31 = 2112;
-        v32 = v25;
+        v32 = homeUniqueIdentifier;
         _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "%{public}@Participant home no longer exists with homeUniqueIdentifier: %@", buf, 0x16u);
       }
 
@@ -136,7 +136,7 @@
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -156,11 +156,11 @@
   return v20;
 }
 
-+ (id)stopSharingResource:(id)a3 context:(id)a4
++ (id)stopSharingResource:(id)resource context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  resourceCopy = resource;
+  contextCopy = context;
+  v8 = resourceCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -176,22 +176,22 @@
 
   if (v10)
   {
-    v11 = [v7 homes];
+    homes = [contextCopy homes];
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_1C38;
     v40[3] = &unk_C3C8;
     v12 = v10;
     v41 = v12;
-    v13 = [v11 na_firstObjectPassingTest:v40];
+    v13 = [homes na_firstObjectPassingTest:v40];
 
-    v14 = [v13 currentUser];
-    v15 = [v13 homeAccessControlForUser:v14];
+    currentUser = [v13 currentUser];
+    v15 = [v13 homeAccessControlForUser:currentUser];
 
     if ([v15 isOwner] & 1) != 0 || (objc_msgSend(v15, "isAdministrator"))
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = a1;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -204,22 +204,22 @@
       }
 
       objc_autoreleasePoolPop(v16);
-      v20 = [v12 participants];
+      participants = [v12 participants];
       v33 = _NSConcreteStackBlock;
       v34 = 3221225472;
       v35 = sub_1CA8;
       v36 = &unk_C3F0;
-      v39 = v17;
+      v39 = selfCopy;
       v37 = v13;
-      v38 = v7;
-      v21 = [v20 na_map:&v33];
-      v22 = [v17 _combineAllFuturesWithNoResult:{v21, v33, v34, v35, v36}];
+      v38 = contextCopy;
+      v21 = [participants na_map:&v33];
+      v22 = [selfCopy _combineAllFuturesWithNoResult:{v21, v33, v34, v35, v36}];
     }
 
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = a1;
+      selfCopy2 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
@@ -241,7 +241,7 @@
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = a1;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -261,12 +261,12 @@
   return v22;
 }
 
-+ (id)stopSharingHome:(id)a3 withParticipant:(id)a4 context:(id)a5
++ (id)stopSharingHome:(id)home withParticipant:(id)participant context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  homeCopy = home;
+  participantCopy = participant;
+  contextCopy = context;
+  v11 = participantCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -282,27 +282,27 @@
 
   if (v13)
   {
-    v14 = [v8 currentUser];
-    v15 = [v8 homeAccessControlForUser:v14];
+    currentUser = [homeCopy currentUser];
+    v15 = [homeCopy homeAccessControlForUser:currentUser];
 
     if ([v15 isOwner] & 1) != 0 || (objc_msgSend(v15, "isAdministrator"))
     {
-      v16 = [v10 simpleLabelAccessCodesForHome:v8];
+      v16 = [contextCopy simpleLabelAccessCodesForHome:homeCopy];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_200C;
       v28[3] = &unk_C3A0;
-      v32 = a1;
+      selfCopy = self;
       v29 = v13;
-      v30 = v8;
-      v31 = v10;
+      v30 = homeCopy;
+      v31 = contextCopy;
       v17 = [v16 flatMap:v28];
 
       goto LABEL_15;
     }
 
     v23 = objc_autoreleasePoolPush();
-    v24 = a1;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
@@ -310,7 +310,7 @@
       *buf = 138543618;
       v34 = v26;
       v35 = 2112;
-      v36 = v8;
+      v36 = homeCopy;
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_INFO, "%{public}@We do not have admin privileges, so we cannot remove anyone from the home: %@", buf, 0x16u);
     }
 
@@ -321,7 +321,7 @@
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy3 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -344,16 +344,16 @@ LABEL_15:
   return v17;
 }
 
-+ (id)removeParticipantObject:(id)a3 fromHome:(id)a4 accessCodes:(id)a5 context:(id)a6
++ (id)removeParticipantObject:(id)object fromHome:(id)home accessCodes:(id)codes context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (([a1 canRemoveParticipantObject:v10 fromHome:v11 accessCodes:v12] & 1) == 0)
+  objectCopy = object;
+  homeCopy = home;
+  codesCopy = codes;
+  contextCopy = context;
+  if (([self canRemoveParticipantObject:objectCopy fromHome:homeCopy accessCodes:codesCopy] & 1) == 0)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = a1;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -361,7 +361,7 @@ LABEL_15:
       v38 = 138543618;
       v39 = v26;
       v40 = 2112;
-      v41 = v10;
+      v41 = objectCopy;
       v27 = "%{public}@Cannot remove participant object: %@";
 LABEL_8:
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, v27, &v38, 0x16u);
@@ -370,23 +370,23 @@ LABEL_8:
 LABEL_9:
 
     objc_autoreleasePoolPop(v23);
-    v19 = [NSError errorWithDomain:HMErrorDomain code:48 userInfo:0];
-    v28 = [NAFuture futureWithError:v19];
+    outgoingInvitation2 = [NSError errorWithDomain:HMErrorDomain code:48 userInfo:0];
+    v28 = [NAFuture futureWithError:outgoingInvitation2];
 LABEL_10:
     v22 = v28;
     goto LABEL_11;
   }
 
-  v14 = [v10 accessCode];
+  accessCode = [objectCopy accessCode];
 
-  if (!v14)
+  if (!accessCode)
   {
-    v30 = [v10 outgoingInvitation];
+    outgoingInvitation = [objectCopy outgoingInvitation];
 
-    if (v30)
+    if (outgoingInvitation)
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = a1;
+      selfCopy2 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
@@ -394,25 +394,25 @@ LABEL_10:
         v38 = 138543874;
         v39 = v34;
         v40 = 2112;
-        v41 = v11;
+        v41 = homeCopy;
         v42 = 2112;
-        v43 = v10;
+        v43 = objectCopy;
         _os_log_impl(&dword_0, v33, OS_LOG_TYPE_INFO, "%{public}@Removing outgoing invitation participant from home: %@, participantObject: %@", &v38, 0x20u);
       }
 
       objc_autoreleasePoolPop(v31);
-      v19 = [v10 outgoingInvitation];
-      v28 = [v13 cancelInvitation:v19];
+      outgoingInvitation2 = [objectCopy outgoingInvitation];
+      v28 = [contextCopy cancelInvitation:outgoingInvitation2];
       goto LABEL_10;
     }
 
-    v35 = [v10 user];
+    user = [objectCopy user];
 
     v23 = objc_autoreleasePoolPush();
-    v24 = a1;
+    selfCopy3 = self;
     v36 = HMFGetOSLogHandle();
     v25 = v36;
-    if (v35)
+    if (user)
     {
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
@@ -420,15 +420,15 @@ LABEL_10:
         v38 = 138543874;
         v39 = v37;
         v40 = 2112;
-        v41 = v11;
+        v41 = homeCopy;
         v42 = 2112;
-        v43 = v10;
+        v43 = objectCopy;
         _os_log_impl(&dword_0, v25, OS_LOG_TYPE_INFO, "%{public}@Removing user participant from home: %@, participantObject: %@", &v38, 0x20u);
       }
 
       objc_autoreleasePoolPop(v23);
-      v19 = [v10 user];
-      v28 = [v13 removeUser:v19 fromHome:v11];
+      outgoingInvitation2 = [objectCopy user];
+      v28 = [contextCopy removeUser:outgoingInvitation2 fromHome:homeCopy];
       goto LABEL_10;
     }
 
@@ -438,7 +438,7 @@ LABEL_10:
       v38 = 138543618;
       v39 = v26;
       v40 = 2112;
-      v41 = v10;
+      v41 = objectCopy;
       v27 = "%{public}@Participant object has all nil properties: %@";
       goto LABEL_8;
     }
@@ -447,7 +447,7 @@ LABEL_10:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = a1;
+  selfCopy4 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -455,29 +455,29 @@ LABEL_10:
     v38 = 138543874;
     v39 = v18;
     v40 = 2112;
-    v41 = v11;
+    v41 = homeCopy;
     v42 = 2112;
-    v43 = v10;
+    v43 = objectCopy;
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "%{public}@Removing access code participant from home: %@, participantObject: %@", &v38, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
-  v19 = [v10 accessCode];
-  v20 = [v19 accessCodeValue];
-  v21 = [v20 stringValue];
-  v22 = [v13 removeSimpleLabelAccessCode:v21 fromHome:v11];
+  outgoingInvitation2 = [objectCopy accessCode];
+  accessCodeValue = [outgoingInvitation2 accessCodeValue];
+  stringValue = [accessCodeValue stringValue];
+  v22 = [contextCopy removeSimpleLabelAccessCode:stringValue fromHome:homeCopy];
 
 LABEL_11:
 
   return v22;
 }
 
-+ (id)sharedResourceForHome:(id)a3 context:(id)a4
++ (id)sharedResourceForHome:(id)home context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  contextCopy = context;
   v8 = objc_autoreleasePoolPush();
-  v9 = a1;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -485,30 +485,30 @@ LABEL_11:
     *buf = 138543618;
     v25 = v11;
     v26 = 2112;
-    v27 = v6;
+    v27 = homeCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "%{public}@Creating shared resource for home: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v6 currentUser];
-  v13 = [v6 homeAccessControlForUser:v12];
+  currentUser = [homeCopy currentUser];
+  v13 = [homeCopy homeAccessControlForUser:currentUser];
 
   if ([v13 isOwner] & 1) != 0 || (objc_msgSend(v13, "isAdministrator"))
   {
-    v14 = [v7 simpleLabelAccessCodesForHome:v6];
+    v14 = [contextCopy simpleLabelAccessCodesForHome:homeCopy];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_293C;
     v21[3] = &unk_C378;
-    v22 = v6;
-    v23 = v9;
+    v22 = homeCopy;
+    v23 = selfCopy;
     v15 = [v14 flatMap:v21];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v9;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -516,7 +516,7 @@ LABEL_11:
       *buf = 138543618;
       v25 = v19;
       v26 = 2112;
-      v27 = v6;
+      v27 = homeCopy;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "%{public}@We do not have admin privileges, so not creating a shared resource for home: %@", buf, 0x16u);
     }
 
@@ -527,13 +527,13 @@ LABEL_11:
   return v15;
 }
 
-+ (BOOL)canRemoveParticipantObject:(id)a3 fromHome:(id)a4 accessCodes:(id)a5
++ (BOOL)canRemoveParticipantObject:(id)object fromHome:(id)home accessCodes:(id)codes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 currentUser];
-  v12 = [v9 homeAccessControlForUser:v11];
+  objectCopy = object;
+  homeCopy = home;
+  codesCopy = codes;
+  currentUser = [homeCopy currentUser];
+  v12 = [homeCopy homeAccessControlForUser:currentUser];
 
   if ([v12 isOwner])
   {
@@ -547,27 +547,27 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [v8 accessCode];
+  accessCode = [objectCopy accessCode];
 
-  if (!v13)
+  if (!accessCode)
   {
-    v14 = [v8 outgoingInvitation];
+    outgoingInvitation = [objectCopy outgoingInvitation];
 
-    if (!v14)
+    if (!outgoingInvitation)
     {
-      v16 = [v8 user];
+      user = [objectCopy user];
 
-      if (v16)
+      if (user)
       {
-        v17 = [v8 user];
-        v18 = [v9 homeAccessControlForUser:v17];
+        user2 = [objectCopy user];
+        v18 = [homeCopy homeAccessControlForUser:user2];
 
         v15 = [v18 isOwner] ^ 1;
         goto LABEL_12;
       }
 
       v19 = objc_autoreleasePoolPush();
-      v20 = a1;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -575,7 +575,7 @@ LABEL_11:
         v24 = 138543618;
         v25 = v22;
         v26 = 2112;
-        v27 = v8;
+        v27 = objectCopy;
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "%{public}@Participant object has all nil properties: %@", &v24, 0x16u);
       }
 
@@ -591,16 +591,16 @@ LABEL_12:
   return v15;
 }
 
-+ (id)participantObjectForParticipant:(id)a3 inHome:(id)a4 accessCodes:(id)a5
++ (id)participantObjectForParticipant:(id)participant inHome:(id)home accessCodes:(id)codes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identity];
+  participantCopy = participant;
+  homeCopy = home;
+  codesCopy = codes;
+  identity = [participantCopy identity];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = identity;
   }
 
   else
@@ -613,7 +613,7 @@ LABEL_12:
   if (!v13)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -621,7 +621,7 @@ LABEL_12:
       *buf = 138543618;
       v35 = v21;
       v36 = 2112;
-      v37 = v8;
+      v37 = participantCopy;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "%{public}@Invalid identity on participant: %@", buf, 0x16u);
     }
 
@@ -631,20 +631,20 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  v14 = [v13 userID];
+  userID = [v13 userID];
 
-  if (!v14)
+  if (!userID)
   {
-    v22 = [v13 pinCodeLabel];
+    pinCodeLabel = [v13 pinCodeLabel];
 
-    if (v22)
+    if (pinCodeLabel)
     {
       v27 = _NSConcreteStackBlock;
       v28 = 3221225472;
       v29 = sub_3470;
       v30 = &unk_C2D8;
       v31 = v13;
-      v23 = [v10 na_firstObjectPassingTest:&v27];
+      v23 = [codesCopy na_firstObjectPassingTest:&v27];
       if (v23)
       {
         v17 = [HMDSParticipantObject homeParticipantObjectWithAccessCode:v23, v27, v28, v29, v30];
@@ -661,8 +661,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v15 = [v13 userID];
-  v16 = [a1 outgoingInvitationForUserID:v15 inHome:v9];
+  userID2 = [v13 userID];
+  v16 = [self outgoingInvitationForUserID:userID2 inHome:homeCopy];
 
   if (v16)
   {
@@ -671,13 +671,13 @@ LABEL_11:
 
   else
   {
-    v24 = [v9 users];
+    users = [homeCopy users];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_340C;
     v32[3] = &unk_C2B0;
     v33 = v13;
-    v25 = [v24 na_firstObjectPassingTest:v32];
+    v25 = [users na_firstObjectPassingTest:v32];
 
     if (v25)
     {
@@ -695,52 +695,52 @@ LABEL_22:
   return v17;
 }
 
-+ (id)outgoingInvitationForUserID:(id)a3 inHome:(id)a4
++ (id)outgoingInvitationForUserID:(id)d inHome:(id)home
 {
-  v5 = a3;
-  v6 = [a4 outgoingInvitations];
+  dCopy = d;
+  outgoingInvitations = [home outgoingInvitations];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_35B4;
   v10[3] = &unk_C288;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = dCopy;
+  v7 = dCopy;
+  v8 = [outgoingInvitations na_firstObjectPassingTest:v10];
 
   return v8;
 }
 
-+ (id)participantForOutgoingInvitation:(id)a3 inHome:(id)a4
++ (id)participantForOutgoingInvitation:(id)invitation inHome:(id)home
 {
-  v6 = a4;
-  v7 = [a3 invitee];
-  v8 = [a1 identityForUser:v7];
+  homeCopy = home;
+  invitee = [invitation invitee];
+  v8 = [self identityForUser:invitee];
 
   v9 = [HMDSParticipant alloc];
-  v10 = [v6 uniqueIdentifier];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v11 = [(HMDSParticipant *)v9 initWithRole:2 permission:1 identity:v8 homeUniqueIdentifier:v10];
+  v11 = [(HMDSParticipant *)v9 initWithRole:2 permission:1 identity:v8 homeUniqueIdentifier:uniqueIdentifier];
 
   return v11;
 }
 
-+ (id)participantForAccessCode:(id)a3 inHome:(id)a4
++ (id)participantForAccessCode:(id)code inHome:(id)home
 {
-  v6 = a4;
-  v7 = [a1 identityForAccessCode:a3];
+  homeCopy = home;
+  v7 = [self identityForAccessCode:code];
   v8 = [HMDSParticipant alloc];
-  v9 = [v6 uniqueIdentifier];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v10 = [(HMDSParticipant *)v8 initWithRole:2 permission:1 identity:v7 homeUniqueIdentifier:v9];
+  v10 = [(HMDSParticipant *)v8 initWithRole:2 permission:1 identity:v7 homeUniqueIdentifier:uniqueIdentifier];
 
   return v10;
 }
 
-+ (id)participantForUser:(id)a3 inHome:(id)a4
++ (id)participantForUser:(id)user inHome:(id)home
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 homeAccessControlForUser:v7];
+  homeCopy = home;
+  userCopy = user;
+  v8 = [homeCopy homeAccessControlForUser:userCopy];
   v9 = 1;
   if ([v8 isOwner])
   {
@@ -757,85 +757,85 @@ LABEL_22:
     v9 = 2;
   }
 
-  v11 = [a1 identityForUser:v7];
+  v11 = [self identityForUser:userCopy];
 
   v12 = [HMDSParticipant alloc];
-  v13 = [v6 uniqueIdentifier];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v14 = [(HMDSParticipant *)v12 initWithRole:v10 permission:v9 identity:v11 homeUniqueIdentifier:v13];
+  v14 = [(HMDSParticipant *)v12 initWithRole:v10 permission:v9 identity:v11 homeUniqueIdentifier:uniqueIdentifier];
 
   return v14;
 }
 
-+ (id)identityForAccessCode:(id)a3
++ (id)identityForAccessCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_opt_new();
-  v5 = [v3 userInformation];
-  v6 = [v5 simpleLabel];
-  [v4 setGivenName:v6];
+  userInformation = [codeCopy userInformation];
+  simpleLabel = [userInformation simpleLabel];
+  [v4 setGivenName:simpleLabel];
 
   v7 = [HMDSParticipantIdentity alloc];
-  v8 = [v3 userInformation];
+  userInformation2 = [codeCopy userInformation];
 
-  v9 = [v8 simpleLabel];
-  v10 = [(HMDSParticipantIdentity *)v7 initWithUnifiedContactIdentifier:0 nameComponents:v4 emailAddress:0 phoneNumber:0 userID:0 pinCodeLabel:v9];
+  simpleLabel2 = [userInformation2 simpleLabel];
+  v10 = [(HMDSParticipantIdentity *)v7 initWithUnifiedContactIdentifier:0 nameComponents:v4 emailAddress:0 phoneNumber:0 userID:0 pinCodeLabel:simpleLabel2];
 
   return v10;
 }
 
-+ (id)identityForUser:(id)a3
++ (id)identityForUser:(id)user
 {
-  v3 = a3;
-  v4 = [v3 userID];
-  if ([v4 hmds_isEmail])
+  userCopy = user;
+  userID = [userCopy userID];
+  if ([userID hmds_isEmail])
   {
-    v5 = [v3 userID];
+    userID2 = [userCopy userID];
   }
 
   else
   {
-    v5 = 0;
+    userID2 = 0;
   }
 
-  v6 = [v3 userID];
-  if ([v6 hmds_isPhoneNumber])
+  userID3 = [userCopy userID];
+  if ([userID3 hmds_isPhoneNumber])
   {
-    v7 = [v3 userID];
+    userID4 = [userCopy userID];
   }
 
   else
   {
-    v7 = 0;
+    userID4 = 0;
   }
 
-  v8 = [v3 userID];
-  if (v8 && (v8, v5 | v7))
+  userID5 = [userCopy userID];
+  if (userID5 && (userID5, userID2 | userID4))
   {
     v14 = [HMDSParticipantIdentity alloc];
-    v9 = [v3 userID];
-    v13 = [(HMDSParticipantIdentity *)v14 initWithUnifiedContactIdentifier:0 nameComponents:0 emailAddress:v5 phoneNumber:v7 userID:v9 pinCodeLabel:0];
+    userID6 = [userCopy userID];
+    v13 = [(HMDSParticipantIdentity *)v14 initWithUnifiedContactIdentifier:0 nameComponents:0 emailAddress:userID2 phoneNumber:userID4 userID:userID6 pinCodeLabel:0];
   }
 
   else
   {
-    v9 = objc_opt_new();
-    v10 = [v3 name];
-    [v9 setGivenName:v10];
+    userID6 = objc_opt_new();
+    name = [userCopy name];
+    [userID6 setGivenName:name];
 
     v11 = [HMDSParticipantIdentity alloc];
-    v12 = [v3 userID];
-    v13 = [(HMDSParticipantIdentity *)v11 initWithUnifiedContactIdentifier:0 nameComponents:v9 emailAddress:0 phoneNumber:0 userID:v12 pinCodeLabel:0];
+    userID7 = [userCopy userID];
+    v13 = [(HMDSParticipantIdentity *)v11 initWithUnifiedContactIdentifier:0 nameComponents:userID6 emailAddress:0 phoneNumber:0 userID:userID7 pinCodeLabel:0];
   }
 
   return v13;
 }
 
-+ (id)_combineAllFuturesWithNoResult:(id)a3
++ (id)_combineAllFuturesWithNoResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[NAScheduler immediateScheduler];
-  v5 = [NAFuture combineAllFutures:v3 scheduler:v4];
+  v5 = [NAFuture combineAllFutures:resultCopy scheduler:v4];
 
   v6 = [v5 flatMap:&stru_C260];
 

@@ -1,16 +1,16 @@
 @interface EMSearchableIndexTopHitsQuery
 + (OS_os_log)log;
-- (EMSearchableIndexTopHitsQuery)initWithSearchString:(id)a3 filterQueries:(id)a4 bundleID:(id)a5 keyboardLanguage:(id)a6 updatedSuggestion:(id)a7 generateSuggestions:(BOOL)a8 logDescription:(id)a9 resultLimit:(unint64_t)a10 suggestionLimit:(unint64_t)a11 customFlags:(id)a12 feedbackQueryID:(int64_t)a13;
+- (EMSearchableIndexTopHitsQuery)initWithSearchString:(id)string filterQueries:(id)queries bundleID:(id)d keyboardLanguage:(id)language updatedSuggestion:(id)suggestion generateSuggestions:(BOOL)suggestions logDescription:(id)description resultLimit:(unint64_t)self0 suggestionLimit:(unint64_t)self1 customFlags:(id)self2 feedbackQueryID:(int64_t)self3;
 - (id)topHitsQueryInstantAnswersResult;
 - (id)topHitsQueryResult;
 - (id)topHitsQuerySuggestionResult;
 - (void)_cancel;
-- (void)_configureTopHitsSearchQuery:(id)a3;
-- (void)_searchDidCompleteWithError:(id)a3;
-- (void)_searchFoundInstantAnswers:(id)a3;
-- (void)_searchFoundItems:(id)a3;
-- (void)_searchFoundSuggestions:(id)a3;
-- (void)_searchHasAttributedQuery:(id)a3;
+- (void)_configureTopHitsSearchQuery:(id)query;
+- (void)_searchDidCompleteWithError:(id)error;
+- (void)_searchFoundInstantAnswers:(id)answers;
+- (void)_searchFoundItems:(id)items;
+- (void)_searchFoundSuggestions:(id)suggestions;
+- (void)_searchHasAttributedQuery:(id)query;
 - (void)cancel;
 - (void)dealloc;
 - (void)start;
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __36__EMSearchableIndexTopHitsQuery_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_80 != -1)
   {
     dispatch_once(&log_onceToken_80, block);
@@ -43,37 +43,37 @@ void __36__EMSearchableIndexTopHitsQuery_log__block_invoke(uint64_t a1)
   log_log_79 = v1;
 }
 
-- (EMSearchableIndexTopHitsQuery)initWithSearchString:(id)a3 filterQueries:(id)a4 bundleID:(id)a5 keyboardLanguage:(id)a6 updatedSuggestion:(id)a7 generateSuggestions:(BOOL)a8 logDescription:(id)a9 resultLimit:(unint64_t)a10 suggestionLimit:(unint64_t)a11 customFlags:(id)a12 feedbackQueryID:(int64_t)a13
+- (EMSearchableIndexTopHitsQuery)initWithSearchString:(id)string filterQueries:(id)queries bundleID:(id)d keyboardLanguage:(id)language updatedSuggestion:(id)suggestion generateSuggestions:(BOOL)suggestions logDescription:(id)description resultLimit:(unint64_t)self0 suggestionLimit:(unint64_t)self1 customFlags:(id)self2 feedbackQueryID:(int64_t)self3
 {
   v98[10] = *MEMORY[0x1E69E9840];
-  v84 = a3;
-  v19 = a4;
-  v82 = a5;
-  v20 = a6;
-  v85 = a7;
-  v83 = a9;
-  v21 = a12;
+  stringCopy = string;
+  queriesCopy = queries;
+  dCopy = d;
+  languageCopy = language;
+  suggestionCopy = suggestion;
+  descriptionCopy = description;
+  flagsCopy = flags;
   v90.receiver = self;
   v90.super_class = EMSearchableIndexTopHitsQuery;
   v22 = [(EMSearchableIndexTopHitsQuery *)&v90 init];
   if (v22)
   {
-    v23 = [v84 copy];
+    v23 = [stringCopy copy];
     searchString = v22->_searchString;
     v22->_searchString = v23;
 
-    v25 = [v19 copy];
+    v25 = [queriesCopy copy];
     filterQueries = v22->_filterQueries;
     v22->_filterQueries = v25;
 
-    v27 = [v20 copy];
+    v27 = [languageCopy copy];
     keyboardLanguage = v22->_keyboardLanguage;
     v22->_keyboardLanguage = v27;
 
-    v22->_generateSuggestions = a8;
-    v22->_resultLimit = a10;
-    objc_storeStrong(&v22->_bundleID, a5);
-    objc_storeStrong(&v22->_logDescription, a9);
+    v22->_generateSuggestions = suggestions;
+    v22->_resultLimit = limit;
+    objc_storeStrong(&v22->_bundleID, d);
+    objc_storeStrong(&v22->_logDescription, description);
     v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
     foundItems = v22->_foundItems;
     v22->_foundItems = v29;
@@ -128,22 +128,22 @@ void __36__EMSearchableIndexTopHitsQuery_log__block_invoke(uint64_t a1)
     v98[9] = v51;
     v81 = [MEMORY[0x1E695DEC8] arrayWithObjects:v98 count:10];
     v52 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v53 = [(EMSearchableIndexTopHitsQuery *)v22 bundleID];
+    bundleID = [(EMSearchableIndexTopHitsQuery *)v22 bundleID];
 
-    if (v53)
+    if (bundleID)
     {
-      v54 = [(EMSearchableIndexTopHitsQuery *)v22 bundleID];
-      [v52 addObject:v54];
+      bundleID2 = [(EMSearchableIndexTopHitsQuery *)v22 bundleID];
+      [v52 addObject:bundleID2];
     }
 
-    v55 = [MEMORY[0x1E6964EB8] topHitQueryContextWithCurrentSuggestion:v85];
-    [v55 setMaxSuggestionCount:a11];
-    [v55 setMaxItemCount:a10];
-    [v55 setKeyboardLanguage:v20];
+    v55 = [MEMORY[0x1E6964EB8] topHitQueryContextWithCurrentSuggestion:suggestionCopy];
+    [v55 setMaxSuggestionCount:suggestionLimit];
+    [v55 setMaxItemCount:limit];
+    [v55 setKeyboardLanguage:languageCopy];
     [v55 setFetchAttributes:v81];
-    [v55 setFilterQueries:v19];
+    [v55 setFilterQueries:queriesCopy];
     [v55 setBundleIDs:v52];
-    [v55 setFeedbackQueryID:a13];
+    [v55 setFeedbackQueryID:iD];
     v56 = +[EMSearchableIndexTopHitsQuery log];
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
@@ -152,7 +152,7 @@ void __36__EMSearchableIndexTopHitsQuery_log__block_invoke(uint64_t a1)
     }
 
     [v55 setEnableInstantAnswers:1];
-    if (v21 && [v21 count])
+    if (flagsCopy && [flagsCopy count])
     {
       v57 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v88[0] = MEMORY[0x1E69E9820];
@@ -161,7 +161,7 @@ void __36__EMSearchableIndexTopHitsQuery_log__block_invoke(uint64_t a1)
       v88[3] = &unk_1E826F9C8;
       v58 = v57;
       v89 = v58;
-      [v21 enumerateKeysAndObjectsUsingBlock:v88];
+      [flagsCopy enumerateKeysAndObjectsUsingBlock:v88];
       v59 = [v58 copy];
       [v55 setCustomFieldSpecifications:v59];
 
@@ -188,9 +188,9 @@ void __36__EMSearchableIndexTopHitsQuery_log__block_invoke(uint64_t a1)
     topHitSearchQuery = v22->_topHitSearchQuery;
     v22->_topHitSearchQuery = v65;
 
-    v67 = [(CSTopHitQuery *)v22->_topHitSearchQuery queryContext];
-    v68 = [(EMSearchableIndexTopHitsQuery *)v22 bundleID];
-    [v67 setClientBundleID:v68];
+    queryContext = [(CSTopHitQuery *)v22->_topHitSearchQuery queryContext];
+    bundleID3 = [(EMSearchableIndexTopHitsQuery *)v22 bundleID];
+    [queryContext setClientBundleID:bundleID3];
 
     v69 = +[EMSearchableIndexTopHitsQuery log];
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
@@ -201,18 +201,18 @@ void __36__EMSearchableIndexTopHitsQuery_log__block_invoke(uint64_t a1)
       v93 = 2112;
       v94 = v55;
       v95 = 2112;
-      v96 = v85;
+      v96 = suggestionCopy;
       _os_log_impl(&dword_1C6655000, v69, OS_LOG_TYPE_DEFAULT, "Setting top hits query with searchString: %@ and csContext: %@ with suggestion: %@", buf, 0x20u);
     }
 
     [(EMSearchableIndexTopHitsQuery *)v22 _configureTopHitsSearchQuery:v22->_topHitSearchQuery];
     v71 = MEMORY[0x1E696AEC0];
-    v72 = [(EMSearchableIndexTopHitsQuery *)v22 logDescription];
-    v73 = v72;
+    logDescription = [(EMSearchableIndexTopHitsQuery *)v22 logDescription];
+    v73 = logDescription;
     v74 = &stru_1F45FD218;
-    if (v72)
+    if (logDescription)
     {
-      v74 = v72;
+      v74 = logDescription;
     }
 
     v75 = [v71 stringWithFormat:@"[%p %@]", v22, v74];
@@ -261,22 +261,22 @@ void __203__EMSearchableIndexTopHitsQuery_initWithSearchString_filterQueries_bun
   [(EMSearchableIndexTopHitsQuery *)&v3 dealloc];
 }
 
-- (void)_configureTopHitsSearchQuery:(id)a3
+- (void)_configureTopHitsSearchQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_invoke;
   v13[3] = &unk_1E826F9F0;
   objc_copyWeak(&v14, &location);
-  [v4 setAttributedQueryHandler:v13];
+  [queryCopy setAttributedQueryHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_invoke_2;
   v11[3] = &unk_1E826F850;
   objc_copyWeak(&v12, &location);
-  [v4 setFoundItemsHandler:v11];
+  [queryCopy setFoundItemsHandler:v11];
   if ([(EMSearchableIndexTopHitsQuery *)self generateSuggestions])
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -284,7 +284,7 @@ void __203__EMSearchableIndexTopHitsQuery_initWithSearchString_filterQueries_bun
     v9[2] = __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_invoke_3;
     v9[3] = &unk_1E826F850;
     objc_copyWeak(&v10, &location);
-    [v4 setFoundSuggestionsHandler:v9];
+    [queryCopy setFoundSuggestionsHandler:v9];
     objc_destroyWeak(&v10);
   }
 
@@ -293,13 +293,13 @@ void __203__EMSearchableIndexTopHitsQuery_initWithSearchString_filterQueries_bun
   v7[2] = __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_invoke_4;
   v7[3] = &unk_1E826F850;
   objc_copyWeak(&v8, &location);
-  [v4 setFoundInstantAnswersHandler:v7];
+  [queryCopy setFoundInstantAnswersHandler:v7];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_invoke_5;
   v5[3] = &unk_1E826F878;
   objc_copyWeak(&v6, &location);
-  [v4 setCompletionHandler:v5];
+  [queryCopy setCompletionHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v12);
@@ -342,152 +342,152 @@ void __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_in
   [WeakRetained _searchDidCompleteWithError:v3];
 }
 
-- (void)_searchHasAttributedQuery:(id)a3
+- (void)_searchHasAttributedQuery:(id)query
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EMSearchableIndexTopHitsQuery *)self embeddingHandler];
-  if (v5)
+  queryCopy = query;
+  embeddingHandler = [(EMSearchableIndexTopHitsQuery *)self embeddingHandler];
+  if (embeddingHandler)
   {
-    v6 = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
-    v7 = [v6 queryContext];
-    v8 = [v7 queryEmbedding];
+    topHitSearchQuery = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
+    queryContext = [topHitSearchQuery queryContext];
+    queryEmbedding = [queryContext queryEmbedding];
 
     v9 = +[EMSearchableIndexTopHitsQuery log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
+      logPrefix = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
       v12 = 138543874;
-      v13 = v10;
+      v13 = logPrefix;
       v14 = 1024;
-      v15 = v8 != 0;
+      v15 = queryEmbedding != 0;
       v16 = 1024;
-      v17 = [v4 isUnsafeQuery];
+      isUnsafeQuery = [queryCopy isUnsafeQuery];
       _os_log_impl(&dword_1C6655000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ hasQueryEmbedding: %{BOOL}d, isUnsafeQuery: %{BOOL}d", &v12, 0x18u);
     }
 
-    (v5)[2](v5, v8 != 0);
+    (embeddingHandler)[2](embeddingHandler, queryEmbedding != 0);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_searchFoundItems:(id)a3
+- (void)_searchFoundItems:(id)items
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v5 lock];
+  itemsCopy = items;
+  lock = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock lock];
 
-  v6 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
-  v7 = [v6 future];
-  v8 = [v7 isFinished];
+  spotlightTopHitsQueryResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
+  future = [spotlightTopHitsQueryResultPromise future];
+  isFinished = [future isFinished];
 
   v9 = +[EMSearchableIndexTopHitsQuery log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
+    logPrefix = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
     v16 = 138543874;
-    v17 = v10;
+    v17 = logPrefix;
     v18 = 2112;
-    v19 = v4;
+    v19 = itemsCopy;
     v20 = 1024;
-    v21 = v8;
+    v21 = isFinished;
     _os_log_impl(&dword_1C6655000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ _searchFoundItems:%@ isFinished:%d", &v16, 0x1Cu);
   }
 
-  if ((v8 & 1) == 0)
+  if ((isFinished & 1) == 0)
   {
-    v11 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
-    [v11 becomeCurrentWithPendingUnitCount:1];
+    internalProgress = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
+    [internalProgress becomeCurrentWithPendingUnitCount:1];
 
-    v12 = [(EMSearchableIndexTopHitsQuery *)self foundItems];
-    [v12 addObjectsFromArray:v4];
+    foundItems = [(EMSearchableIndexTopHitsQuery *)self foundItems];
+    [foundItems addObjectsFromArray:itemsCopy];
 
-    v13 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
-    [v13 resignCurrent];
+    internalProgress2 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
+    [internalProgress2 resignCurrent];
   }
 
-  v14 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v14 unlock];
+  lock2 = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock2 unlock];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_searchFoundSuggestions:(id)a3
+- (void)_searchFoundSuggestions:(id)suggestions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v5 lock];
+  suggestionsCopy = suggestions;
+  lock = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock lock];
 
-  v6 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
-  v7 = [v6 future];
-  v8 = [v7 isFinished];
+  spotlightTopHitsQuerySuggestionsResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
+  future = [spotlightTopHitsQuerySuggestionsResultPromise future];
+  isFinished = [future isFinished];
 
   v9 = +[EMSearchableIndexTopHitsQuery log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
-    v11 = [EMCSLoggingAdditions publicDescriptionForSuggestionArray:v4];
+    logPrefix = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
+    v11 = [EMCSLoggingAdditions publicDescriptionForSuggestionArray:suggestionsCopy];
     v17 = 138543874;
-    v18 = v10;
+    v18 = logPrefix;
     v19 = 2112;
     v20 = v11;
     v21 = 1024;
-    v22 = v8;
+    v22 = isFinished;
     _os_log_impl(&dword_1C6655000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ _searchFoundSuggestions:%@ isFinished:%d", &v17, 0x1Cu);
   }
 
-  if ((v8 & 1) == 0)
+  if ((isFinished & 1) == 0)
   {
-    v12 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
-    [v12 becomeCurrentWithPendingUnitCount:1];
+    internalProgress = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
+    [internalProgress becomeCurrentWithPendingUnitCount:1];
 
-    v13 = [(EMSearchableIndexTopHitsQuery *)self foundSuggestions];
-    [v13 addObjectsFromArray:v4];
+    foundSuggestions = [(EMSearchableIndexTopHitsQuery *)self foundSuggestions];
+    [foundSuggestions addObjectsFromArray:suggestionsCopy];
 
-    v14 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
-    [v14 resignCurrent];
+    internalProgress2 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
+    [internalProgress2 resignCurrent];
   }
 
-  v15 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v15 unlock];
+  lock2 = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock2 unlock];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_searchFoundInstantAnswers:(id)a3
+- (void)_searchFoundInstantAnswers:(id)answers
 {
   v43 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v4 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v4 lock];
+  answersCopy = answers;
+  lock = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock lock];
 
-  v5 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
-  v6 = [v5 future];
-  v7 = [v6 isFinished];
+  spotlightTopHitsQueryInstantAnswersResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
+  future = [spotlightTopHitsQueryInstantAnswersResultPromise future];
+  isFinished = [future isFinished];
 
   v8 = +[EMSearchableIndexTopHitsQuery log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
-    v10 = [v29 count];
+    logPrefix = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
+    v10 = [answersCopy count];
     *buf = 138544130;
-    v36 = v9;
+    v36 = logPrefix;
     v37 = 2112;
-    v38 = v29;
+    v38 = answersCopy;
     v39 = 1024;
-    v40 = v7;
+    v40 = isFinished;
     v41 = 2048;
     v42 = v10;
     _os_log_impl(&dword_1C6655000, v8, OS_LOG_TYPE_DEFAULT, "[instant answers] %{public}@ _searchFoundInstantAnswers:%@ isFinished:%d with instant answers count: %ld", buf, 0x26u);
   }
 
-  if ((v7 & 1) == 0)
+  if ((isFinished & 1) == 0)
   {
-    v11 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
-    [v11 becomeCurrentWithPendingUnitCount:1];
+    internalProgress = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
+    [internalProgress becomeCurrentWithPendingUnitCount:1];
 
     v12 = +[EMSearchableIndexTopHitsQuery log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -501,7 +501,7 @@ void __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_in
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v13 = v29;
+    v13 = answersCopy;
     v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v14)
     {
@@ -516,12 +516,12 @@ void __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_in
           }
 
           v17 = *(*(&v30 + 1) + 8 * i);
-          v18 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
-          if (![v18 count])
+          foundInstantAnswersSuggestions = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
+          if (![foundInstantAnswersSuggestions count])
           {
             v19 = MEMORY[0x1E696AD98];
-            v20 = [v17 instantAnswer];
-            v21 = [v19 numberWithInteger:{objc_msgSend(v20, "instantAnswersKind")}];
+            instantAnswer = [v17 instantAnswer];
+            v21 = [v19 numberWithInteger:{objc_msgSend(instantAnswer, "instantAnswersKind")}];
             LODWORD(v19) = [&unk_1F461CE88 containsObject:v21];
 
             if (!v19)
@@ -529,8 +529,8 @@ void __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_in
               continue;
             }
 
-            v18 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
-            [v18 addObject:v17];
+            foundInstantAnswersSuggestions = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
+            [foundInstantAnswersSuggestions addObject:v17];
           }
         }
 
@@ -543,78 +543,78 @@ void __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_in
     v22 = +[EMSearchableIndexTopHitsQuery log];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
-      v24 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
-      v25 = [v24 count];
+      foundInstantAnswersSuggestions2 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
+      foundInstantAnswersSuggestions3 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
+      v25 = [foundInstantAnswersSuggestions3 count];
       *buf = 138412546;
-      v36 = v23;
+      v36 = foundInstantAnswersSuggestions2;
       v37 = 2048;
       v38 = v25;
       _os_log_impl(&dword_1C6655000, v22, OS_LOG_TYPE_DEFAULT, "[instant answers] Final found instant answers are:%@ with count:%lu", buf, 0x16u);
     }
 
-    v26 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
-    [v26 resignCurrent];
+    internalProgress2 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
+    [internalProgress2 resignCurrent];
   }
 
-  v27 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v27 unlock];
+  lock2 = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock2 unlock];
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_searchDidCompleteWithError:(id)a3
+- (void)_searchDidCompleteWithError:(id)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = +[EMSearchableIndexTopHitsQuery log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
-    v7 = [v4 ef_publicDescription];
+    logPrefix = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
+    ef_publicDescription = [errorCopy ef_publicDescription];
     *buf = 138543618;
-    v37 = v6;
+    v37 = logPrefix;
     v38 = 2114;
-    v39 = v7;
+    v39 = ef_publicDescription;
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ _searchDidComplete error:%{public}@", buf, 0x16u);
   }
 
-  v8 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v8 lock];
+  lock = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock lock];
 
   v9 = [EMSearchableIndexTopHitsQueryResult alloc];
-  v10 = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
-  v11 = [(EMSearchableIndexTopHitsQuery *)self foundItems];
-  v12 = [(EMSearchableIndexTopHitsQuery *)self foundMatchingHintsByPersistentID];
-  v35 = [(EMSearchableIndexTopHitsQueryResult *)v9 initWithTopHitSearchQuery:v10 foundItems:v11 foundMatchingHintsByPersistentID:v12];
+  topHitSearchQuery = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
+  foundItems = [(EMSearchableIndexTopHitsQuery *)self foundItems];
+  foundMatchingHintsByPersistentID = [(EMSearchableIndexTopHitsQuery *)self foundMatchingHintsByPersistentID];
+  v35 = [(EMSearchableIndexTopHitsQueryResult *)v9 initWithTopHitSearchQuery:topHitSearchQuery foundItems:foundItems foundMatchingHintsByPersistentID:foundMatchingHintsByPersistentID];
 
   [(EMSearchableIndexTopHitsQuery *)self setTopHitSearchQuery:0];
   v13 = [EMSearchableIndexSuggestionsQueryResult alloc];
-  v14 = [(EMSearchableIndexTopHitsQuery *)self foundSuggestions];
-  v15 = [(EMSearchableIndexSuggestionsQueryResult *)v13 initWithSuggestions:v14];
+  foundSuggestions = [(EMSearchableIndexTopHitsQuery *)self foundSuggestions];
+  v15 = [(EMSearchableIndexSuggestionsQueryResult *)v13 initWithSuggestions:foundSuggestions];
 
   v16 = [EMSearchableIndexInstantAnswersQueryResult alloc];
-  v17 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
-  v18 = [(EMSearchableIndexInstantAnswersQueryResult *)v16 initWithInstantAnswersSuggestions:v17];
+  foundInstantAnswersSuggestions = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
+  v18 = [(EMSearchableIndexInstantAnswersQueryResult *)v16 initWithInstantAnswersSuggestions:foundInstantAnswersSuggestions];
 
-  v19 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v19 unlock];
+  lock2 = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock2 unlock];
 
-  v20 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
-  v21 = [v20 completedUnitCount];
-  v22 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
-  [v22 setTotalUnitCount:v21];
+  internalProgress = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
+  completedUnitCount = [internalProgress completedUnitCount];
+  internalProgress2 = [(EMSearchableIndexTopHitsQuery *)self internalProgress];
+  [internalProgress2 setTotalUnitCount:completedUnitCount];
 
-  if (v4)
+  if (errorCopy)
   {
-    v23 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
-    [v23 finishWithError:v4];
+    spotlightTopHitsQuerySuggestionsResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
+    [spotlightTopHitsQuerySuggestionsResultPromise finishWithError:errorCopy];
 
-    v24 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
-    [v24 finishWithError:v4];
+    spotlightTopHitsQueryResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
+    [spotlightTopHitsQueryResultPromise finishWithError:errorCopy];
 
-    v25 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
-    [v25 finishWithError:v4];
+    spotlightTopHitsQueryInstantAnswersResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
+    [spotlightTopHitsQueryInstantAnswersResultPromise finishWithError:errorCopy];
   }
 
   else
@@ -622,30 +622,30 @@ void __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_in
     v26 = +[EMSearchableIndexTopHitsQuery log];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
-      v28 = [(EMSearchableIndexTopHitsQuery *)self foundItems];
-      v29 = [(EMSearchableIndexTopHitsQuery *)self foundSuggestions];
-      v30 = [EMCSLoggingAdditions publicDescriptionForSuggestionArray:v29];
-      v31 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
+      logPrefix2 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
+      foundItems2 = [(EMSearchableIndexTopHitsQuery *)self foundItems];
+      foundSuggestions2 = [(EMSearchableIndexTopHitsQuery *)self foundSuggestions];
+      v30 = [EMCSLoggingAdditions publicDescriptionForSuggestionArray:foundSuggestions2];
+      foundInstantAnswersSuggestions2 = [(EMSearchableIndexTopHitsQuery *)self foundInstantAnswersSuggestions];
       *buf = 138544130;
-      v37 = v27;
+      v37 = logPrefix2;
       v38 = 2112;
-      v39 = v28;
+      v39 = foundItems2;
       v40 = 2112;
       v41 = v30;
       v42 = 2112;
-      v43 = v31;
+      v43 = foundInstantAnswersSuggestions2;
       _os_log_impl(&dword_1C6655000, v26, OS_LOG_TYPE_DEFAULT, "[instant answers] %{public}@ _searchDidComplete foundLibraryItems:%@ foundSuggestionItems:%@ foundInstantAnswersItems: %@", buf, 0x2Au);
     }
 
-    v32 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
-    [v32 finishWithResult:v15];
+    spotlightTopHitsQuerySuggestionsResultPromise2 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
+    [spotlightTopHitsQuerySuggestionsResultPromise2 finishWithResult:v15];
 
-    v33 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
-    [v33 finishWithResult:v35];
+    spotlightTopHitsQueryResultPromise2 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
+    [spotlightTopHitsQueryResultPromise2 finishWithResult:v35];
 
-    v25 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
-    [v25 finishWithResult:v18];
+    spotlightTopHitsQueryInstantAnswersResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
+    [spotlightTopHitsQueryInstantAnswersResultPromise finishWithResult:v18];
   }
 
   v34 = *MEMORY[0x1E69E9840];
@@ -653,84 +653,84 @@ void __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_in
 
 - (id)topHitsQueryResult
 {
-  v2 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
-  v3 = [v2 future];
+  spotlightTopHitsQueryResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
+  future = [spotlightTopHitsQueryResultPromise future];
 
-  return v3;
+  return future;
 }
 
 - (id)topHitsQuerySuggestionResult
 {
-  v2 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
-  v3 = [v2 future];
+  spotlightTopHitsQuerySuggestionsResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
+  future = [spotlightTopHitsQuerySuggestionsResultPromise future];
 
-  return v3;
+  return future;
 }
 
 - (id)topHitsQueryInstantAnswersResult
 {
-  v2 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
-  v3 = [v2 future];
+  spotlightTopHitsQueryInstantAnswersResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
+  future = [spotlightTopHitsQueryInstantAnswersResultPromise future];
 
-  return v3;
+  return future;
 }
 
 - (void)start
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v3 lock];
+  lock = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock lock];
 
   v4 = +[EMSearchableIndexTopHitsQuery log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
-    v6 = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
+    logPrefix = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
+    topHitSearchQuery = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
     v7 = MEMORY[0x1E699B858];
-    v8 = [(EMSearchableIndexTopHitsQuery *)self searchString];
-    v9 = [v7 partiallyRedactedStringForString:v8];
-    v10 = [(EMSearchableIndexTopHitsQuery *)self filterQueries];
+    searchString = [(EMSearchableIndexTopHitsQuery *)self searchString];
+    v9 = [v7 partiallyRedactedStringForString:searchString];
+    filterQueries = [(EMSearchableIndexTopHitsQuery *)self filterQueries];
     v14 = 138544130;
-    v15 = v5;
+    v15 = logPrefix;
     v16 = 2112;
-    v17 = v6;
+    v17 = topHitSearchQuery;
     v18 = 2112;
     v19 = v9;
     v20 = 2112;
-    v21 = v10;
+    v21 = filterQueries;
     _os_log_impl(&dword_1C6655000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ starting query:%@ searchString:%@ filter:%@", &v14, 0x2Au);
   }
 
-  v11 = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
-  [v11 start];
+  topHitSearchQuery2 = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
+  [topHitSearchQuery2 start];
 
-  v12 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v12 unlock];
+  lock2 = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock2 unlock];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
 - (void)cancel
 {
-  v2 = [(EMSearchableIndexTopHitsQuery *)self progress];
-  [v2 cancel];
+  progress = [(EMSearchableIndexTopHitsQuery *)self progress];
+  [progress cancel];
 }
 
 - (void)_cancel
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v3 lock];
+  lock = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock lock];
 
-  v4 = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
+  topHitSearchQuery = [(EMSearchableIndexTopHitsQuery *)self topHitSearchQuery];
   v5 = +[EMSearchableIndexTopHitsQuery log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
+    logPrefix = [(EMSearchableIndexTopHitsQuery *)self logPrefix];
     v16 = 138543618;
-    v17 = v6;
+    v17 = logPrefix;
     v18 = 2112;
-    v19 = v4;
+    v19 = topHitSearchQuery;
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ cancelling query:%@", &v16, 0x16u);
   }
 
@@ -738,24 +738,24 @@ void __62__EMSearchableIndexTopHitsQuery__configureTopHitsSearchQuery___block_in
   [(CSTopHitQuery *)self->_topHitSearchQuery setFoundItemHandler:0];
   [(CSTopHitQuery *)self->_topHitSearchQuery setFoundSuggestionsHandler:0];
   [(CSTopHitQuery *)self->_topHitSearchQuery setFoundInstantAnswersHandler:0];
-  [v4 cancel];
+  [topHitSearchQuery cancel];
   topHitSearchQuery = self->_topHitSearchQuery;
   self->_topHitSearchQuery = 0;
 
-  v8 = [(EMSearchableIndexTopHitsQuery *)self lock];
-  [v8 unlock];
+  lock2 = [(EMSearchableIndexTopHitsQuery *)self lock];
+  [lock2 unlock];
 
-  v9 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
-  v10 = [v9 future];
-  [v10 cancel];
+  spotlightTopHitsQueryResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryResultPromise];
+  future = [spotlightTopHitsQueryResultPromise future];
+  [future cancel];
 
-  v11 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
-  v12 = [v11 future];
-  [v12 cancel];
+  spotlightTopHitsQuerySuggestionsResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQuerySuggestionsResultPromise];
+  future2 = [spotlightTopHitsQuerySuggestionsResultPromise future];
+  [future2 cancel];
 
-  v13 = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
-  v14 = [v13 future];
-  [v14 cancel];
+  spotlightTopHitsQueryInstantAnswersResultPromise = [(EMSearchableIndexTopHitsQuery *)self spotlightTopHitsQueryInstantAnswersResultPromise];
+  future3 = [spotlightTopHitsQueryInstantAnswersResultPromise future];
+  [future3 cancel];
 
   v15 = *MEMORY[0x1E69E9840];
 }

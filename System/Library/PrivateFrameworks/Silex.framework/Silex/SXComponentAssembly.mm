@@ -1,47 +1,47 @@
 @interface SXComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F54265E8 factory:&__block_literal_global_5];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F54265E8 factory:&__block_literal_global_5];
   v6 = [v5 withConfiguration:&__block_literal_global_111];
 
-  v7 = [v3 publicContainer];
-  v8 = [v7 registerProtocol:&unk_1F53E9D88 factory:&__block_literal_global_124];
+  publicContainer2 = [registryCopy publicContainer];
+  v8 = [publicContainer2 registerProtocol:&unk_1F53E9D88 factory:&__block_literal_global_124];
 
-  v9 = [v3 publicContainer];
-  v10 = [v9 registerProtocol:&unk_1F53E41E0 factory:&__block_literal_global_139];
+  publicContainer3 = [registryCopy publicContainer];
+  v10 = [publicContainer3 registerProtocol:&unk_1F53E41E0 factory:&__block_literal_global_139];
 
-  v11 = [v3 publicContainer];
-  v12 = [v11 registerProtocol:&unk_1F53BE7F0 factory:&__block_literal_global_150];
+  publicContainer4 = [registryCopy publicContainer];
+  v12 = [publicContainer4 registerProtocol:&unk_1F53BE7F0 factory:&__block_literal_global_150];
   v13 = [v12 withConfiguration:&__block_literal_global_154];
 
-  v14 = [v3 publicContainer];
-  v15 = [v14 registerProtocol:&unk_1F53FCA00 factory:&__block_literal_global_168];
+  publicContainer5 = [registryCopy publicContainer];
+  v15 = [publicContainer5 registerProtocol:&unk_1F53FCA00 factory:&__block_literal_global_168];
 
-  v16 = [v3 publicContainer];
-  v17 = [v16 registerProtocol:&unk_1F53F7820 factory:&__block_literal_global_184];
+  publicContainer6 = [registryCopy publicContainer];
+  v17 = [publicContainer6 registerProtocol:&unk_1F53F7820 factory:&__block_literal_global_184];
 
-  v18 = [v3 publicContainer];
-  v19 = [v18 registerClass:objc_opt_class() factory:&__block_literal_global_188_0];
+  publicContainer7 = [registryCopy publicContainer];
+  v19 = [publicContainer7 registerClass:objc_opt_class() factory:&__block_literal_global_188_0];
 
-  v20 = [v3 publicContainer];
-  v21 = [v20 registerProtocol:&unk_1F53D86F0 factory:&__block_literal_global_199];
+  publicContainer8 = [registryCopy publicContainer];
+  v21 = [publicContainer8 registerProtocol:&unk_1F53D86F0 factory:&__block_literal_global_199];
 
-  v22 = [v3 publicContainer];
-  v23 = [v22 registerProtocol:&unk_1F53BC890 factory:&__block_literal_global_228];
+  publicContainer9 = [registryCopy publicContainer];
+  v23 = [publicContainer9 registerProtocol:&unk_1F53BC890 factory:&__block_literal_global_228];
 
-  v24 = [v3 privateContainer];
-  v25 = [v24 registerClass:objc_opt_class() factory:&__block_literal_global_232];
+  privateContainer = [registryCopy privateContainer];
+  v25 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_232];
 
-  v27 = [v3 publicContainer];
+  publicContainer10 = [registryCopy publicContainer];
 
-  v26 = [v27 registerProtocol:&unk_1F5416D50 factory:&__block_literal_global_250_0];
+  v26 = [publicContainer10 registerProtocol:&unk_1F5416D50 factory:&__block_literal_global_250_0];
 }
 
 SXComponentController *__38__SXComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

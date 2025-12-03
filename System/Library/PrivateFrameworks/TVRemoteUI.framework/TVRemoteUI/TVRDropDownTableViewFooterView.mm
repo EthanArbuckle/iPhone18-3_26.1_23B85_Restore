@@ -1,14 +1,14 @@
 @interface TVRDropDownTableViewFooterView
-- (TVRDropDownTableViewFooterView)initWithReuseIdentifier:(id)a3;
+- (TVRDropDownTableViewFooterView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation TVRDropDownTableViewFooterView
 
-- (TVRDropDownTableViewFooterView)initWithReuseIdentifier:(id)a3
+- (TVRDropDownTableViewFooterView)initWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = TVRDropDownTableViewFooterView;
-  v3 = [(TVRDropDownTableViewFooterView *)&v6 initWithReuseIdentifier:a3];
+  v3 = [(TVRDropDownTableViewFooterView *)&v6 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = +[TVRMaterialView seperatorMaterialView];

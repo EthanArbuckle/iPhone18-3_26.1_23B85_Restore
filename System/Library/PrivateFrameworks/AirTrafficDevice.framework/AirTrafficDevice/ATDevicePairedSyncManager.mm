@@ -4,16 +4,16 @@
 - (BOOL)hasRestriction;
 - (void)_cleanupSyncState;
 - (void)_triggerInitialSync;
-- (void)nanoPairedDeviceStatusMonitor:(id)a3 didFinishInitialSyncForPairingIdentifier:(id)a4;
-- (void)nanoPairedDeviceStatusMonitorNewActiveDevice:(id)a3;
-- (void)nanoPairedDeviceStatusMonitorPairedDeviceChanged:(id)a3;
+- (void)nanoPairedDeviceStatusMonitor:(id)monitor didFinishInitialSyncForPairingIdentifier:(id)identifier;
+- (void)nanoPairedDeviceStatusMonitorNewActiveDevice:(id)device;
+- (void)nanoPairedDeviceStatusMonitorPairedDeviceChanged:(id)changed;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ATDevicePairedSyncManager
 
-- (void)nanoPairedDeviceStatusMonitor:(id)a3 didFinishInitialSyncForPairingIdentifier:(id)a4
+- (void)nanoPairedDeviceStatusMonitor:(id)monitor didFinishInitialSyncForPairingIdentifier:(id)identifier
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -24,7 +24,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)nanoPairedDeviceStatusMonitorNewActiveDevice:(id)a3
+- (void)nanoPairedDeviceStatusMonitorNewActiveDevice:(id)device
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -35,7 +35,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)nanoPairedDeviceStatusMonitorPairedDeviceChanged:(id)a3
+- (void)nanoPairedDeviceStatusMonitorPairedDeviceChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -59,11 +59,11 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v2 = +[ATDeviceSettings sharedInstance];
-  v3 = [MEMORY[0x277D7FBA8] sharedMonitor];
+  mEMORY[0x277D7FBA8] = [MEMORY[0x277D7FBA8] sharedMonitor];
   v4 = MEMORY[0x277CBEB98];
-  v18 = v3;
-  v5 = [v3 allPairedDeviceGUIDs];
-  v6 = [v4 setWithArray:v5];
+  v18 = mEMORY[0x277D7FBA8];
+  allPairedDeviceGUIDs = [mEMORY[0x277D7FBA8] allPairedDeviceGUIDs];
+  v6 = [v4 setWithArray:allPairedDeviceGUIDs];
 
   v7 = _ATLogCategoryDeviceSync();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -73,13 +73,13 @@
     _os_log_impl(&dword_223819000, v7, OS_LOG_TYPE_DEFAULT, "Cleaning up sync state. allPairedDeviceGUIDs = %{public}@", buf, 0xCu);
   }
 
-  v17 = [v2 endpointInfo];
-  v8 = [v17 allKeys];
+  endpointInfo = [v2 endpointInfo];
+  allKeys = [endpointInfo allKeys];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -90,13 +90,13 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = [v2 hostInfoForLibrary:v13];
-        v15 = [v14 deviceGUID];
-        if (!v15 || ([v6 containsObject:v15] & 1) == 0)
+        deviceGUID = [v14 deviceGUID];
+        if (!deviceGUID || ([v6 containsObject:deviceGUID] & 1) == 0)
         {
           v16 = _ATLogCategoryDeviceSync();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -104,7 +104,7 @@
             *buf = 138543618;
             v24 = v13;
             v25 = 2114;
-            v26 = v15;
+            v26 = deviceGUID;
             _os_log_impl(&dword_223819000, v16, OS_LOG_TYPE_DEFAULT, "removing endpoint for library %{public}@. GUID=%{public}@", buf, 0x16u);
           }
 
@@ -112,7 +112,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v10);
@@ -121,22 +121,22 @@
 
 - (BOOL)hasRestriction
 {
-  v2 = [MEMORY[0x277D7FBA8] sharedMonitor];
-  v3 = [v2 isInitialSyncComplete];
+  mEMORY[0x277D7FBA8] = [MEMORY[0x277D7FBA8] sharedMonitor];
+  isInitialSyncComplete = [mEMORY[0x277D7FBA8] isInitialSyncComplete];
 
-  return v3 ^ 1;
+  return isInitialSyncComplete ^ 1;
 }
 
 - (void)stop
 {
-  v3 = [MEMORY[0x277D7FBA8] sharedMonitor];
-  [v3 removeObserver:self];
+  mEMORY[0x277D7FBA8] = [MEMORY[0x277D7FBA8] sharedMonitor];
+  [mEMORY[0x277D7FBA8] removeObserver:self];
 }
 
 - (void)start
 {
-  v3 = [MEMORY[0x277D7FBA8] sharedMonitor];
-  [v3 addObserver:self];
+  mEMORY[0x277D7FBA8] = [MEMORY[0x277D7FBA8] sharedMonitor];
+  [mEMORY[0x277D7FBA8] addObserver:self];
 
   v4 = +[ATDeviceSettings sharedInstance];
   [v4 removePendingSyncSettingForDataClass:@"PlayActivity-Sync"];

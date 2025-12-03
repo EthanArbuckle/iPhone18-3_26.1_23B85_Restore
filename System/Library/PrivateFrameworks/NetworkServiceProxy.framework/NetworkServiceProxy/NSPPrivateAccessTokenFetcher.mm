@@ -1,34 +1,34 @@
 @interface NSPPrivateAccessTokenFetcher
-+ (BOOL)checkOriginAllowedAsThirdParty:(id)a3;
-+ (void)fetchAuxiliaryAuthenticationDataFromCacheForType:(unint64_t)a3 label:(id)a4 cacheKey:(id)a5 completionHandler:(id)a6;
-+ (void)saveAuxiliaryAuthenticationDataToCache:(id)a3 type:(unint64_t)a4 forLabel:(id)a5 cacheKey:(id)a6;
-- (NSPPrivateAccessTokenFetcher)initWithChallenge:(id)a3 tokenKey:(id)a4 auxiliaryAuthenticationChallenge:(id)a5 auxiliaryAuthenticationKey:(id)a6 auxiliaryAuthenticationLabel:(id)a7;
-- (NSPPrivateAccessTokenFetcher)initWithChallenge:(id)a3 tokenKey:(id)a4 originNameKey:(id)a5;
-- (id)initForKnownIssuerWithChallenge:(id)a3;
-- (id)initForKnownIssuerWithLongLivedTokenChallenge:(id)a3 oneTimeTokenChallenge:(id)a4;
-- (void)addSecondaryChallenge:(id)a3 tokenKey:(id)a4 originNameKey:(id)a5;
-- (void)checkRemainingCostQuotaWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)fetchLinkedTokenPairWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)fetchTokenAndAuxiliaryAuthenticationWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)fetchTokenPairWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)fetchTokenWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)generateTokenRequestForKey:(void *)a3 withQueue:(void *)a4 completionHandler:;
-- (void)generateTokenRequestWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)handleTokenResponse:(id)a3 withQueue:(id)a4 completionHandler:(id)a5;
-- (void)saveOneTimeTokenToCache:(id)a3 oneTimeTokenSalt:(id)a4 longLivedToken:(id)a5;
-- (void)saveTokenToCache:(id)a3;
-- (void)setCustomAttester:(id)a3 headers:(id)a4;
++ (BOOL)checkOriginAllowedAsThirdParty:(id)party;
++ (void)fetchAuxiliaryAuthenticationDataFromCacheForType:(unint64_t)type label:(id)label cacheKey:(id)key completionHandler:(id)handler;
++ (void)saveAuxiliaryAuthenticationDataToCache:(id)cache type:(unint64_t)type forLabel:(id)label cacheKey:(id)key;
+- (NSPPrivateAccessTokenFetcher)initWithChallenge:(id)challenge tokenKey:(id)key auxiliaryAuthenticationChallenge:(id)authenticationChallenge auxiliaryAuthenticationKey:(id)authenticationKey auxiliaryAuthenticationLabel:(id)label;
+- (NSPPrivateAccessTokenFetcher)initWithChallenge:(id)challenge tokenKey:(id)key originNameKey:(id)nameKey;
+- (id)initForKnownIssuerWithChallenge:(id)challenge;
+- (id)initForKnownIssuerWithLongLivedTokenChallenge:(id)challenge oneTimeTokenChallenge:(id)tokenChallenge;
+- (void)addSecondaryChallenge:(id)challenge tokenKey:(id)key originNameKey:(id)nameKey;
+- (void)checkRemainingCostQuotaWithQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchLinkedTokenPairWithQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchTokenAndAuxiliaryAuthenticationWithQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchTokenPairWithQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchTokenWithQueue:(id)queue completionHandler:(id)handler;
+- (void)generateTokenRequestForKey:(void *)key withQueue:(void *)queue completionHandler:;
+- (void)generateTokenRequestWithQueue:(id)queue completionHandler:(id)handler;
+- (void)handleTokenResponse:(id)response withQueue:(id)queue completionHandler:(id)handler;
+- (void)saveOneTimeTokenToCache:(id)cache oneTimeTokenSalt:(id)salt longLivedToken:(id)token;
+- (void)saveTokenToCache:(id)cache;
+- (void)setCustomAttester:(id)attester headers:(id)headers;
 @end
 
 @implementation NSPPrivateAccessTokenFetcher
 
-- (NSPPrivateAccessTokenFetcher)initWithChallenge:(id)a3 tokenKey:(id)a4 originNameKey:(id)a5
+- (NSPPrivateAccessTokenFetcher)initWithChallenge:(id)challenge tokenKey:(id)key originNameKey:(id)nameKey
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  challengeCopy = challenge;
+  keyCopy = key;
+  nameKeyCopy = nameKey;
+  if (!challengeCopy)
   {
     v18 = nplog_obj();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -48,7 +48,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (!v9)
+  if (!keyCopy)
   {
     v18 = nplog_obj();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -78,20 +78,20 @@ LABEL_14:
   }
 
   v13 = v11;
-  objc_setProperty_atomic(v11, v12, v8, 64);
-  objc_setProperty_atomic(v13, v14, v9, 80);
-  objc_setProperty_atomic(v13, v15, v10, 88);
+  objc_setProperty_atomic(v11, v12, challengeCopy, 64);
+  objc_setProperty_atomic(v13, v14, keyCopy, 80);
+  objc_setProperty_atomic(v13, v15, nameKeyCopy, 88);
 LABEL_5:
 
   v16 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (id)initForKnownIssuerWithChallenge:(id)a3
+- (id)initForKnownIssuerWithChallenge:(id)challenge
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  challengeCopy = challenge;
+  if (!challengeCopy)
   {
     v10 = nplog_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -123,20 +123,20 @@ LABEL_10:
   }
 
   v7 = v5;
-  objc_setProperty_atomic(v5, v6, v4, 64);
+  objc_setProperty_atomic(v5, v6, challengeCopy, 64);
 LABEL_4:
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (id)initForKnownIssuerWithLongLivedTokenChallenge:(id)a3 oneTimeTokenChallenge:(id)a4
+- (id)initForKnownIssuerWithLongLivedTokenChallenge:(id)challenge oneTimeTokenChallenge:(id)tokenChallenge
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  challengeCopy = challenge;
+  tokenChallengeCopy = tokenChallenge;
+  v8 = tokenChallengeCopy;
+  if (!challengeCopy)
   {
     v15 = nplog_obj();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -156,7 +156,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!tokenChallengeCopy)
   {
     v15 = nplog_obj();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -186,7 +186,7 @@ LABEL_14:
   }
 
   v11 = v9;
-  objc_setProperty_atomic(v9, v10, v6, 64);
+  objc_setProperty_atomic(v9, v10, challengeCopy, 64);
   objc_setProperty_atomic(v11, v12, v8, 72);
 LABEL_5:
 
@@ -194,15 +194,15 @@ LABEL_5:
   return v11;
 }
 
-- (NSPPrivateAccessTokenFetcher)initWithChallenge:(id)a3 tokenKey:(id)a4 auxiliaryAuthenticationChallenge:(id)a5 auxiliaryAuthenticationKey:(id)a6 auxiliaryAuthenticationLabel:(id)a7
+- (NSPPrivateAccessTokenFetcher)initWithChallenge:(id)challenge tokenKey:(id)key auxiliaryAuthenticationChallenge:(id)authenticationChallenge auxiliaryAuthenticationKey:(id)authenticationKey auxiliaryAuthenticationLabel:(id)label
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12)
+  challengeCopy = challenge;
+  keyCopy = key;
+  authenticationChallengeCopy = authenticationChallenge;
+  authenticationKeyCopy = authenticationKey;
+  labelCopy = label;
+  if (!challengeCopy)
   {
     v26 = nplog_obj();
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
@@ -222,7 +222,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (!v14)
+  if (!authenticationChallengeCopy)
   {
     v26 = nplog_obj();
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
@@ -252,23 +252,23 @@ LABEL_14:
   }
 
   v19 = v17;
-  objc_setProperty_atomic(v17, v18, v12, 64);
-  objc_setProperty_atomic(v19, v20, v13, 80);
-  objc_setProperty_atomic(v19, v21, v14, 96);
-  objc_setProperty_atomic(v19, v22, v15, 104);
-  objc_setProperty_atomic(v19, v23, v16, 112);
+  objc_setProperty_atomic(v17, v18, challengeCopy, 64);
+  objc_setProperty_atomic(v19, v20, keyCopy, 80);
+  objc_setProperty_atomic(v19, v21, authenticationChallengeCopy, 96);
+  objc_setProperty_atomic(v19, v22, authenticationKeyCopy, 104);
+  objc_setProperty_atomic(v19, v23, labelCopy, 112);
 LABEL_5:
 
   v24 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-- (void)addSecondaryChallenge:(id)a3 tokenKey:(id)a4 originNameKey:(id)a5
+- (void)addSecondaryChallenge:(id)challenge tokenKey:(id)key originNameKey:(id)nameKey
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v17 = [[NSPPrivateAccessTokenFetcher alloc] initWithChallenge:v10 tokenKey:v9 originNameKey:v8];
+  nameKeyCopy = nameKey;
+  keyCopy = key;
+  challengeCopy = challenge;
+  v17 = [[NSPPrivateAccessTokenFetcher alloc] initWithChallenge:challengeCopy tokenKey:keyCopy originNameKey:nameKeyCopy];
 
   v12 = v17;
   if (v17)
@@ -295,23 +295,23 @@ LABEL_5:
   }
 }
 
-- (void)setCustomAttester:(id)a3 headers:(id)a4
+- (void)setCustomAttester:(id)attester headers:(id)headers
 {
   if (self)
   {
-    newValue = a4;
-    objc_setProperty_atomic(self, v6, a3, 48);
+    newValue = headers;
+    objc_setProperty_atomic(self, v6, attester, 48);
     objc_setProperty_atomic(self, v7, newValue, 56);
   }
 }
 
-- (void)fetchTokenWithQueue:(id)a3 completionHandler:(id)a4
+- (void)fetchTokenWithQueue:(id)queue completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!queueCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -327,7 +327,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -346,7 +346,7 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __70__NSPPrivateAccessTokenFetcher_fetchTokenWithQueue_completionHandler___block_invoke;
   v13[3] = &unk_1E7A30DB8;
-  v14 = v6;
+  v14 = queueCopy;
   v15 = v8;
   [v9 fetchPrivateAccessTokenWithFetcher:self allowRetry:1 completionHandler:v13];
 
@@ -388,13 +388,13 @@ void __70__NSPPrivateAccessTokenFetcher_fetchTokenWithQueue_completionHandler___
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTokenPairWithQueue:(id)a3 completionHandler:(id)a4
+- (void)fetchTokenPairWithQueue:(id)queue completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!queueCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -410,7 +410,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -429,7 +429,7 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __74__NSPPrivateAccessTokenFetcher_fetchTokenPairWithQueue_completionHandler___block_invoke;
   v13[3] = &unk_1E7A30DE0;
-  v14 = v6;
+  v14 = queueCopy;
   v15 = v8;
   [v9 fetchPrivateAccessTokenPairWithFetcher:self allowRetry:1 completionHandler:v13];
 
@@ -474,13 +474,13 @@ void __74__NSPPrivateAccessTokenFetcher_fetchTokenPairWithQueue_completionHandle
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchLinkedTokenPairWithQueue:(id)a3 completionHandler:(id)a4
+- (void)fetchLinkedTokenPairWithQueue:(id)queue completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!queueCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -496,7 +496,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -515,7 +515,7 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __80__NSPPrivateAccessTokenFetcher_fetchLinkedTokenPairWithQueue_completionHandler___block_invoke;
   v13[3] = &unk_1E7A30DE0;
-  v14 = v6;
+  v14 = queueCopy;
   v15 = v8;
   [v9 fetchPrivateAccessTokenPairWithFetcher:self allowRetry:1 completionHandler:v13];
 
@@ -563,13 +563,13 @@ void __80__NSPPrivateAccessTokenFetcher_fetchLinkedTokenPairWithQueue_completion
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTokenAndAuxiliaryAuthenticationWithQueue:(id)a3 completionHandler:(id)a4
+- (void)fetchTokenAndAuxiliaryAuthenticationWithQueue:(id)queue completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!queueCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -585,7 +585,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -604,7 +604,7 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __96__NSPPrivateAccessTokenFetcher_fetchTokenAndAuxiliaryAuthenticationWithQueue_completionHandler___block_invoke;
   v13[3] = &unk_1E7A30E08;
-  v14 = v6;
+  v14 = queueCopy;
   v15 = v8;
   [v9 fetchPrivateAccessTokenAndAuxAuthWithFetcher:self allowRetry:1 completionHandler:v13];
 
@@ -649,14 +649,14 @@ void __96__NSPPrivateAccessTokenFetcher_fetchTokenAndAuxiliaryAuthenticationWith
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)checkOriginAllowedAsThirdParty:(id)a3
++ (BOOL)checkOriginAllowedAsThirdParty:(id)party
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  partyCopy = party;
+  if (partyCopy)
   {
     v4 = getServerConnection();
-    v5 = [v4 checkOriginAllowedAsThirdParty:v3];
+    v5 = [v4 checkOriginAllowedAsThirdParty:partyCopy];
   }
 
   else
@@ -676,20 +676,20 @@ void __96__NSPPrivateAccessTokenFetcher_fetchTokenAndAuxiliaryAuthenticationWith
   return v5;
 }
 
-- (void)generateTokenRequestForKey:(void *)a3 withQueue:(void *)a4 completionHandler:
+- (void)generateTokenRequestForKey:(void *)key withQueue:(void *)queue completionHandler:
 {
   v175 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  keyCopy = key;
+  queueCopy = queue;
+  if (self)
   {
     v9 = a2;
     v10 = objc_alloc_init(NSPPrivacyProxyTokenKey);
     [(NSPPrivacyProxyTokenKey *)v10 setKey:v9];
 
-    -[NSPPrivacyProxyTokenKey setMetadataSize:](v10, "setMetadataSize:", [a1 metadataSize]);
+    -[NSPPrivacyProxyTokenKey setMetadataSize:](v10, "setMetadataSize:", [self metadataSize]);
     v11 = [NSPPrivateAccessTokenChallenge alloc];
-    v13 = [(NSPPrivateAccessTokenChallenge *)v11 initWithData:objc_getProperty(a1, v12, 64, 1)];
+    v13 = [(NSPPrivateAccessTokenChallenge *)v11 initWithData:objc_getProperty(self, v12, 64, 1)];
     if (![(NSPPrivateAccessTokenChallenge *)v13 isSupportedTokenType])
     {
       v33 = nplog_obj();
@@ -703,8 +703,8 @@ void __96__NSPPrivateAccessTokenFetcher_fetchTokenAndAuxiliaryAuthenticationWith
       block[1] = 3221225472;
       block[2] = __87__NSPPrivateAccessTokenFetcher_generateTokenRequestForKey_withQueue_completionHandler___block_invoke;
       block[3] = &unk_1E7A30E30;
-      v166 = v8;
-      dispatch_async(v7, block);
+      v166 = queueCopy;
+      dispatch_async(keyCopy, block);
       v24 = v166;
       goto LABEL_78;
     }
@@ -713,15 +713,15 @@ void __96__NSPPrivateAccessTokenFetcher_fetchTokenAndAuxiliaryAuthenticationWith
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v18 = v13;
-    v19 = objc_getProperty(a1, v17, 88, 1);
-    self = a1;
-    v20 = [a1 selectedOrigin];
+    v19 = objc_getProperty(self, v17, 88, 1);
+    self = self;
+    selectedOrigin = [self selectedOrigin];
     v152 = v18;
     v21 = v18;
     v150 = v14;
     v154 = v14;
     v22 = v19;
-    v153 = v20;
+    v153 = selectedOrigin;
     v23 = v16;
     v24 = v15;
     v25 = v21;
@@ -766,11 +766,11 @@ LABEL_69:
           goto LABEL_70;
         }
 
-        v32 = [(NSPPrivateAccessTokenChallenge *)v147 issuerName];
+        issuerName = [(NSPPrivateAccessTokenChallenge *)v147 issuerName];
         *buf = 138412546;
         *&buf[4] = v31;
         *&buf[12] = 2112;
-        *&buf[14] = v32;
+        *&buf[14] = issuerName;
         _os_log_error_impl(&dword_1AE7E2000, log, OS_LOG_TYPE_ERROR, "RSABSSATokenBlinder initWithPublicKey failed with error %@ for %@", buf, 0x16u);
 LABEL_41:
 
@@ -817,7 +817,7 @@ LABEL_41:
           v38 = v35;
           v39 = v36;
           objc_opt_self();
-          v140 = v7;
+          v140 = keyCopy;
           if (v39)
           {
             if ([(NSPPrivateAccessTokenChallenge *)v37 tokenType]== 2 || [(NSPPrivateAccessTokenChallenge *)v37 tokenType]== 3)
@@ -830,8 +830,8 @@ LABEL_41:
                 v41 = v38;
                 [v40 appendData:v38];
                 memset(buf, 0, 32);
-                v42 = [(NSPPrivateAccessTokenChallenge *)v37 challengeData];
-                CC_SHA256([v42 bytes], objc_msgSend(v42, "length"), buf);
+                challengeData = [(NSPPrivateAccessTokenChallenge *)v37 challengeData];
+                CC_SHA256([challengeData bytes], objc_msgSend(challengeData, "length"), buf);
                 [v40 appendBytes:buf length:32];
                 md = 0u;
                 v172 = 0u;
@@ -866,7 +866,7 @@ LABEL_20:
                 }
 
                 v68 = 0;
-                v7 = v140;
+                keyCopy = v140;
 LABEL_68:
                 v13 = v152;
                 v24 = v138;
@@ -925,7 +925,7 @@ LABEL_44:
 
 LABEL_53:
                   v135 = v23;
-                  v137 = v8;
+                  v137 = queueCopy;
 
                   if (![v46 count])
                   {
@@ -939,7 +939,7 @@ LABEL_53:
 
                     v68 = 0;
                     v24 = v138;
-                    v7 = v140;
+                    keyCopy = v140;
                     v13 = v152;
                     goto LABEL_69;
                   }
@@ -967,8 +967,8 @@ LABEL_53:
                         v95 = *(*(&md + 1) + 8 * i);
                         v96 = [NSPPrivateAccessTokenRequest alloc];
                         v97 = [(NSPPrivacyProxyTokenKey *)v157 key];
-                        v98 = [v95 blindedMessage];
-                        v99 = [(NSPPrivateAccessTokenRequest *)&v96->super initWithChallenge:v37 tokenKey:v97 tokenKeyID:0 originNameKey:v156 selectedOrigin:v155 blindedMessage:v98];
+                        blindedMessage = [v95 blindedMessage];
+                        v99 = [(NSPPrivateAccessTokenRequest *)&v96->super initWithChallenge:v37 tokenKey:v97 tokenKeyID:0 originNameKey:v156 selectedOrigin:v155 blindedMessage:blindedMessage];
 
                         if (!v99)
                         {
@@ -999,9 +999,9 @@ LABEL_53:
 
                   v68 = v89;
 LABEL_67:
-                  v7 = v140;
+                  keyCopy = v140;
                   v23 = v135;
-                  v8 = v137;
+                  queueCopy = v137;
 
                   goto LABEL_68;
                 }
@@ -1072,12 +1072,12 @@ LABEL_67:
         }
       }
 
-      v32 = nplog_obj();
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
+      issuerName = nplog_obj();
+      if (os_log_type_enabled(issuerName, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
         *&buf[4] = "+[NSPPrivateAccessTokenFetcher createBlindRSATokenRequestsWithChallenge:tokenKey:tokenCount:originNameKey:selectedOrigin:waitingTokenList:clientNonceArray:clientSaltArray:longLivedToken:]";
-        _os_log_fault_impl(&dword_1AE7E2000, v32, OS_LOG_TYPE_FAULT, "%s called with null clientNonce", buf, 0xCu);
+        _os_log_fault_impl(&dword_1AE7E2000, issuerName, OS_LOG_TYPE_FAULT, "%s called with null clientNonce", buf, 0xCu);
       }
 
       goto LABEL_41;
@@ -1086,7 +1086,7 @@ LABEL_67:
     if ([(NSPPrivateAccessTokenChallenge *)v21 tokenType]== 49278)
     {
       v139 = v24;
-      v141 = v7;
+      v141 = keyCopy;
       v48 = v21;
       v49 = v154;
       v50 = v23;
@@ -1096,11 +1096,11 @@ LABEL_67:
       objc_opt_self();
       v52 = MEMORY[0x1E69996C8];
       v53 = [(NSPPrivacyProxyTokenKey *)v51 key];
-      v54 = [(NSPPrivacyProxyTokenKey *)v51 metadataSize];
-      v55 = [(NSPPrivateAccessTokenChallenge *)v48 issuerName];
-      v56 = [v52 verifyAndGetKeyIDFromKeyCommitmentsData:v53 numBuckets:v54 deploymentID:v55];
+      metadataSize = [(NSPPrivacyProxyTokenKey *)v51 metadataSize];
+      issuerName2 = [(NSPPrivateAccessTokenChallenge *)v48 issuerName];
+      v56 = [v52 verifyAndGetKeyIDFromKeyCommitmentsData:v53 numBuckets:metadataSize deploymentID:issuerName2];
 
-      v136 = v8;
+      v136 = queueCopy;
       if (!v56)
       {
         v62 = nplog_obj();
@@ -1118,18 +1118,18 @@ LABEL_67:
 
       v57 = objc_alloc(MEMORY[0x1E69996C8]);
       v58 = [(NSPPrivacyProxyTokenKey *)v51 key];
-      v59 = [(NSPPrivacyProxyTokenKey *)v51 metadataSize];
-      v60 = [(NSPPrivateAccessTokenChallenge *)v48 issuerName];
+      metadataSize2 = [(NSPPrivacyProxyTokenKey *)v51 metadataSize];
+      issuerName3 = [(NSPPrivateAccessTokenChallenge *)v48 issuerName];
       *&md = 0;
-      v61 = [v57 initWithKeyCommitmentsData:v58 nbuckets:v59 deploymentID:v60 error:&md];
+      v61 = [v57 initWithKeyCommitmentsData:v58 nbuckets:metadataSize2 deploymentID:issuerName3 error:&md];
       v62 = md;
 
       if (v61)
       {
         v63 = [NSPPrivateAccessTokenRequest alloc];
         v64 = [(NSPPrivacyProxyTokenKey *)v51 key];
-        v65 = [v61 requestData];
-        v66 = [(NSPPrivateAccessTokenRequest *)&v63->super initWithChallenge:v48 tokenKey:v64 tokenKeyID:v56 originNameKey:0 selectedOrigin:0 blindedMessage:v65];
+        requestData = [v61 requestData];
+        v66 = [(NSPPrivateAccessTokenRequest *)&v63->super initWithChallenge:v48 tokenKey:v64 tokenKeyID:v56 originNameKey:0 selectedOrigin:0 blindedMessage:requestData];
 
         if (v66)
         {
@@ -1143,9 +1143,9 @@ LABEL_31:
 LABEL_88:
 
           v24 = v139;
-          v7 = v141;
+          keyCopy = v141;
           v23 = v134;
-          v8 = v136;
+          queueCopy = v136;
           v13 = v152;
           v100 = v154;
           v25 = v148;
@@ -1189,14 +1189,14 @@ LABEL_70:
 
       if ([v68 count])
       {
-        v102 = [v23 firstObject];
-        objc_setProperty_atomic(self, v103, v102, 128);
+        firstObject = [v23 firstObject];
+        objc_setProperty_atomic(self, v103, firstObject, 128);
 
-        v104 = [v68 firstObject];
-        objc_setProperty_atomic(self, v105, v104, 136);
+        firstObject2 = [v68 firstObject];
+        objc_setProperty_atomic(self, v105, firstObject2, 136);
 
-        v106 = [v24 firstObject];
-        objc_setProperty_atomic(self, v107, v106, 144);
+        firstObject3 = [v24 firstObject];
+        objc_setProperty_atomic(self, v107, firstObject3, 144);
 
         objc_setProperty_atomic(self, v108, v100, 152);
         v109 = nplog_obj();
@@ -1211,9 +1211,9 @@ LABEL_70:
         v160[2] = __87__NSPPrivateAccessTokenFetcher_generateTokenRequestForKey_withQueue_completionHandler___block_invoke_198;
         v160[3] = &unk_1E7A30A18;
         v110 = &v162;
-        v162 = v8;
+        v162 = queueCopy;
         v161 = v68;
-        dispatch_async(v7, v160);
+        dispatch_async(keyCopy, v160);
       }
 
       else
@@ -1230,8 +1230,8 @@ LABEL_70:
         v163[2] = __87__NSPPrivateAccessTokenFetcher_generateTokenRequestForKey_withQueue_completionHandler___block_invoke_194;
         v163[3] = &unk_1E7A30E30;
         v110 = &v164;
-        v164 = v8;
-        dispatch_async(v7, v163);
+        v164 = queueCopy;
+        dispatch_async(keyCopy, v163);
       }
 
       v10 = v150;
@@ -1240,7 +1240,7 @@ LABEL_78:
       goto LABEL_79;
     }
 
-    v136 = v8;
+    v136 = queueCopy;
     v139 = v24;
     v48 = v21;
     v69 = v154;
@@ -1250,31 +1250,31 @@ LABEL_78:
     v70 = [(NSPPrivacyProxyTokenKey *)v69 key];
     objc_opt_self();
     memset(buf, 0, 32);
-    v71 = [v70 bytes];
+    bytes = [v70 bytes];
     v72 = [v70 length];
 
-    CC_SHA256(v71, v72, buf);
+    CC_SHA256(bytes, v72, buf);
     v73 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:buf length:32];
 
     v74 = v73;
     if ([(NSPPrivateAccessTokenChallenge *)v48 tokenType]== 58796)
     {
       v75 = objc_alloc_init(MEMORY[0x1E695DF88]);
-      v76 = [(NSPPrivateAccessTokenChallenge *)v48 issuerName];
-      v77 = [v76 UTF8String];
-      *buf = bswap32(strlen(v77)) >> 16;
+      issuerName4 = [(NSPPrivateAccessTokenChallenge *)v48 issuerName];
+      uTF8String = [issuerName4 UTF8String];
+      *buf = bswap32(strlen(uTF8String)) >> 16;
       [v75 appendBytes:buf length:2];
-      [v75 appendBytes:v77 length:strlen(v77)];
+      [v75 appendBytes:uTF8String length:strlen(uTF8String)];
       v79 = objc_getProperty(v48, v78, 64, 1);
       v80 = v79;
       if (v79)
       {
-        v81 = [v79 UTF8String];
-        LOWORD(md) = bswap32(strlen(v81)) >> 16;
+        uTF8String2 = [v79 UTF8String];
+        LOWORD(md) = bswap32(strlen(uTF8String2)) >> 16;
         [v75 appendBytes:&md length:2];
-        v82 = strlen(v81);
+        v82 = strlen(uTF8String2);
         v83 = v75;
-        p_md = v81;
+        p_md = uTF8String2;
       }
 
       else
@@ -1286,17 +1286,17 @@ LABEL_78:
       }
 
       [v83 appendBytes:p_md length:v82];
-      v113 = [(NSPPrivateAccessTokenChallenge *)v48 credentialContext];
-      v114 = 32 * (v113 != 0);
+      credentialContext = [(NSPPrivateAccessTokenChallenge *)v48 credentialContext];
+      v114 = 32 * (credentialContext != 0);
 
       LOBYTE(md) = v114;
       [v75 appendBytes:&md length:1];
-      v115 = [(NSPPrivateAccessTokenChallenge *)v48 credentialContext];
+      credentialContext2 = [(NSPPrivateAccessTokenChallenge *)v48 credentialContext];
 
-      if (v115)
+      if (credentialContext2)
       {
-        v116 = [(NSPPrivateAccessTokenChallenge *)v48 credentialContext];
-        [v75 appendData:v116];
+        credentialContext3 = [(NSPPrivateAccessTokenChallenge *)v48 credentialContext];
+        [v75 appendData:credentialContext3];
       }
 
       [v75 appendData:v74];
@@ -1304,18 +1304,18 @@ LABEL_78:
 
     else
     {
-      v76 = nplog_obj();
-      if (os_log_type_enabled(v76, OS_LOG_TYPE_FAULT))
+      issuerName4 = nplog_obj();
+      if (os_log_type_enabled(issuerName4, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
         *&buf[4] = "[NSPPrivateAccessTokenChallenge credentialRequestContextForKeyID:]";
-        _os_log_fault_impl(&dword_1AE7E2000, v76, OS_LOG_TYPE_FAULT, "%s called with null self.isARC", buf, 0xCu);
+        _os_log_fault_impl(&dword_1AE7E2000, issuerName4, OS_LOG_TYPE_FAULT, "%s called with null self.isARC", buf, 0xCu);
       }
 
       v75 = 0;
     }
 
-    v141 = v7;
+    v141 = keyCopy;
 
     v117 = objc_alloc(MEMORY[0x1E69996C0]);
     v118 = [(NSPPrivacyProxyTokenKey *)v69 key];
@@ -1327,8 +1327,8 @@ LABEL_78:
     {
       v121 = [NSPPrivateAccessTokenRequest alloc];
       v122 = [(NSPPrivacyProxyTokenKey *)v69 key];
-      v123 = [v119 requestData];
-      v124 = [(NSPPrivateAccessTokenRequest *)&v121->super initWithChallenge:v48 tokenKey:v122 tokenKeyID:0 originNameKey:0 selectedOrigin:0 blindedMessage:v123];
+      requestData2 = [v119 requestData];
+      v124 = [(NSPPrivateAccessTokenRequest *)&v121->super initWithChallenge:v48 tokenKey:v122 tokenKeyID:0 originNameKey:0 selectedOrigin:0 blindedMessage:requestData2];
 
       if (v124)
       {
@@ -1417,10 +1417,10 @@ void __87__NSPPrivateAccessTokenFetcher_generateTokenRequestForKey_withQueue_com
   (*(v1 + 16))(v1, Property, 0);
 }
 
-- (void)generateTokenRequestWithQueue:(id)a3 completionHandler:(id)a4
+- (void)generateTokenRequestWithQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self)
   {
     if (objc_getProperty(self, v7, 128, 1))
@@ -1436,8 +1436,8 @@ void __87__NSPPrivateAccessTokenFetcher_generateTokenRequestForKey_withQueue_com
       block[1] = 3221225472;
       block[2] = __80__NSPPrivateAccessTokenFetcher_generateTokenRequestWithQueue_completionHandler___block_invoke;
       block[3] = &unk_1E7A30E30;
-      v20 = v8;
-      dispatch_async(v6, block);
+      v20 = handlerCopy;
+      dispatch_async(queueCopy, block);
       v11 = v20;
       goto LABEL_6;
     }
@@ -1445,7 +1445,7 @@ void __87__NSPPrivateAccessTokenFetcher_generateTokenRequestForKey_withQueue_com
     if (objc_getProperty(self, v9, 80, 1))
     {
       Property = objc_getProperty(self, v12, 80, 1);
-      [(NSPPrivateAccessTokenFetcher *)self generateTokenRequestForKey:v6 withQueue:v8 completionHandler:?];
+      [(NSPPrivateAccessTokenFetcher *)self generateTokenRequestForKey:queueCopy withQueue:handlerCopy completionHandler:?];
       goto LABEL_9;
     }
   }
@@ -1455,9 +1455,9 @@ void __87__NSPPrivateAccessTokenFetcher_generateTokenRequestForKey_withQueue_com
   v15[1] = 3221225472;
   v15[2] = __80__NSPPrivateAccessTokenFetcher_generateTokenRequestWithQueue_completionHandler___block_invoke_2;
   v15[3] = &unk_1E7A30E58;
-  v16 = v6;
-  v17 = self;
-  v18 = v8;
+  v16 = queueCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
   [v14 fetchKnownPrivateAccessTokenKeyWithFetcher:self allowRetry:1 completionHandler:v15];
 
   v11 = v16;
@@ -1500,13 +1500,13 @@ void __80__NSPPrivateAccessTokenFetcher_generateTokenRequestWithQueue_completion
   }
 }
 
-- (void)handleTokenResponse:(id)a3 withQueue:(id)a4 completionHandler:(id)a5
+- (void)handleTokenResponse:(id)response withQueue:(id)queue completionHandler:(id)handler
 {
   v114 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v93 = a5;
-  if (!v8 || !self || (v11 = objc_getProperty(self, v10, 128, 1)) == 0 || (v13 = v11, Property = objc_getProperty(self, v12, 136, 1), v13, !Property))
+  responseCopy = response;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!responseCopy || !self || (v11 = objc_getProperty(self, v10, 128, 1)) == 0 || (v13 = v11, Property = objc_getProperty(self, v12, 136, 1), v13, !Property))
   {
     v25 = nplog_obj();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1519,14 +1519,14 @@ void __80__NSPPrivateAccessTokenFetcher_generateTokenRequestWithQueue_completion
     block[1] = 3221225472;
     block[2] = __80__NSPPrivateAccessTokenFetcher_handleTokenResponse_withQueue_completionHandler___block_invoke;
     block[3] = &unk_1E7A30E30;
-    v104 = v93;
-    v26 = v93;
-    dispatch_async(v9, block);
+    v104 = handlerCopy;
+    v26 = handlerCopy;
+    dispatch_async(queueCopy, block);
     v27 = v104;
     goto LABEL_10;
   }
 
-  v88 = v8;
+  v88 = responseCopy;
   v16 = objc_getProperty(self, v15, 152, 1);
   v17 = [NSPPrivateAccessTokenChallenge alloc];
   v19 = [(NSPPrivateAccessTokenChallenge *)v17 initWithData:objc_getProperty(self, v18, 64, 1)];
@@ -1557,8 +1557,8 @@ void __80__NSPPrivateAccessTokenFetcher_generateTokenRequestWithQueue_completion
   v34 = v32;
   objc_opt_self();
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v89 = v9;
-  v90 = self;
+  v89 = queueCopy;
+  selfCopy = self;
   v95 = v26;
   v92 = v30;
   v96 = v31;
@@ -1644,22 +1644,22 @@ LABEL_17:
       v47 = v105;
       if (v47)
       {
-        v48 = nplog_obj();
-        if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+        signature2 = nplog_obj();
+        if (os_log_type_enabled(signature2, OS_LOG_TYPE_ERROR))
         {
           *buf = v83;
           v111 = v47;
-          _os_log_error_impl(&dword_1AE7E2000, v48, OS_LOG_TYPE_ERROR, "activateToken failed with error %@", buf, 0xCu);
+          _os_log_error_impl(&dword_1AE7E2000, signature2, OS_LOG_TYPE_ERROR, "activateToken failed with error %@", buf, 0xCu);
         }
 
-        v49 = 0;
+        data = 0;
       }
 
       else
       {
         if (!v46)
         {
-          v49 = 0;
+          data = 0;
           goto LABEL_49;
         }
 
@@ -1667,12 +1667,12 @@ LABEL_17:
         {
           v62 = [NSPPrivateAccessTokenResponse alloc];
           v63 = [v98 key];
-          v64 = [v46 signature];
-          v48 = [(NSPPrivateAccessTokenResponse *)&v62->super initWithChallenge:v99 nonce:v44 tokenKey:v63 keyID:0 authenticator:v64];
+          signature = [v46 signature];
+          signature2 = [(NSPPrivateAccessTokenResponse *)&v62->super initWithChallenge:v99 nonce:v44 tokenKey:v63 keyID:0 authenticator:signature];
 
-          if (v48)
+          if (signature2)
           {
-            v66 = objc_getProperty(v48, v65, 8, 1);
+            v66 = objc_getProperty(signature2, v65, 8, 1);
           }
 
           else
@@ -1680,26 +1680,26 @@ LABEL_17:
             v66 = 0;
           }
 
-          v49 = v66;
-          v9 = v89;
+          data = v66;
+          queueCopy = v89;
         }
 
         else
         {
-          v49 = [MEMORY[0x1E695DF88] data];
-          [v49 appendBytes:&v106 length:1];
-          v68 = [v46 keyId];
-          [v49 appendData:v68];
+          data = [MEMORY[0x1E695DF88] data];
+          [data appendBytes:&v106 length:1];
+          keyId = [v46 keyId];
+          [data appendData:keyId];
 
-          v69 = [v46 tokenContent];
-          [v49 appendData:v69];
+          tokenContent = [v46 tokenContent];
+          [data appendData:tokenContent];
 
-          v48 = [v46 signature];
-          [v49 appendData:v48];
+          signature2 = [v46 signature];
+          [data appendData:signature2];
         }
       }
 
-      self = v90;
+      self = selfCopy;
     }
 
     else
@@ -1709,16 +1709,16 @@ LABEL_17:
       {
         v50 = MEMORY[0x1E69996C8];
         v51 = [v98 key];
-        v52 = [v98 metadataSize];
-        v53 = [(NSPPrivateAccessTokenChallenge *)v99 issuerName];
-        v46 = [v50 verifyAndGetKeyIDFromKeyCommitmentsData:v51 numBuckets:v52 deploymentID:v53];
+        metadataSize = [v98 metadataSize];
+        issuerName = [(NSPPrivateAccessTokenChallenge *)v99 issuerName];
+        v46 = [v50 verifyAndGetKeyIDFromKeyCommitmentsData:v51 numBuckets:metadataSize deploymentID:issuerName];
 
         v105 = 0;
         v54 = [v43 activateWithResponseData:v45 error:&v105];
         v47 = v105;
-        v55 = [v54 presentationData];
-        v56 = v55;
-        if (v47 || !v55)
+        presentationData = [v54 presentationData];
+        v56 = presentationData;
+        if (v47 || !presentationData)
         {
           v59 = nplog_obj();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -1728,7 +1728,7 @@ LABEL_17:
             _os_log_error_impl(&dword_1AE7E2000, v59, OS_LOG_TYPE_ERROR, "activateWithResponseData failed with error %@", buf, 0xCu);
           }
 
-          v49 = 0;
+          data = 0;
         }
 
         else
@@ -1747,11 +1747,11 @@ LABEL_17:
             v61 = 0;
           }
 
-          v49 = v61;
+          data = v61;
         }
 
-        v9 = v89;
-        self = v90;
+        queueCopy = v89;
+        self = selfCopy;
       }
 
       else
@@ -1759,7 +1759,7 @@ LABEL_17:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v49 = 0;
+          data = 0;
           goto LABEL_50;
         }
 
@@ -1776,12 +1776,12 @@ LABEL_17:
             _os_log_error_impl(&dword_1AE7E2000, v67, OS_LOG_TYPE_ERROR, "activateWithResponseData failed with error %@", buf, 0xCu);
           }
 
-          v49 = 0;
+          data = 0;
         }
 
         else
         {
-          v49 = [v46 getCredentialDataError:0];
+          data = [v46 getCredentialDataError:0];
           v47 = 0;
         }
       }
@@ -1792,9 +1792,9 @@ LABEL_49:
     v33 = v92;
 LABEL_50:
 
-    if (v49)
+    if (data)
     {
-      [v91 addObject:v49];
+      [v91 addObject:data];
     }
 
     ++v39;
@@ -1835,22 +1835,22 @@ LABEL_66:
     _os_log_impl(&dword_1AE7E2000, v73, OS_LOG_TYPE_INFO, "Generated token from response", buf, 2u);
   }
 
-  v74 = [v27 firstObject];
+  firstObject = [v27 firstObject];
   v100[0] = MEMORY[0x1E69E9820];
   v100[1] = 3221225472;
   v100[2] = __80__NSPPrivateAccessTokenFetcher_handleTokenResponse_withQueue_completionHandler___block_invoke_209;
   v100[3] = &unk_1E7A30A18;
-  v101 = v74;
-  v102 = v93;
-  v75 = v74;
-  v76 = v93;
-  dispatch_async(v9, v100);
+  v101 = firstObject;
+  v102 = handlerCopy;
+  v75 = firstObject;
+  v76 = handlerCopy;
+  dispatch_async(queueCopy, v100);
   objc_setProperty_atomic(self, v77, 0, 128);
   objc_setProperty_atomic(self, v78, 0, 136);
   objc_setProperty_atomic(self, v79, 0, 144);
   objc_setProperty_atomic(self, v80, 0, 152);
 
-  v8 = v88;
+  responseCopy = v88;
 LABEL_10:
 
   v28 = *MEMORY[0x1E69E9840];
@@ -1869,14 +1869,14 @@ void __80__NSPPrivateAccessTokenFetcher_handleTokenResponse_withQueue_completion
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveTokenToCache:(id)a3
+- (void)saveTokenToCache:(id)cache
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  cacheCopy = cache;
+  if (cacheCopy)
   {
     v5 = getServerConnection();
-    [v5 addToken:v4 toCacheForFetcher:self];
+    [v5 addToken:cacheCopy toCacheForFetcher:self];
   }
 
   else
@@ -1893,14 +1893,14 @@ void __80__NSPPrivateAccessTokenFetcher_handleTokenResponse_withQueue_completion
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveOneTimeTokenToCache:(id)a3 oneTimeTokenSalt:(id)a4 longLivedToken:(id)a5
+- (void)saveOneTimeTokenToCache:(id)cache oneTimeTokenSalt:(id)salt longLivedToken:(id)token
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  cacheCopy = cache;
+  saltCopy = salt;
+  tokenCopy = token;
+  v11 = tokenCopy;
+  if (!cacheCopy)
   {
     v14 = nplog_obj();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -1916,7 +1916,7 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!saltCopy)
   {
     v14 = nplog_obj();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -1930,7 +1930,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!tokenCopy)
   {
     v14 = nplog_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -1947,20 +1947,20 @@ LABEL_13:
   }
 
   v12 = getServerConnection();
-  [v12 addOneTimeToken:v8 oneTimeTokenSalt:v9 longLivedToken:v11 toCacheForFetcher:self];
+  [v12 addOneTimeToken:cacheCopy oneTimeTokenSalt:saltCopy longLivedToken:v11 toCacheForFetcher:self];
 
 LABEL_5:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)saveAuxiliaryAuthenticationDataToCache:(id)a3 type:(unint64_t)a4 forLabel:(id)a5 cacheKey:(id)a6
++ (void)saveAuxiliaryAuthenticationDataToCache:(id)cache type:(unint64_t)type forLabel:(id)label cacheKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (!v9)
+  cacheCopy = cache;
+  labelCopy = label;
+  keyCopy = key;
+  v12 = keyCopy;
+  if (!cacheCopy)
   {
     v15 = nplog_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -1976,7 +1976,7 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!labelCopy)
   {
     v15 = nplog_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -1990,7 +1990,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!keyCopy)
   {
     v15 = nplog_obj();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -2007,19 +2007,19 @@ LABEL_13:
   }
 
   v13 = getServerConnection();
-  [v13 addAuxiliaryAuthenticationData:v9 type:a4 label:v10 cacheKey:v12];
+  [v13 addAuxiliaryAuthenticationData:cacheCopy type:type label:labelCopy cacheKey:v12];
 
 LABEL_5:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)fetchAuxiliaryAuthenticationDataFromCacheForType:(unint64_t)a3 label:(id)a4 cacheKey:(id)a5 completionHandler:(id)a6
++ (void)fetchAuxiliaryAuthenticationDataFromCacheForType:(unint64_t)type label:(id)label cacheKey:(id)key completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (!v9)
+  labelCopy = label;
+  keyCopy = key;
+  handlerCopy = handler;
+  if (!labelCopy)
   {
     v14 = nplog_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -2037,7 +2037,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!keyCopy)
   {
     v14 = nplog_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -2052,19 +2052,19 @@ LABEL_10:
   }
 
   v12 = getServerConnection();
-  [v12 fetchAuxiliaryAuthenticationDataFromCacheForType:a3 label:v9 cacheKey:v10 completionHandler:v11];
+  [v12 fetchAuxiliaryAuthenticationDataFromCacheForType:type label:labelCopy cacheKey:keyCopy completionHandler:handlerCopy];
 
 LABEL_4:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkRemainingCostQuotaWithQueue:(id)a3 completionHandler:(id)a4
+- (void)checkRemainingCostQuotaWithQueue:(id)queue completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!queueCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -2080,7 +2080,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v10 = nplog_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -2099,7 +2099,7 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __83__NSPPrivateAccessTokenFetcher_checkRemainingCostQuotaWithQueue_completionHandler___block_invoke;
   v13[3] = &unk_1E7A30EA8;
-  v14 = v6;
+  v14 = queueCopy;
   v15 = v8;
   [v9 checkRemainingCostQuotaWithFetcher:self allowRetry:1 completionHandler:v13];
 

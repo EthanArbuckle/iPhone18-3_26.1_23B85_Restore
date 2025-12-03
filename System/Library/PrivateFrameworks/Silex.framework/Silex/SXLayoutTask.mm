@@ -1,15 +1,15 @@
 @interface SXLayoutTask
-- (SXLayoutTask)initWithOptions:(id)a3 instructions:(id)a4;
-- (SXLayoutTask)initWithOptions:(id)a3 instructions:(id)a4 blueprint:(id)a5 DOM:(id)a6;
+- (SXLayoutTask)initWithOptions:(id)options instructions:(id)instructions;
+- (SXLayoutTask)initWithOptions:(id)options instructions:(id)instructions blueprint:(id)blueprint DOM:(id)m;
 - (id)description;
 @end
 
 @implementation SXLayoutTask
 
-- (SXLayoutTask)initWithOptions:(id)a3 instructions:(id)a4
+- (SXLayoutTask)initWithOptions:(id)options instructions:(id)instructions
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  instructionsCopy = instructions;
   v15.receiver = self;
   v15.super_class = SXLayoutTask;
   v9 = [(SXLayoutTask *)&v15 init];
@@ -17,25 +17,25 @@
   if (v9)
   {
     v9->_type = 0;
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v11 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v10->_identifier;
-    v10->_identifier = v12;
+    v10->_identifier = uUIDString;
 
-    objc_storeStrong(&v10->_options, a3);
-    objc_storeStrong(&v10->_instructions, a4);
+    objc_storeStrong(&v10->_options, options);
+    objc_storeStrong(&v10->_instructions, instructions);
     v10->_startTime = CACurrentMediaTime();
   }
 
   return v10;
 }
 
-- (SXLayoutTask)initWithOptions:(id)a3 instructions:(id)a4 blueprint:(id)a5 DOM:(id)a6
+- (SXLayoutTask)initWithOptions:(id)options instructions:(id)instructions blueprint:(id)blueprint DOM:(id)m
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  optionsCopy = options;
+  instructionsCopy = instructions;
+  blueprintCopy = blueprint;
+  mCopy = m;
   v23.receiver = self;
   v23.super_class = SXLayoutTask;
   v15 = [(SXLayoutTask *)&v23 init];
@@ -43,18 +43,18 @@
   if (v15)
   {
     v15->_type = 1;
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v17 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v16->_identifier;
-    v16->_identifier = v18;
+    v16->_identifier = uUIDString;
 
-    objc_storeStrong(&v16->_options, a3);
-    objc_storeStrong(&v16->_instructions, a4);
-    v20 = [v13 copy];
+    objc_storeStrong(&v16->_options, options);
+    objc_storeStrong(&v16->_instructions, instructions);
+    v20 = [blueprintCopy copy];
     blueprint = v16->_blueprint;
     v16->_blueprint = v20;
 
-    objc_storeStrong(&v16->_DOM, a6);
+    objc_storeStrong(&v16->_DOM, m);
     v16->_startTime = CACurrentMediaTime();
   }
 
@@ -63,14 +63,14 @@
 
 - (id)description
 {
-  v3 = [(SXLayoutTask *)self type];
+  type = [(SXLayoutTask *)self type];
   v4 = @"update";
-  if (v3 != 1)
+  if (type != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (type)
   {
     v5 = v4;
   }
@@ -82,14 +82,14 @@
 
   v6 = MEMORY[0x1E696AD60];
   v7 = objc_opt_class();
-  v8 = [(SXLayoutTask *)self identifier];
-  v9 = [v6 stringWithFormat:@"<%@: %p type: %@; identifier: %@", v7, self, v5, v8];;
+  identifier = [(SXLayoutTask *)self identifier];
+  v9 = [v6 stringWithFormat:@"<%@: %p type: %@; identifier: %@", v7, self, v5, identifier];;
 
-  v10 = [(SXLayoutTask *)self options];
-  [v9 appendFormat:@"\noptions: \n%@", v10];
+  options = [(SXLayoutTask *)self options];
+  [v9 appendFormat:@"\noptions: \n%@", options];
 
-  v11 = [(SXLayoutTask *)self instructions];
-  [v9 appendFormat:@"\ninstructions: \n%@", v11];
+  instructions = [(SXLayoutTask *)self instructions];
+  [v9 appendFormat:@"\ninstructions: \n%@", instructions];
 
   [v9 appendFormat:@"\n>"];
 

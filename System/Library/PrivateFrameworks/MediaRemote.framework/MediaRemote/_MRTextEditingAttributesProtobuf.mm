@@ -1,12 +1,12 @@
 @interface _MRTextEditingAttributesProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRTextEditingAttributesProtobuf
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = _MRTextEditingAttributesProtobuf;
   v4 = [(_MRTextEditingAttributesProtobuf *)&v8 description];
-  v5 = [(_MRTextEditingAttributesProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRTextEditingAttributesProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   prompt = self->_prompt;
@@ -42,84 +42,84 @@
   inputTraits = self->_inputTraits;
   if (inputTraits)
   {
-    v8 = [(_MRTextInputTraitsProtobuf *)inputTraits dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"inputTraits"];
+    dictionaryRepresentation = [(_MRTextInputTraitsProtobuf *)inputTraits dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"inputTraits"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_prompt)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_inputTraits)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v5;
+    [toCopy setTitle:?];
+    toCopy = v5;
   }
 
   if (self->_prompt)
   {
     [v5 setPrompt:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_inputTraits)
   {
     [v5 setInputTraits:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_prompt copyWithZone:a3];
+  v8 = [(NSString *)self->_prompt copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(_MRTextInputTraitsProtobuf *)self->_inputTraits copyWithZone:a3];
+  v10 = [(_MRTextInputTraitsProtobuf *)self->_inputTraits copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | v4[3])) || -[NSString isEqual:](title, "isEqual:")) && ((prompt = self->_prompt, !(prompt | v4[2])) || -[NSString isEqual:](prompt, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | equalCopy[3])) || -[NSString isEqual:](title, "isEqual:")) && ((prompt = self->_prompt, !(prompt | equalCopy[2])) || -[NSString isEqual:](prompt, "isEqual:")))
   {
     inputTraits = self->_inputTraits;
-    if (inputTraits | v4[1])
+    if (inputTraits | equalCopy[1])
     {
       v8 = [(_MRTextInputTraitsProtobuf *)inputTraits isEqual:?];
     }
@@ -145,24 +145,24 @@
   return v4 ^ [(_MRTextInputTraitsProtobuf *)self->_inputTraits hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[3])
   {
     [(_MRTextEditingAttributesProtobuf *)self setTitle:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(_MRTextEditingAttributesProtobuf *)self setPrompt:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   inputTraits = self->_inputTraits;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (inputTraits)
   {
     if (!v6)
@@ -183,7 +183,7 @@
     [(_MRTextEditingAttributesProtobuf *)self setInputTraits:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_11:
 }
 

@@ -5,11 +5,11 @@
 - (NanoWeatherPreferences)init;
 - (id)cityList;
 - (id)cityObjectsListFromNanoPreferences;
-- (id)nanoPreferencesDictionaryForCity:(id)a3;
-- (void)setCity:(id)a3 atIndex:(unint64_t)a4 lastUpdated:(id)a5;
-- (void)setCityList:(id)a3 lastUpdated:(id)a4;
-- (void)setCityListFromCityObjs:(id)a3 lastUpdated:(id)a4;
-- (void)setUserIdentifier:(id)a3;
+- (id)nanoPreferencesDictionaryForCity:(id)city;
+- (void)setCity:(id)city atIndex:(unint64_t)index lastUpdated:(id)updated;
+- (void)setCityList:(id)list lastUpdated:(id)updated;
+- (void)setCityListFromCityObjs:(id)objs lastUpdated:(id)updated;
+- (void)setUserIdentifier:(id)identifier;
 - (void)syncPreferencesToNano;
 - (void)syncPreferencesWithDisk;
 @end
@@ -55,15 +55,15 @@
     v4 = sub_1000010B8(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NSMutableSet *)self->_keysToSync allObjects];
-      v6 = [v5 componentsJoinedByString:{@", "}];
+      allObjects = [(NSMutableSet *)self->_keysToSync allObjects];
+      v6 = [allObjects componentsJoinedByString:{@", "}];
       v8 = 138543362;
       v9 = v6;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Synchronizing %{public}@ to watch.", &v8, 0xCu);
     }
 
-    v7 = [(NanoWeatherPreferences *)self sharedDefaults];
-    [v7 synchronize];
+    sharedDefaults = [(NanoWeatherPreferences *)self sharedDefaults];
+    [sharedDefaults synchronize];
 
     [v3 synchronizeUserDefaultsDomain:@"com.apple.nanoweatherprefs" keys:self->_keysToSync];
     [(NSMutableSet *)self->_keysToSync removeAllObjects];
@@ -72,20 +72,20 @@
 
 - (void)syncPreferencesWithDisk
 {
-  v2 = [(NanoWeatherPreferences *)self sharedDefaults];
-  [v2 synchronize];
+  sharedDefaults = [(NanoWeatherPreferences *)self sharedDefaults];
+  [sharedDefaults synchronize];
 }
 
-- (void)setCityListFromCityObjs:(id)a3 lastUpdated:(id)a4
+- (void)setCityListFromCityObjs:(id)objs lastUpdated:(id)updated
 {
-  v6 = a3;
-  v7 = a4;
+  objsCopy = objs;
+  updatedCopy = updated;
   v8 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = objsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -114,29 +114,29 @@
     while (v11);
   }
 
-  [(NanoWeatherPreferences *)self setCityList:v8 lastUpdated:v7];
+  [(NanoWeatherPreferences *)self setCityList:v8 lastUpdated:updatedCopy];
 }
 
-- (void)setCityList:(id)a3 lastUpdated:(id)a4
+- (void)setCityList:(id)list lastUpdated:(id)updated
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14)
+  listCopy = list;
+  updatedCopy = updated;
+  if (listCopy)
   {
-    v7 = [(NanoWeatherPreferences *)self cityList];
-    if (([v14 isEqualToArray:v7] & 1) == 0)
+    cityList = [(NanoWeatherPreferences *)self cityList];
+    if (([listCopy isEqualToArray:cityList] & 1) == 0)
     {
-      v8 = [(NanoWeatherPreferences *)self sharedDefaults];
-      [v8 setObject:v14 forKey:@"Cities"];
+      sharedDefaults = [(NanoWeatherPreferences *)self sharedDefaults];
+      [sharedDefaults setObject:listCopy forKey:@"Cities"];
 
-      v9 = [(NanoWeatherPreferences *)self keysToSync];
-      [v9 addObject:@"Cities"];
+      keysToSync = [(NanoWeatherPreferences *)self keysToSync];
+      [keysToSync addObject:@"Cities"];
 
-      v10 = [(NanoWeatherPreferences *)self sharedDefaults];
-      v11 = v10;
-      if (v6)
+      sharedDefaults2 = [(NanoWeatherPreferences *)self sharedDefaults];
+      v11 = sharedDefaults2;
+      if (updatedCopy)
       {
-        [v10 setObject:v6 forKey:@"LastUpdated"];
+        [sharedDefaults2 setObject:updatedCopy forKey:@"LastUpdated"];
       }
 
       else
@@ -145,40 +145,40 @@
         [v11 setObject:v12 forKey:@"LastUpdated"];
       }
 
-      v13 = [(NanoWeatherPreferences *)self keysToSync];
-      [v13 addObject:@"LastUpdated"];
+      keysToSync2 = [(NanoWeatherPreferences *)self keysToSync];
+      [keysToSync2 addObject:@"LastUpdated"];
     }
   }
 }
 
-- (void)setCity:(id)a3 atIndex:(unint64_t)a4 lastUpdated:(id)a5
+- (void)setCity:(id)city atIndex:(unint64_t)index lastUpdated:(id)updated
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NanoWeatherPreferences *)self cityList];
-  v11 = [NSMutableArray arrayWithArray:v10];
+  updatedCopy = updated;
+  cityCopy = city;
+  cityList = [(NanoWeatherPreferences *)self cityList];
+  v11 = [NSMutableArray arrayWithArray:cityList];
 
-  [v11 setObject:v9 atIndexedSubscript:a4];
-  [(NanoWeatherPreferences *)self setCityList:v11 lastUpdated:v8];
+  [v11 setObject:cityCopy atIndexedSubscript:index];
+  [(NanoWeatherPreferences *)self setCityList:v11 lastUpdated:updatedCopy];
 }
 
 - (id)cityList
 {
-  v2 = [(NanoWeatherPreferences *)self sharedDefaults];
-  v3 = [v2 arrayForKey:@"Cities"];
+  sharedDefaults = [(NanoWeatherPreferences *)self sharedDefaults];
+  v3 = [sharedDefaults arrayForKey:@"Cities"];
 
   return v3;
 }
 
 - (id)cityObjectsListFromNanoPreferences
 {
-  v2 = [(NanoWeatherPreferences *)self cityList];
-  v3 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v2, "count")}];
+  cityList = [(NanoWeatherPreferences *)self cityList];
+  v3 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(cityList, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v2;
+  v4 = cityList;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
@@ -205,9 +205,9 @@
           v11 = sub_1000010B8(0);
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [v9 allKeys];
+            allKeys = [v9 allKeys];
             *buf = 138543362;
-            v20 = v12;
+            v20 = allKeys;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Couldn't create a City object from the city dictionary. The dictionary may be missing required values. Keys present in the dictionary: %{public}@", buf, 0xCu);
           }
         }
@@ -224,18 +224,18 @@
   return v13;
 }
 
-- (id)nanoPreferencesDictionaryForCity:(id)a3
+- (id)nanoPreferencesDictionaryForCity:(id)city
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  cityCopy = city;
+  v4 = cityCopy;
+  if (cityCopy)
   {
-    v5 = [v3 locationID];
-    v6 = v5;
+    locationID = [cityCopy locationID];
+    v6 = locationID;
     v7 = &stru_10000C9E0;
-    if (v5)
+    if (locationID)
     {
-      v8 = v5;
+      v8 = locationID;
     }
 
     else
@@ -252,11 +252,11 @@
       v9 = v10;
     }
 
-    v11 = [v4 name];
-    v12 = v11;
-    if (v11)
+    name = [v4 name];
+    v12 = name;
+    if (name)
     {
-      v7 = v11;
+      v7 = name;
     }
 
     [v4 latitude];
@@ -265,37 +265,37 @@
     v14 = [NSNumber numberWithDouble:?];
     v15 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v7, @"Name", v13, @"Lat", v14, @"Lon", v9, @"UUID", 0];
 
-    v16 = [v4 ISO3166CountryAbbreviation];
+    iSO3166CountryAbbreviation = [v4 ISO3166CountryAbbreviation];
 
-    if (v16)
+    if (iSO3166CountryAbbreviation)
     {
-      v17 = [v4 ISO3166CountryAbbreviation];
-      [v15 setObject:v17 forKey:@"CountryAbbreviation"];
+      iSO3166CountryAbbreviation2 = [v4 ISO3166CountryAbbreviation];
+      [v15 setObject:iSO3166CountryAbbreviation2 forKey:@"CountryAbbreviation"];
     }
 
     else
     {
-      v17 = sub_1000010B8(0);
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      iSO3166CountryAbbreviation2 = sub_1000010B8(0);
+      if (os_log_type_enabled(iSO3166CountryAbbreviation2, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v4 name];
+        name2 = [v4 name];
         *buf = 138412290;
-        v26 = v18;
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Unable to find country abbreviation for %@.", buf, 0xCu);
+        v26 = name2;
+        _os_log_impl(&_mh_execute_header, iSO3166CountryAbbreviation2, OS_LOG_TYPE_DEFAULT, "Unable to find country abbreviation for %@.", buf, 0xCu);
       }
     }
 
-    v19 = [v4 timeZone];
+    timeZone = [v4 timeZone];
 
-    if (v19)
+    if (timeZone)
     {
-      v20 = [v4 timeZone];
-      v21 = [v20 name];
-      [v15 setObject:v21 forKey:@"TimeZone"];
+      timeZone2 = [v4 timeZone];
+      name3 = [timeZone2 name];
+      [v15 setObject:name3 forKey:@"TimeZone"];
 
-      v22 = [v4 timeZoneUpdateDate];
+      timeZoneUpdateDate = [v4 timeZoneUpdateDate];
 
-      if (v22)
+      if (timeZoneUpdateDate)
       {
         [v4 timeZoneUpdateDate];
       }
@@ -319,26 +319,26 @@
 
 - (NSDate)lastUpdated
 {
-  v2 = [(NanoWeatherPreferences *)self sharedDefaults];
-  v3 = [v2 objectForKey:@"LastUpdated"];
+  sharedDefaults = [(NanoWeatherPreferences *)self sharedDefaults];
+  v3 = [sharedDefaults objectForKey:@"LastUpdated"];
 
   return v3;
 }
 
-- (void)setUserIdentifier:(id)a3
+- (void)setUserIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NanoWeatherPreferences *)self sharedDefaults];
-  [v5 setObject:v4 forKey:@"UserIdentifier"];
+  identifierCopy = identifier;
+  sharedDefaults = [(NanoWeatherPreferences *)self sharedDefaults];
+  [sharedDefaults setObject:identifierCopy forKey:@"UserIdentifier"];
 
-  v6 = [(NanoWeatherPreferences *)self keysToSync];
-  [v6 addObject:@"UserIdentifier"];
+  keysToSync = [(NanoWeatherPreferences *)self keysToSync];
+  [keysToSync addObject:@"UserIdentifier"];
 }
 
 - (NSString)userIdentifier
 {
-  v2 = [(NanoWeatherPreferences *)self sharedDefaults];
-  v3 = [v2 stringForKey:@"UserIdentifier"];
+  sharedDefaults = [(NanoWeatherPreferences *)self sharedDefaults];
+  v3 = [sharedDefaults stringForKey:@"UserIdentifier"];
 
   return v3;
 }

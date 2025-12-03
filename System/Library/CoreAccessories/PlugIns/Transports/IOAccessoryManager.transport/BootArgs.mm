@@ -1,11 +1,11 @@
 @interface BootArgs
-+ (BOOL)BOOLForKey:(id)a3;
++ (BOOL)BOOLForKey:(id)key;
 + (id)configuredBootArgs;
 + (id)configuredBootArgsString;
-+ (id)numberForKey:(id)a3;
-+ (id)stringForKey:(id)a3;
-+ (int)intForKey:(id)a3;
-+ (int64_t)integerForKey:(id)a3;
++ (id)numberForKey:(id)key;
++ (id)stringForKey:(id)key;
++ (int)intForKey:(id)key;
++ (int64_t)integerForKey:(id)key;
 - (BootArgs)init;
 @end
 
@@ -144,18 +144,18 @@ void __36__BootArgs_configuredBootArgsString__block_invoke()
   }
 }
 
-+ (id)stringForKey:(id)a3
++ (id)stringForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[BootArgs configuredBootArgs];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
 
-+ (id)numberForKey:(id)a3
++ (id)numberForKey:(id)key
 {
-  v3 = [BootArgs stringForKey:a3];
+  v3 = [BootArgs stringForKey:key];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCABB8]);
@@ -185,58 +185,58 @@ void __36__BootArgs_configuredBootArgsString__block_invoke()
   return v5;
 }
 
-+ (BOOL)BOOLForKey:(id)a3
++ (BOOL)BOOLForKey:(id)key
 {
-  v3 = a3;
-  v4 = [BootArgs numberForKey:v3];
+  keyCopy = key;
+  v4 = [BootArgs numberForKey:keyCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v7 = [BootArgs stringForKey:v3];
+    v7 = [BootArgs stringForKey:keyCopy];
     v8 = v7;
-    v6 = v7 && (![v7 caseInsensitiveCompare:@"true"] || !objc_msgSend(v8, "caseInsensitiveCompare:", @"yes"));
+    bOOLValue = v7 && (![v7 caseInsensitiveCompare:@"true"] || !objc_msgSend(v8, "caseInsensitiveCompare:", @"yes"));
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (int64_t)integerForKey:(id)a3
++ (int64_t)integerForKey:(id)key
 {
-  v3 = [BootArgs numberForKey:a3];
+  v3 = [BootArgs numberForKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (int)intForKey:(id)a3
++ (int)intForKey:(id)key
 {
-  v3 = [BootArgs numberForKey:a3];
+  v3 = [BootArgs numberForKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v5 = 0;
+    intValue = 0;
   }
 
-  return v5;
+  return intValue;
 }
 
 @end

@@ -1,78 +1,78 @@
 @interface _DPOBHRecord
-+ (id)createRecordFromManagedObject:(id)a3;
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOBHRecord:(id)a3;
-- (_DPOBHRecord)initWithCoder:(id)a3;
-- (_DPOBHRecord)initWithKey:(id)a3 creationDate:(double)a4 submitted:(BOOL)a5 objectId:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)createRecordFromManagedObject:(id)object;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOBHRecord:(id)record;
+- (_DPOBHRecord)initWithCoder:(id)coder;
+- (_DPOBHRecord)initWithKey:(id)key creationDate:(double)date submitted:(BOOL)submitted objectId:(id)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)entityName;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DPOBHRecord
 
-- (_DPOBHRecord)initWithKey:(id)a3 creationDate:(double)a4 submitted:(BOOL)a5 objectId:(id)a6
+- (_DPOBHRecord)initWithKey:(id)key creationDate:(double)date submitted:(BOOL)submitted objectId:(id)id
 {
-  v11 = a3;
-  v12 = a6;
+  keyCopy = key;
+  idCopy = id;
   v16.receiver = self;
   v16.super_class = _DPOBHRecord;
   v13 = [(_DPOBHRecord *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_key, a3);
-    v14->_creationDate = a4;
-    v14->_submitted = a5;
+    objc_storeStrong(&v13->_key, key);
+    v14->_creationDate = date;
+    v14->_submitted = submitted;
     v14->_reportVersion = +[_DPJSONOutputHelper currentVersion];
-    objc_storeStrong(&v14->_objectId, a6);
+    objc_storeStrong(&v14->_objectId, id);
   }
 
   return v14;
 }
 
-- (_DPOBHRecord)initWithCoder:(id)a3
+- (_DPOBHRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"submitted"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"submitted"];
 
-  v10 = [v9 BOOLValue];
-  v11 = [(_DPOBHRecord *)self initWithKey:v5 creationDate:v10 submitted:0 objectId:v8];
+  bOOLValue = [v9 BOOLValue];
+  v11 = [(_DPOBHRecord *)self initWithKey:v5 creationDate:bOOLValue submitted:0 objectId:v8];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   key = self->_key;
   if (key)
   {
-    [v9 encodeObject:key forKey:@"key"];
+    [coderCopy encodeObject:key forKey:@"key"];
   }
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_creationDate];
-  [v9 encodeObject:v5 forKey:@"creationDate"];
+  [coderCopy encodeObject:v5 forKey:@"creationDate"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_submitted];
-  [v9 encodeObject:v6 forKey:@"submitted"];
+  [coderCopy encodeObject:v6 forKey:@"submitted"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_reportVersion];
-  [v9 encodeObject:v7 forKey:@"reportVersion"];
+  [coderCopy encodeObject:v7 forKey:@"reportVersion"];
 
   objectId = self->_objectId;
   if (objectId)
   {
-    [v9 encodeObject:objectId forKey:@"objectId"];
+    [coderCopy encodeObject:objectId forKey:@"objectId"];
   }
 }
 
@@ -115,58 +115,58 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(_DPOBHRecord *)self key];
   [(_DPOBHRecord *)self creationDate];
   v7 = v6;
-  v8 = [(_DPOBHRecord *)self submitted];
-  v9 = [(_DPOBHRecord *)self objectId];
-  v10 = [v4 initWithKey:v5 creationDate:v8 submitted:v9 objectId:v7];
+  submitted = [(_DPOBHRecord *)self submitted];
+  objectId = [(_DPOBHRecord *)self objectId];
+  v10 = [v4 initWithKey:v5 creationDate:submitted submitted:objectId objectId:v7];
 
   return v10;
 }
 
-- (BOOL)isEqualToOBHRecord:(id)a3
+- (BOOL)isEqualToOBHRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     goto LABEL_6;
   }
 
   v5 = [(_DPOBHRecord *)self key];
-  v6 = [v4 key];
+  v6 = [recordCopy key];
   v7 = [v5 isEqualToString:v6];
 
   [(_DPOBHRecord *)self creationDate];
   v9 = v8;
-  [v4 creationDate];
+  [recordCopy creationDate];
   v11 = areEqualTimeIntervals(v9, v10);
   LODWORD(v6) = [(_DPOBHRecord *)self submitted];
-  v12 = v6 ^ [v4 submitted];
-  v13 = [(_DPOBHRecord *)self reportVersion];
-  v14 = [v4 reportVersion];
-  v15 = [(_DPOBHRecord *)self objectId];
+  v12 = v6 ^ [recordCopy submitted];
+  reportVersion = [(_DPOBHRecord *)self reportVersion];
+  reportVersion2 = [recordCopy reportVersion];
+  objectId = [(_DPOBHRecord *)self objectId];
 
-  if (v15)
+  if (objectId)
   {
-    v16 = [(_DPOBHRecord *)self objectId];
-    v17 = [v4 objectId];
-    v18 = [v16 isEqual:v17];
+    objectId2 = [(_DPOBHRecord *)self objectId];
+    objectId3 = [recordCopy objectId];
+    v18 = [objectId2 isEqual:objectId3];
   }
 
   else
   {
-    v19 = [v4 objectId];
+    objectId4 = [recordCopy objectId];
 
-    v18 = v19 == 0;
+    v18 = objectId4 == 0;
   }
 
   if (!(v12 & 1 | ((v7 & v11 & 1) == 0)))
   {
-    v20 = (v13 == v14) & v18;
+    v20 = (reportVersion == reportVersion2) & v18;
   }
 
   else
@@ -178,18 +178,18 @@ LABEL_6:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPOBHRecord *)self isEqualToOBHRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPOBHRecord *)self isEqualToOBHRecord:v5];
   }
 
   return v6;
@@ -203,20 +203,20 @@ LABEL_6:
   v6 = v5;
   v7 = v4 ^ [(_DPOBHRecord *)self submitted];
   v8 = v7 ^ [(_DPOBHRecord *)self reportVersion];
-  v9 = [(_DPOBHRecord *)self objectId];
-  v10 = v8 ^ [v9 hash];
+  objectId = [(_DPOBHRecord *)self objectId];
+  v10 = v8 ^ [objectId hash];
 
   return v10 ^ v6;
 }
 
-+ (id)createRecordFromManagedObject:(id)a3
++ (id)createRecordFromManagedObject:(id)object
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  objectCopy = object;
   v35[0] = objc_opt_class();
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  v5 = [v3 entity];
-  v6 = [v5 name];
+  entity = [objectCopy entity];
+  name = [entity name];
 
   v7 = [MEMORY[0x277CBEBF8] mutableCopy];
   v29 = 0u;
@@ -239,8 +239,8 @@ LABEL_6:
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        v14 = [v13 entityName];
-        v15 = [v14 isEqualToString:v6];
+        entityName = [v13 entityName];
+        v15 = [entityName isEqualToString:name];
 
         if (v15)
         {
@@ -275,7 +275,7 @@ LABEL_12:
 
       v21 = *(*(&v25 + 1) + 8 * v20);
       v22 = objc_opt_new();
-      if ([v22 copyFromManagedObject:{v3, v25}])
+      if ([v22 copyFromManagedObject:{objectCopy, v25}])
       {
         break;
       }
@@ -311,14 +311,14 @@ LABEL_18:
   return [v2 entityName];
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [(_DPOBHRecord *)self key];
     [v6 setKey:v7];
 
@@ -326,27 +326,27 @@ LABEL_18:
     [v6 setCreationDate:?];
     [v6 setSubmitted:{-[_DPOBHRecord submitted](self, "submitted")}];
     [v6 setReportVersion:{-[_DPOBHRecord reportVersion](self, "reportVersion")}];
-    v8 = [(_DPOBHRecord *)self objectId];
-    v9 = [v6 objectID];
+    objectId = [(_DPOBHRecord *)self objectId];
+    objectID = [v6 objectID];
 
-    if (v8 != v9)
+    if (objectId != objectID)
     {
-      v10 = [v6 objectID];
-      [(_DPOBHRecord *)self setObjectId:v10];
+      objectID2 = [v6 objectID];
+      [(_DPOBHRecord *)self setObjectId:objectID2];
     }
   }
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [v6 key];
     [(_DPOBHRecord *)self setKey:v7];
 
@@ -354,9 +354,9 @@ LABEL_18:
     [(_DPOBHRecord *)self setCreationDate:?];
     -[_DPOBHRecord setSubmitted:](self, "setSubmitted:", [v6 submitted]);
     -[_DPOBHRecord setReportVersion:](self, "setReportVersion:", [v6 reportVersion]);
-    v8 = [v6 objectID];
+    objectID = [v6 objectID];
 
-    [(_DPOBHRecord *)self setObjectId:v8];
+    [(_DPOBHRecord *)self setObjectId:objectID];
   }
 
   return isKindOfClass & 1;

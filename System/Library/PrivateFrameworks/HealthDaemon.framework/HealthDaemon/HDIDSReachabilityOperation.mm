@@ -1,19 +1,19 @@
 @interface HDIDSReachabilityOperation
-- (HDIDSReachabilityOperation)initWithIdentifers:(id)a3 serviceIdentifier:(id)a4 updateHandler:(id)a5;
+- (HDIDSReachabilityOperation)initWithIdentifers:(id)identifers serviceIdentifier:(id)identifier updateHandler:(id)handler;
 - (uint64_t)_finish;
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
 - (void)cancel;
 - (void)start;
-- (void)updateDestinations:(id)a3;
+- (void)updateDestinations:(id)destinations;
 @end
 
 @implementation HDIDSReachabilityOperation
 
-- (HDIDSReachabilityOperation)initWithIdentifers:(id)a3 serviceIdentifier:(id)a4 updateHandler:(id)a5
+- (HDIDSReachabilityOperation)initWithIdentifers:(id)identifers serviceIdentifier:(id)identifier updateHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifersCopy = identifers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = HDIDSReachabilityOperation;
   v12 = [(HDIDSReachabilityOperation *)&v17 init];
@@ -21,9 +21,9 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_destinationIdentifiers, a3);
-    objc_storeStrong(&v13->_serviceIdentifier, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_destinationIdentifiers, identifers);
+    objc_storeStrong(&v13->_serviceIdentifier, identifier);
+    v14 = [handlerCopy copy];
     updateHandler = v13->_updateHandler;
     v13->_updateHandler = v14;
 
@@ -40,19 +40,19 @@
   v18[1] = *MEMORY[0x277D85DE8];
   if (!self->_queryController)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDIDSReachabilityOperation.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"_queryController != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSReachabilityOperation.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"_queryController != nil"}];
   }
 
   if ([(HDIDSReachabilityOperation *)self isCancelled])
   {
     _HKInitializeLogging();
-    v3 = HKLogSharing();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    underlyingQueue = HKLogSharing();
+    if (os_log_type_enabled(underlyingQueue, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       *&buf[4] = self;
-      _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: We've been cancelled while in the operation queue.", buf, 0xCu);
+      _os_log_impl(&dword_228986000, underlyingQueue, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: We've been cancelled while in the operation queue.", buf, 0xCu);
     }
   }
 
@@ -74,10 +74,10 @@
     }
 
     [(IDSBatchIDQueryController *)self->_queryController setDestinations:self->_destinationIdentifiers];
-    v6 = [MEMORY[0x277CCABD8] currentQueue];
-    v3 = [v6 underlyingQueue];
+    currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+    underlyingQueue = [currentQueue underlyingQueue];
 
-    v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v3);
+    v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, underlyingQueue);
     timer = self->_timer;
     self->_timer = v7;
 
@@ -100,23 +100,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDestinations:(id)a3
+- (void)updateDestinations:(id)destinations
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  destinationsCopy = destinations;
   os_unfair_lock_lock(&self->_lock);
   _HKInitializeLogging();
   v5 = HKLogSharing();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = [v4 count];
+    v12 = [destinationsCopy count];
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Updating reachability operation for %ld identifiers", &v9, 0x16u);
   }
 
-  [(IDSBatchIDQueryController *)self->_queryController setDestinations:v4];
+  [(IDSBatchIDQueryController *)self->_queryController setDestinations:destinationsCopy];
   timer = self->_timer;
   if (timer)
   {
@@ -137,7 +137,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: The reachability operation has been cancelled.", buf, 0xCu);
   }
 
@@ -193,12 +193,12 @@ void __41__HDIDSReachabilityOperation__startTimer__block_invoke(uint64_t a1)
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  statusCopy = status;
+  serviceCopy = service;
+  errorCopy = error;
   if ([(HDIDSReachabilityOperation *)self isCancelled])
   {
     _HKInitializeLogging();
@@ -206,7 +206,7 @@ void __41__HDIDSReachabilityOperation__startTimer__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = self;
+      selfCopy2 = self;
       v13 = "[summary-sharing] %{public}@: We got a reachability callback but we are already cancelled.";
       v14 = v12;
       v15 = 12;
@@ -215,9 +215,9 @@ LABEL_8:
     }
   }
 
-  else if ([v10 isEqualToString:self->_serviceIdentifier])
+  else if ([serviceCopy isEqualToString:self->_serviceIdentifier])
   {
-    v12 = [v9 hk_map:&__block_literal_global_231];
+    v12 = [statusCopy hk_map:&__block_literal_global_231];
     (*(self->_updateHandler + 2))();
   }
 
@@ -228,9 +228,9 @@ LABEL_8:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543618;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
-      v20 = v10;
+      v20 = serviceCopy;
       v13 = "[summary-sharing] %{public}@: We got a reachability callback with the incorrect service identifier %@";
       v14 = v12;
       v15 = 22;

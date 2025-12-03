@@ -2,8 +2,8 @@
 - (BOOL)isHUDEnabled;
 - (int64_t)hudThreshold;
 - (void)applySettings;
-- (void)setHUDEnabled:(BOOL)a3;
-- (void)setHUDThreshold:(int64_t)a3;
+- (void)setHUDEnabled:(BOOL)enabled;
+- (void)setHUDThreshold:(int64_t)threshold;
 @end
 
 @implementation HTInternalSettings
@@ -51,13 +51,13 @@
   return AppBooleanValue;
 }
 
-- (void)setHUDEnabled:(BOOL)a3
+- (void)setHUDEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(HTInternalSettings *)self isHUDEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(HTInternalSettings *)self isHUDEnabled]!= enabled)
   {
     v5 = *MEMORY[0x277D0FA80];
-    if (v3)
+    if (enabledCopy)
     {
       v6 = [MEMORY[0x277CCABB0] numberWithBool:1];
       v7 = *MEMORY[0x277D0FA18];
@@ -88,21 +88,21 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v5 = 500;
+    intValue = 500;
   }
 
-  return v5;
+  return intValue;
 }
 
-- (void)setHUDThreshold:(int64_t)a3
+- (void)setHUDThreshold:(int64_t)threshold
 {
   v4 = *MEMORY[0x277D0FA88];
-  if (a3 == 500)
+  if (threshold == 500)
   {
     CFPreferencesSetAppValue(*MEMORY[0x277D0FA88], 0, *MEMORY[0x277D0FA18]);
   }

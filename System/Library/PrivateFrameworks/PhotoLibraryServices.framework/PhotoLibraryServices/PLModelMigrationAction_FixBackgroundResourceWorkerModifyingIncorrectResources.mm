@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_FixBackgroundResourceWorkerModifyingIncorrectResources
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixBackgroundResourceWorkerModifyingIncorrectResources
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v100[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
@@ -25,8 +25,8 @@
   v10 = MEMORY[0x1E696AB28];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"dataStoreClassID", 0];
   v100[0] = v11;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 4294934528];
-  v100[1] = v12;
+  4294934528 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 4294934528];
+  v100[1] = 4294934528;
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT (%K IN %@)", @"recipeID", &unk_1F0FBFCB8];
   v100[2] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:3];
@@ -35,7 +35,7 @@
 
   v16 = v56 + 5;
   obj = v56[5];
-  v17 = [v6 executeFetchRequest:v9 error:&obj];
+  v17 = [contextCopy executeFetchRequest:v9 error:&obj];
   objc_storeStrong(v16, obj);
   v18 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v17 count], 0);
   v19 = v18;
@@ -49,7 +49,7 @@
     v52 = &v55;
     v53 = &v61;
     v51 = v18;
-    v20 = [v6 enumerateWithIncrementalSaveUsingObjects:v17 withBlock:v50];
+    v20 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v17 withBlock:v50];
     if (v20)
     {
       if (!v56[5])
@@ -61,8 +61,8 @@
 
         if (v22)
         {
-          v23 = [(PLModelMigrationActionCore *)self logger];
-          v24 = v23 == 0;
+          logger = [(PLModelMigrationActionCore *)self logger];
+          v24 = logger == 0;
 
           if (v24)
           {
@@ -144,8 +144,8 @@
 
     if (v30)
     {
-      v31 = [(PLModelMigrationActionCore *)self logger];
-      v32 = v31 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v32 = logger2 == 0;
 
       if (v32)
       {
@@ -220,9 +220,9 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = v56[5];
+    *error = v56[5];
   }
 
   v46 = v62[3];

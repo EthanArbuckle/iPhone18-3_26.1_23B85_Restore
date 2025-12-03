@@ -1,12 +1,12 @@
 @interface SearchCallHistoryIntentHandler
-+ (unint64_t)maximumRecordCountForCallRecordTypeOptions:(unint64_t)a3;
++ (unint64_t)maximumRecordCountForCallRecordTypeOptions:(unint64_t)options;
 - (SearchCallHistoryIntentHandler)init;
-- (SearchCallHistoryIntentHandler)initWithDataSource:(id)a3;
-- (id)callRecordsForRecentCallsWithRecordTypeOptions:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 recipient:(id)a6 capabilities:(unint64_t)a7 preferredProvider:(int64_t)a8 maximumRecordCount:(unint64_t)a9 unseen:(id)a10;
-- (id)callRecordsForVoicemails:(id)a3;
-- (void)handleSearchCallHistory:(id)a3 completion:(id)a4;
-- (void)handleSearchVoicemailForRecipient:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 unread:(id)a6 maximumRecordCount:(unint64_t)a7 completion:(id)a8;
-- (void)resolveRecipientForSearchCallHistory:(id)a3 withCompletion:(id)a4;
+- (SearchCallHistoryIntentHandler)initWithDataSource:(id)source;
+- (id)callRecordsForRecentCallsWithRecordTypeOptions:(unint64_t)options startDate:(id)date endDate:(id)endDate recipient:(id)recipient capabilities:(unint64_t)capabilities preferredProvider:(int64_t)provider maximumRecordCount:(unint64_t)count unseen:(id)self0;
+- (id)callRecordsForVoicemails:(id)voicemails;
+- (void)handleSearchCallHistory:(id)history completion:(id)completion;
+- (void)handleSearchVoicemailForRecipient:(id)recipient fromStartDate:(id)date toEndDate:(id)endDate unread:(id)unread maximumRecordCount:(unint64_t)count completion:(id)completion;
+- (void)resolveRecipientForSearchCallHistory:(id)history withCompletion:(id)completion;
 @end
 
 @implementation SearchCallHistoryIntentHandler
@@ -19,16 +19,16 @@
   return v4;
 }
 
-- (SearchCallHistoryIntentHandler)initWithDataSource:(id)a3
+- (SearchCallHistoryIntentHandler)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = SearchCallHistoryIntentHandler;
   v6 = [(SearchCallHistoryIntentHandler *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v8 = objc_alloc_init(NSCache);
     identifierToContactCache = v7->_identifierToContactCache;
     v7->_identifierToContactCache = v8;
@@ -37,9 +37,9 @@
   return v7;
 }
 
-+ (unint64_t)maximumRecordCountForCallRecordTypeOptions:(unint64_t)a3
++ (unint64_t)maximumRecordCountForCallRecordTypeOptions:(unint64_t)options
 {
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
     return 1;
   }
@@ -50,31 +50,31 @@
   }
 }
 
-- (void)handleSearchCallHistory:(id)a3 completion:(id)a4
+- (void)handleSearchCallHistory:(id)history completion:(id)completion
 {
-  v6 = a3;
-  v33 = a4;
+  historyCopy = history;
+  completionCopy = completion;
   v7 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v6;
+    v38 = historyCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Got a SearchCallHistory intent: %@", buf, 0xCu);
   }
 
-  v8 = [v6 dateCreated];
-  v9 = [v8 startDateComponents];
-  v36 = [v8 endDateComponents];
-  v34 = [v6 recipient];
-  v10 = [v6 callCapabilities];
-  v11 = [v6 callTypes];
-  v35 = [v6 unseen];
-  v12 = [v6 preferredCallProvider];
+  dateCreated = [historyCopy dateCreated];
+  startDateComponents = [dateCreated startDateComponents];
+  endDateComponents = [dateCreated endDateComponents];
+  recipient = [historyCopy recipient];
+  callCapabilities = [historyCopy callCapabilities];
+  callTypes = [historyCopy callTypes];
+  unseen = [historyCopy unseen];
+  preferredCallProvider = [historyCopy preferredCallProvider];
   v13 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v9;
+    v38 = startDateComponents;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Start Date  : %@", buf, 0xCu);
   }
 
@@ -82,7 +82,7 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v36;
+    v38 = endDateComponents;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "End Date    : %@", buf, 0xCu);
   }
 
@@ -90,7 +90,7 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v34;
+    v38 = recipient;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Recipient   : %@", buf, 0xCu);
   }
 
@@ -98,11 +98,11 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v38 = v10;
+    v38 = callCapabilities;
     v39 = 1024;
-    v40 = v10 & 1;
+    v40 = callCapabilities & 1;
     v41 = 1024;
-    v42 = (v10 >> 1) & 1;
+    v42 = (callCapabilities >> 1) & 1;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Capabilities: %lx (audio: %d | video: %d)", buf, 0x18u);
   }
 
@@ -119,7 +119,7 @@
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v38 = v11;
+    v38 = callTypes;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Types       : %lx", buf, 0xCu);
   }
 
@@ -127,60 +127,60 @@
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v35;
+    v38 = unseen;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Unseen     : %@", buf, 0xCu);
   }
 
-  v21 = [objc_opt_class() maximumRecordCountForCallRecordTypeOptions:v11];
-  v22 = v9;
-  v23 = [v9 date];
-  v24 = [v36 date];
-  if ((v11 & 0x10) != 0)
+  v21 = [objc_opt_class() maximumRecordCountForCallRecordTypeOptions:callTypes];
+  v22 = startDateComponents;
+  date = [startDateComponents date];
+  date2 = [endDateComponents date];
+  if ((callTypes & 0x10) != 0)
   {
-    v31 = self;
-    v26 = v34;
-    v30 = v35;
+    selfCopy = self;
+    v26 = recipient;
+    v30 = unseen;
     v32 = v21;
-    v29 = v33;
-    [(SearchCallHistoryIntentHandler *)v31 handleSearchVoicemailForRecipient:v34 fromStartDate:v23 toEndDate:v24 unread:v35 maximumRecordCount:v32 completion:v33];
+    v29 = completionCopy;
+    [(SearchCallHistoryIntentHandler *)selfCopy handleSearchVoicemailForRecipient:recipient fromStartDate:date toEndDate:date2 unread:unseen maximumRecordCount:v32 completion:completionCopy];
   }
 
   else
   {
-    v25 = self;
-    v26 = v34;
-    v27 = [(SearchCallHistoryIntentHandler *)v25 callRecordsForRecentCallsWithRecordTypeOptions:v11 startDate:v23 endDate:v24 recipient:v34 capabilities:v10 preferredProvider:v12 maximumRecordCount:v21 unseen:v35];
+    selfCopy2 = self;
+    v26 = recipient;
+    v27 = [(SearchCallHistoryIntentHandler *)selfCopy2 callRecordsForRecentCallsWithRecordTypeOptions:callTypes startDate:date endDate:date2 recipient:recipient capabilities:callCapabilities preferredProvider:preferredCallProvider maximumRecordCount:v21 unseen:unseen];
 
-    v24 = [[INSearchCallHistoryIntentResponse alloc] initWithCode:7 userActivity:0];
-    [v24 setCallRecords:v27];
+    date2 = [[INSearchCallHistoryIntentResponse alloc] initWithCode:7 userActivity:0];
+    [date2 setCallRecords:v27];
     v28 = IntentHandlerDefaultLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v24;
+      v38 = date2;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Calling completion block with response: %@", buf, 0xCu);
     }
 
-    v29 = v33;
-    (*(v33 + 2))(v33, v24);
-    v23 = v27;
-    v30 = v35;
+    v29 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, date2);
+    date = v27;
+    v30 = unseen;
   }
 }
 
-- (void)resolveRecipientForSearchCallHistory:(id)a3 withCompletion:(id)a4
+- (void)resolveRecipientForSearchCallHistory:(id)history withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 recipient];
+  completionCopy = completion;
+  recipient = [history recipient];
   v7 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v6;
+    v22 = recipient;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "resolveRecipientForSearchCallHistory: %@", &v21, 0xCu);
   }
 
-  if (!v6)
+  if (!recipient)
   {
     v13 = IntentHandlerDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -193,9 +193,9 @@
     goto LABEL_11;
   }
 
-  v8 = [v6 personHandle];
-  v9 = [v8 value];
-  v10 = [v9 length];
+  personHandle = [recipient personHandle];
+  value = [personHandle value];
+  v10 = [value length];
 
   if (v10)
   {
@@ -203,18 +203,18 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = v6;
+      v22 = recipient;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Handle is present. Simply using the recipient to resolve with: %@", &v21, 0xCu);
     }
 
-    v12 = [INPersonResolutionResult successWithResolvedPerson:v6];
+    v12 = [INPersonResolutionResult successWithResolvedPerson:recipient];
 LABEL_11:
     v14 = v12;
     goto LABEL_20;
   }
 
-  v15 = [v6 siriMatches];
-  v16 = [v15 count];
+  siriMatches = [recipient siriMatches];
+  v16 = [siriMatches count];
   v17 = IntentHandlerDefaultLog();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
   if (v16)
@@ -225,7 +225,7 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Recipient contains siriMatches, preserving those and returning success", &v21, 2u);
     }
 
-    v19 = [INPersonResolutionResult successWithResolvedPerson:v6];
+    v19 = [INPersonResolutionResult successWithResolvedPerson:recipient];
   }
 
   else
@@ -250,16 +250,16 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Resolving with: %@", &v21, 0xCu);
   }
 
-  v5[2](v5, v14);
+  completionCopy[2](completionCopy, v14);
 }
 
-- (void)handleSearchVoicemailForRecipient:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 unread:(id)a6 maximumRecordCount:(unint64_t)a7 completion:(id)a8
+- (void)handleSearchVoicemailForRecipient:(id)recipient fromStartDate:(id)date toEndDate:(id)endDate unread:(id)unread maximumRecordCount:(unint64_t)count completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  recipientCopy = recipient;
+  dateCopy = date;
+  endDateCopy = endDate;
+  unreadCopy = unread;
+  completionCopy = completion;
   v19 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -267,68 +267,68 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Type indicates we should be searching for voicemail. Matching voicemails to this intent", buf, 2u);
   }
 
-  v20 = [(SearchCallHistoryIntentHandler *)self dataSource];
-  v21 = [v20 voicemailDataSource];
+  dataSource = [(SearchCallHistoryIntentHandler *)self dataSource];
+  voicemailDataSource = [dataSource voicemailDataSource];
 
-  if ([v21 isOnlineAndSubscribed])
+  if ([voicemailDataSource isOnlineAndSubscribed])
   {
     [(SearchCallHistoryIntentHandler *)self dataSource];
-    v22 = self;
+    selfCopy = self;
     v23 = v34 = self;
     [v23 contactsDataSource];
-    v35 = a7;
-    v24 = v21;
-    v25 = v18;
-    v26 = v17;
-    v27 = v16;
-    v29 = v28 = v15;
-    v30 = [(SearchCallHistoryIntentHandler *)v22 identifierToContactCache];
-    v31 = [v14 tu_handlesMatchingPersonWithContactsDataSource:v29 identifierToContactCache:v30];
+    countCopy = count;
+    v24 = voicemailDataSource;
+    v25 = completionCopy;
+    v26 = unreadCopy;
+    v27 = endDateCopy;
+    v29 = v28 = dateCopy;
+    identifierToContactCache = [(SearchCallHistoryIntentHandler *)selfCopy identifierToContactCache];
+    v31 = [recipientCopy tu_handlesMatchingPersonWithContactsDataSource:v29 identifierToContactCache:identifierToContactCache];
 
-    v15 = v28;
-    v16 = v27;
-    v17 = v26;
-    v18 = v25;
-    v21 = v24;
+    dateCopy = v28;
+    endDateCopy = v27;
+    unreadCopy = v26;
+    completionCopy = v25;
+    voicemailDataSource = v24;
 
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_100008D3C;
     v39[3] = &unk_10004CCD0;
-    v40 = v14;
+    v40 = recipientCopy;
     v41 = v31;
-    v42 = v15;
-    v43 = v16;
-    v44 = v17;
+    v42 = dateCopy;
+    v43 = endDateCopy;
+    v44 = unreadCopy;
     v32 = v31;
     v33 = objc_retainBlock(v39);
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = sub_10000915C;
     v36[3] = &unk_10004CCF8;
-    v38 = v35;
+    v38 = countCopy;
     v36[4] = v34;
-    v37 = v18;
+    v37 = completionCopy;
     [v24 fetchVoicemailsMatching:v33 completion:v36];
   }
 
   else
   {
     v32 = [[INSearchCallHistoryIntentResponse alloc] initWithCode:5 userActivity:0];
-    (*(v18 + 2))(v18, v32);
+    (*(completionCopy + 2))(completionCopy, v32);
   }
 }
 
-- (id)callRecordsForVoicemails:(id)a3
+- (id)callRecordsForVoicemails:(id)voicemails
 {
-  v3 = a3;
-  v35 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  voicemailsCopy = voicemails;
+  v35 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [voicemailsCopy count]);
   v33 = objc_alloc_init(NSMutableDictionary);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v3;
+  obj = voicemailsCopy;
   v36 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v36)
   {
@@ -343,8 +343,8 @@ LABEL_20:
         }
 
         v5 = *(*(&v38 + 1) + 8 * i);
-        v6 = [v5 senderDestinationID];
-        v7 = [v6 length];
+        senderDestinationID = [v5 senderDestinationID];
+        v7 = [senderDestinationID length];
 
         if (!v7)
         {
@@ -359,8 +359,8 @@ LABEL_20:
         }
 
         v8 = [TUHandle alloc];
-        v9 = [v5 senderDestinationID];
-        v10 = [v8 initWithType:2 value:v9];
+        senderDestinationID2 = [v5 senderDestinationID];
+        v10 = [v8 initWithType:2 value:senderDestinationID2];
 
         v11 = [v33 objectForKey:v10];
         objc_opt_class();
@@ -381,12 +381,12 @@ LABEL_23:
             goto LABEL_24;
           }
 
-          v14 = [(SearchCallHistoryIntentHandler *)self dataSource];
-          v15 = [v14 contactsDataSource];
-          v16 = [(SearchCallHistoryIntentHandler *)self dataSource];
-          v17 = [v16 coreTelephonyDataSource];
-          v18 = [v17 allRelevantISOCountryCodes];
-          v12 = [INPerson tu_personMatchingHandle:v10 contactsDataSource:v15 isoCountryCodes:v18];
+          dataSource = [(SearchCallHistoryIntentHandler *)self dataSource];
+          contactsDataSource = [dataSource contactsDataSource];
+          dataSource2 = [(SearchCallHistoryIntentHandler *)self dataSource];
+          coreTelephonyDataSource = [dataSource2 coreTelephonyDataSource];
+          allRelevantISOCountryCodes = [coreTelephonyDataSource allRelevantISOCountryCodes];
+          v12 = [INPerson tu_personMatchingHandle:v10 contactsDataSource:contactsDataSource isoCountryCodes:allRelevantISOCountryCodes];
 
           if (v12)
           {
@@ -418,12 +418,12 @@ LABEL_23:
         v22 = [NSArray arrayWithObjects:&v42 count:1];
 LABEL_24:
         v23 = [INCallRecord alloc];
-        v24 = [v5 vmIdentifier];
-        v25 = [v5 date];
+        vmIdentifier = [v5 vmIdentifier];
+        date = [v5 date];
         [v5 duration];
         v26 = [NSNumber numberWithDouble:?];
         v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isUnread]);
-        v28 = [v23 initWithIdentifier:v24 dateCreated:v25 callRecordType:5 callCapability:1 callDuration:v26 unseen:v27 participants:v22 numberOfCalls:0 isCallerIdBlocked:0];
+        v28 = [v23 initWithIdentifier:vmIdentifier dateCreated:date callRecordType:5 callCapability:1 callDuration:v26 unseen:v27 participants:v22 numberOfCalls:0 isCallerIdBlocked:0];
 
         [v35 addObject:v28];
       }
@@ -439,13 +439,13 @@ LABEL_24:
   return v29;
 }
 
-- (id)callRecordsForRecentCallsWithRecordTypeOptions:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 recipient:(id)a6 capabilities:(unint64_t)a7 preferredProvider:(int64_t)a8 maximumRecordCount:(unint64_t)a9 unseen:(id)a10
+- (id)callRecordsForRecentCallsWithRecordTypeOptions:(unint64_t)options startDate:(id)date endDate:(id)endDate recipient:(id)recipient capabilities:(unint64_t)capabilities preferredProvider:(int64_t)provider maximumRecordCount:(unint64_t)count unseen:(id)self0
 {
-  v84 = a8;
-  *(&v87 + 1) = a4;
-  *&v87 = a5;
-  v13 = a6;
-  v86 = a10;
+  providerCopy = provider;
+  *(&v87 + 1) = date;
+  *&v87 = endDate;
+  recipientCopy = recipient;
+  unseenCopy = unseen;
   v14 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -461,83 +461,83 @@ LABEL_24:
     [v16 addObject:v17];
   }
 
-  if (v13)
+  if (recipientCopy)
   {
-    v18 = [(SearchCallHistoryIntentHandler *)self dataSource];
-    v19 = [v18 contactsDataSource];
-    v20 = [(SearchCallHistoryIntentHandler *)self identifierToContactCache];
-    v21 = [v13 tu_handlesMatchingPersonWithContactsDataSource:v19 identifierToContactCache:v20];
+    dataSource = [(SearchCallHistoryIntentHandler *)self dataSource];
+    contactsDataSource = [dataSource contactsDataSource];
+    identifierToContactCache = [(SearchCallHistoryIntentHandler *)self identifierToContactCache];
+    v21 = [recipientCopy tu_handlesMatchingPersonWithContactsDataSource:contactsDataSource identifierToContactCache:identifierToContactCache];
 
     v22 = [CallHistoryDataSourcePredicate predicateForCallsWithNumberOfRemoteParticipants:1];
     [v16 addObject:v22];
-    v23 = [(SearchCallHistoryIntentHandler *)self dataSource];
-    [v23 coreTelephonyDataSource];
-    v25 = v24 = a3;
-    v26 = [v25 allRelevantISOCountryCodes];
-    v27 = [CallHistoryDataSourcePredicate predicateForCallsWithAnyOfTheseRemoteParticipantHandles:v21 isoCountryCodes:v26];
+    dataSource2 = [(SearchCallHistoryIntentHandler *)self dataSource];
+    [dataSource2 coreTelephonyDataSource];
+    v25 = v24 = options;
+    allRelevantISOCountryCodes = [v25 allRelevantISOCountryCodes];
+    v27 = [CallHistoryDataSourcePredicate predicateForCallsWithAnyOfTheseRemoteParticipantHandles:v21 isoCountryCodes:allRelevantISOCountryCodes];
 
-    a3 = v24;
+    options = v24;
     [v16 addObject:v27];
   }
 
-  v85 = v13;
-  v28 = v86;
-  if (a3)
+  v85 = recipientCopy;
+  v28 = unseenCopy;
+  if (options)
   {
     v29 = objc_alloc_init(NSMutableArray);
-    if (a3)
+    if (options)
     {
       v30 = [CallHistoryDataSourcePredicate predicateForCallsThatWereOriginated:1];
       [v29 addObject:v30];
     }
 
-    if ((a3 & 2) != 0)
+    if ((options & 2) != 0)
     {
       v31 = [CallHistoryDataSourcePredicate predicateForCallsThatWereOriginated:0];
       v32 = [CallHistoryDataSourcePredicate predicateForCallsThatWereAnswered:0];
-      v33 = a3;
+      optionsCopy = options;
       v93[0] = v31;
       v93[1] = v32;
       v34 = [NSArray arrayWithObjects:v93 count:2];
       v35 = [NSCompoundPredicate andPredicateWithSubpredicates:v34];
 
       [v29 addObject:v35];
-      a3 = v33;
+      options = optionsCopy;
 
-      v28 = v86;
+      v28 = unseenCopy;
       v15 = &AnalyticsSendEventLazy_ptr;
     }
 
-    if ((a3 & 4) != 0)
+    if ((options & 4) != 0)
     {
       v36 = [CallHistoryDataSourcePredicate predicateForCallsThatWereOriginated:0];
       [CallHistoryDataSourcePredicate predicateForCallsThatWereAnswered:1];
       v38 = v37 = v28;
-      v39 = a3;
+      optionsCopy2 = options;
       v92[0] = v36;
       v92[1] = v38;
       v40 = [NSArray arrayWithObjects:v92 count:2];
       v41 = [NSCompoundPredicate andPredicateWithSubpredicates:v40];
 
       [v29 addObject:v41];
-      a3 = v39;
+      options = optionsCopy2;
 
       v28 = v37;
       v15 = &AnalyticsSendEventLazy_ptr;
     }
 
-    if (a3 >= 8)
+    if (options >= 8)
     {
       v42 = IntentHandlerDefaultLog();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
-        sub_10002F50C(a3, v42, v43, v44, v45, v46, v47, v48);
+        sub_10002F50C(options, v42, v43, v44, v45, v46, v47, v48);
       }
     }
 
     if ([v29 count] == 1)
     {
-      v49 = [v29 firstObject];
+      firstObject = [v29 firstObject];
     }
 
     else
@@ -549,70 +549,70 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v49 = [NSCompoundPredicate orPredicateWithSubpredicates:v29];
+      firstObject = [NSCompoundPredicate orPredicateWithSubpredicates:v29];
     }
 
-    v50 = v49;
-    [v16 addObject:v49];
+    v50 = firstObject;
+    [v16 addObject:firstObject];
 
     goto LABEL_23;
   }
 
 LABEL_24:
-  if (!a7)
+  if (!capabilities)
   {
     goto LABEL_39;
   }
 
   v51 = objc_alloc_init(v15[337]);
-  if (a7)
+  if (capabilities)
   {
     v52 = +[CallHistoryDataSourcePredicate predicateForAudioCalls];
     [v51 addObject:v52];
   }
 
-  if ((a7 & 2) != 0)
+  if ((capabilities & 2) != 0)
   {
     v53 = +[CallHistoryDataSourcePredicate predicateForVideoCalls];
     [v51 addObject:v53];
   }
 
-  if (a7 >= 4)
+  if (capabilities >= 4)
   {
     v54 = IntentHandlerDefaultLog();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
     {
-      sub_10002F578(a7, v54, v55, v56, v57, v58, v59, v60);
+      sub_10002F578(capabilities, v54, v55, v56, v57, v58, v59, v60);
     }
   }
 
   if ([v51 count] == 1)
   {
-    v61 = [v51 firstObject];
+    firstObject2 = [v51 firstObject];
 LABEL_37:
-    v62 = v61;
-    [v16 addObject:v61];
+    v62 = firstObject2;
+    [v16 addObject:firstObject2];
 
     goto LABEL_38;
   }
 
   if ([v51 count] >= 2)
   {
-    v61 = [NSCompoundPredicate orPredicateWithSubpredicates:v51];
+    firstObject2 = [NSCompoundPredicate orPredicateWithSubpredicates:v51];
     goto LABEL_37;
   }
 
 LABEL_38:
 
 LABEL_39:
-  if (v84 == 2)
+  if (providerCopy == 2)
   {
     v63 = +[CallHistoryDataSourcePredicate predicateForFaceTimeCalls];
   }
 
   else
   {
-    if (v84 != 1)
+    if (providerCopy != 1)
     {
       goto LABEL_44;
     }
@@ -621,7 +621,7 @@ LABEL_39:
   }
 
   v64 = v63;
-  [v16 addObject:{v63, v84}];
+  [v16 addObject:{v63, providerCopy}];
 
 LABEL_44:
   if (v28)
@@ -630,26 +630,26 @@ LABEL_44:
     [v16 addObject:v65];
   }
 
-  v66 = [(SearchCallHistoryIntentHandler *)self dataSource];
-  v67 = [v66 restrictedCallTypes];
+  dataSource3 = [(SearchCallHistoryIntentHandler *)self dataSource];
+  restrictedCallTypes = [dataSource3 restrictedCallTypes];
 
-  if (v67)
+  if (restrictedCallTypes)
   {
-    v68 = [CallHistoryDataSourcePredicate predicateFilteringOutCallTypes:v67];
+    v68 = [CallHistoryDataSourcePredicate predicateFilteringOutCallTypes:restrictedCallTypes];
     [v16 addObject:v68];
   }
 
   if ([v16 count] == 1)
   {
-    v69 = [v16 firstObject];
+    firstObject3 = [v16 firstObject];
 LABEL_52:
-    v70 = v69;
+    v70 = firstObject3;
     goto LABEL_54;
   }
 
   if ([v16 count] >= 2)
   {
-    v69 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
+    firstObject3 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
     goto LABEL_52;
   }
 
@@ -663,9 +663,9 @@ LABEL_54:
     _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "Using predicate: %@", buf, 0xCu);
   }
 
-  v72 = [(SearchCallHistoryIntentHandler *)self dataSource];
-  v73 = [v72 callHistoryDataSource];
-  v74 = [v73 coalescedCallsWithPredicate:v70 limit:a9 offset:0 batchSize:a9];
+  dataSource4 = [(SearchCallHistoryIntentHandler *)self dataSource];
+  callHistoryDataSource = [dataSource4 callHistoryDataSource];
+  v74 = [callHistoryDataSource coalescedCallsWithPredicate:v70 limit:count offset:0 batchSize:count];
 
   v75 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
@@ -676,11 +676,11 @@ LABEL_54:
   }
 
   v76 = +[CallRecordConverter sharedInstance];
-  v77 = [(SearchCallHistoryIntentHandler *)self dataSource];
-  v78 = [v77 contactsDataSource];
-  v79 = [(SearchCallHistoryIntentHandler *)self dataSource];
-  v80 = [v79 providerManager];
-  v81 = [v76 callRecordsForRecentCalls:v74 withContactsDataSource:v78 withCallProviderManager:v80];
+  dataSource5 = [(SearchCallHistoryIntentHandler *)self dataSource];
+  contactsDataSource2 = [dataSource5 contactsDataSource];
+  dataSource6 = [(SearchCallHistoryIntentHandler *)self dataSource];
+  providerManager = [dataSource6 providerManager];
+  v81 = [v76 callRecordsForRecentCalls:v74 withContactsDataSource:contactsDataSource2 withCallProviderManager:providerManager];
 
   v82 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))

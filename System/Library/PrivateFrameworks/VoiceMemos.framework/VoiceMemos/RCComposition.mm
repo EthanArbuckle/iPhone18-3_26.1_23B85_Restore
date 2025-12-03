@@ -1,21 +1,21 @@
 @interface RCComposition
-+ (BOOL)_isSessionWithModificationAccessActiveForComposedAVURL:(id)a3;
-+ (BOOL)_markCompositionAVURLsBeingModified:(id)a3;
-+ (BOOL)excludeFromBackup:(id)a3 error:(id *)a4;
-+ (BOOL)migrateBackupExclusionFlag:(id)a3;
-+ (id)_compositionFragmentsFolderForComposedAVURL:(id)a3;
-+ (id)_compositionLoadedFromMetadataURL:(id)a3 composedAVURL:(id)a4 savedRecordingUUID:(id)a5 creationDate:(id)a6 createIfNeeded:(BOOL)a7;
-+ (id)_compositionLoadedFromMetadataURL:(id)a3 savedRecording:(id)a4;
-+ (id)_unitTestingCompositionWithDecomposedFragments:(id)a3;
-+ (id)compositionLoadedForEditingSavedRecording:(id)a3 error:(id *)a4;
-+ (id)compositionLoadedForSavedRecording:(id)a3;
-+ (id)compositionLoadedFromCompositionBundleURL:(id)a3;
-+ (id)compositionMetadataURLForComposedAVURL:(id)a3;
-+ (id)mergeCaptureFragmentMetadataURLForComposedAVURL:(id)a3;
-+ (id)uriRepresentationForLegacyComposedAVURL:(id)a3;
-+ (void)deleteFromFilesystem:(id)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)composedTimeRangeForTrackIndex:(unint64_t)a3;
-- (BOOL)_enumerateTracksForInsertion:(id)a3 error:(id *)a4;
++ (BOOL)_isSessionWithModificationAccessActiveForComposedAVURL:(id)l;
++ (BOOL)_markCompositionAVURLsBeingModified:(id)modified;
++ (BOOL)excludeFromBackup:(id)backup error:(id *)error;
++ (BOOL)migrateBackupExclusionFlag:(id)flag;
++ (id)_compositionFragmentsFolderForComposedAVURL:(id)l;
++ (id)_compositionLoadedFromMetadataURL:(id)l composedAVURL:(id)rL savedRecordingUUID:(id)d creationDate:(id)date createIfNeeded:(BOOL)needed;
++ (id)_compositionLoadedFromMetadataURL:(id)l savedRecording:(id)recording;
++ (id)_unitTestingCompositionWithDecomposedFragments:(id)fragments;
++ (id)compositionLoadedForEditingSavedRecording:(id)recording error:(id *)error;
++ (id)compositionLoadedForSavedRecording:(id)recording;
++ (id)compositionLoadedFromCompositionBundleURL:(id)l;
++ (id)compositionMetadataURLForComposedAVURL:(id)l;
++ (id)mergeCaptureFragmentMetadataURLForComposedAVURL:(id)l;
++ (id)uriRepresentationForLegacyComposedAVURL:(id)l;
++ (void)deleteFromFilesystem:(id)filesystem;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)composedTimeRangeForTrackIndex:(unint64_t)index;
+- (BOOL)_enumerateTracksForInsertion:(id)insertion error:(id *)error;
 - (BOOL)hasSpatialAudio;
 - (BOOL)isContentBeingModified;
 - (BOOL)rcs_allAssetsAreMissing;
@@ -23,80 +23,80 @@
 - (NSArray)composedFragments;
 - (NSArray)composedWaveformURLs;
 - (NSString)description;
-- (RCComposition)initWithDictionaryPListRepresentation:(id)a3;
+- (RCComposition)initWithDictionaryPListRepresentation:(id)representation;
 - (id)_calculateComposedFragments;
-- (id)_compositionAsset:(id *)a3;
-- (id)_initWithComposedAVURL:(id)a3 savedRecordingUUID:(id)a4 creationDate:(id)a5 title:(id)a6 musicMemoMetadata:(id)a7 decomposedFragments:(id)a8 composedFragments:(id)a9;
-- (id)_initWithSavedRecording:(id)a3 decomposedFragments:(id)a4 composedFragments:(id)a5;
-- (id)bufferEnumerator:(id)a3 startTime:(double)a4 error:(id *)a5;
-- (id)composedFragmentsIntersectingTimeRange:(id)a3;
-- (id)compositionByClippingToComposedTimeRange:(id)a3;
-- (id)compositionByDeletingAndSplittingAtComposedTimeRange:(id)a3;
-- (id)compositionByOverdubbingWithFragment:(id)a3;
+- (id)_compositionAsset:(id *)asset;
+- (id)_initWithComposedAVURL:(id)l savedRecordingUUID:(id)d creationDate:(id)date title:(id)title musicMemoMetadata:(id)metadata decomposedFragments:(id)fragments composedFragments:(id)composedFragments;
+- (id)_initWithSavedRecording:(id)recording decomposedFragments:(id)fragments composedFragments:(id)composedFragments;
+- (id)bufferEnumerator:(id)enumerator startTime:(double)time error:(id *)error;
+- (id)composedFragmentsIntersectingTimeRange:(id)range;
+- (id)compositionByClippingToComposedTimeRange:(id)range;
+- (id)compositionByDeletingAndSplittingAtComposedTimeRange:(id)range;
+- (id)compositionByOverdubbingWithFragment:(id)fragment;
 - (id)dictionaryPListRepresentation;
-- (id)moveTo:(id)a3 recordingID:(id)a4 error:(id *)a5;
-- (id)newRandomFragmentWithInsertionTimeRangeInComposition:(id)a3 trackIndex:(unint64_t)a4 pathExtension:(id)a5;
-- (id)playableAsset:(id *)a3;
+- (id)moveTo:(id)to recordingID:(id)d error:(id *)error;
+- (id)newRandomFragmentWithInsertionTimeRangeInComposition:(id)composition trackIndex:(unint64_t)index pathExtension:(id)extension;
+- (id)playableAsset:(id *)asset;
 - (unint64_t)_fileSizeOfComposedAssets;
 - (unint64_t)fileSizeOfAssets;
 - (void)_calculateComposedAVURLDerivedValues;
 - (void)_loadMusicMemoMetadata;
 - (void)_updateCachedValueForHasSpatialAudio;
 - (void)deleteFromFilesystem;
-- (void)enumerateOrphanedFragmentsWithBlock:(id)a3;
+- (void)enumerateOrphanedFragmentsWithBlock:(id)block;
 - (void)recacheAVURLDerivedValues;
 - (void)saveMetadataToDefaultLocation;
-- (void)setComposedFragments:(id)a3;
-- (void)setDecomposedFragments:(id)a3;
+- (void)setComposedFragments:(id)fragments;
+- (void)setDecomposedFragments:(id)fragments;
 @end
 
 @implementation RCComposition
 
-- (id)_initWithComposedAVURL:(id)a3 savedRecordingUUID:(id)a4 creationDate:(id)a5 title:(id)a6 musicMemoMetadata:(id)a7 decomposedFragments:(id)a8 composedFragments:(id)a9
+- (id)_initWithComposedAVURL:(id)l savedRecordingUUID:(id)d creationDate:(id)date title:(id)title musicMemoMetadata:(id)metadata decomposedFragments:(id)fragments composedFragments:(id)composedFragments
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  lCopy = l;
+  dCopy = d;
+  dateCopy = date;
+  titleCopy = title;
+  metadataCopy = metadata;
+  fragmentsCopy = fragments;
+  composedFragmentsCopy = composedFragments;
   v32.receiver = self;
   v32.super_class = RCComposition;
   v19 = [(RCComposition *)&v32 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_composedAVURL, a3);
-    objc_storeStrong(&v20->_savedRecordingUUID, a4);
-    objc_storeStrong(&v20->_creationDate, a5);
-    objc_storeStrong(&v20->_title, a6);
-    objc_storeStrong(&v20->_musicMemoMetadata, a7);
-    if (v17)
+    objc_storeStrong(&v19->_composedAVURL, l);
+    objc_storeStrong(&v20->_savedRecordingUUID, d);
+    objc_storeStrong(&v20->_creationDate, date);
+    objc_storeStrong(&v20->_title, title);
+    objc_storeStrong(&v20->_musicMemoMetadata, metadata);
+    if (fragmentsCopy)
     {
-      v21 = v17;
+      array = fragmentsCopy;
     }
 
     else
     {
-      v21 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
     decomposedFragments = v20->_decomposedFragments;
-    v20->_decomposedFragments = v21;
+    v20->_decomposedFragments = array;
 
-    if (v18)
+    if (composedFragmentsCopy)
     {
-      v23 = v18;
+      _calculateComposedFragments = composedFragmentsCopy;
     }
 
     else
     {
-      v23 = [(RCComposition *)v20 _calculateComposedFragments];
+      _calculateComposedFragments = [(RCComposition *)v20 _calculateComposedFragments];
     }
 
     composedFragments = v20->_composedFragments;
-    v20->_composedFragments = v23;
+    v20->_composedFragments = _calculateComposedFragments;
 
     v25 = objc_opt_new();
     composedFragmentsMutex = v20->_composedFragmentsMutex;
@@ -106,60 +106,60 @@
   return v20;
 }
 
-- (id)_initWithSavedRecording:(id)a3 decomposedFragments:(id)a4 composedFragments:(id)a5
+- (id)_initWithSavedRecording:(id)recording decomposedFragments:(id)fragments composedFragments:(id)composedFragments
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordingCopy = recording;
+  fragmentsCopy = fragments;
+  composedFragmentsCopy = composedFragments;
   v26.receiver = self;
   v26.super_class = RCComposition;
   v11 = [(RCComposition *)&v26 init];
   if (v11)
   {
-    v12 = [v8 url];
+    v12 = [recordingCopy url];
     objc_storeStrong(&v11->_composedAVURL, v12);
-    v13 = [v8 uuid];
+    uuid = [recordingCopy uuid];
     savedRecordingUUID = v11->_savedRecordingUUID;
-    v11->_savedRecordingUUID = v13;
+    v11->_savedRecordingUUID = uuid;
 
-    v15 = [v8 creationDate];
+    creationDate = [recordingCopy creationDate];
     creationDate = v11->_creationDate;
-    v11->_creationDate = v15;
+    v11->_creationDate = creationDate;
 
-    v17 = [v8 title];
+    title = [recordingCopy title];
     title = v11->_title;
-    v11->_title = v17;
+    v11->_title = title;
 
-    if ([v8 musicMemo])
+    if ([recordingCopy musicMemo])
     {
       [(RCComposition *)v11 _loadMusicMemoMetadata];
     }
 
-    if (v9)
+    if (fragmentsCopy)
     {
-      v19 = v9;
+      array = fragmentsCopy;
     }
 
     else
     {
-      v19 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
     decomposedFragments = v11->_decomposedFragments;
-    v11->_decomposedFragments = v19;
+    v11->_decomposedFragments = array;
 
-    if (v10)
+    if (composedFragmentsCopy)
     {
-      v21 = v10;
+      _calculateComposedFragments = composedFragmentsCopy;
     }
 
     else
     {
-      v21 = [(RCComposition *)v11 _calculateComposedFragments];
+      _calculateComposedFragments = [(RCComposition *)v11 _calculateComposedFragments];
     }
 
     composedFragments = v11->_composedFragments;
-    v11->_composedFragments = v21;
+    v11->_composedFragments = _calculateComposedFragments;
 
     v23 = objc_opt_new();
     composedFragmentsMutex = v11->_composedFragmentsMutex;
@@ -176,20 +176,20 @@
   v12.super_class = RCComposition;
   v4 = [(RCComposition *)&v12 description];
   savedRecordingUUID = self->_savedRecordingUUID;
-  v6 = [(NSURL *)self->_composedAVURL path];
-  v7 = [(RCComposition *)self composedWaveformURLs];
+  path = [(NSURL *)self->_composedAVURL path];
+  composedWaveformURLs = [(RCComposition *)self composedWaveformURLs];
   v8 = MEMORY[0x277CCABB0];
   [(RCComposition *)self composedDuration];
   v9 = [v8 numberWithDouble:?];
-  v10 = [v3 stringWithFormat:@"%@ savedRecordingUUID = %@, AVURL = %@ (waveformURLs = %@), composedDuration = %@, _decomposedFragments = %@", v4, savedRecordingUUID, v6, v7, v9, self->_decomposedFragments];
+  v10 = [v3 stringWithFormat:@"%@ savedRecordingUUID = %@, AVURL = %@ (waveformURLs = %@), composedDuration = %@, _decomposedFragments = %@", v4, savedRecordingUUID, path, composedWaveformURLs, v9, self->_decomposedFragments];
 
   return v10;
 }
 
-- (RCComposition)initWithDictionaryPListRepresentation:(id)a3
+- (RCComposition)initWithDictionaryPListRepresentation:(id)representation
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   v43.receiver = self;
   v43.super_class = RCComposition;
   v5 = [(RCComposition *)&v43 init];
@@ -199,17 +199,17 @@
   }
 
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [v4 objectForKey:@"RCComposedAVURL"];
+  v7 = [representationCopy objectForKey:@"RCComposedAVURL"];
   v8 = [v6 URLWithString:v7];
-  v9 = [v8 rc_URLByFixingUpPersistentMediaRecordingsDirectory];
+  rc_URLByFixingUpPersistentMediaRecordingsDirectory = [v8 rc_URLByFixingUpPersistentMediaRecordingsDirectory];
   composedAVURL = v5->_composedAVURL;
-  v5->_composedAVURL = v9;
+  v5->_composedAVURL = rc_URLByFixingUpPersistentMediaRecordingsDirectory;
 
-  v11 = [v4 objectForKey:@"RCSavedRecordingUUID"];
+  v11 = [representationCopy objectForKey:@"RCSavedRecordingUUID"];
   savedRecordingUUID = v5->_savedRecordingUUID;
   v5->_savedRecordingUUID = v11;
 
-  v13 = [v4 objectForKey:@"RCSavedRecordingCreationTime"];
+  v13 = [representationCopy objectForKey:@"RCSavedRecordingCreationTime"];
   v38 = v13;
   if (v13)
   {
@@ -220,26 +220,26 @@
 
   else
   {
-    [v4 objectForKey:@"RCSavedRecordingCreationDate"];
+    [representationCopy objectForKey:@"RCSavedRecordingCreationDate"];
   }
   v15 = ;
   creationDate = v5->_creationDate;
   v5->_creationDate = v15;
 
-  v17 = [v4 objectForKey:@"RCSavedRecordingTitle"];
+  v17 = [representationCopy objectForKey:@"RCSavedRecordingTitle"];
   title = v5->_title;
   v5->_title = v17;
 
-  v19 = [v4 objectForKey:@"RCSavedRecordingMusicMemoMetadata"];
+  v19 = [representationCopy objectForKey:@"RCSavedRecordingMusicMemoMetadata"];
   musicMemoMetadata = v5->_musicMemoMetadata;
   v5->_musicMemoMetadata = v19;
 
-  v21 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v22 = [v4 objectForKey:@"RCDecomposedFragments"];
+  v22 = [representationCopy objectForKey:@"RCDecomposedFragments"];
   v23 = [v22 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v23)
   {
@@ -255,7 +255,7 @@
         }
 
         v27 = [[RCCompositionFragment alloc] initWithDictionaryPListRepresentation:*(*(&v39 + 1) + 8 * i)];
-        [v21 addObject:v27];
+        [array addObject:v27];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -264,17 +264,17 @@
     while (v24);
   }
 
-  objc_storeStrong(&v5->_decomposedFragments, v21);
-  v28 = [(RCComposition *)v5 _calculateComposedFragments];
+  objc_storeStrong(&v5->_decomposedFragments, array);
+  _calculateComposedFragments = [(RCComposition *)v5 _calculateComposedFragments];
   composedFragments = v5->_composedFragments;
-  v5->_composedFragments = v28;
+  v5->_composedFragments = _calculateComposedFragments;
 
   v30 = objc_opt_new();
   composedFragmentsMutex = v5->_composedFragmentsMutex;
   v5->_composedFragmentsMutex = v30;
 
-  v32 = [MEMORY[0x277CCAA00] defaultManager];
-  v33 = [v32 rc_fileExistsAndIsInValidRecordingURL:v5->_composedAVURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v33 = [defaultManager rc_fileExistsAndIsInValidRecordingURL:v5->_composedAVURL];
 
   if (!v33)
   {
@@ -300,18 +300,18 @@ LABEL_18:
 - (id)dictionaryPListRepresentation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(NSURL *)self->_composedAVURL absoluteString];
-  if (v4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  absoluteString = [(NSURL *)self->_composedAVURL absoluteString];
+  if (absoluteString)
   {
-    [v3 setObject:v4 forKey:@"RCComposedAVURL"];
+    [dictionary setObject:absoluteString forKey:@"RCComposedAVURL"];
   }
 
   v5 = self->_savedRecordingUUID;
 
   if (v5)
   {
-    [v3 setObject:v5 forKey:@"RCSavedRecordingUUID"];
+    [dictionary setObject:v5 forKey:@"RCSavedRecordingUUID"];
   }
 
   creationDate = self->_creationDate;
@@ -320,25 +320,25 @@ LABEL_18:
     v7 = MEMORY[0x277CCABB0];
     [(NSDate *)creationDate timeIntervalSinceReferenceDate];
     v8 = [v7 numberWithDouble:?];
-    [v3 setObject:v8 forKey:@"RCSavedRecordingCreationTime"];
+    [dictionary setObject:v8 forKey:@"RCSavedRecordingCreationTime"];
 
-    [v3 setObject:self->_creationDate forKey:@"RCSavedRecordingCreationDate"];
+    [dictionary setObject:self->_creationDate forKey:@"RCSavedRecordingCreationDate"];
   }
 
-  v9 = [(RCComposition *)self title];
+  title = [(RCComposition *)self title];
 
-  if (v9)
+  if (title)
   {
-    [v3 setObject:v9 forKey:@"RCSavedRecordingTitle"];
+    [dictionary setObject:title forKey:@"RCSavedRecordingTitle"];
   }
 
   musicMemoMetadata = self->_musicMemoMetadata;
   if (musicMemoMetadata)
   {
-    [v3 setObject:musicMemoMetadata forKey:@"RCSavedRecordingMusicMemoMetadata"];
+    [dictionary setObject:musicMemoMetadata forKey:@"RCSavedRecordingMusicMemoMetadata"];
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -358,8 +358,8 @@ LABEL_18:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * i) dictionaryPListRepresentation];
-        [v11 addObject:v17];
+        dictionaryPListRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryPListRepresentation];
+        [array addObject:dictionaryPListRepresentation];
       }
 
       v14 = [(NSArray *)v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -368,29 +368,29 @@ LABEL_18:
     while (v14);
   }
 
-  [v3 setObject:v11 forKey:@"RCDecomposedFragments"];
+  [dictionary setObject:array forKey:@"RCDecomposedFragments"];
   v18 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)_unitTestingCompositionWithDecomposedFragments:(id)a3
++ (id)_unitTestingCompositionWithDecomposedFragments:(id)fragments
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = a3;
+  fragmentsCopy = fragments;
   v5 = [v3 URLWithString:@"*composedAVURL*"];
-  v6 = [objc_alloc(objc_opt_class()) _initWithComposedAVURL:v5 savedRecordingUUID:0 creationDate:0 title:0 musicMemoMetadata:0 decomposedFragments:v4 composedFragments:0];
+  v6 = [objc_alloc(objc_opt_class()) _initWithComposedAVURL:v5 savedRecordingUUID:0 creationDate:0 title:0 musicMemoMetadata:0 decomposedFragments:fragmentsCopy composedFragments:0];
 
   return v6;
 }
 
-+ (id)_compositionLoadedFromMetadataURL:(id)a3 composedAVURL:(id)a4 savedRecordingUUID:(id)a5 creationDate:(id)a6 createIfNeeded:(BOOL)a7
++ (id)_compositionLoadedFromMetadataURL:(id)l composedAVURL:(id)rL savedRecordingUUID:(id)d creationDate:(id)date createIfNeeded:(BOOL)needed
 {
-  v7 = a7;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3];
+  neededCopy = needed;
+  rLCopy = rL;
+  dCopy = d;
+  dateCopy = date;
+  v14 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l];
   if (v14)
   {
     v22 = 0;
@@ -412,9 +412,9 @@ LABEL_18:
     {
       v20 = [objc_alloc(objc_opt_class()) initWithDictionaryPListRepresentation:v15];
       v19 = v20;
-      if (v12)
+      if (dCopy)
       {
-        [v20 setSavedRecordingUUID:v12];
+        [v20 setSavedRecordingUUID:dCopy];
       }
     }
   }
@@ -422,24 +422,24 @@ LABEL_18:
   else
   {
     v19 = 0;
-    if (v11 && v7)
+    if (rLCopy && neededCopy)
     {
-      v19 = [objc_alloc(objc_opt_class()) _initWithComposedAVURL:v11 savedRecordingUUID:v12 creationDate:v13 title:0 musicMemoMetadata:0 decomposedFragments:0 composedFragments:0];
+      v19 = [objc_alloc(objc_opt_class()) _initWithComposedAVURL:rLCopy savedRecordingUUID:dCopy creationDate:dateCopy title:0 musicMemoMetadata:0 decomposedFragments:0 composedFragments:0];
     }
   }
 
   return v19;
 }
 
-+ (id)_compositionLoadedFromMetadataURL:(id)a3 savedRecording:(id)a4
++ (id)_compositionLoadedFromMetadataURL:(id)l savedRecording:(id)recording
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3];
+  recordingCopy = recording;
+  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l];
   if (!v6)
   {
-    if (v5)
+    if (recordingCopy)
     {
-      v11 = [objc_alloc(objc_opt_class()) _initWithSavedRecording:v5 decomposedFragments:0 composedFragments:0];
+      v11 = [objc_alloc(objc_opt_class()) _initWithSavedRecording:recordingCopy decomposedFragments:0 composedFragments:0];
       goto LABEL_13;
     }
 
@@ -464,18 +464,18 @@ LABEL_8:
   }
 
   v11 = [objc_alloc(objc_opt_class()) initWithDictionaryPListRepresentation:v7];
-  if (v5)
+  if (recordingCopy)
   {
-    v12 = [v5 uuid];
-    [v11 setSavedRecordingUUID:v12];
+    uuid = [recordingCopy uuid];
+    [v11 setSavedRecordingUUID:uuid];
 
-    v13 = [v5 creationDate];
-    [v11 setCreationDate:v13];
+    creationDate = [recordingCopy creationDate];
+    [v11 setCreationDate:creationDate];
 
-    v14 = [v5 title];
-    [v11 setTitle:v14];
+    title = [recordingCopy title];
+    [v11 setTitle:title];
 
-    if ([v5 musicMemo])
+    if ([recordingCopy musicMemo])
     {
       [v11 _loadMusicMemoMetadata];
     }
@@ -486,17 +486,17 @@ LABEL_13:
   return v11;
 }
 
-+ (id)compositionLoadedFromCompositionBundleURL:(id)a3
++ (id)compositionLoadedFromCompositionBundleURL:(id)l
 {
-  v4 = [a1 _compositionMetadataURLForCompositionBundleURL:a3];
-  v5 = [a1 _compositionLoadedFromMetadataURL:v4 composedAVURL:0 savedRecordingUUID:0 creationDate:0 createIfNeeded:0];
+  v4 = [self _compositionMetadataURLForCompositionBundleURL:l];
+  v5 = [self _compositionLoadedFromMetadataURL:v4 composedAVURL:0 savedRecordingUUID:0 creationDate:0 createIfNeeded:0];
 
   return v5;
 }
 
-+ (id)uriRepresentationForLegacyComposedAVURL:(id)a3
++ (id)uriRepresentationForLegacyComposedAVURL:(id)l
 {
-  v3 = [RCComposition compositionMetadataURLForComposedAVURL:a3];
+  v3 = [RCComposition compositionMetadataURLForComposedAVURL:l];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v3];
   v5 = [v4 objectForKeyedSubscript:@"RCSavedRecordingURI"];
   if (v5)
@@ -512,41 +512,41 @@ LABEL_13:
   return v6;
 }
 
-+ (id)compositionLoadedForSavedRecording:(id)a3
++ (id)compositionLoadedForSavedRecording:(id)recording
 {
-  v4 = a3;
-  v5 = [v4 url];
+  recordingCopy = recording;
+  v5 = [recordingCopy url];
   v6 = [RCComposition compositionMetadataURLForComposedAVURL:v5];
 
-  v7 = [a1 _compositionLoadedFromMetadataURL:v6 savedRecording:v4];
+  v7 = [self _compositionLoadedFromMetadataURL:v6 savedRecording:recordingCopy];
 
   return v7;
 }
 
-+ (id)compositionLoadedForEditingSavedRecording:(id)a3 error:(id *)a4
++ (id)compositionLoadedForEditingSavedRecording:(id)recording error:(id *)error
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 compositionLoadedForSavedRecording:v6];
-  v8 = [v7 composedFragments];
-  v9 = [v8 count];
+  recordingCopy = recording;
+  v7 = [self compositionLoadedForSavedRecording:recordingCopy];
+  composedFragments = [v7 composedFragments];
+  v9 = [composedFragments count];
 
   if (!v9)
   {
-    v10 = [v6 url];
-    [v6 length];
+    v10 = [recordingCopy url];
+    [recordingCopy length];
     v12 = v11;
     v13 = RCTimeRangeMake(0.0, v11);
     v15 = v14;
-    v16 = [v10 pathExtension];
-    v17 = [v7 newRandomFragmentWithInsertionTimeRangeInComposition:0 trackIndex:v16 pathExtension:{v13, v15}];
+    pathExtension = [v10 pathExtension];
+    v17 = [v7 newRandomFragmentWithInsertionTimeRangeInComposition:0 trackIndex:pathExtension pathExtension:{v13, v15}];
     v18 = [v17 mutableCopy];
 
     [v18 setContentDuration:v12];
     [v18 setTimeRangeInContentToUse:{v13, v15}];
-    v19 = [MEMORY[0x277CCAA00] defaultManager];
-    v20 = [v18 AVOutputURL];
-    v21 = [v19 moveItemAtURL:v10 toURL:v20 error:a4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    aVOutputURL = [v18 AVOutputURL];
+    v21 = [defaultManager moveItemAtURL:v10 toURL:aVOutputURL error:error];
 
     if (!v21)
     {
@@ -586,28 +586,28 @@ LABEL_9:
 - (BOOL)isContentBeingModified
 {
   v3 = objc_opt_class();
-  v4 = [(RCComposition *)self composedAVURL];
-  LOBYTE(v3) = [v3 _isSessionWithModificationAccessActiveForComposedAVURL:v4];
+  composedAVURL = [(RCComposition *)self composedAVURL];
+  LOBYTE(v3) = [v3 _isSessionWithModificationAccessActiveForComposedAVURL:composedAVURL];
 
   return v3;
 }
 
-- (void)setDecomposedFragments:(id)a3
+- (void)setDecomposedFragments:(id)fragments
 {
-  v5 = a3;
+  fragmentsCopy = fragments;
   p_decomposedFragments = &self->_decomposedFragments;
-  if (self->_decomposedFragments != v5)
+  if (self->_decomposedFragments != fragmentsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_decomposedFragments, a3);
-    v7 = [(RCComposition *)self _calculateComposedFragments];
-    [(RCComposition *)self setComposedFragments:v7];
+    v8 = fragmentsCopy;
+    objc_storeStrong(p_decomposedFragments, fragments);
+    _calculateComposedFragments = [(RCComposition *)self _calculateComposedFragments];
+    [(RCComposition *)self setComposedFragments:_calculateComposedFragments];
 
     p_decomposedFragments = [(RCComposition *)self recacheAVURLDerivedValues];
-    v5 = v8;
+    fragmentsCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_decomposedFragments, v5);
+  MEMORY[0x2821F96F8](p_decomposedFragments, fragmentsCopy);
 }
 
 - (NSArray)composedFragments
@@ -620,21 +620,21 @@ LABEL_9:
   return v4;
 }
 
-- (void)setComposedFragments:(id)a3
+- (void)setComposedFragments:(id)fragments
 {
-  v4 = a3;
+  fragmentsCopy = fragments;
   v5 = self->_composedFragmentsMutex;
   objc_sync_enter(v5);
   composedFragments = self->_composedFragments;
-  self->_composedFragments = v4;
-  v7 = v4;
+  self->_composedFragments = fragmentsCopy;
+  v7 = fragmentsCopy;
 
   objc_sync_exit(v5);
 }
 
 - (NSArray)composedWaveformURLs
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = objc_opt_new();
   for (i = 0; i != 3; ++i)
   {
@@ -642,8 +642,8 @@ LABEL_9:
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 path];
-      v9 = [v3 fileExistsAtPath:v8];
+      path = [v6 path];
+      v9 = [defaultManager fileExistsAtPath:path];
 
       if (v9)
       {
@@ -655,11 +655,11 @@ LABEL_9:
   return v4;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)composedTimeRangeForTrackIndex:(unint64_t)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)composedTimeRangeForTrackIndex:(unint64_t)index
 {
   [(RCComposition *)self _calculateComposedAVURLDerivedValues];
-  v5 = &self->_cachedTrackRanges[a3];
-  if (a3 >= 2)
+  v5 = &self->_cachedTrackRanges[index];
+  if (index >= 2)
   {
     v5 = &RCTimeRangeZero;
   }
@@ -677,18 +677,18 @@ LABEL_9:
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(RCComposition *)self decomposedFragments];
+  decomposedFragments = [(RCComposition *)self decomposedFragments];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__RCComposition_fileSizeOfAssets__block_invoke;
   v7[3] = &unk_279E44198;
   v7[4] = &v8;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [decomposedFragments enumerateObjectsUsingBlock:v7];
 
   v4 = v9[3];
-  v5 = [(RCComposition *)self _fileSizeOfComposedAssets];
+  _fileSizeOfComposedAssets = [(RCComposition *)self _fileSizeOfComposedAssets];
   _Block_object_dispose(&v8, 8);
-  return v5 + v4;
+  return _fileSizeOfComposedAssets + v4;
 }
 
 uint64_t __33__RCComposition_fileSizeOfAssets__block_invoke(uint64_t a1, void *a2)
@@ -700,95 +700,95 @@ uint64_t __33__RCComposition_fileSizeOfAssets__block_invoke(uint64_t a1, void *a
 
 - (unint64_t)_fileSizeOfComposedAssets
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSURL *)self->_composedAVURL path];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->_composedAVURL path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if (v5)
   {
-    v6 = [(NSURL *)self->_composedAVURL path];
-    v7 = [v3 attributesOfItemAtPath:v6 error:0];
+    path2 = [(NSURL *)self->_composedAVURL path];
+    v7 = [defaultManager attributesOfItemAtPath:path2 error:0];
     v8 = [v7 objectForKey:*MEMORY[0x277CCA1C0]];
-    v9 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
-    v9 = 0;
+    longLongValue = 0;
   }
 
-  return v9;
+  return longLongValue;
 }
 
-- (id)composedFragmentsIntersectingTimeRange:(id)a3
+- (id)composedFragmentsIntersectingTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [(RCComposition *)self composedFragments];
-  v8 = [v7 objectEnumerator];
+  var1 = range.var1;
+  var0 = range.var0;
+  array = [MEMORY[0x277CBEB18] array];
+  composedFragments = [(RCComposition *)self composedFragments];
+  objectEnumerator = [composedFragments objectEnumerator];
 
-  v9 = 0;
+  nextObject = 0;
   while (1)
   {
-    v10 = v9;
-    v9 = [v8 nextObject];
+    v10 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v9)
+    if (!nextObject)
     {
       break;
     }
 
-    [v9 timeRangeInComposition];
+    [nextObject timeRangeInComposition];
     if (RCTimeRangeIntersectsRange(v11, v12, var0, var1))
     {
-      [v6 addObject:v9];
-      v13 = [v8 nextObject];
+      [array addObject:nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      if (v13)
+      if (nextObject2)
       {
         do
         {
-          [v13 timeRangeInComposition];
+          [nextObject2 timeRangeInComposition];
           if (v14 >= var1)
           {
             break;
           }
 
-          [v6 addObject:v13];
-          v15 = [v8 nextObject];
+          [array addObject:nextObject2];
+          nextObject3 = [objectEnumerator nextObject];
 
-          v13 = v15;
+          nextObject2 = nextObject3;
         }
 
-        while (v15);
+        while (nextObject3);
       }
 
       break;
     }
   }
 
-  return v6;
+  return array;
 }
 
-- (id)compositionByDeletingAndSplittingAtComposedTimeRange:(id)a3
+- (id)compositionByDeletingAndSplittingAtComposedTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v50 = *MEMORY[0x277D85DE8];
-  v6 = [(RCComposition *)self compositionByClippingToComposedTimeRange:RCTimeRangeMake(-3.40282347e38, a3.var0)];
+  v6 = [(RCComposition *)self compositionByClippingToComposedTimeRange:RCTimeRangeMake(-3.40282347e38, range.var0)];
   v7 = [(RCComposition *)self compositionByClippingToComposedTimeRange:RCTimeRangeMake(var1, 3.40282347e38)];
   v8 = v7;
   if (v6)
   {
     v9 = [v6 mutableCopy];
-    v36 = [v8 decomposedFragments];
-    if (v36)
+    decomposedFragments = [v8 decomposedFragments];
+    if (decomposedFragments)
     {
       v33 = v8;
       v34 = v6;
-      v10 = [v9 decomposedFragments];
-      v11 = [v10 mutableCopy];
+      decomposedFragments2 = [v9 decomposedFragments];
+      v11 = [decomposedFragments2 mutableCopy];
 
       v12 = 0;
       v13 = 1;
@@ -796,19 +796,19 @@ uint64_t __33__RCComposition_fileSizeOfAssets__block_invoke(uint64_t a1, void *a
       do
       {
         v38 = v13;
-        v14 = [v9 composedFragments];
-        v15 = [v14 fragmentsWithTrackIndex:v12];
+        composedFragments = [v9 composedFragments];
+        v15 = [composedFragments fragmentsWithTrackIndex:v12];
 
         v37 = v15;
-        v16 = [v15 lastObject];
-        [v16 timeRangeInComposition];
+        lastObject = [v15 lastObject];
+        [lastObject timeRangeInComposition];
         v18 = v17;
 
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v19 = [v36 fragmentsWithTrackIndex:v12];
+        v19 = [decomposedFragments fragmentsWithTrackIndex:v12];
         v20 = [v19 countByEnumeratingWithState:&v39 objects:v49 count:16];
         if (v20)
         {
@@ -888,17 +888,17 @@ uint64_t __33__RCComposition_fileSizeOfAssets__block_invoke(uint64_t a1, void *a
   return v9;
 }
 
-- (id)compositionByClippingToComposedTimeRange:(id)a3
+- (id)compositionByClippingToComposedTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v33 = *MEMORY[0x277D85DE8];
   v6 = [(RCComposition *)self composedFragmentsIntersectingTimeRange:?];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
   if ([v6 count] < 2)
   {
     v9 = 0;
-    if (v7)
+    if (firstObject)
     {
       goto LABEL_7;
     }
@@ -906,10 +906,10 @@ uint64_t __33__RCComposition_fileSizeOfAssets__block_invoke(uint64_t a1, void *a
 
   else
   {
-    v8 = [v6 lastObject];
+    lastObject = [v6 lastObject];
 
-    v9 = v8 != 0;
-    if (v7)
+    v9 = lastObject != 0;
+    if (firstObject)
     {
       goto LABEL_7;
     }
@@ -922,7 +922,7 @@ uint64_t __33__RCComposition_fileSizeOfAssets__block_invoke(uint64_t a1, void *a
   }
 
 LABEL_7:
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0;
   v13 = 1;
   do
@@ -955,7 +955,7 @@ LABEL_7:
             v24 = RCTimeRangeDeltaWithExactPrecision(v22, v23);
             v25 = v19 + v24;
             [v21 setTimeRangeInComposition:{RCTimeRangeMake(v19, v19 + v24)}];
-            [v11 addObject:v21];
+            [array addObject:v21];
             v19 = v25;
           }
         }
@@ -972,7 +972,7 @@ LABEL_7:
 
   while ((v14 & 1) != 0);
   v10 = [(RCComposition *)self mutableCopy];
-  [v10 setDecomposedFragments:v11];
+  [v10 setDecomposedFragments:array];
   [v10 recacheAVURLDerivedValues];
 
 LABEL_19:
@@ -981,27 +981,27 @@ LABEL_19:
   return v10;
 }
 
-- (id)compositionByOverdubbingWithFragment:(id)a3
+- (id)compositionByOverdubbingWithFragment:(id)fragment
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (-[RCComposition hasMultipleTracks](self, "hasMultipleTracks") || [v4 trackIndex])
+  fragmentCopy = fragment;
+  if (-[RCComposition hasMultipleTracks](self, "hasMultipleTracks") || [fragmentCopy trackIndex])
   {
     v5 = [(RCComposition *)self mutableCopy];
-    v6 = [(RCComposition *)self decomposedFragments];
-    v7 = [v6 mutableCopy];
+    decomposedFragments = [(RCComposition *)self decomposedFragments];
+    v7 = [decomposedFragments mutableCopy];
 
-    [v7 addObject:v4];
+    [v7 addObject:fragmentCopy];
     [v5 setDecomposedFragments:v7];
-    v8 = [v5 _calculateComposedFragments];
-    [v5 setComposedFragments:v8];
+    _calculateComposedFragments = [v5 _calculateComposedFragments];
+    [v5 setComposedFragments:_calculateComposedFragments];
 
     [v5 recacheAVURLDerivedValues];
   }
 
   else
   {
-    [v4 timeRangeInComposition];
+    [fragmentCopy timeRangeInComposition];
     v12 = v11;
     v14 = v13;
     [(RCComposition *)self composedDuration];
@@ -1009,7 +1009,7 @@ LABEL_19:
     if (RCTimeRangeContainsRange(v12, v14, v16, v17))
     {
       v5 = [(RCComposition *)self mutableCopy];
-      v62[0] = v4;
+      v62[0] = fragmentCopy;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:1];
       [v5 setDecomposedFragments:v18];
     }
@@ -1022,9 +1022,9 @@ LABEL_19:
       if (v19)
       {
         v5 = [v19 mutableCopy];
-        v22 = [v19 decomposedFragments];
-        v23 = [v22 lastObject];
-        [v23 timeRangeInComposition];
+        decomposedFragments2 = [v19 decomposedFragments];
+        lastObject = [decomposedFragments2 lastObject];
+        [lastObject timeRangeInComposition];
         if (v24 != v12)
         {
           v25 = OSLogForCategory(@"Default");
@@ -1034,38 +1034,38 @@ LABEL_19:
           }
         }
 
-        v26 = [v22 arrayByAddingObject:v4];
+        v26 = [decomposedFragments2 arrayByAddingObject:fragmentCopy];
         [v5 setDecomposedFragments:v26];
       }
 
       else
       {
         v5 = [v20 mutableCopy];
-        v61 = v4;
-        v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
-        [v5 setDecomposedFragments:v22];
+        v61 = fragmentCopy;
+        decomposedFragments2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
+        [v5 setDecomposedFragments:decomposedFragments2];
       }
 
-      v27 = [v21 decomposedFragments];
-      if (v27)
+      decomposedFragments3 = [v21 decomposedFragments];
+      if (decomposedFragments3)
       {
         v47 = v21;
         v48 = v19;
-        v49 = v4;
-        v28 = [v5 decomposedFragments];
-        v29 = [v28 mutableCopy];
+        v49 = fragmentCopy;
+        decomposedFragments4 = [v5 decomposedFragments];
+        v29 = [decomposedFragments4 mutableCopy];
 
-        v30 = [v5 composedFragments];
-        v31 = [v30 lastObject];
-        [v31 timeRangeInComposition];
+        composedFragments = [v5 composedFragments];
+        lastObject2 = [composedFragments lastObject];
+        [lastObject2 timeRangeInComposition];
         v33 = v32;
 
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v46 = v27;
-        v34 = v27;
+        v46 = decomposedFragments3;
+        v34 = decomposedFragments3;
         v35 = [v34 countByEnumeratingWithState:&v50 objects:v60 count:16];
         if (v35)
         {
@@ -1124,8 +1124,8 @@ LABEL_19:
 
         [v5 setDecomposedFragments:v29];
         v19 = v48;
-        v4 = v49;
-        v27 = v46;
+        fragmentCopy = v49;
+        decomposedFragments3 = v46;
         v21 = v47;
       }
     }
@@ -1136,25 +1136,25 @@ LABEL_19:
   return v5;
 }
 
-- (id)newRandomFragmentWithInsertionTimeRangeInComposition:(id)a3 trackIndex:(unint64_t)a4 pathExtension:(id)a5
+- (id)newRandomFragmentWithInsertionTimeRangeInComposition:(id)composition trackIndex:(unint64_t)index pathExtension:(id)extension
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = composition.var1;
+  var0 = composition.var0;
   v9 = MEMORY[0x277CCAD78];
-  v10 = a5;
-  v11 = [v9 UUID];
-  v12 = [v11 UUIDString];
+  extensionCopy = extension;
+  uUID = [v9 UUID];
+  uUIDString = [uUID UUIDString];
 
   v13 = [objc_opt_class() _compositionFragmentsFolderForComposedAVURL:self->_composedAVURL];
-  v14 = [v13 URLByAppendingPathComponent:v12];
-  v15 = [v14 URLByAppendingPathExtension:v10];
+  v14 = [v13 URLByAppendingPathComponent:uUIDString];
+  v15 = [v14 URLByAppendingPathExtension:extensionCopy];
 
   [(RCComposition *)self composedDuration];
   v17 = v16;
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [v15 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  uRLByDeletingLastPathComponent = [v15 URLByDeletingLastPathComponent];
   v29 = 0;
-  LOBYTE(v14) = [v18 createDirectoryAtURL:v19 withIntermediateDirectories:1 attributes:0 error:&v29];
+  LOBYTE(v14) = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v29];
   v20 = v29;
 
   if ((v14 & 1) == 0)
@@ -1203,15 +1203,15 @@ LABEL_19:
     v26 = v17;
   }
 
-  v27 = [[RCCompositionFragment alloc] initWithAVOutputURL:v15 contentDuration:a4 timeRangeInContentToUse:0.0 timeRangeInComposition:-1.79769313e308 trackIndex:1.79769313e308, var0, v26];
+  v27 = [[RCCompositionFragment alloc] initWithAVOutputURL:v15 contentDuration:index timeRangeInContentToUse:0.0 timeRangeInComposition:-1.79769313e308 trackIndex:1.79769313e308, var0, v26];
 
   return v27;
 }
 
-- (void)enumerateOrphanedFragmentsWithBlock:(id)a3
+- (void)enumerateOrphanedFragmentsWithBlock:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v29 = a3;
+  blockCopy = block;
   v30 = +[RCCaptureFormat fileExtensionsSupported];
   v4 = [MEMORY[0x277CBEB58] set];
   if ([(NSArray *)self->_decomposedFragments count])
@@ -1235,9 +1235,9 @@ LABEL_19:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v36 + 1) + 8 * i) AVOutputURL];
-          v11 = [v10 lastPathComponent];
-          [v4 addObject:v11];
+          aVOutputURL = [*(*(&v36 + 1) + 8 * i) AVOutputURL];
+          lastPathComponent = [aVOutputURL lastPathComponent];
+          [v4 addObject:lastPathComponent];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -1247,13 +1247,13 @@ LABEL_19:
     }
   }
 
-  v12 = [(NSURL *)self->_composedAVURL lastPathComponent];
-  [v4 addObject:v12];
+  lastPathComponent2 = [(NSURL *)self->_composedAVURL lastPathComponent];
+  [v4 addObject:lastPathComponent2];
 
   v13 = [objc_opt_class() _compositionFragmentsFolderForComposedAVURL:self->_composedAVURL];
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [MEMORY[0x277CBEA60] array];
-  v16 = [v14 contentsOfDirectoryAtURL:v13 includingPropertiesForKeys:v15 options:5 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEA60] array];
+  v16 = [defaultManager contentsOfDirectoryAtURL:v13 includingPropertiesForKeys:array options:5 error:0];
 
   v34 = 0u;
   v35 = 0u;
@@ -1275,21 +1275,21 @@ LABEL_19:
         }
 
         v22 = *(*(&v32 + 1) + 8 * j);
-        v23 = [v22 lastPathComponent];
-        if ([v4 containsObject:v23])
+        lastPathComponent3 = [v22 lastPathComponent];
+        if ([v4 containsObject:lastPathComponent3])
         {
         }
 
         else
         {
-          v24 = [v22 pathExtension];
-          v25 = [v30 containsObject:v24];
+          pathExtension = [v22 pathExtension];
+          v25 = [v30 containsObject:pathExtension];
 
           if (v25)
           {
             v31 = 0;
             v26 = [[RCCompositionFragment alloc] initWithAVOutputURL:v22 contentDuration:0 timeRangeInContentToUse:0.0 timeRangeInComposition:-1.79769313e308 trackIndex:1.79769313e308, -1.79769313e308, 1.79769313e308];
-            v29[2](v29, v26, &v31);
+            blockCopy[2](blockCopy, v26, &v31);
             v27 = v31;
 
             if (v27)
@@ -1320,7 +1320,7 @@ LABEL_21:
     v5 = 136315394;
     v6 = "[RCComposition deleteFromFilesystem]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_272442000, v3, OS_LOG_TYPE_INFO, "%s -- deleting all composition assets for %@", &v5, 0x16u);
   }
 
@@ -1328,59 +1328,59 @@ LABEL_21:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)deleteFromFilesystem:(id)a3
++ (void)deleteFromFilesystem:(id)filesystem
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  filesystemCopy = filesystem;
   v4 = OSLogForCategory(@"Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "+[RCComposition deleteFromFilesystem:]";
     v13 = 2112;
-    v14 = v3;
+    v14 = filesystemCopy;
     _os_log_impl(&dword_272442000, v4, OS_LOG_TYPE_INFO, "%s -- deleting all composition assets for %@", &v11, 0x16u);
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [RCWaveform waveformURLForAVURL:v3 trackIndex:-1];
-  [v5 removeItemAtURL:v6 error:0];
-  v7 = [RCWaveform waveformURLForAVURL:v3 trackIndex:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [RCWaveform waveformURLForAVURL:filesystemCopy trackIndex:-1];
+  [defaultManager removeItemAtURL:v6 error:0];
+  v7 = [RCWaveform waveformURLForAVURL:filesystemCopy trackIndex:0];
 
-  [v5 removeItemAtURL:v7 error:0];
-  v8 = [RCWaveform waveformURLForAVURL:v3 trackIndex:1];
+  [defaultManager removeItemAtURL:v7 error:0];
+  v8 = [RCWaveform waveformURLForAVURL:filesystemCopy trackIndex:1];
 
-  [v5 removeItemAtURL:v8 error:0];
-  v9 = [v3 rc_URLByReplacingPathExtensionWithExtension:@"composition"];
-  [v5 removeItemAtURL:v3 error:0];
-  [v5 removeItemAtURL:v9 error:0];
+  [defaultManager removeItemAtURL:v8 error:0];
+  v9 = [filesystemCopy rc_URLByReplacingPathExtensionWithExtension:@"composition"];
+  [defaultManager removeItemAtURL:filesystemCopy error:0];
+  [defaultManager removeItemAtURL:v9 error:0];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)excludeFromBackup:(id)a3 error:(id *)a4
++ (BOOL)excludeFromBackup:(id)backup error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  backupCopy = backup;
   v6 = OSLogForCategory(@"Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 136315394;
     v19 = "+[RCComposition excludeFromBackup:error:]";
     v20 = 2112;
-    v21 = v5;
+    v21 = backupCopy;
     _os_log_impl(&dword_272442000, v6, OS_LOG_TYPE_DEFAULT, "%s -- excluding from backup %@", &v18, 0x16u);
   }
 
-  v7 = [v5 path];
-  v8 = chmod([v7 fileSystemRepresentation], 0x1A4u);
+  path = [backupCopy path];
+  v8 = chmod([path fileSystemRepresentation], 0x1A4u);
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -1393,16 +1393,16 @@ LABEL_21:
   {
     v10 = *MEMORY[0x277CBECB0];
     v11 = MEMORY[0x277CBEC38];
-    v9 = [v5 setResourceValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBECB0] error:a4];
-    v12 = [RCWaveform waveformURLForAVURL:v5 trackIndex:-1];
+    v9 = [backupCopy setResourceValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBECB0] error:error];
+    v12 = [RCWaveform waveformURLForAVURL:backupCopy trackIndex:-1];
     [v12 setResourceValue:v11 forKey:v10 error:0];
-    v13 = [RCWaveform waveformURLForAVURL:v5 trackIndex:0];
+    v13 = [RCWaveform waveformURLForAVURL:backupCopy trackIndex:0];
 
     [v13 setResourceValue:v11 forKey:v10 error:0];
-    v14 = [RCWaveform waveformURLForAVURL:v5 trackIndex:1];
+    v14 = [RCWaveform waveformURLForAVURL:backupCopy trackIndex:1];
 
     [v14 setResourceValue:v11 forKey:v10 error:0];
-    v15 = [v5 rc_URLByReplacingPathExtensionWithExtension:@"composition"];
+    v15 = [backupCopy rc_URLByReplacingPathExtensionWithExtension:@"composition"];
     [v15 setResourceValue:v11 forKey:v10 error:0];
   }
 
@@ -1410,31 +1410,31 @@ LABEL_21:
   return v9;
 }
 
-+ (BOOL)migrateBackupExclusionFlag:(id)a3
++ (BOOL)migrateBackupExclusionFlag:(id)flag
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  flagCopy = flag;
   v4 = OSLogForCategory(@"Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "+[RCComposition migrateBackupExclusionFlag:]";
     v13 = 2112;
-    v14 = v3;
+    v14 = flagCopy;
     _os_log_impl(&dword_272442000, v4, OS_LOG_TYPE_DEFAULT, "%s -- migrating backup exclusion flag %@", &v11, 0x16u);
   }
 
-  migrateBackupExclusionFlag(v3);
-  v5 = [RCWaveform waveformURLForAVURL:v3 trackIndex:-1];
+  migrateBackupExclusionFlag(flagCopy);
+  v5 = [RCWaveform waveformURLForAVURL:flagCopy trackIndex:-1];
   migrateBackupExclusionFlag(v5);
 
-  v6 = [RCWaveform waveformURLForAVURL:v3 trackIndex:0];
+  v6 = [RCWaveform waveformURLForAVURL:flagCopy trackIndex:0];
   migrateBackupExclusionFlag(v6);
 
-  v7 = [RCWaveform waveformURLForAVURL:v3 trackIndex:1];
+  v7 = [RCWaveform waveformURLForAVURL:flagCopy trackIndex:1];
   migrateBackupExclusionFlag(v7);
 
-  v8 = [v3 rc_URLByReplacingPathExtensionWithExtension:@"composition"];
+  v8 = [flagCopy rc_URLByReplacingPathExtensionWithExtension:@"composition"];
   migrateBackupExclusionFlag(v8);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1443,11 +1443,11 @@ LABEL_21:
 
 - (BOOL)saveMetadataToDefaultLocation
 {
-  v3 = [(RCComposition *)self dictionaryPListRepresentation];
-  if (v3)
+  dictionaryPListRepresentation = [(RCComposition *)self dictionaryPListRepresentation];
+  if (dictionaryPListRepresentation)
   {
     v17 = 0;
-    v4 = [MEMORY[0x277CCAC58] dataWithPropertyList:v3 format:100 options:0 error:&v17];
+    v4 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionaryPListRepresentation format:100 options:0 error:&v17];
     v5 = v17;
     if (v5)
     {
@@ -1461,8 +1461,8 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v8 = [(RCComposition *)self composedAVURL];
-    v6 = [RCComposition compositionMetadataURLForComposedAVURL:v8];
+    composedAVURL = [(RCComposition *)self composedAVURL];
+    v6 = [RCComposition compositionMetadataURLForComposedAVURL:composedAVURL];
 
     v9 = OSLogForCategory(@"Default");
     v10 = v9;
@@ -1479,10 +1479,10 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
-      v12 = [v6 URLByDeletingLastPathComponent];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
       v16 = 0;
-      v13 = [v11 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v16];
+      v13 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v16];
       v10 = v16;
 
       if ((v13 & 1) == 0)
@@ -1528,9 +1528,9 @@ LABEL_22:
 
 - (void)_loadMusicMemoMetadata
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSURL *)self->_composedAVURL path];
-  v5 = [v3 fileExistsAtPath:v4 isDirectory:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->_composedAVURL path];
+  v5 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if (v5)
   {
@@ -1541,38 +1541,38 @@ LABEL_22:
     }
 
     v7 = RCMusicMemosKeys_musicMemosKeys;
-    v8 = [v6 rc_recordingMetadata];
+    rc_recordingMetadata = [v6 rc_recordingMetadata];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __39__RCComposition__loadMusicMemoMetadata__block_invoke;
     v12[3] = &unk_279E441C0;
     v13 = v7;
     v9 = v7;
-    v10 = [v8 na_filter:v12];
+    v10 = [rc_recordingMetadata na_filter:v12];
     musicMemoMetadata = self->_musicMemoMetadata;
     self->_musicMemoMetadata = v10;
   }
 }
 
-+ (id)compositionMetadataURLForComposedAVURL:(id)a3
++ (id)compositionMetadataURLForComposedAVURL:(id)l
 {
-  v3 = [a1 compositionBundleURLForComposedAVURL:a3];
+  v3 = [self compositionBundleURLForComposedAVURL:l];
   v4 = [v3 URLByAppendingPathComponent:@"manifest.plist"];
 
   return v4;
 }
 
-+ (id)_compositionFragmentsFolderForComposedAVURL:(id)a3
++ (id)_compositionFragmentsFolderForComposedAVURL:(id)l
 {
-  v3 = [a1 compositionBundleURLForComposedAVURL:a3];
+  v3 = [self compositionBundleURLForComposedAVURL:l];
   v4 = [v3 URLByAppendingPathComponent:@"fragments"];
 
   return v4;
 }
 
-+ (id)mergeCaptureFragmentMetadataURLForComposedAVURL:(id)a3
++ (id)mergeCaptureFragmentMetadataURLForComposedAVURL:(id)l
 {
-  v3 = [a1 compositionBundleURLForComposedAVURL:a3];
+  v3 = [self compositionBundleURLForComposedAVURL:l];
   v4 = [v3 URLByAppendingPathComponent:@"mergeCaptureFragment.plist"];
 
   return v4;
@@ -1588,7 +1588,7 @@ LABEL_22:
 - (void)_calculateComposedAVURLDerivedValues
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [*a1 path];
+  path = [*self path];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_0(&dword_272442000, v2, v3, "%s -- could not open audio file path = %@, error = %@", v4, v5, v6, v7, 2u);
 
@@ -1599,9 +1599,9 @@ LABEL_22:
 {
   if (!self->_cachedValueForHasSpatialAudioIsValid)
   {
-    v7 = [(RCComposition *)self composedFragments];
+    composedFragments = [(RCComposition *)self composedFragments];
     v4 = MEMORY[0x277CBEB98];
-    v5 = [v7 na_map:&__block_literal_global_3];
+    v5 = [composedFragments na_map:&__block_literal_global_3];
     v6 = [v4 setWithArray:v5];
     self->_cachedHasSpatialAudio = [v6 na_any:&__block_literal_global_71];
 
@@ -1622,8 +1622,8 @@ uint64_t __53__RCComposition__updateCachedValueForHasSpatialAudio__block_invoke_
   v141 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_decomposedFragments count])
   {
-    v109 = objc_opt_new();
-    v113 = [MEMORY[0x277CBEB18] array];
+    array3 = objc_opt_new();
+    array = [MEMORY[0x277CBEB18] array];
     v2 = 0;
     v3 = 1;
     while (1)
@@ -1651,7 +1651,7 @@ uint64_t __53__RCComposition__updateCachedValueForHasSpatialAudio__block_invoke_
           }
 
           v5 = *(*(&v121 + 1) + 8 * i);
-          v6 = v113;
+          v6 = array;
           v7 = v5;
           v8 = v6;
           v9 = v7;
@@ -1746,7 +1746,7 @@ LABEL_27:
 
           v120 = v9;
           v118 = i;
-          v22 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           v116 = v13;
           v117 = v8;
           v115 = v20;
@@ -1878,7 +1878,7 @@ LABEL_42:
                     [v55 timeRangeInContentToUse];
                     if (RCTimeRangeDeltaWithExactPrecision(v56, v57) > 2.22044605e-16)
                     {
-                      [v22 addObject:v55];
+                      [array2 addObject:v55];
                     }
                   }
 
@@ -1899,7 +1899,7 @@ LABEL_42:
           while (v74);
 LABEL_61:
           v8 = v117;
-          [v117 replaceObjectsInRange:v116 withObjectsFromArray:{v115, v22}];
+          [v117 replaceObjectsInRange:v116 withObjectsFromArray:{v115, array2}];
 
           i = v118;
           v9 = v120;
@@ -1983,8 +1983,8 @@ LABEL_62:
       while (v114);
 LABEL_77:
 
-      [v109 addObjectsFromArray:v113];
-      [v113 removeAllObjects];
+      [array3 addObjectsFromArray:array];
+      [array removeAllObjects];
       v3 = 0;
       v2 = 1;
       if ((v110 & 1) == 0)
@@ -1995,16 +1995,16 @@ LABEL_77:
     }
   }
 
-  v109 = [MEMORY[0x277CBEA60] array];
+  array3 = [MEMORY[0x277CBEA60] array];
 LABEL_80:
   v106 = *MEMORY[0x277D85DE8];
 
-  return v109;
+  return array3;
 }
 
-+ (BOOL)_isSessionWithModificationAccessActiveForComposedAVURL:(id)a3
++ (BOOL)_isSessionWithModificationAccessActiveForComposedAVURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2013,9 +2013,9 @@ LABEL_80:
   v7[1] = 3221225472;
   v7[2] = __72__RCComposition__isSessionWithModificationAccessActiveForComposedAVURL___block_invoke;
   v7[3] = &unk_279E44228;
-  v8 = v3;
+  v8 = lCopy;
   v9 = &v10;
-  v4 = v3;
+  v4 = lCopy;
   _accessActiveCaptureCompositionAVURLs(v7);
   v5 = *(v11 + 24);
 
@@ -2030,9 +2030,9 @@ uint64_t __72__RCComposition__isSessionWithModificationAccessActiveForComposedAV
   return result;
 }
 
-+ (BOOL)_markCompositionAVURLsBeingModified:(id)a3
++ (BOOL)_markCompositionAVURLsBeingModified:(id)modified
 {
-  v3 = a3;
+  modifiedCopy = modified;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2041,9 +2041,9 @@ uint64_t __72__RCComposition__isSessionWithModificationAccessActiveForComposedAV
   v7[1] = 3221225472;
   v7[2] = __53__RCComposition__markCompositionAVURLsBeingModified___block_invoke;
   v7[3] = &unk_279E44228;
-  v8 = v3;
+  v8 = modifiedCopy;
   v9 = &v10;
-  v4 = v3;
+  v4 = modifiedCopy;
   _accessActiveCaptureCompositionAVURLs(v7);
   v5 = *(v11 + 24);
 
@@ -2070,8 +2070,8 @@ void __53__RCComposition__markCompositionAVURLsBeingModified___block_invoke(uint
 - (BOOL)rcs_allAssetsAreMissing
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(RCComposition *)self composedAVURL];
-  v4 = [v3 checkResourceIsReachableAndReturnError:0];
+  composedAVURL = [(RCComposition *)self composedAVURL];
+  v4 = [composedAVURL checkResourceIsReachableAndReturnError:0];
 
   if (v4)
   {
@@ -2084,8 +2084,8 @@ void __53__RCComposition__markCompositionAVURLsBeingModified___block_invoke(uint
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(RCComposition *)self decomposedFragments];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    decomposedFragments = [(RCComposition *)self decomposedFragments];
+    v7 = [decomposedFragments countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2096,11 +2096,11 @@ void __53__RCComposition__markCompositionAVURLsBeingModified___block_invoke(uint
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(decomposedFragments);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) AVOutputURL];
-          v12 = [v11 checkResourceIsReachableAndReturnError:0];
+          aVOutputURL = [*(*(&v15 + 1) + 8 * i) AVOutputURL];
+          v12 = [aVOutputURL checkResourceIsReachableAndReturnError:0];
 
           if (v12)
           {
@@ -2109,7 +2109,7 @@ void __53__RCComposition__markCompositionAVURLsBeingModified___block_invoke(uint
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [decomposedFragments countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v8)
         {
           continue;
@@ -2127,35 +2127,35 @@ LABEL_13:
   return v5;
 }
 
-- (id)moveTo:(id)a3 recordingID:(id)a4 error:(id *)a5
+- (id)moveTo:(id)to recordingID:(id)d error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [(RCComposition *)self composedAVURL];
-  v13 = [RCComposition compositionBundleURLForComposedAVURL:v12];
+  toCopy = to;
+  dCopy = d;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  composedAVURL = [(RCComposition *)self composedAVURL];
+  v13 = [RCComposition compositionBundleURLForComposedAVURL:composedAVURL];
 
-  v14 = [RCComposition compositionBundleURLForComposedAVURL:v9];
-  if ([v11 moveItemAtURL:v13 toURL:v14 error:a5])
+  v14 = [RCComposition compositionBundleURLForComposedAVURL:toCopy];
+  if ([defaultManager moveItemAtURL:v13 toURL:v14 error:error])
   {
     v31 = v14;
     v33 = v13;
-    v34 = v11;
-    v35 = v10;
+    v34 = defaultManager;
+    v35 = dCopy;
     v15 = [(RCComposition *)self mutableCopy];
-    objc_storeStrong(v15 + 7, a3);
-    objc_storeStrong(v15 + 8, a4);
-    v36 = v9;
-    v16 = [objc_opt_class() _compositionFragmentsFolderForComposedAVURL:v9];
+    objc_storeStrong(v15 + 7, to);
+    objc_storeStrong(v15 + 8, d);
+    v36 = toCopy;
+    v16 = [objc_opt_class() _compositionFragmentsFolderForComposedAVURL:toCopy];
     v17 = objc_opt_new();
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v32 = v15;
-    v18 = [v15 decomposedFragments];
-    v19 = [v18 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    decomposedFragments = [v15 decomposedFragments];
+    v19 = [decomposedFragments countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v19)
     {
       v20 = v19;
@@ -2166,20 +2166,20 @@ LABEL_13:
         {
           if (*v38 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(decomposedFragments);
           }
 
           v23 = *(*(&v37 + 1) + 8 * i);
           v24 = [v23 mutableCopy];
-          v25 = [v23 AVOutputURL];
-          v26 = [v25 lastPathComponent];
-          v27 = [v16 URLByAppendingPathComponent:v26];
+          aVOutputURL = [v23 AVOutputURL];
+          lastPathComponent = [aVOutputURL lastPathComponent];
+          v27 = [v16 URLByAppendingPathComponent:lastPathComponent];
           [v24 setAVOutputURL:v27];
 
           [v17 addObject:v24];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v20 = [decomposedFragments countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v20);
@@ -2189,10 +2189,10 @@ LABEL_13:
     [v32 setDecomposedFragments:v17];
     [v32 saveMetadataToDefaultLocation];
 
-    v10 = v35;
-    v9 = v36;
+    dCopy = v35;
+    toCopy = v36;
     v13 = v33;
-    v11 = v34;
+    defaultManager = v34;
     v14 = v31;
   }
 
@@ -2206,52 +2206,52 @@ LABEL_13:
   return v28;
 }
 
-- (id)playableAsset:(id *)a3
+- (id)playableAsset:(id *)asset
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(RCComposition *)self composedAVURL];
-  v7 = [v6 path];
-  v8 = [v5 fileExistsAtPath:v7 isDirectory:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  composedAVURL = [(RCComposition *)self composedAVURL];
+  path = [composedAVURL path];
+  v8 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if (v8)
   {
     v9 = MEMORY[0x277CE6650];
-    v10 = [(RCComposition *)self composedAVURL];
-    v11 = [v9 assetWithURL:v10];
+    composedAVURL2 = [(RCComposition *)self composedAVURL];
+    v11 = [v9 assetWithURL:composedAVURL2];
 
-    v12 = [v11 rc_audioTracks];
-    v13 = [v12 count];
+    rc_audioTracks = [v11 rc_audioTracks];
+    v13 = [rc_audioTracks count];
 
     if (v13)
     {
-      a3 = v11;
+      asset = v11;
     }
 
-    else if (a3)
+    else if (asset)
     {
       v14 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA760];
-      v15 = [(RCComposition *)self composedAVURL];
-      v20[0] = v15;
+      composedAVURL3 = [(RCComposition *)self composedAVURL];
+      v20[0] = composedAVURL3;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      *a3 = [v14 errorWithDomain:@"com.apple.VoiceMemos.ErrorDomain" code:1 userInfo:v16];
+      *asset = [v14 errorWithDomain:@"com.apple.VoiceMemos.ErrorDomain" code:1 userInfo:v16];
 
-      a3 = 0;
+      asset = 0;
     }
   }
 
   else
   {
-    a3 = [(RCComposition *)self _compositionAsset:a3];
+    asset = [(RCComposition *)self _compositionAsset:asset];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return a3;
+  return asset;
 }
 
-- (id)_compositionAsset:(id *)a3
+- (id)_compositionAsset:(id *)asset
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CE6548];
@@ -2292,11 +2292,11 @@ LABEL_13:
       [(RCComposition(RCAVFoundation) *)v14 _compositionAsset:v16];
     }
 
-    if (a3)
+    if (asset)
     {
       v17 = v14;
       v15 = 0;
-      *a3 = v14;
+      *asset = v14;
     }
 
     else
@@ -2340,14 +2340,14 @@ uint64_t __51__RCComposition_RCAVFoundation___compositionAsset___block_invoke_2(
   return v15;
 }
 
-- (BOOL)_enumerateTracksForInsertion:(id)a3 error:(id *)a4
+- (BOOL)_enumerateTracksForInsertion:(id)insertion error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(RCComposition *)self composedFragments];
-  if ([v7 count])
+  insertionCopy = insertion;
+  composedFragments = [(RCComposition *)self composedFragments];
+  if ([composedFragments count])
   {
-    v41 = a4;
+    errorCopy = error;
     v8 = objc_opt_new();
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
@@ -2366,13 +2366,13 @@ uint64_t __51__RCComposition_RCAVFoundation___compositionAsset___block_invoke_2(
       v49 = v12;
       v46 = v12;
       v47 = v12;
-      obj = [v7 fragmentsWithTrackIndex:v10];
+      obj = [composedFragments fragmentsWithTrackIndex:v10];
       v14 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
       if (v14)
       {
         v15 = v14;
         v16 = *v47;
-        v39 = v7;
+        v39 = composedFragments;
         v37 = v13;
         while (2)
         {
@@ -2384,8 +2384,8 @@ uint64_t __51__RCComposition_RCAVFoundation___compositionAsset___block_invoke_2(
             }
 
             v18 = *(*(&v46 + 1) + 8 * i);
-            v19 = [v18 AVOutputURL];
-            v20 = (v9)[2](v9, v19);
+            aVOutputURL = [v18 AVOutputURL];
+            v20 = (v9)[2](v9, aVOutputURL);
 
             if (RCSpatialFeatureFlagIsEnabled())
             {
@@ -2406,19 +2406,19 @@ uint64_t __51__RCComposition_RCAVFoundation___compositionAsset___block_invoke_2(
                 [RCComposition(RCAVFoundation) _enumerateTracksForInsertion:v31 error:?];
               }
 
-              if (v41)
+              if (errorCopy)
               {
                 v32 = MEMORY[0x277CCA9B8];
                 v52 = *MEMORY[0x277CCA760];
-                v33 = [v18 AVOutputURL];
-                v53 = v33;
+                aVOutputURL2 = [v18 AVOutputURL];
+                v53 = aVOutputURL2;
                 v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-                *v41 = [v32 errorWithDomain:@"com.apple.VoiceMemos.ErrorDomain" code:1 userInfo:v34];
+                *errorCopy = [v32 errorWithDomain:@"com.apple.VoiceMemos.ErrorDomain" code:1 userInfo:v34];
               }
 
 LABEL_26:
               LOBYTE(v10) = 0;
-              v7 = v39;
+              composedFragments = v39;
               goto LABEL_27;
             }
 
@@ -2440,10 +2440,10 @@ LABEL_26:
             }
 
             v28 = [v21 objectAtIndexedSubscript:v27];
-            v29 = v6[2];
+            v29 = insertionCopy[2];
             v43 = v45;
             v42 = v44;
-            v30 = v29(v6, v10, v28, &v43, &v42, v41);
+            v30 = v29(insertionCopy, v10, v28, &v43, &v42, errorCopy);
 
             if (!v30)
             {
@@ -2452,7 +2452,7 @@ LABEL_26:
           }
 
           v15 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
-          v7 = v39;
+          composedFragments = v39;
           v13 = v37;
           if (v15)
           {
@@ -2494,10 +2494,10 @@ id __68__RCComposition_RCAVFoundation___enumerateTracksForInsertion_error___bloc
   return v4;
 }
 
-- (id)bufferEnumerator:(id)a3 startTime:(double)a4 error:(id *)a5
+- (id)bufferEnumerator:(id)enumerator startTime:(double)time error:(id *)error
 {
-  v8 = a3;
-  v9 = [[RCAudioBufferEnumerator alloc] initWithComposition:self processingFormat:v8 startTime:a5 error:a4];
+  enumeratorCopy = enumerator;
+  v9 = [[RCAudioBufferEnumerator alloc] initWithComposition:self processingFormat:enumeratorCopy startTime:error error:time];
 
   return v9;
 }

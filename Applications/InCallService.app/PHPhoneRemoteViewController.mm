@@ -1,62 +1,62 @@
 @interface PHPhoneRemoteViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (PHInCallBackgroundStyleProtocol)backgroundStyleDelegate;
 - (PHPhoneRemoteViewControllerDelegate)delegate;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PHPhoneRemoteViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 viewControllerClassName];
-  v6 = [a1 serviceBundleIdentifier];
+  handlerCopy = handler;
+  viewControllerClassName = [self viewControllerClassName];
+  serviceBundleIdentifier = [self serviceBundleIdentifier];
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v5;
+    v11 = viewControllerClassName;
     v12 = 2112;
-    v13 = v6;
+    v13 = serviceBundleIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Requesting view controller with class name %@ and bundle identifier %@", &v10, 0x16u);
   }
 
-  v8 = [a1 requestViewController:v5 fromServiceWithBundleIdentifier:v6 connectionHandler:v4];
+  v8 = [self requestViewController:viewControllerClassName fromServiceWithBundleIdentifier:serviceBundleIdentifier connectionHandler:handlerCopy];
 
   return v8;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(PHPhoneRemoteViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(PHPhoneRemoteViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(PHPhoneRemoteViewController *)self delegate];
-    [v5 viewServiceDidTerminateWithError:v6];
+    delegate2 = [(PHPhoneRemoteViewController *)self delegate];
+    [delegate2 viewServiceDidTerminateWithError:errorCopy];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PHPhoneRemoteViewController;
-  [(PHPhoneRemoteViewController *)&v5 viewDidAppear:a3];
-  v4 = [(PHPhoneRemoteViewController *)self backgroundStyleDelegate];
-  [v4 setBackgroundStyle:-[PHPhoneRemoteViewController backgroundStyle](self animatedWithDuration:{"backgroundStyle"), 0.5}];
+  [(PHPhoneRemoteViewController *)&v5 viewDidAppear:appear];
+  backgroundStyleDelegate = [(PHPhoneRemoteViewController *)self backgroundStyleDelegate];
+  [backgroundStyleDelegate setBackgroundStyle:-[PHPhoneRemoteViewController backgroundStyle](self animatedWithDuration:{"backgroundStyle"), 0.5}];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHPhoneRemoteViewController;
-  [(PHPhoneRemoteViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PHPhoneRemoteViewController *)self backgroundStyleDelegate];
-  [v4 setBackgroundStyle:4 animatedWithDuration:0.5];
+  [(PHPhoneRemoteViewController *)&v5 viewWillDisappear:disappear];
+  backgroundStyleDelegate = [(PHPhoneRemoteViewController *)self backgroundStyleDelegate];
+  [backgroundStyleDelegate setBackgroundStyle:4 animatedWithDuration:0.5];
 }
 
 - (PHPhoneRemoteViewControllerDelegate)delegate

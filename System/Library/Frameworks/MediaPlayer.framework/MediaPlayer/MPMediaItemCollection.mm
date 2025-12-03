@@ -1,17 +1,17 @@
 @interface MPMediaItemCollection
 + (MPMediaItemCollection)collectionWithItems:(NSArray *)items;
-+ (id)artworkCatalogCachePropertiesForGroupingType:(int64_t)a3;
-+ (id)representativePersistentIDPropertyForGroupingType:(int64_t)a3;
-+ (id)sortTitlePropertyForGroupingType:(int64_t)a3;
-+ (id)titlePropertyForGroupingType:(int64_t)a3;
++ (id)artworkCatalogCachePropertiesForGroupingType:(int64_t)type;
++ (id)representativePersistentIDPropertyForGroupingType:(int64_t)type;
++ (id)sortTitlePropertyForGroupingType:(int64_t)type;
++ (id)titlePropertyForGroupingType:(int64_t)type;
 - (BOOL)MPSD_hasDownloadingItem;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setValue:(id)value forProperty:(id)property;
 - (MPMediaItemCollection)init;
-- (MPMediaItemCollection)initWithCoder:(id)a3;
+- (MPMediaItemCollection)initWithCoder:(id)coder;
 - (MPMediaItemCollection)initWithItems:(NSArray *)items;
-- (MPMediaItemCollection)initWithItemsQuery:(id)a3;
-- (MPMediaItemCollection)initWithMultiverseIdentifier:(id)a3 library:(id)a4;
+- (MPMediaItemCollection)initWithItemsQuery:(id)query;
+- (MPMediaItemCollection)initWithMultiverseIdentifier:(id)identifier library:(id)library;
 - (MPMediaType)mediaTypes;
 - (id)_artworkCatalogRepresentativeItem;
 - (id)albumArtistArtworkCatalog;
@@ -19,10 +19,10 @@
 - (id)artworkCatalog;
 - (id)multiverseIdentifier;
 - (unint64_t)hash;
-- (void)_enumerateItemPersistentIDsUsingBlock:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValue:(id)a3 forProperty:(id)a4 withCompletionBlock:(id)a5;
-- (void)setValuesForProperties:(id)a3 trackList:(id)a4 withCompletionBlock:(id)a5;
+- (void)_enumerateItemPersistentIDsUsingBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValue:(id)value forProperty:(id)property withCompletionBlock:(id)block;
+- (void)setValuesForProperties:(id)properties trackList:(id)list withCompletionBlock:(id)block;
 @end
 
 @implementation MPMediaItemCollection
@@ -30,11 +30,11 @@
 - (BOOL)MPSD_hasDownloadingItem
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(MPMediaItemCollection *)self itemsQuery];
-  v4 = v3;
-  if (v3)
+  itemsQuery = [(MPMediaItemCollection *)self itemsQuery];
+  v4 = itemsQuery;
+  if (itemsQuery)
   {
-    v5 = [v3 MPSD_hasDownloadingEntities];
+    mPSD_hasDownloadingEntities = [itemsQuery MPSD_hasDownloadingEntities];
   }
 
   else
@@ -43,8 +43,8 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(MPMediaItemCollection *)self items];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    items = [(MPMediaItemCollection *)self items];
+    v7 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -55,18 +55,18 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(items);
           }
 
           if ([*(*(&v12 + 1) + 8 * i) MPSD_isDownloadInProgress])
           {
 
-            v5 = 1;
+            mPSD_hasDownloadingEntities = 1;
             goto LABEL_13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v8)
         {
           continue;
@@ -76,12 +76,12 @@
       }
     }
 
-    v5 = 0;
+    mPSD_hasDownloadingEntities = 0;
   }
 
 LABEL_13:
 
-  return v5;
+  return mPSD_hasDownloadingEntities;
 }
 
 - (id)_artworkCatalogRepresentativeItem
@@ -97,34 +97,34 @@ LABEL_13:
     v4 = 0;
   }
 
-  v5 = [v4 longLongValue];
-  if (!v5 || (v6 = v5, -[MPMediaEntity mediaLibrary](self, "mediaLibrary"), v7 = objc_claimAutoreleasedReturnValue(), [v7 itemWithPersistentID:v6 verifyExistence:0], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  longLongValue = [v4 longLongValue];
+  if (!longLongValue || (v6 = longLongValue, -[MPMediaEntity mediaLibrary](self, "mediaLibrary"), v7 = objc_claimAutoreleasedReturnValue(), [v7 itemWithPersistentID:v6 verifyExistence:0], representativeItem = objc_claimAutoreleasedReturnValue(), v7, !representativeItem))
   {
-    v8 = [(MPMediaItemCollection *)self representativeItem];
+    representativeItem = [(MPMediaItemCollection *)self representativeItem];
   }
 
-  return v8;
+  return representativeItem;
 }
 
 - (id)artistArtworkCatalog
 {
   if ([(MPMediaItemCollection *)self groupingType]== 2)
   {
-    v3 = [(MPMediaItemCollection *)self _artworkCatalogRepresentativeItem];
+    _artworkCatalogRepresentativeItem = [(MPMediaItemCollection *)self _artworkCatalogRepresentativeItem];
     v4 = [MPMediaLibraryArtworkRequest alloc];
-    v5 = [(MPMediaEntity *)self mediaLibrary];
-    v6 = -[MPMediaLibraryArtworkRequest initWithLibrary:identifier:entityType:artworkType:](v4, "initWithLibrary:identifier:entityType:artworkType:", v5, [v3 artistPersistentID], 2, 4);
+    mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+    v6 = -[MPMediaLibraryArtworkRequest initWithLibrary:identifier:entityType:artworkType:](v4, "initWithLibrary:identifier:entityType:artworkType:", mediaLibrary, [_artworkCatalogRepresentativeItem artistPersistentID], 2, 4);
 
     v7 = [MPArtworkCatalog alloc];
-    v8 = [(MPMediaEntity *)self mediaLibrary];
-    v9 = [v8 artworkDataSource];
-    v10 = [(MPArtworkCatalog *)v7 initWithToken:v6 dataSource:v9];
+    mediaLibrary2 = [(MPMediaEntity *)self mediaLibrary];
+    artworkDataSource = [mediaLibrary2 artworkDataSource];
+    v10 = [(MPArtworkCatalog *)v7 initWithToken:v6 dataSource:artworkDataSource];
 
-    v11 = [(MPMediaEntity *)self mediaLibrary];
-    v12 = [v11 artworkDataSource];
-    LODWORD(v9) = [v12 areRepresentationsAvailableForCatalog:v10];
+    mediaLibrary3 = [(MPMediaEntity *)self mediaLibrary];
+    artworkDataSource2 = [mediaLibrary3 artworkDataSource];
+    LODWORD(artworkDataSource) = [artworkDataSource2 areRepresentationsAvailableForCatalog:v10];
 
-    if (v9)
+    if (artworkDataSource)
     {
       v13 = v10;
     }
@@ -147,21 +147,21 @@ LABEL_13:
 {
   if ([(MPMediaItemCollection *)self groupingType]== 3)
   {
-    v3 = [(MPMediaItemCollection *)self _artworkCatalogRepresentativeItem];
+    _artworkCatalogRepresentativeItem = [(MPMediaItemCollection *)self _artworkCatalogRepresentativeItem];
     v4 = [MPMediaLibraryArtworkRequest alloc];
-    v5 = [(MPMediaEntity *)self mediaLibrary];
-    v6 = -[MPMediaLibraryArtworkRequest initWithLibrary:identifier:entityType:artworkType:](v4, "initWithLibrary:identifier:entityType:artworkType:", v5, [v3 albumArtistPersistentID], 7, 4);
+    mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+    v6 = -[MPMediaLibraryArtworkRequest initWithLibrary:identifier:entityType:artworkType:](v4, "initWithLibrary:identifier:entityType:artworkType:", mediaLibrary, [_artworkCatalogRepresentativeItem albumArtistPersistentID], 7, 4);
 
     v7 = [MPArtworkCatalog alloc];
-    v8 = [(MPMediaEntity *)self mediaLibrary];
-    v9 = [v8 artworkDataSource];
-    v10 = [(MPArtworkCatalog *)v7 initWithToken:v6 dataSource:v9];
+    mediaLibrary2 = [(MPMediaEntity *)self mediaLibrary];
+    artworkDataSource = [mediaLibrary2 artworkDataSource];
+    v10 = [(MPArtworkCatalog *)v7 initWithToken:v6 dataSource:artworkDataSource];
 
-    v11 = [(MPMediaEntity *)self mediaLibrary];
-    v12 = [v11 artworkDataSource];
-    LODWORD(v9) = [v12 areRepresentationsAvailableForCatalog:v10];
+    mediaLibrary3 = [(MPMediaEntity *)self mediaLibrary];
+    artworkDataSource2 = [mediaLibrary3 artworkDataSource];
+    LODWORD(artworkDataSource) = [artworkDataSource2 areRepresentationsAvailableForCatalog:v10];
 
-    if (v9)
+    if (artworkDataSource)
     {
       v13 = v10;
     }
@@ -182,13 +182,13 @@ LABEL_13:
 
 - (id)artworkCatalog
 {
-  v3 = [(MPMediaItemCollection *)self groupingType];
-  if (v3 == 2)
+  groupingType = [(MPMediaItemCollection *)self groupingType];
+  if (groupingType == 2)
   {
-    v4 = [(MPMediaItemCollection *)self artistArtworkCatalog];
+    artistArtworkCatalog = [(MPMediaItemCollection *)self artistArtworkCatalog];
 LABEL_5:
-    v5 = v4;
-    if (v4)
+    artworkCatalog = artistArtworkCatalog;
+    if (artistArtworkCatalog)
     {
       goto LABEL_7;
     }
@@ -196,28 +196,28 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v3 == 3)
+  if (groupingType == 3)
   {
-    v4 = [(MPMediaItemCollection *)self albumArtistArtworkCatalog];
+    artistArtworkCatalog = [(MPMediaItemCollection *)self albumArtistArtworkCatalog];
     goto LABEL_5;
   }
 
 LABEL_6:
-  v6 = [(MPMediaItemCollection *)self _artworkCatalogRepresentativeItem];
-  v7 = [objc_opt_class() artworkCatalogCacheProperties];
-  v8 = [v6 valuesForProperties:v7];
+  _artworkCatalogRepresentativeItem = [(MPMediaItemCollection *)self _artworkCatalogRepresentativeItem];
+  artworkCatalogCacheProperties = [objc_opt_class() artworkCatalogCacheProperties];
+  v8 = [_artworkCatalogRepresentativeItem valuesForProperties:artworkCatalogCacheProperties];
 
-  v5 = [v6 artworkCatalog];
+  artworkCatalog = [_artworkCatalogRepresentativeItem artworkCatalog];
 
 LABEL_7:
 
-  return v5;
+  return artworkCatalog;
 }
 
-+ (id)artworkCatalogCachePropertiesForGroupingType:(int64_t)a3
++ (id)artworkCatalogCachePropertiesForGroupingType:(int64_t)type
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5 = [MPMediaItemCollection representativePersistentIDPropertyForGroupingType:a3];
+  v5 = [MPMediaItemCollection representativePersistentIDPropertyForGroupingType:type];
   if (v5)
   {
     [v4 addObject:v5];
@@ -226,10 +226,10 @@ LABEL_7:
   return v4;
 }
 
-- (void)_enumerateItemPersistentIDsUsingBlock:(id)a3
+- (void)_enumerateItemPersistentIDsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
@@ -250,10 +250,10 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v10 = [*(*(&v11 + 1) + 8 * v9) persistentID];
-      if (v10)
+      persistentID = [*(*(&v11 + 1) + 8 * v9) persistentID];
+      if (persistentID)
       {
-        v4[2](v4, v10, &v15);
+        blockCopy[2](blockCopy, persistentID, &v15);
       }
 
       if (v15)
@@ -275,46 +275,46 @@ LABEL_3:
   }
 }
 
-- (void)setValuesForProperties:(id)a3 trackList:(id)a4 withCompletionBlock:(id)a5
+- (void)setValuesForProperties:(id)properties trackList:(id)list withCompletionBlock:(id)block
 {
-  v9 = a5;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:408 description:@"subclass must implement"];
+  blockCopy = block;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:408 description:@"subclass must implement"];
 
-  v8 = v9;
-  if (v9)
+  v8 = blockCopy;
+  if (blockCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
-    v8 = v9;
+    (*(blockCopy + 2))(blockCopy, 0, 0);
+    v8 = blockCopy;
   }
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4 withCompletionBlock:(id)a5
+- (void)setValue:(id)value forProperty:(id)property withCompletionBlock:(id)block
 {
-  v9 = a5;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:403 description:@"subclass must implement"];
+  blockCopy = block;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:403 description:@"subclass must implement"];
 
-  v8 = v9;
-  if (v9)
+  v8 = blockCopy;
+  if (blockCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
-    v8 = v9;
+    (*(blockCopy + 2))(blockCopy, 0, 0);
+    v8 = blockCopy;
   }
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:398 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:398 description:@"subclass must implement"];
 
   return 0;
 }
 
 - (id)multiverseIdentifier
 {
-  v3 = [(MPMediaEntity *)self mediaLibrary];
-  v4 = [v3 multiverseIdentifierForCollectionWithPersistentID:-[MPMediaEntity persistentID](self groupingType:{"persistentID"), -[MPMediaItemCollection groupingType](self, "groupingType")}];
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  v4 = [mediaLibrary multiverseIdentifierForCollectionWithPersistentID:-[MPMediaEntity persistentID](self groupingType:{"persistentID"), -[MPMediaItemCollection groupingType](self, "groupingType")}];
 
   return v4;
 }
@@ -322,9 +322,9 @@ LABEL_3:
 - (MPMediaType)mediaTypes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(MPMediaItemCollection *)self items];
-  v4 = v3;
-  if (!self->_initializedContainedMediaTypes && [v3 count])
+  items = [(MPMediaItemCollection *)self items];
+  v4 = items;
+  if (!self->_initializedContainedMediaTypes && [items count])
   {
     self->_containedMediaTypes = 0;
     v13 = 0u;
@@ -368,47 +368,47 @@ LABEL_3:
   return containedMediaTypes;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  if (([v6 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:195 description:@"only keyed coding is supported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:195 description:@"only keyed coding is supported"];
   }
 
-  [v6 encodeInteger:self->_itemsCount forKey:@"MPItemsCount"];
-  [v6 encodeObject:self->_representativeItem forKey:@"MPRepresentativeItem"];
-  [v6 encodeInteger:self->_containedMediaTypes forKey:@"MPContainedMediaTypes"];
-  [v6 encodeBool:self->_initializedContainedMediaTypes forKey:@"MPInitializedContainedMediaTypes"];
-  [v6 encodeObject:self->_items forKey:@"MPItems"];
-  [v6 encodeObject:self->_itemsQuery forKey:@"MPMediaItemsQuery"];
+  [coderCopy encodeInteger:self->_itemsCount forKey:@"MPItemsCount"];
+  [coderCopy encodeObject:self->_representativeItem forKey:@"MPRepresentativeItem"];
+  [coderCopy encodeInteger:self->_containedMediaTypes forKey:@"MPContainedMediaTypes"];
+  [coderCopy encodeBool:self->_initializedContainedMediaTypes forKey:@"MPInitializedContainedMediaTypes"];
+  [coderCopy encodeObject:self->_items forKey:@"MPItems"];
+  [coderCopy encodeObject:self->_itemsQuery forKey:@"MPMediaItemsQuery"];
 }
 
-- (MPMediaItemCollection)initWithCoder:(id)a3
+- (MPMediaItemCollection)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:164 description:@"only keyed coding is supported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:164 description:@"only keyed coding is supported"];
   }
 
   v6 = MSVPropertyListDataClasses();
   v7 = [v6 setByAddingObject:objc_opt_class()];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"MPItems"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"MPItems"];
 
   v9 = [(MPMediaItemCollection *)self initWithItems:v8];
   if (v9)
   {
-    v9->_itemsCount = [v5 decodeIntegerForKey:@"MPItemsCount"];
-    v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"MPRepresentativeItem"];
+    v9->_itemsCount = [coderCopy decodeIntegerForKey:@"MPItemsCount"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPRepresentativeItem"];
     representativeItem = v9->_representativeItem;
     v9->_representativeItem = v10;
 
-    v9->_containedMediaTypes = [v5 decodeIntegerForKey:@"MPContainedMediaTypes"];
-    v9->_initializedContainedMediaTypes = [v5 decodeBoolForKey:@"MPInitializedContainedMediaTypes"];
+    v9->_containedMediaTypes = [coderCopy decodeIntegerForKey:@"MPContainedMediaTypes"];
+    v9->_initializedContainedMediaTypes = [coderCopy decodeBoolForKey:@"MPInitializedContainedMediaTypes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -461,7 +461,7 @@ LABEL_15:
       v9->_items = 0;
     }
 
-    v18 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"MPMediaItemsQuery"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMediaItemsQuery"];
     itemsQuery = v9->_itemsQuery;
     v9->_itemsQuery = v18;
   }
@@ -469,10 +469,10 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -482,7 +482,7 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (-[NSArray count](self->_items, "count") || [v5[5] count])
       {
         v6 = [(NSArray *)self->_items isEqual:v5[5]];
@@ -522,22 +522,22 @@ LABEL_15:
   return [(MPMediaItemCollection *)self initWithItemsQuery:0];
 }
 
-- (MPMediaItemCollection)initWithMultiverseIdentifier:(id)a3 library:(id)a4
+- (MPMediaItemCollection)initWithMultiverseIdentifier:(id)identifier library:(id)library
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:138 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItemCollection.m" lineNumber:138 description:@"subclass must implement"];
 
   return [(MPMediaItemCollection *)self initWithItemsQuery:0];
 }
 
-- (MPMediaItemCollection)initWithItemsQuery:(id)a3
+- (MPMediaItemCollection)initWithItemsQuery:(id)query
 {
-  v4 = a3;
-  v5 = [v4 items];
-  v6 = [(MPMediaItemCollection *)self initWithItems:v5];
+  queryCopy = query;
+  items = [queryCopy items];
+  v6 = [(MPMediaItemCollection *)self initWithItems:items];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [queryCopy copy];
     itemsQuery = v6->_itemsQuery;
     v6->_itemsQuery = v7;
   }
@@ -558,15 +558,15 @@ LABEL_15:
     v7 = v5->_items;
     v5->_items = v6;
 
-    v8 = [(NSArray *)v5->_items firstObject];
+    firstObject = [(NSArray *)v5->_items firstObject];
     representativeItem = v5->_representativeItem;
-    v5->_representativeItem = v8;
+    v5->_representativeItem = firstObject;
   }
 
   return v5;
 }
 
-+ (id)representativePersistentIDPropertyForGroupingType:(int64_t)a3
++ (id)representativePersistentIDPropertyForGroupingType:(int64_t)type
 {
   if (representativePersistentIDPropertyForGroupingType__once != -1)
   {
@@ -575,7 +575,7 @@ LABEL_15:
 
   v4 = representativePersistentIDPropertyForGroupingType__groupingTypeToRepresentativePersistentIDProperty;
 
-  return CFDictionaryGetValue(v4, a3);
+  return CFDictionaryGetValue(v4, type);
 }
 
 CFDictionaryRef __75__MPMediaItemCollection_representativePersistentIDPropertyForGroupingType___block_invoke()
@@ -619,7 +619,7 @@ CFDictionaryRef __75__MPMediaItemCollection_representativePersistentIDPropertyFo
   return result;
 }
 
-+ (id)sortTitlePropertyForGroupingType:(int64_t)a3
++ (id)sortTitlePropertyForGroupingType:(int64_t)type
 {
   if (sortTitlePropertyForGroupingType__once != -1)
   {
@@ -628,7 +628,7 @@ CFDictionaryRef __75__MPMediaItemCollection_representativePersistentIDPropertyFo
 
   v4 = sortTitlePropertyForGroupingType__groupingTypeToSortTitleProperty;
 
-  return CFDictionaryGetValue(v4, a3);
+  return CFDictionaryGetValue(v4, type);
 }
 
 CFDictionaryRef __58__MPMediaItemCollection_sortTitlePropertyForGroupingType___block_invoke()
@@ -651,7 +651,7 @@ CFDictionaryRef __58__MPMediaItemCollection_sortTitlePropertyForGroupingType___b
   return result;
 }
 
-+ (id)titlePropertyForGroupingType:(int64_t)a3
++ (id)titlePropertyForGroupingType:(int64_t)type
 {
   if (titlePropertyForGroupingType__once != -1)
   {
@@ -660,7 +660,7 @@ CFDictionaryRef __58__MPMediaItemCollection_sortTitlePropertyForGroupingType___b
 
   v4 = titlePropertyForGroupingType__groupingTypeToTitleProperty;
 
-  return CFDictionaryGetValue(v4, a3);
+  return CFDictionaryGetValue(v4, type);
 }
 
 CFDictionaryRef __54__MPMediaItemCollection_titlePropertyForGroupingType___block_invoke()

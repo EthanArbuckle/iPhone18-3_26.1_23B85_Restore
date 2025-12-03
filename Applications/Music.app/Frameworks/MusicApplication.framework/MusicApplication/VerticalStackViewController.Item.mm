@@ -7,7 +7,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_4DD890();
 
   v3 = sub_AB9260();

@@ -6,9 +6,9 @@
 
 - (SBCPlaybackPositionEntity)sbcEntity
 {
-  v2 = [a1 playbackPositionKey];
+  playbackPositionKey = [self playbackPositionKey];
 
-  if (v2)
+  if (playbackPositionKey)
   {
     v21 = 0;
     v22 = &v21;
@@ -16,23 +16,23 @@
     v24 = __Block_byref_object_copy_;
     v25 = __Block_byref_object_dispose_;
     v26 = 0;
-    v3 = [MEMORY[0x277D2B5F8] allLibraries];
+    allLibraries = [MEMORY[0x277D2B5F8] allLibraries];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __49__ICPlaybackPositionEntity_SBCPrivate__sbcEntity__block_invoke;
     v20[3] = &unk_279D24E30;
-    v20[4] = a1;
+    v20[4] = self;
     v20[5] = &v21;
-    [v3 enumerateObjectsUsingBlock:v20];
+    [allLibraries enumerateObjectsUsingBlock:v20];
 
     v4 = [SBCPlaybackPositionDomain alloc];
-    v5 = [a1 playbackPositionDomain];
-    v6 = [(SBCPlaybackPositionDomain *)v4 initWithDomainIdentifier:v5 foreignDatabasePath:v22[5]];
+    playbackPositionDomain = [self playbackPositionDomain];
+    v6 = [(SBCPlaybackPositionDomain *)v4 initWithDomainIdentifier:playbackPositionDomain foreignDatabasePath:v22[5]];
 
     v7 = [SBCPlaybackPositionEntity alloc];
-    v8 = [a1 playbackPositionKey];
-    v9 = [a1 itemPersistentIdentifier];
-    v10 = -[SBCPlaybackPositionEntity initWithPlaybackPositionDomain:ubiquitousIdentifier:foreignDatabaseEntityID:](v7, "initWithPlaybackPositionDomain:ubiquitousIdentifier:foreignDatabaseEntityID:", v6, v8, [v9 longLongValue]);
+    playbackPositionKey2 = [self playbackPositionKey];
+    itemPersistentIdentifier = [self itemPersistentIdentifier];
+    v10 = -[SBCPlaybackPositionEntity initWithPlaybackPositionDomain:ubiquitousIdentifier:foreignDatabaseEntityID:](v7, "initWithPlaybackPositionDomain:ubiquitousIdentifier:foreignDatabaseEntityID:", v6, playbackPositionKey2, [itemPersistentIdentifier longLongValue]);
 
     _Block_object_dispose(&v21, 8);
   }
@@ -42,38 +42,38 @@
     v10 = objc_alloc_init(SBCPlaybackPositionEntity);
   }
 
-  v11 = [a1 bookmarkTimestamp];
+  bookmarkTimestamp = [self bookmarkTimestamp];
 
-  if (v11)
+  if (bookmarkTimestamp)
   {
-    v12 = [a1 bookmarkTimestamp];
-    [v12 doubleValue];
+    bookmarkTimestamp2 = [self bookmarkTimestamp];
+    [bookmarkTimestamp2 doubleValue];
     [(SBCPlaybackPositionEntity *)v10 setBookmarkTimestamp:?];
   }
 
-  v13 = [a1 bookmarkTime];
+  bookmarkTime = [self bookmarkTime];
 
-  if (v13)
+  if (bookmarkTime)
   {
-    v14 = [a1 bookmarkTime];
-    [v14 doubleValue];
+    bookmarkTime2 = [self bookmarkTime];
+    [bookmarkTime2 doubleValue];
     [(SBCPlaybackPositionEntity *)v10 setBookmarkTime:?];
   }
 
-  v15 = [a1 userPlayCount];
+  userPlayCount = [self userPlayCount];
 
-  if (v15)
+  if (userPlayCount)
   {
-    v16 = [a1 userPlayCount];
-    -[SBCPlaybackPositionEntity setUserPlayCount:](v10, "setUserPlayCount:", [v16 unsignedIntValue]);
+    userPlayCount2 = [self userPlayCount];
+    -[SBCPlaybackPositionEntity setUserPlayCount:](v10, "setUserPlayCount:", [userPlayCount2 unsignedIntValue]);
   }
 
-  v17 = [a1 hasBeenPlayed];
+  hasBeenPlayed = [self hasBeenPlayed];
 
-  if (v17)
+  if (hasBeenPlayed)
   {
-    v18 = [a1 hasBeenPlayed];
-    -[SBCPlaybackPositionEntity setHasBeenPlayed:](v10, "setHasBeenPlayed:", [v18 BOOLValue]);
+    hasBeenPlayed2 = [self hasBeenPlayed];
+    -[SBCPlaybackPositionEntity setHasBeenPlayed:](v10, "setHasBeenPlayed:", [hasBeenPlayed2 BOOLValue]);
   }
 
   return v10;

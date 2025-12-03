@@ -1,18 +1,18 @@
 @interface HKClinicalStore
-- (HKClinicalStore)initWithHealthStore:(id)a3 exportedObject:(id)a4;
-- (id)clientQueueBoolHandlerWithCompletion:(id)a3;
-- (id)clientQueueDoubleBoolHandlerWithCompletion:(id)a3;
-- (id)clientQueueFailableActionHandlerWithCompletion:(id)a3;
-- (void)dispatchAsyncProxyClientQueue:(id)a3;
+- (HKClinicalStore)initWithHealthStore:(id)store exportedObject:(id)object;
+- (id)clientQueueBoolHandlerWithCompletion:(id)completion;
+- (id)clientQueueDoubleBoolHandlerWithCompletion:(id)completion;
+- (id)clientQueueFailableActionHandlerWithCompletion:(id)completion;
+- (void)dispatchAsyncProxyClientQueue:(id)queue;
 @end
 
 @implementation HKClinicalStore
 
-- (HKClinicalStore)initWithHealthStore:(id)a3 exportedObject:(id)a4
+- (HKClinicalStore)initWithHealthStore:(id)store exportedObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  storeCopy = store;
+  objectCopy = object;
+  if (!storeCopy)
   {
     [HKClinicalStore initWithHealthStore:a2 exportedObject:self];
   }
@@ -23,11 +23,11 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_healthStore, a3);
+    objc_storeStrong(&v10->_healthStore, store);
     v12 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v13 = [objc_opt_class() taskIdentifier];
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v12 initWithHealthStore:v8 taskIdentifier:v13 exportedObject:v9 taskUUID:v14];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v15 = [v12 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:objectCopy taskUUID:uUID];
     proxyProvider = v11->_proxyProvider;
     v11->_proxyProvider = v15;
   }
@@ -35,31 +35,31 @@
   return v11;
 }
 
-- (void)dispatchAsyncProxyClientQueue:(id)a3
+- (void)dispatchAsyncProxyClientQueue:(id)queue
 {
   proxyProvider = self->_proxyProvider;
-  v4 = a3;
-  v5 = [(HKTaskServerProxyProvider *)proxyProvider clientQueue];
-  dispatch_async(v5, v4);
+  queueCopy = queue;
+  clientQueue = [(HKTaskServerProxyProvider *)proxyProvider clientQueue];
+  dispatch_async(clientQueue, queueCopy);
 }
 
-- (id)clientQueueBoolHandlerWithCompletion:(id)a3
+- (id)clientQueueBoolHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__0;
   v11[4] = __Block_byref_object_dispose__0;
-  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider exportedObject];
+  exportedObject = [(HKTaskServerProxyProvider *)self->_proxyProvider exportedObject];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__HKClinicalStore_clientQueueBoolHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_2796DC1B0;
   aBlock[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = v11;
-  v5 = v4;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
 
   _Block_object_dispose(v11, 8);
@@ -95,23 +95,23 @@ void __56__HKClinicalStore_clientQueueBoolHandlerWithCompletion___block_invoke_2
   *(v3 + 40) = 0;
 }
 
-- (id)clientQueueDoubleBoolHandlerWithCompletion:(id)a3
+- (id)clientQueueDoubleBoolHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__0;
   v11[4] = __Block_byref_object_dispose__0;
-  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider exportedObject];
+  exportedObject = [(HKTaskServerProxyProvider *)self->_proxyProvider exportedObject];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__HKClinicalStore_clientQueueDoubleBoolHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_2796DC200;
   aBlock[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = v11;
-  v5 = v4;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
 
   _Block_object_dispose(v11, 8);
@@ -148,23 +148,23 @@ void __62__HKClinicalStore_clientQueueDoubleBoolHandlerWithCompletion___block_in
   *(v3 + 40) = 0;
 }
 
-- (id)clientQueueFailableActionHandlerWithCompletion:(id)a3
+- (id)clientQueueFailableActionHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__0;
   v11[4] = __Block_byref_object_dispose__0;
-  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider exportedObject];
+  exportedObject = [(HKTaskServerProxyProvider *)self->_proxyProvider exportedObject];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__HKClinicalStore_clientQueueFailableActionHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_2796DC250;
   aBlock[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = v11;
-  v5 = v4;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
 
   _Block_object_dispose(v11, 8);

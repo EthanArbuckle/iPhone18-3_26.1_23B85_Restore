@@ -7,50 +7,50 @@
 - (BOOL)originatedFromAccessory;
 - (BOOL)originatedFromHID;
 - (BOOL)shouldImplicitlyLaunchApplication;
-- (MRDRemoteControlCommand)initWithCommandType:(unsigned int)a3 playerPath:(id)a4 unresolvedPlayerPath:(id)a5 senderAppDisplayID:(id)a6 optionsData:(id)a7;
+- (MRDRemoteControlCommand)initWithCommandType:(unsigned int)type playerPath:(id)path unresolvedPlayerPath:(id)playerPath senderAppDisplayID:(id)d optionsData:(id)data;
 - (NSData)optionsData;
 - (NSData)protobufData;
 - (NSString)destinationAppDisplayID;
 - (id)_completionHandler;
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4;
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class;
 - (id)_optionsDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)optionValueForKey:(__CFString *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)optionValueForKey:(__CFString *)key;
 - (int)destinationAppProcessID;
-- (void)_setCompletionHandler:(id)a3;
+- (void)_setCompletionHandler:(id)handler;
 @end
 
 @implementation MRDRemoteControlCommand
 
-- (MRDRemoteControlCommand)initWithCommandType:(unsigned int)a3 playerPath:(id)a4 unresolvedPlayerPath:(id)a5 senderAppDisplayID:(id)a6 optionsData:(id)a7
+- (MRDRemoteControlCommand)initWithCommandType:(unsigned int)type playerPath:(id)path unresolvedPlayerPath:(id)playerPath senderAppDisplayID:(id)d optionsData:(id)data
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  pathCopy = path;
+  playerPathCopy = playerPath;
+  dCopy = d;
+  dataCopy = data;
   v31.receiver = self;
   v31.super_class = MRDRemoteControlCommand;
   v16 = [(MRDRemoteControlCommand *)&v31 init];
   v17 = v16;
   if (v16)
   {
-    v16->_commandType = a3;
-    v18 = [v12 copy];
+    v16->_commandType = type;
+    v18 = [pathCopy copy];
     playerPath = v17->_playerPath;
     v17->_playerPath = v18;
 
-    v20 = [v13 copy];
+    v20 = [playerPathCopy copy];
     unresolvedPlayerPath = v17->_unresolvedPlayerPath;
     v17->_unresolvedPlayerPath = v20;
 
-    v22 = [v14 copy];
+    v22 = [dCopy copy];
     senderAppDisplayID = v17->_senderAppDisplayID;
     v17->_senderAppDisplayID = v22;
 
-    v24 = [v15 copy];
+    v24 = [dataCopy copy];
     optionsData = v17->_optionsData;
     v17->_optionsData = v24;
 
@@ -73,10 +73,10 @@
   commandType = self->_commandType;
   v4 = MRMediaRemoteCopyCommandDescription();
   v5 = objc_opt_class();
-  v6 = [(MRDRemoteControlCommand *)self senderID];
-  v7 = [(MRDRemoteControlCommand *)self commandID];
-  v8 = [(MRDRemoteControlCommand *)self remoteControlInterfaceID];
-  v9 = [NSString stringWithFormat:@"<%@ %p, command = %@, %@\n, commandID = %@\n, remote control interface = %@\n, appOptions = %ld\n, path = %@\n, unresolvedPath = %@\n>", v5, self, v4, v6, v7, v8, [(MRDRemoteControlCommand *)self appOptions], self->_playerPath, self->_unresolvedPlayerPath];
+  senderID = [(MRDRemoteControlCommand *)self senderID];
+  commandID = [(MRDRemoteControlCommand *)self commandID];
+  remoteControlInterfaceID = [(MRDRemoteControlCommand *)self remoteControlInterfaceID];
+  v9 = [NSString stringWithFormat:@"<%@ %p, command = %@, %@\n, commandID = %@\n, remote control interface = %@\n, appOptions = %ld\n, path = %@\n, unresolvedPath = %@\n>", v5, self, v4, senderID, commandID, remoteControlInterfaceID, [(MRDRemoteControlCommand *)self appOptions], self->_playerPath, self->_unresolvedPlayerPath];
 
   return v9;
 }
@@ -86,30 +86,30 @@
   commandType = self->_commandType;
   v4 = MRMediaRemoteCopyCommandDescription();
   v5 = objc_opt_class();
-  v6 = [(MRDRemoteControlCommand *)self senderID];
-  v7 = [(MRDRemoteControlCommand *)self commandID];
-  v8 = [(MRDRemoteControlCommand *)self remoteControlInterfaceID];
-  v9 = [(MRDRemoteControlCommand *)self appOptions];
+  senderID = [(MRDRemoteControlCommand *)self senderID];
+  commandID = [(MRDRemoteControlCommand *)self commandID];
+  remoteControlInterfaceID = [(MRDRemoteControlCommand *)self remoteControlInterfaceID];
+  appOptions = [(MRDRemoteControlCommand *)self appOptions];
   playerPath = self->_playerPath;
   unresolvedPlayerPath = self->_unresolvedPlayerPath;
-  v12 = [(MRDRemoteControlCommand *)self _optionsDictionary];
-  v13 = [NSString stringWithFormat:@"<%@ %p, command = %@, %@\n, commandID = %@\n, remote control interface = %@\n, appOptions = %ld\n, path = %@\n, unresolvedPath = %@\n, options = %@\n>", v5, self, v4, v6, v7, v8, v9, playerPath, unresolvedPlayerPath, v12];
+  _optionsDictionary = [(MRDRemoteControlCommand *)self _optionsDictionary];
+  v13 = [NSString stringWithFormat:@"<%@ %p, command = %@, %@\n, commandID = %@\n, remote control interface = %@\n, appOptions = %ld\n, path = %@\n, unresolvedPath = %@\n, options = %@\n>", v5, self, v4, senderID, commandID, remoteControlInterfaceID, appOptions, playerPath, unresolvedPlayerPath, _optionsDictionary];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MRDRemoteControlCommand *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MRDRemoteControlCommand *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MRDRemoteControlCommand *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MRDRemoteControlCommand *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
 - (NSData)protobufData
@@ -117,43 +117,43 @@
   cachedProtobufData = self->_cachedProtobufData;
   if (!cachedProtobufData)
   {
-    v4 = [(MRPlayerPath *)self->_playerPath origin];
+    origin = [(MRPlayerPath *)self->_playerPath origin];
     v5 = objc_alloc_init(_MRReceivedCommandProtobuf);
     commandType = self->_commandType;
     [v5 setCommand:MRMediaRemoteCommandToProtobuf()];
-    v7 = [(MRDRemoteControlCommand *)self _optionsDictionary];
+    _optionsDictionary = [(MRDRemoteControlCommand *)self _optionsDictionary];
     v8 = MRMediaRemoteCommandOptionsToProtobuf();
     [v5 setOptions:v8];
 
-    if (v4)
+    if (origin)
     {
-      v9 = [v4 identifier];
+      identifier = [origin identifier];
     }
 
     else
     {
-      v9 = 0;
+      identifier = 0;
     }
 
-    [v5 setOriginUID:v9];
+    [v5 setOriginUID:identifier];
     [v5 setSenderAppDisplayID:self->_senderAppDisplayID];
-    v10 = [(MRDRemoteControlCommand *)self destinationAppDisplayID];
-    [v5 setDestinationAppDisplayID:v10];
+    destinationAppDisplayID = [(MRDRemoteControlCommand *)self destinationAppDisplayID];
+    [v5 setDestinationAppDisplayID:destinationAppDisplayID];
 
     [v5 setDestinationAppProcessID:{-[MRDRemoteControlCommand destinationAppProcessID](self, "destinationAppProcessID")}];
-    v11 = [(MRDRemoteControlCommand *)self remoteControlInterfaceID];
-    [v5 setRemoteControlInterfaceID:v11];
+    remoteControlInterfaceID = [(MRDRemoteControlCommand *)self remoteControlInterfaceID];
+    [v5 setRemoteControlInterfaceID:remoteControlInterfaceID];
 
     appOptions = self->_appOptions;
     v13 = MRProtobufFromSendCommandAppOptions();
     [v5 setAppOptions:v13];
 
-    v14 = [(MRPlayerPath *)self->_playerPath protobuf];
-    [v5 setPlayerPath:v14];
+    protobuf = [(MRPlayerPath *)self->_playerPath protobuf];
+    [v5 setPlayerPath:protobuf];
 
-    v15 = [v5 data];
+    data = [v5 data];
     v16 = self->_cachedProtobufData;
-    self->_cachedProtobufData = v15;
+    self->_cachedProtobufData = data;
 
     cachedProtobufData = self->_cachedProtobufData;
   }
@@ -163,18 +163,18 @@
 
 - (int)destinationAppProcessID
 {
-  v2 = [(MRPlayerPath *)self->_playerPath client];
-  v3 = [v2 processIdentifier];
+  client = [(MRPlayerPath *)self->_playerPath client];
+  processIdentifier = [client processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (NSString)destinationAppDisplayID
 {
-  v2 = [(MRPlayerPath *)self->_playerPath client];
-  v3 = [v2 bundleIdentifier];
+  client = [(MRPlayerPath *)self->_playerPath client];
+  bundleIdentifier = [client bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSData)optionsData
@@ -195,17 +195,17 @@
 - (BOOL)alwaysIgnoreDuringCall
 {
   v2 = [(MRDRemoteControlCommand *)self optionValueForKey:kMRMediaRemoteOptionAlwaysIgnoreDuringCall];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)alwaysIgnoreDuringSharePlay
 {
   v2 = [(MRDRemoteControlCommand *)self optionValueForKey:kMRMediaRemoteOptionAlwaysIgnoreDuringSharePlay];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isContextSensitive
@@ -252,16 +252,16 @@
 
 - (BOOL)isAVRCPCommand
 {
-  v2 = [(MRDRemoteControlCommand *)self remoteControlInterfaceID];
-  v3 = [v2 isEqualToString:@"com.apple.AVRCP"];
+  remoteControlInterfaceID = [(MRDRemoteControlCommand *)self remoteControlInterfaceID];
+  v3 = [remoteControlInterfaceID isEqualToString:@"com.apple.AVRCP"];
 
   return v3;
 }
 
-- (id)optionValueForKey:(__CFString *)a3
+- (id)optionValueForKey:(__CFString *)key
 {
-  v4 = [(MRDRemoteControlCommand *)self _optionsDictionary];
-  v5 = [v4 objectForKey:a3];
+  _optionsDictionary = [(MRDRemoteControlCommand *)self _optionsDictionary];
+  v5 = [_optionsDictionary objectForKey:key];
 
   return v5;
 }
@@ -269,14 +269,14 @@
 - (BOOL)nowPlayingAppStackEligible
 {
   v3 = +[MRUserSettings currentSettings];
-  v4 = [v3 supportMultiplayerHost];
+  supportMultiplayerHost = [v3 supportMultiplayerHost];
 
-  if ((v4 & 1) == 0)
+  if ((supportMultiplayerHost & 1) == 0)
   {
     v5 = +[MRUserSettings currentSettings];
-    v6 = [v5 computeNowPlayingApplication];
+    computeNowPlayingApplication = [v5 computeNowPlayingApplication];
 
-    if ((v6 & 1) == 0)
+    if ((computeNowPlayingApplication & 1) == 0)
     {
       v7 = +[MRUserSettings currentSettings];
       [v7 nowPlayingAppStackFailedPlayInterval];
@@ -284,22 +284,22 @@
 
       if (v9 > 0.0)
       {
-        v10 = [(MRDRemoteControlCommand *)self playerPath];
-        v11 = [v10 origin];
-        v12 = [v11 isLocal];
+        playerPath = [(MRDRemoteControlCommand *)self playerPath];
+        origin = [playerPath origin];
+        isLocal = [origin isLocal];
 
-        if (v12)
+        if (isLocal)
         {
           if ([(MRDRemoteControlCommand *)self commandType]== 2)
           {
             v13 = +[MRDMediaRemoteServer server];
-            v14 = [v13 nowPlayingServer];
-            v15 = [(MRDRemoteControlCommand *)self playerPath];
-            v16 = [v14 queryExistingPlayerPath:v15];
-            v17 = [v16 playerClient];
-            v18 = [v17 isPlaying];
+            nowPlayingServer = [v13 nowPlayingServer];
+            playerPath2 = [(MRDRemoteControlCommand *)self playerPath];
+            v16 = [nowPlayingServer queryExistingPlayerPath:playerPath2];
+            playerClient = [v16 playerClient];
+            isPlaying = [playerClient isPlaying];
 
-            if ((v18 & 1) == 0)
+            if ((isPlaying & 1) == 0)
             {
               return 1;
             }
@@ -324,9 +324,9 @@
   return v2;
 }
 
-- (void)_setCompletionHandler:(id)a3
+- (void)_setCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 }
@@ -357,15 +357,15 @@
   return parsedOptionsDict;
 }
 
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class
 {
-  v5 = [(objc_class *)a4 allocWithZone:a3];
+  v5 = [(objc_class *)class allocWithZone:zone];
   commandType = self->_commandType;
   playerPath = self->_playerPath;
   unresolvedPlayerPath = self->_unresolvedPlayerPath;
   senderAppDisplayID = self->_senderAppDisplayID;
-  v10 = [(MRDRemoteControlCommand *)self optionsData];
-  v11 = [(objc_class *)v5 initWithCommandType:commandType playerPath:playerPath unresolvedPlayerPath:unresolvedPlayerPath senderAppDisplayID:senderAppDisplayID optionsData:v10];
+  optionsData = [(MRDRemoteControlCommand *)self optionsData];
+  v11 = [(objc_class *)v5 initWithCommandType:commandType playerPath:playerPath unresolvedPlayerPath:unresolvedPlayerPath senderAppDisplayID:senderAppDisplayID optionsData:optionsData];
 
   *(v11 + 14) = self->_appOptions;
   v12 = [self->_completionHandler copy];

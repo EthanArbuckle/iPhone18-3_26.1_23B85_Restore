@@ -6,9 +6,9 @@
 
 - (id)cp_bundleIdentifier
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
-  location[0] = [a1 valueForEntitlement:@"application-identifier"];
+  location[0] = [self valueForEntitlement:@"application-identifier"];
   if (location[0])
   {
     v11 = _CPAppIdentifierFromTeamAppTuple(location[0]);

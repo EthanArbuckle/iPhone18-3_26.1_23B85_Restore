@@ -1,94 +1,94 @@
 @interface CLSAdminRequest
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (id)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (id)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation CLSAdminRequest
 
-- (id)initWithDatabaseRow:(id)a3
+- (id)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSAdminRequest *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSAdminRequest *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"organizationID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"organizationID");
     [v6 setOrganizationID:v7];
 
-    v8 = sub_10016D778(v4, @"type");
+    v8 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v8, "intValue")}];
 
-    v9 = sub_10016D778(v4, @"status");
+    v9 = sub_10016D778(rowCopy, @"status");
     [v6 setStatus:{objc_msgSend(v9, "intValue")}];
 
-    v10 = sub_10016D778(v4, @"approval");
+    v10 = sub_10016D778(rowCopy, @"approval");
     [v6 setApproval:{objc_msgSend(v10, "intValue")}];
 
-    v11 = sub_10016D778(v4, @"requestorID");
+    v11 = sub_10016D778(rowCopy, @"requestorID");
     [v6 setRequestorID:v11];
 
-    v12 = sub_10016D778(v4, @"bundleIdentifier");
+    v12 = sub_10016D778(rowCopy, @"bundleIdentifier");
     [v6 setBundleIdentifier:v12];
 
-    v13 = sub_10016D778(v4, @"dateCompleted");
+    v13 = sub_10016D778(rowCopy, @"dateCompleted");
     [v6 setDateCompleted:v13];
 
-    v14 = sub_10016D778(v4, @"responderNote");
+    v14 = sub_10016D778(rowCopy, @"responderNote");
     [v6 setResponderNote:v14];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v13.receiver = self;
   v13.super_class = CLSAdminRequest;
-  v4 = a3;
-  [(CLSAdminRequest *)&v13 bindTo:v4];
+  toCopy = to;
+  [(CLSAdminRequest *)&v13 bindTo:toCopy];
   v5 = [(CLSAdminRequest *)self organizationID:v13.receiver];
-  sub_1000982FC(v4, v5, @"organizationID");
+  sub_1000982FC(toCopy, v5, @"organizationID");
 
   v6 = [NSNumber numberWithInteger:[(CLSAdminRequest *)self type]];
-  sub_1000982FC(v4, v6, @"type");
+  sub_1000982FC(toCopy, v6, @"type");
 
   v7 = [NSNumber numberWithInteger:[(CLSAdminRequest *)self status]];
-  sub_1000982FC(v4, v7, @"status");
+  sub_1000982FC(toCopy, v7, @"status");
 
   v8 = [NSNumber numberWithInteger:[(CLSAdminRequest *)self approval]];
-  sub_1000982FC(v4, v8, @"approval");
+  sub_1000982FC(toCopy, v8, @"approval");
 
-  v9 = [(CLSAdminRequest *)self bundleIdentifier];
-  sub_1000982FC(v4, v9, @"bundleIdentifier");
+  bundleIdentifier = [(CLSAdminRequest *)self bundleIdentifier];
+  sub_1000982FC(toCopy, bundleIdentifier, @"bundleIdentifier");
 
-  v10 = [(CLSAdminRequest *)self dateCompleted];
-  sub_1000982FC(v4, v10, @"dateCompleted");
+  dateCompleted = [(CLSAdminRequest *)self dateCompleted];
+  sub_1000982FC(toCopy, dateCompleted, @"dateCompleted");
 
-  v11 = [(CLSAdminRequest *)self requestorID];
-  sub_1000982FC(v4, v11, @"requestorID");
+  requestorID = [(CLSAdminRequest *)self requestorID];
+  sub_1000982FC(toCopy, requestorID, @"requestorID");
 
-  v12 = [(CLSAdminRequest *)self responderNote];
-  sub_1000982FC(v4, v12, @"responderNote");
+  responderNote = [(CLSAdminRequest *)self responderNote];
+  sub_1000982FC(toCopy, responderNote, @"responderNote");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSAdminRequest (\n    objectID               text not null,\n    dateCreated            real not null,\n    dateLastModified       real not null,\n    dateCompleted          real,\n    organizationID         text,\n    type                   integer,\n    status                 integer,\n    approval               integer,\n    requestorID            text,\n    bundleIdentifier       text,\n    responderNote          text\n)\n", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSAdminRequest_objectID on CLSAdminRequest (objectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSAdminRequest (\n    objectID               text not null,\n    dateCreated            real not null,\n    dateLastModified       real not null,\n    dateCompleted          real,\n    organizationID         text,\n    type                   integer,\n    status                 integer,\n    approval               integer,\n    requestorID            text,\n    bundleIdentifier       text,\n    responderNote          text\n)\n", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSAdminRequest_objectID on CLSAdminRequest (objectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_7:
 

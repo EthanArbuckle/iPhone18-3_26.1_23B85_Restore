@@ -1,13 +1,13 @@
 @interface CSUTextEncoderConfiguration
-+ (id)availableContextLengthsForRevision:(int64_t)a3;
++ (id)availableContextLengthsForRevision:(int64_t)revision;
 + (id)availableRevisions;
-+ (id)createForRevision:(int64_t)a3 error:(id *)a4;
-+ (id)defaultContextLengthForRevision:(int64_t)a3;
-- (BOOL)setInferenceBackend:(int64_t)a3;
-- (id)initSystemSearchTextEncoderV1:(id)a3 forRevision:(int64_t)a4;
-- (id)initTextEncoderE5ML:(id)a3 forRevision:(int64_t)a4;
-- (void)setAdditionalLayerNames:(id)a3;
-- (void)setContextLength:(unint64_t)a3;
++ (id)createForRevision:(int64_t)revision error:(id *)error;
++ (id)defaultContextLengthForRevision:(int64_t)revision;
+- (BOOL)setInferenceBackend:(int64_t)backend;
+- (id)initSystemSearchTextEncoderV1:(id)v1 forRevision:(int64_t)revision;
+- (id)initTextEncoderE5ML:(id)l forRevision:(int64_t)revision;
+- (void)setAdditionalLayerNames:(id)names;
+- (void)setContextLength:(unint64_t)length;
 @end
 
 @implementation CSUTextEncoderConfiguration
@@ -24,48 +24,48 @@
   return v2;
 }
 
-+ (id)availableContextLengthsForRevision:(int64_t)a3
++ (id)availableContextLengthsForRevision:(int64_t)revision
 {
-  if ((a3 - 6) > 6)
+  if ((revision - 6) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_1E7967FB0[a3 - 6];
+    return qword_1E7967FB0[revision - 6];
   }
 }
 
-+ (id)defaultContextLengthForRevision:(int64_t)a3
++ (id)defaultContextLengthForRevision:(int64_t)revision
 {
-  if ((a3 - 6) > 6)
+  if ((revision - 6) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_1E7967FE8[a3 - 6];
+    return qword_1E7967FE8[revision - 6];
   }
 }
 
-+ (id)createForRevision:(int64_t)a3 error:(id *)a4
++ (id)createForRevision:(int64_t)revision error:(id *)error
 {
   v6 = 0;
-  *a4 = 0;
-  if (a3 <= 10)
+  *error = 0;
+  if (revision <= 10)
   {
-    if ((a3 - 6) >= 2)
+    if ((revision - 6) >= 2)
     {
-      if (a3 != 8)
+      if (revision != 8)
       {
         goto LABEL_20;
       }
 
-      v11 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 5, a4, v4);
-      v12 = *a4;
-      if (*a4)
+      v11 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 5, error, v4);
+      v12 = *error;
+      if (*error)
       {
         goto LABEL_13;
       }
@@ -76,15 +76,15 @@
 
     else
     {
-      v11 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 2, a4, v4);
-      v12 = *a4;
-      if (*a4)
+      v11 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 2, error, v4);
+      v12 = *error;
+      if (*error)
       {
         goto LABEL_13;
       }
 
       v13 = [CSUTextEncoderConfiguration alloc];
-      inited = objc_msgSend_initTextEncoderE5ML_forRevision_(v13, v14, v11, a3, v15);
+      inited = objc_msgSend_initTextEncoderE5ML_forRevision_(v13, v14, v11, revision, v15);
     }
 
 LABEL_18:
@@ -92,16 +92,16 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3 != 11)
+  if (revision != 11)
   {
-    if (a3 != 12)
+    if (revision != 12)
     {
       goto LABEL_20;
     }
 
-    v11 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 8, a4, v4);
-    v12 = *a4;
-    if (*a4)
+    v11 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 8, error, v4);
+    v12 = *error;
+    if (*error)
     {
       goto LABEL_13;
     }
@@ -111,9 +111,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v11 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 7, a4, v4);
-  v12 = *a4;
-  if (!*a4)
+  v11 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 7, error, v4);
+  v12 = *error;
+  if (!*error)
   {
     v17 = [CSUTextEncoderConfiguration alloc];
     inited = objc_msgSend_initTextEncoderE5ML_forRevision_(v17, v18, v11, 11, v19);
@@ -130,17 +130,17 @@ LABEL_20:
   return v6;
 }
 
-- (id)initSystemSearchTextEncoderV1:(id)a3 forRevision:(int64_t)a4
+- (id)initSystemSearchTextEncoderV1:(id)v1 forRevision:(int64_t)revision
 {
-  v7 = a3;
+  v1Copy = v1;
   v17.receiver = self;
   v17.super_class = CSUTextEncoderConfiguration;
   v8 = [(CSUTextEncoderConfiguration *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    v8->_revision = a4;
-    objc_storeStrong(&v8->_systemSearchTextEncoderConfig, a3);
+    v8->_revision = revision;
+    objc_storeStrong(&v8->_systemSearchTextEncoderConfig, v1);
     v9->_tokenEmbeddingLength = objc_msgSend_tokenEmbeddingLength(v9->_systemSearchTextEncoderConfig, v10, v11, v12, v13);
     textEncoderE5MLConfig = v9->_textEncoderE5MLConfig;
     v9->_textEncoderE5MLConfig = 0;
@@ -151,17 +151,17 @@ LABEL_20:
   return v9;
 }
 
-- (id)initTextEncoderE5ML:(id)a3 forRevision:(int64_t)a4
+- (id)initTextEncoderE5ML:(id)l forRevision:(int64_t)revision
 {
-  v7 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = CSUTextEncoderConfiguration;
   v8 = [(CSUTextEncoderConfiguration *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    v8->_revision = a4;
-    objc_storeStrong(&v8->_textEncoderE5MLConfig, a3);
+    v8->_revision = revision;
+    objc_storeStrong(&v8->_textEncoderE5MLConfig, l);
     v9->_tokenEmbeddingLength = objc_msgSend_tokenEmbeddingLength(v9->_textEncoderE5MLConfig, v10, v11, v12, v13);
     systemSearchTextEncoderConfig = v9->_systemSearchTextEncoderConfig;
     v9->_systemSearchTextEncoderConfig = 0;
@@ -172,24 +172,24 @@ LABEL_20:
   return v9;
 }
 
-- (void)setAdditionalLayerNames:(id)a3
+- (void)setAdditionalLayerNames:(id)names
 {
-  v10 = a3;
-  objc_storeStrong(&self->_additionalLayerNames, a3);
+  namesCopy = names;
+  objc_storeStrong(&self->_additionalLayerNames, names);
   systemSearchTextEncoderConfig = self->_systemSearchTextEncoderConfig;
   if (systemSearchTextEncoderConfig)
   {
-    objc_msgSend_setAdditionalLayerNames_(systemSearchTextEncoderConfig, v5, v10, v6, v7);
+    objc_msgSend_setAdditionalLayerNames_(systemSearchTextEncoderConfig, v5, namesCopy, v6, v7);
   }
 
   textEncoderE5MLConfig = self->_textEncoderE5MLConfig;
   if (textEncoderE5MLConfig)
   {
-    objc_msgSend_setAdditionalLayerNames_(textEncoderE5MLConfig, v5, v10, v6, v7);
+    objc_msgSend_setAdditionalLayerNames_(textEncoderE5MLConfig, v5, namesCopy, v6, v7);
   }
 }
 
-- (BOOL)setInferenceBackend:(int64_t)a3
+- (BOOL)setInferenceBackend:(int64_t)backend
 {
   if ((self->_revision - 11) <= 1)
   {
@@ -203,9 +203,9 @@ LABEL_20:
   return 0;
 }
 
-- (void)setContextLength:(unint64_t)a3
+- (void)setContextLength:(unint64_t)length
 {
-  self->_contextLength = a3;
+  self->_contextLength = length;
   if (self->_systemSearchTextEncoderConfig)
   {
     v5 = sub_1AC090E50();
@@ -220,7 +220,7 @@ LABEL_20:
     textEncoderE5MLConfig = self->_textEncoderE5MLConfig;
     if (textEncoderE5MLConfig)
     {
-      objc_msgSend_setContextLength_(textEncoderE5MLConfig, a2, a3, v3, v4);
+      objc_msgSend_setContextLength_(textEncoderE5MLConfig, a2, length, v3, v4);
       revision = self->_revision;
       if (revision == 11)
       {

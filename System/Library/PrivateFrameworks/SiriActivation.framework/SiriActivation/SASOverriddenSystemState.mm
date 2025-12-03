@@ -12,26 +12,26 @@
 - (BOOL)siriIsRestricted;
 - (BOOL)siriIsSupported;
 - (BOOL)smartCoverClosed;
-- (SASOverriddenSystemState)initWithSystemState:(id)a3 contextOverride:(id)a4;
+- (SASOverriddenSystemState)initWithSystemState:(id)state contextOverride:(id)override;
 - (id)currentSpokenLanguageCode;
 - (id)lockStateMonitor;
-- (void)setLockStateMonitor:(id)a3;
+- (void)setLockStateMonitor:(id)monitor;
 @end
 
 @implementation SASOverriddenSystemState
 
-- (SASOverriddenSystemState)initWithSystemState:(id)a3 contextOverride:(id)a4
+- (SASOverriddenSystemState)initWithSystemState:(id)state contextOverride:(id)override
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  overrideCopy = override;
   v11.receiver = self;
   v11.super_class = SASOverriddenSystemState;
   v8 = [(SASSystemState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(SASOverriddenSystemState *)v8 setSystemState:v6];
-    [(SASOverriddenSystemState *)v9 setContextOverride:v7];
+    [(SASOverriddenSystemState *)v8 setSystemState:stateCopy];
+    [(SASOverriddenSystemState *)v9 setContextOverride:overrideCopy];
   }
 
   return v9;
@@ -39,141 +39,141 @@
 
 - (id)lockStateMonitor
 {
-  v2 = [(SASOverriddenSystemState *)self systemState];
-  v3 = [v2 lockStateMonitor];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  lockStateMonitor = [systemState lockStateMonitor];
 
-  return v3;
+  return lockStateMonitor;
 }
 
-- (void)setLockStateMonitor:(id)a3
+- (void)setLockStateMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = [(SASOverriddenSystemState *)self systemState];
-  [v5 setLockStateMonitor:v4];
+  monitorCopy = monitor;
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  [systemState setLockStateMonitor:monitorCopy];
 }
 
 - (id)currentSpokenLanguageCode
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 currentSpokenLanguageCodeForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride currentSpokenLanguageCodeForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)hasUnlockedSinceBoot
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 hasUnlockedSinceBootForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride hasUnlockedSinceBootForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)deviceIsBlocked
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 deviceIsBlockedForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride deviceIsBlockedForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)deviceIsPasscodeLocked
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 deviceIsPasscodeLockedForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride deviceIsPasscodeLockedForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)pocketStateShouldPreventVoiceTrigger
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 pocketStateShouldPreventVoiceTriggerForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride pocketStateShouldPreventVoiceTriggerForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)isPad
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 isPadForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride isPadForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)smartCoverClosed
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 smartCoverClosedForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride smartCoverClosedForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)accessibilityShortcutEnabled
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 accessibilityShortcutEnabledForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride accessibilityShortcutEnabledForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)carDNDActive
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 carDNDActiveForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride carDNDActiveForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)isConnectedToCarPlay
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 isConnectedToCarPlayForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride isConnectedToCarPlayForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)isConnectedToTrustedCarPlay
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 isConnectedToTrustedCarPlayForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride isConnectedToTrustedCarPlayForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)siriIsEnabled
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 siriIsEnabledForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride siriIsEnabledForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)siriIsRestricted
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 siriIsRestrictedForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride siriIsRestrictedForSystemState:systemState];
 
   return v5;
 }
 
 - (BOOL)siriIsSupported
 {
-  v3 = [(SASOverriddenSystemState *)self contextOverride];
-  v4 = [(SASOverriddenSystemState *)self systemState];
-  v5 = [v3 siriIsSupportedForSystemState:v4];
+  contextOverride = [(SASOverriddenSystemState *)self contextOverride];
+  systemState = [(SASOverriddenSystemState *)self systemState];
+  v5 = [contextOverride siriIsSupportedForSystemState:systemState];
 
   return v5;
 }

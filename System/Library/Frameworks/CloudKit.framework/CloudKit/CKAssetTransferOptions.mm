@@ -1,34 +1,34 @@
 @interface CKAssetTransferOptions
-- (CKAssetTransferOptions)initWithCoder:(id)a3;
+- (CKAssetTransferOptions)initWithCoder:(id)coder;
 - (id)CKPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKAssetTransferOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_sparseAware(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v21, v8, v7, @"AssetTransferOptionSparseAware");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"AssetTransferOptionSparseAware");
 
   v11 = objc_msgSend_shouldFetchAssetContent(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v21, v12, v11, @"AssetTransferOptionShouldFetchAssetContent");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"AssetTransferOptionShouldFetchAssetContent");
 
   v15 = objc_msgSend_shouldFetchAssetContentInMemory(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v21, v16, v15, @"AssetTransferOptionShouldFetchAssetContentInMemory");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"AssetTransferOptionShouldFetchAssetContentInMemory");
 
   v19 = objc_msgSend_useMMCSEncryptionV2(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v21, v20, v19, @"AssetTransferOptionUseMMCSEncryptionV2");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"AssetTransferOptionUseMMCSEncryptionV2");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKAssetTransferOptions)initWithCoder:(id)a3
+- (CKAssetTransferOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = CKAssetTransferOptions;
   v5 = [(CKAssetTransferOptions *)&v24 init];
@@ -36,22 +36,22 @@
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"AssetTransferOptionSparseAware");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"AssetTransferOptionSparseAware");
     sparseAware = v5->_sparseAware;
     v5->_sparseAware = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"AssetTransferOptionShouldFetchAssetContent");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"AssetTransferOptionShouldFetchAssetContent");
     shouldFetchAssetContent = v5->_shouldFetchAssetContent;
     v5->_shouldFetchAssetContent = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"AssetTransferOptionShouldFetchAssetContentInMemory");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"AssetTransferOptionShouldFetchAssetContentInMemory");
     shouldFetchAssetContentInMemory = v5->_shouldFetchAssetContentInMemory;
     v5->_shouldFetchAssetContentInMemory = v17;
 
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"AssetTransferOptionUseMMCSEncryptionV2");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"AssetTransferOptionUseMMCSEncryptionV2");
     useMMCSEncryptionV2 = v5->_useMMCSEncryptionV2;
     v5->_useMMCSEncryptionV2 = v21;
 
@@ -117,7 +117,7 @@
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CKAssetTransferOptions);
   v7 = objc_msgSend_sparseAware(self, v5, v6);

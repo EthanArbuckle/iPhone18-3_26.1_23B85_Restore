@@ -1,47 +1,47 @@
 @interface BMSafariBrowsingAssistantDimensionContext
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSafariBrowsingAssistantDimensionContext)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSafariBrowsingAssistantDimensionContext)initWithWebpageViewIdentifier:(id)a3 systemLocale:(id)a4 currentCountry:(id)a5 build:(id)a6 osType:(id)a7 productType:(id)a8 buildType:(int)a9 duEnabled:(id)a10 searchBarPosition:(int)a11 prefixStoreVersion:(id)a12 trialExperiment:(id)a13;
-- (BMSafariBrowsingAssistantDimensionContext)initWithWebpageViewIdentifier:(id)a3 systemLocale:(id)a4 currentCountry:(id)a5 build:(id)a6 osType:(id)a7 productType:(id)a8 buildType:(int)a9 duEnabled:(id)a10 searchBarPosition:(int)a11 prefixStoreVersion:(id)a12 trialExperiment:(id)a13 isInternalTest:(id)a14;
-- (BOOL)isEqual:(id)a3;
+- (BMSafariBrowsingAssistantDimensionContext)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSafariBrowsingAssistantDimensionContext)initWithWebpageViewIdentifier:(id)identifier systemLocale:(id)locale currentCountry:(id)country build:(id)build osType:(id)type productType:(id)productType buildType:(int)buildType duEnabled:(id)self0 searchBarPosition:(int)self1 prefixStoreVersion:(id)self2 trialExperiment:(id)self3;
+- (BMSafariBrowsingAssistantDimensionContext)initWithWebpageViewIdentifier:(id)identifier systemLocale:(id)locale currentCountry:(id)country build:(id)build osType:(id)type productType:(id)productType buildType:(int)buildType duEnabled:(id)self0 searchBarPosition:(int)self1 prefixStoreVersion:(id)self2 trialExperiment:(id)self3 isInternalTest:(id)self4;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_trialExperimentJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSafariBrowsingAssistantDimensionContext
 
-- (BMSafariBrowsingAssistantDimensionContext)initWithWebpageViewIdentifier:(id)a3 systemLocale:(id)a4 currentCountry:(id)a5 build:(id)a6 osType:(id)a7 productType:(id)a8 buildType:(int)a9 duEnabled:(id)a10 searchBarPosition:(int)a11 prefixStoreVersion:(id)a12 trialExperiment:(id)a13
+- (BMSafariBrowsingAssistantDimensionContext)initWithWebpageViewIdentifier:(id)identifier systemLocale:(id)locale currentCountry:(id)country build:(id)build osType:(id)type productType:(id)productType buildType:(int)buildType duEnabled:(id)self0 searchBarPosition:(int)self1 prefixStoreVersion:(id)self2 trialExperiment:(id)self3
 {
-  LODWORD(v15) = a11;
-  LODWORD(v14) = a9;
-  return [(BMSafariBrowsingAssistantDimensionContext *)self initWithWebpageViewIdentifier:a3 systemLocale:a4 currentCountry:a5 build:a6 osType:a7 productType:a8 buildType:v14 duEnabled:a10 searchBarPosition:v15 prefixStoreVersion:a12 trialExperiment:a13 isInternalTest:0];
+  LODWORD(v15) = position;
+  LODWORD(v14) = buildType;
+  return [(BMSafariBrowsingAssistantDimensionContext *)self initWithWebpageViewIdentifier:identifier systemLocale:locale currentCountry:country build:build osType:type productType:productType buildType:v14 duEnabled:enabled searchBarPosition:v15 prefixStoreVersion:version trialExperiment:experiment isInternalTest:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSafariBrowsingAssistantDimensionContext *)self webpageViewIdentifier];
-    v7 = [v5 webpageViewIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    webpageViewIdentifier = [(BMSafariBrowsingAssistantDimensionContext *)self webpageViewIdentifier];
+    webpageViewIdentifier2 = [v5 webpageViewIdentifier];
+    v8 = webpageViewIdentifier2;
+    if (webpageViewIdentifier == webpageViewIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMSafariBrowsingAssistantDimensionContext *)self webpageViewIdentifier];
-      v10 = [v5 webpageViewIdentifier];
-      v11 = [v9 isEqual:v10];
+      webpageViewIdentifier3 = [(BMSafariBrowsingAssistantDimensionContext *)self webpageViewIdentifier];
+      webpageViewIdentifier4 = [v5 webpageViewIdentifier];
+      v11 = [webpageViewIdentifier3 isEqual:webpageViewIdentifier4];
 
       if (!v11)
       {
@@ -49,18 +49,18 @@
       }
     }
 
-    v13 = [(BMSafariBrowsingAssistantDimensionContext *)self systemLocale];
-    v14 = [v5 systemLocale];
-    v15 = v14;
-    if (v13 == v14)
+    systemLocale = [(BMSafariBrowsingAssistantDimensionContext *)self systemLocale];
+    systemLocale2 = [v5 systemLocale];
+    v15 = systemLocale2;
+    if (systemLocale == systemLocale2)
     {
     }
 
     else
     {
-      v16 = [(BMSafariBrowsingAssistantDimensionContext *)self systemLocale];
-      v17 = [v5 systemLocale];
-      v18 = [v16 isEqual:v17];
+      systemLocale3 = [(BMSafariBrowsingAssistantDimensionContext *)self systemLocale];
+      systemLocale4 = [v5 systemLocale];
+      v18 = [systemLocale3 isEqual:systemLocale4];
 
       if (!v18)
       {
@@ -68,18 +68,18 @@
       }
     }
 
-    v19 = [(BMSafariBrowsingAssistantDimensionContext *)self currentCountry];
-    v20 = [v5 currentCountry];
-    v21 = v20;
-    if (v19 == v20)
+    currentCountry = [(BMSafariBrowsingAssistantDimensionContext *)self currentCountry];
+    currentCountry2 = [v5 currentCountry];
+    v21 = currentCountry2;
+    if (currentCountry == currentCountry2)
     {
     }
 
     else
     {
-      v22 = [(BMSafariBrowsingAssistantDimensionContext *)self currentCountry];
-      v23 = [v5 currentCountry];
-      v24 = [v22 isEqual:v23];
+      currentCountry3 = [(BMSafariBrowsingAssistantDimensionContext *)self currentCountry];
+      currentCountry4 = [v5 currentCountry];
+      v24 = [currentCountry3 isEqual:currentCountry4];
 
       if (!v24)
       {
@@ -87,18 +87,18 @@
       }
     }
 
-    v25 = [(BMSafariBrowsingAssistantDimensionContext *)self build];
-    v26 = [v5 build];
-    v27 = v26;
-    if (v25 == v26)
+    build = [(BMSafariBrowsingAssistantDimensionContext *)self build];
+    build2 = [v5 build];
+    v27 = build2;
+    if (build == build2)
     {
     }
 
     else
     {
-      v28 = [(BMSafariBrowsingAssistantDimensionContext *)self build];
-      v29 = [v5 build];
-      v30 = [v28 isEqual:v29];
+      build3 = [(BMSafariBrowsingAssistantDimensionContext *)self build];
+      build4 = [v5 build];
+      v30 = [build3 isEqual:build4];
 
       if (!v30)
       {
@@ -106,18 +106,18 @@
       }
     }
 
-    v31 = [(BMSafariBrowsingAssistantDimensionContext *)self osType];
-    v32 = [v5 osType];
-    v33 = v32;
-    if (v31 == v32)
+    osType = [(BMSafariBrowsingAssistantDimensionContext *)self osType];
+    osType2 = [v5 osType];
+    v33 = osType2;
+    if (osType == osType2)
     {
     }
 
     else
     {
-      v34 = [(BMSafariBrowsingAssistantDimensionContext *)self osType];
-      v35 = [v5 osType];
-      v36 = [v34 isEqual:v35];
+      osType3 = [(BMSafariBrowsingAssistantDimensionContext *)self osType];
+      osType4 = [v5 osType];
+      v36 = [osType3 isEqual:osType4];
 
       if (!v36)
       {
@@ -125,18 +125,18 @@
       }
     }
 
-    v37 = [(BMSafariBrowsingAssistantDimensionContext *)self productType];
-    v38 = [v5 productType];
-    v39 = v38;
-    if (v37 == v38)
+    productType = [(BMSafariBrowsingAssistantDimensionContext *)self productType];
+    productType2 = [v5 productType];
+    v39 = productType2;
+    if (productType == productType2)
     {
     }
 
     else
     {
-      v40 = [(BMSafariBrowsingAssistantDimensionContext *)self productType];
-      v41 = [v5 productType];
-      v42 = [v40 isEqual:v41];
+      productType3 = [(BMSafariBrowsingAssistantDimensionContext *)self productType];
+      productType4 = [v5 productType];
+      v42 = [productType3 isEqual:productType4];
 
       if (!v42)
       {
@@ -144,8 +144,8 @@
       }
     }
 
-    v43 = [(BMSafariBrowsingAssistantDimensionContext *)self buildType];
-    if (v43 != [v5 buildType])
+    buildType = [(BMSafariBrowsingAssistantDimensionContext *)self buildType];
+    if (buildType != [v5 buildType])
     {
       goto LABEL_47;
     }
@@ -162,31 +162,31 @@
         goto LABEL_47;
       }
 
-      v44 = [(BMSafariBrowsingAssistantDimensionContext *)self duEnabled];
-      if (v44 != [v5 duEnabled])
+      duEnabled = [(BMSafariBrowsingAssistantDimensionContext *)self duEnabled];
+      if (duEnabled != [v5 duEnabled])
       {
         goto LABEL_47;
       }
     }
 
-    v45 = [(BMSafariBrowsingAssistantDimensionContext *)self searchBarPosition];
-    if (v45 != [v5 searchBarPosition])
+    searchBarPosition = [(BMSafariBrowsingAssistantDimensionContext *)self searchBarPosition];
+    if (searchBarPosition != [v5 searchBarPosition])
     {
       goto LABEL_47;
     }
 
-    v46 = [(BMSafariBrowsingAssistantDimensionContext *)self prefixStoreVersion];
-    v47 = [v5 prefixStoreVersion];
-    v48 = v47;
-    if (v46 == v47)
+    prefixStoreVersion = [(BMSafariBrowsingAssistantDimensionContext *)self prefixStoreVersion];
+    prefixStoreVersion2 = [v5 prefixStoreVersion];
+    v48 = prefixStoreVersion2;
+    if (prefixStoreVersion == prefixStoreVersion2)
     {
     }
 
     else
     {
-      v49 = [(BMSafariBrowsingAssistantDimensionContext *)self prefixStoreVersion];
-      v50 = [v5 prefixStoreVersion];
-      v51 = [v49 isEqual:v50];
+      prefixStoreVersion3 = [(BMSafariBrowsingAssistantDimensionContext *)self prefixStoreVersion];
+      prefixStoreVersion4 = [v5 prefixStoreVersion];
+      v51 = [prefixStoreVersion3 isEqual:prefixStoreVersion4];
 
       if (!v51)
       {
@@ -194,18 +194,18 @@
       }
     }
 
-    v52 = [(BMSafariBrowsingAssistantDimensionContext *)self trialExperiment];
-    v53 = [v5 trialExperiment];
-    v54 = v53;
-    if (v52 == v53)
+    trialExperiment = [(BMSafariBrowsingAssistantDimensionContext *)self trialExperiment];
+    trialExperiment2 = [v5 trialExperiment];
+    v54 = trialExperiment2;
+    if (trialExperiment == trialExperiment2)
     {
     }
 
     else
     {
-      v55 = [(BMSafariBrowsingAssistantDimensionContext *)self trialExperiment];
-      v56 = [v5 trialExperiment];
-      v57 = [v55 isEqual:v56];
+      trialExperiment3 = [(BMSafariBrowsingAssistantDimensionContext *)self trialExperiment];
+      trialExperiment4 = [v5 trialExperiment];
+      v57 = [trialExperiment3 isEqual:trialExperiment4];
 
       if (!v57)
       {
@@ -221,8 +221,8 @@
 
     if (-[BMSafariBrowsingAssistantDimensionContext hasIsInternalTest](self, "hasIsInternalTest") && [v5 hasIsInternalTest])
     {
-      v58 = [(BMSafariBrowsingAssistantDimensionContext *)self isInternalTest];
-      v12 = v58 ^ [v5 isInternalTest] ^ 1;
+      isInternalTest = [(BMSafariBrowsingAssistantDimensionContext *)self isInternalTest];
+      v12 = isInternalTest ^ [v5 isInternalTest] ^ 1;
 LABEL_48:
 
       goto LABEL_49;
@@ -242,14 +242,14 @@ LABEL_49:
 - (id)jsonDictionary
 {
   v41[12] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSafariBrowsingAssistantDimensionContext *)self webpageViewIdentifier];
-  v4 = [v3 base64EncodedStringWithOptions:0];
+  webpageViewIdentifier = [(BMSafariBrowsingAssistantDimensionContext *)self webpageViewIdentifier];
+  v4 = [webpageViewIdentifier base64EncodedStringWithOptions:0];
 
-  v5 = [(BMSafariBrowsingAssistantDimensionContext *)self systemLocale];
-  v6 = [(BMSafariBrowsingAssistantDimensionContext *)self currentCountry];
-  v7 = [(BMSafariBrowsingAssistantDimensionContext *)self build];
-  v8 = [(BMSafariBrowsingAssistantDimensionContext *)self osType];
-  v39 = [(BMSafariBrowsingAssistantDimensionContext *)self productType];
+  systemLocale = [(BMSafariBrowsingAssistantDimensionContext *)self systemLocale];
+  currentCountry = [(BMSafariBrowsingAssistantDimensionContext *)self currentCountry];
+  build = [(BMSafariBrowsingAssistantDimensionContext *)self build];
+  osType = [(BMSafariBrowsingAssistantDimensionContext *)self osType];
+  productType = [(BMSafariBrowsingAssistantDimensionContext *)self productType];
   v38 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariBrowsingAssistantDimensionContext buildType](self, "buildType")}];
   v9 = 0;
   if ([(BMSafariBrowsingAssistantDimensionContext *)self hasDuEnabled])
@@ -258,8 +258,8 @@ LABEL_49:
   }
 
   v37 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariBrowsingAssistantDimensionContext searchBarPosition](self, "searchBarPosition")}];
-  v36 = [(BMSafariBrowsingAssistantDimensionContext *)self prefixStoreVersion];
-  v35 = [(BMSafariBrowsingAssistantDimensionContext *)self _trialExperimentJSONArray];
+  prefixStoreVersion = [(BMSafariBrowsingAssistantDimensionContext *)self prefixStoreVersion];
+  _trialExperimentJSONArray = [(BMSafariBrowsingAssistantDimensionContext *)self _trialExperimentJSONArray];
   if ([(BMSafariBrowsingAssistantDimensionContext *)self hasIsInternalTest])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSafariBrowsingAssistantDimensionContext isInternalTest](self, "isInternalTest")}];
@@ -271,120 +271,120 @@ LABEL_49:
   }
 
   v40[0] = @"webpageViewIdentifier";
-  v11 = v4;
+  null = v4;
   if (!v4)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v11;
-  v41[0] = v11;
+  v29 = null;
+  v41[0] = null;
   v40[1] = @"systemLocale";
-  v12 = v5;
-  if (!v5)
+  null2 = systemLocale;
+  if (!systemLocale)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v12;
-  v41[1] = v12;
+  v28 = null2;
+  v41[1] = null2;
   v40[2] = @"currentCountry";
-  v13 = v6;
-  if (!v6)
+  null3 = currentCountry;
+  if (!currentCountry)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v13;
-  v41[2] = v13;
+  v27 = null3;
+  v41[2] = null3;
   v40[3] = @"build";
-  v14 = v7;
-  if (!v7)
+  null4 = build;
+  if (!build)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v34 = v4;
-  v26 = v14;
-  v41[3] = v14;
+  v26 = null4;
+  v41[3] = null4;
   v40[4] = @"osType";
-  v15 = v8;
-  if (!v8)
+  null5 = osType;
+  if (!osType)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v5;
-  v25 = v15;
-  v41[4] = v15;
+  v33 = systemLocale;
+  v25 = null5;
+  v41[4] = null5;
   v40[5] = @"productType";
-  v16 = v39;
-  if (!v39)
+  null6 = productType;
+  if (!productType)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v6;
-  v41[5] = v16;
+  v32 = currentCountry;
+  v41[5] = null6;
   v40[6] = @"buildType";
-  v17 = v38;
+  null7 = v38;
   if (!v38)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v7;
-  v41[6] = v17;
+  v31 = build;
+  v41[6] = null7;
   v40[7] = @"duEnabled";
-  v18 = v9;
+  null8 = v9;
   if (!v9)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[7] = v18;
+  v41[7] = null8;
   v40[8] = @"searchBarPosition";
-  v19 = v37;
+  null9 = v37;
   if (!v37)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[8] = v19;
+  v41[8] = null9;
   v40[9] = @"prefixStoreVersion";
-  v20 = v36;
-  if (!v36)
+  null10 = prefixStoreVersion;
+  if (!prefixStoreVersion)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[9] = v20;
+  v41[9] = null10;
   v40[10] = @"trialExperiment";
-  v21 = v35;
-  if (!v35)
+  null11 = _trialExperimentJSONArray;
+  if (!_trialExperimentJSONArray)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[10] = v21;
+  v41[10] = null11;
   v40[11] = @"isInternalTest";
-  v22 = v10;
+  null12 = v10;
   if (!v10)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[11] = v22;
+  v41[11] = null12;
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:12];
   if (!v10)
   {
   }
 
-  if (!v35)
+  if (!_trialExperimentJSONArray)
   {
   }
 
-  if (!v36)
+  if (!prefixStoreVersion)
   {
   }
 
@@ -410,11 +410,11 @@ LABEL_38:
   {
   }
 
-  if (!v39)
+  if (!productType)
   {
   }
 
-  if (!v8)
+  if (!osType)
   {
   }
 
@@ -475,8 +475,8 @@ LABEL_48:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSafariBrowsingAssistantDimensionContext *)self trialExperiment];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  trialExperiment = [(BMSafariBrowsingAssistantDimensionContext *)self trialExperiment];
+  v5 = [trialExperiment countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -487,14 +487,14 @@ LABEL_48:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(trialExperiment);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [trialExperiment countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -505,11 +505,11 @@ LABEL_48:
   return v3;
 }
 
-- (BMSafariBrowsingAssistantDimensionContext)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSafariBrowsingAssistantDimensionContext)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v188[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"webpageViewIdentifier"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"webpageViewIdentifier"];
   v152 = v6;
   if (v6)
   {
@@ -533,8 +533,8 @@ LABEL_48:
           goto LABEL_4;
         }
 
-        v23 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v25 = *MEMORY[0x1E698F240];
@@ -551,24 +551,24 @@ LABEL_60:
           v62 = [v61 initWithDomain:v25 code:2 userInfo:v60];
           v8 = 0;
           v38 = 0;
-          *v23 = v62;
+          *errorCopy2 = v62;
           goto LABEL_133;
         }
       }
 
       else
       {
-        v23 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v25 = *MEMORY[0x1E698F240];
           v185 = *MEMORY[0x1E696A578];
-          v57 = v5;
+          v57 = dictionaryCopy;
           v58 = objc_alloc(MEMORY[0x1E696AEC0]);
           v126 = objc_opt_class();
           v59 = v58;
-          v5 = v57;
+          dictionaryCopy = v57;
           v26 = [v59 initWithFormat:@"Unexpected type (%@) for value of field '%@', expected NSData or base64 encoded NSString", v126, @"webpageViewIdentifier"];
           v186 = v26;
           v27 = MEMORY[0x1E695DF20];
@@ -586,16 +586,16 @@ LABEL_60:
 
   v8 = 0;
 LABEL_4:
-  v9 = [v5 objectForKeyedSubscript:@"systemLocale"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"systemLocale"];
   v148 = v8;
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
-        v30 = self;
+        selfCopy = self;
         v31 = v9;
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
         v33 = *MEMORY[0x1E698F240];
@@ -605,12 +605,12 @@ LABEL_4:
         v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v184 forKeys:&v183 count:1];
         v36 = v32;
         v9 = v31;
-        self = v30;
+        self = selfCopy;
         v149 = v35;
         v37 = [v36 initWithDomain:v33 code:2 userInfo:?];
         v26 = 0;
         v38 = 0;
-        *a4 = v37;
+        *error = v37;
         goto LABEL_131;
       }
 
@@ -627,14 +627,14 @@ LABEL_4:
     v147 = 0;
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"currentCountry"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"currentCountry"];
   v149 = v10;
   if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v39 = v9;
         v40 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -648,7 +648,7 @@ LABEL_4:
         v44 = [v43 initWithDomain:v41 code:2 userInfo:v12];
         v34 = 0;
         v38 = 0;
-        *a4 = v44;
+        *error = v44;
         v26 = v147;
         goto LABEL_130;
       }
@@ -667,14 +667,14 @@ LABEL_4:
     v145 = 0;
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"build"];
-  v146 = self;
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"build"];
+  selfCopy2 = self;
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v45 = v9;
         v46 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -688,7 +688,7 @@ LABEL_4:
         v49 = [v48 initWithDomain:v47 code:2 userInfo:v13];
         v42 = 0;
         v38 = 0;
-        *a4 = v49;
+        *error = v49;
         v26 = v147;
         v34 = v145;
         goto LABEL_129;
@@ -709,13 +709,13 @@ LABEL_4:
     v143 = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"osType"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"osType"];
   if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v50 = v9;
         v51 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -730,7 +730,7 @@ LABEL_4:
         v56 = [v55 initWithDomain:v52 code:2 userInfo:?];
         v144 = 0;
         v38 = 0;
-        *a4 = v56;
+        *error = v56;
         v26 = v147;
         v34 = v145;
         v42 = v143;
@@ -753,7 +753,7 @@ LABEL_4:
     v144 = 0;
   }
 
-  v14 = [v5 objectForKeyedSubscript:@"productType"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
   v142 = v14;
   v140 = v12;
   if (v14 && (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -761,7 +761,7 @@ LABEL_4:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v63 = v9;
         v64 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -775,7 +775,7 @@ LABEL_4:
         v67 = [v66 initWithDomain:v65 code:2 userInfo:v16];
         v141 = 0;
         v38 = 0;
-        *a4 = v67;
+        *error = v67;
         v26 = v147;
         v34 = v145;
         v42 = v143;
@@ -798,7 +798,7 @@ LABEL_4:
     v141 = 0;
   }
 
-  v16 = [v5 objectForKeyedSubscript:@"buildType"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"buildType"];
   v137 = v13;
   if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -813,7 +813,7 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v106 = v9;
           v107 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -828,7 +828,7 @@ LABEL_4:
           v111 = [v110 initWithDomain:v108 code:2 userInfo:?];
           v17 = 0;
           v38 = 0;
-          *a4 = v111;
+          *error = v111;
           v26 = v147;
           v34 = v145;
           v42 = v143;
@@ -852,14 +852,14 @@ LABEL_4:
     v17 = 0;
   }
 
-  v18 = [v5 objectForKeyedSubscript:@"duEnabled"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"duEnabled"];
   v138 = v18;
   if (v18 && (v19 = v18, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v68 = v9;
         v69 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -874,7 +874,7 @@ LABEL_4:
         v73 = [v72 initWithDomain:v70 code:2 userInfo:?];
         v139 = 0;
         v38 = 0;
-        *a4 = v73;
+        *error = v73;
         v26 = v147;
         v34 = v145;
         v42 = v143;
@@ -897,7 +897,7 @@ LABEL_4:
     v139 = 0;
   }
 
-  v20 = [v5 objectForKeyedSubscript:@"searchBarPosition"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"searchBarPosition"];
   v134 = v16;
   v135 = v20;
   if (v20 && (v21 = v20, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -914,7 +914,7 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v136 = 0;
           v38 = 0;
@@ -938,7 +938,7 @@ LABEL_4:
         v121 = [v120 initWithDomain:v118 code:2 userInfo:?];
         v136 = 0;
         v38 = 0;
-        *a4 = v121;
+        *error = v121;
         v26 = v147;
         v34 = v145;
         v42 = v143;
@@ -956,7 +956,7 @@ LABEL_4:
     v136 = 0;
   }
 
-  v74 = [v5 objectForKeyedSubscript:@"prefixStoreVersion"];
+  v74 = [dictionaryCopy objectForKeyedSubscript:@"prefixStoreVersion"];
   v132 = v9;
   v133 = v74;
   if (v74)
@@ -975,8 +975,8 @@ LABEL_4:
       goto LABEL_75;
     }
 
-    v88 = self;
-    if (a4)
+    selfCopy3 = self;
+    if (error)
     {
       v89 = objc_alloc(MEMORY[0x1E696ABC0]);
       v90 = v22;
@@ -987,12 +987,12 @@ LABEL_4:
       v92 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v168 forKeys:&v167 count:1];
       v93 = v91;
       v22 = v90;
-      self = v88;
+      self = selfCopy3;
       v150 = v92;
       v94 = [v89 initWithDomain:v93 code:2 userInfo:?];
       v74 = 0;
       v38 = 0;
-      *a4 = v94;
+      *error = v94;
       v26 = v147;
       v34 = v145;
       v16 = v134;
@@ -1010,15 +1010,15 @@ LABEL_139:
   }
 
 LABEL_75:
-  v75 = [v5 objectForKeyedSubscript:@"trialExperiment"];
-  v76 = [MEMORY[0x1E695DFB0] null];
-  v77 = [v75 isEqual:v76];
+  v75 = [dictionaryCopy objectForKeyedSubscript:@"trialExperiment"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v77 = [v75 isEqual:null];
 
   v130 = v74;
   v131 = v22;
   if (v77)
   {
-    v129 = v5;
+    v129 = dictionaryCopy;
 
     v75 = 0;
   }
@@ -1030,7 +1030,7 @@ LABEL_75:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v38 = 0;
           v26 = v147;
@@ -1047,7 +1047,7 @@ LABEL_75:
         v87 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v166 forKeys:&v165 count:1];
         v105 = [v103 initWithDomain:v104 code:2 userInfo:v87];
         v38 = 0;
-        *a4 = v105;
+        *error = v105;
 LABEL_111:
         v26 = v147;
         v34 = v145;
@@ -1056,7 +1056,7 @@ LABEL_111:
       }
     }
 
-    v129 = v5;
+    v129 = dictionaryCopy;
   }
 
   v150 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v75, "count")}];
@@ -1086,8 +1086,8 @@ LABEL_111:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v95 = a4;
-        if (a4)
+        errorCopy4 = error;
+        if (error)
         {
           v96 = objc_alloc(MEMORY[0x1E696ABC0]);
           v97 = *MEMORY[0x1E698F240];
@@ -1099,12 +1099,12 @@ LABEL_111:
           v100 = &v162;
 LABEL_101:
           v101 = [v98 dictionaryWithObjects:v99 forKeys:v100 count:1];
-          *v95 = [v96 initWithDomain:v97 code:2 userInfo:v101];
+          *errorCopy4 = [v96 initWithDomain:v97 code:2 userInfo:v101];
 LABEL_105:
 
           v38 = 0;
           v87 = v75;
-          v5 = v129;
+          dictionaryCopy = v129;
           v26 = v147;
           v34 = v145;
           v16 = v134;
@@ -1117,8 +1117,8 @@ LABEL_105:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v95 = a4;
-        if (a4)
+        errorCopy4 = error;
+        if (error)
         {
           v96 = objc_alloc(MEMORY[0x1E696ABC0]);
           v97 = *MEMORY[0x1E698F240];
@@ -1134,7 +1134,7 @@ LABEL_105:
 LABEL_110:
         v38 = 0;
         v87 = v75;
-        v5 = v129;
+        dictionaryCopy = v129;
         goto LABEL_111;
       }
 
@@ -1146,10 +1146,10 @@ LABEL_110:
       if (v86)
       {
         v101 = v86;
-        if (a4)
+        if (error)
         {
           v102 = v86;
-          *a4 = v101;
+          *error = v101;
         }
 
         goto LABEL_105;
@@ -1170,7 +1170,7 @@ LABEL_110:
 
 LABEL_90:
 
-  v5 = v129;
+  dictionaryCopy = v129;
   v83 = [v129 objectForKeyedSubscript:@"isInternalTest"];
   if (!v83)
   {
@@ -1199,16 +1199,16 @@ LABEL_90:
 LABEL_118:
     v112 = v148;
 LABEL_119:
-    v113 = [v131 intValue];
+    intValue = [v131 intValue];
     LODWORD(v127) = [v136 intValue];
-    LODWORD(v125) = v113;
-    v38 = [(BMSafariBrowsingAssistantDimensionContext *)v146 initWithWebpageViewIdentifier:v112 systemLocale:v26 currentCountry:v34 build:v143 osType:v144 productType:v141 buildType:v125 duEnabled:v139 searchBarPosition:v127 prefixStoreVersion:v130 trialExperiment:v150 isInternalTest:v87];
-    v146 = v38;
+    LODWORD(v125) = intValue;
+    v38 = [(BMSafariBrowsingAssistantDimensionContext *)selfCopy2 initWithWebpageViewIdentifier:v112 systemLocale:v26 currentCountry:v34 build:v143 osType:v144 productType:v141 buildType:v125 duEnabled:v139 searchBarPosition:v127 prefixStoreVersion:v130 trialExperiment:v150 isInternalTest:v87];
+    selfCopy2 = v38;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v122 = objc_alloc(MEMORY[0x1E696ABC0]);
       v128 = *MEMORY[0x1E698F240];
@@ -1216,7 +1216,7 @@ LABEL_119:
       v123 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isInternalTest"];
       v159 = v123;
       v124 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v159 forKeys:&v158 count:1];
-      *a4 = [v122 initWithDomain:v128 code:2 userInfo:v124];
+      *error = [v122 initWithDomain:v128 code:2 userInfo:v124];
     }
 
     v87 = 0;
@@ -1226,7 +1226,7 @@ LABEL_119:
 LABEL_120:
 
 LABEL_121:
-  self = v146;
+  self = selfCopy2;
   v74 = v130;
   v22 = v131;
 LABEL_122:
@@ -1267,15 +1267,15 @@ LABEL_134:
 {
   v3 = objc_opt_new();
   [(BMSafariBrowsingAssistantDimensionContext *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_webpageViewIdentifier)
   {
     PBDataWriterWriteDataField();
@@ -1342,7 +1342,7 @@ LABEL_134:
 
         v13 = *(*(&v16 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v13 writeTo:v4];
+        [v13 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -1361,9 +1361,9 @@ LABEL_134:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v55.receiver = self;
   v55.super_class = BMSafariBrowsingAssistantDimensionContext;
   v5 = [(BMEventBase *)&v55 init];
@@ -1373,12 +1373,12 @@ LABEL_134:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_97;
       }
@@ -1389,18 +1389,18 @@ LABEL_134:
       while (1)
       {
         LOBYTE(v56[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v56 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v56[0] & 0x7F) << v8;
@@ -1418,9 +1418,9 @@ LABEL_134:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_97;
       }
@@ -1496,18 +1496,18 @@ LABEL_76:
           while (1)
           {
             LOBYTE(v56[0]) = 0;
-            v29 = [v4 position] + 1;
-            if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+            v29 = [fromCopy position] + 1;
+            if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
             {
-              v31 = [v4 data];
-              [v31 getBytes:v56 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v28 |= (v56[0] & 0x7F) << v26;
@@ -1525,7 +1525,7 @@ LABEL_76:
             }
           }
 
-          v32 = (v28 != 0) & ~[v4 hasError];
+          v32 = (v28 != 0) & ~[fromCopy hasError];
 LABEL_87:
           v48 = 18;
           goto LABEL_95;
@@ -1542,7 +1542,7 @@ LABEL_80:
 
       v56[0] = 0;
       v56[1] = 0;
-      if (!PBReaderPlaceMark() || (v45 = [[BMSafariBrowsingAssistantTrialExperiment alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v45 = [[BMSafariBrowsingAssistantTrialExperiment alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_101:
 
@@ -1554,8 +1554,8 @@ LABEL_101:
       PBReaderRecallMark();
 
 LABEL_96:
-      v49 = [v4 position];
-      if (v49 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_97;
       }
@@ -1570,18 +1570,18 @@ LABEL_96:
         while (1)
         {
           LOBYTE(v56[0]) = 0;
-          v35 = [v4 position] + 1;
-          if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+          v35 = [fromCopy position] + 1;
+          if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
           {
-            v37 = [v4 data];
-            [v37 getBytes:v56 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v56[0] & 0x7F) << v33;
@@ -1598,7 +1598,7 @@ LABEL_96:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v21 > 4)
+        if (([fromCopy hasError] & 1) != 0 || v21 > 4)
         {
 LABEL_90:
           LODWORD(v21) = 0;
@@ -1614,18 +1614,18 @@ LABEL_90:
         while (1)
         {
           LOBYTE(v56[0]) = 0;
-          v41 = [v4 position] + 1;
-          if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+          v41 = [fromCopy position] + 1;
+          if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
           {
-            v43 = [v4 data];
-            [v43 getBytes:v56 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v40 |= (v56[0] & 0x7F) << v38;
@@ -1643,7 +1643,7 @@ LABEL_90:
           }
         }
 
-        v32 = (v40 != 0) & ~[v4 hasError];
+        v32 = (v40 != 0) & ~[fromCopy hasError];
 LABEL_94:
         v48 = 16;
 LABEL_95:
@@ -1656,18 +1656,18 @@ LABEL_95:
         while (1)
         {
           LOBYTE(v56[0]) = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:v56 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v56[0] & 0x7F) << v19;
@@ -1684,7 +1684,7 @@ LABEL_95:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v21 > 2)
+        if (([fromCopy hasError] & 1) != 0 || v21 > 2)
         {
 LABEL_84:
           LODWORD(v21) = 0;
@@ -1704,8 +1704,8 @@ LABEL_97:
   trialExperiment = v5->_trialExperiment;
   v5->_trialExperiment = v50;
 
-  v52 = [v4 hasError];
-  if (v52)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_98:
     v53 = 0;
@@ -1723,55 +1723,55 @@ LABEL_99:
 - (NSString)description
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v13 = [(BMSafariBrowsingAssistantDimensionContext *)self webpageViewIdentifier];
-  v17 = [(BMSafariBrowsingAssistantDimensionContext *)self systemLocale];
-  v16 = [(BMSafariBrowsingAssistantDimensionContext *)self currentCountry];
-  v3 = [(BMSafariBrowsingAssistantDimensionContext *)self build];
-  v4 = [(BMSafariBrowsingAssistantDimensionContext *)self osType];
-  v12 = [(BMSafariBrowsingAssistantDimensionContext *)self productType];
+  webpageViewIdentifier = [(BMSafariBrowsingAssistantDimensionContext *)self webpageViewIdentifier];
+  systemLocale = [(BMSafariBrowsingAssistantDimensionContext *)self systemLocale];
+  currentCountry = [(BMSafariBrowsingAssistantDimensionContext *)self currentCountry];
+  build = [(BMSafariBrowsingAssistantDimensionContext *)self build];
+  osType = [(BMSafariBrowsingAssistantDimensionContext *)self osType];
+  productType = [(BMSafariBrowsingAssistantDimensionContext *)self productType];
   v5 = BMSafariBrowsingAssistantBuildTypeAsString([(BMSafariBrowsingAssistantDimensionContext *)self buildType]);
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSafariBrowsingAssistantDimensionContext duEnabled](self, "duEnabled")}];
   v7 = BMSafariBrowsingAssistantSearchBarPositionAsString([(BMSafariBrowsingAssistantDimensionContext *)self searchBarPosition]);
-  v8 = [(BMSafariBrowsingAssistantDimensionContext *)self prefixStoreVersion];
-  v9 = [(BMSafariBrowsingAssistantDimensionContext *)self trialExperiment];
+  prefixStoreVersion = [(BMSafariBrowsingAssistantDimensionContext *)self prefixStoreVersion];
+  trialExperiment = [(BMSafariBrowsingAssistantDimensionContext *)self trialExperiment];
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSafariBrowsingAssistantDimensionContext isInternalTest](self, "isInternalTest")}];
-  v15 = [v14 initWithFormat:@"BMSafariBrowsingAssistantDimensionContext with webpageViewIdentifier: %@, systemLocale: %@, currentCountry: %@, build: %@, osType: %@, productType: %@, buildType: %@, duEnabled: %@, searchBarPosition: %@, prefixStoreVersion: %@, trialExperiment: %@, isInternalTest: %@", v13, v17, v16, v3, v4, v12, v5, v6, v7, v8, v9, v10];
+  v15 = [v14 initWithFormat:@"BMSafariBrowsingAssistantDimensionContext with webpageViewIdentifier: %@, systemLocale: %@, currentCountry: %@, build: %@, osType: %@, productType: %@, buildType: %@, duEnabled: %@, searchBarPosition: %@, prefixStoreVersion: %@, trialExperiment: %@, isInternalTest: %@", webpageViewIdentifier, systemLocale, currentCountry, build, osType, productType, v5, v6, v7, prefixStoreVersion, trialExperiment, v10];
 
   return v15;
 }
 
-- (BMSafariBrowsingAssistantDimensionContext)initWithWebpageViewIdentifier:(id)a3 systemLocale:(id)a4 currentCountry:(id)a5 build:(id)a6 osType:(id)a7 productType:(id)a8 buildType:(int)a9 duEnabled:(id)a10 searchBarPosition:(int)a11 prefixStoreVersion:(id)a12 trialExperiment:(id)a13 isInternalTest:(id)a14
+- (BMSafariBrowsingAssistantDimensionContext)initWithWebpageViewIdentifier:(id)identifier systemLocale:(id)locale currentCountry:(id)country build:(id)build osType:(id)type productType:(id)productType buildType:(int)buildType duEnabled:(id)self0 searchBarPosition:(int)self1 prefixStoreVersion:(id)self2 trialExperiment:(id)self3 isInternalTest:(id)self4
 {
-  v19 = a3;
-  v35 = a4;
-  v34 = a5;
-  v33 = a6;
-  v29 = a7;
-  v20 = a7;
-  v21 = v19;
-  v32 = v20;
-  v31 = a8;
-  v22 = a10;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
+  identifierCopy = identifier;
+  localeCopy = locale;
+  countryCopy = country;
+  buildCopy = build;
+  typeCopy = type;
+  typeCopy2 = type;
+  v21 = identifierCopy;
+  v32 = typeCopy2;
+  productTypeCopy = productType;
+  enabledCopy = enabled;
+  versionCopy = version;
+  experimentCopy = experiment;
+  testCopy = test;
   v36.receiver = self;
   v36.super_class = BMSafariBrowsingAssistantDimensionContext;
   v26 = [(BMEventBase *)&v36 init];
   if (v26)
   {
     v26->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v26->_webpageViewIdentifier, a3);
-    objc_storeStrong(&v26->_systemLocale, a4);
-    objc_storeStrong(&v26->_currentCountry, a5);
-    objc_storeStrong(&v26->_build, a6);
-    objc_storeStrong(&v26->_osType, v29);
-    objc_storeStrong(&v26->_productType, a8);
-    v26->_buildType = a9;
-    if (v22)
+    objc_storeStrong(&v26->_webpageViewIdentifier, identifier);
+    objc_storeStrong(&v26->_systemLocale, locale);
+    objc_storeStrong(&v26->_currentCountry, country);
+    objc_storeStrong(&v26->_build, build);
+    objc_storeStrong(&v26->_osType, typeCopy);
+    objc_storeStrong(&v26->_productType, productType);
+    v26->_buildType = buildType;
+    if (enabledCopy)
     {
       v26->_hasDuEnabled = 1;
-      v26->_duEnabled = [v22 BOOLValue];
+      v26->_duEnabled = [enabledCopy BOOLValue];
     }
 
     else
@@ -1780,13 +1780,13 @@ LABEL_99:
       v26->_duEnabled = 0;
     }
 
-    v26->_searchBarPosition = a11;
-    objc_storeStrong(&v26->_prefixStoreVersion, a12);
-    objc_storeStrong(&v26->_trialExperiment, a13);
-    if (v25)
+    v26->_searchBarPosition = position;
+    objc_storeStrong(&v26->_prefixStoreVersion, version);
+    objc_storeStrong(&v26->_trialExperiment, experiment);
+    if (testCopy)
     {
       v26->_hasIsInternalTest = 1;
-      v26->_isInternalTest = [v25 BOOLValue];
+      v26->_isInternalTest = [testCopy BOOLValue];
     }
 
     else
@@ -1876,9 +1876,9 @@ id __52__BMSafariBrowsingAssistantDimensionContext_columns__block_invoke(uint64_
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1886,8 +1886,8 @@ id __52__BMSafariBrowsingAssistantDimensionContext_columns__block_invoke(uint64_
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSafariBrowsingAssistantDimensionContext alloc] initByReadFrom:v7];
     v4 = v8;

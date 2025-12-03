@@ -1,12 +1,12 @@
 @interface MKSpatialCollider
-- (MKSpatialCollider)initWithAnnotationViews:(id)a3 previousCollissions:(id)a4 options:(int64_t)a5;
+- (MKSpatialCollider)initWithAnnotationViews:(id)views previousCollissions:(id)collissions options:(int64_t)options;
 - (id).cxx_construct;
 - (id)registeredCollissions;
-- (id)viewsCollidingWithAnnotationView:(id)a3 inCollidableList:(BOOL)a4;
-- (id)viewsCollidingWithAnnotationView:(id)a3 inCollidableList:(BOOL)a4 fromIndex:(int64_t)a5 length:(double)a6;
-- (id)viewsCollidingWithAnnotationViewAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)insertAnnotationView:(id)a3;
+- (id)viewsCollidingWithAnnotationView:(id)view inCollidableList:(BOOL)list;
+- (id)viewsCollidingWithAnnotationView:(id)view inCollidableList:(BOOL)list fromIndex:(int64_t)index length:(double)length;
+- (id)viewsCollidingWithAnnotationViewAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)insertAnnotationView:(id)view;
 - (void)dealloc;
 @end
 
@@ -34,13 +34,13 @@
   [(MKSpatialCollider *)&v3 dealloc];
 }
 
-- (id)viewsCollidingWithAnnotationView:(id)a3 inCollidableList:(BOOL)a4 fromIndex:(int64_t)a5 length:(double)a6
+- (id)viewsCollidingWithAnnotationView:(id)view inCollidableList:(BOOL)list fromIndex:(int64_t)index length:(double)length
 {
-  v66 = a4;
-  v9 = self;
+  listCopy = list;
+  selfCopy = self;
   ++self->mutator;
   v10 = &OBJC_IVAR___MKAnnotationView__clusterAnnotationView;
-  v11 = *(a3 + 42);
+  v11 = *(view + 42);
   if (self->_isVertical)
   {
     v12 = [MKSpatialCollider viewsCollidingWithAnnotationView:inCollidableList:fromIndex:length:]::$_7::__invoke;
@@ -51,12 +51,12 @@
     v12 = [MKSpatialCollider viewsCollidingWithAnnotationView:inCollidableList:fromIndex:length:]::$_8::__invoke;
   }
 
-  v75.origin = *(a3 + 41);
+  v75.origin = *(view + 41);
   v75.size = v11;
   (v12)(&v75, a2);
-  v64 = a5;
-  v14 = &v9->_sortedAnnotationViews.__begin_[a5];
-  if (v9->_sortedAnnotationViews.var0 == v14)
+  indexCopy = index;
+  v14 = &selfCopy->_sortedAnnotationViews.__begin_[index];
+  if (selfCopy->_sortedAnnotationViews.var0 == v14)
   {
     v15 = 0;
     v73 = 0;
@@ -70,15 +70,15 @@
     v73 = 0;
     v67 = 0;
     v68 = v12;
-    v16 = v13 + a6;
-    registeredCollisonPairs = v9->_registeredCollisonPairs;
-    previousCollisionPairs = v9->_previousCollisionPairs;
+    v16 = v13 + length;
+    registeredCollisonPairs = selfCopy->_registeredCollisonPairs;
+    previousCollisionPairs = selfCopy->_previousCollisionPairs;
     v65 = registeredCollisonPairs + 3;
-    v69 = v9;
+    v69 = selfCopy;
     do
     {
       v17 = *v14;
-      if (*v14 == a3)
+      if (*v14 == view)
       {
         v27 = v15;
         v28 = v15 >> 3;
@@ -95,7 +95,7 @@
         *(8 * v28) = v17;
         v15 = 8 * v28 + 8;
         memcpy(0, 0, v27);
-        v36 = v14 - v9->_sortedAnnotationViews.__begin_;
+        v36 = v14 - selfCopy->_sortedAnnotationViews.__begin_;
 LABEL_68:
         v73 = v36;
         v72 = 1;
@@ -115,27 +115,27 @@ LABEL_68:
 
         if (CGRectIntersectsRect(v75, v74))
         {
-          if (v17 <= a3)
+          if (v17 <= view)
           {
-            v20 = v17;
+            viewCopy = v17;
           }
 
           else
           {
-            v20 = a3;
+            viewCopy = view;
           }
 
-          if (v17 <= a3)
+          if (v17 <= view)
           {
-            v21 = a3;
+            viewCopy2 = view;
           }
 
           else
           {
-            v21 = v17;
+            viewCopy2 = v17;
           }
 
-          v22 = std::hash<_MKAnnotationViewPair>::operator()(v20, v21);
+          v22 = std::hash<_MKAnnotationViewPair>::operator()(viewCopy, viewCopy2);
           v23 = v22;
           v24 = previousCollisionPairs[2];
           if (v24)
@@ -164,7 +164,7 @@ LABEL_68:
                 v31 = i[1];
                 if (v31 == v22)
                 {
-                  if (i[2] == v20 && i[3] == v21)
+                  if (i[2] == viewCopy && i[3] == viewCopy2)
                   {
                     v41 = 1;
                     goto LABEL_39;
@@ -197,7 +197,7 @@ LABEL_68:
 
           v41 = 0;
 LABEL_39:
-          if ([a3 isCollidingWithAnnotationView:v17 previouslyCollided:{v41, v64, v65}])
+          if ([view isCollidingWithAnnotationView:v17 previouslyCollided:{v41, indexCopy, v65}])
           {
             v33 = registeredCollisonPairs[2];
             if (!*&v33)
@@ -233,12 +233,12 @@ LABEL_62:
               v39 = v38[1];
               if (v39 == v23)
               {
-                if (v38[2] == v20 && v38[3] == v21)
+                if (v38[2] == viewCopy && v38[3] == viewCopy2)
                 {
                   v42 = v15;
                   v43 = v15 >> 3;
                   v12 = v68;
-                  v9 = v69;
+                  selfCopy = v69;
                   v10 = &OBJC_IVAR___MKAnnotationView__clusterAnnotationView;
                   if (((v15 >> 3) + 1) >> 61)
                   {
@@ -294,7 +294,7 @@ LABEL_62:
           }
 
           v12 = v68;
-          v9 = v69;
+          selfCopy = v69;
           v10 = &OBJC_IVAR___MKAnnotationView__clusterAnnotationView;
         }
       }
@@ -302,7 +302,7 @@ LABEL_62:
       ++v14;
     }
 
-    while (v14 != v9->_sortedAnnotationViews.var0);
+    while (v14 != selfCopy->_sortedAnnotationViews.var0);
   }
 
   v44 = v15 >> 3;
@@ -313,12 +313,12 @@ LABEL_62:
 
   if (v44 != 1)
   {
-    if (v9->_options)
+    if (selfCopy->_options)
     {
-      begin = v9->_sortedAnnotationViews.__begin_;
+      begin = selfCopy->_sortedAnnotationViews.__begin_;
       v47 = 8 * v67 + 8;
       v48 = begin + v47;
-      if (8 * v64 == v47)
+      if (8 * indexCopy == v47)
       {
 LABEL_82:
         v49 = (begin + v47);
@@ -326,7 +326,7 @@ LABEL_82:
 
       else
       {
-        v49 = &begin[v64];
+        v49 = &begin[indexCopy];
         while (*v49 != MEMORY[0])
         {
           if (++v49 == v48)
@@ -366,31 +366,31 @@ LABEL_82:
       {
         v51 = v49;
         v52 = (v49 + v50);
-        var0 = v9->_sortedAnnotationViews.var0;
+        var0 = selfCopy->_sortedAnnotationViews.var0;
         v54 = var0 - v52;
         if (var0 != v52)
         {
           memmove(v49, v52, var0 - v52);
         }
 
-        v9->_sortedAnnotationViews.var0 = (v51 + v54);
+        selfCopy->_sortedAnnotationViews.var0 = (v51 + v54);
       }
     }
 
-    return [MEMORY[0x1E695DEC8] arrayWithObjects:0 count:{v44, v64}];
+    return [MEMORY[0x1E695DEC8] arrayWithObjects:0 count:{v44, indexCopy}];
   }
 
-  options = v9->_options;
-  if (!v66)
+  options = selfCopy->_options;
+  if (!listCopy)
   {
     if ((options & 1) == 0)
     {
-      return [MEMORY[0x1E695DEC8] arrayWithObjects:0 count:{1, v64}];
+      return [MEMORY[0x1E695DEC8] arrayWithObjects:0 count:{1, indexCopy}];
     }
 
 LABEL_89:
-    v56 = v9->_sortedAnnotationViews.__begin_;
-    v57 = v9->_sortedAnnotationViews.var0;
+    v56 = selfCopy->_sortedAnnotationViews.__begin_;
+    v57 = selfCopy->_sortedAnnotationViews.var0;
     v58 = &v56[v73];
     v59 = (v57 - (v58 + 1));
     if (v57 != v58 + 1)
@@ -398,13 +398,13 @@ LABEL_89:
       memmove(&v56[v73], v58 + 1, v57 - (v58 + 1));
     }
 
-    v9->_sortedAnnotationViews.var0 = &v59[v58];
-    if (v66)
+    selfCopy->_sortedAnnotationViews.var0 = &v59[v58];
+    if (listCopy)
     {
       return 0;
     }
 
-    return [MEMORY[0x1E695DEC8] arrayWithObjects:0 count:{1, v64}];
+    return [MEMORY[0x1E695DEC8] arrayWithObjects:0 count:{1, indexCopy}];
   }
 
   if ((options & 2) != 0)
@@ -415,7 +415,7 @@ LABEL_89:
   return 0;
 }
 
-- (id)viewsCollidingWithAnnotationViewAtIndex:(unint64_t)a3
+- (id)viewsCollidingWithAnnotationViewAtIndex:(unint64_t)index
 {
   v5 = [MKSpatialCollider viewsCollidingWithAnnotationViewAtIndex:]::$_6::__invoke;
   if (self->_isVertical)
@@ -423,15 +423,15 @@ LABEL_89:
     v5 = [MKSpatialCollider viewsCollidingWithAnnotationViewAtIndex:]::$_5::__invoke;
   }
 
-  v6 = self->_sortedAnnotationViews.__begin_[a3];
+  v6 = self->_sortedAnnotationViews.__begin_[index];
   v8 = *(v6 + 42);
   (v5)(&v8, a2);
-  return [(MKSpatialCollider *)self viewsCollidingWithAnnotationView:v6 inCollidableList:1 fromIndex:a3 length:?];
+  return [(MKSpatialCollider *)self viewsCollidingWithAnnotationView:v6 inCollidableList:1 fromIndex:index length:?];
 }
 
-- (id)viewsCollidingWithAnnotationView:(id)a3 inCollidableList:(BOOL)a4
+- (id)viewsCollidingWithAnnotationView:(id)view inCollidableList:(BOOL)list
 {
-  v4 = a4;
+  listCopy = list;
   if (self->_isVertical)
   {
     v7 = [MKSpatialCollider viewsCollidingWithAnnotationView:inCollidableList:]::$_1::__invoke;
@@ -443,17 +443,17 @@ LABEL_89:
   }
 
   v8 = [MKSpatialCollider viewsCollidingWithAnnotationView:inCollidableList:]::$_4::__invoke;
-  v9 = *(a3 + 42);
+  v9 = *(view + 42);
   if (self->_isVertical)
   {
     v8 = [MKSpatialCollider viewsCollidingWithAnnotationView:inCollidableList:]::$_3::__invoke;
   }
 
-  v29 = *(a3 + 41);
+  v29 = *(view + 41);
   v30 = v9;
   v10 = (v8)(&v30, a2);
-  v11 = *(a3 + 42);
-  v29 = *(a3 + 41);
+  v11 = *(view + 42);
+  v29 = *(view + 41);
   v30 = v11;
   v12 = v7(&v29);
   maxLength = self->_maxLength;
@@ -527,13 +527,13 @@ LABEL_22:
 
   else
   {
-    return [(MKSpatialCollider *)self viewsCollidingWithAnnotationView:a3 inCollidableList:v4 fromIndex:v18 - begin length:v10 + maxLength];
+    return [(MKSpatialCollider *)self viewsCollidingWithAnnotationView:view inCollidableList:listCopy fromIndex:v18 - begin length:v10 + maxLength];
   }
 }
 
-- (unint64_t)insertAnnotationView:(id)a3
+- (unint64_t)insertAnnotationView:(id)view
 {
-  v42 = a3;
+  viewCopy = view;
   ++self->mutator;
   begin = self->_sortedAnnotationViews.__begin_;
   var0 = self->_sortedAnnotationViews.var0;
@@ -542,14 +542,14 @@ LABEL_22:
     if (var0 != begin)
     {
       v7 = var0 - begin;
-      v8 = *(a3 + 83);
+      v8 = *(view + 83);
       v9 = self->_sortedAnnotationViews.__begin_;
       do
       {
         v10 = v7 >> 1;
         v11 = &v9[v7 >> 1];
         v12 = *(*v11 + 83);
-        if (v12 < v8 || (*v11 < a3 ? (v13 = v12 == v8) : (v13 = 0), v13))
+        if (v12 < v8 || (*v11 < view ? (v13 = v12 == v8) : (v13 = 0), v13))
         {
           v9 = v11 + 1;
           v10 = v7 + ~v10;
@@ -573,14 +573,14 @@ LABEL_24:
   }
 
   v14 = var0 - begin;
-  v15 = *(a3 + 82);
+  v15 = *(view + 82);
   v9 = self->_sortedAnnotationViews.__begin_;
   do
   {
     v16 = v14 >> 1;
     v17 = &v9[v14 >> 1];
     v18 = *(*v17 + 82);
-    if (v18 < v15 || (*v17 < a3 ? (v19 = v18 == v15) : (v19 = 0), v19))
+    if (v18 < v15 || (*v17 < view ? (v19 = v18 == v15) : (v19 = 0), v19))
     {
       v9 = v17 + 1;
       v16 = v14 + ~v16;
@@ -646,7 +646,7 @@ LABEL_25:
       v29 = v28;
     }
 
-    *v28 = a3;
+    *v28 = view;
     v33 = v29 + 8;
     memcpy((v29 + 8), v9, self->_sortedAnnotationViews.var0 - v9);
     v34 = self->_sortedAnnotationViews.__begin_;
@@ -666,7 +666,7 @@ LABEL_25:
 
   else if (v9 == var0)
   {
-    *var0 = a3;
+    *var0 = view;
     self->_sortedAnnotationViews.var0 = var0 + 1;
   }
 
@@ -691,14 +691,14 @@ LABEL_25:
       v24 = self->_sortedAnnotationViews.var0;
     }
 
-    v30 = v24 <= &v42 || v9 > &v42;
+    v30 = v24 <= &viewCopy || v9 > &viewCopy;
     v31 = 8;
     if (v30)
     {
       v31 = 0;
     }
 
-    *v9 = *(&v42 + v31);
+    *v9 = *(&viewCopy + v31);
   }
 
   maxLength = self->_maxLength;
@@ -708,31 +708,31 @@ LABEL_25:
     v39 = 24;
   }
 
-  if (maxLength < *(a3 + v39 + 656))
+  if (maxLength < *(view + v39 + 656))
   {
-    maxLength = *(a3 + v39 + 656);
+    maxLength = *(view + v39 + 656);
   }
 
   self->_maxLength = maxLength;
   return v22;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
     return 0;
   }
 
   begin = self->_sortedAnnotationViews.__begin_;
   var0 = self->_sortedAnnotationViews.var0;
-  a3->var0 = 1;
-  a3->var1 = begin;
-  a3->var2 = &self->mutator;
+  state->var0 = 1;
+  state->var1 = begin;
+  state->var2 = &self->mutator;
   return var0 - begin;
 }
 
-- (MKSpatialCollider)initWithAnnotationViews:(id)a3 previousCollissions:(id)a4 options:(int64_t)a5
+- (MKSpatialCollider)initWithAnnotationViews:(id)views previousCollissions:(id)collissions options:(int64_t)options
 {
   v47 = *MEMORY[0x1E69E9840];
   v45.receiver = self;
@@ -741,22 +741,22 @@ LABEL_25:
   v8 = v7;
   if (v7)
   {
-    v7->_options = a5;
-    if (a4)
+    v7->_options = options;
+    if (collissions)
     {
-      v9 = a4;
+      collissionsCopy = collissions;
     }
 
     else
     {
-      v9 = objc_opt_new();
+      collissionsCopy = objc_opt_new();
     }
 
-    v8->_previousCollisionPairs = v9;
-    v8->_registeredCollisonPairs = -[_MKSpatialColliderPairSet initWithCapacity:]([_MKSpatialColliderPairSet alloc], "initWithCapacity:", [a3 count]);
-    [objc_msgSend(objc_msgSend(a3 "anyObject")];
+    v8->_previousCollisionPairs = collissionsCopy;
+    v8->_registeredCollisonPairs = -[_MKSpatialColliderPairSet initWithCapacity:]([_MKSpatialColliderPairSet alloc], "initWithCapacity:", [views count]);
+    [objc_msgSend(objc_msgSend(views "anyObject")];
     v8->_isVertical = v11 < v10;
-    v12 = [a3 count];
+    v12 = [views count];
     if (v12 > (v8->_sortedAnnotationViews.var1 - v8->_sortedAnnotationViews.__begin_) >> 3)
     {
       if (!(v12 >> 61))
@@ -771,7 +771,7 @@ LABEL_25:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v13 = [a3 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    v13 = [views countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v13)
     {
       v15 = *v42;
@@ -781,7 +781,7 @@ LABEL_25:
         {
           if (*v42 != v15)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(views);
           }
 
           v17 = *(*(&v41 + 1) + 8 * i);
@@ -863,7 +863,7 @@ LABEL_25:
           v8->_maxLength = maxLength;
         }
 
-        v13 = [a3 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v13 = [views countByEnumeratingWithState:&v41 objects:v46 count:16];
       }
 
       while (v13);

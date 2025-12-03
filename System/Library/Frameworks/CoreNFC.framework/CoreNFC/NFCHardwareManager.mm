@@ -1,24 +1,24 @@
 @interface NFCHardwareManager
 + (id)sharedHardwareManager;
-- (BOOL)areFeaturesSupported:(unint64_t)a3 outError:(id *)a4;
+- (BOOL)areFeaturesSupported:(unint64_t)supported outError:(id *)error;
 - (NFCHardwareManager)init;
 - (NSArray)getDelegates;
-- (id)_queueSession:(id)a3;
-- (id)getReaderSessionWithKey:(id)a3;
+- (id)_queueSession:(id)session;
+- (id)getReaderSessionWithKey:(id)key;
 - (void)_cleanupPresentmentAssertion;
-- (void)addNFCHardwareManagerCallbacksListener:(id)a3;
-- (void)areFeaturesSupported:(unint64_t)a3 expiry:(double)a4 completion:(id)a5;
-- (void)dequeueSession:(id)a3;
+- (void)addNFCHardwareManagerCallbacksListener:(id)listener;
+- (void)areFeaturesSupported:(unint64_t)supported expiry:(double)expiry completion:(id)completion;
+- (void)dequeueSession:(id)session;
 - (void)didExpire;
 - (void)didFinishCooldown;
 - (void)didInvalidate;
-- (void)hwStateDidChange:(unsigned int)a3;
-- (void)isCardSessionEligibleWithCompletionHandler:(id)a3;
-- (void)queueCardFieldDetectSession:(id)a3 completionHandler:(id)a4;
-- (void)queueCardSession:(id)a3 sessionConfig:(id)a4 completionHandler:(id)a5;
-- (void)queueReaderSession:(id)a3 sessionConfig:(id)a4 completionHandler:(id)a5;
-- (void)releasePresentmentSuppression:(id)a3 completion:(id)a4;
-- (void)requestPresentmentSuppressionWithDelegate:(id)a3 completion:(id)a4;
+- (void)hwStateDidChange:(unsigned int)change;
+- (void)isCardSessionEligibleWithCompletionHandler:(id)handler;
+- (void)queueCardFieldDetectSession:(id)session completionHandler:(id)handler;
+- (void)queueCardSession:(id)session sessionConfig:(id)config completionHandler:(id)handler;
+- (void)queueReaderSession:(id)session sessionConfig:(id)config completionHandler:(id)handler;
+- (void)releasePresentmentSuppression:(id)suppression completion:(id)completion;
+- (void)requestPresentmentSuppressionWithDelegate:(id)delegate completion:(id)completion;
 @end
 
 @implementation NFCHardwareManager
@@ -42,9 +42,9 @@
   v2 = [(NFCHardwareManager *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     delegates = v2->_delegates;
-    v2->_delegates = v3;
+    v2->_delegates = weakObjectsHashTable;
 
     v5 = [NFCSession alloc];
     v6 = +[NFCHardwareManagerInterface interface];
@@ -63,19 +63,19 @@
   return v2;
 }
 
-- (id)_queueSession:(id)a3
+- (id)_queueSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:arc4random()];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2372CD430;
   v11[3] = &unk_278A2A460;
   v11[4] = self;
-  v12 = v4;
+  v12 = sessionCopy;
   v6 = v5;
   v13 = v6;
-  v7 = v4;
+  v7 = sessionCopy;
   os_unfair_lock_lock(&self->_readerSessionLock);
   sub_2372CD430(v11);
   os_unfair_lock_unlock(&self->_readerSessionLock);
@@ -85,68 +85,68 @@
   return v6;
 }
 
-- (void)queueReaderSession:(id)a3 sessionConfig:(id)a4 completionHandler:(id)a5
+- (void)queueReaderSession:(id)session sessionConfig:(id)config completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  sessionCopy = session;
+  handlerCopy = handler;
   xpcSession = self->_xpcSession;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_2372CD59C;
   v21[3] = &unk_278A2A488;
-  v12 = v10;
+  v12 = handlerCopy;
   v22 = v12;
-  v13 = a4;
+  configCopy = config;
   v14 = [(NFCSession *)xpcSession synchronousRemoteObjectProxyWithErrorHandler:v21];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2372CD628;
   v17[3] = &unk_278A2A4B0;
   v17[4] = self;
-  v18 = v9;
+  v18 = sessionCopy;
   v19 = v12;
   v20 = a2;
   v15 = v12;
-  v16 = v9;
-  [v14 queueReaderSession:v16 sessionConfig:v13 completion:v17];
+  v16 = sessionCopy;
+  [v14 queueReaderSession:v16 sessionConfig:configCopy completion:v17];
 }
 
-- (void)queueCardSession:(id)a3 sessionConfig:(id)a4 completionHandler:(id)a5
+- (void)queueCardSession:(id)session sessionConfig:(id)config completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  sessionCopy = session;
+  handlerCopy = handler;
   xpcSession = self->_xpcSession;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_2372CDAF4;
   v21[3] = &unk_278A2A488;
-  v12 = v10;
+  v12 = handlerCopy;
   v22 = v12;
-  v13 = a4;
+  configCopy = config;
   v14 = [(NFCSession *)xpcSession synchronousRemoteObjectProxyWithErrorHandler:v21];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2372CDB80;
   v17[3] = &unk_278A2A4D8;
   v17[4] = self;
-  v18 = v9;
+  v18 = sessionCopy;
   v19 = v12;
   v20 = a2;
   v15 = v12;
-  v16 = v9;
-  [v14 queueCardSession:v16 sessionConfig:v13 completion:v17];
+  v16 = sessionCopy;
+  [v14 queueCardSession:v16 sessionConfig:configCopy completion:v17];
 }
 
-- (void)queueCardFieldDetectSession:(id)a3 completionHandler:(id)a4
+- (void)queueCardFieldDetectSession:(id)session completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   xpcSession = self->_xpcSession;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_2372CDF14;
   v18[3] = &unk_278A2A488;
-  v10 = v8;
+  v10 = handlerCopy;
   v19 = v10;
   v11 = [(NFCSession *)xpcSession synchronousRemoteObjectProxyWithErrorHandler:v18];
   v14[0] = MEMORY[0x277D85DD0];
@@ -154,19 +154,19 @@
   v14[2] = sub_2372CDF2C;
   v14[3] = &unk_278A2A500;
   v14[4] = self;
-  v15 = v7;
+  v15 = sessionCopy;
   v16 = v10;
   v17 = a2;
   v12 = v10;
-  v13 = v7;
+  v13 = sessionCopy;
   [v11 queueCardFieldDetectSession:v13 completion:v14];
 }
 
-- (void)requestPresentmentSuppressionWithDelegate:(id)a3 completion:(id)a4
+- (void)requestPresentmentSuppressionWithDelegate:(id)delegate completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -241,7 +241,7 @@
     v44[3] = v24;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:4];
     v26 = [v20 initWithDomain:v21 code:34 userInfo:v25];
-    v8[2](v8, 0, v26);
+    completionCopy[2](completionCopy, 0, v26);
   }
 
   else
@@ -251,7 +251,7 @@
     v36[1] = 3221225472;
     v36[2] = sub_2372CE584;
     v36[3] = &unk_278A2A488;
-    v28 = v8;
+    v28 = completionCopy;
     v37 = v28;
     v29 = [(NFCSession *)xpcSession remoteObjectProxyWithErrorHandler:v36];
     v32[0] = MEMORY[0x277D85DD0];
@@ -260,7 +260,7 @@
     v32[3] = &unk_278A2A528;
     v32[4] = self;
     v35 = a2;
-    v33 = v7;
+    v33 = delegateCopy;
     v34 = v28;
     [v29 requestSuppressPresentmentWithCompletion:v32];
 
@@ -271,11 +271,11 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)releasePresentmentSuppression:(id)a3 completion:(id)a4
+- (void)releasePresentmentSuppression:(id)suppression completion:(id)completion
 {
   v63[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  suppressionCopy = suppression;
+  completionCopy = completion;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -287,7 +287,7 @@
   v42[2] = sub_2372CED78;
   v42[3] = &unk_278A2A550;
   v42[4] = self;
-  v9 = v7;
+  v9 = suppressionCopy;
   v44 = &v46;
   v45 = a2;
   v43 = v9;
@@ -296,7 +296,7 @@
   os_unfair_lock_unlock(&self->_presentmentSuppressionLock);
   if (v10)
   {
-    v8[2](v8, v10);
+    completionCopy[2](completionCopy, v10);
   }
 
   else if (v47[5])
@@ -309,14 +309,14 @@
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v36 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
       v17 = 45;
       if (isMetaClass)
       {
         v17 = 43;
       }
 
-      v12(6, "%c[%{public}s %{public}s]:%i handle=%lu", v17, ClassName, Name, 261, v36);
+      v12(6, "%c[%{public}s %{public}s]:%i handle=%lu", v17, ClassName, Name, 261, unsignedIntegerValue);
     }
 
     v18 = NFSharedLogGetLogger();
@@ -335,7 +335,7 @@
 
       v21 = object_getClassName(self);
       v22 = sel_getName(a2);
-      v23 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v9 unsignedIntegerValue];
       *buf = 67110146;
       v53 = v20;
       v54 = 2082;
@@ -345,7 +345,7 @@
       v58 = 1024;
       v59 = 261;
       v60 = 2048;
-      v61 = v23;
+      v61 = unsignedIntegerValue2;
       _os_log_impl(&dword_23728C000, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i handle=%lu", buf, 0x2Cu);
     }
 
@@ -354,7 +354,7 @@
     v40[1] = 3221225472;
     v40[2] = sub_2372CF088;
     v40[3] = &unk_278A2A488;
-    v25 = v8;
+    v25 = completionCopy;
     v41 = v25;
     v26 = [(NFCSession *)xpcSession remoteObjectProxyWithErrorHandler:v40];
     v27 = v47[5];
@@ -385,22 +385,22 @@
     v63[3] = v32;
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:4];
     v34 = [v28 initWithDomain:v29 code:10 userInfo:v33];
-    v8[2](v8, v34);
+    completionCopy[2](completionCopy, v34);
   }
 
   _Block_object_dispose(&v46, 8);
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isCardSessionEligibleWithCompletionHandler:(id)a3
+- (void)isCardSessionEligibleWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   xpcSession = self->_xpcSession;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2372CF3BC;
   v11[3] = &unk_278A2A488;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [(NFCSession *)xpcSession remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x277D85DD0];
@@ -412,16 +412,16 @@
   [v7 isCardSessionEligibleWithCompletion:v9];
 }
 
-- (void)dequeueSession:(id)a3
+- (void)dequeueSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2372CF520;
   v6[3] = &unk_278A29E60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sessionCopy;
+  v5 = sessionCopy;
   os_unfair_lock_lock(&self->_readerSessionLock);
   sub_2372CF520(v6);
   os_unfair_lock_unlock(&self->_readerSessionLock);
@@ -429,25 +429,25 @@
 
 - (NSArray)getDelegates
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_delegates allObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSHashTable *)selfCopy->_delegates allObjects];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)addNFCHardwareManagerCallbacksListener:(id)a3
+- (void)addNFCHardwareManagerCallbacksListener:(id)listener
 {
   obj = self;
-  v4 = a3;
+  listenerCopy = listener;
   objc_sync_enter(obj);
-  [(NSHashTable *)obj->_delegates addObject:v4];
+  [(NSHashTable *)obj->_delegates addObject:listenerCopy];
 
   objc_sync_exit(obj);
 }
 
-- (BOOL)areFeaturesSupported:(unint64_t)a3 outError:(id *)a4
+- (BOOL)areFeaturesSupported:(unint64_t)supported outError:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
   v54 = 0;
@@ -460,9 +460,9 @@
   v51 = sub_2372CED60;
   v52 = sub_2372CED70;
   v53 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v6 = MEMORY[0x277D85DD0];
@@ -482,7 +482,7 @@
     v46[3] = &unk_278A2A5C8;
     v46[4] = &v48;
     v46[5] = &v54;
-    [v9 areFeaturesSupported:a3 completion:v46];
+    [v9 areFeaturesSupported:supported completion:v46];
 
     v10 = v49[5];
     if (!v10)
@@ -492,9 +492,9 @@ LABEL_16:
       goto LABEL_36;
     }
 
-    v11 = [v10 domain];
+    domain = [v10 domain];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
-    v13 = [v11 isEqualToString:v12];
+    v13 = [domain isEqualToString:v12];
 
     Logger = NFLogGetLogger();
     v15 = Logger;
@@ -599,7 +599,7 @@ LABEL_16:
     _os_log_impl(&dword_23728C000, v33, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Stack error: %@", buf, 0x2Cu);
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_35;
   }
@@ -624,7 +624,7 @@ LABEL_16:
     v59[0] = v40;
     v59[1] = v49[5];
     v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2];
-    *a4 = [NFCError errorWithCode:202 userInfo:v41];
+    *error = [NFCError errorWithCode:202 userInfo:v41];
 
 LABEL_35:
     v27 = 0;
@@ -634,7 +634,7 @@ LABEL_35:
   v39 = 1;
 LABEL_33:
   [NFCError errorWithCode:v39];
-  *a4 = v27 = 0;
+  *error = v27 = 0;
 LABEL_36:
   _Block_object_dispose(&v48, 8);
 
@@ -643,39 +643,39 @@ LABEL_36:
   return v27 & 1;
 }
 
-- (void)areFeaturesSupported:(unint64_t)a3 expiry:(double)a4 completion:(id)a5
+- (void)areFeaturesSupported:(unint64_t)supported expiry:(double)expiry completion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  completionCopy = completion;
   v49 = 0;
-  v10 = [(NFCHardwareManager *)self areFeaturesSupported:a3 outError:&v49];
+  v10 = [(NFCHardwareManager *)self areFeaturesSupported:supported outError:&v49];
   v11 = v49;
   if (!v11)
   {
-    v9[2](v9, v10, 0);
+    completionCopy[2](completionCopy, v10, 0);
     goto LABEL_7;
   }
 
   v12 = v11;
   if ([v11 code] == 1 || objc_msgSend(v12, "code") == 202)
   {
-    (v9)[2](v9, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  if (v14->_hwSupportStateUpdate)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hwSupportStateUpdate)
   {
     Logger = NFLogGetLogger();
     if (Logger)
     {
       v16 = Logger;
-      Class = object_getClass(v14);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v14);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(a2);
       v20 = 45;
       if (isMetaClass)
@@ -689,7 +689,7 @@ LABEL_5:
     v21 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = object_getClass(v14);
+      v22 = object_getClass(selfCopy);
       if (class_isMetaClass(v22))
       {
         v23 = 43;
@@ -700,7 +700,7 @@ LABEL_5:
         v23 = 45;
       }
 
-      v24 = object_getClassName(v14);
+      v24 = object_getClassName(selfCopy);
       v25 = sel_getName(a2);
       *buf = 67109890;
       v51 = v23;
@@ -714,23 +714,23 @@ LABEL_5:
     }
 
     v26 = [NFCError errorWithCode:203];
-    (v9)[2](v9, 0, v26);
+    (completionCopy)[2](completionCopy, 0, v26);
 
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
     goto LABEL_5;
   }
 
   v27 = dispatch_semaphore_create(0);
-  hwSupportStateUpdate = v14->_hwSupportStateUpdate;
-  v14->_hwSupportStateUpdate = v27;
+  hwSupportStateUpdate = selfCopy->_hwSupportStateUpdate;
+  selfCopy->_hwSupportStateUpdate = v27;
 
-  objc_sync_exit(v14);
-  v29 = dispatch_time(0, (a4 * 1000000.0 * 1000.0));
-  v30 = dispatch_semaphore_wait(v14->_hwSupportStateUpdate, v29);
-  v31 = v14;
+  objc_sync_exit(selfCopy);
+  v29 = dispatch_time(0, (expiry * 1000000.0 * 1000.0));
+  v30 = dispatch_semaphore_wait(selfCopy->_hwSupportStateUpdate, v29);
+  v31 = selfCopy;
   objc_sync_enter(v31);
-  v32 = v14->_hwSupportStateUpdate;
-  v14->_hwSupportStateUpdate = 0;
+  v32 = selfCopy->_hwSupportStateUpdate;
+  selfCopy->_hwSupportStateUpdate = 0;
 
   objc_sync_exit(v31);
   if (v30)
@@ -781,18 +781,18 @@ LABEL_5:
   }
 
   v48 = v12;
-  v44 = [(NFCHardwareManager *)v31 areFeaturesSupported:a3 outError:&v48];
+  v44 = [(NFCHardwareManager *)v31 areFeaturesSupported:supported outError:&v48];
   v45 = v48;
 
-  (v9)[2](v9, v44, v45);
+  (completionCopy)[2](completionCopy, v44, v45);
 LABEL_7:
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getReaderSessionWithKey:(id)a3
+- (id)getReaderSessionWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -803,10 +803,10 @@ LABEL_7:
   v8[1] = 3221225472;
   v8[2] = sub_2372D01AC;
   v8[3] = &unk_278A29E88;
-  v9 = v4;
+  v9 = keyCopy;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   os_unfair_lock_lock(&self->_readerSessionLock);
   sub_2372D01AC(v8);
   os_unfair_lock_unlock(&self->_readerSessionLock);
@@ -817,7 +817,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)hwStateDidChange:(unsigned int)a3
+- (void)hwStateDidChange:(unsigned int)change
 {
   v32 = *MEMORY[0x277D85DE8];
   Logger = NFLogGetLogger();
@@ -834,7 +834,7 @@ LABEL_7:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i HW support state update: %lu", v10, ClassName, Name, 445, a3);
+    v7(6, "%c[%{public}s %{public}s]:%i HW support state update: %lu", v10, ClassName, Name, 445, change);
   }
 
   v11 = NFSharedLogGetLogger();
@@ -860,27 +860,27 @@ LABEL_7:
     v28 = 1024;
     v29 = 445;
     v30 = 2048;
-    v31 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_23728C000, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i HW support state update: %lu", buf, 0x2Cu);
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  v15 = [(NSHashTable *)v14->_delegates allObjects];
-  hwSupportStateUpdate = v14->_hwSupportStateUpdate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSHashTable *)selfCopy->_delegates allObjects];
+  hwSupportStateUpdate = selfCopy->_hwSupportStateUpdate;
   if (hwSupportStateUpdate)
   {
     dispatch_semaphore_signal(hwSupportStateUpdate);
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_2372D0414;
   v20[3] = &unk_278A2A5E8;
-  v21 = a3;
-  [v15 enumerateObjectsUsingBlock:v20];
+  changeCopy2 = change;
+  [allObjects enumerateObjectsUsingBlock:v20];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -918,13 +918,13 @@ LABEL_7:
 
 - (void)didInvalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_delegates allObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSHashTable *)selfCopy->_delegates allObjects];
+  objc_sync_exit(selfCopy);
 
-  [v3 enumerateObjectsUsingBlock:&unk_284A4F4D0];
-  [(NFCHardwareManager *)v2 _cleanupPresentmentAssertion];
+  [allObjects enumerateObjectsUsingBlock:&unk_284A4F4D0];
+  [(NFCHardwareManager *)selfCopy _cleanupPresentmentAssertion];
 }
 
 - (void)didExpire

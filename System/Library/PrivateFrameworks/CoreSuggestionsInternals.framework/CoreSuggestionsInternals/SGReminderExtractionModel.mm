@@ -1,18 +1,18 @@
 @interface SGReminderExtractionModel
-+ (id)enrichTaggedCharacterRangesWithModelOutput:(id)a3 usingInputCharacterRanges:(id)a4;
-+ (id)inputFromTaggedCharacterRanges:(id)a3 usingTokenMapping:(id)a4 forModel:(id)a5;
++ (id)enrichTaggedCharacterRangesWithModelOutput:(id)output usingInputCharacterRanges:(id)ranges;
++ (id)inputFromTaggedCharacterRanges:(id)ranges usingTokenMapping:(id)mapping forModel:(id)model;
 + (id)sharedInstance;
-- (_NSRange)_whitelistedVerbRangeInContent:(id)a3;
+- (_NSRange)_whitelistedVerbRangeInContent:(id)content;
 - (id)_init;
 - (id)enrichments;
 - (id)inputTokenMapping;
 - (id)loadModel;
 - (id)modelDescription;
-- (id)modelInferences:(id)a3;
+- (id)modelInferences:(id)inferences;
 - (id)outputConfig;
 - (id)reminderOverrides;
-- (id)whitelistedRangesInContent:(id)a3;
-- (id)whitelistedVerbInContent:(id)a3;
+- (id)whitelistedRangesInContent:(id)content;
+- (id)whitelistedVerbInContent:(id)content;
 - (void)dealloc;
 - (void)updateAll;
 @end
@@ -21,15 +21,15 @@
 
 - (id)modelDescription
 {
-  v2 = [(SGReminderExtractionModel *)self loadModel];
-  v3 = [v2 modelDescription];
-  v4 = [v3 metadata];
+  loadModel = [(SGReminderExtractionModel *)self loadModel];
+  modelDescription = [loadModel modelDescription];
+  metadata = [modelDescription metadata];
 
-  if (v4)
+  if (metadata)
   {
-    v5 = [v2 modelDescription];
-    v6 = [v5 metadata];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBFE98]];
+    modelDescription2 = [loadModel modelDescription];
+    metadata2 = [modelDescription2 metadata];
+    v7 = [metadata2 objectForKeyedSubscript:*MEMORY[0x277CBFE98]];
   }
 
   else
@@ -40,9 +40,9 @@
   return v7;
 }
 
-- (id)whitelistedRangesInContent:(id)a3
+- (id)whitelistedRangesInContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -65,14 +65,14 @@
   v6 = v15[5];
   _Block_object_dispose(&v14, 8);
 
-  if (v6 && [v4 length])
+  if (v6 && [contentCopy length])
   {
-    v7 = [v4 length];
+    v7 = [contentCopy length];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __56__SGReminderExtractionModel_whitelistedRangesInContent___block_invoke_2;
     v10[3] = &unk_27894E480;
-    v11 = v4;
+    v11 = contentCopy;
     v12 = &v20;
     [v6 enumerateMatchesInString:v11 options:0 range:0 usingBlock:{v7, v10}];
   }
@@ -116,9 +116,9 @@ uint64_t __56__SGReminderExtractionModel_whitelistedRangesInContent___block_invo
   return result;
 }
 
-- (_NSRange)_whitelistedVerbRangeInContent:(id)a3
+- (_NSRange)_whitelistedVerbRangeInContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -137,7 +137,7 @@ uint64_t __56__SGReminderExtractionModel_whitelistedRangesInContent___block_invo
 
   if (v6)
   {
-    v7 = [v6 rangeOfFirstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v7 = [v6 rangeOfFirstMatchInString:contentCopy options:0 range:{0, objc_msgSend(contentCopy, "length")}];
     v9 = v8;
   }
 
@@ -154,31 +154,31 @@ uint64_t __56__SGReminderExtractionModel_whitelistedRangesInContent___block_invo
   return result;
 }
 
-- (id)whitelistedVerbInContent:(id)a3
+- (id)whitelistedVerbInContent:(id)content
 {
-  v4 = a3;
-  v5 = [(SGReminderExtractionModel *)self _whitelistedVerbRangeInContent:v4];
+  contentCopy = content;
+  v5 = [(SGReminderExtractionModel *)self _whitelistedVerbRangeInContent:contentCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL && v6 == 0)
   {
-    v9 = 0;
+    lowercaseString = 0;
   }
 
   else
   {
-    v8 = [v4 substringWithRange:{v5, v6}];
-    v9 = [v8 lowercaseString];
+    v8 = [contentCopy substringWithRange:{v5, v6}];
+    lowercaseString = [v8 lowercaseString];
   }
 
-  return v9;
+  return lowercaseString;
 }
 
 - (id)outputConfig
 {
   v3 = +[SGReminderTrialClientWrapper sharedInstance];
-  v4 = [v3 reminderOutputMapping];
+  reminderOutputMapping = [v3 reminderOutputMapping];
 
-  outputConfig = v4;
-  if (!v4)
+  outputConfig = reminderOutputMapping;
+  if (!reminderOutputMapping)
   {
     outputConfig = self->_outputConfig;
   }
@@ -191,10 +191,10 @@ uint64_t __56__SGReminderExtractionModel_whitelistedRangesInContent___block_invo
 - (id)inputTokenMapping
 {
   v3 = +[SGReminderTrialClientWrapper sharedInstance];
-  v4 = [v3 reminderInputMapping];
+  reminderInputMapping = [v3 reminderInputMapping];
 
-  inputTokenMapping = v4;
-  if (!v4)
+  inputTokenMapping = reminderInputMapping;
+  if (!reminderInputMapping)
   {
     inputTokenMapping = self->_inputTokenMapping;
   }
@@ -207,10 +207,10 @@ uint64_t __56__SGReminderExtractionModel_whitelistedRangesInContent___block_invo
 - (id)reminderOverrides
 {
   v3 = +[SGReminderTrialClientWrapper sharedInstance];
-  v4 = [v3 reminderOverrides];
+  reminderOverrides = [v3 reminderOverrides];
 
-  reminderOverrides = v4;
-  if (!v4)
+  reminderOverrides = reminderOverrides;
+  if (!reminderOverrides)
   {
     reminderOverrides = self->_reminderOverrides;
   }
@@ -223,10 +223,10 @@ uint64_t __56__SGReminderExtractionModel_whitelistedRangesInContent___block_invo
 - (id)enrichments
 {
   v3 = +[SGReminderTrialClientWrapper sharedInstance];
-  v4 = [v3 reminderEnrichments];
+  reminderEnrichments = [v3 reminderEnrichments];
 
-  enrichments = v4;
-  if (!v4)
+  enrichments = reminderEnrichments;
+  if (!reminderEnrichments)
   {
     enrichments = self->_enrichments;
   }
@@ -236,10 +236,10 @@ uint64_t __56__SGReminderExtractionModel_whitelistedRangesInContent___block_invo
   return v6;
 }
 
-- (id)modelInferences:(id)a3
+- (id)modelInferences:(id)inferences
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inferencesCopy = inferences;
   v5 = objc_opt_new();
   if (!self->_inputTokenMapping)
   {
@@ -279,14 +279,14 @@ LABEL_14:
     _os_log_debug_impl(&dword_231E60000, v7, OS_LOG_TYPE_DEBUG, "Preparing model inference", buf, 2u);
   }
 
-  v8 = [(SGReminderExtractionModel *)self loadModel];
-  if (v8)
+  loadModel = [(SGReminderExtractionModel *)self loadModel];
+  if (loadModel)
   {
-    v9 = [objc_opt_class() inputFromTaggedCharacterRanges:v4 usingTokenMapping:self->_inputTokenMapping forModel:v8];
+    v9 = [objc_opt_class() inputFromTaggedCharacterRanges:inferencesCopy usingTokenMapping:self->_inputTokenMapping forModel:loadModel];
     if (v9)
     {
       v27 = 0;
-      v10 = [v8 predictionFromFeatures:v9 error:&v27];
+      v10 = [loadModel predictionFromFeatures:v9 error:&v27];
       v26 = v27;
       if (v10)
       {
@@ -385,9 +385,9 @@ LABEL_37:
   v3 = objc_opt_new();
   [v3 setComputeUnits:0];
   v4 = +[SGReminderTrialClientWrapper sharedInstance];
-  v5 = [v4 modelPath];
-  v6 = v5;
-  if (v5 && [v5 length])
+  modelPath = [v4 modelPath];
+  v6 = modelPath;
+  if (modelPath && [modelPath length])
   {
     v7 = sgRemindersLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -535,20 +535,20 @@ void __38__SGReminderExtractionModel_updateAll__block_invoke(uint64_t a1, void *
   return [(SGReminderExtractionModel *)&v12 init];
 }
 
-+ (id)enrichTaggedCharacterRangesWithModelOutput:(id)a3 usingInputCharacterRanges:(id)a4
++ (id)enrichTaggedCharacterRangesWithModelOutput:(id)output usingInputCharacterRanges:(id)ranges
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  outputCopy = output;
+  rangesCopy = ranges;
   v32 = objc_opt_new();
   v7 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v5;
+  obj = outputCopy;
   v8 = off_278949000;
-  v9 = v6;
+  v9 = rangesCopy;
   v37 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v37)
   {
@@ -587,7 +587,7 @@ void __38__SGReminderExtractionModel_updateAll__block_invoke(uint64_t a1, void *
               [v16 addObject:v20];
 
               v8 = off_278949000;
-              v6 = v9;
+              rangesCopy = v9;
             }
 
             ++v12;
@@ -609,20 +609,20 @@ void __38__SGReminderExtractionModel_updateAll__block_invoke(uint64_t a1, void *
     do
     {
       v33 = objc_alloc(v8[59]);
-      v38 = [v6 objectAtIndexedSubscript:v21];
-      v36 = [v38 tags];
+      v38 = [rangesCopy objectAtIndexedSubscript:v21];
+      tags = [v38 tags];
       v34 = [v7 objectAtIndexedSubscript:v21];
-      v22 = [v36 arrayByAddingObjectsFromArray:v34];
-      v23 = [v6 objectAtIndexedSubscript:v21];
-      v24 = [v23 range];
+      v22 = [tags arrayByAddingObjectsFromArray:v34];
+      v23 = [rangesCopy objectAtIndexedSubscript:v21];
+      range = [v23 range];
       v26 = v25;
       v27 = [v9 objectAtIndexedSubscript:v21];
-      v28 = [v27 text];
-      v29 = [v33 initWithAnnotationType:4 tags:v22 range:v24 text:{v26, v28}];
+      text = [v27 text];
+      v29 = [v33 initWithAnnotationType:4 tags:v22 range:range text:{v26, text}];
       [v32 addObject:v29];
 
       v8 = off_278949000;
-      v6 = v9;
+      rangesCopy = v9;
 
       ++v21;
     }
@@ -635,12 +635,12 @@ void __38__SGReminderExtractionModel_updateAll__block_invoke(uint64_t a1, void *
   return v32;
 }
 
-+ (id)inputFromTaggedCharacterRanges:(id)a3 usingTokenMapping:(id)a4 forModel:(id)a5
++ (id)inputFromTaggedCharacterRanges:(id)ranges usingTokenMapping:(id)mapping forModel:(id)model
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() inputDictFromTaggedCharacterRanges:v9 usingTokenMapping:v8 forModel:v7];
+  modelCopy = model;
+  mappingCopy = mapping;
+  rangesCopy = ranges;
+  v10 = [objc_opt_class() inputDictFromTaggedCharacterRanges:rangesCopy usingTokenMapping:mappingCopy forModel:modelCopy];
 
   if (v10)
   {

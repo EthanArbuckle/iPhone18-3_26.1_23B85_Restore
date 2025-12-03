@@ -1,22 +1,22 @@
 @interface ABVCardParameter
-- (ABVCardParameter)initWithName:(id)a3;
+- (ABVCardParameter)initWithName:(id)name;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation ABVCardParameter
 
-- (ABVCardParameter)initWithName:(id)a3
+- (ABVCardParameter)initWithName:(id)name
 {
   v7.receiver = self;
   v7.super_class = ABVCardParameter;
   v4 = [(ABVCardParameter *)&v7 init];
-  v4->_name = a3;
+  v4->_name = name;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4->_types = v5;
-  if (a3)
+  if (name)
   {
-    [(NSMutableArray *)v5 addObject:a3];
+    [(NSMutableArray *)v5 addObject:name];
   }
 
   return v4;

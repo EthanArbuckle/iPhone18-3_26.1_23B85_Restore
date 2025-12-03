@@ -1,23 +1,23 @@
 @interface HDMedicationCountProvider
-+ (uint64_t)_medicationCountForCurrentCountNumber:(uint64_t)a3 addedCount:;
++ (uint64_t)_medicationCountForCurrentCountNumber:(uint64_t)number addedCount:;
 - (HDDaemon)daemon;
 - (HDMedicationCountProvider)init;
-- (HDMedicationCountProvider)initWithDaemon:(id)a3;
-- (id)_countOfOntologyBackedMedicationsForTransaction:(uint64_t)a3 error:;
-- (int64_t)ontologyBackedMedicationCountInProfile:(id)a3;
+- (HDMedicationCountProvider)initWithDaemon:(id)daemon;
+- (id)_countOfOntologyBackedMedicationsForTransaction:(uint64_t)transaction error:;
+- (int64_t)ontologyBackedMedicationCountInProfile:(id)profile;
 - (uint64_t)_getAndSetReadyProfile:(uint64_t)result;
 - (uint64_t)_isReadyProfile:(uint64_t)result;
-- (uint64_t)_lock_lookupAndUpdateCountForProfile:(void *)a3 transaction:(uint64_t)a4 error:;
-- (uint64_t)_updateAndReturnCountForProfile:(uint64_t)a1;
-- (uint64_t)_updateCountForReadyProfile:(uint64_t)a1;
-- (void)_lock_updateCountAndNotifyIfRequiredForProfile:(void *)a3 currentCountNumber:(uint64_t)a4 newCount:;
-- (void)_lock_updateOntologyBackedMedicationCountWithAddedCount:(void *)a3 profile:;
-- (void)_monitorMedicationCountsInProfile:(uint64_t)a1;
-- (void)_updateOntologyBackedMedicationCountWithAddedCount:(void *)a3 profile:;
-- (void)monitorMedicationCountsInProfile:(id)a3;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)userDomainConceptManager:(id)a3 didAddUserDomainConcepts:(id)a4;
-- (void)userDomainConceptManager:(id)a3 didDeleteUserDomainConcepts:(id)a4;
+- (uint64_t)_lock_lookupAndUpdateCountForProfile:(void *)profile transaction:(uint64_t)transaction error:;
+- (uint64_t)_updateAndReturnCountForProfile:(uint64_t)profile;
+- (uint64_t)_updateCountForReadyProfile:(uint64_t)profile;
+- (void)_lock_updateCountAndNotifyIfRequiredForProfile:(void *)profile currentCountNumber:(uint64_t)number newCount:;
+- (void)_lock_updateOntologyBackedMedicationCountWithAddedCount:(void *)count profile:;
+- (void)_monitorMedicationCountsInProfile:(uint64_t)profile;
+- (void)_updateOntologyBackedMedicationCountWithAddedCount:(void *)count profile:;
+- (void)monitorMedicationCountsInProfile:(id)profile;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)userDomainConceptManager:(id)manager didAddUserDomainConcepts:(id)concepts;
+- (void)userDomainConceptManager:(id)manager didDeleteUserDomainConcepts:(id)concepts;
 @end
 
 @implementation HDMedicationCountProvider
@@ -32,16 +32,16 @@
   return 0;
 }
 
-- (HDMedicationCountProvider)initWithDaemon:(id)a3
+- (HDMedicationCountProvider)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v12.receiver = self;
   v12.super_class = HDMedicationCountProvider;
   v5 = [(HDMedicationCountProvider *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = HKLogHealthOntology();
     v9 = [v7 initWithName:@"HDMedicationCountObserver" loggingCategory:v8];
@@ -54,21 +54,21 @@
   return v6;
 }
 
-- (void)monitorMedicationCountsInProfile:(id)a3
+- (void)monitorMedicationCountsInProfile:(id)profile
 {
-  v8 = a3;
+  profileCopy = profile;
   os_unfair_lock_lock(&self->_lock);
   isProfileReadyByProfile = self->_isProfileReadyByProfile;
   if (!isProfileReadyByProfile)
   {
-    v5 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v6 = self->_isProfileReadyByProfile;
-    self->_isProfileReadyByProfile = v5;
+    self->_isProfileReadyByProfile = weakToStrongObjectsMapTable;
 
     isProfileReadyByProfile = self->_isProfileReadyByProfile;
   }
 
-  v7 = [(NSMapTable *)isProfileReadyByProfile objectForKey:v8];
+  v7 = [(NSMapTable *)isProfileReadyByProfile objectForKey:profileCopy];
   if (v7)
   {
     os_unfair_lock_unlock(&self->_lock);
@@ -76,70 +76,70 @@
 
   else
   {
-    [(NSMapTable *)self->_isProfileReadyByProfile setObject:MEMORY[0x277CBEC28] forKey:v8];
+    [(NSMapTable *)self->_isProfileReadyByProfile setObject:MEMORY[0x277CBEC28] forKey:profileCopy];
     os_unfair_lock_unlock(&self->_lock);
-    [(HDMedicationCountProvider *)self _monitorMedicationCountsInProfile:v8];
-    [v8 registerProfileReadyObserver:self queue:0];
+    [(HDMedicationCountProvider *)self _monitorMedicationCountsInProfile:profileCopy];
+    [profileCopy registerProfileReadyObserver:self queue:0];
   }
 }
 
-- (int64_t)ontologyBackedMedicationCountInProfile:(id)a3
+- (int64_t)ontologyBackedMedicationCountInProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMapTable *)self->_ontologyBackedMedicationCountByProfile objectForKey:v4];
+  v5 = [(NSMapTable *)self->_ontologyBackedMedicationCountByProfile objectForKey:profileCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v6 = [v5 integerValue];
-    if (v6 == -1)
+    integerValue = [v5 integerValue];
+    if (integerValue == -1)
     {
-      v6 = [(HDMedicationCountProvider *)self _updateAndReturnCountForProfile:v4];
+      integerValue = [(HDMedicationCountProvider *)self _updateAndReturnCountForProfile:profileCopy];
     }
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = a3;
-  if (([(HDMedicationCountProvider *)self _getAndSetReadyProfile:v4]& 1) == 0)
+  readyCopy = ready;
+  if (([(HDMedicationCountProvider *)self _getAndSetReadyProfile:readyCopy]& 1) == 0)
   {
-    [(HDMedicationCountProvider *)self _updateCountForReadyProfile:v4];
+    [(HDMedicationCountProvider *)self _updateCountForReadyProfile:readyCopy];
   }
 }
 
-- (uint64_t)_updateCountForReadyProfile:(uint64_t)a1
+- (uint64_t)_updateCountForReadyProfile:(uint64_t)profile
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (profile)
   {
-    v5 = [v3 userDomainConceptManager];
+    userDomainConceptManager = [v3 userDomainConceptManager];
 
-    if (v5)
+    if (userDomainConceptManager)
     {
       v16 = 0;
       v17 = &v16;
       v18 = 0x2020000000;
       v19 = -1;
       v6 = MEMORY[0x277D10920];
-      v7 = [v4 database];
+      database = [v4 database];
       v14 = &v16;
       v15 = 0;
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke;
       v12[3] = &unk_2796CDEA8;
-      v12[4] = a1;
+      v12[4] = profile;
       v13 = v4;
-      v8 = [v6 performReadTransactionWithHealthDatabase:v7 error:&v15 block:v12];
+      v8 = [v6 performReadTransactionWithHealthDatabase:database error:&v15 block:v12];
       v9 = v15;
 
       if ((v8 & 1) == 0 && (HKIsUnitTesting() & 1) == 0)
@@ -148,34 +148,34 @@
         v10 = HKLogHealthOntology();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          [(HDMedicationCountProvider *)a1 _updateCountForReadyProfile:v9, v10];
+          [(HDMedicationCountProvider *)profile _updateCountForReadyProfile:v9, v10];
         }
       }
 
-      a1 = v17[3];
+      profile = v17[3];
 
       _Block_object_dispose(&v16, 8);
     }
 
     else
     {
-      a1 = 0;
+      profile = 0;
     }
   }
 
-  return a1;
+  return profile;
 }
 
-- (void)userDomainConceptManager:(id)a3 didAddUserDomainConcepts:(id)a4
+- (void)userDomainConceptManager:(id)manager didAddUserDomainConcepts:(id)concepts
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  conceptsCopy = concepts;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [conceptsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -187,30 +187,30 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(conceptsCopy);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v13 firstOntologyCoding];
+          firstOntologyCoding = [v13 firstOntologyCoding];
 
-          if (v14)
+          if (firstOntologyCoding)
           {
             ++v10;
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [conceptsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
     if (v10 >= 1)
     {
-      v16 = [v6 profile];
-      [(HDMedicationCountProvider *)self _updateOntologyBackedMedicationCountWithAddedCount:v10 profile:v16];
+      profile = [managerCopy profile];
+      [(HDMedicationCountProvider *)self _updateOntologyBackedMedicationCountWithAddedCount:v10 profile:profile];
     }
   }
 
@@ -229,11 +229,11 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
   return *(*(*(a1 + 48) + 8) + 24) != -1;
 }
 
-+ (uint64_t)_medicationCountForCurrentCountNumber:(uint64_t)a3 addedCount:
++ (uint64_t)_medicationCountForCurrentCountNumber:(uint64_t)number addedCount:
 {
   v4 = a2;
   objc_opt_self();
-  if (a3)
+  if (number)
   {
     v5 = -1;
   }
@@ -243,12 +243,12 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
     v5 = 0;
   }
 
-  if (a3 == 1)
+  if (number == 1)
   {
     v5 = 1;
   }
 
-  if (a3 >= 2)
+  if (number >= 2)
   {
     v6 = 2;
   }
@@ -260,10 +260,10 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
 
   if (v4)
   {
-    v7 = [v4 integerValue];
-    if (v7 > v6)
+    integerValue = [v4 integerValue];
+    if (integerValue > v6)
     {
-      v6 = v7;
+      v6 = integerValue;
     }
   }
 
@@ -277,48 +277,48 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
   return WeakRetained;
 }
 
-- (void)_monitorMedicationCountsInProfile:(uint64_t)a1
+- (void)_monitorMedicationCountsInProfile:(uint64_t)profile
 {
-  if (a1)
+  if (profile)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 16));
-    v4 = *(a1 + 24);
+    os_unfair_lock_lock((profile + 16));
+    v4 = *(profile + 24);
     if (!v4)
     {
-      v5 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
-      v6 = *(a1 + 24);
-      *(a1 + 24) = v5;
+      weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+      v6 = *(profile + 24);
+      *(profile + 24) = weakToStrongObjectsMapTable;
 
-      v4 = *(a1 + 24);
+      v4 = *(profile + 24);
     }
 
     [v4 setObject:&unk_2863C29C0 forKey:v3];
-    os_unfair_lock_unlock((a1 + 16));
-    v7 = [v3 userDomainConceptManager];
+    os_unfair_lock_unlock((profile + 16));
+    userDomainConceptManager = [v3 userDomainConceptManager];
 
-    [v7 addUserDomainConceptObserver:a1 queue:0];
+    [userDomainConceptManager addUserDomainConceptObserver:profile queue:0];
   }
 }
 
-- (uint64_t)_updateAndReturnCountForProfile:(uint64_t)a1
+- (uint64_t)_updateAndReturnCountForProfile:(uint64_t)profile
 {
   v3 = a2;
-  if (a1)
+  if (profile)
   {
-    os_unfair_lock_assert_not_owner((a1 + 16));
-    if ([(HDMedicationCountProvider *)a1 _isReadyProfile:v3])
+    os_unfair_lock_assert_not_owner((profile + 16));
+    if ([(HDMedicationCountProvider *)profile _isReadyProfile:v3])
     {
-      a1 = [(HDMedicationCountProvider *)a1 _updateCountForReadyProfile:v3];
+      profile = [(HDMedicationCountProvider *)profile _updateCountForReadyProfile:v3];
     }
 
     else
     {
-      a1 = -1;
+      profile = -1;
     }
   }
 
-  return a1;
+  return profile;
 }
 
 - (uint64_t)_getAndSetReadyProfile:(uint64_t)result
@@ -329,35 +329,35 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
     v3 = a2;
     os_unfair_lock_lock((v2 + 16));
     v4 = [*(v2 + 32) objectForKey:v3];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
     [*(v2 + 32) setObject:MEMORY[0x277CBEC38] forKey:v3];
     os_unfair_lock_unlock((v2 + 16));
-    return v5;
+    return bOOLValue;
   }
 
   return result;
 }
 
-- (void)_updateOntologyBackedMedicationCountWithAddedCount:(void *)a3 profile:
+- (void)_updateOntologyBackedMedicationCountWithAddedCount:(void *)count profile:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    os_unfair_lock_lock(a1 + 4);
-    [(HDMedicationCountProvider *)a1 _lock_updateOntologyBackedMedicationCountWithAddedCount:a2 profile:v5];
-    os_unfair_lock_unlock(a1 + 4);
-    [(HDMedicationCountProvider *)a1 _updateAndReturnCountForProfile:v5];
+    countCopy = count;
+    os_unfair_lock_lock(self + 4);
+    [(HDMedicationCountProvider *)self _lock_updateOntologyBackedMedicationCountWithAddedCount:a2 profile:countCopy];
+    os_unfair_lock_unlock(self + 4);
+    [(HDMedicationCountProvider *)self _updateAndReturnCountForProfile:countCopy];
   }
 }
 
-- (void)userDomainConceptManager:(id)a3 didDeleteUserDomainConcepts:(id)a4
+- (void)userDomainConceptManager:(id)manager didDeleteUserDomainConcepts:(id)concepts
 {
-  v5 = [a3 profile];
+  profile = [manager profile];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_ontologyBackedMedicationCountByProfile setObject:&unk_2863C29C0 forKey:v5];
+  [(NSMapTable *)self->_ontologyBackedMedicationCountByProfile setObject:&unk_2863C29C0 forKey:profile];
   os_unfair_lock_unlock(&self->_lock);
-  [(HDMedicationCountProvider *)self _updateAndReturnCountForProfile:v5];
+  [(HDMedicationCountProvider *)self _updateAndReturnCountForProfile:profile];
 }
 
 - (uint64_t)_isReadyProfile:(uint64_t)result
@@ -369,25 +369,25 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
     os_unfair_lock_lock((v2 + 16));
     v4 = [*(v2 + 32) objectForKey:v3];
 
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
     os_unfair_lock_unlock((v2 + 16));
-    return v5;
+    return bOOLValue;
   }
 
   return result;
 }
 
-- (uint64_t)_lock_lookupAndUpdateCountForProfile:(void *)a3 transaction:(uint64_t)a4 error:
+- (uint64_t)_lock_lookupAndUpdateCountForProfile:(void *)profile transaction:(uint64_t)transaction error:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = [(HDMedicationCountProvider *)a1 _countOfOntologyBackedMedicationsForTransaction:a3 error:a4];
+    v8 = [(HDMedicationCountProvider *)self _countOfOntologyBackedMedicationsForTransaction:profile error:transaction];
     v9 = v8;
     if (v8)
     {
-      v12 = [v8 integerValue];
-      if (v12)
+      integerValue = [v8 integerValue];
+      if (integerValue)
       {
         v13 = -1;
       }
@@ -397,12 +397,12 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
         v13 = 0;
       }
 
-      if (v12 == 1)
+      if (integerValue == 1)
       {
         v13 = 1;
       }
 
-      if (v12 >= 2)
+      if (integerValue >= 2)
       {
         v10 = 2;
       }
@@ -412,8 +412,8 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
         v10 = v13;
       }
 
-      v14 = [*(a1 + 24) objectForKey:v7];
-      [(HDMedicationCountProvider *)a1 _lock_updateCountAndNotifyIfRequiredForProfile:v7 currentCountNumber:v14 newCount:v10];
+      v14 = [*(self + 24) objectForKey:v7];
+      [(HDMedicationCountProvider *)self _lock_updateCountAndNotifyIfRequiredForProfile:v7 currentCountNumber:v14 newCount:v10];
     }
 
     else
@@ -430,27 +430,27 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
   return v10;
 }
 
-- (void)_lock_updateOntologyBackedMedicationCountWithAddedCount:(void *)a3 profile:
+- (void)_lock_updateOntologyBackedMedicationCountWithAddedCount:(void *)count profile:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    os_unfair_lock_assert_owner((a1 + 16));
-    v7 = [*(a1 + 24) objectForKey:v5];
+    countCopy = count;
+    os_unfair_lock_assert_owner((self + 16));
+    v7 = [*(self + 24) objectForKey:countCopy];
     v6 = [HDMedicationCountProvider _medicationCountForCurrentCountNumber:v7 addedCount:a2];
-    [(HDMedicationCountProvider *)a1 _lock_updateCountAndNotifyIfRequiredForProfile:v5 currentCountNumber:v7 newCount:v6];
+    [(HDMedicationCountProvider *)self _lock_updateCountAndNotifyIfRequiredForProfile:countCopy currentCountNumber:v7 newCount:v6];
   }
 }
 
-- (id)_countOfOntologyBackedMedicationsForTransaction:(uint64_t)a3 error:
+- (id)_countOfOntologyBackedMedicationsForTransaction:(uint64_t)transaction error:
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v4 = MEMORY[0x277D10B20];
     v5 = MEMORY[0x277CCDB50];
     v6 = a2;
-    v7 = [v5 medicationUserDomainConceptTypeIdentifier];
+    medicationUserDomainConceptTypeIdentifier = [v5 medicationUserDomainConceptTypeIdentifier];
     v8 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifier();
     v15[0] = v8;
     v9 = [MEMORY[0x277D10B18] predicateWithProperty:*MEMORY[0x277D10520] equalToValue:*MEMORY[0x277CCC348]];
@@ -458,7 +458,7 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
     v11 = [v4 predicateMatchingAllPredicates:v10];
 
-    v12 = [MEMORY[0x277D10938] countOfUserDomainConceptsMatchingPredicate:v11 options:0 transaction:v6 error:a3];
+    v12 = [MEMORY[0x277D10938] countOfUserDomainConceptsMatchingPredicate:v11 options:0 transaction:v6 error:transaction];
   }
 
   else
@@ -471,15 +471,15 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
   return v12;
 }
 
-- (void)_lock_updateCountAndNotifyIfRequiredForProfile:(void *)a3 currentCountNumber:(uint64_t)a4 newCount:
+- (void)_lock_updateCountAndNotifyIfRequiredForProfile:(void *)profile currentCountNumber:(uint64_t)number newCount:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  profileCopy = profile;
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
-    v9 = [v8 integerValue];
-    if (v9)
+    os_unfair_lock_assert_owner((self + 16));
+    integerValue = [profileCopy integerValue];
+    if (integerValue)
     {
       v10 = -1;
     }
@@ -489,30 +489,30 @@ BOOL __57__HDMedicationCountProvider__updateCountForReadyProfile___block_invoke(
       v10 = 0;
     }
 
-    if (v9 == 1)
+    if (integerValue == 1)
     {
       v10 = 1;
     }
 
-    if (v9 >= 2)
+    if (integerValue >= 2)
     {
       v10 = 2;
     }
 
-    if (v10 != a4)
+    if (v10 != number)
     {
-      v11 = *(a1 + 24);
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v11 = *(self + 24);
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:number];
       [v11 setObject:v12 forKey:v7];
 
-      v13 = *(a1 + 8);
+      v13 = *(self + 8);
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __104__HDMedicationCountProvider__lock_updateCountAndNotifyIfRequiredForProfile_currentCountNumber_newCount___block_invoke;
       v14[3] = &unk_2796CDED0;
-      v14[4] = a1;
+      v14[4] = self;
       v15 = v7;
-      v16 = a4;
+      numberCopy = number;
       [v13 notifyObservers:v14];
     }
   }

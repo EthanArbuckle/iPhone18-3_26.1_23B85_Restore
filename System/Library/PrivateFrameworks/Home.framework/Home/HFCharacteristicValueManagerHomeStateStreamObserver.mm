@@ -1,30 +1,30 @@
 @interface HFCharacteristicValueManagerHomeStateStreamObserver
-- (BOOL)homeStateStreamHasInProgressWriteFor:(id)a3;
+- (BOOL)homeStateStreamHasInProgressWriteFor:(id)for;
 - (HFCharacteristicValueManagerHomeStateStreamObserver)init;
-- (id)homeStateStreamCachedValueFor:(id)a3;
+- (id)homeStateStreamCachedValueFor:(id)for;
 - (void)cancelObservation;
 - (void)startObserving;
 @end
 
 @implementation HFCharacteristicValueManagerHomeStateStreamObserver
 
-- (BOOL)homeStateStreamHasInProgressWriteFor:(id)a3
+- (BOOL)homeStateStreamHasInProgressWriteFor:(id)for
 {
   sub_20D9C7830();
   sub_20DA5A66C(&unk_280E020F0, sub_20D9C7830);
   v4 = sub_20DD651E4();
-  v5 = self;
+  selfCopy = self;
   sub_20DA569DC(v4);
   v7 = v6;
 
   return v7 & 1;
 }
 
-- (id)homeStateStreamCachedValueFor:(id)a3
+- (id)homeStateStreamCachedValueFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_20DA57188(v4, v14);
+  forCopy = for;
+  selfCopy = self;
+  sub_20DA57188(forCopy, v14);
 
   v6 = v15;
   if (v15)
@@ -50,7 +50,7 @@
 
 - (void)startObserving
 {
-  v2 = self;
+  selfCopy = self;
   sub_20DA57A64();
 }
 
@@ -59,7 +59,7 @@
   v3 = OBJC_IVAR___HFCharacteristicValueManagerHomeStateStreamObserver_observingTask;
   if (*(&self->super.isa + OBJC_IVAR___HFCharacteristicValueManagerHomeStateStreamObserver_observingTask))
   {
-    v4 = self;
+    selfCopy = self;
 
     sub_20DD65174();
 
@@ -68,7 +68,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   *(&self->super.isa + v3) = 0;

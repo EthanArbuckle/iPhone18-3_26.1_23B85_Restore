@@ -6,11 +6,11 @@
 
 - (uint64_t)hmd_transactionAuthor
 {
-  v1 = [a1 author];
-  v2 = [HMDCoreDataContextTransactionAuthor contextAuthorWithString:v1];
+  author = [self author];
+  v2 = [HMDCoreDataContextTransactionAuthor contextAuthorWithString:author];
 
-  v3 = [v2 type];
-  return v3;
+  type = [v2 type];
+  return type;
 }
 
 @end

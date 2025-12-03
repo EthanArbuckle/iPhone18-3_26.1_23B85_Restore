@@ -1,12 +1,12 @@
 @interface CRTextSequenceRecognizerTopKModelEspresso
-- (id)outputFromOutputBuffers:()vector<espresso_buffer_t featureInfo:(std:(id)a4 :allocator<espresso_buffer_t>> *)a3;
+- (id)outputFromOutputBuffers:()vector<espresso_buffer_t featureInfo:(std:(id)info :allocator<espresso_buffer_t>> *)a3;
 @end
 
 @implementation CRTextSequenceRecognizerTopKModelEspresso
 
-- (id)outputFromOutputBuffers:()vector<espresso_buffer_t featureInfo:(std:(id)a4 :allocator<espresso_buffer_t>> *)a3
+- (id)outputFromOutputBuffers:()vector<espresso_buffer_t featureInfo:(std:(id)info :allocator<espresso_buffer_t>> *)a3
 {
-  v6 = a4;
+  infoCopy = info;
   var0 = a3->var0;
   v8 = *(a3->var0 + 120);
   v64 = *(a3->var0 + 104);
@@ -44,11 +44,11 @@
   v49 = v20;
   v21 = malloc_type_malloc(*(v14 + 30), 0xCAD6D062uLL);
   memcpy(v21, *(a3->var0 + 21), *(a3->var0 + 30));
-  v22 = [v6 count];
+  batchSize = [infoCopy count];
   if ([(CRTextSequenceRecognizerModelEspresso *)self engine]== 10007)
   {
-    v23 = [(CRTextSequenceRecognizerModelEspresso *)self configuration];
-    v22 = [v23 batchSize];
+    configuration = [(CRTextSequenceRecognizerModelEspresso *)self configuration];
+    batchSize = [configuration batchSize];
   }
 
   v44 = v64;
@@ -73,7 +73,7 @@
   v37 = v13;
   v26 = v21;
   v28 = v49;
-  v24 = [[CRTextRecognizerTopKModelEspressoOutput alloc] initWithOutputLabelProbs:&v37 outputTopKIndices:&v26 featureInfo:v6 batchSize:v22];
+  v24 = [[CRTextRecognizerTopKModelEspressoOutput alloc] initWithOutputLabelProbs:&v37 outputTopKIndices:&v26 featureInfo:infoCopy batchSize:batchSize];
 
   return v24;
 }

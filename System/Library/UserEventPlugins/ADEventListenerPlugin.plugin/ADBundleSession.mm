@@ -1,7 +1,7 @@
 @interface ADBundleSession
 + (void)initialize;
 - (id)copyBasicInfoSinceLastCheckAsXpcObject;
-- (id)initBundle:(id)a3;
+- (id)initBundle:(id)bundle;
 - (void)dealloc;
 @end
 
@@ -29,25 +29,25 @@
   }
 }
 
-- (id)initBundle:(id)a3
+- (id)initBundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = ADBundleSession;
   v4 = [(ADBundleSession *)&v9 init];
   if (v4)
   {
-    v4->_bundleID = a3;
+    v4->_bundleID = bundle;
     v4->appstate.state = 1;
-    v5 = [LSApplicationProxy applicationProxyForIdentifier:a3];
+    v5 = [LSApplicationProxy applicationProxyForIdentifier:bundle];
     v4->_bundleVers = [v5 bundleVersion];
     v4->_shortVers = [v5 shortVersionString];
     v4->_adamID = [v5 itemID];
     v6 = gADEventListenerLogObject;
     if (os_log_type_enabled(gADEventListenerLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(ADBundleSession *)v4 bundleID];
+      bundleID = [(ADBundleSession *)v4 bundleID];
       *buf = 138412290;
-      v11 = v7;
+      v11 = bundleID;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Tracking %@", buf, 0xCu);
     }
   }
@@ -71,15 +71,15 @@
     {
       if ([(ADBundleSession *)self bundleVers])
       {
-        v4 = [(ADBundleSession *)self bundleVers];
+        bundleVers = [(ADBundleSession *)self bundleVers];
       }
 
       else
       {
-        v4 = @"???";
+        bundleVers = @"???";
       }
 
-      v5 = [NSString stringWithFormat:@"%@ (%@)", v4, [(ADBundleSession *)self shortVers]];
+      bundleVers2 = [NSString stringWithFormat:@"%@ (%@)", bundleVers, [(ADBundleSession *)self shortVers]];
     }
 
     else
@@ -90,10 +90,10 @@
         goto LABEL_10;
       }
 
-      v5 = [(ADBundleSession *)self bundleVers];
+      bundleVers2 = [(ADBundleSession *)self bundleVers];
     }
 
-    v6 = v5;
+    v6 = bundleVers2;
 LABEL_10:
     xpc_dictionary_set_string(v3, "bundle_id", [(NSString *)[(ADBundleSession *)self bundleID] UTF8String]);
     xpc_dictionary_set_string(v3, "version", [(__CFString *)v6 UTF8String]);

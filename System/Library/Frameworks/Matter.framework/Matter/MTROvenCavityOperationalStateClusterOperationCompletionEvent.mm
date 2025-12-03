@@ -1,6 +1,6 @@
 @interface MTROvenCavityOperationalStateClusterOperationCompletionEvent
 - (MTROvenCavityOperationalStateClusterOperationCompletionEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROvenCavityOperationalStateClusterOperationCompletionEvent);
-  v5 = [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)self completionErrorCode];
-  [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)v4 setCompletionErrorCode:v5];
+  completionErrorCode = [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)self completionErrorCode];
+  [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)v4 setCompletionErrorCode:completionErrorCode];
 
-  v6 = [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)self totalOperationalTime];
-  [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)v4 setTotalOperationalTime:v6];
+  totalOperationalTime = [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)self totalOperationalTime];
+  [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)v4 setTotalOperationalTime:totalOperationalTime];
 
-  v7 = [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)self pausedTime];
-  [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)v4 setPausedTime:v7];
+  pausedTime = [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)self pausedTime];
+  [(MTROvenCavityOperationalStateClusterOperationCompletionEvent *)v4 setPausedTime:pausedTime];
 
   return v4;
 }

@@ -1,17 +1,17 @@
 @interface UITextDraggableObject
-+ (id)draggableObjectWithItemProvider:(id)a3 fromRange:(id)a4;
++ (id)draggableObjectWithItemProvider:(id)provider fromRange:(id)range;
 @end
 
 @implementation UITextDraggableObject
 
-+ (id)draggableObjectWithItemProvider:(id)a3 fromRange:(id)a4
++ (id)draggableObjectWithItemProvider:(id)provider fromRange:(id)range
 {
-  v5 = a4;
-  v6 = a3;
+  rangeCopy = range;
+  providerCopy = provider;
   v7 = objc_opt_new();
-  [v7 setItemProvider:v6];
+  [v7 setItemProvider:providerCopy];
 
-  [v7 setRange:v5];
+  [v7 setRange:rangeCopy];
 
   return v7;
 }

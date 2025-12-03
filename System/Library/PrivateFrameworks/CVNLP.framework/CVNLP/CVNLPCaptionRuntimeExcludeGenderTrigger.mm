@@ -1,22 +1,22 @@
 @interface CVNLPCaptionRuntimeExcludeGenderTrigger
-- (CVNLPCaptionRuntimeExcludeGenderTrigger)initWithDictionary:(id)a3;
+- (CVNLPCaptionRuntimeExcludeGenderTrigger)initWithDictionary:(id)dictionary;
 @end
 
 @implementation CVNLPCaptionRuntimeExcludeGenderTrigger
 
-- (CVNLPCaptionRuntimeExcludeGenderTrigger)initWithDictionary:(id)a3
+- (CVNLPCaptionRuntimeExcludeGenderTrigger)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CVNLPCaptionRuntimeExcludeGenderTrigger;
   v7 = [(CVNLPCaptionRuntimeExcludeGenderTrigger *)&v14 init];
   if (v7)
   {
-    v8 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"triggerTokens", v6);
+    v8 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"triggerTokens", v6);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"triggerTokens", v10);
+      v11 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v9, @"triggerTokens", v10);
     }
 
     else

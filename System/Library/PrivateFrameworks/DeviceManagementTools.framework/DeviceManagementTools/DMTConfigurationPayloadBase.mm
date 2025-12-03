@@ -1,25 +1,25 @@
 @interface DMTConfigurationPayloadBase
 + (NSDictionary)payloadSubclassesByPayloadType;
-+ (id)concretePayloadWithDictionary:(id)a3 error:(id *)a4;
++ (id)concretePayloadWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation DMTConfigurationPayloadBase
 
-+ (id)concretePayloadWithDictionary:(id)a3 error:(id *)a4
++ (id)concretePayloadWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v13 = &unk_285B5BE10;
     v14 = 70;
 LABEL_8:
     DMTErrorWithCodeAndUserInfo(v14, v13);
-    *a4 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_9;
   }
 
-  v8 = CFGetTypeID(v6);
+  v8 = CFGetTypeID(dictionaryCopy);
   if (v8 != CFDictionaryGetTypeID())
   {
     v13 = &unk_285B5BE38;
@@ -27,15 +27,15 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v9 = DMTValidateProfileString(v7, @"PayloadType", 0, a4);
-  v10 = [a1 payloadSubclassesByPayloadType];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  v9 = DMTValidateProfileString(v7, @"PayloadType", 0, error);
+  payloadSubclassesByPayloadType = [self payloadSubclassesByPayloadType];
+  v11 = [payloadSubclassesByPayloadType objectForKeyedSubscript:v9];
   if (!v11)
   {
     v11 = objc_opt_class();
   }
 
-  v12 = [[v11 alloc] initWithDictionary:v7 error:a4];
+  v12 = [[v11 alloc] initWithDictionary:v7 error:error];
 LABEL_9:
 
   return v12;

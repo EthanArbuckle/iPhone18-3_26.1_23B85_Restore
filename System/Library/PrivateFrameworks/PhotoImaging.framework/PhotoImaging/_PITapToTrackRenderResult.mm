@@ -1,19 +1,19 @@
 @interface _PITapToTrackRenderResult
-- (_PITapToTrackRenderResult)initWithCompletedTrack:(id)a3;
+- (_PITapToTrackRenderResult)initWithCompletedTrack:(id)track;
 @end
 
 @implementation _PITapToTrackRenderResult
 
-- (_PITapToTrackRenderResult)initWithCompletedTrack:(id)a3
+- (_PITapToTrackRenderResult)initWithCompletedTrack:(id)track
 {
-  v5 = a3;
+  trackCopy = track;
   v9.receiver = self;
   v9.super_class = _PITapToTrackRenderResult;
   v6 = [(_PITapToTrackRenderResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_completedTrack, a3);
+    objc_storeStrong(&v6->_completedTrack, track);
   }
 
   return v7;

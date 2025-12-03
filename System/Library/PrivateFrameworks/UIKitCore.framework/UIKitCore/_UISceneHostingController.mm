@@ -3,8 +3,8 @@
 - (NSString)debugDescription;
 - (_UISceneHostingActivationControlling)activationController;
 - (_UISceneHostingActivationStateHostComponent)activationStateComponent;
-- (_UISceneHostingController)initWithAdvancedConfiguration:(id)a3;
-- (_UISceneHostingController)initWithProcessIdentity:(id)a3 sceneSpecification:(id)a4;
+- (_UISceneHostingController)initWithAdvancedConfiguration:(id)configuration;
+- (_UISceneHostingController)initWithProcessIdentity:(id)identity sceneSpecification:(id)specification;
 - (_UISceneHostingControllerDelegate)delegate;
 - (_UISceneHostingSheetPresentationHostProviding)_remoteSheetProvider;
 - (_UISceneIntelligenceSupportHost)intelligenceComponent;
@@ -14,22 +14,22 @@
 - (id)_eventDeferringComponent;
 - (id)contentSizePreferenceProvider;
 - (id)keyboardSuppressionController;
-- (id)scene:(id)a3 handleActions:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
 - (id)succinctDescription;
 - (id)traitCollectionReceiver;
 - (uint64_t)_fbScene;
 - (void)_clientIsReady;
-- (void)_updateSceneSettingsFromSettingsProvidersWithFence:(BOOL)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)createSceneWithConfiguration:(id)a3;
+- (void)_updateSceneSettingsFromSettingsProvidersWithFence:(BOOL)fence;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)createSceneWithConfiguration:(id)configuration;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4;
-- (void)sceneWillActivate:(id)a3;
-- (void)sendAction:(id)a3;
-- (void)setActivationController:(id)a3;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context;
+- (void)sceneWillActivate:(id)activate;
+- (void)sendAction:(id)action;
+- (void)setActivationController:(id)controller;
 @end
 
 @implementation _UISceneHostingController
@@ -111,9 +111,9 @@
   }
 
   v3 = fbScene;
-  v4 = [(FBScene *)v3 ui_activationStateComponent];
+  ui_activationStateComponent = [(FBScene *)v3 ui_activationStateComponent];
 
-  return v4;
+  return ui_activationStateComponent;
 }
 
 - (id)contentSizePreferenceProvider
@@ -193,8 +193,8 @@
 
   if (v4)
   {
-    v5 = [(_UISceneHostingController *)self delegate];
-    [v5 clientIsReady];
+    delegate = [(_UISceneHostingController *)self delegate];
+    [delegate clientIsReady];
   }
 }
 
@@ -209,8 +209,8 @@
 - (void)invalidate
 {
   [(FBScene *)self->_fbScene invalidate];
-  v3 = [(_UISceneHostingView *)self->_sceneView _scenePresenter];
-  [v3 invalidate];
+  _scenePresenter = [(_UISceneHostingView *)self->_sceneView _scenePresenter];
+  [_scenePresenter invalidate];
 }
 
 - (_UISceneIntelligenceSupportHost)intelligenceComponent
@@ -226,9 +226,9 @@
   }
 
   v3 = fbScene;
-  v4 = [(FBScene *)v3 ui_intelligenceComponent];
+  ui_intelligenceComponent = [(FBScene *)v3 ui_intelligenceComponent];
 
-  return v4;
+  return ui_intelligenceComponent;
 }
 
 + (void)initialize
@@ -239,9 +239,9 @@
   }
 }
 
-- (_UISceneHostingController)initWithAdvancedConfiguration:(id)a3
+- (_UISceneHostingController)initWithAdvancedConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = _UISceneHostingController;
   v5 = [(_UISceneHostingController *)&v11 init];
@@ -255,42 +255,42 @@
     sceneViewController = v5->_sceneViewController;
     v5->_sceneViewController = v8;
 
-    [(_UISceneHostingController *)v5 createSceneWithConfiguration:v4];
+    [(_UISceneHostingController *)v5 createSceneWithConfiguration:configurationCopy];
   }
 
   return v5;
 }
 
-- (_UISceneHostingController)initWithProcessIdentity:(id)a3 sceneSpecification:(id)a4
+- (_UISceneHostingController)initWithProcessIdentity:(id)identity sceneSpecification:(id)specification
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_UISceneHostingControllerAdvancedConfiguration alloc] initWithProcessIdentity:v7];
+  specificationCopy = specification;
+  identityCopy = identity;
+  v8 = [[_UISceneHostingControllerAdvancedConfiguration alloc] initWithProcessIdentity:identityCopy];
 
-  [(_UISceneHostingControllerAdvancedConfiguration *)v8 setSceneSpecification:v6];
+  [(_UISceneHostingControllerAdvancedConfiguration *)v8 setSceneSpecification:specificationCopy];
   v9 = [(_UISceneHostingController *)self initWithAdvancedConfiguration:v8];
 
   return v9;
 }
 
-- (void)createSceneWithConfiguration:(id)a3
+- (void)createSceneWithConfiguration:(id)configuration
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   if (self->_fbScene)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"_UISceneHostingController.m" lineNumber:75 description:@"A scene already exists!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneHostingController.m" lineNumber:75 description:@"A scene already exists!"];
   }
 
-  v6 = [v5 sceneWorkspace];
+  sceneWorkspace = [configurationCopy sceneWorkspace];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __58___UISceneHostingController_createSceneWithConfiguration___block_invoke;
   v31[3] = &unk_1E71186B0;
-  v7 = v5;
+  v7 = configurationCopy;
   v32 = v7;
-  v8 = [v6 createScene:v31];
+  v8 = [sceneWorkspace createScene:v31];
   fbScene = self->_fbScene;
   self->_fbScene = v8;
 
@@ -300,8 +300,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [v7 additionalExtensions];
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  additionalExtensions = [v7 additionalExtensions];
+  v11 = [additionalExtensions countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
@@ -313,61 +313,61 @@
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(additionalExtensions);
         }
 
         [(FBScene *)self->_fbScene addExtension:*(*(&v27 + 1) + 8 * v14++)];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
+      v12 = [additionalExtensions countByEnumeratingWithState:&v27 objects:v33 count:16];
     }
 
     while (v12);
   }
 
-  v15 = [(_UISceneHostingController *)self activationStateComponent];
+  activationStateComponent = [(_UISceneHostingController *)self activationStateComponent];
 
-  if (!v15)
+  if (!activationStateComponent)
   {
     [(FBScene *)self->_fbScene addExtension:objc_opt_class()];
   }
 
-  v16 = [(_UISceneHostingController *)self contentSizePreferenceProvider];
-  [v16 setContentSizePreferenceReceiver:self->_sceneViewController];
+  contentSizePreferenceProvider = [(_UISceneHostingController *)self contentSizePreferenceProvider];
+  [contentSizePreferenceProvider setContentSizePreferenceReceiver:self->_sceneViewController];
 
-  v17 = [(_UISceneHostingController *)self _remoteSheetProvider];
-  [v17 _setTargetViewController:self->_sceneViewController];
+  _remoteSheetProvider = [(_UISceneHostingController *)self _remoteSheetProvider];
+  [_remoteSheetProvider _setTargetViewController:self->_sceneViewController];
 
   v18 = self->_fbScene;
-  v19 = [(FBScene *)v18 _viewControllerAppearanceComponent];
-  [v19 setDelegate:self->_sceneViewController];
+  _viewControllerAppearanceComponent = [(FBScene *)v18 _viewControllerAppearanceComponent];
+  [_viewControllerAppearanceComponent setDelegate:self->_sceneViewController];
 
-  v20 = [(FBScene *)self->_fbScene ui_scrollPocket];
-  v21 = [v20 registrationInteraction];
+  ui_scrollPocket = [(FBScene *)self->_fbScene ui_scrollPocket];
+  registrationInteraction = [ui_scrollPocket registrationInteraction];
 
-  if (v21)
+  if (registrationInteraction)
   {
-    v22 = [(_UISceneHostingController *)self sceneView];
-    [v22 addInteraction:v21];
+    sceneView = [(_UISceneHostingController *)self sceneView];
+    [sceneView addInteraction:registrationInteraction];
   }
 
-  v23 = [(FBScene *)self->_fbScene _relationshipManagementHostComponent];
-  v24 = [(_UISceneHostingController *)self _eventDeferringComponent];
-  [v23 addObserver:v24];
+  _relationshipManagementHostComponent = [(FBScene *)self->_fbScene _relationshipManagementHostComponent];
+  _eventDeferringComponent = [(_UISceneHostingController *)self _eventDeferringComponent];
+  [_relationshipManagementHostComponent addObserver:_eventDeferringComponent];
 
-  v25 = [(FBScene *)self->_fbScene ui_intelligenceComponent];
-  [v25 setCollectAsRemoteElement:1];
+  ui_intelligenceComponent = [(FBScene *)self->_fbScene ui_intelligenceComponent];
+  [ui_intelligenceComponent setCollectAsRemoteElement:1];
 
   [(FBScene *)self->_fbScene updateSettings:&__block_literal_global_16_5];
 }
 
-- (void)setActivationController:(id)a3
+- (void)setActivationController:(id)controller
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v5 = [(_UISceneHostingController *)self activationStateComponent];
-  if (!v5)
+  controllerCopy = controller;
+  activationStateComponent = [(_UISceneHostingController *)self activationStateComponent];
+  if (!activationStateComponent)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"activationComponent"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -380,7 +380,7 @@
       v14 = 2114;
       v15 = v10;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"_UISceneHostingController.m";
       v20 = 1024;
@@ -396,15 +396,15 @@
     JUMPOUT(0x189CA61C8);
   }
 
-  v6 = v5;
-  [v5 setActivationController:v11];
+  v6 = activationStateComponent;
+  [activationStateComponent setActivationController:controllerCopy];
 }
 
 - (_UISceneHostingActivationControlling)activationController
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [(_UISceneHostingController *)self activationStateComponent];
-  if (!v4)
+  activationStateComponent = [(_UISceneHostingController *)self activationStateComponent];
+  if (!activationStateComponent)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"activationComponent"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -417,7 +417,7 @@
       v14 = 2114;
       v15 = v11;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"_UISceneHostingController.m";
       v20 = 1024;
@@ -433,19 +433,19 @@
     JUMPOUT(0x189CA6354);
   }
 
-  v5 = v4;
-  v6 = [v4 activationController];
+  v5 = activationStateComponent;
+  activationController = [activationStateComponent activationController];
 
-  return v6;
+  return activationController;
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
-  v9 = a3;
+  actionCopy = action;
   if ([(FBScene *)self->_fbScene isActive])
   {
     fbScene = self->_fbScene;
-    v5 = [MEMORY[0x1E695DFD8] setWithObject:v9];
+    v5 = [MEMORY[0x1E695DFD8] setWithObject:actionCopy];
     [(FBScene *)fbScene sendActions:v5];
   }
 
@@ -461,11 +461,11 @@
       queuedActions = self->_queuedActions;
     }
 
-    [(NSMutableArray *)queuedActions addObject:v9];
+    [(NSMutableArray *)queuedActions addObject:actionCopy];
   }
 }
 
-- (void)_updateSceneSettingsFromSettingsProvidersWithFence:(BOOL)a3
+- (void)_updateSceneSettingsFromSettingsProvidersWithFence:(BOOL)fence
 {
   fbScene = self->_fbScene;
   v4[0] = MEMORY[0x1E69E9820];
@@ -473,20 +473,20 @@
   v4[2] = __80___UISceneHostingController__updateSceneSettingsFromSettingsProvidersWithFence___block_invoke;
   v4[3] = &unk_1E71186D8;
   v4[4] = self;
-  v5 = a3;
+  fenceCopy = fence;
   [(FBScene *)fbScene _performUpdateWithoutActivation:v4];
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  actionsCopy = actions;
   v6 = [MEMORY[0x1E695DFA8] set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = actionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -519,10 +519,10 @@
   return v6;
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 contentState] == 2 && (*&self->_flags & 1) == 0)
+  changeCopy = change;
+  if ([changeCopy contentState] == 2 && (*&self->_flags & 1) == 0)
   {
     *&self->_flags |= 1u;
     objc_initWeak(&location, self);
@@ -538,7 +538,7 @@
   }
 }
 
-- (void)sceneWillActivate:(id)a3
+- (void)sceneWillActivate:(id)activate
 {
   if (self)
   {
@@ -546,7 +546,7 @@
   }
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
   v18 = *MEMORY[0x1E69E9840];
   queuedActions = self->_queuedActions;
@@ -591,36 +591,36 @@
   }
 }
 
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UISceneHostingController *)self activationStateComponent];
-  [v8 ui_sceneDidDeactivate:v7 withContext:v6];
+  contextCopy = context;
+  deactivateCopy = deactivate;
+  activationStateComponent = [(_UISceneHostingController *)self activationStateComponent];
+  [activationStateComponent ui_sceneDidDeactivate:deactivateCopy withContext:contextCopy];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55___UISceneHostingController_appendDescriptionToStream___block_invoke;
   v11[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = streamCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v11];
-  v6 = [v5 style];
-  v7 = [v6 verbosity];
+  style = [v5 style];
+  verbosity = [style verbosity];
 
-  if (v7 != 2)
+  if (verbosity != 2)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __55___UISceneHostingController_appendDescriptionToStream___block_invoke_2;
     v8[3] = &unk_1E70F35B8;
     v9 = v5;
-    v10 = self;
+    selfCopy2 = self;
     [v9 appendBodySectionWithName:0 block:v8];
   }
 }
@@ -628,8 +628,8 @@
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -637,8 +637,8 @@
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
@@ -671,9 +671,9 @@
   }
 
   v3 = fbScene;
-  v4 = [(FBScene *)v3 ui_viewServiceComponent];
+  ui_viewServiceComponent = [(FBScene *)v3 ui_viewServiceComponent];
 
-  return v4;
+  return ui_viewServiceComponent;
 }
 
 - (id)keyboardSuppressionController
@@ -689,9 +689,9 @@
   }
 
   v3 = fbScene;
-  v4 = [(FBScene *)v3 _keyboardHostComponent];
+  _keyboardHostComponent = [(FBScene *)v3 _keyboardHostComponent];
 
-  return v4;
+  return _keyboardHostComponent;
 }
 
 - (_UISceneTouchSharing)touchSharing
@@ -707,20 +707,20 @@
   }
 
   v4 = fbScene;
-  v5 = [(FBScene *)v4 ui_touchSharing];
+  ui_touchSharing = [(FBScene *)v4 ui_touchSharing];
 
-  if (v5)
+  if (ui_touchSharing)
   {
-    v6 = [v5 targetView];
+    targetView = [ui_touchSharing targetView];
 
-    if (!v6)
+    if (!targetView)
     {
-      v7 = [(_UISceneHostingController *)self sceneView];
-      [v5 setTargetView:v7];
+      sceneView = [(_UISceneHostingController *)self sceneView];
+      [ui_touchSharing setTargetView:sceneView];
     }
   }
 
-  return v5;
+  return ui_touchSharing;
 }
 
 @end

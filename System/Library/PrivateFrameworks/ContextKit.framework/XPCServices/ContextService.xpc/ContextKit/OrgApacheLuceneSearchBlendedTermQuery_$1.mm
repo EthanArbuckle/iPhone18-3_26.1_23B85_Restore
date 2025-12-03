@@ -1,21 +1,21 @@
 @interface OrgApacheLuceneSearchBlendedTermQuery_$1
-- (id)rewriteWithOrgApacheLuceneSearchQueryArray:(id)a3;
+- (id)rewriteWithOrgApacheLuceneSearchQueryArray:(id)array;
 @end
 
 @implementation OrgApacheLuceneSearchBlendedTermQuery_$1
 
-- (id)rewriteWithOrgApacheLuceneSearchQueryArray:(id)a3
+- (id)rewriteWithOrgApacheLuceneSearchQueryArray:(id)array
 {
   v4 = new_OrgApacheLuceneSearchBooleanQuery_Builder_init();
   [(OrgApacheLuceneSearchBooleanQuery_Builder *)v4 setDisableCoordWithBoolean:1];
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = (a3 + 24);
-  v6 = a3 + 8 * *(a3 + 2) + 24;
-  if (a3 + 24 < v6)
+  v5 = (array + 24);
+  v6 = array + 8 * *(array + 2) + 24;
+  if (array + 24 < v6)
   {
     do
     {

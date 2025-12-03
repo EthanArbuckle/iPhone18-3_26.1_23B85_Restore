@@ -1,20 +1,20 @@
 @interface PLMomentGenerationUtils
-+ (BOOL)isTopFrequentLocationForCoordinate:(CLLocationCoordinate2D)a3 startDate:(id)a4 endDate:(id)a5 frequentLocations:(id)a6;
-+ (BOOL)isTopFrequentLocationForMoment:(id)a3 frequentLocations:(id)a4;
-+ (BOOL)shouldConsiderAssetAsOutlierForMomentClustering:(id)a3;
-+ (id)_sortedOverlappingFrequentLocations:(id)a3;
-+ (id)frequentLocationNearMoment:(id)a3 withFrequentLocations:(id)a4;
-+ (id)frequentLocationsOverlappingStartDate:(id)a3 endDate:(id)a4 frequentLocations:(id)a5;
++ (BOOL)isTopFrequentLocationForCoordinate:(CLLocationCoordinate2D)coordinate startDate:(id)date endDate:(id)endDate frequentLocations:(id)locations;
++ (BOOL)isTopFrequentLocationForMoment:(id)moment frequentLocations:(id)locations;
++ (BOOL)shouldConsiderAssetAsOutlierForMomentClustering:(id)clustering;
++ (id)_sortedOverlappingFrequentLocations:(id)locations;
++ (id)frequentLocationNearMoment:(id)moment withFrequentLocations:(id)locations;
++ (id)frequentLocationsOverlappingStartDate:(id)date endDate:(id)endDate frequentLocations:(id)locations;
 + (id)importedByBundleIdentifiersAllowListForMomentGeneration;
 + (id)importedByBundleIdentifiersToIncludeIfNotProcessed;
 + (id)internalPredicateToIncludeExternalAssetsEligibleForProcessing;
 + (id)today;
-+ (signed)externalOriginatorStateForAsset:(id)a3;
-+ (signed)originatorStateForAsset:(id)a3;
-+ (unsigned)_locationTypeForLocation:(id)a3 horizontalAccuracy:(double)a4 startDate:(id)a5 endDate:(id)a6 locationsOfInterest:(id)a7 frequentLocations:(id)a8;
-+ (unsigned)locationTypeForAsset:(id)a3 locationsOfInterest:(id)a4 frequentLocations:(id)a5;
-+ (unsigned)locationTypeForMoment:(id)a3 locationsOfInterest:(id)a4 frequentLocations:(id)a5;
-+ (void)processLocationIfNecessaryInMoment:(id)a3 usingManager:(id)a4 frequentLocations:(id)a5 frequentLocationsDidChange:(BOOL)a6;
++ (signed)externalOriginatorStateForAsset:(id)asset;
++ (signed)originatorStateForAsset:(id)asset;
++ (unsigned)_locationTypeForLocation:(id)location horizontalAccuracy:(double)accuracy startDate:(id)date endDate:(id)endDate locationsOfInterest:(id)interest frequentLocations:(id)locations;
++ (unsigned)locationTypeForAsset:(id)asset locationsOfInterest:(id)interest frequentLocations:(id)locations;
++ (unsigned)locationTypeForMoment:(id)moment locationsOfInterest:(id)interest frequentLocations:(id)locations;
++ (void)processLocationIfNecessaryInMoment:(id)moment usingManager:(id)manager frequentLocations:(id)locations frequentLocationsDidChange:(BOOL)change;
 @end
 
 @implementation PLMomentGenerationUtils
@@ -23,15 +23,15 @@
 {
   if (PLMomentGenerationUtilsOverridenToday)
   {
-    v2 = PLMomentGenerationUtilsOverridenToday;
+    date = PLMomentGenerationUtilsOverridenToday;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  return v2;
+  return date;
 }
 
 + (id)internalPredicateToIncludeExternalAssetsEligibleForProcessing
@@ -118,18 +118,18 @@ void __77__PLMomentGenerationUtils_importedByBundleIdentifiersToIncludeIfNotProc
   importedByBundleIdentifiersToIncludeIfNotProcessed_allowList = v1;
 }
 
-+ (signed)externalOriginatorStateForAsset:(id)a3
++ (signed)externalOriginatorStateForAsset:(id)asset
 {
-  v4 = a3;
-  if (([v4 syndicationProcessingValue] & 0x3CF1) == 0)
+  assetCopy = asset;
+  if (([assetCopy syndicationProcessingValue] & 0x3CF1) == 0)
   {
-    v6 = [a1 importedByBundleIdentifiersToIncludeIfNotProcessed];
-    v7 = [v4 importedByBundleIdentifier];
-    if ([v6 containsObject:v7])
+    importedByBundleIdentifiersToIncludeIfNotProcessed = [self importedByBundleIdentifiersToIncludeIfNotProcessed];
+    importedByBundleIdentifier = [assetCopy importedByBundleIdentifier];
+    if ([importedByBundleIdentifiersToIncludeIfNotProcessed containsObject:importedByBundleIdentifier])
     {
-      v8 = [v4 syndicationProcessingVersion];
+      syndicationProcessingVersion = [assetCopy syndicationProcessingVersion];
 
-      if (!v8)
+      if (!syndicationProcessingVersion)
       {
         v5 = 16;
         goto LABEL_8;
@@ -150,10 +150,10 @@ LABEL_8:
   return v5;
 }
 
-+ (BOOL)shouldConsiderAssetAsOutlierForMomentClustering:(id)a3
++ (BOOL)shouldConsiderAssetAsOutlierForMomentClustering:(id)clustering
 {
-  v4 = a3;
-  if (([v4 isScreenRecording] & 1) != 0 || objc_msgSend(v4, "kindSubtype") == 10)
+  clusteringCopy = clustering;
+  if (([clusteringCopy isScreenRecording] & 1) != 0 || objc_msgSend(clusteringCopy, "kindSubtype") == 10)
   {
     v5 = 1;
   }
@@ -161,19 +161,19 @@ LABEL_8:
   else
   {
     [MEMORY[0x1E69BF328] maskForGuestAsset];
-    [v4 savedAssetType];
-    if ((PLValidatedSavedAssetTypeApplies() & 1) != 0 || [v4 syndicationHistory])
+    [clusteringCopy savedAssetType];
+    if ((PLValidatedSavedAssetTypeApplies() & 1) != 0 || [clusteringCopy syndicationHistory])
     {
-      v5 = ([v4 syndicationProcessingValue] & 0x3CF1) == 0;
+      v5 = ([clusteringCopy syndicationProcessingValue] & 0x3CF1) == 0;
     }
 
     else
     {
-      v7 = [v4 importedByBundleIdentifier];
-      if (v7)
+      importedByBundleIdentifier = [clusteringCopy importedByBundleIdentifier];
+      if (importedByBundleIdentifier)
       {
-        v8 = [a1 importedByBundleIdentifiersAllowListForMomentGeneration];
-        v9 = [v8 containsObject:v7];
+        importedByBundleIdentifiersAllowListForMomentGeneration = [self importedByBundleIdentifiersAllowListForMomentGeneration];
+        v9 = [importedByBundleIdentifiersAllowListForMomentGeneration containsObject:importedByBundleIdentifier];
 
         v5 = v9 ^ 1;
       }
@@ -188,37 +188,37 @@ LABEL_8:
   return v5;
 }
 
-+ (signed)originatorStateForAsset:(id)a3
++ (signed)originatorStateForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 shareState];
-  if (v5 >= 3)
+  assetCopy = asset;
+  shareState = [assetCopy shareState];
+  if (shareState >= 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = 0x400020001uLL >> (16 * v5);
+    v6 = 0x400020001uLL >> (16 * shareState);
   }
 
-  if ([a1 shouldConsiderAssetAsOutlierForMomentClustering:v4])
+  if ([self shouldConsiderAssetAsOutlierForMomentClustering:assetCopy])
   {
-    v6 |= [a1 externalOriginatorStateForAsset:v4];
+    v6 |= [self externalOriginatorStateForAsset:assetCopy];
   }
 
   return v6;
 }
 
-+ (id)frequentLocationNearMoment:(id)a3 withFrequentLocations:(id)a4
++ (id)frequentLocationNearMoment:(id)moment withFrequentLocations:(id)locations
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 startDate];
-  v9 = [v6 endDate];
-  v28 = v7;
-  v10 = [a1 frequentLocationsOverlappingStartDate:v8 endDate:v9 frequentLocations:v7];
+  momentCopy = moment;
+  locationsCopy = locations;
+  startDate = [momentCopy startDate];
+  endDate = [momentCopy endDate];
+  v28 = locationsCopy;
+  v10 = [self frequentLocationsOverlappingStartDate:startDate endDate:endDate frequentLocations:locationsCopy];
 
   v31 = 0u;
   v32 = 0u;
@@ -243,8 +243,8 @@ LABEL_8:
 
         v18 = *(*(&v29 + 1) + 8 * i);
         v19 = objc_autoreleasePoolPush();
-        v20 = [v18 momentsSet];
-        v21 = [v20 containsObject:v6];
+        momentsSet = [v18 momentsSet];
+        v21 = [momentsSet containsObject:momentCopy];
 
         if (v21)
         {
@@ -256,8 +256,8 @@ LABEL_8:
         }
 
         [v18 coordinate];
-        v22 = [v6 approximateLocation];
-        [v22 coordinate];
+        approximateLocation = [momentCopy approximateLocation];
+        [approximateLocation coordinate];
 
         CLLocationCoordinate2DGetDistanceFrom();
         if (v23 < v16)
@@ -295,20 +295,20 @@ LABEL_15:
   return v14;
 }
 
-+ (id)frequentLocationsOverlappingStartDate:(id)a3 endDate:(id)a4 frequentLocations:(id)a5
++ (id)frequentLocationsOverlappingStartDate:(id)date endDate:(id)endDate frequentLocations:(id)locations
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v21 = v7;
-  v10 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v7 endDate:v8];
+  dateCopy = date;
+  endDateCopy = endDate;
+  locationsCopy = locations;
+  v21 = dateCopy;
+  v10 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:dateCopy endDate:endDateCopy];
   v11 = [MEMORY[0x1E695DFA8] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v9;
+  v12 = locationsCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -324,8 +324,8 @@ LABEL_15:
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
-        v18 = [v17 dateInterval];
-        v19 = [v10 intersectsDateInterval:v18];
+        dateInterval = [v17 dateInterval];
+        v19 = [v10 intersectsDateInterval:dateInterval];
 
         if (v19)
         {
@@ -342,10 +342,10 @@ LABEL_15:
   return v11;
 }
 
-+ (id)_sortedOverlappingFrequentLocations:(id)a3
++ (id)_sortedOverlappingFrequentLocations:(id)locations
 {
-  v3 = [a3 allObjects];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_116758];
+  allObjects = [locations allObjects];
+  v4 = [allObjects sortedArrayUsingComparator:&__block_literal_global_116758];
 
   return v4;
 }
@@ -403,13 +403,13 @@ LABEL_5:
   return v10;
 }
 
-+ (BOOL)isTopFrequentLocationForCoordinate:(CLLocationCoordinate2D)a3 startDate:(id)a4 endDate:(id)a5 frequentLocations:(id)a6
++ (BOOL)isTopFrequentLocationForCoordinate:(CLLocationCoordinate2D)coordinate startDate:(id)date endDate:(id)endDate frequentLocations:(id)locations
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v23 = *MEMORY[0x1E69E9840];
-  v9 = [a1 frequentLocationsOverlappingStartDate:a4 endDate:a5 frequentLocations:a6];
-  v10 = [a1 _sortedOverlappingFrequentLocations:v9];
+  v9 = [self frequentLocationsOverlappingStartDate:date endDate:endDate frequentLocations:locations];
+  v10 = [self _sortedOverlappingFrequentLocations:v9];
   v11 = [v10 count];
   if (v11 >= 2)
   {
@@ -461,59 +461,59 @@ LABEL_14:
   return v14;
 }
 
-+ (BOOL)isTopFrequentLocationForMoment:(id)a3 frequentLocations:(id)a4
++ (BOOL)isTopFrequentLocationForMoment:(id)moment frequentLocations:(id)locations
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 pl_coordinate];
+  locationsCopy = locations;
+  momentCopy = moment;
+  [momentCopy pl_coordinate];
   v9 = v8;
   v11 = v10;
-  v12 = [v7 startDate];
-  v13 = [v7 endDate];
+  startDate = [momentCopy startDate];
+  endDate = [momentCopy endDate];
 
-  LOBYTE(v7) = [a1 isTopFrequentLocationForCoordinate:v12 startDate:v13 endDate:v6 frequentLocations:{v9, v11}];
-  return v7;
+  LOBYTE(momentCopy) = [self isTopFrequentLocationForCoordinate:startDate startDate:endDate endDate:locationsCopy frequentLocations:{v9, v11}];
+  return momentCopy;
 }
 
-+ (unsigned)_locationTypeForLocation:(id)a3 horizontalAccuracy:(double)a4 startDate:(id)a5 endDate:(id)a6 locationsOfInterest:(id)a7 frequentLocations:(id)a8
++ (unsigned)_locationTypeForLocation:(id)location horizontalAccuracy:(double)accuracy startDate:(id)date endDate:(id)endDate locationsOfInterest:(id)interest frequentLocations:(id)locations
 {
   v43 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v14)
+  locationCopy = location;
+  dateCopy = date;
+  endDateCopy = endDate;
+  interestCopy = interest;
+  locationsCopy = locations;
+  if (!locationCopy)
   {
     v19 = 2;
     goto LABEL_39;
   }
 
-  if ([PLLocationUtils horizontalAccuracyIsCoarse:a4])
+  if ([PLLocationUtils horizontalAccuracyIsCoarse:accuracy])
   {
     v19 = 7;
     goto LABEL_39;
   }
 
-  if (!v17)
+  if (!interestCopy)
   {
     v19 = 8;
     goto LABEL_28;
   }
 
-  v37 = a1;
+  selfCopy = self;
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v20 = v17;
+  v20 = interestCopy;
   v21 = [v20 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (!v21)
   {
 
     v19 = 6;
-    a1 = v37;
-    if (v18)
+    self = selfCopy;
+    if (locationsCopy)
     {
       goto LABEL_29;
     }
@@ -522,8 +522,8 @@ LABEL_14:
   }
 
   v22 = v21;
-  v35 = v16;
-  v36 = v15;
+  v35 = endDateCopy;
+  v36 = dateCopy;
   v23 = *MEMORY[0x1E6985C30];
   v24 = *v39;
   v25 = 1;
@@ -538,12 +538,12 @@ LABEL_14:
       }
 
       v27 = *(*(&v38 + 1) + 8 * i);
-      [v27 distanceFromLocation:v14];
+      [v27 distanceFromLocation:locationCopy];
       if (v28 <= 50.0 && v28 < v23)
       {
         v30 = v28;
-        v31 = [v27 type];
-        switch(v31)
+        type = [v27 type];
+        switch(type)
         {
           case -1:
             v19 = 6;
@@ -567,18 +567,18 @@ LABEL_14:
 
   while (v22);
 
-  v16 = v35;
-  v15 = v36;
-  a1 = v37;
+  endDateCopy = v35;
+  dateCopy = v36;
+  self = selfCopy;
   if (v25)
   {
 LABEL_28:
-    if (v18)
+    if (locationsCopy)
     {
 LABEL_29:
-      [v14 coordinate];
-      v32 = [a1 isTopFrequentLocationForCoordinate:v15 startDate:v16 endDate:v18 frequentLocations:?];
-      if (v17)
+      [locationCopy coordinate];
+      v32 = [self isTopFrequentLocationForCoordinate:dateCopy startDate:endDateCopy endDate:locationsCopy frequentLocations:?];
+      if (interestCopy)
       {
         v33 = 5;
       }
@@ -613,54 +613,54 @@ LABEL_39:
   return v19;
 }
 
-+ (unsigned)locationTypeForMoment:(id)a3 locationsOfInterest:(id)a4 frequentLocations:(id)a5
++ (unsigned)locationTypeForMoment:(id)moment locationsOfInterest:(id)interest frequentLocations:(id)locations
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 approximateLocation];
-  [v10 gpsHorizontalAccuracy];
+  locationsCopy = locations;
+  interestCopy = interest;
+  momentCopy = moment;
+  approximateLocation = [momentCopy approximateLocation];
+  [momentCopy gpsHorizontalAccuracy];
   v13 = v12;
-  v14 = [v10 startDate];
-  v15 = [v10 endDate];
+  startDate = [momentCopy startDate];
+  endDate = [momentCopy endDate];
 
-  LOWORD(v10) = [a1 _locationTypeForLocation:v11 horizontalAccuracy:v14 startDate:v15 endDate:v9 locationsOfInterest:v8 frequentLocations:v13];
-  return v10;
+  LOWORD(momentCopy) = [self _locationTypeForLocation:approximateLocation horizontalAccuracy:startDate startDate:endDate endDate:interestCopy locationsOfInterest:locationsCopy frequentLocations:v13];
+  return momentCopy;
 }
 
-+ (unsigned)locationTypeForAsset:(id)a3 locationsOfInterest:(id)a4 frequentLocations:(id)a5
++ (unsigned)locationTypeForAsset:(id)asset locationsOfInterest:(id)interest frequentLocations:(id)locations
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 location];
-  [v10 gpsHorizontalAccuracy];
+  locationsCopy = locations;
+  interestCopy = interest;
+  assetCopy = asset;
+  location = [assetCopy location];
+  [assetCopy gpsHorizontalAccuracy];
   v13 = v12;
-  v14 = [v10 dateCreated];
-  v15 = [v10 dateCreated];
+  dateCreated = [assetCopy dateCreated];
+  dateCreated2 = [assetCopy dateCreated];
 
-  LOWORD(v10) = [a1 _locationTypeForLocation:v11 horizontalAccuracy:v14 startDate:v15 endDate:v9 locationsOfInterest:v8 frequentLocations:v13];
-  return v10;
+  LOWORD(assetCopy) = [self _locationTypeForLocation:location horizontalAccuracy:dateCreated startDate:dateCreated2 endDate:interestCopy locationsOfInterest:locationsCopy frequentLocations:v13];
+  return assetCopy;
 }
 
-+ (void)processLocationIfNecessaryInMoment:(id)a3 usingManager:(id)a4 frequentLocations:(id)a5 frequentLocationsDidChange:(BOOL)a6
++ (void)processLocationIfNecessaryInMoment:(id)moment usingManager:(id)manager frequentLocations:(id)locations frequentLocationsDidChange:(BOOL)change
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v20 processedLocation];
-  if (v12 > 0xA || ((1 << v12) & 0x49C) == 0)
+  momentCopy = moment;
+  managerCopy = manager;
+  locationsCopy = locations;
+  processedLocation = [momentCopy processedLocation];
+  if (processedLocation > 0xA || ((1 << processedLocation) & 0x49C) == 0)
   {
-    v14 = v12;
-    v15 = [v10 routineIsAvailable];
-    v16 = v11 && v14 == 9;
+    v14 = processedLocation;
+    routineIsAvailable = [managerCopy routineIsAvailable];
+    v16 = locationsCopy && v14 == 9;
     v17 = v16;
-    if (!v14 || a6 || v17 || v15 && (v14 == 8 || v14 == 1))
+    if (!v14 || change || v17 || routineIsAvailable && (v14 == 8 || v14 == 1))
     {
-      v18 = [v10 locationsOfInterest];
-      v19 = [a1 locationTypeForMoment:v20 locationsOfInterest:v18 frequentLocations:v11];
+      locationsOfInterest = [managerCopy locationsOfInterest];
+      v19 = [self locationTypeForMoment:momentCopy locationsOfInterest:locationsOfInterest frequentLocations:locationsCopy];
 
-      [v20 setProcessedLocation:v19];
+      [momentCopy setProcessedLocation:v19];
     }
   }
 }

@@ -1,36 +1,36 @@
 @interface SSDatabaseCache
 - (BOOL)_setupDatabase;
-- (SSDatabaseCache)initWithIdentifier:(id)a3 cacheName:(id)a4;
-- (SSDatabaseCache)initWithIdentifier:(id)a3 cacheName:(id)a4 database:(id)a5 cacheEntryClass:(Class)a6;
-- (id)cacheEntryForLookupKey:(id)a3;
-- (id)cacheEntryProperties:(id)a3 forLookupKeys:(id)a4;
-- (id)setData:(id)a3 expiring:(double)a4 retiring:(double)a5 lookupKey:(id)a6 userInfo:(id)a7;
+- (SSDatabaseCache)initWithIdentifier:(id)identifier cacheName:(id)name;
+- (SSDatabaseCache)initWithIdentifier:(id)identifier cacheName:(id)name database:(id)database cacheEntryClass:(Class)class;
+- (id)cacheEntryForLookupKey:(id)key;
+- (id)cacheEntryProperties:(id)properties forLookupKeys:(id)keys;
+- (id)setData:(id)data expiring:(double)expiring retiring:(double)retiring lookupKey:(id)key userInfo:(id)info;
 - (id)statistics;
 - (int)clearRetiredData;
 - (void)clear;
-- (void)clearCacheForLookupKey:(id)a3;
+- (void)clearCacheForLookupKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation SSDatabaseCache
 
-- (SSDatabaseCache)initWithIdentifier:(id)a3 cacheName:(id)a4 database:(id)a5 cacheEntryClass:(Class)a6
+- (SSDatabaseCache)initWithIdentifier:(id)identifier cacheName:(id)name database:(id)database cacheEntryClass:(Class)class
 {
   v68[2] = *MEMORY[0x1E69E9840];
   v10 = [(SSDatabaseCache *)self init];
   if (v10)
   {
-    if ([a3 length] && objc_msgSend(a4, "length"))
+    if ([identifier length] && objc_msgSend(name, "length"))
     {
       v10->_maximumInlineBlobSize = 1024;
-      v10->_identifier = [a3 copy];
-      v10->_cacheName = [a4 copy];
-      v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{CPSharedResourcesDirectory(), @"Library", @"Caches", a3, a4, 0}];
+      v10->_identifier = [identifier copy];
+      v10->_cacheName = [name copy];
+      v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{CPSharedResourcesDirectory(), @"Library", @"Caches", identifier, name, 0}];
       v12 = [MEMORY[0x1E696AEC0] pathWithComponents:v11];
 
       v13 = objc_alloc(MEMORY[0x1E695DEC8]);
       v14 = objc_opt_class();
-      v15 = [v13 initWithObjects:{NSStringFromClass(v14), a3, a4, 0}];
+      v15 = [v13 initWithObjects:{NSStringFromClass(v14), identifier, name, 0}];
       v16 = [v15 componentsJoinedByString:@"."];
 
       v17 = dispatch_queue_create([v16 UTF8String], 0);
@@ -46,18 +46,18 @@
       v68[1] = @"mobile";
       if ([v19 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", v68, v67, 2), &v60}])
       {
-        v21 = [[SSPersistentCache alloc] initWithIdentifier:a3 cacheName:a4];
+        v21 = [[SSPersistentCache alloc] initWithIdentifier:identifier cacheName:name];
         v10->_persistentCache = v21;
         if (v21)
         {
-          if (a5)
+          if (database)
           {
-            v10->_database = a5;
+            v10->_database = database;
           }
 
           else
           {
-            v39 = [objc_msgSend(v12 stringByAppendingPathComponent:{a4), "stringByAppendingPathExtension:", @"db"}];
+            v39 = [objc_msgSend(v12 stringByAppendingPathComponent:{name), "stringByAppendingPathExtension:", @"db"}];
             v40 = [SSSQLiteDatabase alloc];
             v41 = -[SSSQLiteDatabase initWithDatabaseURL:](v40, "initWithDatabaseURL:", [MEMORY[0x1E695DFF8] fileURLWithPath:v39 isDirectory:0]);
             v10->_database = v41;
@@ -69,15 +69,15 @@
                 v45 = +[SSLogConfig sharedConfig];
               }
 
-              v46 = [v45 shouldLog];
+              shouldLog = [v45 shouldLog];
               if ([v45 shouldLogToDisk])
               {
-                v47 = v46 | 2;
+                v47 = shouldLog | 2;
               }
 
               else
               {
-                v47 = v46;
+                v47 = shouldLog;
               }
 
               if (!os_log_type_enabled([v45 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -106,12 +106,12 @@
             }
           }
 
-          if (!a6)
+          if (!class)
           {
-            a6 = objc_opt_class();
+            class = objc_opt_class();
           }
 
-          v10->_cacheEntryClass = a6;
+          v10->_cacheEntryClass = class;
           if ([(SSDatabaseCache *)v10 _setupDatabase])
           {
             goto LABEL_30;
@@ -123,15 +123,15 @@
             v22 = +[SSLogConfig sharedConfig];
           }
 
-          v42 = [v22 shouldLog];
+          shouldLog2 = [v22 shouldLog];
           if ([v22 shouldLogToDisk])
           {
-            v43 = v42 | 2;
+            v43 = shouldLog2 | 2;
           }
 
           else
           {
-            v43 = v42;
+            v43 = shouldLog2;
           }
 
           if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -163,15 +163,15 @@ LABEL_30:
             v22 = +[SSLogConfig sharedConfig];
           }
 
-          v26 = [v22 shouldLog];
+          shouldLog3 = [v22 shouldLog];
           if ([v22 shouldLogToDisk])
           {
-            v27 = v26 | 2;
+            v27 = shouldLog3 | 2;
           }
 
           else
           {
-            v27 = v26;
+            v27 = shouldLog3;
           }
 
           if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -201,15 +201,15 @@ LABEL_30:
           v22 = +[SSLogConfig sharedConfig];
         }
 
-        v23 = [v22 shouldLog];
+        shouldLog4 = [v22 shouldLog];
         if ([v22 shouldLogToDisk])
         {
-          v24 = v23 | 2;
+          v24 = shouldLog4 | 2;
         }
 
         else
         {
-          v24 = v23;
+          v24 = shouldLog4;
         }
 
         if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -250,11 +250,11 @@ LABEL_30:
   return v10;
 }
 
-- (SSDatabaseCache)initWithIdentifier:(id)a3 cacheName:(id)a4
+- (SSDatabaseCache)initWithIdentifier:(id)identifier cacheName:(id)name
 {
   v7 = objc_opt_class();
 
-  return [(SSDatabaseCache *)self initWithIdentifier:a3 cacheName:a4 database:0 cacheEntryClass:v7];
+  return [(SSDatabaseCache *)self initWithIdentifier:identifier cacheName:name database:0 cacheEntryClass:v7];
 }
 
 - (void)dealloc
@@ -272,15 +272,15 @@ LABEL_30:
 
 - (BOOL)_setupDatabase
 {
-  v3 = [(objc_class *)self->_cacheEntryClass databaseTable];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (pid INTEGER, lookup_key TEXT, data_blob BLOB, data_size INTEGER, date_inserted INTEGER, date_expired INTEGER, date_retired INTEGER, user_info TEXT, PRIMARY KEY (pid));", v3];
-  if (!-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", @"PRAGMA legacy_file_format = 0;") || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", v4) || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", @"PRAGMA journal_mode=WAL;") || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS %@_lookup_key ON %@ (lookup_key);", v3, v3]) || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE INDEX IF NOT EXISTS %@_date_inserted ON %@ (date_inserted);", v3, v3)) || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE INDEX IF NOT EXISTS %@_date_expired ON %@ (date_expired);", v3, v3)) || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE INDEX IF NOT EXISTS %@_date_retired ON %@ (date_retired);", v3, v3)))
+  databaseTable = [(objc_class *)self->_cacheEntryClass databaseTable];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (pid INTEGER, lookup_key TEXT, data_blob BLOB, data_size INTEGER, date_inserted INTEGER, date_expired INTEGER, date_retired INTEGER, user_info TEXT, PRIMARY KEY (pid));", databaseTable];
+  if (!-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", @"PRAGMA legacy_file_format = 0;") || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", v4) || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", @"PRAGMA journal_mode=WAL;") || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS %@_lookup_key ON %@ (lookup_key);", databaseTable, databaseTable]) || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE INDEX IF NOT EXISTS %@_date_inserted ON %@ (date_inserted);", databaseTable, databaseTable)) || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE INDEX IF NOT EXISTS %@_date_expired ON %@ (date_expired);", databaseTable, databaseTable)) || !-[SSSQLiteDatabase executeSQL:](self->_database, "executeSQL:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CREATE INDEX IF NOT EXISTS %@_date_retired ON %@ (date_retired);", databaseTable, databaseTable)))
   {
     return 0;
   }
 
   database = self->_database;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS %@_date_user_info ON %@ (user_info);", v3, v3];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS %@_date_user_info ON %@ (user_info);", databaseTable, databaseTable];
 
   return [(SSSQLiteDatabase *)database executeSQL:v6];
 }
@@ -293,8 +293,8 @@ LABEL_30:
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8 = SSDatabaseCacheEntryDataBlobSize;
-  v9 = [(objc_class *)self->_cacheEntryClass databaseTable];
-  v10 = [v7 initWithFormat:@"SELECT SUM(%@), COUNT(*) FROM %@ WHERE %@ <= ?;", v8, v9, SSDatabaseCacheEntryDateRetired];
+  databaseTable = [(objc_class *)self->_cacheEntryClass databaseTable];
+  sSDatabaseCacheEntryDateRetired = [v7 initWithFormat:@"SELECT SUM(%@), COUNT(*) FROM %@ WHERE %@ <= ?;", v8, databaseTable, SSDatabaseCacheEntryDateRetired];
   database = self->_database;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -303,14 +303,14 @@ LABEL_30:
   v25[5] = v3;
   v25[6] = v5;
   v25[4] = self;
-  [(SSSQLiteDatabase *)database prepareStatementForSQL:v10 cache:1 usingBlock:v25];
+  [(SSSQLiteDatabase *)database prepareStatementForSQL:sSDatabaseCacheEntryDateRetired cache:1 usingBlock:v25];
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_autoreleasePoolPush();
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
   v14 = SSDatabaseCacheEntryDataBlobSize;
-  v15 = [(objc_class *)self->_cacheEntryClass databaseTable];
-  v16 = [v13 initWithFormat:@"SELECT SUM(%@), COUNT(*) FROM %@ WHERE %@ <= ?;", v14, v15, SSDatabaseCacheEntryDateExpired];
+  databaseTable2 = [(objc_class *)self->_cacheEntryClass databaseTable];
+  sSDatabaseCacheEntryDateExpired = [v13 initWithFormat:@"SELECT SUM(%@), COUNT(*) FROM %@ WHERE %@ <= ?;", v14, databaseTable2, SSDatabaseCacheEntryDateExpired];
   v17 = self->_database;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -319,7 +319,7 @@ LABEL_30:
   v24[5] = v3;
   v24[6] = v5;
   v24[4] = self;
-  [(SSSQLiteDatabase *)v17 prepareStatementForSQL:v16 cache:1 usingBlock:v24];
+  [(SSSQLiteDatabase *)v17 prepareStatementForSQL:sSDatabaseCacheEntryDateExpired cache:1 usingBlock:v24];
 
   objc_autoreleasePoolPop(v12);
   v18 = objc_autoreleasePoolPush();
@@ -500,12 +500,12 @@ uint64_t __24__SSDatabaseCache_clear__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (void)clearCacheForLookupKey:(id)a3
+- (void)clearCacheForLookupKey:(id)key
 {
-  if ([a3 length])
+  if ([key length])
   {
-    [(SSPersistentCache *)self->_persistentCache removeDataForKey:a3];
-    v5 = [(SSDatabaseCache *)self cacheEntryForLookupKey:a3];
+    [(SSPersistentCache *)self->_persistentCache removeDataForKey:key];
+    v5 = [(SSDatabaseCache *)self cacheEntryForLookupKey:key];
 
     [v5 deleteFromDatabase];
   }
@@ -522,8 +522,8 @@ uint64_t __24__SSDatabaseCache_clear__block_invoke(uint64_t a1, uint64_t a2)
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
   v9 = SSDatabaseCacheEntryLookupKey;
   v10 = SSDatabaseCacheEntryDataBlob;
-  v11 = [(objc_class *)self->_cacheEntryClass databaseTable];
-  v12 = [v8 initWithFormat:@"SELECT %@, LENGTH(HEX(%@)) FROM %@ WHERE %@ <= ?;", v9, v10, v11, SSDatabaseCacheEntryDateRetired];
+  databaseTable = [(objc_class *)self->_cacheEntryClass databaseTable];
+  sSDatabaseCacheEntryDateRetired = [v8 initWithFormat:@"SELECT %@, LENGTH(HEX(%@)) FROM %@ WHERE %@ <= ?;", v9, v10, databaseTable, SSDatabaseCacheEntryDateRetired];
   database = self->_database;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
@@ -533,7 +533,7 @@ uint64_t __24__SSDatabaseCache_clear__block_invoke(uint64_t a1, uint64_t a2)
   v38[5] = v3;
   v38[6] = v4;
   v38[7] = v7;
-  [(SSSQLiteDatabase *)database prepareStatementForSQL:v12 cache:1 usingBlock:v38];
+  [(SSSQLiteDatabase *)database prepareStatementForSQL:sSDatabaseCacheEntryDateRetired cache:1 usingBlock:v38];
 
   objc_autoreleasePoolPop(v5);
   v14 = objc_autoreleasePoolPush();
@@ -575,8 +575,8 @@ uint64_t __24__SSDatabaseCache_clear__block_invoke(uint64_t a1, uint64_t a2)
   if ([v3 count])
   {
     v21 = objc_alloc(MEMORY[0x1E696AD60]);
-    v22 = [(objc_class *)self->_cacheEntryClass databaseTable];
-    v23 = objc_msgSend(v21, "initWithFormat:", @"DELETE FROM %@ WHERE %@ IN(?"), v22, SSDatabaseCacheEntryLookupKey;
+    databaseTable2 = [(objc_class *)self->_cacheEntryClass databaseTable];
+    v23 = objc_msgSend(v21, "initWithFormat:", @"DELETE FROM %@ WHERE %@ IN(?"), databaseTable2, SSDatabaseCacheEntryLookupKey;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -689,57 +689,57 @@ uint64_t __35__SSDatabaseCache_clearRetiredData__block_invoke_2(uint64_t a1, sql
   return [*(*(a1 + 40) + 56) statementDidFinishAfterStepping:a2];
 }
 
-- (id)cacheEntryForLookupKey:(id)a3
+- (id)cacheEntryForLookupKey:(id)key
 {
-  v4 = [objc_alloc(self->_cacheEntryClass) initWithLookupKey:a3 inDatabase:self->_database];
+  v4 = [objc_alloc(self->_cacheEntryClass) initWithLookupKey:key inDatabase:self->_database];
   [v4 setPersistentCache:self->_persistentCache];
   return v4;
 }
 
-- (id)setData:(id)a3 expiring:(double)a4 retiring:(double)a5 lookupKey:(id)a6 userInfo:(id)a7
+- (id)setData:(id)data expiring:(double)expiring retiring:(double)retiring lookupKey:(id)key userInfo:(id)info
 {
   v68 = *MEMORY[0x1E69E9840];
   v13 = objc_autoreleasePoolPush();
-  v14 = [a3 length];
-  if (v14 && (v15 = v14, [a6 length]))
+  v14 = [data length];
+  if (v14 && (v15 = v14, [key length]))
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v17 = v16;
     v18 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:10];
-    v19 = [(SSDatabaseCache *)self maximumInlineBlobSize];
-    v20 = a3;
-    v61 = v19;
-    if (v15 > v19)
+    maximumInlineBlobSize = [(SSDatabaseCache *)self maximumInlineBlobSize];
+    dataCopy = data;
+    v61 = maximumInlineBlobSize;
+    if (v15 > maximumInlineBlobSize)
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
+      dataCopy = [MEMORY[0x1E695DFB0] null];
     }
 
-    [v18 setObject:v20 forKey:SSDatabaseCacheEntryDataBlob];
-    if (a7)
+    [v18 setObject:dataCopy forKey:SSDatabaseCacheEntryDataBlob];
+    if (info)
     {
       v21 = SSDatabaseCacheEntryUserInfo;
       v22 = v18;
-      v23 = a7;
+      infoCopy = info;
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
+      infoCopy = [MEMORY[0x1E695DFB0] null];
       v21 = SSDatabaseCacheEntryUserInfo;
       v22 = v18;
     }
 
-    [v22 setObject:v23 forKey:v21];
-    [v18 setObject:a6 forKey:SSDatabaseCacheEntryLookupKey];
+    [v22 setObject:infoCopy forKey:v21];
+    [v18 setObject:key forKey:SSDatabaseCacheEntryLookupKey];
     v26 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
     [v18 setObject:v26 forKey:SSDatabaseCacheEntryDataBlobSize];
     v27 = [MEMORY[0x1E696AD98] numberWithLongLong:v17];
     [v18 setObject:v27 forKey:SSDatabaseCacheEntryDateInserted];
-    v28 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+    v28 = [MEMORY[0x1E696AD98] numberWithLongLong:expiring];
     [v18 setObject:v28 forKey:SSDatabaseCacheEntryDateExpired];
-    v29 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+    v29 = [MEMORY[0x1E696AD98] numberWithLongLong:retiring];
     [v18 setObject:v29 forKey:SSDatabaseCacheEntryDateRetired];
-    v30 = [(SSDatabaseCache *)self cacheEntryForLookupKey:a6];
+    v30 = [(SSDatabaseCache *)self cacheEntryForLookupKey:key];
     if (v30)
     {
       v24 = v30;
@@ -758,15 +758,15 @@ uint64_t __35__SSDatabaseCache_clearRetiredData__block_invoke_2(uint64_t a1, sql
       v32 = +[SSLogConfig sharedConfig];
     }
 
-    v33 = [v32 shouldLog];
+    shouldLog = [v32 shouldLog];
     if ([v32 shouldLogToDisk])
     {
-      v34 = v33 | 2;
+      v34 = shouldLog | 2;
     }
 
     else
     {
-      v34 = v33;
+      v34 = shouldLog;
     }
 
     if (os_log_type_enabled([v32 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -788,7 +788,7 @@ uint64_t __35__SSDatabaseCache_clearRetiredData__block_invoke_2(uint64_t a1, sql
       *&v65[4] = 1024;
       *&v65[6] = v15 > v61;
       v66 = 2112;
-      v67 = a6;
+      keyCopy = key;
       LODWORD(v60) = 34;
       v59 = &v62;
       v36 = _os_log_send_and_compose_impl();
@@ -806,12 +806,12 @@ uint64_t __35__SSDatabaseCache_clearRetiredData__block_invoke_2(uint64_t a1, sql
       persistentCache = self->_persistentCache;
       if (v15 <= v61)
       {
-        [(SSPersistentCache *)persistentCache removeDataForKey:a6];
+        [(SSPersistentCache *)persistentCache removeDataForKey:key];
       }
 
       else
       {
-        [(SSPersistentCache *)persistentCache setData:a3 forKey:a6];
+        [(SSPersistentCache *)persistentCache setData:data forKey:key];
       }
     }
 
@@ -823,15 +823,15 @@ uint64_t __35__SSDatabaseCache_clearRetiredData__block_invoke_2(uint64_t a1, sql
         v46 = +[SSLogConfig sharedConfig];
       }
 
-      v47 = [v46 shouldLog];
+      shouldLog2 = [v46 shouldLog];
       if ([v46 shouldLogToDisk])
       {
-        v48 = v47 | 2;
+        v48 = shouldLog2 | 2;
       }
 
       else
       {
-        v48 = v47;
+        v48 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v46 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -845,7 +845,7 @@ uint64_t __35__SSDatabaseCache_clearRetiredData__block_invoke_2(uint64_t a1, sql
         v62 = 138412546;
         v63 = v49;
         v64 = 2112;
-        *v65 = a6;
+        *v65 = key;
         LODWORD(v60) = 22;
         v50 = _os_log_send_and_compose_impl();
         if (v50)
@@ -868,20 +868,20 @@ uint64_t __35__SSDatabaseCache_clearRetiredData__block_invoke_2(uint64_t a1, sql
   return v24;
 }
 
-- (id)cacheEntryProperties:(id)a3 forLookupKeys:(id)a4
+- (id)cacheEntryProperties:(id)properties forLookupKeys:(id)keys
 {
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   database = self->_database;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__SSDatabaseCache_cacheEntryProperties_forLookupKeys___block_invoke;
   v10[3] = &unk_1E84B3290;
-  v10[4] = a4;
+  v10[4] = keys;
   v10[5] = self;
-  v10[6] = a3;
-  v10[7] = v7;
+  v10[6] = properties;
+  v10[7] = array;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v10];
-  return v7;
+  return array;
 }
 
 uint64_t __54__SSDatabaseCache_cacheEntryProperties_forLookupKeys___block_invoke(uint64_t a1)

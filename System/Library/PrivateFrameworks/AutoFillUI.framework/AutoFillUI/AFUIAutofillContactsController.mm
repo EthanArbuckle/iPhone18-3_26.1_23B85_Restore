@@ -1,34 +1,34 @@
 @interface AFUIAutofillContactsController
-- (AFUIAutofillContactsController)initWithDocumentTraits:(id)a3 presentingViewController:(id)a4 textOperationsHandler:(id)a5;
+- (AFUIAutofillContactsController)initWithDocumentTraits:(id)traits presentingViewController:(id)controller textOperationsHandler:(id)handler;
 - (AFUIModalUIDelegate)modalUIDelegate;
 - (UIViewController)presentingViewController;
-- (double)_maximumSuggestionsForReturnedSuggestions:(double)a3;
+- (double)_maximumSuggestionsForReturnedSuggestions:(double)suggestions;
 - (id)_chooseOtherMenu;
 - (id)_meAction;
-- (void)_addCustomInfoActions:(id)a3;
-- (void)_generateSuggestions:(id)a3;
-- (void)_performCustomInfoTextOperations:(id)a3;
+- (void)_addCustomInfoActions:(id)actions;
+- (void)_generateSuggestions:(id)suggestions;
+- (void)_performCustomInfoTextOperations:(id)operations;
 - (void)_presentContactPicker;
 - (void)_presentCustomizeUI;
 - (void)contactPickerDidCancel;
-- (void)userSelectedContactProperties:(id)a3;
+- (void)userSelectedContactProperties:(id)properties;
 @end
 
 @implementation AFUIAutofillContactsController
 
-- (AFUIAutofillContactsController)initWithDocumentTraits:(id)a3 presentingViewController:(id)a4 textOperationsHandler:(id)a5
+- (AFUIAutofillContactsController)initWithDocumentTraits:(id)traits presentingViewController:(id)controller textOperationsHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  traitsCopy = traits;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = AFUIAutofillContactsController;
   v12 = [(AFUIAutofillContactsController *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_documentTraits, a3);
-    v14 = MEMORY[0x1D38AFC90](v11);
+    objc_storeStrong(&v12->_documentTraits, traits);
+    v14 = MEMORY[0x1D38AFC90](handlerCopy);
     performTextOperations = v13->_performTextOperations;
     v13->_performTextOperations = v14;
 
@@ -37,50 +37,50 @@
     v13->_contactsController = v16;
 
     [(AFUIContactsController *)v13->_contactsController setContactPropertyPickerDelegate:v13];
-    objc_storeWeak(&v13->_presentingViewController, v10);
+    objc_storeWeak(&v13->_presentingViewController, controllerCopy);
   }
 
   return v13;
 }
 
-- (void)userSelectedContactProperties:(id)a3
+- (void)userSelectedContactProperties:(id)properties
 {
-  v12 = a3;
-  v4 = [(RTIDocumentTraits *)self->_documentTraits textInputTraits];
-  v5 = [v4 textContentType];
-  v6 = [v12 objectForKey:v5];
+  propertiesCopy = properties;
+  textInputTraits = [(RTIDocumentTraits *)self->_documentTraits textInputTraits];
+  textContentType = [textInputTraits textContentType];
+  v6 = [propertiesCopy objectForKey:textContentType];
 
   if (!v6)
   {
-    v6 = [v12 objectForKey:*MEMORY[0x1E698E130]];
+    v6 = [propertiesCopy objectForKey:*MEMORY[0x1E698E130]];
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E69C6FA8]);
   [v7 _assertOrInsertText:v6 documentTraits:self->_documentTraits];
-  v8 = [v12 mutableCopy];
-  v9 = [v7 keyboardOutput];
-  [v9 setCustomInfo:v8];
+  v8 = [propertiesCopy mutableCopy];
+  keyboardOutput = [v7 keyboardOutput];
+  [keyboardOutput setCustomInfo:v8];
 
-  v10 = [(AFUIAutofillContactsController *)self performTextOperations];
-  (v10)[2](v10, v7);
+  performTextOperations = [(AFUIAutofillContactsController *)self performTextOperations];
+  (performTextOperations)[2](performTextOperations, v7);
 
-  v11 = [(AFUIAutofillContactsController *)self modalUIDelegate];
-  [v11 contactsUIDidEndForSessionUUID:0 completion:0];
+  modalUIDelegate = [(AFUIAutofillContactsController *)self modalUIDelegate];
+  [modalUIDelegate contactsUIDidEndForSessionUUID:0 completion:0];
 }
 
 - (void)contactPickerDidCancel
 {
-  v2 = [(AFUIAutofillContactsController *)self modalUIDelegate];
-  [v2 contactsUIDidEndForSessionUUID:0 completion:0];
+  modalUIDelegate = [(AFUIAutofillContactsController *)self modalUIDelegate];
+  [modalUIDelegate contactsUIDidEndForSessionUUID:0 completion:0];
 }
 
-- (double)_maximumSuggestionsForReturnedSuggestions:(double)a3
+- (double)_maximumSuggestionsForReturnedSuggestions:(double)suggestions
 {
-  v4 = [(AFUIAutofillContactsController *)self presentingViewController];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  if (([v7 interfaceOrientation] - 3) >= 2)
+  presentingViewController = [(AFUIAutofillContactsController *)self presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  if (([windowScene interfaceOrientation] - 3) >= 2)
   {
     v8 = 3.0;
   }
@@ -100,42 +100,42 @@
     result = v8;
   }
 
-  if (result >= a3)
+  if (result >= suggestions)
   {
-    return a3;
+    return suggestions;
   }
 
   return result;
 }
 
-- (void)_generateSuggestions:(id)a3
+- (void)_generateSuggestions:(id)suggestions
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v9 = [v4 array];
+  suggestionsCopy = suggestions;
+  array = [v4 array];
   [(AFUIAutofillContactsController *)self _addCustomInfoActions:?];
   if (_os_feature_enabled_impl())
   {
-    v6 = [(AFUIAutofillContactsController *)self _meAction];
-    [v9 addObject:v6];
+    _meAction = [(AFUIAutofillContactsController *)self _meAction];
+    [array addObject:_meAction];
   }
 
-  -[AFUIAutofillContactsController setHasSuggestions:](self, "setHasSuggestions:", [v9 count] != 0);
-  v7 = [(AFUIAutofillContactsController *)self _chooseOtherMenu];
-  [v9 addObject:v7];
+  -[AFUIAutofillContactsController setHasSuggestions:](self, "setHasSuggestions:", [array count] != 0);
+  _chooseOtherMenu = [(AFUIAutofillContactsController *)self _chooseOtherMenu];
+  [array addObject:_chooseOtherMenu];
 
-  v8 = [MEMORY[0x1E69DCC60] menuWithChildren:v9];
-  v5[2](v5, v8);
+  v8 = [MEMORY[0x1E69DCC60] menuWithChildren:array];
+  suggestionsCopy[2](suggestionsCopy, v8);
 }
 
-- (void)_addCustomInfoActions:(id)a3
+- (void)_addCustomInfoActions:(id)actions
 {
-  v40 = a3;
-  v4 = [(AFUIAutofillContactsController *)self contactsController];
-  v5 = [(AFUIAutofillContactsController *)self documentTraits];
-  v6 = [v5 textInputTraits];
-  v7 = [v6 textContentType];
-  v8 = [v4 meContactInfosForTextContentType:v7];
+  actionsCopy = actions;
+  contactsController = [(AFUIAutofillContactsController *)self contactsController];
+  documentTraits = [(AFUIAutofillContactsController *)self documentTraits];
+  textInputTraits = [documentTraits textInputTraits];
+  textContentType = [textInputTraits textContentType];
+  v8 = [contactsController meContactInfosForTextContentType:textContentType];
 
   v41 = v8;
   -[AFUIAutofillContactsController _maximumSuggestionsForReturnedSuggestions:](self, "_maximumSuggestionsForReturnedSuggestions:", [v8 count]);
@@ -147,10 +147,10 @@
     while (1)
     {
       v12 = [v41 objectAtIndex:{v11, v39}];
-      v13 = [(AFUIAutofillContactsController *)self documentTraits];
-      v14 = [v13 textInputTraits];
-      v15 = [v14 textContentType];
-      v16 = [v12 propertyForTextContentType:v15];
+      documentTraits2 = [(AFUIAutofillContactsController *)self documentTraits];
+      textInputTraits2 = [documentTraits2 textInputTraits];
+      textContentType2 = [textInputTraits2 textContentType];
+      v16 = [v12 propertyForTextContentType:textContentType2];
 
       if ([v16 length])
       {
@@ -164,38 +164,38 @@
         v18 = v12;
         v48 = v18;
         v19 = [v17 actionWithHandler:v46];
-        v20 = [v18 titleText];
-        [v19 setTitle:v20];
+        titleText = [v18 titleText];
+        [v19 setTitle:titleText];
 
-        v21 = [(AFUIAutofillContactsController *)self documentTraits];
-        v22 = [v21 autofillContext];
-        v23 = [v18 subtitleTextForAutoFillContext:v22];
+        documentTraits3 = [(AFUIAutofillContactsController *)self documentTraits];
+        autofillContext = [documentTraits3 autofillContext];
+        v23 = [v18 subtitleTextForAutoFillContext:autofillContext];
         [v19 setSubtitle:v23];
 
         v24 = MEMORY[0x1E69DCAB8];
-        v25 = [v18 label];
-        v26 = [AFUIContactInfo symbolNameForLabel:v25];
+        label = [v18 label];
+        v26 = [AFUIContactInfo symbolNameForLabel:label];
         v27 = [v24 systemImageNamed:v26];
         [v19 setImage:v27];
 
-        [v40 addObject:v19];
+        [actionsCopy addObject:v19];
         objc_destroyWeak(&v49);
         objc_destroyWeak(&location);
       }
 
-      v28 = [(AFUIAutofillContactsController *)self documentTraits];
-      v29 = [v28 textInputTraits];
-      v30 = [v29 textContentType];
-      if (AFTextContentTypeIsInNameSet(v30))
+      documentTraits4 = [(AFUIAutofillContactsController *)self documentTraits];
+      textInputTraits3 = [documentTraits4 textInputTraits];
+      textContentType3 = [textInputTraits3 textContentType];
+      if (AFTextContentTypeIsInNameSet(textContentType3))
       {
         break;
       }
 
       v45 = v16;
-      v31 = [(AFUIAutofillContactsController *)self documentTraits];
-      v32 = [v31 textInputTraits];
-      v33 = [v32 textContentType];
-      if (AFTextContentTypeIsInBirthdaySet(v33))
+      documentTraits5 = [(AFUIAutofillContactsController *)self documentTraits];
+      textInputTraits4 = [documentTraits5 textInputTraits];
+      textContentType4 = [textInputTraits4 textContentType];
+      if (AFTextContentTypeIsInBirthdaySet(textContentType4))
       {
 
         v16 = v45;
@@ -208,7 +208,7 @@
       [v36 textInputTraits];
       v37 = v44 = v12;
       [v37 textContentType];
-      v38 = v42 = v28;
+      v38 = v42 = documentTraits4;
       v43 = AFTextContentTypeIsInJobSet(v38);
 
       self = v35;
@@ -246,13 +246,13 @@ void __56__AFUIAutofillContactsController__addCustomInfoActions___block_invoke(u
   objc_copyWeak(&v17, &location);
   v4 = [v3 actionWithHandler:&v13];
   v5 = [(AFUIAutofillContactsController *)self contactsController:v13];
-  v6 = [(AFUIAutofillContactsController *)self documentTraits];
-  v7 = [v6 textInputTraits];
-  v8 = [v7 textContentType];
-  v9 = [v5 meContactInfosForTextContentType:v8];
-  v10 = [v9 firstObject];
-  v11 = [v10 nameString];
-  [v4 setTitle:v11];
+  documentTraits = [(AFUIAutofillContactsController *)self documentTraits];
+  textInputTraits = [documentTraits textInputTraits];
+  textContentType = [textInputTraits textContentType];
+  v9 = [v5 meContactInfosForTextContentType:textContentType];
+  firstObject = [v9 firstObject];
+  nameString = [firstObject nameString];
+  [v4 setTitle:nameString];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -299,22 +299,22 @@ void __50__AFUIAutofillContactsController__chooseOtherMenu__block_invoke(uint64_
   [WeakRetained _presentContactPicker];
 }
 
-- (void)_performCustomInfoTextOperations:(id)a3
+- (void)_performCustomInfoTextOperations:(id)operations
 {
   v4 = MEMORY[0x1E69C6FA8];
-  v5 = a3;
+  operationsCopy = operations;
   v12 = objc_alloc_init(v4);
-  v6 = [(AFUIAutofillContactsController *)self documentTraits];
-  v7 = [v6 textInputTraits];
-  v8 = [v7 textContentType];
-  v9 = [v5 objectForKey:v8];
+  documentTraits = [(AFUIAutofillContactsController *)self documentTraits];
+  textInputTraits = [documentTraits textInputTraits];
+  textContentType = [textInputTraits textContentType];
+  v9 = [operationsCopy objectForKey:textContentType];
 
   [v12 _assertOrInsertText:v9 documentTraits:self->_documentTraits];
-  v10 = [v12 keyboardOutput];
-  [v10 setCustomInfo:v5];
+  keyboardOutput = [v12 keyboardOutput];
+  [keyboardOutput setCustomInfo:operationsCopy];
 
-  v11 = [(AFUIAutofillContactsController *)self performTextOperations];
-  (v11)[2](v11, v12);
+  performTextOperations = [(AFUIAutofillContactsController *)self performTextOperations];
+  (performTextOperations)[2](performTextOperations, v12);
 }
 
 - (void)_presentContactPicker
@@ -324,42 +324,42 @@ void __50__AFUIAutofillContactsController__chooseOtherMenu__block_invoke(uint64_
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
-  v3 = [(AFUIAutofillContactsController *)self documentTraits];
-  v4 = [v3 textInputTraits];
-  v18 = [v4 textContentType];
+  documentTraits = [(AFUIAutofillContactsController *)self documentTraits];
+  textInputTraits = [documentTraits textInputTraits];
+  textContentType = [textInputTraits textContentType];
 
   if (AFTextContentTypeIsInNameSet(v14[5]))
   {
-    v5 = [(AFUIAutofillContactsController *)self documentTraits];
-    v6 = [v5 autofillContext];
+    documentTraits2 = [(AFUIAutofillContactsController *)self documentTraits];
+    autofillContext = [documentTraits2 autofillContext];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __55__AFUIAutofillContactsController__presentContactPicker__block_invoke;
     v12[3] = &unk_1E8424690;
     v12[4] = &v13;
-    [v6 enumerateKeysAndObjectsUsingBlock:v12];
+    [autofillContext enumerateKeysAndObjectsUsingBlock:v12];
   }
 
-  v7 = [(AFUIAutofillContactsController *)self modalUIDelegate];
+  modalUIDelegate = [(AFUIAutofillContactsController *)self modalUIDelegate];
 
-  if (v7)
+  if (modalUIDelegate)
   {
-    v8 = [(AFUIAutofillContactsController *)self modalUIDelegate];
+    modalUIDelegate2 = [(AFUIAutofillContactsController *)self modalUIDelegate];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __55__AFUIAutofillContactsController__presentContactPicker__block_invoke_2;
     v11[3] = &unk_1E84246D8;
     v11[4] = self;
     v11[5] = &v13;
-    [v8 contactsUIWillBeginForSessionUUID:0 completion:v11];
+    [modalUIDelegate2 contactsUIWillBeginForSessionUUID:0 completion:v11];
   }
 
   else
   {
-    v8 = [(AFUIAutofillContactsController *)self presentingViewController];
-    v9 = [(AFUIAutofillContactsController *)self contactsController];
-    v10 = [v9 allContactsViewControllerForTextContentType:v14[5]];
-    [v8 presentViewController:v10 animated:1 completion:&__block_literal_global_22];
+    modalUIDelegate2 = [(AFUIAutofillContactsController *)self presentingViewController];
+    contactsController = [(AFUIAutofillContactsController *)self contactsController];
+    v10 = [contactsController allContactsViewControllerForTextContentType:v14[5]];
+    [modalUIDelegate2 presentViewController:v10 animated:1 completion:&__block_literal_global_22];
   }
 
   _Block_object_dispose(&v13, 8);
@@ -412,13 +412,13 @@ void __55__AFUIAutofillContactsController__presentContactPicker__block_invoke_3(
 
 - (void)_presentCustomizeUI
 {
-  v8 = [(AFUIAutofillContactsController *)self presentingViewController];
-  v3 = [(AFUIAutofillContactsController *)self contactsController];
-  v4 = [(AFUIAutofillContactsController *)self documentTraits];
-  v5 = [v4 textInputTraits];
-  v6 = [v5 textContentType];
-  v7 = [v3 meCardViewControllerForTextContentType:v6];
-  [v8 presentViewController:v7 animated:1 completion:&__block_literal_global_24];
+  presentingViewController = [(AFUIAutofillContactsController *)self presentingViewController];
+  contactsController = [(AFUIAutofillContactsController *)self contactsController];
+  documentTraits = [(AFUIAutofillContactsController *)self documentTraits];
+  textInputTraits = [documentTraits textInputTraits];
+  textContentType = [textInputTraits textContentType];
+  v7 = [contactsController meCardViewControllerForTextContentType:textContentType];
+  [presentingViewController presentViewController:v7 animated:1 completion:&__block_literal_global_24];
 }
 
 - (AFUIModalUIDelegate)modalUIDelegate

@@ -1,26 +1,26 @@
 @interface APUIAppIconGridLayoutProvider
-- (APUIAppIconGridLayoutProvider)initWithLargeIconsEnabled:(BOOL)a3;
-- (id)layoutForIconLocation:(id)a3;
+- (APUIAppIconGridLayoutProvider)initWithLargeIconsEnabled:(BOOL)enabled;
+- (id)layoutForIconLocation:(id)location;
 @end
 
 @implementation APUIAppIconGridLayoutProvider
 
-- (APUIAppIconGridLayoutProvider)initWithLargeIconsEnabled:(BOOL)a3
+- (APUIAppIconGridLayoutProvider)initWithLargeIconsEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = APUIAppIconGridLayoutProvider;
   result = [(APUIAppIconGridLayoutProvider *)&v5 init];
   if (result)
   {
-    result->_largeIconsEnabled = a3;
+    result->_largeIconsEnabled = enabled;
   }
 
   return result;
 }
 
-- (id)layoutForIconLocation:(id)a3
+- (id)layoutForIconLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if ([(APUIAppIconGridLayoutProvider *)self isLargeIconsEnabled])
   {
     v5 = 24;
@@ -78,20 +78,20 @@
   }
 
   v12 = [v8 makeLayoutForIconLocation:*v9];
-  v13 = [v12 layoutConfiguration];
-  [v13 setNumberOfPortraitColumns:4];
+  layoutConfiguration = [v12 layoutConfiguration];
+  [layoutConfiguration setNumberOfPortraitColumns:4];
 
-  v14 = [v12 layoutConfiguration];
-  [v14 setNumberOfLandscapeColumns:4];
+  layoutConfiguration2 = [v12 layoutConfiguration];
+  [layoutConfiguration2 setNumberOfLandscapeColumns:4];
 
-  v15 = [v12 layoutConfiguration];
-  [v15 setNumberOfPortraitRows:2];
+  layoutConfiguration3 = [v12 layoutConfiguration];
+  [layoutConfiguration3 setNumberOfPortraitRows:2];
 
-  v16 = [v12 layoutConfiguration];
-  [v16 setNumberOfLandscapeRows:2];
+  layoutConfiguration4 = [v12 layoutConfiguration];
+  [layoutConfiguration4 setNumberOfLandscapeRows:2];
 
-  v17 = [v12 layoutConfiguration];
-  [v17 portraitLayoutInsets];
+  layoutConfiguration5 = [v12 layoutConfiguration];
+  [layoutConfiguration5 portraitLayoutInsets];
   v19 = v18;
   v21 = v20;
 
@@ -107,16 +107,16 @@
     v22 = 0.0;
   }
 
-  v23 = [v12 layoutConfiguration];
-  [v23 setPortraitLayoutInsets:{v22, v19, v22, v21}];
+  layoutConfiguration6 = [v12 layoutConfiguration];
+  [layoutConfiguration6 setPortraitLayoutInsets:{v22, v19, v22, v21}];
 
-  v24 = [MEMORY[0x277D75418] currentDevice];
-  v25 = [v24 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v25 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v26 = [v12 layoutConfiguration];
-    [v26 setLandscapeLayoutInsets:{12.0, 12.0, 12.0, 12.0}];
+    layoutConfiguration7 = [v12 layoutConfiguration];
+    [layoutConfiguration7 setLandscapeLayoutInsets:{12.0, 12.0, 12.0, 12.0}];
   }
 
   return v12;

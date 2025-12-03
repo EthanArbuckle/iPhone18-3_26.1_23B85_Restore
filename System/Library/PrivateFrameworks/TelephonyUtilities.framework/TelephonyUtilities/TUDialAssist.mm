@@ -32,8 +32,8 @@ uint64_t __30__TUDialAssist_sharedInstance__block_invoke()
   v2 = [(TUDialAssist *)&v5 init];
   if (v2)
   {
-    v3 = [TUDialAssistUserSettingChanged UTF8String];
-    notify_register_dispatch(v3, &v2->_dialAssistUserSettingsChangedToken, MEMORY[0x1E69E96A0], &__block_literal_global_4_0);
+    uTF8String = [TUDialAssistUserSettingChanged UTF8String];
+    notify_register_dispatch(uTF8String, &v2->_dialAssistUserSettingsChangedToken, MEMORY[0x1E69E96A0], &__block_literal_global_4_0);
     CFPreferencesAppSynchronize(TUDialAssistDomain);
     CFPreferencesAppSynchronize(TUMobilePhoneDomain);
   }

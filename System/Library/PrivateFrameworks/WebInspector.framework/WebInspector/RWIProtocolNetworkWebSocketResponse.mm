@@ -2,8 +2,8 @@
 - (NSString)statusText;
 - (RWIProtocolNetworkHeaders)headers;
 - (int)status;
-- (void)setHeaders:(id)a3;
-- (void)setStatusText:(id)a3;
+- (void)setHeaders:(id)headers;
+- (void)setStatusText:(id)text;
 @end
 
 @implementation RWIProtocolNetworkWebSocketResponse
@@ -15,11 +15,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"status"];
 }
 
-- (void)setStatusText:(id)a3
+- (void)setStatusText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkWebSocketResponse;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"statusText"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"statusText"];
 }
 
 - (NSString)statusText
@@ -31,11 +31,11 @@
   return v2;
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkWebSocketResponse;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"headers"];
+  [(RWIProtocolJSONObject *)&v3 setObject:headers forKey:@"headers"];
 }
 
 - (RWIProtocolNetworkHeaders)headers

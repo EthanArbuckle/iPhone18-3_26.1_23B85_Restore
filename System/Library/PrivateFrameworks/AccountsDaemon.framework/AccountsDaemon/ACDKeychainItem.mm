@@ -1,30 +1,30 @@
 @interface ACDKeychainItem
 - (ACDKeychainItem)init;
-- (ACDKeychainItem)initWithPersistentRef:(__CFData *)a3;
-- (ACDKeychainItem)initWithPersistentRef:(__CFData *)a3 properties:(id)a4;
-- (BOOL)_setMetadata:(id)a3 withError:(id *)a4;
+- (ACDKeychainItem)initWithPersistentRef:(__CFData *)ref;
+- (ACDKeychainItem)initWithPersistentRef:(__CFData *)ref properties:(id)properties;
+- (BOOL)_setMetadata:(id)metadata withError:(id *)error;
 - (BOOL)hasCustomAccessControl;
-- (BOOL)save:(id *)a3;
+- (BOOL)save:(id *)save;
 - (NSString)accessGroup;
 - (NSString)accessibility;
 - (NSString)account;
 - (NSString)service;
-- (id)_metadataWithError:(id *)a3;
+- (id)_metadataWithError:(id *)error;
 - (id)_modifiedProperties;
 - (id)debugDescription;
 - (id)description;
 - (int64_t)version;
 - (void)_clearDirtyProperties;
-- (void)_markPropertyDirty:(id)a3;
+- (void)_markPropertyDirty:(id)dirty;
 - (void)_reloadProperties;
-- (void)_setValue:(id)a3 forProperty:(id)a4;
+- (void)_setValue:(id)value forProperty:(id)property;
 - (void)dealloc;
 - (void)reload;
-- (void)setAccessGroup:(id)a3;
-- (void)setAccessibility:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setService:(id)a3;
-- (void)setVersion:(int64_t)a3;
+- (void)setAccessGroup:(id)group;
+- (void)setAccessibility:(id)accessibility;
+- (void)setAccount:(id)account;
+- (void)setService:(id)service;
+- (void)setVersion:(int64_t)version;
 @end
 
 @implementation ACDKeychainItem
@@ -58,17 +58,17 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ACDKeychainItem *)self account];
+  account = [(ACDKeychainItem *)self account];
   v7 = ACHashedString();
-  v8 = [(ACDKeychainItem *)self service];
-  v9 = [(ACDKeychainItem *)self synchronizable];
+  service = [(ACDKeychainItem *)self service];
+  synchronizable = [(ACDKeychainItem *)self synchronizable];
   v10 = @"NO";
-  if (v9)
+  if (synchronizable)
   {
     v10 = @"YES";
   }
 
-  v11 = [v3 stringWithFormat:@"<%@: %p {username: %@, service: %@, synchronizable: %@}>", v5, self, v7, v8, v10];
+  v11 = [v3 stringWithFormat:@"<%@: %p {username: %@, service: %@, synchronizable: %@}>", v5, self, v7, service, v10];
 
   return v11;
 }
@@ -96,30 +96,30 @@
   return 0;
 }
 
-- (ACDKeychainItem)initWithPersistentRef:(__CFData *)a3
+- (ACDKeychainItem)initWithPersistentRef:(__CFData *)ref
 {
   v6.receiver = self;
   v6.super_class = ACDKeychainItem;
   v4 = [(ACDKeychainItem *)&v6 init];
   if (v4)
   {
-    v4->_persistentRef = CFRetain(a3);
+    v4->_persistentRef = CFRetain(ref);
     [(ACDKeychainItem *)v4 _reloadProperties];
   }
 
   return v4;
 }
 
-- (ACDKeychainItem)initWithPersistentRef:(__CFData *)a3 properties:(id)a4
+- (ACDKeychainItem)initWithPersistentRef:(__CFData *)ref properties:(id)properties
 {
-  v6 = a4;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = ACDKeychainItem;
   v7 = [(ACDKeychainItem *)&v11 init];
   if (v7)
   {
-    v7->_persistentRef = CFRetain(a3);
-    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
+    v7->_persistentRef = CFRetain(ref);
+    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:propertiesCopy];
     properties = v7->_properties;
     v7->_properties = v8;
   }
@@ -134,7 +134,7 @@
   [(ACDKeychainItem *)self _reloadProperties];
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   keys[2] = *MEMORY[0x277D85DE8];
   if (self->_persistentRef)
@@ -148,15 +148,15 @@
       values[0] = self->_persistentRef;
       values[1] = v6;
       v7 = CFDictionaryCreate(*MEMORY[0x277CBECE8], keys, values, 2, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-      v8 = [(ACDKeychainItem *)self _modifiedProperties];
-      v9 = SecItemUpdate(v7, v8);
+      _modifiedProperties = [(ACDKeychainItem *)self _modifiedProperties];
+      v9 = SecItemUpdate(v7, _modifiedProperties);
       CFRelease(v7);
       v10 = v9 == 0;
       if (v9)
       {
-        if (a3)
+        if (save)
         {
-          *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC8] code:v9 userInfo:0];
+          *save = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC8] code:v9 userInfo:0];
         }
       }
 
@@ -172,10 +172,10 @@
     }
   }
 
-  else if (a3)
+  else if (save)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:10003 userInfo:0];
-    *a3 = v10 = 0;
+    *save = v10 = 0;
   }
 
   else
@@ -203,7 +203,7 @@
   return v3;
 }
 
-- (id)_metadataWithError:(id *)a3
+- (id)_metadataWithError:(id *)error
 {
   v4 = [(NSMutableDictionary *)self->_properties dataValueForKey:*MEMORY[0x277CDBFB8]];
   if (v4)
@@ -219,10 +219,10 @@
         [(ACDKeychainItem *)v6 _metadataWithError:v7];
       }
 
-      if (a3)
+      if (error)
       {
         v8 = v6;
-        *a3 = v6;
+        *error = v6;
       }
     }
   }
@@ -237,80 +237,80 @@
 
 - (int64_t)version
 {
-  v2 = [(ACDKeychainItem *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"ACKeychainItemVersion"];
+  metadata = [(ACDKeychainItem *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"ACKeychainItemVersion"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v7 = a3;
-  v4 = [(ACDKeychainItem *)self account];
-  v5 = [v7 isEqualToString:v4];
+  accountCopy = account;
+  account = [(ACDKeychainItem *)self account];
+  v5 = [accountCopy isEqualToString:account];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v7 copy];
+    v6 = [accountCopy copy];
     [(ACDKeychainItem *)self _setValue:v6 forProperty:*MEMORY[0x277CDBF20]];
   }
 }
 
-- (void)setService:(id)a3
+- (void)setService:(id)service
 {
-  v7 = a3;
-  v4 = [(ACDKeychainItem *)self service];
-  v5 = [v7 isEqualToString:v4];
+  serviceCopy = service;
+  service = [(ACDKeychainItem *)self service];
+  v5 = [serviceCopy isEqualToString:service];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v7 copy];
+    v6 = [serviceCopy copy];
     [(ACDKeychainItem *)self _setValue:v6 forProperty:*MEMORY[0x277CDC120]];
   }
 }
 
-- (void)setAccessGroup:(id)a3
+- (void)setAccessGroup:(id)group
 {
-  v7 = a3;
-  v4 = [(ACDKeychainItem *)self accessGroup];
-  v5 = [v7 isEqualToString:v4];
+  groupCopy = group;
+  accessGroup = [(ACDKeychainItem *)self accessGroup];
+  v5 = [groupCopy isEqualToString:accessGroup];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v7 copy];
+    v6 = [groupCopy copy];
     [(ACDKeychainItem *)self _setValue:v6 forProperty:*MEMORY[0x277CDBEC8]];
   }
 }
 
-- (void)setAccessibility:(id)a3
+- (void)setAccessibility:(id)accessibility
 {
-  v7 = a3;
-  v4 = [(ACDKeychainItem *)self accessibility];
-  v5 = [v7 isEqualToString:v4];
+  accessibilityCopy = accessibility;
+  accessibility = [(ACDKeychainItem *)self accessibility];
+  v5 = [accessibilityCopy isEqualToString:accessibility];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v7 copy];
+    v6 = [accessibilityCopy copy];
     [(ACDKeychainItem *)self _setValue:v6 forProperty:*MEMORY[0x277CDBED8]];
   }
 }
 
-- (BOOL)_setMetadata:(id)a3 withError:(id *)a4
+- (BOOL)_setMetadata:(id)metadata withError:(id *)error
 {
-  if (a3)
+  if (metadata)
   {
     v13 = 0;
-    v6 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:100 options:0 error:&v13];
+    v6 = [MEMORY[0x277CCAC58] dataWithPropertyList:metadata format:100 options:0 error:&v13];
     v7 = v13;
     v8 = v7 == 0;
     if (v7)
@@ -321,10 +321,10 @@
         [ACDKeychainItem _setMetadata:v7 withError:v9];
       }
 
-      if (a4)
+      if (error)
       {
         v10 = v7;
-        *a4 = v7;
+        *error = v7;
       }
     }
 
@@ -336,8 +336,8 @@
 
   else
   {
-    v11 = [MEMORY[0x277CBEA90] data];
-    [(ACDKeychainItem *)self _setValue:v11 forProperty:*MEMORY[0x277CDBFB8]];
+    data = [MEMORY[0x277CBEA90] data];
+    [(ACDKeychainItem *)self _setValue:data forProperty:*MEMORY[0x277CDBFB8]];
 
     return 1;
   }
@@ -345,42 +345,42 @@
   return v8;
 }
 
-- (void)setVersion:(int64_t)a3
+- (void)setVersion:(int64_t)version
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = [(ACDKeychainItem *)self metadata];
-  v8 = [v5 dictionaryWithDictionary:v6];
+  metadata = [(ACDKeychainItem *)self metadata];
+  v8 = [v5 dictionaryWithDictionary:metadata];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:version];
   [v8 setObject:v7 forKey:@"ACKeychainItemVersion"];
 
   [(ACDKeychainItem *)self setMetadata:v8];
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4
+- (void)_setValue:(id)value forProperty:(id)property
 {
   properties = self->_properties;
-  v7 = a4;
-  [(NSMutableDictionary *)properties setObject:a3 forKey:v7];
-  [(ACDKeychainItem *)self _markPropertyDirty:v7];
+  propertyCopy = property;
+  [(NSMutableDictionary *)properties setObject:value forKey:propertyCopy];
+  [(ACDKeychainItem *)self _markPropertyDirty:propertyCopy];
 }
 
-- (void)_markPropertyDirty:(id)a3
+- (void)_markPropertyDirty:(id)dirty
 {
-  v4 = a3;
+  dirtyCopy = dirty;
   dirtyProperties = self->_dirtyProperties;
-  v8 = v4;
+  v8 = dirtyCopy;
   if (!dirtyProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_dirtyProperties;
     self->_dirtyProperties = v6;
 
-    v4 = v8;
+    dirtyCopy = v8;
     dirtyProperties = self->_dirtyProperties;
   }
 
-  [(NSMutableSet *)dirtyProperties addObject:v4];
+  [(NSMutableSet *)dirtyProperties addObject:dirtyCopy];
 }
 
 - (void)_clearDirtyProperties
@@ -392,12 +392,12 @@
 
 - (id)_modifiedProperties
 {
-  v3 = [(NSMutableSet *)self->_dirtyProperties allObjects];
+  allObjects = [(NSMutableSet *)self->_dirtyProperties allObjects];
   properties = self->_properties;
-  v5 = [MEMORY[0x277CBEB68] null];
-  v6 = [(NSMutableDictionary *)properties objectsForKeys:v3 notFoundMarker:v5];
+  null = [MEMORY[0x277CBEB68] null];
+  v6 = [(NSMutableDictionary *)properties objectsForKeys:allObjects notFoundMarker:null];
 
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:v3];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:allObjects];
 
   return v7;
 }
@@ -405,7 +405,7 @@
 - (void)_reloadProperties
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CCABB0] numberWithInt:a1];
+  v7 = [MEMORY[0x277CCABB0] numberWithInt:self];
   OUTLINED_FUNCTION_7();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 
@@ -417,19 +417,19 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ACDKeychainItem *)self account];
+  account = [(ACDKeychainItem *)self account];
   v7 = ACHashedString();
-  v8 = [(ACDKeychainItem *)self service];
-  v9 = [(ACDKeychainItem *)self accessGroup];
-  v10 = [(ACDKeychainItem *)self accessibility];
-  v11 = [(ACDKeychainItem *)self synchronizable];
+  service = [(ACDKeychainItem *)self service];
+  accessGroup = [(ACDKeychainItem *)self accessGroup];
+  accessibility = [(ACDKeychainItem *)self accessibility];
+  synchronizable = [(ACDKeychainItem *)self synchronizable];
   v12 = @"NO";
-  if (v11)
+  if (synchronizable)
   {
     v12 = @"YES";
   }
 
-  v13 = [v3 stringWithFormat:@"<%@: %p {\n\taccount: %@, \n\tservice: %@, \n\taccessGroup: %@, \n\taccessibility: %@, \n\tsynchronizable: %@, \n\tdirtyProperties: %@\n}>", v5, self, v7, v8, v9, v10, v12, self->_dirtyProperties];
+  v13 = [v3 stringWithFormat:@"<%@: %p {\n\taccount: %@, \n\tservice: %@, \n\taccessGroup: %@, \n\taccessibility: %@, \n\tsynchronizable: %@, \n\tdirtyProperties: %@\n}>", v5, self, v7, service, accessGroup, accessibility, v12, self->_dirtyProperties];
 
   return v13;
 }

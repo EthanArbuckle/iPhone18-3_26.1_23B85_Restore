@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (ADJingleRequestManager)init;
 - (BOOL)canMakeJingleRequest;
-- (void)authenticateUser:(id)a3;
-- (void)jingleRequestCompleted:(id)a3;
-- (void)startJingleRequest:(id)a3;
+- (void)authenticateUser:(id)user;
+- (void)jingleRequestCompleted:(id)completed;
+- (void)startJingleRequest:(id)request;
 @end
 
 @implementation ADJingleRequestManager
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __40__ADJingleRequestManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance__onceToken_5, block);
@@ -49,21 +49,21 @@ uint64_t __40__ADJingleRequestManager_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)startJingleRequest:(id)a3
+- (void)startJingleRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   pendingJingleRequests = self->_pendingJingleRequests;
-  v6 = [v4 token];
-  [(NSMutableDictionary *)pendingJingleRequests setObject:v4 forKeyedSubscript:v6];
+  token = [requestCopy token];
+  [(NSMutableDictionary *)pendingJingleRequests setObject:requestCopy forKeyedSubscript:token];
 
-  v7 = [MEMORY[0x277CE96B8] workQueue];
+  workQueue = [MEMORY[0x277CE96B8] workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__ADJingleRequestManager_startJingleRequest___block_invoke;
   v9[3] = &unk_278C57E10;
-  v10 = v4;
-  v8 = v4;
-  [v7 addOperationWithBlock:v9];
+  v10 = requestCopy;
+  v8 = requestCopy;
+  [workQueue addOperationWithBlock:v9];
 }
 
 void __74__ADJingleRequestManager_makeSegmentRequest_forceSegments_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -99,59 +99,59 @@ uint64_t __74__ADJingleRequestManager_makeSegmentRequest_forceSegments_withCompl
 
 - (BOOL)canMakeJingleRequest
 {
-  v2 = [MEMORY[0x277CE9658] sharedInstance];
-  v3 = [v2 activeDSIDRecord];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
 
-  if (!v3)
+  if (!activeDSIDRecord)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] There is no active DSID Record.", objc_opt_class()];
     _ADLog();
   }
 
-  v5 = [MEMORY[0x277CE9658] sharedInstance];
-  v6 = [v5 activeDSIDRecord];
-  v7 = v6 != 0;
+  mEMORY[0x277CE9658]2 = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord2 = [mEMORY[0x277CE9658]2 activeDSIDRecord];
+  v7 = activeDSIDRecord2 != 0;
 
   return v7;
 }
 
-- (void)jingleRequestCompleted:(id)a3
+- (void)jingleRequestCompleted:(id)completed
 {
   pendingJingleRequests = self->_pendingJingleRequests;
-  v5 = a3;
-  v6 = [v5 token];
-  v7 = [(NSMutableDictionary *)pendingJingleRequests objectForKey:v6];
+  completedCopy = completed;
+  token = [completedCopy token];
+  v7 = [(NSMutableDictionary *)pendingJingleRequests objectForKey:token];
 
   if (v7)
   {
     v8 = self->_pendingJingleRequests;
-    v11 = [v5 token];
+    token2 = [completedCopy token];
 
-    [(NSMutableDictionary *)v8 removeObjectForKey:v11];
+    [(NSMutableDictionary *)v8 removeObjectForKey:token2];
   }
 
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v11 = [v5 token];
+    token2 = [completedCopy token];
 
-    v10 = [v9 stringWithFormat:@"Received a response to Jingle request %@, but the request has already timed out this response will be ignored.", v11];;
+    v10 = [v9 stringWithFormat:@"Received a response to Jingle request %@, but the request has already timed out this response will be ignored.", token2];;
     _ADLog();
   }
 }
 
-- (void)authenticateUser:(id)a3
+- (void)authenticateUser:(id)user
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CE96B8] workQueue];
+  userCopy = user;
+  workQueue = [MEMORY[0x277CE96B8] workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ADJingleRequestManager_authenticateUser___block_invoke;
   v7[3] = &unk_278C57E88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = userCopy;
+  v6 = userCopy;
+  [workQueue addOperationWithBlock:v7];
 }
 
 void __43__ADJingleRequestManager_authenticateUser___block_invoke(uint64_t a1)

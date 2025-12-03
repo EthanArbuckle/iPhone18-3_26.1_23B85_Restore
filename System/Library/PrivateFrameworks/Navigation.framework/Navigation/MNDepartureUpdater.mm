@@ -1,6 +1,6 @@
 @interface MNDepartureUpdater
-- (BOOL)allowDepartureForLocation:(id)a3;
-- (MNDepartureUpdater)initWithRoute:(id)a3 arrivalLegIndex:(unint64_t)a4;
+- (BOOL)allowDepartureForLocation:(id)location;
+- (MNDepartureUpdater)initWithRoute:(id)route arrivalLegIndex:(unint64_t)index;
 - (id)_arrivalRegionsDepartureConditions;
 - (id)_defaultDepartureConditions;
 - (id)_descriptionForSubScores;
@@ -11,13 +11,13 @@
 
 - (id)_descriptionForSubScores
 {
-  v3 = [(NSMutableDictionary *)self->_conditionScores allKeys];
+  allKeys = [(NSMutableDictionary *)self->_conditionScores allKeys];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__MNDepartureUpdater__descriptionForSubScores__block_invoke;
   v9[3] = &unk_1E8430588;
   v9[4] = self;
-  v4 = [v3 _geo_map:v9];
+  v4 = [allKeys _geo_map:v9];
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = [v4 componentsJoinedByString:@"\n\t"];
@@ -41,10 +41,10 @@ id __46__MNDepartureUpdater__descriptionForSubScores__block_invoke(uint64_t a1, 
 - (id)_arrivalRegionsDepartureConditions
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
-  v4 = [v3 arrivalMapRegions];
+  arrivalParameters = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
+  arrivalMapRegions = [arrivalParameters arrivalMapRegions];
 
-  if (!v4)
+  if (!arrivalMapRegions)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -62,9 +62,9 @@ id __46__MNDepartureUpdater__descriptionForSubScores__block_invoke(uint64_t a1, 
   }
 
   v5 = [__MNDepartureExitedArrivalRegionCondition alloc];
-  v6 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
-  v7 = [v6 arrivalMapRegions];
-  v8 = [(__MNDepartureExitedArrivalRegionCondition *)v5 initWithUpdater:self arrivalRegions:v7];
+  arrivalParameters2 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
+  arrivalMapRegions2 = [arrivalParameters2 arrivalMapRegions];
+  v8 = [(__MNDepartureExitedArrivalRegionCondition *)v5 initWithUpdater:self arrivalRegions:arrivalMapRegions2];
   v13 = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
 
@@ -77,27 +77,27 @@ id __46__MNDepartureUpdater__descriptionForSubScores__block_invoke(uint64_t a1, 
 {
   v28[1] = *MEMORY[0x1E69E9840];
   BOOL = GEOConfigGetBOOL();
-  v4 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
-  v5 = [v4 arrivalPoints];
+  arrivalParameters = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
+  arrivalPoints = [arrivalParameters arrivalPoints];
 
   if (BOOL)
   {
     v6 = [__MNDepartureTimeSpentCondition alloc];
     GEOConfigGetDouble();
     v7 = [(__MNDepartureTimeSpentCondition *)v6 initWithUpdater:self timeThreshold:?];
-    v8 = v7;
-    if (v5)
+    arrivalParameters3 = v7;
+    if (arrivalPoints)
     {
       v26[0] = v7;
       v9 = [__MNDepartureMinimumArrivalDistanceCondition alloc];
       GEOConfigGetDouble();
-      v10 = [(__MNDepartureMinimumArrivalDistanceCondition *)v9 initWithUpdater:self distanceThreshold:?];
-      v26[1] = v10;
+      arrivalPoints3 = [(__MNDepartureMinimumArrivalDistanceCondition *)v9 initWithUpdater:self distanceThreshold:?];
+      v26[1] = arrivalPoints3;
       v11 = [__MNDepartureMinimumDepartureDistanceCondition alloc];
-      v12 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
-      v13 = [v12 arrivalPoints];
+      arrivalParameters2 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
+      arrivalPoints2 = [arrivalParameters2 arrivalPoints];
       GEOConfigGetDouble();
-      v14 = [(__MNDepartureMinimumDepartureDistanceCondition *)v11 initWithUpdater:self arrivalPoints:v13 distanceThreshold:?];
+      v14 = [(__MNDepartureMinimumDepartureDistanceCondition *)v11 initWithUpdater:self arrivalPoints:arrivalPoints2 distanceThreshold:?];
       v26[2] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
 
@@ -108,8 +108,8 @@ LABEL_8:
     v25[0] = v7;
     v21 = [__MNDepartureMinimumArrivalDistanceCondition alloc];
     GEOConfigGetDouble();
-    v10 = [(__MNDepartureMinimumArrivalDistanceCondition *)v21 initWithUpdater:self distanceThreshold:?];
-    v25[1] = v10;
+    arrivalPoints3 = [(__MNDepartureMinimumArrivalDistanceCondition *)v21 initWithUpdater:self distanceThreshold:?];
+    v25[1] = arrivalPoints3;
     v22 = [__MNDepartureMinimumDepartureDistanceCondition alloc];
     GEOConfigGetDouble();
     v17 = [(__MNDepartureMinimumDepartureDistanceCondition *)v22 initWithUpdater:self distanceThreshold:?];
@@ -124,12 +124,12 @@ LABEL_7:
   }
 
   v16 = [__MNDepartureMinimumDepartureDistanceCondition alloc];
-  if (v5)
+  if (arrivalPoints)
   {
-    v8 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
-    v10 = [(__MNDepartureMinimumDepartureDistanceCondition *)v8 arrivalPoints];
+    arrivalParameters3 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
+    arrivalPoints3 = [(__MNDepartureMinimumDepartureDistanceCondition *)arrivalParameters3 arrivalPoints];
     GEOConfigGetDouble();
-    v17 = [(__MNDepartureMinimumDepartureDistanceCondition *)v16 initWithUpdater:self arrivalPoints:v10 distanceThreshold:?];
+    v17 = [(__MNDepartureMinimumDepartureDistanceCondition *)v16 initWithUpdater:self arrivalPoints:arrivalPoints3 distanceThreshold:?];
     v28[0] = v17;
     v18 = MEMORY[0x1E695DEC8];
     v19 = v28;
@@ -138,8 +138,8 @@ LABEL_7:
   }
 
   GEOConfigGetDouble();
-  v8 = [(__MNDepartureMinimumDepartureDistanceCondition *)v16 initWithUpdater:self distanceThreshold:?];
-  v27 = v8;
+  arrivalParameters3 = [(__MNDepartureMinimumDepartureDistanceCondition *)v16 initWithUpdater:self distanceThreshold:?];
+  v27 = arrivalParameters3;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
 LABEL_9:
 
@@ -151,16 +151,16 @@ LABEL_9:
 - (void)_initConditions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
+  arrivalParameters = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
 
-  if (v3)
+  if (arrivalParameters)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
-    conditions = [v4 arrivalMapRegions];
+    arrivalParameters2 = [(GEOComposedRouteLeg *)self->_arrivalLeg arrivalParameters];
+    conditions = [arrivalParameters2 arrivalMapRegions];
 
     v6 = [conditions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
@@ -180,9 +180,9 @@ LABEL_9:
           if ([v10 arrivalRegionAction] == 5 || objc_msgSend(v10, "arrivalRegionAction") == 2)
           {
 
-            v11 = [(MNDepartureUpdater *)self _arrivalRegionsDepartureConditions];
+            _arrivalRegionsDepartureConditions = [(MNDepartureUpdater *)self _arrivalRegionsDepartureConditions];
             conditions = self->_conditions;
-            self->_conditions = v11;
+            self->_conditions = _arrivalRegionsDepartureConditions;
             goto LABEL_13;
           }
         }
@@ -202,18 +202,18 @@ LABEL_13:
 
   if (!self->_conditions)
   {
-    v12 = [(MNDepartureUpdater *)self _defaultDepartureConditions];
+    _defaultDepartureConditions = [(MNDepartureUpdater *)self _defaultDepartureConditions];
     v13 = self->_conditions;
-    self->_conditions = v12;
+    self->_conditions = _defaultDepartureConditions;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)allowDepartureForLocation:(id)a3
+- (BOOL)allowDepartureForLocation:(id)location
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   if (!self->_conditionScores)
   {
     v29 = 0;
@@ -244,19 +244,19 @@ LABEL_13:
       }
 
       v10 = *(*(&v42 + 1) + 8 * i);
-      [v10 scoreForLocation:v4];
+      [v10 scoreForLocation:locationCopy];
       v12 = v11;
       conditionScores = self->_conditionScores;
-      v14 = [v10 name];
-      v15 = [(NSMutableDictionary *)conditionScores objectForKey:v14];
+      name = [v10 name];
+      v15 = [(NSMutableDictionary *)conditionScores objectForKey:name];
       [v15 doubleValue];
       v17 = v16;
 
       if (v17 == -1.0)
       {
         v18 = self->_conditionScores;
-        v19 = [v10 name];
-        [(NSMutableDictionary *)v18 removeObjectForKey:v19];
+        name2 = [v10 name];
+        [(NSMutableDictionary *)v18 removeObjectForKey:name2];
       }
 
       else
@@ -267,9 +267,9 @@ LABEL_13:
         }
 
         v20 = self->_conditionScores;
-        v19 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-        v21 = [v10 name];
-        [(NSMutableDictionary *)v20 setObject:v19 forKey:v21];
+        name2 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
+        name3 = [v10 name];
+        [(NSMutableDictionary *)v20 setObject:name2 forKey:name3];
       }
     }
 
@@ -283,8 +283,8 @@ LABEL_14:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v22 = [(NSMutableDictionary *)self->_conditionScores allValues];
-  v23 = [v22 countByEnumeratingWithState:&v38 objects:v52 count:16];
+  allValues = [(NSMutableDictionary *)self->_conditionScores allValues];
+  v23 = [allValues countByEnumeratingWithState:&v38 objects:v52 count:16];
   if (v23)
   {
     v24 = v23;
@@ -296,14 +296,14 @@ LABEL_14:
       {
         if (*v39 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v38 + 1) + 8 * j) doubleValue];
         v26 = v28 + v26;
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v38 objects:v52 count:16];
+      v24 = [allValues countByEnumeratingWithState:&v38 objects:v52 count:16];
     }
 
     while (v24);
@@ -318,19 +318,19 @@ LABEL_14:
   {
     v30 = v26 / [(NSMutableDictionary *)self->_conditionScores count];
     v31 = MNGetMNDepartureUpdaterLog();
-    v32 = v31;
+    routeMatch = v31;
     if (v30 <= UInteger * 0.01)
     {
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
-        v34 = [(MNDepartureUpdater *)self _descriptionForSubScores];
+        _descriptionForSubScores = [(MNDepartureUpdater *)self _descriptionForSubScores];
         *buf = 134218498;
         v47 = v30;
         v48 = 2048;
         v49 = UInteger * 0.01;
         v50 = 2112;
-        v51 = v34;
-        _os_log_impl(&dword_1D311E000, v32, OS_LOG_TYPE_INFO, "Not allowing departure yet because score (%0.2f) is below the minimum score (%g). Sub scores:%@", buf, 0x20u);
+        v51 = _descriptionForSubScores;
+        _os_log_impl(&dword_1D311E000, routeMatch, OS_LOG_TYPE_INFO, "Not allowing departure yet because score (%0.2f) is below the minimum score (%g). Sub scores:%@", buf, 0x20u);
       }
 
       v29 = 0;
@@ -344,7 +344,7 @@ LABEL_14:
         v47 = v30;
         v48 = 2048;
         v49 = UInteger * 0.01;
-        _os_log_impl(&dword_1D311E000, v32, OS_LOG_TYPE_DEFAULT, "Allow departure because score (%0.2f) is above the minimum score (%g).", buf, 0x16u);
+        _os_log_impl(&dword_1D311E000, routeMatch, OS_LOG_TYPE_DEFAULT, "Allow departure because score (%0.2f) is above the minimum score (%g).", buf, 0x16u);
       }
 
       v29 = 1;
@@ -353,9 +353,9 @@ LABEL_14:
 
   else
   {
-    v32 = [v4 routeMatch];
-    v33 = [v32 legIndex];
-    v29 = v33 > [(MNDepartureUpdater *)self arrivalWaypointLegIndex];
+    routeMatch = [locationCopy routeMatch];
+    legIndex = [routeMatch legIndex];
+    v29 = legIndex > [(MNDepartureUpdater *)self arrivalWaypointLegIndex];
   }
 
 LABEL_34:
@@ -363,18 +363,18 @@ LABEL_34:
   return v29;
 }
 
-- (MNDepartureUpdater)initWithRoute:(id)a3 arrivalLegIndex:(unint64_t)a4
+- (MNDepartureUpdater)initWithRoute:(id)route arrivalLegIndex:(unint64_t)index
 {
-  v7 = a3;
+  routeCopy = route;
   v17.receiver = self;
   v17.super_class = MNDepartureUpdater;
   v8 = [(MNDepartureUpdater *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_route, a3);
-    v10 = [v7 legs];
-    v11 = [v10 objectAtIndexedSubscript:a4];
+    objc_storeStrong(&v8->_route, route);
+    legs = [routeCopy legs];
+    v11 = [legs objectAtIndexedSubscript:index];
     arrivalLeg = v9->_arrivalLeg;
     v9->_arrivalLeg = v11;
 

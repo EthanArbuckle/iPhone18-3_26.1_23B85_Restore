@@ -1,15 +1,15 @@
 @interface ANFiles
-+ (id)createTemporaryFileWithData:(id)a3 extension:(id)a4 directory:(id)a5;
-+ (id)createTemporaryURLWithFileExtension:(id)a3 directory:(id)a4;
++ (id)createTemporaryFileWithData:(id)data extension:(id)extension directory:(id)directory;
++ (id)createTemporaryURLWithFileExtension:(id)extension directory:(id)directory;
 + (id)shared;
 + (id)temporaryDirectoryUrl;
-+ (void)purgeTemporarySubDirectory:(id)a3;
-+ (void)removeItem:(id)a3;
-- (id)createDirectory:(id)a3 andFileURLWithExtension:(id)a4;
-- (id)createTemporaryFileWithData:(id)a3 extension:(id)a4 directory:(id)a5;
-- (void)purgeTemporarySubDirectory:(id)a3;
-- (void)removeDirectoryIfEmpty:(id)a3;
-- (void)removeItem:(id)a3;
++ (void)purgeTemporarySubDirectory:(id)directory;
++ (void)removeItem:(id)item;
+- (id)createDirectory:(id)directory andFileURLWithExtension:(id)extension;
+- (id)createTemporaryFileWithData:(id)data extension:(id)extension directory:(id)directory;
+- (void)purgeTemporarySubDirectory:(id)directory;
+- (void)removeDirectoryIfEmpty:(id)empty;
+- (void)removeItem:(id)item;
 @end
 
 @implementation ANFiles
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __17__ANFiles_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -39,39 +39,39 @@ uint64_t __17__ANFiles_shared__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)createTemporaryFileWithData:(id)a3 extension:(id)a4 directory:(id)a5
++ (id)createTemporaryFileWithData:(id)data extension:(id)extension directory:(id)directory
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  directoryCopy = directory;
+  extensionCopy = extension;
+  dataCopy = data;
   v10 = +[ANFiles shared];
-  v11 = [v10 createTemporaryFileWithData:v9 extension:v8 directory:v7];
+  v11 = [v10 createTemporaryFileWithData:dataCopy extension:extensionCopy directory:directoryCopy];
 
   return v11;
 }
 
-+ (id)createTemporaryURLWithFileExtension:(id)a3 directory:(id)a4
++ (id)createTemporaryURLWithFileExtension:(id)extension directory:(id)directory
 {
-  v5 = a4;
-  v6 = a3;
+  directoryCopy = directory;
+  extensionCopy = extension;
   v7 = +[ANFiles shared];
-  v8 = [v7 createTemporaryURLWithExtension:v6 directory:v5];
+  v8 = [v7 createTemporaryURLWithExtension:extensionCopy directory:directoryCopy];
 
   return v8;
 }
 
-+ (void)purgeTemporarySubDirectory:(id)a3
++ (void)purgeTemporarySubDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = +[ANFiles shared];
-  [v4 purgeTemporarySubDirectory:v3];
+  [v4 purgeTemporarySubDirectory:directoryCopy];
 }
 
-+ (void)removeItem:(id)a3
++ (void)removeItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[ANFiles shared];
-  [v4 removeItem:v3];
+  [v4 removeItem:itemCopy];
 }
 
 + (id)temporaryDirectoryUrl
@@ -83,18 +83,18 @@ uint64_t __17__ANFiles_shared__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)createTemporaryFileWithData:(id)a3 extension:(id)a4 directory:(id)a5
+- (id)createTemporaryFileWithData:(id)data extension:(id)extension directory:(id)directory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(ANFiles *)self createDirectory:a5 andFileURLWithExtension:a4];
+  dataCopy = data;
+  v9 = [(ANFiles *)self createDirectory:directory andFileURLWithExtension:extension];
   if (!v9)
   {
     goto LABEL_4;
   }
 
   v17 = 0;
-  v10 = [v8 writeToURL:v9 options:1 error:&v17];
+  v10 = [dataCopy writeToURL:v9 options:1 error:&v17];
   v11 = v17;
   v12 = v11;
   if (v10)
@@ -123,22 +123,22 @@ LABEL_8:
   return v13;
 }
 
-- (void)purgeTemporarySubDirectory:(id)a3
+- (void)purgeTemporarySubDirectory:(id)directory
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  directoryCopy = directory;
   v4 = +[ANFiles temporaryDirectoryUrl];
-  v5 = [v4 URLByAppendingPathComponent:v3 isDirectory:1];
+  v5 = [v4 URLByAppendingPathComponent:directoryCopy isDirectory:1];
 
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v8 = +[ANFiles temporaryDirectoryUrl];
-  v9 = [v8 URLByAppendingPathComponent:v7 isDirectory:1];
+  v9 = [v8 URLByAppendingPathComponent:uUIDString isDirectory:1];
 
-  v10 = [v5 fileSystemRepresentation];
-  v11 = [v9 fileSystemRepresentation];
-  rename(v10, v11, v12);
+  fileSystemRepresentation = [v5 fileSystemRepresentation];
+  fileSystemRepresentation2 = [v9 fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v12);
   if (v13)
   {
     v14 = *__error();
@@ -176,9 +176,9 @@ LABEL_11:
 
   else
   {
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v25 = 0;
-    [v21 removeItemAtURL:v9 error:&v25];
+    [defaultManager removeItemAtURL:v9 error:&v25];
     v16 = v25;
 
     if (v16)
@@ -200,46 +200,46 @@ LABEL_11:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  itemCopy = item;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = 0;
-  [v5 removeItemAtURL:v4 error:&v9];
+  [defaultManager removeItemAtURL:itemCopy error:&v9];
   v6 = v9;
 
   if (v6)
   {
-    v7 = ANLogHandleFiles();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    uRLByDeletingLastPathComponent = ANLogHandleFiles();
+    if (os_log_type_enabled(uRLByDeletingLastPathComponent, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
       v11 = &stru_2836DAA20;
       v12 = 2112;
-      v13 = v4;
+      v13 = itemCopy;
       v14 = 2112;
       v15 = v6;
-      _os_log_impl(&dword_2237C8000, v7, OS_LOG_TYPE_ERROR, "%@ANFiles: failed to remove item at %@: %@", buf, 0x20u);
+      _os_log_impl(&dword_2237C8000, uRLByDeletingLastPathComponent, OS_LOG_TYPE_ERROR, "%@ANFiles: failed to remove item at %@: %@", buf, 0x20u);
     }
   }
 
   else
   {
-    v7 = [v4 URLByDeletingLastPathComponent];
-    [(ANFiles *)self removeDirectoryIfEmpty:v7];
+    uRLByDeletingLastPathComponent = [itemCopy URLByDeletingLastPathComponent];
+    [(ANFiles *)self removeDirectoryIfEmpty:uRLByDeletingLastPathComponent];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createDirectory:(id)a3 andFileURLWithExtension:(id)a4
+- (id)createDirectory:(id)directory andFileURLWithExtension:(id)extension
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  extensionCopy = extension;
+  directoryCopy = directory;
   v7 = +[ANFiles temporaryDirectoryUrl];
-  v8 = [v7 URLByAppendingPathComponent:v6 isDirectory:1];
+  v8 = [v7 URLByAppendingPathComponent:directoryCopy isDirectory:1];
 
   v9 = ANLogHandleFiles();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -271,16 +271,16 @@ LABEL_11:
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = objc_opt_new();
-    v12 = [v11 UUIDString];
+    uUIDString = [v11 UUIDString];
     v13 = +[ANUtils an_dateFormatterForFilename];
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [v13 stringFromDate:v14];
-    v16 = [v10 stringWithFormat:@"%@--%@", v12, v15];
+    date = [MEMORY[0x277CBEAA8] date];
+    v15 = [v13 stringFromDate:date];
+    v16 = [v10 stringWithFormat:@"%@--%@", uUIDString, v15];
 
     v17 = [v8 URLByAppendingPathComponent:v16 isDirectory:0];
-    if ([v5 length])
+    if ([extensionCopy length])
     {
-      v18 = [v17 URLByAppendingPathExtension:v5];
+      v18 = [v17 URLByAppendingPathExtension:extensionCopy];
 
       v17 = v18;
     }
@@ -291,11 +291,11 @@ LABEL_11:
   return v17;
 }
 
-- (void)removeDirectoryIfEmpty:(id)a3
+- (void)removeDirectoryIfEmpty:(id)empty
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (rmdir([v3 fileSystemRepresentation]))
+  emptyCopy = empty;
+  if (rmdir([emptyCopy fileSystemRepresentation]))
   {
     if (*__error() == 66)
     {
@@ -325,7 +325,7 @@ LABEL_10:
           v13 = 138412546;
           v14 = &stru_2836DAA20;
           v15 = 2112;
-          v16 = v3;
+          v16 = emptyCopy;
           v5 = "%@ANFiles: failed to remove item. %@ is not a directory";
           v6 = v4;
           v7 = OS_LOG_TYPE_DEFAULT;

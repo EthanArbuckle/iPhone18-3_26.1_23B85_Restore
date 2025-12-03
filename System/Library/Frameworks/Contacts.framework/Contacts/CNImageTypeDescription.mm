@@ -1,20 +1,20 @@
 @interface CNImageTypeDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNImageTypeDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 imageType];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  imageType = [contactCopy imageType];
+  if (!imageType)
   {
-    v4 = [v7 imageType];
-    if (!v4)
+    imageType2 = [otherCopy imageType];
+    if (!imageType2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 imageType];
-  v10 = [v7 imageType];
-  v11 = [v9 isEqual:v10];
+  imageType3 = [contactCopy imageType];
+  imageType4 = [otherCopy imageType];
+  v11 = [imageType3 isEqual:imageType4];
 
-  if (!v8)
+  if (!imageType)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_imageType"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageType"];
 
   v7 = [v9 copy];
-  v8 = v5[78];
-  v5[78] = v7;
+  v8 = contactCopy[78];
+  contactCopy[78] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A3B8];
+    *d = *MEMORY[0x1E698A3B8];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

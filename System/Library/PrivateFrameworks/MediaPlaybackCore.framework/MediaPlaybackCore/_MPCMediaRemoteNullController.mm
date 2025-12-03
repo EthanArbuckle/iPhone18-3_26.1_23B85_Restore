@@ -1,7 +1,7 @@
 @interface _MPCMediaRemoteNullController
-- (id)_initWithResolvedPlayerPath:(id)a3;
+- (id)_initWithResolvedPlayerPath:(id)path;
 - (void)invalidateAllTokens;
-- (void)sendCommand:(unsigned int)a3 options:(id)a4 completion:(id)a5;
+- (void)sendCommand:(unsigned int)command options:(id)options completion:(id)completion;
 @end
 
 @implementation _MPCMediaRemoteNullController
@@ -19,22 +19,22 @@
   [(MPCFuture *)contentItemAnimatedArtworkForIdentifierFuture invalidate];
 }
 
-- (void)sendCommand:(unsigned int)a3 options:(id)a4 completion:(id)a5
+- (void)sendCommand:(unsigned int)command options:(id)options completion:(id)completion
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = a4;
+  v6 = *&command;
+  completionCopy = completion;
+  optionsCopy = options;
   v10 = objc_opt_class();
-  v11 = [(MPCMediaRemoteController *)self resolvedPlayerPath];
-  [v10 sendCommand:v6 options:v9 toPlayerPath:v11 completion:v8];
+  resolvedPlayerPath = [(MPCMediaRemoteController *)self resolvedPlayerPath];
+  [v10 sendCommand:v6 options:optionsCopy toPlayerPath:resolvedPlayerPath completion:completionCopy];
 }
 
-- (id)_initWithResolvedPlayerPath:(id)a3
+- (id)_initWithResolvedPlayerPath:(id)path
 {
   v42 = *MEMORY[0x1E69E9840];
   v40.receiver = self;
   v40.super_class = _MPCMediaRemoteNullController;
-  v3 = [(MPCMediaRemoteController *)&v40 _initWithResolvedPlayerPath:a3];
+  v3 = [(MPCMediaRemoteController *)&v40 _initWithResolvedPlayerPath:path];
   if (v3)
   {
     v4 = [[MPCFuture alloc] initWithQueue:*(v3 + 2)];

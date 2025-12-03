@@ -1,23 +1,23 @@
 @interface SUIBOrchestrationTask
-- (SUIBOrchestrationTask)initWithBuilder:(id)a3;
-- (SUIBOrchestrationTask)initWithCoder:(id)a3;
+- (SUIBOrchestrationTask)initWithBuilder:(id)builder;
+- (SUIBOrchestrationTask)initWithCoder:(id)coder;
 @end
 
 @implementation SUIBOrchestrationTask
 
-- (SUIBOrchestrationTask)initWithBuilder:(id)a3
+- (SUIBOrchestrationTask)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = SUIBOrchestrationTask;
   v5 = [(SUIBOrchestrationTask *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SUIBOrchestrationTaskMutation);
-    v4[2](v4, v7);
-    v8 = [(SUIBOrchestrationTaskMutation *)v7 taskId];
-    v9 = [v8 copy];
+    builderCopy[2](builderCopy, v7);
+    taskId = [(SUIBOrchestrationTaskMutation *)v7 taskId];
+    v9 = [taskId copy];
     taskId = v6->_taskId;
     v6->_taskId = v9;
   }
@@ -25,10 +25,10 @@
   return v6;
 }
 
-- (SUIBOrchestrationTask)initWithCoder:(id)a3
+- (SUIBOrchestrationTask)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUIBOrchestrationTask::taskId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUIBOrchestrationTask::taskId"];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

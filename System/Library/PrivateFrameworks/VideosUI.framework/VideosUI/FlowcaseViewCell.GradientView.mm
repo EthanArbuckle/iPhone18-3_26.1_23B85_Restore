@@ -14,7 +14,7 @@
 
 - (CAGradientLayer)layer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3A8D9D0();
 
   return v3;

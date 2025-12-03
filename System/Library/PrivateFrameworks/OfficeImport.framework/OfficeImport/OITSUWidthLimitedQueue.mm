@@ -1,9 +1,9 @@
 @interface OITSUWidthLimitedQueue
 - (OITSUWidthLimitedQueue)init;
-- (OITSUWidthLimitedQueue)initWithLimit:(unint64_t)a3;
+- (OITSUWidthLimitedQueue)initWithLimit:(unint64_t)limit;
 - (void)dealloc;
-- (void)performAsync:(id)a3;
-- (void)performSync:(id)a3;
+- (void)performAsync:(id)async;
+- (void)performSync:(id)sync;
 @end
 
 @implementation OITSUWidthLimitedQueue
@@ -35,19 +35,19 @@
   return [(OITSUWidthLimitedQueue *)self initWithLimit:v6];
 }
 
-- (OITSUWidthLimitedQueue)initWithLimit:(unint64_t)a3
+- (OITSUWidthLimitedQueue)initWithLimit:(unint64_t)limit
 {
   v7.receiver = self;
   v7.super_class = OITSUWidthLimitedQueue;
   v4 = [(OITSUWidthLimitedQueue *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (limit)
     {
-      if (a3 >> 31)
+      if (limit >> 31)
       {
         [OITSUWidthLimitedQueue initWithLimit:];
-        LODWORD(a3) = 0x7FFFFFFF;
+        LODWORD(limit) = 0x7FFFFFFF;
       }
     }
 
@@ -56,11 +56,11 @@
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUWidthLimitedQueue initWithLimit:]"];
       +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v5, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUWidthLimitedQueue.m"], 36, 0, "Queue limit shoudl be at least one.");
       +[OITSUAssertionHandler logBacktraceThrottled];
-      LODWORD(a3) = 1;
+      LODWORD(limit) = 1;
     }
 
     v4->mReaderCount = 0;
-    v4->mLimit = a3;
+    v4->mLimit = limit;
     v4->mManagerQueue = dispatch_queue_create("com.apple.iwork.limitedqueue.manager", 0);
     v4->mTargetQueue = dispatch_queue_create("com.apple.iwork.limitedqueue", MEMORY[0x277D85CD8]);
     v4->mUnfairLock._os_unfair_lock_opaque = 0;
@@ -79,7 +79,7 @@
   [(OITSUWidthLimitedQueue *)&v3 dealloc];
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
   mManagerQueue = self->mManagerQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -87,7 +87,7 @@
   v4[2] = __39__OITSUWidthLimitedQueue_performAsync___block_invoke;
   v4[3] = &unk_2799C6638;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = async;
   dispatch_async(mManagerQueue, v4);
 }
 
@@ -128,7 +128,7 @@ void __39__OITSUWidthLimitedQueue_performAsync___block_invoke_2(uint64_t a1)
   os_unfair_lock_unlock((v2 + 32));
 }
 
-- (void)performSync:(id)a3
+- (void)performSync:(id)sync
 {
   mManagerQueue = self->mManagerQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -136,7 +136,7 @@ void __39__OITSUWidthLimitedQueue_performAsync___block_invoke_2(uint64_t a1)
   v4[2] = __38__OITSUWidthLimitedQueue_performSync___block_invoke;
   v4[3] = &unk_2799C6638;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = sync;
   dispatch_barrier_sync(mManagerQueue, v4);
 }
 

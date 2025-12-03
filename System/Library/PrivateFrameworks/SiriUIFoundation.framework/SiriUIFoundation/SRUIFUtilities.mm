@@ -1,36 +1,36 @@
 @interface SRUIFUtilities
-+ (BOOL)shouldRedactSpeakableTextForAceObject:(id)a3;
-+ (BOOL)string:(id)a3 equalToString:(id)a4;
-+ (BOOL)string:(id)a3 isSameAsUserUtterance:(id)a4;
-+ (id)_normalizeTextString:(id)a3;
-+ (id)descriptionForAceView:(id)a3;
-+ (id)descriptionForAddDialogs:(id)a3;
-+ (id)descriptionForAddViews:(id)a3;
-+ (id)descriptionForDialog:(id)a3;
-+ (id)descriptionForSayIt:(id)a3;
-+ (id)parsedUtteranceFromText:(id)a3 context:(id)a4 spekableObjectProviding:(id)a5;
++ (BOOL)shouldRedactSpeakableTextForAceObject:(id)object;
++ (BOOL)string:(id)string equalToString:(id)toString;
++ (BOOL)string:(id)string isSameAsUserUtterance:(id)utterance;
++ (id)_normalizeTextString:(id)string;
++ (id)descriptionForAceView:(id)view;
++ (id)descriptionForAddDialogs:(id)dialogs;
++ (id)descriptionForAddViews:(id)views;
++ (id)descriptionForDialog:(id)dialog;
++ (id)descriptionForSayIt:(id)it;
++ (id)parsedUtteranceFromText:(id)text context:(id)context spekableObjectProviding:(id)providing;
 @end
 
 @implementation SRUIFUtilities
 
-+ (id)parsedUtteranceFromText:(id)a3 context:(id)a4 spekableObjectProviding:(id)a5
++ (id)parsedUtteranceFromText:(id)text context:(id)context spekableObjectProviding:(id)providing
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CEF430] sruif_speakableUtteranceParserForCurrentLanguage];
-  v11 = v7;
-  if (v8 && v9 && [v10 sruif_hasExternalDomainsForStringWithFormat:v11 shouldRedactLog:0])
+  textCopy = text;
+  contextCopy = context;
+  providingCopy = providing;
+  sruif_speakableUtteranceParserForCurrentLanguage = [MEMORY[0x277CEF430] sruif_speakableUtteranceParserForCurrentLanguage];
+  v11 = textCopy;
+  if (contextCopy && providingCopy && [sruif_speakableUtteranceParserForCurrentLanguage sruif_hasExternalDomainsForStringWithFormat:v11 shouldRedactLog:0])
   {
-    v12 = [v9 speakableProviderForObject:v8];
+    v12 = [providingCopy speakableProviderForObject:contextCopy];
     if (v12)
     {
-      [v10 registerProvider:v12 forNamespace:*MEMORY[0x277CEF568]];
+      [sruif_speakableUtteranceParserForCurrentLanguage registerProvider:v12 forNamespace:*MEMORY[0x277CEF568]];
     }
   }
 
   v17 = 0;
-  v13 = [v10 parseStringWithFormat:v11 error:&v17];
+  v13 = [sruif_speakableUtteranceParserForCurrentLanguage parseStringWithFormat:v11 error:&v17];
   v14 = v17;
   if (v14)
   {
@@ -44,46 +44,46 @@
   return v13;
 }
 
-+ (id)descriptionForAddViews:(id)a3
++ (id)descriptionForAddViews:(id)views
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  viewsCopy = views;
   v4 = objc_alloc(MEMORY[0x277CCAB68]);
   v5 = objc_opt_class();
-  v6 = [v3 aceId];
-  v7 = [v3 refId];
-  v8 = [v4 initWithFormat:@"<%@: %@ refId:%@>\n", v5, v6, v7];
+  aceId = [viewsCopy aceId];
+  refId = [viewsCopy refId];
+  v8 = [v4 initWithFormat:@"<%@: %@ refId:%@>\n", v5, aceId, refId];
 
-  v9 = [v3 responseMode];
+  responseMode = [viewsCopy responseMode];
 
-  if (v9)
+  if (responseMode)
   {
-    v10 = [v3 responseMode];
-    [v8 appendFormat:@"responseMode=%@\n", v10];
+    responseMode2 = [viewsCopy responseMode];
+    [v8 appendFormat:@"responseMode=%@\n", responseMode2];
   }
 
-  v11 = [v3 patternId];
+  patternId = [viewsCopy patternId];
 
-  if (v11)
+  if (patternId)
   {
-    v12 = [v3 patternId];
-    [v8 appendFormat:@"patternId=%@\n", v12];
+    patternId2 = [viewsCopy patternId];
+    [v8 appendFormat:@"patternId=%@\n", patternId2];
   }
 
-  v13 = [v3 patternType];
+  patternType = [viewsCopy patternType];
 
-  if (v13)
+  if (patternType)
   {
-    v14 = [v3 patternType];
-    [v8 appendFormat:@"patternType=%@\n", v14];
+    patternType2 = [viewsCopy patternType];
+    [v8 appendFormat:@"patternType=%@\n", patternType2];
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = [v3 views];
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  views = [viewsCopy views];
+  v16 = [views countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v16)
   {
     v17 = v16;
@@ -94,14 +94,14 @@
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(views);
         }
 
         v20 = [SRUIFUtilities descriptionForAceView:*(*(&v23 + 1) + 8 * i)];
         [v8 appendFormat:@"%@\n", v20];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v17 = [views countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v17);
@@ -112,21 +112,21 @@
   return v8;
 }
 
-+ (id)descriptionForAddDialogs:(id)a3
++ (id)descriptionForAddDialogs:(id)dialogs
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dialogsCopy = dialogs;
   v4 = objc_alloc(MEMORY[0x277CCAB68]);
   v5 = objc_opt_class();
-  v6 = [v3 aceId];
-  v7 = [v4 initWithFormat:@"<%@: %@>\n", v5, v6];
+  aceId = [dialogsCopy aceId];
+  v7 = [v4 initWithFormat:@"<%@: %@>\n", v5, aceId];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v3 dialogs];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  dialogs = [dialogsCopy dialogs];
+  v9 = [dialogs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -137,14 +137,14 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dialogs);
         }
 
         v13 = [SRUIFUtilities descriptionForDialog:*(*(&v16 + 1) + 8 * i)];
         [v7 appendFormat:@"%@\n", v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [dialogs countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -155,53 +155,53 @@
   return v7;
 }
 
-+ (id)descriptionForDialog:(id)a3
++ (id)descriptionForDialog:(id)dialog
 {
-  v3 = a3;
+  dialogCopy = dialog;
   v4 = objc_alloc(MEMORY[0x277CCAB68]);
   v5 = objc_opt_class();
-  v6 = [v3 aceId];
-  v7 = [v4 initWithFormat:@"<%@: %@\n", v5, v6];
+  aceId = [dialogCopy aceId];
+  v7 = [v4 initWithFormat:@"<%@: %@\n", v5, aceId];
 
-  v8 = [v3 caption];
+  caption = [dialogCopy caption];
 
-  if (v8)
+  if (caption)
   {
-    v9 = [v3 caption];
-    v10 = [v9 text];
+    caption2 = [dialogCopy caption];
+    text = [caption2 text];
 
-    if (v10)
+    if (text)
     {
-      v11 = [v3 caption];
-      v12 = [v11 text];
-      [v7 appendFormat:@"caption.text=%@\n", v12];
+      caption3 = [dialogCopy caption];
+      text2 = [caption3 text];
+      [v7 appendFormat:@"caption.text=%@\n", text2];
     }
 
-    v13 = [v3 caption];
-    v14 = [v13 speakableTextOverride];
+    caption4 = [dialogCopy caption];
+    speakableTextOverride = [caption4 speakableTextOverride];
 
-    if (v14)
+    if (speakableTextOverride)
     {
-      v15 = [v3 caption];
-      v16 = [v15 speakableTextOverride];
-      [v7 appendFormat:@"caption.speakableTextOverride=%@\n", v16];
+      caption5 = [dialogCopy caption];
+      speakableTextOverride2 = [caption5 speakableTextOverride];
+      [v7 appendFormat:@"caption.speakableTextOverride=%@\n", speakableTextOverride2];
     }
   }
 
-  v17 = [v3 content];
+  content = [dialogCopy content];
 
-  if (v17)
+  if (content)
   {
-    v18 = [v3 content];
-    v19 = [v18 text];
+    content2 = [dialogCopy content];
+    text3 = [content2 text];
 
-    if (v19)
+    if (text3)
     {
-      if ([v3 canUseServerTTS])
+      if ([dialogCopy canUseServerTTS])
       {
-        v20 = [v3 content];
-        v21 = [v20 text];
-        [v7 appendFormat:@"content.text=%@\n", v21];
+        content3 = [dialogCopy content];
+        text4 = [content3 text];
+        [v7 appendFormat:@"content.text=%@\n", text4];
       }
 
       else
@@ -210,16 +210,16 @@
       }
     }
 
-    v22 = [v3 content];
-    v23 = [v22 speakableTextOverride];
+    content4 = [dialogCopy content];
+    speakableTextOverride3 = [content4 speakableTextOverride];
 
-    if (v23)
+    if (speakableTextOverride3)
     {
-      if ([v3 canUseServerTTS])
+      if ([dialogCopy canUseServerTTS])
       {
-        v24 = [v3 content];
-        v25 = [v24 speakableTextOverride];
-        [v7 appendFormat:@"content.speakableTextOverride=%@\n", v25];
+        content5 = [dialogCopy content];
+        speakableTextOverride4 = [content5 speakableTextOverride];
+        [v7 appendFormat:@"content.speakableTextOverride=%@\n", speakableTextOverride4];
       }
 
       else
@@ -229,54 +229,54 @@
     }
   }
 
-  if ([v3 canUseServerTTS])
+  if ([dialogCopy canUseServerTTS])
   {
-    [v7 appendFormat:@"canUseServerTTS=%i\n", objc_msgSend(v3, "canUseServerTTS")];
+    [v7 appendFormat:@"canUseServerTTS=%i\n", objc_msgSend(dialogCopy, "canUseServerTTS")];
   }
 
-  v26 = [v3 dialogIdentifier];
+  dialogIdentifier = [dialogCopy dialogIdentifier];
 
-  if (v26)
+  if (dialogIdentifier)
   {
-    v27 = [v3 dialogIdentifier];
-    [v7 appendFormat:@"dialogIdentifier=%@\n", v27];
+    dialogIdentifier2 = [dialogCopy dialogIdentifier];
+    [v7 appendFormat:@"dialogIdentifier=%@\n", dialogIdentifier2];
   }
 
-  v28 = [v3 refId];
+  refId = [dialogCopy refId];
 
-  if (v28)
+  if (refId)
   {
-    v29 = [v3 refId];
-    [v7 appendFormat:@"refId=%@\n", v29];
+    refId2 = [dialogCopy refId];
+    [v7 appendFormat:@"refId=%@\n", refId2];
   }
 
-  v30 = [v3 configuration];
+  configuration = [dialogCopy configuration];
 
-  if (v30)
+  if (configuration)
   {
-    v31 = [v3 configuration];
-    v32 = [v31 languageCode];
+    configuration2 = [dialogCopy configuration];
+    languageCode = [configuration2 languageCode];
 
-    if (v32)
+    if (languageCode)
     {
-      v33 = [v31 languageCode];
-      [v7 appendFormat:@"languageCode=%@\n", v33];
+      languageCode2 = [configuration2 languageCode];
+      [v7 appendFormat:@"languageCode=%@\n", languageCode2];
     }
 
-    v34 = [v31 gender];
+    gender = [configuration2 gender];
 
-    if (v34)
+    if (gender)
     {
-      v35 = [v31 gender];
-      [v7 appendFormat:@"gender=%@\n", v35];
+      gender2 = [configuration2 gender];
+      [v7 appendFormat:@"gender=%@\n", gender2];
     }
 
-    v36 = [v31 context];
+    context = [configuration2 context];
 
-    if (v36)
+    if (context)
     {
-      v37 = [v31 context];
-      [v7 appendFormat:@"context=%@\n", v37];
+      context2 = [configuration2 context];
+      [v7 appendFormat:@"context=%@\n", context2];
     }
   }
 
@@ -285,22 +285,22 @@
   return v7;
 }
 
-+ (id)descriptionForAceView:(id)a3
++ (id)descriptionForAceView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_alloc(MEMORY[0x277CCAB68]);
   v5 = objc_opt_class();
-  v6 = [v3 aceId];
-  v7 = [v4 initWithFormat:@"<%@: %@\n", v5, v6];
+  aceId = [viewCopy aceId];
+  v7 = [v4 initWithFormat:@"<%@: %@\n", v5, aceId];
 
-  v8 = [v3 speakableText];
+  speakableText = [viewCopy speakableText];
 
-  if (v8)
+  if (speakableText)
   {
-    if ([v3 canUseServerTTS])
+    if ([viewCopy canUseServerTTS])
     {
-      v9 = [v3 speakableText];
-      [v7 appendFormat:@"speakableText=%@\n", v9];
+      speakableText2 = [viewCopy speakableText];
+      [v7 appendFormat:@"speakableText=%@\n", speakableText2];
     }
 
     else
@@ -309,45 +309,45 @@
     }
   }
 
-  if ([v3 canUseServerTTS])
+  if ([viewCopy canUseServerTTS])
   {
-    [v7 appendFormat:@"canUseServerTTS=%i\n", objc_msgSend(v3, "canUseServerTTS")];
+    [v7 appendFormat:@"canUseServerTTS=%i\n", objc_msgSend(viewCopy, "canUseServerTTS")];
   }
 
-  v10 = [v3 listenAfterSpeaking];
+  listenAfterSpeaking = [viewCopy listenAfterSpeaking];
 
-  if (v10)
+  if (listenAfterSpeaking)
   {
-    v11 = [v3 listenAfterSpeaking];
-    [v7 appendFormat:@"listenAfterSpeaking=%@\n", v11];
+    listenAfterSpeaking2 = [viewCopy listenAfterSpeaking];
+    [v7 appendFormat:@"listenAfterSpeaking=%@\n", listenAfterSpeaking2];
   }
 
-  v12 = [v3 refId];
+  refId = [viewCopy refId];
 
-  if (v12)
+  if (refId)
   {
-    v13 = [v3 refId];
-    [v7 appendFormat:@"refId=%@\n", v13];
+    refId2 = [viewCopy refId];
+    [v7 appendFormat:@"refId=%@\n", refId2];
   }
 
-  v14 = [v3 dialog];
+  dialog = [viewCopy dialog];
 
-  if (v14)
+  if (dialog)
   {
-    v15 = [v3 dialog];
-    v16 = [SRUIFUtilities descriptionForDialog:v15];
+    dialog2 = [viewCopy dialog];
+    v16 = [SRUIFUtilities descriptionForDialog:dialog2];
     [v7 appendFormat:@"dialog=%@\n", v16];
   }
 
-  v17 = [v3 itemType];
+  itemType = [viewCopy itemType];
 
-  if (v17)
+  if (itemType)
   {
-    v18 = [v3 itemType];
-    [v7 appendFormat:@"itemType = %@\n", v18];
+    itemType2 = [viewCopy itemType];
+    [v7 appendFormat:@"itemType = %@\n", itemType2];
   }
 
-  v19 = [v3 propertyForKey:*MEMORY[0x277D47C40]];
+  v19 = [viewCopy propertyForKey:*MEMORY[0x277D47C40]];
   v20 = v19;
   if (v19)
   {
@@ -357,15 +357,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = v3;
-    v22 = [v21 text];
+    v21 = viewCopy;
+    text = [v21 text];
 
-    if (v22)
+    if (text)
     {
       if ([v21 canUseServerTTS])
       {
-        v23 = [v21 text];
-        [v7 appendFormat:@"text=%@\n", v23];
+        text2 = [v21 text];
+        [v7 appendFormat:@"text=%@\n", text2];
       }
 
       else
@@ -374,12 +374,12 @@
       }
     }
 
-    v24 = [v21 dialogIdentifier];
+    dialogIdentifier = [v21 dialogIdentifier];
 
-    if (v24)
+    if (dialogIdentifier)
     {
-      v25 = [v21 dialogIdentifier];
-      [v7 appendFormat:@"dialogIdentifier=%@\n", v25];
+      dialogIdentifier2 = [v21 dialogIdentifier];
+      [v7 appendFormat:@"dialogIdentifier=%@\n", dialogIdentifier2];
     }
   }
 
@@ -388,22 +388,22 @@
   return v7;
 }
 
-+ (id)descriptionForSayIt:(id)a3
++ (id)descriptionForSayIt:(id)it
 {
-  v3 = a3;
+  itCopy = it;
   v4 = objc_alloc(MEMORY[0x277CCAB68]);
   v5 = objc_opt_class();
-  v6 = [v3 aceId];
-  v7 = [v4 initWithFormat:@"<%@: %@\n", v5, v6];
+  aceId = [itCopy aceId];
+  v7 = [v4 initWithFormat:@"<%@: %@\n", v5, aceId];
 
-  v8 = [v3 message];
+  message = [itCopy message];
 
-  if (v8)
+  if (message)
   {
-    if ([v3 canUseServerTTS])
+    if ([itCopy canUseServerTTS])
     {
-      v9 = [v3 message];
-      [v7 appendFormat:@"message=%@\n", v9];
+      message2 = [itCopy message];
+      [v7 appendFormat:@"message=%@\n", message2];
     }
 
     else
@@ -412,80 +412,80 @@
     }
   }
 
-  v10 = [v3 audioData];
+  audioData = [itCopy audioData];
 
-  if (v10)
+  if (audioData)
   {
-    v11 = [v3 audioData];
-    v12 = [v11 audioBuffer];
-    [v7 appendFormat:@"audioData=%tu Bytes\n", objc_msgSend(v12, "length")];
+    audioData2 = [itCopy audioData];
+    audioBuffer = [audioData2 audioBuffer];
+    [v7 appendFormat:@"audioData=%tu Bytes\n", objc_msgSend(audioBuffer, "length")];
   }
 
-  v13 = [v3 audioDataUrl];
+  audioDataUrl = [itCopy audioDataUrl];
 
-  if (v13)
+  if (audioDataUrl)
   {
-    v14 = [v3 audioDataUrl];
-    [v7 appendFormat:@"audioDataUrl=%@n", v14];
+    audioDataUrl2 = [itCopy audioDataUrl];
+    [v7 appendFormat:@"audioDataUrl=%@n", audioDataUrl2];
   }
 
-  v15 = [v3 listenAfterSpeaking];
+  listenAfterSpeaking = [itCopy listenAfterSpeaking];
 
-  if (v15)
+  if (listenAfterSpeaking)
   {
-    v16 = [v3 listenAfterSpeaking];
-    [v7 appendFormat:@"listenAfterSpeaking=%@\n", v16];
+    listenAfterSpeaking2 = [itCopy listenAfterSpeaking];
+    [v7 appendFormat:@"listenAfterSpeaking=%@\n", listenAfterSpeaking2];
   }
 
-  if ([v3 canUseServerTTS])
+  if ([itCopy canUseServerTTS])
   {
-    [v7 appendFormat:@"canUseServerTTS=%i\n", objc_msgSend(v3, "canUseServerTTS")];
+    [v7 appendFormat:@"canUseServerTTS=%i\n", objc_msgSend(itCopy, "canUseServerTTS")];
   }
 
-  v17 = [v3 dialogIdentifier];
+  dialogIdentifier = [itCopy dialogIdentifier];
 
-  if (v17)
+  if (dialogIdentifier)
   {
-    v18 = [v3 dialogIdentifier];
-    [v7 appendFormat:@"dialogIdentifier=%@\n", v18];
+    dialogIdentifier2 = [itCopy dialogIdentifier];
+    [v7 appendFormat:@"dialogIdentifier=%@\n", dialogIdentifier2];
   }
 
-  v19 = [v3 gender];
+  gender = [itCopy gender];
 
-  if (v19)
+  if (gender)
   {
-    v20 = [v3 gender];
-    [v7 appendFormat:@"gender=%@\n", v20];
+    gender2 = [itCopy gender];
+    [v7 appendFormat:@"gender=%@\n", gender2];
   }
 
-  v21 = [v3 languageCode];
+  languageCode = [itCopy languageCode];
 
-  if (v21)
+  if (languageCode)
   {
-    v22 = [v3 languageCode];
-    [v7 appendFormat:@"languageCode=%@\n", v22];
+    languageCode2 = [itCopy languageCode];
+    [v7 appendFormat:@"languageCode=%@\n", languageCode2];
   }
 
-  if ([v3 repeatable])
+  if ([itCopy repeatable])
   {
-    [v7 appendFormat:@"repeatable=%i\n", objc_msgSend(v3, "repeatable")];
+    [v7 appendFormat:@"repeatable=%i\n", objc_msgSend(itCopy, "repeatable")];
   }
 
-  v23 = [v3 refId];
+  refId = [itCopy refId];
 
-  if (v23)
+  if (refId)
   {
-    v24 = [v3 refId];
-    [v7 appendFormat:@"refId=%@\n", v24];
+    refId2 = [itCopy refId];
+    [v7 appendFormat:@"refId=%@\n", refId2];
   }
 
-  v25 = [v3 listenAfterSpeakingBehavior];
+  listenAfterSpeakingBehavior = [itCopy listenAfterSpeakingBehavior];
 
-  if (v25)
+  if (listenAfterSpeakingBehavior)
   {
-    v26 = [v3 listenAfterSpeakingBehavior];
-    v27 = [v26 startAlertSoundID];
-    [v7 appendFormat:@"listenAfterSpeakingBehavior=%@\n", v27];
+    listenAfterSpeakingBehavior2 = [itCopy listenAfterSpeakingBehavior];
+    startAlertSoundID = [listenAfterSpeakingBehavior2 startAlertSoundID];
+    [v7 appendFormat:@"listenAfterSpeakingBehavior=%@\n", startAlertSoundID];
   }
 
   [v7 appendFormat:@">"];
@@ -493,12 +493,12 @@
   return v7;
 }
 
-+ (BOOL)string:(id)a3 equalToString:(id)a4
++ (BOOL)string:(id)string equalToString:(id)toString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  stringCopy = string;
+  toStringCopy = toString;
+  v7 = toStringCopy;
+  if (stringCopy == toStringCopy)
   {
     v8 = 1;
   }
@@ -506,35 +506,35 @@
   else
   {
     v8 = 0;
-    if (v5 && v6)
+    if (stringCopy && toStringCopy)
     {
-      v8 = [v5 isEqualToString:v6];
+      v8 = [stringCopy isEqualToString:toStringCopy];
     }
   }
 
   return v8;
 }
 
-+ (BOOL)string:(id)a3 isSameAsUserUtterance:(id)a4
++ (BOOL)string:(id)string isSameAsUserUtterance:(id)utterance
 {
-  v6 = a4;
-  v7 = [a1 _normalizeTextString:a3];
-  v8 = [v6 bestTextInterpretation];
+  utteranceCopy = utterance;
+  v7 = [self _normalizeTextString:string];
+  bestTextInterpretation = [utteranceCopy bestTextInterpretation];
 
-  v9 = [a1 _normalizeTextString:v8];
-  LOBYTE(v6) = [v7 localizedStandardCompare:v9] == 0;
+  v9 = [self _normalizeTextString:bestTextInterpretation];
+  LOBYTE(utteranceCopy) = [v7 localizedStandardCompare:v9] == 0;
 
-  return v6;
+  return utteranceCopy;
 }
 
-+ (BOOL)shouldRedactSpeakableTextForAceObject:(id)a3
++ (BOOL)shouldRedactSpeakableTextForAceObject:(id)object
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    LODWORD(v4) = [v3 canUseServerTTS] ^ 1;
+    LODWORD(views) = [objectCopy canUseServerTTS] ^ 1;
   }
 
   else
@@ -546,8 +546,8 @@
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v4 = [v3 views];
-      v7 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      views = [objectCopy views];
+      v7 = [views countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         v8 = v7;
@@ -558,18 +558,18 @@
           {
             if (*v12 != v9)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(views);
             }
 
             if (![*(*(&v11 + 1) + 8 * i) canUseServerTTS])
             {
 
-              LOBYTE(v4) = 1;
+              LOBYTE(views) = 1;
               goto LABEL_5;
             }
           }
 
-          v8 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v8 = [views countByEnumeratingWithState:&v11 objects:v15 count:16];
           if (v8)
           {
             continue;
@@ -580,21 +580,21 @@
       }
     }
 
-    LOBYTE(v4) = 0;
+    LOBYTE(views) = 0;
   }
 
 LABEL_5:
 
   v5 = *MEMORY[0x277D85DE8];
-  return v4;
+  return views;
 }
 
-+ (id)_normalizeTextString:(id)a3
++ (id)_normalizeTextString:(id)string
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  stringCopy = string;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v7 = [v6 stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"“" withString:@""];

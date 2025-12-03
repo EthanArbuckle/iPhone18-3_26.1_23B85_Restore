@@ -1,16 +1,16 @@
 @interface CryptexSession
-- (BOOL)sessionAddCptxWithBundleID:(const char *)a3 withType:(int64_t)a4 dmgFd:(int *)a5 trustCacheFD:(int *)a6 manifestFD:(int *)a7 volumeHashFD:(int *)a8 infoPlistFd:(int *)a9 cx1Properties:(id)a10;
-- (CryptexSession)initWithCore:(id)a3;
+- (BOOL)sessionAddCptxWithBundleID:(const char *)d withType:(int64_t)type dmgFd:(int *)fd trustCacheFD:(int *)fD manifestFD:(int *)manifestFD volumeHashFD:(int *)hashFD infoPlistFd:(int *)plistFd cx1Properties:(id)self0;
+- (CryptexSession)initWithCore:(id)core;
 - (char)copySessionName;
 - (int)activate;
 - (void)cancelPeerConnections;
-- (void)parseCommandFromMessage:(id)a3 fromPeer:(id)a4;
-- (void)sessionAddParseXPC:(id)a3;
-- (void)sessionEventNotify:(int64_t)a3;
-- (void)sessionMessageReply:(id)a3;
+- (void)parseCommandFromMessage:(id)message fromPeer:(id)peer;
+- (void)sessionAddParseXPC:(id)c;
+- (void)sessionEventNotify:(int64_t)notify;
+- (void)sessionMessageReply:(id)reply;
 - (void)sessionStart;
-- (void)sessionStopWithReason:(int64_t)a3 exitCode:(unint64_t)a4;
-- (void)setExitReason:(int64_t)a3 withCode:(unint64_t)a4;
+- (void)sessionStopWithReason:(int64_t)reason exitCode:(unint64_t)code;
+- (void)setExitReason:(int64_t)reason withCode:(unint64_t)code;
 - (void)setupHandler;
 @end
 
@@ -21,9 +21,9 @@
   v3 = [(CryptexSession *)self log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CryptexSession *)self peer_array];
+    peer_array = [(CryptexSession *)self peer_array];
     *buf = 134217984;
-    v16 = [v4 count];
+    v16 = [peer_array count];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cancelling peer connections: %zu", buf, 0xCu);
   }
 
@@ -31,8 +31,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(CryptexSession *)self peer_array];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  peer_array2 = [(CryptexSession *)self peer_array];
+  v6 = [peer_array2 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -44,7 +44,7 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(peer_array2);
         }
 
         xpc_connection_cancel(*(*(&v10 + 1) + 8 * v9));
@@ -52,7 +52,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [peer_array2 countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -65,11 +65,11 @@
   v3 = [(CryptexSession *)self cs];
   uid = cryptex_session_core_get_uid();
 
-  v5 = [(CryptexSession *)self session_work_group];
-  dispatch_group_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+  session_work_group = [(CryptexSession *)self session_work_group];
+  dispatch_group_wait(session_work_group, 0xFFFFFFFFFFFFFFFFLL);
 
-  v6 = [(CryptexSession *)self session_work_group];
-  dispatch_group_enter(v6);
+  session_work_group2 = [(CryptexSession *)self session_work_group];
+  dispatch_group_enter(session_work_group2);
 
   v7 = [(CryptexSession *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -92,29 +92,29 @@
     v14 = [(CryptexSession *)self log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(CryptexSession *)self error];
+      error = [(CryptexSession *)self error];
       v18 = 138412546;
-      v19 = self;
+      selfCopy = self;
       v20 = 1024;
-      v21 = v15;
+      v21 = error;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to start session %@: %{darwin.errno}d", &v18, 0x12u);
     }
 
     *__error() = v13;
-    v16 = [(CryptexSession *)self session_work_group];
-    dispatch_group_leave(v16);
+    session_work_group3 = [(CryptexSession *)self session_work_group];
+    dispatch_group_leave(session_work_group3);
   }
 
   else
   {
-    v17 = self;
+    selfCopy2 = self;
     cryptex_async_f();
   }
 }
 
-- (void)sessionMessageReply:(id)a3
+- (void)sessionMessageReply:(id)reply
 {
-  reply = xpc_dictionary_create_reply(a3);
+  reply = xpc_dictionary_create_reply(reply);
   if (reply)
   {
     if ([(CryptexSession *)self error])
@@ -128,19 +128,19 @@
       }
 
       xpc_dictionary_set_int64(reply, "STATE", 1);
-      v6 = [(CryptexSession *)self error];
+      error = [(CryptexSession *)self error];
       v7 = "ERROR";
-      v8 = reply;
+      replyCopy2 = reply;
     }
 
     else
     {
       v7 = "STATE";
-      v8 = reply;
-      v6 = 0;
+      replyCopy2 = reply;
+      error = 0;
     }
 
-    xpc_dictionary_set_int64(v8, v7, v6);
+    xpc_dictionary_set_int64(replyCopy2, v7, error);
     xpc_dictionary_send_reply();
   }
 
@@ -154,7 +154,7 @@
   }
 }
 
-- (void)sessionStopWithReason:(int64_t)a3 exitCode:(unint64_t)a4
+- (void)sessionStopWithReason:(int64_t)reason exitCode:(unint64_t)code
 {
   v38 = codex_copy_system();
   v7 = *__error();
@@ -176,16 +176,16 @@
   else
   {
     [(CryptexSession *)self setSession_removal_begun:1];
-    v10 = [(CryptexSession *)self session_work_group];
-    dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
+    session_work_group = [(CryptexSession *)self session_work_group];
+    dispatch_group_wait(session_work_group, 0xFFFFFFFFFFFFFFFFLL);
 
-    v11 = [(CryptexSession *)self session_work_group];
-    dispatch_group_enter(v11);
+    session_work_group2 = [(CryptexSession *)self session_work_group];
+    dispatch_group_enter(session_work_group2);
 
-    [(CryptexSession *)self setExitReason:a3 withCode:a4];
+    [(CryptexSession *)self setExitReason:reason withCode:code];
     [(CryptexSession *)self sessionEventNotify:8];
-    v12 = [(CryptexSession *)self quire_array];
-    v13 = [v12 count] == 0;
+    quire_array = [(CryptexSession *)self quire_array];
+    v13 = [quire_array count] == 0;
 
     if (v13)
     {
@@ -198,8 +198,8 @@
       v14 = [(CryptexSession *)self log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(CryptexSession *)self quire_array];
-        v16 = [v15 count];
+        quire_array2 = [(CryptexSession *)self quire_array];
+        v16 = [quire_array2 count];
         *buf = 134217984;
         v49 = v16;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Taking down quires: count %zu", buf, 0xCu);
@@ -235,8 +235,8 @@
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "unmounting %p", buf, 0xCu);
             }
 
-            v23 = [(CryptexSession *)self session_work_group];
-            dispatch_group_enter(v23);
+            session_work_group3 = [(CryptexSession *)self session_work_group];
+            dispatch_group_enter(session_work_group3);
 
             v24 = daemon_get_main_queue();
             block[0] = _NSConcreteStackBlock;
@@ -245,7 +245,7 @@
             block[3] = &unk_100071FD0;
             v40 = v38;
             v41 = v21;
-            v42 = self;
+            selfCopy = self;
             dispatch_async(v24, block);
 
             v20 = v20 + 1;
@@ -298,8 +298,8 @@
     }
 
     codex_unbootstrap_launch_agents_from_session(v38, uid);
-    v34 = [(CryptexSession *)self session_work_group];
-    dispatch_group_leave(v34);
+    session_work_group4 = [(CryptexSession *)self session_work_group];
+    dispatch_group_leave(session_work_group4);
 
     v35 = +[CryptexSessionList sharedList];
     [v35 removeCryptexSession:self];
@@ -320,11 +320,11 @@ uint64_t __49__CryptexSession_sessionStopWithReason_exitCode___block_invoke(uint
   return codex_unbootstrap(v1, v2, 1uLL, v3, _session_unbootstrap_codex_callback);
 }
 
-- (void)sessionAddParseXPC:(id)a3
+- (void)sessionAddParseXPC:(id)c
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  cCopy = c;
+  v5 = cCopy;
+  if (!cCopy)
   {
     [(CryptexSession *)self setError:22];
     v10 = *__error();
@@ -332,7 +332,7 @@ uint64_t __49__CryptexSession_sessionStopWithReason_exitCode___block_invoke(uint
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v17 = [(CryptexSession *)self error];
+      error = [(CryptexSession *)self error];
       v12 = "No payload sent for add.: %{darwin.errno}d";
 LABEL_9:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, v12, buf, 8u);
@@ -344,7 +344,7 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v6 = xpc_dictionary_get_dictionary(v4, "PAYLOAD");
+  v6 = xpc_dictionary_get_dictionary(cCopy, "PAYLOAD");
   if (!v6)
   {
     [(CryptexSession *)self setError:22];
@@ -353,7 +353,7 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v17 = [(CryptexSession *)self error];
+      error = [(CryptexSession *)self error];
       v12 = "Payload format incorrect: %{darwin.errno}d";
       goto LABEL_9;
     }
@@ -382,7 +382,7 @@ LABEL_10:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v17 = [(CryptexSession *)self error];
+      error = [(CryptexSession *)self error];
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "session_add incorrectly formatted: %{darwin.errno}d", buf, 8u);
     }
 
@@ -491,9 +491,9 @@ id __37__CryptexSession_sessionAddParseXPC___block_invoke(uint64_t a1, uint64_t 
   return v9;
 }
 
-- (BOOL)sessionAddCptxWithBundleID:(const char *)a3 withType:(int64_t)a4 dmgFd:(int *)a5 trustCacheFD:(int *)a6 manifestFD:(int *)a7 volumeHashFD:(int *)a8 infoPlistFd:(int *)a9 cx1Properties:(id)a10
+- (BOOL)sessionAddCptxWithBundleID:(const char *)d withType:(int64_t)type dmgFd:(int *)fd trustCacheFD:(int *)fD manifestFD:(int *)manifestFD volumeHashFD:(int *)hashFD infoPlistFd:(int *)plistFd cx1Properties:(id)self0
 {
-  v12 = a10;
+  propertiesCopy = properties;
   v13 = cryptex_core_create();
   v14 = cryptex_core_set_assets_from_fds();
   if (v14)
@@ -504,7 +504,7 @@ id __37__CryptexSession_sessionAddParseXPC___block_invoke(uint64_t a1, uint64_t 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v26 = 67109120;
-      LODWORD(v27) = v14;
+      LODWORD(dCopy) = v14;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "failed to add cryptex assets: %{darwin.errno}d", &v26, 8u);
     }
 
@@ -513,13 +513,13 @@ id __37__CryptexSession_sessionAddParseXPC___block_invoke(uint64_t a1, uint64_t 
 
   else
   {
-    if (v12)
+    if (propertiesCopy)
     {
       cryptex_core_set_cryptex1_properties();
     }
 
-    v17 = [(CryptexSession *)self session_work_group];
-    dispatch_group_enter(v17);
+    session_work_group = [(CryptexSession *)self session_work_group];
+    dispatch_group_enter(session_work_group);
 
     v18 = cryptex_host_create();
     cryptex_core_attach_host();
@@ -527,9 +527,9 @@ id __37__CryptexSession_sessionAddParseXPC___block_invoke(uint64_t a1, uint64_t 
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 136315394;
-      v27 = a3;
+      dCopy = d;
       v28 = 2112;
-      v29 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Installing cryptex %s to %@", &v26, 0x16u);
     }
 
@@ -546,29 +546,29 @@ id __37__CryptexSession_sessionAddParseXPC___block_invoke(uint64_t a1, uint64_t 
   return v14 == 0;
 }
 
-- (void)parseCommandFromMessage:(id)a3 fromPeer:(id)a4
+- (void)parseCommandFromMessage:(id)message fromPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  peerCopy = peer;
   v8 = [(CryptexSession *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(daemon) delivering to %@", &v18, 0xCu);
   }
 
-  type = xpc_get_type(v6);
+  type = xpc_get_type(messageCopy);
   if (type != &_xpc_type_dictionary)
   {
     goto LABEL_4;
   }
 
-  v11 = xpc_dictionary_get_value(v6, "COMMAND");
+  v11 = xpc_dictionary_get_value(messageCopy, "COMMAND");
 
   if (!v11)
   {
-    if (xpc_dictionary_get_BOOL(v6, "REMOVE"))
+    if (xpc_dictionary_get_BOOL(messageCopy, "REMOVE"))
     {
       v16 = [(CryptexSession *)self log];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -577,30 +577,30 @@ id __37__CryptexSession_sessionAddParseXPC___block_invoke(uint64_t a1, uint64_t 
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Recieved Peer Remove Message", &v18, 2u);
       }
 
-      v10 = [(CryptexSession *)self peer_array];
-      [v10 removeObject:v7];
+      peer_array = [(CryptexSession *)self peer_array];
+      [peer_array removeObject:peerCopy];
       goto LABEL_20;
     }
 
 LABEL_4:
     if (type == &_xpc_type_error)
     {
-      string = xpc_dictionary_get_string(v6, _xpc_error_key_description);
-      v10 = [(CryptexSession *)self log];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      string = xpc_dictionary_get_string(messageCopy, _xpc_error_key_description);
+      peer_array = [(CryptexSession *)self log];
+      if (os_log_type_enabled(peer_array, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 136315138;
-        v19 = string;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Recieved error from peer - %s", &v18, 0xCu);
+        selfCopy4 = string;
+        _os_log_impl(&_mh_execute_header, peer_array, OS_LOG_TYPE_DEFAULT, "Recieved error from peer - %s", &v18, 0xCu);
       }
     }
 
     else
     {
-      v10 = [(CryptexSession *)self log];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      peer_array = [(CryptexSession *)self log];
+      if (os_log_type_enabled(peer_array, OS_LOG_TYPE_ERROR))
       {
-        [CryptexSession parseCommandFromMessage:v10 fromPeer:?];
+        [CryptexSession parseCommandFromMessage:peer_array fromPeer:?];
       }
     }
 
@@ -609,7 +609,7 @@ LABEL_20:
     goto LABEL_31;
   }
 
-  int64 = xpc_dictionary_get_int64(v6, "COMMAND");
+  int64 = xpc_dictionary_get_int64(messageCopy, "COMMAND");
   v13 = [(CryptexSession *)self log];
   v14 = v13;
   switch(int64)
@@ -618,17 +618,17 @@ LABEL_20:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@: ADD", &v18, 0xCu);
       }
 
-      [(CryptexSession *)self sessionAddParseXPC:v6];
+      [(CryptexSession *)self sessionAddParseXPC:messageCopy];
       break;
     case 2:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@: STOP", &v18, 0xCu);
       }
 
@@ -638,7 +638,7 @@ LABEL_20:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@: START", &v18, 0xCu);
       }
 
@@ -653,28 +653,28 @@ LABEL_20:
       break;
   }
 
-  v17 = [(CryptexSession *)self session_work_group];
-  dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
+  session_work_group = [(CryptexSession *)self session_work_group];
+  dispatch_group_wait(session_work_group, 0xFFFFFFFFFFFFFFFFLL);
 
-  [(CryptexSession *)self sessionMessageReply:v6];
+  [(CryptexSession *)self sessionMessageReply:messageCopy];
 LABEL_31:
 }
 
 - (void)setupHandler
 {
-  v3 = [(CryptexSession *)self listener];
+  listener = [(CryptexSession *)self listener];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = __30__CryptexSession_setupHandler__block_invoke;
   handler[3] = &unk_100071EB0;
   handler[4] = self;
-  xpc_connection_set_event_handler(v3, handler);
+  xpc_connection_set_event_handler(listener, handler);
 
-  v4 = [(CryptexSession *)self listener];
-  xpc_connection_activate(v4);
+  listener2 = [(CryptexSession *)self listener];
+  xpc_connection_activate(listener2);
 
-  v5 = [(CryptexSession *)self listener];
-  v6 = xpc_endpoint_create(v5);
+  listener3 = [(CryptexSession *)self listener];
+  v6 = xpc_endpoint_create(listener3);
 
   v7 = [(CryptexSession *)self cs];
   cryptex_session_core_set_endpoint();
@@ -740,9 +740,9 @@ LABEL_10:
 LABEL_12:
 }
 
-- (CryptexSession)initWithCore:(id)a3
+- (CryptexSession)initWithCore:(id)core
 {
-  v4 = a3;
+  coreCopy = core;
   v17.receiver = self;
   v17.super_class = CryptexSession;
   v5 = [(CryptexSession *)&v17 init];
@@ -750,7 +750,7 @@ LABEL_12:
   {
     v6 = codex_copy_system();
     v7 = cryptex_session_core_copy_name();
-    [(CryptexSession *)v5 setCs:v4];
+    [(CryptexSession *)v5 setCs:coreCopy];
     v8 = [NSString stringWithUTF8String:v7];
     [(CryptexSession *)v5 setName:v8];
 
@@ -781,30 +781,30 @@ LABEL_12:
   return v5;
 }
 
-- (void)sessionEventNotify:(int64_t)a3
+- (void)sessionEventNotify:(int64_t)notify
 {
   v5 = [(CryptexSession *)self cs];
   value = cryptex_session_core_get_state();
 
   [(CryptexSession *)self error];
   v6 = [(CryptexSession *)self cs];
-  v23 = a3;
+  notifyCopy = notify;
   v7 = cryptex_session_core_transition();
 
   v8 = [(CryptexSession *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v30 = a3;
+    notifyCopy2 = notify;
     v31 = 2048;
-    v32 = [(CryptexSession *)self exit_code];
+    exit_code = [(CryptexSession *)self exit_code];
     v33 = 2048;
-    v34 = [(CryptexSession *)self stop_reason];
+    stop_reason = [(CryptexSession *)self stop_reason];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "sessionNotify event:%lld code: %llu reason: %lld", buf, 0x20u);
   }
 
-  v9 = [(CryptexSession *)self peer_array];
-  v10 = [v9 count];
+  peer_array = [(CryptexSession *)self peer_array];
+  v10 = [peer_array count];
 
   if (v10)
   {
@@ -834,7 +834,7 @@ LABEL_12:
 
           v19 = xpc_dictionary_create(0, 0, 0);
           xpc_dictionary_set_value(v19, "object", v18);
-          v20 = v23;
+          v20 = notifyCopy;
           if (v7 == 6)
           {
             xpc_dictionary_set_int64(v19, "error_event", [(CryptexSession *)self error]);
@@ -861,8 +861,8 @@ LABEL_12:
 
 - (int)activate
 {
-  v3 = [(CryptexSession *)self name];
-  [v3 UTF8String];
+  name = [(CryptexSession *)self name];
+  [name UTF8String];
 
   v4 = [(CryptexSession *)self cs];
   v5 = cryptex_session_core_copy_homedir();
@@ -881,7 +881,7 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 1024;
       v25 = new_user;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to create user for %@: %{darwin.errno}d", buf, 0x12u);
@@ -906,7 +906,7 @@ LABEL_12:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
-        v23 = v12;
+        selfCopy2 = v12;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Created homedir %s", buf, 0xCu);
       }
 
@@ -918,7 +918,7 @@ LABEL_12:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v23 = self;
+          selfCopy2 = self;
           v24 = 1024;
           v25 = new_user;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to create launchd session for %@: %{darwin.errno}d", buf, 0x12u);
@@ -943,7 +943,7 @@ LABEL_12:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        LODWORD(v23) = 22;
+        LODWORD(selfCopy2) = 22;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to find homedir for user.: %{darwin.errno}d", buf, 8u);
       }
 
@@ -955,10 +955,10 @@ LABEL_12:
 
   [(CryptexSession *)self setError:new_user];
   [(CryptexSession *)self sessionEventNotify:1];
-  v20 = [(CryptexSession *)self error];
+  error = [(CryptexSession *)self error];
   free(v11);
   free(v5);
-  return v20;
+  return error;
 }
 
 - (char)copySessionName
@@ -969,13 +969,13 @@ LABEL_12:
   return v3;
 }
 
-- (void)setExitReason:(int64_t)a3 withCode:(unint64_t)a4
+- (void)setExitReason:(int64_t)reason withCode:(unint64_t)code
 {
   if (![(CryptexSession *)self stop_reason])
   {
-    [(CryptexSession *)self setStop_reason:a3];
+    [(CryptexSession *)self setStop_reason:reason];
 
-    [(CryptexSession *)self setExit_code:a4];
+    [(CryptexSession *)self setExit_code:code];
   }
 }
 

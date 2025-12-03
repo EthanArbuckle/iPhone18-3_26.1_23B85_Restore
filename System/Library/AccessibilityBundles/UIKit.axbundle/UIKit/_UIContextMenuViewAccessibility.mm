@@ -1,21 +1,21 @@
 @interface _UIContextMenuViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityAllowOutOfBoundsHitTestAtPoint:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityAllowOutOfBoundsHitTestAtPoint:(CGPoint)point withEvent:(id)event;
 - (BOOL)accessibilityScrollToVisible;
 - (id)accessibilityElements;
-- (void)displayMenu:(id)a3 updateType:(unint64_t)a4 alongsideAnimations:(id)a5;
+- (void)displayMenu:(id)menu updateType:(unint64_t)type alongsideAnimations:(id)animations;
 @end
 
 @implementation _UIContextMenuViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v10 = location;
   v9 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIContextMenuView";
   v4 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -32,18 +32,18 @@
   objc_storeStrong(v10, v9);
 }
 
-- (void)displayMenu:(id)a3 updateType:(unint64_t)a4 alongsideAnimations:(id)a5
+- (void)displayMenu:(id)menu updateType:(unint64_t)type alongsideAnimations:(id)animations
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, menu);
+  typeCopy = type;
   v16 = 0;
-  objc_storeStrong(&v16, a5);
-  v7 = v19;
+  objc_storeStrong(&v16, animations);
+  v7 = selfCopy;
   v8 = location[0];
-  v9 = v17;
+  v9 = typeCopy;
   v11 = MEMORY[0x29EDCA5F8];
   v12 = 3221225472;
   v13 = __78___UIContextMenuViewAccessibility_displayMenu_updateType_alongsideAnimations___block_invoke;
@@ -94,16 +94,16 @@
   return v9;
 }
 
-- (BOOL)_accessibilityAllowOutOfBoundsHitTestAtPoint:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)_accessibilityAllowOutOfBoundsHitTestAtPoint:(CGPoint)point withEvent:(id)event
 {
-  v17 = a3;
-  v16 = self;
+  pointCopy = point;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v13.receiver = v16;
+  objc_storeStrong(location, event);
+  v13.receiver = selfCopy;
   v13.super_class = _UIContextMenuViewAccessibility;
-  v14 = [(_UIContextMenuViewAccessibility *)&v13 _accessibilityAllowOutOfBoundsHitTestAtPoint:location[0] withEvent:v17];
+  v14 = [(_UIContextMenuViewAccessibility *)&v13 _accessibilityAllowOutOfBoundsHitTestAtPoint:location[0] withEvent:pointCopy];
   if (v14)
   {
     v18 = v14 & 1;
@@ -111,7 +111,7 @@
 
   else
   {
-    v12 = [(_UIContextMenuViewAccessibility *)v16 safeUIViewForKey:@"currentListView"];
+    v12 = [(_UIContextMenuViewAccessibility *)selfCopy safeUIViewForKey:@"currentListView"];
     v10 = 0;
     objc_opt_class();
     v9 = __UIAccessibilityCastAsClass();

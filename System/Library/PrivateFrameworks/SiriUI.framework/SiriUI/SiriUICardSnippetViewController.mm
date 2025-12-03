@@ -1,86 +1,86 @@
 @interface SiriUICardSnippetViewController
 + (void)initialize;
-- (BOOL)cardLoader:(id)a3 loadCard:(id)a4 withCompletionHandler:(id)a5;
+- (BOOL)cardLoader:(id)loader loadCard:(id)card withCompletionHandler:(id)handler;
 - (BOOL)isNavigating;
 - (BOOL)logContentsIfApplicable;
-- (BOOL)performBeganEditingCommand:(id)a3 forCardViewController:(id)a4;
-- (BOOL)performFinishedEditingCommand:(id)a3 forCardViewController:(id)a4;
-- (BOOL)performInvocationPayloadCommand:(id)a3 forCardViewController:(id)a4;
-- (BOOL)performNextCardCommand:(id)a3 forCardViewController:(id)a4;
-- (BOOL)performPunchoutCommand:(id)a3 forCardViewController:(id)a4;
-- (BOOL)performReferentialCommand:(id)a3 forCardViewController:(id)a4;
-- (CGSize)cardViewController:(id)a3 boundingSizeForCardSectionViewController:(id)a4;
+- (BOOL)performBeganEditingCommand:(id)command forCardViewController:(id)controller;
+- (BOOL)performFinishedEditingCommand:(id)command forCardViewController:(id)controller;
+- (BOOL)performInvocationPayloadCommand:(id)command forCardViewController:(id)controller;
+- (BOOL)performNextCardCommand:(id)command forCardViewController:(id)controller;
+- (BOOL)performPunchoutCommand:(id)command forCardViewController:(id)controller;
+- (BOOL)performReferentialCommand:(id)command forCardViewController:(id)controller;
+- (CGSize)cardViewController:(id)controller boundingSizeForCardSectionViewController:(id)viewController;
 - (Class)transparentHeaderViewClass;
-- (SiriUICardSnippetViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SiriUICardSnippetViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIEdgeInsets)defaultViewInsets;
-- (double)boundingWidthForPresentation:(id)a3;
+- (double)boundingWidthForPresentation:(id)presentation;
 - (double)desiredHeight;
 - (double)desiredHeightForTransparentHeaderView;
-- (id)_metricsContextOfEventsForCard:(id)a3;
-- (id)_metricsContextOfEventsForCardSection:(id)a3 inCard:(id)a4;
-- (id)localeForCardSnippetView:(id)a3;
+- (id)_metricsContextOfEventsForCard:(id)card;
+- (id)_metricsContextOfEventsForCardSection:(id)section inCard:(id)card;
+- (id)localeForCardSnippetView:(id)view;
 - (id)requestContext;
-- (unint64_t)navigationIndexOfCardViewController:(id)a3;
-- (void)_addCardViewControllerAsChildViewController:(id)a3;
-- (void)_addNextCardTo:(id)a3 fullCard:(id)a4;
-- (void)_beginMonitoringForNextCardWithBlock:(id)a3;
-- (void)_emitInstrumentationEvent:(id)a3 requiresNewTurn:(BOOL)a4;
+- (unint64_t)navigationIndexOfCardViewController:(id)controller;
+- (void)_addCardViewControllerAsChildViewController:(id)controller;
+- (void)_addNextCardTo:(id)to fullCard:(id)card;
+- (void)_beginMonitoringForNextCardWithBlock:(id)block;
+- (void)_emitInstrumentationEvent:(id)event requiresNewTurn:(BOOL)turn;
 - (void)_emitInstrumentationEventForKeyboardInvocation;
-- (void)_emitInstrumentationEventWithInvocationSource:(int)a3;
-- (void)_forwardProgressEvent:(unint64_t)a3 toCardViewController:(id)a4 animated:(BOOL)a5;
-- (void)_forwardProgressEventToCardViewController:(unint64_t)a3;
-- (void)_insertCardViewController:(id)a3;
-- (void)_inspectPayloadForMetricsEvents:(id)a3;
-- (void)_instrumentCardSectionInteractionForCardSection:(id)a3 previousTurn:(id)a4;
-- (void)_logCardRelationshipIdentifiedForCompactCard:(id)a3 fullCard:(id)a4 snippet:(id)a5;
-- (void)_navigationButtonTapped:(id)a3;
-- (void)_removeBottomKeylineFromCard:(id)a3;
-- (void)_removeCardViewControllerFromParentViewController:(id)a3;
+- (void)_emitInstrumentationEventWithInvocationSource:(int)source;
+- (void)_forwardProgressEvent:(unint64_t)event toCardViewController:(id)controller animated:(BOOL)animated;
+- (void)_forwardProgressEventToCardViewController:(unint64_t)controller;
+- (void)_insertCardViewController:(id)controller;
+- (void)_inspectPayloadForMetricsEvents:(id)events;
+- (void)_instrumentCardSectionInteractionForCardSection:(id)section previousTurn:(id)turn;
+- (void)_logCardRelationshipIdentifiedForCompactCard:(id)card fullCard:(id)fullCard snippet:(id)snippet;
+- (void)_navigationButtonTapped:(id)tapped;
+- (void)_removeBottomKeylineFromCard:(id)card;
+- (void)_removeCardViewControllerFromParentViewController:(id)controller;
 - (void)_removeShouldHideInAmbientSectionsFromCurrentCard;
-- (void)_setCardViewController:(id)a3;
-- (void)_updateContentSizeAndNotifyDelegateIfNecessary:(BOOL)a3;
-- (void)_validateCardForParsecFeedbackDelivery:(id)a3 validHandler:(id)a4;
-- (void)_validateCardSectionForParsecFeedbackDelivery:(id)a3 validHandler:(id)a4;
-- (void)backgroundColorView:(id)a3 didFinishColorUpdate:(id)a4;
-- (void)cardLoadingMonitor:(id)a3 didReceiveCardSnippet:(id)a4;
-- (void)cardLoadingMonitor:(id)a3 didReceiveVisualResponseSnippet:(id)a4;
-- (void)cardSectionView:(id)a3 willProcessEngagementFeedback:(id)a4;
-- (void)cardSectionViewDidAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4;
-- (void)cardSectionViewWillAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4;
-- (void)cardSnippetViewSashWasTapped:(id)a3;
-- (void)cardViewController:(id)a3 requestsHandlingOfIntent:(id)a4;
-- (void)cardViewController:(id)a3 willDismissViewController:(id)a4;
-- (void)cardViewControllerDidLoad:(id)a3;
-- (void)cardViewDidAppearForCard:(id)a3 withAppearanceFeedback:(id)a4;
-- (void)cardViewDidDisappearForCard:(id)a3 withDisappearanceFeedback:(id)a4;
-- (void)cardViewWillAppearForCard:(id)a3 withAppearanceFeedback:(id)a4;
-- (void)commandWasPerformed:(id)a3;
-- (void)configureContentWithSizeClass:(int64_t)a3;
-- (void)configureReusableTransparentHeaderView:(id)a3;
-- (void)controllerForCard:(id)a3 didReceiveAsyncCard:(id)a4 withAsyncCardReceiptFeedback:(id)a5;
-- (void)controllerForCard:(id)a3 didRequestAsyncCard:(id)a4 withAsyncCardRequestFeedback:(id)a5;
+- (void)_setCardViewController:(id)controller;
+- (void)_updateContentSizeAndNotifyDelegateIfNecessary:(BOOL)necessary;
+- (void)_validateCardForParsecFeedbackDelivery:(id)delivery validHandler:(id)handler;
+- (void)_validateCardSectionForParsecFeedbackDelivery:(id)delivery validHandler:(id)handler;
+- (void)backgroundColorView:(id)view didFinishColorUpdate:(id)update;
+- (void)cardLoadingMonitor:(id)monitor didReceiveCardSnippet:(id)snippet;
+- (void)cardLoadingMonitor:(id)monitor didReceiveVisualResponseSnippet:(id)snippet;
+- (void)cardSectionView:(id)view willProcessEngagementFeedback:(id)feedback;
+- (void)cardSectionViewDidAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback;
+- (void)cardSectionViewWillAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback;
+- (void)cardSnippetViewSashWasTapped:(id)tapped;
+- (void)cardViewController:(id)controller requestsHandlingOfIntent:(id)intent;
+- (void)cardViewController:(id)controller willDismissViewController:(id)viewController;
+- (void)cardViewControllerDidLoad:(id)load;
+- (void)cardViewDidAppearForCard:(id)card withAppearanceFeedback:(id)feedback;
+- (void)cardViewDidDisappearForCard:(id)card withDisappearanceFeedback:(id)feedback;
+- (void)cardViewWillAppearForCard:(id)card withAppearanceFeedback:(id)feedback;
+- (void)commandWasPerformed:(id)performed;
+- (void)configureContentWithSizeClass:(int64_t)class;
+- (void)configureReusableTransparentHeaderView:(id)view;
+- (void)controllerForCard:(id)card didReceiveAsyncCard:(id)asyncCard withAsyncCardReceiptFeedback:(id)feedback;
+- (void)controllerForCard:(id)card didRequestAsyncCard:(id)asyncCard withAsyncCardRequestFeedback:(id)feedback;
 - (void)loadView;
-- (void)modalContainerViewControllerViewDidDisappear:(id)a3;
-- (void)modalContainerViewControllerViewWillDisappear:(id)a3;
-- (void)presentViewController:(id)a3 forCardViewController:(id)a4;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setIsInAmbientInteractivity:(BOOL)a3;
-- (void)setNavigating:(BOOL)a3;
-- (void)setSnippet:(id)a3;
+- (void)modalContainerViewControllerViewDidDisappear:(id)disappear;
+- (void)modalContainerViewControllerViewWillDisappear:(id)disappear;
+- (void)presentViewController:(id)controller forCardViewController:(id)viewController;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity;
+- (void)setNavigating:(BOOL)navigating;
+- (void)setSnippet:(id)snippet;
 - (void)siriDidDeactivate;
-- (void)siriDidReceiveViewsWithDialogPhase:(id)a3;
-- (void)siriDidScrollVisible:(BOOL)a3;
-- (void)siriDidStartSpeakingWithIdentifier:(id)a3;
-- (void)siriDidStopSpeakingWithIdentifier:(id)a3 speechQueueIsEmpty:(BOOL)a4;
+- (void)siriDidReceiveViewsWithDialogPhase:(id)phase;
+- (void)siriDidScrollVisible:(BOOL)visible;
+- (void)siriDidStartSpeakingWithIdentifier:(id)identifier;
+- (void)siriDidStopSpeakingWithIdentifier:(id)identifier speechQueueIsEmpty:(BOOL)empty;
 - (void)siriDidTapOutsideContent;
-- (void)siriDidUpdateASRWithRecognition:(id)a3;
+- (void)siriDidUpdateASRWithRecognition:(id)recognition;
 - (void)siriWillBeginScrolling;
 - (void)siriWillStartRequest;
-- (void)userDidEngageCardSection:(id)a3 withEngagementFeedback:(id)a4;
-- (void)userDidReportFeedback:(id)a3 fromCardSection:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)userDidEngageCardSection:(id)section withEngagementFeedback:(id)feedback;
+- (void)userDidReportFeedback:(id)feedback fromCardSection:(id)section;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)wasAddedToTranscript;
 - (void)willCancel;
 - (void)willConfirm;
@@ -90,26 +90,26 @@
 
 + (void)initialize
 {
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___SiriUICardSnippetViewController;
   objc_msgSendSuper2(&v17, sel_initialize);
   +[(CRKCardSectionViewController *)SiriUILegacyStocksChartCardSectionViewController];
-  v2 = [MEMORY[0x277CF93D0] appearance];
-  v3 = [MEMORY[0x277D75348] siriui_highlightColor];
-  [v2 setBackgroundColor:v3 forState:1];
+  appearance = [MEMORY[0x277CF93D0] appearance];
+  siriui_highlightColor = [MEMORY[0x277D75348] siriui_highlightColor];
+  [appearance setBackgroundColor:siriui_highlightColor forState:1];
 
-  v4 = [MEMORY[0x277CF93D0] appearance];
-  v5 = [MEMORY[0x277D75348] siriui_highlightColor];
-  [v4 setBackgroundColor:v5 forState:4];
+  appearance2 = [MEMORY[0x277CF93D0] appearance];
+  siriui_highlightColor2 = [MEMORY[0x277D75348] siriui_highlightColor];
+  [appearance2 setBackgroundColor:siriui_highlightColor2 forState:4];
 
-  v6 = [MEMORY[0x277CF93D0] appearance];
-  v7 = [MEMORY[0x277D75348] siriui_highlightColor];
-  [v6 setBackgroundColor:v7 forState:5];
+  appearance3 = [MEMORY[0x277CF93D0] appearance];
+  siriui_highlightColor3 = [MEMORY[0x277D75348] siriui_highlightColor];
+  [appearance3 setBackgroundColor:siriui_highlightColor3 forState:5];
 
-  v8 = [MEMORY[0x277D0ED00] feedbackListenerForParsec];
+  feedbackListenerForParsec = [MEMORY[0x277D0ED00] feedbackListenerForParsec];
   SFFeedbackListenerRegister();
 
-  v9 = [MEMORY[0x277D007C0] sharedSession];
+  mEMORY[0x277D007C0] = [MEMORY[0x277D007C0] sharedSession];
   SFFeedbackListenerRegister();
 
   v10 = +[SiriUICardProviderRegistry sharedInstance];
@@ -142,11 +142,11 @@
   [v13 registerService:v16];
 }
 
-- (SiriUICardSnippetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SiriUICardSnippetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v13.receiver = self;
   v13.super_class = SiriUICardSnippetViewController;
-  v4 = [(SiriUISnippetViewController *)&v13 initWithNibName:a3 bundle:a4];
+  v4 = [(SiriUISnippetViewController *)&v13 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -186,11 +186,11 @@
       [(CRKCardViewControlling *)self->_cardViewController setThreeDTouchEnabled:0];
     }
 
-    v3 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [(SiriUICardSnippetViewController *)self _addCardViewControllerAsChildViewController:v3];
+    _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [(SiriUICardSnippetViewController *)self _addCardViewControllerAsChildViewController:_cardViewController];
 
-    v4 = [(SiriUICardSnippetViewController *)self view];
-    [v4 reloadData];
+    view = [(SiriUICardSnippetViewController *)self view];
+    [view reloadData];
   }
 }
 
@@ -199,40 +199,40 @@
   v5.receiver = self;
   v5.super_class = SiriUICardSnippetViewController;
   [(SiriUICardSnippetViewController *)&v5 viewDidLoad];
-  v3 = [(SiriUICardSnippetViewController *)self view];
-  v4 = [v3 backNavigationButton];
-  [v4 addTarget:self action:sel__navigationButtonTapped_ forControlEvents:64];
+  view = [(SiriUICardSnippetViewController *)self view];
+  backNavigationButton = [view backNavigationButton];
+  [backNavigationButton addTarget:self action:sel__navigationButtonTapped_ forControlEvents:64];
 }
 
-- (void)backgroundColorView:(id)a3 didFinishColorUpdate:(id)a4
+- (void)backgroundColorView:(id)view didFinishColorUpdate:(id)update
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  updateCopy = update;
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SiriUICardSnippetViewController backgroundColorView:didFinishColorUpdate:]";
     v10 = 1024;
-    v11 = v5 != 0;
+    v11 = updateCopy != 0;
     _os_log_impl(&dword_26948D000, v6, OS_LOG_TYPE_DEFAULT, "%s #background SearchUI color update successful %d", &v8, 0x12u);
   }
 
-  v7 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v7 siriSnippetViewController:self isBackgroundColorUpdateSuccessful:v5 != 0];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriSnippetViewController:self isBackgroundColorUpdateSuccessful:updateCopy != 0];
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  if (self->_isInAmbient == a3)
+  if (self->_isInAmbient == ambient)
   {
     return;
   }
 
-  v3 = a3;
-  self->_isInAmbient = a3;
+  ambientCopy = ambient;
+  self->_isInAmbient = ambient;
   cardViewController = self->_cardViewController;
-  if (a3)
+  if (ambient)
   {
     v6 = cardViewController;
     getSearchUICardViewControllerClass();
@@ -262,13 +262,13 @@
   [(CRKCardViewControlling *)v7 setRowSelectionAppearanceEnabled:v8];
 LABEL_8:
 
-  v9 = [(SiriUICardSnippetViewController *)self view];
+  view = [(SiriUICardSnippetViewController *)self view];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(SiriUICardSnippetViewController *)self view];
-    [v11 setIsInAmbient:v3];
+    view2 = [(SiriUICardSnippetViewController *)self view];
+    [view2 setIsInAmbient:ambientCopy];
   }
 }
 
@@ -279,20 +279,20 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v3 = self->_cardViewController;
-    v4 = [(CRKCardViewControlling *)v3 card];
-    v5 = [v4 cardSections];
-    v6 = [v5 count];
+    card = [(CRKCardViewControlling *)v3 card];
+    cardSections = [card cardSections];
+    v6 = [cardSections count];
 
     if (v6)
     {
-      v7 = [v4 copy];
+      v7 = [card copy];
       v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v9 = [v4 cardSections];
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      cardSections2 = [card cardSections];
+      v10 = [cardSections2 countByEnumeratingWithState:&v21 objects:v27 count:16];
       if (v10)
       {
         v11 = v10;
@@ -307,7 +307,7 @@ LABEL_8:
           {
             if (*v22 != v13)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(cardSections2);
             }
 
             v16 = *(*(&v21 + 1) + 8 * i);
@@ -330,13 +330,13 @@ LABEL_8:
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+          v11 = [cardSections2 countByEnumeratingWithState:&v21 objects:v27 count:16];
         }
 
         while (v11);
 
         v3 = v20;
-        v18 = v4;
+        v18 = card;
         v7 = v19;
         if (v12)
         {
@@ -348,7 +348,7 @@ LABEL_8:
       else
       {
 
-        v18 = v4;
+        v18 = card;
       }
 
       [(CRKCardViewControlling *)v3 setCard:v18];
@@ -356,55 +356,55 @@ LABEL_8:
   }
 }
 
-- (void)setIsInAmbientInteractivity:(BOOL)a3
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity
 {
-  v3 = a3;
-  v5 = [(SiriUICardSnippetViewController *)self view];
+  interactivityCopy = interactivity;
+  view = [(SiriUICardSnippetViewController *)self view];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SiriUICardSnippetViewController *)self view];
-    [v7 setIsInAmbientInteractivity:v3];
+    view2 = [(SiriUICardSnippetViewController *)self view];
+    [view2 setIsInAmbientInteractivity:interactivityCopy];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__SiriUICardSnippetViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_279C5A068;
   v9[4] = self;
-  v7 = a4;
-  [v7 animateAlongsideTransition:v9 completion:0];
+  coordinatorCopy = coordinator;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   v8.receiver = self;
   v8.super_class = SiriUICardSnippetViewController;
-  [(SiriUICardSnippetViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SiriUICardSnippetViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = SiriUICardSnippetViewController;
-  [(SiriUISnippetViewController *)&v10 viewDidAppear:a3];
+  [(SiriUISnippetViewController *)&v10 viewDidAppear:appear];
   [(SiriUICardSnippetViewController *)self _updateContentSizeAndNotifyDelegateIfNecessary:1];
   presentedModalContainerViewController = self->_presentedModalContainerViewController;
   if (presentedModalContainerViewController)
   {
-    v5 = [(SiriUIModalContainerViewController *)presentedModalContainerViewController contentViewController];
-    v6 = [v5 siriui_shouldHideStatusBar];
+    contentViewController = [(SiriUIModalContainerViewController *)presentedModalContainerViewController contentViewController];
+    siriui_shouldHideStatusBar = [contentViewController siriui_shouldHideStatusBar];
 
-    if (v6)
+    if (siriui_shouldHideStatusBar)
     {
-      v7 = [(SiriUIBaseSnippetViewController *)self delegate];
-      [v7 siriSnippetViewController:self setStatusBarHidden:0 animated:1];
+      delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+      [delegate siriSnippetViewController:self setStatusBarHidden:0 animated:1];
     }
 
-    v8 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v8 siriSnippetViewController:self setStatusViewHidden:0];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate2 siriSnippetViewController:self setStatusViewHidden:0];
 
     v9 = self->_presentedModalContainerViewController;
     self->_presentedModalContainerViewController = 0;
@@ -416,28 +416,28 @@ LABEL_8:
   }
 }
 
-- (void)configureContentWithSizeClass:(int64_t)a3
+- (void)configureContentWithSizeClass:(int64_t)class
 {
-  if (self->_sizeClass != a3)
+  if (self->_sizeClass != class)
   {
-    self->_sizeClass = a3;
+    self->_sizeClass = class;
   }
 }
 
-- (void)_addNextCardTo:(id)a3 fullCard:(id)a4
+- (void)_addNextCardTo:(id)to fullCard:(id)card
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cardSections];
-  if (![v8 count])
+  toCopy = to;
+  cardCopy = card;
+  cardSections = [toCopy cardSections];
+  if (![cardSections count])
   {
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  if ([v7 type] == 2)
+  if ([cardCopy type] == 2)
   {
 
 LABEL_5:
@@ -445,8 +445,8 @@ LABEL_5:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = [v6 cardSections];
-    v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    cardSections2 = [toCopy cardSections];
+    v12 = [cardSections2 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v12)
     {
       v13 = v12;
@@ -457,23 +457,23 @@ LABEL_5:
         {
           if (*v29 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(cardSections2);
           }
 
           v16 = *(*(&v28 + 1) + 8 * i);
-          v17 = [v16 nextCard];
+          nextCard = [v16 nextCard];
 
-          if (v17)
+          if (nextCard)
           {
-            v19 = [v16 nextCard];
-            v20 = [v19 backingCard];
+            nextCard2 = [v16 nextCard];
+            backingCard = [nextCard2 backingCard];
 
-            v21 = [v7 backingCard];
-            if ([v20 afui_hasContentEqualTo:v21])
+            backingCard2 = [cardCopy backingCard];
+            if ([backingCard afui_hasContentEqualTo:backingCard2])
             {
-              v22 = [v6 backingCard];
-              v23 = [v7 backingCard];
-              [(SiriUICardSnippetViewController *)self _logCardRelationshipIdentifiedForCompactCard:v22 fullCard:v23 snippet:self->_snippet];
+              backingCard3 = [toCopy backingCard];
+              backingCard4 = [cardCopy backingCard];
+              [(SiriUICardSnippetViewController *)self _logCardRelationshipIdentifiedForCompactCard:backingCard3 fullCard:backingCard4 snippet:self->_snippet];
             }
 
             v18 = 1;
@@ -481,7 +481,7 @@ LABEL_5:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v13 = [cardSections2 countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v13)
         {
           continue;
@@ -494,27 +494,27 @@ LABEL_5:
     v18 = 0;
 LABEL_17:
 
-    v24 = [v6 cardSections];
-    v8 = [v24 firstObject];
+    cardSections3 = [toCopy cardSections];
+    cardSections = [cardSections3 firstObject];
 
     if ((v18 & 1) == 0)
     {
-      v25 = [v8 punchoutOptions];
+      punchoutOptions = [cardSections punchoutOptions];
 
-      if (!v25)
+      if (!punchoutOptions)
       {
-        [v8 setNextCard:v7];
-        v26 = [v6 backingCard];
-        v27 = [v7 backingCard];
-        [(SiriUICardSnippetViewController *)self _logCardRelationshipIdentifiedForCompactCard:v26 fullCard:v27 snippet:self->_snippet];
+        [cardSections setNextCard:cardCopy];
+        backingCard5 = [toCopy backingCard];
+        backingCard6 = [cardCopy backingCard];
+        [(SiriUICardSnippetViewController *)self _logCardRelationshipIdentifiedForCompactCard:backingCard5 fullCard:backingCard6 snippet:self->_snippet];
       }
     }
 
     goto LABEL_20;
   }
 
-  v9 = [v7 cardSections];
-  v10 = [v9 count];
+  cardSections4 = [cardCopy cardSections];
+  v10 = [cardSections4 count];
 
   if (v10)
   {
@@ -524,39 +524,39 @@ LABEL_17:
 LABEL_21:
 }
 
-- (void)_removeBottomKeylineFromCard:(id)a3
+- (void)_removeBottomKeylineFromCard:(id)card
 {
-  v7 = a3;
-  v3 = [v7 cardSections];
-  v4 = [v3 count];
+  cardCopy = card;
+  cardSections = [cardCopy cardSections];
+  v4 = [cardSections count];
 
   if (v4)
   {
-    v5 = [v7 cardSections];
-    v6 = [v5 lastObject];
+    cardSections2 = [cardCopy cardSections];
+    lastObject = [cardSections2 lastObject];
 
-    [v6 setSeparatorStyle:1];
+    [lastObject setSeparatorStyle:1];
   }
 }
 
-- (void)setSnippet:(id)a3
+- (void)setSnippet:(id)snippet
 {
   v73 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  snippetCopy = snippet;
   snippet = self->_snippet;
-  if (snippet != v5 && ([(SACardSnippet *)snippet isEqual:v5]& 1) == 0)
+  if (snippet != snippetCopy && ([(SACardSnippet *)snippet isEqual:snippetCopy]& 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v52 = v5;
-      objc_storeStrong(&self->_snippet, a3);
+      v52 = snippetCopy;
+      objc_storeStrong(&self->_snippet, snippet);
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v7 = [(SACardSnippet *)self->_snippet referencedCommands];
-      v8 = [v7 countByEnumeratingWithState:&v63 objects:v72 count:16];
+      referencedCommands = [(SACardSnippet *)self->_snippet referencedCommands];
+      v8 = [referencedCommands countByEnumeratingWithState:&v63 objects:v72 count:16];
       if (v8)
       {
         v9 = *v64;
@@ -566,16 +566,16 @@ LABEL_21:
           {
             if (*v64 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(referencedCommands);
             }
 
             v11 = *(*(&v63 + 1) + 8 * i);
             referenceableCommandsByIdentifierMap = self->_referenceableCommandsByIdentifierMap;
-            v13 = [v11 aceId];
-            [(NSMutableDictionary *)referenceableCommandsByIdentifierMap setObject:v11 forKey:v13];
+            aceId = [v11 aceId];
+            [(NSMutableDictionary *)referenceableCommandsByIdentifierMap setObject:v11 forKey:aceId];
           }
 
-          v8 = [v7 countByEnumeratingWithState:&v63 objects:v72 count:16];
+          v8 = [referencedCommands countByEnumeratingWithState:&v63 objects:v72 count:16];
         }
 
         while (v8);
@@ -585,8 +585,8 @@ LABEL_21:
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v14 = [(SACardSnippet *)self->_snippet referencedSnippets];
-      v15 = [v14 countByEnumeratingWithState:&v59 objects:v71 count:16];
+      referencedSnippets = [(SACardSnippet *)self->_snippet referencedSnippets];
+      v15 = [referencedSnippets countByEnumeratingWithState:&v59 objects:v71 count:16];
       if (v15)
       {
         v16 = *v60;
@@ -596,25 +596,25 @@ LABEL_21:
           {
             if (*v60 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(referencedSnippets);
             }
 
             v18 = *(*(&v59 + 1) + 8 * j);
             referenceableSnippetsByIdentifierMap = self->_referenceableSnippetsByIdentifierMap;
-            v20 = [v18 aceId];
-            [(NSMutableDictionary *)referenceableSnippetsByIdentifierMap setObject:v18 forKey:v20];
+            aceId2 = [v18 aceId];
+            [(NSMutableDictionary *)referenceableSnippetsByIdentifierMap setObject:v18 forKey:aceId2];
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v59 objects:v71 count:16];
+          v15 = [referencedSnippets countByEnumeratingWithState:&v59 objects:v71 count:16];
         }
 
         while (v15);
       }
 
-      v21 = [MEMORY[0x277CEF368] sharedPreferences];
-      v22 = [v21 cardLoggingEnabled];
+      mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+      cardLoggingEnabled = [mEMORY[0x277CEF368] cardLoggingEnabled];
 
-      if (v22)
+      if (cardLoggingEnabled)
       {
         [(SiriUICardSnippetViewController *)self logContentsIfApplicable];
       }
@@ -624,27 +624,27 @@ LABEL_21:
       self->_cardPresentation = v23;
 
       [(CRKCardPresentation *)self->_cardPresentation setDelegate:self];
-      v25 = [(SACardSnippet *)self->_snippet siriui_card];
-      v26 = [v25 interactions];
-      v53 = [v26 anyObject];
+      siriui_card = [(SACardSnippet *)self->_snippet siriui_card];
+      interactions = [siriui_card interactions];
+      anyObject = [interactions anyObject];
 
-      v27 = [v53 intent];
+      intent = [anyObject intent];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v28 = [(SACardSnippet *)self->_snippet siriui_card_compact];
-      v29 = [v25 backingCard];
+      siriui_card_compact = [(SACardSnippet *)self->_snippet siriui_card_compact];
+      backingCard = [siriui_card backingCard];
       originalCard = self->_originalCard;
-      self->_originalCard = v29;
+      self->_originalCard = backingCard;
 
-      v31 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-      v32 = [v25 backingCard];
-      v33 = [v32 cardId];
-      v34 = [(SACardSnippet *)self->_snippet aceId];
-      [v31 storeCardID:v33 forSnippetAceID:v34];
+      _instrumentationManager = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+      backingCard2 = [siriui_card backingCard];
+      cardId = [backingCard2 cardId];
+      aceId3 = [(SACardSnippet *)self->_snippet aceId];
+      [_instrumentationManager storeCardID:cardId forSnippetAceID:aceId3];
 
-      if (self->_sizeClass != 1 || ([v28 backingCard], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "cardSections"), v36 = objc_claimAutoreleasedReturnValue(), v37 = v36 == 0, v36, v35, v37))
+      if (self->_sizeClass != 1 || ([siriui_card_compact backingCard], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "cardSections"), v36 = objc_claimAutoreleasedReturnValue(), v37 = v36 == 0, v36, v35, v37))
       {
-        v41 = v25;
+        v41 = siriui_card;
       }
 
       else
@@ -655,29 +655,29 @@ LABEL_21:
           *buf = 136315394;
           v68 = "[SiriUICardSnippetViewController setSnippet:]";
           v69 = 2112;
-          v70 = v28;
+          v70 = siriui_card_compact;
           _os_log_impl(&dword_26948D000, v38, OS_LOG_TYPE_DEFAULT, "%s Compact card exists and our size class is compact. Presenting compact card : %@", buf, 0x16u);
         }
 
-        v39 = [v28 backingCard];
-        v40 = [v25 backingCard];
-        [(SiriUICardSnippetViewController *)self _addNextCardTo:v39 fullCard:v40];
+        backingCard3 = [siriui_card_compact backingCard];
+        backingCard4 = [siriui_card backingCard];
+        [(SiriUICardSnippetViewController *)self _addNextCardTo:backingCard3 fullCard:backingCard4];
 
-        v41 = v28;
-        v42 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-        v43 = [v41 backingCard];
-        v44 = [v43 cardId];
-        v45 = [(SACardSnippet *)self->_snippet aceId];
-        [v42 storeCardID:v44 forSnippetAceID:v45];
+        v41 = siriui_card_compact;
+        _instrumentationManager2 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+        backingCard5 = [v41 backingCard];
+        cardId2 = [backingCard5 cardId];
+        aceId4 = [(SACardSnippet *)self->_snippet aceId];
+        [_instrumentationManager2 storeCardID:cardId2 forSnippetAceID:aceId4];
       }
 
-      v46 = [v41 backingCard];
-      [(SiriUICardSnippetViewController *)self _removeBottomKeylineFromCard:v46];
+      backingCard6 = [v41 backingCard];
+      [(SiriUICardSnippetViewController *)self _removeBottomKeylineFromCard:backingCard6];
 
       v47 = [objc_alloc(MEMORY[0x277CF93B0]) initWithCard:v41];
       [v47 setLoadsBundleProviders:0];
-      v48 = [v47 cardRequest];
-      [v48 setLoadsBundleServices:0];
+      cardRequest = [v47 cardRequest];
+      [cardRequest setLoadsBundleServices:0];
 
       [v47 setRespectsUserConsent:(isKindOfClass ^ 1) & 1];
       self->_isCardViewControllerLoading = 1;
@@ -699,7 +699,7 @@ LABEL_21:
       objc_destroyWeak(&location);
       objc_destroyWeak(buf);
 
-      v5 = v52;
+      snippetCopy = v52;
     }
   }
 }
@@ -955,23 +955,23 @@ LABEL_26:
 - (BOOL)logContentsIfApplicable
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(SACardSnippet *)self->_snippet siriui_card];
-  v4 = [(SACardSnippet *)self->_snippet siriui_card_compact];
-  v5 = v4;
+  siriui_card = [(SACardSnippet *)self->_snippet siriui_card];
+  siriui_card_compact = [(SACardSnippet *)self->_snippet siriui_card_compact];
+  v5 = siriui_card_compact;
   if (self->_sizeClass == 1)
   {
-    v6 = [v4 backingCard];
-    v7 = [v6 cardSections];
+    backingCard = [siriui_card_compact backingCard];
+    cardSections = [backingCard cardSections];
 
-    if (v7)
+    if (cardSections)
     {
       v8 = v5;
 
-      v3 = v8;
+      siriui_card = v8;
     }
   }
 
-  v9 = [SiriUICardLogger logCard:v3 format:0];
+  v9 = [SiriUICardLogger logCard:siriui_card format:0];
   v10 = MEMORY[0x277CEF098];
   if (v9)
   {
@@ -982,9 +982,9 @@ LABEL_26:
       v17 = 136316162;
       v18 = "[SiriUICardSnippetViewController logContentsIfApplicable]";
       v19 = 2112;
-      v20 = v3;
+      v20 = siriui_card;
       v21 = 2112;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
       v24 = snippet;
       v25 = 2112;
@@ -993,7 +993,7 @@ LABEL_26:
     }
   }
 
-  v13 = [SiriUICardLogger logCard:v3 format:3];
+  v13 = [SiriUICardLogger logCard:siriui_card format:3];
   if (v13)
   {
     v14 = *v10;
@@ -1003,9 +1003,9 @@ LABEL_26:
       v17 = 136316162;
       v18 = "[SiriUICardSnippetViewController logContentsIfApplicable]";
       v19 = 2112;
-      v20 = v3;
+      v20 = siriui_card;
       v21 = 2112;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
       v24 = v15;
       v25 = 2112;
@@ -1021,10 +1021,10 @@ LABEL_26:
 {
   v44 = *MEMORY[0x277D85DE8];
   v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(SACardSnippet *)self->_snippet siriui_card];
-  v4 = [v3 backingCard];
-  v5 = [v4 entityProtobufMessages];
-  v6 = [v5 count];
+  siriui_card = [(SACardSnippet *)self->_snippet siriui_card];
+  backingCard = [siriui_card backingCard];
+  entityProtobufMessages = [backingCard entityProtobufMessages];
+  v6 = [entityProtobufMessages count];
 
   if (v6)
   {
@@ -1032,11 +1032,11 @@ LABEL_26:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v7 = [(SACardSnippet *)self->_snippet siriui_card];
-    v8 = [v7 backingCard];
-    v9 = [v8 entityProtobufMessages];
+    siriui_card2 = [(SACardSnippet *)self->_snippet siriui_card];
+    backingCard2 = [siriui_card2 backingCard];
+    entityProtobufMessages2 = [backingCard2 entityProtobufMessages];
 
-    v10 = [v9 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    v10 = [entityProtobufMessages2 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1047,25 +1047,25 @@ LABEL_26:
         {
           if (*v40 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(entityProtobufMessages2);
           }
 
           v14 = *(*(&v39 + 1) + 8 * i);
           v15 = objc_alloc_init(MEMORY[0x277D47688]);
-          v16 = [MEMORY[0x277CCAD78] UUID];
-          v17 = [v16 UUIDString];
-          [v15 setAceId:v17];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString = [uUID UUIDString];
+          [v15 setAceId:uUIDString];
 
-          v18 = [v14 protobufMessageData];
-          [v15 setData:v18];
+          protobufMessageData = [v14 protobufMessageData];
+          [v15 setData:protobufMessageData];
 
-          v19 = [v14 protobufMessageName];
-          [v15 setTypeName:v19];
+          protobufMessageName = [v14 protobufMessageName];
+          [v15 setTypeName:protobufMessageName];
 
           [v38 addObject:v15];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v11 = [entityProtobufMessages2 countByEnumeratingWithState:&v39 objects:v43 count:16];
       }
 
       while (v11);
@@ -1074,36 +1074,36 @@ LABEL_26:
 
   else
   {
-    v20 = [(SACardSnippet *)self->_snippet siriui_card];
-    v21 = [v20 backingCard];
-    v22 = [v21 entityIdentifier];
+    siriui_card3 = [(SACardSnippet *)self->_snippet siriui_card];
+    backingCard3 = [siriui_card3 backingCard];
+    entityIdentifier = [backingCard3 entityIdentifier];
 
-    if (!v22)
+    if (!entityIdentifier)
     {
       goto LABEL_13;
     }
 
     v23 = objc_alloc(MEMORY[0x277CCACA8]);
-    v24 = [(SACardSnippet *)self->_snippet siriui_card];
-    v25 = [v24 backingCard];
-    v26 = [v25 entityIdentifier];
-    v27 = [v23 initWithData:v26 encoding:4];
-    v9 = [v27 stringByRemovingPercentEncoding];
+    siriui_card4 = [(SACardSnippet *)self->_snippet siriui_card];
+    backingCard4 = [siriui_card4 backingCard];
+    entityIdentifier2 = [backingCard4 entityIdentifier];
+    v27 = [v23 initWithData:entityIdentifier2 encoding:4];
+    entityProtobufMessages2 = [v27 stringByRemovingPercentEncoding];
 
     v28 = objc_alloc(MEMORY[0x277D4C7E8]);
-    v29 = [MEMORY[0x277CBEBC0] URLWithString:v9];
+    v29 = [MEMORY[0x277CBEBC0] URLWithString:entityProtobufMessages2];
     v30 = [v28 initWithNSURL:v29];
 
     v31 = objc_alloc_init(MEMORY[0x277D47688]);
-    v32 = [MEMORY[0x277CCAD78] UUID];
-    v33 = [v32 UUIDString];
-    [v31 setAceId:v33];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    [v31 setAceId:uUIDString2];
 
-    v34 = [v30 data];
-    [v31 setData:v34];
+    data = [v30 data];
+    [v31 setData:data];
 
-    v35 = [v30 _siriui_protobufTypeName];
-    [v31 setTypeName:v35];
+    _siriui_protobufTypeName = [v30 _siriui_protobufTypeName];
+    [v31 setTypeName:_siriui_protobufTypeName];
 
     [v38 addObject:v31];
   }
@@ -1114,19 +1114,19 @@ LABEL_13:
   return v36;
 }
 
-- (void)setNavigating:(BOOL)a3
+- (void)setNavigating:(BOOL)navigating
 {
-  v3 = a3;
-  v4 = [(SiriUICardSnippetViewController *)self view];
-  [v4 setNavigating:v3];
+  navigatingCopy = navigating;
+  view = [(SiriUICardSnippetViewController *)self view];
+  [view setNavigating:navigatingCopy];
 }
 
 - (BOOL)isNavigating
 {
-  v2 = [(SiriUICardSnippetViewController *)self view];
-  v3 = [v2 isNavigating];
+  view = [(SiriUICardSnippetViewController *)self view];
+  isNavigating = [view isNavigating];
 
-  return v3;
+  return isNavigating;
 }
 
 - (void)wasAddedToTranscript
@@ -1136,13 +1136,13 @@ LABEL_13:
   [(SiriUIBaseSnippetViewController *)&v6 wasAddedToTranscript];
   if ([(SiriUISnippetViewController *)self isVirgin])
   {
-    v3 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
-      [v5 cardEventDidOccur:0 withIdentifier:0 userInfo:0];
+      _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+      [_cardViewController2 cardEventDidOccur:0 withIdentifier:0 userInfo:0];
     }
   }
 }
@@ -1152,13 +1152,13 @@ LABEL_13:
   v6.receiver = self;
   v6.super_class = SiriUICardSnippetViewController;
   [(SiriUIBaseSnippetViewController *)&v6 siriDidDeactivate];
-  v3 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v5 cardEventDidOccur:4 withIdentifier:0 userInfo:0];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:4 withIdentifier:0 userInfo:0];
   }
 }
 
@@ -1167,119 +1167,119 @@ LABEL_13:
   v6.receiver = self;
   v6.super_class = SiriUICardSnippetViewController;
   [(SiriUISnippetViewController *)&v6 willCancel];
-  v3 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v5 cardEventDidOccur:3 withIdentifier:0 userInfo:0];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:3 withIdentifier:0 userInfo:0];
   }
 }
 
-- (void)siriDidStartSpeakingWithIdentifier:(id)a3
+- (void)siriDidStartSpeakingWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  identifierCopy = identifier;
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v6 cardEventDidOccur:1 withIdentifier:v7 userInfo:0];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:1 withIdentifier:identifierCopy userInfo:0];
   }
 }
 
-- (void)siriDidStopSpeakingWithIdentifier:(id)a3 speechQueueIsEmpty:(BOOL)a4
+- (void)siriDidStopSpeakingWithIdentifier:(id)identifier speechQueueIsEmpty:(BOOL)empty
 {
-  v8 = a3;
-  v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  identifierCopy = identifier;
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v7 cardEventDidOccur:2 withIdentifier:v8 userInfo:0];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:2 withIdentifier:identifierCopy userInfo:0];
   }
 }
 
-- (void)siriDidUpdateASRWithRecognition:(id)a3
+- (void)siriDidUpdateASRWithRecognition:(id)recognition
 {
-  v8 = a3;
-  v4 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  recognitionCopy = recognition;
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v8 forKey:@"UpdatedRecognition"];
-    v7 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v7 cardEventDidOccur:7 withIdentifier:0 userInfo:v6];
+    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:recognitionCopy forKey:@"UpdatedRecognition"];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:7 withIdentifier:0 userInfo:v6];
   }
 }
 
 - (void)siriWillBeginScrolling
 {
-  v3 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v5 cardEventDidOccur:5 withIdentifier:0 userInfo:0];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:5 withIdentifier:0 userInfo:0];
   }
 }
 
-- (void)siriDidScrollVisible:(BOOL)a3
+- (void)siriDidScrollVisible:(BOOL)visible
 {
-  v4 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v6 cardEventDidOccur:6 withIdentifier:0 userInfo:0];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:6 withIdentifier:0 userInfo:0];
   }
 }
 
 - (void)siriDidTapOutsideContent
 {
-  v3 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v5 cardEventDidOccur:8 withIdentifier:0 userInfo:0];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:8 withIdentifier:0 userInfo:0];
   }
 }
 
 - (void)siriWillStartRequest
 {
-  v3 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    [v5 cardEventDidOccur:9 withIdentifier:0 userInfo:0];
+    _cardViewController2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+    [_cardViewController2 cardEventDidOccur:9 withIdentifier:0 userInfo:0];
   }
 }
 
-- (void)siriDidReceiveViewsWithDialogPhase:(id)a3
+- (void)siriDidReceiveViewsWithDialogPhase:(id)phase
 {
-  v9 = a3;
+  phaseCopy = phase;
   if ([(SiriUISnippetViewController *)self _isAwaitingSuccessOrFailureEvent])
   {
-    v4 = [(SiriUICardSnippetViewController *)self _cardViewController];
-    v5 = [v4 card];
-    v6 = [v5 interactions];
-    v7 = [v6 anyObject];
+    _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
+    card = [_cardViewController card];
+    interactions = [card interactions];
+    anyObject = [interactions anyObject];
 
-    if (v7)
+    if (anyObject)
     {
-      if (([v9 isCompletionDialogPhase] & 1) != 0 || objc_msgSend(v9, "isConfirmedDialogPhase"))
+      if (([phaseCopy isCompletionDialogPhase] & 1) != 0 || objc_msgSend(phaseCopy, "isConfirmedDialogPhase"))
       {
-        if ([v9 isConfirmedDialogPhase])
+        if ([phaseCopy isConfirmedDialogPhase])
         {
           [(SiriUISnippetViewController *)self setConfirmed:1];
         }
@@ -1291,9 +1291,9 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      if (([v9 isErrorDialogPhase] & 1) != 0 || objc_msgSend(v9, "isCancelledDialogPhase"))
+      if (([phaseCopy isErrorDialogPhase] & 1) != 0 || objc_msgSend(phaseCopy, "isCancelledDialogPhase"))
       {
-        if ([v9 isCancelledDialogPhase])
+        if ([phaseCopy isCancelledDialogPhase])
         {
           [(SiriUISnippetViewController *)self setCancelled:1];
         }
@@ -1307,9 +1307,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_setCardViewController:(id)a3
+- (void)_setCardViewController:(id)controller
 {
-  objc_storeStrong(&self->_cardViewController, a3);
+  objc_storeStrong(&self->_cardViewController, controller);
   if (self->_isInAmbient)
   {
     [(SiriUICardSnippetViewController *)self _removeShouldHideInAmbientSectionsFromCurrentCard];
@@ -1318,62 +1318,62 @@ LABEL_9:
   [(SiriUISnippetViewController *)self setLoading:0];
 }
 
-- (void)_removeCardViewControllerFromParentViewController:(id)a3
+- (void)_removeCardViewControllerFromParentViewController:(id)controller
 {
-  v5 = a3;
-  v3 = [v5 parentViewController];
+  controllerCopy = controller;
+  parentViewController = [controllerCopy parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
-    [v5 didMoveToParentViewController:0];
-    v4 = [v5 view];
-    [v4 removeFromSuperview];
+    [controllerCopy didMoveToParentViewController:0];
+    view = [controllerCopy view];
+    [view removeFromSuperview];
 
-    [v5 removeFromParentViewController];
+    [controllerCopy removeFromParentViewController];
   }
 }
 
-- (void)_addCardViewControllerAsChildViewController:(id)a3
+- (void)_addCardViewControllerAsChildViewController:(id)controller
 {
-  v8 = a3;
-  v4 = [(SiriUICardSnippetViewController *)self childViewControllers];
-  v5 = [v4 containsObject:v8];
+  controllerCopy = controller;
+  childViewControllers = [(SiriUICardSnippetViewController *)self childViewControllers];
+  v5 = [childViewControllers containsObject:controllerCopy];
 
   if ((v5 & 1) == 0)
   {
     [(SiriUICardSnippetViewController *)self _removeCardViewControllerFromParentViewController:self->_cardViewController];
-    [(SiriUICardSnippetViewController *)self addChildViewController:v8];
-    v6 = [v8 view];
-    v7 = [(SiriUICardSnippetViewController *)self view];
-    [v7 setCardView:v6];
+    [(SiriUICardSnippetViewController *)self addChildViewController:controllerCopy];
+    view = [controllerCopy view];
+    view2 = [(SiriUICardSnippetViewController *)self view];
+    [view2 setCardView:view];
 
-    [v8 didMoveToParentViewController:self];
+    [controllerCopy didMoveToParentViewController:self];
   }
 }
 
-- (void)_updateContentSizeAndNotifyDelegateIfNecessary:(BOOL)a3
+- (void)_updateContentSizeAndNotifyDelegateIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   p_contentSize = &self->_contentSize;
   width = self->_contentSize.width;
   height = self->_contentSize.height;
-  v8 = [(SiriUICardSnippetViewController *)self view];
-  v9 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v9 siriViewControllerExpectedWidth:self];
-  [v8 sizeThatFits:{v10 + 8.0 + 8.0, 1.79769313e308}];
+  view = [(SiriUICardSnippetViewController *)self view];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
+  [view sizeThatFits:{v10 + 8.0 + 8.0, 1.79769313e308}];
   p_contentSize->width = v11;
   p_contentSize->height = v12;
 
-  if (v3 && (width != p_contentSize->width || height != p_contentSize->height))
+  if (necessaryCopy && (width != p_contentSize->width || height != p_contentSize->height))
   {
-    v14 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v14 siriViewControllerHeightDidChange:self];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate2 siriViewControllerHeightDidChange:self];
   }
 }
 
-- (void)_beginMonitoringForNextCardWithBlock:(id)a3
+- (void)_beginMonitoringForNextCardWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&cardLoadingLock);
   if (self->_isCardLoading)
   {
@@ -1384,10 +1384,10 @@ LABEL_9:
   {
     self->_isCardLoading = 1;
     os_unfair_lock_unlock(&cardLoadingLock);
-    v5 = [MEMORY[0x277D61AC8] sharedInstance];
-    [v5 addObserver:self];
+    mEMORY[0x277D61AC8] = [MEMORY[0x277D61AC8] sharedInstance];
+    [mEMORY[0x277D61AC8] addObserver:self];
 
-    v6 = MEMORY[0x26D63F900](v4);
+    v6 = MEMORY[0x26D63F900](blockCopy);
     cardLoadingCompletionhandler = self->_cardLoadingCompletionhandler;
     self->_cardLoadingCompletionhandler = v6;
 
@@ -1437,20 +1437,20 @@ void __72__SiriUICardSnippetViewController__beginMonitoringForNextCardWithBlock_
   }
 }
 
-- (void)_validateCardForParsecFeedbackDelivery:(id)a3 validHandler:(id)a4
+- (void)_validateCardForParsecFeedbackDelivery:(id)delivery validHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRKCardViewControlling *)self->_cardViewController card];
+  deliveryCopy = delivery;
+  handlerCopy = handler;
+  card = [(CRKCardViewControlling *)self->_cardViewController card];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 backingCard];
+    backingCard = [card backingCard];
   }
 
   else
   {
-    v9 = 0;
+    backingCard = 0;
   }
 
   v10 = *MEMORY[0x277CEF098];
@@ -1460,47 +1460,47 @@ void __72__SiriUICardSnippetViewController__beginMonitoringForNextCardWithBlock_
     v13 = 136315394;
     v14 = "[SiriUICardSnippetViewController _validateCardForParsecFeedbackDelivery:validHandler:]";
     v15 = 1024;
-    v16 = [v9 source];
+    source = [backingCard source];
     _os_log_impl(&dword_26948D000, v11, OS_LOG_TYPE_DEFAULT, "%s #cards Card source for backing card is %d", &v13, 0x12u);
   }
 
-  if (v9)
+  if (backingCard)
   {
-    if ([v9 source] == 1)
+    if ([backingCard source] == 1)
     {
-      v12 = [v8 isEqual:v6];
-      if (v7)
+      v12 = [card isEqual:deliveryCopy];
+      if (handlerCopy)
       {
         if (v12)
         {
-          v7[2](v7);
+          handlerCopy[2](handlerCopy);
         }
       }
     }
   }
 }
 
-- (void)_validateCardSectionForParsecFeedbackDelivery:(id)a3 validHandler:(id)a4
+- (void)_validateCardSectionForParsecFeedbackDelivery:(id)delivery validHandler:(id)handler
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CRKCardViewControlling *)self->_cardViewController card];
+  deliveryCopy = delivery;
+  handlerCopy = handler;
+  card = [(CRKCardViewControlling *)self->_cardViewController card];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 backingCard];
-    v9 = v8;
-    if (v8)
+    backingCard = [card backingCard];
+    v9 = backingCard;
+    if (backingCard)
     {
-      if ([v8 source] == 1)
+      if ([backingCard source] == 1)
       {
-        v10 = [v7 cardSections];
-        v11 = [v10 containsObject:v12];
+        cardSections = [card cardSections];
+        v11 = [cardSections containsObject:deliveryCopy];
 
-        if (v6)
+        if (handlerCopy)
         {
           if (v11)
           {
-            v6[2](v6);
+            handlerCopy[2](handlerCopy);
           }
         }
       }
@@ -1513,49 +1513,49 @@ void __72__SiriUICardSnippetViewController__beginMonitoringForNextCardWithBlock_
   }
 }
 
-- (id)_metricsContextOfEventsForCard:(id)a3
+- (id)_metricsContextOfEventsForCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 cardSections];
-  v7 = [v6 count];
+  cardSections = [cardCopy cardSections];
+  v7 = [cardSections count];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
   [v5 setObject:v8 forKey:@"cardSectionCount"];
 
-  v9 = [(SiriUICardSnippetViewController *)self snippet];
-  v10 = [v9 aceId];
+  snippet = [(SiriUICardSnippetViewController *)self snippet];
+  aceId = [snippet aceId];
 
-  if (v10)
+  if (aceId)
   {
-    [v5 setObject:v10 forKey:@"snippetAceId"];
+    [v5 setObject:aceId forKey:@"snippetAceId"];
   }
 
-  v11 = [v4 interactions];
-  v12 = [v11 anyObject];
-  v13 = [v12 identifier];
+  interactions = [cardCopy interactions];
+  anyObject = [interactions anyObject];
+  identifier = [anyObject identifier];
 
-  if (v13)
+  if (identifier)
   {
-    [v5 setObject:v13 forKey:@"interactionId"];
+    [v5 setObject:identifier forKey:@"interactionId"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v4 backingCard];
-    if (v14)
+    backingCard = [cardCopy backingCard];
+    if (backingCard)
     {
-      v15 = v14;
-      v16 = [v14 cardId];
-      if (v16)
+      v15 = backingCard;
+      cardId = [backingCard cardId];
+      if (cardId)
       {
-        [v5 setObject:v16 forKey:@"cardId"];
+        [v5 setObject:cardId forKey:@"cardId"];
       }
 
-      v17 = [v15 resultIdentifier];
-      if (v17)
+      resultIdentifier = [v15 resultIdentifier];
+      if (resultIdentifier)
       {
-        [v5 setObject:v17 forKey:@"resultId"];
+        [v5 setObject:resultIdentifier forKey:@"resultId"];
       }
     }
   }
@@ -1565,72 +1565,72 @@ void __72__SiriUICardSnippetViewController__beginMonitoringForNextCardWithBlock_
   return v18;
 }
 
-- (id)_metricsContextOfEventsForCardSection:(id)a3 inCard:(id)a4
+- (id)_metricsContextOfEventsForCardSection:(id)section inCard:(id)card
 {
-  v6 = a3;
-  v7 = a4;
+  sectionCopy = section;
+  cardCopy = card;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v7 cardSections];
-  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "indexOfObject:", v6)}];
+  cardSections = [cardCopy cardSections];
+  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(cardSections, "indexOfObject:", sectionCopy)}];
   [v8 setObject:v11 forKey:@"ordinalCardSectionPosition"];
 
-  v12 = [v7 cardSections];
-  v13 = [v12 count];
+  cardSections2 = [cardCopy cardSections];
+  v13 = [cardSections2 count];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
   [v8 setObject:v14 forKey:@"cardSectionCount"];
 
-  v15 = [(SiriUICardSnippetViewController *)self snippet];
-  v16 = [v15 aceId];
+  snippet = [(SiriUICardSnippetViewController *)self snippet];
+  aceId = [snippet aceId];
 
-  if (v16)
+  if (aceId)
   {
-    [v8 setObject:v16 forKey:@"snippetAceId"];
+    [v8 setObject:aceId forKey:@"snippetAceId"];
   }
 
-  v17 = [v7 interactions];
-  v18 = [v17 anyObject];
-  v19 = [v18 identifier];
+  interactions = [cardCopy interactions];
+  anyObject = [interactions anyObject];
+  identifier = [anyObject identifier];
 
-  if (v19)
+  if (identifier)
   {
-    [v8 setObject:v19 forKey:@"interactionId"];
+    [v8 setObject:identifier forKey:@"interactionId"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v20 = [v6 backingCardSection];
-    if (v20)
+    backingCardSection = [sectionCopy backingCardSection];
+    if (backingCardSection)
     {
-      v21 = v20;
-      v22 = [v20 cardSectionId];
-      if (v22)
+      v21 = backingCardSection;
+      cardSectionId = [backingCardSection cardSectionId];
+      if (cardSectionId)
       {
-        [v8 setObject:v22 forKey:@"cardSectionId"];
+        [v8 setObject:cardSectionId forKey:@"cardSectionId"];
       }
 
-      v23 = [v21 resultIdentifier];
-      if (v23)
+      resultIdentifier = [v21 resultIdentifier];
+      if (resultIdentifier)
       {
-        [v8 setObject:v23 forKey:@"resultId"];
+        [v8 setObject:resultIdentifier forKey:@"resultId"];
       }
 
-      v30 = v22;
-      v24 = [v21 nextCard];
-      v25 = [v24 cardId];
+      v30 = cardSectionId;
+      nextCard = [v21 nextCard];
+      cardId = [nextCard cardId];
 
-      if (v25)
+      if (cardId)
       {
-        [v8 setObject:v25 forKey:@"nextCardId"];
+        [v8 setObject:cardId forKey:@"nextCardId"];
       }
 
-      v26 = [v21 nextCard];
-      v27 = [v26 resultIdentifier];
+      nextCard2 = [v21 nextCard];
+      resultIdentifier2 = [nextCard2 resultIdentifier];
 
-      if (v27)
+      if (resultIdentifier2)
       {
-        [v8 setObject:v27 forKey:@"nextCardResultId"];
+        [v8 setObject:resultIdentifier2 forKey:@"nextCardResultId"];
       }
     }
   }
@@ -1640,15 +1640,15 @@ void __72__SiriUICardSnippetViewController__beginMonitoringForNextCardWithBlock_
   return v28;
 }
 
-- (void)_insertCardViewController:(id)a3
+- (void)_insertCardViewController:(id)controller
 {
-  [(SiriUICardSnippetViewController *)self _addCardViewControllerAsChildViewController:a3];
-  v4 = [(SiriUICardSnippetViewController *)self view];
-  [v4 reloadData];
+  [(SiriUICardSnippetViewController *)self _addCardViewControllerAsChildViewController:controller];
+  view = [(SiriUICardSnippetViewController *)self view];
+  [view reloadData];
 
   [(SiriUICardSnippetViewController *)self _updateContentSizeAndNotifyDelegateIfNecessary:1];
-  v5 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v5 siriSnippetViewControllerViewDidLoad:self];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriSnippetViewControllerViewDidLoad:self];
 }
 
 - (void)willConfirm
@@ -1656,38 +1656,38 @@ void __72__SiriUICardSnippetViewController__beginMonitoringForNextCardWithBlock_
   v7.receiver = self;
   v7.super_class = SiriUICardSnippetViewController;
   [(SiriUISnippetViewController *)&v7 willConfirm];
-  v3 = [(SiriUICardSnippetViewController *)self _cardViewController];
-  v4 = [v3 card];
-  v5 = [v4 interactions];
-  v6 = [v5 anyObject];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
+  card = [_cardViewController card];
+  interactions = [card interactions];
+  anyObject = [interactions anyObject];
 
-  if (v6)
+  if (anyObject)
   {
     [(SiriUICardSnippetViewController *)self _forwardProgressEventToCardViewController:0];
     [(SiriUISnippetViewController *)self _setAwaitingSuccessOrFailureEvent:1];
   }
 }
 
-- (void)_forwardProgressEventToCardViewController:(unint64_t)a3
+- (void)_forwardProgressEventToCardViewController:(unint64_t)controller
 {
-  v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
-  [(SiriUICardSnippetViewController *)self _forwardProgressEvent:a3 toCardViewController:v5 animated:1];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
+  [(SiriUICardSnippetViewController *)self _forwardProgressEvent:controller toCardViewController:_cardViewController animated:1];
 }
 
-- (void)_forwardProgressEvent:(unint64_t)a3 toCardViewController:(id)a4 animated:(BOOL)a5
+- (void)_forwardProgressEvent:(unint64_t)event toCardViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v8 = objc_alloc_init(MEMORY[0x277CF9478]);
-  [v8 setEvent:a3];
-  [v8 setAnimatesProgress:v5];
+  [v8 setEvent:event];
+  [v8 setAnimatesProgress:animatedCopy];
   if (objc_opt_respondsToSelector())
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __87__SiriUICardSnippetViewController__forwardProgressEvent_toCardViewController_animated___block_invoke;
     v10[3] = &unk_279C5A0E0;
-    v11 = v7;
+    v11 = controllerCopy;
     [v11 handleCardCommand:v8 reply:v10];
   }
 
@@ -1696,7 +1696,7 @@ void __72__SiriUICardSnippetViewController__beginMonitoringForNextCardWithBlock_
     v9 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
-      [SiriUICardSnippetViewController _forwardProgressEvent:v7 toCardViewController:v9 animated:?];
+      [SiriUICardSnippetViewController _forwardProgressEvent:controllerCopy toCardViewController:v9 animated:?];
     }
   }
 }
@@ -1715,52 +1715,52 @@ void __87__SiriUICardSnippetViewController__forwardProgressEvent_toCardViewContr
   }
 }
 
-- (void)_navigationButtonTapped:(id)a3
+- (void)_navigationButtonTapped:(id)tapped
 {
-  v4 = [(SiriUICardSnippetViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(SiriUICardSnippetViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (id)localeForCardSnippetView:(id)a3
+- (id)localeForCardSnippetView:(id)view
 {
-  v4 = [(SiriUISnippetViewController *)self _privateDelegate];
-  v5 = [v4 localeForSiriViewController:self];
+  _privateDelegate = [(SiriUISnippetViewController *)self _privateDelegate];
+  v5 = [_privateDelegate localeForSiriViewController:self];
 
   return v5;
 }
 
-- (void)cardSnippetViewSashWasTapped:(id)a3
+- (void)cardSnippetViewSashWasTapped:(id)tapped
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [(SiriUIBaseSnippetViewController *)self sashItem];
+  sashItem = [(SiriUIBaseSnippetViewController *)self sashItem];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[SiriUICardSnippetViewController cardSnippetViewSashWasTapped:]";
     v24 = 2112;
-    v25 = v4;
+    v25 = sashItem;
     _os_log_impl(&dword_26948D000, v5, OS_LOG_TYPE_DEFAULT, "%s #cards Card snippet's sash %@ tapped", buf, 0x16u);
   }
 
-  v6 = [v4 commands];
-  v7 = [v6 count];
+  commands = [sashItem commands];
+  v7 = [commands count];
 
   if (v7)
   {
-    v8 = [(SiriUIBaseSnippetViewController *)self delegate];
+    delegate = [(SiriUIBaseSnippetViewController *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
-    v10 = [(SiriUIBaseSnippetViewController *)self delegate];
-    v11 = [v4 commands];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    commands2 = [sashItem commands];
     if (v9)
     {
-      [v10 siriSnippetViewController:self performAceCommands:v11 sashItem:v4];
+      [delegate2 siriSnippetViewController:self performAceCommands:commands2 sashItem:sashItem];
     }
 
     else
     {
-      [v10 siriViewController:self performAceCommands:v11];
+      [delegate2 siriViewController:self performAceCommands:commands2];
     }
 
 LABEL_13:
@@ -1768,39 +1768,39 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v12 = [v4 applicationBundleIdentifier];
-  if (v12)
+  applicationBundleIdentifier = [sashItem applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
-    v13 = v12;
-    v14 = [v4 canPunchout];
+    v13 = applicationBundleIdentifier;
+    canPunchout = [sashItem canPunchout];
 
-    if (v14)
+    if (canPunchout)
     {
-      v10 = objc_alloc_init(MEMORY[0x277D479F0]);
-      v15 = [MEMORY[0x277CCAD78] UUID];
-      v16 = [v15 UUIDString];
-      [v10 setAceId:v16];
+      delegate2 = objc_alloc_init(MEMORY[0x277D479F0]);
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [delegate2 setAceId:uUIDString];
 
-      [v10 setAppAvailableInStorefront:1];
-      v17 = [v4 applicationBundleIdentifier];
-      [v10 setBundleId:v17];
+      [delegate2 setAppAvailableInStorefront:1];
+      applicationBundleIdentifier2 = [sashItem applicationBundleIdentifier];
+      [delegate2 setBundleId:applicationBundleIdentifier2];
 
-      v18 = [(SiriUIBaseSnippetViewController *)self delegate];
-      LOBYTE(v16) = objc_opt_respondsToSelector();
+      delegate3 = [(SiriUIBaseSnippetViewController *)self delegate];
+      LOBYTE(uUIDString) = objc_opt_respondsToSelector();
 
-      v11 = [(SiriUIBaseSnippetViewController *)self delegate];
-      if (v16)
+      commands2 = [(SiriUIBaseSnippetViewController *)self delegate];
+      if (uUIDString)
       {
-        v21 = v10;
+        v21 = delegate2;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
-        [v11 siriSnippetViewController:self performAceCommands:v19 sashItem:v4];
+        [commands2 siriSnippetViewController:self performAceCommands:v19 sashItem:sashItem];
       }
 
       else
       {
-        v20 = v10;
+        v20 = delegate2;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-        [v11 siriViewController:self performAceCommands:v19];
+        [commands2 siriViewController:self performAceCommands:v19];
       }
 
       goto LABEL_13;
@@ -1810,20 +1810,20 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)cardViewControllerDidLoad:(id)a3
+- (void)cardViewControllerDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   if ([(SiriUISnippetViewController *)self isLoading])
   {
     [(SiriUISnippetViewController *)self setLoading:0];
-    [(SiriUICardSnippetViewController *)self _insertCardViewController:v4];
+    [(SiriUICardSnippetViewController *)self _insertCardViewController:loadCopy];
   }
 
   self->_isCardViewControllerLoading = 0;
   [(SiriUISnippetViewController *)self setUserConfirmationEnabled:1];
 }
 
-- (void)cardViewController:(id)a3 requestsHandlingOfIntent:(id)a4
+- (void)cardViewController:(id)controller requestsHandlingOfIntent:(id)intent
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1833,53 +1833,53 @@ LABEL_14:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (BOOL)performReferentialCommand:(id)a3 forCardViewController:(id)a4
+- (BOOL)performReferentialCommand:(id)command forCardViewController:(id)controller
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  controllerCopy = controller;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v21 = "[SiriUICardSnippetViewController performReferentialCommand:forCardViewController:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = commandCopy;
     _os_log_impl(&dword_26948D000, v8, OS_LOG_TYPE_DEFAULT, "%s #cards Perform referential command %@", buf, 0x16u);
   }
 
-  v9 = [v6 referenceIdentifier];
-  v10 = [(NSMutableDictionary *)self->_referenceableCommandsByIdentifierMap objectForKey:v9];
+  referenceIdentifier = [commandCopy referenceIdentifier];
+  v10 = [(NSMutableDictionary *)self->_referenceableCommandsByIdentifierMap objectForKey:referenceIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v6 userInfo];
-    [v10 _siriui_applyUserInfoDictionary:v11];
+    userInfo = [commandCopy userInfo];
+    [v10 _siriui_applyUserInfoDictionary:userInfo];
   }
 
   if (v10)
   {
     SRUIFPopulateSendCommandWithInstrumentationTurn();
-    v12 = [(SiriUIBaseSnippetViewController *)self delegate];
+    delegate = [(SiriUIBaseSnippetViewController *)self delegate];
     v19 = v10;
-    v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-    [v12 siriViewController:self performAceCommands:v13];
+    delegate2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
+    [delegate siriViewController:self performAceCommands:delegate2];
   }
 
   else
   {
-    v14 = [(NSMutableDictionary *)self->_referenceableSnippetsByIdentifierMap objectForKey:v9];
+    v14 = [(NSMutableDictionary *)self->_referenceableSnippetsByIdentifierMap objectForKey:referenceIdentifier];
     if (!v14)
     {
       v16 = 0;
       goto LABEL_10;
     }
 
-    v12 = v14;
-    v13 = [(SiriUIBaseSnippetViewController *)self delegate];
-    v18 = v12;
+    delegate = v14;
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    v18 = delegate;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
-    [v13 siriSnippetViewController:self pushSirilandSnippets:v15];
+    [delegate2 siriSnippetViewController:self pushSirilandSnippets:v15];
   }
 
   v16 = 1;
@@ -1888,45 +1888,45 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)performNextCardCommand:(id)a3 forCardViewController:(id)a4
+- (BOOL)performNextCardCommand:(id)command forCardViewController:(id)controller
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  commandCopy = command;
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[SiriUICardSnippetViewController performNextCardCommand:forCardViewController:]";
     v24 = 2112;
-    v25 = v5;
+    v25 = commandCopy;
     _os_log_impl(&dword_26948D000, v6, OS_LOG_TYPE_DEFAULT, "%s #cards Perform next card command %@", buf, 0x16u);
   }
 
   v7 = MEMORY[0x277D47200];
   v8 = self->_snippet;
   v9 = objc_alloc_init(v7);
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
-  [v9 setAceId:v11];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v9 setAceId:uUIDString];
 
   v12 = MEMORY[0x277CF9450];
-  v13 = [v5 nextCard];
-  v14 = [v12 originalDataForCard:v13];
+  nextCard = [commandCopy nextCard];
+  v14 = [v12 originalDataForCard:nextCard];
   [v9 setCardData:v14];
 
-  v15 = [(SACardSnippet *)v8 referencedCommands];
-  [v9 setReferencedCommands:v15];
+  referencedCommands = [(SACardSnippet *)v8 referencedCommands];
+  [v9 setReferencedCommands:referencedCommands];
 
-  v16 = [(SACardSnippet *)v8 referencedSnippets];
-  [v9 setReferencedSnippets:v16];
+  referencedSnippets = [(SACardSnippet *)v8 referencedSnippets];
+  [v9 setReferencedSnippets:referencedSnippets];
 
-  v17 = [(SACardSnippet *)v8 sash];
-  [v9 setSash:v17];
+  sash = [(SACardSnippet *)v8 sash];
+  [v9 setSash:sash];
 
-  v18 = [(SiriUIBaseSnippetViewController *)self delegate];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
   v21 = v9;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
-  [v18 siriSnippetViewController:self pushSirilandSnippets:v19];
+  [delegate siriSnippetViewController:self pushSirilandSnippets:v19];
 
   [(SiriUICardSnippetViewController *)self beginAppearanceTransition:1 animated:0];
   [(SiriUICardSnippetViewController *)self endAppearanceTransition];
@@ -1934,51 +1934,51 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)performPunchoutCommand:(id)a3 forCardViewController:(id)a4
+- (BOOL)performPunchoutCommand:(id)command forCardViewController:(id)controller
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  controllerCopy = controller;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v36 = "[SiriUICardSnippetViewController performPunchoutCommand:forCardViewController:]";
     v37 = 2112;
-    v38 = v6;
+    v38 = commandCopy;
     _os_log_impl(&dword_26948D000, v8, OS_LOG_TYPE_DEFAULT, "%s #cards Perform punch out command %@", buf, 0x16u);
   }
 
-  v9 = [v6 punchout];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v6 punchout];
-  v12 = [v11 urls];
+  punchout = [commandCopy punchout];
+  bundleIdentifier = [punchout bundleIdentifier];
+  punchout2 = [commandCopy punchout];
+  urls = [punchout2 urls];
 
   getSearchUICardViewControllerClass();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setThreeDTouchEnabled:0];
+    [controllerCopy setThreeDTouchEnabled:0];
   }
 
-  if (v10)
+  if (bundleIdentifier)
   {
-    v13 = objc_alloc_init(MEMORY[0x277D479F0]);
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [v13 setAceId:v15];
+    urls2 = objc_alloc_init(MEMORY[0x277D479F0]);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [urls2 setAceId:uUIDString];
 
-    [v13 setAppAvailableInStorefront:1];
-    [v13 setBundleId:v10];
-    if ([v12 count])
+    [urls2 setAppAvailableInStorefront:1];
+    [urls2 setBundleId:bundleIdentifier];
+    if ([urls count])
     {
-      v16 = [v12 firstObject];
-      [v13 setPunchOutUri:v16];
+      firstObject = [urls firstObject];
+      [urls2 setPunchOutUri:firstObject];
     }
 
-    v17 = [(SiriUIBaseSnippetViewController *)self delegate];
-    v34 = v13;
+    delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+    v34 = urls2;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-    [v17 siriViewController:self performAceCommands:v18];
+    [delegate siriViewController:self performAceCommands:v18];
   }
 
   else
@@ -1987,15 +1987,15 @@ LABEL_10:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v19 = [v6 punchout];
-    v13 = [v19 urls];
+    punchout3 = [commandCopy punchout];
+    urls2 = [punchout3 urls];
 
-    v20 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v20 = [urls2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v20)
     {
       v21 = v20;
-      v27 = v9;
-      v28 = v7;
+      v27 = punchout;
+      v28 = controllerCopy;
       v22 = *v30;
       do
       {
@@ -2003,7 +2003,7 @@ LABEL_10:
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(urls2);
           }
 
           v24 = *(*(&v29 + 1) + 8 * i);
@@ -2011,66 +2011,66 @@ LABEL_10:
           [v25 siriViewController:self openURL:v24 completion:0];
         }
 
-        v21 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v21 = [urls2 countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v21);
-      v9 = v27;
-      v7 = v28;
+      punchout = v27;
+      controllerCopy = v28;
     }
   }
 
   return 1;
 }
 
-- (BOOL)performInvocationPayloadCommand:(id)a3 forCardViewController:(id)a4
+- (BOOL)performInvocationPayloadCommand:(id)command forCardViewController:(id)controller
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  controllerCopy = controller;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v23 = 136315394;
     v24 = "[SiriUICardSnippetViewController performInvocationPayloadCommand:forCardViewController:]";
     v25 = 2112;
-    v26 = v6;
+    v26 = commandCopy;
     _os_log_impl(&dword_26948D000, v8, OS_LOG_TYPE_DEFAULT, "%s #cards Perform invocation payload command %@", &v23, 0x16u);
   }
 
-  [(SiriUICardSnippetViewController *)self _inspectPayloadForMetricsEvents:v6];
+  [(SiriUICardSnippetViewController *)self _inspectPayloadForMetricsEvents:commandCopy];
   v9 = objc_alloc(MEMORY[0x277D5C220]);
-  v10 = [v6 invocationIdentifier];
-  v11 = [v9 initWithIdentifier:v10];
+  invocationIdentifier = [commandCopy invocationIdentifier];
+  v11 = [v9 initWithIdentifier:invocationIdentifier];
 
-  v12 = [v6 userInfo];
-  [v11 setUserData:v12];
+  userInfo = [commandCopy userInfo];
+  [v11 setUserData:userInfo];
 
   v13 = objc_alloc_init(MEMORY[0x277D5C218]);
   [v13 setInputOrigin:*MEMORY[0x277D48400]];
   [v13 setInteractionType:*MEMORY[0x277D48470]];
   v14 = [MEMORY[0x277D5C210] runSiriKitExecutorCommandWithContext:v13 payload:v11];
   v15 = [MEMORY[0x277D5C210] wrapCommandInStartLocalRequest:v14];
-  v16 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-  v17 = [v16 currentInstrumentationTurnContext];
+  _instrumentationManager = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+  currentInstrumentationTurnContext = [_instrumentationManager currentInstrumentationTurnContext];
 
-  v18 = [(SiriUIBaseSnippetViewController *)self delegate];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(SiriUIBaseSnippetViewController *)self delegate];
-    v21 = [v17 turnIdentifier];
-    [v20 siriSnippetViewController:self handleStartLocalRequest:v15 turnIdentifier:v21];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    turnIdentifier = [currentInstrumentationTurnContext turnIdentifier];
+    [delegate2 siriSnippetViewController:self handleStartLocalRequest:v15 turnIdentifier:turnIdentifier];
   }
 
   return 1;
 }
 
-- (void)_inspectPayloadForMetricsEvents:(id)a3
+- (void)_inspectPayloadForMetricsEvents:(id)events
 {
-  v4 = [a3 invocationIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D5C2E0]];
+  invocationIdentifier = [events invocationIdentifier];
+  v5 = [invocationIdentifier isEqualToString:*MEMORY[0x277D5C2E0]];
 
   if (v5)
   {
@@ -2079,56 +2079,56 @@ LABEL_10:
   }
 }
 
-- (BOOL)performBeganEditingCommand:(id)a3 forCardViewController:(id)a4
+- (BOOL)performBeganEditingCommand:(id)command forCardViewController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  controllerCopy = controller;
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[SiriUICardSnippetViewController performBeganEditingCommand:forCardViewController:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = controllerCopy;
     _os_log_impl(&dword_26948D000, v6, OS_LOG_TYPE_DEFAULT, "%s #cards CRBeganEditingCommand received for %@. Hiding status view and alerting our delegate", &v10, 0x16u);
   }
 
-  v7 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v7 siriSnippetViewController:self setStatusViewHidden:1];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriSnippetViewController:self setStatusViewHidden:1];
 
-  v8 = [(SiriUISnippetViewController *)self _privateDelegate];
-  [v8 siriViewControllerWillBeginEditing:self];
+  _privateDelegate = [(SiriUISnippetViewController *)self _privateDelegate];
+  [_privateDelegate siriViewControllerWillBeginEditing:self];
 
   [(SiriUICardSnippetViewController *)self _emitInstrumentationEventForKeyboardInvocation];
   return 1;
 }
 
-- (BOOL)performFinishedEditingCommand:(id)a3 forCardViewController:(id)a4
+- (BOOL)performFinishedEditingCommand:(id)command forCardViewController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  controllerCopy = controller;
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[SiriUICardSnippetViewController performFinishedEditingCommand:forCardViewController:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = controllerCopy;
     _os_log_impl(&dword_26948D000, v6, OS_LOG_TYPE_DEFAULT, "%s #cards CRFinishedEditingCommand received for %@. Showing status view and alerting our delegate", &v10, 0x16u);
   }
 
-  v7 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v7 siriSnippetViewController:self setStatusViewHidden:0];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriSnippetViewController:self setStatusViewHidden:0];
 
-  v8 = [(SiriUISnippetViewController *)self _privateDelegate];
-  [v8 siriViewControllerDidEndEditing:self];
+  _privateDelegate = [(SiriUISnippetViewController *)self _privateDelegate];
+  [_privateDelegate siriViewControllerDidEndEditing:self];
 
   return 1;
 }
 
-- (CGSize)cardViewController:(id)a3 boundingSizeForCardSectionViewController:(id)a4
+- (CGSize)cardViewController:(id)controller boundingSizeForCardSectionViewController:(id)viewController
 {
-  v5 = [(SiriUIBaseSnippetViewController *)self delegate:a3];
+  v5 = [(SiriUIBaseSnippetViewController *)self delegate:controller];
   [v5 siriViewControllerExpectedWidth:self];
   v7 = v6 - 8.0 - 8.0;
 
@@ -2139,13 +2139,13 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)navigationIndexOfCardViewController:(id)a3
+- (unint64_t)navigationIndexOfCardViewController:(id)controller
 {
-  v4 = [(SiriUIBaseSnippetViewController *)self delegate];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(SiriUIBaseSnippetViewController *)self delegate];
-    v6 = [v5 navigationIndexOfSnippetViewController:self];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    v6 = [delegate2 navigationIndexOfSnippetViewController:self];
   }
 
   else
@@ -2156,81 +2156,81 @@ LABEL_10:
   return v6;
 }
 
-- (void)presentViewController:(id)a3 forCardViewController:(id)a4
+- (void)presentViewController:(id)controller forCardViewController:(id)viewController
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v28 = "[SiriUICardSnippetViewController presentViewController:forCardViewController:]";
     v29 = 2112;
-    v30 = v6;
+    v30 = controllerCopy;
     v31 = 2112;
-    v32 = v7;
+    v32 = viewControllerCopy;
     _os_log_impl(&dword_26948D000, v8, OS_LOG_TYPE_DEFAULT, "%s #cards Presenting view controller: %@ for card view controller: %@", buf, 0x20u);
   }
 
-  v9 = [(SiriUIModalContainerViewController *)v6 modalPresentationStyle];
+  modalPresentationStyle = [(SiriUIModalContainerViewController *)controllerCopy modalPresentationStyle];
   v10 = 0;
-  v11 = v9 + 2;
-  if ((v9 + 2) > 0xA)
+  v11 = modalPresentationStyle + 2;
+  if ((modalPresentationStyle + 2) > 0xA)
   {
     v13 = 0;
     goto LABEL_6;
   }
 
-  v12 = v6;
+  v12 = controllerCopy;
   if (((1 << v11) & 0x73B) == 0)
   {
     if (((1 << v11) & 0x84) != 0)
     {
-      v12 = [[SiriUIModalContainerViewController alloc] initWithContentViewController:v6];
+      v12 = [[SiriUIModalContainerViewController alloc] initWithContentViewController:controllerCopy];
       [(SiriUIModalContainerViewController *)v12 setDelegate:self];
-      v16 = [(SiriUISnippetViewController *)self _privateDelegate];
-      [v16 siriSnippetViewController:self willPresentViewController:v6];
+      _privateDelegate = [(SiriUISnippetViewController *)self _privateDelegate];
+      [_privateDelegate siriSnippetViewController:self willPresentViewController:controllerCopy];
 
-      v17 = [(SiriUIBaseSnippetViewController *)self delegate];
-      [v17 siriSnippetViewController:self setStatusViewHidden:1];
+      delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+      [delegate siriSnippetViewController:self setStatusViewHidden:1];
 
-      if (![(UIViewController *)v6 siriui_shouldHideStatusBar])
+      if (![(UIViewController *)controllerCopy siriui_shouldHideStatusBar])
       {
         v10 = v12;
         goto LABEL_5;
       }
 
-      v18 = [(SiriUIBaseSnippetViewController *)self delegate];
-      [v18 siriSnippetViewController:self setStatusBarHidden:1 animated:1];
+      delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+      [delegate2 siriSnippetViewController:self setStatusBarHidden:1 animated:1];
       v10 = v12;
     }
 
     else
     {
-      v19 = [(SiriUIBaseSnippetViewController *)self delegate];
-      [v19 siriSnippetViewController:self setStatusViewHidden:1];
+      delegate3 = [(SiriUIBaseSnippetViewController *)self delegate];
+      [delegate3 siriSnippetViewController:self setStatusViewHidden:1];
 
-      if ([(UIViewController *)v6 siriui_shouldHideStatusBar])
+      if ([(UIViewController *)controllerCopy siriui_shouldHideStatusBar])
       {
-        v20 = [(SiriUIBaseSnippetViewController *)self delegate];
-        [v20 siriSnippetViewController:self setStatusBarHidden:1 animated:1];
+        delegate4 = [(SiriUIBaseSnippetViewController *)self delegate];
+        [delegate4 siriSnippetViewController:self setStatusBarHidden:1 animated:1];
       }
 
-      v21 = [(SiriUIBaseSnippetViewController *)self delegate];
+      delegate5 = [(SiriUIBaseSnippetViewController *)self delegate];
       v22 = objc_opt_respondsToSelector();
 
       if ((v22 & 1) == 0)
       {
         v10 = 0;
-        v12 = v6;
+        v12 = controllerCopy;
         goto LABEL_5;
       }
 
-      v18 = [(SiriUIBaseSnippetViewController *)self delegate];
-      [v18 siriViewController:self setTypeToSiriViewHidden:1];
+      delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+      [delegate2 siriViewController:self setTypeToSiriViewHidden:1];
       v10 = 0;
-      v12 = v6;
+      v12 = controllerCopy;
     }
   }
 
@@ -2243,9 +2243,9 @@ LABEL_6:
   v23[2] = __79__SiriUICardSnippetViewController_presentViewController_forCardViewController___block_invoke;
   v23[3] = &unk_279C5A040;
   v24 = v13;
-  v25 = self;
-  v26 = v6;
-  v14 = v6;
+  selfCopy = self;
+  v26 = controllerCopy;
+  v14 = controllerCopy;
   v15 = v13;
   [(SiriUICardSnippetViewController *)self presentViewController:v10 animated:1 completion:v23];
 }
@@ -2262,144 +2262,144 @@ void __79__SiriUICardSnippetViewController_presentViewController_forCardViewCont
   [v3 siriSnippetViewController:*(a1 + 40) didPresentViewController:*(a1 + 48)];
 }
 
-- (void)cardViewController:(id)a3 willDismissViewController:(id)a4
+- (void)cardViewController:(id)controller willDismissViewController:(id)viewController
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[SiriUICardSnippetViewController cardViewController:willDismissViewController:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = controllerCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = viewControllerCopy;
     _os_log_impl(&dword_26948D000, v8, OS_LOG_TYPE_DEFAULT, "%s #cards Card view controller %@ dismissing view controller %@", &v14, 0x20u);
   }
 
-  v9 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v9 siriSnippetViewController:self setStatusViewHidden:0];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriSnippetViewController:self setStatusViewHidden:0];
 
-  if ([v6 siriui_shouldHideStatusBar])
+  if ([controllerCopy siriui_shouldHideStatusBar])
   {
-    v10 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v10 siriSnippetViewController:self setStatusBarHidden:0 animated:1];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate2 siriSnippetViewController:self setStatusBarHidden:0 animated:1];
   }
 
-  v11 = [(SiriUIBaseSnippetViewController *)self delegate];
+  delegate3 = [(SiriUIBaseSnippetViewController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v13 siriViewController:self setTypeToSiriViewHidden:0];
+    delegate4 = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate4 siriViewController:self setTypeToSiriViewHidden:0];
   }
 }
 
-- (void)modalContainerViewControllerViewWillDisappear:(id)a3
+- (void)modalContainerViewControllerViewWillDisappear:(id)disappear
 {
-  v4 = a3;
-  v5 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v5 siriSnippetViewController:self setStatusViewHidden:0];
+  disappearCopy = disappear;
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriSnippetViewController:self setStatusViewHidden:0];
 
-  v6 = [(SiriUISnippetViewController *)self _privateDelegate];
-  v7 = [v4 contentViewController];
-  [v6 siriSnippetViewController:self willDismissViewController:v7];
+  _privateDelegate = [(SiriUISnippetViewController *)self _privateDelegate];
+  contentViewController = [disappearCopy contentViewController];
+  [_privateDelegate siriSnippetViewController:self willDismissViewController:contentViewController];
 
-  v8 = [v4 contentViewController];
+  contentViewController2 = [disappearCopy contentViewController];
 
-  LODWORD(v4) = [v8 siriui_shouldHideStatusBar];
-  if (v4)
+  LODWORD(disappearCopy) = [contentViewController2 siriui_shouldHideStatusBar];
+  if (disappearCopy)
   {
-    v9 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v9 siriSnippetViewController:self setStatusBarHidden:0 animated:1];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate2 siriSnippetViewController:self setStatusBarHidden:0 animated:1];
   }
 }
 
-- (void)modalContainerViewControllerViewDidDisappear:(id)a3
+- (void)modalContainerViewControllerViewDidDisappear:(id)disappear
 {
-  v4 = a3;
-  v6 = [(SiriUISnippetViewController *)self _privateDelegate];
-  v5 = [v4 contentViewController];
+  disappearCopy = disappear;
+  _privateDelegate = [(SiriUISnippetViewController *)self _privateDelegate];
+  contentViewController = [disappearCopy contentViewController];
 
-  [v6 siriSnippetViewController:self didDismissViewController:v5];
+  [_privateDelegate siriSnippetViewController:self didDismissViewController:contentViewController];
 }
 
-- (void)commandWasPerformed:(id)a3
+- (void)commandWasPerformed:(id)performed
 {
-  v4 = [a3 backingFeedback];
-  if (v4)
+  backingFeedback = [performed backingFeedback];
+  if (backingFeedback)
   {
-    v14 = v4;
-    v5 = [(SiriUICardSnippetViewController *)self snippet];
-    v6 = [v5 aceId];
+    v14 = backingFeedback;
+    snippet = [(SiriUICardSnippetViewController *)self snippet];
+    aceId = [snippet aceId];
 
     [MEMORY[0x277CCAD78] UUID];
-    v7 = [objc_claimAutoreleasedReturnValue() initWithUUIDString:v6];
-    v8 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-    v9 = [v8 currentInstrumentationTurnContext];
-    v10 = [v9 turnIdentifier];
+    v7 = [objc_claimAutoreleasedReturnValue() initWithUUIDString:aceId];
+    _instrumentationManager = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+    currentInstrumentationTurnContext = [_instrumentationManager currentInstrumentationTurnContext];
+    turnIdentifier = [currentInstrumentationTurnContext turnIdentifier];
     v11 = MEMORY[0x26D63F050]();
 
     v12 = [v11 isEqualToString:self->_feedbackEngagementInstrumentationIdentifier];
-    v13 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-    [v13 emitVRXInstrumentationEvent:v14 aceViewId:v7 cardEngagementProcessed:v12];
+    _instrumentationManager2 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+    [_instrumentationManager2 emitVRXInstrumentationEvent:v14 aceViewId:v7 cardEngagementProcessed:v12];
 
-    v4 = v14;
+    backingFeedback = v14;
   }
 }
 
-- (void)cardSectionView:(id)a3 willProcessEngagementFeedback:(id)a4
+- (void)cardSectionView:(id)view willProcessEngagementFeedback:(id)feedback
 {
-  v5 = a3;
-  v6 = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
-  [(SiriUICardSnippetViewController *)self _instrumentCardSectionInteractionForCardSection:v5 previousTurn:v6];
+  viewCopy = view;
+  instrumentationTurnIdentifier = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
+  [(SiriUICardSnippetViewController *)self _instrumentCardSectionInteractionForCardSection:viewCopy previousTurn:instrumentationTurnIdentifier];
 }
 
-- (void)userDidEngageCardSection:(id)a3 withEngagementFeedback:(id)a4
+- (void)userDidEngageCardSection:(id)section withEngagementFeedback:(id)feedback
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 backingFeedback];
-  if ([v7 actionTarget] == 1 || objc_msgSend(v7, "actionTarget") == 2)
+  sectionCopy = section;
+  backingFeedback = [feedback backingFeedback];
+  if ([backingFeedback actionTarget] == 1 || objc_msgSend(backingFeedback, "actionTarget") == 2)
   {
-    if ([v7 actionTarget] == 1)
+    if ([backingFeedback actionTarget] == 1)
     {
       v8 = 3;
     }
 
     else
     {
-      v8 = 4 * ([v7 actionTarget] == 2);
+      v8 = 4 * ([backingFeedback actionTarget] == 2);
     }
 
-    v9 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-    v10 = [v7 destination];
-    v11 = [v10 urls];
-    v12 = [v11 firstObject];
-    v13 = [v7 destination];
-    v14 = [v13 bundleIdentifier];
-    [v9 emitPunchOutEventWithURL:v12 appID:v14 punchoutOrigin:v8];
+    _instrumentationManager = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+    destination = [backingFeedback destination];
+    urls = [destination urls];
+    firstObject = [urls firstObject];
+    destination2 = [backingFeedback destination];
+    bundleIdentifier = [destination2 bundleIdentifier];
+    [_instrumentationManager emitPunchOutEventWithURL:firstObject appID:bundleIdentifier punchoutOrigin:v8];
   }
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __83__SiriUICardSnippetViewController_userDidEngageCardSection_withEngagementFeedback___block_invoke;
   v35[3] = &unk_279C59D78;
-  v15 = v7;
+  v15 = backingFeedback;
   v36 = v15;
-  [(SiriUICardSnippetViewController *)self _validateCardSectionForParsecFeedbackDelivery:v6 validHandler:v35];
-  v16 = [(CRKCardViewControlling *)self->_cardViewController card];
-  v17 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCardSection:v6 inCard:v16];
+  [(SiriUICardSnippetViewController *)self _validateCardSectionForParsecFeedbackDelivery:sectionCopy validHandler:v35];
+  card = [(CRKCardViewControlling *)self->_cardViewController card];
+  v17 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCardSection:sectionCopy inCard:card];
 
-  v18 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+  _instrumentationManager2 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
   v19 = [v17 objectForKey:@"cardSectionId"];
   v20 = [v17 objectForKey:@"ordinalCardSectionPosition"];
-  v21 = [v20 integerValue];
+  integerValue = [v20 integerValue];
   v22 = [v17 objectForKey:@"snippetAceId"];
-  [v18 emitUUFRCasinoCardSelectedEventWithCardSectionID:v19 ordinalCardSectionPosition:v21 snippetAceId:v22];
+  [_instrumentationManager2 emitUUFRCasinoCardSelectedEventWithCardSectionID:v19 ordinalCardSectionPosition:integerValue snippetAceId:v22];
 
   v23 = MEMORY[0x277CEF098];
   v24 = *MEMORY[0x277CEF098];
@@ -2414,8 +2414,8 @@ void __79__SiriUICardSnippetViewController_presentViewController_forCardViewCont
     _os_log_impl(&dword_26948D000, v25, OS_LOG_TYPE_DEFAULT, "%s Sending event to AFAnalytics: %@", buf, 0x16u);
   }
 
-  v27 = [(SiriUICardSnippetViewController *)self _analytics];
-  [v27 logEventWithType:3905 context:v17];
+  _analytics = [(SiriUICardSnippetViewController *)self _analytics];
+  [_analytics logEventWithType:3905 context:v17];
 
   v28 = *v23;
   if (os_log_type_enabled(*v23, OS_LOG_TYPE_DEFAULT))
@@ -2429,17 +2429,17 @@ void __79__SiriUICardSnippetViewController_presentViewController_forCardViewCont
     _os_log_impl(&dword_26948D000, v29, OS_LOG_TYPE_DEFAULT, "%s Sending event to AFAnalytics: %@", buf, 0x16u);
   }
 
-  v31 = [(SiriUICardSnippetViewController *)self _analytics];
-  v32 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:v16];
-  [v31 logEventWithType:3904 context:v32];
+  _analytics2 = [(SiriUICardSnippetViewController *)self _analytics];
+  v32 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:card];
+  [_analytics2 logEventWithType:3904 context:v32];
 
-  v33 = [(SiriUIBaseSnippetViewController *)self delegate];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
   LOBYTE(v32) = objc_opt_respondsToSelector();
 
   if (v32)
   {
-    v34 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v34 userTouchedSnippet];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate2 userTouchedSnippet];
   }
 }
 
@@ -2461,103 +2461,103 @@ uint64_t __83__SiriUICardSnippetViewController_userDidEngageCardSection_withEnga
   return SFFeedbackNotify();
 }
 
-- (void)_instrumentCardSectionInteractionForCardSection:(id)a3 previousTurn:(id)a4
+- (void)_instrumentCardSectionInteractionForCardSection:(id)section previousTurn:(id)turn
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v7];
+  sectionCopy = section;
+  turnCopy = turn;
+  v8 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:turnCopy];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v8 turnIdentifier];
+    turnIdentifier = [v8 turnIdentifier];
     v24 = 136315650;
     v25 = "[SiriUICardSnippetViewController _instrumentCardSectionInteractionForCardSection:previousTurn:]";
     v26 = 2112;
-    v27 = v11;
+    v27 = turnIdentifier;
     v28 = 2112;
-    v29 = v7;
+    v29 = turnCopy;
     _os_log_impl(&dword_26948D000, v10, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", &v24, 0x20u);
   }
 
-  v12 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-  [v12 storeCurrentInstrumentationTurnContext:v8];
+  _instrumentationManager = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+  [_instrumentationManager storeCurrentInstrumentationTurnContext:v8];
 
-  v13 = [(SACardSnippet *)self->_snippet responseViewId];
+  responseViewId = [(SACardSnippet *)self->_snippet responseViewId];
 
-  if (!v13)
+  if (!responseViewId)
   {
     v14 = objc_alloc_init(MEMORY[0x277D5A928]);
     [v14 setInvocationSource:11];
     v15 = objc_alloc_init(MEMORY[0x277D5ACB0]);
-    v16 = [v6 cardSectionIdentifier];
-    [v15 setViewID:v16];
+    cardSectionIdentifier = [sectionCopy cardSectionIdentifier];
+    [v15 setViewID:cardSectionIdentifier];
 
     [v14 setViewContainer:v15];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v6 backingCardSection];
-      v18 = [v17 resultIdentifier];
+      backingCardSection = [sectionCopy backingCardSection];
+      resultIdentifier = [backingCardSection resultIdentifier];
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && v18)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && resultIdentifier)
       {
         v19 = objc_alloc_init(MEMORY[0x277D5ACA8]);
-        [v19 setResultIdentifier:v18];
+        [v19 setResultIdentifier:resultIdentifier];
         [v14 setCardInvocationContext:v19];
       }
 
-      v20 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-      [v20 emitInstrumentation:v14];
+      _instrumentationManager2 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+      [_instrumentationManager2 emitInstrumentation:v14];
     }
   }
 
-  v21 = [v8 turnIdentifier];
-  v22 = [v21 UUIDString];
+  turnIdentifier2 = [v8 turnIdentifier];
+  uUIDString = [turnIdentifier2 UUIDString];
   feedbackEngagementInstrumentationIdentifier = self->_feedbackEngagementInstrumentationIdentifier;
-  self->_feedbackEngagementInstrumentationIdentifier = v22;
+  self->_feedbackEngagementInstrumentationIdentifier = uUIDString;
 }
 
-- (void)_emitInstrumentationEventWithInvocationSource:(int)a3
+- (void)_emitInstrumentationEventWithInvocationSource:(int)source
 {
-  v3 = *&a3;
+  v3 = *&source;
   v21 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277D5A928]);
   [v5 setInvocationSource:v3];
   v6 = MEMORY[0x277CEF168];
-  v7 = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
-  v8 = [v6 newTurnBasedContextWithPreviousTurnID:v7];
+  instrumentationTurnIdentifier = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
+  v8 = [v6 newTurnBasedContextWithPreviousTurnID:instrumentationTurnIdentifier];
 
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v8 turnIdentifier];
-    v12 = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
+    turnIdentifier = [v8 turnIdentifier];
+    instrumentationTurnIdentifier2 = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
     v15 = 136315650;
     v16 = "[SiriUICardSnippetViewController _emitInstrumentationEventWithInvocationSource:]";
     v17 = 2112;
-    v18 = v11;
+    v18 = turnIdentifier;
     v19 = 2112;
-    v20 = v12;
+    v20 = instrumentationTurnIdentifier2;
     _os_log_impl(&dword_26948D000, v10, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", &v15, 0x20u);
   }
 
-  v13 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-  [v13 storeCurrentInstrumentationTurnContext:v8];
+  _instrumentationManager = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+  [_instrumentationManager storeCurrentInstrumentationTurnContext:v8];
 
-  v14 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-  [v14 emitInstrumentation:v5];
+  _instrumentationManager2 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+  [_instrumentationManager2 emitInstrumentation:v5];
 }
 
 - (void)_emitInstrumentationEventForKeyboardInvocation
 {
   v8 = objc_alloc_init(MEMORY[0x277D5A7F0]);
   v3 = MEMORY[0x277D5ACF0];
-  v4 = [(SiriUICardSnippetViewController *)self textInputMode];
-  v5 = [v4 primaryLanguage];
-  v6 = [v3 convertLanguageCodeToSchemaLocale:v5];
+  textInputMode = [(SiriUICardSnippetViewController *)self textInputMode];
+  primaryLanguage = [textInputMode primaryLanguage];
+  v6 = [v3 convertLanguageCodeToSchemaLocale:primaryLanguage];
 
   [v8 setKeyboardLocale:v6];
   [v8 setKeyboardPresented:1];
@@ -2567,57 +2567,57 @@ uint64_t __83__SiriUICardSnippetViewController_userDidEngageCardSection_withEnga
   [(SiriUICardSnippetViewController *)self _emitInstrumentationEvent:v7 requiresNewTurn:1];
 }
 
-- (void)_emitInstrumentationEvent:(id)a3 requiresNewTurn:(BOOL)a4
+- (void)_emitInstrumentationEvent:(id)event requiresNewTurn:(BOOL)turn
 {
-  v4 = a4;
+  turnCopy = turn;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  eventCopy = event;
+  if (turnCopy)
   {
-    v7 = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
-    v8 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v7];
+    instrumentationTurnIdentifier = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
+    v8 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:instrumentationTurnIdentifier];
     v9 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v8 turnIdentifier];
+      turnIdentifier = [v8 turnIdentifier];
       v14 = 136315650;
       v15 = "[SiriUICardSnippetViewController _emitInstrumentationEvent:requiresNewTurn:]";
       v16 = 2112;
-      v17 = v11;
+      v17 = turnIdentifier;
       v18 = 2112;
-      v19 = v7;
+      v19 = instrumentationTurnIdentifier;
       _os_log_impl(&dword_26948D000, v10, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", &v14, 0x20u);
     }
 
-    v12 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-    [v12 storeCurrentInstrumentationTurnContext:v8];
+    _instrumentationManager = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+    [_instrumentationManager storeCurrentInstrumentationTurnContext:v8];
   }
 
-  v13 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-  [v13 emitInstrumentation:v6];
+  _instrumentationManager2 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+  [_instrumentationManager2 emitInstrumentation:eventCopy];
 }
 
-- (void)userDidReportFeedback:(id)a3 fromCardSection:(id)a4
+- (void)userDidReportFeedback:(id)feedback fromCardSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  feedbackCopy = feedback;
+  sectionCopy = section;
   v8 = objc_alloc_init(MEMORY[0x277D4C5D0]);
-  v9 = [(CRKCardViewControlling *)self->_cardViewController card];
+  card = [(CRKCardViewControlling *)self->_cardViewController card];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 backingCard];
+    backingCard = [card backingCard];
   }
 
   else
   {
-    v10 = 0;
+    backingCard = 0;
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v11 = 0;
-    if (!v10)
+    backingCardSection = 0;
+    if (!backingCard)
     {
       goto LABEL_9;
     }
@@ -2625,30 +2625,30 @@ uint64_t __83__SiriUICardSnippetViewController_userDidEngageCardSection_withEnga
     goto LABEL_8;
   }
 
-  v11 = [v7 backingCardSection];
-  if (v10)
+  backingCardSection = [sectionCopy backingCardSection];
+  if (backingCard)
   {
 LABEL_8:
-    v12 = [v10 fbr];
+    v12 = [backingCard fbr];
     [v8 setFbr:v12];
   }
 
 LABEL_9:
-  if (v11)
+  if (backingCardSection)
   {
-    v13 = [v11 resultIdentifier];
-    [v8 setIdentifier:v13];
+    resultIdentifier = [backingCardSection resultIdentifier];
+    [v8 setIdentifier:resultIdentifier];
   }
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__SiriUICardSnippetViewController_userDidReportFeedback_fromCardSection___block_invoke;
   v16[3] = &unk_279C5A018;
-  v17 = v6;
+  v17 = feedbackCopy;
   v18 = v8;
   v14 = v8;
-  v15 = v6;
-  [(SiriUICardSnippetViewController *)self _validateCardSectionForParsecFeedbackDelivery:v7 validHandler:v16];
+  v15 = feedbackCopy;
+  [(SiriUICardSnippetViewController *)self _validateCardSectionForParsecFeedbackDelivery:sectionCopy validHandler:v16];
 }
 
 void __73__SiriUICardSnippetViewController_userDidReportFeedback_fromCardSection___block_invoke(uint64_t a1)
@@ -2673,10 +2673,10 @@ void __73__SiriUICardSnippetViewController_userDidReportFeedback_fromCardSection
   }
 }
 
-- (void)cardViewWillAppearForCard:(id)a3 withAppearanceFeedback:(id)a4
+- (void)cardViewWillAppearForCard:(id)card withAppearanceFeedback:(id)feedback
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(CRKCardViewControlling *)self->_cardViewController card:a3];
+  v5 = [(CRKCardViewControlling *)self->_cardViewController card:card];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -2689,23 +2689,23 @@ void __73__SiriUICardSnippetViewController_userDidReportFeedback_fromCardSection
     _os_log_impl(&dword_26948D000, v7, OS_LOG_TYPE_DEFAULT, "%s #cards Sending event to AFAnalytics: %@", &v11, 0x16u);
   }
 
-  v9 = [(SiriUICardSnippetViewController *)self _analytics];
+  _analytics = [(SiriUICardSnippetViewController *)self _analytics];
   v10 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:v5];
-  [v9 logEventWithType:3900 context:v10];
+  [_analytics logEventWithType:3900 context:v10];
 }
 
-- (void)cardViewDidAppearForCard:(id)a3 withAppearanceFeedback:(id)a4
+- (void)cardViewDidAppearForCard:(id)card withAppearanceFeedback:(id)feedback
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  feedbackCopy = feedback;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __83__SiriUICardSnippetViewController_cardViewDidAppearForCard_withAppearanceFeedback___block_invoke;
   v14[3] = &unk_279C59D78;
-  v7 = v6;
+  v7 = feedbackCopy;
   v15 = v7;
-  [(SiriUICardSnippetViewController *)self _validateCardForParsecFeedbackDelivery:a3 validHandler:v14];
-  v8 = [(CRKCardViewControlling *)self->_cardViewController card];
+  [(SiriUICardSnippetViewController *)self _validateCardForParsecFeedbackDelivery:card validHandler:v14];
+  card = [(CRKCardViewControlling *)self->_cardViewController card];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -2718,9 +2718,9 @@ void __73__SiriUICardSnippetViewController_userDidReportFeedback_fromCardSection
     _os_log_impl(&dword_26948D000, v10, OS_LOG_TYPE_DEFAULT, "%s #cards Sending event to AFAnalytics: %@", buf, 0x16u);
   }
 
-  v12 = [(SiriUICardSnippetViewController *)self _analytics];
-  v13 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:v8];
-  [v12 logEventWithType:3901 context:v13];
+  _analytics = [(SiriUICardSnippetViewController *)self _analytics];
+  v13 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:card];
+  [_analytics logEventWithType:3901 context:v13];
 }
 
 void __83__SiriUICardSnippetViewController_cardViewDidAppearForCard_withAppearanceFeedback___block_invoke(uint64_t a1)
@@ -2741,16 +2741,16 @@ void __83__SiriUICardSnippetViewController_cardViewDidAppearForCard_withAppearan
   SFFeedbackNotify();
 }
 
-- (void)cardViewDidDisappearForCard:(id)a3 withDisappearanceFeedback:(id)a4
+- (void)cardViewDidDisappearForCard:(id)card withDisappearanceFeedback:(id)feedback
 {
-  v6 = a4;
+  feedbackCopy = feedback;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisappearanceFeedback___block_invoke;
   v8[3] = &unk_279C59D78;
-  v9 = v6;
-  v7 = v6;
-  [(SiriUICardSnippetViewController *)self _validateCardForParsecFeedbackDelivery:a3 validHandler:v8];
+  v9 = feedbackCopy;
+  v7 = feedbackCopy;
+  [(SiriUICardSnippetViewController *)self _validateCardForParsecFeedbackDelivery:card validHandler:v8];
 }
 
 void __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisappearanceFeedback___block_invoke(uint64_t a1)
@@ -2771,12 +2771,12 @@ void __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisap
   SFFeedbackNotify();
 }
 
-- (void)cardSectionViewWillAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4
+- (void)cardSectionViewWillAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback
 {
   v17 = *MEMORY[0x277D85DE8];
   cardViewController = self->_cardViewController;
-  v6 = a3;
-  v7 = [(CRKCardViewControlling *)cardViewController card];
+  sectionCopy = section;
+  card = [(CRKCardViewControlling *)cardViewController card];
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -2789,18 +2789,18 @@ void __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisap
     _os_log_impl(&dword_26948D000, v9, OS_LOG_TYPE_DEFAULT, "%s #cards Sending event to AFAnalytics: %@", &v13, 0x16u);
   }
 
-  v11 = [(SiriUICardSnippetViewController *)self _analytics];
-  v12 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCardSection:v6 inCard:v7];
+  _analytics = [(SiriUICardSnippetViewController *)self _analytics];
+  v12 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCardSection:sectionCopy inCard:card];
 
-  [v11 logEventWithType:3902 context:v12];
+  [_analytics logEventWithType:3902 context:v12];
 }
 
-- (void)cardSectionViewDidAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4
+- (void)cardSectionViewDidAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback
 {
   v17 = *MEMORY[0x277D85DE8];
   cardViewController = self->_cardViewController;
-  v6 = a3;
-  v7 = [(CRKCardViewControlling *)cardViewController card];
+  sectionCopy = section;
+  card = [(CRKCardViewControlling *)cardViewController card];
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -2813,16 +2813,16 @@ void __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisap
     _os_log_impl(&dword_26948D000, v9, OS_LOG_TYPE_DEFAULT, "%s #cards Sending event to AFAnalytics: %@", &v13, 0x16u);
   }
 
-  v11 = [(SiriUICardSnippetViewController *)self _analytics];
-  v12 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCardSection:v6 inCard:v7];
+  _analytics = [(SiriUICardSnippetViewController *)self _analytics];
+  v12 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCardSection:sectionCopy inCard:card];
 
-  [v11 logEventWithType:3903 context:v12];
+  [_analytics logEventWithType:3903 context:v12];
 }
 
-- (void)controllerForCard:(id)a3 didRequestAsyncCard:(id)a4 withAsyncCardRequestFeedback:(id)a5
+- (void)controllerForCard:(id)card didRequestAsyncCard:(id)asyncCard withAsyncCardRequestFeedback:(id)feedback
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cardCopy = card;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -2835,15 +2835,15 @@ void __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisap
     _os_log_impl(&dword_26948D000, v8, OS_LOG_TYPE_DEFAULT, "%s #cards Sending event to AFAnalytics: %@", &v12, 0x16u);
   }
 
-  v10 = [(SiriUICardSnippetViewController *)self _analytics];
-  v11 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:v6];
-  [v10 logEventWithType:3906 context:v11];
+  _analytics = [(SiriUICardSnippetViewController *)self _analytics];
+  v11 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:cardCopy];
+  [_analytics logEventWithType:3906 context:v11];
 }
 
-- (void)controllerForCard:(id)a3 didReceiveAsyncCard:(id)a4 withAsyncCardReceiptFeedback:(id)a5
+- (void)controllerForCard:(id)card didReceiveAsyncCard:(id)asyncCard withAsyncCardReceiptFeedback:(id)feedback
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cardCopy = card;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -2856,22 +2856,22 @@ void __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisap
     _os_log_impl(&dword_26948D000, v8, OS_LOG_TYPE_DEFAULT, "%s #cards Sending event to AFAnalytics: %@", &v12, 0x16u);
   }
 
-  v10 = [(SiriUICardSnippetViewController *)self _analytics];
-  v11 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:v6];
-  [v10 logEventWithType:3907 context:v11];
+  _analytics = [(SiriUICardSnippetViewController *)self _analytics];
+  v11 = [(SiriUICardSnippetViewController *)self _metricsContextOfEventsForCard:cardCopy];
+  [_analytics logEventWithType:3907 context:v11];
 }
 
-- (BOOL)cardLoader:(id)a3 loadCard:(id)a4 withCompletionHandler:(id)a5
+- (BOOL)cardLoader:(id)loader loadCard:(id)card withCompletionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  cardCopy = card;
+  handlerCopy = handler;
   v9 = objc_alloc(MEMORY[0x277CCACA8]);
-  v10 = [v7 entityIdentifier];
-  v11 = [v9 initWithData:v10 encoding:4];
-  v12 = [v11 stringByRemovingPercentEncoding];
+  entityIdentifier = [cardCopy entityIdentifier];
+  v11 = [v9 initWithData:entityIdentifier encoding:4];
+  stringByRemovingPercentEncoding = [v11 stringByRemovingPercentEncoding];
 
-  [v12 componentsSeparatedByString:@"&"];
+  [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -2880,9 +2880,9 @@ void __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisap
   if (v14)
   {
     v15 = v14;
-    v29 = v12;
-    v30 = v8;
-    v31 = v7;
+    v29 = stringByRemovingPercentEncoding;
+    v30 = handlerCopy;
+    v31 = cardCopy;
     v16 = *v33;
     while (2)
     {
@@ -2915,9 +2915,9 @@ void __89__SiriUICardSnippetViewController_cardViewDidDisappearForCard_withDisap
 
     v21 = 0;
 LABEL_11:
-    v8 = v30;
-    v7 = v31;
-    v12 = v29;
+    handlerCopy = v30;
+    cardCopy = v31;
+    stringByRemovingPercentEncoding = v29;
   }
 
   else
@@ -2936,36 +2936,36 @@ LABEL_11:
   }
 
   v23 = objc_alloc_init(MEMORY[0x277D47948]);
-  v24 = [MEMORY[0x277CCAD78] UUID];
-  v25 = [v24 UUIDString];
-  [v23 setAceId:v25];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v23 setAceId:uUIDString];
 
   [v23 setUtterance:v21];
-  [(SiriUICardSnippetViewController *)self _beginMonitoringForNextCardWithBlock:v8];
-  v26 = [(SiriUIBaseSnippetViewController *)self delegate];
+  [(SiriUICardSnippetViewController *)self _beginMonitoringForNextCardWithBlock:handlerCopy];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
   v36 = v23;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-  [v26 siriViewController:self performAceCommands:v27];
+  [delegate siriViewController:self performAceCommands:v27];
 
   return 1;
 }
 
-- (void)cardLoadingMonitor:(id)a3 didReceiveCardSnippet:(id)a4
+- (void)cardLoadingMonitor:(id)monitor didReceiveCardSnippet:(id)snippet
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  objc_storeStrong(&self->_newlyLoadedCardSnippet, a4);
-  v8 = a3;
+  snippetCopy = snippet;
+  objc_storeStrong(&self->_newlyLoadedCardSnippet, snippet);
+  monitorCopy = monitor;
   [(NSTimer *)self->_cardLoadingTimer invalidate];
   cardLoadingTimer = self->_cardLoadingTimer;
   self->_cardLoadingTimer = 0;
 
-  [v8 removeObserver:self];
+  [monitorCopy removeObserver:self];
   newlyLoadedCardSnippet = self->_newlyLoadedCardSnippet;
   if (newlyLoadedCardSnippet)
   {
-    v11 = [(SACardSnippet *)newlyLoadedCardSnippet siriui_card];
-    v12 = [v11 backingCard];
+    siriui_card = [(SACardSnippet *)newlyLoadedCardSnippet siriui_card];
+    backingCard = [siriui_card backingCard];
 
     v13 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -2973,14 +2973,14 @@ LABEL_11:
       v17 = 136315394;
       v18 = "[SiriUICardSnippetViewController cardLoadingMonitor:didReceiveCardSnippet:]";
       v19 = 2112;
-      v20 = v12;
+      v20 = backingCard;
       _os_log_impl(&dword_26948D000, v13, OS_LOG_TYPE_DEFAULT, "%s #cards CardLoadingMonitor received next card %@", &v17, 0x16u);
     }
 
     cardLoadingCompletionhandler = self->_cardLoadingCompletionhandler;
     if (cardLoadingCompletionhandler)
     {
-      cardLoadingCompletionhandler[2](cardLoadingCompletionhandler, v12, 0);
+      cardLoadingCompletionhandler[2](cardLoadingCompletionhandler, backingCard, 0);
       v15 = self->_cardLoadingCompletionhandler;
       self->_cardLoadingCompletionhandler = 0;
     }
@@ -2994,25 +2994,25 @@ LABEL_11:
   os_unfair_lock_unlock(&cardLoadingLock);
 }
 
-- (void)cardLoadingMonitor:(id)a3 didReceiveVisualResponseSnippet:(id)a4
+- (void)cardLoadingMonitor:(id)monitor didReceiveVisualResponseSnippet:(id)snippet
 {
   v13[1] = *MEMORY[0x277D85DE8];
   cardLoadingTimer = self->_cardLoadingTimer;
-  v7 = a4;
-  v8 = a3;
+  snippetCopy = snippet;
+  monitorCopy = monitor;
   [(NSTimer *)cardLoadingTimer invalidate];
   v9 = self->_cardLoadingTimer;
   self->_cardLoadingTimer = 0;
 
-  [v8 removeObserver:self];
+  [monitorCopy removeObserver:self];
   cardLoadingCompletionhandler = self->_cardLoadingCompletionhandler;
   self->_cardLoadingCompletionhandler = 0;
 
-  v11 = [(SiriUIBaseSnippetViewController *)self delegate];
-  v13[0] = v7;
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  v13[0] = snippetCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
 
-  [v11 siriSnippetViewController:self pushSirilandSnippets:v12];
+  [delegate siriSnippetViewController:self pushSirilandSnippets:v12];
   os_unfair_lock_lock(&cardLoadingLock);
   self->_isCardLoading = 0;
   os_unfair_lock_unlock(&cardLoadingLock);
@@ -3020,9 +3020,9 @@ LABEL_11:
 
 - (Class)transparentHeaderViewClass
 {
-  v2 = [(SACardSnippet *)self->_snippet title];
+  title = [(SACardSnippet *)self->_snippet title];
 
-  if (v2)
+  if (title)
   {
     v3 = objc_opt_class();
   }
@@ -3035,54 +3035,54 @@ LABEL_11:
   return v3;
 }
 
-- (void)configureReusableTransparentHeaderView:(id)a3
+- (void)configureReusableTransparentHeaderView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     snippet = self->_snippet;
-    v5 = v7;
-    v6 = [(SACardSnippet *)snippet title];
-    [v5 configureWithTitle:v6];
+    v5 = viewCopy;
+    title = [(SACardSnippet *)snippet title];
+    [v5 configureWithTitle:title];
   }
 }
 
 - (double)desiredHeightForTransparentHeaderView
 {
-  v2 = [(SiriUICardSnippetViewController *)self transparentHeaderViewClass];
+  transparentHeaderViewClass = [(SiriUICardSnippetViewController *)self transparentHeaderViewClass];
 
-  [(objc_class *)v2 defaultHeight];
+  [(objc_class *)transparentHeaderViewClass defaultHeight];
   return result;
 }
 
-- (double)boundingWidthForPresentation:(id)a3
+- (double)boundingWidthForPresentation:(id)presentation
 {
-  v4 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v4 boundingWidthForSnippetViewController:self];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate boundingWidthForSnippetViewController:self];
   v6 = v5;
 
   return v6;
 }
 
-- (void)_logCardRelationshipIdentifiedForCompactCard:(id)a3 fullCard:(id)a4 snippet:(id)a5
+- (void)_logCardRelationshipIdentifiedForCompactCard:(id)card fullCard:(id)fullCard snippet:(id)snippet
 {
-  v8 = a5;
-  v9 = a4;
-  v15 = [a3 cardId];
-  v10 = [v9 cardId];
+  snippetCopy = snippet;
+  fullCardCopy = fullCard;
+  cardId = [card cardId];
+  cardId2 = [fullCardCopy cardId];
 
-  v11 = [v8 aceId];
+  aceId = [snippetCopy aceId];
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [v12 setValue:v15 forKey:@"compactId"];
-  [v12 setValue:v10 forKey:@"regularId"];
-  [v12 setValue:v11 forKey:@"snippetAceId"];
-  v13 = [(SiriUICardSnippetViewController *)self _instrumentationManager];
-  [v13 emitCasinoRelationshipEventWithViewIDFrom:v15 ViewIDTo:v10 casinoFromType:1];
+  [v12 setValue:cardId forKey:@"compactId"];
+  [v12 setValue:cardId2 forKey:@"regularId"];
+  [v12 setValue:aceId forKey:@"snippetAceId"];
+  _instrumentationManager = [(SiriUICardSnippetViewController *)self _instrumentationManager];
+  [_instrumentationManager emitCasinoRelationshipEventWithViewIDFrom:cardId ViewIDTo:cardId2 casinoFromType:1];
 
-  v14 = [(SiriUICardSnippetViewController *)self _analytics];
-  [v14 logEventWithType:3908 context:v12];
+  _analytics = [(SiriUICardSnippetViewController *)self _analytics];
+  [_analytics logEventWithType:3908 context:v12];
 }
 
 void __46__SiriUICardSnippetViewController_setSnippet___block_invoke_cold_1(uint64_t a1, uint64_t a2, NSObject *a3)

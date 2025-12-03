@@ -1,5 +1,5 @@
 @interface SCNMTLLibrary
-- (SCNMTLLibrary)initWithPath:(id)a3 manager:(id)a4;
+- (SCNMTLLibrary)initWithPath:(id)path manager:(id)manager;
 - (void)_load;
 - (void)dealloc;
 @end
@@ -13,16 +13,16 @@
   OUTLINED_FUNCTION_5_3(&dword_21BEF7000, v0, v1, "Error: FATAL ERROR : failed to load Metal shaders library %@, %@");
 }
 
-- (SCNMTLLibrary)initWithPath:(id)a3 manager:(id)a4
+- (SCNMTLLibrary)initWithPath:(id)path manager:(id)manager
 {
   v9.receiver = self;
   v9.super_class = SCNMTLLibrary;
   v6 = [(SCNMTLLibrary *)&v9 init];
   if (v6)
   {
-    if (a3)
+    if (path)
     {
-      v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+      v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
     }
 
     else
@@ -31,7 +31,7 @@
     }
 
     v6->_libraryURL = v7;
-    v6->_manager = a4;
+    v6->_manager = manager;
     [(SCNMTLLibrary *)v6 _load];
   }
 

@@ -1,65 +1,65 @@
 @interface DNDModeConfigurationService
-+ (id)serviceForClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
 - (BOOL)_queue_registerForUpdatesIfRequired;
-- (BOOL)canRemoveModeConfigurationForModeIdentifier:(id)a3;
-- (BOOL)clearAppActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)clearAppConfigurationActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)clearSystemActionWithIdentifier:(id)a3 forModeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)clearSystemConfigurationActionWithIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)getSyncAvailableReturningError:(id *)a3;
-- (BOOL)getSyncEnabledReturningError:(id *)a3;
-- (BOOL)getSyncPreferenceEnabledReturningError:(id *)a3;
-- (BOOL)hasActivelyConfiguredModes:(BOOL *)a3 error:(id *)a4;
-- (BOOL)hasActivelyConfiguredModesReturningError:(id *)a3;
-- (BOOL)isLocalUserAvailableForContactInActiveMode:(id)a3 error:(id *)a4;
+- (BOOL)canRemoveModeConfigurationForModeIdentifier:(id)identifier;
+- (BOOL)clearAppActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)clearAppConfigurationActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)clearSystemActionWithIdentifier:(id)identifier forModeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)clearSystemConfigurationActionWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)getSyncAvailableReturningError:(id *)error;
+- (BOOL)getSyncEnabledReturningError:(id *)error;
+- (BOOL)getSyncPreferenceEnabledReturningError:(id *)error;
+- (BOOL)hasActivelyConfiguredModes:(BOOL *)modes error:(id *)error;
+- (BOOL)hasActivelyConfiguredModesReturningError:(id *)error;
+- (BOOL)isLocalUserAvailableForContactInActiveMode:(id)mode error:(id *)error;
 - (BOOL)resetAppConfigurationState;
-- (BOOL)setAppAction:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)setAppConfigurationAction:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)setAppConfigurationPredicate:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 error:(id *)a7;
-- (BOOL)setAppConfigurationTargetContentIdentifierPrefix:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 error:(id *)a7;
-- (BOOL)setModeConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)setSystemAction:(id)a3 forModeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setSystemConfigurationAction:(id)a3 modeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)syncModeConfigurationsReturningError:(id *)a3;
-- (id)_createDefaultModeConfigurationForIdentifier:(id)a3 withRequestDetails:(id)a4 error:(id *)a5;
-- (id)_createEmptyModeConfigurationForMode:(id)a3 withRequestDetails:(id)a4 error:(id *)a5;
-- (id)_createModeSpecificConfigurationForModeSemanticType:(int64_t)a3 withIdentifier:(id)a4;
-- (id)_createTriggersForFocusWithIdentifier:(id)a3;
-- (id)_initWithClientIdentifier:(id)a3;
-- (id)_setModeConfigurationDefaultsForModeConfiguration:(id)a3 withIdentifier:(id)a4;
-- (id)allModesReturningError:(id *)a3;
-- (id)allowedModesForContactHandle:(id)a3 error:(id *)a4;
-- (id)availableModesReturningError:(id *)a3;
-- (id)createDefaultDrivingModeConfigurationWithError:(id *)a3;
-- (id)createDefaultSleepingModeConfigurationWithError:(id *)a3;
-- (id)createDefaultWorkoutModeConfigurationWithError:(id *)a3;
-- (id)createEmptyModeConfigurationForMode:(id)a3 error:(id *)a4;
-- (id)createModeConfigurationUsingTemplateForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)createModeConfigurationUsingTemplateForModeSemanticType:(int64_t)a3 error:(id *)a4;
-- (id)getAppActionsForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)getAppConfigurationActionsForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)getAppConfigurationPredicateForActionIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (id)getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)getSystemActionsForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)getSystemConfigurationActionsForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)modeConfigurationForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)modeConfigurationsReturningError:(id *)a3;
-- (id)publishCurrentStatusKitAvailabilityReturningError:(id *)a3;
-- (id)silencedModesForContactHandle:(id)a3 error:(id *)a4;
-- (unint64_t)_defaultConfigurationTypeForModeSemanticType:(int64_t)a3;
+- (BOOL)setAppAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)setAppConfigurationAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)setAppConfigurationPredicate:(id)predicate forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)setAppConfigurationTargetContentIdentifierPrefix:(id)prefix forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)setModeConfiguration:(id)configuration error:(id *)error;
+- (BOOL)setSystemAction:(id)action forModeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setSystemConfigurationAction:(id)action modeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)syncModeConfigurationsReturningError:(id *)error;
+- (id)_createDefaultModeConfigurationForIdentifier:(id)identifier withRequestDetails:(id)details error:(id *)error;
+- (id)_createEmptyModeConfigurationForMode:(id)mode withRequestDetails:(id)details error:(id *)error;
+- (id)_createModeSpecificConfigurationForModeSemanticType:(int64_t)type withIdentifier:(id)identifier;
+- (id)_createTriggersForFocusWithIdentifier:(id)identifier;
+- (id)_initWithClientIdentifier:(id)identifier;
+- (id)_setModeConfigurationDefaultsForModeConfiguration:(id)configuration withIdentifier:(id)identifier;
+- (id)allModesReturningError:(id *)error;
+- (id)allowedModesForContactHandle:(id)handle error:(id *)error;
+- (id)availableModesReturningError:(id *)error;
+- (id)createDefaultDrivingModeConfigurationWithError:(id *)error;
+- (id)createDefaultSleepingModeConfigurationWithError:(id *)error;
+- (id)createDefaultWorkoutModeConfigurationWithError:(id *)error;
+- (id)createEmptyModeConfigurationForMode:(id)mode error:(id *)error;
+- (id)createModeConfigurationUsingTemplateForModeIdentifier:(id)identifier error:(id *)error;
+- (id)createModeConfigurationUsingTemplateForModeSemanticType:(int64_t)type error:(id *)error;
+- (id)getAppActionsForModeIdentifier:(id)identifier error:(id *)error;
+- (id)getAppConfigurationActionsForModeIdentifier:(id)identifier error:(id *)error;
+- (id)getAppConfigurationPredicateForActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (id)getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:(id)identifier error:(id *)error;
+- (id)getSystemActionsForModeIdentifier:(id)identifier error:(id *)error;
+- (id)getSystemConfigurationActionsForModeIdentifier:(id)identifier error:(id *)error;
+- (id)modeConfigurationForModeIdentifier:(id)identifier error:(id *)error;
+- (id)modeConfigurationsReturningError:(id *)error;
+- (id)publishCurrentStatusKitAvailabilityReturningError:(id *)error;
+- (id)silencedModesForContactHandle:(id)handle error:(id *)error;
+- (unint64_t)_defaultConfigurationTypeForModeSemanticType:(int64_t)type;
 - (void)_queue_registerForUpdatesIfRequired;
-- (void)addListener:(id)a3 withCompletionHandler:(id)a4;
-- (void)remoteService:(id)a3 didReceiveAppConfigurationContextUpdateForModeIdentifier:(id)a4;
-- (void)remoteService:(id)a3 didReceiveUpdatedAvailableModeIdentifiers:(id)a4;
-- (void)removeListener:(id)a3;
+- (void)addListener:(id)listener withCompletionHandler:(id)handler;
+- (void)remoteService:(id)service didReceiveAppConfigurationContextUpdateForModeIdentifier:(id)identifier;
+- (void)remoteService:(id)service didReceiveUpdatedAvailableModeIdentifiers:(id)identifiers;
+- (void)removeListener:(id)listener;
 - (void)resetAppConfigurationState;
 @end
 
 @implementation DNDModeConfigurationService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_3 != -1)
   {
     +[DNDModeConfigurationService serviceForClientIdentifier:];
@@ -76,10 +76,10 @@
   block[1] = 3221225472;
   block[2] = __58__DNDModeConfigurationService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -124,16 +124,16 @@ void __58__DNDModeConfigurationService_serviceForClientIdentifier___block_invoke
   }
 }
 
-- (BOOL)hasActivelyConfiguredModesReturningError:(id *)a3
+- (BOOL)hasActivelyConfiguredModesReturningError:(id *)error
 {
   v8 = 0;
   v7 = 0;
   [(DNDModeConfigurationService *)self hasActivelyConfiguredModes:&v8 error:&v7];
   v4 = v7;
-  if (a3)
+  if (error)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   v5 = v8;
@@ -141,7 +141,7 @@ void __58__DNDModeConfigurationService_serviceForClientIdentifier___block_invoke
   return v5;
 }
 
-- (BOOL)hasActivelyConfiguredModes:(BOOL *)a3 error:(id *)a4
+- (BOOL)hasActivelyConfiguredModes:(BOOL *)modes error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.hasActivelyConfiguredModes", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -237,17 +237,17 @@ LABEL_15:
   }
 
   v16 = v27[0];
-  if (a4)
+  if (error)
   {
     v17 = *(v27[0] + 40);
     if (v17)
     {
-      *a4 = v17;
+      *error = v17;
       v16 = v27[0];
     }
   }
 
-  *a3 = v10;
+  *modes = v10;
   v18 = *(v16 + 40) == 0;
   _Block_object_dispose(&v26, 8);
 
@@ -272,24 +272,24 @@ void __64__DNDModeConfigurationService_hasActivelyConfiguredModes_error___block_
   *(v9 + 40) = v6;
 }
 
-- (id)createModeConfigurationUsingTemplateForModeSemanticType:(int64_t)a3 error:(id *)a4
+- (id)createModeConfigurationUsingTemplateForModeSemanticType:(int64_t)type error:(id *)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3 - 1;
-  if (a3 - 1) < 9 && ((0x1FDu >> v5))
+  v5 = type - 1;
+  if (type - 1) < 9 && ((0x1FDu >> v5))
   {
-    v6 = [(DNDModeConfigurationService *)self createModeConfigurationUsingTemplateForModeIdentifier:off_27843A7C0[v5] error:a4];
+    v6 = [(DNDModeConfigurationService *)self createModeConfigurationUsingTemplateForModeIdentifier:off_27843A7C0[v5] error:error];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v7 = MEMORY[0x277CCA9B8];
       v11 = *MEMORY[0x277CCA450];
       v12[0] = @"Mode not supported.";
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      *a4 = [v7 errorWithDomain:@"DNDErrorDomain" code:1006 userInfo:v8];
+      *error = [v7 errorWithDomain:@"DNDErrorDomain" code:1006 userInfo:v8];
     }
 
     v6 = 0;
@@ -300,10 +300,10 @@ void __64__DNDModeConfigurationService_hasActivelyConfiguredModes_error___block_
   return v6;
 }
 
-- (BOOL)setModeConfiguration:(id)a3 error:(id *)a4
+- (BOOL)setModeConfiguration:(id)configuration error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.setModeConfiguration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -319,7 +319,7 @@ void __64__DNDModeConfigurationService_hasActivelyConfiguredModes_error___block_
   v18[2] = __Block_byref_object_copy__3;
   v18[3] = __Block_byref_object_dispose__3;
   v19 = 0;
-  v9 = [v6 copy];
+  v9 = [configurationCopy copy];
   v10 = +[DNDRemoteServiceConnection sharedInstance];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -347,12 +347,12 @@ void __64__DNDModeConfigurationService_hasActivelyConfiguredModes_error___block_
     [DNDModeConfigurationService setModeConfiguration:v8 error:v18];
   }
 
-  if (a4)
+  if (error)
   {
     v12 = *(v18[0] + 40);
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -375,20 +375,20 @@ void __58__DNDModeConfigurationService_setModeConfiguration_error___block_invoke
   *(v6 + 40) = v5;
 }
 
-- (BOOL)canRemoveModeConfigurationForModeIdentifier:(id)a3
+- (BOOL)canRemoveModeConfigurationForModeIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.removeModeConfiguration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v4, &v7);
-  v5 = [v3 isEqualToString:@"com.apple.donotdisturb.mode.default"];
+  v5 = [identifierCopy isEqualToString:@"com.apple.donotdisturb.mode.default"];
   os_activity_scope_leave(&v7);
 
   return v5 ^ 1;
 }
 
-- (id)modeConfigurationsReturningError:(id *)a3
+- (id)modeConfigurationsReturningError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getModeConfigurations", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -433,12 +433,12 @@ void __58__DNDModeConfigurationService_setModeConfiguration_error___block_invoke
     _os_log_impl(&dword_22002F000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Get mode configurations", buf, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
     v9 = *(v15[0] + 40);
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
     }
   }
 
@@ -502,10 +502,10 @@ void __64__DNDModeConfigurationService_modeConfigurationsReturningError___block_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modeConfigurationForModeIdentifier:(id)a3 error:(id *)a4
+- (id)modeConfigurationForModeIdentifier:(id)identifier error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getModeConfiguration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -530,7 +530,7 @@ void __64__DNDModeConfigurationService_modeConfigurationsReturningError___block_
   v15[3] = &unk_27843A5E8;
   v15[4] = &v19;
   v15[5] = &v16;
-  [v9 getModeConfigurationForModeIdentifier:v6 withRequestDetails:v8 completionHandler:v15];
+  [v9 getModeConfigurationForModeIdentifier:identifierCopy withRequestDetails:v8 completionHandler:v15];
 
   v10 = DNDLogModeConfiguration;
   if (*(v17[0] + 40))
@@ -546,16 +546,16 @@ void __64__DNDModeConfigurationService_modeConfigurationsReturningError___block_
     *buf = 138543618;
     v27 = v8;
     v28 = 2114;
-    v29 = v6;
+    v29 = identifierCopy;
     _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Get mode configuration, identifier=%{public}@", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v11 = *(v17[0] + 40);
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -584,10 +584,10 @@ void __72__DNDModeConfigurationService_modeConfigurationForModeIdentifier_error_
   *(v9 + 40) = v6;
 }
 
-- (BOOL)isLocalUserAvailableForContactInActiveMode:(id)a3 error:(id *)a4
+- (BOOL)isLocalUserAvailableForContactInActiveMode:(id)mode error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modeCopy = mode;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getIsLocalUserAvailable", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -610,7 +610,7 @@ void __72__DNDModeConfigurationService_modeConfigurationForModeIdentifier_error_
   v16[3] = &unk_27843A0A8;
   v16[4] = &v20;
   v16[5] = &v17;
-  [v9 getUserAvailabilityInActiveModeForContactHandle:v6 withRequestDetails:v8 completionHandler:v16];
+  [v9 getUserAvailabilityInActiveModeForContactHandle:modeCopy withRequestDetails:v8 completionHandler:v16];
 
   if (*(v18[0] + 40))
   {
@@ -631,17 +631,17 @@ void __72__DNDModeConfigurationService_modeConfigurationForModeIdentifier_error_
       v27 = 2114;
       v28 = v11;
       v29 = 2113;
-      v30 = v6;
+      v30 = modeCopy;
       _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Get user availability in current mode for contact, availability=%{public}@, handle=%{private}@", buf, 0x20u);
     }
   }
 
-  if (a4)
+  if (error)
   {
     v12 = *(v18[0] + 40);
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -664,10 +664,10 @@ void __80__DNDModeConfigurationService_isLocalUserAvailableForContactInActiveMod
   *(v6 + 40) = v5;
 }
 
-- (id)allowedModesForContactHandle:(id)a3 error:(id *)a4
+- (id)allowedModesForContactHandle:(id)handle error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handleCopy = handle;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getAllowedModesForContact", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -692,7 +692,7 @@ void __80__DNDModeConfigurationService_isLocalUserAvailableForContactInActiveMod
   v15[3] = &unk_27843A5C0;
   v15[4] = &v19;
   v15[5] = &v16;
-  [v9 getAllowedModesForContactHandle:v6 withRequestDetails:v8 completionHandler:v15];
+  [v9 getAllowedModesForContactHandle:handleCopy withRequestDetails:v8 completionHandler:v15];
 
   v10 = DNDLogModeConfiguration;
   if (*(v17[0] + 40))
@@ -708,16 +708,16 @@ void __80__DNDModeConfigurationService_isLocalUserAvailableForContactInActiveMod
     *buf = 138543619;
     v27 = v8;
     v28 = 2113;
-    v29 = v6;
+    v29 = handleCopy;
     _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Get allowed modes for contact, handle=%{private}@", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v11 = *(v17[0] + 40);
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -746,10 +746,10 @@ void __66__DNDModeConfigurationService_allowedModesForContactHandle_error___bloc
   *(v9 + 40) = v6;
 }
 
-- (id)silencedModesForContactHandle:(id)a3 error:(id *)a4
+- (id)silencedModesForContactHandle:(id)handle error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handleCopy = handle;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getSilencedModesForContact", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -774,7 +774,7 @@ void __66__DNDModeConfigurationService_allowedModesForContactHandle_error___bloc
   v15[3] = &unk_27843A5C0;
   v15[4] = &v19;
   v15[5] = &v16;
-  [v9 getSilencedModesForContactHandle:v6 withRequestDetails:v8 completionHandler:v15];
+  [v9 getSilencedModesForContactHandle:handleCopy withRequestDetails:v8 completionHandler:v15];
 
   v10 = DNDLogModeConfiguration;
   if (*(v17[0] + 40))
@@ -790,16 +790,16 @@ void __66__DNDModeConfigurationService_allowedModesForContactHandle_error___bloc
     *buf = 138543619;
     v27 = v8;
     v28 = 2113;
-    v29 = v6;
+    v29 = handleCopy;
     _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Get silenced modes for contact, handle=%{private}@", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v11 = *(v17[0] + 40);
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -828,7 +828,7 @@ void __67__DNDModeConfigurationService_silencedModesForContactHandle_error___blo
   *(v9 + 40) = v6;
 }
 
-- (id)publishCurrentStatusKitAvailabilityReturningError:(id *)a3
+- (id)publishCurrentStatusKitAvailabilityReturningError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.publishCurrentStatusKitAvailability", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -876,12 +876,12 @@ void __67__DNDModeConfigurationService_silencedModesForContactHandle_error___blo
     _os_log_impl(&dword_22002F000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Request to publish statuskit availability succeeded: %{public}@", buf, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
     v10 = *(v16[0] + 40);
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -910,7 +910,7 @@ void __81__DNDModeConfigurationService_publishCurrentStatusKitAvailabilityReturn
   *(v9 + 40) = v6;
 }
 
-- (id)allModesReturningError:(id *)a3
+- (id)allModesReturningError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.allModes", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -939,12 +939,12 @@ void __81__DNDModeConfigurationService_publishCurrentStatusKitAvailabilityReturn
   v14[5] = &v15;
   [v7 getAllModesWithRequestDetails:v6 completionHandler:v14];
 
-  if (a3)
+  if (error)
   {
     v8 = v16[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -984,7 +984,7 @@ void __54__DNDModeConfigurationService_allModesReturningError___block_invoke(uin
   *(v9 + 40) = v6;
 }
 
-- (id)availableModesReturningError:(id *)a3
+- (id)availableModesReturningError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.availableModes", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -1013,12 +1013,12 @@ void __54__DNDModeConfigurationService_allModesReturningError___block_invoke(uin
   v14[5] = &v15;
   [v7 getAvailableModesWithRequestDetails:v6 completionHandler:v14];
 
-  if (a3)
+  if (error)
   {
     v8 = v16[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -1058,13 +1058,13 @@ void __60__DNDModeConfigurationService_availableModesReturningError___block_invo
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setAppConfigurationPredicate:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 error:(id *)a7
+- (BOOL)setAppConfigurationPredicate:(id)predicate forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
   v16 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.setAppConfigurationPredicate", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1087,7 +1087,7 @@ void __60__DNDModeConfigurationService_availableModesReturningError___block_invo
   v24[3] = &unk_27843A0A8;
   v24[4] = &v28;
   v24[5] = &v25;
-  [v18 setAppConfigurationPredicate:v12 forActionIdentifier:v13 forApplicationIdentifier:v14 modeIdentifier:v15 withRequestDetails:v17 completionHandler:v24];
+  [v18 setAppConfigurationPredicate:predicateCopy forActionIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy withRequestDetails:v17 completionHandler:v24];
 
   v19 = DNDLogModeConfiguration;
   if (*(v29 + 24) == 1)
@@ -1097,11 +1097,11 @@ void __60__DNDModeConfigurationService_availableModesReturningError___block_invo
       *buf = 138544130;
       v34 = v17;
       v35 = 2114;
-      v36 = v12;
+      v36 = predicateCopy;
       v37 = 2114;
-      v38 = v14;
+      v38 = applicationIdentifierCopy;
       v39 = 2114;
-      v40 = v15;
+      v40 = modeIdentifierCopy;
       _os_log_impl(&dword_22002F000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set app configuration predicate, predicate=%{public}@ applicationIdentifier=%{public}@ modeIdentifier=%{public}@", buf, 0x2Au);
     }
   }
@@ -1111,12 +1111,12 @@ void __60__DNDModeConfigurationService_availableModesReturningError___block_invo
     [DNDModeConfigurationService setAppConfigurationPredicate:v17 forActionIdentifier:v26 forApplicationIdentifier:? modeIdentifier:? error:?];
   }
 
-  if (a7)
+  if (error)
   {
     v20 = *(v26[0] + 40);
     if (v20)
     {
-      *a7 = v20;
+      *error = v20;
     }
   }
 
@@ -1139,12 +1139,12 @@ void __126__DNDModeConfigurationService_setAppConfigurationPredicate_forActionId
   *(v6 + 40) = v5;
 }
 
-- (id)getAppConfigurationPredicateForActionIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (id)getAppConfigurationPredicateForActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
   v13 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getAppConfigurationPredicate", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1169,7 +1169,7 @@ void __126__DNDModeConfigurationService_setAppConfigurationPredicate_forActionId
   v22[3] = &unk_27843A660;
   v22[4] = &v26;
   v22[5] = &v23;
-  [v15 getAppConfigurationPredicateForActionIdentifier:v10 forApplicationIdentifier:v11 modeIdentifier:v12 withRequestDetails:v14 completionHandler:v22];
+  [v15 getAppConfigurationPredicateForActionIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy withRequestDetails:v14 completionHandler:v22];
 
   v16 = DNDLogModeConfiguration;
   if (*(v24[0] + 40))
@@ -1188,18 +1188,18 @@ void __126__DNDModeConfigurationService_setAppConfigurationPredicate_forActionId
     v35 = 2114;
     v36 = v17;
     v37 = 2114;
-    v38 = v11;
+    v38 = applicationIdentifierCopy;
     v39 = 2114;
-    v40 = v12;
+    v40 = modeIdentifierCopy;
     _os_log_impl(&dword_22002F000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Got app configuration predicate, predicate=%{public}@ applicationIdentifier=%{public}@ modeIdentifier=%{public}@", buf, 0x2Au);
   }
 
-  if (a6)
+  if (error)
   {
     v18 = *(v24[0] + 40);
     if (v18)
     {
-      *a6 = v18;
+      *error = v18;
     }
   }
 
@@ -1228,13 +1228,13 @@ void __125__DNDModeConfigurationService_getAppConfigurationPredicateForActionIde
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setAppConfigurationTargetContentIdentifierPrefix:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 error:(id *)a7
+- (BOOL)setAppConfigurationTargetContentIdentifierPrefix:(id)prefix forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  prefixCopy = prefix;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
   v16 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.setAppConfigurationTargetContentIdentifierPrefix", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1257,7 +1257,7 @@ void __125__DNDModeConfigurationService_getAppConfigurationPredicateForActionIde
   v24[3] = &unk_27843A0A8;
   v24[4] = &v28;
   v24[5] = &v25;
-  [v18 setAppConfigurationTargetContentIdentifierPrefix:v12 forActionIdentifier:v13 forApplicationIdentifier:v14 modeIdentifier:v15 withRequestDetails:v17 completionHandler:v24];
+  [v18 setAppConfigurationTargetContentIdentifierPrefix:prefixCopy forActionIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy withRequestDetails:v17 completionHandler:v24];
 
   v19 = DNDLogModeConfiguration;
   if (*(v29 + 24) == 1)
@@ -1267,11 +1267,11 @@ void __125__DNDModeConfigurationService_getAppConfigurationPredicateForActionIde
       *buf = 138544130;
       v34 = v17;
       v35 = 2114;
-      v36 = v12;
+      v36 = prefixCopy;
       v37 = 2114;
-      v38 = v14;
+      v38 = applicationIdentifierCopy;
       v39 = 2114;
-      v40 = v15;
+      v40 = modeIdentifierCopy;
       _os_log_impl(&dword_22002F000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set target content identifier prefix, prefix=%{public}@ applicationIdentifier=%{public}@ modeIdentifier=%{public}@", buf, 0x2Au);
     }
   }
@@ -1281,12 +1281,12 @@ void __125__DNDModeConfigurationService_getAppConfigurationPredicateForActionIde
     [DNDModeConfigurationService setAppConfigurationTargetContentIdentifierPrefix:v17 forActionIdentifier:v26 forApplicationIdentifier:? modeIdentifier:? error:?];
   }
 
-  if (a7)
+  if (error)
   {
     v20 = *(v26[0] + 40);
     if (v20)
     {
-      *a7 = v20;
+      *error = v20;
     }
   }
 
@@ -1309,10 +1309,10 @@ void __146__DNDModeConfigurationService_setAppConfigurationTargetContentIdentifi
   *(v6 + 40) = v5;
 }
 
-- (id)getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:(id)a3 error:(id *)a4
+- (id)getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:(id)identifier error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getAppConfigurationTargetContentIdentifierPrefixes", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1337,7 +1337,7 @@ void __146__DNDModeConfigurationService_setAppConfigurationTargetContentIdentifi
   v16[3] = &unk_27843A688;
   v16[4] = &v20;
   v16[5] = &v17;
-  [v9 getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:v6 withRequestDetails:v8 completionHandler:v16];
+  [v9 getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:identifierCopy withRequestDetails:v8 completionHandler:v16];
 
   if (v21[5])
   {
@@ -1350,7 +1350,7 @@ void __146__DNDModeConfigurationService_setAppConfigurationTargetContentIdentifi
       v29 = 2112;
       v30 = v11;
       v31 = 2114;
-      v32 = v6;
+      v32 = identifierCopy;
       _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Got %@ target content identifier prefixes for modeIdentifier %{public}@", buf, 0x20u);
     }
   }
@@ -1360,12 +1360,12 @@ void __146__DNDModeConfigurationService_setAppConfigurationTargetContentIdentifi
     [DNDModeConfigurationService getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:v8 error:v18];
   }
 
-  if (a4)
+  if (error)
   {
     v12 = *(v18[0] + 40);
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -1393,47 +1393,47 @@ void __105__DNDModeConfigurationService_getAppConfigurationTargetContentIdentifi
   *(v9 + 40) = v5;
 }
 
-- (BOOL)setAppConfigurationAction:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (BOOL)setAppConfigurationAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  actionCopy = action;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v13 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.setAppConfigurationAction", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   os_activity_scope_enter(v13, &v16);
-  v14 = [[DNDAppAction alloc] initWithAction:v10 enabled:1];
-  LOBYTE(a6) = [(DNDModeConfigurationService *)self setAppAction:v14 forApplicationIdentifier:v11 modeIdentifier:v12 error:a6];
+  v14 = [[DNDAppAction alloc] initWithAction:actionCopy enabled:1];
+  LOBYTE(error) = [(DNDModeConfigurationService *)self setAppAction:v14 forApplicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy error:error];
 
   os_activity_scope_leave(&v16);
-  return a6;
+  return error;
 }
 
-- (BOOL)clearAppConfigurationActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (BOOL)clearAppConfigurationActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
   v13 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.clearAppConfigurationAction", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v15.opaque[0] = 0;
   v15.opaque[1] = 0;
   os_activity_scope_enter(v13, &v15);
-  LOBYTE(a6) = [(DNDModeConfigurationService *)self clearAppActionWithIdentifier:v10 forApplicationIdentifier:v11 modeIdentifier:v12 error:a6];
+  LOBYTE(error) = [(DNDModeConfigurationService *)self clearAppActionWithIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy error:error];
   os_activity_scope_leave(&v15);
 
-  return a6;
+  return error;
 }
 
-- (id)getAppConfigurationActionsForModeIdentifier:(id)a3 error:(id *)a4
+- (id)getAppConfigurationActionsForModeIdentifier:(id)identifier error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v26 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getAppConfigurationActions", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v26, &state);
-  v25 = v6;
-  v7 = [(DNDModeConfigurationService *)self getAppActionsForModeIdentifier:v6 error:a4];
+  v25 = identifierCopy;
+  v7 = [(DNDModeConfigurationService *)self getAppActionsForModeIdentifier:identifierCopy error:error];
   v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
   v35 = 0u;
   v36 = 0u;
@@ -1478,13 +1478,13 @@ void __105__DNDModeConfigurationService_getAppConfigurationTargetContentIdentifi
               }
 
               v19 = *(*(&v29 + 1) + 8 * j);
-              v20 = [v19 action];
+              action = [v19 action];
 
-              if (v20)
+              if (action)
               {
                 v21 = [v8 objectForKeyedSubscript:v12];
-                v22 = [v19 action];
-                [v21 addObject:v22];
+                action2 = [v19 action];
+                [v21 addObject:action2];
               }
             }
 
@@ -1507,12 +1507,12 @@ void __105__DNDModeConfigurationService_getAppConfigurationTargetContentIdentifi
   return v8;
 }
 
-- (BOOL)setAppAction:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (BOOL)setAppAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  actionCopy = action;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v13 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.setAppAction", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1535,7 +1535,7 @@ void __105__DNDModeConfigurationService_getAppConfigurationTargetContentIdentifi
   v21[3] = &unk_27843A0A8;
   v21[4] = &v25;
   v21[5] = &v22;
-  [v15 setAppAction:v10 forApplicationIdentifier:v11 modeIdentifier:v12 withRequestDetails:v14 completionHandler:v21];
+  [v15 setAppAction:actionCopy forApplicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy withRequestDetails:v14 completionHandler:v21];
 
   v16 = DNDLogModeConfiguration;
   if (*(v26 + 24) == 1)
@@ -1545,9 +1545,9 @@ void __105__DNDModeConfigurationService_getAppConfigurationTargetContentIdentifi
       *buf = 138543874;
       v31 = v14;
       v32 = 2114;
-      v33 = v10;
+      v33 = actionCopy;
       v34 = 2114;
-      v35 = v12;
+      v35 = modeIdentifierCopy;
       _os_log_impl(&dword_22002F000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set app action, action=%{public}@; modeIdentifier=%{public}@", buf, 0x20u);
     }
   }
@@ -1557,12 +1557,12 @@ void __105__DNDModeConfigurationService_getAppConfigurationTargetContentIdentifi
     [DNDModeConfigurationService setAppAction:v14 forApplicationIdentifier:v23 modeIdentifier:? error:?];
   }
 
-  if (a6)
+  if (error)
   {
     v17 = *(v23[0] + 40);
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -1585,12 +1585,12 @@ void __90__DNDModeConfigurationService_setAppAction_forApplicationIdentifier_mod
   *(v6 + 40) = v5;
 }
 
-- (BOOL)clearAppActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (BOOL)clearAppActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
   v13 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.clearAppAction", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1613,7 +1613,7 @@ void __90__DNDModeConfigurationService_setAppAction_forApplicationIdentifier_mod
   v21[3] = &unk_27843A0A8;
   v21[4] = &v25;
   v21[5] = &v22;
-  [v15 clearAppActionWithIdentifier:v10 forApplicationIdentifier:v11 modeIdentifier:v12 withRequestDetails:v14 completionHandler:v21];
+  [v15 clearAppActionWithIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy withRequestDetails:v14 completionHandler:v21];
 
   v16 = DNDLogModeConfiguration;
   if (*(v26 + 24) == 1)
@@ -1623,11 +1623,11 @@ void __90__DNDModeConfigurationService_setAppAction_forApplicationIdentifier_mod
       *buf = 138544130;
       v31 = v14;
       v32 = 2114;
-      v33 = v10;
+      v33 = identifierCopy;
       v34 = 2114;
-      v35 = v11;
+      v35 = applicationIdentifierCopy;
       v36 = 2114;
-      v37 = v12;
+      v37 = modeIdentifierCopy;
       _os_log_impl(&dword_22002F000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Clear app action, identifier=%{public}@ applicationIdentifier=%{public}@ modeIdentifier=%{public}@", buf, 0x2Au);
     }
   }
@@ -1637,12 +1637,12 @@ void __90__DNDModeConfigurationService_setAppAction_forApplicationIdentifier_mod
     [DNDModeConfigurationService clearAppActionWithIdentifier:v14 forApplicationIdentifier:v23 modeIdentifier:? error:?];
   }
 
-  if (a6)
+  if (error)
   {
     v17 = *(v23[0] + 40);
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -1665,10 +1665,10 @@ void __106__DNDModeConfigurationService_clearAppActionWithIdentifier_forApplicat
   *(v6 + 40) = v5;
 }
 
-- (id)getAppActionsForModeIdentifier:(id)a3 error:(id *)a4
+- (id)getAppActionsForModeIdentifier:(id)identifier error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getAppActionsForModeIdentifier", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1693,7 +1693,7 @@ void __106__DNDModeConfigurationService_clearAppActionWithIdentifier_forApplicat
   v17[3] = &unk_27843A6B0;
   v17[4] = &v21;
   v17[5] = &v18;
-  [v9 getAppActionsForModeIdentifier:v6 withRequestDetails:v8 completionHandler:v17];
+  [v9 getAppActionsForModeIdentifier:identifierCopy withRequestDetails:v8 completionHandler:v17];
 
   if (v22[5])
   {
@@ -1707,7 +1707,7 @@ void __106__DNDModeConfigurationService_clearAppActionWithIdentifier_forApplicat
       v30 = 2112;
       v31 = v11;
       v32 = 2114;
-      v33 = v6;
+      v33 = identifierCopy;
       v34 = 2112;
       v35 = v12;
       _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Got %@ app actions for modeIdentifier %{public}@. actions = %@", buf, 0x2Au);
@@ -1719,12 +1719,12 @@ void __106__DNDModeConfigurationService_clearAppActionWithIdentifier_forApplicat
     [DNDModeConfigurationService getAppActionsForModeIdentifier:v8 error:v19];
   }
 
-  if (a4)
+  if (error)
   {
     v13 = *(v19[0] + 40);
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -1803,11 +1803,11 @@ uint64_t __57__DNDModeConfigurationService_resetAppConfigurationState__block_inv
   return result;
 }
 
-- (BOOL)setSystemAction:(id)a3 forModeIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setSystemAction:(id)action forModeIdentifier:(id)identifier error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   v10 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.setSystemAction", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1830,7 +1830,7 @@ uint64_t __57__DNDModeConfigurationService_resetAppConfigurationState__block_inv
   v18[3] = &unk_27843A0A8;
   v18[4] = &v22;
   v18[5] = &v19;
-  [v12 setSystemAction:v8 forModeIdentifier:v9 withRequestDetails:v11 completionHandler:v18];
+  [v12 setSystemAction:actionCopy forModeIdentifier:identifierCopy withRequestDetails:v11 completionHandler:v18];
 
   v13 = DNDLogModeConfiguration;
   if (*(v23 + 24) == 1)
@@ -1840,9 +1840,9 @@ uint64_t __57__DNDModeConfigurationService_resetAppConfigurationState__block_inv
       *buf = 138543874;
       v28 = v11;
       v29 = 2114;
-      v30 = v8;
+      v30 = actionCopy;
       v31 = 2114;
-      v32 = v9;
+      v32 = identifierCopy;
       _os_log_impl(&dword_22002F000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set system action, action=%{public}@; modeIdentifier=%{public}@", buf, 0x20u);
     }
   }
@@ -1852,12 +1852,12 @@ uint64_t __57__DNDModeConfigurationService_resetAppConfigurationState__block_inv
     [DNDModeConfigurationService setSystemAction:v11 forModeIdentifier:v20 error:?];
   }
 
-  if (a5)
+  if (error)
   {
     v14 = *(v20[0] + 40);
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -1880,11 +1880,11 @@ void __71__DNDModeConfigurationService_setSystemAction_forModeIdentifier_error__
   *(v6 + 40) = v5;
 }
 
-- (BOOL)clearSystemActionWithIdentifier:(id)a3 forModeIdentifier:(id)a4 error:(id *)a5
+- (BOOL)clearSystemActionWithIdentifier:(id)identifier forModeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v10 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.clearSystemAction", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1907,7 +1907,7 @@ void __71__DNDModeConfigurationService_setSystemAction_forModeIdentifier_error__
   v18[3] = &unk_27843A0A8;
   v18[4] = &v22;
   v18[5] = &v19;
-  [v12 clearSystemActionWithIdentifier:v8 forModeIdentifier:v9 withRequestDetails:v11 completionHandler:v18];
+  [v12 clearSystemActionWithIdentifier:identifierCopy forModeIdentifier:modeIdentifierCopy withRequestDetails:v11 completionHandler:v18];
 
   v13 = DNDLogModeConfiguration;
   if (*(v23 + 24) == 1)
@@ -1917,9 +1917,9 @@ void __71__DNDModeConfigurationService_setSystemAction_forModeIdentifier_error__
       *buf = 138543874;
       v28 = v11;
       v29 = 2114;
-      v30 = v8;
+      v30 = identifierCopy;
       v31 = 2114;
-      v32 = v9;
+      v32 = modeIdentifierCopy;
       _os_log_impl(&dword_22002F000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Clear system action, identifier=%{public}@ modeIdentifier=%{public}@", buf, 0x20u);
     }
   }
@@ -1929,12 +1929,12 @@ void __71__DNDModeConfigurationService_setSystemAction_forModeIdentifier_error__
     [DNDModeConfigurationService clearSystemActionWithIdentifier:v11 forModeIdentifier:v20 error:?];
   }
 
-  if (a5)
+  if (error)
   {
     v14 = *(v20[0] + 40);
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -1957,10 +1957,10 @@ void __87__DNDModeConfigurationService_clearSystemActionWithIdentifier_forModeId
   *(v6 + 40) = v5;
 }
 
-- (id)getSystemActionsForModeIdentifier:(id)a3 error:(id *)a4
+- (id)getSystemActionsForModeIdentifier:(id)identifier error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getSystemActionsForModeIdentifier", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1985,7 +1985,7 @@ void __87__DNDModeConfigurationService_clearSystemActionWithIdentifier_forModeId
   v16[3] = &unk_27843A700;
   v16[4] = &v20;
   v16[5] = &v17;
-  [v9 getSystemActionsForModeIdentifier:v6 withRequestDetails:v8 completionHandler:v16];
+  [v9 getSystemActionsForModeIdentifier:identifierCopy withRequestDetails:v8 completionHandler:v16];
 
   if (v21[5])
   {
@@ -1998,7 +1998,7 @@ void __87__DNDModeConfigurationService_clearSystemActionWithIdentifier_forModeId
       v29 = 2112;
       v30 = v11;
       v31 = 2114;
-      v32 = v6;
+      v32 = identifierCopy;
       _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Got %@ system actions for modeIdentifier %{public}@", buf, 0x20u);
     }
   }
@@ -2008,12 +2008,12 @@ void __87__DNDModeConfigurationService_clearSystemActionWithIdentifier_forModeId
     [DNDModeConfigurationService getSystemActionsForModeIdentifier:v8 error:v18];
   }
 
-  if (a4)
+  if (error)
   {
     v12 = *(v18[0] + 40);
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -2041,44 +2041,44 @@ void __71__DNDModeConfigurationService_getSystemActionsForModeIdentifier_error__
   *(v9 + 40) = v5;
 }
 
-- (BOOL)setSystemConfigurationAction:(id)a3 modeIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setSystemConfigurationAction:(id)action modeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   v10 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.setSystemConfigurationAction", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v10, &v13);
-  v11 = [[DNDSystemAction alloc] initWithAction:v8 enabled:1];
-  LOBYTE(a5) = [(DNDModeConfigurationService *)self setSystemAction:v11 forModeIdentifier:v9 error:a5];
+  v11 = [[DNDSystemAction alloc] initWithAction:actionCopy enabled:1];
+  LOBYTE(error) = [(DNDModeConfigurationService *)self setSystemAction:v11 forModeIdentifier:identifierCopy error:error];
 
   os_activity_scope_leave(&v13);
-  return a5;
+  return error;
 }
 
-- (BOOL)clearSystemConfigurationActionWithIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5
+- (BOOL)clearSystemConfigurationActionWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v10 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.clearSystemConfigurationAction", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v10, &v12);
-  LOBYTE(a5) = [(DNDModeConfigurationService *)self clearSystemActionWithIdentifier:v8 forModeIdentifier:v9 error:a5];
+  LOBYTE(error) = [(DNDModeConfigurationService *)self clearSystemActionWithIdentifier:identifierCopy forModeIdentifier:modeIdentifierCopy error:error];
   os_activity_scope_leave(&v12);
 
-  return a5;
+  return error;
 }
 
-- (id)getSystemConfigurationActionsForModeIdentifier:(id)a3 error:(id *)a4
+- (id)getSystemConfigurationActionsForModeIdentifier:(id)identifier error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getSystemConfigurationActions", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
-  v8 = [(DNDModeConfigurationService *)self getSystemActionsForModeIdentifier:v6 error:a4];
+  v8 = [(DNDModeConfigurationService *)self getSystemActionsForModeIdentifier:identifierCopy error:error];
   v9 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v8, "count")}];
   v21 = 0u;
   v22 = 0u;
@@ -2099,12 +2099,12 @@ void __71__DNDModeConfigurationService_getSystemActionsForModeIdentifier_error__
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 action];
+        action = [v14 action];
 
-        if (v15)
+        if (action)
         {
-          v16 = [v14 action];
-          [v9 addObject:v16];
+          action2 = [v14 action];
+          [v9 addObject:action2];
         }
       }
 
@@ -2120,7 +2120,7 @@ void __71__DNDModeConfigurationService_getSystemActionsForModeIdentifier_error__
   return v9;
 }
 
-- (BOOL)getSyncPreferenceEnabledReturningError:(id *)a3
+- (BOOL)getSyncPreferenceEnabledReturningError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getSyncPreferenceEnabled", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2148,12 +2148,12 @@ void __71__DNDModeConfigurationService_getSystemActionsForModeIdentifier_error__
   [v7 getCloudSyncStateWithRequestDetails:v6 completionHandler:v15];
 
   v8 = v17[0];
-  if (a3)
+  if (error)
   {
     v9 = *(v17[0] + 40);
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
       v8 = v17[0];
     }
   }
@@ -2199,7 +2199,7 @@ void __70__DNDModeConfigurationService_getSyncPreferenceEnabledReturningError___
   *(v6 + 40) = v5;
 }
 
-- (BOOL)getSyncAvailableReturningError:(id *)a3
+- (BOOL)getSyncAvailableReturningError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getSyncAvailable", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2227,12 +2227,12 @@ void __70__DNDModeConfigurationService_getSyncPreferenceEnabledReturningError___
   [v7 getCloudSyncStateWithRequestDetails:v6 completionHandler:v15];
 
   v8 = v17[0];
-  if (a3)
+  if (error)
   {
     v9 = *(v17[0] + 40);
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
       v8 = v17[0];
     }
   }
@@ -2278,7 +2278,7 @@ void __62__DNDModeConfigurationService_getSyncAvailableReturningError___block_in
   *(v6 + 40) = v5;
 }
 
-- (BOOL)getSyncEnabledReturningError:(id *)a3
+- (BOOL)getSyncEnabledReturningError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getSyncEnabled", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2306,12 +2306,12 @@ void __62__DNDModeConfigurationService_getSyncAvailableReturningError___block_in
   [v7 getCloudSyncStateWithRequestDetails:v6 completionHandler:v15];
 
   v8 = v17[0];
-  if (a3)
+  if (error)
   {
     v9 = *(v17[0] + 40);
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
       v8 = v17[0];
     }
   }
@@ -2366,10 +2366,10 @@ void __62__DNDModeConfigurationService_setSyncPreferenceEnabled_error___block_in
   *(v6 + 40) = v5;
 }
 
-- (void)addListener:(id)a3 withCompletionHandler:(id)a4
+- (void)addListener:(id)listener withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.addListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2380,11 +2380,11 @@ void __62__DNDModeConfigurationService_setSyncPreferenceEnabled_error___block_in
   v13[2] = __65__DNDModeConfigurationService_addListener_withCompletionHandler___block_invoke;
   v13[3] = &unk_27843A728;
   v14 = v8;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = listenerCopy;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = listenerCopy;
   v12 = v8;
   dispatch_sync(queue, v13);
 
@@ -2447,9 +2447,9 @@ void __65__DNDModeConfigurationService_addListener_withCompletionHandler___block
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.removeListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2460,9 +2460,9 @@ void __65__DNDModeConfigurationService_addListener_withCompletionHandler___block
   block[2] = __46__DNDModeConfigurationService_removeListener___block_invoke;
   block[3] = &unk_27843A210;
   v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = listenerCopy;
+  selfCopy = self;
+  v7 = listenerCopy;
   v8 = v5;
   dispatch_sync(queue, block);
 
@@ -2489,17 +2489,17 @@ void __46__DNDModeConfigurationService_removeListener___block_invoke(uint64_t a1
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedAvailableModeIdentifiers:(id)a4
+- (void)remoteService:(id)service didReceiveUpdatedAvailableModeIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __87__DNDModeConfigurationService_remoteService_didReceiveUpdatedAvailableModeIdentifiers___block_invoke;
   v8[3] = &unk_27843A1E8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = identifiersCopy;
+  selfCopy = self;
+  v7 = identifiersCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -2573,17 +2573,17 @@ void __87__DNDModeConfigurationService_remoteService_didReceiveUpdatedAvailableM
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didReceiveAppConfigurationContextUpdateForModeIdentifier:(id)a4
+- (void)remoteService:(id)service didReceiveAppConfigurationContextUpdateForModeIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __102__DNDModeConfigurationService_remoteService_didReceiveAppConfigurationContextUpdateForModeIdentifier___block_invoke;
   v8[3] = &unk_27843A1E8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -2657,7 +2657,7 @@ void __102__DNDModeConfigurationService_remoteService_didReceiveAppConfiguration
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)syncModeConfigurationsReturningError:(id *)a3
+- (BOOL)syncModeConfigurationsReturningError:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.syncModeConfigurations", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2684,12 +2684,12 @@ void __102__DNDModeConfigurationService_remoteService_didReceiveAppConfiguration
   v13[5] = &v14;
   [v7 syncModeConfigurationsWithRequestDetails:v6 completionHandler:v13];
 
-  if (a3)
+  if (error)
   {
     v8 = v15[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -2720,7 +2720,7 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
   *(v6 + 40) = v5;
 }
 
-- (id)createDefaultDrivingModeConfigurationWithError:(id *)a3
+- (id)createDefaultDrivingModeConfigurationWithError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.createDefaultDrivingModeConfiguration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2736,7 +2736,7 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
     _os_log_impl(&dword_22002F000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating Driving mode configuration from template", buf, 0xCu);
   }
 
-  v8 = [(DNDModeConfigurationService *)self _createDefaultModeConfigurationForIdentifier:@"com.apple.donotdisturb.mode.driving" withRequestDetails:v6 error:a3];
+  v8 = [(DNDModeConfigurationService *)self _createDefaultModeConfigurationForIdentifier:@"com.apple.donotdisturb.mode.driving" withRequestDetails:v6 error:error];
 
   os_activity_scope_leave(&v11);
   v9 = *MEMORY[0x277D85DE8];
@@ -2744,7 +2744,7 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
   return v8;
 }
 
-- (id)createDefaultSleepingModeConfigurationWithError:(id *)a3
+- (id)createDefaultSleepingModeConfigurationWithError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.createDefaultSleepingModeConfiguration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2760,7 +2760,7 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
     _os_log_impl(&dword_22002F000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating Sleeping mode configuration from template", buf, 0xCu);
   }
 
-  v8 = [(DNDModeConfigurationService *)self _createDefaultModeConfigurationForIdentifier:@"com.apple.sleep.sleep-mode" withRequestDetails:v6 error:a3];
+  v8 = [(DNDModeConfigurationService *)self _createDefaultModeConfigurationForIdentifier:@"com.apple.sleep.sleep-mode" withRequestDetails:v6 error:error];
 
   os_activity_scope_leave(&v11);
   v9 = *MEMORY[0x277D85DE8];
@@ -2768,7 +2768,7 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
   return v8;
 }
 
-- (id)createDefaultWorkoutModeConfigurationWithError:(id *)a3
+- (id)createDefaultWorkoutModeConfigurationWithError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.createDefaultWorkoutModeConfiguration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2784,7 +2784,7 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
     _os_log_impl(&dword_22002F000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating Workout mode configuration from template", buf, 0xCu);
   }
 
-  v8 = [(DNDModeConfigurationService *)self _createDefaultModeConfigurationForIdentifier:@"com.apple.donotdisturb.mode.workout" withRequestDetails:v6 error:a3];
+  v8 = [(DNDModeConfigurationService *)self _createDefaultModeConfigurationForIdentifier:@"com.apple.donotdisturb.mode.workout" withRequestDetails:v6 error:error];
 
   os_activity_scope_leave(&v11);
   v9 = *MEMORY[0x277D85DE8];
@@ -2792,10 +2792,10 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
   return v8;
 }
 
-- (id)createModeConfigurationUsingTemplateForModeIdentifier:(id)a3 error:(id *)a4
+- (id)createModeConfigurationUsingTemplateForModeIdentifier:(id)identifier error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.createModeConfigurationUsingTemplateForModeIdentifier", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
@@ -2807,11 +2807,11 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
     *buf = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_22002F000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating mode configuration from template for identifier: identifier=%{pubic}@", buf, 0x16u);
   }
 
-  v10 = [(DNDModeConfigurationService *)self _createDefaultModeConfigurationForIdentifier:v6 withRequestDetails:v8 error:a4];
+  v10 = [(DNDModeConfigurationService *)self _createDefaultModeConfigurationForIdentifier:identifierCopy withRequestDetails:v8 error:error];
 
   os_activity_scope_leave(&v13);
   v11 = *MEMORY[0x277D85DE8];
@@ -2819,10 +2819,10 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
   return v10;
 }
 
-- (id)createEmptyModeConfigurationForMode:(id)a3 error:(id *)a4
+- (id)createEmptyModeConfigurationForMode:(id)mode error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modeCopy = mode;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.createEmptyModeConfigurationForMode", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
@@ -2831,15 +2831,15 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
   v9 = DNDLogSettings;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 modeIdentifier];
+    modeIdentifier = [modeCopy modeIdentifier];
     *buf = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v10;
+    v18 = modeIdentifier;
     _os_log_impl(&dword_22002F000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating mode configuration from template for identifier: identifier=%{pubic}@", buf, 0x16u);
   }
 
-  v11 = [(DNDModeConfigurationService *)self _createEmptyModeConfigurationForMode:v6 withRequestDetails:v8 error:a4];
+  v11 = [(DNDModeConfigurationService *)self _createEmptyModeConfigurationForMode:modeCopy withRequestDetails:v8 error:error];
 
   os_activity_scope_leave(&v14);
   v12 = *MEMORY[0x277D85DE8];
@@ -2847,15 +2847,15 @@ void __68__DNDModeConfigurationService_syncModeConfigurationsReturningError___bl
   return v11;
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = DNDModeConfigurationService;
   v5 = [(DNDModeConfigurationService *)&v18 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
 
@@ -2962,25 +2962,25 @@ void __66__DNDModeConfigurationService__queue_registerForUpdatesIfRequired__bloc
   *(v7 + 40) = v6;
 }
 
-- (unint64_t)_defaultConfigurationTypeForModeSemanticType:(int64_t)a3
+- (unint64_t)_defaultConfigurationTypeForModeSemanticType:(int64_t)type
 {
-  if (a3 > 9)
+  if (type > 9)
   {
     return 2;
   }
 
   else
   {
-    return qword_22007C5E8[a3];
+    return qword_22007C5E8[type];
   }
 }
 
-- (id)_createDefaultModeConfigurationForIdentifier:(id)a3 withRequestDetails:(id)a4 error:(id *)a5
+- (id)_createDefaultModeConfigurationForIdentifier:(id)identifier withRequestDetails:(id)details error:(id *)error
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(DNDModeConfigurationService *)self allModesReturningError:a5];
+  identifierCopy = identifier;
+  detailsCopy = details;
+  v10 = [(DNDModeConfigurationService *)self allModesReturningError:error];
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -2995,7 +2995,7 @@ void __66__DNDModeConfigurationService__queue_registerForUpdatesIfRequired__bloc
   v28[1] = 3221225472;
   v28[2] = __101__DNDModeConfigurationService__createDefaultModeConfigurationForIdentifier_withRequestDetails_error___block_invoke;
   v28[3] = &unk_27843A778;
-  v11 = v8;
+  v11 = identifierCopy;
   v29 = v11;
   v30 = &v38;
   v31 = &v32;
@@ -3014,11 +3014,11 @@ void __66__DNDModeConfigurationService__queue_registerForUpdatesIfRequired__bloc
       else
       {
         v19 = [DNDMode alloc];
-        v20 = [v33[5] name];
-        v21 = [v33[5] modeIdentifier];
-        v22 = [v33[5] symbolImageName];
-        v23 = [v33[5] tintColorName];
-        v13 = -[DNDMode initWithName:modeIdentifier:symbolImageName:tintColorName:semanticType:](v19, "initWithName:modeIdentifier:symbolImageName:tintColorName:semanticType:", v20, v21, v22, v23, [v33[5] semanticType]);
+        name = [v33[5] name];
+        modeIdentifier = [v33[5] modeIdentifier];
+        symbolImageName = [v33[5] symbolImageName];
+        tintColorName = [v33[5] tintColorName];
+        v13 = -[DNDMode initWithName:modeIdentifier:symbolImageName:tintColorName:semanticType:](v19, "initWithName:modeIdentifier:symbolImageName:tintColorName:semanticType:", name, modeIdentifier, symbolImageName, tintColorName, [v33[5] semanticType]);
 
         v15 = [(DNDModeConfigurationService *)self _createModeSpecificConfigurationForModeSemanticType:[(DNDMode *)v13 semanticType] withIdentifier:v11];
         v24 = [(DNDModeConfigurationService *)self _createTriggersForFocusWithIdentifier:v11];
@@ -3026,7 +3026,7 @@ void __66__DNDModeConfigurationService__queue_registerForUpdatesIfRequired__bloc
         v16 = [(DNDModeConfigurationService *)self _setModeConfigurationDefaultsForModeConfiguration:v25 withIdentifier:v11];
       }
 
-      if ([(DNDModeConfigurationService *)self setModeConfiguration:v16 error:a5])
+      if ([(DNDModeConfigurationService *)self setModeConfiguration:v16 error:error])
       {
         v18 = [v16 copy];
       }
@@ -3039,7 +3039,7 @@ void __66__DNDModeConfigurationService__queue_registerForUpdatesIfRequired__bloc
       goto LABEL_16;
     }
 
-    if (a5)
+    if (error)
     {
       v17 = MEMORY[0x277CCA9B8];
       v44 = *MEMORY[0x277CCA450];
@@ -3054,7 +3054,7 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -3066,7 +3066,7 @@ LABEL_10:
   v14 = [v12 errorWithDomain:@"DNDErrorDomain" code:1001 userInfo:v13];
 LABEL_9:
   v18 = 0;
-  *a5 = v14;
+  *error = v14;
 LABEL_16:
 
 LABEL_17:
@@ -3092,16 +3092,16 @@ void __101__DNDModeConfigurationService__createDefaultModeConfigurationForIdenti
   }
 }
 
-- (id)_createModeSpecificConfigurationForModeSemanticType:(int64_t)a3 withIdentifier:(id)a4
+- (id)_createModeSpecificConfigurationForModeSemanticType:(int64_t)type withIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [DNDMutableConfiguration configurationOfType:[(DNDModeConfigurationService *)self _defaultConfigurationTypeForModeSemanticType:a3]];
-  if ([v6 isEqualToString:@"com.apple.sleep.sleep-mode"])
+  identifierCopy = identifier;
+  v7 = [DNDMutableConfiguration configurationOfType:[(DNDModeConfigurationService *)self _defaultConfigurationTypeForModeSemanticType:type]];
+  if ([identifierCopy isEqualToString:@"com.apple.sleep.sleep-mode"])
   {
     [v7 setHideApplicationBadges:2];
   }
 
-  else if ([v6 isEqualToString:@"com.apple.focus.reduce-interruptions"])
+  else if ([identifierCopy isEqualToString:@"com.apple.focus.reduce-interruptions"])
   {
     v8 = +[DNDModeConfiguration defaultReduceInterruptionsMode];
     v9 = [v8 mutableCopy];
@@ -3112,11 +3112,11 @@ void __101__DNDModeConfigurationService__createDefaultModeConfigurationForIdenti
   return v7;
 }
 
-- (id)_createTriggersForFocusWithIdentifier:(id)a3
+- (id)_createTriggersForFocusWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if ([v3 isEqualToString:@"com.apple.sleep.sleep-mode"])
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([identifierCopy isEqualToString:@"com.apple.sleep.sleep-mode"])
   {
     v5 = DNDModeConfigurationSleepingTrigger;
 LABEL_11:
@@ -3124,25 +3124,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:@"com.apple.donotdisturb.mode.driving"])
+  if ([identifierCopy isEqualToString:@"com.apple.donotdisturb.mode.driving"])
   {
     v5 = DNDModeConfigurationDrivingTrigger;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"com.apple.donotdisturb.mode.workout"])
+  if ([identifierCopy isEqualToString:@"com.apple.donotdisturb.mode.workout"])
   {
     v5 = DNDModeConfigurationWorkoutTrigger;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"com.apple.focus.gaming"])
+  if ([identifierCopy isEqualToString:@"com.apple.focus.gaming"])
   {
     v5 = DNDModeConfigurationGameControllerTrigger;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"com.apple.focus.mindfulness"])
+  if ([identifierCopy isEqualToString:@"com.apple.focus.mindfulness"])
   {
     v5 = DNDModeConfigurationMindfulnessTrigger;
     goto LABEL_11;
@@ -3151,30 +3151,30 @@ LABEL_11:
   v6 = [(DNDModeConfigurationTrigger *)[DNDModeConfigurationSmartTrigger alloc] initWithEnabledSetting:1];
 LABEL_12:
   v7 = v6;
-  [v4 addObject:v6];
+  [array addObject:v6];
 
-  return v4;
+  return array;
 }
 
-- (id)_setModeConfigurationDefaultsForModeConfiguration:(id)a3 withIdentifier:(id)a4
+- (id)_setModeConfigurationDefaultsForModeConfiguration:(id)configuration withIdentifier:(id)identifier
 {
-  v5 = a3;
-  if ([a4 isEqualToString:@"com.apple.sleep.sleep-mode"])
+  configurationCopy = configuration;
+  if ([identifier isEqualToString:@"com.apple.sleep.sleep-mode"])
   {
-    [v5 setDimsLockScreen:2];
+    [configurationCopy setDimsLockScreen:2];
   }
 
-  [v5 setAutomaticallyGenerated:1];
+  [configurationCopy setAutomaticallyGenerated:1];
 
-  return v5;
+  return configurationCopy;
 }
 
-- (id)_createEmptyModeConfigurationForMode:(id)a3 withRequestDetails:(id)a4 error:(id *)a5
+- (id)_createEmptyModeConfigurationForMode:(id)mode withRequestDetails:(id)details error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(DNDModeConfigurationService *)self allModesReturningError:a5];
+  modeCopy = mode;
+  detailsCopy = details;
+  v10 = [(DNDModeConfigurationService *)self allModesReturningError:error];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -3183,20 +3183,20 @@ LABEL_12:
   v20[1] = 3221225472;
   v20[2] = __93__DNDModeConfigurationService__createEmptyModeConfigurationForMode_withRequestDetails_error___block_invoke;
   v20[3] = &unk_27843A7A0;
-  v11 = v8;
+  v11 = modeCopy;
   v21 = v11;
   v22 = &v23;
   [v10 enumerateObjectsUsingBlock:v20];
   if ((v24[3] & 1) == 0)
   {
     v13 = [DNDMutableConfiguration configurationOfType:2];
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16 = [(DNDModeConfigurationTrigger *)[DNDModeConfigurationSmartTrigger alloc] initWithEnabledSetting:1];
-    [v15 addObject:v16];
+    [array addObject:v16];
 
-    v17 = [(DNDModeConfiguration *)[DNDMutableModeConfiguration alloc] initWithMode:v11 configuration:v13 triggers:v15];
+    v17 = [(DNDModeConfiguration *)[DNDMutableModeConfiguration alloc] initWithMode:v11 configuration:v13 triggers:array];
     [(DNDMutableModeConfiguration *)v17 setAutomaticallyGenerated:1];
-    if ([(DNDModeConfigurationService *)self setModeConfiguration:v17 error:a5])
+    if ([(DNDModeConfigurationService *)self setModeConfiguration:v17 error:error])
     {
       v14 = [(DNDMutableModeConfiguration *)v17 copy];
     }
@@ -3209,14 +3209,14 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
     v12 = MEMORY[0x277CCA9B8];
     v27 = *MEMORY[0x277CCA450];
     v28[0] = @"Mode configuration already exists for mode identifier.";
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     [v12 errorWithDomain:@"DNDErrorDomain" code:1001 userInfo:v13];
-    *a5 = v14 = 0;
+    *error = v14 = 0;
 LABEL_8:
 
     goto LABEL_9;
@@ -3361,7 +3361,7 @@ void __93__DNDModeConfigurationService__createEmptyModeConfigurationForMode_with
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22002F000, a2, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to reset app configuration state", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

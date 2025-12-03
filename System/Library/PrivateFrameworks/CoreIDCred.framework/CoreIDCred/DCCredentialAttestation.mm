@@ -1,18 +1,18 @@
 @interface DCCredentialAttestation
-- (DCCredentialAttestation)initWithCoder:(id)a3;
-- (DCCredentialAttestation)initWithData:(id)a3 type:(unint64_t)a4;
+- (DCCredentialAttestation)initWithCoder:(id)coder;
+- (DCCredentialAttestation)initWithData:(id)data type:(unint64_t)type;
 - (NSData)attestationData;
 - (unint64_t)attestationType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttestationData:(id)a3;
-- (void)setAttestationType:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttestationData:(id)data;
+- (void)setAttestationType:(unint64_t)type;
 @end
 
 @implementation DCCredentialAttestation
 
-- (DCCredentialAttestation)initWithData:(id)a3 type:(unint64_t)a4
+- (DCCredentialAttestation)initWithData:(id)data type:(unint64_t)type
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = DCCredentialAttestation;
   v7 = [(DCCredentialAttestation *)&v12 init];
@@ -20,31 +20,31 @@
   if (v7)
   {
     v7->_lock._os_unfair_lock_opaque = 0;
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     attestationData = v8->_attestationData;
     v8->_attestationData = v9;
 
-    v8->_attestationType = a4;
+    v8->_attestationType = type;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeObject:self->_attestationData forKey:0x28586D240];
-  [v4 encodeInteger:self->_attestationType forKey:10830140000];
+  [coderCopy encodeObject:self->_attestationData forKey:0x28586D240];
+  [coderCopy encodeInteger:self->_attestationType forKey:10830140000];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (DCCredentialAttestation)initWithCoder:(id)a3
+- (DCCredentialAttestation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586D240];
-  v6 = [v4 decodeIntegerForKey:10830140000];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586D240];
+  v6 = [coderCopy decodeIntegerForKey:10830140000];
 
   v7 = [(DCCredentialAttestation *)self initWithData:v5 type:v6];
   return v7;
@@ -59,13 +59,13 @@
   return v3;
 }
 
-- (void)setAttestationData:(id)a3
+- (void)setAttestationData:(id)data
 {
-  v6 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_attestationData != v6)
+  if (self->_attestationData != dataCopy)
   {
-    v4 = [(NSData *)v6 copyWithZone:0];
+    v4 = [(NSData *)dataCopy copyWithZone:0];
     attestationData = self->_attestationData;
     self->_attestationData = v4;
   }
@@ -81,10 +81,10 @@
   return attestationType;
 }
 
-- (void)setAttestationType:(unint64_t)a3
+- (void)setAttestationType:(unint64_t)type
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_attestationType = a3;
+  self->_attestationType = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }

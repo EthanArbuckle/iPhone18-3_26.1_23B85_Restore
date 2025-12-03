@@ -1,7 +1,7 @@
 @interface IKAppBrowserBridge
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 - (IKAppBrowser)appBrowser;
-- (IKAppBrowserBridge)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (IKAppBrowserBridge)initWithDOMNode:(id)node featureName:(id)name;
 - (IKAppContext)appContext;
 - (UIEdgeInsets)maskInset;
 - (void)present;
@@ -9,18 +9,18 @@
 
 @implementation IKAppBrowserBridge
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (v3 && (isKindOfClass & 1) != 0)
+  if (featureCopy && (isKindOfClass & 1) != 0)
   {
-    v6 = v3;
+    v6 = featureCopy;
     v7 = [IKJSBrowser alloc];
-    v8 = [v6 appContext];
-    v5 = [(IKJSObject *)v7 initWithAppContext:v8];
+    appContext = [v6 appContext];
+    v5 = [(IKJSObject *)v7 initWithAppContext:appContext];
 
     [(IKJSBrowser *)v5 setBridge:v6];
   }
@@ -28,19 +28,19 @@
   return v5;
 }
 
-- (IKAppBrowserBridge)initWithDOMNode:(id)a3 featureName:(id)a4
+- (IKAppBrowserBridge)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = IKAppBrowserBridge;
   v8 = [(IKAppBrowserBridge *)&v13 init];
   if (v8)
   {
-    v9 = [v6 appContext];
-    objc_storeWeak(v8 + 3, v9);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(v8 + 3, appContext);
 
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     v11 = *(v8 + 4);
     *(v8 + 4) = v10;
 
@@ -54,7 +54,7 @@
 
 - (void)present
 {
-  v3 = [(IKAppBrowserBridge *)self appBrowser];
+  appBrowser = [(IKAppBrowserBridge *)self appBrowser];
   [(IKAppBrowserBridge *)self cornerRadius];
   v5 = v4;
   [(IKAppBrowserBridge *)self interitemSpacing];
@@ -64,20 +64,20 @@
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(IKAppBrowserBridge *)self appContext];
+  appContext = [(IKAppBrowserBridge *)self appContext];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __29__IKAppBrowserBridge_present__block_invoke;
   v18[3] = &unk_2797997B8;
-  v19 = v3;
+  v19 = appBrowser;
   v20 = v5;
   v21 = v7;
   v22 = v9;
   v23 = v11;
   v24 = v13;
   v25 = v15;
-  v17 = v3;
-  [v16 evaluateDelegateBlockSync:v18];
+  v17 = appBrowser;
+  [appContext evaluateDelegateBlockSync:v18];
 }
 
 uint64_t __29__IKAppBrowserBridge_present__block_invoke(uint64_t a1)

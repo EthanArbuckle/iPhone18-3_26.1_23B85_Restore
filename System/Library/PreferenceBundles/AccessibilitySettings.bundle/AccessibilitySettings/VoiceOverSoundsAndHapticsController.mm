@@ -1,21 +1,21 @@
 @interface VoiceOverSoundsAndHapticsController
 - (id)_soundVolumeSpecifiers;
-- (id)hapticIntensity:(id)a3;
-- (id)hapticsEnabled:(id)a3;
-- (id)matchSpeechVolume:(id)a3;
-- (id)soundEffectsEnabled:(id)a3;
-- (id)soundVolume:(id)a3;
+- (id)hapticIntensity:(id)intensity;
+- (id)hapticsEnabled:(id)enabled;
+- (id)matchSpeechVolume:(id)volume;
+- (id)soundEffectsEnabled:(id)enabled;
+- (id)soundVolume:(id)volume;
 - (id)specifiers;
 - (void)_clearSoundVolumeSpecifiers;
 - (void)_createSoundVolumeSpecifiers;
-- (void)_updateSoundVolumeSpecifiers:(BOOL)a3;
+- (void)_updateSoundVolumeSpecifiers:(BOOL)specifiers;
 - (void)dealloc;
-- (void)dispatcher:(id)a3 handleEvent:(id)a4 soundPack:(id)a5 hapticPack:(id)a6;
-- (void)setHapticIntensity:(id)a3 specifier:(id)a4;
-- (void)setHapticsEnabled:(id)a3 specifier:(id)a4;
-- (void)setMatchSpeechVolume:(id)a3 specifier:(id)a4;
-- (void)setSoundEffectsEnabled:(id)a3 specifier:(id)a4;
-- (void)setSoundVolume:(id)a3 specifier:(id)a4;
+- (void)dispatcher:(id)dispatcher handleEvent:(id)event soundPack:(id)pack hapticPack:(id)hapticPack;
+- (void)setHapticIntensity:(id)intensity specifier:(id)specifier;
+- (void)setHapticsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMatchSpeechVolume:(id)volume specifier:(id)specifier;
+- (void)setSoundEffectsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSoundVolume:(id)volume specifier:(id)specifier;
 @end
 
 @implementation VoiceOverSoundsAndHapticsController
@@ -73,8 +73,8 @@
     if (v12)
     {
       [(VoiceOverSoundsAndHapticsController *)self _createSoundVolumeSpecifiers];
-      v16 = [(VoiceOverSoundsAndHapticsController *)self _soundVolumeSpecifiers];
-      [v8 addObjectsFromArray:v16];
+      _soundVolumeSpecifiers = [(VoiceOverSoundsAndHapticsController *)self _soundVolumeSpecifiers];
+      [v8 addObjectsFromArray:_soundVolumeSpecifiers];
 
       [(VoiceOverSoundsAndHapticsController *)self _updateSoundVolumeSpecifiers:0];
     }
@@ -112,7 +112,7 @@
       v23 = 0;
     }
 
-    v56 = self;
+    selfCopy = self;
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
@@ -135,8 +135,8 @@
 
           v54 = v26;
           v28 = *(*(&v63 + 1) + 8 * v26);
-          v29 = [v28 localizedCategoryName];
-          v30 = [PSSpecifier groupSpecifierWithName:v29];
+          localizedCategoryName = [v28 localizedCategoryName];
+          v30 = [PSSpecifier groupSpecifierWithName:localizedCategoryName];
 
           v55 = v30;
           [v57 addObject:v30];
@@ -144,8 +144,8 @@
           v62 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v31 = [v28 outputEvents];
-          v32 = [v31 countByEnumeratingWithState:&v59 objects:v67 count:16];
+          outputEvents = [v28 outputEvents];
+          v32 = [outputEvents countByEnumeratingWithState:&v59 objects:v67 count:16];
           if (v32)
           {
             v33 = v32;
@@ -156,7 +156,7 @@
               {
                 if (*v60 != v34)
                 {
-                  objc_enumerationMutation(v31);
+                  objc_enumerationMutation(outputEvents);
                 }
 
                 v36 = *(*(&v59 + 1) + 8 * i);
@@ -220,8 +220,8 @@
 
                 if (v58 && ([v36 supportsHaptic] & 1) != 0 || objc_msgSend(v36, "supportsSoundEffect"))
                 {
-                  v45 = [v36 localizedName];
-                  v46 = [PSSpecifier preferenceSpecifierNamed:v45 target:v56 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+                  localizedName = [v36 localizedName];
+                  v46 = [PSSpecifier preferenceSpecifierNamed:localizedName target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
                   [v46 setVosOutputEvent:v36];
                   [v57 addObject:v46];
@@ -229,7 +229,7 @@
                 }
               }
 
-              v33 = [v31 countByEnumeratingWithState:&v59 objects:v67 count:16];
+              v33 = [outputEvents countByEnumeratingWithState:&v59 objects:v67 count:16];
             }
 
             while (v33);
@@ -247,12 +247,12 @@
       while (v53);
     }
 
-    [(VoiceOverSoundsAndHapticsController *)v56 setupLongTitleSpecifiers:v57];
-    v47 = *&v56->AXUISettingsBaseListController_opaque[v50];
-    *&v56->AXUISettingsBaseListController_opaque[v50] = v57;
+    [(VoiceOverSoundsAndHapticsController *)selfCopy setupLongTitleSpecifiers:v57];
+    v47 = *&selfCopy->AXUISettingsBaseListController_opaque[v50];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v50] = v57;
     v48 = v57;
 
-    v3 = *&v56->AXUISettingsBaseListController_opaque[v50];
+    v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v50];
   }
 
   return v3;
@@ -300,9 +300,9 @@
   if (self->_soundVolumeAdjustsIndependentlySpecifier)
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 voiceOverAdjustSoundVolumeIndependently];
+    voiceOverAdjustSoundVolumeIndependently = [v3 voiceOverAdjustSoundVolumeIndependently];
 
-    if (v4)
+    if (voiceOverAdjustSoundVolumeIndependently)
     {
       soundVolumeSliderSpecifier = self->_soundVolumeSliderSpecifier;
       soundVolumeAdjustsIndependentlySpecifier = self->_soundVolumeAdjustsIndependentlySpecifier;
@@ -329,9 +329,9 @@
   return v8;
 }
 
-- (void)_updateSoundVolumeSpecifiers:(BOOL)a3
+- (void)_updateSoundVolumeSpecifiers:(BOOL)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -340,14 +340,14 @@
   v24[1] = 3221225472;
   v24[2] = __68__VoiceOverSoundsAndHapticsController__updateSoundVolumeSpecifiers___block_invoke;
   v24[3] = &unk_258288;
-  v25 = a3;
+  specifiersCopy2 = specifiers;
   v24[4] = self;
   v24[5] = &v26;
   v5 = objc_retainBlock(v24);
   v6 = [(VoiceOverSoundsAndHapticsController *)self soundEffectsEnabled:0];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     if (![(VoiceOverSoundsAndHapticsController *)self hasSoundVolumeSpecifiers])
     {
@@ -361,9 +361,9 @@
     }
 
     v8 = +[AXSettings sharedInstance];
-    v9 = [v8 voiceOverAdjustSoundVolumeIndependently];
+    voiceOverAdjustSoundVolumeIndependently = [v8 voiceOverAdjustSoundVolumeIndependently];
 
-    if (v9)
+    if (voiceOverAdjustSoundVolumeIndependently)
     {
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
@@ -383,15 +383,15 @@
       (v5[2])(v5, v21);
     }
 
-    if (v3)
+    if (specifiersCopy)
     {
       v10 = +[AXSettings sharedInstance];
-      v11 = [v10 voiceOverAdjustSoundVolumeIndependently];
+      voiceOverAdjustSoundVolumeIndependently2 = [v10 voiceOverAdjustSoundVolumeIndependently];
 
-      if (v11)
+      if (voiceOverAdjustSoundVolumeIndependently2)
       {
-        v12 = [(VoiceOverSoundsAndHapticsController *)self specifiers];
-        v13 = [v12 containsObject:self->_soundVolumeSliderSpecifier];
+        specifiers = [(VoiceOverSoundsAndHapticsController *)self specifiers];
+        v13 = [specifiers containsObject:self->_soundVolumeSliderSpecifier];
 
         if ((v13 & 1) == 0)
         {
@@ -406,8 +406,8 @@
 
       else if (self->_soundVolumeSliderSpecifier)
       {
-        v14 = [(VoiceOverSoundsAndHapticsController *)self specifiers];
-        v15 = [v14 containsObject:self->_soundVolumeSliderSpecifier];
+        specifiers2 = [(VoiceOverSoundsAndHapticsController *)self specifiers];
+        v15 = [specifiers2 containsObject:self->_soundVolumeSliderSpecifier];
 
         if (v15)
         {
@@ -442,7 +442,7 @@
       (v5[2])(v5, v17);
     }
 
-    if (v3)
+    if (specifiersCopy)
     {
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
@@ -507,16 +507,16 @@ id __68__VoiceOverSoundsAndHapticsController__updateSoundVolumeSpecifiers___bloc
   return [v4 _clearSoundVolumeSpecifiers];
 }
 
-- (void)setSoundEffectsEnabled:(id)a3 specifier:(id)a4
+- (void)setSoundEffectsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v6 = +[AXSettings sharedInstance];
-  [v6 setVoiceOverSoundEffectsEnabled:v5];
+  [v6 setVoiceOverSoundEffectsEnabled:bOOLValue];
 
   [(VoiceOverSoundsAndHapticsController *)self _updateSoundVolumeSpecifiers:1];
 }
 
-- (id)soundEffectsEnabled:(id)a3
+- (id)soundEffectsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSoundEffectsEnabled]);
@@ -524,15 +524,15 @@ id __68__VoiceOverSoundsAndHapticsController__updateSoundVolumeSpecifiers___bloc
   return v4;
 }
 
-- (void)setSoundVolume:(id)a3 specifier:(id)a4
+- (void)setSoundVolume:(id)volume specifier:(id)specifier
 {
-  [a3 doubleValue];
+  [volume doubleValue];
   v5 = v4;
   v6 = +[AXSettings sharedInstance];
   [v6 setVoiceOverSoundVolume:v5];
 }
 
-- (id)soundVolume:(id)a3
+- (id)soundVolume:(id)volume
 {
   v3 = +[AXSettings sharedInstance];
   [v3 voiceOverSoundVolume];
@@ -541,16 +541,16 @@ id __68__VoiceOverSoundsAndHapticsController__updateSoundVolumeSpecifiers___bloc
   return v4;
 }
 
-- (void)setMatchSpeechVolume:(id)a3 specifier:(id)a4
+- (void)setMatchSpeechVolume:(id)volume specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [volume BOOLValue];
   v6 = +[AXSettings sharedInstance];
-  [v6 setVoiceOverAdjustSoundVolumeIndependently:v5 ^ 1];
+  [v6 setVoiceOverAdjustSoundVolumeIndependently:bOOLValue ^ 1];
 
   [(VoiceOverSoundsAndHapticsController *)self _updateSoundVolumeSpecifiers:1];
 }
 
-- (id)matchSpeechVolume:(id)a3
+- (id)matchSpeechVolume:(id)volume
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 voiceOverAdjustSoundVolumeIndependently] ^ 1);
@@ -558,14 +558,14 @@ id __68__VoiceOverSoundsAndHapticsController__updateSoundVolumeSpecifiers___bloc
   return v4;
 }
 
-- (void)setHapticsEnabled:(id)a3 specifier:(id)a4
+- (void)setHapticsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverHapticsEnabled:v4];
+  [v5 setVoiceOverHapticsEnabled:bOOLValue];
 }
 
-- (id)hapticsEnabled:(id)a3
+- (id)hapticsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverHapticsEnabled]);
@@ -573,15 +573,15 @@ id __68__VoiceOverSoundsAndHapticsController__updateSoundVolumeSpecifiers___bloc
   return v4;
 }
 
-- (void)setHapticIntensity:(id)a3 specifier:(id)a4
+- (void)setHapticIntensity:(id)intensity specifier:(id)specifier
 {
-  [a3 doubleValue];
+  [intensity doubleValue];
   v5 = v4;
   v6 = +[AXSettings sharedInstance];
   [v6 setVoiceOverHapticIntensity:v5];
 }
 
-- (id)hapticIntensity:(id)a3
+- (id)hapticIntensity:(id)intensity
 {
   v3 = +[AXSettings sharedInstance];
   [v3 voiceOverHapticIntensity];
@@ -590,20 +590,20 @@ id __68__VoiceOverSoundsAndHapticsController__updateSoundVolumeSpecifiers___bloc
   return v4;
 }
 
-- (void)dispatcher:(id)a3 handleEvent:(id)a4 soundPack:(id)a5 hapticPack:(id)a6
+- (void)dispatcher:(id)dispatcher handleEvent:(id)event soundPack:(id)pack hapticPack:(id)hapticPack
 {
-  v15 = a4;
-  v9 = a6;
-  v10 = a5;
+  eventCopy = event;
+  hapticPackCopy = hapticPack;
+  packCopy = pack;
   v11 = objc_alloc_init(AXMOutputRequest);
-  v12 = [v10 soundAssetURLForOutputEvent:v15];
+  v12 = [packCopy soundAssetURLForOutputEvent:eventCopy];
 
   if (v12)
   {
     [v11 addSoundItemWithURL:v12];
   }
 
-  v13 = [v9 hapticAssetURLForOutputEvent:v15];
+  v13 = [hapticPackCopy hapticAssetURLForOutputEvent:eventCopy];
   if (v13)
   {
     [v11 addHapticItemWithURL:v13];

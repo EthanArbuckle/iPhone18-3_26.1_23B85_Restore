@@ -1,33 +1,33 @@
 @interface PXGPPTLayoutTester
 + (NSArray)mockPaddingValues;
-- (CGRect)generatedLayout:(id)a3 bestCropRectForInputItemAtIndex:(unsigned int)a4 withAspectRatio:(double)a5;
-- (id)generatedLayout:(id)a3 inputItemAtIndex:(unsigned int)a4;
-- (void)_iterateEditorialConfigurationsForItemsCount:(int64_t)a3 itemsIncrement:(int64_t)a4 handler:(id)a5;
-- (void)_iterateGridConfigurationsForItemsCount:(int64_t)a3 itemsIncrement:(int64_t)a4 handler:(id)a5;
-- (void)runEditorialLayoutTestWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)runGridLayoutTestWithOptions:(id)a3 completionHandler:(id)a4;
+- (CGRect)generatedLayout:(id)layout bestCropRectForInputItemAtIndex:(unsigned int)index withAspectRatio:(double)ratio;
+- (id)generatedLayout:(id)layout inputItemAtIndex:(unsigned int)index;
+- (void)_iterateEditorialConfigurationsForItemsCount:(int64_t)count itemsIncrement:(int64_t)increment handler:(id)handler;
+- (void)_iterateGridConfigurationsForItemsCount:(int64_t)count itemsIncrement:(int64_t)increment handler:(id)handler;
+- (void)runEditorialLayoutTestWithOptions:(id)options completionHandler:(id)handler;
+- (void)runGridLayoutTestWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation PXGPPTLayoutTester
 
-- (void)_iterateEditorialConfigurationsForItemsCount:(int64_t)a3 itemsIncrement:(int64_t)a4 handler:(id)a5
+- (void)_iterateEditorialConfigurationsForItemsCount:(int64_t)count itemsIncrement:(int64_t)increment handler:(id)handler
 {
-  v34 = a5;
-  v7 = [off_1E7721798 allLayoutMetricConfigurationSizes];
+  handlerCopy = handler;
+  allLayoutMetricConfigurationSizes = [off_1E7721798 allLayoutMetricConfigurationSizes];
   v8 = +[PXGPPTLayoutTester mockPaddingValues];
-  v32 = a3;
-  if (a4 < a3)
+  countCopy = count;
+  if (increment < count)
   {
-    v9 = a4;
-    v33 = v7;
+    incrementCopy = increment;
+    v33 = allLayoutMetricConfigurationSizes;
     do
     {
-      if ([v7 count])
+      if ([allLayoutMetricConfigurationSizes count])
       {
         v10 = 0;
         do
         {
-          v11 = [v7 objectAtIndexedSubscript:v10];
+          v11 = [allLayoutMetricConfigurationSizes objectAtIndexedSubscript:v10];
           [v11 CGSizeValue];
           v13 = v12;
           v15 = v14;
@@ -55,7 +55,7 @@
                 {
                   for (i = 1; i != 3; ++i)
                   {
-                    v34[2](v34, v9, v30, v28, i, v13, v15, v19, v21, v23, v25);
+                    handlerCopy[2](handlerCopy, incrementCopy, v30, v28, i, v13, v15, v19, v21, v23, v25);
                   }
 
                   ++v28;
@@ -74,42 +74,42 @@
           }
 
           ++v10;
-          v7 = v33;
+          allLayoutMetricConfigurationSizes = v33;
         }
 
         while (v10 < [v33 count]);
       }
 
-      v9 += a4;
+      incrementCopy += increment;
     }
 
-    while (v9 < v32);
+    while (incrementCopy < countCopy);
   }
 }
 
-- (void)_iterateGridConfigurationsForItemsCount:(int64_t)a3 itemsIncrement:(int64_t)a4 handler:(id)a5
+- (void)_iterateGridConfigurationsForItemsCount:(int64_t)count itemsIncrement:(int64_t)increment handler:(id)handler
 {
-  v35 = a5;
-  v5 = [off_1E7721798 allLayoutMetricConfigurationSizes];
+  handlerCopy = handler;
+  allLayoutMetricConfigurationSizes = [off_1E7721798 allLayoutMetricConfigurationSizes];
   v6 = +[PXGPPTLayoutTester mockPaddingValues];
   v7 = 0;
   v8 = 1;
-  v34 = v5;
+  v34 = allLayoutMetricConfigurationSizes;
   do
   {
     v31 = v8;
-    if (a4 < a3)
+    if (increment < count)
     {
       v9 = *(&xmmword_1A5301350 + v7);
-      v10 = a4;
+      incrementCopy = increment;
       do
       {
-        if ([v5 count])
+        if ([allLayoutMetricConfigurationSizes count])
         {
           v11 = 0;
           do
           {
-            v12 = [v5 objectAtIndexedSubscript:v11];
+            v12 = [allLayoutMetricConfigurationSizes objectAtIndexedSubscript:v11];
             [v12 CGSizeValue];
             v14 = v13;
             v16 = v15;
@@ -133,7 +133,7 @@
                     for (k = 1; k != 3; ++k)
                     {
                       v30 = objc_autoreleasePoolPush();
-                      v35[2](v35, v9, v10, i, j, k, v14, v16, v20, v22, v24, v26);
+                      handlerCopy[2](handlerCopy, v9, incrementCopy, i, j, k, v14, v16, v20, v22, v24, v26);
                       objc_autoreleasePoolPop(v30);
                     }
                   }
@@ -146,16 +146,16 @@
             }
 
             ++v11;
-            v5 = v34;
+            allLayoutMetricConfigurationSizes = v34;
           }
 
           while (v11 < [v34 count]);
         }
 
-        v10 += a4;
+        incrementCopy += increment;
       }
 
-      while (v10 < a3);
+      while (incrementCopy < count);
     }
 
     v8 = 0;
@@ -165,10 +165,10 @@
   while ((v31 & 1) != 0);
 }
 
-- (CGRect)generatedLayout:(id)a3 bestCropRectForInputItemAtIndex:(unsigned int)a4 withAspectRatio:(double)a5
+- (CGRect)generatedLayout:(id)layout bestCropRectForInputItemAtIndex:(unsigned int)index withAspectRatio:(double)ratio
 {
-  v6 = [(PXGPPTLayoutTester *)self inputItems:a3];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  v6 = [(PXGPPTLayoutTester *)self inputItems:layout];
+  v7 = [v6 objectAtIndexedSubscript:index];
   [v7 preferredCropRect];
   v9 = v8;
   v11 = v10;
@@ -186,41 +186,41 @@
   return result;
 }
 
-- (id)generatedLayout:(id)a3 inputItemAtIndex:(unsigned int)a4
+- (id)generatedLayout:(id)layout inputItemAtIndex:(unsigned int)index
 {
-  v5 = [(PXGPPTLayoutTester *)self inputItems];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  inputItems = [(PXGPPTLayoutTester *)self inputItems];
+  v6 = [inputItems objectAtIndexedSubscript:index];
 
   return v6;
 }
 
-- (void)runEditorialLayoutTestWithOptions:(id)a3 completionHandler:(id)a4
+- (void)runEditorialLayoutTestWithOptions:(id)options completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"itemsCount"];
+  optionsCopy = options;
+  handlerCopy = handler;
+  v9 = [optionsCopy objectForKeyedSubscript:@"itemsCount"];
 
   if (!v9)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXGPPTLayoutTester.m" lineNumber:71 description:@"itemsCount option is required to run test"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGPPTLayoutTester.m" lineNumber:71 description:@"itemsCount option is required to run test"];
   }
 
-  v10 = [v7 objectForKeyedSubscript:@"itemsIncrement"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"itemsIncrement"];
 
   if (!v10)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXGPPTLayoutTester.m" lineNumber:72 description:@"itemsIncrement option is required to run test"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGPPTLayoutTester.m" lineNumber:72 description:@"itemsIncrement option is required to run test"];
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"itemsCount"];
-  v12 = [v11 integerValue];
+  v11 = [optionsCopy objectForKeyedSubscript:@"itemsCount"];
+  integerValue = [v11 integerValue];
 
-  v13 = [v7 objectForKeyedSubscript:@"itemsIncrement"];
-  v14 = [v13 integerValue];
+  v13 = [optionsCopy objectForKeyedSubscript:@"itemsIncrement"];
+  integerValue2 = [v13 integerValue];
 
-  v15 = [PXGPPTLayoutTesterItemInput createItemInputsForCount:v12];
+  v15 = [PXGPPTLayoutTesterItemInput createItemInputsForCount:integerValue];
   [(PXGPPTLayoutTester *)self setInputItems:v15];
 
   v16 = objc_alloc_init(PXEditorialTungstenLayout);
@@ -248,8 +248,8 @@
   v24 = v19;
   v25 = &v33;
   v26 = &v27;
-  [(PXGPPTLayoutTester *)self _iterateEditorialConfigurationsForItemsCount:v12 itemsIncrement:v14 handler:v22];
-  v8[2](v8, v19, v34[5], v28[5]);
+  [(PXGPPTLayoutTester *)self _iterateEditorialConfigurationsForItemsCount:integerValue itemsIncrement:integerValue2 handler:v22];
+  handlerCopy[2](handlerCopy, v19, v34[5], v28[5]);
 
   _Block_object_dispose(&v27, 8);
   _Block_object_dispose(&v33, 8);
@@ -281,31 +281,31 @@ void __74__PXGPPTLayoutTester_runEditorialLayoutTestWithOptions_completionHandle
   }
 }
 
-- (void)runGridLayoutTestWithOptions:(id)a3 completionHandler:(id)a4
+- (void)runGridLayoutTestWithOptions:(id)options completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"itemsCount"];
+  optionsCopy = options;
+  handlerCopy = handler;
+  v9 = [optionsCopy objectForKeyedSubscript:@"itemsCount"];
 
   if (!v9)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXGPPTLayoutTester.m" lineNumber:34 description:@"itemsCount option is required to run test"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGPPTLayoutTester.m" lineNumber:34 description:@"itemsCount option is required to run test"];
   }
 
-  v10 = [v7 objectForKeyedSubscript:@"itemsIncrement"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"itemsIncrement"];
 
   if (!v10)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXGPPTLayoutTester.m" lineNumber:35 description:@"itemsIncrement option is required to run test"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGPPTLayoutTester.m" lineNumber:35 description:@"itemsIncrement option is required to run test"];
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"itemsCount"];
-  v12 = [v11 integerValue];
+  v11 = [optionsCopy objectForKeyedSubscript:@"itemsCount"];
+  integerValue = [v11 integerValue];
 
-  v13 = [v7 objectForKeyedSubscript:@"itemsIncrement"];
-  v14 = [v13 integerValue];
+  v13 = [optionsCopy objectForKeyedSubscript:@"itemsIncrement"];
+  integerValue2 = [v13 integerValue];
 
   v15 = objc_alloc_init(off_1E7721600);
   v32 = 0;
@@ -331,8 +331,8 @@ void __74__PXGPPTLayoutTester_runEditorialLayoutTestWithOptions_completionHandle
   v23 = v18;
   v24 = &v32;
   v25 = &v26;
-  [(PXGPPTLayoutTester *)self _iterateGridConfigurationsForItemsCount:v12 itemsIncrement:v14 handler:v21];
-  v8[2](v8, v18, v33[5], v27[5]);
+  [(PXGPPTLayoutTester *)self _iterateGridConfigurationsForItemsCount:integerValue itemsIncrement:integerValue2 handler:v21];
+  handlerCopy[2](handlerCopy, v18, v33[5], v27[5]);
 
   _Block_object_dispose(&v26, 8);
   _Block_object_dispose(&v32, 8);

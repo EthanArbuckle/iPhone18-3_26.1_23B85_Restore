@@ -1,6 +1,6 @@
 @interface JPFileEntry
-- (BOOL)writeStream:(id)a3 toDirectory:(id)a4 error:(id *)a5;
-- (JPFileEntry)initWithBacking:(void *)a3 releaseOnDealloc:(BOOL)a4;
+- (BOOL)writeStream:(id)stream toDirectory:(id)directory error:(id *)error;
+- (JPFileEntry)initWithBacking:(void *)backing releaseOnDealloc:(BOOL)dealloc;
 - (NSString)pathname;
 @end
 
@@ -8,8 +8,8 @@
 
 - (NSString)pathname
 {
-  v2 = [(JPFileEntry *)self backing];
-  Pathname = JetPackFileEntryGetPathname(v2, v3, v4);
+  backing = [(JPFileEntry *)self backing];
+  Pathname = JetPackFileEntryGetPathname(backing, v3, v4);
   if (Pathname)
   {
     Pathname = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:Pathname];
@@ -18,35 +18,35 @@
   return Pathname;
 }
 
-- (JPFileEntry)initWithBacking:(void *)a3 releaseOnDealloc:(BOOL)a4
+- (JPFileEntry)initWithBacking:(void *)backing releaseOnDealloc:(BOOL)dealloc
 {
   v7.receiver = self;
   v7.super_class = JPFileEntry;
   result = [(JPFileEntry *)&v7 init];
   if (result)
   {
-    result->_backing = a3;
-    result->_releaseBackingOnDealloc = a4;
+    result->_backing = backing;
+    result->_releaseBackingOnDealloc = dealloc;
   }
 
   return result;
 }
 
-- (BOOL)writeStream:(id)a3 toDirectory:(id)a4 error:(id *)a5
+- (BOOL)writeStream:(id)stream toDirectory:(id)directory error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(JPFileEntry *)self backing];
-  v11 = [v9 backing];
+  directoryCopy = directory;
+  streamCopy = stream;
+  backing = [(JPFileEntry *)self backing];
+  backing2 = [streamCopy backing];
 
-  v12 = v8;
-  v13 = [v8 cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
+  v12 = directoryCopy;
+  v13 = [directoryCopy cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
 
-  v14 = JetPackFileEntryWriteToDirectory(v10, v11, v13);
+  v14 = JetPackFileEntryWriteToDirectory(backing, backing2, v13);
   v15 = v14;
-  if (a5 && (v14 & 1) == 0)
+  if (error && (v14 & 1) == 0)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"JPErrorDomain" code:0 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"JPErrorDomain" code:0 userInfo:0];
   }
 
   return v15;

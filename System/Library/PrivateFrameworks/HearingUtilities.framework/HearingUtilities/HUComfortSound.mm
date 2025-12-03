@@ -1,63 +1,63 @@
 @interface HUComfortSound
-+ (id)comfortSoundWithAsset:(id)a3;
-+ (id)defaultComfortSoundForGroup:(unint64_t)a3;
-+ (id)soundWithName:(id)a3 path:(id)a4 andGroup:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)comfortSoundWithAsset:(id)asset;
++ (id)defaultComfortSoundForGroup:(unint64_t)group;
++ (id)soundWithName:(id)name path:(id)path andGroup:(unint64_t)group;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstalled;
-- (HUComfortSound)initWithCoder:(id)a3;
+- (HUComfortSound)initWithCoder:(id)coder;
 - (NSString)description;
 - (NSString)localizedName;
 - (id)nextFilePath;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)nextFilePath;
 @end
 
 @implementation HUComfortSound
 
-+ (id)comfortSoundWithAsset:(id)a3
++ (id)comfortSoundWithAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 properties];
-  v5 = [v4 valueForKey:@"SoundName"];
-  v6 = [v3 localURL];
-  v7 = [v3 properties];
-  v8 = [v7 valueForKey:@"SoundGroup"];
-  v9 = +[HUComfortSound soundWithName:path:andGroup:](HUComfortSound, "soundWithName:path:andGroup:", v5, v6, [v8 unsignedIntegerValue]);
+  assetCopy = asset;
+  properties = [assetCopy properties];
+  v5 = [properties valueForKey:@"SoundName"];
+  localURL = [assetCopy localURL];
+  properties2 = [assetCopy properties];
+  v8 = [properties2 valueForKey:@"SoundGroup"];
+  v9 = +[HUComfortSound soundWithName:path:andGroup:](HUComfortSound, "soundWithName:path:andGroup:", v5, localURL, [v8 unsignedIntegerValue]);
 
-  [v9 setAsset:v3];
+  [v9 setAsset:assetCopy];
 
   return v9;
 }
 
-+ (id)defaultComfortSoundForGroup:(unint64_t)a3
++ (id)defaultComfortSoundForGroup:(unint64_t)group
 {
-  if (a3 - 1 > 0xF)
+  if (group - 1 > 0xF)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E85CA1B8[a3 - 1];
+    v4 = off_1E85CA1B8[group - 1];
   }
 
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [v5 URLForResource:v4 withExtension:@"m4a"];
-  v7 = [HUComfortSound soundWithName:v4 path:v6 andGroup:a3];
+  v7 = [HUComfortSound soundWithName:v4 path:v6 andGroup:group];
 
   return v7;
 }
 
-+ (id)soundWithName:(id)a3 path:(id)a4 andGroup:(unint64_t)a5
++ (id)soundWithName:(id)name path:(id)path andGroup:(unint64_t)group
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length])
+  nameCopy = name;
+  pathCopy = path;
+  if ([nameCopy length])
   {
     v9 = objc_alloc_init(HUComfortSound);
-    [(HUComfortSound *)v9 setName:v7];
-    [(HUComfortSound *)v9 setPath:v8];
-    [(HUComfortSound *)v9 setSoundGroup:a5];
+    [(HUComfortSound *)v9 setName:nameCopy];
+    [(HUComfortSound *)v9 setPath:pathCopy];
+    [(HUComfortSound *)v9 setSoundGroup:group];
   }
 
   else
@@ -68,47 +68,47 @@
   return v9;
 }
 
-- (HUComfortSound)initWithCoder:(id)a3
+- (HUComfortSound)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HUComfortSound;
   v5 = [(HUComfortSound *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HUComfortSoundNameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HUComfortSoundNameKey"];
     [(HUComfortSound *)v5 setName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HUComfortSoundPathKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HUComfortSoundPathKey"];
     [(HUComfortSound *)v5 setPath:v7];
 
-    -[HUComfortSound setSoundGroup:](v5, "setSoundGroup:", [v4 decodeIntegerForKey:@"HUComfortSoundGroupKey"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HUComfortSoundAssetKey"];
+    -[HUComfortSound setSoundGroup:](v5, "setSoundGroup:", [coderCopy decodeIntegerForKey:@"HUComfortSoundGroupKey"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HUComfortSoundAssetKey"];
     [(HUComfortSound *)v5 setAsset:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HUComfortSound *)self name];
-  [v4 encodeObject:v5 forKey:@"HUComfortSoundNameKey"];
+  coderCopy = coder;
+  name = [(HUComfortSound *)self name];
+  [coderCopy encodeObject:name forKey:@"HUComfortSoundNameKey"];
 
-  v6 = [(HUComfortSound *)self path];
-  [v4 encodeObject:v6 forKey:@"HUComfortSoundPathKey"];
+  path = [(HUComfortSound *)self path];
+  [coderCopy encodeObject:path forKey:@"HUComfortSoundPathKey"];
 
-  [v4 encodeInteger:-[HUComfortSound soundGroup](self forKey:{"soundGroup"), @"HUComfortSoundGroupKey"}];
-  v7 = [(HUComfortSound *)self asset];
-  [v4 encodeObject:v7 forKey:@"HUComfortSoundAssetKey"];
+  [coderCopy encodeInteger:-[HUComfortSound soundGroup](self forKey:{"soundGroup"), @"HUComfortSoundGroupKey"}];
+  asset = [(HUComfortSound *)self asset];
+  [coderCopy encodeObject:asset forKey:@"HUComfortSoundAssetKey"];
 }
 
 - (NSString)localizedName
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HUComfortSound *)self name];
-  v4 = [v2 stringWithFormat:@"%@_%@", @"ComfortSound", v3];
+  name = [(HUComfortSound *)self name];
+  v4 = [v2 stringWithFormat:@"%@_%@", @"ComfortSound", name];
   v5 = hearingLocString(v4);
 
   return v5;
@@ -117,9 +117,9 @@
 - (id)nextFilePath
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [(HUComfortSound *)self path];
+  path = [(HUComfortSound *)self path];
 
-  if (!v3)
+  if (!path)
   {
     v4 = HCLogComfortSounds();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -131,13 +131,13 @@
   fileShuffler = self->_fileShuffler;
   if (!fileShuffler)
   {
-    v6 = [(HUComfortSound *)self path];
-    v7 = [v6 pathExtension];
-    v8 = [v7 isEqualToString:@"m4a"];
+    path2 = [(HUComfortSound *)self path];
+    pathExtension = [path2 pathExtension];
+    v8 = [pathExtension isEqualToString:@"m4a"];
 
     if (v8)
     {
-      v20[0] = v6;
+      v20[0] = path2;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
       v10 = 0;
 LABEL_16:
@@ -149,9 +149,9 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v19 = 0;
-    v12 = [v11 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:0 options:0 error:&v19];
+    v12 = [defaultManager contentsOfDirectoryAtURL:path2 includingPropertiesForKeys:0 options:0 error:&v19];
     v10 = v19;
 
     if (v10)
@@ -176,10 +176,10 @@ LABEL_15:
   }
 
 LABEL_17:
-  v16 = [(HUComfortSoundsShuffler *)fileShuffler nextObject];
+  nextObject = [(HUComfortSoundsShuffler *)fileShuffler nextObject];
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return nextObject;
 }
 
 uint64_t __30__HUComfortSound_nextFilePath__block_invoke(uint64_t a1, void *a2)
@@ -190,15 +190,15 @@ uint64_t __30__HUComfortSound_nextFilePath__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 path];
-    v6 = [(HUComfortSound *)self path];
-    v7 = [v5 isEqual:v6];
+    path = [equalCopy path];
+    path2 = [(HUComfortSound *)self path];
+    v7 = [path isEqual:path2];
   }
 
   else
@@ -215,29 +215,29 @@ uint64_t __30__HUComfortSound_nextFilePath__block_invoke(uint64_t a1, void *a2)
   v10.receiver = self;
   v10.super_class = HUComfortSound;
   v4 = [(HUComfortSound *)&v10 description];
-  v5 = [(HUComfortSound *)self name];
-  v6 = [(HUComfortSound *)self soundGroup];
-  v7 = [(HUComfortSound *)self path];
-  v8 = [v3 stringWithFormat:@"%@ - %@ [%lu] = %@", v4, v5, v6, v7];
+  name = [(HUComfortSound *)self name];
+  soundGroup = [(HUComfortSound *)self soundGroup];
+  path = [(HUComfortSound *)self path];
+  v8 = [v3 stringWithFormat:@"%@ - %@ [%lu] = %@", v4, name, soundGroup, path];
 
   return v8;
 }
 
 - (BOOL)isInstalled
 {
-  v3 = [(HUComfortSound *)self asset];
-  if (v3)
+  asset = [(HUComfortSound *)self asset];
+  if (asset)
   {
-    v4 = [(HUComfortSound *)self asset];
-    v5 = [v4 isInstalled];
+    asset2 = [(HUComfortSound *)self asset];
+    isInstalled = [asset2 isInstalled];
   }
 
   else
   {
-    v5 = 0;
+    isInstalled = 0;
   }
 
-  return v5;
+  return isInstalled;
 }
 
 - (void)nextFilePath

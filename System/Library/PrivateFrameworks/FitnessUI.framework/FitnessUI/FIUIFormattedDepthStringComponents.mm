@@ -3,7 +3,7 @@
 - (NSString)formattedString;
 - (NSString)unitString;
 - (NSString)valueString;
-- (void)set_unitString:(id)a3;
+- (void)set_unitString:(id)string;
 @end
 
 @implementation FIUIFormattedDepthStringComponents
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (void)set_unitString:(id)a3
+- (void)set_unitString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = sub_1E5DA915C();
   }
@@ -44,25 +44,25 @@
 
 - (NSString)formattedString
 {
-  v2 = [(FIUIFormattedDepthStringComponents *)self _formattedString];
+  _formattedString = [(FIUIFormattedDepthStringComponents *)self _formattedString];
 
-  return v2;
+  return _formattedString;
 }
 
 - (NSString)valueString
 {
-  v2 = [(FIUIFormattedDepthStringComponents *)self _valueString];
+  _valueString = [(FIUIFormattedDepthStringComponents *)self _valueString];
 
-  return v2;
+  return _valueString;
 }
 
 - (NSString)unitString
 {
-  v2 = self;
-  v3 = [(FIUIFormattedDepthStringComponents *)v2 _unitString];
-  if (v3)
+  selfCopy = self;
+  _unitString = [(FIUIFormattedDepthStringComponents *)selfCopy _unitString];
+  if (_unitString)
   {
-    v4 = v3;
+    v4 = _unitString;
     sub_1E5DA915C();
 
     v5 = sub_1E5DA911C();

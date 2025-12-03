@@ -1,95 +1,95 @@
 @interface FMFDevice
-- (BOOL)isEqual:(id)a3;
-- (FMFDevice)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FMFDevice)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMFDevice
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(FMFDevice *)self deviceName];
-  [v4 setDeviceName:v5];
+  deviceName = [(FMFDevice *)self deviceName];
+  [v4 setDeviceName:deviceName];
 
   [v4 setIsActiveDevice:{-[FMFDevice isActiveDevice](self, "isActiveDevice")}];
   [v4 setIsAutoMeCapable:{-[FMFDevice isAutoMeCapable](self, "isAutoMeCapable")}];
-  v6 = [(FMFDevice *)self idsDeviceId];
-  [v4 setIdsDeviceId:v6];
+  idsDeviceId = [(FMFDevice *)self idsDeviceId];
+  [v4 setIdsDeviceId:idsDeviceId];
 
   [v4 setIsThisDevice:{-[FMFDevice isThisDevice](self, "isThisDevice")}];
   [v4 setIsCompanionDevice:{-[FMFDevice isCompanionDevice](self, "isCompanionDevice")}];
-  v7 = [(FMFDevice *)self deviceId];
-  [v4 setDeviceId:v7];
+  deviceId = [(FMFDevice *)self deviceId];
+  [v4 setDeviceId:deviceId];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(FMFDevice *)self deviceId];
-  [v7 encodeObject:v4 forKey:@"deviceId"];
+  coderCopy = coder;
+  deviceId = [(FMFDevice *)self deviceId];
+  [coderCopy encodeObject:deviceId forKey:@"deviceId"];
 
-  v5 = [(FMFDevice *)self deviceName];
-  [v7 encodeObject:v5 forKey:@"deviceName"];
+  deviceName = [(FMFDevice *)self deviceName];
+  [coderCopy encodeObject:deviceName forKey:@"deviceName"];
 
-  [v7 encodeBool:-[FMFDevice isActiveDevice](self forKey:{"isActiveDevice"), @"isActiveDevice"}];
-  [v7 encodeBool:-[FMFDevice isThisDevice](self forKey:{"isThisDevice"), @"isThisDevice"}];
-  [v7 encodeBool:-[FMFDevice isCompanionDevice](self forKey:{"isCompanionDevice"), @"isCompanionDevice"}];
-  v6 = [(FMFDevice *)self idsDeviceId];
-  [v7 encodeObject:v6 forKey:@"idsDeviceId"];
+  [coderCopy encodeBool:-[FMFDevice isActiveDevice](self forKey:{"isActiveDevice"), @"isActiveDevice"}];
+  [coderCopy encodeBool:-[FMFDevice isThisDevice](self forKey:{"isThisDevice"), @"isThisDevice"}];
+  [coderCopy encodeBool:-[FMFDevice isCompanionDevice](self forKey:{"isCompanionDevice"), @"isCompanionDevice"}];
+  idsDeviceId = [(FMFDevice *)self idsDeviceId];
+  [coderCopy encodeObject:idsDeviceId forKey:@"idsDeviceId"];
 
-  [v7 encodeBool:-[FMFDevice isAutoMeCapable](self forKey:{"isAutoMeCapable"), @"isAutoMeCapable"}];
+  [coderCopy encodeBool:-[FMFDevice isAutoMeCapable](self forKey:{"isAutoMeCapable"), @"isAutoMeCapable"}];
 }
 
-- (FMFDevice)initWithCoder:(id)a3
+- (FMFDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceId"];
   [(FMFDevice *)v5 setDeviceId:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
   [(FMFDevice *)v5 setDeviceName:v7];
 
-  -[FMFDevice setIsActiveDevice:](v5, "setIsActiveDevice:", [v4 decodeBoolForKey:@"isActiveDevice"]);
-  -[FMFDevice setIsThisDevice:](v5, "setIsThisDevice:", [v4 decodeBoolForKey:@"isThisDevice"]);
-  -[FMFDevice setIsCompanionDevice:](v5, "setIsCompanionDevice:", [v4 decodeBoolForKey:@"isCompanionDevice"]);
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceId"];
+  -[FMFDevice setIsActiveDevice:](v5, "setIsActiveDevice:", [coderCopy decodeBoolForKey:@"isActiveDevice"]);
+  -[FMFDevice setIsThisDevice:](v5, "setIsThisDevice:", [coderCopy decodeBoolForKey:@"isThisDevice"]);
+  -[FMFDevice setIsCompanionDevice:](v5, "setIsCompanionDevice:", [coderCopy decodeBoolForKey:@"isCompanionDevice"]);
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceId"];
   [(FMFDevice *)v5 setIdsDeviceId:v8];
 
-  v9 = [v4 decodeBoolForKey:@"isAutoMeCapable"];
+  v9 = [coderCopy decodeBoolForKey:@"isAutoMeCapable"];
   [(FMFDevice *)v5 setIsAutoMeCapable:v9];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(FMFDevice *)self deviceId];
-    v7 = [v5 deviceId];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    deviceId = [(FMFDevice *)self deviceId];
+    deviceId2 = [v5 deviceId];
+    if ([deviceId isEqualToString:deviceId2])
     {
-      v8 = [(FMFDevice *)self deviceName];
-      v9 = [v5 deviceName];
-      if ([v8 isEqualToString:v9])
+      deviceName = [(FMFDevice *)self deviceName];
+      deviceName2 = [v5 deviceName];
+      if ([deviceName isEqualToString:deviceName2])
       {
-        v10 = [(FMFDevice *)self idsDeviceId];
-        v11 = [v5 idsDeviceId];
-        if ([v10 isEqualToString:v11] && (v12 = -[FMFDevice isAutoMeCapable](self, "isAutoMeCapable"), v12 == objc_msgSend(v5, "isAutoMeCapable")) && (v13 = -[FMFDevice isActiveDevice](self, "isActiveDevice"), v13 == objc_msgSend(v5, "isActiveDevice")) && (v14 = -[FMFDevice isThisDevice](self, "isThisDevice"), v14 == objc_msgSend(v5, "isThisDevice")))
+        idsDeviceId = [(FMFDevice *)self idsDeviceId];
+        idsDeviceId2 = [v5 idsDeviceId];
+        if ([idsDeviceId isEqualToString:idsDeviceId2] && (v12 = -[FMFDevice isAutoMeCapable](self, "isAutoMeCapable"), v12 == objc_msgSend(v5, "isAutoMeCapable")) && (v13 = -[FMFDevice isActiveDevice](self, "isActiveDevice"), v13 == objc_msgSend(v5, "isActiveDevice")) && (v14 = -[FMFDevice isThisDevice](self, "isThisDevice"), v14 == objc_msgSend(v5, "isThisDevice")))
         {
-          v17 = [(FMFDevice *)self isCompanionDevice];
-          v15 = v17 ^ [v5 isCompanionDevice] ^ 1;
+          isCompanionDevice = [(FMFDevice *)self isCompanionDevice];
+          v15 = isCompanionDevice ^ [v5 isCompanionDevice] ^ 1;
         }
 
         else
@@ -120,8 +120,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FMFDevice *)self deviceId];
-  v3 = [v2 hash];
+  deviceId = [(FMFDevice *)self deviceId];
+  v3 = [deviceId hash];
 
   return v3;
 }
@@ -129,8 +129,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(FMFDevice *)self deviceName];
-  v5 = [(FMFDevice *)self deviceId];
+  deviceName = [(FMFDevice *)self deviceName];
+  deviceId = [(FMFDevice *)self deviceId];
   v6 = @"NO";
   if ([(FMFDevice *)self isActiveDevice])
   {
@@ -147,8 +147,8 @@
     v6 = @"YES";
   }
 
-  v8 = [(FMFDevice *)self idsDeviceId];
-  v9 = [v3 stringWithFormat:@"%@ [%@] {meDevice=%@} {thisDevice=%@} {idsDeviceId=%@}", v4, v5, v7, v6, v8];
+  idsDeviceId = [(FMFDevice *)self idsDeviceId];
+  v9 = [v3 stringWithFormat:@"%@ [%@] {meDevice=%@} {thisDevice=%@} {idsDeviceId=%@}", deviceName, deviceId, v7, v6, idsDeviceId];
 
   return v9;
 }
@@ -157,8 +157,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FMFDevice *)self deviceId];
-  v6 = [(FMFDevice *)self deviceName];
+  deviceId = [(FMFDevice *)self deviceId];
+  deviceName = [(FMFDevice *)self deviceName];
   v7 = @"YES";
   if ([(FMFDevice *)self isActiveDevice])
   {
@@ -175,8 +175,8 @@
     v7 = @"NO";
   }
 
-  v9 = [(FMFDevice *)self idsDeviceId];
-  v10 = [v3 stringWithFormat:@"<%@ %p [%@:%@]> meDevice ? (%@) : thisDevice ? (%@) : idsDeviceId (%@)", v4, self, v5, v6, v8, v7, v9];
+  idsDeviceId = [(FMFDevice *)self idsDeviceId];
+  v10 = [v3 stringWithFormat:@"<%@ %p [%@:%@]> meDevice ? (%@) : thisDevice ? (%@) : idsDeviceId (%@)", v4, self, deviceId, deviceName, v8, v7, idsDeviceId];
 
   return v10;
 }

@@ -1,36 +1,36 @@
 @interface MPMusicPlayerPlayParameters
-- (BOOL)isEqual:(id)a3;
-- (MPMusicPlayerPlayParameters)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPMusicPlayerPlayParameters)initWithCoder:(id)coder;
 - (MPMusicPlayerPlayParameters)initWithDictionary:(NSDictionary *)dictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMusicPlayerPlayParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dictionary = self->_dictionary;
-  v5 = a3;
-  [v5 encodeObject:dictionary forKey:@"MPMusicPlayerPlayParametersDictionary"];
-  [v5 encodeObject:self->_itemID forKey:@"MPMusicPlayerPlayParametersItemID"];
-  [v5 encodeObject:self->_identifiers forKey:@"MPMusicPlayerPlayParametersIdentifiers"];
-  [v5 encodeObject:self->_itemKind forKey:@"MPMusicPlayerPlayParametersItemKind"];
-  [v5 encodeBool:self->_libraryContent forKey:@"MPMusicPlayerPlayParametersIsLibraryContent"];
-  [v5 encodeObject:self->_catalogID forKey:@"MPMusicPlayerPlayParametersCatalogID"];
-  [v5 encodeObject:self->_libraryID forKey:@"MPMusicPlayerPlayParametersLibraryID"];
-  [v5 encodeObject:self->_persistentID forKey:@"MPMusicPlayerPlayParametersMusicKitPersistentID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dictionary forKey:@"MPMusicPlayerPlayParametersDictionary"];
+  [coderCopy encodeObject:self->_itemID forKey:@"MPMusicPlayerPlayParametersItemID"];
+  [coderCopy encodeObject:self->_identifiers forKey:@"MPMusicPlayerPlayParametersIdentifiers"];
+  [coderCopy encodeObject:self->_itemKind forKey:@"MPMusicPlayerPlayParametersItemKind"];
+  [coderCopy encodeBool:self->_libraryContent forKey:@"MPMusicPlayerPlayParametersIsLibraryContent"];
+  [coderCopy encodeObject:self->_catalogID forKey:@"MPMusicPlayerPlayParametersCatalogID"];
+  [coderCopy encodeObject:self->_libraryID forKey:@"MPMusicPlayerPlayParametersLibraryID"];
+  [coderCopy encodeObject:self->_persistentID forKey:@"MPMusicPlayerPlayParametersMusicKitPersistentID"];
 }
 
-- (MPMusicPlayerPlayParameters)initWithCoder:(id)a3
+- (MPMusicPlayerPlayParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = MPMusicPlayerPlayParameters;
   v5 = [(MPMusicPlayerPlayParameters *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"MPMusicPlayerPlayParametersDictionary"];
+    v6 = [coderCopy decodePropertyListForKey:@"MPMusicPlayerPlayParametersDictionary"];
     if (_NSIsNSDictionary())
     {
       v7 = v6;
@@ -52,28 +52,28 @@
     }
 
     objc_storeStrong(&v5->_dictionary, v8);
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersItemID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersItemID"];
     itemID = v5->_itemID;
     v5->_itemID = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersIdentifiers"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersIdentifiers"];
     identifiers = v5->_identifiers;
     v5->_identifiers = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersItemKind"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersItemKind"];
     itemKind = v5->_itemKind;
     v5->_itemKind = v13;
 
-    v5->_libraryContent = [v4 decodeBoolForKey:@"MPMusicPlayerPlayParametersIsLibraryContent"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersCatalogID"];
+    v5->_libraryContent = [coderCopy decodeBoolForKey:@"MPMusicPlayerPlayParametersIsLibraryContent"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersCatalogID"];
     catalogID = v5->_catalogID;
     v5->_catalogID = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersLibraryID"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersLibraryID"];
     libraryID = v5->_libraryID;
     v5->_libraryID = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersMusicKitPersistentID"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerPlayParametersMusicKitPersistentID"];
     persistentID = v5->_persistentID;
     v5->_persistentID = v19;
   }
@@ -81,13 +81,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[2];
     v7 = self->_dictionary;
     v8 = v7;
@@ -234,7 +234,7 @@
     v53 = [(NSDictionary *)v4 objectForKey:@"id"];
     if (_NSIsNSString())
     {
-      v6 = v53;
+      stringValue3 = v53;
     }
 
     else
@@ -278,7 +278,7 @@ LABEL_8:
         v11 = [(NSDictionary *)v4 objectForKey:@"catalogId"];
         if (_NSIsNSString())
         {
-          v12 = v11;
+          stringValue2 = v11;
         }
 
         else
@@ -296,7 +296,7 @@ LABEL_22:
             v14 = [(NSDictionary *)v4 objectForKey:@"musicKit_libraryID"];
             if (_NSIsNSString())
             {
-              v15 = v14;
+              stringValue = v14;
             }
 
             else
@@ -484,9 +484,9 @@ LABEL_56:
                   v24 = MPModelPlaylistEntryKind;
                 }
 
-                v25 = [(__objc2_class *)v24 identityKind];
+                identityKind = [(__objc2_class *)v24 identityKind];
                 v26 = v13;
-                v22 = v25;
+                v22 = identityKind;
                 v27 = 0;
                 v28 = 0;
                 if (!v10)
@@ -498,24 +498,24 @@ LABEL_56:
                 goto LABEL_56;
               }
 
-              v15 = [v14 stringValue];
+              stringValue = [v14 stringValue];
             }
 
-            v16 = v15;
+            v16 = stringValue;
             goto LABEL_30;
           }
 
-          v12 = [v11 stringValue];
+          stringValue2 = [v11 stringValue];
         }
 
-        v13 = v12;
+        v13 = stringValue2;
         goto LABEL_22;
       }
 
-      v6 = [v53 stringValue];
+      stringValue3 = [v53 stringValue];
     }
 
-    v7 = v6;
+    v7 = stringValue3;
     goto LABEL_8;
   }
 

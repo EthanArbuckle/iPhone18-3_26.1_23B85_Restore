@@ -1,25 +1,25 @@
 @interface SLSystemConfigManager
-+ (id)sharedInstanceForCallbackWhileLocked:(void *)a3;
-+ (id)sharedInstanceForServiceType:(id)a3;
-- (SLSystemConfigManager)initWithServiceType:(id)a3;
-- (void)_initializeSystemConfigPrefs:(id)a3;
++ (id)sharedInstanceForCallbackWhileLocked:(void *)locked;
++ (id)sharedInstanceForServiceType:(id)type;
+- (SLSystemConfigManager)initWithServiceType:(id)type;
+- (void)_initializeSystemConfigPrefs:(id)prefs;
 - (void)_keepAlive;
-- (void)_notifyTarget:(unsigned int)a3;
-- (void)_setValue:(void *)a3 forKey:(id)a4;
+- (void)_notifyTarget:(unsigned int)target;
+- (void)_setValue:(void *)value forKey:(id)key;
 - (void)_tearDown;
 - (void)dealloc;
-- (void)setCachedUsername:(id)a3;
+- (void)setCachedUsername:(id)username;
 @end
 
 @implementation SLSystemConfigManager
 
-+ (id)sharedInstanceForServiceType:(id)a3
++ (id)sharedInstanceForServiceType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   pthread_mutex_lock(&__SystemConfigManagerMutex);
   if (__sharedSLSystemConfigManagers)
   {
-    v4 = [__sharedSLSystemConfigManagers objectForKey:v3];
+    v4 = [__sharedSLSystemConfigManagers objectForKey:typeCopy];
     if (v4)
     {
       goto LABEL_6;
@@ -33,8 +33,8 @@
     __sharedSLSystemConfigManagers = v5;
   }
 
-  v4 = [[SLSystemConfigManager alloc] initWithServiceType:v3];
-  [__sharedSLSystemConfigManagers setObject:v4 forKey:v3];
+  v4 = [[SLSystemConfigManager alloc] initWithServiceType:typeCopy];
+  [__sharedSLSystemConfigManagers setObject:v4 forKey:typeCopy];
 LABEL_6:
   pthread_mutex_unlock(&__SystemConfigManagerMutex);
   [(SLSystemConfigManager *)v4 _keepAlive];
@@ -42,7 +42,7 @@ LABEL_6:
   return v4;
 }
 
-+ (id)sharedInstanceForCallbackWhileLocked:(void *)a3
++ (id)sharedInstanceForCallbackWhileLocked:(void *)locked
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -65,7 +65,7 @@ LABEL_6:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if (v9 == a3)
+        if (v9 == locked)
         {
           v10 = v9;
           goto LABEL_11;
@@ -88,17 +88,17 @@ LABEL_11:
   return v10;
 }
 
-- (SLSystemConfigManager)initWithServiceType:(id)a3
+- (SLSystemConfigManager)initWithServiceType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v10.receiver = self;
   v10.super_class = SLSystemConfigManager;
   v6 = [(SLSystemConfigManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceType, a3);
-    if ([v5 isEqualToString:@"com.apple.social.twitter"])
+    objc_storeStrong(&v6->_serviceType, type);
+    if ([typeCopy isEqualToString:@"com.apple.social.twitter"])
     {
       v8 = @"com.apple.twitter.plist";
 LABEL_8:
@@ -106,13 +106,13 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if ([v5 isEqualToString:@"com.apple.social.sinaweibo"])
+    if ([typeCopy isEqualToString:@"com.apple.social.sinaweibo"])
     {
       v8 = @"com.apple.sinaweibo.plist";
       goto LABEL_8;
     }
 
-    if ([v5 isEqualToString:@"com.apple.social.facebook"])
+    if ([typeCopy isEqualToString:@"com.apple.social.facebook"])
     {
       v8 = @"com.apple.facebook.plist";
       goto LABEL_8;
@@ -139,27 +139,27 @@ LABEL_9:
   [(SLSystemConfigManager *)&v5 dealloc];
 }
 
-- (void)setCachedUsername:(id)a3
+- (void)setCachedUsername:(id)username
 {
-  if (a3)
+  if (username)
   {
-    [(SLSystemConfigManager *)self _setValue:a3 forKey:@"SLCachedUsername"];
+    [(SLSystemConfigManager *)self _setValue:username forKey:@"SLCachedUsername"];
   }
 }
 
-- (void)_initializeSystemConfigPrefs:(id)a3
+- (void)_initializeSystemConfigPrefs:(id)prefs
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
+  prefsCopy = prefs;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v6)
+  if (!bundleIdentifier)
   {
-    v7 = [MEMORY[0x1E696AE30] processInfo];
-    v6 = [v7 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    bundleIdentifier = [processInfo processName];
   }
 
-  v8 = SCPreferencesCreateWithAuthorization(*MEMORY[0x1E695E480], v6, v4, 0);
+  v8 = SCPreferencesCreateWithAuthorization(*MEMORY[0x1E695E480], bundleIdentifier, prefsCopy, 0);
   self->_prefs = v8;
   Main = CFRunLoopGetMain();
   SCPreferencesScheduleWithRunLoop(v8, Main, *MEMORY[0x1E695E8E0]);
@@ -197,9 +197,9 @@ LABEL_9:
   pthread_mutex_unlock(&__SystemConfigManagerMutex);
 }
 
-- (void)_notifyTarget:(unsigned int)a3
+- (void)_notifyTarget:(unsigned int)target
 {
-  if ((a3 & 2) != 0)
+  if ((target & 2) != 0)
   {
     applySkipCount = self->_applySkipCount;
     if (!applySkipCount)
@@ -218,9 +218,9 @@ LABEL_9:
   }
 }
 
-- (void)_setValue:(void *)a3 forKey:(id)a4
+- (void)_setValue:(void *)value forKey:(id)key
 {
-  key = a4;
+  key = key;
   if (SCPreferencesLock(self->_prefs, 1u))
   {
     goto LABEL_16;
@@ -237,7 +237,7 @@ LABEL_9:
     if (SCPreferencesLock(self->_prefs, 1u))
     {
 LABEL_16:
-      if (SCPreferencesSetValue(self->_prefs, key, a3) && SCPreferencesCommitChanges(self->_prefs) && SCPreferencesApplyChanges(self->_prefs))
+      if (SCPreferencesSetValue(self->_prefs, key, value) && SCPreferencesCommitChanges(self->_prefs) && SCPreferencesApplyChanges(self->_prefs))
       {
         ++self->_applySkipCount;
         [(SLSystemConfigManager *)self _synchronize];

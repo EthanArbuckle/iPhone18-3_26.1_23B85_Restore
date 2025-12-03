@@ -7,20 +7,20 @@
 + (id)isFromMeCustomKey;
 + (id)isTranslatedCustomKey;
 + (id)mentionedAddressesCustomKey;
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7;
-+ (void)startTimingWithProfiler:(id)a3;
-+ (void)stopTimingWithProfiler:(id)a3;
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler;
++ (void)startTimingWithProfiler:(id)profiler;
++ (void)stopTimingWithProfiler:(id)profiler;
 @end
 
 @implementation IMDCoreSpotlightBaseIndexer
 
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  itemCopy = item;
+  chatCopy = chat;
+  contextCopy = context;
+  updateCopy = update;
+  profilerCopy = profiler;
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
@@ -123,20 +123,20 @@
   return NSStringFromClass(v2);
 }
 
-+ (void)startTimingWithProfiler:(id)a3
++ (void)startTimingWithProfiler:(id)profiler
 {
-  v3 = a3;
+  profilerCopy = profiler;
   v4 = objc_opt_class();
   v8 = objc_msgSend_timingProfileKey(v4, v5, v6);
-  objc_msgSend_startTimingForKey_(v3, v7, v8);
+  objc_msgSend_startTimingForKey_(profilerCopy, v7, v8);
 }
 
-+ (void)stopTimingWithProfiler:(id)a3
++ (void)stopTimingWithProfiler:(id)profiler
 {
-  v3 = a3;
+  profilerCopy = profiler;
   v4 = objc_opt_class();
   v8 = objc_msgSend_timingProfileKey(v4, v5, v6);
-  objc_msgSend_stopTimingForKey_(v3, v7, v8);
+  objc_msgSend_stopTimingForKey_(profilerCopy, v7, v8);
 }
 
 @end

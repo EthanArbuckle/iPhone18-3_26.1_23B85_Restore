@@ -2,8 +2,8 @@
 - (AXCACCustomCommandEditorServiceViewController)init;
 - (void)_dismiss;
 - (void)_saveCommandItem;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AXCACCustomCommandEditorServiceViewController
@@ -71,9 +71,9 @@
 
     v9 = v8;
     _Block_object_dispose(&v26, 8);
-    v10 = [v8 sharedPreferences];
-    v11 = [v10 bestLocaleIdentifier];
-    v12 = [v6 newCommandItemWithLocale:v11 scope:@"com.apple.speech.SystemWideScope"];
+    sharedPreferences = [v8 sharedPreferences];
+    bestLocaleIdentifier = [sharedPreferences bestLocaleIdentifier];
+    v12 = [v6 newCommandItemWithLocale:bestLocaleIdentifier scope:@"com.apple.speech.SystemWideScope"];
     [v5 setCommandItem:v12];
 
     v13 = [NSBundle bundleForClass:objc_opt_class()];
@@ -94,21 +94,21 @@
 
 - (void)_saveCommandItem
 {
-  v3 = [(AXCACCustomCommandEditorServiceViewController *)self editor];
-  v4 = [v3 commandItem];
+  editor = [(AXCACCustomCommandEditorServiceViewController *)self editor];
+  commandItem = [editor commandItem];
 
-  v5 = [v4 dictionaryForSavingToPreferences];
-  if (v5)
+  dictionaryForSavingToPreferences = [commandItem dictionaryForSavingToPreferences];
+  if (dictionaryForSavingToPreferences)
   {
-    v6 = [v4 identifier];
+    identifier = [commandItem identifier];
 
-    if (v6)
+    if (identifier)
     {
       v23[0] = kAXCACCustomCommandIdentifierKey;
-      v7 = [v4 identifier];
+      identifier2 = [commandItem identifier];
       v23[1] = kAXCACCustomCommandDictionaryKey;
-      v24[0] = v7;
-      v24[1] = v5;
+      v24[0] = identifier2;
+      v24[1] = dictionaryForSavingToPreferences;
       v8 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
       UIAccessibilityPostNotification(0x7ECu, v8);
     }
@@ -139,8 +139,8 @@
         __break(1u);
       }
 
-      v7 = v9(v11, v12, v13, v14);
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      identifier2 = v9(v11, v12, v13, v14);
+      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_ERROR))
       {
         sub_100012D08();
       }
@@ -160,44 +160,44 @@
   [(AXCACCustomCommandEditorServiceViewController *)self dismissViewControllerAnimated:1 completion:v2];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:AXCACCommandEditorTextToInsertKey];
+  contextCopy = context;
+  completionCopy = completion;
+  userInfo = [contextCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:AXCACCommandEditorTextToInsertKey];
 
-  v10 = [v6 userInfo];
-  v11 = [v10 objectForKeyedSubscript:AXCACCommandEditorGestureKey];
+  userInfo2 = [contextCopy userInfo];
+  v11 = [userInfo2 objectForKeyedSubscript:AXCACCommandEditorGestureKey];
 
-  v12 = [v6 userInfo];
-  v13 = [v12 objectForKeyedSubscript:AXCACCommandEditorUserActionFlowKey];
+  userInfo3 = [contextCopy userInfo];
+  v13 = [userInfo3 objectForKeyedSubscript:AXCACCommandEditorUserActionFlowKey];
 
-  v14 = [v6 userInfo];
-  v15 = [v14 objectForKeyedSubscript:AXCACCommandEditorShortcutWorkflowKey];
+  userInfo4 = [contextCopy userInfo];
+  v15 = [userInfo4 objectForKeyedSubscript:AXCACCommandEditorShortcutWorkflowKey];
 
-  v16 = [v6 userInfo];
-  v33 = [v16 objectForKeyedSubscript:AXCACCommandEditorPasteboardKey];
+  userInfo5 = [contextCopy userInfo];
+  v33 = [userInfo5 objectForKeyedSubscript:AXCACCommandEditorPasteboardKey];
 
   if (!v9 && !v11 && !v13)
   {
     v17 = sub_1000028D4();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_100012DA0(v6, v17);
+      sub_100012DA0(contextCopy, v17);
     }
   }
 
-  v18 = [(AXCACCustomCommandEditorServiceViewController *)self editor];
-  v19 = [v18 commandItem];
+  editor = [(AXCACCustomCommandEditorServiceViewController *)self editor];
+  commandItem = [editor commandItem];
 
   if (v9)
   {
@@ -210,8 +210,8 @@
       }
     }
 
-    [v19 setCustomType:@"PasteText"];
-    [v19 setCustomTextToInsert:v9];
+    [commandItem setCustomType:@"PasteText"];
+    [commandItem setCustomTextToInsert:v9];
     goto LABEL_30;
   }
 
@@ -223,8 +223,8 @@
     v22 = v35;
     if (v21)
     {
-      [v19 setCustomType:@"RunGesture"];
-      [v19 setCustomGesture:v21];
+      [commandItem setCustomType:@"RunGesture"];
+      [commandItem setCustomGesture:v21];
 LABEL_29:
 
       v15 = v32;
@@ -266,8 +266,8 @@ LABEL_29:
     v22 = v34;
     if (v21)
     {
-      [v19 setCustomType:@"RunUserActionFlow"];
-      [v19 setCustomUserActionFlow:v21];
+      [commandItem setCustomType:@"RunUserActionFlow"];
+      [commandItem setCustomUserActionFlow:v21];
       goto LABEL_29;
     }
 
@@ -289,8 +289,8 @@ LABEL_28:
 
     if (v27)
     {
-      [v19 setCustomType:@"RunShortcutsWorkflow"];
-      [v19 setCustomShortcutsWorkflowIdentifier:v15];
+      [commandItem setCustomType:@"RunShortcutsWorkflow"];
+      [commandItem setCustomShortcutsWorkflowIdentifier:v15];
     }
 
     else
@@ -304,15 +304,15 @@ LABEL_28:
   }
 
 LABEL_30:
-  v28 = [v6 userInfo];
-  v29 = [v28 objectForKeyedSubscript:AXCACCommandEditorApplicationIdentifiersToNamesKey];
+  userInfo6 = [contextCopy userInfo];
+  v29 = [userInfo6 objectForKeyedSubscript:AXCACCommandEditorApplicationIdentifiersToNamesKey];
 
-  v30 = [(AXCACCustomCommandEditorServiceViewController *)self editor];
-  [v30 setApplicationIdentifiersToNames:v29];
+  editor2 = [(AXCACCustomCommandEditorServiceViewController *)self editor];
+  [editor2 setApplicationIdentifiersToNames:v29];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 

@@ -7,11 +7,11 @@
 - (void)af_addEntriesToAnalyticsContext:()AnalyticsContextVending
 {
   v4 = a3;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &off_1F05B1B30;
   objc_msgSendSuper2(&v7, sel_af_addEntriesToAnalyticsContext_, v4);
-  v5 = [a1 hashedRouteUIDs];
-  v6 = [v5 count];
+  hashedRouteUIDs = [self hashedRouteUIDs];
+  v6 = [hashedRouteUIDs count];
 
   if (v6)
   {

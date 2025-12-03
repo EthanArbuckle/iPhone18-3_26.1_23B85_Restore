@@ -1,8 +1,8 @@
 @interface SKANInteropService
 + (SKANInteropService)sharedInstance;
-- (void)getImpressionsForApp:(id)a3 completionHandler:(id)a4;
-- (void)storePostbacks:(id)a3 completionHandler:(id)a4;
-- (void)storeSkannerEvents:(id)a3 advertisedItemID:(id)a4 completionHandler:(id)a5;
+- (void)getImpressionsForApp:(id)app completionHandler:(id)handler;
+- (void)storePostbacks:(id)postbacks completionHandler:(id)handler;
+- (void)storeSkannerEvents:(id)events advertisedItemID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation SKANInteropService
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __36__SKANInteropService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D510 != -1)
   {
     dispatch_once(&qword_1ED90D510, block);
@@ -45,18 +45,18 @@ void __36__SKANInteropService_sharedInstance__block_invoke(uint64_t a1)
   _MergedGlobals_34 = v1;
 }
 
-- (void)getImpressionsForApp:(id)a3 completionHandler:(id)a4
+- (void)getImpressionsForApp:(id)app completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  handlerCopy = handler;
   v8 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v18 = objc_opt_class();
     v19 = 2114;
-    v20 = v6;
+    v20 = appCopy;
     v9 = v18;
     _os_log_impl(&dword_1B8220000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting skan impressions for adamID: %{public}@", buf, 0x16u);
   }
@@ -66,10 +66,10 @@ void __36__SKANInteropService_sharedInstance__block_invoke(uint64_t a1)
   v14[1] = 3221225472;
   v14[2] = __61__SKANInteropService_getImpressionsForApp_completionHandler___block_invoke;
   v14[3] = &unk_1E7CDC970;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = appCopy;
+  v16 = handlerCopy;
+  v11 = appCopy;
+  v12 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getSKANInteropServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -117,12 +117,12 @@ void __61__SKANInteropService_getImpressionsForApp_completionHandler___block_inv
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeSkannerEvents:(id)a3 advertisedItemID:(id)a4 completionHandler:(id)a5
+- (void)storeSkannerEvents:(id)events advertisedItemID:(id)d completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventsCopy = events;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -137,12 +137,12 @@ void __61__SKANInteropService_getImpressionsForApp_completionHandler___block_inv
   v18[1] = 3221225472;
   v18[2] = __76__SKANInteropService_storeSkannerEvents_advertisedItemID_completionHandler___block_invoke;
   v18[3] = &unk_1E7CDC998;
-  v20 = v9;
-  v21 = v10;
-  v19 = v8;
-  v14 = v9;
-  v15 = v8;
-  v16 = v10;
+  v20 = dCopy;
+  v21 = handlerCopy;
+  v19 = eventsCopy;
+  v14 = dCopy;
+  v15 = eventsCopy;
+  v16 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getSKANInteropServiceWithCompletionHandler:v18];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -190,11 +190,11 @@ void __76__SKANInteropService_storeSkannerEvents_advertisedItemID_completionHand
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storePostbacks:(id)a3 completionHandler:(id)a4
+- (void)storePostbacks:(id)postbacks completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  postbacksCopy = postbacks;
+  handlerCopy = handler;
   v8 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -209,10 +209,10 @@ void __76__SKANInteropService_storeSkannerEvents_advertisedItemID_completionHand
   v14[1] = 3221225472;
   v14[2] = __55__SKANInteropService_storePostbacks_completionHandler___block_invoke;
   v14[3] = &unk_1E7CDC970;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = postbacksCopy;
+  v16 = handlerCopy;
+  v11 = postbacksCopy;
+  v12 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getSKANInteropServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];

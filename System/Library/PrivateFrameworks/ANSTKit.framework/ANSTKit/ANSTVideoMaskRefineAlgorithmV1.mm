@@ -1,32 +1,32 @@
 @interface ANSTVideoMaskRefineAlgorithmV1
-- (ANSTVideoMaskRefineAlgorithmV1)initWithConfiguration:(id)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (__CVBuffer)_createCVPixelBuffer_256x192_Float32_fromEspressoBufferFloat32:(id *)a3;
+- (ANSTVideoMaskRefineAlgorithmV1)initWithConfiguration:(id)configuration;
+- (BOOL)prepareWithError:(id *)error;
+- (__CVBuffer)_createCVPixelBuffer_256x192_Float32_fromEspressoBufferFloat32:(id *)float32;
 - (id)_networkResult;
-- (id)resultForPixelBuffer:(__CVBuffer *)resizedInputBuffer coarseSegementationMasks:(id)a4 error:(id *)a5;
+- (id)resultForPixelBuffer:(__CVBuffer *)resizedInputBuffer coarseSegementationMasks:(id)masks error:(id *)error;
 - (void)dealloc;
 - (void)undoPrepareSideEffects;
 @end
 
 @implementation ANSTVideoMaskRefineAlgorithmV1
 
-- (ANSTVideoMaskRefineAlgorithmV1)initWithConfiguration:(id)a3
+- (ANSTVideoMaskRefineAlgorithmV1)initWithConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = ANSTVideoMaskRefineAlgorithmV1;
-  v6 = [(ANSTVideoMaskRefineAlgorithm *)&v14 initWithConfiguration:v5];
+  v6 = [(ANSTVideoMaskRefineAlgorithm *)&v14 initWithConfiguration:configurationCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, configuration);
     v7->_readyForInference = 0;
     v7->_isFirstFrame = 1;
     v8 = _ANSTLoggingGetOSLogForCategoryANSTKit();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = objc_msgSend_description(v5, v9, v10);
+      v11 = objc_msgSend_description(configurationCopy, v9, v10);
       *buf = 138543362;
       v16 = v11;
       _os_log_impl(&dword_22E5D5000, v8, OS_LOG_TYPE_DEFAULT, "ANSTVideoMaskRefineAlgorithmV1 (VMRefiner v1.1) initialized with config %{public}@.", buf, 0xCu);
@@ -66,7 +66,7 @@
   self->_readyForInference = 0;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v125[1] = *MEMORY[0x277D85DE8];
   v5 = _ANSTLoggingGetOSLogForCategoryANSTKit();
@@ -94,13 +94,13 @@
         sub_22E65B640(v5, v23, v24, v25, v26, v27, v28, v29);
       }
 
-      if (a3)
+      if (error)
       {
         v32 = MEMORY[0x277CCA9B8];
         v124 = *MEMORY[0x277CCA450];
         v125[0] = @"ANSTKit has deprecated non-ANE execution support. Please stop configuring ANSTVideoMaskRefineAlgorithm for executing on non-ANE platforms.";
         v33 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v30, v125, &v124, 1);
-        *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v32, v34, @"ANSTErrorDomain", 3, v33);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v32, v34, @"ANSTErrorDomain", 3, v33);
       }
 
       objc_msgSend_undoPrepareSideEffects(self, v30, v31);
@@ -127,13 +127,13 @@ LABEL_38:
         sub_22E65B6B8(v5, v69, v70, v71, v72, v73, v74, v75);
       }
 
-      if (a3)
+      if (error)
       {
         v78 = MEMORY[0x277CCA9B8];
         v122 = *MEMORY[0x277CCA450];
         v123 = @"Failed to prepare espresso network.";
         v79 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v76, &v123, &v122, 1);
-        *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v78, v80, @"ANSTErrorDomain", 3, v79);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v78, v80, @"ANSTErrorDomain", 3, v79);
       }
 
       objc_msgSend_undoPrepareSideEffects(self, v76, v77);
@@ -175,13 +175,13 @@ LABEL_38:
             sub_22E65B730(v5, v56, v57, v58, v59, v60, v61, v62);
           }
 
-          if (a3)
+          if (error)
           {
             v65 = MEMORY[0x277CCA9B8];
             v114 = *MEMORY[0x277CCA450];
             v115 = @"Failed to prepare VTPixelTransferSession.";
             v66 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v63, &v115, &v114, 1);
-            *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v65, v67, @"ANSTErrorDomain", 3, v66);
+            *error = objc_msgSend_errorWithDomain_code_userInfo_(v65, v67, @"ANSTErrorDomain", 3, v66);
           }
 
           objc_msgSend_undoPrepareSideEffects(self, v63, v64);
@@ -218,13 +218,13 @@ LABEL_38:
             sub_22E65B7A8(v5, v99, v100, v101, v102, v103, v104, v105);
           }
 
-          if (a3)
+          if (error)
           {
             v108 = MEMORY[0x277CCA9B8];
             v112 = *MEMORY[0x277CCA450];
             v113 = @"Failed to prepare output pixel buffer pool.";
             v109 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v106, &v113, &v112, 1);
-            *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v108, v110, @"ANSTErrorDomain", 3, v109);
+            *error = objc_msgSend_errorWithDomain_code_userInfo_(v108, v110, @"ANSTErrorDomain", 3, v109);
           }
 
           objc_msgSend_undoPrepareSideEffects(self, v106, v107);
@@ -250,13 +250,13 @@ LABEL_54:
           sub_22E65B820(v5, v86, v87, v88, v89, v90, v91, v92);
         }
 
-        if (a3)
+        if (error)
         {
           v95 = MEMORY[0x277CCA9B8];
           v116 = *MEMORY[0x277CCA450];
           v117 = @"Failed to prepare resized input buffer.";
           v96 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v93, &v117, &v116, 1);
-          *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v95, v97, @"ANSTErrorDomain", 3, v96);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v95, v97, @"ANSTErrorDomain", 3, v96);
         }
 
         objc_msgSend_undoPrepareSideEffects(self, v93, v94);
@@ -273,13 +273,13 @@ LABEL_54:
 
     else
     {
-      if (a3)
+      if (error)
       {
         v83 = MEMORY[0x277CCA9B8];
         v118 = *MEMORY[0x277CCA450];
         v119 = @"Failed to get last person mask output blob dimensions";
         v84 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v52, &v119, &v118, 1);
-        *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v83, v85, @"ANSTErrorDomain", 3, v84);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v83, v85, @"ANSTErrorDomain", 3, v84);
       }
 
       objc_msgSend_undoPrepareSideEffects(self, v52, v53);
@@ -311,10 +311,10 @@ LABEL_39:
   return v8;
 }
 
-- (id)resultForPixelBuffer:(__CVBuffer *)resizedInputBuffer coarseSegementationMasks:(id)a4 error:(id *)a5
+- (id)resultForPixelBuffer:(__CVBuffer *)resizedInputBuffer coarseSegementationMasks:(id)masks error:(id *)error
 {
   v147[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  masksCopy = masks;
   v9 = _ANSTLoggingGetOSLogForCategoryANSTKit();
   v10 = os_signpost_id_make_with_pointer(v9, self);
 
@@ -326,12 +326,12 @@ LABEL_39:
 
   if (!self->_readyForInference)
   {
-    if (a5)
+    if (error)
     {
       v28 = MEMORY[0x277CCA9B8];
       v146 = *MEMORY[0x277CCA450];
       v29 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v11, v147, &v146, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v28, v30, @"ANSTErrorDomain", 4, v29);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v28, v30, @"ANSTErrorDomain", 4, v29);
     }
 
     v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -352,13 +352,13 @@ LABEL_39:
       sub_22E65BAF0(v9, v31, v32, v33, v34, v35, v36, v37);
     }
 
-    if (a5)
+    if (error)
     {
       v39 = MEMORY[0x277CCA9B8];
       v144 = *MEMORY[0x277CCA450];
       v145 = @"Nil input buffer.";
       v40 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v38, &v145, &v144, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v39, v41, @"ANSTErrorDomain", 2, v40);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v39, v41, @"ANSTErrorDomain", 2, v40);
     }
 
     v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -382,13 +382,13 @@ LABEL_39:
       sub_22E65BA78(v9, v16, v17, v18, v19, v20, v21, v22);
     }
 
-    if (a5)
+    if (error)
     {
       v24 = MEMORY[0x277CCA9B8];
       v142 = *MEMORY[0x277CCA450];
       v143 = @"Input pixel buffer width < height. ANSTISPAlgorithm only supports landscape input.";
       v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v23, &v143, &v142, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v24, v26, @"ANSTErrorDomain", 2, v25);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v24, v26, @"ANSTErrorDomain", 2, v25);
     }
 
     v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -415,13 +415,13 @@ LABEL_72:
         sub_22E65B898(v9, v42, v43, v44, v45, v46, v47, v48);
       }
 
-      if (a5)
+      if (error)
       {
         v50 = MEMORY[0x277CCA9B8];
         v140 = *MEMORY[0x277CCA450];
         v141 = @"Failed to transfer input pixel buffer.";
         v51 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v49, &v141, &v140, 1);
-        *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v50, v52, @"ANSTErrorDomain", 4, v51);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v50, v52, @"ANSTErrorDomain", 4, v51);
       }
 
       v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -438,11 +438,11 @@ LABEL_72:
     resizedInputBuffer = self->_resizedInputBuffer;
   }
 
-  v53 = objc_msgSend_objectForKeyedSubscript_(v8, v15, @"Skin");
+  v53 = objc_msgSend_objectForKeyedSubscript_(masksCopy, v15, @"Skin");
 
-  v55 = objc_msgSend_objectForKeyedSubscript_(v8, v54, @"Hair");
+  v55 = objc_msgSend_objectForKeyedSubscript_(masksCopy, v54, @"Hair");
 
-  v57 = objc_msgSend_objectForKeyedSubscript_(v8, v56, @"Person");
+  v57 = objc_msgSend_objectForKeyedSubscript_(masksCopy, v56, @"Person");
 
   if (!v53 || !v55 || !v57)
   {
@@ -451,13 +451,13 @@ LABEL_72:
       sub_22E65BA00(v9, v79, v80, v81, v82, v83, v84, v85);
     }
 
-    if (a5)
+    if (error)
     {
       v87 = MEMORY[0x277CCA9B8];
       v138 = *MEMORY[0x277CCA450];
       v139 = @"Missing one or more required coarse input mask.";
       v88 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v86, &v139, &v138, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v87, v89, @"ANSTErrorDomain", 2, v88);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v87, v89, @"ANSTErrorDomain", 2, v88);
     }
 
     v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -478,13 +478,13 @@ LABEL_72:
       sub_22E65B910(v9, v90, v91, v92, v93, v94, v95, v96);
     }
 
-    if (a5)
+    if (error)
     {
       v98 = MEMORY[0x277CCA9B8];
       v136 = *MEMORY[0x277CCA450];
       v137 = @"Unexpected input mask dimension. VMRefiner expects 256 x 192 input.";
       v99 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v97, &v137, &v136, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v98, v100, @"ANSTErrorDomain", 2, v99);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v98, v100, @"ANSTErrorDomain", 2, v99);
     }
 
     v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -505,13 +505,13 @@ LABEL_72:
       sub_22E65B988(v9, v104, v105, v106, v107, v108, v109, v110);
     }
 
-    if (a5)
+    if (error)
     {
       v112 = MEMORY[0x277CCA9B8];
       v134 = *MEMORY[0x277CCA450];
       v135 = @"Unexpected input mask pixel format. VMRefiner expects OneComponent8.";
       v113 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v111, &v135, &v134, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v112, v114, @"ANSTErrorDomain", 2, v113);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v112, v114, @"ANSTErrorDomain", 2, v113);
     }
 
     v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -572,13 +572,13 @@ LABEL_85:
     }
 
 LABEL_86:
-    if (a5)
+    if (error)
     {
       v115 = MEMORY[0x277CCA9B8];
       v132 = *MEMORY[0x277CCA450];
       v133 = @"Failed to set network input buffers";
       v116 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v73, &v133, &v132, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v115, v117, @"ANSTErrorDomain", 4, v116);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v115, v117, @"ANSTErrorDomain", 4, v116);
     }
 
     v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -604,13 +604,13 @@ LABEL_86:
 LABEL_92:
   if ((objc_msgSend_runNetwork(self->_network, v73, v78) & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v125 = MEMORY[0x277CCA9B8];
       v130 = *MEMORY[0x277CCA450];
       v131 = @"Failed to run network";
       v126 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v122, &v131, &v130, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v125, v127, @"ANSTErrorDomain", 4, v126);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v125, v127, @"ANSTErrorDomain", 4, v126);
     }
 
     v27 = os_signpost_id_make_with_pointer(v9, self);
@@ -712,9 +712,9 @@ LABEL_12:
   return v39;
 }
 
-- (__CVBuffer)_createCVPixelBuffer_256x192_Float32_fromEspressoBufferFloat32:(id *)a3
+- (__CVBuffer)_createCVPixelBuffer_256x192_Float32_fromEspressoBufferFloat32:(id *)float32
 {
-  if (a3->var6 != 1)
+  if (float32->var6 != 1)
   {
     v4 = _ANSTLoggingGetOSLogForCategoryANSTKit();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -725,7 +725,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (a3->var4 != 256 || a3->var5 != 192)
+  if (float32->var4 != 256 || float32->var5 != 192)
   {
     v4 = _ANSTLoggingGetOSLogForCategoryANSTKit();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -736,7 +736,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (a3->var14 != 65568)
+  if (float32->var14 != 65568)
   {
     v4 = _ANSTLoggingGetOSLogForCategoryANSTKit();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -762,10 +762,10 @@ LABEL_12:
   }
 
   CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
-  var5 = a3->var5;
-  v21 = 4 * a3->var4;
+  var5 = float32->var5;
+  v21 = 4 * float32->var4;
   BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBufferOut);
-  var0 = a3->var0;
+  var0 = float32->var0;
   BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
   v25 = BaseAddress;
   if (v21 == BytesPerRow)

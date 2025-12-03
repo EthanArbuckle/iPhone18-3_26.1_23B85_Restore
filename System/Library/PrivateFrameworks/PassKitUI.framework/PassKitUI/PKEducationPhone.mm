@@ -1,24 +1,24 @@
 @interface PKEducationPhone
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKEducationPhone)initWithFrame:(CGRect)a3 displayOptions:(unint64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKEducationPhone)initWithFrame:(CGRect)frame displayOptions:(unint64_t)options;
 - (double)_deviceIconsPadding;
 - (double)_topPadding;
 - (void)_setHomeButtonOutlineColor;
 - (void)_startPowerIndicatorAnimation;
 - (void)layoutSubviews;
-- (void)setPassImage:(id)a3;
+- (void)setPassImage:(id)image;
 - (void)startAnimation;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKEducationPhone
 
-- (PKEducationPhone)initWithFrame:(CGRect)a3 displayOptions:(unint64_t)a4
+- (PKEducationPhone)initWithFrame:(CGRect)frame displayOptions:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v60.receiver = self;
   v60.super_class = PKEducationPhone;
-  v5 = [(PKEducationPhone *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PKEducationPhone *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -39,7 +39,7 @@
 
     [(UIImageView *)v6->_cardImageView setContentMode:1];
     [(PKEducationPhone *)v6 addSubview:v6->_cardImageView];
-    if ((v4 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
       v14 = objc_alloc_init(PKPaymentSetupInitialCardEducationIconsView);
       iconsView = v6->_iconsView;
@@ -63,14 +63,14 @@
     v22 = v6->_homeButtonView;
     if (v6->_hasPearl)
     {
-      v23 = [MEMORY[0x1E69DC888] labelColor];
-      [(UIView *)v22 setBackgroundColor:v23];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UIView *)v22 setBackgroundColor:labelColor];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [(UIView *)v22 setBackgroundColor:v24];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      [(UIView *)v22 setBackgroundColor:systemBlueColor];
 
       [(UIView *)v6->_homeButtonView setAlpha:0.4];
     }
@@ -82,8 +82,8 @@
       homeButtonOutlineView = v6->_homeButtonOutlineView;
       v6->_homeButtonOutlineView = v25;
 
-      v27 = [(UIView *)v6->_homeButtonOutlineView layer];
-      [v27 setBorderWidth:2.0];
+      layer = [(UIView *)v6->_homeButtonOutlineView layer];
+      [layer setBorderWidth:2.0];
 
       [(PKEducationPhone *)v6 addSubview:v6->_homeButtonOutlineView];
       [(PKEducationPhone *)v6 _setHomeButtonOutlineColor];
@@ -105,7 +105,7 @@
     }
 
     v31 = v30;
-    if ((v4 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Barcode", v31];
 
@@ -138,12 +138,12 @@
       [(UIImageView *)v44 setImage:v45];
 
       v46 = v6->_powerIndicatorView;
-      v47 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [(UIImageView *)v46 setTintColor:v47];
+      systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
+      [(UIImageView *)v46 setTintColor:systemBlueColor2];
 
       [(UIImageView *)v6->_powerIndicatorView setAlpha:0.4];
-      v48 = [(UIImageView *)v6->_powerIndicatorView layer];
-      [v48 setAnchorPoint:{0.0, 0.5}];
+      layer2 = [(UIImageView *)v6->_powerIndicatorView layer];
+      [layer2 setAnchorPoint:{0.0, 0.5}];
 
       [(PKEducationPhone *)v6 addSubview:v6->_powerIndicatorView];
       v49 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -160,8 +160,8 @@
       [(UIImageView *)v55 setImage:v56];
 
       v57 = v6->_powerArrowImageView;
-      v58 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [(UIImageView *)v57 setTintColor:v58];
+      systemBlueColor3 = [MEMORY[0x1E69DC888] systemBlueColor];
+      [(UIImageView *)v57 setTintColor:systemBlueColor3];
 
       [(PKEducationPhone *)v6 addSubview:v6->_powerArrowImageView];
     }
@@ -170,9 +170,9 @@
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   screenType = self->_screenType;
   if (screenType > 0x13)
   {
@@ -244,8 +244,8 @@
   [(PKPhoneHeroView *)self->_phoneBackgroundView deviceCornerRadius];
   v21 = v20;
   recta.origin.x = v17;
-  v22 = [(UIImageView *)self->_cardImageView image];
-  [v22 size];
+  image = [(UIImageView *)self->_cardImageView image];
+  [image size];
   PKSizeAspectFit();
   PKSizeRoundToPixel();
   v24 = v23;
@@ -299,18 +299,18 @@
     v69 = CGRectInset(v68, 4.0, 4.0);
     width = v69.size.width;
     [(UIView *)self->_homeButtonOutlineView setFrame:v69.origin.x, v69.origin.y];
-    v44 = [(UIView *)self->_homeButtonOutlineView layer];
-    [v44 setCornerRadius:width * 0.5];
+    layer = [(UIView *)self->_homeButtonOutlineView layer];
+    [layer setCornerRadius:width * 0.5];
 
     v42 = 17.5;
   }
 
   [(UIView *)self->_homeButtonView setFrame:v38, v41, v37, *&v58];
-  v45 = [(UIView *)self->_homeButtonView layer];
-  [v45 setCornerRadius:v42];
+  layer2 = [(UIView *)self->_homeButtonView layer];
+  [layer2 setCornerRadius:v42];
 
-  v46 = [(UIImageView *)self->_walletImageView image];
-  [v46 size];
+  image2 = [(UIImageView *)self->_walletImageView image];
+  [image2 size];
   v48 = v47;
   v50 = v49;
 
@@ -339,17 +339,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PKEducationPhone;
-  [(PKEducationPhone *)&v4 traitCollectionDidChange:a3];
+  [(PKEducationPhone *)&v4 traitCollectionDidChange:change];
   [(PKEducationPhone *)self _setHomeButtonOutlineColor];
 }
 
-- (void)setPassImage:(id)a3
+- (void)setPassImage:(id)image
 {
-  [(UIImageView *)self->_cardImageView setImage:a3];
+  [(UIImageView *)self->_cardImageView setImage:image];
 
   [(PKEducationPhone *)self setNeedsLayout];
 }
@@ -376,14 +376,14 @@
     v7[3] = &unk_1E8010970;
     v7[4] = self;
     v2 = MEMORY[0x1E69DD1B8];
-    v3 = self;
-    v4 = [v2 currentTraitCollection];
+    selfCopy = self;
+    currentTraitCollection = [v2 currentTraitCollection];
     v5 = MEMORY[0x1E69DD1B8];
-    v6 = [(PKEducationPhone *)v3 traitCollection];
+    traitCollection = [(PKEducationPhone *)selfCopy traitCollection];
 
-    [v5 setCurrentTraitCollection:v6];
+    [v5 setCurrentTraitCollection:traitCollection];
     __46__PKEducationPhone__setHomeButtonOutlineColor__block_invoke(v7);
-    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v4];
+    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
   }
 }
 
@@ -433,48 +433,48 @@ void __46__PKEducationPhone__setHomeButtonOutlineColor__block_invoke(uint64_t a1
   v23[3] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
 
-  v10 = [MEMORY[0x1E6979390] animation];
-  [v10 setKeyPath:@"position.x"];
-  [v10 setValues:&unk_1F3CC8210];
-  [v10 setKeyTimes:&unk_1F3CC81F8];
-  [v10 setDuration:1.0];
-  [v10 setAdditive:1];
-  [v10 setTimingFunctions:v9];
-  v11 = [MEMORY[0x1E6979308] animation];
-  v22 = v10;
+  animation = [MEMORY[0x1E6979390] animation];
+  [animation setKeyPath:@"position.x"];
+  [animation setValues:&unk_1F3CC8210];
+  [animation setKeyTimes:&unk_1F3CC81F8];
+  [animation setDuration:1.0];
+  [animation setAdditive:1];
+  [animation setTimingFunctions:v9];
+  animation2 = [MEMORY[0x1E6979308] animation];
+  v22 = animation;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-  [v11 setAnimations:v12];
+  [animation2 setAnimations:v12];
 
-  [v11 setDuration:3.0];
+  [animation2 setDuration:3.0];
   LODWORD(v13) = 2139095039;
-  [v11 setRepeatCount:v13];
-  v14 = [(UIImageView *)self->_powerArrowImageView layer];
-  [v14 addAnimation:v11 forKey:@"double-tap"];
+  [animation2 setRepeatCount:v13];
+  layer = [(UIImageView *)self->_powerArrowImageView layer];
+  [layer addAnimation:animation2 forKey:@"double-tap"];
 
-  v15 = [MEMORY[0x1E6979390] animation];
-  [v15 setKeyPath:@"transform.scale.x"];
-  [v15 setValues:&unk_1F3CC8228];
-  [v15 setKeyTimes:&unk_1F3CC81F8];
-  [v15 setDuration:1.0];
-  [v15 setTimingFunctions:v9];
-  v16 = [MEMORY[0x1E6979390] animation];
-  [v16 setKeyPath:@"opacity"];
-  [v16 setValues:&unk_1F3CC8240];
-  [v16 setKeyTimes:&unk_1F3CC81F8];
-  [v16 setDuration:1.0];
-  [v16 setTimingFunctions:v9];
-  v17 = [MEMORY[0x1E6979308] animation];
+  animation3 = [MEMORY[0x1E6979390] animation];
+  [animation3 setKeyPath:@"transform.scale.x"];
+  [animation3 setValues:&unk_1F3CC8228];
+  [animation3 setKeyTimes:&unk_1F3CC81F8];
+  [animation3 setDuration:1.0];
+  [animation3 setTimingFunctions:v9];
+  animation4 = [MEMORY[0x1E6979390] animation];
+  [animation4 setKeyPath:@"opacity"];
+  [animation4 setValues:&unk_1F3CC8240];
+  [animation4 setKeyTimes:&unk_1F3CC81F8];
+  [animation4 setDuration:1.0];
+  [animation4 setTimingFunctions:v9];
+  animation5 = [MEMORY[0x1E6979308] animation];
 
-  v21[0] = v15;
-  v21[1] = v16;
+  v21[0] = animation3;
+  v21[1] = animation4;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-  [v17 setAnimations:v18];
+  [animation5 setAnimations:v18];
 
-  [v17 setDuration:3.0];
+  [animation5 setDuration:3.0];
   LODWORD(v19) = 2139095039;
-  [v17 setRepeatCount:v19];
-  v20 = [(UIImageView *)self->_powerIndicatorView layer];
-  [v20 addAnimation:v17 forKey:@"power-indicator"];
+  [animation5 setRepeatCount:v19];
+  layer2 = [(UIImageView *)self->_powerIndicatorView layer];
+  [layer2 addAnimation:animation5 forKey:@"power-indicator"];
 }
 
 @end

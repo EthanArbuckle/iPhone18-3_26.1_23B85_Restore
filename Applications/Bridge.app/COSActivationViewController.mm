@@ -1,15 +1,15 @@
 @interface COSActivationViewController
 - (COSActivationViewController)init;
 - (COSBuddyControllerDelegate)delegate;
-- (void)back:(id)a3;
+- (void)back:(id)back;
 - (void)checkActivationState;
-- (void)completedActivation:(id)a3;
-- (void)enteredCompatibilityState:(id)a3;
+- (void)completedActivation:(id)activation;
+- (void)enteredCompatibilityState:(id)state;
 - (void)postProcessActivation;
 - (void)startActivating;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)waitForCompatibilityUpdateState;
 @end
 
@@ -23,9 +23,9 @@
   if (v2)
   {
     v3 = +[NRPairedDeviceRegistry sharedInstance];
-    v4 = [v3 compatibilityState];
+    compatibilityState = [v3 compatibilityState];
 
-    if (v4 == 2)
+    if (compatibilityState == 2)
     {
       [(COSActivationViewController *)v2 startActivating];
     }
@@ -49,17 +49,17 @@
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v3 = [UIApp setupController];
-  v4 = [UIApp setupController];
-  v5 = [v4 activationManager];
+  setupController = [UIApp setupController];
+  setupController2 = [UIApp setupController];
+  activationManager = [setupController2 activationManager];
 
-  if ([v5 awaitingActivation] && objc_msgSend(v5, "didPresentFlow"))
+  if ([activationManager awaitingActivation] && objc_msgSend(activationManager, "didPresentFlow"))
   {
-    [v3 popRUIObject:0 animated:0];
-    [v5 setAwaitingActivation:0];
+    [setupController popRUIObject:0 animated:0];
+    [activationManager setAwaitingActivation:0];
   }
 
-  [v3 popControllerAnimated:0];
+  [setupController popControllerAnimated:0];
 }
 
 - (void)waitForCompatibilityUpdateState
@@ -84,11 +84,11 @@
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "Starting activation", v4, 2u);
   }
 
-  v3 = [UIApp bridgeController];
-  [v3 tellGizmoToBeginActivation];
+  bridgeController = [UIApp bridgeController];
+  [bridgeController tellGizmoToBeginActivation];
 }
 
-- (void)completedActivation:(id)a3
+- (void)completedActivation:(id)activation
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:PBBridgeGizmoDidFinishActivatingNotification object:0];
@@ -116,28 +116,28 @@
     v4 = +[NSNotificationCenter defaultCenter];
     [v4 addObserver:self selector:"completedActivation:" name:PBBridgeGizmoDidFinishActivatingNotification object:0];
 
-    v5 = [UIApp setupController];
-    v6 = [v5 activationManager];
-    [v6 awaitActivationWhileHoldingFlow:0];
+    setupController = [UIApp setupController];
+    activationManager = [setupController activationManager];
+    [activationManager awaitActivationWhileHoldingFlow:0];
   }
 }
 
-- (void)enteredCompatibilityState:(id)a3
+- (void)enteredCompatibilityState:(id)state
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NRPairedDeviceRegistryCompatibilityStateKey];
-  v6 = [v5 unsignedIntValue];
+  userInfo = [state userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryCompatibilityStateKey];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   v7 = pbb_activation_log();
-  v8 = v6;
+  v8 = unsignedIntValue;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134217984;
-    v14 = v6;
+    v14 = unsignedIntValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Entered compatibility state: %lu", &v13, 0xCu);
   }
 
-  if (v6 == 2 || (([UIApp setupController], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "shouldForceSoftwareUpdateCheck"), v9, v8 == 3) ? (v11 = v10 == 0) : (v11 = 1), !v11))
+  if (unsignedIntValue == 2 || (([UIApp setupController], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "shouldForceSoftwareUpdateCheck"), v9, v8 == 3) ? (v11 = v10 == 0) : (v11 = 1), !v11))
   {
     v12 = +[NSNotificationCenter defaultCenter];
     [v12 removeObserver:self name:NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification object:0];
@@ -146,7 +146,7 @@
   }
 }
 
-- (void)back:(id)a3
+- (void)back:(id)back
 {
   v3 = pbb_activation_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -232,11 +232,11 @@
   spinner = self->_spinner;
   self->_spinner = v23;
 
-  v25 = [(COSActivationViewController *)self view];
-  [v25 addSubview:self->_spinner];
+  view = [(COSActivationViewController *)self view];
+  [view addSubview:self->_spinner];
 
-  v26 = [(COSActivationViewController *)self view];
-  [v26 addSubview:self->_infoLabel];
+  view2 = [(COSActivationViewController *)self view];
+  [view2 addSubview:self->_infoLabel];
 
   objc_initWeak(location, self);
   v27 = dispatch_time(0, 3000000000);
@@ -250,11 +250,11 @@
   objc_destroyWeak(location);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSActivationViewController;
-  [(COSActivationViewController *)&v4 viewWillAppear:a3];
+  [(COSActivationViewController *)&v4 viewWillAppear:appear];
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
 }
 
@@ -263,8 +263,8 @@
   v21.receiver = self;
   v21.super_class = COSActivationViewController;
   [(COSActivationViewController *)&v21 viewDidLayoutSubviews];
-  v3 = [(COSActivationViewController *)self view];
-  [v3 bounds];
+  view = [(COSActivationViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

@@ -1,12 +1,12 @@
 @interface PULayerAnimation
 - (BOOL)isReadyToComplete;
 - (NSString)description;
-- (PULayerAnimation)initWithLayer:(id)a3 key:(id)a4;
+- (PULayerAnimation)initWithLayer:(id)layer key:(id)key;
 - (void)_updateLayerAnimation;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)finishImmediately;
-- (void)setSpeed:(float)a3 timeOffset:(double)a4 beginTime:(double)a5;
+- (void)setSpeed:(float)speed timeOffset:(double)offset beginTime:(double)time;
 @end
 
 @implementation PULayerAnimation
@@ -16,19 +16,19 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PULayerAnimation *)self layer];
+  layer = [(PULayerAnimation *)self layer];
   v7 = [(PULayerAnimation *)self key];
-  v8 = [v3 stringWithFormat:@"<%@ %p layer: %@; key: %@>", v5, self, v6, v7];;
+  v8 = [v3 stringWithFormat:@"<%@ %p layer: %@; key: %@>", v5, self, layer, v7];;
 
   return v8;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = a3;
-  v6 = [(PULayerAnimation *)self _animation];
+  stopCopy = stop;
+  _animation = [(PULayerAnimation *)self _animation];
 
-  if (v6 == v5)
+  if (_animation == stopCopy)
   {
     self->_isAnimationRunning = 0;
     [(PUAnimationGroup *)self completeIfNeeded];
@@ -37,12 +37,12 @@
   }
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v4 = a3;
-  v5 = [(PULayerAnimation *)self _animation];
+  startCopy = start;
+  _animation = [(PULayerAnimation *)self _animation];
 
-  if (v5 == v4)
+  if (_animation == startCopy)
   {
     self->_isAnimationRunning = 1;
   }
@@ -50,19 +50,19 @@
 
 - (void)_updateLayerAnimation
 {
-  v3 = [(PULayerAnimation *)self _animation];
-  v4 = [v3 mutableCopy];
+  _animation = [(PULayerAnimation *)self _animation];
+  v4 = [_animation mutableCopy];
 
   *&v5 = self->_speed;
   [v4 setSpeed:v5];
   [v4 setTimeOffset:self->_timeOffset];
   [v4 setBeginTime:self->_beginTime];
   [v4 setDelegate:self];
-  v6 = [(PULayerAnimation *)self layer];
+  layer = [(PULayerAnimation *)self layer];
   v7 = [(PULayerAnimation *)self key];
-  [v6 removeAnimationForKey:v7];
-  [v6 addAnimation:v4 forKey:v7];
-  v8 = [v6 animationForKey:v7];
+  [layer removeAnimationForKey:v7];
+  [layer addAnimation:v4 forKey:v7];
+  v8 = [layer animationForKey:v7];
 
   [(PULayerAnimation *)self _setAnimation:v8];
 }
@@ -72,49 +72,49 @@
   v7.receiver = self;
   v7.super_class = PULayerAnimation;
   [(PUAnimationGroup *)&v7 finishImmediately];
-  v3 = [(PULayerAnimation *)self _animation];
-  v4 = [(PULayerAnimation *)self layer];
+  _animation = [(PULayerAnimation *)self _animation];
+  layer = [(PULayerAnimation *)self layer];
   v5 = [(PULayerAnimation *)self key];
-  v6 = [v4 animationForKey:v5];
+  v6 = [layer animationForKey:v5];
 
-  if (v3 == v6)
+  if (_animation == v6)
   {
-    [v4 removeAnimationForKey:v5];
+    [layer removeAnimationForKey:v5];
   }
 }
 
-- (void)setSpeed:(float)a3 timeOffset:(double)a4 beginTime:(double)a5
+- (void)setSpeed:(float)speed timeOffset:(double)offset beginTime:(double)time
 {
-  v9 = [(PULayerAnimation *)self _animation];
-  if (v9)
+  _animation = [(PULayerAnimation *)self _animation];
+  if (_animation)
   {
-    v15 = v9;
-    v10 = [(PULayerAnimation *)self layer];
+    v15 = _animation;
+    layer = [(PULayerAnimation *)self layer];
     v11 = [(PULayerAnimation *)self key];
-    v12 = [v10 animationForKey:v11];
+    v12 = [layer animationForKey:v11];
 
     if (v15 == v12)
     {
-      if (a3 == 0.0)
+      if (speed == 0.0)
       {
-        if (a4 < 0.0)
+        if (offset < 0.0)
         {
-          a4 = 0.0;
+          offset = 0.0;
         }
 
         [v15 duration];
         v14 = v13 + -0.01;
-        if (a4 >= v14)
+        if (offset >= v14)
         {
-          a4 = v14;
+          offset = v14;
         }
       }
 
-      if (self->_speed != a3 || a4 != self->_timeOffset || self->_beginTime != a5)
+      if (self->_speed != speed || offset != self->_timeOffset || self->_beginTime != time)
       {
-        self->_speed = a3;
-        self->_timeOffset = a4;
-        self->_beginTime = a5;
+        self->_speed = speed;
+        self->_timeOffset = offset;
+        self->_beginTime = time;
         [(PULayerAnimation *)self _updateLayerAnimation];
       }
     }
@@ -125,7 +125,7 @@
       [(PULayerAnimation *)self _setAnimation:0];
     }
 
-    v9 = v15;
+    _animation = v15;
   }
 }
 
@@ -138,13 +138,13 @@
     return 0;
   }
 
-  v3 = [(PULayerAnimation *)self _animation];
-  if (v3 && self->_isAnimationRunning)
+  _animation = [(PULayerAnimation *)self _animation];
+  if (_animation && self->_isAnimationRunning)
   {
-    v4 = [(PULayerAnimation *)self layer];
+    layer = [(PULayerAnimation *)self layer];
     v5 = [(PULayerAnimation *)self key];
-    v6 = [v4 animationForKey:v5];
-    v7 = v3 != v6;
+    v6 = [layer animationForKey:v5];
+    v7 = _animation != v6;
   }
 
   else
@@ -155,14 +155,14 @@
   return v7;
 }
 
-- (PULayerAnimation)initWithLayer:(id)a3 key:(id)a4
+- (PULayerAnimation)initWithLayer:(id)layer key:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  layerCopy = layer;
+  keyCopy = key;
+  v10 = keyCopy;
+  if (layerCopy)
   {
-    if (v9)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -170,8 +170,8 @@
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PULayerAnimation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"layer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PULayerAnimation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"layer != nil"}];
 
     if (v10)
     {
@@ -179,8 +179,8 @@
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PULayerAnimation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PULayerAnimation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
 
 LABEL_3:
   v23.receiver = self;
@@ -189,12 +189,12 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_layer, a3);
+    objc_storeStrong(&v11->_layer, layer);
     v13 = [v10 copy];
     key = v12->_key;
     v12->_key = v13;
 
-    v15 = [v8 animationForKey:v12->_key];
+    v15 = [layerCopy animationForKey:v12->_key];
     animation = v12->__animation;
     v12->__animation = v15;
 

@@ -1,19 +1,19 @@
 @interface NgtMenstrualAlgorithmsHistoricalAnalyzer
-- (NgtMenstrualAlgorithmsHistoricalAnalyzer)initWithMlConfig:(id)a3;
+- (NgtMenstrualAlgorithmsHistoricalAnalyzer)initWithMlConfig:(id)config;
 - (id).cxx_construct;
-- (id)analyzeWithError:(id *)a3;
-- (unsigned)watchNumericIdentifierFromString:(id)a3;
-- (void)appendDay:(id)a3;
-- (void)beginPhase:(unsigned __int8)a3 onJulianDay:(unsigned int)a4;
-- (void)endPhase:(unsigned __int8)a3 onJulianDay:(unsigned int)a4;
+- (id)analyzeWithError:(id *)error;
+- (unsigned)watchNumericIdentifierFromString:(id)string;
+- (void)appendDay:(id)day;
+- (void)beginPhase:(unsigned __int8)phase onJulianDay:(unsigned int)day;
+- (void)endPhase:(unsigned __int8)phase onJulianDay:(unsigned int)day;
 - (void)runDays;
 @end
 
 @implementation NgtMenstrualAlgorithmsHistoricalAnalyzer
 
-- (NgtMenstrualAlgorithmsHistoricalAnalyzer)initWithMlConfig:(id)a3
+- (NgtMenstrualAlgorithmsHistoricalAnalyzer)initWithMlConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v45.receiver = self;
   v45.super_class = NgtMenstrualAlgorithmsHistoricalAnalyzer;
   v5 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)&v45 init];
@@ -54,8 +54,8 @@
     v42 = 0u;
     v43 = 0u;
     v44 = 0;
-    v10 = [v4 heartRateFwEnd10PctModelPath];
-    std::string::basic_string[abi:ne200100]<0>(&v16, [v10 UTF8String]);
+    heartRateFwEnd10PctModelPath = [configCopy heartRateFwEnd10PctModelPath];
+    std::string::basic_string[abi:ne200100]<0>(&v16, [heartRateFwEnd10PctModelPath UTF8String]);
     if (SBYTE7(v41) < 0)
     {
       operator delete(__p);
@@ -66,8 +66,8 @@
     HIBYTE(v17) = 0;
     LOBYTE(v16) = 0;
 
-    v11 = [v4 heartRatePeriod10PctModelPath];
-    std::string::basic_string[abi:ne200100]<0>(&v16, [v11 UTF8String]);
+    heartRatePeriod10PctModelPath = [configCopy heartRatePeriod10PctModelPath];
+    std::string::basic_string[abi:ne200100]<0>(&v16, [heartRatePeriod10PctModelPath UTF8String]);
     if (SHIBYTE(v39[3]) < 0)
     {
       operator delete(v39[1]);
@@ -78,8 +78,8 @@
     HIBYTE(v17) = 0;
     LOBYTE(v16) = 0;
 
-    v12 = [v4 wTmpFwEndLstmModelPath];
-    std::string::basic_string[abi:ne200100]<0>(&v16, [v12 UTF8String]);
+    wTmpFwEndLstmModelPath = [configCopy wTmpFwEndLstmModelPath];
+    std::string::basic_string[abi:ne200100]<0>(&v16, [wTmpFwEndLstmModelPath UTF8String]);
     if (SHIBYTE(v37[3]) < 0)
     {
       operator delete(v37[1]);
@@ -90,8 +90,8 @@
     HIBYTE(v17) = 0;
     LOBYTE(v16) = 0;
 
-    v13 = [v4 wTmpFwEndRFModelPath];
-    std::string::basic_string[abi:ne200100]<0>(&v16, [v13 UTF8String]);
+    wTmpFwEndRFModelPath = [configCopy wTmpFwEndRFModelPath];
+    std::string::basic_string[abi:ne200100]<0>(&v16, [wTmpFwEndRFModelPath UTF8String]);
     if (SHIBYTE(v39[0]) < 0)
     {
       operator delete(v38);
@@ -102,8 +102,8 @@
     HIBYTE(v17) = 0;
     LOBYTE(v16) = 0;
 
-    v14 = [v4 wTmpPeriodLstmModelPath];
-    std::string::basic_string[abi:ne200100]<0>(&v16, [v14 UTF8String]);
+    wTmpPeriodLstmModelPath = [configCopy wTmpPeriodLstmModelPath];
+    std::string::basic_string[abi:ne200100]<0>(&v16, [wTmpPeriodLstmModelPath UTF8String]);
     if (SHIBYTE(v37[0]) < 0)
     {
       operator delete(v36);
@@ -120,20 +120,20 @@
   return 0;
 }
 
-- (void)appendDay:(id)a3
+- (void)appendDay:(id)day
 {
-  v8 = a3;
-  v4 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-  [v4 addObject:v8];
+  dayCopy = day;
+  dayInputBuffer = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+  [dayInputBuffer addObject:dayCopy];
 
-  v5 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-  v6 = [v5 count];
+  dayInputBuffer2 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+  v6 = [dayInputBuffer2 count];
 
   if (v6 == 100)
   {
     [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self runDays];
-    v7 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-    [v7 removeAllObjects];
+    dayInputBuffer3 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+    [dayInputBuffer3 removeAllObjects];
   }
 }
 
@@ -144,8 +144,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dayInputBuffer = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+  v4 = [dayInputBuffer countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -155,13 +155,13 @@ LABEL_3:
     {
       if (*v14 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(dayInputBuffer);
       }
 
       v7 = *(*(&v13 + 1) + 8 * v6);
-      v8 = [(NgtMenstrualAlgorithmsDayInput *)v7 wristTemperature];
-      v9 = [v8 watchIdentifier];
-      v10 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self watchNumericIdentifierFromString:v9];
+      wristTemperature = [(NgtMenstrualAlgorithmsDayInput *)v7 wristTemperature];
+      watchIdentifier = [wristTemperature watchIdentifier];
+      v10 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self watchNumericIdentifierFromString:watchIdentifier];
 
       if (self->_julianDayOfLastInput.__engaged_)
       {
@@ -178,7 +178,7 @@ LABEL_3:
       Nightingale::ngt_HistoricalAnalyzer::appendDay(self->_historicalAnalyzer.__ptr_, v12);
       if (v4 == ++v6)
       {
-        v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v4 = [dayInputBuffer countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -190,58 +190,58 @@ LABEL_3:
   }
 }
 
-- (unsigned)watchNumericIdentifierFromString:(id)a3
+- (unsigned)watchNumericIdentifierFromString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self watchIdentifiers];
-    v6 = [v5 indexOfObject:v4];
+    watchIdentifiers = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self watchIdentifiers];
+    watchIdentifiers2 = [watchIdentifiers indexOfObject:stringCopy];
 
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    if (watchIdentifiers2 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self watchIdentifiers];
-      [v6 addObject:v4];
+      watchIdentifiers2 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self watchIdentifiers];
+      [watchIdentifiers2 addObject:stringCopy];
 
-      v7 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self watchIdentifiers];
-      LOBYTE(v6) = [v7 count] - 1;
+      watchIdentifiers3 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self watchIdentifiers];
+      LOBYTE(watchIdentifiers2) = [watchIdentifiers3 count] - 1;
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(watchIdentifiers2) = 0;
   }
 
-  return v6;
+  return watchIdentifiers2;
 }
 
-- (void)beginPhase:(unsigned __int8)a3 onJulianDay:(unsigned int)a4
+- (void)beginPhase:(unsigned __int8)phase onJulianDay:(unsigned int)day
 {
   ptr = self->_historicalAnalyzer.__ptr_;
-  v6 = ngt_phase_to_algs_phase(a3);
+  v6 = ngt_phase_to_algs_phase(phase);
 
-  Nightingale::ngt_HistoricalAnalyzer::begin_phase(ptr, v6, a4);
+  Nightingale::ngt_HistoricalAnalyzer::begin_phase(ptr, v6, day);
 }
 
-- (void)endPhase:(unsigned __int8)a3 onJulianDay:(unsigned int)a4
+- (void)endPhase:(unsigned __int8)phase onJulianDay:(unsigned int)day
 {
   ptr = self->_historicalAnalyzer.__ptr_;
-  v6 = ngt_phase_to_algs_phase(a3);
+  v6 = ngt_phase_to_algs_phase(phase);
 
-  Nightingale::ngt_HistoricalAnalyzer::end_phase(ptr, v6, a4);
+  Nightingale::ngt_HistoricalAnalyzer::end_phase(ptr, v6, day);
 }
 
-- (id)analyzeWithError:(id *)a3
+- (id)analyzeWithError:(id *)error
 {
-  v4 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-  v5 = [v4 count];
+  dayInputBuffer = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+  v5 = [dayInputBuffer count];
 
   if (v5)
   {
     [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self runDays];
-    v6 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
-    [v6 removeAllObjects];
+    dayInputBuffer2 = [(NgtMenstrualAlgorithmsHistoricalAnalyzer *)self dayInputBuffer];
+    [dayInputBuffer2 removeAllObjects];
   }
 
   Nightingale::ngt_HistoricalAnalyzer::analyze(self->_historicalAnalyzer.__ptr_, 1, &v22);

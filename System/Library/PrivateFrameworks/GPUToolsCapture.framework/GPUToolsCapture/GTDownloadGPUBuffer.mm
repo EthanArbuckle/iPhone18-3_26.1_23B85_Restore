@@ -1,6 +1,6 @@
 @interface GTDownloadGPUBuffer
-- (GTDownloadGPUBuffer)initWithTracking:(unint64_t *)a3;
-- (id)getTensorAlias:(id)a3;
+- (GTDownloadGPUBuffer)initWithTracking:(unint64_t *)tracking;
+- (id)getTensorAlias:(id)alias;
 - (void)dealloc;
 @end
 
@@ -19,22 +19,22 @@
   [(GTDownloadGPUBuffer *)&v4 dealloc];
 }
 
-- (id)getTensorAlias:(id)a3
+- (id)getTensorAlias:(id)alias
 {
-  v4 = a3;
+  aliasCopy = alias;
   if (self->_buffer)
   {
     tensor = self->_tensor;
     if (!tensor)
     {
       v6 = objc_alloc_init(MTLTensorDescriptor);
-      v7 = [v4 dimensions];
-      [v6 setDimensions:v7];
+      dimensions = [aliasCopy dimensions];
+      [v6 setDimensions:dimensions];
 
-      [v6 setDataType:{objc_msgSend(v4, "dataType")}];
-      [v6 setUsage:{objc_msgSend(v4, "usage")}];
-      v8 = [v4 dimensions];
-      v9 = MTLTensorExtents_computeStrides(v8);
+      [v6 setDataType:{objc_msgSend(aliasCopy, "dataType")}];
+      [v6 setUsage:{objc_msgSend(aliasCopy, "usage")}];
+      dimensions2 = [aliasCopy dimensions];
+      v9 = MTLTensorExtents_computeStrides(dimensions2);
       [v6 setStrides:v9];
 
       buffer = self->_buffer;
@@ -80,7 +80,7 @@
   return v16;
 }
 
-- (GTDownloadGPUBuffer)initWithTracking:(unint64_t *)a3
+- (GTDownloadGPUBuffer)initWithTracking:(unint64_t *)tracking
 {
   v8.receiver = self;
   v8.super_class = GTDownloadGPUBuffer;
@@ -89,7 +89,7 @@
   if (v4)
   {
     tensor = v4->_tensor;
-    v4->_usedGPUMemory = a3;
+    v4->_usedGPUMemory = tracking;
     v4->_tensor = 0;
   }
 

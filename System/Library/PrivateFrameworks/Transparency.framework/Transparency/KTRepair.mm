@@ -1,16 +1,16 @@
 @interface KTRepair
 + (id)hardResetRepair;
 - (_TtC12Transparency8KTRepair)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTRepair
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  KTRepair.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  KTRepair.encode(with:)(coderCopy);
 }
 
 + (id)hardResetRepair

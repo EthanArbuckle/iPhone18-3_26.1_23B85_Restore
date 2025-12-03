@@ -19,25 +19,25 @@
 
 - (double)cuik_alphaComponent
 {
-  v1 = [a1 CGColor];
+  cGColor = [self CGColor];
 
-  return CGColorGetAlpha(v1);
+  return CGColorGetAlpha(cGColor);
 }
 
 + (id)cuik_nonTodayTimelineColor
 {
-  v1 = [a1 cuik_todayTimelineColor];
-  v2 = [v1 colorWithAlphaComponent:0.1];
+  cuik_todayTimelineColor = [self cuik_todayTimelineColor];
+  v2 = [cuik_todayTimelineColor colorWithAlphaComponent:0.1];
 
   return v2;
 }
 
 - (uint64_t)cuik_colorWithAlphaScaled:()CUIKPlatforms
 {
-  [a1 cuik_alphaComponent];
+  [self cuik_alphaComponent];
   v5 = v4 * a2;
 
-  return [a1 colorWithAlphaComponent:v5];
+  return [self colorWithAlphaComponent:v5];
 }
 
 - (id)cuik_blendWithColor:()CUIKPlatforms
@@ -47,7 +47,7 @@
   v12 = 0.0;
   v13 = 0.0;
   v4 = a3;
-  [a1 getRed:&v15 green:&v14 blue:&v13 alpha:&v12];
+  [self getRed:&v15 green:&v14 blue:&v13 alpha:&v12];
   v10 = 0.0;
   v11 = 0.0;
   v8 = 0.0;
@@ -57,15 +57,15 @@
   v5 = (1.0 - v8) * v12;
   if (v8 + v5 <= 0.0)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] colorWithRed:(v8 * v11 + v15 * v5) / (v8 + v5) green:(v8 * v10 + v14 * v5) / (v8 + v5) blue:(v8 * v9 + v13 * v5) / (v8 + v5) alpha:?];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithRed:(v8 * v11 + v15 * v5) / (v8 + v5) green:(v8 * v10 + v14 * v5) / (v8 + v5) blue:(v8 * v9 + v13 * v5) / (v8 + v5) alpha:?];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

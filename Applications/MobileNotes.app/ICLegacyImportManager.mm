@@ -2,7 +2,7 @@
 + (id)sharedLegacyImportManager;
 - (BOOL)hasPendingOperations;
 - (ICLegacyImportManager)init;
-- (void)moveLegacyNotes:(id)a3 toFolder:(id)a4;
+- (void)moveLegacyNotes:(id)notes toFolder:(id)folder;
 @end
 
 @implementation ICLegacyImportManager
@@ -29,24 +29,24 @@
     v3 = objc_alloc_init(NSOperationQueue);
     [(ICLegacyImportManager *)v2 setOperationQueue:v3];
 
-    v4 = [(ICLegacyImportManager *)v2 operationQueue];
-    [v4 setName:@"com.apple.notes.move-HTML-notes-to-modern-account-queue"];
+    operationQueue = [(ICLegacyImportManager *)v2 operationQueue];
+    [operationQueue setName:@"com.apple.notes.move-HTML-notes-to-modern-account-queue"];
 
-    v5 = [(ICLegacyImportManager *)v2 operationQueue];
-    [v5 setMaxConcurrentOperationCount:1];
+    operationQueue2 = [(ICLegacyImportManager *)v2 operationQueue];
+    [operationQueue2 setMaxConcurrentOperationCount:1];
 
-    v6 = [(ICLegacyImportManager *)v2 operationQueue];
-    [v6 setQualityOfService:25];
+    operationQueue3 = [(ICLegacyImportManager *)v2 operationQueue];
+    [operationQueue3 setQualityOfService:25];
   }
 
   return v2;
 }
 
-- (void)moveLegacyNotes:(id)a3 toFolder:(id)a4
+- (void)moveLegacyNotes:(id)notes toFolder:(id)folder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[ICImportLegacyNotesOperation alloc] initWithLegacyNotes:v6 destinationFolder:v7 deleteLegacyNotesAfterImport:1];
+  notesCopy = notes;
+  folderCopy = folder;
+  v8 = [[ICImportLegacyNotesOperation alloc] initWithLegacyNotes:notesCopy destinationFolder:folderCopy deleteLegacyNotesAfterImport:1];
   objc_initWeak(&location, v8);
   v9 = [NSString stringWithFormat:@"Move legacy notes %@", v8];
   v22 = 0;
@@ -81,8 +81,8 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Adding move legacy notes operation: %@", buf, 0xCu);
   }
 
-  v14 = [(ICLegacyImportManager *)self operationQueue];
-  [v14 addOperation:v8];
+  operationQueue = [(ICLegacyImportManager *)self operationQueue];
+  [operationQueue addOperation:v8];
 
   v15 = +[NSNotificationCenter defaultCenter];
   [v15 postNotificationName:@"ICLegacyImportManagerOperationsDidChangeNotification" object:self];
@@ -96,8 +96,8 @@
 
 - (BOOL)hasPendingOperations
 {
-  v2 = [(ICLegacyImportManager *)self operationQueue];
-  v3 = [v2 operationCount] != 0;
+  operationQueue = [(ICLegacyImportManager *)self operationQueue];
+  v3 = [operationQueue operationCount] != 0;
 
   return v3;
 }

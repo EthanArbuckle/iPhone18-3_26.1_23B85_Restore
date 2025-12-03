@@ -1,38 +1,38 @@
 @interface NUVideoFrameJobCallbackCompositor
-- (void)fulfillVideoCompositionRequest:(id)a3;
+- (void)fulfillVideoCompositionRequest:(id)request;
 @end
 
 @implementation NUVideoFrameJobCallbackCompositor
 
-- (void)fulfillVideoCompositionRequest:(id)a3
+- (void)fulfillVideoCompositionRequest:(id)request
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 videoCompositionInstruction];
-  v6 = [v5 renderJob];
-  v7 = [v5 colorSpace];
-  v8 = [v4 sourceTrackIDs];
-  v9 = [v8 count];
+  requestCopy = request;
+  videoCompositionInstruction = [requestCopy videoCompositionInstruction];
+  renderJob = [videoCompositionInstruction renderJob];
+  colorSpace = [videoCompositionInstruction colorSpace];
+  sourceTrackIDs = [requestCopy sourceTrackIDs];
+  v9 = [sourceTrackIDs count];
 
   if (v9)
   {
-    v10 = [(NUVideoCompositor *)self videoFramesFromRequest:v4];
-    v11 = [(NUVideoCompositor *)self videoMetadataSamplesFromRequest:v4];
-    v12 = [(NUVideoCompositor *)self videoSampleSlicesFromRequest:v4];
-    v13 = [v4 renderContext];
-    v14 = [v13 newPixelBuffer];
+    v10 = [(NUVideoCompositor *)self videoFramesFromRequest:requestCopy];
+    v11 = [(NUVideoCompositor *)self videoMetadataSamplesFromRequest:requestCopy];
+    v12 = [(NUVideoCompositor *)self videoSampleSlicesFromRequest:requestCopy];
+    renderContext = [requestCopy renderContext];
+    newPixelBuffer = [renderContext newPixelBuffer];
 
-    if (v14)
+    if (newPixelBuffer)
     {
-      [(NUVideoCompositor *)self setColorSpaceOfDestinationBuffer:v14 fromPrimarySourceBufferOfRequest:v4];
+      [(NUVideoCompositor *)self setColorSpaceOfDestinationBuffer:newPixelBuffer fromPrimarySourceBufferOfRequest:requestCopy];
       if (+[NUGlobalSettings videoCompositorDebugMode]== 2)
       {
-        NUDebugWatermarkCVPixelBuffer(v14, 2);
+        NUDebugWatermarkCVPixelBuffer(newPixelBuffer, 2);
       }
 
-      if (v4)
+      if (requestCopy)
       {
-        [v4 compositionTime];
+        [requestCopy compositionTime];
       }
 
       else
@@ -43,13 +43,13 @@
 
       v21 = v10;
       v22 = 0;
-      v17 = [v6 renderVideoFrames:v10 videoMetadataSamples:v11 videoSampleSlices:v12 intoPixelBuffer:v14 time:&buf colorSpace:v7 playbackDirection:-[NUVideoCompositor playbackDirection](self error:{"playbackDirection"), &v22}];
+      v17 = [renderJob renderVideoFrames:v10 videoMetadataSamples:v11 videoSampleSlices:v12 intoPixelBuffer:newPixelBuffer time:&buf colorSpace:colorSpace playbackDirection:-[NUVideoCompositor playbackDirection](self error:{"playbackDirection"), &v22}];
       v18 = v22;
-      if ([(NUVideoCompositor *)self testAndSetVideoCompositionRequestFinished:v4])
+      if ([(NUVideoCompositor *)self testAndSetVideoCompositionRequestFinished:requestCopy])
       {
         if (v17)
         {
-          [(NUVideoCompositor *)self finishCompositionRequest:v4 withComposedVideoFrame:v14];
+          [(NUVideoCompositor *)self finishCompositionRequest:requestCopy withComposedVideoFrame:newPixelBuffer];
         }
 
         else
@@ -67,7 +67,7 @@
             _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Failed to export video: %@", &buf, 0xCu);
           }
 
-          [v4 finishWithError:v18];
+          [requestCopy finishWithError:v18];
         }
       }
 
@@ -86,7 +86,7 @@
         }
       }
 
-      CFRelease(v14);
+      CFRelease(newPixelBuffer);
 
       v10 = v21;
     }
@@ -94,14 +94,14 @@
     else
     {
       v16 = [NUError unknownError:@"Unable to allocate destination buffer" object:0];
-      [(NUVideoCompositor *)self failVideoCompositionRequest:v4 error:v16];
+      [(NUVideoCompositor *)self failVideoCompositionRequest:requestCopy error:v16];
     }
   }
 
   else
   {
     v15 = [NUError unknownError:@"No sourceTrackIDs" object:0];
-    [(NUVideoCompositor *)self failVideoCompositionRequest:v4 error:v15];
+    [(NUVideoCompositor *)self failVideoCompositionRequest:requestCopy error:v15];
   }
 }
 

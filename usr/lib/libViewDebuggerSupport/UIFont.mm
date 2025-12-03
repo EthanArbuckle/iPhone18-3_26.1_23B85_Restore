@@ -1,10 +1,10 @@
 @interface UIFont
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4;
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIFont
 
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error
 {
   v6 = objc_opt_class();
   if (!v6 || (v7 = v6, !object_isClass(v6)))
@@ -33,13 +33,13 @@ LABEL_7:
   v34[0] = @"font";
   v34[1] = v12;
   v30 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
-  *a3 = v30;
+  *options = v30;
   v31[0] = @"familyName";
-  v13 = [(UIFont *)self familyName];
-  v14 = v13;
-  if (v13)
+  familyName = [(UIFont *)self familyName];
+  v14 = familyName;
+  if (familyName)
   {
-    v15 = v13;
+    v15 = familyName;
   }
 
   else
@@ -49,11 +49,11 @@ LABEL_7:
 
   v32[0] = v15;
   v31[1] = @"fontName";
-  v16 = [(UIFont *)self fontName];
-  v17 = v16;
-  if (v16)
+  fontName = [(UIFont *)self fontName];
+  v17 = fontName;
+  if (fontName)
   {
-    v18 = v16;
+    v18 = fontName;
   }
 
   else

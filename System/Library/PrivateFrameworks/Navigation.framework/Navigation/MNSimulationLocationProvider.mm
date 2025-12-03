@@ -1,14 +1,14 @@
 @interface MNSimulationLocationProvider
 - (MNLocationProviderDelegate)delegate;
-- (MNSimulationLocationProvider)initWithSimulationParameters:(id)a3 alternateRouteInfos:(id)a4;
-- (MNSimulationLocationProvider)initWithStartNavigationDetails:(id)a3;
+- (MNSimulationLocationProvider)initWithSimulationParameters:(id)parameters alternateRouteInfos:(id)infos;
+- (MNSimulationLocationProvider)initWithStartNavigationDetails:(id)details;
 - (void)_resetLocationUpdateInterval;
 - (void)_sendLocationUpdate;
 - (void)dealloc;
-- (void)setUpdateIntervalSpeedMultiplier:(double)a3;
-- (void)startMonitoringForRegion:(id)a3;
+- (void)setUpdateIntervalSpeedMultiplier:(double)multiplier;
+- (void)startMonitoringForRegion:(id)region;
 - (void)startUpdatingLocation;
-- (void)stopMonitoringForRegion:(id)a3;
+- (void)stopMonitoringForRegion:(id)region;
 - (void)stopUpdatingLocation;
 @end
 
@@ -21,9 +21,9 @@
   return WeakRetained;
 }
 
-- (void)stopMonitoringForRegion:(id)a3
+- (void)stopMonitoringForRegion:(id)region
 {
-  v5 = a3;
+  regionCopy = region;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[MNSimulationLocationProvider stopMonitoringForRegion:]"];
   v4 = self->_monitoredGeoFences;
   objc_sync_enter(v4);
@@ -32,17 +32,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NSMutableArray *)self->_monitoredGeoFences removeObject:v5];
-      [(NSMutableArray *)self->_currentGeoFences removeObject:v5];
+      [(NSMutableArray *)self->_monitoredGeoFences removeObject:regionCopy];
+      [(NSMutableArray *)self->_currentGeoFences removeObject:regionCopy];
     }
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)startMonitoringForRegion:(id)a3
+- (void)startMonitoringForRegion:(id)region
 {
-  v5 = a3;
+  regionCopy = region;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[MNSimulationLocationProvider startMonitoringForRegion:]"];
   v4 = self->_monitoredGeoFences;
   objc_sync_enter(v4);
@@ -51,7 +51,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NSMutableArray *)self->_monitoredGeoFences addObject:v5];
+      [(NSMutableArray *)self->_monitoredGeoFences addObject:regionCopy];
     }
   }
 
@@ -76,18 +76,18 @@
     v5 = self->_locationUpdateTimer;
     self->_locationUpdateTimer = 0;
 
-    v6 = [(MNSimulatedLocationGenerator *)self->_locationGenerator lastLocation];
+    lastLocation = [(MNSimulatedLocationGenerator *)self->_locationGenerator lastLocation];
     if (GEOConfigGetBOOL())
     {
       v7 = MNGetMNNavigationSimulationLog();
       v8 = v7;
-      if (v6)
+      if (lastLocation)
       {
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          [v6 coordinate];
+          [lastLocation coordinate];
           v10 = v9;
-          [v6 coordinate];
+          [lastLocation coordinate];
           *buf = 134283777;
           *&buf[4] = v10;
           *&buf[12] = 2049;
@@ -101,7 +101,7 @@
         v21 = 0u;
         v19 = 0u;
         memset(buf, 0, sizeof(buf));
-        [v6 clientLocation];
+        [lastLocation clientLocation];
         *&buf[44] = 0;
         if (*&buf[28] == 1.79769313e308)
         {
@@ -135,18 +135,18 @@
           _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_ERROR, "Set simulated location after ending navigation was set, but no simulation location was set. Ignoring.", buf, 2u);
         }
 
-        v6 = 0;
+        lastLocation = 0;
       }
     }
   }
 
   else
   {
-    v6 = MNGetMNNavigationSimulationLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    lastLocation = MNGetMNNavigationSimulationLog();
+    if (os_log_type_enabled(lastLocation, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_ERROR, "-stopUpdatingLocation called after location updates have already been stopped.", buf, 2u);
+      _os_log_impl(&dword_1D311E000, lastLocation, OS_LOG_TYPE_ERROR, "-stopUpdatingLocation called after location updates have already been stopped.", buf, 2u);
     }
   }
 
@@ -256,8 +256,8 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
 
   if (v4)
   {
-    v5 = [(MNSimulatedLocationGenerator *)self->_locationGenerator currentStateType];
-    v6 = v5;
+    currentStateType = [(MNSimulatedLocationGenerator *)self->_locationGenerator currentStateType];
+    v6 = currentStateType;
     v7 = MEMORY[0x1E696AD60];
     if (v52)
     {
@@ -289,14 +289,14 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
 
     else
     {
-      if (v5 > 0xA)
+      if (currentStateType > 0xA)
       {
         v16 = @"Unknown";
       }
 
       else
       {
-        v16 = off_1E842ED18[v5];
+        v16 = off_1E842ED18[currentStateType];
       }
 
       v17 = [MEMORY[0x1E696AD60] stringWithFormat:@"Location is nil. State: %@", v16];
@@ -349,8 +349,8 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
 
           v27 = *(*(&v61 + 1) + 8 * i);
           v28 = [(NSMutableArray *)self->_currentGeoFences indexOfObject:v27];
-          v29 = [v52 rawLocation];
-          [v29 coordinate];
+          rawLocation = [v52 rawLocation];
+          [rawLocation coordinate];
           v30 = [v27 containsCoordinate:?];
 
           if (((v28 == 0x7FFFFFFFFFFFFFFFLL) & v30) == 1)
@@ -465,10 +465,10 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUpdateIntervalSpeedMultiplier:(double)a3
+- (void)setUpdateIntervalSpeedMultiplier:(double)multiplier
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (vabdd_f64(self->_updateIntervalSpeedMultiplier, a3) >= 0.01)
+  if (vabdd_f64(self->_updateIntervalSpeedMultiplier, multiplier) >= 0.01)
   {
     v5 = MNGetMNNavigationSimulationLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -477,11 +477,11 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
       v8 = 134218240;
       v9 = v6;
       v10 = 2048;
-      v11 = 1.0 / a3;
+      v11 = 1.0 / multiplier;
       _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "Setting simulation update interval from %0.2fs to %0.2fs.", &v8, 0x16u);
     }
 
-    self->_updateIntervalSpeedMultiplier = a3;
+    self->_updateIntervalSpeedMultiplier = multiplier;
     [(MNSimulationLocationProvider *)self _resetLocationUpdateInterval];
   }
 
@@ -499,20 +499,20 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
   [(MNSimulationLocationProvider *)&v4 dealloc];
 }
 
-- (MNSimulationLocationProvider)initWithStartNavigationDetails:(id)a3
+- (MNSimulationLocationProvider)initWithStartNavigationDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 tracePlaybackPath];
+  detailsCopy = details;
+  tracePlaybackPath = [detailsCopy tracePlaybackPath];
 
-  if (v5 || ([v4 simulationType] + 1) < 2)
+  if (tracePlaybackPath || ([detailsCopy simulationType] + 1) < 2)
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v7 = [v4 routes];
-    v8 = [v7 count];
+    routes = [detailsCopy routes];
+    v8 = [routes count];
 
     v9 = 0;
     if (v8)
@@ -521,13 +521,13 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
       v10 = 0;
       do
       {
-        v11 = [v4 routes];
-        v12 = [v11 objectAtIndexedSubscript:v10];
+        routes2 = [detailsCopy routes];
+        v12 = [routes2 objectAtIndexedSubscript:v10];
 
-        v13 = [v4 selectedRouteIndex];
+        selectedRouteIndex = [detailsCopy selectedRouteIndex];
         v14 = [[MNActiveRouteInfo alloc] initWithRoute:v12];
         v15 = v14;
-        if (v10 == v13)
+        if (v10 == selectedRouteIndex)
         {
           v16 = v14;
 
@@ -545,45 +545,45 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
         }
 
         ++v10;
-        v17 = [v4 routes];
-        v18 = [v17 count];
+        routes3 = [detailsCopy routes];
+        v18 = [routes3 count];
       }
 
       while (v10 < v18);
     }
 
     v19 = objc_opt_new();
-    [v19 setSimulationType:{objc_msgSend(v4, "simulationType")}];
+    [v19 setSimulationType:{objc_msgSend(detailsCopy, "simulationType")}];
     [v19 setInitialRoute:v9];
-    v20 = [(MNActiveRouteInfo *)v9 route];
-    v21 = [v20 source] != 1;
+    route = [(MNActiveRouteInfo *)v9 route];
+    v21 = [route source] != 1;
 
     v22 = [MNSuggestedNavigationModeFinder alloc];
-    v23 = [(MNActiveRouteInfo *)v9 route];
-    v24 = [(MNSuggestedNavigationModeFinder *)v22 initWithRoute:v23 context:v21];
+    route2 = [(MNActiveRouteInfo *)v9 route];
+    v24 = [(MNSuggestedNavigationModeFinder *)v22 initWithRoute:route2 context:v21];
 
-    v25 = [v4 initialUserLocation];
-    v26 = [(MNSuggestedNavigationModeFinder *)v24 suggestedNavigationModeForLocation:v25];
+    initialUserLocation = [detailsCopy initialUserLocation];
+    v26 = [(MNSuggestedNavigationModeFinder *)v24 suggestedNavigationModeForLocation:initialUserLocation];
 
     if (v26 == 1)
     {
-      v27 = [v4 initialUserLocation];
-      [v19 setStartingLocation:v27];
+      initialUserLocation2 = [detailsCopy initialUserLocation];
+      [v19 setStartingLocation:initialUserLocation2];
     }
 
     self = [(MNSimulationLocationProvider *)self initWithSimulationParameters:v19 alternateRouteInfos:v8];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MNSimulationLocationProvider)initWithSimulationParameters:(id)a3 alternateRouteInfos:(id)a4
+- (MNSimulationLocationProvider)initWithSimulationParameters:(id)parameters alternateRouteInfos:(id)infos
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  infosCopy = infos;
   v45.receiver = self;
   v45.super_class = MNSimulationLocationProvider;
   v8 = [(MNSimulationLocationProvider *)&v45 init];
@@ -593,25 +593,25 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
     performanceEventLogger = v8->_performanceEventLogger;
     v8->_performanceEventLogger = v9;
 
-    v11 = [v6 simulationType];
-    v8->_simulationType = v11;
-    if (v11 == 3 && [v7 count])
+    simulationType = [parametersCopy simulationType];
+    v8->_simulationType = simulationType;
+    if (simulationType == 3 && [infosCopy count])
     {
-      v12 = [v7 firstObject];
-      if ([v7 count] >= 2)
+      firstObject = [infosCopy firstObject];
+      if ([infosCopy count] >= 2)
       {
         v36 = v8;
-        v37 = v6;
+        v37 = parametersCopy;
         v40 = objc_alloc_init(MNRouteDivergenceFinder);
-        v13 = [v12 route];
-        [v13 endRouteCoordinate];
+        route = [firstObject route];
+        [route endRouteCoordinate];
 
         v43 = 0u;
         v44 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v35 = v7;
-        obj = v7;
+        v35 = infosCopy;
+        obj = infosCopy;
         v14 = [obj countByEnumeratingWithState:&v41 objects:v48 count:16];
         if (v14)
         {
@@ -628,17 +628,17 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
               }
 
               v17 = *(*(&v41 + 1) + 8 * v16);
-              v18 = [v12 route];
-              v19 = [v17 route];
-              v20 = [(MNRouteDivergenceFinder *)v40 findFirstDivergenceBetweenRoute:v18 andRoute:v19];
-              v21 = [v20 firstObject];
-              [v21 routeCoordinate];
+              route2 = [firstObject route];
+              route3 = [v17 route];
+              v20 = [(MNRouteDivergenceFinder *)v40 findFirstDivergenceBetweenRoute:route2 andRoute:route3];
+              firstObject2 = [v20 firstObject];
+              [firstObject2 routeCoordinate];
 
               if (GEOPolylineCoordinateIsABeforeB())
               {
                 v22 = v17;
 
-                v12 = v22;
+                firstObject = v22;
               }
 
               ++v16;
@@ -652,35 +652,35 @@ void __60__MNSimulationLocationProvider__resetLocationUpdateInterval__block_invo
         }
 
         v8 = v36;
-        v6 = v37;
-        v7 = v35;
+        parametersCopy = v37;
+        infosCopy = v35;
       }
 
       v23 = MNGetMNNavigationSimulationLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v12 route];
-        v25 = [v24 name];
+        route4 = [firstObject route];
+        name = [route4 name];
         *buf = 138412290;
-        v47 = v25;
+        v47 = name;
       }
 
-      [v6 setInitialRoute:v12];
+      [parametersCopy setInitialRoute:firstObject];
     }
 
-    v26 = [[MNSimulatedLocationGenerator alloc] initWithSimulationParameters:v6];
+    v26 = [[MNSimulatedLocationGenerator alloc] initWithSimulationParameters:parametersCopy];
     locationGenerator = v8->_locationGenerator;
     v8->_locationGenerator = v26;
 
     [(MNSimulatedLocationGenerator *)v8->_locationGenerator setEndAtFinalDestination:0];
     v8->_simulateGeoFences = 0;
-    v28 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     monitoredGeoFences = v8->_monitoredGeoFences;
-    v8->_monitoredGeoFences = v28;
+    v8->_monitoredGeoFences = array;
 
-    v30 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     currentGeoFences = v8->_currentGeoFences;
-    v8->_currentGeoFences = v30;
+    v8->_currentGeoFences = array2;
 
     v8->_updateIntervalSpeedMultiplier = 1.0;
     v32 = v8;

@@ -1,20 +1,20 @@
 @interface TSUserResponseFlow
-- (TSUserResponseFlow)initWithConfirmationCodeRequired:(BOOL)a3;
+- (TSUserResponseFlow)initWithConfirmationCodeRequired:(BOOL)required;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)firstViewController:(id)a3;
-- (void)setCancelNavigationBarItems:(id)a3;
-- (void)viewControllerDidComplete:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
+- (void)firstViewController:(id)controller;
+- (void)setCancelNavigationBarItems:(id)items;
+- (void)viewControllerDidComplete:(id)complete;
 @end
 
 @implementation TSUserResponseFlow
 
-- (TSUserResponseFlow)initWithConfirmationCodeRequired:(BOOL)a3
+- (TSUserResponseFlow)initWithConfirmationCodeRequired:(BOOL)required
 {
   v8.receiver = self;
   v8.super_class = TSUserResponseFlow;
   v4 = [(TSSIMSetupFlow *)&v8 init];
-  v4->_confirmationCodeRequired = a3;
+  v4->_confirmationCodeRequired = required;
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v4 action:sel_userDidTapCancel];
   cancelButton = v4->_cancelButton;
   v4->_cancelButton = v5;
@@ -28,10 +28,10 @@
   v20 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v3 = +[TSCellularPlanManagerCache sharedInstance];
-  v4 = [v3 planItems];
+  planItems = [v3 planItems];
 
   v5 = +[TSCellularPlanManagerCache sharedInstance];
-  v6 = [v5 calculateInstallConsentTextTypeFor:v4];
+  v6 = [v5 calculateInstallConsentTextTypeFor:planItems];
 
   if (v6 > 2)
   {
@@ -125,19 +125,19 @@ LABEL_17:
   return v10;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v5 = a3;
-    v6 = [(TSUserResponseFlow *)self firstViewController];
-    (*(a3 + 2))(v5, v6);
+    controllerCopy = controller;
+    firstViewController = [(TSUserResponseFlow *)self firstViewController];
+    (*(controller + 2))(controllerCopy, firstViewController);
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -154,24 +154,24 @@ LABEL_17:
   return v6;
 }
 
-- (void)viewControllerDidComplete:(id)a3
+- (void)viewControllerDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 confirmationCode];
+    confirmationCode = [completeCopy confirmationCode];
     confirmationCode = self->_confirmationCode;
-    self->_confirmationCode = v5;
+    self->_confirmationCode = confirmationCode;
 
     if (!self->_userConsentType)
     {
       v7 = +[TSCellularPlanManagerCache sharedInstance];
       v8 = v7;
       v9 = self->_confirmationCode;
-      v10 = 1;
+      userConsentResponse = 1;
 LABEL_6:
-      [v7 sendUserResponse:v10 confirmationCode:v9];
+      [v7 sendUserResponse:userConsentResponse confirmationCode:v9];
     }
   }
 
@@ -181,7 +181,7 @@ LABEL_6:
     if (objc_opt_isKindOfClass())
     {
       v8 = +[TSCellularPlanManagerCache sharedInstance];
-      v10 = [v4 userConsentResponse];
+      userConsentResponse = [completeCopy userConsentResponse];
       v9 = self->_confirmationCode;
       v7 = v8;
       goto LABEL_6;
@@ -190,16 +190,16 @@ LABEL_6:
 
   v11.receiver = self;
   v11.super_class = TSUserResponseFlow;
-  [(TSSIMSetupFlow *)&v11 viewControllerDidComplete:v4];
+  [(TSSIMSetupFlow *)&v11 viewControllerDidComplete:completeCopy];
 }
 
-- (void)setCancelNavigationBarItems:(id)a3
+- (void)setCancelNavigationBarItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   if (+[TSUtilities isPad])
   {
-    v4 = [v5 navigationItem];
-    [v4 setRightBarButtonItem:self->_cancelButton];
+    navigationItem = [itemsCopy navigationItem];
+    [navigationItem setRightBarButtonItem:self->_cancelButton];
   }
 }
 

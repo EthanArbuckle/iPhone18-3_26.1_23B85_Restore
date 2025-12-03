@@ -2,8 +2,8 @@
 - (ATXHeuristicCacheExpirer)init;
 - (void)dealloc;
 - (void)expire;
-- (void)startExpiring:(id)a3 cache:(id)a4;
-- (void)stopExpiring:(id)a3 cache:(id)a4;
+- (void)startExpiring:(id)expiring cache:(id)cache;
+- (void)stopExpiring:(id)expiring cache:(id)cache;
 @end
 
 @implementation ATXHeuristicCacheExpirer
@@ -34,15 +34,15 @@
   return v2;
 }
 
-- (void)startExpiring:(id)a3 cache:(id)a4
+- (void)startExpiring:(id)expiring cache:(id)cache
 {
-  if (a4)
+  if (cache)
   {
-    v6 = a4;
-    v7 = a3;
+    cacheCopy = cache;
+    expiringCopy = expiring;
     pthread_mutex_lock(&self->_lock);
     expirationEntries = self->_expirationEntries;
-    v9 = [[ATXHeuristicCacheExpirationEntry alloc] initWithHeuristic:v7 cache:v6];
+    v9 = [[ATXHeuristicCacheExpirationEntry alloc] initWithHeuristic:expiringCopy cache:cacheCopy];
 
     [(NSMutableSet *)expirationEntries addObject:v9];
     if ([(NSMutableSet *)self->_expirationEntries count])
@@ -54,15 +54,15 @@
   }
 }
 
-- (void)stopExpiring:(id)a3 cache:(id)a4
+- (void)stopExpiring:(id)expiring cache:(id)cache
 {
-  if (a4)
+  if (cache)
   {
-    v6 = a4;
-    v7 = a3;
+    cacheCopy = cache;
+    expiringCopy = expiring;
     pthread_mutex_lock(&self->_lock);
     expirationEntries = self->_expirationEntries;
-    v9 = [[ATXHeuristicCacheExpirationEntry alloc] initWithHeuristic:v7 cache:v6];
+    v9 = [[ATXHeuristicCacheExpirationEntry alloc] initWithHeuristic:expiringCopy cache:cacheCopy];
 
     [(NSMutableSet *)expirationEntries removeObject:v9];
     if (![(NSMutableSet *)self->_expirationEntries count])
@@ -104,9 +104,9 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 cache];
-        v13 = [v11 heuristicName];
-        [v12 _expire:v13 postNotification:1];
+        cache = [v11 cache];
+        heuristicName = [v11 heuristicName];
+        [cache _expire:heuristicName postNotification:1];
       }
 
       v8 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];

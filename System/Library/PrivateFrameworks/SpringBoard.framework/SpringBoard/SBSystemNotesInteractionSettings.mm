@@ -26,12 +26,12 @@
   [(SBPIPInteractionSettings *)self setRotationGestureEnabled:1];
   [(SBPIPInteractionSettings *)self setStashingEnabled:1];
   [(SBPIPInteractionSettings *)self setFreePositioning:0];
-  v3 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v3 setName:@"Region Update Behavior"];
-  [v3 setBehaviorType:2];
-  [v3 setDampingRatio:0.9];
-  [v3 setResponse:0.55];
-  [(SBPIPInteractionSettings *)self setRegionUpdateFluidBehavior:v3];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues setName:@"Region Update Behavior"];
+  [initWithDefaultValues setBehaviorType:2];
+  [initWithDefaultValues setDampingRatio:0.9];
+  [initWithDefaultValues setResponse:0.55];
+  [(SBPIPInteractionSettings *)self setRegionUpdateFluidBehavior:initWithDefaultValues];
 }
 
 + (id)settingsControllerModule
@@ -53,7 +53,7 @@
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
   v13 = [v11 sectionWithRows:v12 title:@"User Interaction Dismissal Behavior"];
 
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = &OBJC_METACLASS___SBSystemNotesInteractionSettings;
   v14 = objc_msgSendSuper2(&v20, sel_settingsControllerModule);
   v15 = [MEMORY[0x277D43210] submoduleWithModule:v14 childSettingsKeyPath:0];

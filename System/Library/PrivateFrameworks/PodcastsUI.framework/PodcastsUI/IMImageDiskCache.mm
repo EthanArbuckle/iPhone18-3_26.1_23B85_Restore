@@ -1,35 +1,35 @@
 @interface IMImageDiskCache
-- (BOOL)_addImage:(id)a3 forKey:(id)a4 resizeIfTooBig:(BOOL)a5 manageProcessingState:(BOOL)a6 completion:(id)a7;
-- (BOOL)_isProcessingKey:(id)a3 completion:(id)a4;
-- (BOOL)_startProcessingForAddingKey:(id)a3 originalKey:(id)a4;
-- (BOOL)_usesLessMemoryToConvertThenResizeImageSource:(CGImageSource *)a3 destinationDimensionInPixels:(double)a4;
-- (BOOL)copyImageFromSourceUrl:(id)a3 sourceFileType:(id)a4 to:(id)a5 discardTransparency:(BOOL)a6 enforceSquare:(BOOL)a7 maxDimensionInPixels:(double)a8;
-- (CGImageSource)_copyImageSourceByConvertingImage:(CGImageSource *)a3 toFileType:(id)a4 destinationUrl:(id)a5;
-- (IMImageDiskCache)initWithBasePath:(id)a3 maxImageDimensionInPixels:(double)a4;
+- (BOOL)_addImage:(id)image forKey:(id)key resizeIfTooBig:(BOOL)big manageProcessingState:(BOOL)state completion:(id)completion;
+- (BOOL)_isProcessingKey:(id)key completion:(id)completion;
+- (BOOL)_startProcessingForAddingKey:(id)key originalKey:(id)originalKey;
+- (BOOL)_usesLessMemoryToConvertThenResizeImageSource:(CGImageSource *)source destinationDimensionInPixels:(double)pixels;
+- (BOOL)copyImageFromSourceUrl:(id)url sourceFileType:(id)type to:(id)to discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels;
+- (CGImageSource)_copyImageSourceByConvertingImage:(CGImageSource *)image toFileType:(id)type destinationUrl:(id)url;
+- (IMImageDiskCache)initWithBasePath:(id)path maxImageDimensionInPixels:(double)pixels;
 - (id)_defaultImageSavingOptions;
 - (id)_defaultImageSavingSourceOptions;
-- (id)_resizeImageForKey:(id)a3 maxDimensionInPixels:(double)a4;
-- (id)imageForKey:(id)a3;
-- (id)imageUrlForKey:(id)a3;
-- (id)pathForKey:(id)a3;
-- (void)_addImageWithSourceUrl:(id)a3 forKey:(id)a4 discardTransparency:(BOOL)a5 enforceSquare:(BOOL)a6 maxDimensionInPixels:(double)a7 completion:(id)a8;
-- (void)_finishProcessingKey:(id)a3 success:(BOOL)a4;
-- (void)_performWithSyncLock:(id)a3;
-- (void)_startProcessingKey:(id)a3 completion:(id)a4;
-- (void)addImageWithSourceUrl:(id)a3 forKey:(id)a4 discardTransparency:(BOOL)a5 enforceSquare:(BOOL)a6 maxDimensionInPixels:(double)a7 completion:(id)a8;
-- (void)addImageWithSourceUrl:(id)a3 forKey:(id)a4 enforceSquare:(BOOL)a5 maxDimensionInPixels:(double)a6 completion:(id)a7;
-- (void)addImagesWithSourceUrl:(id)a3 forKeys:(id)a4 discardTransparency:(BOOL)a5 enforceSquare:(BOOL)a6 completion:(id)a7;
-- (void)copyImageFromSourceUrl:(id)a3 to:(id)a4 discardTransparency:(BOOL)a5 enforceSquare:(BOOL)a6 maxDimensionInPixels:(double)a7 completion:(id)a8;
-- (void)performWhenURLAvailableForImageForKey:(id)a3 block:(id)a4;
+- (id)_resizeImageForKey:(id)key maxDimensionInPixels:(double)pixels;
+- (id)imageForKey:(id)key;
+- (id)imageUrlForKey:(id)key;
+- (id)pathForKey:(id)key;
+- (void)_addImageWithSourceUrl:(id)url forKey:(id)key discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels completion:(id)completion;
+- (void)_finishProcessingKey:(id)key success:(BOOL)success;
+- (void)_performWithSyncLock:(id)lock;
+- (void)_startProcessingKey:(id)key completion:(id)completion;
+- (void)addImageWithSourceUrl:(id)url forKey:(id)key discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels completion:(id)completion;
+- (void)addImageWithSourceUrl:(id)url forKey:(id)key enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels completion:(id)completion;
+- (void)addImagesWithSourceUrl:(id)url forKeys:(id)keys discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square completion:(id)completion;
+- (void)copyImageFromSourceUrl:(id)url to:(id)to discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels completion:(id)completion;
+- (void)performWhenURLAvailableForImageForKey:(id)key block:(id)block;
 @end
 
 @implementation IMImageDiskCache
 
-- (IMImageDiskCache)initWithBasePath:(id)a3 maxImageDimensionInPixels:(double)a4
+- (IMImageDiskCache)initWithBasePath:(id)path maxImageDimensionInPixels:(double)pixels
 {
   v24.receiver = self;
   v24.super_class = IMImageDiskCache;
-  v5 = [(IMBaseDiskCache *)&v24 initWithBasePath:a3];
+  v5 = [(IMBaseDiskCache *)&v24 initWithBasePath:path];
   if (v5)
   {
     v6 = MEMORY[0x277CCACA8];
@@ -40,13 +40,13 @@
     workQueue = v5->_workQueue;
     v5->_workQueue = v10;
 
-    v12 = [MEMORY[0x277D3DB18] fileType];
-    v13 = [v12 identifier];
+    fileType = [MEMORY[0x277D3DB18] fileType];
+    identifier = [fileType identifier];
     onDiskFileType = v5->_onDiskFileType;
-    v5->_onDiskFileType = v13;
+    v5->_onDiskFileType = identifier;
 
     v5->_saveCompressionQuality = 0.9;
-    v5->_maxImageDimensionInPixels = a4;
+    v5->_maxImageDimensionInPixels = pixels;
     v15 = objc_alloc_init(MEMORY[0x277CCAC60]);
     syncLock = v5->_syncLock;
     v5->_syncLock = v15;
@@ -67,86 +67,86 @@
   return v5;
 }
 
-- (void)_addImageWithSourceUrl:(id)a3 forKey:(id)a4 discardTransparency:(BOOL)a5 enforceSquare:(BOOL)a6 maxDimensionInPixels:(double)a7 completion:(id)a8
+- (void)_addImageWithSourceUrl:(id)url forKey:(id)key discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v19 = a3;
-  v14 = a4;
-  v15 = a8;
-  v16 = [v14 length];
-  if (v19 && v16)
+  squareCopy = square;
+  transparencyCopy = transparency;
+  urlCopy = url;
+  keyCopy = key;
+  completionCopy = completion;
+  v16 = [keyCopy length];
+  if (urlCopy && v16)
   {
-    if ([(IMBaseDiskCache *)self hasItemForKey:v14])
+    if ([(IMBaseDiskCache *)self hasItemForKey:keyCopy])
     {
-      if (v15)
+      if (completionCopy)
       {
-        v15[2](v15, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
     else
     {
-      v17 = [(IMImageDiskCache *)self pathForKey:v14];
+      v17 = [(IMImageDiskCache *)self pathForKey:keyCopy];
       v18 = [MEMORY[0x277CBEBC0] fileURLWithPath:v17 isDirectory:0];
-      [(IMImageDiskCache *)self copyImageFromSourceUrl:v19 to:v18 discardTransparency:v11 enforceSquare:v10 maxDimensionInPixels:v15 completion:a7];
+      [(IMImageDiskCache *)self copyImageFromSourceUrl:urlCopy to:v18 discardTransparency:transparencyCopy enforceSquare:squareCopy maxDimensionInPixels:completionCopy completion:pixels];
     }
   }
 
-  else if (v15)
+  else if (completionCopy)
   {
-    v15[2](v15, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)addImagesWithSourceUrl:(id)a3 forKeys:(id)a4 discardTransparency:(BOOL)a5 enforceSquare:(BOOL)a6 completion:(id)a7
+- (void)addImagesWithSourceUrl:(id)url forKeys:(id)keys discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square completion:(id)completion
 {
-  v27 = a6;
-  v8 = a5;
+  squareCopy = square;
+  transparencyCopy = transparency;
   v48 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a7;
+  urlCopy = url;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__IMImageDiskCache_addImagesWithSourceUrl_forKeys_discardTransparency_enforceSquare_completion___block_invoke;
   aBlock[3] = &unk_2782BD8D0;
-  v28 = v12;
+  v28 = completionCopy;
   v39 = v28;
-  v13 = a4;
+  keysCopy = keys;
   v14 = _Block_copy(aBlock);
-  v15 = [v13 objectsPassingTest:&__block_literal_global];
+  v15 = [keysCopy objectsPassingTest:&__block_literal_global];
 
-  v16 = [MEMORY[0x277D3DA88] imageCache];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  imageCache = [MEMORY[0x277D3DA88] imageCache];
+  if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v41 = v11;
+    v41 = urlCopy;
     v42 = 2112;
     v43 = v15;
     v44 = 1024;
-    v45 = v8;
+    v45 = transparencyCopy;
     v46 = 1024;
-    v47 = v27;
-    _os_log_impl(&dword_21B365000, v16, OS_LOG_TYPE_DEFAULT, "[DiskCache] addImagesWithSourceUrl: got store-image request (fileUrl=%@, keys=%@, discardTransparency=%d, enforceSquare=%d)", buf, 0x22u);
+    v47 = squareCopy;
+    _os_log_impl(&dword_21B365000, imageCache, OS_LOG_TYPE_DEFAULT, "[DiskCache] addImagesWithSourceUrl: got store-image request (fileUrl=%@, keys=%@, discardTransparency=%d, enforceSquare=%d)", buf, 0x22u);
   }
 
   v17 = [v15 mutableCopy];
   v18 = v17;
-  if (v11 && [v17 count])
+  if (urlCopy && [v17 count])
   {
-    v19 = [v18 anyObject];
-    [v18 removeObject:v19];
+    anyObject = [v18 anyObject];
+    [v18 removeObject:anyObject];
     v20 = dispatch_group_create();
     dispatch_group_enter(v20);
     objc_initWeak(&location, self);
-    v21 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    imageCache2 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v41 = v11;
+      v41 = urlCopy;
       v42 = 2112;
-      v43 = v19;
-      _os_log_impl(&dword_21B365000, v21, OS_LOG_TYPE_DEFAULT, "[DiskCache] addImagesWithSourceUrl: adding first item via addImage: (fileUrl = %@, key=%@)", buf, 0x16u);
+      v43 = anyObject;
+      _os_log_impl(&dword_21B365000, imageCache2, OS_LOG_TYPE_DEFAULT, "[DiskCache] addImagesWithSourceUrl: adding first item via addImage: (fileUrl = %@, key=%@)", buf, 0x16u);
     }
 
     maxImageDimensionInPixels = self->_maxImageDimensionInPixels;
@@ -156,18 +156,18 @@
     v35[3] = &unk_2782BD918;
     v23 = v20;
     v36 = v23;
-    [(IMImageDiskCache *)self addImageWithSourceUrl:v11 forKey:v19 discardTransparency:v8 enforceSquare:v27 maxDimensionInPixels:v35 completion:maxImageDimensionInPixels];
+    [(IMImageDiskCache *)self addImageWithSourceUrl:urlCopy forKey:anyObject discardTransparency:transparencyCopy enforceSquare:squareCopy maxDimensionInPixels:v35 completion:maxImageDimensionInPixels];
     v24 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __96__IMImageDiskCache_addImagesWithSourceUrl_forKeys_discardTransparency_enforceSquare_completion___block_invoke_2_16;
     block[3] = &unk_2782BD940;
     objc_copyWeak(&v34, &location);
-    v30 = v19;
+    v30 = anyObject;
     v31 = v18;
     v33 = v14;
-    v32 = v11;
-    v25 = v19;
+    v32 = urlCopy;
+    v25 = anyObject;
     dispatch_group_notify(v23, v24, block);
 
     objc_destroyWeak(&v34);
@@ -176,14 +176,14 @@
 
   else
   {
-    v26 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    imageCache3 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v41 = v11;
+      v41 = urlCopy;
       v42 = 2112;
       v43 = v18;
-      _os_log_impl(&dword_21B365000, v26, OS_LOG_TYPE_ERROR, "[DiskCache] addImagesWithSourceUrl: invalid requests (fileUrl = %@, validKeys=%@), bailing.", buf, 0x16u);
+      _os_log_impl(&dword_21B365000, imageCache3, OS_LOG_TYPE_ERROR, "[DiskCache] addImagesWithSourceUrl: invalid requests (fileUrl = %@, validKeys=%@), bailing.", buf, 0x16u);
     }
 
     (*(v14 + 2))(v14, 0);
@@ -312,39 +312,39 @@ LABEL_19:
   (*(*(v1 + 56) + 16))();
 }
 
-- (void)addImageWithSourceUrl:(id)a3 forKey:(id)a4 enforceSquare:(BOOL)a5 maxDimensionInPixels:(double)a6 completion:(id)a7
+- (void)addImageWithSourceUrl:(id)url forKey:(id)key enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels completion:(id)completion
 {
-  v8 = a5;
-  v12 = a7;
+  squareCopy = square;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __95__IMImageDiskCache_addImageWithSourceUrl_forKey_enforceSquare_maxDimensionInPixels_completion___block_invoke;
   v14[3] = &unk_2782BD8D0;
-  v15 = v12;
-  v13 = v12;
-  [(IMImageDiskCache *)self addImageWithSourceUrl:a3 forKey:a4 discardTransparency:0 enforceSquare:v8 maxDimensionInPixels:v14 completion:a6];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [(IMImageDiskCache *)self addImageWithSourceUrl:url forKey:key discardTransparency:0 enforceSquare:squareCopy maxDimensionInPixels:v14 completion:pixels];
 }
 
-- (void)addImageWithSourceUrl:(id)a3 forKey:(id)a4 discardTransparency:(BOOL)a5 enforceSquare:(BOOL)a6 maxDimensionInPixels:(double)a7 completion:(id)a8
+- (void)addImageWithSourceUrl:(id)url forKey:(id)key discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  if (![(IMImageDiskCache *)self _isProcessingKey:v15 completion:v16])
+  urlCopy = url;
+  keyCopy = key;
+  completionCopy = completion;
+  if (![(IMImageDiskCache *)self _isProcessingKey:keyCopy completion:completionCopy])
   {
     objc_initWeak(&location, self);
-    [(IMImageDiskCache *)self _startProcessingKey:v15 completion:v16];
+    [(IMImageDiskCache *)self _startProcessingKey:keyCopy completion:completionCopy];
     workQueue = self->_workQueue;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __115__IMImageDiskCache_addImageWithSourceUrl_forKey_discardTransparency_enforceSquare_maxDimensionInPixels_completion___block_invoke;
     v18[3] = &unk_2782BD990;
     objc_copyWeak(v21, &location);
-    v19 = v14;
-    v20 = v15;
-    v22 = a5;
-    v23 = a6;
-    v21[1] = *&a7;
+    v19 = urlCopy;
+    v20 = keyCopy;
+    transparencyCopy = transparency;
+    squareCopy = square;
+    v21[1] = *&pixels;
     dispatch_async(workQueue, v18);
 
     objc_destroyWeak(v21);
@@ -385,76 +385,76 @@ void __115__IMImageDiskCache_addImageWithSourceUrl_forKey_discardTransparency_en
   }
 }
 
-- (void)copyImageFromSourceUrl:(id)a3 to:(id)a4 discardTransparency:(BOOL)a5 enforceSquare:(BOOL)a6 maxDimensionInPixels:(double)a7 completion:(id)a8
+- (void)copyImageFromSourceUrl:(id)url to:(id)to discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v20 = a8;
+  squareCopy = square;
+  transparencyCopy = transparency;
+  completionCopy = completion;
   workQueue = self->_workQueue;
-  v15 = a4;
-  v16 = a3;
+  toCopy = to;
+  urlCopy = url;
   dispatch_assert_queue_V2(workQueue);
-  v17 = [(IMImageDiskCache *)self onDiskFileType];
-  v18 = [(IMImageDiskCache *)self copyImageFromSourceUrl:v16 sourceFileType:v17 to:v15 discardTransparency:v10 enforceSquare:v9 maxDimensionInPixels:a7];
+  onDiskFileType = [(IMImageDiskCache *)self onDiskFileType];
+  v18 = [(IMImageDiskCache *)self copyImageFromSourceUrl:urlCopy sourceFileType:onDiskFileType to:toCopy discardTransparency:transparencyCopy enforceSquare:squareCopy maxDimensionInPixels:pixels];
 
-  v19 = v20;
-  if (v20)
+  v19 = completionCopy;
+  if (completionCopy)
   {
-    (*(v20 + 2))(v20, v18);
-    v19 = v20;
+    (*(completionCopy + 2))(completionCopy, v18);
+    v19 = completionCopy;
   }
 }
 
-- (BOOL)copyImageFromSourceUrl:(id)a3 sourceFileType:(id)a4 to:(id)a5 discardTransparency:(BOOL)a6 enforceSquare:(BOOL)a7 maxDimensionInPixels:(double)a8
+- (BOOL)copyImageFromSourceUrl:(id)url sourceFileType:(id)type to:(id)to discardTransparency:(BOOL)transparency enforceSquare:(BOOL)square maxDimensionInPixels:(double)pixels
 {
-  v9 = a7;
-  v10 = a6;
+  squareCopy = square;
+  transparencyCopy = transparency;
   v98 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  urlCopy = url;
+  typeCopy = type;
+  toCopy = to;
   v17 = os_transaction_create();
-  v18 = [MEMORY[0x277D3DA88] imageCache];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  imageCache = [MEMORY[0x277D3DA88] imageCache];
+  if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v91 = v14;
+    v91 = urlCopy;
     v92 = 2112;
-    *v93 = v16;
+    *v93 = toCopy;
     *&v93[8] = 1024;
-    *&v93[10] = v10;
+    *&v93[10] = transparencyCopy;
     v94 = 1024;
-    v95 = v9;
+    v95 = squareCopy;
     v96 = 2048;
-    v97 = a8;
-    _os_log_impl(&dword_21B365000, v18, OS_LOG_TYPE_DEFAULT, "saving image to disk in copyImageFromSourceUrl: (sourceUrl = %@, destinationUrl = %@, discardTransparency=%d, enforceSquare=%d, maxPixels=%.2f)", buf, 0x2Cu);
+    pixelsCopy3 = pixels;
+    _os_log_impl(&dword_21B365000, imageCache, OS_LOG_TYPE_DEFAULT, "saving image to disk in copyImageFromSourceUrl: (sourceUrl = %@, destinationUrl = %@, discardTransparency=%d, enforceSquare=%d, maxPixels=%.2f)", buf, 0x2Cu);
   }
 
-  v84 = v10;
+  v84 = transparencyCopy;
 
   v19 = objc_autoreleasePoolPush();
   v20 = *MEMORY[0x277CD3668];
   v88[0] = *MEMORY[0x277CD3618];
   v88[1] = v20;
   v89[0] = MEMORY[0x277CBEC28];
-  v89[1] = v15;
+  v89[1] = typeCopy;
   v85 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:v88 count:2];
-  v21 = CGImageSourceCreateWithURL(v14, v85);
+  v21 = CGImageSourceCreateWithURL(urlCopy, v85);
   v22 = v21;
   if (!v21 || !CGImageSourceGetCount(v21))
   {
-    v23 = v15;
-    v26 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    v23 = typeCopy;
+    imageCache2 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache2, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(__CFURL *)v14 path];
+      path = [(__CFURL *)urlCopy path];
       *buf = 134218498;
       v91 = v22;
       v92 = 1024;
       *v93 = 0;
       *&v93[4] = 2112;
-      *&v93[6] = v27;
-      _os_log_impl(&dword_21B365000, v26, OS_LOG_TYPE_DEFAULT, "Could not create image source (source = %p, imageCount = %d) using sourceUrl: %@", buf, 0x1Cu);
+      *&v93[6] = path;
+      _os_log_impl(&dword_21B365000, imageCache2, OS_LOG_TYPE_DEFAULT, "Could not create image source (source = %p, imageCount = %d) using sourceUrl: %@", buf, 0x1Cu);
     }
 
     if (!v22)
@@ -465,10 +465,10 @@ void __115__IMImageDiskCache_addImageWithSourceUrl_forKey_discardTransparency_en
     goto LABEL_11;
   }
 
-  v23 = v15;
+  v23 = typeCopy;
   [(IMImageDiskCache *)self onDiskFileType];
   v24 = v83 = v17;
-  v25 = CGImageDestinationCreateWithURL(v16, v24, 1uLL, 0);
+  v25 = CGImageDestinationCreateWithURL(toCopy, v24, 1uLL, 0);
 
   v17 = v83;
   idst = v25;
@@ -479,50 +479,50 @@ LABEL_11:
 LABEL_12:
     v28 = 0;
     v29 = v23;
-    v30 = v16;
+    v30 = toCopy;
     goto LABEL_51;
   }
 
-  v80 = v9 && !CGImageSourceIsSquare(v22);
+  v80 = squareCopy && !CGImageSourceIsSquare(v22);
   v29 = v23;
-  v31 = [(IMImageDiskCache *)self _defaultImageSavingOptions];
-  v82 = [v31 mutableCopy];
+  _defaultImageSavingOptions = [(IMImageDiskCache *)self _defaultImageSavingOptions];
+  v82 = [_defaultImageSavingOptions mutableCopy];
 
-  v30 = v16;
+  v30 = toCopy;
   if (v84)
   {
-    v32 = [MEMORY[0x277D75348] whiteColor];
-    v33 = [v32 CGColor];
-    [v82 setObject:v33 forKeyedSubscript:*MEMORY[0x277CD2CD0]];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    cGColor = [whiteColor CGColor];
+    [v82 setObject:cGColor forKeyedSubscript:*MEMORY[0x277CD2CD0]];
   }
 
-  if ([(IMImageDiskCache *)self _needsResizing:v22 maxDimensionInPixels:a8])
+  if ([(IMImageDiskCache *)self _needsResizing:v22 maxDimensionInPixels:pixels])
   {
     v79 = v19;
-    if ([(IMImageDiskCache *)self _usesLessMemoryToConvertThenResizeImageSource:v22 destinationDimensionInPixels:a8])
+    if ([(IMImageDiskCache *)self _usesLessMemoryToConvertThenResizeImageSource:v22 destinationDimensionInPixels:pixels])
     {
       v34 = MEMORY[0x277CBEBC0];
       v35 = NSTemporaryDirectory();
-      v36 = [MEMORY[0x277CCAD78] UUID];
-      v37 = [v36 UUIDString];
-      v38 = [v35 stringByAppendingPathComponent:v37];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v38 = [v35 stringByAppendingPathComponent:uUIDString];
       v39 = [v34 fileURLWithPath:v38];
 
-      v40 = [(IMImageDiskCache *)self onDiskFileType];
-      v41 = [(IMImageDiskCache *)self _copyImageSourceByConvertingImage:v22 toFileType:v40 destinationUrl:v39];
+      onDiskFileType = [(IMImageDiskCache *)self onDiskFileType];
+      v41 = [(IMImageDiskCache *)self _copyImageSourceByConvertingImage:v22 toFileType:onDiskFileType destinationUrl:v39];
 
       if (v41)
       {
-        v42 = [MEMORY[0x277D3DA88] imageCache];
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+        imageCache3 = [MEMORY[0x277D3DA88] imageCache];
+        if (os_log_type_enabled(imageCache3, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [(__CFURL *)v14 path];
-          v44 = [v39 path];
+          path2 = [(__CFURL *)urlCopy path];
+          path3 = [v39 path];
           *buf = 138412546;
-          v91 = v43;
+          v91 = path2;
           v92 = 2112;
-          *v93 = v44;
-          _os_log_impl(&dword_21B365000, v42, OS_LOG_TYPE_DEFAULT, "[ImageResize] performing 2-step save.  Performing format-only conversion (originalSourceUrl = %@, intermediateUrl = %@", buf, 0x16u);
+          *v93 = path3;
+          _os_log_impl(&dword_21B365000, imageCache3, OS_LOG_TYPE_DEFAULT, "[ImageResize] performing 2-step save.  Performing format-only conversion (originalSourceUrl = %@, intermediateUrl = %@", buf, 0x16u);
         }
 
         CFRelease(v22);
@@ -552,28 +552,28 @@ LABEL_12:
     v62 = *MEMORY[0x277CD3660];
     v86[2] = v61;
     v86[3] = v62;
-    v63 = [MEMORY[0x277CCABB0] numberWithDouble:a8];
+    v63 = [MEMORY[0x277CCABB0] numberWithDouble:pixels];
     v86[4] = *MEMORY[0x277CD3678];
     v87[3] = v63;
     v87[4] = v59;
     v64 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:5];
 
-    v65 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
+    imageCache4 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache4, OS_LOG_TYPE_DEFAULT))
     {
-      v66 = [(__CFURL *)v14 path];
-      v67 = [(__CFURL *)v30 path];
+      path4 = [(__CFURL *)urlCopy path];
+      path5 = [(__CFURL *)v30 path];
       *buf = 138413314;
-      v91 = v66;
+      v91 = path4;
       v92 = 2112;
-      *v93 = v67;
+      *v93 = path5;
       *&v93[8] = 1024;
       *&v93[10] = v84;
       v94 = 1024;
       v95 = v80;
       v96 = 2048;
-      v97 = a8;
-      _os_log_impl(&dword_21B365000, v65, OS_LOG_TYPE_DEFAULT, "[ImageResize] saving... (sourceUrl = %@, destinationUrl = %@, discardTransparency=%d, enforceSquare=%d, maxPixels=%.2f)", buf, 0x2Cu);
+      pixelsCopy3 = pixels;
+      _os_log_impl(&dword_21B365000, imageCache4, OS_LOG_TYPE_DEFAULT, "[ImageResize] saving... (sourceUrl = %@, destinationUrl = %@, discardTransparency=%d, enforceSquare=%d, maxPixels=%.2f)", buf, 0x2Cu);
     }
 
     v68 = v64;
@@ -581,16 +581,16 @@ LABEL_12:
     if (v80)
     {
       v70 = MEMORY[0x277D755B8];
-      v71 = [MEMORY[0x277D759A0] mainScreen];
-      [v71 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v72 = [v70 imageWithCGImage:ThumbnailAtIndex scale:0 orientation:?];
 
       if (v72)
       {
-        v73 = [v72 squareImage];
-        v74 = [v73 CGImage];
+        squareImage = [v72 squareImage];
+        cGImage = [squareImage CGImage];
 
-        CGImageDestinationAddImage(idst, v74, v82);
+        CGImageDestinationAddImage(idst, cGImage, v82);
       }
 
       v58 = idst;
@@ -611,14 +611,14 @@ LABEL_12:
 
   else
   {
-    v46 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+    imageCache5 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache5, OS_LOG_TYPE_DEFAULT))
     {
-      v47 = [(__CFURL *)v14 path];
-      [(__CFURL *)v16 path];
+      path6 = [(__CFURL *)urlCopy path];
+      [(__CFURL *)toCopy path];
       v49 = v48 = v19;
       *buf = 138413314;
-      v91 = v47;
+      v91 = path6;
       v92 = 2112;
       *v93 = v49;
       *&v93[8] = 1024;
@@ -626,8 +626,8 @@ LABEL_12:
       v94 = 1024;
       v95 = v80;
       v96 = 2048;
-      v97 = a8;
-      _os_log_impl(&dword_21B365000, v46, OS_LOG_TYPE_DEFAULT, "[ImageResize] saving... (sourceUrl = %@, destinationUrl = %@, discardTransparency=%d, enforceSquare=%d, maxPixels=%.2f)", buf, 0x2Cu);
+      pixelsCopy3 = pixels;
+      _os_log_impl(&dword_21B365000, imageCache5, OS_LOG_TYPE_DEFAULT, "[ImageResize] saving... (sourceUrl = %@, destinationUrl = %@, discardTransparency=%d, enforceSquare=%d, maxPixels=%.2f)", buf, 0x2Cu);
 
       v19 = v48;
     }
@@ -636,24 +636,24 @@ LABEL_12:
     {
       v50 = v19;
       v51 = MEMORY[0x277D755B8];
-      v52 = [(__CFURL *)v14 path];
-      v53 = [v51 imageWithContentsOfFile:v52];
+      path7 = [(__CFURL *)urlCopy path];
+      v53 = [v51 imageWithContentsOfFile:path7];
 
       if (v53)
       {
-        v54 = [MEMORY[0x277D3DA88] imageCache];
-        if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+        imageCache6 = [MEMORY[0x277D3DA88] imageCache];
+        if (os_log_type_enabled(imageCache6, OS_LOG_TYPE_DEFAULT))
         {
-          v55 = [(__CFURL *)v14 path];
+          path8 = [(__CFURL *)urlCopy path];
           *buf = 138412290;
-          v91 = v55;
-          _os_log_impl(&dword_21B365000, v54, OS_LOG_TYPE_DEFAULT, "Failed to load image from: %@", buf, 0xCu);
+          v91 = path8;
+          _os_log_impl(&dword_21B365000, imageCache6, OS_LOG_TYPE_DEFAULT, "Failed to load image from: %@", buf, 0xCu);
         }
 
-        v56 = [v53 squareImage];
-        v57 = [v56 CGImage];
+        squareImage2 = [v53 squareImage];
+        cGImage2 = [squareImage2 CGImage];
 
-        CGImageDestinationAddImage(idst, v57, v82);
+        CGImageDestinationAddImage(idst, cGImage2, v82);
       }
 
       v45 = 0;
@@ -672,13 +672,13 @@ LABEL_12:
   v28 = CGImageDestinationFinalize(v58);
   if (!v28)
   {
-    v75 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
+    imageCache7 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache7, OS_LOG_TYPE_DEFAULT))
     {
-      v76 = [(__CFURL *)v30 path];
+      path9 = [(__CFURL *)v30 path];
       *buf = 138412290;
-      v91 = v76;
-      _os_log_impl(&dword_21B365000, v75, OS_LOG_TYPE_DEFAULT, "Failed to write image data to: %@", buf, 0xCu);
+      v91 = path9;
+      _os_log_impl(&dword_21B365000, imageCache7, OS_LOG_TYPE_DEFAULT, "Failed to write image data to: %@", buf, 0xCu);
 
       v58 = idst;
     }
@@ -688,8 +688,8 @@ LABEL_12:
   CFRelease(v22);
   if (v45)
   {
-    v77 = [MEMORY[0x277CCAA00] defaultManager];
-    [v77 removeItemAtURL:v45 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtURL:v45 error:0];
   }
 
   v17 = v83;
@@ -699,12 +699,12 @@ LABEL_51:
   return v28;
 }
 
-- (CGImageSource)_copyImageSourceByConvertingImage:(CGImageSource *)a3 toFileType:(id)a4 destinationUrl:(id)a5
+- (CGImageSource)_copyImageSourceByConvertingImage:(CGImageSource *)image toFileType:(id)type destinationUrl:(id)url
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (!a3)
+  typeCopy = type;
+  urlCopy = url;
+  if (!image)
   {
     Type = [MEMORY[0x277D3DA88] imageCache];
     if (os_log_type_enabled(Type, OS_LOG_TYPE_ERROR))
@@ -716,9 +716,9 @@ LABEL_51:
     goto LABEL_10;
   }
 
-  Type = CGImageSourceGetType(a3);
-  v11 = [(IMImageDiskCache *)self onDiskFileType];
-  v12 = [Type isEqualToString:v11];
+  Type = CGImageSourceGetType(image);
+  onDiskFileType = [(IMImageDiskCache *)self onDiskFileType];
+  v12 = [Type isEqualToString:onDiskFileType];
 
   if (v12)
   {
@@ -727,24 +727,24 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v13 = CGImageDestinationCreateWithURL(v9, v8, 1uLL, 0);
+  v13 = CGImageDestinationCreateWithURL(urlCopy, typeCopy, 1uLL, 0);
   if (!v13)
   {
-    v16 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    imageCache = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = v9;
-      _os_log_impl(&dword_21B365000, v16, OS_LOG_TYPE_ERROR, "unable to save image to %@", &v18, 0xCu);
+      v19 = urlCopy;
+      _os_log_impl(&dword_21B365000, imageCache, OS_LOG_TYPE_ERROR, "unable to save image to %@", &v18, 0xCu);
     }
 
     goto LABEL_10;
   }
 
   v14 = v13;
-  CGImageDestinationAddImageFromSource(v13, a3, 0, 0);
+  CGImageDestinationAddImageFromSource(v13, image, 0, 0);
   CGImageDestinationFinalize(v14);
-  v15 = CGImageSourceCreateWithURL(v9, [(IMImageDiskCache *)self _defaultImageSavingSourceOptions]);
+  v15 = CGImageSourceCreateWithURL(urlCopy, [(IMImageDiskCache *)self _defaultImageSavingSourceOptions]);
   CFRelease(v14);
 LABEL_11:
 
@@ -759,9 +759,9 @@ LABEL_11:
   v3 = *MEMORY[0x277CD3668];
   v7[0] = v2;
   v7[1] = v3;
-  v4 = [(IMImageDiskCache *)self onDiskFileType];
+  onDiskFileType = [(IMImageDiskCache *)self onDiskFileType];
   v7[2] = *MEMORY[0x277CD3678];
-  v8[1] = v4;
+  v8[1] = onDiskFileType;
   v8[2] = MEMORY[0x277CBEC38];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:3];
 
@@ -787,72 +787,72 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_usesLessMemoryToConvertThenResizeImageSource:(CGImageSource *)a3 destinationDimensionInPixels:(double)a4
+- (BOOL)_usesLessMemoryToConvertThenResizeImageSource:(CGImageSource *)source destinationDimensionInPixels:(double)pixels
 {
-  v4 = a3;
-  if (a3)
+  sourceCopy = source;
+  if (source)
   {
-    Type = CGImageSourceGetType(a3);
-    v8 = [(IMImageDiskCache *)self onDiskFileType];
-    v9 = [(__CFString *)Type isEqualToString:v8];
+    Type = CGImageSourceGetType(source);
+    onDiskFileType = [(IMImageDiskCache *)self onDiskFileType];
+    v9 = [(__CFString *)Type isEqualToString:onDiskFileType];
 
     if (v9)
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(sourceCopy) = 0;
     }
 
     else
     {
-      v10 = (2 * CGImageSourcePixelSize(v4)) >= a4;
-      LOBYTE(v4) = (2 * v11) >= a4 && v10;
+      v10 = (2 * CGImageSourcePixelSize(sourceCopy)) >= pixels;
+      LOBYTE(sourceCopy) = (2 * v11) >= pixels && v10;
     }
   }
 
-  return v4;
+  return sourceCopy;
 }
 
-- (BOOL)_addImage:(id)a3 forKey:(id)a4 resizeIfTooBig:(BOOL)a5 manageProcessingState:(BOOL)a6 completion:(id)a7
+- (BOOL)_addImage:(id)image forKey:(id)key resizeIfTooBig:(BOOL)big manageProcessingState:(BOOL)state completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
+  stateCopy = state;
+  bigCopy = big;
   v63 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  imageCopy = image;
+  keyCopy = key;
+  completionCopy = completion;
   v15 = os_transaction_create();
-  v16 = v13;
+  v16 = keyCopy;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__IMImageDiskCache__addImage_forKey_resizeIfTooBig_manageProcessingState_completion___block_invoke;
   aBlock[3] = &unk_2782BD8D0;
-  v17 = v14;
+  v17 = completionCopy;
   v54 = v17;
   v18 = _Block_copy(aBlock);
   v19 = [v16 length];
-  if (v12 && v19)
+  if (imageCopy && v19)
   {
-    v20 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    imageCache = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
     {
-      [v12 size];
+      [imageCopy size];
       NSStringFromCGSize(v64);
       v21 = v17;
-      v23 = v22 = v8;
+      v23 = v22 = stateCopy;
       *buf = 138412546;
       v56 = v23;
       v57 = 2112;
       v58 = v16;
-      _os_log_impl(&dword_21B365000, v20, OS_LOG_TYPE_DEFAULT, "adding image (size = %@) to cache for with key %@", buf, 0x16u);
+      _os_log_impl(&dword_21B365000, imageCache, OS_LOG_TYPE_DEFAULT, "adding image (size = %@) to cache for with key %@", buf, 0x16u);
 
-      v8 = v22;
+      stateCopy = v22;
       v17 = v21;
     }
 
-    if (!v9 || (([v12 scale], v25 = v24, objc_msgSend(v12, "size"), maxImageDimensionInPixels = self->_maxImageDimensionInPixels, v29 = v25 * v28, v25 * v26 <= maxImageDimensionInPixels) ? (v30 = v29 <= maxImageDimensionInPixels) : (v30 = 0), v30))
+    if (!bigCopy || (([imageCopy scale], v25 = v24, objc_msgSend(imageCopy, "size"), maxImageDimensionInPixels = self->_maxImageDimensionInPixels, v29 = v25 * v28, v25 * v26 <= maxImageDimensionInPixels) ? (v30 = v29 <= maxImageDimensionInPixels) : (v30 = 0), v30))
     {
       v33 = 0;
       v31 = v16;
-      if (!v8)
+      if (!stateCopy)
       {
 LABEL_13:
         v34 = &__block_literal_global_32;
@@ -864,16 +864,16 @@ LABEL_13:
     {
       v31 = [v16 stringByAppendingString:@"-raw"];
 
-      v32 = [MEMORY[0x277D3DA88] imageCache];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      imageCache2 = [MEMORY[0x277D3DA88] imageCache];
+      if (os_log_type_enabled(imageCache2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v56 = v16;
-        _os_log_impl(&dword_21B365000, v32, OS_LOG_TYPE_DEFAULT, "image is too big, will resize (key=%@)", buf, 0xCu);
+        _os_log_impl(&dword_21B365000, imageCache2, OS_LOG_TYPE_DEFAULT, "image is too big, will resize (key=%@)", buf, 0xCu);
       }
 
       v33 = 1;
-      if (!v8)
+      if (!stateCopy)
       {
         goto LABEL_13;
       }
@@ -898,12 +898,12 @@ LABEL_24:
 LABEL_18:
     if (v33)
     {
-      v35 = [MEMORY[0x277D3DA88] imageCache];
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+      imageCache3 = [MEMORY[0x277D3DA88] imageCache];
+      if (os_log_type_enabled(imageCache3, OS_LOG_TYPE_DEFAULT))
       {
-        [v12 size];
+        [imageCopy size];
         v37 = v36;
-        [v12 size];
+        [imageCopy size];
         v38 = self->_maxImageDimensionInPixels;
         *buf = 138413058;
         v56 = v31;
@@ -913,7 +913,7 @@ LABEL_18:
         v60 = v39;
         v61 = 2048;
         v62 = v38;
-        _os_log_impl(&dword_21B365000, v35, OS_LOG_TYPE_DEFAULT, "Image for key %@ is larger than max size so downscaling asynchronously ({%f,%f} > max size (px) of %f)", buf, 0x2Au);
+        _os_log_impl(&dword_21B365000, imageCache3, OS_LOG_TYPE_DEFAULT, "Image for key %@ is larger than max size so downscaling asynchronously ({%f,%f} > max size (px) of %f)", buf, 0x2Au);
       }
     }
 
@@ -928,7 +928,7 @@ LABEL_18:
     v41 = v34;
     v48 = v41;
     v49 = v18;
-    v45 = v12;
+    v45 = imageCopy;
     v51 = v33;
     v46 = v16;
     v47 = v15;
@@ -1034,21 +1034,21 @@ uint64_t __85__IMImageDiskCache__addImage_forKey_resizeIfTooBig_manageProcessing
   return v2();
 }
 
-- (BOOL)_startProcessingForAddingKey:(id)a3 originalKey:(id)a4
+- (BOOL)_startProcessingForAddingKey:(id)key originalKey:(id)originalKey
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 isEqualToString:v6];
+  keyCopy = key;
+  originalKeyCopy = originalKey;
+  v8 = [originalKeyCopy isEqualToString:keyCopy];
   if ((v8 & 1) == 0)
   {
-    if ([(IMImageDiskCache *)self _isProcessingKey:v7 completion:0])
+    if ([(IMImageDiskCache *)self _isProcessingKey:originalKeyCopy completion:0])
     {
-      v9 = [MEMORY[0x277D3DA88] imageCache];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      imageCache = [MEMORY[0x277D3DA88] imageCache];
+      if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v7;
+        v18 = originalKeyCopy;
         v10 = "Skipping adding image. originalKey '%@' is already being processed";
         goto LABEL_16;
       }
@@ -1060,13 +1060,13 @@ LABEL_18:
       goto LABEL_25;
     }
 
-    if ([(IMBaseDiskCache *)self hasItemForKey:v7])
+    if ([(IMBaseDiskCache *)self hasItemForKey:originalKeyCopy])
     {
-      v9 = [MEMORY[0x277D3DA88] imageCache];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      imageCache = [MEMORY[0x277D3DA88] imageCache];
+      if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v7;
+        v18 = originalKeyCopy;
         v10 = "Skipping adding image. An image for originalKey '%@' already exists on disk.";
         goto LABEL_16;
       }
@@ -1075,33 +1075,33 @@ LABEL_18:
     }
   }
 
-  if ([(IMImageDiskCache *)self _isProcessingKey:v6 completion:0])
+  if ([(IMImageDiskCache *)self _isProcessingKey:keyCopy completion:0])
   {
-    v9 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    imageCache = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v6;
+      v18 = keyCopy;
       v10 = "Skipping adding image. key '%@' is already being processed";
 LABEL_16:
-      _os_log_impl(&dword_21B365000, v9, OS_LOG_TYPE_DEFAULT, v10, &v17, 0xCu);
+      _os_log_impl(&dword_21B365000, imageCache, OS_LOG_TYPE_DEFAULT, v10, &v17, 0xCu);
       goto LABEL_17;
     }
 
     goto LABEL_17;
   }
 
-  if ([(IMBaseDiskCache *)self hasItemForKey:v6])
+  if ([(IMBaseDiskCache *)self hasItemForKey:keyCopy])
   {
-    v11 = [MEMORY[0x277D3DA88] imageCache];
-    v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
+    imageCache2 = [MEMORY[0x277D3DA88] imageCache];
+    v12 = os_log_type_enabled(imageCache2, OS_LOG_TYPE_DEFAULT);
     if (v8)
     {
       if (v12)
       {
         v17 = 138412290;
-        v18 = v6;
-        _os_log_impl(&dword_21B365000, v11, OS_LOG_TYPE_DEFAULT, "Skipping adding image. An image for key '%@' already exists on disk.", &v17, 0xCu);
+        v18 = keyCopy;
+        _os_log_impl(&dword_21B365000, imageCache2, OS_LOG_TYPE_DEFAULT, "Skipping adding image. An image for key '%@' already exists on disk.", &v17, 0xCu);
       }
 
       goto LABEL_18;
@@ -1110,40 +1110,40 @@ LABEL_16:
     if (v12)
     {
       v17 = 138412546;
-      v18 = v6;
+      v18 = keyCopy;
       v19 = 2112;
-      v20 = v7;
-      _os_log_impl(&dword_21B365000, v11, OS_LOG_TYPE_DEFAULT, "Detected orphaned intermediate image with key '%@' for original '%@'.  Deleting and will continue processing…", &v17, 0x16u);
+      v20 = originalKeyCopy;
+      _os_log_impl(&dword_21B365000, imageCache2, OS_LOG_TYPE_DEFAULT, "Detected orphaned intermediate image with key '%@' for original '%@'.  Deleting and will continue processing…", &v17, 0x16u);
     }
 
-    v14 = [(IMImageDiskCache *)self pathForKey:v6];
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    [v15 removeItemAtPath:v14 error:0];
+    v14 = [(IMImageDiskCache *)self pathForKey:keyCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:v14 error:0];
   }
 
-  if (([v7 isEqualToString:v6] & 1) == 0)
+  if (([originalKeyCopy isEqualToString:keyCopy] & 1) == 0)
   {
-    [(IMImageDiskCache *)self _startProcessingKey:v7 completion:0];
+    [(IMImageDiskCache *)self _startProcessingKey:originalKeyCopy completion:0];
   }
 
-  [(IMImageDiskCache *)self _startProcessingKey:v6 completion:0];
+  [(IMImageDiskCache *)self _startProcessingKey:keyCopy completion:0];
   v13 = 1;
 LABEL_25:
 
   return v13;
 }
 
-- (id)imageUrlForKey:(id)a3
+- (id)imageUrlForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = a3;
-    v5 = [(IMImageDiskCache *)self pathForKey:v4];
+    keyCopy = key;
+    v5 = [(IMImageDiskCache *)self pathForKey:keyCopy];
     v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:0];
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    LOBYTE(self) = [(IMImageDiskCache *)self _isProcessingKey:v4 completion:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    LOBYTE(self) = [(IMImageDiskCache *)self _isProcessingKey:keyCopy completion:0];
 
-    if ((self & 1) != 0 || ![v7 fileExistsAtPath:v5])
+    if ((self & 1) != 0 || ![defaultManager fileExistsAtPath:v5])
     {
       v8 = 0;
     }
@@ -1162,17 +1162,17 @@ LABEL_25:
   return v8;
 }
 
-- (id)imageForKey:(id)a3
+- (id)imageForKey:(id)key
 {
-  v4 = [(IMImageDiskCache *)self imageUrlForKey:a3];
+  v4 = [(IMImageDiskCache *)self imageUrlForKey:key];
   if (v4)
   {
-    v5 = [(IMImageDiskCache *)self _defaultImageSavingSourceOptions];
-    v6 = CGImageSourceCreateWithURL(v4, v5);
+    _defaultImageSavingSourceOptions = [(IMImageDiskCache *)self _defaultImageSavingSourceOptions];
+    v6 = CGImageSourceCreateWithURL(v4, _defaultImageSavingSourceOptions);
     if (v6)
     {
       v7 = v6;
-      ImageAtIndex = CGImageSourceCreateImageAtIndex(v6, 0, v5);
+      ImageAtIndex = CGImageSourceCreateImageAtIndex(v6, 0, _defaultImageSavingSourceOptions);
       if (ImageAtIndex)
       {
         v9 = ImageAtIndex;
@@ -1202,11 +1202,11 @@ LABEL_25:
   return v10;
 }
 
-- (id)pathForKey:(id)a3
+- (id)pathForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IMImageDiskCache *)self _onDiskFileExtension];
-  v6 = [v4 stringByAppendingPathExtension:v5];
+  keyCopy = key;
+  _onDiskFileExtension = [(IMImageDiskCache *)self _onDiskFileExtension];
+  v6 = [keyCopy stringByAppendingPathExtension:_onDiskFileExtension];
 
   v9.receiver = self;
   v9.super_class = IMImageDiskCache;
@@ -1215,27 +1215,27 @@ LABEL_25:
   return v7;
 }
 
-- (void)_performWithSyncLock:(id)a3
+- (void)_performWithSyncLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   [(NSRecursiveLock *)self->_syncLock lock];
-  v4[2]();
+  lockCopy[2]();
   [(NSRecursiveLock *)self->_syncLock unlock];
 }
 
-- (void)_startProcessingKey:(id)a3 completion:(id)a4
+- (void)_startProcessingKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__IMImageDiskCache__startProcessingKey_completion___block_invoke;
   v10[3] = &unk_2782BDA50;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = keyCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = keyCopy;
   [(IMImageDiskCache *)self _performWithSyncLock:v10];
 }
 
@@ -1273,17 +1273,17 @@ void __51__IMImageDiskCache__startProcessingKey_completion___block_invoke(uint64
   }
 }
 
-- (void)_finishProcessingKey:(id)a3 success:(BOOL)a4
+- (void)_finishProcessingKey:(id)key success:(BOOL)success
 {
-  v6 = a3;
+  keyCopy = key;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__IMImageDiskCache__finishProcessingKey_success___block_invoke;
   v8[3] = &unk_2782BDA78;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = keyCopy;
+  successCopy = success;
+  v7 = keyCopy;
   [(IMImageDiskCache *)self _performWithSyncLock:v8];
 }
 
@@ -1331,10 +1331,10 @@ void __49__IMImageDiskCache__finishProcessingKey_success___block_invoke(uint64_t
   [v10 removeObjectForKey:*(a1 + 40)];
 }
 
-- (BOOL)_isProcessingKey:(id)a3 completion:(id)a4
+- (BOOL)_isProcessingKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1345,9 +1345,9 @@ void __49__IMImageDiskCache__finishProcessingKey_success___block_invoke(uint64_t
   v11[3] = &unk_2782BDAA0;
   v14 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = keyCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
   [(IMImageDiskCache *)self _performWithSyncLock:v11];
   LOBYTE(self) = *(v16 + 24);
@@ -1374,37 +1374,37 @@ void __48__IMImageDiskCache__isProcessingKey_completion___block_invoke(uint64_t 
   }
 }
 
-- (id)_resizeImageForKey:(id)a3 maxDimensionInPixels:(double)a4
+- (id)_resizeImageForKey:(id)key maxDimensionInPixels:(double)pixels
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 length];
-  if (a4 < 1.0 || v7 == 0)
+  keyCopy = key;
+  v7 = [keyCopy length];
+  if (pixels < 1.0 || v7 == 0)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [(IMImageDiskCache *)self pathForKey:v6];
+    v10 = [(IMImageDiskCache *)self pathForKey:keyCopy];
     v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v12 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:v10];
 
     if (v13)
     {
-      v14 = [MEMORY[0x277D3DA88] imageCache];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      imageCache = [MEMORY[0x277D3DA88] imageCache];
+      if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v28 = v6;
+        v28 = keyCopy;
         v29 = 2048;
-        v30 = a4;
-        _os_log_impl(&dword_21B365000, v14, OS_LOG_TYPE_DEFAULT, "[ImageResize] disk-based image resizing: (key = %@, maxDimensionInPixels = %.2f)", buf, 0x16u);
+        pixelsCopy = pixels;
+        _os_log_impl(&dword_21B365000, imageCache, OS_LOG_TYPE_DEFAULT, "[ImageResize] disk-based image resizing: (key = %@, maxDimensionInPixels = %.2f)", buf, 0x16u);
       }
 
-      v15 = [(IMImageDiskCache *)self _defaultImageSavingSourceOptions];
-      v9 = CGImageSourceCreateWithURL(v11, v15);
+      _defaultImageSavingSourceOptions = [(IMImageDiskCache *)self _defaultImageSavingSourceOptions];
+      v9 = CGImageSourceCreateWithURL(v11, _defaultImageSavingSourceOptions);
       if (v9)
       {
         v16 = MEMORY[0x277CBEC38];
@@ -1415,7 +1415,7 @@ void __48__IMImageDiskCache__isProcessingKey_completion___block_invoke(uint64_t 
         v26[1] = MEMORY[0x277CBEC38];
         v18 = *MEMORY[0x277CD3568];
         v26[2] = MEMORY[0x277CBEC38];
-        v19 = [MEMORY[0x277CCABB0] numberWithDouble:{a4, v25[0], v17, v18, *MEMORY[0x277CD3660]}];
+        v19 = [MEMORY[0x277CCABB0] numberWithDouble:{pixels, v25[0], v17, v18, *MEMORY[0x277CD3660]}];
         v25[4] = *MEMORY[0x277CD3678];
         v26[3] = v19;
         v26[4] = v16;
@@ -1427,8 +1427,8 @@ void __48__IMImageDiskCache__isProcessingKey_completion___block_invoke(uint64_t 
         if (ThumbnailAtIndex)
         {
           v22 = MEMORY[0x277D755B8];
-          v23 = [MEMORY[0x277D759A0] mainScreen];
-          [v23 scale];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen scale];
           v9 = [v22 imageWithCGImage:ThumbnailAtIndex scale:0 orientation:?];
 
           CFRelease(ThumbnailAtIndex);
@@ -1450,17 +1450,17 @@ void __48__IMImageDiskCache__isProcessingKey_completion___block_invoke(uint64_t 
   return v9;
 }
 
-- (void)performWhenURLAvailableForImageForKey:(id)a3 block:(id)a4
+- (void)performWhenURLAvailableForImageForKey:(id)key block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = [(IMImageDiskCache *)self imageUrlForKey:v6];
+    v8 = [(IMImageDiskCache *)self imageUrlForKey:keyCopy];
 
     if (v8)
     {
-      v7[2](v7, 1);
+      blockCopy[2](blockCopy, 1);
     }
 
     else
@@ -1475,8 +1475,8 @@ void __48__IMImageDiskCache__isProcessingKey_completion___block_invoke(uint64_t 
       v9[3] = &unk_2782BDAA0;
       v12 = v13;
       v9[4] = self;
-      v10 = v6;
-      v11 = v7;
+      v10 = keyCopy;
+      v11 = blockCopy;
       [(IMImageDiskCache *)self _performWithSyncLock:v9];
 
       _Block_object_dispose(v13, 8);

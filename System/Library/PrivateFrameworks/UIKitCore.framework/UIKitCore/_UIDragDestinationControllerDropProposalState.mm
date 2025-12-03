@@ -9,23 +9,23 @@
 
 - (id)effectiveIndexPath
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([a1 _hasDropActionTarget])
+    selfCopy = self;
+    if ([self _hasDropActionTarget])
     {
-      a1 = v2[3];
+      self = selfCopy[3];
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (_UIDragDestinationControllerDropProposalState)init
@@ -77,8 +77,8 @@
     didDrop = 0;
   }
 
-  v11 = [(_UIDragDestinationControllerDropProposalState *)&self->super.isa effectiveIndexPath];
-  v12 = __UICVIndexPathDescription(v11);
+  effectiveIndexPath = [(_UIDragDestinationControllerDropProposalState *)&self->super.isa effectiveIndexPath];
+  v12 = __UICVIndexPathDescription(effectiveIndexPath);
   v13 = [v3 stringWithFormat:@"<%@: indexPath = %@ proposal = %@; didDrop = %d; effectiveIndexPath = %@>", v5, v8, v9, didDrop, v12];;
 
   return v13;
@@ -113,9 +113,9 @@
       v5 = 0;
     }
 
-    v6 = [(UICollectionViewDropProposal *)v5 intent];
+    intent = [(UICollectionViewDropProposal *)v5 intent];
 
-    if (v6 != 2)
+    if (intent != 2)
     {
       return 0;
     }

@@ -1,15 +1,15 @@
 @interface PKSpendingSummaryAccountUserCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PKSpendingSummaryAccountUserCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKSpendingSummaryAccountUserCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKSpendingSummaryAccountUserCell" hasInstanceVariable:@"_amountLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKSpendingSummaryAccountUserCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKSpendingSummaryAccountUserCell" hasInstanceVariable:@"_amountLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel

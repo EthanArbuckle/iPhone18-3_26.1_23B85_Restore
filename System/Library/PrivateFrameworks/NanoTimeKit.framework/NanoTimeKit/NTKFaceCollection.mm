@@ -1,58 +1,58 @@
 @interface NTKFaceCollection
-- (BOOL)containsFace:(id)a3;
+- (BOOL)containsFace:(id)face;
 - (NTKFace)selectedFace;
-- (NTKFaceCollection)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4;
-- (id)_chooseNewSelectionBecauseSelectedUUIDWillBeRemovedAtIndex:(unint64_t)a3;
-- (id)faceAtIndex:(unint64_t)a3;
+- (NTKFaceCollection)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d;
+- (id)_chooseNewSelectionBecauseSelectedUUIDWillBeRemovedAtIndex:(unint64_t)index;
+- (id)faceAtIndex:(unint64_t)index;
 - (id)observers;
-- (unint64_t)indexOfFace:(id)a3;
+- (unint64_t)indexOfFace:(id)face;
 - (unint64_t)selectedFaceIndex;
-- (void)_addFace:(id)a3 forUUID:(id)a4 atIndex:(unint64_t)a5 suppressingCallbackToObserver:(id)a6;
-- (void)_notifyAddedFace:(id)a3 atIndex:(unint64_t)a4 omitObserver:(id)a5;
-- (void)_notifyRemovedFace:(id)a3 atIndex:(unint64_t)a4 omitObserver:(id)a5;
-- (void)_notifyReorderedFacesOmittingObserver:(id)a3;
-- (void)_notifySelectedFaceOmittingObserver:(id)a3;
-- (void)_removeFaceForUUID:(id)a3 suppressingCallbackToObserver:(id)a4;
-- (void)_setContentWithFaces:(id)a3 order:(id)a4 selection:(id)a5;
-- (void)_setSelectedUUID:(id)a3 notify:(BOOL)a4 suppressingCallbackToObserver:(id)a5;
-- (void)_throwIfNotLoaded:(SEL)a3;
+- (void)_addFace:(id)face forUUID:(id)d atIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer;
+- (void)_notifyAddedFace:(id)face atIndex:(unint64_t)index omitObserver:(id)observer;
+- (void)_notifyRemovedFace:(id)face atIndex:(unint64_t)index omitObserver:(id)observer;
+- (void)_notifyReorderedFacesOmittingObserver:(id)observer;
+- (void)_notifySelectedFaceOmittingObserver:(id)observer;
+- (void)_removeFaceForUUID:(id)d suppressingCallbackToObserver:(id)observer;
+- (void)_setContentWithFaces:(id)faces order:(id)order selection:(id)selection;
+- (void)_setSelectedUUID:(id)d notify:(BOOL)notify suppressingCallbackToObserver:(id)observer;
+- (void)_throwIfNotLoaded:(SEL)loaded;
 - (void)_updateLogIdentifier;
-- (void)_updateOrderedUUIDsFromReference:(id)a3 andNotifyReordered:(BOOL)a4;
-- (void)_upgradeFace:(id)a3 forUUID:(id)a4;
-- (void)addFace:(id)a3 atIndex:(unint64_t)a4 suppressingCallbackToObserver:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)appendFace:(id)a3 suppressingCallbackToObserver:(id)a4;
-- (void)enumerateFaceNamesUsingBlock:(id)a3;
-- (void)enumerateFacesUsingBlock:(id)a3;
-- (void)enumerateFacesWithIndexesUsingBlock:(id)a3;
-- (void)moveFace:(id)a3 toIndex:(unint64_t)a4 suppressingCallbackToObserver:(id)a5;
-- (void)removeFace:(id)a3 suppressingCallbackToObserver:(id)a4;
-- (void)removeFaceAtIndex:(unint64_t)a3 suppressingCallbackToObserver:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)replaceFaceLocallyByCopy:(id)a3 suppressingCallbackToObserver:(id)a4;
-- (void)setDebugName:(id)a3;
-- (void)setSelectedFace:(id)a3 suppressingCallbackToObserver:(id)a4;
-- (void)setSelectedFaceIndex:(unint64_t)a3 suppressingCallbackToObserver:(id)a4;
+- (void)_updateOrderedUUIDsFromReference:(id)reference andNotifyReordered:(BOOL)reordered;
+- (void)_upgradeFace:(id)face forUUID:(id)d;
+- (void)addFace:(id)face atIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer;
+- (void)addObserver:(id)observer;
+- (void)appendFace:(id)face suppressingCallbackToObserver:(id)observer;
+- (void)enumerateFaceNamesUsingBlock:(id)block;
+- (void)enumerateFacesUsingBlock:(id)block;
+- (void)enumerateFacesWithIndexesUsingBlock:(id)block;
+- (void)moveFace:(id)face toIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer;
+- (void)removeFace:(id)face suppressingCallbackToObserver:(id)observer;
+- (void)removeFaceAtIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)replaceFaceLocallyByCopy:(id)copy suppressingCallbackToObserver:(id)observer;
+- (void)setDebugName:(id)name;
+- (void)setSelectedFace:(id)face suppressingCallbackToObserver:(id)observer;
+- (void)setSelectedFaceIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer;
 @end
 
 @implementation NTKFaceCollection
 
-- (NTKFaceCollection)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4
+- (NTKFaceCollection)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = NTKFaceCollection;
   v9 = [(NTKFaceCollection *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collectionIdentifier, a3);
-    objc_storeStrong(&v10->_deviceUUID, a4);
+    objc_storeStrong(&v9->_collectionIdentifier, identifier);
+    objc_storeStrong(&v10->_deviceUUID, d);
     [(NTKFaceCollection *)v10 _updateLogIdentifier];
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v10->_observers;
-    v10->_observers = v11;
+    v10->_observers = weakObjectsHashTable;
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     orderedUUIDs = v10->_orderedUUIDs;
@@ -62,17 +62,17 @@
     facesByUUID = v10->_facesByUUID;
     v10->_facesByUUID = v15;
 
-    v17 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     UUIDsByFace = v10->_UUIDsByFace;
-    v10->_UUIDsByFace = v17;
+    v10->_UUIDsByFace = strongToStrongObjectsMapTable;
   }
 
   return v10;
 }
 
-- (unint64_t)indexOfFace:(id)a3
+- (unint64_t)indexOfFace:(id)face
 {
-  v4 = [(NSMapTable *)self->_UUIDsByFace objectForKey:a3];
+  v4 = [(NSMapTable *)self->_UUIDsByFace objectForKey:face];
   if (v4)
   {
     v5 = [(NSMutableArray *)self->_orderedUUIDs indexOfObject:v4];
@@ -86,9 +86,9 @@
   return v5;
 }
 
-- (BOOL)containsFace:(id)a3
+- (BOOL)containsFace:(id)face
 {
-  v3 = [(NSMapTable *)self->_UUIDsByFace objectForKey:a3];
+  v3 = [(NSMapTable *)self->_UUIDsByFace objectForKey:face];
   v4 = v3 != 0;
 
   return v4;
@@ -96,12 +96,12 @@
 
 - (NTKFace)selectedFace
 {
-  v3 = [(NTKFaceCollection *)self selectedUUID];
-  if (v3)
+  selectedUUID = [(NTKFaceCollection *)self selectedUUID];
+  if (selectedUUID)
   {
-    v4 = [(NTKFaceCollection *)self facesByUUID];
-    v5 = [(NTKFaceCollection *)self selectedUUID];
-    v6 = [v4 objectForKey:v5];
+    facesByUUID = [(NTKFaceCollection *)self facesByUUID];
+    selectedUUID2 = [(NTKFaceCollection *)self selectedUUID];
+    v6 = [facesByUUID objectForKey:selectedUUID2];
   }
 
   else
@@ -112,34 +112,34 @@
   return v6;
 }
 
-- (id)faceAtIndex:(unint64_t)a3
+- (id)faceAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_orderedUUIDs count]<= a3)
+  if ([(NSMutableArray *)self->_orderedUUIDs count]<= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_orderedUUIDs objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_orderedUUIDs objectAtIndex:index];
     v6 = [(NSMutableDictionary *)self->_facesByUUID objectForKey:v5];
   }
 
   return v6;
 }
 
-- (void)enumerateFacesUsingBlock:(id)a3
+- (void)enumerateFacesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NTKFaceCollection *)self orderedUUIDs];
+  blockCopy = block;
+  orderedUUIDs = [(NTKFaceCollection *)self orderedUUIDs];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__NTKFaceCollection_enumerateFacesUsingBlock___block_invoke;
   v7[3] = &unk_278781D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [orderedUUIDs enumerateObjectsUsingBlock:v7];
 }
 
 void __46__NTKFaceCollection_enumerateFacesUsingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -153,18 +153,18 @@ void __46__NTKFaceCollection_enumerateFacesUsingBlock___block_invoke(uint64_t a1
   (*(v5 + 16))(v5, v8, a4);
 }
 
-- (void)enumerateFacesWithIndexesUsingBlock:(id)a3
+- (void)enumerateFacesWithIndexesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NTKFaceCollection *)self orderedUUIDs];
+  blockCopy = block;
+  orderedUUIDs = [(NTKFaceCollection *)self orderedUUIDs];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__NTKFaceCollection_enumerateFacesWithIndexesUsingBlock___block_invoke;
   v7[3] = &unk_278781D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [orderedUUIDs enumerateObjectsUsingBlock:v7];
 }
 
 void __57__NTKFaceCollection_enumerateFacesWithIndexesUsingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -178,17 +178,17 @@ void __57__NTKFaceCollection_enumerateFacesWithIndexesUsingBlock___block_invoke(
   (*(v6 + 16))(v6, v9, a3, a4);
 }
 
-- (void)enumerateFaceNamesUsingBlock:(id)a3
+- (void)enumerateFaceNamesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NTKFaceCollection *)self facesByUUID];
+  blockCopy = block;
+  facesByUUID = [(NTKFaceCollection *)self facesByUUID];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke;
   v7[3] = &unk_278781DC0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [facesByUUID enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -200,12 +200,12 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
 
 - (unint64_t)selectedFaceIndex
 {
-  v3 = [(NTKFaceCollection *)self selectedUUID];
-  if (v3)
+  selectedUUID = [(NTKFaceCollection *)self selectedUUID];
+  if (selectedUUID)
   {
-    v4 = [(NTKFaceCollection *)self orderedUUIDs];
-    v5 = [(NTKFaceCollection *)self selectedUUID];
-    v6 = [v4 indexOfObject:v5];
+    orderedUUIDs = [(NTKFaceCollection *)self orderedUUIDs];
+    selectedUUID2 = [(NTKFaceCollection *)self selectedUUID];
+    v6 = [orderedUUIDs indexOfObject:selectedUUID2];
   }
 
   else
@@ -216,26 +216,26 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
   return v6;
 }
 
-- (void)setSelectedFaceIndex:(unint64_t)a3 suppressingCallbackToObserver:(id)a4
+- (void)setSelectedFaceIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  observerCopy = observer;
   v8 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     logIdentifier = self->_logIdentifier;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
     v13 = 138412802;
     v14 = logIdentifier;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v7;
+    v18 = observerCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "%@ set selected face index %@, observer = %@", &v13, 0x20u);
   }
 
   [(NTKFaceCollection *)self _throwIfNotLoaded:a2];
-  if ([(NSMutableArray *)self->_orderedUUIDs count]<= a3)
+  if ([(NSMutableArray *)self->_orderedUUIDs count]<= index)
   {
     v11 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -246,17 +246,17 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
 
   else
   {
-    v11 = [(NSMutableArray *)self->_orderedUUIDs objectAtIndex:a3];
+    v11 = [(NSMutableArray *)self->_orderedUUIDs objectAtIndex:index];
     v12 = [(NSMutableDictionary *)self->_facesByUUID objectForKey:v11];
-    [(NTKFaceCollection *)self setSelectedFace:v12 suppressingCallbackToObserver:v7];
+    [(NTKFaceCollection *)self setSelectedFace:v12 suppressingCallbackToObserver:observerCopy];
   }
 }
 
-- (void)setSelectedFace:(id)a3 suppressingCallbackToObserver:(id)a4
+- (void)setSelectedFace:(id)face suppressingCallbackToObserver:(id)observer
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  faceCopy = face;
+  observerCopy = observer;
   v9 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -264,26 +264,26 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
     v12 = 138412802;
     v13 = logIdentifier;
     v14 = 2112;
-    v15 = v7;
+    v15 = faceCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = observerCopy;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "%@ set selected face %@, observer = %@", &v12, 0x20u);
   }
 
   [(NTKFaceCollection *)self _throwIfNotLoaded:a2];
-  v11 = [(NSMapTable *)self->_UUIDsByFace objectForKey:v7];
+  v11 = [(NSMapTable *)self->_UUIDsByFace objectForKey:faceCopy];
   if (v11)
   {
-    [(NTKFaceCollection *)self _setSelectedUUID:v11 notify:1 suppressingCallbackToObserver:v8];
+    [(NTKFaceCollection *)self _setSelectedUUID:v11 notify:1 suppressingCallbackToObserver:observerCopy];
     [(NTKFaceCollection *)self _didSelectFaceUUID:v11 suppressingCallback:1];
   }
 }
 
-- (void)appendFace:(id)a3 suppressingCallbackToObserver:(id)a4
+- (void)appendFace:(id)face suppressingCallbackToObserver:(id)observer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  faceCopy = face;
+  observerCopy = observer;
   v9 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -291,97 +291,97 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
     v11 = 138412802;
     v12 = logIdentifier;
     v13 = 2112;
-    v14 = v7;
+    v14 = faceCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = observerCopy;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "%@ append face %@, observer = %@", &v11, 0x20u);
   }
 
   [(NTKFaceCollection *)self _throwIfNotLoaded:a2];
-  [(NTKFaceCollection *)self addFace:v7 atIndex:[(NTKFaceCollection *)self numberOfFaces] suppressingCallbackToObserver:v8];
+  [(NTKFaceCollection *)self addFace:faceCopy atIndex:[(NTKFaceCollection *)self numberOfFaces] suppressingCallbackToObserver:observerCopy];
 }
 
-- (void)addFace:(id)a3 atIndex:(unint64_t)a4 suppressingCallbackToObserver:(id)a5
+- (void)addFace:(id)face atIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  faceCopy = face;
+  observerCopy = observer;
   v11 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     logIdentifier = self->_logIdentifier;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
     v15 = 138413058;
     v16 = logIdentifier;
     v17 = 2112;
-    v18 = v9;
+    v18 = faceCopy;
     v19 = 2112;
     v20 = v13;
     v21 = 2112;
-    v22 = v10;
+    v22 = observerCopy;
     _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_DEFAULT, "%@ add face %@, at index %@, observer = %@", &v15, 0x2Au);
   }
 
   [(NTKFaceCollection *)self _throwIfNotLoaded:a2];
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  [(NTKFaceCollection *)self _addFace:v9 forUUID:v14 atIndex:a4 suppressingCallbackToObserver:v10];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(NTKFaceCollection *)self _addFace:faceCopy forUUID:uUID atIndex:index suppressingCallbackToObserver:observerCopy];
 }
 
-- (void)moveFace:(id)a3 toIndex:(unint64_t)a4 suppressingCallbackToObserver:(id)a5
+- (void)moveFace:(id)face toIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  faceCopy = face;
+  observerCopy = observer;
   v11 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     logIdentifier = self->_logIdentifier;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
     v15 = 138413058;
     v16 = logIdentifier;
     v17 = 2112;
-    v18 = v9;
+    v18 = faceCopy;
     v19 = 2112;
     v20 = v13;
     v21 = 2112;
-    v22 = v10;
+    v22 = observerCopy;
     _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_DEFAULT, "%@ move face %@, to index %@, observer = %@", &v15, 0x2Au);
   }
 
   [(NTKFaceCollection *)self _throwIfNotLoaded:a2];
-  v14 = [(NSMapTable *)self->_UUIDsByFace objectForKey:v9];
+  v14 = [(NSMapTable *)self->_UUIDsByFace objectForKey:faceCopy];
   if (v14)
   {
     [(NSMutableArray *)self->_orderedUUIDs removeObject:v14];
-    [(NSMutableArray *)self->_orderedUUIDs insertObject:v14 atIndex:a4];
-    [(NTKFaceCollection *)self _didMoveFace:v9 withUUID:v14 toIndex:a4];
-    [(NTKFaceCollection *)self _notifyReorderedFacesOmittingObserver:v10];
+    [(NSMutableArray *)self->_orderedUUIDs insertObject:v14 atIndex:index];
+    [(NTKFaceCollection *)self _didMoveFace:faceCopy withUUID:v14 toIndex:index];
+    [(NTKFaceCollection *)self _notifyReorderedFacesOmittingObserver:observerCopy];
   }
 }
 
-- (void)removeFaceAtIndex:(unint64_t)a3 suppressingCallbackToObserver:(id)a4
+- (void)removeFaceAtIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  observerCopy = observer;
   v8 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     logIdentifier = self->_logIdentifier;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
     v15 = 138412802;
     v16 = logIdentifier;
     v17 = 2112;
-    v18 = v10;
+    indexCopy = v10;
     v19 = 2112;
-    v20 = v7;
+    v20 = observerCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "%@ remove face at index %@, observer = %@", &v15, 0x20u);
   }
 
   [(NTKFaceCollection *)self _throwIfNotLoaded:a2];
-  v11 = [(NTKFaceCollection *)self faceAtIndex:a3];
+  v11 = [(NTKFaceCollection *)self faceAtIndex:index];
   if (v11)
   {
-    [(NTKFaceCollection *)self removeFace:v11 suppressingCallbackToObserver:v7];
+    [(NTKFaceCollection *)self removeFace:v11 suppressingCallbackToObserver:observerCopy];
   }
 
   else
@@ -394,7 +394,7 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
       v15 = 138543874;
       v16 = v13;
       v17 = 2048;
-      v18 = a3;
+      indexCopy = index;
       v19 = 2048;
       v20 = v14;
       _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to remove face because there is no face at index %lu. count: %lu", &v15, 0x20u);
@@ -402,11 +402,11 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
   }
 }
 
-- (void)removeFace:(id)a3 suppressingCallbackToObserver:(id)a4
+- (void)removeFace:(id)face suppressingCallbackToObserver:(id)observer
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  faceCopy = face;
+  observerCopy = observer;
   v9 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -414,42 +414,42 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
     v12 = 138412802;
     v13 = logIdentifier;
     v14 = 2112;
-    v15 = v7;
+    v15 = faceCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = observerCopy;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "%@ remove face %@, observer = %@", &v12, 0x20u);
   }
 
   [(NTKFaceCollection *)self _throwIfNotLoaded:a2];
-  v11 = [(NSMapTable *)self->_UUIDsByFace objectForKey:v7];
+  v11 = [(NSMapTable *)self->_UUIDsByFace objectForKey:faceCopy];
   if (v11)
   {
-    [(NTKFaceCollection *)self _removeFaceForUUID:v11 suppressingCallbackToObserver:v8];
-    [(NTKFaceCollection *)self _didRemoveFace:v7 withUUID:v11];
+    [(NTKFaceCollection *)self _removeFaceForUUID:v11 suppressingCallbackToObserver:observerCopy];
+    [(NTKFaceCollection *)self _didRemoveFace:faceCopy withUUID:v11];
   }
 }
 
-- (void)_setContentWithFaces:(id)a3 order:(id)a4 selection:(id)a5
+- (void)_setContentWithFaces:(id)faces order:(id)order selection:(id)selection
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 mutableCopy];
+  facesCopy = faces;
+  orderCopy = order;
+  selectionCopy = selection;
+  v11 = [facesCopy mutableCopy];
   facesByUUID = self->_facesByUUID;
   self->_facesByUUID = v11;
 
-  v13 = [v9 mutableCopy];
+  v13 = [orderCopy mutableCopy];
   orderedUUIDs = self->_orderedUUIDs;
   self->_orderedUUIDs = v13;
 
-  objc_storeStrong(&self->_selectedUUID, a5);
+  objc_storeStrong(&self->_selectedUUID, selection);
   [(NSMapTable *)self->_UUIDsByFace removeAllObjects];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = v8;
+  v15 = facesCopy;
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v16)
   {
@@ -477,23 +477,23 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
   }
 }
 
-- (void)_updateOrderedUUIDsFromReference:(id)a3 andNotifyReordered:(BOOL)a4
+- (void)_updateOrderedUUIDsFromReference:(id)reference andNotifyReordered:(BOOL)reordered
 {
-  v4 = a4;
+  reorderedCopy = reordered;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  referenceCopy = reference;
   v7 = [(NSMutableArray *)self->_orderedUUIDs copy];
-  if (v6)
+  if (referenceCopy)
   {
-    v16 = v4;
+    v16 = reorderedCopy;
     v8 = [(NSMutableArray *)self->_orderedUUIDs mutableCopy];
-    [v8 removeObjectsInArray:v6];
+    [v8 removeObjectsInArray:referenceCopy];
     [(NSMutableArray *)self->_orderedUUIDs removeAllObjects];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = v6;
+    v9 = referenceCopy;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -524,35 +524,35 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
     }
 
     [(NSMutableArray *)self->_orderedUUIDs addObjectsFromArray:v8];
-    v4 = v16;
+    reorderedCopy = v16;
   }
 
-  if (v4 && ([v7 isEqualToArray:self->_orderedUUIDs] & 1) == 0)
+  if (reorderedCopy && ([v7 isEqualToArray:self->_orderedUUIDs] & 1) == 0)
   {
     [(NTKFaceCollection *)self _notifyReorderedFacesOmittingObserver:0];
   }
 }
 
-- (void)_upgradeFace:(id)a3 forUUID:(id)a4
+- (void)_upgradeFace:(id)face forUUID:(id)d
 {
   facesByUUID = self->_facesByUUID;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)facesByUUID objectForKey:v7];
+  dCopy = d;
+  faceCopy = face;
+  v9 = [(NSMutableDictionary *)facesByUUID objectForKey:dCopy];
   [(NSMapTable *)self->_UUIDsByFace removeObjectForKey:v9];
-  [(NSMutableDictionary *)self->_facesByUUID setObject:v8 forKey:v7];
-  [(NSMapTable *)self->_UUIDsByFace setObject:v7 forKey:v8];
+  [(NSMutableDictionary *)self->_facesByUUID setObject:faceCopy forKey:dCopy];
+  [(NSMapTable *)self->_UUIDsByFace setObject:dCopy forKey:faceCopy];
 }
 
-- (void)_removeFaceForUUID:(id)a3 suppressingCallbackToObserver:(id)a4
+- (void)_removeFaceForUUID:(id)d suppressingCallbackToObserver:(id)observer
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(NTKFaceCollection *)self orderedUUIDs];
-  v8 = [v7 indexOfObject:v15];
+  dCopy = d;
+  observerCopy = observer;
+  orderedUUIDs = [(NTKFaceCollection *)self orderedUUIDs];
+  v8 = [orderedUUIDs indexOfObject:dCopy];
 
-  v9 = [(NTKFaceCollection *)self selectedUUID];
-  v10 = [v15 isEqual:v9];
+  selectedUUID = [(NTKFaceCollection *)self selectedUUID];
+  v10 = [dCopy isEqual:selectedUUID];
 
   if (v10)
   {
@@ -561,33 +561,33 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
     self->_selectedUUID = v11;
   }
 
-  v13 = [(NTKFaceCollection *)self facesByUUID];
-  v14 = [v13 objectForKey:v15];
+  facesByUUID = [(NTKFaceCollection *)self facesByUUID];
+  v14 = [facesByUUID objectForKey:dCopy];
 
   [v14 removeObserver:self];
-  [(NSMutableDictionary *)self->_facesByUUID removeObjectForKey:v15];
+  [(NSMutableDictionary *)self->_facesByUUID removeObjectForKey:dCopy];
   [(NSMapTable *)self->_UUIDsByFace removeObjectForKey:v14];
-  [(NSMutableArray *)self->_orderedUUIDs removeObject:v15];
-  [(NTKFaceCollection *)self _notifyRemovedFace:v14 atIndex:v8 omitObserver:v6];
+  [(NSMutableArray *)self->_orderedUUIDs removeObject:dCopy];
+  [(NTKFaceCollection *)self _notifyRemovedFace:v14 atIndex:v8 omitObserver:observerCopy];
   if (v10)
   {
-    [(NTKFaceCollection *)self _notifySelectedFaceOmittingObserver:v6];
+    [(NTKFaceCollection *)self _notifySelectedFaceOmittingObserver:observerCopy];
   }
 }
 
-- (void)_addFace:(id)a3 forUUID:(id)a4 atIndex:(unint64_t)a5 suppressingCallbackToObserver:(id)a6
+- (void)_addFace:(id)face forUUID:(id)d atIndex:(unint64_t)index suppressingCallbackToObserver:(id)observer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [v10 addObserver:self];
-  if (v10)
+  faceCopy = face;
+  dCopy = d;
+  observerCopy = observer;
+  [faceCopy addObserver:self];
+  if (faceCopy)
   {
-    [(NSMutableArray *)self->_orderedUUIDs insertObject:v11 atIndex:a5];
-    [(NSMutableDictionary *)self->_facesByUUID setObject:v10 forKey:v11];
-    [(NSMapTable *)self->_UUIDsByFace setObject:v11 forKey:v10];
-    [(NTKFaceCollection *)self _notifyAddedFace:v10 atIndex:a5 omitObserver:v12];
-    [(NTKFaceCollection *)self _didAddFace:v10 withUUID:v11 atIndex:a5];
+    [(NSMutableArray *)self->_orderedUUIDs insertObject:dCopy atIndex:index];
+    [(NSMutableDictionary *)self->_facesByUUID setObject:faceCopy forKey:dCopy];
+    [(NSMapTable *)self->_UUIDsByFace setObject:dCopy forKey:faceCopy];
+    [(NTKFaceCollection *)self _notifyAddedFace:faceCopy atIndex:index omitObserver:observerCopy];
+    [(NTKFaceCollection *)self _didAddFace:faceCopy withUUID:dCopy atIndex:index];
   }
 
   else
@@ -595,50 +595,50 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
     v13 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [NTKFaceCollection _addFace:v11 forUUID:? atIndex:? suppressingCallbackToObserver:?];
+      [NTKFaceCollection _addFace:dCopy forUUID:? atIndex:? suppressingCallbackToObserver:?];
     }
   }
 }
 
-- (void)_setSelectedUUID:(id)a3 notify:(BOOL)a4 suppressingCallbackToObserver:(id)a5
+- (void)_setSelectedUUID:(id)d notify:(BOOL)notify suppressingCallbackToObserver:(id)observer
 {
-  v10 = a3;
-  v8 = a5;
-  if ((NTKEqualObjects(v10, self->_selectedUUID) & 1) == 0)
+  dCopy = d;
+  observerCopy = observer;
+  if ((NTKEqualObjects(dCopy, self->_selectedUUID) & 1) == 0)
   {
-    objc_storeStrong(&self->_selectedUUID, a3);
-    v9 = [(NTKFaceCollection *)self selectedUUID];
+    objc_storeStrong(&self->_selectedUUID, d);
+    selectedUUID = [(NTKFaceCollection *)self selectedUUID];
 
-    if (v9)
+    if (selectedUUID)
     {
-      [(NTKFaceCollection *)self _notifySelectedFaceOmittingObserver:v8];
+      [(NTKFaceCollection *)self _notifySelectedFaceOmittingObserver:observerCopy];
     }
   }
 }
 
-- (id)_chooseNewSelectionBecauseSelectedUUIDWillBeRemovedAtIndex:(unint64_t)a3
+- (id)_chooseNewSelectionBecauseSelectedUUIDWillBeRemovedAtIndex:(unint64_t)index
 {
   v4 = [(NSMutableArray *)self->_orderedUUIDs mutableCopy];
-  [v4 removeObjectAtIndex:a3];
-  if ([v4 count] <= a3)
+  [v4 removeObjectAtIndex:index];
+  if ([v4 count] <= index)
   {
     [v4 lastObject];
   }
 
   else
   {
-    [v4 objectAtIndex:a3];
+    [v4 objectAtIndex:index];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)replaceFaceLocallyByCopy:(id)a3 suppressingCallbackToObserver:(id)a4
+- (void)replaceFaceLocallyByCopy:(id)copy suppressingCallbackToObserver:(id)observer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  copyCopy = copy;
+  observerCopy = observer;
   v8 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -646,53 +646,53 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
     v13 = 138412802;
     v14 = logIdentifier;
     v15 = 2112;
-    v16 = v6;
+    v16 = copyCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = observerCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "%@ replace face locally by copy %@, observer = %@", &v13, 0x20u);
   }
 
-  v10 = [(NSMapTable *)self->_UUIDsByFace objectForKey:v6];
+  v10 = [(NSMapTable *)self->_UUIDsByFace objectForKey:copyCopy];
   if (v10)
   {
     v11 = [(NSMutableArray *)self->_orderedUUIDs indexOfObject:v10];
-    v12 = [v6 copy];
-    [(NTKFaceCollection *)self _removeFaceForUUID:v10 suppressingCallbackToObserver:v7];
-    [(NTKFaceCollection *)self _addFace:v12 forUUID:v10 atIndex:v11 suppressingCallbackToObserver:v7];
+    v12 = [copyCopy copy];
+    [(NTKFaceCollection *)self _removeFaceForUUID:v10 suppressingCallbackToObserver:observerCopy];
+    [(NTKFaceCollection *)self _addFace:v12 forUUID:v10 atIndex:v11 suppressingCallbackToObserver:observerCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_notifyAddedFace:(id)a3 atIndex:(unint64_t)a4 omitObserver:(id)a5
+- (void)_notifyAddedFace:(id)face atIndex:(unint64_t)index omitObserver:(id)observer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  faceCopy = face;
+  observerCopy = observer;
   if ([(NTKFaceCollection *)self hasLoaded])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(NTKFaceCollection *)self observers];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    observers = [(NTKFaceCollection *)self observers];
+    v11 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -704,20 +704,20 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(observers);
           }
 
           v15 = *(*(&v16 + 1) + 8 * v14);
-          if (v15 != v9 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (v15 != observerCopy && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v15 faceCollection:self didAddFace:v8 atIndex:a4];
+            [v15 faceCollection:self didAddFace:faceCopy atIndex:index];
           }
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -725,19 +725,19 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
   }
 }
 
-- (void)_notifyRemovedFace:(id)a3 atIndex:(unint64_t)a4 omitObserver:(id)a5
+- (void)_notifyRemovedFace:(id)face atIndex:(unint64_t)index omitObserver:(id)observer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  faceCopy = face;
+  observerCopy = observer;
   if ([(NTKFaceCollection *)self hasLoaded])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(NTKFaceCollection *)self observers];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    observers = [(NTKFaceCollection *)self observers];
+    v11 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -749,20 +749,20 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(observers);
           }
 
           v15 = *(*(&v16 + 1) + 8 * v14);
-          if (v15 != v9 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (v15 != observerCopy && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v15 faceCollection:self didRemoveFace:v8 atIndex:a4];
+            [v15 faceCollection:self didRemoveFace:faceCopy atIndex:index];
           }
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -770,20 +770,20 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
   }
 }
 
-- (void)_notifySelectedFaceOmittingObserver:(id)a3
+- (void)_notifySelectedFaceOmittingObserver:(id)observer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if ([(NTKFaceCollection *)self hasLoaded])
   {
-    v5 = [(NTKFaceCollection *)self selectedFace];
-    v6 = [(NTKFaceCollection *)self selectedFaceIndex];
+    selectedFace = [(NTKFaceCollection *)self selectedFace];
+    selectedFaceIndex = [(NTKFaceCollection *)self selectedFaceIndex];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NTKFaceCollection *)self observers];
-    v8 = [v7 copy];
+    observers = [(NTKFaceCollection *)self observers];
+    v8 = [observers copy];
 
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
@@ -801,9 +801,9 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
           }
 
           v13 = *(*(&v14 + 1) + 8 * v12);
-          if (v13 != v4 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (v13 != observerCopy && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v13 faceCollection:self didSelectFace:v5 atIndex:v6];
+            [v13 faceCollection:self didSelectFace:selectedFace atIndex:selectedFaceIndex];
           }
 
           ++v12;
@@ -818,18 +818,18 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
   }
 }
 
-- (void)_notifyReorderedFacesOmittingObserver:(id)a3
+- (void)_notifyReorderedFacesOmittingObserver:(id)observer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if ([(NTKFaceCollection *)self hasLoaded])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(NTKFaceCollection *)self observers];
-    v6 = [v5 copy];
+    observers = [(NTKFaceCollection *)self observers];
+    v6 = [observers copy];
 
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
@@ -847,7 +847,7 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
-          if (v11 != v4 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (v11 != observerCopy && (objc_opt_respondsToSelector() & 1) != 0)
           {
             [v11 faceCollectionDidReorderFaces:self];
           }
@@ -866,29 +866,29 @@ void __50__NTKFaceCollection_enumerateFaceNamesUsingBlock___block_invoke(uint64_
 
 - (id)observers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_observers copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSHashTable *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_throwIfNotLoaded:(SEL)a3
+- (void)_throwIfNotLoaded:(SEL)loaded
 {
   if (![(NTKFaceCollection *)self hasLoaded])
   {
     v5 = MEMORY[0x277CBEAD8];
     v6 = *MEMORY[0x277CBE658];
-    v8 = [(NTKFaceCollection *)self collectionIdentifier];
-    v7 = NSStringFromSelector(a3);
-    [v5 raise:v6 format:{@"Attempt to modify face collection (%@) before it has loaded (sel = %@)", v8, v7}];
+    collectionIdentifier = [(NTKFaceCollection *)self collectionIdentifier];
+    v7 = NSStringFromSelector(loaded);
+    [v5 raise:v6 format:{@"Attempt to modify face collection (%@) before it has loaded (sel = %@)", collectionIdentifier, v7}];
   }
 }
 
-- (void)setDebugName:(id)a3
+- (void)setDebugName:(id)name
 {
-  objc_storeStrong(&self->_debugName, a3);
+  objc_storeStrong(&self->_debugName, name);
 
   [(NTKFaceCollection *)self _updateLogIdentifier];
 }

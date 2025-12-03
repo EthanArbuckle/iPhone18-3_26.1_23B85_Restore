@@ -1,7 +1,7 @@
 @interface WKTextExtractionScrollableItem
 - (CGSize)contentSize;
 - (WKTextExtractionScrollableItem)init;
-- (WKTextExtractionScrollableItem)initWithContentSize:(CGSize)a3 rectInWebView:(CGRect)a4 children:(id)a5;
+- (WKTextExtractionScrollableItem)initWithContentSize:(CGSize)size rectInWebView:(CGRect)view children:(id)children;
 @end
 
 @implementation WKTextExtractionScrollableItem
@@ -15,12 +15,12 @@
   return result;
 }
 
-- (WKTextExtractionScrollableItem)initWithContentSize:(CGSize)a3 rectInWebView:(CGRect)a4 children:(id)a5
+- (WKTextExtractionScrollableItem)initWithContentSize:(CGSize)size rectInWebView:(CGRect)view children:(id)children
 {
-  *&self->WKTextExtractionItem_opaque[OBJC_IVAR___WKTextExtractionScrollableItem_contentSize] = a3;
+  *&self->WKTextExtractionItem_opaque[OBJC_IVAR___WKTextExtractionScrollableItem_contentSize] = size;
   v6.receiver = self;
   v6.super_class = WKTextExtractionScrollableItem;
-  return [(WKTextExtractionItem *)&v6 initWith:a5 children:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  return [(WKTextExtractionItem *)&v6 initWith:children children:view.origin.x, view.origin.y, view.size.width, view.size.height];
 }
 
 - (WKTextExtractionScrollableItem)init

@@ -1,30 +1,30 @@
 @interface WebFrameView
-+ (BOOL)_canShowMIMETypeAsHTML:(id)a3;
-+ (Class)_viewClassForMIMEType:(id)a3 allowingPlugins:(BOOL)a4;
-+ (id)_viewTypesAllowImageTypeOmission:(BOOL)a3;
++ (BOOL)_canShowMIMETypeAsHTML:(id)l;
++ (Class)_viewClassForMIMEType:(id)type allowingPlugins:(BOOL)plugins;
++ (id)_viewTypesAllowImageTypeOmission:(BOOL)omission;
 - (BOOL)_hasScrollBars;
 - (BOOL)_isFlippedDocument;
 - (BOOL)_isVerticalDocument;
-- (BOOL)_pageHorizontally:(BOOL)a3;
-- (BOOL)_pageInBlockProgressionDirection:(BOOL)a3;
-- (BOOL)_pageVertically:(BOOL)a3;
-- (BOOL)_scrollLineHorizontally:(BOOL)a3;
-- (BOOL)_scrollLineVertically:(BOOL)a3;
-- (BOOL)_scrollOverflowInDirection:(unsigned __int8)a3 granularity:(unsigned __int8)a4;
+- (BOOL)_pageHorizontally:(BOOL)horizontally;
+- (BOOL)_pageInBlockProgressionDirection:(BOOL)direction;
+- (BOOL)_pageVertically:(BOOL)vertically;
+- (BOOL)_scrollLineHorizontally:(BOOL)horizontally;
+- (BOOL)_scrollLineVertically:(BOOL)vertically;
+- (BOOL)_scrollOverflowInDirection:(unsigned __int8)direction granularity:(unsigned __int8)granularity;
 - (BOOL)_scrollToBeginningOfDocument;
 - (BOOL)_scrollToEndOfDocument;
 - (BOOL)allowsScrolling;
 - (BOOL)becomeFirstResponder;
 - (BOOL)documentViewShouldHandlePrint;
 - (BOOL)isOpaque;
-- (BOOL)scrollView:(id)a3 shouldScrollToPoint:(CGPoint)a4;
+- (BOOL)scrollView:(id)view shouldScrollToPoint:(CGPoint)point;
 - (CGRect)visibleRect;
 - (Class)_customScrollViewClass;
-- (Class)_viewClassForMIMEType:(id)a3;
+- (Class)_viewClassForMIMEType:(id)type;
 - (NSView)documentView;
 - (NakedPtr<WebCore::LocalFrame>)_web_frame;
 - (WebFrame)webFrame;
-- (WebFrameView)initWithFrame:(CGRect)a3;
+- (WebFrameView)initWithFrame:(CGRect)frame;
 - (float)_horizontalKeyboardScrollDistance;
 - (float)_horizontalPageScrollDistance;
 - (float)_verticalKeyboardScrollDistance;
@@ -32,30 +32,30 @@
 - (id)_contentView;
 - (id)_largestChildWithScrollBars;
 - (id)_largestScrollableChild;
-- (id)_makeDocumentViewForDataSource:(id)a3;
+- (id)_makeDocumentViewForDataSource:(id)source;
 - (id)_scrollView;
 - (id)_webcore_effectiveFirstResponder;
-- (void)_forwardMouseEvent:(id)a3;
+- (void)_forwardMouseEvent:(id)event;
 - (void)_frameSizeChanged;
 - (void)_goBack;
 - (void)_goForward;
 - (void)_install;
-- (void)_setDocumentView:(id)a3;
-- (void)_setWebFrame:(id)a3;
+- (void)_setDocumentView:(id)view;
+- (void)_setWebFrame:(id)frame;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)frameSizeChanged;
-- (void)keyDown:(id)a3;
+- (void)keyDown:(id)down;
 - (void)printDocumentView;
-- (void)scrollLineDown:(id)a3;
-- (void)scrollLineUp:(id)a3;
-- (void)scrollPageDown:(id)a3;
-- (void)scrollPageUp:(id)a3;
-- (void)scrollToBeginningOfDocument:(id)a3;
-- (void)scrollToEndOfDocument:(id)a3;
+- (void)scrollLineDown:(id)down;
+- (void)scrollLineUp:(id)up;
+- (void)scrollPageDown:(id)down;
+- (void)scrollPageUp:(id)up;
+- (void)scrollToBeginningOfDocument:(id)document;
+- (void)scrollToEndOfDocument:(id)document;
 - (void)setAllowsScrolling:(BOOL)allowsScrolling;
-- (void)setFrameSize:(CGSize)a3;
-- (void)setNextKeyView:(id)a3;
+- (void)setFrameSize:(CGSize)size;
+- (void)setNextKeyView:(id)view;
 - (void)viewDidMoveToWindow;
 @end
 
@@ -63,9 +63,9 @@
 
 - (float)_verticalKeyboardScrollDistance
 {
-  v2 = [(WebFrameView *)self _scrollView];
+  _scrollView = [(WebFrameView *)self _scrollView];
 
-  [v2 verticalLineScroll];
+  [_scrollView verticalLineScroll];
   return result;
 }
 
@@ -81,28 +81,28 @@
   return self;
 }
 
-- (void)_setDocumentView:(id)a3
+- (void)_setDocumentView:(id)view
 {
-  v5 = [(WebFrameView *)self _scrollView];
+  _scrollView = [(WebFrameView *)self _scrollView];
   [-[WebFrameView _webView](self "_webView")];
   *(*(v9 + 72) + 47) = 0;
-  [v5 setDocumentView:a3];
+  [_scrollView setDocumentView:view];
   m_ptr = self->_private->webFrame->_private->coreFrame.m_ptr;
   if (m_ptr == *(*(*(m_ptr + 3) + 8) + 176))
   {
-    v7 = [(WebFrameView *)self window];
-    v8 = [(WebFrameView *)self documentView];
+    window = [(WebFrameView *)self window];
+    documentView = [(WebFrameView *)self documentView];
 
-    [v7 makeFirstResponder:v8];
+    [window makeFirstResponder:documentView];
   }
 }
 
-- (id)_makeDocumentViewForDataSource:(id)a3
+- (id)_makeDocumentViewForDataSource:(id)source
 {
-  v5 = [a3 _responseMIMEType];
-  if (v5)
+  _responseMIMEType = [source _responseMIMEType];
+  if (_responseMIMEType)
   {
-    v6 = v5;
+    v6 = _responseMIMEType;
   }
 
   else
@@ -114,8 +114,8 @@
   if (v7)
   {
     v8 = v7;
-    v9 = [a3 representation];
-    if (v9 && (v10 = v9, objc_opt_class() == v8))
+    representation = [source representation];
+    if (representation && (v10 = representation, objc_opt_class() == v8))
     {
       v11 = v10;
     }
@@ -140,21 +140,21 @@
   return v10;
 }
 
-- (void)_setWebFrame:(id)a3
+- (void)_setWebFrame:(id)frame
 {
-  if (!a3)
+  if (!frame)
   {
-    v5 = [(WebFrameView *)self documentView];
+    documentView = [(WebFrameView *)self documentView];
     if (objc_opt_respondsToSelector())
     {
-      [(NSView *)v5 performSelector:sel_close];
+      [(NSView *)documentView performSelector:sel_close];
     }
   }
 
-  self->_private->webFrame = a3;
+  self->_private->webFrame = frame;
   if (!self->_private->includedInWebKitStatistics)
   {
-    if ([a3 _isIncludedInWebKitStatistics])
+    if ([frame _isIncludedInWebKitStatistics])
     {
       self->_private->includedInWebKitStatistics = 1;
       ++WebFrameViewCount;
@@ -189,7 +189,7 @@
   return result;
 }
 
-+ (id)_viewTypesAllowImageTypeOmission:(BOOL)a3
++ (id)_viewTypesAllowImageTypeOmission:(BOOL)omission
 {
   if (_MergedGlobals_11 == 1)
   {
@@ -202,9 +202,9 @@
 
   else
   {
-    v9 = a3;
+    omissionCopy = omission;
     +[WebFrameView(WebInternal) _viewTypesAllowImageTypeOmission:]::$_0::operator()(&v10);
-    a3 = v9;
+    omission = omissionCopy;
     v3 = v10;
     qword_1ED6A6120 = v10;
     _MergedGlobals_11 = 1;
@@ -214,25 +214,25 @@
     }
   }
 
-  if (!a3)
+  if (!omission)
   {
     v4 = objc_opt_class();
     v5 = [+[WebHTMLView supportedImageMIMETypes](WebHTMLView "supportedImageMIMETypes")];
-    v6 = [v5 nextObject];
-    if (v6)
+    nextObject = [v5 nextObject];
+    if (nextObject)
     {
-      v7 = v6;
+      nextObject2 = nextObject;
       do
       {
-        if (![v3 objectForKey:v7])
+        if (![v3 objectForKey:nextObject2])
         {
-          [v3 setObject:v4 forKey:v7];
+          [v3 setObject:v4 forKey:nextObject2];
         }
 
-        v7 = [v5 nextObject];
+        nextObject2 = [v5 nextObject];
       }
 
-      while (v7);
+      while (nextObject2);
     }
 
     byte_1ED6A6119 = 1;
@@ -242,18 +242,18 @@
   return v3;
 }
 
-+ (BOOL)_canShowMIMETypeAsHTML:(id)a3
++ (BOOL)_canShowMIMETypeAsHTML:(id)l
 {
-  v3 = [objc_msgSend(a1 _viewTypesAllowImageTypeOmission:{1), "_webkit_objectForMIMEType:", a3}];
+  v3 = [objc_msgSend(self _viewTypesAllowImageTypeOmission:{1), "_webkit_objectForMIMEType:", l}];
   v4 = objc_opt_class();
 
   return [v3 isSubclassOfClass:v4];
 }
 
-+ (Class)_viewClassForMIMEType:(id)a3 allowingPlugins:(BOOL)a4
++ (Class)_viewClassForMIMEType:(id)type allowingPlugins:(BOOL)plugins
 {
   v5 = 0;
-  if ([WebView _viewClass:&v5 andRepresentationClass:0 forMIMEType:a3 allowingPlugins:a4])
+  if ([WebView _viewClass:&v5 andRepresentationClass:0 forMIMEType:type allowingPlugins:plugins])
   {
     return v5;
   }
@@ -264,17 +264,17 @@
   }
 }
 
-- (Class)_viewClassForMIMEType:(id)a3
+- (Class)_viewClassForMIMEType:(id)type
 {
-  v4 = [objc_opt_class() _viewClassForMIMEType:a3 allowingPlugins:0];
+  v4 = [objc_opt_class() _viewClassForMIMEType:type allowingPlugins:0];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return v4;
   }
 
-  v5 = [(WebFrameView *)self webFrame];
+  webFrame = [(WebFrameView *)self webFrame];
 
-  return [(objc_class *)v4 _representationClassForWebFrame:v5];
+  return [(objc_class *)v4 _representationClassForWebFrame:webFrame];
 }
 
 - (void)_install
@@ -331,13 +331,13 @@ LABEL_7:
   }
 }
 
-- (WebFrameView)initWithFrame:(CGRect)a3
+- (WebFrameView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v14.receiver = self;
   v14.super_class = WebFrameView;
-  v5 = [(WebFrameView *)&v14 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(WebFrameView *)&v14 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     if (([WebFrameView initWithFrame:]::didFirstTimeInitialization & 1) == 0)
@@ -393,15 +393,15 @@ LABEL_7:
   [(WebFrameView *)&v4 dealloc];
 }
 
-- (BOOL)scrollView:(id)a3 shouldScrollToPoint:(CGPoint)a4
+- (BOOL)scrollView:(id)view shouldScrollToPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(WebFrameView *)self _webView];
-  v8 = [v7 _UIKitDelegateForwarder];
+  y = point.y;
+  x = point.x;
+  _webView = [(WebFrameView *)self _webView];
+  _UIKitDelegateForwarder = [_webView _UIKitDelegateForwarder];
   webFrame = self->_private->webFrame;
 
-  return [v8 webView:v7 shouldScrollToPoint:webFrame forFrame:{x, y}];
+  return [_UIKitDelegateForwarder webView:_webView shouldScrollToPoint:webFrame forFrame:{x, y}];
 }
 
 - (WebFrame)webFrame
@@ -420,10 +420,10 @@ LABEL_7:
 
 - (void)setAllowsScrolling:(BOOL)allowsScrolling
 {
-  v3 = [(WebFrameView *)self webFrame];
-  if (v3)
+  webFrame = [(WebFrameView *)self webFrame];
+  if (webFrame)
   {
-    m_ptr = v3->_private->coreFrame.m_ptr;
+    m_ptr = webFrame->_private->coreFrame.m_ptr;
     if (m_ptr)
     {
       v5 = *(m_ptr + 27);
@@ -438,75 +438,75 @@ LABEL_7:
 
 - (BOOL)allowsScrolling
 {
-  v2 = [(WebFrameView *)self webFrame];
-  result = !v2 || (m_ptr = v2->_private->coreFrame.m_ptr) == 0 || (v4 = *(m_ptr + 27)) == 0 || (v6 = *(v4 + 64), v5 = v4 + 64, (*(v6 + 144))(v5) != 1) || (*(*v5 + 152))(v5) != 1;
+  webFrame = [(WebFrameView *)self webFrame];
+  result = !webFrame || (m_ptr = webFrame->_private->coreFrame.m_ptr) == 0 || (v4 = *(m_ptr + 27)) == 0 || (v6 = *(v4 + 64), v5 = v4 + 64, (*(v6 + 144))(v5) != 1) || (*(*v5 + 152))(v5) != 1;
   return result;
 }
 
 - (NSView)documentView
 {
-  v2 = [(WebFrameView *)self _scrollView];
+  _scrollView = [(WebFrameView *)self _scrollView];
 
-  return [v2 documentView];
+  return [_scrollView documentView];
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(WebFrameView *)self window];
-  if ([v3 keyViewSelectionDirection] == 2)
+  window = [(WebFrameView *)self window];
+  if ([window keyViewSelectionDirection] == 2)
   {
-    v4 = [(WebFrameView *)self previousValidKeyView];
-    if (v4)
+    previousValidKeyView = [(WebFrameView *)self previousValidKeyView];
+    if (previousValidKeyView)
     {
-      v5 = v4;
-      if (v4 != self)
+      v5 = previousValidKeyView;
+      if (previousValidKeyView != self)
       {
         goto LABEL_8;
       }
     }
 
-    v6 = [(WebView *)[[(WebFrameView *)self webFrame] webView] previousValidKeyView];
+    previousValidKeyView2 = [(WebView *)[[(WebFrameView *)self webFrame] webView] previousValidKeyView];
 LABEL_7:
-    v5 = v6;
+    v5 = previousValidKeyView2;
 LABEL_8:
-    [v3 makeFirstResponder:v5];
+    [window makeFirstResponder:v5];
     return 1;
   }
 
   if ([-[WebFrameView _scrollView](self "_scrollView")])
   {
-    v6 = [(WebFrameView *)self _scrollView];
+    previousValidKeyView2 = [(WebFrameView *)self _scrollView];
     goto LABEL_7;
   }
 
   return 1;
 }
 
-- (void)setNextKeyView:(id)a3
+- (void)setNextKeyView:(id)view
 {
   if ([(WebFrameView *)self _scrollView])
   {
-    v5 = [(WebFrameView *)self _scrollView];
+    _scrollView = [(WebFrameView *)self _scrollView];
 
-    [v5 setNextKeyView:a3];
+    [_scrollView setNextKeyView:view];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WebFrameView;
-    [(WebFrameView *)&v6 setNextKeyView:a3];
+    [(WebFrameView *)&v6 setNextKeyView:view];
   }
 }
 
 - (BOOL)isOpaque
 {
-  v2 = [(WebFrameView *)self _webView];
+  _webView = [(WebFrameView *)self _webView];
 
-  return [v2 drawsBackground];
+  return [_webView drawsBackground];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (![(WebFrameView *)self documentView]|| ([(NSView *)[(WebFrameView *)self documentView] frame], v4 == 0.0) || [[(WebFrameView *)self webFrame] _isCommitting])
   {
@@ -579,10 +579,10 @@ LABEL_8:
   return result;
 }
 
-- (void)setFrameSize:(CGSize)a3
+- (void)setFrameSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(WebFrameView *)self frame];
   v7.width = width;
   v7.height = height;
@@ -608,10 +608,10 @@ LABEL_8:
   [(WebFrameView *)&v3 viewDidMoveToWindow];
 }
 
-- (BOOL)_scrollOverflowInDirection:(unsigned __int8)a3 granularity:(unsigned __int8)a4
+- (BOOL)_scrollOverflowInDirection:(unsigned __int8)direction granularity:(unsigned __int8)granularity
 {
-  v4 = a4;
-  v5 = a3;
+  granularityCopy = granularity;
+  directionCopy = direction;
   [(WebFrameView *)self documentView];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -619,13 +619,13 @@ LABEL_8:
     return 0;
   }
 
-  v7 = [(WebFrameView *)self webFrame];
-  if (!v7)
+  webFrame = [(WebFrameView *)self webFrame];
+  if (!webFrame)
   {
     return 0;
   }
 
-  m_ptr = v7->_private->coreFrame.m_ptr;
+  m_ptr = webFrame->_private->coreFrame.m_ptr;
   if (!m_ptr)
   {
     return 0;
@@ -633,7 +633,7 @@ LABEL_8:
 
   v9 = *(m_ptr + 42);
 
-  return MEMORY[0x1EEE54AE8](v9, v5, v4, 0);
+  return MEMORY[0x1EEE54AE8](v9, directionCopy, granularityCopy, 0);
 }
 
 - (BOOL)_isVerticalDocument
@@ -670,13 +670,13 @@ LABEL_8:
 {
   if ([(WebFrameView *)self _scrollOverflowInDirection:0 granularity:2])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(_isScrollable) = 1;
   }
 
   else
   {
-    v3 = [(WebFrameView *)self _isScrollable];
-    if (v3)
+    _isScrollable = [(WebFrameView *)self _isScrollable];
+    if (_isScrollable)
     {
       [objc_msgSend(-[WebFrameView _scrollView](self "_scrollView")];
       v5 = v4;
@@ -684,11 +684,11 @@ LABEL_8:
       [-[WebFrameView _scrollView](self "_scrollView")];
       [-[WebFrameView _scrollView](self _scrollView];
       *&v11[1] = v7 + v9;
-      LOBYTE(v3) = [-[WebFrameView _contentView](self "_contentView")];
+      LOBYTE(_isScrollable) = [-[WebFrameView _contentView](self "_contentView")];
     }
   }
 
-  return v3;
+  return _isScrollable;
 }
 
 - (BOOL)_scrollToEndOfDocument
@@ -703,12 +703,12 @@ LABEL_8:
       v7 = v6;
       v9 = v8;
       v11 = v10;
-      v12 = [(WebFrameView *)self _isVerticalDocument];
-      v13 = [(WebFrameView *)self _isFlippedDocument];
-      if (v12)
+      _isVerticalDocument = [(WebFrameView *)self _isVerticalDocument];
+      _isFlippedDocument = [(WebFrameView *)self _isFlippedDocument];
+      if (_isVerticalDocument)
       {
         v14 = v7 + v11;
-        if (v13)
+        if (_isFlippedDocument)
         {
           v14 = v7;
         }
@@ -721,7 +721,7 @@ LABEL_8:
       else
       {
         v16 = v5 + v9;
-        if (v13)
+        if (_isFlippedDocument)
         {
           v16 = v5;
         }
@@ -742,53 +742,53 @@ LABEL_8:
   return v3;
 }
 
-- (void)scrollToBeginningOfDocument:(id)a3
+- (void)scrollToBeginningOfDocument:(id)document
 {
   if (![(WebFrameView *)self _scrollToBeginningOfDocument])
   {
-    v5 = [(WebFrameView *)self _largestScrollableChild];
-    if (!v5 || ([v5 _scrollToBeginningOfDocument] & 1) == 0)
+    _largestScrollableChild = [(WebFrameView *)self _largestScrollableChild];
+    if (!_largestScrollableChild || ([_largestScrollableChild _scrollToBeginningOfDocument] & 1) == 0)
     {
-      v6 = [(WAKResponder *)self nextResponder];
+      nextResponder = [(WAKResponder *)self nextResponder];
 
-      [v6 tryToPerform:sel_scrollToBeginningOfDocument_ with:a3];
+      [nextResponder tryToPerform:sel_scrollToBeginningOfDocument_ with:document];
     }
   }
 }
 
-- (void)scrollToEndOfDocument:(id)a3
+- (void)scrollToEndOfDocument:(id)document
 {
   if (![(WebFrameView *)self _scrollToEndOfDocument])
   {
-    v5 = [(WebFrameView *)self _largestScrollableChild];
-    if (!v5 || ([v5 _scrollToEndOfDocument] & 1) == 0)
+    _largestScrollableChild = [(WebFrameView *)self _largestScrollableChild];
+    if (!_largestScrollableChild || ([_largestScrollableChild _scrollToEndOfDocument] & 1) == 0)
     {
-      v6 = [(WAKResponder *)self nextResponder];
+      nextResponder = [(WAKResponder *)self nextResponder];
 
-      [v6 tryToPerform:sel_scrollToEndOfDocument_ with:a3];
+      [nextResponder tryToPerform:sel_scrollToEndOfDocument_ with:document];
     }
   }
 }
 
 - (void)_goBack
 {
-  v2 = [(WebFrameView *)self _webView];
+  _webView = [(WebFrameView *)self _webView];
 
-  [v2 goBack];
+  [_webView goBack];
 }
 
 - (void)_goForward
 {
-  v2 = [(WebFrameView *)self _webView];
+  _webView = [(WebFrameView *)self _webView];
 
-  [v2 goForward];
+  [_webView goForward];
 }
 
 - (float)_horizontalKeyboardScrollDistance
 {
-  v2 = [(WebFrameView *)self _scrollView];
+  _scrollView = [(WebFrameView *)self _scrollView];
 
-  [v2 horizontalLineScroll];
+  [_scrollView horizontalLineScroll];
   return result;
 }
 
@@ -805,10 +805,10 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)_pageVertically:(BOOL)a3
+- (BOOL)_pageVertically:(BOOL)vertically
 {
-  v3 = a3;
-  if ([(WebFrameView *)self _scrollOverflowInDirection:!a3 granularity:1])
+  verticallyCopy = vertically;
+  if ([(WebFrameView *)self _scrollOverflowInDirection:!vertically granularity:1])
   {
     return 1;
   }
@@ -816,7 +816,7 @@ LABEL_8:
   if ([(WebFrameView *)self _isScrollable])
   {
     [(WebFrameView *)self _verticalPageScrollDistance];
-    if (v3)
+    if (verticallyCopy)
     {
       *&v6 = -*&v6;
     }
@@ -826,16 +826,16 @@ LABEL_8:
 
   else
   {
-    v7 = [(WebFrameView *)self _largestScrollableChild];
+    _largestScrollableChild = [(WebFrameView *)self _largestScrollableChild];
 
-    return [v7 _pageVertically:v3];
+    return [_largestScrollableChild _pageVertically:verticallyCopy];
   }
 }
 
-- (BOOL)_pageHorizontally:(BOOL)a3
+- (BOOL)_pageHorizontally:(BOOL)horizontally
 {
-  v3 = a3;
-  if (a3)
+  horizontallyCopy = horizontally;
+  if (horizontally)
   {
     v5 = 2;
   }
@@ -853,7 +853,7 @@ LABEL_8:
   if ([(WebFrameView *)self _isScrollable])
   {
     [(WebFrameView *)self _horizontalPageScrollDistance];
-    if (v3)
+    if (horizontallyCopy)
     {
       *&v7 = -*&v7;
     }
@@ -863,18 +863,18 @@ LABEL_8:
 
   else
   {
-    v8 = [(WebFrameView *)self _largestScrollableChild];
+    _largestScrollableChild = [(WebFrameView *)self _largestScrollableChild];
 
-    return [v8 _pageHorizontally:v3];
+    return [_largestScrollableChild _pageHorizontally:horizontallyCopy];
   }
 }
 
-- (BOOL)_pageInBlockProgressionDirection:(BOOL)a3
+- (BOOL)_pageInBlockProgressionDirection:(BOOL)direction
 {
-  v3 = a3;
-  v5 = [(WebFrameView *)self _isVerticalDocument];
-  v6 = [(WebFrameView *)self _isFlippedDocument]^ v3;
-  if (v5)
+  directionCopy = direction;
+  _isVerticalDocument = [(WebFrameView *)self _isVerticalDocument];
+  v6 = [(WebFrameView *)self _isFlippedDocument]^ directionCopy;
+  if (_isVerticalDocument)
   {
 
     return [(WebFrameView *)self _pageVertically:v6];
@@ -887,10 +887,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)_scrollLineVertically:(BOOL)a3
+- (BOOL)_scrollLineVertically:(BOOL)vertically
 {
-  v3 = a3;
-  if ([(WebFrameView *)self _scrollOverflowInDirection:!a3 granularity:0])
+  verticallyCopy = vertically;
+  if ([(WebFrameView *)self _scrollOverflowInDirection:!vertically granularity:0])
   {
     return 1;
   }
@@ -898,7 +898,7 @@ LABEL_8:
   if ([(WebFrameView *)self _isScrollable])
   {
     [(WebFrameView *)self _verticalKeyboardScrollDistance];
-    if (v3)
+    if (verticallyCopy)
     {
       *&v6 = -*&v6;
     }
@@ -908,16 +908,16 @@ LABEL_8:
 
   else
   {
-    v7 = [(WebFrameView *)self _largestScrollableChild];
+    _largestScrollableChild = [(WebFrameView *)self _largestScrollableChild];
 
-    return [v7 _scrollLineVertically:v3];
+    return [_largestScrollableChild _scrollLineVertically:verticallyCopy];
   }
 }
 
-- (BOOL)_scrollLineHorizontally:(BOOL)a3
+- (BOOL)_scrollLineHorizontally:(BOOL)horizontally
 {
-  v3 = a3;
-  if (a3)
+  horizontallyCopy = horizontally;
+  if (horizontally)
   {
     v5 = 2;
   }
@@ -935,7 +935,7 @@ LABEL_8:
   if ([(WebFrameView *)self _isScrollable])
   {
     [(WebFrameView *)self _horizontalKeyboardScrollDistance];
-    if (v3)
+    if (horizontallyCopy)
     {
       *&v7 = -*&v7;
     }
@@ -945,87 +945,87 @@ LABEL_8:
 
   else
   {
-    v8 = [(WebFrameView *)self _largestScrollableChild];
+    _largestScrollableChild = [(WebFrameView *)self _largestScrollableChild];
 
-    return [v8 _scrollLineHorizontally:v3];
+    return [_largestScrollableChild _scrollLineHorizontally:horizontallyCopy];
   }
 }
 
-- (void)scrollPageUp:(id)a3
+- (void)scrollPageUp:(id)up
 {
   if (![(WebFrameView *)self _pageInBlockProgressionDirection:1])
   {
-    v5 = [(WAKResponder *)self nextResponder];
+    nextResponder = [(WAKResponder *)self nextResponder];
 
-    [v5 tryToPerform:sel_scrollPageUp_ with:a3];
+    [nextResponder tryToPerform:sel_scrollPageUp_ with:up];
   }
 }
 
-- (void)scrollPageDown:(id)a3
+- (void)scrollPageDown:(id)down
 {
   if (![(WebFrameView *)self _pageInBlockProgressionDirection:0])
   {
-    v5 = [(WAKResponder *)self nextResponder];
+    nextResponder = [(WAKResponder *)self nextResponder];
 
-    [v5 tryToPerform:sel_scrollPageDown_ with:a3];
+    [nextResponder tryToPerform:sel_scrollPageDown_ with:down];
   }
 }
 
-- (void)scrollLineUp:(id)a3
+- (void)scrollLineUp:(id)up
 {
   if (![(WebFrameView *)self _scrollLineVertically:1])
   {
-    v5 = [(WAKResponder *)self nextResponder];
+    nextResponder = [(WAKResponder *)self nextResponder];
 
-    [v5 tryToPerform:sel_scrollLineUp_ with:a3];
+    [nextResponder tryToPerform:sel_scrollLineUp_ with:up];
   }
 }
 
-- (void)scrollLineDown:(id)a3
+- (void)scrollLineDown:(id)down
 {
   if (![(WebFrameView *)self _scrollLineVertically:0])
   {
-    v5 = [(WAKResponder *)self nextResponder];
+    nextResponder = [(WAKResponder *)self nextResponder];
 
-    [v5 tryToPerform:sel_scrollLineDown_ with:a3];
+    [nextResponder tryToPerform:sel_scrollLineDown_ with:down];
   }
 }
 
-- (void)_forwardMouseEvent:(id)a3
+- (void)_forwardMouseEvent:(id)event
 {
-  v5 = [(WebFrameView *)self superview];
-  if ([v5 conformsToProtocol:&unk_1F475AD50])
+  superview = [(WebFrameView *)self superview];
+  if ([superview conformsToProtocol:&unk_1F475AD50])
   {
-    v6 = [objc_msgSend(v5 "_web_parentWebFrameView")];
-    v7 = a3;
+    nextResponder = [objc_msgSend(superview "_web_parentWebFrameView")];
+    eventCopy2 = event;
   }
 
   else
   {
-    v6 = [(WAKResponder *)self nextResponder];
-    v7 = a3;
+    nextResponder = [(WAKResponder *)self nextResponder];
+    eventCopy2 = event;
   }
 
-  [v6 handleEvent:v7];
+  [nextResponder handleEvent:eventCopy2];
 }
 
-- (void)keyDown:(id)a3
+- (void)keyDown:(id)down
 {
-  v5 = [a3 characters];
-  v14 = [a3 modifierFlags];
+  characters = [down characters];
+  modifierFlags = [down modifierFlags];
   if (self)
   {
     [(WebFrameView *)self _web_frame];
     if (v17)
     {
       v15 = *(*(*(*(*(v17 + 24) + 8) + 152) + 16) + 65);
-      v6 = [v5 length];
+      v6 = [characters length];
       if (v6 < 1)
       {
 LABEL_73:
         v16.receiver = self;
         v16.super_class = WebFrameView;
-        [(WAKResponder *)&v16 keyDown:a3];
+        [(WAKResponder *)&v16 keyDown:down];
         return;
       }
     }
@@ -1033,7 +1033,7 @@ LABEL_73:
     else
     {
       v15 = 0;
-      v6 = [v5 length];
+      v6 = [characters length];
       if (v6 < 1)
       {
         goto LABEL_73;
@@ -1045,7 +1045,7 @@ LABEL_73:
   {
     v15 = 0;
     v17 = 0;
-    v6 = [v5 length];
+    v6 = [characters length];
     if (v6 < 1)
     {
       goto LABEL_73;
@@ -1053,12 +1053,12 @@ LABEL_73:
   }
 
   v7 = 0;
-  v8 = v14 & 0x60000;
+  v8 = modifierFlags & 0x60000;
   v9 = v6 & 0x7FFFFFFF;
   v10 = 1;
   do
   {
-    v11 = [v5 characterAtIndex:v7];
+    v11 = [characters characterAtIndex:v7];
     if (v11 > 63234)
     {
       if (v11 <= 63274)
@@ -1085,7 +1085,7 @@ LABEL_49:
           goto LABEL_10;
         }
 
-        if ((v14 & 0x100000) != 0)
+        if ((modifierFlags & 0x100000) != 0)
         {
           if ((v15 & 1) == 0)
           {
@@ -1102,9 +1102,9 @@ LABEL_69:
           goto LABEL_10;
         }
 
-        v12 = self;
+        selfCopy2 = self;
         v13 = 0;
-        if ((v14 & 0x80000) == 0)
+        if ((modifierFlags & 0x80000) == 0)
         {
           goto LABEL_67;
         }
@@ -1165,7 +1165,7 @@ LABEL_57:
           goto LABEL_10;
         }
 
-        if ((v14 & 0x20000) == 0)
+        if ((modifierFlags & 0x20000) == 0)
         {
           goto LABEL_71;
         }
@@ -1180,7 +1180,7 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      if ((v14 & 0x20000) != 0)
+      if ((modifierFlags & 0x20000) != 0)
       {
         goto LABEL_61;
       }
@@ -1195,12 +1195,12 @@ LABEL_10:
         goto LABEL_10;
       }
 
-      if ((v14 & 0x100000) != 0)
+      if ((modifierFlags & 0x100000) != 0)
       {
         goto LABEL_49;
       }
 
-      if ((v14 & 0x80000) != 0)
+      if ((modifierFlags & 0x80000) != 0)
       {
         goto LABEL_61;
       }
@@ -1217,7 +1217,7 @@ LABEL_10:
           goto LABEL_10;
         }
 
-        if ((v14 & 0x100000) != 0)
+        if ((modifierFlags & 0x100000) != 0)
         {
           if ((v15 & 1) == 0)
           {
@@ -1234,17 +1234,17 @@ LABEL_71:
           goto LABEL_10;
         }
 
-        v12 = self;
+        selfCopy2 = self;
         v13 = 1;
-        if ((v14 & 0x80000) == 0)
+        if ((modifierFlags & 0x80000) == 0)
         {
 LABEL_67:
-          [(WebFrameView *)v12 _scrollLineHorizontally:v13];
+          [(WebFrameView *)selfCopy2 _scrollLineHorizontally:v13];
           goto LABEL_62;
         }
 
 LABEL_21:
-        [(WebFrameView *)v12 _pageHorizontally:v13];
+        [(WebFrameView *)selfCopy2 _pageHorizontally:v13];
         goto LABEL_62;
       }
 
@@ -1253,12 +1253,12 @@ LABEL_21:
         goto LABEL_10;
       }
 
-      if ((v14 & 0x100000) != 0)
+      if ((modifierFlags & 0x100000) != 0)
       {
         goto LABEL_58;
       }
 
-      if ((v14 & 0x80000) != 0)
+      if ((modifierFlags & 0x80000) != 0)
       {
         goto LABEL_57;
       }
@@ -1281,11 +1281,11 @@ LABEL_11:
 
 - (id)_webcore_effectiveFirstResponder
 {
-  v3 = [(WebFrameView *)self documentView];
-  if (v3)
+  documentView = [(WebFrameView *)self documentView];
+  if (documentView)
   {
 
-    return [(NSView *)v3 _webcore_effectiveFirstResponder];
+    return [(NSView *)documentView _webcore_effectiveFirstResponder];
   }
 
   else
@@ -1329,8 +1329,8 @@ LABEL_11:
 
 - (id)_largestScrollableChild
 {
-  v2 = [[(WebFrameView *)self webFrame] childFrames];
-  if (![(NSArray *)v2 count])
+  childFrames = [[(WebFrameView *)self webFrame] childFrames];
+  if (![(NSArray *)childFrames count])
   {
     return 0;
   }
@@ -1340,20 +1340,20 @@ LABEL_11:
   v5 = 1;
   do
   {
-    v6 = [-[NSArray objectAtIndex:](v2 objectAtIndex:{v3), "frameView"}];
-    if (([v6 _isScrollable] & 1) == 0)
+    _largestScrollableChild = [-[NSArray objectAtIndex:](childFrames objectAtIndex:{v3), "frameView"}];
+    if (([_largestScrollableChild _isScrollable] & 1) == 0)
     {
-      v6 = [v6 _largestScrollableChild];
+      _largestScrollableChild = [_largestScrollableChild _largestScrollableChild];
     }
 
-    if (v6)
+    if (_largestScrollableChild)
     {
-      [v6 _area];
+      [_largestScrollableChild _area];
       if (v7 >= 1.0)
       {
         if (!v4 || (v8 = v7, [v4 _area], v8 > v9))
         {
-          v4 = v6;
+          v4 = _largestScrollableChild;
         }
       }
     }
@@ -1361,25 +1361,25 @@ LABEL_11:
     v3 = v5++;
   }
 
-  while ([(NSArray *)v2 count]> v3);
+  while ([(NSArray *)childFrames count]> v3);
   return v4;
 }
 
 - (BOOL)_hasScrollBars
 {
-  v2 = [(WebFrameView *)self _scrollView];
-  if ([v2 hasHorizontalScroller])
+  _scrollView = [(WebFrameView *)self _scrollView];
+  if ([_scrollView hasHorizontalScroller])
   {
     return 1;
   }
 
-  return [v2 hasVerticalScroller];
+  return [_scrollView hasVerticalScroller];
 }
 
 - (id)_largestChildWithScrollBars
 {
-  v2 = [[(WebFrameView *)self webFrame] childFrames];
-  if (![(NSArray *)v2 count])
+  childFrames = [[(WebFrameView *)self webFrame] childFrames];
+  if (![(NSArray *)childFrames count])
   {
     return 0;
   }
@@ -1389,20 +1389,20 @@ LABEL_11:
   v5 = 1;
   do
   {
-    v6 = [-[NSArray objectAtIndex:](v2 objectAtIndex:{v3), "frameView"}];
-    if (([v6 _hasScrollBars] & 1) == 0)
+    _largestChildWithScrollBars = [-[NSArray objectAtIndex:](childFrames objectAtIndex:{v3), "frameView"}];
+    if (([_largestChildWithScrollBars _hasScrollBars] & 1) == 0)
     {
-      v6 = [v6 _largestChildWithScrollBars];
+      _largestChildWithScrollBars = [_largestChildWithScrollBars _largestChildWithScrollBars];
     }
 
-    if (v6)
+    if (_largestChildWithScrollBars)
     {
-      [v6 _area];
+      [_largestChildWithScrollBars _area];
       if (v7 >= 1.0)
       {
         if (!v4 || (v8 = v7, [v4 _area], v8 > v9))
         {
-          v4 = v6;
+          v4 = _largestChildWithScrollBars;
         }
       }
     }
@@ -1410,15 +1410,15 @@ LABEL_11:
     v3 = v5++;
   }
 
-  while ([(NSArray *)v2 count]> v3);
+  while ([(NSArray *)childFrames count]> v3);
   return v4;
 }
 
 - (id)_contentView
 {
-  v2 = [(WebFrameView *)self _scrollView];
+  _scrollView = [(WebFrameView *)self _scrollView];
 
-  return [v2 contentView];
+  return [_scrollView contentView];
 }
 
 - (Class)_customScrollViewClass

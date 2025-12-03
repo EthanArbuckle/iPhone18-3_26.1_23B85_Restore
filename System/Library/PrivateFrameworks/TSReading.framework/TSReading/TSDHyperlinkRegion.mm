@@ -1,6 +1,6 @@
 @interface TSDHyperlinkRegion
-+ (id)hyperlinkRegionWithURL:(id)a3 bezierPath:(id)a4;
-- (TSDHyperlinkRegion)initWithURL:(id)a3 bezierPath:(id)a4;
++ (id)hyperlinkRegionWithURL:(id)l bezierPath:(id)path;
+- (TSDHyperlinkRegion)initWithURL:(id)l bezierPath:(id)path;
 - (void)dealloc;
 @end
 
@@ -13,24 +13,24 @@
   [(TSDHyperlinkRegion *)&v3 dealloc];
 }
 
-+ (id)hyperlinkRegionWithURL:(id)a3 bezierPath:(id)a4
++ (id)hyperlinkRegionWithURL:(id)l bezierPath:(id)path
 {
-  v4 = [[a1 alloc] initWithURL:a3 bezierPath:a4];
+  v4 = [[self alloc] initWithURL:l bezierPath:path];
 
   return v4;
 }
 
-- (TSDHyperlinkRegion)initWithURL:(id)a3 bezierPath:(id)a4
+- (TSDHyperlinkRegion)initWithURL:(id)l bezierPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = TSDHyperlinkRegion;
   v6 = [(TSDHyperlinkRegion *)&v9 init];
   if (v6)
   {
-    v6->mURL = a3;
+    v6->mURL = l;
     v7 = objc_alloc_init(TSDBezierPath);
     v6->mBezierPath = v7;
-    [(TSDBezierPath *)v7 appendBezierPath:a4];
+    [(TSDBezierPath *)v7 appendBezierPath:path];
   }
 
   return v6;

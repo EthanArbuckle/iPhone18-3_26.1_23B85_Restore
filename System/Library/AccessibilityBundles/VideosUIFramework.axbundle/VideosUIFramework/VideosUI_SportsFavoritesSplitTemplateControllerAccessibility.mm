@@ -1,17 +1,17 @@
 @interface VideosUI_SportsFavoritesSplitTemplateControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHeaderElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation VideosUI_SportsFavoritesSplitTemplateControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.ErrorContentView"];
-  [v3 validateClass:@"VideosUI.ErrorContentView" hasSwiftField:@"titleView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.ErrorContentView" hasSwiftField:@"descriptionView" withSwiftType:"Optional<UIView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.ErrorContentView"];
+  [validationsCopy validateClass:@"VideosUI.ErrorContentView" hasSwiftField:@"titleView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.ErrorContentView" hasSwiftField:@"descriptionView" withSwiftType:"Optional<UIView>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,8 +25,8 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
-  v4 = [v3 _accessibilityDescendantOfType:MEMORY[0x29ED3FF70](@"VideosUI.ErrorContentView")];
+  view = [v2 view];
+  v4 = [view _accessibilityDescendantOfType:MEMORY[0x29ED3FF70](@"VideosUI.ErrorContentView")];
 
   v5 = MEMORY[0x29EDB8D80];
   v6 = [v4 safeSwiftValueForKey:@"titleView"];

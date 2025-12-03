@@ -1,11 +1,11 @@
 @interface AppLaunchAddressCorrectionAlert
-- (id)_actionsForPromptOptions:(id)a3;
-- (id)_localizedStringForAddressCorrectionOutcome:(unint64_t)a3;
+- (id)_actionsForPromptOptions:(id)options;
+- (id)_localizedStringForAddressCorrectionOutcome:(unint64_t)outcome;
 - (void)_alertDidFinishProcessing;
 - (void)_displayAlert;
-- (void)_fetchShouldDisplayAlertWithHandler:(id)a3;
+- (void)_fetchShouldDisplayAlertWithHandler:(id)handler;
 - (void)cancelAlertIfNecessary;
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3;
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppLaunchAddressCorrectionAlert
@@ -34,12 +34,12 @@
 - (void)_displayAlert
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  v7 = v4 != 5;
-  if (v4 == 5)
+  v7 = userInterfaceIdiom != 5;
+  if (userInterfaceIdiom == 5)
   {
     v8 = @"AddressCorrection_Permission_Message (macOS)";
   }
@@ -49,7 +49,7 @@
     v8 = @"AddressCorrection_Permission_Message (iOS)";
   }
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v9 = &off_1016ED568;
   }
@@ -79,22 +79,22 @@
   v16[3] = &unk_101638B38;
   v19 = v7;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   [v15 interruptApplicationWithKind:17 userInfo:v14 completionHandler:v16];
 }
 
-- (void)_fetchShouldDisplayAlertWithHandler:(id)a3
+- (void)_fetchShouldDisplayAlertWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[MKLocationManager sharedLocationManager];
-  v5 = [v4 isLocationServicesAuthorizationNeeded];
+  isLocationServicesAuthorizationNeeded = [v4 isLocationServicesAuthorizationNeeded];
 
   v6 = +[MKLocationManager sharedLocationManager];
-  v7 = [v6 isLocationServicesApproved];
+  isLocationServicesApproved = [v6 isLocationServicesApproved];
 
-  if (v5 || (v7 & 1) == 0 || [UIApp launchedToTest])
+  if (isLocationServicesAuthorizationNeeded || (isLocationServicesApproved & 1) == 0 || [UIApp launchedToTest])
   {
-    v3[2](v3, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -102,27 +102,27 @@
     v8 = +[MCProfileConnection sharedConnection];
     if ([v8 userMode] == 1 || objc_msgSend(v8, "isEphemeralMultiUser") || (Integer = GEOConfigGetInteger(), +[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLForKey:", @"HasAcknowledgedAddressCorrectionAlert2021"), v10, Integer) && v11 || (MGGetBoolAnswer() & 1) == 0)
     {
-      v3[2](v3, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
     {
-      v12 = v3;
+      v12 = handlerCopy;
       GEORegisterNetworkDefaults();
     }
   }
 }
 
-- (id)_localizedStringForAddressCorrectionOutcome:(unint64_t)a3
+- (id)_localizedStringForAddressCorrectionOutcome:(unint64_t)outcome
 {
-  if (a3 - 1 > 2)
+  if (outcome - 1 > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = *(&off_101638B58 + a3 - 1);
+    v3 = *(&off_101638B58 + outcome - 1);
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:@"localized string not found" table:0];
   }
@@ -130,15 +130,15 @@
   return v5;
 }
 
-- (id)_actionsForPromptOptions:(id)a3
+- (id)_actionsForPromptOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = optionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -188,9 +188,9 @@
   }
 }
 
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 

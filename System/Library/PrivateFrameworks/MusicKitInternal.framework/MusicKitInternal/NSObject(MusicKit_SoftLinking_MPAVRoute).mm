@@ -8,10 +8,10 @@
 
 - (id)musicKit_avRoute_routeUID
 {
-  v1 = [a1 _musicKit_self_avRoute];
-  v2 = [v1 routeUID];
+  _musicKit_self_avRoute = [self _musicKit_self_avRoute];
+  routeUID = [_musicKit_self_avRoute routeUID];
 
-  return v2;
+  return routeUID;
 }
 
 - (id)_musicKit_self_avRoute
@@ -36,23 +36,23 @@
   _Block_object_dispose(&v7, 8);
   if (objc_opt_isKindOfClass())
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)musicKit_avRoute_routeName
 {
-  v1 = [a1 _musicKit_self_avRoute];
-  v2 = [v1 routeName];
+  _musicKit_self_avRoute = [self _musicKit_self_avRoute];
+  routeName = [_musicKit_self_avRoute routeName];
 
-  return v2;
+  return routeName;
 }
 
 @end

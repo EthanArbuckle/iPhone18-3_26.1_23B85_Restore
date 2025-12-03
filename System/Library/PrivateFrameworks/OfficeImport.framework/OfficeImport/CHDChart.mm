@@ -1,5 +1,5 @@
 @interface CHDChart
-+ (id)binaryEffects:(BOOL)a3;
++ (id)binaryEffects:(BOOL)effects;
 - (BOOL)is3D;
 - (BOOL)isArea;
 - (BOOL)isPie;
@@ -10,7 +10,7 @@
 - (NSString)description;
 - (id)defaultContentFormat;
 - (id)defaultDataLabelFont;
-- (id)defaultFontWithResources:(id)a3;
+- (id)defaultFontWithResources:(id)resources;
 - (id)defaultSeriesTitleFont;
 - (id)defaultTextFont;
 - (id)defaultThemeFont;
@@ -20,21 +20,21 @@
 - (unint64_t)categoryCount;
 - (unint64_t)defaultFontIndex;
 - (unint64_t)seriesCount;
-- (void)addChild:(id)a3;
-- (void)addChildren:(id)a3;
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3;
-- (void)removeChild:(id)a3;
-- (void)replaceChild:(id)a3 with:(id)a4;
-- (void)setBackWallGraphicProperties:(id)a3;
-- (void)setChartAreaGraphicProperties:(id)a3;
-- (void)setDefaultTextProperties:(id)a3;
-- (void)setExternalData:(id)a3;
-- (void)setFloorGraphicProperties:(id)a3;
-- (void)setLegend:(id)a3;
-- (void)setPlotArea:(id)a3;
-- (void)setSideWallGraphicProperties:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setView3D:(id)a3;
+- (void)addChild:(id)child;
+- (void)addChildren:(id)children;
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values;
+- (void)removeChild:(id)child;
+- (void)replaceChild:(id)child with:(id)with;
+- (void)setBackWallGraphicProperties:(id)properties;
+- (void)setChartAreaGraphicProperties:(id)properties;
+- (void)setDefaultTextProperties:(id)properties;
+- (void)setExternalData:(id)data;
+- (void)setFloorGraphicProperties:(id)properties;
+- (void)setLegend:(id)legend;
+- (void)setPlotArea:(id)area;
+- (void)setSideWallGraphicProperties:(id)properties;
+- (void)setTitle:(id)title;
+- (void)setView3D:(id)d;
 @end
 
 @implementation CHDChart
@@ -78,9 +78,9 @@
 
 - (id)mainType
 {
-  v2 = [(CHDChart *)self plotArea];
-  v3 = [v2 chartTypes];
-  v4 = [v3 objectAtIndex:0];
+  plotArea = [(CHDChart *)self plotArea];
+  chartTypes = [plotArea chartTypes];
+  v4 = [chartTypes objectAtIndex:0];
 
   return v4;
 }
@@ -91,40 +91,40 @@
   v3 = v2;
   if (v2 && ([v2 runs], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [v3 runs];
-    v6 = [v5 objectAtIndex:0];
-    v7 = [v6 fontIndex];
+    runs = [v3 runs];
+    v6 = [runs objectAtIndex:0];
+    fontIndex = [v6 fontIndex];
   }
 
   else
   {
-    v7 = -1;
+    fontIndex = -1;
   }
 
-  return v7;
+  return fontIndex;
 }
 
 - (id)styleMatrix
 {
-  v2 = [(CHDChart *)self workbook];
-  v3 = [v2 theme];
-  v4 = [v3 baseStyles];
-  v5 = [v4 styleMatrix];
+  workbook = [(CHDChart *)self workbook];
+  theme = [workbook theme];
+  baseStyles = [theme baseStyles];
+  styleMatrix = [baseStyles styleMatrix];
 
-  return v5;
+  return styleMatrix;
 }
 
 - (BOOL)is3D
 {
-  v2 = [(CHDChart *)self mainType];
-  v3 = [objc_opt_class() is3DType];
+  mainType = [(CHDChart *)self mainType];
+  is3DType = [objc_opt_class() is3DType];
 
-  return v3;
+  return is3DType;
 }
 
 - (BOOL)isPie
 {
-  v2 = [(CHDChart *)self mainType];
+  mainType = [(CHDChart *)self mainType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -133,17 +133,17 @@
 
 - (unint64_t)seriesCount
 {
-  v2 = [(CHDChart *)self plotArea];
-  v3 = [v2 chartTypes];
+  plotArea = [(CHDChart *)self plotArea];
+  chartTypes = [plotArea chartTypes];
 
-  v4 = [v3 count];
+  v4 = [chartTypes count];
   if (v4)
   {
     v5 = 0;
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndex:v5];
+      v7 = [chartTypes objectAtIndex:v5];
       v6 += [v7 seriesCount];
 
       ++v5;
@@ -162,22 +162,22 @@
 
 - (unint64_t)categoryCount
 {
-  v2 = [(CHDChart *)self plotArea];
-  v3 = [v2 chartTypes];
+  plotArea = [(CHDChart *)self plotArea];
+  chartTypes = [plotArea chartTypes];
 
   v4 = 0;
-  v5 = [v3 count];
+  v5 = [chartTypes count];
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndex:v6];
-      v8 = [v7 categoryCount];
+      v7 = [chartTypes objectAtIndex:v6];
+      categoryCount = [v7 categoryCount];
 
-      if (v8 > v4)
+      if (categoryCount > v4)
       {
-        v4 = v8;
+        v4 = categoryCount;
       }
 
       ++v6;
@@ -189,113 +189,113 @@
   return v4;
 }
 
-- (void)setPlotArea:(id)a3
+- (void)setPlotArea:(id)area
 {
-  v5 = a3;
-  if (self->mPlotArea != v5)
+  areaCopy = area;
+  if (self->mPlotArea != areaCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mPlotArea, a3);
-    v5 = v6;
+    v6 = areaCopy;
+    objc_storeStrong(&self->mPlotArea, area);
+    areaCopy = v6;
   }
 }
 
-- (void)setView3D:(id)a3
+- (void)setView3D:(id)d
 {
-  v5 = a3;
-  if (self->mView3D != v5)
+  dCopy = d;
+  if (self->mView3D != dCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mView3D, a3);
-    v5 = v6;
+    v6 = dCopy;
+    objc_storeStrong(&self->mView3D, d);
+    dCopy = v6;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (self->mTitle != v5)
+  titleCopy = title;
+  if (self->mTitle != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mTitle, a3);
-    v5 = v6;
+    v6 = titleCopy;
+    objc_storeStrong(&self->mTitle, title);
+    titleCopy = v6;
   }
 }
 
-- (void)setLegend:(id)a3
+- (void)setLegend:(id)legend
 {
-  v5 = a3;
-  if (self->mLegend != v5)
+  legendCopy = legend;
+  if (self->mLegend != legendCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mLegend, a3);
-    v5 = v6;
+    v6 = legendCopy;
+    objc_storeStrong(&self->mLegend, legend);
+    legendCopy = v6;
   }
 }
 
-- (void)setExternalData:(id)a3
+- (void)setExternalData:(id)data
 {
-  v5 = a3;
-  if (self->mExternalData != v5)
+  dataCopy = data;
+  if (self->mExternalData != dataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mExternalData, a3);
-    v5 = v6;
+    v6 = dataCopy;
+    objc_storeStrong(&self->mExternalData, data);
+    dataCopy = v6;
   }
 }
 
-- (void)setChartAreaGraphicProperties:(id)a3
+- (void)setChartAreaGraphicProperties:(id)properties
 {
-  v5 = a3;
-  if (self->mChartAreaGraphicProperties != v5)
+  propertiesCopy = properties;
+  if (self->mChartAreaGraphicProperties != propertiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mChartAreaGraphicProperties, a3);
-    v5 = v6;
+    v6 = propertiesCopy;
+    objc_storeStrong(&self->mChartAreaGraphicProperties, properties);
+    propertiesCopy = v6;
   }
 }
 
-- (void)setBackWallGraphicProperties:(id)a3
+- (void)setBackWallGraphicProperties:(id)properties
 {
-  v5 = a3;
-  if (self->mBackWallGraphicProperties != v5)
+  propertiesCopy = properties;
+  if (self->mBackWallGraphicProperties != propertiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mBackWallGraphicProperties, a3);
-    v5 = v6;
+    v6 = propertiesCopy;
+    objc_storeStrong(&self->mBackWallGraphicProperties, properties);
+    propertiesCopy = v6;
   }
 }
 
-- (void)setSideWallGraphicProperties:(id)a3
+- (void)setSideWallGraphicProperties:(id)properties
 {
-  v5 = a3;
-  if (self->mSideWallGraphicProperties != v5)
+  propertiesCopy = properties;
+  if (self->mSideWallGraphicProperties != propertiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mSideWallGraphicProperties, a3);
-    v5 = v6;
+    v6 = propertiesCopy;
+    objc_storeStrong(&self->mSideWallGraphicProperties, properties);
+    propertiesCopy = v6;
   }
 }
 
-- (void)setFloorGraphicProperties:(id)a3
+- (void)setFloorGraphicProperties:(id)properties
 {
-  v5 = a3;
-  if (self->mFloorGraphicProperties != v5)
+  propertiesCopy = properties;
+  if (self->mFloorGraphicProperties != propertiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mFloorGraphicProperties, a3);
-    v5 = v6;
+    v6 = propertiesCopy;
+    objc_storeStrong(&self->mFloorGraphicProperties, properties);
+    propertiesCopy = v6;
   }
 }
 
-- (void)setDefaultTextProperties:(id)a3
+- (void)setDefaultTextProperties:(id)properties
 {
-  v5 = a3;
-  if (self->mDefaultTextProperties != v5)
+  propertiesCopy = properties;
+  if (self->mDefaultTextProperties != propertiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mDefaultTextProperties, a3);
-    v5 = v6;
+    v6 = propertiesCopy;
+    objc_storeStrong(&self->mDefaultTextProperties, properties);
+    propertiesCopy = v6;
   }
 }
 
@@ -312,60 +312,60 @@
   return result;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
-  if (v4)
+  childCopy = child;
+  if (childCopy)
   {
-    [(NSMutableArray *)self->mDrawables addObject:v4];
-    [v4 setParent:self];
+    [(NSMutableArray *)self->mDrawables addObject:childCopy];
+    [childCopy setParent:self];
   }
 }
 
-- (void)addChildren:(id)a3
+- (void)addChildren:(id)children
 {
-  v7 = a3;
-  v4 = [v7 count];
+  childrenCopy = children;
+  v4 = [childrenCopy count];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      v6 = [v7 objectAtIndex:i];
+      v6 = [childrenCopy objectAtIndex:i];
       [v6 setParent:self];
     }
   }
 
-  [(NSMutableArray *)self->mDrawables addObjectsFromArray:v7];
+  [(NSMutableArray *)self->mDrawables addObjectsFromArray:childrenCopy];
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->mDrawables indexOfObjectIdenticalTo:v8];
+  childCopy = child;
+  withCopy = with;
+  v7 = [(NSMutableArray *)self->mDrawables indexOfObjectIdenticalTo:childCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v8 setParent:0];
-    [(NSMutableArray *)self->mDrawables replaceObjectAtIndex:v7 withObject:v6];
-    [v6 setParent:self];
+    [childCopy setParent:0];
+    [(NSMutableArray *)self->mDrawables replaceObjectAtIndex:v7 withObject:withCopy];
+    [withCopy setParent:self];
   }
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  v5 = a3;
+  childCopy = child;
   v4 = [(NSMutableArray *)self->mDrawables indexOfObjectIdenticalTo:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v5 setParent:0];
+    [childCopy setParent:0];
     [(NSMutableArray *)self->mDrawables removeObjectAtIndex:v4];
   }
 }
 
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -385,7 +385,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) changeParentTextListStylePreservingEffectiveValues:{v4, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) changeParentTextListStylePreservingEffectiveValues:{valuesCopy, v9}];
       }
 
       while (v6 != v8);
@@ -401,41 +401,41 @@
   v3 = self->mExternalData;
   if (v3)
   {
-    v4 = v3;
+    workbook = v3;
   }
 
   else
   {
-    v4 = [(CHDChart *)self workbook];
-    if (!v4)
+    workbook = [(CHDChart *)self workbook];
+    if (!workbook)
     {
       v11 = 0;
       goto LABEL_9;
     }
   }
 
-  v5 = [v4 theme];
-  v6 = [v5 baseStyles];
-  v7 = [v6 fontScheme];
-  v8 = [v7 minorFont];
-  v9 = [v8 latinFont];
+  theme = [workbook theme];
+  baseStyles = [theme baseStyles];
+  fontScheme = [baseStyles fontScheme];
+  minorFont = [fontScheme minorFont];
+  latinFont = [minorFont latinFont];
 
-  v10 = [v4 resources];
-  v11 = [EDFont fontWithResources:v10];
+  resources = [workbook resources];
+  v11 = [EDFont fontWithResources:resources];
 
-  if (v9)
+  if (latinFont)
   {
-    [v11 setName:v9];
+    [v11 setName:latinFont];
   }
 
   [v11 setHeight:200.0];
   v12 = [OADSchemeColor schemeColorWithIndex:1];
-  v13 = [v4 theme];
-  v14 = [v13 baseStyles];
-  v15 = [v14 colorScheme];
-  v16 = [v4 resources];
-  v17 = [v16 colors];
-  v18 = [OADColor tsuColorWithColor:v12 colorMap:0 colorScheme:v15 colorPalette:v17];
+  theme2 = [workbook theme];
+  baseStyles2 = [theme2 baseStyles];
+  colorScheme = [baseStyles2 colorScheme];
+  resources2 = [workbook resources];
+  colors = [resources2 colors];
+  v18 = [OADColor tsuColorWithColor:v12 colorMap:0 colorScheme:colorScheme colorPalette:colors];
 
   if (!v18)
   {
@@ -455,17 +455,17 @@ LABEL_9:
   v4 = v3;
   if (v3 && ([v3 runs], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 runs];
-    v7 = [v6 objectAtIndex:0];
-    v8 = [v7 font];
+    runs = [v4 runs];
+    v7 = [runs objectAtIndex:0];
+    font = [v7 font];
   }
 
   else
   {
-    v8 = [(CHDChart *)self defaultThemeFont];
+    font = [(CHDChart *)self defaultThemeFont];
   }
 
-  return v8;
+  return font;
 }
 
 - (id)defaultDataLabelFont
@@ -474,29 +474,29 @@ LABEL_9:
   v4 = v3;
   if (v3 && ([v3 runs], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 runs];
+    runs = [v4 runs];
 
-    if (v6)
+    if (runs)
     {
-      v7 = [v4 runs];
-      v8 = [v7 objectAtIndex:0];
-      v9 = [v8 font];
+      runs2 = [v4 runs];
+      v8 = [runs2 objectAtIndex:0];
+      font = [v8 font];
 
       goto LABEL_7;
     }
 
-    v10 = [(CHDChart *)self defaultThemeFont];
+    defaultThemeFont = [(CHDChart *)self defaultThemeFont];
   }
 
   else
   {
-    v10 = [(CHDChart *)self defaultTextFont];
+    defaultThemeFont = [(CHDChart *)self defaultTextFont];
   }
 
-  v9 = v10;
+  font = defaultThemeFont;
 LABEL_7:
 
-  return v9;
+  return font;
 }
 
 - (id)defaultSeriesTitleFont
@@ -505,29 +505,29 @@ LABEL_7:
   v4 = v3;
   if (v3 && ([v3 runs], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 runs];
+    runs = [v4 runs];
 
-    if (v6)
+    if (runs)
     {
-      v7 = [v4 runs];
-      v8 = [v7 objectAtIndex:0];
-      v9 = [v8 font];
+      runs2 = [v4 runs];
+      v8 = [runs2 objectAtIndex:0];
+      font = [v8 font];
 
       goto LABEL_7;
     }
 
-    v10 = [(CHDChart *)self defaultThemeFont];
+    defaultThemeFont = [(CHDChart *)self defaultThemeFont];
   }
 
   else
   {
-    v10 = [(CHDChart *)self defaultTextFont];
+    defaultThemeFont = [(CHDChart *)self defaultTextFont];
   }
 
-  v9 = v10;
+  font = defaultThemeFont;
 LABEL_7:
 
-  return v9;
+  return font;
 }
 
 - (id)defaultContentFormat
@@ -536,28 +536,28 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 contentFormat];
+    contentFormat = [v2 contentFormat];
   }
 
   else
   {
-    v4 = 0;
+    contentFormat = 0;
   }
 
-  return v4;
+  return contentFormat;
 }
 
-- (id)defaultFontWithResources:(id)a3
+- (id)defaultFontWithResources:(id)resources
 {
-  v4 = [a3 fonts];
-  if (!v4 || (v5 = [(CHDChart *)self defaultFontIndex], v5 == -1))
+  fonts = [resources fonts];
+  if (!fonts || (v5 = [(CHDChart *)self defaultFontIndex], v5 == -1))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v4 objectAtIndex:v5];
+    v6 = [fonts objectAtIndex:v5];
   }
 
   return v6;
@@ -569,20 +569,20 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 labelPosition];
+    labelPosition = [v2 labelPosition];
   }
 
   else
   {
-    v4 = 0;
+    labelPosition = 0;
   }
 
-  return v4;
+  return labelPosition;
 }
 
 - (BOOL)isArea
 {
-  v2 = [(CHDChart *)self mainType];
+  mainType = [(CHDChart *)self mainType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -591,7 +591,7 @@ LABEL_7:
 
 - (BOOL)supportsMarkers
 {
-  v3 = [(CHDChart *)self mainType];
+  mainType = [(CHDChart *)self mainType];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -600,7 +600,7 @@ LABEL_7:
 
   else
   {
-    v5 = [(CHDChart *)self mainType];
+    mainType2 = [(CHDChart *)self mainType];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -610,7 +610,7 @@ LABEL_7:
 
 - (BOOL)isScatterOrBubble
 {
-  v3 = [(CHDChart *)self mainType];
+  mainType = [(CHDChart *)self mainType];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -619,7 +619,7 @@ LABEL_7:
 
   else
   {
-    v5 = [(CHDChart *)self mainType];
+    mainType2 = [(CHDChart *)self mainType];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -627,9 +627,9 @@ LABEL_7:
   return isKindOfClass & 1;
 }
 
-+ (id)binaryEffects:(BOOL)a3
++ (id)binaryEffects:(BOOL)effects
 {
-  if (a3)
+  if (effects)
   {
     v3 = objc_alloc_init(OADOuterShadowEffect);
     v4 = +[OADRgbColor black];
@@ -640,15 +640,15 @@ LABEL_7:
     LODWORD(v6) = 3.0;
     [(OADShadowEffect *)v3 setDistance:v6];
     [(OADShadowEffect *)v3 setBlurRadius:0.0];
-    v7 = [MEMORY[0x277CBEA60] arrayWithObject:v3];
+    array = [MEMORY[0x277CBEA60] arrayWithObject:v3];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v7;
+  return array;
 }
 
 - (NSString)description

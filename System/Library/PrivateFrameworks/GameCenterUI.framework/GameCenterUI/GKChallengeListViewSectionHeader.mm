@@ -2,7 +2,7 @@
 - (NSLayoutConstraint)leadingConstraint;
 - (NSLayoutConstraint)trailingConstraint;
 - (void)awakeFromNib;
-- (void)secondaryLabelTapped:(id)a3;
+- (void)secondaryLabelTapped:(id)tapped;
 @end
 
 @implementation GKChallengeListViewSectionHeader
@@ -14,14 +14,14 @@
   [(GKChallengeListViewSectionHeader *)&v5 awakeFromNib];
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_secondaryLabelTapped_];
   [(GKChallengeListViewSectionHeader *)self setSecondaryLabelTapGesture:v3];
-  v4 = [(GKChallengeListViewSectionHeader *)self secondaryLabel];
-  [v4 addGestureRecognizer:v3];
+  secondaryLabel = [(GKChallengeListViewSectionHeader *)self secondaryLabel];
+  [secondaryLabel addGestureRecognizer:v3];
 }
 
-- (void)secondaryLabelTapped:(id)a3
+- (void)secondaryLabelTapped:(id)tapped
 {
-  v3 = [(GKChallengeListViewSectionHeader *)self secondaryLabelTapHandler];
-  v3[2]();
+  secondaryLabelTapHandler = [(GKChallengeListViewSectionHeader *)self secondaryLabelTapHandler];
+  secondaryLabelTapHandler[2]();
 }
 
 - (NSLayoutConstraint)trailingConstraint

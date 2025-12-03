@@ -1,30 +1,30 @@
 @interface RMSDAAPNowPlayingManager
-- (BOOL)_audioRoutes:(id)a3 equalAudioRoutes:(id)a4;
-- (RMSDAAPNowPlayingManager)initWithRequestManager:(id)a3;
+- (BOOL)_audioRoutes:(id)routes equalAudioRoutes:(id)audioRoutes;
+- (RMSDAAPNowPlayingManager)initWithRequestManager:(id)manager;
 - (RMSDAAPNowPlayingManagerDelegate)delegate;
 - (void)_cancelArtworkRetryTimer;
 - (void)_refreshNowPlayingInfoRequest;
-- (void)_requestArtworkDataIfNecessaryForNowPlayingInfo:(id)a3;
+- (void)_requestArtworkDataIfNecessaryForNowPlayingInfo:(id)info;
 - (void)_requestAudioRoutes;
-- (void)_requestNowPlayingInfoWithCompletionHandler:(id)a3;
+- (void)_requestNowPlayingInfoWithCompletionHandler:(id)handler;
 - (void)_requestVolume;
-- (void)_scheduleArtworkRetryForNowPlayingInfo:(id)a3 delay:(double)a4;
+- (void)_scheduleArtworkRetryForNowPlayingInfo:(id)info delay:(double)delay;
 - (void)beginObservingNowPlaying;
 - (void)endObservingNowPlaying;
 @end
 
 @implementation RMSDAAPNowPlayingManager
 
-- (RMSDAAPNowPlayingManager)initWithRequestManager:(id)a3
+- (RMSDAAPNowPlayingManager)initWithRequestManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = RMSDAAPNowPlayingManager;
   v6 = [(RMSDAAPNowPlayingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestManager, a3);
+    objc_storeStrong(&v6->_requestManager, manager);
   }
 
   return v7;
@@ -154,10 +154,10 @@ void __52__RMSDAAPNowPlayingManager_beginObservingNowPlaying__block_invoke_1(uin
   }
 }
 
-- (void)_requestNowPlayingInfoWithCompletionHandler:(id)a3
+- (void)_requestNowPlayingInfoWithCompletionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/1/%s", "ctrl-int", "playstatusupdate"];
   [(NSURLSessionDataTask *)self->_nowPlayingInfoRequest cancel];
   v14 = @"revision-number";
@@ -169,8 +169,8 @@ void __52__RMSDAAPNowPlayingManager_beginObservingNowPlaying__block_invoke_1(uin
   v12[1] = 3221225472;
   v12[2] = __72__RMSDAAPNowPlayingManager__requestNowPlayingInfoWithCompletionHandler___block_invoke;
   v12[3] = &unk_279B08CF0;
-  v13 = v4;
-  v9 = v4;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [(RMSDAAPRequestManager *)requestManager requestWithPath:v5 method:@"GET" postData:0 queryArgs:v8 completionHandler:v12];
   nowPlayingInfoRequest = self->_nowPlayingInfoRequest;
   self->_nowPlayingInfoRequest = v10;
@@ -360,13 +360,13 @@ LABEL_27:
   }
 }
 
-- (void)_requestArtworkDataIfNecessaryForNowPlayingInfo:(id)a3
+- (void)_requestArtworkDataIfNecessaryForNowPlayingInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 artworkIdentifier];
-  v6 = v5;
-  if (!v5)
+  infoCopy = info;
+  artworkIdentifier = [infoCopy artworkIdentifier];
+  v6 = artworkIdentifier;
+  if (!artworkIdentifier)
   {
     v11 = RMSLogger();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -381,13 +381,13 @@ LABEL_27:
     goto LABEL_12;
   }
 
-  if (([v5 isEqualToString:self->_currentArtworkIdentifier] & 1) == 0)
+  if (([artworkIdentifier isEqualToString:self->_currentArtworkIdentifier] & 1) == 0)
   {
     [(NSURLSessionDataTask *)self->_artworkRequest cancel];
     [(RMSDAAPNowPlayingManager *)self _cancelArtworkRetryTimer];
     objc_storeStrong(&self->_currentArtworkIdentifier, v6);
     v7 = +[RMSNowPlayingArtworkCache sharedArtworkCache];
-    currentArtworkIdentifier = [v7 artworkDataForNowPlayingInfo:v4];
+    currentArtworkIdentifier = [v7 artworkDataForNowPlayingInfo:infoCopy];
 
     if (currentArtworkIdentifier)
     {
@@ -413,7 +413,7 @@ LABEL_27:
       v15[2] = __76__RMSDAAPNowPlayingManager__requestArtworkDataIfNecessaryForNowPlayingInfo___block_invoke;
       v15[3] = &unk_279B08DD0;
       objc_copyWeak(&v18, buf);
-      v16 = v4;
+      v16 = infoCopy;
       v17 = v6;
       v13 = [(RMSDAAPRequestManager *)requestManager requestWithPath:WeakRetained method:@"GET" postData:0 queryArgs:0 completionHandler:v15];
       artworkRequest = self->_artworkRequest;
@@ -470,25 +470,25 @@ void __76__RMSDAAPNowPlayingManager__requestArtworkDataIfNecessaryForNowPlayingI
   }
 }
 
-- (void)_scheduleArtworkRetryForNowPlayingInfo:(id)a3 delay:(double)a4
+- (void)_scheduleArtworkRetryForNowPlayingInfo:(id)info delay:(double)delay
 {
-  v6 = a3;
+  infoCopy = info;
   v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
   artworkRetryTimer = self->_artworkRetryTimer;
   self->_artworkRetryTimer = v7;
 
   objc_initWeak(&location, self);
   v9 = self->_artworkRetryTimer;
-  v10 = dispatch_time(0, (a4 * 1000000000.0));
-  dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, (a4 * 1000000000.0) / 10);
+  v10 = dispatch_time(0, (delay * 1000000000.0));
+  dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, (delay * 1000000000.0) / 10);
   v11 = self->_artworkRetryTimer;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __73__RMSDAAPNowPlayingManager__scheduleArtworkRetryForNowPlayingInfo_delay___block_invoke;
   handler[3] = &unk_279B08BB0;
   objc_copyWeak(&v15, &location);
-  v14 = v6;
-  v12 = v6;
+  v14 = infoCopy;
+  v12 = infoCopy;
   dispatch_source_set_event_handler(v11, handler);
   dispatch_resume(self->_artworkRetryTimer);
 
@@ -651,25 +651,25 @@ void __42__RMSDAAPNowPlayingManager__requestVolume__block_invoke(uint64_t a1, ui
   }
 }
 
-- (BOOL)_audioRoutes:(id)a3 equalAudioRoutes:(id)a4
+- (BOOL)_audioRoutes:(id)routes equalAudioRoutes:(id)audioRoutes
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  routesCopy = routes;
+  audioRoutesCopy = audioRoutes;
+  v7 = [routesCopy count];
+  if (v7 == [audioRoutesCopy count])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v5;
+    v8 = routesCopy;
     v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v9)
     {
       v10 = v9;
       v11 = *v27;
-      v21 = v5;
+      v21 = routesCopy;
       while (1)
       {
         v12 = 0;
@@ -684,7 +684,7 @@ LABEL_5:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v14 = v6;
+        v14 = audioRoutesCopy;
         v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (!v15)
         {
@@ -726,7 +726,7 @@ LABEL_9:
 
         v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
         v19 = 1;
-        v5 = v21;
+        routesCopy = v21;
         if (!v10)
         {
           goto LABEL_22;
@@ -736,7 +736,7 @@ LABEL_9:
 LABEL_20:
 
       v19 = 0;
-      v5 = v21;
+      routesCopy = v21;
     }
 
     else

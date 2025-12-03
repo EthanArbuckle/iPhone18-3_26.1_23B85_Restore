@@ -1,36 +1,36 @@
 @interface PBFPosterRoleProcessor
-- (BOOL)_executeChange:(id)a3 roleCoordinator:(id)a4 changeHandler:(id)a5 recursiveDepth:(unint64_t)a6 transaction:(id)a7 error:(id *)a8;
-- (BOOL)_executeTransaction:(id)a3 block:(id)a4 error:(id *)a5;
-- (BOOL)_processEvent:(id)a3 changeHandler:(id)a4 recursiveDepth:(unint64_t)a5 transaction:(id)a6 error:(id *)a7;
-- (PBFPosterRoleProcessor)initWithDataStorage:(id)a3 roleCoordinators:(id)a4;
-- (id)processChanges:(id)a3 context:(id)a4 reason:(id)a5 userInfo:(id)a6 error:(id *)a7;
-- (id)processEvents:(id)a3 context:(id)a4 reason:(id)a5 userInfo:(id)a6 error:(id *)a7;
-- (void)_fireDidBeginTransaction:(id)a3;
-- (void)_fireDidCommitTransaction:(id)a3;
-- (void)_fireDidEvaluateEvent:(id)a3 transaction:(id)a4;
-- (void)_fireDidExecuteChange:(id)a3 transaction:(id)a4;
-- (void)_fireDidFinalizeTransaction:(id)a3;
-- (void)_fireTransactionFinished:(id)a3 result:(id)a4 error:(id)a5;
-- (void)_fireWasInvalidated:(id)a3;
-- (void)_fireWillBeginTransaction:(id)a3;
-- (void)_fireWillCommitTransaction:(id)a3;
-- (void)_fireWillEvaluateEvent:(id)a3 transaction:(id)a4;
-- (void)_fireWillExecuteChange:(id)a3 transaction:(id)a4;
-- (void)_fireWillFinalizeTransaction:(id)a3;
+- (BOOL)_executeChange:(id)change roleCoordinator:(id)coordinator changeHandler:(id)handler recursiveDepth:(unint64_t)depth transaction:(id)transaction error:(id *)error;
+- (BOOL)_executeTransaction:(id)transaction block:(id)block error:(id *)error;
+- (BOOL)_processEvent:(id)event changeHandler:(id)handler recursiveDepth:(unint64_t)depth transaction:(id)transaction error:(id *)error;
+- (PBFPosterRoleProcessor)initWithDataStorage:(id)storage roleCoordinators:(id)coordinators;
+- (id)processChanges:(id)changes context:(id)context reason:(id)reason userInfo:(id)info error:(id *)error;
+- (id)processEvents:(id)events context:(id)context reason:(id)reason userInfo:(id)info error:(id *)error;
+- (void)_fireDidBeginTransaction:(id)transaction;
+- (void)_fireDidCommitTransaction:(id)transaction;
+- (void)_fireDidEvaluateEvent:(id)event transaction:(id)transaction;
+- (void)_fireDidExecuteChange:(id)change transaction:(id)transaction;
+- (void)_fireDidFinalizeTransaction:(id)transaction;
+- (void)_fireTransactionFinished:(id)finished result:(id)result error:(id)error;
+- (void)_fireWasInvalidated:(id)invalidated;
+- (void)_fireWillBeginTransaction:(id)transaction;
+- (void)_fireWillCommitTransaction:(id)transaction;
+- (void)_fireWillEvaluateEvent:(id)event transaction:(id)transaction;
+- (void)_fireWillExecuteChange:(id)change transaction:(id)transaction;
+- (void)_fireWillFinalizeTransaction:(id)transaction;
 - (void)_resetRoleCoordinatorTransaction;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
-- (void)noteTransactionWasInvalidated:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)noteTransactionWasInvalidated:(id)invalidated;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PBFPosterRoleProcessor
 
-- (PBFPosterRoleProcessor)initWithDataStorage:(id)a3 roleCoordinators:(id)a4
+- (PBFPosterRoleProcessor)initWithDataStorage:(id)storage roleCoordinators:(id)coordinators
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  storageCopy = storage;
+  coordinatorsCopy = coordinators;
+  v10 = storageCopy;
   if (!v10)
   {
     [PBFPosterRoleProcessor initWithDataStorage:a2 roleCoordinators:?];
@@ -42,7 +42,7 @@
     [PBFPosterRoleProcessor initWithDataStorage:a2 roleCoordinators:?];
   }
 
-  v12 = v9;
+  v12 = coordinatorsCopy;
   NSClassFromString(&cfstr_Nsarray.isa);
   if (!v12)
   {
@@ -82,15 +82,15 @@
     roleOrderedSet = v15->_roleOrderedSet;
     v15->_roleOrderedSet = v20;
 
-    v22 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v15->_observers;
-    v15->_observers = v22;
+    v15->_observers = weakObjectsHashTable;
 
     v24 = [v14 copy];
     roleToRoleCoordinator = v15->_roleToRoleCoordinator;
     v15->_roleToRoleCoordinator = v24;
 
-    objc_storeStrong(&v15->_dataStorage, a3);
+    objc_storeStrong(&v15->_dataStorage, storage);
     v26 = [objc_alloc(MEMORY[0x277CF0B78]) initWithFlag:0];
     invalidationFlag = v15->_invalidationFlag;
     v15->_invalidationFlag = v26;
@@ -120,38 +120,38 @@ uint64_t __63__PBFPosterRoleProcessor_initWithDataStorage_roleCoordinators___blo
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
     v4 = self->_observers;
     objc_sync_enter(v4);
-    [(NSHashTable *)self->_observers addObject:v5];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
     objc_sync_exit(v4);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
     v4 = self->_observers;
     objc_sync_enter(v4);
-    [(NSHashTable *)self->_observers removeObject:v5];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     objc_sync_exit(v4);
   }
 }
 
-- (id)processChanges:(id)a3 context:(id)a4 reason:(id)a5 userInfo:(id)a6 error:(id *)a7
+- (id)processChanges:(id)changes context:(id)context reason:(id)reason userInfo:(id)info error:(id *)error
 {
   v93 = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  v13 = a4;
-  v64 = a5;
-  v65 = a6;
-  v14 = v13;
+  changesCopy = changes;
+  contextCopy = context;
+  reasonCopy = reason;
+  infoCopy = info;
+  v14 = contextCopy;
   if (!v14)
   {
     [PBFPosterRoleProcessor processChanges:a2 context:? reason:? userInfo:? error:?];
@@ -166,24 +166,24 @@ uint64_t __63__PBFPosterRoleProcessor_initWithDataStorage_roleCoordinators___blo
   v66 = v15;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a7)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      *a7 = v16 = 0;
+      *error = results = 0;
     }
 
     else
     {
-      v16 = 0;
+      results = 0;
     }
   }
 
   else
   {
-    v17 = self;
-    objc_sync_enter(v17);
-    obj = v17;
-    if (v17->_activeTransaction)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    obj = selfCopy;
+    if (selfCopy->_activeTransaction)
     {
       v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"Active transaction is ongoing.  Role processing is not concurrent."];
       v49 = MEMORY[0x277D86220];
@@ -198,7 +198,7 @@ uint64_t __63__PBFPosterRoleProcessor_initWithDataStorage_roleCoordinators___blo
         *&buf[12] = 2114;
         *&buf[14] = v53;
         *&buf[22] = 2048;
-        v89 = v17;
+        v89 = selfCopy;
         LOWORD(v90) = 2114;
         *(&v90 + 2) = @"PBFPosterRoleProcessor.m";
         WORD5(v90) = 1024;
@@ -214,18 +214,18 @@ uint64_t __63__PBFPosterRoleProcessor_initWithDataStorage_roleCoordinators___blo
       [PBFPosterRoleProcessor processChanges:v55 context:? reason:? userInfo:? error:?];
     }
 
-    v61 = a7;
-    v18 = [(NSHashTable *)v17->_observers allObjects];
-    v19 = [_PBFPosterRoleProcessorTransaction transactionWithReason:v64 context:v15 userInfo:v65 observers:v18 processor:v17];
+    errorCopy = error;
+    allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
+    v19 = [_PBFPosterRoleProcessorTransaction transactionWithReason:reasonCopy context:v15 userInfo:infoCopy observers:allObjects processor:selfCopy];
 
-    objc_storeStrong(&v17->_activeTransaction, v19);
+    objc_storeStrong(&selfCopy->_activeTransaction, v19);
     v20 = v19;
     objc_sync_exit(obj);
 
     v21 = [(PBFPosterRoleProcessor *)obj log];
-    v22 = [v15 pbf_transitionContextIdentifier];
-    v23 = [v22 UUIDString];
-    v67 = [v23 substringToIndex:7];
+    pbf_transitionContextIdentifier = [v15 pbf_transitionContextIdentifier];
+    uUIDString = [pbf_transitionContextIdentifier UUIDString];
+    v67 = [uUIDString substringToIndex:7];
 
     v60 = obj->_roleToRoleCoordinator;
     v24 = os_signpost_id_generate(v21);
@@ -264,7 +264,7 @@ uint64_t __63__PBFPosterRoleProcessor_initWithDataStorage_roleCoordinators___blo
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v27 = v63;
+    v27 = changesCopy;
     v28 = [v27 countByEnumeratingWithState:&v78 objects:v87 count:16];
     if (v28)
     {
@@ -353,12 +353,12 @@ uint64_t __63__PBFPosterRoleProcessor_initWithDataStorage_roleCoordinators___blo
 
     if (v45 && !*(*&buf[8] + 40))
     {
-      v16 = [v38 results];
+      results = [v38 results];
     }
 
     else
     {
-      if (v61)
+      if (errorCopy)
       {
         if (*(*&buf[8] + 40))
         {
@@ -370,7 +370,7 @@ uint64_t __63__PBFPosterRoleProcessor_initWithDataStorage_roleCoordinators___blo
           v46 = v40;
         }
 
-        *v61 = v46;
+        *errorCopy = v46;
       }
 
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -388,13 +388,13 @@ uint64_t __63__PBFPosterRoleProcessor_initWithDataStorage_roleCoordinators___blo
         _os_log_error_impl(&dword_21B526000, v44, OS_LOG_TYPE_ERROR, "(%{public}@} Failed to commit changes: %{public}@", v83, 0x16u);
       }
 
-      v16 = 0;
+      results = 0;
     }
 
     _Block_object_dispose(buf, 8);
   }
 
-  return v16;
+  return results;
 }
 
 uint64_t __71__PBFPosterRoleProcessor_processChanges_context_reason_userInfo_error___block_invoke(uint64_t a1, void *a2)
@@ -619,14 +619,14 @@ LABEL_40:
   return v39;
 }
 
-- (id)processEvents:(id)a3 context:(id)a4 reason:(id)a5 userInfo:(id)a6 error:(id *)a7
+- (id)processEvents:(id)events context:(id)context reason:(id)reason userInfo:(id)info error:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  v61 = a3;
-  v13 = a4;
-  v14 = a5;
-  v62 = a6;
-  v15 = v13;
+  eventsCopy = events;
+  contextCopy = context;
+  reasonCopy = reason;
+  infoCopy = info;
+  v15 = contextCopy;
   if (!v15)
   {
     [PBFPosterRoleProcessor processEvents:a2 context:? reason:? userInfo:? error:?];
@@ -638,28 +638,28 @@ LABEL_40:
     [PBFPosterRoleProcessor processEvents:a2 context:? reason:? userInfo:? error:?];
   }
 
-  v60 = v14;
+  v60 = reasonCopy;
   v63 = v16;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a7)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      *a7 = v17 = 0;
+      *error = results = 0;
     }
 
     else
     {
-      v17 = 0;
+      results = 0;
     }
   }
 
   else
   {
-    v18 = self;
-    objc_sync_enter(v18);
-    obj = v18;
-    if (v18->_activeTransaction)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    obj = selfCopy;
+    if (selfCopy->_activeTransaction)
     {
       v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"Active transaction is ongoing.  Role processing is not concurrent."];
       v46 = MEMORY[0x277D86220];
@@ -674,7 +674,7 @@ LABEL_40:
         *&buf[12] = 2114;
         *&buf[14] = v50;
         *&buf[22] = 2048;
-        v84 = v18;
+        v84 = selfCopy;
         LOWORD(v85) = 2114;
         *(&v85 + 2) = @"PBFPosterRoleProcessor.m";
         WORD5(v85) = 1024;
@@ -690,18 +690,18 @@ LABEL_40:
       [PBFPosterRoleProcessor processChanges:v52 context:? reason:? userInfo:? error:?];
     }
 
-    v58 = a7;
-    v19 = [(NSHashTable *)v18->_observers allObjects];
-    v20 = [_PBFPosterRoleProcessorTransaction transactionWithReason:v14 context:v16 userInfo:v62 observers:v19 processor:v18];
+    errorCopy = error;
+    allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
+    v20 = [_PBFPosterRoleProcessorTransaction transactionWithReason:reasonCopy context:v16 userInfo:infoCopy observers:allObjects processor:selfCopy];
 
     v57 = v20;
-    objc_storeStrong(&v18->_activeTransaction, v20);
-    objc_sync_exit(v18);
+    objc_storeStrong(&selfCopy->_activeTransaction, v20);
+    objc_sync_exit(selfCopy);
 
-    v21 = [(PBFPosterRoleProcessor *)v18 log];
-    v22 = [v16 pbf_transitionContextIdentifier];
-    v23 = [v22 UUIDString];
-    v64 = [v23 substringToIndex:7];
+    v21 = [(PBFPosterRoleProcessor *)selfCopy log];
+    pbf_transitionContextIdentifier = [v16 pbf_transitionContextIdentifier];
+    uUIDString = [pbf_transitionContextIdentifier UUIDString];
+    v64 = [uUIDString substringToIndex:7];
 
     v24 = os_signpost_id_generate(v21);
     v25 = v21;
@@ -739,7 +739,7 @@ LABEL_40:
     v74 = 0u;
     v75 = 0u;
     v73 = 0u;
-    v27 = v61;
+    v27 = eventsCopy;
     v28 = [v27 countByEnumeratingWithState:&v73 objects:v82 count:16];
     if (v28)
     {
@@ -789,12 +789,12 @@ LABEL_40:
     v34 = v64;
     v68 = v34;
     v69 = v27;
-    v70 = v18;
+    v70 = selfCopy;
     v35 = v57;
     v71 = v35;
     v72 = buf;
     v65 = 0;
-    v36 = [(PBFPosterRoleProcessor *)v18 _executeTransaction:v35 block:v66 error:&v65];
+    v36 = [(PBFPosterRoleProcessor *)selfCopy _executeTransaction:v35 block:v66 error:&v65];
     v37 = v65;
     v38 = obj;
     objc_sync_enter(v38);
@@ -823,12 +823,12 @@ LABEL_40:
 
     if (v42 && !*(*&buf[8] + 40))
     {
-      v17 = [v35 results];
+      results = [v35 results];
     }
 
     else
     {
-      if (v58)
+      if (errorCopy)
       {
         if (*(*&buf[8] + 40))
         {
@@ -840,7 +840,7 @@ LABEL_40:
           v43 = v37;
         }
 
-        *v58 = v43;
+        *errorCopy = v43;
       }
 
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -858,13 +858,13 @@ LABEL_40:
         _os_log_error_impl(&dword_21B526000, v41, OS_LOG_TYPE_ERROR, "(%{public}@} Failed to commit changes: %{public}@", v78, 0x16u);
       }
 
-      v17 = 0;
+      results = 0;
     }
 
     _Block_object_dispose(buf, 8);
   }
 
-  return v17;
+  return results;
 }
 
 BOOL __70__PBFPosterRoleProcessor_processEvents_context_reason_userInfo_error___block_invoke(uint64_t a1, void *a2)
@@ -1002,40 +1002,40 @@ LABEL_21:
   return v26 == 0;
 }
 
-- (void)noteTransactionWasInvalidated:(id)a3
+- (void)noteTransactionWasInvalidated:(id)invalidated
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  invalidatedCopy = invalidated;
+  if (invalidatedCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5->_activeTransaction == v4)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_activeTransaction == invalidatedCopy)
     {
-      v6 = [(PBFPosterRoleProcessor *)v5 log];
-      v7 = [(_PBFPosterRoleProcessorTransaction *)v4 shortIdentifier];
+      v6 = [(PBFPosterRoleProcessor *)selfCopy log];
+      shortIdentifier = [(_PBFPosterRoleProcessorTransaction *)invalidatedCopy shortIdentifier];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138543618;
-        v9 = v7;
+        v9 = shortIdentifier;
         v10 = 2114;
-        v11 = v4;
+        v11 = invalidatedCopy;
         _os_log_impl(&dword_21B526000, v6, OS_LOG_TYPE_DEFAULT, "(%{public}@} Transaction Invalidated %{public}@", &v8, 0x16u);
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (BOOL)_executeTransaction:(id)a3 block:(id)a4 error:(id *)a5
+- (BOOL)_executeTransaction:(id)transaction block:(id)block error:(id *)error
 {
   v101 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v48 = a4;
-  v49 = v6;
-  v52 = [v6 shortIdentifier];
-  v56 = [v6 context];
+  transactionCopy = transaction;
+  blockCopy = block;
+  v49 = transactionCopy;
+  shortIdentifier = [transactionCopy shortIdentifier];
+  context = [transactionCopy context];
   v7 = [(PBFPosterRoleProcessor *)self log];
   v57 = self->_roleToRoleCoordinator;
   BSAbsoluteMachTimeNow();
@@ -1044,7 +1044,7 @@ LABEL_21:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v52;
+    *&buf[4] = shortIdentifier;
     _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "(%{public}@} Starting transaction", buf, 0xCu);
   }
 
@@ -1099,22 +1099,22 @@ LABEL_21:
 
         v20 = *(*(&v82 + 1) + 8 * j);
         v21 = [(NSDictionary *)v57 objectForKeyedSubscript:v20];
-        v22 = [v56 pbf_currentActivePosterForRole:v20];
+        v22 = [context pbf_currentActivePosterForRole:v20];
         [v55 setObject:v22 forKeyedSubscript:v20];
-        v23 = [v21 posterCollection];
-        if (v23)
+        posterCollection = [v21 posterCollection];
+        if (posterCollection)
         {
-          [v54 setObject:v23 forKeyedSubscript:v20];
+          [v54 setObject:posterCollection forKeyedSubscript:v20];
         }
 
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
-          *&buf[4] = v52;
+          *&buf[4] = shortIdentifier;
           *&buf[12] = 2114;
           *&buf[14] = v20;
           *&buf[22] = 2114;
-          v96 = v23;
+          v96 = posterCollection;
           _os_log_impl(&dword_21B526000, v7, OS_LOG_TYPE_DEFAULT, "(%{public}@} Stashing collection for role %{public}@: %{public}@", buf, 0x20u);
         }
       }
@@ -1125,19 +1125,19 @@ LABEL_21:
     while (v17);
   }
 
-  v24 = [v56 pbf_extensionStoreCoordinatorForProvider];
-  v25 = [v24 objectEnumerator];
-  v26 = [v25 allObjects];
+  pbf_extensionStoreCoordinatorForProvider = [context pbf_extensionStoreCoordinatorForProvider];
+  objectEnumerator = [pbf_extensionStoreCoordinatorForProvider objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__PBFPosterRoleProcessor__executeTransaction_block_error___block_invoke;
   aBlock[3] = &unk_2782C6428;
-  v27 = v26;
+  v27 = allObjects;
   v79 = v27;
   v28 = v7;
   v80 = v28;
-  v29 = v52;
+  v29 = shortIdentifier;
   v81 = v29;
   v46 = _Block_copy(aBlock);
   *buf = 0;
@@ -1149,7 +1149,7 @@ LABEL_21:
   v47 = objc_opt_new();
   v51 = objc_opt_new();
   v53 = objc_opt_new();
-  if (v48)
+  if (blockCopy)
   {
     dataStorage = self->_dataStorage;
     v63[0] = MEMORY[0x277D85DD0];
@@ -1160,7 +1160,7 @@ LABEL_21:
     v64 = v49;
     v65 = v28;
     v66 = v29;
-    v75 = v48;
+    v75 = blockCopy;
     v76 = v46;
     v77 = buf;
     v67 = v57;
@@ -1169,7 +1169,7 @@ LABEL_21:
     v70 = v54;
     v71 = v51;
     v72 = v55;
-    v73 = v56;
+    v73 = context;
     v74 = v47;
     v62 = 0;
     v31 = [(PBFPosterExtensionDataStorage *)dataStorage performChanges:v63 error:&v62];
@@ -1228,8 +1228,8 @@ LABEL_21:
     [(_PBFPosterRoleProcessorTransactionResult *)v39 setCollectionDiffsPerRole:v51];
     [(_PBFPosterRoleProcessorTransactionResult *)v39 setPreCommitActivePosterConfigurationForRole:v55];
     [(_PBFPosterRoleProcessorTransactionResult *)v39 setPostCommitActivePosterConfigurationForRole:v47];
-    v41 = [v49 emittedEvents];
-    [(_PBFPosterRoleProcessorTransactionResult *)v39 setEmittedEvents:v41];
+    emittedEvents = [v49 emittedEvents];
+    [(_PBFPosterRoleProcessorTransactionResult *)v39 setEmittedEvents:emittedEvents];
 
     [v49 setResults:v39];
     [(PBFPosterRoleProcessor *)self _fireTransactionFinished:v49 result:v39 error:0];
@@ -2013,32 +2013,32 @@ LABEL_129:
   return v9;
 }
 
-- (BOOL)_executeChange:(id)a3 roleCoordinator:(id)a4 changeHandler:(id)a5 recursiveDepth:(unint64_t)a6 transaction:(id)a7 error:(id *)a8
+- (BOOL)_executeChange:(id)change roleCoordinator:(id)coordinator changeHandler:(id)handler recursiveDepth:(unint64_t)depth transaction:(id)transaction error:(id *)error
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  changeCopy = change;
+  coordinatorCopy = coordinator;
+  handlerCopy = handler;
+  transactionCopy = transaction;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    *a8 = v18 = 0;
+    *error = v18 = 0;
     goto LABEL_23;
   }
 
-  [(PBFPosterRoleProcessor *)self _fireWillExecuteChange:v14 transaction:v17];
-  if (![v17 isInvalidated])
+  [(PBFPosterRoleProcessor *)self _fireWillExecuteChange:changeCopy transaction:transactionCopy];
+  if (![transactionCopy isInvalidated])
   {
     v38 = 0;
-    v21 = [v15 updateCoordinatorWithChange:v14 changeHandler:v16 emitEvents:&v38 error:a8];
+    v21 = [coordinatorCopy updateCoordinatorWithChange:changeCopy changeHandler:handlerCopy emitEvents:&v38 error:error];
     v22 = v38;
     if (v21)
     {
-      v23 = [v17 affectedRoles];
-      v33 = v15;
-      v24 = [v15 role];
-      [v23 addObject:v24];
+      affectedRoles = [transactionCopy affectedRoles];
+      v33 = coordinatorCopy;
+      role = [coordinatorCopy role];
+      [affectedRoles addObject:role];
 
       v36 = 0u;
       v37 = 0u;
@@ -2060,10 +2060,10 @@ LABEL_129:
               objc_enumerationMutation(v25);
             }
 
-            if (![(PBFPosterRoleProcessor *)self _processEvent:*(*(&v34 + 1) + 8 * i) changeHandler:v16 recursiveDepth:a6 + 1 transaction:v17 error:a8, v32])
+            if (![(PBFPosterRoleProcessor *)self _processEvent:*(*(&v34 + 1) + 8 * i) changeHandler:handlerCopy recursiveDepth:depth + 1 transaction:transactionCopy error:error, v32])
             {
               v22 = v32;
-              v15 = v33;
+              coordinatorCopy = v33;
               goto LABEL_20;
             }
           }
@@ -2078,20 +2078,20 @@ LABEL_129:
         }
       }
 
-      [(PBFPosterRoleProcessor *)self _fireDidExecuteChange:v14 transaction:v17];
-      if (![v17 isInvalidated])
+      [(PBFPosterRoleProcessor *)self _fireDidExecuteChange:changeCopy transaction:transactionCopy];
+      if (![transactionCopy isInvalidated])
       {
         v18 = 1;
         v22 = v32;
-        v15 = v33;
+        coordinatorCopy = v33;
         goto LABEL_22;
       }
 
       v22 = v32;
-      if (!a8)
+      if (!error)
       {
         v18 = 0;
-        v15 = v33;
+        coordinatorCopy = v33;
         goto LABEL_22;
       }
 
@@ -2099,8 +2099,8 @@ LABEL_129:
       v39 = *MEMORY[0x277CCA470];
       v40 = @"transaction invalidated";
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-      *a8 = [v30 pbf_generalErrorWithCode:3 userInfo:v25];
-      v15 = v33;
+      *error = [v30 pbf_generalErrorWithCode:3 userInfo:v25];
+      coordinatorCopy = v33;
 LABEL_20:
     }
 
@@ -2110,13 +2110,13 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a8)
+  if (error)
   {
     v19 = MEMORY[0x277CCA9B8];
     v42 = *MEMORY[0x277CCA470];
     v43[0] = @"transaction invalidated";
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
-    *a8 = [v19 pbf_generalErrorWithCode:3 userInfo:v20];
+    *error = [v19 pbf_generalErrorWithCode:3 userInfo:v20];
   }
 
   v18 = 0;
@@ -2125,31 +2125,31 @@ LABEL_23:
   return v18;
 }
 
-- (BOOL)_processEvent:(id)a3 changeHandler:(id)a4 recursiveDepth:(unint64_t)a5 transaction:(id)a6 error:(id *)a7
+- (BOOL)_processEvent:(id)event changeHandler:(id)handler recursiveDepth:(unint64_t)depth transaction:(id)transaction error:(id *)error
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v48 = a4;
-  v13 = a6;
+  eventCopy = event;
+  handlerCopy = handler;
+  transactionCopy = transaction;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    *a7 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
   {
-    [v13 appendEmittedEvent:v12];
-    [(PBFPosterRoleProcessor *)self _fireWillEvaluateEvent:v12 transaction:v13];
-    if ([v13 isInvalidated])
+    [transactionCopy appendEmittedEvent:eventCopy];
+    [(PBFPosterRoleProcessor *)self _fireWillEvaluateEvent:eventCopy transaction:transactionCopy];
+    if ([transactionCopy isInvalidated])
     {
-      if (a7)
+      if (error)
       {
         v15 = MEMORY[0x277CCA9B8];
         v72 = *MEMORY[0x277CCA470];
         v73[0] = @"transaction invalidated";
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:&v72 count:1];
-        *a7 = [v15 pbf_generalErrorWithCode:3 userInfo:v16];
+        *error = [v15 pbf_generalErrorWithCode:3 userInfo:v16];
       }
 
       v14 = 0;
@@ -2157,19 +2157,19 @@ LABEL_23:
 
     else
     {
-      v17 = [v13 shortIdentifier];
+      shortIdentifier = [transactionCopy shortIdentifier];
       v18 = [(PBFPosterRoleProcessor *)self log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v66 = v17;
+        v66 = shortIdentifier;
         v67 = 2114;
-        v68 = v12;
+        v68 = eventCopy;
         _os_log_impl(&dword_21B526000, v18, OS_LOG_TYPE_DEFAULT, "(%{public}@} Processing event: %{public}@", buf, 0x16u);
       }
 
-      v19 = [v13 affectedRoles];
-      v41 = [v19 count];
+      affectedRoles = [transactionCopy affectedRoles];
+      v41 = [affectedRoles count];
       v45 = v18;
 
       roleCoordinators = self->_roleCoordinators;
@@ -2178,9 +2178,9 @@ LABEL_23:
       v58[2] = __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth_transaction_error___block_invoke;
       v58[3] = &unk_2782C97D8;
       v61 = v41 != 0;
-      v21 = v13;
+      v21 = transactionCopy;
       v59 = v21;
-      v42 = v12;
+      v42 = eventCopy;
       v60 = v42;
       [(NSArray *)roleCoordinators bs_filter:v58];
       v54 = 0u;
@@ -2191,9 +2191,9 @@ LABEL_23:
       if (v43)
       {
         v44 = *v55;
-        v38 = v13;
-        v39 = v12;
-        v40 = v17;
+        v38 = transactionCopy;
+        v39 = eventCopy;
+        v40 = shortIdentifier;
         do
         {
           v22 = 0;
@@ -2209,7 +2209,7 @@ LABEL_23:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              v66 = v17;
+              v66 = shortIdentifier;
               v67 = 2114;
               v68 = v23;
               v69 = 2114;
@@ -2218,7 +2218,7 @@ LABEL_23:
             }
 
             v53 = 0;
-            v25 = [v24 notifyEventWasReceived:v23 changes:&v53 storage:{v48, v38, v39}];
+            v25 = [v24 notifyEventWasReceived:v23 changes:&v53 storage:{handlerCopy, v38, v39}];
             v26 = v53;
             v46 = v26;
             if (v25)
@@ -2226,9 +2226,9 @@ LABEL_23:
               if (!v41)
               {
                 v27 = v26;
-                v28 = [v21 affectedRoles];
-                v29 = [v24 role];
-                [v28 addObject:v29];
+                affectedRoles2 = [v21 affectedRoles];
+                role = [v24 role];
+                [affectedRoles2 addObject:role];
 
                 v26 = v27;
               }
@@ -2252,13 +2252,13 @@ LABEL_23:
                       objc_enumerationMutation(v30);
                     }
 
-                    if (![(PBFPosterRoleProcessor *)self _executeChange:*(*(&v49 + 1) + 8 * i) roleCoordinator:v24 changeHandler:v48 recursiveDepth:a5 + 1 transaction:v21 error:a7])
+                    if (![(PBFPosterRoleProcessor *)self _executeChange:*(*(&v49 + 1) + 8 * i) roleCoordinator:v24 changeHandler:handlerCopy recursiveDepth:depth + 1 transaction:v21 error:error])
                     {
 
                       v36 = obj;
-                      v13 = v38;
-                      v12 = v39;
-                      v17 = v40;
+                      transactionCopy = v38;
+                      eventCopy = v39;
+                      shortIdentifier = v40;
                       v18 = v45;
                       goto LABEL_36;
                     }
@@ -2274,7 +2274,7 @@ LABEL_23:
                 }
               }
 
-              v17 = v40;
+              shortIdentifier = v40;
               v18 = v45;
               v23 = v42;
             }
@@ -2282,7 +2282,7 @@ LABEL_23:
             else if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              v66 = v17;
+              v66 = shortIdentifier;
               v67 = 2114;
               v68 = v23;
               v69 = 2114;
@@ -2294,8 +2294,8 @@ LABEL_23:
           }
 
           while (v22 != v43);
-          v13 = v38;
-          v12 = v39;
+          transactionCopy = v38;
+          eventCopy = v39;
           v43 = [obj countByEnumeratingWithState:&v54 objects:v71 count:16];
         }
 
@@ -2305,13 +2305,13 @@ LABEL_23:
       [(PBFPosterRoleProcessor *)self _fireDidEvaluateEvent:v42 transaction:v21];
       if ([v21 isInvalidated])
       {
-        if (a7)
+        if (error)
         {
           v35 = MEMORY[0x277CCA9B8];
           v62 = *MEMORY[0x277CCA470];
           v63 = @"transaction invalidated";
           v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-          *a7 = [v35 pbf_generalErrorWithCode:3 userInfo:v36];
+          *error = [v35 pbf_generalErrorWithCode:3 userInfo:v36];
 LABEL_36:
         }
 
@@ -2344,16 +2344,16 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
   return v7;
 }
 
-- (void)_fireWillBeginTransaction:(id)a3
+- (void)_fireWillBeginTransaction:(id)transaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [transactionCopy observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2365,36 +2365,36 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 roleProcessor:self willBeginTransaction:v4];
+          [v10 roleProcessor:self willBeginTransaction:transactionCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_fireDidBeginTransaction:(id)a3
+- (void)_fireDidBeginTransaction:(id)transaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [transactionCopy observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2406,37 +2406,37 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 roleProcessor:self didBeginTransaction:v4];
+          [v10 roleProcessor:self didBeginTransaction:transactionCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_fireWillExecuteChange:(id)a3 transaction:(id)a4
+- (void)_fireWillExecuteChange:(id)change transaction:(id)transaction
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  transactionCopy = transaction;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 observers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [transactionCopy observers];
+  v9 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2448,37 +2448,37 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 roleProcessor:self willExecuteChange:v6 transaction:v7];
+          [v13 roleProcessor:self willExecuteChange:changeCopy transaction:transactionCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_fireDidExecuteChange:(id)a3 transaction:(id)a4
+- (void)_fireDidExecuteChange:(id)change transaction:(id)transaction
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  transactionCopy = transaction;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 observers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [transactionCopy observers];
+  v9 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2490,37 +2490,37 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 roleProcessor:self didExecuteChange:v6 transaction:v7];
+          [v13 roleProcessor:self didExecuteChange:changeCopy transaction:transactionCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_fireWillEvaluateEvent:(id)a3 transaction:(id)a4
+- (void)_fireWillEvaluateEvent:(id)event transaction:(id)transaction
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  transactionCopy = transaction;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 observers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [transactionCopy observers];
+  v9 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2532,37 +2532,37 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 roleProcessor:self willEvaluateEvent:v6 transaction:v7];
+          [v13 roleProcessor:self willEvaluateEvent:eventCopy transaction:transactionCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_fireDidEvaluateEvent:(id)a3 transaction:(id)a4
+- (void)_fireDidEvaluateEvent:(id)event transaction:(id)transaction
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  transactionCopy = transaction;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 observers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [transactionCopy observers];
+  v9 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2574,36 +2574,36 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 roleProcessor:self didEvaluateEvent:v6 transaction:v7];
+          [v13 roleProcessor:self didEvaluateEvent:eventCopy transaction:transactionCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_fireWillFinalizeTransaction:(id)a3
+- (void)_fireWillFinalizeTransaction:(id)transaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [transactionCopy observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2615,36 +2615,36 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 roleProcessor:self willFinalizeTransaction:v4];
+          [v10 roleProcessor:self willFinalizeTransaction:transactionCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_fireDidFinalizeTransaction:(id)a3
+- (void)_fireDidFinalizeTransaction:(id)transaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [transactionCopy observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2656,36 +2656,36 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 roleProcessor:self didFinalizeTransaction:v4];
+          [v10 roleProcessor:self didFinalizeTransaction:transactionCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_fireWillCommitTransaction:(id)a3
+- (void)_fireWillCommitTransaction:(id)transaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [transactionCopy observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2697,36 +2697,36 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 roleProcessor:self willCommitTransaction:v4];
+          [v10 roleProcessor:self willCommitTransaction:transactionCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_fireDidCommitTransaction:(id)a3
+- (void)_fireDidCommitTransaction:(id)transaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [transactionCopy observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2738,50 +2738,50 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 roleProcessor:self didCommitTransaction:v4];
+          [v10 roleProcessor:self didCommitTransaction:transactionCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_fireTransactionFinished:(id)a3 result:(id)a4 error:(id)a5
+- (void)_fireTransactionFinished:(id)finished result:(id)result error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v17 = a4;
-  v9 = a5;
+  finishedCopy = finished;
+  resultCopy = result;
+  errorCopy = error;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v8 observers];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  observers = [finishedCopy observers];
+  v11 = [observers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v19;
-    if (v9)
+    if (errorCopy)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = v17;
+      v14 = resultCopy;
     }
 
     do
@@ -2791,39 +2791,39 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(observers);
         }
 
         v16 = *(*(&v18 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 roleProcessor:self transactionFinished:v8 success:v9 == 0 results:v14 error:v9];
+          [v16 roleProcessor:self transactionFinished:finishedCopy success:errorCopy == 0 results:v14 error:errorCopy];
         }
 
         ++v15;
       }
 
       while (v12 != v15);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [observers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
   }
 
-  [v8 cancel];
+  [finishedCopy cancel];
   [(PBFPosterRoleProcessor *)self _resetRoleCoordinatorTransaction];
 }
 
-- (void)_fireWasInvalidated:(id)a3
+- (void)_fireWasInvalidated:(id)invalidated
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [invalidatedCopy observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2835,7 +2835,7 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -2848,13 +2848,13 @@ uint64_t __87__PBFPosterRoleProcessor__processEvent_changeHandler_recursiveDepth
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [v4 cancel];
+  [invalidatedCopy cancel];
   [(PBFPosterRoleProcessor *)self _resetRoleCoordinatorTransaction];
 }
 

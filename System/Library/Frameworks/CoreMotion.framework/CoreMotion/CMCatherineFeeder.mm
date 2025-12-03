@@ -1,7 +1,7 @@
 @interface CMCatherineFeeder
 - (CMCatherineFeeder)init;
 - (void)dealloc;
-- (void)feedCatherine:(double)a3 confidence:(double)a4;
+- (void)feedCatherine:(double)catherine confidence:(double)confidence;
 @end
 
 @implementation CMCatherineFeeder
@@ -34,7 +34,7 @@
   [(CMCatherineFeeder *)&v5 dealloc];
 }
 
-- (void)feedCatherine:(double)a3 confidence:(double)a4
+- (void)feedCatherine:(double)catherine confidence:(double)confidence
 {
   v23 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE29E8 != -1)
@@ -46,9 +46,9 @@
   if (os_log_type_enabled(qword_1EAFE29F0, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134283777;
-    v20 = a3;
+    catherineCopy = catherine;
     v21 = 2049;
-    v22 = a4;
+    confidenceCopy = confidence;
     _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_DEBUG, "feedCatherine called with HR %{private}f, confidence %{private}f", buf, 0x16u);
   }
 
@@ -62,9 +62,9 @@
     }
 
     v15 = 134283777;
-    v16 = a3;
+    catherineCopy2 = catherine;
     v17 = 2049;
-    v18 = a4;
+    confidenceCopy2 = confidence;
     v11 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMCatherineFeeder feedCatherine:confidence:]", "CoreLocation: %s\n", v11);
     if (v11 != buf)
@@ -79,8 +79,8 @@
   block[2] = sub_19B734FD0;
   block[3] = &unk_1E7533448;
   block[4] = self;
-  *&block[5] = a3;
-  *&block[6] = a4;
+  *&block[5] = catherine;
+  *&block[6] = confidence;
   dispatch_async(v12, block);
   v13 = *MEMORY[0x1E69E9840];
 }

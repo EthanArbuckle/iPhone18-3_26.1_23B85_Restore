@@ -1,19 +1,19 @@
 @interface MOPerformanceMeasurement
-- (MOPerformanceMeasurement)initWithName:(id)a3 measureRecentPeak:(BOOL)a4;
+- (MOPerformanceMeasurement)initWithName:(id)name measureRecentPeak:(BOOL)peak;
 - (id)description;
-- (void)_addMetricWithKey:(id)a3 name:(id)a4 unit:(id)a5 denominator:(double)a6 pcMetricID:(unint64_t)a7;
-- (void)_evaluateEndedSession:(pc_session *)a3 duration:(double)a4;
+- (void)_addMetricWithKey:(id)key name:(id)name unit:(id)unit denominator:(double)denominator pcMetricID:(unint64_t)d;
+- (void)_evaluateEndedSession:(pc_session *)session duration:(double)duration;
 - (void)dealloc;
 - (void)endSession;
-- (void)measureBlock:(id)a3;
+- (void)measureBlock:(id)block;
 - (void)startSession;
 @end
 
 @implementation MOPerformanceMeasurement
 
-- (MOPerformanceMeasurement)initWithName:(id)a3 measureRecentPeak:(BOOL)a4
+- (MOPerformanceMeasurement)initWithName:(id)name measureRecentPeak:(BOOL)peak
 {
-  v7 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = MOPerformanceMeasurement;
   v8 = [(MOPerformanceMeasurement *)&v12 init];
@@ -24,8 +24,8 @@
     v10 = objc_opt_new();
     [(MOPerformanceMeasurement *)v9 setMetrics:v10];
 
-    objc_storeStrong(&v9->_name, a3);
-    v9->_measureRecentPeak = a4;
+    objc_storeStrong(&v9->_name, name);
+    v9->_measureRecentPeak = peak;
     [(MOPerformanceMeasurement *)v9 _addMetricWithKey:@"MOPerformanceMetricExecutionTime" name:@"Execution Time" unit:@"ms" denominator:0 pcMetricID:1.0];
     [(MOPerformanceMeasurement *)v9 _addMetricWithKey:@"MOPerformanceMetricCPUTime" name:@"CPU Time" unit:@"ms" denominator:0x63707574696D6500 pcMetricID:1000000.0];
     [(MOPerformanceMeasurement *)v9 _addMetricWithKey:@"MOPerformanceMetricLifetimeMemPeak" name:@"Lifetime Peak" unit:@"MB" denominator:0x6C6966657065616BLL pcMetricID:1000.0];
@@ -48,16 +48,16 @@
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MOPerformanceMeasurement *)self name];
-  v14 = [v3 stringWithFormat:@"\n=========== %s ===========\n", objc_msgSend(v4, "UTF8String")];
+  name = [(MOPerformanceMeasurement *)self name];
+  v14 = [v3 stringWithFormat:@"\n=========== %s ===========\n", objc_msgSend(name, "UTF8String")];
 
-  v5 = [(MOPerformanceMeasurement *)self metrics];
+  metrics = [(MOPerformanceMeasurement *)self metrics];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__MOPerformanceMeasurement_description__block_invoke;
   v8[3] = &unk_279A1F1B0;
   v8[4] = &v9;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [metrics enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -77,11 +77,11 @@ void __39__MOPerformanceMeasurement_description__block_invoke(uint64_t a1, uint6
   *(v8 + 40) = v7;
 }
 
-- (void)measureBlock:(id)a3
+- (void)measureBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(MOPerformanceMeasurement *)self startSession];
-  v4[2]();
+  blockCopy[2]();
   [(MOPerformanceMeasurement *)self endSession];
 }
 
@@ -104,8 +104,8 @@ void __39__MOPerformanceMeasurement_description__block_invoke(uint64_t a1, uint6
     if (v6)
     {
       v7 = v6;
-      v8 = [MEMORY[0x277CCAC38] processInfo];
-      [v8 processIdentifier];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      [processInfo processIdentifier];
       pc_session_set_procpid();
 
       if (self->_measureRecentPeak)
@@ -147,7 +147,7 @@ void __39__MOPerformanceMeasurement_description__block_invoke(uint64_t a1, uint6
     {
       v9 = [(MOPerformanceMeasurement *)self description];
       v10 = 136315138;
-      v11 = [v9 UTF8String];
+      uTF8String = [v9 UTF8String];
       _os_log_debug_impl(&dword_25E48F000, v7, OS_LOG_TYPE_DEBUG, "METRICS: %s", &v10, 0xCu);
     }
   }
@@ -163,29 +163,29 @@ void __39__MOPerformanceMeasurement_description__block_invoke(uint64_t a1, uint6
   [(MOPerformanceMeasurement *)&v3 dealloc];
 }
 
-- (void)_addMetricWithKey:(id)a3 name:(id)a4 unit:(id)a5 denominator:(double)a6 pcMetricID:(unint64_t)a7
+- (void)_addMetricWithKey:(id)key name:(id)name unit:(id)unit denominator:(double)denominator pcMetricID:(unint64_t)d
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [[MOPerformanceMetric alloc] initWithDisplayName:v12 pcMetricID:a7 unit:v13 denominator:a6];
-  v15 = [(MOPerformanceMeasurement *)self metrics];
-  [v15 setObject:v14 forKeyedSubscript:v16];
+  keyCopy = key;
+  nameCopy = name;
+  unitCopy = unit;
+  v14 = [[MOPerformanceMetric alloc] initWithDisplayName:nameCopy pcMetricID:d unit:unitCopy denominator:denominator];
+  metrics = [(MOPerformanceMeasurement *)self metrics];
+  [metrics setObject:v14 forKeyedSubscript:keyCopy];
 }
 
-- (void)_evaluateEndedSession:(pc_session *)a3 duration:(double)a4
+- (void)_evaluateEndedSession:(pc_session *)session duration:(double)duration
 {
-  v7 = [(MOPerformanceMeasurement *)self metrics];
-  v8 = [v7 objectForKeyedSubscript:@"MOPerformanceMetricExecutionTime"];
-  [v8 setRawValue:a4 * 1000.0];
+  metrics = [(MOPerformanceMeasurement *)self metrics];
+  v8 = [metrics objectForKeyedSubscript:@"MOPerformanceMetricExecutionTime"];
+  [v8 setRawValue:duration * 1000.0];
 
-  v9 = [(MOPerformanceMeasurement *)self metrics];
+  metrics2 = [(MOPerformanceMeasurement *)self metrics];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__MOPerformanceMeasurement__evaluateEndedSession_duration___block_invoke;
   v10[3] = &__block_descriptor_40_e46_v32__0__NSString_8__MOPerformanceMetric_16_B24l;
-  v10[4] = a3;
-  [v9 enumerateKeysAndObjectsUsingBlock:v10];
+  v10[4] = session;
+  [metrics2 enumerateKeysAndObjectsUsingBlock:v10];
 }
 
 void __59__MOPerformanceMeasurement__evaluateEndedSession_duration___block_invoke(uint64_t a1, uint64_t a2, void *a3)

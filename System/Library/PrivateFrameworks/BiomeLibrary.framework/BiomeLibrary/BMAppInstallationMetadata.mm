@@ -1,39 +1,39 @@
 @interface BMAppInstallationMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppInstallationMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAppInstallationMetadata)initWithOriginalInstallationDate:(id)a3 version:(id)a4 shortVersion:(id)a5 uniqueInstallID:(id)a6 installSessionID:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMAppInstallationMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAppInstallationMetadata)initWithOriginalInstallationDate:(id)date version:(id)version shortVersion:(id)shortVersion uniqueInstallID:(id)d installSessionID:(id)iD;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)originalInstallationDate;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppInstallationMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppInstallationMetadata *)self originalInstallationDate];
-    v7 = [v5 originalInstallationDate];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    originalInstallationDate = [(BMAppInstallationMetadata *)self originalInstallationDate];
+    originalInstallationDate2 = [v5 originalInstallationDate];
+    v8 = originalInstallationDate2;
+    if (originalInstallationDate == originalInstallationDate2)
     {
     }
 
     else
     {
-      v9 = [(BMAppInstallationMetadata *)self originalInstallationDate];
-      v10 = [v5 originalInstallationDate];
-      v11 = [v9 isEqual:v10];
+      originalInstallationDate3 = [(BMAppInstallationMetadata *)self originalInstallationDate];
+      originalInstallationDate4 = [v5 originalInstallationDate];
+      v11 = [originalInstallationDate3 isEqual:originalInstallationDate4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMAppInstallationMetadata *)self version];
-    v14 = [v5 version];
-    v15 = v14;
-    if (v13 == v14)
+    version = [(BMAppInstallationMetadata *)self version];
+    version2 = [v5 version];
+    v15 = version2;
+    if (version == version2)
     {
     }
 
     else
     {
-      v16 = [(BMAppInstallationMetadata *)self version];
-      v17 = [v5 version];
-      v18 = [v16 isEqual:v17];
+      version3 = [(BMAppInstallationMetadata *)self version];
+      version4 = [v5 version];
+      v18 = [version3 isEqual:version4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMAppInstallationMetadata *)self shortVersion];
-    v20 = [v5 shortVersion];
-    v21 = v20;
-    if (v19 == v20)
+    shortVersion = [(BMAppInstallationMetadata *)self shortVersion];
+    shortVersion2 = [v5 shortVersion];
+    v21 = shortVersion2;
+    if (shortVersion == shortVersion2)
     {
     }
 
     else
     {
-      v22 = [(BMAppInstallationMetadata *)self shortVersion];
-      v23 = [v5 shortVersion];
-      v24 = [v22 isEqual:v23];
+      shortVersion3 = [(BMAppInstallationMetadata *)self shortVersion];
+      shortVersion4 = [v5 shortVersion];
+      v24 = [shortVersion3 isEqual:shortVersion4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMAppInstallationMetadata *)self uniqueInstallID];
-    v26 = [v5 uniqueInstallID];
-    v27 = v26;
-    if (v25 == v26)
+    uniqueInstallID = [(BMAppInstallationMetadata *)self uniqueInstallID];
+    uniqueInstallID2 = [v5 uniqueInstallID];
+    v27 = uniqueInstallID2;
+    if (uniqueInstallID == uniqueInstallID2)
     {
     }
 
     else
     {
-      v28 = [(BMAppInstallationMetadata *)self uniqueInstallID];
-      v29 = [v5 uniqueInstallID];
-      v30 = [v28 isEqual:v29];
+      uniqueInstallID3 = [(BMAppInstallationMetadata *)self uniqueInstallID];
+      uniqueInstallID4 = [v5 uniqueInstallID];
+      v30 = [uniqueInstallID3 isEqual:uniqueInstallID4];
 
       if (!v30)
       {
@@ -102,18 +102,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMAppInstallationMetadata *)self installSessionID];
-    v32 = [v5 installSessionID];
-    if (v31 == v32)
+    installSessionID = [(BMAppInstallationMetadata *)self installSessionID];
+    installSessionID2 = [v5 installSessionID];
+    if (installSessionID == installSessionID2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMAppInstallationMetadata *)self installSessionID];
-      v34 = [v5 installSessionID];
-      v12 = [v33 isEqual:v34];
+      installSessionID3 = [(BMAppInstallationMetadata *)self installSessionID];
+      installSessionID4 = [v5 installSessionID];
+      v12 = [installSessionID3 isEqual:installSessionID4];
     }
 
     goto LABEL_23;
@@ -145,12 +145,12 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v28[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppInstallationMetadata *)self originalInstallationDate];
-  if (v3)
+  originalInstallationDate = [(BMAppInstallationMetadata *)self originalInstallationDate];
+  if (originalInstallationDate)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMAppInstallationMetadata *)self originalInstallationDate];
-    [v5 timeIntervalSince1970];
+    originalInstallationDate2 = [(BMAppInstallationMetadata *)self originalInstallationDate];
+    [originalInstallationDate2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -159,55 +159,55 @@ LABEL_24:
     v6 = 0;
   }
 
-  v7 = [(BMAppInstallationMetadata *)self version];
-  v8 = [(BMAppInstallationMetadata *)self shortVersion];
-  v9 = [(BMAppInstallationMetadata *)self uniqueInstallID];
-  v10 = [v9 base64EncodedStringWithOptions:0];
+  version = [(BMAppInstallationMetadata *)self version];
+  shortVersion = [(BMAppInstallationMetadata *)self shortVersion];
+  uniqueInstallID = [(BMAppInstallationMetadata *)self uniqueInstallID];
+  v10 = [uniqueInstallID base64EncodedStringWithOptions:0];
 
-  v11 = [(BMAppInstallationMetadata *)self installSessionID];
-  v12 = [v11 base64EncodedStringWithOptions:0];
+  installSessionID = [(BMAppInstallationMetadata *)self installSessionID];
+  v12 = [installSessionID base64EncodedStringWithOptions:0];
 
   v23 = @"originalInstallationDate";
-  v13 = v6;
+  null = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v13;
-  v28[0] = v13;
+  v21 = null;
+  v28[0] = null;
   v24 = @"version";
-  v14 = v7;
-  if (!v7)
+  null2 = version;
+  if (!version)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[1] = v14;
+  v28[1] = null2;
   v25 = @"shortVersion";
-  v15 = v8;
-  if (!v8)
+  null3 = shortVersion;
+  if (!shortVersion)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[2] = v15;
+  v28[2] = null3;
   v26 = @"uniqueInstallID";
-  v16 = v10;
+  null4 = v10;
   if (!v10)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[3] = v16;
+  v28[3] = null4;
   v27 = @"installSessionID";
-  v17 = v12;
+  null5 = v12;
   if (!v12)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[4] = v17;
+  v28[4] = null5;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v23 count:{5, v21}];
   if (v12)
   {
@@ -223,7 +223,7 @@ LABEL_24:
     if (v10)
     {
 LABEL_16:
-      if (v8)
+      if (shortVersion)
       {
         goto LABEL_17;
       }
@@ -232,10 +232,10 @@ LABEL_16:
     }
   }
 
-  if (v8)
+  if (shortVersion)
   {
 LABEL_17:
-    if (v7)
+    if (version)
     {
       goto LABEL_18;
     }
@@ -252,7 +252,7 @@ LABEL_25:
 
 LABEL_24:
 
-  if (!v7)
+  if (!version)
   {
     goto LABEL_25;
   }
@@ -271,22 +271,22 @@ LABEL_19:
   return v18;
 }
 
-- (BMAppInstallationMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppInstallationMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"originalInstallationDate"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"originalInstallationDate"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v50 = 0;
 LABEL_9:
-    v15 = [v6 objectForKeyedSubscript:@"version"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v49 = 0;
           v22 = 0;
@@ -301,7 +301,7 @@ LABEL_9:
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
         v49 = 0;
         v22 = 0;
-        *a4 = [v25 initWithDomain:v26 code:2 userInfo:v16];
+        *error = [v25 initWithDomain:v26 code:2 userInfo:v16];
         goto LABEL_25;
       }
 
@@ -313,13 +313,13 @@ LABEL_9:
       v49 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"shortVersion"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"shortVersion"];
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v47 = 0;
           v22 = 0;
@@ -333,7 +333,7 @@ LABEL_9:
         v60 = v19;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
         v28 = v7;
-        v18 = v29 = a4;
+        v18 = v29 = error;
         v30 = [v48 initWithDomain:v27 code:2 userInfo:v18];
         v47 = 0;
         v22 = 0;
@@ -346,7 +346,7 @@ LABEL_25:
       }
 
       v46 = v7;
-      v17 = a4;
+      errorCopy2 = error;
       v47 = v16;
     }
 
@@ -354,15 +354,15 @@ LABEL_25:
     {
       v46 = v7;
       v47 = 0;
-      v17 = a4;
+      errorCopy2 = error;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"uniqueInstallID"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"uniqueInstallID"];
     if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v19 = 0;
 LABEL_18:
-      v20 = [v6 objectForKeyedSubscript:@"installSessionID"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"installSessionID"];
       if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v21 = 0;
@@ -392,7 +392,7 @@ LABEL_23:
           goto LABEL_21;
         }
 
-        if (v17)
+        if (errorCopy2)
         {
           v45 = objc_alloc(MEMORY[0x1E696ABC0]);
           v43 = *MEMORY[0x1E698F240];
@@ -404,11 +404,11 @@ LABEL_23:
           v38 = &v53;
 LABEL_56:
           v40 = [v36 dictionaryWithObjects:v37 forKeys:v38 count:1];
-          *v17 = [v45 initWithDomain:v43 code:2 userInfo:v40];
+          *errorCopy2 = [v45 initWithDomain:v43 code:2 userInfo:v40];
         }
       }
 
-      else if (v17)
+      else if (errorCopy2)
       {
         v45 = objc_alloc(MEMORY[0x1E696ABC0]);
         v43 = *MEMORY[0x1E698F240];
@@ -442,7 +442,7 @@ LABEL_56:
         goto LABEL_18;
       }
 
-      if (v17)
+      if (errorCopy2)
       {
         v44 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
@@ -457,12 +457,12 @@ LABEL_53:
         v39 = [v44 initWithDomain:v31 code:2 userInfo:v20];
         v19 = 0;
         v22 = 0;
-        *v17 = v39;
+        *errorCopy2 = v39;
         goto LABEL_22;
       }
     }
 
-    else if (v17)
+    else if (errorCopy2)
     {
       v44 = objc_alloc(MEMORY[0x1E696ABC0]);
       v31 = *MEMORY[0x1E698F240];
@@ -511,7 +511,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!error)
   {
     v50 = 0;
     v22 = 0;
@@ -526,7 +526,7 @@ LABEL_6:
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
   v50 = 0;
   v22 = 0;
-  *a4 = [v41 initWithDomain:v42 code:2 userInfo:v15];
+  *error = [v41 initWithDomain:v42 code:2 userInfo:v15];
 LABEL_26:
 
 LABEL_27:
@@ -538,50 +538,50 @@ LABEL_27:
 {
   v3 = objc_opt_new();
   [(BMAppInstallationMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_hasRaw_originalInstallationDate)
   {
     raw_originalInstallationDate = self->_raw_originalInstallationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_version)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_shortVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uniqueInstallID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_installSessionID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMAppInstallationMetadata;
   v5 = [(BMEventBase *)&v25 init];
@@ -590,12 +590,12 @@ LABEL_27:
     goto LABEL_40;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -606,18 +606,18 @@ LABEL_27:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v26) & 0x7F) << v7;
@@ -634,9 +634,9 @@ LABEL_27:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -648,18 +648,18 @@ LABEL_16:
         {
           v5->_hasRaw_originalInstallationDate = 1;
           v26 = 0.0;
-          v20 = [v4 position] + 8;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 8, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 8;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 8, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:&v26 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_raw_originalInstallationDate = v26;
@@ -703,13 +703,13 @@ LABEL_28:
       }
 
 LABEL_29:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_39:
     v23 = 0;
@@ -727,33 +727,33 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAppInstallationMetadata *)self originalInstallationDate];
-  v5 = [(BMAppInstallationMetadata *)self version];
-  v6 = [(BMAppInstallationMetadata *)self shortVersion];
-  v7 = [(BMAppInstallationMetadata *)self uniqueInstallID];
-  v8 = [(BMAppInstallationMetadata *)self installSessionID];
-  v9 = [v3 initWithFormat:@"BMAppInstallationMetadata with originalInstallationDate: %@, version: %@, shortVersion: %@, uniqueInstallID: %@, installSessionID: %@", v4, v5, v6, v7, v8];
+  originalInstallationDate = [(BMAppInstallationMetadata *)self originalInstallationDate];
+  version = [(BMAppInstallationMetadata *)self version];
+  shortVersion = [(BMAppInstallationMetadata *)self shortVersion];
+  uniqueInstallID = [(BMAppInstallationMetadata *)self uniqueInstallID];
+  installSessionID = [(BMAppInstallationMetadata *)self installSessionID];
+  v9 = [v3 initWithFormat:@"BMAppInstallationMetadata with originalInstallationDate: %@, version: %@, shortVersion: %@, uniqueInstallID: %@, installSessionID: %@", originalInstallationDate, version, shortVersion, uniqueInstallID, installSessionID];
 
   return v9;
 }
 
-- (BMAppInstallationMetadata)initWithOriginalInstallationDate:(id)a3 version:(id)a4 shortVersion:(id)a5 uniqueInstallID:(id)a6 installSessionID:(id)a7
+- (BMAppInstallationMetadata)initWithOriginalInstallationDate:(id)date version:(id)version shortVersion:(id)shortVersion uniqueInstallID:(id)d installSessionID:(id)iD
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dateCopy = date;
+  versionCopy = version;
+  shortVersionCopy = shortVersion;
+  dCopy = d;
+  iDCopy = iD;
   v20.receiver = self;
   v20.super_class = BMAppInstallationMetadata;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (dateCopy)
     {
       v17->_hasRaw_originalInstallationDate = 1;
-      [v12 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     else
@@ -763,10 +763,10 @@ LABEL_40:
     }
 
     v17->_raw_originalInstallationDate = v18;
-    objc_storeStrong(&v17->_version, a4);
-    objc_storeStrong(&v17->_shortVersion, a5);
-    objc_storeStrong(&v17->_uniqueInstallID, a6);
-    objc_storeStrong(&v17->_installSessionID, a7);
+    objc_storeStrong(&v17->_version, version);
+    objc_storeStrong(&v17->_shortVersion, shortVersion);
+    objc_storeStrong(&v17->_uniqueInstallID, d);
+    objc_storeStrong(&v17->_installSessionID, iD);
   }
 
   return v17;
@@ -811,9 +811,9 @@ LABEL_40:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -821,8 +821,8 @@ LABEL_40:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppInstallationMetadata alloc] initByReadFrom:v7];
     v4 = v8;

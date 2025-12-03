@@ -1,16 +1,16 @@
 @interface _SAMetricsSendCompletionsProxy
 - (_SAMetricsSendCompletionsProxy)init;
-- (void)addBlock:(id)a3;
+- (void)addBlock:(id)block;
 - (void)dealloc;
-- (void)dispatchBlocksWithResult:(int64_t)a3 error:(id)a4;
+- (void)dispatchBlocksWithResult:(int64_t)result error:(id)error;
 @end
 
 @implementation _SAMetricsSendCompletionsProxy
 
-- (void)dispatchBlocksWithResult:(int64_t)a3 error:(id)a4
+- (void)dispatchBlocksWithResult:(int64_t)result error:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   if ([(NSMutableArray *)self->_blocks count])
   {
     v14 = 0u;
@@ -50,12 +50,12 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addBlock:(id)a3
+- (void)addBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     blocks = self->_blocks;
-    v5 = [a3 copy];
+    v5 = [block copy];
     v4 = MEMORY[0x26D5E5DB0]();
     [(NSMutableArray *)blocks addObject:v4];
   }

@@ -1,62 +1,62 @@
 @interface TransactionReleasedDataApplication
-+ (id)_predicateForReleasedDataPID:(int64_t)a3;
++ (id)_predicateForReleasedDataPID:(int64_t)d;
 + (id)_propertySettersForReleasedData;
-+ (id)_releasedDataElementsFromQuery:(id)a3;
-+ (id)releasedDataElementsForPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deleteEntitiesForPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)insertReleasedDataApplication:(id)a3 forPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)_releasedDataElementsFromQuery:(id)query;
++ (id)releasedDataElementsForPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteEntitiesForPID:(int64_t)d inDatabase:(id)database;
++ (void)insertReleasedDataApplication:(id)application forPID:(int64_t)d inDatabase:(id)database;
 @end
 
 @implementation TransactionReleasedDataApplication
 
-+ (void)insertReleasedDataApplication:(id)a3 forPID:(int64_t)a4 inDatabase:(id)a5
++ (void)insertReleasedDataApplication:(id)application forPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  [a1 deleteEntitiesForPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  applicationCopy = application;
+  [self deleteEntitiesForPID:d inDatabase:databaseCopy];
   v15 = objc_alloc_init(NSMutableDictionary);
-  v10 = [NSNumber numberWithLongLong:a4];
+  v10 = [NSNumber numberWithLongLong:d];
   [v15 setObject:v10 forKey:@"a"];
 
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 client]);
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [applicationCopy client]);
   [v15 setObjectOrNull:v11 forKey:@"b"];
 
-  v12 = [v9 bundleIdentifier];
-  [v15 setObjectOrNull:v12 forKey:@"c"];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  [v15 setObjectOrNull:bundleIdentifier forKey:@"c"];
 
-  v13 = [v9 usageDescription];
+  usageDescription = [applicationCopy usageDescription];
 
-  [v15 setObjectOrNull:v13 forKey:@"d"];
-  v14 = [[a1 alloc] initWithPropertyValues:v15 inDatabase:v8];
+  [v15 setObjectOrNull:usageDescription forKey:@"d"];
+  v14 = [[self alloc] initWithPropertyValues:v15 inDatabase:databaseCopy];
 }
 
-+ (id)releasedDataElementsForPID:(int64_t)a3 inDatabase:(id)a4
++ (id)releasedDataElementsForPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForReleasedDataPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForReleasedDataPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _releasedDataElementsFromQuery:v8];
+  v9 = [self _releasedDataElementsFromQuery:v8];
 
   return v9;
 }
 
-+ (id)_releasedDataElementsFromQuery:(id)a3
++ (id)_releasedDataElementsFromQuery:(id)query
 {
-  v4 = a3;
-  v5 = [a1 _propertySettersForReleasedData];
+  queryCopy = query;
+  _propertySettersForReleasedData = [self _propertySettersForReleasedData];
   v6 = objc_alloc_init(PKTransactionReleasedDataApplication);
-  v7 = [v5 allKeys];
+  allKeys = [_propertySettersForReleasedData allKeys];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001901A0;
   v12[3] = &unk_10083C998;
-  v15 = a1;
-  v13 = v5;
+  selfCopy = self;
+  v13 = _propertySettersForReleasedData;
   v8 = v6;
   v14 = v8;
-  v9 = v5;
-  [v4 enumeratePersistentIDsAndProperties:v7 usingBlock:v12];
+  v9 = _propertySettersForReleasedData;
+  [queryCopy enumeratePersistentIDsAndProperties:allKeys usingBlock:v12];
 
   if ([v8 client])
   {
@@ -71,18 +71,18 @@
   return v10;
 }
 
-+ (void)deleteEntitiesForPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForReleasedDataPID:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForReleasedDataPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)_predicateForReleasedDataPID:(int64_t)a3
++ (id)_predicateForReleasedDataPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;

@@ -1,37 +1,37 @@
 @interface IntelligentCallScreeningMenuCellOption
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 + (id)optionMenuItems;
-- (IntelligentCallScreeningMenuCellOption)initWithTitleKey:(id)a3 explanationKey:(id)a4 optionID:(id)a5;
+- (IntelligentCallScreeningMenuCellOption)initWithTitleKey:(id)key explanationKey:(id)explanationKey optionID:(id)d;
 @end
 
 @implementation IntelligentCallScreeningMenuCellOption
 
-- (IntelligentCallScreeningMenuCellOption)initWithTitleKey:(id)a3 explanationKey:(id)a4 optionID:(id)a5
+- (IntelligentCallScreeningMenuCellOption)initWithTitleKey:(id)key explanationKey:(id)explanationKey optionID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  explanationKeyCopy = explanationKey;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = IntelligentCallScreeningMenuCellOption;
   v12 = [(IntelligentCallScreeningMenuCellOption *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_titleKey, a3);
-    objc_storeStrong(&v13->_explanationKey, a4);
-    objc_storeStrong(&v13->_optionID, a5);
+    objc_storeStrong(&v12->_titleKey, key);
+    objc_storeStrong(&v13->_explanationKey, explanationKey);
+    objc_storeStrong(&v13->_optionID, d);
   }
 
   return v13;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 bundleForClass:a1];
-  v7 = [a1 localizationTableName];
-  v8 = [v6 localizedStringForKey:v5 value:&stru_284EEA450 table:v7];
+  keyCopy = key;
+  v6 = [v4 bundleForClass:self];
+  localizationTableName = [self localizationTableName];
+  v8 = [v6 localizedStringForKey:keyCopy value:&stru_284EEA450 table:localizationTableName];
 
   return v8;
 }

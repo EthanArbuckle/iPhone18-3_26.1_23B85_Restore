@@ -1,20 +1,20 @@
 @interface HSPCAssociatedTypeSelectionViewController
-- (HSPCAssociatedTypeSelectionViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCAssociatedTypeSelectionViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (UITableView)tableView;
 - (id)commitConfiguration;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCAssociatedTypeSelectionViewController
 
-- (HSPCAssociatedTypeSelectionViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCAssociatedTypeSelectionViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v10 = [[PRXScrollableContentView alloc] initWithCardStyle:0 scrollView:v9];
   v47.receiver = self;
@@ -24,8 +24,8 @@
   if (v11)
   {
     v46 = v10;
-    objc_storeStrong(&v11->_config, a4);
-    objc_storeStrong(&v12->_coordinator, a3);
+    objc_storeStrong(&v11->_config, config);
+    objc_storeStrong(&v12->_coordinator, coordinator);
     v13 = objc_storeWeak(&v12->_tableView, v9);
     [v9 setDelegate:v12];
 
@@ -53,30 +53,30 @@
     v23 = objc_loadWeakRetained(&v12->_tableView);
     [v23 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
 
-    v24 = [(HSPCAssociatedTypeSelectionViewController *)v12 config];
-    v25 = [v24 addedAccessory];
-    v26 = [v25 hf_primaryService];
+    config = [(HSPCAssociatedTypeSelectionViewController *)v12 config];
+    addedAccessory = [config addedAccessory];
+    hf_primaryService = [addedAccessory hf_primaryService];
     service = v12->_service;
-    v12->_service = v26;
+    v12->_service = hf_primaryService;
 
-    v28 = [(HMService *)v12->_service serviceType];
+    serviceType = [(HMService *)v12->_service serviceType];
     defaultAssociatedServiceType = v12->_defaultAssociatedServiceType;
-    v12->_defaultAssociatedServiceType = v28;
+    v12->_defaultAssociatedServiceType = serviceType;
 
-    v30 = [(HMService *)v12->_service serviceType];
-    v31 = [HFAssociatedServiceTypeFactory associatedServiceTypesArrayFor:v30];
+    serviceType2 = [(HMService *)v12->_service serviceType];
+    v31 = [HFAssociatedServiceTypeFactory associatedServiceTypesArrayFor:serviceType2];
     possibleAssociatedServiceTypes = v12->_possibleAssociatedServiceTypes;
     v12->_possibleAssociatedServiceTypes = v31;
 
     v33 = HULocalizedString();
     [(HSPCAssociatedTypeSelectionViewController *)v12 setTitle:v33];
 
-    v34 = [v7 activeTuple];
-    v35 = [v34 accessoryCategoryOrPrimaryServiceType];
-    v36 = v7;
-    v37 = [v7 setupAccessoryDescription];
-    v38 = [v37 setupAccessoryPayload];
-    v39 = [v38 matterDeviceTypeID];
+    activeTuple = [coordinatorCopy activeTuple];
+    accessoryCategoryOrPrimaryServiceType = [activeTuple accessoryCategoryOrPrimaryServiceType];
+    v36 = coordinatorCopy;
+    setupAccessoryDescription = [coordinatorCopy setupAccessoryDescription];
+    setupAccessoryPayload = [setupAccessoryDescription setupAccessoryPayload];
+    matterDeviceTypeID = [setupAccessoryPayload matterDeviceTypeID];
     v40 = HFLocalizedCategoryOrPrimaryServiceTypeString();
     [(HSPCAssociatedTypeSelectionViewController *)v12 setSubtitle:v40];
 
@@ -93,7 +93,7 @@
     }
 
     v44 = v12;
-    v7 = v36;
+    coordinatorCopy = v36;
     v10 = v46;
   }
 
@@ -102,23 +102,23 @@
 
 - (id)commitConfiguration
 {
-  v3 = [(HSPCAssociatedTypeSelectionViewController *)self tableView];
-  v4 = [v3 indexPathForSelectedRow];
-  v5 = [v4 row];
+  tableView = [(HSPCAssociatedTypeSelectionViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  v5 = [indexPathForSelectedRow row];
 
-  v6 = [(HSPCAssociatedTypeSelectionViewController *)self possibleAssociatedServiceTypes];
-  v7 = [v6 objectAtIndexedSubscript:v5];
+  possibleAssociatedServiceTypes = [(HSPCAssociatedTypeSelectionViewController *)self possibleAssociatedServiceTypes];
+  v7 = [possibleAssociatedServiceTypes objectAtIndexedSubscript:v5];
 
   v8 = [NAFuture futureWithResult:&off_1000CD9C0];
-  v9 = [(HSPCAssociatedTypeSelectionViewController *)self service];
-  v10 = v9;
-  if (v9)
+  service = [(HSPCAssociatedTypeSelectionViewController *)self service];
+  v10 = service;
+  if (service)
   {
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_10004EDF4;
     v26[3] = &unk_1000C63A0;
-    v11 = v9;
+    v11 = service;
     v27 = v11;
     v12 = v7;
     v28 = v12;
@@ -143,9 +143,9 @@
 
   else
   {
-    v17 = [(HSPCAssociatedTypeSelectionViewController *)self config];
-    v18 = [v17 addedAccessory];
-    NSLog(@"Attempting to set an associated service on an accessory without any services that support that: %@", v18);
+    config = [(HSPCAssociatedTypeSelectionViewController *)self config];
+    addedAccessory = [config addedAccessory];
+    NSLog(@"Attempting to set an associated service on an accessory without any services that support that: %@", addedAccessory);
   }
 
   return v8;
@@ -156,49 +156,49 @@
   v4.receiver = self;
   v4.super_class = HSPCAssociatedTypeSelectionViewController;
   [(HSPCAssociatedTypeSelectionViewController *)&v4 viewDidLoad];
-  v3 = [(HSPCAssociatedTypeSelectionViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(HSPCAssociatedTypeSelectionViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [view cellForRowAtIndexPath:pathCopy];
   [v6 setAccessoryType:3];
 
-  return v5;
+  return pathCopy;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [view cellForRowAtIndexPath:pathCopy];
   [v6 setAccessoryType:0];
 
-  return v5;
+  return pathCopy;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HSPCAssociatedTypeSelectionViewController *)self possibleAssociatedServiceTypes:a3];
+  v4 = [(HSPCAssociatedTypeSelectionViewController *)self possibleAssociatedServiceTypes:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v6];
-  v9 = [(HSPCAssociatedTypeSelectionViewController *)self possibleAssociatedServiceTypes];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
+  possibleAssociatedServiceTypes = [(HSPCAssociatedTypeSelectionViewController *)self possibleAssociatedServiceTypes];
+  v10 = [possibleAssociatedServiceTypes objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   [v8 updateUIWithServiceType:v10];
-  v11 = [v7 indexPathForSelectedRow];
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
 
-  LODWORD(v7) = [v11 isEqual:v6];
-  if (v7)
+  LODWORD(viewCopy) = [indexPathForSelectedRow isEqual:pathCopy];
+  if (viewCopy)
   {
     v12 = 3;
   }

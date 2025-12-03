@@ -1,21 +1,21 @@
 @interface DSContactIdentity
-- (DSContactIdentity)initWithEmail:(id)a3 withPhone:(id)a4;
+- (DSContactIdentity)initWithEmail:(id)email withPhone:(id)phone;
 @end
 
 @implementation DSContactIdentity
 
-- (DSContactIdentity)initWithEmail:(id)a3 withPhone:(id)a4
+- (DSContactIdentity)initWithEmail:(id)email withPhone:(id)phone
 {
-  v7 = a3;
-  v8 = a4;
+  emailCopy = email;
+  phoneCopy = phone;
   v12.receiver = self;
   v12.super_class = DSContactIdentity;
   v9 = [(DSContactIdentity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_email, a3);
-    objc_storeStrong(&v10->_phone, a4);
+    objc_storeStrong(&v9->_email, email);
+    objc_storeStrong(&v10->_phone, phone);
   }
 
   return v10;

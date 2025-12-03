@@ -1,18 +1,18 @@
 @interface CRKTableEntriesWithColumnSpacer
-- (CRKTableEntriesWithColumnSpacer)initWithOrigin:(id)a3 index:(unint64_t)a4 spacerEntry:(id)a5;
-- (id)entryAtRow:(unint64_t)a3 column:(unint64_t)a4;
+- (CRKTableEntriesWithColumnSpacer)initWithOrigin:(id)origin index:(unint64_t)index spacerEntry:(id)entry;
+- (id)entryAtRow:(unint64_t)row column:(unint64_t)column;
 @end
 
 @implementation CRKTableEntriesWithColumnSpacer
 
-- (CRKTableEntriesWithColumnSpacer)initWithOrigin:(id)a3 index:(unint64_t)a4 spacerEntry:(id)a5
+- (CRKTableEntriesWithColumnSpacer)initWithOrigin:(id)origin index:(unint64_t)index spacerEntry:(id)entry
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  originCopy = origin;
+  entryCopy = entry;
+  v12 = entryCopy;
+  if (originCopy)
   {
-    if (v11)
+    if (entryCopy)
     {
       goto LABEL_3;
     }
@@ -35,27 +35,27 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->mOrigin, a3);
-    v14->mIndex = a4;
-    objc_storeStrong(&v14->mSpacerEntry, a5);
+    objc_storeStrong(&v13->mOrigin, origin);
+    v14->mIndex = index;
+    objc_storeStrong(&v14->mSpacerEntry, entry);
   }
 
   return v14;
 }
 
-- (id)entryAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (id)entryAtRow:(unint64_t)row column:(unint64_t)column
 {
   mIndex = self->mIndex;
-  if (mIndex <= a4)
+  if (mIndex <= column)
   {
-    if (mIndex == a4)
+    if (mIndex == column)
     {
       v6 = self->mSpacerEntry;
       goto LABEL_7;
     }
 
     mOrigin = self->mOrigin;
-    --a4;
+    --column;
   }
 
   else
@@ -63,7 +63,7 @@ LABEL_3:
     mOrigin = self->mOrigin;
   }
 
-  v6 = [(CRKTableEntries *)mOrigin entryAtRow:a3 column:a4];
+  v6 = [(CRKTableEntries *)mOrigin entryAtRow:row column:column];
 LABEL_7:
 
   return v6;

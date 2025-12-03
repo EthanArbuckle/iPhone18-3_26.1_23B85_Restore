@@ -1,31 +1,31 @@
 @interface PKPaymentPassActionGroupDataController
-- (PKPaymentPassActionGroupDataController)initWithPass:(id)a3 actionGroups:(id)a4 paymentDataProvider:(id)a5 webService:(id)a6;
+- (PKPaymentPassActionGroupDataController)initWithPass:(id)pass actionGroups:(id)groups paymentDataProvider:(id)provider webService:(id)service;
 - (UIViewController)viewController;
-- (void)remoteGroupActionsViewControllerDidCancel:(id)a3;
-- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)a3;
-- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)a3;
-- (void)selectActionGroupViewControllerDidCancel:(id)a3;
-- (void)selectActionGroupViewControllerDidPerformFetchActionGroup:(id)a3;
+- (void)remoteGroupActionsViewControllerDidCancel:(id)cancel;
+- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)group;
+- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)payment;
+- (void)selectActionGroupViewControllerDidCancel:(id)cancel;
+- (void)selectActionGroupViewControllerDidPerformFetchActionGroup:(id)group;
 @end
 
 @implementation PKPaymentPassActionGroupDataController
 
-- (PKPaymentPassActionGroupDataController)initWithPass:(id)a3 actionGroups:(id)a4 paymentDataProvider:(id)a5 webService:(id)a6
+- (PKPaymentPassActionGroupDataController)initWithPass:(id)pass actionGroups:(id)groups paymentDataProvider:(id)provider webService:(id)service
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  passCopy = pass;
+  groupsCopy = groups;
+  providerCopy = provider;
+  serviceCopy = service;
   v18.receiver = self;
   v18.super_class = PKPaymentPassActionGroupDataController;
   v15 = [(PKPaymentPassActionGroupDataController *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_pass, a3);
-    objc_storeStrong(&v16->_actionGroups, a4);
-    objc_storeStrong(&v16->_paymentDataProvider, a5);
-    objc_storeStrong(&v16->_webService, a6);
+    objc_storeStrong(&v15->_pass, pass);
+    objc_storeStrong(&v16->_actionGroups, groups);
+    objc_storeStrong(&v16->_paymentDataProvider, provider);
+    objc_storeStrong(&v16->_webService, service);
   }
 
   return v16;
@@ -38,8 +38,8 @@
   {
     if (v3 == 1)
     {
-      v4 = [(NSArray *)self->_actionGroups firstObject];
-      v5 = [[PKRemoteActionGroupViewController alloc] initWithPass:self->_pass actionGroup:v4 paymentDataProvider:self->_paymentDataProvider webService:self->_webService];
+      firstObject = [(NSArray *)self->_actionGroups firstObject];
+      v5 = [[PKRemoteActionGroupViewController alloc] initWithPass:self->_pass actionGroup:firstObject paymentDataProvider:self->_paymentDataProvider webService:self->_webService];
       [(PKRemoteActionGroupViewController *)v5 setDelegate:self];
     }
 
@@ -58,49 +58,49 @@
   return v5;
 }
 
-- (void)remoteGroupActionsViewControllerDidCancel:(id)a3
+- (void)remoteGroupActionsViewControllerDidCancel:(id)cancel
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v5 = [v3 navigationController];
+  cancelCopy = cancel;
+  [cancelCopy setDelegate:0];
+  navigationController = [cancelCopy navigationController];
 
-  v4 = [v5 popViewControllerAnimated:0];
+  v4 = [navigationController popViewControllerAnimated:0];
 }
 
-- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)a3
+- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)group
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v5 = [v3 navigationController];
+  groupCopy = group;
+  [groupCopy setDelegate:0];
+  navigationController = [groupCopy navigationController];
 
-  v4 = [v5 popViewControllerAnimated:0];
+  v4 = [navigationController popViewControllerAnimated:0];
 }
 
-- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)a3
+- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)payment
 {
-  v5 = a3;
-  v3 = [v5 navigationController];
-  v4 = [v3 popViewControllerAnimated:0];
+  paymentCopy = payment;
+  navigationController = [paymentCopy navigationController];
+  v4 = [navigationController popViewControllerAnimated:0];
 
-  [v5 setDelegate:0];
+  [paymentCopy setDelegate:0];
 }
 
-- (void)selectActionGroupViewControllerDidCancel:(id)a3
+- (void)selectActionGroupViewControllerDidCancel:(id)cancel
 {
-  v5 = a3;
-  v3 = [v5 navigationController];
-  v4 = [v3 popViewControllerAnimated:0];
+  cancelCopy = cancel;
+  navigationController = [cancelCopy navigationController];
+  v4 = [navigationController popViewControllerAnimated:0];
 
-  [v5 setDelegate:0];
+  [cancelCopy setDelegate:0];
 }
 
-- (void)selectActionGroupViewControllerDidPerformFetchActionGroup:(id)a3
+- (void)selectActionGroupViewControllerDidPerformFetchActionGroup:(id)group
 {
-  v5 = a3;
-  v3 = [v5 navigationController];
-  v4 = [v3 popViewControllerAnimated:0];
+  groupCopy = group;
+  navigationController = [groupCopy navigationController];
+  v4 = [navigationController popViewControllerAnimated:0];
 
-  [v5 setDelegate:0];
+  [groupCopy setDelegate:0];
 }
 
 @end

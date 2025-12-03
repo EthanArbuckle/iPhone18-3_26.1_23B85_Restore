@@ -1,11 +1,11 @@
 @interface _CNContactsAPIServiceAuthorizationChecker
-- (BOOL)acceptConnectionWithReason:(id)a3;
+- (BOOL)acceptConnectionWithReason:(id)reason;
 - (BOOL)check;
 - (BOOL)isConnectionFromContactProvider;
 - (BOOL)isConnectionFromTCCUncoupledProcess;
-- (BOOL)rejectConnectionWithReason:(id)a3;
-- (_CNContactsAPIServiceAuthorizationChecker)initWithConnection:(id)a3 log:(id)a4 tccServices:(id)a5;
-- (id)bundleIdentifierForConnection:(id)a3;
+- (BOOL)rejectConnectionWithReason:(id)reason;
+- (_CNContactsAPIServiceAuthorizationChecker)initWithConnection:(id)connection log:(id)log tccServices:(id)services;
+- (id)bundleIdentifierForConnection:(id)connection;
 - (void)_checkTCCAuthorizationStatus;
 - (void)isConnectionFromTCCUncoupledProcess;
 @end
@@ -53,15 +53,15 @@ LABEL_3:
 
 - (BOOL)isConnectionFromContactProvider
 {
-  v3 = [(_CNContactsAPIServiceAuthorizationChecker *)self allowContactProvidersWithoutTCCApproval];
-  if (v3)
+  allowContactProvidersWithoutTCCApproval = [(_CNContactsAPIServiceAuthorizationChecker *)self allowContactProvidersWithoutTCCApproval];
+  if (allowContactProvidersWithoutTCCApproval)
   {
     connection = self->_connection;
 
-    LOBYTE(v3) = [CNContactProviderSupportManager isConnectionForContactProvider:connection];
+    LOBYTE(allowContactProvidersWithoutTCCApproval) = [CNContactProviderSupportManager isConnectionForContactProvider:connection];
   }
 
-  return v3;
+  return allowContactProvidersWithoutTCCApproval;
 }
 
 - (void)_checkTCCAuthorizationStatus
@@ -86,20 +86,20 @@ LABEL_3:
   }
 }
 
-- (_CNContactsAPIServiceAuthorizationChecker)initWithConnection:(id)a3 log:(id)a4 tccServices:(id)a5
+- (_CNContactsAPIServiceAuthorizationChecker)initWithConnection:(id)connection log:(id)log tccServices:(id)services
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  logCopy = log;
+  servicesCopy = services;
   v16.receiver = self;
   v16.super_class = _CNContactsAPIServiceAuthorizationChecker;
   v12 = [(_CNContactsAPIServiceAuthorizationChecker *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connection, a3);
-    objc_storeStrong(&v13->_log, a4);
-    objc_storeStrong(&v13->_tccServices, a5);
+    objc_storeStrong(&v12->_connection, connection);
+    objc_storeStrong(&v13->_log, log);
+    objc_storeStrong(&v13->_tccServices, services);
     v14 = v13;
   }
 
@@ -109,8 +109,8 @@ LABEL_3:
 - (BOOL)isConnectionFromTCCUncoupledProcess
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 entitlementVerifier];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  entitlementVerifier = [currentEnvironment entitlementVerifier];
   connection = self->_connection;
   if (connection)
   {
@@ -126,7 +126,7 @@ LABEL_3:
   v16[0] = *MEMORY[0x1E6996518];
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v14 = 0;
-  v8 = [v4 valuesForAuditToken:v15 forEntitlements:v7 error:&v14];
+  v8 = [entitlementVerifier valuesForAuditToken:v15 forEntitlements:v7 error:&v14];
   v9 = v14;
 
   if (v9)
@@ -149,12 +149,12 @@ LABEL_3:
   return v11;
 }
 
-- (BOOL)acceptConnectionWithReason:(id)a3
+- (BOOL)acceptConnectionWithReason:(id)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSXPCConnection *)self->_connection serviceName];
-  v6 = [(NSXPCConnection *)self->_connection processIdentifier];
+  reasonCopy = reason;
+  serviceName = [(NSXPCConnection *)self->_connection serviceName];
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
   v7 = [(_CNContactsAPIServiceAuthorizationChecker *)self bundleIdentifierForConnection:self->_connection];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -162,23 +162,23 @@ LABEL_3:
     v10 = 138544130;
     v11 = v7;
     v12 = 1024;
-    v13 = v6;
+    v13 = processIdentifier;
     v14 = 2114;
-    v15 = v5;
+    v15 = serviceName;
     v16 = 2114;
-    v17 = v4;
+    v17 = reasonCopy;
     _os_log_impl(&dword_1954A0000, log, OS_LOG_TYPE_DEFAULT, "shouldAcceptNewConnection: Accepting connection from %{public}@ (%d) for %{public}@ (%{public}@)", &v10, 0x26u);
   }
 
   return 1;
 }
 
-- (BOOL)rejectConnectionWithReason:(id)a3
+- (BOOL)rejectConnectionWithReason:(id)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSXPCConnection *)self->_connection serviceName];
-  v6 = [(NSXPCConnection *)self->_connection processIdentifier];
+  reasonCopy = reason;
+  serviceName = [(NSXPCConnection *)self->_connection serviceName];
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
   v7 = [(_CNContactsAPIServiceAuthorizationChecker *)self bundleIdentifierForConnection:self->_connection];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -186,23 +186,23 @@ LABEL_3:
     v10 = 138544130;
     v11 = v7;
     v12 = 1024;
-    v13 = v6;
+    v13 = processIdentifier;
     v14 = 2114;
-    v15 = v5;
+    v15 = serviceName;
     v16 = 2114;
-    v17 = v4;
+    v17 = reasonCopy;
     _os_log_impl(&dword_1954A0000, log, OS_LOG_TYPE_DEFAULT, "shouldAcceptNewConnection: Rejecting connection from %{public}@ (%d) for %{public}@ (%{public}@)", &v10, 0x26u);
   }
 
   return 0;
 }
 
-- (id)bundleIdentifierForConnection:(id)a3
+- (id)bundleIdentifierForConnection:(id)connection
 {
   v3 = MEMORY[0x1E6996638];
-  if (a3)
+  if (connection)
   {
-    [a3 auditToken];
+    [connection auditToken];
   }
 
   else
@@ -220,7 +220,7 @@ LABEL_3:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1954A0000, a2, OS_LOG_TYPE_ERROR, "shouldAcceptNewConnection: Failed check for TCC uncoupled process %{public}@", &v2, 0xCu);
 }
 

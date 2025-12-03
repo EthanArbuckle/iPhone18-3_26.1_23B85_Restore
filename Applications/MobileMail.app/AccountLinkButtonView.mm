@@ -1,14 +1,14 @@
 @interface AccountLinkButtonView
-- (AccountLinkButtonView)initWithSpecifier:(id)a3;
+- (AccountLinkButtonView)initWithSpecifier:(id)specifier;
 - (void)_goToAccountURL;
 - (void)layoutSubviews;
 @end
 
 @implementation AccountLinkButtonView
 
-- (AccountLinkButtonView)initWithSpecifier:(id)a3
+- (AccountLinkButtonView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = AccountLinkButtonView;
   v5 = [(AccountLinkButtonView *)&v14 init];
@@ -20,9 +20,9 @@
 
     [(AccountLinkButton *)v5->_linkButton addTarget:v5 action:"_goToAccountURL" forControlEvents:64];
     [(AccountLinkButtonView *)v5 addSubview:v5->_linkButton];
-    v8 = [v4 propertyForKey:@"accountLinkButtonTitle"];
-    v9 = [v4 propertyForKey:@"accountLinkButtonURL"];
-    v10 = [v4 propertyForKey:@"accountLinkButtonViewHeight"];
+    v8 = [specifierCopy propertyForKey:@"accountLinkButtonTitle"];
+    v9 = [specifierCopy propertyForKey:@"accountLinkButtonURL"];
+    v10 = [specifierCopy propertyForKey:@"accountLinkButtonViewHeight"];
     [(AccountLinkButton *)v5->_linkButton setTitle:v8 forState:0];
     objc_storeStrong(&v5->_helpURL, v9);
     if (v10)

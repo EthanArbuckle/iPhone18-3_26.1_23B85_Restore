@@ -1,24 +1,24 @@
 @interface NESMRelaySession
-- (BOOL)handleUpdateConfiguration:(id)a3;
-- (BOOL)reportError:(int)a3 withOptions:(id)a4;
-- (BOOL)shouldBeIdleForStatus:(int)a3;
-- (NESMRelaySession)initWithConfiguration:(id)a3 andServer:(id)a4;
+- (BOOL)handleUpdateConfiguration:(id)configuration;
+- (BOOL)reportError:(int)error withOptions:(id)options;
+- (BOOL)shouldBeIdleForStatus:(int)status;
+- (NESMRelaySession)initWithConfiguration:(id)configuration andServer:(id)server;
 - (id)copyExtendedStatus;
-- (void)configUpdated:(id)a3;
+- (void)configUpdated:(id)updated;
 - (void)dealloc;
-- (void)handleGetInfoMessage:(id)a3 withType:(int)a4;
-- (void)handleNetworkDetectionNotification:(int)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleGetInfoMessage:(id)message withType:(int)type;
+- (void)handleNetworkDetectionNotification:(int)notification;
+- (void)handleStartMessage:(id)message;
 - (void)install;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)uninstall;
 @end
 
 @implementation NESMRelaySession
 
-- (void)configUpdated:(id)a3
+- (void)configUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -28,8 +28,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "PvD configuration updated for relay %@", buf, 0xCu);
   }
 
-  v7 = [v4 rawDictionary];
-  v9 = v7;
+  rawDictionary = [updatedCopy rawDictionary];
+  v9 = rawDictionary;
   if (!self)
   {
 
@@ -44,7 +44,7 @@ LABEL_83:
     goto LABEL_85;
   }
 
-  objc_setProperty_atomic(self, v8, v7, 416);
+  objc_setProperty_atomic(self, v8, rawDictionary, 416);
 
   if (!objc_getProperty(self, v10, 416, 1))
   {
@@ -222,7 +222,7 @@ LABEL_76:
               if (v68)
               {
                 v67 = *v78;
-                v62 = v4;
+                v62 = updatedCopy;
                 while (2)
                 {
                   v38 = 0;
@@ -275,7 +275,7 @@ LABEL_76:
                                 if (v52)
                                 {
 
-                                  v4 = v62;
+                                  updatedCopy = v62;
                                   v16 = v71;
                                   v20 = v66;
                                   v17 = v69;
@@ -298,7 +298,7 @@ LABEL_76:
                           }
                         }
 
-                        v4 = v62;
+                        updatedCopy = v62;
                         v16 = v71;
                         v20 = v66;
                       }
@@ -375,22 +375,22 @@ LABEL_56:
 LABEL_85:
 }
 
-- (BOOL)reportError:(int)a3 withOptions:(id)a4
+- (BOOL)reportError:(int)error withOptions:(id)options
 {
-  v7 = a4;
+  optionsCopy = options;
   v8 = 0;
-  if (a3 > 59)
+  if (error > 59)
   {
-    if (a3 <= 1199)
+    if (error <= 1199)
     {
-      if (a3 <= 1103)
+      if (error <= 1103)
       {
-        if (a3 == 60)
+        if (error == 60)
         {
           goto LABEL_26;
         }
 
-        if (a3 == 1100)
+        if (error == 1100)
         {
           v8 = 20;
           goto LABEL_26;
@@ -399,21 +399,21 @@ LABEL_85:
 
       else
       {
-        if ((a3 - 1104) < 2)
+        if ((error - 1104) < 2)
         {
           goto LABEL_22;
         }
 
-        if (a3 == 1106)
+        if (error == 1106)
         {
           goto LABEL_4;
         }
       }
     }
 
-    else if (a3 > 1205)
+    else if (error > 1205)
     {
-      switch(a3)
+      switch(error)
       {
         case 1206:
           goto LABEL_4;
@@ -426,12 +426,12 @@ LABEL_85:
 
     else
     {
-      if ((a3 - 1204) < 2)
+      if ((error - 1204) < 2)
       {
         goto LABEL_22;
       }
 
-      if (a3 == 1200)
+      if (error == 1200)
       {
         goto LABEL_26;
       }
@@ -440,10 +440,10 @@ LABEL_85:
 
   else
   {
-    v9 = (a3 + 9858);
+    v9 = (error + 9858);
     if (v9 <= 0x32)
     {
-      if (((1 << (a3 - 126)) & 0x41807C0000001) != 0)
+      if (((1 << (error - 126)) & 0x41807C0000001) != 0)
       {
 LABEL_4:
         v8 = 28;
@@ -475,13 +475,13 @@ LABEL_26:
           v45 = 0u;
         }
 
-        v41 = v7;
+        v41 = optionsCopy;
         obj = Property;
         v15 = [obj countByEnumeratingWithState:&v44 objects:v54 count:16];
         if (v15)
         {
           v17 = v15;
-          v43 = 0;
+          intValue = 0;
           v18 = 0;
           v19 = *v45;
           do
@@ -510,7 +510,7 @@ LABEL_26:
               if (v26 == -1)
               {
 LABEL_39:
-                v43 = [v21 intValue];
+                intValue = [v21 intValue];
                 if (self)
                 {
                   v28 = objc_getProperty(self, v27, *(v10 + 622), 1);
@@ -540,12 +540,12 @@ LABEL_39:
 
         else
         {
-          v43 = 0;
+          intValue = 0;
           v18 = 0;
         }
 
-        v7 = v41;
-        if (v43 != v40)
+        optionsCopy = v41;
+        if (intValue != v40)
         {
           v32 = ne_log_obj();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
@@ -554,7 +554,7 @@ LABEL_39:
             *buf = 138412802;
             v49 = v33;
             v50 = 1024;
-            v51 = v43;
+            v51 = intValue;
             v52 = 1024;
             v53 = v40;
             _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "Relay %@ last recorded error changing from %d to %d", buf, 0x18u);
@@ -587,13 +587,13 @@ LABEL_22:
       }
     }
 
-    if ((a3 + 65568) <= 0x1E && ((1 << (a3 + 32)) & 0x4000C001) != 0)
+    if ((error + 65568) <= 0x1E && ((1 << (error + 32)) & 0x4000C001) != 0)
     {
       v8 = 17;
       goto LABEL_26;
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -603,7 +603,7 @@ LABEL_22:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    LODWORD(v49) = a3;
+    LODWORD(v49) = error;
     _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Relay session ignoring unmapped error %d", buf, 8u);
   }
 
@@ -617,8 +617,8 @@ LABEL_56:
   v3 = [NSMutableDictionary alloc];
   v52.receiver = self;
   v52.super_class = NESMRelaySession;
-  v4 = [(NESMSession *)&v52 copyExtendedStatus];
-  v41 = [v3 initWithDictionary:v4];
+  copyExtendedStatus = [(NESMSession *)&v52 copyExtendedStatus];
+  v41 = [v3 initWithDictionary:copyExtendedStatus];
 
   v50 = 0u;
   v51 = 0u;
@@ -766,16 +766,16 @@ LABEL_56:
   return v42;
 }
 
-- (void)handleGetInfoMessage:(id)a3 withType:(int)a4
+- (void)handleGetInfoMessage:(id)message withType:(int)type
 {
-  xdict = a3;
+  xdict = message;
   reply = xpc_dictionary_create_reply(xdict);
-  if (a4 == 2)
+  if (type == 2)
   {
-    v7 = [(NESMRelaySession *)self copyExtendedStatus];
-    if (v7)
+    copyExtendedStatus = [(NESMRelaySession *)self copyExtendedStatus];
+    if (copyExtendedStatus)
     {
-      v8 = v7;
+      v8 = copyExtendedStatus;
       v9 = _CFXPCCreateXPCObjectFromCFObject();
       xpc_dictionary_set_value(reply, "SessionInfo", v9);
     }
@@ -800,15 +800,15 @@ LABEL_56:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v18 = 138412290;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@ uninstalling relay session", &v18, 0xCu);
   }
 
-  v4 = [(NESMSession *)self policySession];
-  sub_100030D44(v4);
+  policySession = [(NESMSession *)self policySession];
+  sub_100030D44(policySession);
 
-  v5 = [(NESMSession *)self policySession];
-  sub_100031148(v5);
+  policySession2 = [(NESMSession *)self policySession];
+  sub_100031148(policySession2);
 
   sub_1000862AC(self, v6);
   sub_1000863C8(self, v7);
@@ -824,11 +824,11 @@ LABEL_56:
     }
   }
 
-  v12 = [(NESMSession *)self configuration];
-  v13 = [v12 relay];
-  v14 = [v13 isEnabled];
+  configuration = [(NESMSession *)self configuration];
+  relay = [configuration relay];
+  isEnabled = [relay isEnabled];
 
-  if ((v14 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
     sub_100085FD0(self, v15);
   }
@@ -891,11 +891,11 @@ LABEL_56:
                 }
 
                 v19 = *(*(&v154 + 1) + 8 * i);
-                v20 = [v19 HTTP3RelayURL];
-                v21 = v20 != 0;
+                hTTP3RelayURL = [v19 HTTP3RelayURL];
+                v21 = hTTP3RelayURL != 0;
 
-                v22 = [v19 HTTP2RelayURL];
-                LODWORD(v19) = v22 != 0;
+                hTTP2RelayURL = [v19 HTTP2RelayURL];
+                LODWORD(v19) = hTTP2RelayURL != 0;
 
                 v17 &= v21;
                 v16 &= v19;
@@ -970,27 +970,27 @@ LABEL_58:
                   [*(*(&v150 + 1) + 8 * j) HTTP3RelayURL];
                 }
                 v55 = ;
-                v56 = [v55 absoluteString];
+                absoluteString = [v55 absoluteString];
 
-                if (v56)
+                if (absoluteString)
                 {
-                  v57 = sub_100087AC8(v56, v54);
+                  v57 = sub_100087AC8(absoluteString, v54);
                   nw_array_append();
                   if (v144)
                   {
-                    v58 = [v54 HTTP2RelayURL];
-                    v59 = [v58 absoluteString];
+                    hTTP2RelayURL2 = [v54 HTTP2RelayURL];
+                    absoluteString2 = [hTTP2RelayURL2 absoluteString];
 
-                    if (v59)
+                    if (absoluteString2)
                     {
-                      v60 = sub_100087AC8(v59, v54);
+                      v60 = sub_100087AC8(absoluteString2, v54);
                       nw_array_append();
                     }
                   }
 
                   else
                   {
-                    v59 = 0;
+                    absoluteString2 = 0;
                   }
                 }
               }
@@ -1015,14 +1015,14 @@ LABEL_58:
           objc_getProperty(selfa, v65, 368, 1);
           nw_proxy_config_set_use_over_privacy_proxy();
           v66 = [NERelayNetworkAgent alloc];
-          v67 = [(NESMSession *)selfa configuration];
-          v68 = [v67 identifier];
-          v69 = [v66 initWithConfigUUID:v68 sessionType:-[NESMRelaySession type](selfa name:{"type"), @"h2-fallback"}];
+          configuration = [(NESMSession *)selfa configuration];
+          identifier = [configuration identifier];
+          v69 = [v66 initWithConfigUUID:identifier sessionType:-[NESMRelaySession type](selfa name:{"type"), @"h2-fallback"}];
           objc_setProperty_atomic(selfa, v70, v69, 376);
 
           [objc_getProperty(selfa v71];
-          v72 = [(NESMSession *)selfa configuration];
-          v73 = [v72 name];
+          configuration2 = [(NESMSession *)selfa configuration];
+          name = [configuration2 name];
           [objc_getProperty(selfa v74];
 
           v75 = [NWNetworkAgentRegistration alloc];
@@ -1071,8 +1071,8 @@ LABEL_58:
           v93 = *(*(&v167 + 1) + 40);
           if (v93)
           {
-            v94 = [v93 handle];
-            v95 = dup([v94 fileDescriptor]);
+            handle = [v93 handle];
+            v95 = dup([handle fileDescriptor]);
 
             v97 = objc_getProperty(selfa, v96, 384, 1);
             v99 = objc_getProperty(selfa, v98, 376, 1);
@@ -1093,9 +1093,9 @@ LABEL_58:
           }
 
           v103 = objc_getProperty(v102, v101, 384, 1);
-          v104 = [v103 isRegistered];
+          isRegistered = [v103 isRegistered];
 
-          if (v104)
+          if (isRegistered)
           {
             v106 = selfa;
             if (is_equal)
@@ -1124,25 +1124,25 @@ LABEL_102:
               nw_proxy_config_set_use_over_privacy_proxy();
               if (v144)
               {
-                v132 = [objc_getProperty(selfa v131];
-                v133 = v132 == 0;
+                v131 = [objc_getProperty(selfa v131];
+                v133 = v131 == 0;
 
                 if (!v133)
                 {
                   v167 = 0uLL;
-                  v134 = [objc_getProperty(selfa v131];
-                  [v134 getUUIDBytes:&v167];
+                  v1312 = [objc_getProperty(selfa v131];
+                  [v1312 getUUIDBytes:&v167];
 
                   objc_getProperty(selfa, v135, 360, 1);
                   nw_proxy_config_set_fallback_proxy_agent();
                 }
               }
 
-              v136 = [objc_getProperty(selfa v131];
-              v137 = [v136 lastObject];
+              v1313 = [objc_getProperty(selfa v131];
+              lastObject = [v1313 lastObject];
 
-              v138 = [v137 dnsOverHTTPSURL];
-              if (v138)
+              dnsOverHTTPSURL = [lastObject dnsOverHTTPSURL];
+              if (dnsOverHTTPSURL)
               {
               }
 
@@ -1167,11 +1167,11 @@ LABEL_112:
               if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
               {
                 v113 = objc_getProperty(selfa, v112, 376, 1);
-                v114 = [v113 agentUUID];
+                agentUUID = [v113 agentUUID];
                 *v163 = 138412546;
                 v164 = selfa;
                 v165 = 2114;
-                v166 = v114;
+                v166 = agentUUID;
                 _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "%@: Updated fallback relay network agent %{public}@", v163, 0x16u);
               }
             }
@@ -1182,11 +1182,11 @@ LABEL_112:
               if (os_log_type_enabled(v111, OS_LOG_TYPE_ERROR))
               {
                 v140 = objc_getProperty(selfa, v125, 376, 1);
-                v141 = [v140 agentUUID];
+                agentUUID2 = [v140 agentUUID];
                 *v163 = 138412546;
                 v164 = selfa;
                 v165 = 2114;
-                v166 = v141;
+                v166 = agentUUID2;
                 _os_log_error_impl(&_mh_execute_header, v111, OS_LOG_TYPE_ERROR, "%@: Update failed for fallback relay network agent %{public}@", v163, 0x16u);
               }
             }
@@ -1204,11 +1204,11 @@ LABEL_112:
               if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
               {
                 v120 = objc_getProperty(selfa, v119, 376, 1);
-                v121 = [v120 agentUUID];
+                agentUUID3 = [v120 agentUUID];
                 *v163 = 138412546;
                 v164 = selfa;
                 v165 = 2114;
-                v166 = v121;
+                v166 = agentUUID3;
                 _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "%@: Registered fallback relay network agent %{public}@", v163, 0x16u);
               }
             }
@@ -1219,11 +1219,11 @@ LABEL_112:
               if (os_log_type_enabled(v111, OS_LOG_TYPE_ERROR))
               {
                 v123 = objc_getProperty(selfa, v122, 376, 1);
-                v124 = [v123 agentUUID];
+                agentUUID4 = [v123 agentUUID];
                 *v163 = 138412546;
                 v164 = selfa;
                 v165 = 2114;
-                v166 = v124;
+                v166 = agentUUID4;
                 _os_log_error_impl(&_mh_execute_header, v111, OS_LOG_TYPE_ERROR, "%@: Registration failed for fallback relay network agent %{public}@", v163, 0x16u);
               }
             }
@@ -1261,11 +1261,11 @@ LABEL_19:
   v148 = 0u;
   v149 = 0u;
 LABEL_22:
-  v29 = [Property relays];
-  v30 = 0;
-  v31 = 0;
-  v32 = 0;
-  v33 = [v29 countByEnumeratingWithState:&v146 objects:v159 count:16];
+  relays = [Property relays];
+  copySecIdentityRef = 0;
+  hTTP2RelayURL3 = 0;
+  hTTP3RelayURL2 = 0;
+  v33 = [relays countByEnumeratingWithState:&v146 objects:v159 count:16];
   if (!v33)
   {
     goto LABEL_42;
@@ -1278,13 +1278,13 @@ LABEL_22:
     {
       if (*v147 != v34)
       {
-        objc_enumerationMutation(v29);
+        objc_enumerationMutation(relays);
       }
 
       v36 = *(*(&v146 + 1) + 8 * k);
-      if (v32)
+      if (hTTP3RelayURL2)
       {
-        if (v31)
+        if (hTTP2RelayURL3)
         {
           goto LABEL_32;
         }
@@ -1292,19 +1292,19 @@ LABEL_22:
 
       else
       {
-        v32 = [*(*(&v146 + 1) + 8 * k) HTTP3RelayURL];
-        if (v31)
+        hTTP3RelayURL2 = [*(*(&v146 + 1) + 8 * k) HTTP3RelayURL];
+        if (hTTP2RelayURL3)
         {
           goto LABEL_32;
         }
       }
 
-      v31 = [v36 HTTP2RelayURL];
+      hTTP2RelayURL3 = [v36 HTTP2RelayURL];
 LABEL_32:
-      v37 = [v36 identity];
-      if (v37)
+      identity = [v36 identity];
+      if (identity)
       {
-        v38 = v30 == 0;
+        v38 = copySecIdentityRef == 0;
       }
 
       else
@@ -1316,31 +1316,31 @@ LABEL_32:
 
       if (v39)
       {
-        v30 = [v36 copySecIdentityRef];
+        copySecIdentityRef = [v36 copySecIdentityRef];
       }
     }
 
-    v33 = [v29 countByEnumeratingWithState:&v146 objects:v159 count:16];
+    v33 = [relays countByEnumeratingWithState:&v146 objects:v159 count:16];
   }
 
   while (v33);
 LABEL_42:
 
-  if (v32 | v31)
+  if (hTTP3RelayURL2 | hTTP2RelayURL3)
   {
     v40 = [NEPvDFetcher alloc];
-    v41 = [(NESMSession *)selfa queue];
-    if (v32)
+    queue = [(NESMSession *)selfa queue];
+    if (hTTP3RelayURL2)
     {
-      v42 = v32;
+      v42 = hTTP3RelayURL2;
     }
 
     else
     {
-      v42 = v31;
+      v42 = hTTP2RelayURL3;
     }
 
-    v44 = [v40 initWithDelegate:selfa queue:v41 url:v42 identityRef:v30];
+    v44 = [v40 initWithDelegate:selfa queue:queue url:v42 identityRef:copySecIdentityRef];
     if (selfa)
     {
       objc_setProperty_atomic(selfa, v43, v44, 488);
@@ -1374,32 +1374,32 @@ LABEL_50:
   }
 }
 
-- (void)handleNetworkDetectionNotification:(int)a3
+- (void)handleNetworkDetectionNotification:(int)notification
 {
-  if (a3 == 1)
+  if (notification == 1)
   {
     block[7] = v3;
     block[8] = v4;
-    v6 = [(NESMSession *)self queue];
+    queue = [(NESMSession *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100089328;
     block[3] = &unk_1000EB1C0;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (BOOL)handleUpdateConfiguration:(id)a3
+- (BOOL)handleUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && (v11.receiver = self, v11.super_class = NESMRelaySession, [(NESMSession *)&v11 handleUpdateConfiguration:v4]))
+  configurationCopy = configuration;
+  if (configurationCopy && (v11.receiver = self, v11.super_class = NESMRelaySession, [(NESMSession *)&v11 handleUpdateConfiguration:configurationCopy]))
   {
-    v5 = [v4 relay];
-    v7 = v5;
+    relay = [configurationCopy relay];
+    v7 = relay;
     if (self)
     {
-      objc_setProperty_atomic(self, v6, v5, 408);
+      objc_setProperty_atomic(self, v6, relay, 408);
 
       sub_100089454(self, v8);
     }
@@ -1419,29 +1419,29 @@ LABEL_50:
   return v9;
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ handling start for relay session", buf, 0xCu);
   }
 
   v7.receiver = self;
   v7.super_class = NESMRelaySession;
-  [(NESMSession *)&v7 handleStartMessage:v4];
+  [(NESMSession *)&v7 handleStartMessage:messageCopy];
 
   sub_100089454(self, v6);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (self)
   {
     Property = objc_getProperty(self, v11, 432, 1);
@@ -1452,7 +1452,7 @@ LABEL_50:
     Property = 0;
   }
 
-  if (Property == v10 && [v9 isEqualToString:@"bestAvailableNetworkDescription"])
+  if (Property == objectCopy && [pathCopy isEqualToString:@"bestAvailableNetworkDescription"])
   {
     v15 = objc_alloc_init(NEOnDemandRuleConnect);
     if (self)
@@ -1465,8 +1465,8 @@ LABEL_50:
       v16 = 0;
     }
 
-    v52 = [v16 bestAvailableNetworkDescription];
-    if (v52)
+    bestAvailableNetworkDescription = [v16 bestAvailableNetworkDescription];
+    if (bestAvailableNetworkDescription)
     {
       if (self)
       {
@@ -1478,8 +1478,8 @@ LABEL_50:
         v18 = 0;
       }
 
-      v19 = [v18 networkDescriptionArray];
-      v20 = [v19 indexOfObject:v52];
+      networkDescriptionArray = [v18 networkDescriptionArray];
+      v20 = [networkDescriptionArray indexOfObject:bestAvailableNetworkDescription];
 
       if (self)
       {
@@ -1491,8 +1491,8 @@ LABEL_50:
         v22 = 0;
       }
 
-      v23 = [v22 onDemandRules];
-      v24 = [v23 count];
+      onDemandRules = [v22 onDemandRules];
+      v24 = [onDemandRules count];
 
       if (v24 > v20)
       {
@@ -1506,8 +1506,8 @@ LABEL_50:
           v26 = 0;
         }
 
-        v27 = [v26 onDemandRules];
-        v28 = [v27 objectAtIndex:v20];
+        onDemandRules2 = [v26 onDemandRules];
+        v28 = [onDemandRules2 objectAtIndex:v20];
 
         v15 = v28;
       }
@@ -1521,12 +1521,12 @@ LABEL_21:
         {
           v34 = objc_alloc_init(NSMutableArray);
           v51 = v15;
-          v35 = [v15 connectionRules];
+          connectionRules = [v15 connectionRules];
           v53 = 0u;
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v36 = [v35 countByEnumeratingWithState:&v53 objects:v57 count:16];
+          v36 = [connectionRules countByEnumeratingWithState:&v53 objects:v57 count:16];
           if (v36)
           {
             v38 = v36;
@@ -1537,18 +1537,18 @@ LABEL_21:
               {
                 if (*v54 != v39)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(connectionRules);
                 }
 
                 v41 = *(*(&v53 + 1) + 8 * i);
                 if ([v41 action] == 2)
                 {
-                  v42 = [v41 matchDomains];
-                  [v34 addObjectsFromArray:v42];
+                  matchDomains = [v41 matchDomains];
+                  [v34 addObjectsFromArray:matchDomains];
                 }
               }
 
-              v38 = [v35 countByEnumeratingWithState:&v53 objects:v57 count:16];
+              v38 = [connectionRules countByEnumeratingWithState:&v53 objects:v57 count:16];
             }
 
             while (v38);
@@ -1595,8 +1595,8 @@ LABEL_21:
 
         if (-[NESMSession status](self, "status") != 1 && ([v15 action] == 2 || objc_msgSend(v15, "action") == 4))
         {
-          v50 = [(NESMSession *)self server];
-          [v50 requestUninstallForSession:self];
+          server = [(NESMSession *)self server];
+          [server requestUninstallForSession:self];
         }
 
         else
@@ -1605,7 +1605,7 @@ LABEL_21:
           {
             if ((([(NESMSession *)self status]== 3) & v46) == 1)
             {
-              v48 = self;
+              selfCopy2 = self;
               v49 = 0;
             }
 
@@ -1617,25 +1617,25 @@ LABEL_21:
               }
 
               self->_configurationUpdatePending = 0;
-              v48 = self;
+              selfCopy2 = self;
               v49 = 1;
             }
 
-            sub_100084AD8(v48, v49);
+            sub_100084AD8(selfCopy2, v49);
 LABEL_55:
 
             goto LABEL_56;
           }
 
-          v50 = [(NESMSession *)self server];
-          [v50 requestInstallForSession:self withParentSession:0 exclusive:0];
+          server = [(NESMSession *)self server];
+          [server requestInstallForSession:self withParentSession:0 exclusive:0];
         }
 
         goto LABEL_55;
       }
 
       *buf = 138412546;
-      v59 = self;
+      selfCopy4 = self;
       v60 = 2112;
       v61 = v15;
       v30 = "%@ Matched Relay On Demand rule %@";
@@ -1652,7 +1652,7 @@ LABEL_55:
       }
 
       *buf = 138412290;
-      v59 = self;
+      selfCopy4 = self;
       v30 = "%@ Matched no Relay On Demand rule";
       v31 = v29;
       v32 = 12;
@@ -1665,11 +1665,11 @@ LABEL_55:
 LABEL_56:
 }
 
-- (BOOL)shouldBeIdleForStatus:(int)a3
+- (BOOL)shouldBeIdleForStatus:(int)status
 {
-  if (a3 != 3)
+  if (status != 3)
   {
-    return a3 < 2;
+    return status < 2;
   }
 
   if (sub_100087DF4(self, a2))
@@ -1698,12 +1698,12 @@ LABEL_56:
   return v5;
 }
 
-- (NESMRelaySession)initWithConfiguration:(id)a3 andServer:(id)a4
+- (NESMRelaySession)initWithConfiguration:(id)configuration andServer:(id)server
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = NESMRelaySession;
-  v7 = [(NESMSession *)&v18 initWithConfiguration:v6 andServer:a4];
+  v7 = [(NESMSession *)&v18 initWithConfiguration:configurationCopy andServer:server];
   if (!v7)
   {
 LABEL_6:
@@ -1719,20 +1719,20 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v8 = [v6 relay];
+  relay = [configurationCopy relay];
 
-  if (v8)
+  if (relay)
   {
-    v9 = [v6 relay];
+    relay2 = [configurationCopy relay];
     relayConfig = v7->_relayConfig;
-    v7->_relayConfig = v9;
+    v7->_relayConfig = relay2;
 
     v11 = [NESMPolicySession alloc];
-    v12 = [v6 identifier];
-    v13 = [v6 grade];
+    identifier = [configurationCopy identifier];
+    grade = [configurationCopy grade];
     if (v11)
     {
-      v11 = sub_100033D18(&v11->super.isa, v12, 9, v13, 2, 1);
+      v11 = sub_100033D18(&v11->super.isa, identifier, 9, grade, 2, 1);
     }
 
     [(NESMSession *)v7 setPolicySession:v11];

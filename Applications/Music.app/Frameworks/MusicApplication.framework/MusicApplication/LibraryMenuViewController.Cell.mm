@@ -1,20 +1,20 @@
 @interface LibraryMenuViewController.Cell
-- (_TtCC16MusicApplication25LibraryMenuViewController4Cell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtCC16MusicApplication25LibraryMenuViewController4Cell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
 - (void)prepareForReuse;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation LibraryMenuViewController.Cell
 
-- (_TtCC16MusicApplication25LibraryMenuViewController4Cell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtCC16MusicApplication25LibraryMenuViewController4Cell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_AB92A0();
+    identifier = sub_AB92A0();
     v6 = v5;
   }
 
@@ -23,19 +23,19 @@
     v6 = 0;
   }
 
-  return sub_1F0608(a3, a4, v6);
+  return sub_1F0608(style, identifier, v6);
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = type metadata accessor for LibraryMenuViewController.Cell();
   v6 = v8.receiver;
-  [(LibraryMenuViewController.Cell *)&v8 setSelected:v5 animated:v4];
+  [(LibraryMenuViewController.Cell *)&v8 setSelected:selectedCopy animated:animatedCopy];
   v7 = &UIAccessibilityTraitNone;
-  if (v5)
+  if (selectedCopy)
   {
     v7 = &UIAccessibilityTraitSelected;
   }
@@ -43,18 +43,18 @@
   [v6 setAccessibilityTraits:{*v7, v8.receiver, v8.super_class}];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = self;
-  v7 = [(LibraryMenuViewController.Cell *)v6 isEditing];
-  v8.receiver = v6;
+  animatedCopy = animated;
+  editingCopy = editing;
+  selfCopy = self;
+  isEditing = [(LibraryMenuViewController.Cell *)selfCopy isEditing];
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for LibraryMenuViewController.Cell();
-  [(LibraryMenuViewController.Cell *)&v8 setEditing:v5 animated:v4];
-  if (v7 != v5)
+  [(LibraryMenuViewController.Cell *)&v8 setEditing:editingCopy animated:animatedCopy];
+  if (isEditing != editingCopy)
   {
-    [(LibraryMenuViewController.Cell *)v6 invalidateIntrinsicContentSize];
+    [(LibraryMenuViewController.Cell *)selfCopy invalidateIntrinsicContentSize];
   }
 }
 
@@ -69,7 +69,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1F109C();
 }
 
@@ -85,7 +85,7 @@
 
 - (void)layoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1F12E8();
 }
 

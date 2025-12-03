@@ -6,11 +6,11 @@
 + (MEMessageAction)moveToJunkAction;
 + (MEMessageAction)moveToTrashAction;
 + (MEMessageAction)setBackgroundColorActionWithColor:(MEMessageActionMessageColor)color;
-- (BOOL)isEqual:(id)a3;
-- (MEMessageAction)initWithCoder:(id)a3;
-- (MEMessageAction)initWithDestination:(id)a3 readStatus:(int64_t)a4 flagChange:(id)a5 messageColor:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (MEMessageAction)initWithCoder:(id)coder;
+- (MEMessageAction)initWithDestination:(id)destination readStatus:(int64_t)status flagChange:(id)change messageColor:(int64_t)color;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEMessageAction
@@ -71,66 +71,66 @@
   return v3;
 }
 
-- (MEMessageAction)initWithDestination:(id)a3 readStatus:(int64_t)a4 flagChange:(id)a5 messageColor:(int64_t)a6
+- (MEMessageAction)initWithDestination:(id)destination readStatus:(int64_t)status flagChange:(id)change messageColor:(int64_t)color
 {
-  v11 = a3;
-  v12 = a5;
+  destinationCopy = destination;
+  changeCopy = change;
   v16.receiver = self;
   v16.super_class = MEMessageAction;
   v13 = [(MEMessageAction *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_destination, a3);
-    v14->_readStatus = a4;
-    objc_storeStrong(&v14->_flagChange, a5);
-    v14->_messageColor = a6;
+    objc_storeStrong(&v13->_destination, destination);
+    v14->_readStatus = status;
+    objc_storeStrong(&v14->_flagChange, change);
+    v14->_messageColor = color;
   }
 
   return v14;
 }
 
-- (MEMessageAction)initWithCoder:(id)a3
+- (MEMessageAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"EFPropertyKey_readStatus"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_flagChange"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_destination"];
-  v8 = -[MEMessageAction initWithDestination:readStatus:flagChange:messageColor:](self, "initWithDestination:readStatus:flagChange:messageColor:", v7, v5, v6, [v4 decodeIntegerForKey:@"EFPropertyKey_messageColor"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"EFPropertyKey_readStatus"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_flagChange"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_destination"];
+  v8 = -[MEMessageAction initWithDestination:readStatus:flagChange:messageColor:](self, "initWithDestination:readStatus:flagChange:messageColor:", v7, v5, v6, [coderCopy decodeIntegerForKey:@"EFPropertyKey_messageColor"]);
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MEMessageAction *)self destination];
-  [v6 encodeObject:v4 forKey:@"EFPropertyKey_destination"];
+  coderCopy = coder;
+  destination = [(MEMessageAction *)self destination];
+  [coderCopy encodeObject:destination forKey:@"EFPropertyKey_destination"];
 
-  [v6 encodeInteger:-[MEMessageAction readStatus](self forKey:{"readStatus"), @"EFPropertyKey_readStatus"}];
-  v5 = [(MEMessageAction *)self flagChange];
-  [v6 encodeObject:v5 forKey:@"EFPropertyKey_flagChange"];
+  [coderCopy encodeInteger:-[MEMessageAction readStatus](self forKey:{"readStatus"), @"EFPropertyKey_readStatus"}];
+  flagChange = [(MEMessageAction *)self flagChange];
+  [coderCopy encodeObject:flagChange forKey:@"EFPropertyKey_flagChange"];
 
-  [v6 encodeInteger:-[MEMessageAction messageColor](self forKey:{"messageColor"), @"EFPropertyKey_messageColor"}];
+  [coderCopy encodeInteger:-[MEMessageAction messageColor](self forKey:{"messageColor"), @"EFPropertyKey_messageColor"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(MEMessageAction *)self destination];
-    v8 = [v6 destination];
+    v6 = equalCopy;
+    destination = [(MEMessageAction *)self destination];
+    destination2 = [v6 destination];
     if (EFObjectsAreEqual())
     {
-      v9 = [(MEMessageAction *)self flagChange];
-      v10 = [v6 flagChange];
+      flagChange = [(MEMessageAction *)self flagChange];
+      flagChange2 = [v6 flagChange];
       if (EFObjectsAreEqual() && (v11 = -[MEMessageAction readStatus](self, "readStatus"), v11 == [v6 readStatus]))
       {
-        v12 = [(MEMessageAction *)self messageColor];
-        v13 = v12 == [v6 messageColor];
+        messageColor = [(MEMessageAction *)self messageColor];
+        v13 = messageColor == [v6 messageColor];
       }
 
       else
@@ -156,10 +156,10 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MEMessageAction *)self destination];
-  v5 = [(MEMessageAction *)self readStatus];
-  v6 = [(MEMessageAction *)self flagChange];
-  v7 = [v3 stringWithFormat:@"Message Action: Destination: %@, Read Status: %ld, Flag Change: %@, Message Color: %ld", v4, v5, v6, -[MEMessageAction messageColor](self, "messageColor")];
+  destination = [(MEMessageAction *)self destination];
+  readStatus = [(MEMessageAction *)self readStatus];
+  flagChange = [(MEMessageAction *)self flagChange];
+  v7 = [v3 stringWithFormat:@"Message Action: Destination: %@, Read Status: %ld, Flag Change: %@, Message Color: %ld", destination, readStatus, flagChange, -[MEMessageAction messageColor](self, "messageColor")];
 
   return v7;
 }

@@ -6,34 +6,34 @@
 - (NSArray)devices;
 - (RPCompanionLinkDevice)localDevice;
 - (double)_remainingScanTimeInterval;
-- (id)activateLinkWithOptions:(unint64_t)a3;
-- (id)sendMessage:(id)a3 device:(id)a4 responseHandler:(id)a5;
+- (id)activateLinkWithOptions:(unint64_t)options;
+- (id)sendMessage:(id)message device:(id)device responseHandler:(id)handler;
 - (void)_cancelTimer;
-- (void)_decrementMessageCountForCompanionLinkClient:(id)a3;
-- (void)_executeBlockForDelegates:(id)a3;
+- (void)_decrementMessageCountForCompanionLinkClient:(id)client;
+- (void)_executeBlockForDelegates:(id)delegates;
 - (void)_handleLinkInvalidation;
 - (void)_handleTimerExpired;
-- (void)_incrementMessageCountForCompanionLinkClient:(id)a3;
-- (void)_linkForDevice:(id)a3 handler:(id)a4;
-- (void)_notifyDeviceDelegatesConnectionDidFindDevice:(id)a3;
-- (void)_notifyDeviceDelegatesConnectionDidLoseDevice:(id)a3;
+- (void)_incrementMessageCountForCompanionLinkClient:(id)client;
+- (void)_linkForDevice:(id)device handler:(id)handler;
+- (void)_notifyDeviceDelegatesConnectionDidFindDevice:(id)device;
+- (void)_notifyDeviceDelegatesConnectionDidLoseDevice:(id)device;
 - (void)_registerHandlers;
 - (void)_registerHomeLocationStatusRequestHandler;
 - (void)_registerMessageRequestHandler;
-- (void)_sendDailyRequest:(id)a3 handler:(id)a4;
-- (void)_sendHomeLocationStatusRequestToDevice:(id)a3 handler:(id)a4;
-- (void)_sendMessage:(id)a3 linkClient:(id)a4 handler:(id)a5;
-- (void)_setupLink:(id)a3;
-- (void)_simulateDeliveryFailureForMessage:(id)a3;
+- (void)_sendDailyRequest:(id)request handler:(id)handler;
+- (void)_sendHomeLocationStatusRequestToDevice:(id)device handler:(id)handler;
+- (void)_sendMessage:(id)message linkClient:(id)client handler:(id)handler;
+- (void)_setupLink:(id)link;
+- (void)_simulateDeliveryFailureForMessage:(id)message;
 - (void)_startTimer;
 - (void)_tearDownLink;
 - (void)_updateDevices;
-- (void)activateLinkWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)addDeviceDelegate:(id)a3 queue:(id)a4;
-- (void)deactivateLinkWithOptions:(unint64_t)a3;
-- (void)registerDailyRequest:(id)a3;
-- (void)sendDailyRequest:(id)a3 handler:(id)a4;
-- (void)sendHomeLocationStatusRequestToDevice:(id)a3 handler:(id)a4;
+- (void)activateLinkWithOptions:(unint64_t)options completion:(id)completion;
+- (void)addDeviceDelegate:(id)delegate queue:(id)queue;
+- (void)deactivateLinkWithOptions:(unint64_t)options;
+- (void)registerDailyRequest:(id)request;
+- (void)sendDailyRequest:(id)request handler:(id)handler;
+- (void)sendHomeLocationStatusRequestToDevice:(id)device handler:(id)handler;
 @end
 
 @implementation ANRapportConnection
@@ -65,8 +65,8 @@
     deviceDelegatesToQueues = v2->_deviceDelegatesToQueues;
     v2->_deviceDelegatesToQueues = v11;
 
-    v13 = [MEMORY[0x277CEAB80] sharedInstance];
-    v14 = [v13 numberForDefault:*MEMORY[0x277CEA920]];
+    mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+    v14 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA920]];
     [v14 doubleValue];
     v16 = v15;
 
@@ -89,7 +89,7 @@
   block[1] = 3221225472;
   block[2] = __39__ANRapportConnection_sharedConnection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConnection_onceToken != -1)
   {
     dispatch_once(&sharedConnection_onceToken, block);
@@ -110,21 +110,21 @@ uint64_t __39__ANRapportConnection_sharedConnection__block_invoke(uint64_t a1)
 
 - (RPCompanionLinkDevice)localDevice
 {
-  v2 = [(ANRapportConnection *)self companionLinkClient];
-  v3 = [v2 localDevice];
+  companionLinkClient = [(ANRapportConnection *)self companionLinkClient];
+  localDevice = [companionLinkClient localDevice];
 
-  return v3;
+  return localDevice;
 }
 
 - (NSArray)devices
 {
-  v2 = [(ANRapportConnection *)self activeDevices];
-  v3 = [v2 copy];
+  activeDevices = [(ANRapportConnection *)self activeDevices];
+  v3 = [activeDevices copy];
 
   return v3;
 }
 
-- (id)activateLinkWithOptions:(unint64_t)a3
+- (id)activateLinkWithOptions:(unint64_t)options
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = ANLogHandleRapportConnection();
@@ -150,7 +150,7 @@ uint64_t __39__ANRapportConnection_sharedConnection__block_invoke(uint64_t a1)
   p_buf = &buf;
   v7 = v6;
   v13 = v7;
-  [(ANRapportConnection *)self activateLinkWithOptions:a3 completion:v12];
+  [(ANRapportConnection *)self activateLinkWithOptions:options completion:v12];
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = ANLogHandleRapportConnection();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -194,19 +194,19 @@ void __47__ANRapportConnection_activateLinkWithOptions___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateLinkWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)activateLinkWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ANRapportConnection *)self clientQueue];
+  completionCopy = completion;
+  clientQueue = [(ANRapportConnection *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ANRapportConnection_activateLinkWithOptions_completion___block_invoke;
   block[3] = &unk_278C872D0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  optionsCopy = options;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = completionCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __58__ANRapportConnection_activateLinkWithOptions_completion___block_invoke(uint64_t a1)
@@ -436,16 +436,16 @@ uint64_t __58__ANRapportConnection_activateLinkWithOptions_completion___block_in
   return result;
 }
 
-- (void)deactivateLinkWithOptions:(unint64_t)a3
+- (void)deactivateLinkWithOptions:(unint64_t)options
 {
-  v5 = [(ANRapportConnection *)self clientQueue];
+  clientQueue = [(ANRapportConnection *)self clientQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__ANRapportConnection_deactivateLinkWithOptions___block_invoke;
   v6[3] = &unk_278C872F8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = options;
+  dispatch_async(clientQueue, v6);
 }
 
 uint64_t __49__ANRapportConnection_deactivateLinkWithOptions___block_invoke(uint64_t result)
@@ -469,22 +469,22 @@ uint64_t __49__ANRapportConnection_deactivateLinkWithOptions___block_invoke(uint
   return result;
 }
 
-- (void)addDeviceDelegate:(id)a3 queue:(id)a4
+- (void)addDeviceDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   objc_initWeak(&location, self);
-  v8 = [(ANRapportConnection *)self clientQueue];
+  clientQueue = [(ANRapportConnection *)self clientQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__ANRapportConnection_addDeviceDelegate_queue___block_invoke;
   v11[3] = &unk_278C86B70;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = queueCopy;
+  v13 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = queueCopy;
+  dispatch_async(clientQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -556,23 +556,23 @@ void __47__ANRapportConnection_addDeviceDelegate_queue___block_invoke(uint64_t a
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sendMessage:(id)a3 device:(id)a4 responseHandler:(id)a5
+- (id)sendMessage:(id)message device:(id)device responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  deviceCopy = device;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__ANRapportConnection_sendMessage_device_responseHandler___block_invoke;
   v14[3] = &unk_278C87370;
   objc_copyWeak(&v18, &location);
-  v11 = v8;
+  v11 = messageCopy;
   v15 = v11;
-  v16 = self;
-  v12 = v10;
+  selfCopy = self;
+  v12 = handlerCopy;
   v17 = v12;
-  [(ANRapportConnection *)self _linkForDevice:v9 handler:v14];
+  [(ANRapportConnection *)self _linkForDevice:deviceCopy handler:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -671,19 +671,19 @@ void __58__ANRapportConnection_sendMessage_device_responseHandler___block_invoke
   [v2 connection:*(a1 + 32) failedDeliveryForMessage:*(a1 + 40) withError:*(a1 + 48)];
 }
 
-- (void)sendDailyRequest:(id)a3 handler:(id)a4
+- (void)sendDailyRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__ANRapportConnection_sendDailyRequest_handler___block_invoke;
   v9[3] = &unk_278C87398;
-  v8 = v7;
+  v8 = handlerCopy;
   v10 = v8;
   objc_copyWeak(&v11, &location);
-  [(ANRapportConnection *)self _linkForDevice:v6 handler:v9];
+  [(ANRapportConnection *)self _linkForDevice:requestCopy handler:v9];
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(&location);
@@ -715,16 +715,16 @@ void __48__ANRapportConnection_sendDailyRequest_handler___block_invoke(uint64_t 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerDailyRequest:(id)a3
+- (void)registerDailyRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   companionLinkClient = self->_companionLinkClient;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ANRapportConnection_registerDailyRequest___block_invoke;
   v7[3] = &unk_278C873C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   [(RPCompanionLinkClient *)companionLinkClient registerRequestID:@"com.apple.announce.dailyanalytics" options:0 handler:v7];
 }
 
@@ -750,19 +750,19 @@ void __44__ANRapportConnection_registerDailyRequest___block_invoke(uint64_t a1, 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendHomeLocationStatusRequestToDevice:(id)a3 handler:(id)a4
+- (void)sendHomeLocationStatusRequestToDevice:(id)device handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__ANRapportConnection_sendHomeLocationStatusRequestToDevice_handler___block_invoke;
   v9[3] = &unk_278C87398;
-  v8 = v7;
+  v8 = handlerCopy;
   v10 = v8;
   objc_copyWeak(&v11, &location);
-  [(ANRapportConnection *)self _linkForDevice:v6 handler:v9];
+  [(ANRapportConnection *)self _linkForDevice:deviceCopy handler:v9];
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(&location);
@@ -794,10 +794,10 @@ void __69__ANRapportConnection_sendHomeLocationStatusRequestToDevice_handler___b
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_simulateDeliveryFailureForMessage:(id)a3
+- (void)_simulateDeliveryFailureForMessage:(id)message
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = ANLogHandleRapportConnection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -807,15 +807,15 @@ void __69__ANRapportConnection_sendHomeLocationStatusRequestToDevice_handler___b
   }
 
   v6 = [MEMORY[0x277CCA9B8] an_errorWithCode:1036 component:*MEMORY[0x277CEA9C8] description:@"Force Delivery Failure Enabled in User Defaults"];
-  v7 = [(ANRapportConnection *)self delegate];
-  [v7 connection:self failedDeliveryForMessage:v4 withError:v6];
+  delegate = [(ANRapportConnection *)self delegate];
+  [delegate connection:self failedDeliveryForMessage:messageCopy withError:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupLink:(id)a3
+- (void)_setupLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   [(ANRapportConnection *)self setActiveDevices:MEMORY[0x277CBEBF8]];
   [(ANRapportConnection *)self _tearDownLink];
   v5 = objc_opt_new();
@@ -857,7 +857,7 @@ void __69__ANRapportConnection_sendHomeLocationStatusRequestToDevice_handler___b
   v9[2] = __34__ANRapportConnection__setupLink___block_invoke_41;
   v9[3] = &unk_278C87078;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = linkCopy;
   v10 = v8;
   [(RPCompanionLinkClient *)v7 activateWithCompletion:v9];
 
@@ -1042,23 +1042,23 @@ void __34__ANRapportConnection__setupLink___block_invoke_42(uint64_t a1)
   [WeakRetained _startTimer];
 }
 
-- (void)_linkForDevice:(id)a3 handler:(id)a4
+- (void)_linkForDevice:(id)device handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(ANRapportConnection *)self clientQueue];
+  clientQueue = [(ANRapportConnection *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__ANRapportConnection__linkForDevice_handler___block_invoke;
   block[3] = &unk_278C87460;
   objc_copyWeak(&v15, &location);
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = deviceCopy;
+  v9 = handlerCopy;
+  v10 = deviceCopy;
+  dispatch_async(clientQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1220,11 +1220,11 @@ void __46__ANRapportConnection__linkForDevice_handler___block_invoke_46(uint64_t
   v3 = ANLogHandleRapportConnection();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ANRapportConnection *)self companionLinkClient];
+    companionLinkClient = [(ANRapportConnection *)self companionLinkClient];
     v7 = 138412546;
     v8 = &stru_2851BDB18;
     v9 = 2112;
-    v10 = v4;
+    v10 = companionLinkClient;
     _os_log_impl(&dword_23F525000, v3, OS_LOG_TYPE_DEFAULT, "%@Tearing Down Companion Link: %@", &v7, 0x16u);
   }
 
@@ -1381,36 +1381,36 @@ void __64__ANRapportConnection__registerHomeLocationStatusRequestHandler__block_
 - (void)_updateDevices
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(ANRapportConnection *)self companionLinkClient];
-  v4 = [v3 activeDevices];
-  v5 = [v4 copy];
+  companionLinkClient = [(ANRapportConnection *)self companionLinkClient];
+  activeDevices = [companionLinkClient activeDevices];
+  v5 = [activeDevices copy];
   [(ANRapportConnection *)self setActiveDevices:v5];
 
   v6 = ANLogHandleRapportConnection();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(ANRapportConnection *)self activeDevices];
+    activeDevices2 = [(ANRapportConnection *)self activeDevices];
     v9 = 138412546;
     v10 = &stru_2851BDB18;
     v11 = 2048;
-    v12 = [v7 count];
+    v12 = [activeDevices2 count];
     _os_log_impl(&dword_23F525000, v6, OS_LOG_TYPE_DEFAULT, "%@### Updated Devices (%lu)", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_incrementMessageCountForCompanionLinkClient:(id)a3
+- (void)_incrementMessageCountForCompanionLinkClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__ANRapportConnection__incrementMessageCountForCompanionLinkClient___block_invoke;
   v7[3] = &unk_278C86378;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(clientQueue, v7);
 }
 
@@ -1429,17 +1429,17 @@ void __68__ANRapportConnection__incrementMessageCountForCompanionLinkClient___bl
   }
 }
 
-- (void)_decrementMessageCountForCompanionLinkClient:(id)a3
+- (void)_decrementMessageCountForCompanionLinkClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__ANRapportConnection__decrementMessageCountForCompanionLinkClient___block_invoke;
   v7[3] = &unk_278C86378;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(clientQueue, v7);
 }
 
@@ -1487,16 +1487,16 @@ void __68__ANRapportConnection__decrementMessageCountForCompanionLinkClient___bl
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendMessage:(id)a3 linkClient:(id)a4 handler:(id)a5
+- (void)_sendMessage:(id)message linkClient:(id)client handler:(id)handler
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(ANRapportConnection *)self _incrementMessageCountForCompanionLinkClient:v9];
+  messageCopy = message;
+  clientCopy = client;
+  handlerCopy = handler;
+  [(ANRapportConnection *)self _incrementMessageCountForCompanionLinkClient:clientCopy];
   objc_initWeak(&location, self);
-  v11 = [MEMORY[0x277CEAB80] sharedInstance];
-  v12 = [v11 numberForDefault:*MEMORY[0x277CEA938]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v12 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA938]];
 
   v22 = *MEMORY[0x277D442F0];
   v23[0] = v12;
@@ -1505,12 +1505,12 @@ void __68__ANRapportConnection__decrementMessageCountForCompanionLinkClient___bl
   v17[1] = 3221225472;
   v17[2] = __55__ANRapportConnection__sendMessage_linkClient_handler___block_invoke;
   v17[3] = &unk_278C87500;
-  v14 = v9;
+  v14 = clientCopy;
   v18 = v14;
   objc_copyWeak(&v20, &location);
-  v15 = v10;
+  v15 = handlerCopy;
   v19 = v15;
-  [v14 sendRequestID:@"com.apple.announce.announcement.message" request:v8 options:v13 responseHandler:v17];
+  [v14 sendRequestID:@"com.apple.announce.announcement.message" request:messageCopy options:v13 responseHandler:v17];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -1574,15 +1574,15 @@ void __55__ANRapportConnection__sendMessage_linkClient_handler___block_invoke(ui
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendDailyRequest:(id)a3 handler:(id)a4
+- (void)_sendDailyRequest:(id)request handler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(ANRapportConnection *)self _incrementMessageCountForCompanionLinkClient:v6];
+  requestCopy = request;
+  handlerCopy = handler;
+  [(ANRapportConnection *)self _incrementMessageCountForCompanionLinkClient:requestCopy];
   objc_initWeak(&location, self);
-  v8 = [MEMORY[0x277CEAB80] sharedInstance];
-  v9 = [v8 numberForDefault:*MEMORY[0x277CEA938]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v9 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA938]];
 
   v19 = *MEMORY[0x277D442F0];
   v20[0] = v9;
@@ -1591,10 +1591,10 @@ void __55__ANRapportConnection__sendMessage_linkClient_handler___block_invoke(ui
   v14[1] = 3221225472;
   v14[2] = __49__ANRapportConnection__sendDailyRequest_handler___block_invoke;
   v14[3] = &unk_278C87500;
-  v11 = v6;
+  v11 = requestCopy;
   v15 = v11;
   objc_copyWeak(&v17, &location);
-  v12 = v7;
+  v12 = handlerCopy;
   v16 = v12;
   [v11 sendRequestID:@"com.apple.announce.dailyanalytics" request:MEMORY[0x277CBEC10] options:v10 responseHandler:v14];
 
@@ -1658,15 +1658,15 @@ void __49__ANRapportConnection__sendDailyRequest_handler___block_invoke(uint64_t
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendHomeLocationStatusRequestToDevice:(id)a3 handler:(id)a4
+- (void)_sendHomeLocationStatusRequestToDevice:(id)device handler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(ANRapportConnection *)self _incrementMessageCountForCompanionLinkClient:v6];
+  deviceCopy = device;
+  handlerCopy = handler;
+  [(ANRapportConnection *)self _incrementMessageCountForCompanionLinkClient:deviceCopy];
   objc_initWeak(&location, self);
-  v8 = [MEMORY[0x277CEAB80] sharedInstance];
-  v9 = [v8 numberForDefault:*MEMORY[0x277CEA930]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v9 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA930]];
 
   v19 = *MEMORY[0x277D442F0];
   v20[0] = v9;
@@ -1675,10 +1675,10 @@ void __49__ANRapportConnection__sendDailyRequest_handler___block_invoke(uint64_t
   v14[1] = 3221225472;
   v14[2] = __70__ANRapportConnection__sendHomeLocationStatusRequestToDevice_handler___block_invoke;
   v14[3] = &unk_278C87500;
-  v11 = v6;
+  v11 = deviceCopy;
   v15 = v11;
   objc_copyWeak(&v17, &location);
-  v12 = v7;
+  v12 = handlerCopy;
   v16 = v12;
   [v11 sendRequestID:@"com.apple.announce.home-location-status-request" request:MEMORY[0x277CBEC10] options:v10 responseHandler:v14];
 
@@ -1742,19 +1742,19 @@ void __70__ANRapportConnection__sendHomeLocationStatusRequestToDevice_handler___
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeBlockForDelegates:(id)a3
+- (void)_executeBlockForDelegates:(id)delegates
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ANRapportConnection *)self deviceDelegatesToQueues];
-  v6 = [v5 keyEnumerator];
-  v7 = [v6 allObjects];
+  delegatesCopy = delegates;
+  deviceDelegatesToQueues = [(ANRapportConnection *)self deviceDelegatesToQueues];
+  keyEnumerator = [deviceDelegatesToQueues keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v7;
+  obj = allObjects;
   v8 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -1771,14 +1771,14 @@ void __70__ANRapportConnection__sendHomeLocationStatusRequestToDevice_handler___
         }
 
         v12 = *(*(&v20 + 1) + 8 * v11);
-        v13 = [(ANRapportConnection *)self deviceDelegatesToQueues];
-        v14 = [v13 objectForKey:v12];
+        deviceDelegatesToQueues2 = [(ANRapportConnection *)self deviceDelegatesToQueues];
+        v14 = [deviceDelegatesToQueues2 objectForKey:v12];
 
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __49__ANRapportConnection__executeBlockForDelegates___block_invoke;
         block[3] = &unk_278C86C60;
-        v15 = v4;
+        v15 = delegatesCopy;
         block[4] = v12;
         v19 = v15;
         dispatch_async(v14, block);
@@ -1796,16 +1796,16 @@ void __70__ANRapportConnection__sendHomeLocationStatusRequestToDevice_handler___
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyDeviceDelegatesConnectionDidFindDevice:(id)a3
+- (void)_notifyDeviceDelegatesConnectionDidFindDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__ANRapportConnection__notifyDeviceDelegatesConnectionDidFindDevice___block_invoke;
   v6[3] = &unk_278C87528;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   [(ANRapportConnection *)self _executeBlockForDelegates:v6];
 }
 
@@ -1818,16 +1818,16 @@ void __69__ANRapportConnection__notifyDeviceDelegatesConnectionDidFindDevice___b
   }
 }
 
-- (void)_notifyDeviceDelegatesConnectionDidLoseDevice:(id)a3
+- (void)_notifyDeviceDelegatesConnectionDidLoseDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__ANRapportConnection__notifyDeviceDelegatesConnectionDidLoseDevice___block_invoke;
   v6[3] = &unk_278C87528;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   [(ANRapportConnection *)self _executeBlockForDelegates:v6];
 }
 
@@ -1843,33 +1843,33 @@ void __69__ANRapportConnection__notifyDeviceDelegatesConnectionDidLoseDevice___b
 - (double)_remainingScanTimeInterval
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = v4;
-  v6 = [(ANRapportConnection *)self lastScanStartTimestamp];
-  [v6 timeIntervalSince1970];
+  lastScanStartTimestamp = [(ANRapportConnection *)self lastScanStartTimestamp];
+  [lastScanStartTimestamp timeIntervalSince1970];
   v8 = v7;
 
   v9 = ANLogHandleRapportConnection();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = MEMORY[0x277CCABB0];
-    v11 = [(ANRapportConnection *)self activeDevices];
-    v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
-    v13 = [(ANRapportConnection *)self lastScanStartTimestamp];
+    activeDevices = [(ANRapportConnection *)self activeDevices];
+    v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(activeDevices, "count")}];
+    lastScanStartTimestamp2 = [(ANRapportConnection *)self lastScanStartTimestamp];
     v20 = 138413058;
     v21 = &stru_2851BDB18;
     v22 = 2112;
     v23 = v12;
     v24 = 2112;
-    v25 = v13;
+    v25 = lastScanStartTimestamp2;
     v26 = 2112;
-    v27 = v3;
+    v27 = date;
     _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_DEFAULT, "%@### Active Device Count: %@, Scan Start: %@, Now: %@", &v20, 0x2Au);
   }
 
-  v14 = [MEMORY[0x277CEAB80] sharedInstance];
-  v15 = [v14 numberForDefault:*MEMORY[0x277CEA928]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v15 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA928]];
   [v15 doubleValue];
   v17 = v16;
 
@@ -1885,17 +1885,17 @@ void __69__ANRapportConnection__notifyDeviceDelegatesConnectionDidLoseDevice___b
     goto LABEL_13;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = v4;
 
-  v6 = [MEMORY[0x277CEAB80] sharedInstance];
-  v7 = [v6 numberForDefault:*MEMORY[0x277CEA928]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v7 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA928]];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [(ANRapportConnection *)self lastScanStartTimestamp];
-  [v10 timeIntervalSince1970];
+  lastScanStartTimestamp = [(ANRapportConnection *)self lastScanStartTimestamp];
+  [lastScanStartTimestamp timeIntervalSince1970];
   v12 = v9 + v11;
 
   if (v12 < v5)
@@ -1903,16 +1903,16 @@ void __69__ANRapportConnection__notifyDeviceDelegatesConnectionDidLoseDevice___b
     v13 = ANLogHandleRapportConnection();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(ANRapportConnection *)self lastScanStartTimestamp];
+      lastScanStartTimestamp2 = [(ANRapportConnection *)self lastScanStartTimestamp];
       v28 = 138412546;
       v29 = &stru_2851BDB18;
       v30 = 2112;
-      v31 = v14;
+      v31 = lastScanStartTimestamp2;
       _os_log_impl(&dword_23F525000, v13, OS_LOG_TYPE_DEFAULT, "%@### Last Scan Completion: %@", &v28, 0x16u);
     }
 
-    v15 = [MEMORY[0x277CEAB80] sharedInstance];
-    v16 = [v15 numberForDefault:*MEMORY[0x277CEA920]];
+    mEMORY[0x277CEAB80]2 = [MEMORY[0x277CEAB80] sharedInstance];
+    v16 = [mEMORY[0x277CEAB80]2 numberForDefault:*MEMORY[0x277CEA920]];
     [v16 doubleValue];
     v18 = v17;
 
@@ -1937,9 +1937,9 @@ void __69__ANRapportConnection__notifyDeviceDelegatesConnectionDidLoseDevice___b
     }
   }
 
-  v20 = [(ANRapportConnection *)self activeDevices];
-  v21 = [v20 activeDevicesSupportingAnnounce];
-  v22 = [v21 count];
+  activeDevices = [(ANRapportConnection *)self activeDevices];
+  activeDevicesSupportingAnnounce = [activeDevices activeDevicesSupportingAnnounce];
+  v22 = [activeDevicesSupportingAnnounce count];
 
   if (!v22)
   {
@@ -1967,8 +1967,8 @@ LABEL_14:
 - (void)_startTimer
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(ANRapportConnection *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(ANRapportConnection *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   if ([(ANRapportConnection *)self isTimerSuspended])
   {
@@ -1983,9 +1983,9 @@ LABEL_14:
 
   else
   {
-    v5 = [(ANRapportConnection *)self timer];
+    timer = [(ANRapportConnection *)self timer];
 
-    if (v5)
+    if (timer)
     {
       [(ANRapportConnection *)self _cancelTimer];
       v6 = ANLogHandleRapportConnection();
@@ -1997,27 +1997,27 @@ LABEL_14:
       }
     }
 
-    v7 = [MEMORY[0x277CEAB80] sharedInstance];
-    v8 = [v7 numberForDefault:*MEMORY[0x277CEA918]];
+    mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+    v8 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA918]];
     [v8 doubleValue];
     v10 = v9;
 
-    v11 = [(ANRapportConnection *)self clientQueue];
-    v12 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v11);
+    clientQueue2 = [(ANRapportConnection *)self clientQueue];
+    v12 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, clientQueue2);
     [(ANRapportConnection *)self setTimer:v12];
 
-    v13 = [(ANRapportConnection *)self timer];
+    timer2 = [(ANRapportConnection *)self timer];
     v14 = dispatch_time(0, (v10 * 1000000000.0));
-    dispatch_source_set_timer(v13, v14, (v10 * 1000000000.0), 0);
+    dispatch_source_set_timer(timer2, v14, (v10 * 1000000000.0), 0);
 
     objc_initWeak(&location, self);
-    v15 = [(ANRapportConnection *)self timer];
+    timer3 = [(ANRapportConnection *)self timer];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __34__ANRapportConnection__startTimer__block_invoke;
     v24 = &unk_278C86580;
     objc_copyWeak(&v25, &location);
-    dispatch_source_set_event_handler(v15, &v21);
+    dispatch_source_set_event_handler(timer3, &v21);
 
     v16 = ANLogHandleRapportConnection();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2034,8 +2034,8 @@ LABEL_14:
       }
     }
 
-    v19 = [(ANRapportConnection *)self timer];
-    dispatch_resume(v19);
+    timer4 = [(ANRapportConnection *)self timer];
+    dispatch_resume(timer4);
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&location);
@@ -2069,23 +2069,23 @@ void __34__ANRapportConnection__startTimer__block_invoke(uint64_t a1)
 - (void)_cancelTimer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(ANRapportConnection *)self timer];
+  timer = [(ANRapportConnection *)self timer];
 
-  if (v3)
+  if (timer)
   {
     v4 = ANLogHandleRapportConnection();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(ANRapportConnection *)self timer];
+      timer2 = [(ANRapportConnection *)self timer];
       v8 = 138412546;
       v9 = &stru_2851BDB18;
       v10 = 2112;
-      v11 = v5;
+      v11 = timer2;
       _os_log_impl(&dword_23F525000, v4, OS_LOG_TYPE_DEFAULT, "%@### Removing client link deactivation timer %@", &v8, 0x16u);
     }
 
-    v6 = [(ANRapportConnection *)self timer];
-    dispatch_source_cancel(v6);
+    timer3 = [(ANRapportConnection *)self timer];
+    dispatch_source_cancel(timer3);
 
     [(ANRapportConnection *)self setTimer:0];
   }

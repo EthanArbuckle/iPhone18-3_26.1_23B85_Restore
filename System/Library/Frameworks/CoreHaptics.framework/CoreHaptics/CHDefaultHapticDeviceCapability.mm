@@ -1,12 +1,12 @@
 @interface CHDefaultHapticDeviceCapability
-- (float)defaultValueForDynamicParameter:(id)a3;
-- (float)defaultValueForEventParameter:(id)a3 eventType:(id)a4;
-- (float)maximumValueForDynamicParameter:(id)a3;
-- (float)maximumValueForEventParameter:(id)a3;
-- (float)minimumValueForDynamicParameter:(id)a3;
-- (float)minimumValueForEventParameter:(id)a3;
-- (id)attributesForDynamicParameter:(id)a3 error:(id *)a4;
-- (id)attributesForEventParameter:(id)a3 eventType:(id)a4 error:(id *)a5;
+- (float)defaultValueForDynamicParameter:(id)parameter;
+- (float)defaultValueForEventParameter:(id)parameter eventType:(id)type;
+- (float)maximumValueForDynamicParameter:(id)parameter;
+- (float)maximumValueForEventParameter:(id)parameter;
+- (float)minimumValueForDynamicParameter:(id)parameter;
+- (float)minimumValueForEventParameter:(id)parameter;
+- (id)attributesForDynamicParameter:(id)parameter error:(id *)error;
+- (id)attributesForEventParameter:(id)parameter eventType:(id)type error:(id *)error;
 - (id)initPrivate;
 @end
 
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (float)maximumValueForEventParameter:(id)a3
+- (float)maximumValueForEventParameter:(id)parameter
 {
   v12[10] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  parameterCopy = parameter;
   v11[0] = CHHapticEventParameterIDHapticIntensity;
   v11[1] = CHHapticEventParameterIDHapticSharpness;
   v12[0] = &unk_28279D7A0;
@@ -52,7 +52,7 @@
   v12[8] = &unk_28279D7A0;
   v12[9] = &unk_28279D7A0;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:10];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:parameterCopy];
   v6 = v5;
   if (v5)
   {
@@ -69,10 +69,10 @@
   return v8;
 }
 
-- (float)minimumValueForEventParameter:(id)a3
+- (float)minimumValueForEventParameter:(id)parameter
 {
   v12[10] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  parameterCopy = parameter;
   v11[0] = CHHapticEventParameterIDHapticIntensity;
   v11[1] = CHHapticEventParameterIDHapticSharpness;
   v12[0] = &unk_28279D7B0;
@@ -94,7 +94,7 @@
   v12[8] = &unk_28279D7C0;
   v12[9] = &unk_28279D7B0;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:10];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:parameterCopy];
   v6 = v5;
   if (v5)
   {
@@ -111,14 +111,14 @@
   return v8;
 }
 
-- (float)defaultValueForEventParameter:(id)a3 eventType:(id)a4
+- (float)defaultValueForEventParameter:(id)parameter eventType:(id)type
 {
   v15[10] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 isEqualToString:CHHapticEventParameterIDHapticIntensity] || (v7 = 0.75, (objc_msgSend(v6, "isEqualToString:", CHHapticEventTypeHapticTransient) & 1) == 0))
+  parameterCopy = parameter;
+  typeCopy = type;
+  if (![parameterCopy isEqualToString:CHHapticEventParameterIDHapticIntensity] || (v7 = 0.75, (objc_msgSend(typeCopy, "isEqualToString:", CHHapticEventTypeHapticTransient) & 1) == 0))
   {
-    if (![v5 isEqualToString:CHHapticEventParameterIDHapticSharpness] || (v7 = 0.5, (objc_msgSend(v6, "isEqualToString:", CHHapticEventTypeHapticTransient) & 1) == 0))
+    if (![parameterCopy isEqualToString:CHHapticEventParameterIDHapticSharpness] || (v7 = 0.5, (objc_msgSend(typeCopy, "isEqualToString:", CHHapticEventTypeHapticTransient) & 1) == 0))
     {
       v14[0] = CHHapticEventParameterIDHapticIntensity;
       v14[1] = CHHapticEventParameterIDHapticSharpness;
@@ -141,7 +141,7 @@
       v15[8] = &unk_28279D7B0;
       v15[9] = &unk_28279D7A0;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:10];
-      v9 = [v8 objectForKey:v5];
+      v9 = [v8 objectForKey:parameterCopy];
       v10 = v9;
       if (v9)
       {
@@ -160,10 +160,10 @@
   return v7;
 }
 
-- (float)maximumValueForDynamicParameter:(id)a3
+- (float)maximumValueForDynamicParameter:(id)parameter
 {
   v12[12] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  parameterCopy = parameter;
   v11[0] = CHHapticDynamicParameterIDHapticIntensityControl;
   v11[1] = CHHapticDynamicParameterIDHapticSharpnessControl;
   v12[0] = &unk_28279D7A0;
@@ -189,7 +189,7 @@
   v12[10] = &unk_28279D7A0;
   v12[11] = &unk_28279D7A0;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:12];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:parameterCopy];
   v6 = v5;
   if (v5)
   {
@@ -206,10 +206,10 @@
   return v8;
 }
 
-- (float)minimumValueForDynamicParameter:(id)a3
+- (float)minimumValueForDynamicParameter:(id)parameter
 {
   v12[12] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  parameterCopy = parameter;
   v11[0] = CHHapticDynamicParameterIDHapticIntensityControl;
   v11[1] = CHHapticDynamicParameterIDHapticSharpnessControl;
   v12[0] = &unk_28279D7B0;
@@ -235,7 +235,7 @@
   v12[10] = &unk_28279D7C0;
   v12[11] = &unk_28279D7C0;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:12];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:parameterCopy];
   v6 = v5;
   if (v5)
   {
@@ -252,10 +252,10 @@
   return v8;
 }
 
-- (float)defaultValueForDynamicParameter:(id)a3
+- (float)defaultValueForDynamicParameter:(id)parameter
 {
   v12[12] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  parameterCopy = parameter;
   v11[0] = CHHapticDynamicParameterIDHapticIntensityControl;
   v11[1] = CHHapticDynamicParameterIDHapticSharpnessControl;
   v12[0] = &unk_28279D7A0;
@@ -281,7 +281,7 @@
   v12[10] = &unk_28279D7B0;
   v12[11] = &unk_28279D7B0;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:12];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:parameterCopy];
   v6 = v5;
   if (v5)
   {
@@ -298,16 +298,16 @@
   return v8;
 }
 
-- (id)attributesForEventParameter:(id)a3 eventType:(id)a4 error:(id *)a5
+- (id)attributesForEventParameter:(id)parameter eventType:(id)type error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  [(CHDefaultHapticDeviceCapability *)self minimumValueForEventParameter:v8];
+  parameterCopy = parameter;
+  typeCopy = type;
+  [(CHDefaultHapticDeviceCapability *)self minimumValueForEventParameter:parameterCopy];
   v11 = v10;
-  [(CHDefaultHapticDeviceCapability *)self maximumValueForEventParameter:v8];
+  [(CHDefaultHapticDeviceCapability *)self maximumValueForEventParameter:parameterCopy];
   v13 = v12;
-  [(CHDefaultHapticDeviceCapability *)self defaultValueForEventParameter:v8 eventType:v9];
+  [(CHDefaultHapticDeviceCapability *)self defaultValueForEventParameter:parameterCopy eventType:typeCopy];
   v15 = v14;
   if (v11 != -999.0 && v13 != -999.0 && v14 != -999.0)
   {
@@ -339,15 +339,15 @@ LABEL_9:
       v29 = 2080;
       v30 = "[CHDefaultHapticDeviceCapability attributesForEventParameter:eventType:error:]";
       v31 = 2112;
-      v32 = v8;
+      v32 = parameterCopy;
       _os_log_impl(&dword_21569A000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: In parameter %@ is not a valid CHHapticEventParameter", &v25, 0x26u);
     }
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4820 userInfo:0];
-    *a5 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -362,15 +362,15 @@ LABEL_15:
   return v20;
 }
 
-- (id)attributesForDynamicParameter:(id)a3 error:(id *)a4
+- (id)attributesForDynamicParameter:(id)parameter error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(CHDefaultHapticDeviceCapability *)self minimumValueForDynamicParameter:v6];
+  parameterCopy = parameter;
+  [(CHDefaultHapticDeviceCapability *)self minimumValueForDynamicParameter:parameterCopy];
   v8 = v7;
-  [(CHDefaultHapticDeviceCapability *)self maximumValueForDynamicParameter:v6];
+  [(CHDefaultHapticDeviceCapability *)self maximumValueForDynamicParameter:parameterCopy];
   v10 = v9;
-  [(CHDefaultHapticDeviceCapability *)self defaultValueForDynamicParameter:v6];
+  [(CHDefaultHapticDeviceCapability *)self defaultValueForDynamicParameter:parameterCopy];
   v12 = v11;
   if (v8 != -999.0 && v10 != -999.0 && v11 != -999.0)
   {
@@ -402,15 +402,15 @@ LABEL_9:
       v26 = 2080;
       v27 = "[CHDefaultHapticDeviceCapability attributesForDynamicParameter:error:]";
       v28 = 2112;
-      v29 = v6;
+      v29 = parameterCopy;
       _os_log_impl(&dword_21569A000, v18, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: In parameter %@ is not a valid CHHapticDynamicParameter", &v22, 0x26u);
     }
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4820 userInfo:0];
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else

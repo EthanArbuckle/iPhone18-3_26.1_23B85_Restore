@@ -1,8 +1,8 @@
 @interface ICNoteResultsListCollectionViewCell
-- (CGRect)estimatedBoundsForLabel:(id)a3;
+- (CGRect)estimatedBoundsForLabel:(id)label;
 - (CGSize)currentThumbnailSize;
 - (ICAccessibilityCustomActionsDelegate)accessibilityCustomActionsDelegate;
-- (ICNoteResultsListCollectionViewCell)initWithFrame:(CGRect)a3;
+- (ICNoteResultsListCollectionViewCell)initWithFrame:(CGRect)frame;
 - (double)verticalPadding;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -11,30 +11,30 @@
 - (unint64_t)numberOfLines;
 - (void)addNotificationObservers;
 - (void)configureColorsForSearchResult;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)enableIntrinsicSizeShortcut:(BOOL)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)enableIntrinsicSizeShortcut:(BOOL)shortcut;
 - (void)registerForTraitChanges;
 - (void)removeNotificationObservers;
 - (void)resetColors;
-- (void)setConfiguration:(id)a3 synchronously:(BOOL)a4;
-- (void)setCurrentThumbnailLocation:(int64_t)a3;
-- (void)updateBackgroundConfigurationUsingState:(id)a3;
-- (void)updateColorsUsingState:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setConfiguration:(id)configuration synchronously:(BOOL)synchronously;
+- (void)setCurrentThumbnailLocation:(int64_t)location;
+- (void)updateBackgroundConfigurationUsingState:(id)state;
+- (void)updateColorsUsingState:(id)state;
+- (void)updateConfigurationUsingState:(id)state;
 - (void)updateFromConfiguration;
 - (void)updateLabelsFromConfiguration;
-- (void)updateStatusIndicatorsUsingState:(id)a3;
+- (void)updateStatusIndicatorsUsingState:(id)state;
 - (void)updateThumbnailFromConfiguration;
 - (void)updateViewStateProperties;
 @end
 
 @implementation ICNoteResultsListCollectionViewCell
 
-- (ICNoteResultsListCollectionViewCell)initWithFrame:(CGRect)a3
+- (ICNoteResultsListCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v145.receiver = self;
   v145.super_class = ICNoteResultsListCollectionViewCell;
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)&v145 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICBaseNoteResultsCollectionViewCell *)&v145 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v3;
   v6 = &OBJC_IVAR___ICNoteBrowseNavigationItemConfiguration__authenticated;
   if (v3)
@@ -56,48 +56,48 @@
 
     [(UIImageView *)v5->_secondaryStatusIndicatorImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ICNoteResultsListCollectionViewCell *)v5 resetColors];
-    v15 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
+    createLabel = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
     titleLabel = v5->_titleLabel;
-    v5->_titleLabel = v15;
+    v5->_titleLabel = createLabel;
 
-    v17 = [(ICNoteResultsListCollectionViewCell *)v5 primaryLabelColor];
-    [(UILabel *)v5->_titleLabel setTextColor:v17];
+    primaryLabelColor = [(ICNoteResultsListCollectionViewCell *)v5 primaryLabelColor];
+    [(UILabel *)v5->_titleLabel setTextColor:primaryLabelColor];
 
-    v18 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
+    createLabel2 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
     dateLabel = v5->_dateLabel;
-    v5->_dateLabel = v18;
+    v5->_dateLabel = createLabel2;
 
-    v20 = [(ICNoteResultsListCollectionViewCell *)v5 secondaryLabelColor];
-    [(UILabel *)v5->_dateLabel setTextColor:v20];
+    secondaryLabelColor = [(ICNoteResultsListCollectionViewCell *)v5 secondaryLabelColor];
+    [(UILabel *)v5->_dateLabel setTextColor:secondaryLabelColor];
 
-    v21 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
+    createLabel3 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
     summaryLabel = v5->_summaryLabel;
-    v5->_summaryLabel = v21;
+    v5->_summaryLabel = createLabel3;
 
-    v23 = [(ICNoteResultsListCollectionViewCell *)v5 secondaryLabelColor];
-    [(UILabel *)v5->_summaryLabel setTextColor:v23];
+    secondaryLabelColor2 = [(ICNoteResultsListCollectionViewCell *)v5 secondaryLabelColor];
+    [(UILabel *)v5->_summaryLabel setTextColor:secondaryLabelColor2];
 
-    v24 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
+    createLabel4 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
     participantsLabel = v5->_participantsLabel;
-    v5->_participantsLabel = v24;
+    v5->_participantsLabel = createLabel4;
 
-    v26 = [(ICNoteResultsListCollectionViewCell *)v5 secondaryLabelColor];
-    [(UILabel *)v5->_participantsLabel setTextColor:v26];
+    secondaryLabelColor3 = [(ICNoteResultsListCollectionViewCell *)v5 secondaryLabelColor];
+    [(UILabel *)v5->_participantsLabel setTextColor:secondaryLabelColor3];
 
-    v27 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
+    createLabel5 = [(ICNoteResultsListCollectionViewCell *)v5 createLabel];
     folderAndAccountLabel = v5->_folderAndAccountLabel;
-    v5->_folderAndAccountLabel = v27;
+    v5->_folderAndAccountLabel = createLabel5;
 
-    v29 = [(ICNoteResultsListCollectionViewCell *)v5 secondaryLabelColor];
-    [(UILabel *)v5->_folderAndAccountLabel setTextColor:v29];
+    secondaryLabelColor4 = [(ICNoteResultsListCollectionViewCell *)v5 secondaryLabelColor];
+    [(UILabel *)v5->_folderAndAccountLabel setTextColor:secondaryLabelColor4];
 
     v30 = objc_alloc_init(UIImageView);
     folderLabelImageView = v5->_folderLabelImageView;
     v5->_folderLabelImageView = v30;
 
     [(UIImageView *)v5->_folderLabelImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v32 = [(UILabel *)v5->_folderAndAccountLabel textColor];
-    [(UIImageView *)v5->_folderLabelImageView setTintColor:v32];
+    textColor = [(UILabel *)v5->_folderAndAccountLabel textColor];
+    [(UIImageView *)v5->_folderLabelImageView setTintColor:textColor];
 
     [(UIImageView *)v5->_folderLabelImageView setContentMode:1];
     [(UIImageView *)v5->_folderLabelImageView setOpaque:1];
@@ -132,14 +132,14 @@
     [(UIImageView *)v5->_thumbnailImageView setTintColor:v44];
 
     v45 = +[UIColor quaternaryLabelColor];
-    v46 = [v45 CGColor];
-    v47 = [(UIImageView *)v5->_thumbnailImageView layer];
-    [v47 setBorderColor:v46];
+    cGColor = [v45 CGColor];
+    layer = [(UIImageView *)v5->_thumbnailImageView layer];
+    [layer setBorderColor:cGColor];
 
     [(ICNoteResultsListCollectionViewCell *)v5 ic_hairlineWidth];
     v49 = v48;
-    v50 = [(UIImageView *)v5->_thumbnailImageView layer];
-    [v50 setBorderWidth:v49];
+    layer2 = [(UIImageView *)v5->_thumbnailImageView layer];
+    [layer2 setBorderWidth:v49];
 
     [(UIImageView *)v5->_thumbnailImageView ic_applyRoundedCornersWithRadius:8.0];
     v150[0] = v5->_titleLabel;
@@ -156,85 +156,85 @@
     [(UIStackView *)v5->_verticalStackView setAxis:1];
     [(UIStackView *)v5->_verticalStackView setDistribution:0];
     [(UIStackView *)v5->_verticalStackView setSpacing:2.0];
-    v53 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    [v53 addSubview:v5->_verticalStackView];
+    contentView = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    [contentView addSubview:v5->_verticalStackView];
 
-    v54 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    [v54 addSubview:v5->_statusIndicatorImageView];
+    contentView2 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    [contentView2 addSubview:v5->_statusIndicatorImageView];
 
-    v55 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    [v55 addSubview:v5->_secondaryStatusIndicatorImageView];
+    contentView3 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    [contentView3 addSubview:v5->_secondaryStatusIndicatorImageView];
 
-    v56 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    [v56 addSubview:v5->_thumbnailImageView];
+    contentView4 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    [contentView4 addSubview:v5->_thumbnailImageView];
 
     v57 = objc_alloc_init(UILayoutGuide);
-    v58 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    [v58 addLayoutGuide:v57];
+    contentView5 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    [contentView5 addLayoutGuide:v57];
 
-    v136 = [(ICNoteResultsListCollectionViewCell *)v5 separatorLayoutGuide];
-    v135 = [v136 leadingAnchor];
-    v134 = [(UIStackView *)v5->_verticalStackView leadingAnchor];
-    v59 = [v135 constraintEqualToAnchor:v134];
+    separatorLayoutGuide = [(ICNoteResultsListCollectionViewCell *)v5 separatorLayoutGuide];
+    leadingAnchor = [separatorLayoutGuide leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)v5->_verticalStackView leadingAnchor];
+    v59 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     separatorLeadingConstraint = v5->_separatorLeadingConstraint;
     v5->_separatorLeadingConstraint = v59;
 
     v149[0] = v59;
-    v132 = [v57 leadingAnchor];
-    v133 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    v131 = [v133 leadingAnchor];
-    v130 = [v132 constraintEqualToAnchor:v131];
+    leadingAnchor3 = [v57 leadingAnchor];
+    contentView6 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    leadingAnchor4 = [contentView6 leadingAnchor];
+    v130 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v149[1] = v130;
-    v129 = [v57 trailingAnchor];
-    v128 = [(UIStackView *)v5->_verticalStackView leadingAnchor];
-    v127 = [v129 constraintEqualToAnchor:v128];
+    trailingAnchor = [v57 trailingAnchor];
+    leadingAnchor5 = [(UIStackView *)v5->_verticalStackView leadingAnchor];
+    v127 = [trailingAnchor constraintEqualToAnchor:leadingAnchor5];
     v149[2] = v127;
-    v126 = [(UIImageView *)v5->_statusIndicatorImageView centerXAnchor];
+    centerXAnchor = [(UIImageView *)v5->_statusIndicatorImageView centerXAnchor];
     v139 = v57;
-    v125 = [v57 centerXAnchor];
-    v124 = [v126 constraintEqualToAnchor:v125];
+    centerXAnchor2 = [v57 centerXAnchor];
+    v124 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v149[3] = v124;
-    v123 = [(UIImageView *)v5->_statusIndicatorImageView centerYAnchor];
-    v122 = [(UILabel *)v5->_titleLabel centerYAnchor];
-    v121 = [v123 constraintEqualToAnchor:v122];
+    centerYAnchor = [(UIImageView *)v5->_statusIndicatorImageView centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v5->_titleLabel centerYAnchor];
+    v121 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v149[4] = v121;
-    v120 = [(UIImageView *)v5->_secondaryStatusIndicatorImageView centerXAnchor];
-    v119 = [v57 centerXAnchor];
-    v118 = [v120 constraintEqualToAnchor:v119];
+    centerXAnchor3 = [(UIImageView *)v5->_secondaryStatusIndicatorImageView centerXAnchor];
+    centerXAnchor4 = [v57 centerXAnchor];
+    v118 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v149[5] = v118;
-    v116 = [(UIStackView *)v5->_verticalStackView topAnchor];
-    v117 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    v115 = [v117 topAnchor];
+    topAnchor = [(UIStackView *)v5->_verticalStackView topAnchor];
+    contentView7 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    topAnchor2 = [contentView7 topAnchor];
     [(ICNoteResultsListCollectionViewCell *)v5 verticalPadding];
-    v61 = [v116 constraintEqualToAnchor:v115 constant:?];
+    v61 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     verticalStackViewTopConstraint = v5->_verticalStackViewTopConstraint;
     v5->_verticalStackViewTopConstraint = v61;
 
     v149[6] = v61;
-    v114 = [(ICNoteResultsListCollectionViewCell *)v5 verticalStackView];
-    v112 = [v114 leadingAnchor];
-    v113 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    v111 = [v113 leadingAnchor];
-    v63 = [v112 constraintEqualToAnchor:v111 constant:28.0];
+    verticalStackView = [(ICNoteResultsListCollectionViewCell *)v5 verticalStackView];
+    leadingAnchor6 = [verticalStackView leadingAnchor];
+    contentView8 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    leadingAnchor7 = [contentView8 leadingAnchor];
+    v63 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:28.0];
     verticalStackViewLeadingConstraint = v5->_verticalStackViewLeadingConstraint;
     v5->_verticalStackViewLeadingConstraint = v63;
 
     v149[7] = v63;
-    v65 = [(ICNoteResultsListCollectionViewCell *)v5 verticalStackView];
-    v66 = [v65 trailingAnchor];
-    v67 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    v68 = [v67 trailingAnchor];
-    v69 = [v66 constraintEqualToAnchor:v68 constant:-12.0];
+    verticalStackView2 = [(ICNoteResultsListCollectionViewCell *)v5 verticalStackView];
+    trailingAnchor2 = [verticalStackView2 trailingAnchor];
+    contentView9 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    trailingAnchor3 = [contentView9 trailingAnchor];
+    v69 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-12.0];
     verticalStackViewTrailingConstraint = v5->_verticalStackViewTrailingConstraint;
     v5->_verticalStackViewTrailingConstraint = v69;
 
     v149[8] = v69;
-    v71 = [(ICNoteResultsListCollectionViewCell *)v5 verticalStackView];
-    v72 = [v71 bottomAnchor];
-    v73 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    v74 = [v73 bottomAnchor];
+    verticalStackView3 = [(ICNoteResultsListCollectionViewCell *)v5 verticalStackView];
+    bottomAnchor = [verticalStackView3 bottomAnchor];
+    contentView10 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    bottomAnchor2 = [contentView10 bottomAnchor];
     [(ICNoteResultsListCollectionViewCell *)v5 verticalPadding];
-    v76 = [v72 constraintEqualToAnchor:v74 constant:-v75];
+    v76 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v75];
     verticalStackViewBottomConstraint = v5->_verticalStackViewBottomConstraint;
     v5->_verticalStackViewBottomConstraint = v76;
 
@@ -242,51 +242,51 @@
     v78 = [NSArray arrayWithObjects:v149 count:10];
     [NSLayoutConstraint activateConstraints:v78];
 
-    v79 = [(UIImageView *)v5->_secondaryStatusIndicatorImageView centerYAnchor];
-    v80 = [(UILabel *)v5->_summaryLabel centerYAnchor];
-    v81 = [v79 constraintEqualToAnchor:v80];
+    centerYAnchor3 = [(UIImageView *)v5->_secondaryStatusIndicatorImageView centerYAnchor];
+    centerYAnchor4 = [(UILabel *)v5->_summaryLabel centerYAnchor];
+    v81 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     secondaryStatusIndicatorCenterYNormalConstraint = v5->_secondaryStatusIndicatorCenterYNormalConstraint;
     v5->_secondaryStatusIndicatorCenterYNormalConstraint = v81;
 
-    v83 = [(UIImageView *)v5->_secondaryStatusIndicatorImageView centerYAnchor];
-    v84 = [(UILabel *)v5->_dateLabel centerYAnchor];
-    v85 = [v83 constraintEqualToAnchor:v84];
+    centerYAnchor5 = [(UIImageView *)v5->_secondaryStatusIndicatorImageView centerYAnchor];
+    centerYAnchor6 = [(UILabel *)v5->_dateLabel centerYAnchor];
+    v85 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     secondaryStatusIndicatorCenterYAXConstraint = v5->_secondaryStatusIndicatorCenterYAXConstraint;
     v5->_secondaryStatusIndicatorCenterYAXConstraint = v85;
 
-    v141 = [(UIImageView *)v5->_thumbnailImageView trailingAnchor];
-    v143 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    v137 = [v143 trailingAnchor];
-    v87 = [v141 constraintEqualToAnchor:v137 constant:-12.0];
+    trailingAnchor4 = [(UIImageView *)v5->_thumbnailImageView trailingAnchor];
+    contentView11 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    trailingAnchor5 = [contentView11 trailingAnchor];
+    v87 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-12.0];
     v148[0] = v87;
-    v88 = [(UIImageView *)v5->_thumbnailImageView centerYAnchor];
-    v89 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    v90 = [v89 centerYAnchor];
-    v91 = [v88 constraintEqualToAnchor:v90];
+    centerYAnchor7 = [(UIImageView *)v5->_thumbnailImageView centerYAnchor];
+    contentView12 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    centerYAnchor8 = [contentView12 centerYAnchor];
+    v91 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v148[1] = v91;
-    v92 = [(UIImageView *)v5->_thumbnailImageView widthAnchor];
-    v93 = [(UIImageView *)v5->_thumbnailImageView heightAnchor];
-    v94 = [v92 constraintEqualToAnchor:v93];
+    widthAnchor = [(UIImageView *)v5->_thumbnailImageView widthAnchor];
+    heightAnchor = [(UIImageView *)v5->_thumbnailImageView heightAnchor];
+    v94 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v148[2] = v94;
     v95 = [NSArray arrayWithObjects:v148 count:3];
     trailingThumbnailConstraints = v5->_trailingThumbnailConstraints;
     v5->_trailingThumbnailConstraints = v95;
 
-    v142 = [(UIImageView *)v5->_thumbnailImageView bottomAnchor];
-    v144 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
-    v138 = [v144 bottomAnchor];
+    bottomAnchor3 = [(UIImageView *)v5->_thumbnailImageView bottomAnchor];
+    contentView13 = [(ICNoteResultsListCollectionViewCell *)v5 contentView];
+    bottomAnchor4 = [contentView13 bottomAnchor];
     [(ICNoteResultsListCollectionViewCell *)v5 verticalPadding];
-    v98 = [v142 constraintEqualToAnchor:v138 constant:v97 * -2.0];
+    v98 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v97 * -2.0];
     v147[0] = v98;
-    v99 = [(UIImageView *)v5->_thumbnailImageView leadingAnchor];
-    v100 = [(UILabel *)v5->_titleLabel leadingAnchor];
-    v101 = [v99 constraintEqualToAnchor:v100];
+    leadingAnchor8 = [(UIImageView *)v5->_thumbnailImageView leadingAnchor];
+    leadingAnchor9 = [(UILabel *)v5->_titleLabel leadingAnchor];
+    v101 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v147[1] = v101;
-    v102 = [(UIImageView *)v5->_thumbnailImageView heightAnchor];
-    v103 = [v102 constraintEqualToConstant:68.0];
+    heightAnchor2 = [(UIImageView *)v5->_thumbnailImageView heightAnchor];
+    v103 = [heightAnchor2 constraintEqualToConstant:68.0];
     v147[2] = v103;
-    v104 = [(UIImageView *)v5->_thumbnailImageView widthAnchor];
-    v105 = [v104 constraintEqualToConstant:68.0];
+    widthAnchor2 = [(UIImageView *)v5->_thumbnailImageView widthAnchor];
+    v105 = [widthAnchor2 constraintEqualToConstant:68.0];
     v147[3] = v105;
     v106 = [NSArray arrayWithObjects:v147 count:4];
     bottomThumbnailConstraints = v5->_bottomThumbnailConstraints;
@@ -311,14 +311,14 @@
   return v5;
 }
 
-- (void)setConfiguration:(id)a3 synchronously:(BOOL)a4
+- (void)setConfiguration:(id)configuration synchronously:(BOOL)synchronously
 {
-  v4 = a4;
-  v6 = a3;
+  synchronouslyCopy = synchronously;
+  configurationCopy = configuration;
   [(ICNoteResultsListCollectionViewCell *)self enableIntrinsicSizeShortcut:1];
   v7.receiver = self;
   v7.super_class = ICNoteResultsListCollectionViewCell;
-  [(ICBaseNoteResultsCollectionViewCell *)&v7 setConfiguration:v6 synchronously:v4];
+  [(ICBaseNoteResultsCollectionViewCell *)&v7 setConfiguration:configurationCopy synchronously:synchronouslyCopy];
 
   [(ICNoteResultsListCollectionViewCell *)self resetColors];
 }
@@ -329,20 +329,20 @@
   v16.super_class = ICNoteResultsListCollectionViewCell;
   [(ICBaseNoteResultsCollectionViewCell *)&v16 updateViewStateProperties];
   v3 = [UIFont ic_preferredSingleLineAFontForTextStyle:UIFontTextStyleSubheadline];
-  v4 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-  [v4 setFont:v3];
+  dateLabel = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+  [dateLabel setFont:v3];
 
   v5 = [UIFont ic_preferredSingleLineAFontForTextStyle:UIFontTextStyleSubheadline];
-  v6 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
-  [v6 setFont:v5];
+  participantsLabel = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
+  [participantsLabel setFont:v5];
 
-  v7 = [(ICNoteResultsListCollectionViewCell *)self traitCollection];
-  -[ICNoteResultsListCollectionViewCell setIsInSplitView:](self, "setIsInSplitView:", [v7 _splitViewControllerContext] == 3);
+  traitCollection = [(ICNoteResultsListCollectionViewCell *)self traitCollection];
+  -[ICNoteResultsListCollectionViewCell setIsInSplitView:](self, "setIsInSplitView:", [traitCollection _splitViewControllerContext] == 3);
 
   [(ICNoteResultsListCollectionViewCell *)self setIsAXSize:ICAccessibilityAccessibilityLargerTextSizesEnabled()];
-  v8 = [(ICNoteResultsListCollectionViewCell *)self traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
-  [(ICNoteResultsListCollectionViewCell *)self setIsLargerThanAXLarge:UIContentSizeCategoryCompareToCategory(v9, UIContentSizeCategoryAccessibilityLarge) > NSOrderedSame];
+  traitCollection2 = [(ICNoteResultsListCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+  [(ICNoteResultsListCollectionViewCell *)self setIsLargerThanAXLarge:UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryAccessibilityLarge) > NSOrderedSame];
 
   if ([(ICNoteResultsListCollectionViewCell *)self isAXSize])
   {
@@ -380,32 +380,32 @@
     v12 = 28.0;
   }
 
-  v13 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewLeadingConstraint];
-  [v13 setConstant:v12];
+  verticalStackViewLeadingConstraint = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewLeadingConstraint];
+  [verticalStackViewLeadingConstraint setConstant:v12];
 
-  v14 = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
-  v15 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  [v15 setMaxNumberOfLabelLines:v14];
+  numberOfLines = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  [configuration setMaxNumberOfLabelLines:numberOfLines];
 }
 
-- (CGRect)estimatedBoundsForLabel:(id)a3
+- (CGRect)estimatedBoundsForLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = 0.0;
-  if (([v4 isHidden] & 1) == 0)
+  if (([labelCopy isHidden] & 1) == 0)
   {
-    v6 = [v4 font];
-    [v6 lineHeight];
+    font = [labelCopy font];
+    [font lineHeight];
     v5 = v7;
   }
 
   [(ICNoteResultsListCollectionViewCell *)self frame];
   v9 = v8 + -24.0;
-  v10 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewLeadingConstraint];
-  [v10 constant];
+  verticalStackViewLeadingConstraint = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewLeadingConstraint];
+  [verticalStackViewLeadingConstraint constant];
   v12 = v9 - v11;
-  v13 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTrailingConstraint];
-  [v13 constant];
+  verticalStackViewTrailingConstraint = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTrailingConstraint];
+  [verticalStackViewTrailingConstraint constant];
   v15 = v12 - v14;
 
   v16 = 0.0;
@@ -419,21 +419,21 @@
   return result;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  [(ICNoteResultsListCollectionViewCell *)self updateColorsUsingState:v4];
-  [(ICNoteResultsListCollectionViewCell *)self updateStatusIndicatorsUsingState:v4];
-  [(ICNoteResultsListCollectionViewCell *)self updateBackgroundConfigurationUsingState:v4];
+  stateCopy = state;
+  [(ICNoteResultsListCollectionViewCell *)self updateColorsUsingState:stateCopy];
+  [(ICNoteResultsListCollectionViewCell *)self updateStatusIndicatorsUsingState:stateCopy];
+  [(ICNoteResultsListCollectionViewCell *)self updateBackgroundConfigurationUsingState:stateCopy];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(ICNoteResultsListCollectionViewCell *)self enableIntrinsicSizeShortcut:0];
-  v5 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:UIContentSizeCategoryNewValueKey];
+  v6 = [userInfo objectForKeyedSubscript:UIContentSizeCategoryNewValueKey];
 
   if (v6)
   {
@@ -446,17 +446,17 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v3 = [v2 accessibilityLabel];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  accessibilityLabel = [configuration accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(ICNoteResultsListCollectionViewCell *)self isSelected];
+  isSelected = [(ICNoteResultsListCollectionViewCell *)self isSelected];
   v3 = &UIAccessibilityTraitSelected;
-  if (!v2)
+  if (!isSelected)
   {
     v3 = &UIAccessibilityTraitNone;
   }
@@ -466,16 +466,16 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(ICNoteResultsListCollectionViewCell *)self accessibilityCustomActionsDelegate];
+  accessibilityCustomActionsDelegate = [(ICNoteResultsListCollectionViewCell *)self accessibilityCustomActionsDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ICNoteResultsListCollectionViewCell *)self accessibilityCustomActionsDelegate];
-    v6 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v7 = [v6 note];
-    v8 = [v7 objectID];
-    v9 = [v5 customAccessibilityActionsForObjectID:v8 galleryView:0];
+    accessibilityCustomActionsDelegate2 = [(ICNoteResultsListCollectionViewCell *)self accessibilityCustomActionsDelegate];
+    configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    note = [configuration note];
+    objectID = [note objectID];
+    v9 = [accessibilityCustomActionsDelegate2 customAccessibilityActionsForObjectID:objectID galleryView:0];
   }
 
   else
@@ -501,9 +501,9 @@
   return 2;
 }
 
-- (void)updateBackgroundConfigurationUsingState:(id)a3
+- (void)updateBackgroundConfigurationUsingState:(id)state
 {
-  v9 = a3;
+  stateCopy = state;
   if ((+[UIDevice ic_isVision]& 1) != 0)
   {
     +[UIBackgroundConfiguration listPlainCellConfiguration];
@@ -514,10 +514,10 @@
     [(ICNoteResultsListCollectionViewCell *)self defaultBackgroundConfiguration];
   }
   v4 = ;
-  if ([v9 cellDropState] == 2)
+  if ([stateCopy cellDropState] == 2)
   {
-    [v9 setCellDropState:1];
-    [v9 setFocused:0];
+    [stateCopy setCellDropState:1];
+    [stateCopy setFocused:0];
   }
 
   if ([(ICNoteResultsListCollectionViewCell *)self isPinDropTarget])
@@ -535,94 +535,94 @@
     [v4 setBackgroundColor:v5];
   }
 
-  v6 = [v9 traitCollection];
-  v7 = [v6 listEnvironment];
+  traitCollection = [stateCopy traitCollection];
+  listEnvironment = [traitCollection listEnvironment];
 
-  if (v7 == 6)
+  if (listEnvironment == 6)
   {
     [v4 setCornerRadius:20.0];
   }
 
-  v8 = [v4 updatedConfigurationForState:v9];
+  v8 = [v4 updatedConfigurationForState:stateCopy];
   [(ICNoteResultsListCollectionViewCell *)self setBackgroundConfiguration:v8];
 }
 
 - (void)configureColorsForSearchResult
 {
-  v3 = [(ICNoteResultsListCollectionViewCell *)self configurationState];
-  [(ICNoteResultsListCollectionViewCell *)self updateColorsUsingState:v3];
+  configurationState = [(ICNoteResultsListCollectionViewCell *)self configurationState];
+  [(ICNoteResultsListCollectionViewCell *)self updateColorsUsingState:configurationState];
 }
 
-- (void)updateColorsUsingState:(id)a3
+- (void)updateColorsUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[UIListContentConfiguration valueCellConfiguration];
-  if ([v4 cellDropState] == 2 || objc_msgSend(v4, "cellDropState") == 1)
+  if ([stateCopy cellDropState] == 2 || objc_msgSend(stateCopy, "cellDropState") == 1)
   {
-    [v4 setCellDropState:1];
-    [v4 setFocused:0];
+    [stateCopy setCellDropState:1];
+    [stateCopy setFocused:0];
   }
 
-  v6 = [v5 updatedConfigurationForState:v4];
+  v6 = [v5 updatedConfigurationForState:stateCopy];
 
-  v7 = [v6 textProperties];
-  v8 = [v7 color];
-  [(ICNoteResultsListCollectionViewCell *)self setPrimaryLabelColor:v8];
+  textProperties = [v6 textProperties];
+  color = [textProperties color];
+  [(ICNoteResultsListCollectionViewCell *)self setPrimaryLabelColor:color];
 
-  v9 = [v6 secondaryTextProperties];
-  v10 = [v9 color];
-  [(ICNoteResultsListCollectionViewCell *)self setSecondaryLabelColor:v10];
+  secondaryTextProperties = [v6 secondaryTextProperties];
+  color2 = [secondaryTextProperties color];
+  [(ICNoteResultsListCollectionViewCell *)self setSecondaryLabelColor:color2];
 
-  v11 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v12 = [v11 searchResult];
-  if (v12)
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  searchResult = [configuration searchResult];
+  if (searchResult)
   {
-    v13 = v12;
-    v14 = [(ICBaseNoteResultsCollectionViewCell *)self settingConfigurationForSearchResult];
+    v13 = searchResult;
+    settingConfigurationForSearchResult = [(ICBaseNoteResultsCollectionViewCell *)self settingConfigurationForSearchResult];
 
-    if ((v14 & 1) == 0)
+    if ((settingConfigurationForSearchResult & 1) == 0)
     {
-      v15 = [v4 isSelected];
-      v16 = v15;
+      isSelected = [stateCopy isSelected];
+      v16 = isSelected;
       v48 = v6;
-      if (v15)
+      if (isSelected)
       {
         [UIColor colorNamed:@"selected_search_highlight"];
       }
 
       else
       {
-        v14 = [(ICNoteResultsListCollectionViewCell *)self window];
-        [v14 tintColor];
+        settingConfigurationForSearchResult = [(ICNoteResultsListCollectionViewCell *)self window];
+        [settingConfigurationForSearchResult tintColor];
       }
       v17 = ;
-      v18 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      [v18 setHighlightColor:v17];
+      configuration2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      [configuration2 setHighlightColor:v17];
 
       if ((v16 & 1) == 0)
       {
 
-        v17 = v14;
+        v17 = settingConfigurationForSearchResult;
       }
 
-      v46 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      configuration3 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
       v51[0] = NSFontAttributeName;
-      v47 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-      v19 = [v47 font];
-      v52[0] = v19;
+      titleLabel = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+      font = [titleLabel font];
+      v52[0] = font;
       v51[1] = NSForegroundColorAttributeName;
-      v20 = [(ICNoteResultsListCollectionViewCell *)self primaryLabelColor];
-      v52[1] = v20;
+      primaryLabelColor = [(ICNoteResultsListCollectionViewCell *)self primaryLabelColor];
+      v52[1] = primaryLabelColor;
       v21 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:2];
       v49[0] = NSFontAttributeName;
-      v22 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
-      v23 = [v22 font];
+      summaryLabel = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
+      font2 = [summaryLabel font];
       v49[1] = NSForegroundColorAttributeName;
-      v50[0] = v23;
-      v24 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
-      v50[1] = v24;
+      v50[0] = font2;
+      secondaryLabelColor = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
+      v50[1] = secondaryLabelColor;
       v25 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:2];
-      [v46 updateTitleLabelAttributes:v21 summaryLabelAttributes:v25];
+      [configuration3 updateTitleLabelAttributes:v21 summaryLabelAttributes:v25];
 
       v6 = v48;
     }
@@ -632,14 +632,14 @@
   {
   }
 
-  v26 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v27 = [v26 searchResult];
-  if (v27)
+  configuration4 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  searchResult2 = [configuration4 searchResult];
+  if (searchResult2)
   {
-    v28 = v27;
-    v29 = [(ICBaseNoteResultsCollectionViewCell *)self settingConfigurationForSearchResult];
+    v28 = searchResult2;
+    settingConfigurationForSearchResult2 = [(ICBaseNoteResultsCollectionViewCell *)self settingConfigurationForSearchResult];
 
-    if ((v29 & 1) == 0)
+    if ((settingConfigurationForSearchResult2 & 1) == 0)
     {
       [(ICBaseNoteResultsCollectionViewCell *)self synchronouslyLoadConfigurationDataAndUpdate];
     }
@@ -649,37 +649,37 @@
   {
   }
 
-  v30 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v31 = [v30 searchResult];
+  configuration5 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  searchResult3 = [configuration5 searchResult];
 
-  if (!v31)
+  if (!searchResult3)
   {
-    v32 = [(ICNoteResultsListCollectionViewCell *)self primaryLabelColor];
-    v33 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-    [v33 setTextColor:v32];
+    primaryLabelColor2 = [(ICNoteResultsListCollectionViewCell *)self primaryLabelColor];
+    titleLabel2 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+    [titleLabel2 setTextColor:primaryLabelColor2];
 
-    v34 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
-    v35 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
-    [v35 setTextColor:v34];
+    secondaryLabelColor2 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
+    summaryLabel2 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
+    [summaryLabel2 setTextColor:secondaryLabelColor2];
   }
 
-  v36 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
-  v37 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-  [v37 setTextColor:v36];
+  secondaryLabelColor3 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
+  dateLabel = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+  [dateLabel setTextColor:secondaryLabelColor3];
 
-  v38 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
-  v39 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
-  [v39 setTextColor:v38];
+  secondaryLabelColor4 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
+  participantsLabel = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
+  [participantsLabel setTextColor:secondaryLabelColor4];
 
-  v40 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
-  v41 = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
-  [v41 setTextColor:v40];
+  secondaryLabelColor5 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
+  folderAndAccountLabel = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
+  [folderAndAccountLabel setTextColor:secondaryLabelColor5];
 
-  v42 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
-  v43 = [(ICNoteResultsListCollectionViewCell *)self folderLabelImageView];
-  [v43 setTintColor:v42];
+  secondaryLabelColor6 = [(ICNoteResultsListCollectionViewCell *)self secondaryLabelColor];
+  folderLabelImageView = [(ICNoteResultsListCollectionViewCell *)self folderLabelImageView];
+  [folderLabelImageView setTintColor:secondaryLabelColor6];
 
-  if ([v4 isSelected])
+  if ([stateCopy isSelected])
   {
     +[UIColor whiteColor];
   }
@@ -689,8 +689,8 @@
     +[UIColor tertiaryLabelColor];
   }
   v44 = ;
-  v45 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-  [v45 setTintColor:v44];
+  thumbnailImageView = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+  [thumbnailImageView setTintColor:v44];
 }
 
 - (void)resetColors
@@ -702,8 +702,8 @@
   [(ICNoteResultsListCollectionViewCell *)self setSecondaryLabelColor:v4];
 
   v6 = +[UIColor ICTintColor];
-  v5 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  [v5 setHighlightColor:v6];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  [configuration setHighlightColor:v6];
 }
 
 - (id)createLabel
@@ -717,116 +717,116 @@
   return v2;
 }
 
-- (void)enableIntrinsicSizeShortcut:(BOOL)a3
+- (void)enableIntrinsicSizeShortcut:(BOOL)shortcut
 {
-  v3 = a3;
-  v5 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-  [v5 _setUseShortcutIntrinsicContentSize:v3];
+  shortcutCopy = shortcut;
+  titleLabel = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+  [titleLabel _setUseShortcutIntrinsicContentSize:shortcutCopy];
 
-  v6 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
-  [v6 _setUseShortcutIntrinsicContentSize:v3];
+  summaryLabel = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
+  [summaryLabel _setUseShortcutIntrinsicContentSize:shortcutCopy];
 
-  v7 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-  [v7 _setUseShortcutIntrinsicContentSize:v3];
+  dateLabel = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+  [dateLabel _setUseShortcutIntrinsicContentSize:shortcutCopy];
 
-  v8 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
-  [v8 _setUseShortcutIntrinsicContentSize:v3];
+  participantsLabel = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
+  [participantsLabel _setUseShortcutIntrinsicContentSize:shortcutCopy];
 
-  v9 = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
-  [v9 _setUseShortcutIntrinsicContentSize:v3];
+  folderAndAccountLabel = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
+  [folderAndAccountLabel _setUseShortcutIntrinsicContentSize:shortcutCopy];
 }
 
-- (void)setCurrentThumbnailLocation:(int64_t)a3
+- (void)setCurrentThumbnailLocation:(int64_t)location
 {
-  switch(a3)
+  switch(location)
   {
     case 2:
-      v17 = [(ICNoteResultsListCollectionViewCell *)self trailingThumbnailConstraints];
-      [NSLayoutConstraint deactivateConstraints:v17];
+      trailingThumbnailConstraints = [(ICNoteResultsListCollectionViewCell *)self trailingThumbnailConstraints];
+      [NSLayoutConstraint deactivateConstraints:trailingThumbnailConstraints];
 
       [(ICNoteResultsListCollectionViewCell *)self currentThumbnailSize];
       v19 = v18;
       [(ICNoteResultsListCollectionViewCell *)self verticalPadding];
       v21 = -(v19 + v20 * 3.0);
-      v22 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewBottomConstraint];
-      [v22 setConstant:v21];
+      verticalStackViewBottomConstraint = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewBottomConstraint];
+      [verticalStackViewBottomConstraint setConstant:v21];
 
-      v23 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTrailingConstraint];
-      [v23 setConstant:-12.0];
+      verticalStackViewTrailingConstraint = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTrailingConstraint];
+      [verticalStackViewTrailingConstraint setConstant:-12.0];
 
-      v16 = [(ICNoteResultsListCollectionViewCell *)self bottomThumbnailConstraints];
+      bottomThumbnailConstraints = [(ICNoteResultsListCollectionViewCell *)self bottomThumbnailConstraints];
       goto LABEL_7;
     case 1:
-      v9 = [(ICNoteResultsListCollectionViewCell *)self bottomThumbnailConstraints];
-      [NSLayoutConstraint deactivateConstraints:v9];
+      bottomThumbnailConstraints2 = [(ICNoteResultsListCollectionViewCell *)self bottomThumbnailConstraints];
+      [NSLayoutConstraint deactivateConstraints:bottomThumbnailConstraints2];
 
       [(ICNoteResultsListCollectionViewCell *)self currentThumbnailSize];
       v11 = -(v10 + 24.0);
-      v12 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTrailingConstraint];
-      [v12 setConstant:v11];
+      verticalStackViewTrailingConstraint2 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTrailingConstraint];
+      [verticalStackViewTrailingConstraint2 setConstant:v11];
 
       [(ICNoteResultsListCollectionViewCell *)self verticalPadding];
       v14 = -v13;
-      v15 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewBottomConstraint];
-      [v15 setConstant:v14];
+      verticalStackViewBottomConstraint2 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewBottomConstraint];
+      [verticalStackViewBottomConstraint2 setConstant:v14];
 
-      v16 = [(ICNoteResultsListCollectionViewCell *)self trailingThumbnailConstraints];
+      bottomThumbnailConstraints = [(ICNoteResultsListCollectionViewCell *)self trailingThumbnailConstraints];
 LABEL_7:
-      v8 = v16;
-      [NSLayoutConstraint activateConstraints:v16];
+      verticalStackViewTrailingConstraint3 = bottomThumbnailConstraints;
+      [NSLayoutConstraint activateConstraints:bottomThumbnailConstraints];
       goto LABEL_8;
     case 0:
       [(ICNoteResultsListCollectionViewCell *)self verticalPadding];
       v6 = -v5;
-      v7 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewBottomConstraint];
-      [v7 setConstant:v6];
+      verticalStackViewBottomConstraint3 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewBottomConstraint];
+      [verticalStackViewBottomConstraint3 setConstant:v6];
 
-      v8 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTrailingConstraint];
-      [v8 setConstant:-12.0];
+      verticalStackViewTrailingConstraint3 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTrailingConstraint];
+      [verticalStackViewTrailingConstraint3 setConstant:-12.0];
 LABEL_8:
 
       break;
   }
 
-  self->_currentThumbnailLocation = a3;
+  self->_currentThumbnailLocation = location;
 }
 
 - (void)updateFromConfiguration
 {
-  v3 = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
-  v4 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-  [v4 setNumberOfLines:v3];
+  numberOfLines = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
+  titleLabel = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+  [titleLabel setNumberOfLines:numberOfLines];
 
-  v5 = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
-  v6 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
-  [v6 setNumberOfLines:v5];
+  numberOfLines2 = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
+  summaryLabel = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
+  [summaryLabel setNumberOfLines:numberOfLines2];
 
-  v7 = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
-  v8 = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
-  [v8 setNumberOfLines:v7];
+  numberOfLines3 = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
+  folderAndAccountLabel = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
+  [folderAndAccountLabel setNumberOfLines:numberOfLines3];
 
-  v9 = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
-  v10 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
-  [v10 setNumberOfLines:v9];
+  numberOfLines4 = [(ICNoteResultsListCollectionViewCell *)self numberOfLines];
+  participantsLabel = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
+  [participantsLabel setNumberOfLines:numberOfLines4];
 
-  v11 = [(ICNoteResultsListCollectionViewCell *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  [(ICNoteResultsListCollectionViewCell *)self setIsLargerThanAXLarge:UIContentSizeCategoryCompareToCategory(v12, UIContentSizeCategoryAccessibilityLarge) > NSOrderedSame];
+  traitCollection = [(ICNoteResultsListCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [(ICNoteResultsListCollectionViewCell *)self setIsLargerThanAXLarge:UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryAccessibilityLarge) > NSOrderedSame];
 
-  v13 = [(ICNoteResultsListCollectionViewCell *)self isLargerThanAXLarge];
-  v14 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v15 = [v14 showParticipantsInfo];
+  isLargerThanAXLarge = [(ICNoteResultsListCollectionViewCell *)self isLargerThanAXLarge];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  showParticipantsInfo = [configuration showParticipantsInfo];
 
-  v16 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  if ([v16 showFolderName])
+  configuration2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  if ([configuration2 showFolderName])
   {
-    v17 = 1;
+    showAccountName = 1;
   }
 
   else
   {
-    v18 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v17 = [v18 showAccountName];
+    configuration3 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    showAccountName = [configuration3 showAccountName];
   }
 
   if ([(ICNoteResultsListCollectionViewCell *)self hidesThumbnail])
@@ -836,59 +836,59 @@ LABEL_8:
 
   else
   {
-    v19 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    -[ICNoteResultsListCollectionViewCell setIsThumbnailPresent:](self, "setIsThumbnailPresent:", [v19 hasThumbnailImage]);
+    configuration4 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    -[ICNoteResultsListCollectionViewCell setIsThumbnailPresent:](self, "setIsThumbnailPresent:", [configuration4 hasThumbnailImage]);
   }
 
   if ([(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent])
   {
-    v20 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-    v21 = [v20 font];
-    [v21 lineHeight];
+    titleLabel2 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+    font = [titleLabel2 font];
+    [font lineHeight];
     v23 = v22;
-    v24 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
-    v25 = [v24 font];
-    [v25 lineHeight];
+    summaryLabel2 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
+    font2 = [summaryLabel2 font];
+    [font2 lineHeight];
     v27 = v23 + v26;
     v28 = 0.0;
     v29 = 0.0;
-    if (v13)
+    if (isLargerThanAXLarge)
     {
-      v60 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-      v59 = [v60 font];
-      [v59 lineHeight];
+      dateLabel = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+      font3 = [dateLabel font];
+      [font3 lineHeight];
     }
 
     v30 = v27 + v29;
-    if (v15)
+    if (showParticipantsInfo)
     {
-      v58 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
-      v61 = [v58 font];
-      [v61 lineHeight];
+      participantsLabel2 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
+      font4 = [participantsLabel2 font];
+      [font4 lineHeight];
       v28 = v31;
     }
 
     v32 = v30 + v28;
-    if (v17)
+    if (showAccountName)
     {
       [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
-      v33 = v21;
-      v34 = v17;
-      v36 = v35 = v20;
+      v33 = font;
+      v34 = showAccountName;
+      v36 = v35 = titleLabel2;
       [v36 font];
-      v37 = v25;
-      v38 = v15;
-      v40 = v39 = v24;
+      v37 = font2;
+      v38 = showParticipantsInfo;
+      v40 = v39 = summaryLabel2;
       [v40 lineHeight];
       v42 = v32 + v41;
 
-      v24 = v39;
-      v15 = v38;
-      v25 = v37;
+      summaryLabel2 = v39;
+      showParticipantsInfo = v38;
+      font2 = v37;
 
-      v20 = v35;
-      v17 = v34;
-      v21 = v33;
+      titleLabel2 = v35;
+      showAccountName = v34;
+      font = v33;
     }
 
     else
@@ -896,11 +896,11 @@ LABEL_8:
       v42 = v32 + 0.0;
     }
 
-    if (v15)
+    if (showParticipantsInfo)
     {
     }
 
-    if (v13)
+    if (isLargerThanAXLarge)
     {
     }
 
@@ -908,51 +908,51 @@ LABEL_8:
     [(ICNoteResultsListCollectionViewCell *)self setCurrentThumbnailSize:v43, v43];
   }
 
-  v44 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-  [v44 setHidden:v13 ^ 1];
+  dateLabel2 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+  [dateLabel2 setHidden:isLargerThanAXLarge ^ 1];
 
-  v45 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
-  [v45 setHidden:v15 ^ 1];
+  participantsLabel3 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
+  [participantsLabel3 setHidden:showParticipantsInfo ^ 1];
 
-  v46 = [(ICNoteResultsListCollectionViewCell *)self folderStackView];
-  [v46 setHidden:v17 ^ 1];
+  folderStackView = [(ICNoteResultsListCollectionViewCell *)self folderStackView];
+  [folderStackView setHidden:showAccountName ^ 1];
 
-  LODWORD(v46) = [(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent];
-  v47 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-  [v47 setHidden:v46 ^ 1];
+  LODWORD(folderStackView) = [(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent];
+  thumbnailImageView = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+  [thumbnailImageView setHidden:folderStackView ^ 1];
 
   if ([(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent]&& ![(ICNoteResultsListCollectionViewCell *)self currentThumbnailLocation]|| ![(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent]&& [(ICNoteResultsListCollectionViewCell *)self currentThumbnailLocation]|| [(ICNoteResultsListCollectionViewCell *)self isAXSize]&& [(ICNoteResultsListCollectionViewCell *)self currentThumbnailLocation]!= 2 || ![(ICNoteResultsListCollectionViewCell *)self isAXSize]&& [(ICNoteResultsListCollectionViewCell *)self currentThumbnailLocation]!= 1)
   {
     if ([(ICNoteResultsListCollectionViewCell *)self isAXSize]&& [(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent])
     {
-      v48 = 2;
+      isThumbnailPresent = 2;
     }
 
     else
     {
-      v48 = [(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent];
+      isThumbnailPresent = [(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent];
     }
 
-    [(ICNoteResultsListCollectionViewCell *)self setCurrentThumbnailLocation:v48];
+    [(ICNoteResultsListCollectionViewCell *)self setCurrentThumbnailLocation:isThumbnailPresent];
   }
 
-  v49 = [(ICNoteResultsListCollectionViewCell *)self configurationState];
-  [(ICNoteResultsListCollectionViewCell *)self updateStatusIndicatorsUsingState:v49];
+  configurationState = [(ICNoteResultsListCollectionViewCell *)self configurationState];
+  [(ICNoteResultsListCollectionViewCell *)self updateStatusIndicatorsUsingState:configurationState];
 
   [(ICNoteResultsListCollectionViewCell *)self updateLabelsFromConfiguration];
   [(ICNoteResultsListCollectionViewCell *)self updateThumbnailFromConfiguration];
-  v50 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v51 = [v50 styleForCalculator];
+  configuration5 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  styleForCalculator = [configuration5 styleForCalculator];
 
-  v52 = [(ICNoteResultsListCollectionViewCell *)self separatorLeadingConstraint];
-  [v52 setActive:v51 ^ 1];
+  separatorLeadingConstraint = [(ICNoteResultsListCollectionViewCell *)self separatorLeadingConstraint];
+  [separatorLeadingConstraint setActive:styleForCalculator ^ 1];
 
   [(ICNoteResultsListCollectionViewCell *)self verticalPadding];
   v54 = v53;
-  v55 = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTopConstraint];
-  [v55 setConstant:v54];
+  verticalStackViewTopConstraint = [(ICNoteResultsListCollectionViewCell *)self verticalStackViewTopConstraint];
+  [verticalStackViewTopConstraint setConstant:v54];
 
-  if (v51)
+  if (styleForCalculator)
   {
     v56 = 4.0;
   }
@@ -962,16 +962,16 @@ LABEL_8:
     v56 = 2.0;
   }
 
-  v57 = [(ICNoteResultsListCollectionViewCell *)self verticalStackView];
-  [v57 setSpacing:v56];
+  verticalStackView = [(ICNoteResultsListCollectionViewCell *)self verticalStackView];
+  [verticalStackView setSpacing:v56];
 
   [(ICNoteResultsListCollectionViewCell *)self layoutIfNeeded];
 }
 
 - (double)verticalPadding
 {
-  v2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  if ([v2 styleForCalculator])
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  if ([configuration styleForCalculator])
   {
     v3 = 18.0;
   }
@@ -984,188 +984,188 @@ LABEL_8:
   return v3;
 }
 
-- (void)updateStatusIndicatorsUsingState:(id)a3
+- (void)updateStatusIndicatorsUsingState:(id)state
 {
-  v25 = a3;
-  v4 = [(ICNoteResultsListCollectionViewCell *)self statusIndicatorImageView];
-  [v4 setHidden:1];
+  stateCopy = state;
+  statusIndicatorImageView = [(ICNoteResultsListCollectionViewCell *)self statusIndicatorImageView];
+  [statusIndicatorImageView setHidden:1];
 
-  v5 = [(ICNoteResultsListCollectionViewCell *)self secondaryStatusIndicatorImageView];
-  [v5 setHidden:1];
+  secondaryStatusIndicatorImageView = [(ICNoteResultsListCollectionViewCell *)self secondaryStatusIndicatorImageView];
+  [secondaryStatusIndicatorImageView setHidden:1];
 
-  if (([v25 isSelected] & 1) != 0 || objc_msgSend(v25, "isFocused"))
+  if (([stateCopy isSelected] & 1) != 0 || objc_msgSend(stateCopy, "isFocused"))
   {
-    v6 = [(ICNoteResultsListCollectionViewCell *)self isInSplitView];
+    isInSplitView = [(ICNoteResultsListCollectionViewCell *)self isInSplitView];
   }
 
   else
   {
-    v6 = 0;
+    isInSplitView = 0;
   }
 
-  v7 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v8 = [v7 primaryStatusImage];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  primaryStatusImage = [configuration primaryStatusImage];
 
-  if (v8)
+  if (primaryStatusImage)
   {
-    v9 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v10 = [v9 primaryStatusImage];
-    v11 = [(ICNoteResultsListCollectionViewCell *)self statusIndicatorImageView];
-    [v11 setImage:v10];
+    configuration2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    primaryStatusImage2 = [configuration2 primaryStatusImage];
+    statusIndicatorImageView2 = [(ICNoteResultsListCollectionViewCell *)self statusIndicatorImageView];
+    [statusIndicatorImageView2 setImage:primaryStatusImage2];
 
-    if (v6)
+    if (isInSplitView)
     {
-      v12 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-      [v12 textColor];
+      titleLabel = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+      [titleLabel textColor];
     }
 
     else
     {
-      v12 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      [v12 primaryStatusImageTintColor];
+      titleLabel = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      [titleLabel primaryStatusImageTintColor];
     }
     v13 = ;
-    v14 = [(ICNoteResultsListCollectionViewCell *)self statusIndicatorImageView];
-    [v14 setTintColor:v13];
+    statusIndicatorImageView3 = [(ICNoteResultsListCollectionViewCell *)self statusIndicatorImageView];
+    [statusIndicatorImageView3 setTintColor:v13];
 
-    v15 = [(ICNoteResultsListCollectionViewCell *)self statusIndicatorImageView];
-    [v15 setHidden:0];
+    statusIndicatorImageView4 = [(ICNoteResultsListCollectionViewCell *)self statusIndicatorImageView];
+    [statusIndicatorImageView4 setHidden:0];
   }
 
-  v16 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v17 = [v16 secondaryStatusImage];
+  configuration3 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  secondaryStatusImage = [configuration3 secondaryStatusImage];
 
-  if (v17)
+  if (secondaryStatusImage)
   {
-    v18 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v19 = [v18 secondaryStatusImage];
-    v20 = [(ICNoteResultsListCollectionViewCell *)self secondaryStatusIndicatorImageView];
-    [v20 setImage:v19];
+    configuration4 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    secondaryStatusImage2 = [configuration4 secondaryStatusImage];
+    secondaryStatusIndicatorImageView2 = [(ICNoteResultsListCollectionViewCell *)self secondaryStatusIndicatorImageView];
+    [secondaryStatusIndicatorImageView2 setImage:secondaryStatusImage2];
 
-    if (v6)
+    if (isInSplitView)
     {
-      v21 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-      [v21 textColor];
+      titleLabel2 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+      [titleLabel2 textColor];
     }
 
     else
     {
-      v21 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      [v21 secondaryStatusImageTintColor];
+      titleLabel2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      [titleLabel2 secondaryStatusImageTintColor];
     }
     v22 = ;
-    v23 = [(ICNoteResultsListCollectionViewCell *)self secondaryStatusIndicatorImageView];
-    [v23 setTintColor:v22];
+    secondaryStatusIndicatorImageView3 = [(ICNoteResultsListCollectionViewCell *)self secondaryStatusIndicatorImageView];
+    [secondaryStatusIndicatorImageView3 setTintColor:v22];
 
-    v24 = [(ICNoteResultsListCollectionViewCell *)self secondaryStatusIndicatorImageView];
-    [v24 setHidden:0];
+    secondaryStatusIndicatorImageView4 = [(ICNoteResultsListCollectionViewCell *)self secondaryStatusIndicatorImageView];
+    [secondaryStatusIndicatorImageView4 setHidden:0];
   }
 }
 
 - (void)updateLabelsFromConfiguration
 {
-  v3 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-  v4 = [v3 isDataLoaded];
+  configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+  isDataLoaded = [configuration isDataLoaded];
 
-  if (v4)
+  if (isDataLoaded)
   {
-    v5 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v6 = [v5 titleAttributedString];
+    configuration2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    titleAttributedString = [configuration2 titleAttributedString];
 
-    v7 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v8 = v7;
-    if (v6)
+    configuration3 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    v8 = configuration3;
+    if (titleAttributedString)
     {
-      v9 = [v7 titleAttributedString];
-      v10 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-      [v10 setAttributedText:v9];
+      titleAttributedString2 = [configuration3 titleAttributedString];
+      titleLabel = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+      [titleLabel setAttributedText:titleAttributedString2];
     }
 
     else
     {
-      v9 = [v7 titleString];
-      v10 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-      [v10 setText:v9];
+      titleAttributedString2 = [configuration3 titleString];
+      titleLabel = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+      [titleLabel setText:titleAttributedString2];
     }
 
-    v22 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-    v23 = [v22 isHidden];
+    dateLabel = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+    isHidden = [dateLabel isHidden];
 
-    if ((v23 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v24 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      v25 = [v24 dateString];
-      v26 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-      [v26 setText:v25];
+      configuration4 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      dateString = [configuration4 dateString];
+      dateLabel2 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+      [dateLabel2 setText:dateString];
     }
 
-    v27 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v28 = [v27 summaryAttributedString];
+    configuration5 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    summaryAttributedString = [configuration5 summaryAttributedString];
 
-    v29 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v30 = v29;
-    if (v28)
+    configuration6 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    v30 = configuration6;
+    if (summaryAttributedString)
     {
-      v31 = [v29 summaryAttributedString];
-      v32 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
-      [v32 setAttributedText:v31];
+      summaryAttributedString2 = [configuration6 summaryAttributedString];
+      summaryLabel = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
+      [summaryLabel setAttributedText:summaryAttributedString2];
     }
 
     else
     {
-      v31 = [v29 summaryString];
-      v32 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
-      [v32 setText:v31];
+      summaryAttributedString2 = [configuration6 summaryString];
+      summaryLabel = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
+      [summaryLabel setText:summaryAttributedString2];
     }
 
-    v33 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v34 = [v33 showParticipantsInfo];
+    configuration7 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    showParticipantsInfo = [configuration7 showParticipantsInfo];
 
-    if (v34)
+    if (showParticipantsInfo)
     {
-      v35 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      v36 = [v35 participantsInfoString];
-      v37 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
-      [v37 setText:v36];
+      configuration8 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      participantsInfoString = [configuration8 participantsInfoString];
+      participantsLabel = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
+      [participantsLabel setText:participantsInfoString];
     }
 
-    v38 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v39 = [v38 showsNoteContainer];
+    configuration9 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    showsNoteContainer = [configuration9 showsNoteContainer];
 
-    if (v39)
+    if (showsNoteContainer)
     {
-      v40 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      v41 = [v40 folderAndAccountInfoString];
-      v42 = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
-      [v42 setText:v41];
+      configuration10 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      folderAndAccountInfoString = [configuration10 folderAndAccountInfoString];
+      folderAndAccountLabel = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
+      [folderAndAccountLabel setText:folderAndAccountInfoString];
 
-      v43 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      v44 = [v43 folderImage];
-      v45 = [(ICNoteResultsListCollectionViewCell *)self folderLabelImageView];
-      [v45 setImage:v44];
+      configuration11 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      folderImage = [configuration11 folderImage];
+      folderLabelImageView = [(ICNoteResultsListCollectionViewCell *)self folderLabelImageView];
+      [folderLabelImageView setImage:folderImage];
 
-      v46 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      v47 = [v46 folderImage];
-      v48 = [(ICNoteResultsListCollectionViewCell *)self folderLabelImageView];
-      [v48 setHidden:v47 == 0];
+      configuration12 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      folderImage2 = [configuration12 folderImage];
+      folderLabelImageView2 = [(ICNoteResultsListCollectionViewCell *)self folderLabelImageView];
+      [folderLabelImageView2 setHidden:folderImage2 == 0];
     }
 
-    v49 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v50 = [v49 searchResult];
+    configuration13 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    searchResult = [configuration13 searchResult];
 
-    if (v50)
+    if (searchResult)
     {
-      v51 = [(ICNoteResultsListCollectionViewCell *)self superview];
-      if (v51)
+      superview = [(ICNoteResultsListCollectionViewCell *)self superview];
+      if (superview)
       {
-        v52 = v51;
+        v52 = superview;
         v53 = +[UIApplication sharedApplication];
-        v54 = [v53 isRunningTest];
+        isRunningTest = [v53 isRunningTest];
 
-        if (v54)
+        if (isRunningTest)
         {
-          v55 = +[ICAppDelegate sharedInstance];
-          [v55 searchResultBecameVisible];
+          folderLabelImageView3 = +[ICAppDelegate sharedInstance];
+          [folderLabelImageView3 searchResultBecameVisible];
           goto LABEL_24;
         }
       }
@@ -1174,40 +1174,40 @@ LABEL_8:
 
   else
   {
-    v11 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
-    [v11 setText:@" "];
+    titleLabel2 = [(ICNoteResultsListCollectionViewCell *)self titleLabel];
+    [titleLabel2 setText:@" "];
 
-    v12 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
-    [v12 setText:@" "];
+    summaryLabel2 = [(ICNoteResultsListCollectionViewCell *)self summaryLabel];
+    [summaryLabel2 setText:@" "];
 
-    v13 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-    v14 = [v13 isHidden];
+    dateLabel3 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+    isHidden2 = [dateLabel3 isHidden];
 
-    if ((v14 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
-      v15 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
-      [v15 setText:@" "];
+      dateLabel4 = [(ICNoteResultsListCollectionViewCell *)self dateLabel];
+      [dateLabel4 setText:@" "];
     }
 
-    v16 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v17 = [v16 showParticipantsInfo];
+    configuration14 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    showParticipantsInfo2 = [configuration14 showParticipantsInfo];
 
-    if (v17)
+    if (showParticipantsInfo2)
     {
-      v18 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
-      [v18 setText:@" "];
+      participantsLabel2 = [(ICNoteResultsListCollectionViewCell *)self participantsLabel];
+      [participantsLabel2 setText:@" "];
     }
 
-    v19 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v20 = [v19 showsNoteContainer];
+    configuration15 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    showsNoteContainer2 = [configuration15 showsNoteContainer];
 
-    if (v20)
+    if (showsNoteContainer2)
     {
-      v21 = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
-      [v21 setText:@" "];
+      folderAndAccountLabel2 = [(ICNoteResultsListCollectionViewCell *)self folderAndAccountLabel];
+      [folderAndAccountLabel2 setText:@" "];
 
-      v55 = [(ICNoteResultsListCollectionViewCell *)self folderLabelImageView];
-      [v55 setHidden:1];
+      folderLabelImageView3 = [(ICNoteResultsListCollectionViewCell *)self folderLabelImageView];
+      [folderLabelImageView3 setHidden:1];
 LABEL_24:
     }
   }
@@ -1217,34 +1217,34 @@ LABEL_24:
 {
   if ([(ICNoteResultsListCollectionViewCell *)self isThumbnailPresent])
   {
-    v3 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v4 = [v3 note];
+    configuration = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    note = [configuration note];
 
-    v5 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-    v6 = v5;
-    if (v4)
+    configuration2 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+    v6 = configuration2;
+    if (note)
     {
-      v7 = [v5 searchResult];
-      v8 = [v7 configuration];
-      v9 = [v8 foundAttachmentObjectID];
+      searchResult = [configuration2 searchResult];
+      configuration3 = [searchResult configuration];
+      foundAttachmentObjectID = [configuration3 foundAttachmentObjectID];
 
-      if (v9)
+      if (foundAttachmentObjectID)
       {
-        v10 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-        v11 = [v10 searchResult];
-        v12 = [v11 object];
-        v13 = [v12 managedObjectContext];
-        v14 = [v13 objectWithID:v9];
+        configuration4 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+        searchResult2 = [configuration4 searchResult];
+        object = [searchResult2 object];
+        managedObjectContext = [object managedObjectContext];
+        v14 = [managedObjectContext objectWithID:foundAttachmentObjectID];
 
         v15 = [ICThumbnailConfiguration alloc];
         [(ICNoteResultsListCollectionViewCell *)self currentThumbnailSize];
         v17 = v16;
         v19 = v18;
-        v20 = +[UIScreen mainScreen];
-        [v20 scale];
+        configuration5 = +[UIScreen mainScreen];
+        [configuration5 scale];
         v22 = v21;
-        v23 = [(ICNoteResultsListCollectionViewCell *)self ic_appearanceInfo];
-        v24 = [v15 initForNoteListWithFoundAttachment:v14 preferredSize:v23 scale:v17 appearanceInfo:{v19, v22}];
+        ic_appearanceInfo = [(ICNoteResultsListCollectionViewCell *)self ic_appearanceInfo];
+        v24 = [v15 initForNoteListWithFoundAttachment:v14 preferredSize:ic_appearanceInfo scale:v17 appearanceInfo:{v19, v22}];
       }
 
       else
@@ -1260,19 +1260,19 @@ LABEL_24:
         }
         v14 = ;
         v57 = [ICThumbnailConfiguration alloc];
-        v20 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-        v23 = [v20 note];
+        configuration5 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+        ic_appearanceInfo = [configuration5 note];
         [(ICNoteResultsListCollectionViewCell *)self currentThumbnailSize];
         v59 = v58;
         v61 = v60;
         v62 = +[UIScreen mainScreen];
         [v62 scale];
-        v24 = [v57 initForNoteListWithNote:v23 preferredSize:v14 scale:v59 appearanceInfo:{v61, v63}];
+        v24 = [v57 initForNoteListWithNote:ic_appearanceInfo preferredSize:v14 scale:v59 appearanceInfo:{v61, v63}];
       }
 
       v64 = +[ICThumbnailService sharedThumbnailService];
-      v65 = [v24 uniqueKey];
-      [(ICNoteResultsListCollectionViewCell *)self setCurrentThumbnailConfigurationUniqueKey:v65];
+      uniqueKey = [v24 uniqueKey];
+      [(ICNoteResultsListCollectionViewCell *)self setCurrentThumbnailConfigurationUniqueKey:uniqueKey];
 
       v67[0] = _NSConcreteStackBlock;
       v67[1] = 3221225472;
@@ -1284,79 +1284,79 @@ LABEL_24:
 
     else
     {
-      v25 = [v5 invitation];
+      invitation = [configuration2 invitation];
 
-      if (!v25)
+      if (!invitation)
       {
         return;
       }
 
-      v26 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      v27 = [v26 invitation];
-      v28 = [v27 rootObjectType];
-      v29 = [v28 isEqualToString:@"com.apple.notes.note"];
+      configuration6 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      invitation2 = [configuration6 invitation];
+      rootObjectType = [invitation2 rootObjectType];
+      v29 = [rootObjectType isEqualToString:@"com.apple.notes.note"];
 
-      v30 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
-      v31 = [v30 invitation];
-      v32 = v31;
+      configuration7 = [(ICBaseNoteResultsCollectionViewCell *)self configuration];
+      invitation3 = [configuration7 invitation];
+      v32 = invitation3;
       if (v29)
       {
-        v33 = [(ICNoteResultsListCollectionViewCell *)self traitCollection];
-        v34 = [v33 ic_appearanceInfo];
+        traitCollection = [(ICNoteResultsListCollectionViewCell *)self traitCollection];
+        ic_appearanceInfo2 = [traitCollection ic_appearanceInfo];
         [(ICNoteResultsListCollectionViewCell *)self currentThumbnailSize];
-        v35 = [v32 thumbnailImageForAppearance:v34 size:?];
-        v36 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        [v36 setImage:v35];
+        v35 = [v32 thumbnailImageForAppearance:ic_appearanceInfo2 size:?];
+        thumbnailImageView = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        [thumbnailImageView setImage:v35];
 
-        v37 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        [v37 setContentMode:2];
+        thumbnailImageView2 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        [thumbnailImageView2 setContentMode:2];
 
         v38 = +[UIColor secondarySystemGroupedBackgroundColor];
-        v39 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        [v39 setBackgroundColor:v38];
+        thumbnailImageView3 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        [thumbnailImageView3 setBackgroundColor:v38];
 
         [(ICNoteResultsListCollectionViewCell *)self ic_hairlineWidth];
         v41 = v40;
-        v42 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        v43 = [v42 layer];
-        [v43 setBorderWidth:v41];
+        thumbnailImageView4 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        layer = [thumbnailImageView4 layer];
+        [layer setBorderWidth:v41];
 
-        v66 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        v44 = [v66 image];
-        v45 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        [v45 setHidden:v44 == 0];
+        thumbnailImageView5 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        image = [thumbnailImageView5 image];
+        thumbnailImageView6 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        [thumbnailImageView6 setHidden:image == 0];
       }
 
       else
       {
-        v46 = [v31 rootObjectType];
-        v47 = [v46 isEqualToString:@"com.apple.notes.folder"];
+        rootObjectType2 = [invitation3 rootObjectType];
+        v47 = [rootObjectType2 isEqualToString:@"com.apple.notes.folder"];
 
         if (!v47)
         {
           return;
         }
 
-        v66 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:3 scale:26.0];
-        v48 = [UIImage systemImageNamed:@"folder.badge.person.crop" withConfiguration:v66];
-        v49 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        [v49 setImage:v48];
+        thumbnailImageView5 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:3 scale:26.0];
+        v48 = [UIImage systemImageNamed:@"folder.badge.person.crop" withConfiguration:thumbnailImageView5];
+        thumbnailImageView7 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        [thumbnailImageView7 setImage:v48];
 
-        v50 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        [v50 setContentMode:1];
+        thumbnailImageView8 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        [thumbnailImageView8 setContentMode:1];
 
         v51 = +[UIColor clearColor];
-        v52 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        [v52 setBackgroundColor:v51];
+        thumbnailImageView9 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        [thumbnailImageView9 setBackgroundColor:v51];
 
-        v53 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        v54 = [v53 layer];
-        [v54 setBorderWidth:0.0];
+        thumbnailImageView10 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        layer2 = [thumbnailImageView10 layer];
+        [layer2 setBorderWidth:0.0];
 
-        v44 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        v55 = [v44 image];
-        v56 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
-        [v56 setHidden:v55 == 0];
+        image = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        v44Image = [image image];
+        thumbnailImageView11 = [(ICNoteResultsListCollectionViewCell *)self thumbnailImageView];
+        [thumbnailImageView11 setHidden:v44Image == 0];
       }
     }
   }

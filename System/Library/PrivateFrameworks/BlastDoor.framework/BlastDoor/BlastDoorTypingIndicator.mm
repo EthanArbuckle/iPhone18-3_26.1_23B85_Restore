@@ -19,7 +19,7 @@
 
 - (BlastDoorTypingIndicator_Icon)icon
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21457C2AC();
 
   return v3;

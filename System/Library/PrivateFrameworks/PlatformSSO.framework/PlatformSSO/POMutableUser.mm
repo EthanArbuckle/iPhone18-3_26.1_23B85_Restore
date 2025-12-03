@@ -1,54 +1,54 @@
 @interface POMutableUser
-- (void)addCustomClaims:(id)a3;
-- (void)setAltSecurityIdentity:(id)a3;
-- (void)setGeneratedUUID:(id)a3;
-- (void)setLoginUserName:(id)a3;
-- (void)setUid:(id)a3;
-- (void)setUniqueIdpIdentifier:(id)a3;
+- (void)addCustomClaims:(id)claims;
+- (void)setAltSecurityIdentity:(id)identity;
+- (void)setGeneratedUUID:(id)d;
+- (void)setLoginUserName:(id)name;
+- (void)setUid:(id)uid;
+- (void)setUniqueIdpIdentifier:(id)identifier;
 @end
 
 @implementation POMutableUser
 
-- (void)setLoginUserName:(id)a3
+- (void)setLoginUserName:(id)name
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"loginUserName"];
+  nameCopy = name;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:nameCopy forKeyedSubscript:@"loginUserName"];
 }
 
-- (void)setGeneratedUUID:(id)a3
+- (void)setGeneratedUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"generatedUUID"];
+  dCopy = d;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:dCopy forKeyedSubscript:@"generatedUUID"];
 }
 
-- (void)setUniqueIdpIdentifier:(id)a3
+- (void)setUniqueIdpIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"uniqueIdentifier"];
+  identifierCopy = identifier;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:identifierCopy forKeyedSubscript:@"uniqueIdentifier"];
 }
 
-- (void)setUid:(id)a3
+- (void)setUid:(id)uid
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"uid"];
+  uidCopy = uid;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:uidCopy forKeyedSubscript:@"uid"];
 }
 
-- (void)setAltSecurityIdentity:(id)a3
+- (void)setAltSecurityIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"altSecurityIdentity"];
+  identityCopy = identity;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:identityCopy forKeyedSubscript:@"altSecurityIdentity"];
 }
 
-- (void)addCustomClaims:(id)a3
+- (void)addCustomClaims:(id)claims
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 addEntriesFromDictionary:v4];
+  claimsCopy = claims;
+  data = [(_POJWTBodyBase *)self data];
+  [data addEntriesFromDictionary:claimsCopy];
 }
 
 @end

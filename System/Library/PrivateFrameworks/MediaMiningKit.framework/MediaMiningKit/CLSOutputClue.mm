@@ -43,9 +43,9 @@
   v2 = [(CLSClue *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     relatedInputLocationClues = v2->_relatedInputLocationClues;
-    v2->_relatedInputLocationClues = v3;
+    v2->_relatedInputLocationClues = array;
   }
 
   return v2;

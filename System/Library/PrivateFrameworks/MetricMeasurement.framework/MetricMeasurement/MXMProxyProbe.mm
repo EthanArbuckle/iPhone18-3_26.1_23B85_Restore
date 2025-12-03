@@ -1,57 +1,57 @@
 @interface MXMProxyProbe
-- (MXMProxyProbe)initWithCoder:(id)a3;
-- (MXMProxyProbe)initWithProxyMetric:(id)a3;
-- (id)sampleWithTimeout:(double)a3 stopReason:(unint64_t *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateNowUntilStoppedWithUpdateHandler:(id)a3 stopHandler:(id)a4;
+- (MXMProxyProbe)initWithCoder:(id)coder;
+- (MXMProxyProbe)initWithProxyMetric:(id)metric;
+- (id)sampleWithTimeout:(double)timeout stopReason:(unint64_t *)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateNowUntilStoppedWithUpdateHandler:(id)handler stopHandler:(id)stopHandler;
 @end
 
 @implementation MXMProxyProbe
 
-- (MXMProxyProbe)initWithProxyMetric:(id)a3
+- (MXMProxyProbe)initWithProxyMetric:(id)metric
 {
-  v5 = a3;
+  metricCopy = metric;
   v9.receiver = self;
   v9.super_class = MXMProxyProbe;
   v6 = [(MXMProbe *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proxyMetric, a3);
+    objc_storeStrong(&v6->_proxyMetric, metric);
   }
 
   return v7;
 }
 
-- (MXMProxyProbe)initWithCoder:(id)a3
+- (MXMProxyProbe)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metric"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metric"];
 
   v6 = [(MXMProxyProbe *)self initWithProxyMetric:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MXMProxyProbe *)self proxyMetric];
-  [v4 encodeObject:v5 forKey:@"metric"];
+  coderCopy = coder;
+  proxyMetric = [(MXMProxyProbe *)self proxyMetric];
+  [coderCopy encodeObject:proxyMetric forKey:@"metric"];
 }
 
-- (void)updateNowUntilStoppedWithUpdateHandler:(id)a3 stopHandler:(id)a4
+- (void)updateNowUntilStoppedWithUpdateHandler:(id)handler stopHandler:(id)stopHandler
 {
-  v5 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  stopHandlerCopy = stopHandler;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:@"updateNowUntilStoppedWithUpdateHandler:stopHandler: is not implemented on MXMProxyProbe" reason:0 userInfo:0];
   objc_exception_throw(v7);
 }
 
-- (id)sampleWithTimeout:(double)a3 stopReason:(unint64_t *)a4
+- (id)sampleWithTimeout:(double)timeout stopReason:(unint64_t *)reason
 {
   v7 = +[MXMProxyServiceManager shared];
-  v8 = [(MXMProxyProbe *)self proxyMetric];
-  v9 = [v7 _sampleWithProxyMetric:v8 timeout:a4 stopReason:a3];
+  proxyMetric = [(MXMProxyProbe *)self proxyMetric];
+  v9 = [v7 _sampleWithProxyMetric:proxyMetric timeout:reason stopReason:timeout];
 
   return v9;
 }

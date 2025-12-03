@@ -1,21 +1,21 @@
 @interface INPersonResolutionResult
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4;
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4;
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description;
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description;
 @end
 
 @implementation INPersonResolutionResult
 
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 description];
-  v8 = [MEMORY[0x1E695DF58] systemLocale];
-  v9 = [v8 groupingSeparator];
-  if ([v6 valueType] == 18 || objc_msgSend(v6, "valueType") == 10)
+  objectCopy = object;
+  descriptionCopy = description;
+  v7 = [objectCopy description];
+  systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+  groupingSeparator = [systemLocale groupingSeparator];
+  if ([descriptionCopy valueType] == 18 || objc_msgSend(descriptionCopy, "valueType") == 10)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 firstObject], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) == 0))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([objectCopy firstObject], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -23,27 +23,27 @@
         goto LABEL_13;
       }
 
-      v13 = [v5 displayName];
+      displayName = [objectCopy displayName];
       goto LABEL_8;
     }
 
 LABEL_5:
-    v12 = [v5 valueForKey:@"displayName"];
-    v13 = [v12 if_escapedComponentsJoinedByString:v9 forLocale:v8];
+    v12 = [objectCopy valueForKey:@"displayName"];
+    displayName = [v12 if_escapedComponentsJoinedByString:groupingSeparator forLocale:systemLocale];
 
     v7 = v12;
 LABEL_8:
 
-    v7 = v13;
+    v7 = displayName;
     goto LABEL_13;
   }
 
-  if ([v6 valueType] == 11 && objc_msgSend(v6, "valueStyle") != 3)
+  if ([descriptionCopy valueType] == 11 && objc_msgSend(descriptionCopy, "valueStyle") != 3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v5 firstObject];
+      firstObject = [objectCopy firstObject];
       objc_opt_class();
       v15 = objc_opt_isKindOfClass();
 
@@ -59,18 +59,18 @@ LABEL_13:
   return v7;
 }
 
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  descriptionCopy = description;
   v7 = objc_alloc_init(_INPBIntentSlotValue);
-  if ([v6 valueType] == 18)
+  if ([descriptionCopy valueType] == 18)
   {
     [(_INPBIntentSlotValue *)v7 setType:1000];
-    if ([v6 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v5, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
+    if ([descriptionCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(objectCopy, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
     {
-      v10 = v5;
+      v10 = objectCopy;
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
@@ -108,19 +108,19 @@ LABEL_13:
         goto LABEL_46;
       }
 
-      v10 = INIntentSlotValueTransformToDialingContact(v5);
+      v10 = INIntentSlotValueTransformToDialingContact(objectCopy);
       [(_INPBIntentSlotValue *)v7 addPayloadDialingContact:v10];
     }
 
     goto LABEL_45;
   }
 
-  if ([v6 valueType] == 10)
+  if ([descriptionCopy valueType] == 10)
   {
     [(_INPBIntentSlotValue *)v7 setType:4];
-    if ([v6 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v5, "firstObject"), v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v17 = objc_opt_isKindOfClass(), v16, (v17 & 1) != 0))
+    if ([descriptionCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(objectCopy, "firstObject"), v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v17 = objc_opt_isKindOfClass(), v16, (v17 & 1) != 0))
     {
-      v10 = v5;
+      v10 = objectCopy;
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
@@ -140,9 +140,9 @@ LABEL_13:
             }
 
             v22 = INIntentSlotValueTransformToContact(*(*(&v41 + 1) + 8 * j));
-            v23 = [v22 values];
-            v24 = [v23 firstObject];
-            [(_INPBIntentSlotValue *)v7 addPayloadContactValue:v24];
+            values = [v22 values];
+            firstObject = [values firstObject];
+            [(_INPBIntentSlotValue *)v7 addPayloadContactValue:firstObject];
           }
 
           v19 = [(_INPBContactList *)v10 countByEnumeratingWithState:&v41 objects:v50 count:16];
@@ -160,25 +160,25 @@ LABEL_13:
         goto LABEL_46;
       }
 
-      v10 = INIntentSlotValueTransformToContact(v5);
-      v33 = [(_INPBContactList *)v10 values];
-      v34 = [v33 firstObject];
-      [(_INPBIntentSlotValue *)v7 addPayloadContactValue:v34];
+      v10 = INIntentSlotValueTransformToContact(objectCopy);
+      values2 = [(_INPBContactList *)v10 values];
+      firstObject2 = [values2 firstObject];
+      [(_INPBIntentSlotValue *)v7 addPayloadContactValue:firstObject2];
     }
 
     goto LABEL_45;
   }
 
-  if ([v6 valueType] == 11)
+  if ([descriptionCopy valueType] == 11)
   {
     [(_INPBIntentSlotValue *)v7 setType:53];
-    if ([v6 valueStyle] != 3)
+    if ([descriptionCopy valueStyle] != 3)
     {
       v10 = objc_alloc_init(_INPBContactList);
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 && ([v5 firstObject], v25 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v26 = objc_opt_isKindOfClass(), v25, (v26))
+      if (objc_opt_isKindOfClass() & 1) != 0 && ([objectCopy firstObject], v25 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v26 = objc_opt_isKindOfClass(), v25, (v26))
       {
-        v27 = v5;
+        v27 = objectCopy;
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
@@ -220,7 +220,7 @@ LABEL_45:
           goto LABEL_46;
         }
 
-        v27 = INIntentSlotValueTransformToContact(v5);
+        v27 = INIntentSlotValueTransformToContact(objectCopy);
         [(_INPBContactList *)v10 addContact:v27];
       }
 

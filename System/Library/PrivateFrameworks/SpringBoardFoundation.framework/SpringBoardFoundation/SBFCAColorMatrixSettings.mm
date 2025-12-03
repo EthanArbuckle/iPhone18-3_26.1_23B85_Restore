@@ -1,16 +1,16 @@
 @interface SBFCAColorMatrixSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (id)settingsControllerModule;
 - (CAColorMatrix)colorMatrix;
 - (id)drillDownSummary;
-- (void)setColorMatrix:(CAColorMatrix *)a3;
-- (void)setControlFirstThreeRowsTogether:(BOOL)a3;
+- (void)setColorMatrix:(CAColorMatrix *)matrix;
+- (void)setControlFirstThreeRowsTogether:(BOOL)together;
 - (void)setDefaultValues;
-- (void)setMx1:(double)a3;
-- (void)setMx2:(double)a3;
-- (void)setMx3:(double)a3;
-- (void)setMx4:(double)a3;
-- (void)setMx5:(double)a3;
+- (void)setMx1:(double)mx1;
+- (void)setMx2:(double)mx2;
+- (void)setMx3:(double)mx3;
+- (void)setMx4:(double)mx4;
+- (void)setMx5:(double)mx5;
 @end
 
 @implementation SBFCAColorMatrixSettings
@@ -302,17 +302,17 @@
   return v17;
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"colorMatrix"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"mx1") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"mx2") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"mx3") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"mx4"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"colorMatrix"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"mx1") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"mx2") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"mx3") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"mx4"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"mx5"];
+    v4 = [keyCopy isEqualToString:@"mx5"];
   }
 
   return v4;
@@ -363,9 +363,9 @@
   return [v3 stringWithFormat:@"(%.3g, %.3g, %.3g, %.3g, %.3g)\n(%.3g, %.3g, %.3g, %.3g, %.3g)\n(%.3g, %.3g, %.3g, %.3g, %.3g)\n(%.3g, %.3g, %.3g, %.3g, %.3g)\n", v43, v42, v41, v40, v39, v38, v37, v36, v35, v34, v33, v16, v18, v20, v22, v24, v26, v28, v30, v31];
 }
 
-- (void)setControlFirstThreeRowsTogether:(BOOL)a3
+- (void)setControlFirstThreeRowsTogether:(BOOL)together
 {
-  if (a3)
+  if (together)
   {
     [(SBFCAColorMatrixSettings *)self m11];
     [(SBFCAColorMatrixSettings *)self setMx1:?];
@@ -379,71 +379,71 @@
     [(SBFCAColorMatrixSettings *)self setMx5:?];
   }
 
-  self->_controlFirstThreeRowsTogether = a3;
+  self->_controlFirstThreeRowsTogether = together;
 }
 
-- (void)setMx1:(double)a3
+- (void)setMx1:(double)mx1
 {
   [(SBFCAColorMatrixSettings *)self setM11:?];
-  [(SBFCAColorMatrixSettings *)self setM21:a3];
+  [(SBFCAColorMatrixSettings *)self setM21:mx1];
 
-  [(SBFCAColorMatrixSettings *)self setM31:a3];
+  [(SBFCAColorMatrixSettings *)self setM31:mx1];
 }
 
-- (void)setMx2:(double)a3
+- (void)setMx2:(double)mx2
 {
   [(SBFCAColorMatrixSettings *)self setM12:?];
-  [(SBFCAColorMatrixSettings *)self setM22:a3];
+  [(SBFCAColorMatrixSettings *)self setM22:mx2];
 
-  [(SBFCAColorMatrixSettings *)self setM32:a3];
+  [(SBFCAColorMatrixSettings *)self setM32:mx2];
 }
 
-- (void)setMx3:(double)a3
+- (void)setMx3:(double)mx3
 {
   [(SBFCAColorMatrixSettings *)self setM13:?];
-  [(SBFCAColorMatrixSettings *)self setM23:a3];
+  [(SBFCAColorMatrixSettings *)self setM23:mx3];
 
-  [(SBFCAColorMatrixSettings *)self setM33:a3];
+  [(SBFCAColorMatrixSettings *)self setM33:mx3];
 }
 
-- (void)setMx4:(double)a3
+- (void)setMx4:(double)mx4
 {
   [(SBFCAColorMatrixSettings *)self setM14:?];
-  [(SBFCAColorMatrixSettings *)self setM24:a3];
+  [(SBFCAColorMatrixSettings *)self setM24:mx4];
 
-  [(SBFCAColorMatrixSettings *)self setM34:a3];
+  [(SBFCAColorMatrixSettings *)self setM34:mx4];
 }
 
-- (void)setMx5:(double)a3
+- (void)setMx5:(double)mx5
 {
   [(SBFCAColorMatrixSettings *)self setM15:?];
-  [(SBFCAColorMatrixSettings *)self setM25:a3];
+  [(SBFCAColorMatrixSettings *)self setM25:mx5];
 
-  [(SBFCAColorMatrixSettings *)self setM35:a3];
+  [(SBFCAColorMatrixSettings *)self setM35:mx5];
 }
 
-- (void)setColorMatrix:(CAColorMatrix *)a3
+- (void)setColorMatrix:(CAColorMatrix *)matrix
 {
-  [(SBFCAColorMatrixSettings *)self setM11:a3->var0];
-  [(SBFCAColorMatrixSettings *)self setM12:a3->var1];
-  [(SBFCAColorMatrixSettings *)self setM13:a3->var2];
-  [(SBFCAColorMatrixSettings *)self setM14:a3->var3];
-  [(SBFCAColorMatrixSettings *)self setM15:a3->var4];
-  [(SBFCAColorMatrixSettings *)self setM21:a3->var5];
-  [(SBFCAColorMatrixSettings *)self setM22:a3->var6];
-  [(SBFCAColorMatrixSettings *)self setM23:a3->var7];
-  [(SBFCAColorMatrixSettings *)self setM24:a3->var8];
-  [(SBFCAColorMatrixSettings *)self setM25:a3->var9];
-  [(SBFCAColorMatrixSettings *)self setM31:a3->var10];
-  [(SBFCAColorMatrixSettings *)self setM32:a3->var11];
-  [(SBFCAColorMatrixSettings *)self setM33:a3->var12];
-  [(SBFCAColorMatrixSettings *)self setM34:a3->var13];
-  [(SBFCAColorMatrixSettings *)self setM35:a3->var14];
-  [(SBFCAColorMatrixSettings *)self setM41:a3->var15];
-  [(SBFCAColorMatrixSettings *)self setM42:a3->var16];
-  [(SBFCAColorMatrixSettings *)self setM43:a3->var17];
-  [(SBFCAColorMatrixSettings *)self setM44:a3->var18];
-  var19 = a3->var19;
+  [(SBFCAColorMatrixSettings *)self setM11:matrix->var0];
+  [(SBFCAColorMatrixSettings *)self setM12:matrix->var1];
+  [(SBFCAColorMatrixSettings *)self setM13:matrix->var2];
+  [(SBFCAColorMatrixSettings *)self setM14:matrix->var3];
+  [(SBFCAColorMatrixSettings *)self setM15:matrix->var4];
+  [(SBFCAColorMatrixSettings *)self setM21:matrix->var5];
+  [(SBFCAColorMatrixSettings *)self setM22:matrix->var6];
+  [(SBFCAColorMatrixSettings *)self setM23:matrix->var7];
+  [(SBFCAColorMatrixSettings *)self setM24:matrix->var8];
+  [(SBFCAColorMatrixSettings *)self setM25:matrix->var9];
+  [(SBFCAColorMatrixSettings *)self setM31:matrix->var10];
+  [(SBFCAColorMatrixSettings *)self setM32:matrix->var11];
+  [(SBFCAColorMatrixSettings *)self setM33:matrix->var12];
+  [(SBFCAColorMatrixSettings *)self setM34:matrix->var13];
+  [(SBFCAColorMatrixSettings *)self setM35:matrix->var14];
+  [(SBFCAColorMatrixSettings *)self setM41:matrix->var15];
+  [(SBFCAColorMatrixSettings *)self setM42:matrix->var16];
+  [(SBFCAColorMatrixSettings *)self setM43:matrix->var17];
+  [(SBFCAColorMatrixSettings *)self setM44:matrix->var18];
+  var19 = matrix->var19;
 
   [(SBFCAColorMatrixSettings *)self setM45:var19];
 }

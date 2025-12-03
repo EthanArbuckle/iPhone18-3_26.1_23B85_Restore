@@ -2,7 +2,7 @@
 + (LARightStore)sharedStore;
 - (LARightStore)init;
 - (id)keyStore;
-- (void)_saveRight:(void *)a3 identifier:(void *)a4 secret:(void *)a5 completion:;
+- (void)_saveRight:(void *)right identifier:(void *)identifier secret:(void *)secret completion:;
 - (void)dealloc;
 - (void)init;
 - (void)removeAllRightsWithCompletion:(void *)handler;
@@ -11,7 +11,7 @@
 - (void)rightForIdentifier:(NSString *)identifier completion:(void *)handler;
 - (void)saveRight:(LARight *)right identifier:(NSString *)identifier completion:(void *)handler;
 - (void)saveRight:(LARight *)right identifier:(NSString *)identifier secret:(NSData *)secret completion:(void *)handler;
-- (void)setKeyStore:(uint64_t)a1;
+- (void)setKeyStore:(uint64_t)store;
 @end
 
 @implementation LARightStore
@@ -31,8 +31,8 @@
     workQueue = v2->_workQueue;
     v2->_workQueue = v5;
 
-    v7 = [MEMORY[0x1E696EE90] sharedInstance];
-    v2->_instanceID = [v7 nextInstanceIDInDomain:@"LARightStore"];
+    mEMORY[0x1E696EE90] = [MEMORY[0x1E696EE90] sharedInstance];
+    v2->_instanceID = [mEMORY[0x1E696EE90] nextInstanceIDInDomain:@"LARightStore"];
 
     v8 = LA_LOG_0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -48,7 +48,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1A784E000, a2, OS_LOG_TYPE_DEBUG, "%{public}@ deallocated", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -1507,26 +1507,26 @@ uint64_t __56__LARightStore__saveRight_identifier_secret_completion___block_invo
   return result;
 }
 
-- (void)_saveRight:(void *)a3 identifier:(void *)a4 secret:(void *)a5 completion:
+- (void)_saveRight:(void *)right identifier:(void *)identifier secret:(void *)secret completion:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  rightCopy = right;
+  identifierCopy = identifier;
+  secretCopy = secret;
+  if (self)
   {
-    objc_initWeak(&location, a1);
-    v13 = a1[2];
+    objc_initWeak(&location, self);
+    v13 = self[2];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__LARightStore__saveRight_identifier_secret_completion___block_invoke;
     block[3] = &unk_1E77CB658;
-    block[4] = a1;
+    block[4] = self;
     objc_copyWeak(&v19, &location);
-    v18 = v12;
-    v15 = v10;
+    v18 = secretCopy;
+    v15 = rightCopy;
     v16 = v9;
-    v17 = v11;
+    v17 = identifierCopy;
     dispatch_async(v13, block);
 
     objc_destroyWeak(&v19);
@@ -1566,21 +1566,21 @@ void __55__LARightStore_saveRight_identifier_secret_completion___block_invoke(ui
 
 - (id)keyStore
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setKeyStore:(uint64_t)a1
+- (void)setKeyStore:(uint64_t)store
 {
   v4 = a2;
-  if (a1)
+  if (store)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((store + 8), a2);
   }
 }
 
@@ -1588,7 +1588,7 @@ void __55__LARightStore_saveRight_identifier_secret_completion___block_invoke(ui
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1A784E000, a2, OS_LOG_TYPE_DEBUG, "%{public}@ initialized", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

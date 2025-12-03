@@ -1,15 +1,15 @@
 @interface ICDocCamNavigationController
-- (ICDocCamNavigationController)initWithImageCache:(id)a3 docCamDelegate:(id)a4 remoteDocCamDelegate:(id)a5;
+- (ICDocCamNavigationController)initWithImageCache:(id)cache docCamDelegate:(id)delegate remoteDocCamDelegate:(id)camDelegate;
 - (void)prepareForDismissal;
 @end
 
 @implementation ICDocCamNavigationController
 
-- (ICDocCamNavigationController)initWithImageCache:(id)a3 docCamDelegate:(id)a4 remoteDocCamDelegate:(id)a5
+- (ICDocCamNavigationController)initWithImageCache:(id)cache docCamDelegate:(id)delegate remoteDocCamDelegate:(id)camDelegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  camDelegateCopy = camDelegate;
+  delegateCopy = delegate;
+  cacheCopy = cache;
   if (DCDebugInterfaceEnabled())
   {
     v11 = off_278F92358;
@@ -20,15 +20,15 @@
     v11 = off_278F92350;
   }
 
-  v12 = [objc_alloc(*v11) initWithImageCache:v10];
+  v12 = [objc_alloc(*v11) initWithImageCache:cacheCopy];
 
   v13 = objc_opt_class();
   v14 = DCDynamicCast(v13, v12);
-  [v14 setDelegate:v9];
+  [v14 setDelegate:delegateCopy];
 
   v15 = objc_opt_class();
   v16 = DCDynamicCast(v15, v12);
-  [v16 setDelegate:v8];
+  [v16 setDelegate:camDelegateCopy];
 
   v20.receiver = self;
   v20.super_class = ICDocCamNavigationController;
@@ -49,8 +49,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(ICDocCamNavigationController *)self viewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  viewControllers = [(ICDocCamNavigationController *)self viewControllers];
+  v4 = [viewControllers countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -62,7 +62,7 @@
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewControllers);
         }
 
         v8 = *(*(&v23 + 1) + 8 * v7);
@@ -78,7 +78,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v5 = [viewControllers countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v5);
@@ -88,8 +88,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(ICDocCamNavigationController *)self viewControllers];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  viewControllers2 = [(ICDocCamNavigationController *)self viewControllers];
+  v12 = [viewControllers2 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -101,7 +101,7 @@
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(viewControllers2);
         }
 
         v16 = *(*(&v19 + 1) + 8 * v15);
@@ -117,7 +117,7 @@
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v13 = [viewControllers2 countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v13);

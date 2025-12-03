@@ -1,15 +1,15 @@
 @interface CRSearchMatcher
-- (BOOL)matches:(id)a3;
-- (BOOL)matchesASCIIString:(const char *)a3 matchType:(int)a4;
-- (BOOL)matchesUTF8String:(const char *)a3 matchType:(int)a4;
+- (BOOL)matches:(id)matches;
+- (BOOL)matchesASCIIString:(const char *)string matchType:(int)type;
+- (BOOL)matchesUTF8String:(const char *)string matchType:(int)type;
 - (void)dealloc;
 @end
 
 @implementation CRSearchMatcher
 
-- (BOOL)matchesASCIIString:(const char *)a3 matchType:(int)a4
+- (BOOL)matchesASCIIString:(const char *)string matchType:(int)type
 {
-  v7 = [(NSData *)self->_wholeSearchStringData bytes];
+  bytes = [(NSData *)self->_wholeSearchStringData bytes];
   v8 = [(NSData *)self->_wholeSearchStringData length];
   options = self->_options;
   v10 = &strncasecmp;
@@ -29,12 +29,12 @@
     v11 = &strstr;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
     v12 = v8;
-    if (strlen(a3) == v8)
+    if (strlen(string) == v8)
     {
-      LOBYTE(v13) = (v23)(a3, v7, v12) == 0;
+      LOBYTE(v13) = (v23)(string, bytes, v12) == 0;
       return v13;
     }
 
@@ -65,8 +65,8 @@ LABEL_11:
     }
 
     v17 = *(*(&v30 + 1) + 8 * v16);
-    v18 = [v17 bytes];
-    v13 = v11(a3, v18);
+    bytes2 = [v17 bytes];
+    v13 = v11(string, bytes2);
     if (!v13)
     {
       return v13;
@@ -81,12 +81,12 @@ LABEL_11:
     v24[1] = 3221225472;
     v24[2] = sub_100016DD8;
     v24[3] = &unk_10002D560;
-    v25 = a4;
+    typeCopy = type;
     v24[6] = v23;
-    v24[7] = v18;
+    v24[7] = bytes2;
     v24[4] = &v26;
     v24[5] = v19 - 1;
-    sub_100016C48(a3, v24);
+    sub_100016C48(string, v24);
     v20 = *(v27 + 24);
     _Block_object_dispose(&v26, 8);
     if ((v20 & 1) == 0)
@@ -108,21 +108,21 @@ LABEL_11:
   }
 }
 
-- (BOOL)matchesUTF8String:(const char *)a3 matchType:(int)a4
+- (BOOL)matchesUTF8String:(const char *)string matchType:(int)type
 {
-  if ((a4 & 0xFFFFFFFD) == 4)
+  if ((type & 0xFFFFFFFD) == 4)
   {
-    v6 = a4;
+    typeCopy = type;
   }
 
   else
   {
-    v6 = 5;
+    typeCopy = 5;
   }
 
-  if (a3 && self->_asciiComponents)
+  if (string && self->_asciiComponents)
   {
-    for (i = a3; ; ++i)
+    for (i = string; ; ++i)
     {
       v8 = *i;
       if (v8 < 0)
@@ -138,7 +138,7 @@ LABEL_11:
     }
   }
 
-  if (v6 != 4)
+  if (typeCopy != 4)
   {
     v13 = [(NSArray *)self->_components count]!= 0;
     v20 = 0u;
@@ -163,7 +163,7 @@ LABEL_19:
         objc_enumerationMutation(components);
       }
 
-      if (!sub_100017BA4(a3, [*(*(&v20 + 1) + 8 * v18) bytes], objc_msgSend(*(*(&v20 + 1) + 8 * v18), "length"), v6, -[NSData bytes](self->_context, "bytes")))
+      if (!sub_100017BA4(string, [*(*(&v20 + 1) + 8 * v18) bytes], objc_msgSend(*(*(&v20 + 1) + 8 * v18), "length"), typeCopy, -[NSData bytes](self->_context, "bytes")))
       {
         return 0;
       }
@@ -188,24 +188,24 @@ LABEL_19:
     return 0;
   }
 
-  v10 = [(NSData *)wholeSearchStringData bytes];
+  bytes = [(NSData *)wholeSearchStringData bytes];
   v11 = [(NSData *)self->_wholeSearchStringData length];
-  v12 = [(NSData *)self->_context bytes];
+  bytes2 = [(NSData *)self->_context bytes];
 
-  return sub_100017BA4(a3, v10, v11, 4, v12);
+  return sub_100017BA4(string, bytes, v11, 4, bytes2);
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = [a3 UTF8String];
+  uTF8String = [matches UTF8String];
 
-  return [(CRSearchMatcher *)self matchesUTF8String:v4];
+  return [(CRSearchMatcher *)self matchesUTF8String:uTF8String];
 }
 
 - (void)dealloc
 {
-  v3 = [(NSData *)self->_context bytes];
-  sub_100018074(v3, v4);
+  bytes = [(NSData *)self->_context bytes];
+  sub_100018074(bytes, v4);
 
   v5.receiver = self;
   v5.super_class = CRSearchMatcher;

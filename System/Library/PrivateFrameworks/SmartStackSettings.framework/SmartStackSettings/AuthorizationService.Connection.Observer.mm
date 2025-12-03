@@ -1,6 +1,6 @@
 @interface AuthorizationService.Connection.Observer
 - (_TtCCC18SmartStackSettings20AuthorizationService10Connection8Observer)init;
-- (void)descriptorCollectionChanged:(id)a3;
+- (void)descriptorCollectionChanged:(id)changed;
 @end
 
 @implementation AuthorizationService.Connection.Observer
@@ -35,16 +35,16 @@
   return [(AuthorizationService.Connection.Observer *)&v20 init];
 }
 
-- (void)descriptorCollectionChanged:(id)a3
+- (void)descriptorCollectionChanged:(id)changed
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2803698E8, ":+");
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   MEMORY[0x28223BE20](v5);
   v9 = v12 - v8;
-  v12[1] = a3;
-  v10 = a3;
-  v11 = self;
+  v12[1] = changed;
+  changedCopy = changed;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2803698F0, &qword_26A09FE00);
   sub_26A09E024();
 

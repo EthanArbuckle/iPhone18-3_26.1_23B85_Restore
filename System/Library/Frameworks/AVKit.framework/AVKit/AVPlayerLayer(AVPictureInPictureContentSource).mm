@@ -17,44 +17,44 @@
 {
   v2 = MEMORY[0x1E69DCAB8];
   v3 = AVBundle();
-  v4 = [a1 avkit_window];
-  v5 = [v4 traitCollection];
-  v6 = [v2 imageNamed:@"PictureInPictureIndicatorLarge" inBundle:v3 compatibleWithTraitCollection:v5];
+  avkit_window = [self avkit_window];
+  traitCollection = [avkit_window traitCollection];
+  v6 = [v2 imageNamed:@"PictureInPictureIndicatorLarge" inBundle:v3 compatibleWithTraitCollection:traitCollection];
 
-  v7 = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
-  v8 = [v6 _flatImageWithColor:v7];
+  aV_indicatorForegroundColor = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
+  v8 = [v6 _flatImageWithColor:aV_indicatorForegroundColor];
 
   v9 = [AVPictureInPictureIndicatorLayer alloc];
-  v10 = [a1 avkit_window];
-  v11 = [v10 traitCollection];
-  [v11 displayScale];
+  avkit_window2 = [self avkit_window];
+  traitCollection2 = [avkit_window2 traitCollection];
+  [traitCollection2 displayScale];
   v13 = v12;
-  v14 = [v8 CGImage];
-  [a1 avkit_videoRectInWindow];
-  v19 = [(AVPictureInPictureIndicatorLayer *)v9 initWithDisplayScale:v14 placeholderImage:0 opaque:v13 videoRectWhenPIPBegan:v15, v16, v17, v18];
+  cGImage = [v8 CGImage];
+  [self avkit_videoRectInWindow];
+  v19 = [(AVPictureInPictureIndicatorLayer *)v9 initWithDisplayScale:cGImage placeholderImage:0 opaque:v13 videoRectWhenPIPBegan:v15, v16, v17, v18];
 
   return v19;
 }
 
 - (double)avkit_playerLayerRectInWindow
 {
-  v2 = [a1 avkit_window];
-  [a1 frame];
+  avkit_window = [self avkit_window];
+  [self frame];
   v4 = v3;
-  if (v2)
+  if (avkit_window)
   {
-    [a1 videoRect];
+    [self videoRect];
     v12.origin.x = v5;
     v12.origin.y = v6;
     v12.size.width = v7;
     v12.size.height = v8;
     if (!CGRectEqualToRect(*MEMORY[0x1E695F058], v12))
     {
-      v9 = [v2 layer];
-      if (v9)
+      layer = [avkit_window layer];
+      if (layer)
       {
-        [a1 videoRect];
-        [v9 convertRect:a1 fromLayer:?];
+        [self videoRect];
+        [layer convertRect:self fromLayer:?];
         v4 = v10;
       }
     }
@@ -65,23 +65,23 @@
 
 - (double)avkit_videoRectInWindow
 {
-  v2 = [a1 avkit_window];
-  [a1 bounds];
+  avkit_window = [self avkit_window];
+  [self bounds];
   v4 = v3;
-  if (v2)
+  if (avkit_window)
   {
-    [a1 videoRect];
+    [self videoRect];
     v12.origin.x = v5;
     v12.origin.y = v6;
     v12.size.width = v7;
     v12.size.height = v8;
     if (!CGRectEqualToRect(*MEMORY[0x1E695F058], v12))
     {
-      v9 = [v2 layer];
-      if (v9)
+      layer = [avkit_window layer];
+      if (layer)
       {
-        [a1 videoRect];
-        [v9 convertRect:a1 fromLayer:?];
+        [self videoRect];
+        [layer convertRect:self fromLayer:?];
         v4 = v10;
       }
     }
@@ -92,74 +92,74 @@
 
 - (id)avkit_window
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
+    v2 = selfCopy;
     do
     {
-      v3 = [v2 delegate];
+      delegate = [v2 delegate];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v5 = [v2 delegate];
-        v6 = [v5 window];
+        delegate2 = [v2 delegate];
+        window = [delegate2 window];
       }
 
       else
       {
-        v6 = 0;
+        window = 0;
       }
 
-      v7 = [v2 superlayer];
+      superlayer = [v2 superlayer];
 
-      if (v6)
+      if (window)
       {
         break;
       }
 
-      v2 = v7;
+      v2 = superlayer;
     }
 
-    while (v7);
+    while (superlayer);
   }
 
   else
   {
-    v6 = 0;
-    v7 = 0;
+    window = 0;
+    superlayer = 0;
   }
 
-  return v6;
+  return window;
 }
 
 - (void)avkit_willBeginStoppingPictureInPictureForPictureInPictureViewController:()AVPictureInPictureContentSource
 {
-  v4 = [a3 pictureInPicturePlayerLayerView];
-  v3 = [v4 playerLayer];
-  [v3 setLegibleDisplayEnabled:1];
+  pictureInPicturePlayerLayerView = [a3 pictureInPicturePlayerLayerView];
+  playerLayer = [pictureInPicturePlayerLayerView playerLayer];
+  [playerLayer setLegibleDisplayEnabled:1];
 }
 
 - (void)avkit_endReducingResourcesForPictureInPictureViewController:()AVPictureInPictureContentSource playerController:
 {
   v5 = a4;
-  v7 = [a3 pictureInPicturePlayerLayerView];
-  v6 = [v7 playerLayer];
-  [v5 endReducingResourcesForPictureInPicturePlayerLayer:v6];
+  pictureInPicturePlayerLayerView = [a3 pictureInPicturePlayerLayerView];
+  playerLayer = [pictureInPicturePlayerLayerView playerLayer];
+  [v5 endReducingResourcesForPictureInPicturePlayerLayer:playerLayer];
 }
 
 - (void)avkit_beginReducingResourcesForPictureInPictureViewController:()AVPictureInPictureContentSource playerController:
 {
   v12 = a3;
   v6 = a4;
-  v7 = [a1 avkit_window];
-  if (!v7 || (v8 = v7, v9 = dyld_program_sdk_at_least(), v8, v9))
+  avkit_window = [self avkit_window];
+  if (!avkit_window || (v8 = avkit_window, v9 = dyld_program_sdk_at_least(), v8, v9))
   {
-    v10 = [v12 pictureInPicturePlayerLayerView];
-    v11 = [v10 playerLayer];
-    [v6 beginReducingResourcesForPictureInPicturePlayerLayer:v11];
+    pictureInPicturePlayerLayerView = [v12 pictureInPicturePlayerLayerView];
+    playerLayer = [pictureInPicturePlayerLayerView playerLayer];
+    [v6 beginReducingResourcesForPictureInPicturePlayerLayer:playerLayer];
   }
 }
 
@@ -170,13 +170,13 @@
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [a1 isPIPModeEnabled];
+    isPIPModeEnabled = [self isPIPModeEnabled];
     v7 = "NO";
     *v13 = 136315650;
     *&v13[4] = "[AVPlayerLayer(AVPictureInPictureContentSource) avkit_stopRoutingVideoToPictureInPictureViewController:]";
     *&v13[14] = "self.isPIPModeEnabled";
     *&v13[12] = 2080;
-    if (v6)
+    if (isPIPModeEnabled)
     {
       v7 = "YES";
     }
@@ -186,26 +186,26 @@
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", v13, 0x20u);
   }
 
-  if ([a1 isPIPModeEnabled])
+  if ([self isPIPModeEnabled])
   {
-    v8 = [v4 pictureInPicturePlayerLayerView];
-    v9 = [v8 playerLayer];
-    [a1 stopRedirectingVideoToLayer:v9];
+    pictureInPicturePlayerLayerView = [v4 pictureInPicturePlayerLayerView];
+    playerLayer = [pictureInPicturePlayerLayerView playerLayer];
+    [self stopRedirectingVideoToLayer:playerLayer];
 
-    if ([a1 isLegibleDisplayEnabled])
+    if ([self isLegibleDisplayEnabled])
     {
-      [a1 setLegibleDisplayEnabled:0];
-      [a1 setLegibleDisplayEnabled:1];
+      [self setLegibleDisplayEnabled:0];
+      [self setLegibleDisplayEnabled:1];
     }
 
-    v10 = [v4 pictureInPicturePlayerLayerView];
-    v11 = [v10 playerLayer];
-    [v11 setLegibleDisplayEnabled:1];
+    pictureInPicturePlayerLayerView2 = [v4 pictureInPicturePlayerLayerView];
+    playerLayer2 = [pictureInPicturePlayerLayerView2 playerLayer];
+    [playerLayer2 setLegibleDisplayEnabled:1];
 
-    v12 = [v4 pictureInPicturePlayerLayerView];
-    [v12 detachPlayerLayer];
+    pictureInPicturePlayerLayerView3 = [v4 pictureInPicturePlayerLayerView];
+    [pictureInPicturePlayerLayerView3 detachPlayerLayer];
 
-    [a1 setPlaceholderContentLayerDuringPIPMode:0];
+    [self setPlaceholderContentLayerDuringPIPMode:0];
   }
 }
 
@@ -216,13 +216,13 @@
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [a1 isPIPModeEnabled];
+    isPIPModeEnabled = [self isPIPModeEnabled];
     v7 = "NO";
     v12 = 136315650;
     v13 = "[AVPlayerLayer(AVPictureInPictureContentSource) avkit_startRoutingVideoToPictureInPictureViewController:]";
     v15 = "self.isPIPModeEnabled";
     v14 = 2080;
-    if (v6)
+    if (isPIPModeEnabled)
     {
       v7 = "YES";
     }
@@ -232,32 +232,32 @@
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v12, 0x20u);
   }
 
-  if (([a1 isPIPModeEnabled] & 1) == 0)
+  if (([self isPIPModeEnabled] & 1) == 0)
   {
-    v8 = [v4 pictureInPicturePlayerLayerView];
-    [v8 attachPlayerLayer];
+    pictureInPicturePlayerLayerView = [v4 pictureInPicturePlayerLayerView];
+    [pictureInPicturePlayerLayerView attachPlayerLayer];
 
-    v9 = [v4 pictureInPicturePlayerLayerView];
-    v10 = [v9 playerLayer];
-    [a1 startRedirectingVideoToLayer:v10 forMode:0];
+    pictureInPicturePlayerLayerView2 = [v4 pictureInPicturePlayerLayerView];
+    playerLayer = [pictureInPicturePlayerLayerView2 playerLayer];
+    [self startRedirectingVideoToLayer:playerLayer forMode:0];
 
-    v11 = [a1 avkit_makePictureInPicturePlatformAdapterContentPlaceholderLayer];
-    [a1 setPlaceholderContentLayerDuringPIPMode:v11];
+    avkit_makePictureInPicturePlatformAdapterContentPlaceholderLayer = [self avkit_makePictureInPicturePlatformAdapterContentPlaceholderLayer];
+    [self setPlaceholderContentLayerDuringPIPMode:avkit_makePictureInPicturePlatformAdapterContentPlaceholderLayer];
   }
 }
 
 - (AVPlayerController)avkit_makePlayerControllerIfNeeded:()AVPictureInPictureContentSource
 {
   v4 = a3;
-  v5 = [(AVPlayerController *)v4 player];
-  v6 = [a1 player];
+  player = [(AVPlayerController *)v4 player];
+  player2 = [self player];
 
   v7 = v4;
-  if (v5 != v6)
+  if (player != player2)
   {
     v8 = [AVPlayerController alloc];
-    v9 = [a1 player];
-    v7 = [(AVPlayerController *)v8 initWithPlayer:v9];
+    player3 = [self player];
+    v7 = [(AVPlayerController *)v8 initWithPlayer:player3];
 
     [(AVPlayerController *)v7 setHandlesAudioSessionInterruptions:1];
     [(AVPlayerController *)v7 setPlayingOnSecondScreen:[(AVPlayerController *)v4 isPlayingOnSecondScreen]];

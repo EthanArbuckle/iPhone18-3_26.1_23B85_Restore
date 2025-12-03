@@ -1,7 +1,7 @@
 @interface ECTwoIntegerKeyCache
 - (ECTwoIntegerKeyCache)init;
-- (id)objectForKey1:(int64_t)a3 key2:(int64_t)a4;
-- (void)setObject:(id)a3 forKey1:(int64_t)a4 key2:(int64_t)a5;
+- (id)objectForKey1:(int64_t)key1 key2:(int64_t)key2;
+- (void)setObject:(id)object forKey1:(int64_t)key1 key2:(int64_t)key2;
 @end
 
 @implementation ECTwoIntegerKeyCache
@@ -23,25 +23,25 @@
   return v2;
 }
 
-- (id)objectForKey1:(int64_t)a3 key2:(int64_t)a4
+- (id)objectForKey1:(int64_t)key1 key2:(int64_t)key2
 {
-  v5 = [(OITSUIntegerKeyDictionary *)self->mCache objectForKey:a3];
-  v6 = [v5 objectForKey:a4];
+  v5 = [(OITSUIntegerKeyDictionary *)self->mCache objectForKey:key1];
+  v6 = [v5 objectForKey:key2];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey1:(int64_t)a4 key2:(int64_t)a5
+- (void)setObject:(id)object forKey1:(int64_t)key1 key2:(int64_t)key2
 {
-  v9 = a3;
-  v8 = [(OITSUIntegerKeyDictionary *)self->mCache objectForKey:a4];
+  objectCopy = object;
+  v8 = [(OITSUIntegerKeyDictionary *)self->mCache objectForKey:key1];
   if (!v8)
   {
     v8 = objc_alloc_init(OITSUIntegerKeyDictionary);
     [OITSUIntegerKeyDictionary setObject:"setObject:forKey:" forKey:?];
   }
 
-  [(OITSUIntegerKeyDictionary *)v8 setObject:v9 forKey:a5];
+  [(OITSUIntegerKeyDictionary *)v8 setObject:objectCopy forKey:key2];
 }
 
 @end

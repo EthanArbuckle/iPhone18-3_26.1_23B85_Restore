@@ -1,41 +1,41 @@
 @interface ICNoteSearchSnapshot
 - (BOOL)integratesSuggestions;
-- (ICNoteSearchSnapshot)initWithDiffableDataSource:(id)a3 containerViewMode:(int64_t)a4 isCompactSize:(BOOL)a5 collectionView:(id)a6 searchContext:(id)a7;
+- (ICNoteSearchSnapshot)initWithDiffableDataSource:(id)source containerViewMode:(int64_t)mode isCompactSize:(BOOL)size collectionView:(id)view searchContext:(id)context;
 - (ICNoteSearchSnapshotDelegate)delegate;
 - (ICSearchSuggestionsContext)searchContext;
 - (NSArray)currentSuggestions;
 - (NSString)currentSearchDescription;
-- (id)currentSnapshotClearingPreviousResults:(BOOL)a3;
-- (void)applyAndUpdateHeaders:(BOOL)a3 animated:(BOOL)a4;
+- (id)currentSnapshotClearingPreviousResults:(BOOL)results;
+- (void)applyAndUpdateHeaders:(BOOL)headers animated:(BOOL)animated;
 - (void)clear;
-- (void)insertItems:(id)a3 intoSection:(id)a4 snapshot:(id)a5;
-- (void)performBlockAndUpdateHeaders:(BOOL)a3 animated:(BOOL)a4 block:(id)a5;
-- (void)prepareSearchWithCannedSuggestionToken:(BOOL)a3;
-- (void)setVisibleSearchSuggestions:(id)a3;
-- (void)switchToMode:(unint64_t)a3 force:(BOOL)a4;
-- (void)updateHeaderView:(id)a3 forIndexPath:(id)a4;
-- (void)updateHeaderView:(id)a3 forIndexPath:(id)a4 usingSnapshot:(id)a5;
-- (void)updateWithResults:(id)a3;
+- (void)insertItems:(id)items intoSection:(id)section snapshot:(id)snapshot;
+- (void)performBlockAndUpdateHeaders:(BOOL)headers animated:(BOOL)animated block:(id)block;
+- (void)prepareSearchWithCannedSuggestionToken:(BOOL)token;
+- (void)setVisibleSearchSuggestions:(id)suggestions;
+- (void)switchToMode:(unint64_t)mode force:(BOOL)force;
+- (void)updateHeaderView:(id)view forIndexPath:(id)path;
+- (void)updateHeaderView:(id)view forIndexPath:(id)path usingSnapshot:(id)snapshot;
+- (void)updateWithResults:(id)results;
 @end
 
 @implementation ICNoteSearchSnapshot
 
-- (ICNoteSearchSnapshot)initWithDiffableDataSource:(id)a3 containerViewMode:(int64_t)a4 isCompactSize:(BOOL)a5 collectionView:(id)a6 searchContext:(id)a7
+- (ICNoteSearchSnapshot)initWithDiffableDataSource:(id)source containerViewMode:(int64_t)mode isCompactSize:(BOOL)size collectionView:(id)view searchContext:(id)context
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  sourceCopy = source;
+  viewCopy = view;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = ICNoteSearchSnapshot;
   v16 = [(ICNoteSearchSnapshot *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_diffableDataSource, a3);
-    v17->_containerViewMode = a4;
-    objc_storeStrong(&v17->_collectionView, a6);
-    v17->_isCompactSize = a5;
-    objc_storeWeak(&v17->_searchContext, v15);
+    objc_storeStrong(&v16->_diffableDataSource, source);
+    v17->_containerViewMode = mode;
+    objc_storeStrong(&v17->_collectionView, view);
+    v17->_isCompactSize = size;
+    objc_storeWeak(&v17->_searchContext, contextCopy);
     v17->_mode = +[ICSearchSuggestionsContext supportsSearchSuggestions];
     v17->_includesCannedSuggestionToken = 0;
     v18 = [(ICNoteSearchSnapshot *)v17 currentSnapshotClearingPreviousResults:0];
@@ -48,10 +48,10 @@
 
 - (BOOL)integratesSuggestions
 {
-  v3 = [(ICNoteSearchSnapshot *)self isCompactSize];
+  isCompactSize = [(ICNoteSearchSnapshot *)self isCompactSize];
   v4 = +[ICSearchSuggestionsContext supportsSearchSuggestions];
-  result = v3 & v4;
-  if (v3 & 1) == 0 && (v4)
+  result = isCompactSize & v4;
+  if (isCompactSize & 1) == 0 && (v4)
   {
     if ([(ICNoteSearchSnapshot *)self containerViewMode])
     {
@@ -69,9 +69,9 @@
 
 - (NSArray)currentSuggestions
 {
-  v2 = [(ICNoteSearchSnapshot *)self searchResults];
-  v3 = [v2 suggestions];
-  v4 = [v3 copy];
+  searchResults = [(ICNoteSearchSnapshot *)self searchResults];
+  suggestions = [searchResults suggestions];
+  v4 = [suggestions copy];
   v5 = v4;
   if (v4)
   {
@@ -88,64 +88,64 @@
   return v6;
 }
 
-- (void)prepareSearchWithCannedSuggestionToken:(BOOL)a3
+- (void)prepareSearchWithCannedSuggestionToken:(BOOL)token
 {
-  v3 = a3;
-  v5 = [(ICNoteSearchSnapshot *)self currentSnapshot];
+  tokenCopy = token;
+  currentSnapshot = [(ICNoteSearchSnapshot *)self currentSnapshot];
   v9 = @"ICNoteSearchDataSourceSuggestionsSectionIdentifier";
   v6 = [NSArray arrayWithObjects:&v9 count:1];
-  [v5 deleteSectionsWithIdentifiers:v6];
+  [currentSnapshot deleteSectionsWithIdentifiers:v6];
 
   [(ICNoteSearchSnapshot *)self applyAndUpdateHeaders:1 animated:0];
   v7 = [(ICNoteSearchSnapshot *)self currentSnapshotClearingPreviousResults:1];
   [(ICNoteSearchSnapshot *)self setCurrentSnapshot:v7];
 
-  [(ICNoteSearchSnapshot *)self setIncludesCannedSuggestionToken:v3];
+  [(ICNoteSearchSnapshot *)self setIncludesCannedSuggestionToken:tokenCopy];
   v8 = objc_alloc_init(SearchResults);
   [(ICNoteSearchSnapshot *)self setSearchResults:v8];
 }
 
-- (id)currentSnapshotClearingPreviousResults:(BOOL)a3
+- (id)currentSnapshotClearingPreviousResults:(BOOL)results
 {
-  v3 = a3;
-  v4 = [(ICNoteSearchSnapshot *)self diffableDataSource];
-  v5 = [v4 snapshot];
+  resultsCopy = results;
+  diffableDataSource = [(ICNoteSearchSnapshot *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
 
-  if (v3)
+  if (resultsCopy)
   {
-    [v5 deleteAllItems];
+    [snapshot deleteAllItems];
   }
 
-  return v5;
+  return snapshot;
 }
 
-- (void)insertItems:(id)a3 intoSection:(id)a4 snapshot:(id)a5
+- (void)insertItems:(id)items intoSection:(id)section snapshot:(id)snapshot
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v9 numberOfSections] || objc_msgSend(v9, "indexOfSectionIdentifier:", v8) == 0x7FFFFFFFFFFFFFFFLL)
+  itemsCopy = items;
+  sectionCopy = section;
+  snapshotCopy = snapshot;
+  if (![snapshotCopy numberOfSections] || objc_msgSend(snapshotCopy, "indexOfSectionIdentifier:", sectionCopy) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = v8;
+    v12 = sectionCopy;
     v10 = [NSArray arrayWithObjects:&v12 count:1];
-    [v9 appendSectionsWithIdentifiers:v10];
+    [snapshotCopy appendSectionsWithIdentifiers:v10];
   }
 
-  if (v7 && [v7 count])
+  if (itemsCopy && [itemsCopy count])
   {
-    v11 = [v7 copy];
-    [v9 appendItemsWithIdentifiers:v11 intoSectionWithIdentifier:v8];
+    v11 = [itemsCopy copy];
+    [snapshotCopy appendItemsWithIdentifiers:v11 intoSectionWithIdentifier:sectionCopy];
   }
 }
 
-- (void)updateWithResults:(id)a3
+- (void)updateWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [resultsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -157,21 +157,21 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         if (-[ICNoteSearchSnapshot behavior](self, "behavior") != 1 || [v9 isMathNote])
         {
-          v10 = [(ICNoteSearchSnapshot *)self searchResults];
-          [v10 addResult:v9];
+          searchResults = [(ICNoteSearchSnapshot *)self searchResults];
+          [searchResults addResult:v9];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [resultsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -191,38 +191,38 @@
   if ([(ICNoteSearchSnapshot *)self integratesSuggestions])
   {
     v5 = +[ICSearchSuggestion orderedDefaultSearchSuggestions];
-    v6 = [(ICNoteSearchSnapshot *)self currentSnapshot];
-    [(ICNoteSearchSnapshot *)self insertItems:v5 intoSection:@"ICNoteSearchDataSourceSuggestionsSectionIdentifier" snapshot:v6];
+    currentSnapshot = [(ICNoteSearchSnapshot *)self currentSnapshot];
+    [(ICNoteSearchSnapshot *)self insertItems:v5 intoSection:@"ICNoteSearchDataSourceSuggestionsSectionIdentifier" snapshot:currentSnapshot];
   }
 
   [(ICNoteSearchSnapshot *)self applyAndUpdateHeaders:0 animated:0];
 }
 
-- (void)performBlockAndUpdateHeaders:(BOOL)a3 animated:(BOOL)a4 block:(id)a5
+- (void)performBlockAndUpdateHeaders:(BOOL)headers animated:(BOOL)animated block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  headersCopy = headers;
+  blockCopy = block;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = sub_100101AA8;
   v14 = sub_100101AB8;
-  v15 = [(ICNoteSearchSnapshot *)self currentSnapshot];
-  v9 = v8;
+  currentSnapshot = [(ICNoteSearchSnapshot *)self currentSnapshot];
+  v9 = blockCopy;
   performBlockOnMainThreadAndWait();
   [(ICNoteSearchSnapshot *)self setCurrentSnapshot:v11[5], _NSConcreteStackBlock, 3221225472, sub_100101AC0, &unk_10064A008];
-  [(ICNoteSearchSnapshot *)self applyAndUpdateHeaders:v6 animated:v5];
+  [(ICNoteSearchSnapshot *)self applyAndUpdateHeaders:headersCopy animated:animatedCopy];
 
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)applyAndUpdateHeaders:(BOOL)a3 animated:(BOOL)a4
+- (void)applyAndUpdateHeaders:(BOOL)headers animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(ICNoteSearchSnapshot *)self currentSnapshot];
+  animatedCopy = animated;
+  currentSnapshot = [(ICNoteSearchSnapshot *)self currentSnapshot];
 
-  if (!v7)
+  if (!currentSnapshot)
   {
     [ICAssert handleFailedAssertWithCondition:"self.currentSnapshot != ((void*)0)" functionName:"[ICNoteSearchSnapshot applyAndUpdateHeaders:animated:]" simulateCrash:1 showAlert:0 format:@"Unexpected nil snapshot"];
   }
@@ -232,11 +232,11 @@
   v17[1] = 3221225472;
   v17[2] = sub_100101CB0;
   v17[3] = &unk_1006462D8;
-  v19 = a3;
+  headersCopy = headers;
   v8 = v17[4] = self;
   v18 = v8;
   v9 = objc_retainBlock(v17);
-  if (v4)
+  if (animatedCopy)
   {
     v10 = v16;
     v16[0] = _NSConcreteStackBlock;
@@ -266,33 +266,33 @@
   [v14 postNotificationName:ICDataSourceDataUpdateDidRenderNotification object:self];
 }
 
-- (void)updateHeaderView:(id)a3 forIndexPath:(id)a4
+- (void)updateHeaderView:(id)view forIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(ICNoteSearchSnapshot *)self diffableDataSource];
-  v8 = [v9 snapshot];
-  [(ICNoteSearchSnapshot *)self updateHeaderView:v7 forIndexPath:v6 usingSnapshot:v8];
+  pathCopy = path;
+  viewCopy = view;
+  diffableDataSource = [(ICNoteSearchSnapshot *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
+  [(ICNoteSearchSnapshot *)self updateHeaderView:viewCopy forIndexPath:pathCopy usingSnapshot:snapshot];
 }
 
-- (void)updateHeaderView:(id)a3 forIndexPath:(id)a4 usingSnapshot:(id)a5
+- (void)updateHeaderView:(id)view forIndexPath:(id)path usingSnapshot:(id)snapshot
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 section];
-  if (v10 >= [v9 numberOfSections])
+  viewCopy = view;
+  pathCopy = path;
+  snapshotCopy = snapshot;
+  section = [pathCopy section];
+  if (section >= [snapshotCopy numberOfSections])
   {
-    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "-[ICNoteSearchSnapshot updateHeaderView:forIndexPath:usingSnapshot:]", 1, 0, @"Snapshot out of sync with collection view. Asked to update visible header view for section that doesn't exist in snapshot. Asking for section %ld, got %ld sections.", [v8 section], objc_msgSend(v9, "numberOfSections"));
+    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "-[ICNoteSearchSnapshot updateHeaderView:forIndexPath:usingSnapshot:]", 1, 0, @"Snapshot out of sync with collection view. Asked to update visible header view for section that doesn't exist in snapshot. Asking for section %ld, got %ld sections.", [pathCopy section], objc_msgSend(snapshotCopy, "numberOfSections"));
     goto LABEL_19;
   }
 
-  v11 = [v9 sectionIdentifiers];
-  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v8, "section")}];
+  sectionIdentifiers = [snapshotCopy sectionIdentifiers];
+  v12 = [sectionIdentifiers objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   if (v12 == @"ICNoteSearchDataSourceTopHitsSectionIdentifier")
   {
-    if ([v9 indexOfSectionIdentifier:@"ICNoteSearchDataSourceTopHitsSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([snapshotCopy indexOfSectionIdentifier:@"ICNoteSearchDataSourceTopHitsSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_17;
     }
@@ -300,7 +300,7 @@
     v16 = +[NSBundle mainBundle];
     v14 = [v16 localizedStringForKey:@"Top Hits" value:&stru_100661CF0 table:0];
 
-    v17 = [v9 numberOfItemsInSection:@"ICNoteSearchDataSourceTopHitsSectionIdentifier"];
+    v17 = [snapshotCopy numberOfItemsInSection:@"ICNoteSearchDataSourceTopHitsSectionIdentifier"];
     v18 = +[NSBundle mainBundle];
     v19 = v18;
     v20 = @"%lu (Top_Hits) Found";
@@ -315,7 +315,7 @@ LABEL_15:
 
   if (v12 == @"ICNoteSearchDataSourceNoteSectionIdentifier")
   {
-    if ([v9 indexOfSectionIdentifier:@"ICNoteSearchDataSourceNoteSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([snapshotCopy indexOfSectionIdentifier:@"ICNoteSearchDataSourceNoteSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_17;
     }
@@ -323,7 +323,7 @@ LABEL_15:
     v21 = +[NSBundle mainBundle];
     v14 = [v21 localizedStringForKey:@"Notes" value:&stru_100661CF0 table:0];
 
-    v17 = [v9 numberOfItemsInSection:@"ICNoteSearchDataSourceNoteSectionIdentifier"];
+    v17 = [snapshotCopy numberOfItemsInSection:@"ICNoteSearchDataSourceNoteSectionIdentifier"];
     v18 = +[NSBundle mainBundle];
     v19 = v18;
     v20 = @"%lu (Notes) Found";
@@ -332,7 +332,7 @@ LABEL_15:
 
   if (v12 == @"ICNoteSearchDataSourceSuggestionsSectionIdentifier")
   {
-    if ([v9 indexOfSectionIdentifier:@"ICNoteSearchDataSourceSuggestionsSectionIdentifier"] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([snapshotCopy indexOfSectionIdentifier:@"ICNoteSearchDataSourceSuggestionsSectionIdentifier"] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v19 = +[NSBundle mainBundle];
       v14 = [v19 localizedStringForKey:@"Suggested" value:&stru_100661CF0 table:0];
@@ -347,7 +347,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v12 != @"ICNoteSearchDataSourceAttachmentSectionIdentifier" || [v9 indexOfSectionIdentifier:@"ICNoteSearchDataSourceAttachmentSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
+  if (v12 != @"ICNoteSearchDataSourceAttachmentSectionIdentifier" || [snapshotCopy indexOfSectionIdentifier:@"ICNoteSearchDataSourceAttachmentSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_17;
   }
@@ -357,7 +357,7 @@ LABEL_17:
     v23 = +[NSBundle mainBundle];
     v14 = [v23 localizedStringForKey:@"Attachments" value:&stru_100661CF0 table:0];
 
-    v17 = [v9 numberOfItemsInSection:@"ICNoteSearchDataSourceAttachmentSectionIdentifier"];
+    v17 = [snapshotCopy numberOfItemsInSection:@"ICNoteSearchDataSourceAttachmentSectionIdentifier"];
     v18 = +[NSBundle mainBundle];
     v19 = v18;
     v20 = @"%lu (Attachments) Found";
@@ -368,31 +368,31 @@ LABEL_17:
   v14 = 0;
   v15 = 1;
 LABEL_18:
-  [v24 setHidden:v15];
-  [v24 setTitle:v14 detail:v13];
+  [viewCopy setHidden:v15];
+  [viewCopy setTitle:v14 detail:v13];
 
 LABEL_19:
 }
 
 - (NSString)currentSearchDescription
 {
-  v2 = [(ICNoteSearchSnapshot *)self currentSnapshot];
-  if ([v2 indexOfSectionIdentifier:@"ICNoteSearchDataSourceNoteSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
+  currentSnapshot = [(ICNoteSearchSnapshot *)self currentSnapshot];
+  if ([currentSnapshot indexOfSectionIdentifier:@"ICNoteSearchDataSourceNoteSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [v2 numberOfItemsInSection:@"ICNoteSearchDataSourceNoteSectionIdentifier"];
+    v3 = [currentSnapshot numberOfItemsInSection:@"ICNoteSearchDataSourceNoteSectionIdentifier"];
   }
 
-  if ([v2 indexOfSectionIdentifier:@"ICNoteSearchDataSourceTopHitsSectionIdentifier"] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([currentSnapshot indexOfSectionIdentifier:@"ICNoteSearchDataSourceTopHitsSectionIdentifier"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = &v3[[v2 numberOfItemsInSection:@"ICNoteSearchDataSourceTopHitsSectionIdentifier"]];
+    v3 = &v3[[currentSnapshot numberOfItemsInSection:@"ICNoteSearchDataSourceTopHitsSectionIdentifier"]];
   }
 
-  if ([v2 indexOfSectionIdentifier:@"ICNoteSearchDataSourceAttachmentSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([currentSnapshot indexOfSectionIdentifier:@"ICNoteSearchDataSourceAttachmentSectionIdentifier"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (!v3)
     {
@@ -405,7 +405,7 @@ LABEL_8:
 
   else
   {
-    v6 = [v2 numberOfItemsInSection:@"ICNoteSearchDataSourceAttachmentSectionIdentifier"];
+    v6 = [currentSnapshot numberOfItemsInSection:@"ICNoteSearchDataSourceAttachmentSectionIdentifier"];
     v7 = v6;
     if (v3 && v6)
     {
@@ -440,34 +440,34 @@ LABEL_15:
   return v5;
 }
 
-- (void)switchToMode:(unint64_t)a3 force:(BOOL)a4
+- (void)switchToMode:(unint64_t)mode force:(BOOL)force
 {
-  if (a4 || self->_mode != a3)
+  if (force || self->_mode != mode)
   {
     v6[6] = v4;
     v6[7] = v5;
-    self->_mode = a3;
+    self->_mode = mode;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10010263C;
     v6[3] = &unk_10064A030;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = mode;
     [(ICNoteSearchSnapshot *)self performBlockAndUpdateHeaders:1 animated:0 block:v6];
   }
 }
 
-- (void)setVisibleSearchSuggestions:(id)a3
+- (void)setVisibleSearchSuggestions:(id)suggestions
 {
-  v7 = a3;
+  suggestionsCopy = suggestions;
   if ([(ICNoteSearchSnapshot *)self behavior]!= 1)
   {
-    v4 = [NSMutableArray arrayWithArray:v7];
-    v5 = [(ICNoteSearchSnapshot *)self searchResults];
-    [v5 setSuggestions:v4];
+    v4 = [NSMutableArray arrayWithArray:suggestionsCopy];
+    searchResults = [(ICNoteSearchSnapshot *)self searchResults];
+    [searchResults setSuggestions:v4];
 
-    v6 = [(ICNoteSearchSnapshot *)self delegate];
-    [v6 searchSnapshotDidUpdateSuggestions:self];
+    delegate = [(ICNoteSearchSnapshot *)self delegate];
+    [delegate searchSnapshotDidUpdateSuggestions:self];
   }
 }
 

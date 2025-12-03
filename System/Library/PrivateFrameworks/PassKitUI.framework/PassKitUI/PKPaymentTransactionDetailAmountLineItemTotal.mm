@@ -1,51 +1,51 @@
 @interface PKPaymentTransactionDetailAmountLineItemTotal
-- (PKPaymentTransactionDetailAmountLineItemTotal)initWithAmount:(id)a3 totalType:(unint64_t)a4;
+- (PKPaymentTransactionDetailAmountLineItemTotal)initWithAmount:(id)amount totalType:(unint64_t)type;
 @end
 
 @implementation PKPaymentTransactionDetailAmountLineItemTotal
 
-- (PKPaymentTransactionDetailAmountLineItemTotal)initWithAmount:(id)a3 totalType:(unint64_t)a4
+- (PKPaymentTransactionDetailAmountLineItemTotal)initWithAmount:(id)amount totalType:(unint64_t)type
 {
-  v6 = a3;
+  amountCopy = amount;
   v19.receiver = self;
   v19.super_class = PKPaymentTransactionDetailAmountLineItemTotal;
   v7 = [(PKPaymentTransactionDetailAmountLineItemTotal *)&v19 init];
   if (v7)
   {
-    v8 = [v6 amount];
-    v9 = [v8 pk_isNegativeNumber];
+    amount = [amountCopy amount];
+    pk_isNegativeNumber = [amount pk_isNegativeNumber];
 
-    if (v9)
+    if (pk_isNegativeNumber)
     {
-      v10 = [v6 negativeValue];
+      negativeValue = [amountCopy negativeValue];
 
-      v11 = [v10 formattedStringValue];
-      v12 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v11);
+      formattedStringValue = [negativeValue formattedStringValue];
+      v12 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue);
       value = v7->_value;
       v7->_value = v12;
 
-      v6 = v10;
+      amountCopy = negativeValue;
     }
 
     else
     {
-      v14 = [v6 formattedStringValue];
-      v11 = v7->_value;
-      v7->_value = v14;
+      formattedStringValue2 = [amountCopy formattedStringValue];
+      formattedStringValue = v7->_value;
+      v7->_value = formattedStringValue2;
     }
 
     v15 = 0;
-    if (a4 > 3)
+    if (type > 3)
     {
-      if (a4 > 5)
+      if (type > 5)
       {
-        if (a4 == 6)
+        if (type == 6)
         {
           v15 = PKLocalizedFeatureString();
           goto LABEL_22;
         }
 
-        if (a4 == 7)
+        if (type == 7)
         {
           v16 = @"TRANSACTION_DETAILS_AMOUNT_LINE_ITEM_TOTAL_REQUEST";
           goto LABEL_21;
@@ -54,7 +54,7 @@
 
       else
       {
-        if (a4 == 4)
+        if (type == 4)
         {
           v16 = @"TRANSACTION_DETAILS_AMOUNT_LINE_ITEM_UNQUALIFIED_TOTAL";
           goto LABEL_21;
@@ -66,9 +66,9 @@
 
     else
     {
-      if (a4 > 1)
+      if (type > 1)
       {
-        if (a4 == 2)
+        if (type == 2)
         {
           v16 = @"TRANSACTION_DETAILS_AMOUNT_LINE_ITEM_TOTAL_RECEIVED";
         }
@@ -81,13 +81,13 @@
         goto LABEL_21;
       }
 
-      if (!a4)
+      if (!type)
       {
         v16 = @"TRANSACTION_DETAILS_AMOUNT_LINE_ITEM_TOTAL_PAID";
         goto LABEL_21;
       }
 
-      if (a4 == 1)
+      if (type == 1)
       {
         v16 = @"TRANSACTION_DETAILS_AMOUNT_LINE_ITEM_TOTAL_SENT";
 LABEL_21:

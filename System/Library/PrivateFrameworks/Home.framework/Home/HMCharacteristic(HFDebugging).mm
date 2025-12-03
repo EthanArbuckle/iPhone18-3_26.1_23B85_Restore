@@ -31,23 +31,23 @@
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
   v4 = [a3 copyWithOutputStyle:1];
-  v5 = [HFStateDumpBuilder builderWithObject:a1 context:v4];
-  v6 = [a1 uniqueIdentifier];
-  [v5 appendObject:v6 withName:@"UUID" options:2];
+  v5 = [HFStateDumpBuilder builderWithObject:self context:v4];
+  uniqueIdentifier = [self uniqueIdentifier];
+  [v5 appendObject:uniqueIdentifier withName:@"UUID" options:2];
 
-  v7 = [a1 hf_characteristicTypeDescription];
-  [v5 setObject:v7 forKeyedSubscript:@"type"];
+  hf_characteristicTypeDescription = [self hf_characteristicTypeDescription];
+  [v5 setObject:hf_characteristicTypeDescription forKeyedSubscript:@"type"];
 
   if ([v4 includeVolatileObjects])
   {
-    v8 = [a1 value];
-    [v5 setObject:v8 forKeyedSubscript:@"value"];
+    value = [self value];
+    [v5 setObject:value forKeyedSubscript:@"value"];
 
-    v9 = [a1 hf_formattedValueUpdatedTime];
-    [v5 setObject:v9 forKeyedSubscript:@"time"];
+    hf_formattedValueUpdatedTime = [self hf_formattedValueUpdatedTime];
+    [v5 setObject:hf_formattedValueUpdatedTime forKeyedSubscript:@"time"];
   }
 
-  if ([a1 isNotificationEnabled])
+  if ([self isNotificationEnabled])
   {
     v10 = @"on";
   }
@@ -60,25 +60,25 @@
   [v5 setObject:v10 forKeyedSubscript:@"notifications"];
   if ([v4 detailLevel] == 2)
   {
-    v11 = [a1 service];
+    service = [self service];
     v12 = [v4 copyWithDetailLevel:0];
-    [v5 appendObject:v11 withName:@"service" context:v12];
+    [v5 appendObject:service withName:@"service" context:v12];
 
-    v13 = [a1 metadata];
+    metadata = [self metadata];
     v14 = [v4 copyWithDetailLevel:0];
-    [v5 appendObject:v13 withName:@"metadata" context:v14];
+    [v5 appendObject:metadata withName:@"metadata" context:v14];
 
     v15 = objc_opt_class();
-    v16 = [a1 properties];
-    v17 = [v15 hf_descriptionForProperties:v16];
+    properties = [self properties];
+    v17 = [v15 hf_descriptionForProperties:properties];
     [v5 setObject:v17 forKeyedSubscript:@"properties"];
 
-    v18 = [a1 properties];
-    LODWORD(v16) = [v18 containsObject:*MEMORY[0x277CCF730]];
+    properties2 = [self properties];
+    LODWORD(properties) = [properties2 containsObject:*MEMORY[0x277CCF730]];
 
-    if (v16)
+    if (properties)
     {
-      [v5 appendBool:objc_msgSend(a1 withName:{"hasAuthorizationData"), @"hasAuthorizationData"}];
+      [v5 appendBool:objc_msgSend(self withName:{"hasAuthorizationData"), @"hasAuthorizationData"}];
     }
   }
 

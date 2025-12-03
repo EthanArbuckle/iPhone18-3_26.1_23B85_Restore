@@ -1,6 +1,6 @@
 @interface HostingControllerAndModelUpdates
 - (_TtC14CloudSharingUI32HostingControllerAndModelUpdates)init;
-- (_TtC14CloudSharingUI32HostingControllerAndModelUpdates)initWithViewController:(id)a3 sourceAppBundleIDDidChangeBlock:(id)a4;
+- (_TtC14CloudSharingUI32HostingControllerAndModelUpdates)initWithViewController:(id)controller sourceAppBundleIDDidChangeBlock:(id)block;
 - (id)sourceAppBundleIDDidChangeBlock;
 @end
 
@@ -20,18 +20,18 @@
   return v3;
 }
 
-- (_TtC14CloudSharingUI32HostingControllerAndModelUpdates)initWithViewController:(id)a3 sourceAppBundleIDDidChangeBlock:(id)a4
+- (_TtC14CloudSharingUI32HostingControllerAndModelUpdates)initWithViewController:(id)controller sourceAppBundleIDDidChangeBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  *(self + OBJC_IVAR____TtC14CloudSharingUI32HostingControllerAndModelUpdates_viewController) = a3;
+  *(self + OBJC_IVAR____TtC14CloudSharingUI32HostingControllerAndModelUpdates_viewController) = controller;
   v8 = (self + OBJC_IVAR____TtC14CloudSharingUI32HostingControllerAndModelUpdates_sourceAppBundleIDDidChangeBlock);
   *v8 = sub_243B69E24;
   v8[1] = v7;
   v11.receiver = self;
   v11.super_class = type metadata accessor for HostingControllerAndModelUpdates();
-  v9 = a3;
+  controllerCopy = controller;
   return [(HostingControllerAndModelUpdates *)&v11 init];
 }
 

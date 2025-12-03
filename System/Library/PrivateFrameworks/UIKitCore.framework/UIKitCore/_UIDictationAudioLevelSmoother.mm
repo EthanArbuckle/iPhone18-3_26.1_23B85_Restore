@@ -1,68 +1,68 @@
 @interface _UIDictationAudioLevelSmoother
-- (_UIDictationAudioLevelSmoother)initWithBaseValue:(float)a3 exponentMultiplier:(float)a4 historyLength:(int64_t)a5;
-- (_UIDictationAudioLevelSmoother)initWithMinimumPower:(float)a3 maximumPower:(float)a4 historyLength:(int64_t)a5;
-- (_UIDictationAudioLevelSmoother)initWithMinimumPower:(float)a3 maximumPower:(float)a4 historyLength:(int64_t)a5 attackSpeed:(float)a6 decaySpeed:(float)a7;
-- (float)_updateMedianWithNewValue:(float)a3;
+- (_UIDictationAudioLevelSmoother)initWithBaseValue:(float)value exponentMultiplier:(float)multiplier historyLength:(int64_t)length;
+- (_UIDictationAudioLevelSmoother)initWithMinimumPower:(float)power maximumPower:(float)maximumPower historyLength:(int64_t)length;
+- (_UIDictationAudioLevelSmoother)initWithMinimumPower:(float)power maximumPower:(float)maximumPower historyLength:(int64_t)length attackSpeed:(float)speed decaySpeed:(float)decaySpeed;
+- (float)_updateMedianWithNewValue:(float)value;
 - (float)smoothedLevelForMicPower:(float)minimumPower;
-- (id)_initWithHistoryLength:(int64_t)a3;
+- (id)_initWithHistoryLength:(int64_t)length;
 - (void)clearHistory;
 - (void)dealloc;
 @end
 
 @implementation _UIDictationAudioLevelSmoother
 
-- (_UIDictationAudioLevelSmoother)initWithMinimumPower:(float)a3 maximumPower:(float)a4 historyLength:(int64_t)a5
+- (_UIDictationAudioLevelSmoother)initWithMinimumPower:(float)power maximumPower:(float)maximumPower historyLength:(int64_t)length
 {
-  result = [(_UIDictationAudioLevelSmoother *)self _initWithHistoryLength:a5];
+  result = [(_UIDictationAudioLevelSmoother *)self _initWithHistoryLength:length];
   if (result)
   {
-    result->_minimumPower = a3;
-    result->_maximumPower = a4;
+    result->_minimumPower = power;
+    result->_maximumPower = maximumPower;
   }
 
   return result;
 }
 
-- (_UIDictationAudioLevelSmoother)initWithMinimumPower:(float)a3 maximumPower:(float)a4 historyLength:(int64_t)a5 attackSpeed:(float)a6 decaySpeed:(float)a7
+- (_UIDictationAudioLevelSmoother)initWithMinimumPower:(float)power maximumPower:(float)maximumPower historyLength:(int64_t)length attackSpeed:(float)speed decaySpeed:(float)decaySpeed
 {
-  result = [_UIDictationAudioLevelSmoother initWithMinimumPower:"initWithMinimumPower:maximumPower:historyLength:" maximumPower:a5 historyLength:?];
+  result = [_UIDictationAudioLevelSmoother initWithMinimumPower:"initWithMinimumPower:maximumPower:historyLength:" maximumPower:length historyLength:?];
   if (result)
   {
     *&result->_attackVelocity = 0;
     result->_previousLevel = 0.0;
-    result->_attackSpeed = a6;
-    result->_decaySpeed = a7;
+    result->_attackSpeed = speed;
+    result->_decaySpeed = decaySpeed;
     result->_usesAttackAndDecaySpeed = 1;
   }
 
   return result;
 }
 
-- (_UIDictationAudioLevelSmoother)initWithBaseValue:(float)a3 exponentMultiplier:(float)a4 historyLength:(int64_t)a5
+- (_UIDictationAudioLevelSmoother)initWithBaseValue:(float)value exponentMultiplier:(float)multiplier historyLength:(int64_t)length
 {
-  result = [(_UIDictationAudioLevelSmoother *)self _initWithHistoryLength:a5];
+  result = [(_UIDictationAudioLevelSmoother *)self _initWithHistoryLength:length];
   if (result)
   {
-    result->_baseValue = a3;
-    result->_exponentMultiplier = a4;
+    result->_baseValue = value;
+    result->_exponentMultiplier = multiplier;
     result->_usesExponentialCurve = 1;
   }
 
   return result;
 }
 
-- (id)_initWithHistoryLength:(int64_t)a3
+- (id)_initWithHistoryLength:(int64_t)length
 {
   v7.receiver = self;
   v7.super_class = _UIDictationAudioLevelSmoother;
   v4 = [(_UIDictationAudioLevelSmoother *)&v7 init];
   if (v4)
   {
-    v5 = malloc_type_calloc(4uLL, a3, 0xE1AA1CEEuLL);
+    v5 = malloc_type_calloc(4uLL, length, 0xE1AA1CEEuLL);
     v4->_samplesSinceLastCleared = 0;
     v4->_runningPowerLevels = v5;
     v4->_powerPointer = 0;
-    v4->_historyLength = a3;
+    v4->_historyLength = length;
   }
 
   return v4;
@@ -83,13 +83,13 @@
   [(_UIDictationAudioLevelSmoother *)&v3 dealloc];
 }
 
-- (float)_updateMedianWithNewValue:(float)a3
+- (float)_updateMedianWithNewValue:(float)value
 {
   runningPowerLevels = self->_runningPowerLevels;
   powerPointer = self->_powerPointer;
   v6 = (powerPointer + 1);
   self->_powerPointer = v6;
-  runningPowerLevels[powerPointer] = a3;
+  runningPowerLevels[powerPointer] = value;
   historyLength = self->_historyLength;
   if (historyLength <= v6)
   {

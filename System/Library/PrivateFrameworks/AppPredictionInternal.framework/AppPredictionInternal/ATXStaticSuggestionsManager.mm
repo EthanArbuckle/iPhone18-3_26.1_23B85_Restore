@@ -1,46 +1,46 @@
 @interface ATXStaticSuggestionsManager
-+ (BOOL)isValidPreviousPosition:(id)a3 uiLimit:(unint64_t)a4 newSuggestionsCount:(unint64_t)a5;
-+ (BOOL)suggestionsAreAllAppExecutableTypeAndHaveValidHash:(id)a3;
-+ (id)executableObjectHashToPositionMappingForSuggestions:(id)a3;
-+ (id)preservePreviousAppPositionsForPreviousSuggestions:(id)a3 newSuggestions:(id)a4 uiLimit:(unint64_t)a5;
++ (BOOL)isValidPreviousPosition:(id)position uiLimit:(unint64_t)limit newSuggestionsCount:(unint64_t)count;
++ (BOOL)suggestionsAreAllAppExecutableTypeAndHaveValidHash:(id)hash;
++ (id)executableObjectHashToPositionMappingForSuggestions:(id)suggestions;
++ (id)preservePreviousAppPositionsForPreviousSuggestions:(id)suggestions newSuggestions:(id)newSuggestions uiLimit:(unint64_t)limit;
 @end
 
 @implementation ATXStaticSuggestionsManager
 
-+ (id)preservePreviousAppPositionsForPreviousSuggestions:(id)a3 newSuggestions:(id)a4 uiLimit:(unint64_t)a5
++ (id)preservePreviousAppPositionsForPreviousSuggestions:(id)suggestions newSuggestions:(id)newSuggestions uiLimit:(unint64_t)limit
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([ATXStaticSuggestionsManager suggestionsAreAllAppExecutableTypeAndHaveValidHash:v7]&& [ATXStaticSuggestionsManager suggestionsAreAllAppExecutableTypeAndHaveValidHash:v8])
+  suggestionsCopy = suggestions;
+  newSuggestionsCopy = newSuggestions;
+  if ([ATXStaticSuggestionsManager suggestionsAreAllAppExecutableTypeAndHaveValidHash:suggestionsCopy]&& [ATXStaticSuggestionsManager suggestionsAreAllAppExecutableTypeAndHaveValidHash:newSuggestionsCopy])
   {
-    v31 = v7;
-    v33 = [ATXStaticSuggestionsManager executableObjectHashToPositionMappingForSuggestions:v7];
-    v9 = [v8 mutableCopy];
+    v31 = suggestionsCopy;
+    v33 = [ATXStaticSuggestionsManager executableObjectHashToPositionMappingForSuggestions:suggestionsCopy];
+    v9 = [newSuggestionsCopy mutableCopy];
     v32 = objc_opt_new();
     v10 = objc_opt_new();
-    v11 = [v8 count];
-    if (v11 >= a5)
+    v11 = [newSuggestionsCopy count];
+    if (v11 >= limit)
     {
-      v12 = a5;
+      limitCopy = limit;
     }
 
     else
     {
-      v12 = v11;
+      limitCopy = v11;
     }
 
-    if (v12)
+    if (limitCopy)
     {
-      for (i = 0; i < v20; ++i)
+      for (i = 0; i < limitCopy2; ++i)
       {
-        v14 = [v8 objectAtIndexedSubscript:i];
+        v14 = [newSuggestionsCopy objectAtIndexedSubscript:i];
         v15 = MEMORY[0x277CCABB0];
-        v16 = [v14 executableSpecification];
-        v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "executableObjectHash")}];
+        executableSpecification = [v14 executableSpecification];
+        v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(executableSpecification, "executableObjectHash")}];
 
         v18 = [v33 objectForKeyedSubscript:v17];
-        if (+[ATXStaticSuggestionsManager isValidPreviousPosition:uiLimit:newSuggestionsCount:](ATXStaticSuggestionsManager, "isValidPreviousPosition:uiLimit:newSuggestionsCount:", v18, a5, [v8 count]))
+        if (+[ATXStaticSuggestionsManager isValidPreviousPosition:uiLimit:newSuggestionsCount:](ATXStaticSuggestionsManager, "isValidPreviousPosition:uiLimit:newSuggestionsCount:", v18, limit, [newSuggestionsCopy count]))
         {
           [v9 setObject:v14 atIndexedSubscript:{objc_msgSend(v18, "unsignedIntegerValue")}];
           [v10 addIndex:{objc_msgSend(v18, "unsignedIntegerValue")}];
@@ -51,15 +51,15 @@
           [v32 addObject:v14];
         }
 
-        v19 = [v8 count];
-        if (v19 >= a5)
+        v19 = [newSuggestionsCopy count];
+        if (v19 >= limit)
         {
-          v20 = a5;
+          limitCopy2 = limit;
         }
 
         else
         {
-          v20 = v19;
+          limitCopy2 = v19;
         }
       }
     }
@@ -110,12 +110,12 @@ LABEL_26:
       while (v23);
     }
 
-    v7 = v31;
+    suggestionsCopy = v31;
   }
 
   else
   {
-    v9 = v8;
+    v9 = newSuggestionsCopy;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -123,15 +123,15 @@ LABEL_26:
   return v9;
 }
 
-+ (BOOL)suggestionsAreAllAppExecutableTypeAndHaveValidHash:(id)a3
++ (BOOL)suggestionsAreAllAppExecutableTypeAndHaveValidHash:(id)hash
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  hashCopy = hash;
+  v4 = [hashCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -142,19 +142,19 @@ LABEL_26:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(hashCopy);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 executableSpecification];
-        v10 = [v9 executableType];
+        executableSpecification = [v8 executableSpecification];
+        executableType = [executableSpecification executableType];
 
-        if (v10 == 1)
+        if (executableType == 1)
         {
-          v11 = [v8 executableSpecification];
-          v12 = [v11 executableObjectHash];
+          executableSpecification2 = [v8 executableSpecification];
+          executableObjectHash = [executableSpecification2 executableObjectHash];
 
-          if (v12)
+          if (executableObjectHash)
           {
             continue;
           }
@@ -164,7 +164,7 @@ LABEL_26:
         goto LABEL_13;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [hashCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       v13 = 1;
       if (v5)
       {
@@ -186,18 +186,18 @@ LABEL_13:
   return v13;
 }
 
-+ (BOOL)isValidPreviousPosition:(id)a3 uiLimit:(unint64_t)a4 newSuggestionsCount:(unint64_t)a5
++ (BOOL)isValidPreviousPosition:(id)position uiLimit:(unint64_t)limit newSuggestionsCount:(unint64_t)count
 {
-  v7 = a3;
-  v8 = v7;
-  v9 = v7 && [v7 unsignedIntegerValue] < a4 && objc_msgSend(v8, "unsignedIntegerValue") < a5;
+  positionCopy = position;
+  v8 = positionCopy;
+  v9 = positionCopy && [positionCopy unsignedIntegerValue] < limit && objc_msgSend(v8, "unsignedIntegerValue") < count;
 
   return v9;
 }
 
-+ (id)executableObjectHashToPositionMappingForSuggestions:(id)a3
++ (id)executableObjectHashToPositionMappingForSuggestions:(id)suggestions
 {
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -205,7 +205,7 @@ LABEL_13:
   v7[3] = &unk_278599578;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [suggestionsCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }

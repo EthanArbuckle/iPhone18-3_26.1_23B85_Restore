@@ -1,8 +1,8 @@
 @interface CSDNearbySessionManager
-- (CSDNearbySessionManager)initWithAdvertisementID:(id)a3;
+- (CSDNearbySessionManager)initWithAdvertisementID:(id)d;
 - (CSDNearbySessionManagerDelegate)delegate;
-- (void)advertiseGroupActivityWithAdvertisementID:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)advertiseGroupActivityWithAdvertisementID:(id)d;
+- (void)setDelegate:(id)delegate;
 - (void)stopAdvertisingGroupActivity;
 @end
 
@@ -15,14 +15,14 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   NearbySessionManager.delegate.setter();
 }
 
-- (CSDNearbySessionManager)initWithAdvertisementID:(id)a3
+- (CSDNearbySessionManager)initWithAdvertisementID:(id)d
 {
   v3 = type metadata accessor for UUID();
   v4 = *(*(v3 - 8) + 64);
@@ -32,7 +32,7 @@
   return NearbySessionManager.init(advertisementID:)(v7);
 }
 
-- (void)advertiseGroupActivityWithAdvertisementID:(id)a3
+- (void)advertiseGroupActivityWithAdvertisementID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -40,7 +40,7 @@
   __chkstk_darwin(v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   sub_1002FD050(v9);
 
   (*(v5 + 8))(v9, v4);
@@ -48,7 +48,7 @@
 
 - (void)stopAdvertisingGroupActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002FDD10();
 }
 

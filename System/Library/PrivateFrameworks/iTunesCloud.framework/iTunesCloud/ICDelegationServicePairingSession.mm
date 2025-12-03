@@ -1,16 +1,16 @@
 @interface ICDelegationServicePairingSession
-- (BOOL)_deriveEncryptionKeysReturningError:(id *)a3;
-- (ICDelegationServicePairingSession)initWithRole:(int64_t)a3 securitySettings:(id)a4;
+- (BOOL)_deriveEncryptionKeysReturningError:(id *)error;
+- (ICDelegationServicePairingSession)initWithRole:(int64_t)role securitySettings:(id)settings;
 - (ICDelegationServicePairingSessionDelegate)delegate;
-- (id)_encryptedDataForData:(id)a3;
-- (void)_handlePairingSessionCompletionWithError:(id)a3;
-- (void)_receivedData:(id)a3;
-- (void)_sendData:(id)a3 withCompletionHandler:(id)a4;
+- (id)_encryptedDataForData:(id)data;
+- (void)_handlePairingSessionCompletionWithError:(id)error;
+- (void)_receivedData:(id)data;
+- (void)_sendData:(id)data withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)getDecryptedDataForEncryptedData:(id)a3 withCompletionHandler:(id)a4;
-- (void)getEncryptedDataForData:(id)a3 withCompletionHandler:(id)a4;
-- (void)prepareEncryptedSessionWithCompletionHandler:(id)a3;
-- (void)receievedData:(id)a3;
+- (void)getDecryptedDataForEncryptedData:(id)data withCompletionHandler:(id)handler;
+- (void)getEncryptedDataForData:(id)data withCompletionHandler:(id)handler;
+- (void)prepareEncryptedSessionWithCompletionHandler:(id)handler;
+- (void)receievedData:(id)data;
 @end
 
 @implementation ICDelegationServicePairingSession
@@ -22,10 +22,10 @@
   return WeakRetained;
 }
 
-- (void)_sendData:(id)a3 withCompletionHandler:(id)a4
+- (void)_sendData:(id)data withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
@@ -36,37 +36,37 @@
     v12[2] = __69__ICDelegationServicePairingSession__sendData_withCompletionHandler___block_invoke;
     v12[3] = &unk_1E7BF9E78;
     v13 = WeakRetained;
-    v14 = self;
-    v15 = v6;
-    v16 = v7;
+    selfCopy = self;
+    v15 = dataCopy;
+    v16 = handlerCopy;
     dispatch_async(calloutQueue, v12);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:0 userInfo:0];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
-- (void)_receivedData:(id)a3
+- (void)_receivedData:(id)data
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   if (self->_state == 1)
   {
     v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2048;
-      v13 = [v4 length];
+      v13 = [dataCopy length];
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Passing data of length %li to pairing session", buf, 0x16u);
     }
 
-    [v4 bytes];
-    [v4 length];
+    [dataCopy bytes];
+    [dataCopy length];
     v6 = PairingSessionExchange();
     if (v6)
     {
@@ -75,7 +75,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v11 = self;
+        selfCopy2 = self;
         v12 = 1024;
         LODWORD(v13) = v7;
         _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Error returned from PairingSessionExchange: %i", buf, 0x12u);
@@ -87,14 +87,14 @@
   }
 }
 
-- (BOOL)_deriveEncryptionKeysReturningError:(id *)a3
+- (BOOL)_deriveEncryptionKeysReturningError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   if (!self->_pairingSession)
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:0 userInfo:0];
     v13 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -144,7 +144,7 @@ LABEL_10:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2048;
       v32 = v17;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Failed to derive input key (OSStatus = %li)", buf, 0x16u);
@@ -158,11 +158,11 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v18 = [obj mutableBytes];
+  mutableBytes = [obj mutableBytes];
   v19 = [obj length];
-  if (v18)
+  if (mutableBytes)
   {
-    memset_s(v18, v19, 0, v19);
+    memset_s(mutableBytes, v19, 0, v19);
   }
 
   [v14 bytes];
@@ -179,7 +179,7 @@ LABEL_19:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2048;
       v32 = v17;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Failed to derive output key (OSStatus = %li)", buf, 0x16u);
@@ -189,11 +189,11 @@ LABEL_19:
   }
 
   v21 = v26;
-  v24 = [v26 mutableBytes];
+  mutableBytes2 = [v26 mutableBytes];
   v25 = [v26 length];
-  if (v24)
+  if (mutableBytes2)
   {
-    memset_s(v24, v25, 0, v25);
+    memset_s(mutableBytes2, v25, 0, v25);
   }
 
   objc_storeStrong(&self->_inputKey, v5);
@@ -204,11 +204,11 @@ LABEL_19:
   v13 = 1;
 LABEL_20:
 
-  if (a3)
+  if (error)
   {
 LABEL_21:
     v22 = v12;
-    *a3 = v12;
+    *error = v12;
   }
 
 LABEL_22:
@@ -216,23 +216,23 @@ LABEL_22:
   return v13;
 }
 
-- (void)_handlePairingSessionCompletionWithError:(id)a3
+- (void)_handlePairingSessionCompletionWithError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v4;
+    v23 = errorCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Finishing pairing session with error: %{public}@", buf, 0x16u);
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    v6 = v4;
+    v6 = errorCopy;
     v7 = 0;
   }
 
@@ -278,7 +278,7 @@ LABEL_22:
     v15[2] = __78__ICDelegationServicePairingSession__handlePairingSessionCompletionWithError___block_invoke;
     v15[3] = &unk_1E7BFA178;
     v16 = v12;
-    v17 = v4;
+    v17 = errorCopy;
     v18 = v6;
     dispatch_async(calloutQueue, v15);
   }
@@ -319,26 +319,26 @@ void __78__ICDelegationServicePairingSession__handlePairingSessionCompletionWith
   }
 }
 
-- (id)_encryptedDataForData:(id)a3
+- (id)_encryptedDataForData:(id)data
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(v4, "length")}];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(dataCopy, "length")}];
   [(NSData *)self->_outputKey bytes];
   [(NSMutableData *)self->_outputNonce bytes];
-  [v4 bytes];
-  [v4 length];
+  [dataCopy bytes];
+  [dataCopy length];
   [v5 mutableBytes];
   chacha20_poly1305_encrypt_all_64x64();
   [v5 appendBytes:v12 length:16];
-  v6 = [(NSMutableData *)self->_outputNonce mutableBytes];
+  mutableBytes = [(NSMutableData *)self->_outputNonce mutableBytes];
   v7 = [(NSMutableData *)self->_outputNonce length];
   if (v7)
   {
     v8 = v7 - 1;
     do
     {
-      if (++*v6++)
+      if (++*mutableBytes++)
       {
         v10 = 1;
       }
@@ -357,20 +357,20 @@ void __78__ICDelegationServicePairingSession__handlePairingSessionCompletionWith
   return v5;
 }
 
-- (void)getEncryptedDataForData:(id)a3 withCompletionHandler:(id)a4
+- (void)getEncryptedDataForData:(id)data withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   accessSerialQueue = self->_accessSerialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__ICDelegationServicePairingSession_getEncryptedDataForData_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dataCopy;
   dispatch_async(accessSerialQueue, block);
 }
 
@@ -418,20 +418,20 @@ void __83__ICDelegationServicePairingSession_getEncryptedDataForData_withComplet
   }
 }
 
-- (void)getDecryptedDataForEncryptedData:(id)a3 withCompletionHandler:(id)a4
+- (void)getDecryptedDataForEncryptedData:(id)data withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   accessSerialQueue = self->_accessSerialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__ICDelegationServicePairingSession_getDecryptedDataForEncryptedData_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dataCopy;
   dispatch_async(accessSerialQueue, block);
 }
 
@@ -514,31 +514,31 @@ LABEL_17:
   dispatch_async(v14, block);
 }
 
-- (void)receievedData:(id)a3
+- (void)receievedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   accessSerialQueue = self->_accessSerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__ICDelegationServicePairingSession_receievedData___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(accessSerialQueue, v7);
 }
 
-- (void)prepareEncryptedSessionWithCompletionHandler:(id)a3
+- (void)prepareEncryptedSessionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessSerialQueue = self->_accessSerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__ICDelegationServicePairingSession_prepareEncryptedSessionWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(accessSerialQueue, v7);
 }
 
@@ -692,9 +692,9 @@ LABEL_34:
   [(ICDelegationServicePairingSession *)&v4 dealloc];
 }
 
-- (ICDelegationServicePairingSession)initWithRole:(int64_t)a3 securitySettings:(id)a4
+- (ICDelegationServicePairingSession)initWithRole:(int64_t)role securitySettings:(id)settings
 {
-  v7 = a4;
+  settingsCopy = settings;
   v14.receiver = self;
   v14.super_class = ICDelegationServicePairingSession;
   v8 = [(ICDelegationServicePairingSession *)&v14 init];
@@ -708,8 +708,8 @@ LABEL_34:
     calloutQueue = v8->_calloutQueue;
     v8->_calloutQueue = v11;
 
-    v8->_role = a3;
-    objc_storeStrong(&v8->_securitySettings, a4);
+    v8->_role = role;
+    objc_storeStrong(&v8->_securitySettings, settings);
   }
 
   return v8;

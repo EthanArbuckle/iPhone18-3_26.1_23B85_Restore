@@ -1,56 +1,56 @@
 @interface MRURoutingTableViewCell
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGRect)expandRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRURoutingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRURoutingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (MRURoutingTableViewCellDelegate)delegate;
 - (MRUVolumeController)volumeController;
 - (UIEdgeInsets)contentEdgeInsets;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)separator;
 - (void)didTapToExpand;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)routingSubtitleStateController:(id)a3 didUpdateText:(id)a4 icon:(id)a5 accessory:(int64_t)a6;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setShowChevron:(BOOL)a3;
-- (void)setShowChevronExpanded:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleAccessory:(int64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)setVolumeController:(id)a3;
-- (void)sliderValueChanged:(id)a3;
-- (void)transitionToNextVisibleStateWithDuration:(double)a3;
+- (void)routingSubtitleStateController:(id)controller didUpdateText:(id)text icon:(id)icon accessory:(int64_t)accessory;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setIcon:(id)icon;
+- (void)setIconImage:(id)image;
+- (void)setShowChevron:(BOOL)chevron;
+- (void)setShowChevronExpanded:(BOOL)expanded;
+- (void)setStylingProvider:(id)provider;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleAccessory:(int64_t)accessory;
+- (void)setTitle:(id)title;
+- (void)setVolumeController:(id)controller;
+- (void)sliderValueChanged:(id)changed;
+- (void)transitionToNextVisibleStateWithDuration:(double)duration;
 - (void)updateContentSizeCategory;
 - (void)updateVisibility;
 - (void)updateVisualStyling;
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation MRURoutingTableViewCell
 
-- (MRURoutingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MRURoutingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v47[1] = *MEMORY[0x1E69E9840];
   v45.receiver = self;
   v45.super_class = MRURoutingTableViewCell;
-  v4 = [(MRURoutingTableViewCell *)&v45 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MRURoutingTableViewCell *)&v45 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(MRURoutingTableViewCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MRURoutingTableViewCell *)v4 setBackgroundColor:clearColor];
 
     v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(MRURoutingTableViewCell *)v4 setSelectedBackgroundView:v6];
 
     v7 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.5];
-    v8 = [(MRURoutingTableViewCell *)v4 selectedBackgroundView];
-    [v8 setBackgroundColor:v7];
+    selectedBackgroundView = [(MRURoutingTableViewCell *)v4 selectedBackgroundView];
+    [selectedBackgroundView setBackgroundColor:v7];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     outlineImageView = v4->_outlineImageView;
@@ -62,8 +62,8 @@
     v12 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:1 scale:17.0];
     [(UIImageView *)v4->_outlineImageView setPreferredSymbolConfiguration:v12];
 
-    v13 = [(MRURoutingTableViewCell *)v4 contentView];
-    [v13 addSubview:v4->_outlineImageView];
+    contentView = [(MRURoutingTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_outlineImageView];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     iconImageView = v4->_iconImageView;
@@ -73,8 +73,8 @@
     v16 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:2 scale:20.0];
     [(UIImageView *)v4->_iconImageView setPreferredSymbolConfiguration:v16];
 
-    v17 = [(MRURoutingTableViewCell *)v4 contentView];
-    [v17 addSubview:v4->_iconImageView];
+    contentView2 = [(MRURoutingTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_iconImageView];
 
     v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v4->_titleLabel;
@@ -82,22 +82,22 @@
 
     [(UILabel *)v4->_titleLabel setNumberOfLines:1];
     [(UILabel *)v4->_titleLabel _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
-    v20 = [(MRURoutingTableViewCell *)v4 contentView];
-    [v20 addSubview:v4->_titleLabel];
+    contentView3 = [(MRURoutingTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_titleLabel];
 
     v21 = objc_alloc_init(MRURoutingSubtitleView);
     subtitleView = v4->_subtitleView;
     v4->_subtitleView = v21;
 
-    v23 = [(MRURoutingTableViewCell *)v4 contentView];
-    [v23 addSubview:v4->_subtitleView];
+    contentView4 = [(MRURoutingTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_subtitleView];
 
     v24 = objc_alloc_init(MRURoutingAccessoryView);
     routingAccessoryView = v4->_routingAccessoryView;
     v4->_routingAccessoryView = v24;
 
-    v26 = [(MRURoutingTableViewCell *)v4 contentView];
-    [v26 addSubview:v4->_routingAccessoryView];
+    contentView5 = [(MRURoutingTableViewCell *)v4 contentView];
+    [contentView5 addSubview:v4->_routingAccessoryView];
 
     v27 = objc_alloc_init(MRUSlider);
     volumeSlider = v4->_volumeSlider;
@@ -111,11 +111,11 @@
     separatorView = v4->_separatorView;
     v4->_separatorView = v29;
 
-    v31 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v4->_separatorView setBackgroundColor:v31];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v4->_separatorView setBackgroundColor:whiteColor];
 
-    v32 = [(MRURoutingTableViewCell *)v4 contentView];
-    [v32 addSubview:v4->_separatorView];
+    contentView6 = [(MRURoutingTableViewCell *)v4 contentView];
+    [contentView6 addSubview:v4->_separatorView];
 
     v33 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel_didTapToExpand];
     expandGestureRecognizer = v4->_expandGestureRecognizer;
@@ -123,8 +123,8 @@
 
     [(UITapGestureRecognizer *)v4->_expandGestureRecognizer setDelegate:v4];
     [(UITapGestureRecognizer *)v4->_expandGestureRecognizer setEnabled:0];
-    v35 = [(MRURoutingTableViewCell *)v4 contentView];
-    [v35 addGestureRecognizer:v4->_expandGestureRecognizer];
+    contentView7 = [(MRURoutingTableViewCell *)v4 contentView];
+    [contentView7 addGestureRecognizer:v4->_expandGestureRecognizer];
 
     v36 = objc_alloc_init(MRURoutingSubtitleController);
     subtitleStateController = v4->_subtitleStateController;
@@ -132,8 +132,8 @@
 
     [(MRURoutingSubtitleController *)v4->_subtitleStateController setDelegate:v4];
     v38 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v4];
-    v39 = [(MRURoutingTableViewCell *)v4 contentView];
-    [v39 addInteraction:v38];
+    contentView8 = [(MRURoutingTableViewCell *)v4 contentView];
+    [contentView8 addInteraction:v38];
 
     v47[0] = objc_opt_class();
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
@@ -155,12 +155,12 @@
   v75.receiver = self;
   v75.super_class = MRURoutingTableViewCell;
   [(MRURoutingTableViewCell *)&v75 layoutSubviews];
-  v3 = [(MRURoutingTableViewCell *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MRURoutingTableViewCell *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
-  v6 = [(MRURoutingTableViewCell *)self contentView];
-  [v6 bounds];
+  contentView = [(MRURoutingTableViewCell *)self contentView];
+  [contentView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -341,18 +341,18 @@
   [(MRUSlider *)self->_volumeSlider setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_titleLabel sizeThatFits:?];
   MRUSizeCeilToViewScale(self);
   v7 = v6 + 0.0;
   v8 = height - v6;
   WeakRetained = objc_loadWeakRetained(&self->_volumeController);
-  v10 = [WeakRetained isVolumeControlAvailable];
+  isVolumeControlAvailable = [WeakRetained isVolumeControlAvailable];
 
-  if (v10)
+  if (isVolumeControlAvailable)
   {
     [(MRUSlider *)self->_volumeSlider sizeThatFits:width, v8];
     v7 = v7 + v11;
@@ -384,8 +384,8 @@
   [(MRURoutingTableViewCell *)&v4 prepareForReuse];
   [(MRURoutingSubtitleView *)self->_subtitleView prepareForReuse];
   [(MRURoutingSubtitleController *)self->_subtitleStateController prepareForReuse];
-  v3 = [(MRURoutingSubtitleView *)self->_subtitleView layer];
-  [v3 removeAllAnimations];
+  layer = [(MRURoutingSubtitleView *)self->_subtitleView layer];
+  [layer removeAllAnimations];
 
   [(MRURoutingAccessoryView *)self->_routingAccessoryView setState:0];
   objc_storeWeak(&self->_volumeController, 0);
@@ -395,12 +395,12 @@
   [(MRURoutingTableViewCell *)self updateVisibility];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  objc_storeStrong(&self->_iconImage, a3);
-  v5 = a3;
-  [(UIImageView *)self->_iconImageView setImage:v5];
-  if ([v5 isSymbolImage])
+  objc_storeStrong(&self->_iconImage, image);
+  imageCopy = image;
+  [(UIImageView *)self->_iconImageView setImage:imageCopy];
+  if ([imageCopy isSymbolImage])
   {
     v6 = 4;
   }
@@ -415,32 +415,32 @@
   [(MRURoutingTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(MRURoutingTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  [(MRURoutingSubtitleView *)self->_subtitleView setText:a3];
+  [(MRURoutingSubtitleView *)self->_subtitleView setText:subtitle];
 
   [(MRURoutingTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  [(MRURoutingSubtitleView *)self->_subtitleView setIcon:a3];
+  [(MRURoutingSubtitleView *)self->_subtitleView setIcon:icon];
 
   [(MRURoutingTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setSubtitleAccessory:(int64_t)a3
+- (void)setSubtitleAccessory:(int64_t)accessory
 {
-  if (a3 <= 3)
+  if (accessory <= 3)
   {
     [(MRURoutingSubtitleView *)self->_subtitleView setState:?];
   }
@@ -448,40 +448,40 @@
   [(MRURoutingTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRURoutingTableViewCell *)self updateVisualStyling];
     [(MRURoutingSubtitleView *)self->_subtitleView setStylingProvider:v6];
     [(MRURoutingAccessoryView *)self->_routingAccessoryView setStylingProvider:v6];
     [(MRUSlider *)self->_volumeSlider setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setShowChevron:(BOOL)a3
+- (void)setShowChevron:(BOOL)chevron
 {
-  if (self->_showChevron != a3)
+  if (self->_showChevron != chevron)
   {
-    self->_showChevron = a3;
+    self->_showChevron = chevron;
     [(UITapGestureRecognizer *)self->_expandGestureRecognizer setEnabled:?];
 
     [(MRURoutingTableViewCell *)self updateVisibility];
   }
 }
 
-- (void)setShowChevronExpanded:(BOOL)a3
+- (void)setShowChevronExpanded:(BOOL)expanded
 {
-  if (self->_showChevronExpanded != a3)
+  if (self->_showChevronExpanded != expanded)
   {
     v9 = v4;
     v10 = v3;
-    self->_showChevronExpanded = a3;
-    if (a3)
+    self->_showChevronExpanded = expanded;
+    if (expanded)
     {
       +[MRUAssetsProvider expandedRoutingChevron];
     }
@@ -497,13 +497,13 @@
   }
 }
 
-- (void)setVolumeController:(id)a3
+- (void)setVolumeController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_volumeController);
-  v5 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
     v6 = objc_loadWeakRetained(&self->_volumeController);
     [v6 setDelegate:0];
@@ -518,36 +518,36 @@
   [(MRURoutingTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
   self->_contentEdgeInsets.top = 0.0;
-  self->_contentEdgeInsets.left = a3.left;
+  self->_contentEdgeInsets.left = insets.left;
   self->_contentEdgeInsets.bottom = 0.0;
-  self->_contentEdgeInsets.right = a3.right;
+  self->_contentEdgeInsets.right = insets.right;
   [(MRURoutingTableViewCell *)self setNeedsLayout];
 }
 
-- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)a3
+- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)separator
 {
-  v3 = a3;
+  separatorCopy = separator;
   v5.receiver = self;
   v5.super_class = MRURoutingTableViewCell;
   [(MRURoutingTableViewCell *)&v5 _setShouldHaveFullLengthBottomSeparator:?];
-  [(UIView *)self->_separatorView setHidden:v3];
+  [(UIView *)self->_separatorView setHidden:separatorCopy];
 }
 
 - (void)didTapToExpand
 {
   self->_showChevronExpanded ^= 1u;
-  v3 = [(MRURoutingTableViewCell *)self delegate];
-  [v3 routingCellDidTapToExpand:self];
+  delegate = [(MRURoutingTableViewCell *)self delegate];
+  [delegate routingCellDidTapToExpand:self];
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_volumeController);
-  [v4 value];
+  [changedCopy value];
   v6 = v5;
 
   LODWORD(v7) = 1036831949;
@@ -555,7 +555,7 @@
   [WeakRetained setVolume:v8 withNotificationDelay:v7];
 }
 
-- (void)transitionToNextVisibleStateWithDuration:(double)a3
+- (void)transitionToNextVisibleStateWithDuration:(double)duration
 {
   if ([(MRURoutingSubtitleController *)self->_subtitleStateController canTransitionToNextState])
   {
@@ -573,8 +573,8 @@
       v6[2] = __68__MRURoutingTableViewCell_transitionToNextVisibleStateWithDuration___block_invoke_2;
       v6[3] = &unk_1E7666348;
       v6[4] = self;
-      *&v6[5] = a3;
-      [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:v6 completion:a3];
+      *&v6[5] = duration;
+      [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:v6 completion:duration];
     }
   }
 }
@@ -622,38 +622,38 @@ void __68__MRURoutingTableViewCell_transitionToNextVisibleStateWithDuration___bl
   [v3 setAlpha:v2];
 }
 
-- (void)routingSubtitleStateController:(id)a3 didUpdateText:(id)a4 icon:(id)a5 accessory:(int64_t)a6
+- (void)routingSubtitleStateController:(id)controller didUpdateText:(id)text icon:(id)icon accessory:(int64_t)accessory
 {
-  v9 = a5;
-  [(MRURoutingTableViewCell *)self setSubtitle:a4];
-  [(MRURoutingTableViewCell *)self setIcon:v9];
+  iconCopy = icon;
+  [(MRURoutingTableViewCell *)self setSubtitle:text];
+  [(MRURoutingTableViewCell *)self setIcon:iconCopy];
 
-  [(MRURoutingTableViewCell *)self setSubtitleAccessory:a6];
+  [(MRURoutingTableViewCell *)self setSubtitleAccessory:accessory];
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
   if (([(MRUSlider *)self->_volumeSlider isTracking]& 1) == 0)
   {
     volumeSlider = self->_volumeSlider;
-    *&v6 = a4;
+    *&v6 = change;
 
     [(MRUSlider *)volumeSlider setValue:1 animated:v6];
   }
 }
 
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change
 {
-  [(MRURoutingTableViewCell *)self updateVisibility:a3];
+  [(MRURoutingTableViewCell *)self updateVisibility:controller];
 
   [(MRURoutingTableViewCell *)self setNeedsLayout];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(MRURoutingTableViewCell *)self contentView];
-  [v5 locationInView:v6];
+  touchCopy = touch;
+  contentView = [(MRURoutingTableViewCell *)self contentView];
+  [touchCopy locationInView:contentView];
   v8 = v7;
   v10 = v9;
 
@@ -664,12 +664,12 @@ void __68__MRURoutingTableViewCell_transitionToNextVisibleStateWithDuration___bl
   return CGRectContainsPoint(*&v11, *&v15);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_showChevron && (-[MRURoutingTableViewCell expandRect](self, "expandRect"), v12 = v11, v14 = v13, v16 = v15, v18 = v17, [v9 location], v26.x = v19, v26.y = v20, v27.origin.x = v12, v27.origin.y = v14, v27.size.width = v16, v27.size.height = v18, CGRectContainsPoint(v27, v26)))
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  if (self->_showChevron && (-[MRURoutingTableViewCell expandRect](self, "expandRect"), v12 = v11, v14 = v13, v16 = v15, v18 = v17, [requestCopy location], v26.x = v19, v26.y = v20, v27.origin.x = v12, v27.origin.y = v14, v27.size.width = v16, v27.size.height = v18, CGRectContainsPoint(v27, v26)))
   {
     v21 = MEMORY[0x1E69DCDC0];
     [(MRURoutingTableViewCell *)self expandRect];
@@ -678,7 +678,7 @@ void __68__MRURoutingTableViewCell_transitionToNextVisibleStateWithDuration___bl
 
   else
   {
-    v22 = v10;
+    v22 = regionCopy;
   }
 
   v23 = v22;
@@ -686,10 +686,10 @@ void __68__MRURoutingTableViewCell_transitionToNextVisibleStateWithDuration___bl
   return v23;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [a4 identifier];
-  v6 = [v5 isEqual:@"outline"];
+  identifier = [region identifier];
+  v6 = [identifier isEqual:@"outline"];
 
   v7 = objc_alloc(MEMORY[0x1E69DD070]);
   v8 = v7;
@@ -706,8 +706,8 @@ void __68__MRURoutingTableViewCell_transitionToNextVisibleStateWithDuration___bl
 
   else
   {
-    v14 = [(MRURoutingTableViewCell *)self contentView];
-    v9 = [v8 initWithView:v14];
+    contentView = [(MRURoutingTableViewCell *)self contentView];
+    v9 = [v8 initWithView:contentView];
 
     v10 = [MEMORY[0x1E69DCDA8] effectWithPreview:v9];
     [v10 setPrefersScaledContent:0];
@@ -721,29 +721,29 @@ void __68__MRURoutingTableViewCell_transitionToNextVisibleStateWithDuration___bl
 {
   stylingProvider = self->_stylingProvider;
   titleLabel = self->_titleLabel;
-  v5 = [(MRURoutingTableViewCell *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:v5];
+  traitCollection = [(MRURoutingTableViewCell *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
   outlineImageView = self->_outlineImageView;
-  v8 = [(MRURoutingTableViewCell *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:2 toView:outlineImageView traitCollection:v8];
+  traitCollection2 = [(MRURoutingTableViewCell *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:2 toView:outlineImageView traitCollection:traitCollection2];
 
   v9 = self->_stylingProvider;
   iconImageView = self->_iconImageView;
-  v11 = [(MRURoutingTableViewCell *)self traitCollection];
-  [(MRUVisualStylingProvider *)v9 applyStyle:0 toView:iconImageView traitCollection:v11];
+  traitCollection3 = [(MRURoutingTableViewCell *)self traitCollection];
+  [(MRUVisualStylingProvider *)v9 applyStyle:0 toView:iconImageView traitCollection:traitCollection3];
 
   v12 = self->_stylingProvider;
   separatorView = self->_separatorView;
-  v14 = [(MRURoutingTableViewCell *)self traitCollection];
-  [(MRUVisualStylingProvider *)v12 applyStyle:4 toView:separatorView traitCollection:v14];
+  traitCollection4 = [(MRURoutingTableViewCell *)self traitCollection];
+  [(MRUVisualStylingProvider *)v12 applyStyle:4 toView:separatorView traitCollection:traitCollection4];
 }
 
 - (void)updateContentSizeCategory
 {
-  v3 = [MEMORY[0x1E69DB878] mru_routingTitleFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  mru_routingTitleFont = [MEMORY[0x1E69DB878] mru_routingTitleFont];
+  [(UILabel *)self->_titleLabel setFont:mru_routingTitleFont];
 }
 
 - (void)updateVisibility
@@ -782,27 +782,27 @@ void __68__MRURoutingTableViewCell_transitionToNextVisibleStateWithDuration___bl
   {
     [(UIImageView *)self->_iconImageView frame];
     MinX = CGRectGetMinX(v18);
-    v4 = [(MRURoutingTableViewCell *)self contentView];
-    [v4 bounds];
+    contentView = [(MRURoutingTableViewCell *)self contentView];
+    [contentView bounds];
     MinY = CGRectGetMinY(v19);
-    v6 = [(MRURoutingTableViewCell *)self contentView];
-    [v6 bounds];
+    contentView2 = [(MRURoutingTableViewCell *)self contentView];
+    [contentView2 bounds];
   }
 
   else
   {
-    v4 = [(MRURoutingTableViewCell *)self contentView];
-    [v4 bounds];
+    contentView = [(MRURoutingTableViewCell *)self contentView];
+    [contentView bounds];
     MinX = CGRectGetMinX(v20);
-    v6 = [(MRURoutingTableViewCell *)self contentView];
-    [v6 bounds];
+    contentView2 = [(MRURoutingTableViewCell *)self contentView];
+    [contentView2 bounds];
     MinY = CGRectGetMinY(v21);
     [(UIImageView *)self->_iconImageView frame];
   }
 
   MaxX = CGRectGetMaxX(*&v7);
-  v12 = [(MRURoutingTableViewCell *)self contentView];
-  [v12 bounds];
+  contentView3 = [(MRURoutingTableViewCell *)self contentView];
+  [contentView3 bounds];
   Height = CGRectGetHeight(v22);
 
   v14 = MinX;

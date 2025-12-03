@@ -1,7 +1,7 @@
 @interface ISUIKitDialogOperation
 - (void)_cleanupAlert;
-- (void)_showAlertWithCompletion:(id)a3;
-- (void)handleButtonSelected:(int64_t)a3 withResponseDictionary:(id)a4;
+- (void)_showAlertWithCompletion:(id)completion;
+- (void)handleButtonSelected:(int64_t)selected withResponseDictionary:(id)dictionary;
 - (void)run;
 @end
 
@@ -9,27 +9,27 @@
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   v71 = *MEMORY[0x277D85DE8];
-  v3 = [(ISDialogOperation *)self dialog];
-  v4 = v3;
-  if (v3 && ([v3 isDisplayable] & 1) != 0)
+  dialog = [(ISDialogOperation *)self dialog];
+  v4 = dialog;
+  if (dialog && ([dialog isDisplayable] & 1) != 0)
   {
     v48 = dispatch_semaphore_create(0);
     UIAlertControllerClass = getUIAlertControllerClass();
-    v6 = [v4 title];
-    v7 = [v4 message];
-    v8 = [(objc_class *)UIAlertControllerClass alertControllerWithTitle:v6 message:v7 preferredStyle:1];
-    alert = v2->_alert;
-    v2->_alert = v8;
+    title = [v4 title];
+    message = [v4 message];
+    v8 = [(objc_class *)UIAlertControllerClass alertControllerWithTitle:title message:message preferredStyle:1];
+    alert = selfCopy->_alert;
+    selfCopy->_alert = v8;
 
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
     v47 = v4;
-    v10 = [v4 textFields];
-    v11 = [v10 countByEnumeratingWithState:&v63 objects:v68 count:16];
+    textFields = [v4 textFields];
+    v11 = [textFields countByEnumeratingWithState:&v63 objects:v68 count:16];
     if (v11)
     {
       v12 = v11;
@@ -40,11 +40,11 @@
         {
           if (*v64 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(textFields);
           }
 
           v15 = *(*(&v63 + 1) + 8 * i);
-          v16 = v2->_alert;
+          v16 = selfCopy->_alert;
           v62[0] = MEMORY[0x277D85DD0];
           v62[1] = 3221225472;
           v62[2] = __29__ISUIKitDialogOperation_run__block_invoke;
@@ -53,7 +53,7 @@
           [(UIAlertController *)v16 addTextFieldWithConfigurationHandler:v62];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v63 objects:v68 count:16];
+        v12 = [textFields countByEnumeratingWithState:&v63 objects:v68 count:16];
       }
 
       while (v12);
@@ -64,51 +64,51 @@
     v58 = 0u;
     v59 = 0u;
     v4 = v47;
-    v17 = [v47 buttons];
-    v18 = [v17 countByEnumeratingWithState:&v58 objects:v67 count:16];
+    buttons = [v47 buttons];
+    v18 = [buttons countByEnumeratingWithState:&v58 objects:v67 count:16];
     if (v18)
     {
       v19 = v18;
       v20 = 0;
       v21 = 0;
       v22 = *v59;
-      obj = v17;
+      obj = buttons;
       do
       {
         for (j = 0; j != v19; ++j)
         {
-          v24 = v2;
+          v24 = selfCopy;
           if (*v59 != v22)
           {
             objc_enumerationMutation(obj);
           }
 
           v25 = *(*(&v58 + 1) + 8 * j);
-          v26 = [v25 title];
-          v27 = [v26 lowercaseString];
-          v28 = [v27 isEqualToString:@"cancel"];
+          title2 = [v25 title];
+          lowercaseString = [title2 lowercaseString];
+          v28 = [lowercaseString isEqualToString:@"cancel"];
 
           if (v28)
           {
             v29 = v25;
 
             v21 = v29;
-            v2 = v24;
+            selfCopy = v24;
           }
 
           else
           {
             UIAlertActionClass = getUIAlertActionClass();
-            v31 = [v25 title];
+            title3 = [v25 title];
             v55[0] = MEMORY[0x277D85DD0];
             v55[1] = 3221225472;
             v55[2] = __29__ISUIKitDialogOperation_run__block_invoke_2;
             v55[3] = &unk_27A670E78;
-            v2 = v24;
+            selfCopy = v24;
             v55[4] = v24;
             v57 = v20;
             v56 = v48;
-            v32 = [(objc_class *)UIAlertActionClass actionWithTitle:v31 style:0 handler:v55];
+            v32 = [(objc_class *)UIAlertActionClass actionWithTitle:title3 style:0 handler:v55];
 
             [(UIAlertController *)v24->_alert addAction:v32];
             ++v20;
@@ -123,18 +123,18 @@
       if (v21)
       {
         v33 = getUIAlertActionClass();
-        v34 = [v21 title];
+        title4 = [v21 title];
         v52[0] = MEMORY[0x277D85DD0];
         v52[1] = 3221225472;
         v52[2] = __29__ISUIKitDialogOperation_run__block_invoke_3;
         v52[3] = &unk_27A670E78;
-        v52[4] = v2;
+        v52[4] = selfCopy;
         v54 = v20;
         v35 = v48;
         v53 = v48;
-        v36 = [(objc_class *)v33 actionWithTitle:v34 style:1 handler:v52];
+        v36 = [(objc_class *)v33 actionWithTitle:title4 style:1 handler:v52];
 
-        [(UIAlertController *)v2->_alert addAction:v36];
+        [(UIAlertController *)selfCopy->_alert addAction:v36];
         v4 = v47;
 LABEL_38:
         v50[0] = MEMORY[0x277D85DD0];
@@ -143,7 +143,7 @@ LABEL_38:
         v50[3] = &unk_27A670EA0;
         v51 = v35;
         v44 = v35;
-        [(ISUIKitDialogOperation *)v2 _showAlertWithCompletion:v50];
+        [(ISUIKitDialogOperation *)selfCopy _showAlertWithCompletion:v50];
         dispatch_semaphore_wait(v44, 0xFFFFFFFFFFFFFFFFLL);
 
         goto LABEL_39;
@@ -162,25 +162,25 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v37 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v37)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v37 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v38 = [v37 shouldLog];
-  if ([v37 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v39 = v38 | 2;
+    v39 = shouldLog | 2;
   }
 
   else
   {
-    v39 = v38;
+    v39 = shouldLog;
   }
 
-  v40 = [v37 OSLogObject];
-  if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v41 = v39;
   }
@@ -203,13 +203,13 @@ LABEL_38:
 
   if (v43)
   {
-    v40 = [MEMORY[0x277CCACA8] stringWithCString:v43 encoding:{4, &v69, v46}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v43 encoding:{4, &v69, v46}];
     free(v43);
     SSFileLog();
 LABEL_33:
   }
 
-  [(ISOperation *)v2 setSuccess:1];
+  [(ISOperation *)selfCopy setSuccess:1];
 LABEL_39:
 
   v45 = *MEMORY[0x277D85DE8];
@@ -272,32 +272,32 @@ intptr_t __29__ISUIKitDialogOperation_run__block_invoke_4(intptr_t result, char 
   self->_window = 0;
 }
 
-- (void)_showAlertWithCompletion:(id)a3
+- (void)_showAlertWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (!self->_alert)
   {
-    v6 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v6)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v6 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
-    if ([v6 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 &= 2u;
     }
@@ -318,7 +318,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v9 = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:{4, &v16, v13}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:{4, &v16, v13}];
       free(v11);
       SSFileLog();
     }
@@ -331,7 +331,7 @@ LABEL_14:
   block[2] = __51__ISUIKitDialogOperation__showAlertWithCompletion___block_invoke;
   block[3] = &unk_27A670EC8;
   block[4] = self;
-  v15 = v4;
+  v15 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
 LABEL_15:
@@ -486,33 +486,33 @@ LABEL_31:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleButtonSelected:(int64_t)a3 withResponseDictionary:(id)a4
+- (void)handleButtonSelected:(int64_t)selected withResponseDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = [(ISDialogOperation *)self dialog:a3];
-  v7 = [v6 buttons];
+  v6 = [(ISDialogOperation *)self dialog:selected];
+  buttons = [v6 buttons];
 
-  if (a3 < 0 || [v7 count] <= a3 || (objc_msgSend(v7, "objectAtIndexedSubscript:", a3), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (selected < 0 || [buttons count] <= selected || (objc_msgSend(buttons, "objectAtIndexedSubscript:", selected), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v9 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v9)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v9 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v11 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 &= 2u;
     }
@@ -522,7 +522,7 @@ LABEL_31:
       v35 = 138412546;
       v36 = objc_opt_class();
       v37 = 2048;
-      v38 = a3;
+      selectedCopy = selected;
       v14 = v36;
       LODWORD(v28) = 22;
       v15 = _os_log_send_and_compose_impl();
@@ -542,21 +542,21 @@ LABEL_31:
 
   else
   {
-    v9 = v8;
-    v10 = [(ISOperation *)self delegate];
-    v29 = v10;
+    mEMORY[0x277D69B38] = v8;
+    delegate = [(ISOperation *)self delegate];
+    v29 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      [v10 operation:self selectedButton:v9];
+      [delegate operation:self selectedButton:mEMORY[0x277D69B38]];
     }
 
     else if ([(ISDialogOperation *)self performDefaultActions])
     {
-      v17 = [(ISDialogOperation *)self dialog];
-      [v9 performDefaultActionForDialog:v17];
+      dialog = [(ISDialogOperation *)self dialog];
+      [mEMORY[0x277D69B38] performDefaultActionForDialog:dialog];
     }
 
-    [(ISDialogOperation *)self setSelectedButton:v9];
+    [(ISDialogOperation *)self setSelectedButton:mEMORY[0x277D69B38]];
     [(ISOperation *)self lock];
     textFieldValues = self->super._textFieldValues;
     self->super._textFieldValues = 0;
@@ -566,8 +566,8 @@ LABEL_31:
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v20 = [(UIAlertController *)self->_alert textFields];
-    v21 = [v20 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    textFields = [(UIAlertController *)self->_alert textFields];
+    v21 = [textFields countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v21)
     {
       v22 = v21;
@@ -578,14 +578,14 @@ LABEL_31:
         {
           if (*v31 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(textFields);
           }
 
-          v25 = [*(*(&v30 + 1) + 8 * i) text];
-          [(NSArray *)v19 addObject:v25];
+          text = [*(*(&v30 + 1) + 8 * i) text];
+          [(NSArray *)v19 addObject:text];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v22 = [textFields countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v22);

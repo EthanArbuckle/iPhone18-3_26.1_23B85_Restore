@@ -1,42 +1,42 @@
 @interface CADDatabasePoolKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CADDatabaseInitializationOptions)options;
-- (CADDatabasePoolKey)initWithInitializationOptions:(id)a3;
+- (CADDatabasePoolKey)initWithInitializationOptions:(id)options;
 - (id)description;
 @end
 
 @implementation CADDatabasePoolKey
 
-- (CADDatabasePoolKey)initWithInitializationOptions:(id)a3
+- (CADDatabasePoolKey)initWithInitializationOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = CADDatabasePoolKey;
   v5 = [(CADDatabasePoolKey *)&v11 init];
   if (v5)
   {
-    v5->_initOptions = [v4 databaseInitOptions] & 0xFFFFFFF9;
-    v6 = [v4 databaseDirectory];
+    v5->_initOptions = [optionsCopy databaseInitOptions] & 0xFFFFFFF9;
+    databaseDirectory = [optionsCopy databaseDirectory];
     databaseDirectory = v5->_databaseDirectory;
-    v5->_databaseDirectory = v6;
+    v5->_databaseDirectory = databaseDirectory;
 
-    v8 = [v4 calendarDataContainerProvider];
+    calendarDataContainerProvider = [optionsCopy calendarDataContainerProvider];
     calendarDataContainerProvider = v5->_calendarDataContainerProvider;
-    v5->_calendarDataContainerProvider = v8;
+    v5->_calendarDataContainerProvider = calendarDataContainerProvider;
 
-    v5->_unitTesting = [v4 unitTesting];
+    v5->_unitTesting = [optionsCopy unitTesting];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = self->_initOptions == v5[2] && ((databaseDirectory = self->_databaseDirectory, !(databaseDirectory | *(v5 + 2))) || [(NSURL *)databaseDirectory isEqual:?]) && ((calendarDataContainerProvider = self->_calendarDataContainerProvider, !(calendarDataContainerProvider | *(v5 + 3))) || [(CalCalendarDataContainerProvider *)calendarDataContainerProvider isEqual:?]) && self->_unitTesting == *(v5 + 32);
   }
 
@@ -72,9 +72,9 @@
   databaseDirectory = self->_databaseDirectory;
   if (databaseDirectory)
   {
-    v7 = [(NSURL *)databaseDirectory path];
+    path = [(NSURL *)databaseDirectory path];
     v8 = CalDatabaseCopyDirectoryPath();
-    v9 = [v7 isEqualToString:v8];
+    v9 = [path isEqualToString:v8];
 
     if ((v9 & 1) == 0)
     {
@@ -83,8 +83,8 @@
         [v4 appendString:@"; "];
       }
 
-      v10 = [(NSURL *)self->_databaseDirectory path];
-      [v4 appendFormat:@" path = %@", v10];
+      path2 = [(NSURL *)self->_databaseDirectory path];
+      [v4 appendFormat:@" path = %@", path2];
     }
   }
 

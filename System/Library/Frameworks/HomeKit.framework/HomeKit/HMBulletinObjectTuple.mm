@@ -1,24 +1,24 @@
 @interface HMBulletinObjectTuple
-+ (id)tupleWithQueryType:(int64_t)a3 uuidString:(id)a4;
-- (HMBulletinObjectTuple)initWithQueryType:(int64_t)a3 uuidString:(id)a4;
++ (id)tupleWithQueryType:(int64_t)type uuidString:(id)string;
+- (HMBulletinObjectTuple)initWithQueryType:(int64_t)type uuidString:(id)string;
 @end
 
 @implementation HMBulletinObjectTuple
 
-- (HMBulletinObjectTuple)initWithQueryType:(int64_t)a3 uuidString:(id)a4
+- (HMBulletinObjectTuple)initWithQueryType:(int64_t)type uuidString:(id)string
 {
-  v6 = a4;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = HMBulletinObjectTuple;
   v7 = [(HMBulletinObjectTuple *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    if (a3 <= 3)
+    if (type <= 3)
     {
-      if (a3 > 1)
+      if (type > 1)
       {
-        if (a3 == 2)
+        if (type == 2)
         {
           v9 = @"service";
         }
@@ -31,13 +31,13 @@
         goto LABEL_20;
       }
 
-      if (!a3)
+      if (!type)
       {
         v9 = @"home";
         goto LABEL_20;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         v9 = @"accessory";
         goto LABEL_20;
@@ -46,9 +46,9 @@
 
     else
     {
-      if (a3 <= 5)
+      if (type <= 5)
       {
-        if (a3 == 4)
+        if (type == 4)
         {
           v9 = @"invitation";
         }
@@ -61,7 +61,7 @@
         goto LABEL_20;
       }
 
-      switch(a3)
+      switch(type)
       {
         case 6:
           v9 = @"trigger";
@@ -78,7 +78,7 @@ LABEL_20:
           v10 = v7->_queryName;
           v7->_queryName = &v9->isa;
 
-          v11 = [v6 copy];
+          v11 = [stringCopy copy];
 LABEL_21:
           uuidString = v8->_uuidString;
           v8->_uuidString = &v11->isa;
@@ -91,10 +91,10 @@ LABEL_21:
   return v8;
 }
 
-+ (id)tupleWithQueryType:(int64_t)a3 uuidString:(id)a4
++ (id)tupleWithQueryType:(int64_t)type uuidString:(id)string
 {
-  v5 = a4;
-  v6 = [[HMBulletinObjectTuple alloc] initWithQueryType:a3 uuidString:v5];
+  stringCopy = string;
+  v6 = [[HMBulletinObjectTuple alloc] initWithQueryType:type uuidString:stringCopy];
 
   return v6;
 }

@@ -1,13 +1,13 @@
 @interface APAttributionRouter
-- (APAttributionRouter)initWithDevicePipelinesAttribution:(id)a3;
-- (id)actionReceiverForConnection:(id)a3;
+- (APAttributionRouter)initWithDevicePipelinesAttribution:(id)attribution;
+- (id)actionReceiverForConnection:(id)connection;
 @end
 
 @implementation APAttributionRouter
 
-- (APAttributionRouter)initWithDevicePipelinesAttribution:(id)a3
+- (APAttributionRouter)initWithDevicePipelinesAttribution:(id)attribution
 {
-  v5 = a3;
+  attributionCopy = attribution;
   v11.receiver = self;
   v11.super_class = APAttributionRouter;
   v6 = [(APAttributionRouter *)&v11 init];
@@ -23,19 +23,19 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{private}@] Initializing listener for Attribution", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_attribution, a3);
+    objc_storeStrong(&v6->_attribution, attribution);
     [APXPCListenerManager addDelegate:v6];
   }
 
   return v6;
 }
 
-- (id)actionReceiverForConnection:(id)a3
+- (id)actionReceiverForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [APAttributionReceiver alloc];
-  v6 = [(APAttributionRouter *)self attribution];
-  v7 = [(APAttributionReceiver *)v5 initWithConnection:v4 devicePipelinesAttribution:v6];
+  attribution = [(APAttributionRouter *)self attribution];
+  v7 = [(APAttributionReceiver *)v5 initWithConnection:connectionCopy devicePipelinesAttribution:attribution];
 
   return v7;
 }

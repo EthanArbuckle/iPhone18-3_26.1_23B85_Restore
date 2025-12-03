@@ -1,15 +1,15 @@
 @interface CIConfidenceThresholdProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation CIConfidenceThresholdProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v9 = [a3 objectAtIndexedSubscript:{0, a4, a5, a6}];
-  v10 = [a3 objectAtIndexedSubscript:1];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputFocusRect", "CGRectValue"}];
+  v9 = [inputs objectAtIndexedSubscript:{0, arguments, output, error}];
+  v10 = [inputs objectAtIndexedSubscript:1];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputFocusRect", "CGRectValue"}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -264,17 +264,17 @@
   }
 
   v81 = v30 + ((v52 / 127.0) * v80);
-  v82 = [a5 baseAddress];
-  *v82 = v81;
-  v82[1] = v30;
-  *(v82 + 2) = v50;
-  v82[3] = 1.0;
+  baseAddress = [output baseAddress];
+  *baseAddress = v81;
+  baseAddress[1] = v30;
+  *(baseAddress + 2) = v50;
+  baseAddress[3] = 1.0;
   return 1;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v5 = [a4 objectForKeyedSubscript:{@"fullROI", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v5 = [arguments objectForKeyedSubscript:{@"fullROI", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   [v5 CGRectValue];
   result.size.height = v9;

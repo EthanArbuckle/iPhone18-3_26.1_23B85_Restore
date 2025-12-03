@@ -8,24 +8,24 @@
 
 + (BOOL)isDryRun
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"directoriesCleanupDryRun"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"directoriesCleanupDryRun"];
 
   return v3;
 }
 
 + (BOOL)shouldRun
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"directoriesCleanupDone"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"directoriesCleanupDone"];
 
   return v3 ^ 1;
 }
 
 + (void)didRun
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 setBool:1 forKey:@"directoriesCleanupDone"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:@"directoriesCleanupDone"];
 }
 
 @end

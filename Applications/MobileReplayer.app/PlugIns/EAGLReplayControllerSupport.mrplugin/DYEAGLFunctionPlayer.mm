@@ -5,11 +5,11 @@
 - (id).cxx_construct;
 - (id)currentRenderbufferDrawableMap;
 - (unint64_t)_generateDrawableId;
-- (unsigned)_loadShaderWithType:(unsigned int)a3 source:(const char *)a4 dispatcher:(Dispatcher *)a5;
-- (unsigned)_loadSimpleProgramWithVertexSource:(const char *)a3 fragmentSource:(const char *)a4 link:(BOOL)a5 dispatcher:(Dispatcher *)a6;
-- (void)_createIOSurfaceReplacementForFramebuffer:(FramebufferInfo *)a3;
-- (void)_transformCoreAnimationLayer:(id)a3 rotated:(BOOL)a4;
-- (void)createEAGLContextWithAPI:(unint64_t)a3 sharegroupID:(unint64_t)a4 contextID:(unint64_t)a5;
+- (unsigned)_loadShaderWithType:(unsigned int)type source:(const char *)source dispatcher:(Dispatcher *)dispatcher;
+- (unsigned)_loadSimpleProgramWithVertexSource:(const char *)source fragmentSource:(const char *)fragmentSource link:(BOOL)link dispatcher:(Dispatcher *)dispatcher;
+- (void)_createIOSurfaceReplacementForFramebuffer:(FramebufferInfo *)framebuffer;
+- (void)_transformCoreAnimationLayer:(id)layer rotated:(BOOL)rotated;
+- (void)createEAGLContextWithAPI:(unint64_t)i sharegroupID:(unint64_t)d contextID:(unint64_t)iD;
 - (void)executePlatformFunction;
 - (void)initializeNewSharegroupInfoDictionary;
 @end
@@ -30,8 +30,8 @@
   [(DYEAGLFunctionPlayer *)&v8 initializeNewSharegroupInfoDictionary];
   v3 = OBJC_IVAR___DYGLFunctionPlayer__sharegroup_dict;
   v4 = *&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__sharegroup_dict];
-  v5 = [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] sharegroup];
-  [v4 setObject:v5 forKey:@"sharegroup"];
+  sharegroup = [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] sharegroup];
+  [v4 setObject:sharegroup forKey:@"sharegroup"];
 
   v6 = *&self->DYGLFunctionPlayer_opaque[v3];
   v7 = +[NSMutableDictionary dictionary];
@@ -53,12 +53,12 @@
   return v3;
 }
 
-- (void)createEAGLContextWithAPI:(unint64_t)a3 sharegroupID:(unint64_t)a4 contextID:(unint64_t)a5
+- (void)createEAGLContextWithAPI:(unint64_t)i sharegroupID:(unint64_t)d contextID:(unint64_t)iD
 {
-  v12 = a5;
-  if (sub_5308(&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__contextInfoMap], &v12))
+  iDCopy = iD;
+  if (sub_5308(&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__contextInfoMap], &iDCopy))
   {
-    [(DYEAGLFunctionPlayer *)self setCurrentContext:v12];
+    [(DYEAGLFunctionPlayer *)self setCurrentContext:iDCopy];
     if (!self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__recreateContexts])
     {
       return;
@@ -67,21 +67,21 @@
     [(DYEAGLFunctionPlayer *)self deleteCurrentContext];
   }
 
-  v8 = [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__sharegroupMap] objectForIntKey:a4];
+  v8 = [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__sharegroupMap] objectForIntKey:d];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 objectForKey:@"sharegroup"];
-    v11 = [[EAGLContext alloc] initWithAPI:a3 sharegroup:v10];
+    v11 = [[EAGLContext alloc] initWithAPI:i sharegroup:v10];
   }
 
   else
   {
-    v11 = [[EAGLContext alloc] initWithAPI:a3];
+    v11 = [[EAGLContext alloc] initWithAPI:i];
   }
 
-  [(DYEAGLFunctionPlayer *)self updateCurrentStateWithNewContext:v11 contextID:v12 sharegroupID:a4];
-  *(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__currentContextInfo] + 104) = a3;
+  [(DYEAGLFunctionPlayer *)self updateCurrentStateWithNewContext:v11 contextID:iDCopy sharegroupID:d];
+  *(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__currentContextInfo] + 104) = i;
 }
 
 - (void)executePlatformFunction
@@ -182,25 +182,25 @@
           {
             v46 = &kEAGLColorFormatRGB565;
 LABEL_89:
-            v22 = *v46;
+            currentRenderbufferDrawableMap3 = *v46;
             v66 = [NSNumber numberWithBool:v38];
-            v59 = [NSDictionary dictionaryWithObjectsAndKeys:v66, kEAGLDrawablePropertyRetainedBacking, v22, kEAGLDrawablePropertyColorFormat, 0];
+            v59 = [NSDictionary dictionaryWithObjectsAndKeys:v66, kEAGLDrawablePropertyRetainedBacking, currentRenderbufferDrawableMap3, kEAGLDrawablePropertyColorFormat, 0];
 
-            v67 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-            v68 = [v67 layerForID:v37];
+            strongLayerManager = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+            v68 = [strongLayerManager layerForID:v37];
 
             if (v68)
             {
-              v69 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-              [v69 updateLayer:v68 contentRect:v59 contentsScale:v42.n64_f64[0] properties:{v43.n64_f64[0], v44.n64_f64[0], v45.n64_f64[0], v40}];
+              strongLayerManager2 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+              [strongLayerManager2 updateLayer:v68 contentRect:v59 contentsScale:v42.n64_f64[0] properties:{v43.n64_f64[0], v44.n64_f64[0], v45.n64_f64[0], v40}];
 
               v62 = v68;
             }
 
             else
             {
-              v70 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-              v62 = [v70 createLayerWithID:v37 contentRect:v59 contentsScale:0 properties:v42.n64_f64[0] isCoreAnimationSurface:{v43.n64_f64[0], v44.n64_f64[0], v45.n64_f64[0], v40}];
+              strongLayerManager3 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+              v62 = [strongLayerManager3 createLayerWithID:v37 contentRect:v59 contentsScale:0 properties:v42.n64_f64[0] isCoreAnimationSurface:{v43.n64_f64[0], v44.n64_f64[0], v45.n64_f64[0], v40}];
 
               if (!v62)
               {
@@ -255,22 +255,22 @@ LABEL_66:
         LODWORD(v75[0]) = 0;
         (*(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__disp] + 832))(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__gli_ctx], renderbuffer_binding_enum, v75);
         v19 = DYGetGLGuestAppClient();
-        v20 = [v19 traceMode];
+        traceMode = [v19 traceMode];
 
-        if (v20 == 6)
+        if (traceMode == 6)
         {
           return;
         }
 
-        v21 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-        v22 = [v21 layerForID:v16];
+        strongLayerManager4 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+        currentRenderbufferDrawableMap3 = [strongLayerManager4 layerForID:v16];
 
-        [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] renderbufferStorage:v17 fromDrawable:v22];
+        [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] renderbufferStorage:v17 fromDrawable:currentRenderbufferDrawableMap3];
         +[CATransaction flush];
-        v23 = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
+        currentRenderbufferDrawableMap = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
         v24 = [NSNumber numberWithUnsignedLongLong:v16];
         v25 = [NSNumber numberWithUnsignedInt:LODWORD(v75[0])];
-        [v23 setObject:v24 forKey:v25];
+        [currentRenderbufferDrawableMap setObject:v24 forKey:v25];
 
 LABEL_96:
         return;
@@ -324,16 +324,16 @@ LABEL_28:
       (*(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__disp] + 832))(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__gli_ctx], v28, v75);
       if (LODWORD(v75[0]))
       {
-        v29 = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
+        currentRenderbufferDrawableMap2 = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
         v30 = [NSNumber numberWithUnsignedInt:LODWORD(v75[0])];
-        v31 = [v29 objectForKey:v30];
-        v32 = [v31 unsignedLongLongValue];
+        v31 = [currentRenderbufferDrawableMap2 objectForKey:v30];
+        unsignedLongLongValue = [v31 unsignedLongLongValue];
 
-        v33 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-        v34 = [v33 layerForID:v32];
+        strongLayerManager5 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+        v34 = [strongLayerManager5 layerForID:unsignedLongLongValue];
 
-        v35 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-        [v35 prepareLayerForPresent:v34];
+        strongLayerManager6 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+        [strongLayerManager6 prepareLayerForPresent:v34];
       }
 
       switch(v6)
@@ -363,8 +363,8 @@ LABEL_28:
       goto LABEL_37;
     }
 
-    v73 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-    [v73 setAnchorPoint:v4 + 72 forLayerID:{sub_DA80(v5, 0)}];
+    strongLayerManager7 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+    [strongLayerManager7 setAnchorPoint:v4 + 72 forLayerID:{sub_DA80(v5, 0)}];
     goto LABEL_63;
   }
 
@@ -382,14 +382,14 @@ LABEL_28:
 
       *&v75[0] = v53;
       *(&v75[0] + 1) = v54;
-      v55 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-      [v55 setTransform:v4 + 72 forLayerID:sub_DA80(v5 withScreenToLayerScale:{0), v75}];
+      strongLayerManager8 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+      [strongLayerManager8 setTransform:v4 + 72 forLayerID:sub_DA80(v5 withScreenToLayerScale:{0), v75}];
 
       return;
     }
 
-    v73 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-    [v73 setPosition:v4 + 72 forLayerID:{sub_DA80(v5, 0)}];
+    strongLayerManager7 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+    [strongLayerManager7 setPosition:v4 + 72 forLayerID:{sub_DA80(v5, 0)}];
 LABEL_63:
 
     return;
@@ -403,9 +403,9 @@ LABEL_63:
     }
 
     v50 = DYGetGLGuestAppClient();
-    v51 = [v50 traceMode];
+    traceMode2 = [v50 traceMode];
 
-    if (v51 != 6)
+    if (traceMode2 != 6)
     {
       v56 = sub_63B0((v8 + 120), (v8 + 112));
       if ((*(*&self->DYGLFunctionPlayer_opaque[v3] + 4) & 4) != 0)
@@ -422,18 +422,18 @@ LABEL_63:
       }
 
       v57 = *(v56 + 5);
-      v22 = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
+      currentRenderbufferDrawableMap3 = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
       v58 = [NSNumber numberWithUnsignedInt:v57];
-      v59 = [v22 objectForKeyedSubscript:v58];
+      v59 = [currentRenderbufferDrawableMap3 objectForKeyedSubscript:v58];
 
       if (!v59)
       {
         __assert_rtn("[DYEAGLFunctionPlayer executePlatformFunction]", &unk_1FD61, 0, "drawable_obj");
       }
 
-      v60 = [v59 unsignedLongLongValue];
-      v61 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-      v62 = [v61 layerForID:v60];
+      unsignedLongLongValue2 = [v59 unsignedLongLongValue];
+      strongLayerManager9 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+      v62 = [strongLayerManager9 layerForID:unsignedLongLongValue2];
 
       if (!v62)
       {
@@ -445,8 +445,8 @@ LABEL_63:
       v64 = OBJC_IVAR___DYGLFunctionPlayer__gli_ctx;
       (*(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__disp] + 832))(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__gli_ctx], 36007, v75);
       (*(*&self->DYGLFunctionPlayer_opaque[v63] + 5328))(*&self->DYGLFunctionPlayer_opaque[v64], 36161, v57);
-      v65 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-      [v65 prepareLayerForPresent:v62];
+      strongLayerManager10 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+      [strongLayerManager10 prepareLayerForPresent:v62];
 
       [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] presentRenderbuffer:36161];
       (*(*&self->DYGLFunctionPlayer_opaque[v63] + 5328))(*&self->DYGLFunctionPlayer_opaque[v64], 36161, LODWORD(v75[0]));
@@ -490,8 +490,8 @@ LABEL_63:
           }
         }
 
-        v14 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-        [v14 deleteLayer:v12[2]];
+        strongLayerManager11 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+        [strongLayerManager11 deleteLayer:v12[2]];
 
         v15 = *v12;
         sub_64A8((v8 + 200), v12, v75);
@@ -728,13 +728,13 @@ LABEL_38:
           if (*(v56 + 5))
           {
             v57 = v56;
-            v58 = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
+            currentRenderbufferDrawableMap = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
             v59 = [NSNumber numberWithUnsignedInt:*(v57 + 5)];
-            v60 = [v58 objectForKeyedSubscript:v59];
+            v60 = [currentRenderbufferDrawableMap objectForKeyedSubscript:v59];
 
-            v61 = [v60 unsignedLongLongValue];
-            v62 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-            v63 = [v62 layerForID:v61];
+            unsignedLongLongValue = [v60 unsignedLongLongValue];
+            strongLayerManager = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+            v63 = [strongLayerManager layerForID:unsignedLongLongValue];
 
             [(DYEAGLFunctionPlayer *)self _transformCoreAnimationLayer:v63 rotated:v54 == 35453];
           }
@@ -822,17 +822,17 @@ LABEL_38:
   return nextIOSurfaceDrawableId;
 }
 
-- (void)_createIOSurfaceReplacementForFramebuffer:(FramebufferInfo *)a3
+- (void)_createIOSurfaceReplacementForFramebuffer:(FramebufferInfo *)framebuffer
 {
   v5 = *&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__function];
   v6 = *v5[9];
   v7 = *v5[15];
   v8 = *v5[18];
   v9 = (v8 + 1000000);
-  v10 = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
+  currentRenderbufferDrawableMap = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
   v11 = [NSNumber numberWithUnsignedInt:v9];
   v31 = v6;
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [currentRenderbufferDrawableMap objectForKeyedSubscript:v11];
 
   v13 = OBJC_IVAR___DYGLFunctionPlayer__disp;
   v14 = OBJC_IVAR___DYGLFunctionPlayer__gli_ctx;
@@ -845,26 +845,26 @@ LABEL_38:
   {
     v37 = 0;
     v36 = 0;
-    v30 = v10;
+    v30 = currentRenderbufferDrawableMap;
     (*(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__disp] + 832))(*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__gli_ctx], 32873, &v37 + 4);
     (*(*&self->DYGLFunctionPlayer_opaque[v13] + 40))(*&self->DYGLFunctionPlayer_opaque[v14], 3553, v8);
     (*(*&self->DYGLFunctionPlayer_opaque[v13] + 1000))(*&self->DYGLFunctionPlayer_opaque[v14], v7, 0, 4096, &v37);
     (*(*&self->DYGLFunctionPlayer_opaque[v13] + 1000))(*&self->DYGLFunctionPlayer_opaque[v14], v7, 0, 4097, &v36);
     (*(*&self->DYGLFunctionPlayer_opaque[v13] + 40))(*&self->DYGLFunctionPlayer_opaque[v14], 3553, HIDWORD(v37));
-    v16 = [(DYEAGLFunctionPlayer *)self _generateDrawableId];
-    v17 = [NSNumber numberWithUnsignedLongLong:v16];
+    _generateDrawableId = [(DYEAGLFunctionPlayer *)self _generateDrawableId];
+    v17 = [NSNumber numberWithUnsignedLongLong:_generateDrawableId];
     v18 = [NSNumber numberWithUnsignedInt:v9];
-    [v10 setObject:v17 forKeyedSubscript:v18];
+    [currentRenderbufferDrawableMap setObject:v17 forKeyedSubscript:v18];
 
-    v19 = [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__captureSessionInfo] deviceInfo];
+    deviceInfo = [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__captureSessionInfo] deviceInfo];
     v33 = 0;
     v34 = 0;
     v35 = 0;
-    v27 = a3;
-    v28 = v19;
-    if (v19)
+    framebufferCopy = framebuffer;
+    v28 = deviceInfo;
+    if (deviceInfo)
     {
-      [v19 mainScreenDescriptor];
+      [deviceInfo mainScreenDescriptor];
       v20 = HIDWORD(v34);
       v21 = v35;
       v22 = v34;
@@ -877,19 +877,19 @@ LABEL_38:
       v22 = 0;
     }
 
-    v23 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-    v29 = [v23 layerForID:v16];
+    strongLayerManager = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+    v29 = [strongLayerManager layerForID:_generateDrawableId];
 
     v24 = [NSNumber numberWithBool:1];
     v25 = [NSDictionary dictionaryWithObjectsAndKeys:v24, kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, 0];
 
-    v26 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
-    v15 = [v26 createLayerWithID:v16 contentRect:v25 contentsScale:1 properties:0.0 isCoreAnimationSurface:{0.0, (v22 / v21), (v20 / v21), v21}];
+    strongLayerManager2 = [(DYEAGLFunctionPlayer *)self strongLayerManager];
+    v15 = [strongLayerManager2 createLayerWithID:_generateDrawableId contentRect:v25 contentsScale:1 properties:0.0 isCoreAnimationSurface:{0.0, (v22 / v21), (v20 / v21), v21}];
 
-    a3 = v27;
+    framebuffer = framebufferCopy;
     v12 = 0;
-    v10 = v30;
-    [(DYEAGLFunctionPlayer *)self _transformCoreAnimationLayer:v15 rotated:v27->var1 == 35453];
+    currentRenderbufferDrawableMap = v30;
+    [(DYEAGLFunctionPlayer *)self _transformCoreAnimationLayer:v15 rotated:framebufferCopy->var1 == 35453];
     v32 = 0;
     (*(*&self->DYGLFunctionPlayer_opaque[v13] + 832))(*&self->DYGLFunctionPlayer_opaque[v14], 36007, &v32);
     (*(*&self->DYGLFunctionPlayer_opaque[v13] + 5328))(*&self->DYGLFunctionPlayer_opaque[v14], 36161, v9);
@@ -899,32 +899,32 @@ LABEL_38:
   }
 
   (*(*&self->DYGLFunctionPlayer_opaque[v13] + 5432))(*&self->DYGLFunctionPlayer_opaque[v14], v31, 36064, 36161, v9);
-  a3->var0 = v9;
+  framebuffer->var0 = v9;
 }
 
-- (unsigned)_loadShaderWithType:(unsigned int)a3 source:(const char *)a4 dispatcher:(Dispatcher *)a5
+- (unsigned)_loadShaderWithType:(unsigned int)type source:(const char *)source dispatcher:(Dispatcher *)dispatcher
 {
-  v12 = a4;
-  v6 = *a5->var0;
+  sourceCopy = source;
+  v6 = *dispatcher->var0;
   v7 = DYCreatePrivateGLShader();
   if (v7)
   {
     size_4 = 0;
-    (a5->var1->shader_source_ARB)(*(a5->var0 + 2), v7, 1, &v12, 0);
-    (a5->var1->compile_shader_ARB)(*(a5->var0 + 2), v7);
-    (a5->var1->get_shaderiv)(*(a5->var0 + 2), v7, 35713, &size_4);
+    (dispatcher->var1->shader_source_ARB)(*(dispatcher->var0 + 2), v7, 1, &sourceCopy, 0);
+    (dispatcher->var1->compile_shader_ARB)(*(dispatcher->var0 + 2), v7);
+    (dispatcher->var1->get_shaderiv)(*(dispatcher->var0 + 2), v7, 35713, &size_4);
     if (!size_4)
     {
       size = 0;
-      (a5->var1->get_shaderiv)(*(a5->var0 + 2), v7, 35716, &size);
+      (dispatcher->var1->get_shaderiv)(*(dispatcher->var0 + 2), v7, 35716, &size);
       if (size >= 2)
       {
         v8 = malloc_type_malloc(size, 0x100004077774924uLL);
-        (a5->var1->get_shader_info_log)(*(a5->var0 + 2), v7, size, 0, v8);
+        (dispatcher->var1->get_shader_info_log)(*(dispatcher->var0 + 2), v7, size, 0, v8);
         free(v8);
       }
 
-      (a5->var1->delete_object_ARB)(*(a5->var0 + 2), v7);
+      (dispatcher->var1->delete_object_ARB)(*(dispatcher->var0 + 2), v7);
       LODWORD(v7) = 0;
     }
   }
@@ -932,60 +932,60 @@ LABEL_38:
   return v7;
 }
 
-- (unsigned)_loadSimpleProgramWithVertexSource:(const char *)a3 fragmentSource:(const char *)a4 link:(BOOL)a5 dispatcher:(Dispatcher *)a6
+- (unsigned)_loadSimpleProgramWithVertexSource:(const char *)source fragmentSource:(const char *)fragmentSource link:(BOOL)link dispatcher:(Dispatcher *)dispatcher
 {
-  v7 = a5;
-  v10 = [(DYEAGLFunctionPlayer *)self _loadShaderWithType:35633 source:a3 dispatcher:a6];
+  linkCopy = link;
+  v10 = [(DYEAGLFunctionPlayer *)self _loadShaderWithType:35633 source:source dispatcher:dispatcher];
   if (!v10)
   {
     return 0;
   }
 
   v11 = v10;
-  v12 = [(DYEAGLFunctionPlayer *)self _loadShaderWithType:35632 source:a4 dispatcher:a6];
+  v12 = [(DYEAGLFunctionPlayer *)self _loadShaderWithType:35632 source:fragmentSource dispatcher:dispatcher];
   if (!v12)
   {
-    (a6->var1->delete_object_ARB)(*(a6->var0 + 2), v11);
+    (dispatcher->var1->delete_object_ARB)(*(dispatcher->var0 + 2), v11);
     return 0;
   }
 
   v13 = v12;
-  v14 = *a6->var0;
+  v14 = *dispatcher->var0;
   v15 = DYCreatePrivateGLProgram();
-  var1 = a6->var1;
-  v17 = *(a6->var0 + 2);
+  var1 = dispatcher->var1;
+  v17 = *(dispatcher->var0 + 2);
   if (!v15)
   {
     (var1->delete_object_ARB)(v17, v11);
-    (a6->var1->delete_object_ARB)(*(a6->var0 + 2), v13);
+    (dispatcher->var1->delete_object_ARB)(*(dispatcher->var0 + 2), v13);
     return v15;
   }
 
   (var1->attach_object_ARB)(v17, v15, v11);
-  (a6->var1->attach_object_ARB)(*(a6->var0 + 2), v15, v13);
-  (a6->var1->delete_object_ARB)(*(a6->var0 + 2), v11);
-  (a6->var1->delete_object_ARB)(*(a6->var0 + 2), v13);
-  if (v7 && ![(DYEAGLFunctionPlayer *)self _linkProgram:v15 dispatcher:a6])
+  (dispatcher->var1->attach_object_ARB)(*(dispatcher->var0 + 2), v15, v13);
+  (dispatcher->var1->delete_object_ARB)(*(dispatcher->var0 + 2), v11);
+  (dispatcher->var1->delete_object_ARB)(*(dispatcher->var0 + 2), v13);
+  if (linkCopy && ![(DYEAGLFunctionPlayer *)self _linkProgram:v15 dispatcher:dispatcher])
   {
-    (a6->var1->delete_object_ARB)(*(a6->var0 + 2), v15);
+    (dispatcher->var1->delete_object_ARB)(*(dispatcher->var0 + 2), v15);
     return 0;
   }
 
   return v15;
 }
 
-- (void)_transformCoreAnimationLayer:(id)a3 rotated:(BOOL)a4
+- (void)_transformCoreAnimationLayer:(id)layer rotated:(BOOL)rotated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__captureSessionInfo] deviceInfo];
-  v8 = v7;
+  rotatedCopy = rotated;
+  layerCopy = layer;
+  deviceInfo = [*&self->DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__captureSessionInfo] deviceInfo];
+  v8 = deviceInfo;
   v16 = 0.0;
   v17 = 0;
   v18 = 0;
-  if (v7)
+  if (deviceInfo)
   {
-    [v7 mainScreenDescriptor];
+    [deviceInfo mainScreenDescriptor];
     v9 = v16;
   }
 
@@ -1005,7 +1005,7 @@ LABEL_38:
   v19 = v15;
   CGAffineTransformScale(&v14, &v19, 1.0, -1.0);
   v15 = v14;
-  if (v4)
+  if (rotatedCopy)
   {
     v19 = v15;
     CGAffineTransformScale(&v14, &v19, -1.0, -1.0);
@@ -1017,8 +1017,8 @@ LABEL_38:
   v13 = v17;
   sub_A3F4(&v19, 1, 1);
   v14 = v15;
-  [v6 setAffineTransform:&v14];
-  [v6 setFrame:{0.0, 0.0, (v13 / v11), (v12 / v11)}];
+  [layerCopy setAffineTransform:&v14];
+  [layerCopy setFrame:{0.0, 0.0, (v13 / v11), (v12 / v11)}];
   sub_A4C0(&v19);
 }
 

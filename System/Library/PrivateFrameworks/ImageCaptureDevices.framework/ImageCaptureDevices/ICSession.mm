@@ -1,24 +1,24 @@
 @interface ICSession
-- (BOOL)interestedInNotification:(id)a3;
-- (ICSession)initWithConnection:(id)a3;
+- (BOOL)interestedInNotification:(id)notification;
+- (ICSession)initWithConnection:(id)connection;
 - (int)pid;
-- (void)addNotifications:(id)a3;
+- (void)addNotifications:(id)notifications;
 - (void)dealloc;
-- (void)remNotifications:(id)a3;
+- (void)remNotifications:(id)notifications;
 @end
 
 @implementation ICSession
 
-- (ICSession)initWithConnection:(id)a3
+- (ICSession)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = ICSession;
   v5 = [(ICSession *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(ICSession *)v5 setConnection:v4];
+    [(ICSession *)v5 setConnection:connectionCopy];
     [(ICSession *)v6 setOpenSession:0];
     [(ICSession *)v6 setObjectHandle:0];
     v7 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -61,30 +61,30 @@
   [(ICSession *)&v5 dealloc];
 }
 
-- (BOOL)interestedInNotification:(id)a3
+- (BOOL)interestedInNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   os_unfair_lock_lock(&self->_resourceLock);
-  v5 = [(NSMutableArray *)self->_notifications containsObject:v4];
+  v5 = [(NSMutableArray *)self->_notifications containsObject:notificationCopy];
 
   os_unfair_lock_unlock(&self->_resourceLock);
   return v5;
 }
 
-- (void)addNotifications:(id)a3
+- (void)addNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock(&self->_resourceLock);
-  [(NSMutableArray *)self->_notifications addObjectsFromArray:v4];
+  [(NSMutableArray *)self->_notifications addObjectsFromArray:notificationsCopy];
 
   os_unfair_lock_unlock(&self->_resourceLock);
 }
 
-- (void)remNotifications:(id)a3
+- (void)remNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock(&self->_resourceLock);
-  [(NSMutableArray *)self->_notifications removeObjectsInArray:v4];
+  [(NSMutableArray *)self->_notifications removeObjectsInArray:notificationsCopy];
 
   os_unfair_lock_unlock(&self->_resourceLock);
 }

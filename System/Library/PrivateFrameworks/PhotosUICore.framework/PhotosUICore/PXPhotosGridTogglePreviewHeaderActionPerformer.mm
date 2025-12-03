@@ -1,7 +1,7 @@
 @interface PXPhotosGridTogglePreviewHeaderActionPerformer
 - (NSString)activitySystemImageName;
 - (NSString)activityType;
-- (PXPhotosGridTogglePreviewHeaderActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4;
+- (PXPhotosGridTogglePreviewHeaderActionPerformer)initWithViewModel:(id)model actionType:(id)type;
 - (int64_t)menuElementState;
 @end
 
@@ -24,18 +24,18 @@
 
 - (int64_t)menuElementState
 {
-  v2 = self;
-  v3 = [(PXPhotosGridActionPerformer *)v2 viewModel];
-  v4 = [(PXPhotosViewModel *)v3 allowsPreviewHeader];
+  selfCopy = self;
+  viewModel = [(PXPhotosGridActionPerformer *)selfCopy viewModel];
+  allowsPreviewHeader = [(PXPhotosViewModel *)viewModel allowsPreviewHeader];
 
-  return v4;
+  return allowsPreviewHeader;
 }
 
-- (PXPhotosGridTogglePreviewHeaderActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4
+- (PXPhotosGridTogglePreviewHeaderActionPerformer)initWithViewModel:(id)model actionType:(id)type
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PhotosGridTogglePreviewHeaderActionPerformer();
-  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:a3 actionType:a4];
+  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:model actionType:type];
 }
 
 @end

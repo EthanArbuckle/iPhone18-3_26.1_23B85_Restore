@@ -1,19 +1,19 @@
 @interface COSContextualVolumeProfileViewController
-- (COSContextualVolumeProfileViewController)initWithCoder:(id)a3;
-- (COSContextualVolumeProfileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (COSContextualVolumeProfileViewController)initWithCoder:(id)coder;
+- (COSContextualVolumeProfileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSNumber)userProfile;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setUserProfile:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setUserProfile:(id)profile;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSContextualVolumeProfileViewController
 
-- (COSContextualVolumeProfileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (COSContextualVolumeProfileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -25,11 +25,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100154888(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100154888(v5, v7, bundle);
 }
 
-- (COSContextualVolumeProfileViewController)initWithCoder:(id)a3
+- (COSContextualVolumeProfileViewController)initWithCoder:(id)coder
 {
   *&self->BPSListController_opaque[OBJC_IVAR___COSContextualVolumeProfileViewController____lazy_storage___controller] = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -39,24 +39,24 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(v3, v2);
+  CFNotificationCenterRemoveEveryObserver(v3, selfCopy);
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for ContextualVolumeProfileViewController();
   [(COSContextualVolumeProfileViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100154B34(a3);
+  selfCopy = self;
+  sub_100154B34(appear);
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015507C();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -66,7 +66,7 @@
 
 - (NSNumber)userProfile
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015587C();
   (*((swift_isaMask & *v3) + 0x90))();
 
@@ -75,11 +75,11 @@
   return v4;
 }
 
-- (void)setUserProfile:(id)a3
+- (void)setUserProfile:(id)profile
 {
-  v4 = a3;
-  v9 = self;
-  [v4 integerValue];
+  profileCopy = profile;
+  selfCopy = self;
+  [profileCopy integerValue];
   v5 = ConsiderateVolumeProfile.init(rawValue:)();
   if ((v6 & 1) == 0)
   {
@@ -89,16 +89,16 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_1001559D4(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1001559D4(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

@@ -1,17 +1,17 @@
 @interface BMAppleIntelligenceAvailability
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppleIntelligenceAvailability)initWithAppleIntelligenceUseCase:(id)a3 appleIntelligenceDiffusionUseCase:(id)a4 isAppleIntelligenceToggleEnabled:(id)a5 hasEngagedWithAppleIntelligenceCFU:(id)a6 datePostedAppleIntelligenceCFU:(id)a7 languages:(id)a8 region:(int)a9;
-- (BMAppleIntelligenceAvailability)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMAppleIntelligenceAvailability)initWithAppleIntelligenceUseCase:(id)case appleIntelligenceDiffusionUseCase:(id)useCase isAppleIntelligenceToggleEnabled:(id)enabled hasEngagedWithAppleIntelligenceCFU:(id)u datePostedAppleIntelligenceCFU:(id)fU languages:(id)languages region:(int)region;
+- (BMAppleIntelligenceAvailability)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)datePostedAppleIntelligenceCFU;
 - (NSString)description;
 - (id)_languagesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppleIntelligenceAvailability
@@ -40,25 +40,25 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceUseCase];
-    v7 = [v5 appleIntelligenceUseCase];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    appleIntelligenceUseCase = [(BMAppleIntelligenceAvailability *)self appleIntelligenceUseCase];
+    appleIntelligenceUseCase2 = [v5 appleIntelligenceUseCase];
+    v8 = appleIntelligenceUseCase2;
+    if (appleIntelligenceUseCase == appleIntelligenceUseCase2)
     {
     }
 
     else
     {
-      v9 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceUseCase];
-      v10 = [v5 appleIntelligenceUseCase];
-      v11 = [v9 isEqual:v10];
+      appleIntelligenceUseCase3 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceUseCase];
+      appleIntelligenceUseCase4 = [v5 appleIntelligenceUseCase];
+      v11 = [appleIntelligenceUseCase3 isEqual:appleIntelligenceUseCase4];
 
       if (!v11)
       {
@@ -66,18 +66,18 @@
       }
     }
 
-    v13 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceDiffusionUseCase];
-    v14 = [v5 appleIntelligenceDiffusionUseCase];
-    v15 = v14;
-    if (v13 == v14)
+    appleIntelligenceDiffusionUseCase = [(BMAppleIntelligenceAvailability *)self appleIntelligenceDiffusionUseCase];
+    appleIntelligenceDiffusionUseCase2 = [v5 appleIntelligenceDiffusionUseCase];
+    v15 = appleIntelligenceDiffusionUseCase2;
+    if (appleIntelligenceDiffusionUseCase == appleIntelligenceDiffusionUseCase2)
     {
     }
 
     else
     {
-      v16 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceDiffusionUseCase];
-      v17 = [v5 appleIntelligenceDiffusionUseCase];
-      v18 = [v16 isEqual:v17];
+      appleIntelligenceDiffusionUseCase3 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceDiffusionUseCase];
+      appleIntelligenceDiffusionUseCase4 = [v5 appleIntelligenceDiffusionUseCase];
+      v18 = [appleIntelligenceDiffusionUseCase3 isEqual:appleIntelligenceDiffusionUseCase4];
 
       if (!v18)
       {
@@ -97,8 +97,8 @@
         goto LABEL_27;
       }
 
-      v19 = [(BMAppleIntelligenceAvailability *)self isAppleIntelligenceToggleEnabled];
-      if (v19 != [v5 isAppleIntelligenceToggleEnabled])
+      isAppleIntelligenceToggleEnabled = [(BMAppleIntelligenceAvailability *)self isAppleIntelligenceToggleEnabled];
+      if (isAppleIntelligenceToggleEnabled != [v5 isAppleIntelligenceToggleEnabled])
       {
         goto LABEL_27;
       }
@@ -116,25 +116,25 @@
         goto LABEL_27;
       }
 
-      v20 = [(BMAppleIntelligenceAvailability *)self hasEngagedWithAppleIntelligenceCFU];
-      if (v20 != [v5 hasEngagedWithAppleIntelligenceCFU])
+      hasEngagedWithAppleIntelligenceCFU = [(BMAppleIntelligenceAvailability *)self hasEngagedWithAppleIntelligenceCFU];
+      if (hasEngagedWithAppleIntelligenceCFU != [v5 hasEngagedWithAppleIntelligenceCFU])
       {
         goto LABEL_27;
       }
     }
 
-    v21 = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
-    v22 = [v5 datePostedAppleIntelligenceCFU];
-    v23 = v22;
-    if (v21 == v22)
+    datePostedAppleIntelligenceCFU = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
+    datePostedAppleIntelligenceCFU2 = [v5 datePostedAppleIntelligenceCFU];
+    v23 = datePostedAppleIntelligenceCFU2;
+    if (datePostedAppleIntelligenceCFU == datePostedAppleIntelligenceCFU2)
     {
     }
 
     else
     {
-      v24 = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
-      v25 = [v5 datePostedAppleIntelligenceCFU];
-      v26 = [v24 isEqual:v25];
+      datePostedAppleIntelligenceCFU3 = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
+      datePostedAppleIntelligenceCFU4 = [v5 datePostedAppleIntelligenceCFU];
+      v26 = [datePostedAppleIntelligenceCFU3 isEqual:datePostedAppleIntelligenceCFU4];
 
       if (!v26)
       {
@@ -142,18 +142,18 @@
       }
     }
 
-    v27 = [(BMAppleIntelligenceAvailability *)self languages];
-    v28 = [v5 languages];
-    v29 = v28;
-    if (v27 == v28)
+    languages = [(BMAppleIntelligenceAvailability *)self languages];
+    languages2 = [v5 languages];
+    v29 = languages2;
+    if (languages == languages2)
     {
     }
 
     else
     {
-      v30 = [(BMAppleIntelligenceAvailability *)self languages];
-      v31 = [v5 languages];
-      v32 = [v30 isEqual:v31];
+      languages3 = [(BMAppleIntelligenceAvailability *)self languages];
+      languages4 = [v5 languages];
+      v32 = [languages3 isEqual:languages4];
 
       if (!v32)
       {
@@ -165,8 +165,8 @@ LABEL_28:
       }
     }
 
-    v34 = [(BMAppleIntelligenceAvailability *)self region];
-    v12 = v34 == [v5 region];
+    region = [(BMAppleIntelligenceAvailability *)self region];
+    v12 = region == [v5 region];
     goto LABEL_28;
   }
 
@@ -196,11 +196,11 @@ LABEL_29:
 - (id)jsonDictionary
 {
   v30[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceUseCase];
-  v4 = [v3 jsonDictionary];
+  appleIntelligenceUseCase = [(BMAppleIntelligenceAvailability *)self appleIntelligenceUseCase];
+  jsonDictionary = [appleIntelligenceUseCase jsonDictionary];
 
-  v5 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceDiffusionUseCase];
-  v6 = [v5 jsonDictionary];
+  appleIntelligenceDiffusionUseCase = [(BMAppleIntelligenceAvailability *)self appleIntelligenceDiffusionUseCase];
+  jsonDictionary2 = [appleIntelligenceDiffusionUseCase jsonDictionary];
 
   if ([(BMAppleIntelligenceAvailability *)self hasIsAppleIntelligenceToggleEnabled])
   {
@@ -222,12 +222,12 @@ LABEL_29:
     v7 = 0;
   }
 
-  v8 = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
-  if (v8)
+  datePostedAppleIntelligenceCFU = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
+  if (datePostedAppleIntelligenceCFU)
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
-    [v10 timeIntervalSince1970];
+    datePostedAppleIntelligenceCFU2 = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
+    [datePostedAppleIntelligenceCFU2 timeIntervalSince1970];
     v11 = [v9 numberWithDouble:?];
   }
 
@@ -236,72 +236,72 @@ LABEL_29:
     v11 = 0;
   }
 
-  v12 = [(BMAppleIntelligenceAvailability *)self _languagesJSONArray];
+  _languagesJSONArray = [(BMAppleIntelligenceAvailability *)self _languagesJSONArray];
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAppleIntelligenceAvailability region](self, "region")}];
   v29[0] = @"appleIntelligenceUseCase";
-  v14 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v14;
-  v30[0] = v14;
+  v25 = null;
+  v30[0] = null;
   v29[1] = @"appleIntelligenceDiffusionUseCase";
-  v15 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v15;
-  v30[1] = v15;
+  v24 = null2;
+  v30[1] = null2;
   v29[2] = @"isAppleIntelligenceToggleEnabled";
-  v16 = v28;
+  null3 = v28;
   if (!v28)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v4;
-  v30[2] = v16;
+  v27 = jsonDictionary;
+  v30[2] = null3;
   v29[3] = @"hasEngagedWithAppleIntelligenceCFU";
-  v17 = v7;
+  null4 = v7;
   if (!v7)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v6;
-  v30[3] = v17;
+  v26 = jsonDictionary2;
+  v30[3] = null4;
   v29[4] = @"datePostedAppleIntelligenceCFU";
-  v18 = v11;
+  null5 = v11;
   if (!v11)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[4] = v18;
+  v30[4] = null5;
   v29[5] = @"languages";
-  v19 = v12;
-  if (!v12)
+  null6 = _languagesJSONArray;
+  if (!_languagesJSONArray)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[5] = v19;
+  v30[5] = null6;
   v29[6] = @"region";
-  v20 = v13;
+  null7 = v13;
   if (!v13)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[6] = v20;
+  v30[6] = null7;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:7];
   if (v13)
   {
-    if (v12)
+    if (_languagesJSONArray)
     {
       goto LABEL_26;
     }
@@ -316,7 +316,7 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (!v12)
+  if (!_languagesJSONArray)
   {
     goto LABEL_36;
   }
@@ -378,8 +378,8 @@ LABEL_32:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMAppleIntelligenceAvailability *)self languages];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  languages = [(BMAppleIntelligenceAvailability *)self languages];
+  v5 = [languages countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -390,13 +390,13 @@ LABEL_32:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(languages);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [languages countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -407,16 +407,16 @@ LABEL_32:
   return v3;
 }
 
-- (BMAppleIntelligenceAvailability)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppleIntelligenceAvailability)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v132[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"appleIntelligenceUseCase"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"appleIntelligenceUseCase"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"appleIntelligenceDiffusionUseCase"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appleIntelligenceDiffusionUseCase"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
@@ -434,11 +434,11 @@ LABEL_4:
       {
 
 LABEL_7:
-        v11 = [v6 objectForKeyedSubscript:@"isAppleIntelligenceToggleEnabled"];
+        v11 = [dictionaryCopy objectForKeyedSubscript:@"isAppleIntelligenceToggleEnabled"];
         v106 = v10;
         if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v12 = self;
+          selfCopy2 = self;
           v104 = 0;
           goto LABEL_10;
         }
@@ -446,10 +446,10 @@ LABEL_7:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = self;
+          selfCopy2 = self;
           v104 = v11;
 LABEL_10:
-          v13 = [v6 objectForKeyedSubscript:@"hasEngagedWithAppleIntelligenceCFU"];
+          v13 = [dictionaryCopy objectForKeyedSubscript:@"hasEngagedWithAppleIntelligenceCFU"];
           v101 = v7;
           v102 = v11;
           if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -457,12 +457,12 @@ LABEL_10:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
                 v62 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v63 = *MEMORY[0x1E698F240];
                 v125 = *MEMORY[0x1E696A578];
-                v99 = a4;
+                errorCopy = error;
                 v64 = v8;
                 v103 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"hasEngagedWithAppleIntelligenceCFU"];
                 v126 = v103;
@@ -472,10 +472,10 @@ LABEL_10:
                 v7 = v101;
                 v53 = v13;
                 v107 = 0;
-                a4 = 0;
-                *v99 = [v66 initWithDomain:v67 code:2 userInfo:v65];
+                error = 0;
+                *errorCopy = [v66 initWithDomain:v67 code:2 userInfo:v65];
                 v19 = v104;
-                self = v12;
+                self = selfCopy2;
                 v14 = v65;
                 v8 = v64;
                 goto LABEL_86;
@@ -484,7 +484,7 @@ LABEL_10:
               v107 = 0;
               v19 = v104;
               v53 = v13;
-              self = v12;
+              self = selfCopy2;
               goto LABEL_87;
             }
 
@@ -498,8 +498,8 @@ LABEL_10:
             v107 = 0;
           }
 
-          [v6 objectForKeyedSubscript:@"datePostedAppleIntelligenceCFU"];
-          v14 = self = v12;
+          [dictionaryCopy objectForKeyedSubscript:@"datePostedAppleIntelligenceCFU"];
+          v14 = self = selfCopy2;
           if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
@@ -528,11 +528,11 @@ LABEL_10:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (a4)
+                  if (error)
                   {
                     v77 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v95 = v9;
-                    v78 = a4;
+                    errorCopy2 = error;
                     v79 = *MEMORY[0x1E698F240];
                     v123 = *MEMORY[0x1E696A578];
                     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"datePostedAppleIntelligenceCFU"];
@@ -540,8 +540,8 @@ LABEL_10:
                     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v124 forKeys:&v123 count:1];
                     v80 = [v77 initWithDomain:v79 code:2 userInfo:v21];
                     v103 = 0;
-                    a4 = 0;
-                    *v78 = v80;
+                    error = 0;
+                    *errorCopy2 = v80;
                     v9 = v95;
                     v53 = v96;
                     goto LABEL_84;
@@ -563,14 +563,14 @@ LABEL_10:
             v103 = 0;
           }
 
-          v15 = [v6 objectForKeyedSubscript:@"languages"];
-          v16 = [MEMORY[0x1E695DFB0] null];
-          v17 = [v15 isEqual:v16];
+          v15 = [dictionaryCopy objectForKeyedSubscript:@"languages"];
+          null = [MEMORY[0x1E695DFB0] null];
+          v17 = [v15 isEqual:null];
 
           if (v17)
           {
             v92 = v8;
-            v97 = self;
+            errorCopy5 = self;
 
             v15 = 0;
           }
@@ -582,19 +582,19 @@ LABEL_10:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (a4)
+                if (error)
                 {
                   v100 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v69 = v9;
-                  v70 = a4;
+                  errorCopy3 = error;
                   v71 = *MEMORY[0x1E698F240];
                   v121 = *MEMORY[0x1E696A578];
                   v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"languages"];
                   v122 = v21;
                   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
                   v72 = [v100 initWithDomain:v71 code:2 userInfo:v29];
-                  a4 = 0;
-                  *v70 = v72;
+                  error = 0;
+                  *errorCopy3 = v72;
                   v9 = v69;
                   v53 = v96;
                   goto LABEL_83;
@@ -607,7 +607,7 @@ LABEL_10:
             }
 
             v92 = v8;
-            v97 = self;
+            errorCopy5 = self;
           }
 
           v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v15, "count")}];
@@ -627,7 +627,7 @@ LABEL_10:
           v93 = v9;
           v90 = v14;
 LABEL_33:
-          v25 = a4;
+          errorCopy4 = error;
           v26 = 0;
           while (1)
           {
@@ -646,7 +646,7 @@ LABEL_33:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (v25)
+              if (errorCopy4)
               {
                 v52 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v49 = *MEMORY[0x1E698F240];
@@ -665,7 +665,7 @@ LABEL_33:
             if (v23 == ++v26)
             {
               v23 = [v15 countByEnumeratingWithState:&v108 objects:v120 count:16];
-              a4 = v25;
+              error = errorCopy4;
               v9 = v93;
               v14 = v90;
               if (v23)
@@ -675,7 +675,7 @@ LABEL_33:
 
 LABEL_40:
 
-              v28 = [v6 objectForKeyedSubscript:@"region"];
+              v28 = [dictionaryCopy objectForKeyedSubscript:@"region"];
               if (!v28)
               {
                 v29 = 0;
@@ -713,27 +713,27 @@ LABEL_80:
                 v53 = v96;
 LABEL_81:
                 LODWORD(v86) = [v29 intValue];
-                a4 = [(BMAppleIntelligenceAvailability *)v97 initWithAppleIntelligenceUseCase:v8 appleIntelligenceDiffusionUseCase:v73 isAppleIntelligenceToggleEnabled:v104 hasEngagedWithAppleIntelligenceCFU:v107 datePostedAppleIntelligenceCFU:v103 languages:v21 region:v86];
-                v97 = a4;
+                error = [(BMAppleIntelligenceAvailability *)errorCopy5 initWithAppleIntelligenceUseCase:v8 appleIntelligenceDiffusionUseCase:v73 isAppleIntelligenceToggleEnabled:v104 hasEngagedWithAppleIntelligenceCFU:v107 datePostedAppleIntelligenceCFU:v103 languages:v21 region:v86];
+                errorCopy5 = error;
               }
 
               else
               {
-                if (a4)
+                if (error)
                 {
                   v89 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v81 = *MEMORY[0x1E698F240];
                   v114 = *MEMORY[0x1E696A578];
                   v82 = v9;
-                  v83 = a4;
+                  errorCopy6 = error;
                   v84 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"region"];
                   v115 = v84;
                   v85 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v115 forKeys:&v114 count:1];
-                  *v83 = [v89 initWithDomain:v81 code:2 userInfo:v85];
+                  *errorCopy6 = [v89 initWithDomain:v81 code:2 userInfo:v85];
                   v9 = v82;
 
                   v29 = 0;
-                  a4 = 0;
+                  error = 0;
                 }
 
                 else
@@ -748,7 +748,7 @@ LABEL_81:
 
 LABEL_82:
 
-              self = v97;
+              self = errorCopy5;
 LABEL_83:
 
 LABEL_84:
@@ -767,7 +767,7 @@ LABEL_88:
             }
           }
 
-          if (v25)
+          if (errorCopy4)
           {
             v48 = objc_alloc(MEMORY[0x1E696ABC0]);
             v49 = *MEMORY[0x1E698F240];
@@ -779,9 +779,9 @@ LABEL_88:
 LABEL_57:
             v14 = v90;
             v8 = v92;
-            *v25 = [v51 initWithDomain:v49 code:2 userInfo:v50];
+            *errorCopy4 = [v51 initWithDomain:v49 code:2 userInfo:v50];
 
-            a4 = 0;
+            error = 0;
             v29 = v15;
             v9 = v93;
             v53 = v96;
@@ -789,21 +789,21 @@ LABEL_57:
           }
 
 LABEL_60:
-          a4 = 0;
+          error = 0;
           v29 = v15;
           v53 = v96;
-          self = v97;
+          self = errorCopy5;
           v8 = v92;
           v9 = v93;
           v14 = v90;
           goto LABEL_83;
         }
 
-        if (a4)
+        if (error)
         {
           v105 = objc_alloc(MEMORY[0x1E696ABC0]);
           v94 = v9;
-          v54 = a4;
+          errorCopy7 = error;
           v55 = v8;
           v56 = *MEMORY[0x1E698F240];
           v127 = *MEMORY[0x1E696A578];
@@ -820,8 +820,8 @@ LABEL_60:
           v61 = v56;
           v8 = v55;
           v19 = 0;
-          a4 = 0;
-          *v54 = [v105 initWithDomain:v61 code:2 userInfo:v53];
+          error = 0;
+          *errorCopy7 = [v105 initWithDomain:v61 code:2 userInfo:v53];
           v9 = v94;
           goto LABEL_88;
         }
@@ -832,25 +832,25 @@ LABEL_89:
         goto LABEL_90;
       }
 
-      if (a4)
+      if (error)
       {
         v20 = v20;
-        *a4 = v20;
+        *error = v20;
       }
 
-      a4 = 0;
+      error = 0;
 LABEL_90:
 
       goto LABEL_91;
     }
 
-    if (a4)
+    if (error)
     {
       v41 = objc_alloc(MEMORY[0x1E696ABC0]);
       v42 = v8;
       v43 = *MEMORY[0x1E698F240];
       v129 = *MEMORY[0x1E696A578];
-      v98 = a4;
+      errorCopy8 = error;
       v44 = v7;
       v45 = objc_alloc(MEMORY[0x1E696AEC0]);
       v87 = objc_opt_class();
@@ -861,8 +861,8 @@ LABEL_90:
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v130 forKeys:&v129 count:1];
       v47 = v43;
       v8 = v42;
-      a4 = 0;
-      *v98 = [v41 initWithDomain:v47 code:2 userInfo:v19];
+      error = 0;
+      *errorCopy8 = [v41 initWithDomain:v47 code:2 userInfo:v19];
       goto LABEL_90;
     }
 
@@ -880,20 +880,20 @@ LABEL_91:
     v18 = v113;
     if (v18)
     {
-      if (a4)
+      if (error)
       {
         v18 = v18;
-        *a4 = v18;
+        *error = v18;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_91;
     }
 
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v30 = objc_alloc(MEMORY[0x1E696ABC0]);
     v31 = *MEMORY[0x1E698F240];
@@ -904,36 +904,36 @@ LABEL_91:
     v33 = v31;
     v8 = v32;
     v34 = [v30 initWithDomain:v33 code:2 userInfo:v9];
-    v35 = a4;
-    a4 = 0;
-    *v35 = v34;
+    errorCopy9 = error;
+    error = 0;
+    *errorCopy9 = v34;
     goto LABEL_91;
   }
 
 LABEL_92:
 
   v75 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMAppleIntelligenceAvailability *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_appleIntelligenceUseCase)
   {
     v20 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppleIntelligenceAvailabilityUseCaseInfo *)self->_appleIntelligenceUseCase writeTo:v4];
+    [(BMAppleIntelligenceAvailabilityUseCaseInfo *)self->_appleIntelligenceUseCase writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -941,7 +941,7 @@ LABEL_92:
   {
     v20 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppleIntelligenceAvailabilityUseCaseInfo *)self->_appleIntelligenceDiffusionUseCase writeTo:v4];
+    [(BMAppleIntelligenceAvailabilityUseCaseInfo *)self->_appleIntelligenceDiffusionUseCase writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1001,9 +1001,9 @@ LABEL_92:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v50.receiver = self;
   v50.super_class = BMAppleIntelligenceAvailability;
   v5 = [(BMEventBase *)&v50 init];
@@ -1013,12 +1013,12 @@ LABEL_92:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_78;
       }
@@ -1029,18 +1029,18 @@ LABEL_92:
       while (1)
       {
         LOBYTE(v51) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v51) & 0x7F) << v8;
@@ -1058,9 +1058,9 @@ LABEL_92:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_78;
       }
@@ -1073,7 +1073,7 @@ LABEL_16:
           case 1:
             v51 = 0.0;
             v52 = 0;
-            if (!PBReaderPlaceMark() || (v31 = [[BMAppleIntelligenceAvailabilityUseCaseInfo alloc] initByReadFrom:v4]) == 0)
+            if (!PBReaderPlaceMark() || (v31 = [[BMAppleIntelligenceAvailabilityUseCaseInfo alloc] initByReadFrom:fromCopy]) == 0)
             {
 LABEL_82:
 
@@ -1090,7 +1090,7 @@ LABEL_82:
               goto LABEL_82;
             }
 
-            v31 = [[BMAppleIntelligenceAvailabilityUseCaseInfo alloc] initByReadFrom:v4];
+            v31 = [[BMAppleIntelligenceAvailabilityUseCaseInfo alloc] initByReadFrom:fromCopy];
             if (!v31)
             {
               goto LABEL_82;
@@ -1111,18 +1111,18 @@ LABEL_67:
             while (1)
             {
               LOBYTE(v51) = 0;
-              v22 = [v4 position] + 1;
-              if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+              v22 = [fromCopy position] + 1;
+              if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
               {
-                v24 = [v4 data];
-                [v24 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v21 |= (LOBYTE(v51) & 0x7F) << v19;
@@ -1140,7 +1140,7 @@ LABEL_67:
               }
             }
 
-            v25 = (v21 != 0) & ~[v4 hasError];
+            v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_73:
             v42 = 32;
             goto LABEL_74;
@@ -1162,18 +1162,18 @@ LABEL_73:
           while (1)
           {
             LOBYTE(v51) = 0;
-            v27 = [v4 position] + 1;
-            if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+            v27 = [fromCopy position] + 1;
+            if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             if ((SLOBYTE(v51) & 0x80000000) == 0)
@@ -1187,7 +1187,7 @@ LABEL_73:
             }
           }
 
-          [v4 hasError];
+          [fromCopy hasError];
 LABEL_71:
           v5->_region = 0;
           goto LABEL_77;
@@ -1212,8 +1212,8 @@ LABEL_51:
       [v6 addObject:v39];
 
 LABEL_77:
-      v44 = [v4 position];
-      if (v44 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_78;
       }
@@ -1228,18 +1228,18 @@ LABEL_77:
       while (1)
       {
         LOBYTE(v51) = 0;
-        v36 = [v4 position] + 1;
-        if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+        v36 = [fromCopy position] + 1;
+        if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
         {
-          v38 = [v4 data];
-          [v38 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v35 |= (LOBYTE(v51) & 0x7F) << v33;
@@ -1257,7 +1257,7 @@ LABEL_77:
         }
       }
 
-      v25 = (v35 != 0) & ~[v4 hasError];
+      v25 = (v35 != 0) & ~[fromCopy hasError];
 LABEL_69:
       v42 = 34;
 LABEL_74:
@@ -1269,18 +1269,18 @@ LABEL_74:
     {
       v5->_hasRaw_datePostedAppleIntelligenceCFU = 1;
       v51 = 0.0;
-      v17 = [v4 position] + 8;
-      if (v17 >= [v4 position] && (v18 = objc_msgSend(v4, "position") + 8, v18 <= objc_msgSend(v4, "length")))
+      v17 = [fromCopy position] + 8;
+      if (v17 >= [fromCopy position] && (v18 = objc_msgSend(fromCopy, "position") + 8, v18 <= objc_msgSend(fromCopy, "length")))
       {
-        v43 = [v4 data];
-        [v43 getBytes:&v51 range:{objc_msgSend(v4, "position"), 8}];
+        data5 = [fromCopy data];
+        [data5 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v5->_raw_datePostedAppleIntelligenceCFU = v51;
@@ -1295,8 +1295,8 @@ LABEL_78:
   languages = v5->_languages;
   v5->_languages = v45;
 
-  v47 = [v4 hasError];
-  if (v47)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_79:
     v48 = 0;
@@ -1314,38 +1314,38 @@ LABEL_80:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceUseCase];
-  v5 = [(BMAppleIntelligenceAvailability *)self appleIntelligenceDiffusionUseCase];
+  appleIntelligenceUseCase = [(BMAppleIntelligenceAvailability *)self appleIntelligenceUseCase];
+  appleIntelligenceDiffusionUseCase = [(BMAppleIntelligenceAvailability *)self appleIntelligenceDiffusionUseCase];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppleIntelligenceAvailability isAppleIntelligenceToggleEnabled](self, "isAppleIntelligenceToggleEnabled")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppleIntelligenceAvailability hasEngagedWithAppleIntelligenceCFU](self, "hasEngagedWithAppleIntelligenceCFU")}];
-  v8 = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
-  v9 = [(BMAppleIntelligenceAvailability *)self languages];
+  datePostedAppleIntelligenceCFU = [(BMAppleIntelligenceAvailability *)self datePostedAppleIntelligenceCFU];
+  languages = [(BMAppleIntelligenceAvailability *)self languages];
   v10 = BMAppleIntelligenceAvailabilityRegionAsString([(BMAppleIntelligenceAvailability *)self region]);
-  v11 = [v3 initWithFormat:@"BMAppleIntelligenceAvailability with appleIntelligenceUseCase: %@, appleIntelligenceDiffusionUseCase: %@, isAppleIntelligenceToggleEnabled: %@, hasEngagedWithAppleIntelligenceCFU: %@, datePostedAppleIntelligenceCFU: %@, languages: %@, region: %@", v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v3 initWithFormat:@"BMAppleIntelligenceAvailability with appleIntelligenceUseCase: %@, appleIntelligenceDiffusionUseCase: %@, isAppleIntelligenceToggleEnabled: %@, hasEngagedWithAppleIntelligenceCFU: %@, datePostedAppleIntelligenceCFU: %@, languages: %@, region: %@", appleIntelligenceUseCase, appleIntelligenceDiffusionUseCase, v6, v7, datePostedAppleIntelligenceCFU, languages, v10];
 
   return v11;
 }
 
-- (BMAppleIntelligenceAvailability)initWithAppleIntelligenceUseCase:(id)a3 appleIntelligenceDiffusionUseCase:(id)a4 isAppleIntelligenceToggleEnabled:(id)a5 hasEngagedWithAppleIntelligenceCFU:(id)a6 datePostedAppleIntelligenceCFU:(id)a7 languages:(id)a8 region:(int)a9
+- (BMAppleIntelligenceAvailability)initWithAppleIntelligenceUseCase:(id)case appleIntelligenceDiffusionUseCase:(id)useCase isAppleIntelligenceToggleEnabled:(id)enabled hasEngagedWithAppleIntelligenceCFU:(id)u datePostedAppleIntelligenceCFU:(id)fU languages:(id)languages region:(int)region
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  caseCopy = case;
+  useCaseCopy = useCase;
+  enabledCopy = enabled;
+  uCopy = u;
+  fUCopy = fU;
+  languagesCopy = languages;
   v25.receiver = self;
   v25.super_class = BMAppleIntelligenceAvailability;
   v22 = [(BMEventBase *)&v25 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v22->_appleIntelligenceUseCase, a3);
-    objc_storeStrong(&v22->_appleIntelligenceDiffusionUseCase, a4);
-    if (v18)
+    objc_storeStrong(&v22->_appleIntelligenceUseCase, case);
+    objc_storeStrong(&v22->_appleIntelligenceDiffusionUseCase, useCase);
+    if (enabledCopy)
     {
       v22->_hasIsAppleIntelligenceToggleEnabled = 1;
-      v22->_isAppleIntelligenceToggleEnabled = [v18 BOOLValue];
+      v22->_isAppleIntelligenceToggleEnabled = [enabledCopy BOOLValue];
     }
 
     else
@@ -1354,10 +1354,10 @@ LABEL_80:
       v22->_isAppleIntelligenceToggleEnabled = 0;
     }
 
-    if (v19)
+    if (uCopy)
     {
       v22->_hasHasEngagedWithAppleIntelligenceCFU = 1;
-      v22->_hasEngagedWithAppleIntelligenceCFU = [v19 BOOLValue];
+      v22->_hasEngagedWithAppleIntelligenceCFU = [uCopy BOOLValue];
     }
 
     else
@@ -1366,10 +1366,10 @@ LABEL_80:
       v22->_hasEngagedWithAppleIntelligenceCFU = 0;
     }
 
-    if (v20)
+    if (fUCopy)
     {
       v22->_hasRaw_datePostedAppleIntelligenceCFU = 1;
-      [v20 timeIntervalSince1970];
+      [fUCopy timeIntervalSince1970];
     }
 
     else
@@ -1379,8 +1379,8 @@ LABEL_80:
     }
 
     v22->_raw_datePostedAppleIntelligenceCFU = v23;
-    objc_storeStrong(&v22->_languages, a8);
-    v22->_region = a9;
+    objc_storeStrong(&v22->_languages, languages);
+    v22->_region = region;
   }
 
   return v22;
@@ -1438,9 +1438,9 @@ id __42__BMAppleIntelligenceAvailability_columns__block_invoke(uint64_t a1, void
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1448,8 +1448,8 @@ id __42__BMAppleIntelligenceAvailability_columns__block_invoke(uint64_t a1, void
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppleIntelligenceAvailability alloc] initByReadFrom:v7];
     v4 = v8;

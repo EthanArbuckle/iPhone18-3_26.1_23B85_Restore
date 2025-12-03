@@ -1,25 +1,25 @@
 @interface PLClickPresentationPresentationTransition
 - (CGAffineTransform)targetTransform;
-- (PLClickPresentationPresentationTransition)initWithTransitionDelegate:(id)a3 presentingViewController:(id)a4 presentedViewController:(id)a5 completion:(id)a6;
+- (PLClickPresentationPresentationTransition)initWithTransitionDelegate:(id)delegate presentingViewController:(id)controller presentedViewController:(id)viewController completion:(id)completion;
 - (id)_newAnimator;
-- (void)_configureTransitionContextWithFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
+- (void)_configureTransitionContextWithFromView:(id)view toView:(id)toView containerView:(id)containerView;
 - (void)updateBackgroundViewForTransition;
 @end
 
 @implementation PLClickPresentationPresentationTransition
 
-- (PLClickPresentationPresentationTransition)initWithTransitionDelegate:(id)a3 presentingViewController:(id)a4 presentedViewController:(id)a5 completion:(id)a6
+- (PLClickPresentationPresentationTransition)initWithTransitionDelegate:(id)delegate presentingViewController:(id)controller presentedViewController:(id)viewController completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v15.receiver = self;
   v15.super_class = PLClickPresentationPresentationTransition;
-  v12 = [(PLClickPresentationTransition *)&v15 initWithTransitionDelegate:a3 presentingViewController:v10 presentedViewController:v11 completion:a6];
+  v12 = [(PLClickPresentationTransition *)&v15 initWithTransitionDelegate:delegate presentingViewController:controllerCopy presentedViewController:viewControllerCopy completion:completion];
   v13 = v12;
   if (v12)
   {
-    [(_UIViewControllerOneToOneTransitionContext *)v12->super._transitionContext _setFromViewController:v10];
-    [(_UIViewControllerOneToOneTransitionContext *)v13->super._transitionContext _setToViewController:v11];
+    [(_UIViewControllerOneToOneTransitionContext *)v12->super._transitionContext _setFromViewController:controllerCopy];
+    [(_UIViewControllerOneToOneTransitionContext *)v13->super._transitionContext _setToViewController:viewControllerCopy];
   }
 
   return v13;
@@ -27,8 +27,8 @@
 
 - (void)updateBackgroundViewForTransition
 {
-  v2 = [(PLClickPresentationTransition *)self backgroundView];
-  [v2 setWeighting:1.0];
+  backgroundView = [(PLClickPresentationTransition *)self backgroundView];
+  [backgroundView setWeighting:1.0];
 }
 
 - (CGAffineTransform)targetTransform
@@ -48,35 +48,35 @@
 - (id)_newAnimator
 {
   transitionDelegate = self->super._transitionDelegate;
-  v4 = [(_UIViewControllerOneToOneTransitionContext *)self->super._transitionContext toViewController];
-  v5 = [(_UIViewControllerOneToOneTransitionContext *)self->super._transitionContext fromViewController];
-  v6 = [(_UIViewControllerOneToOneTransitionContext *)self->super._transitionContext fromViewController];
-  v7 = [(UIViewControllerTransitioningDelegate *)transitionDelegate animationControllerForPresentedController:v4 presentingController:v5 sourceController:v6];
+  toViewController = [(_UIViewControllerOneToOneTransitionContext *)self->super._transitionContext toViewController];
+  fromViewController = [(_UIViewControllerOneToOneTransitionContext *)self->super._transitionContext fromViewController];
+  fromViewController2 = [(_UIViewControllerOneToOneTransitionContext *)self->super._transitionContext fromViewController];
+  v7 = [(UIViewControllerTransitioningDelegate *)transitionDelegate animationControllerForPresentedController:toViewController presentingController:fromViewController sourceController:fromViewController2];
 
   return v7;
 }
 
-- (void)_configureTransitionContextWithFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)_configureTransitionContextWithFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v8 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = PLClickPresentationPresentationTransition;
-  v9 = a5;
-  [(PLClickPresentationTransition *)&v13 _configureTransitionContextWithFromView:v8 toView:a4 containerView:v9];
+  containerViewCopy = containerView;
+  [(PLClickPresentationTransition *)&v13 _configureTransitionContextWithFromView:viewCopy toView:toView containerView:containerViewCopy];
   v10 = [MEMORY[0x277D26718] materialViewWithRecipe:6 options:0 initialWeighting:0.0];
   [v10 setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:1];
-  [v9 bounds];
+  [containerViewCopy bounds];
   [v10 setFrame:?];
   [v10 setAutoresizingMask:18];
-  [v9 insertSubview:v10 atIndex:0];
+  [containerViewCopy insertSubview:v10 atIndex:0];
 
   [(PLClickPresentationTransition *)self setBackgroundView:v10];
   if ([(PLClickPresentationTransition *)self propagatesPresentingViewTransform])
   {
     transitionContext = self->super._transitionContext;
-    if (v8)
+    if (viewCopy)
     {
-      [v8 transform];
+      [viewCopy transform];
     }
 
     else

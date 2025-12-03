@@ -1,16 +1,16 @@
 @interface CSMicControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CSMicControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSMicControl" hasInstanceVariable:@"_micState" withType:"NSUInteger"];
-  [v3 validateClass:@"CSMicControl" hasInstanceMethod:@"setMicControlState:animated:" withFullSignature:{"v", "Q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSMicControl" hasInstanceVariable:@"_micState" withType:"NSUInteger"];
+  [validationsCopy validateClass:@"CSMicControl" hasInstanceMethod:@"setMicControlState:animated:" withFullSignature:{"v", "Q", "B", 0}];
 }
 
 - (id)accessibilityValue

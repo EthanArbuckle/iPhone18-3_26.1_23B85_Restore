@@ -1,19 +1,19 @@
 @interface UIKeyboardInputMode
-+ (UIKeyboardInputMode)keyboardInputModeWithIdentifier:(id)a3;
-+ (id)_displayNameForMultilingualSet:(id)a3 forDisplayInLists:(BOOL)a4 usingDeviceLanguage:(BOOL)a5 context:(int64_t)a6;
++ (UIKeyboardInputMode)keyboardInputModeWithIdentifier:(id)identifier;
++ (id)_displayNameForMultilingualSet:(id)set forDisplayInLists:(BOOL)lists usingDeviceLanguage:(BOOL)language context:(int64_t)context;
 + (id)autofillSignupInputMode;
-+ (id)canonicalLanguageIdentifierFromIdentifier:(id)a3;
++ (id)canonicalLanguageIdentifierFromIdentifier:(id)identifier;
 + (id)dictationInputMode;
-+ (id)hardwareLayoutFromIdentifier:(id)a3;
++ (id)hardwareLayoutFromIdentifier:(id)identifier;
 + (id)intlInputMode;
-+ (id)multilingualSetsFromInputModeIdentifiers:(id)a3;
-+ (id)softwareLayoutFromIdentifier:(id)a3;
++ (id)multilingualSetsFromInputModeIdentifiers:(id)identifiers;
++ (id)softwareLayoutFromIdentifier:(id)identifier;
 - (BOOL)defaultLayoutIsASCIICapable;
-- (BOOL)isAllowedForTraits:(id)a3;
+- (BOOL)isAllowedForTraits:(id)traits;
 - (BOOL)isDefaultRightToLeft;
-- (BOOL)isDesiredForTraits:(id)a3 withExtended:(BOOL)a4;
+- (BOOL)isDesiredForTraits:(id)traits withExtended:(BOOL)extended;
 - (BOOL)isEmojiInputMode;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHandwritingInputMode;
 - (BOOL)isMultilingual;
 - (BOOL)isMultilingualOnly;
@@ -32,33 +32,33 @@
 - (NSString)displayName;
 - (NSString)identifierWithLayouts;
 - (NSString)monolingualDisplayName;
-- (UIKeyboardInputMode)initWithCoder:(id)a3;
-- (UIKeyboardInputMode)initWithIdentifier:(id)a3;
+- (UIKeyboardInputMode)initWithCoder:(id)coder;
+- (UIKeyboardInputMode)initWithIdentifier:(id)identifier;
 - (double)languageIndicatorScale;
 - (id)_fallbackIconLabel;
 - (id)_iconLabelComponentsForMultilingualSet;
 - (id)_iconLabelForMultilingualSet;
 - (id)_iconLabelWithinMultiscriptSet;
-- (id)_indicatorIconWithConfiguration:(id)a3;
+- (id)_indicatorIconWithConfiguration:(id)configuration;
 - (id)cursorAccessoryIcon;
-- (id)imageForInputModeLabel:(id)a3 secondaryIconLabel:(id)a4 artwork:(id)a5 withConfiguration:(id)a6;
+- (id)imageForInputModeLabel:(id)label secondaryIconLabel:(id)iconLabel artwork:(id)artwork withConfiguration:(id)configuration;
 - (id)indicatorIcon;
 - (id)indicatorIconForSoftwareLayout;
 - (id)indicatorTextIcon;
 - (id)largeCursorAccessoryIcon;
 - (id)multilingualInputModeIdentifiers;
-- (id)multilingualSetFromInputModeIdentifiers:(id)a3;
+- (id)multilingualSetFromInputModeIdentifiers:(id)identifiers;
 - (id)multiscriptInputModeIdentifiers;
 - (unint64_t)multilingualIndex;
 - (unint64_t)multiscriptIndex;
-- (void)_getIconLabel:(id *)a3 secondaryIconLabel:(id *)a4 artwork:(id *)a5;
-- (void)_getIconLabel:(id *)a3 secondaryIconLabel:(id *)a4 artwork:(id *)a5 inputModes:(id)a6;
+- (void)_getIconLabel:(id *)label secondaryIconLabel:(id *)iconLabel artwork:(id *)artwork;
+- (void)_getIconLabel:(id *)label secondaryIconLabel:(id *)iconLabel artwork:(id *)artwork inputModes:(id)modes;
 - (void)dealloc;
-- (void)drawStringInRect:(id)a3 inRect:(CGRect)a4 useSmallFont:(BOOL)a5 useCondensedFont:(BOOL)a6 scale:(double)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCachedIcon:(id)a3;
+- (void)drawStringInRect:(id)rect inRect:(CGRect)inRect useSmallFont:(BOOL)font useCondensedFont:(BOOL)condensedFont scale:(double)scale;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCachedIcon:(id)icon;
 - (void)setCurrentInputModeToActiveInputModeForMultilingualKeyboardForDictation;
-- (void)setDictationLanguage:(id)a3;
+- (void)setDictationLanguage:(id)language;
 - (void)setLastUsedDictationLanguage;
 @end
 
@@ -66,8 +66,8 @@
 
 - (BOOL)isEmojiInputMode
 {
-  v3 = [(UIKeyboardInputMode *)self primaryLanguage];
-  if ([v3 isEqualToString:@"emoji"])
+  primaryLanguage = [(UIKeyboardInputMode *)self primaryLanguage];
+  if ([primaryLanguage isEqualToString:@"emoji"])
   {
     v4 = ![(UIKeyboardInputMode *)self isExtensionInputMode];
   }
@@ -82,28 +82,28 @@
 
 - (NSString)identifierWithLayouts
 {
-  v3 = [(UIKeyboardInputMode *)self identifier];
-  v4 = UIKeyboardInputModeGetIdentifierWithKeyboardLayouts(v3);
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v4 = UIKeyboardInputModeGetIdentifierWithKeyboardLayouts(identifier);
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    identifier2 = v4;
   }
 
   else
   {
-    v6 = [(UIKeyboardInputMode *)self identifier];
+    identifier2 = [(UIKeyboardInputMode *)self identifier];
   }
 
-  v7 = v6;
+  v7 = identifier2;
 
   return v7;
 }
 
 - (BOOL)showSWLayoutWithHWKeyboard
 {
-  v2 = [(UIKeyboardInputMode *)self hardwareLayout];
-  if (v2)
+  hardwareLayout = [(UIKeyboardInputMode *)self hardwareLayout];
+  if (hardwareLayout)
   {
     LOBYTE(v3) = 0;
   }
@@ -119,16 +119,16 @@
 
 - (BOOL)isMultilingual
 {
-  v2 = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
-  v3 = [v2 count] > 1;
+  multilingualInputModeIdentifiers = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
+  v3 = [multilingualInputModeIdentifiers count] > 1;
 
   return v3;
 }
 
 - (id)multilingualInputModeIdentifiers
 {
-  v2 = [(UIKeyboardInputMode *)self identifier];
-  v3 = [UIKeyboardInputModeController multilingualSetForInputModeIdentifier:v2];
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v3 = [UIKeyboardInputModeController multilingualSetForInputModeIdentifier:identifier];
 
   return v3;
 }
@@ -156,16 +156,16 @@ void __41__UIKeyboardInputMode_dictationInputMode__block_invoke()
 {
   if (-[UIKeyboardInputMode isEmojiInputMode](self, "isEmojiInputMode") && (+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController, "sharedInputModeController"), v3 = objc_claimAutoreleasedReturnValue(), [v3 inputModeThatInvokeEmoji], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
-    v5 = +[UIKeyboardInputModeController sharedInputModeController];
-    v6 = [v5 inputModeThatInvokeEmoji];
-    v7 = [v6 identifier];
-    IsDefaultRightToLeft = UIKeyboardInputModeIsDefaultRightToLeft(v7);
+    identifier2 = +[UIKeyboardInputModeController sharedInputModeController];
+    inputModeThatInvokeEmoji = [identifier2 inputModeThatInvokeEmoji];
+    identifier = [inputModeThatInvokeEmoji identifier];
+    IsDefaultRightToLeft = UIKeyboardInputModeIsDefaultRightToLeft(identifier);
   }
 
   else
   {
-    v5 = [(UIKeyboardInputMode *)self identifier];
-    IsDefaultRightToLeft = UIKeyboardInputModeIsDefaultRightToLeft(v5);
+    identifier2 = [(UIKeyboardInputMode *)self identifier];
+    IsDefaultRightToLeft = UIKeyboardInputModeIsDefaultRightToLeft(identifier2);
   }
 
   return IsDefaultRightToLeft;
@@ -173,8 +173,8 @@ void __41__UIKeyboardInputMode_dictationInputMode__block_invoke()
 
 - (BOOL)isHandwritingInputMode
 {
-  v2 = [(UIKeyboardInputMode *)self normalizedIdentifier];
-  v3 = [v2 hasSuffix:@"HWR"];
+  normalizedIdentifier = [(UIKeyboardInputMode *)self normalizedIdentifier];
+  v3 = [normalizedIdentifier hasSuffix:@"HWR"];
 
   return v3;
 }
@@ -186,7 +186,7 @@ void __41__UIKeyboardInputMode_dictationInputMode__block_invoke()
     return 1;
   }
 
-  v4 = [(UIKeyboardInputMode *)self identifier];
+  identifier = [(UIKeyboardInputMode *)self identifier];
   v5 = UIKeyboardShowsTransliterationCandidatesForInputMode();
 
   return v5;
@@ -200,21 +200,21 @@ void __41__UIKeyboardInputMode_dictationInputMode__block_invoke()
     goto LABEL_13;
   }
 
-  v3 = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
-  if ([v3 count] <= 1)
+  multilingualInputModeIdentifiers = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
+  if ([multilingualInputModeIdentifiers count] <= 1)
   {
 
 LABEL_13:
-    v12 = [(UIKeyboardInputMode *)self normalizedIdentifier];
+    normalizedIdentifier = [(UIKeyboardInputMode *)self normalizedIdentifier];
     goto LABEL_14;
   }
 
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(multilingualInputModeIdentifiers, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = multilingualInputModeIdentifiers;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -240,31 +240,31 @@ LABEL_13:
   }
 
   v11 = [MEMORY[0x1E696AAE8] preferredLocalizationsFromArray:v4];
-  v12 = [v11 firstObject];
+  normalizedIdentifier = [v11 firstObject];
 
-  if (!v12)
+  if (!normalizedIdentifier)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
-  v13 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:{v12, v15}];
+  v13 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:{normalizedIdentifier, v15}];
 
   return v13;
 }
 
 - (BOOL)isMultiscript
 {
-  v2 = [(UIKeyboardInputMode *)self multiscriptInputModeIdentifiers];
-  v3 = [v2 count] > 1;
+  multiscriptInputModeIdentifiers = [(UIKeyboardInputMode *)self multiscriptInputModeIdentifiers];
+  v3 = [multiscriptInputModeIdentifiers count] > 1;
 
   return v3;
 }
 
 - (id)multiscriptInputModeIdentifiers
 {
-  v2 = [(UIKeyboardInputMode *)self identifier];
-  v3 = [UIKeyboardInputModeController multilingualSetForInputModeIdentifier:v2];
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v3 = [UIKeyboardInputModeController multilingualSetForInputModeIdentifier:identifier];
   if ([v3 count])
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
@@ -305,43 +305,43 @@ LABEL_14:
 
 - (NSString)dictationLanguage
 {
-  v2 = self;
+  selfCopy = self;
   v68 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardInputMode *)self languageWithRegion];
+  languageWithRegion = [(UIKeyboardInputMode *)self languageWithRegion];
   v4 = off_1E70EA000;
   v5 = +[UIKeyboardInputModeController sharedInputModeController];
-  v6 = [(UIKeyboardInputMode *)v2 languageWithRegion];
-  v7 = [v5 defaultDictationLanguages:v6];
+  languageWithRegion2 = [(UIKeyboardInputMode *)selfCopy languageWithRegion];
+  v7 = [v5 defaultDictationLanguages:languageWithRegion2];
 
   v8 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v9 = [v8 preferencesActions];
-  v10 = [v9 valueForPreferenceKey:@"DictationLanguagesLastUsed"];
+  preferencesActions = [v8 preferencesActions];
+  v10 = [preferencesActions valueForPreferenceKey:@"DictationLanguagesLastUsed"];
 
   v11 = [v10 objectForKey:@"LastUsedDictationLangauge"];
   v12 = &unk_1ED46F000;
   if ([v7 count])
   {
-    v13 = [(UIKeyboardInputMode *)v2 languageWithRegion];
-    v14 = [v10 objectForKey:v13];
+    languageWithRegion3 = [(UIKeyboardInputMode *)selfCopy languageWithRegion];
+    v14 = [v10 objectForKey:languageWithRegion3];
 
     if (v14 && (+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController, "sharedInputModeController"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isDictationLanguageEnabled:v14], v15, (v16 & 1) != 0))
     {
-      v3 = v14;
+      languageWithRegion = v14;
     }
 
     else
     {
-      v55 = v2;
+      v55 = selfCopy;
       v56 = v11;
       v57 = v10;
       v17 = +[UIKeyboardInputModeController sharedInputModeController];
-      v18 = [v17 suggestedDictationLanguagesForDeviceLanguage];
+      suggestedDictationLanguagesForDeviceLanguage = [v17 suggestedDictationLanguagesForDeviceLanguage];
 
       v64 = 0u;
       v65 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v19 = v18;
+      v19 = suggestedDictationLanguagesForDeviceLanguage;
       v20 = [v19 countByEnumeratingWithState:&v62 objects:v67 count:16];
       if (v20)
       {
@@ -443,45 +443,45 @@ LABEL_18:
         }
       }
 
-      v3 = v14;
+      languageWithRegion = v14;
       v11 = v56;
       v10 = v57;
-      v2 = v55;
+      selfCopy = v55;
     }
   }
 
   if (![v12 + 3656 _isUsingLargeFormatDictationUI])
   {
-    if ((!v3 || (-[__objc2_class sharedInputModeController](v4[13], "sharedInputModeController"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v37 isDictationLanguageEnabled:v3], v37, (v38 & 1) == 0)) && (v39 = v11, v3, (v3 = v39) == 0) || (-[__objc2_class sharedInputModeController](v4[13], "sharedInputModeController"), v40 = objc_claimAutoreleasedReturnValue(), v41 = objc_msgSend(v40, "isDictationLanguageEnabled:", v3), v40, (v41 & 1) == 0))
+    if ((!languageWithRegion || (-[__objc2_class sharedInputModeController](v4[13], "sharedInputModeController"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v37 isDictationLanguageEnabled:languageWithRegion], v37, (v38 & 1) == 0)) && (v39 = v11, languageWithRegion, (languageWithRegion = v39) == 0) || (-[__objc2_class sharedInputModeController](v4[13], "sharedInputModeController"), v40 = objc_claimAutoreleasedReturnValue(), v41 = objc_msgSend(v40, "isDictationLanguageEnabled:", languageWithRegion), v40, (v41 & 1) == 0))
     {
-      v43 = [(__objc2_class *)v4[13] sharedInputModeController];
-      v44 = [v43 enabledDictationLanguages];
-      v45 = [v44 firstObject];
+      sharedInputModeController = [(__objc2_class *)v4[13] sharedInputModeController];
+      enabledDictationLanguages = [sharedInputModeController enabledDictationLanguages];
+      firstObject = [enabledDictationLanguages firstObject];
 
-      if (!v45)
+      if (!firstObject)
       {
-        v36 = [(UIKeyboardInputMode *)v2 languageWithRegion];
-        v3 = 0;
+        languageWithRegion4 = [(UIKeyboardInputMode *)selfCopy languageWithRegion];
+        languageWithRegion = 0;
         goto LABEL_36;
       }
 
-      v42 = v45;
+      v42 = firstObject;
 LABEL_35:
-      v3 = v42;
-      v36 = v42;
+      languageWithRegion = v42;
+      languageWithRegion4 = v42;
       goto LABEL_36;
     }
 
 LABEL_32:
-    v42 = v3;
+    v42 = languageWithRegion;
     goto LABEL_35;
   }
 
   v29 = v4;
-  if (v3)
+  if (languageWithRegion)
   {
-    v30 = [(__objc2_class *)v4[13] sharedInputModeController];
-    v31 = [v30 isDictationLanguageEnabled:v3];
+    sharedInputModeController2 = [(__objc2_class *)v4[13] sharedInputModeController];
+    v31 = [sharedInputModeController2 isDictationLanguageEnabled:languageWithRegion];
 
     if (v31)
     {
@@ -490,28 +490,28 @@ LABEL_32:
   }
 
   v32 = +[UIKeyboardImpl activeInstance];
-  v33 = [v32 textInputTraits];
+  textInputTraits = [v32 textInputTraits];
 
-  if (UIKeyboardTypeSupportsDictationSpelling([v33 dictationKeyboardType]) || (objc_msgSend(v33, "isSecureTextEntry") & 1) != 0 || objc_msgSend(v33, "forceSpellingDictation"))
+  if (UIKeyboardTypeSupportsDictationSpelling([textInputTraits dictationKeyboardType]) || (objc_msgSend(textInputTraits, "isSecureTextEntry") & 1) != 0 || objc_msgSend(textInputTraits, "forceSpellingDictation"))
   {
-    v34 = [(__objc2_class *)v29[13] sharedInputModeController];
-    v35 = [v34 enabledDictationLanguages];
-    v36 = [v35 firstObject];
+    sharedInputModeController3 = [(__objc2_class *)v29[13] sharedInputModeController];
+    enabledDictationLanguages2 = [sharedInputModeController3 enabledDictationLanguages];
+    languageWithRegion4 = [enabledDictationLanguages2 firstObject];
   }
 
   else
   {
-    v36 = 0;
+    languageWithRegion4 = 0;
   }
 
 LABEL_36:
 
-  return v36;
+  return languageWithRegion4;
 }
 
 - (NSArray)normalizedIdentifierLevels
 {
-  v2 = [(UIKeyboardInputMode *)self identifier];
+  identifier = [(UIKeyboardInputMode *)self identifier];
   v3 = TIInputModeGetComponentsFromIdentifier();
 
   v4 = TIInputModeGetNormalizedLevelsFromComponents();
@@ -542,8 +542,8 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
 
 - (id)_iconLabelForMultilingualSet
 {
-  v2 = [(UIKeyboardInputMode *)self _iconLabelComponentsForMultilingualSet];
-  v3 = [v2 componentsJoinedByString:@" "];
+  _iconLabelComponentsForMultilingualSet = [(UIKeyboardInputMode *)self _iconLabelComponentsForMultilingualSet];
+  v3 = [_iconLabelComponentsForMultilingualSet componentsJoinedByString:@" "];
 
   return v3;
 }
@@ -551,7 +551,7 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
 - (id)_iconLabelComponentsForMultilingualSet
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(UIKeyboardInputMode *)self normalizedIdentifier];
   IsTransliteration = TIInputModeIsTransliteration();
 
   if (IsTransliteration)
@@ -561,22 +561,22 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
 
   else
   {
-    v6 = [(UIKeyboardInputMode *)self multilingualSet];
-    if ([v6 count] < 2)
+    multilingualSet = [(UIKeyboardInputMode *)self multilingualSet];
+    if ([multilingualSet count] < 2)
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
-      v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-      v18 = [MEMORY[0x1E695DF70] array];
+      multilingualInputModeIdentifiers = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
+      v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(multilingualSet, "count")}];
+      array = [MEMORY[0x1E695DF70] array];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v8 = v6;
+      v8 = multilingualSet;
       v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v9)
       {
@@ -592,13 +592,13 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
             }
 
             v13 = *(*(&v20 + 1) + 8 * i);
-            v14 = [v13 normalizedIdentifier];
+            normalizedIdentifier2 = [v13 normalizedIdentifier];
             v15 = TIInputModeIsTransliteration();
 
             if ((v15 & 1) == 0)
             {
               v19 = 0;
-              [v13 _getIconLabel:&v19 secondaryIconLabel:0 artwork:0 inputModes:v7];
+              [v13 _getIconLabel:&v19 secondaryIconLabel:0 artwork:0 inputModes:multilingualInputModeIdentifiers];
               v16 = v19;
               if ([v16 length])
               {
@@ -621,8 +621,8 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
 - (NSArray)multilingualSet
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(UIKeyboardInputMode *)self identifier];
-  v3 = [UIKeyboardInputModeController multilingualSetForInputModeIdentifier:v2];
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v3 = [UIKeyboardInputModeController multilingualSetForInputModeIdentifier:identifier];
 
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v12 = 0u;
@@ -660,10 +660,10 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
   return v4;
 }
 
-+ (id)canonicalLanguageIdentifierFromIdentifier:(id)a3
++ (id)canonicalLanguageIdentifierFromIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v4 = TIInputModeGetComponentsFromIdentifier();
     v5 = *MEMORY[0x1E695D9B0];
@@ -696,7 +696,7 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
   return v14;
 }
 
-+ (id)softwareLayoutFromIdentifier:(id)a3
++ (id)softwareLayoutFromIdentifier:(id)identifier
 {
   v3 = TIInputModeGetComponentsFromIdentifier();
   v4 = [v3 objectForKey:@"sw"];
@@ -704,9 +704,9 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
   return v4;
 }
 
-+ (id)hardwareLayoutFromIdentifier:(id)a3
++ (id)hardwareLayoutFromIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = TIInputModeGetComponentsFromIdentifier();
   v5 = [v4 objectForKey:@"hw"];
   if (v5)
@@ -716,7 +716,7 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
 
   else
   {
-    v7 = UIKeyboardInputModeGetIdentifierWithKeyboardLayouts(v3);
+    v7 = UIKeyboardInputModeGetIdentifierWithKeyboardLayouts(identifierCopy);
 
     v8 = TIInputModeGetComponentsFromIdentifier();
 
@@ -731,21 +731,21 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
       v6 = @"US";
     }
 
-    v3 = v7;
+    identifierCopy = v7;
     v4 = v8;
   }
 
   return v6;
 }
 
-- (UIKeyboardInputMode)initWithIdentifier:(id)a3
+- (UIKeyboardInputMode)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = UIKeyboardInputMode;
   v5 = [(UIKeyboardInputMode *)&v18 init];
   v6 = v5;
-  if (!v4)
+  if (!identifierCopy)
   {
     v16 = v5;
     v6 = 0;
@@ -758,7 +758,7 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
     goto LABEL_7;
   }
 
-  [(UIKeyboardInputMode *)v5 setIdentifier:v4];
+  [(UIKeyboardInputMode *)v5 setIdentifier:identifierCopy];
   v7 = TIInputModeGetNormalizedIdentifier();
   [(UIKeyboardInputMode *)v6 setNormalizedIdentifier:v7];
 
@@ -768,20 +768,20 @@ void __36__UIKeyboardInputMode_intlInputMode__block_invoke()
   v9 = TIInputModeGetVariant();
   [(UIKeyboardInputMode *)v6 setVariant:v9];
 
-  v10 = [UIKeyboardInputMode canonicalLanguageIdentifierFromIdentifier:v4];
+  v10 = [UIKeyboardInputMode canonicalLanguageIdentifierFromIdentifier:identifierCopy];
   [(UIKeyboardInputMode *)v6 setPrimaryLanguage:v10];
 
-  v11 = [UIKeyboardInputMode softwareLayoutFromIdentifier:v4];
+  v11 = [UIKeyboardInputMode softwareLayoutFromIdentifier:identifierCopy];
   [(UIKeyboardInputMode *)v6 setSoftwareLayout:v11];
 
   v12 = +[UIKeyboardInputModeController sharedInputModeController];
-  v13 = [v12 inputModesWithoutHardwareSupport];
-  v14 = [(UIKeyboardInputMode *)v6 normalizedIdentifier];
-  v15 = [v13 containsObject:v14];
+  inputModesWithoutHardwareSupport = [v12 inputModesWithoutHardwareSupport];
+  normalizedIdentifier = [(UIKeyboardInputMode *)v6 normalizedIdentifier];
+  v15 = [inputModesWithoutHardwareSupport containsObject:normalizedIdentifier];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [UIKeyboardInputMode hardwareLayoutFromIdentifier:v4];
+    v16 = [UIKeyboardInputMode hardwareLayoutFromIdentifier:identifierCopy];
     [(UIKeyboardInputMode *)v6 setHardwareLayout:v16];
 LABEL_7:
   }
@@ -807,8 +807,8 @@ LABEL_7:
   cachedIcon = self->_cachedIcon;
   if (cachedIcon)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 removeObserver:self name:*MEMORY[0x1E69D9908] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69D9908] object:0];
 
     cachedIcon = self->_cachedIcon;
   }
@@ -823,10 +823,10 @@ LABEL_7:
   [(UIKeyboardInputMode *)&v9 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -836,14 +836,14 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIKeyboardInputMode *)self identifier];
-      v7 = [(UIKeyboardInputMode *)v5 identifier];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      identifier = [(UIKeyboardInputMode *)self identifier];
+      identifier2 = [(UIKeyboardInputMode *)v5 identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v8 = [(UIKeyboardInputMode *)self primaryLanguage];
-        v9 = [(UIKeyboardInputMode *)v5 primaryLanguage];
-        v10 = [v8 isEqualToString:v9];
+        primaryLanguage = [(UIKeyboardInputMode *)self primaryLanguage];
+        primaryLanguage2 = [(UIKeyboardInputMode *)v5 primaryLanguage];
+        v10 = [primaryLanguage isEqualToString:primaryLanguage2];
       }
 
       else
@@ -861,53 +861,53 @@ LABEL_7:
   return v10;
 }
 
-- (void)setCachedIcon:(id)a3
+- (void)setCachedIcon:(id)icon
 {
-  v9 = a3;
+  iconCopy = icon;
   cachedIcon = self->_cachedIcon;
-  objc_storeStrong(&self->_cachedIcon, a3);
+  objc_storeStrong(&self->_cachedIcon, icon);
   v6 = self->_cachedIcon;
   if ((cachedIcon == 0) == (v6 != 0))
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    v8 = v7;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v8 = defaultCenter;
     if (v6)
     {
-      [v7 addObserver:self selector:sel_preferencesControllerChanged_ name:*MEMORY[0x1E69D9908] object:0];
+      [defaultCenter addObserver:self selector:sel_preferencesControllerChanged_ name:*MEMORY[0x1E69D9908] object:0];
     }
 
     else
     {
-      [v7 removeObserver:self name:*MEMORY[0x1E69D9908] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E69D9908] object:0];
     }
   }
 }
 
-+ (UIKeyboardInputMode)keyboardInputModeWithIdentifier:(id)a3
++ (UIKeyboardInputMode)keyboardInputModeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (qword_1ED498728 != -1)
   {
     dispatch_once(&qword_1ED498728, &__block_literal_global_1183);
   }
 
-  v5 = [qword_1ED4986C0 objectForKey:v4];
+  v5 = [qword_1ED4986C0 objectForKey:identifierCopy];
   if (!v5)
   {
-    if ([v4 isEqualToString:@"dictation"])
+    if ([identifierCopy isEqualToString:@"dictation"])
     {
-      v6 = [a1 dictationInputMode];
+      dictationInputMode = [self dictationInputMode];
     }
 
-    else if ([v4 isEqualToString:@"autofillsignup"])
+    else if ([identifierCopy isEqualToString:@"autofillsignup"])
     {
-      v6 = [a1 autofillSignupInputMode];
+      dictationInputMode = [self autofillSignupInputMode];
     }
 
     else
     {
       v7 = +[UIKeyboardInputModeController sharedInputModeController];
-      v8 = [v7 identifierIsValidSystemInputMode:v4];
+      v8 = [v7 identifierIsValidSystemInputMode:identifierCopy];
 
       if (v8)
       {
@@ -919,22 +919,22 @@ LABEL_7:
         v9 = UIKeyboardExtensionInputMode;
       }
 
-      v6 = [[v9 alloc] initWithIdentifier:v4];
+      dictationInputMode = [[v9 alloc] initWithIdentifier:identifierCopy];
     }
 
-    v5 = v6;
-    if (v6)
+    v5 = dictationInputMode;
+    if (dictationInputMode)
     {
       v10 = qword_1ED4986C0;
-      v11 = [v6 identifier];
-      [v10 setObject:v5 forKey:v11];
+      identifier = [dictationInputMode identifier];
+      [v10 setObject:v5 forKey:identifier];
     }
 
     else
     {
-      if (v4)
+      if (identifierCopy)
       {
-        [qword_1ED4986C0 removeObjectForKey:v4];
+        [qword_1ED4986C0 removeObjectForKey:identifierCopy];
       }
 
       v5 = 0;
@@ -1003,28 +1003,28 @@ LABEL_7:
   return [qword_1ED498740 setViewControllerClass:NSClassFromString(&cfstr_Sfautomaticpas.isa)];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UIKeyboardInputMode *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(UIKeyboardInputMode *)self primaryLanguage];
-  [v4 encodeObject:v6 forKey:@"primaryLanguage"];
+  primaryLanguage = [(UIKeyboardInputMode *)self primaryLanguage];
+  [coderCopy encodeObject:primaryLanguage forKey:@"primaryLanguage"];
 }
 
-- (UIKeyboardInputMode)initWithCoder:(id)a3
+- (UIKeyboardInputMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = [(UIKeyboardInputMode *)self initWithIdentifier:v5];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryLanguage"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryLanguage"];
 
   if (v7)
   {
-    v8 = [(UIKeyboardInputMode *)v6 primaryLanguage];
-    v9 = [v8 isEqualToString:v7];
+    primaryLanguage = [(UIKeyboardInputMode *)v6 primaryLanguage];
+    v9 = [primaryLanguage isEqualToString:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -1037,26 +1037,26 @@ LABEL_7:
 
 - (NSString)monolingualDisplayName
 {
-  v2 = [(UIKeyboardInputMode *)self identifier];
-  v3 = UIKeyboardLocalizedInputModeName(v2);
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v3 = UIKeyboardLocalizedInputModeName(identifier);
 
   return v3;
 }
 
-+ (id)_displayNameForMultilingualSet:(id)a3 forDisplayInLists:(BOOL)a4 usingDeviceLanguage:(BOOL)a5 context:(int64_t)a6
++ (id)_displayNameForMultilingualSet:(id)set forDisplayInLists:(BOOL)lists usingDeviceLanguage:(BOOL)language context:(int64_t)context
 {
-  v44 = a4;
+  listsCopy = lists;
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  setCopy = set;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v8 = +[UIKeyboardInputModeController sharedInputModeController];
-  v9 = [v8 enabledInputModeIdentifiers];
+  enabledInputModeIdentifiers = [v8 enabledInputModeIdentifiers];
 
-  v10 = [v9 countByEnumeratingWithState:&v52 objects:v57 count:16];
+  v10 = [enabledInputModeIdentifiers countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1067,30 +1067,30 @@ LABEL_7:
       {
         if (*v53 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(enabledInputModeIdentifiers);
         }
 
         v14 = TIInputModeGetLanguage();
         v15 = TIInputModeGetNormalizedIdentifier();
-        v16 = [v7 objectForKeyedSubscript:v14];
+        v16 = [dictionary objectForKeyedSubscript:v14];
         if (!v16)
         {
           v16 = [MEMORY[0x1E695DFA8] set];
-          [v7 setObject:v16 forKeyedSubscript:v14];
+          [dictionary setObject:v16 forKeyedSubscript:v14];
         }
 
         [v16 addObject:v15];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v52 objects:v57 count:16];
+      v11 = [enabledInputModeIdentifiers countByEnumeratingWithState:&v52 objects:v57 count:16];
     }
 
     while (v11);
   }
 
-  v17 = [v6 firstObject];
-  v18 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v45 = v6;
+  firstObject = [setCopy firstObject];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v45 = setCopy;
   v19 = TIInputModeGetMultilingualSetFromInputModesWithPreferredLanguages();
 
   v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count")}];
@@ -1116,7 +1116,7 @@ LABEL_7:
         if ((TIInputModeIsMultilingualOnly() & 1) == 0)
         {
           v26 = TIInputModeGetLanguage();
-          v27 = [v7 objectForKeyedSubscript:v26];
+          v27 = [dictionary objectForKeyedSubscript:v26];
           v28 = [v27 count];
 
           if (v28 >= 2)
@@ -1127,10 +1127,10 @@ LABEL_7:
           }
 
           v30 = MEMORY[0x1E695DF58];
-          if (a5)
+          if (language)
           {
-            v31 = [MEMORY[0x1E695DF58] _deviceLanguage];
-            v32 = [v30 localeWithLocaleIdentifier:v31];
+            _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+            v32 = [v30 localeWithLocaleIdentifier:_deviceLanguage];
           }
 
           else
@@ -1138,7 +1138,7 @@ LABEL_7:
             v32 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v26];
           }
 
-          v33 = [v32 localizedStringForLanguage:v26 context:a6];
+          v33 = [v32 localizedStringForLanguage:v26 context:context];
           [v20 addObject:v33];
         }
       }
@@ -1149,23 +1149,23 @@ LABEL_7:
     while (v23);
   }
 
-  if (a5)
+  if (language)
   {
-    v34 = [MEMORY[0x1E695DF58] _deviceLanguage];
+    _deviceLanguage2 = [MEMORY[0x1E695DF58] _deviceLanguage];
   }
 
   else
   {
-    v35 = [v21 firstObject];
-    v34 = TIInputModeGetLanguageWithRegion();
+    firstObject2 = [v21 firstObject];
+    _deviceLanguage2 = TIInputModeGetLanguageWithRegion();
   }
 
-  if (v44)
+  if (listsCopy)
   {
     if ([v20 count] == 2)
     {
       v36 = MEMORY[0x1E696AEC0];
-      v37 = _UILocalizedStringWithDefaultValueInLanguage(@"%@ & %@", v34, @"%@ & %@");
+      v37 = _UILocalizedStringWithDefaultValueInLanguage(@"%@ & %@", _deviceLanguage2, @"%@ & %@");
       v38 = [v20 objectAtIndexedSubscript:0];
       v39 = [v20 objectAtIndexedSubscript:1];
       v40 = [v36 localizedStringWithFormat:v37, v38, v39];
@@ -1173,14 +1173,14 @@ LABEL_7:
       goto LABEL_33;
     }
 
-    v37 = _UILocalizedStringWithDefaultValueInLanguage(@", ", v34, @", ");
+    v37 = _UILocalizedStringWithDefaultValueInLanguage(@", ", _deviceLanguage2, @", ");
     v42 = [v20 componentsJoinedByString:v37];
   }
 
   else
   {
     v37 = objc_opt_new();
-    v41 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v34];
+    v41 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:_deviceLanguage2];
     [v37 setLocale:v41];
 
     v42 = [v37 stringFromItems:v20];
@@ -1196,38 +1196,38 @@ LABEL_33:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
-    if ([v3 count] >= 2)
+    multilingualInputModeIdentifiers = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
+    if ([multilingualInputModeIdentifiers count] >= 2)
     {
-      v4 = [objc_opt_class() _displayNameForMultilingualSet:v3 forDisplayInLists:1 usingDeviceLanguage:0 context:3];
+      monolingualDisplayName = [objc_opt_class() _displayNameForMultilingualSet:multilingualInputModeIdentifiers forDisplayInLists:1 usingDeviceLanguage:0 context:3];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v3 = 0;
+    multilingualInputModeIdentifiers = 0;
   }
 
-  v4 = [(UIKeyboardInputMode *)self monolingualDisplayName];
+  monolingualDisplayName = [(UIKeyboardInputMode *)self monolingualDisplayName];
 LABEL_6:
-  v5 = v4;
+  v5 = monolingualDisplayName;
 
   return v5;
 }
 
 - (BOOL)defaultLayoutIsASCIICapable
 {
-  v2 = [(UIKeyboardInputMode *)self identifier];
-  IsASCIICapable = UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapable(v2);
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  IsASCIICapable = UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapable(identifier);
 
   return IsASCIICapable;
 }
 
 - (NSString)automaticHardwareLayout
 {
-  v3 = [(UIKeyboardInputMode *)self hardwareLayout];
-  if ([v3 isEqualToString:@"Automatic"])
+  hardwareLayout = [(UIKeyboardInputMode *)self hardwareLayout];
+  if ([hardwareLayout isEqualToString:@"Automatic"])
   {
     v4 = +[UIKeyboardInputModeController sharedInputModeController];
     v5 = [v4 hardwareLayoutToUseForInputMode:self];
@@ -1236,11 +1236,11 @@ LABEL_6:
     {
       v6 = v5;
 
-      v3 = v6;
+      hardwareLayout = v6;
     }
   }
 
-  return v3;
+  return hardwareLayout;
 }
 
 - (BOOL)supportsEmojiSearch
@@ -1251,8 +1251,8 @@ LABEL_6:
   }
 
   v4 = MEMORY[0x1E695DF58];
-  v5 = [(UIKeyboardInputMode *)self primaryLanguage];
-  v6 = [v4 localeWithLocaleIdentifier:v5];
+  primaryLanguage = [(UIKeyboardInputMode *)self primaryLanguage];
+  v6 = [v4 localeWithLocaleIdentifier:primaryLanguage];
 
   v11 = 0;
   v12 = &v11;
@@ -1277,33 +1277,33 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)isAllowedForTraits:(id)a3
+- (BOOL)isAllowedForTraits:(id)traits
 {
-  v5 = a3;
-  v6 = [(UIKeyboardInputMode *)self normalizedIdentifier];
+  traitsCopy = traits;
+  normalizedIdentifier = [(UIKeyboardInputMode *)self normalizedIdentifier];
   if (![(UIKeyboardInputMode *)self isEmojiInputMode])
   {
     v7 = 1;
     goto LABEL_6;
   }
 
-  if ([v5 keyboardType] == 2 || objc_msgSend(v5, "keyboardType") == 123)
+  if ([traitsCopy keyboardType] == 2 || objc_msgSend(traitsCopy, "keyboardType") == 123)
   {
     goto LABEL_4;
   }
 
-  v13 = [v5 keyboardType];
+  keyboardType = [traitsCopy keyboardType];
   v7 = 0;
-  if ((v13 > 0xB || ((1 << v13) & 0x930) == 0) && v13 != 127)
+  if ((keyboardType > 0xB || ((1 << keyboardType) & 0x930) == 0) && keyboardType != 127)
   {
-    if ([v5 keyboardType] == 13)
+    if ([traitsCopy keyboardType] == 13)
     {
 LABEL_4:
       v7 = 0;
       goto LABEL_6;
     }
 
-    if (+[UIKeyboard isMajelEnabled](UIKeyboard, "isMajelEnabled") && [v5 forceFloatingKeyboard])
+    if (+[UIKeyboard isMajelEnabled](UIKeyboard, "isMajelEnabled") && [traitsCopy forceFloatingKeyboard])
     {
       v3 = +[UIKeyboardImpl activeInstance];
       if (![v3 _shouldSuppressAssistantBar])
@@ -1324,7 +1324,7 @@ LABEL_46:
 
     if (_UIApplicationIsStickerPickerService() && !+[UIKeyboard canShowEmojiKeyboardInsideStickerPickerService])
     {
-      v7 = [v5 keyboardType] == 124;
+      v7 = [traitsCopy keyboardType] == 124;
       if ((v14 & 1) == 0)
       {
         goto LABEL_6;
@@ -1346,15 +1346,15 @@ LABEL_46:
 LABEL_6:
   if ([(UIKeyboardInputMode *)self isHandwritingInputMode])
   {
-    if ([v5 disableHandwritingKeyboard])
+    if ([traitsCopy disableHandwritingKeyboard])
     {
       goto LABEL_35;
     }
 
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 _shouldSuppressSoftwareKeyboardByOneness];
+    _shouldSuppressSoftwareKeyboardByOneness = [v8 _shouldSuppressSoftwareKeyboardByOneness];
 
-    if ((v9 & 1) != 0 || !+[UIKeyboardVisualModeManager softwareKeyboardAllowedForActiveKeyboardSceneDelegate])
+    if ((_shouldSuppressSoftwareKeyboardByOneness & 1) != 0 || !+[UIKeyboardVisualModeManager softwareKeyboardAllowedForActiveKeyboardSceneDelegate])
     {
       goto LABEL_35;
     }
@@ -1365,10 +1365,10 @@ LABEL_6:
     goto LABEL_35;
   }
 
-  if ([v5 isSecureTextEntry])
+  if ([traitsCopy isSecureTextEntry])
   {
-    v10 = [(UIKeyboardInputMode *)self identifierWithLayouts];
-    IsSecure = UIKeyboardLayoutDefaultTypeForInputModeIsSecure(v10);
+    identifierWithLayouts = [(UIKeyboardInputMode *)self identifierWithLayouts];
+    IsSecure = UIKeyboardLayoutDefaultTypeForInputModeIsSecure(identifierWithLayouts);
 
     if (!IsSecure)
     {
@@ -1376,12 +1376,12 @@ LABEL_6:
     }
   }
 
-  if ([v5 isCarPlayIdiom] && !_UIKeyboardInputModeDefaultLayoutIsCarPlayEnabled(self) || (objc_msgSend(v5, "keyboardType") == 1 || objc_msgSend(v5, "keyboardType") == 11 || objc_msgSend(v5, "keyboardType") == 127) && !UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapableExtended(v6))
+  if ([traitsCopy isCarPlayIdiom] && !_UIKeyboardInputModeDefaultLayoutIsCarPlayEnabled(self) || (objc_msgSend(traitsCopy, "keyboardType") == 1 || objc_msgSend(traitsCopy, "keyboardType") == 11 || objc_msgSend(traitsCopy, "keyboardType") == 127) && !UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapableExtended(normalizedIdentifier))
   {
     goto LABEL_35;
   }
 
-  if ([v5 keyboardType] == 4)
+  if ([traitsCopy keyboardType] == 4)
   {
     v12 = +[UIDevice currentDevice];
     if ([v12 userInterfaceIdiom])
@@ -1392,7 +1392,7 @@ LABEL_6:
 
     v15 = dyld_program_sdk_at_least();
 
-    if ((v15 & 1) != 0 || UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapableExtended(v6))
+    if ((v15 & 1) != 0 || UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapableExtended(normalizedIdentifier))
     {
       goto LABEL_33;
     }
@@ -1403,43 +1403,43 @@ LABEL_35:
   }
 
 LABEL_33:
-  v16 = [v5 keyboardType] != 122 || -[UIKeyboardInputMode supportsEmojiSearch](self, "supportsEmojiSearch");
+  v16 = [traitsCopy keyboardType] != 122 || -[UIKeyboardInputMode supportsEmojiSearch](self, "supportsEmojiSearch");
 LABEL_36:
 
   return v16;
 }
 
-- (BOOL)isDesiredForTraits:(id)a3 withExtended:(BOOL)a4
+- (BOOL)isDesiredForTraits:(id)traits withExtended:(BOOL)extended
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIKeyboardInputMode *)self normalizedIdentifier];
-  if ([v6 isSecureTextEntry])
+  extendedCopy = extended;
+  traitsCopy = traits;
+  normalizedIdentifier = [(UIKeyboardInputMode *)self normalizedIdentifier];
+  if ([traitsCopy isSecureTextEntry])
   {
-    IsSecure = UIKeyboardLayoutDefaultTypeForInputModeIsSecure(v7);
+    IsSecure = UIKeyboardLayoutDefaultTypeForInputModeIsSecure(normalizedIdentifier);
   }
 
-  else if ([v6 isCarPlayIdiom])
+  else if ([traitsCopy isCarPlayIdiom])
   {
     IsSecure = _UIKeyboardInputModeDefaultLayoutIsCarPlayEnabled(self);
   }
 
   else
   {
-    if (!+[UITextInputTraits keyboardTypeRequiresASCIICapable:](UITextInputTraits, "keyboardTypeRequiresASCIICapable:", [v6 keyboardType]))
+    if (!+[UITextInputTraits keyboardTypeRequiresASCIICapable:](UITextInputTraits, "keyboardTypeRequiresASCIICapable:", [traitsCopy keyboardType]))
     {
       v9 = 1;
       goto LABEL_6;
     }
 
-    if (v4)
+    if (extendedCopy)
     {
-      IsSecure = UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapableExtended(v7);
+      IsSecure = UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapableExtended(normalizedIdentifier);
     }
 
     else
     {
-      IsSecure = UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapable(v7);
+      IsSecure = UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapable(normalizedIdentifier);
     }
   }
 
@@ -1451,20 +1451,20 @@ LABEL_6:
 
 - (NSString)dictationDisplayName
 {
-  v3 = [(UIKeyboardInputMode *)self dictationLanguage];
-  v4 = UIKeyboardLocalizedDictationDisplayName(v3);
+  dictationLanguage = [(UIKeyboardInputMode *)self dictationLanguage];
+  v4 = UIKeyboardLocalizedDictationDisplayName(dictationLanguage);
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    extendedDisplayName = v4;
   }
 
   else
   {
-    v6 = [(UIKeyboardInputMode *)self extendedDisplayName];
+    extendedDisplayName = [(UIKeyboardInputMode *)self extendedDisplayName];
   }
 
-  v7 = v6;
+  v7 = extendedDisplayName;
 
   return v7;
 }
@@ -1472,21 +1472,21 @@ LABEL_6:
 - (NSString)defaultDictationLanguage
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardInputMode *)self languageWithRegion];
+  languageWithRegion = [(UIKeyboardInputMode *)self languageWithRegion];
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  v5 = [(UIKeyboardInputMode *)self languageWithRegion];
-  v6 = [v4 defaultDictationLanguages:v5];
+  languageWithRegion2 = [(UIKeyboardInputMode *)self languageWithRegion];
+  v6 = [v4 defaultDictationLanguages:languageWithRegion2];
 
   if ([v6 count])
   {
     v7 = +[UIKeyboardInputModeController sharedInputModeController];
-    v8 = [v7 suggestedDictationLanguagesForDeviceLanguage];
+    suggestedDictationLanguagesForDeviceLanguage = [v7 suggestedDictationLanguagesForDeviceLanguage];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = v8;
+    v9 = suggestedDictationLanguagesForDeviceLanguage;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -1504,9 +1504,9 @@ LABEL_6:
           v14 = *(*(&v17 + 1) + 8 * i);
           if (v14 && ([v6 containsObject:{*(*(&v17 + 1) + 8 * i), v17}] & 1) != 0)
           {
-            v15 = v14;
+            firstObject = v14;
 
-            v3 = v9;
+            languageWithRegion = v9;
             goto LABEL_13;
           }
         }
@@ -1521,27 +1521,27 @@ LABEL_6:
       }
     }
 
-    v15 = [v6 firstObject];
+    firstObject = [v6 firstObject];
 LABEL_13:
 
-    v3 = v15;
+    languageWithRegion = firstObject;
   }
 
-  return v3;
+  return languageWithRegion;
 }
 
-- (void)setDictationLanguage:(id)a3
+- (void)setDictationLanguage:(id)language
 {
-  v14 = a3;
+  languageCopy = language;
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  v5 = [(UIKeyboardInputMode *)self languageWithRegion];
-  v6 = [v4 defaultDictationLanguages:v5];
+  languageWithRegion = [(UIKeyboardInputMode *)self languageWithRegion];
+  v6 = [v4 defaultDictationLanguages:languageWithRegion];
 
-  if ([v6 containsObject:v14])
+  if ([v6 containsObject:languageCopy])
   {
     v7 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v8 = [v7 preferencesActions];
-    v9 = [v8 valueForPreferenceKey:@"DictationLanguagesLastUsed"];
+    preferencesActions = [v7 preferencesActions];
+    v9 = [preferencesActions valueForPreferenceKey:@"DictationLanguagesLastUsed"];
     v10 = [v9 mutableCopy];
 
     if (!v10)
@@ -1549,24 +1549,24 @@ LABEL_13:
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    v11 = [(UIKeyboardInputMode *)self languageWithRegion];
-    [v10 setObject:v14 forKey:v11];
+    languageWithRegion2 = [(UIKeyboardInputMode *)self languageWithRegion];
+    [v10 setObject:languageCopy forKey:languageWithRegion2];
 
     v12 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v13 = [v12 preferencesActions];
-    [v13 setLastUsedDictationLanguages:v10];
+    preferencesActions2 = [v12 preferencesActions];
+    [preferencesActions2 setLastUsedDictationLanguages:v10];
   }
 }
 
 - (void)setLastUsedDictationLanguage
 {
-  v2 = [(UIKeyboardInputMode *)self dictationLanguage];
-  if (v2)
+  dictationLanguage = [(UIKeyboardInputMode *)self dictationLanguage];
+  if (dictationLanguage)
   {
-    v9 = v2;
+    v9 = dictationLanguage;
     v3 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v4 = [v3 preferencesActions];
-    v5 = [v4 valueForPreferenceKey:@"DictationLanguagesLastUsed"];
+    preferencesActions = [v3 preferencesActions];
+    v5 = [preferencesActions valueForPreferenceKey:@"DictationLanguagesLastUsed"];
     v6 = [v5 mutableCopy];
 
     if (!v6)
@@ -1576,10 +1576,10 @@ LABEL_13:
 
     [v6 setObject:v9 forKey:@"LastUsedDictationLangauge"];
     v7 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v8 = [v7 preferencesActions];
-    [v8 setLastUsedDictationLanguages:v6];
+    preferencesActions2 = [v7 preferencesActions];
+    [preferencesActions2 setLastUsedDictationLanguages:v6];
 
-    v2 = v9;
+    dictationLanguage = v9;
   }
 }
 
@@ -1658,8 +1658,8 @@ LABEL_13:
 - (id)_iconLabelWithinMultiscriptSet
 {
   v7 = 0;
-  v3 = [(UIKeyboardInputMode *)self multiscriptInputModeIdentifiers];
-  [(UIKeyboardInputMode *)self _getIconLabel:&v7 secondaryIconLabel:0 artwork:0 inputModes:v3];
+  multiscriptInputModeIdentifiers = [(UIKeyboardInputMode *)self multiscriptInputModeIdentifiers];
+  [(UIKeyboardInputMode *)self _getIconLabel:&v7 secondaryIconLabel:0 artwork:0 inputModes:multiscriptInputModeIdentifiers];
   v4 = v7;
   v5 = v7;
 
@@ -1668,73 +1668,73 @@ LABEL_13:
 
 - (id)_fallbackIconLabel
 {
-  v3 = [(UIKeyboardInputMode *)self identifier];
-  v4 = UIKeyboardLocalizedString(@"UI-ABC", v3, 0, 0);
-  v5 = [v4 _firstGrapheme];
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v4 = UIKeyboardLocalizedString(@"UI-ABC", identifier, 0, 0);
+  _firstGrapheme = [v4 _firstGrapheme];
 
-  if ([v5 isEqual:@"A"])
+  if ([_firstGrapheme isEqual:@"A"])
   {
 
-    v5 = 0;
+    _firstGrapheme = 0;
   }
 
-  v6 = [(UIKeyboardInputMode *)self primaryLanguage];
-  [v6 cStringUsingEncoding:4];
+  primaryLanguage = [(UIKeyboardInputMode *)self primaryLanguage];
+  [primaryLanguage cStringUsingEncoding:4];
   uscript_getCode();
   if (v14 != 25 && v14 != 8)
   {
     goto LABEL_4;
   }
 
-  v8 = [(UIKeyboardInputMode *)self primaryLanguage];
-  if ([v8 length] >= 3)
+  primaryLanguage2 = [(UIKeyboardInputMode *)self primaryLanguage];
+  if ([primaryLanguage2 length] >= 3)
   {
-    v9 = [v8 substringToIndex:2];
+    v9 = [primaryLanguage2 substringToIndex:2];
 
-    v8 = v9;
+    primaryLanguage2 = v9;
   }
 
-  v7 = [v8 uppercaseString];
+  uppercaseString = [primaryLanguage2 uppercaseString];
 
-  if (!v7)
+  if (!uppercaseString)
   {
 LABEL_4:
-    if (v5)
+    if (_firstGrapheme)
     {
-      v7 = v5;
+      uppercaseString = _firstGrapheme;
     }
 
     else
     {
-      v10 = [(UIKeyboardInputMode *)self identifier];
-      v11 = UIKeyboardLocalizedInputModeName(v10);
-      v7 = [v11 _firstGrapheme];
+      identifier2 = [(UIKeyboardInputMode *)self identifier];
+      v11 = UIKeyboardLocalizedInputModeName(identifier2);
+      uppercaseString = [v11 _firstGrapheme];
     }
   }
 
-  v12 = v7;
+  v12 = uppercaseString;
 
   return v12;
 }
 
-- (void)_getIconLabel:(id *)a3 secondaryIconLabel:(id *)a4 artwork:(id *)a5
+- (void)_getIconLabel:(id *)label secondaryIconLabel:(id *)iconLabel artwork:(id *)artwork
 {
   v9 = UIKeyboardGetActiveUniqueInputModesForHardwareKeyboard();
-  [(UIKeyboardInputMode *)self _getIconLabel:a3 secondaryIconLabel:a4 artwork:a5 inputModes:v9];
+  [(UIKeyboardInputMode *)self _getIconLabel:label secondaryIconLabel:iconLabel artwork:artwork inputModes:v9];
 }
 
-- (void)_getIconLabel:(id *)a3 secondaryIconLabel:(id *)a4 artwork:(id *)a5 inputModes:(id)a6
+- (void)_getIconLabel:(id *)label secondaryIconLabel:(id *)iconLabel artwork:(id *)artwork inputModes:(id)modes
 {
   v74 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = [(UIKeyboardInputMode *)self identifier];
-  v12 = UIKeyboardLocalizedObject(@"UI-IconLabel", v11, 0, 0, 0);
-  v13 = UIKeyboardLocalizedObject(@"UI-IconLabelScript", v11, 0, 0, 0);
-  v14 = UIKeyboardLocalizedObject(@"UI-IconLabelLanguage", v11, 0, 0, 0);
+  modesCopy = modes;
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  _fallbackIconLabel = UIKeyboardLocalizedObject(@"UI-IconLabel", identifier, 0, 0, 0);
+  v13 = UIKeyboardLocalizedObject(@"UI-IconLabelScript", identifier, 0, 0, 0);
+  v14 = UIKeyboardLocalizedObject(@"UI-IconLabelLanguage", identifier, 0, 0, 0);
   v62 = v14;
-  v15 = UIKeyboardLocalizedObject(@"UI-IconLabelLanguageVariant", v11, 0, 0, 0);
-  v58 = UIKeyboardLocalizedObject(@"UI-IconArtworkShort", v11, 0, 0, 0);
-  v59 = UIKeyboardLocalizedObject(@"UI-IconArtworkFull", v11, 0, 0, 0);
+  v15 = UIKeyboardLocalizedObject(@"UI-IconLabelLanguageVariant", identifier, 0, 0, 0);
+  v58 = UIKeyboardLocalizedObject(@"UI-IconArtworkShort", identifier, 0, 0, 0);
+  v59 = UIKeyboardLocalizedObject(@"UI-IconArtworkFull", identifier, 0, 0, 0);
   v63 = v13;
   if (v13)
   {
@@ -1748,22 +1748,22 @@ LABEL_4:
 
   v60 = v15;
   v17 = v16 && v15 == 0;
-  v49 = self;
+  selfCopy = self;
   if (v17)
   {
     goto LABEL_32;
   }
 
-  v48 = a3;
-  v50 = v12;
-  v52 = a4;
-  v54 = a5;
-  v56 = v10;
+  labelCopy = label;
+  v50 = _fallbackIconLabel;
+  iconLabelCopy = iconLabel;
+  artworkCopy = artwork;
+  v56 = modesCopy;
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v18 = v10;
+  v18 = modesCopy;
   v19 = [v18 countByEnumeratingWithState:&v68 objects:v73 count:16];
   if (v19)
   {
@@ -1781,9 +1781,9 @@ LABEL_4:
         }
 
         v24 = *(*(&v68 + 1) + 8 * i);
-        if (([v11 isEqualToString:{v24, v48}] & 1) == 0)
+        if (([identifier isEqualToString:{v24, labelCopy}] & 1) == 0)
         {
-          v25 = v11;
+          v25 = identifier;
           v26 = UIKeyboardLocalizedObject(@"UI-IconLabelScript", v24, 0, 0, 0);
           v27 = UIKeyboardLocalizedObject(@"UI-IconLabelLanguage", v24, 0, 0, 0);
           v28 = [v63 isEqualToString:v26];
@@ -1795,7 +1795,7 @@ LABEL_4:
 
           v21 |= v28;
 
-          v11 = v25;
+          identifier = v25;
         }
       }
 
@@ -1813,32 +1813,32 @@ LABEL_4:
 
   if ((v21 & 1) == 0 && v63)
   {
-    v12 = v63;
+    _fallbackIconLabel = v63;
 
     v30 = 0;
     v31 = 0;
-    a5 = v54;
-    v10 = v56;
-    a4 = v52;
-    a3 = v48;
+    artwork = artworkCopy;
+    modesCopy = v56;
+    iconLabel = iconLabelCopy;
+    label = labelCopy;
 LABEL_33:
     v33 = v58;
     goto LABEL_34;
   }
 
-  a4 = v52;
-  a5 = v54;
-  v12 = v50;
-  a3 = v48;
+  iconLabel = iconLabelCopy;
+  artwork = artworkCopy;
+  _fallbackIconLabel = v50;
+  label = labelCopy;
   if (v59)
   {
     v30 = v59;
     v31 = 0;
-    v10 = v56;
+    modesCopy = v56;
     goto LABEL_33;
   }
 
-  v10 = v56;
+  modesCopy = v56;
   if ((v61 & 1) == 0)
   {
     if (v62)
@@ -1847,7 +1847,7 @@ LABEL_33:
 
       v30 = 0;
       v31 = 0;
-      v12 = v34;
+      _fallbackIconLabel = v34;
       goto LABEL_33;
     }
 
@@ -1861,7 +1861,7 @@ LABEL_32:
   {
     v32 = v62;
 
-    v12 = v32;
+    _fallbackIconLabel = v32;
   }
 
   v33 = v58;
@@ -1874,20 +1874,20 @@ LABEL_34:
 
     if (v59)
     {
-      v36 = a3;
+      labelCopy2 = label;
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v37 = v10;
+      v37 = modesCopy;
       v38 = [v37 countByEnumeratingWithState:&v64 objects:v72 count:16];
       if (v38)
       {
         v39 = v38;
-        v51 = v12;
-        v53 = a4;
-        v55 = a5;
-        v57 = v10;
+        v51 = _fallbackIconLabel;
+        iconLabelCopy2 = iconLabel;
+        artworkCopy2 = artwork;
+        v57 = modesCopy;
         v40 = *v65;
         while (2)
         {
@@ -1899,7 +1899,7 @@ LABEL_34:
             }
 
             v42 = *(*(&v64 + 1) + 8 * j);
-            if (([v11 isEqualToString:{v42, v48}] & 1) == 0)
+            if (([identifier isEqualToString:{v42, labelCopy}] & 1) == 0)
             {
               v43 = UIKeyboardLocalizedObject(@"UI-IconArtworkShort", v42, 0, 0, 0);
               v44 = [v35 isEqualToString:v43];
@@ -1924,14 +1924,14 @@ LABEL_34:
         }
 
 LABEL_48:
-        a5 = v55;
-        v10 = v57;
-        v12 = v51;
-        a4 = v53;
+        artwork = artworkCopy2;
+        modesCopy = v57;
+        _fallbackIconLabel = v51;
+        iconLabel = iconLabelCopy2;
       }
 
       v30 = v35;
-      a3 = v36;
+      label = labelCopy2;
     }
 
     else
@@ -1942,27 +1942,27 @@ LABEL_48:
     v33 = v58;
   }
 
-  if (!v12)
+  if (!_fallbackIconLabel)
   {
-    v12 = [(UIKeyboardInputMode *)v49 _fallbackIconLabel];
+    _fallbackIconLabel = [(UIKeyboardInputMode *)selfCopy _fallbackIconLabel];
   }
 
-  if (a3)
+  if (label)
   {
-    v45 = v12;
-    *a3 = v12;
+    v45 = _fallbackIconLabel;
+    *label = _fallbackIconLabel;
   }
 
-  if (a4)
+  if (iconLabel)
   {
     v46 = v31;
-    *a4 = v31;
+    *iconLabel = v31;
   }
 
-  if (a5)
+  if (artwork)
   {
     v47 = v30;
-    *a5 = v30;
+    *artwork = v30;
   }
 }
 
@@ -1973,8 +1973,8 @@ LABEL_48:
     dispatch_once(&qword_1ED498768, &__block_literal_global_1221);
   }
 
-  v2 = [UIApp preferredContentSizeCategory];
-  v3 = [qword_1ED498760 objectForKeyedSubscript:v2];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  v3 = [qword_1ED498760 objectForKeyedSubscript:preferredContentSizeCategory];
   v4 = v3;
   if (v3)
   {
@@ -2016,22 +2016,22 @@ void __45__UIKeyboardInputMode_languageIndicatorScale__block_invoke()
   qword_1ED498760 = v0;
 }
 
-- (id)_indicatorIconWithConfiguration:(id)a3
+- (id)_indicatorIconWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 hash];
-  if ([v4 background])
+  configurationCopy = configuration;
+  v5 = [configurationCopy hash];
+  if ([configurationCopy background])
   {
-    v6 = [(UIKeyboardInputMode *)self cachedIcon];
-    if (v6 && [(UIKeyboardInputMode *)self cachedIconKey]== v5)
+    cachedIcon = [(UIKeyboardInputMode *)self cachedIcon];
+    if (cachedIcon && [(UIKeyboardInputMode *)self cachedIconKey]== v5)
     {
-      v7 = [(UIKeyboardInputMode *)self cachedSizeCategory];
-      v8 = [UIApp preferredContentSizeCategory];
-      v9 = [v7 isEqual:v8];
+      cachedSizeCategory = [(UIKeyboardInputMode *)self cachedSizeCategory];
+      preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+      v9 = [cachedSizeCategory isEqual:preferredContentSizeCategory];
 
       if (v9)
       {
-        v10 = [(UIKeyboardInputMode *)self cachedIcon];
+        cachedIcon2 = [(UIKeyboardInputMode *)self cachedIcon];
         goto LABEL_24;
       }
     }
@@ -2041,8 +2041,8 @@ void __45__UIKeyboardInputMode_languageIndicatorScale__block_invoke()
     }
   }
 
-  v11 = [(UIKeyboardInputMode *)self identifier];
-  v12 = [v11 hasPrefix:@"emoji"];
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v12 = [identifier hasPrefix:@"emoji"];
 
   if (v12)
   {
@@ -2057,23 +2057,23 @@ void __45__UIKeyboardInputMode_languageIndicatorScale__block_invoke()
       v14 = 2;
     }
 
-    v15 = [UITraitCollection traitCollectionWithUserInterfaceStyle:v14];
-    v16 = v15;
-    if (v15)
+    imageConfiguration = [UITraitCollection traitCollectionWithUserInterfaceStyle:v14];
+    v16 = imageConfiguration;
+    if (imageConfiguration)
     {
-      v15 = [v15 imageConfiguration];
+      imageConfiguration = [imageConfiguration imageConfiguration];
     }
 
-    v17 = v15;
+    v17 = imageConfiguration;
 
     v18 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleFootnote" scale:-1];
     v19 = [v17 configurationByApplyingConfiguration:v18];
 
-    [v4 size];
-    v21 = +[UIImageSymbolConfiguration configurationWithPointSize:weight:](UIImageSymbolConfiguration, "configurationWithPointSize:weight:", [v4 weight], v20);
+    [configurationCopy size];
+    v21 = +[UIImageSymbolConfiguration configurationWithPointSize:weight:](UIImageSymbolConfiguration, "configurationWithPointSize:weight:", [configurationCopy weight], v20);
     v22 = [v19 configurationByApplyingConfiguration:v21];
 
-    v10 = [UIImage _systemImageNamed:@"face.grinning" withConfiguration:v22];
+    cachedIcon2 = [UIImage _systemImageNamed:@"face.grinning" withConfiguration:v22];
     goto LABEL_22;
   }
 
@@ -2081,7 +2081,7 @@ void __45__UIKeyboardInputMode_languageIndicatorScale__block_invoke()
   {
     v25 = 0;
 LABEL_17:
-    if ([v4 softwareLayout])
+    if ([configurationCopy softwareLayout])
     {
       v26 = UIKeyboardActiveUserSelectableInputModes;
     }
@@ -2104,11 +2104,11 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  v32 = [(UIKeyboardInputMode *)self _iconLabelComponentsForMultilingualSet];
-  if ([v32 count] == 2)
+  _iconLabelComponentsForMultilingualSet = [(UIKeyboardInputMode *)self _iconLabelComponentsForMultilingualSet];
+  if ([_iconLabelComponentsForMultilingualSet count] == 2)
   {
-    v22 = [v32 objectAtIndexedSubscript:0];
-    v25 = [v32 objectAtIndexedSubscript:1];
+    v22 = [_iconLabelComponentsForMultilingualSet objectAtIndexedSubscript:0];
+    v25 = [_iconLabelComponentsForMultilingualSet objectAtIndexedSubscript:1];
 
     if (!v22)
     {
@@ -2127,35 +2127,35 @@ LABEL_17:
   }
 
 LABEL_21:
-  v10 = [(UIKeyboardInputMode *)self imageForInputModeLabel:v22 secondaryIconLabel:v25 artwork:v29 withConfiguration:v4];
+  cachedIcon2 = [(UIKeyboardInputMode *)self imageForInputModeLabel:v22 secondaryIconLabel:v25 artwork:v29 withConfiguration:configurationCopy];
 
 LABEL_22:
-  if ([v4 background])
+  if ([configurationCopy background])
   {
-    [(UIKeyboardInputMode *)self setCachedIcon:v10];
+    [(UIKeyboardInputMode *)self setCachedIcon:cachedIcon2];
     [(UIKeyboardInputMode *)self setCachedIconKey:v5];
-    v30 = [UIApp preferredContentSizeCategory];
-    [(UIKeyboardInputMode *)self setCachedSizeCategory:v30];
+    preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+    [(UIKeyboardInputMode *)self setCachedSizeCategory:preferredContentSizeCategory2];
   }
 
 LABEL_24:
 
-  return v10;
+  return cachedIcon2;
 }
 
-- (void)drawStringInRect:(id)a3 inRect:(CGRect)a4 useSmallFont:(BOOL)a5 useCondensedFont:(BOOL)a6 scale:(double)a7
+- (void)drawStringInRect:(id)rect inRect:(CGRect)inRect useSmallFont:(BOOL)font useCondensedFont:(BOOL)condensedFont scale:(double)scale
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
+  height = inRect.size.height;
+  width = inRect.size.width;
+  x = inRect.origin.x;
+  y = inRect.origin.y;
   v10 = 12.0;
-  if (a6)
+  if (condensedFont)
   {
     v10 = 9.5;
   }
 
-  if (a5)
+  if (font)
   {
     v11 = 8.5;
   }
@@ -2165,7 +2165,7 @@ LABEL_24:
     v11 = v10;
   }
 
-  if (a5)
+  if (font)
   {
     v12 = off_1E70ECD08;
   }
@@ -2176,7 +2176,7 @@ LABEL_24:
   }
 
   v64[1] = *MEMORY[0x1E69E9840];
-  if (a6)
+  if (condensedFont)
   {
     v13 = off_1E70ECCE8;
   }
@@ -2186,8 +2186,8 @@ LABEL_24:
     v13 = off_1E70ECCF8;
   }
 
-  v55 = a3;
-  UICeilToScale(v11 * a7, 2.0);
+  rectCopy = rect;
+  UICeilToScale(v11 * scale, 2.0);
   v15 = v14;
   v16 = *v13;
   v63 = *off_1E70ECCC0;
@@ -2214,7 +2214,7 @@ LABEL_24:
     v59 = v22;
     v60 = v25;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-    v21 = [v26 initWithString:v55 attributes:v27];
+    v21 = [v26 initWithString:rectCopy attributes:v27];
 
     [v21 size];
     v29 = v28 / (width * 1.2);
@@ -2291,20 +2291,20 @@ LABEL_24:
   CFRelease(v34);
 }
 
-- (id)imageForInputModeLabel:(id)a3 secondaryIconLabel:(id)a4 artwork:(id)a5 withConfiguration:(id)a6
+- (id)imageForInputModeLabel:(id)label secondaryIconLabel:(id)iconLabel artwork:(id)artwork withConfiguration:(id)configuration
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(UIKeyboardInputMode *)self identifier];
-  v15 = UIKeyboardLocalizedObject(@"UI-IconLabelLanguageUsesCondensedFont", v14, 0, 0, 0);
+  labelCopy = label;
+  iconLabelCopy = iconLabel;
+  artworkCopy = artwork;
+  configurationCopy = configuration;
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v15 = UIKeyboardLocalizedObject(@"UI-IconLabelLanguageUsesCondensedFont", identifier, 0, 0, 0);
 
-  [v13 scaleFactor];
+  [configurationCopy scaleFactor];
   v17 = v16;
-  [v13 size];
+  [configurationCopy size];
   v19 = ceil(v17 * v18);
-  [v13 size];
+  [configurationCopy size];
   v21 = ceil(v17 * v20);
   if (+[UIKeyboard isLanguageIndicatorEnabled]&& getTUIKeyboardInputModeIconRendererClass_0())
   {
@@ -2330,16 +2330,16 @@ LABEL_24:
     [v24 setSize:{v19, v21}];
     +[_UICursorAccessoryView baseFontSize];
     [v24 setBaseFontSize:?];
-    [v24 setStyle:{objc_msgSend(v13, "background")}];
+    [v24 setStyle:{objc_msgSend(configurationCopy, "background")}];
     if (objc_opt_respondsToSelector())
     {
-      v25 = [(UIKeyboardInputMode *)self languageWithRegion];
-      [v24 setLanguage:v25];
+      languageWithRegion = [(UIKeyboardInputMode *)self languageWithRegion];
+      [v24 setLanguage:languageWithRegion];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v24 setArtwork:v12];
+      [v24 setArtwork:artworkCopy];
     }
 
     if ([(UIKeyboardInputMode *)self isMultilingual])
@@ -2348,7 +2348,7 @@ LABEL_24:
     }
 
     v26 = objc_alloc_init(getTUIKeyboardInputModeIconRendererClass_0());
-    v27 = [v26 imageForPrimaryLabel:v10 secondaryLabel:v11 withConfiguration:v24];
+    v27 = [v26 imageForPrimaryLabel:labelCopy secondaryLabel:iconLabelCopy withConfiguration:v24];
     v28 = [v27 imageWithRenderingMode:2];
   }
 
@@ -2361,7 +2361,7 @@ LABEL_24:
     v31 = v19 - (v29 + v29);
     v32 = v21 - (v29 + v29);
     CGContextClear();
-    if ([v13 background])
+    if ([configurationCopy background])
     {
       v53.origin.x = v29;
       v53.origin.y = v29;
@@ -2382,15 +2382,15 @@ LABEL_24:
       [v33 setFill];
     }
 
-    if (v11)
+    if (iconLabelCopy)
     {
       v35 = v32 * 0.5 + -1.0;
       v36 = v31 + -2.0;
       v37 = v32 - (v35 + 1.0);
-      [(UIKeyboardInputMode *)self drawStringInRect:v10 inRect:1 useSmallFont:v15 != 0 useCondensedFont:v29 + 1.0 scale:v29 + 1.0, v36, v37, v17];
+      [(UIKeyboardInputMode *)self drawStringInRect:labelCopy inRect:1 useSmallFont:v15 != 0 useCondensedFont:v29 + 1.0 scale:v29 + 1.0, v36, v37, v17];
       v38 = v29 + v35;
-      v39 = self;
-      v40 = v11;
+      selfCopy2 = self;
+      v40 = iconLabelCopy;
       v41 = v29 + 1.0;
       v42 = v36;
       v43 = v37;
@@ -2405,13 +2405,13 @@ LABEL_24:
       v55.size.width = v31;
       v55.size.height = v21 - v30;
       *&v41 = CGRectInset(v55, 2.0, 2.0);
-      v39 = self;
-      v40 = v10;
+      selfCopy2 = self;
+      v40 = labelCopy;
       v44 = 0;
       v45 = v15 != 0;
     }
 
-    [(UIKeyboardInputMode *)v39 drawStringInRect:v40 inRect:v44 useSmallFont:v45 useCondensedFont:v41 scale:v38, v42, v43, v17];
+    [(UIKeyboardInputMode *)selfCopy2 drawStringInRect:v40 inRect:v44 useSmallFont:v45 useCondensedFont:v41 scale:v38, v42, v43, v17];
     v24 = _UIGraphicsGetImageFromCurrentImageContext(0);
     UIGraphicsEndImageContext();
     v28 = [v24 imageWithRenderingMode:2];
@@ -2422,7 +2422,7 @@ LABEL_24:
 
 - (BOOL)isMultilingualOnly
 {
-  v2 = [(UIKeyboardInputMode *)self identifier];
+  identifier = [(UIKeyboardInputMode *)self identifier];
   IsMultilingualOnly = TIInputModeIsMultilingualOnly();
 
   return IsMultilingualOnly;
@@ -2430,27 +2430,27 @@ LABEL_24:
 
 - (unint64_t)multilingualIndex
 {
-  v3 = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
-  v4 = [(UIKeyboardInputMode *)self identifier];
-  v5 = [v3 indexOfObject:v4];
+  multilingualInputModeIdentifiers = [(UIKeyboardInputMode *)self multilingualInputModeIdentifiers];
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v5 = [multilingualInputModeIdentifiers indexOfObject:identifier];
 
   return v5;
 }
 
 - (unint64_t)multiscriptIndex
 {
-  v3 = [(UIKeyboardInputMode *)self multiscriptInputModeIdentifiers];
-  v4 = [(UIKeyboardInputMode *)self identifier];
-  v5 = [v3 indexOfObject:v4];
+  multiscriptInputModeIdentifiers = [(UIKeyboardInputMode *)self multiscriptInputModeIdentifiers];
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v5 = [multiscriptInputModeIdentifiers indexOfObject:identifier];
 
   return v5;
 }
 
-- (id)multilingualSetFromInputModeIdentifiers:(id)a3
+- (id)multilingualSetFromInputModeIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKeyboardInputMode *)self identifier];
+  identifiersCopy = identifiers;
+  identifier = [(UIKeyboardInputMode *)self identifier];
   v6 = TIInputModeGetMultilingualSetFromInputModes();
 
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
@@ -2489,13 +2489,13 @@ LABEL_24:
 - (NSArray)multiscriptSet
 {
   v24 = *MEMORY[0x1E69E9840];
-  v2 = [(UIKeyboardInputMode *)self multiscriptInputModeIdentifiers];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  multiscriptInputModeIdentifiers = [(UIKeyboardInputMode *)self multiscriptInputModeIdentifiers];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(multiscriptInputModeIdentifiers, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v2;
+  v4 = multiscriptInputModeIdentifiers;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v5)
   {
@@ -2539,17 +2539,17 @@ LABEL_24:
   return v3;
 }
 
-+ (id)multilingualSetsFromInputModeIdentifiers:(id)a3
++ (id)multilingualSetsFromInputModeIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v18 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v6)
   {
@@ -2571,21 +2571,21 @@ LABEL_24:
         v13 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:v12, v17];
         if (v13)
         {
-          if (([v4 containsObject:v13] & 1) == 0)
+          if (([array2 containsObject:v13] & 1) == 0)
           {
             v14 = [v13 multilingualSetFromInputModeIdentifiers:v5];
             if ([v14 count])
             {
-              v15 = [v14 firstObject];
-              [v18 addObject:v15];
+              firstObject = [v14 firstObject];
+              [array addObject:firstObject];
 
-              [v4 addObjectsFromArray:v14];
+              [array2 addObjectsFromArray:v14];
             }
 
             else
             {
-              [v18 addObject:v13];
-              [v4 addObject:v13];
+              [array addObject:v13];
+              [array2 addObject:v13];
             }
           }
         }
@@ -2606,16 +2606,16 @@ LABEL_24:
     while (v8);
   }
 
-  return v18;
+  return array;
 }
 
 - (void)setCurrentInputModeToActiveInputModeForMultilingualKeyboardForDictation
 {
   if ([(UIKeyboardInputMode *)self isMultilingual])
   {
-    v3 = [(UIKeyboardInputMode *)self multilingualLanguages];
-    v4 = [(UIKeyboardInputMode *)self primaryLanguage];
-    [UIDictationUtilities setActiveMultilingualKeyboardDictationMappings:v3 activeDictationlanguage:v4];
+    multilingualLanguages = [(UIKeyboardInputMode *)self multilingualLanguages];
+    primaryLanguage = [(UIKeyboardInputMode *)self primaryLanguage];
+    [UIDictationUtilities setActiveMultilingualKeyboardDictationMappings:multilingualLanguages activeDictationlanguage:primaryLanguage];
 
     v5 = +[UIKeyboardImpl activeInstance];
     [v5 setSuppressUpdateInputMode:1];

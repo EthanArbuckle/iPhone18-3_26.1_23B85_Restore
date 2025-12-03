@@ -1,17 +1,17 @@
 @interface PDSlideMaster
 - (PDPresentation)presentation;
-- (PDSlideMaster)initWithPresentation:(id)a3;
+- (PDSlideMaster)initWithPresentation:(id)presentation;
 - (id)addSlideLayout;
 - (id)colorScheme;
 - (id)defaultTextListStyle;
 - (id)description;
 - (id)drawingTheme;
 - (id)fontScheme;
-- (id)parentTextStyleForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 defaultTextListStyle:(id)a5 overrideIndex:(BOOL)a6;
-- (id)placeholderWithType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5;
-- (id)slideLayoutOfType:(int)a3;
+- (id)parentTextStyleForPlaceholderType:(int)type placeholderTypeIndex:(int)index defaultTextListStyle:(id)style overrideIndex:(BOOL)overrideIndex;
+- (id)placeholderWithType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex;
+- (id)slideLayoutOfType:(int)type;
 - (id)styleMatrix;
-- (void)addSlideLayout:(id)a3;
+- (void)addSlideLayout:(id)layout;
 - (void)doneWithContent;
 - (void)removeUnnecessaryOverrides;
 - (void)setUpPropertyHierarchyPreservingEffectiveValues;
@@ -21,11 +21,11 @@
 
 - (id)colorScheme
 {
-  v2 = [(PDSlideMaster *)self theme];
-  v3 = [v2 baseStyles];
-  v4 = [v3 colorScheme];
+  theme = [(PDSlideMaster *)self theme];
+  baseStyles = [theme baseStyles];
+  colorScheme = [baseStyles colorScheme];
 
-  return v4;
+  return colorScheme;
 }
 
 - (id)addSlideLayout
@@ -38,32 +38,32 @@
 
 - (id)fontScheme
 {
-  v2 = [(PDSlideMaster *)self theme];
-  v3 = [v2 baseStyles];
-  v4 = [v3 fontScheme];
+  theme = [(PDSlideMaster *)self theme];
+  baseStyles = [theme baseStyles];
+  fontScheme = [baseStyles fontScheme];
 
-  return v4;
+  return fontScheme;
 }
 
 - (id)styleMatrix
 {
-  v2 = [(PDSlideMaster *)self theme];
-  v3 = [v2 baseStyles];
-  v4 = [v3 styleMatrix];
+  theme = [(PDSlideMaster *)self theme];
+  baseStyles = [theme baseStyles];
+  styleMatrix = [baseStyles styleMatrix];
 
-  return v4;
+  return styleMatrix;
 }
 
-- (PDSlideMaster)initWithPresentation:(id)a3
+- (PDSlideMaster)initWithPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v25.receiver = self;
   v25.super_class = PDSlideMaster;
   v5 = [(PDSlideBase *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mPresentation, v4);
+    objc_storeWeak(&v5->mPresentation, presentationCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mSlideLayouts = v6->mSlideLayouts;
     v6->mSlideLayouts = v7;
@@ -102,14 +102,14 @@
   return v6;
 }
 
-- (void)addSlideLayout:(id)a3
+- (void)addSlideLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   [(NSMutableArray *)self->mSlideLayouts addObject:?];
-  [v4 setSlideMaster:self];
+  [layoutCopy setSlideMaster:self];
 }
 
-- (id)slideLayoutOfType:(int)a3
+- (id)slideLayoutOfType:(int)type
 {
   if ([(NSMutableArray *)self->mSlideLayouts count])
   {
@@ -118,7 +118,7 @@
     while (1)
     {
       v7 = [(NSMutableArray *)self->mSlideLayouts objectAtIndex:v5];
-      if ([v7 slideLayoutType] == a3)
+      if ([v7 slideLayoutType] == type)
       {
         break;
       }
@@ -140,32 +140,32 @@ LABEL_5:
   return v7;
 }
 
-- (id)placeholderWithType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5
+- (id)placeholderWithType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex
 {
   v7.receiver = self;
   v7.super_class = PDSlideMaster;
-  v5 = [(PDSlideBase *)&v7 placeholderWithType:[PDSlideBase placeholderTypeIndex:"inheritedPlaceholderType:" overrideIndex:*&a3 inheritedPlaceholderType:a5], 0, 1];
+  v5 = [(PDSlideBase *)&v7 placeholderWithType:[PDSlideBase placeholderTypeIndex:"inheritedPlaceholderType:" overrideIndex:*&type inheritedPlaceholderType:overrideIndex], 0, 1];
 
   return v5;
 }
 
-- (id)parentTextStyleForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 defaultTextListStyle:(id)a5 overrideIndex:(BOOL)a6
+- (id)parentTextStyleForPlaceholderType:(int)type placeholderTypeIndex:(int)index defaultTextListStyle:(id)style overrideIndex:(BOOL)overrideIndex
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3 > 8)
+  styleCopy = style;
+  v9 = styleCopy;
+  if (type > 8)
   {
-    v10 = [(PDSlideMaster *)self otherTextStyle];
+    otherTextStyle = [(PDSlideMaster *)self otherTextStyle];
   }
 
-  else if (((1 << a3) & 0xF0) != 0)
+  else if (((1 << type) & 0xF0) != 0)
   {
-    v10 = v8;
+    otherTextStyle = styleCopy;
   }
 
   else
   {
-    if (((1 << a3) & 0x10A) != 0)
+    if (((1 << type) & 0x10A) != 0)
     {
       [(PDSlideMaster *)self bodyTextStyle];
     }
@@ -174,10 +174,10 @@ LABEL_5:
     {
       [(PDSlideMaster *)self titleTextStyle];
     }
-    v10 = ;
+    otherTextStyle = ;
   }
 
-  v11 = v10;
+  v11 = otherTextStyle;
 
   return v11;
 }
@@ -216,10 +216,10 @@ LABEL_5:
 
 - (id)defaultTextListStyle
 {
-  v2 = [(PDSlideMaster *)self presentation];
-  v3 = [v2 defaultTextStyle];
+  presentation = [(PDSlideMaster *)self presentation];
+  defaultTextStyle = [presentation defaultTextStyle];
 
-  return v3;
+  return defaultTextStyle;
 }
 
 - (void)setUpPropertyHierarchyPreservingEffectiveValues

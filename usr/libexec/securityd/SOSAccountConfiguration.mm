@@ -1,26 +1,26 @@
 @interface SOSAccountConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPendingBackupPeers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPendingBackupPeers:(id)peers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SOSAccountConfiguration
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -47,9 +47,9 @@
     while (v7);
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_ringUpdateFlag = *(v4 + 16);
+    self->_ringUpdateFlag = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 }
@@ -70,16 +70,16 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
   pendingBackupPeers = self->_pendingBackupPeers;
-  if (pendingBackupPeers | *(v4 + 1))
+  if (pendingBackupPeers | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)pendingBackupPeers isEqual:?])
     {
@@ -87,10 +87,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
 LABEL_6:
       v6 = 0;
@@ -99,13 +99,13 @@ LABEL_6:
 
     if (self->_ringUpdateFlag)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_6;
     }
@@ -118,9 +118,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -141,7 +141,7 @@ LABEL_7:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addPendingBackupPeers:v11];
 
         v10 = v10 + 1;
@@ -163,34 +163,34 @@ LABEL_7:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(SOSAccountConfiguration *)self pendingBackupPeersCount])
   {
-    [v8 clearPendingBackupPeers];
-    v4 = [(SOSAccountConfiguration *)self pendingBackupPeersCount];
-    if (v4)
+    [toCopy clearPendingBackupPeers];
+    pendingBackupPeersCount = [(SOSAccountConfiguration *)self pendingBackupPeersCount];
+    if (pendingBackupPeersCount)
     {
-      v5 = v4;
+      v5 = pendingBackupPeersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SOSAccountConfiguration *)self pendingBackupPeersAtIndex:i];
-        [v8 addPendingBackupPeers:v7];
+        [toCopy addPendingBackupPeers:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    v8[16] = self->_ringUpdateFlag;
-    v8[20] |= 1u;
+    toCopy[16] = self->_ringUpdateFlag;
+    toCopy[20] |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -230,14 +230,14 @@ LABEL_7:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -248,18 +248,18 @@ LABEL_7:
       while (1)
       {
         v25 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v25 & 0x7F) << v6;
@@ -277,9 +277,9 @@ LABEL_7:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -293,18 +293,18 @@ LABEL_15:
         while (1)
         {
           v26 = 0;
-          v18 = [a3 position] + 1;
-          if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+          v18 = [from position] + 1;
+          if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
           {
-            v20 = [a3 data];
-            [v20 getBytes:&v26 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v26 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v17 |= (v26 & 0x7F) << v15;
@@ -322,7 +322,7 @@ LABEL_15:
           }
         }
 
-        v21 = (v17 != 0) & ~[a3 hasError];
+        v21 = (v17 != 0) & ~[from hasError];
 LABEL_34:
         self->_ringUpdateFlag = v21;
       }
@@ -345,13 +345,13 @@ LABEL_34:
         }
       }
 
-      v23 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v23 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v22) = [a3 hasError] ^ 1;
+  LOBYTE(v22) = [from hasError] ^ 1;
   return v22;
 }
 
@@ -379,28 +379,28 @@ LABEL_34:
   v7.receiver = self;
   v7.super_class = SOSAccountConfiguration;
   v3 = [(SOSAccountConfiguration *)&v7 description];
-  v4 = [(SOSAccountConfiguration *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SOSAccountConfiguration *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addPendingBackupPeers:(id)a3
+- (void)addPendingBackupPeers:(id)peers
 {
-  v4 = a3;
+  peersCopy = peers;
   pendingBackupPeers = self->_pendingBackupPeers;
-  v8 = v4;
+  v8 = peersCopy;
   if (!pendingBackupPeers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_pendingBackupPeers;
     self->_pendingBackupPeers = v6;
 
-    v4 = v8;
+    peersCopy = v8;
     pendingBackupPeers = self->_pendingBackupPeers;
   }
 
-  [(NSMutableArray *)pendingBackupPeers addObject:v4];
+  [(NSMutableArray *)pendingBackupPeers addObject:peersCopy];
 }
 
 @end

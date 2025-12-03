@@ -2,7 +2,7 @@
 - (DBIconBadgeView)init;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setControlState:(unint64_t)a3;
+- (void)setControlState:(unint64_t)state;
 @end
 
 @implementation DBIconBadgeView
@@ -49,8 +49,8 @@
   }
 
   v9 = *v8;
-  v10 = [(CPUIDimmingEffectView *)self->_dimmingView layer];
-  [v10 setCornerCurve:v9];
+  layer = [(CPUIDimmingEffectView *)self->_dimmingView layer];
+  [layer setCornerCurve:v9];
 
   if (width <= height)
   {
@@ -63,16 +63,16 @@
   }
 
   v12 = v11 * 0.5;
-  v13 = [(CPUIDimmingEffectView *)self->_dimmingView layer];
-  [v13 setCornerRadius:v12];
+  layer2 = [(CPUIDimmingEffectView *)self->_dimmingView layer];
+  [layer2 setCornerRadius:v12];
 }
 
-- (void)setControlState:(unint64_t)a3
+- (void)setControlState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = DBIconBadgeView;
   [(DBIconBadgeView *)&v5 setControlState:?];
-  [(CPUIDimmingEffectView *)self->_dimmingView setHidden:a3 != 131073];
+  [(CPUIDimmingEffectView *)self->_dimmingView setHidden:state != 131073];
 }
 
 - (void)prepareForReuse

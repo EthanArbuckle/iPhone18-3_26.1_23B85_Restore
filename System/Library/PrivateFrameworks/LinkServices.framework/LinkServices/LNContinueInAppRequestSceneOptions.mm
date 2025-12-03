@@ -1,68 +1,68 @@
 @interface LNContinueInAppRequestSceneOptions
-- (LNContinueInAppRequestSceneOptions)initWithActions:(id)a3 supportsNotices:(BOOL)a4 targetContentIdentifier:(id)a5;
-- (LNContinueInAppRequestSceneOptions)initWithCoder:(id)a3;
-- (id)fbsOpenApplicationOptionsWithActionExecutorOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LNContinueInAppRequestSceneOptions)initWithActions:(id)actions supportsNotices:(BOOL)notices targetContentIdentifier:(id)identifier;
+- (LNContinueInAppRequestSceneOptions)initWithCoder:(id)coder;
+- (id)fbsOpenApplicationOptionsWithActionExecutorOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNContinueInAppRequestSceneOptions
 
-- (LNContinueInAppRequestSceneOptions)initWithCoder:(id)a3
+- (LNContinueInAppRequestSceneOptions)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"actions"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"actions"];
 
-  v9 = [v5 decodeBoolForKey:@"supportsNotices"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"targetContentIdentifier"];
+  v9 = [coderCopy decodeBoolForKey:@"supportsNotices"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetContentIdentifier"];
 
   if (v8)
   {
     self = [(LNContinueInAppRequestSceneOptions *)self initWithActions:v8 supportsNotices:v9 targetContentIdentifier:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNContinueInAppRequestSceneOptions *)self actions];
-  [v4 encodeObject:v5 forKey:@"actions"];
+  coderCopy = coder;
+  actions = [(LNContinueInAppRequestSceneOptions *)self actions];
+  [coderCopy encodeObject:actions forKey:@"actions"];
 
-  [v4 encodeBool:-[LNContinueInAppRequestSceneOptions supportsNotices](self forKey:{"supportsNotices"), @"supportsNotices"}];
-  v6 = [(LNContinueInAppRequestSceneOptions *)self targetContentIdentifier];
-  [v4 encodeObject:v6 forKey:@"targetContentIdentifier"];
+  [coderCopy encodeBool:-[LNContinueInAppRequestSceneOptions supportsNotices](self forKey:{"supportsNotices"), @"supportsNotices"}];
+  targetContentIdentifier = [(LNContinueInAppRequestSceneOptions *)self targetContentIdentifier];
+  [coderCopy encodeObject:targetContentIdentifier forKey:@"targetContentIdentifier"];
 }
 
-- (id)fbsOpenApplicationOptionsWithActionExecutorOptions:(id)a3
+- (id)fbsOpenApplicationOptionsWithActionExecutorOptions:(id)options
 {
   v4 = objc_opt_new();
-  v5 = [(LNContinueInAppRequestSceneOptions *)self actions];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E699F8D0]];
+  actions = [(LNContinueInAppRequestSceneOptions *)self actions];
+  [v4 setObject:actions forKeyedSubscript:*MEMORY[0x1E699F8D0]];
 
-  v6 = [(LNContinueInAppRequestSceneOptions *)self targetContentIdentifier];
-  [v4 setValue:v6 forKey:@"__TargetContentIdentifier"];
+  targetContentIdentifier = [(LNContinueInAppRequestSceneOptions *)self targetContentIdentifier];
+  [v4 setValue:targetContentIdentifier forKey:@"__TargetContentIdentifier"];
 
   return v4;
 }
 
-- (LNContinueInAppRequestSceneOptions)initWithActions:(id)a3 supportsNotices:(BOOL)a4 targetContentIdentifier:(id)a5
+- (LNContinueInAppRequestSceneOptions)initWithActions:(id)actions supportsNotices:(BOOL)notices targetContentIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  actionsCopy = actions;
+  identifierCopy = identifier;
+  if (!actionsCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNContinueInAppRequest.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNContinueInAppRequest.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
   }
 
   v17.receiver = self;
@@ -71,9 +71,9 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actions, a3);
-    v13->_supportsNotices = a4;
-    objc_storeStrong(&v13->_targetContentIdentifier, a5);
+    objc_storeStrong(&v12->_actions, actions);
+    v13->_supportsNotices = notices;
+    objc_storeStrong(&v13->_targetContentIdentifier, identifier);
     v14 = v13;
   }
 

@@ -1,15 +1,15 @@
 @interface ExpandableTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation ExpandableTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.ExpandableTextView" hasSwiftField:@"moreTextLabel" withSwiftType:"GradientBackedLabelView"];
-  [v3 validateClass:@"SeymourUI.ExpandableTextView" hasInstanceMethod:@"handleTapGesture:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.ExpandableTextView" hasSwiftField:@"moreTextLabel" withSwiftType:"GradientBackedLabelView"];
+  [validationsCopy validateClass:@"SeymourUI.ExpandableTextView" hasInstanceMethod:@"handleTapGesture:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -2,16 +2,16 @@
 - (id)copy;
 - (id)freeze;
 - (id)freezeWithSelfAsSnapshot;
-- (void)adoptValuesFromAndSetSnapshot:(id)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setExternalIdentifier:(id)a3;
-- (void)setExternalModificationTag:(id)a3;
-- (void)setExternalRepresentation:(id)a3;
-- (void)setExternalUUID:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setModificationDate:(id)a3;
+- (void)adoptValuesFromAndSetSnapshot:(id)snapshot;
+- (void)setCreationDate:(id)date;
+- (void)setExternalIdentifier:(id)identifier;
+- (void)setExternalModificationTag:(id)tag;
+- (void)setExternalRepresentation:(id)representation;
+- (void)setExternalUUID:(id)d;
+- (void)setIdentifier:(id)identifier;
+- (void)setModificationDate:(id)date;
 - (void)setName:(NSString *)name;
-- (void)setSnapshot:(id)a3;
+- (void)setSnapshot:(id)snapshot;
 @end
 
 @implementation CNMutableGroup
@@ -23,11 +23,11 @@
   return [(CNGroup *)v3 initWithGroup:self];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (self->super._identifier != a3)
+  if (self->super._identifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     identifier = self->super._identifier;
     self->super._identifier = v4;
 
@@ -47,11 +47,11 @@
   }
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  if (self->super._creationDate != a3)
+  if (self->super._creationDate != date)
   {
-    v4 = [a3 copy];
+    v4 = [date copy];
     creationDate = self->super._creationDate;
     self->super._creationDate = v4;
 
@@ -59,11 +59,11 @@
   }
 }
 
-- (void)setModificationDate:(id)a3
+- (void)setModificationDate:(id)date
 {
-  if (self->super._modificationDate != a3)
+  if (self->super._modificationDate != date)
   {
-    v4 = [a3 copy];
+    v4 = [date copy];
     modificationDate = self->super._modificationDate;
     self->super._modificationDate = v4;
 
@@ -71,11 +71,11 @@
   }
 }
 
-- (void)setExternalIdentifier:(id)a3
+- (void)setExternalIdentifier:(id)identifier
 {
-  if (self->super._externalIdentifier != a3)
+  if (self->super._externalIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     externalIdentifier = self->super._externalIdentifier;
     self->super._externalIdentifier = v4;
 
@@ -83,11 +83,11 @@
   }
 }
 
-- (void)setExternalRepresentation:(id)a3
+- (void)setExternalRepresentation:(id)representation
 {
-  if (self->super._externalRepresentation != a3)
+  if (self->super._externalRepresentation != representation)
   {
-    v4 = [a3 copy];
+    v4 = [representation copy];
     externalRepresentation = self->super._externalRepresentation;
     self->super._externalRepresentation = v4;
 
@@ -95,11 +95,11 @@
   }
 }
 
-- (void)setExternalModificationTag:(id)a3
+- (void)setExternalModificationTag:(id)tag
 {
-  if (self->super._externalModificationTag != a3)
+  if (self->super._externalModificationTag != tag)
   {
-    v4 = [a3 copy];
+    v4 = [tag copy];
     externalModificationTag = self->super._externalModificationTag;
     self->super._externalModificationTag = v4;
 
@@ -107,11 +107,11 @@
   }
 }
 
-- (void)setExternalUUID:(id)a3
+- (void)setExternalUUID:(id)d
 {
-  if (self->super._externalUUID != a3)
+  if (self->super._externalUUID != d)
   {
-    v4 = [a3 copy];
+    v4 = [d copy];
     externalUUID = self->super._externalUUID;
     self->super._externalUUID = v4;
 
@@ -119,49 +119,49 @@
   }
 }
 
-- (void)adoptValuesFromAndSetSnapshot:(id)a3
+- (void)adoptValuesFromAndSetSnapshot:(id)snapshot
 {
-  v12 = a3;
-  if (v12)
+  snapshotCopy = snapshot;
+  if (snapshotCopy)
   {
-    v4 = [v12 name];
-    [(CNMutableGroup *)self setName:v4];
+    name = [snapshotCopy name];
+    [(CNMutableGroup *)self setName:name];
 
-    v5 = [v12 identifier];
-    [(CNMutableGroup *)self setIdentifier:v5];
+    identifier = [snapshotCopy identifier];
+    [(CNMutableGroup *)self setIdentifier:identifier];
 
-    -[CNMutableGroup setIOSLegacyIdentifier:](self, "setIOSLegacyIdentifier:", [v12 iOSLegacyIdentifier]);
-    v6 = [v12 creationDate];
-    [(CNMutableGroup *)self setCreationDate:v6];
+    -[CNMutableGroup setIOSLegacyIdentifier:](self, "setIOSLegacyIdentifier:", [snapshotCopy iOSLegacyIdentifier]);
+    creationDate = [snapshotCopy creationDate];
+    [(CNMutableGroup *)self setCreationDate:creationDate];
 
-    v7 = [v12 modificationDate];
-    [(CNMutableGroup *)self setModificationDate:v7];
+    modificationDate = [snapshotCopy modificationDate];
+    [(CNMutableGroup *)self setModificationDate:modificationDate];
 
-    v8 = [v12 externalIdentifier];
-    [(CNMutableGroup *)self setExternalIdentifier:v8];
+    externalIdentifier = [snapshotCopy externalIdentifier];
+    [(CNMutableGroup *)self setExternalIdentifier:externalIdentifier];
 
-    v9 = [v12 externalRepresentation];
-    [(CNMutableGroup *)self setExternalRepresentation:v9];
+    externalRepresentation = [snapshotCopy externalRepresentation];
+    [(CNMutableGroup *)self setExternalRepresentation:externalRepresentation];
 
-    v10 = [v12 externalModificationTag];
-    [(CNMutableGroup *)self setExternalModificationTag:v10];
+    externalModificationTag = [snapshotCopy externalModificationTag];
+    [(CNMutableGroup *)self setExternalModificationTag:externalModificationTag];
 
-    v11 = [v12 externalUUID];
-    [(CNMutableGroup *)self setExternalUUID:v11];
+    externalUUID = [snapshotCopy externalUUID];
+    [(CNMutableGroup *)self setExternalUUID:externalUUID];
   }
 
-  [(CNMutableGroup *)self setSnapshot:v12];
+  [(CNMutableGroup *)self setSnapshot:snapshotCopy];
 }
 
-- (void)setSnapshot:(id)a3
+- (void)setSnapshot:(id)snapshot
 {
   snapshot = self->super._snapshot;
-  if (snapshot != a3)
+  if (snapshot != snapshot)
   {
     self->super._snapshot = 0;
-    v5 = a3;
+    snapshotCopy = snapshot;
 
-    v6 = [v5 copy];
+    v6 = [snapshotCopy copy];
     v7 = self->super._snapshot;
     self->super._snapshot = v6;
   }
@@ -176,8 +176,8 @@
 
 - (id)freezeWithSelfAsSnapshot
 {
-  v3 = [MEMORY[0x1E695DFB0] null];
-  [(CNMutableGroup *)self setSnapshot:v3];
+  null = [MEMORY[0x1E695DFB0] null];
+  [(CNMutableGroup *)self setSnapshot:null];
 
   return [(CNMutableGroup *)self freeze];
 }

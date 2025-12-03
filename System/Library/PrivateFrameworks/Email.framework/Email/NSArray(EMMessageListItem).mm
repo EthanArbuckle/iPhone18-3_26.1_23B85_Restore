@@ -11,9 +11,9 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a1;
+  selfCopy = self;
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -23,20 +23,20 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if (([v8 conformsToProtocol:{&unk_1F4620048, v12}] & 1) == 0)
         {
-          v9 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v9 handleFailureInMethod:a2 object:v3 file:@"EMMessageListItem.m" lineNumber:742 description:@"Objects in the array must conform to protocol EMMessageListItem"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"EMMessageListItem.m" lineNumber:742 description:@"Objects in the array must conform to protocol EMMessageListItem"];
         }
 
         v4 += [v8 count];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

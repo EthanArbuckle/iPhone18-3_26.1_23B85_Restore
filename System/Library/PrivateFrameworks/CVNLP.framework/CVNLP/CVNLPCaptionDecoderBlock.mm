@@ -6,52 +6,52 @@
 - ($FD4688982923A924290ECB669CAF1EC2)maskInput;
 - ($FD4688982923A924290ECB669CAF1EC2)positionInput;
 - ($FD4688982923A924290ECB669CAF1EC2)scaleInput;
-- (BOOL)_loadNetwork:(id)a3 modelIndex:(unint64_t)a4;
-- (CVNLPCaptionDecoderBlock)initWithOptions:(id)a3 modelIndex:(unint64_t)a4 runTimeParams:(id)a5;
+- (BOOL)_loadNetwork:(id)network modelIndex:(unint64_t)index;
+- (CVNLPCaptionDecoderBlock)initWithOptions:(id)options modelIndex:(unint64_t)index runTimeParams:(id)params;
 - (id).cxx_construct;
 - (map<std::string,)stateInputEspressoBuffers;
 - (map<std::string,)stateInputEspressoBuffersShape;
 - (map<std::string,)stateOutputEspressoBuffers;
 - (vector<std::string,)decoderInputNames;
-- (void)_runBlockWithCopyOutputBlock:(id)a3;
-- (void)buildNetworkForSequenceLength:(unint64_t)a3 imageFeatures:(id)a4;
-- (void)copyInputState:(id)a3;
-- (void)copyOutputState:(id)a3;
+- (void)_runBlockWithCopyOutputBlock:(id)block;
+- (void)buildNetworkForSequenceLength:(unint64_t)length imageFeatures:(id)features;
+- (void)copyInputState:(id)state;
+- (void)copyOutputState:(id)state;
 - (void)dealloc;
-- (void)runBlockWithCopyInput:(float *)a3 copyOutputBlock:(id)a4;
-- (void)runBlockWithCopyInputBlock:(id)a3 copyOutputBlock:(id)a4;
-- (void)setAttFeatsPlaceholderBlob:(id *)a3;
-- (void)setBlockInput:(id *)a3;
-- (void)setBlockOutput:(id *)a3;
-- (void)setDecoderInputNames:()vector<std:(std::allocator<std::string>> *)a3 :string;
-- (void)setMaskInput:(id *)a3;
-- (void)setPositionInput:(id *)a3;
-- (void)setScaleInput:(id *)a3;
-- (void)setStateInputEspressoBuffers:()map<std:()std:()std:(std:(std::vector<float>>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :vector<float> :string;
-- (void)setStateInputEspressoBuffersShape:()map<std:(std:()std:(std:(std::vector<unsigned long>>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :vector<unsigned)long> :string;
-- (void)setStateOutputEspressoBuffers:()map<std:()std:()std:(std:(std::vector<float>>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :vector<float> :string;
+- (void)runBlockWithCopyInput:(float *)input copyOutputBlock:(id)block;
+- (void)runBlockWithCopyInputBlock:(id)block copyOutputBlock:(id)outputBlock;
+- (void)setAttFeatsPlaceholderBlob:(id *)blob;
+- (void)setBlockInput:(id *)input;
+- (void)setBlockOutput:(id *)output;
+- (void)setDecoderInputNames:()vector<std:(std::allocator<std::string>> *)std :string;
+- (void)setMaskInput:(id *)input;
+- (void)setPositionInput:(id *)input;
+- (void)setScaleInput:(id *)input;
+- (void)setStateInputEspressoBuffers:()map<std:()std:()std:(std:(std::vector<float>>>> *)std :allocator<std::pair<const)std::string :less<std::string> :vector<float> :string;
+- (void)setStateInputEspressoBuffersShape:()map<std:(std:()std:(std:(std::vector<unsigned long>>>> *)std :allocator<std::pair<const)std::string :less<std::string> :vector<unsigned)long> :string;
+- (void)setStateOutputEspressoBuffers:()map<std:()std:()std:(std:(std::vector<float>>>> *)std :allocator<std::pair<const)std::string :less<std::string> :vector<float> :string;
 @end
 
 @implementation CVNLPCaptionDecoderBlock
 
-- (CVNLPCaptionDecoderBlock)initWithOptions:(id)a3 modelIndex:(unint64_t)a4 runTimeParams:(id)a5
+- (CVNLPCaptionDecoderBlock)initWithOptions:(id)options modelIndex:(unint64_t)index runTimeParams:(id)params
 {
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  paramsCopy = params;
   v29.receiver = self;
   v29.super_class = CVNLPCaptionDecoderBlock;
-  v10 = [(CVNLPCaptionModelBase *)&v29 initWithOptions:v8 runTimeParams:v9];
+  v10 = [(CVNLPCaptionModelBase *)&v29 initWithOptions:optionsCopy runTimeParams:paramsCopy];
   v11 = v10;
   if (v10)
   {
-    v10->_modelIndex = a4;
+    v10->_modelIndex = index;
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v13 = dispatch_queue_create("decoder_queue", v12);
     decoderQueue = v11->_decoderQueue;
     v11->_decoderQueue = v13;
 
-    v17 = objc_msgSend_objectForKeyedSubscript_(v8, v15, CVNLPCaptionModelPath, v16);
-    if ((objc_msgSend__loadNetwork_modelIndex_(v11, v18, v17, a4) & 1) == 0)
+    v17 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v15, CVNLPCaptionModelPath, v16);
+    if ((objc_msgSend__loadNetwork_modelIndex_(v11, v18, v17, index) & 1) == 0)
     {
 
       v27 = 0;
@@ -102,13 +102,13 @@ LABEL_6:
   [(CVNLPCaptionDecoderBlock *)&v3 dealloc];
 }
 
-- (BOOL)_loadNetwork:(id)a3 modelIndex:(unint64_t)a4
+- (BOOL)_loadNetwork:(id)network modelIndex:(unint64_t)index
 {
-  v6 = a3;
+  networkCopy = network;
   self->_decoderCtx = espresso_create_context();
   self->_decoderPlan = espresso_create_plan();
-  v9 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"decoder_block%tu_opt.espresso.net", v8, a4);
-  v12 = objc_msgSend_URLByAppendingPathComponent_(v6, v10, v9, v11);
+  v9 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"decoder_block%tu_opt.espresso.net", v8, index);
+  v12 = objc_msgSend_URLByAppendingPathComponent_(networkCopy, v10, v9, v11);
 
   v16 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v13, v14, v15);
   v20 = objc_msgSend_path(v12, v17, v18, v19);
@@ -116,9 +116,9 @@ LABEL_6:
 
   if (!v23)
   {
-    if (!a4)
+    if (!index)
     {
-      v42 = objc_msgSend_URLByAppendingPathComponent_(v6, v24, @"decoder_opt.espresso.net", v26);
+      v42 = objc_msgSend_URLByAppendingPathComponent_(networkCopy, v24, @"decoder_opt.espresso.net", v26);
 
       v47 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v44, v45, v46);
       v51 = objc_msgSend_path(v42, v48, v49, v50);
@@ -420,10 +420,10 @@ LABEL_19:
   return v43;
 }
 
-- (void)buildNetworkForSequenceLength:(unint64_t)a3 imageFeatures:(id)a4
+- (void)buildNetworkForSequenceLength:(unint64_t)length imageFeatures:(id)features
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  featuresCopy = features;
   if (0xAAAAAAAAAAAAAAABLL * ((self->_decoderInputNames.__end_ - self->_decoderInputNames.__begin_) >> 3) >= 5)
   {
     decoderPlan = self->_decoderPlan;
@@ -434,20 +434,20 @@ LABEL_19:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyInputState:(id)a3
+- (void)copyInputState:(id)state
 {
   v81 = *MEMORY[0x1E69E9840];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v4 = a3;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v75, v80, 16);
+  stateCopy = state;
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(stateCopy, v5, &v75, v80, 16);
   if (v6)
   {
     v7 = *v76;
-    v67 = self;
-    v68 = v4;
+    selfCopy = self;
+    v68 = stateCopy;
     v66 = *v76;
     do
     {
@@ -457,7 +457,7 @@ LABEL_19:
       {
         if (*v76 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stateCopy);
         }
 
         v71 = v8;
@@ -495,7 +495,7 @@ LABEL_19:
           operator delete(__dst.__r_.__value_.__l.__data_);
         }
 
-        v70 = objc_msgSend_objectForKey_(v4, v18, v9, v19);
+        v70 = objc_msgSend_objectForKey_(stateCopy, v18, v9, v19);
         v21 = 0;
         p_stateInputEspressoBuffersShape = &self->_stateInputEspressoBuffersShape;
         left = p_stateInputEspressoBuffersShape->__tree_.__end_node_.__left_;
@@ -705,17 +705,17 @@ LABEL_82:
           }
         }
 
-        self = v67;
-        v4 = v68;
+        self = selfCopy;
+        stateCopy = v68;
         v7 = v66;
         if (v72)
         {
           __dst.__r_.__value_.__r.__words[0] = __p;
-          v54 = sub_1D9D90464(&v67->_stateInputEspressoBuffers, __p);
+          v54 = sub_1D9D90464(&selfCopy->_stateInputEspressoBuffers, __p);
           if (v72 > (v54[8] - v54[7]) >> 2)
           {
             __dst.__r_.__value_.__r.__words[0] = __p;
-            v55 = sub_1D9D90464(&v67->_stateInputEspressoBuffers, __p);
+            v55 = sub_1D9D90464(&selfCopy->_stateInputEspressoBuffers, __p);
             v56 = v55[7];
             v57 = (v55[8] - v56) >> 2;
             if (v72 <= v57)
@@ -733,7 +733,7 @@ LABEL_82:
           }
 
           __dst.__r_.__value_.__r.__words[0] = __p;
-          v58 = sub_1D9D90464(&v67->_stateInputEspressoBuffers, __p)[7];
+          v58 = sub_1D9D90464(&selfCopy->_stateInputEspressoBuffers, __p)[7];
           v59 = v70;
           v63 = objc_msgSend_bytes(v70, v60, v61, v62);
           memcpy(v58, v63, 4 * v72);
@@ -757,14 +757,14 @@ LABEL_82:
   v65 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyOutputState:(id)a3
+- (void)copyOutputState:(id)state
 {
-  v55 = a3;
+  stateCopy = state;
   begin_node = self->_stateOutputEspressoBuffers.__tree_.__begin_node_;
   p_end_node = &self->_stateOutputEspressoBuffers.__tree_.__end_node_;
   if (begin_node != &self->_stateOutputEspressoBuffers.__tree_.__end_node_)
   {
-    v57 = self;
+    selfCopy = self;
     do
     {
       left_high = SHIBYTE(begin_node[6].__left_);
@@ -842,12 +842,12 @@ LABEL_97:
 
       *(__p + v8) = 7235935;
       v67 = __p;
-      v10 = v57;
-      v11 = *(sub_1D9DB8880(&v57->_stateInputEspressoBuffersShape, __p)[7] + 8);
+      v10 = selfCopy;
+      v11 = *(sub_1D9DB8880(&selfCopy->_stateInputEspressoBuffersShape, __p)[7] + 8);
       v67 = __p;
-      v12 = *(sub_1D9DB8880(&v57->_stateInputEspressoBuffersShape, __p)[7] + 16);
+      v12 = *(sub_1D9DB8880(&selfCopy->_stateInputEspressoBuffersShape, __p)[7] + 16);
       v67 = __p;
-      v59 = *sub_1D9DB8880(&v57->_stateInputEspressoBuffersShape, __p)[7];
+      v59 = *sub_1D9DB8880(&selfCopy->_stateInputEspressoBuffersShape, __p)[7];
       v14 = v12 * (v11 + 1) * v59;
       if (v14)
       {
@@ -974,7 +974,7 @@ LABEL_54:
               }
             }
 
-            v10 = v57;
+            v10 = selfCopy;
             memcpy((4 * v15 * v60), (v19[7] + 4 * v15 * v61), __n);
           }
 
@@ -1090,7 +1090,7 @@ LABEL_80:
         while (v15 != v58);
       }
 
-      v49 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v13, 0, 0, v55);
+      v49 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v13, 0, 0, stateCopy);
       if ((v66 & 0x80u) == 0)
       {
         objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], v47, __dst, v48);
@@ -1101,7 +1101,7 @@ LABEL_80:
         objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], v47, __dst[0], v48);
       }
       v50 = ;
-      objc_msgSend_setObject_forKeyedSubscript_(v55, v51, v49, v50);
+      objc_msgSend_setObject_forKeyedSubscript_(stateCopy, v51, v49, v50);
 
       if (SHIBYTE(v64) < 0)
       {
@@ -1156,16 +1156,16 @@ LABEL_3:
   }
 }
 
-- (void)runBlockWithCopyInputBlock:(id)a3 copyOutputBlock:(id)a4
+- (void)runBlockWithCopyInputBlock:(id)block copyOutputBlock:(id)outputBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  outputBlockCopy = outputBlock;
   v11 = objc_msgSend_decoderQueue(self, v8, v9, v10);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1D9DB6914;
   block[3] = &unk_1E858E278;
-  v12 = v6;
+  v12 = blockCopy;
   v21 = v12;
   dispatch_sync(v11, block);
 
@@ -1175,29 +1175,29 @@ LABEL_3:
   v18[2] = sub_1D9DB6924;
   v18[3] = &unk_1E858E2A0;
   v18[4] = self;
-  v19 = v7;
-  v17 = v7;
+  v19 = outputBlockCopy;
+  v17 = outputBlockCopy;
   dispatch_async(v16, v18);
 }
 
-- (void)runBlockWithCopyInput:(float *)a3 copyOutputBlock:(id)a4
+- (void)runBlockWithCopyInput:(float *)input copyOutputBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v10 = objc_msgSend_decoderQueue(self, v7, v8, v9);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1D9DB69FC;
   block[3] = &unk_1E858E2C8;
-  v13 = v6;
-  v14 = a3;
+  v13 = blockCopy;
+  inputCopy = input;
   block[4] = self;
-  v11 = v6;
+  v11 = blockCopy;
   dispatch_async(v10, block);
 }
 
-- (void)_runBlockWithCopyOutputBlock:(id)a3
+- (void)_runBlockWithCopyOutputBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = objc_msgSend_perfResults(self, v5, v6, v7);
   v12 = objc_msgSend_metricString(self, v9, v10, v11);
   v24[0] = MEMORY[0x1E69E9820];
@@ -1216,7 +1216,7 @@ LABEL_3:
     operator new[]();
   }
 
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 }
 
 - ($C4732ECC957FA13B9B3DF4A51A95735B)decoderNet
@@ -1250,24 +1250,24 @@ LABEL_3:
   return self;
 }
 
-- (void)setAttFeatsPlaceholderBlob:(id *)a3
+- (void)setAttFeatsPlaceholderBlob:(id *)blob
 {
-  v4 = *a3->var2;
-  v3 = *&a3->var2[2];
-  *&self->_attFeatsPlaceholderBlob.data = *&a3->var0;
+  v4 = *blob->var2;
+  v3 = *&blob->var2[2];
+  *&self->_attFeatsPlaceholderBlob.data = *&blob->var0;
   *self->_attFeatsPlaceholderBlob.dim = v4;
   *&self->_attFeatsPlaceholderBlob.dim[2] = v3;
-  v5 = *&a3->var6;
-  v7 = *a3->var3;
-  v6 = *&a3->var3[2];
-  *&self->_attFeatsPlaceholderBlob.width = *&a3->var4;
+  v5 = *&blob->var6;
+  v7 = *blob->var3;
+  v6 = *&blob->var3[2];
+  *&self->_attFeatsPlaceholderBlob.width = *&blob->var4;
   *&self->_attFeatsPlaceholderBlob.channels = v5;
   *self->_attFeatsPlaceholderBlob.stride = v7;
   *&self->_attFeatsPlaceholderBlob.stride[2] = v6;
-  v9 = *&a3->var10;
-  v8 = *&a3->var12;
-  v10 = *&a3->var8;
-  *&self->_attFeatsPlaceholderBlob.storage_type = *&a3->var14;
+  v9 = *&blob->var10;
+  v8 = *&blob->var12;
+  v10 = *&blob->var8;
+  *&self->_attFeatsPlaceholderBlob.storage_type = *&blob->var14;
   *&self->_attFeatsPlaceholderBlob.stride_height = v9;
   *&self->_attFeatsPlaceholderBlob.stride_batch_number = v8;
   *&self->_attFeatsPlaceholderBlob.sequence_length = v10;
@@ -1294,24 +1294,24 @@ LABEL_3:
   return self;
 }
 
-- (void)setScaleInput:(id *)a3
+- (void)setScaleInput:(id *)input
 {
-  v4 = *a3->var2;
-  v3 = *&a3->var2[2];
-  *&self->_scaleInput.data = *&a3->var0;
+  v4 = *input->var2;
+  v3 = *&input->var2[2];
+  *&self->_scaleInput.data = *&input->var0;
   *self->_scaleInput.dim = v4;
   *&self->_scaleInput.dim[2] = v3;
-  v5 = *&a3->var6;
-  v7 = *a3->var3;
-  v6 = *&a3->var3[2];
-  *&self->_scaleInput.width = *&a3->var4;
+  v5 = *&input->var6;
+  v7 = *input->var3;
+  v6 = *&input->var3[2];
+  *&self->_scaleInput.width = *&input->var4;
   *&self->_scaleInput.channels = v5;
   *self->_scaleInput.stride = v7;
   *&self->_scaleInput.stride[2] = v6;
-  v9 = *&a3->var10;
-  v8 = *&a3->var12;
-  v10 = *&a3->var8;
-  *&self->_scaleInput.storage_type = *&a3->var14;
+  v9 = *&input->var10;
+  v8 = *&input->var12;
+  v10 = *&input->var8;
+  *&self->_scaleInput.storage_type = *&input->var14;
   *&self->_scaleInput.stride_height = v9;
   *&self->_scaleInput.stride_batch_number = v8;
   *&self->_scaleInput.sequence_length = v10;
@@ -1338,24 +1338,24 @@ LABEL_3:
   return self;
 }
 
-- (void)setPositionInput:(id *)a3
+- (void)setPositionInput:(id *)input
 {
-  v4 = *a3->var2;
-  v3 = *&a3->var2[2];
-  *&self->_positionInput.data = *&a3->var0;
+  v4 = *input->var2;
+  v3 = *&input->var2[2];
+  *&self->_positionInput.data = *&input->var0;
   *self->_positionInput.dim = v4;
   *&self->_positionInput.dim[2] = v3;
-  v5 = *&a3->var6;
-  v7 = *a3->var3;
-  v6 = *&a3->var3[2];
-  *&self->_positionInput.width = *&a3->var4;
+  v5 = *&input->var6;
+  v7 = *input->var3;
+  v6 = *&input->var3[2];
+  *&self->_positionInput.width = *&input->var4;
   *&self->_positionInput.channels = v5;
   *self->_positionInput.stride = v7;
   *&self->_positionInput.stride[2] = v6;
-  v9 = *&a3->var10;
-  v8 = *&a3->var12;
-  v10 = *&a3->var8;
-  *&self->_positionInput.storage_type = *&a3->var14;
+  v9 = *&input->var10;
+  v8 = *&input->var12;
+  v10 = *&input->var8;
+  *&self->_positionInput.storage_type = *&input->var14;
   *&self->_positionInput.stride_height = v9;
   *&self->_positionInput.stride_batch_number = v8;
   *&self->_positionInput.sequence_length = v10;
@@ -1382,24 +1382,24 @@ LABEL_3:
   return self;
 }
 
-- (void)setMaskInput:(id *)a3
+- (void)setMaskInput:(id *)input
 {
-  v4 = *a3->var2;
-  v3 = *&a3->var2[2];
-  *&self->_maskInput.data = *&a3->var0;
+  v4 = *input->var2;
+  v3 = *&input->var2[2];
+  *&self->_maskInput.data = *&input->var0;
   *self->_maskInput.dim = v4;
   *&self->_maskInput.dim[2] = v3;
-  v5 = *&a3->var6;
-  v7 = *a3->var3;
-  v6 = *&a3->var3[2];
-  *&self->_maskInput.width = *&a3->var4;
+  v5 = *&input->var6;
+  v7 = *input->var3;
+  v6 = *&input->var3[2];
+  *&self->_maskInput.width = *&input->var4;
   *&self->_maskInput.channels = v5;
   *self->_maskInput.stride = v7;
   *&self->_maskInput.stride[2] = v6;
-  v9 = *&a3->var10;
-  v8 = *&a3->var12;
-  v10 = *&a3->var8;
-  *&self->_maskInput.storage_type = *&a3->var14;
+  v9 = *&input->var10;
+  v8 = *&input->var12;
+  v10 = *&input->var8;
+  *&self->_maskInput.storage_type = *&input->var14;
   *&self->_maskInput.stride_height = v9;
   *&self->_maskInput.stride_batch_number = v8;
   *&self->_maskInput.sequence_length = v10;
@@ -1426,24 +1426,24 @@ LABEL_3:
   return self;
 }
 
-- (void)setBlockInput:(id *)a3
+- (void)setBlockInput:(id *)input
 {
-  v4 = *a3->var2;
-  v3 = *&a3->var2[2];
-  *&self->_blockInput.data = *&a3->var0;
+  v4 = *input->var2;
+  v3 = *&input->var2[2];
+  *&self->_blockInput.data = *&input->var0;
   *self->_blockInput.dim = v4;
   *&self->_blockInput.dim[2] = v3;
-  v5 = *&a3->var6;
-  v7 = *a3->var3;
-  v6 = *&a3->var3[2];
-  *&self->_blockInput.width = *&a3->var4;
+  v5 = *&input->var6;
+  v7 = *input->var3;
+  v6 = *&input->var3[2];
+  *&self->_blockInput.width = *&input->var4;
   *&self->_blockInput.channels = v5;
   *self->_blockInput.stride = v7;
   *&self->_blockInput.stride[2] = v6;
-  v9 = *&a3->var10;
-  v8 = *&a3->var12;
-  v10 = *&a3->var8;
-  *&self->_blockInput.storage_type = *&a3->var14;
+  v9 = *&input->var10;
+  v8 = *&input->var12;
+  v10 = *&input->var8;
+  *&self->_blockInput.storage_type = *&input->var14;
   *&self->_blockInput.stride_height = v9;
   *&self->_blockInput.stride_batch_number = v8;
   *&self->_blockInput.sequence_length = v10;
@@ -1470,24 +1470,24 @@ LABEL_3:
   return self;
 }
 
-- (void)setBlockOutput:(id *)a3
+- (void)setBlockOutput:(id *)output
 {
-  v4 = *a3->var2;
-  v3 = *&a3->var2[2];
-  *&self->_blockOutput.data = *&a3->var0;
+  v4 = *output->var2;
+  v3 = *&output->var2[2];
+  *&self->_blockOutput.data = *&output->var0;
   *self->_blockOutput.dim = v4;
   *&self->_blockOutput.dim[2] = v3;
-  v5 = *&a3->var6;
-  v7 = *a3->var3;
-  v6 = *&a3->var3[2];
-  *&self->_blockOutput.width = *&a3->var4;
+  v5 = *&output->var6;
+  v7 = *output->var3;
+  v6 = *&output->var3[2];
+  *&self->_blockOutput.width = *&output->var4;
   *&self->_blockOutput.channels = v5;
   *self->_blockOutput.stride = v7;
   *&self->_blockOutput.stride[2] = v6;
-  v9 = *&a3->var10;
-  v8 = *&a3->var12;
-  v10 = *&a3->var8;
-  *&self->_blockOutput.storage_type = *&a3->var14;
+  v9 = *&output->var10;
+  v8 = *&output->var12;
+  v10 = *&output->var8;
+  *&self->_blockOutput.storage_type = *&output->var14;
   *&self->_blockOutput.stride_height = v9;
   *&self->_blockOutput.stride_batch_number = v8;
   *&self->_blockOutput.sequence_length = v10;
@@ -1538,12 +1538,12 @@ LABEL_3:
   return self;
 }
 
-- (void)setStateOutputEspressoBuffers:()map<std:()std:()std:(std:(std::vector<float>>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :vector<float> :string
+- (void)setStateOutputEspressoBuffers:()map<std:()std:()std:(std:(std::vector<float>>>> *)std :allocator<std::pair<const)std::string :less<std::string> :vector<float> :string
 {
   p_stateOutputEspressoBuffers = &self->_stateOutputEspressoBuffers;
-  if (p_stateOutputEspressoBuffers != a3)
+  if (p_stateOutputEspressoBuffers != std)
   {
-    sub_1D9DB8068(p_stateOutputEspressoBuffers, a3->__tree_.__begin_node_, &a3->__tree_.__end_node_);
+    sub_1D9DB8068(p_stateOutputEspressoBuffers, std->__tree_.__begin_node_, &std->__tree_.__end_node_);
   }
 }
 
@@ -1592,12 +1592,12 @@ LABEL_3:
   return self;
 }
 
-- (void)setStateInputEspressoBuffers:()map<std:()std:()std:(std:(std::vector<float>>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :vector<float> :string
+- (void)setStateInputEspressoBuffers:()map<std:()std:()std:(std:(std::vector<float>>>> *)std :allocator<std::pair<const)std::string :less<std::string> :vector<float> :string
 {
   p_stateInputEspressoBuffers = &self->_stateInputEspressoBuffers;
-  if (p_stateInputEspressoBuffers != a3)
+  if (p_stateInputEspressoBuffers != std)
   {
-    sub_1D9DB8068(p_stateInputEspressoBuffers, a3->__tree_.__begin_node_, &a3->__tree_.__end_node_);
+    sub_1D9DB8068(p_stateInputEspressoBuffers, std->__tree_.__begin_node_, &std->__tree_.__end_node_);
   }
 }
 
@@ -1660,13 +1660,13 @@ LABEL_3:
   return self;
 }
 
-- (void)setStateInputEspressoBuffersShape:()map<std:(std:()std:(std:(std::vector<unsigned long>>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :vector<unsigned)long> :string
+- (void)setStateInputEspressoBuffersShape:()map<std:(std:()std:(std:(std::vector<unsigned long>>>> *)std :allocator<std::pair<const)std::string :less<std::string> :vector<unsigned)long> :string
 {
   p_stateInputEspressoBuffersShape = &self->_stateInputEspressoBuffersShape;
-  if (&self->_stateInputEspressoBuffersShape != a3)
+  if (&self->_stateInputEspressoBuffersShape != std)
   {
-    p_end_node = &a3->__tree_.__end_node_;
-    begin_node = a3->__tree_.__begin_node_;
+    p_end_node = &std->__tree_.__end_node_;
+    begin_node = std->__tree_.__begin_node_;
     if (self->_stateInputEspressoBuffersShape.__tree_.__size_)
     {
       v6 = p_stateInputEspressoBuffersShape->__tree_.__begin_node_;
@@ -1989,12 +1989,12 @@ LABEL_62:
   return sub_1D9D29BD0(retstr, self->_decoderInputNames.__begin_, self->_decoderInputNames.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_decoderInputNames.__end_ - self->_decoderInputNames.__begin_) >> 3));
 }
 
-- (void)setDecoderInputNames:()vector<std:(std::allocator<std::string>> *)a3 :string
+- (void)setDecoderInputNames:()vector<std:(std::allocator<std::string>> *)std :string
 {
   p_decoderInputNames = &self->_decoderInputNames;
-  if (p_decoderInputNames != a3)
+  if (p_decoderInputNames != std)
   {
-    sub_1D9D75118(p_decoderInputNames, a3->__begin_, a3->__end_, 0xAAAAAAAAAAAAAAABLL * ((a3->__end_ - a3->__begin_) >> 3));
+    sub_1D9D75118(p_decoderInputNames, std->__begin_, std->__end_, 0xAAAAAAAAAAAAAAABLL * ((std->__end_ - std->__begin_) >> 3));
   }
 }
 

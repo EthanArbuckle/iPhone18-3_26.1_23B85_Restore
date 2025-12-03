@@ -1,26 +1,26 @@
 @interface CardReaderViewController
-- (_TtC9PassKitUI24CardReaderViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (_TtC9PassKitUI24CardReaderViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)defaultFields;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 - (id)pk_childrenForAppearance;
 - (id)visibleFieldIdentifiers;
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection;
 - (void)applicationWillResignActive;
 - (void)backButtonPressed;
 - (void)cancelButtonPressed;
 - (void)didBecomeActiveNotification;
-- (void)handleNextButtonTapped:(id)a3;
+- (void)handleNextButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)tryAgainButtonPressed;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -28,29 +28,29 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD3770DC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1BD377664(a3);
+  selfCopy = self;
+  sub_1BD377664(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1BD377830(a3);
+  selfCopy = self;
+  sub_1BD377830(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for CardReaderViewController();
   v4 = v6.receiver;
-  [(PKPaymentSetupFieldsViewController *)&v6 viewWillDisappear:v3];
+  [(PKPaymentSetupFieldsViewController *)&v6 viewWillDisappear:disappearCopy];
   v5 = *&v4[OBJC_IVAR____TtC9PassKitUI24CardReaderViewController_animationView];
   if (v5 && *(v5 + OBJC_IVAR____TtC9PassKitUI35ProvisioningCardReaderAnimationView_isMonitoringMotion) == 1)
   {
@@ -59,56 +59,56 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1BD377A30(a3);
+  selfCopy = self;
+  sub_1BD377A30(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD377B6C();
 }
 
 - (void)applicationWillResignActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD377FBC();
 }
 
 - (void)didBecomeActiveNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD37816C();
 }
 
 - (void)tryAgainButtonPressed
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x250);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
 - (void)cancelButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD3784E8();
 }
 
 - (void)backButtonPressed
 {
-  v4 = self;
-  v2 = [(CardReaderViewController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(CardReaderViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -121,13 +121,13 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_1BD378794(v10, a4, v8, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1BD378794(controllerCopy, animated, v8, v9);
   sub_1BD0D4744(v8);
 }
 
-- (_TtC9PassKitUI24CardReaderViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (_TtC9PassKitUI24CardReaderViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -136,18 +136,18 @@
 
 - (id)visibleFieldIdentifiers
 {
-  v2 = self;
-  result = [(PKPaymentSetupFieldsViewController *)v2 fieldsModel];
+  selfCopy = self;
+  result = [(PKPaymentSetupFieldsViewController *)selfCopy fieldsModel];
   if (result)
   {
     v4 = result;
-    v5 = [result visibleSetupFieldIdentifiers];
+    visibleSetupFieldIdentifiers = [result visibleSetupFieldIdentifiers];
 
-    if (v5)
+    if (visibleSetupFieldIdentifiers)
     {
       sub_1BE052744();
 
-      v2 = v5;
+      selfCopy = visibleSetupFieldIdentifiers;
     }
 
     v6 = sub_1BE052724();
@@ -163,11 +163,11 @@
   return result;
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BE053624();
     swift_unknownObjectRelease();
@@ -176,16 +176,16 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  v6 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI24CardReaderViewController_reporter);
-  if (v6)
+  reportButtonPressed_ = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI24CardReaderViewController_reporter);
+  if (reportButtonPressed_)
   {
-    v6 = [v6 reportButtonPressed_];
+    reportButtonPressed_ = [reportButtonPressed_ reportButtonPressed_];
   }
 
-  (*((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x250))(v6);
+  (*((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x250))(reportButtonPressed_);
 
   sub_1BD14EC0C(v7);
 }
@@ -193,7 +193,7 @@
 - (id)defaultHeaderViewTitle
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x260);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   v4 = sub_1BE052404();
@@ -204,7 +204,7 @@
 - (id)defaultHeaderViewSubTitle
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x260);
-  v3 = self;
+  selfCopy = self;
   v2();
   v5 = v4;
 
@@ -233,8 +233,8 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD39F80);
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_1BE0B7020;
-  v4 = self;
-  result = [(PKPaymentSetupTableViewController *)v4 dockView];
+  selfCopy = self;
+  result = [(PKPaymentSetupTableViewController *)selfCopy dockView];
   if (result)
   {
     *(v3 + 32) = result;
@@ -253,43 +253,43 @@
   return result;
 }
 
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1BD37D598(v7);
+  viewCopy = view;
+  collectionCopy = collection;
+  selfCopy = self;
+  v9 = sub_1BD37D598(collectionCopy);
 
   return v9;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1BD37CE48(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_1BD37CE48(controllerCopy);
 
   return v6;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1BD37D6B0(v8);
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  selfCopy = self;
+  v12 = sub_1BD37D6B0(controllerCopy);
 
   return v12;
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  v14 = sub_1BD37D910(a4, v11, v12);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  selfCopy = self;
+  v14 = sub_1BD37D910(operation, viewControllerCopy, toViewControllerCopy);
 
   return v14;
 }

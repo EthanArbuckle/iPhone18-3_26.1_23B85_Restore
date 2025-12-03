@@ -5,32 +5,32 @@
 - (BOOL)_setupDBIfNeeded;
 - (BOOL)_setupPragmas;
 - (BOOL)_setupPragmasNotUpsetAboutWAL_17553237;
-- (BOOL)_upgradeDB:(int64_t)a3;
-- (BOOL)openAtPath:(id)a3 isReadOnly:(BOOL)a4 error:(id *)a5;
+- (BOOL)_upgradeDB:(int64_t)b;
+- (BOOL)openAtPath:(id)path isReadOnly:(BOOL)only error:(id *)error;
 - (NSError)translatedError;
 - (id)loadLibraryState;
-- (void)setCorruptionHandler:(id)a3;
+- (void)setCorruptionHandler:(id)handler;
 @end
 
 @implementation PQLConnection
 
-- (void)setCorruptionHandler:(id)a3
+- (void)setCorruptionHandler:(id)handler
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000D240;
   v6[3] = &unk_100040F78;
-  v7 = a3;
-  v4 = v7;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   [(PQLConnection *)self setSqliteErrorHandler:v6];
-  v5 = [(PQLConnection *)self sqliteErrorHandler];
-  [(PQLConnection *)self setAutoRollbackHandler:v5];
+  sqliteErrorHandler = [(PQLConnection *)self sqliteErrorHandler];
+  [(PQLConnection *)self setAutoRollbackHandler:sqliteErrorHandler];
 }
 
 - (NSError)translatedError
 {
-  v2 = [(PQLConnection *)self lastError];
-  v3 = sub_10000D39C(v2);
+  lastError = [(PQLConnection *)self lastError];
+  v3 = sub_10000D39C(lastError);
 
   return v3;
 }
@@ -55,62 +55,62 @@
   return [(PQLConnection *)self performWithFlags:10 action:v3];
 }
 
-- (BOOL)_upgradeDB:(int64_t)a3
+- (BOOL)_upgradeDB:(int64_t)b
 {
-  if (a3 <= 2)
+  if (b <= 2)
   {
-    if (a3 == 1)
+    if (b == 1)
     {
-      v4 = [(PQLConnection *)self _gotoV2];
-      if (!v4)
+      _gotoV2 = [(PQLConnection *)self _gotoV2];
+      if (!_gotoV2)
       {
-        return v4;
+        return _gotoV2;
       }
     }
 
-    else if (a3 != 2)
+    else if (b != 2)
     {
       goto LABEL_12;
     }
 
-    v4 = [(PQLConnection *)self _gotoV3];
-    if (!v4)
+    _gotoV2 = [(PQLConnection *)self _gotoV3];
+    if (!_gotoV2)
     {
-      return v4;
+      return _gotoV2;
     }
 
     goto LABEL_10;
   }
 
-  if (a3 == 3)
+  if (b == 3)
   {
 LABEL_10:
-    v4 = [(PQLConnection *)self _gotoV4];
-    if (!v4)
+    _gotoV2 = [(PQLConnection *)self _gotoV4];
+    if (!_gotoV2)
     {
-      return v4;
+      return _gotoV2;
     }
 
     goto LABEL_11;
   }
 
-  if (a3 == 4)
+  if (b == 4)
   {
 LABEL_11:
-    v4 = [(PQLConnection *)self _gotoV5];
-    if (!v4)
+    _gotoV2 = [(PQLConnection *)self _gotoV5];
+    if (!_gotoV2)
     {
-      return v4;
+      return _gotoV2;
     }
   }
 
 LABEL_12:
-  v5 = [(PQLConnection *)self userVersion];
-  v6 = [v5 intValue];
+  userVersion = [(PQLConnection *)self userVersion];
+  intValue = [userVersion intValue];
 
-  if (v6 == 5)
+  if (intValue == 5)
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(_gotoV2) = 1;
   }
 
   else
@@ -118,18 +118,18 @@ LABEL_12:
     v7 = [NSError errorWithSqliteCode:24 andMessage:@"invalid user version"];
     [(PQLConnection *)self setLastError:v7];
 
-    LOBYTE(v4) = 0;
+    LOBYTE(_gotoV2) = 0;
   }
 
-  return v4;
+  return _gotoV2;
 }
 
 - (BOOL)_setupDBIfNeeded
 {
-  v3 = [(PQLConnection *)self userVersion];
-  v4 = [v3 longLongValue];
+  userVersion = [(PQLConnection *)self userVersion];
+  longLongValue = [userVersion longLongValue];
 
-  if (v4)
+  if (longLongValue)
   {
 
     return [(PQLConnection *)self _upgradeDB:?];
@@ -183,10 +183,10 @@ LABEL_13:
 
     [(PQLConnection *)self execute:@"PRAGMA auto_vacuum = incremental"];
     [(PQLConnection *)self execute:@"VACUUM"];
-    v6 = [(PQLConnection *)self _vacuumMode];
+    _vacuumMode = [(PQLConnection *)self _vacuumMode];
     v7 = sub_100003164();
     v8 = v7;
-    if (v6 == 2)
+    if (_vacuumMode == 2)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -219,11 +219,11 @@ LABEL_14:
   return [(PQLConnection *)self registerFunction:@"gs_is_prunable" nArgs:2 handler:&stru_1000410A0];
 }
 
-- (BOOL)openAtPath:(id)a3 isReadOnly:(BOOL)a4 error:(id *)a5
+- (BOOL)openAtPath:(id)path isReadOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
+  onlyCopy = only;
   memset(&v29, 0, sizeof(v29));
-  v8 = [a3 stringByAppendingPathComponent:@"db.sqlite"];
+  v8 = [path stringByAppendingPathComponent:@"db.sqlite"];
   v9 = [NSURL URLWithString:v8];
   v10 = +[GSUserDefaults defaults];
   -[PQLConnection setTraced:](self, "setTraced:", [v10 BOOLForKey:@"db.trace" byDefault:0]);
@@ -241,9 +241,9 @@ LABEL_14:
         goto LABEL_23;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = sub_10000D39C(v16);
+        *error = sub_10000D39C(v16);
       }
 
       v17 = sub_100003164();
@@ -265,7 +265,7 @@ LABEL_14:
     }
 
 LABEL_16:
-    if (v6)
+    if (onlyCopy)
     {
       v11 = [NSString stringWithFormat:@"No valid database and storage is read-only"];
       v20 = sub_100003164();
@@ -274,7 +274,7 @@ LABEL_16:
         sub_1000274C0();
       }
 
-      if (a5)
+      if (error)
       {
         v14 = sub_10000F0F8(111, v11, 0);
         goto LABEL_21;
@@ -303,18 +303,18 @@ LABEL_23:
         goto LABEL_36;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [(PQLConnection *)self translatedError];
+        *error = [(PQLConnection *)self translatedError];
       }
 
       [(PQLConnection *)self close:0];
       goto LABEL_35;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = sub_10000D39C(v23);
+      *error = sub_10000D39C(v23);
     }
 
     v17 = sub_100003164();
@@ -341,7 +341,7 @@ LABEL_34:
     sub_10002717C(v11, v12);
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_35;
   }
@@ -349,7 +349,7 @@ LABEL_34:
   v14 = sub_10000F37C(v12, v11);
 LABEL_21:
   v21 = 0;
-  *a5 = v14;
+  *error = v14;
 LABEL_36:
 
   return v21;

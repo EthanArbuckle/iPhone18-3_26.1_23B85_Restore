@@ -1,9 +1,9 @@
 @interface _SFGeolocationPermissionManager
 + (id)sharedManager;
 - (BOOL)hasPreciseLocationPermission;
-- (void)_showDialogRequestingPermissionForURL:(id)a3 frame:(id)a4 dialogPresenter:(id)a5 browserPersona:(int64_t)a6 completionHandler:(id)a7;
-- (void)requestPermissionForURL:(id)a3 frame:(id)a4 dialogPresenter:(id)a5 browserPersona:(int64_t)a6 completionHandler:(id)a7;
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 completionHandler:(id)a6;
+- (void)_showDialogRequestingPermissionForURL:(id)l frame:(id)frame dialogPresenter:(id)presenter browserPersona:(int64_t)persona completionHandler:(id)handler;
+- (void)requestPermissionForURL:(id)l frame:(id)frame dialogPresenter:(id)presenter browserPersona:(int64_t)persona completionHandler:(id)handler;
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain completionHandler:(id)handler;
 @end
 
 @implementation _SFGeolocationPermissionManager
@@ -20,67 +20,67 @@
   return v3;
 }
 
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 completionHandler:(id)a6
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  handlerCopy = handler;
   if (!self->_policyDecider)
   {
-    v14 = [MEMORY[0x1E69DD2D8] sharedPolicyDecider];
+    mEMORY[0x1E69DD2D8] = [MEMORY[0x1E69DD2D8] sharedPolicyDecider];
     policyDecider = self->_policyDecider;
-    self->_policyDecider = v14;
+    self->_policyDecider = mEMORY[0x1E69DD2D8];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(UIWebGeolocationPolicyDecider *)self->_policyDecider clearAuthorizationForDomain:v12];
+    [(UIWebGeolocationPolicyDecider *)self->_policyDecider clearAuthorizationForDomain:domainCopy];
   }
 
   v16.receiver = self;
   v16.super_class = _SFGeolocationPermissionManager;
-  [(WBSGeolocationPreferenceManager *)&v16 setValue:v10 ofPreference:v11 forDomain:v12 completionHandler:v13];
+  [(WBSGeolocationPreferenceManager *)&v16 setValue:valueCopy ofPreference:preferenceCopy forDomain:domainCopy completionHandler:handlerCopy];
 }
 
-- (void)requestPermissionForURL:(id)a3 frame:(id)a4 dialogPresenter:(id)a5 browserPersona:(int64_t)a6 completionHandler:(id)a7
+- (void)requestPermissionForURL:(id)l frame:(id)frame dialogPresenter:(id)presenter browserPersona:(int64_t)persona completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [v12 safari_userVisibleHostWithoutWWWSubdomain];
+  lCopy = l;
+  frameCopy = frame;
+  presenterCopy = presenter;
+  handlerCopy = handler;
+  safari_userVisibleHostWithoutWWWSubdomain = [lCopy safari_userVisibleHostWithoutWWWSubdomain];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __114___SFGeolocationPermissionManager_requestPermissionForURL_frame_dialogPresenter_browserPersona_completionHandler___block_invoke;
   v21[3] = &unk_1E84954A8;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a6;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
-  v20 = v15;
-  [(WBSGeolocationPreferenceManager *)self getGeolocationSettingForDomain:v16 completionHandler:v21];
+  v22 = lCopy;
+  v23 = frameCopy;
+  v24 = presenterCopy;
+  v25 = handlerCopy;
+  personaCopy = persona;
+  v17 = presenterCopy;
+  v18 = frameCopy;
+  v19 = lCopy;
+  v20 = handlerCopy;
+  [(WBSGeolocationPreferenceManager *)self getGeolocationSettingForDomain:safari_userVisibleHostWithoutWWWSubdomain completionHandler:v21];
 }
 
-- (void)_showDialogRequestingPermissionForURL:(id)a3 frame:(id)a4 dialogPresenter:(id)a5 browserPersona:(int64_t)a6 completionHandler:(id)a7
+- (void)_showDialogRequestingPermissionForURL:(id)l frame:(id)frame dialogPresenter:(id)presenter browserPersona:(int64_t)persona completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v47 = a7;
-  v15 = [v13 securityOrigin];
+  lCopy = l;
+  frameCopy = frame;
+  presenterCopy = presenter;
+  handlerCopy = handler;
+  securityOrigin = [frameCopy securityOrigin];
   v16 = objc_alloc_init(MEMORY[0x1E696AF20]);
-  v17 = [v15 protocol];
-  [v16 setScheme:v17];
+  protocol = [securityOrigin protocol];
+  [v16 setScheme:protocol];
 
-  if ([v15 port])
+  if ([securityOrigin port])
   {
-    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v15, "port")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(securityOrigin, "port")}];
     [v16 setPort:v18];
   }
 
@@ -89,29 +89,29 @@
     [v16 setPort:0];
   }
 
-  v19 = [v15 host];
-  [v16 setHost:v19];
+  host = [securityOrigin host];
+  [v16 setHost:host];
 
   v20 = objc_alloc(MEMORY[0x1E69E2F98]);
   v21 = [v16 URL];
   v22 = [v20 initWithURL:v21];
 
-  v23 = [v13 securityOrigin];
-  [v23 safari_userVisibleName];
-  v46 = v45 = v23;
-  if (([v12 isFileURL] & 1) == 0)
+  securityOrigin2 = [frameCopy securityOrigin];
+  [securityOrigin2 safari_userVisibleName];
+  v46 = v45 = securityOrigin2;
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v24 = MEMORY[0x1E695DFF8];
-    v25 = [v23 safari_userVisibleName];
-    v26 = [v24 URLWithString:v25];
+    safari_userVisibleName = [securityOrigin2 safari_userVisibleName];
+    v26 = [v24 URLWithString:safari_userVisibleName];
 
-    v12 = v26;
+    lCopy = v26;
   }
 
-  v27 = [v13 webView];
-  v28 = [v27 webui_privateBrowsingEnabled];
+  webView = [frameCopy webView];
+  webui_privateBrowsingEnabled = [webView webui_privateBrowsingEnabled];
 
-  if (v28)
+  if (webui_privateBrowsingEnabled)
   {
 LABEL_7:
     v29 = 0;
@@ -121,23 +121,23 @@ LABEL_7:
   policyDecider = self->_policyDecider;
   if (!policyDecider)
   {
-    v31 = [MEMORY[0x1E69DD2D8] sharedPolicyDecider];
+    mEMORY[0x1E69DD2D8] = [MEMORY[0x1E69DD2D8] sharedPolicyDecider];
     v32 = self->_policyDecider;
-    self->_policyDecider = v31;
+    self->_policyDecider = mEMORY[0x1E69DD2D8];
 
     policyDecider = self->_policyDecider;
   }
 
   v61[0] = 0;
-  v33 = [(UIWebGeolocationPolicyDecider *)policyDecider getAuthorizationStatusForOrigin:v22 requestingURL:v12 promptInfo:v61];
+  v33 = [(UIWebGeolocationPolicyDecider *)policyDecider getAuthorizationStatusForOrigin:v22 requestingURL:lCopy promptInfo:v61];
   v29 = v61[0];
   if (!v29)
   {
     if (([MEMORY[0x1E69C98B8] isLockdownModeEnabledForSafari] & v33 & 1) == 0)
     {
-      v39 = v47;
-      (*(v47 + 2))(v47, v33);
-      v37 = v14;
+      v39 = handlerCopy;
+      (*(handlerCopy + 2))(handlerCopy, v33);
+      v37 = presenterCopy;
       v38 = 0;
       v42 = v46;
       goto LABEL_13;
@@ -148,23 +148,23 @@ LABEL_7:
 
 LABEL_11:
   v44 = v22;
-  v34 = a6;
-  v35 = [v14 permissionDialogThrottler];
-  if (v35)
+  personaCopy = persona;
+  permissionDialogThrottler = [presenterCopy permissionDialogThrottler];
+  if (permissionDialogThrottler)
   {
-    v36 = v35;
-    v37 = v14;
+    v36 = permissionDialogThrottler;
+    v37 = presenterCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __128___SFGeolocationPermissionManager__showDialogRequestingPermissionForURL_frame_dialogPresenter_browserPersona_completionHandler___block_invoke;
     aBlock[3] = &unk_1E84954D0;
-    v56 = v35;
-    v57 = v13;
+    v56 = permissionDialogThrottler;
+    v57 = frameCopy;
     v38 = v29;
     v58 = v38;
-    v59 = self;
-    v39 = v47;
-    v60 = v47;
+    selfCopy = self;
+    v39 = handlerCopy;
+    v60 = handlerCopy;
     v40 = v36;
     v41 = _Block_copy(aBlock);
     v48[0] = MEMORY[0x1E69E9820];
@@ -172,11 +172,11 @@ LABEL_11:
     v48[2] = __128___SFGeolocationPermissionManager__showDialogRequestingPermissionForURL_frame_dialogPresenter_browserPersona_completionHandler___block_invoke_2;
     v48[3] = &unk_1E8491C28;
     v53 = v41;
-    v49 = v12;
+    v49 = lCopy;
     v42 = v46;
     v50 = v46;
-    v51 = self;
-    v54 = v34;
+    selfCopy2 = self;
+    v54 = personaCopy;
     v52 = v37;
     v43 = v41;
     [v40 requestPermissionDialogPresentation:v48];

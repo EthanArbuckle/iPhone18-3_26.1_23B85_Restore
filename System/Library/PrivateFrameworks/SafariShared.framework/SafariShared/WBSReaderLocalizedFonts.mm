@@ -1,17 +1,17 @@
 @interface WBSReaderLocalizedFonts
-+ (id)defaultFontFamilyNameForLanguage:(id)a3;
++ (id)defaultFontFamilyNameForLanguage:(id)language;
 + (id)defaultFontFamilyNameForLanguageMap;
-+ (id)fontsForLanguage:(id)a3;
++ (id)fontsForLanguage:(id)language;
 + (uint64_t)defaultFontFamilyNameForLanguageMap;
 @end
 
 @implementation WBSReaderLocalizedFonts
 
-+ (id)fontsForLanguage:(id)a3
++ (id)fontsForLanguage:(id)language
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"am"])
+  languageCopy = language;
+  if ([languageCopy isEqualToString:@"am"])
   {
     v4 = [WBSReaderFont fontWithFamilyName:@"Kefa" displayName:0];
     v17 = v4;
@@ -20,7 +20,7 @@
     goto LABEL_45;
   }
 
-  if ([v3 isEqualToString:@"ar"])
+  if ([languageCopy isEqualToString:@"ar"])
   {
     v6 = [WBSReaderFont systemFontWithDisplayName:@"سان فرانسيسكو"];
     v17 = v6;
@@ -35,7 +35,7 @@
     goto LABEL_45;
   }
 
-  if ([v3 isEqualToString:@"hy"])
+  if ([languageCopy isEqualToString:@"hy"])
   {
     v10 = [WBSReaderFont fontWithFamilyName:@"Mshtakan" displayName:@"մշտական"];
     v17 = v10;
@@ -44,7 +44,7 @@
     goto LABEL_45;
   }
 
-  if (([v3 isEqualToString:@"bn"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"as"))
+  if (([languageCopy isEqualToString:@"bn"] & 1) != 0 || objc_msgSend(languageCopy, "isEqualToString:", @"as"))
   {
     v11 = [WBSReaderFont fontWithFamilyName:@"Kohinoor Bangla" displayName:@"কোহিনুর বাংলা"];
     v17 = v11;
@@ -59,121 +59,121 @@
     goto LABEL_45;
   }
 
-  if ([v3 isEqualToString:@"my"])
+  if ([languageCopy isEqualToString:@"my"])
   {
     v15 = burmeseFonts();
   }
 
-  else if ([v3 isEqualToString:@"chr"])
+  else if ([languageCopy isEqualToString:@"chr"])
   {
     v15 = cherokeeFonts();
   }
 
-  else if ([v3 isEqualToString:@"gu"])
+  else if ([languageCopy isEqualToString:@"gu"])
   {
     v15 = gujaratiFonts();
   }
 
-  else if ([v3 isEqualToString:@"pa-Guru"])
+  else if ([languageCopy isEqualToString:@"pa-Guru"])
   {
     v15 = punjabiFonts();
   }
 
-  else if ([v3 isEqualToString:@"he"])
+  else if ([languageCopy isEqualToString:@"he"])
   {
     v15 = hebrewFonts();
   }
 
-  else if ([v3 isEqualToString:@"hi"])
+  else if ([languageCopy isEqualToString:@"hi"])
   {
     v15 = hindiFonts();
   }
 
-  else if ([v3 isEqualToString:@"ja"])
+  else if ([languageCopy isEqualToString:@"ja"])
   {
     v15 = japaneseFonts();
   }
 
-  else if ([v3 isEqualToString:@"kn"])
+  else if ([languageCopy isEqualToString:@"kn"])
   {
     v15 = kannadaFonts();
   }
 
-  else if ([v3 isEqualToString:@"km"])
+  else if ([languageCopy isEqualToString:@"km"])
   {
     v15 = khmerFonts();
   }
 
-  else if ([v3 isEqualToString:@"ko"])
+  else if ([languageCopy isEqualToString:@"ko"])
   {
     v15 = koreanFonts();
   }
 
   else
   {
-    if (([v3 isEqualToString:@"lo"] & 1) == 0)
+    if (([languageCopy isEqualToString:@"lo"] & 1) == 0)
     {
-      if ([v3 isEqualToString:@"ml"])
+      if ([languageCopy isEqualToString:@"ml"])
       {
         v15 = malayalamFonts();
         goto LABEL_44;
       }
 
-      if ([v3 isEqualToString:@"mr"])
+      if ([languageCopy isEqualToString:@"mr"])
       {
         v15 = marathiFonts();
         goto LABEL_44;
       }
 
-      if ([v3 isEqualToString:@"or"])
+      if ([languageCopy isEqualToString:@"or"])
       {
         v15 = oriyaFonts();
         goto LABEL_44;
       }
 
-      if ([v3 isEqualToString:@"si"])
+      if ([languageCopy isEqualToString:@"si"])
       {
         v15 = sinhalaFonts();
         goto LABEL_44;
       }
 
-      if ([v3 isEqualToString:@"ta"])
+      if ([languageCopy isEqualToString:@"ta"])
       {
         v15 = tamilFonts();
         goto LABEL_44;
       }
 
-      if ([v3 isEqualToString:@"te"])
+      if ([languageCopy isEqualToString:@"te"])
       {
         v15 = teluguFonts();
         goto LABEL_44;
       }
 
-      if (![v3 isEqualToString:@"lo"])
+      if (![languageCopy isEqualToString:@"lo"])
       {
-        if ([v3 isEqualToString:@"th"])
+        if ([languageCopy isEqualToString:@"th"])
         {
           v15 = thaiFonts();
         }
 
-        else if ([v3 isEqualToString:@"zh-Hans"])
+        else if ([languageCopy isEqualToString:@"zh-Hans"])
         {
           v15 = simplifiedChineseFonts();
         }
 
-        else if ([v3 isEqualToString:@"zh-Hant"])
+        else if ([languageCopy isEqualToString:@"zh-Hant"])
         {
           v15 = traditionalChineseFonts();
         }
 
-        else if ([v3 isEqualToString:@"iu-Cans"])
+        else if ([languageCopy isEqualToString:@"iu-Cans"])
         {
           v15 = unifiedCanadianSyllabicsFonts();
         }
 
         else
         {
-          if ([v3 isEqualToString:@"ur"])
+          if ([languageCopy isEqualToString:@"ur"])
           {
             urduFonts();
           }
@@ -199,24 +199,24 @@ LABEL_45:
   return v5;
 }
 
-+ (id)defaultFontFamilyNameForLanguage:(id)a3
++ (id)defaultFontFamilyNameForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [a1 defaultFontFamilyNameForLanguageMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  languageCopy = language;
+  defaultFontFamilyNameForLanguageMap = [self defaultFontFamilyNameForLanguageMap];
+  v6 = [defaultFontFamilyNameForLanguageMap objectForKeyedSubscript:languageCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    familyName = v6;
   }
 
   else
   {
     v9 = +[WBSReaderFont systemFont];
-    v8 = [v9 familyName];
+    familyName = [v9 familyName];
   }
 
-  return v8;
+  return familyName;
 }
 
 + (id)defaultFontFamilyNameForLanguageMap
@@ -238,59 +238,59 @@ LABEL_45:
 
 + (uint64_t)defaultFontFamilyNameForLanguageMap
 {
-  *a1 = @"am";
+  *self = @"am";
   *a2 = @"Kefa";
-  a1[1] = @"hy";
+  self[1] = @"hy";
   a2[1] = @"Mshtakan";
-  a1[2] = @"as";
+  self[2] = @"as";
   a2[2] = @"Kohinoor Bangla";
-  a1[3] = @"bn";
+  self[3] = @"bn";
   a2[3] = @"Kohinoor Bangla";
-  a1[4] = @"my";
+  self[4] = @"my";
   a2[4] = @"Noto Sans Myanmar";
-  a1[5] = @"chr";
+  self[5] = @"chr";
   a2[5] = @"Plantagenet Cherokee";
-  a1[6] = @"gu";
+  self[6] = @"gu";
   a2[6] = @"Kohinoor Gujarati";
-  a1[7] = @"pa-Guru";
+  self[7] = @"pa-Guru";
   a2[7] = @"Mukta Mahee";
-  a1[8] = @"he";
+  self[8] = @"he";
   a2[8] = @"Arial Hebrew";
-  a1[9] = @"hi";
+  self[9] = @"hi";
   a2[9] = @"Kohinoor Devanagari";
-  a1[10] = @"ja";
+  self[10] = @"ja";
   a2[10] = @"Hiragino Maru Gothic ProN";
-  a1[11] = @"kn";
+  self[11] = @"kn";
   a2[11] = @"Noto Sans Kannada";
-  a1[12] = @"km";
+  self[12] = @"km";
   a2[12] = @"Khmer Sangam MN";
-  a1[13] = @"ko";
+  self[13] = @"ko";
   a2[13] = @"Apple SD Gothic Neo";
-  a1[14] = @"lo";
+  self[14] = @"lo";
   a2[14] = @"Lao Sangam MN";
-  a1[15] = @"ml";
+  self[15] = @"ml";
   a2[15] = @"Malayalam Sangam MN";
-  a1[16] = @"mr";
+  self[16] = @"mr";
   a2[16] = @"Kohinoor Devanagari Marathi";
-  a1[17] = @"or";
+  self[17] = @"or";
   a2[17] = @"Noto Sans Oriya";
-  a1[18] = @"si";
+  self[18] = @"si";
   a2[18] = @"Sinhala Sangam MN";
-  a1[19] = @"ta";
+  self[19] = @"ta";
   a2[19] = @"Tamil Sangam MN";
-  a1[20] = @"te";
+  self[20] = @"te";
   a2[20] = @"Kohinoor Telugu";
-  a1[21] = @"th";
+  self[21] = @"th";
   a2[21] = @"Thonburi";
-  a1[22] = @"zh-Hans";
+  self[22] = @"zh-Hans";
   a2[22] = @"PingFang SC";
-  a1[23] = @"zh-Hant";
+  self[23] = @"zh-Hant";
   a2[23] = @"PingFang TC";
-  a1[24] = @"iu-Cans";
+  self[24] = @"iu-Cans";
   a2[24] = @"Euphemia UCAS";
-  a1[25] = @"ur";
+  self[25] = @"ur";
   a2[25] = @"Noto Nastaliq Urdu";
-  result = [MEMORY[0x1E695DF20] dictionaryWithObjects:a2 forKeys:a1 count:26];
+  result = [MEMORY[0x1E695DF20] dictionaryWithObjects:a2 forKeys:self count:26];
   *a3 = result;
   qword_1EBC79460 = result;
   _MergedGlobals_0 = 1;

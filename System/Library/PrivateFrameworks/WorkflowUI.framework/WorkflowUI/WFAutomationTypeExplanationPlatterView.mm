@@ -1,25 +1,25 @@
 @interface WFAutomationTypeExplanationPlatterView
-- (WFAutomationTypeExplanationPlatterView)initWithFrame:(CGRect)a3;
+- (WFAutomationTypeExplanationPlatterView)initWithFrame:(CGRect)frame;
 - (id)homeAutomationIcon;
 - (id)personalAutomationIcon;
-- (void)configureForAutomationType:(unint64_t)a3;
+- (void)configureForAutomationType:(unint64_t)type;
 - (void)prepareForReuse;
-- (void)setButtonTarget:(id)a3 action:(SEL)a4;
-- (void)setButtonTitle:(id)a3 color:(id)a4;
-- (void)setExplanatoryText:(id)a3;
-- (void)setIcon:(id)a3;
+- (void)setButtonTarget:(id)target action:(SEL)action;
+- (void)setButtonTitle:(id)title color:(id)color;
+- (void)setExplanatoryText:(id)text;
+- (void)setIcon:(id)icon;
 @end
 
 @implementation WFAutomationTypeExplanationPlatterView
 
 - (void)prepareForReuse
 {
-  v3 = [(WFAutomationTypeExplanationPlatterView *)self button];
-  [v3 removeTarget:0 action:0 forControlEvents:64];
+  button = [(WFAutomationTypeExplanationPlatterView *)self button];
+  [button removeTarget:0 action:0 forControlEvents:64];
 
-  v5 = [MEMORY[0x277D75348] systemBlueColor];
-  v4 = [(WFAutomationTypeExplanationPlatterView *)self iconView];
-  [v4 setTintColor:v5];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  iconView = [(WFAutomationTypeExplanationPlatterView *)self iconView];
+  [iconView setTintColor:systemBlueColor];
 }
 
 - (id)homeAutomationIcon
@@ -27,8 +27,8 @@
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D755D0] configurationWithPointSize:60.0];
   v3 = MEMORY[0x277D755D0];
-  v4 = [MEMORY[0x277D75348] wf_homeTintColor];
-  v10[0] = v4;
+  wf_homeTintColor = [MEMORY[0x277D75348] wf_homeTintColor];
+  v10[0] = wf_homeTintColor;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v6 = [v3 _configurationWithHierarchicalColors:v5];
   v7 = [v2 configurationByApplyingConfiguration:v6];
@@ -43,8 +43,8 @@
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D755D0] configurationWithPointSize:60.0];
   v3 = MEMORY[0x277D755D0];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v10[0] = v4;
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v10[0] = systemBlueColor;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v6 = [v3 _configurationWithHierarchicalColors:v5];
   v7 = [v2 configurationByApplyingConfiguration:v6];
@@ -54,65 +54,65 @@
   return v8;
 }
 
-- (void)setButtonTarget:(id)a3 action:(SEL)a4
+- (void)setButtonTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
-  v7 = [(WFAutomationTypeExplanationPlatterView *)self button];
-  [v7 addTarget:v6 action:a4 forControlEvents:64];
+  targetCopy = target;
+  button = [(WFAutomationTypeExplanationPlatterView *)self button];
+  [button addTarget:targetCopy action:action forControlEvents:64];
 }
 
-- (void)setButtonTitle:(id)a3 color:(id)a4
+- (void)setButtonTitle:(id)title color:(id)color
 {
   v6 = MEMORY[0x277D75230];
-  v7 = a4;
-  v8 = a3;
-  v15 = [v6 filledButtonConfiguration];
-  [v15 setTitle:v8];
+  colorCopy = color;
+  titleCopy = title;
+  filledButtonConfiguration = [v6 filledButtonConfiguration];
+  [filledButtonConfiguration setTitle:titleCopy];
 
-  [v15 setButtonSize:3];
-  v9 = [v15 background];
-  [v9 setBackgroundColor:v7];
+  [filledButtonConfiguration setButtonSize:3];
+  background = [filledButtonConfiguration background];
+  [background setBackgroundColor:colorCopy];
 
-  [v15 setCornerStyle:4];
-  [v15 setTitleLineBreakMode:0];
-  v10 = [(WFAutomationTypeExplanationPlatterView *)self button];
-  [v10 setConfiguration:v15];
+  [filledButtonConfiguration setCornerStyle:4];
+  [filledButtonConfiguration setTitleLineBreakMode:0];
+  button = [(WFAutomationTypeExplanationPlatterView *)self button];
+  [button setConfiguration:filledButtonConfiguration];
 
-  v11 = [(WFAutomationTypeExplanationPlatterView *)self button];
-  v12 = [v11 titleLabel];
-  [v12 setNumberOfLines:0];
+  button2 = [(WFAutomationTypeExplanationPlatterView *)self button];
+  titleLabel = [button2 titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v13 = [(WFAutomationTypeExplanationPlatterView *)self button];
-  v14 = [v13 titleLabel];
-  [v14 setTextAlignment:1];
+  button3 = [(WFAutomationTypeExplanationPlatterView *)self button];
+  titleLabel2 = [button3 titleLabel];
+  [titleLabel2 setTextAlignment:1];
 }
 
-- (void)setExplanatoryText:(id)a3
+- (void)setExplanatoryText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFAutomationTypeExplanationPlatterView *)self explanationTextLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  explanationTextLabel = [(WFAutomationTypeExplanationPlatterView *)self explanationTextLabel];
+  [explanationTextLabel setText:textCopy];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(WFAutomationTypeExplanationPlatterView *)self iconView];
-  [v5 setImage:v4];
+  iconCopy = icon;
+  iconView = [(WFAutomationTypeExplanationPlatterView *)self iconView];
+  [iconView setImage:iconCopy];
 }
 
-- (void)configureForAutomationType:(unint64_t)a3
+- (void)configureForAutomationType:(unint64_t)type
 {
   v4 = 0;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      v5 = 0;
-      v6 = 0;
+      homeExplanatoryText = 0;
+      systemBlueColor = 0;
       v7 = 0;
       v8 = 0;
-      if (a3 == 1)
+      if (type == 1)
       {
         v8 = @"automations.add-home";
         v9 = @"Create Home Automation";
@@ -122,22 +122,22 @@
 
     else
     {
-      v14 = [(WFAutomationTypeExplanationPlatterView *)self personalAutomationIcon];
-      v5 = WFLocalizedString(@"Create an automation that runs on a personal iPhone or iPad.");
-      v6 = [MEMORY[0x277D75348] systemBlueColor];
+      personalAutomationIcon = [(WFAutomationTypeExplanationPlatterView *)self personalAutomationIcon];
+      homeExplanatoryText = WFLocalizedString(@"Create an automation that runs on a personal iPhone or iPad.");
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
       v10 = WFLocalizedString(@"Create Personal Automation");
-      v4 = v14;
+      v4 = personalAutomationIcon;
       v7 = v10;
       v8 = @"automations.add-personal";
     }
 
 LABEL_9:
-    v15 = v4;
+    homeAutomationIcon = v4;
     [(WFAutomationTypeExplanationPlatterView *)self setIcon:v4];
     goto LABEL_13;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v8 = @"automations.setup-home";
     v9 = @"Set Up Your Home";
@@ -145,11 +145,11 @@ LABEL_9:
 
   else
   {
-    v5 = 0;
-    v6 = 0;
+    homeExplanatoryText = 0;
+    systemBlueColor = 0;
     v7 = 0;
     v8 = 0;
-    if (a3 != 3)
+    if (type != 3)
     {
       goto LABEL_9;
     }
@@ -159,31 +159,31 @@ LABEL_9:
   }
 
 LABEL_11:
-  v15 = [(WFAutomationTypeExplanationPlatterView *)self homeAutomationIcon];
-  v11 = [(WFAutomationTypeExplanationPlatterView *)self homeButtonColor];
-  v5 = [(WFAutomationTypeExplanationPlatterView *)self homeExplanatoryText];
-  v6 = [(WFAutomationTypeExplanationPlatterView *)self homeButtonColor];
+  homeAutomationIcon = [(WFAutomationTypeExplanationPlatterView *)self homeAutomationIcon];
+  homeButtonColor = [(WFAutomationTypeExplanationPlatterView *)self homeButtonColor];
+  homeExplanatoryText = [(WFAutomationTypeExplanationPlatterView *)self homeExplanatoryText];
+  systemBlueColor = [(WFAutomationTypeExplanationPlatterView *)self homeButtonColor];
   v7 = WFLocalizedString(v9);
-  [(WFAutomationTypeExplanationPlatterView *)self setIcon:v15];
-  if (v11)
+  [(WFAutomationTypeExplanationPlatterView *)self setIcon:homeAutomationIcon];
+  if (homeButtonColor)
   {
-    v12 = [(WFAutomationTypeExplanationPlatterView *)self iconView];
-    [v12 setTintColor:v11];
+    iconView = [(WFAutomationTypeExplanationPlatterView *)self iconView];
+    [iconView setTintColor:homeButtonColor];
   }
 
 LABEL_13:
-  [(WFAutomationTypeExplanationPlatterView *)self setExplanatoryText:v5];
-  [(WFAutomationTypeExplanationPlatterView *)self setButtonTitle:v7 color:v6];
-  v13 = [(WFAutomationTypeExplanationPlatterView *)self button];
-  [v13 setAccessibilityIdentifier:v8];
+  [(WFAutomationTypeExplanationPlatterView *)self setExplanatoryText:homeExplanatoryText];
+  [(WFAutomationTypeExplanationPlatterView *)self setButtonTitle:v7 color:systemBlueColor];
+  button = [(WFAutomationTypeExplanationPlatterView *)self button];
+  [button setAccessibilityIdentifier:v8];
 }
 
-- (WFAutomationTypeExplanationPlatterView)initWithFrame:(CGRect)a3
+- (WFAutomationTypeExplanationPlatterView)initWithFrame:(CGRect)frame
 {
   v62[4] = *MEMORY[0x277D85DE8];
   v60.receiver = self;
   v60.super_class = WFAutomationTypeExplanationPlatterView;
-  v3 = [(WFAutomationTypeExplanationPlatterView *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFAutomationTypeExplanationPlatterView *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -192,15 +192,15 @@ LABEL_13:
     [(WFAutomationTypeExplanationPlatterView *)v4 setContentCompressionResistancePriority:0 forAxis:v5];
     LODWORD(v6) = 1148846080;
     [(WFAutomationTypeExplanationPlatterView *)v4 setContentCompressionResistancePriority:1 forAxis:v6];
-    v7 = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
-    [(WFAutomationTypeExplanationPlatterView *)v4 setBackgroundColor:v7];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
+    [(WFAutomationTypeExplanationPlatterView *)v4 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
-    v8 = [(WFAutomationTypeExplanationPlatterView *)v4 layer];
-    [v8 setCornerRadius:26.0];
+    layer = [(WFAutomationTypeExplanationPlatterView *)v4 layer];
+    [layer setCornerRadius:26.0];
 
     v9 = *MEMORY[0x277CDA138];
-    v10 = [(WFAutomationTypeExplanationPlatterView *)v4 layer];
-    [v10 setCornerCurve:v9];
+    layer2 = [(WFAutomationTypeExplanationPlatterView *)v4 layer];
+    [layer2 setCornerCurve:v9];
 
     v11 = objc_alloc(MEMORY[0x277D75A68]);
     v12 = *MEMORY[0x277CBF3A0];
@@ -220,21 +220,21 @@ LABEL_13:
     [(UIStackView *)v4->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(WFAutomationTypeExplanationPlatterView *)v4 addSubview:v4->_stackView];
     v50 = MEMORY[0x277CCAAD0];
-    v58 = [(UIStackView *)v4->_stackView topAnchor];
-    v56 = [(WFAutomationTypeExplanationPlatterView *)v4 topAnchor];
-    v54 = [v58 constraintEqualToAnchor:v56];
+    topAnchor = [(UIStackView *)v4->_stackView topAnchor];
+    topAnchor2 = [(WFAutomationTypeExplanationPlatterView *)v4 topAnchor];
+    v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v62[0] = v54;
-    v52 = [(UIStackView *)v4->_stackView bottomAnchor];
-    v18 = [(WFAutomationTypeExplanationPlatterView *)v4 bottomAnchor];
-    v19 = [v52 constraintEqualToAnchor:v18];
+    bottomAnchor = [(UIStackView *)v4->_stackView bottomAnchor];
+    bottomAnchor2 = [(WFAutomationTypeExplanationPlatterView *)v4 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v62[1] = v19;
-    v20 = [(UIStackView *)v4->_stackView leadingAnchor];
-    v21 = [(WFAutomationTypeExplanationPlatterView *)v4 leadingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    leadingAnchor = [(UIStackView *)v4->_stackView leadingAnchor];
+    leadingAnchor2 = [(WFAutomationTypeExplanationPlatterView *)v4 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v62[2] = v22;
-    v23 = [(UIStackView *)v4->_stackView trailingAnchor];
-    v24 = [(WFAutomationTypeExplanationPlatterView *)v4 trailingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    trailingAnchor = [(UIStackView *)v4->_stackView trailingAnchor];
+    trailingAnchor2 = [(WFAutomationTypeExplanationPlatterView *)v4 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v62[3] = v25;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:4];
     [v50 activateConstraints:v26];
@@ -267,25 +267,25 @@ LABEL_13:
     v35 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v35 addSubview:v4->_button];
     v48 = MEMORY[0x277CCAAD0];
-    v59 = [(UIButton *)v4->_button topAnchor];
-    v57 = [v35 topAnchor];
-    v55 = [v59 constraintEqualToAnchor:v57];
+    topAnchor3 = [(UIButton *)v4->_button topAnchor];
+    topAnchor4 = [v35 topAnchor];
+    v55 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v61[0] = v55;
-    v53 = [(UIButton *)v4->_button centerXAnchor];
-    v51 = [v35 centerXAnchor];
-    v49 = [v53 constraintEqualToAnchor:v51];
+    centerXAnchor = [(UIButton *)v4->_button centerXAnchor];
+    centerXAnchor2 = [v35 centerXAnchor];
+    v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v61[1] = v49;
-    v47 = [(UIButton *)v4->_button bottomAnchor];
-    v46 = [v35 bottomAnchor];
-    v36 = [v47 constraintEqualToAnchor:v46];
+    bottomAnchor3 = [(UIButton *)v4->_button bottomAnchor];
+    bottomAnchor4 = [v35 bottomAnchor];
+    v36 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v61[2] = v36;
-    v37 = [(UIButton *)v4->_button leadingAnchor];
-    v38 = [v35 leadingAnchor];
-    v39 = [v37 constraintGreaterThanOrEqualToAnchor:v38];
+    leadingAnchor3 = [(UIButton *)v4->_button leadingAnchor];
+    leadingAnchor4 = [v35 leadingAnchor];
+    v39 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
     v61[3] = v39;
-    v40 = [(UIButton *)v4->_button trailingAnchor];
-    v41 = [v35 trailingAnchor];
-    v42 = [v40 constraintLessThanOrEqualToAnchor:v41];
+    trailingAnchor3 = [(UIButton *)v4->_button trailingAnchor];
+    trailingAnchor4 = [v35 trailingAnchor];
+    v42 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
     v61[4] = v42;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:5];
     [v48 activateConstraints:v43];

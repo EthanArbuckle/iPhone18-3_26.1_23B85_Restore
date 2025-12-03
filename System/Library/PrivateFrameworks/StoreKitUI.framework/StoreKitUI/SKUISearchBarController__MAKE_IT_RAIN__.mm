@@ -1,10 +1,10 @@
 @interface SKUISearchBarController__MAKE_IT_RAIN__
-- (SKUISearchBarController__MAKE_IT_RAIN__)initWithSearchBarViewElement:(id)a3;
+- (SKUISearchBarController__MAKE_IT_RAIN__)initWithSearchBarViewElement:(id)element;
 @end
 
 @implementation SKUISearchBarController__MAKE_IT_RAIN__
 
-- (SKUISearchBarController__MAKE_IT_RAIN__)initWithSearchBarViewElement:(id)a3
+- (SKUISearchBarController__MAKE_IT_RAIN__)initWithSearchBarViewElement:(id)element
 {
   v4.receiver = self;
   v4.super_class = SKUISearchBarController__MAKE_IT_RAIN__;

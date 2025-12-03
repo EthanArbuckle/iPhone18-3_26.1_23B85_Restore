@@ -1,42 +1,42 @@
 @interface AMMotionDetectionTriggerManager
 - (AMMotionDetectionTriggerManager)init;
-- (AMMotionDetectionTriggerManager)initWithAWClientOverride:(id)a3;
+- (AMMotionDetectionTriggerManager)initWithAWClientOverride:(id)override;
 - (BOOL)isMotionDetectionEnabled;
 - (double)watchdogTimeout;
-- (id)_firstOrderLowPassArray:(id)a3 last:(id)a4 dt:(float)a5 tau:(float)a6;
-- (id)_subtractArrayX:(id)a3 andY:(id)a4;
-- (id)_unitIntervalClipArray:(id)a3;
-- (unint64_t)_computeThresholdMaskFromMotionData:(id)a3 filtered:(BOOL)a4;
+- (id)_firstOrderLowPassArray:(id)array last:(id)last dt:(float)dt tau:(float)tau;
+- (id)_subtractArrayX:(id)x andY:(id)y;
+- (id)_unitIntervalClipArray:(id)array;
+- (unint64_t)_computeThresholdMaskFromMotionData:(id)data filtered:(BOOL)filtered;
 - (unint64_t)triggerState;
-- (void)_accessQueue_setPublishedTriggers:(unint64_t)a3;
+- (void)_accessQueue_setPublishedTriggers:(unint64_t)triggers;
 - (void)_accessQueue_updatePublishedTriggers;
-- (void)_handleMotionDataSample:(id)a3;
-- (void)_handleMotionDetectBoolean:(BOOL)a3;
-- (void)_injectSyntheticMotionData:(id)a3 timestampSeconds:(double)a4;
-- (void)_injectSyntheticMotionDetectBoolean:(BOOL)a3 timestamp:(double)a4;
-- (void)_notifyObserversUpdateMotionDetectionTriggerState:(unint64_t)a3;
-- (void)_setEnabledTriggers:(unint64_t)a3;
-- (void)_setMotionDetectionMonitoringEnabled:(BOOL)a3;
-- (void)_updateFilteredMotionDensity:(id)a3;
-- (void)_updateMotionDetectionTriggerMaskWithDataSample:(id)a3 andFilteredDataSample:(id)a4;
+- (void)_handleMotionDataSample:(id)sample;
+- (void)_handleMotionDetectBoolean:(BOOL)boolean;
+- (void)_injectSyntheticMotionData:(id)data timestampSeconds:(double)seconds;
+- (void)_injectSyntheticMotionDetectBoolean:(BOOL)boolean timestamp:(double)timestamp;
+- (void)_notifyObserversUpdateMotionDetectionTriggerState:(unint64_t)state;
+- (void)_setEnabledTriggers:(unint64_t)triggers;
+- (void)_setMotionDetectionMonitoringEnabled:(BOOL)enabled;
+- (void)_updateFilteredMotionDensity:(id)density;
+- (void)_updateMotionDetectionTriggerMaskWithDataSample:(id)sample andFilteredDataSample:(id)dataSample;
 - (void)_updateWatchdogTimer;
-- (void)addObserver:(id)a3 queue:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setMotionDetectionEnabled:(BOOL)a3;
-- (void)setWatchdogTimeout:(double)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)addObserver:(id)observer queue:(id)queue;
+- (void)removeObserver:(id)observer;
+- (void)setMotionDetectionEnabled:(BOOL)enabled;
+- (void)setWatchdogTimeout:(double)timeout;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation AMMotionDetectionTriggerManager
 
-- (AMMotionDetectionTriggerManager)initWithAWClientOverride:(id)a3
+- (AMMotionDetectionTriggerManager)initWithAWClientOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   v6 = [(AMMotionDetectionTriggerManager *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_awClientOverride, a3);
+    objc_storeStrong(&v6->_awClientOverride, override);
   }
 
   return v7;
@@ -96,7 +96,7 @@
   return v3;
 }
 
-- (void)setMotionDetectionEnabled:(BOOL)a3
+- (void)setMotionDetectionEnabled:(BOOL)enabled
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -104,7 +104,7 @@
   v4[2] = __61__AMMotionDetectionTriggerManager_setMotionDetectionEnabled___block_invoke;
   v4[3] = &unk_278C73750;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -150,20 +150,20 @@ uint64_t __61__AMMotionDetectionTriggerManager_setMotionDetectionEnabled___block
   return v3;
 }
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__AMMotionDetectionTriggerManager_addObserver_queue___block_invoke;
   block[3] = &unk_278C73778;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = queueCopy;
+  selfCopy = self;
+  v9 = queueCopy;
+  v10 = observerCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -186,17 +186,17 @@ void __53__AMMotionDetectionTriggerManager_addObserver_queue___block_invoke(void
   [v3 addObject:v2];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__AMMotionDetectionTriggerManager_removeObserver___block_invoke;
   v7[3] = &unk_278C73688;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -263,24 +263,24 @@ void __50__AMMotionDetectionTriggerManager_removeObserver___block_invoke(uint64_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   settings = self->_settings;
-  if (settings == a3)
+  if (settings == settings)
   {
-    v6 = [(AMMotionDetectionSettings *)settings enabledTriggers];
+    enabledTriggers = [(AMMotionDetectionSettings *)settings enabledTriggers];
 
-    [(AMMotionDetectionTriggerManager *)self _setEnabledTriggers:v6];
+    [(AMMotionDetectionTriggerManager *)self _setEnabledTriggers:enabledTriggers];
   }
 }
 
-- (void)_injectSyntheticMotionData:(id)a3 timestampSeconds:(double)a4
+- (void)_injectSyntheticMotionData:(id)data timestampSeconds:(double)seconds
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_alloc_init(_AMMotionDetectionDataSample);
-  [(_AMMotionDetectionDataSample *)v7 setData:v6];
+  [(_AMMotionDetectionDataSample *)v7 setData:dataCopy];
 
-  [(_AMMotionDetectionDataSample *)v7 setTimestampSeconds:a4];
+  [(_AMMotionDetectionDataSample *)v7 setTimestampSeconds:seconds];
   accessQueue = self->_accessQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -292,7 +292,7 @@ void __50__AMMotionDetectionTriggerManager_removeObserver___block_invoke(uint64_
   dispatch_async(accessQueue, v10);
 }
 
-- (void)_injectSyntheticMotionDetectBoolean:(BOOL)a3 timestamp:(double)a4
+- (void)_injectSyntheticMotionDetectBoolean:(BOOL)boolean timestamp:(double)timestamp
 {
   accessQueue = self->_accessQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -300,7 +300,7 @@ void __50__AMMotionDetectionTriggerManager_removeObserver___block_invoke(uint64_
   v5[2] = __81__AMMotionDetectionTriggerManager__injectSyntheticMotionDetectBoolean_timestamp___block_invoke;
   v5[3] = &unk_278C73750;
   v5[4] = self;
-  v6 = a3;
+  booleanCopy = boolean;
   dispatch_async(accessQueue, v5);
 }
 
@@ -330,7 +330,7 @@ double __50__AMMotionDetectionTriggerManager_watchdogTimeout__block_invoke(uint6
   return result;
 }
 
-- (void)setWatchdogTimeout:(double)a3
+- (void)setWatchdogTimeout:(double)timeout
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -338,7 +338,7 @@ double __50__AMMotionDetectionTriggerManager_watchdogTimeout__block_invoke(uint6
   v4[2] = __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke;
   v4[3] = &unk_278C737A0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = timeout;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -349,16 +349,16 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   return result;
 }
 
-- (void)_updateMotionDetectionTriggerMaskWithDataSample:(id)a3 andFilteredDataSample:(id)a4
+- (void)_updateMotionDetectionTriggerMaskWithDataSample:(id)sample andFilteredDataSample:(id)dataSample
 {
   v17 = *MEMORY[0x277D85DE8];
   accessQueue = self->_accessQueue;
-  v7 = a4;
-  v8 = a3;
+  dataSampleCopy = dataSample;
+  sampleCopy = sample;
   dispatch_assert_queue_V2(accessQueue);
-  v9 = [(AMMotionDetectionTriggerManager *)self _computeThresholdMaskFromMotionData:v8 filtered:0];
+  v9 = [(AMMotionDetectionTriggerManager *)self _computeThresholdMaskFromMotionData:sampleCopy filtered:0];
 
-  v10 = [(AMMotionDetectionTriggerManager *)self _computeThresholdMaskFromMotionData:v7 filtered:1];
+  v10 = [(AMMotionDetectionTriggerManager *)self _computeThresholdMaskFromMotionData:dataSampleCopy filtered:1];
   v11 = v10 | v9;
   if (v11 != self->_triggerState)
   {
@@ -379,7 +379,7 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setEnabledTriggers:(unint64_t)a3
+- (void)_setEnabledTriggers:(unint64_t)triggers
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -387,7 +387,7 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   v4[2] = __55__AMMotionDetectionTriggerManager__setEnabledTriggers___block_invoke;
   v4[3] = &unk_278C737A0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = triggers;
   dispatch_async(accessQueue, v4);
 }
 
@@ -408,18 +408,18 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   [(AMMotionDetectionTriggerManager *)self _accessQueue_setPublishedTriggers:v4];
 }
 
-- (void)_accessQueue_setPublishedTriggers:(unint64_t)a3
+- (void)_accessQueue_setPublishedTriggers:(unint64_t)triggers
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (self->_publishedTriggers != a3)
+  if (self->_publishedTriggers != triggers)
   {
-    self->_publishedTriggers = a3;
+    self->_publishedTriggers = triggers;
 
-    [(AMMotionDetectionTriggerManager *)self _notifyObserversUpdateMotionDetectionTriggerState:a3];
+    [(AMMotionDetectionTriggerManager *)self _notifyObserversUpdateMotionDetectionTriggerState:triggers];
   }
 }
 
-- (void)_notifyObserversUpdateMotionDetectionTriggerState:(unint64_t)a3
+- (void)_notifyObserversUpdateMotionDetectionTriggerState:(unint64_t)state
 {
   v25 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_accessQueue);
@@ -444,17 +444,17 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 observer];
-        v12 = [v10 queue];
+        observer = [v10 observer];
+        queue = [v10 queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __85__AMMotionDetectionTriggerManager__notifyObserversUpdateMotionDetectionTriggerState___block_invoke;
         block[3] = &unk_278C737C8;
-        v17 = v11;
-        v18 = self;
-        v19 = a3;
-        v13 = v11;
-        dispatch_async(v12, block);
+        v17 = observer;
+        selfCopy = self;
+        stateCopy = state;
+        v13 = observer;
+        dispatch_async(queue, block);
       }
 
       v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -466,11 +466,11 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_computeThresholdMaskFromMotionData:(id)a3 filtered:(BOOL)a4
+- (unint64_t)_computeThresholdMaskFromMotionData:(id)data filtered:(BOOL)filtered
 {
-  v4 = a4;
+  filteredCopy = filtered;
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v29 = 0x3E4CCCCD3DCCCCCDLL;
   v30 = xmmword_23EE4FC50;
   v31 = 0;
@@ -490,11 +490,11 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   v45 = xmmword_23EE4FC90;
   v46 = 1;
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:0 selector:sel_compare_];
-  v27 = v5;
-  v7 = [v5 data];
+  v27 = dataCopy;
+  data = [dataCopy data];
   v28 = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-  v9 = [v7 sortedArrayUsingDescriptors:v8];
+  v9 = [data sortedArrayUsingDescriptors:v8];
 
   v10 = [v9 objectAtIndexedSubscript:0];
   [v10 floatValue];
@@ -504,7 +504,7 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   for (i = 0; i != 6; ++i)
   {
     v15 = (&v29 + 4 * i);
-    if (*(v15 + 24) == v4)
+    if (*(v15 + 24) == filteredCopy)
     {
       v16 = *(v15 + 1);
       v17 = [v9 count];
@@ -560,18 +560,18 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   return v13;
 }
 
-- (id)_firstOrderLowPassArray:(id)a3 last:(id)a4 dt:(float)a5 tau:(float)a6
+- (id)_firstOrderLowPassArray:(id)array last:(id)last dt:(float)dt tau:(float)tau
 {
-  v9 = a3;
-  v10 = a4;
+  arrayCopy = array;
+  lastCopy = last;
   v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:16];
   v12 = 0;
-  v13 = a5 / (a5 + a6);
+  v13 = dt / (dt + tau);
   LODWORD(v14) = 1.0;
   do
   {
-    v15 = [v9 objectAtIndexedSubscript:{v12, v14}];
-    v16 = [v10 objectAtIndexedSubscript:v12];
+    v15 = [arrayCopy objectAtIndexedSubscript:{v12, v14}];
+    v16 = [lastCopy objectAtIndexedSubscript:v12];
     [v15 floatValue];
     v18 = v17;
     [v16 floatValue];
@@ -587,18 +587,18 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   return v11;
 }
 
-- (id)_subtractArrayX:(id)a3 andY:(id)a4
+- (id)_subtractArrayX:(id)x andY:(id)y
 {
-  v5 = a3;
-  v6 = a4;
+  xCopy = x;
+  yCopy = y;
   v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:16];
   for (i = 0; i != 16; ++i)
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v5 objectAtIndexedSubscript:i];
+    v10 = [xCopy objectAtIndexedSubscript:i];
     [v10 floatValue];
     v12 = v11;
-    v13 = [v6 objectAtIndexedSubscript:i];
+    v13 = [yCopy objectAtIndexedSubscript:i];
     [v13 floatValue];
     *&v15 = v12 - v14;
     v16 = [v9 numberWithFloat:v15];
@@ -608,13 +608,13 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   return v7;
 }
 
-- (id)_unitIntervalClipArray:(id)a3
+- (id)_unitIntervalClipArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:16];
   for (i = 0; i != 16; ++i)
   {
-    v6 = [v3 objectAtIndexedSubscript:i];
+    v6 = [arrayCopy objectAtIndexedSubscript:i];
     [v6 floatValue];
     v8 = &unk_285177C08;
     if (v7 >= 0.0)
@@ -632,12 +632,12 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   return v4;
 }
 
-- (void)_updateFilteredMotionDensity:(id)a3
+- (void)_updateFilteredMotionDensity:(id)density
 {
-  v26 = a3;
+  densityCopy = density;
   [(_AMMotionDetectionDataSample *)self->_dataSample timestampSeconds];
   v5 = v4;
-  [v26 timestampSeconds];
+  [densityCopy timestampSeconds];
   v7 = v6;
   v8 = v6 - v5;
   if (v5 == 0.0)
@@ -652,41 +652,41 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
 
   if (v9 >= 0.0)
   {
-    v10 = [v26 data];
-    v11 = [(_AMMotionDetectionDataSample *)self->_motionDensityBackground data];
-    v12 = [(AMMotionDetectionTriggerManager *)self _subtractArrayX:v10 andY:v11];
+    data = [densityCopy data];
+    data2 = [(_AMMotionDetectionDataSample *)self->_motionDensityBackground data];
+    v12 = [(AMMotionDetectionTriggerManager *)self _subtractArrayX:data andY:data2];
     v13 = [(AMMotionDetectionTriggerManager *)self _unitIntervalClipArray:v12];
 
     filteredMotionDensity = self->_filteredMotionDensity;
-    v15 = [(_AMMotionDetectionDataSample *)filteredMotionDensity data];
+    data3 = [(_AMMotionDetectionDataSample *)filteredMotionDensity data];
     v16 = v9;
     LODWORD(v17) = 1045220557;
     *&v18 = v16;
-    v19 = [(AMMotionDetectionTriggerManager *)self _firstOrderLowPassArray:v13 last:v15 dt:v18 tau:v17];
+    v19 = [(AMMotionDetectionTriggerManager *)self _firstOrderLowPassArray:v13 last:data3 dt:v18 tau:v17];
     [(_AMMotionDetectionDataSample *)filteredMotionDensity setData:v19];
 
     [(_AMMotionDetectionDataSample *)self->_filteredMotionDensity setTimestampSeconds:v7];
     motionDensityBackground = self->_motionDensityBackground;
-    v21 = [v26 data];
-    v22 = [(_AMMotionDetectionDataSample *)self->_motionDensityBackground data];
+    data4 = [densityCopy data];
+    data5 = [(_AMMotionDetectionDataSample *)self->_motionDensityBackground data];
     LODWORD(v23) = 1120403456;
     *&v24 = v16;
-    v25 = [(AMMotionDetectionTriggerManager *)self _firstOrderLowPassArray:v21 last:v22 dt:v24 tau:v23];
+    v25 = [(AMMotionDetectionTriggerManager *)self _firstOrderLowPassArray:data4 last:data5 dt:v24 tau:v23];
     [(_AMMotionDetectionDataSample *)motionDensityBackground setData:v25];
 
     [(_AMMotionDetectionDataSample *)self->_motionDensityBackground setTimestampSeconds:v7];
   }
 }
 
-- (void)_handleMotionDataSample:(id)a3
+- (void)_handleMotionDataSample:(id)sample
 {
-  v5 = a3;
+  sampleCopy = sample;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v6 = [v5 data];
-  v7 = [v6 count];
+  data = [sampleCopy data];
+  v7 = [data count];
 
-  v8 = [v5 data];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  data2 = [sampleCopy data];
+  v9 = [data2 objectAtIndexedSubscript:0];
   [v9 floatValue];
 
   if (v7 == 16)
@@ -694,22 +694,22 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
     v10 = AMLogMotion();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(AMMotionDetectionTriggerManager *)v5 _handleMotionDataSample:v10];
+      [(AMMotionDetectionTriggerManager *)sampleCopy _handleMotionDataSample:v10];
     }
 
-    [(AMMotionDetectionTriggerManager *)self _updateFilteredMotionDensity:v5];
-    [(AMMotionDetectionTriggerManager *)self _updateMotionDetectionTriggerMaskWithDataSample:v5 andFilteredDataSample:self->_filteredMotionDensity];
-    objc_storeStrong(&self->_dataSample, a3);
+    [(AMMotionDetectionTriggerManager *)self _updateFilteredMotionDensity:sampleCopy];
+    [(AMMotionDetectionTriggerManager *)self _updateMotionDetectionTriggerMaskWithDataSample:sampleCopy andFilteredDataSample:self->_filteredMotionDensity];
+    objc_storeStrong(&self->_dataSample, sample);
     [(AMMotionDetectionTriggerManager *)self _updateWatchdogTimer];
   }
 }
 
-- (void)_handleMotionDetectBoolean:(BOOL)a3
+- (void)_handleMotionDetectBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   v11 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (v3)
+  if (booleanCopy)
   {
     enabledTriggers = self->_enabledTriggers;
   }
@@ -739,13 +739,13 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setMotionDetectionMonitoringEnabled:(BOOL)a3
+- (void)_setMotionDetectionMonitoringEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   dispatch_assert_queue_V2(self->_accessQueue);
   self->_triggerState = 0x8000000000000000;
   self->_publishedTriggers = 0x8000000000000000;
-  if (v3)
+  if (enabledCopy)
   {
     watchdogTimer = objc_alloc_init(MEMORY[0x277CEF768]);
     [(NSTimer *)watchdogTimer setIdentifier:@"com.apple.Ambient.MotionDetectionManager"];
@@ -805,7 +805,7 @@ double __54__AMMotionDetectionTriggerManager_setWatchdogTimeout___block_invoke(u
     v15 = AMLogMotion();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(AMMotionDetectionTriggerManager *)v3 _setMotionDetectionMonitoringEnabled:v9, v15];
+      [(AMMotionDetectionTriggerManager *)enabledCopy _setMotionDetectionMonitoringEnabled:v9, v15];
     }
   }
 }

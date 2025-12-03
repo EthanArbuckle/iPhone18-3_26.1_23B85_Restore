@@ -1,10 +1,10 @@
 @interface VFXMaterialPropertyTextureProviderSource
-- (id)cachedTextureWithURL:(id)a3 token:(id *)a4 didFallbackToDefaultTexture:(BOOL *)a5;
-- (id)metalTextureWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5 status:(id *)a6;
-- (void)connectToProxy:(__CFXImageProxy *)a3;
+- (id)cachedTextureWithURL:(id)l token:(id *)token didFallbackToDefaultTexture:(BOOL *)texture;
+- (id)metalTextureWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time status:(id *)status;
+- (void)connectToProxy:(__CFXImageProxy *)proxy;
 - (void)dealloc;
-- (void)renderWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5;
-- (void)setTextureProvider:(id)a3;
+- (void)renderWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time;
+- (void)setTextureProvider:(id)provider;
 @end
 
 @implementation VFXMaterialPropertyTextureProviderSource
@@ -16,28 +16,28 @@
   [(VFXTextureSource *)&v3 dealloc];
 }
 
-- (void)setTextureProvider:(id)a3
+- (void)setTextureProvider:(id)provider
 {
-  if (self->_textureProvider != a3)
+  if (self->_textureProvider != provider)
   {
 
     self->_texture = 0;
-    self->_textureProvider = a3;
+    self->_textureProvider = provider;
   }
 }
 
-- (void)connectToProxy:(__CFXImageProxy *)a3
+- (void)connectToProxy:(__CFXImageProxy *)proxy
 {
-  sub_1AF27679C(a3, self, 0);
+  sub_1AF27679C(proxy, self, 0);
   v4[0] = xmmword_1F24EBDC8;
   v4[1] = *&off_1F24EBDD8;
-  sub_1AF276824(a3, v4);
+  sub_1AF276824(proxy, v4);
 }
 
-- (id)metalTextureWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5 status:(id *)a6
+- (id)metalTextureWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time status:(id *)status
 {
-  self->_engineContext = a3;
-  v8 = sub_1AF12E2AC(a3);
+  self->_engineContext = context;
+  v8 = sub_1AF12E2AC(context);
   v12 = v8;
   if (self->_texture)
   {
@@ -52,39 +52,39 @@
     v13 = 1;
   }
 
-  a6->var0 = v13;
-  a6->var1 = 1;
+  status->var0 = v13;
+  status->var1 = 1;
   sub_1AF28B814(self->_textureProvider, self->_texture, self, v12);
   return self->_texture;
 }
 
-- (void)renderWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5
+- (void)renderWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time
 {
-  self->_engineContext = a3;
-  v6 = sub_1AF12E2AC(a3);
+  self->_engineContext = context;
+  v6 = sub_1AF12E2AC(context);
   textureProvider = self->_textureProvider;
   texture = self->_texture;
 
   sub_1AF28B814(textureProvider, texture, self, v6);
 }
 
-- (id)cachedTextureWithURL:(id)a3 token:(id *)a4 didFallbackToDefaultTexture:(BOOL *)a5
+- (id)cachedTextureWithURL:(id)l token:(id *)token didFallbackToDefaultTexture:(BOOL *)texture
 {
-  if (a4)
+  if (token)
   {
-    *a4 = 0;
+    *token = 0;
   }
 
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = sub_1AF28BAD4;
   v30[3] = &unk_1E7A7E0E8;
-  v30[4] = a3;
-  v9 = sub_1AF198494(a3, 1, v30);
+  v30[4] = l;
+  v9 = sub_1AF198494(l, 1, v30);
   v10 = v9;
-  if (a4)
+  if (token)
   {
-    *a4 = v9;
+    *token = v9;
   }
 
   v29 = 0;
@@ -99,14 +99,14 @@
     if (v22)
     {
       v25 = v22;
-      v26 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v23, @"VFXMaterialPropertyTextureProviderHelper could not find texture for %@", v24, a3);
-      objc_msgSend_renderContext_didFallbackToDefaultTextureForSource_message_(v25, v27, v11, a3, v26);
+      v26 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v23, @"VFXMaterialPropertyTextureProviderHelper could not find texture for %@", v24, l);
+      objc_msgSend_renderContext_didFallbackToDefaultTextureForSource_message_(v25, v27, v11, l, v26);
     }
   }
 
-  if (a5)
+  if (texture)
   {
-    *a5 = v29;
+    *texture = v29;
   }
 
   return v18;

@@ -5,10 +5,10 @@
 + (id)movieRental;
 + (id)season;
 + (id)show;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUIMediaEntityType)init;
-- (id)_initWithMediaCollectionType:(unint64_t)a3 mediaCategoryType:(unint64_t)a4;
-- (id)_initWithMediaItemCategoryType:(unint64_t)a3 isRental:(BOOL)a4;
+- (id)_initWithMediaCollectionType:(unint64_t)type mediaCategoryType:(unint64_t)categoryType;
+- (id)_initWithMediaItemCategoryType:(unint64_t)type isRental:(BOOL)rental;
 - (id)description;
 - (id)stringDescription;
 - (unint64_t)hash;
@@ -140,7 +140,7 @@ void __28__VUIMediaEntityType_season__block_invoke()
   return 0;
 }
 
-- (id)_initWithMediaItemCategoryType:(unint64_t)a3 isRental:(BOOL)a4
+- (id)_initWithMediaItemCategoryType:(unint64_t)type isRental:(BOOL)rental
 {
   v7.receiver = self;
   v7.super_class = VUIMediaEntityType;
@@ -148,16 +148,16 @@ void __28__VUIMediaEntityType_season__block_invoke()
   if (result)
   {
     *(result + 2) = 0;
-    *(result + 3) = a3;
-    *(result + 8) = a4;
+    *(result + 3) = type;
+    *(result + 8) = rental;
   }
 
   return result;
 }
 
-- (id)_initWithMediaCollectionType:(unint64_t)a3 mediaCategoryType:(unint64_t)a4
+- (id)_initWithMediaCollectionType:(unint64_t)type mediaCategoryType:(unint64_t)categoryType
 {
-  if (!a3)
+  if (!type)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The mediaCollectionType argument cannot be VUIMediaCollectionTypeNone"];
   }
@@ -167,23 +167,23 @@ void __28__VUIMediaEntityType_season__block_invoke()
   v7 = [(VUIMediaEntityType *)&v17 init];
   if (v7)
   {
-    v8 = [VUIMediaCategory mediaCatgeoryForType:a4];
-    v9 = [v8 supportedMediaCollectionTypes];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v11 = [v9 containsObject:v10];
+    v8 = [VUIMediaCategory mediaCatgeoryForType:categoryType];
+    supportedMediaCollectionTypes = [v8 supportedMediaCollectionTypes];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+    v11 = [supportedMediaCollectionTypes containsObject:v10];
 
     if ((v11 & 1) == 0)
     {
       v12 = MEMORY[0x1E695DF30];
       v13 = *MEMORY[0x1E695D940];
-      v14 = VUIMediaCollectionTypeLogString(a3);
-      v15 = VUIMediaCategoryTypeLogString(a4);
+      v14 = VUIMediaCollectionTypeLogString(type);
+      v15 = VUIMediaCategoryTypeLogString(categoryType);
       [v12 raise:v13 format:{@"The mediaCollectionType (%@) is not supported for the supplied mediaCategoryType (%@)", v14, v15}];
     }
 
     v7->_subtype = 1;
-    v7->_mediaCategoryType = a4;
-    v7->_mediaCollectionType = a3;
+    v7->_mediaCategoryType = categoryType;
+    v7->_mediaCollectionType = type;
   }
 
   return v7;
@@ -191,12 +191,12 @@ void __28__VUIMediaEntityType_season__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMediaEntityType *)self subtype];
-  v4 = v3 ^ (2 * [(VUIMediaEntityType *)self mediaCategoryType]);
+  subtype = [(VUIMediaEntityType *)self subtype];
+  v4 = subtype ^ (2 * [(VUIMediaEntityType *)self mediaCategoryType]);
   v5 = v4 ^ (4 * [(VUIMediaEntityType *)self mediaCollectionType]);
-  v6 = [(VUIMediaEntityType *)self isRental];
+  isRental = [(VUIMediaEntityType *)self isRental];
   v7 = 8;
-  if (!v6)
+  if (!isRental)
   {
     v7 = 0;
   }
@@ -204,23 +204,23 @@ void __28__VUIMediaEntityType_season__block_invoke()
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v11) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIMediaEntityType *)self subtype];
-    if (v7 == [(VUIMediaEntityType *)v6 subtype]&& (v8 = [(VUIMediaEntityType *)self mediaCategoryType], v8 == [(VUIMediaEntityType *)v6 mediaCategoryType]) && (v9 = [(VUIMediaEntityType *)self mediaCollectionType], v9 == [(VUIMediaEntityType *)v6 mediaCollectionType]))
+    subtype = [(VUIMediaEntityType *)self subtype];
+    if (subtype == [(VUIMediaEntityType *)v6 subtype]&& (v8 = [(VUIMediaEntityType *)self mediaCategoryType], v8 == [(VUIMediaEntityType *)v6 mediaCategoryType]) && (v9 = [(VUIMediaEntityType *)self mediaCollectionType], v9 == [(VUIMediaEntityType *)v6 mediaCollectionType]))
     {
-      v10 = [(VUIMediaEntityType *)self isRental];
-      v11 = v10 ^ [(VUIMediaEntityType *)v6 isRental]^ 1;
+      isRental = [(VUIMediaEntityType *)self isRental];
+      v11 = isRental ^ [(VUIMediaEntityType *)v6 isRental]^ 1;
     }
 
     else

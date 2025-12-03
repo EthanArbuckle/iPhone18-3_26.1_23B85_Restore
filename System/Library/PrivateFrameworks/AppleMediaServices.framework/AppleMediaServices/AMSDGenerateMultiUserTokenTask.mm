@@ -1,31 +1,31 @@
 @interface AMSDGenerateMultiUserTokenTask
 + (double)_scheduleRefreshInterval;
-- (AMSDGenerateMultiUserTokenTask)initWithController:(id)a3 account:(id)a4 home:(id)a5;
-- (BOOL)_saveMultiUserToken:(id)a3 forHomeParticipant:(id)a4 iCloudAccount:(id)a5 error:(id *)a6;
+- (AMSDGenerateMultiUserTokenTask)initWithController:(id)controller account:(id)account home:(id)home;
+- (BOOL)_saveMultiUserToken:(id)token forHomeParticipant:(id)participant iCloudAccount:(id)account error:(id *)error;
 - (BOOL)_shouldGenerateInviteToken;
-- (id)_generateAppProvidedDataWithAction:(id)a3 inviteToken:(id)a4;
-- (id)_generateMultiUserTokenWithAction:(id)a3 iCloudAccount:(id)a4 inviteToken:(id)a5 error:(id *)a6;
-- (id)_saveRecord:(id)a3 database:(id)a4;
-- (id)_shareRecord:(id)a3 withError:(id *)a4;
+- (id)_generateAppProvidedDataWithAction:(id)action inviteToken:(id)token;
+- (id)_generateMultiUserTokenWithAction:(id)action iCloudAccount:(id)account inviteToken:(id)token error:(id *)error;
+- (id)_saveRecord:(id)record database:(id)database;
+- (id)_shareRecord:(id)record withError:(id *)error;
 - (id)performTask;
 @end
 
 @implementation AMSDGenerateMultiUserTokenTask
 
-- (AMSDGenerateMultiUserTokenTask)initWithController:(id)a3 account:(id)a4 home:(id)a5
+- (AMSDGenerateMultiUserTokenTask)initWithController:(id)controller account:(id)account home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  accountCopy = account;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = AMSDGenerateMultiUserTokenTask;
   v12 = [(AMSDGenerateMultiUserTokenTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a4);
-    objc_storeStrong(&v13->_controller, a3);
-    objc_storeStrong(&v13->_home, a5);
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_controller, controller);
+    objc_storeStrong(&v13->_home, home);
   }
 
   return v13;
@@ -46,24 +46,24 @@
   return v3;
 }
 
-- (id)_generateAppProvidedDataWithAction:(id)a3 inviteToken:(id)a4
+- (id)_generateAppProvidedDataWithAction:(id)action inviteToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSDGenerateMultiUserTokenTask *)self home];
-  v9 = [AMSAuthenticateOptions amsd_createAppProvidedDataWithMultiUserAction:v7 home:v8];
+  tokenCopy = token;
+  actionCopy = action;
+  home = [(AMSDGenerateMultiUserTokenTask *)self home];
+  v9 = [AMSAuthenticateOptions amsd_createAppProvidedDataWithMultiUserAction:actionCopy home:home];
 
-  v10 = [(AMSDGenerateMultiUserTokenTask *)self account];
-  v11 = [v10 ams_altDSID];
-  [v9 ams_setNullableObject:v11 forKey:@"inviteeiTunesAltDsId"];
+  account = [(AMSDGenerateMultiUserTokenTask *)self account];
+  ams_altDSID = [account ams_altDSID];
+  [v9 ams_setNullableObject:ams_altDSID forKey:@"inviteeiTunesAltDsId"];
 
   [v9 ams_setNullableObject:@"com.apple.gs.itunes.mu.invite" forKey:@"inviteeiTunesAuthTokenType"];
-  [v9 ams_setNullableObject:v6 forKey:@"muInviteCode"];
+  [v9 ams_setNullableObject:tokenCopy forKey:@"muInviteCode"];
 
   v12 = +[ACAccountStore ams_sharedAccountStore];
-  v13 = [(AMSDGenerateMultiUserTokenTask *)self account];
+  account2 = [(AMSDGenerateMultiUserTokenTask *)self account];
   v27 = 0;
-  v14 = [v12 ams_fetchGrandSlamTokenForAccount:v13 withIdentifier:AMSAccountGrandSlamTokenIdentifierMultiUser error:&v27];
+  v14 = [v12 ams_fetchGrandSlamTokenForAccount:account2 withIdentifier:AMSAccountGrandSlamTokenIdentifierMultiUser error:&v27];
   v15 = v27;
 
   if (!v14)
@@ -74,8 +74,8 @@
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
       v19 = AMSLogKey();
@@ -86,7 +86,7 @@
       v31 = v19;
       v32 = 2114;
       v33 = v20;
-      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the GrandSlam token. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the GrandSlam token. error = %{public}@", buf, 0x20u);
     }
   }
 
@@ -97,8 +97,8 @@
     v21 = +[AMSLogConfig sharedConfig];
   }
 
-  v22 = [v21 OSLogObject];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v21 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v23 = objc_opt_class();
     v24 = AMSLogKey();
@@ -109,23 +109,23 @@
     v31 = v24;
     v32 = 2114;
     v33 = v25;
-    _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] appProvidedData = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] appProvidedData = %{public}@", buf, 0x20u);
   }
 
   return v9;
 }
 
-- (id)_shareRecord:(id)a3 withError:(id *)a4
+- (id)_shareRecord:(id)record withError:(id *)error
 {
-  v5 = a3;
+  recordCopy = record;
   v6 = +[AMSLogConfig sharedAccountsMultiUserConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -133,20 +133,20 @@
     v46 = v8;
     v47 = 2114;
     v48 = v9;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Sharing a record.", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Sharing a record.", buf, 0x16u);
   }
 
-  v10 = [(AMSDGenerateMultiUserTokenTask *)self controller];
-  v11 = [v10 cloudContainer];
-  v12 = [v11 privateDatabase];
+  controller = [(AMSDGenerateMultiUserTokenTask *)self controller];
+  cloudContainer = [controller cloudContainer];
+  privateDatabase = [cloudContainer privateDatabase];
 
-  v13 = [v5 identifier];
+  identifier = [recordCopy identifier];
 
-  v14 = [v13 zoneIdentifier];
-  v15 = [v12 shareForRecordZoneIdentifier:v14];
+  zoneIdentifier = [identifier zoneIdentifier];
+  v15 = [privateDatabase shareForRecordZoneIdentifier:zoneIdentifier];
 
-  v16 = [v15 identifier];
-  v17 = [v12 fetchRecordWithRecordIdentifier:v16];
+  identifier2 = [v15 identifier];
+  v17 = [privateDatabase fetchRecordWithRecordIdentifier:identifier2];
 
   v18 = v17;
   v42[0] = _NSConcreteStackBlock;
@@ -156,7 +156,7 @@
   v42[4] = self;
   v19 = v15;
   v43 = v19;
-  v20 = v12;
+  v20 = privateDatabase;
   v44 = v20;
   v21 = [v18 catchWithBlock:v42];
   v40[0] = _NSConcreteStackBlock;
@@ -190,8 +190,8 @@
       v28 = +[AMSLogConfig sharedConfig];
     }
 
-    v29 = [v28 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v28 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v34 = objc_opt_class();
       v35 = AMSLogKey();
@@ -203,77 +203,77 @@
       v49 = 2114;
       v50 = v30;
       v31 = v30;
-      _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to share the record. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to share the record. error = %{public}@", buf, 0x20u);
     }
 
     v18 = v36;
-    if (a4)
+    if (error)
     {
       v32 = v26;
-      *a4 = v26;
+      *error = v26;
     }
   }
 
   return v25;
 }
 
-- (id)_generateMultiUserTokenWithAction:(id)a3 iCloudAccount:(id)a4 inviteToken:(id)a5 error:(id *)a6
+- (id)_generateMultiUserTokenWithAction:(id)action iCloudAccount:(id)account inviteToken:(id)token error:(id *)error
 {
-  v10 = a4;
-  v11 = [(AMSDGenerateMultiUserTokenTask *)self _generateAppProvidedDataWithAction:a3 inviteToken:a5];
+  accountCopy = account;
+  v11 = [(AMSDGenerateMultiUserTokenTask *)self _generateAppProvidedDataWithAction:action inviteToken:token];
   v12 = [AMSAuthenticateOptions amsd_multiUserAuthenticateOptionsWithAppProvidedData:v11];
   [v12 setAuthenticationType:1];
   [v12 setDebugReason:@"Generating a multi-user token"];
-  v13 = [[AMSAuthKitUpdateTask alloc] initWithAccount:v10 options:v12];
+  v13 = [[AMSAuthKitUpdateTask alloc] initWithAccount:accountCopy options:v12];
 
   [v13 setRunMode:1];
-  v14 = [v13 performAuthKitUpdate];
-  v15 = [v14 thenWithBlock:&stru_1002B0C68];
+  performAuthKitUpdate = [v13 performAuthKitUpdate];
+  v15 = [performAuthKitUpdate thenWithBlock:&stru_1002B0C68];
 
-  v16 = [v15 resultWithError:a6];
+  v16 = [v15 resultWithError:error];
 
   return v16;
 }
 
-- (BOOL)_saveMultiUserToken:(id)a3 forHomeParticipant:(id)a4 iCloudAccount:(id)a5 error:(id *)a6
+- (BOOL)_saveMultiUserToken:(id)token forHomeParticipant:(id)participant iCloudAccount:(id)account error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 ams_altDSID];
-  [v11 setField:v13 forKey:@"AMSHomeParticipant_iCloudAltDSID"];
+  accountCopy = account;
+  participantCopy = participant;
+  tokenCopy = token;
+  ams_altDSID = [accountCopy ams_altDSID];
+  [participantCopy setField:ams_altDSID forKey:@"AMSHomeParticipant_iCloudAltDSID"];
 
-  v14 = [v10 ams_DSID];
+  ams_DSID = [accountCopy ams_DSID];
 
-  [v11 setField:v14 forKey:@"AMSHomeParticipant_iCloudDSID"];
-  v15 = [(AMSDGenerateMultiUserTokenTask *)self account];
-  v16 = [v15 ams_altDSID];
-  [v11 setField:v16 forKey:@"AMSHomeParticipant_iTunesAltDSID"];
+  [participantCopy setField:ams_DSID forKey:@"AMSHomeParticipant_iCloudDSID"];
+  account = [(AMSDGenerateMultiUserTokenTask *)self account];
+  ams_altDSID2 = [account ams_altDSID];
+  [participantCopy setField:ams_altDSID2 forKey:@"AMSHomeParticipant_iTunesAltDSID"];
 
-  v17 = [(AMSDGenerateMultiUserTokenTask *)self account];
-  v18 = [v17 ams_DSID];
-  [v11 setField:v18 forKey:@"AMSHomeParticipant_iTunesDSID"];
+  account2 = [(AMSDGenerateMultiUserTokenTask *)self account];
+  ams_DSID2 = [account2 ams_DSID];
+  [participantCopy setField:ams_DSID2 forKey:@"AMSHomeParticipant_iTunesDSID"];
 
-  v19 = [(AMSDGenerateMultiUserTokenTask *)self account];
-  v20 = [v19 username];
-  [v11 setField:v20 forKey:@"AMSHomeParticipant_iTunesUsername"];
+  account3 = [(AMSDGenerateMultiUserTokenTask *)self account];
+  username = [account3 username];
+  [participantCopy setField:username forKey:@"AMSHomeParticipant_iTunesUsername"];
 
-  [v11 setField:v12 forKey:@"AMSHomeParticipant_MultiUserToken"];
-  [v11 setField:&__kCFBooleanFalse forKey:@"AMSHomeParticipant_MultiUserTokenInvalid"];
-  v21 = [(AMSDGenerateMultiUserTokenTask *)self controller];
-  v22 = [v21 cloudContainer];
-  v23 = [v22 privateDatabase];
-  v24 = [(AMSDGenerateMultiUserTokenTask *)self _saveRecord:v11 database:v23];
+  [participantCopy setField:tokenCopy forKey:@"AMSHomeParticipant_MultiUserToken"];
+  [participantCopy setField:&__kCFBooleanFalse forKey:@"AMSHomeParticipant_MultiUserTokenInvalid"];
+  controller = [(AMSDGenerateMultiUserTokenTask *)self controller];
+  cloudContainer = [controller cloudContainer];
+  privateDatabase = [cloudContainer privateDatabase];
+  v24 = [(AMSDGenerateMultiUserTokenTask *)self _saveRecord:participantCopy database:privateDatabase];
 
-  v25 = [v24 resultWithError:a6];
-  LOBYTE(a6) = v25 != 0;
+  v25 = [v24 resultWithError:error];
+  LOBYTE(error) = v25 != 0;
 
-  return a6;
+  return error;
 }
 
-- (id)_saveRecord:(id)a3 database:(id)a4
+- (id)_saveRecord:(id)record database:(id)database
 {
-  v5 = [a4 saveRecord:a3];
+  v5 = [database saveRecord:record];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100060910;
@@ -286,8 +286,8 @@
 
 + (double)_scheduleRefreshInterval
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (*&qword_1002E3218 == 0.0)
   {
     v3 = 60.0;
@@ -299,17 +299,17 @@
   }
 
   qword_1002E3218 = *&v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)_shouldGenerateInviteToken
 {
-  v2 = [(AMSDGenerateMultiUserTokenTask *)self home];
-  v3 = [v2 isCurrentUserOwner];
+  home = [(AMSDGenerateMultiUserTokenTask *)self home];
+  isCurrentUserOwner = [home isCurrentUserOwner];
 
-  return v3 ^ 1;
+  return isCurrentUserOwner ^ 1;
 }
 
 @end

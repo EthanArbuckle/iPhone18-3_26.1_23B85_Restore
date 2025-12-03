@@ -4,8 +4,8 @@
 - (BOOL)isLocalClass;
 - (BOOL)isMemberClass;
 - (BOOL)isSynthetic;
-- (id)asSubclass:(id)a3;
-- (id)getAnnotationWithIOSClass:(id)a3;
+- (id)asSubclass:(id)subclass;
+- (id)getAnnotationWithIOSClass:(id)class;
 - (id)getAnnotations;
 - (id)getCanonicalName;
 - (id)getClasses;
@@ -13,26 +13,26 @@
 - (id)getDeclaredAnnotations;
 - (id)getDeclaredClasses;
 - (id)getDeclaredConstructors;
-- (id)getDeclaredField:(id)a3;
+- (id)getDeclaredField:(id)field;
 - (id)getDeclaredFields;
-- (id)getDeclaredMethod:(id)a3 parameterTypes:(id)a4;
+- (id)getDeclaredMethod:(id)method parameterTypes:(id)types;
 - (id)getDeclaredMethods;
 - (id)getDeclaringClass;
 - (id)getEnclosingClass;
 - (id)getEnclosingConstructor;
 - (id)getEnclosingMethod;
 - (id)getEnumConstants;
-- (id)getField:(id)a3;
+- (id)getField:(id)field;
 - (id)getFields;
 - (id)getGenericInterfaces;
 - (id)getGenericSuperclass;
 - (id)getInterfaces;
 - (id)getMetadata;
-- (id)getMethod:(id)a3 parameterTypes:(id)a4;
+- (id)getMethod:(id)method parameterTypes:(id)types;
 - (id)getMethods;
 - (id)getPackage;
-- (id)getResource:(id)a3;
-- (id)getResourceAsStream:(id)a3;
+- (id)getResource:(id)resource;
+- (id)getResourceAsStream:(id)stream;
 - (id)getTypeParameters;
 - (int)getModifiers;
 @end
@@ -41,16 +41,16 @@
 
 - (id)getGenericSuperclass
 {
-  v3 = [(IOSClass *)self getSuperclass];
-  if (!v3)
+  getSuperclass = [(IOSClass *)self getSuperclass];
+  if (!getSuperclass)
   {
-    return v3;
+    return getSuperclass;
   }
 
   v4 = [-[IOSClass getMetadata](self "getMetadata")];
   if (!v4)
   {
-    return v3;
+    return getSuperclass;
   }
 
   v5 = v4;
@@ -68,47 +68,47 @@
     return 0;
   }
 
-  v3 = [(IOSClass *)self getEnclosingClass];
-  if ([v3 isAnonymousClass])
+  getEnclosingClass = [(IOSClass *)self getEnclosingClass];
+  if ([getEnclosingClass isAnonymousClass])
   {
     do
     {
-      v3 = [v3 getEnclosingClass];
+      getEnclosingClass = [getEnclosingClass getEnclosingClass];
     }
 
-    while (([v3 isAnonymousClass] & 1) != 0);
+    while (([getEnclosingClass isAnonymousClass] & 1) != 0);
   }
 
-  return v3;
+  return getEnclosingClass;
 }
 
 - (id)getCanonicalName
 {
-  v2 = [(IOSClass *)self getName];
+  getName = [(IOSClass *)self getName];
 
-  return [v2 stringByReplacingOccurrencesOfString:@"$" withString:@"."];
+  return [getName stringByReplacingOccurrencesOfString:@"$" withString:@"."];
 }
 
 - (int)getModifiers
 {
-  v2 = [(IOSClass *)self getMetadata];
-  if (!v2)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (!getMetadata)
   {
     return 1;
   }
 
-  v3 = [v2 modifiers];
-  return JavaLangReflectModifier_classModifiers() & v3;
+  modifiers = [getMetadata modifiers];
+  return JavaLangReflectModifier_classModifiers() & modifiers;
 }
 
 - (id)getDeclaredMethods
 {
   v3 = +[NSMutableDictionary dictionary];
   [(IOSClass *)self collectMethods:v3 publicOnly:0];
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
   v5 = JavaLangReflectMethod_class_();
 
-  return [IOSObjectArray arrayWithNSArray:v4 type:v5];
+  return [IOSObjectArray arrayWithNSArray:allValues type:v5];
 }
 
 - (id)getDeclaredConstructors
@@ -122,10 +122,10 @@
 {
   v3 = +[NSMutableDictionary dictionary];
   sub_1002186D4(self, v3);
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
   v5 = JavaLangReflectMethod_class_();
 
-  return [IOSObjectArray arrayWithNSArray:v4 type:v5];
+  return [IOSObjectArray arrayWithNSArray:allValues type:v5];
 }
 
 - (id)getConstructors
@@ -135,13 +135,13 @@
   return [IOSObjectArray arrayWithLength:0 type:v2];
 }
 
-- (id)getMethod:(id)a3 parameterTypes:(id)a4
+- (id)getMethod:(id)method parameterTypes:(id)types
 {
-  v5 = self;
-  TranslatedMethodName = IOSClass_GetTranslatedMethodName(self, a3, a4);
+  selfCopy = self;
+  TranslatedMethodName = IOSClass_GetTranslatedMethodName(self, method, types);
   while (1)
   {
-    v7 = [(IOSClass *)v5 findMethodWithTranslatedName:TranslatedMethodName checkSupertypes:1];
+    v7 = [(IOSClass *)selfCopy findMethodWithTranslatedName:TranslatedMethodName checkSupertypes:1];
     if (v7)
     {
       break;
@@ -151,8 +151,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(IOSClass *)v5 getInterfacesInternal];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    getInterfacesInternal = [(IOSClass *)selfCopy getInterfacesInternal];
+    v9 = [getInterfacesInternal countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (!v9)
     {
       goto LABEL_11;
@@ -167,7 +167,7 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(getInterfacesInternal);
         }
 
         v13 = [*(*(&v16 + 1) + 8 * v12) findMethodWithTranslatedName:TranslatedMethodName checkSupertypes:1];
@@ -180,7 +180,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [getInterfacesInternal countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -190,8 +190,8 @@
     }
 
 LABEL_11:
-    v5 = [(IOSClass *)v5 getSuperclass];
-    if (!v5)
+    selfCopy = [(IOSClass *)selfCopy getSuperclass];
+    if (!selfCopy)
     {
       goto LABEL_12;
     }
@@ -201,26 +201,26 @@ LABEL_11:
   if (([v7 getModifiers] & 1) == 0)
   {
 LABEL_12:
-    objc_exception_throw([[JavaLangNoSuchMethodException alloc] initWithNSString:a3]);
+    objc_exception_throw([[JavaLangNoSuchMethodException alloc] initWithNSString:method]);
   }
 
   return v14;
 }
 
-- (id)getDeclaredMethod:(id)a3 parameterTypes:(id)a4
+- (id)getDeclaredMethod:(id)method parameterTypes:(id)types
 {
-  result = [(IOSClass *)self findMethodWithTranslatedName:IOSClass_GetTranslatedMethodName(self checkSupertypes:a3, a4), 0];
+  result = [(IOSClass *)self findMethodWithTranslatedName:IOSClass_GetTranslatedMethodName(self checkSupertypes:method, types), 0];
   if (!result)
   {
-    objc_exception_throw([[JavaLangNoSuchMethodException alloc] initWithNSString:a3]);
+    objc_exception_throw([[JavaLangNoSuchMethodException alloc] initWithNSString:method]);
   }
 
   return result;
 }
 
-- (id)asSubclass:(id)a3
+- (id)asSubclass:(id)subclass
 {
-  if (![a3 isAssignableFrom:self])
+  if (![subclass isAssignableFrom:self])
   {
     objc_exception_throw([[JavaLangClassCastException alloc] initWithNSString:[(IOSClass *)self description]]);
   }
@@ -230,14 +230,14 @@ LABEL_12:
 
 - (id)getEnclosingClass
 {
-  v2 = [(IOSClass *)self getMetadata];
-  if (!v2)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (!getMetadata)
   {
     return 0;
   }
 
-  v3 = v2;
-  if (![v2 enclosingName])
+  v3 = getMetadata;
+  if (![getMetadata enclosingName])
   {
     return 0;
   }
@@ -256,57 +256,57 @@ LABEL_12:
 
 - (BOOL)isAnnotation
 {
-  v2 = [(IOSClass *)self getMetadata];
-  if (v2)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
-    LODWORD(v2) = ([v2 modifiers] >> 13) & 1;
+    LODWORD(getMetadata) = ([getMetadata modifiers] >> 13) & 1;
   }
 
-  return v2;
+  return getMetadata;
 }
 
 - (BOOL)isMemberClass
 {
-  v3 = [(IOSClass *)self getMetadata];
-  if (v3)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
-    v3 = [v3 enclosingName];
-    if (v3)
+    getMetadata = [getMetadata enclosingName];
+    if (getMetadata)
     {
-      LOBYTE(v3) = ![(IOSClass *)self isAnonymousClass];
+      LOBYTE(getMetadata) = ![(IOSClass *)self isAnonymousClass];
     }
   }
 
-  return v3;
+  return getMetadata;
 }
 
 - (BOOL)isLocalClass
 {
-  v3 = [(IOSClass *)self getEnclosingMethod];
-  if (v3)
+  getEnclosingMethod = [(IOSClass *)self getEnclosingMethod];
+  if (getEnclosingMethod)
   {
-    LOBYTE(v3) = ![(IOSClass *)self isAnonymousClass];
+    LOBYTE(getEnclosingMethod) = ![(IOSClass *)self isAnonymousClass];
   }
 
-  return v3;
+  return getEnclosingMethod;
 }
 
 - (BOOL)isSynthetic
 {
-  v2 = [(IOSClass *)self getMetadata];
-  if (v2)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
-    LODWORD(v2) = ([v2 modifiers] >> 12) & 1;
+    LODWORD(getMetadata) = ([getMetadata modifiers] >> 12) & 1;
   }
 
-  return v2;
+  return getMetadata;
 }
 
 - (id)getInterfaces
 {
-  v2 = [(IOSClass *)self getInterfacesInternal];
+  getInterfacesInternal = [(IOSClass *)self getInterfacesInternal];
 
-  return [IOSObjectArray arrayWithArray:v2];
+  return [IOSObjectArray arrayWithArray:getInterfacesInternal];
 }
 
 - (id)getGenericInterfaces
@@ -333,11 +333,11 @@ LABEL_12:
 
     else
     {
-      v9 = [(IOSClass *)self getInterfacesInternal];
-      v10 = v9[2];
+      getInterfacesInternal = [(IOSClass *)self getInterfacesInternal];
+      v10 = getInterfacesInternal[2];
       v11 = JavaLangReflectType_class_();
 
-      return [IOSObjectArray arrayWithObjects:v9 + 6 count:v10 type:v11];
+      return [IOSObjectArray arrayWithObjects:getInterfacesInternal + 6 count:v10 type:v11];
     }
   }
 }
@@ -363,24 +363,24 @@ LABEL_12:
   }
 }
 
-- (id)getAnnotationWithIOSClass:(id)a3
+- (id)getAnnotationWithIOSClass:(id)class
 {
-  if (!a3)
+  if (!class)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [(IOSClass *)self getAnnotations];
-  v5 = v4[2];
+  getAnnotations = [(IOSClass *)self getAnnotations];
+  v5 = getAnnotations[2];
   if (v5 < 1)
   {
     return 0;
   }
 
-  for (i = v4; ; i += 2)
+  for (i = getAnnotations; ; i += 2)
   {
     v7 = *(i + 3);
-    if ([a3 isInstance:v7])
+    if ([class isInstance:v7])
     {
       break;
     }
@@ -397,12 +397,12 @@ LABEL_12:
 - (id)getAnnotations
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(IOSClass *)self getDeclaredAnnotations];
-  if (v4[2] >= 1)
+  getDeclaredAnnotations = [(IOSClass *)self getDeclaredAnnotations];
+  if (getDeclaredAnnotations[2] >= 1)
   {
-    v5 = v4;
+    v5 = getDeclaredAnnotations;
     v6 = 0;
-    v7 = v4;
+    v7 = getDeclaredAnnotations;
     do
     {
       [v3 addObject:*(v7 + 3)];
@@ -413,18 +413,18 @@ LABEL_12:
     while (v6 < v5[2]);
   }
 
-  v8 = [(IOSClass *)self getSuperclass];
+  getSuperclass = [(IOSClass *)self getSuperclass];
   v9 = JavaLangAnnotationInherited_class_();
-  if (v8)
+  if (getSuperclass)
   {
     v10 = v9;
     do
     {
-      v21 = v8;
-      v11 = [v8 getDeclaredAnnotations];
-      if (v11[2] >= 1)
+      v21 = getSuperclass;
+      getDeclaredAnnotations2 = [getSuperclass getDeclaredAnnotations];
+      if (getDeclaredAnnotations2[2] >= 1)
       {
-        v12 = v11;
+        v12 = getDeclaredAnnotations2;
         v13 = 0;
         do
         {
@@ -455,10 +455,10 @@ LABEL_12:
         while (v13 < v12[2]);
       }
 
-      v8 = [v21 getSuperclass];
+      getSuperclass = [v21 getSuperclass];
     }
 
-    while (v8);
+    while (getSuperclass);
   }
 
   v19 = [IOSObjectArray arrayWithNSArray:v3 type:JavaLangAnnotationAnnotation_class_()];
@@ -468,8 +468,8 @@ LABEL_12:
 
 - (id)getDeclaredAnnotations
 {
-  v2 = [(IOSClass *)self objcClass];
-  if (v2 && JreFindClassMethod(v2, "__annotations"))
+  objcClass = [(IOSClass *)self objcClass];
+  if (objcClass && JreFindClassMethod(objcClass, "__annotations"))
   {
 
     method_invoke();
@@ -487,8 +487,8 @@ LABEL_12:
 
 - (id)getMetadata
 {
-  v2 = [(IOSClass *)self objcClass];
-  if (!v2 || !JreFindClassMethod(v2, "__metadata"))
+  objcClass = [(IOSClass *)self objcClass];
+  if (!objcClass || !JreFindClassMethod(objcClass, "__metadata"))
   {
     return 0;
   }
@@ -501,14 +501,14 @@ LABEL_12:
 
 - (id)getPackage
 {
-  v2 = [(IOSClass *)self getMetadata];
-  if (!v2)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (!getMetadata)
   {
     return 0;
   }
 
-  v3 = v2;
-  if (![v2 packageName])
+  v3 = getMetadata;
+  if (![getMetadata packageName])
   {
     return 0;
   }
@@ -518,33 +518,33 @@ LABEL_12:
   return v4;
 }
 
-- (id)getDeclaredField:(id)a3
+- (id)getDeclaredField:(id)field
 {
-  if (!a3)
+  if (!field)
   {
     JreThrowNullPointerException();
   }
 
-  result = findDeclaredField(self, a3, 0);
+  result = findDeclaredField(self, field, 0);
   if (!result)
   {
-    objc_exception_throw([[JavaLangNoSuchFieldException alloc] initWithNSString:a3]);
+    objc_exception_throw([[JavaLangNoSuchFieldException alloc] initWithNSString:field]);
   }
 
   return result;
 }
 
-- (id)getField:(id)a3
+- (id)getField:(id)field
 {
-  if (!a3)
+  if (!field)
   {
     JreThrowNullPointerException();
   }
 
-  result = findField(self, a3, 1);
+  result = findField(self, field, 1);
   if (!result)
   {
-    objc_exception_throw([[JavaLangNoSuchFieldException alloc] initWithNSString:a3]);
+    objc_exception_throw([[JavaLangNoSuchFieldException alloc] initWithNSString:field]);
   }
 
   return result;
@@ -554,18 +554,18 @@ LABEL_12:
 {
   v3 = +[NSMutableDictionary dictionary];
   sub_10021A540(self, v3, 0);
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
 
-  return copyFieldsToObjectArray(v4);
+  return copyFieldsToObjectArray(allValues);
 }
 
 - (id)getFields
 {
   v3 = +[NSMutableDictionary dictionary];
   sub_10021A730(self, v3);
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
 
-  return copyFieldsToObjectArray(v4);
+  return copyFieldsToObjectArray(allValues);
 }
 
 - (id)getEnclosingMethod
@@ -577,8 +577,8 @@ LABEL_12:
   }
 
   v3 = v2;
-  v4 = [v2 selector];
-  if ([v4 isEqualToString:@"init"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"initWith"))
+  selector = [v2 selector];
+  if ([selector isEqualToString:@"init"] & 1) != 0 || (objc_msgSend(selector, "hasPrefix:", @"initWith"))
   {
     return 0;
   }
@@ -590,9 +590,9 @@ LABEL_12:
   }
 
   v7 = v6;
-  v8 = [v3 selector];
+  selector2 = [v3 selector];
 
-  return [(objc_class *)v7 findMethodWithTranslatedName:v8 checkSupertypes:0];
+  return [(objc_class *)v7 findMethodWithTranslatedName:selector2 checkSupertypes:0];
 }
 
 - (id)getEnclosingConstructor
@@ -604,8 +604,8 @@ LABEL_12:
   }
 
   v3 = v2;
-  v4 = [v2 selector];
-  if (([v4 isEqualToString:@"init"] & 1) == 0 && !objc_msgSend(v4, "hasPrefix:", @"initWith"))
+  selector = [v2 selector];
+  if (([selector isEqualToString:@"init"] & 1) == 0 && !objc_msgSend(selector, "hasPrefix:", @"initWith"))
   {
     return 0;
   }
@@ -617,26 +617,26 @@ LABEL_12:
   }
 
   v6 = v5;
-  v7 = [v3 selector];
+  selector2 = [v3 selector];
 
-  return [(objc_class *)v6 findConstructorWithTranslatedName:v7];
+  return [(objc_class *)v6 findConstructorWithTranslatedName:selector2];
 }
 
 - (id)getClasses
 {
   v3 = objc_alloc_init(NSMutableArray);
   sub_10021AA64(self, v3, 1, 1);
-  v4 = [(IOSClass *)self getSuperclass];
-  if (v4)
+  getSuperclass = [(IOSClass *)self getSuperclass];
+  if (getSuperclass)
   {
-    v5 = v4;
+    getSuperclass2 = getSuperclass;
     do
     {
-      sub_10021AA64(v5, v3, 1, 0);
-      v5 = [v5 getSuperclass];
+      sub_10021AA64(getSuperclass2, v3, 1, 0);
+      getSuperclass2 = [getSuperclass2 getSuperclass];
     }
 
-    while (v5);
+    while (getSuperclass2);
   }
 
   v6 = [IOSObjectArray arrayWithNSArray:v3 type:IOSClass_class_()];
@@ -663,25 +663,25 @@ LABEL_12:
   return JavaLangEnum_getSharedConstantsWithIOSClass_(self);
 }
 
-- (id)getResource:(id)a3
+- (id)getResource:(id)resource
 {
-  v5 = [(IOSClass *)self getClassLoader];
-  v6 = resolveResourceName(self, a3);
+  getClassLoader = [(IOSClass *)self getClassLoader];
+  v6 = resolveResourceName(self, resource);
 
-  return [v5 getResourceWithNSString:v6];
+  return [getClassLoader getResourceWithNSString:v6];
 }
 
-- (id)getResourceAsStream:(id)a3
+- (id)getResourceAsStream:(id)stream
 {
-  v5 = [(IOSClass *)self getClassLoader];
-  v6 = resolveResourceName(self, a3);
+  getClassLoader = [(IOSClass *)self getClassLoader];
+  v6 = resolveResourceName(self, stream);
 
-  return [v5 getResourceAsStreamWithNSString:v6];
+  return [getClassLoader getResourceAsStreamWithNSString:v6];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100555168 = [[NSDictionary alloc] initWithObjectsAndKeys:{@"NSObject", @"java.lang.Object", @"IOSClass", @"java.lang.Class", @"NSNumber", @"java.lang.Number", @"NSString", @"java.lang.String", @"NSCopying", @"java.lang.Cloneable", 0}];
     qword_100555118 = [[IOSPrimitiveClass alloc] initWithName:@"byte" type:@"B"];

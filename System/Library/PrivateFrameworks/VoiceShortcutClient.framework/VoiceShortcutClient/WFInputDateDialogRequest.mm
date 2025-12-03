@@ -1,53 +1,53 @@
 @interface WFInputDateDialogRequest
-- (WFInputDateDialogRequest)initWithCoder:(id)a3;
-- (WFInputDateDialogRequest)initWithDatePickerConfiguration:(id)a3 message:(id)a4 attribution:(id)a5 prompt:(id)a6;
+- (WFInputDateDialogRequest)initWithCoder:(id)coder;
+- (WFInputDateDialogRequest)initWithDatePickerConfiguration:(id)configuration message:(id)message attribution:(id)attribution prompt:(id)prompt;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)overrideDoneButtonTitle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)overrideDoneButtonTitle:(id)title;
 @end
 
 @implementation WFInputDateDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = WFInputDateDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v9 encodeWithCoder:coderCopy];
   v5 = [(WFInputDateDialogRequest *)self configuration:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"configuration"];
+  [coderCopy encodeObject:v5 forKey:@"configuration"];
 
-  v6 = [(WFInputDateDialogRequest *)self message];
-  [v4 encodeObject:v6 forKey:@"message"];
+  message = [(WFInputDateDialogRequest *)self message];
+  [coderCopy encodeObject:message forKey:@"message"];
 
-  v7 = [(WFInputDateDialogRequest *)self cancelButton];
-  [v4 encodeObject:v7 forKey:@"cancelButton"];
+  cancelButton = [(WFInputDateDialogRequest *)self cancelButton];
+  [coderCopy encodeObject:cancelButton forKey:@"cancelButton"];
 
-  v8 = [(WFInputDateDialogRequest *)self doneButton];
-  [v4 encodeObject:v8 forKey:@"doneButton"];
+  doneButton = [(WFInputDateDialogRequest *)self doneButton];
+  [coderCopy encodeObject:doneButton forKey:@"doneButton"];
 }
 
-- (WFInputDateDialogRequest)initWithCoder:(id)a3
+- (WFInputDateDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WFInputDateDialogRequest;
-  v5 = [(WFDialogRequest *)&v16 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
     cancelButton = v5->_cancelButton;
     v5->_cancelButton = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
     doneButton = v5->_doneButton;
     v5->_doneButton = v12;
 
@@ -57,12 +57,12 @@
   return v5;
 }
 
-- (void)overrideDoneButtonTitle:(id)a3
+- (void)overrideDoneButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = [WFDialogButton alloc];
-  v8 = [(WFInputDateDialogRequest *)self doneButton];
-  v6 = -[WFDialogButton initWithTitle:style:](v5, "initWithTitle:style:", v4, [v8 style]);
+  doneButton = [(WFInputDateDialogRequest *)self doneButton];
+  v6 = -[WFDialogButton initWithTitle:style:](v5, "initWithTitle:style:", titleCopy, [doneButton style]);
 
   doneButton = self->_doneButton;
   self->_doneButton = v6;
@@ -73,30 +73,30 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDialogRequest *)self attribution];
-  v7 = [v6 title];
-  v8 = [(WFDialogRequest *)self prompt];
-  v9 = [(WFInputDateDialogRequest *)self message];
-  v10 = [(WFInputDateDialogRequest *)self configuration];
-  v11 = [(WFInputDateDialogRequest *)self cancelButton];
-  v12 = [(WFInputDateDialogRequest *)self doneButton];
-  v13 = [v3 stringWithFormat:@"<%@: %p, title: %@, prompt: %@, message: %@, configuration: %@, cancelButton: %@, doneButton: %@>", v5, self, v7, v8, v9, v10, v11, v12];
+  attribution = [(WFDialogRequest *)self attribution];
+  title = [attribution title];
+  prompt = [(WFDialogRequest *)self prompt];
+  message = [(WFInputDateDialogRequest *)self message];
+  configuration = [(WFInputDateDialogRequest *)self configuration];
+  cancelButton = [(WFInputDateDialogRequest *)self cancelButton];
+  doneButton = [(WFInputDateDialogRequest *)self doneButton];
+  v13 = [v3 stringWithFormat:@"<%@: %p, title: %@, prompt: %@, message: %@, configuration: %@, cancelButton: %@, doneButton: %@>", v5, self, title, prompt, message, configuration, cancelButton, doneButton];
 
   return v13;
 }
 
-- (WFInputDateDialogRequest)initWithDatePickerConfiguration:(id)a3 message:(id)a4 attribution:(id)a5 prompt:(id)a6
+- (WFInputDateDialogRequest)initWithDatePickerConfiguration:(id)configuration message:(id)message attribution:(id)attribution prompt:(id)prompt
 {
-  v11 = a3;
-  v12 = a4;
+  configurationCopy = configuration;
+  messageCopy = message;
   v23.receiver = self;
   v23.super_class = WFInputDateDialogRequest;
-  v13 = [(WFDialogRequest *)&v23 initWithAttribution:a5 prompt:a6];
+  v13 = [(WFDialogRequest *)&v23 initWithAttribution:attribution prompt:prompt];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_configuration, a3);
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_configuration, configuration);
+    v15 = [messageCopy copy];
     message = v14->_message;
     v14->_message = v15;
 

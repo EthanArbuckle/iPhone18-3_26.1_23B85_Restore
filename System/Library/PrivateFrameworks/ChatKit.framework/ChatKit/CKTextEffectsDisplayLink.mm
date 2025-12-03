@@ -1,6 +1,6 @@
 @interface CKTextEffectsDisplayLink
 - (_TtC7ChatKit24CKTextEffectsDisplayLink)init;
-- (id)frameRateRequest:(CAFrameRateRange)a3 block:(id)a4;
+- (id)frameRateRequest:(CAFrameRateRange)request block:(id)block;
 - (void)_displayLinkDidFire;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)_displayLinkDidFire
 {
-  v2 = self;
+  selfCopy = self;
   sub_190A7B084();
 }
 
@@ -21,15 +21,15 @@
   return [(CKTextEffectsDisplayLink *)&v3 init];
 }
 
-- (id)frameRateRequest:(CAFrameRateRange)a3 block:(id)a4
+- (id)frameRateRequest:(CAFrameRateRange)request block:(id)block
 {
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  v8 = _Block_copy(a4);
+  preferred = request.preferred;
+  maximum = request.maximum;
+  minimum = request.minimum;
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = self;
+  selfCopy = self;
   v11 = sub_190A7AE1C(sub_19084CED8, v9, minimum, maximum, preferred);
 
   return v11;

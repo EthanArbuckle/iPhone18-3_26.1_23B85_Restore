@@ -1,11 +1,11 @@
 @interface PXContentSyndicationReviewDecorationView
 - (CGRect)clippingRect;
-- (PXContentSyndicationReviewDecorationView)initWithFrame:(CGRect)a3;
+- (PXContentSyndicationReviewDecorationView)initWithFrame:(CGRect)frame;
 - (void)_positionSubviews;
-- (void)_setEligibility:(int64_t)a3;
+- (void)_setEligibility:(int64_t)eligibility;
 - (void)_updateAssetInformation;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXContentSyndicationReviewDecorationView
@@ -23,39 +23,39 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v5 = a3;
-  if (self->_userData != v5)
+  dataCopy = data;
+  if (self->_userData != dataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userData, a3);
+    v6 = dataCopy;
+    objc_storeStrong(&self->_userData, data);
     [(PXContentSyndicationReviewDecorationView *)self _updateAssetInformation];
-    v5 = v6;
+    dataCopy = v6;
   }
 }
 
 - (void)_updateAssetInformation
 {
-  v3 = [(PXContentSyndicationReviewDecorationView *)self userData];
-  v4 = PXContentSyndicationReviewDecorationEligibilityForAssetReference(v3);
+  userData = [(PXContentSyndicationReviewDecorationView *)self userData];
+  v4 = PXContentSyndicationReviewDecorationEligibilityForAssetReference(userData);
 
   [(PXContentSyndicationReviewDecorationView *)self _setEligibility:v4];
 }
 
-- (void)_setEligibility:(int64_t)a3
+- (void)_setEligibility:(int64_t)eligibility
 {
-  if (self->_eligibility != a3)
+  if (self->_eligibility != eligibility)
   {
-    self->_eligibility = a3;
-    v5 = PXContentSyndicationReviewDecorationImageForSyndicationEligibility(a3);
+    self->_eligibility = eligibility;
+    v5 = PXContentSyndicationReviewDecorationImageForSyndicationEligibility(eligibility);
     [(UIImageView *)self->_imageView setImage:v5];
   }
 }
 
 - (void)_positionSubviews
 {
-  v3 = [(PXContentSyndicationReviewDecorationView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(PXContentSyndicationReviewDecorationView *)self effectiveUserInterfaceLayoutDirection];
   [(PXContentSyndicationReviewDecorationView *)self bounds];
   if (v4 >= v5)
   {
@@ -70,7 +70,7 @@
   v7 = v6 * 0.2;
   v8 = v6 * 0.05;
   v9 = v4 - v6 * 0.05 - v6 * 0.2;
-  if (v3)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v9 = v8;
   }
@@ -90,11 +90,11 @@
   [(PXContentSyndicationReviewDecorationView *)&v3 layoutSubviews];
 }
 
-- (PXContentSyndicationReviewDecorationView)initWithFrame:(CGRect)a3
+- (PXContentSyndicationReviewDecorationView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PXContentSyndicationReviewDecorationView;
-  v3 = [(PXContentSyndicationReviewDecorationView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXContentSyndicationReviewDecorationView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);

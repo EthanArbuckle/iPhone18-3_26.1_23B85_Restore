@@ -1,10 +1,10 @@
 @interface HUQuickControlWheelPickerViewAccessibility
-- (id)pickerView:(id)a3 accessibilityAttributedLabelForComponent:(int64_t)a4;
+- (id)pickerView:(id)view accessibilityAttributedLabelForComponent:(int64_t)component;
 @end
 
 @implementation HUQuickControlWheelPickerViewAccessibility
 
-- (id)pickerView:(id)a3 accessibilityAttributedLabelForComponent:(int64_t)a4
+- (id)pickerView:(id)view accessibilityAttributedLabelForComponent:(int64_t)component
 {
   v4 = MEMORY[0x29EDB9F30];
   v5 = accessibilityHomeUILocalizedString(@"picker.current.mode");

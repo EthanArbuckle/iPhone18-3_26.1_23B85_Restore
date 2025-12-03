@@ -18,25 +18,25 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 tv_associatedViewElementWithDefaultClass:v2];
+  return [self tv_associatedViewElementWithDefaultClass:v2];
 }
 
 - (uint64_t)tv_isResource
 {
-  v1 = [a1 url];
-  v2 = [v1 tv_isResourceURL];
+  v1 = [self url];
+  tv_isResourceURL = [v1 tv_isResourceURL];
 
-  return v2;
+  return tv_isResourceURL;
 }
 
 - (id)tv_resourceImage
 {
-  v1 = [a1 url];
+  v1 = [self url];
   if ([v1 tv_isResourceURL])
   {
     v2 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v3 = [v1 tv_resourceName];
-    v4 = [v2 imageForResource:v3];
+    tv_resourceName = [v1 tv_resourceName];
+    v4 = [v2 imageForResource:tv_resourceName];
   }
 
   else
@@ -49,20 +49,20 @@
 
 - (uint64_t)tv_isSymbol
 {
-  v1 = [a1 url];
-  v2 = [v1 tv_isSymbolURL];
+  v1 = [self url];
+  tv_isSymbolURL = [v1 tv_isSymbolURL];
 
-  return v2;
+  return tv_isSymbolURL;
 }
 
 - (id)tv_symbolImage
 {
-  v1 = [a1 url];
+  v1 = [self url];
   if ([v1 tv_isSymbolURL])
   {
     v2 = MEMORY[0x277D755B8];
-    v3 = [v1 tv_symbolName];
-    v4 = [v2 systemImageNamed:v3];
+    tv_symbolName = [v1 tv_symbolName];
+    v4 = [v2 systemImageNamed:tv_symbolName];
   }
 
   else
@@ -75,14 +75,14 @@
 
 - (id)tv_imageProxyWithLayout:()TVMLKitAdditions
 {
-  v4 = [TVImageLayout layoutWithLayout:a3 element:a1];
-  v5 = [a1 tv_urlWithLayout:v4];
+  v4 = [TVImageLayout layoutWithLayout:a3 element:self];
+  v5 = [self tv_urlWithLayout:v4];
   if (![v5 tv_isResourceURL] || (+[TVInterfaceFactory sharedInterfaceFactory](TVInterfaceFactory, "sharedInterfaceFactory"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "decoratorSize"), objc_msgSend(v6, "_imageProxyForResourceURL:scaleToSize:", v5), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
     if (![v5 tv_isSymbolURL] || (+[TVInterfaceFactory sharedInterfaceFactory](TVInterfaceFactory, "sharedInterfaceFactory"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "imageSymbolConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "decoratorSize"), objc_msgSend(v8, "_imageProxyForSymbolURL:imageSymbolConfiguration:scaleToSize:", v5, v9), v7 = objc_claimAutoreleasedReturnValue(), v9, v8, !v7))
     {
       v10 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v7 = [v10 _imageProxyFromElement:a1 withLayout:v4];
+      v7 = [v10 _imageProxyFromElement:self withLayout:v4];
 
       if (!v7)
       {
@@ -96,19 +96,19 @@
 
 - (double)tv_imageScaleToSize
 {
-  v2 = [TVImageLayout layoutWithLayout:0 element:a1];
+  v2 = [TVImageLayout layoutWithLayout:0 element:self];
   [v2 decoratorSize];
   v4 = v3;
   v6 = v5;
-  v7 = [a1 tv_urlWithLayout:v2];
+  v7 = [self tv_urlWithLayout:v2];
   v8 = v7;
   if (v4 == *MEMORY[0x277CBF3A8] && v6 == *(MEMORY[0x277CBF3A8] + 8))
   {
     if ([v7 tv_isResourceURL])
     {
-      v10 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v11 = [v8 tv_resourceName];
-      v12 = [v10 imageForResource:v11];
+      tv_symbolName = +[TVInterfaceFactory sharedInterfaceFactory];
+      tv_resourceName = [v8 tv_resourceName];
+      v12 = [tv_symbolName imageForResource:tv_resourceName];
     }
 
     else
@@ -119,9 +119,9 @@
       }
 
       v13 = MEMORY[0x277D755B8];
-      v10 = [v8 tv_symbolName];
-      v11 = [v2 imageSymbolConfiguration];
-      v12 = [v13 systemImageNamed:v10 withConfiguration:v11];
+      tv_symbolName = [v8 tv_symbolName];
+      tv_resourceName = [v2 imageSymbolConfiguration];
+      v12 = [v13 systemImageNamed:tv_symbolName withConfiguration:tv_resourceName];
     }
 
     v14 = v12;
@@ -140,23 +140,23 @@ LABEL_12:
 
 - (uint64_t)tv_imageType
 {
-  v1 = [a1 elementName];
-  if ([v1 isEqualToString:@"img"])
+  elementName = [self elementName];
+  if ([elementName isEqualToString:@"img"])
   {
     v2 = 0;
   }
 
-  else if ([v1 isEqualToString:@"fullscreenImg"])
+  else if ([elementName isEqualToString:@"fullscreenImg"])
   {
     v2 = 1;
   }
 
-  else if ([v1 isEqualToString:@"decorationImage"])
+  else if ([elementName isEqualToString:@"decorationImage"])
   {
     v2 = 2;
   }
 
-  else if ([v1 isEqualToString:@"heroImg"])
+  else if ([elementName isEqualToString:@"heroImg"])
   {
     v2 = 3;
   }
@@ -172,18 +172,18 @@ LABEL_12:
 - (id)tv_urlWithSize:()TVMLKitAdditions focusSizeIncrease:centerGrowth:cropCode:
 {
   v12 = a7;
-  v13 = [a1 attributes];
-  v14 = [v13 objectForKeyedSubscript:@"isTemplated"];
+  attributes = [self attributes];
+  v14 = [attributes objectForKeyedSubscript:@"isTemplated"];
 
   if ([v14 length] && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v14, "BOOLValue"))
   {
-    v15 = [a1 attributes];
-    v16 = [v15 objectForKeyedSubscript:@"src"];
+    attributes2 = [self attributes];
+    v16 = [attributes2 objectForKeyedSubscript:@"src"];
 
     if ([v16 length])
     {
-      v17 = [a1 attributes];
-      v18 = [v17 objectForKeyedSubscript:@"format"];
+      attributes3 = [self attributes];
+      v18 = [attributes3 objectForKeyedSubscript:@"format"];
 
       v19 = [[TVURLDescription alloc] initUrlWithProperties:v16 imageSize:v12 focusSizeIncrease:v18 cropCode:a2 urlFormat:a3, a4];
       [v19 setCenterGrowth:a6];
@@ -198,7 +198,7 @@ LABEL_12:
 
   else
   {
-    v20 = [a1 url];
+    v20 = [self url];
   }
 
   return v20;
@@ -206,10 +206,10 @@ LABEL_12:
 
 - (id)tv_urlWithSize:()TVMLKitAdditions focusSizeIncrease:
 {
-  v8 = [a1 attributes];
-  v9 = [v8 objectForKeyedSubscript:@"cropCode"];
+  attributes = [self attributes];
+  v9 = [attributes objectForKeyedSubscript:@"cropCode"];
 
-  v10 = [a1 tv_urlWithSize:0 focusSizeIncrease:v9 centerGrowth:a2 cropCode:{a3, a4}];
+  v10 = [self tv_urlWithSize:0 focusSizeIncrease:v9 centerGrowth:a2 cropCode:{a3, a4}];
 
   return v10;
 }
@@ -227,26 +227,26 @@ LABEL_12:
     }
   }
 
-  v8 = [a1 attributes];
-  v9 = [v8 objectForKeyedSubscript:@"cropCode"];
+  attributes = [self attributes];
+  v9 = [attributes objectForKeyedSubscript:@"cropCode"];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    cropCode = v9;
   }
 
   else
   {
-    v11 = [v4 cropCode];
+    cropCode = [v4 cropCode];
   }
 
-  v12 = v11;
+  v12 = cropCode;
 
   [v4 decoratorSize];
   v14 = v13;
   v16 = v15;
   [v4 focusSizeIncrease];
-  v18 = [a1 tv_urlWithSize:objc_msgSend(v4 focusSizeIncrease:"centerGrowth") centerGrowth:v12 cropCode:{v14, v16, v17}];
+  v18 = [self tv_urlWithSize:objc_msgSend(v4 focusSizeIncrease:"centerGrowth") centerGrowth:v12 cropCode:{v14, v16, v17}];
 
   return v18;
 }

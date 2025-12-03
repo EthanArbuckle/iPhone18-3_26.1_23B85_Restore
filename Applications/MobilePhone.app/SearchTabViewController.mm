@@ -1,33 +1,33 @@
 @interface SearchTabViewController
-+ (id)searchControllersForDifferentSectionsUsingRecentsController:(id)a3 with:(id)a4 and:(id)a5 in:(id)a6 hostingNavigationController:(id)a7;
-- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3 isEditing:(BOOL)a4;
-- (_TtC11MobilePhone23SearchTabViewController)initWithCoder:(id)a3;
-- (_TtC11MobilePhone23SearchTabViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC11MobilePhone23SearchTabViewController)initWithSearchController:(id)a3;
-- (void)didPresentSearchController:(id)a3;
-- (void)handleShowDetailsURLForUniqueID:(id)a3;
++ (id)searchControllersForDifferentSectionsUsingRecentsController:(id)controller with:(id)with and:(id)and in:(id)in hostingNavigationController:(id)navigationController;
+- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category isEditing:(BOOL)editing;
+- (_TtC11MobilePhone23SearchTabViewController)initWithCoder:(id)coder;
+- (_TtC11MobilePhone23SearchTabViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC11MobilePhone23SearchTabViewController)initWithSearchController:(id)controller;
+- (void)didPresentSearchController:(id)controller;
+- (void)handleShowDetailsURLForUniqueID:(id)d;
 - (void)searchControllerBeginDragging;
-- (void)startSearchingForText:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)startSearchingForText:(id)text;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SearchTabViewController
 
-- (_TtC11MobilePhone23SearchTabViewController)initWithSearchController:(id)a3
+- (_TtC11MobilePhone23SearchTabViewController)initWithSearchController:(id)controller
 {
   v4 = &self->MPSearchViewController_opaque[OBJC_IVAR____TtC11MobilePhone23SearchTabViewController_pendingSearchText];
   *v4 = 0;
   *(v4 + 1) = 0;
   self->MPSearchViewController_opaque[OBJC_IVAR____TtC11MobilePhone23SearchTabViewController_pendingSearchControllerActivation] = 0;
-  *&self->MPSearchViewController_opaque[OBJC_IVAR____TtC11MobilePhone23SearchTabViewController_searchController] = a3;
+  *&self->MPSearchViewController_opaque[OBJC_IVAR____TtC11MobilePhone23SearchTabViewController_searchController] = controller;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SearchTabViewController();
-  v5 = a3;
+  controllerCopy = controller;
   return [(SearchTabViewController *)&v7 initWithNibName:0 bundle:0];
 }
 
-- (_TtC11MobilePhone23SearchTabViewController)initWithCoder:(id)a3
+- (_TtC11MobilePhone23SearchTabViewController)initWithCoder:(id)coder
 {
   v3 = &self->MPSearchViewController_opaque[OBJC_IVAR____TtC11MobilePhone23SearchTabViewController_pendingSearchText];
   *v3 = 0;
@@ -38,15 +38,15 @@
   return result;
 }
 
-+ (id)searchControllersForDifferentSectionsUsingRecentsController:(id)a3 with:(id)a4 and:(id)a5 in:(id)a6 hostingNavigationController:(id)a7
++ (id)searchControllersForDifferentSectionsUsingRecentsController:(id)controller with:(id)with and:(id)and in:(id)in hostingNavigationController:(id)navigationController
 {
   swift_getObjectType();
-  v12 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = specialized static SearchTabViewController.searchControllersForDifferentSectionsUsingRecentsController(_:with:and:in:hostingNavigationController:)(v12, a4, v14, v15);
+  andCopy = and;
+  inCopy = in;
+  navigationControllerCopy = navigationController;
+  v16 = specialized static SearchTabViewController.searchControllersForDifferentSectionsUsingRecentsController(_:with:and:in:hostingNavigationController:)(controllerCopy, with, inCopy, navigationControllerCopy);
 
   swift_unknownObjectRelease();
   if (v16)
@@ -63,13 +63,13 @@
   return v17.super.isa;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  SearchTabViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  SearchTabViewController.viewDidAppear(_:)(appear);
 }
 
-- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3 isEditing:(BOOL)a4
+- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category isEditing:(BOOL)editing
 {
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
@@ -84,36 +84,36 @@
 
 - (void)searchControllerBeginDragging
 {
-  v5 = self;
-  v2 = [(SearchTabViewController *)v5 navigationItem];
-  v3 = [v2 searchController];
+  selfCopy = self;
+  navigationItem = [(SearchTabViewController *)selfCopy navigationItem];
+  searchController = [navigationItem searchController];
 
-  if (v3)
+  if (searchController)
   {
-    v4 = [v3 searchBar];
+    searchBar = [searchController searchBar];
 
-    [v4 resignFirstResponder];
+    [searchBar resignFirstResponder];
   }
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v3 = a3;
-  [v3 setShowsSearchResultsController:1];
+  controllerCopy = controller;
+  [controllerCopy setShowsSearchResultsController:1];
   type metadata accessor for TPTipsHelper();
   dispatch thunk of static TPTipsHelper.donateEventSearchedCallHistory()();
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  SearchTabViewController.didPresentSearchController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  SearchTabViewController.didPresentSearchController(_:)(controllerCopy);
 }
 
-- (void)startSearchingForText:(id)a3
+- (void)startSearchingForText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -125,23 +125,23 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   SearchTabViewController.startSearching(for:)(v8);
 }
 
-- (void)handleShowDetailsURLForUniqueID:(id)a3
+- (void)handleShowDetailsURLForUniqueID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   SearchTabViewController.handleShowDetailsURL(for:)(v8);
 }
 
-- (_TtC11MobilePhone23SearchTabViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11MobilePhone23SearchTabViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

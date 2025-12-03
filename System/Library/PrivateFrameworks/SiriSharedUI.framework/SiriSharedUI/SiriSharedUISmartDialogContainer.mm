@@ -1,31 +1,31 @@
 @interface SiriSharedUISmartDialogContainer
 - (BOOL)allowDrillingInAndOut;
-- (BOOL)containsSmartDialogSnippetWithViewId:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)containsSmartDialogSnippetWithViewId:(id)id;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIViewController)popoverViewController;
 - (_TtC12SiriSharedUI32SiriSharedUISmartDialogContainer)init;
-- (_TtC12SiriSharedUI32SiriSharedUISmartDialogContainer)initWithDelegate:(id)a3;
+- (_TtC12SiriSharedUI32SiriSharedUISmartDialogContainer)initWithDelegate:(id)delegate;
 - (id)view;
 - (void)reloadView;
-- (void)setAllowDrillingInAndOut:(BOOL)a3;
-- (void)setInteractionDelegate:(id)a3;
-- (void)setPopoverViewController:(id)a3;
-- (void)setSmartDialogWidth:(double)a3;
+- (void)setAllowDrillingInAndOut:(BOOL)out;
+- (void)setInteractionDelegate:(id)delegate;
+- (void)setPopoverViewController:(id)controller;
+- (void)setSmartDialogWidth:(double)width;
 - (void)triggerAnimation;
-- (void)triggerSmartDialogAnimationWithDelay:(double)a3;
-- (void)updateBodyWithText:(id)a3;
-- (void)updateHeaderWithText:(id)a3 color:(id)a4;
-- (void)updateSmartDialogSnippetWithData:(id)a3;
+- (void)triggerSmartDialogAnimationWithDelay:(double)delay;
+- (void)updateBodyWithText:(id)text;
+- (void)updateHeaderWithText:(id)text color:(id)color;
+- (void)updateSmartDialogSnippetWithData:(id)data;
 - (void)updateSnippetSizes;
-- (void)updateWithActiveTranscriptItems:(id)a3;
-- (void)updateWithAttribution:(id)a3;
-- (void)updateWithBackgroundView:(id)a3;
-- (void)updateWithCappedFrame:(CGRect)a3;
-- (void)updateWithCornerRadius:(double)a3;
-- (void)updateWithMaxSnippetWidth:(double)a3;
-- (void)updateWithSmartDialogCard:(id)a3;
-- (void)updateWithSmartDialogPluginView:(id)a3;
-- (void)updateWithSnippetFrameInGlobal:(id)a3;
+- (void)updateWithActiveTranscriptItems:(id)items;
+- (void)updateWithAttribution:(id)attribution;
+- (void)updateWithBackgroundView:(id)view;
+- (void)updateWithCappedFrame:(CGRect)frame;
+- (void)updateWithCornerRadius:(double)radius;
+- (void)updateWithMaxSnippetWidth:(double)width;
+- (void)updateWithSmartDialogCard:(id)card;
+- (void)updateWithSmartDialogPluginView:(id)view;
+- (void)updateWithSnippetFrameInGlobal:(id)global;
 @end
 
 @implementation SiriSharedUISmartDialogContainer
@@ -38,11 +38,11 @@
   return Strong;
 }
 
-- (void)setPopoverViewController:(id)a3
+- (void)setPopoverViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_21E46480C(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21E46480C(controller);
 }
 
 - (BOOL)allowDrillingInAndOut
@@ -52,13 +52,13 @@
   return *(self + v3);
 }
 
-- (void)setAllowDrillingInAndOut:(BOOL)a3
+- (void)setAllowDrillingInAndOut:(BOOL)out
 {
-  v4 = self;
-  sub_21E464AE4(a3);
+  selfCopy = self;
+  sub_21E464AE4(out);
 }
 
-- (_TtC12SiriSharedUI32SiriSharedUISmartDialogContainer)initWithDelegate:(id)a3
+- (_TtC12SiriSharedUI32SiriSharedUISmartDialogContainer)initWithDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   v3 = sub_21E4693E4();
@@ -69,7 +69,7 @@
 - (void)reloadView
 {
   v2 = qword_280C14550;
-  v5 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -89,7 +89,7 @@
 
 - (void)triggerAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E465130();
 }
 
@@ -100,16 +100,16 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_0Tm(v3, v4);
   v6 = *(v5 + 16);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = sub_21E464C84();
   v7 = 0.0;
   v8 = 0.0;
@@ -119,7 +119,7 @@
     v10 = *(self + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_hostingController + 32);
     __swift_project_boxed_opaque_existential_0Tm((self + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_hostingController), v9);
     v11 = *(v10 + 8);
-    v12 = self;
+    selfCopy = self;
     v13 = v11(v9, v10, width, height);
     v15 = v14;
 
@@ -132,56 +132,56 @@
   return result;
 }
 
-- (void)updateHeaderWithText:(id)a3 color:(id)a4
+- (void)updateHeaderWithText:(id)text color:(id)color
 {
   v6 = sub_21E4DCF78();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  sub_21E46556C(v6, v8, v9);
+  colorCopy = color;
+  selfCopy = self;
+  sub_21E46556C(v6, v8, colorCopy);
 }
 
-- (void)updateBodyWithText:(id)a3
+- (void)updateBodyWithText:(id)text
 {
   v4 = sub_21E4DCF78();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_21E4658BC(v4, v6);
 }
 
-- (void)updateWithSmartDialogCard:(id)a3
+- (void)updateWithSmartDialogCard:(id)card
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E465BB8(v4);
+  cardCopy = card;
+  selfCopy = self;
+  sub_21E465BB8(cardCopy);
 }
 
-- (void)updateWithActiveTranscriptItems:(id)a3
+- (void)updateWithActiveTranscriptItems:(id)items
 {
   sub_21E43F008(0, &qword_280C14128);
   v4 = sub_21E4DD088();
-  v5 = self;
+  selfCopy = self;
   sub_21E465EC8(v4);
 }
 
 - (void)updateSnippetSizes
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E466250();
 }
 
-- (void)updateWithSnippetFrameInGlobal:(id)a3
+- (void)updateWithSnippetFrameInGlobal:(id)global
 {
-  v5 = a3;
-  v6 = self;
-  sub_21E4667A8(a3);
+  globalCopy = global;
+  selfCopy = self;
+  sub_21E4667A8(global);
 }
 
-- (void)updateWithBackgroundView:(id)a3
+- (void)updateWithBackgroundView:(id)view
 {
   v4 = qword_280C14550;
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -191,25 +191,25 @@
   __swift_project_value_buffer(v7, qword_280C14558);
   v8 = sub_21E4DD1F8();
   sub_21E45D81C(v8, 0, 0xD000000000000017, 0x800000021E4EDA90, 0xD000000000000021, 0x800000021E4EDAB0);
-  v9 = *(v6 + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
+  v9 = *(selfCopy + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
   v10 = *(v9 + 120);
-  *(v9 + 120) = v5;
+  *(v9 + 120) = viewCopy;
 }
 
-- (void)updateWithCornerRadius:(double)a3
+- (void)updateWithCornerRadius:(double)radius
 {
   v3 = *(self + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
-  if (*(v3 + 160) != a3)
+  if (*(v3 + 160) != radius)
   {
-    *(v3 + 160) = a3;
+    *(v3 + 160) = radius;
   }
 }
 
-- (void)updateWithSmartDialogPluginView:(id)a3
+- (void)updateWithSmartDialogPluginView:(id)view
 {
   v4 = qword_280C14550;
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -219,16 +219,16 @@
   __swift_project_value_buffer(v7, qword_280C14558);
   v8 = sub_21E4DD1F8();
   sub_21E45D81C(v8, 0, 0xD00000000000001ELL, 0x800000021E4EDAE0, 0xD000000000000028, 0x800000021E4EDB00);
-  v9 = *(v6 + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
+  v9 = *(selfCopy + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
   v10 = *(v9 + 88);
-  *(v9 + 88) = v5;
+  *(v9 + 88) = viewCopy;
 }
 
-- (void)updateWithAttribution:(id)a3
+- (void)updateWithAttribution:(id)attribution
 {
   v4 = qword_280C14550;
-  v5 = a3;
-  v6 = self;
+  attributionCopy = attribution;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -238,19 +238,19 @@
   __swift_project_value_buffer(v7, qword_280C14558);
   v8 = sub_21E4DD1F8();
   sub_21E45D81C(v8, 0, 0xD000000000000014, 0x800000021E4EDB30, 0xD00000000000001ELL, 0x800000021E4EDB50);
-  v9 = *(v6 + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
+  v9 = *(selfCopy + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
   v10 = *(v9 + 96);
-  *(v9 + 96) = v5;
+  *(v9 + 96) = attributionCopy;
 }
 
-- (void)updateWithCappedFrame:(CGRect)a3
+- (void)updateWithCappedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = qword_280C14550;
-  v11 = self;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
@@ -260,7 +260,7 @@
   __swift_project_value_buffer(v8, qword_280C14558);
   v9 = sub_21E4DD1F8();
   sub_21E45D81C(v9, 0, 0xD000000000000014, 0x800000021E4EDB70, 0xD000000000000018, 0x800000021E4EDB90);
-  v10 = *(v11 + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
+  v10 = *(selfCopy + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData);
   *(v10 + 248) = x;
   *(v10 + 256) = y;
   *(v10 + 264) = width;
@@ -268,10 +268,10 @@
   *(v10 + 280) = 0;
 }
 
-- (void)updateWithMaxSnippetWidth:(double)a3
+- (void)updateWithMaxSnippetWidth:(double)width
 {
   v4 = qword_280C14550;
-  v7 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -281,10 +281,10 @@
   __swift_project_value_buffer(v5, qword_280C14558);
   v6 = sub_21E4DD1F8();
   sub_21E45D81C(v6, 0, 0xD000000000000018, 0x800000021E4EDBB0, 0xD000000000000018, 0x800000021E4EDB90);
-  *(*(v7 + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData) + 288) = a3;
+  *(*(selfCopy + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogData) + 288) = width;
 }
 
-- (void)setInteractionDelegate:(id)a3
+- (void)setInteractionDelegate:(id)delegate
 {
   if (*(self + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUISmartDialogContainer_smartDialogInteractionManager))
   {
@@ -292,32 +292,32 @@
   }
 }
 
-- (void)setSmartDialogWidth:(double)a3
+- (void)setSmartDialogWidth:(double)width
 {
-  v4 = self;
-  sub_21E467ADC(a3);
+  selfCopy = self;
+  sub_21E467ADC(width);
 }
 
-- (void)triggerSmartDialogAnimationWithDelay:(double)a3
+- (void)triggerSmartDialogAnimationWithDelay:(double)delay
 {
-  v4 = self;
-  sub_21E467DB0(a3);
+  selfCopy = self;
+  sub_21E467DB0(delay);
 }
 
-- (BOOL)containsSmartDialogSnippetWithViewId:(id)a3
+- (BOOL)containsSmartDialogSnippetWithViewId:(id)id
 {
   v4 = sub_21E4DCF78();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_21E4683FC(v4, v6);
 
   return v4 & 1;
 }
 
-- (void)updateSmartDialogSnippetWithData:(id)a3
+- (void)updateSmartDialogSnippetWithData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_21E4DB5B8();
   v7 = v6;
 

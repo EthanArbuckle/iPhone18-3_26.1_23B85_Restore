@@ -1,14 +1,14 @@
 @interface REMutableFeatureSet
 - (REMutableFeatureSet)init;
-- (REMutableFeatureSet)initWithCapacity:(unint64_t)a3;
-- (REMutableFeatureSet)initWithFeature:(id)a3;
-- (REMutableFeatureSet)initWithFeatures:(id)a3;
-- (void)addFeature:(id)a3;
-- (void)intersetFeatureSet:(id)a3;
-- (void)minusFeatureSet:(id)a3;
+- (REMutableFeatureSet)initWithCapacity:(unint64_t)capacity;
+- (REMutableFeatureSet)initWithFeature:(id)feature;
+- (REMutableFeatureSet)initWithFeatures:(id)features;
+- (void)addFeature:(id)feature;
+- (void)intersetFeatureSet:(id)set;
+- (void)minusFeatureSet:(id)set;
 - (void)removeAllFeatures;
-- (void)removeFeature:(id)a3;
-- (void)unionFeatureSet:(id)a3;
+- (void)removeFeature:(id)feature;
+- (void)unionFeatureSet:(id)set;
 @end
 
 @implementation REMutableFeatureSet
@@ -34,40 +34,40 @@
   return p_super;
 }
 
-- (REMutableFeatureSet)initWithFeatures:(id)a3
+- (REMutableFeatureSet)initWithFeatures:(id)features
 {
-  v4 = a3;
-  v5 = [[_REMutableFeatureSet alloc] initWithFeatures:v4];
+  featuresCopy = features;
+  v5 = [[_REMutableFeatureSet alloc] initWithFeatures:featuresCopy];
 
   return &v5->super;
 }
 
-- (REMutableFeatureSet)initWithFeature:(id)a3
+- (REMutableFeatureSet)initWithFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [[_REMutableFeatureSet alloc] initWithFeature:v4];
+  featureCopy = feature;
+  v5 = [[_REMutableFeatureSet alloc] initWithFeature:featureCopy];
 
   return &v5->super;
 }
 
-- (REMutableFeatureSet)initWithCapacity:(unint64_t)a3
+- (REMutableFeatureSet)initWithCapacity:(unint64_t)capacity
 {
-  v4 = [[_REMutableFeatureSet alloc] initWithCapacity:a3];
+  v4 = [[_REMutableFeatureSet alloc] initWithCapacity:capacity];
 
   return &v4->super;
 }
 
-- (void)intersetFeatureSet:(id)a3
+- (void)intersetFeatureSet:(id)set
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[REFeatureSet count](self, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = self;
-  v7 = [(REFeatureSet *)v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  selfCopy = self;
+  v7 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -78,13 +78,13 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         [v5 addObject:*(*(&v22 + 1) + 8 * i)];
       }
 
-      v8 = [(REFeatureSet *)v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v8 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v8);
@@ -110,9 +110,9 @@
         }
 
         v16 = *(*(&v18 + 1) + 8 * j);
-        if (([v4 containsFeature:{v16, v18}] & 1) == 0)
+        if (([setCopy containsFeature:{v16, v18}] & 1) == 0)
         {
-          [(REMutableFeatureSet *)v6 removeFeature:v16];
+          [(REMutableFeatureSet *)selfCopy removeFeature:v16];
         }
       }
 
@@ -125,15 +125,15 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)minusFeatureSet:(id)a3
+- (void)minusFeatureSet:(id)set
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [setCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -145,14 +145,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(setCopy);
         }
 
         [(REMutableFeatureSet *)self removeFeature:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [setCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -161,15 +161,15 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unionFeatureSet:(id)a3
+- (void)unionFeatureSet:(id)set
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [setCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -181,14 +181,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(setCopy);
         }
 
         [(REMutableFeatureSet *)self addFeature:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [setCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -205,8 +205,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = self;
-  v5 = [(REFeatureSet *)v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  selfCopy = self;
+  v5 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -218,14 +218,14 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         [v3 addObject:*(*(&v19 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [(REFeatureSet *)v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [(REFeatureSet *)selfCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v6);
@@ -251,7 +251,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [(REMutableFeatureSet *)v4 removeFeature:*(*(&v15 + 1) + 8 * v13++), v15];
+        [(REMutableFeatureSet *)selfCopy removeFeature:*(*(&v15 + 1) + 8 * v13++), v15];
       }
 
       while (v11 != v13);
@@ -264,7 +264,7 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addFeature:(id)a3
+- (void)addFeature:(id)feature
 {
   OUTLINED_FUNCTION_1_4();
   objc_opt_class();
@@ -273,7 +273,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)removeFeature:(id)a3
+- (void)removeFeature:(id)feature
 {
   OUTLINED_FUNCTION_1_4();
   objc_opt_class();

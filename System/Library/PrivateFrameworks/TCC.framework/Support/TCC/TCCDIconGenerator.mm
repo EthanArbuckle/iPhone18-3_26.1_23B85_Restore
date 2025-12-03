@@ -1,23 +1,23 @@
 @interface TCCDIconGenerator
-+ (BOOL)createDirectoryIfNeeded:(id)a3;
++ (BOOL)createDirectoryIfNeeded:(id)needed;
 + (BOOL)shouldOverrideCachedIcons;
-+ (CGImage)_createCGImageIconWithBadge:(id)a3 forService:(id)a4 withDescriptor:(id)a5;
-+ (CGImage)_createCGImageRefByOverlay:(CGImage *)a3 ontoImage:(CGImage *)a4;
-+ (id)_iconForService:(id)a3;
-+ (id)_writeCGImage:(CGImage *)a3 toTempURL:(id)a4;
-+ (id)_writeIcon:(id)a3 withDescriptor:(id)a4 toTempURL:(id)a5;
-+ (id)checkAndGetAppropriateBundleIdentifier:(id)a3;
-+ (id)createIconForTCCService:(id)a3 withTempDirectory:(id)a4;
++ (CGImage)_createCGImageIconWithBadge:(id)badge forService:(id)service withDescriptor:(id)descriptor;
++ (CGImage)_createCGImageRefByOverlay:(CGImage *)overlay ontoImage:(CGImage *)image;
++ (id)_iconForService:(id)service;
++ (id)_writeCGImage:(CGImage *)image toTempURL:(id)l;
++ (id)_writeIcon:(id)icon withDescriptor:(id)descriptor toTempURL:(id)l;
++ (id)checkAndGetAppropriateBundleIdentifier:(id)identifier;
++ (id)createIconForTCCService:(id)service withTempDirectory:(id)directory;
 @end
 
 @implementation TCCDIconGenerator
 
-+ (BOOL)createDirectoryIfNeeded:(id)a3
++ (BOOL)createDirectoryIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = +[NSFileManager defaultManager];
   v5 = 1;
-  v6 = [NSURL fileURLWithPath:v3 isDirectory:1];
+  v6 = [NSURL fileURLWithPath:neededCopy isDirectory:1];
   v12 = 0;
   v7 = [v4 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v12];
   v8 = v12;
@@ -29,7 +29,7 @@
       v10 = tcc_access_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        sub_100037884(v3, v10);
+        sub_100037884(neededCopy, v10);
       }
     }
 
@@ -38,7 +38,7 @@
       v10 = tcc_access_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        sub_1000378FC(v3, v9, v10);
+        sub_1000378FC(neededCopy, v9, v10);
       }
 
       v5 = 0;
@@ -56,11 +56,11 @@
   return v3;
 }
 
-+ (id)createIconForTCCService:(id)a3 withTempDirectory:(id)a4
++ (id)createIconForTCCService:(id)service withTempDirectory:(id)directory
 {
-  v5 = a3;
-  v6 = a4;
-  if (![TCCDIconGenerator createDirectoryIfNeeded:v6])
+  serviceCopy = service;
+  directoryCopy = directory;
+  if (![TCCDIconGenerator createDirectoryIfNeeded:directoryCopy])
   {
     v20 = 0;
     goto LABEL_23;
@@ -71,16 +71,16 @@
     sub_100037984();
   }
 
-  [NSString stringWithFormat:@"%@@%dx.png", v5, *&qword_1000C1158];
-  v28 = v27 = v6;
+  [NSString stringWithFormat:@"%@@%dx.png", serviceCopy, *&qword_1000C1158];
+  v28 = v27 = directoryCopy;
   v22 = v28;
   v7 = [NSArray arrayWithObjects:&v27 count:2];
   v8 = [NSURL fileURLWithPathComponents:v7];
 
   v9 = +[NSFileManager defaultManager];
   v10 = +[TCCDIconGenerator shouldOverrideCachedIcons];
-  v11 = [v8 path];
-  v12 = [v9 fileExistsAtPath:v11];
+  path = [v8 path];
+  v12 = [v9 fileExistsAtPath:path];
 
   if (v12)
   {
@@ -90,7 +90,7 @@
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        sub_100037998(v5, v8, v14);
+        sub_100037998(serviceCopy, v8, v14);
       }
 
       v20 = v8;
@@ -99,18 +99,18 @@
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v8 path];
+      path2 = [v8 path];
       *buf = 138412546;
-      v24 = v5;
+      v24 = serviceCopy;
       v25 = 2112;
-      v26 = v15;
+      v26 = path2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#tccIcon overriding cached icon for %@ at %@", buf, 0x16u);
     }
 
     [v9 removeItemAtURL:v8 error:0];
   }
 
-  v16 = [TCCDIconGenerator _iconForService:v5];
+  v16 = [TCCDIconGenerator _iconForService:serviceCopy];
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
     if (qword_1000C1150 != -1)
@@ -121,7 +121,7 @@
     v17 = [[ISImageDescriptor alloc] initWithSize:29.0 scale:{29.0, *&qword_1000C1158}];
     [v17 setDrawBorder:1];
     v18 = [[ISIcon alloc] initWithType:@"com.apple.graphic-icon.privacy"];
-    v19 = [TCCDIconGenerator _createCGImageIconWithBadge:v18 forService:v5 withDescriptor:v17];
+    v19 = [TCCDIconGenerator _createCGImageIconWithBadge:v18 forService:serviceCopy withDescriptor:v17];
     v20 = [TCCDIconGenerator _writeCGImage:v19 toTempURL:v8];
     if (v19)
     {
@@ -141,13 +141,13 @@ LABEL_23:
   return v20;
 }
 
-+ (id)_iconForService:(id)a3
++ (id)_iconForService:(id)service
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 containsString:@"kTCCService"])
+  serviceCopy = service;
+  v4 = serviceCopy;
+  if ([serviceCopy containsString:@"kTCCService"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"kTCCService", "length")}];
+    v4 = [serviceCopy substringFromIndex:{objc_msgSend(@"kTCCService", "length")}];
   }
 
   v5 = [&off_1000AF528 objectForKeyedSubscript:v4];
@@ -166,7 +166,7 @@ LABEL_23:
       v11 = 136315394;
       v12 = "+[TCCDIconGenerator _iconForService:]";
       v13 = 2112;
-      v14 = v3;
+      v14 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "#tccIcon %s: No icon found for TCC service=%@", &v11, 0x16u);
     }
 
@@ -176,15 +176,15 @@ LABEL_23:
   return v8;
 }
 
-+ (id)_writeIcon:(id)a3 withDescriptor:(id)a4 toTempURL:(id)a5
++ (id)_writeIcon:(id)icon withDescriptor:(id)descriptor toTempURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 imageForDescriptor:v8];
+  iconCopy = icon;
+  descriptorCopy = descriptor;
+  lCopy = l;
+  v10 = [iconCopy imageForDescriptor:descriptorCopy];
   if ([v10 placeholder])
   {
-    v11 = [v7 prepareImageForDescriptor:v8];
+    v11 = [iconCopy prepareImageForDescriptor:descriptorCopy];
 
     v10 = v11;
   }
@@ -195,13 +195,13 @@ LABEL_23:
     v16 = 136315394;
     v17 = "+[TCCDIconGenerator _writeIcon:withDescriptor:toTempURL:]";
     v18 = 2112;
-    v19 = v9;
+    v19 = lCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "#tccIcon %s: Attempting to write icon to %@", &v16, 0x16u);
   }
 
-  if ([v10 writeToURL:v9])
+  if ([v10 writeToURL:lCopy])
   {
-    v13 = v9;
+    v13 = lCopy;
   }
 
   else
@@ -218,13 +218,13 @@ LABEL_23:
   return v13;
 }
 
-+ (CGImage)_createCGImageIconWithBadge:(id)a3 forService:(id)a4 withDescriptor:(id)a5
++ (CGImage)_createCGImageIconWithBadge:(id)badge forService:(id)service withDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  badgeCopy = badge;
+  serviceCopy = service;
+  descriptorCopy = descriptor;
   v10 = [NSSet setWithArray:&off_1000B0220];
-  v11 = v8;
+  v11 = serviceCopy;
   v12 = v11;
   if ([v11 containsString:@"kTCCService"])
   {
@@ -290,22 +290,22 @@ LABEL_6:
 
     if ([v10 containsObject:v12])
     {
-      v24 = [v7 imageForDescriptor:v9];
+      v24 = [badgeCopy imageForDescriptor:descriptorCopy];
       v38 = v10;
-      v39 = v9;
+      v39 = descriptorCopy;
       if ([v24 placeholder])
       {
-        v25 = [v7 prepareImageForDescriptor:v9];
+        v25 = [badgeCopy prepareImageForDescriptor:descriptorCopy];
 
         v24 = v25;
       }
 
-      v26 = v7;
+      v26 = badgeCopy;
       v27 = tcc_access_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v28 = [v18 description];
-        v29 = [v7 description];
+        v29 = [badgeCopy description];
         *buf = 138412802;
         v41 = v11;
         v42 = 2112;
@@ -315,10 +315,10 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "#tccIcon Service: %@, icon:%@, badge icon: %@", buf, 0x20u);
       }
 
-      v30 = +[TCCDIconGenerator _createCGImageRefByOverlay:ontoImage:](TCCDIconGenerator, "_createCGImageRefByOverlay:ontoImage:", [v24 CGImage], objc_msgSend(v22, "CGImage"));
-      v7 = v26;
+      cGImage = +[TCCDIconGenerator _createCGImageRefByOverlay:ontoImage:](TCCDIconGenerator, "_createCGImageRefByOverlay:ontoImage:", [v24 CGImage], objc_msgSend(v22, "CGImage"));
+      badgeCopy = v26;
       v10 = v38;
-      v9 = v39;
+      descriptorCopy = v39;
     }
 
     else
@@ -335,7 +335,7 @@ LABEL_6:
       }
 
       CFRetain([v22 CGImage]);
-      v30 = [v22 CGImage];
+      cGImage = [v22 CGImage];
     }
 
     goto LABEL_22;
@@ -347,16 +347,16 @@ LABEL_6:
     sub_100037AF0();
   }
 
-  v30 = 0;
+  cGImage = 0;
 LABEL_22:
 
-  return v30;
+  return cGImage;
 }
 
-+ (id)checkAndGetAppropriateBundleIdentifier:(id)a3
++ (id)checkAndGetAppropriateBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (![v3 isEqualToString:@"com.apple.Passbook"])
+  identifierCopy = identifier;
+  if (![identifierCopy isEqualToString:@"com.apple.Passbook"])
   {
     goto LABEL_6;
   }
@@ -374,24 +374,24 @@ LABEL_22:
   else
   {
 LABEL_6:
-    v4 = v3;
+    v4 = identifierCopy;
   }
 
   return v4;
 }
 
-+ (id)_writeCGImage:(CGImage *)a3 toTempURL:(id)a4
++ (id)_writeCGImage:(CGImage *)image toTempURL:(id)l
 {
-  v5 = a4;
-  v6 = v5;
-  if (!a3)
+  lCopy = l;
+  v6 = lCopy;
+  if (!image)
   {
 LABEL_9:
     v15 = 0;
     goto LABEL_14;
   }
 
-  v7 = CGImageDestinationCreateWithURL(v5, kUTTypePNG, 1uLL, 0);
+  v7 = CGImageDestinationCreateWithURL(lCopy, kUTTypePNG, 1uLL, 0);
   if (!v7)
   {
     v14 = tcc_access_log();
@@ -405,7 +405,7 @@ LABEL_9:
   }
 
   v8 = v7;
-  CGImageDestinationAddImage(v7, a3, 0);
+  CGImageDestinationAddImage(v7, image, 0);
   v9 = CGImageDestinationFinalize(v8);
   v10 = tcc_access_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
@@ -413,9 +413,9 @@ LABEL_9:
   {
     if (v11)
     {
-      v12 = [(__CFURL *)v6 path];
+      path = [(__CFURL *)v6 path];
       v17 = 138412290;
-      v18 = v12;
+      v18 = path;
       v13 = "#tccIcon Image saved to %@";
 LABEL_12:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, v13, &v17, 0xCu);
@@ -424,9 +424,9 @@ LABEL_12:
 
   else if (v11)
   {
-    v12 = [(__CFURL *)v6 path];
+    path = [(__CFURL *)v6 path];
     v17 = 138412290;
-    v18 = v12;
+    v18 = path;
     v13 = "#tccIcon Failed to write image to %@";
     goto LABEL_12;
   }
@@ -438,7 +438,7 @@ LABEL_14:
   return v15;
 }
 
-+ (CGImage)_createCGImageRefByOverlay:(CGImage *)a3 ontoImage:(CGImage *)a4
++ (CGImage)_createCGImageRefByOverlay:(CGImage *)overlay ontoImage:(CGImage *)image
 {
   if (qword_1000C1150 != -1)
   {
@@ -448,11 +448,11 @@ LABEL_14:
   v6 = *&qword_1000C1158;
   v7 = tcc_access_log();
   v8 = v7;
-  if (!a3 || !a4)
+  if (!overlay || !image)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      sub_100037C10(a4 == 0, a3 == 0, v8);
+      sub_100037C10(image == 0, overlay == 0, v8);
     }
 
     return 0;
@@ -463,19 +463,19 @@ LABEL_14:
     v33 = 136316418;
     v34 = "+[TCCDIconGenerator _createCGImageRefByOverlay:ontoImage:]";
     v35 = 2048;
-    Width = CGImageGetWidth(a4);
+    Width = CGImageGetWidth(image);
     v37 = 2048;
-    Height = CGImageGetHeight(a4);
+    Height = CGImageGetHeight(image);
     v39 = 2048;
-    v40 = CGImageGetWidth(a3);
+    v40 = CGImageGetWidth(overlay);
     v41 = 2048;
-    v42 = CGImageGetHeight(a3);
+    v42 = CGImageGetHeight(overlay);
     v43 = 2048;
     v44 = v6;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "#tccIcon %s: baseImageSize: (%zu, %zu) overlayImageSize: (%zu, %zu) both scale: %f", &v33, 0x3Eu);
   }
 
-  ColorSpace = CGImageGetColorSpace(a4);
+  ColorSpace = CGImageGetColorSpace(image);
   if (ColorSpace)
   {
     v10 = ColorSpace;
@@ -538,16 +538,16 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#tccIcon Language code is %@ isRTLLanguage: %d", &v33, 0x12u);
   }
 
-  v19 = CGImageGetWidth(a4);
-  v20 = CGImageGetHeight(a4);
+  v19 = CGImageGetWidth(image);
+  v20 = CGImageGetHeight(image);
   if (v17 == NSLocaleLanguageDirectionRightToLeft)
   {
     v21 = 15.0;
     v22 = 15.0;
     v23 = v19;
-    CGContextDrawImage(v14, *(&v20 - 3), a4);
-    v24 = CGImageGetWidth(a3);
-    v25 = CGImageGetHeight(a3);
+    CGContextDrawImage(v14, *(&v20 - 3), image);
+    v24 = CGImageGetWidth(overlay);
+    v25 = CGImageGetHeight(overlay);
     v26 = 0.0;
   }
 
@@ -556,17 +556,17 @@ LABEL_26:
     v28 = 0;
     v29 = 15.0;
     v30 = v19;
-    CGContextDrawImage(v14, *(&v20 - 3), a4);
-    v26 = (v12 - CGImageGetWidth(a3));
-    v24 = CGImageGetWidth(a3);
-    v25 = CGImageGetHeight(a3);
+    CGContextDrawImage(v14, *(&v20 - 3), image);
+    v26 = (v12 - CGImageGetWidth(overlay));
+    v24 = CGImageGetWidth(overlay);
+    v25 = CGImageGetHeight(overlay);
   }
 
   v46.size.height = v25;
   v46.size.width = v24;
   v46.origin.x = v26;
   v46.origin.y = 0.0;
-  CGContextDrawImage(v14, v46, a3);
+  CGContextDrawImage(v14, v46, overlay);
   Image = CGBitmapContextCreateImage(v14);
   CGContextRelease(v14);
   CGColorSpaceRelease(v10);

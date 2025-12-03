@@ -4,20 +4,20 @@
 - (CGRect)usedBoundingRect;
 - (CGSize)size;
 - (_NSRange)textRange;
-- (_UIVectorTextLayout)initWithTextParameters:(id)a3;
+- (_UIVectorTextLayout)initWithTextParameters:(id)parameters;
 - (id)description;
 - (id)layoutDescription;
 - (unint64_t)numberOfRuns;
 - (void)_layoutIfNeeded;
-- (void)enumerateRunsUsingBlock:(id)a3;
+- (void)enumerateRunsUsingBlock:(id)block;
 - (void)resetLayout;
 @end
 
 @implementation _UIVectorTextLayout
 
-- (_UIVectorTextLayout)initWithTextParameters:(id)a3
+- (_UIVectorTextLayout)initWithTextParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v10.receiver = self;
   v10.super_class = _UIVectorTextLayout;
   v5 = [(_UIVectorTextLayout *)&v10 init];
@@ -27,7 +27,7 @@
     layoutInfo = v5->_layoutInfo;
     v5->_layoutInfo = v6;
 
-    v8 = [[_UIVectorTextLayoutParameters alloc] initWithParameters:v4];
+    v8 = [[_UIVectorTextLayoutParameters alloc] initWithParameters:parametersCopy];
     [(_UIVectorTextLayoutInfo *)v5->_layoutInfo setParameters:v8];
   }
 
@@ -96,35 +96,35 @@
   return result;
 }
 
-- (void)enumerateRunsUsingBlock:(id)a3
+- (void)enumerateRunsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_UIVectorTextLayout *)self _layoutIfNeeded];
   runs = self->_runs;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47___UIVectorTextLayout_enumerateRunsUsingBlock___block_invoke;
   v7[3] = &unk_1E712A3A8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSArray *)runs enumerateObjectsUsingBlock:v7];
 }
 
 - (id)description
 {
-  v3 = [(_UIVectorTextLayout *)self hasLayout];
+  hasLayout = [(_UIVectorTextLayout *)self hasLayout];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-  v7 = v6;
-  if (v3)
+  parameters = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+  v7 = parameters;
+  if (hasLayout)
   {
-    [v4 stringWithFormat:@"<%@:%p params=%@ layout=(%fx%f, %ld lines, %ld runs)>", v5, self, v6, *&self->_boundingRect.size.width, *&self->_boundingRect.size.height, self->_numberOfLines, -[NSArray count](self->_runs, "count")];
+    [v4 stringWithFormat:@"<%@:%p params=%@ layout=(%fx%f, %ld lines, %ld runs)>", v5, self, parameters, *&self->_boundingRect.size.width, *&self->_boundingRect.size.height, self->_numberOfLines, -[NSArray count](self->_runs, "count")];
   }
 
   else
   {
-    [v4 stringWithFormat:@"<%@:%p params=%@ layout=?>", v5, self, v6, v10, v11, v12, v13];
+    [v4 stringWithFormat:@"<%@:%p params=%@ layout=?>", v5, self, parameters, v10, v11, v12, v13];
   }
   v8 = ;
 
@@ -137,12 +137,12 @@
   [(_UIVectorTextLayout *)self _layoutIfNeeded];
   v4 = objc_opt_new();
   [v4 appendString:@"Parameters:\n"];
-  v5 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-  v6 = [v5 attributedText];
-  [v4 appendFormat:@"- text: %@\n", v6];
+  parameters = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+  attributedText = [parameters attributedText];
+  [v4 appendFormat:@"- text: %@\n", attributedText];
 
-  v7 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-  [v7 withinSize];
+  parameters2 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+  [parameters2 withinSize];
   v9 = v8;
   if (v8 >= 1.79769313e308)
   {
@@ -152,13 +152,13 @@
   else
   {
     v10 = MEMORY[0x1E696AD98];
-    v2 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-    [v2 withinSize];
+    parameters3 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+    [parameters3 withinSize];
     v11 = [v10 numberWithDouble:?];
   }
 
-  v12 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-  [v12 withinSize];
+  parameters4 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+  [parameters4 withinSize];
   if (v13 >= 1.79769313e308)
   {
     [v4 appendFormat:@"- withinSize: {%@, %@}\n", v11, @"(max)"];
@@ -167,8 +167,8 @@
   else
   {
     v14 = MEMORY[0x1E696AD98];
-    v15 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-    [v15 withinSize];
+    parameters5 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+    [parameters5 withinSize];
     v17 = [v14 numberWithDouble:v16];
     [v4 appendFormat:@"- withinSize: {%@, %@}\n", v11, v17];
   }
@@ -177,12 +177,12 @@
   {
   }
 
-  v18 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-  [v4 appendFormat:@"- numberOfLines: %ld\n", objc_msgSend(v18, "numberOfLines")];
+  parameters6 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+  [v4 appendFormat:@"- numberOfLines: %ld\n", objc_msgSend(parameters6, "numberOfLines")];
 
-  v19 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-  v20 = [v19 traitCollection];
-  [v4 appendFormat:@"- traitCollection: %@\n", v20];
+  parameters7 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+  traitCollection = [parameters7 traitCollection];
+  [v4 appendFormat:@"- traitCollection: %@\n", traitCollection];
 
   [v4 appendString:@"\n"];
   if ([(_UIVectorTextLayout *)self hasLayout])
@@ -202,7 +202,7 @@
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v41 = self;
+    selfCopy = self;
     obj = self->_runs;
     v42 = [(NSArray *)obj countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v42)
@@ -223,31 +223,31 @@
           v25 = *(*(&v50 + 1) + 8 * i);
           if ([v25 lineIndex] != v43)
           {
-            v26 = [v25 lineIndex];
+            lineIndex = [v25 lineIndex];
             [v25 lineRect];
             v27 = NSStringFromCGRect(v57);
             [v25 usedLineRect];
             v28 = NSStringFromCGRect(v58);
-            v43 = v26;
-            [v4 appendFormat:@"  > Line %ld: rect=%@ usedRect=%@\n", v26, v27, v28];
+            v43 = lineIndex;
+            [v4 appendFormat:@"  > Line %ld: rect=%@ usedRect=%@\n", lineIndex, v27, v28];
           }
 
-          v44 = [v25 stringRange];
+          stringRange = [v25 stringRange];
           v30 = v29;
-          v48 = [v25 glyphCount];
+          glyphCount = [v25 glyphCount];
           GlyphCount = CTRunGetGlyphCount([v25 _CTRun]);
           [v25 usedRunRect];
           v45 = NSStringFromCGRect(v59);
-          v47 = [(_UIVectorTextLayoutInfo *)v41->_layoutInfo parameters];
-          v31 = [v47 attributedText];
-          v32 = [v31 string];
+          parameters8 = [(_UIVectorTextLayoutInfo *)selfCopy->_layoutInfo parameters];
+          attributedText2 = [parameters8 attributedText];
+          string = [attributedText2 string];
           v33 = v30;
-          v34 = [v32 substringWithRange:{v44, v30}];
+          v34 = [string substringWithRange:{stringRange, v30}];
           v35 = [v34 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
           v36 = [v35 stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"];
           v37 = [v36 stringByReplacingOccurrencesOfString:@"\t" withString:@"\\t"];
 
-          [v4 appendFormat:@"    [Run %ld: glyphCount=%ld/%ld usedRect=%@ string={%ld, %ld} %@ (ref=%p)]\n", v49, v48, GlyphCount, v45, v44, v33, v37, objc_msgSend(v25, "_CTRun")];
+          [v4 appendFormat:@"    [Run %ld: glyphCount=%ld/%ld usedRect=%@ string={%ld, %ld} %@ (ref=%p)]\n", v49, glyphCount, GlyphCount, v45, stringRange, v33, v37, objc_msgSend(v25, "_CTRun")];
           v23 = v49 + 1;
         }
 
@@ -274,22 +274,22 @@
     p_layoutInfo = &self->_layoutInfo;
     [(_UIVectorTextLayoutInfo *)self->_layoutInfo scale];
     v84 = v4;
-    v5 = [(_UIVectorTextLayout *)self parameters];
-    v79 = [v5 numberOfLines];
+    parameters = [(_UIVectorTextLayout *)self parameters];
+    numberOfLines = [parameters numberOfLines];
 
     if (![(_UIVectorTextLayoutInfo *)*p_layoutInfo frame])
     {
-      v6 = [(_UIVectorTextLayout *)self parameters];
-      v7 = [v6 attributedText];
+      parameters2 = [(_UIVectorTextLayout *)self parameters];
+      attributedText = [parameters2 attributedText];
 
-      v8 = [v7 length];
-      v9 = CTFramesetterCreateWithAttributedString(v7);
+      v8 = [attributedText length];
+      v9 = CTFramesetterCreateWithAttributedString(attributedText);
       v10 = CFAutorelease(v9);
       if (v10)
       {
         v11 = v10;
-        v12 = [(_UIVectorTextLayout *)self parameters];
-        [v12 withinSize];
+        parameters3 = [(_UIVectorTextLayout *)self parameters];
+        [parameters3 withinSize];
         v99.location = 0;
         v99.length = v8;
         v13 = CTFramesetterSuggestFrameSizeWithConstraints(v11, v99, 0, v103, 0);
@@ -353,10 +353,10 @@
       v77[1] = v77;
       v28 = MEMORY[0x1EEE9AC00](v82);
       v80 = &v77[-2 * v29];
-      v30 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo frame];
+      frame = [(_UIVectorTextLayoutInfo *)self->_layoutInfo frame];
       v101.location = 0;
       v101.length = 0;
-      CTFrameGetLineOrigins(v30, v101, v80);
+      CTFrameGetLineOrigins(frame, v101, v80);
       if (Count < 1)
       {
         v31 = 0;
@@ -368,7 +368,7 @@
         v87 = 0x4010000000;
         v32 = MEMORY[0x1E695F050];
         v86 = 3221225472;
-        while (!v79 || v31 < v79)
+        while (!numberOfLines || v31 < numberOfLines)
         {
           ValueAtIndex = CFArrayGetValueAtIndex(Lines, v31);
           v96 = 0.0;

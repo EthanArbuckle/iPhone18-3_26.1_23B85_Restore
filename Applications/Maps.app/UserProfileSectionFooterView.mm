@@ -3,7 +3,7 @@
 - (void)_setupView;
 - (void)_updateForCollapsed;
 - (void)_updateForFooter;
-- (void)configureWithViewModel:(id)a3;
+- (void)configureWithViewModel:(id)model;
 @end
 
 @implementation UserProfileSectionFooterView
@@ -11,10 +11,10 @@
 - (void)_footerLinkHandler
 {
   v3 = [UITapGestureRecognizer alloc];
-  v4 = [(UserProfileSectionFooterView *)self viewModel];
-  v5 = [v4 target];
-  v6 = [(UserProfileSectionFooterView *)self viewModel];
-  v7 = [v3 initWithTarget:v5 action:{objc_msgSend(v6, "action")}];
+  viewModel = [(UserProfileSectionFooterView *)self viewModel];
+  target = [viewModel target];
+  viewModel2 = [(UserProfileSectionFooterView *)self viewModel];
+  v7 = [v3 initWithTarget:target action:{objc_msgSend(viewModel2, "action")}];
 
   [v7 setNumberOfTapsRequired:1];
   [(UserProfileSectionFooterView *)self addGestureRecognizer:v7];
@@ -27,10 +27,10 @@
   v4 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleFootnote];
   [(UILabel *)self->_textLabel setFont:v4];
 
-  v5 = [(UserProfileSectionFooterView *)self viewModel];
-  v6 = [v5 containsLink];
+  viewModel = [(UserProfileSectionFooterView *)self viewModel];
+  containsLink = [viewModel containsLink];
 
-  if (v6)
+  if (containsLink)
   {
     [(UserProfileSectionFooterView *)self _footerLinkHandler];
   }
@@ -91,39 +91,39 @@
   [(UILabel *)self->_textLabel setAccessibilityIdentifier:@"TextLabel"];
   [(UILabel *)self->_textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_textLabel setNumberOfLines:0];
-  v5 = [(MapsThemeCollectionReusableView *)self contentView];
-  [v5 addSubview:self->_textLabel];
+  contentView = [(MapsThemeCollectionReusableView *)self contentView];
+  [contentView addSubview:self->_textLabel];
 
   [(UserProfileSectionFooterView *)self setDirectionalLayoutMargins:0.0, 0.0, 0.0, 0.0];
   v6 = self->_textLabel;
-  v7 = [(MapsThemeCollectionReusableView *)self contentView];
+  contentView2 = [(MapsThemeCollectionReusableView *)self contentView];
   LODWORD(v8) = 1148846080;
-  v18 = [(UILabel *)v6 _maps_constraintsEqualToEdgesOfView:v7 priority:v8];
+  v18 = [(UILabel *)v6 _maps_constraintsEqualToEdgesOfView:contentView2 priority:v8];
 
-  v9 = [v18 topConstraint];
+  topConstraint = [v18 topConstraint];
   topConstraint = self->_topConstraint;
-  self->_topConstraint = v9;
+  self->_topConstraint = topConstraint;
 
-  v11 = [v18 bottomConstraint];
+  bottomConstraint = [v18 bottomConstraint];
   bottomConstraint = self->_bottomConstraint;
-  self->_bottomConstraint = v11;
+  self->_bottomConstraint = bottomConstraint;
 
-  v13 = [(MapsThemeCollectionReusableView *)self contentView];
-  v14 = [v13 heightAnchor];
-  v15 = [v14 constraintEqualToConstant:0.0];
+  contentView3 = [(MapsThemeCollectionReusableView *)self contentView];
+  heightAnchor = [contentView3 heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:0.0];
   collapsedHeightConstraint = self->_collapsedHeightConstraint;
   self->_collapsedHeightConstraint = v15;
 
-  v17 = [v18 allConstraints];
-  [NSLayoutConstraint activateConstraints:v17];
+  allConstraints = [v18 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
-- (void)configureWithViewModel:(id)a3
+- (void)configureWithViewModel:(id)model
 {
-  v9 = a3;
-  objc_storeStrong(&self->_viewModel, a3);
-  v5 = [(UserProfileSectionFooterView *)self viewModel];
-  self->_collapsed = [v5 isCollapsed];
+  modelCopy = model;
+  objc_storeStrong(&self->_viewModel, model);
+  viewModel = [(UserProfileSectionFooterView *)self viewModel];
+  self->_collapsed = [viewModel isCollapsed];
 
   [(UserProfileSectionFooterView *)self setAccessibilityIdentifier:@"UserProfileSectionFooter"];
   if (!self->_textLabel)
@@ -131,13 +131,13 @@
     [(UserProfileSectionFooterView *)self _setupView];
   }
 
-  v6 = [(UserProfileSectionFooterView *)self viewModel];
-  v7 = [v6 contentString];
-  [(UILabel *)self->_textLabel setAttributedText:v7];
+  viewModel2 = [(UserProfileSectionFooterView *)self viewModel];
+  contentString = [viewModel2 contentString];
+  [(UILabel *)self->_textLabel setAttributedText:contentString];
 
-  v8 = [(UILabel *)self->_textLabel text];
+  text = [(UILabel *)self->_textLabel text];
 
-  if (!v8)
+  if (!text)
   {
     self->_collapsed = 1;
   }

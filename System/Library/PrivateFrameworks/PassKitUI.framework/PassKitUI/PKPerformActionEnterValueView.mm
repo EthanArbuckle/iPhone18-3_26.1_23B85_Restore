@@ -1,43 +1,43 @@
 @interface PKPerformActionEnterValueView
 - (BOOL)_isCurrentAmountValid;
-- (BOOL)_shouldShakeCard:(id)a3;
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5;
-- (PKPerformActionEnterValueView)initWithPass:(id)a3 action:(id)a4 paymentDataProvider:(id)a5;
+- (BOOL)_shouldShakeCard:(id)card;
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to;
+- (PKPerformActionEnterValueView)initWithPass:(id)pass action:(id)action paymentDataProvider:(id)provider;
 - (PKPerformActionViewDelegate)delegate;
 - (double)_amountTopPadding;
 - (id)transactionCurrency;
 - (void)_createSubviews;
-- (void)_currentAmountDidChangeTo:(id)a3 shouldGenerateNewSuggestions:(BOOL)a4;
+- (void)_currentAmountDidChangeTo:(id)to shouldGenerateNewSuggestions:(BOOL)suggestions;
 - (void)_didTapSetUpAutoReloadButton;
 - (void)_readCurrentBalance;
-- (void)_updateCurrentAmount:(id)a3 shouldGenerateNewSuggestions:(BOOL)a4;
+- (void)_updateCurrentAmount:(id)amount shouldGenerateNewSuggestions:(BOOL)suggestions;
 - (void)_updateCurrentBalanceWithUpdatedTransitProperties;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
+- (void)_updateLayoutForKeyboardAction:(id)action;
 - (void)_updatePeerPaymentAccount;
 - (void)dealloc;
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3;
-- (void)fetchServiceProviderDataWithCompletion:(id)a3;
-- (void)keyboardWillChange:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount;
+- (void)fetchServiceProviderDataWithCompletion:(id)completion;
+- (void)keyboardWillChange:(id)change;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)layoutSubviews;
-- (void)numberPadSuggestionsView:(id)a3 didSelectSuggestion:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
+- (void)numberPadSuggestionsView:(id)view didSelectSuggestion:(id)suggestion;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
 - (void)saveLastInputValues;
-- (void)setCardBalance:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setMaxLoadedBalance:(id)a3;
-- (void)setMinBalance:(id)a3;
+- (void)setCardBalance:(id)balance;
+- (void)setDelegate:(id)delegate;
+- (void)setMaxLoadedBalance:(id)balance;
+- (void)setMinBalance:(id)balance;
 @end
 
 @implementation PKPerformActionEnterValueView
 
-- (PKPerformActionEnterValueView)initWithPass:(id)a3 action:(id)a4 paymentDataProvider:(id)a5
+- (PKPerformActionEnterValueView)initWithPass:(id)pass action:(id)action paymentDataProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 type] == 1)
+  passCopy = pass;
+  actionCopy = action;
+  providerCopy = provider;
+  if ([actionCopy type] == 1)
   {
     v51.receiver = self;
     v51.super_class = PKPerformActionEnterValueView;
@@ -45,72 +45,72 @@
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_pass, a3);
-      objc_storeStrong(&v13->_action, a4);
-      v14 = [MEMORY[0x1E696AB90] zero];
+      objc_storeStrong(&v12->_pass, pass);
+      objc_storeStrong(&v13->_action, action);
+      zero = [MEMORY[0x1E696AB90] zero];
       cardBalance = v13->_cardBalance;
-      v13->_cardBalance = v14;
+      v13->_cardBalance = zero;
 
-      v16 = [MEMORY[0x1E696AB90] zero];
+      zero2 = [MEMORY[0x1E696AB90] zero];
       currentAmount = v13->_currentAmount;
-      v13->_currentAmount = v16;
+      v13->_currentAmount = zero2;
 
-      v18 = [v9 paymentPass];
-      v19 = [v18 hasAssociatedPeerPaymentAccount];
+      paymentPass = [passCopy paymentPass];
+      hasAssociatedPeerPaymentAccount = [paymentPass hasAssociatedPeerPaymentAccount];
 
-      if (v19)
+      if (hasAssociatedPeerPaymentAccount)
       {
-        v20 = [MEMORY[0x1E69B9000] sharedInstance];
+        mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
         peerPaymentService = v13->_peerPaymentService;
-        v13->_peerPaymentService = v20;
+        v13->_peerPaymentService = mEMORY[0x1E69B9000];
 
-        v22 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v22 addObserver:v13 selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v13->_peerPaymentService];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:v13 selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v13->_peerPaymentService];
 
         [(PKPerformActionEnterValueView *)v13 _updatePeerPaymentAccount];
       }
 
-      v23 = [v10 enteredValueItem];
-      v24 = [v23 minLoadAmount];
+      enteredValueItem = [actionCopy enteredValueItem];
+      minLoadAmount = [enteredValueItem minLoadAmount];
       minLoadAmount = v13->_minLoadAmount;
-      v13->_minLoadAmount = v24;
+      v13->_minLoadAmount = minLoadAmount;
 
-      v26 = [v10 enteredValueItem];
-      v27 = [v26 maxLoadAmount];
+      enteredValueItem2 = [actionCopy enteredValueItem];
+      maxLoadAmount = [enteredValueItem2 maxLoadAmount];
       maxLoadAmount = v13->_maxLoadAmount;
-      v13->_maxLoadAmount = v27;
+      v13->_maxLoadAmount = maxLoadAmount;
 
-      v29 = [v10 enteredValueItem];
-      v30 = [v29 minLoadedBalance];
+      enteredValueItem3 = [actionCopy enteredValueItem];
+      minLoadedBalance = [enteredValueItem3 minLoadedBalance];
       minLoadedBalance = v13->_minLoadedBalance;
-      v13->_minLoadedBalance = v30;
+      v13->_minLoadedBalance = minLoadedBalance;
 
-      v32 = [v10 enteredValueItem];
-      v33 = [v32 maxLoadedBalance];
+      enteredValueItem4 = [actionCopy enteredValueItem];
+      maxLoadedBalance = [enteredValueItem4 maxLoadedBalance];
       maxLoadedBalance = v13->_maxLoadedBalance;
-      v13->_maxLoadedBalance = v33;
+      v13->_maxLoadedBalance = maxLoadedBalance;
 
-      v35 = [(PKPass *)v13->_pass paymentPass];
-      LODWORD(v32) = [PKPaymentAutoReloadSetupController shouldOfferAutoReloadForPass:v35];
+      paymentPass2 = [(PKPass *)v13->_pass paymentPass];
+      LODWORD(enteredValueItem4) = [PKPaymentAutoReloadSetupController shouldOfferAutoReloadForPass:paymentPass2];
 
-      if (v32)
+      if (enteredValueItem4)
       {
         v13->_shouldShowAutoReloadButton = 1;
       }
 
-      objc_storeStrong(&v13->_paymentServiceDataProvider, a5);
+      objc_storeStrong(&v13->_paymentServiceDataProvider, provider);
       if (objc_opt_respondsToSelector())
       {
         [(PKPaymentDataProvider *)v13->_paymentServiceDataProvider addDelegate:v13];
       }
 
-      v36 = [v10 enteredValueItem];
-      v37 = [v36 currency];
+      enteredValueItem5 = [actionCopy enteredValueItem];
+      currency = [enteredValueItem5 currency];
 
       v38 = PKMaximumFractionDigitsForCurrencyCode();
       v39 = objc_alloc(MEMORY[0x1E69B89E8]);
-      v40 = [v9 serialNumber];
-      v41 = [v39 initWithPassSerialNumber:v40];
+      serialNumber = [passCopy serialNumber];
+      v41 = [v39 initWithPassSerialNumber:serialNumber];
       lastInput = v13->_lastInput;
       v13->_lastInput = v41;
 
@@ -120,24 +120,24 @@
 
       [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setPowerOfTenFactor:3 - v38];
       [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setDecimalPrecision:v38];
-      [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setCurrencyCode:v37];
+      [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setCurrencyCode:currency];
       [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setCardBalance:v13->_cardBalance];
       [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setMaxLoadAmount:*(&v13->super.super.super.isa + v50)];
       [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setMinLoadAmount:v13->_minLoadAmount];
       [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setMinBalance:v13->_minLoadedBalance];
       [(PKNumericSuggestionsEnterValueAlgorithm *)v13->_suggestionGenerator setMaxBalance:v13->_maxLoadedBalance];
       v45 = v13->_suggestionGenerator;
-      v46 = [(PKPaymentPassAction *)v13->_action enteredValueItem];
-      v47 = [v46 defaultSuggestions];
-      [(PKNumericSuggestionsEnterValueAlgorithm *)v45 setDefaultValues:v47];
+      enteredValueItem6 = [(PKPaymentPassAction *)v13->_action enteredValueItem];
+      defaultSuggestions = [enteredValueItem6 defaultSuggestions];
+      [(PKNumericSuggestionsEnterValueAlgorithm *)v45 setDefaultValues:defaultSuggestions];
 
       [(PKPerformActionEnterValueView *)v13 _createSubviews];
       [(PKPerformActionEnterValueView *)v13 _updateCurrentAmount:v13->_currentAmount shouldGenerateNewSuggestions:1];
       [(PKPerformActionEnterValueView *)v13 _readCurrentBalance];
-      v48 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v48 addObserver:v13 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-      [v48 addObserver:v13 selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
-      [v48 addObserver:v13 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v13 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+      [defaultCenter2 addObserver:v13 selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
+      [defaultCenter2 addObserver:v13 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
     }
   }
 
@@ -233,10 +233,10 @@
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -282,14 +282,14 @@ BOOL __50__PKPerformActionEnterValueView_keyboardWillShow___block_invoke(uint64_
   return !CGRectEqualToRect(*(*(a1 + 32) + 480), v16);
 }
 
-- (void)keyboardWillChange:(id)a3
+- (void)keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
     if (v7)
     {
@@ -324,7 +324,7 @@ BOOL __52__PKPerformActionEnterValueView_keyboardWillChange___block_invoke(uint6
   return !CGRectEqualToRect(*(*(a1 + 32) + 480), v13);
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -350,13 +350,13 @@ BOOL __50__PKPerformActionEnterValueView_keyboardWillHide___block_invoke(uint64_
   return !CGRectEqualToRect(*&v3, v8);
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
     [(PKPerformActionEnterValueView *)self layoutIfNeeded];
-    if (v4[2](v4))
+    if (actionCopy[2](actionCopy))
     {
       [(PKPerformActionEnterValueView *)self setNeedsLayout];
       v5[0] = MEMORY[0x1E69E9820];
@@ -371,19 +371,19 @@ BOOL __50__PKPerformActionEnterValueView_keyboardWillHide___block_invoke(uint64_
 
 - (id)transactionCurrency
 {
-  v2 = [(PKPaymentPassAction *)self->_action enteredValueItem];
-  v3 = [v2 currency];
+  enteredValueItem = [(PKPaymentPassAction *)self->_action enteredValueItem];
+  currency = [enteredValueItem currency];
 
-  return v3;
+  return currency;
 }
 
-- (void)fetchServiceProviderDataWithCompletion:(id)a3
+- (void)fetchServiceProviderDataWithCompletion:(id)completion
 {
   action = self->_action;
-  v5 = a3;
-  v6 = [(PKPaymentPassAction *)action enteredValueItem];
-  v7 = [v6 serviceProviderData];
-  v10 = [v7 mutableCopy];
+  completionCopy = completion;
+  enteredValueItem = [(PKPaymentPassAction *)action enteredValueItem];
+  serviceProviderData = [enteredValueItem serviceProviderData];
+  v10 = [serviceProviderData mutableCopy];
 
   currentAmount = self->_currentAmount;
   if (currentAmount)
@@ -392,89 +392,89 @@ BOOL __50__PKPerformActionEnterValueView_keyboardWillHide___block_invoke(uint64_
   }
 
   v9 = [v10 copy];
-  v5[2](v5, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)setCardBalance:(id)a3
+- (void)setCardBalance:(id)balance
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cardBalance != v5)
+  balanceCopy = balance;
+  v6 = balanceCopy;
+  if (self->_cardBalance != balanceCopy)
   {
-    v12 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v12 = balanceCopy;
+    v7 = [(NSDecimalNumber *)balanceCopy isEqualToNumber:?];
     v6 = v12;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_cardBalance, a3);
+      objc_storeStrong(&self->_cardBalance, balance);
       cardBalance = self->_cardBalance;
       if (!cardBalance)
       {
-        v9 = [MEMORY[0x1E696AB90] zero];
+        zero = [MEMORY[0x1E696AB90] zero];
         v10 = self->_cardBalance;
-        self->_cardBalance = v9;
+        self->_cardBalance = zero;
 
         cardBalance = self->_cardBalance;
       }
 
       [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setCardBalance:cardBalance];
       [(PKEnterValueNewBalanceView *)self->_newBalanceView setCardBalance:self->_cardBalance];
-      v11 = [MEMORY[0x1E696AB90] zero];
-      [(PKPerformActionEnterValueView *)self _updateCurrentAmount:v11 shouldGenerateNewSuggestions:1];
+      zero2 = [MEMORY[0x1E696AB90] zero];
+      [(PKPerformActionEnterValueView *)self _updateCurrentAmount:zero2 shouldGenerateNewSuggestions:1];
 
       v6 = v12;
     }
   }
 }
 
-- (void)setMaxLoadedBalance:(id)a3
+- (void)setMaxLoadedBalance:(id)balance
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_maxLoadedBalance != v5)
+  balanceCopy = balance;
+  v6 = balanceCopy;
+  if (self->_maxLoadedBalance != balanceCopy)
   {
-    v9 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v9 = balanceCopy;
+    v7 = [(NSDecimalNumber *)balanceCopy isEqualToNumber:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_maxLoadedBalance, a3);
+      objc_storeStrong(&self->_maxLoadedBalance, balance);
       [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMaxBalance:self->_maxLoadedBalance];
       [(PKEnterValueNewBalanceView *)self->_newBalanceView setMaxBalance:self->_maxLoadedBalance];
-      v8 = [MEMORY[0x1E696AB90] zero];
-      [(PKPerformActionEnterValueView *)self _updateCurrentAmount:v8 shouldGenerateNewSuggestions:1];
+      zero = [MEMORY[0x1E696AB90] zero];
+      [(PKPerformActionEnterValueView *)self _updateCurrentAmount:zero shouldGenerateNewSuggestions:1];
 
       v6 = v9;
     }
   }
 }
 
-- (void)setMinBalance:(id)a3
+- (void)setMinBalance:(id)balance
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_minLoadedBalance != v5)
+  balanceCopy = balance;
+  v6 = balanceCopy;
+  if (self->_minLoadedBalance != balanceCopy)
   {
-    v9 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v9 = balanceCopy;
+    v7 = [(NSDecimalNumber *)balanceCopy isEqualToNumber:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_minLoadedBalance, a3);
+      objc_storeStrong(&self->_minLoadedBalance, balance);
       [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMinBalance:self->_minLoadedBalance];
-      v8 = [MEMORY[0x1E696AB90] zero];
-      [(PKPerformActionEnterValueView *)self _updateCurrentAmount:v8 shouldGenerateNewSuggestions:1];
+      zero = [MEMORY[0x1E696AB90] zero];
+      [(PKPerformActionEnterValueView *)self _updateCurrentAmount:zero shouldGenerateNewSuggestions:1];
 
       v6 = v9;
     }
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v5);
-  [v5 setRightBarButtonEnabled:{-[PKPerformActionEnterValueView _isCurrentAmountValid](self, "_isCurrentAmountValid")}];
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
+  [delegateCopy setRightBarButtonEnabled:{-[PKPerformActionEnterValueView _isCurrentAmountValid](self, "_isCurrentAmountValid")}];
 }
 
 - (void)saveLastInputValues
@@ -497,19 +497,19 @@ BOOL __50__PKPerformActionEnterValueView_keyboardWillHide___block_invoke(uint64_
   [(PKNumericSuggestionLastInput *)lastInput save];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__PKPerformActionEnterValueView_paymentPassWithUniqueIdentifier_didUpdateWithTransitPassProperties___block_invoke;
   block[3] = &unk_1E8010A88;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = propertiesCopy;
+  v8 = propertiesCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -534,35 +534,35 @@ void __100__PKPerformActionEnterValueView_paymentPassWithUniqueIdentifier_didUpd
   }
 }
 
-- (void)numberPadSuggestionsView:(id)a3 didSelectSuggestion:(id)a4
+- (void)numberPadSuggestionsView:(id)view didSelectSuggestion:(id)suggestion
 {
-  v5 = a4;
-  v6 = [v5 value];
-  v7 = [(PKPerformActionEnterValueView *)self _shouldShakeCard:v6];
+  suggestionCopy = suggestion;
+  value = [suggestionCopy value];
+  v7 = [(PKPerformActionEnterValueView *)self _shouldShakeCard:value];
 
-  v8 = [v5 value];
-  v9 = [v5 usedMaximumSuggestion];
+  value2 = [suggestionCopy value];
+  usedMaximumSuggestion = [suggestionCopy usedMaximumSuggestion];
 
-  [(PKPerformActionEnterValueView *)self _updateCurrentAmount:v8 shouldGenerateNewSuggestions:(v9 | v7) & 1];
+  [(PKPerformActionEnterValueView *)self _updateCurrentAmount:value2 shouldGenerateNewSuggestions:(usedMaximumSuggestion | v7) & 1];
   if (v7)
   {
-    v10 = [(PKPerformActionEnterValueView *)self delegate];
-    [v10 shakeCard];
+    delegate = [(PKPerformActionEnterValueView *)self delegate];
+    [delegate shakeCard];
   }
 }
 
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to
 {
-  v7 = a4;
-  v8 = a5;
-  if ([(PKPerformActionEnterValueView *)self _shouldShakeCard:v8])
+  fromCopy = from;
+  toCopy = to;
+  if ([(PKPerformActionEnterValueView *)self _shouldShakeCard:toCopy])
   {
-    v9 = [(PKPerformActionEnterValueView *)self delegate];
-    [v9 shakeCard];
+    delegate = [(PKPerformActionEnterValueView *)self delegate];
+    [delegate shakeCard];
   }
 
-  v10 = [(NSDecimalNumber *)self->_cardBalance decimalNumberByAdding:v7];
-  v11 = [(NSDecimalNumber *)self->_cardBalance decimalNumberByAdding:v8];
+  v10 = [(NSDecimalNumber *)self->_cardBalance decimalNumberByAdding:fromCopy];
+  v11 = [(NSDecimalNumber *)self->_cardBalance decimalNumberByAdding:toCopy];
 
   maxLoadedBalance = self->_maxLoadedBalance;
   v13 = !maxLoadedBalance || -[NSDecimalNumber compare:](maxLoadedBalance, "compare:", v10) != NSOrderedAscending || -[NSDecimalNumber compare:](self->_maxLoadedBalance, "compare:", v11) != NSOrderedAscending || [v10 compare:v11] == 1;
@@ -570,12 +570,12 @@ void __100__PKPerformActionEnterValueView_paymentPassWithUniqueIdentifier_didUpd
   return v13;
 }
 
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount
 {
-  v4 = [a3 currentAmount];
+  currentAmount = [amount currentAmount];
   currentAmount = self->_currentAmount;
-  self->_currentAmount = v4;
-  v6 = v4;
+  self->_currentAmount = currentAmount;
+  v6 = currentAmount;
 
   [(PKEnterValueNewBalanceView *)self->_newBalanceView addAmountToBalance:v6];
   [(PKPerformActionEnterValueView *)self _currentAmountDidChangeTo:v6 shouldGenerateNewSuggestions:1];
@@ -619,33 +619,33 @@ void __58__PKPerformActionEnterValueView__updatePeerPaymentAccount__block_invoke
 
 - (void)_readCurrentBalance
 {
-  v3 = [(PKPass *)self->_pass paymentPass];
-  v4 = v3;
-  if (v3)
+  paymentPass = [(PKPass *)self->_pass paymentPass];
+  v4 = paymentPass;
+  if (paymentPass)
   {
-    if ([v3 hasAssociatedPeerPaymentAccount])
+    if ([paymentPass hasAssociatedPeerPaymentAccount])
     {
-      v5 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
-      v6 = [v5 amount];
+      currentBalance = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
+      amount = [currentBalance amount];
 
-      if (!v6 || ([MEMORY[0x1E696AB90] notANumber], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v8))
+      if (!amount || ([MEMORY[0x1E696AB90] notANumber], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(amount, "isEqual:", v7), v7, v8))
       {
-        v9 = [MEMORY[0x1E696AB90] zero];
+        zero = [MEMORY[0x1E696AB90] zero];
 
-        v6 = v9;
+        amount = zero;
       }
 
-      [(PKPerformActionEnterValueView *)self setCardBalance:v6];
+      [(PKPerformActionEnterValueView *)self setCardBalance:amount];
       goto LABEL_20;
     }
 
-    v10 = [v4 devicePrimaryPaymentApplication];
+    devicePrimaryPaymentApplication = [v4 devicePrimaryPaymentApplication];
     v37[0] = 0;
     v37[1] = v37;
     v37[2] = 0x3032000000;
     v37[3] = __Block_byref_object_copy__68;
     v37[4] = __Block_byref_object_dispose__68;
-    v38 = [(PKPaymentPassAction *)self->_action associatedEnteredValueIdentifier];
+    associatedEnteredValueIdentifier = [(PKPaymentPassAction *)self->_action associatedEnteredValueIdentifier];
     v35[0] = 0;
     v35[1] = v35;
     v35[2] = 0x2020000000;
@@ -654,10 +654,10 @@ void __58__PKPerformActionEnterValueView__updatePeerPaymentAccount__block_invoke
     aBlock[1] = 3221225472;
     aBlock[2] = __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke;
     aBlock[3] = &unk_1E80259D8;
-    v6 = v10;
-    v31 = v6;
+    amount = devicePrimaryPaymentApplication;
+    v31 = amount;
     v32 = v4;
-    v33 = self;
+    selfCopy = self;
     v34 = v35;
     v11 = _Block_copy(aBlock);
     if ([(PKPass *)self->_pass isRemotePass])
@@ -665,13 +665,13 @@ void __58__PKPerformActionEnterValueView__updatePeerPaymentAccount__block_invoke
       v12 = objc_alloc_init(getNPKCompanionAgentConnectionClass_7());
       if (objc_opt_respondsToSelector())
       {
-        v13 = [(PKPass *)self->_pass uniqueID];
+        uniqueID = [(PKPass *)self->_pass uniqueID];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_2;
         v28[3] = &unk_1E8025A00;
         v29 = v11;
-        [v12 transitStateWithPassUniqueIdentifier:v13 paymentApplication:v6 completion:v28];
+        [v12 transitStateWithPassUniqueIdentifier:uniqueID paymentApplication:amount completion:v28];
       }
     }
 
@@ -683,13 +683,13 @@ void __58__PKPerformActionEnterValueView__updatePeerPaymentAccount__block_invoke
       }
 
       paymentServiceDataProvider = self->_paymentServiceDataProvider;
-      v15 = [(PKPass *)self->_pass uniqueID];
+      uniqueID2 = [(PKPass *)self->_pass uniqueID];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_4;
       v26[3] = &unk_1E8025A00;
       v27 = v11;
-      [(PKPaymentDataProvider *)paymentServiceDataProvider transitStateWithPassUniqueIdentifier:v15 paymentApplication:v6 completion:v26];
+      [(PKPaymentDataProvider *)paymentServiceDataProvider transitStateWithPassUniqueIdentifier:uniqueID2 paymentApplication:amount completion:v26];
 
       v12 = v27;
     }
@@ -708,13 +708,13 @@ LABEL_13:
       v17 = objc_alloc_init(getNPKCompanionAgentConnectionClass_7());
       if (objc_opt_respondsToSelector())
       {
-        v18 = [(PKPass *)self->_pass uniqueID];
+        uniqueID3 = [(PKPass *)self->_pass uniqueID];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_8;
         v23[3] = &unk_1E8010D60;
         v24 = v16;
-        [v17 balancesForPaymentPassWithUniqueIdentifier:v18 completion:v23];
+        [v17 balancesForPaymentPassWithUniqueIdentifier:uniqueID3 completion:v23];
       }
     }
 
@@ -732,13 +732,13 @@ LABEL_20:
       }
 
       v19 = self->_paymentServiceDataProvider;
-      v20 = [(PKPass *)self->_pass uniqueID];
+      uniqueID4 = [(PKPass *)self->_pass uniqueID];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_10;
       v21[3] = &unk_1E8010D60;
       v22 = v16;
-      [(PKPaymentDataProvider *)v19 balancesForPaymentPassWithUniqueIdentifier:v20 completion:v21];
+      [(PKPaymentDataProvider *)v19 balancesForPaymentPassWithUniqueIdentifier:uniqueID4 completion:v21];
 
       v17 = v22;
     }
@@ -907,33 +907,33 @@ void __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_10(ui
 
 - (void)_updateCurrentBalanceWithUpdatedTransitProperties
 {
-  v7 = [(PKTransitPassProperties *)self->_transitProperties balance];
-  if (v7 && ([MEMORY[0x1E696AB90] notANumber], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v7, "isEqualToNumber:", v4), v4, v3 = v7, (v5 & 1) == 0))
+  balance = [(PKTransitPassProperties *)self->_transitProperties balance];
+  if (balance && ([MEMORY[0x1E696AB90] notANumber], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(balance, "isEqualToNumber:", v4), v4, v3 = balance, (v5 & 1) == 0))
   {
-    [(PKPerformActionEnterValueView *)self setCardBalance:v7];
+    [(PKPerformActionEnterValueView *)self setCardBalance:balance];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AB90] zero];
-    [(PKPerformActionEnterValueView *)self setCardBalance:v6];
+    zero = [MEMORY[0x1E696AB90] zero];
+    [(PKPerformActionEnterValueView *)self setCardBalance:zero];
   }
 }
 
-- (BOOL)_shouldShakeCard:(id)a3
+- (BOOL)_shouldShakeCard:(id)card
 {
-  v4 = a3;
-  if (v4 && ([MEMORY[0x1E696AB90] notANumber], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "compare:", v5), v5, v6))
+  cardCopy = card;
+  if (cardCopy && ([MEMORY[0x1E696AB90] notANumber], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(cardCopy, "compare:", v5), v5, v6))
   {
-    v7 = [v4 decimalNumberByAdding:self->_cardBalance];
-    v8 = [v7 stringValue];
-    v9 = [v8 length];
+    v7 = [cardCopy decimalNumberByAdding:self->_cardBalance];
+    stringValue = [v7 stringValue];
+    v9 = [stringValue length];
 
     v10 = 1;
     if (v9 <= 7)
     {
       maxLoadAmount = self->_maxLoadAmount;
-      if (!maxLoadAmount || [(NSDecimalNumber *)maxLoadAmount compare:v4]!= NSOrderedAscending)
+      if (!maxLoadAmount || [(NSDecimalNumber *)maxLoadAmount compare:cardCopy]!= NSOrderedAscending)
       {
         maxLoadedBalance = self->_maxLoadedBalance;
         if (!maxLoadedBalance || [(NSDecimalNumber *)maxLoadedBalance compare:v7]!= NSOrderedAscending)
@@ -965,21 +965,21 @@ void __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_10(ui
   }
 }
 
-- (void)_updateCurrentAmount:(id)a3 shouldGenerateNewSuggestions:(BOOL)a4
+- (void)_updateCurrentAmount:(id)amount shouldGenerateNewSuggestions:(BOOL)suggestions
 {
-  v4 = a4;
-  objc_storeStrong(&self->_currentAmount, a3);
-  v7 = a3;
-  [(PKEnterValueNewBalanceView *)self->_newBalanceView addAmountToBalance:v7];
-  [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setCurrentAmount:v7];
-  [(PKPerformActionEnterValueView *)self _currentAmountDidChangeTo:v7 shouldGenerateNewSuggestions:v4];
+  suggestionsCopy = suggestions;
+  objc_storeStrong(&self->_currentAmount, amount);
+  amountCopy = amount;
+  [(PKEnterValueNewBalanceView *)self->_newBalanceView addAmountToBalance:amountCopy];
+  [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setCurrentAmount:amountCopy];
+  [(PKPerformActionEnterValueView *)self _currentAmountDidChangeTo:amountCopy shouldGenerateNewSuggestions:suggestionsCopy];
 }
 
-- (void)_currentAmountDidChangeTo:(id)a3 shouldGenerateNewSuggestions:(BOOL)a4
+- (void)_currentAmountDidChangeTo:(id)to shouldGenerateNewSuggestions:(BOOL)suggestions
 {
-  if (a4)
+  if (suggestions)
   {
-    v5 = [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator suggestionsWithAmount:a3];
+    v5 = [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator suggestionsWithAmount:to];
     [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setAmountSuggestions:v5];
   }
 
@@ -992,12 +992,12 @@ void __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_10(ui
 - (BOOL)_isCurrentAmountValid
 {
   v3 = self->_currentAmount;
-  v4 = [MEMORY[0x1E696AB90] notANumber];
-  v5 = [(NSDecimalNumber *)v3 isEqualToNumber:v4];
+  notANumber = [MEMORY[0x1E696AB90] notANumber];
+  v5 = [(NSDecimalNumber *)v3 isEqualToNumber:notANumber];
 
   v6 = [(NSDecimalNumber *)v3 decimalNumberByAdding:self->_cardBalance];
-  v7 = [MEMORY[0x1E696AB90] zero];
-  v8 = [(NSDecimalNumber *)v3 compare:v7];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v8 = [(NSDecimalNumber *)v3 compare:zero];
 
   if (!v8 || (maxLoadedBalance = self->_maxLoadedBalance) != 0 && [(NSDecimalNumber *)maxLoadedBalance compare:v6]== NSOrderedAscending || (minLoadedBalance = self->_minLoadedBalance) != 0 && [(NSDecimalNumber *)minLoadedBalance compare:v6]== NSOrderedDescending || self->_minLoadAmount && [(NSDecimalNumber *)self->_currentAmount compare:?]== NSOrderedAscending)
   {
@@ -1021,10 +1021,10 @@ void __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_10(ui
   v3 = *MEMORY[0x1E69DB980];
   v18 = PKRoundedSystemFontOfSizeAndWeight(60.0, *MEMORY[0x1E69DB980]);
   v4 = PKRoundedSystemFontOfSizeAndWeight(36.0, v3);
-  v5 = [(PKPaymentPassAction *)self->_action enteredValueItem];
-  v6 = [v5 currency];
+  enteredValueItem = [(PKPaymentPassAction *)self->_action enteredValueItem];
+  currency = [enteredValueItem currency];
 
-  v7 = [[PKEnterCurrencyAmountView alloc] initWithCurrency:v6 amount:self->_currentAmount];
+  v7 = [[PKEnterCurrencyAmountView alloc] initWithCurrency:currency amount:self->_currentAmount];
   enterCurrencyAmountView = self->_enterCurrencyAmountView;
   self->_enterCurrencyAmountView = v7;
 
@@ -1034,9 +1034,9 @@ void __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_10(ui
   [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setKerning:&unk_1F3CC6D08];
   [(PKPerformActionEnterValueView *)self addSubview:self->_enterCurrencyAmountView];
   v9 = [PKEnterValueNewBalanceView alloc];
-  v10 = [(PKPaymentPassAction *)self->_action enteredValueItem];
-  v11 = [v10 currency];
-  v12 = [(PKEnterValueNewBalanceView *)v9 initWithCurrencyCode:v11];
+  enteredValueItem2 = [(PKPaymentPassAction *)self->_action enteredValueItem];
+  currency2 = [enteredValueItem2 currency];
+  v12 = [(PKEnterValueNewBalanceView *)v9 initWithCurrencyCode:currency2];
   newBalanceView = self->_newBalanceView;
   self->_newBalanceView = v12;
 
@@ -1053,13 +1053,13 @@ void __52__PKPerformActionEnterValueView__readCurrentBalance__block_invoke_10(ui
     autoReloadButton = self->_autoReloadButton;
     self->_autoReloadButton = v14;
 
-    v16 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v16 setTitleLineBreakMode:4];
-    [v16 setTitleAlignment:2];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setTitleLineBreakMode:4];
+    [plainButtonConfiguration setTitleAlignment:2];
     v17 = PKLocalizedPaymentString(&cfstr_PassDetailsSet_2.isa);
-    [v16 setTitle:v17];
+    [plainButtonConfiguration setTitle:v17];
 
-    [(UIButton *)self->_autoReloadButton setConfiguration:v16];
+    [(UIButton *)self->_autoReloadButton setConfiguration:plainButtonConfiguration];
     [(UIButton *)self->_autoReloadButton addTarget:self action:sel__didTapSetUpAutoReloadButton forControlEvents:64];
     [(UIButton *)self->_autoReloadButton setAccessibilityIdentifier:*MEMORY[0x1E69B94A8]];
     [(PKPerformActionEnterValueView *)self addSubview:self->_autoReloadButton];

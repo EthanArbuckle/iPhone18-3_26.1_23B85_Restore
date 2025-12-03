@@ -1,58 +1,58 @@
 @interface BuddyProximityBackingViewController
 - (BOOL)_largeAXMode;
 - (BOOL)showPairingStyleToggle;
-- (BuddyProximityBackingViewController)initWithStringProvider:(id)a3;
+- (BuddyProximityBackingViewController)initWithStringProvider:(id)provider;
 - (BuddyProximityBackingViewControllerDelegate)delegate;
-- (void)addPairingStyleToggleButtonBelowView:(id)a3;
+- (void)addPairingStyleToggleButtonBelowView:(id)view;
 - (void)endPairingIfNeeded;
-- (void)pairingStyleToggleTapped:(id)a3;
-- (void)prepareForLanguageChange:(id)a3;
-- (void)setMinimumBrightness:(float)a3;
+- (void)pairingStyleToggleTapped:(id)tapped;
+- (void)prepareForLanguageChange:(id)change;
+- (void)setMinimumBrightness:(float)brightness;
 - (void)showPairingCode;
 - (void)showVisualPairing;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BuddyProximityBackingViewController
 
-- (BuddyProximityBackingViewController)initWithStringProvider:(id)a3
+- (BuddyProximityBackingViewController)initWithStringProvider:(id)provider
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, provider);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = BuddyProximityBackingViewController;
-  v12 = [(BuddyProximityBackingViewController *)&v10 initWithTitle:&stru_10032F900 detailText:0 icon:0];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(BuddyProximityBackingViewController *)&v10 initWithTitle:&stru_10032F900 detailText:0 icon:0];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = objc_alloc_init(BuddyFeatureFlags);
-    v5 = *(v12 + 1);
-    *(v12 + 1) = v4;
+    v5 = *(selfCopy + 1);
+    *(selfCopy + 1) = v4;
 
-    objc_storeStrong(v12 + 11, location[0]);
-    *(v12 + 17) = 1;
+    objc_storeStrong(selfCopy + 11, location[0]);
+    *(selfCopy + 17) = 1;
     v6 = objc_alloc_init(BrightnessSystemClient);
-    v7 = *(v12 + 12);
-    *(v12 + 12) = v6;
+    v7 = *(selfCopy + 12);
+    *(selfCopy + 12) = v6;
   }
 
-  v8 = v12;
+  v8 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
 - (BuddyProximityBackingViewControllerDelegate)delegate
 {
-  v9 = self;
+  selfCopy = self;
   oslog[1] = a2;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -73,66 +73,66 @@
     objc_storeStrong(oslog, 0);
   }
 
-  v4 = objc_loadWeakRetained(&v9->_delegate);
+  v4 = objc_loadWeakRetained(&selfCopy->_delegate);
 
   return v4;
 }
 
 - (void)viewDidLoad
 {
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
   v37.receiver = self;
   v37.super_class = BuddyProximityBackingViewController;
   [(BuddyProximityBackingViewController *)&v37 viewDidLoad];
   v2 = objc_alloc_init(BFFProximityVisualPairingViewController);
-  [(BuddyProximityBackingViewController *)v39 setVisualPairingViewController:v2];
+  [(BuddyProximityBackingViewController *)selfCopy setVisualPairingViewController:v2];
 
-  v3 = [(BuddyProximityBackingViewController *)v39 visualPairingViewController];
-  v4 = [(BFFProximityVisualPairingViewController *)v3 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  visualPairingViewController = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+  view = [(BFFProximityVisualPairingViewController *)visualPairingViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [(BuddyProximityBackingViewController *)v39 setPinCodeLabel:v5];
+  [(BuddyProximityBackingViewController *)selfCopy setPinCodeLabel:v5];
 
-  v6 = [(BuddyProximityBackingViewController *)v39 pinCodeLabel];
-  [(UILabel *)v6 setNumberOfLines:0];
+  pinCodeLabel = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+  [(UILabel *)pinCodeLabel setNumberOfLines:0];
 
   v7 = +[UIColor _labelColor];
-  v8 = [(BuddyProximityBackingViewController *)v39 pinCodeLabel];
-  [(UILabel *)v8 setTextColor:v7];
+  pinCodeLabel2 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+  [(UILabel *)pinCodeLabel2 setTextColor:v7];
 
   v9 = +[UIColor _systemBackgroundColor];
-  v10 = [(BuddyProximityBackingViewController *)v39 pinCodeLabel];
-  [(UILabel *)v10 setBackgroundColor:v9];
+  pinCodeLabel3 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+  [(UILabel *)pinCodeLabel3 setBackgroundColor:v9];
 
   v11 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle0];
-  v12 = [(BuddyProximityBackingViewController *)v39 pinCodeLabel];
-  [(UILabel *)v12 setFont:v11];
+  pinCodeLabel4 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+  [(UILabel *)pinCodeLabel4 setFont:v11];
 
-  if (([(BuddyFeatureFlags *)v39->_featureFlags isSolariumEnabled]& 1) != 0)
+  if (([(BuddyFeatureFlags *)selfCopy->_featureFlags isSolariumEnabled]& 1) != 0)
   {
-    v13 = [(BuddyProximityBackingViewController *)v39 pinCodeLabel];
-    [(UILabel *)v13 setTextAlignment:4];
+    pinCodeLabel5 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+    [(UILabel *)pinCodeLabel5 setTextAlignment:4];
   }
 
   else
   {
-    v13 = [(BuddyProximityBackingViewController *)v39 pinCodeLabel];
-    [(UILabel *)v13 setTextAlignment:1];
+    pinCodeLabel5 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+    [(UILabel *)pinCodeLabel5 setTextAlignment:1];
   }
 
-  v14 = [(BuddyProximityBackingViewController *)v39 pinCodeLabel];
-  [(UILabel *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pinCodeLabel6 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+  [(UILabel *)pinCodeLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(BuddyProximityBackingViewController *)v39 pinCodeLabel];
+  pinCodeLabel7 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
   LODWORD(v16) = 1148846080;
-  [(UILabel *)v15 setContentHuggingPriority:1 forAxis:v16];
+  [(UILabel *)pinCodeLabel7 setContentHuggingPriority:1 forAxis:v16];
 
-  if ([(BuddyProximityBackingViewController *)v39 isShowingVisualPairing]&& [(BuddyProximityBackingViewController *)v39 showPairingStyleToggle])
+  if ([(BuddyProximityBackingViewController *)selfCopy isShowingVisualPairing]&& [(BuddyProximityBackingViewController *)selfCopy showPairingStyleToggle])
   {
     location = 0;
-    if (([(BuddyFeatureFlags *)v39->_featureFlags isSolariumEnabled]& 1) != 0)
+    if (([(BuddyFeatureFlags *)selfCopy->_featureFlags isSolariumEnabled]& 1) != 0)
     {
       v17 = [UIButton buttonWithType:1];
     }
@@ -146,98 +146,98 @@
     location = v17;
 
     [location setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(BuddyProximityBackingViewController *)v39 stringProvider];
-    v20 = [(BuddyProximityBackingViewController *)v39 language];
-    v21 = [(BuddyProximityBackingStringProviding *)v19 textualPairingButtonTitleWithLanguage:v20];
+    stringProvider = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+    language = [(BuddyProximityBackingViewController *)selfCopy language];
+    v21 = [(BuddyProximityBackingStringProviding *)stringProvider textualPairingButtonTitleWithLanguage:language];
     [location setTitle:v21 forState:0];
 
     LODWORD(v22) = 1148846080;
     [location setContentHuggingPriority:1 forAxis:v22];
-    [location addTarget:v39 action:"pairingStyleToggleTapped:" forControlEvents:0x2000];
-    [(BuddyProximityBackingViewController *)v39 setPairingStyleToggleButton:location];
+    [location addTarget:selfCopy action:"pairingStyleToggleTapped:" forControlEvents:0x2000];
+    [(BuddyProximityBackingViewController *)selfCopy setPairingStyleToggleButton:location];
     objc_storeStrong(&location, 0);
   }
 
   v23 = objc_alloc_init(UIView);
-  [(BuddyProximityBackingViewController *)v39 setContainerView:v23];
+  [(BuddyProximityBackingViewController *)selfCopy setContainerView:v23];
 
-  v24 = [(BuddyProximityBackingViewController *)v39 containerView];
-  [(UIView *)v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+  containerView = [(BuddyProximityBackingViewController *)selfCopy containerView];
+  [(UIView *)containerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v25 = +[UIColor _systemBackgroundColor];
-  v26 = [(BuddyProximityBackingViewController *)v39 containerView];
-  [(UIView *)v26 setBackgroundColor:v25];
+  containerView2 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+  [(UIView *)containerView2 setBackgroundColor:v25];
 
-  objc_initWeak(&from, v39);
-  v27 = v39;
-  v28 = [(BuddyProximityBackingViewController *)v39 containerView];
+  objc_initWeak(&from, selfCopy);
+  v27 = selfCopy;
+  containerView3 = [(BuddyProximityBackingViewController *)selfCopy containerView];
   v29 = _NSConcreteStackBlock;
   v30 = -1073741824;
   v31 = 0;
   v32 = sub_1001268B8;
   v33 = &unk_10032D358;
   objc_copyWeak(v34, &from);
-  [(BuddyProximityBackingViewController *)v27 addContentSubView:v28 heightConstraintForLayout:&v29];
+  [(BuddyProximityBackingViewController *)v27 addContentSubView:containerView3 heightConstraintForLayout:&v29];
 
-  [(BuddyProximityBackingViewController *)v39 updateView];
+  [(BuddyProximityBackingViewController *)selfCopy updateView];
   objc_destroyWeak(v34);
   objc_destroyWeak(&from);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v3 = [(BuddyProximityBackingViewController *)self visualPairingViewController];
-  [(BFFProximityVisualPairingViewController *)v3 stop];
+  disappearCopy = disappear;
+  visualPairingViewController = [(BuddyProximityBackingViewController *)self visualPairingViewController];
+  [(BFFProximityVisualPairingViewController *)visualPairingViewController stop];
 
   LODWORD(v4) = 0;
-  [(BuddyProximityBackingViewController *)v10 setMinimumBrightness:v4];
-  v5 = [(BuddyProximityBackingViewController *)v10 parentViewController];
-  v6 = 0;
-  if (!v5)
+  [(BuddyProximityBackingViewController *)selfCopy setMinimumBrightness:v4];
+  parentViewController = [(BuddyProximityBackingViewController *)selfCopy parentViewController];
+  isMovingFromParentViewController = 0;
+  if (!parentViewController)
   {
-    v6 = [(BuddyProximityBackingViewController *)v10 isMovingFromParentViewController];
-    v5 = 0;
+    isMovingFromParentViewController = [(BuddyProximityBackingViewController *)selfCopy isMovingFromParentViewController];
+    parentViewController = 0;
   }
 
-  if (v6)
+  if (isMovingFromParentViewController)
   {
-    [(BuddyProximityBackingViewController *)v10 endPairingIfNeeded];
+    [(BuddyProximityBackingViewController *)selfCopy endPairingIfNeeded];
   }
 
-  v7.receiver = v10;
+  v7.receiver = selfCopy;
   v7.super_class = BuddyProximityBackingViewController;
-  [(BuddyProximityBackingViewController *)&v7 viewDidDisappear:v8];
+  [(BuddyProximityBackingViewController *)&v7 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v7 = self;
+  sizeCopy = size;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v5.receiver = v7;
+  objc_storeStrong(location, coordinator);
+  v5.receiver = selfCopy;
   v5.super_class = BuddyProximityBackingViewController;
-  [(BuddyProximityBackingViewController *)&v5 viewWillTransitionToSize:location[0] withTransitionCoordinator:v8.width, v8.height];
-  v4 = [(BuddyProximityBackingViewController *)v7 view];
-  [v4 setNeedsLayout];
+  [(BuddyProximityBackingViewController *)&v5 viewWillTransitionToSize:location[0] withTransitionCoordinator:sizeCopy.width, sizeCopy.height];
+  view = [(BuddyProximityBackingViewController *)selfCopy view];
+  [view setNeedsLayout];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = BuddyProximityBackingViewController;
   [(BuddyProximityBackingViewController *)&v3 traitCollectionDidChange:location[0]];
-  [(BuddyProximityBackingViewController *)v5 updateView];
+  [(BuddyProximityBackingViewController *)selfCopy updateView];
   objc_storeStrong(location, 0);
 }
 
@@ -245,8 +245,8 @@
 {
   if (![(BuddyProximityBackingViewController *)self nonUserInitiatedDismissal])
   {
-    v2 = [(BuddyProximityBackingViewController *)self delegate];
-    [(BuddyProximityBackingViewControllerDelegate *)v2 pairingEndedByUser];
+    delegate = [(BuddyProximityBackingViewController *)self delegate];
+    [(BuddyProximityBackingViewControllerDelegate *)delegate pairingEndedByUser];
   }
 }
 
@@ -254,33 +254,33 @@
 {
   [(BuddyProximityBackingViewController *)self setShowingVisualPairing:1, a2];
   [(BuddyProximityBackingViewController *)self updateView];
-  v2 = [(BuddyProximityBackingViewController *)self visualPairingViewController];
-  [(BFFProximityVisualPairingViewController *)v2 start];
+  visualPairingViewController = [(BuddyProximityBackingViewController *)self visualPairingViewController];
+  [(BFFProximityVisualPairingViewController *)visualPairingViewController start];
 }
 
 - (void)showPairingCode
 {
   [(BuddyProximityBackingViewController *)self setShowingVisualPairing:0, a2];
   [(BuddyProximityBackingViewController *)self updateView];
-  v2 = [(BuddyProximityBackingViewController *)self visualPairingViewController];
-  [(BFFProximityVisualPairingViewController *)v2 stop];
+  visualPairingViewController = [(BuddyProximityBackingViewController *)self visualPairingViewController];
+  [(BFFProximityVisualPairingViewController *)visualPairingViewController stop];
 }
 
-- (void)prepareForLanguageChange:(id)a3
+- (void)prepareForLanguageChange:(id)change
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityBackingViewController *)v12 visualPairingViewController];
+  objc_storeStrong(location, change);
+  visualPairingViewController = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100126EAC;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  [(BFFProximityVisualPairingViewController *)v3 pairingDidComplete:&v4];
+  [(BFFProximityVisualPairingViewController *)visualPairingViewController pairingDidComplete:&v4];
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
@@ -289,19 +289,19 @@
 
 - (void)updateView
 {
-  v95 = self;
+  selfCopy = self;
   v94 = a2;
-  v2 = [(BuddyProximityBackingViewController *)self view];
-  [v2 layoutIfNeeded];
+  view = [(BuddyProximityBackingViewController *)self view];
+  [view layoutIfNeeded];
 
-  v3 = [(BuddyProximityBackingViewController *)v95 delegate];
-  v93 = [(BuddyProximityBackingViewControllerDelegate *)v3 deviceClass];
+  delegate = [(BuddyProximityBackingViewController *)selfCopy delegate];
+  deviceClass = [(BuddyProximityBackingViewControllerDelegate *)delegate deviceClass];
 
-  v92 = [(BuddyProximityBackingViewController *)v95 language];
-  if ([(BuddyProximityBackingViewController *)v95 isShowingVisualPairing])
+  language = [(BuddyProximityBackingViewController *)selfCopy language];
+  if ([(BuddyProximityBackingViewController *)selfCopy isShowingVisualPairing])
   {
-    v5 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-    v6 = v5 == 0;
+    visualPairingViewController = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+    v6 = visualPairingViewController == 0;
 
     if (v6)
     {
@@ -311,91 +311,91 @@
     else
     {
       LODWORD(v7) = 1140457472;
-      [(BuddyProximityBackingViewController *)v95 setMinimumBrightness:v7];
-      v8 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-      [(BFFProximityVisualPairingViewController *)v8 removeFromParentViewController];
+      [(BuddyProximityBackingViewController *)selfCopy setMinimumBrightness:v7];
+      visualPairingViewController2 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+      [(BFFProximityVisualPairingViewController *)visualPairingViewController2 removeFromParentViewController];
 
-      if ([(BuddyProximityBackingViewController *)v95 _largeAXMode])
+      if ([(BuddyProximityBackingViewController *)selfCopy _largeAXMode])
       {
-        [(BuddyProximityBackingViewController *)v95 resetLayoutTo:1];
+        [(BuddyProximityBackingViewController *)selfCopy resetLayoutTo:1];
       }
 
       else
       {
-        [(BuddyProximityBackingViewController *)v95 resetLayoutTo:2];
+        [(BuddyProximityBackingViewController *)selfCopy resetLayoutTo:2];
       }
 
-      v9 = [(BuddyProximityBackingViewController *)v95 stringProvider];
-      v90 = [(BuddyProximityBackingStringProviding *)v9 visualTitleWithDeviceClass:v93 language:v92];
+      stringProvider = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+      v90 = [(BuddyProximityBackingStringProviding *)stringProvider visualTitleWithDeviceClass:deviceClass language:language];
 
-      v10 = [(BuddyProximityBackingViewController *)v95 stringProvider];
-      location = [(BuddyProximityBackingStringProviding *)v10 visualDescriptionWithDeviceClass:v93 language:v92];
+      stringProvider2 = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+      location = [(BuddyProximityBackingStringProviding *)stringProvider2 visualDescriptionWithDeviceClass:deviceClass language:language];
 
-      v11 = [(BuddyProximityBackingViewController *)v95 headerView];
-      [v11 setTitle:v90];
+      headerView = [(BuddyProximityBackingViewController *)selfCopy headerView];
+      [headerView setTitle:v90];
 
-      v12 = [(BuddyProximityBackingViewController *)v95 headerView];
-      [v12 setDetailText:location];
+      headerView2 = [(BuddyProximityBackingViewController *)selfCopy headerView];
+      [headerView2 setDetailText:location];
 
-      v13 = [(BuddyProximityBackingViewController *)v95 headerView];
-      [v13 setLanguage:v92];
+      headerView3 = [(BuddyProximityBackingViewController *)selfCopy headerView];
+      [headerView3 setLanguage:language];
 
-      v14 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-      v15 = [(BuddyProximityBackingViewController *)v95 pairingCode];
-      [(BFFProximityVisualPairingViewController *)v14 setPairingCode:v15];
+      visualPairingViewController3 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+      pairingCode = [(BuddyProximityBackingViewController *)selfCopy pairingCode];
+      [(BFFProximityVisualPairingViewController *)visualPairingViewController3 setPairingCode:pairingCode];
 
-      v16 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-      [(UILabel *)v16 removeFromSuperview];
+      pinCodeLabel = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+      [(UILabel *)pinCodeLabel removeFromSuperview];
 
-      v17 = [(BuddyProximityBackingViewController *)v95 containerView];
-      v18 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-      v19 = [(BFFProximityVisualPairingViewController *)v18 view];
-      [(UIView *)v17 addSubview:v19];
+      containerView = [(BuddyProximityBackingViewController *)selfCopy containerView];
+      visualPairingViewController4 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+      view2 = [(BFFProximityVisualPairingViewController *)visualPairingViewController4 view];
+      [(UIView *)containerView addSubview:view2];
 
-      v20 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-      [(BuddyProximityBackingViewController *)v95 addChildViewController:v20];
+      visualPairingViewController5 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+      [(BuddyProximityBackingViewController *)selfCopy addChildViewController:visualPairingViewController5];
 
-      v21 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-      v22 = [(BFFProximityVisualPairingViewController *)v21 parentViewController];
-      v23 = v22 == v95;
+      visualPairingViewController6 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+      parentViewController = [(BFFProximityVisualPairingViewController *)visualPairingViewController6 parentViewController];
+      v23 = parentViewController == selfCopy;
 
       if (v23)
       {
         v24 = +[NSAssertionHandler currentHandler];
-        [(NSAssertionHandler *)v24 handleFailureInMethod:v94 object:v95 file:@"BuddyProximityBackingViewController.m" lineNumber:261 description:@"Underlying implementation has changed; Visual pairing controller is expected to have OBWelcomeController as it's parent"];
+        [(NSAssertionHandler *)v24 handleFailureInMethod:v94 object:selfCopy file:@"BuddyProximityBackingViewController.m" lineNumber:261 description:@"Underlying implementation has changed; Visual pairing controller is expected to have OBWelcomeController as it's parent"];
       }
 
-      if ([(BuddyProximityBackingViewController *)v95 showPairingStyleToggle])
+      if ([(BuddyProximityBackingViewController *)selfCopy showPairingStyleToggle])
       {
-        v25 = [(BuddyProximityBackingViewController *)v95 pairingStyleToggleButton];
-        v26 = [(BuddyProximityBackingViewController *)v95 stringProvider];
-        v27 = [(BuddyProximityBackingStringProviding *)v26 textualPairingButtonTitleWithLanguage:v92];
-        [(UIButton *)v25 setTitle:v27 forState:0];
+        pairingStyleToggleButton = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+        stringProvider3 = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+        v27 = [(BuddyProximityBackingStringProviding *)stringProvider3 textualPairingButtonTitleWithLanguage:language];
+        [(UIButton *)pairingStyleToggleButton setTitle:v27 forState:0];
 
-        v28 = [(BuddyProximityBackingViewController *)v95 containerView];
-        v29 = [(UIView *)v28 topAnchor];
-        v30 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-        v31 = [(BFFProximityVisualPairingViewController *)v30 view];
-        v32 = [v31 topAnchor];
-        v33 = [(NSLayoutYAxisAnchor *)v29 constraintEqualToAnchor:v32];
+        containerView2 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+        topAnchor = [(UIView *)containerView2 topAnchor];
+        visualPairingViewController7 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+        view3 = [(BFFProximityVisualPairingViewController *)visualPairingViewController7 view];
+        topAnchor2 = [view3 topAnchor];
+        v33 = [(NSLayoutYAxisAnchor *)topAnchor constraintEqualToAnchor:topAnchor2];
         [v33 setActive:1];
 
-        v34 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-        v35 = [(BFFProximityVisualPairingViewController *)v34 view];
-        v36 = [(BuddyProximityBackingViewController *)v95 containerView];
-        [v35 pinToHorizontalEdges:v36];
+        visualPairingViewController8 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+        view4 = [(BFFProximityVisualPairingViewController *)visualPairingViewController8 view];
+        containerView3 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+        [view4 pinToHorizontalEdges:containerView3];
 
-        v37 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-        v38 = [(BFFProximityVisualPairingViewController *)v37 view];
-        [(BuddyProximityBackingViewController *)v95 addPairingStyleToggleButtonBelowView:v38];
+        visualPairingViewController9 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+        view5 = [(BFFProximityVisualPairingViewController *)visualPairingViewController9 view];
+        [(BuddyProximityBackingViewController *)selfCopy addPairingStyleToggleButtonBelowView:view5];
       }
 
       else
       {
-        v39 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-        v40 = [(BFFProximityVisualPairingViewController *)v39 view];
-        v41 = [(BuddyProximityBackingViewController *)v95 containerView];
-        [v40 pinToEdges:v41];
+        visualPairingViewController10 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+        view6 = [(BFFProximityVisualPairingViewController *)visualPairingViewController10 view];
+        containerView4 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+        [view6 pinToEdges:containerView4];
       }
 
       v91 = 1;
@@ -407,59 +407,59 @@
   else
   {
     LODWORD(v4) = 0;
-    [(BuddyProximityBackingViewController *)v95 setMinimumBrightness:v4];
-    [(BuddyProximityBackingViewController *)v95 resetLayoutTo:2];
-    v42 = [(BuddyProximityBackingViewController *)v95 stringProvider];
-    v88 = [(BuddyProximityBackingStringProviding *)v42 textualTitleWithDeviceClass:v93 language:v92];
+    [(BuddyProximityBackingViewController *)selfCopy setMinimumBrightness:v4];
+    [(BuddyProximityBackingViewController *)selfCopy resetLayoutTo:2];
+    stringProvider4 = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+    v88 = [(BuddyProximityBackingStringProviding *)stringProvider4 textualTitleWithDeviceClass:deviceClass language:language];
 
-    v43 = [(BuddyProximityBackingViewController *)v95 stringProvider];
-    v87 = [(BuddyProximityBackingStringProviding *)v43 textualDescriptionWithDeviceClass:v93 language:v92];
+    stringProvider5 = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+    v87 = [(BuddyProximityBackingStringProviding *)stringProvider5 textualDescriptionWithDeviceClass:deviceClass language:language];
 
-    v44 = [(BuddyProximityBackingViewController *)v95 headerView];
-    [v44 setTitle:v88];
+    headerView4 = [(BuddyProximityBackingViewController *)selfCopy headerView];
+    [headerView4 setTitle:v88];
 
-    v45 = [(BuddyProximityBackingViewController *)v95 headerView];
-    [v45 setDetailText:v87];
+    headerView5 = [(BuddyProximityBackingViewController *)selfCopy headerView];
+    [headerView5 setDetailText:v87];
 
-    v46 = [(BuddyProximityBackingViewController *)v95 headerView];
-    [v46 setLanguage:v92];
+    headerView6 = [(BuddyProximityBackingViewController *)selfCopy headerView];
+    [headerView6 setLanguage:language];
 
-    v47 = [(BuddyProximityBackingViewController *)v95 headerView];
+    headerView7 = [(BuddyProximityBackingViewController *)selfCopy headerView];
     LODWORD(v48) = 1045220557;
-    [v47 setTitleHyphenationFactor:v48];
+    [headerView7 setTitleHyphenationFactor:v48];
 
-    v49 = [(BuddyProximityBackingViewController *)v95 visualPairingViewController];
-    v50 = [(BFFProximityVisualPairingViewController *)v49 view];
-    [v50 removeFromSuperview];
+    visualPairingViewController11 = [(BuddyProximityBackingViewController *)selfCopy visualPairingViewController];
+    view7 = [(BFFProximityVisualPairingViewController *)visualPairingViewController11 view];
+    [view7 removeFromSuperview];
 
-    v51 = [(BuddyProximityBackingViewController *)v95 containerView];
-    v52 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-    [(UIView *)v51 addSubview:v52];
+    containerView5 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+    pinCodeLabel2 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+    [(UIView *)containerView5 addSubview:pinCodeLabel2];
 
-    v53 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-    v54 = [(BuddyProximityBackingViewController *)v95 containerView];
-    [(UILabel *)v53 pinToHorizontalEdges:v54];
+    pinCodeLabel3 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+    containerView6 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+    [(UILabel *)pinCodeLabel3 pinToHorizontalEdges:containerView6];
 
-    if (([(BuddyFeatureFlags *)v95->_featureFlags isSolariumEnabled]& 1) != 0)
+    if (([(BuddyFeatureFlags *)selfCopy->_featureFlags isSolariumEnabled]& 1) != 0)
     {
       v55 = [NSMutableAttributedString alloc];
-      v56 = [(BuddyProximityBackingViewController *)v95 pairingCode];
-      v86 = [v55 initWithString:v56];
+      pairingCode2 = [(BuddyProximityBackingViewController *)selfCopy pairingCode];
+      v86 = [v55 initWithString:pairingCode2];
 
-      v57 = [(BuddyProximityBackingViewController *)v95 pairingCode];
+      pairingCode3 = [(BuddyProximityBackingViewController *)selfCopy pairingCode];
       v97 = 0;
-      v96 = [(NSString *)v57 length];
+      v96 = [(NSString *)pairingCode3 length];
       v98 = 0;
       v99 = v96;
       [v86 addAttribute:NSKernAttributeName value:&off_10033D598 range:{0, v96, 0, v96}];
 
-      v58 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-      [(UILabel *)v58 setAttributedText:v86];
+      pinCodeLabel4 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+      [(UILabel *)pinCodeLabel4 setAttributedText:v86];
 
-      v59 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-      v60 = [(UILabel *)v59 lastBaselineAnchor];
-      v61 = [(BuddyProximityBackingViewController *)v95 containerView];
-      v62 = [(UIView *)v61 topAnchor];
+      pinCodeLabel5 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+      lastBaselineAnchor = [(UILabel *)pinCodeLabel5 lastBaselineAnchor];
+      containerView7 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+      topAnchor3 = [(UIView *)containerView7 topAnchor];
       v63 = BFFIsiPad();
       v64 = 54.0;
       if ((v63 & 1) == 0)
@@ -467,7 +467,7 @@
         v64 = 44.0;
       }
 
-      v65 = [v60 constraintEqualToAnchor:v62 constant:v64];
+      v65 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:v64];
       [v65 setActive:1];
 
       objc_storeStrong(&v86, 0);
@@ -475,14 +475,14 @@
 
     else
     {
-      v66 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-      v67 = [(BuddyProximityBackingViewController *)v95 pairingCode];
-      [(UILabel *)v66 setText:v67];
+      pinCodeLabel6 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+      pairingCode4 = [(BuddyProximityBackingViewController *)selfCopy pairingCode];
+      [(UILabel *)pinCodeLabel6 setText:pairingCode4];
 
-      v68 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-      v69 = [(UILabel *)v68 lastBaselineAnchor];
-      v70 = [(BuddyProximityBackingViewController *)v95 containerView];
-      v71 = [(UIView *)v70 topAnchor];
+      pinCodeLabel7 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+      lastBaselineAnchor2 = [(UILabel *)pinCodeLabel7 lastBaselineAnchor];
+      containerView8 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+      topAnchor4 = [(UIView *)containerView8 topAnchor];
       v72 = BFFIsiPad();
       v73 = 106.0;
       if ((v72 & 1) == 0)
@@ -490,97 +490,97 @@
         v73 = 96.0;
       }
 
-      v74 = [v69 constraintEqualToAnchor:v71 constant:v73];
+      v74 = [lastBaselineAnchor2 constraintEqualToAnchor:topAnchor4 constant:v73];
       [v74 setActive:1];
     }
 
-    if ([(BuddyProximityBackingViewController *)v95 showPairingStyleToggle])
+    if ([(BuddyProximityBackingViewController *)selfCopy showPairingStyleToggle])
     {
-      v75 = [(BuddyProximityBackingViewController *)v95 pairingStyleToggleButton];
-      v76 = [(BuddyProximityBackingViewController *)v95 stringProvider];
-      v77 = [(BuddyProximityBackingStringProviding *)v76 visualPairingButtonTitleWithLanguage:v92];
-      [(UIButton *)v75 setTitle:v77 forState:0];
+      pairingStyleToggleButton2 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+      stringProvider6 = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+      v77 = [(BuddyProximityBackingStringProviding *)stringProvider6 visualPairingButtonTitleWithLanguage:language];
+      [(UIButton *)pairingStyleToggleButton2 setTitle:v77 forState:0];
 
-      v78 = v95;
-      v79 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-      [(BuddyProximityBackingViewController *)v78 addPairingStyleToggleButtonBelowView:v79];
+      v78 = selfCopy;
+      pinCodeLabel8 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+      [(BuddyProximityBackingViewController *)v78 addPairingStyleToggleButtonBelowView:pinCodeLabel8];
     }
 
     else
     {
-      v80 = [(BuddyProximityBackingViewController *)v95 containerView];
-      v81 = [(UIView *)v80 bottomAnchor];
-      v82 = [(BuddyProximityBackingViewController *)v95 pinCodeLabel];
-      v83 = [(UILabel *)v82 bottomAnchor];
-      v84 = [(NSLayoutYAxisAnchor *)v81 constraintGreaterThanOrEqualToAnchor:v83];
+      containerView9 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+      bottomAnchor = [(UIView *)containerView9 bottomAnchor];
+      pinCodeLabel9 = [(BuddyProximityBackingViewController *)selfCopy pinCodeLabel];
+      bottomAnchor2 = [(UILabel *)pinCodeLabel9 bottomAnchor];
+      v84 = [(NSLayoutYAxisAnchor *)bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
       [v84 setActive:1];
     }
 
-    v85 = [(BuddyProximityBackingViewController *)v95 view];
-    [v85 setNeedsLayout];
+    view8 = [(BuddyProximityBackingViewController *)selfCopy view];
+    [view8 setNeedsLayout];
 
     objc_storeStrong(&v87, 0);
     objc_storeStrong(&v88, 0);
     v91 = 0;
   }
 
-  objc_storeStrong(&v92, 0);
-  objc_storeStrong(&v93, 0);
+  objc_storeStrong(&language, 0);
+  objc_storeStrong(&deviceClass, 0);
 }
 
-- (void)addPairingStyleToggleButtonBelowView:(id)a3
+- (void)addPairingStyleToggleButtonBelowView:(id)view
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-  [(UIButton *)v3 removeFromSuperview];
+  objc_storeStrong(location, view);
+  pairingStyleToggleButton = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+  [(UIButton *)pairingStyleToggleButton removeFromSuperview];
 
-  v4 = [(BuddyProximityBackingViewController *)v44 containerView];
-  v5 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-  [(UIView *)v4 addSubview:v5];
+  containerView = [(BuddyProximityBackingViewController *)selfCopy containerView];
+  pairingStyleToggleButton2 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+  [(UIView *)containerView addSubview:pairingStyleToggleButton2];
 
-  if (([(BuddyFeatureFlags *)v44->_featureFlags isSolariumEnabled]& 1) != 0)
+  if (([(BuddyFeatureFlags *)selfCopy->_featureFlags isSolariumEnabled]& 1) != 0)
   {
-    v39 = [location[0] bottomAnchor];
-    v41 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-    v37 = [(UIButton *)v41 topAnchor];
-    v35 = [v39 constraintEqualToAnchor:?];
+    bottomAnchor = [location[0] bottomAnchor];
+    pairingStyleToggleButton3 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+    topAnchor = [(UIButton *)pairingStyleToggleButton3 topAnchor];
+    v35 = [bottomAnchor constraintEqualToAnchor:?];
     v48[0] = v35;
-    v33 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-    v6 = [(UIButton *)v33 leadingAnchor];
-    v7 = [(BuddyProximityBackingViewController *)v44 containerView];
-    v8 = [(UIView *)v7 leadingAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8];
+    pairingStyleToggleButton4 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+    leadingAnchor = [(UIButton *)pairingStyleToggleButton4 leadingAnchor];
+    containerView2 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+    leadingAnchor2 = [(UIView *)containerView2 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v48[1] = v9;
-    v10 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-    v11 = [(UIButton *)v10 trailingAnchor];
-    v12 = [(BuddyProximityBackingViewController *)v44 containerView];
-    v13 = [(UIView *)v12 trailingAnchor];
-    v14 = [v11 constraintLessThanOrEqualToAnchor:v13];
+    pairingStyleToggleButton5 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+    trailingAnchor = [(UIButton *)pairingStyleToggleButton5 trailingAnchor];
+    containerView3 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+    trailingAnchor2 = [(UIView *)containerView3 trailingAnchor];
+    v14 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v48[2] = v14;
     v15 = [NSArray arrayWithObjects:v48 count:3];
     [NSLayoutConstraint activateConstraints:v15];
 
-    if ([(BuddyProximityBackingViewController *)v44 isShowingVisualPairing])
+    if ([(BuddyProximityBackingViewController *)selfCopy isShowingVisualPairing])
     {
-      v16 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-      v17 = [(UIButton *)v16 bottomAnchor];
-      v18 = [(BuddyProximityBackingViewController *)v44 containerView];
-      v19 = [(UIView *)v18 bottomAnchor];
-      v20 = [v17 constraintEqualToAnchor:v19];
+      pairingStyleToggleButton6 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+      bottomAnchor2 = [(UIButton *)pairingStyleToggleButton6 bottomAnchor];
+      containerView4 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+      bottomAnchor3 = [(UIView *)containerView4 bottomAnchor];
+      v20 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       v47 = v20;
       v21 = [NSArray arrayWithObjects:&v47 count:1];
     }
 
     else
     {
-      v16 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-      v17 = [(UIButton *)v16 bottomAnchor];
-      v18 = [(BuddyProximityBackingViewController *)v44 containerView];
-      v19 = [(UIView *)v18 bottomAnchor];
-      v20 = [v17 constraintLessThanOrEqualToAnchor:v19];
+      pairingStyleToggleButton6 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+      bottomAnchor2 = [(UIButton *)pairingStyleToggleButton6 bottomAnchor];
+      containerView4 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+      bottomAnchor3 = [(UIView *)containerView4 bottomAnchor];
+      v20 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
       v46 = v20;
       v21 = [NSArray arrayWithObjects:&v46 count:1];
     }
@@ -590,38 +590,38 @@
 
   else
   {
-    v22 = [(BuddyProximityBackingViewController *)v44 containerView];
-    v40 = [location[0] bottomAnchor];
-    v42 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-    v38 = [(UIButton *)v42 topAnchor];
-    v36 = [v40 constraintEqualToAnchor:?];
+    containerView5 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+    bottomAnchor4 = [location[0] bottomAnchor];
+    pairingStyleToggleButton7 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+    topAnchor2 = [(UIButton *)pairingStyleToggleButton7 topAnchor];
+    v36 = [bottomAnchor4 constraintEqualToAnchor:?];
     v45[0] = v36;
-    v34 = [(BuddyProximityBackingViewController *)v44 containerView];
-    v32 = [(UIView *)v34 bottomAnchor];
-    v23 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-    v24 = [(UIButton *)v23 bottomAnchor];
-    v25 = [(NSLayoutYAxisAnchor *)v32 constraintEqualToAnchor:v24];
+    containerView6 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+    bottomAnchor5 = [(UIView *)containerView6 bottomAnchor];
+    pairingStyleToggleButton8 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+    bottomAnchor6 = [(UIButton *)pairingStyleToggleButton8 bottomAnchor];
+    v25 = [(NSLayoutYAxisAnchor *)bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v45[1] = v25;
-    v26 = [(BuddyProximityBackingViewController *)v44 containerView];
-    v27 = [(UIView *)v26 centerXAnchor];
-    v28 = [(BuddyProximityBackingViewController *)v44 pairingStyleToggleButton];
-    v29 = [(UIButton *)v28 centerXAnchor];
-    v30 = [(NSLayoutXAxisAnchor *)v27 constraintEqualToAnchor:v29];
+    containerView7 = [(BuddyProximityBackingViewController *)selfCopy containerView];
+    centerXAnchor = [(UIView *)containerView7 centerXAnchor];
+    pairingStyleToggleButton9 = [(BuddyProximityBackingViewController *)selfCopy pairingStyleToggleButton];
+    centerXAnchor2 = [(UIButton *)pairingStyleToggleButton9 centerXAnchor];
+    v30 = [(NSLayoutXAxisAnchor *)centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v45[2] = v30;
     v31 = [NSArray arrayWithObjects:v45 count:3];
-    [(UIView *)v22 addConstraints:v31];
+    [(UIView *)containerView5 addConstraints:v31];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setMinimumBrightness:(float)a3
+- (void)setMinimumBrightness:(float)brightness
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  brightnessCopy = brightness;
   v18[0] = @"nits";
-  v3 = [NSNumber numberWithFloat:*&a3];
+  v3 = [NSNumber numberWithFloat:*&brightness];
   v19[0] = v3;
   v18[1] = @"period";
   v19[1] = &off_10033D5A8;
@@ -636,8 +636,8 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v4 = [(BuddyProximityBackingViewController *)v16 brightnessClient];
-  v5 = [(BrightnessSystemClient *)v4 setProperty:location forKey:@"MinNits"]^ 1;
+  brightnessClient = [(BuddyProximityBackingViewController *)selfCopy brightnessClient];
+  v5 = [(BrightnessSystemClient *)brightnessClient setProperty:location forKey:@"MinNits"]^ 1;
 
   if (v5)
   {
@@ -660,22 +660,22 @@
 - (BOOL)_largeAXMode
 {
   v2 = [UIApplication sharedApplication:a2];
-  v3 = [(UIApplication *)v2 preferredContentSizeCategory];
-  v4 = UIContentSizeCategoryCompareToCategory(UIContentSizeCategoryExtraLarge, v3) == NSOrderedAscending;
+  preferredContentSizeCategory = [(UIApplication *)v2 preferredContentSizeCategory];
+  v4 = UIContentSizeCategoryCompareToCategory(UIContentSizeCategoryExtraLarge, preferredContentSizeCategory) == NSOrderedAscending;
 
   return v4;
 }
 
 - (BOOL)showPairingStyleToggle
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v2 = [(BuddyProximityBackingViewController *)self stringProvider];
+  stringProvider = [(BuddyProximityBackingViewController *)self stringProvider];
   v12 = 0;
   v3 = 1;
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(BuddyProximityBackingViewController *)v15 stringProvider];
+    stringProvider2 = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
     v12 = 1;
     v3 = objc_opt_respondsToSelector() ^ 1;
   }
@@ -691,12 +691,12 @@
 
   else
   {
-    v11 = [(BuddyProximityBackingViewController *)v15 language];
-    v4 = [(BuddyProximityBackingViewController *)v15 stringProvider];
-    location = [(BuddyProximityBackingStringProviding *)v4 visualPairingButtonTitleWithLanguage:v11];
+    language = [(BuddyProximityBackingViewController *)selfCopy language];
+    stringProvider3 = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+    location = [(BuddyProximityBackingStringProviding *)stringProvider3 visualPairingButtonTitleWithLanguage:language];
 
-    v5 = [(BuddyProximityBackingViewController *)v15 stringProvider];
-    v9 = [(BuddyProximityBackingStringProviding *)v5 textualPairingButtonTitleWithLanguage:v11];
+    stringProvider4 = [(BuddyProximityBackingViewController *)selfCopy stringProvider];
+    v9 = [(BuddyProximityBackingStringProviding *)stringProvider4 textualPairingButtonTitleWithLanguage:language];
 
     v6 = [location length];
     v7 = 0;
@@ -708,26 +708,26 @@
     v16 = v7;
     objc_storeStrong(&v9, 0);
     objc_storeStrong(&location, 0);
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&language, 0);
   }
 
   return v16;
 }
 
-- (void)pairingStyleToggleTapped:(id)a3
+- (void)pairingStyleToggleTapped:(id)tapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(BuddyProximityBackingViewController *)v4 isShowingVisualPairing])
+  objc_storeStrong(location, tapped);
+  if ([(BuddyProximityBackingViewController *)selfCopy isShowingVisualPairing])
   {
-    [(BuddyProximityBackingViewController *)v4 showPairingCode];
+    [(BuddyProximityBackingViewController *)selfCopy showPairingCode];
   }
 
   else
   {
-    [(BuddyProximityBackingViewController *)v4 showVisualPairing];
+    [(BuddyProximityBackingViewController *)selfCopy showVisualPairing];
   }
 
   objc_storeStrong(location, 0);

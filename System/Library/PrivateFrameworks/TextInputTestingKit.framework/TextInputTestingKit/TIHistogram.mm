@@ -2,31 +2,31 @@
 - (TIHistogram)init;
 - (id)descriptionOfCumulativeDistributionFunction;
 - (id)sortedNumbers;
-- (int64_t)countForNumber:(id)a3;
-- (void)addNumber:(id)a3;
-- (void)enumerateCumulativeDistributionFunctionUsingBlock:(id)a3;
-- (void)enumerateNumbersUsingBlock:(id)a3;
+- (int64_t)countForNumber:(id)number;
+- (void)addNumber:(id)number;
+- (void)enumerateCumulativeDistributionFunctionUsingBlock:(id)block;
+- (void)enumerateNumbersUsingBlock:(id)block;
 @end
 
 @implementation TIHistogram
 
 - (id)descriptionOfCumulativeDistributionFunction
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__TIHistogram_descriptionOfCumulativeDistributionFunction__block_invoke;
   v6[3] = &unk_279DA0D40;
-  v4 = v3;
+  v4 = string;
   v7 = v4;
   [(TIHistogram *)self enumerateCumulativeDistributionFunctionUsingBlock:v6];
 
   return v4;
 }
 
-- (void)enumerateCumulativeDistributionFunctionUsingBlock:(id)a3
+- (void)enumerateCumulativeDistributionFunctionUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -36,7 +36,7 @@
   v6[2] = __65__TIHistogram_enumerateCumulativeDistributionFunctionUsingBlock___block_invoke;
   v6[3] = &unk_279DA0D18;
   v8 = v9;
-  v5 = v4;
+  v5 = blockCopy;
   v6[4] = self;
   v7 = v5;
   [(TIHistogram *)self enumerateNumbersUsingBlock:v6];
@@ -44,18 +44,18 @@
   _Block_object_dispose(v9, 8);
 }
 
-- (void)enumerateNumbersUsingBlock:(id)a3
+- (void)enumerateNumbersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(TIHistogram *)self sortedNumbers];
+  blockCopy = block;
+  sortedNumbers = [(TIHistogram *)self sortedNumbers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__TIHistogram_enumerateNumbersUsingBlock___block_invoke;
   v7[3] = &unk_279DA0CF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [sortedNumbers enumerateObjectsUsingBlock:v7];
 }
 
 void __42__TIHistogram_enumerateNumbersUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -68,8 +68,8 @@ void __42__TIHistogram_enumerateNumbersUsingBlock___block_invoke(uint64_t a1, vo
 
 - (id)sortedNumbers
 {
-  v2 = [(NSMutableDictionary *)self->_counts allKeys];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_2890];
+  allKeys = [(NSMutableDictionary *)self->_counts allKeys];
+  v3 = [allKeys sortedArrayUsingComparator:&__block_literal_global_2890];
 
   return v3;
 }
@@ -101,22 +101,22 @@ uint64_t __28__TIHistogram_sortedNumbers__block_invoke(uint64_t a1, void *a2, vo
   return v7;
 }
 
-- (int64_t)countForNumber:(id)a3
+- (int64_t)countForNumber:(id)number
 {
-  v3 = [(NSMutableDictionary *)self->_counts objectForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_counts objectForKey:number];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)addNumber:(id)a3
+- (void)addNumber:(id)number
 {
   counts = self->_counts;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)counts objectForKey:v5];
+  numberCopy = number;
+  v6 = [(NSMutableDictionary *)counts objectForKey:numberCopy];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "integerValue") + 1}];
 
-  [(NSMutableDictionary *)self->_counts setObject:v7 forKey:v5];
+  [(NSMutableDictionary *)self->_counts setObject:v7 forKey:numberCopy];
   ++self->_totalCount;
 }
 

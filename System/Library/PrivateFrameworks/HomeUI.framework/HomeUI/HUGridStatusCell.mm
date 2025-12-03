@@ -8,13 +8,13 @@
 - (CGRect)tileFrame;
 - (HFItem)item;
 - (HUGridCellLayoutOptions)layoutOptions;
-- (HUGridStatusCell)initWithCoder:(id)a3;
+- (HUGridStatusCell)initWithCoder:(id)coder;
 - (id)baseIconViewConfiguration;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)prepareForReuse;
-- (void)setCellContentsHidden:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)setLayoutOptions:(id)a3;
+- (void)setCellContentsHidden:(BOOL)hidden;
+- (void)setItem:(id)item;
+- (void)setLayoutOptions:(id)options;
 @end
 
 @implementation HUGridStatusCell
@@ -33,11 +33,11 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setCellContentsHidden:(BOOL)a3
+- (void)setCellContentsHidden:(BOOL)hidden
 {
   v5 = OBJC_IVAR___HUGridStatusCell_areCellContentsHidden;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.isa + v5) = hidden;
 }
 
 - (HUGridCellLayoutOptions)layoutOptions
@@ -47,13 +47,13 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
   v5 = OBJC_IVAR___HUGridStatusCell_layoutOptions;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.super.super.isa + v5) = options;
+  optionsCopy = options;
 }
 
 - (HFItem)item
@@ -63,19 +63,19 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   v5 = OBJC_IVAR___HUGridStatusCell_item;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.super.isa + v5) = item;
+  itemCopy = item;
+  selfCopy = self;
 
-  [(HUGridStatusCell *)v8 setNeedsUpdateConfiguration];
+  [(HUGridStatusCell *)selfCopy setNeedsUpdateConfiguration];
 }
 
-- (HUGridStatusCell)initWithCoder:(id)a3
+- (HUGridStatusCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___HUGridStatusCell_areCellContentsHidden) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___HUGridStatusCell_layoutOptions) = 0;
@@ -95,14 +95,14 @@
   [(HUGridStatusCell *)&v4 prepareForReuse];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_20D5660D8();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D5660C8();
-  v8 = self;
+  selfCopy = self;
   sub_20D0FC81C(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -172,7 +172,7 @@
 
 - (id)baseIconViewConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   GridStatusCell.baseIconViewConfiguration()(v11);
 
   v3 = v12;

@@ -1,21 +1,21 @@
 @interface OrgApacheLuceneSearchFieldComparator
-- (int)compareValuesWithId:(id)a3 withId:(id)a4;
+- (int)compareValuesWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneSearchFieldComparator
 
-- (int)compareValuesWithId:(id)a3 withId:(id)a4
+- (int)compareValuesWithId:(id)id withId:(id)withId
 {
-  if (a3)
+  if (id)
   {
-    if (a4)
+    if (withId)
     {
-      if (([JavaLangComparable_class_() isInstance:a3] & 1) == 0)
+      if (([JavaLangComparable_class_() isInstance:id] & 1) == 0)
       {
         JreThrowClassCastException();
       }
 
-      return [a3 compareToWithId:a4];
+      return [id compareToWithId:withId];
     }
 
     else
@@ -24,7 +24,7 @@
     }
   }
 
-  else if (a4)
+  else if (withId)
   {
     return -1;
   }

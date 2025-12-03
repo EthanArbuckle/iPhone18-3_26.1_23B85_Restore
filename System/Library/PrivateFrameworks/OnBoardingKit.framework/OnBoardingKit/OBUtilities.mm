@@ -1,27 +1,27 @@
 @interface OBUtilities
-+ (id)localizedString:(id)a3 forTable:(id)a4 inBundle:(id)a5 forLanguage:(id)a6;
-+ (id)stringWithFormat:(id)a3;
++ (id)localizedString:(id)string forTable:(id)table inBundle:(id)bundle forLanguage:(id)language;
++ (id)stringWithFormat:(id)format;
 @end
 
 @implementation OBUtilities
 
-+ (id)localizedString:(id)a3 forTable:(id)a4 inBundle:(id)a5 forLanguage:(id)a6
++ (id)localizedString:(id)string forTable:(id)table inBundle:(id)bundle forLanguage:(id)language
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 length] && objc_msgSend(v10, "length") && objc_msgSend(v12, "length"))
+  stringCopy = string;
+  tableCopy = table;
+  bundleCopy = bundle;
+  languageCopy = language;
+  if ([stringCopy length] && objc_msgSend(tableCopy, "length") && objc_msgSend(languageCopy, "length"))
   {
     v13 = MEMORY[0x1E696AAE8];
-    v14 = [v11 localizations];
-    v22[0] = v12;
+    localizations = [bundleCopy localizations];
+    v22[0] = languageCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    v16 = [v13 preferredLocalizationsFromArray:v14 forPreferences:v15];
-    v17 = [v16 firstObject];
+    v16 = [v13 preferredLocalizationsFromArray:localizations forPreferences:v15];
+    firstObject = [v16 firstObject];
 
-    v18 = [v11 localizedStringForKey:v9 value:0 table:v10 localization:v17];
+    v18 = [bundleCopy localizedStringForKey:stringCopy value:0 table:tableCopy localization:firstObject];
   }
 
   else
@@ -31,7 +31,7 @@
 
   if (![v18 length])
   {
-    v19 = [v11 localizedStringForKey:v9 value:&stru_1F2CE9518 table:v10];
+    v19 = [bundleCopy localizedStringForKey:stringCopy value:&stru_1F2CE9518 table:tableCopy];
 
     v18 = v19;
   }
@@ -41,11 +41,11 @@
   return v18;
 }
 
-+ (id)stringWithFormat:(id)a3
++ (id)stringWithFormat:(id)format
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithFormat:v4 arguments:&v8];
+  formatCopy = format;
+  v5 = [[v3 alloc] initWithFormat:formatCopy arguments:&v8];
 
   return v5;
 }

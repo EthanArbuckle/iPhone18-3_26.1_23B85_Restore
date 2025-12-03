@@ -1,5 +1,5 @@
 @interface PKAppleCashCardView
-- (PKAppleCashCardView)initWithDiffuse:(CGImage *)a3 metalness:(CGImage *)a4 normal:(CGImage *)a5;
+- (PKAppleCashCardView)initWithDiffuse:(CGImage *)diffuse metalness:(CGImage *)metalness normal:(CGImage *)normal;
 @end
 
 @implementation PKAppleCashCardView
@@ -13,15 +13,15 @@ id *__56__PKAppleCashCardView_initWithDiffuse_metalness_normal___block_invoke(ui
   return v4;
 }
 
-- (PKAppleCashCardView)initWithDiffuse:(CGImage *)a3 metalness:(CGImage *)a4 normal:(CGImage *)a5
+- (PKAppleCashCardView)initWithDiffuse:(CGImage *)diffuse metalness:(CGImage *)metalness normal:(CGImage *)normal
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__PKAppleCashCardView_initWithDiffuse_metalness_normal___block_invoke;
   v6[3] = &__block_descriptor_56_e51___PKTexturedCardRenderer_16__0__PKMetalRenderLoop_8l;
-  v6[4] = a3;
-  v6[5] = a4;
-  v6[6] = a5;
+  v6[4] = diffuse;
+  v6[5] = metalness;
+  v6[6] = normal;
   return [(PKTexturedCardView *)&self->super.super.super.super.isa _initWithPixelFormat:v6 renderer:?];
 }
 

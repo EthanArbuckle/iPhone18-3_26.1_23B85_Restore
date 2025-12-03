@@ -1,13 +1,13 @@
 @interface SKUIItemBrowseTableViewCell
-- (SKUIItemBrowseTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureForItem:(id)a3 clientContext:(id)a4 rowIndex:(int64_t)a5;
+- (SKUIItemBrowseTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureForItem:(id)item clientContext:(id)context rowIndex:(int64_t)index;
 @end
 
 @implementation SKUIItemBrowseTableViewCell
 
-- (SKUIItemBrowseTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUIItemBrowseTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIItemBrowseTableViewCell initWithStyle:reuseIdentifier:];
@@ -15,7 +15,7 @@
 
   v11.receiver = self;
   v11.super_class = SKUIItemBrowseTableViewCell;
-  v7 = [(SKUITableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUITableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = [[SKUIItemBrowseCellLayout alloc] initWithTableViewCell:v7];
@@ -26,32 +26,32 @@
   return v7;
 }
 
-- (void)configureForItem:(id)a3 clientContext:(id)a4 rowIndex:(int64_t)a5
+- (void)configureForItem:(id)item clientContext:(id)context rowIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  contextCopy = context;
   layout = self->_layout;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a5 + 1];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", index + 1];
   [(SKUIItemBrowseCellLayout *)layout setIndexNumberString:v11];
 
   v12 = self->_layout;
-  v13 = [v8 primaryItemOffer];
-  [(SKUIItemCellLayout *)v12 setItemOffer:v13];
+  primaryItemOffer = [itemCopy primaryItemOffer];
+  [(SKUIItemCellLayout *)v12 setItemOffer:primaryItemOffer];
 
-  v14 = [(SKUIItemCellLayout *)self->_layout itemOfferButton];
-  [v14 setUniversal:{SKUIItemDeviceFamilyIsUniversal(objc_msgSend(v8, "deviceFamilies"))}];
+  itemOfferButton = [(SKUIItemCellLayout *)self->_layout itemOfferButton];
+  [itemOfferButton setUniversal:{SKUIItemDeviceFamilyIsUniversal(objc_msgSend(itemCopy, "deviceFamilies"))}];
 
-  -[SKUIItemBrowseCellLayout setNumberOfUserRatings:](self->_layout, "setNumberOfUserRatings:", [v8 numberOfUserRatings]);
+  -[SKUIItemBrowseCellLayout setNumberOfUserRatings:](self->_layout, "setNumberOfUserRatings:", [itemCopy numberOfUserRatings]);
   v15 = self->_layout;
-  v16 = [v8 title];
-  [(SKUIItemBrowseCellLayout *)v15 setTitle:v16];
+  title = [itemCopy title];
+  [(SKUIItemBrowseCellLayout *)v15 setTitle:title];
 
   v17 = self->_layout;
-  [v8 userRating];
+  [itemCopy userRating];
   [(SKUIItemBrowseCellLayout *)v17 setUserRating:(v18 / 5.0)];
-  if ([v8 hasInAppPurchases])
+  if ([itemCopy hasInAppPurchases])
   {
-    v19 = [v9 valueForConfigurationKey:@"inappnote"];
+    v19 = [contextCopy valueForConfigurationKey:@"inappnote"];
   }
 
   else
@@ -60,23 +60,23 @@
   }
 
   [(SKUIItemCellLayout *)self->_layout setItemOfferNoticeString:v19];
-  v20 = [v8 itemKind];
+  itemKind = [itemCopy itemKind];
   v21 = self->_layout;
-  if (v20 == 17)
+  if (itemKind == 17)
   {
-    SKUILockupItemCountString(v8, v9);
+    SKUILockupItemCountString(itemCopy, contextCopy);
   }
 
   else
   {
-    [v8 categoryName];
+    [itemCopy categoryName];
   }
   v22 = ;
   [(SKUIItemBrowseCellLayout *)v21 setSubtitle:v22];
 
   v23.receiver = self;
   v23.super_class = SKUIItemBrowseTableViewCell;
-  [(SKUIItemTableViewCell *)&v23 configureForItem:v8 clientContext:v9 rowIndex:a5];
+  [(SKUIItemTableViewCell *)&v23 configureForItem:itemCopy clientContext:contextCopy rowIndex:index];
 }
 
 - (void)initWithStyle:reuseIdentifier:.cold.1()

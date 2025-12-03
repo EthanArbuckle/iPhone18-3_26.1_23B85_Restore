@@ -1,7 +1,7 @@
 @interface GQDScalarPath
 - (CGPath)createBezierPath;
 - (CGSize)size;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 @end
 
 @implementation GQDScalarPath
@@ -22,7 +22,7 @@
   v6 = v5;
   [(GQDScalarPath *)self scalar];
   v8 = v7;
-  v9 = [(GQDScalarPath *)self type];
+  type = [(GQDScalarPath *)self type];
   if (v4 == 0.0 && v6 == 0.0)
   {
     return 0;
@@ -41,7 +41,7 @@
       return Mutable;
     }
 
-    if (v9 == 1)
+    if (type == 1)
     {
       y = NSZeroRect.origin.y;
       memset(&v22, 0, sizeof(v22));
@@ -68,7 +68,7 @@
 
     else
     {
-      if (v9)
+      if (type)
       {
         return 0;
       }
@@ -119,10 +119,10 @@
   return Mutable;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  self->mType = sub_42468(a3, qword_A35E8, "type", 0);
-  if (sub_426B0(a3, qword_A35E8, "scalar", &self->mScalar))
+  self->mType = sub_42468(reader, qword_A35E8, "type", 0);
+  if (sub_426B0(reader, qword_A35E8, "scalar", &self->mScalar))
   {
     return 1;
   }

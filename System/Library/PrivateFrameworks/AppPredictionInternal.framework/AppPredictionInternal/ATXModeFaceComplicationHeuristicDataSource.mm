@@ -11,10 +11,10 @@
 - (id)_landscapeComplicationsForPersonalMode;
 - (id)_landscapeComplicationsForReadingMode;
 - (id)_landscapeComplicationsForWorkMode;
-- (id)provideComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4;
-- (id)provideLandscapeComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4;
-- (void)_addComplicationWithFamily:(int64_t)a3 extension:(id)a4 kind:(id)a5 container:(id)a6 score:(double)a7 to:(id)a8;
-- (void)_addSystemSmallWidgetWithExtension:(id)a3 kind:(id)a4 container:(id)a5 score:(double)a6 to:(id)a7;
+- (id)provideComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment;
+- (id)provideLandscapeComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment;
+- (void)_addComplicationWithFamily:(int64_t)family extension:(id)extension kind:(id)kind container:(id)container score:(double)score to:(id)to;
+- (void)_addSystemSmallWidgetWithExtension:(id)extension kind:(id)kind container:(id)container score:(double)score to:(id)to;
 @end
 
 @implementation ATXModeFaceComplicationHeuristicDataSource
@@ -26,15 +26,15 @@
   v2 = [(ATXModeFaceComplicationHeuristicDataSource *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEB998] sharedInstance];
-    v4 = [v3 complicationWidgetDescriptors];
+    mEMORY[0x277CEB998] = [MEMORY[0x277CEB998] sharedInstance];
+    complicationWidgetDescriptors = [mEMORY[0x277CEB998] complicationWidgetDescriptors];
     allComplicationDescriptors = v2->_allComplicationDescriptors;
-    v2->_allComplicationDescriptors = v4;
+    v2->_allComplicationDescriptors = complicationWidgetDescriptors;
 
-    v6 = [MEMORY[0x277CEB998] sharedInstance];
-    v7 = [v6 homeScreenDescriptors];
+    mEMORY[0x277CEB998]2 = [MEMORY[0x277CEB998] sharedInstance];
+    homeScreenDescriptors = [mEMORY[0x277CEB998]2 homeScreenDescriptors];
     allWidgetDescriptors = v2->_allWidgetDescriptors;
-    v2->_allWidgetDescriptors = v7;
+    v2->_allWidgetDescriptors = homeScreenDescriptors;
 
     v9 = objc_opt_new();
     suggestedPagesTunableConstants = v2->_suggestedPagesTunableConstants;
@@ -53,23 +53,23 @@
   return v2;
 }
 
-- (id)provideComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4
+- (id)provideComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment
 {
-  v6 = a4;
-  if (a3 > 5)
+  environmentCopy = environment;
+  if (type > 5)
   {
-    if (a3 > 8)
+    if (type > 8)
     {
-      switch(a3)
+      switch(type)
       {
         case 9:
-          v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForGamingMode];
+          _complicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForGamingMode];
           break;
         case 10:
-          v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForMindfulnessMode];
+          _complicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForMindfulnessMode];
           break;
         case 11:
-          v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForReduceInterruptions];
+          _complicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForReduceInterruptions];
           break;
         default:
 LABEL_24:
@@ -83,17 +83,17 @@ LABEL_24:
       }
 
 LABEL_23:
-      v8 = v7;
+      v8 = _complicationsForGamingMode;
       goto LABEL_28;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
-      v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForWorkMode];
+      _complicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForWorkMode];
       goto LABEL_23;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForPersonalMode];
     }
@@ -103,19 +103,19 @@ LABEL_23:
       [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForReadingMode];
     }
 
-    v7 = LABEL_9:;
+    _complicationsForGamingMode = LABEL_9:;
     goto LABEL_23;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForSleepMode];
+      _complicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForSleepMode];
       goto LABEL_23;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       [(ATXModeFaceComplicationHeuristicDataSource *)self _complicationsForDrivingMode];
     }
@@ -128,7 +128,7 @@ LABEL_23:
     goto LABEL_9;
   }
 
-  if (a3 >= 3)
+  if (type >= 3)
   {
     goto LABEL_24;
   }
@@ -195,34 +195,34 @@ LABEL_28:
   return v3;
 }
 
-- (void)_addComplicationWithFamily:(int64_t)a3 extension:(id)a4 kind:(id)a5 container:(id)a6 score:(double)a7 to:(id)a8
+- (void)_addComplicationWithFamily:(int64_t)family extension:(id)extension kind:(id)kind container:(id)container score:(double)score to:(id)to
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  extensionCopy = extension;
+  kindCopy = kind;
+  containerCopy = container;
+  toCopy = to;
   allComplicationDescriptors = self->_allComplicationDescriptors;
   v26 = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = __107__ATXModeFaceComplicationHeuristicDataSource__addComplicationWithFamily_extension_kind_container_score_to___block_invoke;
   v29 = &unk_2785A19E0;
-  v19 = v14;
+  v19 = extensionCopy;
   v30 = v19;
-  v20 = v15;
+  v20 = kindCopy;
   v31 = v20;
-  v33 = a3;
-  v21 = v16;
+  familyCopy = family;
+  v21 = containerCopy;
   v32 = v21;
   v22 = [(NSSet *)allComplicationDescriptors objectsPassingTest:&v26];
   if ([v22 count])
   {
     v23 = objc_alloc(MEMORY[0x277CEB410]);
-    v24 = [v22 anyObject];
-    v25 = [v23 initWithWidgetDescriptor:v24 widgetFamily:a3 intent:0 source:4];
+    anyObject = [v22 anyObject];
+    v25 = [v23 initWithWidgetDescriptor:anyObject widgetFamily:family intent:0 source:4];
 
-    [v25 setScore:a7];
+    [v25 setScore:score];
     [v25 setPredictionSource:@"Heuristic"];
-    [v17 addObject:v25];
+    [toCopy addObject:v25];
   }
 
   else if ([v21 length] && objc_msgSend(MEMORY[0x277CEB3B8], "isInstalledAndNotRestrictedForBundle:", v21))
@@ -275,23 +275,23 @@ uint64_t __107__ATXModeFaceComplicationHeuristicDataSource__addComplicationWithF
   return v13;
 }
 
-- (id)provideLandscapeComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4
+- (id)provideLandscapeComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment
 {
-  v6 = a4;
-  if (a3 > 5)
+  environmentCopy = environment;
+  if (type > 5)
   {
-    if (a3 > 8)
+    if (type > 8)
     {
-      switch(a3)
+      switch(type)
       {
         case 9:
-          v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForGamingMode];
+          _landscapeComplicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForGamingMode];
           break;
         case 10:
-          v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForMindfulnessMode];
+          _landscapeComplicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForMindfulnessMode];
           break;
         case 11:
-          v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForReduceInterruptions];
+          _landscapeComplicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForReduceInterruptions];
           break;
         default:
 LABEL_24:
@@ -305,17 +305,17 @@ LABEL_24:
       }
 
 LABEL_23:
-      v8 = v7;
+      v8 = _landscapeComplicationsForGamingMode;
       goto LABEL_28;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
-      v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForWorkMode];
+      _landscapeComplicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForWorkMode];
       goto LABEL_23;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForPersonalMode];
     }
@@ -325,19 +325,19 @@ LABEL_23:
       [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForReadingMode];
     }
 
-    v7 = LABEL_9:;
+    _landscapeComplicationsForGamingMode = LABEL_9:;
     goto LABEL_23;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v7 = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForSleepMode];
+      _landscapeComplicationsForGamingMode = [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForSleepMode];
       goto LABEL_23;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       [(ATXModeFaceComplicationHeuristicDataSource *)self _landscapeComplicationsForDrivingMode];
     }
@@ -350,7 +350,7 @@ LABEL_23:
     goto LABEL_9;
   }
 
-  if (a3 >= 3)
+  if (type >= 3)
   {
     goto LABEL_24;
   }
@@ -414,33 +414,33 @@ LABEL_28:
   return v3;
 }
 
-- (void)_addSystemSmallWidgetWithExtension:(id)a3 kind:(id)a4 container:(id)a5 score:(double)a6 to:(id)a7
+- (void)_addSystemSmallWidgetWithExtension:(id)extension kind:(id)kind container:(id)container score:(double)score to:(id)to
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  extensionCopy = extension;
+  kindCopy = kind;
+  containerCopy = container;
+  toCopy = to;
   allWidgetDescriptors = self->_allWidgetDescriptors;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __105__ATXModeFaceComplicationHeuristicDataSource__addSystemSmallWidgetWithExtension_kind_container_score_to___block_invoke;
   v24[3] = &unk_2785A1A08;
-  v17 = v12;
+  v17 = extensionCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = kindCopy;
   v26 = v18;
-  v19 = v14;
+  v19 = containerCopy;
   v27 = v19;
   v20 = [(NSSet *)allWidgetDescriptors objectsPassingTest:v24];
   if ([v20 count])
   {
     v21 = objc_alloc(MEMORY[0x277CEB410]);
-    v22 = [v20 anyObject];
-    v23 = [v21 initWithWidgetDescriptor:v22 widgetFamily:1 intent:0 source:4];
+    anyObject = [v20 anyObject];
+    v23 = [v21 initWithWidgetDescriptor:anyObject widgetFamily:1 intent:0 source:4];
 
-    [v23 setScore:a6];
+    [v23 setScore:score];
     [v23 setPredictionSource:@"Heuristic"];
-    [v15 addObject:v23];
+    [toCopy addObject:v23];
   }
 
   else if ([v19 length] && objc_msgSend(MEMORY[0x277CEB3B8], "isInstalledAndNotRestrictedForBundle:", v19))
@@ -497,8 +497,8 @@ uint64_t __105__ATXModeFaceComplicationHeuristicDataSource__addSystemSmallWidget
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CEB8F0] getUpcomingMediaForBundle:@"com.apple.tv" isInternalApplication:1];
-  v3 = [v2 sortedUpcomingMedia];
-  v4 = [v3 count];
+  sortedUpcomingMedia = [v2 sortedUpcomingMedia];
+  v4 = [sortedUpcomingMedia count];
 
   v5 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:@"com.apple.tv" actionType:@"INPlayMediaIntent"];
   v6 = +[_ATXAppLaunchHistogramManager sharedInstance];
@@ -529,11 +529,11 @@ uint64_t __105__ATXModeFaceComplicationHeuristicDataSource__addSystemSmallWidget
   v14 = 0x2020000000;
   v15 = 0;
   v3 = BiomeLibrary();
-  v4 = [v3 HomeKit];
-  v5 = [v4 Client];
-  v6 = [v5 AccessoryControl];
+  homeKit = [v3 HomeKit];
+  client = [homeKit Client];
+  accessoryControl = [client AccessoryControl];
 
-  v7 = [v6 atx_publisherFromStartDate:0];
+  v7 = [accessoryControl atx_publisherFromStartDate:0];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__ATXModeFaceComplicationHeuristicDataSource__hasSignificantHomeAccessoryEvents__block_invoke_121;
@@ -581,9 +581,9 @@ void __80__ATXModeFaceComplicationHeuristicDataSource__hasSignificantHomeAccesso
   v14 = 0;
   v3 = BiomeLibrary();
   v4 = [v3 App];
-  v5 = [v4 Intent];
+  intent = [v4 Intent];
 
-  v6 = [v5 atx_publisherFromStartDate:0];
+  v6 = [intent atx_publisherFromStartDate:0];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__ATXModeFaceComplicationHeuristicDataSource__hasSignificantStocksEvents__block_invoke_125;

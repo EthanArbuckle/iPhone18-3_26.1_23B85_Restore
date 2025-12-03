@@ -1,33 +1,33 @@
 @interface ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContactEmbedding:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContactEmbedding:(id)embedding;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent
 
-- (void)addContactEmbedding:(id)a3
+- (void)addContactEmbedding:(id)embedding
 {
-  v4 = a3;
+  embeddingCopy = embedding;
   contactEmbeddings = self->_contactEmbeddings;
-  v8 = v4;
+  v8 = embeddingCopy;
   if (!contactEmbeddings)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contactEmbeddings;
     self->_contactEmbeddings = v6;
 
-    v4 = v8;
+    embeddingCopy = v8;
     contactEmbeddings = self->_contactEmbeddings;
   }
 
-  [(NSMutableArray *)contactEmbeddings addObject:v4];
+  [(NSMutableArray *)contactEmbeddings addObject:embeddingCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent;
   v4 = [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)&v8 description];
-  v5 = [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   sessinobd = self->_sessinobd;
   if (sessinobd)
   {
-    [v3 setObject:sessinobd forKey:@"sessinobd"];
+    [dictionary setObject:sessinobd forKey:@"sessinobd"];
   }
 
   userId = self->_userId;
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -99,16 +99,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_sessinobd)
   {
     [ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_userId)
   {
@@ -151,36 +151,36 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setSessinobd:self->_sessinobd];
-  [v8 setUserId:self->_userId];
+  toCopy = to;
+  [toCopy setSessinobd:self->_sessinobd];
+  [toCopy setUserId:self->_userId];
   if ([(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)self contactEmbeddingsCount])
   {
-    [v8 clearContactEmbeddings];
-    v4 = [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)self contactEmbeddingsCount];
-    if (v4)
+    [toCopy clearContactEmbeddings];
+    contactEmbeddingsCount = [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)self contactEmbeddingsCount];
+    if (contactEmbeddingsCount)
     {
-      v5 = v4;
+      v5 = contactEmbeddingsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)self contactEmbeddingAtIndex:i];
-        [v8 addContactEmbedding:v7];
+        [toCopy addContactEmbedding:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sessinobd copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sessinobd copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_userId copyWithZone:a3];
+  v8 = [(NSString *)self->_userId copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -204,7 +204,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addContactEmbedding:v15];
 
         ++v14;
@@ -221,13 +221,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((sessinobd = self->_sessinobd, !(sessinobd | v4[2])) || -[NSString isEqual:](sessinobd, "isEqual:")) && ((userId = self->_userId, !(userId | v4[3])) || -[NSString isEqual:](userId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((sessinobd = self->_sessinobd, !(sessinobd | equalCopy[2])) || -[NSString isEqual:](sessinobd, "isEqual:")) && ((userId = self->_userId, !(userId | equalCopy[3])) || -[NSString isEqual:](userId, "isEqual:")))
   {
     contactEmbeddings = self->_contactEmbeddings;
-    if (contactEmbeddings | v4[1])
+    if (contactEmbeddings | equalCopy[1])
     {
       v8 = [(NSMutableArray *)contactEmbeddings isEqual:?];
     }
@@ -253,16 +253,16 @@
   return v4 ^ [(NSMutableArray *)self->_contactEmbeddings hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)self setSessinobd:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ContactEmbeddingAnalysisPETContactEmbeddingArrayEvent *)self setUserId:?];
   }
@@ -271,7 +271,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

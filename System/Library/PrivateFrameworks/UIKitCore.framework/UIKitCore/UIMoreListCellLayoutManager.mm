@@ -1,29 +1,29 @@
 @interface UIMoreListCellLayoutManager
-- (CGRect)standardLayoutImageViewFrameForCell:(id)a3 forSizing:(BOOL)a4;
-- (double)setWidestImageWidthFromViewControllers:(id)a3;
-- (void)layoutSubviewsOfCell:(id)a3;
+- (CGRect)standardLayoutImageViewFrameForCell:(id)cell forSizing:(BOOL)sizing;
+- (double)setWidestImageWidthFromViewControllers:(id)controllers;
+- (void)layoutSubviewsOfCell:(id)cell;
 @end
 
 @implementation UIMoreListCellLayoutManager
 
-- (void)layoutSubviewsOfCell:(id)a3
+- (void)layoutSubviewsOfCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 imageView];
-  [v5 setContentMode:4];
+  cellCopy = cell;
+  imageView = [cellCopy imageView];
+  [imageView setContentMode:4];
 
   v6.receiver = self;
   v6.super_class = UIMoreListCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v6 layoutSubviewsOfCell:v4];
+  [(UITableViewCellLayoutManager *)&v6 layoutSubviewsOfCell:cellCopy];
 }
 
-- (CGRect)standardLayoutImageViewFrameForCell:(id)a3 forSizing:(BOOL)a4
+- (CGRect)standardLayoutImageViewFrameForCell:(id)cell forSizing:(BOOL)sizing
 {
-  v4 = a4;
-  v6 = a3;
+  sizingCopy = sizing;
+  cellCopy = cell;
   v21.receiver = self;
   v21.super_class = UIMoreListCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v21 standardLayoutImageViewFrameForCell:v6 forSizing:v4];
+  [(UITableViewCellLayoutManager *)&v21 standardLayoutImageViewFrameForCell:cellCopy forSizing:sizingCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -33,10 +33,10 @@
     widestImageWidth = v7;
   }
 
-  else if ((v6[106] & 0x40) != 0)
+  else if ((cellCopy[106] & 0x40) != 0)
   {
-    v15 = [v6 contentView];
-    [v15 bounds];
+    contentView = [cellCopy contentView];
+    [contentView bounds];
     v16 = CGRectGetMaxX(v22) + -15.0;
     v23.origin.x = v9;
     v23.origin.y = v11;
@@ -61,16 +61,16 @@
   return result;
 }
 
-- (double)setWidestImageWidthFromViewControllers:(id)a3
+- (double)setWidestImageWidthFromViewControllers:(id)controllers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllersCopy = controllers;
   self->_widestImageWidth = 0.0;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v5 = [controllersCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -81,7 +81,7 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
@@ -114,7 +114,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [controllersCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);

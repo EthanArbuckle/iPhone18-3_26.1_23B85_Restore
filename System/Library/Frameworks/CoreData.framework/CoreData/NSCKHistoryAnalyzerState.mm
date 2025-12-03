@@ -1,13 +1,13 @@
 @interface NSCKHistoryAnalyzerState
 + (NSString)entityPath;
-+ (uint64_t)countAnalyzerStatesInStore:(uint64_t)a3 withManagedObjectContext:(id *)a4 error:;
-+ (uint64_t)purgeAnalyzedHistoryFromStore:(void *)a3 withManagedObjectContext:(void *)a4 error:;
++ (uint64_t)countAnalyzerStatesInStore:(uint64_t)store withManagedObjectContext:(id *)context error:;
++ (uint64_t)purgeAnalyzedHistoryFromStore:(void *)store withManagedObjectContext:(void *)context error:;
 - (NSDictionary)tombstone;
 - (NSManagedObjectID)analyzedObjectID;
 - (int64_t)finalChangeType;
 - (int64_t)originalChangeType;
-- (void)mergeWithState:(id)a3;
-- (void)updateWithChange:(id)a3;
+- (void)mergeWithState:(id)state;
+- (void)updateWithChange:(id)change;
 @end
 
 @implementation NSCKHistoryAnalyzerState
@@ -31,7 +31,7 @@
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Cannot create objectID: called before the record has the necessary properties: %@\n", &v13, 0xCu);
     }
 
@@ -42,18 +42,18 @@
     }
 
     v13 = 138412290;
-    v14 = self;
+    selfCopy4 = self;
     goto LABEL_15;
   }
 
   v5 = v4;
-  v6 = [(NSManagedObjectID *)[(NSManagedObject *)self objectID] persistentStore];
-  v7 = _sqlCoreLookupSQLEntityForEntityID(v6, v3);
+  persistentStore = [(NSManagedObjectID *)[(NSManagedObject *)self objectID] persistentStore];
+  v7 = _sqlCoreLookupSQLEntityForEntityID(persistentStore, v3);
   if (v7)
   {
     if (v5 >= 1)
     {
-      v7 = [(NSPersistentStore *)v6 newObjectIDForEntity:v7 pk:v5];
+      v7 = [(NSPersistentStore *)persistentStore newObjectIDForEntity:v7 pk:v5];
       goto LABEL_13;
     }
 
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_18565F000, v10, OS_LOG_TYPE_ERROR, "CoreData: fault: Cannot create objectID: called before the record has the necessary properties: %@\n", &v13, 0xCu);
     }
 
@@ -74,7 +74,7 @@ LABEL_12:
     }
 
     v13 = 138412290;
-    v14 = self;
+    selfCopy4 = self;
 LABEL_15:
     _os_log_fault_impl(&dword_18565F000, v9, OS_LOG_TYPE_FAULT, "CoreData: Cannot create objectID: called before the record has the necessary properties: %@", &v13, 0xCu);
     goto LABEL_12;
@@ -86,18 +86,18 @@ LABEL_13:
   return result;
 }
 
-- (void)mergeWithState:(id)a3
+- (void)mergeWithState:(id)state
 {
   v12 = *MEMORY[0x1E69E9840];
-  if ([objc_msgSend(a3 "originalTransactionNumber")] == -1 || objc_msgSend(objc_msgSend(a3, "originalTransactionNumber"), "compare:", -[NSCKHistoryAnalyzerState finalTransactionNumber](self, "finalTransactionNumber")) == -1 || objc_msgSend(objc_msgSend(a3, "originalTransactionNumber"), "compare:", -[NSCKHistoryAnalyzerState finalTransactionNumber](self, "finalTransactionNumber")) == -1 || objc_msgSend(objc_msgSend(a3, "finalTransactionNumber"), "compare:", -[NSCKHistoryAnalyzerState finalTransactionNumber](self, "finalTransactionNumber")) == -1)
+  if ([objc_msgSend(state "originalTransactionNumber")] == -1 || objc_msgSend(objc_msgSend(state, "originalTransactionNumber"), "compare:", -[NSCKHistoryAnalyzerState finalTransactionNumber](self, "finalTransactionNumber")) == -1 || objc_msgSend(objc_msgSend(state, "originalTransactionNumber"), "compare:", -[NSCKHistoryAnalyzerState finalTransactionNumber](self, "finalTransactionNumber")) == -1 || objc_msgSend(objc_msgSend(state, "finalTransactionNumber"), "compare:", -[NSCKHistoryAnalyzerState finalTransactionNumber](self, "finalTransactionNumber")) == -1)
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412546;
-      v9 = a3;
+      stateCopy2 = state;
       v10 = 2112;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: History analysis corruption detected. State is behind (or overlaps) this copy but is attempting to be merged. %@ / %@\n", &v8, 0x16u);
     }
 
@@ -105,24 +105,24 @@ LABEL_13:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 138412546;
-      v9 = a3;
+      stateCopy2 = state;
       v10 = 2112;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_fault_impl(&dword_18565F000, v6, OS_LOG_TYPE_FAULT, "CoreData: History analysis corruption detected. State is behind (or overlaps) this copy but is attempting to be merged. %@ / %@", &v8, 0x16u);
     }
   }
 
-  -[NSManagedObject setValue:forKey:](self, "setValue:forKey:", [a3 finalTransactionNumber], @"finalTransactionNumber");
-  -[NSManagedObject setValue:forKey:](self, "setValue:forKey:", [a3 finalChangeAuthor], @"finalChangeAuthor");
-  -[NSCKHistoryAnalyzerState setFinalChangeTypeNum:](self, "setFinalChangeTypeNum:", [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "finalChangeType")}]);
+  -[NSManagedObject setValue:forKey:](self, "setValue:forKey:", [state finalTransactionNumber], @"finalTransactionNumber");
+  -[NSManagedObject setValue:forKey:](self, "setValue:forKey:", [state finalChangeAuthor], @"finalChangeAuthor");
+  -[NSCKHistoryAnalyzerState setFinalChangeTypeNum:](self, "setFinalChangeTypeNum:", [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(state, "finalChangeType")}]);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWithChange:(id)a3
+- (void)updateWithChange:(id)change
 {
-  -[NSManagedObject setValue:forKey:](self, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(objc_msgSend(a3, "transaction"), "transactionNumber")}], @"finalTransactionNumber");
-  -[NSManagedObject setValue:forKey:](self, "setValue:forKey:", [objc_msgSend(a3 "transaction")], @"finalChangeAuthor");
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "changeType")}];
+  -[NSManagedObject setValue:forKey:](self, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(objc_msgSend(change, "transaction"), "transactionNumber")}], @"finalTransactionNumber");
+  -[NSManagedObject setValue:forKey:](self, "setValue:forKey:", [objc_msgSend(change "transaction")], @"finalChangeAuthor");
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(change, "changeType")}];
 
   [(NSCKHistoryAnalyzerState *)self setFinalChangeTypeNum:v5];
 }
@@ -148,19 +148,19 @@ LABEL_13:
 
 - (int64_t)originalChangeType
 {
-  v2 = [(NSCKHistoryAnalyzerState *)self originalChangeTypeNum];
+  originalChangeTypeNum = [(NSCKHistoryAnalyzerState *)self originalChangeTypeNum];
 
-  return [v2 integerValue];
+  return [originalChangeTypeNum integerValue];
 }
 
 - (int64_t)finalChangeType
 {
-  v2 = [(NSCKHistoryAnalyzerState *)self finalChangeTypeNum];
+  finalChangeTypeNum = [(NSCKHistoryAnalyzerState *)self finalChangeTypeNum];
 
-  return [v2 integerValue];
+  return [finalChangeTypeNum integerValue];
 }
 
-+ (uint64_t)purgeAnalyzedHistoryFromStore:(void *)a3 withManagedObjectContext:(void *)a4 error:
++ (uint64_t)purgeAnalyzedHistoryFromStore:(void *)store withManagedObjectContext:(void *)context error:
 {
   v18[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -169,15 +169,15 @@ LABEL_13:
   [(NSBatchDeleteRequest *)v7 setResultType:0];
   v18[0] = a2;
   -[NSPersistentStoreRequest setAffectedStores:](v7, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1]);
-  v8 = [objc_msgSend(objc_msgSend(a3 executeRequest:v7 error:{&v13), "result"), "BOOLValue"}];
+  v8 = [objc_msgSend(objc_msgSend(store executeRequest:v7 error:{&v13), "result"), "BOOLValue"}];
 
   if ((v8 & 1) == 0)
   {
     if (v13)
     {
-      if (a4)
+      if (context)
       {
-        *a4 = v13;
+        *context = v13;
       }
     }
 
@@ -209,7 +209,7 @@ LABEL_13:
   return v8;
 }
 
-+ (uint64_t)countAnalyzerStatesInStore:(uint64_t)a3 withManagedObjectContext:(id *)a4 error:
++ (uint64_t)countAnalyzerStatesInStore:(uint64_t)store withManagedObjectContext:(id *)context error:
 {
   v11[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -219,13 +219,13 @@ LABEL_13:
   -[NSFetchRequest setAffectedStores:](v7, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1]);
   [(NSFetchRequest *)v7 setPredicate:0];
   [(NSFetchRequest *)v7 setResultType:4];
-  if (!a3)
+  if (!store)
   {
     v8 = 0;
     goto LABEL_5;
   }
 
-  v8 = [(NSManagedObjectContext *)a3 _countForFetchRequest_:v7 error:a4];
+  v8 = [(NSManagedObjectContext *)store _countForFetchRequest_:v7 error:context];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:

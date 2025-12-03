@@ -1,47 +1,47 @@
 @interface HKBridgeTinkerSharingSetupDelegate
-- (HKBridgeTinkerSharingSetupDelegate)initWithPresentingController:(id)a3 tinkerDevice:(id)a4 tinkerMember:(id)a5 guardianMember:(id)a6;
-- (void)sharingSetupDidFailWithError:(id)a3;
+- (HKBridgeTinkerSharingSetupDelegate)initWithPresentingController:(id)controller tinkerDevice:(id)device tinkerMember:(id)member guardianMember:(id)guardianMember;
+- (void)sharingSetupDidFailWithError:(id)error;
 - (void)sharingSetupDidSucceed;
 @end
 
 @implementation HKBridgeTinkerSharingSetupDelegate
 
-- (HKBridgeTinkerSharingSetupDelegate)initWithPresentingController:(id)a3 tinkerDevice:(id)a4 tinkerMember:(id)a5 guardianMember:(id)a6
+- (HKBridgeTinkerSharingSetupDelegate)initWithPresentingController:(id)controller tinkerDevice:(id)device tinkerMember:(id)member guardianMember:(id)guardianMember
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  deviceCopy = device;
+  memberCopy = member;
+  guardianMemberCopy = guardianMember;
   v17.receiver = self;
   v17.super_class = HKBridgeTinkerSharingSetupDelegate;
   v14 = [(HKBridgeTinkerSharingSetupDelegate *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_presentingController, v10);
-    objc_storeStrong(&v15->_tinkerDevice, a4);
-    objc_storeStrong(&v15->_tinkerMember, a5);
-    objc_storeStrong(&v15->_guardianMember, a6);
+    objc_storeWeak(&v14->_presentingController, controllerCopy);
+    objc_storeStrong(&v15->_tinkerDevice, device);
+    objc_storeStrong(&v15->_tinkerMember, member);
+    objc_storeStrong(&v15->_guardianMember, guardianMember);
   }
 
   return v15;
 }
 
-- (void)sharingSetupDidFailWithError:(id)a3
+- (void)sharingSetupDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"TINKER_HEALTH_SETUP_FAILED_TITLE" value:&stru_188B0 table:@"HealthUI-Localizable-tinker"];
 
   v7 = [NSBundle bundleWithIdentifier:@"com.apple.HealthUI"];
   v8 = [v7 localizedStringForKey:@"TINKER_HEALTH_SETUP_FAILED_DEFAULT_MESSAGE" value:&stru_188B0 table:@"HealthUI-Localizable-tinker"];
 
-  v9 = [v4 domain];
-  v10 = [v9 isEqualToString:@"HDIDSErrorDomain"];
+  domain = [errorCopy domain];
+  v10 = [domain isEqualToString:@"HDIDSErrorDomain"];
 
   if (!v10)
   {
-    if ([v4 hk_isAuthorizationDeniedError])
+    if ([errorCopy hk_isAuthorizationDeniedError])
     {
       v15 = [NSBundle bundleWithIdentifier:@"com.apple.HealthUI"];
       v12 = v15;
@@ -50,9 +50,9 @@
 
     else
     {
-      if (![v4 hk_isDatabaseAccessibilityError])
+      if (![errorCopy hk_isDatabaseAccessibilityError])
       {
-        if (![v4 hk_isHealthKitErrorWithCode:701])
+        if (![errorCopy hk_isHealthKitErrorWithCode:701])
         {
           goto LABEL_10;
         }
@@ -69,8 +69,8 @@
     }
 
     v17 = [v15 localizedStringForKey:v16 value:&stru_188B0 table:@"HealthUI-Localizable-tinker"];
-    v18 = [(FAFamilyMember *)self->_tinkerMember firstName];
-    v14 = [NSString stringWithFormat:v17, v18];
+    firstName = [(FAFamilyMember *)self->_tinkerMember firstName];
+    v14 = [NSString stringWithFormat:v17, firstName];
 
     v8 = v17;
     goto LABEL_9;
@@ -97,12 +97,12 @@ LABEL_10:
   [v19 addAction:v22];
 
   v23 = +[UIApplication sharedApplication];
-  v24 = [v23 windows];
-  v25 = [v24 firstObject];
-  v26 = [v25 rootViewController];
+  windows = [v23 windows];
+  firstObject = [windows firstObject];
+  rootViewController = [firstObject rootViewController];
 
-  v27 = [v26 presentedViewController];
-  [v27 presentViewController:v19 animated:1 completion:0];
+  presentedViewController = [rootViewController presentedViewController];
+  [presentedViewController presentViewController:v19 animated:1 completion:0];
 }
 
 - (void)sharingSetupDidSucceed

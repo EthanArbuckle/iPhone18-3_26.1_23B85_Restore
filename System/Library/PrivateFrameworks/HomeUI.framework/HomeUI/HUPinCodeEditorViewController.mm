@@ -1,33 +1,33 @@
 @interface HUPinCodeEditorViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (HMHome)home;
-- (HUPinCodeEditorViewController)initWithCoder:(id)a3;
-- (HUPinCodeEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (HUPinCodeEditorViewController)initWithCoder:(id)coder;
+- (HUPinCodeEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (HUPresentationDelegate)presentationDelegate;
 - (id)checkForPINCodeValueValidationErrors;
 - (id)commitPinCodeChange;
-- (id)initForCreatingNewPinCodeWithManager:(id)a3 initialPinCodeValue:(id)a4 home:(id)a5 completionBlock:(id)a6;
-- (id)initForEditingPinCodeWithItem:(id)a3 pinCodeManager:(id)a4 pinCodeValue:(id)a5 home:(id)a6 completionBlock:(id)a7;
-- (void)_commonInitWithManager:(id)a3 home:(id)a4 initialPinCodeValue:(id)a5;
+- (id)initForCreatingNewPinCodeWithManager:(id)manager initialPinCodeValue:(id)value home:(id)home completionBlock:(id)block;
+- (id)initForEditingPinCodeWithItem:(id)item pinCodeManager:(id)manager pinCodeValue:(id)value home:(id)home completionBlock:(id)block;
+- (void)_commonInitWithManager:(id)manager home:(id)home initialPinCodeValue:(id)value;
 - (void)_hideSpinner;
 - (void)_showSpinner;
 - (void)_updateHeaderAndFooter;
-- (void)cancelButtonPressed:(id)a3;
-- (void)saveButtonPressed:(id)a3;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)saveButtonPressed:(id)pressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUPinCodeEditorViewController
 
-- (void)_commonInitWithManager:(id)a3 home:(id)a4 initialPinCodeValue:(id)a5
+- (void)_commonInitWithManager:(id)manager home:(id)home initialPinCodeValue:(id)value
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(HUPinCodeEditorViewController *)self setHome:v9];
-  [(HUPinCodeEditorViewController *)self setPinCodeManager:v8];
+  managerCopy = manager;
+  homeCopy = home;
+  valueCopy = value;
+  [(HUPinCodeEditorViewController *)self setHome:homeCopy];
+  [(HUPinCodeEditorViewController *)self setPinCodeManager:managerCopy];
   [(HUPinCodeEditorViewController *)self setCodeLengthMin:4];
   [(HUPinCodeEditorViewController *)self setCodeLengthMax:8];
   v11 = objc_alloc(MEMORY[0x277D756B8]);
@@ -40,31 +40,31 @@
 
   v17 = *MEMORY[0x277D769D0];
   v18 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  v19 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  [v19 setFont:v18];
+  instructionHeader = [(HUPinCodeEditorViewController *)self instructionHeader];
+  [instructionHeader setFont:v18];
 
-  v20 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  [v20 setNumberOfLines:0];
+  instructionHeader2 = [(HUPinCodeEditorViewController *)self instructionHeader];
+  [instructionHeader2 setNumberOfLines:0];
 
-  v21 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  [v21 setTextAlignment:1];
+  instructionHeader3 = [(HUPinCodeEditorViewController *)self instructionHeader];
+  [instructionHeader3 setTextAlignment:1];
 
   v22 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v12, v13, v14, v15}];
   [(HUPinCodeEditorViewController *)self setFooterLabel:v22];
 
-  v23 = [(HUPinCodeEditorViewController *)self footerLabel];
-  [v23 setNumberOfLines:0];
+  footerLabel = [(HUPinCodeEditorViewController *)self footerLabel];
+  [footerLabel setNumberOfLines:0];
 
-  v24 = [(HUPinCodeEditorViewController *)self footerLabel];
-  [v24 setTextAlignment:1];
+  footerLabel2 = [(HUPinCodeEditorViewController *)self footerLabel];
+  [footerLabel2 setTextAlignment:1];
 
   v25 = [MEMORY[0x277D74300] preferredFontForTextStyle:v17];
-  v26 = [(HUPinCodeEditorViewController *)self footerLabel];
-  [v26 setFont:v25];
+  footerLabel3 = [(HUPinCodeEditorViewController *)self footerLabel];
+  [footerLabel3 setFont:v25];
 
-  v27 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v28 = [(HUPinCodeEditorViewController *)self footerLabel];
-  [v28 setTextColor:v27];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  footerLabel4 = [(HUPinCodeEditorViewController *)self footerLabel];
+  [footerLabel4 setTextColor:secondaryLabelColor];
 
   [(HUPinCodeEditorViewController *)self _updateHeaderAndFooter];
   if (!numberFormatter)
@@ -73,8 +73,8 @@
     v30 = numberFormatter;
     numberFormatter = v29;
 
-    v31 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    [numberFormatter setLocale:v31];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    [numberFormatter setLocale:autoupdatingCurrentLocale];
 
     [numberFormatter setNumberStyle:0];
   }
@@ -85,48 +85,48 @@
   v55 = *MEMORY[0x277D740D0];
   v56[0] = &unk_282493830;
   v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:&v55 count:1];
-  v34 = [(HUPinCodeEditorViewController *)self textField];
-  [v34 setDefaultTextAttributes:v33];
+  textField = [(HUPinCodeEditorViewController *)self textField];
+  [textField setDefaultTextAttributes:v33];
 
   v35 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769A8]];
-  v36 = [(HUPinCodeEditorViewController *)self textField];
-  [v36 setFont:v35];
+  textField2 = [(HUPinCodeEditorViewController *)self textField];
+  [textField2 setFont:v35];
 
-  v37 = [MEMORY[0x277D75348] labelColor];
-  v38 = [(HUPinCodeEditorViewController *)self textField];
-  [v38 setTextColor:v37];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  textField3 = [(HUPinCodeEditorViewController *)self textField];
+  [textField3 setTextColor:labelColor];
 
-  v39 = [(HUPinCodeEditorViewController *)self textField];
-  [v39 setDelegate:self];
+  textField4 = [(HUPinCodeEditorViewController *)self textField];
+  [textField4 setDelegate:self];
 
-  v40 = [(HUPinCodeEditorViewController *)self textField];
-  [v40 setBorderStyle:3];
+  textField5 = [(HUPinCodeEditorViewController *)self textField];
+  [textField5 setBorderStyle:3];
 
-  v41 = [(HUPinCodeEditorViewController *)self textField];
-  [v41 setClearButtonMode:0];
+  textField6 = [(HUPinCodeEditorViewController *)self textField];
+  [textField6 setClearButtonMode:0];
 
-  v42 = [(HUPinCodeEditorViewController *)self textField];
-  [v42 setTextAlignment:1];
+  textField7 = [(HUPinCodeEditorViewController *)self textField];
+  [textField7 setTextAlignment:1];
 
-  v43 = [(HUPinCodeEditorViewController *)self textField];
-  [v43 setEnabled:1];
+  textField8 = [(HUPinCodeEditorViewController *)self textField];
+  [textField8 setEnabled:1];
 
-  v44 = [(HUPinCodeEditorViewController *)self textField];
-  [v44 setKeyboardType:4];
+  textField9 = [(HUPinCodeEditorViewController *)self textField];
+  [textField9 setKeyboardType:4];
 
-  v45 = [(HUPinCodeEditorViewController *)self textField];
-  v46 = [v45 layer];
-  [v46 setDisableUpdateMask:16];
+  textField10 = [(HUPinCodeEditorViewController *)self textField];
+  layer = [textField10 layer];
+  [layer setDisableUpdateMask:16];
 
-  v47 = [v10 length];
+  v47 = [valueCopy length];
   [numberFormatter setMinimumIntegerDigits:v47];
-  v48 = [numberFormatter numberFromString:v10];
+  v48 = [numberFormatter numberFromString:valueCopy];
   v49 = [numberFormatter stringForObjectValue:v48];
-  v50 = [(HUPinCodeEditorViewController *)self textField];
-  [v50 setText:v49];
+  textField11 = [(HUPinCodeEditorViewController *)self textField];
+  [textField11 setText:v49];
 
-  v51 = [(HUPinCodeEditorViewController *)self textField];
-  [v51 sizeToFit];
+  textField12 = [(HUPinCodeEditorViewController *)self textField];
+  [textField12 sizeToFit];
 
   objc_initWeak(&location, self);
   v52[0] = MEMORY[0x277D85DD0];
@@ -134,7 +134,7 @@
   v52[2] = __81__HUPinCodeEditorViewController__commonInitWithManager_home_initialPinCodeValue___block_invoke;
   v52[3] = &unk_277DC4E30;
   objc_copyWeak(&v53, &location);
-  [v8 fetchPinCodeConstraints:v52];
+  [managerCopy fetchPinCodeConstraints:v52];
   objc_destroyWeak(&v53);
   objc_destroyWeak(&location);
 }
@@ -147,60 +147,60 @@ void __81__HUPinCodeEditorViewController__commonInitWithManager_home_initialPinC
   [WeakRetained _updateHeaderAndFooter];
 }
 
-- (id)initForEditingPinCodeWithItem:(id)a3 pinCodeManager:(id)a4 pinCodeValue:(id)a5 home:(id)a6 completionBlock:(id)a7
+- (id)initForEditingPinCodeWithItem:(id)item pinCodeManager:(id)manager pinCodeValue:(id)value home:(id)home completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  itemCopy = item;
+  managerCopy = manager;
+  valueCopy = value;
+  homeCopy = home;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = HUPinCodeEditorViewController;
   v17 = [(HUPinCodeEditorViewController *)&v20 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    [(HUPinCodeEditorViewController *)v17 setSourceItem:v12];
-    [(HUPinCodeEditorViewController *)v18 _commonInitWithManager:v13 home:v15 initialPinCodeValue:v14];
-    [(HUPinCodeEditorViewController *)v18 setUpdatedPINCodeCompletionBlock:v16];
+    [(HUPinCodeEditorViewController *)v17 setSourceItem:itemCopy];
+    [(HUPinCodeEditorViewController *)v18 _commonInitWithManager:managerCopy home:homeCopy initialPinCodeValue:valueCopy];
+    [(HUPinCodeEditorViewController *)v18 setUpdatedPINCodeCompletionBlock:blockCopy];
   }
 
   return v18;
 }
 
-- (id)initForCreatingNewPinCodeWithManager:(id)a3 initialPinCodeValue:(id)a4 home:(id)a5 completionBlock:(id)a6
+- (id)initForCreatingNewPinCodeWithManager:(id)manager initialPinCodeValue:(id)value home:(id)home completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  valueCopy = value;
+  homeCopy = home;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = HUPinCodeEditorViewController;
   v14 = [(HUPinCodeEditorViewController *)&v17 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    [(HUPinCodeEditorViewController *)v14 _commonInitWithManager:v10 home:v12 initialPinCodeValue:v11];
-    [(HUPinCodeEditorViewController *)v15 setNewPINCodeCompletionBlock:v13];
+    [(HUPinCodeEditorViewController *)v14 _commonInitWithManager:managerCopy home:homeCopy initialPinCodeValue:valueCopy];
+    [(HUPinCodeEditorViewController *)v15 setNewPINCodeCompletionBlock:blockCopy];
   }
 
   return v15;
 }
 
-- (HUPinCodeEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HUPinCodeEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initForEditingPinCodeWithItem_pinCodeManager_pinCodeValue_home_completionBlock_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUPinCodeEditorViewController.m" lineNumber:159 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeEditorViewController initWithNibName:bundle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPinCodeEditorViewController.m" lineNumber:159 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeEditorViewController initWithNibName:bundle:]", v7}];
 
   return 0;
 }
 
-- (HUPinCodeEditorViewController)initWithCoder:(id)a3
+- (HUPinCodeEditorViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initForEditingPinCodeWithItem_pinCodeManager_pinCodeValue_home_completionBlock_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUPinCodeEditorViewController.m" lineNumber:164 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeEditorViewController initWithCoder:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPinCodeEditorViewController.m" lineNumber:164 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeEditorViewController initWithCoder:]", v6}];
 
   return 0;
 }
@@ -213,157 +213,157 @@ void __81__HUPinCodeEditorViewController__commonInitWithManager_home_initialPinC
   v3 = _HULocalizedStringWithDefaultValue(@"HUPinCodeEditorViewControllerTitle", @"HUPinCodeEditorViewControllerTitle", 1);
   [(HUPinCodeEditorViewController *)self setTitle:v3];
 
-  v4 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v5 = [(HUPinCodeEditorViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  view = [(HUPinCodeEditorViewController *)self view];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 
-  v6 = [(HUPinCodeEditorViewController *)self view];
-  v7 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  [v6 addSubview:v7];
+  view2 = [(HUPinCodeEditorViewController *)self view];
+  instructionHeader = [(HUPinCodeEditorViewController *)self instructionHeader];
+  [view2 addSubview:instructionHeader];
 
-  v8 = [(HUPinCodeEditorViewController *)self view];
-  v9 = [(HUPinCodeEditorViewController *)self textField];
-  [v8 addSubview:v9];
+  view3 = [(HUPinCodeEditorViewController *)self view];
+  textField = [(HUPinCodeEditorViewController *)self textField];
+  [view3 addSubview:textField];
 
-  v10 = [(HUPinCodeEditorViewController *)self view];
-  v11 = [(HUPinCodeEditorViewController *)self footerLabel];
-  [v10 addSubview:v11];
+  view4 = [(HUPinCodeEditorViewController *)self view];
+  footerLabel = [(HUPinCodeEditorViewController *)self footerLabel];
+  [view4 addSubview:footerLabel];
 
-  v12 = [(HUPinCodeEditorViewController *)self view];
-  [v12 setAccessibilityIdentifier:@"Home.Locks.PinCode.Editor"];
+  view5 = [(HUPinCodeEditorViewController *)self view];
+  [view5 setAccessibilityIdentifier:@"Home.Locks.PinCode.Editor"];
 
-  v13 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  instructionHeader2 = [(HUPinCodeEditorViewController *)self instructionHeader];
+  [instructionHeader2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(HUPinCodeEditorViewController *)self textField];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textField2 = [(HUPinCodeEditorViewController *)self textField];
+  [textField2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(HUPinCodeEditorViewController *)self footerLabel];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  footerLabel2 = [(HUPinCodeEditorViewController *)self footerLabel];
+  [footerLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [(HUPinCodeEditorViewController *)self textField];
-  v18 = [v17 bottomAnchor];
-  v19 = [(HUPinCodeEditorViewController *)self view];
-  v20 = [v19 centerYAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20 constant:-60.0];
-  [v16 addObject:v21];
+  array = [MEMORY[0x277CBEB18] array];
+  textField3 = [(HUPinCodeEditorViewController *)self textField];
+  bottomAnchor = [textField3 bottomAnchor];
+  view6 = [(HUPinCodeEditorViewController *)self view];
+  centerYAnchor = [view6 centerYAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:centerYAnchor constant:-60.0];
+  [array addObject:v21];
 
-  v22 = [(HUPinCodeEditorViewController *)self textField];
-  v23 = [v22 leadingAnchor];
-  v24 = [(HUPinCodeEditorViewController *)self view];
-  v25 = [v24 layoutMarginsGuide];
-  v26 = [v25 leadingAnchor];
-  v27 = [v23 constraintEqualToAnchor:v26];
-  [v16 addObject:v27];
+  textField4 = [(HUPinCodeEditorViewController *)self textField];
+  leadingAnchor = [textField4 leadingAnchor];
+  view7 = [(HUPinCodeEditorViewController *)self view];
+  layoutMarginsGuide = [view7 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v27];
 
-  v28 = [(HUPinCodeEditorViewController *)self textField];
-  v29 = [v28 trailingAnchor];
-  v30 = [(HUPinCodeEditorViewController *)self view];
-  v31 = [v30 layoutMarginsGuide];
-  v32 = [v31 trailingAnchor];
-  v33 = [v29 constraintEqualToAnchor:v32];
-  [v16 addObject:v33];
+  textField5 = [(HUPinCodeEditorViewController *)self textField];
+  trailingAnchor = [textField5 trailingAnchor];
+  view8 = [(HUPinCodeEditorViewController *)self view];
+  layoutMarginsGuide2 = [view8 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v33];
 
-  v34 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  v35 = [v34 leadingAnchor];
-  v36 = [(HUPinCodeEditorViewController *)self view];
-  v37 = [v36 layoutMarginsGuide];
-  v38 = [v37 leadingAnchor];
-  v39 = [v35 constraintEqualToAnchor:v38 constant:10.0];
-  [v16 addObject:v39];
+  instructionHeader3 = [(HUPinCodeEditorViewController *)self instructionHeader];
+  leadingAnchor3 = [instructionHeader3 leadingAnchor];
+  view9 = [(HUPinCodeEditorViewController *)self view];
+  layoutMarginsGuide3 = [view9 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+  v39 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
+  [array addObject:v39];
 
-  v40 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  v41 = [v40 trailingAnchor];
-  v42 = [(HUPinCodeEditorViewController *)self view];
-  v43 = [v42 layoutMarginsGuide];
-  v44 = [v43 trailingAnchor];
-  v45 = [v41 constraintEqualToAnchor:v44 constant:-10.0];
-  [v16 addObject:v45];
+  instructionHeader4 = [(HUPinCodeEditorViewController *)self instructionHeader];
+  trailingAnchor3 = [instructionHeader4 trailingAnchor];
+  view10 = [(HUPinCodeEditorViewController *)self view];
+  layoutMarginsGuide4 = [view10 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+  v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-10.0];
+  [array addObject:v45];
 
-  v46 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  v47 = [v46 centerXAnchor];
-  v48 = [(HUPinCodeEditorViewController *)self view];
-  v49 = [v48 layoutMarginsGuide];
-  v50 = [v49 centerXAnchor];
-  v51 = [v47 constraintEqualToAnchor:v50];
-  [v16 addObject:v51];
+  instructionHeader5 = [(HUPinCodeEditorViewController *)self instructionHeader];
+  centerXAnchor = [instructionHeader5 centerXAnchor];
+  view11 = [(HUPinCodeEditorViewController *)self view];
+  layoutMarginsGuide5 = [view11 layoutMarginsGuide];
+  centerXAnchor2 = [layoutMarginsGuide5 centerXAnchor];
+  v51 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v51];
 
-  v52 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  v53 = [v52 bottomAnchor];
-  v54 = [(HUPinCodeEditorViewController *)self textField];
-  v55 = [v54 topAnchor];
-  v56 = [v53 constraintEqualToAnchor:v55 constant:-28.0];
-  [v16 addObject:v56];
+  instructionHeader6 = [(HUPinCodeEditorViewController *)self instructionHeader];
+  bottomAnchor2 = [instructionHeader6 bottomAnchor];
+  textField6 = [(HUPinCodeEditorViewController *)self textField];
+  topAnchor = [textField6 topAnchor];
+  v56 = [bottomAnchor2 constraintEqualToAnchor:topAnchor constant:-28.0];
+  [array addObject:v56];
 
-  v57 = [(HUPinCodeEditorViewController *)self footerLabel];
-  v58 = [v57 leadingAnchor];
-  v59 = [(HUPinCodeEditorViewController *)self view];
-  v60 = [v59 layoutMarginsGuide];
-  v61 = [v60 leadingAnchor];
-  v62 = [v58 constraintEqualToAnchor:v61 constant:10.0];
-  [v16 addObject:v62];
+  footerLabel3 = [(HUPinCodeEditorViewController *)self footerLabel];
+  leadingAnchor5 = [footerLabel3 leadingAnchor];
+  view12 = [(HUPinCodeEditorViewController *)self view];
+  layoutMarginsGuide6 = [view12 layoutMarginsGuide];
+  leadingAnchor6 = [layoutMarginsGuide6 leadingAnchor];
+  v62 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
+  [array addObject:v62];
 
-  v63 = [(HUPinCodeEditorViewController *)self footerLabel];
-  v64 = [v63 trailingAnchor];
-  v65 = [(HUPinCodeEditorViewController *)self view];
-  v66 = [v65 layoutMarginsGuide];
-  v67 = [v66 trailingAnchor];
-  v68 = [v64 constraintEqualToAnchor:v67 constant:-10.0];
-  [v16 addObject:v68];
+  footerLabel4 = [(HUPinCodeEditorViewController *)self footerLabel];
+  trailingAnchor5 = [footerLabel4 trailingAnchor];
+  view13 = [(HUPinCodeEditorViewController *)self view];
+  layoutMarginsGuide7 = [view13 layoutMarginsGuide];
+  trailingAnchor6 = [layoutMarginsGuide7 trailingAnchor];
+  v68 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-10.0];
+  [array addObject:v68];
 
-  v69 = [(HUPinCodeEditorViewController *)self footerLabel];
-  v70 = [v69 centerXAnchor];
-  v71 = [(HUPinCodeEditorViewController *)self view];
-  v72 = [v71 layoutMarginsGuide];
-  v73 = [v72 centerXAnchor];
-  v74 = [v70 constraintEqualToAnchor:v73];
-  [v16 addObject:v74];
+  footerLabel5 = [(HUPinCodeEditorViewController *)self footerLabel];
+  centerXAnchor3 = [footerLabel5 centerXAnchor];
+  view14 = [(HUPinCodeEditorViewController *)self view];
+  layoutMarginsGuide8 = [view14 layoutMarginsGuide];
+  centerXAnchor4 = [layoutMarginsGuide8 centerXAnchor];
+  v74 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+  [array addObject:v74];
 
-  v75 = [(HUPinCodeEditorViewController *)self footerLabel];
-  v76 = [v75 topAnchor];
-  v77 = [(HUPinCodeEditorViewController *)self textField];
-  v78 = [v77 bottomAnchor];
-  v79 = [v76 constraintEqualToAnchor:v78 constant:28.0];
-  [v16 addObject:v79];
+  footerLabel6 = [(HUPinCodeEditorViewController *)self footerLabel];
+  topAnchor2 = [footerLabel6 topAnchor];
+  textField7 = [(HUPinCodeEditorViewController *)self textField];
+  bottomAnchor3 = [textField7 bottomAnchor];
+  v79 = [topAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:28.0];
+  [array addObject:v79];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v16];
-  v80 = [(HUPinCodeEditorViewController *)self navigationController];
-  v81 = [v80 viewControllers];
-  v82 = [v81 objectAtIndexedSubscript:0];
-  LODWORD(v78) = [v82 isEqual:self];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
+  navigationController = [(HUPinCodeEditorViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v82 = [viewControllers objectAtIndexedSubscript:0];
+  LODWORD(bottomAnchor3) = [v82 isEqual:self];
 
-  if (v78)
+  if (bottomAnchor3)
   {
     v83 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonPressed_];
-    v84 = [(HUPinCodeEditorViewController *)self navigationItem];
-    [v84 setLeftBarButtonItem:v83];
+    navigationItem = [(HUPinCodeEditorViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v83];
   }
 
   v85 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_saveButtonPressed_];
   [(HUPinCodeEditorViewController *)self setSaveButtonItem:v85];
 
-  v86 = [(HUPinCodeEditorViewController *)self saveButtonItem];
-  v87 = [(HUPinCodeEditorViewController *)self navigationItem];
-  [v87 setRightBarButtonItem:v86];
+  saveButtonItem = [(HUPinCodeEditorViewController *)self saveButtonItem];
+  navigationItem2 = [(HUPinCodeEditorViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:saveButtonItem];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUPinCodeEditorViewController;
-  [(HUPinCodeEditorViewController *)&v5 viewWillAppear:a3];
-  v4 = [(HUPinCodeEditorViewController *)self textField];
-  [v4 becomeFirstResponder];
+  [(HUPinCodeEditorViewController *)&v5 viewWillAppear:appear];
+  textField = [(HUPinCodeEditorViewController *)self textField];
+  [textField becomeFirstResponder];
 }
 
 - (void)_updateHeaderAndFooter
 {
   objc_opt_class();
-  v3 = [(HUPinCodeEditorViewController *)self sourceItem];
+  sourceItem = [(HUPinCodeEditorViewController *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceItem;
   }
 
   else
@@ -374,10 +374,10 @@ void __81__HUPinCodeEditorViewController__commonInitWithManager_home_initialPinC
   v46 = v4;
 
   objc_opt_class();
-  v5 = [(HUPinCodeEditorViewController *)self sourceItem];
+  sourceItem2 = [(HUPinCodeEditorViewController *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = sourceItem2;
   }
 
   else
@@ -397,24 +397,24 @@ void __81__HUPinCodeEditorViewController__commonInitWithManager_home_initialPinC
     v8 = v46;
   }
 
-  v9 = [v8 user];
-  v10 = [(HUPinCodeEditorViewController *)self home];
-  v11 = [v10 currentUser];
-  v12 = [v11 uniqueIdentifier];
-  v13 = [v9 uniqueIdentifier];
-  v14 = [v12 isEqual:v13];
+  user = [v8 user];
+  home = [(HUPinCodeEditorViewController *)self home];
+  currentUser = [home currentUser];
+  uniqueIdentifier = [currentUser uniqueIdentifier];
+  uniqueIdentifier2 = [user uniqueIdentifier];
+  v14 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
-  v15 = [v46 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults = [v46 latestResults];
+  v16 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
 
-  v17 = [(HUPinCodeEditorViewController *)self codeLengthMin];
+  codeLengthMin = [(HUPinCodeEditorViewController *)self codeLengthMin];
   [(HUPinCodeEditorViewController *)self codeLengthMax];
-  v24 = HULocalizedStringWithFormat(@"HUPinCodeEditorViewControllerInstructionHeaderNoName", @"%ld%ld", v18, v19, v20, v21, v22, v23, v17);
+  v24 = HULocalizedStringWithFormat(@"HUPinCodeEditorViewControllerInstructionHeaderNoName", @"%ld%ld", v18, v19, v20, v21, v22, v23, codeLengthMin);
   if (v14)
   {
-    v25 = [(HUPinCodeEditorViewController *)self codeLengthMin];
+    codeLengthMin2 = [(HUPinCodeEditorViewController *)self codeLengthMin];
     [(HUPinCodeEditorViewController *)self codeLengthMax];
-    HULocalizedStringWithFormat(@"HUPinCodeEditorViewControllerInstructionHeaderSelf", @"%ld%ld", v26, v27, v28, v29, v30, v31, v25);
+    HULocalizedStringWithFormat(@"HUPinCodeEditorViewControllerInstructionHeaderSelf", @"%ld%ld", v26, v27, v28, v29, v30, v31, codeLengthMin2);
   }
 
   else
@@ -424,35 +424,35 @@ void __81__HUPinCodeEditorViewController__commonInitWithManager_home_initialPinC
       goto LABEL_15;
     }
 
-    v32 = [(HUPinCodeEditorViewController *)self codeLengthMin];
+    codeLengthMin3 = [(HUPinCodeEditorViewController *)self codeLengthMin];
     [(HUPinCodeEditorViewController *)self codeLengthMax];
-    HULocalizedStringWithFormat(@"HUPinCodeEditorViewControllerInstructionHeader", @"%ld%ld%@", v33, v34, v35, v36, v37, v38, v32);
+    HULocalizedStringWithFormat(@"HUPinCodeEditorViewControllerInstructionHeader", @"%ld%ld%@", v33, v34, v35, v36, v37, v38, codeLengthMin3);
   }
   v39 = ;
 
   v24 = v39;
 LABEL_15:
-  v40 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  [v40 setText:v24];
+  instructionHeader = [(HUPinCodeEditorViewController *)self instructionHeader];
+  [instructionHeader setText:v24];
 
-  v41 = [(HUPinCodeEditorViewController *)self instructionHeader];
-  [v41 sizeToFit];
+  instructionHeader2 = [(HUPinCodeEditorViewController *)self instructionHeader];
+  [instructionHeader2 sizeToFit];
 
-  if (v9)
+  if (user)
   {
     v42 = _HULocalizedStringWithDefaultValue(@"HUPinCodeEditInstructionFooter", @"HUPinCodeEditInstructionFooter", 1);
-    v43 = [(HUPinCodeEditorViewController *)self footerLabel];
-    [v43 setText:v42];
+    footerLabel = [(HUPinCodeEditorViewController *)self footerLabel];
+    [footerLabel setText:v42];
 
-    v44 = [(HUPinCodeEditorViewController *)self footerLabel];
-    [v44 sizeToFit];
+    footerLabel2 = [(HUPinCodeEditorViewController *)self footerLabel];
+    [footerLabel2 sizeToFit];
   }
 
-  v45 = [(HUPinCodeEditorViewController *)self footerLabel];
-  [v45 setHidden:v9 == 0];
+  footerLabel3 = [(HUPinCodeEditorViewController *)self footerLabel];
+  [footerLabel3 setHidden:user == 0];
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -461,16 +461,16 @@ LABEL_15:
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(HUPinCodeEditorViewController) User tapped 'cancel' button", v8, 2u);
   }
 
-  v5 = [(HUPinCodeEditorViewController *)self textField];
-  [v5 resignFirstResponder];
+  textField = [(HUPinCodeEditorViewController *)self textField];
+  [textField resignFirstResponder];
 
-  v6 = [(HUPinCodeEditorViewController *)self presentationDelegate];
-  v7 = [v6 finishPresentation:self animated:1];
+  presentationDelegate = [(HUPinCodeEditorViewController *)self presentationDelegate];
+  v7 = [presentationDelegate finishPresentation:self animated:1];
 }
 
-- (void)saveButtonPressed:(id)a3
+- (void)saveButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -478,25 +478,25 @@ LABEL_15:
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(HUPinCodeEditorViewController) User tapped 'save' button", &buf, 2u);
   }
 
-  v6 = [(HUPinCodeEditorViewController *)self textField];
-  [v6 resignFirstResponder];
+  textField = [(HUPinCodeEditorViewController *)self textField];
+  [textField resignFirstResponder];
 
-  v7 = [(HUPinCodeEditorViewController *)self textField];
-  v8 = [v7 text];
+  textField2 = [(HUPinCodeEditorViewController *)self textField];
+  text = [textField2 text];
 
   v23 = 0;
-  v9 = [MEMORY[0x277D14930] asciiStringForLocalizedPINString:v8 error:&v23];
+  v9 = [MEMORY[0x277D14930] asciiStringForLocalizedPINString:text error:&v23];
   v10 = v23;
   [(HUPinCodeEditorViewController *)self setEditedPinCode:v9];
   objc_initWeak(&buf, self);
-  v11 = [(HUPinCodeEditorViewController *)self checkForPINCodeValueValidationErrors];
+  checkForPINCodeValueValidationErrors = [(HUPinCodeEditorViewController *)self checkForPINCodeValueValidationErrors];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __51__HUPinCodeEditorViewController_saveButtonPressed___block_invoke;
   v20[3] = &unk_277DB9858;
   v12 = v10;
   v21 = v12;
-  v13 = [v11 recover:v20];
+  v13 = [checkForPINCodeValueValidationErrors recover:v20];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __51__HUPinCodeEditorViewController_saveButtonPressed___block_invoke_57;
@@ -719,10 +719,10 @@ void __51__HUPinCodeEditorViewController_saveButtonPressed___block_invoke_3(uint
 {
   [(HUPinCodeEditorViewController *)self _showSpinner];
   objc_opt_class();
-  v3 = [(HUPinCodeEditorViewController *)self sourceItem];
+  sourceItem = [(HUPinCodeEditorViewController *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceItem;
   }
 
   else
@@ -733,10 +733,10 @@ void __51__HUPinCodeEditorViewController_saveButtonPressed___block_invoke_3(uint
   v5 = v4;
 
   objc_opt_class();
-  v6 = [(HUPinCodeEditorViewController *)self sourceItem];
+  sourceItem2 = [(HUPinCodeEditorViewController *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = sourceItem2;
   }
 
   else
@@ -756,18 +756,18 @@ void __51__HUPinCodeEditorViewController_saveButtonPressed___block_invoke_3(uint
     v9 = v5;
   }
 
-  v10 = [v9 user];
-  v11 = [(HUPinCodeEditorViewController *)self editedPinCode];
-  v12 = [(HUPinCodeEditorViewController *)self pinCodeManager];
-  v13 = v12;
-  if (v10)
+  user = [v9 user];
+  editedPinCode = [(HUPinCodeEditorViewController *)self editedPinCode];
+  pinCodeManager = [(HUPinCodeEditorViewController *)self pinCodeManager];
+  v13 = pinCodeManager;
+  if (user)
   {
-    [v12 setUserPinCode:v11 forUser:v10];
+    [pinCodeManager setUserPinCode:editedPinCode forUser:user];
   }
 
   else
   {
-    [v12 updatePinCodeWithItem:v5 withCodeValue:v11];
+    [pinCodeManager updatePinCodeWithItem:v5 withCodeValue:editedPinCode];
   }
   v14 = ;
 
@@ -796,11 +796,11 @@ void __52__HUPinCodeEditorViewController_commitPinCodeChange__block_invoke(uint6
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   if ([(HUPinCodeEditorViewController *)self codeLengthMax]<= 0)
   {
     NSLog(&cfstr_IgnoringInvali.isa);
@@ -809,20 +809,20 @@ void __52__HUPinCodeEditorViewController_commitPinCodeChange__block_invoke(uint6
 
   else
   {
-    v9 = [(HUPinCodeEditorViewController *)self textField];
-    v10 = [v9 text];
-    v11 = v10;
+    textField = [(HUPinCodeEditorViewController *)self textField];
+    text = [textField text];
+    v11 = text;
     v12 = &stru_2823E0EE8;
-    if (v10)
+    if (text)
     {
-      v12 = v10;
+      v12 = text;
     }
 
     v13 = v12;
 
-    v14 = [(__CFString *)v13 stringByReplacingCharactersInRange:location withString:length, v8];
+    stringCopy = [(__CFString *)v13 stringByReplacingCharactersInRange:location withString:length, stringCopy];
 
-    v15 = [v14 length];
+    v15 = [stringCopy length];
     v16 = v15 <= [(HUPinCodeEditorViewController *)self codeLengthMax];
   }
 
@@ -832,10 +832,10 @@ void __52__HUPinCodeEditorViewController_commitPinCodeChange__block_invoke(uint6
 - (id)checkForPINCodeValueValidationErrors
 {
   objc_opt_class();
-  v3 = [(HUPinCodeEditorViewController *)self sourceItem];
+  sourceItem = [(HUPinCodeEditorViewController *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceItem;
   }
 
   else
@@ -845,13 +845,13 @@ void __52__HUPinCodeEditorViewController_commitPinCodeChange__block_invoke(uint6
 
   v5 = v4;
 
-  v6 = [(HUPinCodeEditorViewController *)self textField];
-  v7 = [v6 text];
+  textField = [(HUPinCodeEditorViewController *)self textField];
+  text = [textField text];
 
-  v8 = [v5 pinCodeValue];
+  pinCodeValue = [v5 pinCodeValue];
 
-  v9 = [(HUPinCodeEditorViewController *)self pinCodeManager];
-  v10 = [v9 checkForValidationErrorsWithPINCodeValue:v7 originalPINCode:v8];
+  pinCodeManager = [(HUPinCodeEditorViewController *)self pinCodeManager];
+  v10 = [pinCodeManager checkForValidationErrorsWithPINCodeValue:text originalPINCode:pinCodeValue];
 
   return v10;
 }
@@ -860,8 +860,8 @@ void __52__HUPinCodeEditorViewController_commitPinCodeChange__block_invoke(uint6
 {
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(HUPinCodeEditorViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(HUPinCodeEditorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   [v5 startAnimating];
 }
@@ -869,12 +869,12 @@ void __52__HUPinCodeEditorViewController_commitPinCodeChange__block_invoke(uint6
 - (void)_hideSpinner
 {
   objc_opt_class();
-  v3 = [(HUPinCodeEditorViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  v5 = [v4 customView];
+  navigationItem = [(HUPinCodeEditorViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  customView = [rightBarButtonItem customView];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = customView;
   }
 
   else
@@ -884,9 +884,9 @@ void __52__HUPinCodeEditorViewController_commitPinCodeChange__block_invoke(uint6
 
   v9 = v6;
 
-  v7 = [(HUPinCodeEditorViewController *)self saveButtonItem];
-  v8 = [(HUPinCodeEditorViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  saveButtonItem = [(HUPinCodeEditorViewController *)self saveButtonItem];
+  navigationItem2 = [(HUPinCodeEditorViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:saveButtonItem];
 
   [v9 stopAnimating];
 }

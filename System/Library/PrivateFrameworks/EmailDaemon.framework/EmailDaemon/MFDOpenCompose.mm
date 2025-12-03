@@ -1,9 +1,9 @@
 @interface MFDOpenCompose
 + (OS_os_log)log;
 + (id)endpointInfo;
-- (MFDOpenCompose)initWithClient:(id)a3;
-- (MFDOpenCompose)initWithClient:(id)a3 store:(id)a4;
-- (void)presentNewMailWithContext:(id)a3 delegateEndpoint:(id)a4 completion:(id)a5;
+- (MFDOpenCompose)initWithClient:(id)client;
+- (MFDOpenCompose)initWithClient:(id)client store:(id)store;
+- (void)presentNewMailWithContext:(id)context delegateEndpoint:(id)endpoint completion:(id)completion;
 @end
 
 @implementation MFDOpenCompose
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_100063318;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185850 != -1)
   {
     dispatch_once(&qword_100185850, block);
@@ -27,54 +27,54 @@
 
 + (id)endpointInfo
 {
-  v2 = [a1 exportedInterface];
-  v3 = [MFXPCEndpointInfo endpointInfoWithExportedInterface:v2 remoteObjectInterface:0 shouldAcceptClient:&stru_1001587B8 exportedObjectForClient:&stru_1001587D8];
+  exportedInterface = [self exportedInterface];
+  v3 = [MFXPCEndpointInfo endpointInfoWithExportedInterface:exportedInterface remoteObjectInterface:0 shouldAcceptClient:&stru_1001587B8 exportedObjectForClient:&stru_1001587D8];
 
   return v3;
 }
 
-- (MFDOpenCompose)initWithClient:(id)a3
+- (MFDOpenCompose)initWithClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = +[MFDOpenComposeDelegateConfigurationStore sharedStore];
-  v6 = [(MFDOpenCompose *)self initWithClient:v4 store:v5];
+  v6 = [(MFDOpenCompose *)self initWithClient:clientCopy store:v5];
 
   return v6;
 }
 
-- (MFDOpenCompose)initWithClient:(id)a3 store:(id)a4
+- (MFDOpenCompose)initWithClient:(id)client store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = MFDOpenCompose;
-  v8 = [(MFXPCServer *)&v11 initWithClient:v6];
+  v8 = [(MFXPCServer *)&v11 initWithClient:clientCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_store, a4);
-    v9->_isEntitledClient = [v6 hasEntitlement:@"com.apple.private.mobilemail.mail-recipient-vetting"];
+    objc_storeStrong(&v8->_store, store);
+    v9->_isEntitledClient = [clientCopy hasEntitlement:@"com.apple.private.mobilemail.mail-recipient-vetting"];
   }
 
   return v9;
 }
 
-- (void)presentNewMailWithContext:(id)a3 delegateEndpoint:(id)a4 completion:(id)a5
+- (void)presentNewMailWithContext:(id)context delegateEndpoint:(id)endpoint completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  endpointCopy = endpoint;
+  completionCopy = completion;
   v18 = 0;
   v11 = sub_1000637E4(self, &v18);
   v12 = v18;
   if (v11)
   {
-    sub_10006396C(self, v8, v9);
+    sub_10006396C(self, contextCopy, endpointCopy);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100063DAC;
     v16 = v15[3] = &unk_100158828;
-    v17 = v10;
+    v17 = completionCopy;
     v13 = v16;
     [v13 _createUserActivityDataWithOptions:0 completionHandler:v15];
   }
@@ -89,9 +89,9 @@
       sub_1000D41B0();
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, v12);
+      (*(completionCopy + 2))(completionCopy, v12);
     }
   }
 }

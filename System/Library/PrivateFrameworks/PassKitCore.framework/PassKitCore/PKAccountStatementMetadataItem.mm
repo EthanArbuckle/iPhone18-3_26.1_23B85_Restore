@@ -1,39 +1,39 @@
 @interface PKAccountStatementMetadataItem
-- (BOOL)isEqual:(id)a3;
-- (PKAccountStatementMetadataItem)initWithCoder:(id)a3;
-- (PKAccountStatementMetadataItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountStatementMetadataItem)initWithCoder:(id)coder;
+- (PKAccountStatementMetadataItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountStatementMetadataItem
 
-- (PKAccountStatementMetadataItem)initWithDictionary:(id)a3
+- (PKAccountStatementMetadataItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PKAccountStatementMetadataItem;
   v5 = [(PKAccountStatementMetadataItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"type"];
+    v8 = [dictionaryCopy PKStringForKey:@"type"];
     v5->_type = PKAccountStatementMetadataItemTypeFromString(v8);
 
-    v9 = [v4 PKStringForKey:@"accountEventType"];
+    v9 = [dictionaryCopy PKStringForKey:@"accountEventType"];
     v5->_accountEventType = PKAccountEventTypeFromString(v9);
 
-    v10 = [v4 PKStringForKey:@"originatorAltDSID"];
+    v10 = [dictionaryCopy PKStringForKey:@"originatorAltDSID"];
     originatorAltDSID = v5->_originatorAltDSID;
     v5->_originatorAltDSID = v10;
 
-    v12 = [v4 PKStringForKey:@"zoneName"];
+    v12 = [dictionaryCopy PKStringForKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v12;
   }
@@ -114,71 +114,71 @@
   return v18;
 }
 
-- (PKAccountStatementMetadataItem)initWithCoder:(id)a3
+- (PKAccountStatementMetadataItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKAccountStatementMetadataItem;
   v5 = [(PKAccountStatementMetadataItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_accountEventType = [v4 decodeIntegerForKey:@"accountEventType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorAltDSID"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_accountEventType = [coderCopy decodeIntegerForKey:@"accountEventType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorAltDSID"];
     originatorAltDSID = v5->_originatorAltDSID;
     v5->_originatorAltDSID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v10;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v5->_hasBeenProcessed = [v4 decodeBoolForKey:@"hasBeenProcessed"];
-    v5->_processedAttemptCount = [v4 decodeIntegerForKey:@"processedAttemptCount"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastProcessedDate"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v5->_hasBeenProcessed = [coderCopy decodeBoolForKey:@"hasBeenProcessed"];
+    v5->_processedAttemptCount = [coderCopy decodeIntegerForKey:@"processedAttemptCount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastProcessedDate"];
     lastProcessedDate = v5->_lastProcessedDate;
     v5->_lastProcessedDate = v12;
 
-    v5->_lastReportDate = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastReportDate"];
-    v5->_error = [v4 decodeIntegerForKey:@"error"];
-    v5->_reportCount = [v4 decodeIntegerForKey:@"reportCount"];
+    v5->_lastReportDate = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastReportDate"];
+    v5->_error = [coderCopy decodeIntegerForKey:@"error"];
+    v5->_reportCount = [coderCopy decodeIntegerForKey:@"reportCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_accountEventType forKey:@"accountEventType"];
-  [v5 encodeObject:self->_originatorAltDSID forKey:@"originatorAltDSID"];
-  [v5 encodeObject:self->_zoneName forKey:@"zoneName"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeBool:self->_hasBeenProcessed forKey:@"hasBeenProcessed"];
-  [v5 encodeInteger:self->_processedAttemptCount forKey:@"processedAttemptCount"];
-  [v5 encodeObject:self->_lastProcessedDate forKey:@"lastProcessedDate"];
-  [v5 encodeObject:self->_lastReportDate forKey:@"lastReportDate"];
-  [v5 encodeInteger:self->_error forKey:@"error"];
-  [v5 encodeInteger:self->_reportCount forKey:@"reportCount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_accountEventType forKey:@"accountEventType"];
+  [coderCopy encodeObject:self->_originatorAltDSID forKey:@"originatorAltDSID"];
+  [coderCopy encodeObject:self->_zoneName forKey:@"zoneName"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeBool:self->_hasBeenProcessed forKey:@"hasBeenProcessed"];
+  [coderCopy encodeInteger:self->_processedAttemptCount forKey:@"processedAttemptCount"];
+  [coderCopy encodeObject:self->_lastProcessedDate forKey:@"lastProcessedDate"];
+  [coderCopy encodeObject:self->_lastReportDate forKey:@"lastReportDate"];
+  [coderCopy encodeInteger:self->_error forKey:@"error"];
+  [coderCopy encodeInteger:self->_reportCount forKey:@"reportCount"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_20;
   }
 
-  v5 = v4[2];
+  v5 = equalCopy[2];
   v6 = self->_identifier;
   v7 = v5;
   v8 = v7;
@@ -201,7 +201,7 @@
     }
   }
 
-  v10 = v4[5];
+  v10 = equalCopy[5];
   v6 = self->_originatorAltDSID;
   v11 = v10;
   v8 = v11;
@@ -224,7 +224,7 @@
     }
   }
 
-  v13 = v4[6];
+  v13 = equalCopy[6];
   v6 = self->_zoneName;
   v14 = v13;
   v8 = v14;
@@ -249,7 +249,7 @@ LABEL_19:
 
 LABEL_23:
   lastProcessedDate = self->_lastProcessedDate;
-  v19 = v4[9];
+  v19 = equalCopy[9];
   if (lastProcessedDate && v19)
   {
     if (([(NSDate *)lastProcessedDate isEqual:?]& 1) == 0)
@@ -264,7 +264,7 @@ LABEL_23:
   }
 
   lastReportDate = self->_lastReportDate;
-  v21 = v4[10];
+  v21 = equalCopy[10];
   if (lastReportDate && v21)
   {
     if (([(NSDate *)lastReportDate isEqual:?]& 1) == 0)
@@ -278,9 +278,9 @@ LABEL_23:
     goto LABEL_20;
   }
 
-  if (self->_status == v4[7] && self->_type == v4[3] && self->_accountEventType == v4[4] && self->_hasBeenProcessed == *(v4 + 8) && self->_processedAttemptCount == v4[8] && self->_reportCount == v4[11])
+  if (self->_status == equalCopy[7] && self->_type == equalCopy[3] && self->_accountEventType == equalCopy[4] && self->_hasBeenProcessed == *(equalCopy + 8) && self->_processedAttemptCount == equalCopy[8] && self->_reportCount == equalCopy[11])
   {
-    v16 = self->_error == v4[12];
+    v16 = self->_error == equalCopy[12];
     goto LABEL_21;
   }
 
@@ -293,13 +293,13 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_originatorAltDSID];
-  [v3 safelyAddObject:self->_zoneName];
-  [v3 safelyAddObject:self->_lastProcessedDate];
-  [v3 safelyAddObject:self->_lastReportDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_originatorAltDSID];
+  [array safelyAddObject:self->_zoneName];
+  [array safelyAddObject:self->_lastProcessedDate];
+  [array safelyAddObject:self->_lastReportDate];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_status - v4 + 32 * v4;
   v6 = self->_type - v5 + 32 * v5;
   v7 = self->_accountEventType - v6 + 32 * v6;
@@ -384,22 +384,22 @@ LABEL_21:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_originatorAltDSID copyWithZone:a3];
+  v8 = [(NSString *)self->_originatorAltDSID copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v10 = [(NSString *)self->_zoneName copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSDate *)self->_lastProcessedDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_lastProcessedDate copyWithZone:zone];
   v13 = *(v5 + 72);
   *(v5 + 72) = v12;
 

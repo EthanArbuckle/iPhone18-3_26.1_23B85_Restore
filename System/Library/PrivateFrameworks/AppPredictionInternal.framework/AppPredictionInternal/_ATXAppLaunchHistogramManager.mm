@@ -1,20 +1,20 @@
 @interface _ATXAppLaunchHistogramManager
-+ (BOOL)isHistogramDeprecated:(int64_t)a3;
++ (BOOL)isHistogramDeprecated:(int64_t)deprecated;
 + (_ATXAppLaunchHistogramManager)sharedInstance;
 + (void)releaseTemporarySharedInstance;
 + (void)resetDataForCategoricalHistograms;
 + (void)resetDataForHistograms;
 + (void)resetSharedInstance;
-+ (void)useTemporarySharedInstance:(id)a3;
-- (id)categoricalHistogramForLaunchType:(int64_t)a3;
-- (id)histogramForLaunchType:(int64_t)a3;
-- (id)initAndPersist:(BOOL)a3;
-- (int)getHistogramMaxCategoryCountFromAsset:(id)a3;
-- (unint64_t)getHistogramPruningMethodFromAsset:(id)a3;
-- (void)enumerateInMemoryCategoricalHistogramsWithBlock:(id)a3;
-- (void)enumerateInMemoryHistogramsWithBlock:(id)a3;
-- (void)exchangeDatastore:(id)a3;
-- (void)purgeHistogramForLaunchType:(int64_t)a3;
++ (void)useTemporarySharedInstance:(id)instance;
+- (id)categoricalHistogramForLaunchType:(int64_t)type;
+- (id)histogramForLaunchType:(int64_t)type;
+- (id)initAndPersist:(BOOL)persist;
+- (int)getHistogramMaxCategoryCountFromAsset:(id)asset;
+- (unint64_t)getHistogramPruningMethodFromAsset:(id)asset;
+- (void)enumerateInMemoryCategoricalHistogramsWithBlock:(id)block;
+- (void)enumerateInMemoryHistogramsWithBlock:(id)block;
+- (void)exchangeDatastore:(id)datastore;
+- (void)purgeHistogramForLaunchType:(int64_t)type;
 @end
 
 @implementation _ATXAppLaunchHistogramManager
@@ -25,9 +25,9 @@
   v2 = sharedInstance;
   if (!sharedInstance)
   {
-    v3 = [[_ATXAppLaunchHistogramManager alloc] initWithPersistentStore];
+    initWithPersistentStore = [[_ATXAppLaunchHistogramManager alloc] initWithPersistentStore];
     v4 = sharedInstance;
-    sharedInstance = v3;
+    sharedInstance = initWithPersistentStore;
 
     v2 = sharedInstance;
   }
@@ -38,14 +38,14 @@
   return v5;
 }
 
-- (unint64_t)getHistogramPruningMethodFromAsset:(id)a3
+- (unint64_t)getHistogramPruningMethodFromAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:v4];
+  assetCopy = asset;
+  v5 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:assetCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
@@ -53,23 +53,23 @@
     v8 = __atxlog_handle_default();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(_ATXAppLaunchHistogramManager *)v4 getHistogramPruningMethodFromAsset:v8];
+      [(_ATXAppLaunchHistogramManager *)assetCopy getHistogramPruningMethodFromAsset:v8];
     }
 
-    v7 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (int)getHistogramMaxCategoryCountFromAsset:(id)a3
+- (int)getHistogramMaxCategoryCountFromAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:v4];
+  assetCopy = asset;
+  v5 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:assetCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
@@ -77,18 +77,18 @@
     v8 = __atxlog_handle_default();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(_ATXAppLaunchHistogramManager *)v4 getHistogramPruningMethodFromAsset:v8];
+      [(_ATXAppLaunchHistogramManager *)assetCopy getHistogramPruningMethodFromAsset:v8];
     }
 
-    v7 = 50;
+    intValue = 50;
   }
 
-  return v7;
+  return intValue;
 }
 
-- (id)initAndPersist:(BOOL)a3
+- (id)initAndPersist:(BOOL)persist
 {
-  v3 = a3;
+  persistCopy = persist;
   v19.receiver = self;
   v19.super_class = _ATXAppLaunchHistogramManager;
   v4 = [(_ATXAppLaunchHistogramManager *)&v19 init];
@@ -109,8 +109,8 @@
     categoricalHistograms = v4->_categoricalHistograms;
     v4->_categoricalHistograms = v11;
 
-    v4->_persistentStore = v3;
-    if (v3)
+    v4->_persistentStore = persistCopy;
+    if (persistCopy)
     {
       v13 = +[_ATXDataStore sharedInstance];
       datastore = v4->_datastore;
@@ -149,13 +149,13 @@
   pthread_mutex_unlock(&sharedInstanceLock);
 }
 
-+ (void)useTemporarySharedInstance:(id)a3
++ (void)useTemporarySharedInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   pthread_mutex_lock(&sharedInstanceLock);
   objc_storeStrong(&swappedInstance, sharedInstance);
   v4 = sharedInstance;
-  sharedInstance = v3;
+  sharedInstance = instanceCopy;
 
   pthread_mutex_unlock(&sharedInstanceLock);
 }
@@ -170,73 +170,73 @@
   pthread_mutex_unlock(&sharedInstanceLock);
 }
 
-- (void)exchangeDatastore:(id)a3
+- (void)exchangeDatastore:(id)datastore
 {
-  v4 = a3;
+  datastoreCopy = datastore;
   v5 = self->_histograms;
   objc_sync_enter(v5);
   datastore = self->_datastore;
-  self->_datastore = v4;
-  v7 = v4;
+  self->_datastore = datastoreCopy;
+  v7 = datastoreCopy;
 
   objc_sync_exit(v5);
 }
 
-- (void)enumerateInMemoryHistogramsWithBlock:(id)a3
+- (void)enumerateInMemoryHistogramsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   histograms = self->_histograms;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70___ATXAppLaunchHistogramManager_enumerateInMemoryHistogramsWithBlock___block_invoke;
   v7[3] = &unk_27859B1E8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)histograms enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)enumerateInMemoryCategoricalHistogramsWithBlock:(id)a3
+- (void)enumerateInMemoryCategoricalHistogramsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   categoricalHistograms = self->_categoricalHistograms;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81___ATXAppLaunchHistogramManager_enumerateInMemoryCategoricalHistogramsWithBlock___block_invoke;
   v7[3] = &unk_27859B210;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)categoricalHistograms enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (id)histogramForLaunchType:(int64_t)a3
+- (id)histogramForLaunchType:(int64_t)type
 {
   v5 = self->_histograms;
   objc_sync_enter(v5);
   histograms = self->_histograms;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v8 = [(NSMutableDictionary *)histograms objectForKeyedSubscript:v7];
 
   if (!v8)
   {
     if (self->_persistentStore)
     {
-      v8 = [[_ATXAppLaunchHistogramWithPersistentBackup alloc] initWithDataStore:self->_datastore histogramType:a3 saveOnBackgroundQueue:self->_backgroundSaverQueue];
+      v8 = [[_ATXAppLaunchHistogramWithPersistentBackup alloc] initWithDataStore:self->_datastore histogramType:type saveOnBackgroundQueue:self->_backgroundSaverQueue];
       if (v8)
       {
 LABEL_7:
         v10 = self->_histograms;
-        v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+        v11 = [MEMORY[0x277CCABB0] numberWithInteger:type];
         [(NSMutableDictionary *)v10 setObject:v8 forKeyedSubscript:v11];
 
         goto LABEL_8;
       }
 
-      v9 = [[_ATXAppLaunchHistogramWithPersistentBackup alloc] initWithDataStore:self->_datastore histogramType:a3 loadFromDataStore:0 saveOnBackgroundQueue:self->_backgroundSaverQueue];
+      v9 = [[_ATXAppLaunchHistogramWithPersistentBackup alloc] initWithDataStore:self->_datastore histogramType:type loadFromDataStore:0 saveOnBackgroundQueue:self->_backgroundSaverQueue];
     }
 
     else
     {
-      v9 = [[_ATXAppLaunchHistogram alloc] initWithType:a3];
+      v9 = [[_ATXAppLaunchHistogram alloc] initWithType:type];
     }
 
     v8 = v9;
@@ -249,10 +249,10 @@ LABEL_8:
   return v8;
 }
 
-- (id)categoricalHistogramForLaunchType:(int64_t)a3
+- (id)categoricalHistogramForLaunchType:(int64_t)type
 {
   v5 = 0;
-  switch(a3)
+  switch(type)
   {
     case 0:
     case 1:
@@ -524,11 +524,11 @@ LABEL_55:
       v22[2] = __67___ATXAppLaunchHistogramManager_categoricalHistogramForLaunchType___block_invoke;
       v22[3] = &unk_27859B238;
       v22[4] = self;
-      v22[5] = a3;
+      v22[5] = type;
       v23 = maxSSIDCount;
       v22[6] = SSIDPruningMethod;
       v20 = _Block_copy(v22);
-      v5 = ATXHistogramTypeFunctionLookup[a3]();
+      v5 = ATXHistogramTypeFunctionLookup[type]();
 
 LABEL_56:
 
@@ -536,12 +536,12 @@ LABEL_56:
   }
 }
 
-- (void)purgeHistogramForLaunchType:(int64_t)a3
+- (void)purgeHistogramForLaunchType:(int64_t)type
 {
   obj = self->_histograms;
   objc_sync_enter(obj);
   histograms = self->_histograms;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v7 = [(NSMutableDictionary *)histograms objectForKeyedSubscript:v6];
 
   if (v7)
@@ -552,7 +552,7 @@ LABEL_56:
     }
 
     v8 = self->_histograms;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     [(NSMutableDictionary *)v8 removeObjectForKey:v9];
   }
 
@@ -560,7 +560,7 @@ LABEL_56:
   obja = self->_categoricalHistograms;
   objc_sync_enter(obja);
   categoricalHistograms = self->_categoricalHistograms;
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v12 = [(NSMutableDictionary *)categoricalHistograms objectForKeyedSubscript:v11];
 
   if (v12)
@@ -571,16 +571,16 @@ LABEL_56:
     }
 
     v13 = self->_categoricalHistograms;
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     [(NSMutableDictionary *)v13 removeObjectForKey:v14];
   }
 
   objc_sync_exit(obja);
 }
 
-+ (BOOL)isHistogramDeprecated:(int64_t)a3
++ (BOOL)isHistogramDeprecated:(int64_t)deprecated
 {
-  v3 = [_ATXDataStore stringForHistogramType:a3];
+  v3 = [_ATXDataStore stringForHistogramType:deprecated];
   v4 = [v3 hasSuffix:@"_Deprecated"];
 
   return v4;

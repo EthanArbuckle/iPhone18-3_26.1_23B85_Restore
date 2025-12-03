@@ -1,16 +1,16 @@
 @interface FormatSponsoredBanner
-- (_TtC8NewsFeed21FormatSponsoredBanner)initWithCoder:(id)a3;
-- (_TtC8NewsFeed21FormatSponsoredBanner)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed21FormatSponsoredBanner)initWithCoder:(id)coder;
+- (_TtC8NewsFeed21FormatSponsoredBanner)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FormatSponsoredBanner
 
-- (_TtC8NewsFeed21FormatSponsoredBanner)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed21FormatSponsoredBanner)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed21FormatSponsoredBanner_identifier);
   *v9 = 0;
@@ -23,7 +23,7 @@
   return [(FormatSponsoredBanner *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8NewsFeed21FormatSponsoredBanner)initWithCoder:(id)a3
+- (_TtC8NewsFeed21FormatSponsoredBanner)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = (&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed21FormatSponsoredBanner_identifier);
@@ -34,8 +34,8 @@
   v7[1] = 0;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = [(FormatSponsoredBanner *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(FormatSponsoredBanner *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

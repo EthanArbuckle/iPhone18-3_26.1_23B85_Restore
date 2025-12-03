@@ -1,42 +1,42 @@
 @interface UAPasteboardDataProvider
-- (UAPasteboardDataProvider)initWithData:(id)a3 type:(id)a4;
-- (void)getDataWithCompletionBlock:(id)a3;
+- (UAPasteboardDataProvider)initWithData:(id)data type:(id)type;
+- (void)getDataWithCompletionBlock:(id)block;
 @end
 
 @implementation UAPasteboardDataProvider
 
-- (UAPasteboardDataProvider)initWithData:(id)a3 type:(id)a4
+- (UAPasteboardDataProvider)initWithData:(id)data type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = UAPasteboardDataProvider;
   v8 = [(UAPasteboardDataProvider *)&v11 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    [(UAPasteboardDataProvider *)v8 setUuid:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(UAPasteboardDataProvider *)v8 setUuid:uUID];
 
-    [(UAPasteboardDataProvider *)v8 setType:v7];
-    [(UAPasteboardDataProvider *)v8 setData:v6];
+    [(UAPasteboardDataProvider *)v8 setType:typeCopy];
+    [(UAPasteboardDataProvider *)v8 setData:dataCopy];
   }
 
   return v8;
 }
 
-- (void)getDataWithCompletionBlock:(id)a3
+- (void)getDataWithCompletionBlock:(id)block
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UAPasteboardDataProvider *)self data];
+  blockCopy = block;
+  data = [(UAPasteboardDataProvider *)self data];
 
-  if (v5)
+  if (data)
   {
     v6 = MEMORY[0x277CBEAE0];
-    v7 = [(UAPasteboardDataProvider *)self data];
-    v15 = [v6 inputStreamWithData:v7];
+    data2 = [(UAPasteboardDataProvider *)self data];
+    v15 = [v6 inputStreamWithData:data2];
 
-    v4[2](v4, v15, 0);
+    blockCopy[2](blockCopy, v15, 0);
     v8 = *MEMORY[0x277D85DE8];
   }
 
@@ -51,13 +51,13 @@
     v12 = _uaGetLogForCategory(@"pasteboard-client");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(UAPasteboardDataProvider *)self type];
+      type = [(UAPasteboardDataProvider *)self type];
       *buf = 138412290;
-      v17 = v13;
+      v17 = type;
       _os_log_impl(&dword_226A4E000, v12, OS_LOG_TYPE_ERROR, "[Local Pasteboard] Error, providing nil data for type: %@", buf, 0xCu);
     }
 
-    (v4)[2](v4, 0, v11);
+    (blockCopy)[2](blockCopy, 0, v11);
     v14 = *MEMORY[0x277D85DE8];
   }
 }

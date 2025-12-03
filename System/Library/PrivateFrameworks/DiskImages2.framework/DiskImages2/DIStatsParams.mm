@@ -1,22 +1,22 @@
 @interface DIStatsParams
-- (DIStatsParams)initWithCoder:(id)a3;
-- (DIStatsParams)initWithURL:(id)a3 instanceId:(id)a4 error:(id *)a5;
+- (DIStatsParams)initWithCoder:(id)coder;
+- (DIStatsParams)initWithURL:(id)l instanceId:(id)id error:(id *)error;
 - (NSUUID)instanceID;
-- (id)statsWithError:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)statsWithError:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DIStatsParams
 
-- (DIStatsParams)initWithCoder:(id)a3
+- (DIStatsParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DIStatsParams;
-  v5 = [(DIBaseParams *)&v9 initWithCoder:v4];
+  v5 = [(DIBaseParams *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statInstanceID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statInstanceID"];
     statInstanceID = v5->_statInstanceID;
     v5->_statInstanceID = v6;
   }
@@ -24,31 +24,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = DIStatsParams;
-  v4 = a3;
-  [(DIBaseParams *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_statInstanceID forKey:{@"statInstanceID", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(DIBaseParams *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_statInstanceID forKey:{@"statInstanceID", v5.receiver, v5.super_class}];
 }
 
-- (DIStatsParams)initWithURL:(id)a3 instanceId:(id)a4 error:(id *)a5
+- (DIStatsParams)initWithURL:(id)l instanceId:(id)id error:(id *)error
 {
-  v9 = a4;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = DIStatsParams;
-  v10 = [(DIBaseParams *)&v14 initWithURL:a3 error:a5];
+  v10 = [(DIBaseParams *)&v14 initWithURL:l error:error];
   p_isa = &v10->super.super.isa;
   if (v10)
   {
-    if (![(DIBaseParams *)v10 openExistingImageWithError:a5])
+    if (![(DIBaseParams *)v10 openExistingImageWithError:error])
     {
       v12 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(p_isa + 8, a4);
+    objc_storeStrong(p_isa + 8, id);
   }
 
   v12 = p_isa;
@@ -57,7 +57,7 @@ LABEL_6:
   return v12;
 }
 
-- (id)statsWithError:(id *)a3
+- (id)statsWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -65,7 +65,7 @@ LABEL_6:
   v18 = __Block_byref_object_copy__1;
   v19 = __Block_byref_object_dispose__1;
   v20 = objc_alloc_init(DIClient2Controller_XPCHandler);
-  if ([v16[5] connectWithError:a3])
+  if ([v16[5] connectWithError:error])
   {
     v9 = 0;
     v10 = &v9;
@@ -73,16 +73,16 @@ LABEL_6:
     v12 = __Block_byref_object_copy__1;
     v13 = __Block_byref_object_dispose__1;
     v14 = 0;
-    v5 = [v16[5] remoteProxy];
+    remoteProxy = [v16[5] remoteProxy];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__DIStatsParams_statsWithError___block_invoke;
     v8[3] = &unk_278F80A50;
     v8[4] = &v9;
     v8[5] = &v15;
-    [v5 retrieveStatsWithParams:self reply:v8];
+    [remoteProxy retrieveStatsWithParams:self reply:v8];
 
-    if ([v16[5] completeCommandWithError:a3])
+    if ([v16[5] completeCommandWithError:error])
     {
       v6 = v10[5];
     }
@@ -122,17 +122,17 @@ void __32__DIStatsParams_statsWithError___block_invoke(uint64_t a1, void *a2, vo
   statInstanceID = self->_statInstanceID;
   if (statInstanceID)
   {
-    v3 = statInstanceID;
+    instanceID = statInstanceID;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = DIStatsParams;
-    v3 = [(DIBaseParams *)&v5 instanceID];
+    instanceID = [(DIBaseParams *)&v5 instanceID];
   }
 
-  return v3;
+  return instanceID;
 }
 
 @end

@@ -1,73 +1,73 @@
 @interface MTRPluginResidentClientSession
-- (MTRPluginResidentClientSession)initWithTransport:(id)a3 workQueue:(id)a4 sessionID:(id)a5 homeID:(id)a6 peerAddress:(id)a7;
+- (MTRPluginResidentClientSession)initWithTransport:(id)transport workQueue:(id)queue sessionID:(id)d homeID:(id)iD peerAddress:(id)address;
 - (NSString)description;
-- (id)_deviceNodeMessageForDevice:(id)a3 messageValue:(id)a4;
-- (id)_dictionaryFromCommandFields:(id)a3;
-- (id)_validateAndFindDeviceControllerForMessage:(id)a3 deviceControllerMessage:(id *)a4;
-- (id)_validateAndFindDeviceControllerMatchingHomeInMessage:(id)a3;
-- (id)_validateAndFindDeviceNodeForMessage:(id)a3;
+- (id)_deviceNodeMessageForDevice:(id)device messageValue:(id)value;
+- (id)_dictionaryFromCommandFields:(id)fields;
+- (id)_validateAndFindDeviceControllerForMessage:(id)message deviceControllerMessage:(id *)controllerMessage;
+- (id)_validateAndFindDeviceControllerMatchingHomeInMessage:(id)message;
+- (id)_validateAndFindDeviceNodeForMessage:(id)message;
 - (id)deviceController;
 - (void)_registerForMessages;
-- (void)_registerNodeID:(id)a3;
-- (void)_unregisterNodeID:(id)a3;
-- (void)device:(id)a3 internalStateUpdated:(id)a4;
-- (void)device:(id)a3 receivedAttributeReport:(id)a4;
-- (void)device:(id)a3 receivedEventReport:(id)a4;
-- (void)device:(id)a3 stateChanged:(unint64_t)a4;
-- (void)deviceBecameActive:(id)a3;
-- (void)deviceCachePrimed:(id)a3;
-- (void)deviceConfigurationChanged:(id)a3;
+- (void)_registerNodeID:(id)d;
+- (void)_unregisterNodeID:(id)d;
+- (void)device:(id)device internalStateUpdated:(id)updated;
+- (void)device:(id)device receivedAttributeReport:(id)report;
+- (void)device:(id)device receivedEventReport:(id)report;
+- (void)device:(id)device stateChanged:(unint64_t)changed;
+- (void)deviceBecameActive:(id)active;
+- (void)deviceCachePrimed:(id)primed;
+- (void)deviceConfigurationChanged:(id)changed;
 - (void)invalidate;
-- (void)messageTransport:(id)a3 handleCloseSession:(id)a4;
-- (void)messageTransport:(id)a3 handleDeviceInvokeBatchCommand:(id)a4;
-- (void)messageTransport:(id)a3 handleDeviceInvokeCommand:(id)a4;
-- (void)messageTransport:(id)a3 handleDeviceReadAttribute:(id)a4;
-- (void)messageTransport:(id)a3 handleDeviceReadMultipleAttributes:(id)a4;
-- (void)messageTransport:(id)a3 handleDeviceWriteAttribute:(id)a4;
-- (void)messageTransport:(id)a3 handleDownloadDiagnosticLog:(id)a4;
-- (void)messageTransport:(id)a3 handleGetControllerIsRunning:(id)a4;
-- (void)messageTransport:(id)a3 handleGetControllerNodeID:(id)a4;
-- (void)messageTransport:(id)a3 handleGetControllerUniqueID:(id)a4;
-- (void)messageTransport:(id)a3 handleGetDeviceEstimatedStartTime:(id)a4;
-- (void)messageTransport:(id)a3 handleGetDeviceEstimatedSubscriptionLatency:(id)a4;
-- (void)messageTransport:(id)a3 handleGetDeviceIsCachePrimed:(id)a4;
-- (void)messageTransport:(id)a3 handleGetDeviceState:(id)a4;
-- (void)messageTransport:(id)a3 handleUpdateControllerConfig:(id)a4;
-- (void)messageTransport:(id)a3 updateTimeOfActivity:(id)a4;
+- (void)messageTransport:(id)transport handleCloseSession:(id)session;
+- (void)messageTransport:(id)transport handleDeviceInvokeBatchCommand:(id)command;
+- (void)messageTransport:(id)transport handleDeviceInvokeCommand:(id)command;
+- (void)messageTransport:(id)transport handleDeviceReadAttribute:(id)attribute;
+- (void)messageTransport:(id)transport handleDeviceReadMultipleAttributes:(id)attributes;
+- (void)messageTransport:(id)transport handleDeviceWriteAttribute:(id)attribute;
+- (void)messageTransport:(id)transport handleDownloadDiagnosticLog:(id)log;
+- (void)messageTransport:(id)transport handleGetControllerIsRunning:(id)running;
+- (void)messageTransport:(id)transport handleGetControllerNodeID:(id)d;
+- (void)messageTransport:(id)transport handleGetControllerUniqueID:(id)d;
+- (void)messageTransport:(id)transport handleGetDeviceEstimatedStartTime:(id)time;
+- (void)messageTransport:(id)transport handleGetDeviceEstimatedSubscriptionLatency:(id)latency;
+- (void)messageTransport:(id)transport handleGetDeviceIsCachePrimed:(id)primed;
+- (void)messageTransport:(id)transport handleGetDeviceState:(id)state;
+- (void)messageTransport:(id)transport handleUpdateControllerConfig:(id)config;
+- (void)messageTransport:(id)transport updateTimeOfActivity:(id)activity;
 @end
 
 @implementation MTRPluginResidentClientSession
 
-- (MTRPluginResidentClientSession)initWithTransport:(id)a3 workQueue:(id)a4 sessionID:(id)a5 homeID:(id)a6 peerAddress:(id)a7
+- (MTRPluginResidentClientSession)initWithTransport:(id)transport workQueue:(id)queue sessionID:(id)d homeID:(id)iD peerAddress:(id)address
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  transportCopy = transport;
+  queueCopy = queue;
+  dCopy = d;
+  iDCopy = iD;
+  addressCopy = address;
   v26.receiver = self;
   v26.super_class = MTRPluginResidentClientSession;
   v17 = [(MTRPluginResidentClientSession *)&v26 init];
   if (v17)
   {
-    v18 = [MEMORY[0x277CBEAA8] date];
-    [(MTRPluginResidentClientSession *)v17 setTimeOfLastActivity:v18];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(MTRPluginResidentClientSession *)v17 setTimeOfLastActivity:date];
 
-    [(MTRPluginResidentClientSession *)v17 setSessionID:v14];
-    [(MTRPluginResidentClientSession *)v17 setHomeID:v15];
+    [(MTRPluginResidentClientSession *)v17 setSessionID:dCopy];
+    [(MTRPluginResidentClientSession *)v17 setHomeID:iDCopy];
     v19 = [MEMORY[0x277CBEB58] set];
     [(MTRPluginResidentClientSession *)v17 setRegisteredNodeIDs:v19];
 
     v20 = [MEMORY[0x277CBEB58] set];
     [(MTRPluginResidentClientSession *)v17 setSubscribedMTRDevices:v20];
 
-    [(MTRPluginResidentClientSession *)v17 setTransport:v12];
-    [(MTRPluginResidentClientSession *)v17 setWorkQueue:v13];
-    v21 = [v16 copy];
+    [(MTRPluginResidentClientSession *)v17 setTransport:transportCopy];
+    [(MTRPluginResidentClientSession *)v17 setWorkQueue:queueCopy];
+    v21 = [addressCopy copy];
     [(MTRPluginResidentClientSession *)v17 setPeerAddress:v21];
 
-    v22 = [(MTRPluginResidentClientSession *)v17 workQueue];
-    [v12 setDelegate:v17 delegateQueue:v22 forSessionID:v14];
+    workQueue = [(MTRPluginResidentClientSession *)v17 workQueue];
+    [transportCopy setDelegate:v17 delegateQueue:workQueue forSessionID:dCopy];
 
     v23 = objc_autoreleasePoolPush();
     [(MTRPluginResidentClientSession *)v17 _registerForMessages];
@@ -84,10 +84,10 @@
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(MTRPluginResidentClientSession *)self sessionID];
-  v8 = [(MTRPluginResidentClientSession *)self homeID];
-  v9 = [(MTRPluginResidentClientSession *)self timeOfLastActivity];
-  v10 = [v4 stringWithFormat:@"<%@: %p sid: %@ hid: %@ lastActivity: %@>", v6, self, v7, v8, v9];
+  sessionID = [(MTRPluginResidentClientSession *)self sessionID];
+  homeID = [(MTRPluginResidentClientSession *)self homeID];
+  timeOfLastActivity = [(MTRPluginResidentClientSession *)self timeOfLastActivity];
+  v10 = [v4 stringWithFormat:@"<%@: %p sid: %@ hid: %@ lastActivity: %@>", v6, self, sessionID, homeID, timeOfLastActivity];
 
   objc_autoreleasePoolPop(v3);
 
@@ -97,32 +97,32 @@
 - (id)deviceController
 {
   v3 = +[MTRPluginDeviceControllerRegistry sharedInstance];
-  v4 = [(MTRPluginResidentClientSession *)self homeID];
-  v5 = [v3 deviceControllerForUUID:v4];
+  homeID = [(MTRPluginResidentClientSession *)self homeID];
+  v5 = [v3 deviceControllerForUUID:homeID];
 
   return v5;
 }
 
-- (void)_registerNodeID:(id)a3
+- (void)_registerNodeID:(id)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRPluginResidentClientSession *)self registeredNodeIDs];
-  v6 = [v5 containsObject:v4];
+  dCopy = d;
+  registeredNodeIDs = [(MTRPluginResidentClientSession *)self registeredNodeIDs];
+  v6 = [registeredNodeIDs containsObject:dCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(MTRPluginResidentClientSession *)self deviceController];
-    v8 = [MEMORY[0x277CD5310] deviceWithNodeID:v4 controller:v7];
+    deviceController = [(MTRPluginResidentClientSession *)self deviceController];
+    v8 = [MEMORY[0x277CD5310] deviceWithNodeID:dCopy controller:deviceController];
     v9 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138413058;
-      v22 = self;
+      selfCopy4 = self;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       v25 = 2112;
-      v26 = v7;
+      v26 = deviceController;
       v27 = 2112;
       v28 = v8;
       _os_log_impl(&dword_25830F000, v9, OS_LOG_TYPE_DEFAULT, "%@ register nodeID: %@, forController: %@, device: %@", &v21, 0x2Au);
@@ -130,27 +130,27 @@
 
     if (v8)
     {
-      v10 = [(MTRPluginResidentClientSession *)self registeredNodeIDs];
-      [v10 addObject:v4];
+      registeredNodeIDs2 = [(MTRPluginResidentClientSession *)self registeredNodeIDs];
+      [registeredNodeIDs2 addObject:dCopy];
 
-      v11 = [(MTRPluginResidentClientSession *)self subscribedMTRDevices];
-      [v11 addObject:v8];
+      subscribedMTRDevices = [(MTRPluginResidentClientSession *)self subscribedMTRDevices];
+      [subscribedMTRDevices addObject:v8];
 
       v12 = matterPluginLog_default;
       if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412546;
-        v22 = self;
+        selfCopy4 = self;
         v23 = 2112;
         v24 = v8;
         _os_log_impl(&dword_25830F000, v12, OS_LOG_TYPE_DEFAULT, "%@ Adding delegate for MTRDevice: %@", &v21, 0x16u);
       }
 
-      v13 = [(MTRPluginResidentClientSession *)self workQueue];
-      [v8 addDelegate:self queue:v13];
+      workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+      [v8 addDelegate:self queue:workQueue];
 
-      v14 = [v8 getAllAttributesReport];
-      v15 = [v14 count];
+      getAllAttributesReport = [v8 getAllAttributesReport];
+      v15 = [getAllAttributesReport count];
       v16 = matterPluginLog_default;
       v17 = os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT);
       if (v15)
@@ -158,21 +158,21 @@
         if (v17)
         {
           v18 = v16;
-          v19 = [v14 count];
+          v19 = [getAllAttributesReport count];
           v21 = 138412546;
-          v22 = self;
+          selfCopy4 = self;
           v23 = 2048;
           v24 = v19;
           _os_log_impl(&dword_25830F000, v18, OS_LOG_TYPE_DEFAULT, "%@ Reporting all known attributes %lu", &v21, 0x16u);
         }
 
-        [(MTRPluginResidentClientSession *)self device:v8 receivedAttributeReport:v14];
+        [(MTRPluginResidentClientSession *)self device:v8 receivedAttributeReport:getAllAttributesReport];
       }
 
       else if (v17)
       {
         v21 = 138412290;
-        v22 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_25830F000, v16, OS_LOG_TYPE_DEFAULT, "%@ No known attributes to report", &v21, 0xCu);
       }
     }
@@ -186,26 +186,26 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterNodeID:(id)a3
+- (void)_unregisterNodeID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRPluginResidentClientSession *)self registeredNodeIDs];
-  v6 = [v5 containsObject:v4];
+  dCopy = d;
+  registeredNodeIDs = [(MTRPluginResidentClientSession *)self registeredNodeIDs];
+  v6 = [registeredNodeIDs containsObject:dCopy];
 
   if (v6)
   {
-    v7 = [(MTRPluginResidentClientSession *)self deviceController];
-    v8 = [MEMORY[0x277CD5310] deviceWithNodeID:v4 controller:v7];
+    deviceController = [(MTRPluginResidentClientSession *)self deviceController];
+    v8 = [MEMORY[0x277CD5310] deviceWithNodeID:dCopy controller:deviceController];
     v9 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138413058;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v4;
+      v16 = dCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = deviceController;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_25830F000, v9, OS_LOG_TYPE_DEFAULT, "%@ unregister nodeID: %@, forController: %@, device: %@", &v13, 0x2Au);
@@ -213,11 +213,11 @@
 
     if (v8)
     {
-      v10 = [(MTRPluginResidentClientSession *)self registeredNodeIDs];
-      [v10 removeObject:v4];
+      registeredNodeIDs2 = [(MTRPluginResidentClientSession *)self registeredNodeIDs];
+      [registeredNodeIDs2 removeObject:dCopy];
 
-      v11 = [(MTRPluginResidentClientSession *)self subscribedMTRDevices];
-      [v11 removeObject:v8];
+      subscribedMTRDevices = [(MTRPluginResidentClientSession *)self subscribedMTRDevices];
+      [subscribedMTRDevices removeObject:v8];
 
       [v8 removeDelegate:self];
     }
@@ -233,77 +233,77 @@
 
 - (void)_registerForMessages
 {
-  v3 = [(MTRPluginResidentClientSession *)self transport];
-  v4 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v3 registerForRequestMessageWithType:&unk_28697C2A0 requestHandler:sel_messageTransport_handleGetControllerIsRunning_ forSessionID:v4];
+  transport = [(MTRPluginResidentClientSession *)self transport];
+  sessionID = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport registerForRequestMessageWithType:&unk_28697C2A0 requestHandler:sel_messageTransport_handleGetControllerIsRunning_ forSessionID:sessionID];
 
-  v5 = [(MTRPluginResidentClientSession *)self transport];
-  v6 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v5 registerForRequestMessageWithType:&unk_28697C2B8 requestHandler:sel_messageTransport_handleGetControllerUniqueID_ forSessionID:v6];
+  transport2 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID2 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport2 registerForRequestMessageWithType:&unk_28697C2B8 requestHandler:sel_messageTransport_handleGetControllerUniqueID_ forSessionID:sessionID2];
 
-  v7 = [(MTRPluginResidentClientSession *)self transport];
-  v8 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v7 registerForRequestMessageWithType:&unk_28697C2D0 requestHandler:sel_messageTransport_handleGetControllerNodeID_ forSessionID:v8];
+  transport3 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID3 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport3 registerForRequestMessageWithType:&unk_28697C2D0 requestHandler:sel_messageTransport_handleGetControllerNodeID_ forSessionID:sessionID3];
 
-  v9 = [(MTRPluginResidentClientSession *)self transport];
-  v10 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v9 registerForRequestMessageWithType:&unk_28697C2E8 requestHandler:sel_messageTransport_handleUpdateControllerConfig_ forSessionID:v10];
+  transport4 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID4 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport4 registerForRequestMessageWithType:&unk_28697C2E8 requestHandler:sel_messageTransport_handleUpdateControllerConfig_ forSessionID:sessionID4];
 
-  v11 = [(MTRPluginResidentClientSession *)self transport];
-  v12 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v11 registerForRequestMessageWithType:&unk_28697C300 requestHandler:sel_messageTransport_handleCloseSession_ forSessionID:v12];
+  transport5 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID5 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport5 registerForRequestMessageWithType:&unk_28697C300 requestHandler:sel_messageTransport_handleCloseSession_ forSessionID:sessionID5];
 
-  v13 = [(MTRPluginResidentClientSession *)self transport];
-  v14 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v13 registerForRequestMessageWithType:&unk_28697C318 requestHandler:sel_messageTransport_handleGetDeviceState_ forSessionID:v14];
+  transport6 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID6 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport6 registerForRequestMessageWithType:&unk_28697C318 requestHandler:sel_messageTransport_handleGetDeviceState_ forSessionID:sessionID6];
 
-  v15 = [(MTRPluginResidentClientSession *)self transport];
-  v16 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v15 registerForRequestMessageWithType:&unk_28697C330 requestHandler:sel_messageTransport_handleGetDeviceIsCachePrimed_ forSessionID:v16];
+  transport7 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID7 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport7 registerForRequestMessageWithType:&unk_28697C330 requestHandler:sel_messageTransport_handleGetDeviceIsCachePrimed_ forSessionID:sessionID7];
 
-  v17 = [(MTRPluginResidentClientSession *)self transport];
-  v18 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v17 registerForRequestMessageWithType:&unk_28697C348 requestHandler:sel_messageTransport_handleGetDeviceEstimatedStartTime_ forSessionID:v18];
+  transport8 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID8 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport8 registerForRequestMessageWithType:&unk_28697C348 requestHandler:sel_messageTransport_handleGetDeviceEstimatedStartTime_ forSessionID:sessionID8];
 
-  v19 = [(MTRPluginResidentClientSession *)self transport];
-  v20 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v19 registerForRequestMessageWithType:&unk_28697C360 requestHandler:sel_messageTransport_handleGetDeviceEstimatedSubscriptionLatency_ forSessionID:v20];
+  transport9 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID9 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport9 registerForRequestMessageWithType:&unk_28697C360 requestHandler:sel_messageTransport_handleGetDeviceEstimatedSubscriptionLatency_ forSessionID:sessionID9];
 
-  v21 = [(MTRPluginResidentClientSession *)self transport];
-  v22 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v21 registerForRequestMessageWithType:&unk_28697C378 requestHandler:sel_messageTransport_handleDeviceReadAttribute_ forSessionID:v22];
+  transport10 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID10 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport10 registerForRequestMessageWithType:&unk_28697C378 requestHandler:sel_messageTransport_handleDeviceReadAttribute_ forSessionID:sessionID10];
 
-  v23 = [(MTRPluginResidentClientSession *)self transport];
-  v24 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v23 registerForRequestMessageWithType:&unk_28697C390 requestHandler:sel_messageTransport_handleDeviceReadMultipleAttributes_ forSessionID:v24];
+  transport11 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID11 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport11 registerForRequestMessageWithType:&unk_28697C390 requestHandler:sel_messageTransport_handleDeviceReadMultipleAttributes_ forSessionID:sessionID11];
 
-  v25 = [(MTRPluginResidentClientSession *)self transport];
-  v26 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v25 registerForRequestMessageWithType:&unk_28697C3A8 requestHandler:sel_messageTransport_handleDeviceWriteAttribute_ forSessionID:v26];
+  transport12 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID12 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport12 registerForRequestMessageWithType:&unk_28697C3A8 requestHandler:sel_messageTransport_handleDeviceWriteAttribute_ forSessionID:sessionID12];
 
-  v27 = [(MTRPluginResidentClientSession *)self transport];
-  v28 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v27 registerForRequestMessageWithType:&unk_28697C3C0 requestHandler:sel_messageTransport_handleDeviceInvokeCommand_ forSessionID:v28];
+  transport13 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID13 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport13 registerForRequestMessageWithType:&unk_28697C3C0 requestHandler:sel_messageTransport_handleDeviceInvokeCommand_ forSessionID:sessionID13];
 
-  v29 = [(MTRPluginResidentClientSession *)self transport];
-  v30 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v29 registerForRequestMessageWithType:&unk_28697C3D8 requestHandler:sel_messageTransport_handleDeviceInvokeBatchCommand_ forSessionID:v30];
+  transport14 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID14 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport14 registerForRequestMessageWithType:&unk_28697C3D8 requestHandler:sel_messageTransport_handleDeviceInvokeBatchCommand_ forSessionID:sessionID14];
 
-  v31 = [(MTRPluginResidentClientSession *)self transport];
-  v32 = [(MTRPluginResidentClientSession *)self sessionID];
-  [v31 registerForRequestMessageWithType:&unk_28697C3F0 requestHandler:sel_messageTransport_handleDownloadDiagnosticLog_ forSessionID:v32];
+  transport15 = [(MTRPluginResidentClientSession *)self transport];
+  sessionID15 = [(MTRPluginResidentClientSession *)self sessionID];
+  [transport15 registerForRequestMessageWithType:&unk_28697C3F0 requestHandler:sel_messageTransport_handleDownloadDiagnosticLog_ forSessionID:sessionID15];
 
-  v34 = [(MTRPluginResidentClientSession *)self deviceController];
-  v33 = [(MTRPluginResidentClientSession *)self workQueue];
-  [v34 addDeviceControllerDelegate:self queue:v33];
+  deviceController = [(MTRPluginResidentClientSession *)self deviceController];
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  [deviceController addDeviceControllerDelegate:self queue:workQueue];
 }
 
-- (id)_validateAndFindDeviceControllerMatchingHomeInMessage:(id)a3
+- (id)_validateAndFindDeviceControllerMatchingHomeInMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 homeIdentifier];
-  v6 = [(MTRPluginResidentClientSession *)self homeID];
-  v7 = [v5 isEqual:v6];
+  messageCopy = message;
+  homeIdentifier = [messageCopy homeIdentifier];
+  homeID = [(MTRPluginResidentClientSession *)self homeID];
+  v7 = [homeIdentifier isEqual:homeID];
 
   if (!v7 || ([(MTRPluginResidentClientSession *)self deviceController], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -312,9 +312,9 @@
       [MTRPluginResidentClientSession _validateAndFindDeviceControllerMatchingHomeInMessage:];
     }
 
-    v9 = [v4 responseHandler];
+    responseHandler = [messageCopy responseHandler];
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1002 userInfo:0];
-    (v9)[2](v9, v10, 0);
+    (responseHandler)[2](responseHandler, v10, 0);
 
     v8 = 0;
   }
@@ -322,20 +322,20 @@
   return v8;
 }
 
-- (id)_validateAndFindDeviceControllerForMessage:(id)a3 deviceControllerMessage:(id *)a4
+- (id)_validateAndFindDeviceControllerForMessage:(id)message deviceControllerMessage:(id *)controllerMessage
 {
-  v6 = a3;
-  v7 = [MTRPluginPBMDeviceControllerMessage deviceControllerMessageFromMessage:v6];
+  messageCopy = message;
+  v7 = [MTRPluginPBMDeviceControllerMessage deviceControllerMessageFromMessage:messageCopy];
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (controllerMessage)
     {
       v9 = v7;
-      *a4 = v8;
+      *controllerMessage = v8;
     }
 
-    v10 = [(MTRPluginResidentClientSession *)self _validateAndFindDeviceControllerMatchingHomeInMessage:v6];
+    v10 = [(MTRPluginResidentClientSession *)self _validateAndFindDeviceControllerMatchingHomeInMessage:messageCopy];
   }
 
   else
@@ -345,9 +345,9 @@
       [MTRPluginResidentClientSession _validateAndFindDeviceControllerForMessage:deviceControllerMessage:];
     }
 
-    v11 = [v6 responseHandler];
+    responseHandler = [messageCopy responseHandler];
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1007 userInfo:0];
-    (v11)[2](v11, v12, 0);
+    (responseHandler)[2](responseHandler, v12, 0);
 
     v10 = 0;
   }
@@ -355,11 +355,11 @@
   return v10;
 }
 
-- (id)_validateAndFindDeviceNodeForMessage:(id)a3
+- (id)_validateAndFindDeviceNodeForMessage:(id)message
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MTRPluginPBMDeviceNodeMessage deviceNodeMessageFromMessage:v4];
+  messageCopy = message;
+  v5 = [MTRPluginPBMDeviceNodeMessage deviceNodeMessageFromMessage:messageCopy];
   if (!v5)
   {
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
@@ -367,38 +367,38 @@
       [MTRPluginResidentClientSession _validateAndFindDeviceNodeForMessage:];
     }
 
-    v6 = [v4 responseHandler];
+    responseHandler = [messageCopy responseHandler];
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1003 userInfo:0];
-    (v6)[2](v6, v9, 0);
+    (responseHandler)[2](responseHandler, v9, 0);
     v10 = 0;
     goto LABEL_10;
   }
 
-  v6 = [(MTRPluginResidentClientSession *)self _validateAndFindDeviceControllerForMessage:v4 deviceControllerMessage:0];
-  if (v6)
+  responseHandler = [(MTRPluginResidentClientSession *)self _validateAndFindDeviceControllerForMessage:messageCopy deviceControllerMessage:0];
+  if (responseHandler)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v5 node];
-    v9 = [v7 numberWithUnsignedLongLong:{objc_msgSend(v8, "nodeID")}];
+    node = [v5 node];
+    v9 = [v7 numberWithUnsignedLongLong:{objc_msgSend(node, "nodeID")}];
 
-    v10 = [MEMORY[0x277CD5310] deviceWithNodeID:v9 controller:v6];
+    v10 = [MEMORY[0x277CD5310] deviceWithNodeID:v9 controller:responseHandler];
     if (!v10)
     {
       v11 = matterPluginLog_default;
       if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
       {
         v16 = 138412802;
-        v17 = self;
+        selfCopy = self;
         v18 = 2112;
         v19 = v9;
         v20 = 2112;
-        v21 = v4;
+        v21 = messageCopy;
         _os_log_error_impl(&dword_25830F000, v11, OS_LOG_TYPE_ERROR, "%@ failed to find nodeID (%@) for incoming device request message %@", &v16, 0x20u);
       }
 
-      v12 = [v4 responseHandler];
+      responseHandler2 = [messageCopy responseHandler];
       v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1001 userInfo:0];
-      (v12)[2](v12, v13, 0);
+      (responseHandler2)[2](responseHandler2, v13, 0);
     }
 
 LABEL_10:
@@ -414,43 +414,43 @@ LABEL_12:
   return v10;
 }
 
-- (void)messageTransport:(id)a3 updateTimeOfActivity:(id)a4
+- (void)messageTransport:(id)transport updateTimeOfActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  activityCopy = activity;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = self;
-  objc_sync_enter(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEBUG))
   {
     [MTRPluginResidentClientSession messageTransport:updateTimeOfActivity:];
   }
 
-  [(MTRPluginResidentClientSession *)v9 setTimeOfLastActivity:v7];
-  objc_sync_exit(v9);
+  [(MTRPluginResidentClientSession *)selfCopy setTimeOfLastActivity:activityCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)messageTransport:(id)a3 handleGetControllerIsRunning:(id)a4
+- (void)messageTransport:(id)transport handleGetControllerIsRunning:(id)running
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  runningCopy = running;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [runningCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [v7 responseHandler];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    responseHandler2 = [runningCopy responseHandler];
 
-    if (v11)
+    if (responseHandler2)
     {
-      v12 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceControllerForMessage:v7 deviceControllerMessage:0];
+      v12 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerForMessage:runningCopy deviceControllerMessage:0];
       if (v12)
       {
         v13 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
@@ -462,204 +462,204 @@ LABEL_12:
         v17 = matterPluginLog_default;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v12 isRunning];
+          isRunning = [v12 isRunning];
           v19 = @"NO";
           v22 = 138412802;
-          v23 = v10;
+          v23 = selfCopy;
           v24 = 2112;
-          if (v18)
+          if (isRunning)
           {
             v19 = @"YES";
           }
 
           v25 = v19;
           v26 = 2112;
-          v27 = v7;
+          v27 = runningCopy;
           _os_log_impl(&dword_25830F000, v17, OS_LOG_TYPE_DEFAULT, "%@ responding to controller is running state with: %@ for message %@", &v22, 0x20u);
         }
 
-        v20 = [v7 responseHandler];
-        (v20)[2](v20, 0, v13);
+        responseHandler3 = [runningCopy responseHandler];
+        (responseHandler3)[2](responseHandler3, 0, v13);
       }
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleGetControllerUniqueID:(id)a4
+- (void)messageTransport:(id)transport handleGetControllerUniqueID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  dCopy = d;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [dCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [v7 responseHandler];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    responseHandler2 = [dCopy responseHandler];
 
-    if (v11)
+    if (responseHandler2)
     {
-      v12 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceControllerForMessage:v7 deviceControllerMessage:0];
+      v12 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerForMessage:dCopy deviceControllerMessage:0];
       if (v12)
       {
         v13 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
         v14 = [MTRPluginPBMVariableValue alloc];
-        v15 = [v12 uniqueIdentifier];
-        v16 = [(MTRPluginPBMVariableValue *)v14 initWithObjectValue:v15];
+        uniqueIdentifier = [v12 uniqueIdentifier];
+        v16 = [(MTRPluginPBMVariableValue *)v14 initWithObjectValue:uniqueIdentifier];
         [(MTRPluginPBMVariableValueResponseMessage *)v13 setValue:v16];
 
         v17 = matterPluginLog_default;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v12 uniqueIdentifier];
+          uniqueIdentifier2 = [v12 uniqueIdentifier];
           v21 = 138412802;
-          v22 = v10;
+          v22 = selfCopy;
           v23 = 2112;
-          v24 = v18;
+          v24 = uniqueIdentifier2;
           v25 = 2112;
-          v26 = v7;
+          v26 = dCopy;
           _os_log_impl(&dword_25830F000, v17, OS_LOG_TYPE_DEFAULT, "%@ responding to controller get uniqueID with: %@ for message %@", &v21, 0x20u);
         }
 
-        v19 = [v7 responseHandler];
-        (v19)[2](v19, 0, v13);
+        responseHandler3 = [dCopy responseHandler];
+        (responseHandler3)[2](responseHandler3, 0, v13);
       }
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleGetControllerNodeID:(id)a4
+- (void)messageTransport:(id)transport handleGetControllerNodeID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  dCopy = d;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [dCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [v7 responseHandler];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    responseHandler2 = [dCopy responseHandler];
 
-    if (v11)
+    if (responseHandler2)
     {
-      v12 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceControllerForMessage:v7 deviceControllerMessage:0];
+      v12 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerForMessage:dCopy deviceControllerMessage:0];
       if (v12)
       {
         v13 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
         v14 = [MTRPluginPBMVariableValue alloc];
-        v15 = [v12 controllerNodeID];
-        v16 = [(MTRPluginPBMVariableValue *)v14 initWithObjectValue:v15];
+        controllerNodeID = [v12 controllerNodeID];
+        v16 = [(MTRPluginPBMVariableValue *)v14 initWithObjectValue:controllerNodeID];
         [(MTRPluginPBMVariableValueResponseMessage *)v13 setValue:v16];
 
         v17 = matterPluginLog_default;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v12 controllerNodeID];
+          controllerNodeID2 = [v12 controllerNodeID];
           v21 = 138412802;
-          v22 = v10;
+          v22 = selfCopy;
           v23 = 2112;
-          v24 = v18;
+          v24 = controllerNodeID2;
           v25 = 2112;
-          v26 = v7;
+          v26 = dCopy;
           _os_log_impl(&dword_25830F000, v17, OS_LOG_TYPE_DEFAULT, "%@ responding to controller get nodeID with: %@ for message %@", &v21, 0x20u);
         }
 
-        v19 = [v7 responseHandler];
-        (v19)[2](v19, 0, v13);
+        responseHandler3 = [dCopy responseHandler];
+        (responseHandler3)[2](responseHandler3, 0, v13);
       }
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleUpdateControllerConfig:(id)a4
+- (void)messageTransport:(id)transport handleUpdateControllerConfig:(id)config
 {
   v77 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v52 = a4;
-  v6 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  transportCopy = transport;
+  configCopy = config;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v52 responseHandler];
+  responseHandler = [configCopy responseHandler];
 
-  if (v7)
+  if (responseHandler)
   {
     obj = self;
     objc_sync_enter(obj);
-    v8 = [v52 responseHandler];
+    responseHandler2 = [configCopy responseHandler];
 
-    if (v8)
+    if (responseHandler2)
     {
       v66 = 0;
-      v56 = [(MTRPluginResidentClientSession *)obj _validateAndFindDeviceControllerForMessage:v52 deviceControllerMessage:&v66];
+      v56 = [(MTRPluginResidentClientSession *)obj _validateAndFindDeviceControllerForMessage:configCopy deviceControllerMessage:&v66];
       v50 = v66;
-      v49 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       if (v56 && v50)
       {
-        v9 = [v50 value];
-        v10 = [v9 object];
+        value = [v50 value];
+        object = [value object];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v50 value];
-          v48 = [v11 object];
+          value2 = [v50 value];
+          object2 = [value2 object];
         }
 
         else
         {
-          v48 = 0;
+          object2 = 0;
         }
 
-        v47 = [MEMORY[0x277CBEB38] dictionary];
-        v14 = [v56 controllerNodeID];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+        controllerNodeID = [v56 controllerNodeID];
 
-        if (v14)
+        if (controllerNodeID)
         {
-          v15 = [v56 controllerNodeID];
-          [v47 setObject:v15 forKeyedSubscript:*MEMORY[0x277CD50F8]];
+          controllerNodeID2 = [v56 controllerNodeID];
+          [dictionary2 setObject:controllerNodeID2 forKeyedSubscript:*MEMORY[0x277CD50F8]];
         }
 
-        v16 = [v56 compressedFabricID];
+        compressedFabricID = [v56 compressedFabricID];
 
-        if (v16)
+        if (compressedFabricID)
         {
-          v17 = [v56 compressedFabricID];
-          [v47 setObject:v17 forKeyedSubscript:*MEMORY[0x277CD50E0]];
+          compressedFabricID2 = [v56 compressedFabricID];
+          [dictionary2 setObject:compressedFabricID2 forKeyedSubscript:*MEMORY[0x277CD50E0]];
         }
 
         v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v56, "isRunning")}];
-        [v47 setObject:v18 forKeyedSubscript:*MEMORY[0x277CD50F0]];
+        [dictionary2 setObject:v18 forKeyedSubscript:*MEMORY[0x277CD50F0]];
 
-        [v49 setObject:v47 forKeyedSubscript:*MEMORY[0x277CD50E8]];
-        v54 = [MEMORY[0x277CBEB18] array];
-        v19 = [(MTRPluginResidentClientSession *)obj registeredNodeIDs];
-        v55 = [v19 mutableCopy];
+        [dictionary setObject:dictionary2 forKeyedSubscript:*MEMORY[0x277CD50E8]];
+        array = [MEMORY[0x277CBEB18] array];
+        registeredNodeIDs = [(MTRPluginResidentClientSession *)obj registeredNodeIDs];
+        v55 = [registeredNodeIDs mutableCopy];
 
         v64 = 0u;
         v65 = 0u;
         v62 = 0u;
         v63 = 0u;
         v46 = *MEMORY[0x277CD5110];
-        v20 = [v48 objectForKey:?];
+        v20 = [object2 objectForKey:?];
         v21 = [v20 countByEnumeratingWithState:&v62 objects:v76 count:16];
         if (v21)
         {
@@ -705,16 +705,16 @@ LABEL_12:
                   [(MTRPluginResidentClientSession *)obj _registerNodeID:v27];
                   [v55 removeObject:v27];
                   v29 = [MEMORY[0x277CD5310] deviceWithNodeID:v27 controller:v56];
-                  v30 = [v29 _internalProperties];
-                  if (v30)
+                  _internalProperties = [v29 _internalProperties];
+                  if (_internalProperties)
                   {
                     v68[0] = v23;
                     v68[1] = v53;
                     v69[0] = v27;
-                    v31 = [v29 _internalProperties];
-                    v69[1] = v31;
+                    _internalProperties2 = [v29 _internalProperties];
+                    v69[1] = _internalProperties2;
                     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v69 forKeys:v68 count:2];
-                    [v54 addObject:v32];
+                    [array addObject:v32];
                   }
                 }
 
@@ -742,9 +742,9 @@ LABEL_12:
           while (v21);
         }
 
-        if ([v54 count])
+        if ([array count])
         {
-          [v49 setObject:v54 forKeyedSubscript:v46];
+          [dictionary setObject:array forKeyedSubscript:v46];
         }
 
         v60 = 0u;
@@ -790,18 +790,18 @@ LABEL_12:
         v40 = matterPluginLog_default;
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [(MTRPluginResidentClientSession *)obj registeredNodeIDs];
+          registeredNodeIDs2 = [(MTRPluginResidentClientSession *)obj registeredNodeIDs];
           *buf = 138412802;
           v71 = obj;
           v72 = 2112;
           v73 = v56;
           v74 = 2112;
-          v75 = v41;
+          v75 = registeredNodeIDs2;
           _os_log_impl(&dword_25830F000, v40, OS_LOG_TYPE_DEFAULT, "%@  => controller: %@ self.registeredNodeIDs: %@", buf, 0x20u);
         }
 
         v42 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
-        v43 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:v49];
+        v43 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:dictionary];
         [(MTRPluginPBMVariableValueResponseMessage *)v42 setValue:v43];
 
         if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEBUG))
@@ -809,17 +809,17 @@ LABEL_12:
           [MTRPluginResidentClientSession messageTransport:handleUpdateControllerConfig:];
         }
 
-        v44 = [v52 responseHandler];
-        (v44)[2](v44, 0, v42);
+        responseHandler3 = [configCopy responseHandler];
+        (responseHandler3)[2](responseHandler3, 0, v42);
 
-        v13 = v47;
+        v13 = dictionary2;
       }
 
       else
       {
-        v48 = [v52 responseHandler];
+        object2 = [configCopy responseHandler];
         v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1002 userInfo:0];
-        v48[2]();
+        object2[2]();
         v13 = v12;
       }
     }
@@ -830,9 +830,9 @@ LABEL_12:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleCloseSession:(id)a4
+- (void)messageTransport:(id)transport handleCloseSession:(id)session
 {
-  v5 = [(MTRPluginResidentClientSession *)self workQueue:a3];
+  v5 = [(MTRPluginResidentClientSession *)self workQueue:transport];
   dispatch_assert_queue_V2(v5);
 
   v6 = matterPluginLog_default;
@@ -845,30 +845,30 @@ LABEL_12:
   [v7 removeResidentClientSession:self];
 }
 
-- (void)messageTransport:(id)a3 handleGetDeviceState:(id)a4
+- (void)messageTransport:(id)transport handleGetDeviceState:(id)state
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  stateCopy = state;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [stateCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [v7 responseHandler];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    responseHandler2 = [stateCopy responseHandler];
 
-    if (v11)
+    if (responseHandler2)
     {
-      v12 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceNodeForMessage:v7];
+      v12 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceNodeForMessage:stateCopy];
       v13 = v12;
       if (v12)
       {
-        v14 = [v12 nodeID];
-        [(MTRPluginResidentClientSession *)v10 _registerNodeID:v14];
+        nodeID = [v12 nodeID];
+        [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:nodeID];
 
         v15 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
         v16 = [MTRPluginPBMVariableValue alloc];
@@ -879,51 +879,51 @@ LABEL_12:
         v19 = matterPluginLog_default;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v13 nodeID];
+          nodeID2 = [v13 nodeID];
           v23 = 138412802;
-          v24 = v10;
+          v24 = selfCopy;
           v25 = 2112;
-          v26 = v20;
+          v26 = nodeID2;
           v27 = 2112;
-          v28 = v7;
+          v28 = stateCopy;
           _os_log_impl(&dword_25830F000, v19, OS_LOG_TYPE_DEFAULT, "%@ responding to device state for nodeID: %@, for message %@", &v23, 0x20u);
         }
 
-        v21 = [v7 responseHandler];
-        (v21)[2](v21, 0, v15);
+        responseHandler3 = [stateCopy responseHandler];
+        (responseHandler3)[2](responseHandler3, 0, v15);
       }
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleGetDeviceIsCachePrimed:(id)a4
+- (void)messageTransport:(id)transport handleGetDeviceIsCachePrimed:(id)primed
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  primedCopy = primed;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [primedCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [v7 responseHandler];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    responseHandler2 = [primedCopy responseHandler];
 
-    if (v11)
+    if (responseHandler2)
     {
-      v12 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceNodeForMessage:v7];
+      v12 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceNodeForMessage:primedCopy];
       v13 = v12;
       if (v12)
       {
-        v14 = [v12 nodeID];
-        [(MTRPluginResidentClientSession *)v10 _registerNodeID:v14];
+        nodeID = [v12 nodeID];
+        [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:nodeID];
 
         v15 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
         v16 = [MTRPluginPBMVariableValue alloc];
@@ -934,213 +934,213 @@ LABEL_12:
         v19 = matterPluginLog_default;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v13 deviceCachePrimed];
+          deviceCachePrimed = [v13 deviceCachePrimed];
           v21 = @"NO";
           v24 = 138412802;
-          v25 = v10;
+          v25 = selfCopy;
           v26 = 2112;
-          if (v20)
+          if (deviceCachePrimed)
           {
             v21 = @"YES";
           }
 
           v27 = v21;
           v28 = 2112;
-          v29 = v7;
+          v29 = primedCopy;
           _os_log_impl(&dword_25830F000, v19, OS_LOG_TYPE_DEFAULT, "%@ responding to device cachePrimed for nodeID: %@, for message %@", &v24, 0x20u);
         }
 
-        v22 = [v7 responseHandler];
-        (v22)[2](v22, 0, v15);
+        responseHandler3 = [primedCopy responseHandler];
+        (responseHandler3)[2](responseHandler3, 0, v15);
       }
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleGetDeviceEstimatedStartTime:(id)a4
+- (void)messageTransport:(id)transport handleGetDeviceEstimatedStartTime:(id)time
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  timeCopy = time;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [timeCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceNodeForMessage:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceNodeForMessage:timeCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 nodeID];
-      [(MTRPluginResidentClientSession *)v10 _registerNodeID:v13];
+      nodeID = [v11 nodeID];
+      [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:nodeID];
 
       v14 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
       v15 = [MTRPluginPBMVariableValue alloc];
-      v16 = [v12 estimatedStartTime];
-      v17 = [(MTRPluginPBMVariableValue *)v15 initWithObjectValue:v16];
+      estimatedStartTime = [v12 estimatedStartTime];
+      v17 = [(MTRPluginPBMVariableValue *)v15 initWithObjectValue:estimatedStartTime];
       [(MTRPluginPBMVariableValueResponseMessage *)v14 setValue:v17];
 
       v18 = matterPluginLog_default;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v12 estimatedStartTime];
+        estimatedStartTime2 = [v12 estimatedStartTime];
         v22 = 138412802;
-        v23 = v10;
+        v23 = selfCopy;
         v24 = 2112;
-        v25 = v19;
+        v25 = estimatedStartTime2;
         v26 = 2112;
-        v27 = v7;
+        v27 = timeCopy;
         _os_log_impl(&dword_25830F000, v18, OS_LOG_TYPE_DEFAULT, "%@ responding to device estimatedStartTime for nodeID: %@, for message %@", &v22, 0x20u);
       }
 
-      v20 = [v7 responseHandler];
-      (v20)[2](v20, 0, v14);
+      responseHandler2 = [timeCopy responseHandler];
+      (responseHandler2)[2](responseHandler2, 0, v14);
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleGetDeviceEstimatedSubscriptionLatency:(id)a4
+- (void)messageTransport:(id)transport handleGetDeviceEstimatedSubscriptionLatency:(id)latency
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  latencyCopy = latency;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [latencyCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceNodeForMessage:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceNodeForMessage:latencyCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 nodeID];
-      [(MTRPluginResidentClientSession *)v10 _registerNodeID:v13];
+      nodeID = [v11 nodeID];
+      [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:nodeID];
 
       v14 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
       v15 = [MTRPluginPBMVariableValue alloc];
-      v16 = [v12 estimatedSubscriptionLatency];
-      v17 = [(MTRPluginPBMVariableValue *)v15 initWithObjectValue:v16];
+      estimatedSubscriptionLatency = [v12 estimatedSubscriptionLatency];
+      v17 = [(MTRPluginPBMVariableValue *)v15 initWithObjectValue:estimatedSubscriptionLatency];
       [(MTRPluginPBMVariableValueResponseMessage *)v14 setValue:v17];
 
       v18 = matterPluginLog_default;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v12 estimatedSubscriptionLatency];
+        estimatedSubscriptionLatency2 = [v12 estimatedSubscriptionLatency];
         v22 = 138412802;
-        v23 = v10;
+        v23 = selfCopy;
         v24 = 2112;
-        v25 = v19;
+        v25 = estimatedSubscriptionLatency2;
         v26 = 2112;
-        v27 = v7;
+        v27 = latencyCopy;
         _os_log_impl(&dword_25830F000, v18, OS_LOG_TYPE_DEFAULT, "%@ responding to device estimatedSubscriptionLatency for nodeID: %@, for message %@", &v22, 0x20u);
       }
 
-      v20 = [v7 responseHandler];
-      (v20)[2](v20, 0, v14);
+      responseHandler2 = [latencyCopy responseHandler];
+      (responseHandler2)[2](responseHandler2, 0, v14);
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleDeviceReadAttribute:(id)a4
+- (void)messageTransport:(id)transport handleDeviceReadAttribute:(id)attribute
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  attributeCopy = attribute;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [attributeCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [MTRPluginPBMDeviceNodeReadAttributeMessage deviceNodeReadAttributeMessageFromMessage:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [MTRPluginPBMDeviceNodeReadAttributeMessage deviceNodeReadAttributeMessageFromMessage:attributeCopy];
     if (v11)
     {
-      v12 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceControllerMatchingHomeInMessage:v7];
-      if (!v12)
+      responseHandler4 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerMatchingHomeInMessage:attributeCopy];
+      if (!responseHandler4)
       {
 LABEL_23:
 
-        objc_sync_exit(v10);
+        objc_sync_exit(selfCopy);
         goto LABEL_24;
       }
 
       v13 = MEMORY[0x277CCABB0];
-      v14 = [v11 node];
-      v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(v14, "nodeID")}];
+      node = [v11 node];
+      v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(node, "nodeID")}];
 
-      v37 = [MEMORY[0x277CD5310] deviceWithNodeID:v15 controller:v12];
+      v37 = [MEMORY[0x277CD5310] deviceWithNodeID:v15 controller:responseHandler4];
       if (v37)
       {
-        [(MTRPluginResidentClientSession *)v10 _registerNodeID:v15];
+        [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:v15];
         v16 = MEMORY[0x277CCABB0];
-        v17 = [v11 attributePath];
-        v18 = [v17 clusterPath];
-        v36 = [v16 numberWithUnsignedInt:{objc_msgSend(v18, "endpointID")}];
+        attributePath = [v11 attributePath];
+        clusterPath = [attributePath clusterPath];
+        responseHandler3 = [v16 numberWithUnsignedInt:{objc_msgSend(clusterPath, "endpointID")}];
 
         v19 = MEMORY[0x277CCABB0];
-        v20 = [v11 attributePath];
-        v21 = [v20 clusterPath];
-        v22 = [v19 numberWithUnsignedInt:{objc_msgSend(v21, "clusterID")}];
+        attributePath2 = [v11 attributePath];
+        clusterPath2 = [attributePath2 clusterPath];
+        v22 = [v19 numberWithUnsignedInt:{objc_msgSend(clusterPath2, "clusterID")}];
 
         v23 = MEMORY[0x277CCABB0];
-        v24 = [v11 attributePath];
-        v35 = [v23 numberWithUnsignedInt:{objc_msgSend(v24, "attributeID")}];
+        attributePath3 = [v11 attributePath];
+        v35 = [v23 numberWithUnsignedInt:{objc_msgSend(attributePath3, "attributeID")}];
 
         if ([v11 hasReadParams])
         {
-          v25 = [v11 readParams];
-          v33 = [v25 readParams];
+          readParams = [v11 readParams];
+          v25ReadParams = [readParams readParams];
         }
 
         else
         {
-          v33 = 0;
+          v25ReadParams = 0;
         }
 
         v26 = matterPluginLog_default;
         if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413826;
-          v39 = v10;
+          v39 = selfCopy;
           v40 = 2112;
-          v41 = v36;
+          v41 = responseHandler3;
           v42 = 2112;
           v43 = v22;
           v44 = 2112;
           v45 = v35;
           v46 = 2112;
-          v47 = v33;
+          v47 = v25ReadParams;
           v48 = 2112;
           v49 = v15;
           v50 = 2112;
-          v51 = v7;
+          v51 = attributeCopy;
           _os_log_impl(&dword_25830F000, v26, OS_LOG_TYPE_DEFAULT, "%@ Reading attribute: endpointID (%@), clusterID (%@), attributeID (%@), readParams (%@) from local device nodeID (%@) connection for message %@", buf, 0x48u);
         }
 
-        v27 = [v37 readAttributeWithEndpointID:v36 clusterID:v22 attributeID:v35 params:{v33, v33}];
+        v27 = [v37 readAttributeWithEndpointID:responseHandler3 clusterID:v22 attributeID:v35 params:{v25ReadParams, v25ReadParams}];
         v28 = objc_alloc_init(MTRPluginPBMVariableValueResponseMessage);
         if (v27)
         {
@@ -1152,16 +1152,16 @@ LABEL_23:
         if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v39 = v10;
+          v39 = selfCopy;
           v40 = 2112;
           v41 = v15;
           v42 = 2112;
-          v43 = v7;
+          v43 = attributeCopy;
           _os_log_debug_impl(&dword_25830F000, v30, OS_LOG_TYPE_DEBUG, "%@ responding to device read attribute for nodeID: %@, for message %@", buf, 0x20u);
         }
 
-        v31 = [v7 responseHandler];
-        (v31)[2](v31, 0, v28);
+        responseHandler2 = [attributeCopy responseHandler];
+        (responseHandler2)[2](responseHandler2, 0, v28);
       }
 
       else
@@ -1171,9 +1171,9 @@ LABEL_23:
           [MTRPluginResidentClientSession messageTransport:handleDeviceReadAttribute:];
         }
 
-        v36 = [v7 responseHandler];
+        responseHandler3 = [attributeCopy responseHandler];
         v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1001 userInfo:0];
-        (v36)[2](v36, v22, 0);
+        (responseHandler3)[2](responseHandler3, v22, 0);
       }
     }
 
@@ -1184,9 +1184,9 @@ LABEL_23:
         [MTRPluginResidentClientSession messageTransport:handleDeviceReadAttribute:];
       }
 
-      v12 = [v7 responseHandler];
+      responseHandler4 = [attributeCopy responseHandler];
       v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1007 userInfo:0];
-      (v12)[2](v12, v15, 0);
+      (responseHandler4)[2](responseHandler4, v15, 0);
     }
 
     goto LABEL_23;
@@ -1197,77 +1197,77 @@ LABEL_24:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleDeviceReadMultipleAttributes:(id)a4
+- (void)messageTransport:(id)transport handleDeviceReadMultipleAttributes:(id)attributes
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  attributesCopy = attributes;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [attributesCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [MTRPluginPBMDeviceNodeReadMultipleAttributesMessage deviceNodeReadMultipleAttributesMessageFromMessage:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [MTRPluginPBMDeviceNodeReadMultipleAttributesMessage deviceNodeReadMultipleAttributesMessageFromMessage:attributesCopy];
     if (v11)
     {
-      v12 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceControllerMatchingHomeInMessage:v7];
-      if (!v12)
+      responseHandler4 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerMatchingHomeInMessage:attributesCopy];
+      if (!responseHandler4)
       {
 LABEL_18:
 
-        objc_sync_exit(v10);
+        objc_sync_exit(selfCopy);
         goto LABEL_19;
       }
 
       v13 = MEMORY[0x277CCABB0];
-      v14 = [v11 node];
-      v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(v14, "nodeID")}];
+      node = [v11 node];
+      v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(node, "nodeID")}];
 
-      v28 = [MEMORY[0x277CD5310] deviceWithNodeID:v15 controller:v12];
+      v28 = [MEMORY[0x277CD5310] deviceWithNodeID:v15 controller:responseHandler4];
       if (v28)
       {
-        [(MTRPluginResidentClientSession *)v10 _registerNodeID:v15];
-        v26 = [v11 attributeRequestPaths];
+        [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:v15];
+        attributeRequestPaths = [v11 attributeRequestPaths];
         v16 = matterPluginLog_default;
         if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v30 = v10;
+          v30 = selfCopy;
           v31 = 2112;
-          v32 = v26;
+          v32 = attributeRequestPaths;
           v33 = 2112;
           v34 = v15;
           v35 = 2112;
-          v36 = v7;
+          v36 = attributesCopy;
           _os_log_impl(&dword_25830F000, v16, OS_LOG_TYPE_DEFAULT, "%@ Reading multiple attributes: (%@), from local device nodeID (%@) connection for message %@", buf, 0x2Au);
         }
 
         v17 = +[MTRPluginMetricsCollector sharedInstance];
-        v18 = [v7 homeIdentifier];
-        v19 = [v7 uniqueIdentifier];
-        v20 = [MTRPluginBulkReadAttributeMetric bulkReadAttributeMetricForDevice:v28 homeID:v18 remoteMessageID:v19];
+        homeIdentifier = [attributesCopy homeIdentifier];
+        uniqueIdentifier = [attributesCopy uniqueIdentifier];
+        v20 = [MTRPluginBulkReadAttributeMetric bulkReadAttributeMetricForDevice:v28 homeID:homeIdentifier remoteMessageID:uniqueIdentifier];
         [v17 collectMetric:v20];
 
-        v21 = [v28 readAttributePaths:v27];
+        v21 = [v28 readAttributePaths:responseHandler3];
         v22 = [[MTRPluginPBMVariableValueResponseMessage alloc] initWithObjectValue:v21];
         v23 = matterPluginLog_default;
         if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v30 = v10;
+          v30 = selfCopy;
           v31 = 2112;
           v32 = v15;
           v33 = 2112;
-          v34 = v7;
+          v34 = attributesCopy;
           _os_log_debug_impl(&dword_25830F000, v23, OS_LOG_TYPE_DEBUG, "%@ responding to device read multiple attribute for nodeID: %@, for message %@", buf, 0x20u);
         }
 
-        v24 = [v7 responseHandler];
-        (v24)[2](v24, 0, v22);
+        responseHandler2 = [attributesCopy responseHandler];
+        (responseHandler2)[2](responseHandler2, 0, v22);
       }
 
       else
@@ -1277,9 +1277,9 @@ LABEL_18:
           [MTRPluginResidentClientSession messageTransport:handleDeviceReadAttribute:];
         }
 
-        v27 = [v7 responseHandler];
+        responseHandler3 = [attributesCopy responseHandler];
         v21 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1001 userInfo:0];
-        (v27)[2](v27, v21, 0);
+        (responseHandler3)[2](responseHandler3, v21, 0);
       }
     }
 
@@ -1290,9 +1290,9 @@ LABEL_18:
         [MTRPluginResidentClientSession messageTransport:handleDeviceReadMultipleAttributes:];
       }
 
-      v12 = [v7 responseHandler];
+      responseHandler4 = [attributesCopy responseHandler];
       v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1007 userInfo:0];
-      (v12)[2](v12, v15, 0);
+      (responseHandler4)[2](responseHandler4, v15, 0);
     }
 
     goto LABEL_18;
@@ -1303,79 +1303,79 @@ LABEL_19:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleDeviceWriteAttribute:(id)a4
+- (void)messageTransport:(id)transport handleDeviceWriteAttribute:(id)attribute
 {
   v57 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v6 = a4;
-  v7 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  transportCopy = transport;
+  attributeCopy = attribute;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [v6 responseHandler];
+  responseHandler = [attributeCopy responseHandler];
 
-  if (v8)
+  if (responseHandler)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [MTRPluginPBMDeviceNodeWriteAttributeMessage deviceNodeWriteAttributeMessageFromMessage:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v10 = [MTRPluginPBMDeviceNodeWriteAttributeMessage deviceNodeWriteAttributeMessageFromMessage:attributeCopy];
     if (v10)
     {
-      v11 = [(MTRPluginResidentClientSession *)v9 _validateAndFindDeviceControllerMatchingHomeInMessage:v6];
-      if (!v11)
+      responseHandler3 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerMatchingHomeInMessage:attributeCopy];
+      if (!responseHandler3)
       {
 LABEL_26:
 
-        objc_sync_exit(v9);
+        objc_sync_exit(selfCopy);
         goto LABEL_27;
       }
 
       v12 = MEMORY[0x277CCABB0];
-      v13 = [v10 node];
-      v14 = [v12 numberWithUnsignedLongLong:{objc_msgSend(v13, "nodeID")}];
+      node = [v10 node];
+      v14 = [v12 numberWithUnsignedLongLong:{objc_msgSend(node, "nodeID")}];
 
-      v41 = [MEMORY[0x277CD5310] deviceWithNodeID:v14 controller:v11];
+      v41 = [MEMORY[0x277CD5310] deviceWithNodeID:v14 controller:responseHandler3];
       if (v41)
       {
-        [(MTRPluginResidentClientSession *)v9 _registerNodeID:v14];
+        [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:v14];
         v15 = MEMORY[0x277CCABB0];
-        v16 = [v10 attributePath];
-        v17 = [v16 clusterPath];
-        v40 = [v15 numberWithUnsignedInt:{objc_msgSend(v17, "endpointID")}];
+        attributePath = [v10 attributePath];
+        clusterPath = [attributePath clusterPath];
+        responseHandler2 = [v15 numberWithUnsignedInt:{objc_msgSend(clusterPath, "endpointID")}];
 
         v18 = MEMORY[0x277CCABB0];
-        v19 = [v10 attributePath];
-        v20 = [v19 clusterPath];
-        v39 = [v18 numberWithUnsignedInt:{objc_msgSend(v20, "clusterID")}];
+        attributePath2 = [v10 attributePath];
+        clusterPath2 = [attributePath2 clusterPath];
+        v39 = [v18 numberWithUnsignedInt:{objc_msgSend(clusterPath2, "clusterID")}];
 
         v21 = MEMORY[0x277CCABB0];
-        v22 = [v10 attributePath];
-        v38 = [v21 numberWithUnsignedInt:{objc_msgSend(v22, "attributeID")}];
+        attributePath3 = [v10 attributePath];
+        v38 = [v21 numberWithUnsignedInt:{objc_msgSend(attributePath3, "attributeID")}];
 
-        v23 = [v10 value];
-        v37 = [v23 object];
+        value = [v10 value];
+        object = [value object];
 
         v24 = matterPluginLog_default;
         if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413826;
-          v44 = v9;
+          v44 = selfCopy;
           v45 = 2112;
-          v46 = v40;
+          v46 = responseHandler2;
           v47 = 2112;
           v48 = v39;
           v49 = 2112;
           v50 = v38;
           v51 = 2112;
-          v52 = v37;
+          v52 = object;
           v53 = 2112;
           v54 = v14;
           v55 = 2112;
-          v56 = v6;
+          v56 = attributeCopy;
           _os_log_impl(&dword_25830F000, v24, OS_LOG_TYPE_DEFAULT, "%@ Writing attribute: endpointID (%@), clusterID (%@), attributeID (%@), value (%@) from local device nodeID (%@) connection for message %@", buf, 0x48u);
         }
 
-        v25 = [v10 hasExpectedValueInterval];
-        if (v25)
+        hasExpectedValueInterval = [v10 hasExpectedValueInterval];
+        if (hasExpectedValueInterval)
         {
           v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v10, "expectedValueInterval")}];
         }
@@ -1385,8 +1385,8 @@ LABEL_26:
           v26 = 0;
         }
 
-        v28 = [v10 hasTimedWriteTimeout];
-        if (v28)
+        hasTimedWriteTimeout = [v10 hasTimedWriteTimeout];
+        if (hasTimedWriteTimeout)
         {
           v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v10, "timedWriteTimeout")}];
         }
@@ -1396,21 +1396,21 @@ LABEL_26:
           v29 = 0;
         }
 
-        [v41 writeAttributeWithEndpointID:v40 clusterID:v39 attributeID:v38 value:v37 expectedValueInterval:v26 timedWriteTimeout:v29];
-        if (v28)
+        [v41 writeAttributeWithEndpointID:responseHandler2 clusterID:v39 attributeID:v38 value:object expectedValueInterval:v26 timedWriteTimeout:v29];
+        if (hasTimedWriteTimeout)
         {
         }
 
-        if (v25)
+        if (hasExpectedValueInterval)
         {
         }
 
         v30 = +[MTRPluginMetricsCollector sharedInstance];
-        v31 = [v6 homeIdentifier];
-        v32 = [v10 hasTimedWriteTimeout];
-        v33 = [v6 uniqueIdentifier];
-        LOBYTE(v36) = v32;
-        v34 = [MTRPluginWriteAttributeMetric writeAttributeMetricForDevice:v41 homeID:v31 clientType:8 endpointID:v40 clusterID:v39 attributeID:v38 timedWrite:v36 remoteMessageID:v33];
+        homeIdentifier = [attributeCopy homeIdentifier];
+        hasTimedWriteTimeout2 = [v10 hasTimedWriteTimeout];
+        uniqueIdentifier = [attributeCopy uniqueIdentifier];
+        LOBYTE(v36) = hasTimedWriteTimeout2;
+        v34 = [MTRPluginWriteAttributeMetric writeAttributeMetricForDevice:v41 homeID:homeIdentifier clientType:8 endpointID:responseHandler2 clusterID:v39 attributeID:v38 timedWrite:v36 remoteMessageID:uniqueIdentifier];
         [v30 collectMetric:v34];
 
         v27 = v39;
@@ -1423,9 +1423,9 @@ LABEL_26:
           [MTRPluginResidentClientSession messageTransport:handleDeviceWriteAttribute:];
         }
 
-        v40 = [v6 responseHandler];
+        responseHandler2 = [attributeCopy responseHandler];
         v27 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1001 userInfo:0];
-        (v40)[2](v40, v27, 0);
+        (responseHandler2)[2](responseHandler2, v27, 0);
       }
     }
 
@@ -1436,9 +1436,9 @@ LABEL_26:
         [MTRPluginResidentClientSession messageTransport:handleDeviceWriteAttribute:];
       }
 
-      v11 = [v6 responseHandler];
+      responseHandler3 = [attributeCopy responseHandler];
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1007 userInfo:0];
-      (v11)[2](v11, v14, 0);
+      (responseHandler3)[2](responseHandler3, v14, 0);
     }
 
     goto LABEL_26;
@@ -1449,13 +1449,13 @@ LABEL_27:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dictionaryFromCommandFields:(id)a3
+- (id)_dictionaryFromCommandFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = fieldsCopy;
   }
 
   else
@@ -1466,24 +1466,24 @@ LABEL_27:
   v6 = v5;
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = [v6 objectForKey:@"type"];
     v9 = [v6 objectForKey:@"value"];
     if (v8)
     {
-      [v7 setObject:v8 forKey:@"type"];
+      [dictionary setObject:v8 forKey:@"type"];
       if (v9)
       {
-        [v7 setObject:v9 forKey:@"value"];
+        [dictionary setObject:v9 forKey:@"value"];
       }
 
       else
       {
-        v13 = [MEMORY[0x277CBEA60] array];
-        [v7 setObject:v13 forKey:@"value"];
+        array = [MEMORY[0x277CBEA60] array];
+        [dictionary setObject:array forKey:@"value"];
       }
 
-      v11 = v7;
+      v11 = dictionary;
     }
 
     else
@@ -1491,7 +1491,7 @@ LABEL_27:
       v12 = matterPluginLog_default;
       if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
       {
-        [(MTRPluginResidentClientSession *)self _dictionaryFromCommandFields:v4, v12];
+        [(MTRPluginResidentClientSession *)self _dictionaryFromCommandFields:fieldsCopy, v12];
       }
 
       v11 = 0;
@@ -1503,7 +1503,7 @@ LABEL_27:
     v10 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
     {
-      [(MTRPluginResidentClientSession *)self _dictionaryFromCommandFields:v4, v10];
+      [(MTRPluginResidentClientSession *)self _dictionaryFromCommandFields:fieldsCopy, v10];
     }
 
     v11 = 0;
@@ -1512,62 +1512,62 @@ LABEL_27:
   return v11;
 }
 
-- (void)messageTransport:(id)a3 handleDeviceInvokeCommand:(id)a4
+- (void)messageTransport:(id)transport handleDeviceInvokeCommand:(id)command
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  commandCopy = command;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [commandCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [MTRPluginPBMDeviceNodeInvokeCommmandMessage deviceNodeInvokeCommandMessageFromMessage:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [MTRPluginPBMDeviceNodeInvokeCommmandMessage deviceNodeInvokeCommandMessageFromMessage:commandCopy];
     if (v11)
     {
-      v47 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceControllerMatchingHomeInMessage:v7];
+      v47 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerMatchingHomeInMessage:commandCopy];
       if (v47)
       {
         v12 = MEMORY[0x277CCABB0];
-        v13 = [v11 node];
-        v14 = [v12 numberWithUnsignedLongLong:{objc_msgSend(v13, "nodeID")}];
+        node = [v11 node];
+        v14 = [v12 numberWithUnsignedLongLong:{objc_msgSend(node, "nodeID")}];
 
         v46 = v14;
         v48 = [MEMORY[0x277CD5310] deviceWithNodeID:v14 controller:v47];
         if (v48)
         {
-          [(MTRPluginResidentClientSession *)v10 _registerNodeID:v14];
+          [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:v14];
           v15 = MEMORY[0x277CCABB0];
-          v16 = [v11 commandPath];
-          v17 = [v16 clusterPath];
-          v45 = [v15 numberWithUnsignedInt:{objc_msgSend(v17, "endpointID")}];
+          commandPath = [v11 commandPath];
+          clusterPath = [commandPath clusterPath];
+          v45 = [v15 numberWithUnsignedInt:{objc_msgSend(clusterPath, "endpointID")}];
 
           v18 = MEMORY[0x277CCABB0];
-          v19 = [v11 commandPath];
-          v20 = [v19 clusterPath];
-          v44 = [v18 numberWithUnsignedInt:{objc_msgSend(v20, "clusterID")}];
+          commandPath2 = [v11 commandPath];
+          clusterPath2 = [commandPath2 clusterPath];
+          v44 = [v18 numberWithUnsignedInt:{objc_msgSend(clusterPath2, "clusterID")}];
 
           v21 = MEMORY[0x277CCABB0];
-          v22 = [v11 commandPath];
-          v43 = [v21 numberWithUnsignedInt:{objc_msgSend(v22, "commandID")}];
+          commandPath3 = [v11 commandPath];
+          v43 = [v21 numberWithUnsignedInt:{objc_msgSend(commandPath3, "commandID")}];
 
-          v23 = [v11 commandFields];
-          v24 = [v23 object];
-          v42 = [(MTRPluginResidentClientSession *)v10 _dictionaryFromCommandFields:v24];
+          commandFields = [v11 commandFields];
+          object = [commandFields object];
+          v42 = [(MTRPluginResidentClientSession *)selfCopy _dictionaryFromCommandFields:object];
 
           if ([v11 hasExpectedValues])
           {
-            v25 = [v11 expectedValues];
-            v41 = [v25 array];
+            expectedValues = [v11 expectedValues];
+            array = [expectedValues array];
           }
 
           else
           {
-            v41 = 0;
+            array = 0;
           }
 
           if ([v11 hasExpectedValueInterval])
@@ -1604,7 +1604,7 @@ LABEL_27:
           if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138414850;
-            v55 = v10;
+            v55 = selfCopy;
             v56 = 2112;
             v57 = v45;
             v58 = 2112;
@@ -1614,7 +1614,7 @@ LABEL_27:
             v62 = 2112;
             v63 = v42;
             v64 = 2112;
-            v65 = v41;
+            v65 = array;
             v66 = 2112;
             v67 = v30;
             v68 = 2112;
@@ -1624,45 +1624,45 @@ LABEL_27:
             v72 = 2112;
             v73 = v46;
             v74 = 2112;
-            v75 = v7;
+            v75 = commandCopy;
             _os_log_impl(&dword_25830F000, v33, OS_LOG_TYPE_DEFAULT, "%@ Invoking command on: endpointID (%@), clusterID (%@), commandID (%@), commandFields (%@), expectedValues (%@),                      expectedValueInterval (%@), timedInvokeTimeout (%@), serverSideProcessingTimeout (%@), from device nodeID (%@) for message %@", buf, 0x70u);
           }
 
-          v34 = [v7 homeIdentifier];
-          v35 = [v7 uniqueIdentifier];
+          homeIdentifier = [commandCopy homeIdentifier];
+          uniqueIdentifier = [commandCopy uniqueIdentifier];
           LOBYTE(v40) = v31 != 0;
-          v36 = [MTRPluginInvokeCommandMetric invokeCommandMetricForDevice:v48 homeID:v34 clientType:8 endpointID:v45 clusterID:v44 commandID:v43 commandFields:v42 expectedValues:v41 expectedValueInterval:v30 timedInvoke:v40 remoteMessageID:v35];
+          v36 = [MTRPluginInvokeCommandMetric invokeCommandMetricForDevice:v48 homeID:homeIdentifier clientType:8 endpointID:v45 clusterID:v44 commandID:v43 commandFields:v42 expectedValues:array expectedValueInterval:v30 timedInvoke:v40 remoteMessageID:uniqueIdentifier];
 
-          v37 = [(MTRPluginResidentClientSession *)v10 workQueue];
+          workQueue2 = [(MTRPluginResidentClientSession *)selfCopy workQueue];
           v49[0] = MEMORY[0x277D85DD0];
           v49[1] = 3221225472;
           v49[2] = __77__MTRPluginResidentClientSession_messageTransport_handleDeviceInvokeCommand___block_invoke;
           v49[3] = &unk_279893AF0;
-          v50 = v7;
-          v51 = v10;
+          v50 = commandCopy;
+          v51 = selfCopy;
           v52 = v46;
           v38 = v36;
           v53 = v38;
-          [v48 _invokeCommandWithEndpointID:v45 clusterID:v44 commandID:v43 commandFields:v42 expectedValues:v41 expectedValueInterval:v30 timedInvokeTimeout:v31 serverSideProcessingTimeout:v32 queue:v37 completion:v49];
+          [v48 _invokeCommandWithEndpointID:v45 clusterID:v44 commandID:v43 commandFields:v42 expectedValues:array expectedValueInterval:v30 timedInvokeTimeout:v31 serverSideProcessingTimeout:v32 queue:workQueue2 completion:v49];
         }
 
         else
         {
-          v28 = [v7 responseHandler];
+          responseHandler2 = [commandCopy responseHandler];
           v29 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1001 userInfo:0];
-          (v28)[2](v28, v29, 0);
+          (responseHandler2)[2](responseHandler2, v29, 0);
         }
       }
     }
 
     else
     {
-      v26 = [v7 responseHandler];
+      responseHandler3 = [commandCopy responseHandler];
       v27 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1007 userInfo:0];
-      (v26)[2](v26, v27, 0);
+      (responseHandler3)[2](responseHandler3, v27, 0);
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -1735,56 +1735,56 @@ void __77__MTRPluginResidentClientSession_messageTransport_handleDeviceInvokeCom
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleDeviceInvokeBatchCommand:(id)a4
+- (void)messageTransport:(id)transport handleDeviceInvokeBatchCommand:(id)command
 {
   v70 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v46 = a4;
-  v6 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  transportCopy = transport;
+  commandCopy = command;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v46 responseHandler];
+  responseHandler = [commandCopy responseHandler];
 
-  if (v7)
+  if (responseHandler)
   {
-    v38 = self;
-    objc_sync_enter(v38);
-    v39 = [MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage deviceNodeInvokeBatchCommandMessageFromMessage:v46];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v39 = [MTRPluginPBMDeviceNodeInvokeBatchCommmandMessage deviceNodeInvokeBatchCommandMessageFromMessage:commandCopy];
     if (v39)
     {
-      v36 = [(MTRPluginResidentClientSession *)v38 _validateAndFindDeviceControllerMatchingHomeInMessage:v46];
+      v36 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerMatchingHomeInMessage:commandCopy];
       if (v36)
       {
         v8 = MEMORY[0x277CCABB0];
-        v9 = [v39 node];
-        v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(v9, "nodeID")}];
+        node = [v39 node];
+        v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(node, "nodeID")}];
 
         v35 = v10;
         v45 = [MEMORY[0x277CD5310] deviceWithNodeID:v10 controller:v36];
         if (v45)
         {
-          v11 = [v39 commands];
-          [(MTRPluginResidentClientSession *)v38 _registerNodeID:v35];
+          commands = [v39 commands];
+          [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:v35];
           v12 = matterPluginLog_default;
           if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138413058;
-            v63 = v38;
+            v63 = selfCopy;
             v64 = 2112;
             v65 = v35;
             v66 = 2112;
-            v67 = v46;
+            v67 = commandCopy;
             v68 = 2112;
-            v69 = v11;
+            v69 = commands;
             _os_log_impl(&dword_25830F000, v12, OS_LOG_TYPE_DEFAULT, "%@ Invoking Batch Commands on: nodeID %@ message (%@) commands %@", buf, 0x2Au);
           }
 
-          v44 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v58 = 0u;
           v59 = 0u;
           v56 = 0u;
           v57 = 0u;
-          obj = v11;
+          obj = commands;
           v42 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
           if (v42)
           {
@@ -1844,13 +1844,13 @@ void __77__MTRPluginResidentClientSession_messageTransport_handleDeviceInvokeCom
                       v22 = v21;
                       if (v22)
                       {
-                        v23 = [v46 homeIdentifier];
-                        v24 = [v22 path];
-                        v25 = [v22 commandFields];
-                        v26 = [v46 uniqueIdentifier];
-                        v27 = [MTRPluginInvokeCommandMetric invokeBatchCommandMetricForDevice:v45 homeID:v23 clientType:8 commandPath:v24 commandFields:v25 remoteMessageID:v26];
+                        homeIdentifier = [commandCopy homeIdentifier];
+                        path = [v22 path];
+                        commandFields = [v22 commandFields];
+                        uniqueIdentifier = [commandCopy uniqueIdentifier];
+                        v27 = [MTRPluginInvokeCommandMetric invokeBatchCommandMetricForDevice:v45 homeID:homeIdentifier clientType:8 commandPath:path commandFields:commandFields remoteMessageID:uniqueIdentifier];
 
-                        [v44 addObject:v27];
+                        [array addObject:v27];
                       }
                     }
 
@@ -1867,36 +1867,36 @@ void __77__MTRPluginResidentClientSession_messageTransport_handleDeviceInvokeCom
             while (v42);
           }
 
-          v28 = [(MTRPluginResidentClientSession *)v38 workQueue];
+          workQueue2 = [(MTRPluginResidentClientSession *)selfCopy workQueue];
           v47[0] = MEMORY[0x277D85DD0];
           v47[1] = 3221225472;
           v47[2] = __82__MTRPluginResidentClientSession_messageTransport_handleDeviceInvokeBatchCommand___block_invoke;
           v47[3] = &unk_279893AF0;
-          v29 = v44;
+          v29 = array;
           v48 = v29;
-          v49 = v46;
-          v50 = v38;
+          v49 = commandCopy;
+          v50 = selfCopy;
           v51 = v35;
-          [v45 invokeCommands:obj queue:v28 completion:v47];
+          [v45 invokeCommands:obj queue:workQueue2 completion:v47];
         }
 
         else
         {
-          v32 = [v46 responseHandler];
+          responseHandler2 = [commandCopy responseHandler];
           v33 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1001 userInfo:0];
-          (v32)[2](v32, v33, 0);
+          (responseHandler2)[2](responseHandler2, v33, 0);
         }
       }
     }
 
     else
     {
-      v30 = [v46 responseHandler];
+      responseHandler3 = [commandCopy responseHandler];
       v31 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1007 userInfo:0];
-      (v30)[2](v30, v31, 0);
+      (responseHandler3)[2](responseHandler3, v31, 0);
     }
 
-    objc_sync_exit(v38);
+    objc_sync_exit(selfCopy);
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -1997,95 +1997,95 @@ void __82__MTRPluginResidentClientSession_messageTransport_handleDeviceInvokeBat
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 handleDownloadDiagnosticLog:(id)a4
+- (void)messageTransport:(id)transport handleDownloadDiagnosticLog:(id)log
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRPluginResidentClientSession *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  transportCopy = transport;
+  logCopy = log;
+  workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v7 responseHandler];
+  responseHandler = [logCopy responseHandler];
 
-  if (v9)
+  if (responseHandler)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [MTRPluginPBMDeviceNodeDownloadDiagnosticLog deviceNodeDownloadDiagnosticLogMessageFromMessage:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [MTRPluginPBMDeviceNodeDownloadDiagnosticLog deviceNodeDownloadDiagnosticLogMessageFromMessage:logCopy];
     if (v11)
     {
-      v12 = [(MTRPluginResidentClientSession *)v10 _validateAndFindDeviceControllerMatchingHomeInMessage:v7];
+      v12 = [(MTRPluginResidentClientSession *)selfCopy _validateAndFindDeviceControllerMatchingHomeInMessage:logCopy];
       if (v12)
       {
         v13 = MEMORY[0x277CCABB0];
-        v14 = [v11 node];
-        v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(v14, "nodeID")}];
+        node = [v11 node];
+        v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(node, "nodeID")}];
 
         v16 = [MEMORY[0x277CD5310] deviceWithNodeID:v15 controller:v12];
         if (v16)
         {
-          [(MTRPluginResidentClientSession *)v10 _registerNodeID:v15];
+          [(MTRPluginResidentClientSession *)selfCopy _registerNodeID:v15];
           v17 = matterPluginLog_default;
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v11 logType];
+            logType = [v11 logType];
             [v11 timeoutInterval];
             *buf = 138413314;
-            v41 = v10;
+            v41 = selfCopy;
             v42 = 1024;
-            v43 = v18;
+            v43 = logType;
             v44 = 2048;
             v45 = v19;
             v46 = 2112;
             v47 = v15;
             v48 = 2112;
-            v49 = v7;
+            v49 = logCopy;
             _os_log_impl(&dword_25830F000, v17, OS_LOG_TYPE_DEFAULT, "%@ Invoking download diagnostic log of type (%d), timeout (%lf), from device nodeID (%@) for message %@", buf, 0x30u);
           }
 
           v33 = v16;
 
-          v20 = [(MTRPluginResidentClientSession *)v10 homeID];
-          v21 = [v11 logType];
-          v22 = [v7 uniqueIdentifier];
-          v23 = [MTRPluginDownloadDiagnosticLogMetric downloadDiagnosticMetricForDevice:v33 homeID:v20 clientType:8 logType:v21 remoteMessageID:v22];
+          homeID = [(MTRPluginResidentClientSession *)selfCopy homeID];
+          logType2 = [v11 logType];
+          uniqueIdentifier = [logCopy uniqueIdentifier];
+          v23 = [MTRPluginDownloadDiagnosticLogMetric downloadDiagnosticMetricForDevice:v33 homeID:homeID clientType:8 logType:logType2 remoteMessageID:uniqueIdentifier];
 
-          LODWORD(v22) = [v11 logType];
+          LODWORD(uniqueIdentifier) = [v11 logType];
           [v11 timeoutInterval];
           v25 = v24;
-          v26 = [(MTRPluginResidentClientSession *)v10 workQueue];
+          workQueue2 = [(MTRPluginResidentClientSession *)selfCopy workQueue];
           v34[0] = MEMORY[0x277D85DD0];
           v34[1] = 3221225472;
           v34[2] = __79__MTRPluginResidentClientSession_messageTransport_handleDownloadDiagnosticLog___block_invoke;
           v34[3] = &unk_279893B18;
-          v35 = v7;
-          v36 = v10;
+          v35 = logCopy;
+          v36 = selfCopy;
           v37 = v11;
           v38 = v15;
           v27 = v23;
           v39 = v27;
-          [v33 downloadLogOfType:v22 timeout:v26 queue:v34 completion:v25];
+          [v33 downloadLogOfType:uniqueIdentifier timeout:workQueue2 queue:v34 completion:v25];
 
           v16 = v33;
         }
 
         else
         {
-          v30 = [v7 responseHandler];
+          responseHandler2 = [logCopy responseHandler];
           v31 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1001 userInfo:0];
-          (v30)[2](v30, v31, 0);
+          (responseHandler2)[2](responseHandler2, v31, 0);
         }
       }
     }
 
     else
     {
-      v28 = [v7 responseHandler];
+      responseHandler3 = [logCopy responseHandler];
       v29 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1007 userInfo:0];
-      (v28)[2](v28, v29, 0);
+      (responseHandler3)[2](responseHandler3, v29, 0);
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -2183,16 +2183,16 @@ void __79__MTRPluginResidentClientSession_messageTransport_handleDownloadDiagnos
 - (void)invalidate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTRPluginResidentClientSession *)v2 registeredNodeIDs];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  registeredNodeIDs = [(MTRPluginResidentClientSession *)selfCopy registeredNodeIDs];
+  v4 = [registeredNodeIDs copy];
 
   v5 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v2;
+    v23 = selfCopy;
     v24 = 2112;
     v25 = v4;
     _os_log_impl(&dword_25830F000, v5, OS_LOG_TYPE_DEFAULT, "%@ invalidating registered nodeIDs; %@", buf, 0x16u);
@@ -2217,7 +2217,7 @@ void __79__MTRPluginResidentClientSession_messageTransport_handleDownloadDiagnos
           objc_enumerationMutation(v6);
         }
 
-        [(MTRPluginResidentClientSession *)v2 _unregisterNodeID:*(*(&v17 + 1) + 8 * v9++), v17];
+        [(MTRPluginResidentClientSession *)selfCopy _unregisterNodeID:*(*(&v17 + 1) + 8 * v9++), v17];
       }
 
       while (v7 != v9);
@@ -2227,33 +2227,33 @@ void __79__MTRPluginResidentClientSession_messageTransport_handleDownloadDiagnos
     while (v7);
   }
 
-  v10 = [(MTRPluginResidentClientSession *)v2 transport];
-  [v10 removeDelegate:v2];
+  transport = [(MTRPluginResidentClientSession *)selfCopy transport];
+  [transport removeDelegate:selfCopy];
 
-  v11 = [(MTRPluginResidentClientSession *)v2 deviceController];
-  [v11 removeDeviceControllerDelegate:v2];
+  deviceController = [(MTRPluginResidentClientSession *)selfCopy deviceController];
+  [deviceController removeDeviceControllerDelegate:selfCopy];
 
-  v12 = [(MTRPluginResidentClientSession *)v2 internalStateUpdateSource];
+  internalStateUpdateSource = [(MTRPluginResidentClientSession *)selfCopy internalStateUpdateSource];
 
-  if (v12)
+  if (internalStateUpdateSource)
   {
-    v13 = [(MTRPluginResidentClientSession *)v2 internalStateUpdateSource];
-    dispatch_source_cancel(v13);
+    internalStateUpdateSource2 = [(MTRPluginResidentClientSession *)selfCopy internalStateUpdateSource];
+    dispatch_source_cancel(internalStateUpdateSource2);
 
-    [(MTRPluginResidentClientSession *)v2 setInternalStateUpdateSource:0];
+    [(MTRPluginResidentClientSession *)selfCopy setInternalStateUpdateSource:0];
   }
 
-  v14 = [(MTRPluginResidentClientSession *)v2 deviceBecameActiveSource];
+  deviceBecameActiveSource = [(MTRPluginResidentClientSession *)selfCopy deviceBecameActiveSource];
 
-  if (v14)
+  if (deviceBecameActiveSource)
   {
-    v15 = [(MTRPluginResidentClientSession *)v2 deviceBecameActiveSource];
-    dispatch_source_cancel(v15);
+    deviceBecameActiveSource2 = [(MTRPluginResidentClientSession *)selfCopy deviceBecameActiveSource];
+    dispatch_source_cancel(deviceBecameActiveSource2);
 
-    [(MTRPluginResidentClientSession *)v2 setDeviceBecameActiveSource:0];
+    [(MTRPluginResidentClientSession *)selfCopy setDeviceBecameActiveSource:0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v16 = *MEMORY[0x277D85DE8];
 }
 
@@ -2333,66 +2333,66 @@ void __118__MTRPluginResidentClientSession__sendMessageToHomeWithID_messageType_
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_deviceNodeMessageForDevice:(id)a3 messageValue:(id)a4
+- (id)_deviceNodeMessageForDevice:(id)device messageValue:(id)value
 {
-  v5 = a4;
-  if (a3)
+  valueCopy = value;
+  if (device)
   {
-    v6 = [a3 nodeID];
-    a3 = [MTRPluginPBMDeviceNodeMessage deviceNodeMessageWithNodeID:v6];
+    nodeID = [device nodeID];
+    device = [MTRPluginPBMDeviceNodeMessage deviceNodeMessageWithNodeID:nodeID];
 
-    if (v5)
+    if (valueCopy)
     {
-      v7 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:v5];
-      [a3 setValue:v7];
+      v7 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:valueCopy];
+      [device setValue:v7];
     }
   }
 
-  return a3;
+  return device;
 }
 
-- (void)device:(id)a3 stateChanged:(unint64_t)a4
+- (void)device:(id)device stateChanged:(unint64_t)changed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    v7 = [(MTRPluginResidentClientSession *)self workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v8 = self;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v9 = objc_autoreleasePoolPush();
     v10 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v18 = v8;
+      v18 = selfCopy;
       v19 = 2112;
-      v20 = v6;
+      v20 = deviceCopy;
       v21 = 2048;
-      v22 = a4;
+      changedCopy = changed;
       _os_log_impl(&dword_25830F000, v10, OS_LOG_TYPE_DEFAULT, "%@ device %@ stateChanged %lu", buf, 0x20u);
     }
 
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v12 = [(MTRPluginResidentClientSession *)v8 _deviceNodeMessageForDevice:v6 messageValue:v11];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:changed];
+    v12 = [(MTRPluginResidentClientSession *)selfCopy _deviceNodeMessageForDevice:deviceCopy messageValue:v11];
 
-    v13 = [(MTRPluginResidentClientSession *)v8 homeID];
+    homeID = [(MTRPluginResidentClientSession *)selfCopy homeID];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __54__MTRPluginResidentClientSession_device_stateChanged___block_invoke;
     v16[3] = &unk_279893B68;
-    v16[4] = v8;
+    v16[4] = selfCopy;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __54__MTRPluginResidentClientSession_device_stateChanged___block_invoke_121;
     v15[3] = &unk_279893B90;
-    v15[4] = v8;
-    [(MTRPluginResidentClientSession *)v8 _sendMessageToHomeWithID:v13 messageType:1008 pbCodable:v12 timeout:0 metric:v16 errorBlock:v15 replyBlock:60.0];
+    v15[4] = selfCopy;
+    [(MTRPluginResidentClientSession *)selfCopy _sendMessageToHomeWithID:homeID messageType:1008 pbCodable:v12 timeout:0 metric:v16 errorBlock:v15 replyBlock:60.0];
 
     objc_autoreleasePoolPop(v9);
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2422,47 +2422,47 @@ void __54__MTRPluginResidentClientSession_device_stateChanged___block_invoke_121
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)device:(id)a3 receivedAttributeReport:(id)a4
+- (void)device:(id)device receivedAttributeReport:(id)report
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  reportCopy = report;
   v8 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v6;
+    v20 = deviceCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = reportCopy;
     _os_log_impl(&dword_25830F000, v8, OS_LOG_TYPE_DEFAULT, "%@ device %@ receivedAttributeReport %@, sending to remote controller", buf, 0x20u);
   }
 
-  if (v6 && v7)
+  if (deviceCopy && reportCopy)
   {
-    v9 = [(MTRPluginResidentClientSession *)self workQueue];
-    dispatch_assert_queue_V2(v9);
+    workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v10 = self;
-    objc_sync_enter(v10);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
     v11 = objc_autoreleasePoolPush();
-    v12 = [(MTRPluginResidentClientSession *)v10 _deviceNodeMessageForDevice:v6 messageValue:v7];
-    v13 = [(MTRPluginResidentClientSession *)v10 homeID];
+    v12 = [(MTRPluginResidentClientSession *)selfCopy2 _deviceNodeMessageForDevice:deviceCopy messageValue:reportCopy];
+    homeID = [(MTRPluginResidentClientSession *)selfCopy2 homeID];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __65__MTRPluginResidentClientSession_device_receivedAttributeReport___block_invoke;
     v16[3] = &unk_279893B68;
-    v16[4] = v10;
+    v16[4] = selfCopy2;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __65__MTRPluginResidentClientSession_device_receivedAttributeReport___block_invoke_123;
     v15[3] = &unk_279893B90;
-    v15[4] = v10;
-    [(MTRPluginResidentClientSession *)v10 _sendMessageToHomeWithID:v13 messageType:1009 pbCodable:v12 timeout:0 metric:v16 errorBlock:v15 replyBlock:60.0];
+    v15[4] = selfCopy2;
+    [(MTRPluginResidentClientSession *)selfCopy2 _sendMessageToHomeWithID:homeID messageType:1009 pbCodable:v12 timeout:0 metric:v16 errorBlock:v15 replyBlock:60.0];
 
     objc_autoreleasePoolPop(v11);
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy2);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2492,47 +2492,47 @@ void __65__MTRPluginResidentClientSession_device_receivedAttributeReport___block
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)device:(id)a3 receivedEventReport:(id)a4
+- (void)device:(id)device receivedEventReport:(id)report
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  reportCopy = report;
   v8 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v6;
+    v20 = deviceCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = reportCopy;
     _os_log_impl(&dword_25830F000, v8, OS_LOG_TYPE_DEFAULT, "%@ device %@ receivedEventReport %@", buf, 0x20u);
   }
 
-  if (v6 && v7)
+  if (deviceCopy && reportCopy)
   {
-    v9 = [(MTRPluginResidentClientSession *)self workQueue];
-    dispatch_assert_queue_V2(v9);
+    workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v10 = self;
-    objc_sync_enter(v10);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
     v11 = objc_autoreleasePoolPush();
-    v12 = [(MTRPluginResidentClientSession *)v10 _deviceNodeMessageForDevice:v6 messageValue:v7];
-    v13 = [(MTRPluginResidentClientSession *)v10 homeID];
+    v12 = [(MTRPluginResidentClientSession *)selfCopy2 _deviceNodeMessageForDevice:deviceCopy messageValue:reportCopy];
+    homeID = [(MTRPluginResidentClientSession *)selfCopy2 homeID];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __61__MTRPluginResidentClientSession_device_receivedEventReport___block_invoke;
     v16[3] = &unk_279893B68;
-    v16[4] = v10;
+    v16[4] = selfCopy2;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __61__MTRPluginResidentClientSession_device_receivedEventReport___block_invoke_124;
     v15[3] = &unk_279893B90;
-    v15[4] = v10;
-    [(MTRPluginResidentClientSession *)v10 _sendMessageToHomeWithID:v13 messageType:1010 pbCodable:v12 timeout:0 metric:v16 errorBlock:v15 replyBlock:60.0];
+    v15[4] = selfCopy2;
+    [(MTRPluginResidentClientSession *)selfCopy2 _sendMessageToHomeWithID:homeID messageType:1010 pbCodable:v12 timeout:0 metric:v16 errorBlock:v15 replyBlock:60.0];
 
     objc_autoreleasePoolPop(v11);
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy2);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2562,61 +2562,61 @@ void __61__MTRPluginResidentClientSession_device_receivedEventReport___block_inv
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceBecameActive:(id)a3
+- (void)deviceBecameActive:(id)active
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activeCopy = active;
   v5 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = activeCopy;
     _os_log_impl(&dword_25830F000, v5, OS_LOG_TYPE_DEFAULT, "%@ deviceBecameActive %@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceCachePrimed:(id)a3
+- (void)deviceCachePrimed:(id)primed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  primedCopy = primed;
   v5 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = primedCopy;
     _os_log_impl(&dword_25830F000, v5, OS_LOG_TYPE_DEFAULT, "%@ deviceCachePrimed %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (primedCopy)
   {
-    v6 = [(MTRPluginResidentClientSession *)self workQueue];
-    dispatch_assert_queue_V2(v6);
+    workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v7 = self;
-    objc_sync_enter(v7);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
     v8 = objc_autoreleasePoolPush();
-    v9 = [(MTRPluginResidentClientSession *)v7 _deviceNodeMessageForDevice:v4 messageValue:0];
-    v10 = [(MTRPluginResidentClientSession *)v7 homeID];
+    v9 = [(MTRPluginResidentClientSession *)selfCopy2 _deviceNodeMessageForDevice:primedCopy messageValue:0];
+    homeID = [(MTRPluginResidentClientSession *)selfCopy2 homeID];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__MTRPluginResidentClientSession_deviceCachePrimed___block_invoke;
     v13[3] = &unk_279893B68;
-    v13[4] = v7;
+    v13[4] = selfCopy2;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __52__MTRPluginResidentClientSession_deviceCachePrimed___block_invoke_125;
     v12[3] = &unk_279893B90;
-    v12[4] = v7;
-    [(MTRPluginResidentClientSession *)v7 _sendMessageToHomeWithID:v10 messageType:1012 pbCodable:v9 timeout:0 metric:v13 errorBlock:v12 replyBlock:60.0];
+    v12[4] = selfCopy2;
+    [(MTRPluginResidentClientSession *)selfCopy2 _sendMessageToHomeWithID:homeID messageType:1012 pbCodable:v9 timeout:0 metric:v13 errorBlock:v12 replyBlock:60.0];
 
     objc_autoreleasePoolPop(v8);
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy2);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2646,42 +2646,42 @@ void __52__MTRPluginResidentClientSession_deviceCachePrimed___block_invoke_125(u
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceConfigurationChanged:(id)a3
+- (void)deviceConfigurationChanged:(id)changed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = changedCopy;
     _os_log_impl(&dword_25830F000, v5, OS_LOG_TYPE_DEFAULT, "%@ deviceConfigurationChanged %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (changedCopy)
   {
-    v6 = [(MTRPluginResidentClientSession *)self workQueue];
-    dispatch_assert_queue_V2(v6);
+    workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(MTRPluginResidentClientSession *)v7 _deviceNodeMessageForDevice:v4 messageValue:0];
-    v9 = [(MTRPluginResidentClientSession *)v7 homeID];
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    v8 = [(MTRPluginResidentClientSession *)selfCopy2 _deviceNodeMessageForDevice:changedCopy messageValue:0];
+    homeID = [(MTRPluginResidentClientSession *)selfCopy2 homeID];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __61__MTRPluginResidentClientSession_deviceConfigurationChanged___block_invoke;
     v12[3] = &unk_279893B68;
-    v12[4] = v7;
+    v12[4] = selfCopy2;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__MTRPluginResidentClientSession_deviceConfigurationChanged___block_invoke_126;
     v11[3] = &unk_279893B90;
-    v11[4] = v7;
-    [(MTRPluginResidentClientSession *)v7 _sendMessageToHomeWithID:v9 messageType:1013 pbCodable:v8 timeout:0 metric:v12 errorBlock:v11 replyBlock:60.0];
+    v11[4] = selfCopy2;
+    [(MTRPluginResidentClientSession *)selfCopy2 _sendMessageToHomeWithID:homeID messageType:1013 pbCodable:v8 timeout:0 metric:v12 errorBlock:v11 replyBlock:60.0];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy2);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -2711,75 +2711,75 @@ void __61__MTRPluginResidentClientSession_deviceConfigurationChanged___block_inv
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)device:(id)a3 internalStateUpdated:(id)a4
+- (void)device:(id)device internalStateUpdated:(id)updated
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  updatedCopy = updated;
   v8 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v36 = self;
+    selfCopy2 = self;
     v37 = 2112;
-    v38 = v6;
+    v38 = deviceCopy;
     v39 = 2112;
-    v40 = v7;
+    v40 = updatedCopy;
     _os_log_impl(&dword_25830F000, v8, OS_LOG_TYPE_DEFAULT, "%@ device %@ internalStateUpdated with value: %@", buf, 0x20u);
   }
 
-  if (v6 && v7)
+  if (deviceCopy && updatedCopy)
   {
-    v9 = [(MTRPluginResidentClientSession *)self workQueue];
-    dispatch_assert_queue_V2(v9);
+    workQueue = [(MTRPluginResidentClientSession *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
     v10 = objc_autoreleasePoolPush();
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [v7 objectForKeyedSubscript:@"MTRDeviceInternalStateKeyVendorID"];
-    [v11 setObject:v12 forKeyedSubscript:@"MTRDeviceInternalStateKeyVendorID"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v12 = [updatedCopy objectForKeyedSubscript:@"MTRDeviceInternalStateKeyVendorID"];
+    [dictionary setObject:v12 forKeyedSubscript:@"MTRDeviceInternalStateKeyVendorID"];
 
-    v13 = [v7 objectForKeyedSubscript:@"MTRDeviceInternalStateKeyProductID"];
-    [v11 setObject:v13 forKeyedSubscript:@"MTRDeviceInternalStateKeyProductID"];
+    v13 = [updatedCopy objectForKeyedSubscript:@"MTRDeviceInternalStateKeyProductID"];
+    [dictionary setObject:v13 forKeyedSubscript:@"MTRDeviceInternalStateKeyProductID"];
 
-    v14 = [v7 objectForKeyedSubscript:@"MTRDeviceInternalPropertyNetworkFeatures"];
-    [v11 setObject:v14 forKeyedSubscript:@"MTRDeviceInternalPropertyNetworkFeatures"];
+    v14 = [updatedCopy objectForKeyedSubscript:@"MTRDeviceInternalPropertyNetworkFeatures"];
+    [dictionary setObject:v14 forKeyedSubscript:@"MTRDeviceInternalPropertyNetworkFeatures"];
 
-    v15 = [v7 objectForKeyedSubscript:@"MTRDeviceInternalPropertyDeviceInternalState"];
-    [v11 setObject:v15 forKeyedSubscript:@"MTRDeviceInternalPropertyDeviceInternalState"];
+    v15 = [updatedCopy objectForKeyedSubscript:@"MTRDeviceInternalPropertyDeviceInternalState"];
+    [dictionary setObject:v15 forKeyedSubscript:@"MTRDeviceInternalPropertyDeviceInternalState"];
 
-    v16 = [v7 objectForKeyedSubscript:@"MTRDeviceInternalPropertyDeviceState"];
-    [v11 setObject:v16 forKeyedSubscript:@"MTRDeviceInternalPropertyDeviceState"];
+    v16 = [updatedCopy objectForKeyedSubscript:@"MTRDeviceInternalPropertyDeviceState"];
+    [dictionary setObject:v16 forKeyedSubscript:@"MTRDeviceInternalPropertyDeviceState"];
 
-    v17 = [v7 objectForKeyedSubscript:@"MTRDeviceInternalPropertyDeviceCachePrimed"];
-    [v11 setObject:v17 forKeyedSubscript:@"MTRDeviceInternalPropertyDeviceCachePrimed"];
+    v17 = [updatedCopy objectForKeyedSubscript:@"MTRDeviceInternalPropertyDeviceCachePrimed"];
+    [dictionary setObject:v17 forKeyedSubscript:@"MTRDeviceInternalPropertyDeviceCachePrimed"];
 
-    v18 = [(MTRPluginResidentClientSession *)self lastKnownInternalState];
-    if (v18 && (v19 = v18, -[MTRPluginResidentClientSession lastKnownInternalState](self, "lastKnownInternalState"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 isEqual:v11], v20, v19, v21))
+    lastKnownInternalState = [(MTRPluginResidentClientSession *)self lastKnownInternalState];
+    if (lastKnownInternalState && (v19 = lastKnownInternalState, -[MTRPluginResidentClientSession lastKnownInternalState](self, "lastKnownInternalState"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 isEqual:dictionary], v20, v19, v21))
     {
       v22 = matterPluginLog_default;
       if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_25830F000, v22, OS_LOG_TYPE_DEFAULT, "%@ internalState is same as lastKnownInternalState, ignoring sending update to remote clients", buf, 0xCu);
       }
     }
 
     else
     {
-      [(MTRPluginResidentClientSession *)self setLastKnownInternalState:v11];
-      v23 = [(MTRPluginResidentClientSession *)self _deviceNodeMessageForDevice:v6 messageValue:v7];
-      v24 = [(MTRPluginResidentClientSession *)self internalStateUpdateSource];
-      v25 = [(MTRPluginResidentClientSession *)self workQueue];
+      [(MTRPluginResidentClientSession *)self setLastKnownInternalState:dictionary];
+      v23 = [(MTRPluginResidentClientSession *)self _deviceNodeMessageForDevice:deviceCopy messageValue:updatedCopy];
+      internalStateUpdateSource = [(MTRPluginResidentClientSession *)self internalStateUpdateSource];
+      workQueue2 = [(MTRPluginResidentClientSession *)self workQueue];
       v29 = MEMORY[0x277D85DD0];
       v30 = 3221225472;
       v31 = __62__MTRPluginResidentClientSession_device_internalStateUpdated___block_invoke;
       v32 = &unk_279893AC8;
-      v33 = self;
+      selfCopy3 = self;
       v34 = v23;
       v26 = v23;
-      v27 = MTRBufferedExecutionBlock(v24, v25, &v29, 0.5);
-      [(MTRPluginResidentClientSession *)self setInternalStateUpdateSource:v27, v29, v30, v31, v32, v33];
+      v27 = MTRBufferedExecutionBlock(internalStateUpdateSource, workQueue2, &v29, 0.5);
+      [(MTRPluginResidentClientSession *)self setInternalStateUpdateSource:v27, v29, v30, v31, v32, selfCopy3];
     }
 
     objc_autoreleasePoolPop(v10);

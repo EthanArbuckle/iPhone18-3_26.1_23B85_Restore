@@ -1,23 +1,23 @@
 @interface ARGeoTrackingTechniqueState
-+ (id)_findClosestDataToTimestamp:(double)a3 inBuffer:(id)a4;
-- (ARGeoTrackingTechniqueState)initWithResetCount:(int64_t)a3;
++ (id)_findClosestDataToTimestamp:(double)timestamp inBuffer:(id)buffer;
+- (ARGeoTrackingTechniqueState)initWithResetCount:(int64_t)count;
 - (__n128)lastLoggedVioPosition;
-- (id)findClosestDeviceMotionDataToTimestamp:(double)a3;
-- (id)findClosestVioPoseToTimestamp:(double)a3;
-- (void)addDeviceMotionData:(id)a3;
-- (void)addFailureReason:(int64_t)a3;
-- (void)addVioPoseData:(id)a3;
+- (id)findClosestDeviceMotionDataToTimestamp:(double)timestamp;
+- (id)findClosestVioPoseToTimestamp:(double)timestamp;
+- (void)addDeviceMotionData:(id)data;
+- (void)addFailureReason:(int64_t)reason;
+- (void)addVioPoseData:(id)data;
 - (void)enuFromVIO;
-- (void)removeFailureReason:(int64_t)a3;
-- (void)setEnuFromVIO:(__int128 *)a3;
-- (void)setEnuFromVIORotation:(uint64_t)a3;
+- (void)removeFailureReason:(int64_t)reason;
+- (void)setEnuFromVIO:(__int128 *)o;
+- (void)setEnuFromVIORotation:(uint64_t)rotation;
 - (void)setEnuFromVIOTranslation:(ARGeoTrackingTechniqueState *)self;
 - (void)setLastLoggedVioPosition:(ARGeoTrackingTechniqueState *)self;
 @end
 
 @implementation ARGeoTrackingTechniqueState
 
-- (ARGeoTrackingTechniqueState)initWithResetCount:(int64_t)a3
+- (ARGeoTrackingTechniqueState)initWithResetCount:(int64_t)count
 {
   v23.receiver = self;
   v23.super_class = ARGeoTrackingTechniqueState;
@@ -25,7 +25,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_resetCount = a3;
+    v4->_resetCount = count;
     if (_ARLogTechnique_onceToken_2 != -1)
     {
       [ARGeoTrackingTechniqueState initWithResetCount:];
@@ -44,9 +44,9 @@
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Geo tracking has reset! Count=%ld", buf, 0x20u);
     }
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     resultDatas = v5->_resultDatas;
-    v5->_resultDatas = v10;
+    v5->_resultDatas = array;
 
     [(ARGeoTrackingTechniqueState *)v5 setLastCMDeviceMotion:0];
     [(ARGeoTrackingTechniqueState *)v5 setLastCLLocation:0];
@@ -93,42 +93,42 @@
 
 - (void)enuFromVIO
 {
-  os_unfair_lock_lock((a1 + 8));
-  v4 = *(a1 + 336);
-  a2[4] = *(a1 + 320);
+  os_unfair_lock_lock((self + 8));
+  v4 = *(self + 336);
+  a2[4] = *(self + 320);
   a2[5] = v4;
-  v5 = *(a1 + 368);
-  a2[6] = *(a1 + 352);
+  v5 = *(self + 368);
+  a2[6] = *(self + 352);
   a2[7] = v5;
-  v6 = *(a1 + 272);
-  *a2 = *(a1 + 256);
+  v6 = *(self + 272);
+  *a2 = *(self + 256);
   a2[1] = v6;
-  v7 = *(a1 + 304);
-  a2[2] = *(a1 + 288);
+  v7 = *(self + 304);
+  a2[2] = *(self + 288);
   a2[3] = v7;
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((self + 8));
 }
 
-- (void)setEnuFromVIO:(__int128 *)a3
+- (void)setEnuFromVIO:(__int128 *)o
 {
-  os_unfair_lock_lock((a1 + 8));
-  v5 = *a3;
-  v6 = a3[1];
-  v7 = a3[3];
-  *(a1 + 288) = a3[2];
-  *(a1 + 304) = v7;
-  *(a1 + 256) = v5;
-  *(a1 + 272) = v6;
-  v8 = a3[4];
-  v9 = a3[5];
-  v10 = a3[7];
-  *(a1 + 352) = a3[6];
-  *(a1 + 368) = v10;
-  *(a1 + 320) = v8;
-  *(a1 + 336) = v9;
+  os_unfair_lock_lock((self + 8));
+  v5 = *o;
+  v6 = o[1];
+  v7 = o[3];
+  *(self + 288) = o[2];
+  *(self + 304) = v7;
+  *(self + 256) = v5;
+  *(self + 272) = v6;
+  v8 = o[4];
+  v9 = o[5];
+  v10 = o[7];
+  *(self + 352) = o[6];
+  *(self + 368) = v10;
+  *(self + 320) = v8;
+  *(self + 336) = v9;
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((self + 8));
 }
 
 - (void)setEnuFromVIOTranslation:(ARGeoTrackingTechniqueState *)self
@@ -144,43 +144,43 @@
   os_unfair_lock_unlock(&self->_enuFromVIOLock);
 }
 
-- (void)setEnuFromVIORotation:(uint64_t)a3
+- (void)setEnuFromVIORotation:(uint64_t)rotation
 {
-  os_unfair_lock_lock(a1 + 2);
+  os_unfair_lock_lock(self + 2);
   for (i = 0; i != 24; i += 8)
   {
-    v6 = *(a3 + i * 4 + 16);
-    v7 = &a1[i + 64];
-    *&v7->_os_unfair_lock_opaque = *(a3 + i * 4);
+    v6 = *(rotation + i * 4 + 16);
+    v7 = &self[i + 64];
+    *&v7->_os_unfair_lock_opaque = *(rotation + i * 4);
     *&v7[4]._os_unfair_lock_opaque = v6;
   }
 
-  os_unfair_lock_unlock(a1 + 2);
+  os_unfair_lock_unlock(self + 2);
 }
 
-- (void)addFailureReason:(int64_t)a3
+- (void)addFailureReason:(int64_t)reason
 {
-  v4 = [(ARGeoTrackingTechniqueState *)self failureReasons]| a3;
+  v4 = [(ARGeoTrackingTechniqueState *)self failureReasons]| reason;
 
   [(ARGeoTrackingTechniqueState *)self setFailureReasons:v4];
 }
 
-- (void)removeFailureReason:(int64_t)a3
+- (void)removeFailureReason:(int64_t)reason
 {
-  v4 = [(ARGeoTrackingTechniqueState *)self failureReasons]& ~a3;
+  v4 = [(ARGeoTrackingTechniqueState *)self failureReasons]& ~reason;
 
   [(ARGeoTrackingTechniqueState *)self setFailureReasons:v4];
 }
 
-+ (id)_findClosestDataToTimestamp:(double)a3 inBuffer:(id)a4
++ (id)_findClosestDataToTimestamp:(double)timestamp inBuffer:(id)buffer
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  bufferCopy = buffer;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [bufferCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -193,12 +193,12 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bufferCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
         [v12 timestamp];
-        v14 = vabdd_f64(a3, v13);
+        v14 = vabdd_f64(timestamp, v13);
         if (v14 < v10)
         {
           v15 = v12;
@@ -208,7 +208,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [bufferCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -222,22 +222,22 @@
   return v8;
 }
 
-- (id)findClosestVioPoseToTimestamp:(double)a3
+- (id)findClosestVioPoseToTimestamp:(double)timestamp
 {
   os_unfair_lock_lock(&self->_vioPoseBufferLock);
-  v5 = [objc_opt_class() _findClosestDataToTimestamp:self->_vioPoseCircularBuffer inBuffer:a3];
+  v5 = [objc_opt_class() _findClosestDataToTimestamp:self->_vioPoseCircularBuffer inBuffer:timestamp];
   os_unfair_lock_unlock(&self->_vioPoseBufferLock);
 
   return v5;
 }
 
-- (void)addVioPoseData:(id)a3
+- (void)addVioPoseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [ARGeoTrackingTechniqueStatePose alloc];
-  [v4 timestamp];
+  [dataCopy timestamp];
   v7 = v6;
-  [v4 visionCameraTransform];
+  [dataCopy visionCameraTransform];
   ARMatrix4x4FloatToDouble(v14, v8, v9, v10, v11);
   v12 = [(ARGeoTrackingTechniqueStatePose *)v5 initWithTimestamp:v14 transform:0 fused:v7 heading:0.0];
   os_unfair_lock_lock(&self->_vioPoseBufferLock);
@@ -245,24 +245,24 @@
   os_unfair_lock_unlock(&self->_vioPoseBufferLock);
 }
 
-- (id)findClosestDeviceMotionDataToTimestamp:(double)a3
+- (id)findClosestDeviceMotionDataToTimestamp:(double)timestamp
 {
   os_unfair_lock_lock(&self->_deviceMotionBufferLock);
-  v5 = [objc_opt_class() _findClosestDataToTimestamp:self->_deviceMotionCircularBuffer inBuffer:a3];
+  v5 = [objc_opt_class() _findClosestDataToTimestamp:self->_deviceMotionCircularBuffer inBuffer:timestamp];
   os_unfair_lock_unlock(&self->_deviceMotionBufferLock);
 
   return v5;
 }
 
-- (void)addDeviceMotionData:(id)a3
+- (void)addDeviceMotionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [ARGeoTrackingTechniqueStatePose alloc];
-  [v4 timestamp];
+  [dataCopy timestamp];
   v7 = v6;
-  [v4 rotationMatrixENU];
-  v12 = [v4 deviceMotion];
-  [v12 heading];
+  [dataCopy rotationMatrixENU];
+  deviceMotion = [dataCopy deviceMotion];
+  [deviceMotion heading];
   v14 = [(ARGeoTrackingTechniqueStatePose *)v5 initWithTimestamp:v16 transform:0 fused:v7 heading:v13 * 3.14159265 / 180.0];
 
   os_unfair_lock_lock(&self->_deviceMotionBufferLock);
@@ -272,8 +272,8 @@
 
 - (__n128)lastLoggedVioPosition
 {
-  result = a1[14];
-  a2[1].n128_u64[0] = a1[15].n128_u64[0];
+  result = self[14];
+  a2[1].n128_u64[0] = self[15].n128_u64[0];
   *a2 = result;
   return result;
 }

@@ -1,31 +1,31 @@
 @interface CAAnimationCompletionHandler
 - (_TtC14MusicUtilities28CAAnimationCompletionHandler)init;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)displayLinkFiredWithDisplayLink:(id)a3;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)displayLinkFiredWithDisplayLink:(id)link;
 @end
 
 @implementation CAAnimationCompletionHandler
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v4 = a3;
-  v5 = self;
-  sub_10040FEC4(v4);
+  startCopy = start;
+  selfCopy = self;
+  sub_10040FEC4(startCopy);
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v6 = a3;
-  v7 = self;
-  sub_100411BB4(a4);
+  stopCopy = stop;
+  selfCopy = self;
+  sub_100411BB4(finished);
 }
 
-- (void)displayLinkFiredWithDisplayLink:(id)a3
+- (void)displayLinkFiredWithDisplayLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_1004100D0(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_1004100D0(linkCopy);
 }
 
 - (_TtC14MusicUtilities28CAAnimationCompletionHandler)init

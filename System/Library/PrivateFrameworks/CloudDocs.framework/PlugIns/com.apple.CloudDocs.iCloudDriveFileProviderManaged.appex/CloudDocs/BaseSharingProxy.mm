@@ -1,35 +1,35 @@
 @interface BaseSharingProxy
-- (BaseSharingProxy)initWithItemIdentifier:(id)a3 fileURL:(id)a4 operationQueue:(id)a5;
-- (id)fetchParticipantListAndPublicPermission:(id)a3;
-- (id)fetchShareURLWithCompletion:(id)a3;
-- (id)fetchShareWithCompletion:(id)a3;
-- (id)preflightCheckIfCurrentlyShareableWithCompletion:(id)a3;
-- (id)saveShare:(id)a3 completion:(id)a4;
-- (id)unshareWithCompletion:(id)a3;
-- (void)fetchSharingInfo:(id)a3;
-- (void)startPreparingForShareWhenForcing:(BOOL)a3;
+- (BaseSharingProxy)initWithItemIdentifier:(id)identifier fileURL:(id)l operationQueue:(id)queue;
+- (id)fetchParticipantListAndPublicPermission:(id)permission;
+- (id)fetchShareURLWithCompletion:(id)completion;
+- (id)fetchShareWithCompletion:(id)completion;
+- (id)preflightCheckIfCurrentlyShareableWithCompletion:(id)completion;
+- (id)saveShare:(id)share completion:(id)completion;
+- (id)unshareWithCompletion:(id)completion;
+- (void)fetchSharingInfo:(id)info;
+- (void)startPreparingForShareWhenForcing:(BOOL)forcing;
 @end
 
 @implementation BaseSharingProxy
 
-- (BaseSharingProxy)initWithItemIdentifier:(id)a3 fileURL:(id)a4 operationQueue:(id)a5
+- (BaseSharingProxy)initWithItemIdentifier:(id)identifier fileURL:(id)l operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = BaseSharingProxy;
   v10 = [(BaseSharingProxy *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_itemIdentifier, a3);
-    objc_storeStrong(&v11->_operationQueue, a5);
+    objc_storeStrong(&v10->_itemIdentifier, identifier);
+    objc_storeStrong(&v11->_operationQueue, queue);
   }
 
   return v11;
 }
 
-- (void)fetchSharingInfo:(id)a3
+- (void)fetchSharingInfo:(id)info
 {
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();
@@ -39,7 +39,7 @@
   }
 }
 
-- (id)preflightCheckIfCurrentlyShareableWithCompletion:(id)a3
+- (id)preflightCheckIfCurrentlyShareableWithCompletion:(id)completion
 {
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();
@@ -51,9 +51,9 @@
   return 0;
 }
 
-- (id)fetchParticipantListAndPublicPermission:(id)a3
+- (id)fetchParticipantListAndPublicPermission:(id)permission
 {
-  v4 = a3;
+  permissionCopy = permission;
   memset(v13, 0, sizeof(v13));
   sub_10001A20C(1, "[BaseSharingProxy fetchParticipantListAndPublicPermission:]", 67, 0, v13);
   v5 = brc_bread_crumbs();
@@ -64,7 +64,7 @@
     *buf = 134219010;
     v15 = v13[0];
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = "[BaseSharingProxy fetchParticipantListAndPublicPermission:]";
     v20 = 2112;
@@ -79,7 +79,7 @@
   v11[2] = sub_100018978;
   v11[3] = &unk_1000447A0;
   v11[4] = self;
-  v8 = v4;
+  v8 = permissionCopy;
   v12 = v8;
   v9 = [(BaseSharingProxy *)self fetchShareWithCompletion:v11];
 
@@ -88,7 +88,7 @@
   return v9;
 }
 
-- (void)startPreparingForShareWhenForcing:(BOOL)a3
+- (void)startPreparingForShareWhenForcing:(BOOL)forcing
 {
   memset(v7, 0, sizeof(v7));
   sub_10001A20C(1, "[BaseSharingProxy startPreparingForShareWhenForcing:]", 75, 0, v7);
@@ -100,7 +100,7 @@
     *buf = 134219010;
     v9 = v7[0];
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[BaseSharingProxy startPreparingForShareWhenForcing:]";
     v14 = 2112;
@@ -113,7 +113,7 @@
   sub_10001A3DC(v7);
 }
 
-- (id)fetchShareWithCompletion:(id)a3
+- (id)fetchShareWithCompletion:(id)completion
 {
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();
@@ -125,7 +125,7 @@
   return 0;
 }
 
-- (id)fetchShareURLWithCompletion:(id)a3
+- (id)fetchShareURLWithCompletion:(id)completion
 {
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();
@@ -137,10 +137,10 @@
   return 0;
 }
 
-- (id)saveShare:(id)a3 completion:(id)a4
+- (id)saveShare:(id)share completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   memset(v29, 0, sizeof(v29));
   sub_10001A20C(1, "[BaseSharingProxy saveShare:completion:]", 97, 0, v29);
   v9 = brc_bread_crumbs();
@@ -149,9 +149,9 @@
   {
     itemIdentifier = self->_itemIdentifier;
     *buf = 134219010;
-    v31 = v29[0];
+    selfCopy2 = v29[0];
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     v34 = 2080;
     v35 = "[BaseSharingProxy saveShare:completion:]";
     v36 = 2112;
@@ -161,7 +161,7 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ %s %@%@", buf, 0x34u);
   }
 
-  v12 = [v7 objectForKeyedSubscript:CKShareTypeKey];
+  v12 = [shareCopy objectForKeyedSubscript:CKShareTypeKey];
   v13 = [v12 isEqual:_BRFolderShareType];
 
   if (v13)
@@ -172,9 +172,9 @@
     {
       v19 = [NSError br_errorWithPOSIXCode:45];
       *buf = 138413058;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
-      v33 = 0;
+      selfCopy = 0;
       v34 = 2112;
       v35 = v19;
       v36 = 2112;
@@ -183,14 +183,14 @@
     }
 
     v16 = [NSError br_errorWithPOSIXCode:45];
-    v8[2](v8, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     v17 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_cachedShare, a3);
-    v16 = [[BRShareSaveOperation alloc] initWithShare:v7 fileURL:self->_fileURL];
+    objc_storeStrong(&self->_cachedShare, share);
+    v16 = [[BRShareSaveOperation alloc] initWithShare:shareCopy fileURL:self->_fileURL];
     v17 = [NSProgress progressWithTotalUnitCount:1];
     objc_initWeak(buf, v17);
     v26[0] = _NSConcreteStackBlock;
@@ -199,7 +199,7 @@
     v26[3] = &unk_1000450C0;
     objc_copyWeak(&v28, buf);
     v26[4] = self;
-    v27 = v8;
+    v27 = completionCopy;
     [v16 setShareSaveCompletionBlock:v26];
     [v17 setCancellable:1];
     objc_initWeak(&location, v16);
@@ -222,9 +222,9 @@
   return v17;
 }
 
-- (id)unshareWithCompletion:(id)a3
+- (id)unshareWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   memset(v19, 0, sizeof(v19));
   sub_10001A20C(1, "[BaseSharingProxy unshareWithCompletion:]", 126, 0, v19);
   v5 = brc_bread_crumbs();
@@ -235,7 +235,7 @@
     *buf = 134219010;
     v21 = v19[0];
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2080;
     v25 = "[BaseSharingProxy unshareWithCompletion:]";
     v26 = 2112;
@@ -252,7 +252,7 @@
   v16[2] = sub_1000195F0;
   v16[3] = &unk_100045110;
   v16[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v18 = v9;
   v10 = v8;
   v17 = v10;

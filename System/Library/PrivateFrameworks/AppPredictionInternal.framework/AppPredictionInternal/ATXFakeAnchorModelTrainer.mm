@@ -1,7 +1,7 @@
 @interface ATXFakeAnchorModelTrainer
 - (ATXFakeAnchorModelTrainer)init;
-- (id)trainAnchorModel:(id)a3;
-- (void)setTrainingResultsForAnchor:(id)a3 results:(id)a4;
+- (id)trainAnchorModel:(id)model;
+- (void)setTrainingResultsForAnchor:(id)anchor results:(id)results;
 @end
 
 @implementation ATXFakeAnchorModelTrainer
@@ -27,18 +27,18 @@
   return v3;
 }
 
-- (id)trainAnchorModel:(id)a3
+- (id)trainAnchorModel:(id)model
 {
   self->_trained = 1;
   trainedAnchors = self->_trainedAnchors;
-  v5 = a3;
-  v6 = [v5 anchorTypeString];
-  [(NSMutableArray *)trainedAnchors addObject:v6];
+  modelCopy = model;
+  anchorTypeString = [modelCopy anchorTypeString];
+  [(NSMutableArray *)trainedAnchors addObject:anchorTypeString];
 
   trainingResultsForAnchor = self->_trainingResultsForAnchor;
-  v8 = [v5 anchorTypeString];
+  anchorTypeString2 = [modelCopy anchorTypeString];
 
-  v9 = [(NSMutableDictionary *)trainingResultsForAnchor objectForKey:v8];
+  v9 = [(NSMutableDictionary *)trainingResultsForAnchor objectForKey:anchorTypeString2];
 
   if (v9)
   {
@@ -55,12 +55,12 @@
   return v10;
 }
 
-- (void)setTrainingResultsForAnchor:(id)a3 results:(id)a4
+- (void)setTrainingResultsForAnchor:(id)anchor results:(id)results
 {
   trainingResultsForAnchor = self->_trainingResultsForAnchor;
-  v6 = a4;
-  v7 = [a3 anchorTypeString];
-  [(NSMutableDictionary *)trainingResultsForAnchor setObject:v6 forKey:v7];
+  resultsCopy = results;
+  anchorTypeString = [anchor anchorTypeString];
+  [(NSMutableDictionary *)trainingResultsForAnchor setObject:resultsCopy forKey:anchorTypeString];
 }
 
 @end

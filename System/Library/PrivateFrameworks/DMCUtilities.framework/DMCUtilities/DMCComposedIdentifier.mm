@@ -1,24 +1,24 @@
 @interface DMCComposedIdentifier
-+ (id)newComposedIdentifier:(id)a3;
-+ (id)newComposedIdentifierWithBundleID:(id)a3;
-+ (id)newComposedIdentifierWithBundleID:(id)a3 requirement:(id)a4;
-+ (id)newComposedIdentifierWithBundleID:(id)a3 teamID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToComposedIdentifier:(id)a3;
-- (DMCComposedIdentifier)initWithBundleID:(id)a3 teamID:(id)a4 requirement:(id)a5;
++ (id)newComposedIdentifier:(id)identifier;
++ (id)newComposedIdentifierWithBundleID:(id)d;
++ (id)newComposedIdentifierWithBundleID:(id)d requirement:(id)requirement;
++ (id)newComposedIdentifierWithBundleID:(id)d teamID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToComposedIdentifier:(id)identifier;
+- (DMCComposedIdentifier)initWithBundleID:(id)d teamID:(id)iD requirement:(id)requirement;
 - (id)composedIdentifier;
 - (id)designatedRequirement;
 @end
 
 @implementation DMCComposedIdentifier
 
-+ (id)newComposedIdentifier:(id)a3
++ (id)newComposedIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 rangeOfString:@" "];
+  identifierCopy = identifier;
+  v4 = [identifierCopy rangeOfString:@" "];
   v6 = v5;
-  v7 = v3;
+  v7 = identifierCopy;
   v8 = v7;
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -127,46 +127,46 @@ LABEL_26:
   return v15;
 }
 
-+ (id)newComposedIdentifierWithBundleID:(id)a3
++ (id)newComposedIdentifierWithBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [[DMCComposedIdentifier alloc] initWithBundleID:v3 teamID:0 requirement:0];
+  dCopy = d;
+  v4 = [[DMCComposedIdentifier alloc] initWithBundleID:dCopy teamID:0 requirement:0];
 
   return v4;
 }
 
-+ (id)newComposedIdentifierWithBundleID:(id)a3 teamID:(id)a4
++ (id)newComposedIdentifierWithBundleID:(id)d teamID:(id)iD
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[DMCComposedIdentifier alloc] initWithBundleID:v6 teamID:v5 requirement:0];
+  iDCopy = iD;
+  dCopy = d;
+  v7 = [[DMCComposedIdentifier alloc] initWithBundleID:dCopy teamID:iDCopy requirement:0];
 
   return v7;
 }
 
-+ (id)newComposedIdentifierWithBundleID:(id)a3 requirement:(id)a4
++ (id)newComposedIdentifierWithBundleID:(id)d requirement:(id)requirement
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[DMCComposedIdentifier alloc] initWithBundleID:v6 teamID:0 requirement:v5];
+  requirementCopy = requirement;
+  dCopy = d;
+  v7 = [[DMCComposedIdentifier alloc] initWithBundleID:dCopy teamID:0 requirement:requirementCopy];
 
   return v7;
 }
 
-- (DMCComposedIdentifier)initWithBundleID:(id)a3 teamID:(id)a4 requirement:(id)a5
+- (DMCComposedIdentifier)initWithBundleID:(id)d teamID:(id)iD requirement:(id)requirement
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  requirementCopy = requirement;
   v15.receiver = self;
   v15.super_class = DMCComposedIdentifier;
   v12 = [(DMCComposedIdentifier *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundleID, a3);
-    objc_storeStrong(&v13->_teamID, a4);
-    objc_storeStrong(&v13->_requirement, a5);
+    objc_storeStrong(&v12->_bundleID, d);
+    objc_storeStrong(&v13->_teamID, iD);
+    objc_storeStrong(&v13->_requirement, requirement);
   }
 
   return v13;
@@ -174,71 +174,71 @@ LABEL_26:
 
 - (id)composedIdentifier
 {
-  v3 = [(DMCComposedIdentifier *)self teamID];
+  teamID = [(DMCComposedIdentifier *)self teamID];
 
-  if (v3)
+  if (teamID)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(DMCComposedIdentifier *)self bundleID];
-    v6 = [(DMCComposedIdentifier *)self teamID];
-    [v4 stringWithFormat:@"%@ (%@)", v5, v6];
-    v9 = LABEL_5:;
+    bundleID = [(DMCComposedIdentifier *)self bundleID];
+    teamID2 = [(DMCComposedIdentifier *)self teamID];
+    [v4 stringWithFormat:@"%@ (%@)", bundleID, teamID2];
+    bundleID2 = LABEL_5:;
 
     goto LABEL_6;
   }
 
-  v7 = [(DMCComposedIdentifier *)self requirement];
+  requirement = [(DMCComposedIdentifier *)self requirement];
 
-  if (v7)
+  if (requirement)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v5 = [(DMCComposedIdentifier *)self bundleID];
-    v6 = [(DMCComposedIdentifier *)self requirement];
-    [v8 stringWithFormat:@"%@ {%@}", v5, v6];
+    bundleID = [(DMCComposedIdentifier *)self bundleID];
+    teamID2 = [(DMCComposedIdentifier *)self requirement];
+    [v8 stringWithFormat:@"%@ {%@}", bundleID, teamID2];
     goto LABEL_5;
   }
 
-  v9 = [(DMCComposedIdentifier *)self bundleID];
+  bundleID2 = [(DMCComposedIdentifier *)self bundleID];
 LABEL_6:
 
-  return v9;
+  return bundleID2;
 }
 
 - (id)designatedRequirement
 {
-  v3 = [(DMCComposedIdentifier *)self requirement];
+  requirement = [(DMCComposedIdentifier *)self requirement];
 
-  if (v3)
+  if (requirement)
   {
-    v4 = [(DMCComposedIdentifier *)self requirement];
+    requirement2 = [(DMCComposedIdentifier *)self requirement];
   }
 
   else
   {
-    v5 = [(DMCComposedIdentifier *)self teamID];
+    teamID = [(DMCComposedIdentifier *)self teamID];
 
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(DMCComposedIdentifier *)self bundleID];
-    v8 = v7;
-    if (v5)
+    bundleID = [(DMCComposedIdentifier *)self bundleID];
+    v8 = bundleID;
+    if (teamID)
     {
-      v9 = [(DMCComposedIdentifier *)self teamID];
-      v4 = [v6 stringWithFormat:@"anchor apple generic and identifier %@ and certificate leaf[subject.OU] = %@", v8, v9];
+      teamID2 = [(DMCComposedIdentifier *)self teamID];
+      requirement2 = [v6 stringWithFormat:@"anchor apple generic and identifier %@ and certificate leaf[subject.OU] = %@", v8, teamID2];
     }
 
     else
     {
-      v4 = [v6 stringWithFormat:@"anchor apple and identifier %@", v7];
+      requirement2 = [v6 stringWithFormat:@"anchor apple and identifier %@", bundleID];
     }
   }
 
-  return v4;
+  return requirement2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -246,20 +246,20 @@ LABEL_6:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DMCComposedIdentifier *)self isEqualToComposedIdentifier:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DMCComposedIdentifier *)self isEqualToComposedIdentifier:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToComposedIdentifier:(id)a3
+- (BOOL)isEqualToComposedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DMCComposedIdentifier *)self composedIdentifier];
-  v6 = [v4 composedIdentifier];
+  identifierCopy = identifier;
+  composedIdentifier = [(DMCComposedIdentifier *)self composedIdentifier];
+  composedIdentifier2 = [identifierCopy composedIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(identifierCopy) = [composedIdentifier isEqualToString:composedIdentifier2];
+  return identifierCopy;
 }
 
 @end

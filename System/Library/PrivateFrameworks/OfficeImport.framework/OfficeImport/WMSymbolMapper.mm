@@ -1,17 +1,17 @@
 @interface WMSymbolMapper
-+ (BOOL)isSymbolFontName:(id)a3;
-+ (unsigned)mapCharacter:(unsigned __int16)a3 withFontName:(id)a4;
-+ (unsigned)mapWindingsCharacter:(unsigned __int16)a3;
-+ (unsigned)mapZapfDingbatsCharacter:(unsigned __int16)a3;
-- (WMSymbolMapper)initWithWDSymbol:(id)a3 parent:(id)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
++ (BOOL)isSymbolFontName:(id)name;
++ (unsigned)mapCharacter:(unsigned __int16)character withFontName:(id)name;
++ (unsigned)mapWindingsCharacter:(unsigned __int16)character;
++ (unsigned)mapZapfDingbatsCharacter:(unsigned __int16)character;
+- (WMSymbolMapper)initWithWDSymbol:(id)symbol parent:(id)parent;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation WMSymbolMapper
 
-+ (unsigned)mapWindingsCharacter:(unsigned __int16)a3
++ (unsigned)mapWindingsCharacter:(unsigned __int16)character
 {
-  if (a3 == 216)
+  if (character == 216)
   {
     v3 = 10146;
   }
@@ -21,7 +21,7 @@
     v3 = 0;
   }
 
-  if ((a3 - 162) >= 0x14)
+  if ((character - 162) >= 0x14)
   {
     v4 = v3;
   }
@@ -31,7 +31,7 @@
     v4 = 9679;
   }
 
-  if ((a3 - 108) >= 0x14)
+  if ((character - 108) >= 0x14)
   {
     v5 = v4;
   }
@@ -41,7 +41,7 @@
     v5 = 9679;
   }
 
-  if (a3 == 232)
+  if (character == 232)
   {
     return 8594;
   }
@@ -52,9 +52,9 @@
   }
 }
 
-+ (unsigned)mapZapfDingbatsCharacter:(unsigned __int16)a3
++ (unsigned)mapZapfDingbatsCharacter:(unsigned __int16)character
 {
-  if (a3 == 52)
+  if (character == 52)
   {
     return 10004;
   }
@@ -65,21 +65,21 @@
   }
 }
 
-+ (unsigned)mapCharacter:(unsigned __int16)a3 withFontName:(id)a4
++ (unsigned)mapCharacter:(unsigned __int16)character withFontName:(id)name
 {
-  v4 = a3;
-  v5 = a4;
-  if (![v5 compare:@"Wingdings"])
+  characterCopy = character;
+  nameCopy = name;
+  if (![nameCopy compare:@"Wingdings"])
   {
-    v7 = [WMSymbolMapper mapWindingsCharacter:v4];
+    v7 = [WMSymbolMapper mapWindingsCharacter:characterCopy];
 LABEL_6:
     v6 = v7;
     goto LABEL_7;
   }
 
-  if (![v5 compare:@"Zapf Dingbats"])
+  if (![nameCopy compare:@"Zapf Dingbats"])
   {
-    v7 = [WMSymbolMapper mapZapfDingbatsCharacter:v4];
+    v7 = [WMSymbolMapper mapZapfDingbatsCharacter:characterCopy];
     goto LABEL_6;
   }
 
@@ -89,15 +89,15 @@ LABEL_7:
   return v6;
 }
 
-+ (BOOL)isSymbolFontName:(id)a3
++ (BOOL)isSymbolFontName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__WMSymbolMapper_isSymbolFontName___block_invoke;
   v7[3] = &unk_2799CDCB8;
-  v8 = v3;
-  v4 = v3;
+  v8 = nameCopy;
+  v4 = nameCopy;
   v5 = [&unk_286F6D6E0 indexOfObjectPassingTest:v7] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v5;
@@ -110,30 +110,30 @@ uint64_t __35__WMSymbolMapper_isSymbolFontName___block_invoke(uint64_t a1, void 
   return result;
 }
 
-- (WMSymbolMapper)initWithWDSymbol:(id)a3 parent:(id)a4
+- (WMSymbolMapper)initWithWDSymbol:(id)symbol parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  symbolCopy = symbol;
+  parentCopy = parent;
   v13.receiver = self;
   v13.super_class = WMSymbolMapper;
-  v8 = [(CMMapper *)&v13 initWithParent:v7];
+  v8 = [(CMMapper *)&v13 initWithParent:parentCopy];
   if (v8)
   {
-    v8->mCharacter = [v6 character] & 0xFFF;
-    v9 = [v6 font];
-    v10 = [v9 name];
+    v8->mCharacter = [symbolCopy character] & 0xFFF;
+    font = [symbolCopy font];
+    name = [font name];
     mFontName = v8->mFontName;
-    v8->mFontName = v10;
+    v8->mFontName = name;
   }
 
   return v8;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v10 = a3;
+  atCopy = at;
   v5 = [OIXMLElement elementWithType:16];
-  [v10 addChild:v5];
+  [atCopy addChild:v5];
   v6 = [WMSymbolMapper mapCharacter:self->mCharacter withFontName:self->mFontName];
   if (v6)
   {

@@ -1,12 +1,12 @@
 @interface SGPhoneNumber
-+ (id)phoneNumber:(id)a3 label:(id)a4 extractionInfo:(id)a5 recordId:(id)a6;
-+ (id)phoneNumber:(id)a3 label:(id)a4 extractionType:(unint64_t)a5 recordId:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPhoneNumber:(id)a3;
-- (SGPhoneNumber)initWithCoder:(id)a3;
-- (SGPhoneNumber)initWithPhoneNumber:(id)a3 label:(id)a4 extractionInfo:(id)a5 recordId:(id)a6;
++ (id)phoneNumber:(id)number label:(id)label extractionInfo:(id)info recordId:(id)id;
++ (id)phoneNumber:(id)number label:(id)label extractionType:(unint64_t)type recordId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPhoneNumber:(id)number;
+- (SGPhoneNumber)initWithCoder:(id)coder;
+- (SGPhoneNumber)initWithPhoneNumber:(id)number label:(id)label extractionInfo:(id)info recordId:(id)id;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGPhoneNumber
@@ -14,11 +14,11 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SGLabeledObject *)self label];
-  if ([v4 length])
+  label = [(SGLabeledObject *)self label];
+  if ([label length])
   {
-    v5 = [(SGLabeledObject *)self label];
-    v6 = [v3 initWithFormat:@"%@/'%@'", v5, self->_phoneNumber];
+    label2 = [(SGLabeledObject *)self label];
+    v6 = [v3 initWithFormat:@"%@/'%@'", label2, self->_phoneNumber];
   }
 
   else
@@ -29,14 +29,14 @@
   return v6;
 }
 
-- (BOOL)isEqualToPhoneNumber:(id)a3
+- (BOOL)isEqualToPhoneNumber:(id)number
 {
-  v4 = a3;
-  if ([(SGLabeledObject *)self isEqualToLabeledObject:v4])
+  numberCopy = number;
+  if ([(SGLabeledObject *)self isEqualToLabeledObject:numberCopy])
   {
     v5 = self->_phoneNumber;
     v6 = v5;
-    if (v5 == v4[5])
+    if (v5 == numberCopy[5])
     {
       v7 = 1;
     }
@@ -55,42 +55,42 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGPhoneNumber *)self isEqualToPhoneNumber:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGPhoneNumber *)self isEqualToPhoneNumber:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGPhoneNumber;
-  v4 = a3;
-  [(SGLabeledObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_phoneNumber forKey:{@"phoneNumber", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SGLabeledObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_phoneNumber forKey:{@"phoneNumber", v5.receiver, v5.super_class}];
 }
 
-- (SGPhoneNumber)initWithCoder:(id)a3
+- (SGPhoneNumber)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SGPhoneNumber;
-  v6 = [(SGLabeledObject *)&v12 initWithCoder:v5];
+  v6 = [(SGLabeledObject *)&v12 initWithCoder:coderCopy];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"phoneNumber"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"phoneNumber"];
 
     if (v8)
     {
@@ -109,15 +109,15 @@
   return v6;
 }
 
-- (SGPhoneNumber)initWithPhoneNumber:(id)a3 label:(id)a4 extractionInfo:(id)a5 recordId:(id)a6
+- (SGPhoneNumber)initWithPhoneNumber:(id)number label:(id)label extractionInfo:(id)info recordId:(id)id
 {
-  v10 = a3;
+  numberCopy = number;
   v15.receiver = self;
   v15.super_class = SGPhoneNumber;
-  v11 = [(SGLabeledObject *)&v15 initWithLabel:a4 extractionInfo:a5 recordId:a6];
+  v11 = [(SGLabeledObject *)&v15 initWithLabel:label extractionInfo:info recordId:id];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [numberCopy copy];
     phoneNumber = v11->_phoneNumber;
     v11->_phoneNumber = v12;
   }
@@ -125,24 +125,24 @@
   return v11;
 }
 
-+ (id)phoneNumber:(id)a3 label:(id)a4 extractionType:(unint64_t)a5 recordId:(id)a6
++ (id)phoneNumber:(id)number label:(id)label extractionType:(unint64_t)type recordId:(id)id
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [SGExtractionInfo extractionInfoWithExtractionType:a5 modelVersion:0 confidence:0];
-  v13 = [SGPhoneNumber phoneNumber:v11 label:v10 extractionInfo:v12 recordId:v9];
+  idCopy = id;
+  labelCopy = label;
+  numberCopy = number;
+  v12 = [SGExtractionInfo extractionInfoWithExtractionType:type modelVersion:0 confidence:0];
+  v13 = [SGPhoneNumber phoneNumber:numberCopy label:labelCopy extractionInfo:v12 recordId:idCopy];
 
   return v13;
 }
 
-+ (id)phoneNumber:(id)a3 label:(id)a4 extractionInfo:(id)a5 recordId:(id)a6
++ (id)phoneNumber:(id)number label:(id)label extractionInfo:(id)info recordId:(id)id
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[SGPhoneNumber alloc] initWithPhoneNumber:v12 label:v11 extractionInfo:v10 recordId:v9];
+  idCopy = id;
+  infoCopy = info;
+  labelCopy = label;
+  numberCopy = number;
+  v13 = [[SGPhoneNumber alloc] initWithPhoneNumber:numberCopy label:labelCopy extractionInfo:infoCopy recordId:idCopy];
 
   return v13;
 }

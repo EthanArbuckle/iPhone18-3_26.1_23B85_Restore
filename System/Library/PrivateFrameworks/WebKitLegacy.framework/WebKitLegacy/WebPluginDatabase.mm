@@ -2,20 +2,20 @@
 + (id)sharedDatabase;
 + (id)sharedDatabaseIfExists;
 + (void)closeSharedDatabase;
-+ (void)setAdditionalWebPlugInPaths:(id)a3;
++ (void)setAdditionalWebPlugInPaths:(id)paths;
 - (WebPluginDatabase)init;
 - (id)_plugInPaths;
 - (id)_scanForNewPlugins;
-- (id)pluginForExtension:(id)a3;
-- (id)pluginForMIMEType:(id)a3;
-- (void)_addPlugin:(id)a3;
-- (void)_removePlugin:(id)a3;
+- (id)pluginForExtension:(id)extension;
+- (id)pluginForMIMEType:(id)type;
+- (void)_addPlugin:(id)plugin;
+- (void)_removePlugin:(id)plugin;
 - (void)close;
 - (void)dealloc;
 - (void)destroyAllPluginInstanceViews;
 - (void)refresh;
-- (void)removePluginInstanceViewsFor:(id)a3;
-- (void)setPlugInPaths:(id)a3;
+- (void)removePluginInstanceViewsFor:(id)for;
+- (void)setPlugInPaths:(id)paths;
 @end
 
 @implementation WebPluginDatabase
@@ -50,7 +50,7 @@
     v6 = v4;
   }
 
-  -[WebPluginDatabase setPlugInPaths:](v6, "setPlugInPaths:", [a1 _defaultPlugInPaths]);
+  -[WebPluginDatabase setPlugInPaths:](v6, "setPlugInPaths:", [self _defaultPlugInPaths]);
   [qword_1ED6A6108 refresh];
   return qword_1ED6A6108;
 }
@@ -85,20 +85,20 @@
   [v2 close];
 }
 
-- (id)pluginForMIMEType:(id)a3
+- (id)pluginForMIMEType:(id)type
 {
   v15 = 0;
   v16 = 0;
-  v4 = [a3 lowercaseString];
-  v5 = [(NSMutableDictionary *)self->plugins objectEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  lowercaseString = [type lowercaseString];
+  objectEnumerator = [(NSMutableDictionary *)self->plugins objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject2 = nextObject;
     do
     {
-      MEMORY[0x1CCA63A40](&v14, v4);
-      v9 = [(WebBasePluginPackage *)v7 supportsMIMEType:&v14];
+      MEMORY[0x1CCA63A40](&v14, lowercaseString);
+      v9 = [(WebBasePluginPackage *)nextObject2 supportsMIMEType:&v14];
       v10 = v14;
       v14 = 0;
       if (v10 && atomic_fetch_add_explicit(v10, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -108,13 +108,13 @@
 
       if (v9)
       {
-        PluginPackageCandidates::update(&v15, v7);
+        PluginPackageCandidates::update(&v15, nextObject2);
       }
 
-      v7 = [v5 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v7);
+    while (nextObject2);
     v11 = v15;
     if (v15)
     {
@@ -150,14 +150,14 @@
   return v11;
 }
 
-- (id)pluginForExtension:(id)a3
+- (id)pluginForExtension:(id)extension
 {
   v16 = 0;
   v17 = 0;
-  v4 = [a3 lowercaseString];
-  v5 = [(NSMutableDictionary *)self->plugins objectEnumerator];
-  v6 = [v5 nextObject];
-  if (!v6)
+  lowercaseString = [extension lowercaseString];
+  objectEnumerator = [(NSMutableDictionary *)self->plugins objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (!nextObject)
   {
     v11 = 0;
 LABEL_16:
@@ -178,11 +178,11 @@ LABEL_16:
     return v11;
   }
 
-  v7 = v6;
+  nextObject2 = nextObject;
   do
   {
-    MEMORY[0x1CCA63A40](&v15, v4);
-    v9 = [(WebBasePluginPackage *)v7 supportsExtension:&v15];
+    MEMORY[0x1CCA63A40](&v15, lowercaseString);
+    v9 = [(WebBasePluginPackage *)nextObject2 supportsExtension:&v15];
     v10 = v15;
     v15 = 0;
     if (v10 && atomic_fetch_add_explicit(v10, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -192,13 +192,13 @@ LABEL_16:
 
     if (v9)
     {
-      PluginPackageCandidates::update(&v16, v7);
+      PluginPackageCandidates::update(&v16, nextObject2);
     }
 
-    v7 = [v5 nextObject];
+    nextObject2 = [objectEnumerator nextObject];
   }
 
-  while (v7);
+  while (nextObject2);
   v11 = v16;
   if (!v16 || [v16 isQuickTimePlugIn])
   {
@@ -219,11 +219,11 @@ LABEL_16:
   return v11;
 }
 
-+ (void)setAdditionalWebPlugInPaths:(id)a3
++ (void)setAdditionalWebPlugInPaths:(id)paths
 {
   if (byte_1ED6A60F4 == 1)
   {
-    if (qword_1ED6A6110 == a3)
+    if (qword_1ED6A6110 == paths)
     {
       return;
     }
@@ -233,13 +233,13 @@ LABEL_16:
   {
     qword_1ED6A6110 = 0;
     byte_1ED6A60F4 = 1;
-    if (!a3)
+    if (!paths)
     {
       return;
     }
   }
 
-  v3 = [a3 copy];
+  v3 = [paths copy];
   if (byte_1ED6A60F4)
   {
     v4 = qword_1ED6A6110;
@@ -256,30 +256,30 @@ LABEL_16:
   }
 }
 
-- (void)setPlugInPaths:(id)a3
+- (void)setPlugInPaths:(id)paths
 {
   plugInPaths = self->plugInPaths;
-  if (plugInPaths != a3)
+  if (plugInPaths != paths)
   {
 
-    self->plugInPaths = [a3 copy];
+    self->plugInPaths = [paths copy];
   }
 }
 
 - (void)close
 {
   v3 = [-[WebPluginDatabase plugins](self "plugins")];
-  v4 = [v3 nextObject];
-  if (v4)
+  nextObject = [v3 nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    nextObject2 = nextObject;
     do
     {
-      [(WebPluginDatabase *)self _removePlugin:v5];
-      v5 = [v3 nextObject];
+      [(WebPluginDatabase *)self _removePlugin:nextObject2];
+      nextObject2 = [v3 nextObject];
     }
 
-    while (v5);
+    while (nextObject2);
   }
 
   self->plugins = 0;
@@ -314,73 +314,73 @@ LABEL_16:
     self->plugins = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{12, context}];
   }
 
-  v3 = [(WebPluginDatabase *)self _scanForNewPlugins];
+  _scanForNewPlugins = [(WebPluginDatabase *)self _scanForNewPlugins];
   v4 = [MEMORY[0x1E695DFA8] set];
-  v5 = [(NSMutableDictionary *)self->plugins objectEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  objectEnumerator = [(NSMutableDictionary *)self->plugins objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject2 = nextObject;
     do
     {
-      if (([v3 containsObject:v7] & 1) == 0)
+      if (([_scanForNewPlugins containsObject:nextObject2] & 1) == 0)
       {
-        [v4 addObject:v7];
+        [v4 addObject:nextObject2];
       }
 
-      [v3 removeObject:v7];
-      v7 = [v5 nextObject];
+      [_scanForNewPlugins removeObject:nextObject2];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
-  v8 = [v4 objectEnumerator];
-  v9 = [v8 nextObject];
-  if (v9)
+  objectEnumerator2 = [v4 objectEnumerator];
+  nextObject3 = [objectEnumerator2 nextObject];
+  if (nextObject3)
   {
-    v10 = v9;
+    nextObject4 = nextObject3;
     do
     {
-      [(WebPluginDatabase *)self _removePlugin:v10];
-      v10 = [v8 nextObject];
+      [(WebPluginDatabase *)self _removePlugin:nextObject4];
+      nextObject4 = [objectEnumerator2 nextObject];
     }
 
-    while (v10);
+    while (nextObject4);
   }
 
-  v11 = [v3 objectEnumerator];
-  v12 = [v11 nextObject];
-  if (v12)
+  objectEnumerator3 = [_scanForNewPlugins objectEnumerator];
+  nextObject5 = [objectEnumerator3 nextObject];
+  if (nextObject5)
   {
-    v13 = v12;
+    nextObject6 = nextObject5;
     do
     {
-      [(WebPluginDatabase *)self _addPlugin:v13];
-      v13 = [v11 nextObject];
+      [(WebPluginDatabase *)self _addPlugin:nextObject6];
+      nextObject6 = [objectEnumerator3 nextObject];
     }
 
-    while (v13);
+    while (nextObject6);
   }
 
   v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v15 = [(NSMutableDictionary *)self->plugins objectEnumerator];
+  objectEnumerator4 = [(NSMutableDictionary *)self->plugins objectEnumerator];
   while (1)
   {
-    v16 = [v15 nextObject];
-    if (!v16)
+    nextObject7 = [objectEnumerator4 nextObject];
+    if (!nextObject7)
     {
       break;
     }
 
-    v17 = [v16 pluginInfo];
-    if (*(v17 + 36))
+    pluginInfo = [nextObject7 pluginInfo];
+    if (*(pluginInfo + 36))
     {
       v18 = 0;
       v19 = 0;
       do
       {
-        v20 = *(*(v17 + 24) + v18);
+        v20 = *(*(pluginInfo + 24) + v18);
         if (v20)
         {
           atomic_fetch_add_explicit(v20, 2u, memory_order_relaxed);
@@ -408,24 +408,24 @@ LABEL_16:
         v18 += 32;
       }
 
-      while (v19 < *(v17 + 36));
+      while (v19 < *(pluginInfo + 36));
     }
   }
 
-  v24 = [v14 objectEnumerator];
+  objectEnumerator5 = [v14 objectEnumerator];
   while (1)
   {
-    v25 = [v24 nextObject];
-    if (!v25)
+    nextObject8 = [objectEnumerator5 nextObject];
+    if (!nextObject8)
     {
       break;
     }
 
-    [(NSMutableSet *)self->registeredMIMETypes addObject:v25];
-    if (![WebView canShowMIMETypeAsHTML:v25])
+    [(NSMutableSet *)self->registeredMIMETypes addObject:nextObject8];
+    if (![WebView canShowMIMETypeAsHTML:nextObject8])
     {
-      v26 = [(WebPluginDatabase *)self pluginForMIMEType:v25];
-      if (([v26 isJavaPlugIn] & 1) == 0 && (!objc_msgSend(v26, "isQuickTimePlugIn") || !objc_msgSend(+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView, "_viewTypesAllowImageTypeOmission:", 0), "objectForKey:", v25)))
+      v26 = [(WebPluginDatabase *)self pluginForMIMEType:nextObject8];
+      if (([v26 isJavaPlugIn] & 1) == 0 && (!objc_msgSend(v26, "isQuickTimePlugIn") || !objc_msgSend(+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView, "_viewTypesAllowImageTypeOmission:", 0), "objectForKey:", nextObject8)))
       {
         if (byte_1ED6A60F3 == 1)
         {
@@ -442,7 +442,7 @@ LABEL_16:
           if (!self)
           {
 LABEL_33:
-            [WebView _registerPluginMIMEType:v25];
+            [WebView _registerPluginMIMEType:nextObject8];
           }
         }
       }
@@ -456,12 +456,12 @@ LABEL_33:
   objc_autoreleasePoolPop(contexta);
 }
 
-- (void)removePluginInstanceViewsFor:(id)a3
+- (void)removePluginInstanceViewsFor:(id)for
 {
   v17 = *MEMORY[0x1E69E9840];
   if ([(NSMutableSet *)self->pluginInstanceViews count])
   {
-    v5 = [objc_msgSend(a3 "frameView")];
+    v5 = [objc_msgSend(for "frameView")];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -469,8 +469,8 @@ LABEL_33:
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v6 = [v5 subviews];
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      subviews = [v5 subviews];
+      v7 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         v8 = v7;
@@ -490,7 +490,7 @@ LABEL_33:
 
             else
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(subviews);
               v11 = *(*(&v12 + 1) + 8 * i);
               if (![WebPluginController isPlugInView:v11])
               {
@@ -501,7 +501,7 @@ LABEL_33:
             [(NSMutableSet *)self->pluginInstanceViews removeObject:v11];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v8 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v8);
@@ -513,21 +513,21 @@ LABEL_33:
 - (void)destroyAllPluginInstanceViews
 {
   v2 = [-[NSMutableSet allObjects](self->pluginInstanceViews "allObjects")];
-  v3 = [v2 nextObject];
-  if (v3)
+  nextObject = [v2 nextObject];
+  if (nextObject)
   {
-    v4 = v3;
+    nextObject2 = nextObject;
     do
     {
-      if ([WebPluginController isPlugInView:v4])
+      if ([WebPluginController isPlugInView:nextObject2])
       {
-        [objc_msgSend(v4 "superview")];
+        [objc_msgSend(nextObject2 "superview")];
       }
 
-      v4 = [v2 nextObject];
+      nextObject2 = [v2 nextObject];
     }
 
-    while (v4);
+    while (nextObject2);
   }
 }
 
@@ -593,9 +593,9 @@ LABEL_33:
   }
 }
 
-- (void)_addPlugin:(id)a3
+- (void)_addPlugin:(id)plugin
 {
-  v5 = *[a3 path];
+  v5 = *[plugin path];
   if (v5)
   {
     atomic_fetch_add_explicit(v5, 2u, memory_order_relaxed);
@@ -612,8 +612,8 @@ LABEL_33:
     v8 = &stru_1F472E7E8;
   }
 
-  [(NSMutableDictionary *)self->plugins setObject:a3 forKey:v9];
-  [a3 wasAddedToPluginDatabase:self];
+  [(NSMutableDictionary *)self->plugins setObject:plugin forKey:v9];
+  [plugin wasAddedToPluginDatabase:self];
   v7 = v9;
   v9 = 0;
   if (v7)
@@ -621,12 +621,12 @@ LABEL_33:
   }
 }
 
-- (void)_removePlugin:(id)a3
+- (void)_removePlugin:(id)plugin
 {
-  v5 = [a3 pluginInfo];
-  if (*(v5 + 36))
+  pluginInfo = [plugin pluginInfo];
+  if (*(pluginInfo + 36))
   {
-    v6 = v5;
+    v6 = pluginInfo;
     v7 = 0;
     v8 = 0;
     while (1)
@@ -693,7 +693,7 @@ LABEL_10:
   }
 
 LABEL_17:
-  v13 = *[a3 path];
+  v13 = *[plugin path];
   if (v13)
   {
     atomic_fetch_add_explicit(v13, 2u, memory_order_relaxed);
@@ -703,7 +703,7 @@ LABEL_17:
       WTF::StringImpl::destroy(v13, v14);
     }
 
-    if (a3)
+    if (plugin)
     {
       goto LABEL_21;
     }
@@ -713,16 +713,16 @@ LABEL_17:
   {
     v18 = &stru_1F472E7E8;
     v17 = &stru_1F472E7E8;
-    if (a3)
+    if (plugin)
     {
 LABEL_21:
-      v15 = a3;
+      pluginCopy = plugin;
     }
   }
 
   [(NSMutableDictionary *)self->plugins removeObjectForKey:v18];
-  [a3 wasRemovedFromPluginDatabase:self];
-  if (a3)
+  [plugin wasRemovedFromPluginDatabase:self];
+  if (plugin)
   {
   }
 
@@ -738,28 +738,28 @@ LABEL_21:
   v3 = [MEMORY[0x1E695DFA8] set];
   v4 = [-[WebPluginDatabase _plugInPaths](self "_plugInPaths")];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   while (1)
   {
-    v7 = [v4 nextObject];
-    if (!v7)
+    nextObject = [v4 nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = [objc_msgSend(v6 contentsOfDirectoryAtPath:v7 error:{0), "objectEnumerator"}];
+    v8 = [objc_msgSend(defaultManager contentsOfDirectoryAtPath:nextObject error:{0), "objectEnumerator"}];
     while (1)
     {
-      v9 = [v8 nextObject];
-      if (!v9)
+      nextObject2 = [v8 nextObject];
+      if (!nextObject2)
       {
         break;
       }
 
-      if (([v5 containsObject:v9] & 1) == 0)
+      if (([v5 containsObject:nextObject2] & 1) == 0)
       {
-        [v5 addObject:v9];
-        v10 = [v7 stringByAppendingPathComponent:v9];
+        [v5 addObject:nextObject2];
+        v10 = [nextObject stringByAppendingPathComponent:nextObject2];
         if ([(NSMutableDictionary *)self->plugins objectForKey:v10]|| [WebBasePluginPackage pluginWithPath:v10])
         {
           [v3 addObject:?];

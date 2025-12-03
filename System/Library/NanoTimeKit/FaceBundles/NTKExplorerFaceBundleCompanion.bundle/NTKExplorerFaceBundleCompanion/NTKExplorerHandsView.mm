@@ -1,29 +1,29 @@
 @interface NTKExplorerHandsView
 - (CGPoint)secondHandCenter;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)secondHandConfiguration;
-- (void)applyColorPalette:(id)a3;
+- (void)applyColorPalette:(id)palette;
 - (void)layoutSubviews;
-- (void)setInlayColor:(id)a3;
-- (void)setSecondHandDotColor:(id)a3;
+- (void)setInlayColor:(id)color;
+- (void)setSecondHandDotColor:(id)color;
 @end
 
 @implementation NTKExplorerHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = NTKExplorerHandsView;
-  v3 = [(NTKExplorerHandsView *)&v9 initForDevice:a3];
+  v3 = [(NTKExplorerHandsView *)&v9 initForDevice:device];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 secondHandView];
-    [v4 insertSubview:v5 atIndex:0];
+    secondHandView = [v3 secondHandView];
+    [v4 insertSubview:secondHandView atIndex:0];
 
-    v6 = [v4 secondHandView];
+    secondHandView2 = [v4 secondHandView];
     v7 = +[UIColor whiteColor];
-    [v6 setHandDotColor:v7];
+    [secondHandView2 setHandDotColor:v7];
   }
 
   return v4;
@@ -31,14 +31,14 @@
 
 - (id)secondHandConfiguration
 {
-  v3 = [(NTKExplorerHandsView *)self device];
-  v4 = sub_3DE0(v3, v3);
+  device = [(NTKExplorerHandsView *)self device];
+  v4 = sub_3DE0(device, device);
   v6 = v5;
   v8 = v7;
   v10 = v9;
 
-  v11 = [(NTKExplorerHandsView *)self device];
-  v12 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:v11];
+  device2 = [(NTKExplorerHandsView *)self device];
+  v12 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:device2];
 
   [v12 setHandWidth:v4];
   [v12 setHandLength:v6];
@@ -50,56 +50,56 @@
   return v12;
 }
 
-- (void)setInlayColor:(id)a3
+- (void)setInlayColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = NTKExplorerHandsView;
-  v4 = a3;
-  [(NTKExplorerHandsView *)&v6 setInlayColor:v4];
+  colorCopy = color;
+  [(NTKExplorerHandsView *)&v6 setInlayColor:colorCopy];
   v5 = [(NTKExplorerHandsView *)self secondHandView:v6.receiver];
-  [v5 setHandDotColor:v4];
+  [v5 setHandDotColor:colorCopy];
 }
 
-- (void)setSecondHandDotColor:(id)a3
+- (void)setSecondHandDotColor:(id)color
 {
-  v5 = a3;
-  if (self->_secondHandDotColor != v5)
+  colorCopy = color;
+  if (self->_secondHandDotColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_secondHandDotColor, a3);
-    v6 = [(NTKExplorerHandsView *)self secondHandView];
-    [v6 setHandDotColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_secondHandDotColor, color);
+    secondHandView = [(NTKExplorerHandsView *)self secondHandView];
+    [secondHandView setHandDotColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)applyColorPalette:(id)a3
+- (void)applyColorPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [(NTKExplorerHandsView *)self minuteHandView];
-  v6 = [v4 hands];
-  [v5 setColor:v6];
+  paletteCopy = palette;
+  minuteHandView = [(NTKExplorerHandsView *)self minuteHandView];
+  hands = [paletteCopy hands];
+  [minuteHandView setColor:hands];
 
-  v7 = [(NTKExplorerHandsView *)self hourHandView];
-  v8 = [v4 hands];
-  [v7 setColor:v8];
+  hourHandView = [(NTKExplorerHandsView *)self hourHandView];
+  hands2 = [paletteCopy hands];
+  [hourHandView setColor:hands2];
 
-  v9 = [(NTKExplorerHandsView *)self hourHandView];
-  v10 = [v4 handsInlay];
-  [v9 setInlayColor:v10];
+  hourHandView2 = [(NTKExplorerHandsView *)self hourHandView];
+  handsInlay = [paletteCopy handsInlay];
+  [hourHandView2 setInlayColor:handsInlay];
 
-  v11 = [(NTKExplorerHandsView *)self minuteHandView];
-  v12 = [v4 handsInlay];
-  [v11 setInlayColor:v12];
+  minuteHandView2 = [(NTKExplorerHandsView *)self minuteHandView];
+  handsInlay2 = [paletteCopy handsInlay];
+  [minuteHandView2 setInlayColor:handsInlay2];
 
-  v13 = [(NTKExplorerHandsView *)self secondHandView];
-  v14 = [v4 secondHand];
-  [v13 setColor:v14];
+  secondHandView = [(NTKExplorerHandsView *)self secondHandView];
+  secondHand = [paletteCopy secondHand];
+  [secondHandView setColor:secondHand];
 
-  v15 = [v4 secondHandInlay];
+  secondHandInlay = [paletteCopy secondHandInlay];
 
-  [(NTKExplorerHandsView *)self setSecondHandDotColor:v15];
+  [(NTKExplorerHandsView *)self setSecondHandDotColor:secondHandInlay];
 }
 
 - (void)layoutSubviews
@@ -107,8 +107,8 @@
   v4.receiver = self;
   v4.super_class = NTKExplorerHandsView;
   [(NTKExplorerHandsView *)&v4 layoutSubviews];
-  v3 = [(NTKExplorerHandsView *)self secondHandView];
-  [v3 setCenter:{self->_secondHandCenter.x, self->_secondHandCenter.y}];
+  secondHandView = [(NTKExplorerHandsView *)self secondHandView];
+  [secondHandView setCenter:{self->_secondHandCenter.x, self->_secondHandCenter.y}];
 }
 
 - (CGPoint)secondHandCenter

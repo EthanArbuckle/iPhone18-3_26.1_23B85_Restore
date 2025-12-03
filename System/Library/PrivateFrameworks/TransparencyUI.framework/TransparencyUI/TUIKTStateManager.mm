@@ -9,10 +9,10 @@
 - (unint64_t)optIn;
 - (unint64_t)recentFailedEventIdsCount;
 - (void)init;
-- (void)isManateeAvailableWithCompletion:(id)a3;
-- (void)setExpectedResolutionDays:(id)a3;
+- (void)isManateeAvailableWithCompletion:(id)completion;
+- (void)setExpectedResolutionDays:(id)days;
 - (void)stateLabel;
-- (void)updateStateWithKTStatusResult:(id)a3;
+- (void)updateStateWithKTStatusResult:(id)result;
 @end
 
 @implementation TUIKTStateManager
@@ -49,62 +49,62 @@ uint64_t __25__TUIKTStateManager_init__block_invoke()
 
 - (int64_t)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
+  objc_sync_exit(selfCopy);
 
   return state;
 }
 
 - (unint64_t)optIn
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(KTStatusResult *)v2->_ktStatusResult optIn];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  optIn = [(KTStatusResult *)selfCopy->_ktStatusResult optIn];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return optIn;
 }
 
 - (unint64_t)recentFailedEventIdsCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(KTStatusResult *)v2->_ktStatusResult recentFailedEventIds];
-  v4 = [v3 count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  recentFailedEventIds = [(KTStatusResult *)selfCopy->_ktStatusResult recentFailedEventIds];
+  v4 = [recentFailedEventIds count];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (NSUUID)firstRecentFailedEventId
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(KTStatusResult *)v2->_ktStatusResult recentFailedEventIds];
-  if ([v3 count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  recentFailedEventIds = [(KTStatusResult *)selfCopy->_ktStatusResult recentFailedEventIds];
+  if ([recentFailedEventIds count])
   {
-    v4 = [(KTStatusResult *)v2->_ktStatusResult recentFailedEventIds];
-    v5 = [v4 firstObject];
+    recentFailedEventIds2 = [(KTStatusResult *)selfCopy->_ktStatusResult recentFailedEventIds];
+    firstObject = [recentFailedEventIds2 firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return firstObject;
 }
 
-- (void)updateStateWithKTStatusResult:(id)a3
+- (void)updateStateWithKTStatusResult:(id)result
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_12 != -1)
   {
     [TUIKTStateManager updateStateWithKTStatusResult:];
@@ -113,55 +113,55 @@ uint64_t __25__TUIKTStateManager_init__block_invoke()
   v7 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_12;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(TUIKTStateManager *)v6 stateDescription];
+    stateDescription = [(TUIKTStateManager *)selfCopy stateDescription];
     v18 = 136315906;
     v19 = "[TUIKTStateManager updateStateWithKTStatusResult:]";
     v20 = 2114;
-    v21 = v8;
+    v21 = stateDescription;
     v22 = 2114;
-    v23 = v5;
+    v23 = resultCopy;
     v24 = 2114;
-    v25 = v6;
+    v25 = selfCopy;
     _os_log_impl(&dword_26F50B000, v7, OS_LOG_TYPE_DEFAULT, "%s current %{public}@, %{public}@ on %{public}@", &v18, 0x2Au);
   }
 
-  objc_storeStrong(&v6->_ktStatusResult, a3);
-  if ([(TUIKTStateManager *)v5 accountStatus]== 5)
+  objc_storeStrong(&selfCopy->_ktStatusResult, result);
+  if ([(TUIKTStateManager *)resultCopy accountStatus]== 5)
   {
     v9 = 10;
     goto LABEL_38;
   }
 
-  if ([(TUIKTStateManager *)v5 optIn]== 1)
+  if ([(TUIKTStateManager *)resultCopy optIn]== 1)
   {
-    if ([(TUIKTStateManager *)v5 accountStatus]== 2)
+    if ([(TUIKTStateManager *)resultCopy accountStatus]== 2)
     {
 LABEL_9:
       v9 = 5;
       goto LABEL_38;
     }
 
-    if (_os_feature_enabled_impl() && ![(TUIKTStateManager *)v5 idsAccountStatus]|| (_os_feature_enabled_impl() & 1) == 0 && [(TUIKTStateManager *)v5 idsAccountStatus]!= 3)
+    if (_os_feature_enabled_impl() && ![(TUIKTStateManager *)resultCopy idsAccountStatus]|| (_os_feature_enabled_impl() & 1) == 0 && [(TUIKTStateManager *)resultCopy idsAccountStatus]!= 3)
     {
       v9 = 3;
       goto LABEL_38;
     }
 
-    if ([(TUIKTStateManager *)v5 accountStatus]== 3)
+    if ([(TUIKTStateManager *)resultCopy accountStatus]== 3)
     {
       v9 = 6;
       goto LABEL_38;
     }
 
-    if ([(TUIKTStateManager *)v5 accountStatus]== 4 && [(TUIKTStateManager *)v5 selfStatus]== 1)
+    if ([(TUIKTStateManager *)resultCopy accountStatus]== 4 && [(TUIKTStateManager *)resultCopy selfStatus]== 1)
     {
       v9 = 4;
       goto LABEL_38;
     }
 
-    if ([(TUIKTStateManager *)v5 accountStatus]== 4 && ([(TUIKTStateManager *)v5 selfStatus]== 3 || [(TUIKTStateManager *)v5 selfStatus]== 4))
+    if ([(TUIKTStateManager *)resultCopy accountStatus]== 4 && ([(TUIKTStateManager *)resultCopy selfStatus]== 3 || [(TUIKTStateManager *)resultCopy selfStatus]== 4))
     {
-      v10 = [(TUIKTStateManager *)v5 systemStatus]== 3;
+      v10 = [(TUIKTStateManager *)resultCopy systemStatus]== 3;
       v9 = 7;
       v11 = 9;
 LABEL_36:
@@ -173,11 +173,11 @@ LABEL_36:
       goto LABEL_38;
     }
 
-    if ([(TUIKTStateManager *)v5 accountStatus]== 4 && ([(TUIKTStateManager *)v5 selfStatus]== 2 || [(TUIKTStateManager *)v5 systemStatus]== 2 || [(TUIKTStateManager *)v5 systemStatus]== 4))
+    if ([(TUIKTStateManager *)resultCopy accountStatus]== 4 && ([(TUIKTStateManager *)resultCopy selfStatus]== 2 || [(TUIKTStateManager *)resultCopy systemStatus]== 2 || [(TUIKTStateManager *)resultCopy systemStatus]== 4))
     {
-      v16 = [(TUIKTStateManager *)v5 systemStatus];
+      systemStatus = [(TUIKTStateManager *)resultCopy systemStatus];
       v9 = 8;
-      if (v16 == 3)
+      if (systemStatus == 3)
       {
         v9 = 9;
       }
@@ -185,9 +185,9 @@ LABEL_36:
 
     else
     {
-      v17 = [(TUIKTStateManager *)v5 systemStatus];
+      systemStatus2 = [(TUIKTStateManager *)resultCopy systemStatus];
       v9 = 12;
-      if (v17 != 5)
+      if (systemStatus2 != 5)
       {
         v9 = 1;
       }
@@ -196,29 +196,29 @@ LABEL_36:
 
   else
   {
-    if ([(TUIKTStateManager *)v5 optIn]== 2)
+    if ([(TUIKTStateManager *)resultCopy optIn]== 2)
     {
-      if ([(TUIKTStateManager *)v5 serverOptIn]== 1)
+      if ([(TUIKTStateManager *)resultCopy serverOptIn]== 1)
       {
-        if ([(TUIKTStateManager *)v5 accountStatus]== 2)
+        if ([(TUIKTStateManager *)resultCopy accountStatus]== 2)
         {
           goto LABEL_9;
         }
 
-        v10 = [(TUIKTStateManager *)v5 accountStatus]== 3;
+        v10 = [(TUIKTStateManager *)resultCopy accountStatus]== 3;
         v9 = 2;
         v11 = 6;
       }
 
       else
       {
-        if ([(TUIKTStateManager *)v5 accountStatus]== 3)
+        if ([(TUIKTStateManager *)resultCopy accountStatus]== 3)
         {
           v9 = 11;
           goto LABEL_38;
         }
 
-        v10 = [(TUIKTStateManager *)v5 accountStatus]== 2;
+        v10 = [(TUIKTStateManager *)resultCopy accountStatus]== 2;
         v9 = 2;
         v11 = 10;
       }
@@ -226,16 +226,16 @@ LABEL_36:
       goto LABEL_36;
     }
 
-    if ([(TUIKTStateManager *)v5 optIn])
+    if ([(TUIKTStateManager *)resultCopy optIn])
     {
       v9 = -1;
     }
 
     else
     {
-      v12 = [(TUIKTStateManager *)v5 systemStatus];
+      systemStatus3 = [(TUIKTStateManager *)resultCopy systemStatus];
       v9 = 12;
-      if (v12 != 5)
+      if (systemStatus3 != 5)
       {
         v9 = 0;
       }
@@ -243,7 +243,7 @@ LABEL_36:
   }
 
 LABEL_38:
-  v6->_state = v9;
+  selfCopy->_state = v9;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_12 != -1)
   {
     [TUIKTStateManager updateStateWithKTStatusResult:];
@@ -252,17 +252,17 @@ LABEL_38:
   v13 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_12;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(TUIKTStateManager *)v6 stateDescription];
+    stateDescription2 = [(TUIKTStateManager *)selfCopy stateDescription];
     v18 = 136315650;
     v19 = "[TUIKTStateManager updateStateWithKTStatusResult:]";
     v20 = 2114;
-    v21 = v14;
+    v21 = stateDescription2;
     v22 = 2114;
-    v23 = v6;
+    v23 = selfCopy;
     _os_log_impl(&dword_26F50B000, v13, OS_LOG_TYPE_DEFAULT, "%s new %{public}@ on %{public}@", &v18, 0x20u);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x277D85DE8];
 }
 
@@ -280,9 +280,9 @@ uint64_t __51__TUIKTStateManager_updateStateWithKTStatusResult___block_invoke_23
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)isManateeAvailableWithCompletion:(id)a3
+- (void)isManateeAvailableWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_12 != -1)
   {
     [TUIKTStateManager isManateeAvailableWithCompletion:];
@@ -300,8 +300,8 @@ uint64_t __51__TUIKTStateManager_updateStateWithKTStatusResult___block_invoke_23
   block[2] = __54__TUIKTStateManager_isManateeAvailableWithCompletion___block_invoke_28;
   block[3] = &unk_279DDAF50;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -376,22 +376,22 @@ uint64_t __54__TUIKTStateManager_isManateeAvailableWithCompletion___block_invoke
 
 - (BOOL)isErrorState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (v2->_state - 3) < 0xA;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (selfCopy->_state - 3) < 0xA;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isCDPErrorState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
   v4 = state < 0xC;
   v5 = 0xC60u >> state;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4 & v5;
 }
@@ -399,9 +399,9 @@ uint64_t __54__TUIKTStateManager_isManateeAvailableWithCompletion___block_invoke
 - (id)stateLabel
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
   if (state <= 0xC)
   {
     if (((1 << state) & 0x1708) != 0)
@@ -429,8 +429,8 @@ LABEL_8:
     }
   }
 
-  v9 = [(KTStatusResult *)v2->_ktStatusResult recentFailedEventIds];
-  v10 = [v9 count];
+  recentFailedEventIds = [(KTStatusResult *)selfCopy->_ktStatusResult recentFailedEventIds];
+  v10 = [recentFailedEventIds count];
 
   if (v10)
   {
@@ -442,8 +442,8 @@ LABEL_8:
     v11 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_12;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(KTStatusResult *)v2->_ktStatusResult recentFailedEventIds];
-      [(TUIKTStateManager *)v12 stateLabel:v2];
+      recentFailedEventIds2 = [(KTStatusResult *)selfCopy->_ktStatusResult recentFailedEventIds];
+      [(TUIKTStateManager *)recentFailedEventIds2 stateLabel:selfCopy];
     }
 
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -456,7 +456,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v7 = *MEMORY[0x277D85DE8];
 
@@ -470,23 +470,23 @@ uint64_t __31__TUIKTStateManager_stateLabel__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setExpectedResolutionDays:(id)a3
+- (void)setExpectedResolutionDays:(id)days
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  daysCopy = days;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (daysCopy)
   {
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v7 = [MEMORY[0x277CBEAA8] now];
-    v8 = [v6 components:16 fromDate:v7 toDate:v4 options:0];
+    v8 = [currentCalendar components:16 fromDate:v7 toDate:daysCopy options:0];
 
-    v5->_expectedResolutionDays = [v8 day] + 1;
+    selfCopy->_expectedResolutionDays = [v8 day] + 1;
   }
 
   else
   {
-    v5->_expectedResolutionDays = 0;
+    selfCopy->_expectedResolutionDays = 0;
   }
 
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_12 != -1)
@@ -497,10 +497,10 @@ uint64_t __31__TUIKTStateManager_stateLabel__block_invoke()
   v9 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_12;
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_12, OS_LOG_TYPE_DEBUG))
   {
-    [(TUIKTStateManager *)v5 setExpectedResolutionDays:v9];
+    [(TUIKTStateManager *)selfCopy setExpectedResolutionDays:v9];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __47__TUIKTStateManager_setExpectedResolutionDays___block_invoke()
@@ -512,12 +512,12 @@ uint64_t __47__TUIKTStateManager_setExpectedResolutionDays___block_invoke()
 
 - (id)stateDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_state + 1;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_state + 1;
   if (v3 >= 0xD)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"unexpected UI state (%ld)", v2->_state];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"unexpected UI state (%ld)", selfCopy->_state];
   }
 
   else
@@ -527,7 +527,7 @@ uint64_t __47__TUIKTStateManager_setExpectedResolutionDays___block_invoke()
 
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"UI state = %@", v4];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -566,7 +566,7 @@ void __54__TUIKTStateManager_isManateeAvailableWithCompletion___block_invoke_28_
   *buf = 136315650;
   *(buf + 4) = "[TUIKTStateManager stateLabel]";
   *(buf + 6) = 2114;
-  *(buf + 14) = a1;
+  *(buf + 14) = self;
   *(buf + 11) = 2114;
   *(buf + 3) = a2;
   _os_log_debug_impl(&dword_26F50B000, log, OS_LOG_TYPE_DEBUG, "%s recentFailedEventIds: %{public}@ on %{public}@", buf, 0x20u);

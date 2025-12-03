@@ -1,68 +1,68 @@
 @interface CloudTabGroupRecordZoneMetadata
-+ (id)_syncKeyForRecordZoneID:(id)a3;
-+ (id)_syncKeyPrefixForRecordZoneName:(id)a3;
-+ (id)allRecordZoneMetadataInCollection:(id)a3;
-+ (id)recordZoneMetadataWithRecordZoneID:(id)a3 inCollection:(id)a4;
-+ (id)recordZoneMetadataWithRecordZoneName:(id)a3 inCollection:(id)a4;
++ (id)_syncKeyForRecordZoneID:(id)d;
++ (id)_syncKeyPrefixForRecordZoneName:(id)name;
++ (id)allRecordZoneMetadataInCollection:(id)collection;
++ (id)recordZoneMetadataWithRecordZoneID:(id)d inCollection:(id)collection;
++ (id)recordZoneMetadataWithRecordZoneName:(id)name inCollection:(id)collection;
 + (void)initialize;
-+ (void)removeMetadataForRecordZoneIDs:(id)a3 inCollection:(id)a4;
-- (BOOL)isMinimumAPIVersionUnsupportedGetVersionKinds:(unint64_t *)a3;
++ (void)removeMetadataForRecordZoneIDs:(id)ds inCollection:(id)collection;
+- (BOOL)isMinimumAPIVersionUnsupportedGetVersionKinds:(unint64_t *)kinds;
 - (BOOL)isPlaceholder;
-- (BOOL)resetMinimumAPIVersionOfKinds:(unint64_t)a3;
-- (BOOL)resetMinimumAPIVersionOfKinds:(unint64_t)a3 inCollection:(id)a4;
-- (BOOL)setRecordZoneID:(id)a3 inCollection:(id)a4;
-- (BOOL)setUnsupportMinimumAPIVersion:(int64_t)a3 ofKinds:(unint64_t)a4;
-- (BOOL)setUnsupportMinimumAPIVersion:(int64_t)a3 ofKinds:(unint64_t)a4 inCollection:(id)a5;
-- (BOOL)writeToCollectionIfNeeded:(id)a3;
-- (CloudTabGroupRecordZoneMetadata)initWithCoder:(id)a3;
-- (CloudTabGroupRecordZoneMetadata)initWithRecordZoneID:(id)a3;
-- (CloudTabGroupRecordZoneMetadata)initWithRecordZoneName:(id)a3;
+- (BOOL)resetMinimumAPIVersionOfKinds:(unint64_t)kinds;
+- (BOOL)resetMinimumAPIVersionOfKinds:(unint64_t)kinds inCollection:(id)collection;
+- (BOOL)setRecordZoneID:(id)d inCollection:(id)collection;
+- (BOOL)setUnsupportMinimumAPIVersion:(int64_t)version ofKinds:(unint64_t)kinds;
+- (BOOL)setUnsupportMinimumAPIVersion:(int64_t)version ofKinds:(unint64_t)kinds inCollection:(id)collection;
+- (BOOL)writeToCollectionIfNeeded:(id)needed;
+- (CloudTabGroupRecordZoneMetadata)initWithCoder:(id)coder;
+- (CloudTabGroupRecordZoneMetadata)initWithRecordZoneID:(id)d;
+- (CloudTabGroupRecordZoneMetadata)initWithRecordZoneName:(id)name;
 - (id)_syncKey;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CloudTabGroupRecordZoneMetadata
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100153E60 = 4;
   }
 }
 
-+ (id)_syncKeyForRecordZoneID:(id)a3
++ (id)_syncKeyForRecordZoneID:(id)d
 {
   v9[0] = @"com.apple.CloudTabGroupSync:";
-  v3 = a3;
-  v4 = [v3 zoneName];
-  v9[1] = v4;
+  dCopy = d;
+  zoneName = [dCopy zoneName];
+  v9[1] = zoneName;
   v9[2] = @" | ";
-  v5 = [v3 ownerName];
+  ownerName = [dCopy ownerName];
 
-  v9[3] = v5;
+  v9[3] = ownerName;
   v6 = [NSArray arrayWithObjects:v9 count:4];
   v7 = [v6 componentsJoinedByString:&stru_100137BA8];
 
   return v7;
 }
 
-+ (id)_syncKeyPrefixForRecordZoneName:(id)a3
++ (id)_syncKeyPrefixForRecordZoneName:(id)name
 {
   v7 = @"com.apple.CloudTabGroupSync:";
-  v8 = a3;
+  nameCopy = name;
   v9 = @" | ";
-  v3 = a3;
+  nameCopy2 = name;
   v4 = [NSArray arrayWithObjects:&v7 count:3];
 
-  v5 = [v4 componentsJoinedByString:{&stru_100137BA8, v7, v8, v9}];
+  v5 = [v4 componentsJoinedByString:{&stru_100137BA8, v7, nameCopy, v9}];
 
   return v5;
 }
 
-+ (id)allRecordZoneMetadataInCollection:(id)a3
++ (id)allRecordZoneMetadataInCollection:(id)collection
 {
-  v3 = [a3 allSyncDataForKeysWithPrefix:@"com.apple.CloudTabGroupSync:"];
+  v3 = [collection allSyncDataForKeysWithPrefix:@"com.apple.CloudTabGroupSync:"];
   +[NSMutableSet set];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -74,15 +74,15 @@
   return v4;
 }
 
-+ (void)removeMetadataForRecordZoneIDs:(id)a3 inCollection:(id)a4
++ (void)removeMetadataForRecordZoneIDs:(id)ds inCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  collectionCopy = collection;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [dsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -94,29 +94,29 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dsCopy);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) zoneName];
-        v13 = [a1 _syncKeyPrefixForRecordZoneName:v12];
-        [v7 removeAllSyncDataForKeyWithPrefix:v13];
+        zoneName = [*(*(&v14 + 1) + 8 * v11) zoneName];
+        v13 = [self _syncKeyPrefixForRecordZoneName:zoneName];
+        [collectionCopy removeAllSyncDataForKeyWithPrefix:v13];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [dsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-+ (id)recordZoneMetadataWithRecordZoneID:(id)a3 inCollection:(id)a4
++ (id)recordZoneMetadataWithRecordZoneID:(id)d inCollection:(id)collection
 {
-  v6 = a4;
-  v7 = [a1 _syncKeyForRecordZoneID:a3];
-  v8 = [v6 syncDataForKey:v7];
+  collectionCopy = collection;
+  v7 = [self _syncKeyForRecordZoneID:d];
+  v8 = [collectionCopy syncDataForKey:v7];
 
   v9 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:0];
   v10 = v9;
@@ -128,12 +128,12 @@
   return v10;
 }
 
-+ (id)recordZoneMetadataWithRecordZoneName:(id)a3 inCollection:(id)a4
++ (id)recordZoneMetadataWithRecordZoneName:(id)name inCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _syncKeyPrefixForRecordZoneName:v6];
-  v9 = [v7 allSyncDataForKeysWithPrefix:v8];
+  nameCopy = name;
+  collectionCopy = collection;
+  v8 = [self _syncKeyPrefixForRecordZoneName:nameCopy];
+  v9 = [collectionCopy allSyncDataForKeysWithPrefix:v8];
 
   if ([v9 count])
   {
@@ -161,15 +161,15 @@
   return v10;
 }
 
-- (CloudTabGroupRecordZoneMetadata)initWithRecordZoneID:(id)a3
+- (CloudTabGroupRecordZoneMetadata)initWithRecordZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = CloudTabGroupRecordZoneMetadata;
   v5 = [(CloudTabGroupRecordZoneMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     recordZoneID = v5->_recordZoneID;
     v5->_recordZoneID = v6;
 
@@ -184,30 +184,30 @@
   return v5;
 }
 
-- (CloudTabGroupRecordZoneMetadata)initWithRecordZoneName:(id)a3
+- (CloudTabGroupRecordZoneMetadata)initWithRecordZoneName:(id)name
 {
-  v4 = a3;
-  v5 = [[CKRecordZoneID alloc] initWithZoneName:v4 ownerName:@"<SafariUnknownCKRecordZoneOwner>"];
+  nameCopy = name;
+  v5 = [[CKRecordZoneID alloc] initWithZoneName:nameCopy ownerName:@"<SafariUnknownCKRecordZoneOwner>"];
 
   v6 = [(CloudTabGroupRecordZoneMetadata *)self initWithRecordZoneID:v5];
   return v6;
 }
 
-- (CloudTabGroupRecordZoneMetadata)initWithCoder:(id)a3
+- (CloudTabGroupRecordZoneMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CloudTabGroupRecordZoneMetadata;
   v5 = [(CloudTabGroupRecordZoneMetadata *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RecordZoneID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RecordZoneID"];
     recordZoneID = v5->_recordZoneID;
     v5->_recordZoneID = v6;
 
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"KindsToMinimumAPIVersions"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"KindsToMinimumAPIVersions"];
     v11 = v10;
     if (v10)
     {
@@ -228,23 +228,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_recordZoneID forKey:@"RecordZoneID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_recordZoneID forKey:@"RecordZoneID"];
   if ([(NSMutableDictionary *)self->_kindsToMinimumAPIVersions count])
   {
-    [v4 encodeObject:self->_kindsToMinimumAPIVersions forKey:@"KindsToMinimumAPIVersions"];
+    [coderCopy encodeObject:self->_kindsToMinimumAPIVersions forKey:@"KindsToMinimumAPIVersions"];
   }
 }
 
-- (BOOL)writeToCollectionIfNeeded:(id)a3
+- (BOOL)writeToCollectionIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(CloudTabGroupRecordZoneMetadata *)self _isEmpty])
   {
-    v5 = [(CloudTabGroupRecordZoneMetadata *)self _syncKey];
-    v6 = [v4 setSyncData:0 forKey:v5];
+    _syncKey = [(CloudTabGroupRecordZoneMetadata *)self _syncKey];
+    v6 = [neededCopy setSyncData:0 forKey:_syncKey];
 
     if (!v6)
     {
@@ -264,8 +264,8 @@ LABEL_8:
   }
 
   v7 = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  v8 = [(CloudTabGroupRecordZoneMetadata *)self _syncKey];
-  v9 = [v4 setSyncData:v7 forKey:v8];
+  _syncKey2 = [(CloudTabGroupRecordZoneMetadata *)self _syncKey];
+  v9 = [neededCopy setSyncData:v7 forKey:_syncKey2];
 
   if (v9)
   {
@@ -286,34 +286,34 @@ LABEL_10:
 
 - (BOOL)isPlaceholder
 {
-  v2 = [(CKRecordZoneID *)self->_recordZoneID ownerName];
-  v3 = [v2 isEqualToString:@"<SafariUnknownCKRecordZoneOwner>"];
+  ownerName = [(CKRecordZoneID *)self->_recordZoneID ownerName];
+  v3 = [ownerName isEqualToString:@"<SafariUnknownCKRecordZoneOwner>"];
 
   return v3;
 }
 
-- (BOOL)setRecordZoneID:(id)a3 inCollection:(id)a4
+- (BOOL)setRecordZoneID:(id)d inCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:self->_recordZoneID])
+  dCopy = d;
+  collectionCopy = collection;
+  if ([dCopy isEqual:self->_recordZoneID])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(CloudTabGroupRecordZoneMetadata *)self _syncKey];
-    v10 = [v7 setSyncData:0 forKey:v9];
+    _syncKey = [(CloudTabGroupRecordZoneMetadata *)self _syncKey];
+    v10 = [collectionCopy setSyncData:0 forKey:_syncKey];
 
     if (v10)
     {
-      v11 = [v6 copy];
+      v11 = [dCopy copy];
       recordZoneID = self->_recordZoneID;
       self->_recordZoneID = v11;
 
       self->_hasUpdates = 1;
-      v8 = [(CloudTabGroupRecordZoneMetadata *)self writeToCollectionIfNeeded:v7];
+      v8 = [(CloudTabGroupRecordZoneMetadata *)self writeToCollectionIfNeeded:collectionCopy];
     }
 
     else
@@ -325,7 +325,7 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)isMinimumAPIVersionUnsupportedGetVersionKinds:(unint64_t *)a3
+- (BOOL)isMinimumAPIVersionUnsupportedGetVersionKinds:(unint64_t *)kinds
 {
   v12 = 0;
   v13 = &v12;
@@ -344,9 +344,9 @@ LABEL_10:
   v7[5] = &v8;
   v7[6] = &v12;
   [(NSMutableDictionary *)kindsToMinimumAPIVersions enumerateKeysAndObjectsUsingBlock:v7];
-  if (a3)
+  if (kinds)
   {
-    *a3 = v13[3];
+    *kinds = v13[3];
   }
 
   v5 = *(v9 + 24);
@@ -355,22 +355,22 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)setUnsupportMinimumAPIVersion:(int64_t)a3 ofKinds:(unint64_t)a4
+- (BOOL)setUnsupportMinimumAPIVersion:(int64_t)version ofKinds:(unint64_t)kinds
 {
-  if ([objc_opt_class() currentAPIVersion] >= a3)
+  if ([objc_opt_class() currentAPIVersion] >= version)
   {
 
-    return [(CloudTabGroupRecordZoneMetadata *)self resetMinimumAPIVersionOfKinds:a4];
+    return [(CloudTabGroupRecordZoneMetadata *)self resetMinimumAPIVersionOfKinds:kinds];
   }
 
   else
   {
     v7 = [(CloudTabGroupRecordZoneMetadata *)self isMinimumAPIVersionUnsupportedGetVersionKinds:0];
-    v8 = [NSNumber numberWithInteger:a3];
+    v8 = [NSNumber numberWithInteger:version];
     v9 = 1;
     do
     {
-      if ((v9 & a4) != 0)
+      if ((v9 & kinds) != 0)
       {
         kindsToMinimumAPIVersions = self->_kindsToMinimumAPIVersions;
         v11 = [NSNumber numberWithUnsignedInteger:v9];
@@ -397,24 +397,24 @@ LABEL_10:
   }
 }
 
-- (BOOL)setUnsupportMinimumAPIVersion:(int64_t)a3 ofKinds:(unint64_t)a4 inCollection:(id)a5
+- (BOOL)setUnsupportMinimumAPIVersion:(int64_t)version ofKinds:(unint64_t)kinds inCollection:(id)collection
 {
-  v8 = a5;
-  LOBYTE(a4) = [(CloudTabGroupRecordZoneMetadata *)self setUnsupportMinimumAPIVersion:a3 ofKinds:a4];
-  [(CloudTabGroupRecordZoneMetadata *)self writeToCollectionIfNeeded:v8];
+  collectionCopy = collection;
+  LOBYTE(kinds) = [(CloudTabGroupRecordZoneMetadata *)self setUnsupportMinimumAPIVersion:version ofKinds:kinds];
+  [(CloudTabGroupRecordZoneMetadata *)self writeToCollectionIfNeeded:collectionCopy];
 
-  return a4;
+  return kinds;
 }
 
-- (BOOL)resetMinimumAPIVersionOfKinds:(unint64_t)a3
+- (BOOL)resetMinimumAPIVersionOfKinds:(unint64_t)kinds
 {
   v5 = [(CloudTabGroupRecordZoneMetadata *)self isMinimumAPIVersionUnsupportedGetVersionKinds:0];
-  if (a3 != 7)
+  if (kinds != 7)
   {
     v9 = 1;
     do
     {
-      if ((v9 & a3) != 0)
+      if ((v9 & kinds) != 0)
       {
         kindsToMinimumAPIVersions = self->_kindsToMinimumAPIVersions;
         v11 = [NSNumber numberWithUnsignedInteger:v9];
@@ -452,13 +452,13 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)resetMinimumAPIVersionOfKinds:(unint64_t)a3 inCollection:(id)a4
+- (BOOL)resetMinimumAPIVersionOfKinds:(unint64_t)kinds inCollection:(id)collection
 {
-  v6 = a4;
-  LOBYTE(a3) = [(CloudTabGroupRecordZoneMetadata *)self resetMinimumAPIVersionOfKinds:a3];
-  [(CloudTabGroupRecordZoneMetadata *)self writeToCollectionIfNeeded:v6];
+  collectionCopy = collection;
+  LOBYTE(kinds) = [(CloudTabGroupRecordZoneMetadata *)self resetMinimumAPIVersionOfKinds:kinds];
+  [(CloudTabGroupRecordZoneMetadata *)self writeToCollectionIfNeeded:collectionCopy];
 
-  return a3;
+  return kinds;
 }
 
 @end

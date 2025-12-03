@@ -1,11 +1,11 @@
 @interface SRUIFWatchAuthenticationManager
 - (SRUIFWatchAuthenticationManager)init;
-- (SRUIFWatchAuthenticationManager)initWithQueue:(id)a3 manager:(id)a4;
-- (void)_requestWatchAuthentication:(id)a3;
-- (void)manager:(id)a3 didCompleteAuthenticationForSessionWithID:(id)a4;
-- (void)manager:(id)a3 didFailAuthenticationForSessionWithID:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didStartAuthenticationForSessionWithID:(id)a4;
-- (void)requestWatchAuthentication:(id)a3;
+- (SRUIFWatchAuthenticationManager)initWithQueue:(id)queue manager:(id)manager;
+- (void)_requestWatchAuthentication:(id)authentication;
+- (void)manager:(id)manager didCompleteAuthenticationForSessionWithID:(id)d;
+- (void)manager:(id)manager didFailAuthenticationForSessionWithID:(id)d error:(id)error;
+- (void)manager:(id)manager didStartAuthenticationForSessionWithID:(id)d;
+- (void)requestWatchAuthentication:(id)authentication;
 @end
 
 @implementation SRUIFWatchAuthenticationManager
@@ -26,36 +26,36 @@
     authenticationManager = v2->_authenticationManager;
     v2->_authenticationManager = v6;
 
-    v8 = [(SRUIFWatchAuthenticationManager *)v2 authenticationManager];
-    [v8 setDelegate:v2];
+    authenticationManager = [(SRUIFWatchAuthenticationManager *)v2 authenticationManager];
+    [authenticationManager setDelegate:v2];
   }
 
   return v2;
 }
 
-- (SRUIFWatchAuthenticationManager)initWithQueue:(id)a3 manager:(id)a4
+- (SRUIFWatchAuthenticationManager)initWithQueue:(id)queue manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = SRUIFWatchAuthenticationManager;
   v9 = [(SRUIFWatchAuthenticationManager *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_watchAuthenticationQueue, a3);
-    objc_storeStrong(&v10->_authenticationManager, a4);
-    v11 = [(SRUIFWatchAuthenticationManager *)v10 authenticationManager];
-    [v11 setDelegate:v10];
+    objc_storeStrong(&v9->_watchAuthenticationQueue, queue);
+    objc_storeStrong(&v10->_authenticationManager, manager);
+    authenticationManager = [(SRUIFWatchAuthenticationManager *)v10 authenticationManager];
+    [authenticationManager setDelegate:v10];
   }
 
   return v10;
 }
 
-- (void)requestWatchAuthentication:(id)a3
+- (void)requestWatchAuthentication:(id)authentication
 {
-  v4 = a3;
-  if (v4)
+  authenticationCopy = authentication;
+  if (authenticationCopy)
   {
     objc_initWeak(&location, self);
     watchAuthenticationQueue = self->_watchAuthenticationQueue;
@@ -64,7 +64,7 @@
     block[2] = __62__SRUIFWatchAuthenticationManager_requestWatchAuthentication___block_invoke;
     block[3] = &unk_279C61990;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = authenticationCopy;
     dispatch_async(watchAuthenticationQueue, block);
 
     objc_destroyWeak(&v9);
@@ -87,47 +87,47 @@ void __62__SRUIFWatchAuthenticationManager_requestWatchAuthentication___block_in
   [WeakRetained _requestWatchAuthentication:*(a1 + 32)];
 }
 
-- (void)_requestWatchAuthentication:(id)a3
+- (void)_requestWatchAuthentication:(id)authentication
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
-  if (v5)
+  authenticationCopy = authentication;
+  currentSessionID = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
+  if (currentSessionID)
   {
-    v6 = [(SRUIFWatchAuthenticationManager *)self authenticationWatchdogTimer];
-    v7 = [v6 cancelIfNotAlreadyCanceled];
+    authenticationWatchdogTimer = [(SRUIFWatchAuthenticationManager *)self authenticationWatchdogTimer];
+    cancelIfNotAlreadyCanceled = [authenticationWatchdogTimer cancelIfNotAlreadyCanceled];
 
-    if (v7)
+    if (cancelIfNotAlreadyCanceled)
     {
       v8 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v9 = v8;
-        v10 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
+        currentSessionID2 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
         *buf = 136315394;
         v39 = "[SRUIFWatchAuthenticationManager _requestWatchAuthentication:]";
         v40 = 2112;
-        v41 = v10;
+        v41 = currentSessionID2;
         _os_log_impl(&dword_26951F000, v9, OS_LOG_TYPE_DEFAULT, "%s Watch authentication request already in progress. Cancelling session: %@", buf, 0x16u);
       }
 
-      v11 = [(SRUIFWatchAuthenticationManager *)self authenticationManager];
-      v12 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
-      [v11 cancelAuthenticationSessionWithID:v12];
+      authenticationManager = [(SRUIFWatchAuthenticationManager *)self authenticationManager];
+      currentSessionID3 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
+      [authenticationManager cancelAuthenticationSessionWithID:currentSessionID3];
     }
   }
 
-  [(SRUIFWatchAuthenticationManager *)self setAuthenticationCompletion:v4];
-  v13 = [(SRUIFWatchAuthenticationManager *)self authenticationManager];
-  v14 = [v13 isSupportedForType:1];
+  [(SRUIFWatchAuthenticationManager *)self setAuthenticationCompletion:authenticationCopy];
+  authenticationManager2 = [(SRUIFWatchAuthenticationManager *)self authenticationManager];
+  v14 = [authenticationManager2 isSupportedForType:1];
 
-  v15 = [(SRUIFWatchAuthenticationManager *)self authenticationManager];
-  v16 = [v15 isEnabledForType:1];
+  authenticationManager3 = [(SRUIFWatchAuthenticationManager *)self authenticationManager];
+  v16 = [authenticationManager3 isEnabledForType:1];
 
   if ((v14 & v16) == 1)
   {
-    v17 = [(SRUIFWatchAuthenticationManager *)self authenticationManager];
-    v18 = [v17 authenticateForType:1];
+    authenticationManager4 = [(SRUIFWatchAuthenticationManager *)self authenticationManager];
+    v18 = [authenticationManager4 authenticateForType:1];
 
     objc_initWeak(&location, self);
     v19 = objc_alloc(MEMORY[0x277CEF530]);
@@ -144,17 +144,17 @@ void __62__SRUIFWatchAuthenticationManager_requestWatchAuthentication___block_in
     self->_authenticationWatchdogTimer = v22;
 
     [(SRUIFWatchAuthenticationManager *)self setCurrentSessionID:v21];
-    v24 = [(SRUIFWatchAuthenticationManager *)self authenticationWatchdogTimer];
-    [v24 start];
+    authenticationWatchdogTimer2 = [(SRUIFWatchAuthenticationManager *)self authenticationWatchdogTimer];
+    [authenticationWatchdogTimer2 start];
 
     v25 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
+      currentSessionID4 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
       *buf = 136315394;
       v39 = "[SRUIFWatchAuthenticationManager _requestWatchAuthentication:]";
       v40 = 2112;
-      v41 = v26;
+      v41 = currentSessionID4;
       _os_log_impl(&dword_26951F000, v25, OS_LOG_TYPE_DEFAULT, "%s Attempting watch authentication with sessionID: %@", buf, 0x16u);
     }
 
@@ -180,8 +180,8 @@ void __62__SRUIFWatchAuthenticationManager_requestWatchAuthentication___block_in
       _os_log_impl(&dword_26951F000, v29, OS_LOG_TYPE_DEFAULT, "%s Not attempting watch authentication, supported: %@, enabled: %@", buf, 0x20u);
     }
 
-    v32 = [(SRUIFWatchAuthenticationManager *)self authenticationCompletion];
-    v32[2](v32, 0);
+    authenticationCompletion = [(SRUIFWatchAuthenticationManager *)self authenticationCompletion];
+    authenticationCompletion[2](authenticationCompletion, 0);
 
     [(SRUIFWatchAuthenticationManager *)self setAuthenticationCompletion:0];
   }
@@ -224,29 +224,29 @@ void __63__SRUIFWatchAuthenticationManager__requestWatchAuthentication___block_i
   }
 }
 
-- (void)manager:(id)a3 didStartAuthenticationForSessionWithID:(id)a4
+- (void)manager:(id)manager didStartAuthenticationForSessionWithID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  dCopy = d;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SRUIFWatchAuthenticationManager manager:didStartAuthenticationForSessionWithID:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = dCopy;
     _os_log_impl(&dword_26951F000, v5, OS_LOG_TYPE_DEFAULT, "%s Starting new watch authentication request with sessionID: %@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 didCompleteAuthenticationForSessionWithID:(id)a4
+- (void)manager:(id)manager didCompleteAuthenticationForSessionWithID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
-  v7 = [v6 isEqual:v5];
+  dCopy = d;
+  currentSessionID = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
+  v7 = [currentSessionID isEqual:dCopy];
 
   v8 = *MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
@@ -257,15 +257,15 @@ void __63__SRUIFWatchAuthenticationManager__requestWatchAuthentication___block_i
       v13 = 136315394;
       v14 = "[SRUIFWatchAuthenticationManager manager:didCompleteAuthenticationForSessionWithID:]";
       v15 = 2112;
-      v16 = v5;
+      v16 = dCopy;
       _os_log_impl(&dword_26951F000, v8, OS_LOG_TYPE_DEFAULT, "%s Completed watch authentication request with sessionID: %@", &v13, 0x16u);
     }
 
-    v10 = [(SRUIFWatchAuthenticationManager *)self authenticationCompletion];
-    v10[2](v10, 1);
+    authenticationCompletion = [(SRUIFWatchAuthenticationManager *)self authenticationCompletion];
+    authenticationCompletion[2](authenticationCompletion, 1);
 
-    v11 = [(SRUIFWatchAuthenticationManager *)self authenticationWatchdogTimer];
-    [v11 cancel];
+    authenticationWatchdogTimer = [(SRUIFWatchAuthenticationManager *)self authenticationWatchdogTimer];
+    [authenticationWatchdogTimer cancel];
 
     [(SRUIFWatchAuthenticationManager *)self setAuthenticationCompletion:0];
     [(SRUIFWatchAuthenticationManager *)self setCurrentSessionID:0];
@@ -279,13 +279,13 @@ void __63__SRUIFWatchAuthenticationManager__requestWatchAuthentication___block_i
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 didFailAuthenticationForSessionWithID:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailAuthenticationForSessionWithID:(id)d error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
-  v10 = [v9 isEqual:v7];
+  dCopy = d;
+  errorCopy = error;
+  currentSessionID = [(SRUIFWatchAuthenticationManager *)self currentSessionID];
+  v10 = [currentSessionID isEqual:dCopy];
 
   v11 = *MEMORY[0x277CEF098];
   v12 = *MEMORY[0x277CEF098];
@@ -296,17 +296,17 @@ void __63__SRUIFWatchAuthenticationManager__requestWatchAuthentication___block_i
       v16 = 136315650;
       v17 = "[SRUIFWatchAuthenticationManager manager:didFailAuthenticationForSessionWithID:error:]";
       v18 = 2112;
-      v19 = v7;
+      v19 = dCopy;
       v20 = 2112;
-      v21 = v8;
+      v21 = errorCopy;
       _os_log_impl(&dword_26951F000, v11, OS_LOG_TYPE_DEFAULT, "%s Failed authentication request with sessionID: %@, error: %@", &v16, 0x20u);
     }
 
-    v13 = [(SRUIFWatchAuthenticationManager *)self authenticationCompletion];
-    v13[2](v13, 0);
+    authenticationCompletion = [(SRUIFWatchAuthenticationManager *)self authenticationCompletion];
+    authenticationCompletion[2](authenticationCompletion, 0);
 
-    v14 = [(SRUIFWatchAuthenticationManager *)self authenticationWatchdogTimer];
-    [v14 cancel];
+    authenticationWatchdogTimer = [(SRUIFWatchAuthenticationManager *)self authenticationWatchdogTimer];
+    [authenticationWatchdogTimer cancel];
 
     [(SRUIFWatchAuthenticationManager *)self setAuthenticationCompletion:0];
     [(SRUIFWatchAuthenticationManager *)self setCurrentSessionID:0];

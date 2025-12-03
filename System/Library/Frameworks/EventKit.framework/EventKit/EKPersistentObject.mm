@@ -1,26 +1,26 @@
 @interface EKPersistentObject
-+ (BOOL)_shouldRetainPropertyForKey:(id)a3;
++ (BOOL)_shouldRetainPropertyForKey:(id)key;
 + (Class)alternateUniverseClass;
 + (Class)meltedClass;
-+ (id)_relationForKey:(id)a3;
-+ (id)allObjectsWithChangesRelatedToObjects:(id)a3;
++ (id)_relationForKey:(id)key;
++ (id)allObjectsWithChangesRelatedToObjects:(id)objects;
 + (id)propertiesToUnloadOnCommit;
-+ (void)_takeDefaultValuesForObjects:(id)a3 inEventStore:(id)a4;
++ (void)_takeDefaultValuesForObjects:(id)objects inEventStore:(id)store;
 + (void)alternateUniverseClass;
 - (BOOL)_areDefaultPropertiesLoaded;
 - (BOOL)_isNew;
 - (BOOL)_isPendingDelete;
 - (BOOL)_isPendingInsert;
 - (BOOL)_isPendingUpdate;
-- (BOOL)_loadChildIdentifiersForKey:(id)a3 values:(id *)a4;
-- (BOOL)_loadRelationForKey:(id)a3 value:(id *)a4;
+- (BOOL)_loadChildIdentifiersForKey:(id)key values:(id *)values;
+- (BOOL)_loadRelationForKey:(id)key value:(id *)value;
 - (BOOL)existsInStore;
 - (BOOL)isDirty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isPropertyDirty:(id)a3;
-- (BOOL)isPropertyLoaded:(id)a3;
-- (BOOL)isPropertyUnavailable:(id)a3;
-- (BOOL)primitiveBoolValueForKey:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isPropertyDirty:(id)dirty;
+- (BOOL)isPropertyLoaded:(id)loaded;
+- (BOOL)isPropertyUnavailable:(id)unavailable;
+- (BOOL)primitiveBoolValueForKey:(id)key;
 - (BOOL)refresh;
 - (CADGenerationStampedObjectID)CADObjectID;
 - (Class)frozenClass;
@@ -28,72 +28,72 @@
 - (EKObjectID)objectID;
 - (EKPersistentObject)init;
 - (NSString)uniqueIdentifier;
-- (double)primitiveDoubleValueForKey:(id)a3;
-- (id)_loadStringValueForKey:(id)a3;
-- (id)_loadedPropertyForKey:(id)a3;
-- (id)_primitiveValueForKey:(id)a3 loader:(id)a4;
-- (id)_propertyForKey:(id)a3;
+- (double)primitiveDoubleValueForKey:(id)key;
+- (id)_loadStringValueForKey:(id)key;
+- (id)_loadedPropertyForKey:(id)key;
+- (id)_primitiveValueForKey:(id)key loader:(id)loader;
+- (id)_propertyForKey:(id)key;
 - (id)coCommitObjects;
 - (id)dirtyPropertiesAndValues;
 - (id)dump;
-- (id)frozenObjectInStore:(id)a3;
-- (id)loadedOrUpdatedPropertyValue:(id)a3 wasAvailable:(BOOL *)a4;
-- (id)loadedPropertyForKey:(id)a3;
-- (id)meltedObjectInStore:(id)a3;
+- (id)frozenObjectInStore:(id)store;
+- (id)loadedOrUpdatedPropertyValue:(id)value wasAvailable:(BOOL *)available;
+- (id)loadedPropertyForKey:(id)key;
+- (id)meltedObjectInStore:(id)store;
 - (id)ownedObjects;
-- (id)primitiveDataValueForKey:(id)a3;
-- (id)primitiveDateValueForKey:(id)a3;
-- (id)primitiveNumberValueForKey:(id)a3;
-- (id)primitiveRelationValueForKey:(id)a3;
-- (id)primitiveSecurityScopedURLWrapperValueForKey:(id)a3;
-- (id)primitiveStringValueForKey:(id)a3;
-- (id)primitiveURLWrapperValueForKey:(id)a3;
+- (id)primitiveDataValueForKey:(id)key;
+- (id)primitiveDateValueForKey:(id)key;
+- (id)primitiveNumberValueForKey:(id)key;
+- (id)primitiveRelationValueForKey:(id)key;
+- (id)primitiveSecurityScopedURLWrapperValueForKey:(id)key;
+- (id)primitiveStringValueForKey:(id)key;
+- (id)primitiveURLWrapperValueForKey:(id)key;
 - (id)updatedPropertiesWithOnlyPersistentObjects;
 - (int)databaseRestoreGeneration;
 - (int)entityType;
-- (int)primitiveIntValueForKey:(id)a3;
-- (void)_addObjectCore:(id)a3 toValues:(id)a4 relation:(id)a5;
+- (int)primitiveIntValueForKey:(id)key;
+- (void)_addObjectCore:(id)core toValues:(id)values relation:(id)relation;
 - (void)_createLoadedPropertiesIfNeeded;
 - (void)_createUpdatedPropertiesIfNeeded;
 - (void)_loadDefaultPropertiesIfNeeded;
-- (void)_loadPropertiesIfNeeded:(id)a3;
-- (void)_primitiveSetValue:(id)a3 forKey:(id)a4;
+- (void)_loadPropertiesIfNeeded:(id)needed;
+- (void)_primitiveSetValue:(id)value forKey:(id)key;
 - (void)_releaseLoadedProperties;
-- (void)_removeObjectCore:(id)a3 fromValues:(id)a4 relation:(id)a5;
-- (void)_setDefaultPropertiesLoaded:(BOOL)a3;
-- (void)_setEventStore:(id)a3;
-- (void)_setObjectID:(id)a3 inDatabaseRestoreGeneration:(int)a4;
-- (void)_setPendingDelete:(BOOL)a3;
-- (void)_setPendingInsert:(BOOL)a3;
-- (void)_setPendingUpdate:(BOOL)a3;
-- (void)_setProperty:(id)a3 forKey:(id)a4 forRelation:(id)a5 isUpdatedProperty:(BOOL)a6;
-- (void)_takeValues:(id)a3 forKeys:(id)a4 relatedObjectValues:(id)a5;
-- (void)_takeValues:(id)a3 relatedObjectValues:(id)a4;
-- (void)_takeValuesForDefaultPropertyKeys:(id)a3 values:(id)a4 relatedObjectValues:(id)a5;
-- (void)addCoCommitObject:(id)a3;
+- (void)_removeObjectCore:(id)core fromValues:(id)values relation:(id)relation;
+- (void)_setDefaultPropertiesLoaded:(BOOL)loaded;
+- (void)_setEventStore:(id)store;
+- (void)_setObjectID:(id)d inDatabaseRestoreGeneration:(int)generation;
+- (void)_setPendingDelete:(BOOL)delete;
+- (void)_setPendingInsert:(BOOL)insert;
+- (void)_setPendingUpdate:(BOOL)update;
+- (void)_setProperty:(id)property forKey:(id)key forRelation:(id)relation isUpdatedProperty:(BOOL)updatedProperty;
+- (void)_takeValues:(id)values forKeys:(id)keys relatedObjectValues:(id)objectValues;
+- (void)_takeValues:(id)values relatedObjectValues:(id)objectValues;
+- (void)_takeValuesForDefaultPropertyKeys:(id)keys values:(id)values relatedObjectValues:(id)objectValues;
+- (void)addCoCommitObject:(id)object;
 - (void)changed;
 - (void)dealloc;
 - (void)didCommit;
-- (void)internalAddCoCommitObject:(id)a3;
-- (void)internalRemoveCoCommitObject:(id)a3;
-- (void)loadPropertiesIfNeeded:(id)a3;
-- (void)primitiveAddRelatedObject:(id)a3 forKey:(id)a4;
-- (void)primitiveRemoveRelatedObject:(id)a3 forKey:(id)a4;
-- (void)primitiveSetDataValue:(id)a3 forKey:(id)a4;
-- (void)primitiveSetDateValue:(id)a3 forKey:(id)a4;
-- (void)primitiveSetDoubleValue:(double)a3 forKey:(id)a4;
-- (void)primitiveSetNumberValue:(id)a3 forKey:(id)a4;
-- (void)primitiveSetRelationValue:(id)a3 forKey:(id)a4;
-- (void)primitiveSetSecurityScopedURLWrapperValue:(id)a3 forKey:(id)a4;
-- (void)primitiveSetStringValue:(id)a3 forKey:(id)a4;
-- (void)primitiveSetURLWrapperValue:(id)a3 forKey:(id)a4;
-- (void)removeCoCommitObject:(id)a3;
-- (void)reset:(id)a3;
+- (void)internalAddCoCommitObject:(id)object;
+- (void)internalRemoveCoCommitObject:(id)object;
+- (void)loadPropertiesIfNeeded:(id)needed;
+- (void)primitiveAddRelatedObject:(id)object forKey:(id)key;
+- (void)primitiveRemoveRelatedObject:(id)object forKey:(id)key;
+- (void)primitiveSetDataValue:(id)value forKey:(id)key;
+- (void)primitiveSetDateValue:(id)value forKey:(id)key;
+- (void)primitiveSetDoubleValue:(double)value forKey:(id)key;
+- (void)primitiveSetNumberValue:(id)value forKey:(id)key;
+- (void)primitiveSetRelationValue:(id)value forKey:(id)key;
+- (void)primitiveSetSecurityScopedURLWrapperValue:(id)value forKey:(id)key;
+- (void)primitiveSetStringValue:(id)value forKey:(id)key;
+- (void)primitiveSetURLWrapperValue:(id)value forKey:(id)key;
+- (void)removeCoCommitObject:(id)object;
+- (void)reset:(id)reset;
 - (void)rollback;
-- (void)takeDefaultValues:(id)a3;
-- (void)takeValues:(id)a3 forKeys:(id)a4;
-- (void)takeValuesForDefaultPropertyKeys:(id)a3 values:(id)a4;
-- (void)unloadPropertyForKey:(id)a3;
+- (void)takeDefaultValues:(id)values;
+- (void)takeValues:(id)values forKeys:(id)keys;
+- (void)takeValuesForDefaultPropertyKeys:(id)keys values:(id)values;
+- (void)unloadPropertyForKey:(id)key;
 @end
 
 @implementation EKPersistentObject
@@ -104,24 +104,24 @@
   objectID = self->_objectID;
   if (objectID)
   {
-    v4 = [(EKObjectID *)objectID isTemporary];
+    isTemporary = [(EKObjectID *)objectID isTemporary];
   }
 
   else
   {
-    v4 = 1;
+    isTemporary = 1;
   }
 
   pthread_mutex_unlock(&self->_lock);
-  return v4;
+  return isTemporary;
 }
 
 - (void)_loadDefaultPropertiesIfNeeded
 {
-  v3 = [objc_opt_class() defaultPropertiesToLoad];
-  if ([v3 count] && !-[EKPersistentObject _areDefaultPropertiesLoaded](self, "_areDefaultPropertiesLoaded"))
+  defaultPropertiesToLoad = [objc_opt_class() defaultPropertiesToLoad];
+  if ([defaultPropertiesToLoad count] && !-[EKPersistentObject _areDefaultPropertiesLoaded](self, "_areDefaultPropertiesLoaded"))
   {
-    [(EKPersistentObject *)self _loadPropertiesIfNeeded:v3];
+    [(EKPersistentObject *)self _loadPropertiesIfNeeded:defaultPropertiesToLoad];
   }
 }
 
@@ -145,10 +145,10 @@
 - (CADGenerationStampedObjectID)CADObjectID
 {
   pthread_mutex_lock(&self->_lock);
-  v3 = [(EKPersistentObject *)self _CADObjectID];
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
   pthread_mutex_unlock(&self->_lock);
 
-  return v3;
+  return _CADObjectID;
 }
 
 - (EKPersistentObject)init
@@ -204,16 +204,16 @@
   [(EKPersistentObject *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_7;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_13;
@@ -222,15 +222,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(EKPersistentObject *)v5 objectID];
-    if (v6)
+    objectID = [(EKPersistentObject *)v5 objectID];
+    if (objectID)
     {
       pthread_mutex_lock(&self->_lock);
       v7 = self->_objectID;
       pthread_mutex_unlock(&self->_lock);
       if (v7)
       {
-        v8 = [v6 isEqual:v7];
+        v8 = [objectID isEqual:v7];
       }
 
       else
@@ -261,37 +261,37 @@ LABEL_13:
   v4 = +[EKReminderStore log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    +[(EKPersistentObject *)a1];
+    +[(EKPersistentObject *)self];
   }
 
-  [a1 doesNotRecognizeSelector:a2];
+  [self doesNotRecognizeSelector:a2];
   v5 = objc_opt_class();
 
   return v5;
 }
 
-- (BOOL)isPropertyUnavailable:(id)a3
+- (BOOL)isPropertyUnavailable:(id)unavailable
 {
   v5 = 0;
-  v3 = [(EKPersistentObject *)self loadedOrUpdatedPropertyValue:a3 wasAvailable:&v5];
+  v3 = [(EKPersistentObject *)self loadedOrUpdatedPropertyValue:unavailable wasAvailable:&v5];
   return (v5 & 1) == 0;
 }
 
-- (id)loadedOrUpdatedPropertyValue:(id)a3 wasAvailable:(BOOL *)a4
+- (id)loadedOrUpdatedPropertyValue:(id)value wasAvailable:(BOOL *)available
 {
-  v6 = a3;
+  valueCopy = value;
   pthread_mutex_lock(&self->_lock);
-  v7 = [(EKPersistentObject *)self _propertyForKey:v6];
+  v7 = [(EKPersistentObject *)self _propertyForKey:valueCopy];
 
   pthread_mutex_unlock(&self->_lock);
-  if (a4)
+  if (available)
   {
-    *a4 = v7 != 0;
+    *available = v7 != 0;
   }
 
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v7 == v8)
+  if (v7 == null)
   {
 
     v7 = 0;
@@ -302,19 +302,19 @@ LABEL_13:
 
 - (NSString)uniqueIdentifier
 {
-  v3 = [objc_opt_class() propertyKeyForUniqueIdentifier];
-  if ([v3 isEqualToString:@"uniqueIdentifier"])
+  propertyKeyForUniqueIdentifier = [objc_opt_class() propertyKeyForUniqueIdentifier];
+  if ([propertyKeyForUniqueIdentifier isEqualToString:@"uniqueIdentifier"])
   {
-    v4 = [(EKPersistentObject *)self objectID];
-    v5 = [v4 stringRepresentation];
+    objectID = [(EKPersistentObject *)self objectID];
+    stringRepresentation = [objectID stringRepresentation];
   }
 
   else
   {
-    v5 = [(EKPersistentObject *)self valueForKey:v3];
+    stringRepresentation = [(EKPersistentObject *)self valueForKey:propertyKeyForUniqueIdentifier];
   }
 
-  return v5;
+  return stringRepresentation;
 }
 
 - (Class)frozenClass
@@ -324,16 +324,16 @@ LABEL_13:
   return [v2 frozenClass];
 }
 
-- (id)frozenObjectInStore:(id)a3
+- (id)frozenObjectInStore:(id)store
 {
-  v4 = a3;
-  v5 = [(EKPersistentObject *)self eventStore];
-  v6 = v5;
-  if (v4 && v5 && v5 != v4)
+  storeCopy = store;
+  eventStore = [(EKPersistentObject *)self eventStore];
+  v6 = eventStore;
+  if (storeCopy && eventStore && eventStore != storeCopy)
   {
-    v7 = [v5 eventStoreIdentifier];
-    v8 = [v4 eventStoreIdentifier];
-    v9 = [v7 isEqualToString:v8];
+    eventStoreIdentifier = [eventStore eventStoreIdentifier];
+    eventStoreIdentifier2 = [storeCopy eventStoreIdentifier];
+    v9 = [eventStoreIdentifier isEqualToString:eventStoreIdentifier2];
 
     if ((v9 & 1) == 0)
     {
@@ -352,37 +352,37 @@ LABEL_13:
         v10 = objc_alloc_init(objc_opt_class());
       }
 
-      v11 = v10;
-      [(EKPersistentObject *)v10 _setEventStore:v4];
+      selfCopy = v10;
+      [(EKPersistentObject *)v10 _setEventStore:storeCopy];
     }
 
     else
     {
-      v12 = [(EKPersistentObject *)self objectID];
-      v11 = [v4 registerFetchedObjectWithID:v12 withDefaultLoadedPropertyKeys:0 values:0];
+      objectID = [(EKPersistentObject *)self objectID];
+      selfCopy = [storeCopy registerFetchedObjectWithID:objectID withDefaultLoadedPropertyKeys:0 values:0];
     }
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)meltedObjectInStore:(id)a3
+- (id)meltedObjectInStore:(id)store
 {
-  v4 = a3;
-  v5 = [(EKPersistentObject *)self frozenObjectInStore:v4];
-  v6 = [v4 publicObjectWithPersistentObject:v5];
+  storeCopy = store;
+  v5 = [(EKPersistentObject *)self frozenObjectInStore:storeCopy];
+  v6 = [storeCopy publicObjectWithPersistentObject:v5];
 
   return v6;
 }
 
-- (void)_setEventStore:(id)a3
+- (void)_setEventStore:(id)store
 {
-  obj = a3;
+  obj = store;
   if (obj)
   {
     pthread_mutex_lock(&self->_lock);
@@ -396,9 +396,9 @@ LABEL_13:
   }
 }
 
-- (void)_setObjectID:(id)a3 inDatabaseRestoreGeneration:(int)a4
+- (void)_setObjectID:(id)d inDatabaseRestoreGeneration:(int)generation
 {
-  v9 = a3;
+  dCopy = d;
   pthread_mutex_lock(&self->_lock);
   objectID = self->_objectID;
   if (objectID && ![(EKObjectID *)objectID isTemporary])
@@ -406,14 +406,14 @@ LABEL_13:
     [EKPersistentObject _setObjectID:inDatabaseRestoreGeneration:];
   }
 
-  if (self->_objectID != v9)
+  if (self->_objectID != dCopy)
   {
-    v7 = [(EKObjectID *)v9 copy];
+    v7 = [(EKObjectID *)dCopy copy];
     v8 = self->_objectID;
     self->_objectID = v7;
   }
 
-  self->_databaseRestoreGeneration = a4;
+  self->_databaseRestoreGeneration = generation;
   pthread_mutex_unlock(&self->_lock);
 }
 
@@ -432,20 +432,20 @@ LABEL_13:
   v14 = 0x2020000000;
   v15 = 0;
   pthread_mutex_lock(&self->_lock);
-  v3 = [(EKPersistentObject *)self _CADObjectID];
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
   WeakRetained = objc_loadWeakRetained(&self->_eventStore);
   pthread_mutex_unlock(&self->_lock);
-  if (WeakRetained && v3 && ([v3 isTemporary] & 1) == 0)
+  if (WeakRetained && _CADObjectID && ([_CADObjectID isTemporary] & 1) == 0)
   {
-    v5 = [WeakRetained connection];
-    v6 = [v5 CADOperationProxySync];
+    connection = [WeakRetained connection];
+    cADOperationProxySync = [connection CADOperationProxySync];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __35__EKPersistentObject_existsInStore__block_invoke;
     v9[3] = &unk_1E77FED00;
-    v10 = v3;
+    v10 = _CADObjectID;
     v11 = &v12;
-    [v6 CADObjectExists:v10 reply:v9];
+    [cADOperationProxySync CADObjectExists:v10 reply:v9];
   }
 
   v7 = *(v13 + 24);
@@ -494,14 +494,14 @@ void __35__EKPersistentObject_existsInStore__block_invoke(uint64_t a1, uint64_t 
 {
   v20 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_lock);
-  v3 = [(EKPersistentObject *)self _loadedPropertyKeys];
-  v4 = [objc_opt_class() propertyKeyForUniqueIdentifier];
-  v5 = [(NSMutableDictionary *)self->_loadedProperties objectForKeyedSubscript:v4];
+  _loadedPropertyKeys = [(EKPersistentObject *)self _loadedPropertyKeys];
+  propertyKeyForUniqueIdentifier = [objc_opt_class() propertyKeyForUniqueIdentifier];
+  v5 = [(NSMutableDictionary *)self->_loadedProperties objectForKeyedSubscript:propertyKeyForUniqueIdentifier];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v3;
+  v6 = _loadedPropertyKeys;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -533,7 +533,7 @@ void __35__EKPersistentObject_existsInStore__block_invoke(uint64_t a1, uint64_t 
 
   if (v5)
   {
-    [(NSMutableDictionary *)self->_loadedProperties setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_loadedProperties setObject:v5 forKeyedSubscript:propertyKeyForUniqueIdentifier];
   }
 
   pthread_mutex_unlock(&self->_lock);
@@ -542,21 +542,21 @@ void __35__EKPersistentObject_existsInStore__block_invoke(uint64_t a1, uint64_t 
   return 1;
 }
 
-- (BOOL)isPropertyDirty:(id)a3
+- (BOOL)isPropertyDirty:(id)dirty
 {
-  v4 = a3;
+  dirtyCopy = dirty;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_updatedProperties objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_updatedProperties objectForKey:dirtyCopy];
 
   pthread_mutex_unlock(&self->_lock);
   return v5 != 0;
 }
 
-- (BOOL)isPropertyLoaded:(id)a3
+- (BOOL)isPropertyLoaded:(id)loaded
 {
-  v4 = a3;
+  loadedCopy = loaded;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(EKPersistentObject *)self _loadedPropertyForKey:v4];
+  v5 = [(EKPersistentObject *)self _loadedPropertyForKey:loadedCopy];
 
   pthread_mutex_unlock(&self->_lock);
   return v5 != 0;
@@ -577,8 +577,8 @@ void __35__EKPersistentObject_existsInStore__block_invoke(uint64_t a1, uint64_t 
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(NSMutableDictionary *)self->_updatedProperties allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allKeys = [(NSMutableDictionary *)self->_updatedProperties allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -589,7 +589,7 @@ void __35__EKPersistentObject_existsInStore__block_invoke(uint64_t a1, uint64_t 
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -607,12 +607,12 @@ LABEL_13:
               goto LABEL_14;
             }
 
-            v13 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
 
-            if (v10 != v13)
+            if (v10 != null)
             {
-              v14 = [v10 CADObjectID];
-              [v3 setObject:v14 forKey:v9];
+              cADObjectID = [v10 CADObjectID];
+              [v3 setObject:cADObjectID forKey:v9];
 
               goto LABEL_13;
             }
@@ -625,7 +625,7 @@ LABEL_13:
 LABEL_14:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v6);
@@ -698,8 +698,8 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [objc_opt_class() propertiesToUnloadOnCommit];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  propertiesToUnloadOnCommit = [objc_opt_class() propertiesToUnloadOnCommit];
+  v6 = [propertiesToUnloadOnCommit countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -711,14 +711,14 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(propertiesToUnloadOnCommit);
         }
 
         [(EKPersistentObject *)self unloadPropertyForKey:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [propertiesToUnloadOnCommit countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -727,12 +727,12 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reset:(id)a3
+- (void)reset:(id)reset
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resetCopy = reset;
   pthread_mutex_lock(&self->_lock);
-  if ([v4 containsObject:self->_objectID])
+  if ([resetCopy containsObject:self->_objectID])
   {
     pthread_mutex_unlock(&self->_lock);
   }
@@ -741,17 +741,17 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
   {
     [(EKPersistentObject *)self _releaseLoadedProperties];
     updatedProperties = self->_updatedProperties;
-    v6 = [objc_opt_class() propertyKeyForUniqueIdentifier];
-    v7 = [(NSMutableDictionary *)updatedProperties objectForKeyedSubscript:v6];
+    propertyKeyForUniqueIdentifier = [objc_opt_class() propertyKeyForUniqueIdentifier];
+    v7 = [(NSMutableDictionary *)updatedProperties objectForKeyedSubscript:propertyKeyForUniqueIdentifier];
 
     if (v7)
     {
-      v8 = [(EKPersistentObject *)self uniqueIdentifier];
+      uniqueIdentifier = [(EKPersistentObject *)self uniqueIdentifier];
       [(NSMutableDictionary *)self->_updatedProperties removeAllObjects];
-      if (v8)
+      if (uniqueIdentifier)
       {
-        v9 = [objc_opt_class() propertyKeyForUniqueIdentifier];
-        [(EKPersistentObject *)self setValue:v8 forKey:v9];
+        propertyKeyForUniqueIdentifier2 = [objc_opt_class() propertyKeyForUniqueIdentifier];
+        [(EKPersistentObject *)self setValue:uniqueIdentifier forKey:propertyKeyForUniqueIdentifier2];
       }
     }
 
@@ -765,12 +765,12 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
     v11 = [(NSHashTable *)v10 count];
     if (v11)
     {
-      if (!v4)
+      if (!resetCopy)
       {
-        v4 = [MEMORY[0x1E695DFA8] setWithCapacity:v11 + 1];
+        resetCopy = [MEMORY[0x1E695DFA8] setWithCapacity:v11 + 1];
       }
 
-      [v4 addObject:self->_objectID];
+      [resetCopy addObject:self->_objectID];
       coCommitObjects = self->_coCommitObjects;
       self->_coCommitObjects = 0;
     }
@@ -799,7 +799,7 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
             objc_enumerationMutation(v14);
           }
 
-          [*(*(&v20 + 1) + 8 * v18++) reset:{v4, v20}];
+          [*(*(&v20 + 1) + 8 * v18++) reset:{resetCopy, v20}];
         }
 
         while (v16 != v18);
@@ -823,11 +823,11 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)_setPendingInsert:(BOOL)a3
+- (void)_setPendingInsert:(BOOL)insert
 {
-  v3 = a3;
+  insertCopy = insert;
   pthread_mutex_lock(&self->_lock);
-  self->_flags = self->_flags & 0xFFFFFFFE | v3;
+  self->_flags = self->_flags & 0xFFFFFFFE | insertCopy;
 
   pthread_mutex_unlock(&self->_lock);
 }
@@ -840,11 +840,11 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
   return flags & 1;
 }
 
-- (void)_setPendingUpdate:(BOOL)a3
+- (void)_setPendingUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   pthread_mutex_lock(&self->_lock);
-  if (v3)
+  if (updateCopy)
   {
     v5 = 2;
   }
@@ -867,11 +867,11 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
   return v3;
 }
 
-- (void)_setPendingDelete:(BOOL)a3
+- (void)_setPendingDelete:(BOOL)delete
 {
-  v3 = a3;
+  deleteCopy = delete;
   pthread_mutex_lock(&self->_lock);
-  if (v3)
+  if (deleteCopy)
   {
     v5 = 4;
   }
@@ -894,11 +894,11 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
   return v3;
 }
 
-- (void)_setDefaultPropertiesLoaded:(BOOL)a3
+- (void)_setDefaultPropertiesLoaded:(BOOL)loaded
 {
-  v3 = a3;
+  loadedCopy = loaded;
   pthread_mutex_lock(&self->_lock);
-  if (v3)
+  if (loadedCopy)
   {
     v5 = 8;
   }
@@ -913,54 +913,54 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
   pthread_mutex_unlock(&self->_lock);
 }
 
-+ (id)_relationForKey:(id)a3
++ (id)_relationForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 relations];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  relations = [self relations];
+  v6 = [relations objectForKey:keyCopy];
 
   return v6;
 }
 
-+ (BOOL)_shouldRetainPropertyForKey:(id)a3
++ (BOOL)_shouldRetainPropertyForKey:(id)key
 {
-  v3 = [a1 _relationForKey:a3];
+  v3 = [self _relationForKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 ownsRelatedObject];
+    ownsRelatedObject = [v3 ownsRelatedObject];
   }
 
   else
   {
-    v5 = 1;
+    ownsRelatedObject = 1;
   }
 
-  return v5;
+  return ownsRelatedObject;
 }
 
 - (id)coCommitObjects
 {
   pthread_mutex_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_coCommitObjects allObjects];
+  allObjects = [(NSHashTable *)self->_coCommitObjects allObjects];
   pthread_mutex_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)addCoCommitObject:(id)a3
+- (void)addCoCommitObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
-    [(EKPersistentObject *)self internalAddCoCommitObject:v4];
-    [v4 internalAddCoCommitObject:self];
+    objectCopy = object;
+    [(EKPersistentObject *)self internalAddCoCommitObject:objectCopy];
+    [objectCopy internalAddCoCommitObject:self];
   }
 }
 
-- (void)internalAddCoCommitObject:(id)a3
+- (void)internalAddCoCommitObject:(id)object
 {
-  v7 = a3;
+  objectCopy = object;
   pthread_mutex_lock(&self->_lock);
   coCommitObjects = self->_coCommitObjects;
   if (!coCommitObjects)
@@ -972,49 +972,49 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
     coCommitObjects = self->_coCommitObjects;
   }
 
-  [(NSHashTable *)coCommitObjects addObject:v7];
+  [(NSHashTable *)coCommitObjects addObject:objectCopy];
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)removeCoCommitObject:(id)a3
+- (void)removeCoCommitObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
-    [(EKPersistentObject *)self internalRemoveCoCommitObject:v4];
-    [v4 internalRemoveCoCommitObject:self];
+    objectCopy = object;
+    [(EKPersistentObject *)self internalRemoveCoCommitObject:objectCopy];
+    [objectCopy internalRemoveCoCommitObject:self];
   }
 }
 
-- (void)internalRemoveCoCommitObject:(id)a3
+- (void)internalRemoveCoCommitObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   pthread_mutex_lock(&self->_lock);
-  [(NSHashTable *)self->_coCommitObjects removeObject:v4];
+  [(NSHashTable *)self->_coCommitObjects removeObject:objectCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)loadedPropertyForKey:(id)a3
+- (id)loadedPropertyForKey:(id)key
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
   [(EKPersistentObject *)self _loadDefaultPropertiesIfNeeded];
-  v5 = [(EKPersistentObject *)self _loadedPropertyForKey:v4];
+  v5 = [(EKPersistentObject *)self _loadedPropertyForKey:keyCopy];
   if (!v5)
   {
-    v6 = [(EKPersistentObject *)self _CADObjectID];
-    v7 = v6;
+    _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
+    v7 = _CADObjectID;
     v22 = 0;
     v23 = &v22;
     v24 = 0x3032000000;
     v25 = __Block_byref_object_copy__16;
     v26 = __Block_byref_object_dispose__16;
     v27 = 0;
-    if (v6)
+    if (_CADObjectID)
     {
-      if (([v6 isTemporary] & 1) == 0)
+      if (([_CADObjectID isTemporary] & 1) == 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->_eventStore);
         v9 = WeakRetained == 0;
@@ -1023,9 +1023,9 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
         {
           v10 = objc_autoreleasePoolPush();
           v11 = objc_loadWeakRetained(&self->_eventStore);
-          v12 = [v11 connection];
-          v13 = [v12 CADOperationProxySync];
-          v30[0] = v4;
+          connection = [v11 connection];
+          cADOperationProxySync = [connection CADOperationProxySync];
+          v30[0] = keyCopy;
           v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
@@ -1033,7 +1033,7 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
           v19[3] = &unk_1E77FED28;
           v20 = v7;
           v21 = &v22;
-          [v13 CADObject:v20 getPropertiesWithNames:v14 reply:v19];
+          [cADOperationProxySync CADObject:v20 getPropertiesWithNames:v14 reply:v19];
 
           objc_autoreleasePoolPop(v10);
         }
@@ -1044,11 +1044,11 @@ void __48__EKPersistentObject_propertiesToUnloadOnCommit__block_invoke()
     {
       v29 = v23[5];
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-      v28 = v4;
+      v28 = keyCopy;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
       [(EKPersistentObject *)self _takeValues:v15 forKeys:v16 relatedObjectValues:0];
 
-      v5 = [(EKPersistentObject *)self _loadedPropertyForKey:v4];
+      v5 = [(EKPersistentObject *)self _loadedPropertyForKey:keyCopy];
     }
 
     else
@@ -1086,39 +1086,39 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_loadedPropertyForKey:(id)a3
+- (id)_loadedPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_loadedProperties objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_loadedProperties objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 value];
-    if (!v6)
+    value = [v5 value];
+    if (!value)
     {
-      [(NSMutableDictionary *)self->_loadedProperties removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_loadedProperties removeObjectForKey:keyCopy];
     }
 
-    v5 = v6;
+    v5 = value;
   }
 
   return v5;
 }
 
-- (id)_propertyForKey:(id)a3
+- (id)_propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_updatedProperties objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_updatedProperties objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 value];
-    if (!v6)
+    value = [v5 value];
+    if (!value)
     {
-      [(NSMutableDictionary *)self->_updatedProperties removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_updatedProperties removeObjectForKey:keyCopy];
     }
 
-    v5 = v6;
+    v5 = value;
   }
 
   if (v5)
@@ -1128,7 +1128,7 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
 
   else
   {
-    v7 = [(EKPersistentObject *)self _loadedPropertyForKey:v4];
+    v7 = [(EKPersistentObject *)self _loadedPropertyForKey:keyCopy];
   }
 
   v8 = v7;
@@ -1151,7 +1151,7 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
 - (id)updatedPropertiesWithOnlyPersistentObjects
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1176,14 +1176,14 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 value];
+          value = [v10 value];
 
-          v10 = v11;
+          v10 = value;
         }
 
         if (v10)
         {
-          [v3 setValue:v10 forKey:v9];
+          [dictionary setValue:v10 forKey:v9];
         }
       }
 
@@ -1195,63 +1195,63 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_setProperty:(id)a3 forKey:(id)a4 forRelation:(id)a5 isUpdatedProperty:(BOOL)a6
+- (void)_setProperty:(id)property forKey:(id)key forRelation:(id)relation isUpdatedProperty:(BOOL)updatedProperty
 {
-  v6 = a6;
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v14;
-  if (v14)
+  updatedPropertyCopy = updatedProperty;
+  propertyCopy = property;
+  keyCopy = key;
+  relationCopy = relation;
+  null = propertyCopy;
+  if (propertyCopy)
   {
-    if (v11)
+    if (relationCopy)
     {
-      if ([v11 ownsRelatedObject])
+      if ([relationCopy ownsRelatedObject])
       {
-        v12 = v14;
+        null = propertyCopy;
       }
 
       else
       {
-        v13 = [[EKWeakReference alloc] initWithValue:v14];
+        v13 = [[EKWeakReference alloc] initWithValue:propertyCopy];
 
-        v12 = v13;
+        null = v13;
       }
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15 = v12;
-  if (v6)
+  v15 = null;
+  if (updatedPropertyCopy)
   {
     [(EKPersistentObject *)self _createUpdatedPropertiesIfNeeded];
-    [(NSMutableDictionary *)self->_updatedProperties setObject:v15 forKey:v10];
+    [(NSMutableDictionary *)self->_updatedProperties setObject:v15 forKey:keyCopy];
     [(EKPersistentObject *)self changed];
   }
 
   else
   {
     [(EKPersistentObject *)self _createLoadedPropertiesIfNeeded];
-    [(NSMutableDictionary *)self->_loadedProperties setObject:v15 forKey:v10];
+    [(NSMutableDictionary *)self->_loadedProperties setObject:v15 forKey:keyCopy];
   }
 }
 
 - (void)_releaseLoadedProperties
 {
-  v5 = [objc_opt_class() propertyKeyForUniqueIdentifier];
+  propertyKeyForUniqueIdentifier = [objc_opt_class() propertyKeyForUniqueIdentifier];
   v3 = [(NSMutableDictionary *)self->_loadedProperties objectForKeyedSubscript:?];
   loadedProperties = self->_loadedProperties;
   if (v3)
   {
     [(NSMutableDictionary *)loadedProperties removeAllObjects];
-    [(NSMutableDictionary *)self->_loadedProperties setObject:v3 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_loadedProperties setObject:v3 forKeyedSubscript:propertyKeyForUniqueIdentifier];
   }
 
   else
@@ -1260,17 +1260,17 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
   }
 }
 
-- (void)unloadPropertyForKey:(id)a3
+- (void)unloadPropertyForKey:(id)key
 {
-  v7 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_updatedProperties removeObjectForKey:v7];
-  v4 = [(EKPersistentObject *)self _loadedPropertyForKey:v7];
+  [(NSMutableDictionary *)self->_updatedProperties removeObjectForKey:keyCopy];
+  v4 = [(EKPersistentObject *)self _loadedPropertyForKey:keyCopy];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_loadedProperties removeObjectForKey:v7];
-    v5 = [objc_opt_class() defaultPropertiesToLoad];
-    v6 = [v5 containsObject:v7];
+    [(NSMutableDictionary *)self->_loadedProperties removeObjectForKey:keyCopy];
+    defaultPropertiesToLoad = [objc_opt_class() defaultPropertiesToLoad];
+    v6 = [defaultPropertiesToLoad containsObject:keyCopy];
 
     if (v6)
     {
@@ -1281,16 +1281,16 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)primitiveRelationValueForKey:(id)a3
+- (id)primitiveRelationValueForKey:(id)key
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
   [(EKPersistentObject *)self _loadDefaultPropertiesIfNeeded];
-  v5 = [(EKPersistentObject *)self _propertyForKey:v4];
-  v6 = [MEMORY[0x1E695DFB0] null];
+  v5 = [(EKPersistentObject *)self _propertyForKey:keyCopy];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
 
     v5 = 0;
@@ -1298,14 +1298,14 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
 
   else if (!v5)
   {
-    v7 = [objc_opt_class() _relationForKey:v4];
+    v7 = [objc_opt_class() _relationForKey:keyCopy];
     v8 = v7;
     if (v7)
     {
       if ([v7 toMany])
       {
         v34 = 0;
-        v9 = [(EKPersistentObject *)self _loadChildIdentifiersForKey:v4 values:&v34];
+        v9 = [(EKPersistentObject *)self _loadChildIdentifiersForKey:keyCopy values:&v34];
         v10 = v34;
         v11 = v10;
         v5 = 0;
@@ -1335,8 +1335,8 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
                   }
 
                   v18 = *(*(&v30 + 1) + 8 * i);
-                  v19 = [(EKPersistentObject *)self eventStore];
-                  v20 = [v19 registerFetchedObjectWithID:v18];
+                  eventStore = [(EKPersistentObject *)self eventStore];
+                  v20 = [eventStore registerFetchedObjectWithID:v18];
 
                   if (v20)
                   {
@@ -1351,14 +1351,14 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
             }
 
             v5 = [MEMORY[0x1E695DFA8] setWithSet:v12];
-            [(EKPersistentObject *)self _setProperty:v5 forKey:v4 isUpdatedProperty:0];
+            [(EKPersistentObject *)self _setProperty:v5 forKey:keyCopy isUpdatedProperty:0];
 
             v11 = v28;
           }
 
           else
           {
-            [(EKPersistentObject *)self _setProperty:0 forKey:v4 isUpdatedProperty:0];
+            [(EKPersistentObject *)self _setProperty:0 forKey:keyCopy isUpdatedProperty:0];
             v5 = 0;
           }
         }
@@ -1367,7 +1367,7 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
       else
       {
         v29 = 0;
-        v23 = [(EKPersistentObject *)self _loadRelationForKey:v4 value:&v29];
+        v23 = [(EKPersistentObject *)self _loadRelationForKey:keyCopy value:&v29];
         v24 = v29;
         v11 = v24;
         v5 = 0;
@@ -1377,7 +1377,7 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
           v5 = [WeakRetained registerFetchedObjectWithID:v11];
         }
 
-        [(EKPersistentObject *)self _setProperty:v5 forKey:v4 isUpdatedProperty:0];
+        [(EKPersistentObject *)self _setProperty:v5 forKey:keyCopy isUpdatedProperty:0];
       }
     }
 
@@ -1385,7 +1385,7 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
     {
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
-      NSLog(&cfstr_IsNotARelation.isa, v4, v22);
+      NSLog(&cfstr_IsNotARelation.isa, keyCopy, v22);
 
       v5 = 0;
     }
@@ -1398,29 +1398,29 @@ uint64_t __43__EKPersistentObject_loadedPropertyForKey___block_invoke(uint64_t a
   return v5;
 }
 
-- (void)_addObjectCore:(id)a3 toValues:(id)a4 relation:(id)a5
+- (void)_addObjectCore:(id)core toValues:(id)values relation:(id)relation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 eventStore];
-  if (!v11)
+  coreCopy = core;
+  valuesCopy = values;
+  relationCopy = relation;
+  eventStore = [coreCopy eventStore];
+  if (!eventStore)
   {
 LABEL_4:
     WeakRetained = objc_loadWeakRetained(&self->_eventStore);
-    [WeakRetained _insertObject:v8];
+    [WeakRetained _insertObject:coreCopy];
 
-    [(EKPersistentObject *)self addCoCommitObject:v8];
+    [(EKPersistentObject *)self addCoCommitObject:coreCopy];
     goto LABEL_6;
   }
 
-  v12 = v11;
-  if ([v8 isNew])
+  v12 = eventStore;
+  if ([coreCopy isNew])
   {
-    v13 = [v8 _isPendingInsert];
+    _isPendingInsert = [coreCopy _isPendingInsert];
 
-    if (v13)
+    if (_isPendingInsert)
     {
       goto LABEL_6;
     }
@@ -1429,13 +1429,13 @@ LABEL_4:
   }
 
 LABEL_6:
-  [v9 addObject:v8];
-  v15 = [v10 inversePropertyNames];
+  [valuesCopy addObject:coreCopy];
+  inversePropertyNames = [relationCopy inversePropertyNames];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v16 = [inversePropertyNames countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1446,17 +1446,17 @@ LABEL_6:
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(inversePropertyNames);
         }
 
         v20 = *(*(&v22 + 1) + 8 * i);
-        if ([v10 shouldSetInverseProperty:v20 onObject:v8 forObject:self])
+        if ([relationCopy shouldSetInverseProperty:v20 onObject:coreCopy forObject:self])
         {
-          [v8 _setProperty:self forKey:v20 isUpdatedProperty:1];
+          [coreCopy _setProperty:self forKey:v20 isUpdatedProperty:1];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v17 = [inversePropertyNames countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v17);
@@ -1465,18 +1465,18 @@ LABEL_6:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeObjectCore:(id)a3 fromValues:(id)a4 relation:(id)a5
+- (void)_removeObjectCore:(id)core fromValues:(id)values relation:(id)relation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 inversePropertyNames];
+  coreCopy = core;
+  valuesCopy = values;
+  relationCopy = relation;
+  inversePropertyNames = [relationCopy inversePropertyNames];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v12 = [inversePropertyNames countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1487,120 +1487,120 @@ LABEL_6:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(inversePropertyNames);
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        if ([v10 shouldSetInverseProperty:v16 onObject:v8 forObject:self])
+        if ([relationCopy shouldSetInverseProperty:v16 onObject:coreCopy forObject:self])
         {
-          [v8 _setProperty:0 forKey:v16 isUpdatedProperty:1];
+          [coreCopy _setProperty:0 forKey:v16 isUpdatedProperty:1];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [inversePropertyNames countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);
   }
 
-  [v9 removeObject:v8];
-  if ([v8 isNew])
+  [valuesCopy removeObject:coreCopy];
+  if ([coreCopy isNew])
   {
-    [(EKPersistentObject *)self removeCoCommitObject:v8];
+    [(EKPersistentObject *)self removeCoCommitObject:coreCopy];
   }
 
   else
   {
-    [(EKPersistentObject *)self addCoCommitObject:v8];
+    [(EKPersistentObject *)self addCoCommitObject:coreCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_eventStore);
-  [WeakRetained _deleteObject:v8];
+  [WeakRetained _deleteObject:coreCopy];
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)primitiveAddRelatedObject:(id)a3 forKey:(id)a4
+- (void)primitiveAddRelatedObject:(id)object forKey:(id)key
 {
-  v15 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v8 = [objc_opt_class() _relationForKey:v7];
+  v8 = [objc_opt_class() _relationForKey:keyCopy];
   v9 = v8;
   if (v8 && ([v8 toMany] & 1) != 0)
   {
-    v10 = [v15 eventStore];
+    eventStore = [objectCopy eventStore];
 
-    if (!v10)
+    if (!eventStore)
     {
       WeakRetained = objc_loadWeakRetained(&self->_eventStore);
-      [WeakRetained _insertObject:v15];
+      [WeakRetained _insertObject:objectCopy];
 
-      [(EKPersistentObject *)self addCoCommitObject:v15];
+      [(EKPersistentObject *)self addCoCommitObject:objectCopy];
     }
 
-    v12 = [(EKPersistentObject *)self primitiveRelationValueForKey:v7];
-    if (!v12)
+    currentHandler = [(EKPersistentObject *)self primitiveRelationValueForKey:keyCopy];
+    if (!currentHandler)
     {
-      v12 = [MEMORY[0x1E695DFA8] setWithCapacity:1];
-      [(EKPersistentObject *)self _setProperty:v12 forKey:v7 isUpdatedProperty:1];
+      currentHandler = [MEMORY[0x1E695DFA8] setWithCapacity:1];
+      [(EKPersistentObject *)self _setProperty:currentHandler forKey:keyCopy isUpdatedProperty:1];
     }
 
-    [(EKPersistentObject *)self _addObjectCore:v15 toValues:v12 relation:v9];
+    [(EKPersistentObject *)self _addObjectCore:objectCopy toValues:currentHandler relation:v9];
     pthread_mutex_unlock(&self->_lock);
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"EKPersistentObject.m" lineNumber:1020 description:{@"Trying to add an object as a related object for property %@ on %@, but it's not a relation or not to-many", v7, v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EKPersistentObject.m" lineNumber:1020 description:{@"Trying to add an object as a related object for property %@ on %@, but it's not a relation or not to-many", keyCopy, v14}];
   }
 }
 
-- (void)primitiveRemoveRelatedObject:(id)a3 forKey:(id)a4
+- (void)primitiveRemoveRelatedObject:(id)object forKey:(id)key
 {
-  v14 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v8 = [objc_opt_class() _relationForKey:v7];
+  v8 = [objc_opt_class() _relationForKey:keyCopy];
   v9 = v8;
   if (!v8 || ([v8 toMany] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"EKPersistentObject.m" lineNumber:1053 description:{@"Trying to remove an object as a related object for property %@ on %@, but it's not a relation or not to-many", v7, v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EKPersistentObject.m" lineNumber:1053 description:{@"Trying to remove an object as a related object for property %@ on %@, but it's not a relation or not to-many", keyCopy, v12}];
   }
 
-  v13 = [(EKPersistentObject *)self _propertyForKey:v7];
+  v13 = [(EKPersistentObject *)self _propertyForKey:keyCopy];
   if (v13)
   {
-    [(EKPersistentObject *)self _removeObjectCore:v14 fromValues:v13 relation:v9];
+    [(EKPersistentObject *)self _removeObjectCore:objectCopy fromValues:v13 relation:v9];
   }
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)primitiveSetRelationValue:(id)a3 forKey:(id)a4
+- (void)primitiveSetRelationValue:(id)value forKey:(id)key
 {
   v83 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v9 = [objc_opt_class() _relationForKey:v8];
+  v9 = [objc_opt_class() _relationForKey:keyCopy];
   if (!v9)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"EKPersistentObject.m" lineNumber:1069 description:{@"Requested set of relation called %@ on a %@, but that doesn't exist.", v8, v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EKPersistentObject.m" lineNumber:1069 description:{@"Requested set of relation called %@ on a %@, but that doesn't exist.", keyCopy, v12}];
   }
 
   if ([v9 toMany])
   {
-    if (v7)
+    if (valueCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1609,15 +1609,15 @@ LABEL_6:
       }
     }
 
-    v13 = [(EKPersistentObject *)self primitiveRelationValueForKey:v8];
-    v14 = v7;
+    v13 = [(EKPersistentObject *)self primitiveRelationValueForKey:keyCopy];
+    v14 = valueCopy;
     v59 = v13;
     if (!v13)
     {
       v59 = [MEMORY[0x1E695DFA8] set];
     }
 
-    v15 = v8;
+    v15 = keyCopy;
     v60 = v14;
     if ([v14 count])
     {
@@ -1656,7 +1656,7 @@ LABEL_6:
     v78 = 0u;
     obj = v16;
     v33 = [obj countByEnumeratingWithState:&v75 objects:v82 count:16];
-    v8 = v15;
+    keyCopy = v15;
     if (v33)
     {
       v34 = v33;
@@ -1707,11 +1707,11 @@ LABEL_6:
       while (v39);
     }
 
-    [(EKPersistentObject *)self _setProperty:v32 forKey:v8 isUpdatedProperty:1];
+    [(EKPersistentObject *)self _setProperty:v32 forKey:keyCopy isUpdatedProperty:1];
     goto LABEL_77;
   }
 
-  if (v7)
+  if (valueCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1720,16 +1720,16 @@ LABEL_6:
     }
   }
 
-  v18 = v7;
-  v19 = [(EKPersistentObject *)self primitiveRelationValueForKey:v8];
+  v18 = valueCopy;
+  v19 = [(EKPersistentObject *)self primitiveRelationValueForKey:keyCopy];
   v59 = v18;
   v60 = v19;
   if (v19 != v18)
   {
     v20 = v19;
     obj = [v9 inversePropertyNames];
-    v57 = v8;
-    v58 = v7;
+    v57 = keyCopy;
+    v58 = valueCopy;
     if (v20)
     {
       v69 = 0u;
@@ -1782,8 +1782,8 @@ LABEL_6:
         while (v23);
       }
 
-      v8 = v57;
-      v7 = v58;
+      keyCopy = v57;
+      valueCopy = v58;
       if ([v9 ownsRelatedObject])
       {
         if ([v60 _isPendingInsert])
@@ -1807,8 +1807,8 @@ LABEL_6:
       [v43 _insertObject:v59];
     }
 
-    [(EKPersistentObject *)self _setProperty:v59 forKey:v8 isUpdatedProperty:1];
-    if (!v7)
+    [(EKPersistentObject *)self _setProperty:v59 forKey:keyCopy isUpdatedProperty:1];
+    if (!valueCopy)
     {
       goto LABEL_78;
     }
@@ -1877,8 +1877,8 @@ LABEL_6:
     }
 
     obj = v37;
-    v8 = v57;
-    v7 = v58;
+    keyCopy = v57;
+    valueCopy = v58;
 LABEL_77:
 
 LABEL_78:
@@ -1888,15 +1888,15 @@ LABEL_78:
   v56 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_primitiveValueForKey:(id)a3 loader:(id)a4
+- (id)_primitiveValueForKey:(id)key loader:(id)loader
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  loaderCopy = loader;
   [(EKPersistentObject *)self _loadDefaultPropertiesIfNeeded];
-  v8 = [(EKPersistentObject *)self _propertyForKey:v6];
-  v9 = [MEMORY[0x1E695DFB0] null];
+  v8 = [(EKPersistentObject *)self _propertyForKey:keyCopy];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v8 == v9)
+  if (v8 == null)
   {
 
     v8 = 0;
@@ -1904,42 +1904,42 @@ LABEL_78:
 
   else if (!v8)
   {
-    v8 = v7[2](v7, v6);
-    [(EKPersistentObject *)self _setProperty:v8 forKey:v6 isUpdatedProperty:0];
+    v8 = loaderCopy[2](loaderCopy, keyCopy);
+    [(EKPersistentObject *)self _setProperty:v8 forKey:keyCopy isUpdatedProperty:0];
   }
 
   return v8;
 }
 
-- (void)_primitiveSetValue:(id)a3 forKey:(id)a4
+- (void)_primitiveSetValue:(id)value forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = v9;
-  v8 = v6;
-  if (!v9)
+  valueCopy = value;
+  keyCopy = key;
+  null = valueCopy;
+  v8 = keyCopy;
+  if (!valueCopy)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v10 = v7;
-  [(EKPersistentObject *)self _setProperty:v7 forKey:v8 isUpdatedProperty:1];
+  v10 = null;
+  [(EKPersistentObject *)self _setProperty:null forKey:v8 isUpdatedProperty:1];
 }
 
-- (id)primitiveNumberValueForKey:(id)a3
+- (id)primitiveNumberValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(EKPersistentObject *)self _CADObjectID];
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__EKPersistentObject_primitiveNumberValueForKey___block_invoke;
   v11[3] = &unk_1E77FED78;
-  v12 = v5;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
-  v7 = v5;
+  v12 = _CADObjectID;
+  selfCopy = self;
+  v14 = keyCopy;
+  v6 = keyCopy;
+  v7 = _CADObjectID;
   v8 = [(EKPersistentObject *)self _primitiveValueForKey:v6 loader:v11];
   v9 = [v8 copy];
 
@@ -2004,64 +2004,64 @@ void __49__EKPersistentObject_primitiveNumberValueForKey___block_invoke_2(uint64
   }
 }
 
-- (void)primitiveSetNumberValue:(id)a3 forKey:(id)a4
+- (void)primitiveSetNumberValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _primitiveSetValue:v7 forKey:v6];
+  [(EKPersistentObject *)self _primitiveSetValue:valueCopy forKey:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (int)primitiveIntValueForKey:(id)a3
+- (int)primitiveIntValueForKey:(id)key
 {
-  v3 = [(EKPersistentObject *)self primitiveNumberValueForKey:a3];
-  v4 = [v3 intValue];
+  v3 = [(EKPersistentObject *)self primitiveNumberValueForKey:key];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (double)primitiveDoubleValueForKey:(id)a3
+- (double)primitiveDoubleValueForKey:(id)key
 {
-  v3 = [(EKPersistentObject *)self primitiveNumberValueForKey:a3];
+  v3 = [(EKPersistentObject *)self primitiveNumberValueForKey:key];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)primitiveSetDoubleValue:(double)a3 forKey:(id)a4
+- (void)primitiveSetDoubleValue:(double)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(EKPersistentObject *)self _primitiveSetValue:v7 forKey:v6];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  [(EKPersistentObject *)self _primitiveSetValue:v7 forKey:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (BOOL)primitiveBoolValueForKey:(id)a3
+- (BOOL)primitiveBoolValueForKey:(id)key
 {
-  v3 = [(EKPersistentObject *)self primitiveNumberValueForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(EKPersistentObject *)self primitiveNumberValueForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)primitiveDateValueForKey:(id)a3
+- (id)primitiveDateValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(EKPersistentObject *)self _CADObjectID];
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __47__EKPersistentObject_primitiveDateValueForKey___block_invoke;
   v13 = &unk_1E77FEDC8;
-  v14 = v5;
-  v15 = self;
-  v6 = v5;
-  v7 = [(EKPersistentObject *)self _primitiveValueForKey:v4 loader:&v10];
+  v14 = _CADObjectID;
+  selfCopy = self;
+  v6 = _CADObjectID;
+  v7 = [(EKPersistentObject *)self _primitiveValueForKey:keyCopy loader:&v10];
 
   v8 = [v7 copy];
   pthread_mutex_unlock(&self->_lock);
@@ -2125,45 +2125,45 @@ void __47__EKPersistentObject_primitiveDateValueForKey___block_invoke_2(uint64_t
   }
 }
 
-- (void)primitiveSetDateValue:(id)a3 forKey:(id)a4
+- (void)primitiveSetDateValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _primitiveSetValue:v7 forKey:v6];
+  [(EKPersistentObject *)self _primitiveSetValue:valueCopy forKey:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)_loadStringValueForKey:(id)a3
+- (id)_loadStringValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__16;
   v20 = __Block_byref_object_dispose__16;
   v21 = 0;
-  v5 = [(EKPersistentObject *)self _CADObjectID];
-  v6 = v5;
-  if (v5)
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
+  v6 = _CADObjectID;
+  if (_CADObjectID)
   {
-    if (([v5 isTemporary] & 1) == 0)
+    if (([_CADObjectID isTemporary] & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_eventStore);
 
       if (WeakRetained)
       {
         v8 = objc_loadWeakRetained(&self->_eventStore);
-        v9 = [v8 connection];
-        v10 = [v9 CADOperationProxySync];
+        connection = [v8 connection];
+        cADOperationProxySync = [connection CADOperationProxySync];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __45__EKPersistentObject__loadStringValueForKey___block_invoke;
         v13[3] = &unk_1E77FEDF0;
-        v14 = v4;
+        v14 = keyCopy;
         v15 = &v16;
-        [v10 CADObject:v6 getStringPropertyWithName:v14 reply:v13];
+        [cADOperationProxySync CADObject:v6 getStringPropertyWithName:v14 reply:v13];
       }
     }
   }
@@ -2192,16 +2192,16 @@ void __45__EKPersistentObject__loadStringValueForKey___block_invoke(uint64_t a1,
   }
 }
 
-- (id)primitiveStringValueForKey:(id)a3
+- (id)primitiveStringValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__EKPersistentObject_primitiveStringValueForKey___block_invoke;
   v8[3] = &unk_1E77FD048;
   v8[4] = self;
-  v5 = [(EKPersistentObject *)self _primitiveValueForKey:v4 loader:v8];
+  v5 = [(EKPersistentObject *)self _primitiveValueForKey:keyCopy loader:v8];
 
   v6 = [v5 copy];
   pthread_mutex_unlock(&self->_lock);
@@ -2209,30 +2209,30 @@ void __45__EKPersistentObject__loadStringValueForKey___block_invoke(uint64_t a1,
   return v6;
 }
 
-- (void)primitiveSetStringValue:(id)a3 forKey:(id)a4
+- (void)primitiveSetStringValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _primitiveSetValue:v7 forKey:v6];
+  [(EKPersistentObject *)self _primitiveSetValue:valueCopy forKey:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)primitiveDataValueForKey:(id)a3
+- (id)primitiveDataValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(EKPersistentObject *)self _CADObjectID];
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__EKPersistentObject_primitiveDataValueForKey___block_invoke;
   v11[3] = &unk_1E77FED78;
-  v12 = v5;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
-  v7 = v5;
+  v12 = _CADObjectID;
+  selfCopy = self;
+  v14 = keyCopy;
+  v6 = keyCopy;
+  v7 = _CADObjectID;
   v8 = [(EKPersistentObject *)self _primitiveValueForKey:v6 loader:v11];
   v9 = [v8 copy];
 
@@ -2297,30 +2297,30 @@ void __47__EKPersistentObject_primitiveDataValueForKey___block_invoke_2(uint64_t
   }
 }
 
-- (void)primitiveSetDataValue:(id)a3 forKey:(id)a4
+- (void)primitiveSetDataValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _primitiveSetValue:v7 forKey:v6];
+  [(EKPersistentObject *)self _primitiveSetValue:valueCopy forKey:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)primitiveSecurityScopedURLWrapperValueForKey:(id)a3
+- (id)primitiveSecurityScopedURLWrapperValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(EKPersistentObject *)self _CADObjectID];
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__EKPersistentObject_primitiveSecurityScopedURLWrapperValueForKey___block_invoke;
   v10[3] = &unk_1E77FED78;
-  v11 = v5;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
-  v7 = v5;
+  v11 = _CADObjectID;
+  selfCopy = self;
+  v13 = keyCopy;
+  v6 = keyCopy;
+  v7 = _CADObjectID;
   v8 = [(EKPersistentObject *)self _primitiveValueForKey:v6 loader:v10];
   pthread_mutex_unlock(&self->_lock);
 
@@ -2383,40 +2383,40 @@ void __67__EKPersistentObject_primitiveSecurityScopedURLWrapperValueForKey___blo
   }
 }
 
-- (void)primitiveSetSecurityScopedURLWrapperValue:(id)a3 forKey:(id)a4
+- (void)primitiveSetSecurityScopedURLWrapperValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _primitiveSetValue:v7 forKey:v6];
+  [(EKPersistentObject *)self _primitiveSetValue:valueCopy forKey:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)primitiveURLWrapperValueForKey:(id)a3
+- (id)primitiveURLWrapperValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(EKPersistentObject *)self _primitiveValueForKey:v4 loader:&__block_literal_global_91];
+  v5 = [(EKPersistentObject *)self _primitiveValueForKey:keyCopy loader:&__block_literal_global_91];
 
   pthread_mutex_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)primitiveSetURLWrapperValue:(id)a3 forKey:(id)a4
+- (void)primitiveSetURLWrapperValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _primitiveSetValue:v7 forKey:v6];
+  [(EKPersistentObject *)self _primitiveSetValue:valueCopy forKey:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (BOOL)_loadRelationForKey:(id)a3 value:(id *)a4
+- (BOOL)_loadRelationForKey:(id)key value:(id *)value
 {
-  v6 = a3;
+  keyCopy = key;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -2427,27 +2427,27 @@ void __67__EKPersistentObject_primitiveSecurityScopedURLWrapperValueForKey___blo
   v24 = __Block_byref_object_copy__16;
   v25 = __Block_byref_object_dispose__16;
   v26 = 0;
-  v7 = [(EKPersistentObject *)self _CADObjectID];
-  v8 = v7;
-  if (v7)
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
+  v8 = _CADObjectID;
+  if (_CADObjectID)
   {
-    if (([v7 isTemporary] & 1) == 0)
+    if (([_CADObjectID isTemporary] & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_eventStore);
 
       if (WeakRetained)
       {
         v10 = objc_loadWeakRetained(&self->_eventStore);
-        v11 = [v10 connection];
-        v12 = [v11 CADOperationProxySync];
+        connection = [v10 connection];
+        cADOperationProxySync = [connection CADOperationProxySync];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __48__EKPersistentObject__loadRelationForKey_value___block_invoke;
         v17[3] = &unk_1E77FEE88;
-        v18 = v6;
+        v18 = keyCopy;
         v19 = &v21;
         v20 = &v27;
-        [v12 CADObject:v8 getRelatedObjectWithRelationName:v18 reply:v17];
+        [cADOperationProxySync CADObject:v8 getRelatedObjectWithRelationName:v18 reply:v17];
       }
     }
   }
@@ -2464,7 +2464,7 @@ void __67__EKPersistentObject_primitiveSecurityScopedURLWrapperValueForKey___blo
     v14 = 0;
   }
 
-  *a4 = v14;
+  *value = v14;
   v15 = *(v13 + 24);
 
   _Block_object_dispose(&v21, 8);
@@ -2491,9 +2491,9 @@ void __48__EKPersistentObject__loadRelationForKey_value___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)_loadChildIdentifiersForKey:(id)a3 values:(id *)a4
+- (BOOL)_loadChildIdentifiersForKey:(id)key values:(id *)values
 {
-  v6 = a3;
+  keyCopy = key;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -2504,32 +2504,32 @@ void __48__EKPersistentObject__loadRelationForKey_value___block_invoke(uint64_t 
   v22 = __Block_byref_object_copy__16;
   v23 = __Block_byref_object_dispose__16;
   v24 = 0;
-  v7 = [(EKPersistentObject *)self _CADObjectID];
-  v8 = v7;
-  if (v7)
+  _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
+  v8 = _CADObjectID;
+  if (_CADObjectID)
   {
-    if (([v7 isTemporary] & 1) == 0)
+    if (([_CADObjectID isTemporary] & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_eventStore);
 
       if (WeakRetained)
       {
         v10 = objc_loadWeakRetained(&self->_eventStore);
-        v11 = [v10 connection];
-        v12 = [v11 CADOperationProxySync];
+        connection = [v10 connection];
+        cADOperationProxySync = [connection CADOperationProxySync];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __57__EKPersistentObject__loadChildIdentifiersForKey_values___block_invoke;
         v15[3] = &unk_1E77FEEB0;
-        v16 = v6;
+        v16 = keyCopy;
         v17 = &v19;
         v18 = &v25;
-        [v12 CADObject:v8 getRelatedObjectsWithRelationName:v16 reply:v15];
+        [cADOperationProxySync CADObject:v8 getRelatedObjectsWithRelationName:v16 reply:v15];
       }
     }
   }
 
-  *a4 = v20[5];
+  *values = v20[5];
   v13 = *(v26 + 24);
 
   _Block_object_dispose(&v19, 8);
@@ -2597,16 +2597,16 @@ void __57__EKPersistentObject__loadChildIdentifiersForKey_values___block_invoke(
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_takeDefaultValuesForObjects:(id)a3 inEventStore:(id)a4
++ (void)_takeDefaultValuesForObjects:(id)objects inEventStore:(id)store
 {
-  v5 = a4;
+  storeCopy = store;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__EKPersistentObject__takeDefaultValuesForObjects_inEventStore___block_invoke;
   v7[3] = &unk_1E77FEED8;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = storeCopy;
+  v6 = storeCopy;
+  [objects enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __64__EKPersistentObject__takeDefaultValuesForObjects_inEventStore___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2617,47 +2617,47 @@ void __64__EKPersistentObject__takeDefaultValuesForObjects_inEventStore___block_
   [v6 takeDefaultValues:v5];
 }
 
-- (void)takeDefaultValues:(id)a3
+- (void)takeDefaultValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _takeValues:v4 relatedObjectValues:0];
+  [(EKPersistentObject *)self _takeValues:valuesCopy relatedObjectValues:0];
 
   [(EKPersistentObject *)self _setDefaultPropertiesLoaded:1];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)takeValues:(id)a3 forKeys:(id)a4
+- (void)takeValues:(id)values forKeys:(id)keys
 {
-  v6 = a4;
-  v7 = a3;
+  keysCopy = keys;
+  valuesCopy = values;
   v10 = objc_opt_new();
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _takeValues:v7 forKeys:v6 relatedObjectValues:v10];
+  [(EKPersistentObject *)self _takeValues:valuesCopy forKeys:keysCopy relatedObjectValues:v10];
 
   pthread_mutex_unlock(&self->_lock);
   v8 = objc_opt_class();
-  v9 = [(EKPersistentObject *)self eventStore];
-  [v8 _takeDefaultValuesForObjects:v10 inEventStore:v9];
+  eventStore = [(EKPersistentObject *)self eventStore];
+  [v8 _takeDefaultValuesForObjects:v10 inEventStore:eventStore];
 }
 
-- (void)_takeValues:(id)a3 forKeys:(id)a4 relatedObjectValues:(id)a5
+- (void)_takeValues:(id)values forKeys:(id)keys relatedObjectValues:(id)objectValues
 {
-  if (a3)
+  if (values)
   {
     v8 = MEMORY[0x1E695DF20];
-    v9 = a5;
-    v10 = [v8 dictionaryWithObjects:a3 forKeys:a4];
-    [(EKPersistentObject *)self _takeValues:v10 relatedObjectValues:v9];
+    objectValuesCopy = objectValues;
+    v10 = [v8 dictionaryWithObjects:values forKeys:keys];
+    [(EKPersistentObject *)self _takeValues:v10 relatedObjectValues:objectValuesCopy];
   }
 }
 
-- (void)_takeValues:(id)a3 relatedObjectValues:(id)a4
+- (void)_takeValues:(id)values relatedObjectValues:(id)objectValues
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  objectValuesCopy = objectValues;
+  v7 = objectValuesCopy;
+  if (values)
   {
     v8 = self->_loadedProperties != 0;
     v9[0] = MEMORY[0x1E69E9820];
@@ -2665,9 +2665,9 @@ void __64__EKPersistentObject__takeDefaultValuesForObjects_inEventStore___block_
     v9[2] = __54__EKPersistentObject__takeValues_relatedObjectValues___block_invoke;
     v9[3] = &unk_1E77FEF00;
     v9[4] = self;
-    v10 = v6;
+    v10 = objectValuesCopy;
     v11 = v8;
-    [a3 enumerateKeysAndObjectsUsingBlock:v9];
+    [values enumerateKeysAndObjectsUsingBlock:v9];
   }
 }
 
@@ -2835,37 +2835,37 @@ LABEL_37:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)takeValuesForDefaultPropertyKeys:(id)a3 values:(id)a4
+- (void)takeValuesForDefaultPropertyKeys:(id)keys values:(id)values
 {
-  v6 = a4;
-  v7 = a3;
+  valuesCopy = values;
+  keysCopy = keys;
   v10 = objc_opt_new();
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _takeValuesForDefaultPropertyKeys:v7 values:v6 relatedObjectValues:v10];
+  [(EKPersistentObject *)self _takeValuesForDefaultPropertyKeys:keysCopy values:valuesCopy relatedObjectValues:v10];
 
   pthread_mutex_unlock(&self->_lock);
   v8 = objc_opt_class();
-  v9 = [(EKPersistentObject *)self eventStore];
-  [v8 _takeDefaultValuesForObjects:v10 inEventStore:v9];
+  eventStore = [(EKPersistentObject *)self eventStore];
+  [v8 _takeDefaultValuesForObjects:v10 inEventStore:eventStore];
 }
 
-- (void)_takeValuesForDefaultPropertyKeys:(id)a3 values:(id)a4 relatedObjectValues:(id)a5
+- (void)_takeValuesForDefaultPropertyKeys:(id)keys values:(id)values relatedObjectValues:(id)objectValues
 {
-  [(EKPersistentObject *)self _takeValues:a4 forKeys:a3 relatedObjectValues:a5];
-  if (a4)
+  [(EKPersistentObject *)self _takeValues:values forKeys:keys relatedObjectValues:objectValues];
+  if (values)
   {
 
     [(EKPersistentObject *)self _setDefaultPropertiesLoaded:1];
   }
 }
 
-- (void)_loadPropertiesIfNeeded:(id)a3
+- (void)_loadPropertiesIfNeeded:(id)needed
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] && !-[EKPersistentObject isNew](self, "isNew"))
+  neededCopy = needed;
+  if ([neededCopy count] && !-[EKPersistentObject isNew](self, "isNew"))
   {
-    v5 = v4;
+    v5 = neededCopy;
     if ([(NSMutableDictionary *)self->_updatedProperties count]|| [(NSMutableDictionary *)self->_loadedProperties count])
     {
       v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
@@ -2925,11 +2925,11 @@ LABEL_37:
       v31 = __Block_byref_object_copy__16;
       v32 = __Block_byref_object_dispose__16;
       v33 = 0;
-      v15 = [(EKPersistentObject *)self _CADObjectID];
-      v16 = v15;
-      if (v15)
+      _CADObjectID = [(EKPersistentObject *)self _CADObjectID];
+      v16 = _CADObjectID;
+      if (_CADObjectID)
       {
-        if (([v15 isTemporary] & 1) == 0)
+        if (([_CADObjectID isTemporary] & 1) == 0)
         {
           WeakRetained = objc_loadWeakRetained(&self->_eventStore);
           v18 = WeakRetained == 0;
@@ -2938,15 +2938,15 @@ LABEL_37:
           {
             v19 = objc_autoreleasePoolPush();
             v20 = objc_loadWeakRetained(&self->_eventStore);
-            v21 = [v20 connection];
-            v22 = [v21 CADOperationProxySync];
+            connection = [v20 connection];
+            cADOperationProxySync = [connection CADOperationProxySync];
             v25[0] = MEMORY[0x1E69E9820];
             v25[1] = 3221225472;
             v25[2] = __46__EKPersistentObject__loadPropertiesIfNeeded___block_invoke;
             v25[3] = &unk_1E77FED28;
             v26 = v16;
             v27 = &v28;
-            [v22 CADObject:v26 getPropertiesWithNames:v6 reply:v25];
+            [cADOperationProxySync CADObject:v26 getPropertiesWithNames:v6 reply:v25];
 
             objc_autoreleasePoolPop(v19);
           }
@@ -2986,24 +2986,24 @@ void __46__EKPersistentObject__loadPropertiesIfNeeded___block_invoke(uint64_t a1
   }
 }
 
-- (void)loadPropertiesIfNeeded:(id)a3
+- (void)loadPropertiesIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   pthread_mutex_lock(&self->_lock);
-  [(EKPersistentObject *)self _loadPropertiesIfNeeded:v4];
+  [(EKPersistentObject *)self _loadPropertiesIfNeeded:neededCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-+ (id)allObjectsWithChangesRelatedToObjects:(id)a3
++ (id)allObjectsWithChangesRelatedToObjects:(id)objects
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectsCopy = objects;
   v22 = [MEMORY[0x1E695DFA8] set];
   v4 = [MEMORY[0x1E695DFA8] set];
-  v21 = v3;
-  v5 = [v3 allObjects];
-  v6 = [v5 mutableCopy];
+  v21 = objectsCopy;
+  allObjects = [objectsCopy allObjects];
+  v6 = [allObjects mutableCopy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -3016,20 +3016,20 @@ void __46__EKPersistentObject__loadPropertiesIfNeeded___block_invoke(uint64_t a1
   v9 = _Block_copy(aBlock);
   while ([v8 count])
   {
-    v10 = [v8 lastObject];
+    lastObject = [v8 lastObject];
     [v8 removeLastObject];
-    [v7 addObject:v10];
-    if (([v10 isDirty] & 1) != 0 || (objc_msgSend(v10, "_isPendingInsert") & 1) != 0 || (objc_msgSend(v10, "_isPendingDelete") & 1) != 0 || objc_msgSend(v10, "_isPendingUpdate"))
+    [v7 addObject:lastObject];
+    if (([lastObject isDirty] & 1) != 0 || (objc_msgSend(lastObject, "_isPendingInsert") & 1) != 0 || (objc_msgSend(lastObject, "_isPendingDelete") & 1) != 0 || objc_msgSend(lastObject, "_isPendingUpdate"))
     {
-      [v22 addObject:v10];
+      [v22 addObject:lastObject];
     }
 
-    v11 = [v10 coCommitObjects];
+    coCommitObjects = [lastObject coCommitObjects];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v33 count:16];
+    v12 = [coCommitObjects countByEnumeratingWithState:&v26 objects:v33 count:16];
     if (v12)
     {
       v13 = v12;
@@ -3040,27 +3040,27 @@ void __46__EKPersistentObject__loadPropertiesIfNeeded___block_invoke(uint64_t a1
         {
           if (*v27 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(coCommitObjects);
           }
 
           v9[2](v9, *(*(&v26 + 1) + 8 * i));
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v26 objects:v33 count:16];
+        v13 = [coCommitObjects countByEnumeratingWithState:&v26 objects:v33 count:16];
       }
 
       while (v13);
     }
 
-    v16 = [objc_opt_class() relations];
+    relations = [objc_opt_class() relations];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __60__EKPersistentObject_allObjectsWithChangesRelatedToObjects___block_invoke_2;
     v23[3] = &unk_1E77FEF50;
-    v24 = v10;
+    v24 = lastObject;
     v25 = v9;
-    v17 = v10;
-    [v16 enumerateKeysAndObjectsUsingBlock:v23];
+    v17 = lastObject;
+    [relations enumerateKeysAndObjectsUsingBlock:v23];
   }
 
   v18 = [v22 copy];
@@ -3152,17 +3152,17 @@ void __60__EKPersistentObject_allObjectsWithChangesRelatedToObjects___block_invo
   v7 = _Block_copy(aBlock);
   while ([v5 count])
   {
-    v8 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     [v5 removeLastObject];
-    v9 = [objc_opt_class() relations];
+    relations = [objc_opt_class() relations];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __34__EKPersistentObject_ownedObjects__block_invoke_2;
     v13[3] = &unk_1E77FEF50;
-    v14 = v8;
+    v14 = lastObject;
     v15 = v7;
-    v10 = v8;
-    [v9 enumerateKeysAndObjectsUsingBlock:v13];
+    v10 = lastObject;
+    [relations enumerateKeysAndObjectsUsingBlock:v13];
   }
 
   v11 = [v6 copy];
@@ -3248,8 +3248,8 @@ void __34__EKPersistentObject_ownedObjects__block_invoke_2(uint64_t a1, void *a2
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(EKPersistentObject *)self _loadedPropertyKeys];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _loadedPropertyKeys = [(EKPersistentObject *)self _loadedPropertyKeys];
+  v5 = [_loadedPropertyKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3260,7 +3260,7 @@ void __34__EKPersistentObject_ownedObjects__block_invoke_2(uint64_t a1, void *a2
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_loadedPropertyKeys);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -3278,7 +3278,7 @@ void __34__EKPersistentObject_ownedObjects__block_invoke_2(uint64_t a1, void *a2
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [_loadedPropertyKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -3311,7 +3311,7 @@ void __34__EKPersistentObject_ownedObjects__block_invoke_2(uint64_t a1, void *a2
 + (void)alternateUniverseClass
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v5 = 138543362;
   v6 = v3;
   _os_log_error_impl(&dword_1A805E000, a2, OS_LOG_TYPE_ERROR, "+alternateUniverseClass called on a class that does not implement it (%{public}@)", &v5, 0xCu);

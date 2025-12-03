@@ -1,16 +1,16 @@
 @interface WBSSavedAccountSearchMatch
 - (_TtC10SafariCore26WBSSavedAccountSearchMatch)init;
-- (_TtC10SafariCore26WBSSavedAccountSearchMatch)initWithScore:(int64_t)a3 matchingType:(int64_t)a4 matchingRange:(_NSRange)a5;
+- (_TtC10SafariCore26WBSSavedAccountSearchMatch)initWithScore:(int64_t)score matchingType:(int64_t)type matchingRange:(_NSRange)range;
 @end
 
 @implementation WBSSavedAccountSearchMatch
 
-- (_TtC10SafariCore26WBSSavedAccountSearchMatch)initWithScore:(int64_t)a3 matchingType:(int64_t)a4 matchingRange:(_NSRange)a5
+- (_TtC10SafariCore26WBSSavedAccountSearchMatch)initWithScore:(int64_t)score matchingType:(int64_t)type matchingRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  *(&self->super.isa + OBJC_IVAR____TtC10SafariCore26WBSSavedAccountSearchMatch_score) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC10SafariCore26WBSSavedAccountSearchMatch_matchingType) = a4;
+  length = range.length;
+  location = range.location;
+  *(&self->super.isa + OBJC_IVAR____TtC10SafariCore26WBSSavedAccountSearchMatch_score) = score;
+  *(&self->super.isa + OBJC_IVAR____TtC10SafariCore26WBSSavedAccountSearchMatch_matchingType) = type;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA8A918, &qword_1B8574C20);
   result = swift_allocObject();
   *result->matchingType = xmmword_1B85740E0;

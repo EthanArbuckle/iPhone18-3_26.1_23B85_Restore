@@ -1,22 +1,22 @@
 @interface _ASIncomingCallObserver
-+ (_ASIncomingCallObserver)callObserverWithBlock:(id)a3;
-- (id)_initWithBlock:(id)a3;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
++ (_ASIncomingCallObserver)callObserverWithBlock:(id)block;
+- (id)_initWithBlock:(id)block;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 @end
 
 @implementation _ASIncomingCallObserver
 
-+ (_ASIncomingCallObserver)callObserverWithBlock:(id)a3
++ (_ASIncomingCallObserver)callObserverWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] _initWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)_initWithBlock:(id)a3
+- (id)_initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = _ASIncomingCallObserver;
   v5 = [(_ASIncomingCallObserver *)&v12 init];
@@ -27,7 +27,7 @@
     v5->_callObserver = v6;
 
     [(CXCallObserver *)v5->_callObserver setDelegate:v5 queue:0];
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(blockCopy);
     incomingCallHandler = v5->_incomingCallHandler;
     v5->_incomingCallHandler = v8;
 
@@ -37,9 +37,9 @@
   return v5;
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  if ([a4 hasConnected])
+  if ([changed hasConnected])
   {
     v5 = *(self->_incomingCallHandler + 2);
 

@@ -1,31 +1,31 @@
 @interface SBDisplayReferenceModeMonitor
-+ (BOOL)canAddObserverForDisplayWithConfiguration:(id)a3;
-- (BOOL)_shouldNotifyObserversOfReferenceModeStatusChangeForDisplay:(id)a3;
-- (id)_configurationForDisplay:(id)a3;
-- (id)_observersForDisplay:(id)a3;
-- (int64_t)_cachedStatusForDisplay:(id)a3;
-- (int64_t)_referenceModeStatusForDisplay:(id)a3;
-- (int64_t)referenceModeStatusForDisplayWithConfiguration:(id)a3;
-- (void)_addObserver:(id)a3 forDisplay:(id)a4;
-- (void)_enumerateObserversOfDisplay:(id)a3 usingBlock:(id)a4;
-- (void)_removeCachedStatusForDisplay:(id)a3;
-- (void)_removeObserver:(id)a3 forDisplay:(id)a4;
-- (void)_setCachedStatus:(int64_t)a3 forDisplay:(id)a4;
-- (void)_setConfig:(id)a3 forDisplay:(id)a4;
-- (void)_startObservingDisplayIfNeeded:(id)a3;
-- (void)_stopObservingDisplay:(id)a3;
-- (void)addReferenceModeStatusObserver:(id)a3 forDisplayWithConfiguration:(id)a4;
++ (BOOL)canAddObserverForDisplayWithConfiguration:(id)configuration;
+- (BOOL)_shouldNotifyObserversOfReferenceModeStatusChangeForDisplay:(id)display;
+- (id)_configurationForDisplay:(id)display;
+- (id)_observersForDisplay:(id)display;
+- (int64_t)_cachedStatusForDisplay:(id)display;
+- (int64_t)_referenceModeStatusForDisplay:(id)display;
+- (int64_t)referenceModeStatusForDisplayWithConfiguration:(id)configuration;
+- (void)_addObserver:(id)observer forDisplay:(id)display;
+- (void)_enumerateObserversOfDisplay:(id)display usingBlock:(id)block;
+- (void)_removeCachedStatusForDisplay:(id)display;
+- (void)_removeObserver:(id)observer forDisplay:(id)display;
+- (void)_setCachedStatus:(int64_t)status forDisplay:(id)display;
+- (void)_setConfig:(id)config forDisplay:(id)display;
+- (void)_startObservingDisplayIfNeeded:(id)needed;
+- (void)_stopObservingDisplay:(id)display;
+- (void)addReferenceModeStatusObserver:(id)observer forDisplayWithConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeReferenceModeStatusObserver:(id)a3 forDisplayWithConfiguration:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeReferenceModeStatusObserver:(id)observer forDisplayWithConfiguration:(id)configuration;
 @end
 
 @implementation SBDisplayReferenceModeMonitor
 
-+ (BOOL)canAddObserverForDisplayWithConfiguration:(id)a3
++ (BOOL)canAddObserverForDisplayWithConfiguration:(id)configuration
 {
-  v3 = [a3 sb_referenceModeObserverUniqueIdentifier];
-  v4 = v3 != 0;
+  sb_referenceModeObserverUniqueIdentifier = [configuration sb_referenceModeObserverUniqueIdentifier];
+  v4 = sb_referenceModeObserverUniqueIdentifier != 0;
 
   return v4;
 }
@@ -69,14 +69,14 @@
   [(SBDisplayReferenceModeMonitor *)&v9 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(NSMutableSet *)self->_observedDisplays containsObject:v11])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([(NSMutableSet *)self->_observedDisplays containsObject:objectCopy])
   {
-    v13 = v11;
+    v13 = objectCopy;
     if ([(SBDisplayReferenceModeMonitor *)self _shouldNotifyObserversOfReferenceModeStatusChangeForDisplay:v13])
     {
       v15[0] = MEMORY[0x277D85DD0];
@@ -93,7 +93,7 @@
   {
     v14.receiver = self;
     v14.super_class = SBDisplayReferenceModeMonitor;
-    [(SBDisplayReferenceModeMonitor *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SBDisplayReferenceModeMonitor *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -106,45 +106,45 @@ uint64_t __80__SBDisplayReferenceModeMonitor_observeValueForKeyPath_ofObject_cha
   return [v6 _setCachedStatus:a4 forDisplay:v7];
 }
 
-- (void)addReferenceModeStatusObserver:(id)a3 forDisplayWithConfiguration:(id)a4
+- (void)addReferenceModeStatusObserver:(id)observer forDisplayWithConfiguration:(id)configuration
 {
-  v8 = a3;
-  v6 = a4;
-  if (!v8)
+  observerCopy = observer;
+  configurationCopy = configuration;
+  if (!observerCopy)
   {
     [SBDisplayReferenceModeMonitor addReferenceModeStatusObserver:forDisplayWithConfiguration:];
   }
 
-  if (![SBDisplayReferenceModeMonitor canAddObserverForDisplayWithConfiguration:v6])
+  if (![SBDisplayReferenceModeMonitor canAddObserverForDisplayWithConfiguration:configurationCopy])
   {
     [SBDisplayReferenceModeMonitor addReferenceModeStatusObserver:forDisplayWithConfiguration:];
   }
 
-  v7 = [(SBDisplayReferenceModeMonitor *)self _displayForConfiguration:v6];
+  v7 = [(SBDisplayReferenceModeMonitor *)self _displayForConfiguration:configurationCopy];
   if (v7)
   {
-    [(SBDisplayReferenceModeMonitor *)self _addObserver:v8 forDisplay:v7];
+    [(SBDisplayReferenceModeMonitor *)self _addObserver:observerCopy forDisplay:v7];
     [(SBDisplayReferenceModeMonitor *)self _startObservingDisplayIfNeeded:v7];
-    [(SBDisplayReferenceModeMonitor *)self _setConfig:v6 forDisplay:v7];
+    [(SBDisplayReferenceModeMonitor *)self _setConfig:configurationCopy forDisplay:v7];
   }
 }
 
-- (void)removeReferenceModeStatusObserver:(id)a3 forDisplayWithConfiguration:(id)a4
+- (void)removeReferenceModeStatusObserver:(id)observer forDisplayWithConfiguration:(id)configuration
 {
-  v10 = a3;
-  v6 = a4;
-  if (!v10)
+  observerCopy = observer;
+  configurationCopy = configuration;
+  if (!observerCopy)
   {
     [SBDisplayReferenceModeMonitor removeReferenceModeStatusObserver:forDisplayWithConfiguration:];
   }
 
-  if (![SBDisplayReferenceModeMonitor canAddObserverForDisplayWithConfiguration:v6])
+  if (![SBDisplayReferenceModeMonitor canAddObserverForDisplayWithConfiguration:configurationCopy])
   {
     [SBDisplayReferenceModeMonitor removeReferenceModeStatusObserver:forDisplayWithConfiguration:];
   }
 
-  v7 = [(SBDisplayReferenceModeMonitor *)self _displayForConfiguration:v6];
-  [(SBDisplayReferenceModeMonitor *)self _removeObserver:v10 forDisplay:v7];
+  v7 = [(SBDisplayReferenceModeMonitor *)self _displayForConfiguration:configurationCopy];
+  [(SBDisplayReferenceModeMonitor *)self _removeObserver:observerCopy forDisplay:v7];
   v8 = [(SBDisplayReferenceModeMonitor *)self _observersForDisplay:v7];
   v9 = [v8 count];
 
@@ -154,18 +154,18 @@ uint64_t __80__SBDisplayReferenceModeMonitor_observeValueForKeyPath_ofObject_cha
   }
 }
 
-- (int64_t)referenceModeStatusForDisplayWithConfiguration:(id)a3
+- (int64_t)referenceModeStatusForDisplayWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (![SBDisplayReferenceModeMonitor canAddObserverForDisplayWithConfiguration:v4])
+  configurationCopy = configuration;
+  if (![SBDisplayReferenceModeMonitor canAddObserverForDisplayWithConfiguration:configurationCopy])
   {
     [SBDisplayReferenceModeMonitor referenceModeStatusForDisplayWithConfiguration:];
   }
 
-  v5 = [(SBDisplayReferenceModeMonitor *)self _displayForConfiguration:v4];
+  v5 = [(SBDisplayReferenceModeMonitor *)self _displayForConfiguration:configurationCopy];
   displayToCachedStatus = self->_displayToCachedStatus;
-  v7 = [v5 sb_referenceModeObserverUniqueIdentifier];
-  v8 = [(NSMutableDictionary *)displayToCachedStatus objectForKeyedSubscript:v7];
+  sb_referenceModeObserverUniqueIdentifier = [v5 sb_referenceModeObserverUniqueIdentifier];
+  v8 = [(NSMutableDictionary *)displayToCachedStatus objectForKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
 
   if (v8)
   {
@@ -182,36 +182,36 @@ uint64_t __80__SBDisplayReferenceModeMonitor_observeValueForKeyPath_ofObject_cha
   return v10;
 }
 
-- (BOOL)_shouldNotifyObserversOfReferenceModeStatusChangeForDisplay:(id)a3
+- (BOOL)_shouldNotifyObserversOfReferenceModeStatusChangeForDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [(SBDisplayReferenceModeMonitor *)self _cachedStatusForDisplay:v4];
-  v6 = [(SBDisplayReferenceModeMonitor *)self _referenceModeStatusForDisplay:v4];
+  displayCopy = display;
+  v5 = [(SBDisplayReferenceModeMonitor *)self _cachedStatusForDisplay:displayCopy];
+  v6 = [(SBDisplayReferenceModeMonitor *)self _referenceModeStatusForDisplay:displayCopy];
 
   return v5 != v6;
 }
 
-- (void)_setCachedStatus:(int64_t)a3 forDisplay:(id)a4
+- (void)_setCachedStatus:(int64_t)status forDisplay:(id)display
 {
-  v11 = a4;
+  displayCopy = display;
   if (!self->_displayToCachedStatus)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     displayToCachedStatus = self->_displayToCachedStatus;
-    self->_displayToCachedStatus = v6;
+    self->_displayToCachedStatus = dictionary;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:status];
   v9 = self->_displayToCachedStatus;
-  v10 = [v11 sb_referenceModeObserverUniqueIdentifier];
-  [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v10];
+  sb_referenceModeObserverUniqueIdentifier = [displayCopy sb_referenceModeObserverUniqueIdentifier];
+  [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
 }
 
-- (void)_removeCachedStatusForDisplay:(id)a3
+- (void)_removeCachedStatusForDisplay:(id)display
 {
   displayToCachedStatus = self->_displayToCachedStatus;
-  v5 = [a3 sb_referenceModeObserverUniqueIdentifier];
-  [(NSMutableDictionary *)displayToCachedStatus setObject:0 forKeyedSubscript:v5];
+  sb_referenceModeObserverUniqueIdentifier = [display sb_referenceModeObserverUniqueIdentifier];
+  [(NSMutableDictionary *)displayToCachedStatus setObject:0 forKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
 
   if (![(NSMutableDictionary *)self->_displayToCachedStatus count])
   {
@@ -220,23 +220,23 @@ uint64_t __80__SBDisplayReferenceModeMonitor_observeValueForKeyPath_ofObject_cha
   }
 }
 
-- (int64_t)_cachedStatusForDisplay:(id)a3
+- (int64_t)_cachedStatusForDisplay:(id)display
 {
   displayToCachedStatus = self->_displayToCachedStatus;
-  v4 = [a3 sb_referenceModeObserverUniqueIdentifier];
-  v5 = [(NSMutableDictionary *)displayToCachedStatus objectForKeyedSubscript:v4];
-  v6 = [v5 integerValue];
+  sb_referenceModeObserverUniqueIdentifier = [display sb_referenceModeObserverUniqueIdentifier];
+  v5 = [(NSMutableDictionary *)displayToCachedStatus objectForKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (int64_t)_referenceModeStatusForDisplay:(id)a3
+- (int64_t)_referenceModeStatusForDisplay:(id)display
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (([v3 isReference] & 1) != 0 || objc_msgSend(v3, "isReferenceLimited"))
+  displayCopy = display;
+  if (([displayCopy isReference] & 1) != 0 || objc_msgSend(displayCopy, "isReferenceLimited"))
   {
-    if ([v3 isReferenceLimited])
+    if ([displayCopy isReferenceLimited])
     {
       v4 = 2;
     }
@@ -253,8 +253,8 @@ uint64_t __80__SBDisplayReferenceModeMonitor_observeValueForKeyPath_ofObject_cha
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v3 availablePresets];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    availablePresets = [displayCopy availablePresets];
+    v6 = [availablePresets countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -266,7 +266,7 @@ LABEL_8:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(availablePresets);
         }
 
         if ([*(*(&v11 + 1) + 8 * v9) isReference])
@@ -276,7 +276,7 @@ LABEL_8:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v7 = [availablePresets countByEnumeratingWithState:&v11 objects:v15 count:16];
           if (v7)
           {
             goto LABEL_8;
@@ -297,31 +297,31 @@ LABEL_14:
   return v4;
 }
 
-- (id)_configurationForDisplay:(id)a3
+- (id)_configurationForDisplay:(id)display
 {
   CADisplayIdentifierToFBSDisplayConfig = self->_CADisplayIdentifierToFBSDisplayConfig;
-  v4 = [a3 sb_referenceModeObserverUniqueIdentifier];
-  v5 = [(NSMutableDictionary *)CADisplayIdentifierToFBSDisplayConfig objectForKeyedSubscript:v4];
+  sb_referenceModeObserverUniqueIdentifier = [display sb_referenceModeObserverUniqueIdentifier];
+  v5 = [(NSMutableDictionary *)CADisplayIdentifierToFBSDisplayConfig objectForKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
 
   return v5;
 }
 
-- (void)_setConfig:(id)a3 forDisplay:(id)a4
+- (void)_setConfig:(id)config forDisplay:(id)display
 {
-  v12 = a3;
-  v6 = a4;
+  configCopy = config;
+  displayCopy = display;
   CADisplayIdentifierToFBSDisplayConfig = self->_CADisplayIdentifierToFBSDisplayConfig;
-  if (v12 && !CADisplayIdentifierToFBSDisplayConfig)
+  if (configCopy && !CADisplayIdentifierToFBSDisplayConfig)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = self->_CADisplayIdentifierToFBSDisplayConfig;
-    self->_CADisplayIdentifierToFBSDisplayConfig = v8;
+    self->_CADisplayIdentifierToFBSDisplayConfig = dictionary;
 
     CADisplayIdentifierToFBSDisplayConfig = self->_CADisplayIdentifierToFBSDisplayConfig;
   }
 
-  v10 = [v6 sb_referenceModeObserverUniqueIdentifier];
-  [(NSMutableDictionary *)CADisplayIdentifierToFBSDisplayConfig setObject:v12 forKeyedSubscript:v10];
+  sb_referenceModeObserverUniqueIdentifier = [displayCopy sb_referenceModeObserverUniqueIdentifier];
+  [(NSMutableDictionary *)CADisplayIdentifierToFBSDisplayConfig setObject:configCopy forKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
 
   if (![(NSMutableDictionary *)self->_CADisplayIdentifierToFBSDisplayConfig count])
   {
@@ -330,53 +330,53 @@ LABEL_14:
   }
 }
 
-- (void)_addObserver:(id)a3 forDisplay:(id)a4
+- (void)_addObserver:(id)observer forDisplay:(id)display
 {
-  v14 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  displayCopy = display;
   CADisplayIdentifierToObservers = self->_CADisplayIdentifierToObservers;
   if (!CADisplayIdentifierToObservers)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = self->_CADisplayIdentifierToObservers;
-    self->_CADisplayIdentifierToObservers = v8;
+    self->_CADisplayIdentifierToObservers = dictionary;
 
     CADisplayIdentifierToObservers = self->_CADisplayIdentifierToObservers;
   }
 
-  v10 = [v6 sb_referenceModeObserverUniqueIdentifier];
-  v11 = [(NSMutableDictionary *)CADisplayIdentifierToObservers objectForKeyedSubscript:v10];
+  sb_referenceModeObserverUniqueIdentifier = [displayCopy sb_referenceModeObserverUniqueIdentifier];
+  weakObjectsHashTable = [(NSMutableDictionary *)CADisplayIdentifierToObservers objectForKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
 
-  if (!v11)
+  if (!weakObjectsHashTable)
   {
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v12 = self->_CADisplayIdentifierToObservers;
-    v13 = [v6 sb_referenceModeObserverUniqueIdentifier];
-    [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
+    sb_referenceModeObserverUniqueIdentifier2 = [displayCopy sb_referenceModeObserverUniqueIdentifier];
+    [(NSMutableDictionary *)v12 setObject:weakObjectsHashTable forKeyedSubscript:sb_referenceModeObserverUniqueIdentifier2];
   }
 
-  [v11 addObject:v14];
+  [weakObjectsHashTable addObject:observerCopy];
 }
 
-- (void)_removeObserver:(id)a3 forDisplay:(id)a4
+- (void)_removeObserver:(id)observer forDisplay:(id)display
 {
-  v17 = a4;
+  displayCopy = display;
   CADisplayIdentifierToObservers = self->_CADisplayIdentifierToObservers;
-  v7 = a3;
-  v8 = [v17 sb_referenceModeObserverUniqueIdentifier];
-  v9 = [(NSMutableDictionary *)CADisplayIdentifierToObservers objectForKeyedSubscript:v8];
-  [v9 removeObject:v7];
+  observerCopy = observer;
+  sb_referenceModeObserverUniqueIdentifier = [displayCopy sb_referenceModeObserverUniqueIdentifier];
+  v9 = [(NSMutableDictionary *)CADisplayIdentifierToObservers objectForKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
+  [v9 removeObject:observerCopy];
 
   v10 = self->_CADisplayIdentifierToObservers;
-  v11 = [v17 sb_referenceModeObserverUniqueIdentifier];
-  v12 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v11];
+  sb_referenceModeObserverUniqueIdentifier2 = [displayCopy sb_referenceModeObserverUniqueIdentifier];
+  v12 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:sb_referenceModeObserverUniqueIdentifier2];
   v13 = [v12 count];
 
   if (!v13)
   {
     v14 = self->_CADisplayIdentifierToObservers;
-    v15 = [v17 sb_referenceModeObserverUniqueIdentifier];
-    [(NSMutableDictionary *)v14 setObject:0 forKeyedSubscript:v15];
+    sb_referenceModeObserverUniqueIdentifier3 = [displayCopy sb_referenceModeObserverUniqueIdentifier];
+    [(NSMutableDictionary *)v14 setObject:0 forKeyedSubscript:sb_referenceModeObserverUniqueIdentifier3];
   }
 
   if (![(NSMutableDictionary *)self->_CADisplayIdentifierToObservers count])
@@ -386,23 +386,23 @@ LABEL_14:
   }
 }
 
-- (id)_observersForDisplay:(id)a3
+- (id)_observersForDisplay:(id)display
 {
   CADisplayIdentifierToObservers = self->_CADisplayIdentifierToObservers;
-  v4 = [a3 sb_referenceModeObserverUniqueIdentifier];
-  v5 = [(NSMutableDictionary *)CADisplayIdentifierToObservers objectForKeyedSubscript:v4];
-  v6 = [v5 allObjects];
+  sb_referenceModeObserverUniqueIdentifier = [display sb_referenceModeObserverUniqueIdentifier];
+  v5 = [(NSMutableDictionary *)CADisplayIdentifierToObservers objectForKeyedSubscript:sb_referenceModeObserverUniqueIdentifier];
+  allObjects = [v5 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
-- (void)_enumerateObserversOfDisplay:(id)a3 usingBlock:(id)a4
+- (void)_enumerateObserversOfDisplay:(id)display usingBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBDisplayReferenceModeMonitor *)self _configurationForDisplay:v6];
-  v9 = [(SBDisplayReferenceModeMonitor *)self _observersForDisplay:v6];
+  displayCopy = display;
+  blockCopy = block;
+  v8 = [(SBDisplayReferenceModeMonitor *)self _configurationForDisplay:displayCopy];
+  v9 = [(SBDisplayReferenceModeMonitor *)self _observersForDisplay:displayCopy];
   v10 = [(SBDisplayReferenceModeMonitor *)self referenceModeStatusForDisplayWithConfiguration:v8];
   v16 = 0u;
   v17 = 0u;
@@ -424,7 +424,7 @@ LABEL_14:
           objc_enumerationMutation(v11);
         }
 
-        v7[2](v7, *(*(&v16 + 1) + 8 * v15++), v8, v10);
+        blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v15++), v8, v10);
       }
 
       while (v13 != v15);
@@ -435,22 +435,22 @@ LABEL_14:
   }
 }
 
-- (void)_startObservingDisplayIfNeeded:(id)a3
+- (void)_startObservingDisplayIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   observedDisplays = self->_observedDisplays;
-  v8 = v4;
+  v8 = neededCopy;
   if (!observedDisplays)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->_observedDisplays;
     self->_observedDisplays = v6;
 
-    v4 = v8;
+    neededCopy = v8;
     observedDisplays = self->_observedDisplays;
   }
 
-  if (([(NSMutableSet *)observedDisplays containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)observedDisplays containsObject:neededCopy]& 1) == 0)
   {
     [(NSMutableSet *)self->_observedDisplays addObject:v8];
     [v8 addObserver:self forKeyPath:@"isReference" options:0 context:0];
@@ -459,13 +459,13 @@ LABEL_14:
   }
 }
 
-- (void)_stopObservingDisplay:(id)a3
+- (void)_stopObservingDisplay:(id)display
 {
-  v6 = a3;
-  v4 = [(NSMutableSet *)self->_observedDisplays containsObject:v6];
-  [(SBDisplayReferenceModeMonitor *)self _setConfig:0 forDisplay:v6];
-  [(SBDisplayReferenceModeMonitor *)self _removeCachedStatusForDisplay:v6];
-  [(NSMutableSet *)self->_observedDisplays removeObject:v6];
+  displayCopy = display;
+  v4 = [(NSMutableSet *)self->_observedDisplays containsObject:displayCopy];
+  [(SBDisplayReferenceModeMonitor *)self _setConfig:0 forDisplay:displayCopy];
+  [(SBDisplayReferenceModeMonitor *)self _removeCachedStatusForDisplay:displayCopy];
+  [(NSMutableSet *)self->_observedDisplays removeObject:displayCopy];
   if ([(NSMutableSet *)self->_observedDisplays count])
   {
     if (!v4)
@@ -482,8 +482,8 @@ LABEL_14:
   if (v4)
   {
 LABEL_3:
-    [v6 removeObserver:self forKeyPath:@"isReference" context:0];
-    [v6 removeObserver:self forKeyPath:@"isReferenceLimited" context:0];
+    [displayCopy removeObserver:self forKeyPath:@"isReference" context:0];
+    [displayCopy removeObserver:self forKeyPath:@"isReferenceLimited" context:0];
   }
 
 LABEL_4:

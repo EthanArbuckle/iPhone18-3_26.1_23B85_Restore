@@ -1,16 +1,16 @@
 @interface RAPReportComposerPlaceClosureIssueSection
-- (RAPReportComposerPlaceClosureIssueSection)initWithQuestion:(id)a3 selection:(id)a4;
-- (id)cellForRowAtIndex:(int64_t)a3;
+- (RAPReportComposerPlaceClosureIssueSection)initWithQuestion:(id)question selection:(id)selection;
+- (id)cellForRowAtIndex:(int64_t)index;
 - (int64_t)rowsCount;
-- (void)didSelectCellForRowAtIndex:(int64_t)a3 tableIndexPath:(id)a4;
+- (void)didSelectCellForRowAtIndex:(int64_t)index tableIndexPath:(id)path;
 @end
 
 @implementation RAPReportComposerPlaceClosureIssueSection
 
-- (void)didSelectCellForRowAtIndex:(int64_t)a3 tableIndexPath:(id)a4
+- (void)didSelectCellForRowAtIndex:(int64_t)index tableIndexPath:(id)path
 {
-  v6 = [(RAPPlaceClosureQuestion *)self->_question selectableIssues:a3];
-  v8 = [v6 objectAtIndexedSubscript:a3];
+  v6 = [(RAPPlaceClosureQuestion *)self->_question selectableIssues:index];
+  v8 = [v6 objectAtIndexedSubscript:index];
 
   [(RAPPlaceClosureQuestion *)self->_question setSelectedIssue:v8];
   selection = self->_selection;
@@ -20,19 +20,19 @@
   }
 }
 
-- (id)cellForRowAtIndex:(int64_t)a3
+- (id)cellForRowAtIndex:(int64_t)index
 {
-  v5 = [(RAPTablePartSection *)self dequeueDefaultSingleLineTableViewCell];
-  v6 = [(RAPPlaceClosureQuestion *)self->_question selectableIssues];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  dequeueDefaultSingleLineTableViewCell = [(RAPTablePartSection *)self dequeueDefaultSingleLineTableViewCell];
+  selectableIssues = [(RAPPlaceClosureQuestion *)self->_question selectableIssues];
+  v7 = [selectableIssues objectAtIndexedSubscript:index];
 
-  v8 = [v7 localizedName];
-  v9 = [v5 textLabel];
-  [v9 setText:v8];
+  localizedName = [v7 localizedName];
+  textLabel = [dequeueDefaultSingleLineTableViewCell textLabel];
+  [textLabel setText:localizedName];
 
-  v10 = [(RAPPlaceClosureQuestion *)self->_question selectedIssue];
+  selectedIssue = [(RAPPlaceClosureQuestion *)self->_question selectedIssue];
 
-  if (v10 == v7)
+  if (selectedIssue == v7)
   {
     v11 = 3;
   }
@@ -42,36 +42,36 @@
     v11 = 0;
   }
 
-  [v5 setAccessoryType:v11];
-  [v5 setSelectionStyle:0];
+  [dequeueDefaultSingleLineTableViewCell setAccessoryType:v11];
+  [dequeueDefaultSingleLineTableViewCell setSelectionStyle:0];
 
-  return v5;
+  return dequeueDefaultSingleLineTableViewCell;
 }
 
 - (int64_t)rowsCount
 {
-  v2 = [(RAPPlaceClosureQuestion *)self->_question selectableIssues];
-  v3 = [v2 count];
+  selectableIssues = [(RAPPlaceClosureQuestion *)self->_question selectableIssues];
+  v3 = [selectableIssues count];
 
   return v3;
 }
 
-- (RAPReportComposerPlaceClosureIssueSection)initWithQuestion:(id)a3 selection:(id)a4
+- (RAPReportComposerPlaceClosureIssueSection)initWithQuestion:(id)question selection:(id)selection
 {
-  v7 = a3;
-  v8 = a4;
+  questionCopy = question;
+  selectionCopy = selection;
   v15.receiver = self;
   v15.super_class = RAPReportComposerPlaceClosureIssueSection;
   v9 = [(RAPTablePartSection *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_question, a3);
+    objc_storeStrong(&v9->_question, question);
     [(RAPQuestion *)v10->_question addObserver:v10 changeHandler:&stru_101622D80];
-    v11 = [(RAPPlaceClosureQuestion *)v10->_question localizedSelectableIssueLabel];
-    [(RAPTablePartSection *)v10 setHeaderTitle:v11];
+    localizedSelectableIssueLabel = [(RAPPlaceClosureQuestion *)v10->_question localizedSelectableIssueLabel];
+    [(RAPTablePartSection *)v10 setHeaderTitle:localizedSelectableIssueLabel];
 
-    v12 = [v8 copy];
+    v12 = [selectionCopy copy];
     selection = v10->_selection;
     v10->_selection = v12;
   }

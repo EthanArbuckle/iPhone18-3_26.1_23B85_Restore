@@ -1,15 +1,15 @@
 @interface KMMapper_AppGlobalVocabulary
-- (BOOL)_addItemWithItemId:(id)a3 fieldType:(int64_t)a4 values:(id)a5 error:(id *)a6;
+- (BOOL)_addItemWithItemId:(id)id fieldType:(int64_t)type values:(id)values error:(id *)error;
 - (KMMapper_AppGlobalVocabulary)init;
-- (id)_resolveFieldTypeFromIntentSlotName:(id)a3;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (id)_resolveFieldTypeFromIntentSlotName:(id)name;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMMapper_AppGlobalVocabulary
 
-- (id)_resolveFieldTypeFromIntentSlotName:(id)a3
+- (id)_resolveFieldTypeFromIntentSlotName:(id)name
 {
-  v4 = [a3 componentsSeparatedByString:@"."];
+  v4 = [name componentsSeparatedByString:@"."];
   if ([v4 count] >= 2)
   {
     v6 = [v4 objectAtIndex:0];
@@ -34,23 +34,23 @@
   return v5;
 }
 
-- (BOOL)_addItemWithItemId:(id)a3 fieldType:(int64_t)a4 values:(id)a5 error:(id *)a6
+- (BOOL)_addItemWithItemId:(id)id fieldType:(int64_t)type values:(id)values error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  valuesCopy = values;
   builder = self->_builder;
   v36 = 0;
-  v12 = [(KVItemBuilder *)builder setItemType:14 itemId:a3 error:&v36];
+  v12 = [(KVItemBuilder *)builder setItemType:14 itemId:id error:&v36];
   v13 = v36;
 
   if (v12)
   {
-    v29 = a6;
+    errorCopy = error;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = v10;
+    v14 = valuesCopy;
     v15 = [v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v15)
     {
@@ -70,12 +70,12 @@
           v20 = *(*(&v32 + 1) + 8 * v18);
           v21 = self->_builder;
           v31 = v19;
-          v22 = [(KVItemBuilder *)v21 addFieldWithType:a4 value:v20 error:&v31];
+          v22 = [(KVItemBuilder *)v21 addFieldWithType:type value:v20 error:&v31];
           v13 = v31;
 
           if (!v22)
           {
-            KMMapperSetBuilderError(v29, v13);
+            KMMapperSetBuilderError(errorCopy, v13);
 
             goto LABEL_14;
           }
@@ -110,13 +110,13 @@
 
     else
     {
-      KMMapperSetBuilderError(v29, v13);
+      KMMapperSetBuilderError(errorCopy, v13);
     }
   }
 
   else
   {
-    KMMapperSetBuilderError(a6, v13);
+    KMMapperSetBuilderError(error, v13);
 LABEL_14:
     v26 = 0;
   }
@@ -125,16 +125,16 @@ LABEL_14:
   return v26;
 }
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v116 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  objectCopy = object;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   items = self->_items;
   self->_items = v8;
 
-  v58 = v7;
-  v10 = [v7 arrayValueForKey:*MEMORY[0x277CD4488] expectedObjectsType:objc_opt_class() keyRequired:1 error:a5];
+  v58 = objectCopy;
+  v10 = [objectCopy arrayValueForKey:*MEMORY[0x277CD4488] expectedObjectsType:objc_opt_class() keyRequired:1 error:error];
   v57 = v10;
   if (v10)
   {
@@ -153,8 +153,8 @@ LABEL_14:
       v62 = *MEMORY[0x277CD4498];
       v79 = *MEMORY[0x277CD4480];
       v78 = *MEMORY[0x277CD4470];
-      v63 = self;
-      v80 = a5;
+      selfCopy = self;
+      errorCopy = error;
       do
       {
         v11 = 0;
@@ -168,7 +168,7 @@ LABEL_14:
           v60 = v11;
           v12 = *(*(&v105 + 1) + 8 * v11);
           v69 = objc_opt_new();
-          v13 = [v12 arrayValueForKey:v55 expectedObjectsType:objc_opt_class() keyRequired:1 error:a5];
+          v13 = [v12 arrayValueForKey:v55 expectedObjectsType:objc_opt_class() keyRequired:1 error:error];
           if (v13)
           {
             v103 = 0u;
@@ -203,8 +203,8 @@ LABEL_14:
               while (v15);
             }
 
-            a5 = v80;
-            v19 = [v12 arrayValueForKey:v53 expectedObjectsType:objc_opt_class() keyRequired:1 error:v80];
+            error = errorCopy;
+            v19 = [v12 arrayValueForKey:v53 expectedObjectsType:objc_opt_class() keyRequired:1 error:errorCopy];
             if (v19)
             {
               v20 = v19;
@@ -228,7 +228,7 @@ LABEL_14:
                     }
 
                     v22 = *(*(&v97 + 1) + 8 * j);
-                    v23 = [v22 stringValueForKey:v68 error:a5];
+                    v23 = [v22 stringValueForKey:v68 error:error];
                     if ([v23 length])
                     {
                       v74 = j;
@@ -241,7 +241,7 @@ LABEL_14:
                       }
 
                       v72 = v23;
-                      v76 = [v22 arrayValueForKey:v62 expectedObjectsType:objc_opt_class() keyRequired:1 error:a5];
+                      v76 = [v22 arrayValueForKey:v62 expectedObjectsType:objc_opt_class() keyRequired:1 error:error];
                       if (v76)
                       {
                         v95 = 0u;
@@ -263,13 +263,13 @@ LABEL_14:
                               }
 
                               v29 = *(*(&v93 + 1) + 8 * k);
-                              v30 = [v29 stringValueForKey:v79 error:a5];
+                              v30 = [v29 stringValueForKey:v79 error:error];
                               if ([v30 length])
                               {
                                 [v24 addObject:v30];
                               }
 
-                              v31 = [v29 arrayValueForKey:v78 expectedObjectsType:objc_opt_class() keyRequired:0 error:a5];
+                              v31 = [v29 arrayValueForKey:v78 expectedObjectsType:objc_opt_class() keyRequired:0 error:error];
                               v89 = 0u;
                               v90 = 0u;
                               v91 = 0u;
@@ -301,7 +301,7 @@ LABEL_14:
                                 while (v33);
                               }
 
-                              a5 = v80;
+                              error = errorCopy;
                             }
 
                             v26 = [v76 countByEnumeratingWithState:&v93 objects:v112 count:16];
@@ -311,7 +311,7 @@ LABEL_14:
                         }
                       }
 
-                      self = v63;
+                      self = selfCopy;
                       v23 = v72;
                       j = v74;
                     }
@@ -367,9 +367,9 @@ LABEL_14:
                           }
 
                           v46 = *(*(&v81 + 1) + 8 * n);
-                          v47 = [v41 setValueForKey:v46 expectedObjectsType:objc_opt_class() keyRequired:1 error:a5];
+                          v47 = [v41 setValueForKey:v46 expectedObjectsType:objc_opt_class() keyRequired:1 error:error];
                           v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u#%@", v77, v46];
-                          v49 = [(KMMapper_AppGlobalVocabulary *)self _addItemWithItemId:v48 fieldType:v77 values:v47 error:a5];
+                          v49 = [(KMMapper_AppGlobalVocabulary *)self _addItemWithItemId:v48 fieldType:v77 values:v47 error:error];
 
                           if (!v49)
                           {
@@ -378,7 +378,7 @@ LABEL_14:
                             goto LABEL_70;
                           }
 
-                          self = v63;
+                          self = selfCopy;
                         }
 
                         v43 = [v41 countByEnumeratingWithState:&v81 objects:v109 count:16];

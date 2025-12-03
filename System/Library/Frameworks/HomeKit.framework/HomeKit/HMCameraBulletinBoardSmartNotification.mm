@@ -1,6 +1,6 @@
 @interface HMCameraBulletinBoardSmartNotification
 + (id)logCategory;
-+ (id)predicateForSignificantEventTypes:(unint64_t)a3 personFamiliarityOptions:(unint64_t)a4;
++ (id)predicateForSignificantEventTypes:(unint64_t)types personFamiliarityOptions:(unint64_t)options;
 + (id)shortDescription;
 - (HMCameraUserSettings)cameraUserSettings;
 - (NSArray)attributeDescriptions;
@@ -8,7 +8,7 @@
 - (id)logIdentifier;
 - (unint64_t)personFamiliarityOptions;
 - (unint64_t)significantEventTypes;
-- (void)commitWithCompletionHandler:(id)a3;
+- (void)commitWithCompletionHandler:(id)handler;
 @end
 
 @implementation HMCameraBulletinBoardSmartNotification
@@ -29,8 +29,8 @@
   v5 = [v3 initWithName:@"Enabled" value:v4];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMBulletinBoardNotification *)self condition];
-  v8 = [v6 initWithName:@"Condition" value:v7];
+  condition = [(HMBulletinBoardNotification *)self condition];
+  v8 = [v6 initWithName:@"Condition" value:condition];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 
@@ -48,23 +48,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMCameraBulletinBoardSmartNotification *)self cameraUserSettings];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  cameraUserSettings = [(HMCameraBulletinBoardSmartNotification *)self cameraUserSettings];
+  uniqueIdentifier = [cameraUserSettings uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)commitWithCompletionHandler:(id)a3
+- (void)commitWithCompletionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMBulletinBoardNotification *)self context];
-  if (!v4)
+  handlerCopy = handler;
+  context = [(HMBulletinBoardNotification *)self context];
+  if (!handlerCopy)
   {
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCameraBulletinBoardSmartNotification commitWithCompletionHandler:]", @"completion"];
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -81,17 +81,17 @@
     objc_exception_throw(v37);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
-    v7 = [(HMCameraBulletinBoardSmartNotification *)self cameraUserSettings];
-    if (v7)
+    cameraUserSettings = [(HMCameraBulletinBoardSmartNotification *)self cameraUserSettings];
+    if (cameraUserSettings)
     {
-      v8 = [(HMBulletinBoardNotification *)self condition];
-      v9 = [HMPredicateUtilities validatePredicate:v8];
+      condition = [(HMBulletinBoardNotification *)self condition];
+      v9 = [HMPredicateUtilities validatePredicate:condition];
 
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy2 = self;
       v12 = HMFGetOSLogHandle();
       v13 = v12;
       if (v9)
@@ -102,32 +102,32 @@
           *buf = 138543618;
           v39 = v14;
           v40 = 2112;
-          v41 = v11;
+          v41 = selfCopy2;
           _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Committing camera bulletin board smart notification: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v10);
-        v15 = [(HMBulletinBoardNotification *)v11 condition];
-        v16 = [HMPredicateUtilities rewritePredicateForDaemon:v15 characteristicIsInvalid:0];
+        condition2 = [(HMBulletinBoardNotification *)selfCopy2 condition];
+        context2 = [HMPredicateUtilities rewritePredicateForDaemon:condition2 characteristicIsInvalid:0];
 
-        [v7 updateBulletinNotificationEnabled:-[HMBulletinBoardNotification isEnabled](v11 condition:"isEnabled") completionHandler:{v16, v4}];
+        [cameraUserSettings updateBulletinNotificationEnabled:-[HMBulletinBoardNotification isEnabled](selfCopy2 condition:"isEnabled") completionHandler:{context2, handlerCopy}];
         goto LABEL_18;
       }
 
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [(HMBulletinBoardNotification *)v11 condition];
+        condition3 = [(HMBulletinBoardNotification *)selfCopy2 condition];
         *buf = 138543618;
         v39 = v28;
         v40 = 2112;
-        v41 = v29;
+        v41 = condition3;
         _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_ERROR, "%{public}@Invalid predicate: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v16 = [(HMBulletinBoardNotification *)v11 context];
-      v25 = [v16 delegateCaller];
+      context2 = [(HMBulletinBoardNotification *)selfCopy2 context];
+      delegateCaller = [context2 delegateCaller];
       v26 = MEMORY[0x1E696ABC0];
       v27 = 3;
     }
@@ -135,7 +135,7 @@
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy3 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -146,21 +146,21 @@
       }
 
       objc_autoreleasePoolPop(v21);
-      v16 = [(HMBulletinBoardNotification *)v22 context];
-      v25 = [v16 delegateCaller];
+      context2 = [(HMBulletinBoardNotification *)selfCopy3 context];
+      delegateCaller = [context2 delegateCaller];
       v26 = MEMORY[0x1E696ABC0];
       v27 = -1;
     }
 
     v30 = [v26 hmErrorWithCode:v27];
-    [v25 callCompletion:v4 error:v30];
+    [delegateCaller callCompletion:handlerCopy error:v30];
 
 LABEL_18:
     goto LABEL_19;
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy4 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -173,8 +173,8 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v17);
-  v7 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-  v4[2](v4, v7);
+  cameraUserSettings = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+  handlerCopy[2](handlerCopy, cameraUserSettings);
 LABEL_19:
 
   v31 = *MEMORY[0x1E69E9840];
@@ -182,36 +182,36 @@ LABEL_19:
 
 - (unint64_t)personFamiliarityOptions
 {
-  v2 = [(HMBulletinBoardNotification *)self condition];
-  if (v2)
+  condition = [(HMBulletinBoardNotification *)self condition];
+  if (condition)
   {
-    v3 = [objc_opt_class() personFamiliarityOptionsInPredicate:v2];
-    v4 = [v3 integerValue];
+    v3 = [objc_opt_class() personFamiliarityOptionsInPredicate:condition];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)significantEventTypes
 {
-  v2 = [(HMBulletinBoardNotification *)self condition];
-  if (v2)
+  condition = [(HMBulletinBoardNotification *)self condition];
+  if (condition)
   {
-    v3 = [objc_opt_class() significantEventTypesInPredicate:v2];
-    v4 = [v3 integerValue];
+    v3 = [objc_opt_class() significantEventTypesInPredicate:condition];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 + (id)shortDescription
@@ -243,14 +243,14 @@ uint64_t __53__HMCameraBulletinBoardSmartNotification_logCategory__block_invoke(
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)predicateForSignificantEventTypes:(unint64_t)a3 personFamiliarityOptions:(unint64_t)a4
++ (id)predicateForSignificantEventTypes:(unint64_t)types personFamiliarityOptions:(unint64_t)options
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = [a1 predicateForSignificantEventTypes:a3];
+  v6 = [self predicateForSignificantEventTypes:types];
   v7 = v6;
-  if (a4)
+  if (options)
   {
-    v8 = [a1 predicateForPersonFamiliarityOptions:a4];
+    v8 = [self predicateForPersonFamiliarityOptions:options];
     v9 = MEMORY[0x1E696AB28];
     v14[0] = v7;
     v14[1] = v8;

@@ -1,44 +1,44 @@
 @interface TSKCenterTilingImageView
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setCenterTileImage:(id)a3;
-- (void)setLeftCapImage:(id)a3;
-- (void)setRightCapImage:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setCenterTileImage:(id)image;
+- (void)setLeftCapImage:(id)image;
+- (void)setRightCapImage:(id)image;
 @end
 
 @implementation TSKCenterTilingImageView
 
-- (void)setLeftCapImage:(id)a3
+- (void)setLeftCapImage:(id)image
 {
-  if (self->mLeftCapImage != a3)
+  if (self->mLeftCapImage != image)
   {
-    v5 = a3;
+    imageCopy = image;
 
-    self->mLeftCapImage = a3;
+    self->mLeftCapImage = image;
 
     [(TSKCenterTilingImageView *)self setNeedsDisplay];
   }
 }
 
-- (void)setCenterTileImage:(id)a3
+- (void)setCenterTileImage:(id)image
 {
-  if (self->mCenterTileImage != a3)
+  if (self->mCenterTileImage != image)
   {
-    v5 = a3;
+    imageCopy = image;
 
-    self->mCenterTileImage = a3;
+    self->mCenterTileImage = image;
 
     [(TSKCenterTilingImageView *)self setNeedsDisplay];
   }
 }
 
-- (void)setRightCapImage:(id)a3
+- (void)setRightCapImage:(id)image
 {
-  if (self->mRightCapImage != a3)
+  if (self->mRightCapImage != image)
   {
-    v5 = a3;
+    imageCopy = image;
 
-    self->mRightCapImage = a3;
+    self->mRightCapImage = image;
 
     [(TSKCenterTilingImageView *)self setNeedsDisplay];
   }
@@ -51,9 +51,9 @@
   [(TSKCenterTilingImageView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(TSKCenterTilingImageView *)self bounds:a3.origin.x];
+  [(TSKCenterTilingImageView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   [(TSKCenterTilingImageView *)self bounds];

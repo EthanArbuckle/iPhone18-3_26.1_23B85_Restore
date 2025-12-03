@@ -1,18 +1,18 @@
 @interface UIWindowSceneStandardPlacement
 + (UIWindowSceneStandardPlacement)standardPlacement;
-- (id)_createConfigurationWithError:(id *)a3;
+- (id)_createConfigurationWithError:(id *)error;
 @end
 
 @implementation UIWindowSceneStandardPlacement
 
 + (UIWindowSceneStandardPlacement)standardPlacement
 {
-  v2 = [[a1 alloc] _init];
+  _init = [[self alloc] _init];
 
-  return v2;
+  return _init;
 }
 
-- (id)_createConfigurationWithError:(id *)a3
+- (id)_createConfigurationWithError:(id *)error
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DEC60]);
 

@@ -7,15 +7,15 @@
 - (id)sanitizedConfigurationWithContactStore:()Contacts
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
-  v6 = [a1 allowedContacts];
-  v7 = [v4 sanitizeContacts:v6];
+  v5 = [self mutableCopy];
+  allowedContacts = [self allowedContacts];
+  v7 = [v4 sanitizeContacts:allowedContacts];
 
   v8 = [v7 mutableCopy];
   [v5 setAllowedContacts:v8];
 
-  v9 = [a1 deniedContacts];
-  v10 = [v4 sanitizeContacts:v9];
+  deniedContacts = [self deniedContacts];
+  v10 = [v4 sanitizeContacts:deniedContacts];
 
   v11 = [v10 mutableCopy];
   [v5 setDeniedContacts:v11];

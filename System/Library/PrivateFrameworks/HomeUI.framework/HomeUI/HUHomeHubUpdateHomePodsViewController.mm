@@ -2,39 +2,39 @@
 - (BOOL)_allHomePodsHaveValidSoftwareUpdatesOrSupportsHH2;
 - (BOOL)_noHomePodsWithAvailableUpdates;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeHubUpdateHomePodsViewController)initWithOwnedHomes:(id)a3 homePodsToUpdate:(id)a4;
+- (HUHomeHubUpdateHomePodsViewController)initWithOwnedHomes:(id)homes homePodsToUpdate:(id)update;
 - (id)_homePodsDownloadingSoftwareUpdate;
 - (id)_homePodsReadyToInstallSoftwareUpdate;
 - (id)hu_preloadContent;
-- (id)softwareUpdateUIManager:(id)a3 dismissViewController:(id)a4;
-- (id)softwareUpdateUIManager:(id)a3 presentViewController:(id)a4;
-- (void)_cancelButtonPressed:(id)a3;
-- (void)_continueButtonPressed:(id)a3;
+- (id)softwareUpdateUIManager:(id)manager dismissViewController:(id)controller;
+- (id)softwareUpdateUIManager:(id)manager presentViewController:(id)controller;
+- (void)_cancelButtonPressed:(id)pressed;
+- (void)_continueButtonPressed:(id)pressed;
 - (void)_dismiss;
 - (void)_fetchSoftwareUpdates;
 - (void)_hideSpinner;
-- (void)_presentErrorWithMessage:(id)a3;
+- (void)_presentErrorWithMessage:(id)message;
 - (void)_presentGenericError;
 - (void)_showSpinner;
 - (void)_startUpdate;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeHubUpdateHomePodsViewController
 
-- (HUHomeHubUpdateHomePodsViewController)initWithOwnedHomes:(id)a3 homePodsToUpdate:(id)a4
+- (HUHomeHubUpdateHomePodsViewController)initWithOwnedHomes:(id)homes homePodsToUpdate:(id)update
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v8 na_all:&__block_literal_global_222] & 1) == 0)
+  homesCopy = homes;
+  updateCopy = update;
+  if (([updateCopy na_all:&__block_literal_global_222] & 1) == 0)
   {
     NSLog(&cfstr_MustOnlyPassIn.isa);
   }
 
   v9 = _HULocalizedStringWithDefaultValue(@"HUHomePodSoftwareUpdateRequiredDescriptionSingularHomePodSingularHome", @"HUHomePodSoftwareUpdateRequiredDescriptionSingularHomePodSingularHome", 1);
-  if ([v8 count] == 1 && objc_msgSend(v7, "count") > 1)
+  if ([updateCopy count] == 1 && objc_msgSend(homesCopy, "count") > 1)
   {
     v10 = @"HUHomePodSoftwareUpdateRequiredDescriptionSingularHomePodMultipleHomes";
 LABEL_12:
@@ -44,13 +44,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v8 count] >= 2 && objc_msgSend(v7, "count") == 1)
+  if ([updateCopy count] >= 2 && objc_msgSend(homesCopy, "count") == 1)
   {
     v10 = @"HUHomePodSoftwareUpdateRequiredDescriptionMultipleHomePodsSingularHome";
     goto LABEL_12;
   }
 
-  if ([v8 count] >= 2 && objc_msgSend(v7, "count") >= 2)
+  if ([updateCopy count] >= 2 && objc_msgSend(homesCopy, "count") >= 2)
   {
     v10 = @"HUHomePodSoftwareUpdateRequiredDescriptionMultipleHomePodsMultipleHomes";
     goto LABEL_12;
@@ -58,7 +58,7 @@ LABEL_12:
 
 LABEL_13:
   v12 = [HUHomeHubAccessoryListItemManager alloc];
-  v13 = [MEMORY[0x277CBEB98] setWithArray:v8];
+  v13 = [MEMORY[0x277CBEB98] setWithArray:updateCopy];
   v14 = [(HUHomeHubAccessoryListItemManager *)v12 initWithAccessories:v13 delegate:self];
 
   v15 = [(HUItemTableViewController *)[HUHomeHubSimpleTableViewController alloc] initWithItemManager:v14 tableViewStyle:1];
@@ -69,8 +69,8 @@ LABEL_13:
 
   if (v17)
   {
-    objc_storeStrong(&v17->_homes, a3);
-    objc_storeStrong(&v17->_homePods, a4);
+    objc_storeStrong(&v17->_homes, homes);
+    objc_storeStrong(&v17->_homePods, update);
     v17->_userTappedUpdate = 0;
   }
 
@@ -90,23 +90,23 @@ LABEL_13:
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubUpdateHomePodsViewController:viewDidLoad]", buf, 2u);
   }
 
-  v5 = [(HUHomeHubUpdateHomePodsViewController *)self headerView];
-  v6 = [v5 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v6 withIDDictionary:&unk_282493148];
+  headerView = [(HUHomeHubUpdateHomePodsViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282493148];
 
   v7 = _HULocalizedStringWithDefaultValue(@"HUHomePodSoftwareUpdateRequiredCaptionSingularHomePodSingularHome", @"HUHomePodSoftwareUpdateRequiredCaptionSingularHomePodSingularHome", 1);
-  v8 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
-  if ([v8 count] == 1)
+  homePods = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
+  if ([homePods count] == 1)
   {
-    v9 = [(HUHomeHubUpdateHomePodsViewController *)self homes];
-    v10 = [v9 count];
+    homes = [(HUHomeHubUpdateHomePodsViewController *)self homes];
+    v10 = [homes count];
 
     if (v10 > 1)
     {
       v11 = @"HUHomePodSoftwareUpdateRequiredCaptionSingularHomePodMultipleHomes";
 LABEL_14:
       _HULocalizedStringWithDefaultValue(v11, v11, 1);
-      v7 = v15 = v7;
+      v7 = homePods3 = v7;
       goto LABEL_15;
     }
   }
@@ -115,15 +115,15 @@ LABEL_14:
   {
   }
 
-  v12 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
-  if ([v12 count] <= 1)
+  homePods2 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
+  if ([homePods2 count] <= 1)
   {
   }
 
   else
   {
-    v13 = [(HUHomeHubUpdateHomePodsViewController *)self homes];
-    v14 = [v13 count];
+    homes2 = [(HUHomeHubUpdateHomePodsViewController *)self homes];
+    v14 = [homes2 count];
 
     if (v14 == 1)
     {
@@ -132,11 +132,11 @@ LABEL_14:
     }
   }
 
-  v15 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
-  if ([v15 count] >= 2)
+  homePods3 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
+  if ([homePods3 count] >= 2)
   {
-    v16 = [(HUHomeHubUpdateHomePodsViewController *)self homes];
-    v17 = [v16 count];
+    homes3 = [(HUHomeHubUpdateHomePodsViewController *)self homes];
+    v17 = [homes3 count];
 
     if (v17 < 2)
     {
@@ -150,40 +150,40 @@ LABEL_14:
 LABEL_15:
 
 LABEL_16:
-  v18 = [(HUHomeHubUpdateHomePodsViewController *)self buttonTray];
-  [v18 addCaptionText:v7];
+  buttonTray = [(HUHomeHubUpdateHomePodsViewController *)self buttonTray];
+  [buttonTray addCaptionText:v7];
 
-  v19 = [MEMORY[0x277D37618] boldButton];
-  [(HUHomeHubUpdateHomePodsViewController *)self setContinueButton:v19];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUHomeHubUpdateHomePodsViewController *)self setContinueButton:boldButton];
 
-  v20 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+  continueButton = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
   v21 = _HULocalizedStringWithDefaultValue(@"HUHomePodSoftwareUpdateRequiredUpdateNowButton", @"HUHomePodSoftwareUpdateRequiredUpdateNowButton", 1);
-  [v20 setTitle:v21 forState:0];
+  [continueButton setTitle:v21 forState:0];
 
-  v22 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  continueButton2 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+  [continueButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v23 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-  [v23 addTarget:self action:sel__continueButtonPressed_ forControlEvents:64];
+  continueButton3 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+  [continueButton3 addTarget:self action:sel__continueButtonPressed_ forControlEvents:64];
 
-  v24 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-  [v24 setAccessibilityIdentifier:@"Home.Onboarding.HomeHubMigration.HUHomeHubUpdateHomePod.NotNowButton"];
+  continueButton4 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+  [continueButton4 setAccessibilityIdentifier:@"Home.Onboarding.HomeHubMigration.HUHomeHubUpdateHomePod.NotNowButton"];
 
-  v25 = [(HUHomeHubUpdateHomePodsViewController *)self buttonTray];
-  v26 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-  [v25 addButton:v26];
+  buttonTray2 = [(HUHomeHubUpdateHomePodsViewController *)self buttonTray];
+  continueButton5 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+  [buttonTray2 addButton:continueButton5];
 
   v27 = objc_alloc(MEMORY[0x277D751E0]);
   v28 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
   v29 = [v27 initWithTitle:v28 style:0 target:self action:sel__cancelButtonPressed_];
   [(HUHomeHubUpdateHomePodsViewController *)self setCancelButton:v29];
 
-  v30 = [(HUHomeHubUpdateHomePodsViewController *)self cancelButton];
-  [v30 setAccessibilityIdentifier:@"Home.Onboarding.HomeHubMigration.HUHomeHubUpdateHomePod.CancelButton"];
+  cancelButton = [(HUHomeHubUpdateHomePodsViewController *)self cancelButton];
+  [cancelButton setAccessibilityIdentifier:@"Home.Onboarding.HomeHubMigration.HUHomeHubUpdateHomePod.CancelButton"];
 
-  v31 = [(OBBaseWelcomeController *)self navigationItem];
-  v32 = [(HUHomeHubUpdateHomePodsViewController *)self cancelButton];
-  [v31 setRightBarButtonItem:v32];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  cancelButton2 = [(HUHomeHubUpdateHomePodsViewController *)self cancelButton];
+  [navigationItem setRightBarButtonItem:cancelButton2];
 
   [(HUHomeHubUpdateHomePodsViewController *)self setModalInPresentation:1];
   v33 = HFLogForCategory();
@@ -191,18 +191,18 @@ LABEL_16:
   {
     v34 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v34;
     _os_log_impl(&dword_20CEB6000, v33, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: HUHomeHubUpdateHomePodsViewController", buf, 0x16u);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubUpdateHomePodsViewController;
-  [(HUHomeHubUpdateHomePodsViewController *)&v5 viewWillAppear:a3];
+  [(HUHomeHubUpdateHomePodsViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -211,11 +211,11 @@ LABEL_16:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubUpdateHomePodsViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -232,16 +232,16 @@ LABEL_16:
   return [v2 futureWithNoResult];
 }
 
-- (id)softwareUpdateUIManager:(id)a3 presentViewController:(id)a4
+- (id)softwareUpdateUIManager:(id)manager presentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(UIViewController *)self hu_presentPreloadableViewController:v5 animated:1];
+  controllerCopy = controller;
+  v6 = [(UIViewController *)self hu_presentPreloadableViewController:controllerCopy animated:1];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__HUHomeHubUpdateHomePodsViewController_softwareUpdateUIManager_presentViewController___block_invoke;
   v10[3] = &unk_277DB7530;
-  v11 = v5;
-  v7 = v5;
+  v11 = controllerCopy;
+  v7 = controllerCopy;
   v8 = [v6 addCompletionBlock:v10];
 
   return v8;
@@ -260,9 +260,9 @@ void __87__HUHomeHubUpdateHomePodsViewController_softwareUpdateUIManager_present
   }
 }
 
-- (id)softwareUpdateUIManager:(id)a3 dismissViewController:(id)a4
+- (id)softwareUpdateUIManager:(id)manager dismissViewController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   [(HUHomeHubUpdateHomePodsViewController *)self _hideSpinner];
   v6 = objc_alloc_init(MEMORY[0x277D2C900]);
   v12[0] = MEMORY[0x277D85DD0];
@@ -271,8 +271,8 @@ void __87__HUHomeHubUpdateHomePodsViewController_softwareUpdateUIManager_present
   v12[3] = &unk_277DB7558;
   v7 = v6;
   v13 = v7;
-  v14 = v5;
-  v8 = v5;
+  v14 = controllerCopy;
+  v8 = controllerCopy;
   [(HUHomeHubUpdateHomePodsViewController *)self dismissViewControllerAnimated:1 completion:v12];
   v9 = v14;
   v10 = v7;
@@ -294,7 +294,7 @@ void __87__HUHomeHubUpdateHomePodsViewController_softwareUpdateUIManager_dismiss
   }
 }
 
-- (void)_continueButtonPressed:(id)a3
+- (void)_continueButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -307,7 +307,7 @@ void __87__HUHomeHubUpdateHomePodsViewController_softwareUpdateUIManager_dismiss
   [(HUHomeHubUpdateHomePodsViewController *)self _startUpdate];
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -322,26 +322,26 @@ void __87__HUHomeHubUpdateHomePodsViewController_softwareUpdateUIManager_dismiss
 - (void)_dismiss
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HUHomeHubUpdateHomePodsViewController *)self delegate];
+  delegate = [(HUHomeHubUpdateHomePodsViewController *)self delegate];
   v5 = @"HUHomeHub2OnboardingKey_UserInput";
   v6[0] = &unk_282491EF8;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
-  [v3 viewController:self didFinishWithConfigurationResults:v4];
+  [delegate viewController:self didFinishWithConfigurationResults:v4];
 }
 
 - (void)_fetchSoftwareUpdates
 {
-  v3 = [(HUHomeHubUpdateHomePodsViewController *)self softwareUpdateFetchFuture];
+  softwareUpdateFetchFuture = [(HUHomeHubUpdateHomePodsViewController *)self softwareUpdateFetchFuture];
 
-  if (!v3)
+  if (!softwareUpdateFetchFuture)
   {
     v4 = objc_opt_new();
     [(HUHomeHubUpdateHomePodsViewController *)self setSoftwareUpdateFetchFuture:v4];
   }
 
-  v5 = [(HUHomeHubUpdateHomePodsViewController *)self _allHomePodsHaveValidSoftwareUpdatesOrSupportsHH2];
+  _allHomePodsHaveValidSoftwareUpdatesOrSupportsHH2 = [(HUHomeHubUpdateHomePodsViewController *)self _allHomePodsHaveValidSoftwareUpdatesOrSupportsHH2];
   [(HUHomeHubUpdateHomePodsViewController *)self setRanIntoFetchError:0];
-  if (v5)
+  if (_allHomePodsHaveValidSoftwareUpdatesOrSupportsHH2)
   {
     v6 = HFLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -350,16 +350,16 @@ void __87__HUHomeHubUpdateHomePodsViewController_softwareUpdateUIManager_dismiss
       _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "[HUHomeHubUpdateHomePodsViewController:_fetchSoftwareUpdates] Skipping software update fetch since HomePods have valid SU or already support HH2", buf, 2u);
     }
 
-    v7 = [(HUHomeHubUpdateHomePodsViewController *)self softwareUpdateFetchFuture];
-    [v7 finishWithNoResult];
+    softwareUpdateFetchFuture2 = [(HUHomeHubUpdateHomePodsViewController *)self softwareUpdateFetchFuture];
+    [softwareUpdateFetchFuture2 finishWithNoResult];
   }
 
   else
   {
     v8 = +[HUSoftwareUpdateUIManager sharedManager];
     v9 = MEMORY[0x277CBEB98];
-    v10 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
-    v11 = [v9 setWithArray:v10];
+    homePods = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
+    v11 = [v9 setWithArray:homePods];
     v12 = [v8 fetchAvailableUpdatesForAccessories:v11 options:1];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -457,39 +457,39 @@ LABEL_12:
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUHomeHubUpdateHomePodsViewController *)self softwareUpdateFetchFuture];
+    softwareUpdateFetchFuture = [(HUHomeHubUpdateHomePodsViewController *)self softwareUpdateFetchFuture];
     *buf = 67109376;
-    *v28 = [v4 isFinished];
+    *v28 = [softwareUpdateFetchFuture isFinished];
     *&v28[4] = 1024;
     *&v28[6] = [(HUHomeHubUpdateHomePodsViewController *)self ranIntoFetchError];
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "[HUHomeHubUpdateHomePodsViewController:_startUpdate] Did fetching software updates finish: %{BOOL}d. Did fetching software updates run into errors: %{BOOL}d", buf, 0xEu);
   }
 
-  v5 = [(HUHomeHubUpdateHomePodsViewController *)self softwareUpdateFetchFuture];
-  if (![v5 isFinished])
+  softwareUpdateFetchFuture2 = [(HUHomeHubUpdateHomePodsViewController *)self softwareUpdateFetchFuture];
+  if (![softwareUpdateFetchFuture2 isFinished])
   {
 
     goto LABEL_9;
   }
 
-  v6 = [(HUHomeHubUpdateHomePodsViewController *)self ranIntoFetchError];
+  ranIntoFetchError = [(HUHomeHubUpdateHomePodsViewController *)self ranIntoFetchError];
 
-  if (v6)
+  if (ranIntoFetchError)
   {
 LABEL_9:
     [(HUHomeHubUpdateHomePodsViewController *)self _fetchSoftwareUpdates];
     return;
   }
 
-  v7 = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsReadyToInstallSoftwareUpdate];
-  v8 = [v7 count];
+  _homePodsReadyToInstallSoftwareUpdate = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsReadyToInstallSoftwareUpdate];
+  v8 = [_homePodsReadyToInstallSoftwareUpdate count];
 
   if (v8)
   {
     v9 = +[HUSoftwareUpdateUIManager sharedManager];
     v10 = MEMORY[0x277CBEB98];
-    v11 = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsReadyToInstallSoftwareUpdate];
-    v12 = [v10 setWithArray:v11];
+    _homePodsReadyToInstallSoftwareUpdate2 = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsReadyToInstallSoftwareUpdate];
+    v12 = [v10 setWithArray:_homePodsReadyToInstallSoftwareUpdate2];
     v13 = [v9 startUpdatesForAccessories:v12 presentationDelegate:self];
 
     v26[0] = MEMORY[0x277D85DD0];
@@ -509,21 +509,21 @@ LABEL_7:
     return;
   }
 
-  v16 = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsDownloadingSoftwareUpdate];
-  v17 = [v16 count];
+  _homePodsDownloadingSoftwareUpdate = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsDownloadingSoftwareUpdate];
+  v17 = [_homePodsDownloadingSoftwareUpdate count];
 
   if (v17)
   {
     v18 = HFLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsDownloadingSoftwareUpdate];
-      v20 = [v19 count];
-      v21 = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsDownloadingSoftwareUpdate];
+      _homePodsDownloadingSoftwareUpdate2 = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsDownloadingSoftwareUpdate];
+      v20 = [_homePodsDownloadingSoftwareUpdate2 count];
+      _homePodsDownloadingSoftwareUpdate3 = [(HUHomeHubUpdateHomePodsViewController *)self _homePodsDownloadingSoftwareUpdate];
       *buf = 134218242;
       *v28 = v20;
       *&v28[8] = 2112;
-      v29 = v21;
+      v29 = _homePodsDownloadingSoftwareUpdate3;
       _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "[HUHomeHubUpdateHomePodsViewController:_startUpdate] Not starting installation since %lu software update(s) are being downloaded for HomePods: %@... should start installation once finished", buf, 0x16u);
     }
 
@@ -533,10 +533,10 @@ LABEL_7:
 
   else
   {
-    v22 = [(HUHomeHubUpdateHomePodsViewController *)self _noHomePodsWithAvailableUpdates];
+    _noHomePodsWithAvailableUpdates = [(HUHomeHubUpdateHomePodsViewController *)self _noHomePodsWithAvailableUpdates];
     v23 = HFLogForCategory();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_ERROR);
-    if (v22)
+    if (_noHomePodsWithAvailableUpdates)
     {
       if (v24)
       {
@@ -615,8 +615,8 @@ uint64_t __53__HUHomeHubUpdateHomePodsViewController__startUpdate__block_invoke_
     return 1;
   }
 
-  v4 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
-  v5 = [v4 na_all:&__block_literal_global_90];
+  homePods = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
+  v5 = [homePods na_all:&__block_literal_global_90];
 
   return v5;
 }
@@ -640,8 +640,8 @@ uint64_t __90__HUHomeHubUpdateHomePodsViewController__allHomePodsHaveValidSoftwa
 
 - (id)_homePodsReadyToInstallSoftwareUpdate
 {
-  v2 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
-  v3 = [v2 na_filter:&__block_literal_global_92_0];
+  homePods = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
+  v3 = [homePods na_filter:&__block_literal_global_92_0];
 
   return v3;
 }
@@ -664,16 +664,16 @@ uint64_t __78__HUHomeHubUpdateHomePodsViewController__homePodsReadyToInstallSoft
 
 - (id)_homePodsDownloadingSoftwareUpdate
 {
-  v2 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
-  v3 = [v2 na_filter:&__block_literal_global_94];
+  homePods = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
+  v3 = [homePods na_filter:&__block_literal_global_94];
 
   return v3;
 }
 
 - (BOOL)_noHomePodsWithAvailableUpdates
 {
-  v2 = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
-  v3 = [v2 na_all:&__block_literal_global_96_0];
+  homePods = [(HUHomeHubUpdateHomePodsViewController *)self homePods];
+  v3 = [homePods na_all:&__block_literal_global_96_0];
 
   return v3;
 }
@@ -698,75 +698,75 @@ BOOL __72__HUHomeHubUpdateHomePodsViewController__noHomePodsWithAvailableUpdates
 
 - (void)_showSpinner
 {
-  v3 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
+  spinner = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
 
-  if (!v3)
+  if (!spinner)
   {
-    v4 = [(OBBaseWelcomeController *)self navigationItem];
-    [v4 setHidesBackButton:1 animated:1];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1 animated:1];
 
-    v5 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-    v6 = [v5 titleLabel];
-    [v6 setHidden:1];
+    continueButton = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+    titleLabel = [continueButton titleLabel];
+    [titleLabel setHidden:1];
 
-    v7 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-    [v7 setEnabled:0];
+    continueButton2 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+    [continueButton2 setEnabled:0];
 
-    v8 = [(HUHomeHubUpdateHomePodsViewController *)self cancelButton];
-    [v8 setEnabled:0];
+    cancelButton = [(HUHomeHubUpdateHomePodsViewController *)self cancelButton];
+    [cancelButton setEnabled:0];
 
     v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     [(HUHomeHubUpdateHomePodsViewController *)self setSpinner:v9];
 
-    v10 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
-    [v10 sizeToFit];
+    spinner2 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
+    [spinner2 sizeToFit];
 
-    v11 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
-    [v11 startAnimating];
+    spinner3 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
+    [spinner3 startAnimating];
 
-    v12 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
-    [v12 setAccessibilityIdentifier:@"HUHomeHubUpdateHomePodsViewController.spinner"];
+    spinner4 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
+    [spinner4 setAccessibilityIdentifier:@"HUHomeHubUpdateHomePodsViewController.spinner"];
 
-    v13 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-    [v13 center];
+    continueButton3 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+    [continueButton3 center];
     v15 = v14;
     v17 = v16;
-    v18 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
-    [v18 setCenter:{v15, v17}];
+    spinner5 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
+    [spinner5 setCenter:{v15, v17}];
 
-    v21 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-    v19 = [v21 superview];
-    v20 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
-    [v19 addSubview:v20];
+    continueButton4 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+    superview = [continueButton4 superview];
+    spinner6 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
+    [superview addSubview:spinner6];
   }
 }
 
 - (void)_hideSpinner
 {
-  v3 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
+  spinner = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
 
-  if (v3)
+  if (spinner)
   {
-    v4 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
-    [v4 removeFromSuperview];
+    spinner2 = [(HUHomeHubUpdateHomePodsViewController *)self spinner];
+    [spinner2 removeFromSuperview];
 
     [(HUHomeHubUpdateHomePodsViewController *)self setSpinner:0];
-    v5 = [(HUHomeHubUpdateHomePodsViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(HUHomeHubUpdateHomePodsViewController *)self view];
+    [view setNeedsLayout];
   }
 
-  v6 = [(OBBaseWelcomeController *)self navigationItem];
-  [v6 setHidesBackButton:0 animated:1];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:0 animated:1];
 
-  v7 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-  v8 = [v7 titleLabel];
-  [v8 setHidden:0];
+  continueButton = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+  titleLabel = [continueButton titleLabel];
+  [titleLabel setHidden:0];
 
-  v9 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
-  [v9 setEnabled:1];
+  continueButton2 = [(HUHomeHubUpdateHomePodsViewController *)self continueButton];
+  [continueButton2 setEnabled:1];
 
-  v10 = [(HUHomeHubUpdateHomePodsViewController *)self cancelButton];
-  [v10 setEnabled:1];
+  cancelButton = [(HUHomeHubUpdateHomePodsViewController *)self cancelButton];
+  [cancelButton setEnabled:1];
 }
 
 - (void)_presentGenericError
@@ -811,13 +811,13 @@ void __61__HUHomeHubUpdateHomePodsViewController__presentGenericError__block_inv
   }
 }
 
-- (void)_presentErrorWithMessage:(id)a3
+- (void)_presentErrorWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   [(HUHomeHubUpdateHomePodsViewController *)self setUserTappedUpdate:0];
   v5 = MEMORY[0x277D75110];
   v6 = _HULocalizedStringWithDefaultValue(@"HUHomePodSoftwareUpdateRequiredErrorTitle", @"HUHomePodSoftwareUpdateRequiredErrorTitle", 1);
-  v7 = [v5 alertControllerWithTitle:v6 message:v4 preferredStyle:1];
+  v7 = [v5 alertControllerWithTitle:v6 message:messageCopy preferredStyle:1];
 
   v8 = MEMORY[0x277D750F8];
   v9 = _HULocalizedStringWithDefaultValue(@"HUOkTitle", @"HUOkTitle", 1);
@@ -833,8 +833,8 @@ void __61__HUHomeHubUpdateHomePodsViewController__presentGenericError__block_inv
   v12[1] = 3221225472;
   v12[2] = __66__HUHomeHubUpdateHomePodsViewController__presentErrorWithMessage___block_invoke_116;
   v12[3] = &unk_277DB8488;
-  v13 = v4;
-  v11 = v4;
+  v13 = messageCopy;
+  v11 = messageCopy;
   [(HUHomeHubUpdateHomePodsViewController *)self presentViewController:v7 animated:1 completion:v12];
 }
 

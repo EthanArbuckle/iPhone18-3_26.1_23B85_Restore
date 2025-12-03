@@ -1,10 +1,10 @@
 @interface WeatherInMemoryDefaults
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (WeatherInMemoryDefaults)init;
-- (id)objectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)synchronizeWithCompletionHandler:(id)a3;
+- (id)objectForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)synchronizeWithCompletionHandler:(id)handler;
 @end
 
 @implementation WeatherInMemoryDefaults
@@ -16,14 +16,14 @@
   v2 = [(WeatherInMemoryDefaults *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(WeatherInMemoryDefaults *)v2 setInMemoryStore:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(WeatherInMemoryDefaults *)v2 setInMemoryStore:dictionary];
 
-    v4 = [(WeatherInMemoryDefaults *)v2 inMemoryStore];
-    [v4 setObject:MEMORY[0x277CBEBF8] forKey:@"cities"];
+    inMemoryStore = [(WeatherInMemoryDefaults *)v2 inMemoryStore];
+    [inMemoryStore setObject:MEMORY[0x277CBEBF8] forKey:@"cities"];
 
-    v5 = [(WeatherInMemoryDefaults *)v2 inMemoryStore];
-    [v5 setObject:@"2.0" forKey:@"PrefsVersion"];
+    inMemoryStore2 = [(WeatherInMemoryDefaults *)v2 inMemoryStore];
+    [inMemoryStore2 setObject:@"2.0" forKey:@"PrefsVersion"];
 
     v6 = v2;
   }
@@ -31,43 +31,43 @@
   return v2;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WeatherInMemoryDefaults *)self inMemoryStore];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  inMemoryStore = [(WeatherInMemoryDefaults *)self inMemoryStore];
+  v6 = [inMemoryStore objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WeatherInMemoryDefaults *)self inMemoryStore];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  inMemoryStore = [(WeatherInMemoryDefaults *)self inMemoryStore];
+  [inMemoryStore setObject:objectCopy forKey:keyCopy];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WeatherInMemoryDefaults *)self inMemoryStore];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  inMemoryStore = [(WeatherInMemoryDefaults *)self inMemoryStore];
+  [inMemoryStore removeObjectForKey:keyCopy];
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(WeatherInMemoryDefaults *)self objectForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(WeatherInMemoryDefaults *)self objectForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)synchronizeWithCompletionHandler:(id)a3
+- (void)synchronizeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(WeatherInMemoryDefaults *)self synchronize];
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

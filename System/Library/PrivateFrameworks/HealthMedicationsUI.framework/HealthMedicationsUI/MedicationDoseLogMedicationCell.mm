@@ -1,20 +1,20 @@
 @interface MedicationDoseLogMedicationCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC19HealthMedicationsUI31MedicationDoseLogMedicationCell)initWithCoder:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC19HealthMedicationsUI31MedicationDoseLogMedicationCell)initWithCoder:(id)coder;
 @end
 
 @implementation MedicationDoseLogMedicationCell
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  [(MedicationDoseLogMedicationCell *)v9 layoutIfNeeded];
-  v18.receiver = v9;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  [(MedicationDoseLogMedicationCell *)selfCopy layoutIfNeeded];
+  v18.receiver = selfCopy;
   v18.super_class = type metadata accessor for MedicationDoseLogMedicationCell();
-  *&v10 = a4;
-  *&v11 = a5;
+  *&v10 = priority;
+  *&v11 = fittingPriority;
   [(MedicationDoseLogMedicationCell *)&v18 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
   v13 = v12;
   v15 = v14;
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC19HealthMedicationsUI31MedicationDoseLogMedicationCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI31MedicationDoseLogMedicationCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI31MedicationDoseLogMedicationCell____lazy_storage___logView) = 0;
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI31MedicationDoseLogMedicationCell_item;

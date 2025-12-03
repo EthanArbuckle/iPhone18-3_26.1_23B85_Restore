@@ -1,22 +1,22 @@
 @interface OTPairingSession
 - (BOOL)acquireLockAssertion;
-- (id)initAsInitiator:(BOOL)a3 deviceInfo:(id)a4 identifier:(id)a5;
-- (void)addCompletionHandler:(id)a3;
+- (id)initAsInitiator:(BOOL)initiator deviceInfo:(id)info identifier:(id)identifier;
+- (void)addCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)didCompleteWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)didCompleteWithSuccess:(BOOL)success error:(id)error;
 @end
 
 @implementation OTPairingSession
 
-- (void)didCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)didCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(OTPairingSession *)self completionHandlers];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  completionHandlers = [(OTPairingSession *)self completionHandlers];
+  v7 = [completionHandlers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -28,7 +28,7 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(completionHandlers);
         }
 
         (*(*(*(&v11 + 1) + 8 * v10) + 16))();
@@ -36,28 +36,28 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [completionHandlers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(OTPairingSession *)self completionHandlers];
+  handlerCopy = handler;
+  completionHandlers = [(OTPairingSession *)self completionHandlers];
 
-  if (!v5)
+  if (!completionHandlers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     [(OTPairingSession *)self setCompletionHandlers:v6];
   }
 
-  v8 = [(OTPairingSession *)self completionHandlers];
-  v7 = objc_retainBlock(v4);
+  completionHandlers2 = [(OTPairingSession *)self completionHandlers];
+  v7 = objc_retainBlock(handlerCopy);
 
-  [v8 addObject:v7];
+  [completionHandlers2 addObject:v7];
 }
 
 - (BOOL)acquireLockAssertion
@@ -98,11 +98,11 @@
   [(OTPairingSession *)&v4 dealloc];
 }
 
-- (id)initAsInitiator:(BOOL)a3 deviceInfo:(id)a4 identifier:(id)a5
+- (id)initAsInitiator:(BOOL)initiator deviceInfo:(id)info identifier:(id)identifier
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  initiatorCopy = initiator;
+  infoCopy = info;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = OTPairingSession;
   v10 = [(OTPairingSession *)&v23 init];
@@ -113,27 +113,27 @@
 
   v11 = objc_alloc_init(KCPairingChannelContext);
   v12 = +[NSUUID UUID];
-  v13 = [v12 UUIDString];
-  [v11 setUniqueClientID:v13];
+  uUIDString = [v12 UUIDString];
+  [v11 setUniqueClientID:uUIDString];
 
   v14 = +[NSUUID UUID];
-  v15 = [v14 UUIDString];
-  [v11 setUniqueDeviceID:v15];
+  uUIDString2 = [v14 UUIDString];
+  [v11 setUniqueDeviceID:uUIDString2];
 
   [v11 setIntent:KCPairingIntent_Type_SilentRepair];
-  v16 = [v8 modelID];
-  [v11 setModel:v16];
+  modelID = [infoCopy modelID];
+  [v11 setModel:modelID];
 
-  v17 = [v8 osVersion];
-  [v11 setOsVersion:v17];
+  osVersion = [infoCopy osVersion];
+  [v11 setOsVersion:osVersion];
 
-  if (v6)
+  if (initiatorCopy)
   {
-    if (!v9)
+    if (!identifierCopy)
     {
       v18 = +[NSUUID UUID];
-      v19 = [v18 UUIDString];
-      [(OTPairingSession *)v10 setIdentifier:v19];
+      uUIDString3 = [v18 UUIDString];
+      [(OTPairingSession *)v10 setIdentifier:uUIDString3];
 
       v20 = [KCPairingChannel pairingChannelInitiator:v11];
 LABEL_7:
@@ -149,9 +149,9 @@ LABEL_8:
     __break(1u);
   }
 
-  else if (v9)
+  else if (identifierCopy)
   {
-    [(OTPairingSession *)v10 setIdentifier:v9];
+    [(OTPairingSession *)v10 setIdentifier:identifierCopy];
     v20 = [KCPairingChannel pairingChannelAcceptor:v11];
     goto LABEL_7;
   }

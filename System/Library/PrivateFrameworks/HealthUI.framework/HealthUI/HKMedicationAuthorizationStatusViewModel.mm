@@ -1,42 +1,42 @@
 @interface HKMedicationAuthorizationStatusViewModel
-+ (BOOL)areAllAuthorizedForMedicationViewModels:(id)a3;
-+ (id)authorizationStatusesFromMedicationViewModels:(id)a3;
-+ (void)updateAllMedicationViewModels:(id)a3 authorized:(BOOL)a4;
-- (HKMedicationAuthorizationStatusViewModel)initWithMedicationName:(id)a3 authorized:(BOOL)a4 requested:(BOOL)a5 type:(id)a6 identifier:(id)a7;
++ (BOOL)areAllAuthorizedForMedicationViewModels:(id)models;
++ (id)authorizationStatusesFromMedicationViewModels:(id)models;
++ (void)updateAllMedicationViewModels:(id)models authorized:(BOOL)authorized;
+- (HKMedicationAuthorizationStatusViewModel)initWithMedicationName:(id)name authorized:(BOOL)authorized requested:(BOOL)requested type:(id)type identifier:(id)identifier;
 @end
 
 @implementation HKMedicationAuthorizationStatusViewModel
 
-- (HKMedicationAuthorizationStatusViewModel)initWithMedicationName:(id)a3 authorized:(BOOL)a4 requested:(BOOL)a5 type:(id)a6 identifier:(id)a7
+- (HKMedicationAuthorizationStatusViewModel)initWithMedicationName:(id)name authorized:(BOOL)authorized requested:(BOOL)requested type:(id)type identifier:(id)identifier
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  typeCopy = type;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = HKMedicationAuthorizationStatusViewModel;
   v16 = [(HKMedicationAuthorizationStatusViewModel *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_medicationName, a3);
-    v17->_authorized = a4;
-    v17->_requested = a5;
-    objc_storeStrong(&v17->_type, a6);
-    objc_storeStrong(&v17->_identifier, a7);
+    objc_storeStrong(&v16->_medicationName, name);
+    v17->_authorized = authorized;
+    v17->_requested = requested;
+    objc_storeStrong(&v17->_type, type);
+    objc_storeStrong(&v17->_identifier, identifier);
   }
 
   return v17;
 }
 
-+ (BOOL)areAllAuthorizedForMedicationViewModels:(id)a3
++ (BOOL)areAllAuthorizedForMedicationViewModels:(id)models
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  modelsCopy = models;
+  v4 = [modelsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -47,7 +47,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(modelsCopy);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) isAuthorized])
@@ -57,7 +57,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [modelsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -73,16 +73,16 @@ LABEL_11:
   return v8;
 }
 
-+ (void)updateAllMedicationViewModels:(id)a3 authorized:(BOOL)a4
++ (void)updateAllMedicationViewModels:(id)models authorized:(BOOL)authorized
 {
-  v4 = a4;
+  authorizedCopy = authorized;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modelsCopy = models;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 mutableCopy];
+  v6 = [modelsCopy mutableCopy];
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -98,7 +98,7 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) setAuthorized:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v10++) setAuthorized:{authorizedCopy, v12}];
       }
 
       while (v8 != v10);
@@ -108,19 +108,19 @@ LABEL_11:
     while (v8);
   }
 
-  v11 = [v5 copy];
+  v11 = [modelsCopy copy];
 }
 
-+ (id)authorizationStatusesFromMedicationViewModels:(id)a3
++ (id)authorizationStatusesFromMedicationViewModels:(id)models
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  modelsCopy = models;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(modelsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -146,8 +146,8 @@ LABEL_11:
           v11 = &unk_1F4384630;
         }
 
-        v12 = [v10 identifier];
-        [v4 setObject:v11 forKeyedSubscript:v12];
+        identifier = [v10 identifier];
+        [v4 setObject:v11 forKeyedSubscript:identifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];

@@ -11,64 +11,64 @@
 
 - (BOOL)px_isHuman
 {
-  v1 = [a1 detectionType];
+  detectionType = [self detectionType];
 
-  return [PXPeopleUtilities isDetectionTypeHuman:v1];
+  return [PXPeopleUtilities isDetectionTypeHuman:detectionType];
 }
 
 - (uint64_t)px_normalizedCenterEyeLine
 {
-  [a1 centerX];
+  [self centerX];
   if (v2 == 0.0)
   {
-    [a1 bodyWidth];
+    [self bodyWidth];
     v4 = v3;
-    [a1 bodyHeight];
+    [self bodyHeight];
     v6 = fmin(v4, v5);
-    [a1 px_faceTileSizeAdjustingForImageAspectRatio:{v6, v6}];
-    [a1 bodyCenterY];
-    return [a1 bodyCenterX];
+    [self px_faceTileSizeAdjustingForImageAspectRatio:{v6, v6}];
+    [self bodyCenterY];
+    return [self bodyCenterX];
   }
 
   else
   {
-    [a1 size];
-    [a1 px_faceTileSizeAdjustingForImageAspectRatio:{v8, v8}];
-    [a1 centerY];
-    return [a1 centerX];
+    [self size];
+    [self px_faceTileSizeAdjustingForImageAspectRatio:{v8, v8}];
+    [self centerY];
+    return [self centerX];
   }
 }
 
 - (uint64_t)px_faceTileSizeAdjustingForImageAspectRatio:()PhotosUICore
 {
   v6 = MEMORY[0x1E69C07D8];
-  v7 = [a1 sourceWidth];
-  v8 = [a1 sourceHeight];
+  sourceWidth = [self sourceWidth];
+  sourceHeight = [self sourceHeight];
 
-  return [v6 faceTileSizeAdjustingForImageAspectRatio:a2 imgWidth:a3 imgHeight:{v7, v8}];
+  return [v6 faceTileSizeAdjustingForImageAspectRatio:a2 imgWidth:a3 imgHeight:{sourceWidth, sourceHeight}];
 }
 
 - (double)px_cropRectWithCropFactor:()PhotosUICore bounded:
 {
-  [a1 size];
+  [self size];
   v8 = v7;
-  [a1 centerX];
+  [self centerX];
   v10 = v9;
-  [a1 centerY];
+  [self centerY];
   v12 = v11;
   if (fabs(v8) < 0.00000011920929)
   {
-    [a1 bodyWidth];
+    [self bodyWidth];
     v14 = v13;
-    [a1 bodyHeight];
+    [self bodyHeight];
     v8 = fmin(v14, v15);
-    [a1 bodyCenterX];
+    [self bodyCenterX];
     v10 = v16;
-    [a1 bodyCenterY];
+    [self bodyCenterY];
     v12 = v17;
   }
 
-  [a1 px_faceTileSizeAdjustingForImageAspectRatio:{v8 * a2, v8 * a2}];
+  [self px_faceTileSizeAdjustingForImageAspectRatio:{v8 * a2, v8 * a2}];
   width = v18;
   height = v20;
   x = v10 - v18 * 0.5;
@@ -147,56 +147,56 @@
 
 - (uint64_t)px_cropRectForPortraitImage:()PhotosUICore
 {
-  [a1 centerX];
+  [self centerX];
   if (v5 == 0.0)
   {
-    [a1 bodyCenterX];
+    [self bodyCenterX];
     v7 = v6;
-    [a1 bodyCenterY];
+    [self bodyCenterY];
     v9 = v8;
-    [a1 bodyWidth];
+    [self bodyWidth];
     v11 = v10;
-    [a1 bodyHeight];
+    [self bodyHeight];
     v13 = fmin(v11, v12);
   }
 
   else
   {
-    [a1 centerX];
+    [self centerX];
     v7 = v14;
-    [a1 centerY];
+    [self centerY];
     v9 = v15;
-    [a1 size];
+    [self size];
     v13 = v16;
   }
 
   v17 = MEMORY[0x1E69C07D8];
-  v18 = [a1 sourceWidth];
-  v19 = [a1 sourceHeight];
+  sourceWidth = [self sourceWidth];
+  sourceHeight = [self sourceHeight];
 
-  return [v17 getCropRectForPortraitImage:a3 size:v13 imgWidth:v18 imgHeight:v19 centerX:v7 centerY:v9];
+  return [v17 getCropRectForPortraitImage:a3 size:v13 imgWidth:sourceWidth imgHeight:sourceHeight centerX:v7 centerY:v9];
 }
 
 + (id)px_fetchKeyFaceForPerson:()PhotosUICore options:
 {
   v18 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 fetchKeyFaceForPerson:v6 options:a4];
+  v7 = [self fetchKeyFaceForPerson:v6 options:a4];
   v8 = v7;
   if (v6 && v7 && ![v7 count])
   {
-    v9 = [v6 photoLibrary];
-    v10 = [v9 isReadyForAnalysis_FOR_UI_USE_ONLY];
+    photoLibrary = [v6 photoLibrary];
+    isReadyForAnalysis_FOR_UI_USE_ONLY = [photoLibrary isReadyForAnalysis_FOR_UI_USE_ONLY];
 
     v11 = PLUIGetLog();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (isReadyForAnalysis_FOR_UI_USE_ONLY)
     {
       if (v12)
       {
-        v13 = [v6 localIdentifier];
+        localIdentifier = [v6 localIdentifier];
         v16 = 138543362;
-        v17 = v13;
+        v17 = localIdentifier;
         _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "Library is ready for analysis; marking person as needing key face: %{public}@", &v16, 0xCu);
       }
 
@@ -207,9 +207,9 @@
     {
       if (v12)
       {
-        v14 = [v6 localIdentifier];
+        localIdentifier2 = [v6 localIdentifier];
         v16 = 138543362;
-        v17 = v14;
+        v17 = localIdentifier2;
         _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "Library isn't ready for analysis; not marking person as needing key face: %{public}@", &v16, 0xCu);
       }
     }

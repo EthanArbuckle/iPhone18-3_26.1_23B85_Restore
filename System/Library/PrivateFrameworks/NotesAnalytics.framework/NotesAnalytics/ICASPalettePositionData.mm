@@ -1,22 +1,22 @@
 @interface ICASPalettePositionData
-- (ICASPalettePositionData)initWithPaletteStartPosition:(id)a3 paletteEndPosition:(id)a4;
+- (ICASPalettePositionData)initWithPaletteStartPosition:(id)position paletteEndPosition:(id)endPosition;
 - (id)toDict;
 @end
 
 @implementation ICASPalettePositionData
 
-- (ICASPalettePositionData)initWithPaletteStartPosition:(id)a3 paletteEndPosition:(id)a4
+- (ICASPalettePositionData)initWithPaletteStartPosition:(id)position paletteEndPosition:(id)endPosition
 {
-  v7 = a3;
-  v8 = a4;
+  positionCopy = position;
+  endPositionCopy = endPosition;
   v12.receiver = self;
   v12.super_class = ICASPalettePositionData;
   v9 = [(ICASPalettePositionData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_paletteStartPosition, a3);
-    objc_storeStrong(&v10->_paletteEndPosition, a4);
+    objc_storeStrong(&v9->_paletteStartPosition, position);
+    objc_storeStrong(&v10->_paletteEndPosition, endPosition);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"paletteStartPosition";
-  v3 = [(ICASPalettePositionData *)self paletteStartPosition];
-  if (v3)
+  paletteStartPosition = [(ICASPalettePositionData *)self paletteStartPosition];
+  if (paletteStartPosition)
   {
-    v4 = [(ICASPalettePositionData *)self paletteStartPosition];
+    paletteStartPosition2 = [(ICASPalettePositionData *)self paletteStartPosition];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    paletteStartPosition2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = paletteStartPosition2;
   v12[1] = @"paletteEndPosition";
-  v13[0] = v4;
-  v6 = [(ICASPalettePositionData *)self paletteEndPosition];
-  if (v6)
+  v13[0] = paletteStartPosition2;
+  paletteEndPosition = [(ICASPalettePositionData *)self paletteEndPosition];
+  if (paletteEndPosition)
   {
-    v7 = [(ICASPalettePositionData *)self paletteEndPosition];
+    paletteEndPosition2 = [(ICASPalettePositionData *)self paletteEndPosition];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    paletteEndPosition2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = paletteEndPosition2;
+  v13[1] = paletteEndPosition2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

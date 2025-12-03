@@ -1,42 +1,42 @@
 @interface CaptureMTLIntersectionFunctionTable
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasResource:(id)a3;
-- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)a3 captureComputePipelineState:(id)a4 descriptor:(id)a5;
-- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)a3 captureDevice:(id)a4 descriptor:(id)a5;
-- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)a3 captureRenderPipelineState:(id)a4 descriptor:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasResource:(id)resource;
+- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)object captureComputePipelineState:(id)state descriptor:(id)descriptor;
+- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)object captureDevice:(id)device descriptor:(id)descriptor;
+- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)object captureRenderPipelineState:(id)state descriptor:(id)descriptor;
 - (NSString)description;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)streamReference;
 - (void)dealloc;
 - (void)makeAliasable;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setGlobalBuffer:(id)a3;
-- (void)setGlobalBufferOffset:(unint64_t)a3;
-- (void)setLabel:(id)a3;
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4;
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFunction:(id)function atIndex:(unint64_t)index;
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range;
+- (void)setGlobalBuffer:(id)buffer;
+- (void)setGlobalBufferOffset:(unint64_t)offset;
+- (void)setLabel:(id)label;
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index;
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range;
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index;
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 - (void)touch;
 @end
 
 @implementation CaptureMTLIntersectionFunctionTable
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  v6 = [(MTLIntersectionFunctionTableSPI *)self->_baseObject setPurgeableState:a3];
+  v6 = [(MTLIntersectionFunctionTableSPI *)self->_baseObject setPurgeableState:state];
   v7 = v18;
   *(v18 + 8) = -15557;
   v8 = BYTE9(v19);
@@ -56,10 +56,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -69,7 +69,7 @@
 
   *v9 = var0;
   *(v9 + 1) = v6;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = state;
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v19);
@@ -104,10 +104,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -122,72 +122,72 @@
   *(v14 + 15) |= 8u;
 }
 
-- (BOOL)doesAliasResource:(id)a3
+- (BOOL)doesAliasResource:(id)resource
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  LOBYTE(baseObject) = [(MTLIntersectionFunctionTableSPI *)baseObject doesAliasResource:v4];
+  baseObject = [resource baseObject];
+  LOBYTE(baseObject) = [(MTLIntersectionFunctionTableSPI *)baseObject doesAliasResource:baseObject];
 
   return baseObject;
 }
 
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLIntersectionFunctionTableSPI *)baseObject doesAliasAnyResources:v8 count:a4];
+  return [(MTLIntersectionFunctionTableSPI *)baseObject doesAliasAnyResources:v8 count:count];
 }
 
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLIntersectionFunctionTableSPI *)baseObject doesAliasAllResources:v8 count:a4];
+  return [(MTLIntersectionFunctionTableSPI *)baseObject doesAliasAllResources:v8 count:count];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setLabel:v4];
+  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -15570;
   v7 = BYTE9(v20);
@@ -207,10 +207,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -218,16 +218,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -236,28 +236,28 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)setGlobalBufferOffset:(unint64_t)a3
+- (void)setGlobalBufferOffset:(unint64_t)offset
 {
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLIntersectionFunctionTable_setGlobalBufferOffset", "Ray tracing", 0, 0);
   baseObject = self->_baseObject;
 
-  [(MTLIntersectionFunctionTableSPI *)baseObject setGlobalBufferOffset:a3];
+  [(MTLIntersectionFunctionTableSPI *)baseObject setGlobalBufferOffset:offset];
 }
 
-- (void)setGlobalBuffer:(id)a3
+- (void)setGlobalBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLIntersectionFunctionTable_setGlobalBuffer", "Ray tracing", 0, 0);
-  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setGlobalBuffer:v4];
+  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setGlobalBuffer:bufferCopy];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLIntersectionFunctionTableSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLIntersectionFunctionTableSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -312,22 +312,22 @@
   }
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.length)
+  length = range.length;
+  location = range.location;
+  if (range.length)
   {
-    v8 = a4.location;
-    v9 = a3;
-    v10 = a4.length;
+    v8 = range.location;
+    tablesCopy = tables;
+    v10 = range.length;
     do
     {
       if (v8 < [(NSMutableArray *)self->_buffers count])
       {
-        if (*v9)
+        if (*tablesCopy)
         {
-          [(NSMutableArray *)self->_buffers setObject:*v9 atIndexedSubscript:v8];
+          [(NSMutableArray *)self->_buffers setObject:*tablesCopy atIndexedSubscript:v8];
         }
 
         else
@@ -337,7 +337,7 @@
         }
       }
 
-      ++v9;
+      ++tablesCopy;
       ++v8;
       --v10;
     }
@@ -345,7 +345,7 @@
     while (v10);
   }
 
-  v34 = a3;
+  tablesCopy2 = tables;
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
@@ -360,7 +360,7 @@
   bzero(&v33 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v18 = v34;
+    v18 = tablesCopy2;
     v19 = (&v33 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0));
     v20 = length;
     do
@@ -392,12 +392,12 @@
     BYTE9(v37) += 32;
   }
 
-  v27 = v34;
+  v27 = tablesCopy2;
   *(v22 + 13) = v23;
-  v28 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v28->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -405,7 +405,7 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v28, v29);
+  __chkstk_darwin(traceStream, v29);
   bzero(&v33 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   v31 = StreamArray(&v35, (&v33 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0)), v27, length);
   *v24 = var0;
@@ -420,20 +420,20 @@
   *(v32 + 15) |= 8u;
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([(NSMutableArray *)self->_buffers count]> a4)
+  tableCopy = table;
+  if ([(NSMutableArray *)self->_buffers count]> index)
   {
-    if (v6)
+    if (tableCopy)
     {
-      [(NSMutableArray *)self->_buffers setObject:v6 atIndexedSubscript:a4];
+      [(NSMutableArray *)self->_buffers setObject:tableCopy atIndexedSubscript:index];
     }
 
     else
     {
       v7 = +[NSNull null];
-      [(NSMutableArray *)self->_buffers setObject:v7 atIndexedSubscript:a4];
+      [(NSMutableArray *)self->_buffers setObject:v7 atIndexedSubscript:index];
     }
   }
 
@@ -446,8 +446,8 @@
   v10 = v9;
   *(v9 + 8) |= 1u;
   baseObject = self->_baseObject;
-  v12 = [v6 baseObject];
-  [(MTLIntersectionFunctionTableSPI *)baseObject setVisibleFunctionTable:v12 atBufferIndex:a4];
+  baseObject = [tableCopy baseObject];
+  [(MTLIntersectionFunctionTableSPI *)baseObject setVisibleFunctionTable:baseObject atBufferIndex:index];
 
   v13 = v24;
   *(v24 + 8) = -15526;
@@ -468,10 +468,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -479,10 +479,10 @@
     var0 = 0;
   }
 
-  v20 = [v6 traceStream];
-  if (v20)
+  traceStream2 = [tableCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -492,21 +492,21 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
+  *(v15 + 2) = index;
   v22 = v24;
   *v10 = v25;
   *(v10 + 8) = BYTE8(v25);
   *(v22 + 15) |= 8u;
 }
 
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.length)
+  length = range.length;
+  location = range.location;
+  if (range.length)
   {
-    v8 = a4.location;
-    v9 = a4.length;
+    v8 = range.location;
+    v9 = range.length;
     do
     {
       if (v8 < [(NSMutableArray *)self->_functions count])
@@ -527,7 +527,7 @@
   v21 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v21);
-  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setOpaqueCurveIntersectionFunctionWithSignature:a3 withRange:location, length];
+  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setOpaqueCurveIntersectionFunctionWithSignature:signature withRange:location, length];
   v12 = v22;
   *(v22 + 8) = -15257;
   v13 = BYTE9(v23);
@@ -547,10 +547,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -559,7 +559,7 @@
   }
 
   *v14 = var0;
-  *(v14 + 1) = a3;
+  *(v14 + 1) = signature;
   *(v14 + 2) = location;
   *(v14 + 3) = length;
   s();
@@ -568,12 +568,12 @@
   *(v22 + 15) |= 8u;
 }
 
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_functions count]> a4)
+  if ([(NSMutableArray *)self->_functions count]> index)
   {
     v7 = +[NSNull null];
-    [(NSMutableArray *)self->_functions setObject:v7 atIndexedSubscript:a4];
+    [(NSMutableArray *)self->_functions setObject:v7 atIndexedSubscript:index];
   }
 
   v19 = 0u;
@@ -581,7 +581,7 @@
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setOpaqueCurveIntersectionFunctionWithSignature:a3 atIndex:a4];
+  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setOpaqueCurveIntersectionFunctionWithSignature:signature atIndex:index];
   v9 = v19;
   *(v19 + 8) = -15258;
   v10 = BYTE9(v20);
@@ -601,10 +601,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -613,22 +613,22 @@
   }
 
   *v11 = var0;
-  *(v11 + 1) = a3;
-  *(v11 + 2) = a4;
+  *(v11 + 1) = signature;
+  *(v11 + 2) = index;
   s();
   *v16 = v17;
   *(v16 + 8) = BYTE8(v20);
   *(v19 + 15) |= 8u;
 }
 
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.length)
+  length = range.length;
+  location = range.location;
+  if (range.length)
   {
-    v8 = a4.location;
-    v9 = a4.length;
+    v8 = range.location;
+    v9 = range.length;
     do
     {
       if (v8 < [(NSMutableArray *)self->_functions count])
@@ -649,7 +649,7 @@
   v21 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v21);
-  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setOpaqueTriangleIntersectionFunctionWithSignature:a3 withRange:location, length];
+  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setOpaqueTriangleIntersectionFunctionWithSignature:signature withRange:location, length];
   v12 = v22;
   *(v22 + 8) = -15529;
   v13 = BYTE9(v23);
@@ -669,10 +669,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -681,7 +681,7 @@
   }
 
   *v14 = var0;
-  *(v14 + 1) = a3;
+  *(v14 + 1) = signature;
   *(v14 + 2) = location;
   *(v14 + 3) = length;
   s();
@@ -690,12 +690,12 @@
   *(v22 + 15) |= 8u;
 }
 
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_functions count]> a4)
+  if ([(NSMutableArray *)self->_functions count]> index)
   {
     v7 = +[NSNull null];
-    [(NSMutableArray *)self->_functions setObject:v7 atIndexedSubscript:a4];
+    [(NSMutableArray *)self->_functions setObject:v7 atIndexedSubscript:index];
   }
 
   v19 = 0u;
@@ -703,7 +703,7 @@
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setOpaqueTriangleIntersectionFunctionWithSignature:a3 atIndex:a4];
+  [(MTLIntersectionFunctionTableSPI *)self->_baseObject setOpaqueTriangleIntersectionFunctionWithSignature:signature atIndex:index];
   v9 = v19;
   *(v19 + 8) = -15530;
   v10 = BYTE9(v20);
@@ -723,10 +723,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -735,30 +735,30 @@
   }
 
   *v11 = var0;
-  *(v11 + 1) = a3;
-  *(v11 + 2) = a4;
+  *(v11 + 1) = signature;
+  *(v11 + 2) = index;
   s();
   *v16 = v17;
   *(v16 + 8) = BYTE8(v20);
   *(v19 + 15) |= 8u;
 }
 
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.length)
+  length = range.length;
+  location = range.location;
+  if (range.length)
   {
-    v8 = a4.location;
-    v9 = a3;
-    v10 = a4.length;
+    v8 = range.location;
+    functionsCopy = functions;
+    v10 = range.length;
     do
     {
       if (v8 < [(NSMutableArray *)self->_functions count])
       {
-        if (*v9)
+        if (*functionsCopy)
         {
-          [(NSMutableArray *)self->_functions setObject:*v9 atIndexedSubscript:v8];
+          [(NSMutableArray *)self->_functions setObject:*functionsCopy atIndexedSubscript:v8];
         }
 
         else
@@ -768,7 +768,7 @@
         }
       }
 
-      ++v9;
+      ++functionsCopy;
       ++v8;
       --v10;
     }
@@ -787,12 +787,12 @@
   bzero(&v32 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v17 = a3;
+    functionsCopy2 = functions;
     v18 = (&v32 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0));
     v19 = length;
     do
     {
-      v20 = *v17++;
+      v20 = *functionsCopy2++;
       *v18++ = [v20 baseObject];
       --v19;
     }
@@ -820,10 +820,10 @@
   }
 
   *(v21 + 13) = v22;
-  v26 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v26)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v26->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -831,9 +831,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v26, v27);
+  __chkstk_darwin(traceStream, v27);
   bzero(&v32 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v29 = StreamArray(&v32, (&v32 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+  v29 = StreamArray(&v32, (&v32 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0)), functions, length);
   *v23 = var0;
   *(v23 + 1) = location;
   *(v23 + 2) = length;
@@ -846,20 +846,20 @@
   *(v33 + 15) |= 8u;
 }
 
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4
+- (void)setFunction:(id)function atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([(NSMutableArray *)self->_functions count]> a4)
+  functionCopy = function;
+  if ([(NSMutableArray *)self->_functions count]> index)
   {
-    if (v6)
+    if (functionCopy)
     {
-      [(NSMutableArray *)self->_functions setObject:v6 atIndexedSubscript:a4];
+      [(NSMutableArray *)self->_functions setObject:functionCopy atIndexedSubscript:index];
     }
 
     else
     {
       v7 = +[NSNull null];
-      [(NSMutableArray *)self->_functions setObject:v7 atIndexedSubscript:a4];
+      [(NSMutableArray *)self->_functions setObject:v7 atIndexedSubscript:index];
     }
   }
 
@@ -869,8 +869,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLIntersectionFunctionTableSPI *)baseObject setFunction:v10 atIndex:a4];
+  baseObject = [functionCopy baseObject];
+  [(MTLIntersectionFunctionTableSPI *)baseObject setFunction:baseObject atIndex:index];
 
   v11 = v23;
   *(v23 + 8) = -15559;
@@ -891,10 +891,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -902,10 +902,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [functionCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -915,30 +915,30 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = index;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v37 = a4;
-  if (a5.length)
+  length = range.length;
+  location = range.location;
+  offsetsCopy = offsets;
+  if (range.length)
   {
-    v9 = a5.location;
-    v10 = a3;
-    v11 = a5.length;
+    v9 = range.location;
+    buffersCopy = buffers;
+    v11 = range.length;
     do
     {
       if (v9 < [(NSMutableArray *)self->_buffers count])
       {
-        if (*v10)
+        if (*buffersCopy)
         {
-          [(NSMutableArray *)self->_buffers setObject:*v10 atIndexedSubscript:v9];
+          [(NSMutableArray *)self->_buffers setObject:*buffersCopy atIndexedSubscript:v9];
         }
 
         else
@@ -948,7 +948,7 @@
         }
       }
 
-      ++v10;
+      ++buffersCopy;
       ++v9;
       --v11;
     }
@@ -956,7 +956,7 @@
     while (v11);
   }
 
-  v38 = a3;
+  buffersCopy2 = buffers;
   v40 = 0u;
   v41 = 0u;
   v39 = 0u;
@@ -968,11 +968,11 @@
   baseObject = self->_baseObject;
   v17 = 8 * length;
   __chkstk_darwin(v14, v18);
-  bzero(&v37 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  bzero(&offsetsCopy - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
   if (length)
   {
-    v19 = v38;
-    v20 = (&v37 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v19 = buffersCopy2;
+    v20 = (&offsetsCopy - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0));
     v21 = length;
     do
     {
@@ -984,9 +984,9 @@
     while (v21);
   }
 
-  v23 = v37;
+  v23 = offsetsCopy;
   v24 = location;
-  [(MTLIntersectionFunctionTableSPI *)baseObject setBuffers:&v37 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:v37 withRange:location, length, v37];
+  [(MTLIntersectionFunctionTableSPI *)baseObject setBuffers:&offsetsCopy - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:offsetsCopy withRange:location, length, offsetsCopy];
   v25 = v40;
   *(v40 + 8) = -15544;
   v26 = BYTE9(v41);
@@ -1005,12 +1005,12 @@
     BYTE9(v41) += 32;
   }
 
-  v30 = v38;
+  v30 = buffersCopy2;
   *(v25 + 13) = v26;
-  v31 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v31)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v31->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1018,9 +1018,9 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v31, v32);
-  bzero(&v37 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-  v34 = StreamArray(&v39, (&v37 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0)), v30, length);
+  __chkstk_darwin(traceStream, v32);
+  bzero(&offsetsCopy - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
+  v34 = StreamArray(&v39, (&offsetsCopy - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0)), v30, length);
   v35 = GTTraceEncoder_storeBytes(&v39, v23, 8 * length);
   *v27 = var0;
   *(v27 + 1) = v24;
@@ -1035,20 +1035,20 @@
   *(v36 + 15) |= 8u;
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = a3;
-  if ([(NSMutableArray *)self->_buffers count]> a5)
+  bufferCopy = buffer;
+  if ([(NSMutableArray *)self->_buffers count]> index)
   {
-    if (v8)
+    if (bufferCopy)
     {
-      [(NSMutableArray *)self->_buffers setObject:v8 atIndexedSubscript:a5];
+      [(NSMutableArray *)self->_buffers setObject:bufferCopy atIndexedSubscript:index];
     }
 
     else
     {
       v9 = +[NSNull null];
-      [(NSMutableArray *)self->_buffers setObject:v9 atIndexedSubscript:a5];
+      [(NSMutableArray *)self->_buffers setObject:v9 atIndexedSubscript:index];
     }
   }
 
@@ -1061,8 +1061,8 @@
   v12 = v11;
   *(v11 + 8) |= 1u;
   baseObject = self->_baseObject;
-  v14 = [v8 baseObject];
-  [(MTLIntersectionFunctionTableSPI *)baseObject setBuffer:v14 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLIntersectionFunctionTableSPI *)baseObject setBuffer:baseObject offset:offset atIndex:index];
 
   v15 = v26;
   *(v26 + 8) = -15545;
@@ -1083,10 +1083,10 @@
   }
 
   *(v15 + 13) = v16;
-  v20 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1094,10 +1094,10 @@
     var0 = 0;
   }
 
-  v22 = [v8 traceStream];
-  if (v22)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v23 = *v22;
+    v23 = *traceStream2;
   }
 
   else
@@ -1107,8 +1107,8 @@
 
   *v17 = var0;
   *(v17 + 1) = v23;
-  *(v17 + 2) = a4;
-  *(v17 + 3) = a5;
+  *(v17 + 2) = offset;
+  *(v17 + 3) = index;
   v24 = v26;
   *v12 = v27;
   *(v12 + 8) = BYTE8(v27);
@@ -1145,10 +1145,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLIntersectionFunctionTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1167,27 +1167,27 @@
   [(CaptureMTLIntersectionFunctionTable *)&v14 dealloc];
 }
 
-- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)a3 captureRenderPipelineState:(id)a4 descriptor:(id)a5
+- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)object captureRenderPipelineState:(id)state descriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  stateCopy = state;
+  descriptorCopy = descriptor;
   v29.receiver = self;
   v29.super_class = CaptureMTLIntersectionFunctionTable;
   v12 = [(CaptureMTLIntersectionFunctionTable *)&v29 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    v14 = [v10 device];
+    objc_storeStrong(&v12->_baseObject, object);
+    device = [stateCopy device];
     captureDevice = v13->_captureDevice;
-    v13->_captureDevice = v14;
+    v13->_captureDevice = device;
 
-    objc_storeStrong(&v13->_captureRenderPipelineState, a4);
-    v16 = [v10 traceContext];
-    v13->_traceContext = v16;
-    v17 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v16, v17, v13);
+    objc_storeStrong(&v13->_captureRenderPipelineState, state);
+    traceContext = [stateCopy traceContext];
+    v13->_traceContext = traceContext;
+    v17 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v17, v13);
 
     v18 = 31;
     v19 = [[NSMutableArray alloc] initWithCapacity:31];
@@ -1204,11 +1204,11 @@
     }
 
     while (v18);
-    v23 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v11, "functionCount")}];
+    v23 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(descriptorCopy, "functionCount")}];
     functions = v13->_functions;
     v13->_functions = v23;
 
-    if ([v11 functionCount])
+    if ([descriptorCopy functionCount])
     {
       v25 = 0;
       do
@@ -1220,34 +1220,34 @@
         ++v25;
       }
 
-      while ([v11 functionCount] > v25);
+      while ([descriptorCopy functionCount] > v25);
     }
   }
 
   return v13;
 }
 
-- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)a3 captureComputePipelineState:(id)a4 descriptor:(id)a5
+- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)object captureComputePipelineState:(id)state descriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  stateCopy = state;
+  descriptorCopy = descriptor;
   v29.receiver = self;
   v29.super_class = CaptureMTLIntersectionFunctionTable;
   v12 = [(CaptureMTLIntersectionFunctionTable *)&v29 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    v14 = [v10 device];
+    objc_storeStrong(&v12->_baseObject, object);
+    device = [stateCopy device];
     captureDevice = v13->_captureDevice;
-    v13->_captureDevice = v14;
+    v13->_captureDevice = device;
 
-    objc_storeStrong(&v13->_captureComputePipelineState, a4);
-    v16 = [v10 traceContext];
-    v13->_traceContext = v16;
-    v17 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v16, v17, v13);
+    objc_storeStrong(&v13->_captureComputePipelineState, state);
+    traceContext = [stateCopy traceContext];
+    v13->_traceContext = traceContext;
+    v17 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v17, v13);
 
     v18 = 31;
     v19 = [[NSMutableArray alloc] initWithCapacity:31];
@@ -1264,11 +1264,11 @@
     }
 
     while (v18);
-    v23 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v11, "functionCount")}];
+    v23 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(descriptorCopy, "functionCount")}];
     functions = v13->_functions;
     v13->_functions = v23;
 
-    if ([v11 functionCount])
+    if ([descriptorCopy functionCount])
     {
       v25 = 0;
       do
@@ -1280,30 +1280,30 @@
         ++v25;
       }
 
-      while ([v11 functionCount] > v25);
+      while ([descriptorCopy functionCount] > v25);
     }
   }
 
   return v13;
 }
 
-- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)a3 captureDevice:(id)a4 descriptor:(id)a5
+- (CaptureMTLIntersectionFunctionTable)initWithBaseObject:(id)object captureDevice:(id)device descriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
   v27.receiver = self;
   v27.super_class = CaptureMTLIntersectionFunctionTable;
   v12 = [(CaptureMTLIntersectionFunctionTable *)&v27 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_captureDevice, a4);
-    v14 = [v10 traceContext];
-    v13->_traceContext = v14;
-    v15 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v14, v15, v13);
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v13->_traceContext = traceContext;
+    v15 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v15, v13);
 
     v16 = 31;
     v17 = [[NSMutableArray alloc] initWithCapacity:31];
@@ -1320,11 +1320,11 @@
     }
 
     while (v16);
-    v21 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v11, "functionCount")}];
+    v21 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(descriptorCopy, "functionCount")}];
     functions = v13->_functions;
     v13->_functions = v21;
 
-    if ([v11 functionCount])
+    if ([descriptorCopy functionCount])
     {
       v23 = 0;
       do
@@ -1336,7 +1336,7 @@
         ++v23;
       }
 
-      while ([v11 functionCount] > v23);
+      while ([descriptorCopy functionCount] > v23);
     }
   }
 

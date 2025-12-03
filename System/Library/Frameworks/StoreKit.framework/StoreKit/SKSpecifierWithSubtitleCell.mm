@@ -1,41 +1,41 @@
 @interface SKSpecifierWithSubtitleCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation SKSpecifierWithSubtitleCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v18.receiver = self;
   v18.super_class = SKSpecifierWithSubtitleCell;
-  v4 = a3;
-  [(PSTableCell *)&v18 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v18 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(SKSpecifierWithSubtitleCell *)self textLabel:v18.receiver];
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v5 setFont:v6];
 
-  v7 = [(SKSpecifierWithSubtitleCell *)self textLabel];
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  [v7 setTextColor:v8];
+  textLabel = [(SKSpecifierWithSubtitleCell *)self textLabel];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [textLabel setTextColor:labelColor];
 
-  v9 = [(SKSpecifierWithSubtitleCell *)self textLabel];
-  v10 = [v4 propertyForKey:*MEMORY[0x1E69C59A8]];
-  [v9 setText:v10];
+  textLabel2 = [(SKSpecifierWithSubtitleCell *)self textLabel];
+  v10 = [specifierCopy propertyForKey:*MEMORY[0x1E69C59A8]];
+  [textLabel2 setText:v10];
 
-  v11 = [(SKSpecifierWithSubtitleCell *)self detailTextLabel];
+  detailTextLabel = [(SKSpecifierWithSubtitleCell *)self detailTextLabel];
   v12 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  [v11 setFont:v12];
+  [detailTextLabel setFont:v12];
 
-  v13 = [(SKSpecifierWithSubtitleCell *)self detailTextLabel];
-  v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v13 setTextColor:v14];
+  detailTextLabel2 = [(SKSpecifierWithSubtitleCell *)self detailTextLabel];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [detailTextLabel2 setTextColor:secondaryLabelColor];
 
-  v15 = [(SKSpecifierWithSubtitleCell *)self detailTextLabel];
-  v16 = [v4 propertyForKey:*MEMORY[0x1E69C59A0]];
+  detailTextLabel3 = [(SKSpecifierWithSubtitleCell *)self detailTextLabel];
+  v16 = [specifierCopy propertyForKey:*MEMORY[0x1E69C59A0]];
 
-  [v15 setText:v16];
-  v17 = [(SKSpecifierWithSubtitleCell *)self imageView];
-  [v17 setContentMode:1];
+  [detailTextLabel3 setText:v16];
+  imageView = [(SKSpecifierWithSubtitleCell *)self imageView];
+  [imageView setContentMode:1];
 
   [(SKSpecifierWithSubtitleCell *)self setNeedsLayout];
 }

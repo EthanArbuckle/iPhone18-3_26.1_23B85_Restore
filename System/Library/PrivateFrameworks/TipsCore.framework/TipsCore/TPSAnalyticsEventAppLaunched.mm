@@ -2,53 +2,53 @@
 + (id)_currentSessionEvents;
 + (id)_initialSessionEvent;
 + (id)_latestSessionEvent;
-+ (id)eventWithContentID:(id)a3 collectionID:(id)a4 correlationID:(id)a5 launchType:(id)a6;
++ (id)eventWithContentID:(id)d collectionID:(id)iD correlationID:(id)correlationID launchType:(id)type;
 + (id)firstLaunchEvent;
 + (id)lastRecordedLaunchType;
-+ (void)appSessionEndedWithType:(id)a3;
-- (TPSAnalyticsEventAppLaunched)initWithCoder:(id)a3;
++ (void)appSessionEndedWithType:(id)type;
+- (TPSAnalyticsEventAppLaunched)initWithCoder:(id)coder;
 - (id)_initFirstLaunchEvent;
-- (id)_initWithContentID:(id)a3 collectionID:(id)a4 correlationID:(id)a5 launchType:(id)a6;
+- (id)_initWithContentID:(id)d collectionID:(id)iD correlationID:(id)correlationID launchType:(id)type;
 - (id)mutableAnalyticsEventRepresentation;
 - (id)userTypeString;
 - (void)_aggregateLog;
 - (void)_updateLaunchCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)log;
 @end
 
 @implementation TPSAnalyticsEventAppLaunched
 
-- (TPSAnalyticsEventAppLaunched)initWithCoder:(id)a3
+- (TPSAnalyticsEventAppLaunched)initWithCoder:(id)coder
 {
   v24[7] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = TPSAnalyticsEventAppLaunched;
-  v5 = [(TPSAnalyticsEvent *)&v23 initWithCoder:v4];
+  v5 = [(TPSAnalyticsEvent *)&v23 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user_type"];
     userType = v5->_userType;
     v5->_userType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"launch_src"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launch_src"];
     launchType = v5->_launchType;
     v5->_launchType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tip_ID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tip_ID"];
     contentID = v5->_contentID;
     v5->_contentID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collection_ID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collection_ID"];
     collectionID = v5->_collectionID;
     v5->_collectionID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tip_correlation_ID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tip_correlation_ID"];
     correlationID = v5->_correlationID;
     v5->_correlationID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seq_num"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seq_num"];
     launchNumber = v5->_launchNumber;
     v5->_launchNumber = v16;
 
@@ -60,7 +60,7 @@
     v24[5] = @"terminated";
     v24[6] = @"carousel";
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:7];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session_reset"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session_reset"];
     if ([v19 BOOLValue])
     {
       v20 = [v18 containsObject:v5->_launchType];
@@ -83,39 +83,39 @@
 - (id)userTypeString
 {
   v2 = +[TPSCommonDefines sharedInstance];
-  v3 = [v2 userType];
+  userType = [v2 userType];
 
-  if (v3 > 2)
+  if (userType > 2)
   {
     return @"undefined";
   }
 
   else
   {
-    return off_1E8101320[v3];
+    return off_1E8101320[userType];
   }
 }
 
-- (id)_initWithContentID:(id)a3 collectionID:(id)a4 correlationID:(id)a5 launchType:(id)a6
+- (id)_initWithContentID:(id)d collectionID:(id)iD correlationID:(id)correlationID launchType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  correlationIDCopy = correlationID;
+  typeCopy = type;
   v19.receiver = self;
   v19.super_class = TPSAnalyticsEventAppLaunched;
   v14 = [(TPSAnalyticsEvent *)&v19 initWithDate:0];
   v15 = v14;
   if (v14)
   {
-    v16 = [(TPSAnalyticsEventAppLaunched *)v14 userTypeString];
+    userTypeString = [(TPSAnalyticsEventAppLaunched *)v14 userTypeString];
     userType = v15->_userType;
-    v15->_userType = v16;
+    v15->_userType = userTypeString;
 
-    objc_storeStrong(&v15->_launchType, a6);
-    if (v10)
+    objc_storeStrong(&v15->_launchType, type);
+    if (dCopy)
     {
-      if (v11)
+      if (iDCopy)
       {
         goto LABEL_4;
       }
@@ -123,27 +123,27 @@
 
     else
     {
-      v10 = @"landing_page";
-      if (v11)
+      dCopy = @"landing_page";
+      if (iDCopy)
       {
 LABEL_4:
-        if (v12)
+        if (correlationIDCopy)
         {
 LABEL_5:
-          objc_storeStrong(&v15->_contentID, v10);
-          objc_storeStrong(&v15->_collectionID, v11);
-          objc_storeStrong(&v15->_correlationID, v12);
+          objc_storeStrong(&v15->_contentID, dCopy);
+          objc_storeStrong(&v15->_collectionID, iDCopy);
+          objc_storeStrong(&v15->_correlationID, correlationIDCopy);
           goto LABEL_6;
         }
 
 LABEL_9:
-        v12 = @"landing_page";
+        correlationIDCopy = @"landing_page";
         goto LABEL_5;
       }
     }
 
-    v11 = @"landing_page";
-    if (v12)
+    iDCopy = @"landing_page";
+    if (correlationIDCopy)
     {
       goto LABEL_5;
     }
@@ -164,9 +164,9 @@ LABEL_6:
   if (v2)
   {
     [objc_opt_class() resetLaunchNumber];
-    v3 = [(TPSAnalyticsEventAppLaunched *)v2 userType];
+    userType = [(TPSAnalyticsEventAppLaunched *)v2 userType];
     userType = v2->_userType;
-    v2->_userType = v3;
+    v2->_userType = userType;
 
     launchType = v2->_launchType;
     v2->_launchType = @"first_launch";
@@ -181,22 +181,22 @@ LABEL_6:
   return v2;
 }
 
-+ (id)eventWithContentID:(id)a3 collectionID:(id)a4 correlationID:(id)a5 launchType:(id)a6
++ (id)eventWithContentID:(id)d collectionID:(id)iD correlationID:(id)correlationID launchType:(id)type
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] _initWithContentID:v13 collectionID:v12 correlationID:v11 launchType:v10];
+  typeCopy = type;
+  correlationIDCopy = correlationID;
+  iDCopy = iD;
+  dCopy = d;
+  v14 = [[self alloc] _initWithContentID:dCopy collectionID:iDCopy correlationID:correlationIDCopy launchType:typeCopy];
 
   return v14;
 }
 
 + (id)firstLaunchEvent
 {
-  v2 = [[a1 alloc] _initFirstLaunchEvent];
+  _initFirstLaunchEvent = [[self alloc] _initFirstLaunchEvent];
 
-  return v2;
+  return _initFirstLaunchEvent;
 }
 
 - (void)_updateLaunchCount
@@ -222,36 +222,36 @@ LABEL_6:
   self->_needsSessionReset = v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSAnalyticsEventAppLaunched;
-  v4 = a3;
-  [(TPSAnalyticsEvent *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSAnalyticsEvent *)&v6 encodeWithCoder:coderCopy];
   [(TPSAnalyticsEventAppLaunched *)self _updateLaunchCount:v6.receiver];
-  [v4 encodeObject:self->_userType forKey:@"user_type"];
-  [v4 encodeObject:self->_launchType forKey:@"launch_src"];
-  [v4 encodeObject:self->_contentID forKey:@"tip_ID"];
-  [v4 encodeObject:self->_collectionID forKey:@"collection_ID"];
-  [v4 encodeObject:self->_correlationID forKey:@"tip_correlation_ID"];
-  [v4 encodeObject:self->_launchNumber forKey:@"seq_num"];
+  [coderCopy encodeObject:self->_userType forKey:@"user_type"];
+  [coderCopy encodeObject:self->_launchType forKey:@"launch_src"];
+  [coderCopy encodeObject:self->_contentID forKey:@"tip_ID"];
+  [coderCopy encodeObject:self->_collectionID forKey:@"collection_ID"];
+  [coderCopy encodeObject:self->_correlationID forKey:@"tip_correlation_ID"];
+  [coderCopy encodeObject:self->_launchNumber forKey:@"seq_num"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_needsSessionReset];
-  [v4 encodeObject:v5 forKey:@"session_reset"];
+  [coderCopy encodeObject:v5 forKey:@"session_reset"];
 }
 
 - (id)mutableAnalyticsEventRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_userType forKeyedSubscript:@"user_type"];
-  [v3 setObject:self->_launchNumber forKeyedSubscript:@"seq_num"];
-  [v3 setObject:self->_launchType forKeyedSubscript:@"launch_src"];
-  [v3 setObject:self->_contentID forKeyedSubscript:@"tip_ID"];
-  [v3 setObject:self->_collectionID forKeyedSubscript:@"collection_ID"];
-  [v3 setObject:self->_correlationID forKeyedSubscript:@"tip_correlation_ID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_userType forKeyedSubscript:@"user_type"];
+  [dictionary setObject:self->_launchNumber forKeyedSubscript:@"seq_num"];
+  [dictionary setObject:self->_launchType forKeyedSubscript:@"launch_src"];
+  [dictionary setObject:self->_contentID forKeyedSubscript:@"tip_ID"];
+  [dictionary setObject:self->_collectionID forKeyedSubscript:@"collection_ID"];
+  [dictionary setObject:self->_correlationID forKeyedSubscript:@"tip_correlation_ID"];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{+[TPSCommonDefines isSeniorUser](TPSCommonDefines, "isSeniorUser")}];
-  [v3 setObject:v4 forKeyedSubscript:@"u65_flag"];
+  [dictionary setObject:v4 forKeyedSubscript:@"u65_flag"];
 
-  return v3;
+  return dictionary;
 }
 
 + (id)_currentSessionEvents
@@ -275,61 +275,61 @@ uint64_t __53__TPSAnalyticsEventAppLaunched__currentSessionEvents__block_invoke(
 
 + (id)_initialSessionEvent
 {
-  v2 = [a1 _currentSessionEvents];
-  v3 = [v2 firstObject];
+  _currentSessionEvents = [self _currentSessionEvents];
+  firstObject = [_currentSessionEvents firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 + (id)_latestSessionEvent
 {
-  v2 = [a1 _currentSessionEvents];
-  v3 = [v2 lastObject];
+  _currentSessionEvents = [self _currentSessionEvents];
+  lastObject = [_currentSessionEvents lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (void)log
 {
-  v4 = [objc_opt_class() _currentSessionEvents];
-  [v4 addObject:self];
-  v3 = [objc_opt_class() _initialSessionEvent];
-  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:v3 selector:sel__aggregateLog object:0];
-  [v3 performSelector:sel__aggregateLog withObject:0 afterDelay:1.0];
+  _currentSessionEvents = [objc_opt_class() _currentSessionEvents];
+  [_currentSessionEvents addObject:self];
+  _initialSessionEvent = [objc_opt_class() _initialSessionEvent];
+  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:_initialSessionEvent selector:sel__aggregateLog object:0];
+  [_initialSessionEvent performSelector:sel__aggregateLog withObject:0 afterDelay:1.0];
 }
 
-+ (void)appSessionEndedWithType:(id)a3
++ (void)appSessionEndedWithType:(id)type
 {
-  v5 = [TPSAnalyticsEventAppLaunched eventWithContentID:0 collectionID:0 correlationID:0 launchType:a3];
-  v3 = [objc_opt_class() _currentSessionEvents];
-  [v3 addObject:v5];
-  v4 = [objc_opt_class() _initialSessionEvent];
-  [v4 _aggregateLog];
+  v5 = [TPSAnalyticsEventAppLaunched eventWithContentID:0 collectionID:0 correlationID:0 launchType:type];
+  _currentSessionEvents = [objc_opt_class() _currentSessionEvents];
+  [_currentSessionEvents addObject:v5];
+  _initialSessionEvent = [objc_opt_class() _initialSessionEvent];
+  [_initialSessionEvent _aggregateLog];
 }
 
 - (void)_aggregateLog
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__aggregateLog object:0];
-  v2 = [objc_opt_class() _currentSessionEvents];
-  v6 = [v2 lastObject];
+  _currentSessionEvents = [objc_opt_class() _currentSessionEvents];
+  lastObject = [_currentSessionEvents lastObject];
 
-  v3 = [v6 launchType];
-  v4 = [objc_opt_class() _currentSessionEvents];
-  [v4 removeAllObjects];
+  launchType = [lastObject launchType];
+  _currentSessionEvents2 = [objc_opt_class() _currentSessionEvents];
+  [_currentSessionEvents2 removeAllObjects];
 
-  if (v3 != @"background" && v3 != @"terminated")
+  if (launchType != @"background" && launchType != @"terminated")
   {
     v5 = +[TPSAnalyticsEventController sharedInstance];
-    [v5 logAnalyticsEvent:v6];
+    [v5 logAnalyticsEvent:lastObject];
   }
 }
 
 + (id)lastRecordedLaunchType
 {
-  v2 = [a1 _latestSessionEvent];
-  v3 = [v2 launchType];
+  _latestSessionEvent = [self _latestSessionEvent];
+  launchType = [_latestSessionEvent launchType];
 
-  return v3;
+  return launchType;
 }
 
 @end

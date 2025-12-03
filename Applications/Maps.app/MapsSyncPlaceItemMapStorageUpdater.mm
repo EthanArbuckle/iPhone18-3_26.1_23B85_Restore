@@ -1,34 +1,34 @@
 @interface MapsSyncPlaceItemMapStorageUpdater
 - (_TtC4Maps34MapsSyncPlaceItemMapStorageUpdater)init;
-- (void)updateMapsSyncPlaceItemsMatchingMapItem:(id)a3 withStorageFrom:(id)a4;
+- (void)updateMapsSyncPlaceItemsMatchingMapItem:(id)item withStorageFrom:(id)from;
 @end
 
 @implementation MapsSyncPlaceItemMapStorageUpdater
 
-- (void)updateMapsSyncPlaceItemsMatchingMapItem:(id)a3 withStorageFrom:(id)a4
+- (void)updateMapsSyncPlaceItemsMatchingMapItem:(id)item withStorageFrom:(id)from
 {
   v7 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v7 - 8);
   v9 = &v21 - v8;
   v10 = *(&self->super.isa + OBJC_IVAR____TtC4Maps34MapsSyncPlaceItemMapStorageUpdater_libraryDataOperationsProvider);
-  v11 = a3;
-  v12 = a4;
-  v22 = self;
-  v13 = [v12 _geoMapItem];
-  if (v13)
+  itemCopy = item;
+  fromCopy = from;
+  selfCopy = self;
+  _geoMapItem = [fromCopy _geoMapItem];
+  if (_geoMapItem)
   {
-    v14 = v13;
+    v14 = _geoMapItem;
     v15 = type metadata accessor for TaskPriority();
     (*(*(v15 - 8) + 56))(v9, 1, 1, v15);
     v16 = swift_allocObject();
     v16[2] = 0;
     v16[3] = 0;
     v16[4] = v10;
-    v16[5] = v11;
+    v16[5] = itemCopy;
     v16[6] = v14;
-    v16[7] = v12;
-    v17 = v11;
-    v18 = v12;
+    v16[7] = fromCopy;
+    v17 = itemCopy;
+    v18 = fromCopy;
     v19 = v10;
     sub_10020AAE4(0, 0, v9, &unk_101209CC0, v16);
   }
@@ -36,7 +36,7 @@
   else
   {
 
-    v20 = v22;
+    v20 = selfCopy;
   }
 }
 

@@ -1,33 +1,33 @@
 @interface CWFAssocParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAssocParameters:(id)a3;
-- (CWFAssocParameters)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAssocParameters:(id)parameters;
+- (CWFAssocParameters)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFAssocParameters
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"scanResult=%@, profile=%@, hasPassword=%d, eap=%@, remember=%d, forceBSSID=%d, bandPref=%ld, colocatedScopeID=%@", self->_scanResult, self->_knownNetworkProfile, self->_password != 0, self->_EAPCredentials, self->_rememberUponSuccessfulAssociation, self->_forceBSSID, self->_bandPreference, self->_colocatedScopeID];
-  [v3 appendFormat:@"has6GHzOnlyBSS=%d", self->_has6GHzOnlyBSS];
-  [v3 appendFormat:@", remoteHotspotDevice=%@, findAndJoinNetwork=%d", self->_remoteHotspotDevice, self->_findAndJoinNetwork];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"scanResult=%@, profile=%@, hasPassword=%d, eap=%@, remember=%d, forceBSSID=%d, bandPref=%ld, colocatedScopeID=%@", self->_scanResult, self->_knownNetworkProfile, self->_password != 0, self->_EAPCredentials, self->_rememberUponSuccessfulAssociation, self->_forceBSSID, self->_bandPreference, self->_colocatedScopeID];
+  [string appendFormat:@"has6GHzOnlyBSS=%d", self->_has6GHzOnlyBSS];
+  [string appendFormat:@", remoteHotspotDevice=%@, findAndJoinNetwork=%d", self->_remoteHotspotDevice, self->_findAndJoinNetwork];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqualToAssocParameters:(id)a3
+- (BOOL)isEqualToAssocParameters:(id)parameters
 {
-  v6 = a3;
+  parametersCopy = parameters;
   scanResult = self->_scanResult;
-  v8 = [v6 scanResult];
-  if (scanResult != v8)
+  scanResult = [parametersCopy scanResult];
+  if (scanResult != scanResult)
   {
-    if (!self->_scanResult || ([v6 scanResult], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_scanResult || ([parametersCopy scanResult], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = 0;
       goto LABEL_68;
@@ -35,8 +35,8 @@
 
     v3 = v9;
     v10 = self->_scanResult;
-    v4 = [v6 scanResult];
-    if (![(CWFScanResult *)v10 isEqual:v4])
+    scanResult2 = [parametersCopy scanResult];
+    if (![(CWFScanResult *)v10 isEqual:scanResult2])
     {
       v11 = 0;
 LABEL_67:
@@ -46,8 +46,8 @@ LABEL_67:
   }
 
   knownNetworkProfile = self->_knownNetworkProfile;
-  v13 = [v6 knownNetworkProfile];
-  if (knownNetworkProfile != v13)
+  knownNetworkProfile = [parametersCopy knownNetworkProfile];
+  if (knownNetworkProfile != knownNetworkProfile)
   {
     if (!self->_knownNetworkProfile)
     {
@@ -57,18 +57,18 @@ LABEL_44:
       goto LABEL_66;
     }
 
-    v14 = [v6 knownNetworkProfile];
-    if (!v14)
+    knownNetworkProfile2 = [parametersCopy knownNetworkProfile];
+    if (!knownNetworkProfile2)
     {
       goto LABEL_65;
     }
 
-    v69 = v14;
+    v69 = knownNetworkProfile2;
     v15 = self->_knownNetworkProfile;
-    v16 = [v6 knownNetworkProfile];
+    knownNetworkProfile3 = [parametersCopy knownNetworkProfile];
     v17 = v15;
-    v18 = v16;
-    if (![(CWFNetworkProfile *)v17 isEqual:v16])
+    v18 = knownNetworkProfile3;
+    if (![(CWFNetworkProfile *)v17 isEqual:knownNetworkProfile3])
     {
 
 LABEL_64:
@@ -79,8 +79,8 @@ LABEL_64:
   }
 
   password = self->_password;
-  v20 = [v6 password];
-  if (password == v20)
+  password = [parametersCopy password];
+  if (password == password)
   {
     v68 = password;
   }
@@ -92,26 +92,26 @@ LABEL_64:
       v11 = 0;
 LABEL_42:
 
-      if (knownNetworkProfile != v13)
+      if (knownNetworkProfile != knownNetworkProfile)
       {
       }
 
       goto LABEL_44;
     }
 
-    v21 = [v6 password];
-    if (!v21)
+    password2 = [parametersCopy password];
+    if (!password2)
     {
       goto LABEL_62;
     }
 
     v68 = password;
-    v65 = v21;
+    v65 = password2;
     v22 = self->_password;
-    v23 = [v6 password];
+    password3 = [parametersCopy password];
     v24 = v22;
-    v25 = v23;
-    if (([(NSString *)v24 isEqual:v23]& 1) == 0)
+    v25 = password3;
+    if (([(NSString *)v24 isEqual:password3]& 1) == 0)
     {
 
 LABEL_61:
@@ -122,19 +122,19 @@ LABEL_61:
   }
 
   EAPCredentials = self->_EAPCredentials;
-  v27 = [v6 EAPCredentials];
+  eAPCredentials = [parametersCopy EAPCredentials];
   v66 = EAPCredentials;
-  v28 = EAPCredentials == v27;
-  v29 = v27;
+  v28 = EAPCredentials == eAPCredentials;
+  v29 = eAPCredentials;
   if (v28)
   {
-    v64 = v4;
+    v64 = scanResult2;
 LABEL_27:
     rememberUponSuccessfulAssociation = self->_rememberUponSuccessfulAssociation;
-    if (rememberUponSuccessfulAssociation != [v6 rememberUponSuccessfulAssociation] || (forceBSSID = self->_forceBSSID, forceBSSID != objc_msgSend(v6, "forceBSSID")) || (bandPreference = self->_bandPreference, bandPreference != objc_msgSend(v6, "bandPreference")) || (has6GHzOnlyBSS = self->_has6GHzOnlyBSS, has6GHzOnlyBSS != objc_msgSend(v6, "has6GHzOnlyBSS")))
+    if (rememberUponSuccessfulAssociation != [parametersCopy rememberUponSuccessfulAssociation] || (forceBSSID = self->_forceBSSID, forceBSSID != objc_msgSend(parametersCopy, "forceBSSID")) || (bandPreference = self->_bandPreference, bandPreference != objc_msgSend(parametersCopy, "bandPreference")) || (has6GHzOnlyBSS = self->_has6GHzOnlyBSS, has6GHzOnlyBSS != objc_msgSend(parametersCopy, "has6GHzOnlyBSS")))
     {
       v11 = 0;
-      v4 = v64;
+      scanResult2 = v64;
       if (v66 == v29)
       {
         goto LABEL_40;
@@ -144,31 +144,31 @@ LABEL_27:
     }
 
     colocatedScopeID = self->_colocatedScopeID;
-    v40 = [v6 colocatedScopeID];
-    v60 = v40;
-    if (colocatedScopeID == v40)
+    colocatedScopeID = [parametersCopy colocatedScopeID];
+    v60 = colocatedScopeID;
+    if (colocatedScopeID == colocatedScopeID)
     {
       v59 = colocatedScopeID;
 LABEL_48:
       remoteHotspotDevice = self->_remoteHotspotDevice;
-      v47 = [v6 remoteHotspotDevice];
-      v58 = v47;
-      if (remoteHotspotDevice != v47)
+      remoteHotspotDevice = [parametersCopy remoteHotspotDevice];
+      v58 = remoteHotspotDevice;
+      if (remoteHotspotDevice != remoteHotspotDevice)
       {
         if (!self->_remoteHotspotDevice)
         {
           v11 = 0;
-          v4 = v64;
+          scanResult2 = v64;
           goto LABEL_70;
         }
 
-        v48 = [v6 remoteHotspotDevice];
-        if (!v48)
+        remoteHotspotDevice2 = [parametersCopy remoteHotspotDevice];
+        if (!remoteHotspotDevice2)
         {
 
           v11 = 0;
-          v40 = v60;
-          v4 = v64;
+          colocatedScopeID = v60;
+          scanResult2 = v64;
           if (v59 != v60)
           {
             goto LABEL_72;
@@ -178,14 +178,14 @@ LABEL_48:
         }
 
         v54 = self->_remoteHotspotDevice;
-        v55 = v48;
-        v49 = [v6 remoteHotspotDevice];
+        v55 = remoteHotspotDevice2;
+        remoteHotspotDevice3 = [parametersCopy remoteHotspotDevice];
         v50 = v54;
-        v53 = v49;
+        v53 = remoteHotspotDevice3;
         if (![(SFRemoteHotspotDevice *)v50 isEqual:?])
         {
           v11 = 0;
-          v4 = v64;
+          scanResult2 = v64;
 LABEL_55:
 
           goto LABEL_71;
@@ -193,10 +193,10 @@ LABEL_55:
       }
 
       findAndJoinNetwork = self->_findAndJoinNetwork;
-      v11 = findAndJoinNetwork == [v6 findAndJoinNetwork];
-      v47 = v58;
+      v11 = findAndJoinNetwork == [parametersCopy findAndJoinNetwork];
+      remoteHotspotDevice = v58;
       v28 = remoteHotspotDevice == v58;
-      v4 = v64;
+      scanResult2 = v64;
       if (!v28)
       {
         goto LABEL_55;
@@ -205,7 +205,7 @@ LABEL_55:
 LABEL_70:
 
 LABEL_71:
-      v40 = v60;
+      colocatedScopeID = v60;
       if (v59 != v60)
       {
 LABEL_72:
@@ -220,7 +220,7 @@ LABEL_76:
       {
 LABEL_40:
 
-        if (v68 != v20)
+        if (v68 != password)
         {
         }
 
@@ -235,40 +235,40 @@ LABEL_37:
     if (!self->_colocatedScopeID)
     {
       v11 = 0;
-      v4 = v64;
+      scanResult2 = v64;
       goto LABEL_75;
     }
 
-    v41 = [v6 colocatedScopeID];
-    if (!v41)
+    colocatedScopeID2 = [parametersCopy colocatedScopeID];
+    if (!colocatedScopeID2)
     {
       v11 = 0;
-      v4 = v64;
+      scanResult2 = v64;
 LABEL_73:
 
       goto LABEL_76;
     }
 
     v59 = colocatedScopeID;
-    v57 = v41;
+    v57 = colocatedScopeID2;
     v42 = self->_colocatedScopeID;
-    v43 = [v6 colocatedScopeID];
+    colocatedScopeID3 = [parametersCopy colocatedScopeID];
     v44 = v42;
-    v45 = v43;
-    if (([(NSString *)v44 isEqual:v43]& 1) != 0)
+    v45 = colocatedScopeID3;
+    if (([(NSString *)v44 isEqual:colocatedScopeID3]& 1) != 0)
     {
       v56 = v45;
       goto LABEL_48;
     }
 
-    v4 = v64;
+    scanResult2 = v64;
     if (v66 != v29)
     {
     }
 
 LABEL_59:
 
-    if (v68 == v20)
+    if (v68 == password)
     {
       goto LABEL_62;
     }
@@ -282,26 +282,26 @@ LABEL_59:
     goto LABEL_40;
   }
 
-  v30 = [v6 EAPCredentials];
-  if (!v30)
+  eAPCredentials2 = [parametersCopy EAPCredentials];
+  if (!eAPCredentials2)
   {
     goto LABEL_59;
   }
 
-  v62 = v30;
-  v64 = v4;
+  v62 = eAPCredentials2;
+  v64 = scanResult2;
   v31 = self->_EAPCredentials;
-  v32 = [v6 EAPCredentials];
+  eAPCredentials3 = [parametersCopy EAPCredentials];
   v33 = v31;
-  v34 = v32;
-  if ([(CWFEAPCredentials *)v33 isEqual:v32])
+  v34 = eAPCredentials3;
+  if ([(CWFEAPCredentials *)v33 isEqual:eAPCredentials3])
   {
     v61 = v34;
     goto LABEL_27;
   }
 
-  v4 = v64;
-  if (v68 != v20)
+  scanResult2 = v64;
+  if (v68 != password)
   {
 LABEL_60:
 
@@ -310,7 +310,7 @@ LABEL_60:
 
 LABEL_62:
 
-  if (knownNetworkProfile != v13)
+  if (knownNetworkProfile != knownNetworkProfile)
   {
 
     goto LABEL_64;
@@ -320,7 +320,7 @@ LABEL_65:
 
   v11 = 0;
 LABEL_66:
-  if (scanResult != v8)
+  if (scanResult != scanResult)
   {
     goto LABEL_67;
   }
@@ -330,18 +330,18 @@ LABEL_68:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFAssocParameters *)self isEqualToAssocParameters:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFAssocParameters *)self isEqualToAssocParameters:v5];
   }
 
   return v6;
@@ -357,7 +357,7 @@ LABEL_68:
   return v6 ^ v7 ^ [(SFRemoteHotspotDevice *)self->_remoteHotspotDevice hash]^ self->_findAndJoinNetwork;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFAssocParameters allocWithZone:?]];
   [(CWFAssocParameters *)v4 setScanResult:self->_scanResult];
@@ -374,55 +374,55 @@ LABEL_68:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scanResult = self->_scanResult;
-  v5 = a3;
-  [v5 encodeObject:scanResult forKey:@"_scanResult"];
-  [v5 encodeObject:self->_knownNetworkProfile forKey:@"_knownNetworkProfile"];
-  [v5 encodeObject:self->_password forKey:@"_password"];
-  [v5 encodeObject:self->_EAPCredentials forKey:@"_EAPCredentials"];
-  [v5 encodeBool:self->_rememberUponSuccessfulAssociation forKey:@"_rememberUponSuccessfulAssociation"];
-  [v5 encodeBool:self->_forceBSSID forKey:@"_forceBSSID"];
-  [v5 encodeInteger:self->_bandPreference forKey:@"_bandPreference"];
-  [v5 encodeObject:self->_colocatedScopeID forKey:@"_colocatedScopeID"];
-  [v5 encodeBool:self->_has6GHzOnlyBSS forKey:@"_has6GHzOnlyBSS"];
-  [v5 encodeObject:self->_remoteHotspotDevice forKey:@"_remoteHotspotDevice"];
-  [v5 encodeBool:self->_findAndJoinNetwork forKey:@"_findAndJoinNetwork"];
+  coderCopy = coder;
+  [coderCopy encodeObject:scanResult forKey:@"_scanResult"];
+  [coderCopy encodeObject:self->_knownNetworkProfile forKey:@"_knownNetworkProfile"];
+  [coderCopy encodeObject:self->_password forKey:@"_password"];
+  [coderCopy encodeObject:self->_EAPCredentials forKey:@"_EAPCredentials"];
+  [coderCopy encodeBool:self->_rememberUponSuccessfulAssociation forKey:@"_rememberUponSuccessfulAssociation"];
+  [coderCopy encodeBool:self->_forceBSSID forKey:@"_forceBSSID"];
+  [coderCopy encodeInteger:self->_bandPreference forKey:@"_bandPreference"];
+  [coderCopy encodeObject:self->_colocatedScopeID forKey:@"_colocatedScopeID"];
+  [coderCopy encodeBool:self->_has6GHzOnlyBSS forKey:@"_has6GHzOnlyBSS"];
+  [coderCopy encodeObject:self->_remoteHotspotDevice forKey:@"_remoteHotspotDevice"];
+  [coderCopy encodeBool:self->_findAndJoinNetwork forKey:@"_findAndJoinNetwork"];
 }
 
-- (CWFAssocParameters)initWithCoder:(id)a3
+- (CWFAssocParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CWFAssocParameters;
   v5 = [(CWFAssocParameters *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scanResult"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scanResult"];
     scanResult = v5->_scanResult;
     v5->_scanResult = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_knownNetworkProfile"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_knownNetworkProfile"];
     knownNetworkProfile = v5->_knownNetworkProfile;
     v5->_knownNetworkProfile = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_password"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_password"];
     password = v5->_password;
     v5->_password = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_EAPCredentials"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_EAPCredentials"];
     EAPCredentials = v5->_EAPCredentials;
     v5->_EAPCredentials = v12;
 
-    v5->_rememberUponSuccessfulAssociation = [v4 decodeBoolForKey:@"_rememberUponSuccessfulAssociation"];
-    v5->_forceBSSID = [v4 decodeBoolForKey:@"_forceBSSID"];
-    v5->_bandPreference = [v4 decodeIntegerForKey:@"_bandPreference"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_colocatedScopeID"];
+    v5->_rememberUponSuccessfulAssociation = [coderCopy decodeBoolForKey:@"_rememberUponSuccessfulAssociation"];
+    v5->_forceBSSID = [coderCopy decodeBoolForKey:@"_forceBSSID"];
+    v5->_bandPreference = [coderCopy decodeIntegerForKey:@"_bandPreference"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_colocatedScopeID"];
     colocatedScopeID = v5->_colocatedScopeID;
     v5->_colocatedScopeID = v14;
 
-    v5->_has6GHzOnlyBSS = [v4 decodeBoolForKey:@"_has6GHzOnlyBSS"];
+    v5->_has6GHzOnlyBSS = [coderCopy decodeBoolForKey:@"_has6GHzOnlyBSS"];
     if (sub_1E0CD88D0())
     {
       v23 = 0;
@@ -443,12 +443,12 @@ LABEL_68:
 
       v17 = v16;
       _Block_object_dispose(&v23, 8);
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_remoteHotspotDevice"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_remoteHotspotDevice"];
       remoteHotspotDevice = v5->_remoteHotspotDevice;
       v5->_remoteHotspotDevice = v18;
     }
 
-    v5->_findAndJoinNetwork = [v4 decodeBoolForKey:@"_findAndJoinNetwork"];
+    v5->_findAndJoinNetwork = [coderCopy decodeBoolForKey:@"_findAndJoinNetwork"];
   }
 
   return v5;

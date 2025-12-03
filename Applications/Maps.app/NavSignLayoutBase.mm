@@ -1,15 +1,15 @@
 @interface NavSignLayoutBase
-- (double)navSignView:(id)a3 alternateFontLineSpacingForMajorText:(BOOL)a4;
-- (id)navSignView:(id)a3 alternateFontForMajorText:(BOOL)a4;
-- (id)navSignView:(id)a3 preferredFontForMajorText:(BOOL)a4;
+- (double)navSignView:(id)view alternateFontLineSpacingForMajorText:(BOOL)text;
+- (id)navSignView:(id)view alternateFontForMajorText:(BOOL)text;
+- (id)navSignView:(id)view preferredFontForMajorText:(BOOL)text;
 @end
 
 @implementation NavSignLayoutBase
 
-- (double)navSignView:(id)a3 alternateFontLineSpacingForMajorText:(BOOL)a4
+- (double)navSignView:(id)view alternateFontLineSpacingForMajorText:(BOOL)text
 {
   result = 33.0;
-  if (!a4)
+  if (!text)
   {
     return 30.0;
   }
@@ -17,34 +17,34 @@
   return result;
 }
 
-- (id)navSignView:(id)a3 alternateFontForMajorText:(BOOL)a4
+- (id)navSignView:(id)view alternateFontForMajorText:(BOOL)text
 {
   v4 = 27.0;
-  if (a4)
+  if (text)
   {
     v4 = 30.0;
   }
 
   v5 = &UIFontWeightHeavy;
-  if (!a4)
+  if (!text)
   {
     v5 = &UIFontWeightMedium;
   }
 
-  v6 = [UIFont systemFontOfSize:a3 weight:v4, *v5];
+  v6 = [UIFont systemFontOfSize:view weight:v4, *v5];
 
   return v6;
 }
 
-- (id)navSignView:(id)a3 preferredFontForMajorText:(BOOL)a4
+- (id)navSignView:(id)view preferredFontForMajorText:(BOOL)text
 {
   v4 = &UIFontWeightHeavy;
-  if (!a4)
+  if (!text)
   {
     v4 = &UIFontWeightMedium;
   }
 
-  return [UIFont systemFontOfSize:a3 weight:30.0, *v4];
+  return [UIFont systemFontOfSize:view weight:30.0, *v4];
 }
 
 @end

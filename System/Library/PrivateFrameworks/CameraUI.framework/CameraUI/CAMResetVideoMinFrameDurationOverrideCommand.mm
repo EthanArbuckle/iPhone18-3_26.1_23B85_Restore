@@ -1,6 +1,6 @@
 @interface CAMResetVideoMinFrameDurationOverrideCommand
 - (id)initForSecondaryDevice;
-- (void)executeWithContext:(id)a3;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMResetVideoMinFrameDurationOverrideCommand
@@ -20,17 +20,17 @@
   return v3;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(CAMResetVideoMinFrameDurationOverrideCommand *)self _resetSecondaryDevice])
   {
-    [v4 currentSecondaryVideoDeviceInput];
+    [contextCopy currentSecondaryVideoDeviceInput];
   }
 
   else
   {
-    [v4 currentVideoDeviceInput];
+    [contextCopy currentVideoDeviceInput];
   }
   v5 = ;
 

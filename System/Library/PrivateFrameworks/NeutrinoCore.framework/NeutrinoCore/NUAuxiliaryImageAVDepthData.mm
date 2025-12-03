@@ -1,11 +1,11 @@
 @interface NUAuxiliaryImageAVDepthData
 - (CGImageMetadata)metadata;
 - (__CVBuffer)cvPixelBufferRef;
-- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)a3;
-- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
+- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)orientation;
+- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)a3;
-- (id)initAuxiliaryImageFromAVDepthData:(id)a3;
+- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)type;
+- (id)initAuxiliaryImageFromAVDepthData:(id)data;
 - (unsigned)pixelFormatType;
 @end
 
@@ -13,32 +13,32 @@
 
 - (CGImageMetadata)metadata
 {
-  v2 = [(NUAuxiliaryImageAVDepthData *)self dictionaryRepresentation];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696D228]];
+  dictionaryRepresentation = [(NUAuxiliaryImageAVDepthData *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation objectForKeyedSubscript:*MEMORY[0x1E696D228]];
 
   return v3;
 }
 
 - (__CVBuffer)cvPixelBufferRef
 {
-  v2 = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
-  v3 = [v2 depthDataMap];
+  avDepthData = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
+  depthDataMap = [avDepthData depthDataMap];
 
-  return v3;
+  return depthDataMap;
 }
 
 - (unsigned)pixelFormatType
 {
-  v2 = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
-  v3 = [v2 depthDataType];
+  avDepthData = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
+  depthDataType = [avDepthData depthDataType];
 
-  return v3;
+  return depthDataType;
 }
 
-- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)a3
+- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)type
 {
-  v4 = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
-  v5 = [v4 dictionaryRepresentationForAuxiliaryDataType:a3];
+  avDepthData = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
+  v5 = [avDepthData dictionaryRepresentationForAuxiliaryDataType:type];
 
   return v5;
 }
@@ -51,10 +51,10 @@
   return v2;
 }
 
-- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  v6 = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
-  v7 = [v6 depthDataByReplacingDepthDataMapWithPixelBuffer:a3 error:a4];
+  avDepthData = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
+  v7 = [avDepthData depthDataByReplacingDepthDataMapWithPixelBuffer:buffer error:error];
 
   if (v7)
   {
@@ -69,22 +69,22 @@
   return v8;
 }
 
-- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)a3
+- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)orientation
 {
-  v3 = *&a3;
-  v4 = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
-  v5 = [v4 depthDataByApplyingExifOrientation:v3];
+  v3 = *&orientation;
+  avDepthData = [(NUAuxiliaryImageAVDepthData *)self avDepthData];
+  v5 = [avDepthData depthDataByApplyingExifOrientation:v3];
 
   v6 = [[NUAuxiliaryImageAVDepthData alloc] initAuxiliaryImageFromAVDepthData:v5];
 
   return v6;
 }
 
-- (id)initAuxiliaryImageFromAVDepthData:(id)a3
+- (id)initAuxiliaryImageFromAVDepthData:(id)data
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v10 = NUAssertLogger_16664();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -105,8 +105,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -117,8 +117,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -127,7 +127,7 @@
     _NUAssertFailHandler("[NUAuxiliaryImageAVDepthData initAuxiliaryImageFromAVDepthData:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUAuxiliaryImage.m", 274, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "avDepthData != nil");
   }
 
-  v6 = v5;
+  v6 = dataCopy;
   v26.receiver = self;
   v26.super_class = NUAuxiliaryImageAVDepthData;
   v7 = [(NUAuxiliaryImageAVDepthData *)&v26 init];
@@ -135,7 +135,7 @@
   if (v7)
   {
     v7->_auxiliaryImageType = 2;
-    objc_storeStrong(&v7->_avDepthData, a3);
+    objc_storeStrong(&v7->_avDepthData, data);
   }
 
   return v8;

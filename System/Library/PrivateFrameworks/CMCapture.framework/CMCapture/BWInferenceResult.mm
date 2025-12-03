@@ -1,8 +1,8 @@
 @interface BWInferenceResult
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timestamp;
 - (BOOL)isValid;
-- (BWInferenceResult)initWithResult:(id)a3 replacementInferences:(id)a4 replacementPreventionReason:(id)a5;
-- (char)initWithInferenceType:(void *)a3 inferences:(void *)a4 preventionReason:(__int128 *)a5 atTimestamp:;
+- (BWInferenceResult)initWithResult:(id)result replacementInferences:(id)inferences replacementPreventionReason:(id)reason;
+- (char)initWithInferenceType:(void *)type inferences:(void *)inferences preventionReason:(__int128 *)reason atTimestamp:;
 - (id)description;
 - (void)dealloc;
 @end
@@ -60,36 +60,36 @@
   return self;
 }
 
-- (char)initWithInferenceType:(void *)a3 inferences:(void *)a4 preventionReason:(__int128 *)a5 atTimestamp:
+- (char)initWithInferenceType:(void *)type inferences:(void *)inferences preventionReason:(__int128 *)reason atTimestamp:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = BWInferenceResult;
   v9 = objc_msgSendSuper2(&v13, sel_init);
   v10 = v9;
   if (v9)
   {
     *(v9 + 2) = a2;
-    v11 = *a5;
-    *(v9 + 28) = *(a5 + 2);
+    v11 = *reason;
+    *(v9 + 28) = *(reason + 2);
     *(v9 + 12) = v11;
-    *(v9 + 5) = [a3 copy];
-    *(v10 + 6) = [a4 copy];
+    *(v9 + 5) = [type copy];
+    *(v10 + 6) = [inferences copy];
   }
 
   return v10;
 }
 
-- (BWInferenceResult)initWithResult:(id)a3 replacementInferences:(id)a4 replacementPreventionReason:(id)a5
+- (BWInferenceResult)initWithResult:(id)result replacementInferences:(id)inferences replacementPreventionReason:(id)reason
 {
-  v9 = [a3 inferenceType];
-  if (a3)
+  inferenceType = [result inferenceType];
+  if (result)
   {
-    [a3 timestamp];
+    [result timestamp];
   }
 
   else
@@ -98,7 +98,7 @@
     v12 = 0;
   }
 
-  return [(BWInferenceResult *)self initWithInferenceType:v9 inferences:a4 preventionReason:a5 atTimestamp:&v11];
+  return [(BWInferenceResult *)self initWithInferenceType:inferenceType inferences:inferences preventionReason:reason atTimestamp:&v11];
 }
 
 @end

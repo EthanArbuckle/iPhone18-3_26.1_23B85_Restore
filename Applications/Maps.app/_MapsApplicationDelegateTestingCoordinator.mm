@@ -1,7 +1,7 @@
 @interface _MapsApplicationDelegateTestingCoordinator
 + (BOOL)_writeSampleDataToHistoryContainer;
-+ (BOOL)application:(id)a3 testName:(id)a4 options:(id)a5 shouldLoadSampleProactiveData:(BOOL)a6 shouldRaiseExceptionIfNeeded:(BOOL)a7 runTest:(id)a8;
-+ (void)doPostLauchTestSetupWithMapView:(id)a3 mapsAppTesting:(id)a4;
++ (BOOL)application:(id)application testName:(id)name options:(id)options shouldLoadSampleProactiveData:(BOOL)data shouldRaiseExceptionIfNeeded:(BOOL)needed runTest:(id)test;
++ (void)doPostLauchTestSetupWithMapView:(id)view mapsAppTesting:(id)testing;
 @end
 
 @implementation _MapsApplicationDelegateTestingCoordinator
@@ -41,64 +41,64 @@
   return v8;
 }
 
-+ (BOOL)application:(id)a3 testName:(id)a4 options:(id)a5 shouldLoadSampleProactiveData:(BOOL)a6 shouldRaiseExceptionIfNeeded:(BOOL)a7 runTest:(id)a8
++ (BOOL)application:(id)application testName:(id)name options:(id)options shouldLoadSampleProactiveData:(BOOL)data shouldRaiseExceptionIfNeeded:(BOOL)needed runTest:(id)test
 {
-  v9 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = [v15 _mapstest_readSubTestsFromTestSerial];
-  if ([v17 count])
+  dataCopy = data;
+  applicationCopy = application;
+  nameCopy = name;
+  optionsCopy = options;
+  testCopy = test;
+  _mapstest_readSubTestsFromTestSerial = [optionsCopy _mapstest_readSubTestsFromTestSerial];
+  if ([_mapstest_readSubTestsFromTestSerial count])
   {
-    v18 = [NSMutableDictionary dictionaryWithDictionary:v15];
-    [v18 setObject:v17 forKeyedSubscript:@"serialSubTests"];
+    v18 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
+    [v18 setObject:_mapstest_readSubTestsFromTestSerial forKeyedSubscript:@"serialSubTests"];
 
-    v15 = v18;
+    optionsCopy = v18;
   }
 
-  if (v9 && ![a1 _writeSampleDataToHistoryContainer])
+  if (dataCopy && ![self _writeSampleDataToHistoryContainer])
   {
     v21 = 0;
   }
 
   else
   {
-    v19 = v16[2](v16, v14, v13, v15);
-    [a1 setCurrentTest:v19];
+    v19 = testCopy[2](testCopy, nameCopy, applicationCopy, optionsCopy);
+    [self setCurrentTest:v19];
 
-    v20 = [a1 currentTest];
-    v21 = v20 != 0;
+    currentTest = [self currentTest];
+    v21 = currentTest != 0;
   }
 
   return v21;
 }
 
-+ (void)doPostLauchTestSetupWithMapView:(id)a3 mapsAppTesting:(id)a4
++ (void)doPostLauchTestSetupWithMapView:(id)view mapsAppTesting:(id)testing
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  testingCopy = testing;
   v7 = +[GEOCountryConfiguration sharedConfiguration];
-  v8 = [v7 countryCode];
+  countryCode = [v7 countryCode];
 
-  if ([v8 isEqualToString:@"US"])
+  if ([countryCode isEqualToString:@"US"])
   {
-    [v5 _mapstest_jumpToCupertino];
+    [viewCopy _mapstest_jumpToCupertino];
   }
 
-  else if ([v8 isEqualToString:@"JP"])
+  else if ([countryCode isEqualToString:@"JP"])
   {
-    [v5 _mapstest_jumpToTokyo];
+    [viewCopy _mapstest_jumpToTokyo];
   }
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1008100D0;
   v14[3] = &unk_101661B18;
-  v9 = v6;
+  v9 = testingCopy;
   v15 = v9;
   v10 = objc_retainBlock(v14);
-  if ([v5 isFullyDrawn])
+  if ([viewCopy isFullyDrawn])
   {
     (v10[2])(v10);
   }

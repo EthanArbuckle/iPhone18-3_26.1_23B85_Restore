@@ -1,35 +1,35 @@
 @interface OrgApacheLuceneUtilNamedSPILoader
-- (OrgApacheLuceneUtilNamedSPILoader)initWithIOSClass:(id)a3;
-- (OrgApacheLuceneUtilNamedSPILoader)initWithIOSClass:(id)a3 withJavaLangClassLoader:(id)a4;
+- (OrgApacheLuceneUtilNamedSPILoader)initWithIOSClass:(id)class;
+- (OrgApacheLuceneUtilNamedSPILoader)initWithIOSClass:(id)class withJavaLangClassLoader:(id)loader;
 - (id)availableServices;
 - (id)iterator;
-- (id)lookupWithNSString:(id)a3;
+- (id)lookupWithNSString:(id)string;
 - (void)__javaClone;
 - (void)dealloc;
-- (void)reloadWithJavaLangClassLoader:(id)a3;
+- (void)reloadWithJavaLangClassLoader:(id)loader;
 @end
 
 @implementation OrgApacheLuceneUtilNamedSPILoader
 
-- (OrgApacheLuceneUtilNamedSPILoader)initWithIOSClass:(id)a3
+- (OrgApacheLuceneUtilNamedSPILoader)initWithIOSClass:(id)class
 {
   v5 = JavaUtilCollections_emptyMap();
   JreVolatileStrongAssign(&self->services_, v5);
-  JreStrongAssign(&self->clazz_, a3);
+  JreStrongAssign(&self->clazz_, class);
   [(OrgApacheLuceneUtilNamedSPILoader *)self reloadWithJavaLangClassLoader:0];
   return self;
 }
 
-- (OrgApacheLuceneUtilNamedSPILoader)initWithIOSClass:(id)a3 withJavaLangClassLoader:(id)a4
+- (OrgApacheLuceneUtilNamedSPILoader)initWithIOSClass:(id)class withJavaLangClassLoader:(id)loader
 {
   v7 = JavaUtilCollections_emptyMap();
   JreVolatileStrongAssign(&self->services_, v7);
-  JreStrongAssign(&self->clazz_, a3);
-  [(OrgApacheLuceneUtilNamedSPILoader *)self reloadWithJavaLangClassLoader:a4];
+  JreStrongAssign(&self->clazz_, class);
+  [(OrgApacheLuceneUtilNamedSPILoader *)self reloadWithJavaLangClassLoader:loader];
   return self;
 }
 
-- (void)reloadWithJavaLangClassLoader:(id)a3
+- (void)reloadWithJavaLangClassLoader:(id)loader
 {
   p_services = &self->services_;
   v5 = atomic_load(&self->services_);
@@ -143,7 +143,7 @@ LABEL_18:
   JreVolatileStrongAssign(p_services, v14);
 }
 
-- (id)lookupWithNSString:(id)a3
+- (id)lookupWithNSString:(id)string
 {
   v4 = atomic_load(&self->services_);
   if (!v4)

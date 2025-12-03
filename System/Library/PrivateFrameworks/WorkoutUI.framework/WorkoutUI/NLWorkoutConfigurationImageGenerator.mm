@@ -1,15 +1,15 @@
 @interface NLWorkoutConfigurationImageGenerator
-+ (id)createBlastDoorDataSourceFromData:(id)a3;
-+ (id)createImageFromBlastDoorDataSource:(id)a3 scale:(double)a4;
-+ (id)createImageFromData:(id)a3;
++ (id)createBlastDoorDataSourceFromData:(id)data;
++ (id)createImageFromBlastDoorDataSource:(id)source scale:(double)scale;
++ (id)createImageFromData:(id)data;
 - (NLWorkoutConfigurationImageGenerator)init;
 @end
 
 @implementation NLWorkoutConfigurationImageGenerator
 
-+ (id)createBlastDoorDataSourceFromData:(id)a3
++ (id)createBlastDoorDataSourceFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
 
@@ -19,9 +19,9 @@
   return v7;
 }
 
-+ (id)createImageFromData:(id)a3
++ (id)createImageFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
 
@@ -43,10 +43,10 @@
   return v10;
 }
 
-+ (id)createImageFromBlastDoorDataSource:(id)a3 scale:(double)a4
++ (id)createImageFromBlastDoorDataSource:(id)source scale:(double)scale
 {
-  v4 = a3;
-  v5 = specialized static WorkoutConfigurationImageGenerator.createImage(from:scale:)(v4);
+  sourceCopy = source;
+  v5 = specialized static WorkoutConfigurationImageGenerator.createImage(from:scale:)(sourceCopy);
   v7 = v6;
 
   if (v7 >> 60 == 15)

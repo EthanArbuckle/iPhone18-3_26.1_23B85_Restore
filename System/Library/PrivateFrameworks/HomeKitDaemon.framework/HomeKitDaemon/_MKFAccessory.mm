@@ -1,7 +1,7 @@
 @interface _MKFAccessory
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)context;
 - (MKFAccessoryDatabaseID)databaseID;
 - (NSArray)actionMediaPlaybacks;
 - (NSArray)allowedGuests;
@@ -31,9 +31,9 @@
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -48,97 +48,97 @@
 - (NSArray)outgoingInvitations
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"outgoingInvitations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)allowedGuests
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"allowedGuests_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)usersWithPersonalRequestsEnabled
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"usersWithPersonalRequestsEnabled_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)usersWithMediaContentProfileEnabled
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"usersWithMediaContentProfileEnabled_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)usersWithListeningHistoryEnabled
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"usersWithListeningHistoryEnabled_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)mediaPropertyNotificationRegistrations
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"mediaPropertyNotificationRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)hostedAccessories
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"hostedAccessories_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)cameraSignificantEventBulletinRegistrations
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"cameraSignificantEventBulletinRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)cameraReachabilityBulletinRegistrations
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"cameraReachabilityBulletinRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)cameraAccessModeBulletinRegistrations
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"cameraAccessModeBulletinRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)analysisEventBulletinRegistrations
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"analysisEventBulletinRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)actionMediaPlaybacks
 {
   v2 = [(_MKFAccessory *)self valueForKey:@"actionMediaPlaybacks_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFAccessoryDatabaseID)databaseID
@@ -148,16 +148,16 @@
   return v2;
 }
 
-- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)a3
+- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(_MKFAccessory *)self hasRGCapableService])
   {
-    v5 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = selfCopy;
     }
 
     else
@@ -169,9 +169,9 @@
 
     if (v7)
     {
-      v8 = [v4 targetUser];
-      v9 = [v8 allowedAccessories];
-      v10 = [v9 containsObject:v7];
+      targetUser = [contextCopy targetUser];
+      allowedAccessories = [targetUser allowedAccessories];
+      v10 = [allowedAccessories containsObject:v7];
     }
 
     else

@@ -1,55 +1,55 @@
 @interface MDPathFilter
-- ($1CD0F41CAFB66BEF540F4446800F077B)filterFullPath:(SEL)a3;
-- ($1CD0F41CAFB66BEF540F4446800F077B)filterFullPathTestBundle:(SEL)a3;
-- ($1CD0F41CAFB66BEF540F4446800F077B)filterPartialPath:(SEL)a3;
-- ($1CD0F41CAFB66BEF540F4446800F077B)iCloudPath:(SEL)a3 updateFilter:(const char *)a4;
+- ($1CD0F41CAFB66BEF540F4446800F077B)filterFullPath:(SEL)path;
+- ($1CD0F41CAFB66BEF540F4446800F077B)filterFullPathTestBundle:(SEL)bundle;
+- ($1CD0F41CAFB66BEF540F4446800F077B)filterPartialPath:(SEL)path;
+- ($1CD0F41CAFB66BEF540F4446800F077B)iCloudPath:(SEL)path updateFilter:(const char *)filter;
 - (BOOL)isDataROSP;
-- (MDPathFilter)initWithData:(id)a3;
-- (MDPathFilter)initWithMDPlist:(_MDPlistContainer *)a3;
+- (MDPathFilter)initWithData:(id)data;
+- (MDPathFilter)initWithMDPlist:(_MDPlistContainer *)plist;
 - (_MDPlistContainer)plist;
 - (id)data;
-- (unint64_t)filterSubAuxValues:(id *)a3 count:(int *)a4;
-- (unint64_t)trimBundlePath:(id *)a3 path:(const char *)a4 buffer:(char *)a5 length:(unint64_t)a6;
+- (unint64_t)filterSubAuxValues:(id *)values count:(int *)count;
+- (unint64_t)trimBundlePath:(id *)path path:(const char *)a4 buffer:(char *)buffer length:(unint64_t)length;
 - (void)dealloc;
 @end
 
 @implementation MDPathFilter
 
-- (MDPathFilter)initWithMDPlist:(_MDPlistContainer *)a3
+- (MDPathFilter)initWithMDPlist:(_MDPlistContainer *)plist
 {
   v69 = *MEMORY[0x1E69E9840];
   v68.receiver = self;
   v68.super_class = MDPathFilter;
   v4 = [(MDPathFilter *)&v68 init];
   v5 = v4;
-  if (a3 && v4)
+  if (plist && v4)
   {
-    v4->_plist = CFRetain(a3);
+    v4->_plist = CFRetain(plist);
     v66 = 0uLL;
     v67 = 0;
-    _MDPlistContainerGetPlistObjectAtKeyPath(a3, "/COMMON", &v66, v6, v7, v8, v9, v10);
+    _MDPlistContainerGetPlistObjectAtKeyPath(plist, "/COMMON", &v66, v6, v7, v8, v9, v10);
     v65 = 0;
     v63 = v66;
     v64 = v67;
     v5->_commonValues = _MDPlistDataGetBytePtr(&v63, &v65);
     v63 = 0uLL;
     v64 = 0;
-    _MDPlistContainerGetPlistObjectAtKeyPath(a3, "/PREFIXES", &v63, v11, v12, v13, v14, v15);
+    _MDPlistContainerGetPlistObjectAtKeyPath(plist, "/PREFIXES", &v63, v11, v12, v13, v14, v15);
     *&v5->_prefixesDictionary.containerBytes = v63;
     v5->_prefixesDictionary.reference = v64;
     v63 = 0uLL;
     v64 = 0;
-    _MDPlistContainerGetPlistObjectAtKeyPath(a3, "/EXTENSIONS", &v63, v16, v17, v18, v19, v20);
+    _MDPlistContainerGetPlistObjectAtKeyPath(plist, "/EXTENSIONS", &v63, v16, v17, v18, v19, v20);
     *&v5->_extensionsDictionary.containerBytes = v63;
     v5->_extensionsDictionary.reference = v64;
     v63 = 0uLL;
     v64 = 0;
-    _MDPlistContainerGetPlistObjectAtKeyPath(a3, "/HIDDEN_EXTENSIONS", &v63, v21, v22, v23, v24, v25);
+    _MDPlistContainerGetPlistObjectAtKeyPath(plist, "/HIDDEN_EXTENSIONS", &v63, v21, v22, v23, v24, v25);
     *&v5->_hiddenExtensionsDictionary.containerBytes = v63;
     v5->_hiddenExtensionsDictionary.reference = v64;
     v63 = 0uLL;
     v64 = 0;
-    _MDPlistContainerGetPlistObjectAtKeyPath(a3, "/ROOT_ARRAY", &v63, v26, v27, v28, v29, v30);
+    _MDPlistContainerGetPlistObjectAtKeyPath(plist, "/ROOT_ARRAY", &v63, v26, v27, v28, v29, v30);
     *&v5->_rootArray.containerBytes = v63;
     v5->_rootArray.reference = v64;
     v64 = 0;
@@ -95,12 +95,12 @@
   return v5;
 }
 
-- (MDPathFilter)initWithData:(id)a3
+- (MDPathFilter)initWithData:(id)data
 {
   v10 = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([data length])
   {
-    v5 = _MDPlistContainerCreateWithCopiedBytes(*MEMORY[0x1E695E480], [a3 bytes], objc_msgSend(a3, "length"), 1);
+    v5 = _MDPlistContainerCreateWithCopiedBytes(*MEMORY[0x1E695E480], [data bytes], objc_msgSend(data, "length"), 1);
     v6 = [(MDPathFilter *)self initWithMDPlist:v5];
     if (v5)
     {
@@ -177,7 +177,7 @@
   return result;
 }
 
-- ($1CD0F41CAFB66BEF540F4446800F077B)iCloudPath:(SEL)a3 updateFilter:(const char *)a4
+- ($1CD0F41CAFB66BEF540F4446800F077B)iCloudPath:(SEL)path updateFilter:(const char *)filter
 {
   v46 = *MEMORY[0x1E69E9840];
   if (iCloudPath_updateFilter__gSetupCache != -1)
@@ -186,20 +186,20 @@
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a4];
+  v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:filter];
   if (!v9)
   {
     goto LABEL_10;
   }
 
-  v10 = [v9 pathComponents];
-  if (!v10)
+  pathComponents = [v9 pathComponents];
+  if (!pathComponents)
   {
     goto LABEL_10;
   }
 
-  v11 = v10;
-  v12 = [v10 indexOfObject:@"Mobile Documents"];
+  v11 = pathComponents;
+  v12 = [pathComponents indexOfObject:@"Mobile Documents"];
   if (v12 < 4 || v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_10;
@@ -218,7 +218,7 @@
   v20 = [iCloudPath_updateFilter__gPerUserCacheMapping objectForKeyedSubscript:v18];
   if (v20)
   {
-    v21 = v20;
+    dictionary = v20;
     st_uid = 0;
   }
 
@@ -231,10 +231,10 @@
       goto LABEL_10;
     }
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
-    [iCloudPath_updateFilter__gPerUserCacheMapping setObject:v21 forKeyedSubscript:v18];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [iCloudPath_updateFilter__gPerUserCacheMapping setObject:dictionary forKeyedSubscript:v18];
     st_uid = __str.st_uid;
-    if (!v21)
+    if (!dictionary)
     {
       v24 = 0;
       v23 = 0;
@@ -242,7 +242,7 @@
     }
   }
 
-  v23 = [v21 objectForKeyedSubscript:v19];
+  v23 = [dictionary objectForKeyedSubscript:v19];
   v24 = 1;
 LABEL_16:
   pthread_mutex_unlock(&iCloudPath_updateFilter__gComponentIsPublicCacheLock);
@@ -263,7 +263,7 @@ LABEL_16:
     handler[1] = 3221225472;
     handler[2] = __40__MDPathFilter_iCloudPath_updateFilter___block_invoke_2;
     handler[3] = &unk_1E7B257E0;
-    handler[4] = v21;
+    handler[4] = dictionary;
     notify_register_dispatch(&__str, &out_token, global_queue, handler);
   }
 
@@ -330,7 +330,7 @@ LABEL_16:
     }
 
     pthread_mutex_lock(&iCloudPath_updateFilter__gComponentIsPublicCacheLock);
-    [v21 setObject:v23 forKeyedSubscript:v19];
+    [dictionary setObject:v23 forKeyedSubscript:v19];
     pthread_mutex_unlock(&iCloudPath_updateFilter__gComponentIsPublicCacheLock);
   }
 
@@ -366,7 +366,7 @@ uint64_t __40__MDPathFilter_iCloudPath_updateFilter___block_invoke_2(uint64_t a1
   return pthread_mutex_unlock(&iCloudPath_updateFilter__gComponentIsPublicCacheLock);
 }
 
-- ($1CD0F41CAFB66BEF540F4446800F077B)filterPartialPath:(SEL)a3
+- ($1CD0F41CAFB66BEF540F4446800F077B)filterPartialPath:(SEL)path
 {
   v7 = *MEMORY[0x1E69E9840];
   if (self->var1)
@@ -407,7 +407,7 @@ uint64_t __40__MDPathFilter_iCloudPath_updateFilter___block_invoke_2(uint64_t a1
   return self;
 }
 
-- ($1CD0F41CAFB66BEF540F4446800F077B)filterFullPath:(SEL)a3
+- ($1CD0F41CAFB66BEF540F4446800F077B)filterFullPath:(SEL)path
 {
   v24 = *MEMORY[0x1E69E9840];
   if (!self->var1)
@@ -419,7 +419,7 @@ uint64_t __40__MDPathFilter_iCloudPath_updateFilter___block_invoke_2(uint64_t a1
     goto LABEL_47;
   }
 
-  v6 = self;
+  selfCopy = self;
   var1 = self[4].var1;
   retstr->var1 = 0;
   *&retstr->var2 = 0;
@@ -428,14 +428,14 @@ uint64_t __40__MDPathFilter_iCloudPath_updateFilter___block_invoke_2(uint64_t a1
   var0_low = LOWORD(self[4].var0);
   if (LOBYTE(self[5].var6) != 1)
   {
-    v9 = a4;
+    selfCopy2 = a4;
     if (LOWORD(self[4].var0))
     {
       goto LABEL_28;
     }
 
 LABEL_12:
-    v9 = a4;
+    selfCopy2 = a4;
     goto LABEL_33;
   }
 
@@ -462,12 +462,12 @@ LABEL_12:
 LABEL_18:
     if (v13)
     {
-      v9 = v13;
+      selfCopy2 = v13;
     }
 
     else
     {
-      v9 = a4;
+      selfCopy2 = a4;
     }
 
     var0_low = 2;
@@ -475,7 +475,7 @@ LABEL_18:
 
   else
   {
-    v9 = a4;
+    selfCopy2 = a4;
     if (var0_low == 3)
     {
       v10 = 0;
@@ -504,15 +504,15 @@ LABEL_25:
 
       var0_low = 1;
 LABEL_27:
-      v9 = a4;
+      selfCopy2 = a4;
     }
   }
 
 LABEL_28:
-  if (*v9 != 47)
+  if (*selfCopy2 != 47)
   {
 LABEL_32:
-    if (!v6)
+    if (!selfCopy)
     {
 LABEL_36:
       memset(v23, 0, 28);
@@ -521,15 +521,15 @@ LABEL_36:
     }
 
 LABEL_33:
-    self = [($1CD0F41CAFB66BEF540F4446800F077B *)v6 filter:v9 allowBundleCheck:0];
+    self = [($1CD0F41CAFB66BEF540F4446800F077B *)selfCopy filter:selfCopy2 allowBundleCheck:0];
     v18 = 0;
 LABEL_37:
     *&retstr->var0 = v23[0];
     *(&retstr->var1 + 4) = *(v23 + 12);
-    v19 = v9 - a4;
+    v19 = selfCopy2 - a4;
     if (retstr->var6)
     {
-      v20 = v9 - a4;
+      v20 = selfCopy2 - a4;
     }
 
     else
@@ -555,7 +555,7 @@ LABEL_37:
       {
         v22[0] = *&retstr->var0;
         *(v22 + 12) = *(&retstr->var1 + 4);
-        self = [($1CD0F41CAFB66BEF540F4446800F077B *)v6 iCloudPath:a4 updateFilter:v22];
+        self = [($1CD0F41CAFB66BEF540F4446800F077B *)selfCopy iCloudPath:a4 updateFilter:v22];
       }
 
       *&retstr->var0 = v23[0];
@@ -568,13 +568,13 @@ LABEL_37:
   v17 = var0_low + 1;
   while (1)
   {
-    self = strchr(v9 + 1, 47);
+    self = strchr(selfCopy2 + 1, 47);
     if (!self)
     {
       break;
     }
 
-    v9 = self;
+    selfCopy2 = self;
     if (--v17 <= 1)
     {
       goto LABEL_32;
@@ -583,8 +583,8 @@ LABEL_37:
 
   if (v17 == 2)
   {
-    v9 = "/";
-    if (!v6)
+    selfCopy2 = "/";
+    if (!selfCopy)
     {
       goto LABEL_36;
     }
@@ -597,13 +597,13 @@ LABEL_47:
   return self;
 }
 
-- ($1CD0F41CAFB66BEF540F4446800F077B)filterFullPathTestBundle:(SEL)a3
+- ($1CD0F41CAFB66BEF540F4446800F077B)filterFullPathTestBundle:(SEL)bundle
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->var1)
   {
     v5 = a4;
-    v6 = self;
+    selfCopy = self;
     var1 = self[4].var1;
     retstr->var1 = 0;
     *&retstr->var2 = 0;
@@ -612,19 +612,19 @@ LABEL_47:
     if (LOWORD(self[4].var0) && *a4 == 47)
     {
       v8 = LOWORD(self[4].var0) + 1;
-      v9 = a4;
+      selfCopy2 = a4;
       while (1)
       {
-        self = strchr(v9 + 1, 47);
+        self = strchr(selfCopy2 + 1, 47);
         if (!self)
         {
           break;
         }
 
-        v9 = self;
+        selfCopy2 = self;
         if (--v8 <= 1)
         {
-          if (v6)
+          if (selfCopy)
           {
             goto LABEL_10;
           }
@@ -640,8 +640,8 @@ LABEL_21:
         goto LABEL_18;
       }
 
-      v9 = "/";
-      if (!v6)
+      selfCopy2 = "/";
+      if (!selfCopy)
       {
         goto LABEL_21;
       }
@@ -649,18 +649,18 @@ LABEL_21:
 
     else
     {
-      v9 = a4;
+      selfCopy2 = a4;
     }
 
 LABEL_10:
-    self = [($1CD0F41CAFB66BEF540F4446800F077B *)v6 filter:v9 allowBundleCheck:1];
+    self = [($1CD0F41CAFB66BEF540F4446800F077B *)selfCopy filter:selfCopy2 allowBundleCheck:1];
 LABEL_11:
     *&retstr->var0 = v13[0];
     *(&retstr->var1 + 4) = *(v13 + 12);
-    v10 = v9 - v5;
+    v10 = selfCopy2 - v5;
     if (retstr->var6)
     {
-      v11 = v9 - v5;
+      v11 = selfCopy2 - v5;
     }
 
     else
@@ -690,57 +690,57 @@ LABEL_18:
   return self;
 }
 
-- (unint64_t)trimBundlePath:(id *)a3 path:(const char *)a4 buffer:(char *)a5 length:(unint64_t)a6
+- (unint64_t)trimBundlePath:(id *)path path:(const char *)a4 buffer:(char *)buffer length:(unint64_t)length
 {
   v12 = *MEMORY[0x1E69E9840];
-  var6 = a3->var6;
-  if (var6 + 1 < a6)
+  var6 = path->var6;
+  if (var6 + 1 < length)
   {
-    v7 = var6 + 1;
+    lengthCopy = var6 + 1;
   }
 
   else
   {
-    v7 = a6;
+    lengthCopy = length;
   }
 
-  if (a3->var6)
+  if (path->var6)
   {
-    v8 = v7;
+    lengthCopy2 = lengthCopy;
   }
 
   else
   {
-    v8 = a6;
+    lengthCopy2 = length;
   }
 
-  v9 = strlcpy(a5, a4, v8);
-  if (v9 + 1 < v8)
+  v9 = strlcpy(buffer, a4, lengthCopy2);
+  if (v9 + 1 < lengthCopy2)
   {
     result = v9 + 1;
   }
 
   else
   {
-    result = v8;
+    result = lengthCopy2;
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (unint64_t)filterSubAuxValues:(id *)a3 count:(int *)a4
+- (unint64_t)filterSubAuxValues:(id *)values count:(int *)count
 {
   v7 = *MEMORY[0x1E69E9840];
-  var5 = a3->var5;
-  if (a4)
+  var5 = values->var5;
+  if (count)
   {
-    *a4 = var5;
+    *count = var5;
   }
 
   if (var5)
   {
-    result = &self->_auxValues[a3->var4];
+    result = &self->_auxValues[values->var4];
   }
 
   else

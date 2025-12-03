@@ -1,18 +1,18 @@
 @interface EKEventDetailSuggestedLocationCell
 - (CGRect)bannerPopoverSourceRect;
-- (EKEventDetailSuggestedLocationCell)initWithFrame:(CGRect)a3;
-- (EKEventDetailSuggestedLocationCell)initWithInlineStyle:(BOOL)a3;
+- (EKEventDetailSuggestedLocationCell)initWithFrame:(CGRect)frame;
+- (EKEventDetailSuggestedLocationCell)initWithInlineStyle:(BOOL)style;
 - (EKEventDetailSuggestedLocationCellDelegate)delegate;
 - (void)_disambiguateIfNeeded;
 - (void)_setIcon;
 - (void)commonInit;
 - (void)dismissAction;
-- (void)setEvent:(id)a3;
+- (void)setEvent:(id)event;
 @end
 
 @implementation EKEventDetailSuggestedLocationCell
 
-- (EKEventDetailSuggestedLocationCell)initWithFrame:(CGRect)a3
+- (EKEventDetailSuggestedLocationCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = EKEventDetailSuggestedLocationCell;
@@ -26,7 +26,7 @@
   return v4;
 }
 
-- (EKEventDetailSuggestedLocationCell)initWithInlineStyle:(BOOL)a3
+- (EKEventDetailSuggestedLocationCell)initWithInlineStyle:(BOOL)style
 {
   v7.receiver = self;
   v7.super_class = EKEventDetailSuggestedLocationCell;
@@ -34,7 +34,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_inlineStyle = a3;
+    v4->_inlineStyle = style;
     [(EKEventDetailSuggestedLocationCell *)v4 commonInit];
   }
 
@@ -53,10 +53,10 @@
 
   [v5 setAccessoryType:1];
   [v5 setActionButtonType:0];
-  v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   if (MEMORY[0x1D38B98D0]())
   {
-    v9 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
 
     [v5 setIgnoreSafeAreaInsets:1];
   }
@@ -69,19 +69,19 @@
       goto LABEL_7;
     }
 
-    v9 = EKHalfSystemGroupedBackgroundColor();
+    clearColor = EKHalfSystemGroupedBackgroundColor();
 
     +[EKUIClearButton trailingOffsetToMarginForTextFieldClearButtonAlignment];
     [v5 setCloseButtonXAnchorOffset:?];
   }
 
   v10 = 0;
-  v8 = v9;
+  systemBackgroundColor = clearColor;
 LABEL_7:
-  [v5 setBackgroundColor:v8];
+  [v5 setBackgroundColor:systemBackgroundColor];
   v11 = [v3 alloc];
-  v12 = [MEMORY[0x1E69DC888] separatorColor];
-  v13 = [v11 initWithPosition:v10 color:v12];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  v13 = [v11 initWithPosition:v10 color:separatorColor];
   [v5 setBannerDivider:v13];
 
   v14 = EventKitUIBundle();
@@ -106,8 +106,8 @@ LABEL_7:
   v19 = [v4 actionWithTitle:v18 handler:v26];
   [v5 setDismissAction:v19];
   [(EKEventDetailSuggestedLocationCell *)self setBanner:v5];
-  v20 = [(EKEventDetailSuggestedLocationCell *)self contentView];
-  [v20 addSubview:v5];
+  contentView = [(EKEventDetailSuggestedLocationCell *)self contentView];
+  [contentView addSubview:v5];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   v21 = _NSDictionaryOfVariableBindings(&cfstr_Bannerview.isa, v5, 0);
@@ -124,8 +124,8 @@ LABEL_7:
 
 - (CGRect)bannerPopoverSourceRect
 {
-  v2 = [(EKEventDetailSuggestedLocationCell *)self banner];
-  [v2 popoverSourceRect];
+  banner = [(EKEventDetailSuggestedLocationCell *)self banner];
+  [banner popoverSourceRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -142,20 +142,20 @@ LABEL_7:
   return result;
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  objc_storeStrong(&self->_event, a3);
-  v5 = a3;
-  v6 = [v5 preferredLocation];
+  objc_storeStrong(&self->_event, event);
+  eventCopy = event;
+  preferredLocation = [eventCopy preferredLocation];
   location = self->_location;
-  self->_location = v6;
+  self->_location = preferredLocation;
 
   [(EKEventDetailSuggestedLocationCell *)self _setIcon];
-  v10 = [MEMORY[0x1E6993408] locationStringForEvent:v5 options:25];
+  v10 = [MEMORY[0x1E6993408] locationStringForEvent:eventCopy options:25];
 
-  v8 = [v10 string];
-  v9 = [(EKEventDetailSuggestedLocationCell *)self banner];
-  [v9 setSubtitle:v8];
+  string = [v10 string];
+  banner = [(EKEventDetailSuggestedLocationCell *)self banner];
+  [banner setSubtitle:string];
 }
 
 - (void)_setIcon
@@ -167,47 +167,47 @@ LABEL_7:
   v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{0.0, 0.0, 28.0, 28.0}];
   [v5 setImage:v4];
   [v5 setContentMode:1];
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v5 setTintColor:v6];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v5 setTintColor:secondaryLabelColor];
 
   v10[0] = v5;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v8 = [(EKEventDetailSuggestedLocationCell *)self banner];
-  [v8 setImageSGViews:v7];
+  banner = [(EKEventDetailSuggestedLocationCell *)self banner];
+  [banner setImageSGViews:v7];
 
-  v9 = [(EKEventDetailSuggestedLocationCell *)self banner];
-  [v9 reload];
+  banner2 = [(EKEventDetailSuggestedLocationCell *)self banner];
+  [banner2 reload];
 }
 
 - (void)_disambiguateIfNeeded
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EKEventDetailSuggestedLocationCell *)self window];
-  v4 = [v3 rootViewController];
+  window = [(EKEventDetailSuggestedLocationCell *)self window];
+  rootViewController = [window rootViewController];
 
-  v5 = [v4 presentedViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     do
     {
-      v6 = [v4 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v7 = [v6 presentedViewController];
+      v6PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v4 = v6;
+      rootViewController = presentedViewController2;
     }
 
-    while (v7);
+    while (v6PresentedViewController);
   }
 
   else
   {
-    v6 = v4;
+    presentedViewController2 = rootViewController;
   }
 
-  v8 = [(EKStructuredLocation *)self->_location geoLocation];
-  [v8 coordinate];
+  geoLocation = [(EKStructuredLocation *)self->_location geoLocation];
+  [geoLocation coordinate];
   v10 = v9;
   v12 = v11;
 
@@ -222,10 +222,10 @@ LABEL_7:
   v16 = objc_opt_new();
   v17 = EKWeakLinkClass();
   v18 = [objc_alloc(MEMORY[0x1E69A25A0]) initWithCoordinate:0 radius:v10 categories:{v12, fmax(v14 * 1.5, 25.0)}];
-  v19 = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
   v71[0] = v18;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];
-  v21 = [v19 ticketForSpatialLookupParameters:v20 traits:0];
+  v21 = [mEMORY[0x1E69A2208] ticketForSpatialLookupParameters:v20 traits:0];
 
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
@@ -250,9 +250,9 @@ LABEL_7:
   v60[4] = __Block_byref_object_dispose__1;
   v61 = 0;
   v24 = MEMORY[0x1E6992FD8];
-  v25 = [(EKStructuredLocation *)self->_location title];
-  v26 = [(EKStructuredLocation *)self->_location address];
-  v27 = [v24 fullDisplayStringWithTitle:v25 address:v26];
+  title = [(EKStructuredLocation *)self->_location title];
+  address = [(EKStructuredLocation *)self->_location address];
+  v27 = [v24 fullDisplayStringWithTitle:title address:address];
 
   v28 = MEMORY[0x1E6992FB8];
   v54[0] = MEMORY[0x1E69E9820];
@@ -278,8 +278,8 @@ LABEL_7:
   aBlock[3] = &unk_1E843EC38;
   aBlock[4] = self;
   v50 = v30;
-  v51 = v6;
-  v37 = v6;
+  v51 = presentedViewController2;
+  v37 = presentedViewController2;
   v36 = v30;
   v31 = _Block_copy(aBlock);
   block[0] = MEMORY[0x1E69E9820];
@@ -627,8 +627,8 @@ uint64_t __59__EKEventDetailSuggestedLocationCell__disambiguateIfNeeded__block_i
 
 - (void)dismissAction
 {
-  v3 = [(EKEventDetailSuggestedLocationCell *)self delegate];
-  [v3 didTapDismissSuggestedLocationCell:self];
+  delegate = [(EKEventDetailSuggestedLocationCell *)self delegate];
+  [delegate didTapDismissSuggestedLocationCell:self];
 }
 
 - (EKEventDetailSuggestedLocationCellDelegate)delegate

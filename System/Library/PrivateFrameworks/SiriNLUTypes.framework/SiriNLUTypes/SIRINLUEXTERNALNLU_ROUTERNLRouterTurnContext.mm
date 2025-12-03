@@ -1,29 +1,29 @@
 @interface SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addActiveTasks:(id)a3;
-- (void)addExecutedTasks:(id)a3;
-- (void)addSalientEntities:(id)a3;
-- (void)addSystemDialogActs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveTasks:(id)tasks;
+- (void)addExecutedTasks:(id)tasks;
+- (void)addSalientEntities:(id)entities;
+- (void)addSystemDialogActs:(id)acts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v6)
   {
@@ -53,7 +53,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v11)
   {
@@ -83,7 +83,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = v4[4];
+  v15 = fromCopy[4];
   v16 = [v15 countByEnumeratingWithState:&v30 objects:v43 count:16];
   if (v16)
   {
@@ -113,7 +113,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v20 = v4[3];
+  v20 = fromCopy[3];
   v21 = [v20 countByEnumeratingWithState:&v26 objects:v42 count:16];
   if (v21)
   {
@@ -150,13 +150,13 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_salientEntities hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((activeTasks = self->_activeTasks, !(activeTasks | v4[1])) || -[NSMutableArray isEqual:](activeTasks, "isEqual:")) && ((executedTasks = self->_executedTasks, !(executedTasks | v4[2])) || -[NSMutableArray isEqual:](executedTasks, "isEqual:")) && ((systemDialogActs = self->_systemDialogActs, !(systemDialogActs | v4[4])) || -[NSMutableArray isEqual:](systemDialogActs, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((activeTasks = self->_activeTasks, !(activeTasks | equalCopy[1])) || -[NSMutableArray isEqual:](activeTasks, "isEqual:")) && ((executedTasks = self->_executedTasks, !(executedTasks | equalCopy[2])) || -[NSMutableArray isEqual:](executedTasks, "isEqual:")) && ((systemDialogActs = self->_systemDialogActs, !(systemDialogActs | equalCopy[4])) || -[NSMutableArray isEqual:](systemDialogActs, "isEqual:")))
   {
     salientEntities = self->_salientEntities;
-    if (salientEntities | v4[3])
+    if (salientEntities | equalCopy[3])
     {
       v9 = [(NSMutableArray *)salientEntities isEqual:?];
     }
@@ -175,10 +175,10 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -199,7 +199,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v44 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v44 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addActiveTasks:v11];
 
         ++v10;
@@ -232,7 +232,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v40 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v40 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addExecutedTasks:v17];
 
         ++v16;
@@ -265,7 +265,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v36 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v36 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addSystemDialogActs:v23];
 
         ++v22;
@@ -298,7 +298,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v32 + 1) + 8 * v28) copyWithZone:{a3, v32}];
+        v29 = [*(*(&v32 + 1) + 8 * v28) copyWithZone:{zone, v32}];
         [v5 addSalientEntities:v29];
 
         ++v28;
@@ -315,74 +315,74 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   if ([(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self activeTasksCount])
   {
-    [v20 clearActiveTasks];
-    v4 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self activeTasksCount];
-    if (v4)
+    [toCopy clearActiveTasks];
+    activeTasksCount = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self activeTasksCount];
+    if (activeTasksCount)
     {
-      v5 = v4;
+      v5 = activeTasksCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self activeTasksAtIndex:i];
-        [v20 addActiveTasks:v7];
+        [toCopy addActiveTasks:v7];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self executedTasksCount])
   {
-    [v20 clearExecutedTasks];
-    v8 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self executedTasksCount];
-    if (v8)
+    [toCopy clearExecutedTasks];
+    executedTasksCount = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self executedTasksCount];
+    if (executedTasksCount)
     {
-      v9 = v8;
+      v9 = executedTasksCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self executedTasksAtIndex:j];
-        [v20 addExecutedTasks:v11];
+        [toCopy addExecutedTasks:v11];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self systemDialogActsCount])
   {
-    [v20 clearSystemDialogActs];
-    v12 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self systemDialogActsCount];
-    if (v12)
+    [toCopy clearSystemDialogActs];
+    systemDialogActsCount = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self systemDialogActsCount];
+    if (systemDialogActsCount)
     {
-      v13 = v12;
+      v13 = systemDialogActsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self systemDialogActsAtIndex:k];
-        [v20 addSystemDialogActs:v15];
+        [toCopy addSystemDialogActs:v15];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self salientEntitiesCount])
   {
-    [v20 clearSalientEntities];
-    v16 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self salientEntitiesCount];
-    if (v16)
+    [toCopy clearSalientEntities];
+    salientEntitiesCount = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self salientEntitiesCount];
+    if (salientEntitiesCount)
     {
-      v17 = v16;
+      v17 = salientEntitiesCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self salientEntitiesAtIndex:m];
-        [v20 addSalientEntities:v19];
+        [toCopy addSalientEntities:v19];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -517,7 +517,7 @@
 - (id)dictionaryRepresentation
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_activeTasks count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_activeTasks, "count")}];
@@ -540,8 +540,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v46 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v46 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v46 objects:v53 count:16];
@@ -550,7 +550,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"active_tasks"];
+    [dictionary setObject:v4 forKey:@"active_tasks"];
   }
 
   if ([(NSMutableArray *)self->_executedTasks count])
@@ -575,8 +575,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v42 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v42 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v42 objects:v52 count:16];
@@ -585,7 +585,7 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"executed_tasks"];
+    [dictionary setObject:v11 forKey:@"executed_tasks"];
   }
 
   if ([(NSMutableArray *)self->_systemDialogActs count])
@@ -610,8 +610,8 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v38 + 1) + 8 * k) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation3 = [*(*(&v38 + 1) + 8 * k) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation3];
         }
 
         v21 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v38 objects:v51 count:16];
@@ -620,7 +620,7 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKey:@"system_dialog_acts"];
+    [dictionary setObject:v18 forKey:@"system_dialog_acts"];
   }
 
   if ([(NSMutableArray *)self->_salientEntities count])
@@ -645,8 +645,8 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v34 + 1) + 8 * m) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation4 = [*(*(&v34 + 1) + 8 * m) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation4];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v34 objects:v50 count:16];
@@ -655,12 +655,12 @@
       while (v28);
     }
 
-    [v3 setObject:v25 forKey:@"salient_entities"];
+    [dictionary setObject:v25 forKey:@"salient_entities"];
   }
 
   v32 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -669,82 +669,82 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addSalientEntities:(id)a3
+- (void)addSalientEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   salientEntities = self->_salientEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!salientEntities)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_salientEntities;
     self->_salientEntities = v6;
 
-    v4 = v8;
+    entitiesCopy = v8;
     salientEntities = self->_salientEntities;
   }
 
-  [(NSMutableArray *)salientEntities addObject:v4];
+  [(NSMutableArray *)salientEntities addObject:entitiesCopy];
 }
 
-- (void)addSystemDialogActs:(id)a3
+- (void)addSystemDialogActs:(id)acts
 {
-  v4 = a3;
+  actsCopy = acts;
   systemDialogActs = self->_systemDialogActs;
-  v8 = v4;
+  v8 = actsCopy;
   if (!systemDialogActs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_systemDialogActs;
     self->_systemDialogActs = v6;
 
-    v4 = v8;
+    actsCopy = v8;
     systemDialogActs = self->_systemDialogActs;
   }
 
-  [(NSMutableArray *)systemDialogActs addObject:v4];
+  [(NSMutableArray *)systemDialogActs addObject:actsCopy];
 }
 
-- (void)addExecutedTasks:(id)a3
+- (void)addExecutedTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   executedTasks = self->_executedTasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!executedTasks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_executedTasks;
     self->_executedTasks = v6;
 
-    v4 = v8;
+    tasksCopy = v8;
     executedTasks = self->_executedTasks;
   }
 
-  [(NSMutableArray *)executedTasks addObject:v4];
+  [(NSMutableArray *)executedTasks addObject:tasksCopy];
 }
 
-- (void)addActiveTasks:(id)a3
+- (void)addActiveTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   activeTasks = self->_activeTasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!activeTasks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_activeTasks;
     self->_activeTasks = v6;
 
-    v4 = v8;
+    tasksCopy = v8;
     activeTasks = self->_activeTasks;
   }
 
-  [(NSMutableArray *)activeTasks addObject:v4];
+  [(NSMutableArray *)activeTasks addObject:tasksCopy];
 }
 
 @end

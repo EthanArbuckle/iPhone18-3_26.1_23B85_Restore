@@ -1,5 +1,5 @@
 @interface ChartEpisodeCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (id)automationElements;
@@ -7,24 +7,24 @@
 
 @implementation ChartEpisodeCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.ChartEpisodeCell" hasInstanceMethod:@"accessibilityMoreButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ChartEpisodeCell" hasInstanceMethod:@"accessibilityInternalArtworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ChartEpisodeCell" hasInstanceMethod:@"accessibilityOrdinalLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.DynamicContextMenuButton" hasInstanceMethod:@"accessibilityButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ChartEpisodeCell" hasSwiftField:@"episodeInfoView" withSwiftType:"Optional<EpisodeInfoView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ChartEpisodeCell" hasInstanceMethod:@"accessibilityMoreButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ChartEpisodeCell" hasInstanceMethod:@"accessibilityInternalArtworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ChartEpisodeCell" hasInstanceMethod:@"accessibilityOrdinalLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.DynamicContextMenuButton" hasInstanceMethod:@"accessibilityButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ChartEpisodeCell" hasSwiftField:@"episodeInfoView" withSwiftType:"Optional<EpisodeInfoView>"];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(ChartEpisodeCellAccessibility *)self safeValueForKey:@"accessibilityOrdinalLabel"];
   v5 = [(ChartEpisodeCellAccessibility *)self safeSwiftValueForKey:@"episodeInfoView"];
-  [v3 axSafelyAddObject:v4];
-  [v3 axSafelyAddObject:v5];
-  v6 = MEMORY[0x29C2E7870](v3);
+  [array axSafelyAddObject:v4];
+  [array axSafelyAddObject:v5];
+  v6 = MEMORY[0x29C2E7870](array);
 
   return v6;
 }
@@ -36,9 +36,9 @@
   objc_initWeak(&location, v2);
 
   v3 = objc_loadWeakRetained(&location);
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);
     v6 = accessibilityLocalizedString(@"more.button");
@@ -77,20 +77,20 @@ uint64_t __59__ChartEpisodeCellAccessibility_accessibilityCustomActions__block_i
 {
   v12.receiver = self;
   v12.super_class = ChartEpisodeCellAccessibility;
-  v3 = [(ChartEpisodeCellAccessibility *)&v12 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(ChartEpisodeCellAccessibility *)&v12 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
   v8 = [(ChartEpisodeCellAccessibility *)self safeValueForKeyPath:@"accessibilityMoreButton.accessibilityButton"];
   [v7 axSafelyAddObject:v8];

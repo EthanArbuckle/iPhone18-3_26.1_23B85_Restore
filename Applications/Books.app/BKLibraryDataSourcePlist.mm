@@ -1,80 +1,80 @@
 @interface BKLibraryDataSourcePlist
-+ (id)iTunesSyncedBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5;
-+ (id)managedBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5;
-+ (id)sampleBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5;
-+ (id)stashedSampleBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5;
-+ (id)untetheredBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5;
++ (id)iTunesSyncedBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache;
++ (id)managedBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache;
++ (id)sampleBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache;
++ (id)stashedSampleBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache;
++ (id)untetheredBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache;
 - (BKAssetCoverImageHelping)coverImageHelper;
 - (BKAssetMetadataCaching)assetMetadataCache;
 - (BKAssetMetadataProvider)assetMetadataProvider;
-- (BKLibraryDataSourcePlist)initWithPlistKind:(int64_t)a3 identifier:(id)a4 assetMetadataProvider:(id)a5 coverImageHelper:(id)a6 assetMetadataCache:(id)a7;
-- (BKLibraryDataSourcePlist)initWithTestPlist:(id)a3 identifier:(id)a4 assetMetadataProvider:(id)a5 coverImageHelper:(id)a6 assetMetadataCache:(id)a7;
+- (BKLibraryDataSourcePlist)initWithPlistKind:(int64_t)kind identifier:(id)identifier assetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache;
+- (BKLibraryDataSourcePlist)initWithTestPlist:(id)plist identifier:(id)identifier assetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache;
 - (BKLibraryManager)libraryManager;
-- (BOOL)_isEntryFamilyPurchase:(id)a3;
-- (BOOL)_isFamilyPurchaseAtPath:(id)a3;
-- (BOOL)_isSupplementalPDFFromPlistEntry:(id)a3;
+- (BOOL)_isEntryFamilyPurchase:(id)purchase;
+- (BOOL)_isFamilyPurchaseAtPath:(id)path;
+- (BOOL)_isSupplementalPDFFromPlistEntry:(id)entry;
 - (BOOL)_isiTunesSyncedPlist;
 - (BOOL)hasDigestChangedSinceFetch;
-- (BOOL)q_rewritePlistDictionary:(id)a3 path:(id)a4 notify:(BOOL)a5;
-- (BOOL)removeFileWithURL:(id)a3 error:(id *)a4;
+- (BOOL)q_rewritePlistDictionary:(id)dictionary path:(id)path notify:(BOOL)notify;
+- (BOOL)removeFileWithURL:(id)l error:(id *)error;
 - (NSFileManager)fileManager;
 - (NSString)description;
-- (id)_newEntryFromSummary:(id)a3;
-- (id)_pathStringWithoutDirectoryPrefix:(id)a3;
+- (id)_newEntryFromSummary:(id)summary;
+- (id)_pathStringWithoutDirectoryPrefix:(id)prefix;
 - (id)booksRootPath;
-- (id)coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:(id)a3;
-- (id)importDestinationPathForAssetImporter:(id)a3;
-- (id)plistAssetWithAsset:(id)a3 andURL:(id)a4;
+- (id)coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:(id)d;
+- (id)importDestinationPathForAssetImporter:(id)importer;
+- (id)plistAssetWithAsset:(id)asset andURL:(id)l;
 - (id)plistDigest;
-- (id)plistEntryAsDictionaryFromAssetID:(id)a3 path:(id)a4 needsCoordination:(BOOL)a5;
-- (id)q_plistContentsArrayWithError:(id *)a3;
-- (id)q_plistContentsWithError:(id *)a3;
-- (signed)_contentTypeFromPlistEntry:(id)a3 logFailure:(BOOL)a4;
+- (id)plistEntryAsDictionaryFromAssetID:(id)d path:(id)path needsCoordination:(BOOL)coordination;
+- (id)q_plistContentsArrayWithError:(id *)error;
+- (id)q_plistContentsWithError:(id *)error;
+- (signed)_contentTypeFromPlistEntry:(id)entry logFailure:(BOOL)failure;
 - (unsigned)qualitySetting;
-- (void)_addAssetIDsToCacheManager:(id)a3;
-- (void)_deleteAssetIDs:(id)a3 assetIDToPath:(id)a4 completion:(id)a5;
-- (void)_prioritizeRestorePlistAsset:(id)a3;
-- (void)_removeAssetIDsFromCacheManager:(id)a3;
-- (void)_setPropertiesOfAsset:(id)a3 withPlistEntry:(id)a4;
-- (void)assetAccountIdentifiersForAssetID:(id)a3 storeID:(id)a4 path:(id)a5 completion:(id)a6;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4;
-- (void)p_addPlistAssets:(id)a3 checkForDuplicates:(BOOL)a4 completion:(id)a5;
-- (void)prioritizeAssetRestoreWithAssetID:(id)a3;
-- (void)q_asyncAddAssetDictionaries:(id)a3 completion:(id)a4;
-- (void)q_asyncRemovePlistAssets:(id)a3 notify:(BOOL)a4 completion:(id)a5;
-- (void)q_asyncRemovePlistEntriesMatching:(id)a3 notify:(BOOL)a4 completion:(id)a5;
-- (void)q_asyncRemovePlistPaths:(id)a3 completion:(id)a4;
-- (void)q_asyncReplacePlistEntries:(id)a3 notify:(BOOL)a4 completion:(id)a5;
+- (void)_addAssetIDsToCacheManager:(id)manager;
+- (void)_deleteAssetIDs:(id)ds assetIDToPath:(id)path completion:(id)completion;
+- (void)_prioritizeRestorePlistAsset:(id)asset;
+- (void)_removeAssetIDsFromCacheManager:(id)manager;
+- (void)_setPropertiesOfAsset:(id)asset withPlistEntry:(id)entry;
+- (void)assetAccountIdentifiersForAssetID:(id)d storeID:(id)iD path:(id)path completion:(id)completion;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion;
+- (void)p_addPlistAssets:(id)assets checkForDuplicates:(BOOL)duplicates completion:(id)completion;
+- (void)prioritizeAssetRestoreWithAssetID:(id)d;
+- (void)q_asyncAddAssetDictionaries:(id)dictionaries completion:(id)completion;
+- (void)q_asyncRemovePlistAssets:(id)assets notify:(BOOL)notify completion:(id)completion;
+- (void)q_asyncRemovePlistEntriesMatching:(id)matching notify:(BOOL)notify completion:(id)completion;
+- (void)q_asyncRemovePlistPaths:(id)paths completion:(id)completion;
+- (void)q_asyncReplacePlistEntries:(id)entries notify:(BOOL)notify completion:(id)completion;
 - (void)q_clearAssetCaches;
-- (void)q_deletePlistEntries:(id)a3;
-- (void)q_evictFromAssetCaches:(id)a3;
+- (void)q_deletePlistEntries:(id)entries;
+- (void)q_evictFromAssetCaches:(id)caches;
 - (void)q_plistWasChangedOnDisk;
-- (void)q_processAssetStateChanges:(id)a3;
-- (void)q_refreshAssetCachesFromPlistContents:(id)a3;
+- (void)q_processAssetStateChanges:(id)changes;
+- (void)q_refreshAssetCachesFromPlistContents:(id)contents;
 - (void)reload;
-- (void)reloadAssetsForAddingWithAssetIDs:(id)a3;
+- (void)reloadAssetsForAddingWithAssetIDs:(id)ds;
 - (void)reloadIfChanged;
-- (void)reloadInGroup:(id)a3;
-- (void)removePlistAssets:(id)a3 completion:(id)a4;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)updateAsset:(id)a3 isEphemeral:(BOOL)a4 completion:(id)a5;
-- (void)updateAsset:(id)a3 userEditedTitle:(id)a4 completion:(id)a5;
+- (void)reloadInGroup:(id)group;
+- (void)removePlistAssets:(id)assets completion:(id)completion;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
+- (void)updateAsset:(id)asset isEphemeral:(BOOL)ephemeral completion:(id)completion;
+- (void)updateAsset:(id)asset userEditedTitle:(id)title completion:(id)completion;
 - (void)updateFetchDigest;
-- (void)updatePlistAssets:(id)a3 completion:(id)a4;
+- (void)updatePlistAssets:(id)assets completion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourcePlist
 
 - (id)plistDigest
 {
-  v2 = [(BKLibraryDataSourcePlist *)self plist];
-  v3 = [v2 calculateChecksum];
+  plist = [(BKLibraryDataSourcePlist *)self plist];
+  calculateChecksum = [plist calculateChecksum];
 
-  return v3;
+  return calculateChecksum;
 }
 
 - (BKLibraryManager)libraryManager
@@ -84,73 +84,73 @@
   return WeakRetained;
 }
 
-+ (id)iTunesSyncedBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5
++ (id)iTunesSyncedBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[BKLibraryDataSourcePlist alloc] initWithPlistKind:0 identifier:@"com.apple.ibooks.plist.iTunesSynced" assetMetadataProvider:v9 coverImageHelper:v8 assetMetadataCache:v7];
+  cacheCopy = cache;
+  helperCopy = helper;
+  providerCopy = provider;
+  v10 = [[BKLibraryDataSourcePlist alloc] initWithPlistKind:0 identifier:@"com.apple.ibooks.plist.iTunesSynced" assetMetadataProvider:providerCopy coverImageHelper:helperCopy assetMetadataCache:cacheCopy];
 
   return v10;
 }
 
-+ (id)untetheredBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5
++ (id)untetheredBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[BKLibraryDataSourcePlistUntetheredBooks alloc] initWithPlistKind:1 identifier:@"com.apple.ibooks.plist.untethered" assetMetadataProvider:v9 coverImageHelper:v8 assetMetadataCache:v7];
+  cacheCopy = cache;
+  helperCopy = helper;
+  providerCopy = provider;
+  v10 = [[BKLibraryDataSourcePlistUntetheredBooks alloc] initWithPlistKind:1 identifier:@"com.apple.ibooks.plist.untethered" assetMetadataProvider:providerCopy coverImageHelper:helperCopy assetMetadataCache:cacheCopy];
 
   return v10;
 }
 
-+ (id)managedBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5
++ (id)managedBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[BKLibraryDataSourcePlistManagedBooks alloc] initWithPlistKind:2 identifier:@"com.apple.ibooks.plist.managed" assetMetadataProvider:v9 coverImageHelper:v8 assetMetadataCache:v7];
+  cacheCopy = cache;
+  helperCopy = helper;
+  providerCopy = provider;
+  v10 = [[BKLibraryDataSourcePlistManagedBooks alloc] initWithPlistKind:2 identifier:@"com.apple.ibooks.plist.managed" assetMetadataProvider:providerCopy coverImageHelper:helperCopy assetMetadataCache:cacheCopy];
 
   return v10;
 }
 
-+ (id)sampleBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5
++ (id)sampleBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[BKLibraryDataSourcePlistSampleBooks alloc] initWithPlistKind:4 identifier:@"com.apple.iBooks.plist.sample" assetMetadataProvider:v9 coverImageHelper:v8 assetMetadataCache:v7];
+  cacheCopy = cache;
+  helperCopy = helper;
+  providerCopy = provider;
+  v10 = [[BKLibraryDataSourcePlistSampleBooks alloc] initWithPlistKind:4 identifier:@"com.apple.iBooks.plist.sample" assetMetadataProvider:providerCopy coverImageHelper:helperCopy assetMetadataCache:cacheCopy];
 
   return v10;
 }
 
-+ (id)stashedSampleBooksPlistDataSourceWithAssetMetadataProvider:(id)a3 coverImageHelper:(id)a4 assetMetadataCache:(id)a5
++ (id)stashedSampleBooksPlistDataSourceWithAssetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[BKLibraryDataSourcePlistStashedSampleBooks alloc] initWithPlistKind:5 identifier:@"com.apple.iBooks.plist.sample.stashed" assetMetadataProvider:v9 coverImageHelper:v8 assetMetadataCache:v7];
+  cacheCopy = cache;
+  helperCopy = helper;
+  providerCopy = provider;
+  v10 = [[BKLibraryDataSourcePlistStashedSampleBooks alloc] initWithPlistKind:5 identifier:@"com.apple.iBooks.plist.sample.stashed" assetMetadataProvider:providerCopy coverImageHelper:helperCopy assetMetadataCache:cacheCopy];
 
   return v10;
 }
 
-- (BKLibraryDataSourcePlist)initWithPlistKind:(int64_t)a3 identifier:(id)a4 assetMetadataProvider:(id)a5 coverImageHelper:(id)a6 assetMetadataCache:(id)a7
+- (BKLibraryDataSourcePlist)initWithPlistKind:(int64_t)kind identifier:(id)identifier assetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  helperCopy = helper;
+  cacheCopy = cache;
   kdebug_trace();
   v41.receiver = self;
   v41.super_class = BKLibraryDataSourcePlist;
   v17 = [(BKLibraryDataSourcePlist *)&v41 init];
   if (v17)
   {
-    v18 = [IMLibraryPlist libraryPlistWithKind:a3];
+    v18 = [IMLibraryPlist libraryPlistWithKind:kind];
     plist = v17->_plist;
     v17->_plist = v18;
 
-    objc_storeStrong(&v17->_identifier, a4);
+    objc_storeStrong(&v17->_identifier, identifier);
     v20 = objc_alloc_init(NSCache);
     assetCache = v17->_assetCache;
     v17->_assetCache = v20;
@@ -177,9 +177,9 @@
     updateAssetMetadataQueue = v17->_updateAssetMetadataQueue;
     v17->_updateAssetMetadataQueue = v30;
 
-    objc_storeWeak(&v17->_assetMetadataProvider, v14);
-    objc_storeWeak(&v17->_assetMetadataCache, v16);
-    objc_storeWeak(&v17->_coverImageHelper, v15);
+    objc_storeWeak(&v17->_assetMetadataProvider, providerCopy);
+    objc_storeWeak(&v17->_assetMetadataCache, cacheCopy);
+    objc_storeWeak(&v17->_coverImageHelper, helperCopy);
     v32 = dispatch_queue_create("BKLibraryDataSourcePlist.ioQueue", 0);
     ioQueue = v17->_ioQueue;
     v17->_ioQueue = v32;
@@ -192,9 +192,9 @@
     itunesuQueue = v17->_itunesuQueue;
     v17->_itunesuQueue = v36;
 
-    v38 = [(BKLibraryDataSourcePlist *)v17 plistDigest];
+    plistDigest = [(BKLibraryDataSourcePlist *)v17 plistDigest];
     lastReloadDigest = v17->_lastReloadDigest;
-    v17->_lastReloadDigest = v38;
+    v17->_lastReloadDigest = plistDigest;
   }
 
   kdebug_trace();
@@ -202,12 +202,12 @@
   return v17;
 }
 
-- (BKLibraryDataSourcePlist)initWithTestPlist:(id)a3 identifier:(id)a4 assetMetadataProvider:(id)a5 coverImageHelper:(id)a6 assetMetadataCache:(id)a7
+- (BKLibraryDataSourcePlist)initWithTestPlist:(id)plist identifier:(id)identifier assetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache
 {
-  v12 = a3;
-  v13 = [(BKLibraryDataSourcePlist *)self initWithPlistKind:0 identifier:a4 assetMetadataProvider:a5 coverImageHelper:a6 assetMetadataCache:a7];
+  plistCopy = plist;
+  v13 = [(BKLibraryDataSourcePlist *)self initWithPlistKind:0 identifier:identifier assetMetadataProvider:provider coverImageHelper:helper assetMetadataCache:cache];
   plist = v13->_plist;
-  v13->_plist = v12;
+  v13->_plist = plistCopy;
 
   return v13;
 }
@@ -216,38 +216,38 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BKLibraryDataSourcePlist *)self identifier];
-  v6 = [(BKLibraryDataSourcePlist *)self plist];
-  v7 = [v6 path];
-  v8 = [v7 lastPathComponent];
-  v9 = [NSString stringWithFormat:@"<%@=%p id=%@ plist=%@ rank=%ld>", v4, self, v5, v8, [(BKLibraryDataSourcePlist *)self rank]];
+  identifier = [(BKLibraryDataSourcePlist *)self identifier];
+  plist = [(BKLibraryDataSourcePlist *)self plist];
+  path = [plist path];
+  lastPathComponent = [path lastPathComponent];
+  v9 = [NSString stringWithFormat:@"<%@=%p id=%@ plist=%@ rank=%ld>", v4, self, identifier, lastPathComponent, [(BKLibraryDataSourcePlist *)self rank]];
 
   return v9;
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+  completionCopy = completion;
+  assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001D4C70;
   v7[3] = &unk_100A03788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(assetsQueue, v7);
 }
 
-- (void)_addAssetIDsToCacheManager:(id)a3
+- (void)_addAssetIDsToCacheManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[NSMutableDictionary dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v4;
+  obj = managerCopy;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -263,11 +263,11 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 assetID];
-        v12 = [(BKLibraryDataSourcePlist *)self identifier];
-        v13 = [BKCoverCacheURLSchemeHandler urlStringForAssetID:v11 dataSourceID:v12];
-        v14 = [v10 assetID];
-        [v5 setObject:v13 forKeyedSubscript:v14];
+        assetID = [v10 assetID];
+        identifier = [(BKLibraryDataSourcePlist *)self identifier];
+        v13 = [BKCoverCacheURLSchemeHandler urlStringForAssetID:assetID dataSourceID:identifier];
+        assetID2 = [v10 assetID];
+        [v5 setObject:v13 forKeyedSubscript:assetID2];
       }
 
       v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -283,15 +283,15 @@
   }
 }
 
-- (void)_removeAssetIDsFromCacheManager:(id)a3
+- (void)_removeAssetIDsFromCacheManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[NSMutableDictionary dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v4;
+  obj = managerCopy;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -307,11 +307,11 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 assetID];
-        v12 = [(BKLibraryDataSourcePlist *)self identifier];
-        v13 = [BKCoverCacheURLSchemeHandler urlStringForAssetID:v11 dataSourceID:v12];
-        v14 = [v10 assetID];
-        [v5 setObject:v13 forKeyedSubscript:v14];
+        assetID = [v10 assetID];
+        identifier = [(BKLibraryDataSourcePlist *)self identifier];
+        v13 = [BKCoverCacheURLSchemeHandler urlStringForAssetID:assetID dataSourceID:identifier];
+        assetID2 = [v10 assetID];
+        [v5 setObject:v13 forKeyedSubscript:assetID2];
       }
 
       v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -329,16 +329,16 @@
 
 - (unsigned)qualitySetting
 {
-  v3 = [(BKLibraryDataSourcePlist *)self identifier];
-  v4 = [v3 isEqualToString:@"com.apple.iBooks.plist.sample"];
+  identifier = [(BKLibraryDataSourcePlist *)self identifier];
+  v4 = [identifier isEqualToString:@"com.apple.iBooks.plist.sample"];
 
   if (v4)
   {
     return 204;
   }
 
-  v6 = [(BKLibraryDataSourcePlist *)self identifier];
-  v7 = [v6 isEqualToString:@"com.apple.iBooks.plist.sample.stashed"];
+  identifier2 = [(BKLibraryDataSourcePlist *)self identifier];
+  v7 = [identifier2 isEqualToString:@"com.apple.iBooks.plist.sample.stashed"];
 
   if (v7)
   {
@@ -351,11 +351,11 @@
   }
 }
 
-- (BOOL)_isSupplementalPDFFromPlistEntry:(id)a3
+- (BOOL)_isSupplementalPDFFromPlistEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [IMLibraryPlist isSupplementalContentFromPlistEntry:v4];
-  LODWORD(self) = [(BKLibraryDataSourcePlist *)self _contentTypeFromPlistEntry:v4 logFailure:0];
+  entryCopy = entry;
+  v5 = [IMLibraryPlist isSupplementalContentFromPlistEntry:entryCopy];
+  LODWORD(self) = [(BKLibraryDataSourcePlist *)self _contentTypeFromPlistEntry:entryCopy logFailure:0];
 
   if (self == 3)
   {
@@ -368,35 +368,35 @@
   }
 }
 
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   kdebug_trace();
-  v8 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+  assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D56D8;
   block[3] = &unk_100A049A0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(assetsQueue, block);
 }
 
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 objectForKey:@"assetID"];
-  v10 = [v7 objectForKey:@"permlink"];
+  propertiesCopy = properties;
+  completionCopy = completion;
+  v9 = [propertiesCopy objectForKey:@"assetID"];
+  v10 = [propertiesCopy objectForKey:@"permlink"];
   v11 = [NSURL URLWithString:v10];
-  v12 = [(BKLibraryDataSourcePlist *)self coverImageHelper];
-  if (v12)
+  coverImageHelper = [(BKLibraryDataSourcePlist *)self coverImageHelper];
+  if (coverImageHelper)
   {
-    v13 = [v7 objectForKey:@"path"];
+    v13 = [propertiesCopy objectForKey:@"path"];
     if (v13)
     {
       v14 = [NSURL fileURLWithPath:v13];
@@ -411,16 +411,16 @@
     v17[1] = 3221225472;
     v17[2] = sub_1001D6198;
     v17[3] = &unk_100A0B560;
-    v21 = v8;
+    v21 = completionCopy;
     v18 = v11;
-    v19 = self;
+    selfCopy = self;
     v20 = v9;
-    [v12 coverImageFromURL:v14 completion:v17];
+    [coverImageHelper coverImageFromURL:v14 completion:v17];
   }
 
   else
   {
-    v15 = objc_retainBlock(v8);
+    v15 = objc_retainBlock(completionCopy);
     if (v15)
     {
       v16 = [NSError errorWithDomain:kBKLibraryDataSourceDomain code:kBKLibraryDataSourceErrorInvalidAssetError userInfo:0];
@@ -429,10 +429,10 @@
   }
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v6 = a3;
-  v25 = a5;
+  assetsCopy = assets;
+  completionCopy = completion;
   v7 = BKLibraryLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -445,7 +445,7 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
+  obj = assetsCopy;
   v9 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
@@ -461,22 +461,22 @@
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
-        v14 = [v13 assetID];
-        if (v14)
+        assetID = [v13 assetID];
+        if (assetID)
         {
-          [v8 addObject:v14];
-          v15 = [v13 path];
-          if (v15)
+          [v8 addObject:assetID];
+          path = [v13 path];
+          if (path)
           {
-            v16 = v15;
-            v17 = [v13 dataSourceIdentifier];
-            v18 = [(BKLibraryDataSourcePlist *)self identifier];
-            v19 = [v17 isEqualToString:v18];
+            v16 = path;
+            dataSourceIdentifier = [v13 dataSourceIdentifier];
+            identifier = [(BKLibraryDataSourcePlist *)self identifier];
+            v19 = [dataSourceIdentifier isEqualToString:identifier];
 
             if (v19)
             {
-              v20 = [v13 path];
-              [v26 setObject:v20 forKey:v14];
+              path2 = [v13 path];
+              [v26 setObject:path2 forKey:assetID];
             }
           }
         }
@@ -494,8 +494,8 @@
     v29[1] = 3221225472;
     v29[2] = sub_1001D6698;
     v29[3] = &unk_100A063F0;
-    v21 = v25;
-    v30 = v25;
+    v21 = completionCopy;
+    v30 = completionCopy;
     v22 = v26;
     [(BKLibraryDataSourcePlist *)self _deleteAssetIDs:v8 assetIDToPath:v26 completion:v29];
     v23 = v30;
@@ -503,8 +503,8 @@
 
   else
   {
-    v21 = v25;
-    v24 = objc_retainBlock(v25);
+    v21 = completionCopy;
+    v24 = objc_retainBlock(completionCopy);
     v23 = v24;
     v22 = v26;
     if (v24)
@@ -514,118 +514,118 @@
   }
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001D67F0;
   v8[3] = &unk_100A09AD0;
-  v9 = self;
-  v10 = a3;
-  v11 = a5;
-  v6 = v11;
-  v7 = v10;
-  [(BKLibraryDataSourcePlist *)v9 assetForLibraryAsset:v7 completion:v8];
+  selfCopy = self;
+  assetCopy = asset;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = assetCopy;
+  [(BKLibraryDataSourcePlist *)selfCopy assetForLibraryAsset:v7 completion:v8];
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v8 = BKLibraryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_100794938();
   }
 
-  v9 = [v6 assetID];
-  v14 = v9;
+  assetID = [assetCopy assetID];
+  v14 = assetID;
   v10 = [NSArray arrayWithObjects:&v14 count:1];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001D6A10;
   v12[3] = &unk_100A06300;
-  v13 = v7;
-  v11 = v7;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(BKLibraryDataSourcePlist *)self fetchAssetsWithIDs:v10 completion:v12];
 }
 
-- (void)updateAsset:(id)a3 userEditedTitle:(id)a4 completion:(id)a5
+- (void)updateAsset:(id)asset userEditedTitle:(id)title completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  titleCopy = title;
+  completionCopy = completion;
   v11 = BKLibraryLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(BKLibraryDataSourcePlist *)self identifier];
-    v13 = [v8 assetID];
+    identifier = [(BKLibraryDataSourcePlist *)self identifier];
+    assetID = [assetCopy assetID];
     *buf = 138544130;
-    v25 = v12;
+    v25 = identifier;
     v26 = 2160;
     v27 = 1752392040;
     v28 = 2112;
-    v29 = v13;
+    v29 = assetID;
     v30 = 2112;
-    v31 = v9;
+    v31 = titleCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "DataSourcePlist: %{public}@ Updating assetID:%{mask.hash}@ with title:(%@)", buf, 0x2Au);
   }
 
-  v14 = [v8 assetID];
-  v15 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+  assetID2 = [assetCopy assetID];
+  assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001D6D28;
   v19[3] = &unk_100A04FE8;
-  v20 = v14;
-  v21 = self;
-  v22 = v9;
-  v23 = v10;
-  v16 = v10;
-  v17 = v9;
-  v18 = v14;
-  dispatch_async(v15, v19);
+  v20 = assetID2;
+  selfCopy = self;
+  v22 = titleCopy;
+  v23 = completionCopy;
+  v16 = completionCopy;
+  v17 = titleCopy;
+  v18 = assetID2;
+  dispatch_async(assetsQueue, v19);
 }
 
-- (void)updateAsset:(id)a3 isEphemeral:(BOOL)a4 completion:(id)a5
+- (void)updateAsset:(id)asset isEphemeral:(BOOL)ephemeral completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  ephemeralCopy = ephemeral;
+  assetCopy = asset;
+  completionCopy = completion;
   v10 = BKLibraryLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(BKLibraryDataSourcePlist *)self identifier];
-    v16 = [v8 assetID];
-    v17 = [NSNumber numberWithBool:v6];
+    identifier = [(BKLibraryDataSourcePlist *)self identifier];
+    assetID = [assetCopy assetID];
+    v17 = [NSNumber numberWithBool:ephemeralCopy];
     *buf = 138543874;
-    v24 = v15;
+    v24 = identifier;
     v25 = 2112;
-    v26 = v16;
+    v26 = assetID;
     v27 = 2112;
     v28 = v17;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}@ Updating asset %@ isEphemeral: %@", buf, 0x20u);
   }
 
-  v11 = [v8 assetID];
-  v12 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+  assetID2 = [assetCopy assetID];
+  assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1001D71EC;
   v18[3] = &unk_100A057C8;
-  v19 = v11;
-  v20 = self;
-  v22 = v6;
-  v21 = v9;
-  v13 = v9;
-  v14 = v11;
-  dispatch_async(v12, v18);
+  v19 = assetID2;
+  selfCopy = self;
+  v22 = ephemeralCopy;
+  v21 = completionCopy;
+  v13 = completionCopy;
+  v14 = assetID2;
+  dispatch_async(assetsQueue, v18);
 }
 
 - (void)reloadIfChanged
 {
-  v3 = [(BKLibraryDataSourcePlist *)self lastReloadDigest];
-  if (!v3 || (v4 = v3, -[BKLibraryDataSourcePlist lastReloadDigest](self, "lastReloadDigest"), v5 = objc_claimAutoreleasedReturnValue(), -[BKLibraryDataSourcePlist plistDigest](self, "plistDigest"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, v4, (v7 & 1) == 0))
+  lastReloadDigest = [(BKLibraryDataSourcePlist *)self lastReloadDigest];
+  if (!lastReloadDigest || (v4 = lastReloadDigest, -[BKLibraryDataSourcePlist lastReloadDigest](self, "lastReloadDigest"), v5 = objc_claimAutoreleasedReturnValue(), -[BKLibraryDataSourcePlist plistDigest](self, "plistDigest"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, v4, (v7 & 1) == 0))
   {
 
     [(BKLibraryDataSourcePlist *)self reload];
@@ -634,43 +634,43 @@
 
 - (void)reload
 {
-  v3 = [(BKLibraryDataSourcePlist *)self libraryManager];
+  libraryManager = [(BKLibraryDataSourcePlist *)self libraryManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001D76C4;
   v4[3] = &unk_100A0B5D8;
   v4[4] = self;
-  [v3 libraryDataSource:self updateWithName:@"reload" block:v4];
+  [libraryManager libraryDataSource:self updateWithName:@"reload" block:v4];
 }
 
-- (void)reloadInGroup:(id)a3
+- (void)reloadInGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourcePlist *)self plistDigest];
-  [(BKLibraryDataSourcePlist *)self setLastReloadDigest:v5];
+  groupCopy = group;
+  plistDigest = [(BKLibraryDataSourcePlist *)self plistDigest];
+  [(BKLibraryDataSourcePlist *)self setLastReloadDigest:plistDigest];
 
-  v6 = [(BKLibraryDataSourcePlist *)self libraryManager];
-  [v6 libraryDataSource:self reloadInGroup:v4];
+  libraryManager = [(BKLibraryDataSourcePlist *)self libraryManager];
+  [libraryManager libraryDataSource:self reloadInGroup:groupCopy];
 }
 
-- (void)reloadAssetsForAddingWithAssetIDs:(id)a3
+- (void)reloadAssetsForAddingWithAssetIDs:(id)ds
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1001D77C8;
   v3[3] = &unk_100A08418;
   v3[4] = self;
-  [(BKLibraryDataSourcePlist *)self fetchAssetsWithIDs:a3 completion:v3];
+  [(BKLibraryDataSourcePlist *)self fetchAssetsWithIDs:ds completion:v3];
 }
 
 - (BOOL)hasDigestChangedSinceFetch
 {
-  v3 = [(BKLibraryDataSourcePlist *)self lastFetchDigest];
-  if (v3)
+  lastFetchDigest = [(BKLibraryDataSourcePlist *)self lastFetchDigest];
+  if (lastFetchDigest)
   {
-    v4 = [(BKLibraryDataSourcePlist *)self lastFetchDigest];
-    v5 = [(BKLibraryDataSourcePlist *)self plistDigest];
-    v6 = [v4 isEqual:v5] ^ 1;
+    lastFetchDigest2 = [(BKLibraryDataSourcePlist *)self lastFetchDigest];
+    plistDigest = [(BKLibraryDataSourcePlist *)self plistDigest];
+    v6 = [lastFetchDigest2 isEqual:plistDigest] ^ 1;
   }
 
   else
@@ -683,14 +683,14 @@
 
 - (void)updateFetchDigest
 {
-  v3 = [(BKLibraryDataSourcePlist *)self plistDigest];
-  [(BKLibraryDataSourcePlist *)self setLastFetchDigest:v3];
+  plistDigest = [(BKLibraryDataSourcePlist *)self plistDigest];
+  [(BKLibraryDataSourcePlist *)self setLastFetchDigest:plistDigest];
 }
 
-- (id)importDestinationPathForAssetImporter:(id)a3
+- (id)importDestinationPathForAssetImporter:(id)importer
 {
-  v3 = [(BKLibraryDataSourcePlist *)self identifier];
-  v4 = [v3 isEqualToString:@"com.apple.ibooks.plist.untethered"];
+  identifier = [(BKLibraryDataSourcePlist *)self identifier];
+  v4 = [identifier isEqualToString:@"com.apple.ibooks.plist.untethered"];
 
   if (v4)
   {
@@ -705,23 +705,23 @@
   return v5;
 }
 
-- (void)assetAccountIdentifiersForAssetID:(id)a3 storeID:(id)a4 path:(id)a5 completion:(id)a6
+- (void)assetAccountIdentifiersForAssetID:(id)d storeID:(id)iD path:(id)path completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  pathCopy = path;
+  completionCopy = completion;
   v13 = kBKLibraryDataSourceErrorInvalidAssetError;
   v14 = objc_autoreleasePoolPush();
-  if ([v11 length])
+  if ([pathCopy length])
   {
     v15 = +[BLLibrary defaultBookLibrary];
-    v16 = [NSURL fileURLWithPath:v11];
+    v16 = [NSURL fileURLWithPath:pathCopy];
     v17 = [v15 _perUserBookURLForBookURL:v16];
 
     if (v17)
     {
-      v33 = v9;
+      v33 = dCopy;
       v18 = [v17 URLByAppendingPathComponent:@"iTunesMetadata.plist"];
       v19 = [NSDictionary dictionaryWithContentsOfURL:v18];
       if (v19)
@@ -730,7 +730,7 @@
         v21 = [v19 objectForKey:@"com.apple.iTunesStore.downloadInfo"];
         v22 = [v21 valueForKeyPath:@"accountInfo.FamilyID"];
         BUStoreIdStringFromObject();
-        v23 = v32 = v10;
+        v23 = v32 = iDCopy;
         [v20 setFamilyID:v23];
 
         v24 = [v21 valueForKeyPath:@"accountInfo.DSPersonID"];
@@ -741,7 +741,7 @@
         v27 = BUStoreIdStringFromObject();
         [v20 setPurchasedDSID:v27];
 
-        v10 = v32;
+        iDCopy = v32;
         v13 = 0;
       }
 
@@ -750,7 +750,7 @@
         v20 = 0;
       }
 
-      v9 = v33;
+      dCopy = v33;
     }
 
     else
@@ -771,7 +771,7 @@
   }
 
   objc_autoreleasePoolPop(v14);
-  v29 = objc_retainBlock(v12);
+  v29 = objc_retainBlock(completionCopy);
   v30 = v29;
   if (v13)
   {
@@ -788,11 +788,11 @@
   }
 }
 
-- (void)p_addPlistAssets:(id)a3 checkForDuplicates:(BOOL)a4 completion:(id)a5
+- (void)p_addPlistAssets:(id)assets checkForDuplicates:(BOOL)duplicates completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v56 = a5;
+  duplicatesCopy = duplicates;
+  assetsCopy = assets;
+  completionCopy = completion;
   v8 = BKLibraryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -805,7 +805,7 @@
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v7;
+  obj = assetsCopy;
   v9 = [obj countByEnumeratingWithState:&v67 objects:v71 count:16];
   if (v9)
   {
@@ -824,12 +824,12 @@
 
         v12 = *(*(&v67 + 1) + 8 * v11);
         v13 = [v12 url];
-        v14 = [v12 assetID];
-        if (v6)
+        assetID = [v12 assetID];
+        if (duplicatesCopy)
         {
-          v15 = [(BKLibraryDataSourcePlist *)self plist];
-          v16 = [v15 contents];
-          v17 = [IMLibraryPlist entryForAssetID:v14 contents:v16];
+          plist = [(BKLibraryDataSourcePlist *)self plist];
+          contents = [plist contents];
+          v17 = [IMLibraryPlist entryForAssetID:assetID contents:contents];
 
           v18 = v17 == 0;
         }
@@ -841,73 +841,73 @@
 
         if ([v13 isFileURL])
         {
-          v19 = [v13 path];
-          v20 = [v19 length] != 0 && v18;
+          path = [v13 path];
+          v20 = [path length] != 0 && v18;
 
           if (v20 == 1)
           {
             v21 = objc_alloc_init(NSMutableDictionary);
-            v22 = [v12 author];
-            v23 = [v22 length];
+            author = [v12 author];
+            v23 = [author length];
 
             if (v23)
             {
-              v24 = [v12 author];
-              [v21 setObject:v24 forKey:@"author"];
+              author2 = [v12 author];
+              [v21 setObject:author2 forKey:@"author"];
             }
 
-            v25 = [v12 title];
-            v26 = [v25 length];
+            title = [v12 title];
+            v26 = [title length];
 
             if (v26)
             {
-              v27 = [v12 title];
-              [v21 setObject:v27 forKey:@"title"];
+              title2 = [v12 title];
+              [v21 setObject:title2 forKey:@"title"];
             }
 
-            v28 = [v12 genre];
-            v29 = [v28 length];
+            genre = [v12 genre];
+            v29 = [genre length];
 
             if (v29)
             {
-              v30 = [v12 genre];
-              [v21 setObject:v30 forKey:@"genre"];
+              genre2 = [v12 genre];
+              [v21 setObject:genre2 forKey:@"genre"];
             }
 
-            v31 = [v12 storeID];
-            v32 = [v31 length];
+            storeID = [v12 storeID];
+            v32 = [storeID length];
 
             if (v32)
             {
-              v33 = [v12 storeID];
-              [v21 setObject:v33 forKey:@"storeId"];
+              storeID2 = [v12 storeID];
+              [v21 setObject:storeID2 forKey:@"storeId"];
             }
 
-            v34 = [v12 assetID];
-            v35 = [v34 length];
+            assetID2 = [v12 assetID];
+            v35 = [assetID2 length];
 
             if (v35)
             {
-              v36 = [v12 assetID];
-              [v21 setObject:v36 forKey:@"assetID"];
+              assetID3 = [v12 assetID];
+              [v21 setObject:assetID3 forKey:@"assetID"];
             }
 
-            v37 = [v12 sortTitle];
-            v38 = [v37 length];
+            sortTitle = [v12 sortTitle];
+            v38 = [sortTitle length];
 
             if (v38)
             {
-              v39 = [v12 sortTitle];
-              [v21 setObject:v39 forKey:@"sortTitle"];
+              sortTitle2 = [v12 sortTitle];
+              [v21 setObject:sortTitle2 forKey:@"sortTitle"];
             }
 
-            v40 = [v12 sortAuthor];
-            v41 = [v40 length];
+            sortAuthor = [v12 sortAuthor];
+            v41 = [sortAuthor length];
 
             if (v41)
             {
-              v42 = [v12 sortAuthor];
-              [v21 setObject:v42 forKey:@"sortAuthor"];
+              sortAuthor2 = [v12 sortAuthor];
+              [v21 setObject:sortAuthor2 forKey:@"sortAuthor"];
             }
 
             if ([v12 isProof])
@@ -922,23 +922,23 @@
               [v21 setObject:v44 forKey:@"ephemeral"];
             }
 
-            v45 = [v12 purchaseDate];
+            purchaseDate = [v12 purchaseDate];
 
-            if (v45)
+            if (purchaseDate)
             {
-              v46 = [v12 purchaseDate];
-              [v21 setObject:v46 forKey:@"importDate"];
+              purchaseDate2 = [v12 purchaseDate];
+              [v21 setObject:purchaseDate2 forKey:@"importDate"];
             }
 
-            v47 = [v13 path];
-            [v21 setObject:v47 forKey:@"path"];
+            path2 = [v13 path];
+            [v21 setObject:path2 forKey:@"path"];
 
             v48 = [(BKLibraryDataSourcePlist *)self _newEntryFromSummary:v21];
             [v58 addObject:v48];
             v49 = +[BKPlistAsset newBlankAsset];
             [(BKLibraryDataSourcePlist *)self _setPropertiesOfAsset:v49 withPlistEntry:v48];
-            v50 = [v12 assetID];
-            [v57 setObject:v49 forKeyedSubscript:v50];
+            assetID4 = [v12 assetID];
+            [v57 setObject:v49 forKeyedSubscript:assetID4];
 
             v10 = v59;
           }
@@ -956,7 +956,7 @@
 
   if ([v58 count])
   {
-    v51 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+    assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001D832C;
@@ -965,15 +965,15 @@
     v52 = v57;
     v64 = v57;
     v65 = v58;
-    v53 = v56;
-    v66 = v56;
-    dispatch_async(v51, block);
+    v53 = completionCopy;
+    v66 = completionCopy;
+    dispatch_async(assetsQueue, block);
   }
 
   else
   {
-    v53 = v56;
-    v54 = objc_retainBlock(v56);
+    v53 = completionCopy;
+    v54 = objc_retainBlock(completionCopy);
     v55 = v54;
     v52 = v57;
     if (v54)
@@ -983,10 +983,10 @@
   }
 }
 
-- (void)removePlistAssets:(id)a3 completion:(id)a4
+- (void)removePlistAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v8 = BKLibraryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -998,7 +998,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v6;
+  v10 = assetsCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -1014,13 +1014,13 @@
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 assetID];
-        v17 = [v16 length];
+        assetID = [v15 assetID];
+        v17 = [assetID length];
 
         if (v17)
         {
-          v18 = [v15 assetID];
-          [v9 addObject:v18];
+          assetID2 = [v15 assetID];
+          [v9 addObject:assetID2];
         }
       }
 
@@ -1030,22 +1030,22 @@
     while (v12);
   }
 
-  v19 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+  assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D87A8;
   block[3] = &unk_100A049A0;
   v23 = v9;
-  v24 = self;
-  v25 = v7;
-  v20 = v7;
+  selfCopy = self;
+  v25 = completionCopy;
+  v20 = completionCopy;
   v21 = v9;
-  dispatch_async(v19, block);
+  dispatch_async(assetsQueue, block);
 }
 
-- (void)updatePlistAssets:(id)a3 completion:(id)a4
+- (void)updatePlistAssets:(id)assets completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -1054,9 +1054,9 @@
   }
 }
 
-- (id)coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:(id)a3
+- (id)coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSMutableDictionary dictionary];
   v33 = 0;
   v34 = &v33;
@@ -1076,26 +1076,26 @@
   v24 = sub_1000274FC;
   v25 = sub_1000276A8;
   v26 = 0;
-  v6 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+  assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D8BE4;
   block[3] = &unk_100A03738;
   block[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v17 = v7;
   v18 = &v33;
   v19 = &v27;
   v20 = &v21;
-  dispatch_sync(v6, block);
+  dispatch_sync(assetsQueue, block);
 
   if (v34[5] && v28[5] && v22[5])
   {
     goto LABEL_14;
   }
 
-  v8 = [(BKLibraryDataSourcePlist *)self assetMetadataProvider];
-  v9 = [v8 coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:v7];
+  assetMetadataProvider = [(BKLibraryDataSourcePlist *)self assetMetadataProvider];
+  v9 = [assetMetadataProvider coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:v7];
 
   v10 = [v9 objectForKeyedSubscript:@"coverWritingMode"];
   v11 = [v9 objectForKeyedSubscript:@"language"];
@@ -1141,28 +1141,28 @@ LABEL_14:
   return v5;
 }
 
-- (id)plistEntryAsDictionaryFromAssetID:(id)a3 path:(id)a4 needsCoordination:(BOOL)a5
+- (id)plistEntryAsDictionaryFromAssetID:(id)d path:(id)path needsCoordination:(BOOL)coordination
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  pathCopy = path;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_1000274FC;
   v22 = sub_1000276A8;
   v23 = 0;
-  v9 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+  assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001D9008;
   v14[3] = &unk_100A0B600;
   v14[4] = self;
-  v15 = v7;
-  v16 = v8;
+  v15 = dCopy;
+  v16 = pathCopy;
   v17 = &v18;
-  v10 = v8;
-  v11 = v7;
-  dispatch_sync(v9, v14);
+  v10 = pathCopy;
+  v11 = dCopy;
+  dispatch_sync(assetsQueue, v14);
 
   v12 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -1170,15 +1170,15 @@ LABEL_14:
   return v12;
 }
 
-- (void)q_refreshAssetCachesFromPlistContents:(id)a3
+- (void)q_refreshAssetCachesFromPlistContents:(id)contents
 {
-  v4 = [IMLibraryPlist booksArrayFromPlistEntry:a3];
+  v4 = [IMLibraryPlist booksArrayFromPlistEntry:contents];
   v5 = BKLibraryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BKLibraryDataSourcePlist *)self identifier];
+    identifier = [(BKLibraryDataSourcePlist *)self identifier];
     *buf = 138543618;
-    v28 = v6;
+    v28 = identifier;
     v29 = 2048;
     v30 = [v4 count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: q_refreshAssetCachesFromPlistContents: Refreshing asset caches. count: %ld", buf, 0x16u);
@@ -1208,24 +1208,24 @@ LABEL_14:
         v12 = *(*(&v22 + 1) + 8 * v11);
         v13 = +[BKPlistAsset newBlankAsset];
         [(BKLibraryDataSourcePlist *)self _setPropertiesOfAsset:v13 withPlistEntry:v12];
-        v14 = [v13 assetID];
-        v15 = [v14 length];
+        assetID = [v13 assetID];
+        v15 = [assetID length];
 
         if (v15)
         {
-          v16 = [(BKLibraryDataSourcePlist *)self assetCache];
-          v17 = [v13 assetID];
-          [v16 setObject:v13 forKey:v17];
+          assetCache = [(BKLibraryDataSourcePlist *)self assetCache];
+          assetID2 = [v13 assetID];
+          [assetCache setObject:v13 forKey:assetID2];
         }
 
-        v18 = [v13 temporaryAssetID];
-        v19 = [v18 length];
+        temporaryAssetID = [v13 temporaryAssetID];
+        v19 = [temporaryAssetID length];
 
         if (v19)
         {
-          v20 = [(BKLibraryDataSourcePlist *)self assetCacheByTemporaryAssetID];
-          v21 = [v13 temporaryAssetID];
-          [v20 setObject:v13 forKey:v21];
+          assetCacheByTemporaryAssetID = [(BKLibraryDataSourcePlist *)self assetCacheByTemporaryAssetID];
+          temporaryAssetID2 = [v13 temporaryAssetID];
+          [assetCacheByTemporaryAssetID setObject:v13 forKey:temporaryAssetID2];
         }
 
         v11 = v11 + 1;
@@ -1241,38 +1241,38 @@ LABEL_14:
 
 - (void)q_clearAssetCaches
 {
-  v3 = [(BKLibraryDataSourcePlist *)self assetCache];
-  [v3 removeAllObjects];
+  assetCache = [(BKLibraryDataSourcePlist *)self assetCache];
+  [assetCache removeAllObjects];
 
-  v4 = [(BKLibraryDataSourcePlist *)self assetCacheByTemporaryAssetID];
-  [v4 removeAllObjects];
+  assetCacheByTemporaryAssetID = [(BKLibraryDataSourcePlist *)self assetCacheByTemporaryAssetID];
+  [assetCacheByTemporaryAssetID removeAllObjects];
 }
 
-- (void)q_evictFromAssetCaches:(id)a3
+- (void)q_evictFromAssetCaches:(id)caches
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourcePlist *)self assetCache];
-  [v5 removeObjectForKey:v4];
+  cachesCopy = caches;
+  assetCache = [(BKLibraryDataSourcePlist *)self assetCache];
+  [assetCache removeObjectForKey:cachesCopy];
 
-  v6 = [(BKLibraryDataSourcePlist *)self assetCacheByTemporaryAssetID];
-  [v6 removeObjectForKey:v4];
+  assetCacheByTemporaryAssetID = [(BKLibraryDataSourcePlist *)self assetCacheByTemporaryAssetID];
+  [assetCacheByTemporaryAssetID removeObjectForKey:cachesCopy];
 }
 
-- (id)_pathStringWithoutDirectoryPrefix:(id)a3
+- (id)_pathStringWithoutDirectoryPrefix:(id)prefix
 {
-  v3 = a3;
+  prefixCopy = prefix;
   v4 = +[IMLibraryPlist purchasesRepositoryPath];
-  v5 = [v3 stringByReplacingOccurrencesOfString:v4 withString:&stru_100A30A68];
+  v5 = [prefixCopy stringByReplacingOccurrencesOfString:v4 withString:&stru_100A30A68];
 
   return v5;
 }
 
-- (id)_newEntryFromSummary:(id)a3
+- (id)_newEntryFromSummary:(id)summary
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourcePlist *)self writesFullPaths];
-  v6 = [v4 objectForKey:@"path"];
-  if ((v5 & 1) == 0)
+  summaryCopy = summary;
+  writesFullPaths = [(BKLibraryDataSourcePlist *)self writesFullPaths];
+  v6 = [summaryCopy objectForKey:@"path"];
+  if ((writesFullPaths & 1) == 0)
   {
     v7 = [(BKLibraryDataSourcePlist *)self _pathStringWithoutDirectoryPrefix:v6];
 
@@ -1301,125 +1301,125 @@ LABEL_14:
     v10 = +[IMLibraryPlist keyNameForPath];
     [v9 setObject:v6 forKey:v10];
 
-    v11 = [v4 objectForKey:@"author"];
+    v11 = [summaryCopy objectForKey:@"author"];
     v12 = [v11 length];
 
     if (v12)
     {
-      v13 = [v4 objectForKey:@"author"];
+      v13 = [summaryCopy objectForKey:@"author"];
       v14 = +[IMLibraryPlist keyNameForAuthor];
       [v9 setObject:v13 forKey:v14];
     }
 
-    v15 = [v4 objectForKey:@"title"];
+    v15 = [summaryCopy objectForKey:@"title"];
     v16 = [v15 length];
 
     if (v16)
     {
-      v17 = [v4 objectForKey:@"title"];
+      v17 = [summaryCopy objectForKey:@"title"];
       v18 = +[IMLibraryPlist keyNameForTitle];
       [v9 setObject:v17 forKey:v18];
     }
 
-    v19 = [v4 objectForKey:@"genre"];
+    v19 = [summaryCopy objectForKey:@"genre"];
     v20 = [v19 length];
 
     if (v20)
     {
-      v21 = [v4 objectForKey:@"genre"];
+      v21 = [summaryCopy objectForKey:@"genre"];
       v22 = +[IMLibraryPlist keyNameForGenre];
       [v9 setObject:v21 forKey:v22];
     }
 
-    v23 = [v4 objectForKey:@"storeId"];
+    v23 = [summaryCopy objectForKey:@"storeId"];
     v24 = [v23 length];
 
     if (v24)
     {
-      v25 = [v4 objectForKey:@"storeId"];
+      v25 = [summaryCopy objectForKey:@"storeId"];
       v26 = +[IMLibraryPlist keyNameForStoreId];
       [v9 setObject:v25 forKey:v26];
     }
 
-    v27 = [v4 objectForKey:@"assetID"];
+    v27 = [summaryCopy objectForKey:@"assetID"];
     v28 = [v27 length];
 
     if (v28)
     {
-      v29 = [v4 objectForKey:@"assetID"];
+      v29 = [summaryCopy objectForKey:@"assetID"];
       v30 = +[IMLibraryPlist keyNameForUniqueId];
       [v9 setObject:v29 forKey:v30];
     }
 
-    v31 = [v4 objectForKey:@"sortAuthor"];
+    v31 = [summaryCopy objectForKey:@"sortAuthor"];
     v32 = [v31 length];
 
     if (v32)
     {
-      v33 = [v4 objectForKey:@"sortAuthor"];
-      v34 = [v4 objectForKey:@"author"];
+      v33 = [summaryCopy objectForKey:@"sortAuthor"];
+      v34 = [summaryCopy objectForKey:@"author"];
       v35 = [v33 isEqualToString:v34];
 
       if ((v35 & 1) == 0)
       {
-        v36 = [v4 objectForKey:@"sortAuthor"];
+        v36 = [summaryCopy objectForKey:@"sortAuthor"];
         v37 = +[IMLibraryPlist keyNameForSortAuthor];
         [v9 setObject:v36 forKey:v37];
       }
     }
 
-    v38 = [v4 objectForKey:@"sortTitle"];
+    v38 = [summaryCopy objectForKey:@"sortTitle"];
     v39 = [v38 length];
 
     if (v39)
     {
-      v40 = [v4 objectForKey:@"sortTitle"];
-      v41 = [v4 objectForKey:@"title"];
+      v40 = [summaryCopy objectForKey:@"sortTitle"];
+      v41 = [summaryCopy objectForKey:@"title"];
       v42 = [v40 isEqualToString:v41];
 
       if ((v42 & 1) == 0)
       {
-        v43 = [v4 objectForKey:@"sortTitle"];
+        v43 = [summaryCopy objectForKey:@"sortTitle"];
         v44 = +[IMLibraryPlist keyNameForSortTitle];
         [v9 setObject:v43 forKey:v44];
       }
     }
 
-    v45 = [v4 objectForKey:@"pageProgressionDirection"];
+    v45 = [summaryCopy objectForKey:@"pageProgressionDirection"];
     v46 = [v45 length];
 
     if (v46)
     {
-      v47 = [v4 objectForKey:@"pageProgressionDirection"];
+      v47 = [summaryCopy objectForKey:@"pageProgressionDirection"];
       v48 = +[IMLibraryPlist keyNameForPageProgression];
       [v9 setObject:v47 forKey:v48];
     }
 
-    v49 = [v4 objectForKey:@"proof"];
-    v50 = [v49 BOOLValue];
+    v49 = [summaryCopy objectForKey:@"proof"];
+    bOOLValue = [v49 BOOLValue];
 
-    if (v50)
+    if (bOOLValue)
     {
-      v51 = [v4 objectForKey:@"proof"];
+      v51 = [summaryCopy objectForKey:@"proof"];
       v52 = +[IMLibraryPlist keyNameForProofedAsset];
       [v9 setObject:v51 forKey:v52];
     }
 
-    v53 = [v4 objectForKey:@"ephemeral"];
-    v54 = [v53 BOOLValue];
+    v53 = [summaryCopy objectForKey:@"ephemeral"];
+    bOOLValue2 = [v53 BOOLValue];
 
-    if (v54)
+    if (bOOLValue2)
     {
-      v55 = [v4 objectForKey:@"ephemeral"];
+      v55 = [summaryCopy objectForKey:@"ephemeral"];
       v56 = +[IMLibraryPlist keyNameForIsEphemeral];
       [v9 setObject:v55 forKey:v56];
     }
 
-    v57 = [v4 objectForKey:@"importDate"];
+    v57 = [summaryCopy objectForKey:@"importDate"];
 
     if (v57)
     {
-      v58 = [v4 objectForKey:@"importDate"];
+      v58 = [summaryCopy objectForKey:@"importDate"];
       v59 = +[IMLibraryPlist keyNameForImportDate];
       [v9 setObject:v58 forKey:v59];
     }
@@ -1435,24 +1435,24 @@ LABEL_14:
 
 - (BOOL)_isiTunesSyncedPlist
 {
-  v2 = [(BKLibraryDataSourcePlist *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ibooks.plist.iTunesSynced"];
+  identifier = [(BKLibraryDataSourcePlist *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ibooks.plist.iTunesSynced"];
 
   return v3;
 }
 
-- (id)q_plistContentsWithError:(id *)a3
+- (id)q_plistContentsWithError:(id *)error
 {
   v5 = +[IMLibraryPlist keyNameForBooksArray];
   v9 = v5;
-  v6 = [(BKLibraryDataSourcePlist *)self q_plistContentsArrayWithError:a3];
+  v6 = [(BKLibraryDataSourcePlist *)self q_plistContentsArrayWithError:error];
   v10 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
 
   return v7;
 }
 
-- (id)q_plistContentsArrayWithError:(id *)a3
+- (id)q_plistContentsArrayWithError:(id *)error
 {
   v3 = BKLibraryLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -1464,7 +1464,7 @@ LABEL_14:
   v96 = objc_alloc_init(NSMutableDictionary);
   v92 = objc_alloc_init(NSMutableArray);
   v93 = +[BLLibrary defaultBookLibrary];
-  v95 = [(BKLibraryDataSourcePlist *)self plist];
+  plist = [(BKLibraryDataSourcePlist *)self plist];
   context = objc_autoreleasePoolPush();
   v4 = 0;
   v90 = 0;
@@ -1473,12 +1473,12 @@ LABEL_14:
     v5 = +[BLLockFile iTunesSyncLockFile];
     if ([v5 tryLock:0])
     {
-      v6 = [(BKLibraryDataSourcePlist *)self plist];
-      v7 = [v6 contents];
+      plist2 = [(BKLibraryDataSourcePlist *)self plist];
+      contents = [plist2 contents];
 
       v8 = 1;
       v9 = v5;
-      v90 = v7;
+      v90 = contents;
     }
 
     else
@@ -1491,8 +1491,8 @@ LABEL_14:
     v10 = BKLibraryLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [(BKLibraryDataSourcePlist *)self identifier];
-      v14 = v13;
+      identifier = [(BKLibraryDataSourcePlist *)self identifier];
+      v14 = identifier;
       *buf = 138543874;
       v15 = "NO";
       if (v8)
@@ -1500,7 +1500,7 @@ LABEL_14:
         v15 = "YES";
       }
 
-      v109 = v13;
+      v109 = identifier;
       v110 = 2082;
       v111 = v15;
       v112 = 1024;
@@ -1532,8 +1532,8 @@ LABEL_14:
   v16 = +[IMLibraryPlist keyNameForBooksArray];
   v17 = [v90 objectForKey:v16];
 
-  v18 = [(BKLibraryDataSourcePlist *)self identifier];
-  v97 = [v18 isEqualToString:@"com.apple.ibooks.plist.iTunesSynced"];
+  identifier2 = [(BKLibraryDataSourcePlist *)self identifier];
+  v97 = [identifier2 isEqualToString:@"com.apple.ibooks.plist.iTunesSynced"];
 
   v106 = 0u;
   v107 = 0u;
@@ -1563,21 +1563,21 @@ LABEL_14:
           v22 = [IMLibraryPlist folderNameFromPlistEntry:v21];
           if ([v22 length])
           {
-            v23 = [v95 directory];
-            if ([v22 hasPrefix:@"/"] & 1) != 0 || (objc_msgSend(v22, "hasPrefix:", v23))
+            directory = [plist directory];
+            if ([v22 hasPrefix:@"/"] & 1) != 0 || (objc_msgSend(v22, "hasPrefix:", directory))
             {
               v24 = v22;
             }
 
             else
             {
-              v25 = [v95 directory];
-              v24 = [v25 stringByAppendingPathComponent:v22];
+              directory2 = [plist directory];
+              v24 = [directory2 stringByAppendingPathComponent:v22];
             }
 
             [v21 setObject:v24 forKey:@"BKLibraryDataSourcePlist-FullPath"];
-            v26 = [(BKLibraryDataSourcePlist *)self fileManager];
-            v27 = [v26 fileExistsAtPath:v24];
+            fileManager = [(BKLibraryDataSourcePlist *)self fileManager];
+            v27 = [fileManager fileExistsAtPath:v24];
 
             if ((v27 & 1) == 0)
             {
@@ -1589,17 +1589,17 @@ LABEL_14:
                 goto LABEL_53;
               }
 
-              v38 = [(BKLibraryDataSourcePlist *)self fileManager];
-              v39 = [v29 path];
-              v40 = [v38 fileExistsAtPath:v39];
+              fileManager2 = [(BKLibraryDataSourcePlist *)self fileManager];
+              path = [v29 path];
+              v40 = [fileManager2 fileExistsAtPath:path];
 
               if (!v40)
               {
                 goto LABEL_53;
               }
 
-              v41 = [v29 path];
-              [v21 setObject:v41 forKey:@"BKLibraryDataSourcePlist-FullPath"];
+              path2 = [v29 path];
+              [v21 setObject:path2 forKey:@"BKLibraryDataSourcePlist-FullPath"];
 
               goto LABEL_44;
             }
@@ -1612,9 +1612,9 @@ LABEL_14:
               if (!v29 || (-[BKLibraryDataSourcePlist fileManager](self, "fileManager"), v30 = objc_claimAutoreleasedReturnValue(), [v29 path], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v30, "fileExistsAtPath:", v31), v31, v30, (v32 & 1) == 0))
               {
                 [v21 removeObjectForKey:@"BKLibraryDataSourcePlist-FullPath"];
-                v33 = [(BKLibraryDataSourcePlist *)self fileManager];
+                fileManager3 = [(BKLibraryDataSourcePlist *)self fileManager];
                 v103 = 0;
-                v34 = [v33 removeItemAtPath:v24 error:&v103];
+                v34 = [fileManager3 removeItemAtPath:v24 error:&v103];
                 v35 = v103;
 
                 if (v34)
@@ -1636,12 +1636,12 @@ LABEL_53:
 
                 if ((v94 & 1) == 0)
                 {
-                  v50 = [(BKLibraryDataSourcePlist *)self libraryManager];
-                  v51 = [v50 delegate];
+                  libraryManager = [(BKLibraryDataSourcePlist *)self libraryManager];
+                  delegate = [libraryManager delegate];
 
                   if (objc_opt_respondsToSelector())
                   {
-                    BYTE4(v94) = [v51 isRestoringFromiCloud];
+                    BYTE4(v94) = [delegate isRestoringFromiCloud];
                   }
 
                   else
@@ -1653,7 +1653,7 @@ LABEL_53:
                 v62 = BKLibraryLog();
                 if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
                 {
-                  v64 = [(BKLibraryDataSourcePlist *)self identifier];
+                  identifier3 = [(BKLibraryDataSourcePlist *)self identifier];
                   v65 = [IMLibraryPlist folderNameFromPlistEntry:v21];
                   v66 = [v21 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                   v67 = [v21 objectForKey:@"BKLibraryDataSourcePlist-Exists"];
@@ -1665,7 +1665,7 @@ LABEL_53:
                     v69 = @"BUT iCloud Restore in progress, not removing this entry";
                   }
 
-                  v109 = v64;
+                  v109 = identifier3;
                   v110 = 2112;
                   v111 = v65;
                   v112 = 2112;
@@ -1713,18 +1713,18 @@ LABEL_44:
           {
             v44 = [IMLibraryPlist publicationVersionFromPlistEntry:v43];
             v45 = [IMLibraryPlist publicationVersionFromPlistEntry:v21];
-            v46 = [v44 longLongValue];
-            v47 = [(__CFString *)v45 longLongValue];
-            if (v47 > v46)
+            longLongValue = [v44 longLongValue];
+            longLongValue2 = [(__CFString *)v45 longLongValue];
+            if (longLongValue2 > longLongValue)
             {
               v48 = BKLibraryLog();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
               {
-                v70 = [(BKLibraryDataSourcePlist *)self identifier];
+                identifier4 = [(BKLibraryDataSourcePlist *)self identifier];
                 v71 = [v43 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                 v72 = [v21 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                 *buf = 138544642;
-                v109 = v70;
+                v109 = identifier4;
                 v110 = 2112;
                 v111 = v101;
                 v112 = 2112;
@@ -1741,16 +1741,16 @@ LABEL_44:
               goto LABEL_84;
             }
 
-            if (v47 != v46)
+            if (longLongValue2 != longLongValue)
             {
               v60 = BKLibraryLog();
               if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
               {
-                v73 = [(BKLibraryDataSourcePlist *)self identifier];
+                identifier5 = [(BKLibraryDataSourcePlist *)self identifier];
                 v74 = [v43 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                 v75 = [v21 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                 *buf = 138544642;
-                v109 = v73;
+                v109 = identifier5;
                 v110 = 2112;
                 v111 = v101;
                 v112 = 2112;
@@ -1768,10 +1768,10 @@ LABEL_44:
             }
 
             v52 = [IMLibraryPlist isSampleFromPlistEntry:v43];
-            v53 = [v52 BOOLValue];
+            bOOLValue = [v52 BOOLValue];
 
             v54 = [IMLibraryPlist isSampleFromPlistEntry:v21];
-            v55 = [v54 BOOLValue];
+            bOOLValue2 = [v54 BOOLValue];
 
             v56 = [IMLibraryPlist folderNameFromPlistEntry:v43];
             v57 = v56 != 0;
@@ -1793,9 +1793,9 @@ LABEL_44:
               v63 = BKLibraryLog();
               if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
               {
-                v76 = [(BKLibraryDataSourcePlist *)self identifier];
+                identifier6 = [(BKLibraryDataSourcePlist *)self identifier];
                 *buf = 138543618;
-                v109 = v76;
+                v109 = identifier6;
                 v110 = 2112;
                 v111 = v101;
                 _os_log_debug_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEBUG, "%{public}@ Item with path taking over item without path: [StoreID: %@]", buf, 0x16u);
@@ -1806,18 +1806,18 @@ LABEL_44:
               goto LABEL_85;
             }
 
-            if (v55 & 1 | ((v53 & 1) == 0))
+            if (bOOLValue2 & 1 | ((bOOLValue & 1) == 0))
             {
               if (![(BKLibraryDataSourcePlist *)self _isEntryFamilyPurchase:v43]|| [(BKLibraryDataSourcePlist *)self _isEntryFamilyPurchase:v21])
               {
                 v60 = BKLibraryLog();
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
                 {
-                  v80 = [(BKLibraryDataSourcePlist *)self identifier];
+                  identifier7 = [(BKLibraryDataSourcePlist *)self identifier];
                   v81 = [v43 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                   v82 = [v21 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                   *buf = 138544642;
-                  v109 = v80;
+                  v109 = identifier7;
                   v110 = 2112;
                   v111 = v101;
                   v112 = 2112;
@@ -1843,11 +1843,11 @@ LABEL_86:
               v48 = BKLibraryLog();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
               {
-                v83 = [(BKLibraryDataSourcePlist *)self identifier];
+                identifier8 = [(BKLibraryDataSourcePlist *)self identifier];
                 v84 = [v43 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                 v85 = [v21 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                 *buf = 138544130;
-                v109 = v83;
+                v109 = identifier8;
                 v110 = 2112;
                 v111 = v101;
                 v112 = 2112;
@@ -1863,11 +1863,11 @@ LABEL_86:
               v48 = BKLibraryLog();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
               {
-                v77 = [(BKLibraryDataSourcePlist *)self identifier];
+                identifier9 = [(BKLibraryDataSourcePlist *)self identifier];
                 v78 = [v43 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                 v79 = [v21 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
                 *buf = 138544642;
-                v109 = v77;
+                v109 = identifier9;
                 v110 = 2112;
                 v111 = v101;
                 v112 = 2112;
@@ -1907,21 +1907,21 @@ LABEL_88:
 
   objc_autoreleasePoolPop(context);
   [(BKLibraryDataSourcePlist *)self q_deletePlistEntries:v92];
-  v87 = [v96 allValues];
-  [v91 addObjectsFromArray:v87];
+  allValues = [v96 allValues];
+  [v91 addObjectsFromArray:allValues];
 
   return v91;
 }
 
-- (void)q_deletePlistEntries:(id)a3
+- (void)q_deletePlistEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = entriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1955,9 +1955,9 @@ LABEL_88:
 
   if ([v5 count])
   {
-    v12 = [(BKLibraryDataSourcePlist *)self plist];
-    v13 = [v5 allObjects];
-    [v12 addDeletedFiles:v13];
+    plist = [(BKLibraryDataSourcePlist *)self plist];
+    allObjects = [v5 allObjects];
+    [plist addDeletedFiles:allObjects];
 
     [(BKLibraryDataSourcePlist *)self q_asyncRemovePlistPaths:v5 completion:0];
   }
@@ -1978,11 +1978,11 @@ LABEL_88:
   return fileManager;
 }
 
-- (BOOL)_isFamilyPurchaseAtPath:(id)a3
+- (BOOL)_isFamilyPurchaseAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 stringByAppendingPathComponent:@"iTunesMetadata.plist"];
+  v6 = [pathCopy stringByAppendingPathComponent:@"iTunesMetadata.plist"];
   v7 = [NSDictionary dictionaryWithContentsOfFile:v6];
   v8 = v7;
   if (v7)
@@ -1991,8 +1991,8 @@ LABEL_88:
     v10 = [v9 valueForKeyPath:@"accountInfo.FamilyID"];
     v11 = [v9 valueForKeyPath:@"accountInfo.DSPersonID"];
     v12 = [v9 valueForKeyPath:@"accountInfo.PurchaserID"];
-    v13 = [(BKLibraryDataSourcePlist *)self libraryManager];
-    v14 = [v13 isFamilyPurchaseWithFamilyID:v10 purchaserDSID:v12 downloaderDSID:v11];
+    libraryManager = [(BKLibraryDataSourcePlist *)self libraryManager];
+    v14 = [libraryManager isFamilyPurchaseWithFamilyID:v10 purchaserDSID:v12 downloaderDSID:v11];
   }
 
   else
@@ -2004,20 +2004,20 @@ LABEL_88:
   return v14;
 }
 
-- (BOOL)_isEntryFamilyPurchase:(id)a3
+- (BOOL)_isEntryFamilyPurchase:(id)purchase
 {
-  v4 = [a3 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
+  v4 = [purchase objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
   LOBYTE(self) = [(BKLibraryDataSourcePlist *)self _isFamilyPurchaseAtPath:v4];
 
   return self;
 }
 
-- (void)_setPropertiesOfAsset:(id)a3 withPlistEntry:(id)a4
+- (void)_setPropertiesOfAsset:(id)asset withPlistEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryDataSourcePlist *)self _isSupplementalPDFFromPlistEntry:v7];
-  v9 = [IMLibraryPlist storeIdFromPlistEntry:v7];
+  assetCopy = asset;
+  entryCopy = entry;
+  v8 = [(BKLibraryDataSourcePlist *)self _isSupplementalPDFFromPlistEntry:entryCopy];
+  v9 = [IMLibraryPlist storeIdFromPlistEntry:entryCopy];
   v10 = v9;
   if (v8)
   {
@@ -2030,15 +2030,15 @@ LABEL_88:
   }
 
   v12 = v9;
-  v90 = self;
+  selfCopy = self;
   if (!v11)
   {
-    if ([(BKLibraryDataSourcePlist *)self _contentTypeFromPlistEntry:v7 logFailure:0]!= 3)
+    if ([(BKLibraryDataSourcePlist *)self _contentTypeFromPlistEntry:entryCopy logFailure:0]!= 3)
     {
       goto LABEL_9;
     }
 
-    v12 = [IMLibraryPlist uniqueIdFromPlistEntry:v7];
+    v12 = [IMLibraryPlist uniqueIdFromPlistEntry:entryCopy];
     v13 = BKLibraryLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -2056,21 +2056,21 @@ LABEL_9:
       }
 
       objc_opt_class();
-      v23 = [v7 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
+      v23 = [entryCopy objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
       v24 = BUDynamicCast();
 
       if (v24)
       {
-        v25 = [(BKLibraryDataSourcePlist *)self fullPathToAssetID];
-        v26 = [v25 objectForKey:v24];
+        fullPathToAssetID = [(BKLibraryDataSourcePlist *)self fullPathToAssetID];
+        v26 = [fullPathToAssetID objectForKey:v24];
 
         if (v26)
         {
           v27 = v26;
-          v28 = BKLibraryLog();
+          fullPathToAssetID2 = BKLibraryLog();
           v10 = v14;
           v12 = v27;
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+          if (os_log_type_enabled(fullPathToAssetID2, OS_LOG_TYPE_DEBUG))
           {
             sub_100794EF0();
           }
@@ -2092,8 +2092,8 @@ LABEL_9:
             sub_100794F5C();
           }
 
-          v28 = [(BKLibraryDataSourcePlist *)v90 fullPathToAssetID];
-          [v28 setObject:v40 forKey:v24];
+          fullPathToAssetID2 = [(BKLibraryDataSourcePlist *)selfCopy fullPathToAssetID];
+          [fullPathToAssetID2 setObject:v40 forKey:v24];
           goto LABEL_32;
         }
 
@@ -2102,7 +2102,7 @@ LABEL_9:
           sub_100794FC8();
         }
 
-        self = v90;
+        self = selfCopy;
         if (v12)
         {
           goto LABEL_33;
@@ -2120,7 +2120,7 @@ LABEL_9:
         v10 = v14;
       }
 
-      v12 = [IMLibraryPlist uniqueIdFromPlistEntry:v7];
+      v12 = [IMLibraryPlist uniqueIdFromPlistEntry:entryCopy];
       v37 = BKLibraryLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
       {
@@ -2134,17 +2134,17 @@ LABEL_9:
 
       v91 = 0;
       v12 = [BLLibraryUtility identifierFromBookPath:v24 allowHash:1 allowStoreID:0 error:&v91];
-      v28 = v91;
+      fullPathToAssetID2 = v91;
       v38 = BKLibraryLog();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
       {
         sub_100795098();
       }
 
-      if (v12 && !v28)
+      if (v12 && !fullPathToAssetID2)
       {
-        v39 = [(BKLibraryDataSourcePlist *)self fullPathToAssetID];
-        [v39 setObject:v12 forKey:v24];
+        fullPathToAssetID3 = [(BKLibraryDataSourcePlist *)self fullPathToAssetID];
+        [fullPathToAssetID3 setObject:v12 forKey:v24];
       }
 
 LABEL_32:
@@ -2153,10 +2153,10 @@ LABEL_33:
     }
   }
 
-  v44 = [IMLibraryPlist temporaryItemIdentifierFromPlistEntry:v7];
+  v44 = [IMLibraryPlist temporaryItemIdentifierFromPlistEntry:entryCopy];
   if (v44)
   {
-    v45 = v44;
+    identifierFromPermlink = v44;
     if (![v44 isEqualToString:&stru_100A30A68])
     {
       goto LABEL_46;
@@ -2170,12 +2170,12 @@ LABEL_33:
       sub_100795100(v46, v47, v48, v49, v50, v51, v52, v53);
     }
 
-    v45 = 0;
+    identifierFromPermlink = 0;
   }
 
   else if (v8)
   {
-    v45 = v10;
+    identifierFromPermlink = v10;
     v46 = BKLibraryLog();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
     {
@@ -2185,8 +2185,8 @@ LABEL_33:
 
   else
   {
-    v46 = [IMLibraryPlist permlinkFromPlistEntry:v7];
-    v45 = [v46 identifierFromPermlink];
+    v46 = [IMLibraryPlist permlinkFromPlistEntry:entryCopy];
+    identifierFromPermlink = [v46 identifierFromPermlink];
     v54 = BKLibraryLog();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
     {
@@ -2196,28 +2196,28 @@ LABEL_33:
 
 LABEL_46:
   v55 = +[BKLibrarySharedContainerManager sharedInstance];
-  v56 = [v55 sharedURLForEntry:v7];
+  v56 = [v55 sharedURLForEntry:entryCopy];
 
-  v57 = [IMLibraryPlist folderNameFromPlistEntry:v7];
+  v57 = [IMLibraryPlist folderNameFromPlistEntry:entryCopy];
   if (v57)
   {
-    [v6 setIsRestoring:0];
+    [assetCopy setIsRestoring:0];
   }
 
   else
   {
-    v58 = [IMLibraryPlist backupFolderNameFromPlistEntry:v7];
-    [v6 setIsRestoring:v58 != 0];
+    v58 = [IMLibraryPlist backupFolderNameFromPlistEntry:entryCopy];
+    [assetCopy setIsRestoring:v58 != 0];
   }
 
-  v59 = [IMLibraryPlist backupFolderNameFromPlistEntry:v7];
+  v59 = [IMLibraryPlist backupFolderNameFromPlistEntry:entryCopy];
 
   if (v59)
   {
-    [v6 setGeneration:0x7FFFFFFFFFFFFFFFLL];
+    [assetCopy setGeneration:0x7FFFFFFFFFFFFFFFLL];
   }
 
-  if ([v6 isRestoring])
+  if ([assetCopy isRestoring])
   {
     v60 = 2;
   }
@@ -2227,137 +2227,137 @@ LABEL_46:
     v60 = 1;
   }
 
-  [v6 setState:v60];
+  [assetCopy setState:v60];
   if (v56)
   {
-    [v6 setUrl:v56];
+    [assetCopy setUrl:v56];
   }
 
   else
   {
-    v61 = [v7 objectForKeyedSubscript:@"BKLibraryDataSourcePlist-FullPath"];
+    v61 = [entryCopy objectForKeyedSubscript:@"BKLibraryDataSourcePlist-FullPath"];
     if (v61)
     {
-      v62 = [v7 objectForKeyedSubscript:@"BKLibraryDataSourcePlist-FullPath"];
+      v62 = [entryCopy objectForKeyedSubscript:@"BKLibraryDataSourcePlist-FullPath"];
       v63 = [NSURL fileURLWithPath:v62];
-      [v6 setUrl:v63];
+      [assetCopy setUrl:v63];
     }
 
     else
     {
-      [v6 setUrl:0];
+      [assetCopy setUrl:0];
     }
   }
 
-  [v6 setStoreID:v10];
-  v64 = [IMLibraryPlist storePlaylistIdFromPlistEntry:v7];
-  [v6 setStorePlaylistID:v64];
+  [assetCopy setStoreID:v10];
+  v64 = [IMLibraryPlist storePlaylistIdFromPlistEntry:entryCopy];
+  [assetCopy setStorePlaylistID:v64];
 
-  [v6 setSupplementalContent:{+[IMLibraryPlist isSupplementalContentFromPlistEntry:](IMLibraryPlist, "isSupplementalContentFromPlistEntry:", v7)}];
-  [v6 setAssetID:v12];
-  [v6 setTemporaryAssetID:v45];
-  v65 = [IMLibraryPlist authorFromPlistEntry:v7];
-  [v6 setAuthor:v65];
+  [assetCopy setSupplementalContent:{+[IMLibraryPlist isSupplementalContentFromPlistEntry:](IMLibraryPlist, "isSupplementalContentFromPlistEntry:", entryCopy)}];
+  [assetCopy setAssetID:v12];
+  [assetCopy setTemporaryAssetID:identifierFromPermlink];
+  v65 = [IMLibraryPlist authorFromPlistEntry:entryCopy];
+  [assetCopy setAuthor:v65];
 
-  v66 = [IMLibraryPlist sortAuthorFromPlistEntry:v7];
-  [v6 setSortAuthor:v66];
-  v67 = [IMLibraryPlist titleFromPlistEntry:v7];
-  [v6 setTitle:v67];
+  v66 = [IMLibraryPlist sortAuthorFromPlistEntry:entryCopy];
+  [assetCopy setSortAuthor:v66];
+  v67 = [IMLibraryPlist titleFromPlistEntry:entryCopy];
+  [assetCopy setTitle:v67];
 
-  v68 = [IMLibraryPlist sortTitleFromPlistEntry:v7];
+  v68 = [IMLibraryPlist sortTitleFromPlistEntry:entryCopy];
   if (![v68 length])
   {
-    v69 = [v6 title];
+    title = [assetCopy title];
 
-    v68 = v69;
+    v68 = title;
   }
 
   v89 = v12;
-  [v6 setSortTitle:v68];
-  v70 = [v6 title];
-  if ([v70 length])
+  [assetCopy setSortTitle:v68];
+  title2 = [assetCopy title];
+  if ([title2 length])
   {
     goto LABEL_65;
   }
 
-  [v6 sortTitle];
+  [assetCopy sortTitle];
   v72 = v71 = v10;
   v73 = [v72 length];
 
   v10 = v71;
   if (v73)
   {
-    v70 = [v6 sortTitle];
-    [v6 setTitle:v70];
+    title2 = [assetCopy sortTitle];
+    [assetCopy setTitle:title2];
 LABEL_65:
   }
 
-  v74 = [IMLibraryPlist genreFromPlistEntry:v7];
-  [v6 setGenre:v74];
+  v74 = [IMLibraryPlist genreFromPlistEntry:entryCopy];
+  [assetCopy setGenre:v74];
 
-  v75 = [(BKLibraryDataSourcePlist *)v90 identifier];
-  [v6 setDataSourceIdentifier:v75];
+  identifier = [(BKLibraryDataSourcePlist *)selfCopy identifier];
+  [assetCopy setDataSourceIdentifier:identifier];
 
-  [v6 setContentType:{-[BKLibraryDataSourcePlist _contentTypeFromPlistEntry:logFailure:](v90, "_contentTypeFromPlistEntry:logFailure:", v7, 1)}];
-  v76 = [IMLibraryPlist isSampleFromPlistEntry:v7];
-  [v6 setSample:{objc_msgSend(v76, "BOOLValue")}];
+  [assetCopy setContentType:{-[BKLibraryDataSourcePlist _contentTypeFromPlistEntry:logFailure:](selfCopy, "_contentTypeFromPlistEntry:logFailure:", entryCopy, 1)}];
+  v76 = [IMLibraryPlist isSampleFromPlistEntry:entryCopy];
+  [assetCopy setSample:{objc_msgSend(v76, "BOOLValue")}];
 
-  v77 = [IMLibraryPlist isProofedAssetFromPlistEntry:v7];
-  [v6 setProof:{objc_msgSend(v77, "BOOLValue")}];
+  v77 = [IMLibraryPlist isProofedAssetFromPlistEntry:entryCopy];
+  [assetCopy setProof:{objc_msgSend(v77, "BOOLValue")}];
 
-  v78 = [IMLibraryPlist isExplicitContentFromPlistEntry:v7];
-  [v6 setIsExplicit:v78];
+  v78 = [IMLibraryPlist isExplicitContentFromPlistEntry:entryCopy];
+  [assetCopy setIsExplicit:v78];
 
-  v79 = [IMLibraryPlist isEphemeralFromPlistEntry:v7];
-  [v6 setEphemeral:{objc_msgSend(v79, "BOOLValue")}];
+  v79 = [IMLibraryPlist isEphemeralFromPlistEntry:entryCopy];
+  [assetCopy setEphemeral:{objc_msgSend(v79, "BOOLValue")}];
 
-  v80 = [IMLibraryPlist publicationVersionNumberFromPlistEntry:v7];
-  [v6 setVersionNumber:v80];
+  v80 = [IMLibraryPlist publicationVersionNumberFromPlistEntry:entryCopy];
+  [assetCopy setVersionNumber:v80];
 
-  v81 = [IMLibraryPlist humanReadablePublicationVersionFromPlistEntry:v7];
-  [v6 setVersionNumberHumanReadable:v81];
+  v81 = [IMLibraryPlist humanReadablePublicationVersionFromPlistEntry:entryCopy];
+  [assetCopy setVersionNumberHumanReadable:v81];
 
-  v82 = [IMLibraryPlist scrollDirectionFromPlistEntry:v7];
+  v82 = [IMLibraryPlist scrollDirectionFromPlistEntry:entryCopy];
   v83 = v82;
   if (v82 && (([v82 isEqualToString:@"horizontal"] & 1) != 0 || objc_msgSend(v83, "isEqualToString:", @"vertical")))
   {
-    [v6 setScrollDirection:v83];
+    [assetCopy setScrollDirection:v83];
   }
 
-  v84 = [IMLibraryPlist languageFromPlistEntry:v7];
-  [v6 setLanguage:v84];
+  v84 = [IMLibraryPlist languageFromPlistEntry:entryCopy];
+  [assetCopy setLanguage:v84];
 
-  v85 = [IMLibraryPlist coverWritingModeFromPlistEntry:v7];
-  [v6 setCoverWritingMode:v85];
+  v85 = [IMLibraryPlist coverWritingModeFromPlistEntry:entryCopy];
+  [assetCopy setCoverWritingMode:v85];
 
-  v86 = [IMLibraryPlist pageProgressionFromPlistEntry:v7];
-  [v6 setPageProgressionDirection:v86];
+  v86 = [IMLibraryPlist pageProgressionFromPlistEntry:entryCopy];
+  [assetCopy setPageProgressionDirection:v86];
 
-  v87 = [IMLibraryPlist permlinkFromPlistEntry:v7];
-  [v6 setPermlink:v87];
+  v87 = [IMLibraryPlist permlinkFromPlistEntry:entryCopy];
+  [assetCopy setPermlink:v87];
 
-  v88 = [IMLibraryPlist importDateFromPlistEntry:v7];
+  v88 = [IMLibraryPlist importDateFromPlistEntry:entryCopy];
   if (v88)
   {
-    [v6 setPurchaseDate:v88];
+    [assetCopy setPurchaseDate:v88];
   }
 }
 
-- (void)q_processAssetStateChanges:(id)a3
+- (void)q_processAssetStateChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = changesCopy;
   v27 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v27)
   {
     v6 = *v32;
     p_info = BKLibraryBookshelfSupplementaryDataSource.info;
-    v26 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v27; ++i)
@@ -2372,12 +2372,12 @@ LABEL_65:
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 assetID];
-          v12 = [v10 temporaryAssetID];
-          if ([v11 length])
+          assetID = [v9 assetID];
+          temporaryAssetID = [v10 temporaryAssetID];
+          if ([assetID length])
           {
-            v13 = [(BKLibraryDataSourcePlist *)self restoringFromBackupAssetIDs];
-            v14 = [v13 containsObject:v11];
+            restoringFromBackupAssetIDs = [(BKLibraryDataSourcePlist *)self restoringFromBackupAssetIDs];
+            v14 = [restoringFromBackupAssetIDs containsObject:assetID];
           }
 
           else
@@ -2385,13 +2385,13 @@ LABEL_65:
             v14 = 0;
           }
 
-          if ([v12 length])
+          if ([temporaryAssetID length])
           {
             [(BKLibraryDataSourcePlist *)self restoringFromBackupTemporaryAssetIDs];
             v15 = p_info;
             v16 = v6;
             v18 = v17 = v5;
-            v19 = [v18 containsObject:v12];
+            v19 = [v18 containsObject:temporaryAssetID];
 
             v5 = v17;
             v6 = v16;
@@ -2404,38 +2404,38 @@ LABEL_65:
           }
 
           v20 = v14 | v19;
-          if ([v10 state] == 1 && (v20 & 1) != 0 && v11)
+          if ([v10 state] == 1 && (v20 & 1) != 0 && assetID)
           {
             [v10 setGeneration:0x7FFFFFFFFFFFFFFFLL];
             [v5 addObject:v10];
-            self = v26;
-            v21 = [(BKLibraryDataSourcePlist *)v26 restoringFromBackupAssetIDs];
-            [v21 removeObject:v11];
+            self = selfCopy;
+            restoringFromBackupAssetIDs2 = [(BKLibraryDataSourcePlist *)selfCopy restoringFromBackupAssetIDs];
+            [restoringFromBackupAssetIDs2 removeObject:assetID];
 
-            if ([v12 length])
+            if ([temporaryAssetID length])
             {
-              v22 = [(BKLibraryDataSourcePlist *)v26 restoringFromBackupTemporaryAssetIDs];
-              [v22 removeObject:v12];
+              restoringFromBackupTemporaryAssetIDs = [(BKLibraryDataSourcePlist *)selfCopy restoringFromBackupTemporaryAssetIDs];
+              [restoringFromBackupTemporaryAssetIDs removeObject:temporaryAssetID];
               goto LABEL_22;
             }
           }
 
           else
           {
-            self = v26;
+            self = selfCopy;
             if (!(([v10 state] != 2) | v20 & 1))
             {
-              if (v11)
+              if (assetID)
               {
                 [v10 setGeneration:0x7FFFFFFFFFFFFFFFLL];
                 [v5 addObject:v10];
-                v23 = [(BKLibraryDataSourcePlist *)v26 restoringFromBackupAssetIDs];
-                [v23 addObject:v11];
+                restoringFromBackupAssetIDs3 = [(BKLibraryDataSourcePlist *)selfCopy restoringFromBackupAssetIDs];
+                [restoringFromBackupAssetIDs3 addObject:assetID];
 
-                if (v12)
+                if (temporaryAssetID)
                 {
-                  v22 = [(BKLibraryDataSourcePlist *)v26 restoringFromBackupTemporaryAssetIDs];
-                  [v22 addObject:v12];
+                  restoringFromBackupTemporaryAssetIDs = [(BKLibraryDataSourcePlist *)selfCopy restoringFromBackupTemporaryAssetIDs];
+                  [restoringFromBackupTemporaryAssetIDs addObject:temporaryAssetID];
 LABEL_22:
                 }
               }
@@ -2452,22 +2452,22 @@ LABEL_22:
 
   if ([v5 count])
   {
-    v24 = [(BKLibraryDataSourcePlist *)self libraryManager];
+    libraryManager = [(BKLibraryDataSourcePlist *)self libraryManager];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1001DBEA4;
     v28[3] = &unk_100A03440;
     v29 = v5;
-    v30 = self;
-    [v24 addCustomOperationBlock:v28];
+    selfCopy2 = self;
+    [libraryManager addCustomOperationBlock:v28];
   }
 }
 
-- (signed)_contentTypeFromPlistEntry:(id)a3 logFailure:(BOOL)a4
+- (signed)_contentTypeFromPlistEntry:(id)entry logFailure:(BOOL)failure
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [IMLibraryPlist folderNameFromPlistEntry:v5];
+  failureCopy = failure;
+  entryCopy = entry;
+  v6 = [IMLibraryPlist folderNameFromPlistEntry:entryCopy];
   v7 = v6;
   if (v6)
   {
@@ -2476,7 +2476,7 @@ LABEL_22:
 
   else
   {
-    v8 = [IMLibraryPlist backupFolderNameFromPlistEntry:v5];
+    v8 = [IMLibraryPlist backupFolderNameFromPlistEntry:entryCopy];
   }
 
   v9 = v8;
@@ -2489,7 +2489,7 @@ LABEL_22:
   else
   {
     objc_opt_class();
-    v11 = [v5 objectForKey:@"AssetType"];
+    v11 = [entryCopy objectForKey:@"AssetType"];
     v12 = BUDynamicCast();
 
     v10 = 4 * ([v12 length] != 0);
@@ -2502,7 +2502,7 @@ LABEL_22:
 
   else
   {
-    v13 = !v4;
+    v13 = !failureCopy;
   }
 
   if (!v13)
@@ -2517,76 +2517,76 @@ LABEL_22:
   return v10;
 }
 
-- (void)_deleteAssetIDs:(id)a3 assetIDToPath:(id)a4 completion:(id)a5
+- (void)_deleteAssetIDs:(id)ds assetIDToPath:(id)path completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  pathCopy = path;
+  completionCopy = completion;
   v11 = +[NSMutableSet set];
   v12 = +[NSMutableSet set];
   v13 = +[NSMutableArray array];
-  v14 = [(BKLibraryDataSourcePlist *)self assetsQueue];
+  assetsQueue = [(BKLibraryDataSourcePlist *)self assetsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001DC268;
   block[3] = &unk_100A0B628;
   block[4] = self;
-  v22 = v8;
-  v23 = v9;
+  v22 = dsCopy;
+  v23 = pathCopy;
   v24 = v12;
   v25 = v11;
   v26 = v13;
-  v27 = v10;
-  v15 = v10;
+  v27 = completionCopy;
+  v15 = completionCopy;
   v16 = v13;
   v17 = v11;
   v18 = v12;
-  v19 = v9;
-  v20 = v8;
-  dispatch_async(v14, block);
+  v19 = pathCopy;
+  v20 = dsCopy;
+  dispatch_async(assetsQueue, block);
 }
 
 - (id)booksRootPath
 {
-  v2 = [(BKLibraryDataSourcePlist *)self plist];
-  v3 = [v2 path];
-  v4 = [v3 stringByDeletingLastPathComponent];
+  plist = [(BKLibraryDataSourcePlist *)self plist];
+  path = [plist path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-  return v4;
+  return stringByDeletingLastPathComponent;
 }
 
-- (BOOL)removeFileWithURL:(id)a3 error:(id *)a4
+- (BOOL)removeFileWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = +[AEPdfCache sharedInstance];
-  [v7 removeCacheObjectForURL:v6];
+  [v7 removeCacheObjectForURL:lCopy];
 
-  v8 = [(BKLibraryDataSourcePlist *)self fileManager];
-  LOBYTE(a4) = [v8 removeItemAtURL:v6 error:a4];
+  fileManager = [(BKLibraryDataSourcePlist *)self fileManager];
+  LOBYTE(error) = [fileManager removeItemAtURL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (void)q_plistWasChangedOnDisk
 {
-  v3 = [(BKLibraryDataSourcePlist *)self libraryManager];
-  [v3 reloadDataSource:self completion:0];
+  libraryManager = [(BKLibraryDataSourcePlist *)self libraryManager];
+  [libraryManager reloadDataSource:self completion:0];
 
-  v4 = [(BKLibraryDataSourcePlist *)self didWritePlistHandler];
-  if (v4)
+  didWritePlistHandler = [(BKLibraryDataSourcePlist *)self didWritePlistHandler];
+  if (didWritePlistHandler)
   {
-    v5 = v4;
-    v4[2]();
-    v4 = v5;
+    v5 = didWritePlistHandler;
+    didWritePlistHandler[2]();
+    didWritePlistHandler = v5;
   }
 }
 
-- (BOOL)q_rewritePlistDictionary:(id)a3 path:(id)a4 notify:(BOOL)a5
+- (BOOL)q_rewritePlistDictionary:(id)dictionary path:(id)path notify:(BOOL)notify
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  notifyCopy = notify;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  if (!dictionaryCopy)
   {
     v12 = BKLibraryLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2597,11 +2597,11 @@ LABEL_22:
     goto LABEL_9;
   }
 
-  v10 = [(BKLibraryDataSourcePlist *)self currentQueueGeneration];
-  if (v10 == [(BKLibraryDataSourcePlist *)self startQueueGeneration])
+  currentQueueGeneration = [(BKLibraryDataSourcePlist *)self currentQueueGeneration];
+  if (currentQueueGeneration == [(BKLibraryDataSourcePlist *)self startQueueGeneration])
   {
-    v11 = [v8 writeToFile:v9 atomically:1];
-    if (v11 && v5)
+    v11 = [dictionaryCopy writeToFile:pathCopy atomically:1];
+    if (v11 && notifyCopy)
     {
       [(BKLibraryDataSourcePlist *)self q_plistWasChangedOnDisk];
 LABEL_9:
@@ -2623,112 +2623,112 @@ LABEL_9:
   return v11;
 }
 
-- (void)q_asyncRemovePlistAssets:(id)a3 notify:(BOOL)a4 completion:(id)a5
+- (void)q_asyncRemovePlistAssets:(id)assets notify:(BOOL)notify completion:(id)completion
 {
-  v6 = a4;
+  notifyCopy = notify;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001DCC9C;
   v9[3] = &unk_100A0B650;
-  v10 = a3;
-  v8 = v10;
-  [(BKLibraryDataSourcePlist *)self q_asyncRemovePlistEntriesMatching:v9 notify:v6 completion:a5];
+  assetsCopy = assets;
+  v8 = assetsCopy;
+  [(BKLibraryDataSourcePlist *)self q_asyncRemovePlistEntriesMatching:v9 notify:notifyCopy completion:completion];
 }
 
-- (void)q_asyncRemovePlistPaths:(id)a3 completion:(id)a4
+- (void)q_asyncRemovePlistPaths:(id)paths completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001DCD94;
   v7[3] = &unk_100A0B650;
-  v8 = a3;
-  v6 = v8;
-  [(BKLibraryDataSourcePlist *)self q_asyncRemovePlistEntriesMatching:v7 notify:1 completion:a4];
+  pathsCopy = paths;
+  v6 = pathsCopy;
+  [(BKLibraryDataSourcePlist *)self q_asyncRemovePlistEntriesMatching:v7 notify:1 completion:completion];
 }
 
-- (void)q_asyncRemovePlistEntriesMatching:(id)a3 notify:(BOOL)a4 completion:(id)a5
+- (void)q_asyncRemovePlistEntriesMatching:(id)matching notify:(BOOL)notify completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001DCEB0;
   v9[3] = &unk_100A0B6A0;
   v9[4] = self;
-  v10 = a3;
-  v12 = a4;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
+  matchingCopy = matching;
+  notifyCopy = notify;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = matchingCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
-- (void)q_asyncReplacePlistEntries:(id)a3 notify:(BOOL)a4 completion:(id)a5
+- (void)q_asyncReplacePlistEntries:(id)entries notify:(BOOL)notify completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001DD750;
   v9[3] = &unk_100A0B6A0;
   v9[4] = self;
-  v10 = a3;
-  v12 = a4;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
+  entriesCopy = entries;
+  notifyCopy = notify;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = entriesCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
-- (void)q_asyncAddAssetDictionaries:(id)a3 completion:(id)a4
+- (void)q_asyncAddAssetDictionaries:(id)dictionaries completion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001DDF64;
   block[3] = &unk_100A049A0;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  dictionariesCopy = dictionaries;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = dictionariesCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)plistAssetWithAsset:(id)a3 andURL:(id)a4
+- (id)plistAssetWithAsset:(id)asset andURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
+  lCopy = l;
+  assetCopy = asset;
   v7 = +[BKPlistAsset newBlankAsset];
-  v8 = [v6 assetID];
-  [v7 setAssetID:v8];
+  assetID = [assetCopy assetID];
+  [v7 setAssetID:assetID];
 
-  v9 = [v6 storeID];
-  [v7 setStoreID:v9];
+  storeID = [assetCopy storeID];
+  [v7 setStoreID:storeID];
 
-  v10 = [v6 storePlaylistID];
-  [v7 setStorePlaylistID:v10];
+  storePlaylistID = [assetCopy storePlaylistID];
+  [v7 setStorePlaylistID:storePlaylistID];
 
-  [v7 setSupplementalContent:{objc_msgSend(v6, "isSupplementalContent")}];
-  [v7 setUrl:v5];
+  [v7 setSupplementalContent:{objc_msgSend(assetCopy, "isSupplementalContent")}];
+  [v7 setUrl:lCopy];
 
-  v11 = [v6 title];
-  [v7 setTitle:v11];
+  title = [assetCopy title];
+  [v7 setTitle:title];
 
-  v12 = [v6 sortTitle];
-  [v7 setSortTitle:v12];
+  sortTitle = [assetCopy sortTitle];
+  [v7 setSortTitle:sortTitle];
 
-  v13 = [v6 author];
-  [v7 setAuthor:v13];
+  author = [assetCopy author];
+  [v7 setAuthor:author];
 
-  v14 = [v6 sortAuthor];
+  sortAuthor = [assetCopy sortAuthor];
 
-  [v7 setSortAuthor:v14];
+  [v7 setSortAuthor:sortAuthor];
 
   return v7;
 }
 
-- (void)prioritizeAssetRestoreWithAssetID:(id)a3
+- (void)prioritizeAssetRestoreWithAssetID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v7 = v4;
+    v7 = dCopy;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -2739,25 +2739,25 @@ LABEL_9:
   }
 }
 
-- (void)_prioritizeRestorePlistAsset:(id)a3
+- (void)_prioritizeRestorePlistAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 isRestoring])
+  assetCopy = asset;
+  if ([assetCopy isRestoring])
   {
-    v5 = [v4 temporaryAssetID];
-    if (v5)
+    temporaryAssetID = [assetCopy temporaryAssetID];
+    if (temporaryAssetID)
     {
       v6 = objc_opt_new();
-      [v6 prioritizeAsset:v5 forDataclass:@"Book"];
+      [v6 prioritizeAsset:temporaryAssetID forDataclass:@"Book"];
       v7 = BKLibraryLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(BKLibraryDataSourcePlist *)self identifier];
-        v9 = [v4 assetID];
+        identifier = [(BKLibraryDataSourcePlist *)self identifier];
+        assetID = [assetCopy assetID];
         v10 = 138412546;
-        v11 = v8;
+        v11 = identifier;
         v12 = 2112;
-        v13 = v9;
+        v13 = assetID;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Prioritizing asset: %@ %@", &v10, 0x16u);
       }
     }
@@ -2770,8 +2770,8 @@ LABEL_9:
 
   else
   {
-    v5 = BKLibraryLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    temporaryAssetID = BKLibraryLog();
+    if (os_log_type_enabled(temporaryAssetID, OS_LOG_TYPE_ERROR))
     {
       sub_10079543C();
     }

@@ -1,23 +1,23 @@
 @interface IDSQueryCacheClearMetric
-- (IDSQueryCacheClearMetric)initWithServiceIdentifier:(id)a3 clearReason:(id)a4 uriCount:(unint64_t)a5;
+- (IDSQueryCacheClearMetric)initWithServiceIdentifier:(id)identifier clearReason:(id)reason uriCount:(unint64_t)count;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSQueryCacheClearMetric
 
-- (IDSQueryCacheClearMetric)initWithServiceIdentifier:(id)a3 clearReason:(id)a4 uriCount:(unint64_t)a5
+- (IDSQueryCacheClearMetric)initWithServiceIdentifier:(id)identifier clearReason:(id)reason uriCount:(unint64_t)count
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v14.receiver = self;
   v14.super_class = IDSQueryCacheClearMetric;
   v11 = [(IDSQueryCacheClearMetric *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_serviceIdentifier, a3);
-    objc_storeStrong(&v12->_clearReason, a4);
-    v12->_uriCount = a5;
+    objc_storeStrong(&v11->_serviceIdentifier, identifier);
+    objc_storeStrong(&v12->_clearReason, reason);
+    v12->_uriCount = count;
   }
 
   return v12;

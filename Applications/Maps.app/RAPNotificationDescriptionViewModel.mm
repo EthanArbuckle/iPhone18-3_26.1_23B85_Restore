@@ -3,7 +3,7 @@
 - (NSString)descriptionText;
 - (NSString)imageName;
 - (NSString)titleText;
-- (RAPNotificationDescriptionViewModel)initWithRAPNotificationDetailsViewModel:(id)a3;
+- (RAPNotificationDescriptionViewModel)initWithRAPNotificationDetailsViewModel:(id)model;
 - (UIColor)imageBackgroundColor;
 @end
 
@@ -11,11 +11,11 @@
 
 - (BOOL)shouldDisplayLink
 {
-  v3 = [(RAPNotificationDescriptionViewModel *)self linkButtonLink];
-  if ([v3 length])
+  linkButtonLink = [(RAPNotificationDescriptionViewModel *)self linkButtonLink];
+  if ([linkButtonLink length])
   {
-    v4 = [(RAPNotificationDescriptionViewModel *)self linkButtonText];
-    v5 = [v4 length] != 0;
+    linkButtonText = [(RAPNotificationDescriptionViewModel *)self linkButtonText];
+    v5 = [linkButtonText length] != 0;
   }
 
   else
@@ -28,46 +28,46 @@
 
 - (NSString)descriptionText
 {
-  v2 = [(RAPNotificationDetailsViewModel *)self->_detailsViewModel descriptionInfo];
-  v3 = [v2 descriptionText];
+  descriptionInfo = [(RAPNotificationDetailsViewModel *)self->_detailsViewModel descriptionInfo];
+  descriptionText = [descriptionInfo descriptionText];
 
-  return v3;
+  return descriptionText;
 }
 
 - (NSString)titleText
 {
-  v2 = [(RAPNotificationDetailsViewModel *)self->_detailsViewModel descriptionInfo];
-  v3 = [v2 titleText];
+  descriptionInfo = [(RAPNotificationDetailsViewModel *)self->_detailsViewModel descriptionInfo];
+  titleText = [descriptionInfo titleText];
 
-  return v3;
+  return titleText;
 }
 
 - (UIColor)imageBackgroundColor
 {
-  v2 = [(RAPNotificationDetailsViewModel *)self->_detailsViewModel descriptionInfo];
-  v3 = [v2 imageBackgroundColor];
+  descriptionInfo = [(RAPNotificationDetailsViewModel *)self->_detailsViewModel descriptionInfo];
+  imageBackgroundColor = [descriptionInfo imageBackgroundColor];
 
-  return v3;
+  return imageBackgroundColor;
 }
 
 - (NSString)imageName
 {
-  v2 = [(RAPNotificationDetailsViewModel *)self->_detailsViewModel descriptionInfo];
-  v3 = [v2 imageName];
+  descriptionInfo = [(RAPNotificationDetailsViewModel *)self->_detailsViewModel descriptionInfo];
+  imageName = [descriptionInfo imageName];
 
-  return v3;
+  return imageName;
 }
 
-- (RAPNotificationDescriptionViewModel)initWithRAPNotificationDetailsViewModel:(id)a3
+- (RAPNotificationDescriptionViewModel)initWithRAPNotificationDetailsViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = RAPNotificationDescriptionViewModel;
   v6 = [(RAPNotificationDescriptionViewModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_detailsViewModel, a3);
+    objc_storeStrong(&v6->_detailsViewModel, model);
   }
 
   return v7;

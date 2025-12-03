@@ -1,15 +1,15 @@
 @interface CSKSignatureAlgorithmWrapper
 - (_TtC11CodesignKit28CSKSignatureAlgorithmWrapper)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSKSignatureAlgorithmWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v3 = sub_243B8EAE8();
-  [v4 encodeInteger:0 forKey:v3];
+  [coderCopy encodeInteger:0 forKey:v3];
 }
 
 - (_TtC11CodesignKit28CSKSignatureAlgorithmWrapper)init

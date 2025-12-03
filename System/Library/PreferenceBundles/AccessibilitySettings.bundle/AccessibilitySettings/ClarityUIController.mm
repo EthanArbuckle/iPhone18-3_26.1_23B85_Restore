@@ -1,46 +1,46 @@
 @interface ClarityUIController
 - (BOOL)_canUseOneTapUnlock;
 - (ClarityUIController)init;
-- (id)_accessibilityShortcutEnabled:(id)a3;
-- (id)_allowSiri:(id)a3;
-- (id)_appCustomizationSpecifierForFirstPartyAppWithIdentifier:(id)a3 title:(id)a4;
+- (id)_accessibilityShortcutEnabled:(id)enabled;
+- (id)_allowSiri:(id)siri;
+- (id)_appCustomizationSpecifierForFirstPartyAppWithIdentifier:(id)identifier title:(id)title;
 - (id)_appCustomizationSpecifiers;
-- (id)_appSpecifierWithTitle:(id)a3 hasChevron:(BOOL)a4 identifier:(id)a5 appIconImage:(id)a6;
-- (id)_batteryMonitoring:(id)a3;
-- (id)_colorFromData:(id)a3;
-- (id)_fullScreenCompatibilityModeEnabled:(id)a3;
-- (id)_lockScreenClock:(id)a3;
-- (id)_lockScreenDate:(id)a3;
-- (id)_notificationsEnabled:(id)a3;
-- (id)_oneTapUnlockEnabled:(id)a3;
-- (id)_restrictPhoneCallEnabled:(id)a3;
-- (id)_silentModeToggleEnabled:(id)a3;
-- (id)_statusBarClock:(id)a3;
-- (id)_volumeButtons:(id)a3;
+- (id)_appSpecifierWithTitle:(id)title hasChevron:(BOOL)chevron identifier:(id)identifier appIconImage:(id)image;
+- (id)_batteryMonitoring:(id)monitoring;
+- (id)_colorFromData:(id)data;
+- (id)_fullScreenCompatibilityModeEnabled:(id)enabled;
+- (id)_lockScreenClock:(id)clock;
+- (id)_lockScreenDate:(id)date;
+- (id)_notificationsEnabled:(id)enabled;
+- (id)_oneTapUnlockEnabled:(id)enabled;
+- (id)_restrictPhoneCallEnabled:(id)enabled;
+- (id)_silentModeToggleEnabled:(id)enabled;
+- (id)_statusBarClock:(id)clock;
+- (id)_volumeButtons:(id)buttons;
 - (id)createClarityUIIntroductionGroupSpecifier;
 - (id)specifiers;
 - (void)_appCustomizationSpecifiers;
-- (void)_checkExistenceOfSettingsForAppSpecifier:(id)a3 identifier:(id)a4 bundleIdentifiersCheckingExistenceOfSettings:(id)a5 specifiersRequiringReload:(id)a6;
-- (void)_goToSiriSettings:(id)a3;
-- (void)_loadAppSetupControllerForSpecifier:(id)a3;
-- (void)_resetButtonTapped:(id)a3;
-- (void)_setAccessibilityShortcutEnabled:(id)a3 specifier:(id)a4;
-- (void)_setAllowSiri:(id)a3 specifier:(id)a4;
-- (void)_setBatteryMonitorningEnabled:(id)a3 specifier:(id)a4;
-- (void)_setFullScreenCompatibilityModeEnabled:(id)a3 specifier:(id)a4;
-- (void)_setNotificationsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setOneTapUnlockEnabled:(id)a3 specifier:(id)a4;
-- (void)_setRestrictPhoneCallEnabled:(id)a3 specifier:(id)a4;
-- (void)_setSilentModeToggleEnabled:(id)a3 specifier:(id)a4;
-- (void)_setStatusBarClockEnabled:(id)a3 specifier:(id)a4;
-- (void)_setUpForSpecifier:(id)a3;
-- (void)_setVolumeButtonsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setlockScreenClockEnabled:(id)a3 specifier:(id)a4;
-- (void)_setlockScreenDateEnabled:(id)a3 specifier:(id)a4;
-- (void)_updateAppSpecifier:(id)a3 hasChevron:(BOOL)a4;
-- (void)confirmationViewAcceptedForSpecifier:(id)a3;
+- (void)_checkExistenceOfSettingsForAppSpecifier:(id)specifier identifier:(id)identifier bundleIdentifiersCheckingExistenceOfSettings:(id)settings specifiersRequiringReload:(id)reload;
+- (void)_goToSiriSettings:(id)settings;
+- (void)_loadAppSetupControllerForSpecifier:(id)specifier;
+- (void)_resetButtonTapped:(id)tapped;
+- (void)_setAccessibilityShortcutEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setAllowSiri:(id)siri specifier:(id)specifier;
+- (void)_setBatteryMonitorningEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setFullScreenCompatibilityModeEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setNotificationsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setOneTapUnlockEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setRestrictPhoneCallEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setSilentModeToggleEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setStatusBarClockEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setUpForSpecifier:(id)specifier;
+- (void)_setVolumeButtonsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setlockScreenClockEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setlockScreenDateEnabled:(id)enabled specifier:(id)specifier;
+- (void)_updateAppSpecifier:(id)specifier hasChevron:(BOOL)chevron;
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)doneButtonTapped:(id)a3;
+- (void)doneButtonTapped:(id)tapped;
 @end
 
 @implementation ClarityUIController
@@ -121,8 +121,8 @@ void __27__ClarityUIController_init__block_invoke_3(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(ClarityUIController *)self appAvailabilityObserver];
-  [v3 invalidate];
+  appAvailabilityObserver = [(ClarityUIController *)self appAvailabilityObserver];
+  [appAvailabilityObserver invalidate];
 
   v4.receiver = self;
   v4.super_class = ClarityUIController;
@@ -218,12 +218,12 @@ void __27__ClarityUIController_init__block_invoke_3(uint64_t a1)
 
           v23 = *(*(&v35 + 1) + 8 * i);
           v42[0] = @"headerLabel";
-          v24 = [v23 itemTitle];
-          v43[0] = v24;
+          itemTitle = [v23 itemTitle];
+          v43[0] = itemTitle;
           v42[1] = @"contentLabel";
-          v25 = [v23 itemDescription];
+          itemDescription = [v23 itemDescription];
           v42[2] = @"alreadyLocalized";
-          v43[1] = v25;
+          v43[1] = itemDescription;
           v43[2] = &__kCFBooleanTrue;
           v26 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:3];
           [v16 addObject:v26];
@@ -258,10 +258,10 @@ void __64__ClarityUIController_createClarityUIIntroductionGroupSpecifier__block_
 - (BOOL)_canUseOneTapUnlock
 {
   v2 = +[BKDeviceManager availableDevices];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
   v24 = 0;
-  v4 = [BKDevice deviceWithDescriptor:v3 error:&v24];
+  v4 = [BKDevice deviceWithDescriptor:firstObject error:&v24];
   v5 = v24;
   if (v5)
   {
@@ -305,8 +305,8 @@ LABEL_9:
   {
     v5 = +[NSMutableArray array];
     v6 = _AXSClarityUIEnabled();
-    v7 = [(ClarityUIController *)self createClarityUIIntroductionGroupSpecifier];
-    [v5 addObject:v7];
+    createClarityUIIntroductionGroupSpecifier = [(ClarityUIController *)self createClarityUIIntroductionGroupSpecifier];
+    [v5 addObject:createClarityUIIntroductionGroupSpecifier];
     if (!v6)
     {
       v16 = settingsLocString(@"SET_UP_TITLE", @"ClarityUISettings");
@@ -357,11 +357,11 @@ LABEL_19:
 
     v15 = &__kCFBooleanTrue;
 LABEL_10:
-    v104 = v7;
+    v104 = createClarityUIIntroductionGroupSpecifier;
     v89 = PSEnabledKey;
     [v9 setObject:v15 forKeyedSubscript:?];
-    v18 = [(ClarityUIController *)self _appCustomizationSpecifiers];
-    [v5 addObjectsFromArray:v18];
+    _appCustomizationSpecifiers = [(ClarityUIController *)self _appCustomizationSpecifiers];
+    [v5 addObjectsFromArray:_appCustomizationSpecifiers];
 
     v19 = settingsLocString(@"OPTIONS_TITLE", @"ClarityUISettings");
     v20 = [PSSpecifier groupSpecifierWithName:v19];
@@ -512,10 +512,10 @@ LABEL_10:
     v85 = v68;
     [v5 addObject:v68];
     v69 = +[BKDeviceManager availableDevices];
-    v70 = [v69 firstObject];
+    firstObject = [v69 firstObject];
 
     v106 = 0;
-    v84 = [BKDevice deviceWithDescriptor:v70 error:&v106];
+    v84 = [BKDevice deviceWithDescriptor:firstObject error:&v106];
     v83 = v106;
     if ([(ClarityUIController *)self _canUseOneTapUnlock])
     {
@@ -553,27 +553,27 @@ LABEL_20:
   return v4;
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v4 = [(ClarityUIController *)self whatsNewController];
+  whatsNewController = [(ClarityUIController *)self whatsNewController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __40__ClarityUIController_doneButtonTapped___block_invoke;
   v5[3] = &unk_2553B0;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [whatsNewController dismissViewControllerAnimated:1 completion:v5];
 }
 
-- (id)_appCustomizationSpecifierForFirstPartyAppWithIdentifier:(id)a3 title:(id)a4
+- (id)_appCustomizationSpecifierForFirstPartyAppWithIdentifier:(id)identifier title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  titleCopy = title;
   v8 = +[ClarityUIAppSetupCoordinator sharedInstance];
-  v9 = [v8 clarityBundleNameForBundleIdentifier:v6];
+  v9 = [v8 clarityBundleNameForBundleIdentifier:identifierCopy];
 
   if (v9)
   {
-    v10 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:2 edit:0];
+    v10 = [PSSpecifier preferenceSpecifierNamed:titleCopy target:self set:0 get:0 detail:0 cell:2 edit:0];
     v11 = PSBundlePathForPreferenceBundle();
     [v10 setProperty:v11 forKey:PSLazilyLoadedBundleKey];
 
@@ -581,7 +581,7 @@ LABEL_20:
     [v10 setControllerLoadAction:"lazyLoadBundle:"];
     v12 = +[UIScreen mainScreen];
     [v12 scale];
-    v13 = [UIImage _applicationIconImageForBundleIdentifier:v6 format:0 scale:?];
+    v13 = [UIImage _applicationIconImageForBundleIdentifier:identifierCopy format:0 scale:?];
 
     [v10 setProperty:v13 forKey:PSIconImageKey];
   }
@@ -604,17 +604,17 @@ LABEL_20:
   v36 = v5;
   [v3 insertObject:v5 atIndex:0];
   v6 = +[CLFSettings sharedInstance];
-  v7 = [v6 applicationBundleIdentifiers];
+  applicationBundleIdentifiers = [v6 applicationBundleIdentifiers];
 
   v8 = ClarityUIAllInstalledAppIdentifiers();
   v38 = +[NSMutableSet set];
-  v9 = self;
+  selfCopy = self;
   v37 = +[NSMutableArray array];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v7;
+  obj = applicationBundleIdentifiers;
   v10 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v10)
   {
@@ -622,7 +622,7 @@ LABEL_20:
     v12 = *v46;
     v13 = &_s7SwiftUI5ColorV4blueACvgZ_ptr;
     v39 = v3;
-    v40 = self;
+    selfCopy2 = self;
     do
     {
       v14 = 0;
@@ -655,8 +655,8 @@ LABEL_20:
             goto LABEL_21;
           }
 
-          v22 = [v16[337] sharedInstance];
-          v23 = [v22 isHiddenByUserForBundleIdentifier:v15];
+          sharedInstance = [v16[337] sharedInstance];
+          v23 = [sharedInstance isHiddenByUserForBundleIdentifier:v15];
 
           if (v23)
           {
@@ -676,8 +676,8 @@ LABEL_21:
             goto LABEL_22;
           }
 
-          v24 = [v16[337] sharedInstance];
-          v25 = [v24 isAppAvailableForBundleIdentifier:v15];
+          sharedInstance2 = [v16[337] sharedInstance];
+          v25 = [sharedInstance2 isAppAvailableForBundleIdentifier:v15];
 
           if ((v25 & 1) == 0)
           {
@@ -691,7 +691,7 @@ LABEL_21:
           }
 
           v19 = ClarityUIDisplayNameForApp(v15);
-          v26 = [(ClarityUIController *)v9 _appCustomizationSpecifierForFirstPartyAppWithIdentifier:v15 title:v19];
+          v26 = [(ClarityUIController *)selfCopy _appCustomizationSpecifierForFirstPartyAppWithIdentifier:v15 title:v19];
           if (v26)
           {
             [v3 addObject:v26];
@@ -700,23 +700,23 @@ LABEL_21:
           else
           {
             +[UIScreen mainScreen];
-            v28 = v27 = v9;
+            v28 = v27 = selfCopy;
             [v28 scale];
             v41 = [UIImage _applicationIconImageForBundleIdentifier:v15 format:0 scale:?];
 
-            v29 = [(ClarityUIController *)v27 hasSettingsByBundleIdentifier];
-            v30 = [v29 objectForKeyedSubscript:v15];
+            hasSettingsByBundleIdentifier = [(ClarityUIController *)v27 hasSettingsByBundleIdentifier];
+            v30 = [hasSettingsByBundleIdentifier objectForKeyedSubscript:v15];
 
             v31 = -[ClarityUIController _appSpecifierWithTitle:hasChevron:identifier:appIconImage:](v27, "_appSpecifierWithTitle:hasChevron:identifier:appIconImage:", v19, [v30 BOOLValue], v15, v41);
             if (!v30)
             {
-              [(ClarityUIController *)v40 _checkExistenceOfSettingsForAppSpecifier:v31 identifier:v15 bundleIdentifiersCheckingExistenceOfSettings:v38 specifiersRequiringReload:v37];
+              [(ClarityUIController *)selfCopy2 _checkExistenceOfSettingsForAppSpecifier:v31 identifier:v15 bundleIdentifiersCheckingExistenceOfSettings:v38 specifiersRequiringReload:v37];
             }
 
             [v39 addObject:v31];
 
             v3 = v39;
-            v9 = v40;
+            selfCopy = selfCopy2;
           }
 
           v13 = &_s7SwiftUI5ColorV4blueACvgZ_ptr;
@@ -747,37 +747,37 @@ LABEL_22:
   }
 
   v33 = settingsLocString(@"MANAGE_APPS", @"ClarityUISettings");
-  v34 = [PSSpecifier preferenceSpecifierNamed:v33 target:v9 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  v34 = [PSSpecifier preferenceSpecifierNamed:v33 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
   [v3 addObject:v34];
 
   return v3;
 }
 
-- (void)_checkExistenceOfSettingsForAppSpecifier:(id)a3 identifier:(id)a4 bundleIdentifiersCheckingExistenceOfSettings:(id)a5 specifiersRequiringReload:(id)a6
+- (void)_checkExistenceOfSettingsForAppSpecifier:(id)specifier identifier:(id)identifier bundleIdentifiersCheckingExistenceOfSettings:(id)settings specifiersRequiringReload:(id)reload
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ClarityUIController *)self hasSettingsByBundleIdentifier];
-  [v14 setObject:&__kCFBooleanFalse forKeyedSubscript:v11];
+  specifierCopy = specifier;
+  identifierCopy = identifier;
+  settingsCopy = settings;
+  reloadCopy = reload;
+  hasSettingsByBundleIdentifier = [(ClarityUIController *)self hasSettingsByBundleIdentifier];
+  [hasSettingsByBundleIdentifier setObject:&__kCFBooleanFalse forKeyedSubscript:identifierCopy];
 
-  [v12 addObject:v11];
+  [settingsCopy addObject:identifierCopy];
   v15 = dispatch_get_global_queue(25, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifier_bundleIdentifiersCheckingExistenceOfSettings_specifiersRequiringReload___block_invoke;
   block[3] = &unk_2595A0;
-  v21 = v11;
-  v22 = v12;
-  v23 = self;
-  v24 = v10;
-  v25 = v13;
-  v16 = v13;
-  v17 = v10;
-  v18 = v12;
-  v19 = v11;
+  v21 = identifierCopy;
+  v22 = settingsCopy;
+  selfCopy = self;
+  v24 = specifierCopy;
+  v25 = reloadCopy;
+  v16 = reloadCopy;
+  v17 = specifierCopy;
+  v18 = settingsCopy;
+  v19 = identifierCopy;
   dispatch_async(v15, block);
 }
 
@@ -893,44 +893,44 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return result;
 }
 
-- (id)_appSpecifierWithTitle:(id)a3 hasChevron:(BOOL)a4 identifier:(id)a5 appIconImage:(id)a6
+- (id)_appSpecifierWithTitle:(id)title hasChevron:(BOOL)chevron identifier:(id)identifier appIconImage:(id)image
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:4 edit:0];
-  [v13 setProperty:v12 forKey:PSControllerTitleKey];
+  chevronCopy = chevron;
+  imageCopy = image;
+  identifierCopy = identifier;
+  titleCopy = title;
+  v13 = [PSSpecifier preferenceSpecifierNamed:titleCopy target:self set:0 get:0 detail:0 cell:4 edit:0];
+  [v13 setProperty:titleCopy forKey:PSControllerTitleKey];
 
-  [v13 setProperty:v11 forKey:PSIDKey];
-  [v13 setProperty:v10 forKey:PSIconImageKey];
+  [v13 setProperty:identifierCopy forKey:PSIDKey];
+  [v13 setProperty:imageCopy forKey:PSIconImageKey];
 
-  [(ClarityUIController *)self _updateAppSpecifier:v13 hasChevron:v7];
+  [(ClarityUIController *)self _updateAppSpecifier:v13 hasChevron:chevronCopy];
 
   return v13;
 }
 
-- (void)_updateAppSpecifier:(id)a3 hasChevron:(BOOL)a4
+- (void)_updateAppSpecifier:(id)specifier hasChevron:(BOOL)chevron
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = v5;
-  if (v4)
+  chevronCopy = chevron;
+  specifierCopy = specifier;
+  v7 = specifierCopy;
+  if (chevronCopy)
   {
-    [v5 setCellType:2];
+    [specifierCopy setCellType:2];
     v6 = "_loadAppSetupControllerForSpecifier:";
   }
 
   else
   {
-    [v5 setCellType:4];
+    [specifierCopy setCellType:4];
     v6 = 0;
   }
 
   [v7 setControllerLoadAction:v6];
 }
 
-- (id)_volumeButtons:(id)a3
+- (id)_volumeButtons:(id)buttons
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 volumeButtonsEnabled]);
@@ -938,14 +938,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setVolumeButtonsEnabled:(id)a3 specifier:(id)a4
+- (void)_setVolumeButtonsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setVolumeButtonsEnabled:v4];
+  [v5 setVolumeButtonsEnabled:bOOLValue];
 }
 
-- (id)_silentModeToggleEnabled:(id)a3
+- (id)_silentModeToggleEnabled:(id)enabled
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 silentModeToggleEnabled]);
@@ -953,14 +953,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setSilentModeToggleEnabled:(id)a3 specifier:(id)a4
+- (void)_setSilentModeToggleEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setSilentModeToggleEnabled:v4];
+  [v5 setSilentModeToggleEnabled:bOOLValue];
 }
 
-- (id)_accessibilityShortcutEnabled:(id)a3
+- (id)_accessibilityShortcutEnabled:(id)enabled
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowAccessibilityShortcut]);
@@ -968,14 +968,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setAccessibilityShortcutEnabled:(id)a3 specifier:(id)a4
+- (void)_setAccessibilityShortcutEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setAllowAccessibilityShortcut:v4];
+  [v5 setAllowAccessibilityShortcut:bOOLValue];
 }
 
-- (id)_fullScreenCompatibilityModeEnabled:(id)a3
+- (id)_fullScreenCompatibilityModeEnabled:(id)enabled
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 fullScreenCompatibilityMode]);
@@ -983,14 +983,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setFullScreenCompatibilityModeEnabled:(id)a3 specifier:(id)a4
+- (void)_setFullScreenCompatibilityModeEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setFullScreenCompatibilityMode:v4];
+  [v5 setFullScreenCompatibilityMode:bOOLValue];
 }
 
-- (id)_oneTapUnlockEnabled:(id)a3
+- (id)_oneTapUnlockEnabled:(id)enabled
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 oneTapUnlock]);
@@ -998,14 +998,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setOneTapUnlockEnabled:(id)a3 specifier:(id)a4
+- (void)_setOneTapUnlockEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setOneTapUnlock:v4];
+  [v5 setOneTapUnlock:bOOLValue];
 }
 
-- (id)_restrictPhoneCallEnabled:(id)a3
+- (id)_restrictPhoneCallEnabled:(id)enabled
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 restrictPhoneCall]);
@@ -1013,14 +1013,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setRestrictPhoneCallEnabled:(id)a3 specifier:(id)a4
+- (void)_setRestrictPhoneCallEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setRestrictPhoneCall:v4];
+  [v5 setRestrictPhoneCall:bOOLValue];
 }
 
-- (id)_lockScreenClock:(id)a3
+- (id)_lockScreenClock:(id)clock
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 lockScreenClockEnabled]);
@@ -1028,14 +1028,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setlockScreenClockEnabled:(id)a3 specifier:(id)a4
+- (void)_setlockScreenClockEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setLockScreenClockEnabled:v4];
+  [v5 setLockScreenClockEnabled:bOOLValue];
 }
 
-- (id)_lockScreenDate:(id)a3
+- (id)_lockScreenDate:(id)date
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 lockScreenDateEnabled]);
@@ -1043,14 +1043,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setlockScreenDateEnabled:(id)a3 specifier:(id)a4
+- (void)_setlockScreenDateEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setLockScreenDateEnabled:v4];
+  [v5 setLockScreenDateEnabled:bOOLValue];
 }
 
-- (id)_statusBarClock:(id)a3
+- (id)_statusBarClock:(id)clock
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 showTimeInStatusBar]);
@@ -1058,14 +1058,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setStatusBarClockEnabled:(id)a3 specifier:(id)a4
+- (void)_setStatusBarClockEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setShowTimeInStatusBar:v4];
+  [v5 setShowTimeInStatusBar:bOOLValue];
 }
 
-- (id)_notificationsEnabled:(id)a3
+- (id)_notificationsEnabled:(id)enabled
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 notificationsEnabled]);
@@ -1073,14 +1073,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setNotificationsEnabled:(id)a3 specifier:(id)a4
+- (void)_setNotificationsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setNotificationsEnabled:v4];
+  [v5 setNotificationsEnabled:bOOLValue];
 }
 
-- (id)_batteryMonitoring:(id)a3
+- (id)_batteryMonitoring:(id)monitoring
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 batteryMonitoringEnabled]);
@@ -1088,14 +1088,14 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setBatteryMonitorningEnabled:(id)a3 specifier:(id)a4
+- (void)_setBatteryMonitorningEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setBatteryMonitoringEnabled:v4];
+  [v5 setBatteryMonitoringEnabled:bOOLValue];
 }
 
-- (id)_allowSiri:(id)a3
+- (id)_allowSiri:(id)siri
 {
   v3 = +[CLFSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowSiri]);
@@ -1103,21 +1103,21 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v4;
 }
 
-- (void)_setAllowSiri:(id)a3 specifier:(id)a4
+- (void)_setAllowSiri:(id)siri specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [siri BOOLValue];
   v5 = +[CLFSettings sharedInstance];
-  [v5 setAllowSiri:v4];
+  [v5 setAllowSiri:bOOLValue];
 }
 
-- (void)_goToSiriSettings:(id)a3
+- (void)_goToSiriSettings:(id)settings
 {
   v4 = [NSURL URLWithString:@"prefs:root=SIRI"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
   [v3 openSensitiveURL:v4 withOptions:0];
 }
 
-- (void)_setUpForSpecifier:(id)a3
+- (void)_setUpForSpecifier:(id)specifier
 {
   v4 = +[CLFPhoneFaceTimeSettings sharedInstance];
   [v4 setNeedsMigrationFor117558856:0];
@@ -1131,11 +1131,11 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   [(ClarityUIController *)self presentViewController:v6 animated:0 completion:0];
 }
 
-- (id)_colorFromData:(id)a3
+- (id)_colorFromData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy && [dataCopy length])
   {
     v15 = 0;
     v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v15];
@@ -1158,16 +1158,16 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   return v5;
 }
 
-- (void)_loadAppSetupControllerForSpecifier:(id)a3
+- (void)_loadAppSetupControllerForSpecifier:(id)specifier
 {
-  v6 = [a3 propertyForKey:PSIDKey];
+  v6 = [specifier propertyForKey:PSIDKey];
   v4 = +[ClarityUIAppSetupCoordinator sharedInstance];
   v5 = [v4 createSettingsControllerForBundleIdentifier:v6];
 
   [(ClarityUIController *)self showController:v5];
 }
 
-- (void)_resetButtonTapped:(id)a3
+- (void)_resetButtonTapped:(id)tapped
 {
   v8 = objc_alloc_init(PSConfirmationSpecifier);
   v4 = settingsLocString(@"CLARITY_UI_RESET_TITLE", @"ClarityUISettings");
@@ -1186,7 +1186,7 @@ id __146__ClarityUIController__checkExistenceOfSettingsForAppSpecifier_identifie
   [(ClarityUIController *)self showConfirmationViewForSpecifier:v8];
 }
 
-- (void)confirmationViewAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier
 {
   [(ClarityUIController *)self resetAllSettings];
 

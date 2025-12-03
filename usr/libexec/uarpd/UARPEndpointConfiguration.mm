@@ -1,12 +1,12 @@
 @interface UARPEndpointConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UARPEndpointConfiguration)init;
-- (UARPEndpointConfiguration)initWithCoder:(id)a3;
-- (UARPEndpointConfiguration)initWithURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UARPEndpointConfiguration)initWithCoder:(id)coder;
+- (UARPEndpointConfiguration)initWithURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)exportAsDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPEndpointConfiguration
@@ -30,15 +30,15 @@
   return v2;
 }
 
-- (UARPEndpointConfiguration)initWithURL:(id)a3
+- (UARPEndpointConfiguration)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(UARPEndpointConfiguration *)self init];
 
   if (v5)
   {
     v157 = 0;
-    v6 = [NSDictionary dictionaryWithContentsOfURL:v4 error:&v157];
+    v6 = [NSDictionary dictionaryWithContentsOfURL:lCopy error:&v157];
     v152 = v157;
     v7 = [v6 objectForKeyedSubscript:@"Endpoint ID"];
 
@@ -678,197 +678,197 @@
   return v150;
 }
 
-- (UARPEndpointConfiguration)initWithCoder:(id)a3
+- (UARPEndpointConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UARPEndpointConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Endpoint ID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Endpoint ID"];
     endpointID = v5->_endpointID;
     v5->_endpointID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Firmware Version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Firmware Version"];
     firmwareVersion = v5->_firmwareVersion;
     v5->_firmwareVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Friendly Name"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Friendly Name"];
     friendlyName = v5->_friendlyName;
     v5->_friendlyName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Hardware Version"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Hardware Version"];
     hardwareVersion = v5->_hardwareVersion;
     v5->_hardwareVersion = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Manufacturer Name"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Manufacturer Name"];
     manufacturerName = v5->_manufacturerName;
     v5->_manufacturerName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Model Name"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Model Name"];
     modelName = v5->_modelName;
     v5->_modelName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Serial Number"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Serial Number"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Staged Firmware Version"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Staged Firmware Version"];
     stagedFirmwareVersion = v5->_stagedFirmwareVersion;
     v5->_stagedFirmwareVersion = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Apple Model Number"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Apple Model Number"];
     appleModelNumber = v5->_appleModelNumber;
     v5->_appleModelNumber = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Asset Identifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Asset Identifier"];
     assetIdentifier = v5->_assetIdentifier;
     v5->_assetIdentifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Hw Fusing Type"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Hw Fusing Type"];
     hwFusingType = v5->_hwFusingType;
     v5->_hwFusingType = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Ap Board ID"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Ap Board ID"];
     apBoardID = v5->_apBoardID;
     v5->_apBoardID = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Ap Chip ID"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Ap Chip ID"];
     apChipID = v5->_apChipID;
     v5->_apChipID = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Ap Production Mode"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Ap Production Mode"];
     apProductionMode = v5->_apProductionMode;
     v5->_apProductionMode = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Ap Security Mode"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Ap Security Mode"];
     apSecurityMode = v5->_apSecurityMode;
     v5->_apSecurityMode = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Board ID (32-bit)"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Board ID (32-bit)"];
     boardID32 = v5->_boardID32;
     v5->_boardID32 = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Board ID (64-bit)"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Board ID (64-bit)"];
     boardID64 = v5->_boardID64;
     v5->_boardID64 = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Chip Epoch"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Chip Epoch"];
     chipEpoch = v5->_chipEpoch;
     v5->_chipEpoch = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Chip ID"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Chip ID"];
     chipID = v5->_chipID;
     v5->_chipID = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Chip Revision"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Chip Revision"];
     chipRevision = v5->_chipRevision;
     v5->_chipRevision = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ECID"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ECID"];
     ECID = v5->_ECID;
     v5->_ECID = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ECID Data"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ECID Data"];
     ecidData = v5->_ecidData;
     v5->_ecidData = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Enable Future FW Version"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Enable Future FW Version"];
     enableFutureFWVersion = v5->_enableFutureFWVersion;
     v5->_enableFutureFWVersion = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Enable Mix Match"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Enable Mix Match"];
     enableMixMatch = v5->_enableMixMatch;
     v5->_enableMixMatch = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FTAB Generation"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FTAB Generation"];
     ftabGeneration = v5->_ftabGeneration;
     v5->_ftabGeneration = v54;
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Hardware Specific"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Hardware Specific"];
     hardwareSpecific = v5->_hardwareSpecific;
     v5->_hardwareSpecific = v56;
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Life"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Life"];
     life = v5->_life;
     v5->_life = v58;
 
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Live Nonce"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Live Nonce"];
     liveNonce = v5->_liveNonce;
     v5->_liveNonce = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Logical Unit Number"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Logical Unit Number"];
     logicalUnitNumber = v5->_logicalUnitNumber;
     v5->_logicalUnitNumber = v62;
 
-    v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Manifest Epoch"];
+    v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Manifest Epoch"];
     manifestEpoch = v5->_manifestEpoch;
     v5->_manifestEpoch = v64;
 
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Manifest Prefix"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Manifest Prefix"];
     manifestPrefix = v5->_manifestPrefix;
     v5->_manifestPrefix = v66;
 
-    v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Manifest Suffix"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Manifest Suffix"];
     manifestSuffix = v5->_manifestSuffix;
     v5->_manifestSuffix = v68;
 
-    v70 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Nonce"];
+    v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v70;
 
-    v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Nonce Seed"];
+    v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Nonce Seed"];
     nonceSeed = v5->_nonceSeed;
     v5->_nonceSeed = v72;
 
-    v74 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Prefix Needs LUN"];
+    v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Prefix Needs LUN"];
     prefixNeedsLUN = v5->_prefixNeedsLUN;
     v5->_prefixNeedsLUN = v74;
 
-    v76 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Production Mode"];
+    v76 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Production Mode"];
     productionMode = v5->_productionMode;
     v5->_productionMode = v76;
 
-    v78 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Provisioning"];
+    v78 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Provisioning"];
     provisioning = v5->_provisioning;
     v5->_provisioning = v78;
 
-    v80 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Real HDCP Key Present"];
+    v80 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Real HDCP Key Present"];
     realHdcpKeyPresent = v5->_realHdcpKeyPresent;
     v5->_realHdcpKeyPresent = v80;
 
-    v82 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Requires Personalization"];
+    v82 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Requires Personalization"];
     requiresPersonalization = v5->_requiresPersonalization;
     v5->_requiresPersonalization = v82;
 
-    v84 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Security Domain"];
+    v84 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Security Domain"];
     securityDomain = v5->_securityDomain;
     v5->_securityDomain = v84;
 
-    v86 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Security Mode"];
+    v86 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Security Mode"];
     securityMode = v5->_securityMode;
     v5->_securityMode = v86;
 
-    v88 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Suffix Needs LUN"];
+    v88 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Suffix Needs LUN"];
     suffixNeedsLUN = v5->_suffixNeedsLUN;
     v5->_suffixNeedsLUN = v88;
 
-    v90 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Ticket LongName"];
+    v90 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Ticket LongName"];
     ticketLongName = v5->_ticketLongName;
     v5->_ticketLongName = v90;
 
-    v92 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Protocol Version"];
+    v92 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Protocol Version"];
     protocolVersion = v5->_protocolVersion;
     v5->_protocolVersion = v92;
 
-    v94 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Max Payload Length"];
+    v94 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Max Payload Length"];
     maxPayloadLength = v5->_maxPayloadLength;
     v5->_maxPayloadLength = v94;
 
-    v96 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Payload Window Length"];
+    v96 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Payload Window Length"];
     payloadWindowLength = v5->_payloadWindowLength;
     v5->_payloadWindowLength = v96;
 
-    v98 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"Components"];
+    v98 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"Components"];
     components = v5->_components;
     v5->_components = v98;
   }
@@ -876,60 +876,60 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   endpointID = self->_endpointID;
-  v5 = a3;
-  [v5 encodeObject:endpointID forKey:@"Endpoint ID"];
-  [v5 encodeObject:self->_firmwareVersion forKey:@"Firmware Version"];
-  [v5 encodeObject:self->_friendlyName forKey:@"Friendly Name"];
-  [v5 encodeObject:self->_hardwareVersion forKey:@"Hardware Version"];
-  [v5 encodeObject:self->_manufacturerName forKey:@"Manufacturer Name"];
-  [v5 encodeObject:self->_modelName forKey:@"Model Name"];
-  [v5 encodeObject:self->_serialNumber forKey:@"Serial Number"];
-  [v5 encodeObject:self->_stagedFirmwareVersion forKey:@"Staged Firmware Version"];
-  [v5 encodeObject:self->_appleModelNumber forKey:@"Apple Model Number"];
-  [v5 encodeObject:self->_assetIdentifier forKey:@"Asset Identifier"];
-  [v5 encodeObject:self->_hwFusingType forKey:@"Hw Fusing Type"];
-  [v5 encodeObject:self->_apBoardID forKey:@"Ap Board ID"];
-  [v5 encodeObject:self->_apChipID forKey:@"Ap Chip ID"];
-  [v5 encodeObject:self->_apProductionMode forKey:@"Ap Production Mode"];
-  [v5 encodeObject:self->_apSecurityMode forKey:@"Ap Security Mode"];
-  [v5 encodeObject:self->_boardID32 forKey:@"Board ID (32-bit)"];
-  [v5 encodeObject:self->_boardID64 forKey:@"Board ID (64-bit)"];
-  [v5 encodeObject:self->_chipEpoch forKey:@"Chip Epoch"];
-  [v5 encodeObject:self->_chipID forKey:@"Chip ID"];
-  [v5 encodeObject:self->_chipRevision forKey:@"Chip Revision"];
-  [v5 encodeObject:self->_ECID forKey:@"ECID"];
-  [v5 encodeObject:self->_ecidData forKey:@"ECID Data"];
-  [v5 encodeObject:self->_enableFutureFWVersion forKey:@"Enable Future FW Version"];
-  [v5 encodeObject:self->_enableMixMatch forKey:@"Enable Mix Match"];
-  [v5 encodeObject:self->_ftabGeneration forKey:@"FTAB Generation"];
-  [v5 encodeObject:self->_hardwareSpecific forKey:@"Hardware Specific"];
-  [v5 encodeObject:self->_life forKey:@"Life"];
-  [v5 encodeObject:self->_liveNonce forKey:@"Live Nonce"];
-  [v5 encodeObject:self->_logicalUnitNumber forKey:@"Logical Unit Number"];
-  [v5 encodeObject:self->_manifestEpoch forKey:@"Manifest Epoch"];
-  [v5 encodeObject:self->_manifestPrefix forKey:@"Manifest Prefix"];
-  [v5 encodeObject:self->_manifestSuffix forKey:@"Manifest Suffix"];
-  [v5 encodeObject:self->_nonce forKey:@"Nonce"];
-  [v5 encodeObject:self->_nonceSeed forKey:@"Nonce Seed"];
-  [v5 encodeObject:self->_prefixNeedsLUN forKey:@"Prefix Needs LUN"];
-  [v5 encodeObject:self->_productionMode forKey:@"Production Mode"];
-  [v5 encodeObject:self->_provisioning forKey:@"Provisioning"];
-  [v5 encodeObject:self->_realHdcpKeyPresent forKey:@"Real HDCP Key Present"];
-  [v5 encodeObject:self->_requiresPersonalization forKey:@"Requires Personalization"];
-  [v5 encodeObject:self->_securityDomain forKey:@"Security Domain"];
-  [v5 encodeObject:self->_securityMode forKey:@"Security Mode"];
-  [v5 encodeObject:self->_suffixNeedsLUN forKey:@"Suffix Needs LUN"];
-  [v5 encodeObject:self->_ticketLongName forKey:@"Ticket LongName"];
-  [v5 encodeObject:self->_protocolVersion forKey:@"Protocol Version"];
-  [v5 encodeObject:self->_maxPayloadLength forKey:@"Max Payload Length"];
-  [v5 encodeObject:self->_payloadWindowLength forKey:@"Payload Window Length"];
-  [v5 encodeObject:self->_components forKey:@"Components"];
+  coderCopy = coder;
+  [coderCopy encodeObject:endpointID forKey:@"Endpoint ID"];
+  [coderCopy encodeObject:self->_firmwareVersion forKey:@"Firmware Version"];
+  [coderCopy encodeObject:self->_friendlyName forKey:@"Friendly Name"];
+  [coderCopy encodeObject:self->_hardwareVersion forKey:@"Hardware Version"];
+  [coderCopy encodeObject:self->_manufacturerName forKey:@"Manufacturer Name"];
+  [coderCopy encodeObject:self->_modelName forKey:@"Model Name"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"Serial Number"];
+  [coderCopy encodeObject:self->_stagedFirmwareVersion forKey:@"Staged Firmware Version"];
+  [coderCopy encodeObject:self->_appleModelNumber forKey:@"Apple Model Number"];
+  [coderCopy encodeObject:self->_assetIdentifier forKey:@"Asset Identifier"];
+  [coderCopy encodeObject:self->_hwFusingType forKey:@"Hw Fusing Type"];
+  [coderCopy encodeObject:self->_apBoardID forKey:@"Ap Board ID"];
+  [coderCopy encodeObject:self->_apChipID forKey:@"Ap Chip ID"];
+  [coderCopy encodeObject:self->_apProductionMode forKey:@"Ap Production Mode"];
+  [coderCopy encodeObject:self->_apSecurityMode forKey:@"Ap Security Mode"];
+  [coderCopy encodeObject:self->_boardID32 forKey:@"Board ID (32-bit)"];
+  [coderCopy encodeObject:self->_boardID64 forKey:@"Board ID (64-bit)"];
+  [coderCopy encodeObject:self->_chipEpoch forKey:@"Chip Epoch"];
+  [coderCopy encodeObject:self->_chipID forKey:@"Chip ID"];
+  [coderCopy encodeObject:self->_chipRevision forKey:@"Chip Revision"];
+  [coderCopy encodeObject:self->_ECID forKey:@"ECID"];
+  [coderCopy encodeObject:self->_ecidData forKey:@"ECID Data"];
+  [coderCopy encodeObject:self->_enableFutureFWVersion forKey:@"Enable Future FW Version"];
+  [coderCopy encodeObject:self->_enableMixMatch forKey:@"Enable Mix Match"];
+  [coderCopy encodeObject:self->_ftabGeneration forKey:@"FTAB Generation"];
+  [coderCopy encodeObject:self->_hardwareSpecific forKey:@"Hardware Specific"];
+  [coderCopy encodeObject:self->_life forKey:@"Life"];
+  [coderCopy encodeObject:self->_liveNonce forKey:@"Live Nonce"];
+  [coderCopy encodeObject:self->_logicalUnitNumber forKey:@"Logical Unit Number"];
+  [coderCopy encodeObject:self->_manifestEpoch forKey:@"Manifest Epoch"];
+  [coderCopy encodeObject:self->_manifestPrefix forKey:@"Manifest Prefix"];
+  [coderCopy encodeObject:self->_manifestSuffix forKey:@"Manifest Suffix"];
+  [coderCopy encodeObject:self->_nonce forKey:@"Nonce"];
+  [coderCopy encodeObject:self->_nonceSeed forKey:@"Nonce Seed"];
+  [coderCopy encodeObject:self->_prefixNeedsLUN forKey:@"Prefix Needs LUN"];
+  [coderCopy encodeObject:self->_productionMode forKey:@"Production Mode"];
+  [coderCopy encodeObject:self->_provisioning forKey:@"Provisioning"];
+  [coderCopy encodeObject:self->_realHdcpKeyPresent forKey:@"Real HDCP Key Present"];
+  [coderCopy encodeObject:self->_requiresPersonalization forKey:@"Requires Personalization"];
+  [coderCopy encodeObject:self->_securityDomain forKey:@"Security Domain"];
+  [coderCopy encodeObject:self->_securityMode forKey:@"Security Mode"];
+  [coderCopy encodeObject:self->_suffixNeedsLUN forKey:@"Suffix Needs LUN"];
+  [coderCopy encodeObject:self->_ticketLongName forKey:@"Ticket LongName"];
+  [coderCopy encodeObject:self->_protocolVersion forKey:@"Protocol Version"];
+  [coderCopy encodeObject:self->_maxPayloadLength forKey:@"Max Payload Length"];
+  [coderCopy encodeObject:self->_payloadWindowLength forKey:@"Payload Window Length"];
+  [coderCopy encodeObject:self->_components forKey:@"Components"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UARPEndpointConfiguration);
   v5 = [(NSNumber *)self->_endpointID copy];
@@ -1020,23 +1020,23 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v98 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       endpointID = self->_endpointID;
-      v7 = [(UARPEndpointConfiguration *)v5 endpointID];
-      LODWORD(endpointID) = [(NSNumber *)endpointID isEqualToNumber:v7];
+      endpointID = [(UARPEndpointConfiguration *)v5 endpointID];
+      LODWORD(endpointID) = [(NSNumber *)endpointID isEqualToNumber:endpointID];
 
       if (!endpointID)
       {
@@ -1044,8 +1044,8 @@
       }
 
       firmwareVersion = self->_firmwareVersion;
-      v9 = [(UARPEndpointConfiguration *)v5 firmwareVersion];
-      LODWORD(firmwareVersion) = [(UARPComponentVersion *)firmwareVersion isEqual:v9];
+      firmwareVersion = [(UARPEndpointConfiguration *)v5 firmwareVersion];
+      LODWORD(firmwareVersion) = [(UARPComponentVersion *)firmwareVersion isEqual:firmwareVersion];
 
       if (!firmwareVersion)
       {
@@ -1053,8 +1053,8 @@
       }
 
       friendlyName = self->_friendlyName;
-      v11 = [(UARPEndpointConfiguration *)v5 friendlyName];
-      LODWORD(friendlyName) = [(NSString *)friendlyName isEqualToString:v11];
+      friendlyName = [(UARPEndpointConfiguration *)v5 friendlyName];
+      LODWORD(friendlyName) = [(NSString *)friendlyName isEqualToString:friendlyName];
 
       if (!friendlyName)
       {
@@ -1062,8 +1062,8 @@
       }
 
       hardwareVersion = self->_hardwareVersion;
-      v13 = [(UARPEndpointConfiguration *)v5 hardwareVersion];
-      LODWORD(hardwareVersion) = [(NSString *)hardwareVersion isEqualToString:v13];
+      hardwareVersion = [(UARPEndpointConfiguration *)v5 hardwareVersion];
+      LODWORD(hardwareVersion) = [(NSString *)hardwareVersion isEqualToString:hardwareVersion];
 
       if (!hardwareVersion)
       {
@@ -1071,8 +1071,8 @@
       }
 
       manufacturerName = self->_manufacturerName;
-      v15 = [(UARPEndpointConfiguration *)v5 manufacturerName];
-      LODWORD(manufacturerName) = [(NSString *)manufacturerName isEqualToString:v15];
+      manufacturerName = [(UARPEndpointConfiguration *)v5 manufacturerName];
+      LODWORD(manufacturerName) = [(NSString *)manufacturerName isEqualToString:manufacturerName];
 
       if (!manufacturerName)
       {
@@ -1080,8 +1080,8 @@
       }
 
       modelName = self->_modelName;
-      v17 = [(UARPEndpointConfiguration *)v5 modelName];
-      LODWORD(modelName) = [(NSString *)modelName isEqualToString:v17];
+      modelName = [(UARPEndpointConfiguration *)v5 modelName];
+      LODWORD(modelName) = [(NSString *)modelName isEqualToString:modelName];
 
       if (!modelName)
       {
@@ -1089,8 +1089,8 @@
       }
 
       serialNumber = self->_serialNumber;
-      v19 = [(UARPEndpointConfiguration *)v5 serialNumber];
-      LODWORD(serialNumber) = [(NSString *)serialNumber isEqualToString:v19];
+      serialNumber = [(UARPEndpointConfiguration *)v5 serialNumber];
+      LODWORD(serialNumber) = [(NSString *)serialNumber isEqualToString:serialNumber];
 
       if (!serialNumber)
       {
@@ -1098,8 +1098,8 @@
       }
 
       stagedFirmwareVersion = self->_stagedFirmwareVersion;
-      v21 = [(UARPEndpointConfiguration *)v5 stagedFirmwareVersion];
-      LODWORD(stagedFirmwareVersion) = [(UARPComponentVersion *)stagedFirmwareVersion isEqual:v21];
+      stagedFirmwareVersion = [(UARPEndpointConfiguration *)v5 stagedFirmwareVersion];
+      LODWORD(stagedFirmwareVersion) = [(UARPComponentVersion *)stagedFirmwareVersion isEqual:stagedFirmwareVersion];
 
       if (!stagedFirmwareVersion)
       {
@@ -1107,8 +1107,8 @@
       }
 
       appleModelNumber = self->_appleModelNumber;
-      v23 = [(UARPEndpointConfiguration *)v5 appleModelNumber];
-      LODWORD(appleModelNumber) = [(NSString *)appleModelNumber isEqualToString:v23];
+      appleModelNumber = [(UARPEndpointConfiguration *)v5 appleModelNumber];
+      LODWORD(appleModelNumber) = [(NSString *)appleModelNumber isEqualToString:appleModelNumber];
 
       if (!appleModelNumber)
       {
@@ -1116,8 +1116,8 @@
       }
 
       hwFusingType = self->_hwFusingType;
-      v25 = [(UARPEndpointConfiguration *)v5 hwFusingType];
-      LODWORD(hwFusingType) = [(NSString *)hwFusingType isEqualToString:v25];
+      hwFusingType = [(UARPEndpointConfiguration *)v5 hwFusingType];
+      LODWORD(hwFusingType) = [(NSString *)hwFusingType isEqualToString:hwFusingType];
 
       if (!hwFusingType)
       {
@@ -1125,8 +1125,8 @@
       }
 
       apBoardID = self->_apBoardID;
-      v27 = [(UARPEndpointConfiguration *)v5 apBoardID];
-      LODWORD(apBoardID) = [(NSNumber *)apBoardID isEqualToNumber:v27];
+      apBoardID = [(UARPEndpointConfiguration *)v5 apBoardID];
+      LODWORD(apBoardID) = [(NSNumber *)apBoardID isEqualToNumber:apBoardID];
 
       if (!apBoardID)
       {
@@ -1134,8 +1134,8 @@
       }
 
       apChipID = self->_apChipID;
-      v29 = [(UARPEndpointConfiguration *)v5 apChipID];
-      LODWORD(apChipID) = [(NSNumber *)apChipID isEqualToNumber:v29];
+      apChipID = [(UARPEndpointConfiguration *)v5 apChipID];
+      LODWORD(apChipID) = [(NSNumber *)apChipID isEqualToNumber:apChipID];
 
       if (!apChipID)
       {
@@ -1143,8 +1143,8 @@
       }
 
       apProductionMode = self->_apProductionMode;
-      v31 = [(UARPEndpointConfiguration *)v5 apProductionMode];
-      LODWORD(apProductionMode) = [(NSNumber *)apProductionMode isEqualToNumber:v31];
+      apProductionMode = [(UARPEndpointConfiguration *)v5 apProductionMode];
+      LODWORD(apProductionMode) = [(NSNumber *)apProductionMode isEqualToNumber:apProductionMode];
 
       if (!apProductionMode)
       {
@@ -1152,8 +1152,8 @@
       }
 
       apSecurityMode = self->_apSecurityMode;
-      v33 = [(UARPEndpointConfiguration *)v5 apSecurityMode];
-      LODWORD(apSecurityMode) = [(NSNumber *)apSecurityMode isEqualToNumber:v33];
+      apSecurityMode = [(UARPEndpointConfiguration *)v5 apSecurityMode];
+      LODWORD(apSecurityMode) = [(NSNumber *)apSecurityMode isEqualToNumber:apSecurityMode];
 
       if (!apSecurityMode)
       {
@@ -1161,8 +1161,8 @@
       }
 
       boardID32 = self->_boardID32;
-      v35 = [(UARPEndpointConfiguration *)v5 boardID32];
-      LODWORD(boardID32) = [(NSNumber *)boardID32 isEqualToNumber:v35];
+      boardID32 = [(UARPEndpointConfiguration *)v5 boardID32];
+      LODWORD(boardID32) = [(NSNumber *)boardID32 isEqualToNumber:boardID32];
 
       if (!boardID32)
       {
@@ -1170,8 +1170,8 @@
       }
 
       boardID64 = self->_boardID64;
-      v37 = [(UARPEndpointConfiguration *)v5 boardID64];
-      LODWORD(boardID64) = [(NSNumber *)boardID64 isEqualToNumber:v37];
+      boardID64 = [(UARPEndpointConfiguration *)v5 boardID64];
+      LODWORD(boardID64) = [(NSNumber *)boardID64 isEqualToNumber:boardID64];
 
       if (!boardID64)
       {
@@ -1179,8 +1179,8 @@
       }
 
       chipEpoch = self->_chipEpoch;
-      v39 = [(UARPEndpointConfiguration *)v5 chipEpoch];
-      LODWORD(chipEpoch) = [(NSNumber *)chipEpoch isEqualToNumber:v39];
+      chipEpoch = [(UARPEndpointConfiguration *)v5 chipEpoch];
+      LODWORD(chipEpoch) = [(NSNumber *)chipEpoch isEqualToNumber:chipEpoch];
 
       if (!chipEpoch)
       {
@@ -1188,8 +1188,8 @@
       }
 
       chipID = self->_chipID;
-      v41 = [(UARPEndpointConfiguration *)v5 chipID];
-      LODWORD(chipID) = [(NSNumber *)chipID isEqualToNumber:v41];
+      chipID = [(UARPEndpointConfiguration *)v5 chipID];
+      LODWORD(chipID) = [(NSNumber *)chipID isEqualToNumber:chipID];
 
       if (!chipID)
       {
@@ -1197,8 +1197,8 @@
       }
 
       chipRevision = self->_chipRevision;
-      v43 = [(UARPEndpointConfiguration *)v5 chipRevision];
-      LODWORD(chipRevision) = [(NSNumber *)chipRevision isEqualToNumber:v43];
+      chipRevision = [(UARPEndpointConfiguration *)v5 chipRevision];
+      LODWORD(chipRevision) = [(NSNumber *)chipRevision isEqualToNumber:chipRevision];
 
       if (!chipRevision)
       {
@@ -1206,8 +1206,8 @@
       }
 
       ECID = self->_ECID;
-      v45 = [(UARPEndpointConfiguration *)v5 ECID];
-      LODWORD(ECID) = [(NSNumber *)ECID isEqualToNumber:v45];
+      eCID = [(UARPEndpointConfiguration *)v5 ECID];
+      LODWORD(ECID) = [(NSNumber *)ECID isEqualToNumber:eCID];
 
       if (!ECID)
       {
@@ -1215,8 +1215,8 @@
       }
 
       ecidData = self->_ecidData;
-      v47 = [(UARPEndpointConfiguration *)v5 ecidData];
-      LODWORD(ecidData) = [(NSData *)ecidData isEqualToData:v47];
+      ecidData = [(UARPEndpointConfiguration *)v5 ecidData];
+      LODWORD(ecidData) = [(NSData *)ecidData isEqualToData:ecidData];
 
       if (!ecidData)
       {
@@ -1224,8 +1224,8 @@
       }
 
       enableFutureFWVersion = self->_enableFutureFWVersion;
-      v49 = [(UARPEndpointConfiguration *)v5 enableFutureFWVersion];
-      LODWORD(enableFutureFWVersion) = [(NSNumber *)enableFutureFWVersion isEqualToNumber:v49];
+      enableFutureFWVersion = [(UARPEndpointConfiguration *)v5 enableFutureFWVersion];
+      LODWORD(enableFutureFWVersion) = [(NSNumber *)enableFutureFWVersion isEqualToNumber:enableFutureFWVersion];
 
       if (!enableFutureFWVersion)
       {
@@ -1233,8 +1233,8 @@
       }
 
       enableMixMatch = self->_enableMixMatch;
-      v51 = [(UARPEndpointConfiguration *)v5 enableMixMatch];
-      LODWORD(enableMixMatch) = [(NSNumber *)enableMixMatch isEqualToNumber:v51];
+      enableMixMatch = [(UARPEndpointConfiguration *)v5 enableMixMatch];
+      LODWORD(enableMixMatch) = [(NSNumber *)enableMixMatch isEqualToNumber:enableMixMatch];
 
       if (!enableMixMatch)
       {
@@ -1242,8 +1242,8 @@
       }
 
       ftabGeneration = self->_ftabGeneration;
-      v53 = [(UARPEndpointConfiguration *)v5 ftabGeneration];
-      LODWORD(ftabGeneration) = [(NSNumber *)ftabGeneration isEqualToNumber:v53];
+      ftabGeneration = [(UARPEndpointConfiguration *)v5 ftabGeneration];
+      LODWORD(ftabGeneration) = [(NSNumber *)ftabGeneration isEqualToNumber:ftabGeneration];
 
       if (!ftabGeneration)
       {
@@ -1251,8 +1251,8 @@
       }
 
       hardwareSpecific = self->_hardwareSpecific;
-      v55 = [(UARPEndpointConfiguration *)v5 hardwareSpecific];
-      LODWORD(hardwareSpecific) = [(NSData *)hardwareSpecific isEqualToData:v55];
+      hardwareSpecific = [(UARPEndpointConfiguration *)v5 hardwareSpecific];
+      LODWORD(hardwareSpecific) = [(NSData *)hardwareSpecific isEqualToData:hardwareSpecific];
 
       if (!hardwareSpecific)
       {
@@ -1260,8 +1260,8 @@
       }
 
       life = self->_life;
-      v57 = [(UARPEndpointConfiguration *)v5 life];
-      LODWORD(life) = [(NSNumber *)life isEqualToNumber:v57];
+      life = [(UARPEndpointConfiguration *)v5 life];
+      LODWORD(life) = [(NSNumber *)life isEqualToNumber:life];
 
       if (!life)
       {
@@ -1269,8 +1269,8 @@
       }
 
       liveNonce = self->_liveNonce;
-      v59 = [(UARPEndpointConfiguration *)v5 liveNonce];
-      LODWORD(liveNonce) = [(NSNumber *)liveNonce isEqualToNumber:v59];
+      liveNonce = [(UARPEndpointConfiguration *)v5 liveNonce];
+      LODWORD(liveNonce) = [(NSNumber *)liveNonce isEqualToNumber:liveNonce];
 
       if (!liveNonce)
       {
@@ -1278,8 +1278,8 @@
       }
 
       logicalUnitNumber = self->_logicalUnitNumber;
-      v61 = [(UARPEndpointConfiguration *)v5 logicalUnitNumber];
-      LODWORD(logicalUnitNumber) = [(NSNumber *)logicalUnitNumber isEqualToNumber:v61];
+      logicalUnitNumber = [(UARPEndpointConfiguration *)v5 logicalUnitNumber];
+      LODWORD(logicalUnitNumber) = [(NSNumber *)logicalUnitNumber isEqualToNumber:logicalUnitNumber];
 
       if (!logicalUnitNumber)
       {
@@ -1287,8 +1287,8 @@
       }
 
       manifestEpoch = self->_manifestEpoch;
-      v63 = [(UARPEndpointConfiguration *)v5 manifestEpoch];
-      LODWORD(manifestEpoch) = [(NSNumber *)manifestEpoch isEqualToNumber:v63];
+      manifestEpoch = [(UARPEndpointConfiguration *)v5 manifestEpoch];
+      LODWORD(manifestEpoch) = [(NSNumber *)manifestEpoch isEqualToNumber:manifestEpoch];
 
       if (!manifestEpoch)
       {
@@ -1296,8 +1296,8 @@
       }
 
       manifestPrefix = self->_manifestPrefix;
-      v65 = [(UARPEndpointConfiguration *)v5 manifestPrefix];
-      LODWORD(manifestPrefix) = [(NSString *)manifestPrefix isEqualToString:v65];
+      manifestPrefix = [(UARPEndpointConfiguration *)v5 manifestPrefix];
+      LODWORD(manifestPrefix) = [(NSString *)manifestPrefix isEqualToString:manifestPrefix];
 
       if (!manifestPrefix)
       {
@@ -1305,8 +1305,8 @@
       }
 
       manifestSuffix = self->_manifestSuffix;
-      v67 = [(UARPEndpointConfiguration *)v5 manifestSuffix];
-      LODWORD(manifestSuffix) = [(NSString *)manifestSuffix isEqualToString:v67];
+      manifestSuffix = [(UARPEndpointConfiguration *)v5 manifestSuffix];
+      LODWORD(manifestSuffix) = [(NSString *)manifestSuffix isEqualToString:manifestSuffix];
 
       if (!manifestSuffix)
       {
@@ -1314,8 +1314,8 @@
       }
 
       nonce = self->_nonce;
-      v69 = [(UARPEndpointConfiguration *)v5 nonce];
-      LODWORD(nonce) = [(NSData *)nonce isEqualToData:v69];
+      nonce = [(UARPEndpointConfiguration *)v5 nonce];
+      LODWORD(nonce) = [(NSData *)nonce isEqualToData:nonce];
 
       if (!nonce)
       {
@@ -1323,8 +1323,8 @@
       }
 
       nonceSeed = self->_nonceSeed;
-      v71 = [(UARPEndpointConfiguration *)v5 nonceSeed];
-      LODWORD(nonceSeed) = [(NSData *)nonceSeed isEqualToData:v71];
+      nonceSeed = [(UARPEndpointConfiguration *)v5 nonceSeed];
+      LODWORD(nonceSeed) = [(NSData *)nonceSeed isEqualToData:nonceSeed];
 
       if (!nonceSeed)
       {
@@ -1332,8 +1332,8 @@
       }
 
       prefixNeedsLUN = self->_prefixNeedsLUN;
-      v73 = [(UARPEndpointConfiguration *)v5 prefixNeedsLUN];
-      LODWORD(prefixNeedsLUN) = [(NSNumber *)prefixNeedsLUN isEqualToNumber:v73];
+      prefixNeedsLUN = [(UARPEndpointConfiguration *)v5 prefixNeedsLUN];
+      LODWORD(prefixNeedsLUN) = [(NSNumber *)prefixNeedsLUN isEqualToNumber:prefixNeedsLUN];
 
       if (!prefixNeedsLUN)
       {
@@ -1341,8 +1341,8 @@
       }
 
       productionMode = self->_productionMode;
-      v75 = [(UARPEndpointConfiguration *)v5 productionMode];
-      LODWORD(productionMode) = [(NSNumber *)productionMode isEqualToNumber:v75];
+      productionMode = [(UARPEndpointConfiguration *)v5 productionMode];
+      LODWORD(productionMode) = [(NSNumber *)productionMode isEqualToNumber:productionMode];
 
       if (!productionMode)
       {
@@ -1350,8 +1350,8 @@
       }
 
       provisioning = self->_provisioning;
-      v77 = [(UARPEndpointConfiguration *)v5 provisioning];
-      LODWORD(provisioning) = [(NSNumber *)provisioning isEqualToNumber:v77];
+      provisioning = [(UARPEndpointConfiguration *)v5 provisioning];
+      LODWORD(provisioning) = [(NSNumber *)provisioning isEqualToNumber:provisioning];
 
       if (!provisioning)
       {
@@ -1359,8 +1359,8 @@
       }
 
       realHdcpKeyPresent = self->_realHdcpKeyPresent;
-      v79 = [(UARPEndpointConfiguration *)v5 realHdcpKeyPresent];
-      LODWORD(realHdcpKeyPresent) = [(NSNumber *)realHdcpKeyPresent isEqualToNumber:v79];
+      realHdcpKeyPresent = [(UARPEndpointConfiguration *)v5 realHdcpKeyPresent];
+      LODWORD(realHdcpKeyPresent) = [(NSNumber *)realHdcpKeyPresent isEqualToNumber:realHdcpKeyPresent];
 
       if (!realHdcpKeyPresent)
       {
@@ -1368,8 +1368,8 @@
       }
 
       requiresPersonalization = self->_requiresPersonalization;
-      v81 = [(UARPEndpointConfiguration *)v5 requiresPersonalization];
-      LODWORD(requiresPersonalization) = [(NSNumber *)requiresPersonalization isEqualToNumber:v81];
+      requiresPersonalization = [(UARPEndpointConfiguration *)v5 requiresPersonalization];
+      LODWORD(requiresPersonalization) = [(NSNumber *)requiresPersonalization isEqualToNumber:requiresPersonalization];
 
       if (!requiresPersonalization)
       {
@@ -1377,8 +1377,8 @@
       }
 
       securityDomain = self->_securityDomain;
-      v83 = [(UARPEndpointConfiguration *)v5 securityDomain];
-      LODWORD(securityDomain) = [(NSNumber *)securityDomain isEqualToNumber:v83];
+      securityDomain = [(UARPEndpointConfiguration *)v5 securityDomain];
+      LODWORD(securityDomain) = [(NSNumber *)securityDomain isEqualToNumber:securityDomain];
 
       if (!securityDomain)
       {
@@ -1386,8 +1386,8 @@
       }
 
       securityMode = self->_securityMode;
-      v85 = [(UARPEndpointConfiguration *)v5 securityMode];
-      LODWORD(securityMode) = [(NSNumber *)securityMode isEqualToNumber:v85];
+      securityMode = [(UARPEndpointConfiguration *)v5 securityMode];
+      LODWORD(securityMode) = [(NSNumber *)securityMode isEqualToNumber:securityMode];
 
       if (!securityMode)
       {
@@ -1395,8 +1395,8 @@
       }
 
       suffixNeedsLUN = self->_suffixNeedsLUN;
-      v87 = [(UARPEndpointConfiguration *)v5 suffixNeedsLUN];
-      LODWORD(suffixNeedsLUN) = [(NSNumber *)suffixNeedsLUN isEqualToNumber:v87];
+      suffixNeedsLUN = [(UARPEndpointConfiguration *)v5 suffixNeedsLUN];
+      LODWORD(suffixNeedsLUN) = [(NSNumber *)suffixNeedsLUN isEqualToNumber:suffixNeedsLUN];
 
       if (!suffixNeedsLUN)
       {
@@ -1404,8 +1404,8 @@
       }
 
       ticketLongName = self->_ticketLongName;
-      v89 = [(UARPEndpointConfiguration *)v5 ticketLongName];
-      LODWORD(ticketLongName) = [(NSString *)ticketLongName isEqualToString:v89];
+      ticketLongName = [(UARPEndpointConfiguration *)v5 ticketLongName];
+      LODWORD(ticketLongName) = [(NSString *)ticketLongName isEqualToString:ticketLongName];
 
       if (!ticketLongName)
       {
@@ -1413,8 +1413,8 @@
       }
 
       protocolVersion = self->_protocolVersion;
-      v91 = [(UARPEndpointConfiguration *)v5 protocolVersion];
-      LODWORD(protocolVersion) = [(NSNumber *)protocolVersion isEqualToNumber:v91];
+      protocolVersion = [(UARPEndpointConfiguration *)v5 protocolVersion];
+      LODWORD(protocolVersion) = [(NSNumber *)protocolVersion isEqualToNumber:protocolVersion];
 
       if (!protocolVersion)
       {
@@ -1422,8 +1422,8 @@
       }
 
       maxPayloadLength = self->_maxPayloadLength;
-      v93 = [(UARPEndpointConfiguration *)v5 maxPayloadLength];
-      LODWORD(maxPayloadLength) = [(NSNumber *)maxPayloadLength isEqualToNumber:v93];
+      maxPayloadLength = [(UARPEndpointConfiguration *)v5 maxPayloadLength];
+      LODWORD(maxPayloadLength) = [(NSNumber *)maxPayloadLength isEqualToNumber:maxPayloadLength];
 
       if (!maxPayloadLength)
       {
@@ -1431,14 +1431,14 @@
       }
 
       payloadWindowLength = self->_payloadWindowLength;
-      v95 = [(UARPEndpointConfiguration *)v5 payloadWindowLength];
-      LODWORD(payloadWindowLength) = [(NSNumber *)payloadWindowLength isEqualToNumber:v95];
+      payloadWindowLength = [(UARPEndpointConfiguration *)v5 payloadWindowLength];
+      LODWORD(payloadWindowLength) = [(NSNumber *)payloadWindowLength isEqualToNumber:payloadWindowLength];
 
       if (payloadWindowLength)
       {
         components = self->_components;
-        v97 = [(UARPEndpointConfiguration *)v5 components];
-        v98 = [(NSArray *)components isEqualToArray:v97];
+        components = [(UARPEndpointConfiguration *)v5 components];
+        v98 = [(NSArray *)components isEqualToArray:components];
       }
 
       else
@@ -1479,8 +1479,8 @@ LABEL_50:
   firmwareVersion = self->_firmwareVersion;
   if (firmwareVersion)
   {
-    v7 = [(UARPComponentVersion *)firmwareVersion versionString];
-    [v4 setObject:v7 forKeyedSubscript:@"Firmware Version"];
+    versionString = [(UARPComponentVersion *)firmwareVersion versionString];
+    [v4 setObject:versionString forKeyedSubscript:@"Firmware Version"];
   }
 
   friendlyName = self->_friendlyName;
@@ -1516,8 +1516,8 @@ LABEL_50:
   stagedFirmwareVersion = self->_stagedFirmwareVersion;
   if (stagedFirmwareVersion)
   {
-    v14 = [(UARPComponentVersion *)stagedFirmwareVersion versionString];
-    [v4 setObject:v14 forKeyedSubscript:@"Staged Firmware Version"];
+    versionString2 = [(UARPComponentVersion *)stagedFirmwareVersion versionString];
+    [v4 setObject:versionString2 forKeyedSubscript:@"Staged Firmware Version"];
   }
 
   appleModelNumber = self->_appleModelNumber;
@@ -1761,8 +1761,8 @@ LABEL_50:
           objc_enumerationMutation(v62);
         }
 
-        v67 = [*(*(&v71 + 1) + 8 * i) exportAsDictionary];
-        [v61 addObject:v67];
+        exportAsDictionary = [*(*(&v71 + 1) + 8 * i) exportAsDictionary];
+        [v61 addObject:exportAsDictionary];
       }
 
       v64 = [(NSArray *)v62 countByEnumeratingWithState:&v71 objects:v75 count:16];

@@ -1,39 +1,39 @@
 @interface PKPaymentAuthorizationServiceCompactNavigationContainerController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (LAUIPhysicalButtonView)physicalButtonView;
 - (void)_createSecondaryViewsIfNecessary;
 - (void)loadView;
-- (void)setShowCameraIndicator:(BOOL)a3;
-- (void)setShowPhysicalButtonIndicator:(BOOL)a3;
+- (void)setShowCameraIndicator:(BOOL)indicator;
+- (void)setShowPhysicalButtonIndicator:(BOOL)indicator;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKPaymentAuthorizationServiceCompactNavigationContainerController
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = PKPaymentAuthorizationServiceCompactNavigationContainerController;
-  [(PKCompactNavigationContainerController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  [(PKCompactNavigationContainerController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  traitCollection = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     ++self->_rotationCount;
-    v10 = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self view];
-    [v10 setNeedsLayout];
+    view = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self view];
+    [view setNeedsLayout];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __120__PKPaymentAuthorizationServiceCompactNavigationContainerController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v11[3] = &unk_1E80127E0;
     v11[4] = self;
-    [v7 animateAlongsideTransition:0 completion:v11];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v11];
   }
 }
 
@@ -126,10 +126,10 @@ void *__91__PKPaymentAuthorizationServiceCompactNavigationContainerController_vi
       self->_physicalButtonView = v3;
     }
 
-    v5 = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    traitCollection = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (PKPearlIsAvailable() && (v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if (PKPearlIsAvailable() && (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [(PKCompactNavigationContainerController *)self setDidMoveToWindowDirtiesLayout:1];
       v7 = objc_alloc_init(MEMORY[0x1E69AD2F0]);
@@ -143,20 +143,20 @@ void *__91__PKPaymentAuthorizationServiceCompactNavigationContainerController_vi
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  if (v7 != self)
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
+  if (containerCopy != self)
   {
-    v8 = [(PKCompactNavigationContainerController *)self containedNavigationController];
+    containedNavigationController = [(PKCompactNavigationContainerController *)self containedNavigationController];
 
-    if (v8 != v7)
+    if (containedNavigationController != containerCopy)
     {
       v13.receiver = self;
       v13.super_class = PKPaymentAuthorizationServiceCompactNavigationContainerController;
-      [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)&v13 sizeForChildContentContainer:v7 withParentContainerSize:width, height];
+      [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)&v13 sizeForChildContentContainer:containerCopy withParentContainerSize:width, height];
       width = v9;
       height = v10;
     }
@@ -177,32 +177,32 @@ void *__91__PKPaymentAuthorizationServiceCompactNavigationContainerController_vi
   return physicalButtonView;
 }
 
-- (void)setShowPhysicalButtonIndicator:(BOOL)a3
+- (void)setShowPhysicalButtonIndicator:(BOOL)indicator
 {
-  if (self->_showPhysicalButtonIndicator != a3)
+  if (self->_showPhysicalButtonIndicator != indicator)
   {
-    self->_showPhysicalButtonIndicator = a3;
+    self->_showPhysicalButtonIndicator = indicator;
     physicalButtonView = self->_physicalButtonView;
     if (physicalButtonView)
     {
-      v4 = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self _effectiveShowPhysicalButtonIndicator];
+      _effectiveShowPhysicalButtonIndicator = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self _effectiveShowPhysicalButtonIndicator];
 
-      [(LAUIPhysicalButtonView *)physicalButtonView setAnimating:v4];
+      [(LAUIPhysicalButtonView *)physicalButtonView setAnimating:_effectiveShowPhysicalButtonIndicator];
     }
   }
 }
 
-- (void)setShowCameraIndicator:(BOOL)a3
+- (void)setShowCameraIndicator:(BOOL)indicator
 {
-  if (self->_showCameraIndicator != a3)
+  if (self->_showCameraIndicator != indicator)
   {
-    self->_showCameraIndicator = a3;
+    self->_showCameraIndicator = indicator;
     cameraArrowView = self->_cameraArrowView;
     if (cameraArrowView)
     {
-      v4 = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self _effectiveShowCameraIndicator];
+      _effectiveShowCameraIndicator = [(PKPaymentAuthorizationServiceCompactNavigationContainerController *)self _effectiveShowCameraIndicator];
 
-      [(LAUIHorizontalArrowView *)cameraArrowView setAnimating:v4];
+      [(LAUIHorizontalArrowView *)cameraArrowView setAnimating:_effectiveShowCameraIndicator];
     }
   }
 }

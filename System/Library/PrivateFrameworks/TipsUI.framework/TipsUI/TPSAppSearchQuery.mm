@@ -1,12 +1,12 @@
 @interface TPSAppSearchQuery
-+ (id)queryWithSearchTerm:(id)a3 origin:(int64_t)a4;
++ (id)queryWithSearchTerm:(id)term origin:(int64_t)origin;
 - (NSString)identifier;
 - (NSString)searchTerm;
 - (TPSAppSearchQuery)init;
-- (TPSAppSearchQuery)initWithSearchTerm:(id)a3 origin:(int64_t)a4 identifier:(id)a5;
+- (TPSAppSearchQuery)initWithSearchTerm:(id)term origin:(int64_t)origin identifier:(id)identifier;
 - (int64_t)origin;
-- (void)setOrigin:(int64_t)a3;
-- (void)setSearchTerm:(id)a3;
+- (void)setOrigin:(int64_t)origin;
+- (void)setSearchTerm:(id)term;
 @end
 
 @implementation TPSAppSearchQuery
@@ -35,11 +35,11 @@
   return v8;
 }
 
-- (void)setSearchTerm:(id)a3
+- (void)setSearchTerm:(id)term
 {
   sub_220BCDBA0();
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
   sub_220BCDA20();
   swift_endAccess();
 }
@@ -51,17 +51,17 @@
   return *(self + v3);
 }
 
-- (void)setOrigin:(int64_t)a3
+- (void)setOrigin:(int64_t)origin
 {
   v5 = OBJC_IVAR___TPSAppSearchQuery_origin;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = origin;
 }
 
-- (TPSAppSearchQuery)initWithSearchTerm:(id)a3 origin:(int64_t)a4 identifier:(id)a5
+- (TPSAppSearchQuery)initWithSearchTerm:(id)term origin:(int64_t)origin identifier:(id)identifier
 {
   v7 = sub_220BCDBA0();
-  if (a5)
+  if (identifier)
   {
     v9 = v7;
     v10 = v8;
@@ -77,15 +77,15 @@
     v13 = 0;
   }
 
-  return TPSAppSearchQuery.init(searchTerm:origin:identifier:)(v7, v8, a4, v11, v13);
+  return TPSAppSearchQuery.init(searchTerm:origin:identifier:)(v7, v8, origin, v11, v13);
 }
 
-+ (id)queryWithSearchTerm:(id)a3 origin:(int64_t)a4
++ (id)queryWithSearchTerm:(id)term origin:(int64_t)origin
 {
   v5 = sub_220BCDBA0();
   v7 = v6;
   v8 = objc_allocWithZone(type metadata accessor for TPSAppSearchQuery());
-  v9 = TPSAppSearchQuery.init(searchTerm:origin:identifier:)(v5, v7, a4, 0, 0);
+  v9 = TPSAppSearchQuery.init(searchTerm:origin:identifier:)(v5, v7, origin, 0, 0);
 
   return v9;
 }

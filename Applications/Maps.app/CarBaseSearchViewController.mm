@@ -1,79 +1,79 @@
 @interface CarBaseSearchViewController
-- (CarBaseSearchViewController)initWithDisabledETAUpdates:(BOOL)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_lastKnownETAForIndexPath:(id)a3;
-- (id)_lastKnownETAForItem:(id)a3;
-- (id)_quickRouteManagerForIndexPath:(id)a3;
-- (id)indexPathForPreferredFocusedViewInTableView:(id)a3;
-- (id)modelForItemAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (CarBaseSearchViewController)initWithDisabledETAUpdates:(BOOL)updates;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_lastKnownETAForIndexPath:(id)path;
+- (id)_lastKnownETAForItem:(id)item;
+- (id)_quickRouteManagerForIndexPath:(id)path;
+- (id)indexPathForPreferredFocusedViewInTableView:(id)view;
+- (id)modelForItemAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (unint64_t)_markVisibleQuickRouteManagersVisible;
 - (void)_markAllQuickRouteManagersNotVisible;
 - (void)continueQuickRouteETAs;
 - (void)dealloc;
 - (void)prepareQuickRouteETAs;
-- (void)quickRouteManager:(id)a3 didUpdateETA:(id)a4 error:(id)a5 animated:(BOOL)a6;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setUserIsActive:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)quickRouteManager:(id)manager didUpdateETA:(id)a error:(id)error animated:(BOOL)animated;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setUserIsActive:(BOOL)active;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateAllETAs;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarBaseSearchViewController
 
-- (id)indexPathForPreferredFocusedViewInTableView:(id)a3
+- (id)indexPathForPreferredFocusedViewInTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(CarBaseSearchViewController *)self itemAtIndexPath:self->_lastSelectedIndexPath];
 
   if (v5)
   {
-    v6 = self->_lastSelectedIndexPath;
+    firstObject = self->_lastSelectedIndexPath;
   }
 
   else
   {
-    v7 = [v4 indexPathsForVisibleRows];
-    v8 = [v7 count];
+    indexPathsForVisibleRows = [viewCopy indexPathsForVisibleRows];
+    v8 = [indexPathsForVisibleRows count];
 
     if (v8)
     {
-      v9 = [v4 indexPathsForVisibleRows];
-      v6 = [v9 firstObject];
+      indexPathsForVisibleRows2 = [viewCopy indexPathsForVisibleRows];
+      firstObject = [indexPathsForVisibleRows2 firstObject];
     }
 
     else
     {
-      v6 = 0;
+      firstObject = 0;
     }
   }
 
-  return v6;
+  return firstObject;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   lastSelectedIndexPath = self->_lastSelectedIndexPath;
-  self->_lastSelectedIndexPath = v6;
+  self->_lastSelectedIndexPath = pathCopy;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = +[CarSearchItemCell reuseIdentifier];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8 forIndexPath:v7];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(CarBaseSearchViewController *)self itemAtIndexPath:v7];
-  v11 = [(CarBaseSearchViewController *)self modelForItemAtIndexPath:v7];
+  v10 = [(CarBaseSearchViewController *)self itemAtIndexPath:pathCopy];
+  v11 = [(CarBaseSearchViewController *)self modelForItemAtIndexPath:pathCopy];
   if (!v11)
   {
     objc_initWeak(&location, v9);
@@ -95,17 +95,17 @@
     objc_destroyWeak(&location);
   }
 
-  [v11 setIsRecent:{objc_msgSend(v7, "section") == 1}];
+  [v11 setIsRecent:{objc_msgSend(pathCopy, "section") == 1}];
   [v9 setupWithModel:v11 cellStyle:{-[CarBaseSearchViewController cellStyle](self, "cellStyle")}];
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CarBaseSearchViewController *)self itemAtIndexPath:v5];
-  v7 = [(CarBaseSearchViewController *)self modelForItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(CarBaseSearchViewController *)self itemAtIndexPath:pathCopy];
+  v7 = [(CarBaseSearchViewController *)self modelForItemAtIndexPath:pathCopy];
 
   if (!v7)
   {
@@ -113,8 +113,8 @@
     [v6 updateModel:v7];
   }
 
-  v8 = [v7 rating];
-  if (v8)
+  rating = [v7 rating];
+  if (rating)
   {
 
 LABEL_6:
@@ -129,17 +129,17 @@ LABEL_6:
 
   v9 = 0;
 LABEL_7:
-  v10 = [(CarBaseSearchViewController *)self view];
-  v11 = [v10 _car_usingLargeTextSizes];
+  view = [(CarBaseSearchViewController *)self view];
+  _car_usingLargeTextSizes = [view _car_usingLargeTextSizes];
 
   v12 = 44.0;
-  if (v11)
+  if (_car_usingLargeTextSizes)
   {
     v12 = 72.0;
   }
 
   v13 = 56.0;
-  if (v11)
+  if (_car_usingLargeTextSizes)
   {
     v13 = 84.0;
   }
@@ -157,27 +157,27 @@ LABEL_7:
   return v14;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   if (!self->_disableETAUpdates)
   {
     v10 = +[MKLocationManager sharedLocationManager];
-    v11 = [v10 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v10 isAuthorizedForPreciseLocation];
 
-    if (v11)
+    if (isAuthorizedForPreciseLocation)
     {
-      v12 = [(CarBaseSearchViewController *)self _lastKnownETAForIndexPath:v9];
+      v12 = [(CarBaseSearchViewController *)self _lastKnownETAForIndexPath:pathCopy];
       if (v12)
       {
-        [(CarBaseSearchViewController *)self _applyRouteETA:v12 toCell:v8 animated:1];
+        [(CarBaseSearchViewController *)self _applyRouteETA:v12 toCell:cellCopy animated:1];
       }
 
       else
       {
-        v13 = [(CarBaseSearchViewController *)self _quickRouteManagerForIndexPath:v9];
+        v13 = [(CarBaseSearchViewController *)self _quickRouteManagerForIndexPath:pathCopy];
         if (v13)
         {
           if (![(CarBaseSearchViewController *)self userIsActive])
@@ -186,24 +186,24 @@ LABEL_7:
           }
 
           [v13 _Car_queueUpdateETA];
-          [v8 expectUpdatedRouteETA];
+          [cellCopy expectUpdatedRouteETA];
         }
       }
     }
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(CarBaseSearchViewController *)self setUserIsActive:0];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  if (a4.y <= 0.0)
+  if (velocity.y <= 0.0)
   {
     v5 = 7;
   }
@@ -213,35 +213,35 @@ LABEL_7:
     v5 = 8;
   }
 
-  v7 = [CarDisplayController sharedInstance:a3];
-  v6 = [v7 chromeViewController];
-  [v6 captureUserAction:v5];
+  v7 = [CarDisplayController sharedInstance:dragging];
+  chromeViewController = [v7 chromeViewController];
+  [chromeViewController captureUserAction:v5];
 }
 
-- (id)modelForItemAtIndexPath:(id)a3
+- (id)modelForItemAtIndexPath:(id)path
 {
-  v4 = [(CarBaseSearchViewController *)self itemAtIndexPath:a3];
+  v4 = [(CarBaseSearchViewController *)self itemAtIndexPath:path];
   v5 = [(CarBaseSearchViewController *)self modelForItem:v4];
 
   return v5;
 }
 
-- (void)quickRouteManager:(id)a3 didUpdateETA:(id)a4 error:(id)a5 animated:(BOOL)a6
+- (void)quickRouteManager:(id)manager didUpdateETA:(id)a error:(id)error animated:(BOOL)animated
 {
-  v10 = a3;
-  v11 = a4;
+  managerCopy = manager;
+  aCopy = a;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10089BF94;
   v16[3] = &unk_10162CF40;
-  v12 = a5;
-  v17 = v12;
-  v13 = v10;
+  errorCopy = error;
+  v17 = errorCopy;
+  v13 = managerCopy;
   v18 = v13;
-  v19 = self;
-  v14 = v11;
+  selfCopy = self;
+  v14 = aCopy;
   v20 = v14;
-  v21 = a6;
+  animatedCopy = animated;
   v15 = objc_retainBlock(v16);
   if (+[NSThread isMainThread])
   {
@@ -254,28 +254,28 @@ LABEL_7:
   }
 }
 
-- (id)_quickRouteManagerForIndexPath:(id)a3
+- (id)_quickRouteManagerForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_quickRouteManagers objectForKeyedSubscript:v4];
-  if (!v5)
+  pathCopy = path;
+  mapItem = [(NSMutableDictionary *)self->_quickRouteManagers objectForKeyedSubscript:pathCopy];
+  if (!mapItem)
   {
-    v6 = [(CarBaseSearchViewController *)self modelForItemAtIndexPath:v4];
-    v5 = [v6 mapItem];
+    v6 = [(CarBaseSearchViewController *)self modelForItemAtIndexPath:pathCopy];
+    mapItem = [v6 mapItem];
 
-    if (v5)
+    if (mapItem)
     {
-      v5 = objc_alloc_init(_MKQuickRouteManager);
-      [v5 setDelegate:self];
-      [v5 setView:self];
-      v7 = [v6 mapItem];
-      [v5 setMapItem:v7];
+      mapItem = objc_alloc_init(_MKQuickRouteManager);
+      [mapItem setDelegate:self];
+      [mapItem setView:self];
+      mapItem2 = [v6 mapItem];
+      [mapItem setMapItem:mapItem2];
 
-      [(NSMutableDictionary *)self->_quickRouteManagers setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_quickRouteManagers setObject:mapItem forKeyedSubscript:pathCopy];
     }
   }
 
-  return v5;
+  return mapItem;
 }
 
 - (void)_markAllQuickRouteManagersNotVisible
@@ -284,8 +284,8 @@ LABEL_7:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMutableDictionary *)self->_quickRouteManagers allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_quickRouteManagers allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -296,7 +296,7 @@ LABEL_7:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -304,7 +304,7 @@ LABEL_7:
         [v7 _Car_cancelUpdateETA];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -313,21 +313,21 @@ LABEL_7:
 
 - (unint64_t)_markVisibleQuickRouteManagersVisible
 {
-  v3 = [(CarBaseSearchViewController *)self tableView];
-  v4 = [v3 _maps_isVisible];
+  tableView = [(CarBaseSearchViewController *)self tableView];
+  _maps_isVisible = [tableView _maps_isVisible];
 
-  if (!v4)
+  if (!_maps_isVisible)
   {
     return 0;
   }
 
   v5 = objc_opt_new();
-  v6 = [(CarTableView *)self->_tableView indexPathsForVisibleRows];
+  indexPathsForVisibleRows = [(CarTableView *)self->_tableView indexPathsForVisibleRows];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [indexPathsForVisibleRows countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -339,7 +339,7 @@ LABEL_7:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v11 = [(CarBaseSearchViewController *)self _quickRouteManagerForIndexPath:*(*(&v17 + 1) + 8 * v10)];
@@ -347,8 +347,8 @@ LABEL_7:
         {
           [v5 addObject:v11];
           [v11 set_Car_isVisible:1];
-          v12 = [v11 _Car_refreshOperation];
-          if (!v12 || (v13 = v12, v14 = [v11 _Car_isPrimaryRefreshQueue], v13, (v14 & 1) == 0))
+          _Car_refreshOperation = [v11 _Car_refreshOperation];
+          if (!_Car_refreshOperation || (v13 = _Car_refreshOperation, v14 = [v11 _Car_isPrimaryRefreshQueue], v13, (v14 & 1) == 0))
           {
             [v11 _Car_queueUpdateETA];
           }
@@ -358,28 +358,28 @@ LABEL_7:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [indexPathsForVisibleRows countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [v6 count];
+  v15 = [indexPathsForVisibleRows count];
 
   return v15;
 }
 
-- (id)_lastKnownETAForIndexPath:(id)a3
+- (id)_lastKnownETAForIndexPath:(id)path
 {
-  v4 = [(CarBaseSearchViewController *)self itemAtIndexPath:a3];
+  v4 = [(CarBaseSearchViewController *)self itemAtIndexPath:path];
   v5 = [(CarBaseSearchViewController *)self _lastKnownETAForItem:v4];
 
   return v5;
 }
 
-- (id)_lastKnownETAForItem:(id)a3
+- (id)_lastKnownETAForItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     v3 = [(NSMapTable *)self->_lastKnownETAResultsForItem objectForKey:?];
     if (v3)
@@ -418,16 +418,16 @@ LABEL_7:
   if (!self->_suppressETAUpdates && !self->_disableETAUpdates)
   {
     v3 = +[MKLocationManager sharedLocationManager];
-    v4 = [v3 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v3 isAuthorizedForPreciseLocation];
 
-    if (v4)
+    if (isAuthorizedForPreciseLocation)
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [(NSMutableDictionary *)self->_quickRouteManagers allValues];
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      allValues = [(NSMutableDictionary *)self->_quickRouteManagers allValues];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -438,7 +438,7 @@ LABEL_7:
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allValues);
             }
 
             v10 = *(*(&v13 + 1) + 8 * i);
@@ -455,7 +455,7 @@ LABEL_7:
             [v10 _Car_queueUpdateETA];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
@@ -471,9 +471,9 @@ LABEL_7:
     if (!self->_disableETAUpdates)
     {
       v3 = +[MKLocationManager sharedLocationManager];
-      v4 = [v3 isAuthorizedForPreciseLocation];
+      isAuthorizedForPreciseLocation = [v3 isAuthorizedForPreciseLocation];
 
-      if (v4)
+      if (isAuthorizedForPreciseLocation)
       {
         if (!self->_userIsActive && [(CarBaseSearchViewController *)self _markVisibleQuickRouteManagersVisible])
         {
@@ -490,16 +490,16 @@ LABEL_7:
   if (!self->_disableETAUpdates)
   {
     v3 = +[MKLocationManager sharedLocationManager];
-    v4 = [v3 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v3 isAuthorizedForPreciseLocation];
 
-    if (v4)
+    if (isAuthorizedForPreciseLocation)
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [(NSMutableDictionary *)self->_quickRouteManagers allValues];
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      allValues = [(NSMutableDictionary *)self->_quickRouteManagers allValues];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -510,7 +510,7 @@ LABEL_7:
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allValues);
             }
 
             v10 = *(*(&v13 + 1) + 8 * i);
@@ -519,7 +519,7 @@ LABEL_7:
             [v10 setDelegate:0];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
@@ -532,9 +532,9 @@ LABEL_7:
   }
 }
 
-- (void)setUserIsActive:(BOOL)a3
+- (void)setUserIsActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     self->_userIsActive = 1;
     [CarQuickRouteRefreshOperation suspendQueues:1];
@@ -555,30 +555,30 @@ LABEL_7:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CarBaseSearchViewController;
-  [(CarBaseSearchViewController *)&v5 viewDidDisappear:a3];
+  [(CarBaseSearchViewController *)&v5 viewDidDisappear:disappear];
   self->_suppressETAUpdates = 1;
   v4 = +[MKLocationManager sharedLocationManager];
   [v4 stopLocationUpdateWithObserver:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CarBaseSearchViewController;
-  [(CarBaseSearchViewController *)&v4 viewWillDisappear:a3];
+  [(CarBaseSearchViewController *)&v4 viewWillDisappear:disappear];
   [(CarBaseSearchViewController *)self _markAllQuickRouteManagersNotVisible];
   [(CarBaseSearchViewController *)self setUserIsActive:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CarBaseSearchViewController;
-  [(CarBaseSearchViewController *)&v6 viewDidAppear:a3];
+  [(CarBaseSearchViewController *)&v6 viewDidAppear:appear];
   v4 = +[MKLocationManager sharedLocationManager];
   [v4 startLocationUpdateWithObserver:self];
 
@@ -587,11 +587,11 @@ LABEL_7:
   self->_lastSelectedIndexPath = 0;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CarBaseSearchViewController;
-  [(CarBaseSearchViewController *)&v4 viewWillAppear:a3];
+  [(CarBaseSearchViewController *)&v4 viewWillAppear:appear];
   self->_suppressETAUpdates = 0;
   [(CarBaseSearchViewController *)self setUserIsActive:1];
 }
@@ -606,7 +606,7 @@ LABEL_7:
   [(CarBaseSearchViewController *)&v4 dealloc];
 }
 
-- (CarBaseSearchViewController)initWithDisabledETAUpdates:(BOOL)a3
+- (CarBaseSearchViewController)initWithDisabledETAUpdates:(BOOL)updates
 {
   v11.receiver = self;
   v11.super_class = CarBaseSearchViewController;
@@ -614,7 +614,7 @@ LABEL_7:
   v5 = v4;
   if (v4)
   {
-    v4->_disableETAUpdates = a3;
+    v4->_disableETAUpdates = updates;
     v4->_suppressETAUpdates = 1;
     v4->_cellStyle = 0;
     v6 = +[NSMapTable weakToStrongObjectsMapTable];

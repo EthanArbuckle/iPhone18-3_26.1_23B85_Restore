@@ -1,31 +1,31 @@
 @interface BTVCPacketControl
-- (BTVCPacketControl)initWithParams:(id)a3 response:(BOOL)a4;
+- (BTVCPacketControl)initWithParams:(id)params response:(BOOL)response;
 - (id)getCurrentPacket;
 - (void)_activate;
-- (void)_cleanupQueuedPacket:(int)a3;
+- (void)_cleanupQueuedPacket:(int)packet;
 - (void)_invalidate;
 - (void)_processQueuedPacket;
 - (void)_update;
 - (void)activate;
 - (void)activateDirect;
-- (void)cleanupQueuedPacket:(int)a3;
-- (void)completeCurrentPacket:(id)a3;
+- (void)cleanupQueuedPacket:(int)packet;
+- (void)completeCurrentPacket:(id)packet;
 - (void)dealloc;
-- (void)didReceiveData:(id)a3;
-- (void)didSendPacket:(id)a3 error:(id)a4;
+- (void)didReceiveData:(id)data;
+- (void)didSendPacket:(id)packet error:(id)error;
 - (void)invalidate;
 - (void)refreshCompleteTimeoutTimer;
-- (void)sendPacket:(id)a3 completion:(id)a4;
-- (void)sendPacketDirect:(id)a3 completion:(id)a4;
-- (void)setDispatchQueue:(id)a3;
+- (void)sendPacket:(id)packet completion:(id)completion;
+- (void)sendPacketDirect:(id)direct completion:(id)completion;
+- (void)setDispatchQueue:(id)queue;
 - (void)update;
 @end
 
 @implementation BTVCPacketControl
 
-- (BTVCPacketControl)initWithParams:(id)a3 response:(BOOL)a4
+- (BTVCPacketControl)initWithParams:(id)params response:(BOOL)response
 {
-  v7 = a3;
+  paramsCopy = params;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -40,8 +40,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dispatchQueue, a3);
-    v10->_responseIsNeeded = a4;
+    objc_storeStrong(&v9->_dispatchQueue, params);
+    v10->_responseIsNeeded = response;
     v10->_packetCompleteTimeoutSeconds = 0.0;
   }
 
@@ -55,9 +55,9 @@
   [(BTVCPacketControl *)&v2 dealloc];
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -69,7 +69,7 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
@@ -77,28 +77,28 @@
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_activateCalled = 1;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10064C954;
   block[3] = &unk_100ADF820;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)activateDirect
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = self;
-  objc_sync_enter(v3);
-  v3->_activateCalled = 1;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  objc_sync_exit(selfCopy);
 
-  [(BTVCPacketControl *)v3 _activate];
+  [(BTVCPacketControl *)selfCopy _activate];
 }
 
 - (void)_activate
@@ -184,27 +184,27 @@
   [(BTVCPacketControl *)self _processQueuedPacket];
 }
 
-- (void)sendPacket:(id)a3 completion:(id)a4
+- (void)sendPacket:(id)packet completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  packetCopy = packet;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10064CD48;
   block[3] = &unk_100AEAFA0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = packetCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = packetCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)sendPacketDirect:(id)a3 completion:(id)a4
+- (void)sendPacketDirect:(id)direct completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  directCopy = direct;
+  completionCopy = completion;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -222,8 +222,8 @@
   else
   {
     v9 = objc_alloc_init(BTVCPacket);
-    [(BTVCPacket *)v9 setPacket:v6];
-    [(BTVCPacket *)v9 setCompletion:v7];
+    [(BTVCPacket *)v9 setPacket:directCopy];
+    [(BTVCPacket *)v9 setCompletion:completionCopy];
     packetCompleteTimeoutSeconds = self->_packetCompleteTimeoutSeconds;
     if (packetCompleteTimeoutSeconds != 0.0)
     {
@@ -235,7 +235,7 @@
   }
 }
 
-- (void)completeCurrentPacket:(id)a3
+- (void)completeCurrentPacket:(id)packet
 {
   currentPacket = self->_currentPacket;
   self->_currentPacket = 0;
@@ -283,9 +283,9 @@
   if (!self->_currentPacket)
   {
 LABEL_7:
-    v5 = [(NSMutableArray *)self->_packetSendQueue firstObject];
+    firstObject = [(NSMutableArray *)self->_packetSendQueue firstObject];
     currentPacket = self->_currentPacket;
-    self->_currentPacket = v5;
+    self->_currentPacket = firstObject;
 
     if (self->_currentPacket)
     {
@@ -315,14 +315,14 @@ LABEL_11:
       sendingPacket = self->_sendingPacket;
       if (sendingPacket)
       {
-        v10 = [(BTVCPacket *)self->_currentPacket packet];
-        sendingPacket[2](sendingPacket, v10);
+        packet = [(BTVCPacket *)self->_currentPacket packet];
+        sendingPacket[2](sendingPacket, packet);
       }
     }
   }
 }
 
-- (void)cleanupQueuedPacket:(int)a3
+- (void)cleanupQueuedPacket:(int)packet
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -330,23 +330,23 @@ LABEL_11:
   v4[2] = sub_10064D1F8;
   v4[3] = &unk_100ADF920;
   v4[4] = self;
-  v5 = a3;
+  packetCopy = packet;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)_cleanupQueuedPacket:(int)a3
+- (void)_cleanupQueuedPacket:(int)packet
 {
-  v26 = self;
+  selfCopy = self;
   currentPacket = self->_currentPacket;
   if (currentPacket)
   {
-    v10 = [(BTVCPacket *)currentPacket completion];
+    completion = [(BTVCPacket *)currentPacket completion];
 
-    if (v10)
+    if (completion)
     {
-      obj = [(BTVCPacket *)v26->_currentPacket completion];
-      v4 = [(BTVCPacket *)v26->_currentPacket packet];
-      if (a3)
+      obj = [(BTVCPacket *)selfCopy->_currentPacket completion];
+      packet = [(BTVCPacket *)selfCopy->_currentPacket packet];
+      if (packet)
       {
         v36 = NSLocalizedDescriptionKey;
         v11 = [NSString stringWithUTF8String:DebugGetErrorString()];
@@ -358,8 +358,8 @@ LABEL_11:
         }
 
         v37 = v12;
-        v5 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1, v26];
-        v13 = [NSError errorWithDomain:NSOSStatusErrorDomain code:a3 userInfo:v5];
+        selfCopy = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1, selfCopy];
+        v13 = [NSError errorWithDomain:NSOSStatusErrorDomain code:packet userInfo:selfCopy];
       }
 
       else
@@ -367,21 +367,21 @@ LABEL_11:
         v13 = 0;
       }
 
-      obj[2](obj, v4, v13);
-      if (a3)
+      obj[2](obj, packet, v13);
+      if (packet)
       {
       }
     }
 
-    v14 = v26->_currentPacket;
-    v26->_currentPacket = 0;
+    v14 = selfCopy->_currentPacket;
+    selfCopy->_currentPacket = 0;
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obja = v26->_packetSendQueue;
+  obja = selfCopy->_packetSendQueue;
   v15 = [(NSMutableArray *)obja countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v15)
   {
@@ -396,18 +396,18 @@ LABEL_11:
         }
 
         v18 = *(*(&v29 + 1) + 8 * i);
-        v19 = [v18 completion];
-        v20 = v19 == 0;
+        completion2 = [v18 completion];
+        v20 = completion2 == 0;
 
         if (!v20)
         {
-          v21 = [v18 completion];
-          v22 = [v18 packet];
-          if (a3)
+          completion3 = [v18 completion];
+          packet2 = [v18 packet];
+          if (packet)
           {
             v33 = NSLocalizedDescriptionKey;
             v23 = [NSString stringWithUTF8String:DebugGetErrorString()];
-            v4 = v23;
+            packet = v23;
             v24 = @"?";
             if (v23)
             {
@@ -416,7 +416,7 @@ LABEL_11:
 
             v34 = v24;
             v6 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-            v7 = [NSError errorWithDomain:NSOSStatusErrorDomain code:a3 userInfo:v6];
+            v7 = [NSError errorWithDomain:NSOSStatusErrorDomain code:packet userInfo:v6];
             v25 = v7;
           }
 
@@ -425,8 +425,8 @@ LABEL_11:
             v25 = 0;
           }
 
-          (v21)[2](v21, v22, v25);
-          if (a3)
+          (completion3)[2](completion3, packet2, v25);
+          if (packet)
           {
           }
         }
@@ -438,20 +438,20 @@ LABEL_11:
     while (v15);
   }
 
-  [(NSMutableArray *)v26->_packetSendQueue removeAllObjects];
+  [(NSMutableArray *)selfCopy->_packetSendQueue removeAllObjects];
 }
 
-- (void)didSendPacket:(id)a3 error:(id)a4
+- (void)didSendPacket:(id)packet error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  packetCopy = packet;
+  errorCopy = error;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 136315394;
     v19 = "[BTVCPacketControl didSendPacket:error:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = packetCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s packet %@", &v18, 0x16u);
   }
 
@@ -459,8 +459,8 @@ LABEL_11:
   currentPacket = self->_currentPacket;
   if (currentPacket)
   {
-    v10 = [(BTVCPacket *)currentPacket completion];
-    v11 = v10 == 0;
+    completion = [(BTVCPacket *)currentPacket completion];
+    v11 = completion == 0;
 
     v12 = qword_100BCEA70;
     v13 = os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT);
@@ -483,8 +483,8 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s completion function", &v18, 0xCu);
       }
 
-      v14 = [(BTVCPacket *)self->_currentPacket completion];
-      v15 = (v14)[2](v14, v6, v7);
+      completion2 = [(BTVCPacket *)self->_currentPacket completion];
+      v15 = (completion2)[2](completion2, packetCopy, errorCopy);
 
       if ((v15 & 1) == 0)
       {
@@ -508,7 +508,7 @@ LABEL_14:
   [(BTVCPacketControl *)self _processQueuedPacket];
 }
 
-- (void)didReceiveData:(id)a3
+- (void)didReceiveData:(id)data
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
 
@@ -545,14 +545,14 @@ LABEL_14:
 
         else
         {
-          v11 = [(BTVCPacket *)v9 completion];
+          completion = [(BTVCPacket *)v9 completion];
 
-          if (v11)
+          if (completion)
           {
-            v12 = [(BTVCPacket *)self->_currentPacket completion];
-            v13 = [(BTVCPacket *)self->_currentPacket packet];
+            completion2 = [(BTVCPacket *)self->_currentPacket completion];
+            packet = [(BTVCPacket *)self->_currentPacket packet];
             v14 = CBErrorF();
-            (v12)[2](v12, v13, v14);
+            (completion2)[2](completion2, packet, v14);
           }
 
           v15 = self->_currentPacket;
@@ -582,14 +582,14 @@ LABEL_14:
 
             else
             {
-              v22 = [v20 completion];
+              completion3 = [v20 completion];
 
-              if (v22)
+              if (completion3)
               {
-                v23 = [v20 completion];
-                v24 = [v20 packet];
+                completion4 = [v20 completion];
+                packet2 = [v20 packet];
                 v25 = CBErrorF();
-                (v23)[2](v23, v24, v25);
+                (completion4)[2](completion4, packet2, v25);
               }
 
               [(NSMutableArray *)self->_packetSendQueue removeObjectAtIndex:v18];

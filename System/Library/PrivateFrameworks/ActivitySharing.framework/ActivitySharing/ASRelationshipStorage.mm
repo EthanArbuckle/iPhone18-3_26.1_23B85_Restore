@@ -1,28 +1,28 @@
 @interface ASRelationshipStorage
-+ (ASRelationshipStorage)relationshipStorageWithCodableRelationshipStorage:(id)a3;
++ (ASRelationshipStorage)relationshipStorageWithCodableRelationshipStorage:(id)storage;
 - (ASRelationship)primaryRelationship;
 - (ASRelationship)primaryRemoteRelationship;
 - (ASRelationshipStorage)init;
-- (ASRelationshipStorage)initWithRelationship:(id)a3 remoteRelationship:(id)a4;
+- (ASRelationshipStorage)initWithRelationship:(id)relationship remoteRelationship:(id)remoteRelationship;
 - (ASRelationshipStorage)storageWithSynchronizedRelationshipIdentifiers;
-- (BOOL)isEqualToRelationshipStorage:(id)a3;
-- (id)_chosePrimaryRelationshipWithSecureCloudRelationship:(id)a3 legacyRelationship:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToRelationshipStorage:(id)storage;
+- (id)_chosePrimaryRelationshipWithSecureCloudRelationship:(id)relationship legacyRelationship:(id)legacyRelationship;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fullDescription;
-- (id)relationshipForCloudType:(unint64_t)a3;
-- (id)remoteRelationshipForCloudType:(unint64_t)a3;
-- (void)updateRelationship:(id)a3 cloudType:(unint64_t)a4;
-- (void)updateRemoteRelationship:(id)a3 cloudType:(unint64_t)a4;
+- (id)relationshipForCloudType:(unint64_t)type;
+- (id)remoteRelationshipForCloudType:(unint64_t)type;
+- (void)updateRelationship:(id)relationship cloudType:(unint64_t)type;
+- (void)updateRemoteRelationship:(id)relationship cloudType:(unint64_t)type;
 @end
 
 @implementation ASRelationshipStorage
 
 - (ASRelationship)primaryRelationship
 {
-  v3 = [(ASRelationshipStorage *)self secureCloudRelationship];
-  v4 = [(ASRelationshipStorage *)self legacyRelationship];
-  v5 = [(ASRelationshipStorage *)self _chosePrimaryRelationshipWithSecureCloudRelationship:v3 legacyRelationship:v4];
+  secureCloudRelationship = [(ASRelationshipStorage *)self secureCloudRelationship];
+  legacyRelationship = [(ASRelationshipStorage *)self legacyRelationship];
+  v5 = [(ASRelationshipStorage *)self _chosePrimaryRelationshipWithSecureCloudRelationship:secureCloudRelationship legacyRelationship:legacyRelationship];
 
   return v5;
 }
@@ -38,51 +38,51 @@
 
 - (ASRelationship)primaryRemoteRelationship
 {
-  v3 = [(ASRelationshipStorage *)self secureCloudRemoteRelationship];
-  v4 = [(ASRelationshipStorage *)self legacyRemoteRelationship];
-  v5 = [(ASRelationshipStorage *)self _chosePrimaryRelationshipWithSecureCloudRelationship:v3 legacyRelationship:v4];
+  secureCloudRemoteRelationship = [(ASRelationshipStorage *)self secureCloudRemoteRelationship];
+  legacyRemoteRelationship = [(ASRelationshipStorage *)self legacyRemoteRelationship];
+  v5 = [(ASRelationshipStorage *)self _chosePrimaryRelationshipWithSecureCloudRelationship:secureCloudRemoteRelationship legacyRelationship:legacyRemoteRelationship];
 
   return v5;
 }
 
-+ (ASRelationshipStorage)relationshipStorageWithCodableRelationshipStorage:(id)a3
++ (ASRelationshipStorage)relationshipStorageWithCodableRelationshipStorage:(id)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   v4 = objc_alloc_init(ASRelationshipStorage);
-  v5 = [v3 legacyRelationshipContainer];
-  v6 = [ASRelationship relationshipWithCodableRelationshipContainer:v5];
+  legacyRelationshipContainer = [storageCopy legacyRelationshipContainer];
+  v6 = [ASRelationship relationshipWithCodableRelationshipContainer:legacyRelationshipContainer];
   [(ASRelationshipStorage *)v4 setLegacyRelationship:v6];
 
-  v7 = [v3 legacyRemoteRelationshipContainer];
-  v8 = [ASRelationship relationshipWithCodableRelationshipContainer:v7];
+  legacyRemoteRelationshipContainer = [storageCopy legacyRemoteRelationshipContainer];
+  v8 = [ASRelationship relationshipWithCodableRelationshipContainer:legacyRemoteRelationshipContainer];
   [(ASRelationshipStorage *)v4 setLegacyRemoteRelationship:v8];
 
-  v9 = [v3 secureCloudRelationshipContainer];
-  v10 = [ASRelationship relationshipWithCodableRelationshipContainer:v9];
+  secureCloudRelationshipContainer = [storageCopy secureCloudRelationshipContainer];
+  v10 = [ASRelationship relationshipWithCodableRelationshipContainer:secureCloudRelationshipContainer];
   [(ASRelationshipStorage *)v4 setSecureCloudRelationship:v10];
 
-  v11 = [v3 secureCloudRemoteRelationshipContainer];
+  secureCloudRemoteRelationshipContainer = [storageCopy secureCloudRemoteRelationshipContainer];
 
-  v12 = [ASRelationship relationshipWithCodableRelationshipContainer:v11];
+  v12 = [ASRelationship relationshipWithCodableRelationshipContainer:secureCloudRemoteRelationshipContainer];
   [(ASRelationshipStorage *)v4 setSecureCloudRemoteRelationship:v12];
 
   return v4;
 }
 
-- (ASRelationshipStorage)initWithRelationship:(id)a3 remoteRelationship:(id)a4
+- (ASRelationshipStorage)initWithRelationship:(id)relationship remoteRelationship:(id)remoteRelationship
 {
-  v7 = a3;
-  v8 = a4;
+  relationshipCopy = relationship;
+  remoteRelationshipCopy = remoteRelationship;
   v17.receiver = self;
   v17.super_class = ASRelationshipStorage;
   v9 = [(ASRelationshipStorage *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_legacyRelationship, a3);
-    objc_storeStrong(&v10->_legacyRemoteRelationship, a4);
-    v11 = [v7 copy];
-    v12 = [v8 copy];
+    objc_storeStrong(&v9->_legacyRelationship, relationship);
+    objc_storeStrong(&v10->_legacyRemoteRelationship, remoteRelationship);
+    v11 = [relationshipCopy copy];
+    v12 = [remoteRelationshipCopy copy];
     [(ASRelationship *)v11 setCloudType:1];
     [(ASRelationship *)v12 setCloudType:1];
     secureCloudRelationship = v10->_secureCloudRelationship;
@@ -98,13 +98,13 @@
 
 - (id)description
 {
-  v3 = [(ASRelationshipStorage *)self primaryRelationship];
-  v4 = [v3 cloudType];
+  primaryRelationship = [(ASRelationshipStorage *)self primaryRelationship];
+  cloudType = [primaryRelationship cloudType];
 
-  v5 = [(ASRelationshipStorage *)self primaryRemoteRelationship];
-  v6 = [v5 cloudType];
+  primaryRemoteRelationship = [(ASRelationshipStorage *)self primaryRemoteRelationship];
+  cloudType2 = [primaryRemoteRelationship cloudType];
 
-  if (v4)
+  if (cloudType)
   {
     v7 = &stru_2850D2AA8;
   }
@@ -114,7 +114,7 @@
     v7 = @" (PRIMARY)";
   }
 
-  if (v4)
+  if (cloudType)
   {
     v8 = @" (PRIMARY)";
   }
@@ -124,7 +124,7 @@
     v8 = &stru_2850D2AA8;
   }
 
-  if (v6)
+  if (cloudType2)
   {
     v9 = &stru_2850D2AA8;
   }
@@ -134,7 +134,7 @@
     v9 = @" (PRIMARY)";
   }
 
-  if (v6)
+  if (cloudType2)
   {
     v10 = @" (PRIMARY)";
   }
@@ -152,21 +152,21 @@
   v16 = v8;
   v17 = v9;
   v18 = v7;
-  v19 = [v11 stringWithFormat:@"ASRelationshipStorage:\nLEGACY LOCAL%@: %@\nLEGACY REMOTE%@: %@\nSECURE CLOUD LOCAL%@: %@\nSECURE CLOUD REMOTE%@: %@", v18, legacyRelationship, v17, legacyRemoteRelationship, v16, secureCloudRelationship, v10, secureCloudRemoteRelationship];
+  secureCloudRemoteRelationship = [v11 stringWithFormat:@"ASRelationshipStorage:\nLEGACY LOCAL%@: %@\nLEGACY REMOTE%@: %@\nSECURE CLOUD LOCAL%@: %@\nSECURE CLOUD REMOTE%@: %@", v18, legacyRelationship, v17, legacyRemoteRelationship, v16, secureCloudRelationship, v10, secureCloudRemoteRelationship];
 
-  return v19;
+  return secureCloudRemoteRelationship;
 }
 
 - (id)fullDescription
 {
-  v3 = [(ASRelationshipStorage *)self primaryRelationship];
-  v4 = [v3 cloudType];
+  primaryRelationship = [(ASRelationshipStorage *)self primaryRelationship];
+  cloudType = [primaryRelationship cloudType];
 
-  v5 = [(ASRelationshipStorage *)self primaryRemoteRelationship];
-  v6 = [v5 cloudType];
+  primaryRemoteRelationship = [(ASRelationshipStorage *)self primaryRemoteRelationship];
+  cloudType2 = [primaryRemoteRelationship cloudType];
 
   v7 = &stru_2850D2AA8;
-  if (v4)
+  if (cloudType)
   {
     v8 = &stru_2850D2AA8;
   }
@@ -176,7 +176,7 @@
     v8 = @" (PRIMARY)";
   }
 
-  if (v4)
+  if (cloudType)
   {
     v9 = @" (PRIMARY)";
   }
@@ -186,7 +186,7 @@
     v9 = &stru_2850D2AA8;
   }
 
-  if (v6)
+  if (cloudType2)
   {
     v10 = &stru_2850D2AA8;
   }
@@ -196,7 +196,7 @@
     v10 = @" (PRIMARY)";
   }
 
-  if (v6)
+  if (cloudType2)
   {
     v7 = @" (PRIMARY)";
   }
@@ -208,63 +208,63 @@
   v15 = v8;
   v16 = objc_alloc_init(v11);
   [v16 appendFormat:@"-------- Relationship Storage --------\n"];
-  v17 = [(ASRelationship *)self->_legacyRelationship fullDescription];
-  [v16 appendFormat:@"LEGACY LOCAL%@: \n%@\n", v15, v17];
+  fullDescription = [(ASRelationship *)self->_legacyRelationship fullDescription];
+  [v16 appendFormat:@"LEGACY LOCAL%@: \n%@\n", v15, fullDescription];
 
-  v18 = [(ASRelationship *)self->_legacyRemoteRelationship fullDescription];
-  [v16 appendFormat:@"LEGACY REMOTE%@: \n%@\n", v14, v18];
+  fullDescription2 = [(ASRelationship *)self->_legacyRemoteRelationship fullDescription];
+  [v16 appendFormat:@"LEGACY REMOTE%@: \n%@\n", v14, fullDescription2];
 
-  v19 = [(ASRelationship *)self->_secureCloudRelationship fullDescription];
-  [v16 appendFormat:@"SECURE CLOUD LOCAL%@: \n%@\n", v13, v19];
+  fullDescription3 = [(ASRelationship *)self->_secureCloudRelationship fullDescription];
+  [v16 appendFormat:@"SECURE CLOUD LOCAL%@: \n%@\n", v13, fullDescription3];
 
-  v20 = [(ASRelationship *)self->_secureCloudRemoteRelationship fullDescription];
-  [v16 appendFormat:@"SECURE CLOUD REMOTE%@: \n%@\n", v12, v20];
+  fullDescription4 = [(ASRelationship *)self->_secureCloudRemoteRelationship fullDescription];
+  [v16 appendFormat:@"SECURE CLOUD REMOTE%@: \n%@\n", v12, fullDescription4];
 
   v21 = [v16 copy];
 
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ASRelationship *)self->_legacyRelationship copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ASRelationship *)self->_legacyRelationship copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(ASRelationship *)self->_legacyRemoteRelationship copyWithZone:a3];
+  v8 = [(ASRelationship *)self->_legacyRemoteRelationship copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(ASRelationship *)self->_secureCloudRelationship copyWithZone:a3];
+  v10 = [(ASRelationship *)self->_secureCloudRelationship copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(ASRelationship *)self->_secureCloudRemoteRelationship copyWithZone:a3];
+  v12 = [(ASRelationship *)self->_secureCloudRemoteRelationship copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqualToRelationshipStorage:(id)a3
+- (BOOL)isEqualToRelationshipStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   legacyRelationship = self->_legacyRelationship;
-  v6 = [v4 legacyRelationship];
-  if ([(ASRelationship *)legacyRelationship isEqualToRelationship:v6])
+  legacyRelationship = [storageCopy legacyRelationship];
+  if ([(ASRelationship *)legacyRelationship isEqualToRelationship:legacyRelationship])
   {
     legacyRemoteRelationship = self->_legacyRemoteRelationship;
-    v8 = [v4 legacyRemoteRelationship];
-    if ([(ASRelationship *)legacyRemoteRelationship isEqualToRelationship:v8])
+    legacyRemoteRelationship = [storageCopy legacyRemoteRelationship];
+    if ([(ASRelationship *)legacyRemoteRelationship isEqualToRelationship:legacyRemoteRelationship])
     {
       secureCloudRelationship = self->_secureCloudRelationship;
-      v10 = [v4 secureCloudRelationship];
-      if ([(ASRelationship *)secureCloudRelationship isEqualToRelationship:v10])
+      secureCloudRelationship = [storageCopy secureCloudRelationship];
+      if ([(ASRelationship *)secureCloudRelationship isEqualToRelationship:secureCloudRelationship])
       {
         secureCloudRemoteRelationship = self->_secureCloudRemoteRelationship;
-        v12 = [v4 secureCloudRemoteRelationship];
-        v13 = [(ASRelationship *)secureCloudRemoteRelationship isEqualToRelationship:v12];
+        secureCloudRemoteRelationship = [storageCopy secureCloudRemoteRelationship];
+        v13 = [(ASRelationship *)secureCloudRemoteRelationship isEqualToRelationship:secureCloudRemoteRelationship];
       }
 
       else
@@ -287,99 +287,99 @@
   return v13;
 }
 
-- (id)_chosePrimaryRelationshipWithSecureCloudRelationship:(id)a3 legacyRelationship:(id)a4
+- (id)_chosePrimaryRelationshipWithSecureCloudRelationship:(id)relationship legacyRelationship:(id)legacyRelationship
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 dateForLatestRelationshipStart];
-  v8 = [v6 dateForLatestRelationshipEnd];
-  v9 = [v5 dateForLatestRelationshipStart];
-  v10 = [v5 dateForLatestRelationshipEnd];
-  if (([v5 isFriendshipActive] & 1) == 0 && (objc_msgSend(v5, "hasInviteRequestEvent") & 1) == 0 && objc_msgSend(v6, "isFriendshipActive") && objc_msgSend(v10, "hk_isAfterOrEqualToDate:", v7))
+  relationshipCopy = relationship;
+  legacyRelationshipCopy = legacyRelationship;
+  dateForLatestRelationshipStart = [legacyRelationshipCopy dateForLatestRelationshipStart];
+  dateForLatestRelationshipEnd = [legacyRelationshipCopy dateForLatestRelationshipEnd];
+  dateForLatestRelationshipStart2 = [relationshipCopy dateForLatestRelationshipStart];
+  dateForLatestRelationshipEnd2 = [relationshipCopy dateForLatestRelationshipEnd];
+  if (([relationshipCopy isFriendshipActive] & 1) == 0 && (objc_msgSend(relationshipCopy, "hasInviteRequestEvent") & 1) == 0 && objc_msgSend(legacyRelationshipCopy, "isFriendshipActive") && objc_msgSend(dateForLatestRelationshipEnd2, "hk_isAfterOrEqualToDate:", dateForLatestRelationshipStart))
   {
-    v11 = v5;
+    v11 = relationshipCopy;
 LABEL_11:
     v12 = [v11 copy];
     goto LABEL_37;
   }
 
-  if (([v6 isFriendshipActive] & 1) == 0 && (objc_msgSend(v6, "hasInviteRequestEvent") & 1) == 0 && objc_msgSend(v5, "isFriendshipActive") && objc_msgSend(v8, "hk_isAfterOrEqualToDate:", v9))
+  if (([legacyRelationshipCopy isFriendshipActive] & 1) == 0 && (objc_msgSend(legacyRelationshipCopy, "hasInviteRequestEvent") & 1) == 0 && objc_msgSend(relationshipCopy, "isFriendshipActive") && objc_msgSend(dateForLatestRelationshipEnd, "hk_isAfterOrEqualToDate:", dateForLatestRelationshipStart2))
   {
-    v11 = v6;
+    v11 = legacyRelationshipCopy;
     goto LABEL_11;
   }
 
-  v13 = [v6 dateForLatestDowngradeCompleted];
-  v14 = [v5 dateForLatestMigrationCompleted];
-  if ([v5 isFriendshipActive] && objc_msgSend(v5, "secureCloudMigrationCompleted") && (!v8 || objc_msgSend(v9, "hk_isAfterOrEqualToDate:", v8)) && (!v13 || objc_msgSend(v14, "hk_isAfterOrEqualToDate:", v13)))
+  dateForLatestDowngradeCompleted = [legacyRelationshipCopy dateForLatestDowngradeCompleted];
+  dateForLatestMigrationCompleted = [relationshipCopy dateForLatestMigrationCompleted];
+  if ([relationshipCopy isFriendshipActive] && objc_msgSend(relationshipCopy, "secureCloudMigrationCompleted") && (!dateForLatestRelationshipEnd || objc_msgSend(dateForLatestRelationshipStart2, "hk_isAfterOrEqualToDate:", dateForLatestRelationshipEnd)) && (!dateForLatestDowngradeCompleted || objc_msgSend(dateForLatestMigrationCompleted, "hk_isAfterOrEqualToDate:", dateForLatestDowngradeCompleted)))
   {
-    v15 = v5;
+    v15 = relationshipCopy;
   }
 
   else
   {
-    if (![v6 isFriendshipActive])
+    if (![legacyRelationshipCopy isFriendshipActive])
     {
-      v27 = v7;
-      v16 = [v5 dateForLatestInviteRequestEvent];
-      v17 = v16;
-      if (v16)
+      v27 = dateForLatestRelationshipStart;
+      dateForLatestInviteRequestEvent = [relationshipCopy dateForLatestInviteRequestEvent];
+      v17 = dateForLatestInviteRequestEvent;
+      if (dateForLatestInviteRequestEvent)
       {
-        v18 = v16;
+        distantPast = dateForLatestInviteRequestEvent;
       }
 
       else
       {
-        v18 = [MEMORY[0x277CBEAA8] distantPast];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
       }
 
-      v19 = v18;
+      v19 = distantPast;
 
-      v20 = [v6 dateForLatestInviteRequestEvent];
-      v21 = v20;
-      if (v20)
+      dateForLatestInviteRequestEvent2 = [legacyRelationshipCopy dateForLatestInviteRequestEvent];
+      v21 = dateForLatestInviteRequestEvent2;
+      if (dateForLatestInviteRequestEvent2)
       {
-        v22 = v20;
+        distantPast2 = dateForLatestInviteRequestEvent2;
       }
 
       else
       {
-        v22 = [MEMORY[0x277CBEAA8] distantPast];
+        distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
       }
 
-      v23 = v22;
+      v23 = distantPast2;
 
-      if ([v5 hasInviteRequestEvent] && objc_msgSend(v6, "hasInviteRequestEvent"))
+      if ([relationshipCopy hasInviteRequestEvent] && objc_msgSend(legacyRelationshipCopy, "hasInviteRequestEvent"))
       {
         if ([v19 hk_isAfterOrEqualToDate:v23])
         {
-          v24 = v5;
+          v24 = relationshipCopy;
         }
 
         else
         {
-          v24 = v6;
+          v24 = legacyRelationshipCopy;
         }
       }
 
       else
       {
-        v25 = [v5 hasInviteRequestEvent];
-        v24 = v5;
-        if ((v25 & 1) == 0)
+        hasInviteRequestEvent = [relationshipCopy hasInviteRequestEvent];
+        v24 = relationshipCopy;
+        if ((hasInviteRequestEvent & 1) == 0)
         {
-          [v6 hasInviteRequestEvent];
-          v24 = v6;
+          [legacyRelationshipCopy hasInviteRequestEvent];
+          v24 = legacyRelationshipCopy;
         }
       }
 
       v12 = [v24 copy];
 
-      v7 = v27;
+      dateForLatestRelationshipStart = v27;
       goto LABEL_36;
     }
 
-    v15 = v6;
+    v15 = legacyRelationshipCopy;
   }
 
   v12 = [v15 copy];
@@ -390,10 +390,10 @@ LABEL_37:
   return v12;
 }
 
-- (id)relationshipForCloudType:(unint64_t)a3
+- (id)relationshipForCloudType:(unint64_t)type
 {
   v3 = 8;
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 24;
   }
@@ -401,24 +401,24 @@ LABEL_37:
   return *(&self->super.isa + v3);
 }
 
-- (void)updateRelationship:(id)a3 cloudType:(unint64_t)a4
+- (void)updateRelationship:(id)relationship cloudType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [v5 cloudType];
+  relationshipCopy = relationship;
+  cloudType = [relationshipCopy cloudType];
   v7 = 8;
-  if (v6 == 1)
+  if (cloudType == 1)
   {
     v7 = 24;
   }
 
   v8 = *(&self->super.isa + v7);
-  *(&self->super.isa + v7) = v5;
+  *(&self->super.isa + v7) = relationshipCopy;
 }
 
-- (id)remoteRelationshipForCloudType:(unint64_t)a3
+- (id)remoteRelationshipForCloudType:(unint64_t)type
 {
   v3 = 16;
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 32;
   }
@@ -426,46 +426,46 @@ LABEL_37:
   return *(&self->super.isa + v3);
 }
 
-- (void)updateRemoteRelationship:(id)a3 cloudType:(unint64_t)a4
+- (void)updateRemoteRelationship:(id)relationship cloudType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [v5 cloudType];
+  relationshipCopy = relationship;
+  cloudType = [relationshipCopy cloudType];
   v7 = 16;
-  if (v6 == 1)
+  if (cloudType == 1)
   {
     v7 = 32;
   }
 
   v8 = *(&self->super.isa + v7);
-  *(&self->super.isa + v7) = v5;
+  *(&self->super.isa + v7) = relationshipCopy;
 }
 
 - (ASRelationshipStorage)storageWithSynchronizedRelationshipIdentifiers
 {
   v25 = *MEMORY[0x277D85DE8];
   v2 = [(ASRelationshipStorage *)self copy];
-  v3 = [v2 primaryRelationship];
-  if ([v3 cloudType])
+  primaryRelationship = [v2 primaryRelationship];
+  if ([primaryRelationship cloudType])
   {
 LABEL_2:
 
     goto LABEL_3;
   }
 
-  v7 = [v2 legacyRelationship];
-  v8 = [v7 UUID];
-  v9 = [v2 secureCloudRelationship];
-  v10 = [v9 UUID];
-  v11 = [v8 isEqual:v10];
+  legacyRelationship = [v2 legacyRelationship];
+  uUID = [legacyRelationship UUID];
+  secureCloudRelationship = [v2 secureCloudRelationship];
+  uUID2 = [secureCloudRelationship UUID];
+  v11 = [uUID isEqual:uUID2];
 
   if ((v11 & 1) == 0)
   {
-    v3 = [v2 secureCloudRelationship];
-    v12 = [v2 legacyRelationship];
-    v13 = [v12 UUID];
-    [v3 setUUID:v13];
+    primaryRelationship = [v2 secureCloudRelationship];
+    legacyRelationship2 = [v2 legacyRelationship];
+    uUID3 = [legacyRelationship2 UUID];
+    [primaryRelationship setUUID:uUID3];
 
-    [v2 setSecureCloudRelationship:v3];
+    [v2 setSecureCloudRelationship:primaryRelationship];
     ASLoggingInitialize();
     v14 = ASLogRelationships;
     if (os_log_type_enabled(ASLogRelationships, OS_LOG_TYPE_DEFAULT))
@@ -479,28 +479,28 @@ LABEL_2:
   }
 
 LABEL_3:
-  v4 = [v2 primaryRemoteRelationship];
-  if ([v4 cloudType])
+  primaryRemoteRelationship = [v2 primaryRemoteRelationship];
+  if ([primaryRemoteRelationship cloudType])
   {
 LABEL_4:
 
     goto LABEL_5;
   }
 
-  v15 = [v2 legacyRemoteRelationship];
-  v16 = [v15 UUID];
-  v17 = [v2 secureCloudRemoteRelationship];
-  v18 = [v17 UUID];
-  v19 = [v16 isEqual:v18];
+  legacyRemoteRelationship = [v2 legacyRemoteRelationship];
+  uUID4 = [legacyRemoteRelationship UUID];
+  secureCloudRemoteRelationship = [v2 secureCloudRemoteRelationship];
+  uUID5 = [secureCloudRemoteRelationship UUID];
+  v19 = [uUID4 isEqual:uUID5];
 
   if ((v19 & 1) == 0)
   {
-    v4 = [v2 secureCloudRemoteRelationship];
-    v20 = [v2 legacyRemoteRelationship];
-    v21 = [v20 UUID];
-    [v4 setUUID:v21];
+    primaryRemoteRelationship = [v2 secureCloudRemoteRelationship];
+    legacyRemoteRelationship2 = [v2 legacyRemoteRelationship];
+    uUID6 = [legacyRemoteRelationship2 UUID];
+    [primaryRemoteRelationship setUUID:uUID6];
 
-    [v2 setSecureCloudRemoteRelationship:v4];
+    [v2 setSecureCloudRemoteRelationship:primaryRemoteRelationship];
     ASLoggingInitialize();
     v22 = ASLogRelationships;
     if (os_log_type_enabled(ASLogRelationships, OS_LOG_TYPE_DEFAULT))

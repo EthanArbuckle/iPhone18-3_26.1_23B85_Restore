@@ -1,44 +1,44 @@
 @interface ATXPBUserNotification
-- (BOOL)isEqual:(id)a3;
-- (id)attachmentTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)attachmentTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
-- (id)priorityStatusAsString:(int)a3;
-- (id)summaryStatusAsString:(int)a3;
-- (id)urgencyAsString:(int)a3;
-- (int)StringAsAttachmentType:(id)a3;
-- (int)StringAsPriorityStatus:(id)a3;
-- (int)StringAsSummaryStatus:(id)a3;
-- (int)StringAsUrgency:(id)a3;
+- (id)priorityStatusAsString:(int)string;
+- (id)summaryStatusAsString:(int)string;
+- (id)urgencyAsString:(int)string;
+- (int)StringAsAttachmentType:(id)type;
+- (int)StringAsPriorityStatus:(id)status;
+- (int)StringAsSummaryStatus:(id)status;
+- (int)StringAsUrgency:(id)urgency;
 - (int)attachmentType;
 - (int)priorityStatus;
 - (int)summaryStatus;
 - (int)urgency;
 - (unint64_t)hash;
-- (void)addContactIDs:(id)a3;
-- (void)addRawIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAttachmentType:(BOOL)a3;
-- (void)setHasBadge:(BOOL)a3;
-- (void)setHasIsGroupMessage:(BOOL)a3;
-- (void)setHasIsMessage:(BOOL)a3;
-- (void)setHasIsNotificationSummaryEnabled:(BOOL)a3;
-- (void)setHasIsPartOfStack:(BOOL)a3;
-- (void)setHasIsPriorityNotificationEnabled:(BOOL)a3;
-- (void)setHasIsStackSummary:(BOOL)a3;
-- (void)setHasIsSummarized:(BOOL)a3;
-- (void)setHasNumberOfNotificationsInStack:(BOOL)a3;
-- (void)setHasPositionInStack:(BOOL)a3;
-- (void)setHasPriorityStatus:(BOOL)a3;
-- (void)setHasRecordTimestamp:(BOOL)a3;
-- (void)setHasSummaryStatus:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUrgency:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addContactIDs:(id)ds;
+- (void)addRawIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAttachmentType:(BOOL)type;
+- (void)setHasBadge:(BOOL)badge;
+- (void)setHasIsGroupMessage:(BOOL)message;
+- (void)setHasIsMessage:(BOOL)message;
+- (void)setHasIsNotificationSummaryEnabled:(BOOL)enabled;
+- (void)setHasIsPartOfStack:(BOOL)stack;
+- (void)setHasIsPriorityNotificationEnabled:(BOOL)enabled;
+- (void)setHasIsStackSummary:(BOOL)summary;
+- (void)setHasIsSummarized:(BOOL)summarized;
+- (void)setHasNumberOfNotificationsInStack:(BOOL)stack;
+- (void)setHasPositionInStack:(BOOL)stack;
+- (void)setHasPriorityStatus:(BOOL)status;
+- (void)setHasRecordTimestamp:(BOOL)timestamp;
+- (void)setHasSummaryStatus:(BOOL)status;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUrgency:(BOOL)urgency;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUserNotification
@@ -95,9 +95,9 @@
   }
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 32;
   }
@@ -110,9 +110,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasBadge:(BOOL)a3
+- (void)setHasBadge:(BOOL)badge
 {
-  if (a3)
+  if (badge)
   {
     v3 = 2;
   }
@@ -125,45 +125,45 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)addContactIDs:(id)a3
+- (void)addContactIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   contactIDs = self->_contactIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!contactIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contactIDs;
     self->_contactIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     contactIDs = self->_contactIDs;
   }
 
-  [(NSMutableArray *)contactIDs addObject:v4];
+  [(NSMutableArray *)contactIDs addObject:dsCopy];
 }
 
-- (void)addRawIdentifiers:(id)a3
+- (void)addRawIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   rawIdentifiers = self->_rawIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!rawIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_rawIdentifiers;
     self->_rawIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     rawIdentifiers = self->_rawIdentifiers;
   }
 
-  [(NSMutableArray *)rawIdentifiers addObject:v4];
+  [(NSMutableArray *)rawIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasIsMessage:(BOOL)a3
+- (void)setHasIsMessage:(BOOL)message
 {
-  if (a3)
+  if (message)
   {
     v3 = 2048;
   }
@@ -176,9 +176,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasIsGroupMessage:(BOOL)a3
+- (void)setHasIsGroupMessage:(BOOL)message
 {
-  if (a3)
+  if (message)
   {
     v3 = 1024;
   }
@@ -191,9 +191,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasUrgency:(BOOL)a3
+- (void)setHasUrgency:(BOOL)urgency
 {
-  if (a3)
+  if (urgency)
   {
     v3 = 512;
   }
@@ -206,55 +206,55 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (id)urgencyAsString:(int)a3
+- (id)urgencyAsString:(int)string
 {
-  if (a3 >= 7)
+  if (string >= 7)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C29F0[a3];
+    v4 = off_1E80C29F0[string];
   }
 
   return v4;
 }
 
-- (int)StringAsUrgency:(id)a3
+- (int)StringAsUrgency:(id)urgency
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Critical"])
+  urgencyCopy = urgency;
+  if ([urgencyCopy isEqualToString:@"Critical"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TimeSensitive"])
+  else if ([urgencyCopy isEqualToString:@"TimeSensitive"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Active"])
+  else if ([urgencyCopy isEqualToString:@"Active"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Passive"])
+  else if ([urgencyCopy isEqualToString:@"Passive"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([urgencyCopy isEqualToString:@"None"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Priority"])
+  else if ([urgencyCopy isEqualToString:@"Priority"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([urgencyCopy isEqualToString:@"Total"])
   {
     v4 = 6;
   }
@@ -267,9 +267,9 @@
   return v4;
 }
 
-- (void)setHasAttachmentType:(BOOL)a3
+- (void)setHasAttachmentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -282,50 +282,50 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (id)attachmentTypeAsString:(int)a3
+- (id)attachmentTypeAsString:(int)string
 {
-  if (a3 >= 6)
+  if (string >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C2A28[a3];
+    v4 = off_1E80C2A28[string];
   }
 
   return v4;
 }
 
-- (int)StringAsAttachmentType:(id)a3
+- (int)StringAsAttachmentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Image"])
+  else if ([typeCopy isEqualToString:@"Image"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([typeCopy isEqualToString:@"Audio"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([typeCopy isEqualToString:@"Video"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Other"])
+  else if ([typeCopy isEqualToString:@"Other"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([typeCopy isEqualToString:@"Total"])
   {
     v4 = 5;
   }
@@ -338,9 +338,9 @@
   return v4;
 }
 
-- (void)setHasRecordTimestamp:(BOOL)a3
+- (void)setHasRecordTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -353,9 +353,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasIsSummarized:(BOOL)a3
+- (void)setHasIsSummarized:(BOOL)summarized
 {
-  if (a3)
+  if (summarized)
   {
     v3 = 0x10000;
   }
@@ -368,9 +368,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasIsPartOfStack:(BOOL)a3
+- (void)setHasIsPartOfStack:(BOOL)stack
 {
-  if (a3)
+  if (stack)
   {
     v3 = 0x2000;
   }
@@ -383,9 +383,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasIsStackSummary:(BOOL)a3
+- (void)setHasIsStackSummary:(BOOL)summary
 {
-  if (a3)
+  if (summary)
   {
     v3 = 0x8000;
   }
@@ -398,9 +398,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasPositionInStack:(BOOL)a3
+- (void)setHasPositionInStack:(BOOL)stack
 {
-  if (a3)
+  if (stack)
   {
     v3 = 8;
   }
@@ -413,9 +413,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasNumberOfNotificationsInStack:(BOOL)a3
+- (void)setHasNumberOfNotificationsInStack:(BOOL)stack
 {
-  if (a3)
+  if (stack)
   {
     v3 = 4;
   }
@@ -428,9 +428,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasPriorityStatus:(BOOL)a3
+- (void)setHasPriorityStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 128;
   }
@@ -443,55 +443,55 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (id)priorityStatusAsString:(int)a3
+- (id)priorityStatusAsString:(int)string
 {
-  if (a3 >= 7)
+  if (string >= 7)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C2A58[a3];
+    v4 = off_1E80C2A58[string];
   }
 
   return v4;
 }
 
-- (int)StringAsPriorityStatus:(id)a3
+- (int)StringAsPriorityStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"IsPriority"])
+  else if ([statusCopy isEqualToString:@"IsPriority"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IsNotPriority"])
+  else if ([statusCopy isEqualToString:@"IsNotPriority"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"InferenceTimedOut"])
+  else if ([statusCopy isEqualToString:@"InferenceTimedOut"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Error"])
+  else if ([statusCopy isEqualToString:@"Error"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Ineligible"])
+  else if ([statusCopy isEqualToString:@"Ineligible"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([statusCopy isEqualToString:@"Total"])
   {
     v4 = 6;
   }
@@ -504,9 +504,9 @@
   return v4;
 }
 
-- (void)setHasSummaryStatus:(BOOL)a3
+- (void)setHasSummaryStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 256;
   }
@@ -519,50 +519,50 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (id)summaryStatusAsString:(int)a3
+- (id)summaryStatusAsString:(int)string
 {
-  if (a3 >= 6)
+  if (string >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C2A90[a3];
+    v4 = off_1E80C2A90[string];
   }
 
   return v4;
 }
 
-- (int)StringAsSummaryStatus:(id)a3
+- (int)StringAsSummaryStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Summarized"])
+  else if ([statusCopy isEqualToString:@"Summarized"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"InferenceTimedOut"])
+  else if ([statusCopy isEqualToString:@"InferenceTimedOut"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Error"])
+  else if ([statusCopy isEqualToString:@"Error"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Ineligible"])
+  else if ([statusCopy isEqualToString:@"Ineligible"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([statusCopy isEqualToString:@"Total"])
   {
     v4 = 5;
   }
@@ -575,9 +575,9 @@
   return v4;
 }
 
-- (void)setHasIsPriorityNotificationEnabled:(BOOL)a3
+- (void)setHasIsPriorityNotificationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x4000;
   }
@@ -590,9 +590,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasIsNotificationSummaryEnabled:(BOOL)a3
+- (void)setHasIsNotificationSummaryEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4096;
   }
@@ -611,98 +611,98 @@
   v8.receiver = self;
   v8.super_class = ATXPBUserNotification;
   v4 = [(ATXPBUserNotification *)&v8 description];
-  v5 = [(ATXPBUserNotification *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUserNotification *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x20) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   subtitle = self->_subtitle;
   if (subtitle)
   {
-    [v3 setObject:subtitle forKey:@"subtitle"];
+    [dictionary setObject:subtitle forKey:@"subtitle"];
   }
 
   body = self->_body;
   if (body)
   {
-    [v3 setObject:body forKey:@"body"];
+    [dictionary setObject:body forKey:@"body"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_badge];
-    [v3 setObject:v9 forKey:@"badge"];
+    [dictionary setObject:v9 forKey:@"badge"];
   }
 
   userInfo = self->_userInfo;
   if (userInfo)
   {
-    [v3 setObject:userInfo forKey:@"userInfo"];
+    [dictionary setObject:userInfo forKey:@"userInfo"];
   }
 
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   threadID = self->_threadID;
   if (threadID)
   {
-    [v3 setObject:threadID forKey:@"threadID"];
+    [dictionary setObject:threadID forKey:@"threadID"];
   }
 
   categoryID = self->_categoryID;
   if (categoryID)
   {
-    [v3 setObject:categoryID forKey:@"categoryID"];
+    [dictionary setObject:categoryID forKey:@"categoryID"];
   }
 
   sectionID = self->_sectionID;
   if (sectionID)
   {
-    [v3 setObject:sectionID forKey:@"sectionID"];
+    [dictionary setObject:sectionID forKey:@"sectionID"];
   }
 
   contactIDs = self->_contactIDs;
   if (contactIDs)
   {
-    [v3 setObject:contactIDs forKey:@"contactIDs"];
+    [dictionary setObject:contactIDs forKey:@"contactIDs"];
   }
 
   rawIdentifiers = self->_rawIdentifiers;
   if (rawIdentifiers)
   {
-    [v3 setObject:rawIdentifiers forKey:@"rawIdentifiers"];
+    [dictionary setObject:rawIdentifiers forKey:@"rawIdentifiers"];
   }
 
   has = self->_has;
   if ((*&has & 0x800) != 0)
   {
     v32 = [MEMORY[0x1E696AD98] numberWithBool:self->_isMessage];
-    [v3 setObject:v32 forKey:@"isMessage"];
+    [dictionary setObject:v32 forKey:@"isMessage"];
 
     has = self->_has;
     if ((*&has & 0x400) == 0)
@@ -723,7 +723,7 @@ LABEL_29:
   }
 
   v33 = [MEMORY[0x1E696AD98] numberWithBool:self->_isGroupMessage];
-  [v3 setObject:v33 forKey:@"isGroupMessage"];
+  [dictionary setObject:v33 forKey:@"isGroupMessage"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -749,7 +749,7 @@ LABEL_57:
     v35 = off_1E80C29F0[urgency];
   }
 
-  [v3 setObject:v35 forKey:@"urgency"];
+  [dictionary setObject:v35 forKey:@"urgency"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -775,41 +775,41 @@ LABEL_67:
     v43 = off_1E80C2A28[attachmentType];
   }
 
-  [v3 setObject:v43 forKey:@"attachmentType"];
+  [dictionary setObject:v43 forKey:@"attachmentType"];
 
   if (*&self->_has)
   {
 LABEL_32:
     v18 = [MEMORY[0x1E696AD98] numberWithDouble:self->_appSpecifiedScore];
-    [v3 setObject:v18 forKey:@"appSpecifiedScore"];
+    [dictionary setObject:v18 forKey:@"appSpecifiedScore"];
   }
 
 LABEL_33:
   derivedData = self->_derivedData;
   if (derivedData)
   {
-    v20 = [(ATXPBUserNotificationDerivedData *)derivedData dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"derivedData"];
+    dictionaryRepresentation = [(ATXPBUserNotificationDerivedData *)derivedData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"derivedData"];
   }
 
   sharedEngagementTracker = self->_sharedEngagementTracker;
   if (sharedEngagementTracker)
   {
-    v22 = [(ATXPBSharedDigestEngagementTrackingMetrics *)sharedEngagementTracker dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"sharedEngagementTracker"];
+    dictionaryRepresentation2 = [(ATXPBSharedDigestEngagementTrackingMetrics *)sharedEngagementTracker dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"sharedEngagementTracker"];
   }
 
   notificationID = self->_notificationID;
   if (notificationID)
   {
-    [v3 setObject:notificationID forKey:@"notificationID"];
+    [dictionary setObject:notificationID forKey:@"notificationID"];
   }
 
   v24 = self->_has;
   if ((*&v24 & 0x10) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithDouble:self->_recordTimestamp];
-    [v3 setObject:v25 forKey:@"recordTimestamp"];
+    [dictionary setObject:v25 forKey:@"recordTimestamp"];
 
     v24 = self->_has;
   }
@@ -817,20 +817,20 @@ LABEL_33:
   if ((*&v24 & 0x10000) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSummarized];
-    [v3 setObject:v26 forKey:@"isSummarized"];
+    [dictionary setObject:v26 forKey:@"isSummarized"];
   }
 
   summary = self->_summary;
   if (summary)
   {
-    [v3 setObject:summary forKey:@"summary"];
+    [dictionary setObject:summary forKey:@"summary"];
   }
 
   v28 = self->_has;
   if ((*&v28 & 0x2000) != 0)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithBool:self->_isPartOfStack];
-    [v3 setObject:v36 forKey:@"isPartOfStack"];
+    [dictionary setObject:v36 forKey:@"isPartOfStack"];
 
     v28 = self->_has;
     if ((*&v28 & 0x8000) == 0)
@@ -851,7 +851,7 @@ LABEL_47:
   }
 
   v37 = [MEMORY[0x1E696AD98] numberWithBool:self->_isStackSummary];
-  [v3 setObject:v37 forKey:@"isStackSummary"];
+  [dictionary setObject:v37 forKey:@"isStackSummary"];
 
   v28 = self->_has;
   if ((*&v28 & 8) == 0)
@@ -867,7 +867,7 @@ LABEL_48:
 
 LABEL_61:
   v38 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_positionInStack];
-  [v3 setObject:v38 forKey:@"positionInStack"];
+  [dictionary setObject:v38 forKey:@"positionInStack"];
 
   v28 = self->_has;
   if ((*&v28 & 4) == 0)
@@ -883,7 +883,7 @@ LABEL_49:
 
 LABEL_62:
   v39 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numberOfNotificationsInStack];
-  [v3 setObject:v39 forKey:@"numberOfNotificationsInStack"];
+  [dictionary setObject:v39 forKey:@"numberOfNotificationsInStack"];
 
   v28 = self->_has;
   if ((*&v28 & 0x80) == 0)
@@ -909,7 +909,7 @@ LABEL_63:
     v41 = off_1E80C2A58[priorityStatus];
   }
 
-  [v3 setObject:v41 forKey:@"priorityStatus"];
+  [dictionary setObject:v41 forKey:@"priorityStatus"];
 
   v28 = self->_has;
   if ((*&v28 & 0x100) == 0)
@@ -922,7 +922,7 @@ LABEL_51:
 
 LABEL_78:
     v46 = [MEMORY[0x1E696AD98] numberWithBool:self->_isPriorityNotificationEnabled];
-    [v3 setObject:v46 forKey:@"isPriorityNotificationEnabled"];
+    [dictionary setObject:v46 forKey:@"isPriorityNotificationEnabled"];
 
     if ((*&self->_has & 0x1000) == 0)
     {
@@ -944,7 +944,7 @@ LABEL_71:
     v45 = off_1E80C2A90[summaryStatus];
   }
 
-  [v3 setObject:v45 forKey:@"summaryStatus"];
+  [dictionary setObject:v45 forKey:@"summaryStatus"];
 
   v28 = self->_has;
   if ((*&v28 & 0x4000) != 0)
@@ -957,19 +957,19 @@ LABEL_52:
   {
 LABEL_53:
     v29 = [MEMORY[0x1E696AD98] numberWithBool:self->_isNotificationSummaryEnabled];
-    [v3 setObject:v29 forKey:@"isNotificationSummaryEnabled"];
+    [dictionary setObject:v29 forKey:@"isNotificationSummaryEnabled"];
   }
 
 LABEL_54:
-  v30 = v3;
+  v30 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x20) != 0)
   {
     PBDataWriterWriteDoubleField();
@@ -1270,44 +1270,44 @@ LABEL_64:
 LABEL_65:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x20) != 0)
   {
-    v4[6] = *&self->_timestamp;
-    *(v4 + 54) |= 0x20u;
+    toCopy[6] = *&self->_timestamp;
+    *(toCopy + 54) |= 0x20u;
   }
 
-  v18 = v4;
+  v18 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v18;
+    [toCopy setUuid:?];
+    toCopy = v18;
   }
 
   if (self->_title)
   {
     [v18 setTitle:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_subtitle)
   {
     [v18 setSubtitle:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_body)
   {
     [v18 setBody:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_badge;
-    *(v4 + 54) |= 2u;
+    toCopy[2] = self->_badge;
+    *(toCopy + 54) |= 2u;
   }
 
   if (self->_userInfo)
@@ -1343,10 +1343,10 @@ LABEL_65:
   if ([(ATXPBUserNotification *)self contactIDsCount])
   {
     [v18 clearContactIDs];
-    v5 = [(ATXPBUserNotification *)self contactIDsCount];
-    if (v5)
+    contactIDsCount = [(ATXPBUserNotification *)self contactIDsCount];
+    if (contactIDsCount)
     {
-      v6 = v5;
+      v6 = contactIDsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ATXPBUserNotification *)self contactIDsAtIndex:i];
@@ -1419,10 +1419,10 @@ LABEL_34:
   if ([(ATXPBUserNotification *)self rawIdentifiersCount])
   {
     [v18 clearRawIdentifiers];
-    v11 = [(ATXPBUserNotification *)self rawIdentifiersCount];
-    if (v11)
+    rawIdentifiersCount = [(ATXPBUserNotification *)self rawIdentifiersCount];
+    if (rawIdentifiersCount)
     {
-      v12 = v11;
+      v12 = rawIdentifiersCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(ATXPBUserNotification *)self rawIdentifiersAtIndex:j];
@@ -1567,10 +1567,10 @@ LABEL_58:
 LABEL_59:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x20) != 0)
   {
@@ -1578,19 +1578,19 @@ LABEL_59:
     *(v5 + 216) |= 0x20u;
   }
 
-  v7 = [(NSString *)self->_uuid copyWithZone:a3];
+  v7 = [(NSString *)self->_uuid copyWithZone:zone];
   v8 = *(v6 + 200);
   *(v6 + 200) = v7;
 
-  v9 = [(NSString *)self->_title copyWithZone:a3];
+  v9 = [(NSString *)self->_title copyWithZone:zone];
   v10 = *(v6 + 176);
   *(v6 + 176) = v9;
 
-  v11 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v11 = [(NSString *)self->_subtitle copyWithZone:zone];
   v12 = *(v6 + 144);
   *(v6 + 144) = v11;
 
-  v13 = [(NSString *)self->_body copyWithZone:a3];
+  v13 = [(NSString *)self->_body copyWithZone:zone];
   v14 = *(v6 + 64);
   *(v6 + 64) = v13;
 
@@ -1600,27 +1600,27 @@ LABEL_59:
     *(v6 + 216) |= 2u;
   }
 
-  v15 = [(NSData *)self->_userInfo copyWithZone:a3];
+  v15 = [(NSData *)self->_userInfo copyWithZone:zone];
   v16 = *(v6 + 192);
   *(v6 + 192) = v15;
 
-  v17 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v17 = [(NSString *)self->_bundleID copyWithZone:zone];
   v18 = *(v6 + 72);
   *(v6 + 72) = v17;
 
-  v19 = [(ATXPBUserNotificationDerivedData *)self->_derivedData copyWithZone:a3];
+  v19 = [(ATXPBUserNotificationDerivedData *)self->_derivedData copyWithZone:zone];
   v20 = *(v6 + 96);
   *(v6 + 96) = v19;
 
-  v21 = [(NSString *)self->_threadID copyWithZone:a3];
+  v21 = [(NSString *)self->_threadID copyWithZone:zone];
   v22 = *(v6 + 168);
   *(v6 + 168) = v21;
 
-  v23 = [(NSString *)self->_categoryID copyWithZone:a3];
+  v23 = [(NSString *)self->_categoryID copyWithZone:zone];
   v24 = *(v6 + 80);
   *(v6 + 80) = v23;
 
-  v25 = [(NSString *)self->_sectionID copyWithZone:a3];
+  v25 = [(NSString *)self->_sectionID copyWithZone:zone];
   v26 = *(v6 + 128);
   *(v6 + 128) = v25;
 
@@ -1644,7 +1644,7 @@ LABEL_59:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v53 + 1) + 8 * v31) copyWithZone:a3];
+        v32 = [*(*(&v53 + 1) + 8 * v31) copyWithZone:zone];
         [v6 addContactIDs:v32];
 
         ++v31;
@@ -1705,7 +1705,7 @@ LABEL_16:
   }
 
 LABEL_17:
-  v34 = [(ATXPBSharedDigestEngagementTrackingMetrics *)self->_sharedEngagementTracker copyWithZone:a3];
+  v34 = [(ATXPBSharedDigestEngagementTrackingMetrics *)self->_sharedEngagementTracker copyWithZone:zone];
   v35 = *(v6 + 136);
   *(v6 + 136) = v34;
 
@@ -1735,7 +1735,7 @@ LABEL_17:
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v49 + 1) + 8 * v40) copyWithZone:{a3, v49}];
+        v41 = [*(*(&v49 + 1) + 8 * v40) copyWithZone:{zone, v49}];
         [v6 addRawIdentifiers:v41];
 
         ++v40;
@@ -1748,7 +1748,7 @@ LABEL_17:
     while (v38);
   }
 
-  v42 = [(NSString *)self->_notificationID copyWithZone:a3];
+  v42 = [(NSString *)self->_notificationID copyWithZone:zone];
   v43 = *(v6 + 104);
   *(v6 + 104) = v42;
 
@@ -1766,7 +1766,7 @@ LABEL_17:
     *(v6 + 216) |= 0x10000u;
   }
 
-  v45 = [(NSString *)self->_summary copyWithZone:a3, v49];
+  v45 = [(NSString *)self->_summary copyWithZone:zone, v49];
   v46 = *(v6 + 152);
   *(v6 + 152) = v45;
 
@@ -1880,18 +1880,18 @@ LABEL_38:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_135;
   }
 
-  v5 = *(v4 + 54);
+  v5 = *(equalCopy + 54);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v5 & 0x20) == 0 || self->_timestamp != *(v4 + 6))
+    if ((v5 & 0x20) == 0 || self->_timestamp != *(equalCopy + 6))
     {
       goto LABEL_135;
     }
@@ -1903,13 +1903,13 @@ LABEL_38:
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 25) && ![(NSString *)uuid isEqual:?])
+  if (uuid | *(equalCopy + 25) && ![(NSString *)uuid isEqual:?])
   {
     goto LABEL_135;
   }
 
   title = self->_title;
-  if (title | *(v4 + 22))
+  if (title | *(equalCopy + 22))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -1918,7 +1918,7 @@ LABEL_38:
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 18))
+  if (subtitle | *(equalCopy + 18))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -1927,7 +1927,7 @@ LABEL_38:
   }
 
   body = self->_body;
-  if (body | *(v4 + 8))
+  if (body | *(equalCopy + 8))
   {
     if (![(NSString *)body isEqual:?])
     {
@@ -1935,10 +1935,10 @@ LABEL_38:
     }
   }
 
-  v10 = *(v4 + 54);
+  v10 = *(equalCopy + 54);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_badge != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_badge != *(equalCopy + 2))
     {
       goto LABEL_135;
     }
@@ -1950,13 +1950,13 @@ LABEL_38:
   }
 
   userInfo = self->_userInfo;
-  if (userInfo | *(v4 + 24) && ![(NSData *)userInfo isEqual:?])
+  if (userInfo | *(equalCopy + 24) && ![(NSData *)userInfo isEqual:?])
   {
     goto LABEL_135;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 9))
+  if (bundleID | *(equalCopy + 9))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -1965,7 +1965,7 @@ LABEL_38:
   }
 
   derivedData = self->_derivedData;
-  if (derivedData | *(v4 + 12))
+  if (derivedData | *(equalCopy + 12))
   {
     if (![(ATXPBUserNotificationDerivedData *)derivedData isEqual:?])
     {
@@ -1974,7 +1974,7 @@ LABEL_38:
   }
 
   threadID = self->_threadID;
-  if (threadID | *(v4 + 21))
+  if (threadID | *(equalCopy + 21))
   {
     if (![(NSString *)threadID isEqual:?])
     {
@@ -1983,7 +1983,7 @@ LABEL_38:
   }
 
   categoryID = self->_categoryID;
-  if (categoryID | *(v4 + 10))
+  if (categoryID | *(equalCopy + 10))
   {
     if (![(NSString *)categoryID isEqual:?])
     {
@@ -1992,7 +1992,7 @@ LABEL_38:
   }
 
   sectionID = self->_sectionID;
-  if (sectionID | *(v4 + 16))
+  if (sectionID | *(equalCopy + 16))
   {
     if (![(NSString *)sectionID isEqual:?])
     {
@@ -2001,7 +2001,7 @@ LABEL_38:
   }
 
   contactIDs = self->_contactIDs;
-  if (contactIDs | *(v4 + 11))
+  if (contactIDs | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)contactIDs isEqual:?])
     {
@@ -2010,7 +2010,7 @@ LABEL_38:
   }
 
   has = self->_has;
-  v19 = *(v4 + 54);
+  v19 = *(equalCopy + 54);
   if ((*&has & 0x400) != 0)
   {
     if ((v19 & 0x400) == 0)
@@ -2020,13 +2020,13 @@ LABEL_38:
 
     if (self->_isGroupMessage)
     {
-      if ((*(v4 + 208) & 1) == 0)
+      if ((*(equalCopy + 208) & 1) == 0)
       {
         goto LABEL_135;
       }
     }
 
-    else if (*(v4 + 208))
+    else if (*(equalCopy + 208))
     {
       goto LABEL_135;
     }
@@ -2039,7 +2039,7 @@ LABEL_38:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v19 & 0x200) == 0 || self->_urgency != *(v4 + 46))
+    if ((v19 & 0x200) == 0 || self->_urgency != *(equalCopy + 46))
     {
       goto LABEL_135;
     }
@@ -2059,13 +2059,13 @@ LABEL_38:
 
     if (self->_isMessage)
     {
-      if ((*(v4 + 209) & 1) == 0)
+      if ((*(equalCopy + 209) & 1) == 0)
       {
         goto LABEL_135;
       }
     }
 
-    else if (*(v4 + 209))
+    else if (*(equalCopy + 209))
     {
       goto LABEL_135;
     }
@@ -2078,7 +2078,7 @@ LABEL_38:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v19 & 0x40) == 0 || self->_attachmentType != *(v4 + 14))
+    if ((v19 & 0x40) == 0 || self->_attachmentType != *(equalCopy + 14))
     {
       goto LABEL_135;
     }
@@ -2090,7 +2090,7 @@ LABEL_38:
   }
 
   sharedEngagementTracker = self->_sharedEngagementTracker;
-  if (sharedEngagementTracker | *(v4 + 17))
+  if (sharedEngagementTracker | *(equalCopy + 17))
   {
     if (![(ATXPBSharedDigestEngagementTrackingMetrics *)sharedEngagementTracker isEqual:?])
     {
@@ -2100,10 +2100,10 @@ LABEL_38:
     has = self->_has;
   }
 
-  v21 = *(v4 + 54);
+  v21 = *(equalCopy + 54);
   if (*&has)
   {
-    if ((v21 & 1) == 0 || self->_appSpecifiedScore != *(v4 + 1))
+    if ((v21 & 1) == 0 || self->_appSpecifiedScore != *(equalCopy + 1))
     {
       goto LABEL_135;
     }
@@ -2115,13 +2115,13 @@ LABEL_38:
   }
 
   rawIdentifiers = self->_rawIdentifiers;
-  if (rawIdentifiers | *(v4 + 15) && ![(NSMutableArray *)rawIdentifiers isEqual:?])
+  if (rawIdentifiers | *(equalCopy + 15) && ![(NSMutableArray *)rawIdentifiers isEqual:?])
   {
     goto LABEL_135;
   }
 
   notificationID = self->_notificationID;
-  if (notificationID | *(v4 + 13))
+  if (notificationID | *(equalCopy + 13))
   {
     if (![(NSString *)notificationID isEqual:?])
     {
@@ -2130,10 +2130,10 @@ LABEL_38:
   }
 
   v24 = self->_has;
-  v25 = *(v4 + 54);
+  v25 = *(equalCopy + 54);
   if ((*&v24 & 0x10) != 0)
   {
-    if ((v25 & 0x10) == 0 || self->_recordTimestamp != *(v4 + 5))
+    if ((v25 & 0x10) == 0 || self->_recordTimestamp != *(equalCopy + 5))
     {
       goto LABEL_135;
     }
@@ -2153,13 +2153,13 @@ LABEL_38:
 
     if (self->_isSummarized)
     {
-      if ((*(v4 + 214) & 1) == 0)
+      if ((*(equalCopy + 214) & 1) == 0)
       {
         goto LABEL_135;
       }
     }
 
-    else if (*(v4 + 214))
+    else if (*(equalCopy + 214))
     {
       goto LABEL_135;
     }
@@ -2171,7 +2171,7 @@ LABEL_38:
   }
 
   summary = self->_summary;
-  if (summary | *(v4 + 19))
+  if (summary | *(equalCopy + 19))
   {
     if (![(NSString *)summary isEqual:?])
     {
@@ -2181,7 +2181,7 @@ LABEL_38:
     v24 = self->_has;
   }
 
-  v27 = *(v4 + 54);
+  v27 = *(equalCopy + 54);
   if ((*&v24 & 0x2000) != 0)
   {
     if ((v27 & 0x2000) == 0)
@@ -2191,13 +2191,13 @@ LABEL_38:
 
     if (self->_isPartOfStack)
     {
-      if ((*(v4 + 211) & 1) == 0)
+      if ((*(equalCopy + 211) & 1) == 0)
       {
         goto LABEL_135;
       }
     }
 
-    else if (*(v4 + 211))
+    else if (*(equalCopy + 211))
     {
       goto LABEL_135;
     }
@@ -2217,13 +2217,13 @@ LABEL_38:
 
     if (self->_isStackSummary)
     {
-      if ((*(v4 + 213) & 1) == 0)
+      if ((*(equalCopy + 213) & 1) == 0)
       {
         goto LABEL_135;
       }
     }
 
-    else if (*(v4 + 213))
+    else if (*(equalCopy + 213))
     {
       goto LABEL_135;
     }
@@ -2236,7 +2236,7 @@ LABEL_38:
 
   if ((*&v24 & 8) != 0)
   {
-    if ((v27 & 8) == 0 || self->_positionInStack != *(v4 + 4))
+    if ((v27 & 8) == 0 || self->_positionInStack != *(equalCopy + 4))
     {
       goto LABEL_135;
     }
@@ -2249,7 +2249,7 @@ LABEL_38:
 
   if ((*&v24 & 4) != 0)
   {
-    if ((v27 & 4) == 0 || self->_numberOfNotificationsInStack != *(v4 + 3))
+    if ((v27 & 4) == 0 || self->_numberOfNotificationsInStack != *(equalCopy + 3))
     {
       goto LABEL_135;
     }
@@ -2262,7 +2262,7 @@ LABEL_38:
 
   if ((*&v24 & 0x80) != 0)
   {
-    if ((v27 & 0x80) == 0 || self->_priorityStatus != *(v4 + 28))
+    if ((v27 & 0x80) == 0 || self->_priorityStatus != *(equalCopy + 28))
     {
       goto LABEL_135;
     }
@@ -2275,7 +2275,7 @@ LABEL_38:
 
   if ((*&v24 & 0x100) != 0)
   {
-    if ((v27 & 0x100) == 0 || self->_summaryStatus != *(v4 + 40))
+    if ((v27 & 0x100) == 0 || self->_summaryStatus != *(equalCopy + 40))
     {
       goto LABEL_135;
     }
@@ -2295,13 +2295,13 @@ LABEL_38:
 
     if (self->_isPriorityNotificationEnabled)
     {
-      if ((*(v4 + 212) & 1) == 0)
+      if ((*(equalCopy + 212) & 1) == 0)
       {
         goto LABEL_135;
       }
     }
 
-    else if (*(v4 + 212))
+    else if (*(equalCopy + 212))
     {
       goto LABEL_135;
     }
@@ -2318,13 +2318,13 @@ LABEL_38:
     {
       if (self->_isNotificationSummaryEnabled)
       {
-        if ((*(v4 + 210) & 1) == 0)
+        if ((*(equalCopy + 210) & 1) == 0)
         {
           goto LABEL_135;
         }
       }
 
-      else if (*(v4 + 210))
+      else if (*(equalCopy + 210))
       {
         goto LABEL_135;
       }
@@ -2338,7 +2338,7 @@ LABEL_135:
     goto LABEL_136;
   }
 
-  v28 = (*(v4 + 54) & 0x1000) == 0;
+  v28 = (*(equalCopy + 54) & 0x1000) == 0;
 LABEL_136:
 
   return v28;
@@ -2643,18 +2643,18 @@ LABEL_49:
   return v56 ^ v57 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v12 ^ v13 ^ v16 ^ v20 ^ v21 ^ v25 ^ v29 ^ v30 ^ v32 ^ v33 ^ v34 ^ v35 ^ v36 ^ v37 ^ v38 ^ v39;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if ((v4[27] & 0x20) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[27] & 0x20) != 0)
   {
-    self->_timestamp = v4[6];
+    self->_timestamp = fromCopy[6];
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(ATXPBUserNotification *)self setUuid:?];
   }
@@ -2979,17 +2979,17 @@ LABEL_74:
 LABEL_75:
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBUserNotification *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = nCopy;
       v7 = [v6 objectForKeyedSubscript:@"timestamp"];
       [v7 doubleValue];
       [(ATXPBUserNotification *)v5 setTimestamp:?];
@@ -3329,13 +3329,13 @@ LABEL_75:
   v11 = [ATXJSONHelper wrapObject:v10];
   v39[16] = v11;
   v38[17] = @"derivedData";
-  v12 = [(ATXPBUserNotificationDerivedData *)self->_derivedData jsonRepresentation];
-  v13 = [ATXJSONHelper wrapObject:v12];
+  jsonRepresentation = [(ATXPBUserNotificationDerivedData *)self->_derivedData jsonRepresentation];
+  v13 = [ATXJSONHelper wrapObject:jsonRepresentation];
   v39[17] = v13;
   v38[18] = @"sharedDigestEngagementTracker";
-  v14 = [(ATXPBUserNotification *)self sharedEngagementTracker];
-  v15 = [v14 jsonRepresentation];
-  v16 = [ATXJSONHelper wrapObject:v15];
+  sharedEngagementTracker = [(ATXPBUserNotification *)self sharedEngagementTracker];
+  jsonRepresentation2 = [sharedEngagementTracker jsonRepresentation];
+  v16 = [ATXJSONHelper wrapObject:jsonRepresentation2];
   v39[18] = v16;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:19];
 

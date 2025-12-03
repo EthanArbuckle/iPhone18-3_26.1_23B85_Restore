@@ -1,38 +1,38 @@
 @interface PUIStyleGradient
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4;
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4;
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation;
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation;
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
 - (NSArray)colors;
 - (NSString)nonVariatedIdentifier;
-- (PUIStyleGradient)initWithCoder:(id)a3;
-- (PUIStyleGradient)initWithColors:(id)a3 gradientType:(unint64_t)a4 locations:(id)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUIStyleGradient)initWithCoder:(id)coder;
+- (PUIStyleGradient)initWithColors:(id)colors gradientType:(unint64_t)type locations:(id)locations startPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIStyleGradient
 
-- (PUIStyleGradient)initWithColors:(id)a3 gradientType:(unint64_t)a4 locations:(id)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7
+- (PUIStyleGradient)initWithColors:(id)colors gradientType:(unint64_t)type locations:(id)locations startPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
-  v14 = a3;
-  v15 = a5;
+  y = endPoint.y;
+  x = endPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  colorsCopy = colors;
+  locationsCopy = locations;
   v22.receiver = self;
   v22.super_class = PUIStyleGradient;
   v16 = [(PUIStyleGradient *)&v22 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [colorsCopy copy];
     colors = v16->_colors;
     v16->_colors = v17;
 
-    v16->_gradientType = a4;
-    v19 = [v15 copy];
+    v16->_gradientType = type;
+    v19 = [locationsCopy copy];
     locations = v16->_locations;
     v16->_locations = v19;
 
@@ -45,11 +45,11 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 == self)
+  variationCopy = variation;
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -57,28 +57,28 @@
   else
   {
     objc_opt_class();
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStyleGradient *)self isEqualToStyle:v6 ignoringVariation:v4];
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStyleGradient *)self isEqualToStyle:equalCopy ignoringVariation:variationCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  variationCopy = variation;
+  styleCopy = style;
+  v7 = styleCopy;
+  if (styleCopy == self)
   {
     v15 = 1;
   }
 
-  else if (v6 && _PUIStyleCompareUsingIdentifiers(self, v6, v4))
+  else if (styleCopy && _PUIStyleCompareUsingIdentifiers(self, styleCopy, variationCopy))
   {
     v8 = v7;
-    v9 = [(PUIStyleGradient *)self colors];
-    v10 = [(PUIStyleGradient *)v8 colors];
-    v11 = [v9 isEqualToArray:v10];
+    colors = [(PUIStyleGradient *)self colors];
+    colors2 = [(PUIStyleGradient *)v8 colors];
+    v11 = [colors isEqualToArray:colors2];
 
     if (v11 && self->_gradientType == v8->_gradientType && (-[PUIStyleGradient locations](self, "locations"), v12 = objc_claimAutoreleasedReturnValue(), -[PUIStyleGradient locations](v8, "locations"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v12 isEqualToArray:v13], v13, v12, v14) && BSPointEqualToPoint())
     {
@@ -134,18 +134,18 @@
   }
 
   v7 = v6;
-  v8 = [(PUIStyleGradient *)self colors];
-  v9 = [v8 bs_map:&__block_literal_global_198];
+  colors = [(PUIStyleGradient *)self colors];
+  v9 = [colors bs_map:&__block_literal_global_198];
   v10 = [v9 componentsJoinedByString:@"_"];
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray hash](self->_locations, "hash")}];
-  v12 = [v11 stringValue];
+  stringValue = [v11 stringValue];
 
   v13 = NSStringFromCGPoint(self->_startPoint);
   v14 = NSStringFromCGPoint(self->_endPoint);
   v18[0] = v3;
   v18[1] = v7;
   v18[2] = v10;
-  v18[3] = v12;
+  v18[3] = stringValue;
   v18[4] = v13;
   v18[5] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:6];
@@ -170,16 +170,16 @@ uint64_t __41__PUIStyleGradient_nonVariatedIdentifier__block_invoke(uint64_t a1,
   return v2;
 }
 
-- (PUIStyleGradient)initWithCoder:(id)a3
+- (PUIStyleGradient)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"colors"];
-  v6 = [v4 decodeIntegerForKey:@"gradientType"];
-  v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"locations"];
-  [v4 decodeCGPointForKey:@"startPoint"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"colors"];
+  v6 = [coderCopy decodeIntegerForKey:@"gradientType"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"locations"];
+  [coderCopy decodeCGPointForKey:@"startPoint"];
   v9 = v8;
   v11 = v10;
-  [v4 decodeCGPointForKey:@"endPoint"];
+  [coderCopy decodeCGPointForKey:@"endPoint"];
   v13 = v12;
   v15 = v14;
 
@@ -187,18 +187,18 @@ uint64_t __41__PUIStyleGradient_nonVariatedIdentifier__block_invoke(uint64_t a1,
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   colors = self->_colors;
-  v5 = a3;
-  [v5 encodeObject:colors forKey:@"colors"];
-  [v5 encodeInteger:self->_gradientType forKey:@"gradientType"];
-  [v5 encodeObject:self->_locations forKey:@"locations"];
-  [v5 encodeCGPoint:@"startPoint" forKey:{self->_startPoint.x, self->_startPoint.y}];
-  [v5 encodeCGPoint:@"endPoint" forKey:{self->_endPoint.x, self->_endPoint.y}];
+  coderCopy = coder;
+  [coderCopy encodeObject:colors forKey:@"colors"];
+  [coderCopy encodeInteger:self->_gradientType forKey:@"gradientType"];
+  [coderCopy encodeObject:self->_locations forKey:@"locations"];
+  [coderCopy encodeCGPoint:@"startPoint" forKey:{self->_startPoint.x, self->_startPoint.y}];
+  [coderCopy encodeCGPoint:@"endPoint" forKey:{self->_endPoint.x, self->_endPoint.y}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   locations = self->_locations;

@@ -1,19 +1,19 @@
 @interface ADSyncSnapshot
 + (id)sharedInstance;
 - (ADSyncSnapshot)init;
-- (BOOL)_pruneAppsCacheWithTruth:(id)a3;
-- (BOOL)shouldIgnoreSyncKey:(id)a3;
+- (BOOL)_pruneAppsCacheWithTruth:(id)truth;
+- (BOOL)shouldIgnoreSyncKey:(id)key;
 - (id)_storePath;
 - (void)_cancelSaveTimer;
-- (void)_fetchSentAnchorsOnQueue:(id)a3 completion:(id)a4;
-- (void)_noteSendingPostGen:(id)a3 validity:(id)a4 key:(id)a5 appMetaData:(id)a6;
+- (void)_fetchSentAnchorsOnQueue:(id)queue completion:(id)completion;
+- (void)_noteSendingPostGen:(id)gen validity:(id)validity key:(id)key appMetaData:(id)data;
 - (void)_readFromDisk;
 - (void)_save;
 - (void)_scheduleSave;
 - (void)deleteSavedSnapshots;
-- (void)fetchSentAnchorsOnQueue:(id)a3 completion:(id)a4;
-- (void)noteSendingChunk:(id)a3;
-- (void)pruneCacheWithCurrentSynapseInfo:(id)a3;
+- (void)fetchSentAnchorsOnQueue:(id)queue completion:(id)completion;
+- (void)noteSendingChunk:(id)chunk;
+- (void)pruneCacheWithCurrentSynapseInfo:(id)info;
 @end
 
 @implementation ADSyncSnapshot
@@ -60,9 +60,9 @@
   if ([v4 count])
   {
     v18 = 0;
-    v11 = [NSPropertyListSerialization dataWithPropertyList:v4 format:200 options:0 error:&v18];
+    _storePath2 = [NSPropertyListSerialization dataWithPropertyList:v4 format:200 options:0 error:&v18];
     v12 = v18;
-    if (!v11)
+    if (!_storePath2)
     {
       v13 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -75,8 +75,8 @@
       }
     }
 
-    v14 = [(ADSyncSnapshot *)self _storePath];
-    v15 = [v11 writeToFile:v14 atomically:1];
+    _storePath = [(ADSyncSnapshot *)self _storePath];
+    v15 = [_storePath2 writeToFile:_storePath atomically:1];
 
     if ((v15 & 1) == 0)
     {
@@ -101,34 +101,34 @@
     }
 
     v12 = +[NSFileManager defaultManager];
-    v11 = [(ADSyncSnapshot *)self _storePath];
-    [v12 removeItemAtPath:v11 error:0];
+    _storePath2 = [(ADSyncSnapshot *)self _storePath];
+    [v12 removeItemAtPath:_storePath2 error:0];
   }
 
   [(ADSyncSnapshot *)self _cancelSaveTimer];
 }
 
-- (void)pruneCacheWithCurrentSynapseInfo:(id)a3
+- (void)pruneCacheWithCurrentSynapseInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D5A5C;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(queue, v7);
 }
 
-- (BOOL)_pruneAppsCacheWithTruth:(id)a3
+- (BOOL)_pruneAppsCacheWithTruth:(id)truth
 {
-  v26 = a3;
+  truthCopy = truth;
   if ([(NSMutableDictionary *)self->_appsCache count])
   {
-    v4 = [(NSMutableDictionary *)self->_appsCache allKeys];
-    v5 = [v4 copy];
+    allKeys = [(NSMutableDictionary *)self->_appsCache allKeys];
+    v5 = [allKeys copy];
 
     v35 = 0u;
     v36 = 0u;
@@ -151,7 +151,7 @@
           }
 
           v8 = *(*(&v33 + 1) + 8 * v7);
-          v9 = [v26 objectForKey:v8];
+          v9 = [truthCopy objectForKey:v8];
           if (![v9 count])
           {
             v21 = AFSiriLogContextDaemon;
@@ -251,8 +251,8 @@ LABEL_25:
 - (void)_readFromDisk
 {
   v3 = [NSData alloc];
-  v4 = [(ADSyncSnapshot *)self _storePath];
-  v5 = [v3 initWithContentsOfFile:v4];
+  _storePath = [(ADSyncSnapshot *)self _storePath];
+  v5 = [v3 initWithContentsOfFile:_storePath];
 
   if ([v5 length])
   {
@@ -392,17 +392,17 @@ LABEL_26:
 LABEL_27:
 }
 
-- (BOOL)shouldIgnoreSyncKey:(id)a3
+- (BOOL)shouldIgnoreSyncKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AFIntentSupportAndVocabSyncKey])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:AFIntentSupportAndVocabSyncKey])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:AFIntentSupportAndVocabSyncNanoKey];
+    v4 = [keyCopy isEqualToString:AFIntentSupportAndVocabSyncNanoKey];
   }
 
   return v4;
@@ -419,10 +419,10 @@ LABEL_27:
   dispatch_async(queue, block);
 }
 
-- (void)noteSendingChunk:(id)a3
+- (void)noteSendingChunk:(id)chunk
 {
-  v4 = a3;
-  v5 = [v4 key];
+  chunkCopy = chunk;
+  v5 = [chunkCopy key];
   v6 = [v5 copy];
 
   if ([(ADSyncSnapshot *)self shouldIgnoreSyncKey:v6])
@@ -440,14 +440,14 @@ LABEL_27:
 
   else
   {
-    v8 = [v4 postGen];
-    v9 = [v8 copy];
+    postGen = [chunkCopy postGen];
+    v9 = [postGen copy];
 
-    v10 = [v4 validity];
-    v11 = [v10 copy];
+    validity = [chunkCopy validity];
+    v11 = [validity copy];
 
-    v12 = [v4 appMetaData];
-    v13 = [v12 copy];
+    appMetaData = [chunkCopy appMetaData];
+    v13 = [appMetaData copy];
 
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -466,35 +466,35 @@ LABEL_27:
   }
 }
 
-- (void)_noteSendingPostGen:(id)a3 validity:(id)a4 key:(id)a5 appMetaData:(id)a6
+- (void)_noteSendingPostGen:(id)gen validity:(id)validity key:(id)key appMetaData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v12 length])
+  genCopy = gen;
+  validityCopy = validity;
+  keyCopy = key;
+  dataCopy = data;
+  if ([keyCopy length])
   {
     v14 = objc_alloc_init(_ADChunkInfo);
-    [(_ADChunkInfo *)v14 setValidity:v11];
-    [(_ADChunkInfo *)v14 setPostGen:v10];
-    if ([v12 isEqualToString:AFSynapseSyncAnchorKey])
+    [(_ADChunkInfo *)v14 setValidity:validityCopy];
+    [(_ADChunkInfo *)v14 setPostGen:genCopy];
+    if ([keyCopy isEqualToString:AFSynapseSyncAnchorKey])
     {
-      v25 = v10;
-      v15 = [v13 _af_preferredBundleID];
-      v16 = [v13 syncSlots];
-      v17 = [(NSMutableDictionary *)self->_appsCache objectForKey:v15];
+      v25 = genCopy;
+      _af_preferredBundleID = [dataCopy _af_preferredBundleID];
+      syncSlots = [dataCopy syncSlots];
+      v17 = [(NSMutableDictionary *)self->_appsCache objectForKey:_af_preferredBundleID];
       if (!v17)
       {
-        v17 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v16, "count")}];
-        [(NSMutableDictionary *)self->_appsCache setObject:v17 forKey:v15];
+        v17 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(syncSlots, "count")}];
+        [(NSMutableDictionary *)self->_appsCache setObject:v17 forKey:_af_preferredBundleID];
       }
 
-      v24 = v15;
+      v24 = _af_preferredBundleID;
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v18 = v16;
+      v18 = syncSlots;
       v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v19)
       {
@@ -521,12 +521,12 @@ LABEL_27:
         while (v20);
       }
 
-      v10 = v25;
+      genCopy = v25;
     }
 
     else
     {
-      [(NSMutableDictionary *)self->_pluginCache setObject:v14 forKey:v12];
+      [(NSMutableDictionary *)self->_pluginCache setObject:v14 forKey:keyCopy];
     }
 
     [(ADSyncSnapshot *)self _scheduleSave];
@@ -588,15 +588,15 @@ LABEL_27:
   }
 }
 
-- (void)fetchSentAnchorsOnQueue:(id)a3 completion:(id)a4
+- (void)fetchSentAnchorsOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!queueCopy)
     {
-      v6 = &_dispatch_main_q;
+      queueCopy = &_dispatch_main_q;
       v8 = &_dispatch_main_q;
     }
 
@@ -606,9 +606,9 @@ LABEL_27:
     block[2] = sub_1000D70CC;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v6 = v6;
-    v12 = v6;
-    v13 = v7;
+    queueCopy = queueCopy;
+    v12 = queueCopy;
+    v13 = completionCopy;
     dispatch_async(queue, block);
   }
 
@@ -624,10 +624,10 @@ LABEL_27:
   }
 }
 
-- (void)_fetchSentAnchorsOnQueue:(id)a3 completion:(id)a4
+- (void)_fetchSentAnchorsOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = objc_alloc_init(NSMutableArray);
   pluginCache = self->_pluginCache;
   v20[0] = _NSConcreteStackBlock;
@@ -650,10 +650,10 @@ LABEL_27:
   v15[2] = sub_1000D739C;
   v15[3] = &unk_10051E038;
   v16 = v12;
-  v17 = v6;
+  v17 = completionCopy;
   v13 = v12;
-  v14 = v6;
-  dispatch_async(v7, v15);
+  v14 = completionCopy;
+  dispatch_async(queueCopy, v15);
 }
 
 - (id)_storePath
@@ -672,9 +672,9 @@ LABEL_27:
   if (v2)
   {
     v3 = [objc_opt_class() description];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
@@ -704,7 +704,7 @@ LABEL_27:
   block[1] = 3221225472;
   block[2] = sub_1000D7664;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100590000 != -1)
   {
     dispatch_once(&qword_100590000, block);

@@ -1,23 +1,23 @@
 @interface NavTrayActionCell
-- (NavTrayActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (NavTrayActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation NavTrayActionCell
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v10 = a3;
-  v4 = [(NavTrayActionCell *)self backgroundConfiguration];
-  v5 = [v4 updatedConfigurationForState:v10];
+  stateCopy = state;
+  backgroundConfiguration = [(NavTrayActionCell *)self backgroundConfiguration];
+  v5 = [backgroundConfiguration updatedConfigurationForState:stateCopy];
 
-  v6 = [(NavTrayActionCell *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(NavTrayActionCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (([v10 isHighlighted] & 1) != 0 || objc_msgSend(v10, "isSelected"))
+  if (([stateCopy isHighlighted] & 1) != 0 || objc_msgSend(stateCopy, "isSelected"))
   {
-    if (v7 == 2)
+    if (userInterfaceStyle == 2)
     {
       +[UIColor tertiarySystemGroupedBackgroundColor];
     }
@@ -40,27 +40,27 @@
   [(NavTrayActionCell *)self setBackgroundConfiguration:v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NavTrayActionCell;
-  v4 = a3;
-  [(NavTrayActionCell *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NavTrayActionCell *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(NavTrayActionCell *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(NavTrayActionCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (NavTrayActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NavTrayActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v70.receiver = self;
   v70.super_class = NavTrayActionCell;
-  v4 = [(NavTrayActionCell *)&v70 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(NavTrayActionCell *)&v70 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_class();
@@ -73,8 +73,8 @@
     v7 = objc_opt_new();
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v7 setAccessibilityIdentifier:@"ImageViewContainer"];
-    v8 = [(NavTrayActionCell *)v4 contentView];
-    [v8 addSubview:v7];
+    contentView = [(NavTrayActionCell *)v4 contentView];
+    [contentView addSubview:v7];
 
     v9 = objc_opt_new();
     leadingImageBackgroundView = v4->_leadingImageBackgroundView;
@@ -82,8 +82,8 @@
 
     [(UIView *)v4->_leadingImageBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_leadingImageBackgroundView setAccessibilityIdentifier:@"LeadingImageBackground"];
-    v11 = [(UIView *)v4->_leadingImageBackgroundView layer];
-    [v11 setCornerRadius:23.0];
+    layer = [(UIView *)v4->_leadingImageBackgroundView layer];
+    [layer setCornerRadius:23.0];
 
     [v7 addSubview:v4->_leadingImageBackgroundView];
     v12 = objc_opt_new();
@@ -104,72 +104,72 @@
 
     [(UILabel *)v4->_titleLabel setNumberOfLines:2];
     [(UILabel *)v4->_titleLabel setAccessibilityIdentifier:@"TitleLabel"];
-    v17 = [(NavTrayActionCell *)v4 contentView];
-    [v17 addSubview:v4->_titleLabel];
+    contentView2 = [(NavTrayActionCell *)v4 contentView];
+    [contentView2 addSubview:v4->_titleLabel];
 
-    v67 = [v7 leadingAnchor];
-    v68 = [(NavTrayActionCell *)v4 contentView];
-    v66 = [v68 leadingAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    leadingAnchor = [v7 leadingAnchor];
+    contentView3 = [(NavTrayActionCell *)v4 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v65 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v71[0] = v65;
-    v64 = [v7 widthAnchor];
-    v63 = [v64 constraintEqualToConstant:70.0];
+    widthAnchor = [v7 widthAnchor];
+    v63 = [widthAnchor constraintEqualToConstant:70.0];
     v71[1] = v63;
-    v61 = [v7 centerYAnchor];
-    v62 = [(NavTrayActionCell *)v4 contentView];
-    v60 = [v62 centerYAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    centerYAnchor = [v7 centerYAnchor];
+    contentView4 = [(NavTrayActionCell *)v4 contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v59 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v71[2] = v59;
-    v58 = [(UIView *)v4->_leadingImageBackgroundView centerXAnchor];
-    v57 = [v7 centerXAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    centerXAnchor = [(UIView *)v4->_leadingImageBackgroundView centerXAnchor];
+    centerXAnchor2 = [v7 centerXAnchor];
+    v56 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v71[3] = v56;
-    v55 = [(UIView *)v4->_leadingImageBackgroundView centerYAnchor];
-    v54 = [v7 centerYAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    centerYAnchor3 = [(UIView *)v4->_leadingImageBackgroundView centerYAnchor];
+    centerYAnchor4 = [v7 centerYAnchor];
+    v53 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v71[4] = v53;
-    v52 = [(UIView *)v4->_leadingImageBackgroundView heightAnchor];
-    v51 = [v52 constraintEqualToConstant:46.0];
+    heightAnchor = [(UIView *)v4->_leadingImageBackgroundView heightAnchor];
+    v51 = [heightAnchor constraintEqualToConstant:46.0];
     v71[5] = v51;
-    v49 = [(UIView *)v4->_leadingImageBackgroundView widthAnchor];
-    v48 = [v49 constraintEqualToConstant:46.0];
+    widthAnchor2 = [(UIView *)v4->_leadingImageBackgroundView widthAnchor];
+    v48 = [widthAnchor2 constraintEqualToConstant:46.0];
     v71[6] = v48;
-    v47 = [(UIImageView *)v4->_leadingImageView centerXAnchor];
-    v46 = [v7 centerXAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    centerXAnchor3 = [(UIImageView *)v4->_leadingImageView centerXAnchor];
+    centerXAnchor4 = [v7 centerXAnchor];
+    v45 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v71[7] = v45;
-    v44 = [(UIImageView *)v4->_leadingImageView centerYAnchor];
+    centerYAnchor5 = [(UIImageView *)v4->_leadingImageView centerYAnchor];
     v50 = v7;
-    v43 = [v7 centerYAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    centerYAnchor6 = [v7 centerYAnchor];
+    v42 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v71[8] = v42;
-    v41 = [(UIImageView *)v4->_leadingImageView heightAnchor];
-    v40 = [(UIView *)v4->_leadingImageBackgroundView heightAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 multiplier:0.657142857];
+    heightAnchor2 = [(UIImageView *)v4->_leadingImageView heightAnchor];
+    heightAnchor3 = [(UIView *)v4->_leadingImageBackgroundView heightAnchor];
+    v39 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 multiplier:0.657142857];
     v71[9] = v39;
-    v38 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v37 = [v7 trailingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    leadingAnchor3 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    trailingAnchor = [v7 trailingAnchor];
+    v36 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
     v71[10] = v36;
-    v34 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v35 = [(NavTrayActionCell *)v4 contentView];
-    v33 = [v35 trailingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:-16.0];
+    trailingAnchor2 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    contentView5 = [(NavTrayActionCell *)v4 contentView];
+    trailingAnchor3 = [contentView5 trailingAnchor];
+    v32 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
     v71[11] = v32;
-    v30 = [(UILabel *)v4->_titleLabel centerYAnchor];
-    v31 = [(NavTrayActionCell *)v4 contentView];
-    v29 = [v31 centerYAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    centerYAnchor7 = [(UILabel *)v4->_titleLabel centerYAnchor];
+    contentView6 = [(NavTrayActionCell *)v4 contentView];
+    centerYAnchor8 = [contentView6 centerYAnchor];
+    v28 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v71[12] = v28;
-    v18 = [(UILabel *)v4->_titleLabel topAnchor];
-    v19 = [(NavTrayActionCell *)v4 contentView];
-    v20 = [v19 topAnchor];
-    v21 = [v18 constraintGreaterThanOrEqualToAnchor:v20 constant:25.0];
+    topAnchor = [(UILabel *)v4->_titleLabel topAnchor];
+    contentView7 = [(NavTrayActionCell *)v4 contentView];
+    topAnchor2 = [contentView7 topAnchor];
+    v21 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:25.0];
     v71[13] = v21;
-    v22 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v23 = [(NavTrayActionCell *)v4 contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintLessThanOrEqualToAnchor:v24 constant:-25.0];
+    bottomAnchor = [(UILabel *)v4->_titleLabel bottomAnchor];
+    contentView8 = [(NavTrayActionCell *)v4 contentView];
+    bottomAnchor2 = [contentView8 bottomAnchor];
+    v25 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-25.0];
     v71[14] = v25;
     v26 = [NSArray arrayWithObjects:v71 count:15];
     [NSLayoutConstraint activateConstraints:v26];

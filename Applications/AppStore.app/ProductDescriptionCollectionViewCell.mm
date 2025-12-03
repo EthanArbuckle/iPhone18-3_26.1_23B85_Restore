@@ -1,11 +1,11 @@
 @interface ProductDescriptionCollectionViewCell
-- (_TtC8AppStore36ProductDescriptionCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore36ProductDescriptionCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ProductDescriptionCollectionViewCell
 
-- (_TtC8AppStore36ProductDescriptionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore36ProductDescriptionCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore36ProductDescriptionCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10012A8D4();
 }
 

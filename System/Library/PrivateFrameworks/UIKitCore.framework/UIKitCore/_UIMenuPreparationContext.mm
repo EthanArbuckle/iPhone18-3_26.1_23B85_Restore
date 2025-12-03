@@ -1,23 +1,23 @@
 @interface _UIMenuPreparationContext
-+ (id)contextWithPreparer:(id)a3 firstResponderTarget:(id)a4;
-- (BOOL)shouldTrackSelectionForVisibleIndex:(unint64_t)a3 elementSize:(int64_t)a4;
++ (id)contextWithPreparer:(id)preparer firstResponderTarget:(id)target;
+- (BOOL)shouldTrackSelectionForVisibleIndex:(unint64_t)index elementSize:(int64_t)size;
 - (UIDeferredMenuElementDelegate)deferredElementDelegate;
 - (UIResponder)firstResponderTarget;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)preparer;
 - (id)sender;
 @end
 
 @implementation _UIMenuPreparationContext
 
-+ (id)contextWithPreparer:(id)a3 firstResponderTarget:(id)a4
++ (id)contextWithPreparer:(id)preparer firstResponderTarget:(id)target
 {
-  v5 = a4;
-  v6 = a3;
+  targetCopy = target;
+  preparerCopy = preparer;
   v7 = objc_alloc_init(_UIMenuPreparationContext);
-  objc_storeWeak(&v7->_preparer, v6);
+  objc_storeWeak(&v7->_preparer, preparerCopy);
 
-  objc_storeWeak(&v7->_firstResponderTarget, v5);
+  objc_storeWeak(&v7->_firstResponderTarget, targetCopy);
   v7->_tracksSelection = 1;
   elementSizeSolver = v7->_elementSizeSolver;
   v7->_elementSizeSolver = &__block_literal_global_742;
@@ -28,7 +28,7 @@
   return v7;
 }
 
-- (BOOL)shouldTrackSelectionForVisibleIndex:(unint64_t)a3 elementSize:(int64_t)a4
+- (BOOL)shouldTrackSelectionForVisibleIndex:(unint64_t)index elementSize:(int64_t)size
 {
   if (!self->_tracksSelection)
   {
@@ -38,7 +38,7 @@
   shouldTrackVisibleSelection = self->_shouldTrackVisibleSelection;
   if (shouldTrackVisibleSelection)
   {
-    return shouldTrackVisibleSelection[2](shouldTrackVisibleSelection, a3, a4);
+    return shouldTrackVisibleSelection[2](shouldTrackVisibleSelection, index, size);
   }
 
   else
@@ -47,30 +47,30 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UIMenuPreparationContext allocWithZone:?]];
-  v5 = [(_UIMenuPreparationContext *)self preparer];
-  objc_storeWeak(&v4->_preparer, v5);
+  preparer = [(_UIMenuPreparationContext *)self preparer];
+  objc_storeWeak(&v4->_preparer, preparer);
 
-  v6 = [(_UIMenuPreparationContext *)self preparer];
-  objc_storeWeak(&v4->_firstResponderTarget, v6);
+  preparer2 = [(_UIMenuPreparationContext *)self preparer];
+  objc_storeWeak(&v4->_firstResponderTarget, preparer2);
 
-  v7 = [(_UIMenuPreparationContext *)self deferredElementDelegate];
-  [(_UIMenuPreparationContext *)v4 setDeferredElementDelegate:v7];
+  deferredElementDelegate = [(_UIMenuPreparationContext *)self deferredElementDelegate];
+  [(_UIMenuPreparationContext *)v4 setDeferredElementDelegate:deferredElementDelegate];
 
-  v8 = [(_UIMenuPreparationContext *)self sender];
-  [(_UIMenuPreparationContext *)v4 setSender:v8];
+  sender = [(_UIMenuPreparationContext *)self sender];
+  [(_UIMenuPreparationContext *)v4 setSender:sender];
 
   [(_UIMenuPreparationContext *)v4 setSupportsCustomViewMenuElements:[(_UIMenuPreparationContext *)self supportsCustomViewMenuElements]];
   [(_UIMenuPreparationContext *)v4 setUseSenderAsResponderSender:[(_UIMenuPreparationContext *)self useSenderAsResponderSender]];
   [(_UIMenuPreparationContext *)v4 setSupportsHeaderView:[(_UIMenuPreparationContext *)self supportsHeaderView]];
   [(_UIMenuPreparationContext *)v4 setTracksSelection:[(_UIMenuPreparationContext *)self tracksSelection]];
-  v9 = [(_UIMenuPreparationContext *)self elementSizeSolver];
-  [(_UIMenuPreparationContext *)v4 setElementSizeSolver:v9];
+  elementSizeSolver = [(_UIMenuPreparationContext *)self elementSizeSolver];
+  [(_UIMenuPreparationContext *)v4 setElementSizeSolver:elementSizeSolver];
 
-  v10 = [(_UIMenuPreparationContext *)self shouldTrackVisibleSelection];
-  [(_UIMenuPreparationContext *)v4 setShouldTrackVisibleSelection:v10];
+  shouldTrackVisibleSelection = [(_UIMenuPreparationContext *)self shouldTrackVisibleSelection];
+  [(_UIMenuPreparationContext *)v4 setShouldTrackVisibleSelection:shouldTrackVisibleSelection];
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface MGRemoteQueryServerClient
-- (BOOL)_transactionExists:(id)a3;
-- (MGRemoteQueryServerClient)initWithPeer:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5;
+- (BOOL)_transactionExists:(id)exists;
+- (MGRemoteQueryServerClient)initWithPeer:(id)peer delegate:(id)delegate dispatchQueue:(id)queue;
 - (MGRemoteQueryServerClientDelegate)delegate;
 - (NSArray)transactions;
 - (NSString)description;
@@ -12,24 +12,24 @@
 - (void)_timerFired;
 - (void)_timerInit;
 - (void)_timerReschedule;
-- (void)_transactionAdd:(id)a3;
-- (void)_transactionRemove:(id)a3;
-- (void)_withTransactionsLock:(id)a3;
-- (void)addNewConnection:(id)a3 completion:(id)a4;
+- (void)_transactionAdd:(id)add;
+- (void)_transactionRemove:(id)remove;
+- (void)_withTransactionsLock:(id)lock;
+- (void)addNewConnection:(id)connection completion:(id)completion;
 - (void)dealloc;
-- (void)setTransactions:(id)a3;
-- (void)transaction:(id)a3 receivedTimeoutInterval:(unint64_t)a4;
-- (void)transactionActivityOccurred:(id)a3;
-- (void)transactionInvalidated:(id)a3;
+- (void)setTransactions:(id)transactions;
+- (void)transaction:(id)transaction receivedTimeoutInterval:(unint64_t)interval;
+- (void)transactionActivityOccurred:(id)occurred;
+- (void)transactionInvalidated:(id)invalidated;
 @end
 
 @implementation MGRemoteQueryServerClient
 
-- (MGRemoteQueryServerClient)initWithPeer:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5
+- (MGRemoteQueryServerClient)initWithPeer:(id)peer delegate:(id)delegate dispatchQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  peerCopy = peer;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = MGRemoteQueryServerClient;
   v12 = [(MGRemoteQueryServerClient *)&v20 init];
@@ -37,22 +37,22 @@
   if (v12)
   {
     v12->_transactionsLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v12->_delegate, v10);
-    objc_storeStrong(&v13->_dispatchQueue, a5);
-    objc_storeStrong(&v13->_peer, a3);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_dispatchQueue, queue);
+    objc_storeStrong(&v13->_peer, peer);
     v14 = objc_alloc_init(MEMORY[0x277CBEA60]);
     transactions = v13->_transactions;
     v13->_transactions = v14;
 
     v13->_invalidated = 0;
     v13->_timeout = 900;
-    v16 = [(MGRemoteQueryServerClient *)v13 dispatchQueue];
+    dispatchQueue = [(MGRemoteQueryServerClient *)v13 dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__MGRemoteQueryServerClient_initWithPeer_delegate_dispatchQueue___block_invoke;
     block[3] = &unk_27989ED90;
     v19 = v13;
-    dispatch_async(v16, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   return v13;
@@ -71,27 +71,27 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MGRemoteQueryServerClient *)self peer];
-  v7 = [v3 stringWithFormat:@"<%@: %p, _peer = %@, _transactions = %lu>", v5, self, v6, -[MGRemoteQueryServerClient transactionCount](self, "transactionCount")];
+  peer = [(MGRemoteQueryServerClient *)self peer];
+  v7 = [v3 stringWithFormat:@"<%@: %p, _peer = %@, _transactions = %lu>", v5, self, peer, -[MGRemoteQueryServerClient transactionCount](self, "transactionCount")];
 
   return v7;
 }
 
-- (void)addNewConnection:(id)a3 completion:(id)a4
+- (void)addNewConnection:(id)connection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  connectionCopy = connection;
+  completionCopy = completion;
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__MGRemoteQueryServerClient_addNewConnection_completion___block_invoke;
   block[3] = &unk_27989F3C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = connectionCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = connectionCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 void __57__MGRemoteQueryServerClient_addNewConnection_completion___block_invoke(uint64_t a1)
@@ -190,7 +190,7 @@ void __45__MGRemoteQueryServerClient_transactionCount__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25863A000, v3, OS_LOG_TYPE_DEFAULT, "%p server client invalidating", buf, 0xCu);
     }
 
@@ -215,12 +215,12 @@ void __40__MGRemoteQueryServerClient__invalidate__block_invoke(uint64_t a1)
   [v1 setTransactions:v2];
 }
 
-- (void)_transactionAdd:(id)a3
+- (void)_transactionAdd:(id)add
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGRemoteQueryServerClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  addCopy = add;
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   os_unfair_lock_assert_owner(&self->_transactionsLock);
   if ([(MGRemoteQueryServerClient *)self invalidated])
@@ -229,9 +229,9 @@ void __40__MGRemoteQueryServerClient__invalidate__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v17 = 134218242;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
-      v20 = v4;
+      v20 = addCopy;
       v7 = "%p server client invalidated, not adding %@";
 LABEL_12:
       _os_log_error_impl(&dword_25863A000, v6, OS_LOG_TYPE_ERROR, v7, &v17, 0x16u);
@@ -241,8 +241,8 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  v8 = [(MGRemoteQueryServerClient *)self transactions];
-  v9 = [v8 count];
+  transactions = [(MGRemoteQueryServerClient *)self transactions];
+  v9 = [transactions count];
 
   if (v9 >= 0xF)
   {
@@ -250,38 +250,38 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v17 = 134218242;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
-      v20 = v4;
+      v20 = addCopy;
       v7 = "%p server client exceeded limit, not adding %@";
       goto LABEL_12;
     }
 
 LABEL_6:
 
-    nw_connection_cancel(v4);
+    nw_connection_cancel(addCopy);
     goto LABEL_10;
   }
 
   v10 = [MGRemoteQueryServerTransaction alloc];
-  v11 = [(MGRemoteQueryServerClient *)self dispatchQueue];
-  v12 = [(MGRemoteQueryServerTransaction *)v10 initWithConnection:v4 delegate:self dispatchQueue:v11];
+  dispatchQueue2 = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  v12 = [(MGRemoteQueryServerTransaction *)v10 initWithConnection:addCopy delegate:self dispatchQueue:dispatchQueue2];
 
-  v13 = [(MGRemoteQueryServerClient *)self transactions];
-  v14 = [v13 arrayByAddingObject:v12];
+  transactions2 = [(MGRemoteQueryServerClient *)self transactions];
+  v14 = [transactions2 arrayByAddingObject:v12];
 
   [(MGRemoteQueryServerClient *)self setTransactions:v14];
   v15 = MGLogForCategory(5);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     v17 = 134218754;
-    v18 = self;
+    selfCopy3 = self;
     v19 = 2048;
     v20 = [v14 count];
     v21 = 2048;
     v22 = v12;
     v23 = 2112;
-    v24 = v4;
+    v24 = addCopy;
     _os_log_debug_impl(&dword_25863A000, v15, OS_LOG_TYPE_DEBUG, "%p server client now %lu transactions after adding %p with connection %@", &v17, 0x2Au);
   }
 
@@ -289,12 +289,12 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transactionRemove:(id)a3
+- (void)_transactionRemove:(id)remove
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGRemoteQueryServerClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  removeCopy = remove;
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v13 = 0;
   v14 = &v13;
@@ -305,7 +305,7 @@ LABEL_10:
   v10[2] = __48__MGRemoteQueryServerClient__transactionRemove___block_invoke;
   v10[3] = &unk_27989EEA8;
   v10[4] = self;
-  v6 = v4;
+  v6 = removeCopy;
   v11 = v6;
   v12 = &v13;
   [(MGRemoteQueryServerClient *)self _withTransactionsLock:v10];
@@ -314,7 +314,7 @@ LABEL_10:
   {
     v9 = v14[3];
     *buf = 134218496;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
     v20 = v9;
     v21 = 2048;
@@ -342,11 +342,11 @@ void __48__MGRemoteQueryServerClient__transactionRemove___block_invoke(uint64_t 
   *(*(*(a1 + 48) + 8) + 24) = [v3 count];
 }
 
-- (BOOL)_transactionExists:(id)a3
+- (BOOL)_transactionExists:(id)exists
 {
-  v4 = a3;
-  v5 = [(MGRemoteQueryServerClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  existsCopy = exists;
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v11 = 0;
   v12 = &v11;
@@ -358,7 +358,7 @@ void __48__MGRemoteQueryServerClient__transactionRemove___block_invoke(uint64_t 
   v8[3] = &unk_27989EEF8;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = existsCopy;
   v9 = v6;
   [(MGRemoteQueryServerClient *)self _withTransactionsLock:v8];
   LOBYTE(self) = *(v12 + 24);
@@ -375,11 +375,11 @@ void __48__MGRemoteQueryServerClient__transactionExists___block_invoke(uint64_t 
 
 - (void)_timerInit
 {
-  v3 = [(MGRemoteQueryServerClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryServerClient *)self dispatchQueue];
-  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+  dispatchQueue2 = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, dispatchQueue2);
 
   objc_storeStrong(&self->_timeoutTimer, v5);
   objc_initWeak(&location, self);
@@ -408,45 +408,45 @@ void __39__MGRemoteQueryServerClient__timerInit__block_invoke(uint64_t a1)
 
 - (void)_timerReschedule
 {
-  v3 = [(MGRemoteQueryServerClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (![(MGRemoteQueryServerClient *)self invalidated])
   {
-    v4 = [(MGRemoteQueryServerClient *)self timeout];
+    timeout = [(MGRemoteQueryServerClient *)self timeout];
     source = [(MGRemoteQueryServerClient *)self timeoutTimer];
-    v5 = dispatch_walltime(0, 1000000000 * v4 + 60000000000);
+    v5 = dispatch_walltime(0, 1000000000 * timeout + 60000000000);
     dispatch_source_set_timer(source, v5, 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 }
 
 - (void)_timerCancel
 {
-  v2 = [(MGRemoteQueryServerClient *)self timeoutTimer];
-  if (v2)
+  timeoutTimer = [(MGRemoteQueryServerClient *)self timeoutTimer];
+  if (timeoutTimer)
   {
-    v3 = v2;
-    dispatch_source_cancel(v2);
-    v2 = v3;
+    v3 = timeoutTimer;
+    dispatch_source_cancel(timeoutTimer);
+    timeoutTimer = v3;
   }
 }
 
 - (void)_timerFired
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryServerClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (![(MGRemoteQueryServerClient *)self invalidated])
   {
     v4 = MGLogForCategory(5);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(MGRemoteQueryServerClient *)self peer];
+      peer = [(MGRemoteQueryServerClient *)self peer];
       v7 = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v6;
+      v10 = peer;
       _os_log_error_impl(&dword_25863A000, v4, OS_LOG_TYPE_ERROR, "%p watchdog fired, terminating communication with peer %@", &v7, 0x16u);
     }
 
@@ -458,48 +458,48 @@ void __39__MGRemoteQueryServerClient__timerInit__block_invoke(uint64_t a1)
 
 - (void)_delegateNotifyLostTransaction
 {
-  v3 = [(MGRemoteQueryServerClient *)self delegate];
-  if (v3)
+  delegate = [(MGRemoteQueryServerClient *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    [v3 clientLostTransaction:self];
-    v3 = v4;
+    v4 = delegate;
+    [delegate clientLostTransaction:self];
+    delegate = v4;
   }
 }
 
 - (void)_delegateNotifyInvalidated
 {
-  v3 = [(MGRemoteQueryServerClient *)self delegate];
-  if (v3)
+  delegate = [(MGRemoteQueryServerClient *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    [v3 clientInvalidated:self];
-    v3 = v4;
+    v4 = delegate;
+    [delegate clientInvalidated:self];
+    delegate = v4;
   }
 }
 
-- (void)_withTransactionsLock:(id)a3
+- (void)_withTransactionsLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_transactionsLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_transactionsLock);
 }
 
-- (void)transaction:(id)a3 receivedTimeoutInterval:(unint64_t)a4
+- (void)transaction:(id)transaction receivedTimeoutInterval:(unint64_t)interval
 {
-  v6 = a3;
-  v7 = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  transactionCopy = transaction;
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__MGRemoteQueryServerClient_transaction_receivedTimeoutInterval___block_invoke;
   block[3] = &unk_27989F3E8;
-  v10 = v6;
-  v11 = a4;
+  v10 = transactionCopy;
+  intervalCopy = interval;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = transactionCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 uint64_t __65__MGRemoteQueryServerClient_transaction_receivedTimeoutInterval___block_invoke(uint64_t result)
@@ -545,18 +545,18 @@ uint64_t __65__MGRemoteQueryServerClient_transaction_receivedTimeoutInterval___b
   return result;
 }
 
-- (void)transactionActivityOccurred:(id)a3
+- (void)transactionActivityOccurred:(id)occurred
 {
-  v4 = a3;
-  v5 = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  occurredCopy = occurred;
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__MGRemoteQueryServerClient_transactionActivityOccurred___block_invoke;
   v7[3] = &unk_27989EE80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = occurredCopy;
+  v6 = occurredCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 uint64_t __57__MGRemoteQueryServerClient_transactionActivityOccurred___block_invoke(uint64_t a1)
@@ -572,18 +572,18 @@ uint64_t __57__MGRemoteQueryServerClient_transactionActivityOccurred___block_inv
   return result;
 }
 
-- (void)transactionInvalidated:(id)a3
+- (void)transactionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v5 = [(MGRemoteQueryServerClient *)self dispatchQueue];
+  invalidatedCopy = invalidated;
+  dispatchQueue = [(MGRemoteQueryServerClient *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__MGRemoteQueryServerClient_transactionInvalidated___block_invoke;
   v7[3] = &unk_27989EE80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = invalidatedCopy;
+  v6 = invalidatedCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 - (NSArray)transactions
@@ -594,15 +594,15 @@ uint64_t __57__MGRemoteQueryServerClient_transactionActivityOccurred___block_inv
   return transactions;
 }
 
-- (void)setTransactions:(id)a3
+- (void)setTransactions:(id)transactions
 {
-  v7 = a3;
+  transactionsCopy = transactions;
   os_unfair_lock_assert_owner(&self->_transactionsLock);
   transactions = self->_transactions;
   p_transactions = &self->_transactions;
-  if (transactions != v7 && ([(NSArray *)v7 isEqual:?]& 1) == 0)
+  if (transactions != transactionsCopy && ([(NSArray *)transactionsCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(p_transactions, a3);
+    objc_storeStrong(p_transactions, transactions);
   }
 
   MEMORY[0x2821F96F8]();

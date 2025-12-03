@@ -1,18 +1,18 @@
 @interface AVFigAssetWriterAudioTrack
-- (AVFigAssetWriterAudioTrack)initWithFigAssetWriter:(OpaqueFigAssetWriter *)a3 mediaType:(id)a4 mediaFileType:(id)a5 formatSpecification:(id)a6 sourcePixelBufferAttributes:(id)a7 multiPass:(BOOL)a8 error:(id *)a9;
-- (BOOL)addSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-- (BOOL)markEndOfDataReturningError:(id *)a3;
-- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)a3 sourcePixelBufferAttributes:(id)a4 multiPass:(BOOL)a5 error:(id *)a6;
+- (AVFigAssetWriterAudioTrack)initWithFigAssetWriter:(OpaqueFigAssetWriter *)writer mediaType:(id)type mediaFileType:(id)fileType formatSpecification:(id)specification sourcePixelBufferAttributes:(id)attributes multiPass:(BOOL)pass error:(id *)error;
+- (BOOL)addSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
+- (BOOL)markEndOfDataReturningError:(id *)error;
+- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)specification sourcePixelBufferAttributes:(id)attributes multiPass:(BOOL)pass error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation AVFigAssetWriterAudioTrack
 
-- (AVFigAssetWriterAudioTrack)initWithFigAssetWriter:(OpaqueFigAssetWriter *)a3 mediaType:(id)a4 mediaFileType:(id)a5 formatSpecification:(id)a6 sourcePixelBufferAttributes:(id)a7 multiPass:(BOOL)a8 error:(id *)a9
+- (AVFigAssetWriterAudioTrack)initWithFigAssetWriter:(OpaqueFigAssetWriter *)writer mediaType:(id)type mediaFileType:(id)fileType formatSpecification:(id)specification sourcePixelBufferAttributes:(id)attributes multiPass:(BOOL)pass error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = AVFigAssetWriterAudioTrack;
-  v9 = [(AVFigAssetWriterTrack *)&v11 initWithFigAssetWriter:a3 mediaType:a4 mediaFileType:a5 formatSpecification:a6 sourcePixelBufferAttributes:a7 multiPass:a8 error:a9];
+  v9 = [(AVFigAssetWriterTrack *)&v11 initWithFigAssetWriter:writer mediaType:type mediaFileType:fileType formatSpecification:specification sourcePixelBufferAttributes:attributes multiPass:pass error:error];
   if (v9)
   {
     v9->_pendingAudioSampleBuffers = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -28,20 +28,20 @@
   [(AVFigAssetWriterTrack *)&v3 dealloc];
 }
 
-- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)a3 sourcePixelBufferAttributes:(id)a4 multiPass:(BOOL)a5 error:(id *)a6
+- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)specification sourcePixelBufferAttributes:(id)attributes multiPass:(BOOL)pass error:(id *)error
 {
-  v7 = a5;
+  passCopy = pass;
   v28 = 0;
   v27 = 0;
-  v11 = [a3 outputSettings];
-  v12 = [a3 sourceFormatDescription];
-  v13 = [(AVFigAssetWriterTrack *)self mediaFileType];
-  if (!v11)
+  outputSettings = [specification outputSettings];
+  sourceFormatDescription = [specification sourceFormatDescription];
+  mediaFileType = [(AVFigAssetWriterTrack *)self mediaFileType];
+  if (!outputSettings)
   {
     v23.receiver = self;
     v23.super_class = AVFigAssetWriterAudioTrack;
-    v27 = [(AVFigAssetWriterTrack *)&v23 _attachToFigAssetWriterUsingFormatSpecification:a3 sourcePixelBufferAttributes:a4 multiPass:v7 error:&v28];
-    if (!a6)
+    v27 = [(AVFigAssetWriterTrack *)&v23 _attachToFigAssetWriterUsingFormatSpecification:specification sourcePixelBufferAttributes:attributes multiPass:passCopy error:&v28];
+    if (!error)
     {
       return v27;
     }
@@ -49,13 +49,13 @@
     goto LABEL_13;
   }
 
-  v14 = v13;
+  v14 = mediaFileType;
   v26 = 0;
   memset(v25, 0, sizeof(v25));
   v24 = 0;
-  if (v12)
+  if (sourceFormatDescription)
   {
-    v15 = [MEMORY[0x1E695DF20] dictionaryWithObject:v12 forKey:*MEMORY[0x1E6971510]];
+    v15 = [MEMORY[0x1E695DF20] dictionaryWithObject:sourceFormatDescription forKey:*MEMORY[0x1E6971510]];
   }
 
   else
@@ -63,11 +63,11 @@
     v15 = 0;
   }
 
-  [v11 willYieldCompressedSamples];
-  [v11 getAudioStreamBasicDescription:v25 forAudioFileTypeID:-[AVMediaFileType audioFileTypeID](v14 sourceFormatDescription:{"audioFileTypeID"), v12}];
-  v16 = [v11 copyAudioChannelLayoutForSourceFormatDescription:v12 audioChannelLayoutSize:&v24];
-  v17 = [v11 audioOptions];
-  v18 = [(AVFigAssetWriterTrack *)self figAssetWriter];
+  [outputSettings willYieldCompressedSamples];
+  [outputSettings getAudioStreamBasicDescription:v25 forAudioFileTypeID:-[AVMediaFileType audioFileTypeID](v14 sourceFormatDescription:{"audioFileTypeID"), sourceFormatDescription}];
+  v16 = [outputSettings copyAudioChannelLayoutForSourceFormatDescription:sourceFormatDescription audioChannelLayoutSize:&v24];
+  audioOptions = [outputSettings audioOptions];
+  figAssetWriter = [(AVFigAssetWriterTrack *)self figAssetWriter];
   v19 = v24;
   v20 = *(*(CMBaseObjectGetVTable() + 16) + 16);
   if (!v20)
@@ -76,7 +76,7 @@
     goto LABEL_11;
   }
 
-  v21 = v20(v18, v25, v19, v16, v17, v15, &v27);
+  v21 = v20(figAssetWriter, v25, v19, v16, audioOptions, v15, &v27);
   if (v21)
   {
 LABEL_11:
@@ -84,31 +84,31 @@ LABEL_11:
   }
 
   free(v16);
-  if (a6)
+  if (error)
   {
 LABEL_13:
-    *a6 = v28;
+    *error = v28;
   }
 
   return v27;
 }
 
-- (BOOL)addSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (BOOL)addSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = AVFigAssetWriterAudioTrack;
-  return [(AVFigAssetWriterTrack *)&v5 addSampleBuffer:a3 error:a4];
+  return [(AVFigAssetWriterTrack *)&v5 addSampleBuffer:buffer error:error];
 }
 
-- (BOOL)markEndOfDataReturningError:(id *)a3
+- (BOOL)markEndOfDataReturningError:(id *)error
 {
   v5.receiver = self;
   v5.super_class = AVFigAssetWriterAudioTrack;
   v6 = 0;
   result = [(AVFigAssetWriterTrack *)&v5 markEndOfDataReturningError:&v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v6;
+    *error = v6;
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface SBSProfiles
-- (SBSProfiles)initWithTarget:(id)a3;
+- (SBSProfiles)initWithTarget:(id)target;
 - (void)dealloc;
-- (void)getInstalledProfiles:(id)a3;
+- (void)getInstalledProfiles:(id)profiles;
 @end
 
 @implementation SBSProfiles
@@ -14,9 +14,9 @@
   [(SBSProfiles *)&v3 dealloc];
 }
 
-- (void)getInstalledProfiles:(id)a3
+- (void)getInstalledProfiles:(id)profiles
 {
-  if (a3)
+  if (profiles)
   {
     sbProxy = self->_sbProxy;
 
@@ -36,22 +36,22 @@
   }
 }
 
-- (SBSProfiles)initWithTarget:(id)a3
+- (SBSProfiles)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = SBSProfiles;
   v5 = [(SBSProfiles *)&v9 init];
   if (v5)
   {
-    if ([v4 isEqualToString:@"localhost"])
+    if ([targetCopy isEqualToString:@"localhost"])
     {
       [SBSUtils createProxyConnectionForXPCWithExportedObject:0 connection:&v5->_sbConnection];
     }
 
     else
     {
-      [SBSUtils createProxyConnectionForRapportTarget:v4];
+      [SBSUtils createProxyConnectionForRapportTarget:targetCopy];
     }
     v6 = ;
     sbProxy = v5->_sbProxy;

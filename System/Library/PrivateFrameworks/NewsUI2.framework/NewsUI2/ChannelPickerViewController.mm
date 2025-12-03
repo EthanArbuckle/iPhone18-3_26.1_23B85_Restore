@@ -1,18 +1,18 @@
 @interface ChannelPickerViewController
-- (_TtC7NewsUI227ChannelPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI227ChannelPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissVC;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation ChannelPickerViewController
 
-- (_TtC7NewsUI227ChannelPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI227ChannelPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -21,22 +21,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_219124BF4();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(ChannelPickerViewController *)&v4 viewDidAppear:v3];
+  [(ChannelPickerViewController *)&v4 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2191251F4(a3);
+  selfCopy = self;
+  sub_2191251F4(appear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -45,15 +45,15 @@
   v15.super_class = swift_getObjectType();
   v2 = v15.receiver;
   [(ChannelPickerViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC7NewsUI227ChannelPickerViewController_blueprintViewController] view];
-  if (v3)
+  view = [*&v2[OBJC_IVAR____TtC7NewsUI227ChannelPickerViewController_blueprintViewController] view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    v4 = view;
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -72,14 +72,14 @@
   __break(1u);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(ChannelPickerViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(ChannelPickerViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_219126C94();
 }
 
@@ -88,7 +88,7 @@
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI227ChannelPickerViewController_postPurchaseOnboardingTransitionDelegate))
   {
     swift_getObjectType();
-    v2 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_219BE4734();
     swift_unknownObjectRelease();
@@ -96,25 +96,25 @@
 
   else
   {
-    v3 = self;
+    selfCopy2 = self;
   }
 
   sub_2196CAC68();
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   sub_219BF5414();
-  v6 = a3;
-  v7 = self;
-  sub_219126854(v6);
+  barCopy = bar;
+  selfCopy = self;
+  sub_219126854(barCopy);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_2191269F4(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_2191269F4(clickedCopy);
 }
 
 @end

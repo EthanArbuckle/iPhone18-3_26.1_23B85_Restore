@@ -1,23 +1,23 @@
 @interface SBSFocusModesHomeScreenSettingsRequest
-- (SBSFocusModesHomeScreenSettingsRequest)initWithBSXPCCoder:(id)a3;
-- (SBSFocusModesHomeScreenSettingsRequest)initWithFocusModeIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSFocusModesHomeScreenSettingsRequest)initWithBSXPCCoder:(id)coder;
+- (SBSFocusModesHomeScreenSettingsRequest)initWithFocusModeIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SBSFocusModesHomeScreenSettingsRequest
 
-- (SBSFocusModesHomeScreenSettingsRequest)initWithFocusModeIdentifier:(id)a3
+- (SBSFocusModesHomeScreenSettingsRequest)initWithFocusModeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBSFocusModesHomeScreenSettingsRequest;
   v5 = [(SBSFocusModesHomeScreenSettingsRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     focusModeIdentifier = v5->_focusModeIdentifier;
     v5->_focusModeIdentifier = v6;
 
@@ -27,32 +27,32 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   focusModeIdentifier = self->_focusModeIdentifier;
-  v5 = a3;
-  [v5 encodeObject:focusModeIdentifier forKey:@"focusModeIdentifier"];
-  [v5 encodeCollection:self->_listsToAdd forKey:@"listsToAdd"];
-  [v5 encodeCollection:self->_listsToRemove forKey:@"listsToRemove"];
-  [v5 encodeObject:self->_proactivePages forKey:@"proactivePages"];
-  [v5 encodeDouble:@"snapshotDelay" forKey:self->_snapshotDelay];
-  [v5 encodeBool:self->_appendExistingPages forKey:@"appendExistingPages"];
-  [v5 encodeBool:self->_excludeWallpaper forKey:@"excludeWallpaper"];
-  [v5 encodeDouble:@"snapshotScale" forKey:self->_snapshotScale];
+  coderCopy = coder;
+  [coderCopy encodeObject:focusModeIdentifier forKey:@"focusModeIdentifier"];
+  [coderCopy encodeCollection:self->_listsToAdd forKey:@"listsToAdd"];
+  [coderCopy encodeCollection:self->_listsToRemove forKey:@"listsToRemove"];
+  [coderCopy encodeObject:self->_proactivePages forKey:@"proactivePages"];
+  [coderCopy encodeDouble:@"snapshotDelay" forKey:self->_snapshotDelay];
+  [coderCopy encodeBool:self->_appendExistingPages forKey:@"appendExistingPages"];
+  [coderCopy encodeBool:self->_excludeWallpaper forKey:@"excludeWallpaper"];
+  [coderCopy encodeDouble:@"snapshotScale" forKey:self->_snapshotScale];
 }
 
-- (SBSFocusModesHomeScreenSettingsRequest)initWithBSXPCCoder:(id)a3
+- (SBSFocusModesHomeScreenSettingsRequest)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"focusModeIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"focusModeIdentifier"];
   if (v5)
   {
     v6 = [(SBSFocusModesHomeScreenSettingsRequest *)self initWithFocusModeIdentifier:v5];
     v7 = objc_opt_class();
-    v8 = [v4 decodeCollectionOfClass:v7 containingClass:objc_opt_class() forKey:@"listsToAdd"];
+    v8 = [coderCopy decodeCollectionOfClass:v7 containingClass:objc_opt_class() forKey:@"listsToAdd"];
     [(SBSFocusModesHomeScreenSettingsRequest *)v6 setListsToAdd:v8];
     v9 = objc_opt_class();
-    v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"listsToRemove"];
+    v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"listsToRemove"];
     [(SBSFocusModesHomeScreenSettingsRequest *)v6 setListsToRemove:v10];
     v17 = 0;
     v18 = &v17;
@@ -74,7 +74,7 @@
     _Block_object_dispose(&v17, 8);
     if (v11)
     {
-      v13 = [v4 decodeCollectionOfClass:objc_opt_class() containingClass:v11 forKey:@"proactivePages"];
+      v13 = [coderCopy decodeCollectionOfClass:objc_opt_class() containingClass:v11 forKey:@"proactivePages"];
       [(SBSFocusModesHomeScreenSettingsRequest *)v6 setProactivePages:v13];
     }
 
@@ -87,54 +87,54 @@
       }
     }
 
-    [v4 decodeDoubleForKey:@"snapshotDelay"];
+    [coderCopy decodeDoubleForKey:@"snapshotDelay"];
     [(SBSFocusModesHomeScreenSettingsRequest *)v6 setSnapshotDelay:?];
-    -[SBSFocusModesHomeScreenSettingsRequest setAppendExistingPages:](v6, "setAppendExistingPages:", [v4 decodeBoolForKey:@"appendExistingPages"]);
-    -[SBSFocusModesHomeScreenSettingsRequest setExcludeWallpaper:](v6, "setExcludeWallpaper:", [v4 decodeBoolForKey:@"excludeWallpaper"]);
-    [v4 decodeDoubleForKey:@"snapshotScale"];
+    -[SBSFocusModesHomeScreenSettingsRequest setAppendExistingPages:](v6, "setAppendExistingPages:", [coderCopy decodeBoolForKey:@"appendExistingPages"]);
+    -[SBSFocusModesHomeScreenSettingsRequest setExcludeWallpaper:](v6, "setExcludeWallpaper:", [coderCopy decodeBoolForKey:@"excludeWallpaper"]);
+    [coderCopy decodeDoubleForKey:@"snapshotScale"];
     [(SBSFocusModesHomeScreenSettingsRequest *)v6 setSnapshotScale:?];
     self = v6;
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBSFocusModesHomeScreenSettingsRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSFocusModesHomeScreenSettingsRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSFocusModesHomeScreenSettingsRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSFocusModesHomeScreenSettingsRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSFocusModesHomeScreenSettingsRequest *)self succinctDescriptionBuilder];
-  v5 = [(SBSFocusModesHomeScreenSettingsRequest *)self focusModeIdentifier];
-  [v4 appendString:v5 withName:@"focusModeIdentifier"];
+  succinctDescriptionBuilder = [(SBSFocusModesHomeScreenSettingsRequest *)self succinctDescriptionBuilder];
+  focusModeIdentifier = [(SBSFocusModesHomeScreenSettingsRequest *)self focusModeIdentifier];
+  [succinctDescriptionBuilder appendString:focusModeIdentifier withName:@"focusModeIdentifier"];
 
-  v6 = [(SBSFocusModesHomeScreenSettingsRequest *)self listsToAdd];
-  [v4 appendArraySection:v6 withName:@"listsToAdd" skipIfEmpty:0];
+  listsToAdd = [(SBSFocusModesHomeScreenSettingsRequest *)self listsToAdd];
+  [succinctDescriptionBuilder appendArraySection:listsToAdd withName:@"listsToAdd" skipIfEmpty:0];
 
-  v7 = [(SBSFocusModesHomeScreenSettingsRequest *)self listsToRemove];
-  [v4 appendArraySection:v7 withName:@"listsToRemove" skipIfEmpty:0];
+  listsToRemove = [(SBSFocusModesHomeScreenSettingsRequest *)self listsToRemove];
+  [succinctDescriptionBuilder appendArraySection:listsToRemove withName:@"listsToRemove" skipIfEmpty:0];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

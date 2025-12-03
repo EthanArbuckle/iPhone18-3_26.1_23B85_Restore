@@ -1,32 +1,32 @@
 @interface AWDIDSSessionCompleted
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClientType:(BOOL)a3;
-- (void)setHasDestinationType:(BOOL)a3;
-- (void)setHasDurationOfSession:(BOOL)a3;
-- (void)setHasDurationToConnect:(BOOL)a3;
-- (void)setHasEndedReason:(BOOL)a3;
-- (void)setHasIsCellularInterfaceDisallowed:(BOOL)a3;
-- (void)setHasIsInitiator:(BOOL)a3;
-- (void)setHasIsLegacySessionType:(BOOL)a3;
-- (void)setHasIsNetworkActive:(BOOL)a3;
-- (void)setHasIsNetworkEnabled:(BOOL)a3;
-- (void)setHasIsNetworkReachable:(BOOL)a3;
-- (void)setHasIsQREnabled:(BOOL)a3;
-- (void)setHasIsUsingQRDirectly:(BOOL)a3;
-- (void)setHasIsWifiInterfaceDisallowed:(BOOL)a3;
-- (void)setHasIsWithDefaultPairedDevice:(BOOL)a3;
-- (void)setHasLinkProtocol:(BOOL)a3;
-- (void)setHasLinkType:(BOOL)a3;
-- (void)setHasSessionProtocolVersionNumber:(BOOL)a3;
-- (void)setHasTransportType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasClientType:(BOOL)type;
+- (void)setHasDestinationType:(BOOL)type;
+- (void)setHasDurationOfSession:(BOOL)session;
+- (void)setHasDurationToConnect:(BOOL)connect;
+- (void)setHasEndedReason:(BOOL)reason;
+- (void)setHasIsCellularInterfaceDisallowed:(BOOL)disallowed;
+- (void)setHasIsInitiator:(BOOL)initiator;
+- (void)setHasIsLegacySessionType:(BOOL)type;
+- (void)setHasIsNetworkActive:(BOOL)active;
+- (void)setHasIsNetworkEnabled:(BOOL)enabled;
+- (void)setHasIsNetworkReachable:(BOOL)reachable;
+- (void)setHasIsQREnabled:(BOOL)enabled;
+- (void)setHasIsUsingQRDirectly:(BOOL)directly;
+- (void)setHasIsWifiInterfaceDisallowed:(BOOL)disallowed;
+- (void)setHasIsWithDefaultPairedDevice:(BOOL)device;
+- (void)setHasLinkProtocol:(BOOL)protocol;
+- (void)setHasLinkType:(BOOL)type;
+- (void)setHasSessionProtocolVersionNumber:(BOOL)number;
+- (void)setHasTransportType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSSessionCompleted
@@ -40,9 +40,9 @@
   [(AWDIDSSessionCompleted *)&v3 dealloc];
 }
 
-- (void)setHasSessionProtocolVersionNumber:(BOOL)a3
+- (void)setHasSessionProtocolVersionNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 0x40000;
   }
@@ -55,9 +55,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasClientType:(BOOL)a3
+- (void)setHasClientType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -70,9 +70,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasIsQREnabled:(BOOL)a3
+- (void)setHasIsQREnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4096;
   }
@@ -85,9 +85,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasIsUsingQRDirectly:(BOOL)a3
+- (void)setHasIsUsingQRDirectly:(BOOL)directly
 {
-  if (a3)
+  if (directly)
   {
     v3 = 0x2000;
   }
@@ -100,9 +100,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasIsInitiator:(BOOL)a3
+- (void)setHasIsInitiator:(BOOL)initiator
 {
-  if (a3)
+  if (initiator)
   {
     v3 = 128;
   }
@@ -115,9 +115,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasIsLegacySessionType:(BOOL)a3
+- (void)setHasIsLegacySessionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -130,9 +130,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasIsWithDefaultPairedDevice:(BOOL)a3
+- (void)setHasIsWithDefaultPairedDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 0x8000;
   }
@@ -145,9 +145,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasTransportType:(BOOL)a3
+- (void)setHasTransportType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x80000;
   }
@@ -160,9 +160,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasLinkProtocol:(BOOL)a3
+- (void)setHasLinkProtocol:(BOOL)protocol
 {
-  if (a3)
+  if (protocol)
   {
     v3 = 0x10000;
   }
@@ -175,9 +175,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasEndedReason:(BOOL)a3
+- (void)setHasEndedReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 32;
   }
@@ -190,9 +190,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasDurationOfSession:(BOOL)a3
+- (void)setHasDurationOfSession:(BOOL)session
 {
-  if (a3)
+  if (session)
   {
     v3 = 8;
   }
@@ -205,9 +205,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasDurationToConnect:(BOOL)a3
+- (void)setHasDurationToConnect:(BOOL)connect
 {
-  if (a3)
+  if (connect)
   {
     v3 = 16;
   }
@@ -220,9 +220,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasIsNetworkEnabled:(BOOL)a3
+- (void)setHasIsNetworkEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -235,9 +235,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasIsNetworkActive:(BOOL)a3
+- (void)setHasIsNetworkActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 512;
   }
@@ -250,9 +250,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasIsNetworkReachable:(BOOL)a3
+- (void)setHasIsNetworkReachable:(BOOL)reachable
 {
-  if (a3)
+  if (reachable)
   {
     v3 = 2048;
   }
@@ -265,9 +265,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasIsWifiInterfaceDisallowed:(BOOL)a3
+- (void)setHasIsWifiInterfaceDisallowed:(BOOL)disallowed
 {
-  if (a3)
+  if (disallowed)
   {
     v3 = 0x4000;
   }
@@ -280,9 +280,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasIsCellularInterfaceDisallowed:(BOOL)a3
+- (void)setHasIsCellularInterfaceDisallowed:(BOOL)disallowed
 {
-  if (a3)
+  if (disallowed)
   {
     v3 = 64;
   }
@@ -295,9 +295,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasLinkType:(BOOL)a3
+- (void)setHasLinkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x20000;
   }
@@ -310,9 +310,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasDestinationType:(BOOL)a3
+- (void)setHasDestinationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -334,33 +334,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sessionProtocolVersionNumber), @"sessionProtocolVersionNumber"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sessionProtocolVersionNumber), @"sessionProtocolVersionNumber"}];
   }
 
   serviceName = self->_serviceName;
   if (serviceName)
   {
-    [v3 setObject:serviceName forKey:@"serviceName"];
+    [dictionary setObject:serviceName forKey:@"serviceName"];
   }
 
   has = self->_has;
   if ((*&has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_clientType), @"clientType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_clientType), @"clientType"}];
     has = self->_has;
     if ((*&has & 0x1000) == 0)
     {
@@ -379,7 +379,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isQREnabled), @"isQREnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isQREnabled), @"isQREnabled"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -393,7 +393,7 @@ LABEL_12:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isUsingQRDirectly), @"isUsingQRDirectly"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isUsingQRDirectly), @"isUsingQRDirectly"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -407,7 +407,7 @@ LABEL_13:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isInitiator), @"isInitiator"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isInitiator), @"isInitiator"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -421,7 +421,7 @@ LABEL_14:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isLegacySessionType), @"isLegacySessionType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isLegacySessionType), @"isLegacySessionType"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -435,7 +435,7 @@ LABEL_15:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isWithDefaultPairedDevice), @"isWithDefaultPairedDevice"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isWithDefaultPairedDevice), @"isWithDefaultPairedDevice"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -449,7 +449,7 @@ LABEL_16:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_transportType), @"transportType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_transportType), @"transportType"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -463,7 +463,7 @@ LABEL_17:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkProtocol), @"linkProtocol"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkProtocol), @"linkProtocol"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -477,7 +477,7 @@ LABEL_18:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_endedReason), @"endedReason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_endedReason), @"endedReason"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -491,7 +491,7 @@ LABEL_19:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationOfSession), @"durationOfSession"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationOfSession), @"durationOfSession"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -505,7 +505,7 @@ LABEL_20:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationToConnect), @"durationToConnect"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationToConnect), @"durationToConnect"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -519,7 +519,7 @@ LABEL_21:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkEnabled), @"isNetworkEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkEnabled), @"isNetworkEnabled"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -533,7 +533,7 @@ LABEL_22:
   }
 
 LABEL_41:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkActive), @"isNetworkActive"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkActive), @"isNetworkActive"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -547,7 +547,7 @@ LABEL_23:
   }
 
 LABEL_42:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkReachable), @"isNetworkReachable"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkReachable), @"isNetworkReachable"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -561,7 +561,7 @@ LABEL_24:
   }
 
 LABEL_43:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isWifiInterfaceDisallowed), @"isWifiInterfaceDisallowed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isWifiInterfaceDisallowed), @"isWifiInterfaceDisallowed"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -572,17 +572,17 @@ LABEL_25:
     }
 
 LABEL_45:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkType), @"linkType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkType), @"linkType"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_27;
   }
 
 LABEL_44:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isCellularInterfaceDisallowed), @"isCellularInterfaceDisallowed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isCellularInterfaceDisallowed), @"isCellularInterfaceDisallowed"}];
   has = self->_has;
   if ((*&has & 0x20000) != 0)
   {
@@ -593,13 +593,13 @@ LABEL_26:
   if ((*&has & 4) != 0)
   {
 LABEL_27:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_destinationType), @"destinationType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_destinationType), @"destinationType"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -884,35 +884,35 @@ LABEL_45:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
   }
 
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
   {
-    *(a3 + 26) = self->_sessionProtocolVersionNumber;
-    *(a3 + 28) |= 0x40000u;
+    *(to + 26) = self->_sessionProtocolVersionNumber;
+    *(to + 28) |= 0x40000u;
   }
 
   if (self->_serviceName)
   {
-    [a3 setServiceName:?];
+    [to setServiceName:?];
   }
 
   has = self->_has;
   if ((*&has & 2) != 0)
   {
-    *(a3 + 4) = self->_clientType;
-    *(a3 + 28) |= 2u;
+    *(to + 4) = self->_clientType;
+    *(to + 28) |= 2u;
     has = self->_has;
     if ((*&has & 0x1000) == 0)
     {
@@ -931,8 +931,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(a3 + 18) = self->_isQREnabled;
-  *(a3 + 28) |= 0x1000u;
+  *(to + 18) = self->_isQREnabled;
+  *(to + 28) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -946,8 +946,8 @@ LABEL_12:
   }
 
 LABEL_31:
-  *(a3 + 19) = self->_isUsingQRDirectly;
-  *(a3 + 28) |= 0x2000u;
+  *(to + 19) = self->_isUsingQRDirectly;
+  *(to + 28) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -961,8 +961,8 @@ LABEL_13:
   }
 
 LABEL_32:
-  *(a3 + 13) = self->_isInitiator;
-  *(a3 + 28) |= 0x80u;
+  *(to + 13) = self->_isInitiator;
+  *(to + 28) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -976,8 +976,8 @@ LABEL_14:
   }
 
 LABEL_33:
-  *(a3 + 14) = self->_isLegacySessionType;
-  *(a3 + 28) |= 0x100u;
+  *(to + 14) = self->_isLegacySessionType;
+  *(to + 28) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -991,8 +991,8 @@ LABEL_15:
   }
 
 LABEL_34:
-  *(a3 + 21) = self->_isWithDefaultPairedDevice;
-  *(a3 + 28) |= 0x8000u;
+  *(to + 21) = self->_isWithDefaultPairedDevice;
+  *(to + 28) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1006,8 +1006,8 @@ LABEL_16:
   }
 
 LABEL_35:
-  *(a3 + 27) = self->_transportType;
-  *(a3 + 28) |= 0x80000u;
+  *(to + 27) = self->_transportType;
+  *(to + 28) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1021,8 +1021,8 @@ LABEL_17:
   }
 
 LABEL_36:
-  *(a3 + 22) = self->_linkProtocol;
-  *(a3 + 28) |= 0x10000u;
+  *(to + 22) = self->_linkProtocol;
+  *(to + 28) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1036,8 +1036,8 @@ LABEL_18:
   }
 
 LABEL_37:
-  *(a3 + 8) = self->_endedReason;
-  *(a3 + 28) |= 0x20u;
+  *(to + 8) = self->_endedReason;
+  *(to + 28) |= 0x20u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1051,8 +1051,8 @@ LABEL_19:
   }
 
 LABEL_38:
-  *(a3 + 6) = self->_durationOfSession;
-  *(a3 + 28) |= 8u;
+  *(to + 6) = self->_durationOfSession;
+  *(to + 28) |= 8u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1066,8 +1066,8 @@ LABEL_20:
   }
 
 LABEL_39:
-  *(a3 + 7) = self->_durationToConnect;
-  *(a3 + 28) |= 0x10u;
+  *(to + 7) = self->_durationToConnect;
+  *(to + 28) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1081,8 +1081,8 @@ LABEL_21:
   }
 
 LABEL_40:
-  *(a3 + 16) = self->_isNetworkEnabled;
-  *(a3 + 28) |= 0x400u;
+  *(to + 16) = self->_isNetworkEnabled;
+  *(to + 28) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1096,8 +1096,8 @@ LABEL_22:
   }
 
 LABEL_41:
-  *(a3 + 15) = self->_isNetworkActive;
-  *(a3 + 28) |= 0x200u;
+  *(to + 15) = self->_isNetworkActive;
+  *(to + 28) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1111,8 +1111,8 @@ LABEL_23:
   }
 
 LABEL_42:
-  *(a3 + 17) = self->_isNetworkReachable;
-  *(a3 + 28) |= 0x800u;
+  *(to + 17) = self->_isNetworkReachable;
+  *(to + 28) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1126,8 +1126,8 @@ LABEL_24:
   }
 
 LABEL_43:
-  *(a3 + 20) = self->_isWifiInterfaceDisallowed;
-  *(a3 + 28) |= 0x4000u;
+  *(to + 20) = self->_isWifiInterfaceDisallowed;
+  *(to + 28) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1141,8 +1141,8 @@ LABEL_25:
   }
 
 LABEL_44:
-  *(a3 + 12) = self->_isCellularInterfaceDisallowed;
-  *(a3 + 28) |= 0x40u;
+  *(to + 12) = self->_isCellularInterfaceDisallowed;
+  *(to + 28) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1156,21 +1156,21 @@ LABEL_26:
   }
 
 LABEL_45:
-  *(a3 + 23) = self->_linkType;
-  *(a3 + 28) |= 0x20000u;
+  *(to + 23) = self->_linkType;
+  *(to + 28) |= 0x20000u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_27:
-  *(a3 + 5) = self->_destinationType;
-  *(a3 + 28) |= 4u;
+  *(to + 5) = self->_destinationType;
+  *(to + 28) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -1178,14 +1178,14 @@ LABEL_27:
     *(v5 + 112) |= 1u;
   }
 
-  *(v6 + 40) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_guid copyWithZone:zone];
   if ((*(&self->_has + 2) & 4) != 0)
   {
     *(v6 + 104) = self->_sessionProtocolVersionNumber;
     *(v6 + 112) |= 0x40000u;
   }
 
-  *(v6 + 96) = [(NSString *)self->_serviceName copyWithZone:a3];
+  *(v6 + 96) = [(NSString *)self->_serviceName copyWithZone:zone];
   has = self->_has;
   if ((*&has & 2) != 0)
   {
@@ -1446,16 +1446,16 @@ LABEL_23:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_107;
       }
@@ -1469,7 +1469,7 @@ LABEL_107:
     }
 
     guid = self->_guid;
-    if (guid | *(a3 + 5))
+    if (guid | *(equal + 5))
     {
       v5 = [(NSString *)guid isEqual:?];
       if (!v5)
@@ -1480,10 +1480,10 @@ LABEL_107:
       has = self->_has;
     }
 
-    v9 = *(a3 + 28);
+    v9 = *(equal + 28);
     if ((*&has & 0x40000) != 0)
     {
-      if ((v9 & 0x40000) == 0 || self->_sessionProtocolVersionNumber != *(a3 + 26))
+      if ((v9 & 0x40000) == 0 || self->_sessionProtocolVersionNumber != *(equal + 26))
       {
         goto LABEL_107;
       }
@@ -1495,7 +1495,7 @@ LABEL_107:
     }
 
     serviceName = self->_serviceName;
-    if (serviceName | *(a3 + 12))
+    if (serviceName | *(equal + 12))
     {
       v5 = [(NSString *)serviceName isEqual:?];
       if (!v5)
@@ -1506,10 +1506,10 @@ LABEL_107:
       has = self->_has;
     }
 
-    v11 = *(a3 + 28);
+    v11 = *(equal + 28);
     if ((*&has & 2) != 0)
     {
-      if ((v11 & 2) == 0 || self->_clientType != *(a3 + 4))
+      if ((v11 & 2) == 0 || self->_clientType != *(equal + 4))
       {
         goto LABEL_107;
       }
@@ -1522,7 +1522,7 @@ LABEL_107:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v11 & 0x1000) == 0 || self->_isQREnabled != *(a3 + 18))
+      if ((v11 & 0x1000) == 0 || self->_isQREnabled != *(equal + 18))
       {
         goto LABEL_107;
       }
@@ -1535,7 +1535,7 @@ LABEL_107:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v11 & 0x2000) == 0 || self->_isUsingQRDirectly != *(a3 + 19))
+      if ((v11 & 0x2000) == 0 || self->_isUsingQRDirectly != *(equal + 19))
       {
         goto LABEL_107;
       }
@@ -1548,7 +1548,7 @@ LABEL_107:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v11 & 0x80) == 0 || self->_isInitiator != *(a3 + 13))
+      if ((v11 & 0x80) == 0 || self->_isInitiator != *(equal + 13))
       {
         goto LABEL_107;
       }
@@ -1561,7 +1561,7 @@ LABEL_107:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v11 & 0x100) == 0 || self->_isLegacySessionType != *(a3 + 14))
+      if ((v11 & 0x100) == 0 || self->_isLegacySessionType != *(equal + 14))
       {
         goto LABEL_107;
       }
@@ -1574,7 +1574,7 @@ LABEL_107:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v11 & 0x8000) == 0 || self->_isWithDefaultPairedDevice != *(a3 + 21))
+      if ((v11 & 0x8000) == 0 || self->_isWithDefaultPairedDevice != *(equal + 21))
       {
         goto LABEL_107;
       }
@@ -1587,7 +1587,7 @@ LABEL_107:
 
     if ((*&has & 0x80000) != 0)
     {
-      if ((v11 & 0x80000) == 0 || self->_transportType != *(a3 + 27))
+      if ((v11 & 0x80000) == 0 || self->_transportType != *(equal + 27))
       {
         goto LABEL_107;
       }
@@ -1600,7 +1600,7 @@ LABEL_107:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v11 & 0x10000) == 0 || self->_linkProtocol != *(a3 + 22))
+      if ((v11 & 0x10000) == 0 || self->_linkProtocol != *(equal + 22))
       {
         goto LABEL_107;
       }
@@ -1613,7 +1613,7 @@ LABEL_107:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v11 & 0x20) == 0 || self->_endedReason != *(a3 + 8))
+      if ((v11 & 0x20) == 0 || self->_endedReason != *(equal + 8))
       {
         goto LABEL_107;
       }
@@ -1626,7 +1626,7 @@ LABEL_107:
 
     if ((*&has & 8) != 0)
     {
-      if ((v11 & 8) == 0 || self->_durationOfSession != *(a3 + 6))
+      if ((v11 & 8) == 0 || self->_durationOfSession != *(equal + 6))
       {
         goto LABEL_107;
       }
@@ -1639,7 +1639,7 @@ LABEL_107:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v11 & 0x10) == 0 || self->_durationToConnect != *(a3 + 7))
+      if ((v11 & 0x10) == 0 || self->_durationToConnect != *(equal + 7))
       {
         goto LABEL_107;
       }
@@ -1652,7 +1652,7 @@ LABEL_107:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((v11 & 0x400) == 0 || self->_isNetworkEnabled != *(a3 + 16))
+      if ((v11 & 0x400) == 0 || self->_isNetworkEnabled != *(equal + 16))
       {
         goto LABEL_107;
       }
@@ -1665,7 +1665,7 @@ LABEL_107:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v11 & 0x200) == 0 || self->_isNetworkActive != *(a3 + 15))
+      if ((v11 & 0x200) == 0 || self->_isNetworkActive != *(equal + 15))
       {
         goto LABEL_107;
       }
@@ -1678,7 +1678,7 @@ LABEL_107:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v11 & 0x800) == 0 || self->_isNetworkReachable != *(a3 + 17))
+      if ((v11 & 0x800) == 0 || self->_isNetworkReachable != *(equal + 17))
       {
         goto LABEL_107;
       }
@@ -1691,7 +1691,7 @@ LABEL_107:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v11 & 0x4000) == 0 || self->_isWifiInterfaceDisallowed != *(a3 + 20))
+      if ((v11 & 0x4000) == 0 || self->_isWifiInterfaceDisallowed != *(equal + 20))
       {
         goto LABEL_107;
       }
@@ -1704,7 +1704,7 @@ LABEL_107:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v11 & 0x40) == 0 || self->_isCellularInterfaceDisallowed != *(a3 + 12))
+      if ((v11 & 0x40) == 0 || self->_isCellularInterfaceDisallowed != *(equal + 12))
       {
         goto LABEL_107;
       }
@@ -1717,7 +1717,7 @@ LABEL_107:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v11 & 0x20000) == 0 || self->_linkType != *(a3 + 23))
+      if ((v11 & 0x20000) == 0 || self->_linkType != *(equal + 23))
       {
         goto LABEL_107;
       }
@@ -1728,10 +1728,10 @@ LABEL_107:
       goto LABEL_107;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 4) == 0;
     if ((*&has & 4) != 0)
     {
-      if ((v11 & 4) == 0 || self->_destinationType != *(a3 + 5))
+      if ((v11 & 4) == 0 || self->_destinationType != *(equal + 5))
       {
         goto LABEL_107;
       }
@@ -2016,36 +2016,36 @@ LABEL_25:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 112))
+  if (*(from + 112))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDIDSSessionCompleted *)self setGuid:?];
   }
 
-  if ((*(a3 + 114) & 4) != 0)
+  if ((*(from + 114) & 4) != 0)
   {
-    self->_sessionProtocolVersionNumber = *(a3 + 26);
+    self->_sessionProtocolVersionNumber = *(from + 26);
     *&self->_has |= 0x40000u;
   }
 
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
     [(AWDIDSSessionCompleted *)self setServiceName:?];
   }
 
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 2) != 0)
   {
-    self->_clientType = *(a3 + 4);
+    self->_clientType = *(from + 4);
     *&self->_has |= 2u;
-    v5 = *(a3 + 28);
+    v5 = *(from + 28);
     if ((v5 & 0x1000) == 0)
     {
 LABEL_11:
@@ -2063,9 +2063,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  self->_isQREnabled = *(a3 + 18);
+  self->_isQREnabled = *(from + 18);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_12:
@@ -2078,9 +2078,9 @@ LABEL_12:
   }
 
 LABEL_31:
-  self->_isUsingQRDirectly = *(a3 + 19);
+  self->_isUsingQRDirectly = *(from + 19);
   *&self->_has |= 0x2000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x80) == 0)
   {
 LABEL_13:
@@ -2093,9 +2093,9 @@ LABEL_13:
   }
 
 LABEL_32:
-  self->_isInitiator = *(a3 + 13);
+  self->_isInitiator = *(from + 13);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x100) == 0)
   {
 LABEL_14:
@@ -2108,9 +2108,9 @@ LABEL_14:
   }
 
 LABEL_33:
-  self->_isLegacySessionType = *(a3 + 14);
+  self->_isLegacySessionType = *(from + 14);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_15:
@@ -2123,9 +2123,9 @@ LABEL_15:
   }
 
 LABEL_34:
-  self->_isWithDefaultPairedDevice = *(a3 + 21);
+  self->_isWithDefaultPairedDevice = *(from + 21);
   *&self->_has |= 0x8000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_16:
@@ -2138,9 +2138,9 @@ LABEL_16:
   }
 
 LABEL_35:
-  self->_transportType = *(a3 + 27);
+  self->_transportType = *(from + 27);
   *&self->_has |= 0x80000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_17:
@@ -2153,9 +2153,9 @@ LABEL_17:
   }
 
 LABEL_36:
-  self->_linkProtocol = *(a3 + 22);
+  self->_linkProtocol = *(from + 22);
   *&self->_has |= 0x10000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x20) == 0)
   {
 LABEL_18:
@@ -2168,9 +2168,9 @@ LABEL_18:
   }
 
 LABEL_37:
-  self->_endedReason = *(a3 + 8);
+  self->_endedReason = *(from + 8);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_19:
@@ -2183,9 +2183,9 @@ LABEL_19:
   }
 
 LABEL_38:
-  self->_durationOfSession = *(a3 + 6);
+  self->_durationOfSession = *(from + 6);
   *&self->_has |= 8u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_20:
@@ -2198,9 +2198,9 @@ LABEL_20:
   }
 
 LABEL_39:
-  self->_durationToConnect = *(a3 + 7);
+  self->_durationToConnect = *(from + 7);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x400) == 0)
   {
 LABEL_21:
@@ -2213,9 +2213,9 @@ LABEL_21:
   }
 
 LABEL_40:
-  self->_isNetworkEnabled = *(a3 + 16);
+  self->_isNetworkEnabled = *(from + 16);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x200) == 0)
   {
 LABEL_22:
@@ -2228,9 +2228,9 @@ LABEL_22:
   }
 
 LABEL_41:
-  self->_isNetworkActive = *(a3 + 15);
+  self->_isNetworkActive = *(from + 15);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x800) == 0)
   {
 LABEL_23:
@@ -2243,9 +2243,9 @@ LABEL_23:
   }
 
 LABEL_42:
-  self->_isNetworkReachable = *(a3 + 17);
+  self->_isNetworkReachable = *(from + 17);
   *&self->_has |= 0x800u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_24:
@@ -2258,9 +2258,9 @@ LABEL_24:
   }
 
 LABEL_43:
-  self->_isWifiInterfaceDisallowed = *(a3 + 20);
+  self->_isWifiInterfaceDisallowed = *(from + 20);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x40) == 0)
   {
 LABEL_25:
@@ -2273,9 +2273,9 @@ LABEL_25:
   }
 
 LABEL_44:
-  self->_isCellularInterfaceDisallowed = *(a3 + 12);
+  self->_isCellularInterfaceDisallowed = *(from + 12);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_26:
@@ -2288,15 +2288,15 @@ LABEL_26:
   }
 
 LABEL_45:
-  self->_linkType = *(a3 + 23);
+  self->_linkType = *(from + 23);
   *&self->_has |= 0x20000u;
-  if ((*(a3 + 28) & 4) == 0)
+  if ((*(from + 28) & 4) == 0)
   {
     return;
   }
 
 LABEL_27:
-  self->_destinationType = *(a3 + 5);
+  self->_destinationType = *(from + 5);
   *&self->_has |= 4u;
 }
 

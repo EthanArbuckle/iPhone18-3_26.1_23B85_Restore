@@ -4,22 +4,22 @@
 - (BOOL)canCopy;
 - (BOOL)canGoToNextPage;
 - (BOOL)canGoToPreviousPage;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)documentNavigatorIsOnActiveCanvas:(id)a3;
-- (BOOL)flowPageController:(id)a3 isEdgeObscured:(unsigned int)a4;
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4;
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)documentNavigatorIsOnActiveCanvas:(id)canvas;
+- (BOOL)flowPageController:(id)controller isEdgeObscured:(unsigned int)obscured;
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse;
+- (BOOL)followLink:(id)link animated:(BOOL)animated;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)inFlowMode;
 - (BOOL)inPaginatedMode;
-- (BOOL)interactiveCanvasController:(id)a3 allowsDragOfSmartField:(id)a4;
-- (BOOL)interactiveCanvasController:(id)a3 pointIsInLeftMargin:(CGPoint)a4;
-- (BOOL)interactiveCanvasController:(id)a3 pointIsInRightMargin:(CGPoint)a4;
-- (BOOL)interactiveCanvasController:(id)a3 shouldZoomToColumn:(id)a4 withFrame:(CGRect)a5 tapPoint:(CGPoint)a6;
-- (BOOL)interactiveCanvasControllerShouldAllowZoomToColumn:(id)a3;
-- (BOOL)interactiveCanvasControllerShouldPageLeftOnMarginTap:(id)a3;
-- (BOOL)interactiveCanvasControllerShouldPageRightOnMarginTap:(id)a3;
-- (BOOL)interactiveCanvasControllerShouldUseGuidedPan:(id)a3 withMovementDirection:(CGPoint)a4;
+- (BOOL)interactiveCanvasController:(id)controller allowsDragOfSmartField:(id)field;
+- (BOOL)interactiveCanvasController:(id)controller pointIsInLeftMargin:(CGPoint)margin;
+- (BOOL)interactiveCanvasController:(id)controller pointIsInRightMargin:(CGPoint)margin;
+- (BOOL)interactiveCanvasController:(id)controller shouldZoomToColumn:(id)column withFrame:(CGRect)frame tapPoint:(CGPoint)point;
+- (BOOL)interactiveCanvasControllerShouldAllowZoomToColumn:(id)column;
+- (BOOL)interactiveCanvasControllerShouldPageLeftOnMarginTap:(id)tap;
+- (BOOL)interactiveCanvasControllerShouldPageRightOnMarginTap:(id)tap;
+- (BOOL)interactiveCanvasControllerShouldUseGuidedPan:(id)pan withMovementDirection:(CGPoint)direction;
 - (BOOL)isEpub;
 - (BOOL)isFreeTransformInProgress;
 - (BOOL)isGlossaryVisible;
@@ -29,41 +29,41 @@
 - (BOOL)p_allowsPinchZoom;
 - (BOOL)p_canOverscroll;
 - (BOOL)p_isCompactFlowPresentation;
-- (BOOL)p_isCompactFlowPresentationForSectionController:(id)a3;
+- (BOOL)p_isCompactFlowPresentationForSectionController:(id)controller;
 - (BOOL)p_isPageLocationApplicable;
 - (BOOL)p_isSinglePageChapter;
 - (BOOL)p_updateScrollViewClipsToBounds;
-- (BOOL)pointIsInLeftMargin:(CGPoint)a3 fromView:(id)a4;
-- (BOOL)pointIsInRightMargin:(CGPoint)a3 fromView:(id)a4;
-- (BOOL)popoverController:(id)a3 shouldIgnorePassThroughGestureRecognizer:(id)a4;
+- (BOOL)pointIsInLeftMargin:(CGPoint)margin fromView:(id)view;
+- (BOOL)pointIsInRightMargin:(CGPoint)margin fromView:(id)view;
+- (BOOL)popoverController:(id)controller shouldIgnorePassThroughGestureRecognizer:(id)recognizer;
 - (BOOL)prefersHomeIndicatorAutoHidden;
-- (BOOL)repIsPresentedExpanded:(id)a3;
+- (BOOL)repIsPresentedExpanded:(id)expanded;
 - (BOOL)shouldPagingBeEnabled;
 - (BOOL)suspendCanvasScroll;
 - (BOOL)th_cachedIsCompactHeight;
 - (BOOL)th_cachedIsCompactWidth;
-- (BOOL)widgetHostingAllowAutoplayForRep:(id)a3;
-- (BOOL)widgetHostingAllowInteractionOnPageForRep:(id)a3;
-- (BOOL)widgetHostingShouldAllowNaturalHorizontalScrollForRep:(id)a3;
-- (BOOL)widgetLayoutIsCompact:(id)a3;
+- (BOOL)widgetHostingAllowAutoplayForRep:(id)rep;
+- (BOOL)widgetHostingAllowInteractionOnPageForRep:(id)rep;
+- (BOOL)widgetHostingShouldAllowNaturalHorizontalScrollForRep:(id)rep;
+- (BOOL)widgetLayoutIsCompact:(id)compact;
 - (BOOL)willAdjustHeightForSnapshot;
 - (CGPoint)beginDraggingContentOffset;
-- (CGPoint)interactiveCanvasController:(id)a3 clampContentOffset:(CGPoint)a4 forViewScale:(double)a5;
+- (CGPoint)interactiveCanvasController:(id)controller clampContentOffset:(CGPoint)offset forViewScale:(double)scale;
 - (CGPoint)lastScrollOffset;
-- (CGRect)bookmarkHotspotRegionForPage:(id)a3;
+- (CGRect)bookmarkHotspotRegionForPage:(id)page;
 - (CGRect)canvasPreviewFrameForDocumentManager;
 - (CGRect)contentFrame;
-- (CGRect)flowPageController:(id)a3 overrideForBodyFrame:(CGRect)a4;
-- (CGRect)interactiveCanvasController:(id)a3 expandBoundsForHitTesting:(CGRect)a4;
-- (CGRect)p_contentFrameFrameForSize:(CGSize)a3;
-- (CGRect)pageViewProviderUnclippedVisibleBounds:(id)a3;
+- (CGRect)flowPageController:(id)controller overrideForBodyFrame:(CGRect)frame;
+- (CGRect)interactiveCanvasController:(id)controller expandBoundsForHitTesting:(CGRect)testing;
+- (CGRect)p_contentFrameFrameForSize:(CGSize)size;
+- (CGRect)pageViewProviderUnclippedVisibleBounds:(id)bounds;
 - (CGRect)previousContentFrame;
-- (CGRect)rectForCompletionAnimationWithRep:(id)a3;
-- (CGRect)rectForRelativePageIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4;
-- (CGRect)scrollViewClippingBoundsForInteractiveCanvasController:(id)a3;
-- (CGRect)shadowBoundsForCanvasExitTransformDelegate:(id)a3;
-- (CGRect)targetRelativeRectForPoint:(CGPoint)a3 atPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5 waitForContentNodeLoad:(BOOL)a6;
-- (CGRect)targetRelativeRectForRelativePoint:(CGPoint)a3 atPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5 waitForContentNodeLoad:(BOOL)a6;
+- (CGRect)rectForCompletionAnimationWithRep:(id)rep;
+- (CGRect)rectForRelativePageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
+- (CGRect)scrollViewClippingBoundsForInteractiveCanvasController:(id)controller;
+- (CGRect)shadowBoundsForCanvasExitTransformDelegate:(id)delegate;
+- (CGRect)targetRelativeRectForPoint:(CGPoint)point atPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex waitForContentNodeLoad:(BOOL)load;
+- (CGRect)targetRelativeRectForRelativePoint:(CGPoint)point atPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex waitForContentNodeLoad:(BOOL)load;
 - (CGRect)visibleUnscaledRectBeforeRotation;
 - (CGRect)widgetLayoutBounds;
 - (CGSize)lastLayoutBoundsSize;
@@ -72,21 +72,21 @@
 - (CGSize)p_currentSpreadSize;
 - (CGSize)p_desiredCanvasSize;
 - (CGSize)p_maxScrollViewSize;
-- (CGSize)p_maxScrollViewSizeForViewSize:(CGSize)a3;
+- (CGSize)p_maxScrollViewSizeForViewSize:(CGSize)size;
 - (CGSize)p_windowOrViewSize;
-- (CGSize)pageSizeForPagePositionController:(id)a3;
-- (CGSize)pageSizeForPresentationType:(id)a3;
+- (CGSize)pageSizeForPagePositionController:(id)controller;
+- (CGSize)pageSizeForPresentationType:(id)type;
 - (CGSize)paginatedPageSize;
 - (CGSize)paginatedSpreadSize;
 - (CGSize)previousTransitionSize;
 - (CGSize)widgetHostExpandedSize;
-- (CGSize)widgetStackMaxContainerSizeForSize:(CGSize)a3;
+- (CGSize)widgetStackMaxContainerSizeForSize:(CGSize)size;
 - (CGSize)windowMinSize;
 - (THDocumentReflowableLayoutConfiguration)configuration;
 - (THDocumentViewController)initWithDefaultView;
 - (THPresentationType)currentPresentationType;
-- (UIEdgeInsets)contentInsetsForPresentationType:(id)a3;
-- (UIEdgeInsets)expandedViewControllerSafeAreaInsets:(id)a3;
+- (UIEdgeInsets)contentInsetsForPresentationType:(id)type;
+- (UIEdgeInsets)expandedViewControllerSafeAreaInsets:(id)insets;
 - (UIView)expandedWindowHostView;
 - (UIView)rootSuperview;
 - (_NSRange)currentRelativePageIndexRange;
@@ -95,9 +95,9 @@
 - (double)currentViewScale;
 - (double)fitHeightViewScale;
 - (double)fitWidthViewScale;
-- (double)gutterWidthForPresentationType:(id)a3;
-- (double)interactiveCanvasController:(id)a3 adjustViewScale:(double)a4;
-- (double)nextCanvasViewScaleDetentForProposedViewScale:(double)a3 greater:(BOOL)a4;
+- (double)gutterWidthForPresentationType:(id)type;
+- (double)interactiveCanvasController:(id)controller adjustViewScale:(double)scale;
+- (double)nextCanvasViewScaleDetentForProposedViewScale:(double)scale greater:(BOOL)greater;
 - (double)p_horizontalOverscrollAnimationDuration;
 - (double)p_pageMarginWidth;
 - (double)p_verticalOverscrollAnimationDuration;
@@ -107,43 +107,43 @@
 - (double)viewHeaderHeight;
 - (double)zoomedInViewScale;
 - (double)zoomedOutViewScale;
-- (id)actionForHyperlink:(id)a3 inRep:(id)a4 gesture:(id)a5;
-- (id)activityItemProviderWithCachedAnnotation:(id)a3;
-- (id)anchorFromLink:(id)a3;
+- (id)actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
+- (id)activityItemProviderWithCachedAnnotation:(id)annotation;
+- (id)anchorFromLink:(id)link;
 - (id)backgroundColor;
 - (id)backgroundColorForDragUIPlatter;
 - (id)bookLinkResolver;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
 - (id)childViewControllerForStatusBarHidden;
 - (id)childViewControllerForStatusBarStyle;
-- (id)contentNodeForPageIndex:(unint64_t)a3;
+- (id)contentNodeForPageIndex:(unint64_t)index;
 - (id)currentContentNode;
 - (id)currentNavigationUnit;
 - (id)curtainColorForFreeTransform;
-- (id)expandableRepForInfo:(id)a3;
-- (id)expandedViewController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6;
+- (id)expandableRepForInfo:(id)info;
+- (id)expandedViewController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
 - (id)foregroundTextColor;
 - (id)hostCanvasLayer;
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forLayout:(id)a5;
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5;
-- (id)interactiveCanvasController:(id)a3 infoForModel:(id)a4 withSelection:(id)a5;
-- (id)layoutControllerForSectionController:(id)a3;
-- (id)navigationUnitForChapterIndex:(unint64_t)a3;
-- (id)p_canvasInfoForExpandedInfo:(id)a3 presentationType:(id)a4;
-- (id)p_contentNodeForInfo:(id)a3 presentationType:(id)a4;
-- (id)p_expandableInfoForInfo:(id)a3 forceLoad:(BOOL)a4;
-- (id)p_expandedViewControllerForRep:(id)a3;
-- (id)p_overscrollBarWithFrame:(CGRect)a3 chapterIndex:(unint64_t)a4 tocTile:(id)a5;
-- (id)p_ownerInfoForPopUpInfo:(id)a3;
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forLayout:(id)layout;
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep;
+- (id)interactiveCanvasController:(id)controller infoForModel:(id)model withSelection:(id)selection;
+- (id)layoutControllerForSectionController:(id)controller;
+- (id)navigationUnitForChapterIndex:(unint64_t)index;
+- (id)p_canvasInfoForExpandedInfo:(id)info presentationType:(id)type;
+- (id)p_contentNodeForInfo:(id)info presentationType:(id)type;
+- (id)p_expandableInfoForInfo:(id)info forceLoad:(BOOL)load;
+- (id)p_expandedViewControllerForRep:(id)rep;
+- (id)p_overscrollBarWithFrame:(CGRect)frame chapterIndex:(unint64_t)index tocTile:(id)tile;
+- (id)p_ownerInfoForPopUpInfo:(id)info;
 - (id)p_pressableRepGestureRecognizer;
-- (id)panGuideForInteractiveCanvasController:(id)a3 withMovementDirection:(CGPoint)a4;
-- (id)scrollableCanvasActivityItemProviderWithCachedAnnotation:(id)a3;
+- (id)panGuideForInteractiveCanvasController:(id)controller withMovementDirection:(CGPoint)direction;
+- (id)scrollableCanvasActivityItemProviderWithCachedAnnotation:(id)annotation;
 - (id)selectedSectionController;
 - (id)titleOfCurrentNavigationUnit;
 - (id)traitCollection;
 - (int)p_activePagePaddingOptions;
-- (int64_t)columnCountForPresentationType:(id)a3;
-- (int64_t)guidedPanPageIndexForLayout:(id)a3;
+- (int64_t)columnCountForPresentationType:(id)type;
+- (int64_t)guidedPanPageIndexForLayout:(id)layout;
 - (int64_t)overrideUserInterfaceStyle;
 - (int64_t)preferredStatusBarStyle;
 - (int64_t)th_cachedInterfaceOrientation;
@@ -152,214 +152,214 @@
 - (unint64_t)currentLesson;
 - (unint64_t)currentRelativePageIndex;
 - (unint64_t)currentTOCLessonIndex;
-- (unint64_t)fontSizeForPresentationType:(id)a3;
-- (unint64_t)pageViewProviderStartAbsolutePageIndex:(id)a3;
-- (unint64_t)visiblePageCountForDocumentNavigator:(id)a3;
+- (unint64_t)fontSizeForPresentationType:(id)type;
+- (unint64_t)pageViewProviderStartAbsolutePageIndex:(id)index;
+- (unint64_t)visiblePageCountForDocumentNavigator:(id)navigator;
 - (void)_computeTraitCollectionDerivedValues;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)_updateScrubberCalloutForPageNumber:(int64_t)a3;
-- (void)_updateScrubberTheme:(id)a3;
-- (void)bookViewDidRotateTransitionToSize:(CGSize)a3;
-- (void)bookViewDidTransitionToSize:(CGSize)a3;
-- (void)bookViewWillAnimateRotationToSize:(CGSize)a3 duration:(double)a4;
-- (void)bookViewWillRotateTransitionToSize:(CGSize)a3 duration:(double)a4;
-- (void)bookViewWillTransitionToSize:(CGSize)a3;
-- (void)books_addHighlight:(id)a3;
-- (void)books_addNote:(id)a3;
-- (void)books_chapterBackward:(id)a3;
-- (void)books_chapterForward:(id)a3;
-- (void)books_pageBackward:(id)a3;
-- (void)books_pageForward:(id)a3;
-- (void)books_toggleContinuousScroll:(id)a3;
-- (void)buildHoverControlRegionForInteraction:(id)a3 withBuilder:(id)a4;
-- (void)changeAnnotationStyle:(id)a3;
-- (void)changeFontSize:(unint64_t)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)_updateScrubberCalloutForPageNumber:(int64_t)number;
+- (void)_updateScrubberTheme:(id)theme;
+- (void)bookViewDidRotateTransitionToSize:(CGSize)size;
+- (void)bookViewDidTransitionToSize:(CGSize)size;
+- (void)bookViewWillAnimateRotationToSize:(CGSize)size duration:(double)duration;
+- (void)bookViewWillRotateTransitionToSize:(CGSize)size duration:(double)duration;
+- (void)bookViewWillTransitionToSize:(CGSize)size;
+- (void)books_addHighlight:(id)highlight;
+- (void)books_addNote:(id)note;
+- (void)books_chapterBackward:(id)backward;
+- (void)books_chapterForward:(id)forward;
+- (void)books_pageBackward:(id)backward;
+- (void)books_pageForward:(id)forward;
+- (void)books_toggleContinuousScroll:(id)scroll;
+- (void)buildHoverControlRegionForInteraction:(id)interaction withBuilder:(id)builder;
+- (void)changeAnnotationStyle:(id)style;
+- (void)changeFontSize:(unint64_t)size;
 - (void)closeDocument;
 - (void)copySelection;
 - (void)corruptBookAlert;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)documentNavigator:(id)a3 didJumpToPageLocation:(id)a4;
-- (void)documentNavigator:(id)a3 failedToFollowAnchor:(id)a4 pulse:(BOOL)a5;
-- (void)documentNavigator:(id)a3 failedToFollowLink:(id)a4;
-- (void)documentNavigator:(id)a3 scrollToAbsolutePageIndex:(unint64_t)a4 specificUnscaledCanvasRect:(CGRect)a5 animated:(BOOL)a6 willPulse:(BOOL)a7;
-- (void)documentNavigator:(id)a3 willJumpToPageLocation:(id)a4;
-- (void)documentNavigator:(id)a3 willNavigateToAbsolutePageIndex:(unint64_t)a4 inContentNode:(id)a5;
+- (void)documentNavigator:(id)navigator didJumpToPageLocation:(id)location;
+- (void)documentNavigator:(id)navigator failedToFollowAnchor:(id)anchor pulse:(BOOL)pulse;
+- (void)documentNavigator:(id)navigator failedToFollowLink:(id)link;
+- (void)documentNavigator:(id)navigator scrollToAbsolutePageIndex:(unint64_t)index specificUnscaledCanvasRect:(CGRect)rect animated:(BOOL)animated willPulse:(BOOL)pulse;
+- (void)documentNavigator:(id)navigator willJumpToPageLocation:(id)location;
+- (void)documentNavigator:(id)navigator willNavigateToAbsolutePageIndex:(unint64_t)index inContentNode:(id)node;
 - (void)endRevealTOC;
 - (void)ensureDocumentIsLoaded;
-- (void)expandedViewController:(id)a3 handleHyperlinkWithURL:(id)a4;
-- (void)expandedViewControllerDidDismiss:(id)a3;
-- (void)expandedViewControllerDidPresent:(id)a3;
-- (void)expandedViewControllerWantsDismiss:(id)a3;
-- (void)expandedViewControllerWillBeginDismissing:(id)a3;
-- (void)expandedViewControllerWillPresent:(id)a3;
-- (void)flowPageControllerWillChangeContentHeight:(id)a3;
-- (void)followAbsolutePageIndex:(unint64_t)a3;
-- (void)freeTransformDidBeginWithRep:(id)a3 expandableRep:(id)a4;
-- (void)freeTransformDidCancelWithRep:(id)a3 expandableRep:(id)a4;
-- (void)freeTransformDidEndWithRep:(id)a3 expandableRep:(id)a4 completionBlock:(id)a5;
-- (void)freeTransformPostAnimationDidCancelWithRep:(id)a3 expandableRep:(id)a4;
+- (void)expandedViewController:(id)controller handleHyperlinkWithURL:(id)l;
+- (void)expandedViewControllerDidDismiss:(id)dismiss;
+- (void)expandedViewControllerDidPresent:(id)present;
+- (void)expandedViewControllerWantsDismiss:(id)dismiss;
+- (void)expandedViewControllerWillBeginDismissing:(id)dismissing;
+- (void)expandedViewControllerWillPresent:(id)present;
+- (void)flowPageControllerWillChangeContentHeight:(id)height;
+- (void)followAbsolutePageIndex:(unint64_t)index;
+- (void)freeTransformDidBeginWithRep:(id)rep expandableRep:(id)expandableRep;
+- (void)freeTransformDidCancelWithRep:(id)rep expandableRep:(id)expandableRep;
+- (void)freeTransformDidEndWithRep:(id)rep expandableRep:(id)expandableRep completionBlock:(id)block;
+- (void)freeTransformPostAnimationDidCancelWithRep:(id)rep expandableRep:(id)expandableRep;
 - (void)guidedPanDidEnd;
-- (void)guidedPanWillAnimateFrom:(id)a3 to:(id)a4 duration:(double)a5;
+- (void)guidedPanWillAnimateFrom:(id)from to:(id)to duration:(double)duration;
 - (void)guidedPanWillBegin;
 - (void)hideNavigationHistory;
-- (void)hidePageThumbnailsAnimated:(BOOL)a3 duration:(double)a4;
-- (void)hideToolbarAnimated:(BOOL)a3;
-- (void)interactiveCanvasController:(id)a3 didOverscrollBottom:(double)a4 state:(int)a5;
-- (void)interactiveCanvasController:(id)a3 didOverscrollLeft:(double)a4 state:(int)a5;
-- (void)interactiveCanvasController:(id)a3 didOverscrollRight:(double)a4 state:(int)a5;
-- (void)interactiveCanvasController:(id)a3 didOverscrollTop:(double)a4 state:(int)a5;
-- (void)interactiveCanvasController:(id)a3 didZoomToColumn:(id)a4 ofRep:(id)a5;
-- (void)interactiveCanvasController:(id)a3 layoutRegistered:(id)a4;
-- (void)interactiveCanvasController:(id)a3 progressDidChangeForRep:(id)a4 percent:(id)a5;
-- (void)interactiveCanvasController:(id)a3 resetAttemptForRep:(id)a4;
-- (void)interactiveCanvasController:(id)a3 scoreDidChangeForRep:(id)a4 score:(id)a5 total:(id)a6;
-- (void)interactiveCanvasController:(id)a3 scrollViewWillBeginDragging:(id)a4;
-- (void)interactiveCanvasController:(id)a3 wantsToPresentContextMenuAtCanvasPoint:(CGPoint)a4 forAnnotationUUID:(id)a5;
-- (void)interactiveCanvasController:(id)a3 willAnimateScrollToVisibleUnscaledRect:(CGRect)a4;
-- (void)interactiveCanvasController:(id)a3 willAnimateToViewScale:(double)a4 withDuration:(double)a5 unscaledContentOffset:(CGPoint)a6;
-- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)a3 stillAnimating:(BOOL)a4;
-- (void)interactiveCanvasControllerDidLayout:(id)a3;
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3;
-- (void)interactiveCanvasControllerDidScroll:(id)a3;
-- (void)interactiveCanvasControllerDidStopScrolling:(id)a3;
-- (void)interactiveCanvasControllerDidZoom:(id)a3;
-- (void)interactiveCanvasControllerFreeTransformDidEnd:(id)a3;
-- (void)interactiveCanvasControllerWillLayout:(id)a3;
-- (void)interactiveCanvasControllerWillScroll:(id)a3;
-- (void)interactiveCanvasControllerWillZoom:(id)a3;
+- (void)hidePageThumbnailsAnimated:(BOOL)animated duration:(double)duration;
+- (void)hideToolbarAnimated:(BOOL)animated;
+- (void)interactiveCanvasController:(id)controller didOverscrollBottom:(double)bottom state:(int)state;
+- (void)interactiveCanvasController:(id)controller didOverscrollLeft:(double)left state:(int)state;
+- (void)interactiveCanvasController:(id)controller didOverscrollRight:(double)right state:(int)state;
+- (void)interactiveCanvasController:(id)controller didOverscrollTop:(double)top state:(int)state;
+- (void)interactiveCanvasController:(id)controller didZoomToColumn:(id)column ofRep:(id)rep;
+- (void)interactiveCanvasController:(id)controller layoutRegistered:(id)registered;
+- (void)interactiveCanvasController:(id)controller progressDidChangeForRep:(id)rep percent:(id)percent;
+- (void)interactiveCanvasController:(id)controller resetAttemptForRep:(id)rep;
+- (void)interactiveCanvasController:(id)controller scoreDidChangeForRep:(id)rep score:(id)score total:(id)total;
+- (void)interactiveCanvasController:(id)controller scrollViewWillBeginDragging:(id)dragging;
+- (void)interactiveCanvasController:(id)controller wantsToPresentContextMenuAtCanvasPoint:(CGPoint)point forAnnotationUUID:(id)d;
+- (void)interactiveCanvasController:(id)controller willAnimateScrollToVisibleUnscaledRect:(CGRect)rect;
+- (void)interactiveCanvasController:(id)controller willAnimateToViewScale:(double)scale withDuration:(double)duration unscaledContentOffset:(CGPoint)offset;
+- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)animation stillAnimating:(BOOL)animating;
+- (void)interactiveCanvasControllerDidLayout:(id)layout;
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread;
+- (void)interactiveCanvasControllerDidScroll:(id)scroll;
+- (void)interactiveCanvasControllerDidStopScrolling:(id)scrolling;
+- (void)interactiveCanvasControllerDidZoom:(id)zoom;
+- (void)interactiveCanvasControllerFreeTransformDidEnd:(id)end;
+- (void)interactiveCanvasControllerWillLayout:(id)layout;
+- (void)interactiveCanvasControllerWillScroll:(id)scroll;
+- (void)interactiveCanvasControllerWillZoom:(id)zoom;
 - (void)layoutScrubberCallout;
 - (void)loadDocument;
-- (void)navigationUnitDidChange:(id)a3;
-- (void)p_activateProgressForRep:(id)a3;
-- (void)p_adjustContentViewFrameForSize:(CGSize)a3;
-- (void)p_animateHorizontalOverscrollToPageIndex:(unint64_t)a3 duration:(double)a4 animationCompletionBlock:(id)a5 layoutCompletionBlock:(id)a6;
-- (void)p_animateToNextPage:(BOOL)a3;
+- (void)navigationUnitDidChange:(id)change;
+- (void)p_activateProgressForRep:(id)rep;
+- (void)p_adjustContentViewFrameForSize:(CGSize)size;
+- (void)p_animateHorizontalOverscrollToPageIndex:(unint64_t)index duration:(double)duration animationCompletionBlock:(id)block layoutCompletionBlock:(id)completionBlock;
+- (void)p_animateToNextPage:(BOOL)page;
 - (void)p_buildContextTree;
 - (void)p_canvasDidZoom;
 - (void)p_cleanupAfterViewUnload;
 - (void)p_clearCanvas;
-- (void)p_deactivateProgressForRep:(id)a3;
-- (void)p_didFinishTransitionWithSize:(CGSize)a3;
-- (void)p_dismissActiveAnimated:(BOOL)a3;
-- (void)p_ensureInNavigationUnitForContentNode:(id)a3;
+- (void)p_deactivateProgressForRep:(id)rep;
+- (void)p_didFinishTransitionWithSize:(CGSize)size;
+- (void)p_dismissActiveAnimated:(BOOL)animated;
+- (void)p_ensureInNavigationUnitForContentNode:(id)node;
 - (void)p_ensureVisibleAbsolutePhysicalPageIndexFromFullscreen;
 - (void)p_fadeOutOverscrollTransition;
 - (void)p_fireCanvasDidZoomCompletion;
 - (void)p_fixScrollViewToMatchCanvas;
-- (void)p_getWidgetIDsForInfo:(id)a3 completion:(id)a4;
+- (void)p_getWidgetIDsForInfo:(id)info completion:(id)completion;
 - (void)p_horizontalOverscrollNextChapter;
 - (void)p_horizontalOverscrollPreviousChapter;
 - (void)p_interactiveCanvasControllerDidLayout;
-- (void)p_layoutCanvasForSize:(CGSize)a3 duration:(double)a4 forceBackgroundLayout:(BOOL)a5;
+- (void)p_layoutCanvasForSize:(CGSize)size duration:(double)duration forceBackgroundLayout:(BOOL)layout;
 - (void)p_layoutSinglePageChapter;
 - (void)p_localteardown;
 - (void)p_localteardownSecondStage;
 - (void)p_pageLeft;
 - (void)p_pageRight;
-- (void)p_performDelayedLayoutAndRotation:(id)a3;
+- (void)p_performDelayedLayoutAndRotation:(id)rotation;
 - (void)p_performanceModeUpdated;
 - (void)p_presentationStyleChanged;
 - (void)p_releaseOverscrollViews;
 - (void)p_removeCanvasTransform;
 - (void)p_resetPageDisplacment;
-- (void)p_resizeViewsForSize:(CGSize)a3 duration:(double)a4 maintainPageIndex:(BOOL)a5;
-- (void)p_setActiveSectionControllerDeferVantageDidChange:(BOOL)a3;
+- (void)p_resizeViewsForSize:(CGSize)size duration:(double)duration maintainPageIndex:(BOOL)index;
+- (void)p_setActiveSectionControllerDeferVantageDidChange:(BOOL)change;
 - (void)p_setFlowPresentation;
 - (void)p_setPagedPresentation;
-- (void)p_setUnscaledCanvasRect:(CGRect)a3 animated:(BOOL)a4;
-- (void)p_setupHorizontalOverscrollTransitionAnimationToAbsolutePageIndex:(unint64_t)a3;
+- (void)p_setUnscaledCanvasRect:(CGRect)rect animated:(BOOL)animated;
+- (void)p_setupHorizontalOverscrollTransitionAnimationToAbsolutePageIndex:(unint64_t)index;
 - (void)p_setupNavOverlayContainer;
 - (void)p_setupOverscrollViews;
 - (void)p_setupPageNumberViews;
-- (void)p_setupVerticalOverscrollTransitionAnimationToChapter:(id)a3;
-- (void)p_swipeToNextOffsetForScrollView:(id)a3 flowPageController:(id)a4 withVelocity:(CGPoint)a5 targetContentOffset:(CGPoint *)a6;
+- (void)p_setupVerticalOverscrollTransitionAnimationToChapter:(id)chapter;
+- (void)p_swipeToNextOffsetForScrollView:(id)view flowPageController:(id)controller withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)p_updateBookmarkAffordances;
 - (void)p_updateCanvasSize;
 - (void)p_updateNavigationOverlayContainerFrame;
-- (void)p_updatePageNumberViewPositionsForSize:(CGSize)a3;
+- (void)p_updatePageNumberViewPositionsForSize:(CGSize)size;
 - (void)p_updatePageNumberViewVisibility;
-- (void)p_updatePageNumberingForce:(BOOL)a3;
-- (void)p_updatePageViewHostsWithTheme:(id)a3;
-- (void)p_updatePageViewsForScrollingAnimated:(BOOL)a3 restoreOrigin:(BOOL)a4 pageIndexSet:(id)a5;
-- (void)p_updatePresentationTypeAnimated:(BOOL)a3;
-- (void)p_updateProgessKitSectionInCanvasRect:(CGRect)a3;
-- (void)p_updateProgressKitForNewNavigationUnit:(id)a3;
-- (void)p_updateScrollViewAndZoomSettingsForSize:(CGSize)a3;
+- (void)p_updatePageNumberingForce:(BOOL)force;
+- (void)p_updatePageViewHostsWithTheme:(id)theme;
+- (void)p_updatePageViewsForScrollingAnimated:(BOOL)animated restoreOrigin:(BOOL)origin pageIndexSet:(id)set;
+- (void)p_updatePresentationTypeAnimated:(BOOL)animated;
+- (void)p_updateProgessKitSectionInCanvasRect:(CGRect)rect;
+- (void)p_updateProgressKitForNewNavigationUnit:(id)unit;
+- (void)p_updateScrollViewAndZoomSettingsForSize:(CGSize)size;
 - (void)p_updateScrollViewDecelerationRate;
-- (void)p_updateScrollViewForSize:(CGSize)a3;
-- (void)p_updateScrubberCheckToolbarState:(BOOL)a3;
+- (void)p_updateScrollViewForSize:(CGSize)size;
+- (void)p_updateScrubberCheckToolbarState:(BOOL)state;
 - (void)p_updateVerticalOverscrollTransform;
 - (void)p_updateVisibleInfos;
-- (void)p_updateVisibleInfosWithPaddingOptions:(int)a3 force:(BOOL)a4;
+- (void)p_updateVisibleInfosWithPaddingOptions:(int)options force:(BOOL)force;
 - (void)p_updateWidgetInteractionMode;
 - (void)p_verticalOverscrollNextChapter;
 - (void)p_verticalOverscrollPreviousChapter;
-- (void)p_verticalOverscrollSetPreviousChapterNavigationUnit:(id)a3;
-- (void)p_visiblePageRangeWillChangeTo:(_NSRange)a3;
+- (void)p_verticalOverscrollSetPreviousChapterNavigationUnit:(id)unit;
+- (void)p_visiblePageRangeWillChangeTo:(_NSRange)to;
 - (void)p_visibleRectChanged;
-- (void)p_willLayoutCanvasFlow:(id)a3;
-- (void)p_willLayoutCanvasPaginated:(id)a3;
-- (void)p_zoomToAnchor:(id)a3;
-- (void)pageViewProviderViewsAdded:(id)a3 pageIndexSet:(id)a4;
-- (void)paginationController:(id)a3 paginationCompleteStateChangedTo:(BOOL)a4;
-- (void)paginationController:(id)a3 paginationResultChanged:(id)a4 forContentNode:(id)a5 paginationProgress:(double)a6 paginationComplete:(BOOL)a7;
+- (void)p_willLayoutCanvasFlow:(id)flow;
+- (void)p_willLayoutCanvasPaginated:(id)paginated;
+- (void)p_zoomToAnchor:(id)anchor;
+- (void)pageViewProviderViewsAdded:(id)added pageIndexSet:(id)set;
+- (void)paginationController:(id)controller paginationCompleteStateChangedTo:(BOOL)to;
+- (void)paginationController:(id)controller paginationResultChanged:(id)changed forContentNode:(id)node paginationProgress:(double)progress paginationComplete:(BOOL)complete;
 - (void)popMinimizeLayoutPadding;
-- (void)popoverControllerWillDismiss:(id)a3;
-- (void)presentExpandedViewController:(id)a3 completionBlock:(id)a4;
-- (void)presentPopoverForPopUpInfo:(id)a3 withFrame:(CGRect)a4 inLayer:(id)a5;
-- (void)presentRepExpanded:(id)a3;
-- (void)presentSearchResultsForString:(id)a3;
+- (void)popoverControllerWillDismiss:(id)dismiss;
+- (void)presentExpandedViewController:(id)controller completionBlock:(id)block;
+- (void)presentPopoverForPopUpInfo:(id)info withFrame:(CGRect)frame inLayer:(id)layer;
+- (void)presentRepExpanded:(id)expanded;
+- (void)presentSearchResultsForString:(id)string;
 - (void)recordCurrentLocationInHistory;
 - (void)recordOutgoingMajorNavigationJump;
-- (void)removeNote:(id)a3;
-- (void)removeNoteAndHighlight:(id)a3;
-- (void)removePreviewForRelativePageIndex:(unint64_t)a3;
-- (void)scrub:(id)a3;
-- (void)scrubValueChanged:(id)a3;
-- (void)scrubberTouch:(id)a3 forEvent:(id)a4;
-- (void)scrubberTouchDown:(id)a3;
-- (void)sectionControllerInfosDidChange:(id)a3;
-- (void)sectionControllerNeedsLayout:(id)a3;
+- (void)removeNote:(id)note;
+- (void)removeNoteAndHighlight:(id)highlight;
+- (void)removePreviewForRelativePageIndex:(unint64_t)index;
+- (void)scrub:(id)scrub;
+- (void)scrubValueChanged:(id)changed;
+- (void)scrubberTouch:(id)touch forEvent:(id)event;
+- (void)scrubberTouchDown:(id)down;
+- (void)sectionControllerInfosDidChange:(id)change;
+- (void)sectionControllerNeedsLayout:(id)layout;
 - (void)selectionDidChange;
-- (void)setCurrentNavigationUnit:(id)a3;
-- (void)setCurrentNavigationUnit:(id)a3 withRelativePageIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setPageBookmarked:(BOOL)a3;
-- (void)setPerformanceModeBookOpening:(BOOL)a3;
-- (void)setScrubberCalloutVisible:(BOOL)a3;
-- (void)setScrubberHiddenAnimated:(BOOL)a3;
-- (void)setSuspendCanvasScroll:(BOOL)a3;
-- (void)settingToolbarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)showGlossaryViewWithAnchor:(id)a3;
-- (void)showPageThumbnailsForMissingPageIndexes:(id)a3;
-- (void)showPageThumbnailsForPageIndexes:(id)a3 animated:(BOOL)a4 duration:(double)a5;
+- (void)setCurrentNavigationUnit:(id)unit;
+- (void)setCurrentNavigationUnit:(id)unit withRelativePageIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setPageBookmarked:(BOOL)bookmarked;
+- (void)setPerformanceModeBookOpening:(BOOL)opening;
+- (void)setScrubberCalloutVisible:(BOOL)visible;
+- (void)setScrubberHiddenAnimated:(BOOL)animated;
+- (void)setSuspendCanvasScroll:(BOOL)scroll;
+- (void)settingToolbarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)showGlossaryViewWithAnchor:(id)anchor;
+- (void)showPageThumbnailsForMissingPageIndexes:(id)indexes;
+- (void)showPageThumbnailsForPageIndexes:(id)indexes animated:(BOOL)animated duration:(double)duration;
 - (void)showTOC;
-- (void)showToolbarAnimated:(BOOL)a3;
+- (void)showToolbarAnimated:(BOOL)animated;
 - (void)startRevealTOC;
-- (void)switchToNavigationUnitForChapterIndex:(unint64_t)a3;
-- (void)tapGesture:(id)a3;
+- (void)switchToNavigationUnitForChapterIndex:(unint64_t)index;
+- (void)tapGesture:(id)gesture;
 - (void)teardown;
 - (void)toggleFlowPresentation;
 - (void)toggleToolbar;
 - (void)unloadDocument;
-- (void)updateForTheme:(id)a3;
+- (void)updateForTheme:(id)theme;
 - (void)updateNavigationAffordances;
-- (void)updateTwoUpForSize:(CGSize)a3;
-- (void)updateVisibleInfosWithPageIndex:(unint64_t)a3;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateTwoUpForSize:(CGSize)size;
+- (void)updateVisibleInfosWithPageIndex:(unint64_t)index;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)viewsDidResize;
-- (void)zoomOutAnimated:(BOOL)a3;
-- (void)zoomOutIfNecessaryAnimated:(BOOL)a3 completion:(id)a4;
+- (void)zoomOutAnimated:(BOOL)animated;
+- (void)zoomOutIfNecessaryAnimated:(BOOL)animated completion:(id)completion;
 - (void)zoomOutIfNecessaryPriorToNavigation;
-- (void)zoomToRelativeTargetRect:(CGRect)a3 atPageIndex:(unint64_t)a4;
+- (void)zoomToRelativeTargetRect:(CGRect)rect atPageIndex:(unint64_t)index;
 @end
 
 @implementation THDocumentViewController
@@ -480,15 +480,15 @@
     return 0.0;
   }
 
-  v4 = [(THDocumentViewController *)self th_cachedInterfaceOrientation];
-  if (v4 <= 1)
+  th_cachedInterfaceOrientation = [(THDocumentViewController *)self th_cachedInterfaceOrientation];
+  if (th_cachedInterfaceOrientation <= 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = th_cachedInterfaceOrientation;
   }
 
   v6 = [(NSMutableDictionary *)[(THDocumentViewController *)self statusBarHeightForOrientation] objectForKeyedSubscript:[NSNumber numberWithInteger:v5]];
@@ -510,12 +510,12 @@
   return result;
 }
 
-- (void)p_updatePageNumberViewPositionsForSize:(CGSize)a3
+- (void)p_updatePageNumberViewPositionsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THPageNumberView *)[(THDocumentViewController *)self contentPageNumberView] setMode:[(THDocumentViewController *)self inFlowMode]^ 1];
-  v6 = [(THDocumentViewController *)self contentPageNumberView];
+  contentPageNumberView = [(THDocumentViewController *)self contentPageNumberView];
   if ([(THDocumentViewController *)self isEpub])
   {
     v7 = [(THDocumentViewController *)self inFlowMode]^ 1;
@@ -526,7 +526,7 @@
     v7 = 0;
   }
 
-  [(THPageNumberView *)v6 setBold:v7];
+  [(THPageNumberView *)contentPageNumberView setBold:v7];
   if ([(THDocumentViewController *)self inFlowMode])
   {
     [-[THDocumentViewController view](self "view")];
@@ -545,9 +545,9 @@
   [(THPageNumberView *)[(THDocumentViewController *)self contentPageNumberView] updatePosition:v9, v11];
   [(THPageNumberView *)[(THDocumentViewController *)self navOverlayPageNumberView] setMode:1];
   [(THPageNumberView *)[(THDocumentViewController *)self navOverlayPageNumberView] setBold:1];
-  v14 = [(THPageNumberView *)[(THDocumentViewController *)self navOverlayPageNumberView] superview];
+  superview = [(THPageNumberView *)[(THDocumentViewController *)self navOverlayPageNumberView] superview];
   [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] pageNumberPosition];
-  [v14 convertPoint:-[THDocumentViewController view](self fromView:{"view"), v15, v16}];
+  [superview convertPoint:-[THDocumentViewController view](self fromView:{"view"), v15, v16}];
   [(THPageNumberView *)[(THDocumentViewController *)self navOverlayPageNumberView] updatePosition:v17, v18];
 
   [(THDocumentViewController *)self p_updatePageNumberViewVisibility];
@@ -566,20 +566,20 @@
   }
 
   [(THPageNumberView *)[(THDocumentViewController *)self contentPageNumberView] setHidden:v3];
-  v4 = [(THDocumentViewController *)self isEpub];
-  v5 = [(THDocumentViewController *)self navOverlayPageNumberView];
+  isEpub = [(THDocumentViewController *)self isEpub];
+  navOverlayPageNumberView = [(THDocumentViewController *)self navOverlayPageNumberView];
 
-  [(THPageNumberView *)v5 setHidden:v4 ^ 1];
+  [(THPageNumberView *)navOverlayPageNumberView setHidden:isEpub ^ 1];
 }
 
 - (void)p_updateNavigationOverlayContainerFrame
 {
   [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] bottomFullWidthToolbarFrame];
   [(UIView *)[(THDocumentViewController *)self navigationOverlayContainer] setFrame:v3, v4, v5, v6];
-  v7 = [(THDocumentViewController *)self isEpub];
-  v8 = [(THDocumentViewController *)self navigationOverlayContainer];
+  isEpub = [(THDocumentViewController *)self isEpub];
+  navigationOverlayContainer = [(THDocumentViewController *)self navigationOverlayContainer];
 
-  [(UIView *)v8 setHidden:v7 ^ 1];
+  [(UIView *)navigationOverlayContainer setHidden:isEpub ^ 1];
 }
 
 - (void)loadDocument
@@ -606,13 +606,13 @@
       v4 = [THPagePositionController paginatedPositionerWithDelegate:self];
       v5 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
       [v5 setPageSizeDelegate:self];
-      v6 = [v5 copyFixingSize];
-      self->_paginatedSectionController = [[THSectionController alloc] initWithDelegate:self pagePositionController:v4 presentationType:v6];
+      copyFixingSize = [v5 copyFixingSize];
+      self->_paginatedSectionController = [[THSectionController alloc] initWithDelegate:self pagePositionController:v4 presentationType:copyFixingSize];
 
       v7 = [THPageViewProvider alloc];
-      v8 = [(THDocumentViewController *)self interactiveCanvasController];
+      interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
       [(THDocumentViewController *)self paginatedPageSize];
-      v9 = [(THPageViewProvider *)v7 initWithInteractiveCanvasController:v8 pageSize:?];
+      v9 = [(THPageViewProvider *)v7 initWithInteractiveCanvasController:interactiveCanvasController pageSize:?];
       self->mPageViewProvider = v9;
       [(THPageViewProvider *)v9 setDelegate:self];
       [(THPageViewProvider *)self->mPageViewProvider setPreviewEnabled:[(THDocumentViewController *)self isEpub]^ 1];
@@ -731,9 +731,9 @@
 
 - (void)p_updateScrollViewDecelerationRate
 {
-  v3 = [(THDocumentViewController *)self inFlowMode];
+  inFlowMode = [(THDocumentViewController *)self inFlowMode];
   v4 = &UIScrollViewDecelerationRateFast;
-  if (!v3)
+  if (!inFlowMode)
   {
     v4 = &UIScrollViewDecelerationRateNormal;
   }
@@ -744,11 +744,11 @@
   [v6 setDecelerationRate:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = THDocumentViewController;
-  [(THDocumentViewController *)&v8 viewWillAppear:a3];
+  [(THDocumentViewController *)&v8 viewWillAppear:appear];
   [-[THDocumentViewController view](self "view")];
   [(THDocumentViewController *)self setLastLayoutBoundsSize:v4, v5];
   [-[THDocumentViewController view](self "view")];
@@ -759,45 +759,45 @@
   [(THDocumentViewController *)self p_updateScrollViewDecelerationRate];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = THDocumentViewController;
-  [(THDocumentViewController *)&v4 viewWillDisappear:a3];
+  [(THDocumentViewController *)&v4 viewWillDisappear:disappear];
   if (([-[THDocumentViewController presentedViewController](self "presentedViewController")] & 1) == 0)
   {
     [(THDocumentViewController *)self p_dismissActiveAnimated:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4.receiver = self;
   v4.super_class = THDocumentViewController;
-  [(THDocumentViewController *)&v4 viewDidAppear:a3];
-  [-[THDocumentViewController interactiveCanvasController](v3 "interactiveCanvasController")];
-  [(THDocumentViewController *)v3 setPagePaddingOptions:3];
-  if ([(THDocumentViewController *)v3 canvasViewController])
+  [(THDocumentViewController *)&v4 viewDidAppear:appear];
+  [-[THDocumentViewController interactiveCanvasController](selfCopy "interactiveCanvasController")];
+  [(THDocumentViewController *)selfCopy setPagePaddingOptions:3];
+  if ([(THDocumentViewController *)selfCopy canvasViewController])
   {
-    v3 = [(THDocumentViewController *)v3 canvasViewController];
+    selfCopy = [(THDocumentViewController *)selfCopy canvasViewController];
   }
 
-  [(THDocumentViewController *)v3 becomeFirstResponder];
+  [(THDocumentViewController *)selfCopy becomeFirstResponder];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = THDocumentViewController;
-  [(THDocumentViewController *)&v10 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(THDocumentViewController *)&v10 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] scrubberFrame];
     [(BKScrubberControl *)[(THDocumentViewController *)self scrubber] setFrame:v6, v7, v8, v9];
   }
 
-  [(BCDisplaySleepController *)[(THDocumentViewController *)self displaySleepController] setWindow:a3];
+  [(BCDisplaySleepController *)[(THDocumentViewController *)self displaySleepController] setWindow:window];
 }
 
 - (void)viewDidLoad
@@ -877,15 +877,15 @@
     self->mRevealTOCPanController = [[THRevealTOCPanController alloc] initWithDelegate:[(THDocumentViewController *)self revealTOCDelegate] interactiveCanvasController:[(THDocumentViewController *)self interactiveCanvasController]];
   }
 
-  v10 = [(THDocumentViewController *)self interactiveCanvasController];
-  v11 = [v10 gestureRecognizerWithKind:TSWPImmediatePress];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
+  v11 = [interactiveCanvasController gestureRecognizerWithKind:TSWPImmediatePress];
   [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   [objc_msgSend(objc_msgSend(objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-  v12 = [(THDocumentViewController *)self canvasViewController];
-  if (v12)
+  canvasViewController = [(THDocumentViewController *)self canvasViewController];
+  if (canvasViewController)
   {
-    v13 = v12;
-    if (![v12 parentViewController])
+    v13 = canvasViewController;
+    if (![canvasViewController parentViewController])
     {
       [(THDocumentViewController *)self addChildViewController:v13];
     }
@@ -1036,27 +1036,27 @@
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = [(THDocumentViewController *)self toolbarDelegate];
+  toolbarDelegate = [(THDocumentViewController *)self toolbarDelegate];
 
-  return [(THToolbarDelegate *)v2 isToolbarHidden];
+  return [(THToolbarDelegate *)toolbarDelegate isToolbarHidden];
 }
 
 - (BOOL)isPageBookmarked
 {
-  v3 = [(THDocumentViewController *)self userAnnotationDelegate];
+  userAnnotationDelegate = [(THDocumentViewController *)self userAnnotationDelegate];
 
-  return [(THUserAnnotationDelegate *)v3 isPageBookmarkedForDocumentViewController:self];
+  return [(THUserAnnotationDelegate *)userAnnotationDelegate isPageBookmarkedForDocumentViewController:self];
 }
 
-- (void)setPageBookmarked:(BOOL)a3
+- (void)setPageBookmarked:(BOOL)bookmarked
 {
-  v3 = a3;
-  v5 = [(THDocumentViewController *)self userAnnotationDelegate];
+  bookmarkedCopy = bookmarked;
+  userAnnotationDelegate = [(THDocumentViewController *)self userAnnotationDelegate];
 
-  [(THUserAnnotationDelegate *)v5 setPageBookmarked:v3 forDocumentViewController:self];
+  [(THUserAnnotationDelegate *)userAnnotationDelegate setPageBookmarked:bookmarkedCopy forDocumentViewController:self];
 }
 
-- (void)updateForTheme:(id)a3
+- (void)updateForTheme:(id)theme
 {
   if ([(THDocumentViewController *)self isEpub])
   {
@@ -1070,16 +1070,16 @@
     [(THOverscrollImageView *)[(THDocumentViewController *)self rightOverscrollView] setBackgroundColor:v5];
     [(UIView *)[(THDocumentViewController *)self topOverscrollView] setBackgroundColor:v5];
     [(UIView *)[(THDocumentViewController *)self bottomOverscrollView] setBackgroundColor:v5];
-    v6 = [(THDocumentViewController *)self interactiveCanvasController];
-    [objc_msgSend(v6 "canvasView")];
-    [objc_msgSend(objc_msgSend(v6 "canvasView")];
+    interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
+    [objc_msgSend(interactiveCanvasController "canvasView")];
+    [objc_msgSend(objc_msgSend(interactiveCanvasController "canvasView")];
     objc_opt_class();
     [-[THDocumentViewController documentRoot](self "documentRoot")];
     v7 = TSUDynamicCast();
     [v7 updateWithTheme:v4 traitCollection:{-[THDocumentViewController traitCollection](self, "traitCollection")}];
-    v8 = [v7 forceThemeColors];
-    v9 = [(TSWPopoverController *)self->mPopUpPopoverController popUpInfo];
-    if (v8)
+    forceThemeColors = [v7 forceThemeColors];
+    popUpInfo = [(TSWPopoverController *)self->mPopUpPopoverController popUpInfo];
+    if (forceThemeColors)
     {
       v10 = [TSUColor colorWithUIColor:v5];
     }
@@ -1089,22 +1089,22 @@
       v10 = 0;
     }
 
-    [(TSWPopUpInfo *)v9 updateBackgroundColor:v10];
+    [(TSWPopUpInfo *)popUpInfo updateBackgroundColor:v10];
     [(THDocumentViewController *)self p_updatePageViewHostsWithTheme:v4];
     [(THWExpandedViewController *)[(THDocumentViewController *)self expandedViewController] invalidate];
     [(THSectionController *)[(THDocumentViewController *)self activeSectionController] clearCTCaches];
-    [v6 pushThreadedLayoutAndRenderDisabled];
-    [v6 recreateAllLayoutsAndReps];
-    [v6 layoutIfNeeded];
-    [v6 popThreadedLayoutAndRenderDisabled];
+    [interactiveCanvasController pushThreadedLayoutAndRenderDisabled];
+    [interactiveCanvasController recreateAllLayoutsAndReps];
+    [interactiveCanvasController layoutIfNeeded];
+    [interactiveCanvasController popThreadedLayoutAndRenderDisabled];
 
     [(THDocumentViewController *)self _updateScrubberTheme:v4];
   }
 }
 
-- (void)_updateScrubberTheme:(id)a3
+- (void)_updateScrubberTheme:(id)theme
 {
-  if ([a3 shouldInvertContent])
+  if ([theme shouldInvertContent])
   {
     v5 = 1;
   }
@@ -1116,38 +1116,38 @@
 
   [(BKScrubberControl *)self->_scrubber setThemeInterfaceStyle:v5];
   [-[BKScrubberControl track](self->_scrubber "track")];
-  v6 = [a3 HUDBackgroundColor];
+  hUDBackgroundColor = [theme HUDBackgroundColor];
   scrubberCallout = self->_scrubberCallout;
 
-  [(BKScrubberCalloutView *)scrubberCallout setBackgroundColor:v6];
+  [(BKScrubberCalloutView *)scrubberCallout setBackgroundColor:hUDBackgroundColor];
 }
 
-- (void)p_updatePageViewHostsWithTheme:(id)a3
+- (void)p_updatePageViewHostsWithTheme:(id)theme
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_BA24;
   v3[3] = &unk_45AE58;
   v3[4] = self;
-  v3[5] = [a3 backgroundColorForTraitEnvironment:self];
+  v3[5] = [theme backgroundColorForTraitEnvironment:self];
   [UIView performWithoutAnimation:v3];
 }
 
 - (id)foregroundTextColor
 {
-  v2 = [(THThemeDelegate *)[(THDocumentViewController *)self themeDelegate] theme];
+  theme = [(THThemeDelegate *)[(THDocumentViewController *)self themeDelegate] theme];
 
-  return [v2 contentTextColor];
+  return [theme contentTextColor];
 }
 
 - (id)backgroundColor
 {
-  v3 = [(THThemeDelegate *)[(THDocumentViewController *)self themeDelegate] theme];
+  theme = [(THThemeDelegate *)[(THDocumentViewController *)self themeDelegate] theme];
 
-  return [v3 backgroundColorForTraitEnvironment:self];
+  return [theme backgroundColorForTraitEnvironment:self];
 }
 
-- (BOOL)pointIsInLeftMargin:(CGPoint)a3 fromView:(id)a4
+- (BOOL)pointIsInLeftMargin:(CGPoint)margin fromView:(id)view
 {
   [-[THDocumentViewController view](self "view")];
   v6 = v5;
@@ -1162,7 +1162,7 @@
   return v8 > v10;
 }
 
-- (BOOL)pointIsInRightMargin:(CGPoint)a3 fromView:(id)a4
+- (BOOL)pointIsInRightMargin:(CGPoint)margin fromView:(id)view
 {
   [-[THDocumentViewController view](self "view")];
   v6 = v5;
@@ -1179,47 +1179,47 @@
   return v8 > v12;
 }
 
-- (void)scrub:(id)a3
+- (void)scrub:(id)scrub
 {
-  v4 = [a3 pageNumber];
+  pageNumber = [scrub pageNumber];
   [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] recordOutgoingMajorNavigationJump];
-  [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] setVisibleAbsolutePhysicalPageIndex:v4 - 1];
+  [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] setVisibleAbsolutePhysicalPageIndex:pageNumber - 1];
   [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] recordCurrentLocationInHistory];
-  v5 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v5 updateNavigationAffordances];
+  [(THBookNavigation *)bookNavigationDelegate updateNavigationAffordances];
 }
 
-- (void)p_updateScrubberCheckToolbarState:(BOOL)a3
+- (void)p_updateScrubberCheckToolbarState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   [(BKScrubberControl *)[(THDocumentViewController *)self scrubber] setEnabled:1];
-  if (v3)
+  if (stateCopy)
   {
-    v5 = [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] isToolbarHidden];
-    v6 = [(THDocumentViewController *)self scrubber];
+    isToolbarHidden = [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] isToolbarHidden];
+    scrubber = [(THDocumentViewController *)self scrubber];
 
-    [(BKScrubberControl *)v6 setHidden:v5];
+    [(BKScrubberControl *)scrubber setHidden:isToolbarHidden];
   }
 }
 
-- (void)scrubValueChanged:(id)a3
+- (void)scrubValueChanged:(id)changed
 {
-  v4 = [(BKScrubberControl *)self->_scrubber pageNumber];
+  pageNumber = [(BKScrubberControl *)self->_scrubber pageNumber];
 
-  [(THDocumentViewController *)self _updateScrubberCalloutForPageNumber:v4];
+  [(THDocumentViewController *)self _updateScrubberCalloutForPageNumber:pageNumber];
 }
 
-- (void)_updateScrubberCalloutForPageNumber:(int64_t)a3
+- (void)_updateScrubberCalloutForPageNumber:(int64_t)number
 {
-  if ((a3 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
+  if ((number - 1) <= 0x7FFFFFFFFFFFFFFDLL)
   {
     v5 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
     if (v5)
     {
       v6 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
       [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
-      v8 = [[NSString alloc] initWithFormat:objc_msgSend(THBundle(), "localizedStringForKey:value:table:", @"Page %@", &stru_471858, 0), +[NSNumberFormatter imaxLocalizedUnsignedInteger:usesGroupingSeparator:](NSNumberFormatter, "imaxLocalizedUnsignedInteger:usesGroupingSeparator:", a3, 0)];
+      v8 = [[NSString alloc] initWithFormat:objc_msgSend(THBundle(), "localizedStringForKey:value:table:", @"Page %@", &stru_471858, 0), +[NSNumberFormatter imaxLocalizedUnsignedInteger:usesGroupingSeparator:](NSNumberFormatter, "imaxLocalizedUnsignedInteger:usesGroupingSeparator:", number, 0)];
       if (v6)
       {
         v7 = v6;
@@ -1243,7 +1243,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [+[UIApplication sharedApplication](UIApplication userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [+[UIApplication sharedApplication](UIApplication userInterfaceLayoutDirection];
   [(BKScrubberCalloutView *)[(THDocumentViewController *)self scrubberCallout] sizeThatFits:CGSizeZero.width, CGSizeZero.height];
   v13 = v12;
   v15 = v14;
@@ -1265,14 +1265,14 @@
   rect = v10;
   v51.size.height = v10;
   MinY = CGRectGetMinY(v51);
-  v20 = [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] layout];
+  layout = [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] layout];
   if ([(THDocumentViewController *)self scrubberCalloutFollowsScrollerThumb])
   {
     v47 = MinY;
-    v21 = [(THDocumentViewController *)self view];
+    view = [(THDocumentViewController *)self view];
     [-[BKScrubberControl thumb](self->_scrubber "thumb")];
-    [v21 convertRect:objc_msgSend(-[BKScrubberControl thumb](self->_scrubber fromView:{"thumb"), "superview"), v22, v23, v24, v25}];
-    if (v20 == &dword_0 + 2)
+    [view convertRect:objc_msgSend(-[BKScrubberControl thumb](self->_scrubber fromView:{"thumb"), "superview"), v22, v23, v24, v25}];
+    if (layout == &dword_0 + 2)
     {
       MidY = CGRectGetMidY(*&v26);
       v52.size.height = rect;
@@ -1329,7 +1329,7 @@
     if ([(THDocumentViewController *)self scrubberCalloutFollowsScrollerThumb])
     {
       [(BKScrubberControl *)self->_scrubber frame];
-      if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+      if (userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
       {
         MaxX = CGRectGetMaxX(*&v35);
         v40 = 12.0;
@@ -1376,12 +1376,12 @@
   y = v57.origin.y;
   width = v57.size.width;
   height = v57.size.height;
-  v46 = [(THDocumentViewController *)self scrubberCallout];
+  scrubberCallout = [(THDocumentViewController *)self scrubberCallout];
 
-  [(BKScrubberCalloutView *)v46 setFrame:x, y, width, height];
+  [(BKScrubberCalloutView *)scrubberCallout setFrame:x, y, width, height];
 }
 
-- (void)scrubberTouchDown:(id)a3
+- (void)scrubberTouchDown:(id)down
 {
   [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] userWillInteractInToolbar];
   [(BKScrubberCalloutView *)[(THDocumentViewController *)self scrubberCallout] setFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -1389,29 +1389,29 @@
   [(THDocumentViewController *)self setIsScrubbing:1];
 }
 
-- (void)scrubberTouch:(id)a3 forEvent:(id)a4
+- (void)scrubberTouch:(id)touch forEvent:(id)event
 {
-  v5 = [(BKScrubberControl *)self->_scrubber isTracking:a3];
+  v5 = [(BKScrubberControl *)self->_scrubber isTracking:touch];
 
   [(THDocumentViewController *)self setScrubberCalloutVisible:v5];
 }
 
-- (void)setScrubberCalloutVisible:(BOOL)a3
+- (void)setScrubberCalloutVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = a3;
+  visibleCopy = visible;
+  visibleCopy2 = visible;
   [(BKScrubberCalloutView *)[(THDocumentViewController *)self scrubberCallout] alpha];
-  if (v6 != v5)
+  if (v6 != visibleCopy2)
   {
-    v7 = [(THDocumentViewController *)self scrubberCallout];
-    if (v3)
+    scrubberCallout = [(THDocumentViewController *)self scrubberCallout];
+    if (visibleCopy)
     {
-      [(BKScrubberCalloutView *)v7 setAlpha:1.0];
+      [(BKScrubberCalloutView *)scrubberCallout setAlpha:1.0];
     }
 
     else
     {
-      [(BKScrubberCalloutView *)v7 alpha];
+      [(BKScrubberCalloutView *)scrubberCallout alpha];
       if (v8 == 1.0)
       {
         [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] userDidInteractInToolbar];
@@ -1428,7 +1428,7 @@
     [(THDocumentViewController *)self layoutScrubberCallout];
   }
 
-  if (v3)
+  if (visibleCopy)
   {
     [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] userWillInteractInToolbar];
   }
@@ -1462,15 +1462,15 @@
   }
 
   [(THDocumentViewController *)self setIsRevealingTOC:0];
-  v4 = [(THDocumentViewController *)self p_canOverscroll];
-  [(THOverscrollImageView *)[(THDocumentViewController *)self leftOverscrollView] setHidden:v4 ^ 1];
-  [(THOverscrollImageView *)[(THDocumentViewController *)self rightOverscrollView] setHidden:v4 ^ 1];
+  p_canOverscroll = [(THDocumentViewController *)self p_canOverscroll];
+  [(THOverscrollImageView *)[(THDocumentViewController *)self leftOverscrollView] setHidden:p_canOverscroll ^ 1];
+  [(THOverscrollImageView *)[(THDocumentViewController *)self rightOverscrollView] setHidden:p_canOverscroll ^ 1];
 }
 
-- (void)updateTwoUpForSize:(CGSize)a3
+- (void)updateTwoUpForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   isTwoUp = self->_isTwoUp;
   v7 = ![(THDocumentViewController *)self isEpub]&& [(THBookPropertiesProvider *)[(THDocumentViewController *)self bookPropertiesDelegate] bookIsPaginatedForPortrait]&& width > height && width > 1024.0 && ![(THDocumentViewController *)self th_cachedIsCompactWidth]&& ![(THDocumentViewController *)self th_cachedIsCompactHeight];
   self->_isTwoUp = v7;
@@ -1489,12 +1489,12 @@
   [(THDocumentViewController *)self setTransitioningFromOneUpToTwoUp:v8];
 }
 
-- (void)changeFontSize:(unint64_t)a3
+- (void)changeFontSize:(unint64_t)size
 {
   [(THDocumentViewController *)self setFlowSizeScale:?];
-  v5 = [(THDocumentViewController *)self activeSectionController];
+  activeSectionController = [(THDocumentViewController *)self activeSectionController];
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-  v6 = [(THSectionController *)v5 bodyAnchorForCanvasRect:?];
+  v6 = [(THSectionController *)activeSectionController bodyAnchorForCanvasRect:?];
   [+[THApplicationSettings sharedSettings](THApplicationSettings "sharedSettings")];
   [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] setOverrideFontSize:v7];
   if ([(THDocumentViewController *)self inFlowMode]&& ![(THDocumentViewController *)self isEpub])
@@ -1520,22 +1520,22 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->mTapRecognizer != a3)
+  if (self->mTapRecognizer != recognizer)
   {
     return 1;
   }
 
-  v6 = [a4 view];
-  return v6 == [(THDocumentViewController *)self view];
+  view = [touch view];
+  return view == [(THDocumentViewController *)self view];
 }
 
-- (void)tapGesture:(id)a3
+- (void)tapGesture:(id)gesture
 {
-  if (self->mTapRecognizer == a3 && ([-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")] & 1) == 0 && !self->mOverscrollAnimationInProcess)
+  if (self->mTapRecognizer == gesture && ([-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")] & 1) == 0 && !self->mOverscrollAnimationInProcess)
   {
-    [a3 locationInView:{-[THDocumentViewController view](self, "view")}];
+    [gesture locationInView:{-[THDocumentViewController view](self, "view")}];
     v6 = v5;
     v8 = v7;
     [-[THDocumentViewController view](self "view")];
@@ -1569,33 +1569,33 @@
 
 - (BOOL)canGoToPreviousPage
 {
-  v3 = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
-  if (v3)
+  isPagingEnabled = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
+  if (isPagingEnabled)
   {
-    LOBYTE(v3) = [(THDocumentViewController *)self currentAbsolutePageIndex]!= 0;
+    LOBYTE(isPagingEnabled) = [(THDocumentViewController *)self currentAbsolutePageIndex]!= 0;
   }
 
-  return v3;
+  return isPagingEnabled;
 }
 
 - (BOOL)canGoToNextPage
 {
-  v3 = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
-  if (v3)
+  isPagingEnabled = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
+  if (isPagingEnabled)
   {
     v4 = [(THDocumentViewController *)self currentAbsolutePageIndex]+ 1;
-    LOBYTE(v3) = v4 < [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
+    LOBYTE(isPagingEnabled) = v4 < [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
   }
 
-  return v3;
+  return isPagingEnabled;
 }
 
-- (void)p_animateToNextPage:(BOOL)a3
+- (void)p_animateToNextPage:(BOOL)page
 {
-  v5 = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
-  if (a3)
+  isPagingEnabled = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
+  if (page)
   {
-    if (!v5)
+    if (!isPagingEnabled)
     {
       return;
     }
@@ -1611,7 +1611,7 @@
 
   else
   {
-    if (!v5 || ![(THDocumentViewController *)self currentAbsolutePageIndex])
+    if (!isPagingEnabled || ![(THDocumentViewController *)self currentAbsolutePageIndex])
     {
       return;
     }
@@ -1646,21 +1646,21 @@
 
     else
     {
-      v10 = [(THDocumentViewController *)self interactiveCanvasController];
-      if (a3)
+      interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
+      if (page)
       {
-        [v10 pageRight];
+        [interactiveCanvasController pageRight];
       }
 
       else
       {
-        [v10 pageLeft];
+        [interactiveCanvasController pageLeft];
       }
     }
   }
 }
 
-- (void)p_updateProgressKitForNewNavigationUnit:(id)a3
+- (void)p_updateProgressKitForNewNavigationUnit:(id)unit
 {
   if ([objc_msgSend(objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")])
   {
@@ -1674,20 +1674,20 @@
   }
 }
 
-- (void)p_updateProgessKitSectionInCanvasRect:(CGRect)a3
+- (void)p_updateProgessKitSectionInCanvasRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(THDocumentViewController *)self currentNavigationUnit];
-  v9 = [(THDocumentViewController *)self readingStatisticsDelegate];
-  if ([objc_msgSend(v8 "contentNodes")])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  currentNavigationUnit = [(THDocumentViewController *)self currentNavigationUnit];
+  readingStatisticsDelegate = [(THDocumentViewController *)self readingStatisticsDelegate];
+  if ([objc_msgSend(currentNavigationUnit "contentNodes")])
   {
-    if (v9)
+    if (readingStatisticsDelegate)
     {
-      v10 = [(THDocumentViewController *)self currentPresentationType];
-      v11 = [(THDocumentViewController *)self interactiveCanvasController];
+      currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
+      interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
       dispatchQueue = self->_dispatchQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -1698,16 +1698,16 @@
       *&block[11] = width;
       *&block[12] = height;
       block[4] = self;
-      block[5] = v8;
-      block[6] = v10;
-      block[7] = v11;
-      block[8] = v9;
+      block[5] = currentNavigationUnit;
+      block[6] = currentPresentationType;
+      block[7] = interactiveCanvasController;
+      block[8] = readingStatisticsDelegate;
       dispatch_async(dispatchQueue, block);
     }
   }
 }
 
-- (void)p_getWidgetIDsForInfo:(id)a3 completion:(id)a4
+- (void)p_getWidgetIDsForInfo:(id)info completion:(id)completion
 {
   v7 = [-[THDocumentViewController documentRoot](self "documentRoot")];
   v8 = [objc_msgSend(objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
@@ -1715,23 +1715,23 @@
   if (v9)
   {
     v10 = v9;
-    v11 = [v9 progressKitID];
+    progressKitID = [v9 progressKitID];
     v12 = [v7 contentNodeForGUID:{objc_msgSend(v10, "progressKitSectionID")}];
   }
 
   else
   {
-    v11 = [-[THDocumentViewController currentContentNode](self "currentContentNode")];
-    v13 = [(THDocumentViewController *)self inPaginatedMode];
-    v14 = [(THDocumentViewController *)self interactiveCanvasController];
-    if (v13)
+    progressKitID = [-[THDocumentViewController currentContentNode](self "currentContentNode")];
+    inPaginatedMode = [(THDocumentViewController *)self inPaginatedMode];
+    interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
+    if (inPaginatedMode)
     {
-      [v14 visibleUnscaledRect];
+      [interactiveCanvasController visibleUnscaledRect];
     }
 
     else
     {
-      [v14 visibleUnscaledRectForContent];
+      [interactiveCanvasController visibleUnscaledRectForContent];
     }
 
     TSDRoundedRect();
@@ -1739,32 +1739,32 @@
     [v12 nodeGUID];
   }
 
-  v19 = [v12 title];
+  title = [v12 title];
   v20 = [v7 navigationUnitContainingContentNode:v12];
   v21 = [v7 uniqueIdentifierForNavigationUnit:v20];
   v22 = [v7 parentTitleForNavigationUnit:v20];
-  v23 = *(a4 + 2);
+  v23 = *(completion + 2);
 
-  v23(a4, v8, v21, v22, 0, v19, v11);
+  v23(completion, v8, v21, v22, 0, title, progressKitID);
 }
 
-- (void)p_activateProgressForRep:(id)a3
+- (void)p_activateProgressForRep:(id)rep
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_D8C4;
   v3[3] = &unk_45AF48;
-  v3[4] = a3;
+  v3[4] = rep;
   v3[5] = self;
-  -[THDocumentViewController p_getWidgetIDsForInfo:completion:](self, "p_getWidgetIDsForInfo:completion:", [a3 info], v3);
+  -[THDocumentViewController p_getWidgetIDsForInfo:completion:](self, "p_getWidgetIDsForInfo:completion:", [rep info], v3);
 }
 
-- (void)p_deactivateProgressForRep:(id)a3
+- (void)p_deactivateProgressForRep:(id)rep
 {
-  v3 = [objc_msgSend(objc_msgSend(-[THDocumentViewController documentRoot](self documentRoot];
+  documentRoot = [objc_msgSend(objc_msgSend(-[THDocumentViewController documentRoot](self documentRoot];
   v4 = +[BCProgressKitController sharedController];
 
-  [v4 deactivateCurrentWidgetForBook:v3 completion:0];
+  [v4 deactivateCurrentWidgetForBook:documentRoot completion:0];
 }
 
 - (void)p_buildContextTree
@@ -1785,40 +1785,40 @@
   }
 }
 
-- (void)paginationController:(id)a3 paginationResultChanged:(id)a4 forContentNode:(id)a5 paginationProgress:(double)a6 paginationComplete:(BOOL)a7
+- (void)paginationController:(id)controller paginationResultChanged:(id)changed forContentNode:(id)node paginationProgress:(double)progress paginationComplete:(BOOL)complete
 {
-  v7 = a7;
-  if (-[THPresentationType isEqualIncludingSize:](-[THSectionController presentationType](-[THDocumentViewController paginatedSectionController](self, "paginatedSectionController", a3, a4, a5), "presentationType"), "isEqualIncludingSize:", [a4 presentationType]))
+  completeCopy = complete;
+  if (-[THPresentationType isEqualIncludingSize:](-[THSectionController presentationType](-[THDocumentViewController paginatedSectionController](self, "paginatedSectionController", controller, changed, node), "presentationType"), "isEqualIncludingSize:", [changed presentationType]))
   {
-    [(BKScrubberControl *)[(THDocumentViewController *)self scrubber] setProgress:a6];
+    [(BKScrubberControl *)[(THDocumentViewController *)self scrubber] setProgress:progress];
     [(THDocumentViewController *)self p_updatePageNumberingForce:0];
-    if (!v7)
+    if (!completeCopy)
     {
       if (![(THDocumentViewController *)self inFlowMode])
       {
-        v10 = [(THDocumentViewController *)self scrubber];
+        scrubber = [(THDocumentViewController *)self scrubber];
 
-        [(BKScrubberControl *)v10 setHidden:0];
+        [(BKScrubberControl *)scrubber setHidden:0];
       }
 
       return;
     }
   }
 
-  else if (!v7)
+  else if (!completeCopy)
   {
     return;
   }
 
-  v11 = [(THDocumentViewController *)self paginationDelegate];
+  paginationDelegate = [(THDocumentViewController *)self paginationDelegate];
 
-  [(THPaginationStatusDelegate *)v11 paginationDidComplete];
+  [(THPaginationStatusDelegate *)paginationDelegate paginationDidComplete];
 }
 
-- (void)paginationController:(id)a3 paginationCompleteStateChangedTo:(BOOL)a4
+- (void)paginationController:(id)controller paginationCompleteStateChangedTo:(BOOL)to
 {
-  v4 = a4;
-  if (a4)
+  toCopy = to;
+  if (to)
   {
     [(THDocumentLinkResolver *)[(THDocumentViewController *)self documentLinkResolver] updatePaginationResults];
     [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
@@ -1831,13 +1831,13 @@
     dispatch_after(v6, &_dispatch_main_q, block);
   }
 
-  [(THPaginationStatusDelegate *)[(THDocumentViewController *)self paginationDelegate] documentViewController:self didChangePaginationStatus:!v4];
+  [(THPaginationStatusDelegate *)[(THDocumentViewController *)self paginationDelegate] documentViewController:self didChangePaginationStatus:!toCopy];
   [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] updateNavigationAffordances];
 }
 
-- (CGSize)pageSizeForPresentationType:(id)a3
+- (CGSize)pageSizeForPresentationType:(id)type
 {
-  if (-[THDocumentViewController isEpub](self, "isEpub") || [a3 isFlow] && -[THDocumentViewController p_isCompactFlowPresentationForSectionController:](self, "p_isCompactFlowPresentationForSectionController:", -[THDocumentViewController flowSectionController](self, "flowSectionController")))
+  if (-[THDocumentViewController isEpub](self, "isEpub") || [type isFlow] && -[THDocumentViewController p_isCompactFlowPresentationForSectionController:](self, "p_isCompactFlowPresentationForSectionController:", -[THDocumentViewController flowSectionController](self, "flowSectionController")))
   {
 
     [(THDocumentViewController *)self p_maxScrollViewSize];
@@ -1845,18 +1845,18 @@
 
   else
   {
-    if ([a3 isPaginated])
+    if ([type isPaginated])
     {
-      v7 = [(THDocumentViewController *)self paginatedSectionController];
+      paginatedSectionController = [(THDocumentViewController *)self paginatedSectionController];
 LABEL_11:
 
-      [(THSectionController *)v7 pageSize];
+      [(THSectionController *)paginatedSectionController pageSize];
       goto __THDocumentViewController_pageSizeForPresentationType__;
     }
 
     if ([(THDocumentViewController *)self activeSectionController])
     {
-      v7 = [(THDocumentViewController *)self activeSectionController];
+      paginatedSectionController = [(THDocumentViewController *)self activeSectionController];
       goto LABEL_11;
     }
 
@@ -1865,7 +1865,7 @@ LABEL_11:
     [THPagePositionController fixedPageSizeForLandscapeOrientation:v8 > v9];
   }
 
-- (unint64_t)fontSizeForPresentationType:(id)a3
+- (unint64_t)fontSizeForPresentationType:(id)type
 {
   if (![(THDocumentViewController *)self isEpub])
   {
@@ -1875,23 +1875,23 @@ LABEL_11:
   return [(THDocumentViewController *)self flowSizeScale];
 }
 
-- (int64_t)columnCountForPresentationType:(id)a3
+- (int64_t)columnCountForPresentationType:(id)type
 {
   if (![(THDocumentViewController *)self isEpub])
   {
     return 0;
   }
 
-  v4 = [(THDocumentViewController *)self configuration];
+  configuration = [(THDocumentViewController *)self configuration];
 
-  return [(THDocumentReflowableLayoutConfiguration *)v4 columnCount];
+  return [(THDocumentReflowableLayoutConfiguration *)configuration columnCount];
 }
 
-- (double)gutterWidthForPresentationType:(id)a3
+- (double)gutterWidthForPresentationType:(id)type
 {
-  v4 = [(THDocumentViewController *)self isEpub];
+  isEpub = [(THDocumentViewController *)self isEpub];
   result = 0.0;
-  if (v4)
+  if (isEpub)
   {
     [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] gutterWidth];
     v7 = v6;
@@ -1902,7 +1902,7 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)contentInsetsForPresentationType:(id)a3
+- (UIEdgeInsets)contentInsetsForPresentationType:(id)type
 {
   v5 = TSDEdgeInsetsZero[0];
   v4 = TSDEdgeInsetsZero[1];
@@ -1910,12 +1910,12 @@ LABEL_11:
   v7 = TSDEdgeInsetsZero[3];
   if ([(THDocumentViewController *)self isEpub])
   {
-    v8 = [(THDocumentViewController *)self configuration];
-    v9 = [(THDocumentReflowableLayoutConfiguration *)v8 environment];
-    [(THDocumentReflowableLayoutConfiguration *)v8 contentInsets];
-    [v9 safeAreaInsets];
+    configuration = [(THDocumentViewController *)self configuration];
+    environment = [(THDocumentReflowableLayoutConfiguration *)configuration environment];
+    [(THDocumentReflowableLayoutConfiguration *)configuration contentInsets];
+    [environment safeAreaInsets];
     UIEdgeInsetsAdd();
-    [v9 safeAreaInsets];
+    [environment safeAreaInsets];
     UIEdgeInsetsSubtract();
     v4 = v10;
     v6 = v11;
@@ -1945,9 +1945,9 @@ LABEL_11:
 {
   if ([(THDocumentViewController *)self paginatedSectionController])
   {
-    v3 = [(THDocumentViewController *)self paginatedSectionController];
+    paginatedSectionController = [(THDocumentViewController *)self paginatedSectionController];
 
-    [(THSectionController *)v3 pageSize];
+    [(THSectionController *)paginatedSectionController pageSize];
   }
 
   else
@@ -1967,9 +1967,9 @@ LABEL_11:
   [(THDocumentViewController *)self paginatedPageSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(THDocumentViewController *)self isTwoUp];
+  isTwoUp = [(THDocumentViewController *)self isTwoUp];
   v8 = v4 + v4;
-  if (!v7)
+  if (!isTwoUp)
   {
     v8 = v4;
   }
@@ -1982,9 +1982,9 @@ LABEL_11:
 
 - (CGSize)p_currentPageSize
 {
-  v2 = [(THDocumentViewController *)self activeSectionController];
+  activeSectionController = [(THDocumentViewController *)self activeSectionController];
 
-  [(THSectionController *)v2 pageSize];
+  [(THSectionController *)activeSectionController pageSize];
   result.height = v4;
   result.width = v3;
   return result;
@@ -1994,20 +1994,20 @@ LABEL_11:
 {
   if ([(THDocumentViewController *)self activeSectionController])
   {
-    v3 = [(THDocumentViewController *)self activeSectionController];
+    activeSectionController = [(THDocumentViewController *)self activeSectionController];
   }
 
   else
   {
-    v3 = [(THDocumentViewController *)self currentPresentationType];
+    activeSectionController = [(THDocumentViewController *)self currentPresentationType];
   }
 
-  [(THSectionController *)v3 pageSize];
+  [(THSectionController *)activeSectionController pageSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(THDocumentViewController *)self isTwoUp];
+  isTwoUp = [(THDocumentViewController *)self isTwoUp];
   v9 = v5 + v5;
-  if (!v8)
+  if (!isTwoUp)
   {
     v9 = v5;
   }
@@ -2053,9 +2053,9 @@ LABEL_11:
   return result;
 }
 
-- (void)p_updatePresentationTypeAnimated:(BOOL)a3
+- (void)p_updatePresentationTypeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = objc_autoreleasePoolPush();
   [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] invalidate];
   [(THDocumentViewController *)self configuration];
@@ -2067,9 +2067,9 @@ LABEL_11:
   {
     if (![(THDocumentViewController *)self lastStorageAnchor])
     {
-      v10 = [(THDocumentViewController *)self activeSectionController];
+      activeSectionController = [(THDocumentViewController *)self activeSectionController];
       [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-      [(THDocumentViewController *)self setLastStorageAnchor:[(THSectionController *)v10 bodyAnchorForCanvasRect:?]];
+      [(THDocumentViewController *)self setLastStorageAnchor:[(THSectionController *)activeSectionController bodyAnchorForCanvasRect:?]];
     }
 
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
@@ -2124,7 +2124,7 @@ LABEL_11:
     }
 
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-    if (v3)
+    if (animatedCopy)
     {
       v29 = +[CATransition animation];
       [v29 setType:kCATransitionFade];
@@ -2136,14 +2136,14 @@ LABEL_11:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)p_layoutCanvasForSize:(CGSize)a3 duration:(double)a4 forceBackgroundLayout:(BOOL)a5
+- (void)p_layoutCanvasForSize:(CGSize)size duration:(double)duration forceBackgroundLayout:(BOOL)layout
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  layoutCopy = layout;
+  height = size.height;
+  width = size.width;
   self->mDisableContentOffsetClamping = 1;
-  v10 = [(THDocumentViewController *)self activeSectionController];
-  if (v10 == [(THDocumentViewController *)self selectedSectionController])
+  activeSectionController = [(THDocumentViewController *)self activeSectionController];
+  if (activeSectionController == [(THDocumentViewController *)self selectedSectionController])
   {
 LABEL_28:
     [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] viewsDidResize];
@@ -2152,19 +2152,19 @@ LABEL_28:
   }
 
   [(THDocumentViewController *)self setPreventVisibleInfoUpdates:1];
-  v11 = [(THDocumentViewController *)self orientationAnchor];
-  if (v11)
+  orientationAnchor = [(THDocumentViewController *)self orientationAnchor];
+  if (orientationAnchor)
   {
-    v12 = v11;
-    v13 = v11;
+    storageAnchorForCurrentPage = orientationAnchor;
+    v13 = orientationAnchor;
   }
 
   else
   {
-    v12 = [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] storageAnchorForCurrentPage];
+    storageAnchorForCurrentPage = [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] storageAnchorForCurrentPage];
   }
 
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     v14 = 0;
   }
@@ -2173,7 +2173,7 @@ LABEL_28:
   {
     v14 = +[CATransition animation];
     [v14 setType:kCATransitionFade];
-    [v14 setDuration:a4];
+    [v14 setDuration:duration];
   }
 
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
@@ -2184,19 +2184,19 @@ LABEL_28:
     [(THDocumentViewController *)self p_removeCanvasTransform];
   }
 
-  [(THDocumentViewController *)self p_setActiveSectionControllerDeferVantageDidChange:a4 > 0.0];
+  [(THDocumentViewController *)self p_setActiveSectionControllerDeferVantageDidChange:duration > 0.0];
   if ([(THDocumentViewController *)self activeSectionController])
   {
-    v15 = [(THDocumentViewController *)self currentPresentationType];
+    currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
     v16 = +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", [-[THDocumentViewController documentRoot](self "documentRoot")]);
-    if ([(THDocumentViewController *)self showingExpandedWidgetView]&& [(THPresentationType *)v15 isEqual:v16])
+    if ([(THDocumentViewController *)self showingExpandedWidgetView]&& [(THPresentationType *)currentPresentationType isEqual:v16])
     {
-      v17 = [(THDocumentViewController *)self p_canvasInfoForExpandedInfo:[(THWExpandedViewController *)[(THDocumentViewController *)self expandedViewController] expandedInfo] presentationType:v15];
-      v18 = [(THDocumentViewController *)self p_contentNodeForInfo:v17 presentationType:v15];
-      v19 = [(THModelContentNode *)v18 relativePageIndexForInfo:v17 forPresentationType:v15];
+      v17 = [(THDocumentViewController *)self p_canvasInfoForExpandedInfo:[(THWExpandedViewController *)[(THDocumentViewController *)self expandedViewController] expandedInfo] presentationType:currentPresentationType];
+      v18 = [(THDocumentViewController *)self p_contentNodeForInfo:v17 presentationType:currentPresentationType];
+      v19 = [(THModelContentNode *)v18 relativePageIndexForInfo:v17 forPresentationType:currentPresentationType];
       v20 = [-[THDocumentViewController documentRoot](self "documentRoot")];
       v21 = v19;
-      v22 = v18;
+      contentNode = v18;
     }
 
     else
@@ -2205,9 +2205,9 @@ LABEL_28:
       v23 = TSUDynamicCast();
       objc_opt_class();
       v24 = TSUDynamicCast();
-      v25 = [(THPresentationType *)v15 isFlow];
+      isFlow = [(THPresentationType *)currentPresentationType isFlow];
       v26 = 0;
-      if (v25 && v24)
+      if (isFlow && v24)
       {
         v26 = [v24 range] == 0;
       }
@@ -2224,25 +2224,25 @@ LABEL_22:
         [(THDocumentViewController *)self p_setUnscaledCanvasRect:v32, v33, v34, v35];
         [(THDocumentViewController *)self setVisibleRelativePageRange:NSInvalidRange[0], NSInvalidRange[1]];
         [(THDocumentViewController *)self p_updateVisibleInfos];
-        v36 = [(THDocumentViewController *)self interactiveCanvasController];
-        if (v5)
+        interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
+        if (layoutCopy)
         {
-          [v36 popThreadedLayoutAndRenderDisabled];
+          [interactiveCanvasController popThreadedLayoutAndRenderDisabled];
           [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
         }
 
         else
         {
-          [v36 layoutIfNeeded];
+          [interactiveCanvasController layoutIfNeeded];
           [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
         }
 
         [(THDocumentViewController *)self p_updateNavigationOverlayContainerFrame];
         [(THDocumentViewController *)self p_updatePageNumberViewPositionsForSize:width, height];
-        if (a4 > 0.0)
+        if (duration > 0.0)
         {
           +[CATransaction begin];
-          [CATransaction setAnimationDuration:a4];
+          [CATransaction setAnimationDuration:duration];
           v37[0] = _NSConcreteStackBlock;
           v37[1] = 3221225472;
           v37[2] = sub_ED24;
@@ -2253,17 +2253,17 @@ LABEL_22:
           +[CATransaction commit];
         }
 
-        [(THDocumentViewController *)self setOrientationAnchor:v12];
+        [(THDocumentViewController *)self setOrientationAnchor:storageAnchorForCurrentPage];
         goto LABEL_28;
       }
 
       v31 = [-[THDocumentViewController documentRoot](self "documentRoot")];
-      v22 = [(THModelBoundAnchor *)v12 contentNode];
+      contentNode = [(THModelBoundAnchor *)storageAnchorForCurrentPage contentNode];
       v20 = v31;
       v21 = 0;
     }
 
-    -[THSectionController canvasRectForRelativePageIndex:](-[THDocumentViewController activeSectionController](self, "activeSectionController"), "canvasRectForRelativePageIndex:", [v20 navigationUnitRelativePageIndexForContentNodeRelativePageIndex:v21 inContentNode:v22 forPresentationType:v15]);
+    -[THSectionController canvasRectForRelativePageIndex:](-[THDocumentViewController activeSectionController](self, "activeSectionController"), "canvasRectForRelativePageIndex:", [v20 navigationUnitRelativePageIndexForContentNodeRelativePageIndex:v21 inContentNode:contentNode forPresentationType:currentPresentationType]);
     goto LABEL_22;
   }
 }
@@ -2314,7 +2314,7 @@ LABEL_5:
 - (BOOL)p_updateScrollViewClipsToBounds
 {
   v3 = OBJC_IVAR___TSADocumentViewController__scrollView;
-  v4 = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] clipsToBounds];
+  clipsToBounds = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] clipsToBounds];
   if ([(THDocumentViewController *)self p_allowsPinchZoom])
   {
     v5 = 0;
@@ -2326,15 +2326,15 @@ LABEL_5:
   }
 
   [*&self->TSADocumentViewController_opaque[v3] setClipsToBounds:v5];
-  return v4 ^ v5;
+  return clipsToBounds ^ v5;
 }
 
-- (CGRect)p_contentFrameFrameForSize:(CGSize)a3
+- (CGRect)p_contentFrameFrameForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   remainder.origin = CGPointZero;
-  remainder.size = a3;
+  remainder.size = size;
   [(THDocumentViewController *)self viewHeaderHeight];
   if (v6 > 0.0)
   {
@@ -2379,9 +2379,9 @@ LABEL_5:
   return result;
 }
 
-- (void)p_adjustContentViewFrameForSize:(CGSize)a3
+- (void)p_adjustContentViewFrameForSize:(CGSize)size
 {
-  [(THDocumentViewController *)self p_contentFrameFrameForSize:a3.width, a3.height];
+  [(THDocumentViewController *)self p_contentFrameFrameForSize:size.width, size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2407,16 +2407,16 @@ LABEL_5:
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   if (v11 != v14 && [(THDocumentViewController *)self shouldAutoscrollToSelectionOnContentViewSizeChange]&& v11 < v14)
   {
-    v19 = [(THDocumentViewController *)self interactiveCanvasController];
+    interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-    [v19 setShouldAutoscrollToSelectionAfterLayout:1];
+    [interactiveCanvasController setShouldAutoscrollToSelectionAfterLayout:1];
   }
 }
 
-- (void)p_updateScrollViewForSize:(CGSize)a3
+- (void)p_updateScrollViewForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = *&CGAffineTransformIdentity.c;
   v40[0] = *&CGAffineTransformIdentity.a;
   v40[1] = v6;
@@ -2509,15 +2509,15 @@ LABEL_5:
   {
     if ([(THDocumentViewController *)self lastAbsolutePageIndex]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = [(THDocumentViewController *)self currentAbsolutePageIndex];
+      currentAbsolutePageIndex = [(THDocumentViewController *)self currentAbsolutePageIndex];
     }
 
     else
     {
-      v12 = [(THDocumentViewController *)self lastAbsolutePageIndex];
+      currentAbsolutePageIndex = [(THDocumentViewController *)self lastAbsolutePageIndex];
     }
 
-    v14 = v12;
+    v14 = currentAbsolutePageIndex;
     [(THDocumentViewController *)self setLastAbsolutePageIndex:0x7FFFFFFFFFFFFFFFLL];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -2525,9 +2525,9 @@ LABEL_5:
     }
 
 LABEL_21:
-    v15 = [(THDocumentViewController *)self documentNavigator];
+    documentNavigator = [(THDocumentViewController *)self documentNavigator];
 
-    [(THDocumentNavigator *)v15 setVisibleAbsolutePhysicalPageIndex:v14];
+    [(THDocumentNavigator *)documentNavigator setVisibleAbsolutePhysicalPageIndex:v14];
     return;
   }
 
@@ -2590,7 +2590,7 @@ LABEL_5:
       v26 = 0;
       v8 = [v7 bodyStorageForPresentationType:v21];
       v9 = objc_opt_class();
-      v10 = [v8 range];
+      range = [v8 range];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_F7E4;
@@ -2599,7 +2599,7 @@ LABEL_5:
       v22[5] = self;
       v22[6] = v7;
       v22[7] = &v23;
-      [v8 enumerateAttachmentsOfClass:v9 inTextRange:v10 usingBlock:{v11, v22}];
+      [v8 enumerateAttachmentsOfClass:v9 inTextRange:range usingBlock:{v11, v22}];
       LOBYTE(v7) = *(v24 + 24);
       _Block_object_dispose(&v23, 8);
       if (v7)
@@ -2621,21 +2621,21 @@ LABEL_5:
   }
 }
 
-- (void)p_resizeViewsForSize:(CGSize)a3 duration:(double)a4 maintainPageIndex:(BOOL)a5
+- (void)p_resizeViewsForSize:(CGSize)size duration:(double)duration maintainPageIndex:(BOOL)index
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  indexCopy = index;
+  height = size.height;
+  width = size.width;
   [(THDocumentViewController *)self updateTwoUpForSize:?];
   [(THDocumentViewController *)self p_releaseOverscrollViews];
-  [(THDocumentViewController *)self p_layoutCanvasForSize:0 duration:width forceBackgroundLayout:height, a4];
+  [(THDocumentViewController *)self p_layoutCanvasForSize:0 duration:width forceBackgroundLayout:height, duration];
   [(THDocumentViewController *)self p_dismissActiveAnimated:1];
   [(THDocumentViewController *)self p_setupPageNumberViews];
   [(THDocumentViewController *)self p_setupNavOverlayContainer];
   [(THDocumentViewController *)self p_updateScrollViewAndZoomSettingsForSize:width, height];
   [(THDocumentViewController *)self zoomOutAnimated:0];
   [(THDocumentViewController *)self p_updatePageNumberingForce:1];
-  if (v5)
+  if (indexCopy)
   {
     [(THDocumentViewController *)self p_ensureVisibleAbsolutePhysicalPageIndexFromFullscreen];
   }
@@ -2643,7 +2643,7 @@ LABEL_5:
   [(THDocumentViewController *)self p_setupOverscrollViews];
 }
 
-- (void)p_dismissActiveAnimated:(BOOL)a3
+- (void)p_dismissActiveAnimated:(BOOL)animated
 {
   if ([(TSWPopoverController *)self->mPopUpPopoverController shouldDismissWhileRotating:self->mIsRotating])
   {
@@ -2653,26 +2653,26 @@ LABEL_5:
   objc_opt_class();
   [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   [TSUDynamicCast() dismissActivePopovers];
-  v4 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v4 endEditing];
+  [interactiveCanvasController endEditing];
 }
 
 - (id)currentNavigationUnit
 {
-  v2 = [(THDocumentViewController *)self activeSectionController];
+  activeSectionController = [(THDocumentViewController *)self activeSectionController];
 
-  return [(THSectionController *)v2 currentNavigationUnit];
+  return [(THSectionController *)activeSectionController currentNavigationUnit];
 }
 
-- (void)setCurrentNavigationUnit:(id)a3
+- (void)setCurrentNavigationUnit:(id)unit
 {
-  if ([(THDocumentViewController *)self currentNavigationUnit]!= a3)
+  if ([(THDocumentViewController *)self currentNavigationUnit]!= unit)
   {
     [(THDocumentViewController *)self p_releaseOverscrollViews];
     [(THDocumentViewController *)self p_clearCanvas];
-    [(THSectionController *)[(THDocumentViewController *)self paginatedSectionController] setCurrentNavigationUnit:a3];
-    [(THSectionController *)[(THDocumentViewController *)self flowSectionController] setCurrentNavigationUnit:a3];
+    [(THSectionController *)[(THDocumentViewController *)self paginatedSectionController] setCurrentNavigationUnit:unit];
+    [(THSectionController *)[(THDocumentViewController *)self flowSectionController] setCurrentNavigationUnit:unit];
     if (![(THDocumentViewController *)self isEpub])
     {
       -[THToolbarDelegate setCenterTitle:](-[THDocumentViewController toolbarDelegate](self, "toolbarDelegate"), "setCenterTitle:", [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")]);
@@ -2688,58 +2688,58 @@ LABEL_5:
       [(THDocumentViewController *)self p_windowOrViewSize];
       [(THDocumentViewController *)self p_updateScrollViewAndZoomSettingsForSize:?];
       [(THDocumentViewController *)self zoomOutAnimated:0];
-      [(THDocumentViewController *)self navigationUnitDidChange:a3];
-      [(THDocumentViewController *)self p_updateProgressKitForNewNavigationUnit:a3];
+      [(THDocumentViewController *)self navigationUnitDidChange:unit];
+      [(THDocumentViewController *)self p_updateProgressKitForNewNavigationUnit:unit];
 
       [(THDocumentViewController *)self p_setupOverscrollViews];
     }
   }
 }
 
-- (void)setCurrentNavigationUnit:(id)a3 withRelativePageIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)setCurrentNavigationUnit:(id)unit withRelativePageIndex:(unint64_t)index animated:(BOOL)animated
 {
-  [(THDocumentViewController *)self setCurrentNavigationUnit:a3, a4, a5];
-  [(THSectionController *)[(THDocumentViewController *)self activeSectionController] canvasRectForRelativePageIndex:a4];
+  [(THDocumentViewController *)self setCurrentNavigationUnit:unit, index, animated];
+  [(THSectionController *)[(THDocumentViewController *)self activeSectionController] canvasRectForRelativePageIndex:index];
   [(THDocumentViewController *)self p_setUnscaledCanvasRect:?];
-  v7 = [(THDocumentViewController *)self documentNavigator];
+  documentNavigator = [(THDocumentViewController *)self documentNavigator];
 
-  [(THDocumentNavigator *)v7 setVisitedPagesAfterOpening:1];
+  [(THDocumentNavigator *)documentNavigator setVisitedPagesAfterOpening:1];
 }
 
-- (void)navigationUnitDidChange:(id)a3
+- (void)navigationUnitDidChange:(id)change
 {
-  [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] navigationUnitDidChange:a3];
-  v4 = [(THDocumentViewController *)self documentNavigator];
+  [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] navigationUnitDidChange:change];
+  documentNavigator = [(THDocumentViewController *)self documentNavigator];
 
-  [(THDocumentNavigator *)v4 setVisitedPagesAfterOpening:1];
+  [(THDocumentNavigator *)documentNavigator setVisitedPagesAfterOpening:1];
 }
 
 - (void)recordOutgoingMajorNavigationJump
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v2 recordOutgoingMajorNavigationJump];
+  [(THBookNavigation *)bookNavigationDelegate recordOutgoingMajorNavigationJump];
 }
 
 - (void)viewsDidResize
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v2 viewsDidResize];
+  [(THBookNavigation *)bookNavigationDelegate viewsDidResize];
 }
 
 - (void)recordCurrentLocationInHistory
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v2 recordCurrentLocationInHistory];
+  [(THBookNavigation *)bookNavigationDelegate recordCurrentLocationInHistory];
 }
 
 - (void)updateNavigationAffordances
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v2 updateNavigationAffordances];
+  [(THBookNavigation *)bookNavigationDelegate updateNavigationAffordances];
 }
 
 - (unint64_t)currentChapter
@@ -2756,9 +2756,9 @@ LABEL_5:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(THDocumentViewController *)self currentNavigationUnit];
+  currentNavigationUnit = [(THDocumentViewController *)self currentNavigationUnit];
 
-  return [v4 indexOfObjectIdenticalTo:v5];
+  return [v4 indexOfObjectIdenticalTo:currentNavigationUnit];
 }
 
 - (unint64_t)currentLesson
@@ -2769,9 +2769,9 @@ LABEL_5:
   }
 
   v3 = [-[THDocumentViewController currentNavigationUnit](self "currentNavigationUnit")];
-  v4 = [(THDocumentViewController *)self currentContentNode];
+  currentContentNode = [(THDocumentViewController *)self currentContentNode];
 
-  return [v3 indexOfObjectIdenticalTo:v4];
+  return [v3 indexOfObjectIdenticalTo:currentContentNode];
 }
 
 - (unint64_t)currentTOCLessonIndex
@@ -2795,8 +2795,8 @@ LABEL_5:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [-[THDocumentViewController currentNavigationUnit](self currentNavigationUnit];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  currentNavigationUnit = [-[THDocumentViewController currentNavigationUnit](self currentNavigationUnit];
+  v4 = [currentNavigationUnit countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v4)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -2813,7 +2813,7 @@ LABEL_6:
   {
     if (*v13 != v7)
     {
-      objc_enumerationMutation(v3);
+      objc_enumerationMutation(currentNavigationUnit);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v8);
@@ -2825,7 +2825,7 @@ LABEL_6:
     ++v9;
     if (v5 == ++v8)
     {
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [currentNavigationUnit countByEnumeratingWithState:&v12 objects:v16 count:16];
       v9 = 0x7FFFFFFFFFFFFFFFLL;
       if (v5)
       {
@@ -2839,9 +2839,9 @@ LABEL_6:
 
 - (CGRect)canvasPreviewFrameForDocumentManager
 {
-  v2 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v2 visibleUnscaledRect];
+  [interactiveCanvasController visibleUnscaledRect];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2851,46 +2851,46 @@ LABEL_6:
 
 - (BOOL)inFlowMode
 {
-  v2 = [(THDocumentViewController *)self currentPresentationType];
+  currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
 
-  return [(THPresentationType *)v2 isFlow];
+  return [(THPresentationType *)currentPresentationType isFlow];
 }
 
 - (BOOL)inPaginatedMode
 {
-  v2 = [(THDocumentViewController *)self currentPresentationType];
+  currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
 
-  return [(THPresentationType *)v2 isPaginated];
+  return [(THPresentationType *)currentPresentationType isPaginated];
 }
 
 - (BOOL)shouldPagingBeEnabled
 {
   v3 = [-[THDocumentViewController canvasViewController](self "canvasViewController")];
-  v4 = [(THDocumentViewController *)self inPaginatedMode];
-  if (v4)
+  inPaginatedMode = [(THDocumentViewController *)self inPaginatedMode];
+  if (inPaginatedMode)
   {
     if ([v3 allowsPinchZoom])
     {
       [v3 viewScale];
       v6 = v5;
       [v3 minimumPinchViewScale];
-      LOBYTE(v4) = vabdd_f64(v6, v7) < 0.00999999978;
+      LOBYTE(inPaginatedMode) = vabdd_f64(v6, v7) < 0.00999999978;
     }
 
     else
     {
-      LOBYTE(v4) = 1;
+      LOBYTE(inPaginatedMode) = 1;
     }
   }
 
-  return v4;
+  return inPaginatedMode;
 }
 
 - (double)currentViewScale
 {
-  v2 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v2 viewScale];
+  [interactiveCanvasController viewScale];
   return result;
 }
 
@@ -2941,11 +2941,11 @@ LABEL_6:
   }
 }
 
-- (void)setPerformanceModeBookOpening:(BOOL)a3
+- (void)setPerformanceModeBookOpening:(BOOL)opening
 {
-  if (self->_performanceModeBookOpening != a3)
+  if (self->_performanceModeBookOpening != opening)
   {
-    self->_performanceModeBookOpening = a3;
+    self->_performanceModeBookOpening = opening;
     [(THDocumentViewController *)self p_performanceModeUpdated];
   }
 }
@@ -2956,8 +2956,8 @@ LABEL_6:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  interactiveCanvasController = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
+  v4 = [interactiveCanvasController countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2968,13 +2968,13 @@ LABEL_6:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(interactiveCanvasController);
         }
 
         [*(*(&v8 + 1) + 8 * i) recursivelyPerformSelector:"performanceModeChanged"];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [interactiveCanvasController countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -2984,34 +2984,34 @@ LABEL_6:
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
   v9.receiver = self;
   v9.super_class = THDocumentViewController;
   [(THDocumentViewController *)&v9 validateCommand:?];
-  v5 = [a3 action];
-  if (sel_isEqual(v5, "books_toggleContinuousScroll:"))
+  action = [command action];
+  if (sel_isEqual(action, "books_toggleContinuousScroll:"))
   {
-    v6 = [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] isScroll];
+    isScroll = [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] isScroll];
 LABEL_5:
-    [a3 setState:v6];
+    [command setState:isScroll];
     return;
   }
 
-  if (sel_isEqual(v5, "books_disableContinuousScroll:"))
+  if (sel_isEqual(action, "books_disableContinuousScroll:"))
   {
-    v6 = [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] isScroll]^ 1;
+    isScroll = [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] isScroll]^ 1;
     goto LABEL_5;
   }
 
-  if (sel_isEqual(v5, "books_enableContinuousScroll:"))
+  if (sel_isEqual(action, "books_enableContinuousScroll:"))
   {
-    [a3 setState:{-[THDocumentReflowableLayoutConfiguration isScroll](-[THDocumentViewController configuration](self, "configuration"), "isScroll")}];
+    [command setState:{-[THDocumentReflowableLayoutConfiguration isScroll](-[THDocumentViewController configuration](self, "configuration"), "isScroll")}];
     v7 = THBundle();
     v8 = @"Vertical Scrolling";
   }
 
-  else if (sel_isEqual(v5, "books_chapterLeft:"))
+  else if (sel_isEqual(action, "books_chapterLeft:"))
   {
     v7 = THBundle();
     v8 = @"Previous Chapter";
@@ -3019,7 +3019,7 @@ LABEL_5:
 
   else
   {
-    if (!sel_isEqual(v5, "books_chapterRight:"))
+    if (!sel_isEqual(action, "books_chapterRight:"))
     {
       return;
     }
@@ -3028,15 +3028,15 @@ LABEL_5:
     v8 = @"Next Chapter";
   }
 
-  [a3 setTitle:{objc_msgSend(v7, "localizedStringForKey:value:table:", v8, &stru_471858, 0)}];
+  [command setTitle:{objc_msgSend(v7, "localizedStringForKey:value:table:", v8, &stru_471858, 0)}];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v9.receiver = self;
   v9.super_class = THDocumentViewController;
-  v6 = [(THDocumentViewController *)&v9 canPerformAction:a3 withSender:a4];
-  if (sel_isEqual(a3, "copy:"))
+  v6 = [(THDocumentViewController *)&v9 canPerformAction:action withSender:sender];
+  if (sel_isEqual(action, "copy:"))
   {
     if (v6)
     {
@@ -3046,7 +3046,7 @@ LABEL_5:
     return 0;
   }
 
-  if (sel_isEqual(a3, "books_toggleContinuousScroll:") || sel_isEqual(a3, "books_disableContinuousScroll:") || sel_isEqual(a3, "books_enableContinuousScroll:"))
+  if (sel_isEqual(action, "books_toggleContinuousScroll:") || sel_isEqual(action, "books_disableContinuousScroll:") || sel_isEqual(action, "books_enableContinuousScroll:"))
   {
     if (v6)
     {
@@ -3056,7 +3056,7 @@ LABEL_5:
     return 0;
   }
 
-  if (sel_isEqual(a3, "books_addHighlight:"))
+  if (sel_isEqual(action, "books_addHighlight:"))
   {
     if (v6)
     {
@@ -3066,7 +3066,7 @@ LABEL_5:
     return 0;
   }
 
-  isEqual = sel_isEqual(a3, "books_addNote:");
+  isEqual = sel_isEqual(action, "books_addNote:");
   if ((isEqual & v6) == 1)
   {
     return [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
@@ -3078,82 +3078,82 @@ LABEL_5:
   }
 }
 
-- (void)books_toggleContinuousScroll:(id)a3
+- (void)books_toggleContinuousScroll:(id)scroll
 {
   if ([(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] isScroll])
   {
 
-    [(THDocumentViewController *)self books_disableContinuousScroll:a3];
+    [(THDocumentViewController *)self books_disableContinuousScroll:scroll];
   }
 
   else
   {
 
-    [(THDocumentViewController *)self books_enableContinuousScroll:a3];
+    [(THDocumentViewController *)self books_enableContinuousScroll:scroll];
   }
 }
 
-- (void)changeAnnotationStyle:(id)a3
+- (void)changeAnnotationStyle:(id)style
 {
-  v4 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v4 changeAnnotationStyle:a3];
+  [interactiveCanvasController changeAnnotationStyle:style];
 }
 
-- (void)removeNoteAndHighlight:(id)a3
+- (void)removeNoteAndHighlight:(id)highlight
 {
-  v4 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v4 removeNoteAndHighlight:a3];
+  [interactiveCanvasController removeNoteAndHighlight:highlight];
 }
 
-- (void)removeNote:(id)a3
+- (void)removeNote:(id)note
 {
-  v4 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v4 removeNote:a3];
+  [interactiveCanvasController removeNote:note];
 }
 
-- (void)books_addHighlight:(id)a3
+- (void)books_addHighlight:(id)highlight
 {
-  v4 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v4 addHighlight:a3];
+  [interactiveCanvasController addHighlight:highlight];
 }
 
-- (void)books_addNote:(id)a3
+- (void)books_addNote:(id)note
 {
-  v4 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v4 addNote:a3];
+  [interactiveCanvasController addNote:note];
 }
 
-- (void)books_pageForward:(id)a3
+- (void)books_pageForward:(id)forward
 {
-  v3 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v3 navigateToNextPage];
+  [interactiveCanvasController navigateToNextPage];
 }
 
-- (void)books_pageBackward:(id)a3
+- (void)books_pageBackward:(id)backward
 {
-  v3 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v3 navigateToPreviousPage];
+  [interactiveCanvasController navigateToPreviousPage];
 }
 
-- (void)books_chapterForward:(id)a3
+- (void)books_chapterForward:(id)forward
 {
-  v3 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v3 navigateToNextChapter];
+  [interactiveCanvasController navigateToNextChapter];
 }
 
-- (void)books_chapterBackward:(id)a3
+- (void)books_chapterBackward:(id)backward
 {
-  v3 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v3 navigateToPreviousChapter];
+  [interactiveCanvasController navigateToPreviousChapter];
 }
 
 - (BOOL)p_isCompactFlowPresentation
@@ -3162,8 +3162,8 @@ LABEL_5:
   {
     if ([(THDocumentViewController *)self paginatedSectionController])
     {
-      v3 = [(THDocumentViewController *)self activeSectionController];
-      if (v3 == [(THDocumentViewController *)self flowSectionController])
+      activeSectionController = [(THDocumentViewController *)self activeSectionController];
+      if (activeSectionController == [(THDocumentViewController *)self flowSectionController])
       {
         v4 = 1;
         if (![(THDocumentViewController *)self th_cachedIsCompactWidth])
@@ -3197,9 +3197,9 @@ LABEL_5:
   return [(THDocumentViewController *)self compactFlowPresentationState]== 1;
 }
 
-- (BOOL)p_isCompactFlowPresentationForSectionController:(id)a3
+- (BOOL)p_isCompactFlowPresentationForSectionController:(id)controller
 {
-  if ([(THDocumentViewController *)self activeSectionController]== a3)
+  if ([(THDocumentViewController *)self activeSectionController]== controller)
   {
 
     return [(THDocumentViewController *)self p_isCompactFlowPresentation];
@@ -3212,7 +3212,7 @@ LABEL_5:
       return 1;
     }
 
-    if ([(THDocumentViewController *)self flowSectionController]!= a3)
+    if ([(THDocumentViewController *)self flowSectionController]!= controller)
     {
       return 0;
     }
@@ -3303,20 +3303,20 @@ LABEL_5:
   [(THDocumentViewController *)self p_resetPageDisplacment];
   [(THDocumentViewController *)self p_updateWidgetInteractionMode];
   [(THDocumentViewController *)self p_updateScrubberCheckToolbarState:1];
-  v7 = [(THDocumentViewController *)self guidedPanController];
+  guidedPanController = [(THDocumentViewController *)self guidedPanController];
 
-  [(THGuidedPanController *)v7 setTarget:0];
+  [(THGuidedPanController *)guidedPanController setTarget:0];
 }
 
-- (void)p_setActiveSectionControllerDeferVantageDidChange:(BOOL)a3
+- (void)p_setActiveSectionControllerDeferVantageDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(THDocumentViewController *)self selectedSectionController];
-  if ([(THDocumentViewController *)self activeSectionController]!= v5)
+  changeCopy = change;
+  selectedSectionController = [(THDocumentViewController *)self selectedSectionController];
+  if ([(THDocumentViewController *)self activeSectionController]!= selectedSectionController)
   {
 
     self->_configuration = 0;
-    if ([(THDocumentViewController *)self activeSectionController]&& ![(THPresentationType *)[(THSectionController *)[(THDocumentViewController *)self activeSectionController] presentationType] isEqual:[(THSectionController *)v5 presentationType]])
+    if ([(THDocumentViewController *)self activeSectionController]&& ![(THPresentationType *)[(THSectionController *)[(THDocumentViewController *)self activeSectionController] presentationType] isEqual:[(THSectionController *)selectedSectionController presentationType]])
     {
       [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] vantageWillChangeBy:self reason:@"THVantageChangeReasonPresentationMode"];
       v6 = 0;
@@ -3327,11 +3327,11 @@ LABEL_5:
       v6 = 1;
     }
 
-    [(THDocumentViewController *)self setActiveSectionController:v5];
+    [(THDocumentViewController *)self setActiveSectionController:selectedSectionController];
     [(THDocumentViewController *)self setCompactFlowPresentationState:0];
     v7 = +[UIColor clearColor];
-    v8 = [(THPresentationType *)[(THDocumentViewController *)self currentPresentationType] isFlow];
-    if ((v8 & 1) != 0 || [(THDocumentViewController *)self isEpub])
+    isFlow = [(THPresentationType *)[(THDocumentViewController *)self currentPresentationType] isFlow];
+    if ((isFlow & 1) != 0 || [(THDocumentViewController *)self isEpub])
     {
       v7 = [-[THThemeDelegate theme](-[THDocumentViewController themeDelegate](self "themeDelegate")];
     }
@@ -3339,7 +3339,7 @@ LABEL_5:
     [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
     if (![(THDocumentViewController *)self isEpub])
     {
-      if ((v8 & 1) == 0)
+      if ((isFlow & 1) == 0)
       {
         v7 = +[UIColor clearColor];
       }
@@ -3360,11 +3360,11 @@ LABEL_5:
       [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
       [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
       [(THDocumentViewController *)self p_updateCanvasSize];
-      if (((v6 | v3) & 1) == 0)
+      if (((v6 | changeCopy) & 1) == 0)
       {
-        v9 = [(THDocumentViewController *)self bookNavigationDelegate];
+        bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-        [(THBookNavigation *)v9 vantageDidChangeBy:self reason:@"THVantageChangeReasonPresentationMode"];
+        [(THBookNavigation *)bookNavigationDelegate vantageDidChangeBy:self reason:@"THVantageChangeReasonPresentationMode"];
       }
     }
   }
@@ -3408,10 +3408,10 @@ LABEL_5:
   }
 }
 
-- (CGSize)p_maxScrollViewSizeForViewSize:(CGSize)a3
+- (CGSize)p_maxScrollViewSizeForViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THDocumentViewController *)self viewHeaderHeight];
   v6 = height - v5;
   v7 = width;
@@ -3432,16 +3432,16 @@ LABEL_5:
 
 - (CGSize)p_windowOrViewSize
 {
-  v2 = [(THDocumentViewController *)self view];
-  v3 = [v2 window];
-  if (v3)
+  view = [(THDocumentViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    [v3 bounds];
+    [window bounds];
   }
 
   else
   {
-    [v2 frame];
+    [view frame];
   }
 
   v6 = v4;
@@ -3451,16 +3451,16 @@ LABEL_5:
   return result;
 }
 
-- (void)zoomOutAnimated:(BOOL)a3
+- (void)zoomOutAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(THDocumentViewController *)self activeSectionController])
   {
     [objc_msgSend(-[THDocumentViewController canvasViewController](self "canvasViewController")];
     v6 = v5;
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-    if (!v3)
+    if (!animatedCopy)
     {
 
       [(THDocumentViewController *)self p_canvasDidZoom];
@@ -3477,27 +3477,27 @@ LABEL_5:
   }
 }
 
-- (void)zoomOutIfNecessaryAnimated:(BOOL)a3 completion:(id)a4
+- (void)zoomOutIfNecessaryAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(THDocumentViewController *)self currentViewScale];
   v8 = v7;
   [(THDocumentViewController *)self zoomedOutViewScale];
   if (vabdd_f64(v8, v9) < 0.00999999978 || ([(THDocumentViewController *)self currentViewScale], v11 = v10, [(THDocumentViewController *)self zoomedOutViewScale], v11 <= v12))
   {
-    if (a4)
+    if (completion)
     {
-      v13 = *(a4 + 2);
+      v13 = *(completion + 2);
 
-      v13(a4);
+      v13(completion);
     }
   }
 
   else
   {
-    [(THDocumentViewController *)self setCanvasDidZoomCompletion:a4];
+    [(THDocumentViewController *)self setCanvasDidZoomCompletion:completion];
 
-    [(THDocumentViewController *)self zoomOutAnimated:v5];
+    [(THDocumentViewController *)self zoomOutAnimated:animatedCopy];
   }
 }
 
@@ -3525,12 +3525,12 @@ LABEL_5:
 
 - (BOOL)p_allowsPageDisplacement
 {
-  v3 = [(THDocumentViewController *)self activeSectionController];
-  if (v3)
+  activeSectionController = [(THDocumentViewController *)self activeSectionController];
+  if (activeSectionController)
   {
     if ([(THDocumentViewController *)self inFlowMode])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(activeSectionController) = 0;
     }
 
     else
@@ -3539,21 +3539,21 @@ LABEL_5:
       v5 = v4;
       v7 = v6;
       [(THDocumentViewController *)self p_windowOrViewSize];
-      LOBYTE(v3) = 0;
+      LOBYTE(activeSectionController) = 0;
       if (v5 > 0.0 && v8 > 0.0)
       {
-        LOBYTE(v3) = v7 / v5 > v9 / v8;
+        LOBYTE(activeSectionController) = v7 / v5 > v9 / v8;
       }
     }
   }
 
-  return v3;
+  return activeSectionController;
 }
 
-- (void)p_updateScrollViewAndZoomSettingsForSize:(CGSize)a3
+- (void)p_updateScrollViewAndZoomSettingsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THDocumentViewController *)self p_updateScrollViewForSize:?];
   [(THDocumentViewController *)self p_currentSpreadSize];
   v7 = v6;
@@ -3586,9 +3586,9 @@ LABEL_5:
   [(THDocumentViewController *)self p_updateScrollViewClipsToBounds];
 }
 
-- (CGRect)shadowBoundsForCanvasExitTransformDelegate:(id)a3
+- (CGRect)shadowBoundsForCanvasExitTransformDelegate:(id)delegate
 {
-  if (-[THDocumentViewController isTwoUp](self, "isTwoUp", a3) && [-[THDocumentViewController currentNavigationUnit](self "currentNavigationUnit")] == &dword_0 + 1)
+  if (-[THDocumentViewController isTwoUp](self, "isTwoUp", delegate) && [-[THDocumentViewController currentNavigationUnit](self "currentNavigationUnit")] == &dword_0 + 1)
   {
     v4 = [-[THPageViewProvider pageHostForAbsolutePageIndex:](-[THDocumentViewController pageViewProvider](self "pageViewProvider")];
   }
@@ -3606,9 +3606,9 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)rectForRelativePageIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4
+- (CGRect)rectForRelativePageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  v6 = [-[THDocumentViewController navigationUnitForChapterIndex:](self navigationUnitForChapterIndex:{a4), "pageCountForPresentationType:", -[THDocumentViewController currentPresentationType](self, "currentPresentationType")}];
+  v6 = [-[THDocumentViewController navigationUnitForChapterIndex:](self navigationUnitForChapterIndex:{chapterIndex), "pageCountForPresentationType:", -[THDocumentViewController currentPresentationType](self, "currentPresentationType")}];
   if ([(THDocumentViewController *)self isTwoUp])
   {
     v7 = v6 - 1;
@@ -3618,7 +3618,7 @@ LABEL_5:
       v12 = v23;
       v14 = v24;
       v16 = v22 * 0.5;
-      if (v7 == a3)
+      if (v7 == index)
       {
         v18 = v18 + v22 * 0.5;
       }
@@ -3657,14 +3657,14 @@ LABEL_5:
 
 - (BOOL)p_isSinglePageChapter
 {
-  v3 = [(THDocumentViewController *)self currentChapter];
+  currentChapter = [(THDocumentViewController *)self currentChapter];
 
-  return [(THDocumentViewController *)self isSinglePageChapterForChapterIndex:v3];
+  return [(THDocumentViewController *)self isSinglePageChapterForChapterIndex:currentChapter];
 }
 
 - (_NSRange)currentRelativePageIndexRange
 {
-  v3 = [(THDocumentViewController *)self currentRelativePageIndex];
+  currentRelativePageIndex = [(THDocumentViewController *)self currentRelativePageIndex];
   if ([(THDocumentViewController *)self isTwoUp])
   {
     if ([-[THDocumentViewController currentNavigationUnit](self "currentNavigationUnit")] <= 1)
@@ -3683,36 +3683,36 @@ LABEL_5:
     v4 = 1;
   }
 
-  v5 = v3;
+  v5 = currentRelativePageIndex;
   result.length = v4;
   result.location = v5;
   return result;
 }
 
-- (void)sectionControllerNeedsLayout:(id)a3
+- (void)sectionControllerNeedsLayout:(id)layout
 {
-  if ([(THDocumentViewController *)self activeSectionController]== a3)
+  if ([(THDocumentViewController *)self activeSectionController]== layout)
   {
-    v4 = [(THDocumentViewController *)self interactiveCanvasController];
+    interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-    [v4 layoutInvalidated];
+    [interactiveCanvasController layoutInvalidated];
   }
 }
 
-- (id)layoutControllerForSectionController:(id)a3
+- (id)layoutControllerForSectionController:(id)controller
 {
-  v3 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  return [v3 layoutController];
+  return [interactiveCanvasController layoutController];
 }
 
-- (void)sectionControllerInfosDidChange:(id)a3
+- (void)sectionControllerInfosDidChange:(id)change
 {
-  if ([(THDocumentViewController *)self activeSectionController]== a3)
+  if ([(THDocumentViewController *)self activeSectionController]== change)
   {
-    v4 = [(THDocumentViewController *)self p_activePagePaddingOptions];
+    p_activePagePaddingOptions = [(THDocumentViewController *)self p_activePagePaddingOptions];
 
-    [(THDocumentViewController *)self p_updateVisibleInfosWithPaddingOptions:v4 force:1];
+    [(THDocumentViewController *)self p_updateVisibleInfosWithPaddingOptions:p_activePagePaddingOptions force:1];
   }
 }
 
@@ -3723,16 +3723,16 @@ LABEL_5:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = [(THDocumentViewController *)self documentNavigator];
+  documentNavigator = [(THDocumentViewController *)self documentNavigator];
 
-  return [(THDocumentNavigator *)v3 currentAbsolutePageIndex];
+  return [(THDocumentNavigator *)documentNavigator currentAbsolutePageIndex];
 }
 
 - (unint64_t)currentRelativePageIndex
 {
-  v2 = [(THDocumentViewController *)self documentNavigator];
+  documentNavigator = [(THDocumentViewController *)self documentNavigator];
 
-  return [(THDocumentNavigator *)v2 currentNavigationUnitRelativePageIndex];
+  return [(THDocumentNavigator *)documentNavigator currentNavigationUnitRelativePageIndex];
 }
 
 - (THPresentationType)currentPresentationType
@@ -3758,17 +3758,17 @@ LABEL_5:
   return result;
 }
 
-- (void)p_visiblePageRangeWillChangeTo:(_NSRange)a3
+- (void)p_visiblePageRangeWillChangeTo:(_NSRange)to
 {
-  if (a3.location != NSInvalidRange[0] || a3.length != NSInvalidRange[1])
+  if (to.location != NSInvalidRange[0] || to.length != NSInvalidRange[1])
   {
     v5 = [-[THDocumentViewController currentNavigationUnit](self "currentNavigationUnit")];
-    v6 = [(THDocumentViewController *)self visibleRelativePageRange];
-    if (v6 != NSInvalidRange[0] || v7 != NSInvalidRange[1])
+    visibleRelativePageRange = [(THDocumentViewController *)self visibleRelativePageRange];
+    if (visibleRelativePageRange != NSInvalidRange[0] || v7 != NSInvalidRange[1])
     {
-      v9 = [(THDocumentViewController *)self currentNavigationUnit];
-      v10 = [(THDocumentViewController *)self visibleRelativePageRange];
-      v5 = [v5 tsu_arrayByRemovingObjectsIdenticalToObjectsInArray:{objc_msgSend(v9, "contentNodesSurroundingRelativePageRange:forPresentationType:", v10, v11, -[THDocumentViewController currentPresentationType](self, "currentPresentationType"))}];
+      currentNavigationUnit = [(THDocumentViewController *)self currentNavigationUnit];
+      visibleRelativePageRange2 = [(THDocumentViewController *)self visibleRelativePageRange];
+      v5 = [v5 tsu_arrayByRemovingObjectsIdenticalToObjectsInArray:{objc_msgSend(currentNavigationUnit, "contentNodesSurroundingRelativePageRange:forPresentationType:", visibleRelativePageRange2, v11, -[THDocumentViewController currentPresentationType](self, "currentPresentationType"))}];
     }
 
     v21 = 0u;
@@ -3825,14 +3825,14 @@ LABEL_5:
 
 - (void)p_updateVisibleInfos
 {
-  v3 = [(THDocumentViewController *)self p_activePagePaddingOptions];
+  p_activePagePaddingOptions = [(THDocumentViewController *)self p_activePagePaddingOptions];
 
-  [(THDocumentViewController *)self p_updateVisibleInfosWithPaddingOptions:v3 force:0];
+  [(THDocumentViewController *)self p_updateVisibleInfosWithPaddingOptions:p_activePagePaddingOptions force:0];
 }
 
-- (void)p_updateVisibleInfosWithPaddingOptions:(int)a3 force:(BOOL)a4
+- (void)p_updateVisibleInfosWithPaddingOptions:(int)options force:(BOOL)force
 {
-  v5 = *&a3;
+  v5 = *&options;
   if ([-[THDocumentViewController documentRoot](self "documentRoot")])
   {
 
@@ -3850,26 +3850,26 @@ LABEL_5:
     {
       if ([(THDocumentViewController *)self inFlowMode])
       {
-        v7 = 0;
+        setupLoadSpinner = 0;
       }
 
       else
       {
-        v7 = [(THSpinnerProvider *)[(THDocumentViewController *)self spinnerProvider] setupLoadSpinner];
+        setupLoadSpinner = [(THSpinnerProvider *)[(THDocumentViewController *)self spinnerProvider] setupLoadSpinner];
       }
 
       if (![(THDocumentViewController *)self preventVisibleInfoUpdates])
       {
-        v8 = [(THDocumentViewController *)self inPaginatedMode];
-        v9 = [(THDocumentViewController *)self interactiveCanvasController];
-        if (v8)
+        inPaginatedMode = [(THDocumentViewController *)self inPaginatedMode];
+        interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
+        if (inPaginatedMode)
         {
-          [v9 visibleUnscaledRect];
+          [interactiveCanvasController visibleUnscaledRect];
         }
 
         else
         {
-          [v9 visibleUnscaledRectForContent];
+          [interactiveCanvasController visibleUnscaledRectForContent];
         }
 
         TSDRoundedRect();
@@ -3879,12 +3879,12 @@ LABEL_5:
         v17 = v16;
         v18 = [(THSectionController *)[(THDocumentViewController *)self activeSectionController] relativePageRangeForCanvasRect:v5 pad:v10, v12, v14, v16];
         v20 = v19;
-        if (a4 || [(THDocumentViewController *)self visibleRelativePageRange]!= v18 || v24 != v20)
+        if (force || [(THDocumentViewController *)self visibleRelativePageRange]!= v18 || v24 != v20)
         {
           [(THDocumentViewController *)self p_visiblePageRangeWillChangeTo:v18, v20];
           v21 = [(THSectionController *)[(THDocumentViewController *)self activeSectionController] infosToDisplayForRelativePageRange:v18 forceLoad:v20, [(THDocumentViewController *)self firstLoad]];
           [(THDocumentViewController *)self setFirstLoad:0];
-          v22 = [(THDocumentViewController *)self pageViewProvider];
+          pageViewProvider = [(THDocumentViewController *)self pageViewProvider];
           if ([(THDocumentViewController *)self inFlowMode])
           {
             v23 = 0;
@@ -3895,7 +3895,7 @@ LABEL_5:
             v23 = v21;
           }
 
-          [(THPageViewProvider *)v22 updateWithInfosToDisplay:v23];
+          [(THPageViewProvider *)pageViewProvider updateWithInfosToDisplay:v23];
           [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
           [(THDocumentViewController *)self setVisibleRelativePageRange:v18, v20];
         }
@@ -3903,7 +3903,7 @@ LABEL_5:
         [(THDocumentViewController *)self p_updateProgessKitSectionInCanvasRect:v11, v13, v15, v17];
       }
 
-      if (v7)
+      if (setupLoadSpinner)
       {
         [(THSpinnerProvider *)[(THDocumentViewController *)self spinnerProvider] hideLoadSpinner];
       }
@@ -3917,16 +3917,16 @@ LABEL_5:
   }
 }
 
-- (CGSize)pageSizeForPagePositionController:(id)a3
+- (CGSize)pageSizeForPagePositionController:(id)controller
 {
-  if ([a3 pageHorizontally])
+  if ([controller pageHorizontally])
   {
     if (![(THDocumentViewController *)self paginatedSectionController])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v4 = [(THDocumentViewController *)self paginatedSectionController];
+    paginatedSectionController = [(THDocumentViewController *)self paginatedSectionController];
   }
 
   else
@@ -3942,10 +3942,10 @@ LABEL_5:
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v4 = [(THDocumentViewController *)self flowSectionController];
+    paginatedSectionController = [(THDocumentViewController *)self flowSectionController];
   }
 
-  [(THPresentationType *)[(THSectionController *)v4 presentationType] pageSize];
+  [(THPresentationType *)[(THSectionController *)paginatedSectionController presentationType] pageSize];
 LABEL_11:
   if (CGSizeZero.width == v5 && CGSizeZero.height == v6)
   {
@@ -3958,21 +3958,21 @@ LABEL_11:
   return result;
 }
 
-- (void)p_willLayoutCanvasPaginated:(id)a3
+- (void)p_willLayoutCanvasPaginated:(id)paginated
 {
   if (![(THDocumentViewController *)self inPaginatedMode])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THDocumentViewController *)self activeSectionController];
-  v6 = [a3 infosToDisplay];
-  v7 = [a3 layoutController];
+  activeSectionController = [(THDocumentViewController *)self activeSectionController];
+  infosToDisplay = [paginated infosToDisplay];
+  layoutController = [paginated layoutController];
 
-  [(THSectionController *)v5 ensureSectionInfosLaidOut:v6 layoutController:v7];
+  [(THSectionController *)activeSectionController ensureSectionInfosLaidOut:infosToDisplay layoutController:layoutController];
 }
 
-- (void)p_willLayoutCanvasFlow:(id)a3
+- (void)p_willLayoutCanvasFlow:(id)flow
 {
   if (![(THDocumentViewController *)self inFlowMode])
   {
@@ -3983,30 +3983,30 @@ LABEL_11:
   {
     if (!self->mLayoutAnchor)
     {
-      v5 = [(THDocumentViewController *)self activeSectionController];
-      [a3 contentOffset];
-      self->mLayoutAnchor = [(THSectionController *)v5 layoutAnchorForContentOffset:?];
+      activeSectionController = [(THDocumentViewController *)self activeSectionController];
+      [flow contentOffset];
+      self->mLayoutAnchor = [(THSectionController *)activeSectionController layoutAnchorForContentOffset:?];
     }
 
-    v6 = [(THDocumentViewController *)self activeSectionController];
+    activeSectionController2 = [(THDocumentViewController *)self activeSectionController];
     mLayoutAnchor = self->mLayoutAnchor;
-    [a3 visibleHeight];
+    [flow visibleHeight];
     v9 = 2048.0;
     if (v8 + v8 >= 2048.0)
     {
-      [a3 visibleHeight];
+      [flow visibleHeight];
       v9 = v10 + v10;
     }
 
-    [a3 visibleHeight];
+    [flow visibleHeight];
     v12 = 2048.0;
     if (v11 + v11 >= 2048.0)
     {
-      [a3 visibleHeight];
+      [flow visibleHeight];
       v12 = v13 + v13;
     }
 
-    -[THSectionController layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:](v6, "layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:", mLayoutAnchor, [a3 layoutController], v9, v12);
+    -[THSectionController layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:](activeSectionController2, "layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:", mLayoutAnchor, [flow layoutController], v9, v12);
     if (self->mLayoutAnchor)
     {
       if (![(THDocumentViewController *)self inFlowMode])
@@ -4018,14 +4018,14 @@ LABEL_11:
       v15 = v14;
       [(THDocumentViewController *)self currentViewScale];
       self->mCanvasYOffset = self->mCanvasYOffset - v15 * v16;
-      v17 = [objc_msgSend(a3 "layerHost")];
+      v17 = [objc_msgSend(flow "layerHost")];
       [(THDocumentViewController *)self p_desiredCanvasSize];
       [v17 setUnscaledSizeOnLayer:?];
       CGAffineTransformMakeTranslation(&v20, 0.0, self->mCanvasYOffset);
-      v18 = [objc_msgSend(a3 "layerHost")];
+      v18 = [objc_msgSend(flow "layerHost")];
       v19 = v20;
       [v18 setAffineTransform:&v19];
-      [a3 visibleBoundsRect];
+      [flow visibleBoundsRect];
       if (CGRectIsEmpty(v21))
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -4036,9 +4036,9 @@ LABEL_11:
   }
 }
 
-- (void)interactiveCanvasControllerWillLayout:(id)a3
+- (void)interactiveCanvasControllerWillLayout:(id)layout
 {
-  if (([-[THDocumentViewController documentRoot](self "documentRoot")] & 1) == 0 && objc_msgSend(objc_msgSend(a3, "infosToDisplay"), "count"))
+  if (([-[THDocumentViewController documentRoot](self "documentRoot")] & 1) == 0 && objc_msgSend(objc_msgSend(layout, "infosToDisplay"), "count"))
   {
     if (![(THDocumentViewController *)self activeSectionController])
     {
@@ -4047,12 +4047,12 @@ LABEL_11:
 
     if ([(THDocumentViewController *)self inPaginatedMode])
     {
-      [(THDocumentViewController *)self p_willLayoutCanvasPaginated:a3];
+      [(THDocumentViewController *)self p_willLayoutCanvasPaginated:layout];
     }
 
     else
     {
-      [(THDocumentViewController *)self p_willLayoutCanvasFlow:a3];
+      [(THDocumentViewController *)self p_willLayoutCanvasFlow:layout];
     }
   }
 
@@ -4063,9 +4063,9 @@ LABEL_11:
 {
   if ([(THDocumentViewController *)self canvasDidZoomCompletion])
   {
-    v3 = [(THDocumentViewController *)self canvasDidZoomCompletion];
+    canvasDidZoomCompletion = [(THDocumentViewController *)self canvasDidZoomCompletion];
     [(THDocumentViewController *)self setCanvasDidZoomCompletion:0];
-    v3[2]();
+    canvasDidZoomCompletion[2]();
   }
 }
 
@@ -4079,7 +4079,7 @@ LABEL_11:
   [(THDocumentViewController *)self p_fadeOutOverscrollTransition];
 }
 
-- (void)interactiveCanvasControllerDidLayout:(id)a3
+- (void)interactiveCanvasControllerDidLayout:(id)layout
 {
   [(THDocumentViewController *)self performSelectorOnMainThread:"p_interactiveCanvasControllerDidLayout" withObject:0 waitUntilDone:0];
   [(THPageViewProvider *)[(THDocumentViewController *)self pageViewProvider] canvasDidLayout];
@@ -4090,10 +4090,10 @@ LABEL_11:
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
+    if (([layout currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
     {
       [(THDocumentViewController *)self p_fixScrollViewToMatchCanvas];
-      if (([a3 currentlyScrolling] & 1) == 0)
+      if (([layout currentlyScrolling] & 1) == 0)
       {
 
         [(THDocumentViewController *)self p_removeCanvasTransform];
@@ -4102,9 +4102,9 @@ LABEL_11:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 scrollViewWillBeginDragging:(id)a4
+- (void)interactiveCanvasController:(id)controller scrollViewWillBeginDragging:(id)dragging
 {
-  [a3 contentOffset];
+  [controller contentOffset];
   [(THDocumentViewController *)self setBeginDraggingContentOffset:?];
   mPopUpPopoverController = self->mPopUpPopoverController;
   if (mPopUpPopoverController)
@@ -4114,7 +4114,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 allowsDragOfSmartField:(id)a4
+- (BOOL)interactiveCanvasController:(id)controller allowsDragOfSmartField:(id)field
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -4136,27 +4136,27 @@ LABEL_11:
   return v6;
 }
 
-- (void)p_swipeToNextOffsetForScrollView:(id)a3 flowPageController:(id)a4 withVelocity:(CGPoint)a5 targetContentOffset:(CGPoint *)a6
+- (void)p_swipeToNextOffsetForScrollView:(id)view flowPageController:(id)controller withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a5.y;
-  v10 = [a4 contentNode];
-  [a4 desiredPageSizeForRelativePageIndex:0];
+  y = velocity.y;
+  contentNode = [controller contentNode];
+  [controller desiredPageSizeForRelativePageIndex:0];
   v12 = v11;
   v14 = v13;
-  [(THSectionController *)[(THDocumentViewController *)self activeSectionController] canvasOriginForPageController:a4];
+  [(THSectionController *)[(THDocumentViewController *)self activeSectionController] canvasOriginForPageController:controller];
   v16 = v15;
-  x = a6->x;
-  v18 = a6->y;
+  x = offset->x;
+  v18 = offset->y;
   [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] frame];
   v20 = v19;
   [(THDocumentViewController *)self beginDraggingContentOffset];
   if (y > 0.0)
   {
     v22 = v20 + v21;
-    v23 = [a4 firstBodyCharacterIndexOverlappingPageRect:0 forRelativePageIndex:{0.0, v20 + v21 + -40.0 - v16, v12, 40.0}];
+    v23 = [controller firstBodyCharacterIndexOverlappingPageRect:0 forRelativePageIndex:{0.0, v20 + v21 + -40.0 - v16, v12, 40.0}];
     if (v23)
     {
-      [a4 originOfCharacterIndex:v23 forRelativePageIndex:0];
+      [controller originOfCharacterIndex:v23 forRelativePageIndex:0];
       if (v16 + v24 > v22 + v20 * -0.5)
       {
         v22 = v16 + v24;
@@ -4193,10 +4193,10 @@ LABEL_11:
   }
 
   v27 = v21 - v20;
-  v28 = [a4 firstBodyCharacterIndexOverlappingPageRect:0 forRelativePageIndex:{0.0, v27 + 20.0 - v16, v12, 40.0}];
+  v28 = [controller firstBodyCharacterIndexOverlappingPageRect:0 forRelativePageIndex:{0.0, v27 + 20.0 - v16, v12, 40.0}];
   if (v28)
   {
-    [a4 originOfCharacterIndex:v28 forRelativePageIndex:0];
+    [controller originOfCharacterIndex:v28 forRelativePageIndex:0];
     if (v16 + v29 > v27)
     {
       v27 = v16 + v29;
@@ -4228,11 +4228,11 @@ LABEL_11:
   }
 
 LABEL_23:
-  a6->x = x;
-  a6->y = v18;
+  offset->x = x;
+  offset->y = v18;
 }
 
-- (void)interactiveCanvasControllerFreeTransformDidEnd:(id)a3
+- (void)interactiveCanvasControllerFreeTransformDidEnd:(id)end
 {
   if ([(THDocumentViewController *)self p_updateScrollViewClipsToBounds]&& [(THDocumentViewController *)self p_allowsPageDisplacement])
   {
@@ -4243,12 +4243,12 @@ LABEL_23:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 didOverscrollLeft:(double)a4 state:(int)a5
+- (void)interactiveCanvasController:(id)controller didOverscrollLeft:(double)left state:(int)state
 {
-  if ([(THDocumentViewController *)self leftOverscrollView:a3])
+  if ([(THDocumentViewController *)self leftOverscrollView:controller])
   {
     [(THDocumentViewController *)self isEpub];
-    if ((a5 & 0xFFFFFFFE) == 2)
+    if ((state & 0xFFFFFFFE) == 2)
     {
       [(THDocumentViewController *)self p_horizontalOverscrollPreviousChapter];
     }
@@ -4259,12 +4259,12 @@ LABEL_23:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 didOverscrollRight:(double)a4 state:(int)a5
+- (void)interactiveCanvasController:(id)controller didOverscrollRight:(double)right state:(int)state
 {
-  if ([(THDocumentViewController *)self rightOverscrollView:a3])
+  if ([(THDocumentViewController *)self rightOverscrollView:controller])
   {
     [(THDocumentViewController *)self isEpub];
-    if ((a5 & 0xFFFFFFFE) == 2)
+    if ((state & 0xFFFFFFFE) == 2)
     {
       [(THDocumentViewController *)self p_horizontalOverscrollNextChapter];
     }
@@ -4275,18 +4275,18 @@ LABEL_23:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 didOverscrollTop:(double)a4 state:(int)a5
+- (void)interactiveCanvasController:(id)controller didOverscrollTop:(double)top state:(int)state
 {
   if ([(THDocumentViewController *)self topOverscrollView])
   {
-    v8 = [(THDocumentViewController *)self th_cachedIsCompactHeight];
+    th_cachedIsCompactHeight = [(THDocumentViewController *)self th_cachedIsCompactHeight];
     v9 = 128.0;
-    if (v8)
+    if (th_cachedIsCompactHeight)
     {
       v9 = 48.0;
     }
 
-    if (a5 == 2 && v9 < a4)
+    if (state == 2 && v9 < top)
     {
 
       [(THDocumentViewController *)self p_verticalOverscrollPreviousChapter];
@@ -4294,18 +4294,18 @@ LABEL_23:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 didOverscrollBottom:(double)a4 state:(int)a5
+- (void)interactiveCanvasController:(id)controller didOverscrollBottom:(double)bottom state:(int)state
 {
   if ([(THDocumentViewController *)self bottomOverscrollView])
   {
-    v8 = [(THDocumentViewController *)self th_cachedIsCompactHeight];
+    th_cachedIsCompactHeight = [(THDocumentViewController *)self th_cachedIsCompactHeight];
     v9 = 128.0;
-    if (v8)
+    if (th_cachedIsCompactHeight)
     {
       v9 = 48.0;
     }
 
-    if (a5 == 2 && v9 < a4)
+    if (state == 2 && v9 < bottom)
     {
 
       [(THDocumentViewController *)self p_verticalOverscrollNextChapter];
@@ -4325,7 +4325,7 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 pointIsInLeftMargin:(CGPoint)a4
+- (BOOL)interactiveCanvasController:(id)controller pointIsInLeftMargin:(CGPoint)margin
 {
   [-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
   v6 = v5;
@@ -4335,7 +4335,7 @@ LABEL_23:
   return [(THDocumentViewController *)self pointIsInLeftMargin:v9 fromView:v6, v8];
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 pointIsInRightMargin:(CGPoint)a4
+- (BOOL)interactiveCanvasController:(id)controller pointIsInRightMargin:(CGPoint)margin
 {
   [-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
   v6 = v5;
@@ -4345,53 +4345,53 @@ LABEL_23:
   return [(THDocumentViewController *)self pointIsInRightMargin:v9 fromView:v6, v8];
 }
 
-- (BOOL)interactiveCanvasControllerShouldPageLeftOnMarginTap:(id)a3
+- (BOOL)interactiveCanvasControllerShouldPageLeftOnMarginTap:(id)tap
 {
-  if ((TSUPadUI() & 1) != 0 || (v4 = [(THDocumentViewController *)self isEpub]) != 0)
+  if ((TSUPadUI() & 1) != 0 || (isPagingEnabled = [(THDocumentViewController *)self isEpub]) != 0)
   {
-    v4 = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
-    if (v4)
+    isPagingEnabled = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
+    if (isPagingEnabled)
     {
-      LOBYTE(v4) = [(THDocumentViewController *)self currentAbsolutePageIndex]!= 0;
+      LOBYTE(isPagingEnabled) = [(THDocumentViewController *)self currentAbsolutePageIndex]!= 0;
     }
   }
 
-  return v4;
+  return isPagingEnabled;
 }
 
-- (BOOL)interactiveCanvasControllerShouldPageRightOnMarginTap:(id)a3
+- (BOOL)interactiveCanvasControllerShouldPageRightOnMarginTap:(id)tap
 {
-  if ((TSUPadUI() & 1) != 0 || (v4 = [(THDocumentViewController *)self isEpub]) != 0)
+  if ((TSUPadUI() & 1) != 0 || (isPagingEnabled = [(THDocumentViewController *)self isEpub]) != 0)
   {
-    v4 = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
-    if (v4)
+    isPagingEnabled = [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] isPagingEnabled];
+    if (isPagingEnabled)
     {
-      v5 = [(THDocumentViewController *)self currentAbsolutePageIndex];
+      currentAbsolutePageIndex = [(THDocumentViewController *)self currentAbsolutePageIndex];
       v6 = 1;
       if (self->_isTwoUp)
       {
         v6 = 2;
       }
 
-      LOBYTE(v4) = v6 + v5 < [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
+      LOBYTE(isPagingEnabled) = v6 + currentAbsolutePageIndex < [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
     }
   }
 
-  return v4;
+  return isPagingEnabled;
 }
 
-- (void)interactiveCanvasController:(id)a3 wantsToPresentContextMenuAtCanvasPoint:(CGPoint)a4 forAnnotationUUID:(id)a5
+- (void)interactiveCanvasController:(id)controller wantsToPresentContextMenuAtCanvasPoint:(CGPoint)point forAnnotationUUID:(id)d
 {
   [-[THDocumentViewController view](self view];
   v8 = v7;
   v10 = v9;
-  v11 = [(THDocumentViewController *)self canvasViewController];
-  v12 = [(THDocumentViewController *)self view];
+  canvasViewController = [(THDocumentViewController *)self canvasViewController];
+  view = [(THDocumentViewController *)self view];
 
-  [v11 shouldPresentContextMenuInView:v12 atPoint:a5 forAnnotationUUID:{v8, v10}];
+  [canvasViewController shouldPresentContextMenuInView:view atPoint:d forAnnotationUUID:{v8, v10}];
 }
 
-- (BOOL)interactiveCanvasControllerShouldAllowZoomToColumn:(id)a3
+- (BOOL)interactiveCanvasControllerShouldAllowZoomToColumn:(id)column
 {
   if ([(THDocumentViewController *)self th_cachedIsCompactWidth]|| (v4 = [(THDocumentViewController *)self th_cachedIsCompactHeight]))
   {
@@ -4401,16 +4401,16 @@ LABEL_23:
   return v4;
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 shouldZoomToColumn:(id)a4 withFrame:(CGRect)a5 tapPoint:(CGPoint)a6
+- (BOOL)interactiveCanvasController:(id)controller shouldZoomToColumn:(id)column withFrame:(CGRect)frame tapPoint:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
-  [a3 convertUnscaledToBoundsRect:{a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  y = point.y;
+  x = point.x;
+  [controller convertUnscaledToBoundsRect:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [a3 convertUnscaledToBoundsPoint:{x, y}];
+  [controller convertUnscaledToBoundsPoint:{x, y}];
   v18 = v17;
   v20 = v19;
   v29.origin.x = v10;
@@ -4431,26 +4431,26 @@ LABEL_23:
   return CGRectContainsPoint(*&v21, *&v25);
 }
 
-- (void)interactiveCanvasController:(id)a3 didZoomToColumn:(id)a4 ofRep:(id)a5
+- (void)interactiveCanvasController:(id)controller didZoomToColumn:(id)column ofRep:(id)rep
 {
   [-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
-  [a5 layout];
+  [rep layout];
   objc_opt_class();
-  v8 = [[THGuidedPanColumnTarget alloc] initWithLayout:TSUClassAndProtocolCast() column:a4, &OBJC_PROTOCOL___TSWPLayoutTarget];
-  v9 = [(THDocumentViewController *)self guidedPanController];
+  v8 = [[THGuidedPanColumnTarget alloc] initWithLayout:TSUClassAndProtocolCast() column:column, &OBJC_PROTOCOL___TSWPLayoutTarget];
+  guidedPanController = [(THDocumentViewController *)self guidedPanController];
 
-  [(THGuidedPanController *)v9 setTarget:v8];
+  [(THGuidedPanController *)guidedPanController setTarget:v8];
 }
 
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep
 {
-  if (protocol_isEqual(a4, &OBJC_PROTOCOL___THPageLayerAndSubviewHostProvider))
+  if (protocol_isEqual(protocol, &OBJC_PROTOCOL___THPageLayerAndSubviewHostProvider))
   {
 
     return [(THDocumentViewController *)self pageViewProvider];
   }
 
-  else if (protocol_isEqual(a4, &OBJC_PROTOCOL___THPerformanceCoordinator))
+  else if (protocol_isEqual(protocol, &OBJC_PROTOCOL___THPerformanceCoordinator))
   {
     return self;
   }
@@ -4461,9 +4461,9 @@ LABEL_23:
   }
 }
 
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forLayout:(id)a5
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forLayout:(id)layout
 {
-  if (protocol_isEqual(a4, &OBJC_PROTOCOL___THWWidgetStackHosting))
+  if (protocol_isEqual(protocol, &OBJC_PROTOCOL___THWWidgetStackHosting))
   {
     return self;
   }
@@ -4474,47 +4474,47 @@ LABEL_23:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 progressDidChangeForRep:(id)a4 percent:(id)a5
+- (void)interactiveCanvasController:(id)controller progressDidChangeForRep:(id)rep percent:(id)percent
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_132EC;
   v5[3] = &unk_45B028;
-  v5[4] = a5;
-  -[THDocumentViewController p_getWidgetIDsForInfo:completion:](self, "p_getWidgetIDsForInfo:completion:", [a4 info], v5);
+  v5[4] = percent;
+  -[THDocumentViewController p_getWidgetIDsForInfo:completion:](self, "p_getWidgetIDsForInfo:completion:", [rep info], v5);
 }
 
-- (void)interactiveCanvasController:(id)a3 scoreDidChangeForRep:(id)a4 score:(id)a5 total:(id)a6
+- (void)interactiveCanvasController:(id)controller scoreDidChangeForRep:(id)rep score:(id)score total:(id)total
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_133F8;
   v6[3] = &unk_45AF48;
-  v6[4] = a5;
-  v6[5] = a6;
-  -[THDocumentViewController p_getWidgetIDsForInfo:completion:](self, "p_getWidgetIDsForInfo:completion:", [a4 info], v6);
+  v6[4] = score;
+  v6[5] = total;
+  -[THDocumentViewController p_getWidgetIDsForInfo:completion:](self, "p_getWidgetIDsForInfo:completion:", [rep info], v6);
 }
 
-- (void)interactiveCanvasController:(id)a3 resetAttemptForRep:(id)a4
+- (void)interactiveCanvasController:(id)controller resetAttemptForRep:(id)rep
 {
-  v5 = [a4 info];
+  info = [rep info];
 
-  [(THDocumentViewController *)self p_getWidgetIDsForInfo:v5 completion:&stru_45B068];
+  [(THDocumentViewController *)self p_getWidgetIDsForInfo:info completion:&stru_45B068];
 }
 
 - (void)selectionDidChange
 {
   if ([objc_msgSend(objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")])
   {
-    v3 = [(THDocumentViewController *)self interactiveCanvasController];
+    interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-    [v3 resumeEditing];
+    [interactiveCanvasController resumeEditing];
   }
 }
 
-- (void)interactiveCanvasControllerWillScroll:(id)a3
+- (void)interactiveCanvasControllerWillScroll:(id)scroll
 {
-  [a3 contentOffset];
+  [scroll contentOffset];
   [(THDocumentViewController *)self setLastScrollOffset:?];
   [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] vantageWillChangeBy:self reason:@"THVantageChangeReasonScrolling"];
   if ([(THDocumentViewController *)self inFlowMode])
@@ -4528,42 +4528,42 @@ LABEL_23:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 willAnimateScrollToVisibleUnscaledRect:(CGRect)a4
+- (void)interactiveCanvasController:(id)controller willAnimateScrollToVisibleUnscaledRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(THDocumentViewController *)self inFlowMode])
   {
-    [a3 pushThreadedLayoutAndRenderDisabled];
+    [controller pushThreadedLayoutAndRenderDisabled];
     [(THDocumentViewController *)self p_fixScrollViewToMatchCanvas];
 
     self->mLayoutAnchor = 0;
     v10 = [(THSectionController *)[(THDocumentViewController *)self activeSectionController] layoutAnchorForContentOffset:x, y];
-    v11 = [(THDocumentViewController *)self activeSectionController];
-    [a3 visibleHeight];
+    activeSectionController = [(THDocumentViewController *)self activeSectionController];
+    [controller visibleHeight];
     v13 = v12;
-    [a3 visibleHeight];
-    -[THSectionController layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:](v11, "layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:", v10, [a3 layoutController], v13, v14 + v14);
+    [controller visibleHeight];
+    -[THSectionController layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:](activeSectionController, "layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:", v10, [controller layoutController], v13, v14 + v14);
     self->mScrollTargetRect.origin.x = x;
     self->mScrollTargetRect.origin.y = y;
     self->mScrollTargetRect.size.width = width;
     self->mScrollTargetRect.size.height = height;
-    [a3 popThreadedLayoutAndRenderDisabled];
+    [controller popThreadedLayoutAndRenderDisabled];
   }
 
-  v15 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v15 vantageWillChangeBy:self reason:@"THVantageChangeReasonScrolling"];
+  [(THBookNavigation *)bookNavigationDelegate vantageWillChangeBy:self reason:@"THVantageChangeReasonScrolling"];
 }
 
-- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)a3 stillAnimating:(BOOL)a4
+- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)animation stillAnimating:(BOOL)animating
 {
   size = CGRectNull.size;
   self->mScrollTargetRect.origin = CGRectNull.origin;
   self->mScrollTargetRect.size = size;
-  if ([(THDocumentViewController *)self inFlowMode:a3])
+  if ([(THDocumentViewController *)self inFlowMode:animation])
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -4574,24 +4574,24 @@ LABEL_23:
   }
 }
 
-- (void)interactiveCanvasControllerDidStopScrolling:(id)a3
+- (void)interactiveCanvasControllerDidStopScrolling:(id)scrolling
 {
   [(THPageViewProvider *)[(THDocumentViewController *)self pageViewProvider] canvasDidStopScrolling];
-  [a3 contentOffset];
+  [scrolling contentOffset];
   v6 = v5;
   v8 = v7;
   [(THDocumentViewController *)self lastScrollOffset];
   v10 = v9;
   v12 = v11;
-  v13 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
   if (v10 == v6 && v12 == v8)
   {
-    [(THBookNavigation *)v13 vantageChangeWasCancelledBy:self reason:@"THVantageChangeReasonScrolling"];
+    [(THBookNavigation *)bookNavigationDelegate vantageChangeWasCancelledBy:self reason:@"THVantageChangeReasonScrolling"];
   }
 
   else
   {
-    [(THBookNavigation *)v13 vantageDidChangeBy:self reason:@"THVantageChangeReasonScrolling"];
+    [(THBookNavigation *)bookNavigationDelegate vantageDidChangeBy:self reason:@"THVantageChangeReasonScrolling"];
   }
 
   if ([(THDocumentViewController *)self justUpdatedPresentationType]|| ([(THDocumentViewController *)self lastScrollOffset], v16 == v6) && v15 == v8)
@@ -4639,18 +4639,18 @@ LABEL_23:
 
 - (BOOL)p_isPageLocationApplicable
 {
-  v3 = [(THDocumentViewController *)self currentPresentationType];
-  if (v3)
+  currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
+  if (currentPresentationType)
   {
-    LOBYTE(v3) = ![(THDocumentViewController *)self isRotating];
+    LOBYTE(currentPresentationType) = ![(THDocumentViewController *)self isRotating];
   }
 
-  return v3;
+  return currentPresentationType;
 }
 
-- (void)p_updatePageNumberingForce:(BOOL)a3
+- (void)p_updatePageNumberingForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   if (![(THDocumentViewController *)self isDocumentLoaded]|| ![(THDocumentViewController *)self p_isPageLocationApplicable])
   {
     return;
@@ -4662,11 +4662,11 @@ LABEL_23:
     {
       [(NSDate *)[(THDocumentViewController *)self lastPageNumberUpdate] timeIntervalSinceNow];
       v6 = v5 < -2.0;
-      if (v5 >= -2.0 && !v3)
+      if (v5 >= -2.0 && !forceCopy)
       {
         v7 = 0;
 LABEL_30:
-        v8 = 0x7FFFFFFFFFFFFFFFLL;
+        currentAbsolutePageIndex = 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_38;
       }
     }
@@ -4676,16 +4676,16 @@ LABEL_30:
       v6 = 1;
     }
 
-    v8 = [(THDocumentViewController *)self currentAbsolutePageIndex];
+    currentAbsolutePageIndex = [(THDocumentViewController *)self currentAbsolutePageIndex];
     -[THPageNumberView setPageNumberText:](-[THDocumentViewController contentPageNumberView](self, "contentPageNumberView"), "setPageNumberText:", [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")]);
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    if (currentAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v14 = v8 + 1;
+      v14 = currentAbsolutePageIndex + 1;
     }
 
     if ([(THDocumentViewController *)self reflowablePaginationController]&& ![(THReflowablePaginationController *)[(THDocumentViewController *)self reflowablePaginationController] paginationComplete])
@@ -4720,16 +4720,16 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    v11 = [(THDocumentViewController *)self currentAbsolutePageIndex];
-    v8 = v11;
-    if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+    currentAbsolutePageIndex2 = [(THDocumentViewController *)self currentAbsolutePageIndex];
+    currentAbsolutePageIndex = currentAbsolutePageIndex2;
+    if (currentAbsolutePageIndex2 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v12 = v11 + 1;
+      v12 = currentAbsolutePageIndex2 + 1;
     }
 
     if ([(THDocumentViewController *)self reflowablePaginationController]&& ![(THReflowablePaginationController *)[(THDocumentViewController *)self reflowablePaginationController] paginationComplete])
@@ -4751,19 +4751,19 @@ LABEL_37:
 
   if ([(THReflowablePaginationController *)[(THDocumentViewController *)self reflowablePaginationController] paginationComplete])
   {
-    v8 = [(THDocumentViewController *)self currentAbsolutePageIndex];
+    currentAbsolutePageIndex = [(THDocumentViewController *)self currentAbsolutePageIndex];
     v9 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
     [(BKScrubberControl *)[(THDocumentViewController *)self scrubber] setPageCount:v9];
     [(THPageNumberView *)[(THDocumentViewController *)self contentPageNumberView] setPageCount:v9];
     [(THPageNumberView *)[(THDocumentViewController *)self navOverlayPageNumberView] setPageCount:v9];
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    if (currentAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v10 = v8 + 1;
+      v10 = currentAbsolutePageIndex + 1;
     }
 
     [(BKScrubberControl *)[(THDocumentViewController *)self scrubber] setPageNumber:v10];
@@ -4775,7 +4775,7 @@ LABEL_37:
   v7 = 1;
   [(BKScrubberControl *)[(THDocumentViewController *)self scrubber] setPageCount:1];
   [(BKScrubberControl *)[(THDocumentViewController *)self scrubber] setPageNumber:1];
-  v8 = 0x7FFFFFFFFFFFFFFFLL;
+  currentAbsolutePageIndex = 0x7FFFFFFFFFFFFFFFLL;
   [(THPageNumberView *)[(THDocumentViewController *)self contentPageNumberView] setPageCount:0x7FFFFFFFFFFFFFFFLL];
   [(THPageNumberView *)[(THDocumentViewController *)self contentPageNumberView] setPageNumber:0x7FFFFFFFFFFFFFFFLL];
   [(THPageNumberView *)[(THDocumentViewController *)self navOverlayPageNumberView] setPageCount:0x7FFFFFFFFFFFFFFFLL];
@@ -4783,61 +4783,61 @@ LABEL_37:
 LABEL_38:
   if ([(THDocumentViewController *)self isEpub]&& [(THReflowablePaginationController *)[(THDocumentViewController *)self reflowablePaginationController] paginationComplete]&& (![(THDocumentViewController *)self inFlowMode]|| (v7 & [(THDocumentViewController *)self inFlowMode]) == 1))
   {
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    if (currentAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = [(THDocumentViewController *)self currentAbsolutePageIndex];
+      currentAbsolutePageIndex = [(THDocumentViewController *)self currentAbsolutePageIndex];
     }
 
     v16 = [-[THDocumentViewController currentNavigationUnit](self "currentNavigationUnit")];
     if (v17 != 0x7FFFFFFFFFFFFFFFLL && v16 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v18 = v16 + v17 + ~v8;
+      v18 = v16 + v17 + ~currentAbsolutePageIndex;
       if (v18 >= 0)
       {
-        v19 = [(THDocumentViewController *)self configuration];
+        configuration = [(THDocumentViewController *)self configuration];
         if (v18 == 1)
         {
-          v20 = [(THDocumentReflowableLayoutConfiguration *)v19 singularPagesLeftInChapterWithRemainingPageCount:1];
+          v20 = [(THDocumentReflowableLayoutConfiguration *)configuration singularPagesLeftInChapterWithRemainingPageCount:1];
         }
 
         else
         {
-          v20 = v18 ? [(THDocumentReflowableLayoutConfiguration *)v19 pluralPagesLeftInChapterWithRemainingPageCount:v18]: [(THDocumentReflowableLayoutConfiguration *)v19 lastPageInChapterString];
+          v20 = v18 ? [(THDocumentReflowableLayoutConfiguration *)configuration pluralPagesLeftInChapterWithRemainingPageCount:v18]: [(THDocumentReflowableLayoutConfiguration *)configuration lastPageInChapterString];
         }
 
         v21 = v20;
         if (v20)
         {
-          v22 = [(THDocumentViewController *)self toolbarDelegate];
+          toolbarDelegate = [(THDocumentViewController *)self toolbarDelegate];
 
-          [(THToolbarDelegate *)v22 textForPagesLeftInChapterDidChangeTo:v21];
+          [(THToolbarDelegate *)toolbarDelegate textForPagesLeftInChapterDidChangeTo:v21];
         }
       }
     }
   }
 }
 
-- (void)interactiveCanvasControllerDidScroll:(id)a3
+- (void)interactiveCanvasControllerDidScroll:(id)scroll
 {
   if (!self->mPreventScrollViewDidScrollReentrance)
   {
-    if (([a3 isOverscrolling] & 1) == 0)
+    if (([scroll isOverscrolling] & 1) == 0)
     {
       [(THDocumentViewController *)self setOrientationAnchor:0];
-      if ([(THDocumentViewController *)self interactiveCanvasController]!= a3)
+      if ([(THDocumentViewController *)self interactiveCanvasController]!= scroll)
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
 
       if ([(THDocumentViewController *)self inFlowMode])
       {
-        if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
+        if (([scroll currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
         {
           v5[0] = _NSConcreteStackBlock;
           v5[1] = 3221225472;
           v5[2] = sub_140B4;
           v5[3] = &unk_45AE00;
-          v5[4] = a3;
+          v5[4] = scroll;
           [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
         }
       }
@@ -4847,7 +4847,7 @@ LABEL_38:
         [(THDocumentViewController *)self p_updatePageNumberingForce:0];
       }
 
-      if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
+      if (([scroll currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
       {
         [(THDocumentViewController *)self p_visibleRectChanged];
       }
@@ -4857,9 +4857,9 @@ LABEL_38:
   }
 }
 
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread
 {
-  if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0 && (objc_msgSend(a3, "isOverscrolling") & 1) == 0)
+  if (([thread currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0 && (objc_msgSend(thread, "isOverscrolling") & 1) == 0)
   {
     if ([(THDocumentViewController *)self inFlowMode]&& CGRectIsNull(self->mScrollTargetRect))
     {
@@ -4870,17 +4870,17 @@ LABEL_38:
     [(THDocumentViewController *)self p_updatePageViewsForScrollingAnimated:0 restoreOrigin:0];
   }
 
-  v5 = [(THDocumentViewController *)self pageViewProvider];
+  pageViewProvider = [(THDocumentViewController *)self pageViewProvider];
 
-  [(THPageViewProvider *)v5 canvasDidLayoutAndRenderOnBackgroundThread];
+  [(THPageViewProvider *)pageViewProvider canvasDidLayoutAndRenderOnBackgroundThread];
 }
 
 - (void)p_updateBookmarkAffordances
 {
   [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] updateBookmarkButton];
-  v3 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v3 updateBookmarkStatusAnimated:0];
+  [interactiveCanvasController updateBookmarkStatusAnimated:0];
 }
 
 - (void)p_fixScrollViewToMatchCanvas
@@ -4995,17 +4995,17 @@ LABEL_38:
   v5[0] = v6;
   [(CALayer *)[(UIView *)[(THDocumentViewController *)self topOverscrollView] layer] setAffineTransform:v5];
   v4 = v6;
-  v3 = [(UIView *)[(THDocumentViewController *)self bottomOverscrollView] layer];
+  layer = [(UIView *)[(THDocumentViewController *)self bottomOverscrollView] layer];
   v5[0] = v4;
-  [(CALayer *)v3 setAffineTransform:v5];
+  [(CALayer *)layer setAffineTransform:v5];
 }
 
-- (CGRect)interactiveCanvasController:(id)a3 expandBoundsForHitTesting:(CGRect)a4
+- (CGRect)interactiveCanvasController:(id)controller expandBoundsForHitTesting:(CGRect)testing
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = testing.size.height;
+  width = testing.size.width;
+  y = testing.origin.y;
+  x = testing.origin.x;
   [(THDocumentViewController *)self p_maxScrollViewSize];
   TSDRectWithSize();
   [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] frame];
@@ -5072,7 +5072,7 @@ LABEL_38:
   return result;
 }
 
-- (void)interactiveCanvasController:(id)a3 layoutRegistered:(id)a4
+- (void)interactiveCanvasController:(id)controller layoutRegistered:(id)registered
 {
   v5 = TSUProtocolCast();
   if (v5)
@@ -5082,7 +5082,7 @@ LABEL_38:
   }
 }
 
-- (CGRect)scrollViewClippingBoundsForInteractiveCanvasController:(id)a3
+- (CGRect)scrollViewClippingBoundsForInteractiveCanvasController:(id)controller
 {
   [(THDocumentViewController *)self p_maxScrollViewSize];
   [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] bounds];
@@ -5097,7 +5097,7 @@ LABEL_38:
   return result;
 }
 
-- (id)interactiveCanvasController:(id)a3 infoForModel:(id)a4 withSelection:(id)a5
+- (id)interactiveCanvasController:(id)controller infoForModel:(id)model withSelection:(id)selection
 {
   objc_opt_class();
   v6 = TSUClassAndProtocolCast();
@@ -5117,10 +5117,10 @@ LABEL_38:
   }
 
   v10 = v9;
-  v11 = [(THDocumentViewController *)self activeSectionController];
-  v12 = [v10 range];
+  activeSectionController = [(THDocumentViewController *)self activeSectionController];
+  range = [v10 range];
 
-  return [(THSectionController *)v11 bodyInfoForStorage:v8 charIndex:v12];
+  return [(THSectionController *)activeSectionController bodyInfoForStorage:v8 charIndex:range];
 }
 
 - (BOOL)canCopy
@@ -5143,15 +5143,15 @@ LABEL_38:
 
 - (void)p_canvasDidZoom
 {
-  v3 = [(THDocumentViewController *)self shouldPagingBeEnabled];
-  [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] setPagingEnabled:v3];
+  shouldPagingBeEnabled = [(THDocumentViewController *)self shouldPagingBeEnabled];
+  [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] setPagingEnabled:shouldPagingBeEnabled];
   [(THDocumentViewController *)self p_setupOverscrollViews];
   [(THDocumentViewController *)self p_fireCanvasDidZoomCompletion];
 
   [(THDocumentViewController *)self p_updatePageViewsForScrollingAnimated:0 restoreOrigin:0];
 }
 
-- (void)interactiveCanvasControllerWillZoom:(id)a3
+- (void)interactiveCanvasControllerWillZoom:(id)zoom
 {
   if ([(THDocumentViewController *)self p_allowsPageDisplacement])
   {
@@ -5165,7 +5165,7 @@ LABEL_38:
   }
 }
 
-- (void)interactiveCanvasControllerDidZoom:(id)a3
+- (void)interactiveCanvasControllerDidZoom:(id)zoom
 {
   [(THDocumentViewController *)self p_canvasDidZoom];
   if ([(THDocumentViewController *)self p_allowsPageDisplacement])
@@ -5176,7 +5176,7 @@ LABEL_38:
     v7 = fmin(v5, v6);
     v8 = v7 + v7 * 0.1;
     mPageViewDisplacement = self->mPageViewDisplacement;
-    v10 = [(THDocumentViewController *)self currentRelativePageIndex];
+    currentRelativePageIndex = [(THDocumentViewController *)self currentRelativePageIndex];
     [(THDocumentViewController *)self zoomedOutViewScale];
     v12 = v11;
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
@@ -5185,14 +5185,14 @@ LABEL_38:
     v14[2] = sub_15178;
     v14[3] = &unk_45AED0;
     v14[4] = self;
-    [(THPageViewDisplacement *)mPageViewDisplacement animateZoomWithDuration:v10 initialPageIndex:v14 minViewScale:0.1 maxViewScale:v12 currentViewScale:v8 enumerator:v13];
+    [(THPageViewDisplacement *)mPageViewDisplacement animateZoomWithDuration:currentRelativePageIndex initialPageIndex:v14 minViewScale:0.1 maxViewScale:v12 currentViewScale:v8 enumerator:v13];
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 willAnimateToViewScale:(double)a4 withDuration:(double)a5 unscaledContentOffset:(CGPoint)a6
+- (void)interactiveCanvasController:(id)controller willAnimateToViewScale:(double)scale withDuration:(double)duration unscaledContentOffset:(CGPoint)offset
 {
-  x = a6.x;
-  if ([(THDocumentViewController *)self p_allowsPageDisplacement:a3])
+  x = offset.x;
+  if ([(THDocumentViewController *)self p_allowsPageDisplacement:controller])
   {
     [(THDocumentViewController *)self fitWidthViewScale];
     v11 = v10;
@@ -5209,25 +5209,25 @@ LABEL_38:
     v19[2] = sub_15404;
     v19[3] = &unk_45AED0;
     v19[4] = self;
-    [(THPageViewDisplacement *)mPageViewDisplacement animateZoomWithDuration:v16 initialPageIndex:v19 minViewScale:a5 maxViewScale:v18 currentViewScale:v14 enumerator:a4];
+    [(THPageViewDisplacement *)mPageViewDisplacement animateZoomWithDuration:v16 initialPageIndex:v19 minViewScale:duration maxViewScale:v18 currentViewScale:v14 enumerator:scale];
   }
 }
 
-- (CGPoint)interactiveCanvasController:(id)a3 clampContentOffset:(CGPoint)a4 forViewScale:(double)a5
+- (CGPoint)interactiveCanvasController:(id)controller clampContentOffset:(CGPoint)offset forViewScale:(double)scale
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   if (!self->mDisableContentOffsetClamping)
   {
     [(THDocumentViewController *)self zoomedOutViewScale];
-    v11 = vabdd_f64(a5, v10);
+    v11 = vabdd_f64(scale, v10);
     if (v11 < 0.00999999978)
     {
       [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] bounds];
       v13 = v12;
-      v14 = [(THDocumentViewController *)self isTwoUp];
+      isTwoUp = [(THDocumentViewController *)self isTwoUp];
       v15 = v13 * 0.5;
-      if (!v14)
+      if (!isTwoUp)
       {
         v15 = v13;
       }
@@ -5236,7 +5236,7 @@ LABEL_38:
     }
 
     [objc_msgSend(-[THDocumentViewController canvasViewController](self canvasViewController];
-    if (vabdd_f64(a5, v16) >= 0.00999999978)
+    if (vabdd_f64(scale, v16) >= 0.00999999978)
     {
       [(THDocumentViewController *)self p_maxScrollViewSize];
     }
@@ -5246,7 +5246,7 @@ LABEL_38:
       [-[THDocumentViewController canvasScrollView](self "canvasScrollView")];
     }
 
-    [objc_msgSend(objc_msgSend(a3 "layerHost")];
+    [objc_msgSend(objc_msgSend(controller "layerHost")];
     TSDMultiplySizeScalar();
     v17 = OBJC_IVAR___TSADocumentViewController__scrollView;
     [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] bounds];
@@ -5266,13 +5266,13 @@ LABEL_38:
   return result;
 }
 
-- (double)interactiveCanvasController:(id)a3 adjustViewScale:(double)a4
+- (double)interactiveCanvasController:(id)controller adjustViewScale:(double)scale
 {
   [(THDocumentViewController *)self fitWidthViewScale];
   [(THDocumentViewController *)self fitHeightViewScale];
-  if (vabdd_f64(a4, v6) >= 0.1)
+  if (vabdd_f64(scale, scaleCopy) >= 0.1)
   {
-    v6 = a4;
+    scaleCopy = scale;
   }
 
   [(THDocumentViewController *)self zoomedInViewScale];
@@ -5282,7 +5282,7 @@ LABEL_38:
   return result;
 }
 
-- (double)nextCanvasViewScaleDetentForProposedViewScale:(double)a3 greater:(BOOL)a4
+- (double)nextCanvasViewScaleDetentForProposedViewScale:(double)scale greater:(BOOL)greater
 {
   [(THDocumentViewController *)self currentViewScale];
   [(THDocumentViewController *)self zoomedInViewScale];
@@ -5294,10 +5294,10 @@ LABEL_38:
   return result;
 }
 
-- (BOOL)interactiveCanvasControllerShouldUseGuidedPan:(id)a3 withMovementDirection:(CGPoint)a4
+- (BOOL)interactiveCanvasControllerShouldUseGuidedPan:(id)pan withMovementDirection:(CGPoint)direction
 {
-  y = a4.y;
-  x = a4.x;
+  y = direction.y;
+  x = direction.x;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if ((([v7 isCompactWidth] & 1) != 0 || objc_msgSend(v7, "isCompactHeight")) && -[THGuidedPanController wantsToHandlePan](-[THDocumentViewController guidedPanController](self, "guidedPanController"), "wantsToHandlePan"))
@@ -5313,15 +5313,15 @@ LABEL_38:
     return 0;
   }
 
-  v12 = [(THDocumentViewController *)self revealTOCPanController];
+  revealTOCPanController = [(THDocumentViewController *)self revealTOCPanController];
 
-  return [(THRevealTOCPanController *)v12 wantsToHandlePanInDirection:x, y];
+  return [(THRevealTOCPanController *)revealTOCPanController wantsToHandlePanInDirection:x, y];
 }
 
-- (id)panGuideForInteractiveCanvasController:(id)a3 withMovementDirection:(CGPoint)a4
+- (id)panGuideForInteractiveCanvasController:(id)controller withMovementDirection:(CGPoint)direction
 {
-  y = a4.y;
-  x = a4.x;
+  y = direction.y;
+  x = direction.x;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (([v7 isCompactWidth] & 1) == 0 && !objc_msgSend(v7, "isCompactHeight") || !-[THGuidedPanController wantsToHandlePan](-[THDocumentViewController guidedPanController](self, "guidedPanController"), "wantsToHandlePan") || (result = -[THDocumentViewController guidedPanController](self, "guidedPanController")) == 0)
@@ -5359,12 +5359,12 @@ LABEL_38:
   }
 }
 
-- (void)guidedPanWillAnimateFrom:(id)a3 to:(id)a4 duration:(double)a5
+- (void)guidedPanWillAnimateFrom:(id)from to:(id)to duration:(double)duration
 {
-  if (-[THDocumentViewController p_allowsPageDisplacement](self, "p_allowsPageDisplacement") && ![a4 guidedPanTargetKind])
+  if (-[THDocumentViewController p_allowsPageDisplacement](self, "p_allowsPageDisplacement") && ![to guidedPanTargetKind])
   {
-    v9 = [a4 guidedPanRelativePageIndexWithController:{-[THDocumentViewController guidedPanController](self, "guidedPanController")}];
-    if ([a3 guidedPanTargetKind])
+    v9 = [to guidedPanRelativePageIndexWithController:{-[THDocumentViewController guidedPanController](self, "guidedPanController")}];
+    if ([from guidedPanTargetKind])
     {
       v10 = 0.2;
     }
@@ -5380,7 +5380,7 @@ LABEL_38:
     v11[3] = &unk_45B160;
     v11[4] = self;
     v11[5] = v9;
-    [(THPageViewDisplacement *)[(THDocumentViewController *)self pageViewDisplacement] animateOpacityAndDisplaymentProgess:v9 delay:v11 duration:1.0 initialPageIndex:v10 * a5 enumerator:(1.0 - v10) * a5];
+    [(THPageViewDisplacement *)[(THDocumentViewController *)self pageViewDisplacement] animateOpacityAndDisplaymentProgess:v9 delay:v11 duration:1.0 initialPageIndex:v10 * duration enumerator:(1.0 - v10) * duration];
   }
 }
 
@@ -5391,18 +5391,18 @@ LABEL_38:
   [(THDocumentViewController *)self setInGuidedPan:0];
 }
 
-- (int64_t)guidedPanPageIndexForLayout:(id)a3
+- (int64_t)guidedPanPageIndexForLayout:(id)layout
 {
-  v4 = [objc_msgSend(a3 "pageLayout")];
+  v4 = [objc_msgSend(layout "pageLayout")];
 
   return [(THDocumentViewController *)self p_relativePageIndexForPageInfo:v4];
 }
 
 - (CGRect)widgetLayoutBounds
 {
-  v2 = [(THDocumentViewController *)self view];
+  view = [(THDocumentViewController *)self view];
 
-  [v2 bounds];
+  [view bounds];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -5410,7 +5410,7 @@ LABEL_38:
   return result;
 }
 
-- (BOOL)widgetLayoutIsCompact:(id)a3
+- (BOOL)widgetLayoutIsCompact:(id)compact
 {
   if ([(THDocumentViewController *)self th_cachedIsCompactHeight])
   {
@@ -5420,22 +5420,22 @@ LABEL_38:
   return [(THDocumentViewController *)self th_cachedIsCompactWidth];
 }
 
-- (void)flowPageControllerWillChangeContentHeight:(id)a3
+- (void)flowPageControllerWillChangeContentHeight:(id)height
 {
   if (!self->mLayoutAnchor)
   {
-    v4 = [(THDocumentViewController *)self activeSectionController];
+    activeSectionController = [(THDocumentViewController *)self activeSectionController];
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-    self->mLayoutAnchor = [(THSectionController *)v4 layoutAnchorForContentOffset:?];
+    self->mLayoutAnchor = [(THSectionController *)activeSectionController layoutAnchorForContentOffset:?];
   }
 }
 
-- (CGRect)flowPageController:(id)a3 overrideForBodyFrame:(CGRect)a4
+- (CGRect)flowPageController:(id)controller overrideForBodyFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(THDocumentViewController *)self p_isCompactFlowPresentation]|| [(THDocumentViewController *)self isEpub])
   {
     [(THDocumentViewController *)self p_windowOrViewSize];
@@ -5474,15 +5474,15 @@ LABEL_38:
   return result;
 }
 
-- (BOOL)flowPageController:(id)a3 isEdgeObscured:(unsigned int)a4
+- (BOOL)flowPageController:(id)controller isEdgeObscured:(unsigned int)obscured
 {
-  v6 = [+[UIApplication userInterfaceLayoutDirection:a3]];
-  v7 = [(THDocumentViewController *)self isEpub];
-  if (v7)
+  v6 = [+[UIApplication userInterfaceLayoutDirection:controller]];
+  isEpub = [(THDocumentViewController *)self isEpub];
+  if (isEpub)
   {
-    if (a4 != 2 || v6 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (obscured != 2 || v6 == UIUserInterfaceLayoutDirectionRightToLeft)
     {
-      if (a4)
+      if (obscured)
       {
         v8 = 0;
       }
@@ -5492,30 +5492,30 @@ LABEL_38:
         v8 = v6 == UIUserInterfaceLayoutDirectionRightToLeft;
       }
 
-      LOBYTE(v7) = v8;
+      LOBYTE(isEpub) = v8;
     }
 
     else
     {
-      LOBYTE(v7) = 1;
+      LOBYTE(isEpub) = 1;
     }
   }
 
-  return v7;
+  return isEpub;
 }
 
-- (id)p_overscrollBarWithFrame:(CGRect)a3 chapterIndex:(unint64_t)a4 tocTile:(id)a5
+- (id)p_overscrollBarWithFrame:(CGRect)frame chapterIndex:(unint64_t)index tocTile:(id)tile
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = [[UIImageView alloc] initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
-  v9 = [objc_msgSend(a5 "portraitEntries")];
+  height = frame.size.height;
+  width = frame.size.width;
+  v8 = [[UIImageView alloc] initWithFrame:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
+  v9 = [objc_msgSend(tile "portraitEntries")];
   if (v9)
   {
-    v9 = [objc_msgSend(a5 "portraitEntries")];
+    v9 = [objc_msgSend(tile "portraitEntries")];
   }
 
-  v10 = [v9 sectionIdentifier];
+  sectionIdentifier = [v9 sectionIdentifier];
   TSUScreenScale();
   v12 = v11;
   v30.width = width;
@@ -5523,26 +5523,26 @@ LABEL_38:
   UIGraphicsBeginImageContextWithOptions(v30, 0, v12);
   Mutable = CFAttributedStringCreateMutable(0, 0);
   CFAttributedStringBeginEditing(Mutable);
-  if (v10 && [v10 length])
+  if (sectionIdentifier && [sectionIdentifier length])
   {
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"Chapter %@" value:&stru_471858 table:0], v10);
-    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@", v14, [a5 frontTitleText]);
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"Chapter %@" value:&stru_471858 table:0], sectionIdentifier);
+    frontTitleText = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@", v14, [tile frontTitleText]);
   }
 
   else
   {
-    v15 = [a5 frontTitleText];
+    frontTitleText = [tile frontTitleText];
     v14 = 0;
   }
 
   v26.location = 0;
   v26.length = 0;
-  CFAttributedStringReplaceString(Mutable, v26, v15);
+  CFAttributedStringReplaceString(Mutable, v26, frontTitleText);
   UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontUIFontEmphasizedSystem, 20.0, 0);
-  v27.length = [(__CFString *)v15 length];
+  v27.length = [(__CFString *)frontTitleText length];
   v27.location = 0;
   CFAttributedStringSetAttribute(Mutable, v27, kCTFontAttributeName, UIFontForLanguage);
-  v17 = [(__CFString *)v15 length];
+  v17 = [(__CFString *)frontTitleText length];
   v18 = [+[UIColor colorWithWhite:alpha:](UIColor CGColor:0.666666687];
   v28.location = 0;
   v28.length = v17;
@@ -5593,14 +5593,14 @@ LABEL_38:
 
 - (void)p_setupOverscrollViews
 {
-  v3 = [(THDocumentViewController *)self p_canOverscroll];
-  if (!v3)
+  p_canOverscroll = [(THDocumentViewController *)self p_canOverscroll];
+  if (!p_canOverscroll)
   {
 LABEL_42:
-    [(UIView *)[(THDocumentViewController *)self topOverscrollView] setHidden:v3 ^ 1];
-    [(UIView *)[(THDocumentViewController *)self bottomOverscrollView] setHidden:v3 ^ 1];
-    [(THOverscrollImageView *)[(THDocumentViewController *)self leftOverscrollView] setHidden:v3 ^ 1];
-    [(THOverscrollImageView *)[(THDocumentViewController *)self rightOverscrollView] setHidden:v3 ^ 1];
+    [(UIView *)[(THDocumentViewController *)self topOverscrollView] setHidden:p_canOverscroll ^ 1];
+    [(UIView *)[(THDocumentViewController *)self bottomOverscrollView] setHidden:p_canOverscroll ^ 1];
+    [(THOverscrollImageView *)[(THDocumentViewController *)self leftOverscrollView] setHidden:p_canOverscroll ^ 1];
+    [(THOverscrollImageView *)[(THDocumentViewController *)self rightOverscrollView] setHidden:p_canOverscroll ^ 1];
     return;
   }
 
@@ -5612,11 +5612,11 @@ LABEL_42:
   v75 = *&CGAffineTransformIdentity.a;
   v76 = *&CGAffineTransformIdentity.c;
   v77 = *&CGAffineTransformIdentity.tx;
-  v5 = [(UIView *)[(THDocumentViewController *)self bottomOverscrollView] layer];
+  layer = [(UIView *)[(THDocumentViewController *)self bottomOverscrollView] layer];
   v78 = v75;
   v79 = v76;
   v80 = v77;
-  [(CALayer *)v5 setAffineTransform:&v78];
+  [(CALayer *)layer setAffineTransform:&v78];
   width = CGSizeZero.width;
   height = CGSizeZero.height;
   if ([(THDocumentViewController *)self activeSectionController])
@@ -5628,20 +5628,20 @@ LABEL_42:
     height = v9;
   }
 
-  v10 = [(THDocumentViewController *)self currentChapter];
-  if (v10 != self->mOverscrollViewChapterNumber)
+  currentChapter = [(THDocumentViewController *)self currentChapter];
+  if (currentChapter != self->mOverscrollViewChapterNumber)
   {
     [(THDocumentViewController *)self p_releaseOverscrollViews];
-    self->mOverscrollViewChapterNumber = v10;
+    self->mOverscrollViewChapterNumber = currentChapter;
   }
 
-  if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+  if (currentChapter != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
-    v12 = [(THDocumentViewController *)self inFlowMode];
+    inFlowMode = [(THDocumentViewController *)self inFlowMode];
     v13 = OBJC_IVAR___TSADocumentViewController__scrollView;
     v14 = *&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView];
-    if (v12)
+    if (inFlowMode)
     {
       [v14 setAlwaysBounceHorizontal:0];
       [*&self->TSADocumentViewController_opaque[v13] setAlwaysBounceVertical:1];
@@ -5656,18 +5656,18 @@ LABEL_42:
       v20 = v17;
       v21 = fmaxf(v19, v20);
       v22 = -20.0 - v17;
-      if (v10 && !self->mTopOverscrollView && (v10 <= [v11 count] || !v11))
+      if (currentChapter && !self->mTopOverscrollView && (currentChapter <= [v11 count] || !v11))
       {
         self->mTopOverscrollView = [[UIView alloc] initWithFrame:{0.0, v22, v16, v18}];
         [(UIView *)self->mTopOverscrollView setBackgroundColor:[(THDocumentViewController *)self backgroundColor]];
-        v23 = -[THDocumentViewController p_overscrollBarWithFrame:chapterIndex:tocTile:](self, "p_overscrollBarWithFrame:chapterIndex:tocTile:", v10 - 1, [v11 objectAtIndex:v10 - 1], 0.0, v18 + -48.0, v16, 48.0);
+        v23 = -[THDocumentViewController p_overscrollBarWithFrame:chapterIndex:tocTile:](self, "p_overscrollBarWithFrame:chapterIndex:tocTile:", currentChapter - 1, [v11 objectAtIndex:currentChapter - 1], 0.0, v18 + -48.0, v16, 48.0);
         [v23 setAutoresizingMask:12];
         [(UIView *)self->mTopOverscrollView addSubview:v23];
       }
 
       if (!self->mBottomOverscrollView)
       {
-        v24 = v10 + 1;
+        v24 = currentChapter + 1;
         if (v24 < [v11 count] || !v11)
         {
           self->mBottomOverscrollView = [[UIView alloc] initWithFrame:{0.0, v21 + 20.0, v16, v18}];
@@ -5689,7 +5689,7 @@ LABEL_42:
       }
 
       [(UIView *)[(THDocumentViewController *)self topOverscrollView] setFrame:0.0, v22, v16, v18];
-      v26 = [(THDocumentViewController *)self bottomOverscrollView];
+      bottomOverscrollView = [(THDocumentViewController *)self bottomOverscrollView];
       v27 = 0.0;
       v28 = v21 + 20.0;
       v29 = v16;
@@ -5739,7 +5739,7 @@ LABEL_42:
 
       v40 = v32 + v39;
       v41 = v39 - v40;
-      if (v10 && !self->mLeftOverscrollView && (v10 <= [v11 count] || !v11))
+      if (currentChapter && !self->mLeftOverscrollView && (currentChapter <= [v11 count] || !v11))
       {
         self->mLeftOverscrollView = [[THOverscrollImageView alloc] initWithFrame:v39 - v40, 0.0, v40, v34];
         [(THOverscrollImageView *)self->mLeftOverscrollView setBackgroundColor:[(THDocumentViewController *)self backgroundColor]];
@@ -5748,14 +5748,14 @@ LABEL_42:
         {
           if (v11)
           {
-            v49 = [v11 objectAtIndex:v10 - 1];
+            v49 = [v11 objectAtIndex:currentChapter - 1];
             v50 = [objc_msgSend(v49 "largerThumbs")];
             if (v50)
             {
               v51 = v50;
               if ([(THDocumentViewController *)self isTwoUp])
               {
-                v52 = [v49 largerThumbs];
+                largerThumbs = [v49 largerThumbs];
                 v53 = (v40 - v40 * 0.5) * 0.5;
                 if (v51 != &dword_0 + 1)
                 {
@@ -5763,7 +5763,7 @@ LABEL_42:
                 }
 
                 v74 = v53;
-                v54 = +[UIImage imageWithCGImage:](UIImage, "imageWithCGImage:", +[TSDBitmapImageProvider CGImageForImageData:](TSDBitmapImageProvider, "CGImageForImageData:", [v52 objectAtIndex:v51 - 1]));
+                v54 = +[UIImage imageWithCGImage:](UIImage, "imageWithCGImage:", +[TSDBitmapImageProvider CGImageForImageData:](TSDBitmapImageProvider, "CGImageForImageData:", [largerThumbs objectAtIndex:v51 - 1]));
                 CGRectMakeWithSize();
                 v57 = [[THOverscrollImageView alloc] initWithFrame:v74, v55, v40 * 0.5, v56];
                 [(THOverscrollImageView *)v57 setImage:v54];
@@ -5795,25 +5795,25 @@ LABEL_42:
       v42 = width - v39;
       if (!self->mRightOverscrollView)
       {
-        if (v10 + 1 >= [v11 count] && v11)
+        if (currentChapter + 1 >= [v11 count] && v11)
         {
-          v43 = [objc_msgSend(objc_msgSend(v11 objectAtIndex:{v10), "largerThumbs"), "count"}];
+          v43 = [objc_msgSend(objc_msgSend(v11 objectAtIndex:{currentChapter), "largerThumbs"), "count"}];
           if (![(THDocumentViewController *)self isEpub]&& (![(THDocumentViewController *)self isTwoUp]|| v43 >= 2))
           {
             v44 = [[THOverscrollImageView alloc] initWithFrame:v42, 0.0, v40, v34];
             self->mRightOverscrollView = v44;
             [(THOverscrollImageView *)v44 setClipsToBounds:1];
-            v45 = [(THOverscrollImageView *)self->mRightOverscrollView layer];
-            [v45 setShadowColor:{-[UIColor CGColor](+[UIColor blackColor](UIColor, "blackColor"), "CGColor")}];
-            [v45 setShadowOffset:{5.0, 0.0}];
+            layer2 = [(THOverscrollImageView *)self->mRightOverscrollView layer];
+            [layer2 setShadowColor:{-[UIColor CGColor](+[UIColor blackColor](UIColor, "blackColor"), "CGColor")}];
+            [layer2 setShadowOffset:{5.0, 0.0}];
             LODWORD(v46) = 1050253722;
-            [v45 setShadowOpacity:v46];
+            [layer2 setShadowOpacity:v46];
             Mutable = CGPathCreateMutable();
             [(THOverscrollImageView *)self->mRightOverscrollView bounds];
             v81.origin.x = v48 + -10.0;
             v81.size.width = 10.0;
             CGPathAddRect(Mutable, 0, v81);
-            [v45 setShadowPath:Mutable];
+            [layer2 setShadowPath:Mutable];
             CGPathRelease(Mutable);
           }
         }
@@ -5827,7 +5827,7 @@ LABEL_42:
           {
             if (v11)
             {
-              v58 = [v11 objectAtIndex:v10 + 1];
+              v58 = [v11 objectAtIndex:currentChapter + 1];
               v59 = [objc_msgSend(v58 "largerThumbs")];
               if (v59)
               {
@@ -5885,14 +5885,14 @@ LABEL_42:
       }
 
       [(THOverscrollImageView *)[(THDocumentViewController *)self leftOverscrollView] setFrame:v41, 0.0, v40, v34];
-      v26 = [(THDocumentViewController *)self rightOverscrollView];
+      bottomOverscrollView = [(THDocumentViewController *)self rightOverscrollView];
       v28 = 0.0;
       v27 = v42;
       v29 = v40;
       v30 = v34;
     }
 
-    [(THOverscrollImageView *)v26 setFrame:v27, v28, v29, v30];
+    [(THOverscrollImageView *)bottomOverscrollView setFrame:v27, v28, v29, v30];
     [(THDocumentViewController *)self p_updateVerticalOverscrollTransform];
     goto LABEL_42;
   }
@@ -5936,11 +5936,11 @@ LABEL_42:
   }
 }
 
-- (void)p_setupVerticalOverscrollTransitionAnimationToChapter:(id)a3
+- (void)p_setupVerticalOverscrollTransitionAnimationToChapter:(id)chapter
 {
-  v5 = [(THDocumentViewController *)self view];
+  view = [(THDocumentViewController *)self view];
   [(UIView *)[(THDocumentViewController *)self overscrollTransitionView] frame];
-  [v5 convertRect:*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] fromView:?];
+  [view convertRect:*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] fromView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -5960,19 +5960,19 @@ LABEL_42:
   v14[2] = sub_17518;
   v14[3] = &unk_45AE58;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = chapter;
   [+[NSOperationQueue mainQueue](NSOperationQueue addOperation:"addOperation:", [NSBlockOperation blockOperationWithBlock:v14]];
 }
 
-- (void)p_verticalOverscrollSetPreviousChapterNavigationUnit:(id)a3
+- (void)p_verticalOverscrollSetPreviousChapterNavigationUnit:(id)unit
 {
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-  [(THDocumentViewController *)self setCurrentNavigationUnit:a3];
+  [(THDocumentViewController *)self setCurrentNavigationUnit:unit];
   [(THDocumentViewController *)self setVisibleRelativePageRange:NSInvalidRange[0], NSInvalidRange[1]];
   [(THDocumentViewController *)self updateVisibleInfos];
-  v5 = [(THDocumentViewController *)self activeSectionController];
+  activeSectionController = [(THDocumentViewController *)self activeSectionController];
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-  -[THSectionController layoutContentFromBottom:layoutController:](v5, "layoutContentFromBottom:layoutController:", [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")], v6 + v6);
+  -[THSectionController layoutContentFromBottom:layoutController:](activeSectionController, "layoutContentFromBottom:layoutController:", [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")], v6 + v6);
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   [(THDocumentViewController *)self p_desiredCanvasSize];
   TSDRectWithSize();
@@ -5997,18 +5997,18 @@ LABEL_42:
 
 - (void)p_verticalOverscrollPreviousChapter
 {
-  v3 = [(THDocumentViewController *)self currentChapter];
-  if (v3 && v3 != 0x7FFFFFFFFFFFFFFFLL)
+  currentChapter = [(THDocumentViewController *)self currentChapter];
+  if (currentChapter && currentChapter != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(THDocumentViewController *)self navigationUnitForChapterIndex:v3 - 1];
+    v4 = [(THDocumentViewController *)self navigationUnitForChapterIndex:currentChapter - 1];
     if (v4)
     {
       v5 = v4;
       self->mOverscrollAnimationInProcess = 1;
-      v6 = [(THDocumentViewController *)self view];
+      view = [(THDocumentViewController *)self view];
       [(UIView *)[(THDocumentViewController *)self topOverscrollView] frame];
       v7 = OBJC_IVAR___TSADocumentViewController__scrollView;
-      [v6 convertRect:*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] fromView:?];
+      [view convertRect:*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] fromView:?];
       v9 = v8;
       v11 = v10;
       v12 = v10 + v10;
@@ -6059,11 +6059,11 @@ LABEL_42:
 
 - (void)p_verticalOverscrollNextChapter
 {
-  v3 = [(THDocumentViewController *)self currentChapter];
+  currentChapter = [(THDocumentViewController *)self currentChapter];
   v4 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (currentChapter != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3 + 1;
+    v5 = currentChapter + 1;
     if (v5 < [v4 count])
     {
       v6 = [(THDocumentViewController *)self navigationUnitForChapterIndex:v5];
@@ -6071,10 +6071,10 @@ LABEL_42:
       {
         v7 = v6;
         self->mOverscrollAnimationInProcess = 1;
-        v8 = [(THDocumentViewController *)self view];
+        view = [(THDocumentViewController *)self view];
         [(UIView *)[(THDocumentViewController *)self bottomOverscrollView] frame];
         v9 = OBJC_IVAR___TSADocumentViewController__scrollView;
-        [v8 convertRect:*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] fromView:?];
+        [view convertRect:*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] fromView:?];
         v11 = v10;
         v13 = v12;
         v14 = v12 + v12;
@@ -6124,14 +6124,14 @@ LABEL_42:
   }
 }
 
-- (void)p_animateHorizontalOverscrollToPageIndex:(unint64_t)a3 duration:(double)a4 animationCompletionBlock:(id)a5 layoutCompletionBlock:(id)a6
+- (void)p_animateHorizontalOverscrollToPageIndex:(unint64_t)index duration:(double)duration animationCompletionBlock:(id)block layoutCompletionBlock:(id)completionBlock
 {
   if (![(THPresentationType *)[(THDocumentViewController *)self currentPresentationType] isPaginated])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v11 = [(THDocumentViewController *)self currentAbsolutePageIndex];
+  currentAbsolutePageIndex = [(THDocumentViewController *)self currentAbsolutePageIndex];
   v12 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
   v13 = OBJC_IVAR___TSADocumentViewController__scrollView;
   [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] contentOffset];
@@ -6144,7 +6144,7 @@ LABEL_42:
   [*&self->TSADocumentViewController_opaque[v13] contentOffset];
   v22 = v21 - v15;
   [*&self->TSADocumentViewController_opaque[v13] bounds];
-  if (a3 <= v11)
+  if (index <= currentAbsolutePageIndex)
   {
     v24 = v23;
   }
@@ -6174,18 +6174,18 @@ LABEL_42:
     }
 
     +[CATransaction begin];
-    [CATransaction setAnimationDuration:a4];
+    [CATransaction setAnimationDuration:duration];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_183EC;
     v33[3] = &unk_45B220;
-    v33[7] = a6;
-    v33[8] = a3;
+    v33[7] = completionBlock;
+    v33[8] = index;
     v33[4] = self;
     v33[5] = v27;
     v34 = v28;
-    v33[6] = a5;
+    v33[6] = block;
     [CATransaction setCompletionBlock:v33];
     v29 = [CABasicAnimation animationWithKeyPath:@"sublayerTransform"];
     CATransform3DMakeTranslation(&v32, v22, 0.0, 0.0);
@@ -6204,7 +6204,7 @@ LABEL_42:
       v31[2] = sub_184D8;
       v31[3] = &unk_45B298;
       v31[4] = self;
-      *&v31[5] = a4;
+      *&v31[5] = duration;
       [(THPageViewProvider *)mPageViewProvider syncPerformBlock:v31];
     }
 
@@ -6213,25 +6213,25 @@ LABEL_42:
 
   else
   {
-    if (a5)
+    if (block)
     {
-      (*(a5 + 2))(a5);
+      (*(block + 2))(block);
     }
 
-    [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] setVisibleAbsolutePhysicalPageIndex:a3];
+    [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] setVisibleAbsolutePhysicalPageIndex:index];
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
     +[CATransaction flush];
-    if (a6)
+    if (completionBlock)
     {
-      v25 = *(a6 + 2);
+      v25 = *(completionBlock + 2);
 
-      v25(a6);
+      v25(completionBlock);
     }
   }
 }
 
-- (void)p_setupHorizontalOverscrollTransitionAnimationToAbsolutePageIndex:(unint64_t)a3
+- (void)p_setupHorizontalOverscrollTransitionAnimationToAbsolutePageIndex:(unint64_t)index
 {
   self->mOverscrollAnimationInProcess = 1;
   [(THDocumentViewController *)self p_horizontalOverscrollAnimationDuration];
@@ -6245,7 +6245,7 @@ LABEL_42:
   v5[1] = 3221225472;
   v5[2] = sub_18780;
   v5[3] = &unk_45AE00;
-  [(THDocumentViewController *)self p_animateHorizontalOverscrollToPageIndex:a3 duration:v6 animationCompletionBlock:v5 layoutCompletionBlock:?];
+  [(THDocumentViewController *)self p_animateHorizontalOverscrollToPageIndex:index duration:v6 animationCompletionBlock:v5 layoutCompletionBlock:?];
 }
 
 - (void)p_horizontalOverscrollPreviousChapter
@@ -6256,19 +6256,19 @@ LABEL_42:
     {
       if ([(THDocumentViewController *)self leftOverscrollView])
       {
-        v3 = [(THDocumentViewController *)self currentChapter];
-        if (v3)
+        currentChapter = [(THDocumentViewController *)self currentChapter];
+        if (currentChapter)
         {
-          if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+          if (currentChapter != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v4 = [(THDocumentViewController *)self navigationUnitForChapterIndex:v3 - 1];
+            v4 = [(THDocumentViewController *)self navigationUnitForChapterIndex:currentChapter - 1];
             if (v4)
             {
               v5 = v4;
               [(THDocumentViewController *)self setOverscrollTransitionView:[(THDocumentViewController *)self leftOverscrollView]];
               [(THDocumentViewController *)self setLeftOverscrollView:0];
-              v6 = [(THDocumentViewController *)self currentPresentationType];
-              v7 = [v5 absolutePageIndexForRelativePageIndex:objc_msgSend(v5 forPresentationType:{"pageCountForPresentationType:", v6) - 1, v6}];
+              currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
+              v7 = [v5 absolutePageIndexForRelativePageIndex:objc_msgSend(v5 forPresentationType:{"pageCountForPresentationType:", currentPresentationType) - 1, currentPresentationType}];
 
               [(THDocumentViewController *)self p_setupHorizontalOverscrollTransitionAnimationToAbsolutePageIndex:v7];
             }
@@ -6287,11 +6287,11 @@ LABEL_42:
     {
       if ([(THDocumentViewController *)self rightOverscrollView])
       {
-        v3 = [(THDocumentViewController *)self currentChapter];
+        currentChapter = [(THDocumentViewController *)self currentChapter];
         v4 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
-        if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+        if (currentChapter != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v5 = v3 + 1;
+          v5 = currentChapter + 1;
           if (v5 < [v4 count])
           {
             v6 = [(THDocumentViewController *)self navigationUnitForChapterIndex:v5];
@@ -6313,67 +6313,67 @@ LABEL_42:
 
 - (void)p_pageLeft
 {
-  v2 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v2 pageLeft];
+  [interactiveCanvasController pageLeft];
 }
 
 - (void)p_pageRight
 {
-  v2 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v2 pageRight];
+  [interactiveCanvasController pageRight];
 }
 
-- (void)presentSearchResultsForString:(id)a3
+- (void)presentSearchResultsForString:(id)string
 {
-  v4 = [(THDocumentViewController *)self toolbarDelegate];
+  toolbarDelegate = [(THDocumentViewController *)self toolbarDelegate];
 
-  [(THToolbarDelegate *)v4 showSearchPopoverWithText:a3];
+  [(THToolbarDelegate *)toolbarDelegate showSearchPopoverWithText:string];
 }
 
-- (void)showToolbarAnimated:(BOOL)a3
+- (void)showToolbarAnimated:(BOOL)animated
 {
-  [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] showToolbarAnimated:a3];
+  [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] showToolbarAnimated:animated];
 
   [(THDocumentViewController *)self p_updatePageNumberViewVisibility];
 }
 
-- (void)hideToolbarAnimated:(BOOL)a3
+- (void)hideToolbarAnimated:(BOOL)animated
 {
-  [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] hideToolbarAnimated:a3];
+  [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] hideToolbarAnimated:animated];
 
   [(THDocumentViewController *)self p_updatePageNumberViewVisibility];
 }
 
-- (void)settingToolbarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)settingToolbarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   [(THDocumentViewController *)self p_updateScrubberCheckToolbarState:0];
-  if (v4)
+  if (animatedCopy)
   {
 
-    [(THDocumentViewController *)self setScrubberHiddenAnimated:v5];
+    [(THDocumentViewController *)self setScrubberHiddenAnimated:hiddenCopy];
   }
 
   else
   {
-    v7 = [(THDocumentViewController *)self scrubber];
+    scrubber = [(THDocumentViewController *)self scrubber];
 
-    [(BKScrubberControl *)v7 setHidden:v5];
+    [(BKScrubberControl *)scrubber setHidden:hiddenCopy];
   }
 }
 
-- (void)setScrubberHiddenAnimated:(BOOL)a3
+- (void)setScrubberHiddenAnimated:(BOOL)animated
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_18C14;
   v3[3] = &unk_45B2C0;
   v3[4] = self;
-  v4 = a3;
+  animatedCopy = animated;
   [UIView transitionWithView:[(THDocumentViewController *)self scrubber] duration:256 options:v3 animations:0 completion:0.25];
 }
 
@@ -6395,13 +6395,13 @@ LABEL_42:
   }
 }
 
-- (void)p_setUnscaledCanvasRect:(CGRect)a3 animated:(BOOL)a4
+- (void)p_setUnscaledCanvasRect:(CGRect)rect animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ((!-[THDocumentViewController inFlowMode](self, "inFlowMode") || [objc_msgSend(objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")]) && -[THDocumentViewController inFlowMode](self, "inFlowMode"))
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -6422,9 +6422,9 @@ LABEL_42:
   if (([-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")] & 1) == 0)
   {
     [(THDocumentViewController *)self p_updateBookmarkAffordances];
-    v10 = [(THDocumentViewController *)self displaySleepController];
+    displaySleepController = [(THDocumentViewController *)self displaySleepController];
 
-    [(BCDisplaySleepController *)v10 userInteractionOccurred];
+    [(BCDisplaySleepController *)displaySleepController userInteractionOccurred];
   }
 }
 
@@ -6440,16 +6440,16 @@ LABEL_42:
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   [(THPageViewProvider *)[(THDocumentViewController *)self pageViewProvider] updateWithInfosToDisplay:0];
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-  v3 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v3 popThreadedLayoutAndRenderDisabled];
+  [interactiveCanvasController popThreadedLayoutAndRenderDisabled];
 }
 
 - (id)currentContentNode
 {
-  v2 = [(THDocumentViewController *)self documentNavigator];
+  documentNavigator = [(THDocumentViewController *)self documentNavigator];
 
-  return [(THDocumentNavigator *)v2 currentContentNode];
+  return [(THDocumentNavigator *)documentNavigator currentContentNode];
 }
 
 - (double)p_horizontalOverscrollAnimationDuration
@@ -6476,24 +6476,24 @@ LABEL_42:
   return result;
 }
 
-- (void)followAbsolutePageIndex:(unint64_t)a3
+- (void)followAbsolutePageIndex:(unint64_t)index
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
     [(THDocumentViewController *)self p_ensureInNavigationUnitForContentNode:v6];
-    v7 = [v6 storageAnchorForNodeRelativePageIndex:{objc_msgSend(v6, "relativePageIndexForAbsolutePageIndex:forPresentationType:", a3, +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", -[THPresentationType context](-[THDocumentViewController currentPresentationType](self, "currentPresentationType"), "context")))}];
-    [v7 setAbsolutePageIndex:a3];
+    v7 = [v6 storageAnchorForNodeRelativePageIndex:{objc_msgSend(v6, "relativePageIndexForAbsolutePageIndex:forPresentationType:", index, +[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", -[THPresentationType context](-[THDocumentViewController currentPresentationType](self, "currentPresentationType"), "context")))}];
+    [v7 setAbsolutePageIndex:index];
 
     [(THDocumentViewController *)self followAnchor:v7 pulse:0];
   }
 }
 
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  if (a3)
+  if (anchor)
   {
-    v4 = a4;
+    pulseCopy = pulse;
     if ([(THDocumentViewController *)self isEpub])
     {
       objc_opt_class();
@@ -6502,7 +6502,7 @@ LABEL_42:
     }
 
     [(THDocumentViewController *)self p_dismissActiveAnimated:1];
-    v7 = [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] followAnchor:a3 pulse:v4];
+    v7 = [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] followAnchor:anchor pulse:pulseCopy];
     if (v7)
     {
       objc_opt_class();
@@ -6520,90 +6520,90 @@ LABEL_42:
   return v7;
 }
 
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4
+- (BOOL)followLink:(id)link animated:(BOOL)animated
 {
-  v4 = a4;
-  [(THDocumentViewController *)self p_dismissActiveAnimated:a4];
-  LOBYTE(v4) = [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] followLink:a3 animated:v4];
+  animatedCopy = animated;
+  [(THDocumentViewController *)self p_dismissActiveAnimated:animated];
+  LOBYTE(animatedCopy) = [(THDocumentNavigator *)[(THDocumentViewController *)self documentNavigator] followLink:link animated:animatedCopy];
   [(THDocumentViewController *)self p_updatePageNumberingForce:1];
-  return v4;
+  return animatedCopy;
 }
 
-- (id)anchorFromLink:(id)a3
+- (id)anchorFromLink:(id)link
 {
-  v4 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  return [(THBookNavigation *)v4 anchorFromLink:a3];
+  return [(THBookNavigation *)bookNavigationDelegate anchorFromLink:link];
 }
 
 - (void)showTOC
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v2 showTOC];
+  [(THBookNavigation *)bookNavigationDelegate showTOC];
 }
 
 - (void)closeDocument
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v2 closeDocument];
+  [(THBookNavigation *)bookNavigationDelegate closeDocument];
 }
 
 - (BOOL)isNotesFullscreenVisible
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  return [(THBookNavigation *)v2 isNotesFullscreenVisible];
+  return [(THBookNavigation *)bookNavigationDelegate isNotesFullscreenVisible];
 }
 
 - (BOOL)isGlossaryVisible
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  return [(THBookNavigation *)v2 isGlossaryVisible];
+  return [(THBookNavigation *)bookNavigationDelegate isGlossaryVisible];
 }
 
-- (void)showGlossaryViewWithAnchor:(id)a3
+- (void)showGlossaryViewWithAnchor:(id)anchor
 {
-  v4 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v4 showGlossaryViewWithAnchor:a3];
+  [(THBookNavigation *)bookNavigationDelegate showGlossaryViewWithAnchor:anchor];
 }
 
 - (id)bookLinkResolver
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  return [(THBookNavigation *)v2 bookLinkResolver];
+  return [(THBookNavigation *)bookNavigationDelegate bookLinkResolver];
 }
 
 - (void)hideNavigationHistory
 {
-  v2 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v2 hideNavigationHistory];
+  [(THBookNavigation *)bookNavigationDelegate hideNavigationHistory];
 }
 
-- (void)documentNavigator:(id)a3 willNavigateToAbsolutePageIndex:(unint64_t)a4 inContentNode:(id)a5
+- (void)documentNavigator:(id)navigator willNavigateToAbsolutePageIndex:(unint64_t)index inContentNode:(id)node
 {
-  [a5 startLoading];
-  [a5 waitUntilFinishedLoadingAndPaginating];
+  [node startLoading];
+  [node waitUntilFinishedLoadingAndPaginating];
 
-  [(THDocumentViewController *)self p_ensureInNavigationUnitForContentNode:a5];
+  [(THDocumentViewController *)self p_ensureInNavigationUnitForContentNode:node];
 }
 
-- (void)documentNavigator:(id)a3 scrollToAbsolutePageIndex:(unint64_t)a4 specificUnscaledCanvasRect:(CGRect)a5 animated:(BOOL)a6 willPulse:(BOOL)a7
+- (void)documentNavigator:(id)navigator scrollToAbsolutePageIndex:(unint64_t)index specificUnscaledCanvasRect:(CGRect)rect animated:(BOOL)animated willPulse:(BOOL)pulse
 {
-  v7 = a7;
-  v8 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  pulseCopy = pulse;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(THDocumentViewController *)self inFlowMode])
   {
-    if (v7)
+    if (pulseCopy)
     {
       if (y + -100.0 >= 0.0)
       {
@@ -6616,77 +6616,77 @@ LABEL_42:
       }
     }
 
-    else if (!a4 && y <= 20.0 && [(THDocumentViewController *)self isEpub])
+    else if (!index && y <= 20.0 && [(THDocumentViewController *)self isEpub])
     {
       y = 0.0;
     }
   }
 
-  [(THDocumentViewController *)self p_setUnscaledCanvasRect:v8 animated:x, y, width, height];
+  [(THDocumentViewController *)self p_setUnscaledCanvasRect:animatedCopy animated:x, y, width, height];
 
   [(THDocumentViewController *)self setLastStorageAnchor:0];
 }
 
-- (void)documentNavigator:(id)a3 failedToFollowLink:(id)a4
+- (void)documentNavigator:(id)navigator failedToFollowLink:(id)link
 {
-  v5 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v5 followLink:a4];
+  [(THBookNavigation *)bookNavigationDelegate followLink:link];
 }
 
-- (void)documentNavigator:(id)a3 failedToFollowAnchor:(id)a4 pulse:(BOOL)a5
+- (void)documentNavigator:(id)navigator failedToFollowAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  v5 = a5;
-  v7 = [(THDocumentViewController *)self bookNavigationDelegate];
+  pulseCopy = pulse;
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v7 followAnchor:a4 pulse:v5];
+  [(THBookNavigation *)bookNavigationDelegate followAnchor:anchor pulse:pulseCopy];
 }
 
-- (void)documentNavigator:(id)a3 willJumpToPageLocation:(id)a4
+- (void)documentNavigator:(id)navigator willJumpToPageLocation:(id)location
 {
   [(THDocumentViewController *)self bookNavigationDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(THDocumentViewController *)self bookNavigationDelegate];
+    bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-    [(THBookNavigation *)v6 willJumpToPageLocation:a4];
+    [(THBookNavigation *)bookNavigationDelegate willJumpToPageLocation:location];
   }
 }
 
-- (void)documentNavigator:(id)a3 didJumpToPageLocation:(id)a4
+- (void)documentNavigator:(id)navigator didJumpToPageLocation:(id)location
 {
   [(THDocumentViewController *)self bookNavigationDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] didJumpToPageLocation:a4];
+    [(THBookNavigation *)[(THDocumentViewController *)self bookNavigationDelegate] didJumpToPageLocation:location];
   }
 
-  v6 = [(THDocumentViewController *)self displaySleepController];
+  displaySleepController = [(THDocumentViewController *)self displaySleepController];
 
-  [(BCDisplaySleepController *)v6 userInteractionOccurred];
+  [(BCDisplaySleepController *)displaySleepController userInteractionOccurred];
 }
 
-- (BOOL)documentNavigatorIsOnActiveCanvas:(id)a3
+- (BOOL)documentNavigatorIsOnActiveCanvas:(id)canvas
 {
-  v3 = [objc_msgSend(-[THDocumentViewController viewIfLoaded](self viewIfLoaded];
-  if (v3)
+  viewIfLoaded = [objc_msgSend(-[THDocumentViewController viewIfLoaded](self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v4 = v3;
-    if ([v3 activationState])
+    v4 = viewIfLoaded;
+    if ([viewIfLoaded activationState])
     {
-      LOBYTE(v3) = [v4 activationState] == &dword_0 + 1;
+      LOBYTE(viewIfLoaded) = [v4 activationState] == &dword_0 + 1;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(viewIfLoaded) = 1;
     }
   }
 
-  return v3;
+  return viewIfLoaded;
 }
 
-- (unint64_t)visiblePageCountForDocumentNavigator:(id)a3
+- (unint64_t)visiblePageCountForDocumentNavigator:(id)navigator
 {
   if ([(THDocumentViewController *)self isTwoUp])
   {
@@ -6699,44 +6699,44 @@ LABEL_42:
   }
 }
 
-- (id)p_expandedViewControllerForRep:(id)a3
+- (id)p_expandedViewControllerForRep:(id)rep
 {
   objc_opt_class();
-  [a3 expandedContentDrawableToPresent];
+  [rep expandedContentDrawableToPresent];
   v5 = TSUDynamicCast();
   objc_opt_class();
-  [a3 info];
+  [rep info];
   v6 = TSUDynamicCast();
   objc_opt_class();
   [v6 expandedStageDrawable];
   v7 = TSUDynamicCast();
   if (v5 && ![v5 isAudioOnly] || v7 && (objc_msgSend(v7, "isAudioOnly") & 1) == 0)
   {
-    v10 = [[THWiOSExpandedMovieViewController alloc] initWithDocumentRoot:[(THDocumentViewController *)self documentRoot] expandableRep:a3 delegate:self];
+    v10 = [[THWiOSExpandedMovieViewController alloc] initWithDocumentRoot:[(THDocumentViewController *)self documentRoot] expandableRep:rep delegate:self];
     [-[THDocumentViewController parentViewController](self "parentViewController")];
     return v10;
   }
 
   else
   {
-    v8 = [[THWiOSExpandedViewController alloc] initWithDocumentRoot:[(THDocumentViewController *)self documentRoot] expandableRep:a3 delegate:self];
+    v8 = [[THWiOSExpandedViewController alloc] initWithDocumentRoot:[(THDocumentViewController *)self documentRoot] expandableRep:rep delegate:self];
 
     return v8;
   }
 }
 
-- (void)presentRepExpanded:(id)a3
+- (void)presentRepExpanded:(id)expanded
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3)
+  if (expanded)
   {
     if (!self->mExpandedViewController)
     {
-      v5 = [(THDocumentViewController *)self p_expandedViewControllerForRep:a3];
+      v5 = [(THDocumentViewController *)self p_expandedViewControllerForRep:expanded];
 
       [(THDocumentViewController *)self presentExpandedViewController:v5 completionBlock:0];
     }
@@ -6748,9 +6748,9 @@ LABEL_42:
   }
 }
 
-- (void)presentExpandedViewController:(id)a3 completionBlock:(id)a4
+- (void)presentExpandedViewController:(id)controller completionBlock:(id)block
 {
-  [(THDocumentViewController *)self setExpandedViewController:a3];
+  [(THDocumentViewController *)self setExpandedViewController:controller];
   [(THDocumentViewController *)self refreshStatusBarAppearance];
   [-[THDocumentViewController view](self "view")];
   v6[0] = _NSConcreteStackBlock;
@@ -6758,25 +6758,25 @@ LABEL_42:
   v6[2] = sub_199B0;
   v6[3] = &unk_45B2E8;
   v6[4] = self;
-  v6[5] = a4;
+  v6[5] = block;
   [(THWExpandedViewController *)[(THDocumentViewController *)self expandedViewController] presentExpandedAnimatedWithCompletionBlock:v6];
 }
 
-- (BOOL)repIsPresentedExpanded:(id)a3
+- (BOOL)repIsPresentedExpanded:(id)expanded
 {
-  if (![a3 info])
+  if (![expanded info])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THDocumentViewController *)self expandedViewController];
-  if (v5)
+  expandedViewController = [(THDocumentViewController *)self expandedViewController];
+  if (expandedViewController)
   {
-    v6 = [a3 info];
-    LOBYTE(v5) = v6 == [-[THWExpandedViewController expandedRepSourceRep](-[THDocumentViewController expandedViewController](self "expandedViewController")];
+    info = [expanded info];
+    LOBYTE(expandedViewController) = info == [-[THWExpandedViewController expandedRepSourceRep](-[THDocumentViewController expandedViewController](self "expandedViewController")];
   }
 
-  return v5;
+  return expandedViewController;
 }
 
 - (CGSize)widgetHostExpandedSize
@@ -6795,8 +6795,8 @@ LABEL_42:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  interactiveCanvasController = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
+  v3 = [interactiveCanvasController countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (!v3)
   {
     return 0;
@@ -6811,7 +6811,7 @@ LABEL_3:
   {
     if (*v11 != v5)
     {
-      objc_enumerationMutation(v2);
+      objc_enumerationMutation(interactiveCanvasController);
     }
 
     v8 = *(*(&v10 + 1) + 8 * v7);
@@ -6822,7 +6822,7 @@ LABEL_3:
 
     if (v4 == ++v7)
     {
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [interactiveCanvasController countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         goto LABEL_3;
@@ -6833,15 +6833,15 @@ LABEL_3:
   }
 }
 
-- (void)presentPopoverForPopUpInfo:(id)a3 withFrame:(CGRect)a4 inLayer:(id)a5
+- (void)presentPopoverForPopUpInfo:(id)info withFrame:(CGRect)frame inLayer:(id)layer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (+[NSThread isMainThread])
   {
-    if (a3)
+    if (info)
     {
       goto LABEL_3;
     }
@@ -6850,10 +6850,10 @@ LABEL_3:
   else
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a3)
+    if (info)
     {
 LABEL_3:
-      if (a5)
+      if (layer)
       {
         goto LABEL_4;
       }
@@ -6863,10 +6863,10 @@ LABEL_3:
   }
 
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-  if (a5)
+  if (layer)
   {
 LABEL_4:
-    if (!a3)
+    if (!info)
     {
       return;
     }
@@ -6876,20 +6876,20 @@ LABEL_4:
 
 LABEL_8:
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-  if (!a3)
+  if (!info)
   {
     return;
   }
 
 LABEL_9:
-  if ([(TSWPopoverController *)self->mPopUpPopoverController popUpInfo]!= a3)
+  if ([(TSWPopoverController *)self->mPopUpPopoverController popUpInfo]!= info)
   {
-    if (![a3 frameViewSettings])
+    if (![info frameViewSettings])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    if (![a3 popoverTheme])
+    if (![info popoverTheme])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
@@ -6910,19 +6910,19 @@ LABEL_9:
       v14 = 0;
     }
 
-    [a3 updateBackgroundColor:v14];
+    [info updateBackgroundColor:v14];
     objc_opt_class();
     [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
     [TSUDynamicCast() setSelection:0];
     v15 = [THWPopUpContentProvider alloc];
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-    v17 = [(THWPopUpContentProvider *)v15 initWithPopUpInfo:a3 scale:[(THDocumentViewController *)self documentRoot] documentRoot:self scrollableCanvasHost:self bookNavigator:[(THDocumentViewController *)self documentNavigator] documentNavigator:v16];
+    v17 = [(THWPopUpContentProvider *)v15 initWithPopUpInfo:info scale:[(THDocumentViewController *)self documentRoot] documentRoot:self scrollableCanvasHost:self bookNavigator:[(THDocumentViewController *)self documentNavigator] documentNavigator:v16];
     v18 = [[TSWPopoverController alloc] initWithContentProvider:v17];
     self->mPopUpPopoverController = v18;
     [(TSWPopoverController *)v18 setDelegate:self];
 
-    v19 = [(THDocumentViewController *)self p_pressableRepGestureRecognizer];
-    -[TSWPopoverController setPassThroughGestureRecognizers:](self->mPopUpPopoverController, "setPassThroughGestureRecognizers:", +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] panGestureRecognizer], v19, 0));
+    p_pressableRepGestureRecognizer = [(THDocumentViewController *)self p_pressableRepGestureRecognizer];
+    -[TSWPopoverController setPassThroughGestureRecognizers:](self->mPopUpPopoverController, "setPassThroughGestureRecognizers:", +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] panGestureRecognizer], p_pressableRepGestureRecognizer, 0));
     [objc_msgSend(-[THDocumentViewController view](self "view")];
     v21 = v20;
     v23 = v22;
@@ -6948,49 +6948,49 @@ LABEL_9:
   }
 }
 
-- (BOOL)widgetHostingAllowInteractionOnPageForRep:(id)a3
+- (BOOL)widgetHostingAllowInteractionOnPageForRep:(id)rep
 {
   if (![(THDocumentViewController *)self th_cachedIsCompactWidth]&& ![(THDocumentViewController *)self th_cachedIsCompactHeight])
   {
     return 1;
   }
 
-  return [a3 widgetInteractionAllowOnPageForCompact];
+  return [rep widgetInteractionAllowOnPageForCompact];
 }
 
-- (BOOL)widgetHostingAllowAutoplayForRep:(id)a3
+- (BOOL)widgetHostingAllowAutoplayForRep:(id)rep
 {
   if (![(THDocumentViewController *)self th_cachedIsCompactWidth]&& ![(THDocumentViewController *)self th_cachedIsCompactHeight])
   {
     return 1;
   }
 
-  return [a3 widgetInteractionAllowAutoplayForCompact];
+  return [rep widgetInteractionAllowAutoplayForCompact];
 }
 
-- (BOOL)widgetHostingShouldAllowNaturalHorizontalScrollForRep:(id)a3
+- (BOOL)widgetHostingShouldAllowNaturalHorizontalScrollForRep:(id)rep
 {
-  v4 = [(THDocumentViewController *)self inFlowMode];
-  if (v4)
+  inFlowMode = [(THDocumentViewController *)self inFlowMode];
+  if (inFlowMode)
   {
 
-    LOBYTE(v4) = [(THDocumentViewController *)self isEpub];
+    LOBYTE(inFlowMode) = [(THDocumentViewController *)self isEpub];
   }
 
-  return v4;
+  return inFlowMode;
 }
 
-- (BOOL)popoverController:(id)a3 shouldIgnorePassThroughGestureRecognizer:(id)a4
+- (BOOL)popoverController:(id)controller shouldIgnorePassThroughGestureRecognizer:(id)recognizer
 {
   result = 0;
-  if (self->mPopUpPopoverController == a3 && [(THDocumentViewController *)self p_pressableRepGestureRecognizer]== a4)
+  if (self->mPopUpPopoverController == controller && [(THDocumentViewController *)self p_pressableRepGestureRecognizer]== recognizer)
   {
-    v7 = [(THDocumentViewController *)self interactiveCanvasController];
-    [a4 locationInView:{objc_msgSend(-[THDocumentViewController canvasViewController](self, "canvasViewController"), "canvasView")}];
-    [v7 convertBoundsToUnscaledPoint:?];
+    interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
+    [recognizer locationInView:{objc_msgSend(-[THDocumentViewController canvasViewController](self, "canvasViewController"), "canvasView")}];
+    [interactiveCanvasController convertBoundsToUnscaledPoint:?];
     [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-    v10 = [TSUProtocolCast() popUpInfo];
-    if (!v10 || v10 == [(TSWPopoverController *)self->mPopUpPopoverController popUpInfo])
+    popUpInfo = [TSUProtocolCast() popUpInfo];
+    if (!popUpInfo || popUpInfo == [(TSWPopoverController *)self->mPopUpPopoverController popUpInfo])
     {
       return 1;
     }
@@ -6999,11 +6999,11 @@ LABEL_9:
   return result;
 }
 
-- (void)popoverControllerWillDismiss:(id)a3
+- (void)popoverControllerWillDismiss:(id)dismiss
 {
-  if (self->mPopUpPopoverController == a3)
+  if (self->mPopUpPopoverController == dismiss)
   {
-    [a3 popUpInfo];
+    [dismiss popUpInfo];
     v4 = TSUProtocolCast();
     if (v4)
     {
@@ -7013,9 +7013,9 @@ LABEL_9:
     [(TSWPopoverController *)self->mPopUpPopoverController setDelegate:0];
 
     self->mPopUpPopoverController = 0;
-    v5 = [(THDocumentViewController *)self canvasViewController];
+    canvasViewController = [(THDocumentViewController *)self canvasViewController];
 
-    [v5 becomeFirstResponder];
+    [canvasViewController becomeFirstResponder];
   }
 }
 
@@ -7033,16 +7033,16 @@ LABEL_9:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v3 = [(THDocumentViewController *)self expandedViewController];
+  expandedViewController = [(THDocumentViewController *)self expandedViewController];
 
-  return [(THWExpandedViewController *)v3 curtainColorForFreeTransform];
+  return [(THWExpandedViewController *)expandedViewController curtainColorForFreeTransform];
 }
 
-- (CGRect)rectForCompletionAnimationWithRep:(id)a3
+- (CGRect)rectForCompletionAnimationWithRep:(id)rep
 {
-  v3 = [-[THDocumentViewController hostCanvasLayer](self hostCanvasLayer];
+  hostCanvasLayer = [-[THDocumentViewController hostCanvasLayer](self hostCanvasLayer];
 
-  [v3 frame];
+  [hostCanvasLayer frame];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -7050,40 +7050,40 @@ LABEL_9:
   return result;
 }
 
-- (void)freeTransformDidBeginWithRep:(id)a3 expandableRep:(id)a4
+- (void)freeTransformDidBeginWithRep:(id)rep expandableRep:(id)expandableRep
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (!a3)
+  if (!rep)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   [(THDocumentViewController *)self p_dismissActiveAnimated:1];
-  [(THDocumentViewController *)self setExpandedViewController:[(THDocumentViewController *)self p_expandedViewControllerForRep:a4]];
+  [(THDocumentViewController *)self setExpandedViewController:[(THDocumentViewController *)self p_expandedViewControllerForRep:expandableRep]];
   self->mShowToolbarOnCancelFTC = [(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] isToolbarHidden]^ 1;
 
   [(THDocumentViewController *)self hideToolbarAnimated:1];
 }
 
-- (void)freeTransformDidEndWithRep:(id)a3 expandableRep:(id)a4 completionBlock:(id)a5
+- (void)freeTransformDidEndWithRep:(id)rep expandableRep:(id)expandableRep completionBlock:(id)block
 {
-  if (![(THDocumentViewController *)self expandedViewController:a3])
+  if (![(THDocumentViewController *)self expandedViewController:rep])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v7 = [(THDocumentViewController *)self expandedViewController];
+  expandedViewController = [(THDocumentViewController *)self expandedViewController];
 
-  [(THDocumentViewController *)self presentExpandedViewController:v7 completionBlock:a5];
+  [(THDocumentViewController *)self presentExpandedViewController:expandedViewController completionBlock:block];
 }
 
-- (void)freeTransformPostAnimationDidCancelWithRep:(id)a3 expandableRep:(id)a4
+- (void)freeTransformPostAnimationDidCancelWithRep:(id)rep expandableRep:(id)expandableRep
 {
-  if (![(THDocumentViewController *)self expandedViewController:a3])
+  if (![(THDocumentViewController *)self expandedViewController:rep])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -7093,11 +7093,11 @@ LABEL_9:
   self->mExpandedViewController = 0;
 }
 
-- (void)freeTransformDidCancelWithRep:(id)a3 expandableRep:(id)a4
+- (void)freeTransformDidCancelWithRep:(id)rep expandableRep:(id)expandableRep
 {
   if (self->mShowToolbarOnCancelFTC)
   {
-    [(THDocumentViewController *)self showToolbarAnimated:1, a4];
+    [(THDocumentViewController *)self showToolbarAnimated:1, expandableRep];
   }
 }
 
@@ -7113,7 +7113,7 @@ LABEL_9:
   return ![(THDocumentViewController *)self inFlowMode]& v3;
 }
 
-- (CGRect)bookmarkHotspotRegionForPage:(id)a3
+- (CGRect)bookmarkHotspotRegionForPage:(id)page
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -7121,7 +7121,7 @@ LABEL_9:
   height = CGRectZero.size.height;
   if ([(THToolbarDelegate *)[(THDocumentViewController *)self toolbarDelegate] isToolbarHidden]&& [(THDocumentViewController *)self isEpub]&& ![(THDocumentViewController *)self inFlowMode])
   {
-    [objc_msgSend(a3 "geometry")];
+    [objc_msgSend(page "geometry")];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -7152,22 +7152,22 @@ LABEL_9:
   return result;
 }
 
-- (id)p_canvasInfoForExpandedInfo:(id)a3 presentationType:(id)a4
+- (id)p_canvasInfoForExpandedInfo:(id)info presentationType:(id)type
 {
-  if ([a4 isPaginated])
+  if ([type isPaginated])
   {
-    [(THDocumentViewController *)self p_ownerInfoForPopUpInfo:a3];
-    return a3;
+    [(THDocumentViewController *)self p_ownerInfoForPopUpInfo:info];
+    return info;
   }
 
   else
   {
 
-    return [(THDocumentViewController *)self p_expandableInfoForInfo:a3 forceLoad:0];
+    return [(THDocumentViewController *)self p_expandableInfoForInfo:info forceLoad:0];
   }
 }
 
-- (id)p_contentNodeForInfo:(id)a3 presentationType:(id)a4
+- (id)p_contentNodeForInfo:(id)info presentationType:(id)type
 {
   while (1)
   {
@@ -7178,8 +7178,8 @@ LABEL_9:
       break;
     }
 
-    result = [a3 parentInfo];
-    a3 = result;
+    result = [info parentInfo];
+    info = result;
     if (!result)
     {
       return result;
@@ -7191,16 +7191,16 @@ LABEL_9:
 
 - (UIView)rootSuperview
 {
-  v2 = [(THDocumentViewController *)self view];
+  view = [(THDocumentViewController *)self view];
 
-  return [v2 superview];
+  return [view superview];
 }
 
 - (UIView)expandedWindowHostView
 {
-  v2 = [(THDocumentViewController *)self view];
+  view = [(THDocumentViewController *)self view];
 
-  return [v2 superview];
+  return [view superview];
 }
 
 - (CGSize)windowMinSize
@@ -7220,12 +7220,12 @@ LABEL_9:
   return [(THWFreeTransformController *)v2 isFreeTransformInProgress];
 }
 
-- (id)expandableRepForInfo:(id)a3
+- (id)expandableRepForInfo:(id)info
 {
   v5 = [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   if (!v5)
   {
-    v6 = [(THDocumentViewController *)self p_expandableInfoForInfo:a3 forceLoad:0];
+    v6 = [(THDocumentViewController *)self p_expandableInfoForInfo:info forceLoad:0];
     if (!v6 || (v5 = [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")]) == 0)
     {
       v5 = [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
@@ -7235,34 +7235,34 @@ LABEL_9:
   v7 = v5;
   v8 = TSUProtocolCast();
   objc_opt_class();
-  v9 = TSUClassAndProtocolCast();
+  expandableRep = TSUClassAndProtocolCast();
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 expandableRep];
+    expandableRep = [v8 expandableRep];
   }
 
-  if (v7 && !v9)
+  if (v7 && !expandableRep)
   {
     objc_opt_class();
-    v9 = TSUClassAndProtocolCast();
+    expandableRep = TSUClassAndProtocolCast();
   }
 
-  if (v9)
+  if (expandableRep)
   {
-    return v9;
+    return expandableRep;
   }
 
-  if (![a3 parentInfo])
+  if (![info parentInfo])
   {
     return 0;
   }
 
-  v11 = [a3 parentInfo];
+  parentInfo = [info parentInfo];
 
-  return [(THDocumentViewController *)self expandableRepForInfo:v11];
+  return [(THDocumentViewController *)self expandableRepForInfo:parentInfo];
 }
 
-- (void)expandedViewControllerWillPresent:(id)a3
+- (void)expandedViewControllerWillPresent:(id)present
 {
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   [(THDocumentViewController *)self hideToolbarAnimated:0];
@@ -7271,8 +7271,8 @@ LABEL_9:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  interactiveCanvasController = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
+  v6 = [interactiveCanvasController countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -7283,72 +7283,72 @@ LABEL_9:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(interactiveCanvasController);
         }
 
-        [*(*(&v10 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"expandedViewControllerWillPresent:" withObject:a3];
+        [*(*(&v10 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"expandedViewControllerWillPresent:" withObject:present];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [interactiveCanvasController countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)expandedViewControllerDidPresent:(id)a3
+- (void)expandedViewControllerDidPresent:(id)present
 {
   [(THDocumentViewController *)self setPagePaddingOptions:0];
   [(THDocumentViewController *)self hideToolbarAnimated:1];
-  v4 = [(THDocumentViewController *)self toolbarDelegate];
+  toolbarDelegate = [(THDocumentViewController *)self toolbarDelegate];
 
-  [(THToolbarDelegate *)v4 setToolbarHiddenFromAccessibility:1];
+  [(THToolbarDelegate *)toolbarDelegate setToolbarHiddenFromAccessibility:1];
 }
 
-- (void)expandedViewControllerWillBeginDismissing:(id)a3
+- (void)expandedViewControllerWillBeginDismissing:(id)dismissing
 {
   if (![(THDocumentViewController *)self inFlowMode])
   {
     [(THDocumentViewController *)self p_ensureVisibleAbsolutePhysicalPageIndexFromFullscreen];
-    v4 = [(THDocumentViewController *)self interactiveCanvasController];
+    interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-    [v4 forceStopScrolling];
+    [interactiveCanvasController forceStopScrolling];
   }
 }
 
-- (void)expandedViewControllerDidDismiss:(id)a3
+- (void)expandedViewControllerDidDismiss:(id)dismiss
 {
-  v3 = self;
-  if ([(THDocumentViewController *)self expandedViewController]== a3)
+  selfCopy = self;
+  if ([(THDocumentViewController *)self expandedViewController]== dismiss)
   {
-    [(THWExpandedViewController *)[(THDocumentViewController *)v3 expandedViewController] setDelegate:0];
-    [(THWExpandedViewController *)v3->mExpandedViewController teardown];
+    [(THWExpandedViewController *)[(THDocumentViewController *)selfCopy expandedViewController] setDelegate:0];
+    [(THWExpandedViewController *)selfCopy->mExpandedViewController teardown];
 
-    v3->mExpandedViewController = 0;
+    selfCopy->mExpandedViewController = 0;
   }
 
-  [(THDocumentViewController *)v3 setPagePaddingOptions:3];
-  if ([(THDocumentViewController *)v3 inPaginatedMode])
+  [(THDocumentViewController *)selfCopy setPagePaddingOptions:3];
+  if ([(THDocumentViewController *)selfCopy inPaginatedMode])
   {
-    [(THDocumentViewController *)v3 p_updateVisibleInfos];
+    [(THDocumentViewController *)selfCopy p_updateVisibleInfos];
   }
 
-  [(THDocumentViewController *)v3 refreshStatusBarAppearance];
-  [(THDocumentViewController *)v3 setLastAbsolutePageIndex:0x7FFFFFFFFFFFFFFFLL];
-  [(THToolbarDelegate *)[(THDocumentViewController *)v3 toolbarDelegate] setToolbarHiddenFromAccessibility:0];
-  if ([(THDocumentViewController *)v3 canvasViewController])
+  [(THDocumentViewController *)selfCopy refreshStatusBarAppearance];
+  [(THDocumentViewController *)selfCopy setLastAbsolutePageIndex:0x7FFFFFFFFFFFFFFFLL];
+  [(THToolbarDelegate *)[(THDocumentViewController *)selfCopy toolbarDelegate] setToolbarHiddenFromAccessibility:0];
+  if ([(THDocumentViewController *)selfCopy canvasViewController])
   {
-    v3 = [(THDocumentViewController *)v3 canvasViewController];
+    selfCopy = [(THDocumentViewController *)selfCopy canvasViewController];
   }
 
-  [(THDocumentViewController *)v3 becomeFirstResponder];
+  [(THDocumentViewController *)selfCopy becomeFirstResponder];
 }
 
-- (UIEdgeInsets)expandedViewControllerSafeAreaInsets:(id)a3
+- (UIEdgeInsets)expandedViewControllerSafeAreaInsets:(id)insets
 {
-  v3 = [(THDocumentViewController *)self view];
+  view = [(THDocumentViewController *)self view];
 
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -7356,45 +7356,45 @@ LABEL_9:
   return result;
 }
 
-- (void)expandedViewController:(id)a3 handleHyperlinkWithURL:(id)a4
+- (void)expandedViewController:(id)controller handleHyperlinkWithURL:(id)l
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1B1A8;
   v4[3] = &unk_45AE58;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = l;
   [(THWExpandedViewController *)[(THDocumentViewController *)self expandedViewController] dismissExpandedAnimatedWithCompletionBlock:v4];
 }
 
-- (id)actionForHyperlink:(id)a3 inRep:(id)a4 gesture:(id)a5
+- (id)actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
-  v8 = [a5 gestureKind];
+  gestureKind = [gesture gestureKind];
   v9 = TSWPLongPress;
-  if (v8 != TSWPImmediateSingleTap && v8 != TSWPLongPress)
+  if (gestureKind != TSWPImmediateSingleTap && gestureKind != TSWPLongPress)
   {
     return 0;
   }
 
-  v11 = v8;
+  v11 = gestureKind;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1B368;
   v17[3] = &unk_45AE58;
-  v17[4] = a4;
-  v17[5] = a3;
+  v17[4] = rep;
+  v17[5] = hyperlink;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1B374;
   v16[3] = &unk_45AE00;
-  v16[4] = a4;
+  v16[4] = rep;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1B380;
   v15[3] = &unk_45AF70;
-  v15[4] = a4;
+  v15[4] = rep;
   v15[5] = self;
-  v15[6] = a3;
+  v15[6] = hyperlink;
   v13 = [TSWPTwoPartAction actionWithStartAction:v17 cancelAction:v16 finishAction:v15];
   if (v11 == v9)
   {
@@ -7410,48 +7410,48 @@ LABEL_9:
   return v13;
 }
 
-- (void)expandedViewControllerWantsDismiss:(id)a3
+- (void)expandedViewControllerWantsDismiss:(id)dismiss
 {
-  v3 = [(THDocumentViewController *)self expandedViewController];
+  expandedViewController = [(THDocumentViewController *)self expandedViewController];
 
-  [(THWExpandedViewController *)v3 dismissExpandedAnimatedWithCompletionBlock:0];
+  [(THWExpandedViewController *)expandedViewController dismissExpandedAnimatedWithCompletionBlock:0];
 }
 
-- (id)expandedViewController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6
+- (id)expandedViewController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
-  v11 = [a6 gestureKind];
+  gestureKind = [gesture gestureKind];
   v12 = TSWPLongPress;
-  if (v11 != TSWPImmediateSingleTap && v11 != TSWPLongPress)
+  if (gestureKind != TSWPImmediateSingleTap && gestureKind != TSWPLongPress)
   {
     return 0;
   }
 
-  v14 = v11;
-  v15 = [(THDocumentViewController *)self documentNavigator];
-  if (v15)
+  v14 = gestureKind;
+  documentNavigator = [(THDocumentViewController *)self documentNavigator];
+  if (documentNavigator)
   {
-    v16 = -[THDocumentNavigator linkForURL:inStorage:](v15, "linkForURL:inStorage:", [a4 url], objc_msgSend(a4, "parentStorage"));
+    v16 = -[THDocumentNavigator linkForURL:inStorage:](documentNavigator, "linkForURL:inStorage:", [hyperlink url], objc_msgSend(hyperlink, "parentStorage"));
     if (([v16 targetIsApplePub] & 1) != 0 || objc_msgSend(v16, "targetIsiBooks"))
     {
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1B620;
       v22[3] = &unk_45AE58;
-      v22[4] = a5;
-      v22[5] = a4;
+      v22[4] = rep;
+      v22[5] = hyperlink;
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_1B62C;
       v21[3] = &unk_45AE00;
-      v21[4] = a5;
+      v21[4] = rep;
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_1B638;
       v20[3] = &unk_45B330;
-      v20[4] = a5;
-      v20[5] = a3;
+      v20[4] = rep;
+      v20[5] = controller;
       v20[6] = self;
-      v20[7] = a4;
+      v20[7] = hyperlink;
       v18 = [TSWPTwoPartAction actionWithStartAction:v22 cancelAction:v21 finishAction:v20];
       if (v14 == v12)
       {
@@ -7468,17 +7468,17 @@ LABEL_9:
     }
   }
 
-  return [(THDocumentViewController *)self actionForHyperlink:a4 inRep:a5 gesture:a6];
+  return [(THDocumentViewController *)self actionForHyperlink:hyperlink inRep:rep gesture:gesture];
 }
 
-- (void)p_ensureInNavigationUnitForContentNode:(id)a3
+- (void)p_ensureInNavigationUnitForContentNode:(id)node
 {
-  if (!a3)
+  if (!node)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (![(THNavigationUnit *)[(THSectionController *)[(THDocumentViewController *)self activeSectionController] currentNavigationUnit] containsContentNode:a3])
+  if (![(THNavigationUnit *)[(THSectionController *)[(THDocumentViewController *)self activeSectionController] currentNavigationUnit] containsContentNode:node])
   {
     v5 = [objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
 
@@ -7486,17 +7486,17 @@ LABEL_9:
   }
 }
 
-- (void)p_zoomToAnchor:(id)a3
+- (void)p_zoomToAnchor:(id)anchor
 {
-  if (a3)
+  if (anchor)
   {
-    v5 = [a3 range];
+    range = [anchor range];
     v7 = v6;
-    v8 = [a3 contentNode];
-    v9 = [v8 bodyStorageForPresentationType:{-[THDocumentViewController currentPresentationType](self, "currentPresentationType")}];
+    contentNode = [anchor contentNode];
+    v9 = [contentNode bodyStorageForPresentationType:{-[THDocumentViewController currentPresentationType](self, "currentPresentationType")}];
     if (v9)
     {
-      v10 = [v8 nodeUniqueIDForInfo:v9];
+      v10 = [contentNode nodeUniqueIDForInfo:v9];
     }
 
     else
@@ -7504,11 +7504,11 @@ LABEL_9:
       v10 = 0;
     }
 
-    v11 = [a3 storageUID];
-    if ([v10 isEqualToString:v11])
+    storageUID = [anchor storageUID];
+    if ([v10 isEqualToString:storageUID])
     {
-      v12 = [(THSectionController *)[(THDocumentViewController *)self activeSectionController] pageControllerForContentNode:v8];
-      v13 = [v12 relativePageIndexForCharIndex:v5 forceLayout:0];
+      v12 = [(THSectionController *)[(THDocumentViewController *)self activeSectionController] pageControllerForContentNode:contentNode];
+      v13 = [v12 relativePageIndexForCharIndex:range forceLayout:0];
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v14 = v13;
@@ -7521,8 +7521,8 @@ LABEL_9:
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v16 = [v15 childReps];
-          v17 = [v16 countByEnumeratingWithState:&v36 objects:v40 count:16];
+          childReps = [v15 childReps];
+          v17 = [childReps countByEnumeratingWithState:&v36 objects:v40 count:16];
           if (v17)
           {
             v18 = v17;
@@ -7534,7 +7534,7 @@ LABEL_9:
               {
                 if (*v37 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(childReps);
                 }
 
                 objc_opt_class();
@@ -7543,7 +7543,7 @@ LABEL_9:
                 {
                   v22 = v21;
                   objc_opt_class();
-                  [v22 repForCharIndex:v5 isStart:0];
+                  [v22 repForCharIndex:range isStart:0];
                   v23 = TSUDynamicCast();
                   if (v23)
                   {
@@ -7554,7 +7554,7 @@ LABEL_9:
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v36 objects:v40 count:16];
+              v18 = [childReps countByEnumeratingWithState:&v36 objects:v40 count:16];
               if (v18)
               {
                 continue;
@@ -7569,13 +7569,13 @@ LABEL_9:
 
     else
     {
-      v24 = [v8 infoForNodeUniqueID:v11 forPresentationType:{-[THDocumentViewController currentPresentationType](self, "currentPresentationType")}];
+      v24 = [contentNode infoForNodeUniqueID:storageUID forPresentationType:{-[THDocumentViewController currentPresentationType](self, "currentPresentationType")}];
       if (v24)
       {
-        v25 = [v24 parentInfo];
-        if (v25)
+        parentInfo = [v24 parentInfo];
+        if (parentInfo)
         {
-          v25 = [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
+          parentInfo = [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
         }
 
         objc_opt_class();
@@ -7591,7 +7591,7 @@ LABEL_9:
           {
             v29 = v28;
 LABEL_25:
-            [v29 rectForHighlight:v5 lineHasAttachment:{v7, objc_msgSend(objc_msgSend(v29, "storage"), "rangeContainsAttachment:", v5, v7)}];
+            [v29 rectForHighlight:range lineHasAttachment:{v7, objc_msgSend(objc_msgSend(v29, "storage"), "rangeContainsAttachment:", range, v7)}];
             v30 = [v29 closestColumnForPoint:?];
             if (v30)
             {
@@ -7606,14 +7606,14 @@ LABEL_25:
   }
 }
 
-- (id)p_ownerInfoForPopUpInfo:(id)a3
+- (id)p_ownerInfoForPopUpInfo:(id)info
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
-  result = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  interactiveCanvasController = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
+  result = [interactiveCanvasController countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (result)
   {
     v6 = result;
@@ -7625,11 +7625,11 @@ LABEL_25:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(interactiveCanvasController);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        if ([v9 popUpInfo] == a3)
+        if ([v9 popUpInfo] == info)
         {
           return [v9 info];
         }
@@ -7638,7 +7638,7 @@ LABEL_25:
       }
 
       while (v6 != v8);
-      result = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      result = [interactiveCanvasController countByEnumeratingWithState:&v10 objects:v14 count:16];
       v6 = result;
       if (result)
       {
@@ -7652,14 +7652,14 @@ LABEL_25:
   return result;
 }
 
-- (id)p_expandableInfoForInfo:(id)a3 forceLoad:(BOOL)a4
+- (id)p_expandableInfoForInfo:(id)info forceLoad:(BOOL)load
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [-[THDocumentViewController currentNavigationUnit](self currentNavigationUnit];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  currentNavigationUnit = [-[THDocumentViewController currentNavigationUnit](self currentNavigationUnit];
+  v8 = [currentNavigationUnit countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v8)
   {
     return 0;
@@ -7674,13 +7674,13 @@ LABEL_3:
   {
     if (*v16 != v11)
     {
-      objc_enumerationMutation(v7);
+      objc_enumerationMutation(currentNavigationUnit);
     }
 
     v13 = *(*(&v15 + 1) + 8 * v12);
-    if (a4 || [*(*(&v15 + 1) + 8 * v12) isLoaded])
+    if (load || [*(*(&v15 + 1) + 8 * v12) isLoaded])
     {
-      v10 = [v13 expandableInfoForWidgetInfo:a3 forPresentationType:{+[THPresentationType flowPresentationTypeInContext:](THPresentationType, "flowPresentationTypeInContext:", objc_msgSend(-[THDocumentViewController documentRoot](self, "documentRoot"), "context"))}];
+      v10 = [v13 expandableInfoForWidgetInfo:info forPresentationType:{+[THPresentationType flowPresentationTypeInContext:](THPresentationType, "flowPresentationTypeInContext:", objc_msgSend(-[THDocumentViewController documentRoot](self, "documentRoot"), "context"))}];
       if ([-[THDocumentViewController documentRoot](self "documentRoot")])
       {
         if (v10)
@@ -7698,7 +7698,7 @@ LABEL_3:
 
     if (v9 == ++v12)
     {
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [currentNavigationUnit countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         goto LABEL_3;
@@ -7709,9 +7709,9 @@ LABEL_3:
   }
 }
 
-- (void)switchToNavigationUnitForChapterIndex:(unint64_t)a3
+- (void)switchToNavigationUnitForChapterIndex:(unint64_t)index
 {
-  v4 = [(THDocumentViewController *)self navigationUnitForChapterIndex:a3];
+  v4 = [(THDocumentViewController *)self navigationUnitForChapterIndex:index];
   if (!v4)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -7720,7 +7720,7 @@ LABEL_3:
   [(THDocumentViewController *)self setCurrentNavigationUnit:v4];
 }
 
-- (id)navigationUnitForChapterIndex:(unint64_t)a3
+- (id)navigationUnitForChapterIndex:(unint64_t)index
 {
   v4 = -[THDocumentLinkResolver contentNodeFromLink:](-[THDocumentViewController documentLinkResolver](self, "documentLinkResolver"), "contentNodeFromLink:", -[THDocumentLinkResolver absoluteLink:withContentNode:](-[THDocumentViewController documentLinkResolver](self, "documentLinkResolver"), "absoluteLink:withContentNode:", [objc_msgSend(objc_msgSend(objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")], 0));
   v5 = [-[THDocumentViewController documentRoot](self "documentRoot")];
@@ -7728,10 +7728,10 @@ LABEL_3:
   return [v5 navigationUnitContainingContentNode:v4];
 }
 
-- (void)updateVisibleInfosWithPageIndex:(unint64_t)a3
+- (void)updateVisibleInfosWithPageIndex:(unint64_t)index
 {
   [(THDocumentViewController *)self p_currentPageSize];
-  v6 = v5 * a3;
+  v6 = v5 * index;
   [(THDocumentViewController *)self setLastAbsolutePageIndex:0x7FFFFFFFFFFFFFFFLL];
   [(THDocumentViewController *)self setPreventVisibleInfoUpdates:1];
   [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
@@ -7740,21 +7740,21 @@ LABEL_3:
   [(THDocumentViewController *)self p_updateVisibleInfosWithPaddingOptions:0 force:0];
 }
 
-- (id)contentNodeForPageIndex:(unint64_t)a3
+- (id)contentNodeForPageIndex:(unint64_t)index
 {
-  v5 = [(THDocumentViewController *)self currentNavigationUnit];
-  v6 = [(THDocumentViewController *)self currentPresentationType];
+  currentNavigationUnit = [(THDocumentViewController *)self currentNavigationUnit];
+  currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
 
-  return [v5 contentNodeForRelativePageIndex:a3 forPresentationType:v6];
+  return [currentNavigationUnit contentNodeForRelativePageIndex:index forPresentationType:currentPresentationType];
 }
 
-- (CGRect)targetRelativeRectForPoint:(CGPoint)a3 atPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5 waitForContentNodeLoad:(BOOL)a6
+- (CGRect)targetRelativeRectForPoint:(CGPoint)point atPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex waitForContentNodeLoad:(BOOL)load
 {
-  v6 = a6;
-  y = a3.y;
-  x = a3.x;
+  loadCopy = load;
+  y = point.y;
+  x = point.x;
   [(THDocumentViewController *)self ensureDocumentIsLoaded];
-  v10 = [(THSectionController *)[(THDocumentViewController *)self paginatedSectionController] presentationType];
+  presentationType = [(THSectionController *)[(THDocumentViewController *)self paginatedSectionController] presentationType];
   [(THSectionController *)[(THDocumentViewController *)self paginatedSectionController] pageSize];
   TSDRectWithSize();
   v12 = v11;
@@ -7763,10 +7763,10 @@ LABEL_3:
   v18 = v17;
   v19 = v15;
   v20 = v17;
-  v21 = [(THDocumentViewController *)self navigationUnitForChapterIndex:a5];
-  if (([objc_msgSend(v21 contentNodeForRelativePageIndex:a4 forPresentationType:{v10), "isLoaded"}] & 1) != 0 || v6)
+  v21 = [(THDocumentViewController *)self navigationUnitForChapterIndex:chapterIndex];
+  if (([objc_msgSend(v21 contentNodeForRelativePageIndex:index forPresentationType:{presentationType), "isLoaded"}] & 1) != 0 || loadCopy)
   {
-    v22 = [v21 pageInfoForRelativePageIndex:a4 forPresentationType:v10];
+    v22 = [v21 pageInfoForRelativePageIndex:index forPresentationType:presentationType];
     if (!v22)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -7776,8 +7776,8 @@ LABEL_3:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v23 = [v22 modelBodyInfos];
-    v24 = [v23 countByEnumeratingWithState:&v71 objects:v75 count:16];
+    modelBodyInfos = [v22 modelBodyInfos];
+    v24 = [modelBodyInfos countByEnumeratingWithState:&v71 objects:v75 count:16];
     if (v24)
     {
       v25 = v24;
@@ -7794,7 +7794,7 @@ LABEL_3:
         {
           if (*v72 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(modelBodyInfos);
           }
 
           v28 = *(*(&v71 + 1) + 8 * i);
@@ -7807,16 +7807,16 @@ LABEL_3:
           v76.x = x;
           if (CGRectContainsPoint(v77, v76))
           {
-            v33 = [v28 lineHints];
-            if (v33)
+            lineHints = [v28 lineHints];
+            if (lineHints)
             {
-              v34 = v33;
-              if ([v33 valid])
+              v34 = lineHints;
+              if ([lineHints valid])
               {
                 if ([v34 hintsCount])
                 {
-                  v35 = [v28 columnStyle];
-                  if ([v35 columnCount])
+                  columnStyle = [v28 columnStyle];
+                  if ([columnStyle columnCount])
                   {
                     v36 = 0;
                     v37 = x - v29;
@@ -7825,7 +7825,7 @@ LABEL_3:
                     {
                       v69 = 0;
                       v70 = 0.0;
-                      [v35 positionForColumnIndex:v36 bodyWidth:&v70 outWidth:&v69 outGap:width];
+                      [columnStyle positionForColumnIndex:v36 bodyWidth:&v70 outWidth:&v69 outGap:width];
                       v39 = v78.origin.x;
                       v40 = v70;
                       v78.origin.y = 0.0;
@@ -7843,7 +7843,7 @@ LABEL_3:
                       }
 
                       v36 = v38;
-                      v44 = [v35 columnCount] > v38++;
+                      v44 = [columnStyle columnCount] > v38++;
                       if (!v44)
                       {
                         goto LABEL_22;
@@ -7855,12 +7855,12 @@ LABEL_3:
                     v46 = CGRectZero.origin.y;
                     v49 = CGRectZero.size.width;
                     v48 = CGRectZero.size.height;
-                    v50 = [v34 hints];
-                    v51 = [v34 hintsCount];
-                    if (v51)
+                    hints = [v34 hints];
+                    hintsCount = [v34 hintsCount];
+                    if (hintsCount)
                     {
-                      v52 = v51;
-                      v53 = (v50 + 24);
+                      v52 = hintsCount;
+                      v53 = (hints + 24);
                       v54 = 1;
                       do
                       {
@@ -7922,7 +7922,7 @@ LABEL_22:
           ;
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v71 objects:v75 count:16];
+        v25 = [modelBodyInfos countByEnumeratingWithState:&v71 objects:v75 count:16];
         if (v25)
         {
           continue;
@@ -7952,11 +7952,11 @@ LABEL_38:
   return result;
 }
 
-- (CGRect)targetRelativeRectForRelativePoint:(CGPoint)a3 atPageIndex:(unint64_t)a4 chapterIndex:(unint64_t)a5 waitForContentNodeLoad:(BOOL)a6
+- (CGRect)targetRelativeRectForRelativePoint:(CGPoint)point atPageIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex waitForContentNodeLoad:(BOOL)load
 {
-  v6 = a6;
-  y = a3.y;
-  x = a3.x;
+  loadCopy = load;
+  y = point.y;
+  x = point.x;
   [(THDocumentViewController *)self ensureDocumentIsLoaded];
   [(THSectionController *)[(THDocumentViewController *)self paginatedSectionController] pageSize];
   if (x > 1.0 || x < 0.0)
@@ -7971,7 +7971,7 @@ LABEL_38:
 
   TSDRectWithSize();
 
-  [(THDocumentViewController *)self targetRelativeRectForPoint:a4 atPageIndex:a5 chapterIndex:v6 waitForContentNodeLoad:x * v12, y * v13];
+  [(THDocumentViewController *)self targetRelativeRectForPoint:index atPageIndex:chapterIndex chapterIndex:loadCopy waitForContentNodeLoad:x * v12, y * v13];
   result.size.height = v17;
   result.size.width = v16;
   result.origin.y = v15;
@@ -7979,39 +7979,39 @@ LABEL_38:
   return result;
 }
 
-- (void)zoomToRelativeTargetRect:(CGRect)a3 atPageIndex:(unint64_t)a4
+- (void)zoomToRelativeTargetRect:(CGRect)rect atPageIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  IsEmpty = CGRectIsEmpty(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  IsEmpty = CGRectIsEmpty(rect);
   v11 = height == 1.0 && width == 1.0;
   if (!IsEmpty && !v11)
   {
     [(THSectionController *)[(THDocumentViewController *)self paginatedSectionController] pageSize];
     TSDRectWithSize();
-    v13 = v12 * a4 + v12 * x;
+    v13 = v12 * index + v12 * x;
     v15 = v14 * y + 0.0;
     v16 = width * v12;
     v17 = height * v14;
-    v18 = [(THDocumentViewController *)self interactiveCanvasController];
+    interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-    [v18 zoomToColumnWithFrame:{v13, v15, v16, v17}];
+    [interactiveCanvasController zoomToColumnWithFrame:{v13, v15, v16, v17}];
   }
 }
 
-- (void)showPageThumbnailsForMissingPageIndexes:(id)a3
+- (void)showPageThumbnailsForMissingPageIndexes:(id)indexes
 {
-  v6 = [a3 mutableCopy];
-  v4 = [(THDocumentViewController *)self visibleRelativePageRange];
-  [v6 removeIndexesInRange:{v4, v5}];
+  v6 = [indexes mutableCopy];
+  visibleRelativePageRange = [(THDocumentViewController *)self visibleRelativePageRange];
+  [v6 removeIndexesInRange:{visibleRelativePageRange, v5}];
   [(THDocumentViewController *)self showPageThumbnailsForPageIndexes:v6 animated:0 duration:0.0];
 }
 
-- (void)showPageThumbnailsForPageIndexes:(id)a3 animated:(BOOL)a4 duration:(double)a5
+- (void)showPageThumbnailsForPageIndexes:(id)indexes animated:(BOOL)animated duration:(double)duration
 {
-  v20 = a4;
+  animatedCopy = animated;
   if (!self->mCurrentThumbnailViews)
   {
     self->mCurrentThumbnailViews = objc_alloc_init(NSMutableArray);
@@ -8019,11 +8019,11 @@ LABEL_38:
   }
 
   v8 = [objc_msgSend(objc_msgSend(-[THDocumentViewController documentRoot](self "documentRoot")];
-  v9 = [a3 firstIndex];
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [indexes firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v9;
-    if (v20)
+    v10 = firstIndex;
+    if (animatedCopy)
     {
       v11 = 0.0;
     }
@@ -8053,26 +8053,26 @@ LABEL_38:
         [(NSMutableIndexSet *)self->mCurrentThumbnailPageIndexes addIndex:v10];
       }
 
-      v10 = [a3 indexGreaterThanIndex:v10];
+      v10 = [indexes indexGreaterThanIndex:v10];
     }
 
     while (v10 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  if (v20)
+  if (animatedCopy)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1C994;
     v21[3] = &unk_45AE00;
     v21[4] = self;
-    [UIView animateWithDuration:v21 animations:a5];
+    [UIView animateWithDuration:v21 animations:duration];
   }
 }
 
-- (void)hidePageThumbnailsAnimated:(BOOL)a3 duration:(double)a4
+- (void)hidePageThumbnailsAnimated:(BOOL)animated duration:(double)duration
 {
-  if (a3)
+  if (animated)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -8084,12 +8084,12 @@ LABEL_38:
     v5[2] = sub_1CC80;
     v5[3] = &unk_45B188;
     v5[4] = self;
-    [UIView animateWithDuration:v6 animations:v5 completion:a4];
+    [UIView animateWithDuration:v6 animations:v5 completion:duration];
   }
 
   else
   {
-    [(NSMutableArray *)self->mCurrentThumbnailViews makeObjectsPerformSelector:"removeFromSuperview", a4];
+    [(NSMutableArray *)self->mCurrentThumbnailViews makeObjectsPerformSelector:"removeFromSuperview", duration];
 
     self->mCurrentThumbnailViews = 0;
     self->mCurrentThumbnailPageIndexes = 0;
@@ -8114,33 +8114,33 @@ LABEL_38:
   }
 }
 
-- (id)scrollableCanvasActivityItemProviderWithCachedAnnotation:(id)a3
+- (id)scrollableCanvasActivityItemProviderWithCachedAnnotation:(id)annotation
 {
-  v4 = [(THDocumentViewController *)self bookPropertiesDelegate];
+  bookPropertiesDelegate = [(THDocumentViewController *)self bookPropertiesDelegate];
 
-  return [(THBookPropertiesProvider *)v4 activityItemProviderWithCachedAnnotation:a3];
+  return [(THBookPropertiesProvider *)bookPropertiesDelegate activityItemProviderWithCachedAnnotation:annotation];
 }
 
 - (BOOL)allowCopy
 {
-  v2 = [(THDocumentViewController *)self bookPropertiesDelegate];
+  bookPropertiesDelegate = [(THDocumentViewController *)self bookPropertiesDelegate];
 
-  return [(THBookPropertiesProvider *)v2 allowCopy];
+  return [(THBookPropertiesProvider *)bookPropertiesDelegate allowCopy];
 }
 
 - (id)titleOfCurrentNavigationUnit
 {
   v3 = [-[THDocumentViewController documentRoot](self "documentRoot")];
-  v4 = [(THDocumentViewController *)self currentNavigationUnit];
+  currentNavigationUnit = [(THDocumentViewController *)self currentNavigationUnit];
 
-  return [v3 titleStringForNavigationUnit:v4];
+  return [v3 titleStringForNavigationUnit:currentNavigationUnit];
 }
 
-- (id)activityItemProviderWithCachedAnnotation:(id)a3
+- (id)activityItemProviderWithCachedAnnotation:(id)annotation
 {
-  v4 = [(THDocumentViewController *)self bookPropertiesDelegate];
+  bookPropertiesDelegate = [(THDocumentViewController *)self bookPropertiesDelegate];
 
-  return [(THBookPropertiesProvider *)v4 activityItemProviderWithCachedAnnotation:a3];
+  return [(THBookPropertiesProvider *)bookPropertiesDelegate activityItemProviderWithCachedAnnotation:annotation];
 }
 
 - (BOOL)suspendCanvasScroll
@@ -8151,22 +8151,22 @@ LABEL_38:
   return [v2 suspendScrolling];
 }
 
-- (void)setSuspendCanvasScroll:(BOOL)a3
+- (void)setSuspendCanvasScroll:(BOOL)scroll
 {
-  v3 = a3;
+  scrollCopy = scroll;
   objc_opt_class();
   v4 = TSUDynamicCast();
 
-  [v4 setSuspendScrolling:v3];
+  [v4 setSuspendScrolling:scrollCopy];
 }
 
-- (void)removePreviewForRelativePageIndex:(unint64_t)a3
+- (void)removePreviewForRelativePageIndex:(unint64_t)index
 {
   if (![(THDocumentViewController *)self inFlowMode])
   {
-    v5 = [(THSectionController *)[(THDocumentViewController *)self activeSectionController] currentNavigationUnit];
-    v6 = [(THDocumentViewController *)self currentPresentationType];
-    if ([(THNavigationUnit *)v5 pageCountForPresentationType:v6]> a3)
+    currentNavigationUnit = [(THSectionController *)[(THDocumentViewController *)self activeSectionController] currentNavigationUnit];
+    currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
+    if ([(THNavigationUnit *)currentNavigationUnit pageCountForPresentationType:currentPresentationType]> index)
     {
       [-[THPageViewProvider pageHostForAbsolutePageIndex:](-[THDocumentViewController pageViewProvider](self "pageViewProvider")];
     }
@@ -8177,7 +8177,7 @@ LABEL_38:
   }
 }
 
-- (void)pageViewProviderViewsAdded:(id)a3 pageIndexSet:(id)a4
+- (void)pageViewProviderViewsAdded:(id)added pageIndexSet:(id)set
 {
   if ([(THDocumentViewController *)self inGuidedPan]&& [(THDocumentViewController *)self p_allowsPageDisplacement])
   {
@@ -8187,23 +8187,23 @@ LABEL_38:
     v7[2] = sub_1D1CC;
     v7[3] = &unk_45B3D0;
     v7[4] = self;
-    v7[5] = a4;
+    v7[5] = set;
     [(THPageViewDisplacement *)mPageViewDisplacement hideWithEnumerator:v7];
   }
 
   else if (([-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")] & 1) == 0)
   {
-    [(THDocumentViewController *)self p_updatePageViewsForScrollingAnimated:0 restoreOrigin:0 pageIndexSet:a4];
+    [(THDocumentViewController *)self p_updatePageViewsForScrollingAnimated:0 restoreOrigin:0 pageIndexSet:set];
   }
 
   [(THDocumentViewController *)self p_updatePageViewHostsWithTheme:[(THThemeDelegate *)[(THDocumentViewController *)self themeDelegate] theme]];
 }
 
-- (CGRect)pageViewProviderUnclippedVisibleBounds:(id)a3
+- (CGRect)pageViewProviderUnclippedVisibleBounds:(id)bounds
 {
-  v3 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v3 visibleBoundsRect];
+  [interactiveCanvasController visibleBoundsRect];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -8211,18 +8211,18 @@ LABEL_38:
   return result;
 }
 
-- (unint64_t)pageViewProviderStartAbsolutePageIndex:(id)a3
+- (unint64_t)pageViewProviderStartAbsolutePageIndex:(id)index
 {
-  v4 = [(THDocumentViewController *)self currentNavigationUnit];
-  v5 = [(THDocumentViewController *)self currentPresentationType];
+  currentNavigationUnit = [(THDocumentViewController *)self currentNavigationUnit];
+  currentPresentationType = [(THDocumentViewController *)self currentPresentationType];
 
-  return [v4 startPageAbsolutePageIndexForPresentationType:v5];
+  return [currentNavigationUnit startPageAbsolutePageIndexForPresentationType:currentPresentationType];
 }
 
-- (void)p_updatePageViewsForScrollingAnimated:(BOOL)a3 restoreOrigin:(BOOL)a4 pageIndexSet:(id)a5
+- (void)p_updatePageViewsForScrollingAnimated:(BOOL)animated restoreOrigin:(BOOL)origin pageIndexSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
+  originCopy = origin;
+  animatedCopy = animated;
   if ([(THDocumentViewController *)self p_allowsPageDisplacement])
   {
     if (!self->mOverscrollAnimationInProcess && !-[THDocumentViewController isRotating](self, "isRotating") && !-[THDocumentViewController preventVisibleInfoUpdates](self, "preventVisibleInfoUpdates") && ([-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")] & 1) == 0)
@@ -8232,8 +8232,8 @@ LABEL_38:
       [(THDocumentViewController *)self currentViewScale];
       if (vabdd_f64(v10, v11) < 0.00999999978 && !-[THDocumentViewController isRevealingTOC](self, "isRevealingTOC") && ([-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")] & 1) == 0)
       {
-        v12 = [(THGuidedPanController *)[(THDocumentViewController *)self guidedPanController] isFocusedOnTarget];
-        if ((a5 || (v12 & 1) == 0) && ![(THDocumentViewController *)self inGuidedPan])
+        isFocusedOnTarget = [(THGuidedPanController *)[(THDocumentViewController *)self guidedPanController] isFocusedOnTarget];
+        if ((set || (isFocusedOnTarget & 1) == 0) && ![(THDocumentViewController *)self inGuidedPan])
         {
           if ([(THDocumentViewController *)self isTwoUp])
           {
@@ -8252,8 +8252,8 @@ LABEL_38:
           v15[2] = sub_1D5AC;
           v15[3] = &unk_45B3F8;
           v15[4] = self;
-          v15[5] = a5;
-          [(THPageViewDisplacement *)mPageViewDisplacement updateDisplacementAnimated:v7 restoreOrigin:v6 enumerator:v15];
+          v15[5] = set;
+          [(THPageViewDisplacement *)mPageViewDisplacement updateDisplacementAnimated:animatedCopy restoreOrigin:originCopy enumerator:v15];
         }
       }
     }
@@ -8264,13 +8264,13 @@ LABEL_38:
 {
   v8.receiver = self;
   v8.super_class = THDocumentViewController;
-  v3 = [(THDocumentViewController *)&v8 traitCollection];
-  if (!v3)
+  traitCollection = [(THDocumentViewController *)&v8 traitCollection];
+  if (!traitCollection)
   {
     return objc_alloc_init(UITraitCollection);
   }
 
-  v4 = v3;
+  v4 = traitCollection;
   if ([(THDocumentViewController *)self isViewLoaded])
   {
     v5 = [(THDocumentViewController *)self inFlowMode]? 2 : 1;
@@ -8299,9 +8299,9 @@ LABEL_38:
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  [(THDocumentViewController *)self _computeTraitCollectionDerivedValues:a3];
+  [(THDocumentViewController *)self _computeTraitCollectionDerivedValues:change];
   [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] invalidate];
   [(THDocumentViewController *)self p_updateScrollViewDecelerationRate];
 
@@ -8330,7 +8330,7 @@ LABEL_38:
 
 - (BOOL)th_cachedIsCompactHeight
 {
-  v2 = self;
+  selfCopy = self;
   v5 = 0;
   v6 = &v5;
   v7 = 0x2020000000;
@@ -8343,15 +8343,15 @@ LABEL_38:
   v4[5] = &v5;
   os_unfair_lock_lock(&self->_accessLock);
   sub_1DC44(v4);
-  os_unfair_lock_unlock(&v2->_accessLock);
-  LOBYTE(v2) = *(v6 + 24);
+  os_unfair_lock_unlock(&selfCopy->_accessLock);
+  LOBYTE(selfCopy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)th_cachedIsCompactWidth
 {
-  v2 = self;
+  selfCopy = self;
   v5 = 0;
   v6 = &v5;
   v7 = 0x2020000000;
@@ -8364,23 +8364,23 @@ LABEL_38:
   v4[5] = &v5;
   os_unfair_lock_lock(&self->_accessLock);
   sub_1DD44(v4);
-  os_unfair_lock_unlock(&v2->_accessLock);
-  LOBYTE(v2) = *(v6 + 24);
+  os_unfair_lock_unlock(&selfCopy->_accessLock);
+  LOBYTE(selfCopy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THWFreeTransformController *)[(THDocumentViewController *)self ftc] cancelTransform];
   [(THDocumentViewController *)self setLastLayoutBoundsSize:width, height];
   if (![(THDocumentViewController *)self lastStorageAnchor])
   {
-    v8 = [(THDocumentViewController *)self activeSectionController];
+    activeSectionController = [(THDocumentViewController *)self activeSectionController];
     [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
-    [(THDocumentViewController *)self setLastStorageAnchor:[(THSectionController *)v8 bodyAnchorForCanvasRect:?]];
+    [(THDocumentViewController *)self setLastStorageAnchor:[(THSectionController *)activeSectionController bodyAnchorForCanvasRect:?]];
   }
 
   if ([(THDocumentViewController *)self lastAbsolutePageIndex]== 0x7FFFFFFFFFFFFFFFLL && ![(THDocumentViewController *)self expandedViewController])
@@ -8396,19 +8396,19 @@ LABEL_38:
 
   v18.receiver = self;
   v18.super_class = THDocumentViewController;
-  [(THDocumentViewController *)&v18 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(THDocumentViewController *)&v18 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1E030;
   v17[3] = &unk_45B448;
   v17[4] = self;
-  [a4 animateAlongsideTransition:v17 completion:0];
-  if (!-[THDocumentViewController isEpub](self, "isEpub") && [a4 isAnimated])
+  [coordinator animateAlongsideTransition:v17 completion:0];
+  if (!-[THDocumentViewController isEpub](self, "isEpub") && [coordinator isAnimated])
   {
     [(THDocumentViewController *)self setIsTransitioning:1];
-    if (a4 && ([a4 targetTransform], !CGAffineTransformIsIdentity(&v16)))
+    if (coordinator && ([coordinator targetTransform], !CGAffineTransformIsIdentity(&v16)))
     {
-      [a4 transitionDuration];
+      [coordinator transitionDuration];
       [(THDocumentViewController *)self bookViewWillRotateTransitionToSize:width duration:height, v10];
       v9 = 1;
     }
@@ -8440,7 +8440,7 @@ LABEL_38:
     v12[4] = self;
     *&v12[5] = width;
     *&v12[6] = height;
-    v11 = [a4 animateAlongsideTransition:v14 completion:v12];
+    v11 = [coordinator animateAlongsideTransition:v14 completion:v12];
     *(*&v16.b + 24) = v11;
     _Block_object_dispose(&v16, 8);
   }
@@ -8460,10 +8460,10 @@ LABEL_38:
   }
 }
 
-- (void)bookViewWillTransitionToSize:(CGSize)a3
+- (void)bookViewWillTransitionToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(THDocumentViewController *)self isDocumentLoaded])
   {
     [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] invalidate];
@@ -8486,16 +8486,16 @@ LABEL_38:
       [(THDocumentViewController *)self p_layoutCanvasForSize:0 duration:width forceBackgroundLayout:height, 0.0];
     }
 
-    v6 = [(THDocumentViewController *)self bookNavigationDelegate];
+    bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-    [(THBookNavigation *)v6 vantageWillChangeBy:self reason:@"THVantageChangeReasonWindowResize"];
+    [(THBookNavigation *)bookNavigationDelegate vantageWillChangeBy:self reason:@"THVantageChangeReasonWindowResize"];
   }
 }
 
-- (void)bookViewWillRotateTransitionToSize:(CGSize)a3 duration:(double)a4
+- (void)bookViewWillRotateTransitionToSize:(CGSize)size duration:(double)duration
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [objc_msgSend(objc_msgSend(-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
   [*&self->TSADocumentViewController_opaque[OBJC_IVAR___TSADocumentViewController__scrollView] setContentInset:{0.0, 0.0, 0.0, 0.0}];
   if ([(THDocumentViewController *)self isDocumentLoaded])
@@ -8503,9 +8503,9 @@ LABEL_38:
     [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] invalidate];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"p_performDelayedLayoutAndRotation:" object:[NSValue valueWithCGSize:self->_previousTransitionSize.width, self->_previousTransitionSize.height]];
     self->_previousTransitionSize = CGSizeZero;
-    v8 = [(THDocumentViewController *)self expandedViewController];
+    expandedViewController = [(THDocumentViewController *)self expandedViewController];
     v9 = 1;
-    if (!v8)
+    if (!expandedViewController)
     {
       v9 = [(THDocumentViewController *)self presentedViewController]!= 0;
     }
@@ -8513,8 +8513,8 @@ LABEL_38:
     [(THDocumentViewController *)self setDeferCanvasLayoutToAfterRotationHasCompleted:v9];
     self->mIsRotating = 1;
     [(THDocumentViewController *)self p_releaseOverscrollViews];
-    v10 = [(THDocumentViewController *)self activeSectionController];
-    if (v10 == [(THDocumentViewController *)self flowSectionController])
+    activeSectionController = [(THDocumentViewController *)self activeSectionController];
+    if (activeSectionController == [(THDocumentViewController *)self flowSectionController])
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
@@ -8533,7 +8533,7 @@ LABEL_38:
 
     if (([(THDocumentViewController *)self showingExpandedWidgetView]|| [(THDocumentViewController *)self currentChapter]!= 0x7FFFFFFFFFFFFFFFLL) && ![(THDocumentViewController *)self deferCanvasLayoutToAfterRotationHasCompleted])
     {
-      [(THDocumentViewController *)self p_layoutCanvasForSize:0 duration:width forceBackgroundLayout:height, a4];
+      [(THDocumentViewController *)self p_layoutCanvasForSize:0 duration:width forceBackgroundLayout:height, duration];
     }
 
     [-[THDocumentViewController canvasScrollView](self "canvasScrollView")];
@@ -8542,14 +8542,14 @@ LABEL_38:
   }
 }
 
-- (void)bookViewWillAnimateRotationToSize:(CGSize)a3 duration:(double)a4
+- (void)bookViewWillAnimateRotationToSize:(CGSize)size duration:(double)duration
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(THDocumentViewController *)self isDocumentLoaded])
   {
-    v8 = [(THDocumentViewController *)self activeSectionController];
-    if (v8 == [(THDocumentViewController *)self paginatedSectionController])
+    activeSectionController = [(THDocumentViewController *)self activeSectionController];
+    if (activeSectionController == [(THDocumentViewController *)self paginatedSectionController])
     {
       [(THDocumentViewController *)self p_maxScrollViewSizeForViewSize:width, height];
       v10 = v9;
@@ -8563,8 +8563,8 @@ LABEL_38:
       [(THDocumentViewController *)self visibleUnscaledRectBeforeRotation];
       v18 = v17;
       v19 = v12 / v14 * 0.5;
-      v20 = [(THDocumentViewController *)self p_isSinglePageChapter];
-      if (v20)
+      p_isSinglePageChapter = [(THDocumentViewController *)self p_isSinglePageChapter];
+      if (p_isSinglePageChapter)
       {
         [(THDocumentViewController *)self p_layoutSinglePageChapter];
       }
@@ -8583,7 +8583,7 @@ LABEL_38:
           v16 = v16 - v22;
         }
 
-        if (v20)
+        if (p_isSinglePageChapter)
         {
           v23 = [-[THDocumentViewController interactiveCanvasController](self "interactiveCanvasController")];
           [v23 frame];
@@ -8624,8 +8624,8 @@ LABEL_38:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  interactiveCanvasController = [objc_msgSend(-[THDocumentViewController interactiveCanvasController](self interactiveCanvasController];
+  v3 = [interactiveCanvasController countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -8636,23 +8636,23 @@ LABEL_38:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(interactiveCanvasController);
         }
 
         [*(*(&v7 + 1) + 8 * i) recursivelyPerformSelectorIfImplemented:"widgetInteractionModeChanged"];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [interactiveCanvasController countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)bookViewDidRotateTransitionToSize:(CGSize)a3
+- (void)bookViewDidRotateTransitionToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(THDocumentViewController *)self isDocumentLoaded])
   {
     if ([(THDocumentViewController *)self deferCanvasLayoutToAfterRotationHasCompleted])
@@ -8675,23 +8675,23 @@ LABEL_38:
   [v6 adjustContentInsets];
 }
 
-- (void)p_performDelayedLayoutAndRotation:(id)a3
+- (void)p_performDelayedLayoutAndRotation:(id)rotation
 {
   [(THDocumentViewController *)self setDeferCanvasLayoutToAfterRotationHasCompleted:0];
-  [a3 CGSizeValue];
+  [rotation CGSizeValue];
   v6 = v5;
   v8 = v7;
   [THDocumentViewController p_layoutCanvasForSize:"p_layoutCanvasForSize:duration:forceBackgroundLayout:" duration:1 forceBackgroundLayout:?];
   [(THDocumentViewController *)self p_didFinishTransitionWithSize:v6, v8];
-  v9 = [(THDocumentViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THDocumentViewController *)self interactiveCanvasController];
 
-  [v9 forceStopScrolling];
+  [interactiveCanvasController forceStopScrolling];
 }
 
-- (void)p_didFinishTransitionWithSize:(CGSize)a3
+- (void)p_didFinishTransitionWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   self->mIsRotating = 0;
   [(THDocumentViewController *)self p_setupPageNumberViews];
   [(THDocumentViewController *)self p_setupNavOverlayContainer];
@@ -8703,9 +8703,9 @@ LABEL_38:
   [(THDocumentViewController *)self p_setupOverscrollViews];
   [(THDocumentViewController *)self p_resetPageDisplacment];
   [(THDocumentViewController *)self p_updateWidgetInteractionMode];
-  v6 = [(THDocumentViewController *)self bookNavigationDelegate];
+  bookNavigationDelegate = [(THDocumentViewController *)self bookNavigationDelegate];
 
-  [(THBookNavigation *)v6 vantageDidChangeBy:self reason:@"THVantageChangeReasonRotation"];
+  [(THBookNavigation *)bookNavigationDelegate vantageDidChangeBy:self reason:@"THVantageChangeReasonRotation"];
 }
 
 - (void)p_resetPageDisplacment
@@ -8722,10 +8722,10 @@ LABEL_38:
   }
 }
 
-- (void)bookViewDidTransitionToSize:(CGSize)a3
+- (void)bookViewDidTransitionToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(THDocumentViewController *)self isDocumentLoaded])
   {
     if ([(THDocumentViewController *)self currentChapter]!= 0x7FFFFFFFFFFFFFFFLL)
@@ -8745,10 +8745,10 @@ LABEL_38:
   }
 }
 
-- (CGSize)widgetStackMaxContainerSizeForSize:(CGSize)a3
+- (CGSize)widgetStackMaxContainerSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(THDocumentViewController *)self inFlowMode])
   {
     [(THDocumentViewController *)self p_maxScrollViewSize];
@@ -8768,15 +8768,15 @@ LABEL_38:
   if (!result)
   {
     self->_configuration = [[THDocumentReflowableLayoutConfiguration alloc] initWithViewController:self provider:self];
-    v4 = [(THDocumentViewController *)self configuration];
-    v5 = [(THDocumentViewController *)self isEpub];
+    configuration = [(THDocumentViewController *)self configuration];
+    isEpub = [(THDocumentViewController *)self isEpub];
     v6 = 0.8;
-    if (!v5)
+    if (!isEpub)
     {
       v6 = 1.0;
     }
 
-    [(THDocumentReflowableLayoutConfiguration *)v4 setLargeSizeFactor:v6];
+    [(THDocumentReflowableLayoutConfiguration *)configuration setLargeSizeFactor:v6];
     if ([(THDocumentViewController *)self parentViewController])
     {
       [-[THDocumentReflowableLayoutConfiguration environment](self->_configuration "environment")];
@@ -8816,9 +8816,9 @@ LABEL_38:
 
 - (double)toolbarHeight
 {
-  v2 = [(THDocumentViewController *)self th_cachedIsCompactHeight];
+  th_cachedIsCompactHeight = [(THDocumentViewController *)self th_cachedIsCompactHeight];
   result = 44.0;
-  if (v2)
+  if (th_cachedIsCompactHeight)
   {
     return 32.0;
   }
@@ -8828,45 +8828,45 @@ LABEL_38:
 
 - (BOOL)isEpub
 {
-  v2 = [(THDocumentViewController *)self documentRoot];
+  documentRoot = [(THDocumentViewController *)self documentRoot];
 
-  return [v2 isEPUB];
+  return [documentRoot isEPUB];
 }
 
 - (double)topBarHeight
 {
-  v2 = [(THDocumentViewController *)self toolbarDelegate];
+  toolbarDelegate = [(THDocumentViewController *)self toolbarDelegate];
 
-  [(THToolbarDelegate *)v2 topBarHeight];
+  [(THToolbarDelegate *)toolbarDelegate topBarHeight];
   return result;
 }
 
 - (double)bottomBarHeight
 {
-  v2 = [(THDocumentViewController *)self toolbarDelegate];
+  toolbarDelegate = [(THDocumentViewController *)self toolbarDelegate];
 
-  [(THToolbarDelegate *)v2 bottomBarHeight];
+  [(THToolbarDelegate *)toolbarDelegate bottomBarHeight];
   return result;
 }
 
 - (BOOL)willAdjustHeightForSnapshot
 {
-  v2 = [(THDocumentViewController *)self view];
+  view = [(THDocumentViewController *)self view];
   v3 = isPad();
   if (v3)
   {
-    v4 = [v2 window];
-    if (!v4)
+    window = [view window];
+    if (!window)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    [v4 frame];
+    [window frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [objc_msgSend(v4 "screen")];
+    [objc_msgSend(window "screen")];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -8882,7 +8882,7 @@ LABEL_38:
   return v3;
 }
 
-- (void)buildHoverControlRegionForInteraction:(id)a3 withBuilder:(id)a4
+- (void)buildHoverControlRegionForInteraction:(id)interaction withBuilder:(id)builder
 {
   if ([(THDocumentViewController *)self isEpub])
   {
@@ -8891,19 +8891,19 @@ LABEL_38:
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [objc_msgSend(a3 "view")];
+    [objc_msgSend(interaction "view")];
     MinX = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
     if ([(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] isScroll]&& [(THDocumentReflowableLayoutConfiguration *)[(THDocumentViewController *)self configuration] layout]== &dword_0 + 2)
     {
-      v23 = [+[UIApplication sharedApplication](UIApplication userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection = [+[UIApplication sharedApplication](UIApplication userInterfaceLayoutDirection];
       v24 = v8;
       v25 = v10;
       v26 = v12;
       v27 = v14;
-      if (v23 == UIUserInterfaceLayoutDirectionRightToLeft)
+      if (userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
       {
         MaxX = CGRectGetMaxX(*&v24);
       }
@@ -8923,7 +8923,7 @@ LABEL_38:
       v22 = v31;
     }
 
-    [a4 addRegionWithRect:{MinX, v18, MaxX, v22}];
+    [builder addRegionWithRect:{MinX, v18, MaxX, v22}];
   }
 }
 

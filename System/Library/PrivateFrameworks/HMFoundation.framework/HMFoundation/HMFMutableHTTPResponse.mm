@@ -1,35 +1,35 @@
 @interface HMFMutableHTTPResponse
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBody:(id)a3;
-- (void)setHeaderValue:(id)a3 forHeaderKey:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBody:(id)body;
+- (void)setHeaderValue:(id)value forHeaderKey:(id)key;
 @end
 
 @implementation HMFMutableHTTPResponse
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMFHTTPResponse allocWithZone:a3];
-  v5 = [(HMFHTTPResponse *)self request];
-  v6 = [(HMFHTTPResponse *)self internal];
-  v7 = [v6 copy];
-  v8 = [(HMFHTTPResponse *)v4 initWithRequest:v5 internalResponse:v7];
+  v4 = [HMFHTTPResponse allocWithZone:zone];
+  request = [(HMFHTTPResponse *)self request];
+  internal = [(HMFHTTPResponse *)self internal];
+  v7 = [internal copy];
+  v8 = [(HMFHTTPResponse *)v4 initWithRequest:request internalResponse:v7];
 
   return v8;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v4 = a3;
-  v5 = [(HMFHTTPResponse *)self internal];
-  [v5 setBody:v4];
+  bodyCopy = body;
+  internal = [(HMFHTTPResponse *)self internal];
+  [internal setBody:bodyCopy];
 }
 
-- (void)setHeaderValue:(id)a3 forHeaderKey:(id)a4
+- (void)setHeaderValue:(id)value forHeaderKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMFHTTPResponse *)self internal];
-  [v8 setHeaderValue:v7 forHeaderKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(HMFHTTPResponse *)self internal];
+  [internal setHeaderValue:valueCopy forHeaderKey:keyCopy];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface AXGestureRecorderGradientView
-- (id)_copyColorsArrayWithTopColor:(id)a3 bottomColor:(id)a4;
-- (id)_copyLocationsArrayWithTopColorLocation:(float)a3 bottomColorLocation:(float)a4;
-- (void)_configureGradientWithTopColor:(id)a3 bottomColor:(id)a4 locations:(id)a5 animated:(BOOL)a6 duration:(double)a7 completion:(id)a8;
-- (void)configureGradientAnimatedWithTopColor:(id)a3 bottomColor:(id)a4 topColorLocation:(float)a5 bottomColorLocation:(float)a6 duration:(double)a7 completion:(id)a8;
-- (void)configureGradientWithTopColor:(id)a3 bottomColor:(id)a4 topColorLocation:(float)a5 bottomColorLocation:(float)a6;
+- (id)_copyColorsArrayWithTopColor:(id)color bottomColor:(id)bottomColor;
+- (id)_copyLocationsArrayWithTopColorLocation:(float)location bottomColorLocation:(float)colorLocation;
+- (void)_configureGradientWithTopColor:(id)color bottomColor:(id)bottomColor locations:(id)locations animated:(BOOL)animated duration:(double)duration completion:(id)completion;
+- (void)configureGradientAnimatedWithTopColor:(id)color bottomColor:(id)bottomColor topColorLocation:(float)location bottomColorLocation:(float)colorLocation duration:(double)duration completion:(id)completion;
+- (void)configureGradientWithTopColor:(id)color bottomColor:(id)bottomColor topColorLocation:(float)location bottomColorLocation:(float)colorLocation;
 @end
 
 @implementation AXGestureRecorderGradientView
 
-- (void)_configureGradientWithTopColor:(id)a3 bottomColor:(id)a4 locations:(id)a5 animated:(BOOL)a6 duration:(double)a7 completion:(id)a8
+- (void)_configureGradientWithTopColor:(id)color bottomColor:(id)bottomColor locations:(id)locations animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v10 = a6;
-  v14 = a5;
-  v15 = a8;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(AXGestureRecorderGradientView *)self gradientLayer];
-  v19 = [(AXGestureRecorderGradientView *)self _copyColorsArrayWithTopColor:v17 bottomColor:v16];
+  animatedCopy = animated;
+  locationsCopy = locations;
+  completionCopy = completion;
+  bottomColorCopy = bottomColor;
+  colorCopy = color;
+  gradientLayer = [(AXGestureRecorderGradientView *)self gradientLayer];
+  v19 = [(AXGestureRecorderGradientView *)self _copyColorsArrayWithTopColor:colorCopy bottomColor:bottomColorCopy];
 
-  if (a7 > 0.0 && v10)
+  if (duration > 0.0 && animatedCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __115__AXGestureRecorderGradientView__configureGradientWithTopColor_bottomColor_locations_animated_duration_completion___block_invoke;
     aBlock[3] = &unk_1E812DD28;
-    v20 = v18;
+    v20 = gradientLayer;
     v32 = v20;
     v21 = _Block_copy(aBlock);
     v22 = v21[2](v21, v19, sel_colors);
-    v23 = v21[2](v21, v14, sel_locations);
+    v23 = v21[2](v21, locationsCopy, sel_locations);
     v24 = v23;
     if (v22 && v23)
     {
@@ -65,11 +65,11 @@ LABEL_20:
       v25 = v27;
     }
 
-    [v25 setDuration:a7];
-    if (v15)
+    [v25 setDuration:duration];
+    if (completionCopy)
     {
       v28 = objc_opt_new();
-      [v28 setCompletionBlock:v15];
+      [v28 setCompletionBlock:completionCopy];
       [v25 setDelegate:v28];
     }
 
@@ -84,14 +84,14 @@ LABEL_20:
 
     if (v24)
     {
-      [v20 setLocations:v14];
+      [v20 setLocations:locationsCopy];
     }
 
     goto LABEL_20;
   }
 
-  [v18 setColors:v19];
-  [v18 setLocations:v14];
+  [gradientLayer setColors:v19];
+  [gradientLayer setLocations:locationsCopy];
 LABEL_21:
 }
 
@@ -118,46 +118,46 @@ id __115__AXGestureRecorderGradientView__configureGradientWithTopColor_bottomCol
   return v8;
 }
 
-- (void)configureGradientWithTopColor:(id)a3 bottomColor:(id)a4 topColorLocation:(float)a5 bottomColorLocation:(float)a6
+- (void)configureGradientWithTopColor:(id)color bottomColor:(id)bottomColor topColorLocation:(float)location bottomColorLocation:(float)colorLocation
 {
-  v10 = a4;
-  v11 = a3;
-  *&v12 = a5;
-  *&v13 = a6;
+  bottomColorCopy = bottomColor;
+  colorCopy = color;
+  *&v12 = location;
+  *&v13 = colorLocation;
   v14 = [(AXGestureRecorderGradientView *)self _copyLocationsArrayWithTopColorLocation:v12 bottomColorLocation:v13];
-  [(AXGestureRecorderGradientView *)self _configureGradientWithTopColor:v11 bottomColor:v10 locations:v14 animated:0 duration:0 completion:0.0];
+  [(AXGestureRecorderGradientView *)self _configureGradientWithTopColor:colorCopy bottomColor:bottomColorCopy locations:v14 animated:0 duration:0 completion:0.0];
 }
 
-- (void)configureGradientAnimatedWithTopColor:(id)a3 bottomColor:(id)a4 topColorLocation:(float)a5 bottomColorLocation:(float)a6 duration:(double)a7 completion:(id)a8
+- (void)configureGradientAnimatedWithTopColor:(id)color bottomColor:(id)bottomColor topColorLocation:(float)location bottomColorLocation:(float)colorLocation duration:(double)duration completion:(id)completion
 {
-  v14 = a8;
-  v15 = a4;
-  v16 = a3;
-  *&v17 = a5;
-  *&v18 = a6;
+  completionCopy = completion;
+  bottomColorCopy = bottomColor;
+  colorCopy = color;
+  *&v17 = location;
+  *&v18 = colorLocation;
   v19 = [(AXGestureRecorderGradientView *)self _copyLocationsArrayWithTopColorLocation:v17 bottomColorLocation:v18];
-  [(AXGestureRecorderGradientView *)self _configureGradientWithTopColor:v16 bottomColor:v15 locations:v19 animated:1 duration:v14 completion:a7];
+  [(AXGestureRecorderGradientView *)self _configureGradientWithTopColor:colorCopy bottomColor:bottomColorCopy locations:v19 animated:1 duration:completionCopy completion:duration];
 }
 
-- (id)_copyColorsArrayWithTopColor:(id)a3 bottomColor:(id)a4
+- (id)_copyColorsArrayWithTopColor:(id)color bottomColor:(id)bottomColor
 {
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = a3;
+  bottomColorCopy = bottomColor;
+  colorCopy = color;
   v8 = [v5 alloc];
-  v9 = [v7 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  v10 = [v6 CGColor];
-  return [v8 initWithObjects:{v9, v10, 0}];
+  cGColor2 = [bottomColorCopy CGColor];
+  return [v8 initWithObjects:{cGColor, cGColor2, 0}];
 }
 
-- (id)_copyLocationsArrayWithTopColorLocation:(float)a3 bottomColorLocation:(float)a4
+- (id)_copyLocationsArrayWithTopColorLocation:(float)location bottomColorLocation:(float)colorLocation
 {
   v6 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v7 = a3;
+  *&v7 = location;
   v8 = [v6 initWithFloat:v7];
   v9 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v10 = a4;
+  *&v10 = colorLocation;
   v11 = [v9 initWithFloat:v10];
   v12 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v8, v11, 0}];
 

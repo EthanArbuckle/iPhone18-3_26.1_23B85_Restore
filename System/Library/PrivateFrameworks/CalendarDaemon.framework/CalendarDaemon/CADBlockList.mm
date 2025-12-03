@@ -1,29 +1,29 @@
 @interface CADBlockList
-- (BOOL)isEventBlocked:(void *)a3;
-- (CADBlockList)initWithBlockList:(id)a3;
+- (BOOL)isEventBlocked:(void *)blocked;
+- (CADBlockList)initWithBlockList:(id)list;
 @end
 
 @implementation CADBlockList
 
-- (CADBlockList)initWithBlockList:(id)a3
+- (CADBlockList)initWithBlockList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = CADBlockList;
   v6 = [(CADBlockList *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_blockList, a3);
+    objc_storeStrong(&v6->_blockList, list);
   }
 
   return v7;
 }
 
-- (BOOL)isEventBlocked:(void *)a3
+- (BOOL)isEventBlocked:(void *)blocked
 {
-  Event = a3;
-  v5 = CFGetTypeID(a3);
+  Event = blocked;
+  v5 = CFGetTypeID(blocked);
   if (v5 == CalEventOccurrenceGetTypeID())
   {
     Event = CalEventOccurrenceGetEvent();

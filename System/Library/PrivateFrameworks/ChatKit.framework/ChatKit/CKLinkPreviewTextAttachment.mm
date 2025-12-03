@@ -1,18 +1,18 @@
 @interface CKLinkPreviewTextAttachment
 - (BOOL)canPresentCustomizationPicker;
-- (BOOL)supportsCustomizationForEmbeddedRichLinkView:(id)a3;
-- (_TtC7ChatKit27CKLinkPreviewTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (BOOL)supportsCustomizationForEmbeddedRichLinkView:(id)view;
+- (_TtC7ChatKit27CKLinkPreviewTextAttachment)initWithData:(id)data ofType:(id)type;
 - (double)downscaleMultiplier;
-- (double)downscaleMultiplierForEmbeddedRichLinkView:(id)a3;
-- (double)maxWidthForEmbeddedRichLinkView:(id)a3;
-- (id)imageForBounds:(CGRect)a3 textContainer:(id)a4 characterIndex:(int64_t)a5;
+- (double)downscaleMultiplierForEmbeddedRichLinkView:(id)view;
+- (double)maxWidthForEmbeddedRichLinkView:(id)view;
+- (id)imageForBounds:(CGRect)bounds textContainer:(id)container characterIndex:(int64_t)index;
 - (id)makeThrowAnimationSnapshotView;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
-- (void)embeddedRichLinkView:(id)a3 didFinishPreparingPluginPayload:(id)a4;
-- (void)embeddedRichLinkView:(id)a3 didSelectInteractionType:(int64_t)a4;
-- (void)embeddedRichLinkView:(id)a3 requestedTransitionToSize:(CGSize)a4;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
+- (void)embeddedRichLinkView:(id)view didFinishPreparingPluginPayload:(id)payload;
+- (void)embeddedRichLinkView:(id)view didSelectInteractionType:(int64_t)type;
+- (void)embeddedRichLinkView:(id)view requestedTransitionToSize:(CGSize)size;
 - (void)presentCustomizationPicker;
-- (void)setDownscaleMultiplier:(double)a3;
+- (void)setDownscaleMultiplier:(double)multiplier;
 @end
 
 @implementation CKLinkPreviewTextAttachment
@@ -24,20 +24,20 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setDownscaleMultiplier:(double)a3
+- (void)setDownscaleMultiplier:(double)multiplier
 {
   v5 = OBJC_IVAR____TtC7ChatKit27CKLinkPreviewTextAttachment_downscaleMultiplier;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = multiplier;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v9 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v10 = a5;
-  v11 = self;
-  sub_190B9AC60(a3, a4, a5);
+  containerCopy = container;
+  selfCopy = self;
+  sub_190B9AC60(view, location, container);
   v13 = v12;
 
   swift_unknownObjectRelease();
@@ -45,10 +45,10 @@
   return v13;
 }
 
-- (id)imageForBounds:(CGRect)a3 textContainer:(id)a4 characterIndex:(int64_t)a5
+- (id)imageForBounds:(CGRect)bounds textContainer:(id)container characterIndex:(int64_t)index
 {
-  v6 = a4;
-  v7 = self;
+  containerCopy = container;
+  selfCopy = self;
   v8 = sub_190B9B9E0();
 
   return v8;
@@ -56,17 +56,17 @@
 
 - (id)makeThrowAnimationSnapshotView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190AF4994();
 
   return v3;
 }
 
-- (_TtC7ChatKit27CKLinkPreviewTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC7ChatKit27CKLinkPreviewTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = sub_190D51670();
     sub_19083B6D4(v5, v6);
   }
@@ -76,53 +76,53 @@
   return result;
 }
 
-- (void)embeddedRichLinkView:(id)a3 didSelectInteractionType:(int64_t)a4
+- (void)embeddedRichLinkView:(id)view didSelectInteractionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  sub_190B9BC24(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_190B9BC24(type);
 }
 
-- (void)embeddedRichLinkView:(id)a3 didFinishPreparingPluginPayload:(id)a4
+- (void)embeddedRichLinkView:(id)view didFinishPreparingPluginPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_190B9BD60(v7);
+  viewCopy = view;
+  payloadCopy = payload;
+  selfCopy = self;
+  sub_190B9BD60(payloadCopy);
 }
 
-- (void)embeddedRichLinkView:(id)a3 requestedTransitionToSize:(CGSize)a4
+- (void)embeddedRichLinkView:(id)view requestedTransitionToSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_190B9BE70();
 }
 
-- (double)maxWidthForEmbeddedRichLinkView:(id)a3
+- (double)maxWidthForEmbeddedRichLinkView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_190B9C104();
   v7 = v6;
 
   return v7;
 }
 
-- (double)downscaleMultiplierForEmbeddedRichLinkView:(id)a3
+- (double)downscaleMultiplierForEmbeddedRichLinkView:(id)view
 {
   v4 = OBJC_IVAR____TtC7ChatKit27CKLinkPreviewTextAttachment_downscaleMultiplier;
   swift_beginAccess();
   return *(&self->super.super.isa + v4);
 }
 
-- (BOOL)supportsCustomizationForEmbeddedRichLinkView:(id)a3
+- (BOOL)supportsCustomizationForEmbeddedRichLinkView:(id)view
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v5 = [Strong supportsCustomizationForLinkPreviewTextAttachment_];
+    supportsCustomizationForLinkPreviewTextAttachment_ = [Strong supportsCustomizationForLinkPreviewTextAttachment_];
     swift_unknownObjectRelease();
-    LOBYTE(Strong) = v5;
+    LOBYTE(Strong) = supportsCustomizationForLinkPreviewTextAttachment_;
   }
 
   return Strong;
@@ -130,7 +130,7 @@
 
 - (BOOL)canPresentCustomizationPicker
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190AF6424();
 
   return v3 & 1;
@@ -138,7 +138,7 @@
 
 - (void)presentCustomizationPicker
 {
-  v2 = self;
+  selfCopy = self;
   sub_190AF66D4();
 }
 

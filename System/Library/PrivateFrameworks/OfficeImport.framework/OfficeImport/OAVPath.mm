@@ -1,9 +1,9 @@
 @interface OAVPath
 + (EshComputedValue)noneParam;
-+ (EshComputedValue)parseParam:(const char *)a3 first:(BOOL)a4;
-+ (int)parseCommand:(const char *)a3;
-+ (void)readPath:(id)a3 toGeometry:(id)a4;
-+ (void)writePath:(id)a3 toString:(id)a4;
++ (EshComputedValue)parseParam:(const char *)param first:(BOOL)first;
++ (int)parseCommand:(const char *)command;
++ (void)readPath:(id)path toGeometry:(id)geometry;
++ (void)writePath:(id)path toString:(id)string;
 @end
 
 @implementation OAVPath
@@ -17,12 +17,12 @@
   }
 
   *v3 = *+[OAVPath noneParam]::param;
-  return a1;
+  return self;
 }
 
-+ (int)parseCommand:(const char *)a3
++ (int)parseCommand:(const char *)command
 {
-  v4 = **a3;
+  v4 = **command;
   if ((v4 & 0x80000000) != 0)
   {
     if (!__maskrune(v4, 0x100uLL))
@@ -36,12 +36,12 @@
     return -1;
   }
 
-  v5 = (*a3)++;
+  v5 = (*command)++;
   result = 0;
   switch(*v5)
   {
     case 'A':
-      *a3 = v5 + 2;
+      *command = v5 + 2;
       v7 = *(v5 + 1);
       if (v7 > 81)
       {
@@ -81,7 +81,7 @@
     case 'E':
       return 4;
     case 'H':
-      *a3 = v5 + 2;
+      *command = v5 + 2;
       v8 = *(v5 + 1);
       if ((v8 - 65) >= 9)
       {
@@ -94,7 +94,7 @@
     case 'M':
       return 2;
     case 'N':
-      *a3 = v5 + 2;
+      *command = v5 + 2;
       v13 = *(v5 + 1);
       if (v13 == 83)
       {
@@ -110,7 +110,7 @@
       v12 = 15;
       goto LABEL_25;
     case 'Q':
-      *a3 = v5 + 2;
+      *command = v5 + 2;
       v14 = *(v5 + 1);
       switch(v14)
       {
@@ -135,7 +135,7 @@
     case 'V':
       return 30;
     case 'W':
-      *a3 = v5 + 2;
+      *command = v5 + 2;
       v9 = *(v5 + 1);
       if (v9 == 82)
       {
@@ -169,12 +169,12 @@ LABEL_25:
   return result;
 }
 
-+ (EshComputedValue)parseParam:(const char *)a3 first:(BOOL)a4
++ (EshComputedValue)parseParam:(const char *)param first:(BOOL)first
 {
   v7 = v4;
-  v8 = *a3;
+  v8 = *param;
   v9 = MEMORY[0x277D85DE0];
-  if (a4)
+  if (first)
   {
     goto LABEL_9;
   }
@@ -183,13 +183,13 @@ LABEL_25:
   {
     v10 = *v8;
     v11 = (v10 & 0x80000000) != 0 ? __maskrune(v10, 0x4000uLL) : *(v9 + 4 * v10 + 60) & 0x4000;
-    v8 = *a3;
+    v8 = *param;
     if (!v11)
     {
       break;
     }
 
-    *a3 = ++v8;
+    *param = ++v8;
   }
 
   if (*v8 != 44)
@@ -200,7 +200,7 @@ LABEL_9:
 
   else
   {
-    *a3 = ++v8;
+    *param = ++v8;
     v12 = 1;
   }
 
@@ -208,14 +208,14 @@ LABEL_9:
   {
     v13 = *v8;
     v14 = (v13 & 0x80000000) != 0 ? __maskrune(v13, 0x4000uLL) : *(v9 + 4 * v13 + 60) & 0x4000;
-    v15 = *a3;
+    v15 = *param;
     if (!v14)
     {
       break;
     }
 
     v8 = v15 + 1;
-    *a3 = v8;
+    *param = v8;
   }
 
   v16 = *v15;
@@ -242,9 +242,9 @@ LABEL_9:
     }
   }
 
-  v17 = *a3;
-  v18 = **a3;
-  if (!**a3)
+  v17 = *param;
+  v18 = **param;
+  if (!**param)
   {
 LABEL_31:
     if (!v12)
@@ -262,14 +262,14 @@ LABEL_32:
   {
     if (v18 == 64)
     {
-      *a3 = ++v17;
+      *param = ++v17;
     }
 
     v16 = atol(v17);
     v19 = v17 + 1;
     do
     {
-      *a3 = v19;
+      *param = v19;
       v21 = *v19++;
       v20 = v21;
     }
@@ -282,13 +282,13 @@ LABEL_32:
 
 LABEL_33:
 
-  return [a1 noneParam];
+  return [self noneParam];
 }
 
-+ (void)readPath:(id)a3 toGeometry:(id)a4
++ (void)readPath:(id)path toGeometry:(id)geometry
 {
-  v6 = a3;
-  v34 = a4;
+  pathCopy = path;
+  geometryCopy = geometry;
   v42 = 0;
   v43 = 0;
   v44 = 0;
@@ -297,23 +297,23 @@ LABEL_33:
   __p = 0;
   v39 = 0;
   v37 = &unk_286EC4D78;
-  v7 = [v6 uppercaseString];
-  v8 = [v7 UTF8String];
+  uppercaseString = [pathCopy uppercaseString];
+  uTF8String = [uppercaseString UTF8String];
 
   v9 = 0;
-  v36 = v8;
+  v36 = uTF8String;
   v10 = MEMORY[0x277D85DE0];
   while (1)
   {
     while (1)
     {
-      v11 = *v8;
+      v11 = *uTF8String;
       if (!((v11 & 0x80000000) != 0 ? __maskrune(v11, 0x4000uLL) : *(v10 + 4 * v11 + 60) & 0x4000))
       {
         break;
       }
 
-      v8 = ++v36;
+      uTF8String = ++v36;
     }
 
     if (!*v36)
@@ -321,7 +321,7 @@ LABEL_33:
       break;
     }
 
-    v13 = [a1 parseCommand:&v36];
+    v13 = [self parseCommand:&v36];
     v14 = v13;
     if (v13 == -1)
     {
@@ -339,7 +339,7 @@ LABEL_33:
         v19 = v17;
         do
         {
-          [a1 parseParam:&v36 first:v19 & 1];
+          [self parseParam:&v36 first:v19 & 1];
           v20 = v39;
           if (v39 >= v40)
           {
@@ -412,12 +412,12 @@ LABEL_33:
 
     v43 = v33;
     v9 = 1;
-    v8 = v36;
+    uTF8String = v36;
   }
 
   if (v9)
   {
-    [OABShapeGeometry readFromPathCommands:&v41 pathParams:&v37 toGeometry:v34];
+    [OABShapeGeometry readFromPathCommands:&v41 pathParams:&v37 toGeometry:geometryCopy];
   }
 
   v37 = &unk_286EC4E08;
@@ -435,29 +435,29 @@ LABEL_33:
   }
 }
 
-+ (void)writePath:(id)a3 toString:(id)a4
++ (void)writePath:(id)path toString:(id)string
 {
-  v59 = a3;
-  v5 = a4;
-  v6 = [v59 elementCount];
-  v7 = v6;
-  if (v6)
+  pathCopy = path;
+  stringCopy = string;
+  elementCount = [pathCopy elementCount];
+  v7 = elementCount;
+  if (elementCount)
   {
     v8 = 0;
-    v57 = v6;
-    v58 = v5;
+    v57 = elementCount;
+    v58 = stringCopy;
     while (1)
     {
-      v9 = [v59 elementAtIndex:v8];
+      v9 = [pathCopy elementAtIndex:v8];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         break;
       }
 
-      [v5 appendString:@"X"];
+      [stringCopy appendString:@"X"];
 LABEL_57:
-      [v5 appendString:@" "];
+      [stringCopy appendString:@" "];
 
       if (v7 == ++v8)
       {
@@ -468,17 +468,17 @@ LABEL_57:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 toPoint];
+      toPoint = [v9 toPoint];
       v12 = v11;
-      v13 = [v9 relative];
+      relative = [v9 relative];
       v14 = @"M";
-      if (v13)
+      if (relative)
       {
         v14 = @"T";
       }
 
       v15 = v14;
-      if (v10)
+      if (toPoint)
       {
         v16 = @"@";
       }
@@ -488,7 +488,7 @@ LABEL_57:
         v16 = &stru_286EE1130;
       }
 
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v16, HIDWORD(v10)];
+      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v16, HIDWORD(toPoint)];
       v18 = MEMORY[0x277CCACA8];
       if (v12)
       {
@@ -506,17 +506,17 @@ LABEL_57:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [v9 toPoint];
+        toPoint2 = [v9 toPoint];
         v12 = v21;
-        v22 = [v9 relative];
+        relative2 = [v9 relative];
         v23 = @"L";
-        if (v22)
+        if (relative2)
         {
           v23 = @"R";
         }
 
         v15 = v23;
-        if (v20)
+        if (toPoint2)
         {
           v24 = @"@";
         }
@@ -526,7 +526,7 @@ LABEL_57:
           v24 = &stru_286EE1130;
         }
 
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v24, HIDWORD(v20)];
+        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v24, HIDWORD(toPoint2)];
         v18 = MEMORY[0x277CCACA8];
         if (v12)
         {
@@ -544,21 +544,21 @@ LABEL_57:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = [v9 controlPoint1];
+          controlPoint1 = [v9 controlPoint1];
           v27 = v26;
-          v28 = [v9 controlPoint2];
+          controlPoint2 = [v9 controlPoint2];
           v30 = v29;
-          v31 = [v9 toPoint];
+          toPoint3 = [v9 toPoint];
           v56 = v32;
-          v33 = [v9 relative];
+          relative3 = [v9 relative];
           v34 = @"C";
-          if (v33)
+          if (relative3)
           {
             v34 = @"V";
           }
 
           v15 = v34;
-          if (v25)
+          if (controlPoint1)
           {
             v35 = @"@";
           }
@@ -568,7 +568,7 @@ LABEL_57:
             v35 = &stru_286EE1130;
           }
 
-          v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v35, HIDWORD(v25)];
+          v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v35, HIDWORD(controlPoint1)];
           if (v27)
           {
             v36 = @"@";
@@ -580,7 +580,7 @@ LABEL_57:
           }
 
           v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v36, HIDWORD(v27)];
-          if (v28)
+          if (controlPoint2)
           {
             v38 = @"@";
           }
@@ -590,7 +590,7 @@ LABEL_57:
             v38 = &stru_286EE1130;
           }
 
-          v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v38, HIDWORD(v28)];
+          v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v38, HIDWORD(controlPoint2)];
           if (v30)
           {
             v40 = @"@";
@@ -602,7 +602,7 @@ LABEL_57:
           }
 
           v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v40, HIDWORD(v30)];
-          if (v31)
+          if (toPoint3)
           {
             v42 = @"@";
           }
@@ -612,7 +612,7 @@ LABEL_57:
             v42 = &stru_286EE1130;
           }
 
-          v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v42, HIDWORD(v31)];
+          v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v42, HIDWORD(toPoint3)];
           if (v56)
           {
             v44 = @"@";
@@ -655,9 +655,9 @@ LABEL_57:
             goto LABEL_57;
           }
 
-          v51 = [v9 controlPoint];
+          controlPoint = [v9 controlPoint];
           v53 = v52;
-          if (v51)
+          if (controlPoint)
           {
             v54 = @"@";
           }
@@ -667,7 +667,7 @@ LABEL_57:
             v54 = &stru_286EE1130;
           }
 
-          v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v54, HIDWORD(v51)];
+          v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v54, HIDWORD(controlPoint)];
           if (v53)
           {
             v55 = @"@";
@@ -683,17 +683,17 @@ LABEL_57:
           goto LABEL_56;
         }
 
-        v46 = [v9 toPoint];
+        toPoint4 = [v9 toPoint];
         v12 = v47;
-        v48 = [v9 startsVertical];
+        startsVertical = [v9 startsVertical];
         v49 = @"QX";
-        if (v48)
+        if (startsVertical)
         {
           v49 = @"QY";
         }
 
         v15 = v49;
-        if (v46)
+        if (toPoint4)
         {
           v50 = @"@";
         }
@@ -703,7 +703,7 @@ LABEL_57:
           v50 = &stru_286EE1130;
         }
 
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v50, HIDWORD(v46)];
+        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", v50, HIDWORD(toPoint4)];
         v18 = MEMORY[0x277CCACA8];
         if (v12)
         {
@@ -723,22 +723,22 @@ LABEL_55:
 
 LABEL_56:
     v7 = v57;
-    v5 = v58;
+    stringCopy = v58;
     goto LABEL_57;
   }
 
 LABEL_71:
-  if (([v59 stroked] & 1) == 0)
+  if (([pathCopy stroked] & 1) == 0)
   {
-    [v5 appendString:@"NS "];
+    [stringCopy appendString:@"NS "];
   }
 
-  if (![v59 fillMode])
+  if (![pathCopy fillMode])
   {
-    [v5 appendString:@"NF "];
+    [stringCopy appendString:@"NF "];
   }
 
-  [v5 appendString:@"E"];
+  [stringCopy appendString:@"E"];
 }
 
 @end

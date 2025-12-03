@@ -6,7 +6,7 @@
 - (void)_removeMultipleTencentWeiboAccounts;
 - (void)_runAccountMigrationPlugins;
 - (void)_scheduleBackupIfNonexistent;
-- (void)removeObsoleteAccountsFromStore:(id)a3;
+- (void)removeObsoleteAccountsFromStore:(id)store;
 @end
 
 @implementation ACAccountsMigrator
@@ -48,18 +48,18 @@
 - (void)_removeAccountsPlist
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(ACAccountsMigrator *)self _oldAccountsPlistPath];
-  if ([v3 fileExistsAtPath:v4 isDirectory:0])
+  _oldAccountsPlistPath = [(ACAccountsMigrator *)self _oldAccountsPlistPath];
+  if ([v3 fileExistsAtPath:_oldAccountsPlistPath isDirectory:0])
   {
     v8 = 0;
-    v5 = [v3 removeItemAtPath:v4 error:&v8];
+    v5 = [v3 removeItemAtPath:_oldAccountsPlistPath error:&v8];
     v6 = v8;
     if ((v5 & 1) == 0)
     {
       v7 = _ACLogSystem();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        sub_1DE4(v4, v6, v7);
+        sub_1DE4(_oldAccountsPlistPath, v6, v7);
       }
     }
   }
@@ -70,7 +70,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = _oldAccountsPlistPath;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "The legacy accounts plist could not be found at: %@", buf, 0xCu);
     }
   }
@@ -184,9 +184,9 @@
   }
 }
 
-- (void)removeObsoleteAccountsFromStore:(id)a3
+- (void)removeObsoleteAccountsFromStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v43[0] = ACAccountTypeIdentifierTwitterDeprecated;
   v43[1] = ACAccountTypeIdentifierFacebookDeprecated;
   v43[2] = ACAccountTypeIdentifierSinaWeiboDeprecated;
@@ -204,7 +204,7 @@
 
   v37 = 0;
   v24 = v4;
-  v6 = [v3 accountsWithAccountTypeIdentifiers:v4 error:&v37];
+  v6 = [storeCopy accountsWithAccountTypeIdentifiers:v4 error:&v37];
   v7 = v37;
   v8 = _ACLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -240,7 +240,7 @@
 
         v12 = *(*(&v33 + 1) + 8 * v11);
         v32 = 0;
-        v13 = [v3 dataclassActionsForAccountDeletion:v12 error:{&v32, v23}];
+        v13 = [storeCopy dataclassActionsForAccountDeletion:v12 error:{&v32, v23}];
         v14 = v32;
         v15 = _ACLogSystem();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -279,7 +279,7 @@
         v27[4] = v12;
         v20 = v19;
         v28 = v20;
-        [v3 removeAccount:v12 withDataclassActions:v17 completion:v27];
+        [storeCopy removeAccount:v12 withDataclassActions:v17 completion:v27];
         v21 = dispatch_time(0, 2000000000);
         if (dispatch_semaphore_wait(v20, v21))
         {

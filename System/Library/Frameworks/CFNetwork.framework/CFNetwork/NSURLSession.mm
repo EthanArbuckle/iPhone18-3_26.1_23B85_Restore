@@ -9,19 +9,19 @@
 {
   if (!_os_feature_enabled_impl())
   {
-    return a1;
+    return self;
   }
 
-  Name = class_getName(a1);
+  Name = class_getName(self);
   if (strcmp(Name, "NSURLSession"))
   {
-    return a1;
+    return self;
   }
 
   v5 = dyld_image_path_containing_address();
   if (!v5 || !strstr(v5, "Embrace.framework"))
   {
-    return a1;
+    return self;
   }
 
   return objc_getClass("NWURLSession");

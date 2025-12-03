@@ -1,7 +1,7 @@
 @interface FDRContentInstaller
 + (id)sharedInstance;
 - (BOOL)finishInstallContent;
-- (BOOL)updateContent:(id)a3;
+- (BOOL)updateContent:(id)content;
 - (FDRContentInstaller)init;
 @end
 
@@ -35,23 +35,23 @@
   return v2;
 }
 
-- (BOOL)updateContent:(id)a3
+- (BOOL)updateContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = +[NSFileManager defaultManager];
   v38 = 0;
-  v5 = [NSURL fileURLWithPath:v3];
+  v5 = [NSURL fileURLWithPath:contentCopy];
   v35 = v4;
   v6 = [v4 enumeratorAtURL:v5 includingPropertiesForKeys:0 options:0 errorHandler:0];
 
-  v7 = [v6 nextObject];
-  if (!v7)
+  nextObject = [v6 nextObject];
+  if (!nextObject)
   {
     v29 = 1;
     goto LABEL_17;
   }
 
-  v8 = v7;
+  v8 = nextObject;
   v34 = 0;
   v9 = 0;
   while (1)
@@ -59,12 +59,12 @@
     while (1)
     {
       v10 = v9;
-      v11 = [v8 path];
-      [v11 rangeOfString:v3];
+      path = [v8 path];
+      [path rangeOfString:contentCopy];
       v13 = v12;
 
-      v14 = [v8 path];
-      v9 = [v14 substringFromIndex:v13];
+      path2 = [v8 path];
+      v9 = [path2 substringFromIndex:v13];
 
       if ([v9 hasPrefix:@"/var/"])
       {
@@ -72,10 +72,10 @@
       }
 
 LABEL_7:
-      v20 = [v6 nextObject];
+      nextObject2 = [v6 nextObject];
 
-      v8 = v20;
-      if (!v20)
+      v8 = nextObject2;
+      if (!nextObject2)
       {
         v29 = 1;
 LABEL_14:
@@ -86,8 +86,8 @@ LABEL_14:
     }
 
     v15 = +[MSDLogModel sharedInstance];
-    v16 = [v8 path];
-    [v15 logMessage:1 prefix:@"[INF]" message:{@"Copying %@ to %@", v16, v9}];
+    path3 = [v8 path];
+    [v15 logMessage:1 prefix:@"[INF]" message:{@"Copying %@ to %@", path3, v9}];
 
     if (![v4 fileExistsAtPath:v9 isDirectory:&v38])
     {
@@ -128,19 +128,19 @@ LABEL_12:
     {
       v32 = [NSString stringWithFormat:@"[ERR] %s", "[FDRContentInstaller updateContent:]"];
       v30 = v34;
-      v33 = [v34 localizedDescription];
-      [v26 logMessage:2 prefix:v32 message:{@"Failed to copy %@ - %@", v9, v33}];
+      localizedDescription = [v34 localizedDescription];
+      [v26 logMessage:2 prefix:v32 message:{@"Failed to copy %@ - %@", v9, localizedDescription}];
       goto LABEL_20;
     }
 
-    v27 = [v8 path];
+    path4 = [v8 path];
     v29 = 1;
-    [v26 logMessage:1 prefix:@"[INF]" message:{@"Done copying %@ to %@", v27, v9}];
+    [v26 logMessage:1 prefix:@"[INF]" message:{@"Done copying %@ to %@", path4, v9}];
 
-    v28 = [v6 nextObject];
+    nextObject3 = [v6 nextObject];
 
-    v8 = v28;
-    if (!v28)
+    v8 = nextObject3;
+    if (!nextObject3)
     {
       goto LABEL_14;
     }
@@ -148,8 +148,8 @@ LABEL_12:
 
   v26 = +[MSDLogModel sharedInstance];
   v32 = [NSString stringWithFormat:@"[ERR] %s", "[FDRContentInstaller updateContent:]"];
-  v33 = [v23 localizedDescription];
-  [v26 logMessage:2 prefix:v32 message:{@"Failed to remove %@ - %@", v9, v33}];
+  localizedDescription = [v23 localizedDescription];
+  [v26 logMessage:2 prefix:v32 message:{@"Failed to remove %@ - %@", v9, localizedDescription}];
   v30 = v23;
 LABEL_20:
 
@@ -199,8 +199,8 @@ LABEL_17:
           {
             v15 = +[MSDLogModel sharedInstance];
             v16 = [NSString stringWithFormat:@"[ERR] %s", "[FDRContentInstaller finishInstallContent]"];
-            v17 = [v11 localizedDescription];
-            [v15 logMessage:2 prefix:v16 message:{@"Cannot remove %@ - %@", v9, v17}];
+            localizedDescription = [v11 localizedDescription];
+            [v15 logMessage:2 prefix:v16 message:{@"Cannot remove %@ - %@", v9, localizedDescription}];
 
             v13 = 0;
             v6 = v11;

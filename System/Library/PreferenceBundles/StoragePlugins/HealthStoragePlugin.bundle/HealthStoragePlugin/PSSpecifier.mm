@@ -1,30 +1,30 @@
 @interface PSSpecifier
-+ (id)_hkGroupSpecifier:(id)a3;
-+ (id)_hkGroupSpecifier:(id)a3 footer:(id)a4;
-+ (id)_hkGroupSpecifier:(id)a3 footerText:(id)a4 linkText:(id)a5 actionURL:(id)a6;
-+ (id)_hkPreferenceNamed:(id)a3 value:(id)a4;
-- (id)_hkSpecifierValue:(id)a3;
++ (id)_hkGroupSpecifier:(id)specifier;
++ (id)_hkGroupSpecifier:(id)specifier footer:(id)footer;
++ (id)_hkGroupSpecifier:(id)specifier footerText:(id)text linkText:(id)linkText actionURL:(id)l;
++ (id)_hkPreferenceNamed:(id)named value:(id)value;
+- (id)_hkSpecifierValue:(id)value;
 @end
 
 @implementation PSSpecifier
 
-+ (id)_hkPreferenceNamed:(id)a3 value:(id)a4
++ (id)_hkPreferenceNamed:(id)named value:(id)value
 {
-  v5 = a4;
-  v6 = [PSSpecifier preferenceSpecifierNamed:a3 target:0 set:0 get:"_hkSpecifierValue:" detail:0 cell:4 edit:0];
+  valueCopy = value;
+  v6 = [PSSpecifier preferenceSpecifierNamed:named target:0 set:0 get:"_hkSpecifierValue:" detail:0 cell:4 edit:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     [v6 setTarget:v6];
-    [v6 setProperty:v5 forKey:PSValueKey];
+    [v6 setProperty:valueCopy forKey:PSValueKey];
   }
 
   return v6;
 }
 
-- (id)_hkSpecifierValue:(id)a3
+- (id)_hkSpecifierValue:(id)value
 {
-  v3 = [a3 propertyForKey:PSValueKey];
+  v3 = [value propertyForKey:PSValueKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -47,40 +47,40 @@ LABEL_7:
   return v5;
 }
 
-+ (id)_hkGroupSpecifier:(id)a3
++ (id)_hkGroupSpecifier:(id)specifier
 {
-  v3 = [PSSpecifier groupSpecifierWithName:a3];
+  v3 = [PSSpecifier groupSpecifierWithName:specifier];
   [v3 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
 
   return v3;
 }
 
-+ (id)_hkGroupSpecifier:(id)a3 footer:(id)a4
++ (id)_hkGroupSpecifier:(id)specifier footer:(id)footer
 {
-  v5 = a4;
-  v6 = [PSSpecifier groupSpecifierWithName:a3];
-  [v6 setProperty:v5 forKey:PSFooterTextGroupKey];
+  footerCopy = footer;
+  v6 = [PSSpecifier groupSpecifierWithName:specifier];
+  [v6 setProperty:footerCopy forKey:PSFooterTextGroupKey];
 
   [v6 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
 
   return v6;
 }
 
-+ (id)_hkGroupSpecifier:(id)a3 footerText:(id)a4 linkText:(id)a5 actionURL:(id)a6
++ (id)_hkGroupSpecifier:(id)specifier footerText:(id)text linkText:(id)linkText actionURL:(id)l
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [NSString stringWithFormat:@"%@ %@", a4, v10];
-  v13 = [PSSpecifier groupSpecifierWithName:v11];
+  lCopy = l;
+  linkTextCopy = linkText;
+  specifierCopy = specifier;
+  linkTextCopy = [NSString stringWithFormat:@"%@ %@", text, linkTextCopy];
+  v13 = [PSSpecifier groupSpecifierWithName:specifierCopy];
 
-  [v13 setProperty:v12 forKey:PSFooterTextGroupKey];
+  [v13 setProperty:linkTextCopy forKey:PSFooterTextGroupKey];
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
   [v13 setProperty:v15 forKey:PSFooterCellClassGroupKey];
 
-  [v13 setProperty:v12 forKey:PSFooterHyperlinkViewTitleKey];
-  v16 = [v12 rangeOfString:v10];
+  [v13 setProperty:linkTextCopy forKey:PSFooterHyperlinkViewTitleKey];
+  v16 = [linkTextCopy rangeOfString:linkTextCopy];
   v18 = v17;
 
   v22.location = v16;
@@ -88,7 +88,7 @@ LABEL_7:
   v19 = NSStringFromRange(v22);
   [v13 setProperty:v19 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
-  [v13 setProperty:v9 forKey:PSFooterHyperlinkViewURLKey];
+  [v13 setProperty:lCopy forKey:PSFooterHyperlinkViewURLKey];
 
   return v13;
 }

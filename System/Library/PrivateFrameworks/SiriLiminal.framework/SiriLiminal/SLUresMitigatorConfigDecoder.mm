@@ -1,5 +1,5 @@
 @interface SLUresMitigatorConfigDecoder
-- (SLUresMitigatorConfigDecoder)initWithConfigFile:(id)a3 errOut:(id *)a4;
+- (SLUresMitigatorConfigDecoder)initWithConfigFile:(id)file errOut:(id *)out;
 - (id)getBnnsIrWeightFile;
 - (id)getModelFile;
 @end
@@ -45,10 +45,10 @@
   return v6;
 }
 
-- (SLUresMitigatorConfigDecoder)initWithConfigFile:(id)a3 errOut:(id *)a4
+- (SLUresMitigatorConfigDecoder)initWithConfigFile:(id)file errOut:(id *)out
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  fileCopy = file;
   v26.receiver = self;
   v26.super_class = SLUresMitigatorConfigDecoder;
   v7 = [(SLUresMitigatorConfigDecoder *)&v26 init];
@@ -57,11 +57,11 @@
     goto LABEL_11;
   }
 
-  v8 = [v6 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
   resourcePath = v7->_resourcePath;
-  v7->_resourcePath = v8;
+  v7->_resourcePath = stringByDeletingLastPathComponent;
 
-  v10 = [MEMORY[0x277D01778] decodeJsonFromFile:v6];
+  v10 = [MEMORY[0x277D01778] decodeJsonFromFile:fileCopy];
   configDict = v7->_configDict;
   v7->_configDict = v10;
 
@@ -99,7 +99,7 @@
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
   v21 = [v19 errorWithDomain:@"com.apple.sl" code:105 userInfo:v20];
 
-  if (!a4)
+  if (!out)
   {
 
 LABEL_11:
@@ -108,7 +108,7 @@ LABEL_11:
   }
 
   v22 = v21;
-  *a4 = v21;
+  *out = v21;
 
   v23 = 0;
 LABEL_12:

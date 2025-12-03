@@ -1,29 +1,29 @@
 @interface WLKAMSMediaProxy
-- (WLKAMSMediaProxy)initWithDictionary:(id)a3;
-- (void)_initializeProperties:(id)a3;
+- (WLKAMSMediaProxy)initWithDictionary:(id)dictionary;
+- (void)_initializeProperties:(id)properties;
 @end
 
 @implementation WLKAMSMediaProxy
 
-- (WLKAMSMediaProxy)initWithDictionary:(id)a3
+- (WLKAMSMediaProxy)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = WLKAMSMediaProxy;
   v5 = [(WLKAMSMediaProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(WLKAMSMediaProxy *)v5 _initializeProperties:v4];
+    [(WLKAMSMediaProxy *)v5 _initializeProperties:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (void)_initializeProperties:(id)a3
+- (void)_initializeProperties:(id)properties
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = [a3 wlk_arrayForKey:@"data"];
+  v4 = [properties wlk_arrayForKey:@"data"];
   if ([v4 count])
   {
     v25 = [v4 objectAtIndexedSubscript:0];

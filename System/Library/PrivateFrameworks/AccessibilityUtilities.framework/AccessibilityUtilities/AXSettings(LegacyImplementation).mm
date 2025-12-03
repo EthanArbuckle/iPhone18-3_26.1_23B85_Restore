@@ -38,24 +38,24 @@
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1 & 1;
+  v2[1] = self & 1;
   _os_log_debug_impl(&dword_18B15E000, a2, OS_LOG_TYPE_DEBUG, "Local Auth Storage LAStorageKeyDoublePressDisabled: %d", v2, 8u);
 }
 
 - (void)guidedAccessDefaultToneIdentifierForTimeRestrictionEvents
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getTLToneIdentifierNone(void)"];
-  [v0 handleFailureInFunction:v1 file:@"AXSettings.m" lineNumber:82 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AXSettings.m" lineNumber:82 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)reachabilityEnabled
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL weak_SBSIsReachabilityEnabled(void)"];
-  [v0 handleFailureInFunction:v1 file:@"AXSettings.m" lineNumber:99 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AXSettings.m" lineNumber:99 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

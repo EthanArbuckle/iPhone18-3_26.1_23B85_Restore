@@ -2,9 +2,9 @@
 - (NSString)description;
 - (NSString)session;
 - (PSSGResourceID)init;
-- (PSSGResourceID)initWithName:(id)a3 session:(id)a4 storageMode:(unint64_t)a5;
-- (id)initGlobalWithName:(id)a3;
-- (id)initLocalWithName:(id)a3 session:(id)a4;
+- (PSSGResourceID)initWithName:(id)name session:(id)session storageMode:(unint64_t)mode;
+- (id)initGlobalWithName:(id)name;
+- (id)initLocalWithName:(id)name session:(id)session;
 - (int64_t)hash;
 @end
 
@@ -28,7 +28,7 @@
   return v4;
 }
 
-- (id)initLocalWithName:(id)a3 session:(id)a4
+- (id)initLocalWithName:(id)name session:(id)session
 {
   v5 = sub_25EB6E268();
   v7 = v6;
@@ -44,7 +44,7 @@
   return [(PSSGResourceID *)&v13 init];
 }
 
-- (id)initGlobalWithName:(id)a3
+- (id)initGlobalWithName:(id)name
 {
   v4 = sub_25EB6E268();
   v5 = (self + OBJC_IVAR___PSSGResourceID_name);
@@ -58,17 +58,17 @@
   return [(PSSGResourceID *)&v9 init];
 }
 
-- (PSSGResourceID)initWithName:(id)a3 session:(id)a4 storageMode:(unint64_t)a5
+- (PSSGResourceID)initWithName:(id)name session:(id)session storageMode:(unint64_t)mode
 {
   v6 = sub_25EB6E268();
   v8 = v7;
   v9 = sub_25EB6E268();
-  return PSSGResourceID.init(name:session:storageMode:)(v6, v8, v9, v10, a5);
+  return PSSGResourceID.init(name:session:storageMode:)(v6, v8, v9, v10, mode);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PSSGResourceID.hash.getter();
 
   return v3;
@@ -76,7 +76,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   PSSGResourceID.description.getter();
 
   v3 = sub_25EB6E258();

@@ -1,25 +1,25 @@
 @interface _UIInputHostController
-+ (id)_keyboardControllerForIntent:(int64_t)a3;
++ (id)_keyboardControllerForIntent:(int64_t)intent;
 @end
 
 @implementation _UIInputHostController
 
-+ (id)_keyboardControllerForIntent:(int64_t)a3
++ (id)_keyboardControllerForIntent:(int64_t)intent
 {
-  switch(a3)
+  switch(intent)
   {
     case 3:
       goto LABEL_4;
     case 2:
       v3 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-      v4 = [v3 inputWindowRootViewController];
+      inputWindowRootViewController = [v3 inputWindowRootViewController];
       goto LABEL_6;
     case 1:
 LABEL_4:
       v3 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:0];
-      v4 = [v3 rootViewController];
+      inputWindowRootViewController = [v3 rootViewController];
 LABEL_6:
-      v5 = v4;
+      v5 = inputWindowRootViewController;
 
       goto LABEL_8;
   }

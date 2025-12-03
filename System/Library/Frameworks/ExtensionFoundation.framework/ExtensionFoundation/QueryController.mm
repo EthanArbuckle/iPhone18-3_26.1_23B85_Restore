@@ -2,30 +2,30 @@
 - (NSString)description;
 - (_TtC19ExtensionFoundation15QueryController)init;
 - (void)dealloc;
-- (void)resultDidUpdate:(id)a3;
+- (void)resultDidUpdate:(id)update;
 @end
 
 @implementation QueryController
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   QueryController.suspend()();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for QueryController();
   [(QueryController *)&v3 dealloc];
 }
 
-- (void)resultDidUpdate:(id)a3
+- (void)resultDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  QueryController.resultDidUpdate(_:)(v4);
+  updateCopy = update;
+  selfCopy = self;
+  QueryController.resultDidUpdate(_:)(updateCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   _StringGuts.grow(_:)(21);
 
   type metadata accessor for UUID();

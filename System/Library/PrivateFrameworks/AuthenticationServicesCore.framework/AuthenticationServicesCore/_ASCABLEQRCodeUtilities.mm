@@ -1,7 +1,7 @@
 @interface _ASCABLEQRCodeUtilities
-+ (BOOL)isPasskeyRegistrationURL:(id)a3;
-+ (BOOL)isPasskeyURL:(id)a3;
-+ (int64_t)passkeyURLTypeFromURL:(id)a3;
++ (BOOL)isPasskeyRegistrationURL:(id)l;
++ (BOOL)isPasskeyURL:(id)l;
++ (int64_t)passkeyURLTypeFromURL:(id)l;
 - (_TtC26AuthenticationServicesCore23_ASCABLEQRCodeUtilities)init;
 @end
 
@@ -14,7 +14,7 @@
   return [(_ASCABLEQRCodeUtilities *)&v3 init];
 }
 
-+ (BOOL)isPasskeyURL:(id)a3
++ (BOOL)isPasskeyURL:(id)l
 {
   v3 = sub_1C2170024();
   v4 = *(v3 - 8);
@@ -49,7 +49,7 @@
   return v13 & 1;
 }
 
-+ (BOOL)isPasskeyRegistrationURL:(id)a3
++ (BOOL)isPasskeyRegistrationURL:(id)l
 {
   v3 = sub_1C2170024();
   v4 = *(v3 - 8);
@@ -62,7 +62,7 @@
   return v8 == 2;
 }
 
-+ (int64_t)passkeyURLTypeFromURL:(id)a3
++ (int64_t)passkeyURLTypeFromURL:(id)l
 {
   v3 = sub_1C2170024();
   v4 = *(v3 - 8);

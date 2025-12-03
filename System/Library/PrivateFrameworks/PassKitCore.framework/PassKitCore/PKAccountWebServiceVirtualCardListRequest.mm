@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceVirtualCardListRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceVirtualCardListRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v7 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -29,7 +29,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v7 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

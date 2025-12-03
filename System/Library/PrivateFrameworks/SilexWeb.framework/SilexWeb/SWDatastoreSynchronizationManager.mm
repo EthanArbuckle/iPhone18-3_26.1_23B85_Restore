@@ -1,89 +1,89 @@
 @interface SWDatastoreSynchronizationManager
 - (SWDatastoreManager)datastoreManager;
 - (SWDatastoreManager)localDatastoreManager;
-- (SWDatastoreSynchronizationManager)initWithSettingsFactory:(id)a3 scriptsManager:(id)a4 messageHandlerManager:(id)a5 sessionManager:(id)a6 logger:(id)a7;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
-- (void)synchronizeDatastore:(id)a3 from:(id)a4 previousDatastore:(id)a5 originatingSession:(id)a6 queueable:(BOOL)a7 completion:(id)a8;
+- (SWDatastoreSynchronizationManager)initWithSettingsFactory:(id)factory scriptsManager:(id)manager messageHandlerManager:(id)handlerManager sessionManager:(id)sessionManager logger:(id)logger;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
+- (void)synchronizeDatastore:(id)datastore from:(id)from previousDatastore:(id)previousDatastore originatingSession:(id)session queueable:(BOOL)queueable completion:(id)completion;
 @end
 
 @implementation SWDatastoreSynchronizationManager
 
-- (SWDatastoreSynchronizationManager)initWithSettingsFactory:(id)a3 scriptsManager:(id)a4 messageHandlerManager:(id)a5 sessionManager:(id)a6 logger:(id)a7
+- (SWDatastoreSynchronizationManager)initWithSettingsFactory:(id)factory scriptsManager:(id)manager messageHandlerManager:(id)handlerManager sessionManager:(id)sessionManager logger:(id)logger
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  factoryCopy = factory;
+  managerCopy = manager;
+  handlerManagerCopy = handlerManager;
+  sessionManagerCopy = sessionManager;
+  loggerCopy = logger;
   v21.receiver = self;
   v21.super_class = SWDatastoreSynchronizationManager;
   v18 = [(SWDatastoreSynchronizationManager *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_settingsFactory, a3);
-    objc_storeStrong(&v19->_scriptsManager, a4);
-    objc_storeStrong(&v19->_sessionManager, a6);
-    objc_storeStrong(&v19->_logger, a7);
-    [v15 addMessageHandler:v19 name:@"datastore"];
-    [v15 addMessageHandler:v19 name:@"localDatastore"];
+    objc_storeStrong(&v18->_settingsFactory, factory);
+    objc_storeStrong(&v19->_scriptsManager, manager);
+    objc_storeStrong(&v19->_sessionManager, sessionManager);
+    objc_storeStrong(&v19->_logger, logger);
+    [handlerManagerCopy addMessageHandler:v19 name:@"datastore"];
+    [handlerManagerCopy addMessageHandler:v19 name:@"localDatastore"];
   }
 
   return v19;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
-  v5 = a3;
-  v6 = [v5 name];
-  v7 = [v6 isEqualToString:@"localDatastore"];
+  messageCopy = message;
+  name = [messageCopy name];
+  v7 = [name isEqualToString:@"localDatastore"];
 
-  v8 = [(SWDatastoreSynchronizationManager *)self logger];
+  logger = [(SWDatastoreSynchronizationManager *)self logger];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [v5 body];
-  v11 = v10;
+  body = [messageCopy body];
+  v11 = body;
   if (v7)
   {
-    v12 = [v9 stringWithFormat:@"Received local datastore update message: %@", v10];
-    [v8 log:v12];
+    v12 = [v9 stringWithFormat:@"Received local datastore update message: %@", body];
+    [logger log:v12];
 
-    v13 = [(SWDatastoreSynchronizationManager *)self settingsFactory];
-    v19 = [v13 createDatastoreFromMessage:v5];
+    settingsFactory = [(SWDatastoreSynchronizationManager *)self settingsFactory];
+    v19 = [settingsFactory createDatastoreFromMessage:messageCopy];
 
     [(SWDatastoreSynchronizationManager *)self localDatastoreManager];
   }
 
   else
   {
-    v14 = [v9 stringWithFormat:@"Received shared datastore update message: %@", v10];
-    [v8 log:v14];
+    v14 = [v9 stringWithFormat:@"Received shared datastore update message: %@", body];
+    [logger log:v14];
 
-    v15 = [(SWDatastoreSynchronizationManager *)self settingsFactory];
-    v19 = [v15 createDatastoreFromMessage:v5];
+    settingsFactory2 = [(SWDatastoreSynchronizationManager *)self settingsFactory];
+    v19 = [settingsFactory2 createDatastoreFromMessage:messageCopy];
 
     [(SWDatastoreSynchronizationManager *)self datastoreManager];
   }
   v16 = ;
-  v17 = [(SWDatastoreSynchronizationManager *)self sessionManager];
-  v18 = [v17 session];
-  [v16 updateDatastore:v19 originatingSession:v18 options:0 completion:0];
+  sessionManager = [(SWDatastoreSynchronizationManager *)self sessionManager];
+  session = [sessionManager session];
+  [v16 updateDatastore:v19 originatingSession:session options:0 completion:0];
 }
 
-- (void)synchronizeDatastore:(id)a3 from:(id)a4 previousDatastore:(id)a5 originatingSession:(id)a6 queueable:(BOOL)a7 completion:(id)a8
+- (void)synchronizeDatastore:(id)datastore from:(id)from previousDatastore:(id)previousDatastore originatingSession:(id)session queueable:(BOOL)queueable completion:(id)completion
 {
-  v30 = a7;
-  v13 = a8;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(SWDatastoreSynchronizationManager *)self localDatastoreManager];
+  queueableCopy = queueable;
+  completionCopy = completion;
+  sessionCopy = session;
+  previousDatastoreCopy = previousDatastore;
+  fromCopy = from;
+  datastoreCopy = datastore;
+  localDatastoreManager = [(SWDatastoreSynchronizationManager *)self localDatastoreManager];
 
-  v19 = [(SWDatastoreSynchronizationManager *)self logger];
+  logger = [(SWDatastoreSynchronizationManager *)self logger];
   v20 = MEMORY[0x1E696AEC0];
-  v21 = [v14 identifier];
-  v22 = v21;
-  if (v18 == v16)
+  identifier = [sessionCopy identifier];
+  v22 = identifier;
+  if (localDatastoreManager == fromCopy)
   {
     v23 = @"Received local datastore change callback with originating session: %@";
   }
@@ -93,7 +93,7 @@
     v23 = @"Received shared datastore change callback with originating session: %@";
   }
 
-  if (v18 == v16)
+  if (localDatastoreManager == fromCopy)
   {
     v24 = off_1E84DAF30;
   }
@@ -103,19 +103,19 @@
     v24 = off_1E84DAE78;
   }
 
-  v25 = [v20 stringWithFormat:v23, v21];
-  [v19 log:v25];
+  v25 = [v20 stringWithFormat:v23, identifier];
+  [logger log:v25];
 
-  v31 = [objc_alloc(*v24) initWithDatastore:v17 oldDatastore:v15 originatingSession:v14 queueable:v30];
-  v26 = [(SWDatastoreSynchronizationManager *)self scriptsManager];
-  v27 = [v31 identifier];
-  [v26 removeScriptByIdentifier:v27];
+  v31 = [objc_alloc(*v24) initWithDatastore:datastoreCopy oldDatastore:previousDatastoreCopy originatingSession:sessionCopy queueable:queueableCopy];
+  scriptsManager = [(SWDatastoreSynchronizationManager *)self scriptsManager];
+  identifier2 = [v31 identifier];
+  [scriptsManager removeScriptByIdentifier:identifier2];
 
-  v28 = [(SWDatastoreSynchronizationManager *)self scriptsManager];
-  [v28 executeScript:v31 completion:v13];
+  scriptsManager2 = [(SWDatastoreSynchronizationManager *)self scriptsManager];
+  [scriptsManager2 executeScript:v31 completion:completionCopy];
 
-  v29 = [(SWDatastoreSynchronizationManager *)self scriptsManager];
-  [v29 addScript:v31];
+  scriptsManager3 = [(SWDatastoreSynchronizationManager *)self scriptsManager];
+  [scriptsManager3 addScript:v31];
 }
 
 - (SWDatastoreManager)datastoreManager

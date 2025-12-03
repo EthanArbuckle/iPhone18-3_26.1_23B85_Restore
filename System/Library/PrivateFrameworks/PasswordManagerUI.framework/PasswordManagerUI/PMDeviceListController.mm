@@ -1,17 +1,17 @@
 @interface PMDeviceListController
-+ (id)makeUIViewControllerWithDeviceSharingAvailability:(id)a3;
++ (id)makeUIViewControllerWithDeviceSharingAvailability:(id)availability;
 - (PMDeviceListController)init;
 @end
 
 @implementation PMDeviceListController
 
-+ (id)makeUIViewControllerWithDeviceSharingAvailability:(id)a3
++ (id)makeUIViewControllerWithDeviceSharingAvailability:(id)availability
 {
   v4 = objc_allocWithZone(MEMORY[0x277D75D28]);
-  v5 = a3;
+  availabilityCopy = availability;
   v6 = [v4 init];
   v7 = objc_allocWithZone(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CDF2668, &unk_21CBB4360));
-  v8 = v5;
+  v8 = availabilityCopy;
   v9 = sub_21CB827D4();
   [v6 setView_];
 

@@ -1,128 +1,128 @@
 @interface AFBBufferBuilder
 - (AFBBufferBuilder)init;
-- (AFBBufferBuilder)initWithCapacity:(unint64_t)a3;
-- (AFBBufferBuilder)initWithConfig:(const Config *)a3 path:(id)a4 protectionClass:(int)a5 capacity:(unint64_t)a6 error:(id *)a7;
-- (AFBBufferBuilder)initWithFileAtPath:(id)a3 capacity:(unint64_t)a4 error:(id *)a5;
-- (AFBBufferBuilder)initWithFileAtPath:(id)a3 protection:(id)a4 capacity:(unint64_t)a5 error:(id *)a6;
-- (BOOL)finalizeWithSelector:(SEL)a3 allocatorBufferAddr:(void *)a4 size:(unint64_t)a5 error:(id *)a6;
-- (id)createString:(id)a3;
-- (id)createString:(id)a3 alignment:(unint64_t)a4;
-- (id)createStringWithCString:(const char *)a3;
-- (id)createStringWithCString:(const char *)a3 alignment:(unint64_t)a4;
-- (id)createStringWithData:(id)a3;
-- (id)createStringWithData:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfBoolWithArray:(id)a3;
-- (id)createVectorOfBoolWithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfBoolWithCArray:(const BOOL *)a3 count:(unint64_t)a4;
-- (id)createVectorOfBoolWithCArray:(const BOOL *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfBoolWithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfBoolWithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfFloat32WithArray:(id)a3;
-- (id)createVectorOfFloat32WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfFloat32WithCArray:(const float *)a3 count:(unint64_t)a4;
-- (id)createVectorOfFloat32WithCArray:(const float *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfFloat32WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfFloat32WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfFloat64WithArray:(id)a3;
-- (id)createVectorOfFloat64WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfFloat64WithCArray:(const double *)a3 count:(unint64_t)a4;
-- (id)createVectorOfFloat64WithCArray:(const double *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfFloat64WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfFloat64WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfInt16WithArray:(id)a3;
-- (id)createVectorOfInt16WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfInt16WithCArray:(const signed __int16 *)a3 count:(unint64_t)a4;
-- (id)createVectorOfInt16WithCArray:(const signed __int16 *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfInt16WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfInt16WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfInt32WithArray:(id)a3;
-- (id)createVectorOfInt32WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfInt32WithCArray:(const int *)a3 count:(unint64_t)a4;
-- (id)createVectorOfInt32WithCArray:(const int *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfInt32WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfInt32WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfInt64WithArray:(id)a3;
-- (id)createVectorOfInt64WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfInt64WithCArray:(const int64_t *)a3 count:(unint64_t)a4;
-- (id)createVectorOfInt64WithCArray:(const int64_t *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfInt64WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfInt64WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfInt8WithArray:(id)a3;
-- (id)createVectorOfInt8WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfInt8WithCArray:(const char *)a3 count:(unint64_t)a4;
-- (id)createVectorOfInt8WithCArray:(const char *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfInt8WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfInt8WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfStringWithArray:(id)a3;
-- (id)createVectorOfStringWithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfStringWithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfStringWithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfStringWithOffsets:(id)a3;
-- (id)createVectorOfUInt16WithArray:(id)a3;
-- (id)createVectorOfUInt16WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfUInt16WithCArray:(const unsigned __int16 *)a3 count:(unint64_t)a4;
-- (id)createVectorOfUInt16WithCArray:(const unsigned __int16 *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfUInt16WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfUInt16WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfUInt32WithArray:(id)a3;
-- (id)createVectorOfUInt32WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfUInt32WithCArray:(const unsigned int *)a3 count:(unint64_t)a4;
-- (id)createVectorOfUInt32WithCArray:(const unsigned int *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfUInt32WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfUInt32WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfUInt64WithArray:(id)a3;
-- (id)createVectorOfUInt64WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfUInt64WithCArray:(const unint64_t *)a3 count:(unint64_t)a4;
-- (id)createVectorOfUInt64WithCArray:(const unint64_t *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfUInt64WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfUInt64WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfUInt8WithArray:(id)a3;
-- (id)createVectorOfUInt8WithArray:(id)a3 alignment:(unint64_t)a4;
-- (id)createVectorOfUInt8WithCArray:(const char *)a3 count:(unint64_t)a4;
-- (id)createVectorOfUInt8WithCArray:(const char *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5;
-- (id)createVectorOfUInt8WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5;
-- (id)createVectorOfUInt8WithCount:(unint64_t)a3 block:(id)a4;
-- (id)createVectorOfUInt8WithData:(id)a3;
-- (id)createVectorOfUInt8WithData:(id)a3 alignment:(unint64_t)a4;
+- (AFBBufferBuilder)initWithCapacity:(unint64_t)capacity;
+- (AFBBufferBuilder)initWithConfig:(const Config *)config path:(id)path protectionClass:(int)class capacity:(unint64_t)capacity error:(id *)error;
+- (AFBBufferBuilder)initWithFileAtPath:(id)path capacity:(unint64_t)capacity error:(id *)error;
+- (AFBBufferBuilder)initWithFileAtPath:(id)path protection:(id)protection capacity:(unint64_t)capacity error:(id *)error;
+- (BOOL)finalizeWithSelector:(SEL)selector allocatorBufferAddr:(void *)addr size:(unint64_t)size error:(id *)error;
+- (id)createString:(id)string;
+- (id)createString:(id)string alignment:(unint64_t)alignment;
+- (id)createStringWithCString:(const char *)string;
+- (id)createStringWithCString:(const char *)string alignment:(unint64_t)alignment;
+- (id)createStringWithData:(id)data;
+- (id)createStringWithData:(id)data alignment:(unint64_t)alignment;
+- (id)createVectorOfBoolWithArray:(id)array;
+- (id)createVectorOfBoolWithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfBoolWithCArray:(const BOOL *)array count:(unint64_t)count;
+- (id)createVectorOfBoolWithCArray:(const BOOL *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfBoolWithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfBoolWithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfFloat32WithArray:(id)array;
+- (id)createVectorOfFloat32WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfFloat32WithCArray:(const float *)array count:(unint64_t)count;
+- (id)createVectorOfFloat32WithCArray:(const float *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfFloat32WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfFloat32WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfFloat64WithArray:(id)array;
+- (id)createVectorOfFloat64WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfFloat64WithCArray:(const double *)array count:(unint64_t)count;
+- (id)createVectorOfFloat64WithCArray:(const double *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfFloat64WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfFloat64WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfInt16WithArray:(id)array;
+- (id)createVectorOfInt16WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfInt16WithCArray:(const signed __int16 *)array count:(unint64_t)count;
+- (id)createVectorOfInt16WithCArray:(const signed __int16 *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfInt16WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfInt16WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfInt32WithArray:(id)array;
+- (id)createVectorOfInt32WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfInt32WithCArray:(const int *)array count:(unint64_t)count;
+- (id)createVectorOfInt32WithCArray:(const int *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfInt32WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfInt32WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfInt64WithArray:(id)array;
+- (id)createVectorOfInt64WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfInt64WithCArray:(const int64_t *)array count:(unint64_t)count;
+- (id)createVectorOfInt64WithCArray:(const int64_t *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfInt64WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfInt64WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfInt8WithArray:(id)array;
+- (id)createVectorOfInt8WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfInt8WithCArray:(const char *)array count:(unint64_t)count;
+- (id)createVectorOfInt8WithCArray:(const char *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfInt8WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfInt8WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfStringWithArray:(id)array;
+- (id)createVectorOfStringWithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfStringWithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfStringWithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfStringWithOffsets:(id)offsets;
+- (id)createVectorOfUInt16WithArray:(id)array;
+- (id)createVectorOfUInt16WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfUInt16WithCArray:(const unsigned __int16 *)array count:(unint64_t)count;
+- (id)createVectorOfUInt16WithCArray:(const unsigned __int16 *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfUInt16WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfUInt16WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfUInt32WithArray:(id)array;
+- (id)createVectorOfUInt32WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfUInt32WithCArray:(const unsigned int *)array count:(unint64_t)count;
+- (id)createVectorOfUInt32WithCArray:(const unsigned int *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfUInt32WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfUInt32WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfUInt64WithArray:(id)array;
+- (id)createVectorOfUInt64WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfUInt64WithCArray:(const unint64_t *)array count:(unint64_t)count;
+- (id)createVectorOfUInt64WithCArray:(const unint64_t *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfUInt64WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfUInt64WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfUInt8WithArray:(id)array;
+- (id)createVectorOfUInt8WithArray:(id)array alignment:(unint64_t)alignment;
+- (id)createVectorOfUInt8WithCArray:(const char *)array count:(unint64_t)count;
+- (id)createVectorOfUInt8WithCArray:(const char *)array count:(unint64_t)count alignment:(unint64_t)alignment;
+- (id)createVectorOfUInt8WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block;
+- (id)createVectorOfUInt8WithCount:(unint64_t)count block:(id)block;
+- (id)createVectorOfUInt8WithData:(id)data;
+- (id)createVectorOfUInt8WithData:(id)data alignment:(unint64_t)alignment;
 - (uint64_t)_fbb;
 - (void)dealloc;
 - (void)fbb;
-- (void)setError:(id)a3;
-- (void)throwIfFinalizedWithSelector:(SEL)a3;
+- (void)setError:(id)error;
+- (void)throwIfFinalizedWithSelector:(SEL)selector;
 @end
 
 @implementation AFBBufferBuilder
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   firstError = self->_firstError;
   p_firstError = &self->_firstError;
   if (!firstError)
   {
-    v8 = v5;
-    objc_storeStrong(p_firstError, a3);
-    v5 = v8;
+    v8 = errorCopy;
+    objc_storeStrong(p_firstError, error);
+    errorCopy = v8;
   }
 }
 
-- (AFBBufferBuilder)initWithConfig:(const Config *)a3 path:(id)a4 protectionClass:(int)a5 capacity:(unint64_t)a6 error:(id *)a7
+- (AFBBufferBuilder)initWithConfig:(const Config *)config path:(id)path protectionClass:(int)class capacity:(unint64_t)capacity error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v10 = a4;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = AFBBufferBuilder;
   v11 = [(AFBBufferBuilder *)&v15 init];
   if (v11)
   {
-    if (v10)
+    if (pathCopy)
     {
       operator new();
     }
 
     *(v11 + 1) = *(v11 + 13);
     v11[16] = 0;
-    *(v11 + 3) = a6;
+    *(v11 + 3) = capacity;
     *(v11 + 4) = 8;
     *(v11 + 40) = 0u;
     *(v11 + 56) = 0u;
@@ -130,7 +130,7 @@
     *(v11 + 10) = 1;
     *(v11 + 44) = 256;
     *(v11 + 12) = 0;
-    objc_storeStrong(v11 + 15, a4);
+    objc_storeStrong(v11 + 15, path);
     v11[112] = 1;
   }
 
@@ -148,7 +148,7 @@
   return [(AFBBufferBuilder *)self initWithConfig:&v3 path:0 protectionClass:0xFFFFFFFFLL capacity:1024 error:0];
 }
 
-- (AFBBufferBuilder)initWithCapacity:(unint64_t)a3
+- (AFBBufferBuilder)initWithCapacity:(unint64_t)capacity
 {
   v4 = 0;
   v5 = 0x4000;
@@ -156,65 +156,65 @@
   return [(AFBBufferBuilder *)self initWithConfig:&v4 path:0 protectionClass:0xFFFFFFFFLL capacity:1024 error:0];
 }
 
-- (AFBBufferBuilder)initWithFileAtPath:(id)a3 protection:(id)a4 capacity:(unint64_t)a5 error:(id *)a6
+- (AFBBufferBuilder)initWithFileAtPath:(id)path protection:(id)protection capacity:(unint64_t)capacity error:(id *)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([v11 isEqualToString:*MEMORY[0x277CCA190]])
+  pathCopy = path;
+  protectionCopy = protection;
+  if ([protectionCopy isEqualToString:*MEMORY[0x277CCA190]])
   {
     v12 = 1;
 LABEL_9:
     v19 = 0;
     v20 = 0x4000;
     v21 = 0;
-    self = [(AFBBufferBuilder *)self initWithConfig:&v19 path:v10 protectionClass:v12 capacity:a5 error:a6];
-    v13 = self;
+    self = [(AFBBufferBuilder *)self initWithConfig:&v19 path:pathCopy protectionClass:v12 capacity:capacity error:error];
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  if ([v11 isEqualToString:*MEMORY[0x277CCA198]])
+  if ([protectionCopy isEqualToString:*MEMORY[0x277CCA198]])
   {
     v12 = 2;
     goto LABEL_9;
   }
 
-  if ([v11 isEqualToString:*MEMORY[0x277CCA1A0]])
+  if ([protectionCopy isEqualToString:*MEMORY[0x277CCA1A0]])
   {
     v12 = 3;
     goto LABEL_9;
   }
 
-  if ([v11 isEqualToString:*MEMORY[0x277CCA1B8]])
+  if ([protectionCopy isEqualToString:*MEMORY[0x277CCA1B8]])
   {
     v12 = 4;
     goto LABEL_9;
   }
 
-  v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unrecognized file protection: %@", v11];
+  protectionCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unrecognized file protection: %@", protectionCopy];
   v22 = *MEMORY[0x277CCA450];
-  v23[0] = v16;
+  v23[0] = protectionCopy;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   v18 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"AFBErrorDomain" code:1 userInfo:v17];
-  if (a6)
+  if (error)
   {
     v18 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_10:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
-- (AFBBufferBuilder)initWithFileAtPath:(id)a3 capacity:(unint64_t)a4 error:(id *)a5
+- (AFBBufferBuilder)initWithFileAtPath:(id)path capacity:(unint64_t)capacity error:(id *)error
 {
   v6 = 0;
   v7 = 0x4000;
   v8 = 0;
-  return [(AFBBufferBuilder *)self initWithConfig:&v6 path:a3 protectionClass:0xFFFFFFFFLL capacity:a4 error:a5];
+  return [(AFBBufferBuilder *)self initWithConfig:&v6 path:path protectionClass:0xFFFFFFFFLL capacity:capacity error:error];
 }
 
 - (void)dealloc
@@ -237,9 +237,9 @@ LABEL_10:
 
 - (uint64_t)_fbb
 {
-  if (a1)
+  if (self)
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -248,12 +248,12 @@ LABEL_10:
   }
 }
 
-- (void)throwIfFinalizedWithSelector:(SEL)a3
+- (void)throwIfFinalizedWithSelector:(SEL)selector
 {
   if (self->_isFinalized)
   {
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
-    v5 = NSStringFromSelector(a3);
+    v5 = NSStringFromSelector(selector);
     v6 = [v4 initWithFormat:@"%@: AFBBufferBuilder misuse: instance already finalized", v5];
 
     v7 = [MEMORY[0x277CBEAD8] exceptionWithName:@"AFBMisuseException" reason:v6 userInfo:0];
@@ -261,17 +261,17 @@ LABEL_10:
   }
 }
 
-- (BOOL)finalizeWithSelector:(SEL)a3 allocatorBufferAddr:(void *)a4 size:(unint64_t)a5 error:(id *)a6
+- (BOOL)finalizeWithSelector:(SEL)selector allocatorBufferAddr:(void *)addr size:(unint64_t)size error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v11 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v11)
+  if (firstError)
   {
-    if (a6)
+    if (error)
     {
       [(AFBBufferBuilder *)self firstError];
-      *a6 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -282,27 +282,27 @@ LABEL_10:
 
   else
   {
-    [(AFBBufferBuilder *)self finalizeWithSelector:a3];
+    [(AFBBufferBuilder *)self finalizeWithSelector:selector];
     fileAllocator = self->_fileAllocator;
     if (fileAllocator)
     {
       __errnum = 0;
-      v12 = apple::aiml::flatbuffers2::objc_apple::MappedFileAllocator::truncate_to_region(fileAllocator, a4, a5, &__errnum);
+      v12 = apple::aiml::flatbuffers2::objc_apple::MappedFileAllocator::truncate_to_region(fileAllocator, addr, size, &__errnum);
       if ((v12 & 1) == 0)
       {
         v14 = objc_alloc(MEMORY[0x277CCA9B8]);
         v15 = __errnum;
         v24 = *MEMORY[0x277CCA450];
         v16 = objc_alloc(MEMORY[0x277CCACA8]);
-        v17 = [v16 initWithFormat:@"%s (errno %d)", strerror(__errnum), __errnum];
-        v25[0] = v17;
+        __errnum = [v16 initWithFormat:@"%s (errno %d)", strerror(__errnum), __errnum];
+        v25[0] = __errnum;
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
         v19 = [v14 initWithDomain:*MEMORY[0x277CCA5B8] code:v15 userInfo:v18];
 
-        if (a6)
+        if (error)
         {
           v20 = v19;
-          *a6 = v19;
+          *error = v19;
         }
       }
     }
@@ -330,11 +330,11 @@ LABEL_10:
   }
 }
 
-- (id)createVectorOfBoolWithArray:(id)a3
+- (id)createVectorOfBoolWithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -345,9 +345,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -364,13 +364,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 1uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 1uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -380,19 +380,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<BOOL>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) BOOLValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -400,11 +400,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfBoolWithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfBoolWithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -415,16 +415,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -435,18 +435,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v12 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 1, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfBoolWithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 1, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfBoolWithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -454,10 +454,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfBoolWithCArray:(const BOOL *)a3 count:(unint64_t)a4
+- (id)createVectorOfBoolWithCArray:(const BOOL *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -468,9 +468,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -487,20 +487,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 1uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 1uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<BOOL>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<BOOL>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -508,10 +508,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfBoolWithCArray:(const BOOL *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfBoolWithCArray:(const BOOL *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -522,23 +522,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 1)
+    if (alignment <= 1)
     {
-      v11 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -551,8 +551,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 1, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfBoolWithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 1, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfBoolWithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -560,11 +560,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfBoolWithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfBoolWithCount:(unint64_t)count block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -575,9 +575,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -594,15 +594,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 1uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 1uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<BOOL>(p_fbbStorage, v19[0]);
         --v11;
@@ -611,7 +611,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -619,11 +619,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfBoolWithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfBoolWithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -634,23 +634,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v12 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -663,8 +663,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 1, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfBoolWithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 1, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfBoolWithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -672,11 +672,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfInt8WithArray:(id)a3
+- (id)createVectorOfInt8WithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -687,9 +687,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -706,13 +706,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 1uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 1uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -722,19 +722,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<signed char>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) intValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -742,11 +742,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfInt8WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfInt8WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -757,16 +757,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -777,18 +777,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v12 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 1, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfInt8WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 1, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfInt8WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -796,10 +796,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt8WithCArray:(const char *)a3 count:(unint64_t)a4
+- (id)createVectorOfInt8WithCArray:(const char *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -810,9 +810,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -829,20 +829,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 1uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 1uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<signed char>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<signed char>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -850,10 +850,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt8WithCArray:(const char *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfInt8WithCArray:(const char *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -864,23 +864,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 1)
+    if (alignment <= 1)
     {
-      v11 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -893,8 +893,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 1, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfInt8WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 1, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfInt8WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -902,11 +902,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfInt8WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfInt8WithCount:(unint64_t)count block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -917,9 +917,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -936,15 +936,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 1uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 1uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<signed char>(p_fbbStorage, v19[0]);
         --v11;
@@ -953,7 +953,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -961,11 +961,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt8WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfInt8WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -976,23 +976,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v12 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -1005,8 +1005,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 1, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfInt8WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 1, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfInt8WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1014,11 +1014,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfUInt8WithArray:(id)a3
+- (id)createVectorOfUInt8WithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1029,9 +1029,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -1048,13 +1048,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 1uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 1uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -1064,19 +1064,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<signed char>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) intValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1084,11 +1084,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfUInt8WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfUInt8WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1099,16 +1099,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -1119,18 +1119,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v12 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 1, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfUInt8WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 1, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfUInt8WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1138,10 +1138,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt8WithCArray:(const char *)a3 count:(unint64_t)a4
+- (id)createVectorOfUInt8WithCArray:(const char *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1152,9 +1152,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -1171,20 +1171,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 1uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 1uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<signed char>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<signed char>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1192,10 +1192,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt8WithCArray:(const char *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfUInt8WithCArray:(const char *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -1206,23 +1206,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 1)
+    if (alignment <= 1)
     {
-      v11 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -1235,8 +1235,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 1, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfUInt8WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 1, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfUInt8WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1244,11 +1244,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfUInt8WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfUInt8WithCount:(unint64_t)count block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1259,9 +1259,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -1278,15 +1278,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 1uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 1uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<signed char>(p_fbbStorage, v19[0]);
         --v11;
@@ -1295,7 +1295,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1303,11 +1303,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt8WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfUInt8WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -1318,23 +1318,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v12 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -1347,8 +1347,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 1, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfUInt8WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 1, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfUInt8WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1356,12 +1356,12 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfUInt8WithData:(id)a3
+- (id)createVectorOfUInt8WithData:(id)data
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_autoreleasePoolPush();
-  if (!v5)
+  if (!dataCopy)
   {
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
     v13 = NSStringFromSelector(a2);
@@ -1373,16 +1373,16 @@ LABEL_10:
 
   v7 = v6;
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v9 = -[AFBBufferBuilder createVectorOfUInt8WithCArray:count:](self, "createVectorOfUInt8WithCArray:count:", [v5 bytes], objc_msgSend(v5, "length"));
+    v9 = -[AFBBufferBuilder createVectorOfUInt8WithCArray:count:](self, "createVectorOfUInt8WithCArray:count:", [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   }
 
   objc_autoreleasePoolPop(v7);
@@ -1392,12 +1392,12 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt8WithData:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfUInt8WithData:(id)data alignment:(unint64_t)alignment
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dataCopy = data;
   v8 = objc_autoreleasePoolPush();
-  if (!v7)
+  if (!dataCopy)
   {
     v14 = objc_alloc(MEMORY[0x277CCACA8]);
     v15 = NSStringFromSelector(a2);
@@ -1409,16 +1409,16 @@ LABEL_10:
 
   v9 = v8;
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    v11 = -[AFBBufferBuilder createVectorOfUInt8WithCArray:count:alignment:](self, "createVectorOfUInt8WithCArray:count:alignment:", [v7 bytes], objc_msgSend(v7, "length"), a4);
+    v11 = -[AFBBufferBuilder createVectorOfUInt8WithCArray:count:alignment:](self, "createVectorOfUInt8WithCArray:count:alignment:", [dataCopy bytes], objc_msgSend(dataCopy, "length"), alignment);
   }
 
   objc_autoreleasePoolPop(v9);
@@ -1428,11 +1428,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfInt16WithArray:(id)a3
+- (id)createVectorOfInt16WithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1443,9 +1443,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -1462,13 +1462,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 2uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 2uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -1478,19 +1478,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<short>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) intValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1498,11 +1498,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfInt16WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfInt16WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1513,16 +1513,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -1533,18 +1533,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 2)
+    if (alignment <= 2)
     {
-      v12 = 2;
+      alignmentCopy = 2;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 2, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfInt16WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 2, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfInt16WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1552,10 +1552,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt16WithCArray:(const signed __int16 *)a3 count:(unint64_t)a4
+- (id)createVectorOfInt16WithCArray:(const signed __int16 *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1566,9 +1566,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -1585,20 +1585,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 2uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 2uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<short>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<short>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1606,10 +1606,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt16WithCArray:(const signed __int16 *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfInt16WithCArray:(const signed __int16 *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -1620,23 +1620,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 2)
+    if (alignment <= 2)
     {
-      v11 = 2;
+      alignmentCopy = 2;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -1649,8 +1649,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 2, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfInt16WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 2, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfInt16WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1658,11 +1658,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfInt16WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfInt16WithCount:(unint64_t)count block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1673,9 +1673,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -1692,15 +1692,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 2uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 2uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<short>(p_fbbStorage, v19[0]);
         --v11;
@@ -1709,7 +1709,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1717,11 +1717,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt16WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfInt16WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -1732,23 +1732,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 2)
+    if (alignment <= 2)
     {
-      v12 = 2;
+      alignmentCopy = 2;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -1761,8 +1761,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 2, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfInt16WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 2, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfInt16WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1770,11 +1770,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfUInt16WithArray:(id)a3
+- (id)createVectorOfUInt16WithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1785,9 +1785,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -1804,13 +1804,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 2uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 2uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -1820,19 +1820,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<short>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) intValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1840,11 +1840,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfUInt16WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfUInt16WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1855,16 +1855,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -1875,18 +1875,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 2)
+    if (alignment <= 2)
     {
-      v12 = 2;
+      alignmentCopy = 2;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 2, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfUInt16WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 2, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfUInt16WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1894,10 +1894,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt16WithCArray:(const unsigned __int16 *)a3 count:(unint64_t)a4
+- (id)createVectorOfUInt16WithCArray:(const unsigned __int16 *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -1908,9 +1908,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -1927,20 +1927,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 2uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 2uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<short>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<short>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1948,10 +1948,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt16WithCArray:(const unsigned __int16 *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfUInt16WithCArray:(const unsigned __int16 *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -1962,23 +1962,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 2)
+    if (alignment <= 2)
     {
-      v11 = 2;
+      alignmentCopy = 2;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -1991,8 +1991,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 2, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfUInt16WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 2, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfUInt16WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2000,11 +2000,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfUInt16WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfUInt16WithCount:(unint64_t)count block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2015,9 +2015,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -2034,15 +2034,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 2uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 2uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<short>(p_fbbStorage, v19[0]);
         --v11;
@@ -2051,7 +2051,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2059,11 +2059,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt16WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfUInt16WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -2074,23 +2074,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 2)
+    if (alignment <= 2)
     {
-      v12 = 2;
+      alignmentCopy = 2;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -2103,8 +2103,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 2, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfUInt16WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 2, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfUInt16WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2112,11 +2112,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfInt32WithArray:(id)a3
+- (id)createVectorOfInt32WithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2127,9 +2127,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -2146,13 +2146,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 4uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 4uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -2162,19 +2162,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<int>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) intValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2182,11 +2182,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfInt32WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfInt32WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2197,16 +2197,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -2217,18 +2217,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 4)
+    if (alignment <= 4)
     {
-      v12 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 4, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfInt32WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 4, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfInt32WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2236,10 +2236,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt32WithCArray:(const int *)a3 count:(unint64_t)a4
+- (id)createVectorOfInt32WithCArray:(const int *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2250,9 +2250,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -2269,20 +2269,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 4uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 4uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<int>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<int>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2290,10 +2290,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt32WithCArray:(const int *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfInt32WithCArray:(const int *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -2304,23 +2304,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 4)
+    if (alignment <= 4)
     {
-      v11 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -2333,8 +2333,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 4, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfInt32WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 4, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfInt32WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2342,11 +2342,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfInt32WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfInt32WithCount:(unint64_t)count block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2357,9 +2357,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -2376,15 +2376,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 4uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 4uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<int>(p_fbbStorage, v19[0]);
         --v11;
@@ -2393,7 +2393,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2401,11 +2401,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt32WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfInt32WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -2416,23 +2416,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 4)
+    if (alignment <= 4)
     {
-      v12 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -2445,8 +2445,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 4, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfInt32WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 4, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfInt32WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2454,11 +2454,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfUInt32WithArray:(id)a3
+- (id)createVectorOfUInt32WithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2469,9 +2469,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -2488,13 +2488,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 4uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 4uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -2504,19 +2504,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<int>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) unsignedIntValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2524,11 +2524,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfUInt32WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfUInt32WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2539,16 +2539,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -2559,18 +2559,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 4)
+    if (alignment <= 4)
     {
-      v12 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 4, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfUInt32WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 4, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfUInt32WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2578,10 +2578,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt32WithCArray:(const unsigned int *)a3 count:(unint64_t)a4
+- (id)createVectorOfUInt32WithCArray:(const unsigned int *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2592,9 +2592,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -2611,20 +2611,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 4uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 4uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<int>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<int>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2632,10 +2632,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt32WithCArray:(const unsigned int *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfUInt32WithCArray:(const unsigned int *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -2646,23 +2646,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 4)
+    if (alignment <= 4)
     {
-      v11 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -2675,8 +2675,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 4, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfUInt32WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 4, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfUInt32WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2684,11 +2684,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfUInt32WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfUInt32WithCount:(unint64_t)count block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2699,9 +2699,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -2718,15 +2718,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 4uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 4uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<int>(p_fbbStorage, v19[0]);
         --v11;
@@ -2735,7 +2735,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2743,11 +2743,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt32WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfUInt32WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -2758,23 +2758,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 4)
+    if (alignment <= 4)
     {
-      v12 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -2787,8 +2787,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 4, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfUInt32WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 4, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfUInt32WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2796,11 +2796,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfInt64WithArray:(id)a3
+- (id)createVectorOfInt64WithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2811,9 +2811,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -2830,13 +2830,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 8uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 8uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -2846,19 +2846,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<long long>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) longLongValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2866,11 +2866,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfInt64WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfInt64WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2881,16 +2881,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -2901,18 +2901,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 8)
+    if (alignment <= 8)
     {
-      v12 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 8, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfInt64WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 8, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfInt64WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2920,10 +2920,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt64WithCArray:(const int64_t *)a3 count:(unint64_t)a4
+- (id)createVectorOfInt64WithCArray:(const int64_t *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -2934,9 +2934,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -2953,20 +2953,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 8uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 8uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<long long>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<long long>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2974,10 +2974,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt64WithCArray:(const int64_t *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfInt64WithCArray:(const int64_t *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -2988,23 +2988,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 8)
+    if (alignment <= 8)
     {
-      v11 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -3017,8 +3017,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 8, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfInt64WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 8, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfInt64WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3026,11 +3026,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfInt64WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfInt64WithCount:(unint64_t)count block:(id)block
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3041,9 +3041,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -3060,15 +3060,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 8uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 8uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<long long>(p_fbbStorage, v19[0]);
         --v11;
@@ -3077,7 +3077,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3085,11 +3085,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfInt64WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfInt64WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -3100,23 +3100,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 8)
+    if (alignment <= 8)
     {
-      v12 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -3129,8 +3129,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 8, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfInt64WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 8, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfInt64WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3138,11 +3138,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfUInt64WithArray:(id)a3
+- (id)createVectorOfUInt64WithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3153,9 +3153,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -3172,13 +3172,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 8uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 8uLL);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -3188,19 +3188,19 @@ LABEL_10:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<long long>(p_fbbStorage, [*(*(&v19 + 1) + 8 * i) unsignedLongLongValue]);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3208,11 +3208,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfUInt64WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfUInt64WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3223,16 +3223,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -3243,18 +3243,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 8)
+    if (alignment <= 8)
     {
-      v12 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 8, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfUInt64WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 8, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfUInt64WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3262,10 +3262,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt64WithCArray:(const unint64_t *)a3 count:(unint64_t)a4
+- (id)createVectorOfUInt64WithCArray:(const unint64_t *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3276,9 +3276,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -3295,20 +3295,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 8uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 8uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<long long>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<long long>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3316,10 +3316,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt64WithCArray:(const unint64_t *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfUInt64WithCArray:(const unint64_t *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -3330,23 +3330,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 8)
+    if (alignment <= 8)
     {
-      v11 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -3359,8 +3359,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 8, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfUInt64WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 8, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfUInt64WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3368,11 +3368,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfUInt64WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfUInt64WithCount:(unint64_t)count block:(id)block
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3383,9 +3383,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -3402,15 +3402,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 8uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 8uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<long long>(p_fbbStorage, v19[0]);
         --v11;
@@ -3419,7 +3419,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3427,11 +3427,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfUInt64WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfUInt64WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -3442,23 +3442,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 8)
+    if (alignment <= 8)
     {
-      v12 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -3471,8 +3471,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 8, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfUInt64WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 8, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfUInt64WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3480,11 +3480,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfFloat32WithArray:(id)a3
+- (id)createVectorOfFloat32WithArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -3495,9 +3495,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -3514,13 +3514,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 4uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 4uLL);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = *v21;
@@ -3530,20 +3530,20 @@ LABEL_10:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           [*(*(&v20 + 1) + 8 * i) floatValue];
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<float>(p_fbbStorage, v13);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3551,11 +3551,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfFloat32WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfFloat32WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3566,16 +3566,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -3586,18 +3586,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 4)
+    if (alignment <= 4)
     {
-      v12 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 4, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfFloat32WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 4, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfFloat32WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3605,10 +3605,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfFloat32WithCArray:(const float *)a3 count:(unint64_t)a4
+- (id)createVectorOfFloat32WithCArray:(const float *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3619,9 +3619,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -3638,20 +3638,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 4uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 4uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<float>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<float>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3659,10 +3659,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfFloat32WithCArray:(const float *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfFloat32WithCArray:(const float *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -3673,23 +3673,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 4)
+    if (alignment <= 4)
     {
-      v11 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -3702,8 +3702,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 4, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfFloat32WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 4, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfFloat32WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3711,11 +3711,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfFloat32WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfFloat32WithCount:(unint64_t)count block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3726,9 +3726,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -3745,15 +3745,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 4uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 4uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0.0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<float>(p_fbbStorage, v19[0]);
         --v11;
@@ -3762,7 +3762,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3770,11 +3770,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfFloat32WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfFloat32WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -3785,23 +3785,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 4)
+    if (alignment <= 4)
     {
-      v12 = 4;
+      alignmentCopy = 4;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -3814,8 +3814,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 4, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfFloat32WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 4, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfFloat32WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3823,11 +3823,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)createVectorOfFloat64WithArray:(id)a3
+- (id)createVectorOfFloat64WithArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -3838,9 +3838,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
@@ -3857,13 +3857,13 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [v5 count], 8uLL);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, [arrayCopy count], 8uLL);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = *v21;
@@ -3873,20 +3873,20 @@ LABEL_10:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           [*(*(&v20 + 1) + 8 * i) doubleValue];
           apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<double>(p_fbbStorage, v13);
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(v5, "count"))}];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, objc_msgSend(arrayCopy, "count"))}];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3894,11 +3894,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)createVectorOfFloat64WithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfFloat64WithArray:(id)array alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3909,16 +3909,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -3929,18 +3929,18 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    if (a4 <= 8)
+    if (alignment <= 8)
     {
-      v12 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 8, v12);
-    v9 = [(AFBBufferBuilder *)self createVectorOfFloat64WithArray:v7];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, v10, 8, alignmentCopy);
+    v9 = [(AFBBufferBuilder *)self createVectorOfFloat64WithArray:arrayCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -3948,10 +3948,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfFloat64WithCArray:(const double *)a3 count:(unint64_t)a4
+- (id)createVectorOfFloat64WithCArray:(const double *)array count:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -3962,9 +3962,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -3981,20 +3981,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a4, 8uLL);
-    if (a4)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 8uLL);
+    if (count)
     {
-      v11 = a3 - 1;
-      v12 = a4;
+      v11 = array - 1;
+      countCopy = count;
       do
       {
-        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<double>(p_fbbStorage, v11[v12--]);
+        apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<double>(p_fbbStorage, v11[countCopy--]);
       }
 
-      while (v12);
+      while (countCopy);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a4)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -4002,10 +4002,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfFloat64WithCArray:(const double *)a3 count:(unint64_t)a4 alignment:(unint64_t)a5
+- (id)createVectorOfFloat64WithCArray:(const double *)array count:(unint64_t)count alignment:(unint64_t)alignment
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!array)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -4016,23 +4016,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v9 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v9)
+  if (firstError)
   {
     v10 = &unk_2852608B0;
   }
 
   else
   {
-    if (a5 <= 8)
+    if (alignment <= 8)
     {
-      v11 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v11 = a5;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -4045,8 +4045,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a4, 8, v11);
-    v10 = [(AFBBufferBuilder *)self createVectorOfFloat64WithCArray:a3 count:a4];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 8, alignmentCopy);
+    v10 = [(AFBBufferBuilder *)self createVectorOfFloat64WithCArray:array count:count];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -4054,11 +4054,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)createVectorOfFloat64WithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfFloat64WithCount:(unint64_t)count block:(id)block
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -4069,9 +4069,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -4088,15 +4088,15 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, a3, 8uLL);
-    if (a3)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(p_fbbStorage, count, 8uLL);
+    if (count)
     {
-      v11 = a3 - 1;
+      v11 = count - 1;
       do
       {
         v19[0] = 0.0;
         v12 = objc_autoreleasePoolPush();
-        v7[2](v7, v11, v19);
+        blockCopy[2](blockCopy, v11, v19);
         objc_autoreleasePoolPop(v12);
         apple::aiml::flatbuffers2::FlatBufferBuilder::PushElement<double>(p_fbbStorage, v19[0]);
         --v11;
@@ -4105,7 +4105,7 @@ LABEL_10:
       while (v11 != -1);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, a3)}];
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(p_fbbStorage, count)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -4113,11 +4113,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfFloat64WithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfFloat64WithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = NSStringFromSelector(a2);
@@ -4128,23 +4128,23 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v10 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v10)
+  if (firstError)
   {
     v11 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 8)
+    if (alignment <= 8)
     {
-      v12 = 8;
+      alignmentCopy = 8;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
     if (self)
@@ -4157,8 +4157,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, a3, 8, v12);
-    v11 = [(AFBBufferBuilder *)self createVectorOfFloat64WithCount:a3 block:v9];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceVectorAlignment(p_fbbStorage, count, 8, alignmentCopy);
+    v11 = [(AFBBufferBuilder *)self createVectorOfFloat64WithCount:count block:blockCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -4166,19 +4166,19 @@ LABEL_10:
   return v11;
 }
 
-- (id)createString:(id)a3
+- (id)createString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self createString:v5 alignment:1];
+  v6 = [(AFBBufferBuilder *)self createString:stringCopy alignment:1];
 
   return v6;
 }
 
-- (id)createString:(id)a3 alignment:(unint64_t)a4
+- (id)createString:(id)string alignment:(unint64_t)alignment
 {
-  v7 = a3;
-  if (!v7)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
     v12 = NSStringFromSelector(a2);
@@ -4189,25 +4189,25 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [v7 UTF8String];
-  if (!v8)
+  uTF8String = [stringCopy UTF8String];
+  if (!uTF8String)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
-    v17 = [v15 initWithFormat:@"%@: string is not valid unicode: %@", v16, v7];
+    stringCopy = [v15 initWithFormat:@"%@: string is not valid unicode: %@", v16, stringCopy];
 
-    v18 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:v17 userInfo:0];
+    v18 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:stringCopy userInfo:0];
     objc_exception_throw(v18);
   }
 
-  v9 = [(AFBBufferBuilder *)self createStringWithCString:v8 alignment:a4];
+  v9 = [(AFBBufferBuilder *)self createStringWithCString:uTF8String alignment:alignment];
 
   return v9;
 }
 
-- (id)createStringWithCString:(const char *)a3
+- (id)createStringWithCString:(const char *)string
 {
-  if (!a3)
+  if (!string)
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
     v8 = NSStringFromSelector(a2);
@@ -4219,13 +4219,13 @@ LABEL_10:
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
 
-  return [(AFBBufferBuilder *)self createStringWithCString:a3 alignment:1];
+  return [(AFBBufferBuilder *)self createStringWithCString:string alignment:1];
 }
 
-- (id)createStringWithCString:(const char *)a3 alignment:(unint64_t)a4
+- (id)createStringWithCString:(const char *)string alignment:(unint64_t)alignment
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!string)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = NSStringFromSelector(a2);
@@ -4236,26 +4236,26 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v10 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v10 = a4;
+      alignmentCopy = alignment;
     }
 
-    v11 = strlen(a3);
+    v11 = strlen(string);
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -4266,8 +4266,8 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceStringAlignment(p_fbbStorage, v11, v10);
-    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(p_fbbStorage, a3, v11)}];
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceStringAlignment(p_fbbStorage, v11, alignmentCopy);
+    v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:{apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(p_fbbStorage, string, v11)}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -4275,10 +4275,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)createStringWithData:(id)a3
+- (id)createStringWithData:(id)data
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
     v9 = NSStringFromSelector(a2);
@@ -4289,16 +4289,16 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self createStringWithData:v5 alignment:1];
+  v6 = [(AFBBufferBuilder *)self createStringWithData:dataCopy alignment:1];
 
   return v6;
 }
 
-- (id)createStringWithData:(id)a3 alignment:(unint64_t)a4
+- (id)createStringWithData:(id)data alignment:(unint64_t)alignment
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v17 = objc_alloc(MEMORY[0x277CCACA8]);
     v18 = NSStringFromSelector(a2);
@@ -4309,9 +4309,9 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
@@ -4328,20 +4328,20 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    v11 = [v7 length];
-    if (a4 <= 1)
+    v11 = [dataCopy length];
+    if (alignment <= 1)
     {
-      v12 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v12 = a4;
+      alignmentCopy = alignment;
     }
 
-    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceStringAlignment(p_fbbStorage, v11, v12);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::ForceStringAlignment(p_fbbStorage, v11, alignmentCopy);
     v13 = objc_autoreleasePoolPush();
-    String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(p_fbbStorage, [v7 bytes], objc_msgSend(v7, "length"));
+    String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(p_fbbStorage, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
     objc_autoreleasePoolPop(v13);
     v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:String];
   }
@@ -4351,20 +4351,20 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfStringWithArray:(id)a3
+- (id)createVectorOfStringWithArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self createVectorOfStringWithArray:v5 alignment:1];
+  v6 = [(AFBBufferBuilder *)self createVectorOfStringWithArray:arrayCopy alignment:1];
 
   return v6;
 }
 
-- (id)createVectorOfStringWithArray:(id)a3 alignment:(unint64_t)a4
+- (id)createVectorOfStringWithArray:(id)array alignment:(unint64_t)alignment
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v46 = objc_alloc(MEMORY[0x277CCACA8]);
     v47 = NSStringFromSelector(a2);
@@ -4375,30 +4375,30 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v8)
+  if (firstError)
   {
     v9 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v10 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v10 = a4;
+      alignmentCopy = alignment;
     }
 
     __src = 0;
     v51 = 0;
     v52 = 0;
-    std::vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>::reserve(&__src, [v7 count]);
-    v11 = [v7 count];
+    std::vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>::reserve(&__src, [arrayCopy count]);
+    v11 = [arrayCopy count];
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -4412,11 +4412,11 @@ LABEL_10:
     for (i = v11 - 1; i != -1; --i)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = [v7 objectAtIndexedSubscript:i];
+      v15 = [arrayCopy objectAtIndexedSubscript:i];
       v16 = v15;
-      v17 = [v15 UTF8String];
-      v18 = v17;
-      if (!v17)
+      uTF8String = [v15 UTF8String];
+      v18 = uTF8String;
+      if (!uTF8String)
       {
         v42 = objc_alloc(MEMORY[0x277CCACA8]);
         v43 = NSStringFromSelector(a2);
@@ -4426,8 +4426,8 @@ LABEL_10:
         objc_exception_throw(v45);
       }
 
-      v19 = strlen(v17);
-      apple::aiml::flatbuffers2::FlatBufferBuilder::ForceStringAlignment(p_fbbStorage, v19, v10);
+      v19 = strlen(uTF8String);
+      apple::aiml::flatbuffers2::FlatBufferBuilder::ForceStringAlignment(p_fbbStorage, v19, alignmentCopy);
       v20 = strlen(v18);
       String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(p_fbbStorage, v18, v20);
       v22 = v51;
@@ -4527,21 +4527,21 @@ LABEL_10:
   return v9;
 }
 
-- (id)createVectorOfStringWithCount:(unint64_t)a3 block:(id)a4
+- (id)createVectorOfStringWithCount:(unint64_t)count block:(id)block
 {
-  v7 = a4;
+  blockCopy = block;
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v8 = [(AFBBufferBuilder *)self createVectorOfStringWithCount:a3 alignment:1 block:v7];
+  v8 = [(AFBBufferBuilder *)self createVectorOfStringWithCount:count alignment:1 block:blockCopy];
 
   return v8;
 }
 
-- (id)createVectorOfStringWithCount:(unint64_t)a3 alignment:(unint64_t)a4 block:(id)a5
+- (id)createVectorOfStringWithCount:(unint64_t)count alignment:(unint64_t)alignment block:(id)block
 {
   v57 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v53 = v9;
-  if (!v9)
+  blockCopy = block;
+  v53 = blockCopy;
+  if (!blockCopy)
   {
     v48 = a2;
     v49 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -4552,31 +4552,31 @@ LABEL_10:
     objc_exception_throw(v52);
   }
 
-  v10 = v9;
+  v10 = blockCopy;
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v11 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v11)
+  if (firstError)
   {
     v12 = &unk_2852608B0;
   }
 
   else
   {
-    if (a4 <= 1)
+    if (alignment <= 1)
     {
-      v13 = 1;
+      alignmentCopy = 1;
     }
 
     else
     {
-      v13 = a4;
+      alignmentCopy = alignment;
     }
 
     __src = 0;
     v55 = 0;
     v56 = 0;
-    std::vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>::reserve(&__src, a3);
+    std::vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>::reserve(&__src, count);
     if (self)
     {
       p_fbbStorage = &self->_fbbStorage;
@@ -4587,14 +4587,14 @@ LABEL_10:
       p_fbbStorage = 0;
     }
 
-    for (i = a3 - 1; i != -1; --i)
+    for (i = count - 1; i != -1; --i)
     {
       v16 = objc_autoreleasePoolPush();
       v17 = v10[2](v10, i);
       v18 = v17;
-      v19 = [v17 UTF8String];
-      v20 = v19;
-      if (!v19)
+      uTF8String = [v17 UTF8String];
+      v20 = uTF8String;
+      if (!uTF8String)
       {
         v44 = objc_alloc(MEMORY[0x277CCACA8]);
         v45 = NSStringFromSelector(a2);
@@ -4604,8 +4604,8 @@ LABEL_10:
         objc_exception_throw(v47);
       }
 
-      v21 = strlen(v19);
-      apple::aiml::flatbuffers2::FlatBufferBuilder::ForceStringAlignment(p_fbbStorage, v21, v13);
+      v21 = strlen(uTF8String);
+      apple::aiml::flatbuffers2::FlatBufferBuilder::ForceStringAlignment(p_fbbStorage, v21, alignmentCopy);
       v22 = strlen(v20);
       String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(p_fbbStorage, v20, v22);
       v24 = v55;
@@ -4707,11 +4707,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)createVectorOfStringWithOffsets:(id)a3
+- (id)createVectorOfStringWithOffsets:(id)offsets
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  offsetsCopy = offsets;
+  if (!offsetsCopy)
   {
     v34 = objc_alloc(MEMORY[0x277CCACA8]);
     v35 = NSStringFromSelector(a2);
@@ -4722,28 +4722,28 @@ LABEL_10:
   }
 
   [(AFBBufferBuilder *)self throwIfFinalizedWithSelector:a2];
-  v6 = [(AFBBufferBuilder *)self firstError];
+  firstError = [(AFBBufferBuilder *)self firstError];
 
-  if (v6)
+  if (firstError)
   {
     v7 = &unk_2852608B0;
   }
 
   else
   {
-    v39 = self;
-    v40 = v5;
+    selfCopy = self;
+    v40 = offsetsCopy;
     __src = 0;
     v46 = 0;
     v47 = 0;
-    std::vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>::reserve(&__src, [v5 count]);
+    std::vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>::reserve(&__src, [offsetsCopy count]);
     context = objc_autoreleasePoolPush();
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v8 = [v5 reverseObjectEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v41 objects:v48 count:16];
+    reverseObjectEnumerator = [offsetsCopy reverseObjectEnumerator];
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v48 count:16];
     if (v9)
     {
       v10 = *v42;
@@ -4753,11 +4753,11 @@ LABEL_10:
         {
           if (*v42 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v12 = *(*(&v41 + 1) + 8 * i);
-          v13 = [v12 unsignedIntValue];
+          unsignedIntValue = [v12 unsignedIntValue];
           v14 = v46;
           if (v46 >= v47)
           {
@@ -4791,7 +4791,7 @@ LABEL_10:
               std::__allocate_at_least[abi:ne200100]<std::allocator<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>>(&__src, v21);
             }
 
-            *(4 * v18) = v13;
+            *(4 * v18) = unsignedIntValue;
             v15 = 4 * v18 + 4;
             memcpy(0, v16, v17);
             v22 = __src;
@@ -4806,14 +4806,14 @@ LABEL_10:
 
           else
           {
-            *v46 = v13;
+            *v46 = unsignedIntValue;
             v15 = (v14 + 4);
           }
 
           v46 = v15;
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v41 objects:v48 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v48 count:16];
       }
 
       while (v9);
@@ -4822,7 +4822,7 @@ LABEL_10:
     objc_autoreleasePoolPop(context);
     v23 = __src;
     v24 = v46;
-    v5 = v40;
+    offsetsCopy = v40;
     if (__src != v46)
     {
       v25 = v46 - 4;
@@ -4843,9 +4843,9 @@ LABEL_10:
       }
     }
 
-    if (v39)
+    if (selfCopy)
     {
-      p_fbbStorage = &v39->_fbbStorage;
+      p_fbbStorage = &selfCopy->_fbbStorage;
     }
 
     else

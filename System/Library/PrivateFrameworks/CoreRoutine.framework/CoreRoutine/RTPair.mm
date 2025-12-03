@@ -1,29 +1,29 @@
 @interface RTPair
-+ (Class)getClusterClassOfObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTPair)initWithCoder:(id)a3;
-- (RTPair)initWithFirstObject:(id)a3 secondObject:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (Class)getClusterClassOfObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (RTPair)initWithCoder:(id)coder;
+- (RTPair)initWithFirstObject:(id)object secondObject:(id)secondObject;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPair
 
-- (RTPair)initWithFirstObject:(id)a3 secondObject:(id)a4
+- (RTPair)initWithFirstObject:(id)object secondObject:(id)secondObject
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  objectCopy = object;
+  secondObjectCopy = secondObject;
+  v9 = secondObjectCopy;
+  if (!objectCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -34,7 +34,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!secondObjectCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -53,20 +53,20 @@ LABEL_12:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_firstObject, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_firstObject, object);
+    objc_storeStrong(p_isa + 2, secondObject);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
-+ (Class)getClusterClassOfObject:(id)a3
++ (Class)getClusterClassOfObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -95,44 +95,44 @@ LABEL_10:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   firstObject = self->_firstObject;
   secondObject = self->_secondObject;
 
   return [v4 initWithFirstObject:firstObject secondObject:secondObject];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = [objc_opt_class() getClusterClassOfObject:self->_firstObject];
   v5 = [objc_opt_class() getClusterClassOfObject:self->_secondObject];
   if ([v4 conformsToProtocol:&unk_1F3DE48F0] && objc_msgSend(v5, "conformsToProtocol:", &unk_1F3DE48F0))
   {
-    [v6 encodeObject:self->_firstObject forKey:@"firstObject"];
-    [v6 encodeObject:self->_secondObject forKey:@"secondObject"];
+    [coderCopy encodeObject:self->_firstObject forKey:@"firstObject"];
+    [coderCopy encodeObject:self->_secondObject forKey:@"secondObject"];
   }
 }
 
-- (RTPair)initWithCoder:(id)a3
+- (RTPair)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 allowedClasses];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"firstObject"];
+  coderCopy = coder;
+  allowedClasses = [coderCopy allowedClasses];
+  v6 = [coderCopy decodeObjectOfClasses:allowedClasses forKey:@"firstObject"];
 
-  v7 = [v4 allowedClasses];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"secondObject"];
+  allowedClasses2 = [coderCopy allowedClasses];
+  v8 = [coderCopy decodeObjectOfClasses:allowedClasses2 forKey:@"secondObject"];
 
-  v9 = 0;
+  selfCopy = 0;
   if (v6 && v8)
   {
     self = [(RTPair *)self initWithFirstObject:v6 secondObject:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
@@ -145,16 +145,16 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(RTPair *)self firstObject];
-  v6 = [v4 firstObject];
-  if ([v5 isEqual:v6])
+  equalCopy = equal;
+  firstObject = [(RTPair *)self firstObject];
+  firstObject2 = [equalCopy firstObject];
+  if ([firstObject isEqual:firstObject2])
   {
-    v7 = [(RTPair *)self secondObject];
-    v8 = [v4 secondObject];
-    v9 = [v7 isEqual:v8];
+    secondObject = [(RTPair *)self secondObject];
+    secondObject2 = [equalCopy secondObject];
+    v9 = [secondObject isEqual:secondObject2];
   }
 
   else
@@ -167,10 +167,10 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(RTPair *)self firstObject];
-  v4 = [v3 hash];
-  v5 = [(RTPair *)self secondObject];
-  v6 = [v5 hash];
+  firstObject = [(RTPair *)self firstObject];
+  v4 = [firstObject hash];
+  secondObject = [(RTPair *)self secondObject];
+  v6 = [secondObject hash];
 
   return v6 ^ v4;
 }

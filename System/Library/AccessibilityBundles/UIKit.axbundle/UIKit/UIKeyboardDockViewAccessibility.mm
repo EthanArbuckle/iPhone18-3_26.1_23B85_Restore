@@ -1,19 +1,19 @@
 @interface UIKeyboardDockViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_accessibilitySupplementaryHeaderViews;
 @end
 
 @implementation UIKeyboardDockViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIKeyboardDockView";
   v4 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -24,11 +24,11 @@
 
 - (id)_accessibilitySupplementaryHeaderViews
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [MEMORY[0x29EDB8DE8] array];
   v4 = v8[0];
-  v6 = [(UIKeyboardDockViewAccessibility *)v9 safeValueForKey:@"leftDockItem"];
+  v6 = [(UIKeyboardDockViewAccessibility *)selfCopy safeValueForKey:@"leftDockItem"];
   v5 = [v6 safeUIViewForKey:@"view"];
   [v4 axSafelyAddObject:?];
   MEMORY[0x29EDC9740](v5);
@@ -52,11 +52,11 @@ uint64_t __73__UIKeyboardDockViewAccessibility__accessibilitySupplementaryHeader
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [MEMORY[0x29EDB8DE8] array];
   v4 = v8[0];
-  v6 = [(UIKeyboardDockViewAccessibility *)v9 safeValueForKey:@"rightDockItem"];
+  v6 = [(UIKeyboardDockViewAccessibility *)selfCopy safeValueForKey:@"rightDockItem"];
   v5 = [v6 safeUIViewForKey:@"view"];
   [v4 axSafelyAddObject:?];
   MEMORY[0x29EDC9740](v5);

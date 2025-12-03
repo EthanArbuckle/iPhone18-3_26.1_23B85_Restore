@@ -9,7 +9,7 @@
 
 - (id)_pl_prettyDescriptionWithIndent:()PhotoLibraryServices
 {
-  if ([a1 count])
+  if ([self count])
   {
     pl_result_with_autoreleasepool();
   }
@@ -41,7 +41,7 @@
   v8[3] = &unk_1E75739D0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 objectsPassingTest:v8];
+  v6 = [self objectsPassingTest:v8];
 
   return v6;
 }
@@ -54,8 +54,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -65,7 +65,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -76,7 +76,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

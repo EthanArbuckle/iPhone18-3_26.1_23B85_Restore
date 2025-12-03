@@ -1,23 +1,23 @@
 @interface _UISheetActiveDetent
-- (_UISheetActiveDetent)initWithIdentifier:(id)a3 value:(double)a4;
+- (_UISheetActiveDetent)initWithIdentifier:(id)identifier value:(double)value;
 - (id)description;
 @end
 
 @implementation _UISheetActiveDetent
 
-- (_UISheetActiveDetent)initWithIdentifier:(id)a3 value:(double)a4
+- (_UISheetActiveDetent)initWithIdentifier:(id)identifier value:(double)value
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = _UISheetActiveDetent;
   v7 = [(_UISheetActiveDetent *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->__identifier;
     v7->__identifier = v8;
 
-    v7->__value = a4;
+    v7->__value = value;
   }
 
   return v7;

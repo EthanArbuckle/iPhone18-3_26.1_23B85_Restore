@@ -8,9 +8,9 @@
 {
   type metadata accessor for PassthroughView();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(CollapsedTabAccessoryViewController *)v5 setView:v4];
+  [(CollapsedTabAccessoryViewController *)selfCopy setView:v4];
 }
 
 @end

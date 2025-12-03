@@ -1,36 +1,36 @@
 @interface CPLScopeUpdateScopeTask
-+ (void)_updateScopeWithNewScopeType:(int64_t)a3 scope:(id)a4 updatedScopeChange:(id)a5 updatedFlags:(id)a6 oldTransportScope:(id)a7 updatedTransportScope:(id)a8 shouldUpdateTransportScope:(id)a9 store:(id)a10 transport:(id)a11 session:(id)a12 inTransaction:(id)a13;
-+ (void)updateScopeWithNewScopeType:(int64_t)a3 scope:(id)a4 updatedScopeChange:(id)a5 updatedFlags:(id)a6 oldTransportScope:(id)a7 updatedTransportScope:(id)a8 shouldUpdateTransportScope:(id)a9 store:(id)a10 transport:(id)a11 session:(id)a12 inTransaction:(id)a13;
-- (BOOL)checkScopeIsValidInTransaction:(id)a3;
-- (CPLScopeUpdateScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7;
++ (void)_updateScopeWithNewScopeType:(int64_t)type scope:(id)scope updatedScopeChange:(id)change updatedFlags:(id)flags oldTransportScope:(id)transportScope updatedTransportScope:(id)updatedTransportScope shouldUpdateTransportScope:(id)updateTransportScope store:(id)self0 transport:(id)self1 session:(id)self2 inTransaction:(id)self3;
++ (void)updateScopeWithNewScopeType:(int64_t)type scope:(id)scope updatedScopeChange:(id)change updatedFlags:(id)flags oldTransportScope:(id)transportScope updatedTransportScope:(id)updatedTransportScope shouldUpdateTransportScope:(id)updateTransportScope store:(id)self0 transport:(id)self1 session:(id)self2 inTransaction:(id)self3;
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction;
+- (CPLScopeUpdateScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope;
 - (void)_fetchTransportScope;
 - (void)_getLibraryInfo;
-- (void)_lookForStagingScopeWithIdentifier:(id)a3 transportScope:(id)a4;
-- (void)_markScopeAsDeletedAndSucceedTaskWithFlags:(id)a3;
-- (void)_markScopeAsFeatureDisabledWithFlags:(id)a3;
-- (void)_markScopeHasBadTransportScopeWithError:(id)a3;
-- (void)_performAdditionalChecksWithNewScopeType:(int64_t)a3 updatedScopeChange:(id)a4 updatedFlags:(id)a5 oldTransportScope:(id)a6 updatedTransportScope:(id)a7 completionHandler:(id)a8;
-- (void)_updateScopeChangeForPrimaryScopeRelatedToSharingScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)_updateScopeWithNewScopeType:(int64_t)a3 updatedScopeChange:(id)a4 updatedFlags:(id)a5 oldTransportScope:(id)a6 session:(id)a7 updatedTransportScope:(id)a8;
+- (void)_lookForStagingScopeWithIdentifier:(id)identifier transportScope:(id)scope;
+- (void)_markScopeAsDeletedAndSucceedTaskWithFlags:(id)flags;
+- (void)_markScopeAsFeatureDisabledWithFlags:(id)flags;
+- (void)_markScopeHasBadTransportScopeWithError:(id)error;
+- (void)_performAdditionalChecksWithNewScopeType:(int64_t)type updatedScopeChange:(id)change updatedFlags:(id)flags oldTransportScope:(id)scope updatedTransportScope:(id)transportScope completionHandler:(id)handler;
+- (void)_updateScopeChangeForPrimaryScopeRelatedToSharingScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_updateScopeWithNewScopeType:(int64_t)type updatedScopeChange:(id)change updatedFlags:(id)flags oldTransportScope:(id)scope session:(id)session updatedTransportScope:(id)transportScope;
 - (void)cancel;
 - (void)launch;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CPLScopeUpdateScopeTask
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  errorCopy = error;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__CPLScopeUpdateScopeTask_task_didFinishWithError___block_invoke;
   v14[3] = &unk_1E861B1C8;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
+  v15 = taskCopy;
+  selfCopy = self;
+  v17 = errorCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -38,8 +38,8 @@
   block[3] = &unk_1E861B4E0;
   v19 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = errorCopy;
+  v12 = taskCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -54,14 +54,14 @@ uint64_t __51__CPLScopeUpdateScopeTask_task_didFinishWithError___block_invoke(ui
   return result;
 }
 
-- (BOOL)checkScopeIsValidInTransaction:(id)a3
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPLEngineSyncTask *)self session];
-  v6 = [v5 shouldDefer];
+  transactionCopy = transaction;
+  session = [(CPLEngineSyncTask *)self session];
+  shouldDefer = [session shouldDefer];
 
-  if (v6)
+  if (shouldDefer)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -76,15 +76,15 @@ uint64_t __51__CPLScopeUpdateScopeTask_task_didFinishWithError___block_invoke(ui
     }
 
     v9 = +[CPLErrors sessionHasBeenDeferredError];
-    [v4 setError:v9];
+    [transactionCopy setError:v9];
 
     v10 = 0;
   }
 
   else
   {
-    v11 = [v4 error];
-    v10 = v11 == 0;
+    error = [transactionCopy error];
+    v10 = error == 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -128,17 +128,17 @@ uint64_t __33__CPLScopeUpdateScopeTask_cancel__block_invoke(uint64_t a1)
   v11.receiver = self;
   v11.super_class = CPLScopeUpdateScopeTask;
   [(CPLEngineSyncTask *)&v11 launch];
-  v3 = [(CPLEngineScopedTask *)self transportScope];
+  transportScope = [(CPLEngineScopedTask *)self transportScope];
 
-  if (v3)
+  if (transportScope)
   {
-    v4 = [(CPLEngineScopedTask *)self store];
+    store = [(CPLEngineScopedTask *)self store];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __33__CPLScopeUpdateScopeTask_launch__block_invoke;
     v10[3] = &unk_1E86205E0;
     v10[4] = self;
-    v5 = [v4 performReadTransactionWithBlock:v10];
+    v5 = [store performReadTransactionWithBlock:v10];
   }
 
   else
@@ -148,10 +148,10 @@ uint64_t __33__CPLScopeUpdateScopeTask_cancel__block_invoke(uint64_t a1)
       v6 = __CPLTaskOSLogDomain_17161();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(CPLEngineScopedTask *)self scope];
-        v8 = [v7 scopeIdentifier];
+        scope = [(CPLEngineScopedTask *)self scope];
+        scopeIdentifier = [scope scopeIdentifier];
         *buf = 138412290;
-        v13 = v8;
+        v13 = scopeIdentifier;
         _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEFAULT, "Will need to fetch transport scope for %@", buf, 0xCu);
       }
     }
@@ -665,71 +665,71 @@ void __42__CPLScopeUpdateScopeTask__getLibraryInfo__block_invoke_67(uint64_t a1,
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performAdditionalChecksWithNewScopeType:(int64_t)a3 updatedScopeChange:(id)a4 updatedFlags:(id)a5 oldTransportScope:(id)a6 updatedTransportScope:(id)a7 completionHandler:(id)a8
+- (void)_performAdditionalChecksWithNewScopeType:(int64_t)type updatedScopeChange:(id)change updatedFlags:(id)flags oldTransportScope:(id)scope updatedTransportScope:(id)transportScope completionHandler:(id)handler
 {
-  v19 = a4;
-  v11 = a8;
-  v12 = [(CPLEngineScopedTask *)self scope];
-  v13 = [v12 scopeType];
+  changeCopy = change;
+  handlerCopy = handler;
+  scope = [(CPLEngineScopedTask *)self scope];
+  scopeType = [scope scopeType];
 
-  if (v13 == a3)
+  if (scopeType == type)
   {
-    v11[2](v11, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_13;
   }
 
-  v14 = [(CPLEngineScopedTask *)self scope];
-  v15 = [v14 scopeIdentifier];
+  scope2 = [(CPLEngineScopedTask *)self scope];
+  scopeIdentifier = [scope2 scopeIdentifier];
 
-  if (a3 == 6)
+  if (type == 6)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_11:
-      v11[2](v11, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_12;
     }
 
-    v16 = [v19 stagedScopeChange];
-    v17 = v16;
-    if (v16)
+    stagedScopeChange = [changeCopy stagedScopeChange];
+    v17 = stagedScopeChange;
+    if (stagedScopeChange)
     {
-      a3 = [v16 scopeType];
-      v18 = [v17 scopeIdentifier];
+      type = [stagedScopeChange scopeType];
+      scopeIdentifier2 = [v17 scopeIdentifier];
 
-      v15 = v18;
+      scopeIdentifier = scopeIdentifier2;
     }
 
     else
     {
-      a3 = 6;
+      type = 6;
     }
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 4)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
     goto LABEL_11;
   }
 
-  [(CPLScopeUpdateScopeTask *)self _updateScopeChangeForPrimaryScopeRelatedToSharingScopeWithIdentifier:v15 completionHandler:v11];
+  [(CPLScopeUpdateScopeTask *)self _updateScopeChangeForPrimaryScopeRelatedToSharingScopeWithIdentifier:scopeIdentifier completionHandler:handlerCopy];
 LABEL_12:
 
 LABEL_13:
 }
 
-- (void)_updateScopeChangeForPrimaryScopeRelatedToSharingScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_updateScopeChangeForPrimaryScopeRelatedToSharingScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __114__CPLScopeUpdateScopeTask__updateScopeChangeForPrimaryScopeRelatedToSharingScopeWithIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E861AFA0;
   v15[4] = self;
-  v16 = v7;
-  v17 = v8;
+  v16 = identifierCopy;
+  v17 = handlerCopy;
   v18 = a2;
   v10 = v15;
   block[0] = MEMORY[0x1E69E9820];
@@ -738,8 +738,8 @@ LABEL_13:
   block[3] = &unk_1E861B4E0;
   v20 = v10;
   v11 = queue;
-  v12 = v7;
-  v13 = v8;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
@@ -1162,39 +1162,39 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_updateScopeWithNewScopeType:(int64_t)a3 updatedScopeChange:(id)a4 updatedFlags:(id)a5 oldTransportScope:(id)a6 session:(id)a7 updatedTransportScope:(id)a8
+- (void)_updateScopeWithNewScopeType:(int64_t)type updatedScopeChange:(id)change updatedFlags:(id)flags oldTransportScope:(id)scope session:(id)session updatedTransportScope:(id)transportScope
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = [(CPLEngineScopedTask *)self store];
-  v18 = [(CPLEngineSyncTask *)self engineLibrary];
-  v19 = [v18 transport];
+  changeCopy = change;
+  flagsCopy = flags;
+  scopeCopy = scope;
+  transportScopeCopy = transportScope;
+  store = [(CPLEngineScopedTask *)self store];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  transport = [engineLibrary transport];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __136__CPLScopeUpdateScopeTask__updateScopeWithNewScopeType_updatedScopeChange_updatedFlags_oldTransportScope_session_updatedTransportScope___block_invoke;
   v28[3] = &unk_1E861F1A8;
   v28[4] = self;
-  v29 = v13;
-  v30 = v14;
-  v31 = v15;
-  v32 = v16;
-  v33 = v19;
-  v34 = v17;
-  v35 = a3;
+  v29 = changeCopy;
+  v30 = flagsCopy;
+  v31 = scopeCopy;
+  v32 = transportScopeCopy;
+  v33 = transport;
+  v34 = store;
+  typeCopy = type;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __136__CPLScopeUpdateScopeTask__updateScopeWithNewScopeType_updatedScopeChange_updatedFlags_oldTransportScope_session_updatedTransportScope___block_invoke_56;
   v27[3] = &unk_1E86205E0;
   v27[4] = self;
-  v20 = v17;
-  v21 = v19;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
-  v25 = v13;
+  v20 = store;
+  v21 = transport;
+  v22 = transportScopeCopy;
+  v23 = scopeCopy;
+  v24 = flagsCopy;
+  v25 = changeCopy;
   v26 = [v20 performWriteTransactionWithBlock:v28 completionHandler:v27];
 }
 
@@ -1276,23 +1276,23 @@ BOOL __136__CPLScopeUpdateScopeTask__updateScopeWithNewScopeType_updatedScopeCha
   return v5 == 0;
 }
 
-- (void)_markScopeHasBadTransportScopeWithError:(id)a3
+- (void)_markScopeHasBadTransportScopeWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = __CPLTaskOSLogDomain_17161();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CPLEngineScopedTask *)self scope];
+      scope = [(CPLEngineScopedTask *)self scope];
       *buf = 138412290;
-      v15 = v6;
+      v15 = scope;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "Transport scope for %@ is invalid", buf, 0xCu);
     }
   }
 
-  v7 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__CPLScopeUpdateScopeTask__markScopeHasBadTransportScopeWithError___block_invoke;
@@ -1303,9 +1303,9 @@ BOOL __136__CPLScopeUpdateScopeTask__updateScopeWithNewScopeType_updatedScopeCha
   v11[2] = __67__CPLScopeUpdateScopeTask__markScopeHasBadTransportScopeWithError___block_invoke_3;
   v11[3] = &unk_1E86205B8;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 performWriteTransactionWithBlock:v13 completionHandler:v11];
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = [store performWriteTransactionWithBlock:v13 completionHandler:v11];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -1359,36 +1359,36 @@ uint64_t __67__CPLScopeUpdateScopeTask__markScopeHasBadTransportScopeWithError__
   return v7;
 }
 
-- (void)_markScopeAsFeatureDisabledWithFlags:(id)a3
+- (void)_markScopeAsFeatureDisabledWithFlags:(id)flags
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  flagsCopy = flags;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = __CPLTaskOSLogDomain_17161();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CPLEngineScopedTask *)self scope];
+      scope = [(CPLEngineScopedTask *)self scope];
       *buf = 138412290;
-      v15 = v6;
+      v15 = scope;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "Feature is disabled for %@", buf, 0xCu);
     }
   }
 
-  v7 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__CPLScopeUpdateScopeTask__markScopeAsFeatureDisabledWithFlags___block_invoke;
   v12[3] = &unk_1E86205B8;
   v12[4] = self;
-  v13 = v4;
+  v13 = flagsCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__CPLScopeUpdateScopeTask__markScopeAsFeatureDisabledWithFlags___block_invoke_3;
   v11[3] = &unk_1E86205E0;
   v11[4] = self;
-  v8 = v4;
-  v9 = [v7 performWriteTransactionWithBlock:v12 completionHandler:v11];
+  v8 = flagsCopy;
+  v9 = [store performWriteTransactionWithBlock:v12 completionHandler:v11];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -1492,9 +1492,9 @@ LABEL_14:
   return v17;
 }
 
-- (void)_markScopeAsDeletedAndSucceedTaskWithFlags:(id)a3
+- (void)_markScopeAsDeletedAndSucceedTaskWithFlags:(id)flags
 {
-  v5 = a3;
+  flagsCopy = flags;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -1507,13 +1507,13 @@ LABEL_14:
   v14[3] = __Block_byref_object_copy__17251;
   v14[4] = __Block_byref_object_dispose__17252;
   v15 = 0;
-  v6 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__CPLScopeUpdateScopeTask__markScopeAsDeletedAndSucceedTaskWithFlags___block_invoke;
   v10[3] = &unk_1E861F130;
   v10[4] = self;
-  v7 = v5;
+  v7 = flagsCopy;
   v12 = v14;
   v13 = a2;
   v11 = v7;
@@ -1524,7 +1524,7 @@ LABEL_14:
   v9[4] = self;
   v9[5] = v16;
   v9[6] = v14;
-  v8 = [v6 performWriteTransactionWithBlock:v10 completionHandler:v9];
+  v8 = [store performWriteTransactionWithBlock:v10 completionHandler:v9];
 
   _Block_object_dispose(v14, 8);
   _Block_object_dispose(v16, 8);
@@ -1755,18 +1755,18 @@ LABEL_24:
   return v10;
 }
 
-- (void)_lookForStagingScopeWithIdentifier:(id)a3 transportScope:(id)a4
+- (void)_lookForStagingScopeWithIdentifier:(id)identifier transportScope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  scopeCopy = scope;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__CPLScopeUpdateScopeTask__lookForStagingScopeWithIdentifier_transportScope___block_invoke;
   v14[3] = &unk_1E861B1C8;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = identifierCopy;
+  v16 = scopeCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1774,8 +1774,8 @@ LABEL_24:
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = scopeCopy;
+  v12 = identifierCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -1823,11 +1823,11 @@ void __77__CPLScopeUpdateScopeTask__lookForStagingScopeWithIdentifier_transportS
   }
 }
 
-- (CPLScopeUpdateScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7
+- (CPLScopeUpdateScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope
 {
   v12.receiver = self;
   v12.super_class = CPLScopeUpdateScopeTask;
-  v7 = [(CPLEngineScopedTask *)&v12 initWithEngineLibrary:a3 session:a4 clientCacheIdentifier:a5 scope:a6 transportScope:a7];
+  v7 = [(CPLEngineScopedTask *)&v12 initWithEngineLibrary:library session:session clientCacheIdentifier:identifier scope:scope transportScope:transportScope];
   if (v7)
   {
     v8 = CPLCopyDefaultSerialQueueAttributes();
@@ -1839,89 +1839,89 @@ void __77__CPLScopeUpdateScopeTask__lookForStagingScopeWithIdentifier_transportS
   return v7;
 }
 
-+ (void)updateScopeWithNewScopeType:(int64_t)a3 scope:(id)a4 updatedScopeChange:(id)a5 updatedFlags:(id)a6 oldTransportScope:(id)a7 updatedTransportScope:(id)a8 shouldUpdateTransportScope:(id)a9 store:(id)a10 transport:(id)a11 session:(id)a12 inTransaction:(id)a13
++ (void)updateScopeWithNewScopeType:(int64_t)type scope:(id)scope updatedScopeChange:(id)change updatedFlags:(id)flags oldTransportScope:(id)transportScope updatedTransportScope:(id)updatedTransportScope shouldUpdateTransportScope:(id)updateTransportScope store:(id)self0 transport:(id)self1 session:(id)self2 inTransaction:(id)self3
 {
-  v37 = a4;
-  v35 = a5;
-  v34 = a6;
-  v17 = a7;
-  v36 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = [v19 scopes];
-  v24 = [v37 scopeIdentifier];
-  v25 = [v23 scopeWithIdentifier:v24];
+  scopeCopy = scope;
+  changeCopy = change;
+  flagsCopy = flags;
+  transportScopeCopy = transportScope;
+  updatedTransportScopeCopy = updatedTransportScope;
+  updateTransportScopeCopy = updateTransportScope;
+  storeCopy = store;
+  transportCopy = transport;
+  sessionCopy = session;
+  transactionCopy = transaction;
+  scopes = [storeCopy scopes];
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  v25 = [scopes scopeWithIdentifier:scopeIdentifier];
 
-  if (v25 && (v26 = [v25 cloudIndex], v26 == objc_msgSend(v37, "cloudIndex")))
+  if (v25 && (v26 = [v25 cloudIndex], v26 == objc_msgSend(scopeCopy, "cloudIndex")))
   {
-    v28 = v34;
-    v27 = v35;
-    [a1 _updateScopeWithNewScopeType:a3 scope:v37 updatedScopeChange:v35 updatedFlags:v34 oldTransportScope:v17 updatedTransportScope:v36 shouldUpdateTransportScope:v18 store:v19 transport:v20 session:v21 inTransaction:v22];
+    v28 = flagsCopy;
+    v27 = changeCopy;
+    [self _updateScopeWithNewScopeType:type scope:scopeCopy updatedScopeChange:changeCopy updatedFlags:flagsCopy oldTransportScope:transportScopeCopy updatedTransportScope:updatedTransportScopeCopy shouldUpdateTransportScope:updateTransportScopeCopy store:storeCopy transport:transportCopy session:sessionCopy inTransaction:transactionCopy];
   }
 
   else
   {
-    [v37 scopeIdentifier];
-    v30 = v29 = v17;
+    [scopeCopy scopeIdentifier];
+    v30 = v29 = transportScopeCopy;
     v31 = [CPLErrors cplErrorWithCode:32 description:@"%@ has become stale before updating scope info", v30];
-    [v22 setError:v31];
+    [transactionCopy setError:v31];
 
-    v17 = v29;
-    v28 = v34;
-    v27 = v35;
+    transportScopeCopy = v29;
+    v28 = flagsCopy;
+    v27 = changeCopy;
   }
 }
 
-+ (void)_updateScopeWithNewScopeType:(int64_t)a3 scope:(id)a4 updatedScopeChange:(id)a5 updatedFlags:(id)a6 oldTransportScope:(id)a7 updatedTransportScope:(id)a8 shouldUpdateTransportScope:(id)a9 store:(id)a10 transport:(id)a11 session:(id)a12 inTransaction:(id)a13
++ (void)_updateScopeWithNewScopeType:(int64_t)type scope:(id)scope updatedScopeChange:(id)change updatedFlags:(id)flags oldTransportScope:(id)transportScope updatedTransportScope:(id)updatedTransportScope shouldUpdateTransportScope:(id)updateTransportScope store:(id)self0 transport:(id)self1 session:(id)self2 inTransaction:(id)self3
 {
-  v34 = a4;
-  v35 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v37 = a13;
-  v24 = [v21 scopes];
-  v25 = v24;
+  scopeCopy = scope;
+  changeCopy = change;
+  flagsCopy = flags;
+  transportScopeCopy = transportScope;
+  updatedTransportScopeCopy = updatedTransportScope;
+  updateTransportScopeCopy = updateTransportScope;
+  storeCopy = store;
+  transportCopy = transport;
+  sessionCopy = session;
+  transactionCopy = transaction;
+  scopes = [storeCopy scopes];
+  v25 = scopes;
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __199__CPLScopeUpdateScopeTask__updateScopeWithNewScopeType_scope_updatedScopeChange_updatedFlags_oldTransportScope_updatedTransportScope_shouldUpdateTransportScope_store_transport_session_inTransaction___block_invoke_2;
   v42[3] = &unk_1E861F158;
-  v43 = v34;
-  v44 = v17;
-  if (!v20)
+  v43 = scopeCopy;
+  v44 = flagsCopy;
+  if (!updateTransportScopeCopy)
   {
-    v20 = &__block_literal_global_17273;
+    updateTransportScopeCopy = &__block_literal_global_17273;
   }
 
-  v53 = a3;
+  typeCopy = type;
   v54 = a2;
-  v55 = a1;
-  v45 = v35;
-  v46 = v24;
-  v47 = v19;
-  v48 = v18;
-  v49 = v22;
-  v50 = v21;
-  v51 = v23;
-  v52 = v20;
-  v41 = v23;
-  v39 = v21;
-  v26 = v22;
-  v27 = v20;
-  v28 = v18;
-  v29 = v19;
+  selfCopy = self;
+  v45 = changeCopy;
+  v46 = scopes;
+  v47 = updatedTransportScopeCopy;
+  v48 = transportScopeCopy;
+  v49 = transportCopy;
+  v50 = storeCopy;
+  v51 = sessionCopy;
+  v52 = updateTransportScopeCopy;
+  v41 = sessionCopy;
+  v39 = storeCopy;
+  v26 = transportCopy;
+  v27 = updateTransportScopeCopy;
+  v28 = transportScopeCopy;
+  v29 = updatedTransportScopeCopy;
   v30 = v25;
-  v31 = v35;
-  v32 = v17;
-  v33 = v34;
-  [v37 do:v42];
+  v31 = changeCopy;
+  v32 = flagsCopy;
+  v33 = scopeCopy;
+  [transactionCopy do:v42];
 }
 
 uint64_t __199__CPLScopeUpdateScopeTask__updateScopeWithNewScopeType_scope_updatedScopeChange_updatedFlags_oldTransportScope_updatedTransportScope_shouldUpdateTransportScope_store_transport_session_inTransaction___block_invoke_2(uint64_t a1, uint64_t a2)

@@ -1,18 +1,18 @@
 @interface VCPositionalInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VCPositionalInfo)init;
-- (VCPositionalInfo)initWithCoder:(id)a3;
+- (VCPositionalInfo)initWithCoder:(id)coder;
 - (const)metadataPositionalInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)serialize;
 - (tagAVCPositionalInfo)avcPositionalInfo;
-- (void)applyPositionalInfo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyPositionalInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
 - (void)serialize;
-- (void)setAvcPositionalInfo:(tagAVCPositionalInfo *)a3;
-- (void)setIsVisible:(BOOL)a3;
-- (void)setProminenceIndex:(unsigned int)a3;
-- (void)unserialize:(id)a3;
+- (void)setAvcPositionalInfo:(tagAVCPositionalInfo *)info;
+- (void)setIsVisible:(BOOL)visible;
+- (void)setProminenceIndex:(unsigned int)index;
+- (void)unserialize:(id)unserialize;
 @end
 
 @implementation VCPositionalInfo
@@ -31,20 +31,20 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || *(a3 + 8) != self->_isInCanvas || *(a3 + 2) != self->_size.width || *(a3 + 3) != self->_size.height || *(a3 + 4) != self->_x || *(a3 + 5) != self->_y || *(a3 + 6) != self->_z || *(a3 + 57) != self->_isVisible || *(a3 + 15) != self->_prominenceIndex)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || *(equal + 8) != self->_isInCanvas || *(equal + 2) != self->_size.width || *(equal + 3) != self->_size.height || *(equal + 4) != self->_x || *(equal + 5) != self->_y || *(equal + 6) != self->_z || *(equal + 57) != self->_isVisible || *(equal + 15) != self->_prominenceIndex)
   {
     return 0;
   }
 
-  return *(a3 + 8) == *&self->_metadataPositionalInfo.positionX && *(a3 + 9) == *&self->_metadataPositionalInfo.positionZ && *(a3 + 10) == *&self->_metadataPositionalInfo.isVisible;
+  return *(equal + 8) == *&self->_metadataPositionalInfo.positionX && *(equal + 9) == *&self->_metadataPositionalInfo.positionZ && *(equal + 10) == *&self->_metadataPositionalInfo.isVisible;
 }
 
 - (id)serialize
@@ -72,11 +72,11 @@
   return v3;
 }
 
-- (void)unserialize:(id)a3
+- (void)unserialize:(id)unserialize
 {
   v17 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v8];
+  v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:unserialize error:&v8];
   if (v8)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -113,51 +113,51 @@
   }
 }
 
-- (void)applyPositionalInfo:(id)a3
+- (void)applyPositionalInfo:(id)info
 {
-  v3 = *(a3 + 4);
+  v3 = *(info + 4);
   if (v3 != self->_x)
   {
     self->_x = v3;
     self->_hasPendingChanges = 1;
   }
 
-  v4 = *(a3 + 5);
+  v4 = *(info + 5);
   if (v4 != self->_y)
   {
     self->_y = v4;
     self->_hasPendingChanges = 1;
   }
 
-  v5 = *(a3 + 6);
+  v5 = *(info + 6);
   if (v5 != self->_z)
   {
     self->_z = v5;
     self->_hasPendingChanges = 1;
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(info + 2);
   if (v6 != self->_size.width)
   {
     self->_size.width = v6;
     self->_hasPendingChanges = 1;
   }
 
-  v7 = *(a3 + 3);
+  v7 = *(info + 3);
   if (v7 != self->_size.height)
   {
     self->_size.height = v7;
     self->_hasPendingChanges = 1;
   }
 
-  v8 = *(a3 + 8);
+  v8 = *(info + 8);
   if (v8 != self->_isInCanvas)
   {
     self->_isInCanvas = v8;
     self->_hasPendingChanges = 1;
   }
 
-  v9 = *(a3 + 15);
+  v9 = *(info + 15);
   if (v9 != self->_prominenceIndex)
   {
     self->_prominenceIndex = v9;
@@ -188,47 +188,47 @@
   return self;
 }
 
-- (void)setAvcPositionalInfo:(tagAVCPositionalInfo *)a3
+- (void)setAvcPositionalInfo:(tagAVCPositionalInfo *)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  var2 = a3->var2;
+  var2 = info->var2;
   if (var2 != self->_x)
   {
     self->_x = var2;
     self->_hasPendingChanges = 1;
   }
 
-  var3 = a3->var3;
+  var3 = info->var3;
   if (var3 != self->_y)
   {
     self->_y = var3;
     self->_hasPendingChanges = 1;
   }
 
-  var4 = a3->var4;
+  var4 = info->var4;
   if (var4 != self->_z)
   {
     self->_z = var4;
     self->_hasPendingChanges = 1;
   }
 
-  width = a3->var1.width;
+  width = info->var1.width;
   if (width != self->_size.width)
   {
     self->_size.width = width;
     self->_hasPendingChanges = 1;
   }
 
-  height = a3->var1.height;
+  height = info->var1.height;
   if (height != self->_size.height)
   {
     self->_size.height = height;
     self->_hasPendingChanges = 1;
   }
 
-  if ((a3->var0 & 1) != self->_isInCanvas)
+  if ((info->var0 & 1) != self->_isInCanvas)
   {
-    self->_isInCanvas = a3->var0 & 1;
+    self->_isInCanvas = info->var0 & 1;
     self->_hasPendingChanges = 1;
   }
 
@@ -245,69 +245,69 @@
       v15 = 1024;
       v16 = 139;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [AVC SPATIAL AUDIO] %@", &v11, 0x26u);
     }
   }
 }
 
-- (void)setProminenceIndex:(unsigned int)a3
+- (void)setProminenceIndex:(unsigned int)index
 {
-  if (self->_prominenceIndex != a3)
+  if (self->_prominenceIndex != index)
   {
-    self->_prominenceIndex = a3;
+    self->_prominenceIndex = index;
     self->_hasPendingChanges = 1;
   }
 }
 
-- (void)setIsVisible:(BOOL)a3
+- (void)setIsVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
+    self->_isVisible = visible;
     self->_hasPendingChanges = 1;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   x = self->_x;
   *&x = x;
-  [a3 encodeFloat:kVCPositionalInfoTilePositionX forKey:x];
+  [coder encodeFloat:kVCPositionalInfoTilePositionX forKey:x];
   y = self->_y;
   *&y = y;
-  [a3 encodeFloat:kVCPositionalInfoTilePositionY forKey:y];
+  [coder encodeFloat:kVCPositionalInfoTilePositionY forKey:y];
   z = self->_z;
   if (z != 0.0)
   {
     *&z = z;
-    [a3 encodeFloat:kVCPositionalInfoTilePositionZ forKey:z];
+    [coder encodeFloat:kVCPositionalInfoTilePositionZ forKey:z];
   }
 
   width = self->_size.width;
   *&width = width;
-  [a3 encodeFloat:kVCPositionalInfoTileWidth forKey:width];
+  [coder encodeFloat:kVCPositionalInfoTileWidth forKey:width];
   height = self->_size.height;
   *&height = height;
-  [a3 encodeFloat:kVCPositionalInfoTileHeight forKey:height];
+  [coder encodeFloat:kVCPositionalInfoTileHeight forKey:height];
   if (self->_isInCanvas)
   {
-    [a3 encodeBool:1 forKey:kVCPositionalInfoInCanvas];
+    [coder encodeBool:1 forKey:kVCPositionalInfoInCanvas];
   }
 
   if (self->_isVisible)
   {
-    [a3 encodeBool:1 forKey:kVCPositionalInfoIsVisible];
+    [coder encodeBool:1 forKey:kVCPositionalInfoIsVisible];
   }
 
   if (self->_prominenceIndex)
   {
 
-    [a3 encodeInt32:? forKey:?];
+    [coder encodeInt32:? forKey:?];
   }
 }
 
-- (VCPositionalInfo)initWithCoder:(id)a3
+- (VCPositionalInfo)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -318,7 +318,7 @@
     return v4;
   }
 
-  if (([a3 containsValueForKey:kVCPositionalInfoTilePositionX] & 1) == 0)
+  if (([coder containsValueForKey:kVCPositionalInfoTilePositionX] & 1) == 0)
   {
     [VCPositionalInfo initWithCoder:];
 LABEL_19:
@@ -326,57 +326,57 @@ LABEL_19:
     return 0;
   }
 
-  if (([a3 containsValueForKey:kVCPositionalInfoTilePositionY] & 1) == 0)
+  if (([coder containsValueForKey:kVCPositionalInfoTilePositionY] & 1) == 0)
   {
     [VCPositionalInfo initWithCoder:];
     goto LABEL_19;
   }
 
-  if (([a3 containsValueForKey:kVCPositionalInfoTileWidth] & 1) == 0)
+  if (([coder containsValueForKey:kVCPositionalInfoTileWidth] & 1) == 0)
   {
     [VCPositionalInfo initWithCoder:];
     goto LABEL_19;
   }
 
-  if (([a3 containsValueForKey:kVCPositionalInfoTileHeight] & 1) == 0)
+  if (([coder containsValueForKey:kVCPositionalInfoTileHeight] & 1) == 0)
   {
     [VCPositionalInfo initWithCoder:];
     goto LABEL_19;
   }
 
-  [a3 decodeFloatForKey:kVCPositionalInfoTilePositionX];
+  [coder decodeFloatForKey:kVCPositionalInfoTilePositionX];
   v4->_x = v5;
-  [a3 decodeFloatForKey:kVCPositionalInfoTilePositionY];
+  [coder decodeFloatForKey:kVCPositionalInfoTilePositionY];
   v4->_y = v6;
-  if ([a3 containsValueForKey:kVCPositionalInfoTilePositionZ])
+  if ([coder containsValueForKey:kVCPositionalInfoTilePositionZ])
   {
-    [a3 decodeFloatForKey:kVCPositionalInfoTilePositionZ];
+    [coder decodeFloatForKey:kVCPositionalInfoTilePositionZ];
     v4->_z = v7;
   }
 
-  [a3 decodeFloatForKey:kVCPositionalInfoTileWidth];
+  [coder decodeFloatForKey:kVCPositionalInfoTileWidth];
   v4->_size.width = v8;
-  [a3 decodeFloatForKey:kVCPositionalInfoTileHeight];
+  [coder decodeFloatForKey:kVCPositionalInfoTileHeight];
   v4->_size.height = v9;
-  if ([a3 containsValueForKey:kVCPositionalInfoInCanvas])
+  if ([coder containsValueForKey:kVCPositionalInfoInCanvas])
   {
-    v4->_isInCanvas = [a3 decodeBoolForKey:kVCPositionalInfoInCanvas];
+    v4->_isInCanvas = [coder decodeBoolForKey:kVCPositionalInfoInCanvas];
   }
 
-  if ([a3 containsValueForKey:kVCPositionalInfoProminence])
+  if ([coder containsValueForKey:kVCPositionalInfoProminence])
   {
-    v4->_prominenceIndex = [a3 decodeInt32ForKey:kVCPositionalInfoProminence];
+    v4->_prominenceIndex = [coder decodeInt32ForKey:kVCPositionalInfoProminence];
   }
 
-  if ([a3 containsValueForKey:kVCPositionalInfoIsVisible])
+  if ([coder containsValueForKey:kVCPositionalInfoIsVisible])
   {
-    v4->_isVisible = [a3 decodeBoolForKey:kVCPositionalInfoIsVisible];
+    v4->_isVisible = [coder decodeBoolForKey:kVCPositionalInfoIsVisible];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[VCPositionalInfo allocWithZone:?]];
   if (result)

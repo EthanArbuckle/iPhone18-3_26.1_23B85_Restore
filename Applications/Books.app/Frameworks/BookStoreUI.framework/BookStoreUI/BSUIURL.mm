@@ -1,23 +1,23 @@
 @interface BSUIURL
-+ (id)URLWithURL:(id)a3;
-+ (id)URLWithURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5;
-- (BSUIURL)initWithURL:(id)a3;
++ (id)URLWithURL:(id)l;
++ (id)URLWithURL:(id)l sourceApplication:(id)application annotation:(id)annotation;
+- (BSUIURL)initWithURL:(id)l;
 - (id)_queryDictionary;
 - (id)actionString;
-- (id)valueForQueryParameter:(id)a3;
+- (id)valueForQueryParameter:(id)parameter;
 @end
 
 @implementation BSUIURL
 
-- (BSUIURL)initWithURL:(id)a3
+- (BSUIURL)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BSUIURL;
   v5 = [(BSUIURL *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     underlyingURL = v5->_underlyingURL;
     v5->_underlyingURL = v6;
   }
@@ -25,12 +25,12 @@
   return v5;
 }
 
-+ (id)URLWithURL:(id)a3
++ (id)URLWithURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = a3;
-    v4 = [[BSUIURL alloc] initWithURL:v3];
+    lCopy = l;
+    v4 = [[BSUIURL alloc] initWithURL:lCopy];
   }
 
   else
@@ -41,17 +41,17 @@
   return v4;
 }
 
-+ (id)URLWithURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5
++ (id)URLWithURL:(id)l sourceApplication:(id)application annotation:(id)annotation
 {
-  v5 = a3;
-  if (a3)
+  lCopy = l;
+  if (l)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = v5;
-    v5 = [[BSUIURL alloc] initWithURL:v9];
+    annotationCopy = annotation;
+    applicationCopy = application;
+    v9 = lCopy;
+    lCopy = [[BSUIURL alloc] initWithURL:v9];
 
-    [(BSUIURL *)v5 setReferrerApplicationName:v8];
+    [(BSUIURL *)lCopy setReferrerApplicationName:applicationCopy];
     objc_opt_class();
     v10 = BUDynamicCast();
 
@@ -61,7 +61,7 @@
 
     if (v12)
     {
-      [(BSUIURL *)v5 setReferrerURLString:v11];
+      [(BSUIURL *)lCopy setReferrerURLString:v11];
     }
 
     else
@@ -71,13 +71,13 @@
 
       if (v13)
       {
-        v14 = [v11 absoluteString];
-        [(BSUIURL *)v5 setReferrerURLString:v14];
+        absoluteString = [v11 absoluteString];
+        [(BSUIURL *)lCopy setReferrerURLString:absoluteString];
       }
     }
   }
 
-  return v5;
+  return lCopy;
 }
 
 - (id)actionString
@@ -85,18 +85,18 @@
   v3 = [(BSUIURL *)self valueForQueryParameter:@"action"];
   if (!v3)
   {
-    v4 = [(NSURL *)self->_underlyingURL absoluteString];
-    if ([v4 rangeOfString:@"MZSearch.woa"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "rangeOfString:", @"/search?") == 0x7FFFFFFFFFFFFFFFLL)
+    absoluteString = [(NSURL *)self->_underlyingURL absoluteString];
+    if ([absoluteString rangeOfString:@"MZSearch.woa"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(absoluteString, "rangeOfString:", @"/search?") == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v4 rangeOfString:@"freeProductCodeWizard"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "rangeOfString:", @"redeemLandingPage") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "rangeOfString:", @"showDialogForRedeem") == 0x7FFFFFFFFFFFFFFFLL)
+      if ([absoluteString rangeOfString:@"freeProductCodeWizard"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(absoluteString, "rangeOfString:", @"redeemLandingPage") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(absoluteString, "rangeOfString:", @"showDialogForRedeem") == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v4 rangeOfString:@"buyLandingPage"] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([absoluteString rangeOfString:@"buyLandingPage"] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if ([v4 rangeOfString:@"buyCharityGiftWizard"] == 0x7FFFFFFFFFFFFFFFLL)
+          if ([absoluteString rangeOfString:@"buyCharityGiftWizard"] == 0x7FFFFFFFFFFFFFFFLL)
           {
-            if ([v4 rangeOfString:@"MZFinance.woa"] == 0x7FFFFFFFFFFFFFFFLL)
+            if ([absoluteString rangeOfString:@"MZFinance.woa"] == 0x7FFFFFFFFFFFFFFFLL)
             {
-              if ([v4 rangeOfString:@"viewEula"] == 0x7FFFFFFFFFFFFFFFLL)
+              if ([absoluteString rangeOfString:@"viewEula"] == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v3 = 0;
               }
@@ -107,7 +107,7 @@
               }
             }
 
-            else if ([v4 rangeOfString:@"getPass"] == 0x7FFFFFFFFFFFFFFFLL)
+            else if ([absoluteString rangeOfString:@"getPass"] == 0x7FFFFFFFFFFFFFFFLL)
             {
               v3 = @"account";
             }
@@ -145,11 +145,11 @@
   return v3;
 }
 
-- (id)valueForQueryParameter:(id)a3
+- (id)valueForQueryParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = [(BSUIURL *)self _queryDictionary];
-  v6 = [v5 objectForKey:v4];
+  parameterCopy = parameter;
+  _queryDictionary = [(BSUIURL *)self _queryDictionary];
+  v6 = [_queryDictionary objectForKey:parameterCopy];
 
   return v6;
 }
@@ -159,8 +159,8 @@
   queryDictionary = self->_queryDictionary;
   if (!queryDictionary)
   {
-    v4 = [(NSURL *)self->_underlyingURL query];
-    v5 = [v4 componentsSeparatedByString:@"&"];
+    query = [(NSURL *)self->_underlyingURL query];
+    v5 = [query componentsSeparatedByString:@"&"];
 
     v6 = objc_alloc_init(NSMutableDictionary);
     v18 = 0u;

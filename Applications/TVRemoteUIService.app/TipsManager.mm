@@ -2,28 +2,28 @@
 + (_TtC17TVRemoteUIService11TipsManager)shared;
 - (_TtC17TVRemoteUIService11TipsManager)init;
 - (void)dealloc;
-- (void)hideTipWithAnimated:(BOOL)a3 completion:(id)a4;
+- (void)hideTipWithAnimated:(BOOL)animated completion:(id)completion;
 - (void)invalidate;
 - (void)presentTip;
-- (void)setTipsViewController:(id)a3;
+- (void)setTipsViewController:(id)controller;
 - (void)showTip;
-- (void)updatePresentingViewController:(void *)a3;
+- (void)updatePresentingViewController:(void *)controller;
 @end
 
 @implementation TipsManager
 
-- (void)updatePresentingViewController:(void *)a3
+- (void)updatePresentingViewController:(void *)controller
 {
-  v4 = *(a1 + OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_presentingViewController);
-  *(a1 + OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_presentingViewController) = a3;
-  v3 = a3;
+  v4 = *(self + OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_presentingViewController);
+  *(self + OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_presentingViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setTipsViewController:(id)a3
+- (void)setTipsViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_tipsViewController);
-  *(&self->super.isa + OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_tipsViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_tipsViewController) = controller;
+  controllerCopy = controller;
 }
 
 + (_TtC17TVRemoteUIService11TipsManager)shared
@@ -40,25 +40,25 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   TipsManager.invalidate()();
 }
 
 - (void)presentTip
 {
-  v2 = self;
+  selfCopy = self;
   TipsManager.presentTip()();
 }
 
 - (void)showTip
 {
-  v2 = self;
+  selfCopy = self;
   TipsManager.showTip()();
 }
 
-- (void)hideTipWithAnimated:(BOOL)a3 completion:(id)a4
+- (void)hideTipWithAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -71,8 +71,8 @@
     v7 = 0;
   }
 
-  v8 = self;
-  TipsManager.hideTip(animated:completion:)(a3, v6, v7);
+  selfCopy = self;
+  TipsManager.hideTip(animated:completion:)(animated, v6, v7);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v6);
 }
 
@@ -81,7 +81,7 @@
   v3 = OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_tipObservation;
   if (*(&self->super.isa + OBJC_IVAR____TtC17TVRemoteUIService11TipsManager_tipObservation))
   {
-    v4 = self;
+    selfCopy = self;
 
     Task.cancel()();
 
@@ -90,7 +90,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   *(&self->super.isa + v3) = 0;

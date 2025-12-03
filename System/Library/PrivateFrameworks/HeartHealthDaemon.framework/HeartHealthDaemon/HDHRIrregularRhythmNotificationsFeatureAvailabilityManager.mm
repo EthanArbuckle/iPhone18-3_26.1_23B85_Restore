@@ -1,66 +1,66 @@
 @interface HDHRIrregularRhythmNotificationsFeatureAvailabilityManager
-- (HDHRIrregularRhythmNotificationsFeatureAvailabilityManager)initWithProfile:(id)a3 v2PairedFeaturePropertiesSyncManager:(id)a4 notificationSettingDefaults:(id)a5;
-- (HDHRIrregularRhythmNotificationsFeatureAvailabilityManager)initWithV1FeatureAvailabilityManager:(id)a3 v2FeatureAvailabilityManager:(id)a4;
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4;
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3;
-- (id)featureAvailabilityRequirementsWithError:(id *)a3;
-- (id)featureOnboardingRecordWithError:(id *)a3;
-- (id)highestAvailableOnboardedAlgorithmVersionWithError:(id *)a3;
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3;
-- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)a3;
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4;
-- (id)pairedFeatureAttributesWithError:(id *)a3;
-- (int64_t)_featureSupportedStateForOnboardedV1CountryCodeSupportedState:(int64_t)a3 onboardedV2CountryCodeSupportedState:(int64_t)a4;
-- (void)featureAvailabilityExtensionDidUpdatePairedDeviceCapability:(id)a3;
-- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)a3;
-- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)a3;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)featureAvailabilityProvidingDidUpdateSettings:(id)a3;
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3;
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4;
-- (void)resetOnboardingWithCompletion:(id)a3;
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5;
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7;
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (HDHRIrregularRhythmNotificationsFeatureAvailabilityManager)initWithProfile:(id)profile v2PairedFeaturePropertiesSyncManager:(id)manager notificationSettingDefaults:(id)defaults;
+- (HDHRIrregularRhythmNotificationsFeatureAvailabilityManager)initWithV1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager;
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error;
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error;
+- (id)featureAvailabilityRequirementsWithError:(id *)error;
+- (id)featureOnboardingRecordWithError:(id *)error;
+- (id)highestAvailableOnboardedAlgorithmVersionWithError:(id *)error;
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error;
+- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)error;
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error;
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error;
+- (id)pairedFeatureAttributesWithError:(id *)error;
+- (int64_t)_featureSupportedStateForOnboardedV1CountryCodeSupportedState:(int64_t)state onboardedV2CountryCodeSupportedState:(int64_t)supportedState;
+- (void)featureAvailabilityExtensionDidUpdatePairedDeviceCapability:(id)capability;
+- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)availability;
+- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)available;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)featureAvailabilityProvidingDidUpdateSettings:(id)settings;
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion;
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion;
+- (void)resetOnboardingWithCompletion:(id)completion;
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5;
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion;
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDHRIrregularRhythmNotificationsFeatureAvailabilityManager
 
-- (HDHRIrregularRhythmNotificationsFeatureAvailabilityManager)initWithProfile:(id)a3 v2PairedFeaturePropertiesSyncManager:(id)a4 notificationSettingDefaults:(id)a5
+- (HDHRIrregularRhythmNotificationsFeatureAvailabilityManager)initWithProfile:(id)profile v2PairedFeaturePropertiesSyncManager:(id)manager notificationSettingDefaults:(id)defaults
 {
   v8 = MEMORY[0x277D107C0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  defaultsCopy = defaults;
+  managerCopy = manager;
+  profileCopy = profile;
   v12 = [v8 alloc];
-  v13 = [v11 daemon];
-  v14 = [v12 initWithDaemon:v13 remoteDisableCondition:*MEMORY[0x277CCCCE8] seedExpirationCondition:*MEMORY[0x277CCCCF8]];
+  daemon = [profileCopy daemon];
+  v14 = [v12 initWithDaemon:daemon remoteDisableCondition:*MEMORY[0x277CCCCE8] seedExpirationCondition:*MEMORY[0x277CCCCF8]];
 
-  v15 = [[HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager alloc] initWithProfile:v11 disableAndExpiryProvider:v14 notificationSettingDefaults:v9];
-  v16 = [MEMORY[0x277D106D8] hdhr_irregularRhythmNotificationsV2FeatureAvailabilityManagerWithProfile:v11 disableAndExpiryProvider:v14 pairedFeaturePropertiesSyncManager:v10];
+  v15 = [[HDHRIrregularRhythmNotificationsV1FeatureAvailabilityManager alloc] initWithProfile:profileCopy disableAndExpiryProvider:v14 notificationSettingDefaults:defaultsCopy];
+  v16 = [MEMORY[0x277D106D8] hdhr_irregularRhythmNotificationsV2FeatureAvailabilityManagerWithProfile:profileCopy disableAndExpiryProvider:v14 pairedFeaturePropertiesSyncManager:managerCopy];
 
   v17 = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)self initWithV1FeatureAvailabilityManager:v15 v2FeatureAvailabilityManager:v16];
   return v17;
 }
 
-- (HDHRIrregularRhythmNotificationsFeatureAvailabilityManager)initWithV1FeatureAvailabilityManager:(id)a3 v2FeatureAvailabilityManager:(id)a4
+- (HDHRIrregularRhythmNotificationsFeatureAvailabilityManager)initWithV1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  availabilityManagerCopy = availabilityManager;
   v17.receiver = self;
   v17.super_class = HDHRIrregularRhythmNotificationsFeatureAvailabilityManager;
   v9 = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_v1FeatureAvailabilityManager, a3);
-    objc_storeStrong(&v10->_v2FeatureAvailabilityManager, a4);
+    objc_storeStrong(&v9->_v1FeatureAvailabilityManager, manager);
+    objc_storeStrong(&v10->_v2FeatureAvailabilityManager, availabilityManager);
     v11 = objc_alloc(MEMORY[0x277CCD738]);
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
@@ -72,7 +72,7 @@
   return v10;
 }
 
-- (id)highestAvailableOnboardedAlgorithmVersionWithError:(id *)a3
+- (id)highestAvailableOnboardedAlgorithmVersionWithError:(id *)error
 {
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v19 = 0;
@@ -108,10 +108,10 @@
     v14 = v13;
     if (v14)
     {
-      if (a3)
+      if (error)
       {
         v15 = v14;
-        *a3 = v14;
+        *error = v14;
       }
 
       else
@@ -145,16 +145,16 @@ LABEL_19:
   return v16;
 }
 
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error
 {
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v24 = 0;
-  v7 = a3;
-  v8 = [(HDFeatureAvailabilityExtension *)v1FeatureAvailabilityManager canCompleteOnboardingForCountryCode:v7 error:&v24];
+  codeCopy = code;
+  v8 = [(HDFeatureAvailabilityExtension *)v1FeatureAvailabilityManager canCompleteOnboardingForCountryCode:codeCopy error:&v24];
   v9 = v24;
   v2FeatureAvailabilityManager = self->_v2FeatureAvailabilityManager;
   v23 = 0;
-  v11 = [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager canCompleteOnboardingForCountryCode:v7 error:&v23];
+  v11 = [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager canCompleteOnboardingForCountryCode:codeCopy error:&v23];
 
   v12 = v23;
   v13 = v12;
@@ -183,10 +183,10 @@ LABEL_19:
     v16 = v15;
     if (v16)
     {
-      if (a4)
+      if (error)
       {
         v17 = v16;
-        *a4 = v16;
+        *error = v16;
       }
 
       else
@@ -201,34 +201,34 @@ LABEL_19:
   else
   {
     v18 = MEMORY[0x277CCABB0];
-    v19 = [v8 BOOLValue];
-    if (v19)
+    bOOLValue = [v8 BOOLValue];
+    if (bOOLValue)
     {
-      v20 = 1;
+      bOOLValue2 = 1;
     }
 
     else
     {
-      v20 = [v11 BOOLValue];
+      bOOLValue2 = [v11 BOOLValue];
     }
 
-    v21 = [v18 numberWithInt:v20];
+    v21 = [v18 numberWithInt:bOOLValue2];
   }
 
   return v21;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v33 = 0;
-  v7 = a3;
-  v8 = [(HDFeatureAvailabilityExtension *)v1FeatureAvailabilityManager onboardingEligibilityForCountryCode:v7 error:&v33];
+  codeCopy = code;
+  v8 = [(HDFeatureAvailabilityExtension *)v1FeatureAvailabilityManager onboardingEligibilityForCountryCode:codeCopy error:&v33];
   v9 = v33;
   v2FeatureAvailabilityManager = self->_v2FeatureAvailabilityManager;
   v32 = 0;
-  v11 = [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager onboardingEligibilityForCountryCode:v7 error:&v32];
+  v11 = [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager onboardingEligibilityForCountryCode:codeCopy error:&v32];
 
   v12 = v32;
   v13 = v12;
@@ -248,16 +248,16 @@ LABEL_19:
     {
       if ([v8 ineligibilityReasons])
       {
-        v19 = [v8 ineligibilityReasons];
-        v20 = [v11 ineligibilityReasons] & v19;
+        ineligibilityReasons = [v8 ineligibilityReasons];
+        v20 = [v11 ineligibilityReasons] & ineligibilityReasons;
         if (v20)
         {
-          v21 = [v11 countryAvailabilityVersion];
-          v16 = [objc_alloc(MEMORY[0x277CCD3F8]) initWithIneligibilityReasons:v20 countryAvailabilityVersion:v21];
+          countryAvailabilityVersion = [v11 countryAvailabilityVersion];
+          v16 = [objc_alloc(MEMORY[0x277CCD3F8]) initWithIneligibilityReasons:v20 countryAvailabilityVersion:countryAvailabilityVersion];
 
 LABEL_23:
-          v24 = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)self featureIdentifier];
-          v18 = [v16 eligibilityRespectingOverridesForFeatureIdentifier:v24];
+          featureIdentifier = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)self featureIdentifier];
+          v18 = [v16 eligibilityRespectingOverridesForFeatureIdentifier:featureIdentifier];
 
           goto LABEL_24;
         }
@@ -269,14 +269,14 @@ LABEL_23:
           v27 = v23;
           v28 = objc_opt_class();
           v29 = v28;
-          v30 = [v8 ineligibilityReasonsDescription];
-          v31 = [v11 ineligibilityReasonsDescription];
+          ineligibilityReasonsDescription = [v8 ineligibilityReasonsDescription];
+          ineligibilityReasonsDescription2 = [v11 ineligibilityReasonsDescription];
           *buf = 138543874;
           v35 = v28;
           v36 = 2114;
-          v37 = v30;
+          v37 = ineligibilityReasonsDescription;
           v38 = 2114;
-          v39 = v31;
+          v39 = ineligibilityReasonsDescription2;
           _os_log_error_impl(&dword_229486000, v27, OS_LOG_TYPE_ERROR, "[%{public}@] No intersection of unavailability reasons for IRN1 and IRN2: %{public}@ (v1) | %{public}@ (v2)", buf, 0x20u);
         }
       }
@@ -306,11 +306,11 @@ LABEL_23:
   v16 = v15;
   if (v16)
   {
-    if (a4)
+    if (error)
     {
       v17 = v16;
       v18 = 0;
-      *a4 = v16;
+      *error = v16;
       goto LABEL_24;
     }
 
@@ -325,7 +325,7 @@ LABEL_24:
   return v18;
 }
 
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error
 {
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v19 = 0;
@@ -374,10 +374,10 @@ LABEL_24:
     v13 = v12;
     if (v13)
     {
-      if (a3)
+      if (error)
       {
         v14 = v13;
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -392,7 +392,7 @@ LABEL_24:
   return v16;
 }
 
-- (id)featureOnboardingRecordWithError:(id *)a3
+- (id)featureOnboardingRecordWithError:(id *)error
 {
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v19 = 0;
@@ -453,10 +453,10 @@ LABEL_24:
   v15 = v14;
   if (v15)
   {
-    if (a3)
+    if (error)
     {
       v16 = v15;
-      *a3 = v15;
+      *error = v15;
     }
 
     else
@@ -471,18 +471,18 @@ LABEL_20:
   return v13;
 }
 
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)self featureOnboardingRecordWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   v31[0] = 0;
   v31[1] = v31;
@@ -534,12 +534,12 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrentOnboardingVersionCompletedWithCompletion___block_invoke_3;
   block[3] = &unk_278660FD8;
-  v12 = v4;
+  v12 = completionCopy;
   v13 = v31;
   v14 = v23;
   v15 = v29;
   v16 = v21;
-  v10 = v4;
+  v10 = completionCopy;
   dispatch_group_notify(v9, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(v21, 8);
@@ -616,7 +616,7 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
   }
 }
 
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error
 {
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v22 = 0;
@@ -652,10 +652,10 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
     v14 = v13;
     if (v14)
     {
-      if (a3)
+      if (error)
       {
         v15 = v14;
-        *a3 = v14;
+        *error = v14;
       }
 
       else
@@ -670,24 +670,24 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
   else
   {
     v16 = MEMORY[0x277CCABB0];
-    v17 = [v6 BOOLValue];
-    if (v17)
+    bOOLValue = [v6 BOOLValue];
+    if (bOOLValue)
     {
-      v18 = 1;
+      bOOLValue2 = 1;
     }
 
     else
     {
-      v18 = [v9 BOOLValue];
+      bOOLValue2 = [v9 BOOLValue];
     }
 
-    v19 = [v16 numberWithInt:v18];
+    v19 = [v16 numberWithInt:bOOLValue2];
   }
 
   return v19;
 }
 
-- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)a3
+- (id)isFeatureCapabilitySupportedOnActivePairedDeviceWithError:(id *)error
 {
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v22 = 0;
@@ -723,10 +723,10 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
     v14 = v13;
     if (v14)
     {
-      if (a3)
+      if (error)
       {
         v15 = v14;
-        *a3 = v14;
+        *error = v14;
       }
 
       else
@@ -741,24 +741,24 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
   else
   {
     v16 = MEMORY[0x277CCABB0];
-    v17 = [v6 BOOLValue];
-    if (v17)
+    bOOLValue = [v6 BOOLValue];
+    if (bOOLValue)
     {
-      v18 = 1;
+      bOOLValue2 = 1;
     }
 
     else
     {
-      v18 = [v9 BOOLValue];
+      bOOLValue2 = [v9 BOOLValue];
     }
 
-    v19 = [v16 numberWithInt:v18];
+    v19 = [v16 numberWithInt:bOOLValue2];
   }
 
   return v19;
 }
 
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error
 {
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v19 = 0;
@@ -819,10 +819,10 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
     v13 = v12;
     if (v13)
     {
-      if (a3)
+      if (error)
       {
         v14 = v13;
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -837,15 +837,15 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
   return v16;
 }
 
-- (int64_t)_featureSupportedStateForOnboardedV1CountryCodeSupportedState:(int64_t)a3 onboardedV2CountryCodeSupportedState:(int64_t)a4
+- (int64_t)_featureSupportedStateForOnboardedV1CountryCodeSupportedState:(int64_t)state onboardedV2CountryCodeSupportedState:(int64_t)supportedState
 {
   result = 5;
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
-      v5 = a4 - 1;
-      if ((a4 - 1) < 5)
+      v5 = supportedState - 1;
+      if ((supportedState - 1) < 5)
       {
         v6 = &unk_2294F7888;
         return v6[v5];
@@ -854,10 +854,10 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
       return 5;
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
-      v5 = a4 - 1;
-      if ((a4 - 1) < 5)
+      v5 = supportedState - 1;
+      if ((supportedState - 1) < 5)
       {
         v6 = &unk_2294F78B0;
         return v6[v5];
@@ -867,23 +867,23 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
     }
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
-    if ((a4 - 1) >= 5)
+    if ((supportedState - 1) >= 5)
     {
       return 5;
     }
 
     else
     {
-      return a4;
+      return supportedState;
     }
   }
 
-  else if (a3 == 2)
+  else if (state == 2)
   {
-    v5 = a4 - 1;
-    if ((a4 - 1) < 5)
+    v5 = supportedState - 1;
+    if ((supportedState - 1) < 5)
     {
       v6 = &unk_2294F7860;
       return v6[v5];
@@ -895,7 +895,7 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
   return result;
 }
 
-- (id)pairedFeatureAttributesWithError:(id *)a3
+- (id)pairedFeatureAttributesWithError:(id *)error
 {
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v23 = 0;
@@ -931,10 +931,10 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
     v14 = v13;
     if (v14)
     {
-      if (a3)
+      if (error)
       {
         v15 = v14;
-        *a3 = v14;
+        *error = v14;
       }
 
       else
@@ -959,7 +959,7 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
         v19 = self->_v1FeatureAvailabilityManager;
       }
 
-      v20 = [(HDFeatureAvailabilityExtension *)v19 pairedFeatureAttributesWithError:a3];
+      v20 = [(HDFeatureAvailabilityExtension *)v19 pairedFeatureAttributesWithError:error];
       goto LABEL_26;
     }
 
@@ -973,10 +973,10 @@ void __112__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_isCurrent
     v14 = [MEMORY[0x277CCA9B8] hk_error:11 description:@"Unable to determine paired feature attributes for IRN without onboarding completion"];
     if (v14)
     {
-      if (a3)
+      if (error)
       {
         v18 = v14;
-        *a3 = v14;
+        *error = v14;
       }
 
       else
@@ -992,20 +992,20 @@ LABEL_26:
   return v20;
 }
 
-- (id)featureAvailabilityRequirementsWithError:(id *)a3
+- (id)featureAvailabilityRequirementsWithError:(id *)error
 {
-  v3 = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)self featureIdentifier];
+  featureIdentifier = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)self featureIdentifier];
   v4 = HKHRIrregularRhythmNotificationsRequirementsWithFeatureIdentifier();
 
   return v4;
 }
 
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  codeCopy = code;
+  dateCopy = date;
+  settingsCopy = settings;
+  completionCopy = completion;
   v16 = dispatch_group_create();
   v54[0] = 0;
   v54[1] = v54;
@@ -1027,7 +1027,7 @@ LABEL_26:
   v51 = v52;
   v18 = v16;
   v49 = v18;
-  [(HDFeatureAvailabilityExtension *)v1FeatureAvailabilityManager setCurrentOnboardingVersionCompletedForCountryCode:v12 countryCodeProvenance:a4 date:v13 settings:v14 completion:v48];
+  [(HDFeatureAvailabilityExtension *)v1FeatureAvailabilityManager setCurrentOnboardingVersionCompletedForCountryCode:codeCopy countryCodeProvenance:provenance date:dateCopy settings:settingsCopy completion:v48];
   v46[0] = 0;
   v46[1] = v46;
   v46[2] = 0x2020000000;
@@ -1040,7 +1040,7 @@ LABEL_26:
   v45 = 0;
   v2FeatureAvailabilityManager = self->_v2FeatureAvailabilityManager;
   v39 = 0;
-  v20 = [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager onboardingEligibilityForCountryCode:v12 error:&v39];
+  v20 = [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager onboardingEligibilityForCountryCode:codeCopy error:&v39];
   v21 = v39;
   if (v20)
   {
@@ -1059,7 +1059,7 @@ LABEL_26:
     v37 = v46;
     v38 = &v40;
     v36 = v18;
-    [(HDFeatureAvailabilityExtension *)v22 setCurrentOnboardingVersionCompletedForCountryCode:v12 countryCodeProvenance:a4 date:v13 settings:v14 completion:v35];
+    [(HDFeatureAvailabilityExtension *)v22 setCurrentOnboardingVersionCompletedForCountryCode:codeCopy countryCodeProvenance:provenance date:dateCopy settings:settingsCopy completion:v35];
     v23 = v36;
   }
 
@@ -1083,13 +1083,13 @@ LABEL_9:
   v28[1] = 3221225472;
   v28[2] = __160__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_setCurrentOnboardingVersionCompletedForCountryCode_countryCodeProvenance_date_settings_completion___block_invoke_2;
   v28[3] = &unk_278661028;
-  v29 = v15;
+  v29 = completionCopy;
   v30 = v54;
   v31 = v46;
   v32 = v52;
   v33 = &v40;
   v34 = v26;
-  v27 = v15;
+  v27 = completionCopy;
   dispatch_group_notify(v18, MEMORY[0x277D85CD0], v28);
 
   _Block_object_dispose(&v40, 8);
@@ -1174,7 +1174,7 @@ LABEL_5:
   return v23();
 }
 
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5
 {
   v5 = a5;
   _HKInitializeLogging();
@@ -1188,10 +1188,10 @@ LABEL_5:
   v5[2](v5, 0, v7);
 }
 
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  keyCopy = key;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
   {
@@ -1199,13 +1199,13 @@ LABEL_5:
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot set unknown data setting for IRN"];
-  v7[2](v7, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  keyCopy = key;
+  completionCopy = completion;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
   {
@@ -1213,15 +1213,15 @@ LABEL_5:
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Cannot set unknown string setting for IRN"];
-  v7[2](v7, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  keyCopy = key;
+  completionCopy = completion;
   v11 = dispatch_group_create();
   v1FeatureAvailabilityManager = self->_v1FeatureAvailabilityManager;
   v58 = 0;
@@ -1251,7 +1251,7 @@ LABEL_5:
       v52 = v56;
       v53 = v54;
       v51 = v11;
-      [(HDFeatureAvailabilityExtension *)v15 setFeatureSettingNumber:v8 forKey:v9 completion:v50];
+      [(HDFeatureAvailabilityExtension *)v15 setFeatureSettingNumber:numberCopy forKey:keyCopy completion:v50];
     }
   }
 
@@ -1294,7 +1294,7 @@ LABEL_5:
       v43 = v47;
       v44 = v45;
       v42 = v11;
-      [(HDFeatureAvailabilityExtension *)v21 setFeatureSettingNumber:v8 forKey:v9 completion:v41];
+      [(HDFeatureAvailabilityExtension *)v21 setFeatureSettingNumber:numberCopy forKey:keyCopy completion:v41];
     }
   }
 
@@ -1321,11 +1321,11 @@ LABEL_5:
   v38 = v47;
   v39 = v54;
   v40 = v45;
-  v35 = self;
-  v36 = v10;
+  selfCopy = self;
+  v36 = completionCopy;
   v24 = v20;
   v25 = v14;
-  v26 = v10;
+  v26 = completionCopy;
   v27 = v19;
   v28 = v13;
   dispatch_group_notify(v11, MEMORY[0x277D85CD0], v30);
@@ -1431,10 +1431,10 @@ LABEL_15:
   v9();
 }
 
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v8 = dispatch_group_create();
   v34[0] = 0;
   v34[1] = v34;
@@ -1457,7 +1457,7 @@ LABEL_15:
   v31 = v32;
   v10 = v8;
   v29 = v10;
-  [(HDFeatureAvailabilityExtension *)v1FeatureAvailabilityManager removeFeatureSettingValueForKey:v6 completion:v28];
+  [(HDFeatureAvailabilityExtension *)v1FeatureAvailabilityManager removeFeatureSettingValueForKey:keyCopy completion:v28];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -1479,17 +1479,17 @@ LABEL_15:
   v23 = v24;
   v12 = v10;
   v21 = v12;
-  [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager removeFeatureSettingValueForKey:v6 completion:v20];
+  [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager removeFeatureSettingValueForKey:keyCopy completion:v20];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __105__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_removeFeatureSettingValueForKey_completion___block_invoke_326;
   block[3] = &unk_278660FD8;
-  v15 = v7;
+  v15 = completionCopy;
   v16 = v34;
   v17 = v26;
   v18 = v32;
   v19 = v24;
-  v13 = v7;
+  v13 = completionCopy;
   dispatch_group_notify(v12, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(v24, 8);
@@ -1559,9 +1559,9 @@ uint64_t __105__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_remov
   return (*(a1[4] + 16))(a1[4], 0, v2);
 }
 
-- (void)resetOnboardingWithCompletion:(id)a3
+- (void)resetOnboardingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   v31[0] = 0;
   v31[1] = v31;
@@ -1609,12 +1609,12 @@ uint64_t __105__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_remov
   block[1] = 3221225472;
   block[2] = __92__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_resetOnboardingWithCompletion___block_invoke_3;
   block[3] = &unk_278660FD8;
-  v12 = v4;
+  v12 = completionCopy;
   v13 = v31;
   v14 = v23;
   v15 = v29;
   v16 = v21;
-  v10 = v4;
+  v10 = completionCopy;
   dispatch_group_notify(v9, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(v21, 8);
@@ -1656,7 +1656,7 @@ uint64_t __92__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_resetO
   return (*(a1[4] + 16))(a1[4], 0, v2);
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1664,7 +1664,7 @@ uint64_t __92__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_resetO
   v5[2] = __85__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_registerObserver_queue___block_invoke;
   v5[3] = &unk_27865FD90;
   v5[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKObserverSet *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
 void __85__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_registerObserver_queue___block_invoke(uint64_t a1)
@@ -1675,7 +1675,7 @@ void __85__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_registerOb
   [*(*(a1 + 32) + 16) registerObserver:*(a1 + 32) queue:v3];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1683,7 +1683,7 @@ void __85__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_registerOb
   v4[2] = __81__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_unregisterObserver___block_invoke;
   v4[3] = &unk_27865FD90;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 uint64_t __81__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_unregisterObserver___block_invoke(uint64_t a1)
@@ -1694,7 +1694,7 @@ uint64_t __81__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_unregi
   return [v2 unregisterObserver:?];
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1705,7 +1705,7 @@ uint64_t __81__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_unregi
   [(HKObserverSet *)observers notifyObservers:v4];
 }
 
-- (void)featureAvailabilityProvidingDidUpdateSettings:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateSettings:(id)settings
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1725,7 +1725,7 @@ void __108__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_featureAv
   }
 }
 
-- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)a3
+- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)availability
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1745,7 +1745,7 @@ void __118__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_featureAv
   }
 }
 
-- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)a3
+- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)available
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1765,7 +1765,7 @@ void __133__HDHRIrregularRhythmNotificationsFeatureAvailabilityManager_featureAv
   }
 }
 
-- (void)featureAvailabilityExtensionDidUpdatePairedDeviceCapability:(id)a3
+- (void)featureAvailabilityExtensionDidUpdatePairedDeviceCapability:(id)capability
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];

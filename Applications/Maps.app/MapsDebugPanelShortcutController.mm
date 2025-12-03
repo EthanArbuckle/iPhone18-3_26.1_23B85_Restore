@@ -1,15 +1,15 @@
 @interface MapsDebugPanelShortcutController
 + (MapsDebugPanelShortcutController)sharedInstance;
 - (NSArray)shortcuts;
-- (void)addShortcut:(id)a3 completion:(id)a4;
-- (void)addUpdateCompletionHandler:(id)a3;
-- (void)removeShortcut:(id)a3 completion:(id)a4;
-- (void)setShortcuts:(id)a3;
+- (void)addShortcut:(id)shortcut completion:(id)completion;
+- (void)addUpdateCompletionHandler:(id)handler;
+- (void)removeShortcut:(id)shortcut completion:(id)completion;
+- (void)setShortcuts:(id)shortcuts;
 @end
 
 @implementation MapsDebugPanelShortcutController
 
-- (void)addUpdateCompletionHandler:(id)a3
+- (void)addUpdateCompletionHandler:(id)handler
 {
   v8 = 0;
   v9 = &v8;
@@ -17,7 +17,7 @@
   v11 = sub_100815F14;
   v12 = sub_100815F24;
   v13 = 0;
-  v7 = a3;
+  handlerCopy = handler;
   v4 = _GEOConfigAddBlockListenerForKey();
   v5 = v9[5];
   v9[5] = v4;
@@ -28,41 +28,41 @@
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)removeShortcut:(id)a3 completion:(id)a4
+- (void)removeShortcut:(id)shortcut completion:(id)completion
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(MapsDebugPanelShortcutController *)self shortcuts];
-  v8 = [v7 mutableCopy];
+  completionCopy = completion;
+  shortcutCopy = shortcut;
+  shortcuts = [(MapsDebugPanelShortcutController *)self shortcuts];
+  v8 = [shortcuts mutableCopy];
 
-  [v8 removeObject:v6];
-  if (v9)
+  [v8 removeObject:shortcutCopy];
+  if (completionCopy)
   {
-    [(MapsDebugPanelShortcutController *)self addUpdateCompletionHandler:v9];
+    [(MapsDebugPanelShortcutController *)self addUpdateCompletionHandler:completionCopy];
   }
 
   [(MapsDebugPanelShortcutController *)self setShortcuts:v8];
 }
 
-- (void)addShortcut:(id)a3 completion:(id)a4
+- (void)addShortcut:(id)shortcut completion:(id)completion
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(MapsDebugPanelShortcutController *)self shortcuts];
-  v8 = [v7 mutableCopy];
+  completionCopy = completion;
+  shortcutCopy = shortcut;
+  shortcuts = [(MapsDebugPanelShortcutController *)self shortcuts];
+  v8 = [shortcuts mutableCopy];
 
-  [v8 addObject:v6];
-  if (v9)
+  [v8 addObject:shortcutCopy];
+  if (completionCopy)
   {
-    [(MapsDebugPanelShortcutController *)self addUpdateCompletionHandler:v9];
+    [(MapsDebugPanelShortcutController *)self addUpdateCompletionHandler:completionCopy];
   }
 
   [(MapsDebugPanelShortcutController *)self setShortcuts:v8];
 }
 
-- (void)setShortcuts:(id)a3
+- (void)setShortcuts:(id)shortcuts
 {
-  v3 = sub_100021DB0(a3, &stru_10162B480);
+  v3 = sub_100021DB0(shortcuts, &stru_10162B480);
   GEOConfigSetArray();
 }
 

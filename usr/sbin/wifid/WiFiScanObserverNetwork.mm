@@ -1,6 +1,6 @@
 @interface WiFiScanObserverNetwork
 - (NSString)description;
-- (WiFiScanObserverNetwork)initWithWiFiNetworkRef:(__WiFiNetwork *)a3;
+- (WiFiScanObserverNetwork)initWithWiFiNetworkRef:(__WiFiNetwork *)ref;
 - (void)dealloc;
 @end
 
@@ -24,30 +24,30 @@
   [(WiFiScanObserverNetwork *)&v3 dealloc];
 }
 
-- (WiFiScanObserverNetwork)initWithWiFiNetworkRef:(__WiFiNetwork *)a3
+- (WiFiScanObserverNetwork)initWithWiFiNetworkRef:(__WiFiNetwork *)ref
 {
   v43.receiver = self;
   v43.super_class = WiFiScanObserverNetwork;
   v4 = [(WiFiScanObserverNetwork *)&v43 init];
   result = 0;
-  if (a3)
+  if (ref)
   {
     if (v4)
     {
-      result = sub_10000A878(a3);
+      result = sub_10000A878(ref);
       v4->_SSID = &result->super.isa;
       if (result)
       {
         v6 = result;
-        v7 = sub_100013F70(a3);
+        v7 = sub_100013F70(ref);
         v8 = sub_100035044(v7);
         if (v8)
         {
           v4->_BSSID = v8;
         }
 
-        v4->_scanProperties = sub_100017C00(a3);
-        v9 = sub_100035140(a3);
+        v4->_scanProperties = sub_100017C00(ref);
+        v9 = sub_100035140(ref);
         if (v9)
         {
           v10 = v9;
@@ -108,7 +108,7 @@
           }
         }
 
-        v4->_RSSI = sub_100035154(a3);
+        v4->_RSSI = sub_100035154(ref);
         return v4;
       }
     }

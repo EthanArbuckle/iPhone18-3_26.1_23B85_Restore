@@ -1,39 +1,39 @@
 @interface _CDSleepPredictor
-+ (id)array:(id)a3 filter:(id)a4;
-+ (id)array:(id)a3 map:(id)a4;
-+ (id)array:(id)a3 reduce:(id)a4 withInitialValue:(id)a5;
-+ (id)arrayWithObject:(id)a3 repeated:(unint64_t)a4;
-+ (id)fetchDeviceInUseDateIntervalsFromStore:(id)a3 whichIntersectInterval:(id)a4;
-+ (id)findAllSleepPeriodsInDayStarting:(id)a3 FromActivityProbabilities:(id)a4;
-+ (id)findSleepPeriodInDayStarting:(id)a3 FromActivityProbabilities:(id)a4;
-+ (id)gatherBitmapHistoryFromStore:(id)a3 forPeriod:(id)a4;
-+ (id)generateActivityBitmapFor:(id)a3 unlockedIntervals:(id)a4 eventsAvailableInterval:(id)a5;
-+ (id)indexSetFromUnionOf:(id)a3;
++ (id)array:(id)array filter:(id)filter;
++ (id)array:(id)array map:(id)map;
++ (id)array:(id)array reduce:(id)reduce withInitialValue:(id)value;
++ (id)arrayWithObject:(id)object repeated:(unint64_t)repeated;
++ (id)fetchDeviceInUseDateIntervalsFromStore:(id)store whichIntersectInterval:(id)interval;
++ (id)findAllSleepPeriodsInDayStarting:(id)starting FromActivityProbabilities:(id)probabilities;
++ (id)findSleepPeriodInDayStarting:(id)starting FromActivityProbabilities:(id)probabilities;
++ (id)gatherBitmapHistoryFromStore:(id)store forPeriod:(id)period;
++ (id)generateActivityBitmapFor:(id)for unlockedIntervals:(id)intervals eventsAvailableInterval:(id)interval;
++ (id)indexSetFromUnionOf:(id)of;
 + (id)predicateForInUseVaue;
-+ (void)mutableArray:(id)a3 replaceObjectsAtIndexes:(id)a4 withObjectFromBlock:(id)a5;
++ (void)mutableArray:(id)array replaceObjectsAtIndexes:(id)indexes withObjectFromBlock:(id)block;
 @end
 
 @implementation _CDSleepPredictor
 
-+ (id)array:(id)a3 reduce:(id)a4 withInitialValue:(id)a5
++ (id)array:(id)array reduce:(id)reduce withInitialValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  arrayCopy = array;
+  reduceCopy = reduce;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__5;
   v20 = __Block_byref_object_dispose__5;
-  v9 = a5;
-  v21 = v9;
+  valueCopy = value;
+  v21 = valueCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51___CDSleepPredictor_array_reduce_withInitialValue___block_invoke;
   v13[3] = &unk_1E7367F48;
   v15 = &v16;
-  v10 = v8;
+  v10 = reduceCopy;
   v14 = v10;
-  [v7 enumerateObjectsUsingBlock:v13];
+  [arrayCopy enumerateObjectsUsingBlock:v13];
   v11 = v17[5];
 
   _Block_object_dispose(&v16, 8);
@@ -41,29 +41,29 @@
   return v11;
 }
 
-+ (id)indexSetFromUnionOf:(id)a3
++ (id)indexSetFromUnionOf:(id)of
 {
   v4 = MEMORY[0x1E696AD50];
-  v5 = a3;
-  v6 = [v4 indexSet];
-  v7 = [a1 array:v5 reduce:&__block_literal_global_12 withInitialValue:v6];
+  ofCopy = of;
+  indexSet = [v4 indexSet];
+  v7 = [self array:ofCopy reduce:&__block_literal_global_12 withInitialValue:indexSet];
 
   return v7;
 }
 
-+ (id)arrayWithObject:(id)a3 repeated:(unint64_t)a4
++ (id)arrayWithObject:(id)object repeated:(unint64_t)repeated
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  if (a4)
+  objectCopy = object;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:repeated];
+  if (repeated)
   {
     v7 = 0;
     do
     {
-      [v6 setObject:v5 atIndexedSubscript:v7++];
+      [v6 setObject:objectCopy atIndexedSubscript:v7++];
     }
 
-    while (a4 != v7);
+    while (repeated != v7);
   }
 
   v8 = [v6 copy];
@@ -71,21 +71,21 @@
   return v8;
 }
 
-+ (id)array:(id)a3 map:(id)a4
++ (id)array:(id)array map:(id)map
 {
-  v5 = a4;
+  mapCopy = map;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  arrayCopy = array;
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __31___CDSleepPredictor_array_map___block_invoke;
   v14[3] = &unk_1E7367F90;
   v9 = v8;
   v15 = v9;
-  v16 = v5;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:v14];
+  v16 = mapCopy;
+  v10 = mapCopy;
+  [arrayCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -93,46 +93,46 @@
   return v9;
 }
 
-+ (id)array:(id)a3 filter:(id)a4
++ (id)array:(id)array filter:(id)filter
 {
-  v5 = a4;
+  filterCopy = filter;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __34___CDSleepPredictor_array_filter___block_invoke;
   v11[3] = &unk_1E7367FB8;
-  v12 = v5;
-  v6 = v5;
-  v7 = a3;
-  v8 = [v7 indexesOfObjectsPassingTest:v11];
-  v9 = [v7 objectsAtIndexes:v8];
+  v12 = filterCopy;
+  v6 = filterCopy;
+  arrayCopy = array;
+  v8 = [arrayCopy indexesOfObjectsPassingTest:v11];
+  v9 = [arrayCopy objectsAtIndexes:v8];
 
   return v9;
 }
 
-+ (void)mutableArray:(id)a3 replaceObjectsAtIndexes:(id)a4 withObjectFromBlock:(id)a5
++ (void)mutableArray:(id)array replaceObjectsAtIndexes:(id)indexes withObjectFromBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  arrayCopy = array;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78___CDSleepPredictor_mutableArray_replaceObjectsAtIndexes_withObjectFromBlock___block_invoke;
   v11[3] = &unk_1E7367FE0;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
-  [a4 enumerateIndexesUsingBlock:v11];
+  v12 = arrayCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = arrayCopy;
+  [indexes enumerateIndexesUsingBlock:v11];
 }
 
-+ (id)generateActivityBitmapFor:(id)a3 unlockedIntervals:(id)a4 eventsAvailableInterval:(id)a5
++ (id)generateActivityBitmapFor:(id)for unlockedIntervals:(id)intervals eventsAvailableInterval:(id)interval
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 duration];
+  forCopy = for;
+  intervalsCopy = intervals;
+  intervalCopy = interval;
+  [forCopy duration];
   v12 = (v11 / 900.0);
   v13 = [MEMORY[0x1E696AD98] numberWithInt:0];
-  v14 = [a1 arrayWithObject:v13 repeated:v12];
+  v14 = [self arrayWithObject:v13 repeated:v12];
 
   v31 = v14;
   v15 = [v14 mutableCopy];
@@ -140,7 +140,7 @@
   v38[1] = 3221225472;
   v38[2] = __89___CDSleepPredictor_generateActivityBitmapFor_unlockedIntervals_eventsAvailableInterval___block_invoke;
   v38[3] = &unk_1E7368008;
-  v16 = v8;
+  v16 = forCopy;
   v39 = v16;
   v40 = v12;
   v17 = MEMORY[0x193B00C50](v38);
@@ -153,15 +153,15 @@
   v30 = v16;
   v35 = v30;
   v37 = v12;
-  v33 = v9;
-  v29 = [a1 array:v9 map:v34];
-  v28 = [a1 indexSetFromUnionOf:?];
-  [a1 mutableArray:v15 replaceObjectsAtIndexes:? withObjectFromBlock:?];
-  v19 = [v10 startDate];
-  v32 = v10;
-  v20 = [v10 endDate];
-  v21 = (*(v18 + 2))(v18, v19);
-  v22 = (*(v18 + 2))(v18, v20);
+  v33 = intervalsCopy;
+  v29 = [self array:intervalsCopy map:v34];
+  v28 = [self indexSetFromUnionOf:?];
+  [self mutableArray:v15 replaceObjectsAtIndexes:? withObjectFromBlock:?];
+  startDate = [intervalCopy startDate];
+  v32 = intervalCopy;
+  endDate = [intervalCopy endDate];
+  v21 = (*(v18 + 2))(v18, startDate);
+  v22 = (*(v18 + 2))(v18, endDate);
   if (v21)
   {
     for (i = 0; i != v21; ++i)
@@ -196,11 +196,11 @@
   return v3;
 }
 
-+ (id)fetchDeviceInUseDateIntervalsFromStore:(id)a3 whichIntersectInterval:(id)a4
++ (id)fetchDeviceInUseDateIntervalsFromStore:(id)store whichIntersectInterval:(id)interval
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  intervalCopy = interval;
   v7 = objc_alloc_init(_DKEventQuery);
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_CDSleepPredictor.m"];
   v9 = [v8 stringByAppendingFormat:@":%d", 166];
@@ -219,9 +219,9 @@
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
   [(_DKEventQuery *)v7 setSortDescriptors:v13];
 
-  v14 = [v6 startDate];
-  v15 = [v6 endDate];
-  v16 = [_DKQuery predicateForEventsIntersectingDateRangeFrom:v14 to:v15];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  v16 = [_DKQuery predicateForEventsIntersectingDateRangeFrom:startDate to:endDate];
 
   v17 = +[_CDSleepPredictor predicateForInUseVaue];
   v18 = MEMORY[0x1E696AB28];
@@ -239,7 +239,7 @@
   }
 
   v28 = 0;
-  v22 = [v5 executeQuery:v7 error:&v28];
+  v22 = [storeCopy executeQuery:v7 error:&v28];
   v23 = v28;
   if (v23)
   {
@@ -262,21 +262,21 @@
   return v25;
 }
 
-+ (id)gatherBitmapHistoryFromStore:(id)a3 forPeriod:(id)a4
++ (id)gatherBitmapHistoryFromStore:(id)store forPeriod:(id)period
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  periodCopy = period;
   v8 = +[_DKSystemEventStreams deviceInUseProxyStream];
-  v9 = [a1 fetchFirstEventDateIntervalFromStore:v6 forStream:v8 sortDateAscending:1 intersectingInterval:v7];
+  v9 = [self fetchFirstEventDateIntervalFromStore:storeCopy forStream:v8 sortDateAscending:1 intersectingInterval:periodCopy];
 
   if (v9)
   {
     v10 = +[_DKSystemEventStreams deviceInUseProxyStream];
-    v11 = [a1 fetchFirstEventDateIntervalFromStore:v6 forStream:v10 sortDateAscending:0 intersectingInterval:v7];
+    v11 = [self fetchFirstEventDateIntervalFromStore:storeCopy forStream:v10 sortDateAscending:0 intersectingInterval:periodCopy];
 
     if (v11)
     {
-      v12 = [a1 fetchDeviceInUseDateIntervalsFromStore:v6 whichIntersectInterval:v7];
+      v12 = [self fetchDeviceInUseDateIntervalsFromStore:storeCopy whichIntersectInterval:periodCopy];
       v13 = +[_CDLogging knowledgeChannel];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -284,11 +284,11 @@
       }
 
       v14 = objc_alloc(MEMORY[0x1E696AB80]);
-      v15 = [v9 startDate];
-      v16 = [v11 endDate];
-      v17 = [v14 initWithStartDate:v15 endDate:v16];
+      startDate = [v9 startDate];
+      endDate = [v11 endDate];
+      v17 = [v14 initWithStartDate:startDate endDate:endDate];
 
-      v18 = [a1 generateActivityBitmapFor:v7 unlockedIntervals:v12 eventsAvailableInterval:v17];
+      v18 = [self generateActivityBitmapFor:periodCopy unlockedIntervals:v12 eventsAvailableInterval:v17];
     }
 
     else
@@ -317,9 +317,9 @@
   return v18;
 }
 
-+ (id)findSleepPeriodInDayStarting:(id)a3 FromActivityProbabilities:(id)a4
++ (id)findSleepPeriodInDayStarting:(id)starting FromActivityProbabilities:(id)probabilities
 {
-  v4 = [a1 findAllSleepPeriodsInDayStarting:a3 FromActivityProbabilities:a4];
+  v4 = [self findAllSleepPeriodsInDayStarting:starting FromActivityProbabilities:probabilities];
   if (![v4 count])
   {
     v8 = +[_CDLogging knowledgeChannel];
@@ -363,28 +363,28 @@ LABEL_10:
   return v11;
 }
 
-+ (id)findAllSleepPeriodsInDayStarting:(id)a3 FromActivityProbabilities:(id)a4
++ (id)findAllSleepPeriodsInDayStarting:(id)starting FromActivityProbabilities:(id)probabilities
 {
-  v6 = a3;
-  v7 = [a1 array:a4 map:&__block_literal_global_36];
+  startingCopy = starting;
+  v7 = [self array:probabilities map:&__block_literal_global_36];
   v8 = [v7 indexesOfObjectsPassingTest:&__block_literal_global_39];
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __80___CDSleepPredictor_findAllSleepPeriodsInDayStarting_FromActivityProbabilities___block_invoke_3;
   v21[3] = &unk_1E73680B8;
-  v22 = v9;
-  v10 = v9;
+  v22 = array;
+  v10 = array;
   [v8 enumerateRangesUsingBlock:v21];
   v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_44];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __80___CDSleepPredictor_findAllSleepPeriodsInDayStarting_FromActivityProbabilities___block_invoke_5;
   v19 = &unk_1E7368100;
-  v20 = v6;
-  v12 = v6;
+  v20 = startingCopy;
+  v12 = startingCopy;
   v13 = MEMORY[0x193B00C50](&v16);
-  v14 = [a1 array:v11 map:{v13, v16, v17, v18, v19}];
+  v14 = [self array:v11 map:{v13, v16, v17, v18, v19}];
 
   return v14;
 }

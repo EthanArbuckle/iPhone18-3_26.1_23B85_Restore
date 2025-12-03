@@ -1,10 +1,10 @@
 @interface MainLibrarySectionController
-- (MainLibrarySectionController)initWithConfiguration:(id)a3;
+- (MainLibrarySectionController)initWithConfiguration:(id)configuration;
 - (id)headerItemController;
 - (id)itemControllers;
-- (id)libraryItemControllerForCollectionType:(id)a3;
-- (id)viewControllerForCollectionType:(id)a3;
-- (void)registerItemsWithRegistration:(id)a3;
+- (id)libraryItemControllerForCollectionType:(id)type;
+- (id)viewControllerForCollectionType:(id)type;
+- (void)registerItemsWithRegistration:(id)registration;
 @end
 
 @implementation MainLibrarySectionController
@@ -15,8 +15,8 @@
   if (!headerItemController)
   {
     v4 = [HeaderLibraryItemController alloc];
-    v5 = [(LibrarySectionController *)self configuration];
-    v6 = [(HeaderLibraryItemController *)v4 initWithConfiguration:v5 headerType:2];
+    configuration = [(LibrarySectionController *)self configuration];
+    v6 = [(HeaderLibraryItemController *)v4 initWithConfiguration:configuration headerType:2];
     v7 = self->_headerItemController;
     self->_headerItemController = v6;
 
@@ -28,46 +28,46 @@
 
 - (id)itemControllers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [v3 safari_addObjectUnlessNil:self->_bookmarksItemController];
-  [v3 safari_addObjectUnlessNil:self->_readingListBookmarksItemController];
-  [v3 safari_addObjectUnlessNil:self->_bookmarksFolderItemController];
-  [v3 safari_addObjectUnlessNil:self->_readingListController];
-  [v3 safari_addObjectUnlessNil:self->_historyController];
-  [v3 safari_addObjectUnlessNil:self->_sharedWithYouItemController];
+  array = [MEMORY[0x277CBEB18] array];
+  [array safari_addObjectUnlessNil:self->_bookmarksItemController];
+  [array safari_addObjectUnlessNil:self->_readingListBookmarksItemController];
+  [array safari_addObjectUnlessNil:self->_bookmarksFolderItemController];
+  [array safari_addObjectUnlessNil:self->_readingListController];
+  [array safari_addObjectUnlessNil:self->_historyController];
+  [array safari_addObjectUnlessNil:self->_sharedWithYouItemController];
 
-  return v3;
+  return array;
 }
 
-- (MainLibrarySectionController)initWithConfiguration:(id)a3
+- (MainLibrarySectionController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v30.receiver = self;
   v30.super_class = MainLibrarySectionController;
-  v5 = [(LibrarySectionController *)&v30 initWithConfiguration:v4];
+  v5 = [(LibrarySectionController *)&v30 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277D7B5A8] safariBookmarkCollection];
-    v7 = [[HistoryLibraryItemController alloc] initWithConfiguration:v4];
+    safariBookmarkCollection = [MEMORY[0x277D7B5A8] safariBookmarkCollection];
+    v7 = [[HistoryLibraryItemController alloc] initWithConfiguration:configurationCopy];
     historyController = v5->_historyController;
     v5->_historyController = v7;
 
     if ([MEMORY[0x277D49A08] isSaveForLaterEnabled])
     {
       v9 = [BookmarksLibraryItemController alloc];
-      v10 = [v6 rootBookmark];
-      v11 = [(BookmarksLibraryItemController *)v9 initWithConfiguration:v4 folder:v10 collection:v6];
+      rootBookmark = [safariBookmarkCollection rootBookmark];
+      v11 = [(BookmarksLibraryItemController *)v9 initWithConfiguration:configurationCopy folder:rootBookmark collection:safariBookmarkCollection];
       bookmarksItemController = v5->_bookmarksItemController;
       v5->_bookmarksItemController = v11;
 
-      v13 = [BookmarksLibraryItemController itemControllerForReadingListWithConfiguration:v4];
+      v13 = [BookmarksLibraryItemController itemControllerForReadingListWithConfiguration:configurationCopy];
       readingListBookmarksItemController = v5->_readingListBookmarksItemController;
       v5->_readingListBookmarksItemController = v13;
     }
 
     else
     {
-      v15 = [[ReadingListLibraryItemController alloc] initWithConfiguration:v4];
+      v15 = [[ReadingListLibraryItemController alloc] initWithConfiguration:configurationCopy];
       readingListController = v5->_readingListController;
       v5->_readingListController = v15;
 
@@ -76,27 +76,27 @@
       v18 = dispatch_queue_create([v17 UTF8String], 0);
 
       v19 = [BookmarkFolderLibraryItemController alloc];
-      v20 = [v6 rootBookmark];
-      v21 = [(BookmarkFolderLibraryItemController *)v19 initWithConfiguration:v4 folder:v20];
+      rootBookmark2 = [safariBookmarkCollection rootBookmark];
+      v21 = [(BookmarkFolderLibraryItemController *)v19 initWithConfiguration:configurationCopy folder:rootBookmark2];
       bookmarksFolderItemController = v5->_bookmarksFolderItemController;
       v5->_bookmarksFolderItemController = v21;
 
-      [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setCollection:v6];
+      [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setCollection:safariBookmarkCollection];
       [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setBookmarkProvider:readingListBookmarksItemController];
       [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setBookmarkProviderQueue:v18];
-      v23 = [v4 linkPreviewProvider];
-      [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setLinkPreviewProvider:v23];
+      linkPreviewProvider = [configurationCopy linkPreviewProvider];
+      [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setLinkPreviewProvider:linkPreviewProvider];
 
-      v24 = [v4 navigationIntentHandler];
-      [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setNavigationIntentHandler:v24];
+      navigationIntentHandler = [configurationCopy navigationIntentHandler];
+      [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setNavigationIntentHandler:navigationIntentHandler];
 
-      v25 = [v4 tabGroupProvider];
-      [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setTabGroupProvider:v25];
+      tabGroupProvider = [configurationCopy tabGroupProvider];
+      [(BookmarkFolderLibraryItemController *)v5->_bookmarksFolderItemController setTabGroupProvider:tabGroupProvider];
     }
 
     if ([MEMORY[0x277D49A08] isEnhancedVerticalTabsEnabled])
     {
-      v26 = [[SharedWithYouLibraryItemController alloc] initWithConfiguration:v4];
+      v26 = [[SharedWithYouLibraryItemController alloc] initWithConfiguration:configurationCopy];
       sharedWithYouItemController = v5->_sharedWithYouItemController;
       v5->_sharedWithYouItemController = v26;
     }
@@ -107,14 +107,14 @@
   return v5;
 }
 
-- (void)registerItemsWithRegistration:(id)a3
+- (void)registerItemsWithRegistration:(id)registration
 {
   historyController = self->_historyController;
-  v8 = a3;
-  [v8 registerItem:historyController forCollectionType:@"HistoryCollection"];
-  v5 = [MEMORY[0x277D49A08] isSaveForLaterEnabled];
+  registrationCopy = registration;
+  [registrationCopy registerItem:historyController forCollectionType:@"HistoryCollection"];
+  isSaveForLaterEnabled = [MEMORY[0x277D49A08] isSaveForLaterEnabled];
   v6 = &OBJC_IVAR___MainLibrarySectionController__readingListController;
-  if (v5)
+  if (isSaveForLaterEnabled)
   {
     v6 = &OBJC_IVAR___MainLibrarySectionController__readingListBookmarksItemController;
     v7 = &OBJC_IVAR___MainLibrarySectionController__bookmarksItemController;
@@ -125,22 +125,22 @@
     v7 = &OBJC_IVAR___MainLibrarySectionController__bookmarksFolderItemController;
   }
 
-  [v8 registerItem:*(&self->super.super.isa + *v6) forCollectionType:@"ReadingListCollection"];
-  [v8 registerItem:*(&self->super.super.isa + *v7) forCollectionType:@"BookmarksCollection"];
+  [registrationCopy registerItem:*(&self->super.super.isa + *v6) forCollectionType:@"ReadingListCollection"];
+  [registrationCopy registerItem:*(&self->super.super.isa + *v7) forCollectionType:@"BookmarksCollection"];
 }
 
-- (id)viewControllerForCollectionType:(id)a3
+- (id)viewControllerForCollectionType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if ([MEMORY[0x277D49A08] isSaveForLaterEnabled])
   {
-    if (@"BookmarksCollection" == v4)
+    if (@"BookmarksCollection" == typeCopy)
     {
       v5 = &OBJC_IVAR___MainLibrarySectionController__bookmarksItemController;
       goto LABEL_13;
     }
 
-    if (@"ReadingListCollection" == v4)
+    if (@"ReadingListCollection" == typeCopy)
     {
       v5 = &OBJC_IVAR___MainLibrarySectionController__readingListBookmarksItemController;
       goto LABEL_13;
@@ -149,43 +149,43 @@
 
   else
   {
-    if (@"BookmarksCollection" == v4)
+    if (@"BookmarksCollection" == typeCopy)
     {
       v5 = &OBJC_IVAR___MainLibrarySectionController__bookmarksFolderItemController;
       goto LABEL_13;
     }
 
-    if (@"ReadingListCollection" == v4)
+    if (@"ReadingListCollection" == typeCopy)
     {
       v5 = &OBJC_IVAR___MainLibrarySectionController__readingListController;
       goto LABEL_13;
     }
   }
 
-  if (@"HistoryCollection" != v4)
+  if (@"HistoryCollection" != typeCopy)
   {
-    v6 = 0;
+    viewController = 0;
     goto LABEL_14;
   }
 
   v5 = &OBJC_IVAR___MainLibrarySectionController__historyController;
 LABEL_13:
-  v6 = [*(&self->super.super.isa + *v5) viewController];
+  viewController = [*(&self->super.super.isa + *v5) viewController];
 LABEL_14:
 
-  return v6;
+  return viewController;
 }
 
-- (id)libraryItemControllerForCollectionType:(id)a3
+- (id)libraryItemControllerForCollectionType:(id)type
 {
-  if (@"BookmarksCollection" == a3)
+  if (@"BookmarksCollection" == type)
   {
     v6 = &OBJC_IVAR___MainLibrarySectionController__bookmarksItemController;
   }
 
   else
   {
-    if (@"ReadingListCollection" != a3)
+    if (@"ReadingListCollection" != type)
     {
       v4 = 0;
 

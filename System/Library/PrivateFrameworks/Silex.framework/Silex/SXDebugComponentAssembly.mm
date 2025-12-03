@@ -1,33 +1,33 @@
 @interface SXDebugComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXDebugComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_104];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_104];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_23];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_23];
 
-  v8 = [v3 callback];
+  callback3 = [registryCopy callback];
   v9 = TFCallbackScopeAny();
-  [v8 whenResolvingProtocol:&unk_1F53E7178 scope:v9 callbackBlock:&__block_literal_global_68_0];
+  [callback3 whenResolvingProtocol:&unk_1F53E7178 scope:v9 callbackBlock:&__block_literal_global_68_0];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerClass:objc_opt_class() factory:&__block_literal_global_72_0];
+  publicContainer = [registryCopy publicContainer];
+  v11 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_72_0];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerClass:objc_opt_class() factory:&__block_literal_global_118_1];
+  publicContainer2 = [registryCopy publicContainer];
+  v13 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_118_1];
 
-  v15 = [v3 publicContainer];
+  publicContainer3 = [registryCopy publicContainer];
 
-  v14 = [v15 registerClass:objc_opt_class() factory:&__block_literal_global_121_0];
+  v14 = [publicContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_121_0];
 }
 
 void __43__SXDebugComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

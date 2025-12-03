@@ -65,7 +65,7 @@
   v6[3] = &unk_1E7C3A148;
   v7 = v4;
   v5 = v4;
-  [a1 fc_addAsyncOperationWithBlock:v6];
+  [self fc_addAsyncOperationWithBlock:v6];
 }
 
 @end

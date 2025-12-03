@@ -1,19 +1,19 @@
 @interface DYMTLIndirectCommandBufferInfo
-- (DYMTLIndirectCommandBufferInfo)initWithMaxCommandCount:(unint64_t)a3 options:(unint64_t)a4 maxKernelThreadgroupMemoryBindCount:(unint64_t)a5;
+- (DYMTLIndirectCommandBufferInfo)initWithMaxCommandCount:(unint64_t)count options:(unint64_t)options maxKernelThreadgroupMemoryBindCount:(unint64_t)bindCount;
 @end
 
 @implementation DYMTLIndirectCommandBufferInfo
 
-- (DYMTLIndirectCommandBufferInfo)initWithMaxCommandCount:(unint64_t)a3 options:(unint64_t)a4 maxKernelThreadgroupMemoryBindCount:(unint64_t)a5
+- (DYMTLIndirectCommandBufferInfo)initWithMaxCommandCount:(unint64_t)count options:(unint64_t)options maxKernelThreadgroupMemoryBindCount:(unint64_t)bindCount
 {
   v9.receiver = self;
   v9.super_class = DYMTLIndirectCommandBufferInfo;
   result = [(DYMTLIndirectCommandBufferInfo *)&v9 init];
   if (result)
   {
-    result->_maxCommandCount = a3;
-    result->_options = a4;
-    result->_maxKernelThreadgroupMemoryBindCount = a5;
+    result->_maxCommandCount = count;
+    result->_options = options;
+    result->_maxKernelThreadgroupMemoryBindCount = bindCount;
   }
 
   return result;

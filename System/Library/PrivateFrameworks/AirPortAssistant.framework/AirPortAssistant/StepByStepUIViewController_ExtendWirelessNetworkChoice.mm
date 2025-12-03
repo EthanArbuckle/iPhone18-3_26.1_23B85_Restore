@@ -1,19 +1,19 @@
 @interface StepByStepUIViewController_ExtendWirelessNetworkChoice
 - (BOOL)canBeExtendedWithDWDS;
-- (void)addBrowsedRecords:(id)a3 toDestList:(id)a4;
+- (void)addBrowsedRecords:(id)records toDestList:(id)list;
 - (void)selectedDeviceUpdated;
 - (void)setupDevices;
 - (void)setupHeaderAndFooter;
-- (void)stepByStepUpdateProgress:(id)a3 forState:(int)a4;
-- (void)touchInCellAtIndexPath:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)stepByStepUpdateProgress:(id)progress forState:(int)state;
+- (void)touchInCellAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_ExtendWirelessNetworkChoice
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7 = objc_msgSend_objectForKey_(self->super.super.super._outResultsDict, a2, @"kSBSKey_SelectorChoice");
   if (!v7)
   {
@@ -42,7 +42,7 @@
 
   v14.receiver = self;
   v14.super_class = StepByStepUIViewController_ExtendWirelessNetworkChoice;
-  [(StepByStepUIViewController_DevicePicker *)&v14 viewWillAppear:v3];
+  [(StepByStepUIViewController_DevicePicker *)&v14 viewWillAppear:appearCopy];
 }
 
 - (void)setupHeaderAndFooter
@@ -127,9 +127,9 @@
   }
 }
 
-- (void)touchInCellAtIndexPath:(id)a3
+- (void)touchInCellAtIndexPath:(id)path
 {
-  v5 = objc_msgSend_section(a3, a2, a3);
+  v5 = objc_msgSend_section(path, a2, path);
   v8 = objc_msgSend_tableManager(self, v6, v7);
   if (v5 == objc_msgSend_indexOfSectionWithIdentifier_(v8, v9, off_27E383208))
   {
@@ -147,14 +147,14 @@
   {
     v21.receiver = self;
     v21.super_class = StepByStepUIViewController_ExtendWirelessNetworkChoice;
-    [(StepByStepUIViewController_DevicePicker *)&v21 touchInCellAtIndexPath:a3];
+    [(StepByStepUIViewController_DevicePicker *)&v21 touchInCellAtIndexPath:path];
   }
 }
 
-- (void)stepByStepUpdateProgress:(id)a3 forState:(int)a4
+- (void)stepByStepUpdateProgress:(id)progress forState:(int)state
 {
-  v4 = *&a4;
-  v7 = objc_msgSend_tableManager(self, a2, a3);
+  v4 = *&state;
+  v7 = objc_msgSend_tableManager(self, a2, progress);
   v9 = objc_msgSend_indexOfSectionWithIdentifier_(v7, v8, off_27E383208);
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -165,7 +165,7 @@
 
   v15.receiver = self;
   v15.super_class = StepByStepUIViewController_ExtendWirelessNetworkChoice;
-  [(StepByStepUIViewController *)&v15 stepByStepUpdateProgress:a3 forState:v4];
+  [(StepByStepUIViewController *)&v15 stepByStepUpdateProgress:progress forState:v4];
 }
 
 - (BOOL)canBeExtendedWithDWDS
@@ -204,16 +204,16 @@
   return result;
 }
 
-- (void)addBrowsedRecords:(id)a3 toDestList:(id)a4
+- (void)addBrowsedRecords:(id)records toDestList:(id)list
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3);
+  v6 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, records);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v8, &v24, v28, 16);
+  recordsCopy = records;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(records, v8, &v24, v28, 16);
   if (v9)
   {
     v12 = v9;
@@ -224,7 +224,7 @@ LABEL_3:
     {
       if (*v25 != v13)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(recordsCopy);
       }
 
       v15 = *(*(&v24 + 1) + 8 * v14);
@@ -235,14 +235,14 @@ LABEL_3:
         break;
       }
 
-      if (sub_23EB6B8F0(v16, 0, a4) != -1 || objc_msgSend_length(v18, v10, v21) && sub_23EB6B8F0(v18, 0, a4) != -1)
+      if (sub_23EB6B8F0(v16, 0, list) != -1 || objc_msgSend_length(v18, v10, v21) && sub_23EB6B8F0(v18, 0, list) != -1)
       {
         objc_msgSend_addObject_(v6, v10, v15);
       }
 
       if (v12 == ++v14)
       {
-        v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v10, &v24, v28, 16);
+        v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(recordsCopy, v10, &v24, v28, 16);
         v12 = v22;
         if (v22)
         {
@@ -259,7 +259,7 @@ LABEL_3:
 LABEL_15:
     if (objc_msgSend_count(v6, v10, v11))
     {
-      objc_msgSend_addObjectsFromArray_(a4, v23, v6);
+      objc_msgSend_addObjectsFromArray_(list, v23, v6);
     }
   }
 }

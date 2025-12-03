@@ -1,29 +1,29 @@
 @interface VOTUICursorViewController
 - (AXUIService)axuiService;
 - (BOOL)cursorHidden;
-- (CGRect)convertFrameToCursorSpace:(CGRect)a3;
+- (CGRect)convertFrameToCursorSpace:(CGRect)space;
 - (CGRect)cursorFrame;
-- (VOTUICursorViewController)initWithAXUIService:(id)a3;
-- (void)_updateCursorFrameAnimated:(BOOL)a3;
+- (VOTUICursorViewController)initWithAXUIService:(id)service;
+- (void)_updateCursorFrameAnimated:(BOOL)animated;
 - (void)_updateCursorPath;
 - (void)dealloc;
-- (void)setCursorHidden:(BOOL)a3;
-- (void)setCursorPath:(CGPath *)a3;
+- (void)setCursorHidden:(BOOL)hidden;
+- (void)setCursorPath:(CGPath *)path;
 - (void)viewDidLoad;
 @end
 
 @implementation VOTUICursorViewController
 
-- (VOTUICursorViewController)initWithAXUIService:(id)a3
+- (VOTUICursorViewController)initWithAXUIService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v8.receiver = self;
   v8.super_class = VOTUICursorViewController;
   v5 = [(VOTUICursorViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_axuiService, v4);
+    objc_storeWeak(&v5->_axuiService, serviceCopy);
   }
 
   return v6;
@@ -45,27 +45,27 @@
   [(VOTUICursorViewController *)&v4 dealloc];
 }
 
-- (void)_updateCursorFrameAnimated:(BOOL)a3
+- (void)_updateCursorFrameAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(VOTUICursorViewController *)self convertFrameToCursorSpace:self->_cursorFrame.origin.x, self->_cursorFrame.origin.y, self->_cursorFrame.size.width, self->_cursorFrame.size.height];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(VOTUICursorViewController *)self cursorView];
-  [v13 setCursorFrame:v3 animated:{v6, v8, v10, v12}];
+  cursorView = [(VOTUICursorViewController *)self cursorView];
+  [cursorView setCursorFrame:animatedCopy animated:{v6, v8, v10, v12}];
 }
 
-- (CGRect)convertFrameToCursorSpace:(CGRect)a3
+- (CGRect)convertFrameToCursorSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(VOTUICursorViewController *)self view];
-  v9 = [v8 window];
-  [v9 _convertRectFromSceneReferenceSpace:{x, y, width, height}];
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  view = [(VOTUICursorViewController *)self view];
+  window = [view window];
+  [window _convertRectFromSceneReferenceSpace:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -76,15 +76,15 @@
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(VOTUICursorViewController *)self cursorView];
-  [v26 resizeFrameForWindow:{v19, v21, v23, v25}];
+  cursorView = [(VOTUICursorViewController *)self cursorView];
+  [cursorView resizeFrameForWindow:{v19, v21, v23, v25}];
   v28 = v27;
   v30 = v29;
   v32 = v31;
   v34 = v33;
 
-  v35 = [(VOTUICursorViewController *)self view];
-  [v35 convertRect:0 fromView:{v28, v30, v32, v34}];
+  view2 = [(VOTUICursorViewController *)self view];
+  [view2 convertRect:0 fromView:{v28, v30, v32, v34}];
   v37 = v36;
   v39 = v38;
   v41 = v40;
@@ -101,12 +101,12 @@
   return result;
 }
 
-- (void)setCursorPath:(CGPath *)a3
+- (void)setCursorPath:(CGPath *)path
 {
   cursorPath = self->_cursorPath;
-  if (a3)
+  if (path)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(path);
   }
 
   else
@@ -128,37 +128,37 @@
   if (self->_cursorPath)
   {
     v3 = [UIBezierPath bezierPathWithCGPath:?];
-    v4 = [(VOTUICursorViewController *)self view];
-    v9 = UIAccessibilitySceneReferencePathToScreenPathWithView();
+    view = [(VOTUICursorViewController *)self view];
+    cursorView2 = UIAccessibilitySceneReferencePathToScreenPathWithView();
 
-    v5 = [(VOTUICursorViewController *)self view];
+    view2 = [(VOTUICursorViewController *)self view];
     v6 = UIAccessibilityPathForAccessibilityPath();
-    v7 = [v6 CGPath];
+    cGPath = [v6 CGPath];
 
-    v8 = [(VOTUICursorViewController *)self cursorView];
-    [v8 setPath:v7];
+    cursorView = [(VOTUICursorViewController *)self cursorView];
+    [cursorView setPath:cGPath];
   }
 
   else
   {
-    v9 = [(VOTUICursorViewController *)self cursorView];
-    [v9 setPath:0];
+    cursorView2 = [(VOTUICursorViewController *)self cursorView];
+    [cursorView2 setPath:0];
   }
 }
 
 - (BOOL)cursorHidden
 {
-  v2 = [(VOTUICursorViewController *)self view];
-  v3 = [v2 isHidden];
+  view = [(VOTUICursorViewController *)self view];
+  isHidden = [view isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setCursorHidden:(BOOL)a3
+- (void)setCursorHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(VOTUICursorViewController *)self view];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  view = [(VOTUICursorViewController *)self view];
+  [view setHidden:hiddenCopy];
 }
 
 - (void)viewDidLoad
@@ -170,12 +170,12 @@
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(VOTUICursorViewController *)self setView:v7];
 
-  v8 = [[VOTUICursorView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(VOTUICursorViewController *)self setCursorView:v8];
+  height = [[VOTUICursorView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(VOTUICursorViewController *)self setCursorView:height];
 
-  v9 = [(VOTUICursorViewController *)self view];
-  v10 = [(VOTUICursorViewController *)self cursorView];
-  [v9 addSubview:v10];
+  view = [(VOTUICursorViewController *)self view];
+  cursorView = [(VOTUICursorViewController *)self cursorView];
+  [view addSubview:cursorView];
 
   v11.receiver = self;
   v11.super_class = VOTUICursorViewController;

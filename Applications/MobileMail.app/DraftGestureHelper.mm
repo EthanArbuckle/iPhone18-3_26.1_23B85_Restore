@@ -1,99 +1,99 @@
 @interface DraftGestureHelper
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (ComposeCapable)scene;
 - (ConversationViewController)conversationViewController;
-- (DraftGestureHelper)initWithConversationViewController:(id)a3 scene:(id)a4;
-- (void)_tapRecognized:(id)a3;
-- (void)enableGesture:(BOOL)a3;
+- (DraftGestureHelper)initWithConversationViewController:(id)controller scene:(id)scene;
+- (void)_tapRecognized:(id)recognized;
+- (void)enableGesture:(BOOL)gesture;
 @end
 
 @implementation DraftGestureHelper
 
-- (DraftGestureHelper)initWithConversationViewController:(id)a3 scene:(id)a4
+- (DraftGestureHelper)initWithConversationViewController:(id)controller scene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  sceneCopy = scene;
   v13.receiver = self;
   v13.super_class = DraftGestureHelper;
   v8 = [(DraftGestureHelper *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_conversationViewController, v6);
+    objc_storeWeak(&v8->_conversationViewController, controllerCopy);
     v10 = [[UITapGestureRecognizer alloc] initWithTarget:v9 action:"_tapRecognized:"];
     draftTapGesture = v9->_draftTapGesture;
     v9->_draftTapGesture = v10;
 
     [(UITapGestureRecognizer *)v9->_draftTapGesture setDelegate:v9];
-    objc_storeWeak(&v9->_scene, v7);
+    objc_storeWeak(&v9->_scene, sceneCopy);
   }
 
   return v9;
 }
 
-- (void)enableGesture:(BOOL)a3
+- (void)enableGesture:(BOOL)gesture
 {
-  v3 = a3;
-  v5 = [(DraftGestureHelper *)self conversationViewController];
-  v7 = [v5 view];
+  gestureCopy = gesture;
+  conversationViewController = [(DraftGestureHelper *)self conversationViewController];
+  view = [conversationViewController view];
 
-  v6 = [(DraftGestureHelper *)self draftTapGesture];
-  if (v3)
+  draftTapGesture = [(DraftGestureHelper *)self draftTapGesture];
+  if (gestureCopy)
   {
-    [v7 addGestureRecognizer:v6];
+    [view addGestureRecognizer:draftTapGesture];
   }
 
   else
   {
-    [v7 removeGestureRecognizer:v6];
+    [view removeGestureRecognizer:draftTapGesture];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
-  v21 = [(DraftGestureHelper *)self conversationViewController];
-  v4 = [v21 collectionView];
-  v5 = [v4 isDecelerating];
+  conversationViewController = [(DraftGestureHelper *)self conversationViewController];
+  collectionView = [conversationViewController collectionView];
+  isDecelerating = [collectionView isDecelerating];
 
-  if ((v5 & 1) == 0)
+  if ((isDecelerating & 1) == 0)
   {
-    v6 = [v21 referenceMessageListItem];
-    v7 = [v6 displayMessage];
-    v8 = [v7 result];
+    referenceMessageListItem = [conversationViewController referenceMessageListItem];
+    displayMessage = [referenceMessageListItem displayMessage];
+    result = [displayMessage result];
 
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 mailboxProvider];
-    v11 = [v8 mailboxObjectIDs];
-    v12 = [v11 firstObject];
-    v13 = [v10 legacyMailboxForObjectID:v12];
-    v14 = [MFComposeMailMessage legacyMessageWithMessage:v8 mailboxUid:v13];
+    mailboxProvider = [v9 mailboxProvider];
+    mailboxObjectIDs = [result mailboxObjectIDs];
+    firstObject = [mailboxObjectIDs firstObject];
+    v13 = [mailboxProvider legacyMailboxForObjectID:firstObject];
+    v14 = [MFComposeMailMessage legacyMessageWithMessage:result mailboxUid:v13];
 
-    v15 = [v8 mailboxes];
-    v16 = [v15 firstObject];
-    v17 = [v16 type];
+    mailboxes = [result mailboxes];
+    firstObject2 = [mailboxes firstObject];
+    type = [firstObject2 type];
 
-    if (v17 == 5)
+    if (type == 5)
     {
-      v18 = [[_MFMailCompositionContext alloc] initDraftRestoreOfMessage:v8 legacyMessage:v14];
+      v18 = [[_MFMailCompositionContext alloc] initDraftRestoreOfMessage:result legacyMessage:v14];
     }
 
     else
     {
-      v18 = [[_MFMailCompositionContext alloc] initOutboxRestoreOfMessage:v8 legacyMessage:v14];
+      v18 = [[_MFMailCompositionContext alloc] initOutboxRestoreOfMessage:result legacyMessage:v14];
     }
 
     v19 = v18;
-    v20 = [(DraftGestureHelper *)self scene];
-    [v20 showComposeWithContext:v19 animated:1 initialTitle:0 presentationSource:0 completionBlock:0];
+    scene = [(DraftGestureHelper *)self scene];
+    [scene showComposeWithContext:v19 animated:1 initialTitle:0 presentationSource:0 completionBlock:0];
   }
 }
 

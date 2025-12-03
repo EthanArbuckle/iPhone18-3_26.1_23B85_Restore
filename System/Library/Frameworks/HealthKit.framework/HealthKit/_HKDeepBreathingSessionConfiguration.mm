@@ -1,37 +1,37 @@
 @interface _HKDeepBreathingSessionConfiguration
-+ (id)sessionConfigurationWithStartDate:(id)a3 sessionDuration:(double)a4 inhaleExhaleRatio:(double)a5 respirationsPerMinute:(double)a6;
-- (_HKDeepBreathingSessionConfiguration)initWithCoder:(id)a3;
-- (id)_initWithStartDate:(id)a3 sessionDuration:(double)a4 inhaleExhaleRatio:(double)a5 respirationsPerMinute:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)sessionConfigurationWithStartDate:(id)date sessionDuration:(double)duration inhaleExhaleRatio:(double)ratio respirationsPerMinute:(double)minute;
+- (_HKDeepBreathingSessionConfiguration)initWithCoder:(id)coder;
+- (id)_initWithStartDate:(id)date sessionDuration:(double)duration inhaleExhaleRatio:(double)ratio respirationsPerMinute:(double)minute;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKDeepBreathingSessionConfiguration
 
-+ (id)sessionConfigurationWithStartDate:(id)a3 sessionDuration:(double)a4 inhaleExhaleRatio:(double)a5 respirationsPerMinute:(double)a6
++ (id)sessionConfigurationWithStartDate:(id)date sessionDuration:(double)duration inhaleExhaleRatio:(double)ratio respirationsPerMinute:(double)minute
 {
-  v10 = a3;
-  v11 = [[a1 alloc] _initWithStartDate:v10 sessionDuration:a4 inhaleExhaleRatio:a5 respirationsPerMinute:a6];
+  dateCopy = date;
+  v11 = [[self alloc] _initWithStartDate:dateCopy sessionDuration:duration inhaleExhaleRatio:ratio respirationsPerMinute:minute];
 
   return v11;
 }
 
-- (id)_initWithStartDate:(id)a3 sessionDuration:(double)a4 inhaleExhaleRatio:(double)a5 respirationsPerMinute:(double)a6
+- (id)_initWithStartDate:(id)date sessionDuration:(double)duration inhaleExhaleRatio:(double)ratio respirationsPerMinute:(double)minute
 {
-  v10 = a3;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = _HKDeepBreathingSessionConfiguration;
   v11 = [(_HKDeepBreathingSessionConfiguration *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [dateCopy copy];
     startDate = v11->_startDate;
     v11->_startDate = v12;
 
-    v11->_sessionDuration = a4;
-    v11->_inhaleExhaleRatio = a5;
-    v11->_respirationsPerMinute = a6;
+    v11->_sessionDuration = duration;
+    v11->_inhaleExhaleRatio = ratio;
+    v11->_respirationsPerMinute = minute;
   }
 
   return v11;
@@ -50,11 +50,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _HKDeepBreathingSessionConfiguration;
-  v4 = [(HKTaskConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(HKTaskConfiguration *)&v8 copyWithZone:zone];
   v5 = [(NSDate *)self->_startDate copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -65,39 +65,39 @@
   return v4;
 }
 
-- (_HKDeepBreathingSessionConfiguration)initWithCoder:(id)a3
+- (_HKDeepBreathingSessionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _HKDeepBreathingSessionConfiguration;
-  v5 = [(HKTaskConfiguration *)&v12 initWithCoder:v4];
+  v5 = [(HKTaskConfiguration *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    [v4 decodeDoubleForKey:@"sessionDuration"];
+    [coderCopy decodeDoubleForKey:@"sessionDuration"];
     v5->_sessionDuration = v8;
-    [v4 decodeDoubleForKey:@"inhaleExhaleRatio"];
+    [coderCopy decodeDoubleForKey:@"inhaleExhaleRatio"];
     v5->_inhaleExhaleRatio = v9;
-    [v4 decodeDoubleForKey:@"respirationsPerMinute"];
+    [coderCopy decodeDoubleForKey:@"respirationsPerMinute"];
     v5->_respirationsPerMinute = v10;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _HKDeepBreathingSessionConfiguration;
-  v4 = a3;
-  [(HKTaskConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_startDate forKey:{@"startDate", v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"sessionDuration" forKey:self->_sessionDuration];
-  [v4 encodeDouble:@"inhaleExhaleRatio" forKey:self->_inhaleExhaleRatio];
-  [v4 encodeDouble:@"respirationsPerMinute" forKey:self->_respirationsPerMinute];
+  coderCopy = coder;
+  [(HKTaskConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_startDate forKey:{@"startDate", v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"sessionDuration" forKey:self->_sessionDuration];
+  [coderCopy encodeDouble:@"inhaleExhaleRatio" forKey:self->_inhaleExhaleRatio];
+  [coderCopy encodeDouble:@"respirationsPerMinute" forKey:self->_respirationsPerMinute];
 }
 
 @end

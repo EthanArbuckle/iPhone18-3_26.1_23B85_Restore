@@ -1,6 +1,6 @@
 @interface ResourcesDirector
 - (NSString)description;
-- (void)photoLibraryDidBecomeUnavailable:(id)a3;
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable;
 @end
 
 @implementation ResourcesDirector
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (void)photoLibraryDidBecomeUnavailable:(id)a3
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable
 {
-  v3 = a3;
+  unavailableCopy = unavailable;
 
-  sub_22FC1C2A4(v3);
+  sub_22FC1C2A4(unavailableCopy);
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface NSSQLSavePlan
-- (id)_correlationTableUpdateTrackerForRelationship:(uint64_t)a1;
-- (id)_newRowCacheRowForToManyUpdatesForRelationship:(void *)a3 rowCacheOriginal:(void *)a4 originalOrderKeys:(void *)a5 originalSnapshot:(unint64_t *)a6 value:(void *)a7 added:(void *)a8 deleted:(unint64_t *)a9 sourceRowPK:(void *)a10 properties:(void *)a11 sourceObject:(void *)a12 newIndexes:(void *)a13 reorderedIndexes:;
-- (id)initForRequestContext:(id)a3;
+- (id)_correlationTableUpdateTrackerForRelationship:(uint64_t)relationship;
+- (id)_newRowCacheRowForToManyUpdatesForRelationship:(void *)relationship rowCacheOriginal:(void *)original originalOrderKeys:(void *)keys originalSnapshot:(unint64_t *)snapshot value:(void *)value added:(void *)added deleted:(unint64_t *)deleted sourceRowPK:(void *)self0 properties:(void *)self1 sourceObject:(void *)self2 newIndexes:(void *)self3 reorderedIndexes:;
+- (id)initForRequestContext:(id)context;
 - (id)newObjectsForExhaustiveLockConflictDetection;
-- (id)newObjectsForUniquenessConflictDetectionGivenReportedFailures:(uint64_t)a1;
-- (uint64_t)_addFileBackedFutureToDelete:(uint64_t)a1;
+- (id)newObjectsForUniquenessConflictDetectionGivenReportedFailures:(uint64_t)failures;
+- (uint64_t)_addFileBackedFutureToDelete:(uint64_t)delete;
 - (uint64_t)_createRowsForSave;
-- (uint64_t)_registerChangedFOKs:(uint64_t)a3 deletions:(const void *)a4 forSourceObject:(void *)a5 andRelationship:;
+- (uint64_t)_registerChangedFOKs:(uint64_t)ks deletions:(const void *)deletions forSourceObject:(void *)object andRelationship:;
 - (uint64_t)newCorrelationTableUpdates;
 - (uint64_t)newInsertedRows;
 - (void)_computeUpdatedRowSplit;
-- (void)_createCorrelationTrackerUpdatesForDeletedObject:(uint64_t)a1;
-- (void)_findOrCreateChangeSnapshotForGlobalID:(uint64_t)a1;
-- (void)_populateOrderKeysInOrderedSet:(uint64_t)a3 usingSourceObjectID:(void *)a4 inverseRelationship:(void *)a5 newIndexes:(void *)a6 reorderedIndexes:;
-- (void)_populateRow:(_BYTE *)a3 fromObject:(int)a4 timestamp:(_BYTE *)a5 inserted:(double)a6 shouldAddToRowCache:;
-- (void)_prepareForDeletionOfDatabaseExternalPropertiesForObject:(uint64_t)a1;
-- (void)_recordToManyChangesForObject:(unint64_t *)a3 inRow:(int)a4 usingTimestamp:(double)a5 inserted:;
+- (void)_createCorrelationTrackerUpdatesForDeletedObject:(uint64_t)object;
+- (void)_findOrCreateChangeSnapshotForGlobalID:(uint64_t)d;
+- (void)_populateOrderKeysInOrderedSet:(uint64_t)set usingSourceObjectID:(void *)d inverseRelationship:(void *)relationship newIndexes:(void *)indexes reorderedIndexes:;
+- (void)_populateRow:(_BYTE *)row fromObject:(int)object timestamp:(_BYTE *)timestamp inserted:(double)inserted shouldAddToRowCache:;
+- (void)_prepareForDeletionOfDatabaseExternalPropertiesForObject:(uint64_t)object;
+- (void)_recordToManyChangesForObject:(unint64_t *)object inRow:(int)row usingTimestamp:(double)timestamp inserted:;
 - (void)dealloc;
 - (void)newObjectsForFastLockConflictDetection;
 @end
@@ -28,20 +28,20 @@
   if (result)
   {
     v1 = result;
-    v2 = *(result + 8);
-    if (v2)
+    persistentStoreRequest = *(result + 8);
+    if (persistentStoreRequest)
     {
-      v2 = [v2 persistentStoreRequest];
+      persistentStoreRequest = [persistentStoreRequest persistentStoreRequest];
     }
 
-    v3 = [v2 insertedObjects];
+    insertedObjects = [persistentStoreRequest insertedObjects];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v5 = v4;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v6 = [v3 countByEnumeratingWithState:&v66 objects:v73 count:16];
+    v6 = [insertedObjects countByEnumeratingWithState:&v66 objects:v73 count:16];
     if (v6)
     {
       v7 = *v67;
@@ -52,14 +52,14 @@
         {
           if (*v67 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(insertedObjects);
           }
 
           v9 = *(*(&v66 + 1) + 8 * v8);
           v10 = objc_autoreleasePoolPush();
-          v11 = [v9 objectID];
-          v12 = [v9 entity];
-          if (v12)
+          objectID = [v9 objectID];
+          entity = [v9 entity];
+          if (entity)
           {
             v14 = *(v1 + 8);
             if (v14)
@@ -72,7 +72,7 @@
               v15 = 0;
             }
 
-            v13 = _sqlCoreLookupSQLEntityForEntityDescription(v15, v12);
+            v13 = _sqlCoreLookupSQLEntityForEntityDescription(v15, entity);
           }
 
           else
@@ -80,7 +80,7 @@
             v13 = 0;
           }
 
-          v16 = [(NSSQLSaveChangesRequestContext *)*(v1 + 8) originalRowForObjectID:v11];
+          v16 = [(NSSQLSaveChangesRequestContext *)*(v1 + 8) originalRowForObjectID:objectID];
           v17 = [+[NSSQLRow allocForSQLEntity:](NSSQLRow v13)];
           v18 = v17;
           if (v16)
@@ -95,15 +95,15 @@
           }
 
           [v17 setOptLock:v20];
-          CFDictionarySetValue(*(v1 + 16), v11, v18);
-          CFDictionarySetValue(*(v1 + 24), v11, v18);
+          CFDictionarySetValue(*(v1 + 16), objectID, v18);
+          CFDictionarySetValue(*(v1 + 24), objectID, v18);
 
           objc_autoreleasePoolPop(v10);
           ++v8;
         }
 
         while (v6 != v8);
-        v21 = [v3 countByEnumeratingWithState:&v66 objects:v73 count:16];
+        v21 = [insertedObjects countByEnumeratingWithState:&v66 objects:v73 count:16];
         v6 = v21;
       }
 
@@ -114,7 +114,7 @@
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v22 = [v3 countByEnumeratingWithState:&v62 objects:v72 count:16];
+    v22 = [insertedObjects countByEnumeratingWithState:&v62 objects:v72 count:16];
     if (v22)
     {
       v23 = *v63;
@@ -124,7 +124,7 @@
         {
           if (*v63 != v23)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(insertedObjects);
           }
 
           v25 = *(*(&v62 + 1) + 8 * i);
@@ -145,24 +145,24 @@
           objc_autoreleasePoolPop(v26);
         }
 
-        v22 = [v3 countByEnumeratingWithState:&v62 objects:v72 count:16];
+        v22 = [insertedObjects countByEnumeratingWithState:&v62 objects:v72 count:16];
       }
 
       while (v22);
     }
 
-    v28 = *(v1 + 8);
-    if (v28)
+    persistentStoreRequest2 = *(v1 + 8);
+    if (persistentStoreRequest2)
     {
-      v28 = [v28 persistentStoreRequest];
+      persistentStoreRequest2 = [persistentStoreRequest2 persistentStoreRequest];
     }
 
-    v29 = [v28 updatedObjects];
+    updatedObjects = [persistentStoreRequest2 updatedObjects];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v30 = [v29 countByEnumeratingWithState:&v57 objects:v71 count:16];
+    v30 = [updatedObjects countByEnumeratingWithState:&v57 objects:v71 count:16];
     if (v30)
     {
       v31 = *v58;
@@ -172,7 +172,7 @@
         {
           if (*v58 != v31)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(updatedObjects);
           }
 
           v33 = *(*(&v57 + 1) + 8 * j);
@@ -193,24 +193,24 @@
           objc_autoreleasePoolPop(v34);
         }
 
-        v30 = [v29 countByEnumeratingWithState:&v57 objects:v71 count:16];
+        v30 = [updatedObjects countByEnumeratingWithState:&v57 objects:v71 count:16];
       }
 
       while (v30);
     }
 
-    v36 = *(v1 + 8);
-    if (v36)
+    persistentStoreRequest3 = *(v1 + 8);
+    if (persistentStoreRequest3)
     {
-      v36 = [v36 persistentStoreRequest];
+      persistentStoreRequest3 = [persistentStoreRequest3 persistentStoreRequest];
     }
 
-    v37 = [v36 deletedObjects];
+    deletedObjects = [persistentStoreRequest3 deletedObjects];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    result = [v37 countByEnumeratingWithState:&v53 objects:v70 count:16];
+    result = [deletedObjects countByEnumeratingWithState:&v53 objects:v70 count:16];
     v38 = result;
     if (result)
     {
@@ -222,18 +222,18 @@
         {
           if (*v54 != v39)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(deletedObjects);
           }
 
           v41 = *(*(&v53 + 1) + 8 * v40);
           v42 = objc_autoreleasePoolPush();
-          v43 = [v41 objectID];
-          v44 = [v41 entity];
-          if (v44)
+          objectID2 = [v41 objectID];
+          entity2 = [v41 entity];
+          if (entity2)
           {
             v45 = *(v1 + 8);
             v46 = v45 ? *(v45 + 8) : 0;
-            v47 = _sqlCoreLookupSQLEntityForEntityDescription(v46, v44);
+            v47 = _sqlCoreLookupSQLEntityForEntityDescription(v46, entity2);
             v48 = v47;
             if (v47)
             {
@@ -252,9 +252,9 @@
           }
 
           [(NSSQLSavePlan *)v1 _createCorrelationTrackerUpdatesForDeletedObject:v41];
-          v50 = [(NSSQLSavePlan *)v1 _findOrCreateChangeSnapshotForGlobalID:v43];
+          v50 = [(NSSQLSavePlan *)v1 _findOrCreateChangeSnapshotForGlobalID:objectID2];
           v51 = v50;
-          CFDictionaryRemoveValue(*(v1 + 16), v43);
+          CFDictionaryRemoveValue(*(v1 + 16), objectID2);
           if (v50)
           {
             [*(v1 + 40) addObject:v50];
@@ -265,7 +265,7 @@
         }
 
         while (v38 != v40);
-        result = [v37 countByEnumeratingWithState:&v53 objects:v70 count:16];
+        result = [deletedObjects countByEnumeratingWithState:&v53 objects:v70 count:16];
         v38 = result;
       }
 
@@ -280,9 +280,9 @@
 - (uint64_t)newCorrelationTableUpdates
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 32);
+    v1 = *(self + 32);
     v2 = [v1 count];
     v3 = v2;
     if (v2 <= 1)
@@ -336,9 +336,9 @@
 - (uint64_t)newInsertedRows
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     v2 = [v1 count];
     v3 = v2;
     if (v2 <= 1)
@@ -391,19 +391,19 @@
 
 - (void)_computeUpdatedRowSplit
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[1];
-    if (v2)
+    persistentStoreRequest = self[1];
+    if (persistentStoreRequest)
     {
-      v2 = [v2 persistentStoreRequest];
+      persistentStoreRequest = [persistentStoreRequest persistentStoreRequest];
     }
 
-    v3 = [v2 updatedObjects];
-    if (v3)
+    updatedObjects = [persistentStoreRequest updatedObjects];
+    if (updatedObjects)
     {
-      v4 = v3;
-      if ([v3 count])
+      v4 = updatedObjects;
+      if ([updatedObjects count])
       {
         v5 = [_PFRoutines newSetOfObjectIDsFromCollection:v4];
         v14 = 0;
@@ -418,19 +418,19 @@
         v11 = __Block_byref_object_copy__45;
         v12 = __Block_byref_object_dispose__45;
         v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-        v6 = a1[2];
+        v6 = self[2];
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
         v7[2] = __40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke;
         v7[3] = &unk_1E6EC5228;
-        v7[4] = a1;
+        v7[4] = self;
         v7[5] = v5;
         v7[6] = &v14;
         v7[7] = &v8;
         [v6 enumerateKeysAndObjectsUsingBlock:v7];
 
-        a1[6] = v15[5];
-        a1[7] = v9[5];
+        self[6] = v15[5];
+        self[7] = v9[5];
         _Block_object_dispose(&v8, 8);
         _Block_object_dispose(&v14, 8);
       }
@@ -462,15 +462,15 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
 {
   if (result)
   {
-    v1 = result[1];
-    if (v1)
+    persistentStoreRequest = result[1];
+    if (persistentStoreRequest)
     {
-      v1 = [v1 persistentStoreRequest];
+      persistentStoreRequest = [persistentStoreRequest persistentStoreRequest];
     }
 
-    v2 = [v1 lockedObjects];
+    lockedObjects = [persistentStoreRequest lockedObjects];
 
-    return v2;
+    return lockedObjects;
   }
 
   return result;
@@ -515,23 +515,23 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
   [(NSSQLSavePlan *)&v4 dealloc];
 }
 
-- (void)_populateOrderKeysInOrderedSet:(uint64_t)a3 usingSourceObjectID:(void *)a4 inverseRelationship:(void *)a5 newIndexes:(void *)a6 reorderedIndexes:
+- (void)_populateOrderKeysInOrderedSet:(uint64_t)set usingSourceObjectID:(void *)d inverseRelationship:(void *)relationship newIndexes:(void *)indexes reorderedIndexes:
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  if (!a2 || a6 || a5 || !a2[4])
+  if (!a2 || indexes || relationship || !a2[4])
   {
-    if (a4)
+    if (d)
     {
-      v11 = [a4 propertyDescription];
+      propertyDescription = [d propertyDescription];
     }
 
     else
     {
-      v11 = 0;
+      propertyDescription = 0;
     }
 
     v12 = [NSSQLRelationshipFaultRequestContext alloc];
-    v13 = *(a1 + 8);
+    v13 = *(self + 8);
     if (v13)
     {
       v14 = *(v13 + 32);
@@ -544,9 +544,9 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
       v15 = 0;
     }
 
-    v16 = [(NSSQLRelationshipFaultRequestContext *)v12 initWithObjectID:a3 relationship:v11 context:v14 sqlCore:v15];
+    v16 = [(NSSQLRelationshipFaultRequestContext *)v12 initWithObjectID:set relationship:propertyDescription context:v14 sqlCore:v15];
     [(NSSQLStoreRequestContext *)v16 setQueryGenerationToken:?];
-    v17 = *(a1 + 8);
+    v17 = *(self + 8);
     if (v17)
     {
       v18 = *(v17 + 8);
@@ -558,14 +558,14 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
     }
 
     [(NSSQLCore *)v18 dispatchRequest:v16 withRetries:0];
-    v19 = [v16 result];
+    result = [v16 result];
     if (v16)
     {
       v20 = *(v16 + 40);
       if (v20)
       {
         v25 = v20;
-        v26 = [v25 code];
+        code = [v25 code];
         v27 = [v25 description];
         v31[0] = [v25 domain];
         v28 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v25, "code")}];
@@ -573,75 +573,75 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
         v32[0] = v28;
         v32[1] = v25;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
-        v30 = [_NSCoreDataException exceptionWithName:v26 code:v27 reason:v29 userInfo:?];
+        v30 = [_NSCoreDataException exceptionWithName:code code:v27 reason:v29 userInfo:?];
         objc_exception_throw(v30);
       }
     }
 
-    v21 = [v19 count] == 2;
-    v22 = [v19 firstObject];
+    v21 = [result count] == 2;
+    firstObject = [result firstObject];
     if (v21)
     {
-      v23 = [v19 lastObject];
+      lastObject = [result lastObject];
     }
 
     else
     {
-      v23 = NSOrderedSet_EmptyOrderedSet;
+      lastObject = NSOrderedSet_EmptyOrderedSet;
     }
 
-    [(_NSFaultingMutableOrderedSet *)a2 _populateOrderKeysUsingSnapshot:v22 orderKeys:v23 newIndexes:a5 reorderedIndexes:a6];
+    [(_NSFaultingMutableOrderedSet *)a2 _populateOrderKeysUsingSnapshot:firstObject orderKeys:lastObject newIndexes:relationship reorderedIndexes:indexes];
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_registerChangedFOKs:(uint64_t)a3 deletions:(const void *)a4 forSourceObject:(void *)a5 andRelationship:
+- (uint64_t)_registerChangedFOKs:(uint64_t)ks deletions:(const void *)deletions forSourceObject:(void *)object andRelationship:
 {
   v8 = result;
   if (a2)
   {
-    v10 = [*(result + 80) objectForKey:a4];
+    v10 = [*(result + 80) objectForKey:deletions];
     if (!v10)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      CFDictionarySetValue(*(v8 + 80), a4, v10);
+      CFDictionarySetValue(*(v8 + 80), deletions, v10);
     }
 
-    result = [v10 setValue:a2 forKey:{objc_msgSend(a5, "name")}];
+    result = [v10 setValue:a2 forKey:{objc_msgSend(object, "name")}];
   }
 
-  if (a3)
+  if (ks)
   {
-    v11 = [*(v8 + 88) objectForKey:a4];
+    v11 = [*(v8 + 88) objectForKey:deletions];
     if (!v11)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      CFDictionarySetValue(*(v8 + 88), a4, v11);
+      CFDictionarySetValue(*(v8 + 88), deletions, v11);
     }
 
-    v12 = [a5 name];
+    name = [object name];
 
-    return [v11 setValue:a3 forKey:v12];
+    return [v11 setValue:ks forKey:name];
   }
 
   return result;
 }
 
-- (id)_newRowCacheRowForToManyUpdatesForRelationship:(void *)a3 rowCacheOriginal:(void *)a4 originalOrderKeys:(void *)a5 originalSnapshot:(unint64_t *)a6 value:(void *)a7 added:(void *)a8 deleted:(unint64_t *)a9 sourceRowPK:(void *)a10 properties:(void *)a11 sourceObject:(void *)a12 newIndexes:(void *)a13 reorderedIndexes:
+- (id)_newRowCacheRowForToManyUpdatesForRelationship:(void *)relationship rowCacheOriginal:(void *)original originalOrderKeys:(void *)keys originalSnapshot:(unint64_t *)snapshot value:(void *)value added:(void *)added deleted:(unint64_t *)deleted sourceRowPK:(void *)self0 properties:(void *)self1 sourceObject:(void *)self2 newIndexes:(void *)self3 reorderedIndexes:
 {
-  v246 = a6;
-  v238 = a4;
+  deletedCopy = snapshot;
+  originalCopy = original;
   v269 = *MEMORY[0x1E69E9840];
   v232 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v237 = a11;
-  v239 = [a11 objectID];
-  v19 = [a7 count];
-  v235 = a8;
-  v243 = [a8 count];
+  propertiesCopy = properties;
+  objectID = [properties objectID];
+  v19 = [value count];
+  addedCopy = added;
+  v243 = [added count];
   v236 = a2;
-  v20 = [a2 isOrdered];
-  if (!a3)
+  isOrdered = [a2 isOrdered];
+  if (!relationship)
   {
     v221 = *MEMORY[0x1E695D930];
     v222 = MEMORY[0x1E695DF20];
@@ -650,25 +650,25 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
     objc_exception_throw(v224);
   }
 
-  v21 = v20;
-  if (v20)
+  v21 = isOrdered;
+  if (isOrdered)
   {
     v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  else if ([a3 isNSArray])
+  else if ([relationship isNSArray])
   {
-    v22 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:a3];
+    v22 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:relationship];
   }
 
   else
   {
-    v22 = [a3 mutableCopy];
+    v22 = [relationship mutableCopy];
   }
 
   v248 = v22;
-  v234 = a10;
-  v233 = [a3 count];
+  kCopy = k;
+  v233 = [relationship count];
   MEMORY[0x1EEE9AC00](v233);
   v25 = &v225 - v24;
   v231 = v26;
@@ -702,14 +702,14 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
         bzero(&v225 - v31, 8 * v19);
       }
 
-      [a7 getObjects:v32];
+      [value getObjects:v32];
       v35 = 0;
       for (i = 0; i != v19; ++i)
       {
-        v37 = [*&v32[8 * i] objectID];
-        if (v37)
+        objectID2 = [*&v32[8 * i] objectID];
+        if (objectID2)
         {
-          *&v33[8 * v35++] = v37;
+          *&v33[8 * v35++] = objectID2;
         }
       }
 
@@ -728,18 +728,18 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
     goto LABEL_217;
   }
 
-  v228 = a13;
-  v227 = a12;
-  v230 = [_PFRoutines newArrayOfObjectIDsFromCollection:a5];
-  if (([a3 isNSArray] & 1) == 0)
+  indexesCopy = indexes;
+  objectCopy = object;
+  v230 = [_PFRoutines newArrayOfObjectIDsFromCollection:keys];
+  if (([relationship isNSArray] & 1) == 0)
   {
-    a3 = [a3 array];
+    relationship = [relationship array];
   }
 
-  if (([a3 isEqual:v230] & 1) == 0)
+  if (([relationship isEqual:v230] & 1) == 0)
   {
-    v229 = [_PFRoutines newSetOfObjectIDsFromCollection:v235];
-    if (*(a1 + 148))
+    v229 = [_PFRoutines newSetOfObjectIDsFromCollection:addedCopy];
+    if (*(self + 148))
     {
       v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -749,51 +749,51 @@ const void *__40__NSSQLSavePlan__computeUpdatedRowSplit__block_invoke(uint64_t a
       v34 = 0;
     }
 
-    v43 = [_PFRoutines newArrayOfObjectIDsFromCollection:v246];
-    v44 = [v235 count];
+    v43 = [_PFRoutines newArrayOfObjectIDsFromCollection:deletedCopy];
+    v44 = [addedCopy count];
     v45 = v230;
     v46 = [v230 count];
     v247 = v43;
-    v239 = v34;
+    objectID = v34;
     if (v44 == v46)
     {
       v47 = [v45 count];
       if (v47)
       {
         v48 = v47;
-        v49 = [a3 count];
-        if ([_PFRoutines _objectsInOrderedCollection:v45 formSubstringInOrderedCollection:a3])
+        v49 = [relationship count];
+        if ([_PFRoutines _objectsInOrderedCollection:v45 formSubstringInOrderedCollection:relationship])
         {
-          v50 = [a3 indexOfObject:{objc_msgSend(v45, "objectAtIndex:", 0)}];
+          v50 = [relationship indexOfObject:{objc_msgSend(v45, "objectAtIndex:", 0)}];
           if (v50)
           {
             v51 = v50 + v48;
             v52 = v49 - (v50 + v48);
             v53 = 0x1E695D000;
-            v54 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:a3 range:0 copyItems:{v50, 0}];
+            v54 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:relationship range:0 copyItems:{v50, 0}];
             if (v52)
             {
               MEMORY[0x1EEE9AC00](v54);
               v218 = &v225 - v217;
-              [a3 getObjects:&v225 - v217 range:{v51, v52}];
+              [relationship getObjects:&v225 - v217 range:{v51, v52}];
               [v54 addObjects:v218 count:v52];
             }
 
             goto LABEL_163;
           }
 
-          v118 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:a3 range:v48 copyItems:{v49 - v48, 0}];
+          v118 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:relationship range:v48 copyItems:{v49 - v48, 0}];
         }
 
         else
         {
-          v118 = [_PFRoutines newOrderedSetFromCollection:a3 byRemovingItems:v229];
+          v118 = [_PFRoutines newOrderedSetFromCollection:relationship byRemovingItems:v229];
         }
       }
 
       else
       {
-        v118 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:a3];
+        v118 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:relationship];
       }
 
       v54 = v118;
@@ -807,13 +807,13 @@ LABEL_163:
     v88 = [_PFRoutines newOrderedSetFromCollection:v45 byRemovingItems:v229];
     if ([_PFRoutines _objectsInOrderedCollection:v88 formSubstringInOrderedCollection:v43])
     {
-      v54 = [_PFRoutines _replaceBaseline:v88 inOrderedSet:v43 withOrderedSet:a3];
+      v54 = [_PFRoutines _replaceBaseline:v88 inOrderedSet:v43 withOrderedSet:relationship];
 
       v226 = 0;
       v53 = 0x1E695D000;
 LABEL_164:
-      v156 = [v236 name];
-      v245 = [v234 objectForKey:v156];
+      name = [v236 name];
+      v245 = [kCopy objectForKey:name];
       if ([v245 isToMany])
       {
         if (v245 && (v157 = v245[7]) != 0)
@@ -834,15 +834,15 @@ LABEL_164:
         LODWORD(v240) = 0;
       }
 
-      v159 = [v54 isNSArray];
+      isNSArray = [v54 isNSArray];
       v160 = objc_alloc(*(v53 + 3952));
-      v161 = v54;
-      if ((v159 & 1) == 0)
+      array = v54;
+      if ((isNSArray & 1) == 0)
       {
-        v161 = [v54 array];
+        array = [v54 array];
       }
 
-      v248 = [v160 initWithArray:v161];
+      v248 = [v160 initWithArray:array];
       v244 = [[_NSFaultingMutableOrderedSet alloc] initWithOrderedSet:v54];
 
       if ([(_NSFaultingMutableOrderedSet *)v244 count])
@@ -854,7 +854,7 @@ LABEL_164:
         }
 
         v163 = malloc_type_zone_calloc(v162, [(_NSFaultingMutableOrderedSet *)v244 count], 1uLL, 0x100004077774924uLL);
-        *v228 = v163;
+        *indexesCopy = v163;
         v164 = _PF_Private_Malloc_Zone;
         if (!_PF_Private_Malloc_Zone)
         {
@@ -862,11 +862,11 @@ LABEL_164:
         }
 
         v165 = malloc_type_zone_calloc(v164, [(_NSFaultingMutableOrderedSet *)v244 count], 8uLL, 0x100004000313F17uLL);
-        v166 = v227;
-        v167 = v228;
-        *v227 = v165;
-        [(_NSFaultingMutableOrderedSet *)v244 _populateOrderKeysUsingSnapshot:a3 orderKeys:v238 newIndexes:v166 reorderedIndexes:v167];
-        [(_NSFaultingMutableOrderedSet *)v246 _updateOrderKeysFromOrderOfObjectIDs:v244];
+        v166 = objectCopy;
+        v167 = indexesCopy;
+        *objectCopy = v165;
+        [(_NSFaultingMutableOrderedSet *)v244 _populateOrderKeysUsingSnapshot:relationship orderKeys:originalCopy newIndexes:v166 reorderedIndexes:v167];
+        [(_NSFaultingMutableOrderedSet *)deletedCopy _updateOrderKeysFromOrderOfObjectIDs:v244];
       }
 
       v168 = [v248 count];
@@ -876,12 +876,12 @@ LABEL_164:
         {
           v170 = objc_autoreleasePoolPush();
           v171 = [v248 objectAtIndex:j];
-          v172 = [(NSSQLSaveChangesRequestContext *)*(a1 + 8) originalRowForObjectID:v171];
-          if (!v172)
+          result = [(NSSQLSaveChangesRequestContext *)*(self + 8) originalRowForObjectID:v171];
+          if (!result)
           {
-            v173 = [(NSSQLStoreRequestContext *)*(a1 + 8) createNestedObjectFaultContextForObjectWithID:v171];
+            v173 = [(NSSQLStoreRequestContext *)*(self + 8) createNestedObjectFaultContextForObjectWithID:v171];
             [(NSSQLStoreRequestContext *)v173 setQueryGenerationToken:?];
-            v174 = *(a1 + 8);
+            v174 = *(self + 8);
             if (v174)
             {
               v175 = *(v174 + 8);
@@ -893,34 +893,34 @@ LABEL_164:
             }
 
             [(NSSQLCore *)v175 dispatchRequest:v173 withRetries:0];
-            v172 = [v173 result];
-            if (v172)
+            result = [v173 result];
+            if (result)
             {
-              v176 = *(a1 + 8);
+              v176 = *(self + 8);
               if (v176)
               {
-                [*(v176 + 136) setObject:v172 forKey:v171];
+                [*(v176 + 136) setObject:result forKey:v171];
               }
             }
 
-            v177 = v172;
+            v177 = result;
           }
 
           if ([v245 isToMany])
           {
             v178 = [(_NSFaultingMutableOrderedSet *)v244 _orderKeyForObject:v171];
             v179 = v178;
-            v180 = v172 ? *(&v172[v240] + _NSSQLRowInstanceSize + ((4 * v172[4]) & 0x1FFF8)) : 0;
+            v180 = result ? *(&result[v240] + _NSSQLRowInstanceSize + ((4 * result[4]) & 0x1FFF8)) : 0;
             if (v180 != v178)
             {
-              v181 = [objc_msgSend(v237 "managedObjectContext")];
+              v181 = [objc_msgSend(propertiesCopy "managedObjectContext")];
               if (([v181 isDeleted] & 1) == 0)
               {
                 if ([v181 isFault])
                 {
-                  v182 = -[NSSQLStoreRequestContext createNestedObjectFaultContextForObjectWithID:](*(a1 + 8), [v181 objectID]);
+                  v182 = -[NSSQLStoreRequestContext createNestedObjectFaultContextForObjectWithID:](*(self + 8), [v181 objectID]);
                   [(NSSQLStoreRequestContext *)v182 setQueryGenerationToken:?];
-                  v183 = *(a1 + 8);
+                  v183 = *(self + 8);
                   if (v183)
                   {
                     v184 = *(v183 + 8);
@@ -932,24 +932,24 @@ LABEL_164:
                   }
 
                   [(NSSQLCore *)v184 dispatchRequest:v182 withRetries:0];
-                  v172 = [v182 result];
+                  result = [v182 result];
 
-                  v185 = v172;
+                  v185 = result;
                 }
 
-                Value = CFDictionaryGetValue(*(a1 + 16), v171);
-                if (!Value && v172)
+                Value = CFDictionaryGetValue(*(self + 16), v171);
+                if (!Value && result)
                 {
-                  Value = [v172 copy];
-                  CFDictionarySetValue(*(a1 + 16), v171, Value);
+                  Value = [result copy];
+                  CFDictionarySetValue(*(self + 16), v171, Value);
                 }
 
                 if (Value)
                 {
                   [Value setForeignOrderKeySlot:v240 orderKey:v179];
-                  [v239 addObject:v171];
+                  [objectID addObject:v171];
                   v187 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v179];
-                  [v239 addObject:v187];
+                  [objectID addObject:v187];
                 }
               }
             }
@@ -959,11 +959,11 @@ LABEL_164:
         }
       }
 
-      v188 = v239;
-      if (v239)
+      v188 = objectID;
+      if (objectID)
       {
-        v189 = v239;
-        if ([v239 count])
+        v189 = objectID;
+        if ([objectID count])
         {
           v190 = v189;
         }
@@ -983,16 +983,16 @@ LABEL_164:
           v191 = 0;
         }
 
-        v192 = [v237 objectID];
-        [(NSSQLSavePlan *)a1 _registerChangedFOKs:v190 deletions:v191 forSourceObject:v192 andRelationship:v236];
+        objectID3 = [propertiesCopy objectID];
+        [(NSSQLSavePlan *)self _registerChangedFOKs:v190 deletions:v191 forSourceObject:objectID3 andRelationship:v236];
         v188 = v189;
       }
 
       goto LABEL_215;
     }
 
-    v115 = [_PFRoutines newSetOfObjectIDsFromCollection:a7];
-    v245 = [a3 mutableCopy];
+    v115 = [_PFRoutines newSetOfObjectIDsFromCollection:value];
+    v245 = [relationship mutableCopy];
     v116 = [_PFRoutines newOrderedSetFromCollection:v45 byRemovingItems:v245];
     v117 = [_PFRoutines newOrderedSetFromCollection:v116 byRemovingItems:v115];
 
@@ -1025,13 +1025,13 @@ LABEL_164:
     if (v137 == [(_NSFaultingMutableOrderedSet *)v134 count])
     {
       v138 = [_PFRoutines newOrderedSetFromCollection:v247 byRemovingItems:v132];
-      v139 = [_PFRoutines newOrderedSetFromCollection:v138 byAddingItems:a3];
+      v139 = [_PFRoutines newOrderedSetFromCollection:v138 byAddingItems:relationship];
     }
 
     else
     {
       v138 = v135;
-      v140 = [_PFRoutines _objectsInOrderedCollection:v135 formSubstringInOrderedCollection:a3];
+      v140 = [_PFRoutines _objectsInOrderedCollection:v135 formSubstringInOrderedCollection:relationship];
       v141 = v247;
       if (!v140)
       {
@@ -1041,7 +1041,7 @@ LABEL_164:
         [v138 minusSet:v229];
         v54 = [_PFRoutines newOrderedSetFromCollection:v141 byRemovingItems:v244];
         v142 = v143;
-        v144 = [_PFRoutines newArrayOfObjectIDsFromCollection:v235];
+        v144 = [_PFRoutines newArrayOfObjectIDsFromCollection:addedCopy];
         [v142 removeObjectsInArray:v144];
 
         if ([v138 count])
@@ -1052,28 +1052,28 @@ LABEL_164:
           {
             v146 = v145;
             v147 = 0;
-            v148 = 0;
+            kCopy2 = 0;
             v149 = 0;
             for (k = 0; k != v146; ++k)
             {
               v151 = [v142 objectAtIndex:k];
               if ([v54 containsObject:v151])
               {
-                if (v148 | v149)
+                if (kCopy2 | v149)
                 {
-                  v153 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v148, v149}];
+                  v153 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{kCopy2, v149}];
                   v154 = [v245 objectsAtIndexes:v153];
                   v155 = [v54 indexOfObject:v151];
                   [v54 insertObjects:v154 atIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", v155, v149)}];
                   v149 = 0;
-                  v148 = 0;
+                  kCopy2 = 0;
                   v147 = 0;
                 }
 
                 else
                 {
                   v149 = 0;
-                  v148 = 0;
+                  kCopy2 = 0;
                 }
               }
 
@@ -1093,7 +1093,7 @@ LABEL_164:
 
                 if (v152)
                 {
-                  v148 = k;
+                  kCopy2 = k;
                 }
               }
 
@@ -1104,13 +1104,13 @@ LABEL_164:
           else
           {
             v149 = 0;
-            v148 = 0;
+            kCopy2 = 0;
           }
 
           v138 = v240;
-          if (v148 | v149)
+          if (kCopy2 | v149)
           {
-            v219 = [v142 objectsAtIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", v148, v149)}];
+            v219 = [v142 objectsAtIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", kCopy2, v149)}];
             v220 = [v54 count];
             [v54 insertObjects:v219 atIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", v220, v149)}];
           }
@@ -1119,7 +1119,7 @@ LABEL_164:
         goto LABEL_145;
       }
 
-      v139 = [_PFRoutines _replaceBaseline:v135 inOrderedSet:a3 withOrderedSet:v247];
+      v139 = [_PFRoutines _replaceBaseline:v135 inOrderedSet:relationship withOrderedSet:v247];
     }
 
     v54 = v139;
@@ -1130,9 +1130,9 @@ LABEL_145:
     goto LABEL_164;
   }
 
-  v28 = [v236 name];
-  v29 = [v234 objectForKey:v28];
-  if (*(a1 + 148))
+  name2 = [v236 name];
+  v29 = [kCopy objectForKey:name2];
+  if (*(self + 148))
   {
     v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -1142,7 +1142,7 @@ LABEL_145:
     v30 = 0;
   }
 
-  v40 = v228;
+  v40 = indexesCopy;
   v229 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v29 isToMany])
   {
@@ -1164,7 +1164,7 @@ LABEL_145:
     LODWORD(v245) = 0;
   }
 
-  v55 = [v246 count];
+  v55 = [deletedCopy count];
   v56 = _PF_Private_Malloc_Zone;
   if (!_PF_Private_Malloc_Zone)
   {
@@ -1180,11 +1180,11 @@ LABEL_145:
   }
 
   v58 = malloc_type_zone_calloc(v57, v55, 8uLL, 0x100004000313F17uLL);
-  v59 = v227;
-  *v227 = v58;
-  v60 = v246;
-  v238 = v29;
-  [(NSSQLSavePlan *)a1 _populateOrderKeysInOrderedSet:v246 usingSourceObjectID:v239 inverseRelationship:v29 newIndexes:v59 reorderedIndexes:v40];
+  v59 = objectCopy;
+  *objectCopy = v58;
+  v60 = deletedCopy;
+  originalCopy = v29;
+  [(NSSQLSavePlan *)self _populateOrderKeysInOrderedSet:deletedCopy usingSourceObjectID:objectID inverseRelationship:v29 newIndexes:v59 reorderedIndexes:v40];
   v240 = [v60 count];
   v61 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v261 = 0u;
@@ -1201,28 +1201,28 @@ LABEL_145:
       {
         if (*v262 != v63)
         {
-          objc_enumerationMutation(v246);
+          objc_enumerationMutation(deletedCopy);
         }
 
-        v65 = [*(*(&v261 + 1) + 8 * m) objectID];
-        [v248 addObject:v65];
+        objectID4 = [*(*(&v261 + 1) + 8 * m) objectID];
+        [v248 addObject:objectID4];
       }
 
-      v62 = [v246 countByEnumeratingWithState:&v261 objects:v268 count:16];
+      v62 = [deletedCopy countByEnumeratingWithState:&v261 objects:v268 count:16];
     }
 
     while (v62);
   }
 
-  if ([v238 isToMany])
+  if ([originalCopy isToMany])
   {
     if (v240)
     {
       for (n = 0; n != v240; ++n)
       {
         v67 = objc_autoreleasePoolPush();
-        v68 = [objc_msgSend(v246 objectAtIndex:{n), "objectID"}];
-        if (![(NSSQLSaveChangesRequestContext *)*(a1 + 8) originalRowForObjectID:v68])
+        v68 = [objc_msgSend(deletedCopy objectAtIndex:{n), "objectID"}];
+        if (![(NSSQLSaveChangesRequestContext *)*(self + 8) originalRowForObjectID:v68])
         {
           [v61 addObject:v68];
         }
@@ -1235,7 +1235,7 @@ LABEL_145:
     if ([v61 count])
     {
       v69 = objc_alloc_init(NSFetchRequest);
-      -[NSFetchRequest setEntity:](v69, "setEntity:", [objc_msgSend(v238 "destinationEntity")]);
+      -[NSFetchRequest setEntity:](v69, "setEntity:", [objc_msgSend(originalCopy "destinationEntity")]);
       -[NSFetchRequest setPredicate:](v69, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v61]);
       [(NSFetchRequest *)v69 setAllocationType:1];
       [(NSFetchRequest *)v69 setResultType:2];
@@ -1245,7 +1245,7 @@ LABEL_145:
       [(NSExpressionDescription *)v70 setExpressionResultType:2000];
       v71 = objc_alloc_init(NSExpressionDescription);
       [(NSPropertyDescription *)v71 setName:@"fok"];
-      if (v238 && (v72 = *(v238 + 7)) != 0)
+      if (originalCopy && (v72 = *(originalCopy + 7)) != 0)
       {
         v73 = *(v72 + 80);
       }
@@ -1255,12 +1255,12 @@ LABEL_145:
         v73 = 0;
       }
 
-      v74 = [v73 name];
-      -[NSExpressionDescription setExpression:](v71, "setExpression:", [MEMORY[0x1E696ABC8] expressionForKeyPath:v74]);
+      name3 = [v73 name];
+      -[NSExpressionDescription setExpression:](v71, "setExpression:", [MEMORY[0x1E696ABC8] expressionForKeyPath:name3]);
       [(NSExpressionDescription *)v71 setExpressionResultType:200];
       -[NSFetchRequest setPropertiesToFetch:](v69, "setPropertiesToFetch:", [MEMORY[0x1E695DF70] arrayWithObjects:{v70, v71, 0}]);
       v75 = [NSSQLFetchRequestContext alloc];
-      v76 = *(a1 + 8);
+      v76 = *(self + 8);
       if (v76)
       {
         v77 = *(v76 + 32);
@@ -1275,7 +1275,7 @@ LABEL_145:
 
       v79 = [(NSSQLFetchRequestContext *)v75 initWithRequest:v69 context:v77 sqlCore:v78];
       [(NSSQLStoreRequestContext *)v79 setQueryGenerationToken:?];
-      v80 = *(a1 + 8);
+      v80 = *(self + 8);
       if (v80)
       {
         v81 = *(v80 + 8);
@@ -1287,13 +1287,13 @@ LABEL_145:
       }
 
       [(NSSQLCore *)v81 dispatchRequest:v79 withRetries:0];
-      v82 = [v79 result];
+      result2 = [v79 result];
 
       v259 = 0u;
       v260 = 0u;
       v257 = 0u;
       v258 = 0u;
-      v83 = [v82 countByEnumeratingWithState:&v257 objects:v267 count:16];
+      v83 = [result2 countByEnumeratingWithState:&v257 objects:v267 count:16];
       if (v83)
       {
         v84 = *v258;
@@ -1303,7 +1303,7 @@ LABEL_145:
           {
             if (*v258 != v84)
             {
-              objc_enumerationMutation(v82);
+              objc_enumerationMutation(result2);
             }
 
             v86 = *(*(&v257 + 1) + 8 * ii);
@@ -1311,7 +1311,7 @@ LABEL_145:
             [(_NSFaultingMutableOrderedSet *)v244 setObject:v86 forKey:v87];
           }
 
-          v83 = [v82 countByEnumeratingWithState:&v257 objects:v267 count:16];
+          v83 = [result2 countByEnumeratingWithState:&v257 objects:v267 count:16];
         }
 
         while (v83);
@@ -1326,9 +1326,9 @@ LABEL_145:
     v244 = 0;
   }
 
-  if ([v238 isToMany])
+  if ([originalCopy isToMany])
   {
-    v228 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    indexesCopy = objc_alloc_init(MEMORY[0x1E695DF70]);
     v89 = objc_alloc_init(MEMORY[0x1E695DF90]);
     if (v240)
     {
@@ -1336,12 +1336,12 @@ LABEL_145:
       while (1)
       {
         v91 = objc_autoreleasePoolPush();
-        v92 = [v246 objectAtIndex:v90];
-        v93 = [v92 objectID];
-        v94 = [(NSSQLSaveChangesRequestContext *)*(a1 + 8) originalRowForObjectID:v93];
-        v95 = v94 ? 0 : [(_NSFaultingMutableOrderedSet *)v244 objectForKey:v93];
-        [(NSSQLSavePlan *)a1 _populateOrderKeysInOrderedSet:v246 usingSourceObjectID:v239 inverseRelationship:v238 newIndexes:0 reorderedIndexes:0];
-        v96 = [(_NSFaultingMutableOrderedSet *)v246 _orderKeyForObject:v92];
+        v92 = [deletedCopy objectAtIndex:v90];
+        objectID5 = [v92 objectID];
+        v94 = [(NSSQLSaveChangesRequestContext *)*(self + 8) originalRowForObjectID:objectID5];
+        v95 = v94 ? 0 : [(_NSFaultingMutableOrderedSet *)v244 objectForKey:objectID5];
+        [(NSSQLSavePlan *)self _populateOrderKeysInOrderedSet:deletedCopy usingSourceObjectID:objectID inverseRelationship:originalCopy newIndexes:0 reorderedIndexes:0];
+        v96 = [(_NSFaultingMutableOrderedSet *)deletedCopy _orderKeyForObject:v92];
         v97 = v96;
         if (v94)
         {
@@ -1350,9 +1350,9 @@ LABEL_145:
 
         if ([objc_msgSend(v95 objectForKey:{@"fok", "intValue"}] != v96)
         {
-          [v228 addObject:v93];
+          [indexesCopy addObject:objectID5];
 LABEL_90:
-          [v89 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", v97), v93}];
+          [v89 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", v97), objectID5}];
         }
 
 LABEL_91:
@@ -1372,13 +1372,13 @@ LABEL_91:
     }
 
 LABEL_92:
-    if ([v228 count])
+    if ([indexesCopy count])
     {
       v98 = objc_alloc_init(NSFetchRequest);
-      -[NSFetchRequest setEntity:](v98, "setEntity:", [objc_msgSend(v238 "destinationEntity")]);
-      -[NSFetchRequest setPredicate:](v98, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v228]);
+      -[NSFetchRequest setEntity:](v98, "setEntity:", [objc_msgSend(originalCopy "destinationEntity")]);
+      -[NSFetchRequest setPredicate:](v98, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", indexesCopy]);
       v99 = [NSSQLFetchRequestContext alloc];
-      v100 = *(a1 + 8);
+      v100 = *(self + 8);
       if (v100)
       {
         v101 = *(v100 + 32);
@@ -1394,7 +1394,7 @@ LABEL_92:
       v103 = [(NSSQLFetchRequestContext *)v99 initWithRequest:v98 context:v101 sqlCore:v102];
       [(NSSQLStoreRequestContext *)v103 setQueryGenerationToken:?];
       *(*(v103 + 136) + 72) = *(*(v103 + 136) + 72) & 0xFFFFFFE3 | 8;
-      v104 = *(a1 + 8);
+      v104 = *(self + 8);
       if (v104)
       {
         v105 = *(v104 + 8);
@@ -1405,15 +1405,15 @@ LABEL_92:
         v105 = 0;
       }
 
-      v106 = v228;
+      v106 = indexesCopy;
       [(NSSQLCore *)v105 dispatchRequest:v103 withRetries:0];
-      v107 = [v103 result];
+      result3 = [v103 result];
 
       v255 = 0u;
       v256 = 0u;
       v253 = 0u;
       v254 = 0u;
-      v108 = [v107 countByEnumeratingWithState:&v253 objects:v266 count:16];
+      v108 = [result3 countByEnumeratingWithState:&v253 objects:v266 count:16];
       if (v108)
       {
         v109 = *v254;
@@ -1423,19 +1423,19 @@ LABEL_92:
           {
             if (*v254 != v109)
             {
-              objc_enumerationMutation(v107);
+              objc_enumerationMutation(result3);
             }
 
             v111 = *(*(&v253 + 1) + 8 * jj);
-            v112 = *(a1 + 8);
-            v113 = [v111 objectID];
+            v112 = *(self + 8);
+            objectID6 = [v111 objectID];
             if (v112)
             {
-              [*(v112 + 136) setObject:v111 forKey:v113];
+              [*(v112 + 136) setObject:v111 forKey:objectID6];
             }
           }
 
-          v108 = [v107 countByEnumeratingWithState:&v253 objects:v266 count:16];
+          v108 = [result3 countByEnumeratingWithState:&v253 objects:v266 count:16];
         }
 
         while (v108);
@@ -1446,7 +1446,7 @@ LABEL_92:
 
     else
     {
-      v114 = v228;
+      v114 = indexesCopy;
     }
 
     v251 = 0u;
@@ -1468,8 +1468,8 @@ LABEL_92:
 
           v122 = *(*(&v249 + 1) + 8 * kk);
           v123 = [v89 objectForKey:v122];
-          v124 = [(NSSQLSaveChangesRequestContext *)*(a1 + 8) originalRowForObjectID:v122];
-          v125 = CFDictionaryGetValue(*(a1 + 16), v122);
+          v124 = [(NSSQLSaveChangesRequestContext *)*(self + 8) originalRowForObjectID:v122];
+          v125 = CFDictionaryGetValue(*(self + 16), v122);
           if (v125)
           {
             v126 = 1;
@@ -1483,13 +1483,13 @@ LABEL_92:
           if (!v126)
           {
             v125 = [v124 copy];
-            CFDictionarySetValue(*(a1 + 16), v122, v125);
+            CFDictionarySetValue(*(self + 16), v122, v125);
           }
 
           if (v125)
           {
-            v127 = [v123 intValue];
-            [v125 setForeignOrderKeySlot:v245 orderKey:v127];
+            intValue = [v123 intValue];
+            [v125 setForeignOrderKeySlot:v245 orderKey:intValue];
             [v247 addObject:v122];
             [v247 addObject:v123];
           }
@@ -1529,8 +1529,8 @@ LABEL_92:
       v129 = 0;
     }
 
-    v130 = [v237 objectID];
-    [(NSSQLSavePlan *)a1 _registerChangedFOKs:v128 deletions:v129 forSourceObject:v130 andRelationship:v236];
+    objectID7 = [propertiesCopy objectID];
+    [(NSSQLSavePlan *)self _registerChangedFOKs:v128 deletions:v129 forSourceObject:objectID7 andRelationship:v236];
 LABEL_215:
     v131 = v247;
     goto LABEL_216;
@@ -1546,19 +1546,19 @@ LABEL_217:
     goto LABEL_253;
   }
 
-  v193 = [v236 name];
-  v194 = [v234 objectForKey:v193];
-  v195 = [v194 isToMany];
-  v196 = v195 ^ 1;
+  name4 = [v236 name];
+  v194 = [kCopy objectForKey:name4];
+  isToMany = [v194 isToMany];
+  v196 = isToMany ^ 1;
   if (!v194)
   {
     v196 = 1;
   }
 
-  if ((v196 & 1) == 0 && (v195 = v194[7]) != 0 && *(v195 + 88) == 1)
+  if ((v196 & 1) == 0 && (isToMany = v194[7]) != 0 && *(isToMany + 88) == 1)
   {
-    v195 = [objc_msgSend(v195 "foreignKey")];
-    v197 = v195;
+    isToMany = [objc_msgSend(isToMany "foreignKey")];
+    v197 = isToMany;
     LODWORD(v247) = 1;
   }
 
@@ -1569,7 +1569,7 @@ LABEL_217:
   }
 
   v244 = &v225;
-  MEMORY[0x1EEE9AC00](v195);
+  MEMORY[0x1EEE9AC00](isToMany);
   v200 = &v225 - v198;
   if (v199 > 0x200)
   {
@@ -1581,37 +1581,37 @@ LABEL_217:
     bzero(&v225 - v198, 8 * v199);
   }
 
-  [v235 getObjects:v200];
+  [addedCopy getObjects:v200];
   v201 = 0;
-  v246 = a9;
+  deletedCopy = deleted;
   LODWORD(v245) = v197;
   do
   {
     v202 = objc_autoreleasePoolPush();
-    v203 = [*&v200[8 * v201] objectID];
-    v204 = v203;
+    objectID8 = [*&v200[8 * v201] objectID];
+    v204 = objectID8;
     if ((v242 & 1) == 0)
     {
-      *&v241[8 * v201] = v203;
+      *&v241[8 * v201] = objectID8;
     }
 
     if (v247)
     {
-      v205 = CFDictionaryGetValue(*(a1 + 16), v203);
+      v205 = CFDictionaryGetValue(*(self + 16), objectID8);
       if (v205)
       {
         goto LABEL_243;
       }
 
-      if ([(NSSQLSaveChangesRequestContext *)*(a1 + 8) originalRowForObjectID:v204])
+      if ([(NSSQLSaveChangesRequestContext *)*(self + 8) originalRowForObjectID:v204])
       {
         v205 = 0;
         goto LABEL_243;
       }
 
-      v206 = [(NSSQLStoreRequestContext *)*(a1 + 8) createNestedObjectFaultContextForObjectWithID:v204];
+      v206 = [(NSSQLStoreRequestContext *)*(self + 8) createNestedObjectFaultContextForObjectWithID:v204];
       [(NSSQLStoreRequestContext *)v206 setQueryGenerationToken:?];
-      v207 = *(a1 + 8);
+      v207 = *(self + 8);
       if (v207)
       {
         v208 = *(v207 + 8);
@@ -1623,26 +1623,26 @@ LABEL_217:
       }
 
       [(NSSQLCore *)v208 dispatchRequest:v206 withRetries:0];
-      v209 = [v206 result];
-      if (v209)
+      result4 = [v206 result];
+      if (result4)
       {
-        v210 = *(a1 + 8);
+        v210 = *(self + 8);
         if (v210)
         {
-          [*(v210 + 136) setObject:v209 forKey:v204];
+          [*(v210 + 136) setObject:result4 forKey:v204];
         }
       }
 
-      v211 = v209;
+      v211 = result4;
       v197 = v245;
-      if (v209)
+      if (result4)
       {
-        v205 = [v209 copy];
-        CFDictionarySetValue(*(a1 + 16), v204, v205);
+        v205 = [result4 copy];
+        CFDictionarySetValue(*(self + 16), v204, v205);
 
 LABEL_243:
         v212 = [(NSSQLRow *)v205 foreignKeyForSlot:v197];
-        if (v212 == v246)
+        if (v212 == deletedCopy)
         {
           [v205 setForeignKeySlot:v197 int64:0];
         }
@@ -1678,37 +1678,37 @@ LABEL_253:
   return v248;
 }
 
-- (id)_correlationTableUpdateTrackerForRelationship:(uint64_t)a1
+- (id)_correlationTableUpdateTrackerForRelationship:(uint64_t)relationship
 {
-  v4 = [a2 correlationTableName];
-  Value = CFDictionaryGetValue(*(a1 + 32), v4);
+  correlationTableName = [a2 correlationTableName];
+  Value = CFDictionaryGetValue(*(relationship + 32), correlationTableName);
   if (!Value)
   {
     Value = [[NSSQLCorrelationTableUpdateTracker alloc] initForRelationship:a2];
-    CFDictionarySetValue(*(a1 + 32), v4, Value);
+    CFDictionarySetValue(*(relationship + 32), correlationTableName, Value);
   }
 
   return Value;
 }
 
-- (void)_recordToManyChangesForObject:(unint64_t *)a3 inRow:(int)a4 usingTimestamp:(double)a5 inserted:
+- (void)_recordToManyChangesForObject:(unint64_t *)object inRow:(int)row usingTimestamp:(double)timestamp inserted:
 {
-  v164 = a4;
-  v158 = a3;
-  v174 = a1;
+  rowCopy = row;
+  objectCopy = object;
+  selfCopy = self;
   v191 = *MEMORY[0x1E69E9840];
-  v151 = [a2 managedObjectContext];
-  v7 = [a2 entity];
-  v8 = v7;
-  if (v7)
+  managedObjectContext = [a2 managedObjectContext];
+  entity = [a2 entity];
+  v8 = entity;
+  if (entity)
   {
-    v162 = [*(v7 + 104) keys];
+    keys = [*(entity + 104) keys];
     v165 = v8[14];
   }
 
   else
   {
-    v162 = [0 keys];
+    keys = [0 keys];
     v165 = 0;
   }
 
@@ -1718,8 +1718,8 @@ LABEL_253:
     [a2 willAccessValueForKey:0];
   }
 
-  v153 = [v158 objectID];
-  if (v158 && (v158[2] & 1) == 0 && (v9 = atomic_load(v158 + 5), (v10 = [*(v9 + 16) _storeInfo1]) != 0))
+  objectID = [objectCopy objectID];
+  if (objectCopy && (objectCopy[2] & 1) == 0 && (v9 = atomic_load(objectCopy + 5), (v10 = [*(v9 + 16) _storeInfo1]) != 0))
   {
     v148 = 0;
     v147 = v10;
@@ -1745,19 +1745,19 @@ LABEL_253:
     v12 = 0;
   }
 
-  v155 = [v12 values];
-  if (v155)
+  values = [v12 values];
+  if (values)
   {
-    v157 = [MEMORY[0x1E695DFB0] null];
-    if (v158)
+    null = [MEMORY[0x1E695DFB0] null];
+    if (objectCopy)
     {
-      v14 = atomic_load(v158 + 5);
-      v168 = [*(v14 + 16) _referenceData64];
+      v14 = atomic_load(objectCopy + 5);
+      _referenceData64 = [*(v14 + 16) _referenceData64];
     }
 
     else
     {
-      v168 = 0;
+      _referenceData64 = 0;
     }
 
     v15 = v165[18];
@@ -1766,8 +1766,8 @@ LABEL_253:
     v160 = v16;
     if (v15 < v16)
     {
-      v17 = v164;
-      if (!v158)
+      v17 = rowCopy;
+      if (!objectCopy)
       {
         v17 = 0;
       }
@@ -1784,7 +1784,7 @@ LABEL_253:
       do
       {
         v170 = objc_autoreleasePoolPush();
-        v18 = *(v162 + 8 * v176);
+        v18 = *(keys + 8 * v176);
         v172 = [(NSEntityDescription *)v163 _relationshipNamed:v18];
         v19 = v165[16];
         v21 = v176 >= v19;
@@ -1794,7 +1794,7 @@ LABEL_253:
         LODWORD(v173) = v22;
         _PF_Handler_Primitive_GetProperty(a2, v176, v18, *(v161 + 8 * v176));
         v24 = v23;
-        if (v164)
+        if (rowCopy)
         {
           v25 = &NSOrderedSet_EmptyOrderedSet;
           if (!v173)
@@ -1807,7 +1807,7 @@ LABEL_253:
 
         else
         {
-          v26 = *(v155 + 8 * v176);
+          v26 = *(values + 8 * v176);
         }
 
         v171 = v26;
@@ -1816,11 +1816,11 @@ LABEL_253:
           goto LABEL_211;
         }
 
-        if (v157 == v24 || (v169 = 0, ![v24 count]))
+        if (null == v24 || (v169 = 0, ![v24 count]))
         {
           v169 = 0;
           v30 = NSSet_EmptySet;
-          if (v157 == v171 || (v169 = 0, ![v171 count]))
+          if (null == v171 || (v169 = 0, ![v171 count]))
           {
             v169 = 0;
             v169 = NSSet_EmptySet;
@@ -1852,7 +1852,7 @@ LABEL_253:
         {
           v27 = [v24 count];
           v28 = v27;
-          if (v157 != v171)
+          if (null != v171)
           {
             v27 = [v171 count];
             if (v27)
@@ -1934,15 +1934,15 @@ LABEL_54:
         {
           if (v24 && v24[4])
           {
-            v47 = [(_NSFaultingMutableOrderedSet *)v24 _newOrderKeys];
-            v48 = [*(v174 + 8) rowCache];
-            v49 = [(NSPersistentStoreCache *)v48 ancillaryOrderKeysForSourceObjectID:v153 forProperty:v172 afterTimestamp:*&NSSQLDistantPastTimeInterval];
+            _newOrderKeys = [(_NSFaultingMutableOrderedSet *)v24 _newOrderKeys];
+            rowCache = [*(selfCopy + 8) rowCache];
+            v49 = [(NSPersistentStoreCache *)rowCache ancillaryOrderKeysForSourceObjectID:objectID forProperty:v172 afterTimestamp:*&NSSQLDistantPastTimeInterval];
           }
 
           else
           {
             v49 = 0;
-            v47 = 0;
+            _newOrderKeys = 0;
           }
 
           v50 = [v171 count];
@@ -1952,7 +1952,7 @@ LABEL_54:
           }
 
           v51 = v50;
-          v52 = [v47 count];
+          v52 = [_newOrderKeys count];
           if (v52 != [v49 count] || v51 != objc_msgSend(v49, "count"))
           {
             goto LABEL_78;
@@ -1964,7 +1964,7 @@ LABEL_54:
             while (1)
             {
               v54 = [v171 objectAtIndex:v53];
-              if (v54 != [v24 objectAtIndex:v53] || (objc_msgSend(objc_msgSend(v47, "objectAtIndex:", v53), "isEqual:", objc_msgSend(v49, "objectAtIndex:", v53)) & 1) == 0)
+              if (v54 != [v24 objectAtIndex:v53] || (objc_msgSend(objc_msgSend(_newOrderKeys, "objectAtIndex:", v53), "isEqual:", objc_msgSend(v49, "objectAtIndex:", v53)) & 1) == 0)
               {
                 break;
               }
@@ -1990,42 +1990,42 @@ LABEL_77:
         {
           if (v152)
           {
-            v70 = atomic_load(v158 + 5);
+            v70 = atomic_load(objectCopy + 5);
             if (*(v70 + 12) == 1)
             {
-              [NSPersistentCacheRow setRelatedObjectIDs:v158 forProperty:NSArray_EmptyArray options:v172 andTimestamp:a5];
+              [NSPersistentCacheRow setRelatedObjectIDs:objectCopy forProperty:NSArray_EmptyArray options:v172 andTimestamp:timestamp];
               if (v173)
               {
-                [NSPersistentCacheRow setAncillaryOrderKeys:v158 forProperty:NSArray_EmptyArray options:v172 andTimestamp:?];
+                [NSPersistentCacheRow setAncillaryOrderKeys:objectCopy forProperty:NSArray_EmptyArray options:v172 andTimestamp:?];
               }
             }
           }
 
-          v159 = 0;
+          lastObject = 0;
           v156 = 0;
           v175 = 0;
           goto LABEL_210;
         }
 
 LABEL_81:
-        if (v152 && (v55 = atomic_load(v158 + 5), *(v55 + 12) == 1))
+        if (v152 && (v55 = atomic_load(objectCopy + 5), *(v55 + 12) == 1))
         {
-          v56 = NSArray_EmptyArray;
+          firstObject = NSArray_EmptyArray;
           if (v173)
           {
-            v159 = NSArray_EmptyArray;
+            lastObject = NSArray_EmptyArray;
           }
 
           else
           {
-            v159 = 0;
+            lastObject = 0;
           }
         }
 
         else
         {
           v57 = [NSSQLRelationshipFaultRequestContext alloc];
-          v58 = *(v174 + 8);
+          v58 = *(selfCopy + 8);
           if (v58)
           {
             v59 = *(v58 + 8);
@@ -2036,9 +2036,9 @@ LABEL_81:
             v59 = 0;
           }
 
-          v60 = [(NSSQLRelationshipFaultRequestContext *)v57 initWithObjectID:v153 relationship:v172 context:v151 sqlCore:v59];
+          v60 = [(NSSQLRelationshipFaultRequestContext *)v57 initWithObjectID:objectID relationship:v172 context:managedObjectContext sqlCore:v59];
           [(NSSQLStoreRequestContext *)v60 setQueryGenerationToken:?];
-          v61 = *(v174 + 8);
+          v61 = *(selfCopy + 8);
           if (v61)
           {
             v62 = *(v61 + 8);
@@ -2050,25 +2050,25 @@ LABEL_81:
           }
 
           [(NSSQLCore *)v62 dispatchRequest:v60 withRetries:0];
-          v63 = [v60 result];
-          v64 = v63;
+          result = [v60 result];
+          v64 = result;
           if (v60)
           {
             v65 = *(v60 + 40);
             if (v65)
             {
               v132 = v65;
-              v133 = [v132 code];
+              code = [v132 code];
               v175 = [v132 description];
               v188[0] = [v132 domain];
               v167 = MEMORY[0x1E696AD98];
-              v134 = [v132 code];
-              v135 = [v167 numberWithLong:v134];
+              code2 = [v132 code];
+              v135 = [v167 numberWithLong:code2];
               v188[1] = v141;
               v189[0] = v135;
               v189[1] = v132;
               v136 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v189 forKeys:v188 count:2];
-              v137 = [_NSCoreDataException exceptionWithName:v143 code:v133 reason:v175 userInfo:v136];
+              v137 = [_NSCoreDataException exceptionWithName:v143 code:code reason:v175 userInfo:v136];
               objc_exception_throw(v137);
             }
 
@@ -2079,27 +2079,27 @@ LABEL_81:
             }
           }
 
-          if ([v63 count])
+          if ([result count])
           {
-            v56 = [v63 firstObject];
+            firstObject = [result firstObject];
           }
 
           else
           {
-            v56 = 0;
+            firstObject = 0;
           }
 
           if (v173)
           {
-            v159 = [v63 lastObject];
+            lastObject = [result lastObject];
           }
 
           else
           {
-            v159 = 0;
+            lastObject = 0;
           }
 
-          if (!v56)
+          if (!firstObject)
           {
             if (+[NSSQLCore debugDefault]>= 2)
             {
@@ -2113,9 +2113,9 @@ LABEL_81:
                   if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
                   {
                     *v185 = v146;
-                    *&v185[4] = v153;
+                    *&v185[4] = objectID;
                     v186 = 2112;
-                    v187 = v158;
+                    v187 = objectCopy;
                     _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: Optimistic locking failure for %@.  Original row was missing while recording to-many changes.  New row = %@\n", v185, 0x16u);
                   }
                 }
@@ -2126,9 +2126,9 @@ LABEL_81:
                   if (os_log_type_enabled(v138, OS_LOG_TYPE_DEFAULT))
                   {
                     *v185 = v146;
-                    *&v185[4] = v153;
+                    *&v185[4] = objectID;
                     v186 = 2112;
-                    v187 = v158;
+                    v187 = objectCopy;
                     _os_log_impl(&dword_18565F000, v138, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: Optimistic locking failure for %@.  Original row was missing while recording to-many changes.  New row = %@\n", v185, 0x16u);
                   }
                 }
@@ -2144,7 +2144,7 @@ LABEL_81:
                 v126 = 4;
               }
 
-              _NSCoreDataLog_console(v126, "Optimistic locking failure for %@.  Original row was missing while recording to-many changes.  New row = %@", v153, v158);
+              _NSCoreDataLog_console(v126, "Optimistic locking failure for %@.  Original row was missing while recording to-many changes.  New row = %@", objectID, objectCopy);
               goto LABEL_234;
             }
 
@@ -2160,7 +2160,7 @@ LABEL_81:
                   if (os_log_type_enabled(v127, OS_LOG_TYPE_ERROR))
                   {
                     *v185 = v145;
-                    *&v185[4] = v153;
+                    *&v185[4] = objectID;
                     _os_log_error_impl(&dword_18565F000, v127, OS_LOG_TYPE_ERROR, "CoreData: error: Optimistic locking failure for %@.  Original row was missing while recording to-many changes.\n", v185, 0xCu);
                   }
                 }
@@ -2171,7 +2171,7 @@ LABEL_81:
                   if (os_log_type_enabled(v139, OS_LOG_TYPE_DEFAULT))
                   {
                     *v185 = v145;
-                    *&v185[4] = v153;
+                    *&v185[4] = objectID;
                     _os_log_impl(&dword_18565F000, v139, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: Optimistic locking failure for %@.  Original row was missing while recording to-many changes.\n", v185, 0xCu);
                   }
                 }
@@ -2187,12 +2187,12 @@ LABEL_81:
                 v128 = 4;
               }
 
-              _NSCoreDataLog_console(v128, "Optimistic locking failure for %@.  Original row was missing while recording to-many changes.", v153);
+              _NSCoreDataLog_console(v128, "Optimistic locking failure for %@.  Original row was missing while recording to-many changes.", objectID);
 LABEL_234:
               objc_autoreleasePoolPop(v124);
             }
 
-            v182 = v153;
+            v182 = objectID;
             v183 = v144;
             v184 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v182 count:1];
             v129 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v184 forKeys:&v183 count:1];
@@ -2202,8 +2202,8 @@ LABEL_234:
 
         *v185 = 0;
         v177 = 0;
-        v156 = v56;
-        v167 = [(NSSQLSavePlan *)v174 _newRowCacheRowForToManyUpdatesForRelationship:v172 rowCacheOriginal:v56 originalOrderKeys:v159 originalSnapshot:v171 value:v24 added:v30 deleted:v169 sourceRowPK:v168 properties:v154 sourceObject:a2 newIndexes:v185 reorderedIndexes:&v177];
+        v156 = firstObject;
+        v167 = [(NSSQLSavePlan *)selfCopy _newRowCacheRowForToManyUpdatesForRelationship:v172 rowCacheOriginal:firstObject originalOrderKeys:lastObject originalSnapshot:v171 value:v24 added:v30 deleted:v169 sourceRowPK:_referenceData64 properties:v154 sourceObject:a2 newIndexes:v185 reorderedIndexes:&v177];
         if (v173)
         {
           v67 = [v167 count];
@@ -2228,10 +2228,10 @@ LABEL_234:
           v175 = 0;
         }
 
-        [NSPersistentCacheRow setRelatedObjectIDs:v158 forProperty:v167 options:v172 andTimestamp:a5];
+        [NSPersistentCacheRow setRelatedObjectIDs:objectCopy forProperty:v167 options:v172 andTimestamp:timestamp];
         if (v173)
         {
-          [NSPersistentCacheRow setAncillaryOrderKeys:v158 forProperty:v175 options:v172 andTimestamp:?];
+          [NSPersistentCacheRow setAncillaryOrderKeys:objectCopy forProperty:v175 options:v172 andTimestamp:?];
         }
 
         v166 = [v154 objectForKey:v18];
@@ -2239,26 +2239,26 @@ LABEL_234:
         {
           if (v166)
           {
-            v71 = *(v166 + 56);
+            slot = *(v166 + 56);
           }
 
           else
           {
-            v71 = 0;
+            slot = 0;
           }
 
-          v72 = [objc_msgSend(v71 "foreignKey")];
-          if (v71)
+          v72 = [objc_msgSend(slot "foreignKey")];
+          if (slot)
           {
-            v73 = v71[10];
+            v73 = slot[10];
             if (v73)
             {
-              v71 = [v73 slot];
+              slot = [v73 slot];
             }
 
             else
             {
-              v71 = 0;
+              slot = 0;
             }
           }
 
@@ -2288,9 +2288,9 @@ LABEL_234:
                 v81 = objc_autoreleasePoolPush();
                 if (v177[k])
                 {
-                  v82 = [(NSSQLSavePlan *)v174 _findOrCreateChangeSnapshotForGlobalID:?];
-                  [v82 setForeignKeySlot:v72 int64:v168];
-                  [v82 setForeignOrderKeySlot:v71 orderKey:*(*v185 + 8 * k)];
+                  v82 = [(NSSQLSavePlan *)selfCopy _findOrCreateChangeSnapshotForGlobalID:?];
+                  [v82 setForeignKeySlot:v72 int64:_referenceData64];
+                  [v82 setForeignOrderKeySlot:slot orderKey:*(*v185 + 8 * k)];
                 }
 
                 objc_autoreleasePoolPop(v81);
@@ -2307,9 +2307,9 @@ LABEL_234:
               do
               {
                 v84 = objc_autoreleasePoolPush();
-                v85 = [*v83 objectID];
-                v86 = [(NSSQLSavePlan *)v174 _findOrCreateChangeSnapshotForGlobalID:v85];
-                [v86 setForeignKeySlot:v72 int64:v168];
+                objectID2 = [*v83 objectID];
+                v86 = [(NSSQLSavePlan *)selfCopy _findOrCreateChangeSnapshotForGlobalID:objectID2];
+                [v86 setForeignKeySlot:v72 int64:_referenceData64];
                 objc_autoreleasePoolPop(v84);
                 ++v83;
                 --v74;
@@ -2354,8 +2354,8 @@ LABEL_234:
             for (m = v92; v88; --v88)
             {
               v94 = objc_autoreleasePoolPush();
-              v95 = [*m objectID];
-              [-[NSSQLSavePlan _findOrCreateChangeSnapshotForGlobalID:](v174 v95)];
+              objectID3 = [*m objectID];
+              [-[NSSQLSavePlan _findOrCreateChangeSnapshotForGlobalID:](selfCopy objectID3)];
               objc_autoreleasePoolPop(v94);
               ++m;
             }
@@ -2371,13 +2371,13 @@ LABEL_234:
         {
           if ([v166 isToMany])
           {
-            if ((*(v174 + 148) & 1) != 0 && v169 && [v169 count])
+            if ((*(selfCopy + 148) & 1) != 0 && v169 && [v169 count])
             {
               v97 = [_PFRoutines newArrayOfObjectIDsFromCollection:v169];
-              [(NSSQLSavePlan *)v174 _registerChangedFOKs:v97 deletions:v153 forSourceObject:v172 andRelationship:?];
+              [(NSSQLSavePlan *)selfCopy _registerChangedFOKs:v97 deletions:objectID forSourceObject:v172 andRelationship:?];
             }
 
-            v98 = *(v174 + 8);
+            v98 = *(selfCopy + 8);
             if (v98 && *(v98 + 82) == 1 && (!v173 || [v30 count] || objc_msgSend(v169, "count") || objc_msgSend(v171, "count")))
             {
               v99 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -2391,8 +2391,8 @@ LABEL_234:
                 v100 = *(v147 + 184);
               }
 
-              v101 = [v99 initWithFormat:@"%u-%lld", v100, objc_msgSend(v153, "_referenceData64")];
-              v102 = [*(v174 + 128) objectForKey:v101];
+              v101 = [v99 initWithFormat:@"%u-%lld", v100, objc_msgSend(objectID, "_referenceData64")];
+              v102 = [*(selfCopy + 128) objectForKey:v101];
               if (v102)
               {
                 [v102 addObject:{objc_msgSend(v172, "name")}];
@@ -2402,7 +2402,7 @@ LABEL_234:
               {
                 v115 = objc_alloc(MEMORY[0x1E695DFA8]);
                 v116 = [v115 initWithObjects:{objc_msgSend(v172, "name"), 0}];
-                [*(v174 + 128) setObject:v116 forKey:v101];
+                [*(selfCopy + 128) setObject:v116 forKey:v101];
               }
             }
           }
@@ -2410,7 +2410,7 @@ LABEL_234:
           goto LABEL_203;
         }
 
-        if (*(v174 + 148))
+        if (*(selfCopy + 148))
         {
           v96 = objc_alloc_init(MEMORY[0x1E695DF70]);
         }
@@ -2424,13 +2424,13 @@ LABEL_234:
         if (v103)
         {
           v104 = [_PFRoutines newArrayOfObjectIDsFromCollection:v30];
-          v105 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2 * v103];
+          v103 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2 * v103];
         }
 
         else
         {
           v104 = 0;
-          v105 = 0;
+          v103 = 0;
         }
 
         if (v173)
@@ -2447,8 +2447,8 @@ LABEL_234:
               {
                 if ([v106 containsObject:v109])
                 {
-                  [v105 addObject:v109];
-                  [v105 addObject:{objc_msgSend(v175, "objectAtIndex:", n)}];
+                  [v103 addObject:v109];
+                  [v103 addObject:{objc_msgSend(v175, "objectAtIndex:", n)}];
                   goto LABEL_181;
                 }
 
@@ -2479,15 +2479,15 @@ LABEL_181:
         {
 
           v173 = 0;
-          v105 = v104;
+          v103 = v104;
           v104 = 0;
         }
 
         if (*(v166 + 64))
         {
           v111 = [_PFRoutines newArrayOfObjectIDsFromCollection:v169];
-          v112 = [(NSSQLSavePlan *)v174 _correlationTableUpdateTrackerForRelationship:v166];
-          [(NSSQLCorrelationTableUpdateTracker *)v112 trackInserts:v105 deletes:v111 reorders:v173 forObjectWithID:v153];
+          v112 = [(NSSQLSavePlan *)selfCopy _correlationTableUpdateTrackerForRelationship:v166];
+          [(NSSQLCorrelationTableUpdateTracker *)v112 trackInserts:v103 deletes:v111 reorders:v173 forObjectWithID:objectID];
           if (v96)
           {
             v113 = v111;
@@ -2506,8 +2506,8 @@ LABEL_181:
           goto LABEL_195;
         }
 
-        v114 = [(NSSQLSavePlan *)v174 _correlationTableUpdateTrackerForRelationship:?];
-        [(NSSQLCorrelationTableUpdateTracker *)v114 trackReorders:v173 forObjectWithID:v153];
+        v114 = [(NSSQLSavePlan *)selfCopy _correlationTableUpdateTrackerForRelationship:?];
+        [(NSSQLCorrelationTableUpdateTracker *)v114 trackReorders:v173 forObjectWithID:objectID];
         if (v96)
         {
           v113 = [_PFRoutines newArrayOfObjectIDsFromCollection:v169];
@@ -2534,7 +2534,7 @@ LABEL_195:
             v120 = 0;
           }
 
-          [(NSSQLSavePlan *)v174 _registerChangedFOKs:v119 deletions:v120 forSourceObject:v153 andRelationship:v172];
+          [(NSSQLSavePlan *)selfCopy _registerChangedFOKs:v119 deletions:v120 forSourceObject:objectID andRelationship:v172];
           goto LABEL_202;
         }
 
@@ -2575,17 +2575,17 @@ LABEL_211:
   v140 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_findOrCreateChangeSnapshotForGlobalID:(uint64_t)a1
+- (void)_findOrCreateChangeSnapshotForGlobalID:(uint64_t)d
 {
-  Value = CFDictionaryGetValue(*(a1 + 16), a2);
+  Value = CFDictionaryGetValue(*(d + 16), a2);
   if (!Value)
   {
-    v5 = [(NSSQLSaveChangesRequestContext *)*(a1 + 8) originalRowForObjectID:a2];
+    v5 = [(NSSQLSaveChangesRequestContext *)*(d + 8) originalRowForObjectID:a2];
     if (!v5)
     {
-      v6 = [(NSSQLStoreRequestContext *)*(a1 + 8) createNestedObjectFaultContextForObjectWithID:a2];
+      v6 = [(NSSQLStoreRequestContext *)*(d + 8) createNestedObjectFaultContextForObjectWithID:a2];
       [(NSSQLStoreRequestContext *)v6 setQueryGenerationToken:?];
-      v7 = *(a1 + 8);
+      v7 = *(d + 8);
       if (v7)
       {
         v8 = *(v7 + 8);
@@ -2597,20 +2597,20 @@ LABEL_211:
       }
 
       [(NSSQLCore *)v8 dispatchRequest:v6 withRetries:0];
-      v9 = [v6 result];
-      if (v9)
+      result = [v6 result];
+      if (result)
       {
-        v10 = *(a1 + 8);
+        v10 = *(d + 8);
         if (v10)
         {
-          [*(v10 + 136) setObject:v9 forKey:a2];
+          [*(v10 + 136) setObject:result forKey:a2];
         }
       }
 
-      v11 = v9;
-      if (!v9)
+      v11 = result;
+      if (!result)
       {
-        v14 = *(a1 + 8);
+        v14 = *(d + 8);
         if (v14)
         {
           v15 = *(v14 + 8);
@@ -2626,21 +2626,21 @@ LABEL_211:
         goto LABEL_11;
       }
 
-      v5 = v9;
+      v5 = result;
     }
 
     v12 = [v5 copy];
 LABEL_11:
     Value = v12;
-    CFDictionarySetValue(*(a1 + 16), a2, v12);
+    CFDictionarySetValue(*(d + 16), a2, v12);
   }
 
   return Value;
 }
 
-- (uint64_t)_addFileBackedFutureToDelete:(uint64_t)a1
+- (uint64_t)_addFileBackedFutureToDelete:(uint64_t)delete
 {
-  v4 = *(a1 + 8);
+  v4 = *(delete + 8);
   if (v4)
   {
     v5 = *(v4 + 8);
@@ -2651,7 +2651,7 @@ LABEL_11:
     v5 = 0;
   }
 
-  v6 = [v5 fileBackedFuturesDirectory];
+  fileBackedFuturesDirectory = [v5 fileBackedFuturesDirectory];
   if (a2)
   {
     v7 = *(a2 + 8);
@@ -2665,11 +2665,11 @@ LABEL_11:
   result = [objc_msgSend(v7 "path")];
   if (result)
   {
-    v9 = *(a1 + 120);
+    v9 = *(delete + 120);
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      *(a1 + 120) = v9;
+      *(delete + 120) = v9;
     }
 
     return [v9 addObject:a2];
@@ -2678,14 +2678,14 @@ LABEL_11:
   return result;
 }
 
-- (void)_populateRow:(_BYTE *)a3 fromObject:(int)a4 timestamp:(_BYTE *)a5 inserted:(double)a6 shouldAddToRowCache:
+- (void)_populateRow:(_BYTE *)row fromObject:(int)object timestamp:(_BYTE *)timestamp inserted:(double)inserted shouldAddToRowCache:
 {
-  v8 = a3;
-  v10 = [a3 entity];
-  v11 = v10;
-  if (v10)
+  rowCopy = row;
+  entity = [row entity];
+  v11 = entity;
+  if (entity)
   {
-    v139 = v10[13];
+    v139 = entity[13];
   }
 
   else
@@ -2693,67 +2693,67 @@ LABEL_11:
     v139 = 0;
   }
 
-  v137 = _kvcPropertysPrimitiveGetters(v10);
-  *a5 = 1;
-  if ((v8[17] & 0x80) != 0)
+  v137 = _kvcPropertysPrimitiveGetters(entity);
+  *timestamp = 1;
+  if ((rowCopy[17] & 0x80) != 0)
   {
-    [v8 willAccessValueForKey:0];
+    [rowCopy willAccessValueForKey:0];
   }
 
-  v131 = a4;
+  objectCopy = object;
   v127 = v11;
   if (!a2 || (a2[2] & 1) != 0)
   {
-    v13 = 0;
+    _storeInfo1 = 0;
   }
 
   else
   {
     v12 = atomic_load(a2 + 5);
-    v13 = [*(v12 + 16) _storeInfo1];
+    _storeInfo1 = [*(v12 + 16) _storeInfo1];
   }
 
-  v129 = v13;
-  v14 = [v13 foreignKeyColumns];
-  v15 = [v14 count];
-  v138 = v8;
+  v129 = _storeInfo1;
+  foreignKeyColumns = [_storeInfo1 foreignKeyColumns];
+  v15 = [foreignKeyColumns count];
+  v138 = rowCopy;
   v132 = a2;
   if (v15)
   {
     v16 = v15;
     v17 = 0;
-    v134 = v14;
+    v134 = foreignKeyColumns;
     do
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = [v14 objectAtIndex:v17];
-      v20 = [v19 toOneRelationship];
-      v21 = v20;
-      if (v20 && (v20[88] & 1) != 0)
+      v19 = [foreignKeyColumns objectAtIndex:v17];
+      toOneRelationship = [v19 toOneRelationship];
+      v21 = toOneRelationship;
+      if (toOneRelationship && (toOneRelationship[88] & 1) != 0)
       {
         goto LABEL_54;
       }
 
-      v22 = [v20 name];
-      v23 = [v139 fastIndexForKnownKey:v22];
+      name = [toOneRelationship name];
+      v23 = [v139 fastIndexForKnownKey:name];
       if (v23 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v24 = [v8 primitiveValueForKey:v22];
+        v24 = [rowCopy primitiveValueForKey:name];
       }
 
       else
       {
-        _PF_Handler_Primitive_GetProperty(v8, v23, v22, *(v137 + 8 * v23));
+        _PF_Handler_Primitive_GetProperty(rowCopy, v23, name, *(v137 + 8 * v23));
       }
 
       v25 = v24;
       v26 = [objc_msgSend(v24 "objectID")];
       if (v26)
       {
-        v27 = a1[1];
+        v27 = self[1];
         if (!v27 || v26 != *(v27 + 8))
         {
-          v125 = +[_NSCoreDataException exceptionWithName:code:reason:userInfo:](_NSCoreDataException, *MEMORY[0x1E695D940], 133010, @"CoreData does not support persistent cross-store relationships", [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v8, @"Source object", v25, @"Destination Object", objc_msgSend(objc_msgSend(v127, "propertiesByName"), "objectForKey:", v22), @"Relationship", 0}]);
+          v125 = +[_NSCoreDataException exceptionWithName:code:reason:userInfo:](_NSCoreDataException, *MEMORY[0x1E695D940], 133010, @"CoreData does not support persistent cross-store relationships", [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{rowCopy, @"Source object", v25, @"Destination Object", objc_msgSend(objc_msgSend(v127, "propertiesByName"), "objectForKey:", name), @"Relationship", 0}]);
           objc_exception_throw(v125);
         }
       }
@@ -2770,7 +2770,7 @@ LABEL_11:
       v31 = v21[9];
       if (v31)
       {
-        if (v25 && ((v33 = [v25 objectID], (v34 = a1[1]) == 0) ? (v35 = 0) : (v35 = *(v34 + 8)), (v36 = -[NSSQLCore entityForObjectID:](v35, v33)) != 0))
+        if (v25 && ((v33 = [v25 objectID], (v34 = self[1]) == 0) ? (v35 = 0) : (v35 = *(v34 + 8)), (v36 = -[NSSQLCore entityForObjectID:](v35, v33)) != 0))
         {
           v32 = *(v36 + 184);
         }
@@ -2781,7 +2781,7 @@ LABEL_11:
         }
 
         [a2 setForeignEntityKeySlot:objc_msgSend(v31 entityKey:{"slot"), v32}];
-        v8 = v138;
+        rowCopy = v138;
       }
 
       v37 = v21[10];
@@ -2793,11 +2793,11 @@ LABEL_11:
       if (v25)
       {
         v39 = v21[7];
-        v40 = [v25 entity];
-        v41 = v40;
-        if (v40)
+        entity2 = [v25 entity];
+        v41 = entity2;
+        if (entity2)
         {
-          v42 = *(v40 + 104);
+          v42 = *(entity2 + 104);
         }
 
         else
@@ -2805,28 +2805,28 @@ LABEL_11:
           v42 = 0;
         }
 
-        v43 = [v39 name];
-        v44 = [v42 fastIndexForKnownKey:v43];
+        name2 = [v39 name];
+        v44 = [v42 fastIndexForKnownKey:name2];
         if (v44 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v45 = [v25 primitiveValueForKey:v43];
+          v45 = [v25 primitiveValueForKey:name2];
         }
 
         else
         {
           v46 = v44;
           v47 = _kvcPropertysPrimitiveGetters(v41);
-          _PF_Handler_Primitive_GetProperty(v25, v46, v43, *(v47 + 8 * v46));
+          _PF_Handler_Primitive_GetProperty(v25, v46, name2, *(v47 + 8 * v46));
         }
 
         v48 = v45;
-        v8 = v138;
+        rowCopy = v138;
         if (v45)
         {
           v38 = [v45 count];
           if (v38)
           {
-            -[NSSQLSavePlan _populateOrderKeysInOrderedSet:usingSourceObjectID:inverseRelationship:newIndexes:reorderedIndexes:](a1, v48, [v25 objectID], v39, 0, 0);
+            -[NSSQLSavePlan _populateOrderKeysInOrderedSet:usingSourceObjectID:inverseRelationship:newIndexes:reorderedIndexes:](self, v48, [v25 objectID], v39, 0, 0);
             LODWORD(v38) = [(_NSFaultingMutableOrderedSet *)v48 _orderKeyForObject:v138];
           }
         }
@@ -2837,7 +2837,7 @@ LABEL_11:
         }
 
         a2 = v132;
-        v14 = v134;
+        foreignKeyColumns = v134;
         if (v38)
         {
 LABEL_50:
@@ -2851,10 +2851,10 @@ LABEL_50:
             v49 = 0;
           }
 
-          v50 = [v37 slot];
+          slot = [v37 slot];
           v51 = v49;
-          v8 = v138;
-          [a2 setForeignOrderKeySlot:v50 orderKey:v51];
+          rowCopy = v138;
+          [a2 setForeignOrderKeySlot:slot orderKey:v51];
           goto LABEL_54;
         }
       }
@@ -2877,8 +2877,8 @@ LABEL_54:
     while (v16 != v17);
   }
 
-  v52 = [v129 attributeColumns];
-  v53 = [v52 count];
+  attributeColumns = [v129 attributeColumns];
+  v53 = [attributeColumns count];
   v54 = atomic_load(a2 + 5);
   v55 = 0x20000;
   if (!_PF_INTERNAL_DATA_SIZE_THRESHOLD)
@@ -2895,28 +2895,28 @@ LABEL_54:
     do
     {
       v58 = objc_autoreleasePoolPush();
-      v59 = [v52 objectAtIndex:v57];
-      v60 = [v59 propertyDescription];
-      if (v60 && [v60 superCompositeAttribute])
+      v59 = [attributeColumns objectAtIndex:v57];
+      propertyDescription = [v59 propertyDescription];
+      if (propertyDescription && [propertyDescription superCompositeAttribute])
       {
-        v61 = -[NSPropertyDescription _rootName]([v59 propertyDescription]);
+        name3 = -[NSPropertyDescription _rootName]([v59 propertyDescription]);
       }
 
       else
       {
-        v61 = [v59 name];
+        name3 = [v59 name];
       }
 
-      v62 = v61;
-      v63 = [v139 fastIndexForKnownKey:v61];
+      v62 = name3;
+      v63 = [v139 fastIndexForKnownKey:name3];
       if (v63 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v64 = [v8 primitiveValueForKey:v62];
+        v64 = [rowCopy primitiveValueForKey:v62];
       }
 
       else
       {
-        _PF_Handler_Primitive_GetProperty(v8, v63, v62, *(v137 + 8 * v63));
+        _PF_Handler_Primitive_GetProperty(rowCopy, v63, v62, *(v137 + 8 * v63));
       }
 
       v65 = v64;
@@ -2925,44 +2925,44 @@ LABEL_54:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          *a5 = 0;
+          *timestamp = 0;
         }
       }
 
-      v66 = [v59 slot];
-      v67 = v66;
+      slot2 = [v59 slot];
+      v67 = slot2;
       if (v59 && (v59[16] & 8) != 0)
       {
-        snapshot_get_value_as_object(v54, v66);
-        [v8 setPrimitiveValue:v73 forKey:v62];
+        snapshot_get_value_as_object(v54, slot2);
+        [rowCopy setPrimitiveValue:v73 forKey:v62];
       }
 
       else
       {
         if (!v65)
         {
-          if (((v135[v66 >> 3] >> (v66 & 7)) & 1) == 0)
+          if (((v135[slot2 >> 3] >> (slot2 & 7)) & 1) == 0)
           {
             if ([v59 sqlType] == 16)
             {
               object = snapshot_get_object(v54, v67);
               v75 = objc_opt_class();
               v29 = v75 == objc_opt_class();
-              v8 = v138;
+              rowCopy = v138;
               if (v29)
               {
                 if ([v59 isFileBackedFuture])
                 {
-                  [(NSSQLSavePlan *)a1 _addFileBackedFutureToDelete:?];
+                  [(NSSQLSavePlan *)self _addFileBackedFutureToDelete:?];
                 }
 
                 else
                 {
-                  v111 = a1[13];
+                  v111 = self[13];
                   if (!v111)
                   {
                     v111 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                    a1[13] = v111;
+                    self[13] = v111;
                   }
 
                   [v111 addObject:object];
@@ -2976,31 +2976,31 @@ LABEL_54:
           goto LABEL_156;
         }
 
-        type = snapshot_get_type(v54, v66);
+        type = snapshot_get_type(v54, slot2);
         if (type > 0x68)
         {
           switch(type)
           {
             case 'i':
-              v82 = [v65 intValue];
+              intValue = [v65 intValue];
               Class = object_getClass(v54);
               IndexedIvars = object_getIndexedIvars(Class);
               v135[v67 >> 3] &= ~(1 << (v67 & 7));
-              *(v54 + IndexedIvars[v67 + 19]) = v82;
+              *(v54 + IndexedIvars[v67 + 19]) = intValue;
               break;
             case 'q':
-              v92 = [v65 longLongValue];
+              longLongValue = [v65 longLongValue];
               v93 = object_getClass(v54);
               v94 = object_getIndexedIvars(v93);
               v135[v67 >> 3] &= ~(1 << (v67 & 7));
-              *(v54 + v94[v67 + 19]) = v92;
+              *(v54 + v94[v67 + 19]) = longLongValue;
               break;
             case 's':
-              v76 = [v65 shortValue];
+              shortValue = [v65 shortValue];
               v77 = object_getClass(v54);
               v78 = object_getIndexedIvars(v77);
               v135[v67 >> 3] &= ~(1 << (v67 & 7));
-              *(v54 + v78[v67 + 19]) = v76;
+              *(v54 + v78[v67 + 19]) = shortValue;
               break;
             default:
               goto LABEL_92;
@@ -3011,13 +3011,13 @@ LABEL_54:
 
         if (type == 99)
         {
-          v79 = [v65 charValue];
+          charValue = [v65 charValue];
           v80 = object_getClass(v54);
           v81 = object_getIndexedIvars(v80);
           v135[v67 >> 3] &= ~(1 << (v67 & 7));
-          *(v54 + v81[v67 + 19]) = v79;
+          *(v54 + v81[v67 + 19]) = charValue;
 LABEL_106:
-          v8 = v138;
+          rowCopy = v138;
           goto LABEL_156;
         }
 
@@ -3062,7 +3062,7 @@ LABEL_92:
 
               else
               {
-                v99 = a1[1];
+                v99 = self[1];
                 if (v99 && (v100 = *(v99 + 8)) != 0 && (*(v100 + 201) & 0x40) != 0 || v130 >= [v65 length])
                 {
                   v105 = 0;
@@ -3074,7 +3074,7 @@ LABEL_92:
                   v101 = CFUUIDCreate(0);
                   v102 = CFUUIDCreateString(0, v101);
                   CFRelease(v101);
-                  v103 = a1[1];
+                  v103 = self[1];
                   if (v103)
                   {
                     v104 = *(v103 + 152);
@@ -3086,8 +3086,8 @@ LABEL_92:
                   }
 
                   v105 = [v104 stringByAppendingPathComponent:v102];
-                  v106 = a1[1];
-                  v8 = v138;
+                  v106 = self[1];
+                  rowCopy = v138;
                   if (v106)
                   {
                     v107 = *(v106 + 160);
@@ -3108,14 +3108,14 @@ LABEL_92:
                 {
                   v112 = objc_opt_class();
                   v29 = v112 == objc_opt_class();
-                  v8 = v138;
+                  rowCopy = v138;
                   if (v29)
                   {
-                    v113 = a1[13];
+                    v113 = self[13];
                     if (!v113)
                     {
                       v113 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                      a1[13] = v113;
+                      self[13] = v113;
                     }
 
                     [v113 addObject:v128];
@@ -3123,7 +3123,7 @@ LABEL_92:
                 }
 
                 v114 = [_PFExternalReferenceData alloc];
-                v115 = a1[1];
+                v115 = self[1];
                 if (v115 && (v116 = *(v115 + 8)) != 0)
                 {
                   v117 = (*(v116 + 200) >> 2) & 7;
@@ -3135,11 +3135,11 @@ LABEL_92:
                 }
 
                 v65 = [(_PFExternalReferenceData *)v114 initForExternalLocation:v105 safeguardLocation:v110 data:v65 protectionLevel:v117];
-                v118 = a1[12];
+                v118 = self[12];
                 if (!v118)
                 {
                   v118 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                  a1[12] = v118;
+                  self[12] = v118;
                 }
 
                 [v118 addObject:v65];
@@ -3148,7 +3148,7 @@ LABEL_92:
               goto LABEL_155;
             }
 
-            v87 = a1[1];
+            v87 = self[1];
             if (v87)
             {
               v88 = *(v87 + 168);
@@ -3187,21 +3187,21 @@ LABEL_92:
               {
 LABEL_150:
                 v65 = v128;
-                v8 = v138;
+                rowCopy = v138;
                 goto LABEL_155;
               }
 
-              v123 = a1[14];
+              v123 = self[14];
               if (!v123)
               {
                 v123 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                a1[14] = v123;
+                self[14] = v123;
               }
 
               [v123 addObject:v65];
               v124 = [v88 stringByAppendingPathComponent:{objc_msgSend(objc_msgSend(v65, "UUID"), "UUIDString")}];
               v65 = -[_NSDataFileBackedFuture initWithURL:UUID:size:]([_NSDataFileBackedFuture alloc], [MEMORY[0x1E695DFF8] fileURLWithPath:v124 isDirectory:0], objc_msgSend(v65, "UUID"), objc_msgSend(v65, "fileSize"));
-              v8 = v138;
+              rowCopy = v138;
               v122 = v128;
               if (!v126)
               {
@@ -3209,7 +3209,7 @@ LABEL_150:
               }
 
 LABEL_154:
-              [(NSSQLSavePlan *)a1 _addFileBackedFutureToDelete:v122];
+              [(NSSQLSavePlan *)self _addFileBackedFutureToDelete:v122];
               goto LABEL_155;
             }
 
@@ -3220,15 +3220,15 @@ LABEL_154:
 
             v120 = [_NSDataFileBackedFuture alloc];
             v65 = -[_NSDataFileBackedFuture initWithDirectoryURL:UUID:originalURL:](v120, [MEMORY[0x1E695DFF8] fileURLWithPath:v88 isDirectory:1], objc_msgSend(v65, "UUID"), Property);
-            v121 = a1[14];
+            v121 = self[14];
             if (!v121)
             {
               v121 = objc_alloc_init(MEMORY[0x1E695DF70]);
-              a1[14] = v121;
+              self[14] = v121;
             }
 
             [v121 addObject:v65];
-            v8 = v138;
+            rowCopy = v138;
             v122 = v128;
             if (v126)
             {
@@ -3257,25 +3257,25 @@ LABEL_156:
     while (v56 != v57);
   }
 
-  [(NSSQLSavePlan *)a1 _recordToManyChangesForObject:v8 inRow:v132 usingTimestamp:v131 inserted:a6];
+  [(NSSQLSavePlan *)self _recordToManyChangesForObject:rowCopy inRow:v132 usingTimestamp:objectCopy inserted:inserted];
 }
 
-- (void)_createCorrelationTrackerUpdatesForDeletedObject:(uint64_t)a1
+- (void)_createCorrelationTrackerUpdatesForDeletedObject:(uint64_t)object
 {
   v2 = a2;
-  v48 = a1;
+  objectCopy = object;
   v63 = *MEMORY[0x1E69E9840];
-  v3 = [a2 entity];
-  v4 = v3;
-  if (v3)
+  entity = [a2 entity];
+  v4 = entity;
+  if (entity)
   {
-    v5 = [*(v3 + 104) keys];
+    keys = [*(entity + 104) keys];
     v6 = v4[14];
   }
 
   else
   {
-    v5 = [0 keys];
+    keys = [0 keys];
     v6 = 0;
   }
 
@@ -3285,9 +3285,9 @@ LABEL_156:
     [v2 willAccessValueForKey:0];
   }
 
-  v47 = [v2 objectID];
-  v7 = [v2 entity];
-  if (v7 && ((v8 = v7, (v9 = *(v48 + 8)) == 0) ? (v10 = 0) : (v10 = *(v9 + 8)), (v11 = _sqlCoreLookupSQLEntityForEntityDescription(v10, v8)) != 0))
+  objectID = [v2 objectID];
+  entity2 = [v2 entity];
+  if (entity2 && ((v8 = entity2, (v9 = *(objectCopy + 8)) == 0) ? (v10 = 0) : (v10 = *(v9 + 8)), (v11 = _sqlCoreLookupSQLEntityForEntityDescription(v10, v8)) != 0))
   {
     v52 = *(v11 + 40);
   }
@@ -3308,21 +3308,21 @@ LABEL_156:
     v13 = 0;
   }
 
-  v50 = [v13 values];
-  if (v50)
+  values = [v13 values];
+  if (values)
   {
-    v49 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v15 = *(v6 + 144);
     v14 = *(v6 + 152);
     v16 = v14 + v15;
     if (v15 < v14 + v15)
     {
       v17 = 0x1EA8C5000uLL;
-      v45 = v5;
+      v45 = keys;
       v46 = v2;
       while (1)
       {
-        v18 = *(v5 + 8 * v15);
+        v18 = *(keys + 8 * v15);
         v19 = [v52 objectForKey:v18];
         if (v19)
         {
@@ -3332,7 +3332,7 @@ LABEL_156:
             if (*(v19 + *(v17 + 3944)))
             {
               _PF_Handler_Primitive_GetProperty(v2, v15, v18, *(v51 + 8 * v15));
-              v22 = *(v50 + 8 * v15);
+              v22 = *(values + 8 * v15);
               if (v21 != v22)
               {
                 v23 = v21;
@@ -3352,10 +3352,10 @@ LABEL_56:
         }
       }
 
-      if (v49 == v23 || ![v23 count])
+      if (null == v23 || ![v23 count])
       {
         v24 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-        if (v49 != v22 && [v22 count])
+        if (null != v22 && [v22 count])
         {
           v26 = [v22 count];
           v44[1] = v44;
@@ -3386,7 +3386,7 @@ LABEL_56:
 
       else
       {
-        if (v49 != v22 && [v22 count])
+        if (null != v22 && [v22 count])
         {
           v24 = [_PFRoutines newMutableSetFromCollection:v22 byIntersectingWithCollection:v23];
           v25 = [_PFRoutines newMutableSetFromCollection:v22 byRemovingItems:v23];
@@ -3450,11 +3450,11 @@ LABEL_39:
 
           if ([v33 count])
           {
-            v42 = [(NSSQLSavePlan *)v48 _correlationTableUpdateTrackerForRelationship:v20];
-            [(NSSQLCorrelationTableUpdateTracker *)v42 trackInserts:v33 deletes:0 reorders:v47 forObjectWithID:?];
+            v42 = [(NSSQLSavePlan *)objectCopy _correlationTableUpdateTrackerForRelationship:v20];
+            [(NSSQLCorrelationTableUpdateTracker *)v42 trackInserts:v33 deletes:0 reorders:objectID forObjectWithID:?];
           }
 
-          v5 = v45;
+          keys = v45;
           v2 = v46;
           v17 = 0x1EA8C5000;
           goto LABEL_56;
@@ -3473,13 +3473,13 @@ LABEL_57:
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_prepareForDeletionOfDatabaseExternalPropertiesForObject:(uint64_t)a1
+- (void)_prepareForDeletionOfDatabaseExternalPropertiesForObject:(uint64_t)object
 {
-  v4 = [a2 entity];
-  if (v4)
+  entity = [a2 entity];
+  if (entity)
   {
-    v5 = v4;
-    v6 = *(a1 + 8);
+    v5 = entity;
+    v6 = *(object + 8);
     if (v6)
     {
       v7 = *(v6 + 8);
@@ -3490,15 +3490,15 @@ LABEL_57:
       v7 = 0;
     }
 
-    v4 = _sqlCoreLookupSQLEntityForEntityDescription(v7, v5);
+    entity = _sqlCoreLookupSQLEntityForEntityDescription(v7, v5);
   }
 
-  v8 = [v4 entityDescription];
-  if (v8)
+  entityDescription = [entity entityDescription];
+  if (entityDescription)
   {
-    v9 = v8;
-    v10 = v8[13];
-    v11 = [v8 propertiesByName];
+    v9 = entityDescription;
+    v10 = entityDescription[13];
+    propertiesByName = [entityDescription propertiesByName];
     v12 = v9[14];
     v13 = *(v12 + 48);
     v14 = *(v12 + 56);
@@ -3506,23 +3506,23 @@ LABEL_57:
     if (v13 < v14 + v13)
     {
       v16 = v15;
-      v17 = (v11 + 8 * v13 + 24);
+      v17 = (propertiesByName + 8 * v13 + 24);
       do
       {
         v18 = objc_autoreleasePoolPush();
         v19 = *v17;
         if ([*v17 storesBinaryDataExternally] && (objc_msgSend(v19, "isFileBackedFuture") & 1) == 0)
         {
-          v23 = [v19 name];
-          v24 = [v10 fastIndexForKnownKey:v23];
+          name = [v19 name];
+          v24 = [v10 fastIndexForKnownKey:name];
           if (v24 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v25 = [a2 primitiveValueForKey:v23];
+            v25 = [a2 primitiveValueForKey:name];
           }
 
           else
           {
-            _PF_Handler_Primitive_GetProperty(a2, v24, v23, *(v16 + 8 * v24));
+            _PF_Handler_Primitive_GetProperty(a2, v24, name, *(v16 + 8 * v24));
           }
 
           v26 = v25;
@@ -3531,49 +3531,49 @@ LABEL_57:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v27 = *(a1 + 104);
+              v27 = *(object + 104);
               if (!v27)
               {
                 v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                *(a1 + 104) = v27;
+                *(object + 104) = v27;
               }
 
               [v27 addObject:v26];
             }
           }
 
-          v28 = -[NSSQLSavePlan _findOrCreateChangeSnapshotForGlobalID:](a1, [a2 objectID]);
-          v29 = v28;
-          if (v28)
+          _storeInfo1 = -[NSSQLSavePlan _findOrCreateChangeSnapshotForGlobalID:](object, [a2 objectID]);
+          v29 = _storeInfo1;
+          if (_storeInfo1)
           {
-            if (v28[2])
+            if (_storeInfo1[2])
             {
-              v28 = 0;
+              _storeInfo1 = 0;
             }
 
             else
             {
-              v30 = atomic_load(v28 + 5);
-              v28 = [*(v30 + 16) _storeInfo1];
-              if (v28)
+              v30 = atomic_load(_storeInfo1 + 5);
+              _storeInfo1 = [*(v30 + 16) _storeInfo1];
+              if (_storeInfo1)
               {
-                v28 = [v28[5] objectForKey:v23];
+                _storeInfo1 = [_storeInfo1[5] objectForKey:name];
               }
             }
           }
 
-          v31 = -[NSSQLRow attributeValueForSlot:](v29, [v28 slot]);
+          v31 = -[NSSQLRow attributeValueForSlot:](v29, [_storeInfo1 slot]);
           if (v31)
           {
             v32 = v31;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v33 = *(a1 + 104);
+              v33 = *(object + 104);
               if (!v33)
               {
                 v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                *(a1 + 104) = v33;
+                *(object + 104) = v33;
               }
 
               [v33 addObject:v32];
@@ -3583,21 +3583,21 @@ LABEL_57:
 
         else if ([v19 isFileBackedFuture])
         {
-          v20 = [v19 name];
-          v21 = [v10 fastIndexForKnownKey:v20];
+          name2 = [v19 name];
+          v21 = [v10 fastIndexForKnownKey:name2];
           if (v21 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v22 = [a2 primitiveValueForKey:v20];
+            v22 = [a2 primitiveValueForKey:name2];
           }
 
           else
           {
-            _PF_Handler_Primitive_GetProperty(a2, v21, v20, *(v16 + 8 * v21));
+            _PF_Handler_Primitive_GetProperty(a2, v21, name2, *(v16 + 8 * v21));
           }
 
           if (v22)
           {
-            [(NSSQLSavePlan *)a1 _addFileBackedFutureToDelete:v22];
+            [(NSSQLSavePlan *)object _addFileBackedFutureToDelete:v22];
           }
         }
 
@@ -3617,7 +3617,7 @@ LABEL_57:
   }
 }
 
-- (id)initForRequestContext:(id)a3
+- (id)initForRequestContext:(id)context
 {
   v21.receiver = self;
   v21.super_class = NSSQLSavePlan;
@@ -3625,10 +3625,10 @@ LABEL_57:
   v5 = v4;
   if (v4)
   {
-    v4->_requestContext = a3;
-    if (a3)
+    v4->_requestContext = context;
+    if (context)
     {
-      v6 = *(a3 + 1);
+      v6 = *(context + 1);
       if (v6)
       {
         LODWORD(v6) = (*(v6 + 200) >> 5) & 1;
@@ -3660,38 +3660,38 @@ LABEL_57:
     }
 
     [-[NSSQLSaveChangesRequestContext insertedObjects](requestContext "insertedObjects")];
-    v10 = v5->_requestContext;
-    if (v10)
+    persistentStoreRequest = v5->_requestContext;
+    if (persistentStoreRequest)
     {
-      v10 = [(NSSQLStoreRequestContext *)v10 persistentStoreRequest];
+      persistentStoreRequest = [(NSSQLStoreRequestContext *)persistentStoreRequest persistentStoreRequest];
     }
 
-    [-[NSSQLSaveChangesRequestContext updatedObjects](v10 "updatedObjects")];
+    [-[NSSQLSaveChangesRequestContext updatedObjects](persistentStoreRequest "updatedObjects")];
     _CFDictionarySetCapacity();
     v5->_insertCache = CFDictionaryCreateMutable(v8, 0, &keyCallBacks, &valueCallBacks);
-    v11 = v5->_requestContext;
-    if (v11)
+    persistentStoreRequest2 = v5->_requestContext;
+    if (persistentStoreRequest2)
     {
-      v11 = [(NSSQLStoreRequestContext *)v11 persistentStoreRequest];
+      persistentStoreRequest2 = [(NSSQLStoreRequestContext *)persistentStoreRequest2 persistentStoreRequest];
     }
 
-    [-[NSSQLSaveChangesRequestContext insertedObjects](v11 "insertedObjects")];
+    [-[NSSQLSaveChangesRequestContext insertedObjects](persistentStoreRequest2 "insertedObjects")];
     _CFDictionarySetCapacity();
     v5->_toManyCache = CFDictionaryCreateMutable(v8, 0, &keyCallBacks, &valueCallBacks);
-    v12 = v5->_requestContext;
-    if (v12)
+    persistentStoreRequest3 = v5->_requestContext;
+    if (persistentStoreRequest3)
     {
-      v12 = [(NSSQLStoreRequestContext *)v12 persistentStoreRequest];
+      persistentStoreRequest3 = [(NSSQLStoreRequestContext *)persistentStoreRequest3 persistentStoreRequest];
     }
 
-    [-[NSSQLSaveChangesRequestContext insertedObjects](v12 "insertedObjects")];
-    v13 = v5->_requestContext;
-    if (v13)
+    [-[NSSQLSaveChangesRequestContext insertedObjects](persistentStoreRequest3 "insertedObjects")];
+    persistentStoreRequest4 = v5->_requestContext;
+    if (persistentStoreRequest4)
     {
-      v13 = [(NSSQLStoreRequestContext *)v13 persistentStoreRequest];
+      persistentStoreRequest4 = [(NSSQLStoreRequestContext *)persistentStoreRequest4 persistentStoreRequest];
     }
 
-    [-[NSSQLSaveChangesRequestContext updatedObjects](v13 "updatedObjects")];
+    [-[NSSQLSaveChangesRequestContext updatedObjects](persistentStoreRequest4 "updatedObjects")];
     _CFDictionarySetCapacity();
     v5->_toManyRelationshipChanges = objc_alloc_init(MEMORY[0x1E695DF90]);
     v5->_rowsToDelete = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -3703,9 +3703,9 @@ LABEL_57:
 
     v5->_rowsToAddToRowCache = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v5->_objectIDsToRemoveFromRowCache = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    if (a3)
+    if (context)
     {
-      v14 = *(a3 + 1);
+      v14 = *(context + 1);
     }
 
     else
@@ -3714,35 +3714,35 @@ LABEL_57:
     }
 
     v5->_usedIndexes = [(NSSQLCore *)v14 harvestIndexStatisticsFromConnections];
-    v15 = v5->_requestContext;
-    if (v15)
+    persistentStoreRequest5 = v5->_requestContext;
+    if (persistentStoreRequest5)
     {
-      v15 = [(NSSQLStoreRequestContext *)v15 persistentStoreRequest];
+      persistentStoreRequest5 = [(NSSQLStoreRequestContext *)persistentStoreRequest5 persistentStoreRequest];
     }
 
-    if ([-[NSSQLSaveChangesRequestContext insertedObjects](v15 "insertedObjects")])
-    {
-      goto LABEL_29;
-    }
-
-    v16 = v5->_requestContext;
-    if (v16)
-    {
-      v16 = [(NSSQLStoreRequestContext *)v16 persistentStoreRequest];
-    }
-
-    if ([-[NSSQLSaveChangesRequestContext updatedObjects](v16 "updatedObjects")])
+    if ([-[NSSQLSaveChangesRequestContext insertedObjects](persistentStoreRequest5 "insertedObjects")])
     {
       goto LABEL_29;
     }
 
-    v17 = v5->_requestContext;
-    if (v17)
+    persistentStoreRequest6 = v5->_requestContext;
+    if (persistentStoreRequest6)
     {
-      v17 = [(NSSQLStoreRequestContext *)v17 persistentStoreRequest];
+      persistentStoreRequest6 = [(NSSQLStoreRequestContext *)persistentStoreRequest6 persistentStoreRequest];
     }
 
-    if ([-[NSSQLSaveChangesRequestContext deletedObjects](v17 "deletedObjects")] || -[NSMutableDictionary count](v5->_usedIndexes, "count"))
+    if ([-[NSSQLSaveChangesRequestContext updatedObjects](persistentStoreRequest6 "updatedObjects")])
+    {
+      goto LABEL_29;
+    }
+
+    persistentStoreRequest7 = v5->_requestContext;
+    if (persistentStoreRequest7)
+    {
+      persistentStoreRequest7 = [(NSSQLStoreRequestContext *)persistentStoreRequest7 persistentStoreRequest];
+    }
+
+    if ([-[NSSQLSaveChangesRequestContext deletedObjects](persistentStoreRequest7 "deletedObjects")] || -[NSMutableDictionary count](v5->_usedIndexes, "count"))
     {
 LABEL_29:
       *&v5->_flags |= 2u;
@@ -3754,22 +3754,22 @@ LABEL_29:
 
 - (id)newObjectsForExhaustiveLockConflictDetection
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = *(a1 + 8);
-  if (v2)
+  persistentStoreRequest = *(self + 8);
+  if (persistentStoreRequest)
   {
-    v2 = [v2 persistentStoreRequest];
+    persistentStoreRequest = [persistentStoreRequest persistentStoreRequest];
   }
 
-  v3 = [v2 updatedObjects];
-  v4 = v3;
-  if (v3)
+  updatedObjects = [persistentStoreRequest updatedObjects];
+  v4 = updatedObjects;
+  if (updatedObjects)
   {
-    if ([v3 count])
+    if ([updatedObjects count])
     {
       v4 = [v4 mutableCopy];
     }
@@ -3780,17 +3780,17 @@ LABEL_29:
     }
   }
 
-  v5 = *(a1 + 8);
-  if (v5)
+  persistentStoreRequest2 = *(self + 8);
+  if (persistentStoreRequest2)
   {
-    v5 = [v5 persistentStoreRequest];
+    persistentStoreRequest2 = [persistentStoreRequest2 persistentStoreRequest];
   }
 
-  v6 = [v5 deletedObjects];
-  if (v6)
+  deletedObjects = [persistentStoreRequest2 deletedObjects];
+  if (deletedObjects)
   {
-    v7 = v6;
-    if ([v6 count])
+    v7 = deletedObjects;
+    if ([deletedObjects count])
     {
       if (v4)
       {
@@ -3804,17 +3804,17 @@ LABEL_29:
     }
   }
 
-  v8 = *(a1 + 8);
-  if (v8)
+  persistentStoreRequest3 = *(self + 8);
+  if (persistentStoreRequest3)
   {
-    v8 = [v8 persistentStoreRequest];
+    persistentStoreRequest3 = [persistentStoreRequest3 persistentStoreRequest];
   }
 
-  v9 = [v8 lockedObjects];
-  if (v9)
+  lockedObjects = [persistentStoreRequest3 lockedObjects];
+  if (lockedObjects)
   {
-    v10 = v9;
-    if ([v9 count])
+    v10 = lockedObjects;
+    if ([lockedObjects count])
     {
       if (v4)
       {
@@ -3836,10 +3836,10 @@ LABEL_29:
   return objc_alloc_init(v12);
 }
 
-- (id)newObjectsForUniquenessConflictDetectionGivenReportedFailures:(uint64_t)a1
+- (id)newObjectsForUniquenessConflictDetectionGivenReportedFailures:(uint64_t)failures
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (failures)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v5 = objc_autoreleasePoolPush();
@@ -3864,7 +3864,7 @@ LABEL_29:
               objc_enumerationMutation(a2);
             }
 
-            v10 = *(a1 + 8);
+            v10 = *(failures + 8);
             if (v10 && (v11 = *(v10 + 32)) != 0)
             {
               v12 = _PFRetainedObjectIDCore(v11, *(*(&v36 + 1) + 8 * v9), 0, 1);
@@ -3895,14 +3895,14 @@ LABEL_29:
       v35 = 0uLL;
       v32 = 0uLL;
       v33 = 0uLL;
-      v14 = *(a1 + 8);
-      if (v14)
+      persistentStoreRequest = *(failures + 8);
+      if (persistentStoreRequest)
       {
-        v14 = [v14 persistentStoreRequest];
+        persistentStoreRequest = [persistentStoreRequest persistentStoreRequest];
       }
 
-      v15 = [v14 updatedObjects];
-      v16 = [v15 countByEnumeratingWithState:&v32 objects:v41 count:16];
+      updatedObjects = [persistentStoreRequest updatedObjects];
+      v16 = [updatedObjects countByEnumeratingWithState:&v32 objects:v41 count:16];
       if (v16)
       {
         v17 = v16;
@@ -3913,13 +3913,13 @@ LABEL_29:
           {
             if (*v33 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(updatedObjects);
             }
 
             [v4 addObject:*(*(&v32 + 1) + 8 * i)];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v32 objects:v41 count:16];
+          v17 = [updatedObjects countByEnumeratingWithState:&v32 objects:v41 count:16];
         }
 
         while (v17);
@@ -3929,14 +3929,14 @@ LABEL_29:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v20 = *(a1 + 8);
-      if (v20)
+      persistentStoreRequest2 = *(failures + 8);
+      if (persistentStoreRequest2)
       {
-        v20 = [v20 persistentStoreRequest];
+        persistentStoreRequest2 = [persistentStoreRequest2 persistentStoreRequest];
       }
 
-      v21 = [v20 insertedObjects];
-      v22 = [v21 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      insertedObjects = [persistentStoreRequest2 insertedObjects];
+      v22 = [insertedObjects countByEnumeratingWithState:&v28 objects:v40 count:16];
       if (v22)
       {
         v23 = v22;
@@ -3947,13 +3947,13 @@ LABEL_29:
           {
             if (*v29 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(insertedObjects);
             }
 
             [v4 addObject:*(*(&v28 + 1) + 8 * j)];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v28 objects:v40 count:16];
+          v23 = [insertedObjects countByEnumeratingWithState:&v28 objects:v40 count:16];
         }
 
         while (v23);

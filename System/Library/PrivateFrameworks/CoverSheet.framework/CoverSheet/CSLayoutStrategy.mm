@@ -1,13 +1,13 @@
 @interface CSLayoutStrategy
-- (CGRect)suggestedFrameForDateTimeViewInScreenCoordinates:(CGRect)a3 forceCenteredX:(BOOL)a4;
-- (CGRect)suggestedFrameForListForPage:(id)a3 bounds:(CGRect)a4;
-- (CGRect)suggestedVisibleFrameForSleeveInScreenCoordinates:(CGRect)a3 forceCenteredX:(BOOL)a4;
+- (CGRect)suggestedFrameForDateTimeViewInScreenCoordinates:(CGRect)coordinates forceCenteredX:(BOOL)x;
+- (CGRect)suggestedFrameForListForPage:(id)page bounds:(CGRect)bounds;
+- (CGRect)suggestedVisibleFrameForSleeveInScreenCoordinates:(CGRect)coordinates forceCenteredX:(BOOL)x;
 - (CSPersistentContentLayoutProviding)persistentLayout;
-- (UIEdgeInsets)suggestedContentInsetsForListForPage:(id)a3;
-- (double)_customListWidthForPage:(id)a3 startingBounds:(CGRect)a4;
-- (double)_listInsetXForPage:(id)a3;
-- (unint64_t)_listLayoutForPage:(id)a3;
-- (unint64_t)_listWidthStrategyForPage:(id)a3;
+- (UIEdgeInsets)suggestedContentInsetsForListForPage:(id)page;
+- (double)_customListWidthForPage:(id)page startingBounds:(CGRect)bounds;
+- (double)_listInsetXForPage:(id)page;
+- (unint64_t)_listLayoutForPage:(id)page;
+- (unint64_t)_listWidthStrategyForPage:(id)page;
 @end
 
 @implementation CSLayoutStrategy
@@ -19,23 +19,23 @@
   return WeakRetained;
 }
 
-- (CGRect)suggestedFrameForDateTimeViewInScreenCoordinates:(CGRect)a3 forceCenteredX:(BOOL)a4
+- (CGRect)suggestedFrameForDateTimeViewInScreenCoordinates:(CGRect)coordinates forceCenteredX:(BOOL)x
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  xCopy = x;
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_persistentLayout);
   [WeakRetained dateTimeMostExtremeLeadingX];
   [WeakRetained dateTimeMostExtremeTrailingX];
-  v10 = [WeakRetained containsCenteredDateTimeLayout];
+  containsCenteredDateTimeLayout = [WeakRetained containsCenteredDateTimeLayout];
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
   v25.size.height = height;
   CGRectGetMidX(v25);
-  if (v10)
+  if (containsCenteredDateTimeLayout)
   {
     v26.origin.x = x;
     v26.origin.y = y;
@@ -55,13 +55,13 @@
       v28.size.width = width;
       v28.size.height = height;
       CGRectGetHeight(v28);
-      if (!v4)
+      if (!xCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v4)
+    else if (!xCopy)
     {
       goto LABEL_7;
     }
@@ -74,7 +74,7 @@
   v29.size.width = width;
   v29.size.height = height;
   CGRectGetWidth(v29);
-  if (v4)
+  if (xCopy)
   {
 LABEL_6:
     v30.origin.x = x;
@@ -89,8 +89,8 @@ LABEL_7:
   [MEMORY[0x277D65EB0] timeFontMetrics];
   [WeakRetained timeLabelBaselineY];
   [WeakRetained timeToSubtitleLabelBaselineDifferenceY];
-  v12 = [MEMORY[0x277D65EA8] labelFont];
-  [v12 descender];
+  labelFont = [MEMORY[0x277D65EA8] labelFont];
+  [labelFont descender];
 
   SBFMainScreenScale();
   BSRectRoundForScale();
@@ -110,18 +110,18 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)suggestedFrameForListForPage:(id)a3 bounds:(CGRect)a4
+- (CGRect)suggestedFrameForListForPage:(id)page bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(CSLayoutStrategy *)self _listLayoutForPage:v9];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pageCopy = page;
+  v10 = [(CSLayoutStrategy *)self _listLayoutForPage:pageCopy];
   if (v10)
   {
     v11 = v10;
-    [(CSLayoutStrategy *)self _customListWidthForPage:v9 startingBounds:x, y, width, height];
+    [(CSLayoutStrategy *)self _customListWidthForPage:pageCopy startingBounds:x, y, width, height];
     v13 = v12;
     v22.origin.x = x;
     v22.origin.y = y;
@@ -137,7 +137,7 @@ LABEL_7:
 
       else
       {
-        [(CSLayoutStrategy *)self _listInsetXForPage:v9];
+        [(CSLayoutStrategy *)self _listInsetXForPage:pageCopy];
         v16 = v15;
         v23.origin.x = x;
         v23.origin.y = y;
@@ -184,12 +184,12 @@ LABEL_7:
   return result;
 }
 
-- (UIEdgeInsets)suggestedContentInsetsForListForPage:(id)a3
+- (UIEdgeInsets)suggestedContentInsetsForListForPage:(id)page
 {
-  v3 = [(CSLayoutStrategy *)self persistentLayout];
-  [v3 listMinY];
+  persistentLayout = [(CSLayoutStrategy *)self persistentLayout];
+  [persistentLayout listMinY];
   v5 = v4;
-  [v3 bottomContentInset];
+  [persistentLayout bottomContentInset];
   v7 = v6;
 
   v8 = 0.0;
@@ -203,20 +203,20 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)suggestedVisibleFrameForSleeveInScreenCoordinates:(CGRect)a3 forceCenteredX:(BOOL)a4
+- (CGRect)suggestedVisibleFrameForSleeveInScreenCoordinates:(CGRect)coordinates forceCenteredX:(BOOL)x
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(CSLayoutStrategy *)self persistentLayout];
-  [(CSLayoutStrategy *)self suggestedFrameForDateTimeViewInScreenCoordinates:v4 forceCenteredX:x, y, width, height];
+  xCopy = x;
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
+  persistentLayout = [(CSLayoutStrategy *)self persistentLayout];
+  [(CSLayoutStrategy *)self suggestedFrameForDateTimeViewInScreenCoordinates:xCopy forceCenteredX:x, y, width, height];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v10 windowedAccessoryInset];
+  [persistentLayout windowedAccessoryInset];
   v20 = v19;
   [MEMORY[0x277D65EA8] labelFontMetrics];
   v22 = v18 - v21;
@@ -232,59 +232,59 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)_listWidthStrategyForPage:(id)a3
+- (unint64_t)_listWidthStrategyForPage:(id)page
 {
-  v3 = a3;
+  pageCopy = page;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 listWidthStrategy];
+    listWidthStrategy = [pageCopy listWidthStrategy];
   }
 
   else
   {
-    v4 = 2;
+    listWidthStrategy = 2;
   }
 
-  return v4;
+  return listWidthStrategy;
 }
 
-- (unint64_t)_listLayoutForPage:(id)a3
+- (unint64_t)_listLayoutForPage:(id)page
 {
-  v3 = a3;
+  pageCopy = page;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 listLayout];
+    listLayout = [pageCopy listLayout];
   }
 
   else
   {
-    v4 = 0;
+    listLayout = 0;
   }
 
-  return v4;
+  return listLayout;
 }
 
-- (double)_listInsetXForPage:(id)a3
+- (double)_listInsetXForPage:(id)page
 {
-  v3 = a3;
+  pageCopy = page;
   v4 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v3 listInsetX];
+    [pageCopy listInsetX];
     v4 = v5;
   }
 
   return v4;
 }
 
-- (double)_customListWidthForPage:(id)a3 startingBounds:(CGRect)a4
+- (double)_customListWidthForPage:(id)page startingBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(CSLayoutStrategy *)self _listWidthStrategyForPage:v9];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pageCopy = page;
+  v10 = [(CSLayoutStrategy *)self _listWidthStrategyForPage:pageCopy];
   if (!v10)
   {
     v16.origin.x = x;
@@ -292,7 +292,7 @@ LABEL_7:
     v16.size.width = width;
     v16.size.height = height;
     v13 = CGRectGetWidth(v16);
-    [(CSLayoutStrategy *)self _listInsetXForPage:v9];
+    [(CSLayoutStrategy *)self _listInsetXForPage:pageCopy];
     v11 = v13 + v14 * -2.0;
     goto LABEL_9;
   }
@@ -306,7 +306,7 @@ LABEL_7:
   v11 = 0.0;
   if (v10 == 2 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v9 customListWidth];
+    [pageCopy customListWidth];
 LABEL_7:
     v11 = v12;
   }

@@ -1,37 +1,37 @@
 @interface PUConnection
 + (id)clientInterface;
 + (id)serverInterface;
-- (PUConnection)initWithDelegate:(id)a3;
+- (PUConnection)initWithDelegate:(id)delegate;
 - (PUConnectionDelegate)delegate;
-- (const)queueNameWithSuffix:(id)a3;
-- (id)delegateIfRespondsToSelector:(SEL)a3;
+- (const)queueNameWithSuffix:(id)suffix;
+- (id)delegateIfRespondsToSelector:(SEL)selector;
 - (id)serverConnection;
 - (void)dealloc;
-- (void)didDisableOnlyRemoteUnlock:(BOOL)a3 error:(id)a4;
-- (void)didEnableOnlyRemoteUnlock:(BOOL)a3 error:(id)a4;
-- (void)didGetRemoteDeviceState:(id)a3 error:(id)a4;
-- (void)didPairForUnlock:(BOOL)a3 error:(id)a4;
-- (void)didUnpairForUnlock:(BOOL)a3 error:(id)a4;
+- (void)didDisableOnlyRemoteUnlock:(BOOL)unlock error:(id)error;
+- (void)didEnableOnlyRemoteUnlock:(BOOL)unlock error:(id)error;
+- (void)didGetRemoteDeviceState:(id)state error:(id)error;
+- (void)didPairForUnlock:(BOOL)unlock error:(id)error;
+- (void)didUnpairForUnlock:(BOOL)unlock error:(id)error;
 - (void)disableOnlyRemoteUnlock;
-- (void)enableOnlyRemoteUnlockWithPasscode:(id)a3;
-- (void)getRemoteDeviceState:(id)a3;
-- (void)pairForUnlockWithPasscode:(id)a3;
-- (void)queryRemoteDeviceState:(id)a3;
-- (void)remoteDeviceDidCompleteRemoteAction:(BOOL)a3 remoteDeviceState:(id)a4 error:(id)a5;
-- (void)remoteDeviceDidRemoveLockout:(BOOL)a3 error:(id)a4;
+- (void)enableOnlyRemoteUnlockWithPasscode:(id)passcode;
+- (void)getRemoteDeviceState:(id)state;
+- (void)pairForUnlockWithPasscode:(id)passcode;
+- (void)queryRemoteDeviceState:(id)state;
+- (void)remoteDeviceDidCompleteRemoteAction:(BOOL)action remoteDeviceState:(id)state error:(id)error;
+- (void)remoteDeviceDidRemoveLockout:(BOOL)lockout error:(id)error;
 - (void)remoteDeviceDidUnlock;
-- (void)requestRemoteDeviceRemoteAction:(int64_t)a3 type:(int64_t)a4;
-- (void)requestRemoteDeviceRemoveLockout:(id)a3;
+- (void)requestRemoteDeviceRemoteAction:(int64_t)action type:(int64_t)type;
+- (void)requestRemoteDeviceRemoveLockout:(id)lockout;
 - (void)requestRemoteDeviceUnlockNotification;
-- (void)setServerConnection:(id)a3;
+- (void)setServerConnection:(id)connection;
 - (void)unpairForUnlock;
 @end
 
 @implementation PUConnection
 
-- (PUConnection)initWithDelegate:(id)a3
+- (PUConnection)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PUConnection;
   v5 = [(PUConnection *)&v14 init];
@@ -46,7 +46,7 @@
     delegateQueue = v6->_delegateQueue;
     v6->_delegateQueue = v9;
 
-    objc_storeWeak(&v6->_delegate, v4);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     v11 = [[PUConnectionUnlockClient alloc] initWithConnection:v6];
     unlockClient = v6->_unlockClient;
     v6->_unlockClient = v11;
@@ -55,16 +55,16 @@
   return v6;
 }
 
-- (const)queueNameWithSuffix:(id)a3
+- (const)queueNameWithSuffix:(id)suffix
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  suffixCopy = suffix;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v3 stringWithFormat:@"%@-%@", v6, v4];
+  suffixCopy = [v3 stringWithFormat:@"%@-%@", v6, suffixCopy];
 
-  v8 = [v7 UTF8String];
-  return v8;
+  uTF8String = [suffixCopy UTF8String];
+  return uTF8String;
 }
 
 - (void)dealloc
@@ -197,67 +197,67 @@ void __32__PUConnection_serverConnection__block_invoke_4(uint64_t a1, uint64_t a
   [WeakRetained setServerConnection:0];
 }
 
-- (void)setServerConnection:(id)a3
+- (void)setServerConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   serverConnectionQueue = self->_serverConnectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__PUConnection_setServerConnection___block_invoke;
   v7[3] = &unk_2799FCD20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(serverConnectionQueue, v7);
 }
 
-- (void)pairForUnlockWithPasscode:(id)a3
+- (void)pairForUnlockWithPasscode:(id)passcode
 {
-  v4 = a3;
-  v6 = [(PUConnection *)self serverConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 pairForUnlockWithPasscode:v4];
+  passcodeCopy = passcode;
+  serverConnection = [(PUConnection *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  [remoteObjectProxy pairForUnlockWithPasscode:passcodeCopy];
 }
 
 - (void)unpairForUnlock
 {
-  v3 = [(PUConnection *)self serverConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 unpairForUnlock];
+  serverConnection = [(PUConnection *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  [remoteObjectProxy unpairForUnlock];
 }
 
-- (void)enableOnlyRemoteUnlockWithPasscode:(id)a3
+- (void)enableOnlyRemoteUnlockWithPasscode:(id)passcode
 {
-  v4 = a3;
-  v6 = [(PUConnection *)self serverConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 enableOnlyRemoteUnlockWithPasscode:v4];
+  passcodeCopy = passcode;
+  serverConnection = [(PUConnection *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  [remoteObjectProxy enableOnlyRemoteUnlockWithPasscode:passcodeCopy];
 }
 
 - (void)disableOnlyRemoteUnlock
 {
-  v3 = [(PUConnection *)self serverConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 disableOnlyRemoteUnlock];
+  serverConnection = [(PUConnection *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  [remoteObjectProxy disableOnlyRemoteUnlock];
 }
 
-- (void)requestRemoteDeviceRemoteAction:(int64_t)a3 type:(int64_t)a4
+- (void)requestRemoteDeviceRemoteAction:(int64_t)action type:(int64_t)type
 {
-  v7 = [(PUConnection *)self serverConnection];
-  v6 = [v7 remoteObjectProxy];
-  [v6 requestRemoteDeviceRemoteAction:a3 type:a4];
+  serverConnection = [(PUConnection *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  [remoteObjectProxy requestRemoteDeviceRemoteAction:action type:type];
 }
 
 - (void)requestRemoteDeviceUnlockNotification
 {
-  v3 = [(PUConnection *)self serverConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 requestRemoteDeviceUnlockNotification];
+  serverConnection = [(PUConnection *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  [remoteObjectProxy requestRemoteDeviceUnlockNotification];
 }
 
-- (void)requestRemoteDeviceRemoveLockout:(id)a3
+- (void)requestRemoteDeviceRemoveLockout:(id)lockout
 {
-  v4 = a3;
+  lockoutCopy = lockout;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -265,8 +265,8 @@ void __32__PUConnection_serverConnection__block_invoke_4(uint64_t a1, uint64_t a
   block[2] = __49__PUConnection_requestRemoteDeviceRemoveLockout___block_invoke;
   block[3] = &unk_2799FCD48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = lockoutCopy;
+  v6 = lockoutCopy;
   dispatch_async(delegateQueue, block);
 
   objc_destroyWeak(&v9);
@@ -299,15 +299,15 @@ void __66__PUConnection_requestDeviceSetWristDetectionDisabled_completion___bloc
   objc_destroyWeak(&to);
 }
 
-- (void)getRemoteDeviceState:(id)a3
+- (void)getRemoteDeviceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__PUConnection_getRemoteDeviceState___block_invoke;
   v6[3] = &unk_2799FCD98;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   [(PUConnection *)self queryRemoteDeviceState:v6];
 }
 
@@ -326,29 +326,29 @@ void __37__PUConnection_getRemoteDeviceState___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)queryRemoteDeviceState:(id)a3
+- (void)queryRemoteDeviceState:(id)state
 {
-  v4 = a3;
-  v6 = [(PUConnection *)self serverConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 queryRemoteDeviceState:v4];
+  stateCopy = state;
+  serverConnection = [(PUConnection *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  [remoteObjectProxy queryRemoteDeviceState:stateCopy];
 }
 
-- (id)delegateIfRespondsToSelector:(SEL)a3
+- (id)delegateIfRespondsToSelector:(SEL)selector
 {
-  v3 = [(PUConnection *)self delegate];
+  delegate = [(PUConnection *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
-    v3 = 0;
+    delegate = 0;
   }
 
-  return v3;
+  return delegate;
 }
 
-- (void)didPairForUnlock:(BOOL)a3 error:(id)a4
+- (void)didPairForUnlock:(BOOL)unlock error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -356,10 +356,10 @@ void __37__PUConnection_getRemoteDeviceState___block_invoke(uint64_t a1, void *a
   block[2] = __39__PUConnection_didPairForUnlock_error___block_invoke;
   block[3] = &unk_2799FCDC0;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
+  unlockCopy = unlock;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(delegateQueue, block);
 
   objc_destroyWeak(&v11);
@@ -380,9 +380,9 @@ void __39__PUConnection_didPairForUnlock_error___block_invoke(uint64_t a1)
   objc_destroyWeak(&to);
 }
 
-- (void)didUnpairForUnlock:(BOOL)a3 error:(id)a4
+- (void)didUnpairForUnlock:(BOOL)unlock error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -390,10 +390,10 @@ void __39__PUConnection_didPairForUnlock_error___block_invoke(uint64_t a1)
   block[2] = __41__PUConnection_didUnpairForUnlock_error___block_invoke;
   block[3] = &unk_2799FCDC0;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
+  unlockCopy = unlock;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(delegateQueue, block);
 
   objc_destroyWeak(&v11);
@@ -414,9 +414,9 @@ void __41__PUConnection_didUnpairForUnlock_error___block_invoke(uint64_t a1)
   objc_destroyWeak(&to);
 }
 
-- (void)didEnableOnlyRemoteUnlock:(BOOL)a3 error:(id)a4
+- (void)didEnableOnlyRemoteUnlock:(BOOL)unlock error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -424,10 +424,10 @@ void __41__PUConnection_didUnpairForUnlock_error___block_invoke(uint64_t a1)
   block[2] = __48__PUConnection_didEnableOnlyRemoteUnlock_error___block_invoke;
   block[3] = &unk_2799FCDC0;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
+  unlockCopy = unlock;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(delegateQueue, block);
 
   objc_destroyWeak(&v11);
@@ -448,9 +448,9 @@ void __48__PUConnection_didEnableOnlyRemoteUnlock_error___block_invoke(uint64_t 
   objc_destroyWeak(&to);
 }
 
-- (void)didDisableOnlyRemoteUnlock:(BOOL)a3 error:(id)a4
+- (void)didDisableOnlyRemoteUnlock:(BOOL)unlock error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -458,10 +458,10 @@ void __48__PUConnection_didEnableOnlyRemoteUnlock_error___block_invoke(uint64_t 
   block[2] = __49__PUConnection_didDisableOnlyRemoteUnlock_error___block_invoke;
   block[3] = &unk_2799FCDC0;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
+  unlockCopy = unlock;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(delegateQueue, block);
 
   objc_destroyWeak(&v11);
@@ -482,10 +482,10 @@ void __49__PUConnection_didDisableOnlyRemoteUnlock_error___block_invoke(uint64_t
   objc_destroyWeak(&to);
 }
 
-- (void)remoteDeviceDidCompleteRemoteAction:(BOOL)a3 remoteDeviceState:(id)a4 error:(id)a5
+- (void)remoteDeviceDidCompleteRemoteAction:(BOOL)action remoteDeviceState:(id)state error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  stateCopy = state;
+  errorCopy = error;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -493,12 +493,12 @@ void __49__PUConnection_didDisableOnlyRemoteUnlock_error___block_invoke(uint64_t
   v13[2] = __76__PUConnection_remoteDeviceDidCompleteRemoteAction_remoteDeviceState_error___block_invoke;
   v13[3] = &unk_2799FCDE8;
   objc_copyWeak(&v16, &location);
-  v17 = a3;
+  actionCopy = action;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = stateCopy;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = stateCopy;
   dispatch_async(delegateQueue, v13);
 
   objc_destroyWeak(&v16);
@@ -548,10 +548,10 @@ void __37__PUConnection_remoteDeviceDidUnlock__block_invoke(uint64_t a1)
   objc_destroyWeak(&to);
 }
 
-- (void)didGetRemoteDeviceState:(id)a3 error:(id)a4
+- (void)didGetRemoteDeviceState:(id)state error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  errorCopy = error;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -559,11 +559,11 @@ void __37__PUConnection_remoteDeviceDidUnlock__block_invoke(uint64_t a1)
   block[2] = __46__PUConnection_didGetRemoteDeviceState_error___block_invoke;
   block[3] = &unk_2799FCE38;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = stateCopy;
+  v9 = stateCopy;
+  v10 = errorCopy;
   dispatch_async(delegateQueue, block);
 
   objc_destroyWeak(&v15);
@@ -584,9 +584,9 @@ void __46__PUConnection_didGetRemoteDeviceState_error___block_invoke(uint64_t a1
   objc_destroyWeak(&to);
 }
 
-- (void)remoteDeviceDidRemoveLockout:(BOOL)a3 error:(id)a4
+- (void)remoteDeviceDidRemoveLockout:(BOOL)lockout error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -594,9 +594,9 @@ void __46__PUConnection_didGetRemoteDeviceState_error___block_invoke(uint64_t a1
   v9[2] = __51__PUConnection_remoteDeviceDidRemoveLockout_error___block_invoke;
   v9[3] = &unk_2799FCE60;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  lockoutCopy = lockout;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(delegateQueue, v9);
 
   objc_destroyWeak(&v11);

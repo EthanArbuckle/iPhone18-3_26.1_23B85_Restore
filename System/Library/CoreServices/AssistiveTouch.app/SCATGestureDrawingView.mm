@@ -1,44 +1,44 @@
 @interface SCATGestureDrawingView
-+ (BOOL)_isValidPositionFor90ControlWithXAlignment:(unint64_t)a3 yAlignment:(unint64_t)a4 size:(CGSize)a5 nearestPoint:(CGPoint)a6 centerPoint:(CGPoint)a7 frame:(CGRect *)a8;
-+ (CGRect)_bestFrameFor90ControlAtAngle:(double)a3 size:(CGSize)a4 centerPoint:(CGPoint)a5;
-+ (CGRect)_frameFor90ControlWithXAlignment:(unint64_t)a3 yAlignment:(unint64_t)a4 size:(CGSize)a5 nearestPoint:(CGPoint)a6;
++ (BOOL)_isValidPositionFor90ControlWithXAlignment:(unint64_t)alignment yAlignment:(unint64_t)yAlignment size:(CGSize)size nearestPoint:(CGPoint)point centerPoint:(CGPoint)centerPoint frame:(CGRect *)frame;
++ (CGRect)_bestFrameFor90ControlAtAngle:(double)angle size:(CGSize)size centerPoint:(CGPoint)point;
++ (CGRect)_frameFor90ControlWithXAlignment:(unint64_t)alignment yAlignment:(unint64_t)yAlignment size:(CGSize)size nearestPoint:(CGPoint)point;
 + (CGRect)_frameWithIntegralOrigin:(CGRect)result;
 - (CGPoint)_tailPoint;
 - (CGRect)frameForToolbar;
 - (NSArray)fingerPositions;
-- (SCATGestureDrawingView)initWithFrame:(CGRect)a3;
+- (SCATGestureDrawingView)initWithFrame:(CGRect)frame;
 - (double)_actualDistanceForFingerTrail;
-- (double)_midAngleForCurvedTrailWithTailPoint:(CGPoint)a3 fingerTrailDistance:(double)a4 distanceAlongArc:(double)a5 useSecondIntersectionPointIfNecessary:(BOOL)a6;
+- (double)_midAngleForCurvedTrailWithTailPoint:(CGPoint)point fingerTrailDistance:(double)distance distanceAlongArc:(double)arc useSecondIntersectionPointIfNecessary:(BOOL)necessary;
 - (double)angle;
 - (double)curvature;
 - (double)previewDistance;
-- (id)_newControlArrowForCurvature:(BOOL)a3;
+- (id)_newControlArrowForCurvature:(BOOL)curvature;
 - (id)_newRotate90Button;
-- (void)_adjustArrowViewsForNumberOfFingers:(unint64_t)a3;
+- (void)_adjustArrowViewsForNumberOfFingers:(unint64_t)fingers;
 - (void)_updateControls;
-- (void)_updateCurvatureControl:(id)a3 withTailPoint:(CGPoint)a4 tailAngle:(double)a5 distance:(double)a6 curvature:(double)a7;
+- (void)_updateCurvatureControl:(id)control withTailPoint:(CGPoint)point tailAngle:(double)angle distance:(double)distance curvature:(double)curvature;
 - (void)_updateCurvatureControls;
 - (void)_updateRotation90Controls;
 - (void)_updateRotationControls;
-- (void)setAngle:(double)a3;
-- (void)setCurvature:(double)a3;
-- (void)setFingerPositions:(id)a3;
-- (void)setFingersHighlighted:(BOOL)a3;
-- (void)setFingersPressed:(BOOL)a3;
-- (void)setFrameForToolbar:(CGRect)a3;
-- (void)setPreviewDistance:(double)a3;
-- (void)setShowsCurvatureControls:(BOOL)a3;
-- (void)setShowsRotation90Controls:(BOOL)a3;
-- (void)setShowsRotationControls:(BOOL)a3;
+- (void)setAngle:(double)angle;
+- (void)setCurvature:(double)curvature;
+- (void)setFingerPositions:(id)positions;
+- (void)setFingersHighlighted:(BOOL)highlighted;
+- (void)setFingersPressed:(BOOL)pressed;
+- (void)setFrameForToolbar:(CGRect)toolbar;
+- (void)setPreviewDistance:(double)distance;
+- (void)setShowsCurvatureControls:(BOOL)controls;
+- (void)setShowsRotation90Controls:(BOOL)controls;
+- (void)setShowsRotationControls:(BOOL)controls;
 @end
 
 @implementation SCATGestureDrawingView
 
-- (SCATGestureDrawingView)initWithFrame:(CGRect)a3
+- (SCATGestureDrawingView)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = SCATGestureDrawingView;
-  v3 = [(SCATGestureDrawingView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SCATGestureDrawingView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,13 +50,13 @@
     rotateCounterclockwiseControl = v4->_rotateCounterclockwiseControl;
     v4->_rotateCounterclockwiseControl = v7;
 
-    v9 = [(SCATGestureDrawingView *)v4 _newRotate90Button];
+    _newRotate90Button = [(SCATGestureDrawingView *)v4 _newRotate90Button];
     rotate90ClockwiseButton = v4->_rotate90ClockwiseButton;
-    v4->_rotate90ClockwiseButton = v9;
+    v4->_rotate90ClockwiseButton = _newRotate90Button;
 
-    v11 = [(SCATGestureDrawingView *)v4 _newRotate90Button];
+    _newRotate90Button2 = [(SCATGestureDrawingView *)v4 _newRotate90Button];
     rotate90CounterclockwiseButton = v4->_rotate90CounterclockwiseButton;
-    v4->_rotate90CounterclockwiseButton = v11;
+    v4->_rotate90CounterclockwiseButton = _newRotate90Button2;
 
     v13 = [(SCATGestureDrawingView *)v4 _newControlArrowForCurvature:1];
     increaseCurveControl = v4->_increaseCurveControl;
@@ -111,12 +111,12 @@
   return v4;
 }
 
-- (void)setFingersPressed:(BOOL)a3
+- (void)setFingersPressed:(BOOL)pressed
 {
-  if (self->_fingersPressed != a3)
+  if (self->_fingersPressed != pressed)
   {
-    v3 = a3;
-    self->_fingersPressed = a3;
+    pressedCopy = pressed;
+    self->_fingersPressed = pressed;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -137,7 +137,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v8) setPressed:{v3, v9}];
+          [*(*(&v9 + 1) + 8 * v8) setPressed:{pressedCopy, v9}];
           v8 = v8 + 1;
         }
 
@@ -150,12 +150,12 @@
   }
 }
 
-- (void)setFingersHighlighted:(BOOL)a3
+- (void)setFingersHighlighted:(BOOL)highlighted
 {
-  if (self->_fingersHighlighted != a3)
+  if (self->_fingersHighlighted != highlighted)
   {
-    v3 = a3;
-    self->_fingersHighlighted = a3;
+    highlightedCopy = highlighted;
+    self->_fingersHighlighted = highlighted;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -176,7 +176,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v8) setHighlighted:{v3, v9}];
+          [*(*(&v9 + 1) + 8 * v8) setHighlighted:{highlightedCopy, v9}];
           v8 = v8 + 1;
         }
 
@@ -189,29 +189,29 @@
   }
 }
 
-- (void)setShowsRotationControls:(BOOL)a3
+- (void)setShowsRotationControls:(BOOL)controls
 {
-  if (self->_showsRotationControls != a3)
+  if (self->_showsRotationControls != controls)
   {
-    self->_showsRotationControls = a3;
+    self->_showsRotationControls = controls;
     [(SCATGestureDrawingView *)self _updateRotationControls];
   }
 }
 
-- (void)setShowsRotation90Controls:(BOOL)a3
+- (void)setShowsRotation90Controls:(BOOL)controls
 {
-  if (self->_showsRotation90Controls != a3)
+  if (self->_showsRotation90Controls != controls)
   {
-    self->_showsRotation90Controls = a3;
+    self->_showsRotation90Controls = controls;
     [(SCATGestureDrawingView *)self _updateRotation90Controls];
   }
 }
 
-- (void)setShowsCurvatureControls:(BOOL)a3
+- (void)setShowsCurvatureControls:(BOOL)controls
 {
-  if (self->_showsCurvatureControls != a3)
+  if (self->_showsCurvatureControls != controls)
   {
-    self->_showsCurvatureControls = a3;
+    self->_showsCurvatureControls = controls;
     [(SCATGestureDrawingView *)self _updateCurvatureControls];
   }
 }
@@ -252,24 +252,24 @@
   return v3;
 }
 
-- (void)setFingerPositions:(id)a3
+- (void)setFingerPositions:(id)positions
 {
-  v8 = a3;
-  -[SCATGestureDrawingView _adjustArrowViewsForNumberOfFingers:](self, "_adjustArrowViewsForNumberOfFingers:", [v8 count]);
-  if ([v8 count])
+  positionsCopy = positions;
+  -[SCATGestureDrawingView _adjustArrowViewsForNumberOfFingers:](self, "_adjustArrowViewsForNumberOfFingers:", [positionsCopy count]);
+  if ([positionsCopy count])
   {
     v4 = 0;
     do
     {
       v5 = [(NSMutableArray *)self->_arrowViews objectAtIndex:v4];
-      v6 = [v8 objectAtIndex:v4];
+      v6 = [positionsCopy objectAtIndex:v4];
       v7 = CGPointFromString(v6);
       [v5 setTailPoint:{v7.x, v7.y}];
 
       ++v4;
     }
 
-    while (v4 < [v8 count]);
+    while (v4 < [positionsCopy count]);
   }
 
   [(SCATGestureDrawingView *)self _updateControls];
@@ -277,14 +277,14 @@
 
 - (double)angle
 {
-  v2 = [(NSMutableArray *)self->_arrowViews lastObject];
-  [v2 tailAngle];
+  lastObject = [(NSMutableArray *)self->_arrowViews lastObject];
+  [lastObject tailAngle];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAngle:(double)a3
+- (void)setAngle:(double)angle
 {
   v10 = 0u;
   v11 = 0u;
@@ -306,7 +306,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setTailAngle:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9) setTailAngle:{angle, v10}];
         v9 = v9 + 1;
       }
 
@@ -322,14 +322,14 @@
 
 - (double)curvature
 {
-  v2 = [(NSMutableArray *)self->_arrowViews lastObject];
-  [v2 curvature];
+  lastObject = [(NSMutableArray *)self->_arrowViews lastObject];
+  [lastObject curvature];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCurvature:(double)a3
+- (void)setCurvature:(double)curvature
 {
   v10 = 0u;
   v11 = 0u;
@@ -351,7 +351,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setCurvature:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9) setCurvature:{curvature, v10}];
         v9 = v9 + 1;
       }
 
@@ -367,14 +367,14 @@
 
 - (double)previewDistance
 {
-  v2 = [(NSMutableArray *)self->_arrowViews lastObject];
-  [v2 distance];
+  lastObject = [(NSMutableArray *)self->_arrowViews lastObject];
+  [lastObject distance];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPreviewDistance:(double)a3
+- (void)setPreviewDistance:(double)distance
 {
   v10 = 0u;
   v11 = 0u;
@@ -396,7 +396,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setDistance:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9) setDistance:{distance, v10}];
         v9 = v9 + 1;
       }
 
@@ -410,14 +410,14 @@
   [(SCATGestureDrawingView *)self _updateControls];
 }
 
-- (void)setFrameForToolbar:(CGRect)a3
+- (void)setFrameForToolbar:(CGRect)toolbar
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = toolbar.size.height;
+  width = toolbar.size.width;
+  y = toolbar.origin.y;
+  x = toolbar.origin.x;
   p_frameForToolbar = &self->_frameForToolbar;
-  if (!CGRectEqualToRect(self->_frameForToolbar, a3))
+  if (!CGRectEqualToRect(self->_frameForToolbar, toolbar))
   {
     p_frameForToolbar->origin.x = x;
     p_frameForToolbar->origin.y = y;
@@ -426,13 +426,13 @@
   }
 }
 
-- (id)_newControlArrowForCurvature:(BOOL)a3
+- (id)_newControlArrowForCurvature:(BOOL)curvature
 {
-  v3 = a3;
+  curvatureCopy = curvature;
   v5 = objc_alloc_init(SCATGestureArrowView);
   [(SCATGestureArrowView *)v5 setIsControlArrow:1];
   [(SCATGestureArrowView *)v5 setGestureDrawingView:self];
-  if (v3)
+  if (curvatureCopy)
   {
     v6 = 4;
   }
@@ -443,7 +443,7 @@
   }
 
   [(SCATGestureArrowView *)v5 setStyle:v6];
-  [(SCATGestureArrowView *)v5 setShouldClearFingerCircle:v3];
+  [(SCATGestureArrowView *)v5 setShouldClearFingerCircle:curvatureCopy];
   return v5;
 }
 
@@ -456,33 +456,33 @@
   v6 = [NSString stringWithFormat:v4, v5];
 
   [(SCATOutlineLabel *)v3 setText:v6];
-  v7 = [v2 controlArrowColor];
-  [(SCATOutlineLabel *)v3 setTextColor:v7];
+  controlArrowColor = [v2 controlArrowColor];
+  [(SCATOutlineLabel *)v3 setTextColor:controlArrowColor];
 
-  v8 = [v2 controlArrowHighlightedColor];
-  [(SCATOutlineLabel *)v3 setHighlightedTextColor:v8];
+  controlArrowHighlightedColor = [v2 controlArrowHighlightedColor];
+  [(SCATOutlineLabel *)v3 setHighlightedTextColor:controlArrowHighlightedColor];
 
-  v9 = [v2 controlArrowOutlineColor];
-  [(SCATOutlineLabel *)v3 setOutlineColor:v9];
+  controlArrowOutlineColor = [v2 controlArrowOutlineColor];
+  [(SCATOutlineLabel *)v3 setOutlineColor:controlArrowOutlineColor];
 
   [v2 controlArrowOutlineThickness];
   [(SCATOutlineLabel *)v3 setOutlineThickness:?];
   [(SCATOutlineLabel *)v3 setTextAlignment:1];
   v10 = +[SCATStyleProvider sharedStyleProvider];
-  v11 = [v10 rotation90ControlFont];
+  rotation90ControlFont = [v10 rotation90ControlFont];
 
-  [(SCATOutlineLabel *)v3 setFont:v11];
+  [(SCATOutlineLabel *)v3 setFont:rotation90ControlFont];
   [(SCATOutlineLabel *)v3 sizeToFit];
 
   return v3;
 }
 
-- (void)_adjustArrowViewsForNumberOfFingers:(unint64_t)a3
+- (void)_adjustArrowViewsForNumberOfFingers:(unint64_t)fingers
 {
   arrowViews = self->_arrowViews;
   if (!arrowViews)
   {
-    v6 = [[NSMutableArray alloc] initWithCapacity:a3];
+    v6 = [[NSMutableArray alloc] initWithCapacity:fingers];
     v7 = self->_arrowViews;
     self->_arrowViews = v6;
 
@@ -490,10 +490,10 @@
   }
 
   v8 = [(NSMutableArray *)arrowViews count];
-  v9 = a3 - v8;
-  if (a3 >= v8)
+  v9 = fingers - v8;
+  if (fingers >= v8)
   {
-    if (a3 > v8)
+    if (fingers > v8)
     {
       do
       {
@@ -522,15 +522,15 @@
       --v10;
     }
 
-    while (v10 >= a3);
+    while (v10 >= fingers);
   }
 }
 
 - (CGPoint)_tailPoint
 {
-  v2 = [(SCATGestureDrawingView *)self fingerPositions];
-  v3 = [v2 lastObject];
-  v4 = CGPointFromString(v3);
+  fingerPositions = [(SCATGestureDrawingView *)self fingerPositions];
+  lastObject = [fingerPositions lastObject];
+  v4 = CGPointFromString(lastObject);
 
   x = v4.x;
   y = v4.y;
@@ -541,8 +541,8 @@
 
 - (double)_actualDistanceForFingerTrail
 {
-  v2 = [(NSMutableArray *)self->_arrowViews lastObject];
-  [v2 actualDistanceForPreview];
+  lastObject = [(NSMutableArray *)self->_arrowViews lastObject];
+  [lastObject actualDistanceForPreview];
   v4 = v3;
 
   return v4;
@@ -556,45 +556,45 @@
   [(SCATGestureDrawingView *)self _updateCurvatureControls];
 }
 
-+ (CGRect)_frameFor90ControlWithXAlignment:(unint64_t)a3 yAlignment:(unint64_t)a4 size:(CGSize)a5 nearestPoint:(CGPoint)a6
++ (CGRect)_frameFor90ControlWithXAlignment:(unint64_t)alignment yAlignment:(unint64_t)yAlignment size:(CGSize)size nearestPoint:(CGPoint)point
 {
-  height = a5.height;
-  width = a5.width;
-  if (a3 == 2)
+  height = size.height;
+  width = size.width;
+  if (alignment == 2)
   {
-    x = a6.x - a5.width;
+    x = point.x - size.width;
   }
 
-  else if (a3 == 1)
+  else if (alignment == 1)
   {
-    x = a6.x + a5.width * -0.5;
+    x = point.x + size.width * -0.5;
   }
 
   else
   {
     x = CGRectZero.origin.x;
-    if (!a3)
+    if (!alignment)
     {
-      x = a6.x;
+      x = point.x;
     }
   }
 
-  if (a4 == 2)
+  if (yAlignment == 2)
   {
-    y = a6.y - a5.height;
+    y = point.y - size.height;
   }
 
-  else if (a4 == 1)
+  else if (yAlignment == 1)
   {
-    y = a6.y + a5.height * -0.5;
+    y = point.y + size.height * -0.5;
   }
 
   else
   {
     y = CGRectZero.origin.y;
-    if (!a4)
+    if (!yAlignment)
     {
-      y = a6.y;
+      y = point.y;
     }
   }
 
@@ -607,18 +607,18 @@
   return result;
 }
 
-+ (BOOL)_isValidPositionFor90ControlWithXAlignment:(unint64_t)a3 yAlignment:(unint64_t)a4 size:(CGSize)a5 nearestPoint:(CGPoint)a6 centerPoint:(CGPoint)a7 frame:(CGRect *)a8
++ (BOOL)_isValidPositionFor90ControlWithXAlignment:(unint64_t)alignment yAlignment:(unint64_t)yAlignment size:(CGSize)size nearestPoint:(CGPoint)point centerPoint:(CGPoint)centerPoint frame:(CGRect *)frame
 {
-  y = a6.y;
-  x = a6.x;
-  height = a5.height;
-  width = a5.width;
-  if (a3 == 1 && a4 == 1)
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
+  if (alignment == 1 && yAlignment == 1)
   {
     _AXAssert();
   }
 
-  [a1 _frameFor90ControlWithXAlignment:a3 yAlignment:a4 size:width nearestPoint:{height, x, y}];
+  [self _frameFor90ControlWithXAlignment:alignment yAlignment:yAlignment size:width nearestPoint:{height, x, y}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -710,18 +710,18 @@
   v57.size.height = v23;
   CGRectGetMaxY(v57);
   AX_CGPointGetDistanceToPoint();
-  if (a8)
+  if (frame)
   {
     v34 = v17 + 3.0;
-    if (a3 != 1)
+    if (alignment != 1)
     {
       v34 = v17;
     }
 
-    a8->origin.x = v34;
-    a8->origin.y = v19;
-    a8->size.width = v21;
-    a8->size.height = v23;
+    frame->origin.x = v34;
+    frame->origin.y = v19;
+    frame->size.width = v21;
+    frame->size.height = v23;
   }
 
   v35 = v43 >= v25;
@@ -758,22 +758,22 @@
   return v37 >= v25 && v35;
 }
 
-+ (CGRect)_bestFrameFor90ControlAtAngle:(double)a3 size:(CGSize)a4 centerPoint:(CGPoint)a5
++ (CGRect)_bestFrameFor90ControlAtAngle:(double)angle size:(CGSize)size centerPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
   v11 = +[SCATStyleProvider sharedStyleProvider];
   [v11 rotation90ControlNearestRadius];
   v13 = v12;
-  v14 = __sincos_stret(a3);
+  v14 = __sincos_stret(angle);
   v15 = x + v13 * v14.__cosval;
   v16 = y + v13 * v14.__sinval;
   size = CGRectNull.size;
   origin = CGRectNull.origin;
-  v30 = size;
-  if (([a1 _isValidPositionFor90ControlWithXAlignment:1 yAlignment:0 size:&origin nearestPoint:width centerPoint:height frame:{v15, v16, x, y}] & 1) == 0 && (objc_msgSend(a1, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 1, 2, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(a1, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 0, 1, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(a1, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 2, 1, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(a1, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 0, 0, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(a1, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 0, 2, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(a1, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 2, 0, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(a1, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 2, 2, &origin, width, height, v15, v16, x, y) & 1) == 0)
+  sizeCopy = size;
+  if (([self _isValidPositionFor90ControlWithXAlignment:1 yAlignment:0 size:&origin nearestPoint:width centerPoint:height frame:{v15, v16, x, y}] & 1) == 0 && (objc_msgSend(self, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 1, 2, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(self, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 0, 1, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(self, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 2, 1, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(self, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 0, 0, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(self, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 0, 2, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(self, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 2, 0, &origin, width, height, v15, v16, x, y) & 1) == 0 && (objc_msgSend(self, "_isValidPositionFor90ControlWithXAlignment:yAlignment:size:nearestPoint:centerPoint:frame:", 2, 2, &origin, width, height, v15, v16, x, y) & 1) == 0)
   {
     v31.x = x;
     v31.y = y;
@@ -786,17 +786,17 @@
     v28 = NSStringFromCGSize(v33);
     _AXAssert();
 
-    [a1 _frameFor90ControlWithXAlignment:1 yAlignment:0 size:width nearestPoint:{height, v15, v16, v18, v19, v28}];
+    [self _frameFor90ControlWithXAlignment:1 yAlignment:0 size:width nearestPoint:{height, v15, v16, v18, v19, v28}];
     origin.x = v20;
     origin.y = v21;
-    v30.width = v22;
-    v30.height = v23;
+    sizeCopy.width = v22;
+    sizeCopy.height = v23;
   }
 
   v25 = origin.y;
   v24 = origin.x;
-  v27 = v30.height;
-  v26 = v30.width;
+  v27 = sizeCopy.height;
+  v26 = sizeCopy.width;
   result.size.height = v27;
   result.size.width = v26;
   result.origin.y = v25;
@@ -842,11 +842,11 @@
   [(SCATOutlineLabel *)rotate90CounterclockwiseButton setHidden:v23];
 }
 
-- (double)_midAngleForCurvedTrailWithTailPoint:(CGPoint)a3 fingerTrailDistance:(double)a4 distanceAlongArc:(double)a5 useSecondIntersectionPointIfNecessary:(BOOL)a6
+- (double)_midAngleForCurvedTrailWithTailPoint:(CGPoint)point fingerTrailDistance:(double)distance distanceAlongArc:(double)arc useSecondIntersectionPointIfNecessary:(BOOL)necessary
 {
-  v6 = a6;
-  y = a3.y;
-  x = a3.x;
+  necessaryCopy = necessary;
+  y = point.y;
+  x = point.x;
   v12 = +[SCATStyleProvider sharedStyleProvider];
   v26 = CGPointZero;
   [(SCATGestureDrawingView *)self curvature];
@@ -854,13 +854,13 @@
   [(SCATGestureDrawingView *)self angle];
   v16 = v15;
   [(SCATGestureDrawingView *)self curvature];
-  [SCATGestureArrowView getCurveArcCenter:0 startAngle:0 endAngle:0 updatedFingerAngle:0 updatedFingerCenter:&v26 withFingerAngle:v17 < 0.0 fingerCenter:v16 curveRadius:x distanceToMove:y onLeft:v14, a5];
+  [SCATGestureArrowView getCurveArcCenter:0 startAngle:0 endAngle:0 updatedFingerAngle:0 updatedFingerCenter:&v26 withFingerAngle:v17 < 0.0 fingerCenter:v16 curveRadius:x distanceToMove:y onLeft:v14, arc];
   v18 = atan2(v26.y - y, v26.x - x);
-  if (v6)
+  if (necessaryCopy)
   {
     [v12 controlArrowThickness];
-    v20 = v14 * 6.28318531 - a5;
-    if (v20 - (v19 + v19) < a4)
+    v20 = v14 * 6.28318531 - arc;
+    if (v20 - (v19 + v19) < distance)
     {
       [(SCATGestureDrawingView *)self angle];
       v22 = v21;
@@ -947,15 +947,15 @@
   [(SCATGestureArrowView *)rotateCounterclockwiseControl setHidden:v35];
 }
 
-- (void)_updateCurvatureControl:(id)a3 withTailPoint:(CGPoint)a4 tailAngle:(double)a5 distance:(double)a6 curvature:(double)a7
+- (void)_updateCurvatureControl:(id)control withTailPoint:(CGPoint)point tailAngle:(double)angle distance:(double)distance curvature:(double)curvature
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
-  [v12 setTailPoint:{x, y}];
-  [v12 setTailAngle:a5];
-  [v12 setDistance:a6];
-  [v12 setCurvature:a7];
+  y = point.y;
+  x = point.x;
+  controlCopy = control;
+  [controlCopy setTailPoint:{x, y}];
+  [controlCopy setTailAngle:angle];
+  [controlCopy setDistance:distance];
+  [controlCopy setCurvature:curvature];
 }
 
 - (void)_updateCurvatureControls
@@ -1000,13 +1000,13 @@
     [(SCATGestureDrawingView *)self _updateCurvatureControl:self->_straightenCurveControl withTailPoint:v4 tailAngle:v6 distance:v8 curvature:v10, 0.0];
   }
 
-  v19 = [(SCATGestureDrawingView *)self showsCurvatureControls];
-  v20 = [(SCATGestureDrawingView *)self increaseCurveControl];
-  [v20 setHidden:v19 ^ 1];
+  showsCurvatureControls = [(SCATGestureDrawingView *)self showsCurvatureControls];
+  increaseCurveControl = [(SCATGestureDrawingView *)self increaseCurveControl];
+  [increaseCurveControl setHidden:showsCurvatureControls ^ 1];
 
-  v21 = [(SCATGestureDrawingView *)self showsCurvatureControls];
-  v22 = [(SCATGestureDrawingView *)self decreaseCurveControl];
-  [v22 setHidden:v21 ^ 1];
+  showsCurvatureControls2 = [(SCATGestureDrawingView *)self showsCurvatureControls];
+  decreaseCurveControl = [(SCATGestureDrawingView *)self decreaseCurveControl];
+  [decreaseCurveControl setHidden:showsCurvatureControls2 ^ 1];
 
   if ([(SCATGestureDrawingView *)self showsCurvatureControls])
   {
@@ -1019,8 +1019,8 @@
     v24 = 1;
   }
 
-  v25 = [(SCATGestureDrawingView *)self straightenCurveControl];
-  [v25 setHidden:v24];
+  straightenCurveControl = [(SCATGestureDrawingView *)self straightenCurveControl];
+  [straightenCurveControl setHidden:v24];
 }
 
 - (CGRect)frameForToolbar

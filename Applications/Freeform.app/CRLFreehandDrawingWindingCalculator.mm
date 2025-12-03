@@ -1,14 +1,14 @@
 @interface CRLFreehandDrawingWindingCalculator
 - (BOOL)isWindingClockwise;
-- (void)addPoint:(CGPoint)a3;
+- (void)addPoint:(CGPoint)point;
 @end
 
 @implementation CRLFreehandDrawingWindingCalculator
 
-- (void)addPoint:(CGPoint)a3
+- (void)addPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (self->_hasPoints)
   {
     v6 = self->_lastInputPoints[0].x;
@@ -24,7 +24,7 @@
 
   else
   {
-    self->_lastInputPoints[1] = a3;
+    self->_lastInputPoints[1] = point;
     self->_lastInputPoints[0] = self->_lastInputPoints[1];
     self->_hasPoints = 1;
   }

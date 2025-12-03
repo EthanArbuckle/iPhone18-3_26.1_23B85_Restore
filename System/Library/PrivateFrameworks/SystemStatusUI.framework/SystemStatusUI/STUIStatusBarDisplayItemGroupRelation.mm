@@ -1,6 +1,6 @@
 @interface STUIStatusBarDisplayItemGroupRelation
 - (BOOL)isFulfilled;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
 - (id)itemStates;
 - (id)type;
 @end
@@ -61,7 +61,7 @@ LABEL_15:
 - (id)itemStates
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -81,8 +81,8 @@ LABEL_15:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) itemStates];
-        [v3 addObjectsFromArray:v9];
+        itemStates = [*(*(&v11 + 1) + 8 * i) itemStates];
+        [array addObjectsFromArray:itemStates];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -91,7 +91,7 @@ LABEL_15:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)type
@@ -107,13 +107,13 @@ LABEL_15:
   }
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
   v8.receiver = self;
   v8.super_class = STUIStatusBarDisplayItemGroupRelation;
-  v5 = [(STUIStatusBarDisplayItemRelation *)&v8 _descriptionBuilderWithMultilinePrefix:a3 forDebug:a4];
-  v6 = [(STUIStatusBarDisplayItemGroupRelation *)self relations];
-  [v5 appendArraySection:v6 withName:@"relations" skipIfEmpty:1];
+  v5 = [(STUIStatusBarDisplayItemRelation *)&v8 _descriptionBuilderWithMultilinePrefix:prefix forDebug:debug];
+  relations = [(STUIStatusBarDisplayItemGroupRelation *)self relations];
+  [v5 appendArraySection:relations withName:@"relations" skipIfEmpty:1];
 
   return v5;
 }

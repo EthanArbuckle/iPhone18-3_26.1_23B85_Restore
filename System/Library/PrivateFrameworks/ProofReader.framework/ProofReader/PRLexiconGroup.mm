@@ -1,21 +1,21 @@
 @interface PRLexiconGroup
-- (PRLexiconGroup)initWithLocalization:(id)a3 lexicons:(id)a4 cachedOnly:(BOOL)a5;
+- (PRLexiconGroup)initWithLocalization:(id)localization lexicons:(id)lexicons cachedOnly:(BOOL)only;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation PRLexiconGroup
 
-- (PRLexiconGroup)initWithLocalization:(id)a3 lexicons:(id)a4 cachedOnly:(BOOL)a5
+- (PRLexiconGroup)initWithLocalization:(id)localization lexicons:(id)lexicons cachedOnly:(BOOL)only
 {
   v10.receiver = self;
   v10.super_class = PRLexiconGroup;
   v8 = [(PRLexiconGroup *)&v10 init];
   if (v8)
   {
-    v8->_localization = [a3 copy];
-    v8->_lexicons = [a4 copy];
-    v8->_cachedOnly = a5;
+    v8->_localization = [localization copy];
+    v8->_lexicons = [lexicons copy];
+    v8->_cachedOnly = only;
   }
 
   return v8;
@@ -27,7 +27,7 @@
   v8.receiver = self;
   v8.super_class = PRLexiconGroup;
   v4 = [(PRLexiconGroup *)&v8 description];
-  v5 = [(PRLexiconGroup *)self localization];
+  localization = [(PRLexiconGroup *)self localization];
   if ([(PRLexiconGroup *)self cachedOnly])
   {
     v6 = @"-cachedOnly";
@@ -38,7 +38,7 @@
     v6 = &stru_1F4E0A7A0;
   }
 
-  return [v3 stringWithFormat:@"%@(%@%@)%@", v4, v5, v6, -[PRLexiconGroup lexicons](self, "lexicons")];
+  return [v3 stringWithFormat:@"%@(%@%@)%@", v4, localization, v6, -[PRLexiconGroup lexicons](self, "lexicons")];
 }
 
 - (void)dealloc

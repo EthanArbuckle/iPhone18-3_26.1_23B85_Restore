@@ -1,18 +1,18 @@
 @interface TVLatencySetupStartViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (void)handleDeviceSetupNotification:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)handleStartButton:(id)a3;
-- (void)handleTapOutsideView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (void)handleDeviceSetupNotification:(id)notification;
+- (void)handleDismissButton:(id)button;
+- (void)handleStartButton:(id)button;
+- (void)handleTapOutsideView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVLatencySetupStartViewController
 
-- (void)handleTapOutsideView:(id)a3
+- (void)handleTapOutsideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -21,9 +21,9 @@
   [self->super.super._mainController dismiss:1];
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -32,16 +32,16 @@
   [self->super.super._mainController dismiss:5];
 }
 
-- (void)handleStartButton:(id)a3
+- (void)handleStartButton:(id)button
 {
-  v8 = a3;
+  buttonCopy = button;
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v4 = [(SVSBaseViewController *)self containerView];
-  [v4 setSwipeDismissible:0];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:0];
 
   if ([self->super.super._mainController testFlags])
   {
@@ -51,10 +51,10 @@
   else
   {
     v5 = objc_alloc_init(SFDevice);
-    v6 = [self->super.super._mainController deviceIdentifier];
-    [v5 setIdentifier:v6];
+    deviceIdentifier = [self->super.super._mainController deviceIdentifier];
+    [v5 setIdentifier:deviceIdentifier];
 
-    v7 = [self->super.super._mainController userInfo];
+    userInfo = [self->super.super._mainController userInfo];
     [v5 setOsVersion:CFDictionaryGetInt64Ranged()];
 
     [self->super.super._mainController _sessionStart:v5];
@@ -62,30 +62,30 @@
   }
 }
 
-- (void)handleDeviceSetupNotification:(id)a3
+- (void)handleDeviceSetupNotification:(id)notification
 {
-  v14 = a3;
-  v4 = [v14 name];
-  v5 = [v14 userInfo];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  userInfo = [notificationCopy userInfo];
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     v6 = &stru_100195CA8;
-    if (v5)
+    if (userInfo)
     {
-      v6 = v5;
+      v6 = userInfo;
     }
 
-    v12 = v4;
+    v12 = name;
     v13 = v6;
     LogPrintF();
   }
 
-  v7 = [v14 name];
-  v8 = [v7 isEqual:@"com.apple.sharing.DeviceSetup"];
+  name2 = [notificationCopy name];
+  v8 = [name2 isEqual:@"com.apple.sharing.DeviceSetup"];
 
   if (v8 && !CFDictionaryGetInt64())
   {
-    v9 = [self->super.super._mainController userInfo];
+    userInfo2 = [self->super.super._mainController userInfo];
     CFStringGetTypeID();
     v10 = CFDictionaryGetTypedValue();
 
@@ -103,24 +103,24 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if (BYTE1(self->super._animationContainerView))
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = [a4 view];
-  v8 = [v6 view];
+  recognizerCopy = recognizer;
+  view = [touch view];
+  view2 = [recognizerCopy view];
 
-  v4 = v7 == v8;
+  v4 = view == view2;
   return v4;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -128,14 +128,14 @@
 
   v6.receiver = self;
   v6.super_class = TVLatencySetupStartViewController;
-  [(TVLatencySetupStartViewController *)&v6 viewDidDisappear:v3];
+  [(TVLatencySetupStartViewController *)&v6 viewDidDisappear:disappearCopy];
   v5 = +[NSDistributedNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"com.apple.sharing.DeviceSetup" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BF2B8 <= 30 && (dword_1001BF2B8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -143,21 +143,21 @@
 
   v10.receiver = self;
   v10.super_class = TVLatencySetupStartViewController;
-  [(TVLatencySetupBaseViewController *)&v10 viewWillAppear:v3];
-  v5 = [self->super.super._mainController _remoteViewControllerProxy];
-  [v5 setStatusBarHidden:1 withDuration:0.0];
+  [(TVLatencySetupBaseViewController *)&v10 viewWillAppear:appearCopy];
+  _remoteViewControllerProxy = [self->super.super._mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
   v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTapOutsideView:"];
   [v6 setDelegate:self];
   [v6 setNumberOfTapsRequired:1];
   [v6 setCancelsTouchesInView:0];
-  v7 = [(TVLatencySetupStartViewController *)self view];
-  [v7 addGestureRecognizer:v6];
+  view = [(TVLatencySetupStartViewController *)self view];
+  [view addGestureRecognizer:v6];
 
   v8 = +[NSDistributedNotificationCenter defaultCenter];
   [v8 addObserver:self selector:"handleDeviceSetupNotification:" name:@"com.apple.sharing.DeviceSetup" object:0 suspensionBehavior:4];
-  v9 = [(SVSBaseViewController *)self containerView];
-  [v9 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 }
 
 @end

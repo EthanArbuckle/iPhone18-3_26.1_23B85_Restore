@@ -1,16 +1,16 @@
 @interface PXPhotoLibraryChangeDistributor
 - (BOOL)areChangesPaused;
-- (PXPhotoLibraryChangeDistributor)initWithPhotoLibrary:(id)a3;
-- (id)beginPausingChangesWithTimeout:(double)a3 identifier:(id)a4;
+- (PXPhotoLibraryChangeDistributor)initWithPhotoLibrary:(id)library;
+- (id)beginPausingChangesWithTimeout:(double)timeout identifier:(id)identifier;
 - (void)_notifyPausedStateChange;
 - (void)dealloc;
-- (void)distributeChangeOnMainQueue:(id)a3;
-- (void)endPausingChanges:(id)a3;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)registerChangeObserver:(id)a3;
-- (void)registerInternalChangeObserver:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
-- (void)unregisterInternalChangeObserver:(id)a3;
+- (void)distributeChangeOnMainQueue:(id)queue;
+- (void)endPausingChanges:(id)changes;
+- (void)photoLibraryDidChange:(id)change;
+- (void)registerChangeObserver:(id)observer;
+- (void)registerInternalChangeObserver:(id)observer;
+- (void)unregisterChangeObserver:(id)observer;
+- (void)unregisterInternalChangeObserver:(id)observer;
 @end
 
 @implementation PXPhotoLibraryChangeDistributor
@@ -20,20 +20,20 @@
   v26 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:245 description:@"must be on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:245 description:@"must be on main thread"];
   }
 
   v4 = PLUIGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PXPhotoLibraryChangeDistributor *)self areChangesPaused];
-    v6 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    v7 = [v6 currentMode];
+    areChangesPaused = [(PXPhotoLibraryChangeDistributor *)self areChangesPaused];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    currentMode = [currentRunLoop currentMode];
     *buf = 67109378;
-    *&buf[4] = v5;
+    *&buf[4] = areChangesPaused;
     LOWORD(v22) = 2114;
-    *(&v22 + 2) = v7;
+    *(&v22 + 2) = currentMode;
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_INFO, "Change Distribution: Notifying paused state changed to: %d, runLoopMode = %{public}@", buf, 0x12u);
   }
 
@@ -97,13 +97,13 @@ void __59__PXPhotoLibraryChangeDistributor__notifyPausedStateChange__block_invok
   *(v3 + 40) = v2;
 }
 
-- (void)endPausingChanges:(id)a3
+- (void)endPausingChanges:(id)changes
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changesCopy = changes;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    if (!v5)
+    if (!changesCopy)
     {
       goto LABEL_10;
     }
@@ -111,28 +111,28 @@ void __59__PXPhotoLibraryChangeDistributor__notifyPausedStateChange__block_invok
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:226 description:@"must be on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:226 description:@"must be on main thread"];
 
-    if (!v5)
+    if (!changesCopy)
     {
       goto LABEL_10;
     }
   }
 
-  if (([(NSMutableSet *)self->_changePausingTokens containsObject:v5]& 1) != 0)
+  if (([(NSMutableSet *)self->_changePausingTokens containsObject:changesCopy]& 1) != 0)
   {
     v6 = PLUIGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138543362;
-      v11 = v5;
+      v11 = changesCopy;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_INFO, "Change Distribution: endPausingChanges for token: %{public}@", &v10, 0xCu);
     }
 
-    v7 = [(PXPhotoLibraryChangeDistributor *)self areChangesPaused];
-    [(NSMutableSet *)self->_changePausingTokens removeObject:v5];
-    if (v7 != [(PXPhotoLibraryChangeDistributor *)self areChangesPaused])
+    areChangesPaused = [(PXPhotoLibraryChangeDistributor *)self areChangesPaused];
+    [(NSMutableSet *)self->_changePausingTokens removeObject:changesCopy];
+    if (areChangesPaused != [(PXPhotoLibraryChangeDistributor *)self areChangesPaused])
     {
       [(PXPhotoLibraryChangeDistributor *)self _notifyPausedStateChange];
     }
@@ -146,65 +146,65 @@ LABEL_10:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v10 = 138543362;
-    v11 = v5;
+    v11 = changesCopy;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "Change Distribution: Ignoring endPausingChanges for invalid token: %{public}@", &v10, 0xCu);
   }
 
 LABEL_13:
 }
 
-- (id)beginPausingChangesWithTimeout:(double)a3 identifier:(id)a4
+- (id)beginPausingChangesWithTimeout:(double)timeout identifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  identifierCopy = identifier;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:199 description:@"must be on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:199 description:@"must be on main thread"];
   }
 
-  if (a3 < 0.0)
+  if (timeout < 0.0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:200 description:@"timeout must be >= 0"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:200 description:@"timeout must be >= 0"];
   }
 
-  [v7 length];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [(PXPhotoLibraryChangeDistributor *)self areChangesPaused];
-  [(NSMutableSet *)self->_changePausingTokens addObject:v8];
+  [identifierCopy length];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  areChangesPaused = [(PXPhotoLibraryChangeDistributor *)self areChangesPaused];
+  [(NSMutableSet *)self->_changePausingTokens addObject:uUID];
   dispatch_group_enter(self->_changePausingGroup);
   v10 = PLUIGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 134218498;
-    v19 = a3;
+    timeoutCopy = timeout;
     v20 = 2114;
-    v21 = v7;
+    v21 = identifierCopy;
     v22 = 2114;
-    v23 = v8;
+    v23 = uUID;
     _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_INFO, "Change Distribution: beginPausingChangesWithTimeout: %lf, identifier: %{public}@, token: %{public}@", buf, 0x20u);
   }
 
-  if (v9 != [(PXPhotoLibraryChangeDistributor *)self areChangesPaused])
+  if (areChangesPaused != [(PXPhotoLibraryChangeDistributor *)self areChangesPaused])
   {
     [(PXPhotoLibraryChangeDistributor *)self _notifyPausedStateChange];
   }
 
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
-    v11 = dispatch_time(0, (a3 * 1000000000.0));
+    v11 = dispatch_time(0, (timeout * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__PXPhotoLibraryChangeDistributor_beginPausingChangesWithTimeout_identifier___block_invoke;
     block[3] = &unk_1E774A1B8;
     block[4] = self;
-    v16 = v8;
-    v17 = v7;
+    v16 = uUID;
+    v17 = identifierCopy;
     dispatch_after(v11, MEMORY[0x1E69E96A0], block);
   }
 
-  return v8;
+  return uUID;
 }
 
 uint64_t __77__PXPhotoLibraryChangeDistributor_beginPausingChangesWithTimeout_identifier___block_invoke(uint64_t a1)
@@ -231,21 +231,21 @@ uint64_t __77__PXPhotoLibraryChangeDistributor_beginPausingChangesWithTimeout_id
   return result;
 }
 
-- (void)distributeChangeOnMainQueue:(id)a3
+- (void)distributeChangeOnMainQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__PXPhotoLibraryChangeDistributor_distributeChangeOnMainQueue___block_invoke;
   aBlock[3] = &unk_1E774C620;
-  v6 = v5;
+  v6 = queueCopy;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v7 = _Block_copy(aBlock);
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:183 description:@"must be on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:183 description:@"must be on main thread"];
   }
 
   if ([(NSMutableSet *)self->_changePausingTokens count])
@@ -332,10 +332,10 @@ uint64_t __63__PXPhotoLibraryChangeDistributor_distributeChangeOnMainQueue___blo
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changeCopy = change;
   v4 = +[PXPhotosDataSourceSettings sharedInstance];
   [v4 delayChanges];
   v6 = v5;
@@ -385,7 +385,7 @@ uint64_t __63__PXPhotoLibraryChangeDistributor_distributeChangeOnMainQueue___blo
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v35 + 1) + 8 * v11++) photoLibraryWillChange:v3];
+        [*(*(&v35 + 1) + 8 * v11++) photoLibraryWillChange:changeCopy];
       }
 
       while (v9 != v11);
@@ -395,7 +395,7 @@ uint64_t __63__PXPhotoLibraryChangeDistributor_distributeChangeOnMainQueue___blo
     while (v9);
   }
 
-  v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -419,10 +419,10 @@ uint64_t __63__PXPhotoLibraryChangeDistributor_distributeChangeOnMainQueue___blo
         v18 = objc_autoreleasePoolPush();
         if (objc_opt_respondsToSelector())
         {
-          v19 = [v17 prepareForPhotoLibraryChange:v3];
+          v19 = [v17 prepareForPhotoLibraryChange:changeCopy];
           if (v19)
           {
-            [v12 setObject:v19 forKey:v17];
+            [strongToStrongObjectsMapTable setObject:v19 forKey:v17];
           }
         }
 
@@ -440,10 +440,10 @@ uint64_t __63__PXPhotoLibraryChangeDistributor_distributeChangeOnMainQueue___blo
   v20 = PLUIGetLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
-    v21 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    v22 = [v21 currentMode];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    currentMode = [mainRunLoop currentMode];
     *buf = 138543362;
-    v56 = v22;
+    v56 = currentMode;
     _os_log_impl(&dword_1A3C1C000, v20, OS_LOG_TYPE_INFO, "Change Distribution: photoLibraryDidChange calling distributeChangeOnMainQueue (runLoopMode: %{public}@)", buf, 0xCu);
   }
 
@@ -451,9 +451,9 @@ uint64_t __63__PXPhotoLibraryChangeDistributor_distributeChangeOnMainQueue___blo
   v53[0] = @"observers";
   v53[1] = @"changeInstance";
   v54[0] = v23;
-  v54[1] = v3;
+  v54[1] = changeCopy;
   v53[2] = @"preparedInfoByObserver";
-  v54[2] = v12;
+  v54[2] = strongToStrongObjectsMapTable;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:3];
   v52 = *MEMORY[0x1E695D918];
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
@@ -462,10 +462,10 @@ uint64_t __63__PXPhotoLibraryChangeDistributor_distributeChangeOnMainQueue___blo
   v26 = PLUIGetLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
-    v27 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    v28 = [v27 currentMode];
+    mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    currentMode2 = [mainRunLoop2 currentMode];
     *buf = 138543362;
-    v56 = v28;
+    v56 = currentMode2;
     _os_log_impl(&dword_1A3C1C000, v26, OS_LOG_TYPE_INFO, "Change Distribution: photoLibraryDidChange returned from distributeChangeOnMainQueue (runLoopMode: %{public}@)", buf, 0xCu);
   }
 
@@ -494,11 +494,11 @@ void __57__PXPhotoLibraryChangeDistributor_photoLibraryDidChange___block_invoke(
   *(v6 + 40) = v5;
 }
 
-- (void)unregisterInternalChangeObserver:(id)a3
+- (void)unregisterInternalChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -506,16 +506,16 @@ void __57__PXPhotoLibraryChangeDistributor_photoLibraryDidChange___block_invoke(
     v7[2] = __68__PXPhotoLibraryChangeDistributor_unregisterInternalChangeObserver___block_invoke;
     v7[3] = &unk_1E774C620;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)registerInternalChangeObserver:(id)a3
+- (void)registerInternalChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -523,16 +523,16 @@ void __57__PXPhotoLibraryChangeDistributor_photoLibraryDidChange___block_invoke(
     v7[2] = __66__PXPhotoLibraryChangeDistributor_registerInternalChangeObserver___block_invoke;
     v7[3] = &unk_1E774C620;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -540,16 +540,16 @@ void __57__PXPhotoLibraryChangeDistributor_photoLibraryDidChange___block_invoke(
     v7[2] = __60__PXPhotoLibraryChangeDistributor_unregisterChangeObserver___block_invoke;
     v7[3] = &unk_1E774C620;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -557,7 +557,7 @@ void __57__PXPhotoLibraryChangeDistributor_photoLibraryDidChange___block_invoke(
     v7[2] = __58__PXPhotoLibraryChangeDistributor_registerChangeObserver___block_invoke;
     v7[3] = &unk_1E774C620;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -566,8 +566,8 @@ void __57__PXPhotoLibraryChangeDistributor_photoLibraryDidChange___block_invoke(
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:81 description:@"must be on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+PhotosUICore.m" lineNumber:81 description:@"must be on main thread"];
   }
 
   return [(NSMutableSet *)self->_changePausingTokens count]!= 0;
@@ -583,27 +583,27 @@ void __57__PXPhotoLibraryChangeDistributor_photoLibraryDidChange___block_invoke(
   [(PXPhotoLibraryChangeDistributor *)&v4 dealloc];
 }
 
-- (PXPhotoLibraryChangeDistributor)initWithPhotoLibrary:(id)a3
+- (PXPhotoLibraryChangeDistributor)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v23.receiver = self;
   v23.super_class = PXPhotoLibraryChangeDistributor;
   v5 = [(PXPhotoLibraryChangeDistributor *)&v23 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     internalObservers = v5->_internalObservers;
-    v5->_internalObservers = v6;
+    v5->_internalObservers = weakObjectsHashTable;
 
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v8;
+    v5->_observers = weakObjectsHashTable2;
 
     v10 = dispatch_queue_create("com.apple.photos.changeDistributor", 0);
     queue = v5->_queue;
     v5->_queue = v10;
 
-    objc_storeWeak(&v5->_photoLibrary, v4);
+    objc_storeWeak(&v5->_photoLibrary, libraryCopy);
     v12 = dispatch_semaphore_create(0);
     changeDeliverySemaphore = v5->_changeDeliverySemaphore;
     v5->_changeDeliverySemaphore = v12;
@@ -621,7 +621,7 @@ void __57__PXPhotoLibraryChangeDistributor_photoLibraryDidChange___block_invoke(
     v20[1] = 3221225472;
     v20[2] = __56__PXPhotoLibraryChangeDistributor_initWithPhotoLibrary___block_invoke;
     v20[3] = &unk_1E774C620;
-    v21 = v4;
+    v21 = libraryCopy;
     v22 = v5;
     dispatch_async(v18, v20);
   }

@@ -1,33 +1,33 @@
 @interface LICacheClearScheduler
-+ (id)transactionDescription:(id)a3;
-- (LICacheClearScheduler)initWithObject:(id)a3 delay:(double)a4 holdTransaction:(BOOL)a5 clearHandler:(id)a6;
++ (id)transactionDescription:(id)description;
+- (LICacheClearScheduler)initWithObject:(id)object delay:(double)delay holdTransaction:(BOOL)transaction clearHandler:(id)handler;
 - (id)object;
 - (void)_queue_clearCache;
 @end
 
 @implementation LICacheClearScheduler
 
-- (LICacheClearScheduler)initWithObject:(id)a3 delay:(double)a4 holdTransaction:(BOOL)a5 clearHandler:(id)a6
+- (LICacheClearScheduler)initWithObject:(id)object delay:(double)delay holdTransaction:(BOOL)transaction clearHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  objectCopy = object;
+  handlerCopy = handler;
   v31.receiver = self;
   v31.super_class = LICacheClearScheduler;
   v12 = [(LICacheClearScheduler *)&v31 init];
   if (v12)
   {
-    v13 = [v11 copy];
+    v13 = [handlerCopy copy];
     v14 = *(v12 + 9);
     *(v12 + 9) = v13;
 
-    *(v12 + 3) = a4;
+    *(v12 + 3) = delay;
     objc_initWeak(&location, v12);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("delayed evitor queue", v15);
     v17 = *(v12 + 8);
     *(v12 + 8) = v16;
 
-    *(v12 + 9) = a5;
+    *(v12 + 9) = transaction;
     *(v12 + 8) = 0;
     v18 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(v12 + 8));
     v19 = dispatch_time(0, (*(v12 + 3) * 1000000000.0));
@@ -85,10 +85,10 @@ void __75__LICacheClearScheduler_initWithObject_delay_holdTransaction_clearHandl
   [v5 _queue_clearCache];
 }
 
-+ (id)transactionDescription:(id)a3
++ (id)transactionDescription:(id)description
 {
-  v3 = a3;
-  if (v3 && (v4 = os_transaction_copy_description()) != 0)
+  descriptionCopy = description;
+  if (descriptionCopy && (v4 = os_transaction_copy_description()) != 0)
   {
     v5 = v4;
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:v4];

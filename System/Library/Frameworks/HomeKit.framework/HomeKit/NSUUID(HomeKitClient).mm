@@ -14,7 +14,7 @@
   v4[2] = *MEMORY[0x1E69E9840];
   v4[0] = 0;
   v4[1] = 0;
-  [a1 getUUIDBytes:v4];
+  [self getUUIDBytes:v4];
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:v4 length:16];
   v2 = *MEMORY[0x1E69E9840];
 
@@ -25,7 +25,7 @@
 {
   v3 = a3;
   v4 = +[HMIdentifierSaltStore sharedIdentifierSaltStore];
-  v5 = [v4 assistantIdentifierSalt];
+  assistantIdentifierSalt = [v4 assistantIdentifierSalt];
 
   v6 = +[HMIdentifierSaltStore sharedIdentifierSaltStore];
   v7 = [v3 copy];
@@ -40,11 +40,11 @@
   v5 = a3;
   v6 = a4;
   v7 = +[HMIdentifierSaltStore sharedIdentifierSaltStore];
-  v8 = [v7 assistantIdentifierSalt];
+  assistantIdentifierSalt = [v7 assistantIdentifierSalt];
 
-  if (v8)
+  if (assistantIdentifierSalt)
   {
-    v9 = [MEMORY[0x1E696AFB0] hm_deriveUUIDFromBaseUUID:v5 identifierSalt:v8 withSalts:v6];
+    v9 = [MEMORY[0x1E696AFB0] hm_deriveUUIDFromBaseUUID:v5 identifierSalt:assistantIdentifierSalt withSalts:v6];
   }
 
   else
@@ -68,8 +68,8 @@
   v6 = a4;
   v7 = a3;
   v8 = +[HMIdentifierSaltStore sharedIdentifierSaltStore];
-  v9 = [v8 identifierSalt];
-  v10 = [v5 hm_deriveUUIDFromBaseUUID:v7 identifierSalt:v9 withSalts:v6];
+  identifierSalt = [v8 identifierSalt];
+  v10 = [v5 hm_deriveUUIDFromBaseUUID:v7 identifierSalt:identifierSalt withSalts:v6];
 
   return v10;
 }
@@ -88,16 +88,16 @@
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v19 = 138543618;
       v20 = v15;
       v21 = 2112;
-      v22 = v16;
+      v22 = callStackSymbols;
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_FAULT, "%{public}@API Misuse: requested to derive UUID from nil base UUID. Call stack: %@", &v19, 0x16u);
     }
 

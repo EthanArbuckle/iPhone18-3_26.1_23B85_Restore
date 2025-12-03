@@ -1,32 +1,32 @@
 @interface PKDataReleaseViewController
 - (UIColor)_backgroundColorForModalFormSheet;
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithRequest:(id)a3 delegate:(id)a4;
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithRootViewController:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)dataReleaseCompletedWithError:(id)a3;
-- (void)dataReleaseContentViewController:(id)a3 didAuthorizeWithExternalAuthorizationData:(id)a4 dataToRelease:(id)a5;
-- (void)dataReleaseContentViewController:(id)a3 didFinishWithError:(id)a4;
-- (void)dataReleaseContentViewController:(id)a3 didResolveToMerchant:(id)a4;
-- (void)dataReleaseContentViewControllerDidChangePhysicalButtonState:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithRequest:(id)request delegate:(id)delegate;
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithRootViewController:(id)controller;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)dataReleaseCompletedWithError:(id)error;
+- (void)dataReleaseContentViewController:(id)controller didAuthorizeWithExternalAuthorizationData:(id)data dataToRelease:(id)release;
+- (void)dataReleaseContentViewController:(id)controller didFinishWithError:(id)error;
+- (void)dataReleaseContentViewController:(id)controller didResolveToMerchant:(id)merchant;
+- (void)dataReleaseContentViewControllerDidChangePhysicalButtonState:(id)state;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKDataReleaseViewController
 
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithRequest:(id)a3 delegate:(id)a4
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithRequest:(id)request delegate:(id)delegate
 {
-  v4 = a3;
+  requestCopy = request;
   swift_unknownObjectRetain();
-  return PKDataReleaseViewController.init(request:delegate:)(v4);
+  return PKDataReleaseViewController.init(request:delegate:)(requestCopy);
 }
 
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -51,13 +51,13 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(PKDataReleaseViewController *)&v5 viewWillDisappear:v3];
+  [(PKDataReleaseViewController *)&v5 viewWillDisappear:disappearCopy];
   if ([v4 isBeingDismissed])
   {
     sub_1BD5B9E1C();
@@ -66,7 +66,7 @@
 
 - (UIColor)_backgroundColorForModalFormSheet
 {
-  v2 = [objc_opt_self() blackColor];
+  blackColor = [objc_opt_self() blackColor];
   IsAvailable = PKUserIntentIsAvailable();
   v4 = 0.4;
   if (IsAvailable)
@@ -74,19 +74,19 @@
     v4 = 0.52;
   }
 
-  v5 = [v2 colorWithAlphaComponent_];
+  colorWithAlphaComponent_ = [blackColor colorWithAlphaComponent_];
 
-  return v5;
+  return colorWithAlphaComponent_;
 }
 
-- (void)dataReleaseCompletedWithError:(id)a3
+- (void)dataReleaseCompletedWithError:(id)error
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI27PKDataReleaseViewController_contentViewController);
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
-  if (a3)
+  if (error)
   {
-    v6 = a3;
+    errorCopy = error;
     v7 = sub_1BE04A844();
   }
 
@@ -98,43 +98,43 @@
   [v5 dataReleaseCompletedWithError_];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   swift_unknownObjectRetain();
   v4 = v5.receiver;
-  [(PKDataReleaseViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(PKDataReleaseViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:container];
   sub_1BD5BA390();
   swift_unknownObjectRelease();
 }
 
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithRootViewController:(id)a3
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9PassKitUI27PKDataReleaseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9PassKitUI27PKDataReleaseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)dataReleaseContentViewController:(id)a3 didAuthorizeWithExternalAuthorizationData:(id)a4 dataToRelease:(id)a5
+- (void)dataReleaseContentViewController:(id)controller didAuthorizeWithExternalAuthorizationData:(id)data dataToRelease:(id)release
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = self;
+  dataCopy = data;
+  releaseCopy = release;
+  selfCopy = self;
   v10 = sub_1BE04AAC4();
   v12 = v11;
 
@@ -143,7 +143,7 @@
   {
     v14 = Strong;
     v15 = sub_1BE04AAB4();
-    [v14 dataReleaseViewController:v9 didAuthorizeWithExternalAuthorizationData:v15 dataToRelease:v8];
+    [v14 dataReleaseViewController:selfCopy didAuthorizeWithExternalAuthorizationData:v15 dataToRelease:releaseCopy];
 
     sub_1BD1245AC(v10, v12);
 
@@ -157,11 +157,11 @@
   }
 }
 
-- (void)dataReleaseContentViewController:(id)a3 didFinishWithError:(id)a4
+- (void)dataReleaseContentViewController:(id)controller didFinishWithError:(id)error
 {
   v7 = swift_allocObject();
   *(v7 + 16) = self;
-  *(v7 + 24) = a4;
+  *(v7 + 24) = error;
   v14[4] = sub_1BD5BBE68;
   v14[5] = v7;
   v14[0] = MEMORY[0x1E69E9820];
@@ -169,18 +169,18 @@
   v14[2] = sub_1BD126964;
   v14[3] = &block_descriptor_19_4;
   v8 = _Block_copy(v14);
-  v9 = self;
-  v10 = a4;
-  v11 = v9;
-  v12 = v10;
-  v13 = a3;
+  selfCopy = self;
+  errorCopy = error;
+  v11 = selfCopy;
+  v12 = errorCopy;
+  controllerCopy = controller;
 
-  [v13 dismissViewControllerAnimated:1 completion:v8];
+  [controllerCopy dismissViewControllerAnimated:1 completion:v8];
 
   _Block_release(v8);
 }
 
-- (void)dataReleaseContentViewController:(id)a3 didResolveToMerchant:(id)a4
+- (void)dataReleaseContentViewController:(id)controller didResolveToMerchant:(id)merchant
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -188,33 +188,33 @@
     v7 = Strong;
     if ([Strong respondsToSelector_])
     {
-      [v7 dataReleaseViewController:self didResolveToMerchant:a4];
+      [v7 dataReleaseViewController:self didResolveToMerchant:merchant];
     }
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)dataReleaseContentViewControllerDidChangePhysicalButtonState:(id)a3
+- (void)dataReleaseContentViewControllerDidChangePhysicalButtonState:(id)state
 {
-  v3 = self;
+  selfCopy = self;
   sub_1BD5B9E1C();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   _s9PassKitUI27PKDataReleaseViewControllerC012presentationG10DidDismissyySo014UIPresentationG0CF_0();
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = _s9PassKitUI27PKDataReleaseViewControllerC012presentationG012forPresented10presenting6sourceSo014UIPresentationG0CSgSo06UIViewG0C_ALSgALtF_0(v8, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
+  selfCopy = self;
+  v12 = _s9PassKitUI27PKDataReleaseViewControllerC012presentationG012forPresented10presenting6sourceSo014UIPresentationG0CSgSo06UIViewG0C_ALSgALtF_0(controllerCopy, viewController);
 
   return v12;
 }

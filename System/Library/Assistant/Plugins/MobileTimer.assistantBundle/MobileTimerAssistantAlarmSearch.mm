@@ -1,24 +1,24 @@
 @interface MobileTimerAssistantAlarmSearch
-+ (id)sanitizeAlarmLabelForComparison:(id)a3;
-- (MobileTimerAssistantAlarmSearch)searchWithAlarms:(id)a3;
++ (id)sanitizeAlarmLabelForComparison:(id)comparison;
+- (MobileTimerAssistantAlarmSearch)searchWithAlarms:(id)alarms;
 - (id)sanitizedAlarmLabelForComparison;
 - (id)validateCommandArguments;
-- (void)_performWithCompletion:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MobileTimerAssistantAlarmSearch
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_D018(v5);
   }
 
-  [(MobileTimerAssistantAlarmSearch *)self _performWithCompletion:v4];
+  [(MobileTimerAssistantAlarmSearch *)self _performWithCompletion:completionCopy];
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -26,20 +26,20 @@
   }
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MobileTimerAssistantAlarmSearch *)self validateCommandArguments];
-  if (v5)
+  completionCopy = completion;
+  validateCommandArguments = [(MobileTimerAssistantAlarmSearch *)self validateCommandArguments];
+  if (validateCommandArguments)
   {
     v6 = MTLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_D120(self, v5, v6);
+      sub_D120(self, validateCommandArguments, v6);
     }
 
-    v7 = [v5 dictionary];
-    v4[2](v4, v7);
+    dictionary = [validateCommandArguments dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 
   else
@@ -57,7 +57,7 @@
     }
 
     v11 = objc_opt_new();
-    v18 = [v11 alarms];
+    alarms = [v11 alarms];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -84,12 +84,12 @@
     v41 = 0;
     if (MTShouldHandleForEucalyptus())
     {
-      v12 = [(MobileTimerAssistantAlarmSearch *)self includesSleepAlarms];
-      v13 = [v12 BOOLValue];
+      includesSleepAlarms = [(MobileTimerAssistantAlarmSearch *)self includesSleepAlarms];
+      bOOLValue = [includesSleepAlarms BOOLValue];
 
-      if (v13)
+      if (bOOLValue)
       {
-        v14 = [v11 nextSleepAlarm];
+        nextSleepAlarm = [v11 nextSleepAlarm];
         objc_initWeak(location, self);
         dispatch_group_enter(v8);
         v35[0] = _NSConcreteStackBlock;
@@ -100,7 +100,7 @@
         v37 = v42;
         v38 = v40;
         v36 = v8;
-        v15 = [v14 addCompletionBlock:v35];
+        v15 = [nextSleepAlarm addCompletionBlock:v35];
 
         objc_destroyWeak(&v39);
         objc_destroyWeak(location);
@@ -116,9 +116,9 @@
     objc_copyWeak(&v33, &from);
     v31 = buf;
     v32 = v44;
-    v7 = v8;
-    v30 = v7;
-    v16 = [v18 addCompletionBlock:v29];
+    dictionary = v8;
+    v30 = dictionary;
+    v16 = [alarms addCompletionBlock:v29];
     location[0] = 0;
     location[1] = location;
     location[2] = 0x3032000000;
@@ -136,9 +136,9 @@
     v25 = v42;
     v26 = buf;
     v20 = v9;
-    v21 = v4;
+    v21 = completionCopy;
     v17 = v9;
-    dispatch_group_notify(v7, &_dispatch_main_q, block);
+    dispatch_group_notify(dictionary, &_dispatch_main_q, block);
     dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
 
     _Block_object_dispose(location, 8);
@@ -155,75 +155,75 @@
 
 - (id)validateCommandArguments
 {
-  v3 = [(MobileTimerAssistantAlarmSearch *)self hour];
+  hour = [(MobileTimerAssistantAlarmSearch *)self hour];
 
-  if (v3)
+  if (hour)
   {
-    v4 = [(MobileTimerAssistantAlarmSearch *)self hour];
+    hour2 = [(MobileTimerAssistantAlarmSearch *)self hour];
     v24 = 0;
-    v5 = MTValidateAlarmHour([v4 unsignedIntegerValue], &v24);
-    v3 = v24;
+    v5 = MTValidateAlarmHour([hour2 unsignedIntegerValue], &v24);
+    hour = v24;
 
-    v6 = v3;
+    v6 = hour;
     if (!v5)
     {
       goto LABEL_10;
     }
   }
 
-  v7 = [(MobileTimerAssistantAlarmSearch *)self minute];
+  minute = [(MobileTimerAssistantAlarmSearch *)self minute];
 
-  if (v7)
+  if (minute)
   {
-    v8 = [(MobileTimerAssistantAlarmSearch *)self minute];
-    v23 = v3;
-    v9 = MTValidateAlarmMinute([v8 unsignedIntegerValue], &v23);
+    minute2 = [(MobileTimerAssistantAlarmSearch *)self minute];
+    v23 = hour;
+    v9 = MTValidateAlarmMinute([minute2 unsignedIntegerValue], &v23);
     v6 = v23;
 
-    v3 = v6;
+    hour = v6;
     if (!v9)
     {
       goto LABEL_10;
     }
   }
 
-  v10 = [(MobileTimerAssistantAlarmSearch *)self frequency];
+  frequency = [(MobileTimerAssistantAlarmSearch *)self frequency];
 
-  if (v10)
+  if (frequency)
   {
-    v11 = [(MobileTimerAssistantAlarmSearch *)self frequency];
-    v22 = v3;
-    v12 = MTValidateAlarmFrequency(v11, &v22);
+    frequency2 = [(MobileTimerAssistantAlarmSearch *)self frequency];
+    v22 = hour;
+    v12 = MTValidateAlarmFrequency(frequency2, &v22);
     v6 = v22;
 
-    v3 = v6;
+    hour = v6;
     if (!v12)
     {
       goto LABEL_10;
     }
   }
 
-  v13 = [(MobileTimerAssistantAlarmSearch *)self label];
+  label = [(MobileTimerAssistantAlarmSearch *)self label];
 
-  if (v13)
+  if (label)
   {
-    v14 = [(MobileTimerAssistantAlarmSearch *)self label];
-    v21 = v3;
-    v15 = MTValidateAlarmLabel(v14, &v21);
+    label2 = [(MobileTimerAssistantAlarmSearch *)self label];
+    v21 = hour;
+    v15 = MTValidateAlarmLabel(label2, &v21);
     v6 = v21;
 
     if (v15)
     {
       v16 = 0;
 LABEL_11:
-      v3 = v6;
+      hour = v6;
       goto LABEL_12;
     }
 
 LABEL_10:
     v17 = [SACommandFailed alloc];
-    v18 = [v6 userInfo];
-    v19 = [v18 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+    userInfo = [v6 userInfo];
+    v19 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
     v16 = [v17 initWithReason:v19];
 
     [v16 setErrorCode:{objc_msgSend(v6, "code")}];
@@ -236,20 +236,20 @@ LABEL_12:
   return v16;
 }
 
-- (MobileTimerAssistantAlarmSearch)searchWithAlarms:(id)a3
+- (MobileTimerAssistantAlarmSearch)searchWithAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   v82 = objc_opt_new();
-  v5 = [(MobileTimerAssistantAlarmSearch *)self sanitizedAlarmLabelForComparison];
+  sanitizedAlarmLabelForComparison = [(MobileTimerAssistantAlarmSearch *)self sanitizedAlarmLabelForComparison];
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v6 = v4;
-  v7 = v5;
+  v6 = alarmsCopy;
+  v7 = sanitizedAlarmLabelForComparison;
   obj = v6;
   v8 = [v6 countByEnumeratingWithState:&v92 objects:v98 count:16];
-  v81 = v5;
+  v81 = sanitizedAlarmLabelForComparison;
   if (v8)
   {
     v9 = v8;
@@ -291,13 +291,13 @@ LABEL_12:
           continue;
         }
 
-        v18 = [(MobileTimerAssistantAlarmSearch *)self identifier];
-        if (v18)
+        identifier = [(MobileTimerAssistantAlarmSearch *)self identifier];
+        if (identifier)
         {
-          v19 = v18;
-          v20 = [(MobileTimerAssistantAlarmSearch *)self identifier];
-          v21 = [v12 alarmURL];
-          v22 = [v20 isEqual:v21];
+          v19 = identifier;
+          identifier2 = [(MobileTimerAssistantAlarmSearch *)self identifier];
+          alarmURL = [v12 alarmURL];
+          v22 = [identifier2 isEqual:alarmURL];
 
           if (!v22)
           {
@@ -305,54 +305,54 @@ LABEL_12:
           }
         }
 
-        v23 = [(MobileTimerAssistantAlarmSearch *)self hour];
-        if (v23)
+        hour = [(MobileTimerAssistantAlarmSearch *)self hour];
+        if (hour)
         {
-          v24 = v23;
-          v25 = [(MobileTimerAssistantAlarmSearch *)self hour];
-          v26 = [v25 unsignedIntegerValue];
-          v27 = [v12 hour];
+          v24 = hour;
+          hour2 = [(MobileTimerAssistantAlarmSearch *)self hour];
+          unsignedIntegerValue = [hour2 unsignedIntegerValue];
+          hour3 = [v12 hour];
 
-          if (v26 != v27)
+          if (unsignedIntegerValue != hour3)
           {
             continue;
           }
         }
 
-        v28 = [(MobileTimerAssistantAlarmSearch *)self minute];
-        if (v28)
+        minute = [(MobileTimerAssistantAlarmSearch *)self minute];
+        if (minute)
         {
-          v29 = v28;
-          v30 = [(MobileTimerAssistantAlarmSearch *)self minute];
-          v31 = [v30 unsignedIntegerValue];
-          v32 = [v12 minute];
+          v29 = minute;
+          minute2 = [(MobileTimerAssistantAlarmSearch *)self minute];
+          unsignedIntegerValue2 = [minute2 unsignedIntegerValue];
+          minute3 = [v12 minute];
 
-          if (v31 != v32)
+          if (unsignedIntegerValue2 != minute3)
           {
             continue;
           }
         }
 
-        v33 = [(MobileTimerAssistantAlarmSearch *)self enabled];
-        if (v33)
+        enabled = [(MobileTimerAssistantAlarmSearch *)self enabled];
+        if (enabled)
         {
-          v34 = v33;
-          v35 = [(MobileTimerAssistantAlarmSearch *)self enabled];
-          v36 = [v35 BOOLValue];
-          v37 = [v12 isEnabled];
+          v34 = enabled;
+          enabled2 = [(MobileTimerAssistantAlarmSearch *)self enabled];
+          bOOLValue = [enabled2 BOOLValue];
+          isEnabled = [v12 isEnabled];
 
-          if (v36 != v37)
+          if (bOOLValue != isEnabled)
           {
             continue;
           }
         }
 
-        v38 = [(MobileTimerAssistantAlarmSearch *)self frequency];
+        frequency = [(MobileTimerAssistantAlarmSearch *)self frequency];
 
-        if (v38)
+        if (frequency)
         {
-          v39 = [(MobileTimerAssistantAlarmSearch *)self frequency];
-          if ([v39 count] != &dword_0 + 1)
+          frequency2 = [(MobileTimerAssistantAlarmSearch *)self frequency];
+          if ([frequency2 count] != &dword_0 + 1)
           {
 
 LABEL_26:
@@ -360,8 +360,8 @@ LABEL_26:
             v91 = 0u;
             v88 = 0u;
             v89 = 0u;
-            v43 = [(MobileTimerAssistantAlarmSearch *)self frequency];
-            v44 = [v43 countByEnumeratingWithState:&v88 objects:v97 count:16];
+            frequency3 = [(MobileTimerAssistantAlarmSearch *)self frequency];
+            v44 = [frequency3 countByEnumeratingWithState:&v88 objects:v97 count:16];
             if (v44)
             {
               v45 = v44;
@@ -373,7 +373,7 @@ LABEL_26:
                 {
                   if (*v89 != v47)
                   {
-                    objc_enumerationMutation(v43);
+                    objc_enumerationMutation(frequency3);
                   }
 
                   v49 = *(*(&v88 + 1) + 8 * j);
@@ -381,7 +381,7 @@ LABEL_26:
                   v46 |= MTAlarmRepeatDayFromSAAlarmDayOfWeek(v50);
                 }
 
-                v45 = [v43 countByEnumeratingWithState:&v88 objects:v97 count:16];
+                v45 = [frequency3 countByEnumeratingWithState:&v88 objects:v97 count:16];
               }
 
               while (v45);
@@ -402,8 +402,8 @@ LABEL_26:
             goto LABEL_36;
           }
 
-          v40 = [(MobileTimerAssistantAlarmSearch *)self frequency];
-          v41 = [v40 objectAtIndexedSubscript:0];
+          frequency4 = [(MobileTimerAssistantAlarmSearch *)self frequency];
+          v41 = [frequency4 objectAtIndexedSubscript:0];
           v42 = SAAlarmDayOfWeekForString();
 
           if (v42 != 1)
@@ -422,26 +422,26 @@ LABEL_36:
         {
           v52 = v7;
           v53 = objc_opt_class();
-          v54 = [v12 displayTitle];
-          v55 = [v53 sanitizeAlarmLabelForComparison:v54];
+          displayTitle = [v12 displayTitle];
+          v55 = [v53 sanitizeAlarmLabelForComparison:displayTitle];
 
           if ([&stru_14A20 isEqualToString:v52] && objc_msgSend(&stru_14A20, "isEqualToString:", v55))
           {
-            v56 = [(MobileTimerAssistantAlarmSearch *)self label];
+            label = [(MobileTimerAssistantAlarmSearch *)self label];
 
-            v57 = [v12 displayTitle];
+            displayTitle2 = [v12 displayTitle];
 
-            v55 = v57;
+            v55 = displayTitle2;
           }
 
           else
           {
-            v56 = v52;
+            label = v52;
           }
 
           v58 = [v52 length];
           v59 = +[NSLocale currentLocale];
-          v60 = [v56 compare:v55 options:129 range:0 locale:{v58, v59}];
+          v60 = [label compare:v55 options:129 range:0 locale:{v58, v59}];
 
           if (v60)
           {
@@ -508,8 +508,8 @@ LABEL_42:
           v68 = objc_alloc_init(SAAlarmObject);
         }
 
-        v72 = [v67 alarmURL];
-        [v68 setIdentifier:v72];
+        alarmURL2 = [v67 alarmURL];
+        [v68 setIdentifier:alarmURL2];
 
         v73 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v67 hour]);
         [v68 setHour:v73];
@@ -520,8 +520,8 @@ LABEL_42:
         v75 = SAAlarmFrequencyFromRepeatSchedule([v67 repeatSchedule]);
         [v68 setFrequency:v75];
 
-        v76 = [v67 displayTitle];
-        [v68 setLabel:v76];
+        displayTitle3 = [v67 displayTitle];
+        [v68 setLabel:displayTitle3];
 
         v77 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v67 isEnabled]);
         [v68 setEnabled:v77];
@@ -546,23 +546,23 @@ LABEL_42:
 - (id)sanitizedAlarmLabelForComparison
 {
   v3 = objc_opt_class();
-  v4 = [(MobileTimerAssistantAlarmSearch *)self label];
-  v5 = [v3 sanitizeAlarmLabelForComparison:v4];
+  label = [(MobileTimerAssistantAlarmSearch *)self label];
+  v5 = [v3 sanitizeAlarmLabelForComparison:label];
 
   return v5;
 }
 
-+ (id)sanitizeAlarmLabelForComparison:(id)a3
++ (id)sanitizeAlarmLabelForComparison:(id)comparison
 {
-  v3 = a3;
-  if (v3)
+  comparisonCopy = comparison;
+  if (comparisonCopy)
   {
     if (qword_1BE08 != -1)
     {
       sub_D2D8();
     }
 
-    v4 = [v3 componentsSeparatedByCharactersInSet:qword_1BDF8];
+    v4 = [comparisonCopy componentsSeparatedByCharactersInSet:qword_1BDF8];
     v5 = [v4 componentsJoinedByString:&stru_14A20];
 
     v6 = [v5 componentsSeparatedByCharactersInSet:qword_1BE00];

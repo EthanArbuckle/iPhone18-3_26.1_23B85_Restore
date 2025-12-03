@@ -1,13 +1,13 @@
 @interface FairPlayRepair
-+ (BOOL)shouldAttemptToRepairApplication:(id)a3 options:(id)a4 logKey:(id)a5;
++ (BOOL)shouldAttemptToRepairApplication:(id)application options:(id)options logKey:(id)key;
 - (ApplicationRepairDelegate)delegate;
 - (FairPlayRepair)init;
 - (NSArray)repairedBundleIDs;
 - (_TtC9appstored6LogKey)logKey;
 - (int)fairPlayStatus;
-- (void)repairApplication:(id)a3 completionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setLogKey:(id)a3;
+- (void)repairApplication:(id)application completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setLogKey:(id)key;
 @end
 
 @implementation FairPlayRepair
@@ -49,17 +49,17 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001D60D4;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   sub_100379C5C(lock, v7);
 }
 
@@ -104,17 +104,17 @@
   return v3;
 }
 
-- (void)setLogKey:(id)a3
+- (void)setLogKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001D63A4;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   sub_100379C5C(lock, v7);
 }
 
@@ -140,39 +140,39 @@
   return v3;
 }
 
-+ (BOOL)shouldAttemptToRepairApplication:(id)a3 options:(id)a4 logKey:(id)a5
++ (BOOL)shouldAttemptToRepairApplication:(id)application options:(id)options logKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ((sub_1003D2BDC(v7) & 1) == 0 && ((sub_1003D3068(v7) & 1) != 0 || v7 && [v7[15] isBeta]))
+  applicationCopy = application;
+  optionsCopy = options;
+  keyCopy = key;
+  if ((sub_1003D2BDC(applicationCopy) & 1) == 0 && ((sub_1003D3068(applicationCopy) & 1) != 0 || applicationCopy && [applicationCopy[15] isBeta]))
   {
-    if (os_variant_has_internal_content() && [v8 fairplayStatus])
+    if (os_variant_has_internal_content() && [optionsCopy fairplayStatus])
     {
-      v11 = [v8 fairplayStatus];
+      fairplayStatus = [optionsCopy fairplayStatus];
     }
 
     else
     {
-      v12 = sub_1003D2550(v7);
-      v13 = [v12 fileSystemRepresentation];
+      v12 = sub_1003D2550(applicationCopy);
+      fileSystemRepresentation = [v12 fileSystemRepresentation];
 
-      if (!v13)
+      if (!fileSystemRepresentation)
       {
         goto LABEL_15;
       }
 
-      v11 = sub_1001D6788(FairPlayRepair, v7, v8);
+      fairplayStatus = sub_1001D6788(FairPlayRepair, applicationCopy, optionsCopy);
     }
 
-    v14 = v11;
-    if (v11)
+    v14 = fairplayStatus;
+    if (fairplayStatus)
     {
       v15 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138543618;
-        v18 = v9;
+        v18 = keyCopy;
         v19 = 1024;
         v20 = v14;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[FP/%{public}@] Will start fairplay recovery with fairplayStatus: %d", &v17, 0x12u);
@@ -189,7 +189,7 @@ LABEL_15:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543618;
-      v18 = v9;
+      v18 = keyCopy;
       v19 = 1024;
       v20 = 0;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[FP/%{public}@] Will not attempt fairplay recovery do to launchable fairplayStatus: %d", &v17, 0x12u);
@@ -205,18 +205,18 @@ LABEL_19:
   return v10;
 }
 
-- (void)repairApplication:(id)a3 completionHandler:(id)a4
+- (void)repairApplication:(id)application completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  applicationCopy = application;
   if (self)
   {
     v8 = sub_100227468();
-    v9 = [v8 isConnected];
+    isConnected = [v8 isConnected];
 
-    if (v9)
+    if (isConnected)
     {
-      v10 = v7;
+      v10 = applicationCopy;
       v70 = 0;
       v71 = &v70;
       v72 = 0x2020000000;
@@ -225,13 +225,13 @@ LABEL_19:
       v65 = &v64;
       v66 = 0x3032000000;
       v67 = sub_1001D5FD8;
-      v68 = sub_1001D5FE8;
+      selfCopy = sub_1001D5FE8;
       v69 = 0;
       v11 = sub_10020A368([RefetchKeybag alloc], v10);
-      v12 = [(ASDRepairOptions *)self->_options isBackground];
+      isBackground = [(ASDRepairOptions *)self->_options isBackground];
       if (v11)
       {
-        *(v11 + 24) = v12 ^ 1;
+        *(v11 + 24) = isBackground ^ 1;
       }
 
       v13 = dispatch_semaphore_create(0);
@@ -243,7 +243,7 @@ LABEL_19:
       v76 = &v70;
       v77 = &v64;
       v15 = v13;
-      v75 = v15;
+      selfCopy3 = v15;
       [v14 resultWithCompletion:buf];
 
       dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
@@ -265,7 +265,7 @@ LABEL_19:
       v65 = 3221225472;
       v66 = sub_1001D7188;
       v67 = &unk_10051BA50;
-      v68 = self;
+      selfCopy = self;
       LODWORD(v69) = v19;
       sub_100379C5C(lock, &v64);
       if (v19 + 42597 <= 1)
@@ -286,16 +286,16 @@ LABEL_19:
         {
           v35 = [NSNumber numberWithUnsignedLongLong:sub_1003D0F1C(&self->_application->super.isa)];
           v62 = ASDErrorWithDescription();
-          v36 = [(FairPlayRepair *)self delegate];
-          [v36 repair:self needsToReleaseBlockingCallerWithReason:v62];
+          delegate = [(FairPlayRepair *)self delegate];
+          [delegate repair:self needsToReleaseBlockingCallerWithReason:v62];
 
           v37 = [AMSDialogRequest alloc];
           v38 = ASDLocalizedString();
           v39 = ASDLocalizedString();
           v40 = [v37 initWithTitle:v38 message:v39];
 
-          v41 = [(FairPlayRepair *)self logKey];
-          v42 = [v41 description];
+          logKey = [(FairPlayRepair *)self logKey];
+          v42 = [logKey description];
           [v40 setLogKey:v42];
 
           v43 = ASDLocalizedString();
@@ -325,7 +325,7 @@ LABEL_19:
           *&buf[8] = 3221225472;
           *&buf[16] = sub_1001D7208;
           *&buf[24] = &unk_10051BAA0;
-          v75 = self;
+          selfCopy3 = self;
           v76 = v47;
           v21 = v35;
           v77 = v21;
@@ -349,7 +349,7 @@ LABEL_19:
           *&buf[8] = 3221225472;
           *&buf[16] = sub_1001D6548;
           *&buf[24] = &unk_10051B570;
-          v75 = self;
+          selfCopy3 = self;
           v55 = v53;
           v76 = v55;
           sub_100379C5C(v54, buf);
@@ -385,8 +385,8 @@ LABEL_19:
         v27 = ASDLocalizedString();
         v28 = [v25 initWithTitle:v26 message:v27];
 
-        v29 = [(FairPlayRepair *)self logKey];
-        v30 = [v29 description];
+        logKey2 = [(FairPlayRepair *)self logKey];
+        v30 = [logKey2 description];
         [v28 setLogKey:v30];
 
         v31 = ASDLocalizedString();
@@ -408,9 +408,9 @@ LABEL_19:
     v56 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
-      v57 = [(FairPlayRepair *)self logKey];
+      logKey3 = [(FairPlayRepair *)self logKey];
       *buf = 138543874;
-      *&buf[4] = v57;
+      *&buf[4] = logKey3;
       *&buf[12] = 1024;
       *&buf[14] = v34;
       *&buf[18] = 2114;
@@ -434,8 +434,8 @@ LABEL_19:
 
       else
       {
-        v61 = [(FairPlayRepair *)self delegate];
-        [v61 repair:self wantsToRelaunchApplication:self->_application];
+        delegate2 = [(FairPlayRepair *)self delegate];
+        [delegate2 repair:self wantsToRelaunchApplication:self->_application];
       }
 
       self = 0;
@@ -448,7 +448,7 @@ LABEL_19:
     }
   }
 
-  v6[2](v6, self);
+  handlerCopy[2](handlerCopy, self);
 }
 
 @end

@@ -9,10 +9,10 @@
 {
   v2 = *MEMORY[0x29EDC7F70];
   v3 = [(MTAddPodcastCellAccessoryViewAccessibility *)self safeValueForKey:@"superview"];
-  v4 = [v3 accessibilityTraits];
+  accessibilityTraits = [v3 accessibilityTraits];
   v5 = *MEMORY[0x29EDC7FA8];
 
-  if ((v5 & v4) != 0)
+  if ((v5 & accessibilityTraits) != 0)
   {
     v6 = v5;
   }
@@ -28,9 +28,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(MTAddPodcastCellAccessoryViewAccessibility *)self safeValueForKey:@"isAdded"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if (v3)
+  if (bOOLValue)
   {
     v4 = @"selected";
   }

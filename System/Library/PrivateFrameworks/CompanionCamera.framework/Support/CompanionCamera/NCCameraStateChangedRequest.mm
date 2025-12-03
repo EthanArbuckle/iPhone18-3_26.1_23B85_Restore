@@ -1,24 +1,24 @@
 @interface NCCameraStateChangedRequest
-- (BOOL)isEqual:(id)a3;
-- (float)significantZoomMagnificationsAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)significantZoomMagnificationsAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCaptureDevice:(id)a3;
-- (int)StringAsCaptureMode:(id)a3;
-- (int)StringAsFlashMode:(id)a3;
-- (int)StringAsFlashSupport:(id)a3;
-- (int)StringAsHdrMode:(id)a3;
-- (int)StringAsHdrSupport:(id)a3;
-- (int)StringAsIrisMode:(id)a3;
-- (int)StringAsIrisSupport:(id)a3;
-- (int)StringAsOrientation:(id)a3;
-- (int)StringAsShallowDepthOfFieldStatus:(id)a3;
-- (int)StringAsSharedLibraryMode:(id)a3;
-- (int)StringAsSharedLibrarySupport:(id)a3;
-- (int)StringAsStereoCaptureStatus:(id)a3;
-- (int)StringAsSupportedCaptureDevices:(id)a3;
-- (int)StringAsSupportedCaptureModes:(id)a3;
+- (int)StringAsCaptureDevice:(id)device;
+- (int)StringAsCaptureMode:(id)mode;
+- (int)StringAsFlashMode:(id)mode;
+- (int)StringAsFlashSupport:(id)support;
+- (int)StringAsHdrMode:(id)mode;
+- (int)StringAsHdrSupport:(id)support;
+- (int)StringAsIrisMode:(id)mode;
+- (int)StringAsIrisSupport:(id)support;
+- (int)StringAsOrientation:(id)orientation;
+- (int)StringAsShallowDepthOfFieldStatus:(id)status;
+- (int)StringAsSharedLibraryMode:(id)mode;
+- (int)StringAsSharedLibrarySupport:(id)support;
+- (int)StringAsStereoCaptureStatus:(id)status;
+- (int)StringAsSupportedCaptureDevices:(id)devices;
+- (int)StringAsSupportedCaptureModes:(id)modes;
 - (int)captureDevice;
 - (int)captureMode;
 - (int)flashMode;
@@ -32,40 +32,40 @@
 - (int)sharedLibraryMode;
 - (int)sharedLibrarySupport;
 - (int)stereoCaptureStatus;
-- (int)supportedCaptureDeviceAtIndex:(unint64_t)a3;
-- (int)supportedCaptureModeAtIndex:(unint64_t)a3;
+- (int)supportedCaptureDeviceAtIndex:(unint64_t)index;
+- (int)supportedCaptureModeAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBurstSupport:(BOOL)a3;
-- (void)setHasCaptureDevice:(BOOL)a3;
-- (void)setHasCaptureMode:(BOOL)a3;
-- (void)setHasCaptureStartDate:(BOOL)a3;
-- (void)setHasCapturing:(BOOL)a3;
-- (void)setHasCapturingPaused:(BOOL)a3;
-- (void)setHasCurrentZoomMagnification:(BOOL)a3;
-- (void)setHasFlashMode:(BOOL)a3;
-- (void)setHasFlashSupport:(BOOL)a3;
-- (void)setHasHdrMode:(BOOL)a3;
-- (void)setHasHdrSupport:(BOOL)a3;
-- (void)setHasIrisMode:(BOOL)a3;
-- (void)setHasIrisSupport:(BOOL)a3;
-- (void)setHasIsSpatialCapture:(BOOL)a3;
-- (void)setHasMaximumZoomMagnification:(BOOL)a3;
-- (void)setHasMinimumZoomMagnification:(BOOL)a3;
-- (void)setHasOrientation:(BOOL)a3;
-- (void)setHasShallowDepthOfFieldStatus:(BOOL)a3;
-- (void)setHasSharedLibraryMode:(BOOL)a3;
-- (void)setHasSharedLibrarySupport:(BOOL)a3;
-- (void)setHasStereoCaptureStatus:(BOOL)a3;
-- (void)setHasSupportsMomentCapture:(BOOL)a3;
-- (void)setHasToggleCameraDeviceSupport:(BOOL)a3;
-- (void)setHasViewfinderSessionActive:(BOOL)a3;
-- (void)setHasZoomAmount:(BOOL)a3;
-- (void)setHasZoomMagnificationSupport:(BOOL)a3;
-- (void)setHasZoomSupport:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBurstSupport:(BOOL)support;
+- (void)setHasCaptureDevice:(BOOL)device;
+- (void)setHasCaptureMode:(BOOL)mode;
+- (void)setHasCaptureStartDate:(BOOL)date;
+- (void)setHasCapturing:(BOOL)capturing;
+- (void)setHasCapturingPaused:(BOOL)paused;
+- (void)setHasCurrentZoomMagnification:(BOOL)magnification;
+- (void)setHasFlashMode:(BOOL)mode;
+- (void)setHasFlashSupport:(BOOL)support;
+- (void)setHasHdrMode:(BOOL)mode;
+- (void)setHasHdrSupport:(BOOL)support;
+- (void)setHasIrisMode:(BOOL)mode;
+- (void)setHasIrisSupport:(BOOL)support;
+- (void)setHasIsSpatialCapture:(BOOL)capture;
+- (void)setHasMaximumZoomMagnification:(BOOL)magnification;
+- (void)setHasMinimumZoomMagnification:(BOOL)magnification;
+- (void)setHasOrientation:(BOOL)orientation;
+- (void)setHasShallowDepthOfFieldStatus:(BOOL)status;
+- (void)setHasSharedLibraryMode:(BOOL)mode;
+- (void)setHasSharedLibrarySupport:(BOOL)support;
+- (void)setHasStereoCaptureStatus:(BOOL)status;
+- (void)setHasSupportsMomentCapture:(BOOL)capture;
+- (void)setHasToggleCameraDeviceSupport:(BOOL)support;
+- (void)setHasViewfinderSessionActive:(BOOL)active;
+- (void)setHasZoomAmount:(BOOL)amount;
+- (void)setHasZoomMagnificationSupport:(BOOL)support;
+- (void)setHasZoomSupport:(BOOL)support;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NCCameraStateChangedRequest
@@ -93,9 +93,9 @@
   }
 }
 
-- (void)setHasOrientation:(BOOL)a3
+- (void)setHasOrientation:(BOOL)orientation
 {
-  if (a3)
+  if (orientation)
   {
     v3 = 0x2000;
   }
@@ -108,30 +108,30 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (int)StringAsOrientation:(id)a3
+- (int)StringAsOrientation:(id)orientation
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  orientationCopy = orientation;
+  if ([orientationCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Portrait"])
+  else if ([orientationCopy isEqualToString:@"Portrait"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PortraitUpsideDown"])
+  else if ([orientationCopy isEqualToString:@"PortraitUpsideDown"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LandscapeLeft"])
+  else if ([orientationCopy isEqualToString:@"LandscapeLeft"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LandscapeRight"])
+  else if ([orientationCopy isEqualToString:@"LandscapeRight"])
   {
     v4 = 4;
   }
@@ -144,9 +144,9 @@
   return v4;
 }
 
-- (void)setHasZoomAmount:(BOOL)a3
+- (void)setHasZoomAmount:(BOOL)amount
 {
-  if (a3)
+  if (amount)
   {
     v3 = 0x40000;
   }
@@ -172,9 +172,9 @@
   }
 }
 
-- (void)setHasFlashSupport:(BOOL)a3
+- (void)setHasFlashSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 64;
   }
@@ -187,20 +187,20 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (int)StringAsFlashSupport:(id)a3
+- (int)StringAsFlashSupport:(id)support
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  supportCopy = support;
+  if ([supportCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"OnOff"])
+  else if ([supportCopy isEqualToString:@"OnOff"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AutoOnOff"])
+  else if ([supportCopy isEqualToString:@"AutoOnOff"])
   {
     v4 = 2;
   }
@@ -226,9 +226,9 @@
   }
 }
 
-- (void)setHasFlashMode:(BOOL)a3
+- (void)setHasFlashMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 32;
   }
@@ -241,20 +241,20 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (int)StringAsFlashMode:(id)a3
+- (int)StringAsFlashMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"On"])
+  else if ([modeCopy isEqualToString:@"On"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Auto"])
+  else if ([modeCopy isEqualToString:@"Auto"])
   {
     v4 = 2;
   }
@@ -280,9 +280,9 @@
   }
 }
 
-- (void)setHasHdrSupport:(BOOL)a3
+- (void)setHasHdrSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 256;
   }
@@ -295,25 +295,25 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (int)StringAsHdrSupport:(id)a3
+- (int)StringAsHdrSupport:(id)support
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  supportCopy = support;
+  if ([supportCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"OnOff"])
+  else if ([supportCopy isEqualToString:@"OnOff"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AutoOff"])
+  else if ([supportCopy isEqualToString:@"AutoOff"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AutoOnOff"])
+  else if ([supportCopy isEqualToString:@"AutoOnOff"])
   {
     v4 = 3;
   }
@@ -339,9 +339,9 @@
   }
 }
 
-- (void)setHasHdrMode:(BOOL)a3
+- (void)setHasHdrMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 128;
   }
@@ -354,20 +354,20 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (int)StringAsHdrMode:(id)a3
+- (int)StringAsHdrMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"On"])
+  else if ([modeCopy isEqualToString:@"On"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Auto"])
+  else if ([modeCopy isEqualToString:@"Auto"])
   {
     v4 = 2;
   }
@@ -393,9 +393,9 @@
   }
 }
 
-- (void)setHasIrisSupport:(BOOL)a3
+- (void)setHasIrisSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 1024;
   }
@@ -408,20 +408,20 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (int)StringAsIrisSupport:(id)a3
+- (int)StringAsIrisSupport:(id)support
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  supportCopy = support;
+  if ([supportCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"OnOff"])
+  else if ([supportCopy isEqualToString:@"OnOff"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AutoOnOff"])
+  else if ([supportCopy isEqualToString:@"AutoOnOff"])
   {
     v4 = 2;
   }
@@ -447,9 +447,9 @@
   }
 }
 
-- (void)setHasIrisMode:(BOOL)a3
+- (void)setHasIrisMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 512;
   }
@@ -462,20 +462,20 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (int)StringAsIrisMode:(id)a3
+- (int)StringAsIrisMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"On"])
+  else if ([modeCopy isEqualToString:@"On"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Auto"])
+  else if ([modeCopy isEqualToString:@"Auto"])
   {
     v4 = 2;
   }
@@ -488,9 +488,9 @@
   return v4;
 }
 
-- (void)setHasBurstSupport:(BOOL)a3
+- (void)setHasBurstSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 0x80000;
   }
@@ -516,9 +516,9 @@
   }
 }
 
-- (void)setHasCaptureMode:(BOOL)a3
+- (void)setHasCaptureMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -531,55 +531,55 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (int)StringAsCaptureMode:(id)a3
+- (int)StringAsCaptureMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Photo"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Photo"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([modeCopy isEqualToString:@"Video"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Square"])
+  else if ([modeCopy isEqualToString:@"Square"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Timelapse"])
+  else if ([modeCopy isEqualToString:@"Timelapse"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Portrait"])
+  else if ([modeCopy isEqualToString:@"Portrait"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Slomo"])
+  else if ([modeCopy isEqualToString:@"Slomo"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Panorama"])
+  else if ([modeCopy isEqualToString:@"Panorama"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Cinematic"])
+  else if ([modeCopy isEqualToString:@"Cinematic"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SpatialVideo"])
+  else if ([modeCopy isEqualToString:@"SpatialVideo"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SpatialPhoto"])
+  else if ([modeCopy isEqualToString:@"SpatialPhoto"])
   {
     v4 = 12;
   }
@@ -592,9 +592,9 @@
   return v4;
 }
 
-- (void)setHasToggleCameraDeviceSupport:(BOOL)a3
+- (void)setHasToggleCameraDeviceSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 0x1000000;
   }
@@ -607,9 +607,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasZoomSupport:(BOOL)a3
+- (void)setHasZoomSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 0x8000000;
   }
@@ -622,69 +622,69 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (int)supportedCaptureModeAtIndex:(unint64_t)a3
+- (int)supportedCaptureModeAtIndex:(unint64_t)index
 {
   p_supportedCaptureModes = &self->_supportedCaptureModes;
   count = self->_supportedCaptureModes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_supportedCaptureModes->list[a3];
+  return p_supportedCaptureModes->list[index];
 }
 
-- (int)StringAsSupportedCaptureModes:(id)a3
+- (int)StringAsSupportedCaptureModes:(id)modes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Photo"])
+  modesCopy = modes;
+  if ([modesCopy isEqualToString:@"Photo"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([modesCopy isEqualToString:@"Video"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Square"])
+  else if ([modesCopy isEqualToString:@"Square"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Timelapse"])
+  else if ([modesCopy isEqualToString:@"Timelapse"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Portrait"])
+  else if ([modesCopy isEqualToString:@"Portrait"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Slomo"])
+  else if ([modesCopy isEqualToString:@"Slomo"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Panorama"])
+  else if ([modesCopy isEqualToString:@"Panorama"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Cinematic"])
+  else if ([modesCopy isEqualToString:@"Cinematic"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SpatialVideo"])
+  else if ([modesCopy isEqualToString:@"SpatialVideo"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SpatialPhoto"])
+  else if ([modesCopy isEqualToString:@"SpatialPhoto"])
   {
     v4 = 12;
   }
@@ -697,9 +697,9 @@
   return v4;
 }
 
-- (void)setHasCapturing:(BOOL)a3
+- (void)setHasCapturing:(BOOL)capturing
 {
-  if (a3)
+  if (capturing)
   {
     v3 = 0x100000;
   }
@@ -712,9 +712,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasCaptureStartDate:(BOOL)a3
+- (void)setHasCaptureStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -727,9 +727,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasViewfinderSessionActive:(BOOL)a3
+- (void)setHasViewfinderSessionActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 0x2000000;
   }
@@ -755,9 +755,9 @@
   }
 }
 
-- (void)setHasShallowDepthOfFieldStatus:(BOOL)a3
+- (void)setHasShallowDepthOfFieldStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x4000;
   }
@@ -770,85 +770,85 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (int)StringAsShallowDepthOfFieldStatus:(id)a3
+- (int)StringAsShallowDepthOfFieldStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unsupported"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Unsupported"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Enabled"])
+  else if ([statusCopy isEqualToString:@"Enabled"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LensOccluded"])
+  else if ([statusCopy isEqualToString:@"LensOccluded"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SubjectTooFar"])
+  else if ([statusCopy isEqualToString:@"SubjectTooFar"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SubjectTooClose"])
+  else if ([statusCopy isEqualToString:@"SubjectTooClose"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NotEnoughLight"])
+  else if ([statusCopy isEqualToString:@"NotEnoughLight"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"DeviceTooHot"])
+  else if ([statusCopy isEqualToString:@"DeviceTooHot"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"TooMuchLight"])
+  else if ([statusCopy isEqualToString:@"TooMuchLight"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"BackgroundTooFar"])
+  else if ([statusCopy isEqualToString:@"BackgroundTooFar"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"EnabledWideDualLowLightAvailable"])
+  else if ([statusCopy isEqualToString:@"EnabledWideDualLowLightAvailable"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"NotEnoughLightWideDualLowLightAvailable"])
+  else if ([statusCopy isEqualToString:@"NotEnoughLightWideDualLowLightAvailable"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"AvailableAndSuggested"])
+  else if ([statusCopy isEqualToString:@"AvailableAndSuggested"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"AvailableAndNotSuggested"])
+  else if ([statusCopy isEqualToString:@"AvailableAndNotSuggested"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"EnabledAndSuggested"])
+  else if ([statusCopy isEqualToString:@"EnabledAndSuggested"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"EnabledAndNotSuggested"])
+  else if ([statusCopy isEqualToString:@"EnabledAndNotSuggested"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"PeakPowerExceeded"])
+  else if ([statusCopy isEqualToString:@"PeakPowerExceeded"])
   {
     v4 = 15;
   }
@@ -861,9 +861,9 @@
   return v4;
 }
 
-- (void)setHasSupportsMomentCapture:(BOOL)a3
+- (void)setHasSupportsMomentCapture:(BOOL)capture
 {
-  if (a3)
+  if (capture)
   {
     v3 = 0x800000;
   }
@@ -876,31 +876,31 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (int)supportedCaptureDeviceAtIndex:(unint64_t)a3
+- (int)supportedCaptureDeviceAtIndex:(unint64_t)index
 {
   p_supportedCaptureDevices = &self->_supportedCaptureDevices;
   count = self->_supportedCaptureDevices.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_supportedCaptureDevices->list[a3];
+  return p_supportedCaptureDevices->list[index];
 }
 
-- (int)StringAsSupportedCaptureDevices:(id)a3
+- (int)StringAsSupportedCaptureDevices:(id)devices
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Back"])
+  devicesCopy = devices;
+  if ([devicesCopy isEqualToString:@"Back"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Front"];
+    v4 = [devicesCopy isEqualToString:@"Front"];
   }
 
   return v4;
@@ -919,9 +919,9 @@
   }
 }
 
-- (void)setHasCaptureDevice:(BOOL)a3
+- (void)setHasCaptureDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 4;
   }
@@ -934,17 +934,17 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (int)StringAsCaptureDevice:(id)a3
+- (int)StringAsCaptureDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Back"])
+  deviceCopy = device;
+  if ([deviceCopy isEqualToString:@"Back"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Front"];
+    v4 = [deviceCopy isEqualToString:@"Front"];
   }
 
   return v4;
@@ -963,9 +963,9 @@
   }
 }
 
-- (void)setHasSharedLibrarySupport:(BOOL)a3
+- (void)setHasSharedLibrarySupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 0x10000;
   }
@@ -978,17 +978,17 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (int)StringAsSharedLibrarySupport:(id)a3
+- (int)StringAsSharedLibrarySupport:(id)support
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  supportCopy = support;
+  if ([supportCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"OnOff"];
+    v4 = [supportCopy isEqualToString:@"OnOff"];
   }
 
   return v4;
@@ -1007,9 +1007,9 @@
   }
 }
 
-- (void)setHasSharedLibraryMode:(BOOL)a3
+- (void)setHasSharedLibraryMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x8000;
   }
@@ -1022,25 +1022,25 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (int)StringAsSharedLibraryMode:(id)a3
+- (int)StringAsSharedLibraryMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"On"];
+    v4 = [modeCopy isEqualToString:@"On"];
   }
 
   return v4;
 }
 
-- (void)setHasZoomMagnificationSupport:(BOOL)a3
+- (void)setHasZoomMagnificationSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 0x4000000;
   }
@@ -1053,9 +1053,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasMinimumZoomMagnification:(BOOL)a3
+- (void)setHasMinimumZoomMagnification:(BOOL)magnification
 {
-  if (a3)
+  if (magnification)
   {
     v3 = 4096;
   }
@@ -1068,9 +1068,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasMaximumZoomMagnification:(BOOL)a3
+- (void)setHasMaximumZoomMagnification:(BOOL)magnification
 {
-  if (a3)
+  if (magnification)
   {
     v3 = 2048;
   }
@@ -1083,23 +1083,23 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (float)significantZoomMagnificationsAtIndex:(unint64_t)a3
+- (float)significantZoomMagnificationsAtIndex:(unint64_t)index
 {
   p_significantZoomMagnifications = &self->_significantZoomMagnifications;
   count = self->_significantZoomMagnifications.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_significantZoomMagnifications->list[a3];
+  return p_significantZoomMagnifications->list[index];
 }
 
-- (void)setHasCurrentZoomMagnification:(BOOL)a3
+- (void)setHasCurrentZoomMagnification:(BOOL)magnification
 {
-  if (a3)
+  if (magnification)
   {
     v3 = 16;
   }
@@ -1112,9 +1112,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasIsSpatialCapture:(BOOL)a3
+- (void)setHasIsSpatialCapture:(BOOL)capture
 {
-  if (a3)
+  if (capture)
   {
     v3 = 0x400000;
   }
@@ -1127,9 +1127,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasCapturingPaused:(BOOL)a3
+- (void)setHasCapturingPaused:(BOOL)paused
 {
-  if (a3)
+  if (paused)
   {
     v3 = 0x200000;
   }
@@ -1155,9 +1155,9 @@
   }
 }
 
-- (void)setHasStereoCaptureStatus:(BOOL)a3
+- (void)setHasStereoCaptureStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x20000;
   }
@@ -1170,25 +1170,25 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (int)StringAsStereoCaptureStatus:(id)a3
+- (int)StringAsStereoCaptureStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Active"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Active"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Disabled"])
+  else if ([statusCopy isEqualToString:@"Disabled"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NotEnoughLight"])
+  else if ([statusCopy isEqualToString:@"NotEnoughLight"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SubjectTooClose"])
+  else if ([statusCopy isEqualToString:@"SubjectTooClose"])
   {
     v4 = 4;
   }
@@ -1206,8 +1206,8 @@
   v7.receiver = self;
   v7.super_class = NCCameraStateChangedRequest;
   v3 = [(NCCameraStateChangedRequest *)&v7 description];
-  v4 = [(NCCameraStateChangedRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NCCameraStateChangedRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -1841,16 +1841,16 @@ LABEL_76:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v43 = v4;
+  v43 = toCopy;
   if ((*&has & 0x2000) != 0)
   {
     orientation = self->_orientation;
     PBDataWriterWriteInt32Field();
-    v4 = v43;
+    toCopy = v43;
     has = self->_has;
     if ((*&has & 0x40000) == 0)
     {
@@ -1871,7 +1871,7 @@ LABEL_3:
 
   zoomAmount = self->_zoomAmount;
   PBDataWriterWriteFloatField();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1887,7 +1887,7 @@ LABEL_4:
 LABEL_47:
   flashSupport = self->_flashSupport;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1903,7 +1903,7 @@ LABEL_5:
 LABEL_48:
   flashMode = self->_flashMode;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1919,7 +1919,7 @@ LABEL_6:
 LABEL_49:
   hdrSupport = self->_hdrSupport;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1935,7 +1935,7 @@ LABEL_7:
 LABEL_50:
   hdrMode = self->_hdrMode;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1951,7 +1951,7 @@ LABEL_8:
 LABEL_51:
   irisSupport = self->_irisSupport;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1967,7 +1967,7 @@ LABEL_9:
 LABEL_52:
   irisMode = self->_irisMode;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1983,7 +1983,7 @@ LABEL_10:
 LABEL_53:
   burstSupport = self->_burstSupport;
   PBDataWriterWriteBOOLField();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1999,7 +1999,7 @@ LABEL_11:
 LABEL_54:
   captureMode = self->_captureMode;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -2015,13 +2015,13 @@ LABEL_12:
 LABEL_55:
   toggleCameraDeviceSupport = self->_toggleCameraDeviceSupport;
   PBDataWriterWriteBOOLField();
-  v4 = v43;
+  toCopy = v43;
   if ((*&self->_has & 0x8000000) != 0)
   {
 LABEL_13:
     zoomSupport = self->_zoomSupport;
     PBDataWriterWriteBOOLField();
-    v4 = v43;
+    toCopy = v43;
   }
 
 LABEL_14:
@@ -2032,7 +2032,7 @@ LABEL_14:
     {
       v8 = self->_supportedCaptureModes.list[v7];
       PBDataWriterWriteInt32Field();
-      v4 = v43;
+      toCopy = v43;
       ++v7;
     }
 
@@ -2044,7 +2044,7 @@ LABEL_14:
   {
     capturing = self->_capturing;
     PBDataWriterWriteBOOLField();
-    v4 = v43;
+    toCopy = v43;
     v9 = self->_has;
     if ((*&v9 & 2) == 0)
     {
@@ -2065,7 +2065,7 @@ LABEL_19:
 
   captureStartDate = self->_captureStartDate;
   PBDataWriterWriteDoubleField();
-  v4 = v43;
+  toCopy = v43;
   v9 = self->_has;
   if ((*&v9 & 0x2000000) == 0)
   {
@@ -2081,7 +2081,7 @@ LABEL_20:
 LABEL_59:
   viewfinderSessionActive = self->_viewfinderSessionActive;
   PBDataWriterWriteBOOLField();
-  v4 = v43;
+  toCopy = v43;
   v9 = self->_has;
   if ((*&v9 & 0x4000) == 0)
   {
@@ -2097,13 +2097,13 @@ LABEL_21:
 LABEL_60:
   shallowDepthOfFieldStatus = self->_shallowDepthOfFieldStatus;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   if ((*&self->_has & 0x800000) != 0)
   {
 LABEL_22:
     supportsMomentCapture = self->_supportsMomentCapture;
     PBDataWriterWriteBOOLField();
-    v4 = v43;
+    toCopy = v43;
   }
 
 LABEL_23:
@@ -2114,7 +2114,7 @@ LABEL_23:
     {
       v12 = self->_supportedCaptureDevices.list[v11];
       PBDataWriterWriteInt32Field();
-      v4 = v43;
+      toCopy = v43;
       ++v11;
     }
 
@@ -2126,7 +2126,7 @@ LABEL_23:
   {
     captureDevice = self->_captureDevice;
     PBDataWriterWriteInt32Field();
-    v4 = v43;
+    toCopy = v43;
     v13 = self->_has;
     if ((*&v13 & 0x10000) == 0)
     {
@@ -2147,7 +2147,7 @@ LABEL_28:
 
   sharedLibrarySupport = self->_sharedLibrarySupport;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   v13 = self->_has;
   if ((*&v13 & 0x8000) == 0)
   {
@@ -2163,7 +2163,7 @@ LABEL_29:
 LABEL_64:
   sharedLibraryMode = self->_sharedLibraryMode;
   PBDataWriterWriteInt32Field();
-  v4 = v43;
+  toCopy = v43;
   v13 = self->_has;
   if ((*&v13 & 0x4000000) == 0)
   {
@@ -2179,7 +2179,7 @@ LABEL_30:
 LABEL_65:
   zoomMagnificationSupport = self->_zoomMagnificationSupport;
   PBDataWriterWriteBOOLField();
-  v4 = v43;
+  toCopy = v43;
   v13 = self->_has;
   if ((*&v13 & 0x1000) == 0)
   {
@@ -2195,13 +2195,13 @@ LABEL_31:
 LABEL_66:
   minimumZoomMagnification = self->_minimumZoomMagnification;
   PBDataWriterWriteFloatField();
-  v4 = v43;
+  toCopy = v43;
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_32:
     maximumZoomMagnification = self->_maximumZoomMagnification;
     PBDataWriterWriteFloatField();
-    v4 = v43;
+    toCopy = v43;
   }
 
 LABEL_33:
@@ -2212,7 +2212,7 @@ LABEL_33:
     {
       v16 = self->_significantZoomMagnifications.list[v15];
       PBDataWriterWriteFloatField();
-      v4 = v43;
+      toCopy = v43;
       ++v15;
     }
 
@@ -2224,7 +2224,7 @@ LABEL_33:
   {
     currentZoomMagnification = self->_currentZoomMagnification;
     PBDataWriterWriteFloatField();
-    v4 = v43;
+    toCopy = v43;
     v17 = self->_has;
     if ((*&v17 & 0x400000) == 0)
     {
@@ -2245,7 +2245,7 @@ LABEL_38:
 
   isSpatialCapture = self->_isSpatialCapture;
   PBDataWriterWriteBOOLField();
-  v4 = v43;
+  toCopy = v43;
   v17 = self->_has;
   if ((*&v17 & 1) == 0)
   {
@@ -2261,7 +2261,7 @@ LABEL_39:
 LABEL_70:
   capturePauseDate = self->_capturePauseDate;
   PBDataWriterWriteDoubleField();
-  v4 = v43;
+  toCopy = v43;
   v17 = self->_has;
   if ((*&v17 & 0x200000) == 0)
   {
@@ -2277,26 +2277,26 @@ LABEL_40:
 LABEL_71:
   capturingPaused = self->_capturingPaused;
   PBDataWriterWriteBOOLField();
-  v4 = v43;
+  toCopy = v43;
   if ((*&self->_has & 0x20000) != 0)
   {
 LABEL_41:
     stereoCaptureStatus = self->_stereoCaptureStatus;
     PBDataWriterWriteInt32Field();
-    v4 = v43;
+    toCopy = v43;
   }
 
 LABEL_42:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x2000) != 0)
   {
-    v4[35] = self->_orientation;
-    v4[44] |= 0x2000u;
+    toCopy[35] = self->_orientation;
+    toCopy[44] |= 0x2000u;
     has = self->_has;
     if ((*&has & 0x40000) == 0)
     {
@@ -2315,8 +2315,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[40] = LODWORD(self->_zoomAmount);
-  v4[44] |= 0x40000u;
+  toCopy[40] = LODWORD(self->_zoomAmount);
+  toCopy[44] |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -2330,8 +2330,8 @@ LABEL_4:
   }
 
 LABEL_50:
-  v4[28] = self->_flashSupport;
-  v4[44] |= 0x40u;
+  toCopy[28] = self->_flashSupport;
+  toCopy[44] |= 0x40u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2345,8 +2345,8 @@ LABEL_5:
   }
 
 LABEL_51:
-  v4[27] = self->_flashMode;
-  v4[44] |= 0x20u;
+  toCopy[27] = self->_flashMode;
+  toCopy[44] |= 0x20u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -2360,8 +2360,8 @@ LABEL_6:
   }
 
 LABEL_52:
-  v4[30] = self->_hdrSupport;
-  v4[44] |= 0x100u;
+  toCopy[30] = self->_hdrSupport;
+  toCopy[44] |= 0x100u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2375,8 +2375,8 @@ LABEL_7:
   }
 
 LABEL_53:
-  v4[29] = self->_hdrMode;
-  v4[44] |= 0x80u;
+  toCopy[29] = self->_hdrMode;
+  toCopy[44] |= 0x80u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2390,8 +2390,8 @@ LABEL_8:
   }
 
 LABEL_54:
-  v4[32] = self->_irisSupport;
-  v4[44] |= 0x400u;
+  toCopy[32] = self->_irisSupport;
+  toCopy[44] |= 0x400u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2405,8 +2405,8 @@ LABEL_9:
   }
 
 LABEL_55:
-  v4[31] = self->_irisMode;
-  v4[44] |= 0x200u;
+  toCopy[31] = self->_irisMode;
+  toCopy[44] |= 0x200u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -2420,8 +2420,8 @@ LABEL_10:
   }
 
 LABEL_56:
-  *(v4 + 164) = self->_burstSupport;
-  v4[44] |= 0x80000u;
+  *(toCopy + 164) = self->_burstSupport;
+  toCopy[44] |= 0x80000u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -2432,8 +2432,8 @@ LABEL_11:
     }
 
 LABEL_58:
-    *(v4 + 169) = self->_toggleCameraDeviceSupport;
-    v4[44] |= 0x1000000u;
+    *(toCopy + 169) = self->_toggleCameraDeviceSupport;
+    toCopy[44] |= 0x1000000u;
     if ((*&self->_has & 0x8000000) == 0)
     {
       goto LABEL_14;
@@ -2443,8 +2443,8 @@ LABEL_58:
   }
 
 LABEL_57:
-  v4[25] = self->_captureMode;
-  v4[44] |= 8u;
+  toCopy[25] = self->_captureMode;
+  toCopy[44] |= 8u;
   has = self->_has;
   if ((*&has & 0x1000000) != 0)
   {
@@ -2455,19 +2455,19 @@ LABEL_12:
   if ((*&has & 0x8000000) != 0)
   {
 LABEL_13:
-    *(v4 + 172) = self->_zoomSupport;
-    v4[44] |= 0x8000000u;
+    *(toCopy + 172) = self->_zoomSupport;
+    toCopy[44] |= 0x8000000u;
   }
 
 LABEL_14:
-  v18 = v4;
+  v18 = toCopy;
   if ([(NCCameraStateChangedRequest *)self supportedCaptureModesCount])
   {
     [v18 clearSupportedCaptureModes];
-    v6 = [(NCCameraStateChangedRequest *)self supportedCaptureModesCount];
-    if (v6)
+    supportedCaptureModesCount = [(NCCameraStateChangedRequest *)self supportedCaptureModesCount];
+    if (supportedCaptureModesCount)
     {
-      v7 = v6;
+      v7 = supportedCaptureModesCount;
       for (i = 0; i != v7; ++i)
       {
         [v18 addSupportedCaptureMode:{-[NCCameraStateChangedRequest supportedCaptureModeAtIndex:](self, "supportedCaptureModeAtIndex:", i)}];
@@ -2541,10 +2541,10 @@ LABEL_24:
   if ([(NCCameraStateChangedRequest *)self supportedCaptureDevicesCount])
   {
     [v18 clearSupportedCaptureDevices];
-    v10 = [(NCCameraStateChangedRequest *)self supportedCaptureDevicesCount];
-    if (v10)
+    supportedCaptureDevicesCount = [(NCCameraStateChangedRequest *)self supportedCaptureDevicesCount];
+    if (supportedCaptureDevicesCount)
     {
-      v11 = v10;
+      v11 = supportedCaptureDevicesCount;
       for (j = 0; j != v11; ++j)
       {
         [v18 addSupportedCaptureDevice:{-[NCCameraStateChangedRequest supportedCaptureDeviceAtIndex:](self, "supportedCaptureDeviceAtIndex:", j)}];
@@ -2633,10 +2633,10 @@ LABEL_35:
   if ([(NCCameraStateChangedRequest *)self significantZoomMagnificationsCount])
   {
     [v18 clearSignificantZoomMagnifications];
-    v14 = [(NCCameraStateChangedRequest *)self significantZoomMagnificationsCount];
-    if (v14)
+    significantZoomMagnificationsCount = [(NCCameraStateChangedRequest *)self significantZoomMagnificationsCount];
+    if (significantZoomMagnificationsCount)
     {
-      v15 = v14;
+      v15 = significantZoomMagnificationsCount;
       for (k = 0; k != v15; ++k)
       {
         [(NCCameraStateChangedRequest *)self significantZoomMagnificationsAtIndex:k];
@@ -2710,9 +2710,9 @@ LABEL_44:
 LABEL_45:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((*&has & 0x2000) != 0)
@@ -3091,19 +3091,19 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_105;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_orientation != *(v4 + 35))
+    if ((v6 & 0x2000) == 0 || self->_orientation != *(equalCopy + 35))
     {
       goto LABEL_105;
     }
@@ -3116,7 +3116,7 @@ LABEL_32:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_zoomAmount != *(v4 + 40))
+    if ((v6 & 0x40000) == 0 || self->_zoomAmount != *(equalCopy + 40))
     {
       goto LABEL_105;
     }
@@ -3129,7 +3129,7 @@ LABEL_32:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_flashSupport != *(v4 + 28))
+    if ((v6 & 0x40) == 0 || self->_flashSupport != *(equalCopy + 28))
     {
       goto LABEL_105;
     }
@@ -3142,7 +3142,7 @@ LABEL_32:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_flashMode != *(v4 + 27))
+    if ((v6 & 0x20) == 0 || self->_flashMode != *(equalCopy + 27))
     {
       goto LABEL_105;
     }
@@ -3155,7 +3155,7 @@ LABEL_32:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_hdrSupport != *(v4 + 30))
+    if ((v6 & 0x100) == 0 || self->_hdrSupport != *(equalCopy + 30))
     {
       goto LABEL_105;
     }
@@ -3168,7 +3168,7 @@ LABEL_32:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_hdrMode != *(v4 + 29))
+    if ((v6 & 0x80) == 0 || self->_hdrMode != *(equalCopy + 29))
     {
       goto LABEL_105;
     }
@@ -3181,7 +3181,7 @@ LABEL_32:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_irisSupport != *(v4 + 32))
+    if ((v6 & 0x400) == 0 || self->_irisSupport != *(equalCopy + 32))
     {
       goto LABEL_105;
     }
@@ -3194,7 +3194,7 @@ LABEL_32:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_irisMode != *(v4 + 31))
+    if ((v6 & 0x200) == 0 || self->_irisMode != *(equalCopy + 31))
     {
       goto LABEL_105;
     }
@@ -3212,16 +3212,16 @@ LABEL_32:
       goto LABEL_105;
     }
 
-    v7 = *(v4 + 164);
+    v7 = *(equalCopy + 164);
     if (self->_burstSupport)
     {
-      if ((*(v4 + 164) & 1) == 0)
+      if ((*(equalCopy + 164) & 1) == 0)
       {
         goto LABEL_105;
       }
     }
 
-    else if (*(v4 + 164))
+    else if (*(equalCopy + 164))
     {
       goto LABEL_105;
     }
@@ -3234,7 +3234,7 @@ LABEL_32:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_captureMode != *(v4 + 25))
+    if ((v6 & 8) == 0 || self->_captureMode != *(equalCopy + 25))
     {
       goto LABEL_105;
     }
@@ -3252,16 +3252,16 @@ LABEL_32:
       goto LABEL_105;
     }
 
-    v10 = *(v4 + 169);
+    v10 = *(equalCopy + 169);
     if (self->_toggleCameraDeviceSupport)
     {
-      if ((*(v4 + 169) & 1) == 0)
+      if ((*(equalCopy + 169) & 1) == 0)
       {
         goto LABEL_105;
       }
     }
 
-    else if (*(v4 + 169))
+    else if (*(equalCopy + 169))
     {
       goto LABEL_105;
     }
@@ -3279,16 +3279,16 @@ LABEL_32:
       goto LABEL_105;
     }
 
-    v11 = *(v4 + 172);
+    v11 = *(equalCopy + 172);
     if (self->_zoomSupport)
     {
-      if ((*(v4 + 172) & 1) == 0)
+      if ((*(equalCopy + 172) & 1) == 0)
       {
         goto LABEL_105;
       }
     }
 
-    else if (*(v4 + 172))
+    else if (*(equalCopy + 172))
     {
       goto LABEL_105;
     }
@@ -3302,7 +3302,7 @@ LABEL_32:
   if (PBRepeatedInt32IsEqual())
   {
     v8 = self->_has;
-    v9 = *(v4 + 44);
+    v9 = *(equalCopy + 44);
     if ((*&v8 & 0x100000) != 0)
     {
       if ((v9 & 0x100000) == 0)
@@ -3310,16 +3310,16 @@ LABEL_32:
         goto LABEL_105;
       }
 
-      v12 = *(v4 + 165);
+      v12 = *(equalCopy + 165);
       if (self->_capturing)
       {
-        if ((*(v4 + 165) & 1) == 0)
+        if ((*(equalCopy + 165) & 1) == 0)
         {
           goto LABEL_105;
         }
       }
 
-      else if (*(v4 + 165))
+      else if (*(equalCopy + 165))
       {
         goto LABEL_105;
       }
@@ -3332,7 +3332,7 @@ LABEL_32:
 
     if ((*&v8 & 2) != 0)
     {
-      if ((v9 & 2) == 0 || self->_captureStartDate != *(v4 + 11))
+      if ((v9 & 2) == 0 || self->_captureStartDate != *(equalCopy + 11))
       {
         goto LABEL_105;
       }
@@ -3350,16 +3350,16 @@ LABEL_32:
         goto LABEL_105;
       }
 
-      v13 = *(v4 + 170);
+      v13 = *(equalCopy + 170);
       if (self->_viewfinderSessionActive)
       {
-        if ((*(v4 + 170) & 1) == 0)
+        if ((*(equalCopy + 170) & 1) == 0)
         {
           goto LABEL_105;
         }
       }
 
-      else if (*(v4 + 170))
+      else if (*(equalCopy + 170))
       {
         goto LABEL_105;
       }
@@ -3372,7 +3372,7 @@ LABEL_32:
 
     if ((*&v8 & 0x4000) != 0)
     {
-      if ((v9 & 0x4000) == 0 || self->_shallowDepthOfFieldStatus != *(v4 + 36))
+      if ((v9 & 0x4000) == 0 || self->_shallowDepthOfFieldStatus != *(equalCopy + 36))
       {
         goto LABEL_105;
       }
@@ -3390,16 +3390,16 @@ LABEL_32:
         goto LABEL_105;
       }
 
-      v18 = *(v4 + 168);
+      v18 = *(equalCopy + 168);
       if (self->_supportsMomentCapture)
       {
-        if ((*(v4 + 168) & 1) == 0)
+        if ((*(equalCopy + 168) & 1) == 0)
         {
           goto LABEL_105;
         }
       }
 
-      else if (*(v4 + 168))
+      else if (*(equalCopy + 168))
       {
         goto LABEL_105;
       }
@@ -3413,10 +3413,10 @@ LABEL_32:
     if (PBRepeatedInt32IsEqual())
     {
       v14 = self->_has;
-      v15 = *(v4 + 44);
+      v15 = *(equalCopy + 44);
       if ((*&v14 & 4) != 0)
       {
-        if ((v15 & 4) == 0 || self->_captureDevice != *(v4 + 24))
+        if ((v15 & 4) == 0 || self->_captureDevice != *(equalCopy + 24))
         {
           goto LABEL_105;
         }
@@ -3429,7 +3429,7 @@ LABEL_32:
 
       if ((*&v14 & 0x10000) != 0)
       {
-        if ((v15 & 0x10000) == 0 || self->_sharedLibrarySupport != *(v4 + 38))
+        if ((v15 & 0x10000) == 0 || self->_sharedLibrarySupport != *(equalCopy + 38))
         {
           goto LABEL_105;
         }
@@ -3442,7 +3442,7 @@ LABEL_32:
 
       if ((*&v14 & 0x8000) != 0)
       {
-        if ((v15 & 0x8000) == 0 || self->_sharedLibraryMode != *(v4 + 37))
+        if ((v15 & 0x8000) == 0 || self->_sharedLibraryMode != *(equalCopy + 37))
         {
           goto LABEL_105;
         }
@@ -3460,16 +3460,16 @@ LABEL_32:
           goto LABEL_105;
         }
 
-        v19 = *(v4 + 171);
+        v19 = *(equalCopy + 171);
         if (self->_zoomMagnificationSupport)
         {
-          if ((*(v4 + 171) & 1) == 0)
+          if ((*(equalCopy + 171) & 1) == 0)
           {
             goto LABEL_105;
           }
         }
 
-        else if (*(v4 + 171))
+        else if (*(equalCopy + 171))
         {
           goto LABEL_105;
         }
@@ -3482,7 +3482,7 @@ LABEL_32:
 
       if ((*&v14 & 0x1000) != 0)
       {
-        if ((v15 & 0x1000) == 0 || self->_minimumZoomMagnification != *(v4 + 34))
+        if ((v15 & 0x1000) == 0 || self->_minimumZoomMagnification != *(equalCopy + 34))
         {
           goto LABEL_105;
         }
@@ -3495,7 +3495,7 @@ LABEL_32:
 
       if ((*&v14 & 0x800) != 0)
       {
-        if ((v15 & 0x800) == 0 || self->_maximumZoomMagnification != *(v4 + 33))
+        if ((v15 & 0x800) == 0 || self->_maximumZoomMagnification != *(equalCopy + 33))
         {
           goto LABEL_105;
         }
@@ -3509,10 +3509,10 @@ LABEL_32:
       if (PBRepeatedFloatIsEqual())
       {
         v20 = self->_has;
-        v21 = *(v4 + 44);
+        v21 = *(equalCopy + 44);
         if ((*&v20 & 0x10) != 0)
         {
-          if ((v21 & 0x10) == 0 || self->_currentZoomMagnification != *(v4 + 26))
+          if ((v21 & 0x10) == 0 || self->_currentZoomMagnification != *(equalCopy + 26))
           {
             goto LABEL_105;
           }
@@ -3530,16 +3530,16 @@ LABEL_32:
             goto LABEL_105;
           }
 
-          v22 = *(v4 + 167);
+          v22 = *(equalCopy + 167);
           if (self->_isSpatialCapture)
           {
-            if ((*(v4 + 167) & 1) == 0)
+            if ((*(equalCopy + 167) & 1) == 0)
             {
               goto LABEL_105;
             }
           }
 
-          else if (*(v4 + 167))
+          else if (*(equalCopy + 167))
           {
             goto LABEL_105;
           }
@@ -3552,7 +3552,7 @@ LABEL_32:
 
         if (*&v20)
         {
-          if ((v21 & 1) == 0 || self->_capturePauseDate != *(v4 + 10))
+          if ((v21 & 1) == 0 || self->_capturePauseDate != *(equalCopy + 10))
           {
             goto LABEL_105;
           }
@@ -3570,16 +3570,16 @@ LABEL_32:
             goto LABEL_105;
           }
 
-          v23 = *(v4 + 166);
+          v23 = *(equalCopy + 166);
           if (self->_capturingPaused)
           {
-            if ((*(v4 + 166) & 1) == 0)
+            if ((*(equalCopy + 166) & 1) == 0)
             {
               goto LABEL_105;
             }
           }
 
-          else if (*(v4 + 166))
+          else if (*(equalCopy + 166))
           {
             goto LABEL_105;
           }
@@ -3596,7 +3596,7 @@ LABEL_32:
           goto LABEL_106;
         }
 
-        if ((v21 & 0x20000) != 0 && self->_stereoCaptureStatus == *(v4 + 39))
+        if ((v21 & 0x20000) != 0 && self->_stereoCaptureStatus == *(equalCopy + 39))
         {
           v16 = 1;
           goto LABEL_106;
@@ -4106,15 +4106,15 @@ LABEL_92:
   return v64 ^ v65 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v52 ^ v16 ^ v53 ^ v51 ^ v50 ^ v49 ^ v48 ^ v20 ^ v21 ^ v22 ^ v23 ^ v27 ^ v28 ^ v32 ^ v36 ^ v40 ^ v44 ^ v45 ^ v46;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x2000) != 0)
   {
-    self->_orientation = *(v4 + 35);
+    self->_orientation = *(fromCopy + 35);
     *&self->_has |= 0x2000u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 0x40000) == 0)
     {
 LABEL_3:
@@ -4132,9 +4132,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_zoomAmount = *(v4 + 40);
+  self->_zoomAmount = *(fromCopy + 40);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -4147,9 +4147,9 @@ LABEL_4:
   }
 
 LABEL_47:
-  self->_flashSupport = *(v4 + 28);
+  self->_flashSupport = *(fromCopy + 28);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -4162,9 +4162,9 @@ LABEL_5:
   }
 
 LABEL_48:
-  self->_flashMode = *(v4 + 27);
+  self->_flashMode = *(fromCopy + 27);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x100) == 0)
   {
 LABEL_6:
@@ -4177,9 +4177,9 @@ LABEL_6:
   }
 
 LABEL_49:
-  self->_hdrSupport = *(v4 + 30);
+  self->_hdrSupport = *(fromCopy + 30);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80) == 0)
   {
 LABEL_7:
@@ -4192,9 +4192,9 @@ LABEL_7:
   }
 
 LABEL_50:
-  self->_hdrMode = *(v4 + 29);
+  self->_hdrMode = *(fromCopy + 29);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x400) == 0)
   {
 LABEL_8:
@@ -4207,9 +4207,9 @@ LABEL_8:
   }
 
 LABEL_51:
-  self->_irisSupport = *(v4 + 32);
+  self->_irisSupport = *(fromCopy + 32);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x200) == 0)
   {
 LABEL_9:
@@ -4222,9 +4222,9 @@ LABEL_9:
   }
 
 LABEL_52:
-  self->_irisMode = *(v4 + 31);
+  self->_irisMode = *(fromCopy + 31);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_10:
@@ -4237,9 +4237,9 @@ LABEL_10:
   }
 
 LABEL_53:
-  self->_burstSupport = *(v4 + 164);
+  self->_burstSupport = *(fromCopy + 164);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_11:
@@ -4252,9 +4252,9 @@ LABEL_11:
   }
 
 LABEL_54:
-  self->_captureMode = *(v4 + 25);
+  self->_captureMode = *(fromCopy + 25);
   *&self->_has |= 8u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_12:
@@ -4267,21 +4267,21 @@ LABEL_12:
   }
 
 LABEL_55:
-  self->_toggleCameraDeviceSupport = *(v4 + 169);
+  self->_toggleCameraDeviceSupport = *(fromCopy + 169);
   *&self->_has |= 0x1000000u;
-  if ((*(v4 + 44) & 0x8000000) != 0)
+  if ((*(fromCopy + 44) & 0x8000000) != 0)
   {
 LABEL_13:
-    self->_zoomSupport = *(v4 + 172);
+    self->_zoomSupport = *(fromCopy + 172);
     *&self->_has |= 0x8000000u;
   }
 
 LABEL_14:
-  v18 = v4;
-  v6 = [v4 supportedCaptureModesCount];
-  if (v6)
+  v18 = fromCopy;
+  supportedCaptureModesCount = [fromCopy supportedCaptureModesCount];
+  if (supportedCaptureModesCount)
   {
-    v7 = v6;
+    v7 = supportedCaptureModesCount;
     for (i = 0; i != v7; ++i)
     {
       -[NCCameraStateChangedRequest addSupportedCaptureMode:](self, "addSupportedCaptureMode:", [v18 supportedCaptureModeAtIndex:i]);
@@ -4351,10 +4351,10 @@ LABEL_22:
   }
 
 LABEL_23:
-  v10 = [v18 supportedCaptureDevicesCount];
-  if (v10)
+  supportedCaptureDevicesCount = [v18 supportedCaptureDevicesCount];
+  if (supportedCaptureDevicesCount)
   {
-    v11 = v10;
+    v11 = supportedCaptureDevicesCount;
     for (j = 0; j != v11; ++j)
     {
       -[NCCameraStateChangedRequest addSupportedCaptureDevice:](self, "addSupportedCaptureDevice:", [v18 supportedCaptureDeviceAtIndex:j]);
@@ -4439,10 +4439,10 @@ LABEL_32:
   }
 
 LABEL_33:
-  v14 = [v18 significantZoomMagnificationsCount];
-  if (v14)
+  significantZoomMagnificationsCount = [v18 significantZoomMagnificationsCount];
+  if (significantZoomMagnificationsCount)
   {
-    v15 = v14;
+    v15 = significantZoomMagnificationsCount;
     for (k = 0; k != v15; ++k)
     {
       [v18 significantZoomMagnificationsAtIndex:k];

@@ -1,29 +1,29 @@
 @interface AMSPaymentSheetPerformanceMetrics
-- (AMSPaymentSheetPerformanceMetrics)initWithBag:(id)a3;
-- (void)enqueueMetricsEventWithOverlay:(id)a3;
+- (AMSPaymentSheetPerformanceMetrics)initWithBag:(id)bag;
+- (void)enqueueMetricsEventWithOverlay:(id)overlay;
 @end
 
 @implementation AMSPaymentSheetPerformanceMetrics
 
-- (AMSPaymentSheetPerformanceMetrics)initWithBag:(id)a3
+- (AMSPaymentSheetPerformanceMetrics)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v9.receiver = self;
   v9.super_class = AMSPaymentSheetPerformanceMetrics;
   v6 = [(AMSPaymentSheetPerformanceMetrics *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
   }
 
   return v7;
 }
 
-- (void)enqueueMetricsEventWithOverlay:(id)a3
+- (void)enqueueMetricsEventWithOverlay:(id)overlay
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overlayCopy = overlay;
   v5 = [[AMSMetricsEvent alloc] initWithTopic:&stru_1F071BA78];
   [(AMSMetricsEvent *)v5 setEventType:@"pageRender"];
   [(AMSMetricsEvent *)v5 setEventVersion:&unk_1F0779880];
@@ -43,8 +43,8 @@
   v12 = [AMSMetrics serverTimeFromTimeInterval:v43 + v11];
   [(AMSMetricsEvent *)v5 setProperty:v12 forBodyKey:@"modelConstructionEndTime"];
 
-  v13 = [(AMSPaymentSheetPerformanceMetrics *)self primaryDataAppleTimingApp];
-  [(AMSMetricsEvent *)v5 setProperty:v13 forBodyKey:@"primaryDataAppleTimingApp"];
+  primaryDataAppleTimingApp = [(AMSPaymentSheetPerformanceMetrics *)self primaryDataAppleTimingApp];
+  [(AMSMetricsEvent *)v5 setProperty:primaryDataAppleTimingApp forBodyKey:@"primaryDataAppleTimingApp"];
 
   [(AMSPaymentSheetPerformanceMetrics *)self primaryDataResponseStartTime];
   v15 = [AMSMetrics serverTimeFromTimeInterval:v43 + v14];
@@ -82,9 +82,9 @@
   v31 = [AMSMetrics serverTimeFromTimeInterval:v43 + v30];
   [(AMSMetricsEvent *)v5 setProperty:v31 forBodyKey:@"onScreenResourcesAppearEndTime"];
 
-  [(AMSMetricsEvent *)v5 addPropertiesWithDictionary:v4];
-  v32 = [(AMSMetricsEvent *)v5 topic];
-  v33 = [v32 length];
+  [(AMSMetricsEvent *)v5 addPropertiesWithDictionary:overlayCopy];
+  topic = [(AMSMetricsEvent *)v5 topic];
+  v33 = [topic length];
 
   if (v33)
   {
@@ -92,7 +92,7 @@
     v35 = [v34 doubleForKey:@"metrics/performance/samplingPercentageUsersDialogPageRender"];
 
     v36 = [(AMSPaymentSheetPerformanceMetrics *)self bag];
-    v37 = [v36 doubleForKey:@"metrics/performance/sessionDurationDialogPageRender"];
+    oSLogObject = [v36 doubleForKey:@"metrics/performance/sessionDurationDialogPageRender"];
 
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
@@ -100,7 +100,7 @@
     v44[3] = &unk_1E73B5650;
     v44[4] = self;
     v45 = v5;
-    [AMSDefaults shouldSampleWithPercentageValue:v35 sessionDurationValue:v37 identifier:@"paymentDialogRender" completion:v44];
+    [AMSDefaults shouldSampleWithPercentageValue:v35 sessionDurationValue:oSLogObject identifier:@"paymentDialogRender" completion:v44];
   }
 
   else
@@ -111,8 +111,8 @@
       v35 = +[AMSLogConfig sharedConfig];
     }
 
-    v37 = [v35 OSLogObject];
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v35 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v38 = AMSLogKey();
       v39 = MEMORY[0x1E696AEC0];
@@ -128,14 +128,14 @@
       {
         [v39 stringWithFormat:@"%@: ", v40];
       }
-      v42 = ;
+      selfCopy = ;
       *buf = 138543362;
-      v47 = v42;
-      _os_log_impl(&dword_192869000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@Not logging Payment Sheet Performance Metrics, no topic provided.", buf, 0xCu);
+      v47 = selfCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Not logging Payment Sheet Performance Metrics, no topic provided.", buf, 0xCu);
       if (v38)
       {
 
-        v42 = self;
+        selfCopy = self;
       }
     }
   }

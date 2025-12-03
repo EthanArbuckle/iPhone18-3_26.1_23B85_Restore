@@ -1,36 +1,36 @@
 @interface NCAppPickerContentProvider
-+ (NCAppPickerContentProvider)providerWithPreviousBundleIdentifiersSelection:(id)a3 numDaysForAverageNotificationCount:(id)a4 onMainQueue:(id)a5;
-- (BOOL)isSelectedForIndex:(unint64_t)a3;
++ (NCAppPickerContentProvider)providerWithPreviousBundleIdentifiersSelection:(id)selection numDaysForAverageNotificationCount:(id)count onMainQueue:(id)queue;
+- (BOOL)isSelectedForIndex:(unint64_t)index;
 - (NSArray)selectedBundleIdentifiers;
-- (id)_appForIndex:(unint64_t)a3;
-- (id)_initWithATXDigestSetupEntities:(id)a3 containsMessageAndTimeSensitiveData:(BOOL)a4 numberOfDays:(unint64_t)a5 previousBundleIdentifiersSelection:(id)a6;
-- (id)bundleIdentifierForIndex:(unint64_t)a3;
-- (id)imageForIndex:(unint64_t)a3 size:(CGSize)a4;
-- (id)nameForIndex:(unint64_t)a3;
-- (unint64_t)avgNumberOfNotificationsForIndex:(unint64_t)a3;
+- (id)_appForIndex:(unint64_t)index;
+- (id)_initWithATXDigestSetupEntities:(id)entities containsMessageAndTimeSensitiveData:(BOOL)data numberOfDays:(unint64_t)days previousBundleIdentifiersSelection:(id)selection;
+- (id)bundleIdentifierForIndex:(unint64_t)index;
+- (id)imageForIndex:(unint64_t)index size:(CGSize)size;
+- (id)nameForIndex:(unint64_t)index;
+- (unint64_t)avgNumberOfNotificationsForIndex:(unint64_t)index;
 - (void)sortByAvgNumberOfNotifications;
 - (void)sortByName;
-- (void)toggleSelectedForIndex:(unint64_t)a3;
+- (void)toggleSelectedForIndex:(unint64_t)index;
 @end
 
 @implementation NCAppPickerContentProvider
 
-+ (NCAppPickerContentProvider)providerWithPreviousBundleIdentifiersSelection:(id)a3 numDaysForAverageNotificationCount:(id)a4 onMainQueue:(id)a5
++ (NCAppPickerContentProvider)providerWithPreviousBundleIdentifiersSelection:(id)selection numDaysForAverageNotificationCount:(id)count onMainQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a5;
+  selectionCopy = selection;
+  queueCopy = queue;
   v9 = MEMORY[0x277CEB4C0];
-  v10 = a4;
+  countCopy = count;
   v11 = objc_alloc_init(v9);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __124__NCAppPickerContentProvider_providerWithPreviousBundleIdentifiersSelection_numDaysForAverageNotificationCount_onMainQueue___block_invoke;
   v15[3] = &unk_278372528;
-  v16 = v7;
-  v17 = v8;
-  v12 = v8;
-  v13 = v7;
-  [v11 appsSortedByNotificationsReceivedInPreviousNumDaysRaw:v10 completionHandler:v15];
+  v16 = selectionCopy;
+  v17 = queueCopy;
+  v12 = queueCopy;
+  v13 = selectionCopy;
+  [v11 appsSortedByNotificationsReceivedInPreviousNumDaysRaw:countCopy completionHandler:v15];
 
   return result;
 }
@@ -69,11 +69,11 @@ void __124__NCAppPickerContentProvider_providerWithPreviousBundleIdentifiersSele
   }
 }
 
-- (id)_initWithATXDigestSetupEntities:(id)a3 containsMessageAndTimeSensitiveData:(BOOL)a4 numberOfDays:(unint64_t)a5 previousBundleIdentifiersSelection:(id)a6
+- (id)_initWithATXDigestSetupEntities:(id)entities containsMessageAndTimeSensitiveData:(BOOL)data numberOfDays:(unint64_t)days previousBundleIdentifiersSelection:(id)selection
 {
   v89 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a6;
+  entitiesCopy = entities;
+  selectionCopy = selection;
   v81.receiver = self;
   v81.super_class = NCAppPickerContentProvider;
   v64 = [(NCAppPickerContentProvider *)&v81 init];
@@ -85,8 +85,8 @@ void __124__NCAppPickerContentProvider_providerWithPreviousBundleIdentifiersSele
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v58 = v8;
-    v12 = v8;
+    v58 = entitiesCopy;
+    v12 = entitiesCopy;
     v13 = [v12 countByEnumeratingWithState:&v77 objects:v88 count:16];
     if (v13)
     {
@@ -101,8 +101,8 @@ void __124__NCAppPickerContentProvider_providerWithPreviousBundleIdentifiersSele
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v77 + 1) + 8 * i) bundleId];
-          [v11 addObject:v17];
+          bundleId = [*(*(&v77 + 1) + 8 * i) bundleId];
+          [v11 addObject:bundleId];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v77 objects:v88 count:16];
@@ -134,8 +134,8 @@ void __124__NCAppPickerContentProvider_providerWithPreviousBundleIdentifiersSele
           }
 
           v24 = *(*(&v73 + 1) + 8 * j);
-          v25 = [v24 sectionID];
-          [v19 setValue:v24 forKey:v25];
+          sectionID = [v24 sectionID];
+          [v19 setValue:v24 forKey:sectionID];
         }
 
         v21 = [obj countByEnumeratingWithState:&v73 objects:v87 count:16];
@@ -149,9 +149,9 @@ void __124__NCAppPickerContentProvider_providerWithPreviousBundleIdentifiersSele
     selectedApps = v64->_selectedApps;
     v64->_selectedApps = v26;
 
-    if (v9)
+    if (selectionCopy)
     {
-      v59 = [MEMORY[0x277CBEB98] setWithArray:v9];
+      v59 = [MEMORY[0x277CBEB98] setWithArray:selectionCopy];
     }
 
     else
@@ -160,7 +160,7 @@ void __124__NCAppPickerContentProvider_providerWithPreviousBundleIdentifiersSele
     }
 
     v55 = v11;
-    v57 = v9;
+    v57 = selectionCopy;
     v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v69 = 0u;
     v70 = 0u;
@@ -187,36 +187,36 @@ void __124__NCAppPickerContentProvider_providerWithPreviousBundleIdentifiersSele
         }
 
         v32 = *(*(&v69 + 1) + 8 * k);
-        v33 = [v32 bundleId];
-        v34 = [MEMORY[0x277CC1E70] unkit_applicationRecordIfEligibleToDeliverNotificationsForBundleIdentifier:v33];
-        v35 = [v34 localizedName];
-        if (v35)
+        bundleId2 = [v32 bundleId];
+        v34 = [MEMORY[0x277CC1E70] unkit_applicationRecordIfEligibleToDeliverNotificationsForBundleIdentifier:bundleId2];
+        localizedName = [v34 localizedName];
+        if (localizedName)
         {
-          if (v33)
+          if (bundleId2)
           {
-            v36 = [v19 objectForKey:v33];
+            v36 = [v19 objectForKey:bundleId2];
             v37 = v36;
             if (v36 && [v36 authorizationStatus] != 1 && (objc_msgSend(v37, "suppressFromSettings") & 1) == 0 && (objc_msgSend(v37, "isRestricted") & 1) == 0)
             {
-              v38 = [v32 numBasicNotifications];
+              numBasicNotifications = [v32 numBasicNotifications];
               v39 = objc_alloc_init(NCAppPickerContentProviderAppObject);
-              [(NCAppPickerContentProviderAppObject *)v39 setName:v35];
+              [(NCAppPickerContentProviderAppObject *)v39 setName:localizedName];
               v40 = v65;
-              if (!v65 || (v62 = [v65 length], v41 = objc_msgSend(v35, "length"), v40 = v65, v62 < v41))
+              if (!v65 || (v62 = [v65 length], v41 = objc_msgSend(localizedName, "length"), v40 = v65, v62 < v41))
               {
                 v66 = v40;
-                v63 = v38;
-                v42 = v35;
+                v63 = numBasicNotifications;
+                v42 = localizedName;
 
                 v65 = v42;
-                v38 = v63;
+                numBasicNotifications = v63;
               }
 
-              v43 = 7 * v38 / a5;
-              [(NCAppPickerContentProviderAppObject *)v39 setBundleIdentifier:v33];
+              v43 = 7 * numBasicNotifications / days;
+              [(NCAppPickerContentProviderAppObject *)v39 setBundleIdentifier:bundleId2];
               [(NCAppPickerContentProviderAppObject *)v39 setAvgNumberOfNotifications:v43];
               [(NSArray *)v61 addObject:v39];
-              if ([v37 scheduledDeliverySetting] == 2 || objc_msgSend(v59, "containsObject:", v33))
+              if ([v37 scheduledDeliverySetting] == 2 || objc_msgSend(v59, "containsObject:", bundleId2))
               {
                 [(NSMutableSet *)v64->_selectedApps addObject:v39];
               }
@@ -243,7 +243,7 @@ LABEL_44:
           if (os_log_type_enabled(*MEMORY[0x277D77DE0], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v83 = v33;
+            v83 = bundleId2;
             _os_log_impl(&dword_21E77E000, v46, OS_LOG_TYPE_DEFAULT, "Ignoring bundle %@ for digest onboarding since it is not authorized to post notifications", buf, 0xCu);
           }
 
@@ -254,7 +254,7 @@ LABEL_44:
         if (os_log_type_enabled(*MEMORY[0x277D77DE0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v83 = v33;
+          v83 = bundleId2;
           v84 = 2112;
           v85 = 0;
           _os_log_error_impl(&dword_21E77E000, v45, OS_LOG_TYPE_ERROR, "Error getting LSApplicationRecord for %@. Error: %@", buf, 0x16u);
@@ -284,8 +284,8 @@ LABEL_49:
         v64->_ableToSortByAvgNumberOfNotifications = v53;
         v64->_sortedByAvgNumberOfNotifications = v53;
 
-        v9 = v57;
-        v8 = v58;
+        selectionCopy = v57;
+        entitiesCopy = v58;
         break;
       }
     }
@@ -327,8 +327,8 @@ uint64_t __146__NCAppPickerContentProvider__initWithATXDigestSetupEntities_conta
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 copy];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier copy];
         [v3 addObject:v10];
       }
 
@@ -341,50 +341,50 @@ uint64_t __146__NCAppPickerContentProvider__initWithATXDigestSetupEntities_conta
   return v3;
 }
 
-- (id)nameForIndex:(unint64_t)a3
+- (id)nameForIndex:(unint64_t)index
 {
-  v3 = [(NCAppPickerContentProvider *)self _appForIndex:a3];
-  v4 = [v3 name];
+  v3 = [(NCAppPickerContentProvider *)self _appForIndex:index];
+  name = [v3 name];
 
-  return v4;
+  return name;
 }
 
-- (unint64_t)avgNumberOfNotificationsForIndex:(unint64_t)a3
+- (unint64_t)avgNumberOfNotificationsForIndex:(unint64_t)index
 {
-  v3 = [(NCAppPickerContentProvider *)self _appForIndex:a3];
-  v4 = [v3 avgNumberOfNotifications];
+  v3 = [(NCAppPickerContentProvider *)self _appForIndex:index];
+  avgNumberOfNotifications = [v3 avgNumberOfNotifications];
 
-  return v4;
+  return avgNumberOfNotifications;
 }
 
-- (id)imageForIndex:(unint64_t)a3 size:(CGSize)a4
+- (id)imageForIndex:(unint64_t)index size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = [(NCAppPickerContentProvider *)self _appForIndex:a3];
-  v7 = [v6 bundleIdentifier];
+  v6 = [(NCAppPickerContentProvider *)self _appForIndex:index];
+  bundleIdentifier = [v6 bundleIdentifier];
 
-  v8 = [MEMORY[0x277D759A0] mainScreen];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
   v9 = objc_alloc(MEMORY[0x277D1B1C8]);
-  [v8 scale];
+  [mainScreen scale];
   v11 = [v9 initWithSize:width scale:{height, v10}];
-  v12 = [v8 traitCollection];
-  v13 = [v12 userInterfaceStyle];
+  traitCollection = [mainScreen traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v13 == 2)
+  if (userInterfaceStyle == 2)
   {
     [v11 setAppearance:1];
   }
 
-  v14 = [v7 isEqualToString:@"com.apple.mobilecal"];
+  v14 = [bundleIdentifier isEqualToString:@"com.apple.mobilecal"];
   v15 = objc_alloc(MEMORY[0x277D1B1A8]);
   v16 = v15;
   if (v14)
   {
     v17 = [MEMORY[0x277CBEAA8] now];
-    v18 = [MEMORY[0x277CBEA80] currentCalendar];
-    v19 = [v16 initWithDate:v17 calendar:v18 format:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v19 = [v16 initWithDate:v17 calendar:currentCalendar format:0];
 
     v27[0] = v11;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
@@ -396,16 +396,16 @@ uint64_t __146__NCAppPickerContentProvider__initWithATXDigestSetupEntities_conta
     {
 LABEL_5:
       v22 = MEMORY[0x277D755B8];
-      v23 = [v21 CGImage];
+      cGImage = [v21 CGImage];
       [v21 scale];
-      v24 = [v22 imageWithCGImage:v23 scale:0 orientation:?];
+      v24 = [v22 imageWithCGImage:cGImage scale:0 orientation:?];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v25 = [v15 initWithBundleIdentifier:v7];
+    v25 = [v15 initWithBundleIdentifier:bundleIdentifier];
     v21 = [v25 prepareImageForDescriptor:v11];
 
     if (v21)
@@ -420,18 +420,18 @@ LABEL_8:
   return v24;
 }
 
-- (BOOL)isSelectedForIndex:(unint64_t)a3
+- (BOOL)isSelectedForIndex:(unint64_t)index
 {
-  v3 = self;
-  v4 = [(NCAppPickerContentProvider *)self _appForIndex:a3];
-  LOBYTE(v3) = [(NSMutableSet *)v3->_selectedApps containsObject:v4];
+  selfCopy = self;
+  v4 = [(NCAppPickerContentProvider *)self _appForIndex:index];
+  LOBYTE(selfCopy) = [(NSMutableSet *)selfCopy->_selectedApps containsObject:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)toggleSelectedForIndex:(unint64_t)a3
+- (void)toggleSelectedForIndex:(unint64_t)index
 {
-  v6 = [(NCAppPickerContentProvider *)self _appForIndex:a3];
+  v6 = [(NCAppPickerContentProvider *)self _appForIndex:index];
   v4 = [(NSMutableSet *)self->_selectedApps containsObject:?];
   selectedApps = self->_selectedApps;
   if (v4)
@@ -445,12 +445,12 @@ LABEL_8:
   }
 }
 
-- (id)bundleIdentifierForIndex:(unint64_t)a3
+- (id)bundleIdentifierForIndex:(unint64_t)index
 {
-  v3 = [(NCAppPickerContentProvider *)self _appForIndex:a3];
-  v4 = [v3 bundleIdentifier];
+  v3 = [(NCAppPickerContentProvider *)self _appForIndex:index];
+  bundleIdentifier = [v3 bundleIdentifier];
 
-  return v4;
+  return bundleIdentifier;
 }
 
 - (void)sortByName
@@ -469,7 +469,7 @@ LABEL_8:
   }
 }
 
-- (id)_appForIndex:(unint64_t)a3
+- (id)_appForIndex:(unint64_t)index
 {
   v4 = 16;
   if (self->_sortedByAvgNumberOfNotifications)
@@ -478,14 +478,14 @@ LABEL_8:
   }
 
   v5 = *(&self->super.isa + v4);
-  if ([v5 count] <= a3)
+  if ([v5 count] <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a3];
+    v6 = [v5 objectAtIndex:index];
   }
 
   return v6;

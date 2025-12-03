@@ -1,18 +1,18 @@
 @interface CAFTypeTestIndexByUnitObservable
 - (NSString)description;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)typeTestIndexByUnitService:(id)a3 didUpdateDistanceUnitRawValue:(unsigned __int16)a4;
-- (void)typeTestIndexByUnitService:(id)a3 didUpdateName:(id)a4;
-- (void)typeTestIndexByUnitService:(id)a3 didUpdateTestInt32:(int)a4;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)typeTestIndexByUnitService:(id)service didUpdateDistanceUnitRawValue:(unsigned __int16)value;
+- (void)typeTestIndexByUnitService:(id)service didUpdateName:(id)name;
+- (void)typeTestIndexByUnitService:(id)service didUpdateTestInt32:(int)int32;
 @end
 
 @implementation CAFTypeTestIndexByUnitObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFTypeTestIndexByUnitObservable.description.getter();
   v5 = v4;
 
@@ -21,47 +21,47 @@
   return v6;
 }
 
-- (void)typeTestIndexByUnitService:(id)a3 didUpdateDistanceUnitRawValue:(unsigned __int16)a4
+- (void)typeTestIndexByUnitService:(id)service didUpdateDistanceUnitRawValue:(unsigned __int16)value
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestIndexByUnitObservable.typeTestIndexByUnitService(_:didUpdateDistanceUnitRawValue:)();
 }
 
-- (void)typeTestIndexByUnitService:(id)a3 didUpdateTestInt32:(int)a4
+- (void)typeTestIndexByUnitService:(id)service didUpdateTestInt32:(int)int32
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestIndexByUnitObservable.typeTestIndexByUnitService(_:didUpdateTestInt32:)();
 }
 
-- (void)typeTestIndexByUnitService:(id)a3 didUpdateName:(id)a4
+- (void)typeTestIndexByUnitService:(id)service didUpdateName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestIndexByUnitObservable.typeTestIndexByUnitService(_:didUpdateName:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFTypeTestIndexByUnitObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFTypeTestIndexByUnitObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFTypeTestIndexByUnitObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFTypeTestIndexByUnitObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFTypeTestIndexByUnitObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

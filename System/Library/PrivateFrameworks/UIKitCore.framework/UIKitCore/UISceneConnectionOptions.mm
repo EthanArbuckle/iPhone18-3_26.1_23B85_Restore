@@ -1,5 +1,5 @@
 @interface UISceneConnectionOptions
-+ (id)bsActionForReducedLaunch:(BOOL)a3 responder:(id)a4 error:(id *)a5;
++ (id)bsActionForReducedLaunch:(BOOL)launch responder:(id)responder error:(id *)error;
 - (BOOL)_reducedSceneLaunch;
 - (CKShareMetadata)cloudKitShareMetadata;
 - (FBSScene)_fbsScene;
@@ -10,9 +10,9 @@
 - (NSString)sourceApplication;
 - (UIApplicationShortcutItem)shortcutItem;
 - (UNNotificationResponse)notificationResponse;
-- (id)_initWithConnectionOptionsContext:(void *)a3 fbsScene:(void *)a4 specification:;
-- (id)_objectForConnectionValueKey:(id)a3;
-- (int64_t)_flagForConnectionValueKey:(id)a3;
+- (id)_initWithConnectionOptionsContext:(void *)context fbsScene:(void *)scene specification:;
+- (id)_objectForConnectionValueKey:(id)key;
+- (int64_t)_flagForConnectionValueKey:(id)key;
 - (void)performPostConnectionCleanup;
 @end
 
@@ -77,13 +77,13 @@
 - (void)performPostConnectionCleanup
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v2 = *(a1 + 32);
+    v2 = *(self + 32);
     v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v3)
     {
@@ -110,25 +110,25 @@
       while (v4);
     }
 
-    v7 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v7 = *(self + 32);
+    *(self + 32) = 0;
   }
 }
 
 - (UIApplicationShortcutItem)shortcutItem
 {
   v2 = [(NSDictionary *)self->_launchOptionsDictionary objectForKeyedSubscript:@"_UISceneConnectionOptionsShortcutItemKey"];
-  v3 = [v2 anyObject];
+  anyObject = [v2 anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (NSString)sourceApplication
 {
   v2 = [(NSDictionary *)self->_launchOptionsDictionary objectForKeyedSubscript:@"_UISceneConnectionOptionsSourceApplicationKey"];
-  v3 = [v2 anyObject];
+  anyObject = [v2 anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (NSString)handoffUserActivityType
@@ -185,26 +185,26 @@ LABEL_12:
 - (UNNotificationResponse)notificationResponse
 {
   v2 = [(NSDictionary *)self->_launchOptionsDictionary objectForKeyedSubscript:@"_UISceneConnectionOptionsNotificationResponsesKey"];
-  v3 = [v2 anyObject];
+  anyObject = [v2 anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (CKShareMetadata)cloudKitShareMetadata
 {
   v2 = [(NSDictionary *)self->_launchOptionsDictionary objectForKeyedSubscript:@"_UISceneConnectionOptionsCloudKitShareMetadataKey"];
-  v3 = [v2 anyObject];
+  anyObject = [v2 anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (BOOL)_reducedSceneLaunch
 {
-  v2 = self;
-  v3 = [(_UISceneHostingController *)v2 _fbScene];
-  if (v3)
+  selfCopy = self;
+  _fbScene = [(_UISceneHostingController *)selfCopy _fbScene];
+  if (_fbScene)
   {
-    v4 = v3;
+    v4 = _fbScene;
     v5 = sub_189149124();
   }
 
@@ -217,49 +217,49 @@ LABEL_12:
   return v5 & 1;
 }
 
-+ (id)bsActionForReducedLaunch:(BOOL)a3 responder:(id)a4 error:(id *)a5
++ (id)bsActionForReducedLaunch:(BOOL)launch responder:(id)responder error:(id *)error
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_188EBA4B0(v5, 0, 0, &type metadata for _UIReducedLaunchSceneConnectionOptionDefinition, &qword_1EA93E2D0);
-  v8 = [objc_allocWithZone(MEMORY[0x1E698E5F0]) initWithInfo:v7 responder:v6];
+  launchCopy = launch;
+  responderCopy = responder;
+  v7 = sub_188EBA4B0(launchCopy, 0, 0, &type metadata for _UIReducedLaunchSceneConnectionOptionDefinition, &qword_1EA93E2D0);
+  v8 = [objc_allocWithZone(MEMORY[0x1E698E5F0]) initWithInfo:v7 responder:responderCopy];
 
   return v8;
 }
 
-- (id)_initWithConnectionOptionsContext:(void *)a3 fbsScene:(void *)a4 specification:
+- (id)_initWithConnectionOptionsContext:(void *)context fbsScene:(void *)scene specification:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  contextCopy = context;
+  sceneCopy = scene;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = UISceneConnectionOptions;
-    a1 = objc_msgSendSuper2(&v15, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v15, sel_init);
+    if (self)
     {
-      v10 = [v7 launchOptionsDictionary];
-      v11 = a1[1];
-      a1[1] = v10;
+      launchOptionsDictionary = [v7 launchOptionsDictionary];
+      v11 = self[1];
+      self[1] = launchOptionsDictionary;
 
       if (v7)
       {
-        objc_storeStrong(a1 + 4, v7[4]);
-        objc_storeWeak(a1 + 2, v8);
-        objc_storeWeak(a1 + 3, v9);
+        objc_storeStrong(self + 4, v7[4]);
+        objc_storeWeak(self + 2, contextCopy);
+        objc_storeWeak(self + 3, sceneCopy);
         v12 = v7[5];
       }
 
       else
       {
-        objc_storeStrong(a1 + 4, 0);
-        objc_storeWeak(a1 + 2, v8);
-        objc_storeWeak(a1 + 3, v9);
+        objc_storeStrong(self + 4, 0);
+        objc_storeWeak(self + 2, contextCopy);
+        objc_storeWeak(self + 3, sceneCopy);
         v12 = 0;
       }
 
-      objc_storeStrong(a1 + 5, v12);
+      objc_storeStrong(self + 5, v12);
       if (v7)
       {
         v13 = v7[6];
@@ -270,11 +270,11 @@ LABEL_12:
         v13 = 0;
       }
 
-      objc_storeStrong(a1 + 6, v13);
+      objc_storeStrong(self + 6, v13);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (NSSet)_assistantTasks
@@ -296,12 +296,12 @@ LABEL_12:
   return v5;
 }
 
-- (int64_t)_flagForConnectionValueKey:(id)a3
+- (int64_t)_flagForConnectionValueKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (self && (connectionValues = self->_connectionValues) != 0)
   {
-    v6 = [(BSKeyedSettings *)connectionValues flagForKey:v4];
+    v6 = [(BSKeyedSettings *)connectionValues flagForKey:keyCopy];
   }
 
   else
@@ -312,14 +312,14 @@ LABEL_12:
   return v6;
 }
 
-- (id)_objectForConnectionValueKey:(id)a3
+- (id)_objectForConnectionValueKey:(id)key
 {
   if (self)
   {
     self = self->_connectionValues;
   }
 
-  return [(UISceneConnectionOptions *)self objectForKey:a3];
+  return [(UISceneConnectionOptions *)self objectForKey:key];
 }
 
 @end

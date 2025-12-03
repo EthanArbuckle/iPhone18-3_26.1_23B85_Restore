@@ -1,31 +1,31 @@
 @interface PHPhotoLibraryCreationOptions
-+ (id)creationOptionsForApplicationLibraryWithContainerIdentifier:(id)a3;
-+ (id)creationOptionsForDefaultApplicationLibraryWithContainerIdentifier:(id)a3;
++ (id)creationOptionsForApplicationLibraryWithContainerIdentifier:(id)identifier;
++ (id)creationOptionsForDefaultApplicationLibraryWithContainerIdentifier:(id)identifier;
 + (id)creationOptionsForUserLibrary;
 - (NSString)containerIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setContainerIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setContainerIdentifier:(id)identifier;
 @end
 
 @implementation PHPhotoLibraryCreationOptions
 
 + (id)creationOptionsForUserLibrary
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setDomain:2];
   [v2 setInternalCreateOptions:32];
 
   return v2;
 }
 
-+ (id)creationOptionsForApplicationLibraryWithContainerIdentifier:(id)a3
++ (id)creationOptionsForApplicationLibraryWithContainerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  identifierCopy = identifier;
+  v5 = objc_alloc_init(self);
   [v5 setDomain:3];
-  if (v4)
+  if (identifierCopy)
   {
-    [v5 setContainerIdentifier:v4];
+    [v5 setContainerIdentifier:identifierCopy];
   }
 
   else
@@ -39,17 +39,17 @@
   return v5;
 }
 
-+ (id)creationOptionsForDefaultApplicationLibraryWithContainerIdentifier:(id)a3
++ (id)creationOptionsForDefaultApplicationLibraryWithContainerIdentifier:(id)identifier
 {
-  v3 = [a1 creationOptionsForApplicationLibraryWithContainerIdentifier:a3];
+  v3 = [self creationOptionsForApplicationLibraryWithContainerIdentifier:identifier];
   [v3 setUuid:*MEMORY[0x1E69BEC68]];
 
   return v3;
 }
 
-- (void)setContainerIdentifier:(id)a3
+- (void)setContainerIdentifier:(id)identifier
 {
-  self->_containerIdentifier = [a3 copy];
+  self->_containerIdentifier = [identifier copy];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -73,23 +73,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(PHPhotoLibraryCreationOptions *)self libraryURL];
-  [v4 setLibraryURL:v5];
+  libraryURL = [(PHPhotoLibraryCreationOptions *)self libraryURL];
+  [v4 setLibraryURL:libraryURL];
 
   [v4 setDomain:{-[PHPhotoLibraryCreationOptions domain](self, "domain")}];
-  v6 = [(PHPhotoLibraryCreationOptions *)self userDescription];
-  [v4 setUserDescription:v6];
+  userDescription = [(PHPhotoLibraryCreationOptions *)self userDescription];
+  [v4 setUserDescription:userDescription];
 
-  v7 = [(PHPhotoLibraryCreationOptions *)self containerIdentifier];
-  [v4 setContainerIdentifier:v7];
+  containerIdentifier = [(PHPhotoLibraryCreationOptions *)self containerIdentifier];
+  [v4 setContainerIdentifier:containerIdentifier];
 
   [v4 setInternalCreateOptions:{-[PHPhotoLibraryCreationOptions internalCreateOptions](self, "internalCreateOptions")}];
-  v8 = [(PHPhotoLibraryCreationOptions *)self uuid];
-  [v4 setUuid:v8];
+  uuid = [(PHPhotoLibraryCreationOptions *)self uuid];
+  [v4 setUuid:uuid];
 
   return v4;
 }

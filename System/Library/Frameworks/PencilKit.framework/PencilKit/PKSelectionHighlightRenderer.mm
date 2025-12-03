@@ -1,40 +1,40 @@
 @interface PKSelectionHighlightRenderer
 - (CGPoint)editMenuLocation;
-- (PKSelectionHighlightRenderer)initWithStrokeSelection:(id)a3 renderingDelegate:(id)a4;
-- (id)initForLiveSelectionWithRenderingDelegate:(id)a3;
-- (void)_renderLiveSelectionPath:(CGPath *)a3 forStrokes:(id)a4 inDrawing:(id)a5 liveScrollOffset:(CGPoint)a6;
+- (PKSelectionHighlightRenderer)initWithStrokeSelection:(id)selection renderingDelegate:(id)delegate;
+- (id)initForLiveSelectionWithRenderingDelegate:(id)delegate;
+- (void)_renderLiveSelectionPath:(CGPath *)path forStrokes:(id)strokes inDrawing:(id)drawing liveScrollOffset:(CGPoint)offset;
 - (void)_setupHighlightIfNecessary;
 @end
 
 @implementation PKSelectionHighlightRenderer
 
-- (PKSelectionHighlightRenderer)initWithStrokeSelection:(id)a3 renderingDelegate:(id)a4
+- (PKSelectionHighlightRenderer)initWithStrokeSelection:(id)selection renderingDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  selectionCopy = selection;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKSelectionHighlightRenderer;
   v9 = [(PKSelectionHighlightRenderer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_strokeSelection, a3);
-    objc_storeWeak(&v10->_renderingDelegate, v8);
+    objc_storeStrong(&v9->_strokeSelection, selection);
+    objc_storeWeak(&v10->_renderingDelegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (id)initForLiveSelectionWithRenderingDelegate:(id)a3
+- (id)initForLiveSelectionWithRenderingDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PKSelectionHighlightRenderer;
   v5 = [(PKSelectionHighlightRenderer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_renderingDelegate, v4);
+    objc_storeWeak(&v5->_renderingDelegate, delegateCopy);
     [(PKSelectionHighlightRenderer *)v6 _setupHighlightIfNecessary];
   }
 
@@ -43,34 +43,34 @@
 
 - (void)_setupHighlightIfNecessary
 {
-  if (a1 && !*(a1 + 8))
+  if (self && !*(self + 8))
   {
-    v2 = [MEMORY[0x1E69794A0] layer];
-    v3 = *(a1 + 8);
-    *(a1 + 8) = v2;
+    layer = [MEMORY[0x1E69794A0] layer];
+    v3 = *(self + 8);
+    *(self + 8) = layer;
 
-    [*(a1 + 24) bounds];
+    [*(self + 24) bounds];
     v5 = v4;
     v7 = v6;
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v9 = [*(a1 + 24) drawing];
-    [WeakRetained scaleForDrawing:v9];
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    drawing = [*(self + 24) drawing];
+    [WeakRetained scaleForDrawing:drawing];
     v11 = v10;
 
     v12 = [MEMORY[0x1E69DC728] bezierPathWithRect:{0.0, 0.0, v5 * v11, v7 * v11}];
-    v13 = *(a1 + 16);
-    *(a1 + 16) = v12;
+    v13 = *(self + 16);
+    *(self + 16) = v12;
     v18 = v12;
 
-    [*(a1 + 8) setContentsScale:1.0];
+    [*(self + 8) setContentsScale:1.0];
     v14 = v18;
-    [*(a1 + 8) setPath:{objc_msgSend(v18, "CGPath")}];
-    v15 = *(a1 + 8);
-    v16 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [v15 setFillColor:{objc_msgSend(v16, "CGColor")}];
+    [*(self + 8) setPath:{objc_msgSend(v18, "CGPath")}];
+    v15 = *(self + 8);
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [v15 setFillColor:{objc_msgSend(systemYellowColor, "CGColor")}];
 
     LODWORD(v17) = 1050253722;
-    [*(a1 + 8) setOpacity:v17];
+    [*(self + 8) setOpacity:v17];
   }
 }
 
@@ -83,12 +83,12 @@
   return result;
 }
 
-- (void)_renderLiveSelectionPath:(CGPath *)a3 forStrokes:(id)a4 inDrawing:(id)a5 liveScrollOffset:(CGPoint)a6
+- (void)_renderLiveSelectionPath:(CGPath *)path forStrokes:(id)strokes inDrawing:(id)drawing liveScrollOffset:(CGPoint)offset
 {
-  v8 = a5;
+  drawingCopy = drawing;
   if (self)
   {
-    [PKDrawing _boundingBoxForStrokes:a4];
+    [PKDrawing _boundingBoxForStrokes:strokes];
     v9 = [MEMORY[0x1E69DC728] bezierPathWithRect:?];
   }
 
@@ -104,7 +104,7 @@
   v11 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained transformFromStrokeSpaceToViewInDrawing:v8];
+    [WeakRetained transformFromStrokeSpaceToViewInDrawing:drawingCopy];
   }
 
   else

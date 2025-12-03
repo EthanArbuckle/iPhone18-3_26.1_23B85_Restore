@@ -1,22 +1,22 @@
 @interface VIRefineRegionResult
-- (VIRefineRegionResult)initWithRefinedRegions:(id)a3 version:(unint64_t)a4;
+- (VIRefineRegionResult)initWithRefinedRegions:(id)regions version:(unint64_t)version;
 @end
 
 @implementation VIRefineRegionResult
 
-- (VIRefineRegionResult)initWithRefinedRegions:(id)a3 version:(unint64_t)a4
+- (VIRefineRegionResult)initWithRefinedRegions:(id)regions version:(unint64_t)version
 {
-  v6 = a3;
+  regionsCopy = regions;
   v11.receiver = self;
   v11.super_class = VIRefineRegionResult;
   v7 = [(VIRefineRegionResult *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [regionsCopy copy];
     refinedRegions = v7->_refinedRegions;
     v7->_refinedRegions = v8;
 
-    v7->_version = a4;
+    v7->_version = version;
   }
 
   return v7;

@@ -7,14 +7,14 @@
 
 + (BOOL)shouldSubmit
 {
-  v3 = [a1 _isMetricEnabled];
-  if (v3)
+  _isMetricEnabled = [self _isMetricEnabled];
+  if (_isMetricEnabled)
   {
 
-    LOBYTE(v3) = [a1 _isAllowed];
+    LOBYTE(_isMetricEnabled) = [self _isAllowed];
   }
 
-  return v3;
+  return _isMetricEnabled;
 }
 
 + (BOOL)_isMetricEnabled
@@ -22,16 +22,16 @@
   v2 = +[HKMCNotificationSentMetric eventName];
   if (AnalyticsIsEventUsed())
   {
-    v3 = 1;
+    hkmc_analyticsDebugModeEnabled = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
-    v3 = [v4 hkmc_analyticsDebugModeEnabled];
+    hkmc_menstrualCyclesDefaults = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
+    hkmc_analyticsDebugModeEnabled = [hkmc_menstrualCyclesDefaults hkmc_analyticsDebugModeEnabled];
   }
 
-  return v3;
+  return hkmc_analyticsDebugModeEnabled;
 }
 
 @end

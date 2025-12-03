@@ -1,7 +1,7 @@
 @interface SidecarTransfer
-- (SidecarTransfer)initWithSession:(id)a3 requestID:(int64_t)a4 transferID:(int64_t)a5;
+- (SidecarTransfer)initWithSession:(id)session requestID:(int64_t)d transferID:(int64_t)iD;
 - (SidecarTransferDelegate)delegate;
-- (id)_resumeMessage:(id)a3;
+- (id)_resumeMessage:(id)message;
 @end
 
 @implementation SidecarTransfer
@@ -13,16 +13,16 @@
   return WeakRetained;
 }
 
-- (id)_resumeMessage:(id)a3
+- (id)_resumeMessage:(id)message
 {
-  result = a3;
+  result = message;
   __break(1u);
   return result;
 }
 
-- (SidecarTransfer)initWithSession:(id)a3 requestID:(int64_t)a4 transferID:(int64_t)a5
+- (SidecarTransfer)initWithSession:(id)session requestID:(int64_t)d transferID:(int64_t)iD
 {
-  v8 = a3;
+  sessionCopy = session;
   v17.receiver = self;
   v17.super_class = SidecarTransfer;
   v9 = [(SidecarTransfer *)&v17 init];
@@ -35,9 +35,9 @@
     v12[2] = __56__SidecarTransfer_initWithSession_requestID_transferID___block_invoke;
     v12[3] = &unk_279BC3318;
     v13 = v9;
-    v15 = a4;
-    v14 = v8;
-    v16 = a5;
+    dCopy = d;
+    v14 = sessionCopy;
+    iDCopy = iD;
     SidecarTransferLocked(v13, v12);
   }
 

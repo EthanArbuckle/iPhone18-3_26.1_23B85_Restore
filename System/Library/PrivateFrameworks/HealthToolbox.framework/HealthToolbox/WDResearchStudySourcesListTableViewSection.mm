@@ -1,12 +1,12 @@
 @interface WDResearchStudySourcesListTableViewSection
-- (id)_sourceCellForRow:(unint64_t)a3 tableView:(id)a4;
-- (id)cellForRow:(unint64_t)a3 table:(id)a4;
+- (id)_sourceCellForRow:(unint64_t)row tableView:(id)view;
+- (id)cellForRow:(unint64_t)row table:(id)table;
 - (id)noneString;
 - (id)titleForFooter;
 - (id)titleForHeader;
 - (unint64_t)numberOfRows;
 - (void)dataSourceDidUpdate;
-- (void)didSelectRow:(unint64_t)a3 representedByCell:(id)a4 withCompletion:(id)a5;
+- (void)didSelectRow:(unint64_t)row representedByCell:(id)cell withCompletion:(id)completion;
 @end
 
 @implementation WDResearchStudySourcesListTableViewSection
@@ -14,23 +14,23 @@
 - (void)dataSourceDidUpdate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(WDSourcesListTableViewSection *)self dataSource];
-  v4 = [v3 sources];
-  v5 = [v4 orderedResearchStudySources];
-  [(WDResearchStudySourcesListTableViewSection *)self setResearchSources:v5];
+  dataSource = [(WDSourcesListTableViewSection *)self dataSource];
+  sources = [dataSource sources];
+  orderedResearchStudySources = [sources orderedResearchStudySources];
+  [(WDResearchStudySourcesListTableViewSection *)self setResearchSources:orderedResearchStudySources];
 
-  v6 = [(WDTableViewSection *)self delegate];
-  [v6 reloadTable];
+  delegate = [(WDTableViewSection *)self delegate];
+  [delegate reloadTable];
 
-  v7 = [(WDSourcesListTableViewSection *)self restorationSourceBundleIdentifier];
-  if (v7)
+  restorationSourceBundleIdentifier = [(WDSourcesListTableViewSection *)self restorationSourceBundleIdentifier];
+  if (restorationSourceBundleIdentifier)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    researchSources = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
+    v9 = [researchSources countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = *v21;
@@ -40,13 +40,13 @@
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(researchSources);
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 source];
-          v14 = [v13 bundleIdentifier];
-          v15 = [v14 isEqualToString:v7];
+          source = [v12 source];
+          bundleIdentifier = [source bundleIdentifier];
+          v15 = [bundleIdentifier isEqualToString:restorationSourceBundleIdentifier];
 
           if (v15)
           {
@@ -63,7 +63,7 @@
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v9 = [researchSources countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v9)
         {
           continue;
@@ -91,8 +91,8 @@ void __65__WDResearchStudySourcesListTableViewSection_dataSourceDidUpdate__block
 
 - (unint64_t)numberOfRows
 {
-  v2 = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
-  v3 = [v2 count];
+  researchSources = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
+  v3 = [researchSources count];
 
   if (v3 <= 1)
   {
@@ -129,22 +129,22 @@ void __65__WDResearchStudySourcesListTableViewSection_dataSourceDidUpdate__block
   return v3;
 }
 
-- (id)cellForRow:(unint64_t)a3 table:(id)a4
+- (id)cellForRow:(unint64_t)row table:(id)table
 {
-  v6 = a4;
-  if (a3 || ([(WDResearchStudySourcesListTableViewSection *)self researchSources], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  tableCopy = table;
+  if (row || ([(WDResearchStudySourcesListTableViewSection *)self researchSources], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
-    v9 = [v8 count];
+    researchSources = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
+    v9 = [researchSources count];
 
     if (v9)
     {
-      [(WDResearchStudySourcesListTableViewSection *)self _sourceCellForRow:a3 tableView:v6];
+      [(WDResearchStudySourcesListTableViewSection *)self _sourceCellForRow:row tableView:tableCopy];
     }
 
     else
     {
-      [(WDSourcesListTableViewSection *)self noneCellForTableView:v6];
+      [(WDSourcesListTableViewSection *)self noneCellForTableView:tableCopy];
     }
     v10 = ;
   }
@@ -152,42 +152,42 @@ void __65__WDResearchStudySourcesListTableViewSection_dataSourceDidUpdate__block
   else
   {
     v12 = +[WDSpinnerTableViewCell defaultReuseIdentifier];
-    v10 = [v6 dequeueReusableCellWithIdentifier:v12];
+    v10 = [tableCopy dequeueReusableCellWithIdentifier:v12];
   }
 
   return v10;
 }
 
-- (id)_sourceCellForRow:(unint64_t)a3 tableView:(id)a4
+- (id)_sourceCellForRow:(unint64_t)row tableView:(id)view
 {
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"WDResearchStudySourcesListTableViewSectionCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"WDResearchStudySourcesListTableViewSectionCell"];
   if (!v6)
   {
     v6 = [[WDSourcesListTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"WDResearchStudySourcesListTableViewSectionCell"];
     [(WDSourcesListTableViewCell *)v6 setAccessoryType:1];
   }
 
-  v7 = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  researchSources = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
+  v8 = [researchSources objectAtIndexedSubscript:row];
   [(WDSourcesListTableViewCell *)v6 setSourceModel:v8];
 
   return v6;
 }
 
-- (void)didSelectRow:(unint64_t)a3 representedByCell:(id)a4 withCompletion:(id)a5
+- (void)didSelectRow:(unint64_t)row representedByCell:(id)cell withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 || ([(WDResearchStudySourcesListTableViewSection *)self researchSources], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  cellCopy = cell;
+  completionCopy = completion;
+  if (row || ([(WDResearchStudySourcesListTableViewSection *)self researchSources], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
-    v12 = [v11 count];
+    researchSources = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
+    v12 = [researchSources count];
 
     if (v12)
     {
       objc_initWeak(&location, self);
-      v13 = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
-      v14 = [v13 objectAtIndexedSubscript:a3];
+      researchSources2 = [(WDResearchStudySourcesListTableViewSection *)self researchSources];
+      v14 = [researchSources2 objectAtIndexedSubscript:row];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __92__WDResearchStudySourcesListTableViewSection_didSelectRow_representedByCell_withCompletion___block_invoke;
@@ -199,12 +199,12 @@ void __65__WDResearchStudySourcesListTableViewSection_dataSourceDidUpdate__block
       objc_destroyWeak(&location);
     }
 
-    v9[2](v9, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    v9[2](v9, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 

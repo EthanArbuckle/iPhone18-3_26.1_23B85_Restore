@@ -4,15 +4,15 @@
 - (BOOL)hasDataSources;
 - (NSArray)bridgedExternalProviders;
 - (WOWorkoutConfigurationDataSourcesBridgedModel)init;
-- (void)reload:(id)a3;
-- (void)updateExternalProvider:(id)a3 enable:(BOOL)a4;
+- (void)reload:(id)reload;
+- (void)updateExternalProvider:(id)provider enable:(BOOL)enable;
 @end
 
 @implementation WOWorkoutConfigurationDataSourcesBridgedModel
 
 - (NSArray)bridgedExternalProviders
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C120();
 
   type metadata accessor for QueriedExternalProviderBridge();
@@ -24,7 +24,7 @@
 - (BOOL)hasDataSources
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOWorkoutConfigurationDataSourcesBridgedModel_model);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22364();
   if (v4 >> 62)
   {
@@ -39,9 +39,9 @@
   return v5 != 0;
 }
 
-- (void)reload:(id)a3
+- (void)reload:(id)reload
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reload);
   if (v4)
   {
     v5 = v4;
@@ -60,18 +60,18 @@
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
   *(v9 + 24) = v6;
-  v10 = self;
+  selfCopy = self;
   sub_1C6E8(v7);
   sub_22374();
   sub_1C6F8(v7);
 }
 
-- (void)updateExternalProvider:(id)a3 enable:(BOOL)a4
+- (void)updateExternalProvider:(id)provider enable:(BOOL)enable
 {
   v5 = *(&self->super.isa + OBJC_IVAR___WOWorkoutConfigurationDataSourcesBridgedModel_model);
-  v6 = *(a3 + OBJC_IVAR___WOQueriedExternalProviderBridge_externalProvider);
-  v8 = a3;
-  v7 = self;
+  v6 = *(provider + OBJC_IVAR___WOQueriedExternalProviderBridge_externalProvider);
+  providerCopy = provider;
+  selfCopy = self;
   sub_22354();
 }
 

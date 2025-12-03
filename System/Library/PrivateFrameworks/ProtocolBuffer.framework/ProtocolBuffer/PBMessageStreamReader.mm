@@ -1,5 +1,5 @@
 @interface PBMessageStreamReader
-- (PBMessageStreamReader)initWithStream:(id)a3;
+- (PBMessageStreamReader)initWithStream:(id)stream;
 - (id)nextMessage;
 @end
 
@@ -78,16 +78,16 @@ LABEL_11:
   return v11;
 }
 
-- (PBMessageStreamReader)initWithStream:(id)a3
+- (PBMessageStreamReader)initWithStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = PBMessageStreamReader;
   v6 = [(PBMessageStreamReader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
   }
 
   return v7;

@@ -1,12 +1,12 @@
 @interface ADNotifyAndPushContextCollector
 - (ADNotifyAndPushContextCollector)init;
-- (BOOL)_hasCompletionForPID:(int)a3;
-- (void)_addCompletion:(id)a3 forPID:(int)a4;
-- (void)_getContextForAppInfo:(id)a3 completion:(id)a4;
+- (BOOL)_hasCompletionForPID:(int)d;
+- (void)_addCompletion:(id)completion forPID:(int)d;
+- (void)_getContextForAppInfo:(id)info completion:(id)completion;
 - (void)_invokeAllCompletionsWithError;
-- (void)_invokeCompletionWithContext:(id)a3 forPID:(int)a4;
-- (void)_setContext:(id)a3 forPID:(int)a4;
-- (void)getContextForAppInfos:(id)a3 completion:(id)a4;
+- (void)_invokeCompletionWithContext:(id)context forPID:(int)d;
+- (void)_setContext:(id)context forPID:(int)d;
+- (void)getContextForAppInfos:(id)infos completion:(id)completion;
 @end
 
 @implementation ADNotifyAndPushContextCollector
@@ -62,17 +62,17 @@
   [(NSMutableDictionary *)self->_completionsByPID removeAllObjects];
 }
 
-- (void)_invokeCompletionWithContext:(id)a3 forPID:(int)a4
+- (void)_invokeCompletionWithContext:(id)context forPID:(int)d
 {
-  v4 = *&a4;
-  v11 = a3;
+  v4 = *&d;
+  contextCopy = context;
   completionsByPID = self->_completionsByPID;
   v7 = [NSNumber numberWithInt:v4];
   v8 = [(NSMutableDictionary *)completionsByPID objectForKey:v7];
 
   if (v8)
   {
-    (v8)[2](v8, v11);
+    (v8)[2](v8, contextCopy);
   }
 
   v9 = self->_completionsByPID;
@@ -80,35 +80,35 @@
   [(NSMutableDictionary *)v9 removeObjectForKey:v10];
 }
 
-- (void)_addCompletion:(id)a3 forPID:(int)a4
+- (void)_addCompletion:(id)completion forPID:(int)d
 {
-  v4 = *&a4;
+  v4 = *&d;
   completionsByPID = self->_completionsByPID;
-  v7 = objc_retainBlock(a3);
+  v7 = objc_retainBlock(completion);
   v6 = [NSNumber numberWithInt:v4];
   [(NSMutableDictionary *)completionsByPID setObject:v7 forKey:v6];
 }
 
-- (BOOL)_hasCompletionForPID:(int)a3
+- (BOOL)_hasCompletionForPID:(int)d
 {
   completionsByPID = self->_completionsByPID;
-  v4 = [NSNumber numberWithInt:*&a3];
+  v4 = [NSNumber numberWithInt:*&d];
   v5 = [(NSMutableDictionary *)completionsByPID objectForKey:v4];
   LOBYTE(completionsByPID) = v5 != 0;
 
   return completionsByPID;
 }
 
-- (void)_getContextForAppInfo:(id)a3 completion:(id)a4
+- (void)_getContextForAppInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
+  infoCopy = info;
+  completionCopy = completion;
+  identifier = [infoCopy identifier];
   v9 = AFContextProviderNameForBundleId();
-  v10 = [v9 UTF8String];
+  uTF8String = [v9 UTF8String];
 
   out_token = -1;
-  if (v10 && !notify_register_check(v10, &out_token))
+  if (uTF8String && !notify_register_check(uTF8String, &out_token))
   {
     *buf = 0;
     state = notify_get_state(out_token, buf);
@@ -117,7 +117,7 @@
     v11 = 0;
     if (!state && v16 == 1)
     {
-      v11 = notify_post(v10) == 0;
+      v11 = notify_post(uTF8String) == 0;
     }
   }
 
@@ -126,7 +126,7 @@
     v11 = 0;
   }
 
-  v12 = [v6 pid];
+  v12 = [infoCopy pid];
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -141,55 +141,55 @@
     v19 = 2080;
     v20 = v14;
     v21 = 2080;
-    v22 = v10;
+    v22 = uTF8String;
     v23 = 1024;
     v24 = v12;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s %s push context for %s %d", buf, 0x26u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     if (v11)
     {
-      [(ADNotifyAndPushContextCollector *)self _addCompletion:v7 forPID:v12];
+      [(ADNotifyAndPushContextCollector *)self _addCompletion:completionCopy forPID:v12];
     }
 
     else
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)_setContext:(id)a3 forPID:(int)a4
+- (void)_setContext:(id)context forPID:(int)d
 {
-  v6 = a3;
+  contextCopy = context;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100301784;
   block[3] = &unk_10051B618;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = contextCopy;
+  dCopy = d;
+  v8 = contextCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getContextForAppInfos:(id)a3 completion:(id)a4
+- (void)getContextForAppInfos:(id)infos completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infosCopy = infos;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100301860;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infosCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = infosCopy;
   dispatch_async(queue, block);
 }
 

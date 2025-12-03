@@ -1,54 +1,54 @@
 @interface HSResponseDataParser
-+ (id)_parseAuthorizedAccountTokenWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseBrowseListingWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseBulkCloudArtworkInfoResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseBulkCloudLyricsInfoResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseCloudArtworkInfoResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseCloudLyricsInfoResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseControlInterfacesResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseControlPromptResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseDeletedIDListingWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseDictionaryCollectionWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseEditCommandResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseErrorResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseItemIDArrayWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseItemsResponseWithBytes:(const char *)a3 length:(unint64_t)a4 usingHandler:(id)a5;
-+ (id)_parseListingCollectionWithBytes:(const char *)a3 length:(unint64_t)a4 usingHandler:(id)a5;
-+ (id)_parseListingItemWithBytes:(const char *)a3 length:(unsigned int)a4 usingHandler:(id)a5;
-+ (id)_parseLoginResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parsePlayStatusResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseResponseCode:(unsigned int)a3 bytes:(const char *)a4 length:(unint64_t)a5 usingHandler:(id)a6;
-+ (id)_parseUpdateResponseWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)_parseUpdateTypeWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (id)enumerateRawItemsInResponseData:(id)a3 usingHandler:(id)a4;
-+ (id)parseErrorInResponseData:(id)a3;
-+ (unint64_t)_parseItemPropertyCountWithBytes:(const char *)a3 length:(unint64_t)a4;
-+ (unint64_t)parseItemWithBytes:(const char *)a3 length:(unint64_t)a4 valuesOut:(id *)a5 valuesCapacity:(unint64_t)a6;
-+ (void)enumerateDeletedItemsInResponseData:(id)a3 usingHandler:(id)a4;
-+ (void)enumerateItemsInResponseData:(id)a3 usingHandler:(id)a4;
-+ (void)parseItemWithBytes:(const char *)a3 length:(unint64_t)a4 usingHandler:(id)a5;
++ (id)_parseAuthorizedAccountTokenWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseBrowseListingWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseBulkCloudArtworkInfoResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseBulkCloudLyricsInfoResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseCloudArtworkInfoResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseCloudLyricsInfoResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseControlInterfacesResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseControlPromptResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseDeletedIDListingWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseDictionaryCollectionWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseEditCommandResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseErrorResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseItemIDArrayWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseItemsResponseWithBytes:(const char *)bytes length:(unint64_t)length usingHandler:(id)handler;
++ (id)_parseListingCollectionWithBytes:(const char *)bytes length:(unint64_t)length usingHandler:(id)handler;
++ (id)_parseListingItemWithBytes:(const char *)bytes length:(unsigned int)length usingHandler:(id)handler;
++ (id)_parseLoginResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parsePlayStatusResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseResponseCode:(unsigned int)code bytes:(const char *)bytes length:(unint64_t)length usingHandler:(id)handler;
++ (id)_parseUpdateResponseWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)_parseUpdateTypeWithBytes:(const char *)bytes length:(unint64_t)length;
++ (id)enumerateRawItemsInResponseData:(id)data usingHandler:(id)handler;
++ (id)parseErrorInResponseData:(id)data;
++ (unint64_t)_parseItemPropertyCountWithBytes:(const char *)bytes length:(unint64_t)length;
++ (unint64_t)parseItemWithBytes:(const char *)bytes length:(unint64_t)length valuesOut:(id *)out valuesCapacity:(unint64_t)capacity;
++ (void)enumerateDeletedItemsInResponseData:(id)data usingHandler:(id)handler;
++ (void)enumerateItemsInResponseData:(id)data usingHandler:(id)handler;
++ (void)parseItemWithBytes:(const char *)bytes length:(unint64_t)length usingHandler:(id)handler;
 @end
 
 @implementation HSResponseDataParser
 
-+ (id)_parseListingItemWithBytes:(const char *)a3 length:(unsigned int)a4 usingHandler:(id)a5
++ (id)_parseListingItemWithBytes:(const char *)bytes length:(unsigned int)length usingHandler:(id)handler
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, a3, a4);
-    v9 = 0;
+    (*(handlerCopy + 2))(handlerCopy, bytes, length);
+    dictionary = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    while (a4)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    while (length)
     {
-      v10 = *a3;
-      v11 = *(a3 + 1);
-      v12 = (a3 + 8);
+      v10 = *bytes;
+      v11 = *(bytes + 1);
+      v12 = (bytes + 8);
       v13 = bswap32(v11);
       v19 = 0;
       v20 = 0;
@@ -68,44 +68,44 @@
 
       if (!v17)
       {
-        [v9 setObject:v14 forKey:v15];
+        [dictionary setObject:v14 forKey:v15];
       }
 
-      a3 = &v12[v13];
-      a4 = a4 - 8 - v13;
+      bytes = &v12[v13];
+      length = length - 8 - v13;
     }
   }
 
-  return v9;
+  return dictionary;
 }
 
-+ (id)_parseErrorResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseErrorResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v25 = *MEMORY[0x277D85DE8];
   for (i = [MEMORY[0x277CBEB38] dictionary];
   {
-    v7 = *a3;
-    v8 = (v7 << 24) | (*(a3 + 1) << 16);
-    v9 = *(a3 + 3);
-    v10 = v9 | (*(a3 + 2) << 8) | v8;
-    v11 = bswap32(*(a3 + 1));
-    v12 = a3 + 8;
+    v7 = *bytes;
+    v8 = (v7 << 24) | (*(bytes + 1) << 16);
+    v9 = *(bytes + 3);
+    v10 = v9 | (*(bytes + 2) << 8) | v8;
+    v11 = bswap32(*(bytes + 1));
+    v12 = bytes + 8;
     switch(v10)
     {
       case 0x61655243u:
-        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
+        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
         v14 = i;
         v15 = v13;
         v16 = &unk_28666A988;
         break;
       case 0x6D737473u:
-        v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
+        v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
         v14 = i;
         v15 = v13;
         v16 = &unk_28666A970;
         break;
       case 0x6D737474u:
-        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
+        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
         v14 = i;
         v15 = v13;
         v16 = &unk_28666A958;
@@ -131,26 +131,26 @@
     [v14 setObject:v15 forKey:v16];
 LABEL_9:
 
-    a3 = &v12[v11];
+    bytes = &v12[v11];
   }
 
   return i;
 }
 
-+ (id)_parsePlayStatusResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parsePlayStatusResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (length)
   {
     while (1)
     {
-      v7 = *a3;
-      v8 = (v7 << 24) | (*(a3 + 1) << 16);
-      v9 = *(a3 + 3);
-      v10 = v9 | (*(a3 + 2) << 8) | v8;
-      v11 = bswap32(*(a3 + 1));
-      v12 = (a3 + 8);
+      v7 = *bytes;
+      v8 = (v7 << 24) | (*(bytes + 1) << 16);
+      v9 = *(bytes + 3);
+      v10 = v9 | (*(bytes + 2) << 8) | v8;
+      v11 = bswap32(*(bytes + 1));
+      v12 = (bytes + 8);
       if (v10 <= 1667330931)
       {
         if (v10 > 1667329645)
@@ -164,7 +164,7 @@ LABEL_9:
                 if (v10 == 1667330920)
                 {
                   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-                  v14 = v6;
+                  v14 = dictionary;
                   v15 = v13;
                   v16 = &unk_28666A6E8;
                   goto LABEL_80;
@@ -174,7 +174,7 @@ LABEL_9:
               }
 
               v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-              v14 = v6;
+              v14 = dictionary;
               v15 = v13;
               v16 = &unk_28666A8B0;
             }
@@ -186,7 +186,7 @@ LABEL_9:
                 if (v10 == 1667330672)
                 {
                   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-                  v14 = v6;
+                  v14 = dictionary;
                   v15 = v13;
                   v16 = &unk_28666A700;
                   goto LABEL_80;
@@ -196,7 +196,7 @@ LABEL_9:
               }
 
               v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-              v14 = v6;
+              v14 = dictionary;
               v15 = v13;
               v16 = &unk_28666A6D0;
             }
@@ -208,8 +208,8 @@ LABEL_9:
             {
               if (v10 == 1667330156)
               {
-                v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 + 8 length:v11];
-                v14 = v6;
+                v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bytes + 8 length:v11];
+                v14 = dictionary;
                 v15 = v13;
                 v16 = &unk_28666A940;
                 goto LABEL_80;
@@ -218,8 +218,8 @@ LABEL_9:
               goto LABEL_84;
             }
 
-            v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-            v14 = v6;
+            v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+            v14 = dictionary;
             v15 = v13;
             v16 = &unk_28666A8C8;
           }
@@ -230,8 +230,8 @@ LABEL_9:
             {
               if (v10 == 1667329648)
               {
-                v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 + 8 length:v11];
-                v14 = v6;
+                v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bytes + 8 length:v11];
+                v14 = dictionary;
                 v15 = v13;
                 v16 = &unk_28666A928;
                 goto LABEL_80;
@@ -240,8 +240,8 @@ LABEL_9:
               goto LABEL_84;
             }
 
-            v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
-            v14 = v6;
+            v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
+            v14 = dictionary;
             v15 = v13;
             v16 = &unk_28666A688;
           }
@@ -255,8 +255,8 @@ LABEL_9:
             {
               if (v10 == 1667329644)
               {
-                v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
-                v14 = v6;
+                v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
+                v14 = dictionary;
                 v15 = v13;
                 v16 = &unk_28666A6B8;
                 goto LABEL_80;
@@ -265,8 +265,8 @@ LABEL_9:
               goto LABEL_84;
             }
 
-            v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
-            v14 = v6;
+            v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
+            v14 = dictionary;
             v15 = v13;
             v16 = &unk_28666A880;
           }
@@ -277,8 +277,8 @@ LABEL_9:
             {
               if (v10 == 1667329633)
               {
-                v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
-                v14 = v6;
+                v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
+                v14 = dictionary;
                 v15 = v13;
                 v16 = &unk_28666A6A0;
                 goto LABEL_80;
@@ -288,7 +288,7 @@ LABEL_9:
             }
 
             v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-            v14 = v6;
+            v14 = dictionary;
             v15 = v13;
             v16 = &unk_28666A718;
           }
@@ -301,7 +301,7 @@ LABEL_9:
             if (v10 == 1667327589)
             {
               v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-              v14 = v6;
+              v14 = dictionary;
               v15 = v13;
               v16 = &unk_28666A790;
               goto LABEL_80;
@@ -310,8 +310,8 @@ LABEL_9:
             goto LABEL_84;
           }
 
-          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-          v14 = v6;
+          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+          v14 = dictionary;
           v15 = v13;
           v16 = &unk_28666A760;
         }
@@ -322,8 +322,8 @@ LABEL_9:
           {
             if (v10 == 1667326322)
             {
-              v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-              v14 = v6;
+              v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+              v14 = dictionary;
               v15 = v13;
               v16 = &unk_28666A778;
               goto LABEL_80;
@@ -332,8 +332,8 @@ LABEL_9:
             goto LABEL_84;
           }
 
-          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:((*(a3 + 8) << 56) | (*(a3 + 9) << 48) | (*(a3 + 10) << 40) | (*(a3 + 11) << 32) | (*(a3 + 12) << 24) | (*(a3 + 13) << 16) | (*(a3 + 14) << 8)) + *(a3 + 15)];
-          v14 = v6;
+          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:((*(bytes + 8) << 56) | (*(bytes + 9) << 48) | (*(bytes + 10) << 40) | (*(bytes + 11) << 32) | (*(bytes + 12) << 24) | (*(bytes + 13) << 16) | (*(bytes + 14) << 8)) + *(bytes + 15)];
+          v14 = dictionary;
           v15 = v13;
           v16 = &unk_28666A808;
         }
@@ -351,8 +351,8 @@ LABEL_9:
             {
               if (v10 == 1667583569)
               {
-                v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-                v14 = v6;
+                v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+                v14 = dictionary;
                 v15 = v13;
                 v16 = &unk_28666A7F0;
                 goto LABEL_80;
@@ -362,7 +362,7 @@ LABEL_9:
             }
 
             v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-            v14 = v6;
+            v14 = dictionary;
             v15 = v13;
             v16 = &unk_28666A7D8;
           }
@@ -374,7 +374,7 @@ LABEL_9:
               if (v10 == 1667581779)
               {
                 v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-                v14 = v6;
+                v14 = dictionary;
                 v15 = v13;
                 v16 = &unk_28666A910;
                 goto LABEL_80;
@@ -384,7 +384,7 @@ LABEL_9:
             }
 
             v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-            v14 = v6;
+            v14 = dictionary;
             v15 = v13;
             v16 = &unk_28666A730;
           }
@@ -397,7 +397,7 @@ LABEL_9:
             if (v10 == 1667331685)
             {
               v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-              v14 = v6;
+              v14 = dictionary;
               v15 = v13;
               v16 = &unk_28666A7A8;
               goto LABEL_80;
@@ -407,7 +407,7 @@ LABEL_9:
           }
 
           v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-          v14 = v6;
+          v14 = dictionary;
           v15 = v13;
           v16 = &unk_28666A748;
         }
@@ -419,7 +419,7 @@ LABEL_9:
             if (v10 == 1667330933)
             {
               v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-              v14 = v6;
+              v14 = dictionary;
               v15 = v13;
               v16 = &unk_28666A8F8;
               goto LABEL_80;
@@ -428,8 +428,8 @@ LABEL_9:
             goto LABEL_84;
           }
 
-          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-          v14 = v6;
+          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+          v14 = dictionary;
           v15 = v13;
           v16 = &unk_28666A8E0;
         }
@@ -448,8 +448,8 @@ LABEL_9:
         {
           if (v10 == 1668115819)
           {
-            v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-            v14 = v6;
+            v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+            v14 = dictionary;
             v15 = v13;
             v16 = &unk_28666A898;
             goto LABEL_80;
@@ -458,8 +458,8 @@ LABEL_9:
           goto LABEL_84;
         }
 
-        v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
-        v14 = v6;
+        v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
+        v14 = dictionary;
         v15 = v13;
         v16 = &unk_28666A850;
 LABEL_80:
@@ -471,8 +471,8 @@ LABEL_80:
       {
         if (v10 == 1668117362)
         {
-          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-          v14 = v6;
+          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+          v14 = dictionary;
           v15 = v13;
           v16 = &unk_28666A670;
           goto LABEL_80;
@@ -496,9 +496,9 @@ LABEL_84:
 LABEL_81:
       }
 
-      a3 = &v12[v11];
-      a4 = a4 - 8 - v11;
-      if (!a4)
+      bytes = &v12[v11];
+      length = length - 8 - v11;
+      if (!length)
       {
         goto LABEL_86;
       }
@@ -510,8 +510,8 @@ LABEL_81:
       {
         if (v10 == 1668113011)
         {
-          v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
-          v14 = v6;
+          v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
+          v14 = dictionary;
           v15 = v13;
           v16 = &unk_28666A838;
           goto LABEL_80;
@@ -520,8 +520,8 @@ LABEL_81:
         goto LABEL_84;
       }
 
-      v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
-      v14 = v6;
+      v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
+      v14 = dictionary;
       v15 = v13;
       v16 = &unk_28666A868;
     }
@@ -532,8 +532,8 @@ LABEL_81:
       {
         if (v10 == 1668112996)
         {
-          v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 8 length:v11 encoding:4];
-          v14 = v6;
+          v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 8 length:v11 encoding:4];
+          v14 = dictionary;
           v15 = v13;
           v16 = &unk_28666A820;
           goto LABEL_80;
@@ -543,7 +543,7 @@ LABEL_81:
       }
 
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v12];
-      v14 = v6;
+      v14 = dictionary;
       v15 = v13;
       v16 = &unk_28666A7C0;
     }
@@ -553,22 +553,22 @@ LABEL_81:
 
 LABEL_86:
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)_parseItemIDArrayWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseItemIDArrayWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v22 = *MEMORY[0x277D85DE8];
   for (i = [MEMORY[0x277CBEB18] array];
   {
-    v7 = *a3;
-    v8 = (v7 << 24) | (*(a3 + 1) << 16);
-    v9 = *(a3 + 3);
-    v10 = v9 | (*(a3 + 2) << 8) | v8;
-    v11 = *(a3 + 1);
+    v7 = *bytes;
+    v8 = (v7 << 24) | (*(bytes + 1) << 16);
+    v9 = *(bytes + 3);
+    v10 = v9 | (*(bytes + 2) << 8) | v8;
+    v11 = *(bytes + 1);
     if (v10 == 1835624804)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
       [i addObject:v12];
     }
 
@@ -591,23 +591,23 @@ LABEL_86:
 
     v13 = bswap32(v11);
 
-    a3 += v13 + 8;
+    bytes += v13 + 8;
   }
 
   return i;
 }
 
-+ (id)_parseBrowseListingWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseBrowseListingWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v22 = *MEMORY[0x277D85DE8];
   for (i = [MEMORY[0x277CBEB18] array];
   {
-    v7 = *a3;
-    v8 = (v7 << 24) | (*(a3 + 1) << 16);
-    v9 = *(a3 + 3);
-    v10 = v9 | (*(a3 + 2) << 8) | v8;
-    v11 = bswap32(*(a3 + 1));
-    v12 = a3 + 8;
+    v7 = *bytes;
+    v8 = (v7 << 24) | (*(bytes + 1) << 16);
+    v9 = *(bytes + 3);
+    v10 = v9 | (*(bytes + 2) << 8) | v8;
+    v11 = bswap32(*(bytes + 1));
+    v12 = bytes + 8;
     if (v10 == 1835821428)
     {
       v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v12 length:v11 encoding:4];
@@ -631,20 +631,20 @@ LABEL_86:
       }
     }
 
-    a3 = &v12[v11];
+    bytes = &v12[v11];
   }
 
   return i;
 }
 
-+ (id)_parseListingCollectionWithBytes:(const char *)a3 length:(unint64_t)a4 usingHandler:(id)a5
++ (id)_parseListingCollectionWithBytes:(const char *)bytes length:(unint64_t)length usingHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v8)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v20 = 0;
-    if (!a4)
+    array = 0;
+    if (!length)
     {
       goto LABEL_16;
     }
@@ -652,8 +652,8 @@ LABEL_86:
 
   else
   {
-    v20 = [MEMORY[0x277CBEB18] array];
-    if (!a4)
+    array = [MEMORY[0x277CBEB18] array];
+    if (!length)
     {
       goto LABEL_16;
     }
@@ -661,18 +661,18 @@ LABEL_86:
 
   do
   {
-    v9 = *a3;
-    v10 = (v9 << 24) | (*(a3 + 1) << 16);
-    v11 = *(a3 + 3);
-    v12 = v11 | (*(a3 + 2) << 8) | v10;
-    v13 = bswap32(*(a3 + 1));
-    v14 = a3 + 8;
+    v9 = *bytes;
+    v10 = (v9 << 24) | (*(bytes + 1) << 16);
+    v11 = *(bytes + 3);
+    v12 = v11 | (*(bytes + 2) << 8) | v10;
+    v13 = bswap32(*(bytes + 1));
+    v14 = bytes + 8;
     if (v12 == 1634025828 || v12 == 1835821428 || v12 == 1634036070)
     {
-      v17 = [a1 _parseListingItemWithBytes:v14 length:v13 usingHandler:v8];
-      if (!v8)
+      v17 = [self _parseListingItemWithBytes:v14 length:v13 usingHandler:handlerCopy];
+      if (!handlerCopy)
       {
-        [v20 addObject:v17];
+        [array addObject:v17];
       }
     }
 
@@ -693,33 +693,33 @@ LABEL_86:
       }
     }
 
-    a3 = &v14[v13];
-    a4 = a4 - 8 - v13;
+    bytes = &v14[v13];
+    length = length - 8 - v13;
   }
 
-  while (a4);
+  while (length);
 LABEL_16:
 
-  return v20;
+  return array;
 }
 
-+ (id)_parseItemsResponseWithBytes:(const char *)a3 length:(unint64_t)a4 usingHandler:(id)a5
++ (id)_parseItemsResponseWithBytes:(const char *)bytes length:(unint64_t)length usingHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v34 = a5;
+  handlerCopy = handler;
   v8 = 0;
-  if (a4)
+  if (length)
   {
     *&v7 = 67109120;
     v33 = v7;
     while (1)
     {
-      v9 = *a3;
-      v10 = (v9 << 24) | (*(a3 + 1) << 16);
-      v11 = *(a3 + 3);
-      v12 = v11 | (*(a3 + 2) << 8) | v10;
-      v13 = *(a3 + 1);
-      v14 = a4 - 8;
+      v9 = *bytes;
+      v10 = (v9 << 24) | (*(bytes + 1) << 16);
+      v11 = *(bytes + 3);
+      v12 = v11 | (*(bytes + 2) << 8) | v10;
+      v13 = *(bytes + 1);
+      v14 = length - 8;
       if (v12 > 1836213102)
       {
         if (v12 > 1836409963)
@@ -732,10 +732,10 @@ LABEL_16:
         {
           if (v12 == 1836213103)
           {
-            v26 = *(a3 + 8);
-            v27 = *(a3 + 9);
-            v28 = *(a3 + 10);
-            v29 = *(a3 + 11);
+            v26 = *(bytes + 8);
+            v27 = *(bytes + 9);
+            v28 = *(bytes + 10);
+            v29 = *(bytes + 11);
             v20 = os_log_create("com.apple.amp.HomeSharing", "Library");
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
@@ -776,7 +776,7 @@ LABEL_16:
       {
         if (v12 == 1835819884)
         {
-          v19 = [a1 _parseListingCollectionWithBytes:a3 + 8 length:a4 - 8 usingHandler:v34];
+          v19 = [self _parseListingCollectionWithBytes:bytes + 8 length:length - 8 usingHandler:handlerCopy];
 LABEL_21:
           v20 = v8;
           v8 = v19;
@@ -789,7 +789,7 @@ LABEL_21:
       v20 = os_log_create("com.apple.amp.HomeSharing", "Library");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = bswap32(*(a3 + 2));
+        v30 = bswap32(*(bytes + 2));
         *buf = v33;
         v37 = v30;
         v22 = v20;
@@ -805,8 +805,8 @@ LABEL_38:
 
 LABEL_39:
       v31 = bswap32(v13);
-      a3 += v31 + 8;
-      a4 = v14 - v31;
+      bytes += v31 + 8;
+      length = v14 - v31;
       if (v14 == v31)
       {
         goto LABEL_40;
@@ -816,7 +816,7 @@ LABEL_39:
     if (v12 == 1633837420 || v12 == 1633837426 || v12 == 1633837936)
     {
 LABEL_20:
-      v19 = [a1 _parseBrowseListingWithBytes:a3 + 8 length:{a4 - 8, v33}];
+      v19 = [self _parseBrowseListingWithBytes:bytes + 8 length:{length - 8, v33}];
       goto LABEL_21;
     }
 
@@ -847,17 +847,17 @@ LABEL_40:
   return v8;
 }
 
-+ (id)_parseUpdateTypeWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseUpdateTypeWithBytes:(const char *)bytes length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
-    v4 = a4;
+    lengthCopy = length;
     v6 = 0;
     while (1)
     {
-      v7 = bswap32(*a3);
-      v8 = bswap32(*(a3 + 1));
-      v9 = (a3 + 8);
+      v7 = bswap32(*bytes);
+      v8 = bswap32(*(bytes + 1));
+      v9 = (bytes + 8);
       if (v7 == 1836414073)
       {
         v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v9];
@@ -867,13 +867,13 @@ LABEL_40:
 
       else if (v7 == 1633968755 || v7 == 1634759535)
       {
-        v12 = [a1 _parseUpdateTypeWithBytes:a3 + 8 length:v8];
+        v12 = [self _parseUpdateTypeWithBytes:bytes + 8 length:v8];
         goto LABEL_15;
       }
 
-      a3 = &v9[v8];
-      v4 = v4 - 8 - v8;
-      if (!v4)
+      bytes = &v9[v8];
+      lengthCopy = lengthCopy - 8 - v8;
+      if (!lengthCopy)
       {
         goto LABEL_14;
       }
@@ -890,19 +890,19 @@ LABEL_15:
   return v13;
 }
 
-+ (id)_parseEditCommandResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseEditCommandResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (length)
   {
     while (1)
     {
-      v7 = *a3;
-      v8 = (v7 << 24) | (*(a3 + 1) << 16);
-      v9 = *(a3 + 3);
-      v10 = v9 | (*(a3 + 2) << 8) | v8;
-      v11 = *(a3 + 1);
+      v7 = *bytes;
+      v8 = (v7 << 24) | (*(bytes + 1) << 16);
+      v9 = *(bytes + 3);
+      v10 = v9 | (*(bytes + 2) << 8) | v8;
+      v11 = *(bytes + 1);
       if (v10 == 1835624804)
       {
         break;
@@ -912,8 +912,8 @@ LABEL_15:
       {
         if (v10 == 1836413810)
         {
-          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-          v13 = v6;
+          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+          v13 = dictionary;
           v14 = v12;
           v15 = @"dmap.serverrevision";
           goto LABEL_7;
@@ -937,16 +937,16 @@ LABEL_8:
       }
 
       v16 = bswap32(v11);
-      a3 += v16 + 8;
-      a4 = a4 - 8 - v16;
-      if (!a4)
+      bytes += v16 + 8;
+      length = length - 8 - v16;
+      if (!length)
       {
         goto LABEL_13;
       }
     }
 
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-    v13 = v6;
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+    v13 = dictionary;
     v14 = v12;
     v15 = @"dmap.itemid";
 LABEL_7:
@@ -956,25 +956,25 @@ LABEL_7:
 
 LABEL_13:
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)_parseDictionaryCollectionWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseDictionaryCollectionWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v26 = *MEMORY[0x277D85DE8];
-  v17 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4 >= 9)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (length >= 9)
   {
     v6 = 0;
     v7 = 0;
     while (1)
     {
-      v8 = *a3;
-      v9 = (v8 << 24) | (*(a3 + 1) << 16);
-      v10 = *(a3 + 3);
-      v11 = v10 | (*(a3 + 2) << 8) | v9;
-      v12 = bswap32(*(a3 + 1));
-      v13 = a3 + 8;
+      v8 = *bytes;
+      v9 = (v8 << 24) | (*(bytes + 1) << 16);
+      v10 = *(bytes + 3);
+      v11 = v10 | (*(bytes + 2) << 8) | v9;
+      v12 = bswap32(*(bytes + 1));
+      v13 = bytes + 8;
       if (v11 > 1835297656)
       {
         if (v11 != 1835300460)
@@ -1025,15 +1025,15 @@ LABEL_11:
 
       if (v6 && v7)
       {
-        [v17 setObject:v7 forKey:v6];
+        [dictionary setObject:v7 forKey:v6];
 
         v7 = 0;
         v6 = 0;
       }
 
-      a3 = &v13[v12];
-      a4 = a4 - 8 - v12;
-      if (a4 <= 8)
+      bytes = &v13[v12];
+      length = length - 8 - v12;
+      if (length <= 8)
       {
         goto LABEL_19;
       }
@@ -1043,27 +1043,27 @@ LABEL_11:
   v7 = 0;
   v6 = 0;
 LABEL_19:
-  v15 = v17;
+  v15 = dictionary;
 
-  return v17;
+  return dictionary;
 }
 
-+ (id)_parseDeletedIDListingWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseDeletedIDListingWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
-  if (a4 >= 9)
+  array = [MEMORY[0x277CBEB18] array];
+  if (length >= 9)
   {
     do
     {
-      v7 = *a3;
-      v8 = (v7 << 24) | (*(a3 + 1) << 16);
-      v9 = *(a3 + 3);
-      v10 = v9 | (*(a3 + 2) << 8) | v8;
-      v11 = *(a3 + 1);
+      v7 = *bytes;
+      v8 = (v7 << 24) | (*(bytes + 1) << 16);
+      v9 = *(bytes + 3);
+      v10 = v9 | (*(bytes + 2) << 8) | v8;
+      v11 = *(bytes + 1);
       if (v10 == 1835625572)
       {
-        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:((*(a3 + 8) << 56) | (*(a3 + 9) << 48) | (*(a3 + 10) << 40) | (*(a3 + 11) << 32) | (*(a3 + 12) << 24) | (*(a3 + 13) << 16) | (*(a3 + 14) << 8)) + *(a3 + 15)];
+        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:((*(bytes + 8) << 56) | (*(bytes + 9) << 48) | (*(bytes + 10) << 40) | (*(bytes + 11) << 32) | (*(bytes + 12) << 24) | (*(bytes + 13) << 16) | (*(bytes + 14) << 8)) + *(bytes + 15)];
       }
 
       else
@@ -1087,38 +1087,38 @@ LABEL_19:
           goto LABEL_7;
         }
 
-        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
+        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
       }
 
       v13 = v12;
-      [v6 addObject:v12];
+      [array addObject:v12];
 LABEL_7:
       v14 = bswap32(v11);
 
-      a3 += v14 + 8;
-      a4 = a4 - 8 - v14;
+      bytes += v14 + 8;
+      length = length - 8 - v14;
     }
 
-    while (a4 > 8);
+    while (length > 8);
   }
 
-  return v6;
+  return array;
 }
 
-+ (id)_parseControlPromptResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseControlPromptResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (length)
   {
     while (1)
     {
-      v7 = *a3;
-      v8 = (v7 << 24) | (*(a3 + 1) << 16);
-      v9 = *(a3 + 3);
-      v10 = v9 | (*(a3 + 2) << 8) | v8;
-      v11 = bswap32(*(a3 + 1));
-      v12 = a3 + 8;
+      v7 = *bytes;
+      v8 = (v7 << 24) | (*(bytes + 1) << 16);
+      v9 = *(bytes + 3);
+      v10 = v9 | (*(bytes + 2) << 8) | v8;
+      v11 = bswap32(*(bytes + 1));
+      v12 = bytes + 8;
       if (v10 == 1835295596)
       {
         break;
@@ -1128,8 +1128,8 @@ LABEL_7:
       {
         if (v10 == 1835624804)
         {
-          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(a3 + 2))];
-          [v6 setObject:v13 forKey:@"dmap.itemid"];
+          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 2))];
+          [dictionary setObject:v13 forKey:@"dmap.itemid"];
         }
 
         else
@@ -1152,18 +1152,18 @@ LABEL_7:
 LABEL_10:
       }
 
-      a3 = &v12[v11];
-      a4 = a4 - 8 - v11;
-      if (!a4)
+      bytes = &v12[v11];
+      length = length - 8 - v11;
+      if (!length)
       {
         goto LABEL_12;
       }
     }
 
-    v13 = [a1 _parseDictionaryCollectionWithBytes:a3 + 8 length:v11];
+    v13 = [self _parseDictionaryCollectionWithBytes:bytes + 8 length:v11];
     if (v13)
     {
-      [v6 addEntriesFromDictionary:v13];
+      [dictionary addEntriesFromDictionary:v13];
     }
 
     goto LABEL_10;
@@ -1171,24 +1171,24 @@ LABEL_10:
 
 LABEL_12:
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)_parseControlInterfacesResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseControlInterfacesResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = 0;
-  if (a4)
+  if (length)
   {
     while (1)
     {
-      v5 = *a3;
-      v6 = (v5 << 24) | (*(a3 + 1) << 16);
-      v7 = *(a3 + 3);
-      v8 = v7 | (*(a3 + 2) << 8) | v6;
-      v9 = *(a3 + 1);
-      v10 = a3 + 8;
-      v11 = a4 - 8;
+      v5 = *bytes;
+      v6 = (v5 << 24) | (*(bytes + 1) << 16);
+      v7 = *(bytes + 3);
+      v8 = v7 | (*(bytes + 2) << 8) | v6;
+      v9 = *(bytes + 1);
+      v10 = bytes + 8;
+      v11 = length - 8;
       if (v8 > 1836282995)
       {
         break;
@@ -1196,7 +1196,7 @@ LABEL_12:
 
       if (v8 == 1835819884)
       {
-        [a1 _parseListingCollectionWithBytes:a3 + 8 length:a4 - 8 usingHandler:0];
+        [self _parseListingCollectionWithBytes:bytes + 8 length:length - 8 usingHandler:0];
         v4 = v13 = v4;
         goto LABEL_13;
       }
@@ -1208,8 +1208,8 @@ LABEL_12:
 
 LABEL_14:
       v14 = bswap32(v9);
-      a3 = &v10[v14];
-      a4 = v11 - v14;
+      bytes = &v10[v14];
+      length = v11 - v14;
       if (v11 == v14)
       {
         goto LABEL_15;
@@ -1246,22 +1246,22 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_parseCloudLyricsInfoResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseCloudLyricsInfoResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v24 = *MEMORY[0x277D85DE8];
   for (i = [MEMORY[0x277CBEB38] dictionary];
   {
-    v7 = *a3;
-    v8 = (v7 << 24) | (*(a3 + 1) << 16);
-    v9 = *(a3 + 3);
-    v10 = v9 | (*(a3 + 2) << 8) | v8;
-    v11 = bswap32(*(a3 + 1));
-    v12 = a3 + 8;
+    v7 = *bytes;
+    v8 = (v7 << 24) | (*(bytes + 1) << 16);
+    v9 = *(bytes + 3);
+    v10 = v9 | (*(bytes + 2) << 8) | v8;
+    v11 = bswap32(*(bytes + 1));
+    v12 = bytes + 8;
     if (v10 != 1836282996)
     {
       if (v10 == 1835295596)
       {
-        v13 = [a1 _parseDictionaryCollectionWithBytes:v12 length:v11];
+        v13 = [self _parseDictionaryCollectionWithBytes:v12 length:v11];
         if (v13)
         {
           [i addEntriesFromDictionary:v13];
@@ -1286,28 +1286,28 @@ LABEL_15:
       }
     }
 
-    a3 = &v12[v11];
+    bytes = &v12[v11];
   }
 
   return i;
 }
 
-+ (id)_parseCloudArtworkInfoResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseCloudArtworkInfoResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v24 = *MEMORY[0x277D85DE8];
   for (i = [MEMORY[0x277CBEB38] dictionary];
   {
-    v7 = *a3;
-    v8 = (v7 << 24) | (*(a3 + 1) << 16);
-    v9 = *(a3 + 3);
-    v10 = v9 | (*(a3 + 2) << 8) | v8;
-    v11 = bswap32(*(a3 + 1));
-    v12 = a3 + 8;
+    v7 = *bytes;
+    v8 = (v7 << 24) | (*(bytes + 1) << 16);
+    v9 = *(bytes + 3);
+    v10 = v9 | (*(bytes + 2) << 8) | v8;
+    v11 = bswap32(*(bytes + 1));
+    v12 = bytes + 8;
     if (v10 != 1836282996)
     {
       if (v10 == 1835295596)
       {
-        v13 = [a1 _parseDictionaryCollectionWithBytes:v12 length:v11];
+        v13 = [self _parseDictionaryCollectionWithBytes:v12 length:v11];
         if (v13)
         {
           [i addEntriesFromDictionary:v13];
@@ -1332,32 +1332,32 @@ LABEL_15:
       }
     }
 
-    a3 = &v12[v11];
+    bytes = &v12[v11];
   }
 
   return i;
 }
 
-+ (id)_parseBulkCloudLyricsInfoResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseBulkCloudLyricsInfoResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = 0;
-  if (a4)
+  if (length)
   {
     do
     {
-      v5 = *a3;
-      v6 = (v5 << 24) | (*(a3 + 1) << 16);
-      v7 = *(a3 + 3);
-      v8 = v7 | (*(a3 + 2) << 8) | v6;
-      v9 = *(a3 + 1);
-      v10 = a3 + 8;
-      v11 = a4 - 8;
+      v5 = *bytes;
+      v6 = (v5 << 24) | (*(bytes + 1) << 16);
+      v7 = *(bytes + 3);
+      v8 = v7 | (*(bytes + 2) << 8) | v6;
+      v9 = *(bytes + 1);
+      v10 = bytes + 8;
+      v11 = length - 8;
       if (v8 != 1836282996)
       {
         if (v8 == 1835819884)
         {
-          [a1 _parseListingCollectionWithBytes:a3 + 8 length:a4 - 8 usingHandler:0];
+          [self _parseListingCollectionWithBytes:bytes + 8 length:length - 8 usingHandler:0];
           v4 = v12 = v4;
         }
 
@@ -1380,8 +1380,8 @@ LABEL_15:
       }
 
       v13 = bswap32(v9);
-      a3 = &v10[v13];
-      a4 = v11 - v13;
+      bytes = &v10[v13];
+      length = v11 - v13;
     }
 
     while (v11 != v13);
@@ -1390,26 +1390,26 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_parseBulkCloudArtworkInfoResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseBulkCloudArtworkInfoResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = 0;
-  if (a4)
+  if (length)
   {
     do
     {
-      v5 = *a3;
-      v6 = (v5 << 24) | (*(a3 + 1) << 16);
-      v7 = *(a3 + 3);
-      v8 = v7 | (*(a3 + 2) << 8) | v6;
-      v9 = *(a3 + 1);
-      v10 = a3 + 8;
-      v11 = a4 - 8;
+      v5 = *bytes;
+      v6 = (v5 << 24) | (*(bytes + 1) << 16);
+      v7 = *(bytes + 3);
+      v8 = v7 | (*(bytes + 2) << 8) | v6;
+      v9 = *(bytes + 1);
+      v10 = bytes + 8;
+      v11 = length - 8;
       if (v8 != 1836282996)
       {
         if (v8 == 1835819884)
         {
-          [a1 _parseListingCollectionWithBytes:a3 + 8 length:a4 - 8 usingHandler:0];
+          [self _parseListingCollectionWithBytes:bytes + 8 length:length - 8 usingHandler:0];
           v4 = v12 = v4;
         }
 
@@ -1432,8 +1432,8 @@ LABEL_15:
       }
 
       v13 = bswap32(v9);
-      a3 = &v10[v13];
-      a4 = v11 - v13;
+      bytes = &v10[v13];
+      length = v11 - v13;
     }
 
     while (v11 != v13);
@@ -1442,20 +1442,20 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_parseAuthorizedAccountTokenWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseAuthorizedAccountTokenWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (length)
   {
     while (1)
     {
-      v7 = *a3;
-      v8 = (v7 << 24) | (*(a3 + 1) << 16);
-      v9 = *(a3 + 3);
-      v10 = v9 | (*(a3 + 2) << 8) | v8;
-      v11 = bswap32(*(a3 + 1));
-      v12 = a3 + 8;
+      v7 = *bytes;
+      v8 = (v7 << 24) | (*(bytes + 1) << 16);
+      v9 = *(bytes + 3);
+      v10 = v9 | (*(bytes + 2) << 8) | v8;
+      v11 = bswap32(*(bytes + 1));
+      v12 = bytes + 8;
       if (v10 <= 1634030674)
       {
         break;
@@ -1463,8 +1463,8 @@ LABEL_15:
 
       if (v10 == 1634030675)
       {
-        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap32(*(a3 + 2))];
-        v14 = v6;
+        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap32(*(bytes + 2))];
+        v14 = dictionary;
         v15 = v13;
         v16 = @"com.apple.itunes.drm-token-request-status";
 LABEL_12:
@@ -1478,9 +1478,9 @@ LABEL_12:
       }
 
 LABEL_14:
-      a3 = &v12[v11];
-      a4 = a4 - 8 - v11;
-      if (!a4)
+      bytes = &v12[v11];
+      length = length - 8 - v11;
+      if (!length)
       {
         goto LABEL_15;
       }
@@ -1488,8 +1488,8 @@ LABEL_14:
 
     if (v10 == 1634026578)
     {
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:((*(a3 + 8) << 56) | (*(a3 + 9) << 48) | (*(a3 + 10) << 40) | (*(a3 + 11) << 32) | (*(a3 + 12) << 24) | (*(a3 + 13) << 16) | (*(a3 + 14) << 8)) + *(a3 + 15)];
-      v14 = v6;
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:((*(bytes + 8) << 56) | (*(bytes + 9) << 48) | (*(bytes + 10) << 40) | (*(bytes + 11) << 32) | (*(bytes + 12) << 24) | (*(bytes + 13) << 16) | (*(bytes + 14) << 8)) + *(bytes + 15)];
+      v14 = dictionary;
       v15 = v13;
       v16 = @"com.apple.itunes.drm-user-id";
       goto LABEL_12;
@@ -1497,8 +1497,8 @@ LABEL_14:
 
     if (v10 == 1634030660)
     {
-      v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:a3 + 8 length:v11 freeWhenDone:0];
-      v14 = v6;
+      v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:bytes + 8 length:v11 freeWhenDone:0];
+      v14 = dictionary;
       v15 = v13;
       v16 = @"com.apple.itunes.drm-token-data";
       goto LABEL_12;
@@ -1526,26 +1526,26 @@ LABEL_13:
 
 LABEL_15:
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)_parseUpdateResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseUpdateResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!length)
   {
     goto LABEL_14;
   }
 
-  v4 = a4;
+  lengthCopy = length;
   v6 = 0;
   do
   {
-    v7 = *a3;
-    v8 = (v7 << 24) | (*(a3 + 1) << 16);
-    v9 = *(a3 + 3);
-    v10 = v9 | (*(a3 + 2) << 8) | v8;
-    v11 = *(a3 + 1);
+    v7 = *bytes;
+    v8 = (v7 << 24) | (*(bytes + 1) << 16);
+    v9 = *(bytes + 3);
+    v10 = v9 | (*(bytes + 2) << 8) | v8;
+    v11 = *(bytes + 1);
     if (v10 == 1836282996)
     {
       goto LABEL_11;
@@ -1553,7 +1553,7 @@ LABEL_15:
 
     if (v10 == 1836413810)
     {
-      v6 = bswap32(*(a3 + 2));
+      v6 = bswap32(*(bytes + 2));
       v12 = os_log_create("com.apple.amp.HomeSharing", "Library");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -1591,11 +1591,11 @@ LABEL_9:
 
 LABEL_11:
     v17 = bswap32(v11);
-    a3 += v17 + 8;
-    v4 = v4 - 8 - v17;
+    bytes += v17 + 8;
+    lengthCopy = lengthCopy - 8 - v17;
   }
 
-  while (v4);
+  while (lengthCopy);
   if (v6)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
@@ -1609,23 +1609,23 @@ LABEL_15:
   return v18;
 }
 
-+ (id)_parseLoginResponseWithBytes:(const char *)a3 length:(unint64_t)a4
++ (id)_parseLoginResponseWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!length)
   {
     goto LABEL_14;
   }
 
-  v4 = a4;
+  lengthCopy = length;
   v6 = 0;
   do
   {
-    v7 = *a3;
-    v8 = (v7 << 24) | (*(a3 + 1) << 16);
-    v9 = *(a3 + 3);
-    v10 = v9 | (*(a3 + 2) << 8) | v8;
-    v11 = *(a3 + 1);
+    v7 = *bytes;
+    v8 = (v7 << 24) | (*(bytes + 1) << 16);
+    v9 = *(bytes + 3);
+    v10 = v9 | (*(bytes + 2) << 8) | v8;
+    v11 = *(bytes + 1);
     if (v10 == 1836282996)
     {
       goto LABEL_11;
@@ -1633,7 +1633,7 @@ LABEL_15:
 
     if (v10 == 1835821412)
     {
-      v6 = bswap32(*(a3 + 2));
+      v6 = bswap32(*(bytes + 2));
       v12 = os_log_create("com.apple.amp.HomeSharing", "Library");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -1671,11 +1671,11 @@ LABEL_9:
 
 LABEL_11:
     v17 = bswap32(v11);
-    a3 += v17 + 8;
-    v4 = v4 - 8 - v17;
+    bytes += v17 + 8;
+    lengthCopy = lengthCopy - 8 - v17;
   }
 
-  while (v4);
+  while (lengthCopy);
   if (v6)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
@@ -1689,40 +1689,40 @@ LABEL_15:
   return v18;
 }
 
-+ (id)_parseResponseCode:(unsigned int)a3 bytes:(const char *)a4 length:(unint64_t)a5 usingHandler:(id)a6
++ (id)_parseResponseCode:(unsigned int)code bytes:(const char *)bytes length:(unint64_t)length usingHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  if (a3 <= 1634757752)
+  handlerCopy = handler;
+  if (code <= 1634757752)
   {
-    if (a3 > 1634026304)
+    if (code > 1634026304)
     {
-      if (a3 <= 1634027330)
+      if (code <= 1634027330)
       {
-        if (a3 == 1634026305)
+        if (code == 1634026305)
         {
-          v11 = [a1 _parseCloudArtworkInfoResponseWithBytes:a4 length:a5];
+          v11 = [self _parseCloudArtworkInfoResponseWithBytes:bytes length:length];
           goto LABEL_34;
         }
 
-        if (a3 == 1634026348)
+        if (code == 1634026348)
         {
-          v11 = [a1 _parseCloudLyricsInfoResponseWithBytes:a4 length:a5];
+          v11 = [self _parseCloudLyricsInfoResponseWithBytes:bytes length:length];
           goto LABEL_34;
         }
       }
 
       else
       {
-        switch(a3)
+        switch(code)
         {
           case 0x61654743u:
             goto LABEL_33;
           case 0x6165544Bu:
-            v11 = [a1 _parseAuthorizedAccountTokenWithBytes:a4 length:a5];
+            v11 = [self _parseAuthorizedAccountTokenWithBytes:bytes length:length];
             goto LABEL_34;
           case 0x616A4C72u:
-            v11 = [a1 _parseBulkCloudLyricsInfoResponseWithBytes:a4 length:a5];
+            v11 = [self _parseBulkCloudLyricsInfoResponseWithBytes:bytes length:length];
             goto LABEL_34;
         }
       }
@@ -1730,13 +1730,13 @@ LABEL_15:
       goto LABEL_46;
     }
 
-    if (a3 > 1634025792)
+    if (code > 1634025792)
     {
-      if (a3 != 1634025793 && a3 != 1634025813)
+      if (code != 1634025793 && code != 1634025813)
       {
-        if (a3 == 1634026066)
+        if (code == 1634026066)
         {
-          v11 = [a1 _parseBulkCloudArtworkInfoResponseWithBytes:a4 length:a5];
+          v11 = [self _parseBulkCloudArtworkInfoResponseWithBytes:bytes length:length];
           goto LABEL_34;
         }
 
@@ -1746,14 +1746,14 @@ LABEL_15:
       goto LABEL_33;
     }
 
-    if (a3 == 1633841775)
+    if (code == 1633841775)
     {
       goto LABEL_33;
     }
 
     v12 = 1633968755;
 LABEL_32:
-    if (a3 == v12)
+    if (code == v12)
     {
       goto LABEL_33;
     }
@@ -1761,19 +1761,19 @@ LABEL_32:
     goto LABEL_46;
   }
 
-  if (a3 <= 1668117363)
+  if (code <= 1668117363)
   {
-    if (a3 > 1635148897)
+    if (code > 1635148897)
     {
-      switch(a3)
+      switch(code)
       {
         case 0x61766462u:
           goto LABEL_33;
         case 0x63616369u:
-          v11 = [a1 _parseControlInterfacesResponseWithBytes:a4 length:a5];
+          v11 = [self _parseControlInterfacesResponseWithBytes:bytes length:length];
           goto LABEL_34;
         case 0x636D6370u:
-          v11 = [a1 _parseControlPromptResponseWithBytes:a4 length:a5];
+          v11 = [self _parseControlPromptResponseWithBytes:bytes length:length];
           goto LABEL_34;
       }
 
@@ -1782,20 +1782,20 @@ LABEL_46:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v16[0] = 67109888;
-        v16[1] = HIBYTE(a3);
+        v16[1] = HIBYTE(code);
         v17 = 1024;
-        v18 = HIWORD(a3);
+        v18 = HIWORD(code);
         v19 = 1024;
-        v20 = a3 >> 8;
+        v20 = code >> 8;
         v21 = 1024;
-        v22 = a3;
+        codeCopy = code;
         _os_log_impl(&dword_254418000, v15, OS_LOG_TYPE_DEBUG, "Unhandled code in response: %c%c%c%c", v16, 0x1Au);
       }
 
       goto LABEL_49;
     }
 
-    if (a3 == 1634757753)
+    if (code == 1634757753)
     {
       goto LABEL_33;
     }
@@ -1804,19 +1804,19 @@ LABEL_46:
     goto LABEL_32;
   }
 
-  if (a3 <= 1835364977)
+  if (code <= 1835364977)
   {
-    if (a3 == 1668117364)
+    if (code == 1668117364)
     {
-      v11 = [a1 _parsePlayStatusResponseWithBytes:a4 length:a5];
+      v11 = [self _parsePlayStatusResponseWithBytes:bytes length:length];
       goto LABEL_34;
     }
 
-    if (a3 != 1835360880)
+    if (code != 1835360880)
     {
-      if (a3 == 1835361379)
+      if (code == 1835361379)
       {
-        v11 = [a1 _parseEditCommandResponseWithBytes:a4 length:a5];
+        v11 = [self _parseEditCommandResponseWithBytes:bytes length:length];
 LABEL_34:
         v13 = v11;
         goto LABEL_35;
@@ -1826,21 +1826,21 @@ LABEL_34:
     }
 
 LABEL_33:
-    v11 = [a1 _parseItemsResponseWithBytes:a4 length:a5 usingHandler:v10];
+    v11 = [self _parseItemsResponseWithBytes:bytes length:length usingHandler:handlerCopy];
     goto LABEL_34;
   }
 
-  if (a3 != 1835364978)
+  if (code != 1835364978)
   {
-    if (a3 == 1836413028)
+    if (code == 1836413028)
     {
-      v11 = [a1 _parseUpdateResponseWithBytes:a4 length:a5];
+      v11 = [self _parseUpdateResponseWithBytes:bytes length:length];
       goto LABEL_34;
     }
 
-    if (a3 == 1835822951)
+    if (code == 1835822951)
     {
-      v11 = [a1 _parseLoginResponseWithBytes:a4 length:a5];
+      v11 = [self _parseLoginResponseWithBytes:bytes length:length];
       goto LABEL_34;
     }
 
@@ -1854,18 +1854,18 @@ LABEL_35:
   return v13;
 }
 
-+ (unint64_t)_parseItemPropertyCountWithBytes:(const char *)a3 length:(unint64_t)a4
++ (unint64_t)_parseItemPropertyCountWithBytes:(const char *)bytes length:(unint64_t)length
 {
   result = 0;
-  if (a4)
+  if (length)
   {
     do
     {
-      v5 = bswap32(*(a3 + 1));
+      v5 = bswap32(*(bytes + 1));
       ++result;
-      a3 += v5 + 8;
-      v6 = a4 - v5;
-      a4 = v6 - 8;
+      bytes += v5 + 8;
+      v6 = length - v5;
+      length = v6 - 8;
     }
 
     while (v6 != 8);
@@ -1874,22 +1874,22 @@ LABEL_35:
   return result;
 }
 
-+ (void)enumerateDeletedItemsInResponseData:(id)a3 usingHandler:(id)a4
++ (void)enumerateDeletedItemsInResponseData:(id)data usingHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dataCopy = data;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [v6 length];
+    v8 = [dataCopy length];
     if (v8 >= 9)
     {
       v9 = v8;
-      v10 = [v6 bytes];
-      v11 = bswap32(*v10);
+      bytes = [dataCopy bytes];
+      v11 = bswap32(*bytes);
       if (v11 == 1634757753 || v11 == 1633968755)
       {
         v13 = v9 - 8;
-        if (v9 - 8 == bswap32(v10[1]))
+        if (v9 - 8 == bswap32(bytes[1]))
         {
           if (v13 < 9)
           {
@@ -1899,7 +1899,7 @@ LABEL_13:
 
           else
           {
-            v14 = v10 + 2;
+            v14 = bytes + 2;
             while (1)
             {
               v15 = bswap32(v14[1]);
@@ -1917,14 +1917,14 @@ LABEL_13:
               }
             }
 
-            v17 = [a1 _parseDeletedIDListingWithBytes:v16 length:v15];
+            v17 = [self _parseDeletedIDListingWithBytes:v16 length:v15];
           }
 
           v18[0] = MEMORY[0x277D85DD0];
           v18[1] = 3221225472;
           v18[2] = __73__HSResponseDataParser_enumerateDeletedItemsInResponseData_usingHandler___block_invoke;
           v18[3] = &unk_27977A418;
-          v19 = v7;
+          v19 = handlerCopy;
           [v17 enumerateObjectsUsingBlock:v18];
         }
       }
@@ -1932,29 +1932,29 @@ LABEL_13:
   }
 }
 
-+ (void)enumerateItemsInResponseData:(id)a3 usingHandler:(id)a4
++ (void)enumerateItemsInResponseData:(id)data usingHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__HSResponseDataParser_enumerateItemsInResponseData_usingHandler___block_invoke;
     v9[3] = &unk_27977A3F0;
-    v11 = a1;
-    v10 = v6;
-    v8 = [a1 enumerateRawItemsInResponseData:a3 usingHandler:v9];
+    selfCopy = self;
+    v10 = handlerCopy;
+    v8 = [self enumerateRawItemsInResponseData:data usingHandler:v9];
   }
 }
 
-+ (void)parseItemWithBytes:(const char *)a3 length:(unint64_t)a4 usingHandler:(id)a5
++ (void)parseItemWithBytes:(const char *)bytes length:(unint64_t)length usingHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (handler)
   {
-    v8 = a5;
-    v9 = [a1 _parseItemPropertyCountWithBytes:a3 length:a4];
+    handlerCopy = handler;
+    v9 = [self _parseItemPropertyCountWithBytes:bytes length:length];
     v10 = v9;
     if (v9 <= 1)
     {
@@ -1967,24 +1967,24 @@ LABEL_13:
     }
 
     v12 = &v13 - 4 * v11;
-    [a1 parseItemWithBytes:a3 length:a4 valuesOut:v12 valuesCapacity:v9];
+    [self parseItemWithBytes:bytes length:length valuesOut:v12 valuesCapacity:v9];
     HIBYTE(v13) = 0;
-    v8[2](v8, v12, v10, &v13 + 7);
+    handlerCopy[2](handlerCopy, v12, v10, &v13 + 7);
   }
 }
 
-+ (unint64_t)parseItemWithBytes:(const char *)a3 length:(unint64_t)a4 valuesOut:(id *)a5 valuesCapacity:(unint64_t)a6
++ (unint64_t)parseItemWithBytes:(const char *)bytes length:(unint64_t)length valuesOut:(id *)out valuesCapacity:(unint64_t)capacity
 {
   result = 0;
-  if (a4 && a6)
+  if (length && capacity)
   {
     result = 0;
-    p_var2 = &a5->var2;
+    p_var2 = &out->var2;
     while (1)
     {
-      v9 = *a3;
-      v10 = *(a3 + 1);
-      v8 = a3 + 8;
+      v9 = *bytes;
+      v10 = *(bytes + 1);
+      v8 = bytes + 8;
       v11 = bswap32(v9);
       v12 = bswap32(v10);
       *(p_var2 - 4) = v11;
@@ -2097,12 +2097,12 @@ LABEL_74:
 LABEL_71:
       *(p_var2 + 2) = v13;
       ++result;
-      a4 = a4 - 8 - v12;
-      if (a4)
+      length = length - 8 - v12;
+      if (length)
       {
-        a3 = &v8[v12];
+        bytes = &v8[v12];
         p_var2 += 4;
-        if (result < a6)
+        if (result < capacity)
         {
           continue;
         }
@@ -2247,22 +2247,22 @@ LABEL_70:
   return result;
 }
 
-+ (id)enumerateRawItemsInResponseData:(id)a3 usingHandler:(id)a4
++ (id)enumerateRawItemsInResponseData:(id)data usingHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  dataCopy = data;
+  handlerCopy = handler;
+  v8 = [dataCopy length];
   v9 = v8 - 8;
   if (v8 >= 8)
   {
     v10 = v8;
-    v11 = [v6 bytes];
-    v12 = bswap32(*v11);
-    v13 = bswap32(v11[1]);
+    bytes = [dataCopy bytes];
+    v12 = bswap32(*bytes);
+    v13 = bswap32(bytes[1]);
     if (v9 == v13)
     {
-      v14 = [a1 _parseResponseCode:v12 bytes:v11 + 2 length:v13 usingHandler:v7];
+      v14 = [self _parseResponseCode:v12 bytes:bytes + 2 length:v13 usingHandler:handlerCopy];
       goto LABEL_8;
     }
 
@@ -2285,23 +2285,23 @@ LABEL_8:
   return v14;
 }
 
-+ (id)parseErrorInResponseData:(id)a3
++ (id)parseErrorInResponseData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   v6 = v5 - 8;
   if (v5 >= 8)
   {
     v7 = v5;
-    v8 = [v4 bytes];
-    v9 = bswap32(*v8);
-    v10 = bswap32(v8[1]);
+    bytes = [dataCopy bytes];
+    v9 = bswap32(*bytes);
+    v10 = bswap32(bytes[1]);
     if (v6 == v10)
     {
       if (v9 == 1835364978)
       {
-        v11 = [a1 _parseErrorResponseWithBytes:v8 + 2 length:v10];
+        v11 = [self _parseErrorResponseWithBytes:bytes + 2 length:v10];
         goto LABEL_9;
       }
     }

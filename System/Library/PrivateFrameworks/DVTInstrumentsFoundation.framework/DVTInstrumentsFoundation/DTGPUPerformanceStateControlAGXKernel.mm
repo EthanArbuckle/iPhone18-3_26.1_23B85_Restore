@@ -1,6 +1,6 @@
 @interface DTGPUPerformanceStateControlAGXKernel
-- (BOOL)enable:(unint64_t)a3;
-- (DTGPUPerformanceStateControlAGXKernel)initWithDevice:(id)a3;
+- (BOOL)enable:(unint64_t)enable;
+- (DTGPUPerformanceStateControlAGXKernel)initWithDevice:(id)device;
 - (id)currentState;
 - (id)disable;
 - (unsigned)getIOAccelerator;
@@ -10,17 +10,17 @@
 
 @implementation DTGPUPerformanceStateControlAGXKernel
 
-- (DTGPUPerformanceStateControlAGXKernel)initWithDevice:(id)a3
+- (DTGPUPerformanceStateControlAGXKernel)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = DTGPUPerformanceStateControlAGXKernel;
   v5 = [(DTGPUPerformanceStateControlAGXKernel *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(DTGPUPerformanceStateControlAGXKernel *)v5 getIOAccelerator];
-    if (!IOServiceOpen(v7, *MEMORY[0x277D85F48], 1u, &v6->_connection))
+    getIOAccelerator = [(DTGPUPerformanceStateControlAGXKernel *)v5 getIOAccelerator];
+    if (!IOServiceOpen(getIOAccelerator, *MEMORY[0x277D85F48], 1u, &v6->_connection))
     {
       v12 = 258;
       connection = v6->_connection;
@@ -31,7 +31,7 @@
         goto LABEL_4;
       }
 
-      v6->_acceleratorId = [v4 registryID];
+      v6->_acceleratorId = [deviceCopy registryID];
     }
   }
 
@@ -53,7 +53,7 @@ LABEL_4:
 {
   if (self->_holdingLock)
   {
-    v3 = [(DTGPUPerformanceStateControlAGXKernel *)self disable];
+    disable = [(DTGPUPerformanceStateControlAGXKernel *)self disable];
   }
 
   connection = self->_connection;
@@ -139,12 +139,12 @@ LABEL_4:
   return v12;
 }
 
-- (BOOL)enable:(unint64_t)a3
+- (BOOL)enable:(unint64_t)enable
 {
   connection = self->_connection;
   if (connection)
   {
-    v5 = a3;
+    enableCopy = enable;
     v9 = 256;
     outputStructCnt = 8;
     if (IOConnectCallStructMethod(connection, 0x41u, &v9, 8uLL, &v9, &outputStructCnt))
@@ -160,7 +160,7 @@ LABEL_4:
     if (v6)
     {
       v9 = 1;
-      BYTE1(v9) = v5;
+      BYTE1(v9) = enableCopy;
       connection = self->_connection;
       if (connection)
       {
@@ -191,7 +191,7 @@ LABEL_4:
 
 - (id)disable
 {
-  v3 = [(DTGPUPerformanceStateControlAGXKernel *)self currentState];
+  currentState = [(DTGPUPerformanceStateControlAGXKernel *)self currentState];
   connection = self->_connection;
   if (connection)
   {
@@ -206,7 +206,7 @@ LABEL_4:
     }
   }
 
-  return v3;
+  return currentState;
 }
 
 @end

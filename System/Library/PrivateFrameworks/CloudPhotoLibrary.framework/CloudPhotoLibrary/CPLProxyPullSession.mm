@@ -1,6 +1,6 @@
 @interface CPLProxyPullSession
-- (void)acknowledgeChangeBatch:(id)a3 withCompletionHandler:(id)a4;
-- (void)getChangeBatchWithCompletionHandler:(id)a3;
+- (void)acknowledgeChangeBatch:(id)batch withCompletionHandler:(id)handler;
+- (void)getChangeBatchWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPLProxyPullSession
@@ -207,9 +207,9 @@ uint64_t __68__CPLProxyPullSession_acknowledgeChangeBatch_withCompletionHandler_
   return result;
 }
 
-- (void)getChangeBatchWithCompletionHandler:(id)a3
+- (void)getChangeBatchWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLProxyPullSessionOSLogDomain();
@@ -237,8 +237,8 @@ uint64_t __68__CPLProxyPullSession_acknowledgeChangeBatch_withCompletionHandler_
   v19[2] = __59__CPLProxyPullSession_getChangeBatchWithCompletionHandler___block_invoke;
   v19[3] = &unk_1E861AA50;
   v19[4] = self;
-  v20 = v5;
-  v18 = v5;
+  v20 = handlerCopy;
+  v18 = handlerCopy;
   [(CPLProxySession *)self dispatchBlockWhenLibraryIsOpen:v19];
 }
 
@@ -282,18 +282,18 @@ void __59__CPLProxyPullSession_getChangeBatchWithCompletionHandler___block_invok
   v11(v10);
 }
 
-- (void)acknowledgeChangeBatch:(id)a3 withCompletionHandler:(id)a4
+- (void)acknowledgeChangeBatch:(id)batch withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  handlerCopy = handler;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v8 = __CPLProxyPullSessionOSLogDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = batchCopy;
       _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEBUG, "Acknowledging %@", buf, 0xCu);
     }
 
@@ -312,11 +312,11 @@ void __59__CPLProxyPullSession_getChangeBatchWithCompletionHandler___block_invok
   v13[1] = 3221225472;
   v13[2] = __68__CPLProxyPullSession_acknowledgeChangeBatch_withCompletionHandler___block_invoke;
   v13[3] = &unk_1E861ABE0;
-  v14 = v6;
-  v15 = v7;
+  v14 = batchCopy;
+  v15 = handlerCopy;
   v13[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = batchCopy;
+  v11 = handlerCopy;
   [(CPLProxySession *)self dispatchBlockWhenLibraryIsOpen:v13];
 
   v12 = *MEMORY[0x1E69E9840];

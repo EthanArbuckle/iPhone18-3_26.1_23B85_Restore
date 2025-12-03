@@ -4,19 +4,19 @@
 + (id)mainQueue;
 - (CATOperationQueueDelegate)delegate;
 - (id)description;
-- (void)addOperation:(id)a3;
-- (void)addOperations:(id)a3 waitUntilFinished:(BOOL)a4;
-- (void)delegateOperationDidFinish:(id)a3;
-- (void)delegateWillAddOperation:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setUnderlyingQueue:(id)a3;
+- (void)addOperation:(id)operation;
+- (void)addOperations:(id)operations waitUntilFinished:(BOOL)finished;
+- (void)delegateOperationDidFinish:(id)finish;
+- (void)delegateWillAddOperation:(id)operation;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setUnderlyingQueue:(id)queue;
 @end
 
 @implementation CATOperationQueue
 
-- (void)setUnderlyingQueue:(id)a3
+- (void)setUnderlyingQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = +[CATOperationQueue backgroundQueue];
 
   if (v6 == self)
@@ -26,7 +26,7 @@
 
   v7.receiver = self;
   v7.super_class = CATOperationQueue;
-  [(CATOperationQueue *)&v7 setUnderlyingQueue:v5];
+  [(CATOperationQueue *)&v7 setUnderlyingQueue:queueCopy];
 }
 
 + (id)backgroundQueue
@@ -54,16 +54,16 @@ uint64_t __36__CATOperationQueue_backgroundQueue__block_invoke()
 
 + (id)currentQueue
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CATOperationQueue.m" lineNumber:59 description:{@"%@ cannot use +currentQueue, call +[NSOperationQueue currentQueue] instead.", a1}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATOperationQueue.m" lineNumber:59 description:{@"%@ cannot use +currentQueue, call +[NSOperationQueue currentQueue] instead.", self}];
 
   return 0;
 }
 
 + (id)mainQueue
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CATOperationQueue.m" lineNumber:66 description:{@"%@ cannot use +mainQueue, call +[NSOperationQueue mainQueue] instead.", a1}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATOperationQueue.m" lineNumber:66 description:{@"%@ cannot use +mainQueue, call +[NSOperationQueue mainQueue] instead.", self}];
 
   return 0;
 }
@@ -72,38 +72,38 @@ uint64_t __36__CATOperationQueue_backgroundQueue__block_invoke()
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CATOperationQueue *)self name];
-  v6 = [v3 stringWithFormat:@"<%@: %p { name = '%@', suspended = %d, operationCount = %lu, maxConcurrentOperationCount = %ld }>", v4, self, v5, -[CATOperationQueue isSuspended](self, "isSuspended"), -[CATOperationQueue operationCount](self, "operationCount"), -[CATOperationQueue maxConcurrentOperationCount](self, "maxConcurrentOperationCount")];
+  name = [(CATOperationQueue *)self name];
+  v6 = [v3 stringWithFormat:@"<%@: %p { name = '%@', suspended = %d, operationCount = %lu, maxConcurrentOperationCount = %ld }>", v4, self, name, -[CATOperationQueue isSuspended](self, "isSuspended"), -[CATOperationQueue operationCount](self, "operationCount"), -[CATOperationQueue maxConcurrentOperationCount](self, "maxConcurrentOperationCount")];
 
   return v6;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
-  [(CATOperationQueue *)self startObserving:v4];
+  operationCopy = operation;
+  [(CATOperationQueue *)self startObserving:operationCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 operationWillEnqueueOntoOperationQueue:self];
+    [operationCopy operationWillEnqueueOntoOperationQueue:self];
   }
 
-  [(CATOperationQueue *)self delegateWillAddOperation:v4];
+  [(CATOperationQueue *)self delegateWillAddOperation:operationCopy];
   v5.receiver = self;
   v5.super_class = CATOperationQueue;
-  [(CATOperationQueue *)&v5 addOperation:v4];
+  [(CATOperationQueue *)&v5 addOperation:operationCopy];
 }
 
-- (void)addOperations:(id)a3 waitUntilFinished:(BOOL)a4
+- (void)addOperations:(id)operations waitUntilFinished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  operationsCopy = operations;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v7 = [operationsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -115,26 +115,26 @@ uint64_t __36__CATOperationQueue_backgroundQueue__block_invoke()
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(operationsCopy);
         }
 
         [(CATOperationQueue *)self addOperation:*(*(&v21 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v8 = [operationsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v8);
   }
 
-  if (v4)
+  if (finishedCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = v6;
+    v11 = operationsCopy;
     v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v12)
     {
@@ -164,23 +164,23 @@ uint64_t __36__CATOperationQueue_backgroundQueue__block_invoke()
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  if (a6 == @"_CATOperationQueueIsFinishedObservationContext")
+  objectCopy = object;
+  if (context == @"_CATOperationQueueIsFinishedObservationContext")
   {
     v12 = *MEMORY[0x277CCA300];
-    v13 = a5;
-    v14 = [v13 objectForKeyedSubscript:v12];
-    v15 = [v14 BOOLValue];
+    changeCopy = change;
+    v14 = [changeCopy objectForKeyedSubscript:v12];
+    bOOLValue = [v14 BOOLValue];
 
-    v16 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
 
-    v17 = [v16 BOOLValue];
-    if ((v15 & 1) == 0 && v17)
+    bOOLValue2 = [v16 BOOLValue];
+    if ((bOOLValue & 1) == 0 && bOOLValue2)
     {
-      [(CATOperationQueue *)self delegateOperationDidFinish:v10];
-      [(CATOperationQueue *)self stopObserving:v10];
+      [(CATOperationQueue *)self delegateOperationDidFinish:objectCopy];
+      [(CATOperationQueue *)self stopObserving:objectCopy];
     }
   }
 
@@ -188,28 +188,28 @@ uint64_t __36__CATOperationQueue_backgroundQueue__block_invoke()
   {
     v18.receiver = self;
     v18.super_class = CATOperationQueue;
-    v11 = a5;
-    [(CATOperationQueue *)&v18 observeValueForKeyPath:a3 ofObject:v10 change:v11 context:a6];
+    changeCopy2 = change;
+    [(CATOperationQueue *)&v18 observeValueForKeyPath:path ofObject:objectCopy change:changeCopy2 context:context];
   }
 }
 
-- (void)delegateOperationDidFinish:(id)a3
+- (void)delegateOperationDidFinish:(id)finish
 {
-  v5 = a3;
-  v4 = [(CATOperationQueue *)self delegate];
+  finishCopy = finish;
+  delegate = [(CATOperationQueue *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 operationQueue:self operationDidFinish:v5];
+    [delegate operationQueue:self operationDidFinish:finishCopy];
   }
 }
 
-- (void)delegateWillAddOperation:(id)a3
+- (void)delegateWillAddOperation:(id)operation
 {
-  v5 = a3;
-  v4 = [(CATOperationQueue *)self delegate];
+  operationCopy = operation;
+  delegate = [(CATOperationQueue *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 operationQueue:self willAddOperation:v5];
+    [delegate operationQueue:self willAddOperation:operationCopy];
   }
 }
 

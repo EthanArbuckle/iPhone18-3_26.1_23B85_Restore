@@ -1,15 +1,15 @@
 @interface StoreKitMessageInfo
-- (StoreKitMessageInfo)initWithUserID:(id)a3 bundleID:(id)a4 status:(id)a5 allowDeveloperControl:(BOOL)a6 messageType:(int64_t)a7;
+- (StoreKitMessageInfo)initWithUserID:(id)d bundleID:(id)iD status:(id)status allowDeveloperControl:(BOOL)control messageType:(int64_t)type;
 @end
 
 @implementation StoreKitMessageInfo
 
-- (StoreKitMessageInfo)initWithUserID:(id)a3 bundleID:(id)a4 status:(id)a5 allowDeveloperControl:(BOOL)a6 messageType:(int64_t)a7
+- (StoreKitMessageInfo)initWithUserID:(id)d bundleID:(id)iD status:(id)status allowDeveloperControl:(BOOL)control messageType:(int64_t)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (!v13)
+  dCopy = d;
+  iDCopy = iD;
+  statusCopy = status;
+  if (!dCopy)
   {
     if (qword_1003D4BC0 != -1)
     {
@@ -25,7 +25,7 @@
     goto LABEL_14;
   }
 
-  if (!v14)
+  if (!iDCopy)
   {
     if (qword_1003D4BC0 != -1)
     {
@@ -39,7 +39,7 @@
     }
 
 LABEL_14:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -49,18 +49,18 @@ LABEL_14:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_userID, a3);
-    objc_storeStrong(&v17->_bundleID, a4);
-    objc_storeStrong(&v17->_status, a5);
-    v17->_allowDeveloperControl = a6;
-    v17->_type = a7;
+    objc_storeStrong(&v16->_userID, d);
+    objc_storeStrong(&v17->_bundleID, iD);
+    objc_storeStrong(&v17->_status, status);
+    v17->_allowDeveloperControl = control;
+    v17->_type = type;
   }
 
   self = v17;
-  v18 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

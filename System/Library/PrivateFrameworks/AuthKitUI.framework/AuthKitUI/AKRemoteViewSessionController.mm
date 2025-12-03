@@ -1,77 +1,77 @@
 @interface AKRemoteViewSessionController
-- (AKRemoteViewSessionController)initWithRootViewController:(id)a3 sceneSession:(id)a4;
-- (BOOL)respondToAction:(id)a3 error:(id *)a4;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (id)createViewSessionForAction:(id)a3 error:(id *)a4;
-- (void)_activateUIWithConfiguration:(id)a3 completion:(id)a4;
+- (AKRemoteViewSessionController)initWithRootViewController:(id)controller sceneSession:(id)session;
+- (BOOL)respondToAction:(id)action error:(id *)error;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (id)createViewSessionForAction:(id)action error:(id *)error;
+- (void)_activateUIWithConfiguration:(id)configuration completion:(id)completion;
 - (void)_dismissAndDestroy;
-- (void)_onmainqueue_requestDimmingWithConfiguration:(id)a3;
-- (void)_onmainqueue_updatePlacementWithConfiguration:(id)a3 completion:(id)a4;
-- (void)_onmainqueue_updatePlacementWithSceneID:(id)a3 completion:(id)a4;
-- (void)_registerSession:(id)a3;
-- (void)_requestDimmingWithConfiguration:(id)a3 completion:(id)a4;
-- (void)_unregisterSession:(id)a3;
-- (void)_updatePlacementWithConfiguration:(id)a3 completion:(id)a4;
-- (void)_updatePlacementWithSceneID:(id)a3 completion:(id)a4;
+- (void)_onmainqueue_requestDimmingWithConfiguration:(id)configuration;
+- (void)_onmainqueue_updatePlacementWithConfiguration:(id)configuration completion:(id)completion;
+- (void)_onmainqueue_updatePlacementWithSceneID:(id)d completion:(id)completion;
+- (void)_registerSession:(id)session;
+- (void)_requestDimmingWithConfiguration:(id)configuration completion:(id)completion;
+- (void)_unregisterSession:(id)session;
+- (void)_updatePlacementWithConfiguration:(id)configuration completion:(id)completion;
+- (void)_updatePlacementWithSceneID:(id)d completion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation AKRemoteViewSessionController
 
-- (AKRemoteViewSessionController)initWithRootViewController:(id)a3 sceneSession:(id)a4
+- (AKRemoteViewSessionController)initWithRootViewController:(id)controller sceneSession:(id)session
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, session);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = AKRemoteViewSessionController;
-  v13 = [(AKRemoteViewSessionController *)&v10 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKRemoteViewSessionController *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v13->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v13->_rootViewController, location[0]);
-    objc_storeStrong(&v13->_sceneSession, v11);
+    selfCopy->_lock._os_unfair_lock_opaque = 0;
+    objc_storeStrong(&selfCopy->_rootViewController, location[0]);
+    objc_storeStrong(&selfCopy->_sceneSession, v11);
     v5 = [MEMORY[0x277CBEB58] set];
-    sessions = v13->_sessions;
-    v13->_sessions = v5;
+    sessions = selfCopy->_sessions;
+    selfCopy->_sessions = v5;
     MEMORY[0x277D82BD8](sessions);
   }
 
-  v8 = MEMORY[0x277D82BE0](v13);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKRemoteViewSessionController *)self invalidate];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKRemoteViewSessionController;
   [(AKRemoteViewSessionController *)&v2 dealloc];
 }
 
-- (BOOL)respondToAction:(id)a3 error:(id *)a4
+- (BOOL)respondToAction:(id)action error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, action);
+  errorCopy = error;
   v24 = 0;
   v22 = 0;
-  v10 = [(AKRemoteViewSessionController *)v27 createViewSessionForAction:location[0] error:&v22];
+  v10 = [(AKRemoteViewSessionController *)selfCopy createViewSessionForAction:location[0] error:&v22];
   objc_storeStrong(&v24, v22);
   v23 = v10;
   v21 = v10 != 0;
@@ -86,7 +86,7 @@
     }
 
     objc_storeStrong(&v20, 0);
-    [(AKRemoteViewSessionController *)v27 _registerSession:v23];
+    [(AKRemoteViewSessionController *)selfCopy _registerSession:v23];
     v8 = v23;
     v12 = MEMORY[0x277D85DD0];
     v13 = -1073741824;
@@ -94,11 +94,11 @@
     v15 = __55__AKRemoteViewSessionController_respondToAction_error___block_invoke;
     v16 = &unk_2784A6DC0;
     v17 = MEMORY[0x277D82BE0](v23);
-    v18 = MEMORY[0x277D82BE0](v27);
+    v18 = MEMORY[0x277D82BE0](selfCopy);
     [v8 activateWithCompletionHandler:&v12];
-    if (v25)
+    if (errorCopy)
     {
-      *v25 = 0;
+      *errorCopy = 0;
     }
 
     objc_storeStrong(&v18, 0);
@@ -115,11 +115,11 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v25)
+    if (errorCopy)
     {
       v7 = v24;
       v4 = v24;
-      *v25 = v7;
+      *errorCopy = v7;
     }
   }
 
@@ -226,14 +226,14 @@ double __55__AKRemoteViewSessionController_respondToAction_error___block_invoke_
   return result;
 }
 
-- (id)createViewSessionForAction:(id)a3 error:(id *)a4
+- (id)createViewSessionForAction:(id)action error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v39 = a4;
+  objc_storeStrong(location, action);
+  errorCopy = error;
   v38 = _AKLogSystem();
   v37 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -243,8 +243,8 @@ double __55__AKRemoteViewSessionController_respondToAction_error___block_invoke_
   }
 
   objc_storeStrong(&v38, 0);
-  v36 = [location[0] info];
-  v35 = [v36 objectForSetting:1];
+  info = [location[0] info];
+  v35 = [info objectForSetting:1];
   if (v35 && MEMORY[0x277D86478] != MEMORY[0x223DB6D90](v35))
   {
     v34 = _AKLogSystem();
@@ -260,28 +260,28 @@ double __55__AKRemoteViewSessionController_respondToAction_error___block_invoke_
     objc_storeStrong(&v35, 0);
   }
 
-  if (v36 && v35)
+  if (info && v35)
   {
     v29 = objc_alloc_init(MEMORY[0x277CCAEA0]);
     [v29 _setEndpoint:v35];
     v28 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v29];
-    v14 = [MEMORY[0x277CCAE90] remoteViewSessionInterface];
+    remoteViewSessionInterface = [MEMORY[0x277CCAE90] remoteViewSessionInterface];
     [v28 setRemoteObjectInterface:?];
-    v13 = [MEMORY[0x277CCAE90] remoteViewServiceInterface];
+    remoteViewServiceInterface = [MEMORY[0x277CCAE90] remoteViewServiceInterface];
     [v28 setExportedInterface:?];
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](remoteViewServiceInterface);
     v12 = [_AKRemoteViewService alloc];
-    v11 = [(AKRemoteViewSessionController *)v41 rootViewController];
+    rootViewController = [(AKRemoteViewSessionController *)selfCopy rootViewController];
     v27 = [(_AKRemoteViewService *)v12 initWithConnection:v28 rootViewController:?];
-    v10 = [(AKRemoteViewSessionController *)v41 newAuthorizationViewController];
+    newAuthorizationViewController = [(AKRemoteViewSessionController *)selfCopy newAuthorizationViewController];
     [v27 setNewAuthorizationViewController:?];
-    v9 = [(AKRemoteViewSessionController *)v41 newPrivateEmailViewController];
+    newPrivateEmailViewController = [(AKRemoteViewSessionController *)selfCopy newPrivateEmailViewController];
     [v27 setNewPrivateEmailViewController:?];
-    v8 = [(AKRemoteViewSessionController *)v41 newShieldViewController];
+    newShieldViewController = [(AKRemoteViewSessionController *)selfCopy newShieldViewController];
     [v27 setNewShieldViewController:?];
-    [v28 setExportedObject:{v27, MEMORY[0x277D82BD8](v8).n128_f64[0]}];
+    [v28 setExportedObject:{v27, MEMORY[0x277D82BD8](newShieldViewController).n128_f64[0]}];
     v26 = [[_AKRemoteViewSession alloc] initWithConnection:v28];
-    objc_initWeak(&from, v41);
+    objc_initWeak(&from, selfCopy);
     v24 = v26;
     v7 = v26;
     v18 = MEMORY[0x277D85DD0];
@@ -308,16 +308,16 @@ double __55__AKRemoteViewSessionController_respondToAction_error___block_invoke_
     v31 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_3_8_64_8_64_8_64(v43, v35, v36, location[0]);
+      __os_log_helper_16_2_3_8_64_8_64_8_64(v43, v35, info, location[0]);
       _os_log_error_impl(&dword_222379000, v32, v31, "Unable to continue with endpoint (%@) from info (%@) for action: %@", v43, 0x20u);
     }
 
     objc_storeStrong(&v32, 0);
-    if (v39)
+    if (errorCopy)
     {
       v15 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7001];
       v4 = v15;
-      *v39 = v15;
+      *errorCopy = v15;
     }
 
     v42 = 0;
@@ -325,7 +325,7 @@ double __55__AKRemoteViewSessionController_respondToAction_error___block_invoke_
   }
 
   objc_storeStrong(&v35, 0);
-  objc_storeStrong(&v36, 0);
+  objc_storeStrong(&info, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
   v5 = v42;
@@ -344,17 +344,17 @@ void __66__AKRemoteViewSessionController_createViewSessionForAction_error___bloc
 
 - (void)invalidate
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
   os_unfair_lock_lock(&self->_lock);
-  v3[0] = [(NSMutableSet *)v4->_sessions copy];
-  v2 = MEMORY[0x277D82BE0](v4->_sceneSessionInvalidatable);
-  [(NSMutableSet *)v4->_sessions removeAllObjects];
-  objc_storeStrong(&v4->_sceneSessionInvalidatable, 0);
-  os_unfair_lock_unlock(&v4->_lock);
+  v3[0] = [(NSMutableSet *)selfCopy->_sessions copy];
+  v2 = MEMORY[0x277D82BE0](selfCopy->_sceneSessionInvalidatable);
+  [(NSMutableSet *)selfCopy->_sessions removeAllObjects];
+  objc_storeStrong(&selfCopy->_sceneSessionInvalidatable, 0);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   [v3[0] enumerateObjectsUsingBlock:&__block_literal_global_4];
   [v2 invalidate];
-  [(AKRemoteViewSessionController *)v4 _dismissAndDestroy];
+  [(AKRemoteViewSessionController *)selfCopy _dismissAndDestroy];
   objc_storeStrong(&v2, 0);
   objc_storeStrong(v3, 0);
 }
@@ -368,22 +368,22 @@ void __43__AKRemoteViewSessionController_invalidate__block_invoke(void *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (void)_activateUIWithConfiguration:(id)a3 completion:(id)a4
+- (void)_activateUIWithConfiguration:(id)configuration completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v6 = v17;
+  objc_storeStrong(&v15, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
   v10 = __73__AKRemoteViewSessionController__activateUIWithConfiguration_completion___block_invoke;
   v11 = &unk_2784A6818;
-  v12 = MEMORY[0x277D82BE0](v17);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D82BE0](location[0]);
   v14 = MEMORY[0x277D82BE0](v15);
   [(AKRemoteViewSessionController *)v6 _updatePlacementWithConfiguration:v5 completion:?];
@@ -394,14 +394,14 @@ void __43__AKRemoteViewSessionController_invalidate__block_invoke(void *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (void)_updatePlacementWithConfiguration:(id)a3 completion:(id)a4
+- (void)_updatePlacementWithConfiguration:(id)configuration completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -410,7 +410,7 @@ void __43__AKRemoteViewSessionController_invalidate__block_invoke(void *a1, void
   v10 = 0;
   v11 = __78__AKRemoteViewSessionController__updatePlacementWithConfiguration_completion___block_invoke;
   v12 = &unk_2784A6818;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
@@ -422,14 +422,14 @@ void __43__AKRemoteViewSessionController_invalidate__block_invoke(void *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (void)_updatePlacementWithSceneID:(id)a3 completion:(id)a4
+- (void)_updatePlacementWithSceneID:(id)d completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -438,7 +438,7 @@ void __43__AKRemoteViewSessionController_invalidate__block_invoke(void *a1, void
   v10 = 0;
   v11 = __72__AKRemoteViewSessionController__updatePlacementWithSceneID_completion___block_invoke;
   v12 = &unk_2784A6818;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
@@ -450,14 +450,14 @@ void __43__AKRemoteViewSessionController_invalidate__block_invoke(void *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (void)_requestDimmingWithConfiguration:(id)a3 completion:(id)a4
+- (void)_requestDimmingWithConfiguration:(id)configuration completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -466,7 +466,7 @@ void __43__AKRemoteViewSessionController_invalidate__block_invoke(void *a1, void
   v10 = 0;
   v11 = __77__AKRemoteViewSessionController__requestDimmingWithConfiguration_completion___block_invoke;
   v12 = &unk_2784A6818;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
@@ -490,15 +490,15 @@ uint64_t __77__AKRemoteViewSessionController__requestDimmingWithConfiguration_co
   return result;
 }
 
-- (void)_onmainqueue_updatePlacementWithConfiguration:(id)a3 completion:(id)a4
+- (void)_onmainqueue_updatePlacementWithConfiguration:(id)configuration completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v14 = _AKLogSystem();
   v13 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -508,22 +508,22 @@ uint64_t __77__AKRemoteViewSessionController__requestDimmingWithConfiguration_co
   }
 
   objc_storeStrong(&v14, 0);
-  v9 = [location[0] hostSceneID];
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  if (v9)
+  hostSceneID = [location[0] hostSceneID];
+  *&v4 = MEMORY[0x277D82BD8](hostSceneID).n128_u64[0];
+  if (hostSceneID)
   {
-    v7 = v17;
-    v8 = [location[0] hostSceneID];
+    v7 = selfCopy;
+    hostSceneID2 = [location[0] hostSceneID];
     [AKRemoteViewSessionController _onmainqueue_updatePlacementWithSceneID:v7 completion:"_onmainqueue_updatePlacementWithSceneID:completion:"];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](hostSceneID2);
     v12 = 1;
   }
 
   else
   {
-    v6 = [location[0] hostBundleID];
-    v5 = MEMORY[0x277D82BD8](v6);
-    if (v6)
+    hostBundleID = [location[0] hostBundleID];
+    v5 = MEMORY[0x277D82BD8](hostBundleID);
+    if (hostBundleID)
     {
       if (v15)
       {
@@ -543,7 +543,7 @@ uint64_t __77__AKRemoteViewSessionController__requestDimmingWithConfiguration_co
       }
 
       objc_storeStrong(&v11, 0);
-      [(AKRemoteViewSessionController *)v17 _onmainqueue_updatePlacementWithSceneID:0 completion:v15];
+      [(AKRemoteViewSessionController *)selfCopy _onmainqueue_updatePlacementWithSceneID:0 completion:v15];
       v12 = 1;
     }
   }
@@ -553,15 +553,15 @@ uint64_t __77__AKRemoteViewSessionController__requestDimmingWithConfiguration_co
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_onmainqueue_updatePlacementWithSceneID:(id)a3 completion:(id)a4
+- (void)_onmainqueue_updatePlacementWithSceneID:(id)d completion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, completion);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -580,28 +580,28 @@ uint64_t __77__AKRemoteViewSessionController__requestDimmingWithConfiguration_co
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_onmainqueue_requestDimmingWithConfiguration:(id)a3
+- (void)_onmainqueue_requestDimmingWithConfiguration:(id)configuration
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   objc_storeStrong(location, 0);
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, actions);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, scene);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, iScene);
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, context);
   v19 = _AKLogSystem();
   v18 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -617,7 +617,7 @@ uint64_t __77__AKRemoteViewSessionController__requestDimmingWithConfiguration_co
   v14 = 0;
   v15 = __95__AKRemoteViewSessionController__respondToActions_forFBSScene_inUIScene_fromTransitionContext___block_invoke;
   v16 = &unk_2784A6E30;
-  v17 = MEMORY[0x277D82BE0](v24);
+  v17 = MEMORY[0x277D82BE0](selfCopy);
   v8 = [v7 aaf_filter:&v12];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v20, 0);
@@ -641,13 +641,13 @@ BOOL __95__AKRemoteViewSessionController__respondToActions_forFBSScene_inUIScene
   return v4;
 }
 
-- (void)_registerSession:(id)a3
+- (void)_registerSession:(id)session
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -656,20 +656,20 @@ BOOL __95__AKRemoteViewSessionController__respondToActions_forFBSScene_inUIScene
   }
 
   objc_storeStrong(&oslog, 0);
-  os_unfair_lock_lock(&v5->_lock);
-  [(NSMutableSet *)v5->_sessions addObject:location[0]];
-  os_unfair_lock_unlock(&v5->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
+  [(NSMutableSet *)selfCopy->_sessions addObject:location[0]];
+  os_unfair_lock_unlock(&selfCopy->_lock);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterSession:(id)a3
+- (void)_unregisterSession:(id)session
 {
   v14 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v10 = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -679,10 +679,10 @@ BOOL __95__AKRemoteViewSessionController__respondToActions_forFBSScene_inUIScene
   }
 
   objc_storeStrong(&v10, 0);
-  os_unfair_lock_lock(&v12->_lock);
-  [(NSMutableSet *)v12->_sessions removeObject:location[0]];
-  v8 = [(NSMutableSet *)v12->_sessions count]== 0;
-  os_unfair_lock_unlock(&v12->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
+  [(NSMutableSet *)selfCopy->_sessions removeObject:location[0]];
+  v8 = [(NSMutableSet *)selfCopy->_sessions count]== 0;
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v8)
   {
     oslog = _AKLogSystem();
@@ -696,7 +696,7 @@ BOOL __95__AKRemoteViewSessionController__respondToActions_forFBSScene_inUIScene
     }
 
     objc_storeStrong(&oslog, 0);
-    [(AKRemoteViewSessionController *)v12 _dismissAndDestroy];
+    [(AKRemoteViewSessionController *)selfCopy _dismissAndDestroy];
   }
 
   objc_storeStrong(location, 0);
@@ -705,14 +705,14 @@ BOOL __95__AKRemoteViewSessionController__respondToActions_forFBSScene_inUIScene
 
 - (void)_dismissAndDestroy
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   os_unfair_lock_lock(&self->_lock);
-  v13[0] = [(AKRemoteViewSessionController *)v14 rootViewController];
-  v12 = [(AKRemoteViewSessionController *)v14 sceneSession];
-  objc_storeStrong(&v14->_rootViewController, 0);
-  objc_storeStrong(&v14->_sceneSession, 0);
-  os_unfair_lock_unlock(&v14->_lock);
+  v13[0] = [(AKRemoteViewSessionController *)selfCopy rootViewController];
+  sceneSession = [(AKRemoteViewSessionController *)selfCopy sceneSession];
+  objc_storeStrong(&selfCopy->_rootViewController, 0);
+  objc_storeStrong(&selfCopy->_sceneSession, 0);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v3 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
   queue = v3;
@@ -722,12 +722,12 @@ BOOL __95__AKRemoteViewSessionController__respondToActions_forFBSScene_inUIScene
   v8 = __51__AKRemoteViewSessionController__dismissAndDestroy__block_invoke;
   v9 = &unk_2784A6420;
   v10 = MEMORY[0x277D82BE0](v13[0]);
-  v11 = MEMORY[0x277D82BE0](v12);
+  v11 = MEMORY[0x277D82BE0](sceneSession);
   dispatch_async(queue, &v5);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&sceneSession, 0);
   objc_storeStrong(v13, 0);
 }
 

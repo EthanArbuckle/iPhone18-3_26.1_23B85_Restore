@@ -11,9 +11,9 @@
   if (!kanaWordCharacters_wordCharacterSet)
   {
     v1 = [objc_alloc(MEMORY[0x29EDC6FD8]) initWithBaseCharacterSet:3];
-    v2 = [v1 invertedSetDescription];
+    invertedSetDescription = [v1 invertedSetDescription];
     v3 = kanaWordCharacters_wordCharacterSet;
-    kanaWordCharacters_wordCharacterSet = v2;
+    kanaWordCharacters_wordCharacterSet = invertedSetDescription;
 
     v0 = kanaWordCharacters_wordCharacterSet;
   }
@@ -28,9 +28,9 @@
   {
     v1 = [objc_alloc(MEMORY[0x29EDC70E0]) initWithBaseCharacterSet:3];
     [v1 removeCharactersInString:@" 　"];
-    v2 = [v1 invertedSetDescription];
+    invertedSetDescription = [v1 invertedSetDescription];
     v3 = romajiWordCharacters_wordCharacterSet;
-    romajiWordCharacters_wordCharacterSet = v2;
+    romajiWordCharacters_wordCharacterSet = invertedSetDescription;
 
     v0 = romajiWordCharacters_wordCharacterSet;
   }

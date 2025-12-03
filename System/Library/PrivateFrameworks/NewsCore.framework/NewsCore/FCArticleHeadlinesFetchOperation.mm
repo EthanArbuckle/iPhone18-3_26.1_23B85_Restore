@@ -1,9 +1,9 @@
 @interface FCArticleHeadlinesFetchOperation
 - (FCArticleHeadlinesFetchOperation)init;
-- (FCArticleHeadlinesFetchOperation)initWithContext:(id)a3 articleIDs:(id)a4 ignoreCacheForArticleIDs:(id)a5;
-- (id)determineAppropriateFetchStepsWithCompletion:(id)a3;
-- (id)fetchConfigWithCompletion:(id)a3;
-- (id)fetchRecordsWithCompletion:(id)a3;
+- (FCArticleHeadlinesFetchOperation)initWithContext:(id)context articleIDs:(id)ds ignoreCacheForArticleIDs:(id)iDs;
+- (id)determineAppropriateFetchStepsWithCompletion:(id)completion;
+- (id)fetchConfigWithCompletion:(id)completion;
+- (id)fetchRecordsWithCompletion:(id)completion;
 @end
 
 @implementation FCArticleHeadlinesFetchOperation
@@ -34,55 +34,55 @@
   objc_exception_throw(v6);
 }
 
-- (FCArticleHeadlinesFetchOperation)initWithContext:(id)a3 articleIDs:(id)a4 ignoreCacheForArticleIDs:(id)a5
+- (FCArticleHeadlinesFetchOperation)initWithContext:(id)context articleIDs:(id)ds ignoreCacheForArticleIDs:(id)iDs
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v15.receiver = self;
   v15.super_class = FCArticleHeadlinesFetchOperation;
   v12 = [(FCMultiStepFetchOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_articleIDs, a4);
-    objc_storeStrong(&v13->_ignoreCacheForArticleIDs, a5);
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_articleIDs, ds);
+    objc_storeStrong(&v13->_ignoreCacheForArticleIDs, iDs);
     [(FCMultiStepFetchOperation *)v13 addFetchStep:sel_determineAppropriateFetchStepsWithCompletion_];
   }
 
   return v13;
 }
 
-- (id)determineAppropriateFetchStepsWithCompletion:(id)a3
+- (id)determineAppropriateFetchStepsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FCArticleHeadlinesFetchOperation *)self configuration];
+  completionCopy = completion;
+  configuration = [(FCArticleHeadlinesFetchOperation *)self configuration];
 
-  if (!v5)
+  if (!configuration)
   {
     [(FCMultiStepFetchOperation *)self addNonCriticalFetchStep:sel_fetchConfigWithCompletion_];
   }
 
   [(FCMultiStepFetchOperation *)self addFetchStep:sel_fetchRecordsWithCompletion_];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 
   return 0;
 }
 
-- (id)fetchConfigWithCompletion:(id)a3
+- (id)fetchConfigWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FCArticleHeadlinesFetchOperation *)self context];
-  v6 = [v5 configurationManager];
+  completionCopy = completion;
+  context = [(FCArticleHeadlinesFetchOperation *)self context];
+  configurationManager = [context configurationManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__FCArticleHeadlinesFetchOperation_fetchConfigWithCompletion___block_invoke;
   v9[3] = &unk_1E7C3B248;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  FCCoreConfigurationFetch(v6, v9);
+  v10 = completionCopy;
+  v7 = completionCopy;
+  FCCoreConfigurationFetch(configurationManager, v9);
 
   return 0;
 }
@@ -110,16 +110,16 @@ void __62__FCArticleHeadlinesFetchOperation_fetchConfigWithCompletion___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)fetchRecordsWithCompletion:(id)a3
+- (id)fetchRecordsWithCompletion:(id)completion
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCArticleHeadlinesFetchOperation *)self articleIDs];
+  completionCopy = completion;
+  articleIDs = [(FCArticleHeadlinesFetchOperation *)self articleIDs];
   v6 = objc_alloc_init(FCRecordChainFetchOperation);
-  v7 = [(FCArticleHeadlinesFetchOperation *)self context];
-  [(FCRecordChainFetchOperation *)v6 setContext:v7];
+  context = [(FCArticleHeadlinesFetchOperation *)self context];
+  [(FCRecordChainFetchOperation *)v6 setContext:context];
 
-  [(FCRecordChainFetchOperation *)v6 setTopLevelRecordIDs:v5];
+  [(FCRecordChainFetchOperation *)v6 setTopLevelRecordIDs:articleIDs];
   v25[0] = @"Article";
   v24[0] = @"sourceChannelTagID";
   v24[1] = @"parentIssueID";
@@ -135,15 +135,15 @@ void __62__FCArticleHeadlinesFetchOperation_fetchConfigWithCompletion___block_in
   v10 = objc_opt_new();
   if ([(FCArticleHeadlinesFetchOperation *)self overrideArticleCachePolicy])
   {
-    v11 = [(FCArticleHeadlinesFetchOperation *)self articleCachePolicy];
+    articleCachePolicy = [(FCArticleHeadlinesFetchOperation *)self articleCachePolicy];
   }
 
   else
   {
-    v11 = [(FCFetchOperation *)self cachePolicy];
+    articleCachePolicy = [(FCFetchOperation *)self cachePolicy];
   }
 
-  [v10 setCachePolicy:v11];
+  [v10 setCachePolicy:articleCachePolicy];
   if ([(FCArticleHeadlinesFetchOperation *)self overrideArticleCachePolicy])
   {
     [(FCArticleHeadlinesFetchOperation *)self articleMaximumCachedAge];
@@ -158,15 +158,15 @@ void __62__FCArticleHeadlinesFetchOperation_fetchConfigWithCompletion___block_in
   v12 = objc_opt_new();
   if ([(FCArticleHeadlinesFetchOperation *)self overrideTagCachePolicy])
   {
-    v13 = [(FCArticleHeadlinesFetchOperation *)self tagCachePolicy];
+    tagCachePolicy = [(FCArticleHeadlinesFetchOperation *)self tagCachePolicy];
   }
 
   else
   {
-    v13 = [(FCFetchOperation *)self cachePolicy];
+    tagCachePolicy = [(FCFetchOperation *)self cachePolicy];
   }
 
-  [v12 setCachePolicy:v13];
+  [v12 setCachePolicy:tagCachePolicy];
   if ([(FCArticleHeadlinesFetchOperation *)self overrideTagCachePolicy])
   {
     [(FCArticleHeadlinesFetchOperation *)self tagMaximumCachedAge];
@@ -190,10 +190,10 @@ void __62__FCArticleHeadlinesFetchOperation_fetchConfigWithCompletion___block_in
   v19[2] = __63__FCArticleHeadlinesFetchOperation_fetchRecordsWithCompletion___block_invoke;
   v19[3] = &unk_1E7C378E8;
   v19[4] = self;
-  v20 = v5;
-  v21 = v4;
-  v15 = v4;
-  v16 = v5;
+  v20 = articleIDs;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = articleIDs;
   [(FCRecordChainFetchOperation *)v6 setRecordChainCompletionHandler:v19];
 
   v17 = *MEMORY[0x1E69E9840];

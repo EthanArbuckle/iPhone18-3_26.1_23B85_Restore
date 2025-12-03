@@ -1,20 +1,20 @@
 @interface FPRTCReportingSession
-- (BOOL)flushMessagesSynchronouslyWithError:(id *)a3;
-- (FPRTCReportingSession)initWithWithCommonProperties:(id)a3 manager:(id)a4;
+- (BOOL)flushMessagesSynchronouslyWithError:(id *)error;
+- (FPRTCReportingSession)initWithWithCommonProperties:(id)properties manager:(id)manager;
 - (id)description;
-- (id)truncateProviderVersion:(id)a3;
-- (void)executeModifyDecoratedPayloadHook:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 error:(id)a6 decoratedPayload:(id)a7;
-- (void)postReportWithCategory:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 error:(id)a6;
-- (void)setModifyDecoratedPayloadHook:(id)a3 forCategory:(unint64_t)a4;
+- (id)truncateProviderVersion:(id)version;
+- (void)executeModifyDecoratedPayloadHook:(unint64_t)hook type:(unint64_t)type payload:(id)payload error:(id)error decoratedPayload:(id)decoratedPayload;
+- (void)postReportWithCategory:(unint64_t)category type:(unint64_t)type payload:(id)payload error:(id)error;
+- (void)setModifyDecoratedPayloadHook:(id)hook forCategory:(unint64_t)category;
 @end
 
 @implementation FPRTCReportingSession
 
-- (id)truncateProviderVersion:(id)a3
+- (id)truncateProviderVersion:(id)version
 {
-  if (a3)
+  if (version)
   {
-    v3 = objc_msgSend(a3, "componentsSeparatedByString:", @" (");
+    v3 = objc_msgSend(version, "componentsSeparatedByString:", @" (");
     v4 = [v3 objectAtIndexedSubscript:0];
   }
 
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (FPRTCReportingSession)initWithWithCommonProperties:(id)a3 manager:(id)a4
+- (FPRTCReportingSession)initWithWithCommonProperties:(id)properties manager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"provider"];
+  propertiesCopy = properties;
+  managerCopy = manager;
+  v8 = [propertiesCopy objectForKey:@"provider"];
 
   if (v8)
   {
@@ -39,7 +39,7 @@
     v9 = [(FPRTCReportingSession *)&v19 init];
     if (v9)
     {
-      v10 = [v6 mutableCopy];
+      v10 = [propertiesCopy mutableCopy];
       commonProperties = v9->_commonProperties;
       v9->_commonProperties = v10;
 
@@ -51,7 +51,7 @@
         [(NSMutableDictionary *)v13 setObject:v14 forKey:@"providerVersion"];
       }
 
-      objc_storeStrong(&v9->_backingManager, a4);
+      objc_storeStrong(&v9->_backingManager, manager);
       categoryHooks = v9->_categoryHooks;
       v9->_categoryHooks = 0;
 
@@ -63,60 +63,60 @@
     }
 
     self = v9;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)postReportWithCategory:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 error:(id)a6
+- (void)postReportWithCategory:(unint64_t)category type:(unint64_t)type payload:(id)payload error:(id)error
 {
-  v22 = a5;
-  v10 = a6;
+  payloadCopy = payload;
+  errorCopy = error;
   v11 = [(NSMutableDictionary *)self->_commonProperties mutableCopy];
-  [v11 addEntriesFromDictionary:v22];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  [v11 addEntriesFromDictionary:payloadCopy];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
   [v11 setObject:v12 forKey:*MEMORY[0x277D43FF0]];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [v11 setObject:v13 forKey:*MEMORY[0x277D44008]];
 
-  if (v10)
+  if (errorCopy)
   {
-    v14 = [v10 domain];
-    [v11 setObject:v14 forKeyedSubscript:@"errorDomain"];
+    domain = [errorCopy domain];
+    [v11 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "code")}];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v11 setObject:v15 forKeyedSubscript:@"errorCode"];
 
-    v16 = [v10 underlyingErrors];
-    v17 = [v16 firstObject];
-    v18 = v17;
-    if (v17)
+    underlyingErrors = [errorCopy underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
+    v18 = firstObject;
+    if (firstObject)
     {
-      v19 = [v17 domain];
-      [v11 setObject:v19 forKeyedSubscript:@"underlyingErrorDomain"];
+      domain2 = [firstObject domain];
+      [v11 setObject:domain2 forKeyedSubscript:@"underlyingErrorDomain"];
 
       v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v18, "code")}];
       [v11 setObject:v20 forKeyedSubscript:@"underlyingErrorCode"];
     }
 
-    if ([v16 count] >= 2)
+    if ([underlyingErrors count] >= 2)
     {
-      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "count") - 1}];
+      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(underlyingErrors, "count") - 1}];
       [v11 setObject:v21 forKeyedSubscript:@"moreUnderlyingErrors"];
     }
   }
 
-  [(FPRTCReportingSessionManager *)self->_backingManager postReportWithCategory:a3 type:a4 payload:v22 error:v10 decoratedPayload:v11 session:self observer:self->_observer];
+  [(FPRTCReportingSessionManager *)self->_backingManager postReportWithCategory:category type:type payload:payloadCopy error:errorCopy decoratedPayload:v11 session:self observer:self->_observer];
 }
 
-- (BOOL)flushMessagesSynchronouslyWithError:(id *)a3
+- (BOOL)flushMessagesSynchronouslyWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -142,9 +142,9 @@
     v20[5] = v9;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v20[5];
+    *error = v20[5];
   }
 
   v11 = v20[5] == 0;
@@ -171,45 +171,45 @@ void __61__FPRTCReportingSession_flushMessagesSynchronouslyWithError___block_inv
   return v7;
 }
 
-- (void)setModifyDecoratedPayloadHook:(id)a3 forCategory:(unint64_t)a4
+- (void)setModifyDecoratedPayloadHook:(id)hook forCategory:(unint64_t)category
 {
   if (self->_categoryHooks)
   {
-    v6 = a3;
+    hookCopy = hook;
     v14 = MEMORY[0x24C22AE30]();
 
     categoryHooks = self->_categoryHooks;
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
     [(NSMutableDictionary *)categoryHooks setObject:v14 forKeyedSubscript:v8];
   }
 
   else
   {
     v9 = MEMORY[0x277CBEB38];
-    v10 = a3;
+    hookCopy2 = hook;
     v11 = [v9 alloc];
-    v14 = MEMORY[0x24C22AE30](v10);
+    v14 = MEMORY[0x24C22AE30](hookCopy2);
 
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
     v12 = [v11 initWithObjectsAndKeys:{v14, v8, 0}];
     v13 = self->_categoryHooks;
     self->_categoryHooks = v12;
   }
 }
 
-- (void)executeModifyDecoratedPayloadHook:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 error:(id)a6 decoratedPayload:(id)a7
+- (void)executeModifyDecoratedPayloadHook:(unint64_t)hook type:(unint64_t)type payload:(id)payload error:(id)error decoratedPayload:(id)decoratedPayload
 {
-  v15 = a6;
-  v11 = a7;
+  errorCopy = error;
+  decoratedPayloadCopy = decoratedPayload;
   categoryHooks = self->_categoryHooks;
   if (categoryHooks)
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:hook];
     v14 = [(NSMutableDictionary *)categoryHooks objectForKey:v13];
 
     if (v14)
     {
-      (v14)[2](v14, a4, v15, v11);
+      (v14)[2](v14, type, errorCopy, decoratedPayloadCopy);
     }
   }
 }

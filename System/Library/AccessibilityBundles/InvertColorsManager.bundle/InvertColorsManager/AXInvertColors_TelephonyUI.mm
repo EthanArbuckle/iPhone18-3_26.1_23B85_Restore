@@ -1,16 +1,16 @@
 @interface AXInvertColors_TelephonyUI
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_TelephonyUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TPNumberPadButton" hasInstanceMethod:@"circleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPNumberPadButton" hasInstanceMethod:@"setColor:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TPNumberPadButton" hasInstanceMethod:@"initForCharacter:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"TPNumberPadLightStyleButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TPNumberPadButton" hasInstanceMethod:@"circleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPNumberPadButton" hasInstanceMethod:@"setColor:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TPNumberPadButton" hasInstanceMethod:@"initForCharacter:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"TPNumberPadLightStyleButton"];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface NPKRemotePassActionEnterValueRequest
 - (NPKBalanceField)balanceField;
 - (NPKProtoRemotePassActionEnterValueRequest)protoRequest;
-- (NPKRemotePassActionEnterValueRequest)initWithIdentifier:(id)a3 cardType:(unint64_t)a4 passOrganizationName:(id)a5 balanceField:(id)a6 image:(id)a7 passLocalizedDesciption:(id)a8 caption:(id)a9 summaryText:(id)a10;
-- (NPKRemotePassActionEnterValueRequest)initWithPass:(id)a3 image:(id)a4 balanceField:(id)a5;
+- (NPKRemotePassActionEnterValueRequest)initWithIdentifier:(id)identifier cardType:(unint64_t)type passOrganizationName:(id)name balanceField:(id)field image:(id)image passLocalizedDesciption:(id)desciption caption:(id)caption summaryText:(id)self0;
+- (NPKRemotePassActionEnterValueRequest)initWithPass:(id)pass image:(id)image balanceField:(id)field;
 - (id)action;
 - (id)description;
 - (id)identifier;
@@ -10,89 +10,89 @@
 
 @implementation NPKRemotePassActionEnterValueRequest
 
-- (NPKRemotePassActionEnterValueRequest)initWithPass:(id)a3 image:(id)a4 balanceField:(id)a5
+- (NPKRemotePassActionEnterValueRequest)initWithPass:(id)pass image:(id)image balanceField:(id)field
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  v30 = a4;
-  v9 = a3;
-  v10 = [v9 uniqueID];
-  v11 = [v8 action];
-  [v11 type];
+  fieldCopy = field;
+  imageCopy = image;
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
+  action = [fieldCopy action];
+  [action type];
   v12 = PKPaymentPassActionTypeToString();
-  v13 = [v8 action];
-  v14 = [v13 identifier];
-  v29 = [v7 stringWithFormat:@"%@:%@:%@", v10, v12, v14];
+  action2 = [fieldCopy action];
+  identifier = [action2 identifier];
+  v29 = [v7 stringWithFormat:@"%@:%@:%@", uniqueID, v12, identifier];
 
   v15 = MEMORY[0x277CCACA8];
   v16 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoPassKitUI"];
   v17 = [v16 localizedStringForKey:@"REQUEST_REMOTE_PAYMENT_PASS_ACTION_RELOAD_CAPTION" value:&stru_286CE7B58 table:@"NanoPassKitUI-RemotePaymentPassAction"];
-  v18 = [v9 localizedDescription];
-  v19 = [v15 stringWithFormat:v17, v18];
+  localizedDescription = [passCopy localizedDescription];
+  v19 = [v15 stringWithFormat:v17, localizedDescription];
 
-  v20 = [v9 localizedDescription];
+  localizedDescription2 = [passCopy localizedDescription];
   v21 = MEMORY[0x277CCACA8];
   v22 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoPassKitUI"];
   v23 = [v22 localizedStringForKey:@"REQUEST_REMOTE_PAYMENT_PASS_ACTION_RELOAD_SUMMARY_TEXT" value:&stru_286CE7B58 table:@"NanoPassKitUI-RemotePaymentPassAction"];
-  v24 = [v21 localizedStringWithFormat:v23, v20];
+  v24 = [v21 localizedStringWithFormat:v23, localizedDescription2];
 
-  v25 = NPKRemotePassActionCardTypeForPass(v9);
-  v26 = [v9 organizationName];
+  v25 = NPKRemotePassActionCardTypeForPass(passCopy);
+  organizationName = [passCopy organizationName];
 
-  v27 = [(NPKRemotePassActionEnterValueRequest *)self initWithIdentifier:v29 cardType:v25 passOrganizationName:v26 balanceField:v8 image:v30 passLocalizedDesciption:v20 caption:v19 summaryText:v24];
+  v27 = [(NPKRemotePassActionEnterValueRequest *)self initWithIdentifier:v29 cardType:v25 passOrganizationName:organizationName balanceField:fieldCopy image:imageCopy passLocalizedDesciption:localizedDescription2 caption:v19 summaryText:v24];
   return v27;
 }
 
-- (NPKRemotePassActionEnterValueRequest)initWithIdentifier:(id)a3 cardType:(unint64_t)a4 passOrganizationName:(id)a5 balanceField:(id)a6 image:(id)a7 passLocalizedDesciption:(id)a8 caption:(id)a9 summaryText:(id)a10
+- (NPKRemotePassActionEnterValueRequest)initWithIdentifier:(id)identifier cardType:(unint64_t)type passOrganizationName:(id)name balanceField:(id)field image:(id)image passLocalizedDesciption:(id)desciption caption:(id)caption summaryText:(id)self0
 {
   v16 = MEMORY[0x277D2BA30];
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v39 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a3;
+  textCopy = text;
+  captionCopy = caption;
+  desciptionCopy = desciption;
+  imageCopy = image;
+  fieldCopy = field;
+  nameCopy = name;
+  identifierCopy = identifier;
   v23 = objc_alloc_init(v16);
   [v23 setVersion:2];
   [v23 setIsResponse:0];
   [v23 setMessageType:1];
-  [v23 setPassLocalizedDescription:v19];
+  [v23 setPassLocalizedDescription:desciptionCopy];
 
-  [v23 setCaption:v18];
-  [v23 setSummaryText:v17];
+  [v23 setCaption:captionCopy];
+  [v23 setSummaryText:textCopy];
 
-  [v23 setPassOrganizationName:v21];
-  [v23 setCardType:NPKProtoRemotePassActionCardTypeForNPKRemotePassActionCardType(a4)];
+  [v23 setPassOrganizationName:nameCopy];
+  [v23 setCardType:NPKProtoRemotePassActionCardTypeForNPKRemotePassActionCardType(type)];
   v24 = objc_alloc_init(MEMORY[0x277D2BA20]);
-  v25 = [v20 action];
+  action = [fieldCopy action];
   v26 = NPKSecureArchiveObject();
   [v24 setPaymentPassActionData:v26];
 
-  v27 = [v20 balance];
-  v28 = [v27 identifiers];
-  v29 = [v28 anyObject];
-  [v24 setBalanceIdentifier:v29];
+  balance = [fieldCopy balance];
+  identifiers = [balance identifiers];
+  anyObject = [identifiers anyObject];
+  [v24 setBalanceIdentifier:anyObject];
 
-  v30 = [v20 label];
-  [v24 setBalanceLabel:v30];
+  label = [fieldCopy label];
+  [v24 setBalanceLabel:label];
 
-  v31 = [v20 balance];
-  v32 = [v31 currencyCode];
-  [v24 setCurrentBalanceCurrency:v32];
+  balance2 = [fieldCopy balance];
+  currencyCode = [balance2 currencyCode];
+  [v24 setCurrentBalanceCurrency:currencyCode];
 
-  v33 = [v20 balance];
+  balance3 = [fieldCopy balance];
 
-  v34 = [v33 currencyValue];
-  v35 = [v34 amount];
+  currencyValue = [balance3 currencyValue];
+  amount = [currencyValue amount];
   [v24 setCurrentBalanceAmount:PKCurrencyDecimalToStorageInteger()];
 
-  [v24 setRequestUniqueID:v22];
-  v36 = [v24 data];
-  [v23 setMessageProtoData:v36];
+  [v24 setRequestUniqueID:identifierCopy];
+  data = [v24 data];
+  [v23 setMessageProtoData:data];
   v41.receiver = self;
   v41.super_class = NPKRemotePassActionEnterValueRequest;
-  v37 = [(NPKRemotePassAction *)&v41 initWithProtoEnvelope:v23 image:v39];
+  v37 = [(NPKRemotePassAction *)&v41 initWithProtoEnvelope:v23 image:imageCopy];
 
   return v37;
 }
@@ -102,26 +102,26 @@
   v7.receiver = self;
   v7.super_class = NPKRemotePassActionEnterValueRequest;
   v3 = [(NPKRemotePassActionRequest *)&v7 description];
-  v4 = [(NPKRemotePassActionEnterValueRequest *)self balanceField];
-  v5 = [v3 stringByAppendingFormat:@" (balanceField:%@)", v4];
+  balanceField = [(NPKRemotePassActionEnterValueRequest *)self balanceField];
+  v5 = [v3 stringByAppendingFormat:@" (balanceField:%@)", balanceField];
 
   return v5;
 }
 
 - (id)identifier
 {
-  v2 = [(NPKRemotePassActionEnterValueRequest *)self protoRequest];
-  v3 = [v2 requestUniqueID];
+  protoRequest = [(NPKRemotePassActionEnterValueRequest *)self protoRequest];
+  requestUniqueID = [protoRequest requestUniqueID];
 
-  return v3;
+  return requestUniqueID;
 }
 
 - (id)action
 {
-  v2 = [(NPKRemotePassActionEnterValueRequest *)self balanceField];
-  v3 = [v2 action];
+  balanceField = [(NPKRemotePassActionEnterValueRequest *)self balanceField];
+  action = [balanceField action];
 
-  return v3;
+  return action;
 }
 
 - (NPKProtoRemotePassActionEnterValueRequest)protoRequest
@@ -130,9 +130,9 @@
   if (!protoRequest)
   {
     v4 = objc_alloc(MEMORY[0x277D2BA20]);
-    v5 = [(NPKRemotePassAction *)self protoEnvelope];
-    v6 = [v5 messageProtoData];
-    v7 = [v4 initWithData:v6];
+    protoEnvelope = [(NPKRemotePassAction *)self protoEnvelope];
+    messageProtoData = [protoEnvelope messageProtoData];
+    v7 = [v4 initWithData:messageProtoData];
     v8 = self->_protoRequest;
     self->_protoRequest = v7;
 
@@ -147,12 +147,12 @@
   cachedBalanceField = self->_cachedBalanceField;
   if (!cachedBalanceField)
   {
-    v4 = [(NPKRemotePassActionEnterValueRequest *)self protoRequest];
-    v5 = v4;
-    if (v4)
+    protoRequest = [(NPKRemotePassActionEnterValueRequest *)self protoRequest];
+    v5 = protoRequest;
+    if (protoRequest)
     {
-      v6 = [v4 paymentPassActionData];
-      if (v6)
+      paymentPassActionData = [protoRequest paymentPassActionData];
+      if (paymentPassActionData)
       {
         objc_opt_class();
         v7 = NPKSecureUnarchiveObject();
@@ -161,18 +161,18 @@
           v8 = v7;
           [v5 currentBalanceAmount];
           v9 = PKCurrencyStorageIntegerToCurrencyDecimal();
-          v10 = [v5 currentBalanceCurrency];
+          currentBalanceCurrency = [v5 currentBalanceCurrency];
           v29 = PKCurrencyAmountMake();
 
           v11 = objc_alloc(MEMORY[0x277D38008]);
-          v12 = [v5 balanceIdentifier];
-          v13 = [v11 initWithIdentifier:v12 forCurrencyAmount:v29];
+          balanceIdentifier = [v5 balanceIdentifier];
+          v13 = [v11 initWithIdentifier:balanceIdentifier forCurrencyAmount:v29];
 
           v14 = objc_alloc(MEMORY[0x277D2BA00]);
-          v15 = [v5 balanceLabel];
-          v16 = [v13 formattedValue];
-          v17 = [v5 balanceIdentifier];
-          v18 = [v14 initWithBalance:v13 label:v15 formattedValue:v16 identifier:v17 primaryBalance:1 action:v8 pendingUpdateExpireDate:0];
+          balanceLabel = [v5 balanceLabel];
+          formattedValue = [v13 formattedValue];
+          balanceIdentifier2 = [v5 balanceIdentifier];
+          v18 = [v14 initWithBalance:v13 label:balanceLabel formattedValue:formattedValue identifier:balanceIdentifier2 primaryBalance:1 action:v8 pendingUpdateExpireDate:0];
 
 LABEL_19:
 LABEL_22:
@@ -214,7 +214,7 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v6 = 0;
+      paymentPassActionData = 0;
     }
 
     else
@@ -234,11 +234,11 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v6 = pk_RemotePassAction_log();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      paymentPassActionData = pk_RemotePassAction_log();
+      if (os_log_type_enabled(paymentPassActionData, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&dword_25B64D000, v6, OS_LOG_TYPE_ERROR, "Error: Missing proto request", buf, 2u);
+        _os_log_impl(&dword_25B64D000, paymentPassActionData, OS_LOG_TYPE_ERROR, "Error: Missing proto request", buf, 2u);
       }
     }
 

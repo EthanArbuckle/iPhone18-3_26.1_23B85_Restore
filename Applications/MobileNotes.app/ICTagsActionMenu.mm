@@ -1,15 +1,15 @@
 @interface ICTagsActionMenu
-+ (id)menuWithTagSelection:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 viewControllerManager:(id)a6 deferredChildren:(BOOL)a7 delegate:(id)a8 completion:(id)aBlock;
-+ (id)menuWithTagSelection:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 viewControllerManager:(id)a6 delegate:(id)a7 completion:(id)a8;
++ (id)menuWithTagSelection:(id)selection presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager deferredChildren:(BOOL)children delegate:(id)delegate completion:(id)aBlock;
++ (id)menuWithTagSelection:(id)selection presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager delegate:(id)delegate completion:(id)completion;
 - (ICNAEventReporter)eventReporter;
 - (ICTagsActionMenu)init;
-- (ICTagsActionMenu)initWithTagSelection:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 viewControllerManager:(id)a6 delegate:(id)a7 completion:(id)a8;
+- (ICTagsActionMenu)initWithTagSelection:(id)selection presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager delegate:(id)delegate completion:(id)completion;
 - (ICTagsActionMenuDelegate)delegate;
 - (UIViewController)presentingViewController;
 - (id)completion;
 - (id)menuSections;
-- (void)setCompletion:(id)a3;
-- (void)setPresentingBarButtonItem:(id)a3;
+- (void)setCompletion:(id)completion;
+- (void)setPresentingBarButtonItem:(id)item;
 @end
 
 @implementation ICTagsActionMenu
@@ -24,21 +24,21 @@
     v4 = swift_dynamicCastObjCClass();
     if (v4)
     {
-      v5 = [v4 eventReporter];
+      eventReporter = [v4 eventReporter];
     }
 
     else
     {
-      v5 = 0;
+      eventReporter = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    eventReporter = 0;
   }
 
-  return v5;
+  return eventReporter;
 }
 
 - (ICTagsActionMenuDelegate)delegate
@@ -48,9 +48,9 @@
   return Strong;
 }
 
-- (ICTagsActionMenu)initWithTagSelection:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 viewControllerManager:(id)a6 delegate:(id)a7 completion:(id)a8
+- (ICTagsActionMenu)initWithTagSelection:(id)selection presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager delegate:(id)delegate completion:(id)completion
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(completion);
   if (v13)
   {
     v14 = swift_allocObject();
@@ -63,21 +63,21 @@
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  selectionCopy = selection;
+  controllerCopy = controller;
+  itemCopy = item;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v19 = sub_1002CB634(v15, v16, a5, v18, a7, v13, v14);
+  v19 = sub_1002CB634(selectionCopy, controllerCopy, item, managerCopy, delegate, v13, v14);
   sub_10000C840(v13);
 
   swift_unknownObjectRelease();
   return v19;
 }
 
-+ (id)menuWithTagSelection:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 viewControllerManager:(id)a6 delegate:(id)a7 completion:(id)a8
++ (id)menuWithTagSelection:(id)selection presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager delegate:(id)delegate completion:(id)completion
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(completion);
   if (v13)
   {
     v14 = swift_allocObject();
@@ -90,12 +90,12 @@
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  selectionCopy = selection;
+  controllerCopy = controller;
+  itemCopy = item;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v19 = sub_1002CB764(v15, v16, a5, v18, a7, v13, v14);
+  v19 = sub_1002CB764(selectionCopy, controllerCopy, item, managerCopy, delegate, v13, v14);
   sub_10000C840(v13);
 
   swift_unknownObjectRelease();
@@ -103,7 +103,7 @@
   return v19;
 }
 
-+ (id)menuWithTagSelection:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 viewControllerManager:(id)a6 deferredChildren:(BOOL)a7 delegate:(id)a8 completion:(id)aBlock
++ (id)menuWithTagSelection:(id)selection presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager deferredChildren:(BOOL)children delegate:(id)delegate completion:(id)aBlock
 {
   v15 = _Block_copy(aBlock);
   if (v15)
@@ -118,12 +118,12 @@
     v16 = 0;
   }
 
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
+  selectionCopy = selection;
+  controllerCopy = controller;
+  itemCopy = item;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v21 = sub_1002CB8B8(v17, v18, a5, v20, a7, a8, v15, v16);
+  v21 = sub_1002CB8B8(selectionCopy, controllerCopy, item, managerCopy, children, delegate, v15, v16);
   sub_10000C840(v15);
 
   swift_unknownObjectRelease();
@@ -153,9 +153,9 @@
   return v3;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -173,7 +173,7 @@
   v8 = *(self + OBJC_IVAR___ICTagsActionMenu_completion);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_10000C840(v8);
 }
 
@@ -184,16 +184,16 @@
   return Strong;
 }
 
-- (void)setPresentingBarButtonItem:(id)a3
+- (void)setPresentingBarButtonItem:(id)item
 {
   v4 = *(self + OBJC_IVAR___ICTagsActionMenu_presentingBarButtonItem);
-  *(self + OBJC_IVAR___ICTagsActionMenu_presentingBarButtonItem) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICTagsActionMenu_presentingBarButtonItem) = item;
+  itemCopy = item;
 }
 
 - (id)menuSections
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002C90D8();
 
   sub_1000054A4(0, &qword_1006C6400);

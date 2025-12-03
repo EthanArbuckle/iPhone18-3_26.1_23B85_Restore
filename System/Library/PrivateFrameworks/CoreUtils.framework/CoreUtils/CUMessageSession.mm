@@ -1,33 +1,33 @@
 @interface CUMessageSession
 - (CUMessageSession)init;
-- (CUMessageSession)initWithCoder:(id)a3;
-- (CUMessageSession)initWithTemplate:(id)a3;
+- (CUMessageSession)initWithCoder:(id)coder;
+- (CUMessageSession)initWithTemplate:(id)template;
 - (void)_cleanup;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_registerRequestID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)_sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6;
+- (void)_registerRequestID:(id)d options:(id)options handler:(id)handler;
+- (void)_sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler;
 - (void)activate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)remoteRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6;
-- (void)sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6;
-- (void)setLabel:(id)a3;
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler;
+- (void)remoteRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler;
+- (void)sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUMessageSession
 
-- (void)remoteRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6
+- (void)remoteRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler
 {
-  v27 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v13 = [(NSMutableDictionary *)self->_requestMap objectForKeyedSubscript:v27];
+  v13 = [(NSMutableDictionary *)self->_requestMap objectForKeyedSubscript:dCopy];
   v18 = v13;
   if (!v13)
   {
@@ -47,15 +47,15 @@
       ucat = self->_ucat;
     }
 
-    LogPrintF(ucat, "[CUMessageSession remoteRequestID:options:request:responseHandler:]", 0x3Cu, "### No entry for request ID '%@'\n", v14, v15, v16, v17, v27);
+    LogPrintF(ucat, "[CUMessageSession remoteRequestID:options:request:responseHandler:]", 0x3Cu, "### No entry for request ID '%@'\n", v14, v15, v16, v17, dCopy);
     goto LABEL_14;
   }
 
-  v19 = [v13 handler];
-  v24 = v19;
-  if (v19)
+  handler = [v13 handler];
+  v24 = handler;
+  if (handler)
   {
-    (*(v19 + 16))(v19, v10, v11, v12);
+    (*(handler + 16))(handler, optionsCopy, requestCopy, handlerCopy);
   }
 
   else
@@ -73,7 +73,7 @@
         v26 = self->_ucat;
       }
 
-      LogPrintF(v26, "[CUMessageSession remoteRequestID:options:request:responseHandler:]", 0x3Cu, "### No handler for request ID '%@'\n", v20, v21, v22, v23, v27);
+      LogPrintF(v26, "[CUMessageSession remoteRequestID:options:request:responseHandler:]", 0x3Cu, "### No handler for request ID '%@'\n", v20, v21, v22, v23, dCopy);
     }
   }
 
@@ -82,22 +82,22 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6
+- (void)_sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
+  optionsCopy = options;
+  dCopy = d;
   [(CUMessageSession *)self _ensureXPCStarted];
   xpcCnx = self->_xpcCnx;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __67__CUMessageSession__sendRequestID_options_request_responseHandler___block_invoke;
   v17[3] = &unk_1E73A38E8;
-  v18 = v10;
-  v15 = v10;
+  v18 = handlerCopy;
+  v15 = handlerCopy;
   v16 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v17];
-  [v16 remoteSendRequestID:v13 options:v12 request:v11 responseHandler:v15];
+  [v16 remoteSendRequestID:dCopy options:optionsCopy request:requestCopy responseHandler:v15];
 }
 
 uint64_t __67__CUMessageSession__sendRequestID_options_request_responseHandler___block_invoke(uint64_t a1, void *a2)
@@ -118,26 +118,26 @@ uint64_t __67__CUMessageSession__sendRequestID_options_request_responseHandler__
   return v4(v2, v3, 0, 0);
 }
 
-- (void)sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6
+- (void)sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__CUMessageSession_sendRequestID_options_request_responseHandler___block_invoke;
   block[3] = &unk_1E73A3608;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = dCopy;
+  v21 = optionsCopy;
+  v22 = requestCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = requestCopy;
+  v17 = optionsCopy;
+  v18 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -209,17 +209,17 @@ LABEL_9:
   return LogPrintF(result, "[CUMessageSession sendRequestID:options:request:responseHandler:]_block_invoke", 0x3Cu, "### No handler or endpoint to send requests\n", a5, a6, a7, a8, a9);
 }
 
-- (void)_registerRequestID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)_registerRequestID:(id)d options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = objc_alloc_init(CUMessageRequestEntry);
-  [(CUMessageRequestEntry *)v11 setHandler:v10];
+  [(CUMessageRequestEntry *)v11 setHandler:handlerCopy];
 
-  if (v9)
+  if (optionsCopy)
   {
-    [(CUMessageRequestEntry *)v11 setOptions:v9];
+    [(CUMessageRequestEntry *)v11 setOptions:optionsCopy];
   }
 
   requestMap = self->_requestMap;
@@ -232,18 +232,18 @@ LABEL_9:
     requestMap = self->_requestMap;
   }
 
-  [(NSMutableDictionary *)requestMap setObject:v11 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)requestMap setObject:v11 forKeyedSubscript:dCopy];
   [(CUMessageSession *)self _ensureXPCStarted];
   xpcCnx = self->_xpcCnx;
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __55__CUMessageSession__registerRequestID_options_handler___block_invoke;
   v21 = &unk_1E73A35E0;
-  v22 = self;
-  v23 = v8;
-  v16 = v8;
+  selfCopy = self;
+  v23 = dCopy;
+  v16 = dCopy;
   v17 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:&v18];
-  [v17 remoteRegisterRequestID:v16 options:{v9, v18, v19, v20, v21, v22}];
+  [v17 remoteRegisterRequestID:v16 options:{optionsCopy, v18, v19, v20, v21, selfCopy}];
 }
 
 void __55__CUMessageSession__registerRequestID_options_handler___block_invoke(uint64_t a1, void *a2)
@@ -275,23 +275,23 @@ LABEL_5:
   [*(v8 + 80) setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__CUMessageSession_registerRequestID_options_handler___block_invoke;
   v15[3] = &unk_1E73A4108;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = dCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -591,13 +591,13 @@ void *__28__CUMessageSession_activate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE8960;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
@@ -619,12 +619,12 @@ void *__28__CUMessageSession_activate__block_invoke(uint64_t a1)
   self->_sendRequestHandler = 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   listenerEndpoint = self->_listenerEndpoint;
   if (listenerEndpoint)
   {
-    [a3 encodeObject:listenerEndpoint forKey:@"lep"];
+    [coder encodeObject:listenerEndpoint forKey:@"lep"];
   }
 }
 
@@ -642,28 +642,28 @@ void *__28__CUMessageSession_activate__block_invoke(uint64_t a1)
   [(CUMessageSession *)&v4 dealloc];
 }
 
-- (CUMessageSession)initWithTemplate:(id)a3
+- (CUMessageSession)initWithTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   v5 = [(CUMessageSession *)self init];
   if (v5)
   {
-    v6 = [v4 listenerEndpoint];
+    listenerEndpoint = [templateCopy listenerEndpoint];
     listenerEndpoint = v5->_listenerEndpoint;
-    v5->_listenerEndpoint = v6;
+    v5->_listenerEndpoint = listenerEndpoint;
   }
 
   return v5;
 }
 
-- (CUMessageSession)initWithCoder:(id)a3
+- (CUMessageSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CUMessageSession *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
-    NSDecodeObjectIfPresent(v4, @"lep", v6, &v5->_listenerEndpoint);
+    NSDecodeObjectIfPresent(coderCopy, @"lep", v6, &v5->_listenerEndpoint);
   }
 
   return v5;

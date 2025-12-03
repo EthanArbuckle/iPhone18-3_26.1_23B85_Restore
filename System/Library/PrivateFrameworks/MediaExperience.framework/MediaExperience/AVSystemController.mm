@@ -1,63 +1,63 @@
 @interface AVSystemController
 + (id)sharedInstance;
 - (AVSystemController)init;
-- (BOOL)addRemoteDeviceID:(id)a3;
-- (BOOL)changeActiveCategoryVolume:(BOOL)a3 fallbackCategory:(id)a4 resultVolume:(float *)a5 affectedCategory:(id *)a6;
-- (BOOL)changeActiveCategoryVolume:(BOOL)a3 forRoute:(id)a4 andDeviceIdentifier:(id)a5;
-- (BOOL)changeActiveCategoryVolumeBy:(float)a3 fallbackCategory:(id)a4 resultVolume:(float *)a5 affectedCategory:(id *)a6;
-- (BOOL)changeActiveCategoryVolumeBy:(float)a3 forRoute:(id)a4 andDeviceIdentifier:(id)a5;
-- (BOOL)changeVolume:(BOOL)a3 forCategory:(id)a4 mode:(id)a5;
-- (BOOL)changeVolumeBy:(float)a3 forCategory:(id)a4;
-- (BOOL)changeVolumeForRoute:(BOOL)a3 forCategory:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 andRouteSubtype:(id)a8;
-- (BOOL)changeVolumeForRouteBy:(float)a3 forCategory:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 andRouteSubtype:(id)a8;
+- (BOOL)addRemoteDeviceID:(id)d;
+- (BOOL)changeActiveCategoryVolume:(BOOL)volume fallbackCategory:(id)category resultVolume:(float *)resultVolume affectedCategory:(id *)affectedCategory;
+- (BOOL)changeActiveCategoryVolume:(BOOL)volume forRoute:(id)route andDeviceIdentifier:(id)identifier;
+- (BOOL)changeActiveCategoryVolumeBy:(float)by fallbackCategory:(id)category resultVolume:(float *)volume affectedCategory:(id *)affectedCategory;
+- (BOOL)changeActiveCategoryVolumeBy:(float)by forRoute:(id)route andDeviceIdentifier:(id)identifier;
+- (BOOL)changeVolume:(BOOL)volume forCategory:(id)category mode:(id)mode;
+- (BOOL)changeVolumeBy:(float)by forCategory:(id)category;
+- (BOOL)changeVolumeForRoute:(BOOL)route forCategory:(id)category mode:(id)mode route:(id)a6 deviceIdentifier:(id)identifier andRouteSubtype:(id)subtype;
+- (BOOL)changeVolumeForRouteBy:(float)by forCategory:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier andRouteSubtype:(id)subtype;
 - (BOOL)currentRouteHasVolumeControl;
-- (BOOL)getActiveCategoryMuted:(BOOL *)a3;
-- (BOOL)getActiveCategoryMuted:(BOOL *)a3 forRoute:(id)a4 andDeviceIdentifier:(id)a5;
-- (BOOL)getActiveCategoryVolume:(float *)a3 andName:(id *)a4 fallbackCategory:(id)a5;
-- (BOOL)getActiveCategoryVolume:(float *)a3 andName:(id *)a4 forRoute:(id)a5 andDeviceIdentifier:(id)a6;
+- (BOOL)getActiveCategoryMuted:(BOOL *)muted;
+- (BOOL)getActiveCategoryMuted:(BOOL *)muted forRoute:(id)route andDeviceIdentifier:(id)identifier;
+- (BOOL)getActiveCategoryVolume:(float *)volume andName:(id *)name fallbackCategory:(id)category;
+- (BOOL)getActiveCategoryVolume:(float *)volume andName:(id *)name forRoute:(id)route andDeviceIdentifier:(id)identifier;
 - (BOOL)getSilentMode;
-- (BOOL)getSilentMode:(BOOL *)a3 error:(id *)a4;
-- (BOOL)getVibeIntensity:(float *)a3;
-- (BOOL)getVolume:(float *)a3 forCategory:(id)a4 mode:(id)a5;
-- (BOOL)getVolumeForRoute:(float *)a3 forCategory:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 andRouteSubtype:(id)a8;
-- (BOOL)hasRouteSharingPolicyLongFormVideo:(id)a3;
+- (BOOL)getSilentMode:(BOOL *)mode error:(id *)error;
+- (BOOL)getVibeIntensity:(float *)intensity;
+- (BOOL)getVolume:(float *)volume forCategory:(id)category mode:(id)mode;
+- (BOOL)getVolumeForRoute:(float *)route forCategory:(id)category mode:(id)mode route:(id)a6 deviceIdentifier:(id)identifier andRouteSubtype:(id)subtype;
+- (BOOL)hasRouteSharingPolicyLongFormVideo:(id)video;
 - (BOOL)overrideToPartnerRoute;
-- (BOOL)remoteDeviceControlIsAllowed:(unsigned int *)a3;
-- (BOOL)removeRemoteDeviceID:(id)a3;
-- (BOOL)setActiveCategoryVolumeTo:(float)a3 fallbackCategory:(id)a4 resultVolume:(float *)a5 affectedCategory:(id *)a6;
-- (BOOL)setActiveCategoryVolumeTo:(float)a3 forRoute:(id)a4 andDeviceIdentifier:(id)a5;
-- (BOOL)setPickedRouteWithPassword:(id)a3 withPassword:(id)a4;
-- (BOOL)setVibeIntensityTo:(float)a3;
-- (BOOL)setVolumeForRouteTo:(float)a3 forCategory:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 andRouteSubtype:(id)a8;
-- (BOOL)setVolumeTo:(float)a3 forCategory:(id)a4 mode:(id)a5;
-- (BOOL)setVolumeTo:(float)a3 forCategory:(id)a4 retainFullMute:(BOOL)a5;
+- (BOOL)remoteDeviceControlIsAllowed:(unsigned int *)allowed;
+- (BOOL)removeRemoteDeviceID:(id)d;
+- (BOOL)setActiveCategoryVolumeTo:(float)to fallbackCategory:(id)category resultVolume:(float *)volume affectedCategory:(id *)affectedCategory;
+- (BOOL)setActiveCategoryVolumeTo:(float)to forRoute:(id)route andDeviceIdentifier:(id)identifier;
+- (BOOL)setPickedRouteWithPassword:(id)password withPassword:(id)withPassword;
+- (BOOL)setVibeIntensityTo:(float)to;
+- (BOOL)setVolumeForRouteTo:(float)to forCategory:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier andRouteSubtype:(id)subtype;
+- (BOOL)setVolumeTo:(float)to forCategory:(id)category mode:(id)mode;
+- (BOOL)setVolumeTo:(float)to forCategory:(id)category retainFullMute:(BOOL)mute;
 - (BOOL)toggleActiveCategoryMuted;
-- (BOOL)toggleActiveCategoryMutedForRoute:(id)a3 andDeviceIdentifier:(id)a4;
-- (id)errorWithCode:(int)a3 description:(id)a4;
-- (id)pickableRoutesForCategory:(id)a3;
-- (id)pickableRoutesForCategory:(id)a3 andMode:(id)a4;
-- (id)routeForCategory:(id)a3;
+- (BOOL)toggleActiveCategoryMutedForRoute:(id)route andDeviceIdentifier:(id)identifier;
+- (id)errorWithCode:(int)code description:(id)description;
+- (id)pickableRoutesForCategory:(id)category;
+- (id)pickableRoutesForCategory:(id)category andMode:(id)mode;
+- (id)routeForCategory:(id)category;
 - (id)topOfNowPlayingAppStack;
-- (id)volumeCategoryForAudioCategory:(id)a3;
-- (int)allowAppToInitiateRecordingTemporarily:(id)a3;
+- (id)volumeCategoryForAudioCategory:(id)category;
+- (int)allowAppToInitiateRecordingTemporarily:(id)temporarily;
 - (int)clearUplinkMutedCache;
-- (int)getDuckScalarForVoiceOver:(float *)a3;
-- (int)getInputMute:(id *)a3 outMuteValue:(BOOL *)a4;
-- (int)getVolume:(float *)a3 category:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 routeSubtype:(id)a8;
-- (int)getVolumeButtonDelta:(id)a3 outVolumeDelta:(float *)a4;
-- (int)grantMediaEndowmentWithEnvironmentID:(id)a3 endowmentPayload:(id)a4;
+- (int)getDuckScalarForVoiceOver:(float *)over;
+- (int)getInputMute:(id *)mute outMuteValue:(BOOL *)value;
+- (int)getVolume:(float *)volume category:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier routeSubtype:(id)subtype;
+- (int)getVolumeButtonDelta:(id)delta outVolumeDelta:(float *)volumeDelta;
+- (int)grantMediaEndowmentWithEnvironmentID:(id)d endowmentPayload:(id)payload;
 - (int)popNowPlayingAppStack;
-- (int)revokeMediaEndowmentWithEnvironmentID:(id)a3;
-- (int)setDuckScalarForVoiceOver:(float)a3;
-- (int)setVolume:(float)a3 category:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 routeSubtype:(id)a8 rampUpDuration:(float)a9 rampDownDuration:(float)a10;
-- (int)setVolume:(float)a3 category:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 routeSubtype:(id)a8 rampUpDuration:(float)a9 rampDownDuration:(float)a10 retainFullMute:(BOOL)a11;
-- (int)setVolume:(float)a3 category:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 routeSubtype:(id)a8 rampUpwardDuration:(id)a9 rampDownwardDuration:(id)a10;
+- (int)revokeMediaEndowmentWithEnvironmentID:(id)d;
+- (int)setDuckScalarForVoiceOver:(float)over;
+- (int)setVolume:(float)volume category:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpDuration:(float)duration rampDownDuration:(float)self0;
+- (int)setVolume:(float)volume category:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpDuration:(float)duration rampDownDuration:(float)self0 retainFullMute:(BOOL)self1;
+- (int)setVolume:(float)volume category:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpwardDuration:(id)duration rampDownwardDuration:(id)self0;
 - (int)toggleInputMute;
-- (int)volumeCategoryAndMode:(id)a3 mode:(id)a4 outCategory:(id *)a5 outMode:(id *)a6;
+- (int)volumeCategoryAndMode:(id)mode mode:(id)a4 outCategory:(id *)category outMode:(id *)outMode;
 - (void)dealloc;
 - (void)handleServerDied;
-- (void)postEffectiveVolumeNotification:(id)a3;
-- (void)postFullMuteDidChangeNotification:(id)a3;
+- (void)postEffectiveVolumeNotification:(id)notification;
+- (void)postFullMuteDidChangeNotification:(id)notification;
 - (void)releaseSharedInstance;
 @end
 
@@ -182,16 +182,16 @@ LABEL_11:
   return v9;
 }
 
-- (id)errorWithCode:(int)a3 description:(id)a4
+- (id)errorWithCode:(int)code description:(id)description
 {
-  v4 = a4;
-  if (a4)
+  descriptionCopy = description;
+  if (description)
   {
     v6 = objc_alloc(MEMORY[0x1E695DF20]);
-    v4 = [v6 initWithObjectsAndKeys:{v4, *MEMORY[0x1E696A578], 0}];
+    descriptionCopy = [v6 initWithObjectsAndKeys:{descriptionCopy, *MEMORY[0x1E696A578], 0}];
   }
 
-  v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:a3 userInfo:v4];
+  v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:code userInfo:descriptionCopy];
 
   return v7;
 }
@@ -199,21 +199,21 @@ LABEL_11:
 - (void)handleServerDied
 {
   [(AVSystemController(InternalUse) *)self releaseSharedInstance];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = AVSystemController_ServerConnectionDiedNotification;
 
-  [v3 postNotificationName:v4 object:self];
+  [defaultCenter postNotificationName:v4 object:self];
 }
 
-- (void)postEffectiveVolumeNotification:(id)a3
+- (void)postEffectiveVolumeNotification:(id)notification
 {
   v23 = 1065353216;
-  v5 = [a3 objectForKey:@"Volume"];
-  v6 = [a3 objectForKey:@"AudioCategory"];
+  v5 = [notification objectForKey:@"Volume"];
+  v6 = [notification objectForKey:@"AudioCategory"];
   v24 = v6;
-  v7 = [a3 objectForKey:@"Reason"];
-  v8 = [a3 objectForKey:@"SilenceVolumeHUD"];
-  v9 = [a3 objectForKey:@"ActiveAudioCategory"];
+  v7 = [notification objectForKey:@"Reason"];
+  v8 = [notification objectForKey:@"SilenceVolumeHUD"];
+  v9 = [notification objectForKey:@"ActiveAudioCategory"];
   if (!v8)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:0];
@@ -292,9 +292,9 @@ LABEL_17:
   [(AVSystemControllerCommon *)AVSystemController postNotificationOnMainQueue:v22 notification:AVSystemController_EffectiveVolumeDidChangeNotification object:self];
 }
 
-- (void)postFullMuteDidChangeNotification:(id)a3
+- (void)postFullMuteDidChangeNotification:(id)notification
 {
-  v4 = [a3 objectForKey:@"FullMuted"];
+  v4 = [notification objectForKey:@"FullMuted"];
   if (v4)
   {
     v5 = v4;
@@ -346,11 +346,11 @@ LABEL_17:
   [v4 unlock];
 }
 
-- (BOOL)changeActiveCategoryVolumeBy:(float)a3 fallbackCategory:(id)a4 resultVolume:(float *)a5 affectedCategory:(id *)a6
+- (BOOL)changeActiveCategoryVolumeBy:(float)by fallbackCategory:(id)category resultVolume:(float *)volume affectedCategory:(id *)affectedCategory
 {
-  if (a6)
+  if (affectedCategory)
   {
-    *a6 = 0;
+    *affectedCategory = 0;
   }
 
   mFigController = self->mFigController;
@@ -359,8 +359,8 @@ LABEL_17:
   if (v11)
   {
     v12 = *(VTable + 16) + 8;
-    v13 = v11(mFigController, 1, 0, 0, 0, 0, 0, a5, a3, 0.0, 0.0, 0, a6, 0, 0) == 0;
-    if (!a6)
+    v13 = v11(mFigController, 1, 0, 0, 0, 0, 0, volume, by, 0.0, 0.0, 0, affectedCategory, 0, 0) == 0;
+    if (!affectedCategory)
     {
       return v13;
     }
@@ -369,23 +369,23 @@ LABEL_17:
   }
 
   v13 = 0;
-  if (a6)
+  if (affectedCategory)
   {
 LABEL_7:
-    v14 = *a6;
+    v14 = *affectedCategory;
   }
 
   return v13;
 }
 
-- (BOOL)changeActiveCategoryVolume:(BOOL)a3 fallbackCategory:(id)a4 resultVolume:(float *)a5 affectedCategory:(id *)a6
+- (BOOL)changeActiveCategoryVolume:(BOOL)volume fallbackCategory:(id)category resultVolume:(float *)resultVolume affectedCategory:(id *)affectedCategory
 {
-  if (a6)
+  if (affectedCategory)
   {
-    *a6 = 0;
+    *affectedCategory = 0;
   }
 
-  if (a3)
+  if (volume)
   {
     v8 = 0.0625;
   }
@@ -401,8 +401,8 @@ LABEL_7:
   if (v11)
   {
     v12 = *(VTable + 16) + 8;
-    v13 = v11(mFigController, 1, 0, 0, 0, 0, 0, a5, v8, 0.0, 0.0, 0, a6, 0, 0) == 0;
-    if (!a6)
+    v13 = v11(mFigController, 1, 0, 0, 0, 0, 0, resultVolume, v8, 0.0, 0.0, 0, affectedCategory, 0, 0) == 0;
+    if (!affectedCategory)
     {
       return v13;
     }
@@ -411,19 +411,19 @@ LABEL_7:
   }
 
   v13 = 0;
-  if (a6)
+  if (affectedCategory)
   {
 LABEL_10:
-    v14 = *a6;
+    v14 = *affectedCategory;
   }
 
   return v13;
 }
 
-- (BOOL)setVibeIntensityTo:(float)a3
+- (BOOL)setVibeIntensityTo:(float)to
 {
   v5 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v6 = a3;
+  *&v6 = to;
   v7 = [v5 initWithFloat:v6];
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -442,7 +442,7 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)getVibeIntensity:(float *)a3
+- (BOOL)getVibeIntensity:(float *)intensity
 {
   v12 = 0;
   mFigController = self->mFigController;
@@ -453,7 +453,7 @@ LABEL_10:
     v7 = *(VTable + 8) + 48;
     v8 = v6(mFigController, @"VibeIntensity", *MEMORY[0x1E695E480], &v12) == 0;
     v9 = v12;
-    if (!a3)
+    if (!intensity)
     {
       goto LABEL_6;
     }
@@ -463,11 +463,11 @@ LABEL_10:
 
   v9 = 0;
   v8 = 0;
-  if (a3)
+  if (intensity)
   {
 LABEL_5:
     [v9 floatValue];
-    *a3 = v10;
+    *intensity = v10;
     v9 = v12;
   }
 
@@ -476,11 +476,11 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)setActiveCategoryVolumeTo:(float)a3 fallbackCategory:(id)a4 resultVolume:(float *)a5 affectedCategory:(id *)a6
+- (BOOL)setActiveCategoryVolumeTo:(float)to fallbackCategory:(id)category resultVolume:(float *)volume affectedCategory:(id *)affectedCategory
 {
-  if (a6)
+  if (affectedCategory)
   {
-    *a6 = 0;
+    *affectedCategory = 0;
   }
 
   mFigController = self->mFigController;
@@ -489,8 +489,8 @@ LABEL_6:
   if (v12)
   {
     v13 = *(VTable + 16) + 8;
-    v14 = v12(mFigController, 2, a4, 0, 0, 0, 0, a5, a3, 0.0, 0.0, 0, a6, 0, 0) == 0;
-    if (!a6)
+    v14 = v12(mFigController, 2, category, 0, 0, 0, 0, volume, to, 0.0, 0.0, 0, affectedCategory, 0, 0) == 0;
+    if (!affectedCategory)
     {
       return v14;
     }
@@ -499,20 +499,20 @@ LABEL_6:
   }
 
   v14 = 0;
-  if (a6)
+  if (affectedCategory)
   {
 LABEL_7:
-    v15 = *a6;
+    v15 = *affectedCategory;
   }
 
   return v14;
 }
 
-- (BOOL)getActiveCategoryVolume:(float *)a3 andName:(id *)a4 fallbackCategory:(id)a5
+- (BOOL)getActiveCategoryVolume:(float *)volume andName:(id *)name fallbackCategory:(id)category
 {
-  if (a4)
+  if (name)
   {
-    *a4 = 0;
+    *name = 0;
   }
 
   mFigController = self->mFigController;
@@ -521,8 +521,8 @@ LABEL_7:
   if (v10)
   {
     v11 = *(VTable + 16) + 8;
-    v12 = v10(mFigController, 3, a5, 0, 0, 0, 0, a3, 0.0, 0.0, 0.0, 0, a4, 0, 0) == 0;
-    if (!a4)
+    v12 = v10(mFigController, 3, category, 0, 0, 0, 0, volume, 0.0, 0.0, 0.0, 0, name, 0, 0) == 0;
+    if (!name)
     {
       return v12;
     }
@@ -531,16 +531,16 @@ LABEL_7:
   }
 
   v12 = 0;
-  if (a4)
+  if (name)
   {
 LABEL_7:
-    v13 = *a4;
+    v13 = *name;
   }
 
   return v12;
 }
 
-- (BOOL)changeActiveCategoryVolumeBy:(float)a3 forRoute:(id)a4 andDeviceIdentifier:(id)a5
+- (BOOL)changeActiveCategoryVolumeBy:(float)by forRoute:(id)route andDeviceIdentifier:(id)identifier
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -551,12 +551,12 @@ LABEL_7:
   }
 
   v11 = *(VTable + 16) + 8;
-  return v10(mFigController, 4, 0, 0, a4, a5, 0, 0, a3, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v10(mFigController, 4, 0, 0, route, identifier, 0, 0, by, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)changeActiveCategoryVolume:(BOOL)a3 forRoute:(id)a4 andDeviceIdentifier:(id)a5
+- (BOOL)changeActiveCategoryVolume:(BOOL)volume forRoute:(id)route andDeviceIdentifier:(id)identifier
 {
-  if (a3)
+  if (volume)
   {
     v7 = 0.0625;
   }
@@ -575,10 +575,10 @@ LABEL_7:
   }
 
   v11 = *(VTable + 16) + 8;
-  return v10(mFigController, 4, 0, 0, a4, a5, 0, 0, v7, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v10(mFigController, 4, 0, 0, route, identifier, 0, 0, v7, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)setActiveCategoryVolumeTo:(float)a3 forRoute:(id)a4 andDeviceIdentifier:(id)a5
+- (BOOL)setActiveCategoryVolumeTo:(float)to forRoute:(id)route andDeviceIdentifier:(id)identifier
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -589,10 +589,10 @@ LABEL_7:
   }
 
   v11 = *(VTable + 16) + 8;
-  return v10(mFigController, 5, 0, 0, a4, a5, 0, 0, a3, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v10(mFigController, 5, 0, 0, route, identifier, 0, 0, to, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)getActiveCategoryVolume:(float *)a3 andName:(id *)a4 forRoute:(id)a5 andDeviceIdentifier:(id)a6
+- (BOOL)getActiveCategoryVolume:(float *)volume andName:(id *)name forRoute:(id)route andDeviceIdentifier:(id)identifier
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -603,10 +603,10 @@ LABEL_7:
   }
 
   v12 = *(VTable + 16) + 8;
-  return v11(mFigController, 6, 0, 0, a5, a6, 0, a3, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v11(mFigController, 6, 0, 0, route, identifier, 0, volume, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)changeVolumeForRouteBy:(float)a3 forCategory:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 andRouteSubtype:(id)a8
+- (BOOL)changeVolumeForRouteBy:(float)by forCategory:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier andRouteSubtype:(id)subtype
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -617,12 +617,12 @@ LABEL_7:
   }
 
   v16 = *(VTable + 16) + 8;
-  return v15(mFigController, 11, a4, 0, a6, a7, a8, 0, a3, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v15(mFigController, 11, category, 0, route, identifier, subtype, 0, by, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)changeVolumeForRoute:(BOOL)a3 forCategory:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 andRouteSubtype:(id)a8
+- (BOOL)changeVolumeForRoute:(BOOL)route forCategory:(id)category mode:(id)mode route:(id)a6 deviceIdentifier:(id)identifier andRouteSubtype:(id)subtype
 {
-  if (a3)
+  if (route)
   {
     v12 = 0.0625;
   }
@@ -641,10 +641,10 @@ LABEL_7:
   }
 
   v16 = *(VTable + 16) + 8;
-  return v15(mFigController, 11, a4, 0, a6, a7, a8, 0, v12, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v15(mFigController, 11, category, 0, a6, identifier, subtype, 0, v12, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)setVolumeForRouteTo:(float)a3 forCategory:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 andRouteSubtype:(id)a8
+- (BOOL)setVolumeForRouteTo:(float)to forCategory:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier andRouteSubtype:(id)subtype
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -655,15 +655,15 @@ LABEL_7:
   }
 
   v16 = *(VTable + 16) + 8;
-  return v15(mFigController, 12, a4, 0, a6, a7, a8, 0, a3, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v15(mFigController, 12, category, 0, route, identifier, subtype, 0, to, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (int)setVolume:(float)a3 category:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 routeSubtype:(id)a8 rampUpwardDuration:(id)a9 rampDownwardDuration:(id)a10
+- (int)setVolume:(float)volume category:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpwardDuration:(id)duration rampDownwardDuration:(id)self0
 {
   mFigController = self->mFigController;
-  [a9 floatValue];
+  [duration floatValue];
   v17 = v16;
-  [a10 floatValue];
+  [downwardDuration floatValue];
   v19 = v18;
   VTable = CMBaseObjectGetVTable();
   v21 = *(*(VTable + 16) + 8);
@@ -673,13 +673,13 @@ LABEL_7:
   }
 
   v22 = *(VTable + 16) + 8;
-  return v21(mFigController, 12, a4, 0, a6, a7, a8, 0, a3, v17, v19, 0, 0, 0, 0);
+  return v21(mFigController, 12, category, 0, route, identifier, subtype, 0, volume, v17, v19, 0, 0, 0, 0);
 }
 
-- (int)setVolume:(float)a3 category:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 routeSubtype:(id)a8 rampUpDuration:(float)a9 rampDownDuration:(float)a10
+- (int)setVolume:(float)volume category:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpDuration:(float)duration rampDownDuration:(float)self0
 {
   result = -12981;
-  if (a9 >= 0.0 && a10 >= 0.0)
+  if (duration >= 0.0 && downDuration >= 0.0)
   {
     mFigController = self->mFigController;
     VTable = CMBaseObjectGetVTable();
@@ -687,7 +687,7 @@ LABEL_7:
     if (v21)
     {
       v22 = *(VTable + 16) + 8;
-      return v21(mFigController, 12, a4, 0, a6, a7, a8, 0, a3, a9, a10, 0, 0, 0, 0);
+      return v21(mFigController, 12, category, 0, route, identifier, subtype, 0, volume, duration, downDuration, 0, 0, 0, 0);
     }
 
     else
@@ -699,10 +699,10 @@ LABEL_7:
   return result;
 }
 
-- (int)setVolume:(float)a3 category:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 routeSubtype:(id)a8 rampUpDuration:(float)a9 rampDownDuration:(float)a10 retainFullMute:(BOOL)a11
+- (int)setVolume:(float)volume category:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpDuration:(float)duration rampDownDuration:(float)self0 retainFullMute:(BOOL)self1
 {
   result = -12981;
-  if (a9 >= 0.0 && a10 >= 0.0)
+  if (duration >= 0.0 && downDuration >= 0.0)
   {
     mFigController = self->mFigController;
     VTable = CMBaseObjectGetVTable();
@@ -710,7 +710,7 @@ LABEL_7:
     if (v23)
     {
       v24 = *(VTable + 16) + 8;
-      return v23(mFigController, 12, a4, 0, a6, a7, a8, 0, a3, a9, a10, 0, 0, 0, a11);
+      return v23(mFigController, 12, category, 0, route, identifier, subtype, 0, volume, duration, downDuration, 0, 0, 0, mute);
     }
 
     else
@@ -722,7 +722,7 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)getVolumeForRoute:(float *)a3 forCategory:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 andRouteSubtype:(id)a8
+- (BOOL)getVolumeForRoute:(float *)route forCategory:(id)category mode:(id)mode route:(id)a6 deviceIdentifier:(id)identifier andRouteSubtype:(id)subtype
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -733,10 +733,10 @@ LABEL_7:
   }
 
   v16 = *(VTable + 16) + 8;
-  return v15(mFigController, 13, a4, 0, a6, a7, a8, a3, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v15(mFigController, 13, category, 0, a6, identifier, subtype, route, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (int)getVolume:(float *)a3 category:(id)a4 mode:(id)a5 route:(id)a6 deviceIdentifier:(id)a7 routeSubtype:(id)a8
+- (int)getVolume:(float *)volume category:(id)category mode:(id)mode route:(id)route deviceIdentifier:(id)identifier routeSubtype:(id)subtype
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -747,14 +747,14 @@ LABEL_7:
   }
 
   v16 = *(VTable + 16) + 8;
-  return v15(mFigController, 13, a4, 0, a6, a7, a8, a3, 0.0, 0.0, 0.0, 0, 0, 0, 0);
+  return v15(mFigController, 13, category, 0, route, identifier, subtype, volume, 0.0, 0.0, 0.0, 0, 0, 0, 0);
 }
 
-- (int)volumeCategoryAndMode:(id)a3 mode:(id)a4 outCategory:(id *)a5 outMode:(id *)a6
+- (int)volumeCategoryAndMode:(id)mode mode:(id)a4 outCategory:(id *)category outMode:(id *)outMode
 {
   v21[22] = *MEMORY[0x1E69E9840];
   v6 = -12980;
-  if (a5 && a6)
+  if (category && outMode)
   {
     v20 = 0;
     v21[0] = 0;
@@ -762,13 +762,13 @@ LABEL_7:
     v12 = *(*(CMBaseObjectGetVTable() + 16) + 24);
     if (v12)
     {
-      v6 = v12(mFigController, a3, a4, v21, &v20);
+      v6 = v12(mFigController, mode, a4, v21, &v20);
       if (!v6)
       {
         v14 = v20;
         v13 = v21[0];
-        *a5 = v21[0];
-        *a6 = v14;
+        *category = v21[0];
+        *outMode = v14;
         v15 = v13;
         v16 = v20;
         goto LABEL_8;
@@ -790,11 +790,11 @@ LABEL_8:
   return v6;
 }
 
-- (int)setDuckScalarForVoiceOver:(float)a3
+- (int)setDuckScalarForVoiceOver:(float)over
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v6 = a3;
+  *&v6 = over;
   v7 = [v5 initWithFloat:v6];
   mFigController = self->mFigController;
   v9 = *(*(CMBaseObjectGetVTable() + 8) + 56);
@@ -821,7 +821,7 @@ LABEL_6:
   return v10;
 }
 
-- (int)getDuckScalarForVoiceOver:(float *)a3
+- (int)getDuckScalarForVoiceOver:(float *)over
 {
   v11[22] = *MEMORY[0x1E69E9840];
   v11[0] = 0;
@@ -843,11 +843,11 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a3)
+  if (over)
   {
     [v11[0] floatValue];
     v6 = 0;
-    *a3 = v7;
+    *over = v7;
   }
 
   else
@@ -921,7 +921,7 @@ LABEL_6:
   return v4(mFigController, 7, 0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)toggleActiveCategoryMutedForRoute:(id)a3 andDeviceIdentifier:(id)a4
+- (BOOL)toggleActiveCategoryMutedForRoute:(id)route andDeviceIdentifier:(id)identifier
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -932,10 +932,10 @@ LABEL_6:
   }
 
   v9 = *(VTable + 16) + 8;
-  return v8(mFigController, 9, 0, 0, a3, a4, 0, 0, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v8(mFigController, 9, 0, 0, route, identifier, 0, 0, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)getActiveCategoryMuted:(BOOL *)a3
+- (BOOL)getActiveCategoryMuted:(BOOL *)muted
 {
   v10 = 0;
   mFigController = self->mFigController;
@@ -953,11 +953,11 @@ LABEL_6:
     return 0;
   }
 
-  *a3 = v10 != 0;
+  *muted = v10 != 0;
   return 1;
 }
 
-- (BOOL)getActiveCategoryMuted:(BOOL *)a3 forRoute:(id)a4 andDeviceIdentifier:(id)a5
+- (BOOL)getActiveCategoryMuted:(BOOL *)muted forRoute:(id)route andDeviceIdentifier:(id)identifier
 {
   v14 = 0;
   mFigController = self->mFigController;
@@ -970,16 +970,16 @@ LABEL_6:
 
   v11 = *(VTable + 16) + 8;
   v13 = 0;
-  if (v10(mFigController, 10, 0, 0, a4, a5, 0, 0, 0.0, 0.0, 0.0, &v14, 0, 0, v13))
+  if (v10(mFigController, 10, 0, 0, route, identifier, 0, 0, 0.0, 0.0, 0.0, &v14, 0, 0, v13))
   {
     return 0;
   }
 
-  *a3 = v14 != 0;
+  *muted = v14 != 0;
   return 1;
 }
 
-- (BOOL)changeVolumeBy:(float)a3 forCategory:(id)a4
+- (BOOL)changeVolumeBy:(float)by forCategory:(id)category
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -990,12 +990,12 @@ LABEL_6:
   }
 
   v9 = *(VTable + 16) + 8;
-  return v8(mFigController, 11, a4, 0, 0, 0, 0, 0, a3, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v8(mFigController, 11, category, 0, 0, 0, 0, 0, by, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)changeVolume:(BOOL)a3 forCategory:(id)a4 mode:(id)a5
+- (BOOL)changeVolume:(BOOL)volume forCategory:(id)category mode:(id)mode
 {
-  if (a3)
+  if (volume)
   {
     v7 = 0.0625;
   }
@@ -1014,10 +1014,10 @@ LABEL_6:
   }
 
   v11 = *(VTable + 16) + 8;
-  return v10(mFigController, 11, a4, a5, 0, 0, 0, 0, v7, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v10(mFigController, 11, category, mode, 0, 0, 0, 0, v7, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)setVolumeTo:(float)a3 forCategory:(id)a4 retainFullMute:(BOOL)a5
+- (BOOL)setVolumeTo:(float)to forCategory:(id)category retainFullMute:(BOOL)mute
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -1028,10 +1028,10 @@ LABEL_6:
   }
 
   v11 = *(VTable + 16) + 8;
-  return v10(mFigController, 12, a4, 0, 0, 0, 0, 0, a3, 0.0, 0.0, 0, 0, 0, a5) == 0;
+  return v10(mFigController, 12, category, 0, 0, 0, 0, 0, to, 0.0, 0.0, 0, 0, 0, mute) == 0;
 }
 
-- (BOOL)setVolumeTo:(float)a3 forCategory:(id)a4 mode:(id)a5
+- (BOOL)setVolumeTo:(float)to forCategory:(id)category mode:(id)mode
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -1042,17 +1042,17 @@ LABEL_6:
   }
 
   v11 = *(VTable + 16) + 8;
-  return v10(mFigController, 12, a4, a5, 0, 0, 0, 0, a3, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v10(mFigController, 12, category, mode, 0, 0, 0, 0, to, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
-- (BOOL)setPickedRouteWithPassword:(id)a3 withPassword:(id)a4
+- (BOOL)setPickedRouteWithPassword:(id)password withPassword:(id)withPassword
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = v7;
-  if (a3)
+  if (password)
   {
-    [v7 addEntriesFromDictionary:a3];
-    [v8 setObject:a4 forKey:@"PortPassword"];
+    [v7 addEntriesFromDictionary:password];
+    [v8 setObject:withPassword forKey:@"PortPassword"];
     mFigController = self->mFigController;
     VTable = CMBaseObjectGetVTable();
     v11 = *(*(VTable + 8) + 56);
@@ -1076,7 +1076,7 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)getVolume:(float *)a3 forCategory:(id)a4 mode:(id)a5
+- (BOOL)getVolume:(float *)volume forCategory:(id)category mode:(id)mode
 {
   mFigController = self->mFigController;
   VTable = CMBaseObjectGetVTable();
@@ -1087,7 +1087,7 @@ LABEL_6:
   }
 
   v11 = *(VTable + 16) + 8;
-  return v10(mFigController, 13, a4, a5, 0, 0, 0, a3, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
+  return v10(mFigController, 13, category, mode, 0, 0, 0, volume, 0.0, 0.0, 0.0, 0, 0, 0, 0) == 0;
 }
 
 - (BOOL)getSilentMode
@@ -1097,7 +1097,7 @@ LABEL_6:
   return [v2 BOOLValue];
 }
 
-- (BOOL)getSilentMode:(BOOL *)a3 error:(id *)a4
+- (BOOL)getSilentMode:(BOOL *)mode error:(id *)error
 {
   v14 = 0;
   mFigController = self->mFigController;
@@ -1107,7 +1107,7 @@ LABEL_6:
   {
     v12 = 0;
     v11 = 4294954514;
-    if (!a3)
+    if (!mode)
     {
       goto LABEL_6;
     }
@@ -1118,24 +1118,24 @@ LABEL_6:
   v10 = *(VTable + 8) + 48;
   v11 = v9(mFigController, @"SilentModeEnabled", *MEMORY[0x1E695E480], &v14);
   v12 = v14;
-  if (a3)
+  if (mode)
   {
 LABEL_5:
-    *a3 = [v12 BOOLValue];
+    *mode = [v12 BOOLValue];
     v12 = v14;
   }
 
 LABEL_6:
 
-  if (a4)
+  if (error)
   {
-    *a4 = -[AVSystemController errorWithCode:description:](self, "errorWithCode:description:", v11, [MEMORY[0x1E696AEC0] stringWithFormat:@"Error querying SilentModeEnabled with err = %d", v11]);
+    *error = -[AVSystemController errorWithCode:description:](self, "errorWithCode:description:", v11, [MEMORY[0x1E696AEC0] stringWithFormat:@"Error querying SilentModeEnabled with err = %d", v11]);
   }
 
   return v11 == 0;
 }
 
-- (id)routeForCategory:(id)a3
+- (id)routeForCategory:(id)category
 {
   v11 = 0;
   mFigController = self->mFigController;
@@ -1144,7 +1144,7 @@ LABEL_6:
   if (v6)
   {
     v7 = *(VTable + 16) + 16;
-    v6(mFigController, a3, &v11, 0);
+    v6(mFigController, category, &v11, 0);
     v8 = v11;
   }
 
@@ -1157,20 +1157,20 @@ LABEL_6:
   return v11;
 }
 
-- (id)volumeCategoryForAudioCategory:(id)a3
+- (id)volumeCategoryForAudioCategory:(id)category
 {
   if (volumeCategoryForAudioCategory__onceToken != -1)
   {
     [AVSystemController volumeCategoryForAudioCategory:];
   }
 
-  if (!a3)
+  if (!category)
   {
-    a3 = @"Audio/Video";
+    category = @"Audio/Video";
   }
 
   [volumeCategoryForAudioCategory__volumeCategoryForAudioCategoryCacheLock lock];
-  v10 = [volumeCategoryForAudioCategory__volumeCategoryForAudioCategoryCache valueForKey:a3];
+  v10 = [volumeCategoryForAudioCategory__volumeCategoryForAudioCategoryCache valueForKey:category];
   [volumeCategoryForAudioCategory__volumeCategoryForAudioCategoryCacheLock unlock];
   if (!v10)
   {
@@ -1180,10 +1180,10 @@ LABEL_6:
     if (v8)
     {
       v9 = *(VTable + 16) + 24;
-      if (!v8(mFigController, a3, 0, &v10, 0))
+      if (!v8(mFigController, category, 0, &v10, 0))
       {
         [volumeCategoryForAudioCategory__volumeCategoryForAudioCategoryCacheLock lock];
-        [volumeCategoryForAudioCategory__volumeCategoryForAudioCategoryCache setValue:v10 forKey:a3];
+        [volumeCategoryForAudioCategory__volumeCategoryForAudioCategoryCache setValue:v10 forKey:category];
         [volumeCategoryForAudioCategory__volumeCategoryForAudioCategoryCacheLock unlock];
       }
     }
@@ -1215,12 +1215,12 @@ id __53__AVSystemController_volumeCategoryForAudioCategory___block_invoke()
   return v4(mFigController);
 }
 
-- (int)getInputMute:(id *)a3 outMuteValue:(BOOL *)a4
+- (int)getInputMute:(id *)mute outMuteValue:(BOOL *)value
 {
   v15 = *MEMORY[0x1E69E9840];
   mFigController = self->mFigController;
-  v6 = *&a3->var0[4];
-  v13 = *a3->var0;
+  v6 = *&mute->var0[4];
+  v13 = *mute->var0;
   v14 = v6;
   VTable = CMBaseObjectGetVTable();
   v8 = *(*(VTable + 16) + 72);
@@ -1229,7 +1229,7 @@ id __53__AVSystemController_volumeCategoryForAudioCategory___block_invoke()
     v9 = *(VTable + 16) + 72;
     v12[0] = v13;
     v12[1] = v14;
-    result = v8(mFigController, v12, a4);
+    result = v8(mFigController, v12, value);
   }
 
   else
@@ -1256,14 +1256,14 @@ id __53__AVSystemController_volumeCategoryForAudioCategory___block_invoke()
   return v4(mFigController);
 }
 
-- (int)allowAppToInitiateRecordingTemporarily:(id)a3
+- (int)allowAppToInitiateRecordingTemporarily:(id)temporarily
 {
   v10 = *MEMORY[0x1E69E9840];
   mFigController = self->mFigController;
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 88);
   if (v5)
   {
-    v6 = v5(mFigController, a3);
+    v6 = v5(mFigController, temporarily);
     if (!v6)
     {
       goto LABEL_6;
@@ -1283,14 +1283,14 @@ LABEL_6:
   return v6;
 }
 
-- (int)grantMediaEndowmentWithEnvironmentID:(id)a3 endowmentPayload:(id)a4
+- (int)grantMediaEndowmentWithEnvironmentID:(id)d endowmentPayload:(id)payload
 {
   v12 = *MEMORY[0x1E69E9840];
   mFigController = self->mFigController;
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 96);
   if (v7)
   {
-    v8 = v7(mFigController, a3, a4);
+    v8 = v7(mFigController, d, payload);
     if (!v8)
     {
       goto LABEL_6;
@@ -1310,14 +1310,14 @@ LABEL_6:
   return v8;
 }
 
-- (int)revokeMediaEndowmentWithEnvironmentID:(id)a3
+- (int)revokeMediaEndowmentWithEnvironmentID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
   mFigController = self->mFigController;
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 104);
   if (v5)
   {
-    v6 = v5(mFigController, a3);
+    v6 = v5(mFigController, d);
     if (!v6)
     {
       goto LABEL_6;
@@ -1337,27 +1337,27 @@ LABEL_6:
   return v6;
 }
 
-- (id)pickableRoutesForCategory:(id)a3 andMode:(id)a4
+- (id)pickableRoutesForCategory:(id)category andMode:(id)mode
 {
   v13 = 0;
-  if (a3)
+  if (category)
   {
-    v4 = a3;
+    categoryCopy = category;
   }
 
   else
   {
-    v4 = @"Audio/Video";
+    categoryCopy = @"Audio/Video";
   }
 
-  if (a4)
+  if (mode)
   {
-    v5 = a4;
+    modeCopy = mode;
   }
 
   else
   {
-    v5 = @"Default";
+    modeCopy = @"Default";
   }
 
   mFigController = self->mFigController;
@@ -1366,7 +1366,7 @@ LABEL_6:
   if (v8)
   {
     v9 = *(VTable + 16) + 32;
-    v8(mFigController, v4, v5, &v13);
+    v8(mFigController, categoryCopy, modeCopy, &v13);
     v10 = v13;
   }
 
@@ -1387,17 +1387,17 @@ LABEL_6:
   }
 }
 
-- (id)pickableRoutesForCategory:(id)a3
+- (id)pickableRoutesForCategory:(id)category
 {
   v11 = 0;
-  if (a3)
+  if (category)
   {
-    v3 = a3;
+    categoryCopy = category;
   }
 
   else
   {
-    v3 = @"Audio/Video";
+    categoryCopy = @"Audio/Video";
   }
 
   mFigController = self->mFigController;
@@ -1406,7 +1406,7 @@ LABEL_6:
   if (v6)
   {
     v7 = *(VTable + 16) + 32;
-    v6(mFigController, v3, @"Default", &v11);
+    v6(mFigController, categoryCopy, @"Default", &v11);
     v8 = v11;
   }
 
@@ -1441,7 +1441,7 @@ LABEL_6:
   return v4(mFigController, @"OverrideToPartnerRoute", 0) == 0;
 }
 
-- (BOOL)hasRouteSharingPolicyLongFormVideo:(id)a3
+- (BOOL)hasRouteSharingPolicyLongFormVideo:(id)video
 {
   v11 = 0;
   mFigController = self->mFigController;
@@ -1453,11 +1453,11 @@ LABEL_6:
   }
 
   v7 = *(VTable + 16) + 40;
-  v8 = v6(mFigController, a3, &v11);
+  v8 = v6(mFigController, video, &v11);
   return v11 && v8 == 0;
 }
 
-- (BOOL)remoteDeviceControlIsAllowed:(unsigned int *)a3
+- (BOOL)remoteDeviceControlIsAllowed:(unsigned int *)allowed
 {
   v4 = 1;
   v9 = 1;
@@ -1467,11 +1467,11 @@ LABEL_6:
   {
     v7 = v6(mFigController, &v9);
     v4 = v9;
-    if (a3)
+    if (allowed)
     {
       if (!v7)
       {
-        *a3 = v9;
+        *allowed = v9;
       }
     }
   }
@@ -1479,18 +1479,18 @@ LABEL_6:
   return v4 == 0;
 }
 
-- (BOOL)addRemoteDeviceID:(id)a3
+- (BOOL)addRemoteDeviceID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
     [(NSLock *)self->mRemoteDeviceIDsLock lock];
-    [(NSMutableSet *)self->mRemoteDeviceIDs addObject:a3];
-    v5 = [(NSMutableSet *)self->mRemoteDeviceIDs allObjects];
+    [(NSMutableSet *)self->mRemoteDeviceIDs addObject:d];
+    allObjects = [(NSMutableSet *)self->mRemoteDeviceIDs allObjects];
     [(NSLock *)self->mRemoteDeviceIDsLock unlock];
     mFigController = self->mFigController;
     v7 = *(*(CMBaseObjectGetVTable() + 8) + 56);
-    if (v7 && !v7(mFigController, @"RemoteDeviceIDs", v5))
+    if (v7 && !v7(mFigController, @"RemoteDeviceIDs", allObjects))
     {
       v9 = 1;
     }
@@ -1513,18 +1513,18 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)removeRemoteDeviceID:(id)a3
+- (BOOL)removeRemoteDeviceID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
     [(NSLock *)self->mRemoteDeviceIDsLock lock];
-    [(NSMutableSet *)self->mRemoteDeviceIDs removeObject:a3];
-    v5 = [(NSMutableSet *)self->mRemoteDeviceIDs allObjects];
+    [(NSMutableSet *)self->mRemoteDeviceIDs removeObject:d];
+    allObjects = [(NSMutableSet *)self->mRemoteDeviceIDs allObjects];
     [(NSLock *)self->mRemoteDeviceIDsLock unlock];
     mFigController = self->mFigController;
     v7 = *(*(CMBaseObjectGetVTable() + 8) + 56);
-    if (v7 && !v7(mFigController, @"RemoteDeviceIDs", v5))
+    if (v7 && !v7(mFigController, @"RemoteDeviceIDs", allObjects))
     {
       v9 = 1;
     }
@@ -1547,9 +1547,9 @@ LABEL_6:
   return v9;
 }
 
-- (int)getVolumeButtonDelta:(id)a3 outVolumeDelta:(float *)a4
+- (int)getVolumeButtonDelta:(id)delta outVolumeDelta:(float *)volumeDelta
 {
-  if (!a4)
+  if (!volumeDelta)
   {
     return -12980;
   }
@@ -1564,7 +1564,7 @@ LABEL_6:
 
   v9 = *(VTable + 16) + 128;
 
-  return v8(mFigController, a3, a4);
+  return v8(mFigController, delta, volumeDelta);
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface BRCRecentsEnumerator
-+ (void)dropLegacyCoreSpotlightIndexIfNeededWithCompletionHandler:(id)a3;
-- (BOOL)hasDeletedFileObjectID:(id)a3;
-- (BRCRecentsEnumerator)initWithAccountSession:(id)a3;
-- (char)computeTombstoneEntryType:(id)a3;
-- (id)_deletedDocIdResultSetFromNotifRank:(unint64_t)a3 batchSize:(unint64_t)a4;
-- (id)changeTokenForNotifRank:(unint64_t)a3;
++ (void)dropLegacyCoreSpotlightIndexIfNeededWithCompletionHandler:(id)handler;
+- (BOOL)hasDeletedFileObjectID:(id)d;
+- (BRCRecentsEnumerator)initWithAccountSession:(id)session;
+- (char)computeTombstoneEntryType:(id)type;
+- (id)_deletedDocIdResultSetFromNotifRank:(unint64_t)rank batchSize:(unint64_t)size;
+- (id)changeTokenForNotifRank:(unint64_t)rank;
 - (void)_activeSetDidChange;
 - (void)_deleteAllRanks;
-- (void)_enumerateChangesFromChangeToken:(id)a3 limit:(unint64_t)a4 completion:(id)a5;
-- (void)_handleResetForRowID:(int64_t)a3 notifRank:(unint64_t)a4 completionHandler:(id)a5;
-- (void)_readyForIndexingWithAckedRank:(unint64_t)a3;
+- (void)_enumerateChangesFromChangeToken:(id)token limit:(unint64_t)limit completion:(id)completion;
+- (void)_handleResetForRowID:(int64_t)d notifRank:(unint64_t)rank completionHandler:(id)handler;
+- (void)_readyForIndexingWithAckedRank:(unint64_t)rank;
 - (void)cancel;
 - (void)close;
 - (void)dealloc;
-- (void)enumerateChangesFromChangeToken:(id)a3 limit:(unint64_t)a4 completion:(id)a5;
-- (void)garbageCollectRanksPreceding:(unint64_t)a3;
-- (void)itemWasDeletedWithFileObjectID:(id)a3 notifRank:(unint64_t)a4;
+- (void)enumerateChangesFromChangeToken:(id)token limit:(unint64_t)limit completion:(id)completion;
+- (void)garbageCollectRanksPreceding:(unint64_t)preceding;
+- (void)itemWasDeletedWithFileObjectID:(id)d notifRank:(unint64_t)rank;
 - (void)maxNotifRankWasFlushed;
 - (void)resume;
 @end
@@ -59,8 +59,8 @@ uint64_t __46__BRCRecentsEnumerator_maxNotifRankWasFlushed__block_invoke(uint64_
 
 - (void)maxNotifRankWasFlushed
 {
-  v3 = [(BRCAccountSession *)self->_session clientDB];
-  [v3 assertOnQueue];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB assertOnQueue];
 
   v4 = [(BRCPersistedState *)BRCClientRanksPersistedState loadFromClientStateInSession:self->_session];
   v5 = [v4 nextNotifRank] - 1;
@@ -76,10 +76,10 @@ uint64_t __46__BRCRecentsEnumerator_maxNotifRankWasFlushed__block_invoke(uint64_
   brc_task_tracker_async_with_logs(tracker, queue, v8, &__block_literal_global_83);
 }
 
-+ (void)dropLegacyCoreSpotlightIndexIfNeededWithCompletionHandler:(id)a3
++ (void)dropLegacyCoreSpotlightIndexIfNeededWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlerCopy = handler;
   if (([MEMORY[0x277CC34A8] isIndexingAvailable] & 1) == 0)
   {
     v5 = brc_bread_crumbs();
@@ -105,9 +105,9 @@ uint64_t __46__BRCRecentsEnumerator_maxNotifRankWasFlushed__block_invoke(uint64_
 
 LABEL_8:
 
-    if (v3)
+    if (handlerCopy)
     {
-      v3[2](v3, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     goto LABEL_15;
@@ -133,7 +133,7 @@ LABEL_8:
   v12[1] = 3221225472;
   v12[2] = __82__BRCRecentsEnumerator_dropLegacyCoreSpotlightIndexIfNeededWithCompletionHandler___block_invoke;
   v12[3] = &unk_278501F20;
-  v13 = v3;
+  v13 = handlerCopy;
   [v10 deleteAllSearchableItemsWithCompletionHandler:v12];
 
 LABEL_15:
@@ -186,10 +186,10 @@ LABEL_8:
   }
 }
 
-- (char)computeTombstoneEntryType:(id)a3
+- (char)computeTombstoneEntryType:(id)type
 {
-  v3 = [a3 type];
-  if (v3 == 3)
+  type = [type type];
+  if (type == 3)
   {
     v4 = 5;
   }
@@ -199,7 +199,7 @@ LABEL_8:
     v4 = 3;
   }
 
-  if (v3 == 2)
+  if (type == 2)
   {
     return 4;
   }
@@ -212,11 +212,11 @@ LABEL_8:
 
 - (void)_deleteAllRanks
 {
-  v2 = [(BRCAccountSession *)self->_session clientDB];
-  [v2 execute:@"DELETE FROM tombstones"];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB execute:@"DELETE FROM tombstones"];
 }
 
-- (void)garbageCollectRanksPreceding:(unint64_t)a3
+- (void)garbageCollectRanksPreceding:(unint64_t)preceding
 {
   if (garbageCollectRanksPreceding__onceToken != -1)
   {
@@ -225,11 +225,11 @@ LABEL_8:
 
   v5 = time(0);
   v6 = v5 + *&garbageCollectRanksPreceding__tombstonesAgeDeltaAfterEnumerated;
-  v7 = [(BRCAccountSession *)self->_session clientDB];
-  [v7 execute:{@"UPDATE tombstones SET expiration = %ld WHERE notif_rank < %llu AND expiration IS NULL", v6, a3}];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB execute:{@"UPDATE tombstones SET expiration = %ld WHERE notif_rank < %llu AND expiration IS NULL", v6, preceding}];
 
-  v8 = [(BRCAccountSession *)self->_session clientDB];
-  [v8 execute:{@"DELETE FROM tombstones WHERE notif_rank < %llu AND expiration IS NOT NULL AND expiration < %ld", a3, v5}];
+  clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB2 execute:{@"DELETE FROM tombstones WHERE notif_rank < %llu AND expiration IS NOT NULL AND expiration < %ld", preceding, v5}];
 }
 
 void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
@@ -239,7 +239,7 @@ void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
   garbageCollectRanksPreceding__tombstonesAgeDeltaAfterEnumerated = v0;
 }
 
-- (void)_readyForIndexingWithAckedRank:(unint64_t)a3
+- (void)_readyForIndexingWithAckedRank:(unint64_t)rank
 {
   v17 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -249,7 +249,7 @@ void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
   {
     flushedNotifRank = self->_flushedNotifRank;
     v11 = 134218498;
-    v12 = a3;
+    rankCopy = rank;
     v13 = 2048;
     v14 = flushedNotifRank;
     v15 = 2112;
@@ -257,7 +257,7 @@ void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
     _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] Learning index acked rank %llu (flushed rank %llu)%@", &v11, 0x20u);
   }
 
-  if (a3 + 1 > self->_flushedNotifRank)
+  if (rank + 1 > self->_flushedNotifRank)
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -271,55 +271,55 @@ void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)changeTokenForNotifRank:(unint64_t)a3
+- (id)changeTokenForNotifRank:(unint64_t)rank
 {
   v5 = objc_alloc_init(BRCRecentsChangeToken);
   [(BRCRecentsChangeToken *)v5 setDatabaseID:[(BRCAccountSession *)self->_session databaseIDHash]];
-  [(BRCRecentsChangeToken *)v5 setNotifRank:a3];
-  v6 = [(BRCRecentsChangeToken *)v5 toData];
+  [(BRCRecentsChangeToken *)v5 setNotifRank:rank];
+  toData = [(BRCRecentsChangeToken *)v5 toData];
 
-  return v6;
+  return toData;
 }
 
-- (void)_handleResetForRowID:(int64_t)a3 notifRank:(unint64_t)a4 completionHandler:(id)a5
+- (void)_handleResetForRowID:(int64_t)d notifRank:(unint64_t)rank completionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = brc_bread_crumbs();
   v10 = brc_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v44 = a3;
+    dCopy = d;
     v45 = 2048;
-    v46 = a4;
+    rankCopy = rank;
     v47 = 2112;
     v48 = v9;
     _os_log_debug_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] handling reset for rowID %lld, notif rank: %llu%@", buf, 0x20u);
   }
 
-  v11 = [MEMORY[0x277CC64A8] br_sharedProviderManager];
+  br_sharedProviderManager = [MEMORY[0x277CC64A8] br_sharedProviderManager];
   session = self->_session;
-  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v14 = [(BRCAccountSession *)session serverZoneByRowID:v13];
-  v15 = [v14 clientZone];
+  clientZone = [v14 clientZone];
 
-  if ([v15 isPrivateZone])
+  if ([clientZone isPrivateZone])
   {
-    v32 = v11;
-    v33 = a4;
-    v16 = [v15 asPrivateClientZone];
-    v17 = [v16 appLibraries];
+    v32 = br_sharedProviderManager;
+    rankCopy2 = rank;
+    asPrivateClientZone = [clientZone asPrivateClientZone];
+    appLibraries = [asPrivateClientZone appLibraries];
 
-    v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v17, "count")}];
+    v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(appLibraries, "count")}];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v19 = [v15 asPrivateClientZone];
-    v20 = [v19 appLibraries];
+    asPrivateClientZone2 = [clientZone asPrivateClientZone];
+    appLibraries2 = [asPrivateClientZone2 appLibraries];
 
-    v21 = [v20 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    v21 = [appLibraries2 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v21)
     {
       v22 = v21;
@@ -331,20 +331,20 @@ void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
         {
           if (*v39 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(appLibraries2);
           }
 
-          v25 = [*(*(&v38 + 1) + 8 * v24) appLibraryID];
-          if (v25)
+          appLibraryID = [*(*(&v38 + 1) + 8 * v24) appLibraryID];
+          if (appLibraryID)
           {
-            [v18 addObject:v25];
+            [v18 addObject:appLibraryID];
           }
 
           ++v24;
         }
 
         while (v22 != v24);
-        v22 = [v20 countByEnumeratingWithState:&v38 objects:v42 count:16];
+        v22 = [appLibraries2 countByEnumeratingWithState:&v38 objects:v42 count:16];
       }
 
       while (v22);
@@ -355,9 +355,9 @@ void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v44 = v18;
+      dCopy = v18;
       v45 = 2112;
-      v46 = v26;
+      rankCopy = v26;
       _os_log_impl(&dword_223E7A000, v27, OS_LOG_TYPE_DEFAULT, "[WARNING] Dropping spotlight index for %@ due to a reset%@", buf, 0x16u);
     }
 
@@ -367,10 +367,10 @@ void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
     v34[3] = &unk_278500338;
     v34[4] = self;
     v35 = v18;
-    v37 = v33;
-    v36 = v8;
+    v37 = rankCopy2;
+    v36 = handlerCopy;
     v28 = v18;
-    v11 = v32;
+    br_sharedProviderManager = v32;
     [v32 deleteSearchableItemsWithSpotlightDomainIdentifiers:v28 completionHandler:v34];
 
     goto LABEL_20;
@@ -381,15 +381,15 @@ void __53__BRCRecentsEnumerator_garbageCollectRanksPreceding___block_invoke()
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v44 = v29;
+    dCopy = v29;
     _os_log_impl(&dword_223E7A000, v30, OS_LOG_TYPE_DEFAULT, "[WARNING] reset zone is not a private zone, skipping%@", buf, 0xCu);
   }
 
-  [(BRCRecentsEnumerator *)self _readyForIndexingWithAckedRank:a4];
-  if (v8)
+  [(BRCRecentsEnumerator *)self _readyForIndexingWithAckedRank:rank];
+  if (handlerCopy)
   {
-    v17 = [(BRCRecentsEnumerator *)self changeTokenForNotifRank:a4];
-    (*(v8 + 2))(v8, v17, 0);
+    appLibraries = [(BRCRecentsEnumerator *)self changeTokenForNotifRank:rank];
+    (*(handlerCopy + 2))(handlerCopy, appLibraries, 0);
 LABEL_20:
   }
 
@@ -458,19 +458,19 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_deletedDocIdResultSetFromNotifRank:(unint64_t)a3 batchSize:(unint64_t)a4
+- (id)_deletedDocIdResultSetFromNotifRank:(unint64_t)rank batchSize:(unint64_t)size
 {
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(BRCPQLConnection *)self->_indexingDB fetch:@"SELECT file_object_id, file_object_id_type, notif_rank FROM tombstones    WHERE notif_rank >= %lld AND expiration IS NULL ORDER BY notif_rank ASC LIMIT %lld", a3, a4];
+  v7 = [(BRCPQLConnection *)self->_indexingDB fetch:@"SELECT file_object_id, file_object_id_type, notif_rank FROM tombstones    WHERE notif_rank >= %lld AND expiration IS NULL ORDER BY notif_rank ASC LIMIT %lld", rank, size];
 
   return v7;
 }
 
-- (void)_enumerateChangesFromChangeToken:(id)a3 limit:(unint64_t)a4 completion:(id)a5
+- (void)_enumerateChangesFromChangeToken:(id)token limit:(unint64_t)limit completion:(id)completion
 {
   v97 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v49 = a5;
+  tokenCopy = token;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v86 = 0;
   v87 = &v86;
@@ -484,12 +484,12 @@ LABEL_6:
   v79 = &v78;
   v80 = 0x2020000000;
   v81 = 0;
-  v48 = v8;
-  v50 = self;
-  if (v8)
+  v48 = tokenCopy;
+  selfCopy = self;
+  if (tokenCopy)
   {
-    v9 = [v8 databaseID];
-    if (v9 != [(BRCAccountSession *)self->_session databaseIDHash])
+    databaseID = [tokenCopy databaseID];
+    if (databaseID != [(BRCAccountSession *)self->_session databaseIDHash])
     {
       v32 = brc_bread_crumbs();
       v33 = brc_default_log();
@@ -498,22 +498,22 @@ LABEL_6:
         [BRCRecentsEnumerator _enumerateChangesFromChangeToken:limit:completion:];
       }
 
-      v34 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+      clientTruthWorkloop = [(BRCAccountSession *)self->_session clientTruthWorkloop];
       v76[0] = MEMORY[0x277D85DD0];
       v76[1] = 3221225472;
       v76[2] = __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completion___block_invoke;
       v76[3] = &unk_278500048;
       v76[4] = self;
-      v77 = v49;
-      dispatch_async(v34, v76);
+      v77 = completionCopy;
+      dispatch_async(clientTruthWorkloop, v76);
 
       goto LABEL_42;
     }
 
-    v10 = [v8 notifRank];
-    v8 = ([v8 notifRank] + 1);
+    notifRank = [tokenCopy notifRank];
+    tokenCopy = ([tokenCopy notifRank] + 1);
     p_flushedNotifRank = &self->_flushedNotifRank;
-    if (v8 > self->_flushedNotifRank)
+    if (tokenCopy > self->_flushedNotifRank)
     {
       v11 = brc_bread_crumbs();
       v12 = brc_default_log();
@@ -521,7 +521,7 @@ LABEL_6:
       {
         v40 = *p_flushedNotifRank;
         *buf = 134218498;
-        v92 = v8;
+        v92 = tokenCopy;
         v93 = 2048;
         v94 = v40;
         v95 = 2112;
@@ -529,10 +529,10 @@ LABEL_6:
         _os_log_debug_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] incoming rank is newer than what we know about: %lld > %lld, stopping here%@", buf, 0x20u);
       }
 
-      if (v49)
+      if (completionCopy)
       {
-        v13 = [(BRCRecentsEnumerator *)self changeTokenForNotifRank:v10];
-        (*(v49 + 2))(v49, 0, 0, v13, 0);
+        v13 = [(BRCRecentsEnumerator *)self changeTokenForNotifRank:notifRank];
+        (*(completionCopy + 2))(completionCopy, 0, 0, v13, 0);
       }
 
       goto LABEL_42;
@@ -546,12 +546,12 @@ LABEL_6:
 
   v14 = brc_bread_crumbs();
   v15 = brc_default_log();
-  v51 = a4;
+  limitCopy = limit;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     v39 = *p_flushedNotifRank;
     *buf = 134218498;
-    v92 = v8;
+    v92 = tokenCopy;
     v93 = 2048;
     v94 = v39;
     v95 = 2112;
@@ -559,7 +559,7 @@ LABEL_6:
     _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] enumerating changes from notif rank %llu (max %llu)%@", buf, 0x20u);
   }
 
-  v47 = v8;
+  v47 = tokenCopy;
 
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
@@ -569,48 +569,48 @@ LABEL_6:
   v75[5] = &v82;
   v75[6] = &v78;
   v46 = MEMORY[0x22AA4A310](v75);
-  v44 = [(BRCAccountSession *)self->_session itemsNeedingIndexingEnumeratorFromNotifRank:v8 batchSize:a4 db:self->_indexingDB];
-  v45 = [(BRCRecentsEnumerator *)self _deletedDocIdResultSetFromNotifRank:v8 batchSize:a4];
-  v16 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+  v44 = [(BRCAccountSession *)self->_session itemsNeedingIndexingEnumeratorFromNotifRank:tokenCopy batchSize:limit db:self->_indexingDB];
+  v45 = [(BRCRecentsEnumerator *)self _deletedDocIdResultSetFromNotifRank:tokenCopy batchSize:limit];
+  clientTruthWorkloop2 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completion___block_invoke_91;
   block[3] = &unk_278500D50;
   block[4] = self;
-  block[5] = v8;
-  dispatch_async(v16, block);
+  block[5] = tokenCopy;
+  dispatch_async(clientTruthWorkloop2, block);
 
   (v46)[2](v46, v45);
-  if (v79[3] == v8 && *(v83 + 24) == 2)
+  if (v79[3] == tokenCopy && *(v83 + 24) == 2)
   {
     v17 = v87[3];
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
     v72[2] = __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completion___block_invoke_2_92;
     v72[3] = &unk_278505360;
-    v73 = v49;
-    [(BRCRecentsEnumerator *)self _handleResetForRowID:v17 notifRank:v8 completionHandler:v72];
+    v73 = completionCopy;
+    [(BRCRecentsEnumerator *)self _handleResetForRowID:v17 notifRank:tokenCopy completionHandler:v72];
   }
 
   else
   {
     context = objc_autoreleasePoolPush();
     v18 = objc_alloc_init(BRCRecentsChangeToken);
-    v19 = [[BRCRecentsEnumeratorBatch alloc] initWithBatchSize:a4];
-    [(BRCRecentsChangeToken *)v18 setDatabaseID:[(BRCAccountSession *)v50->_session databaseIDHash]];
+    v19 = [[BRCRecentsEnumeratorBatch alloc] initWithBatchSize:limit];
+    [(BRCRecentsChangeToken *)v18 setDatabaseID:[(BRCAccountSession *)selfCopy->_session databaseIDHash]];
     v43 = v18;
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completion___block_invoke_3;
     v63[3] = &unk_278505388;
     v68 = &v78;
-    v63[4] = v50;
+    v63[4] = selfCopy;
     v69 = &v82;
     v70 = &v86;
     v20 = v19;
     v64 = v20;
     v66 = &__block_literal_global_89_2;
-    v71 = a4;
+    limitCopy2 = limit;
     v67 = v46;
     v65 = v45;
     v21 = MEMORY[0x22AA4A310](v63);
@@ -651,7 +651,7 @@ LABEL_6:
           if ([v26 notifsRank] <= *p_flushedNotifRank)
           {
             [(BRCRecentsEnumeratorBatch *)v20 addIndexOfItem:v26];
-            if ([(BRCRecentsEnumeratorBatch *)v20 batchCount]< v51)
+            if ([(BRCRecentsEnumeratorBatch *)v20 batchCount]< limitCopy)
             {
               v29 = [(BRCRecentsEnumeratorBatch *)v20 rank]< *p_flushedNotifRank;
               goto LABEL_27;
@@ -694,13 +694,13 @@ LABEL_27:
     while ((v31 & 1) != 0);
 LABEL_38:
     [v22 close];
-    v35 = [(BRCRecentsEnumeratorBatch *)v20 rank];
-    if (!v35)
+    rank = [(BRCRecentsEnumeratorBatch *)v20 rank];
+    if (!rank)
     {
-      v35 = *p_flushedNotifRank;
+      rank = *p_flushedNotifRank;
     }
 
-    [(BRCRecentsChangeToken *)v43 setNotifRank:v35];
+    [(BRCRecentsChangeToken *)v43 setNotifRank:rank];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completion___block_invoke_96;
@@ -708,10 +708,10 @@ LABEL_38:
     v58 = v47;
     v36 = v20;
     v54 = v36;
-    v55 = v50;
+    v55 = selfCopy;
     v37 = v43;
     v56 = v37;
-    v57 = v49;
+    v57 = completionCopy;
     [(BRCRecentsEnumeratorBatch *)v36 listItems:v53];
 
     objc_autoreleasePoolPop(contexta);
@@ -915,10 +915,10 @@ void __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completio
   (*(v2 + 16))(v2, v4, v3, v5, 0);
 }
 
-- (void)enumerateChangesFromChangeToken:(id)a3 limit:(unint64_t)a4 completion:(id)a5
+- (void)enumerateChangesFromChangeToken:(id)token limit:(unint64_t)limit completion:(id)completion
 {
-  v8 = a5;
-  v9 = [BRCRecentsChangeToken changeTokenFromData:a3];
+  completionCopy = completion;
+  v9 = [BRCRecentsChangeToken changeTokenFromData:token];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __73__BRCRecentsEnumerator_enumerateChangesFromChangeToken_limit_completion___block_invoke;
@@ -926,8 +926,8 @@ void __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completio
   v20[4] = self;
   v10 = v9;
   v21 = v10;
-  v23 = a4;
-  v11 = v8;
+  limitCopy = limit;
+  v11 = completionCopy;
   v22 = v11;
   v12 = MEMORY[0x22AA4A310](v20);
   v13 = v12;
@@ -939,7 +939,7 @@ void __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completio
   else
   {
     tracker = self->_tracker;
-    v15 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->_session clientTruthWorkloop];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __73__BRCRecentsEnumerator_enumerateChangesFromChangeToken_limit_completion___block_invoke_4;
@@ -951,7 +951,7 @@ void __74__BRCRecentsEnumerator__enumerateChangesFromChangeToken_limit_completio
     v16[2] = __73__BRCRecentsEnumerator_enumerateChangesFromChangeToken_limit_completion___block_invoke_5;
     v16[3] = &unk_278501520;
     v17 = v11;
-    brc_task_tracker_async_with_logs(tracker, v15, v18, v16);
+    brc_task_tracker_async_with_logs(tracker, clientTruthWorkloop, v18, v16);
   }
 }
 
@@ -1002,29 +1002,29 @@ void __73__BRCRecentsEnumerator_enumerateChangesFromChangeToken_limit_completion
   (*(v1 + 16))(v1, 0, 0, 0, v2);
 }
 
-- (BRCRecentsEnumerator)initWithAccountSession:(id)a3
+- (BRCRecentsEnumerator)initWithAccountSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v25.receiver = self;
   v25.super_class = BRCRecentsEnumerator;
   v6 = [(BRCRecentsEnumerator *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v8 = [BRCUserDefaults defaultsForMangledID:0];
     [v8 recentsEnumeratorPacerInterval];
     v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-    v10 = [(BRCAccountSession *)v7->_session readOnlyWorkloop];
+    readOnlyWorkloop = [(BRCAccountSession *)v7->_session readOnlyWorkloop];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(v9, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create_with_target_V2("recents-enumerator", v11, v10);
+    v12 = dispatch_queue_create_with_target_V2("recents-enumerator", v11, readOnlyWorkloop);
 
     queue = v7->_queue;
     v7->_queue = v12;
 
-    v14 = [v5 readOnlyDB];
+    readOnlyDB = [sessionCopy readOnlyDB];
     indexingDB = v7->_indexingDB;
-    v7->_indexingDB = v14;
+    v7->_indexingDB = readOnlyDB;
 
     v16 = v7->_queue;
     v17 = br_pacer_create();
@@ -1087,44 +1087,44 @@ void __47__BRCRecentsEnumerator_initWithAccountSession___block_invoke(uint64_t a
   [(BRCRecentsEnumerator *)&v2 dealloc];
 }
 
-- (void)itemWasDeletedWithFileObjectID:(id)a3 notifRank:(unint64_t)a4
+- (void)itemWasDeletedWithFileObjectID:(id)d notifRank:(unint64_t)rank
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(BRCAccountSession *)self->_session clientDB];
-  [v7 assertOnQueue];
+  dCopy = d;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB assertOnQueue];
 
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v14 = v6;
+    v14 = dCopy;
     v15 = 2048;
-    v16 = a4;
+    rankCopy = rank;
     v17 = 2112;
     v18 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] dropping item which was deleted %@ with notif rank %llu%@", buf, 0x20u);
   }
 
-  v10 = [(BRCRecentsEnumerator *)self computeTombstoneEntryType:v6];
-  v11 = [(BRCAccountSession *)self->_session clientDB];
-  [v11 execute:{@"INSERT INTO tombstones (file_object_id, file_object_id_type, notif_rank, expiration) VALUES (%lld, %d, %lld, NULL)", objc_msgSend(v6, "rawID"), v10, a4}];
+  v10 = [(BRCRecentsEnumerator *)self computeTombstoneEntryType:dCopy];
+  clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB2 execute:{@"INSERT INTO tombstones (file_object_id, file_object_id_type, notif_rank, expiration) VALUES (%lld, %d, %lld, NULL)", objc_msgSend(dCopy, "rawID"), v10, rank}];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasDeletedFileObjectID:(id)a3
+- (BOOL)hasDeletedFileObjectID:(id)d
 {
   session = self->_session;
-  v4 = a3;
-  v5 = [(BRCAccountSession *)session clientDB];
-  v6 = [v4 rawID];
+  dCopy = d;
+  clientDB = [(BRCAccountSession *)session clientDB];
+  rawID = [dCopy rawID];
 
-  v7 = [v5 numberWithSQL:{@"SELECT 1 FROM tombstones WHERE file_object_id = %lld LIMIT 1", v6}];
-  LOBYTE(v6) = [v7 BOOLValue];
+  v7 = [clientDB numberWithSQL:{@"SELECT 1 FROM tombstones WHERE file_object_id = %lld LIMIT 1", rawID}];
+  LOBYTE(rawID) = [v7 BOOLValue];
 
-  return v6;
+  return rawID;
 }
 
 + (void)dropLegacyCoreSpotlightIndexIfNeededWithCompletionHandler:.cold.1()

@@ -1,10 +1,10 @@
 @interface Gallery.ViewModel
-- (void)handleBackgroundChannelChangeNotification:(id)a3;
+- (void)handleBackgroundChannelChangeNotification:(id)notification;
 @end
 
 @implementation Gallery.ViewModel
 
-- (void)handleBackgroundChannelChangeNotification:(id)a3
+- (void)handleBackgroundChannelChangeNotification:(id)notification
 {
   v3 = sub_190D50FB0();
   v4 = *(v3 - 8);

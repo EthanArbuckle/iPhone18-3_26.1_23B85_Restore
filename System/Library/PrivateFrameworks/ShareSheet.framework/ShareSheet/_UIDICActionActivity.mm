@@ -3,7 +3,7 @@
 + (id)newLegacyDelegationActionActivityForPrint;
 + (id)newLegacyDelegationActionActivityForSaveToCameraRoll;
 + (id)newPreviewActionActivity;
-- (_UIDICActionActivity)initWithActivityType:(id)a3 activityImageName:(id)a4 localizedTitle:(id)a5;
+- (_UIDICActionActivity)initWithActivityType:(id)type activityImageName:(id)name localizedTitle:(id)title;
 - (id)description;
 - (void)_cleanup;
 - (void)performActivity;
@@ -17,8 +17,8 @@
   v8.receiver = self;
   v8.super_class = _UIDICActionActivity;
   v4 = [(UIActivity *)&v8 description];
-  v5 = [(_UIDICActionActivity *)self activityTitle];
-  v6 = [v3 stringWithFormat:@"%@ '%@'", v4, v5];
+  activityTitle = [(_UIDICActionActivity *)self activityTitle];
+  v6 = [v3 stringWithFormat:@"%@ '%@'", v4, activityTitle];
 
   return v6;
 }
@@ -63,20 +63,20 @@
   return v5;
 }
 
-- (_UIDICActionActivity)initWithActivityType:(id)a3 activityImageName:(id)a4 localizedTitle:(id)a5
+- (_UIDICActionActivity)initWithActivityType:(id)type activityImageName:(id)name localizedTitle:(id)title
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  nameCopy = name;
+  titleCopy = title;
   v15.receiver = self;
   v15.super_class = _UIDICActionActivity;
   v12 = [(UIActivity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actionActivityType, a3);
-    objc_storeStrong(&v13->_activityImageName, a4);
-    objc_storeStrong(&v13->_localizedTitle, a5);
+    objc_storeStrong(&v12->_actionActivityType, type);
+    objc_storeStrong(&v13->_activityImageName, name);
+    objc_storeStrong(&v13->_localizedTitle, title);
   }
 
   return v13;

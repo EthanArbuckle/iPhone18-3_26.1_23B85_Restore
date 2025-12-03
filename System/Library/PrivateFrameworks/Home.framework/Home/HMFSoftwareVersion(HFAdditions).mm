@@ -6,7 +6,7 @@
 
 - (uint64_t)hf_canSupportCoordination
 {
-  if ([a1 majorVersion] < 0xE || objc_msgSend(a1, "majorVersion") == 14 && objc_msgSend(a1, "minorVersion") < 7)
+  if ([self majorVersion] < 0xE || objc_msgSend(self, "majorVersion") == 14 && objc_msgSend(self, "minorVersion") < 7)
   {
     return 0;
   }

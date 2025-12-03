@@ -1,25 +1,25 @@
 @interface NWURLSessionWebSocketTask
-+ (BOOL)isSubclassOfClass:(Class)a3;
-+ (void)addWebSocketHeadersToRequest:(uint64_t)a1;
-- (BOOL)isKindOfClass:(Class)a3;
++ (BOOL)isSubclassOfClass:(Class)class;
++ (void)addWebSocketHeadersToRequest:(uint64_t)request;
+- (BOOL)isKindOfClass:(Class)class;
 - (id)error;
 - (id)response;
-- (void)_sendCloseCode:(int64_t)a3 reason:(id)a4;
-- (void)cancelWithCloseCode:(int64_t)a3 reason:(id)a4;
-- (void)completeTaskWithError:(id)a3 retryable:(BOOL)a4;
+- (void)_sendCloseCode:(int64_t)code reason:(id)reason;
+- (void)cancelWithCloseCode:(int64_t)code reason:(id)reason;
+- (void)completeTaskWithError:(id)error retryable:(BOOL)retryable;
 - (void)processWork;
 - (void)receiveMessage;
-- (void)receiveMessageWithCompletionHandler:(id)a3;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
-- (void)sendPingWithPongReceiveHandler:(id)a3;
+- (void)receiveMessageWithCompletionHandler:(id)handler;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
+- (void)sendPingWithPongReceiveHandler:(id)handler;
 - (void)startNextLoad;
 @end
 
 @implementation NWURLSessionWebSocketTask
 
-- (void)completeTaskWithError:(id)a3 retryable:(BOOL)a4
+- (void)completeTaskWithError:(id)error retryable:(BOOL)retryable
 {
-  v6 = a3;
+  errorCopy = error;
   if (!self)
   {
     nw_context_assert_queue(0);
@@ -29,7 +29,7 @@ LABEL_5:
     v7[2] = __61__NWURLSessionWebSocketTask_completeTaskWithError_retryable___block_invoke;
     v7[3] = &unk_1E6A3D760;
     v7[4] = self;
-    v8 = v6;
+    v8 = errorCopy;
     [(NWURLSessionTask *)self complete:v7];
 
     goto LABEL_6;
@@ -40,7 +40,7 @@ LABEL_5:
   {
     if (!self->super._pendingError)
     {
-      objc_storeStrong(&self->super._pendingError, a3);
+      objc_storeStrong(&self->super._pendingError, error);
     }
 
     goto LABEL_5;
@@ -78,23 +78,23 @@ void __61__NWURLSessionWebSocketTask_completeTaskWithError_retryable___block_inv
 - (void)processWork
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    nw_context_assert_queue(*(a1 + 320));
-    v2 = *(a1 + 528);
+    nw_context_assert_queue(*(self + 320));
+    v2 = *(self + 528);
     if (v2)
     {
     }
 
-    else if (*(a1 + 296) != 2)
+    else if (*(self + 296) != 2)
     {
       return;
     }
 
-    v3 = *(a1 + 536);
+    v3 = *(self + 536);
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = *(a1 + 536);
-    *(a1 + 536) = v4;
+    v5 = *(self + 536);
+    *(self + 536) = v4;
 
     v13 = 0u;
     v14 = 0u;
@@ -127,11 +127,11 @@ void __61__NWURLSessionWebSocketTask_completeTaskWithError_retryable___block_inv
       while (v8);
     }
 
-    if ((*(a1 + 492) & 1) == 0)
+    if ((*(self + 492) & 1) == 0)
     {
-      if ([*(a1 + 552) count])
+      if ([*(self + 552) count])
       {
-        [(NWURLSessionWebSocketTask *)a1 receiveMessage];
+        [(NWURLSessionWebSocketTask *)self receiveMessage];
       }
     }
   }
@@ -139,16 +139,16 @@ void __61__NWURLSessionWebSocketTask_completeTaskWithError_retryable___block_inv
 
 - (void)receiveMessage
 {
-  if (a1)
+  if (self)
   {
-    nw_context_assert_queue(*(a1 + 320));
-    if (*(a1 + 296) == 2)
+    nw_context_assert_queue(*(self + 320));
+    if (*(self + 296) == 2)
     {
-      v3 = *(a1 + 552);
+      v3 = *(self + 552);
       v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [(NWURLSessionWebSocketTask *)a1 setPendingReceiveCompletionHandlers:v4];
+      [(NWURLSessionWebSocketTask *)self setPendingReceiveCompletionHandlers:v4];
 
-      v5 = *(a1 + 280);
+      v5 = *(self + 280);
       if (v5)
       {
         v6 = v5;
@@ -156,12 +156,12 @@ void __61__NWURLSessionWebSocketTask_completeTaskWithError_retryable___block_inv
 
       else
       {
-        v6 = [(NWURLSessionTask *)a1 errorForErrorCode:?];
+        v6 = [(NWURLSessionTask *)self errorForErrorCode:?];
       }
 
       v7 = v6;
 
-      v8 = [(NWURLSessionTask *)a1 delegateWrapper];
+      delegateWrapper = [(NWURLSessionTask *)self delegateWrapper];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __43__NWURLSessionWebSocketTask_receiveMessage__block_invoke;
@@ -170,18 +170,18 @@ void __61__NWURLSessionWebSocketTask_completeTaskWithError_retryable___block_inv
       v14 = v7;
       v9 = v7;
       v10 = v3;
-      [(NWURLSessionDelegateWrapper *)v8 runDelegateBlock:v12];
+      [(NWURLSessionDelegateWrapper *)delegateWrapper runDelegateBlock:v12];
     }
 
     else
     {
-      *(a1 + 492) = 1;
-      v2 = *(a1 + 528);
+      *(self + 492) = 1;
+      v2 = *(self + 528);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __43__NWURLSessionWebSocketTask_receiveMessage__block_invoke_2;
       v11[3] = &unk_1E6A39638;
-      v11[4] = a1;
+      v11[4] = self;
       nw_connection_receive_internal(v2, 0, 0xFFFFFFFF, 0xFFFFFFFF, v11);
     }
   }
@@ -628,23 +628,23 @@ LABEL_82:
 LABEL_83:
 }
 
-- (void)cancelWithCloseCode:(int64_t)a3 reason:(id)a4
+- (void)cancelWithCloseCode:(int64_t)code reason:(id)reason
 {
-  [(NWURLSessionWebSocketTask *)self _sendCloseCode:a3 reason:a4];
+  [(NWURLSessionWebSocketTask *)self _sendCloseCode:code reason:reason];
 
   [(NWURLSessionTask *)self cancel];
 }
 
-- (void)_sendCloseCode:(int64_t)a3 reason:(id)a4
+- (void)_sendCloseCode:(int64_t)code reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__NWURLSessionWebSocketTask__sendCloseCode_reason___block_invoke;
   aBlock[3] = &unk_1E6A3BCF0;
   aBlock[4] = self;
-  v21 = a3;
-  v7 = v6;
+  codeCopy = code;
+  v7 = reasonCopy;
   v20 = v7;
   v8 = _Block_copy(aBlock);
   if (self)
@@ -852,16 +852,16 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)sendPingWithPongReceiveHandler:(id)a3
+- (void)sendPingWithPongReceiveHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__NWURLSessionWebSocketTask_sendPingWithPongReceiveHandler___block_invoke;
   aBlock[3] = &unk_1E6A3D710;
   aBlock[4] = self;
-  v12 = v4;
-  v5 = v4;
+  v12 = handlerCopy;
+  v5 = handlerCopy;
   v6 = _Block_copy(aBlock);
   if (self)
   {
@@ -1180,9 +1180,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)receiveMessageWithCompletionHandler:(id)a3
+- (void)receiveMessageWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self)
   {
     queue = self->super._queue;
@@ -1198,8 +1198,8 @@ LABEL_15:
   v7[2] = __65__NWURLSessionWebSocketTask_receiveMessageWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E6A3D710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1221,19 +1221,19 @@ void __65__NWURLSessionWebSocketTask_receiveMessageWithCompletionHandler___block
   [(NWURLSessionWebSocketTask *)v6 processWork];
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__NWURLSessionWebSocketTask_sendMessage_completionHandler___block_invoke;
   aBlock[3] = &unk_1E6A39AE8;
-  v16 = v6;
-  v17 = v7;
+  v16 = messageCopy;
+  v17 = handlerCopy;
   aBlock[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = messageCopy;
+  v9 = handlerCopy;
   v10 = _Block_copy(aBlock);
   if (self)
   {
@@ -1482,16 +1482,16 @@ LABEL_23:
   }
 
   v4 = configuration;
-  v5 = [(NWURLSessionTask *)self currentRequest];
-  [(NWURLSessionTaskConfiguration *)v4 updateRequest:v5];
+  currentRequest = [(NWURLSessionTask *)self currentRequest];
+  [(NWURLSessionTaskConfiguration *)v4 updateRequest:currentRequest];
 
   v6 = [NWURLLoaderHTTP alloc];
-  v7 = [(NWURLSessionTask *)self currentRequest];
+  currentRequest2 = [(NWURLSessionTask *)self currentRequest];
   if (self)
   {
     v8 = self->super._configuration;
     v9 = self->super._queue;
-    v10 = [(NWURLLoaderHTTP *)&v6->super.isa initWithRequest:v7 bodyKnownSize:0 configuration:v8 queue:v9 client:self];
+    v10 = [(NWURLLoaderHTTP *)&v6->super.isa initWithRequest:currentRequest2 bodyKnownSize:0 configuration:v8 queue:v9 client:self];
     loader = self->super._loader;
     self->super._loader = v10;
 
@@ -1806,7 +1806,7 @@ id __44__NWURLSessionWebSocketTask_handleResponse___block_invoke(uint64_t a1, in
   return self;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = NWURLSessionWebSocketTask;
@@ -1817,13 +1817,13 @@ id __44__NWURLSessionWebSocketTask_handleResponse___block_invoke(uint64_t a1, in
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___NWURLSessionWebSocketTask;
   if (objc_msgSendSuper2(&v5, sel_isSubclassOfClass_))
   {
@@ -1832,11 +1832,11 @@ id __44__NWURLSessionWebSocketTask_handleResponse___block_invoke(uint64_t a1, in
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-+ (void)addWebSocketHeadersToRequest:(uint64_t)a1
++ (void)addWebSocketHeadersToRequest:(uint64_t)request
 {
   v4 = a2;
   objc_opt_self();

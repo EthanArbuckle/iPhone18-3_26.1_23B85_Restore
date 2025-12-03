@@ -7,17 +7,17 @@
 
 - (id)_musicKit_self_shuffleCommand
 {
-  if ([a1 conformsToProtocol:&unk_1F50DDB08])
+  if ([self conformsToProtocol:&unk_1F50DDB08])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_shuffleCommand_setShuffleType:()MusicKit_SoftLinking_MPCPlayerShuffleCommand
@@ -32,8 +32,8 @@
     v3 = a3 == 1;
   }
 
-  v4 = [a1 _musicKit_self_shuffleCommand];
-  v5 = [v4 setShuffleType:v3];
+  _musicKit_self_shuffleCommand = [self _musicKit_self_shuffleCommand];
+  v5 = [_musicKit_self_shuffleCommand setShuffleType:v3];
 
   return v5;
 }

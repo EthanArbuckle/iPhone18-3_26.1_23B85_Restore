@@ -1,5 +1,5 @@
 @interface BAAgentDownloadRulesEngine
-- (BAAgentDownloadRulesEngine)initWithDelegate:(id)a3;
+- (BAAgentDownloadRulesEngine)initWithDelegate:(id)delegate;
 - (BAAgentDownloadRulesEngineDelegate)delegate;
 - (BOOL)isConnectedToPower;
 - (BOOL)isValidTimeForDownloads;
@@ -9,21 +9,21 @@
 - (void)_setupXPCActivity;
 - (void)dealloc;
 - (void)resume;
-- (void)setDebugValidityTimeOverride:(int)a3;
+- (void)setDebugValidityTimeOverride:(int)override;
 @end
 
 @implementation BAAgentDownloadRulesEngine
 
-- (BAAgentDownloadRulesEngine)initWithDelegate:(id)a3
+- (BAAgentDownloadRulesEngine)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = BAAgentDownloadRulesEngine;
   v5 = [(BAAgentDownloadRulesEngine *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(BAAgentDownloadRulesEngine *)v5 setDelegate:v4];
+    [(BAAgentDownloadRulesEngine *)v5 setDelegate:delegateCopy];
     v7 = dispatch_queue_create("com.apple.backgroundassets.rulesengine", 0);
     [(BAAgentDownloadRulesEngine *)v6 setRulesEngineWorkQueue:v7];
 
@@ -48,32 +48,32 @@
   [(BAAgentDownloadRulesEngine *)&v4 dealloc];
 }
 
-- (void)setDebugValidityTimeOverride:(int)a3
+- (void)setDebugValidityTimeOverride:(int)override
 {
-  v5 = [(BAAgentDownloadRulesEngine *)self rulesEngineWorkQueue];
+  rulesEngineWorkQueue = [(BAAgentDownloadRulesEngine *)self rulesEngineWorkQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000280F0;
   v6[3] = &unk_100079F90;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  overrideCopy = override;
+  dispatch_async(rulesEngineWorkQueue, v6);
 }
 
 - (BOOL)isValidTimeForDownloads
 {
   if ([(BAAgentDownloadRulesEngine *)self debugRuleValidity])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isConnectedToPower) = 1;
   }
 
   else
   {
-    v3 = [(BAAgentDownloadRulesEngine *)self isConnectedToPower];
-    [(BAAgentDownloadRulesEngine *)self setLastDownloadIsValidValue:v3];
+    isConnectedToPower = [(BAAgentDownloadRulesEngine *)self isConnectedToPower];
+    [(BAAgentDownloadRulesEngine *)self setLastDownloadIsValidValue:isConnectedToPower];
   }
 
-  return v3;
+  return isConnectedToPower;
 }
 
 - (BOOL)isConnectedToPower
@@ -199,9 +199,9 @@
   if ([(BAAgentDownloadRulesEngine *)self powerRunLoopSource])
   {
     Main = CFRunLoopGetMain();
-    v4 = [(BAAgentDownloadRulesEngine *)self powerRunLoopSource];
+    powerRunLoopSource = [(BAAgentDownloadRulesEngine *)self powerRunLoopSource];
 
-    CFRunLoopAddSource(Main, v4, kCFRunLoopCommonModes);
+    CFRunLoopAddSource(Main, powerRunLoopSource, kCFRunLoopCommonModes);
   }
 }
 
@@ -229,16 +229,16 @@
 
 - (void)_powerSourceHasChanged
 {
-  v3 = [(BAAgentDownloadRulesEngine *)self lastDownloadIsValidValue];
-  if (v3 != [(BAAgentDownloadRulesEngine *)self isValidTimeForDownloads])
+  lastDownloadIsValidValue = [(BAAgentDownloadRulesEngine *)self lastDownloadIsValidValue];
+  if (lastDownloadIsValidValue != [(BAAgentDownloadRulesEngine *)self isValidTimeForDownloads])
   {
-    v4 = [(BAAgentDownloadRulesEngine *)self rulesEngineWorkQueue];
+    rulesEngineWorkQueue = [(BAAgentDownloadRulesEngine *)self rulesEngineWorkQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000289F8;
     block[3] = &unk_100079260;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(rulesEngineWorkQueue, block);
   }
 }
 

@@ -1,26 +1,26 @@
 @interface INVocabularyUpdater
 + (id)_sharedAppInstance;
 + (void)clearAllCustomVocabulary;
-+ (void)clearAllCustomVocabularyOnBehalfOf:(id)a3;
-- (void)setCustomPhotoAlbumNames:(id)a3;
-- (void)setValidatedVocabulary:(id)a3 forIntentSlot:(id)a4 onBehalfOf:(id)a5 validationCompletion:(id)a6;
++ (void)clearAllCustomVocabularyOnBehalfOf:(id)of;
+- (void)setCustomPhotoAlbumNames:(id)names;
+- (void)setValidatedVocabulary:(id)vocabulary forIntentSlot:(id)slot onBehalfOf:(id)of validationCompletion:(id)completion;
 @end
 
 @implementation INVocabularyUpdater
 
-+ (void)clearAllCustomVocabularyOnBehalfOf:(id)a3
++ (void)clearAllCustomVocabularyOnBehalfOf:(id)of
 {
-  v4 = a3;
-  v6 = [a1 _sharedAppInstance];
-  v5 = [v6 _syncService];
-  [v5 deleteEverythingOnBehalfOf:v4];
+  ofCopy = of;
+  _sharedAppInstance = [self _sharedAppInstance];
+  _syncService = [_sharedAppInstance _syncService];
+  [_syncService deleteEverythingOnBehalfOf:ofCopy];
 }
 
 + (void)clearAllCustomVocabulary
 {
-  v3 = [a1 _sharedAppInstance];
-  v2 = [v3 _syncService];
-  [v2 deleteEverything];
+  _sharedAppInstance = [self _sharedAppInstance];
+  _syncService = [_sharedAppInstance _syncService];
+  [_syncService deleteEverything];
 }
 
 + (id)_sharedAppInstance
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __41__INVocabularyUpdater__sharedAppInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sharedAppInstance_onceToken != -1)
   {
     dispatch_once(&_sharedAppInstance_onceToken, block);
@@ -49,12 +49,12 @@ uint64_t __41__INVocabularyUpdater__sharedAppInstance__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (void)setCustomPhotoAlbumNames:(id)a3
+- (void)setCustomPhotoAlbumNames:(id)names
 {
-  v4 = a3;
-  +[_INAggregator logReceivedCount:ofVocabularyStringType:](_INAggregator, "logReceivedCount:ofVocabularyStringType:", [v4 count], 101);
+  namesCopy = names;
+  +[_INAggregator logReceivedCount:ofVocabularyStringType:](_INAggregator, "logReceivedCount:ofVocabularyStringType:", [namesCopy count], 101);
   v5 = objc_alloc_init(_INVocabularyValidator);
-  v6 = [(_INVocabularyValidator *)v5 validatedItemsFromVocabularyStrings:v4 ofType:101 loggingWarnings:0];
+  v6 = [(_INVocabularyValidator *)v5 validatedItemsFromVocabularyStrings:namesCopy ofType:101 loggingWarnings:0];
 
   v7 = @"PhotoAlbumNameType";
   [(INVocabularyUpdater *)self setValidatedVocabulary:v6 forIntentSlot:@"PhotoAlbumNameType" validationCompletion:0];
@@ -68,20 +68,20 @@ uint64_t __41__INVocabularyUpdater__sharedAppInstance__block_invoke(uint64_t a1)
   dispatch_after(v8, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setValidatedVocabulary:(id)a3 forIntentSlot:(id)a4 onBehalfOf:(id)a5 validationCompletion:(id)a6
+- (void)setValidatedVocabulary:(id)vocabulary forIntentSlot:(id)slot onBehalfOf:(id)of validationCompletion:(id)completion
 {
-  v18 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v18 length];
-  v14 = [(_INVocabularyConnection *)self _syncService];
-  v15 = v14;
+  ofCopy = of;
+  completionCopy = completion;
+  slotCopy = slot;
+  vocabularyCopy = vocabulary;
+  v13 = [ofCopy length];
+  _syncService = [(_INVocabularyConnection *)self _syncService];
+  v15 = _syncService;
   if (v13)
   {
-    if (v10)
+    if (completionCopy)
     {
-      v16 = v10;
+      v16 = completionCopy;
     }
 
     else
@@ -89,14 +89,14 @@ uint64_t __41__INVocabularyUpdater__sharedAppInstance__block_invoke(uint64_t a1)
       v16 = &__block_literal_global_91_71982;
     }
 
-    [v14 recordVocabulary:v12 forIntentSlot:v11 onBehalfOf:v18 withValidationCompletion:v16];
+    [_syncService recordVocabulary:vocabularyCopy forIntentSlot:slotCopy onBehalfOf:ofCopy withValidationCompletion:v16];
   }
 
   else
   {
-    if (v10)
+    if (completionCopy)
     {
-      v17 = v10;
+      v17 = completionCopy;
     }
 
     else
@@ -104,7 +104,7 @@ uint64_t __41__INVocabularyUpdater__sharedAppInstance__block_invoke(uint64_t a1)
       v17 = &__block_literal_global_71981;
     }
 
-    [v14 recordVocabulary:v12 forIntentSlot:v11 withValidationCompletion:v17];
+    [_syncService recordVocabulary:vocabularyCopy forIntentSlot:slotCopy withValidationCompletion:v17];
   }
 }
 

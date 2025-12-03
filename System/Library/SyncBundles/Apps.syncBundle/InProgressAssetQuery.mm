@@ -1,26 +1,26 @@
 @interface InProgressAssetQuery
-+ (void)currentInProgressAssetIDs:(id *)a3 restoringAssetIDs:(id *)a4;
++ (void)currentInProgressAssetIDs:(id *)ds restoringAssetIDs:(id *)iDs;
 - (BOOL)_fetchResults;
 - (InProgressAssetQuery)init;
 - (id)_inProgressAssetIDs;
 - (id)_restoringAssetIDs;
-- (void)applicationInstallsArePrioritized:(id)a3 arePaused:(id)a4;
+- (void)applicationInstallsArePrioritized:(id)prioritized arePaused:(id)paused;
 - (void)dealloc;
 @end
 
 @implementation InProgressAssetQuery
 
-+ (void)currentInProgressAssetIDs:(id *)a3 restoringAssetIDs:(id *)a4
++ (void)currentInProgressAssetIDs:(id *)ds restoringAssetIDs:(id *)iDs
 {
-  *a3 = 0;
-  *a4 = 0;
+  *ds = 0;
+  *iDs = 0;
   v7 = objc_alloc_init(InProgressAssetQuery);
   v6 = +[LSApplicationWorkspace defaultWorkspace];
   [v6 addObserver:v7];
   if ([(InProgressAssetQuery *)v7 _fetchResults])
   {
-    *a3 = [(InProgressAssetQuery *)v7 _inProgressAssetIDs];
-    *a4 = [(InProgressAssetQuery *)v7 _restoringAssetIDs];
+    *ds = [(InProgressAssetQuery *)v7 _inProgressAssetIDs];
+    *iDs = [(InProgressAssetQuery *)v7 _restoringAssetIDs];
   }
 
   [v6 removeObserver:v7];
@@ -100,15 +100,15 @@ LABEL_8:
   return v4 == 0;
 }
 
-- (void)applicationInstallsArePrioritized:(id)a3 arePaused:(id)a4
+- (void)applicationInstallsArePrioritized:(id)prioritized arePaused:(id)paused
 {
   v7 = _ATLogCategorySyncBundle_Oversize();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v42 = a3;
+    prioritizedCopy = prioritized;
     v43 = 2114;
-    v44 = a4;
+    pausedCopy = paused;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "prioritized proxies %{public}@ paused proxies %{public}@", buf, 0x16u);
   }
 
@@ -116,13 +116,13 @@ LABEL_8:
   {
     self->_inProgressAssetIDs = [[NSMutableArray alloc] initWithCapacity:0];
     self->_restoringAssetIDs = [[NSMutableArray alloc] initWithCapacity:0];
-    if ([a3 count])
+    if ([prioritized count])
     {
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v8 = [a3 countByEnumeratingWithState:&v37 objects:v49 count:16];
+      v8 = [prioritized countByEnumeratingWithState:&v37 objects:v49 count:16];
       if (!v8)
       {
         goto LABEL_55;
@@ -130,7 +130,7 @@ LABEL_8:
 
       v9 = v8;
       v10 = *v38;
-      v35 = self;
+      selfCopy = self;
       while (1)
       {
         v11 = 0;
@@ -139,11 +139,11 @@ LABEL_8:
         {
           if (*v38 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(prioritized);
           }
 
           v12 = *(*(&v37 + 1) + 8 * v11);
-          v13 = [v12 applicationIdentifier];
+          applicationIdentifier = [v12 applicationIdentifier];
           if (![v12 isPlaceholder])
           {
             v23 = _ATLogCategorySyncBundle();
@@ -153,7 +153,7 @@ LABEL_8:
             }
 
             *buf = 138543362;
-            v42 = v13;
+            prioritizedCopy = applicationIdentifier;
             v24 = v23;
             v25 = "No placeholder for asset identifier %{public}@";
 LABEL_20:
@@ -161,8 +161,8 @@ LABEL_20:
             goto LABEL_50;
           }
 
-          v14 = [v12 installProgressSync];
-          if (!v14)
+          installProgressSync = [v12 installProgressSync];
+          if (!installProgressSync)
           {
             v26 = _ATLogCategorySyncBundle();
             if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -171,82 +171,82 @@ LABEL_20:
             }
 
             *buf = 138543362;
-            v42 = v13;
+            prioritizedCopy = applicationIdentifier;
             v24 = v26;
             v25 = "No install progress found for asset identifier %{public}@";
             goto LABEL_20;
           }
 
-          v15 = v14;
+          v15 = installProgressSync;
           v16 = v10;
-          v17 = a3;
-          v18 = [v12 installType];
-          v19 = [v15 installState];
-          v20 = [v15 installPhase];
+          prioritizedCopy2 = prioritized;
+          installType = [v12 installType];
+          installState = [v15 installState];
+          installPhase = [v15 installPhase];
           v21 = _ATLogCategorySyncBundle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            if (v18 < 0xA && ((0x2FFu >> v18) & 1) != 0)
+            if (installType < 0xA && ((0x2FFu >> installType) & 1) != 0)
             {
-              v22 = *(&off_18678 + v18);
+              v22 = *(&off_18678 + installType);
             }
 
             else
             {
-              v22 = [NSString stringWithFormat:@"Unknown Install Type: %lu", v18];
+              v22 = [NSString stringWithFormat:@"Unknown Install Type: %lu", installType];
             }
 
-            if (v19 >= 6)
+            if (installState >= 6)
             {
-              v27 = [NSString stringWithFormat:@"Unknown Install State: %lu", v19];
-            }
-
-            else
-            {
-              v27 = *(&off_186C8 + v19);
-            }
-
-            if (v20 >= 4)
-            {
-              v28 = [NSString stringWithFormat:@"Unknown Install Phase: %lu", v20];
+              v27 = [NSString stringWithFormat:@"Unknown Install State: %lu", installState];
             }
 
             else
             {
-              v28 = *(&off_186F8 + v20);
+              v27 = *(&off_186C8 + installState);
+            }
+
+            if (installPhase >= 4)
+            {
+              v28 = [NSString stringWithFormat:@"Unknown Install Phase: %lu", installPhase];
+            }
+
+            else
+            {
+              v28 = *(&off_186F8 + installPhase);
             }
 
             *buf = 138544130;
-            v42 = v22;
+            prioritizedCopy = v22;
             v43 = 2114;
-            v44 = v27;
+            pausedCopy = v27;
             v45 = 2114;
             v46 = v28;
             v47 = 2114;
-            v48 = v13;
+            v48 = applicationIdentifier;
             _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "Got install type=%{public}@ state=%{public}@ phase=%{public}@ for %{public}@", buf, 0x2Au);
-            self = v35;
+            self = selfCopy;
           }
 
-          v29 = v19 == &dword_0 + 1 && v20 == &dword_0 + 1;
-          v30 = !v29 || v18 == 2;
-          if (!v30 || (v19 == &dword_0 + 1 ? (v31 = v20 == 0) : (v31 = 0), v31 ? (v32 = v18 == 1) : (v32 = 0), v32))
+          v29 = installState == &dword_0 + 1 && installPhase == &dword_0 + 1;
+          v30 = !v29 || installType == 2;
+          if (!v30 || (installState == &dword_0 + 1 ? (v31 = installPhase == 0) : (v31 = 0), v31 ? (v32 = installType == 1) : (v32 = 0), v32))
           {
-            [(NSMutableArray *)self->_inProgressAssetIDs addObject:v13];
-            a3 = v17;
+            [(NSMutableArray *)self->_inProgressAssetIDs addObject:applicationIdentifier];
+            prioritized = prioritizedCopy2;
             v10 = v16;
             v9 = v36;
           }
 
           else
           {
-            v29 = v18 == 2;
-            a3 = v17;
+            v29 = installType == 2;
+            prioritized = prioritizedCopy2;
             v10 = v16;
             v9 = v36;
-            if (v29 && v19 == &dword_0 + 1 && v20 <= 1)
+            if (v29 && installState == &dword_0 + 1 && installPhase <= 1)
             {
-              [(NSMutableArray *)self->_restoringAssetIDs addObject:v13];
+              [(NSMutableArray *)self->_restoringAssetIDs addObject:applicationIdentifier];
             }
           }
 
@@ -255,7 +255,7 @@ LABEL_50:
         }
 
         while (v9 != v11);
-        v9 = [a3 countByEnumeratingWithState:&v37 objects:v49 count:16];
+        v9 = [prioritized countByEnumeratingWithState:&v37 objects:v49 count:16];
         if (!v9)
         {
           goto LABEL_55;

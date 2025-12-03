@@ -1,7 +1,7 @@
 @interface SBLockScreenActionManager
 - (SBLockScreenActionManager)init;
-- (id)currentLockScreenActionContextActionSource:(unint64_t *)a3;
-- (void)registerLockScreenActionProvider:(id)a3 forSource:(unint64_t)a4;
+- (id)currentLockScreenActionContextActionSource:(unint64_t *)source;
+- (void)registerLockScreenActionProvider:(id)provider forSource:(unint64_t)source;
 - (void)runUnlockAction;
 @end
 
@@ -11,11 +11,11 @@
 {
   v6 = 0;
   v3 = [(SBLockScreenActionManager *)self currentLockScreenActionContextActionSource:&v6];
-  v4 = [v3 action];
-  v5 = v4;
-  if (v4)
+  action = [v3 action];
+  v5 = action;
+  if (action)
   {
-    (*(v4 + 16))(v4);
+    (*(action + 16))(action);
   }
 
   [(SBLockScreenActionManager *)self _clearActionOnAllProviders];
@@ -45,16 +45,16 @@ void __55__SBLockScreenActionManager__clearActionOnAllProviders__block_invoke(ui
   return v2;
 }
 
-- (void)registerLockScreenActionProvider:(id)a3 forSource:(unint64_t)a4
+- (void)registerLockScreenActionProvider:(id)provider forSource:(unint64_t)source
 {
-  v14 = a3;
+  providerCopy = provider;
   actionProviders = self->_actionProviders;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
   v8 = [(NSMutableDictionary *)actionProviders objectForKey:v7];
 
-  if (v8 != v14)
+  if (v8 != providerCopy)
   {
-    if (v14)
+    if (providerCopy)
     {
       if (v8)
       {
@@ -63,42 +63,42 @@ void __55__SBLockScreenActionManager__clearActionOnAllProviders__block_invoke(ui
 
         if (v10)
         {
-          NSLog(&cfstr_ThereAlreadyIs.isa, a4);
+          NSLog(&cfstr_ThereAlreadyIs.isa, source);
         }
       }
 
       v11 = self->_actionProviders;
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-      [(NSMutableDictionary *)v11 setObject:v14 forKey:v12];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+      [(NSMutableDictionary *)v11 setObject:providerCopy forKey:v12];
     }
 
     else
     {
       v13 = self->_actionProviders;
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
       [(NSMutableDictionary *)v13 removeObjectForKey:v12];
     }
   }
 }
 
-- (id)currentLockScreenActionContextActionSource:(unint64_t *)a3
+- (id)currentLockScreenActionContextActionSource:(unint64_t *)source
 {
-  v5 = 0;
+  lockScreenActionContext = 0;
   v6 = 1;
   while (1)
   {
-    v7 = v5;
+    v7 = lockScreenActionContext;
     actionProviders = self->_actionProviders;
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
     v10 = [(NSMutableDictionary *)actionProviders objectForKey:v9];
 
-    v5 = [v10 lockScreenActionContext];
+    lockScreenActionContext = [v10 lockScreenActionContext];
 
-    if (v5)
+    if (lockScreenActionContext)
     {
-      v11 = [v5 action];
+      action = [lockScreenActionContext action];
 
-      if (v11)
+      if (action)
       {
         break;
       }
@@ -110,14 +110,14 @@ void __55__SBLockScreenActionManager__clearActionOnAllProviders__block_invoke(ui
     }
   }
 
-  if (a3)
+  if (source)
   {
-    *a3 = v6;
+    *source = v6;
   }
 
 LABEL_9:
 
-  return v5;
+  return lockScreenActionContext;
 }
 
 @end

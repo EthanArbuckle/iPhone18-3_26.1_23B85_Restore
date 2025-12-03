@@ -6,13 +6,13 @@
 
 - (void)finishReturnToKeyboard
 {
-  v3 = [(AXPronunciationDictationView *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXPronunciationDictationView"];
+  accessibilityIdentifier = [(AXPronunciationDictationView *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXPronunciationDictationView"];
 
   if (v4)
   {
-    v5 = [(AXPronunciationDictationView *)self displayDelegate];
-    [v5 doneButtonPressed];
+    displayDelegate = [(AXPronunciationDictationView *)self displayDelegate];
+    [displayDelegate doneButtonPressed];
   }
 
   v6.receiver = self;

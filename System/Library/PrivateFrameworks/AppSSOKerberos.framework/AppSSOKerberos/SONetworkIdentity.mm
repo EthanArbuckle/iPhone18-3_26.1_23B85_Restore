@@ -1,33 +1,33 @@
 @interface SONetworkIdentity
 - (BOOL)isPerAppVPN;
 - (NSString)networkFingerprint;
-- (id)getInterfaceFingerprintForDynamicInterface:(const char *)a3;
-- (id)getInterfaceSignature:(id)a3;
-- (id)getVPNServerSignature:(id)a3;
-- (id)initForRealm:(id)a3 bundleIdentifier:(id)a4 auditToken:(id)a5;
+- (id)getInterfaceFingerprintForDynamicInterface:(const char *)interface;
+- (id)getInterfaceSignature:(id)signature;
+- (id)getVPNServerSignature:(id)signature;
+- (id)initForRealm:(id)realm bundleIdentifier:(id)identifier auditToken:(id)token;
 - (void)determineNetworkFingerprint;
 - (void)evaluateVPNPath;
-- (void)evaluateVPNPath:(id)a3;
-- (void)evaluateVPNPathForHost:(id)a3 port:(id)a4;
-- (void)setPerAppVPN:(BOOL)a3;
+- (void)evaluateVPNPath:(id)path;
+- (void)evaluateVPNPathForHost:(id)host port:(id)port;
+- (void)setPerAppVPN:(BOOL)n;
 @end
 
 @implementation SONetworkIdentity
 
-- (id)initForRealm:(id)a3 bundleIdentifier:(id)a4 auditToken:(id)a5
+- (id)initForRealm:(id)realm bundleIdentifier:(id)identifier auditToken:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  realmCopy = realm;
+  identifierCopy = identifier;
+  tokenCopy = token;
   v15.receiver = self;
   v15.super_class = SONetworkIdentity;
   v12 = [(SONetworkIdentity *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_realm, a3);
-    objc_storeStrong(p_isa + 4, a4);
-    objc_storeStrong(p_isa + 6, a5);
+    objc_storeStrong(&v12->_realm, realm);
+    objc_storeStrong(p_isa + 4, identifier);
+    objc_storeStrong(p_isa + 6, token);
   }
 
   return p_isa;
@@ -35,57 +35,57 @@
 
 - (NSString)networkFingerprint
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_networkFingerprint;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_networkFingerprint;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isPerAppVPN
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  perAppVPN = v2->_perAppVPN;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  perAppVPN = selfCopy->_perAppVPN;
+  objc_sync_exit(selfCopy);
 
   return perAppVPN;
 }
 
-- (void)setPerAppVPN:(BOOL)a3
+- (void)setPerAppVPN:(BOOL)n
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_perAppVPN = a3;
+  obj->_perAppVPN = n;
   objc_sync_exit(obj);
 }
 
-- (void)evaluateVPNPathForHost:(id)a3 port:(id)a4
+- (void)evaluateVPNPathForHost:(id)host port:(id)port
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a3 UTF8String];
-  v10 = [v8 UTF8String];
+  hostCopy = host;
+  portCopy = port;
+  uTF8String = [host UTF8String];
+  uTF8String2 = [portCopy UTF8String];
 
-  host = nw_endpoint_create_host(v9, v10);
+  host = nw_endpoint_create_host(uTF8String, uTF8String2);
   [(SONetworkIdentity *)self evaluateVPNPath:host];
 }
 
 - (void)evaluateVPNPath
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SONetworkIdentity *)self realm];
-  v5 = [v3 stringWithFormat:@"_kerberos._tcp.%@", v4];
+  realm = [(SONetworkIdentity *)self realm];
+  v5 = [v3 stringWithFormat:@"_kerberos._tcp.%@", realm];
   [v5 UTF8String];
   srv = nw_endpoint_create_srv();
 
   [(SONetworkIdentity *)self evaluateVPNPath:srv];
 }
 
-- (void)evaluateVPNPath:(id)a3
+- (void)evaluateVPNPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = SO_LOG_SONetworkIdentity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -93,22 +93,22 @@
   }
 
   v6 = MEMORY[0x245CB78B0]();
-  v7 = [(SONetworkIdentity *)self bundleIdentifier];
+  bundleIdentifier = [(SONetworkIdentity *)self bundleIdentifier];
 
-  if (v7)
+  if (bundleIdentifier)
   {
-    v8 = [(SONetworkIdentity *)self bundleIdentifier];
-    [v8 UTF8String];
+    bundleIdentifier2 = [(SONetworkIdentity *)self bundleIdentifier];
+    [bundleIdentifier2 UTF8String];
     nw_parameters_set_source_application_by_bundle_id();
 
     memset(v18, 0, sizeof(v18));
-    v9 = [(SONetworkIdentity *)self auditToken];
-    if (v9)
+    auditToken = [(SONetworkIdentity *)self auditToken];
+    if (auditToken)
     {
-      v10 = v9;
+      v10 = auditToken;
       v11 = MEMORY[0x277CEBF10];
-      v12 = [(SONetworkIdentity *)self auditToken];
-      LODWORD(v11) = [v11 auditTokenFromData:v12 auditToken:v18];
+      auditToken2 = [(SONetworkIdentity *)self auditToken];
+      LODWORD(v11) = [v11 auditTokenFromData:auditToken2 auditToken:v18];
 
       if (v11)
       {
@@ -131,25 +131,25 @@
     [SONetworkIdentity evaluateVPNPath:];
   }
 
-  v17 = self;
-  objc_sync_enter(v17);
-  [(SONetworkIdentity *)v17 setPerAppVPN:nw_path_is_per_app_vpn()];
-  objc_sync_exit(v17);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SONetworkIdentity *)selfCopy setPerAppVPN:nw_path_is_per_app_vpn()];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)determineNetworkFingerprint
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 networkFingerprint];
+  networkFingerprint = [self networkFingerprint];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_2_0(&dword_24006C000, v2, v3, "VPN signature: %{private}@", v4, v5, v6, v7, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getVPNServerSignature:(id)a3
+- (id)getVPNServerSignature:(id)signature
 {
-  name = nw_interface_get_name(a3);
+  name = nw_interface_get_name(signature);
   v4 = nwi_state_copy();
   v5 = &stru_285206D08;
   if (v4 && name)
@@ -176,16 +176,16 @@
   return v5;
 }
 
-- (id)getInterfaceSignature:(id)a3
+- (id)getInterfaceSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v5 = SO_LOG_SONetworkIdentity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SONetworkIdentity getInterfaceSignature:];
   }
 
-  name = nw_interface_get_name(v4);
+  name = nw_interface_get_name(signatureCopy);
   v7 = nwi_state_copy();
   if (name && v7)
   {
@@ -204,7 +204,7 @@
   return v9;
 }
 
-- (id)getInterfaceFingerprintForDynamicInterface:(const char *)a3
+- (id)getInterfaceFingerprintForDynamicInterface:(const char *)interface
 {
   v40[2] = *MEMORY[0x277D85DE8];
   v4 = SO_LOG_SONetworkIdentity();
@@ -250,7 +250,7 @@
   v35[2] = __Block_byref_object_copy__1;
   v35[3] = __Block_byref_object_dispose__1;
   v36 = 0;
-  v13 = [MEMORY[0x277CCACA8] stringWithCString:a3 encoding:4];
+  v13 = [MEMORY[0x277CCACA8] stringWithCString:interface encoding:4];
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = __64__SONetworkIdentity_getInterfaceFingerprintForDynamicInterface___block_invoke;

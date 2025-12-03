@@ -1,8 +1,8 @@
 @interface HMDDelegatingMessageRouter
 + (id)logCategory;
-- (HMDDelegatingMessageRouter)initWithMessageDispatcher:(id)a3 routers:(id)a4;
+- (HMDDelegatingMessageRouter)initWithMessageDispatcher:(id)dispatcher routers:(id)routers;
 - (HMDDelegatingMessageRouterDataSource)dataSource;
-- (void)routeMessage:(id)a3 allowRemoteRelayFromPrimary:(BOOL)a4 localHandler:(id)a5;
+- (void)routeMessage:(id)message allowRemoteRelayFromPrimary:(BOOL)primary localHandler:(id)handler;
 @end
 
 @implementation HMDDelegatingMessageRouter
@@ -14,18 +14,18 @@
   return WeakRetained;
 }
 
-- (void)routeMessage:(id)a3 allowRemoteRelayFromPrimary:(BOOL)a4 localHandler:(id)a5
+- (void)routeMessage:(id)message allowRemoteRelayFromPrimary:(BOOL)primary localHandler:(id)handler
 {
-  v18 = a4;
+  primaryCopy = primary;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(HMDDelegatingMessageRouter *)self routers];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  routers = [(HMDDelegatingMessageRouter *)self routers];
+  v10 = [routers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -37,16 +37,16 @@
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(routers);
         }
 
         v14 = *(*(&v19 + 1) + 8 * v13);
-        v15 = [(HMDDelegatingMessageRouter *)self dataSource];
-        v16 = [v15 router:self shouldHandleMessage:v7 usingRouter:v14];
+        dataSource = [(HMDDelegatingMessageRouter *)self dataSource];
+        v16 = [dataSource router:self shouldHandleMessage:messageCopy usingRouter:v14];
 
         if (v16)
         {
-          [v14 routeMessage:v7 allowRemoteRelayFromPrimary:v18 localHandler:v8];
+          [v14 routeMessage:messageCopy allowRemoteRelayFromPrimary:primaryCopy localHandler:handlerCopy];
 
           goto LABEL_11;
         }
@@ -55,7 +55,7 @@
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [routers countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         continue;
@@ -65,24 +65,24 @@
     }
   }
 
-  v8[2](v8, v7);
+  handlerCopy[2](handlerCopy, messageCopy);
 LABEL_11:
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDDelegatingMessageRouter)initWithMessageDispatcher:(id)a3 routers:(id)a4
+- (HMDDelegatingMessageRouter)initWithMessageDispatcher:(id)dispatcher routers:(id)routers
 {
-  v7 = a3;
-  v8 = a4;
+  dispatcherCopy = dispatcher;
+  routersCopy = routers;
   v14.receiver = self;
   v14.super_class = HMDDelegatingMessageRouter;
   v9 = [(HMDDelegatingMessageRouter *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messageDispatcher, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_messageDispatcher, dispatcher);
+    v11 = [routersCopy copy];
     routers = v10->_routers;
     v10->_routers = v11;
   }

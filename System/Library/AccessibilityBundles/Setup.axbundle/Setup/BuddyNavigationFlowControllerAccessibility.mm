@@ -1,5 +1,5 @@
 @interface BuddyNavigationFlowControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityIdentifier;
 - (id)wifiController;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,15 +8,15 @@
 
 @implementation BuddyNavigationFlowControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SetupController" hasInstanceMethod:@"navigationFlowController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"buddyControllers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"wifiController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"navigator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"_presentViewControllerForBuddyController:animated:willPresentViewController:completion:" withFullSignature:{"v", "@", "B", "@?", "@?", 0}];
-  [v3 validateClass:@"BuddyNavigationFlowNavigator" hasInstanceMethod:@"navigationController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SetupController" hasInstanceMethod:@"navigationFlowController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"buddyControllers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"wifiController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"navigator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"_presentViewControllerForBuddyController:animated:willPresentViewController:completion:" withFullSignature:{"v", "@", "B", "@?", "@?", 0}];
+  [validationsCopy validateClass:@"BuddyNavigationFlowNavigator" hasInstanceMethod:@"navigationController" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityIdentifier
@@ -27,24 +27,24 @@
   v3 = [(BuddyNavigationFlowControllerAccessibility *)self safeValueForKey:@"buddyControllers"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
   v6 = AXLogUIA();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 accessibilityIdentifier];
+    accessibilityIdentifier = [lastObject accessibilityIdentifier];
     v11 = 138412546;
-    v12 = v5;
+    v12 = lastObject;
     v13 = 2112;
-    v14 = v7;
+    v14 = accessibilityIdentifier;
     _os_log_impl(&dword_29C309000, v6, OS_LOG_TYPE_INFO, "NavBar: Buddy: identifier %@ %@", &v11, 0x16u);
   }
 
-  v8 = [v5 accessibilityIdentifier];
+  accessibilityIdentifier2 = [lastObject accessibilityIdentifier];
 
   v9 = *MEMORY[0x29EDCA608];
 
-  return v8;
+  return accessibilityIdentifier2;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -83,20 +83,20 @@ void __133__BuddyNavigationFlowControllerAccessibility__presentViewControllerFor
   v3 = [(BuddyNavigationFlowControllerAccessibility *)self safeValueForKeyPath:@"navigator.navigationController"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 navigationBar];
-  [v5 accessibilitySetIdentification:@"AXSetupMainNavBar"];
+  navigationBar = [v4 navigationBar];
+  [navigationBar accessibilitySetIdentification:@"AXSetupMainNavBar"];
 }
 
 - (id)wifiController
 {
   v5.receiver = self;
   v5.super_class = BuddyNavigationFlowControllerAccessibility;
-  v2 = [(BuddyNavigationFlowControllerAccessibility *)&v5 wifiController];
+  wifiController = [(BuddyNavigationFlowControllerAccessibility *)&v5 wifiController];
   v3 = [MEMORY[0x29EDB9F48] bundleWithPath:@"/System/Library/PreferenceBundles/AirPortSettings.bundle"];
   [v3 load];
   [MEMORY[0x29EDC7358] loadAccessibilityBundleForBundle:v3 didLoadCallback:0 force:1 loadAllAccessibilityInfo:0];
 
-  return v2;
+  return wifiController;
 }
 
 @end

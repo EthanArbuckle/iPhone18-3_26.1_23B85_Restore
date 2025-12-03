@@ -1,18 +1,18 @@
 @interface SearchUILabel
-- (void)setSfText:(id)a3;
+- (void)setSfText:(id)text;
 @end
 
 @implementation SearchUILabel
 
-- (void)setSfText:(id)a3
+- (void)setSfText:(id)text
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_sfText, a3);
+  textCopy = text;
+  objc_storeStrong(&self->_sfText, text);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v5];
+    v6 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:textCopy];
     [(TLKLabel *)self setRichText:v6];
   }
 
@@ -22,7 +22,7 @@
     if (objc_opt_isKindOfClass())
     {
       v6 = objc_opt_new();
-      v7 = [SearchUITLKMultilineTextConverter formattedTextForSearchUIText:v5];
+      v7 = [SearchUITLKMultilineTextConverter formattedTextForSearchUIText:textCopy];
       v8 = v7;
       if (v7)
       {
@@ -41,7 +41,7 @@
 
     else
     {
-      v6 = [SearchUITLKMultilineTextConverter textForSearchUIText:v5];
+      v6 = [SearchUITLKMultilineTextConverter textForSearchUIText:textCopy];
       [(TLKLabel *)self setMultilineText:v6];
     }
   }

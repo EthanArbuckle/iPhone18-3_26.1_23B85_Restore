@@ -1,7 +1,7 @@
 @interface MediumAdLockupWithAlignedRegionBackgroundView
 - (NSArray)accessibilityElements;
 - (void)layoutSubviews;
-- (void)setAccessibilityElements:(id)a3;
+- (void)setAccessibilityElements:(id)elements;
 @end
 
 @implementation MediumAdLockupWithAlignedRegionBackgroundView
@@ -35,18 +35,18 @@
   return v6.super.isa;
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     sub_1007701BC();
-    v4 = self;
+    selfCopy = self;
     v5.super.isa = sub_1007701AC().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5.super.isa = 0;
   }
 

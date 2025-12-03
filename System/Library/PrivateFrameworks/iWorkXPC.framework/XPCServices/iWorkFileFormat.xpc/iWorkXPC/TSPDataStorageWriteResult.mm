@@ -1,26 +1,26 @@
 @interface TSPDataStorageWriteResult
 - (TSPDataStorageWriteResult)init;
-- (TSPDataStorageWriteResult)initWithFilename:(id)a3 encryptionInfo:(id)a4 packageStorageType:(int64_t)a5 encodedLength:(unint64_t)a6 isMissingData:(BOOL)a7 changeCount:(unint64_t)a8;
+- (TSPDataStorageWriteResult)initWithFilename:(id)filename encryptionInfo:(id)info packageStorageType:(int64_t)type encodedLength:(unint64_t)length isMissingData:(BOOL)data changeCount:(unint64_t)count;
 @end
 
 @implementation TSPDataStorageWriteResult
 
-- (TSPDataStorageWriteResult)initWithFilename:(id)a3 encryptionInfo:(id)a4 packageStorageType:(int64_t)a5 encodedLength:(unint64_t)a6 isMissingData:(BOOL)a7 changeCount:(unint64_t)a8
+- (TSPDataStorageWriteResult)initWithFilename:(id)filename encryptionInfo:(id)info packageStorageType:(int64_t)type encodedLength:(unint64_t)length isMissingData:(BOOL)data changeCount:(unint64_t)count
 {
-  v15 = a3;
-  v16 = a4;
+  filenameCopy = filename;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = TSPDataStorageWriteResult;
   v17 = [(TSPDataStorageWriteResult *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_filename, a3);
-    objc_storeStrong(&v18->_encryptionInfo, a4);
-    v18->_packageStorageType = a5;
-    v18->_encodedLength = a6;
-    v18->_isMissingData = a7;
-    v18->_changeCount = a8;
+    objc_storeStrong(&v17->_filename, filename);
+    objc_storeStrong(&v18->_encryptionInfo, info);
+    v18->_packageStorageType = type;
+    v18->_encodedLength = length;
+    v18->_isMissingData = data;
+    v18->_changeCount = count;
   }
 
   return v18;

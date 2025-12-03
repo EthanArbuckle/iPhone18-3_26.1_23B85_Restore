@@ -1,8 +1,8 @@
 @interface TIInputModeLocaleIdentifierOverrideMapping
 + (id)sharedInstance;
 - (NSDictionary)overrideMapping;
-- (id)overrideLocaleForIdentifier:(id)a3;
-- (unsigned)localeIdentifierHasOverride:(id)a3;
+- (id)overrideLocaleForIdentifier:(id)identifier;
+- (unsigned)localeIdentifierHasOverride:(id)override;
 @end
 
 @implementation TIInputModeLocaleIdentifierOverrideMapping
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __60__TIInputModeLocaleIdentifierOverrideMapping_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -55,20 +55,20 @@ void __61__TIInputModeLocaleIdentifierOverrideMapping_overrideMapping__block_inv
   *(v1 + 8) = &unk_1EF7CF668;
 }
 
-- (id)overrideLocaleForIdentifier:(id)a3
+- (id)overrideLocaleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TIInputModeLocaleIdentifierOverrideMapping *)self overrideMapping];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  overrideMapping = [(TIInputModeLocaleIdentifierOverrideMapping *)self overrideMapping];
+  v6 = [overrideMapping objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (unsigned)localeIdentifierHasOverride:(id)a3
+- (unsigned)localeIdentifierHasOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(TIInputModeLocaleIdentifierOverrideMapping *)self overrideMapping];
-  v6 = [v5 objectForKey:v4];
+  overrideCopy = override;
+  overrideMapping = [(TIInputModeLocaleIdentifierOverrideMapping *)self overrideMapping];
+  v6 = [overrideMapping objectForKey:overrideCopy];
 
   return v6 != 0;
 }

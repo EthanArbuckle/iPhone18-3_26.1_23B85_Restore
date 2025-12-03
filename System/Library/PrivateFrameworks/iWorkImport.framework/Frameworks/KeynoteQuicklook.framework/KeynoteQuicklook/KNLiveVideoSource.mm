@@ -1,61 +1,61 @@
 @interface KNLiveVideoSource
 + (NSString)accessibilityLabelForCameraArrowTriangle2CirclePath;
-+ (id)colorForSymbolTintColorIdentifier:(int64_t)a3;
-+ (id)colorSetForSymbolTintColorIdentifier:(int64_t)a3;
-+ (id)systemImageNameForSymbolImageIdentifier:(int64_t)a3;
-+ (int64_t)p_archivedSymbolImageIdentifierForSymbolImageIdentifier:(int64_t)a3;
-+ (int64_t)p_archivedSymbolTintColorIdentifierForSymbolTintColorIdentifier:(int64_t)a3;
-- (BOOL)isEquivalentToLiveVideoSource:(id)a3;
-- (BOOL)supportsBackgroundKind:(int64_t)a3;
++ (id)colorForSymbolTintColorIdentifier:(int64_t)identifier;
++ (id)colorSetForSymbolTintColorIdentifier:(int64_t)identifier;
++ (id)systemImageNameForSymbolImageIdentifier:(int64_t)identifier;
++ (int64_t)p_archivedSymbolImageIdentifierForSymbolImageIdentifier:(int64_t)identifier;
++ (int64_t)p_archivedSymbolTintColorIdentifierForSymbolTintColorIdentifier:(int64_t)identifier;
+- (BOOL)isEquivalentToLiveVideoSource:(id)source;
+- (BOOL)supportsBackgroundKind:(int64_t)kind;
 - (KNLiveVideoCaptureDeviceDescription)captureDeviceDescription;
-- (KNLiveVideoSource)initWithContext:(id)a3 name:(id)a4 isDefaultSource:(BOOL)a5;
-- (id)copyWithContext:(id)a3;
+- (KNLiveVideoSource)initWithContext:(id)context name:(id)name isDefaultSource:(BOOL)source;
+- (id)copyWithContext:(id)context;
 - (int64_t)symbolImageIdentifier;
 - (int64_t)symbolTintColorIdentifier;
 - (void)didInitFromSOS;
-- (void)i_updateDefaultSourceCaptureDeviceDescription:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)rollbackToCollaborationCommandUsageState:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setCaptureDeviceDescription:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPosterImageData:(id)a3;
-- (void)setSymbolAbbreviationText:(id)a3;
-- (void)setSymbolImageIdentifier:(int64_t)a3;
-- (void)setSymbolTintColorIdentifier:(int64_t)a3;
-- (void)willBeUsedByCollaborationCommandWithUsageToken:(id)a3;
+- (void)i_updateDefaultSourceCaptureDeviceDescription:(id)description;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)rollbackToCollaborationCommandUsageState:(id)state;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCaptureDeviceDescription:(id)description;
+- (void)setName:(id)name;
+- (void)setPosterImageData:(id)data;
+- (void)setSymbolAbbreviationText:(id)text;
+- (void)setSymbolImageIdentifier:(int64_t)identifier;
+- (void)setSymbolTintColorIdentifier:(int64_t)identifier;
+- (void)willBeUsedByCollaborationCommandWithUsageToken:(id)token;
 @end
 
 @implementation KNLiveVideoSource
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  if (self->_name != v4)
+  nameCopy = name;
+  if (self->_name != nameCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = nameCopy;
+    objc_msgSend_willModify(self, nameCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_name, v8);
-    v4 = v8;
+    nameCopy = v8;
   }
 }
 
-- (KNLiveVideoSource)initWithContext:(id)a3 name:(id)a4 isDefaultSource:(BOOL)a5
+- (KNLiveVideoSource)initWithContext:(id)context name:(id)name isDefaultSource:(BOOL)source
 {
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  nameCopy = name;
   v29.receiver = self;
   v29.super_class = KNLiveVideoSource;
-  v12 = [(KNLiveVideoSource *)&v29 initWithContext:v8];
+  v12 = [(KNLiveVideoSource *)&v29 initWithContext:contextCopy];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v9, v10, v11);
+    v13 = objc_msgSend_copy(nameCopy, v10, v11);
     name = v12->_name;
     v12->_name = v13;
 
-    v12->_isDefaultSource = a5;
+    v12->_isDefaultSource = source;
     v15 = objc_opt_class();
     v18 = objc_msgSend_defaultSymbolImageIdentifier(v15, v16, v17);
     v12->_symbolImageIdentifier = objc_msgSend_p_archivedSymbolImageIdentifierForSymbolImageIdentifier_(v15, v19, v18);
@@ -69,12 +69,12 @@
   return v12;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [KNLiveVideoSource alloc];
   v8 = objc_msgSend_name(self, v6, v7);
-  v10 = objc_msgSend_initWithContext_name_(v5, v9, v4, v8);
+  v10 = objc_msgSend_initWithContext_name_(v5, v9, contextCopy, v8);
 
   v13 = objc_msgSend_copy(self->_collaborationCommandUsageState, v11, v12);
   v14 = *(v10 + 72);
@@ -114,13 +114,13 @@
   return *(&self->super.super.isa + *v2);
 }
 
-- (void)setCaptureDeviceDescription:(id)a3
+- (void)setCaptureDeviceDescription:(id)description
 {
-  v25 = a3;
+  descriptionCopy = description;
   if (objc_msgSend_canChangeCaptureDeviceDescription(self, v4, v5))
   {
     v7 = self->_captureDeviceDescription;
-    v8 = v25;
+    v8 = descriptionCopy;
     if (v8 | v7)
     {
       v10 = v8;
@@ -149,12 +149,12 @@
   }
 }
 
-- (void)i_updateDefaultSourceCaptureDeviceDescription:(id)a3
+- (void)i_updateDefaultSourceCaptureDeviceDescription:(id)description
 {
-  v13 = a3;
+  descriptionCopy = description;
   if (self->_isDefaultSource)
   {
-    objc_storeStrong(&self->_defaultSourceCaptureDeviceDescription, a3);
+    objc_storeStrong(&self->_defaultSourceCaptureDeviceDescription, description);
   }
 
   else
@@ -168,26 +168,26 @@
   }
 }
 
-- (void)setPosterImageData:(id)a3
+- (void)setPosterImageData:(id)data
 {
-  v9 = a3;
-  if (self->_posterImageData != v9)
+  dataCopy = data;
+  if (self->_posterImageData != dataCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
     objc_msgSend_willRemoveReferenceToData_(self, v7, self->_posterImageData);
-    objc_storeStrong(&self->_posterImageData, a3);
+    objc_storeStrong(&self->_posterImageData, data);
     objc_msgSend_didAddReferenceToData_(self, v8, self->_posterImageData);
     self->_definedPosterImageData = self->_posterImageData != 0;
   }
 }
 
-- (void)setSymbolAbbreviationText:(id)a3
+- (void)setSymbolAbbreviationText:(id)text
 {
-  v10 = a3;
-  if (self->_symbolAbbreviationText != v10)
+  textCopy = text;
+  if (self->_symbolAbbreviationText != textCopy)
   {
     objc_msgSend_willModify(self, v4, v5);
-    v8 = objc_msgSend_copy(v10, v6, v7);
+    v8 = objc_msgSend_copy(textCopy, v6, v7);
     symbolAbbreviationText = self->_symbolAbbreviationText;
     self->_symbolAbbreviationText = v8;
 
@@ -218,10 +218,10 @@
   return symbolImageIdentifier;
 }
 
-- (void)setSymbolImageIdentifier:(int64_t)a3
+- (void)setSymbolImageIdentifier:(int64_t)identifier
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_p_archivedSymbolImageIdentifierForSymbolImageIdentifier_(v5, v6, a3);
+  v7 = objc_msgSend_p_archivedSymbolImageIdentifierForSymbolImageIdentifier_(v5, v6, identifier);
   if (self->_symbolImageIdentifier != v7)
   {
     v10 = v7;
@@ -230,29 +230,29 @@
   }
 }
 
-+ (int64_t)p_archivedSymbolImageIdentifierForSymbolImageIdentifier:(int64_t)a3
++ (int64_t)p_archivedSymbolImageIdentifierForSymbolImageIdentifier:(int64_t)identifier
 {
-  if ((a3 - 1) >= 0xE)
+  if ((identifier - 1) >= 0xE)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return identifier;
   }
 }
 
-+ (id)systemImageNameForSymbolImageIdentifier:(int64_t)a3
++ (id)systemImageNameForSymbolImageIdentifier:(int64_t)identifier
 {
-  if (a3 > 0xE)
+  if (identifier > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return off_27A698D30[a3];
+    return off_27A698D30[identifier];
   }
 }
 
@@ -268,10 +268,10 @@
   return objc_msgSend_defaultSymbolTintColorIdentifier(v4, v5, v6);
 }
 
-- (void)setSymbolTintColorIdentifier:(int64_t)a3
+- (void)setSymbolTintColorIdentifier:(int64_t)identifier
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_p_archivedSymbolTintColorIdentifierForSymbolTintColorIdentifier_(v5, v6, a3);
+  v7 = objc_msgSend_p_archivedSymbolTintColorIdentifierForSymbolTintColorIdentifier_(v5, v6, identifier);
   if (self->_symbolTintColorIdentifier != v7)
   {
     v10 = v7;
@@ -280,25 +280,25 @@
   }
 }
 
-+ (int64_t)p_archivedSymbolTintColorIdentifierForSymbolTintColorIdentifier:(int64_t)a3
++ (int64_t)p_archivedSymbolTintColorIdentifierForSymbolTintColorIdentifier:(int64_t)identifier
 {
-  if ((a3 - 1) >= 5)
+  if ((identifier - 1) >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return identifier;
   }
 }
 
-+ (id)colorForSymbolTintColorIdentifier:(int64_t)a3
++ (id)colorForSymbolTintColorIdentifier:(int64_t)identifier
 {
   v3 = 0;
-  if (a3 > 2)
+  if (identifier > 2)
   {
-    switch(a3)
+    switch(identifier)
     {
       case 3:
         v3 = objc_msgSend_systemYellowColor(MEMORY[0x277D75348], a2, 3);
@@ -312,14 +312,14 @@
     }
   }
 
-  else if (a3)
+  else if (identifier)
   {
-    if (a3 == 1)
+    if (identifier == 1)
     {
       v3 = objc_msgSend_whiteColor(MEMORY[0x277D75348], a2, 1);
     }
 
-    else if (a3 == 2)
+    else if (identifier == 2)
     {
       v3 = objc_msgSend_systemRedColor(MEMORY[0x277D75348], a2, 2);
     }
@@ -333,31 +333,31 @@
   return v3;
 }
 
-- (void)willBeUsedByCollaborationCommandWithUsageToken:(id)a3
+- (void)willBeUsedByCollaborationCommandWithUsageToken:(id)token
 {
-  v9 = a3;
+  tokenCopy = token;
   objc_msgSend_willModify(self, v4, v5);
-  v7 = objc_msgSend_usageStateByAddingCollaborationCommandUsageToken_(self->_collaborationCommandUsageState, v6, v9);
+  v7 = objc_msgSend_usageStateByAddingCollaborationCommandUsageToken_(self->_collaborationCommandUsageState, v6, tokenCopy);
   collaborationCommandUsageState = self->_collaborationCommandUsageState;
   self->_collaborationCommandUsageState = v7;
 }
 
-- (void)rollbackToCollaborationCommandUsageState:(id)a3
+- (void)rollbackToCollaborationCommandUsageState:(id)state
 {
-  v10 = a3;
+  stateCopy = state;
   objc_msgSend_willModify(self, v4, v5);
-  v8 = objc_msgSend_copy(v10, v6, v7);
+  v8 = objc_msgSend_copy(stateCopy, v6, v7);
   collaborationCommandUsageState = self->_collaborationCommandUsageState;
   self->_collaborationCommandUsageState = v8;
 }
 
-- (BOOL)isEquivalentToLiveVideoSource:(id)a3
+- (BOOL)isEquivalentToLiveVideoSource:(id)source
 {
-  v4 = a3;
-  v7 = v4;
+  sourceCopy = source;
+  v7 = sourceCopy;
   if (self->_isDefaultSource)
   {
-    isEqual = v4[96];
+    isEqual = sourceCopy[96];
   }
 
   else
@@ -390,9 +390,9 @@
   return isEqual & 1;
 }
 
-- (BOOL)supportsBackgroundKind:(int64_t)a3
+- (BOOL)supportsBackgroundKind:(int64_t)kind
 {
-  if (a3 == 1)
+  if (kind == 1)
   {
     v4 = objc_msgSend_captureDeviceDescription(self, a2, 1);
     v7 = v4;
@@ -410,7 +410,7 @@
 
   else
   {
-    LOBYTE(v3) = a3 == 0;
+    LOBYTE(v3) = kind == 0;
   }
 
   return v3;
@@ -428,11 +428,11 @@
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v61 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v61, v4, off_2812EA908[106]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812EA908[106]);
 
   if (*(v5 + 16))
   {
@@ -460,12 +460,12 @@
     v20 = [KNLiveVideoCaptureDeviceDescription alloc];
     if (*(v5 + 40))
     {
-      v22 = objc_msgSend_initWithMessage_unarchiver_(v20, v21, *(v5 + 40), v61);
+      v22 = objc_msgSend_initWithMessage_unarchiver_(v20, v21, *(v5 + 40), unarchiverCopy);
     }
 
     else
     {
-      v22 = objc_msgSend_initWithMessage_unarchiver_(v20, v21, &unk_2812EBD48, v61);
+      v22 = objc_msgSend_initWithMessage_unarchiver_(v20, v21, &unk_2812EBD48, unarchiverCopy);
     }
 
     captureDeviceDescription = self->_captureDeviceDescription;
@@ -482,7 +482,7 @@
 
   if ((v19 & 0x10) != 0)
   {
-    v24 = objc_msgSend_readDataReferenceMessage_(v61, v18, *(v5 + 56));
+    v24 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v18, *(v5 + 56));
     posterImageData = self->_posterImageData;
     self->_posterImageData = v24;
 
@@ -553,12 +553,12 @@ LABEL_22:
   v48 = [KNLiveVideoSourceCollaborationCommandUsageState alloc];
   if (*(v5 + 48))
   {
-    v50 = objc_msgSend_initWithMessage_unarchiver_(v48, v49, *(v5 + 48), v61);
+    v50 = objc_msgSend_initWithMessage_unarchiver_(v48, v49, *(v5 + 48), unarchiverCopy);
   }
 
   else
   {
-    v50 = objc_msgSend_initWithMessage_unarchiver_(v48, v49, &qword_2812EBD20, v61);
+    v50 = objc_msgSend_initWithMessage_unarchiver_(v48, v49, &qword_2812EBD20, unarchiverCopy);
   }
 
 LABEL_28:
@@ -566,11 +566,11 @@ LABEL_28:
   self->_collaborationCommandUsageState = v50;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_275DCD320, off_2812EA908[106]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_275DCD320, off_2812EA908[106]);
 
   v9 = objc_msgSend_tsp_protobufString(self->_name, v7, v8);
   *(v6 + 16) |= 1u;
@@ -598,7 +598,7 @@ LABEL_28:
       *(v6 + 40) = v13;
     }
 
-    objc_msgSend_saveToMessage_archiver_(captureDeviceDescription, v10, v13, v4);
+    objc_msgSend_saveToMessage_archiver_(captureDeviceDescription, v10, v13, archiverCopy);
   }
 
   isDefaultSource = self->_isDefaultSource;
@@ -622,7 +622,7 @@ LABEL_28:
       *(v6 + 56) = v18;
     }
 
-    objc_msgSend_setDataReference_message_(v4, v10, posterImageData, v18);
+    objc_msgSend_setDataReference_message_(archiverCopy, v10, posterImageData, v18);
   }
 
   symbolAbbreviationText = self->_symbolAbbreviationText;
@@ -704,11 +704,11 @@ LABEL_28:
     *(v6 + 48) = v26;
   }
 
-  objc_msgSend_saveToMessage_archiver_(collaborationCommandUsageState, v10, v26, v4);
+  objc_msgSend_saveToMessage_archiver_(collaborationCommandUsageState, v10, v26, archiverCopy);
   v28 = sub_275E53AE0();
-  objc_msgSend_setMessageVersion_(v4, v29, v28);
+  objc_msgSend_setMessageVersion_(archiverCopy, v29, v28);
   v30 = sub_275E53AD0();
-  objc_msgSend_requiresDocumentVersion_(v4, v31, v30);
+  objc_msgSend_requiresDocumentVersion_(archiverCopy, v31, v30);
 }
 
 + (NSString)accessibilityLabelForCameraArrowTriangle2CirclePath
@@ -719,9 +719,9 @@ LABEL_28:
   return v4;
 }
 
-+ (id)colorSetForSymbolTintColorIdentifier:(int64_t)a3
++ (id)colorSetForSymbolTintColorIdentifier:(int64_t)identifier
 {
-  v3 = sub_275E560BC(a3);
+  v3 = sub_275E560BC(identifier);
 
   return v3;
 }

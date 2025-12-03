@@ -1,18 +1,18 @@
 @interface HKMapRouteTableViewCell
-- (HKMapRouteTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (HKMapRouteTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (void)setUpConstraints;
 - (void)setupSubviews;
 @end
 
 @implementation HKMapRouteTableViewCell
 
-- (HKMapRouteTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKMapRouteTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HKMapRouteTableViewCell;
-  v4 = [(HKMapRouteTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKMapRouteTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -28,77 +28,77 @@
   v3 = objc_opt_new();
   [(HKMapRouteTableViewCell *)self setMapView:v3];
 
-  v4 = [(HKMapRouteTableViewCell *)self mapView];
-  [v4 setDelegate:self];
+  mapView = [(HKMapRouteTableViewCell *)self mapView];
+  [mapView setDelegate:self];
 
-  v5 = [(HKMapRouteTableViewCell *)self mapView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mapView2 = [(HKMapRouteTableViewCell *)self mapView];
+  [mapView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(HKMapRouteTableViewCell *)self contentView];
-  v6 = [(HKMapRouteTableViewCell *)self mapView];
-  [v7 addSubview:v6];
+  contentView = [(HKMapRouteTableViewCell *)self contentView];
+  mapView3 = [(HKMapRouteTableViewCell *)self mapView];
+  [contentView addSubview:mapView3];
 }
 
 - (void)setUpConstraints
 {
-  v3 = [(HKMapRouteTableViewCell *)self contentView];
-  v4 = [v3 topAnchor];
-  v5 = [(HKMapRouteTableViewCell *)self mapView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  contentView = [(HKMapRouteTableViewCell *)self contentView];
+  topAnchor = [contentView topAnchor];
+  mapView = [(HKMapRouteTableViewCell *)self mapView];
+  topAnchor2 = [mapView topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v7 setActive:1];
 
-  v8 = [(HKMapRouteTableViewCell *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(HKMapRouteTableViewCell *)self mapView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  contentView2 = [(HKMapRouteTableViewCell *)self contentView];
+  bottomAnchor = [contentView2 bottomAnchor];
+  mapView2 = [(HKMapRouteTableViewCell *)self mapView];
+  bottomAnchor2 = [mapView2 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v12 setActive:1];
 
-  v13 = [(HKMapRouteTableViewCell *)self contentView];
-  v14 = [v13 leftAnchor];
-  v15 = [(HKMapRouteTableViewCell *)self mapView];
-  v16 = [v15 leftAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  contentView3 = [(HKMapRouteTableViewCell *)self contentView];
+  leftAnchor = [contentView3 leftAnchor];
+  mapView3 = [(HKMapRouteTableViewCell *)self mapView];
+  leftAnchor2 = [mapView3 leftAnchor];
+  v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v17 setActive:1];
 
-  v18 = [(HKMapRouteTableViewCell *)self contentView];
-  v19 = [v18 rightAnchor];
-  v20 = [(HKMapRouteTableViewCell *)self mapView];
-  v21 = [v20 rightAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  contentView4 = [(HKMapRouteTableViewCell *)self contentView];
+  rightAnchor = [contentView4 rightAnchor];
+  mapView4 = [(HKMapRouteTableViewCell *)self mapView];
+  rightAnchor2 = [mapView4 rightAnchor];
+  v22 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v22 setActive:1];
 
-  v23 = [(HKMapRouteTableViewCell *)self mapView];
-  v24 = [v23 heightAnchor];
-  v26 = [v24 constraintEqualToConstant:300.0];
+  mapView5 = [(HKMapRouteTableViewCell *)self mapView];
+  heightAnchor = [mapView5 heightAnchor];
+  v26 = [heightAnchor constraintEqualToConstant:300.0];
 
   LODWORD(v25) = 1132068864;
   [v26 setPriority:v25];
   [v26 setActive:1];
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
   v4 = MEMORY[0x1E696F2F0];
-  v5 = a4;
-  v6 = [[v4 alloc] initWithAnnotation:v5 reuseIdentifier:0];
+  annotationCopy = annotation;
+  v6 = [[v4 alloc] initWithAnnotation:annotationCopy reuseIdentifier:0];
 
-  v7 = [MEMORY[0x1E69DC888] greenColor];
-  [v6 setPinTintColor:v7];
+  greenColor = [MEMORY[0x1E69DC888] greenColor];
+  [v6 setPinTintColor:greenColor];
 
   return v6;
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
   v4 = MEMORY[0x1E696F370];
-  v5 = a4;
-  v6 = [[v4 alloc] initWithOverlay:v5];
+  overlayCopy = overlay;
+  v6 = [[v4 alloc] initWithOverlay:overlayCopy];
 
   [v6 setLineWidth:5.0];
-  v7 = [MEMORY[0x1E696F2F0] greenPinColor];
-  [v6 setStrokeColor:v7];
+  greenPinColor = [MEMORY[0x1E696F2F0] greenPinColor];
+  [v6 setStrokeColor:greenPinColor];
 
   return v6;
 }

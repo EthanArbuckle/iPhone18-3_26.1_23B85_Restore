@@ -2,38 +2,38 @@
 + (void)load;
 - (CAFSymbolNameAndColor)symbolNameAndColorValue;
 - (id)formattedValue;
-- (void)setSymbolNameAndColorValue:(id)a3;
+- (void)setSymbolNameAndColorValue:(id)value;
 @end
 
 @implementation CAFSymbolNameAndColorCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSymbolNameAndColorCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFSymbolNameAndColor)symbolNameAndColorValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFSymbolNameAndColor symbolNameAndColorWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFSymbolNameAndColor symbolNameAndColorWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setSymbolNameAndColorValue:(id)a3
+- (void)setSymbolNameAndColorValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSymbolNameAndColorCharacteristic *)self symbolNameAndColorValue];
-  v3 = [v2 formattedValue];
+  symbolNameAndColorValue = [(CAFSymbolNameAndColorCharacteristic *)self symbolNameAndColorValue];
+  formattedValue = [symbolNameAndColorValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 @end

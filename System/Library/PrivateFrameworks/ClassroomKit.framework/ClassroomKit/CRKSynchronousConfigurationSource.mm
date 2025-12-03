@@ -1,27 +1,27 @@
 @interface CRKSynchronousConfigurationSource
-- (BOOL)setConfiguration:(id)a3 error:(id *)a4;
-- (CRKSynchronousConfigurationSource)initWithConfigurationSource:(id)a3;
-- (id)configurationWithError:(id *)a3;
+- (BOOL)setConfiguration:(id)configuration error:(id *)error;
+- (CRKSynchronousConfigurationSource)initWithConfigurationSource:(id)source;
+- (id)configurationWithError:(id *)error;
 @end
 
 @implementation CRKSynchronousConfigurationSource
 
-- (CRKSynchronousConfigurationSource)initWithConfigurationSource:(id)a3
+- (CRKSynchronousConfigurationSource)initWithConfigurationSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = CRKSynchronousConfigurationSource;
   v6 = [(CRKSynchronousConfigurationSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mBaseSource, a3);
+    objc_storeStrong(&v6->mBaseSource, source);
   }
 
   return v7;
 }
 
-- (id)configurationWithError:(id *)a3
+- (id)configurationWithError:(id *)error
 {
   v5 = dispatch_semaphore_create(0);
   v20 = 0;
@@ -47,9 +47,9 @@
   v11 = v7;
   [(CRKConfigurationSource *)mBaseSource fetchConfiguration:v10];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v8 = v21[5];
@@ -77,9 +77,9 @@ void __60__CRKSynchronousConfigurationSource_configurationWithError___block_invo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)setConfiguration:(id)a3 error:(id *)a4
+- (BOOL)setConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = dispatch_semaphore_create(0);
   v15 = 0;
   v16 = &v15;
@@ -95,11 +95,11 @@ void __60__CRKSynchronousConfigurationSource_configurationWithError___block_invo
   v14 = &v15;
   v9 = v7;
   v13 = v9;
-  [(CRKConfigurationSource *)mBaseSource setConfiguration:v6 completion:v12];
+  [(CRKConfigurationSource *)mBaseSource setConfiguration:configurationCopy completion:v12];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v10 = v16[5] == 0;

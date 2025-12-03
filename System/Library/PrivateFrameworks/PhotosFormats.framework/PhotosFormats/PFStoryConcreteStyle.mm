@@ -1,32 +1,32 @@
 @interface PFStoryConcreteStyle
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStyle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStyle:(id)style;
 - (NSString)diagnosticDescription;
-- (PFStoryConcreteStyle)initWithIdentifier:(id)a3 originalColorGradeCategory:(id)a4 customColorGradeKind:(int64_t)a5 songAssetIdentifier:(id)a6 isCustomized:(BOOL)a7;
+- (PFStoryConcreteStyle)initWithIdentifier:(id)identifier originalColorGradeCategory:(id)category customColorGradeKind:(int64_t)kind songAssetIdentifier:(id)assetIdentifier isCustomized:(BOOL)customized;
 @end
 
 @implementation PFStoryConcreteStyle
 
-- (BOOL)isEqualToStyle:(id)a3
+- (BOOL)isEqualToStyle:(id)style
 {
-  v4 = a3;
-  if (self == v4)
+  styleCopy = style;
+  if (self == styleCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    v5 = [(PFStoryConcreteStyle *)self originalColorGradeCategory];
-    v6 = [(PFStoryConcreteStyle *)v4 originalColorGradeCategory];
-    if ((v5 == v6 || [v5 isEqual:v6]) && (v7 = -[PFStoryConcreteStyle customColorGradeKind](self, "customColorGradeKind"), v7 == -[PFStoryConcreteStyle customColorGradeKind](v4, "customColorGradeKind")))
+    originalColorGradeCategory = [(PFStoryConcreteStyle *)self originalColorGradeCategory];
+    originalColorGradeCategory2 = [(PFStoryConcreteStyle *)styleCopy originalColorGradeCategory];
+    if ((originalColorGradeCategory == originalColorGradeCategory2 || [originalColorGradeCategory isEqual:originalColorGradeCategory2]) && (v7 = -[PFStoryConcreteStyle customColorGradeKind](self, "customColorGradeKind"), v7 == -[PFStoryConcreteStyle customColorGradeKind](styleCopy, "customColorGradeKind")))
     {
-      v8 = [(PFStoryConcreteStyle *)self songAssetIdentifier];
-      v9 = [(PFStoryConcreteStyle *)v4 songAssetIdentifier];
-      if (v8 == v9 || [v8 isEqual:v9])
+      songAssetIdentifier = [(PFStoryConcreteStyle *)self songAssetIdentifier];
+      songAssetIdentifier2 = [(PFStoryConcreteStyle *)styleCopy songAssetIdentifier];
+      if (songAssetIdentifier == songAssetIdentifier2 || [songAssetIdentifier isEqual:songAssetIdentifier2])
       {
-        v10 = [(PFStoryConcreteStyle *)self isCustomized];
-        v11 = v10 ^ [(PFStoryConcreteStyle *)v4 isCustomized]^ 1;
+        isCustomized = [(PFStoryConcreteStyle *)self isCustomized];
+        v11 = isCustomized ^ [(PFStoryConcreteStyle *)styleCopy isCustomized]^ 1;
       }
 
       else
@@ -44,13 +44,13 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqualToStyle:self];
+    v5 = [equalCopy isEqualToStyle:self];
   }
 
   else
@@ -70,19 +70,19 @@
   return v5;
 }
 
-- (PFStoryConcreteStyle)initWithIdentifier:(id)a3 originalColorGradeCategory:(id)a4 customColorGradeKind:(int64_t)a5 songAssetIdentifier:(id)a6 isCustomized:(BOOL)a7
+- (PFStoryConcreteStyle)initWithIdentifier:(id)identifier originalColorGradeCategory:(id)category customColorGradeKind:(int64_t)kind songAssetIdentifier:(id)assetIdentifier isCustomized:(BOOL)customized
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  identifierCopy = identifier;
+  categoryCopy = category;
+  assetIdentifierCopy = assetIdentifier;
   v25.receiver = self;
   v25.super_class = PFStoryConcreteStyle;
   v15 = [(PFStoryConcreteStyle *)&v25 init];
   if (v15)
   {
-    if (v12)
+    if (identifierCopy)
     {
-      v16 = v12;
+      v16 = identifierCopy;
       identifier = v15->_identifier;
       v15->_identifier = v16;
     }
@@ -90,21 +90,21 @@
     else
     {
       identifier = [MEMORY[0x1E696AFB0] UUID];
-      v18 = [identifier UUIDString];
+      uUIDString = [identifier UUIDString];
       v19 = v15->_identifier;
-      v15->_identifier = v18;
+      v15->_identifier = uUIDString;
     }
 
-    v20 = [v13 copy];
+    v20 = [categoryCopy copy];
     originalColorGradeCategory = v15->_originalColorGradeCategory;
     v15->_originalColorGradeCategory = v20;
 
-    v15->_customColorGradeKind = a5;
-    v22 = [v14 copy];
+    v15->_customColorGradeKind = kind;
+    v22 = [assetIdentifierCopy copy];
     songAssetIdentifier = v15->_songAssetIdentifier;
     v15->_songAssetIdentifier = v22;
 
-    v15->_isCustomized = a7;
+    v15->_isCustomized = customized;
   }
 
   return v15;

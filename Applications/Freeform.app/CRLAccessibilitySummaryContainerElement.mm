@@ -1,20 +1,20 @@
 @interface CRLAccessibilitySummaryContainerElement
 - (CGRect)accessibilityFrame;
-- (CRLAccessibilitySummaryContainerElement)initWithAccessibilityContainer:(id)a3 containedElements:(id)a4;
+- (CRLAccessibilitySummaryContainerElement)initWithAccessibilityContainer:(id)container containedElements:(id)elements;
 - (id)accessibilityLabel;
 @end
 
 @implementation CRLAccessibilitySummaryContainerElement
 
-- (CRLAccessibilitySummaryContainerElement)initWithAccessibilityContainer:(id)a3 containedElements:(id)a4
+- (CRLAccessibilitySummaryContainerElement)initWithAccessibilityContainer:(id)container containedElements:(id)elements
 {
-  v6 = a4;
+  elementsCopy = elements;
   v20.receiver = self;
   v20.super_class = CRLAccessibilitySummaryContainerElement;
-  v7 = [(CRLAccessibilitySummaryContainerElement *)&v20 initWithAccessibilityContainer:a3];
+  v7 = [(CRLAccessibilitySummaryContainerElement *)&v20 initWithAccessibilityContainer:container];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [elementsCopy copy];
     containedElements = v7->_containedElements;
     v7->_containedElements = v8;
 
@@ -62,8 +62,8 @@
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = [(CRLAccessibilitySummaryContainerElement *)self containedElements];
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  containedElements = [(CRLAccessibilitySummaryContainerElement *)self containedElements];
+  v6 = [containedElements countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v6)
   {
     v7 = v6;
@@ -81,7 +81,7 @@
       {
         if (*v38 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(containedElements);
         }
 
         v14 = *(*(&v37 + 1) + 8 * i);
@@ -131,7 +131,7 @@
         v9 = v25;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v7 = [containedElements countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v7);
@@ -163,8 +163,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(CRLAccessibilitySummaryContainerElement *)self containedElements];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  containedElements = [(CRLAccessibilitySummaryContainerElement *)self containedElements];
+  v5 = [containedElements countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -175,14 +175,14 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(containedElements);
         }
 
-        v9 = [*(*(&v19 + 1) + 8 * i) accessibilityLabel];
-        [v3 crlaxAddObjectIfNotNil:v9];
+        accessibilityLabel = [*(*(&v19 + 1) + 8 * i) accessibilityLabel];
+        [v3 crlaxAddObjectIfNotNil:accessibilityLabel];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [containedElements countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);

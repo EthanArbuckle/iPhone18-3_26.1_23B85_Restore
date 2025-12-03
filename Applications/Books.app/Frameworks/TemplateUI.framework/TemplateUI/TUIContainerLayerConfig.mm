@@ -1,15 +1,15 @@
 @interface TUIContainerLayerConfig
-- (BOOL)isEqualToConfig:(id)a3;
-- (TUIContainerLayerConfig)initWithSize:(CGSize)a3;
-- (void)configureLayer:(id)a3;
+- (BOOL)isEqualToConfig:(id)config;
+- (TUIContainerLayerConfig)initWithSize:(CGSize)size;
+- (void)configureLayer:(id)layer;
 @end
 
 @implementation TUIContainerLayerConfig
 
-- (TUIContainerLayerConfig)initWithSize:(CGSize)a3
+- (TUIContainerLayerConfig)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = TUIContainerLayerConfig;
   result = [(TUIContainerLayerConfig *)&v6 init];
@@ -22,21 +22,21 @@
   return result;
 }
 
-- (void)configureLayer:(id)a3
+- (void)configureLayer:(id)layer
 {
   if (self->_size.width != CGSizeZero.width || self->_size.height != CGSizeZero.height)
   {
-    v6 = a3;
-    [v6 setAnchorPoint:{0.5, 0.5}];
-    [v6 setFrame:{0.0, 0.0, self->_size.width, self->_size.height}];
+    layerCopy = layer;
+    [layerCopy setAnchorPoint:{0.5, 0.5}];
+    [layerCopy setFrame:{0.0, 0.0, self->_size.width, self->_size.height}];
   }
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, configCopy);
 
   return v6 == self;
 }

@@ -20,29 +20,29 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(CRLCALayerAccessibility *)self string];
+    string = [(CRLCALayerAccessibility *)self string];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 string];
+      v3String = [string string];
     }
 
     else
     {
-      v4 = v3;
+      v3String = string;
     }
 
-    v5 = v4;
+    accessibilityLabel = v3String;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CRLCALayerAccessibility;
-    v5 = [(CRLCALayerAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(CRLCALayerAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame
@@ -50,14 +50,14 @@
   v3 = [(CRLCALayerAccessibility *)self crlaxAncestorOfType:NSClassFromString(@"CRLCanvasView")];
   if (v3)
   {
-    v4 = self;
-    [(CRLCALayerAccessibility *)v4 bounds];
+    selfCopy = self;
+    [(CRLCALayerAccessibility *)selfCopy bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [v3 layer];
-    [(CRLCALayerAccessibility *)v4 convertRect:v13 toLayer:v6, v8, v10, v12];
+    layer = [v3 layer];
+    [(CRLCALayerAccessibility *)selfCopy convertRect:layer toLayer:v6, v8, v10, v12];
     v15 = v14;
     v17 = v16;
     v19 = v18;

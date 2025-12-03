@@ -16,43 +16,43 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(NTKCircularComplicationViewAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(NTKCircularComplicationViewAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(NTKCircularComplicationViewAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(NTKCircularComplicationViewAccessibility *)self accessibilityUserDefinedLabel];
   }
 
   else
   {
     v5 = [(NTKCircularComplicationViewAccessibility *)self safeValueForKey:@"complicationTemplate"];
-    v4 = [v5 accessibilityLabel];
+    accessibilityUserDefinedLabel2 = [v5 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(NTKCircularComplicationViewAccessibility *)self accessibilityUserDefinedValue];
+  accessibilityUserDefinedValue = [(NTKCircularComplicationViewAccessibility *)self accessibilityUserDefinedValue];
 
-  if (v3)
+  if (accessibilityUserDefinedValue)
   {
-    v4 = [(NTKCircularComplicationViewAccessibility *)self accessibilityUserDefinedValue];
+    accessibilityUserDefinedValue2 = [(NTKCircularComplicationViewAccessibility *)self accessibilityUserDefinedValue];
   }
 
   else
   {
     v5 = [(NTKCircularComplicationViewAccessibility *)self safeValueForKey:@"complicationTemplate"];
-    v4 = [v5 accessibilityValue];
+    accessibilityUserDefinedValue2 = [v5 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityUserDefinedValue2;
 }
 
 - (id)accessibilityPath
 {
-  v2 = [(NTKCircularComplicationViewAccessibility *)self _accessibilityCirclePathBasedOnBoundsWidth];
+  _accessibilityCirclePathBasedOnBoundsWidth = [(NTKCircularComplicationViewAccessibility *)self _accessibilityCirclePathBasedOnBoundsWidth];
   v3 = UIAccessibilityInsetBezierPath();
 
   return v3;

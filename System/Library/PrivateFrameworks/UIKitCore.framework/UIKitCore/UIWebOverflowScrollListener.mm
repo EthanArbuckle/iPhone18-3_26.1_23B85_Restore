@@ -1,13 +1,13 @@
 @interface UIWebOverflowScrollListener
-- (UIWebOverflowScrollListener)initWithScrollView:(id)a3;
+- (UIWebOverflowScrollListener)initWithScrollView:(id)view;
 - (void)_didCompleteScrolling;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 @end
 
 @implementation UIWebOverflowScrollListener
 
-- (UIWebOverflowScrollListener)initWithScrollView:(id)a3
+- (UIWebOverflowScrollListener)initWithScrollView:(id)view
 {
   v7.receiver = self;
   v7.super_class = UIWebOverflowScrollListener;
@@ -15,35 +15,35 @@
   v5 = v4;
   if (v4)
   {
-    v4->_scrollView = a3;
-    [a3 setDelegate:v4];
+    v4->_scrollView = view;
+    [view setDelegate:v4];
   }
 
   return v5;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(UIWebOverflowScrollView *)self->_scrollView webBrowserView];
+  webBrowserView = [(UIWebOverflowScrollView *)self->_scrollView webBrowserView];
   scrollView = self->_scrollView;
-  v6 = [(UIWebOverflowScrollView *)scrollView node];
+  node = [(UIWebOverflowScrollView *)scrollView node];
 
-  [(UIWebBrowserView *)v4 _overflowScrollView:scrollView willStartScrollingForNode:v6];
+  [(UIWebBrowserView *)webBrowserView _overflowScrollView:scrollView willStartScrollingForNode:node];
 }
 
 - (void)_didCompleteScrolling
 {
   [(UIWebBrowserView *)[(UIWebOverflowScrollView *)self->_scrollView webBrowserView] _overflowScrollView:self->_scrollView scrollOffsetChangedForNode:[(UIWebOverflowScrollView *)self->_scrollView node] whileScrolling:0];
-  v3 = [(UIWebOverflowScrollView *)self->_scrollView webBrowserView];
+  webBrowserView = [(UIWebOverflowScrollView *)self->_scrollView webBrowserView];
   scrollView = self->_scrollView;
-  v5 = [(UIWebOverflowScrollView *)scrollView node];
+  node = [(UIWebOverflowScrollView *)scrollView node];
 
-  [(UIWebBrowserView *)v3 _overflowScrollView:scrollView didEndScrollingForNode:v5];
+  [(UIWebBrowserView *)webBrowserView _overflowScrollView:scrollView didEndScrollingForNode:node];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(UIWebOverflowScrollListener *)self _didCompleteScrolling];
   }

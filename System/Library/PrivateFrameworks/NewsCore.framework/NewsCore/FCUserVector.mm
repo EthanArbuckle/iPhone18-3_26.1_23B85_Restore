@@ -1,38 +1,38 @@
 @interface FCUserVector
 - (FCUserVector)init;
-- (FCUserVector)initWithWhitelistURL:(id)a3 modelURL:(id)a4 personalizationTreatment:(id)a5 bundleChannelIDs:(id)a6 bundleChannelIDsVersion:(id)a7 subscriptionController:(id)a8 sportsTagIDs:(id)a9;
+- (FCUserVector)initWithWhitelistURL:(id)l modelURL:(id)rL personalizationTreatment:(id)treatment bundleChannelIDs:(id)ds bundleChannelIDsVersion:(id)version subscriptionController:(id)controller sportsTagIDs:(id)iDs;
 - (id)bundleSubscribedVector;
-- (id)computePersonalizationVectorWithAggregateStore:(id)a3 personalizationTreatment:(id)a4 tagRanker:(id)a5 options:(int64_t)a6;
-- (id)computePersonalizationVectorWithAggregateVectorProvider:(id)a3 personalizationTreatment:(id)a4 tagRanker:(id)a5 options:(int64_t)a6;
-- (id)findVector:(id)a3 closestToBins:(id)a4;
+- (id)computePersonalizationVectorWithAggregateStore:(id)store personalizationTreatment:(id)treatment tagRanker:(id)ranker options:(int64_t)options;
+- (id)computePersonalizationVectorWithAggregateVectorProvider:(id)provider personalizationTreatment:(id)treatment tagRanker:(id)ranker options:(int64_t)options;
+- (id)findVector:(id)vector closestToBins:(id)bins;
 - (id)subscribedBundleChannelIDs;
-- (id)subscribedSportsTagsWithPersonalizationTreatment:(id)a3 tagRanker:(id)a4;
+- (id)subscribedSportsTagsWithPersonalizationTreatment:(id)treatment tagRanker:(id)ranker;
 @end
 
 @implementation FCUserVector
 
-- (FCUserVector)initWithWhitelistURL:(id)a3 modelURL:(id)a4 personalizationTreatment:(id)a5 bundleChannelIDs:(id)a6 bundleChannelIDsVersion:(id)a7 subscriptionController:(id)a8 sportsTagIDs:(id)a9
+- (FCUserVector)initWithWhitelistURL:(id)l modelURL:(id)rL personalizationTreatment:(id)treatment bundleChannelIDs:(id)ds bundleChannelIDsVersion:(id)version subscriptionController:(id)controller sportsTagIDs:(id)iDs
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  lCopy = l;
+  rLCopy = rL;
+  treatmentCopy = treatment;
+  dsCopy = ds;
+  versionCopy = version;
+  controllerCopy = controller;
+  iDsCopy = iDs;
   v26.receiver = self;
   v26.super_class = FCUserVector;
   v18 = [(FCUserVector *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_whitelistURL, a3);
-    objc_storeStrong(&v19->_modelURL, a4);
-    objc_storeStrong(&v19->_personalizationTreatment, a5);
-    objc_storeStrong(&v19->_bundleChannelIDs, a6);
-    objc_storeStrong(&v19->_bundleChannelIDsVersion, a7);
-    objc_storeStrong(&v19->_subscriptionController, a8);
-    objc_storeStrong(&v19->_sportsTagIDs, a9);
+    objc_storeStrong(&v18->_whitelistURL, l);
+    objc_storeStrong(&v19->_modelURL, rL);
+    objc_storeStrong(&v19->_personalizationTreatment, treatment);
+    objc_storeStrong(&v19->_bundleChannelIDs, ds);
+    objc_storeStrong(&v19->_bundleChannelIDsVersion, version);
+    objc_storeStrong(&v19->_subscriptionController, controller);
+    objc_storeStrong(&v19->_sportsTagIDs, iDs);
   }
 
   return v19;
@@ -64,26 +64,26 @@
   objc_exception_throw(v6);
 }
 
-- (id)computePersonalizationVectorWithAggregateVectorProvider:(id)a3 personalizationTreatment:(id)a4 tagRanker:(id)a5 options:(int64_t)a6
+- (id)computePersonalizationVectorWithAggregateVectorProvider:(id)provider personalizationTreatment:(id)treatment tagRanker:(id)ranker options:(int64_t)options
 {
-  v6 = a6;
+  optionsCopy = options;
   v108 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  providerCopy = provider;
+  treatmentCopy = treatment;
+  rankerCopy = ranker;
   v13 = objc_alloc_init(MEMORY[0x1E69B7060]);
-  if ((v6 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     goto LABEL_33;
   }
 
-  v88 = v12;
+  v88 = rankerCopy;
   v14 = objc_alloc_init(MEMORY[0x1E695FEB0]);
   [v14 setComputeUnits:0];
   v15 = MEMORY[0x1E695FE90];
-  v16 = [(FCUserVector *)self modelURL];
+  modelURL = [(FCUserVector *)self modelURL];
   v104 = 0;
-  v17 = [v15 compileModelAtURL:v16 error:&v104];
+  v17 = [v15 compileModelAtURL:modelURL error:&v104];
   v18 = v104;
 
   v19 = [FCUserVectorModel alloc];
@@ -109,27 +109,27 @@
   if (v22)
   {
     v83 = v22;
-    v84 = v10;
+    v84 = providerCopy;
     v86 = v22;
-    v24 = [v86 model];
-    v25 = [v24 modelDescription];
-    v26 = [v25 metadata];
-    v27 = [v26 fc_safeObjectForKey:*MEMORY[0x1E695FDB0]];
+    model = [v86 model];
+    modelDescription = [model modelDescription];
+    metadata = [modelDescription metadata];
+    v27 = [metadata fc_safeObjectForKey:*MEMORY[0x1E695FDB0]];
     v85 = [v27 fc_safeObjectForKey:@"version"];
 
     v28 = MEMORY[0x1E695DEF0];
-    v29 = [(FCUserVector *)self whitelistURL];
-    v30 = [v28 dataWithContentsOfURL:v29];
+    whitelistURL = [(FCUserVector *)self whitelistURL];
+    v30 = [v28 dataWithContentsOfURL:whitelistURL];
 
     v82 = v30;
     if (v30)
     {
-      v81 = v6;
+      v81 = optionsCopy;
       v98 = v23;
       v31 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v30 options:4 error:&v98];
       v32 = v98;
 
-      v10 = v84;
+      providerCopy = v84;
       if (v31)
       {
         v79 = v32;
@@ -150,7 +150,7 @@
         {
           v55 = 0;
           v62 = 0;
-          v12 = v88;
+          rankerCopy = v88;
           v22 = v83;
         }
 
@@ -158,7 +158,7 @@
         {
 LABEL_10:
           v73 = v31;
-          v74 = v11;
+          v74 = treatmentCopy;
           v37 = [v84 aggregateVectorForTags:v34];
           v38 = FCPersonalizationLog;
           if (os_log_type_enabled(FCPersonalizationLog, OS_LOG_TYPE_DEBUG))
@@ -170,21 +170,21 @@ LABEL_10:
             _os_log_debug_impl(&dword_1B63EF000, v38, OS_LOG_TYPE_DEBUG, "Created user aggregate input with whitelist version %@ and vector %@.", buf, 0x16u);
           }
 
-          v39 = [v86 model];
-          v40 = [v39 modelDescription];
-          v41 = [v40 inputDescriptionsByName];
-          v42 = [v41 objectForKeyedSubscript:@"aggregates"];
-          v43 = [v42 multiArrayConstraint];
-          v44 = [v43 shape];
+          model2 = [v86 model];
+          modelDescription2 = [model2 modelDescription];
+          inputDescriptionsByName = [modelDescription2 inputDescriptionsByName];
+          v42 = [inputDescriptionsByName objectForKeyedSubscript:@"aggregates"];
+          multiArrayConstraint = [v42 multiArrayConstraint];
+          shape = [multiArrayConstraint shape];
 
           v45 = [v37 count];
-          v46 = [v44 firstObject];
-          LODWORD(v40) = [v46 intValue];
+          firstObject = [shape firstObject];
+          LODWORD(modelDescription2) = [firstObject intValue];
 
-          if (v45 == v40)
+          if (v45 == modelDescription2)
           {
-            v72 = v44;
-            v47 = [objc_alloc(MEMORY[0x1E695FED0]) initWithShape:v44 dataType:65600 error:0];
+            v72 = shape;
+            v47 = [objc_alloc(MEMORY[0x1E695FED0]) initWithShape:shape dataType:65600 error:0];
             v22 = v83;
             if ([v37 count])
             {
@@ -207,15 +207,15 @@ LABEL_10:
 
             v80 = v51;
             v53 = [v51 featureValueForName:@"user_vector"];
-            v54 = [v53 multiArrayValue];
+            multiArrayValue = [v53 multiArrayValue];
 
-            v55 = v54 != 0;
-            v71 = v54;
-            if (v54)
+            v55 = multiArrayValue != 0;
+            v71 = multiArrayValue;
+            if (multiArrayValue)
             {
               v70 = v50;
-              v56 = [(FCUserVector *)self findVector:v54 closestToBins:v78];
-              v57 = [MEMORY[0x1E695DF88] data];
+              v56 = [(FCUserVector *)self findVector:multiArrayValue closestToBins:v78];
+              data = [MEMORY[0x1E695DF88] data];
               if ([v56 count])
               {
                 v58 = 0;
@@ -226,14 +226,14 @@ LABEL_10:
                   v61 = v60;
 
                   *buf = v61;
-                  [v57 appendBytes:buf length:8];
+                  [data appendBytes:buf length:8];
                   ++v58;
                 }
 
                 while ([v56 count] > v58);
               }
 
-              [v13 setPersonalizationVector:v57];
+              [v13 setPersonalizationVector:data];
               [v13 setVersion:v85];
 
               v22 = v83;
@@ -254,9 +254,9 @@ LABEL_10:
 
             v62 = 0;
             v79 = v52;
-            v11 = v74;
-            v12 = v88;
-            v44 = v72;
+            treatmentCopy = v74;
+            rankerCopy = v88;
+            shape = v72;
           }
 
           else
@@ -265,18 +265,18 @@ LABEL_10:
             v93[1] = 3221225472;
             v93[2] = __115__FCUserVector_computePersonalizationVectorWithAggregateVectorProvider_personalizationTreatment_tagRanker_options___block_invoke_34;
             v93[3] = &unk_1E7C3FDC0;
-            v94 = v44;
+            v94 = shape;
             v95 = v37;
             v62 = __115__FCUserVector_computePersonalizationVectorWithAggregateVectorProvider_personalizationTreatment_tagRanker_options___block_invoke_34(v93);
 
             v55 = 0;
             v47 = v94;
-            v11 = v74;
-            v12 = v88;
+            treatmentCopy = v74;
+            rankerCopy = v88;
             v22 = v83;
           }
 
-          v10 = v84;
+          providerCopy = v84;
           v31 = v73;
         }
 
@@ -295,11 +295,11 @@ LABEL_10:
         v62 = __115__FCUserVector_computePersonalizationVectorWithAggregateVectorProvider_personalizationTreatment_tagRanker_options___block_invoke_32(v96);
         v55 = 0;
         v64 = v97;
-        v12 = v88;
+        rankerCopy = v88;
         v22 = v83;
       }
 
-      v6 = v81;
+      optionsCopy = v81;
     }
 
     else
@@ -312,8 +312,8 @@ LABEL_10:
       v62 = __115__FCUserVector_computePersonalizationVectorWithAggregateVectorProvider_personalizationTreatment_tagRanker_options___block_invoke_30(v99);
       v55 = 0;
       v22 = v83;
-      v10 = v84;
-      v12 = v88;
+      providerCopy = v84;
+      rankerCopy = v88;
     }
 
     v63 = v86;
@@ -330,22 +330,22 @@ LABEL_10:
     v62 = __115__FCUserVector_computePersonalizationVectorWithAggregateVectorProvider_personalizationTreatment_tagRanker_options___block_invoke(v100);
     v55 = 0;
     v63 = v101;
-    v12 = v88;
+    rankerCopy = v88;
   }
 
   if (v55)
   {
 LABEL_33:
-    if ((v6 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
-      v65 = [(FCUserVector *)self bundleSubscribedVector];
-      [v13 setBundleSubscribedVector:v65];
+      bundleSubscribedVector = [(FCUserVector *)self bundleSubscribedVector];
+      [v13 setBundleSubscribedVector:bundleSubscribedVector];
 
-      v66 = [(FCUserVector *)self bundleChannelIDsVersion];
-      [v13 setBundleSubscribedVectorVersion:v66];
+      bundleChannelIDsVersion = [(FCUserVector *)self bundleChannelIDsVersion];
+      [v13 setBundleSubscribedVectorVersion:bundleChannelIDsVersion];
     }
 
-    v67 = [(FCUserVector *)self subscribedSportsTagsWithPersonalizationTreatment:v11 tagRanker:v12];
+    v67 = [(FCUserVector *)self subscribedSportsTagsWithPersonalizationTreatment:treatmentCopy tagRanker:rankerCopy];
     [v13 setSportsFavoritesVector:v67];
 
     v62 = v13;
@@ -444,28 +444,28 @@ uint64_t __115__FCUserVector_computePersonalizationVectorWithAggregateVectorProv
   return 0;
 }
 
-- (id)computePersonalizationVectorWithAggregateStore:(id)a3 personalizationTreatment:(id)a4 tagRanker:(id)a5 options:(int64_t)a6
+- (id)computePersonalizationVectorWithAggregateStore:(id)store personalizationTreatment:(id)treatment tagRanker:(id)ranker options:(int64_t)options
 {
-  v6 = a6;
+  optionsCopy = options;
   v139 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  storeCopy = store;
+  treatmentCopy = treatment;
+  rankerCopy = ranker;
   v13 = objc_alloc_init(MEMORY[0x1E69B7060]);
-  if ((v6 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
-    LODWORD(v14) = 0;
+    LODWORD(multiArrayValue) = 0;
 LABEL_41:
-    if ((v6 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
-      v80 = [(FCUserVector *)self bundleSubscribedVector];
-      [v13 setBundleSubscribedVector:v80];
+      bundleSubscribedVector = [(FCUserVector *)self bundleSubscribedVector];
+      [v13 setBundleSubscribedVector:bundleSubscribedVector];
       [(FCUserVector *)self bundleChannelIDsVersion];
-      v82 = v81 = v12;
+      v82 = v81 = rankerCopy;
       [v13 setBundleSubscribedVectorVersion:v82];
 
-      v12 = v81;
-      v79 = v80 != 0;
+      rankerCopy = v81;
+      v79 = bundleSubscribedVector != 0;
     }
 
     else
@@ -473,9 +473,9 @@ LABEL_41:
       v79 = 0;
     }
 
-    v83 = [(FCUserVector *)self subscribedSportsTagsWithPersonalizationTreatment:v11 tagRanker:v12];
+    v83 = [(FCUserVector *)self subscribedSportsTagsWithPersonalizationTreatment:treatmentCopy tagRanker:rankerCopy];
     [v13 setSportsFavoritesVector:v83];
-    if (((v14 | v79) & 1) != 0 || v83)
+    if (((multiArrayValue | v79) & 1) != 0 || v83)
     {
       v76 = v13;
     }
@@ -495,13 +495,13 @@ LABEL_41:
     goto LABEL_51;
   }
 
-  v108 = v6;
+  v108 = optionsCopy;
   v15 = objc_alloc_init(MEMORY[0x1E695FEB0]);
   [v15 setComputeUnits:0];
   v16 = MEMORY[0x1E695FE90];
-  v17 = [(FCUserVector *)self modelURL];
+  modelURL = [(FCUserVector *)self modelURL];
   v134 = 0;
-  v18 = [v16 compileModelAtURL:v17 error:&v134];
+  v18 = [v16 compileModelAtURL:modelURL error:&v134];
   v19 = v134;
 
   v20 = [FCUserVectorModel alloc];
@@ -519,35 +519,35 @@ LABEL_41:
     v22 = [(FCUserVectorModel *)v20 initWithConfiguration:v15 error:&v132];
   }
 
-  v14 = v22;
+  multiArrayValue = v22;
   v109 = v18;
   v23 = *v21;
 
-  v106 = v14;
+  v106 = multiArrayValue;
   v107 = v15;
-  if (v14)
+  if (multiArrayValue)
   {
-    v105 = v11;
-    v104 = v14;
-    v24 = [v104 model];
-    v25 = [v24 modelDescription];
-    v26 = [v25 metadata];
-    v27 = [v26 fc_safeObjectForKey:*MEMORY[0x1E695FDB0]];
+    v105 = treatmentCopy;
+    v104 = multiArrayValue;
+    model = [v104 model];
+    modelDescription = [model modelDescription];
+    metadata = [modelDescription metadata];
+    v27 = [metadata fc_safeObjectForKey:*MEMORY[0x1E695FDB0]];
     v103 = [v27 fc_safeObjectForKey:@"version"];
 
     v28 = MEMORY[0x1E695DEF0];
-    v29 = [(FCUserVector *)self whitelistURL];
-    v14 = [v28 dataWithContentsOfURL:v29];
+    whitelistURL = [(FCUserVector *)self whitelistURL];
+    multiArrayValue = [v28 dataWithContentsOfURL:whitelistURL];
 
-    v102 = v14;
-    if (v14)
+    v102 = multiArrayValue;
+    if (multiArrayValue)
     {
-      v101 = v10;
+      v101 = storeCopy;
       v128 = v23;
-      v30 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v14 options:4 error:&v128];
+      v30 = [MEMORY[0x1E696ACB0] JSONObjectWithData:multiArrayValue options:4 error:&v128];
       v31 = v128;
 
-      v11 = v105;
+      treatmentCopy = v105;
       if (v30)
       {
         v99 = v31;
@@ -561,15 +561,15 @@ LABEL_41:
         if (v109 && ![v34 isEqualToString:v103])
         {
           v69 = 0;
-          LODWORD(v14) = 0;
+          LODWORD(multiArrayValue) = 0;
           v76 = 0;
-          v6 = v108;
+          optionsCopy = v108;
         }
 
         else
         {
           v93 = v30;
-          v94 = v12;
+          v94 = rankerCopy;
           v35 = objc_alloc_init(MEMORY[0x1E695DF90]);
           v122 = 0u;
           v123 = 0u;
@@ -602,12 +602,12 @@ LABEL_41:
           }
 
           v43 = [v101 baselineAggregateWithConfigurableValues:v105];
-          v44 = [v35 allValues];
-          v45 = [v101 aggregatesForFeatures:v44];
+          allValues = [v35 allValues];
+          v45 = [v101 aggregatesForFeatures:allValues];
 
-          v46 = [(FCUserVector *)self personalizationTreatment];
-          v47 = [v46 defaultScoringConfig];
-          [v47 decayFactor];
+          personalizationTreatment = [(FCUserVector *)self personalizationTreatment];
+          defaultScoringConfig = [personalizationTreatment defaultScoringConfig];
+          [defaultScoringConfig decayFactor];
           v49 = v48;
 
           [v43 personalizationValueWithBaseline:0 decayRate:v49];
@@ -635,23 +635,23 @@ LABEL_41:
             _os_log_debug_impl(&dword_1B63EF000, v54, OS_LOG_TYPE_DEBUG, "Created user aggregate input with whitelist version %@ and vector %@.", buf, 0x16u);
           }
 
-          v55 = [v104 model];
-          v56 = [v55 modelDescription];
-          v57 = [v56 inputDescriptionsByName];
-          v58 = [v57 objectForKeyedSubscript:@"aggregates"];
-          v59 = [v58 multiArrayConstraint];
-          v60 = [v59 shape];
+          model2 = [v104 model];
+          modelDescription2 = [model2 modelDescription];
+          inputDescriptionsByName = [modelDescription2 inputDescriptionsByName];
+          v58 = [inputDescriptionsByName objectForKeyedSubscript:@"aggregates"];
+          multiArrayConstraint = [v58 multiArrayConstraint];
+          shape = [multiArrayConstraint shape];
 
           v61 = [v53 count];
-          v62 = [v60 firstObject];
-          LODWORD(v57) = [v62 intValue];
+          firstObject = [shape firstObject];
+          LODWORD(inputDescriptionsByName) = [firstObject intValue];
 
           v92 = v52;
-          if (v61 == v57)
+          if (v61 == inputDescriptionsByName)
           {
-            v89 = v60;
-            v63 = [objc_alloc(MEMORY[0x1E695FED0]) initWithShape:v60 dataType:65600 error:0];
-            v6 = v108;
+            v89 = shape;
+            v63 = [objc_alloc(MEMORY[0x1E695FED0]) initWithShape:shape dataType:65600 error:0];
+            optionsCopy = v108;
             if ([v53 count])
             {
               v64 = 0;
@@ -673,14 +673,14 @@ LABEL_41:
 
             v100 = v66;
             v68 = [v66 featureValueForName:@"user_vector"];
-            v14 = [v68 multiArrayValue];
+            multiArrayValue = [v68 multiArrayValue];
 
-            v69 = v14 != 0;
-            v87 = v14;
-            if (v14)
+            v69 = multiArrayValue != 0;
+            v87 = multiArrayValue;
+            if (multiArrayValue)
             {
-              v70 = [(FCUserVector *)self findVector:v14 closestToBins:v98];
-              v71 = [MEMORY[0x1E695DF88] data];
+              v70 = [(FCUserVector *)self findVector:multiArrayValue closestToBins:v98];
+              data = [MEMORY[0x1E695DF88] data];
               if ([v70 count])
               {
                 v72 = 0;
@@ -691,18 +691,18 @@ LABEL_41:
                   v75 = v74;
 
                   *buf = v75;
-                  [v71 appendBytes:buf length:8];
+                  [data appendBytes:buf length:8];
                   ++v72;
                 }
 
                 while ([v70 count] > v72);
               }
 
-              [v13 setPersonalizationVector:v71];
+              [v13 setPersonalizationVector:data];
               [v13 setVersion:v103];
-              LODWORD(v14) = v71 != 0;
+              LODWORD(multiArrayValue) = data != 0;
 
-              v6 = v108;
+              optionsCopy = v108;
             }
 
             else
@@ -719,8 +719,8 @@ LABEL_41:
 
             v76 = 0;
             v99 = v67;
-            v12 = v94;
-            v60 = v89;
+            rankerCopy = v94;
+            shape = v89;
           }
 
           else
@@ -729,18 +729,18 @@ LABEL_41:
             v113[1] = 3221225472;
             v113[2] = __106__FCUserVector_computePersonalizationVectorWithAggregateStore_personalizationTreatment_tagRanker_options___block_invoke_48;
             v113[3] = &unk_1E7C3FDC0;
-            v114 = v60;
+            v114 = shape;
             v115 = v53;
             v76 = __106__FCUserVector_computePersonalizationVectorWithAggregateStore_personalizationTreatment_tagRanker_options___block_invoke_48(v113);
 
             v69 = 0;
-            LODWORD(v14) = 0;
+            LODWORD(multiArrayValue) = 0;
             v63 = v114;
-            v12 = v94;
-            v6 = v108;
+            rankerCopy = v94;
+            optionsCopy = v108;
           }
 
-          v11 = v105;
+          treatmentCopy = v105;
           v30 = v93;
         }
 
@@ -758,12 +758,12 @@ LABEL_41:
         v127 = v23;
         v76 = __106__FCUserVector_computePersonalizationVectorWithAggregateStore_personalizationTreatment_tagRanker_options___block_invoke_40(v126);
         v69 = 0;
-        LODWORD(v14) = 0;
+        LODWORD(multiArrayValue) = 0;
         v78 = v127;
-        v6 = v108;
+        optionsCopy = v108;
       }
 
-      v10 = v101;
+      storeCopy = v101;
     }
 
     else
@@ -775,8 +775,8 @@ LABEL_41:
       v129[4] = self;
       v76 = __106__FCUserVector_computePersonalizationVectorWithAggregateStore_personalizationTreatment_tagRanker_options___block_invoke_39(v129);
       v69 = 0;
-      v11 = v105;
-      v6 = v108;
+      treatmentCopy = v105;
+      optionsCopy = v108;
     }
 
     v77 = v104;
@@ -793,7 +793,7 @@ LABEL_41:
     v76 = __106__FCUserVector_computePersonalizationVectorWithAggregateStore_personalizationTreatment_tagRanker_options___block_invoke(v130);
     v69 = 0;
     v77 = v131;
-    v6 = v108;
+    optionsCopy = v108;
   }
 
   if (v69)
@@ -925,8 +925,8 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(FCUserVector *)self bundleChannelIDs];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  bundleChannelIDs = [(FCUserVector *)self bundleChannelIDs];
+  v5 = [bundleChannelIDs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -937,12 +937,12 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bundleChannelIDs);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(FCUserVector *)self subscriptionController];
-        v11 = [v10 subscriptionForTagID:v9];
+        subscriptionController = [(FCUserVector *)self subscriptionController];
+        v11 = [subscriptionController subscriptionForTagID:v9];
 
         if (v11)
         {
@@ -950,7 +950,7 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [bundleChannelIDs countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -965,27 +965,27 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
 - (id)bundleSubscribedVector
 {
   v3 = *MEMORY[0x1E695E480];
-  v4 = [(FCUserVector *)self bundleChannelIDs];
-  Mutable = CFBitVectorCreateMutable(v3, [v4 count]);
+  bundleChannelIDs = [(FCUserVector *)self bundleChannelIDs];
+  Mutable = CFBitVectorCreateMutable(v3, [bundleChannelIDs count]);
 
-  v6 = [(FCUserVector *)self bundleChannelIDs];
-  CFBitVectorSetCount(Mutable, [v6 count]);
+  bundleChannelIDs2 = [(FCUserVector *)self bundleChannelIDs];
+  CFBitVectorSetCount(Mutable, [bundleChannelIDs2 count]);
 
-  v7 = [(FCUserVector *)self subscribedBundleChannelIDs];
-  v8 = [(FCUserVector *)self bundleChannelIDs];
-  v9 = [v8 count];
+  subscribedBundleChannelIDs = [(FCUserVector *)self subscribedBundleChannelIDs];
+  bundleChannelIDs3 = [(FCUserVector *)self bundleChannelIDs];
+  v9 = [bundleChannelIDs3 count];
 
   if (v9)
   {
     v10 = 0;
     do
     {
-      v11 = [(FCUserVector *)self bundleChannelIDs];
-      v12 = [v11 objectAtIndex:v10];
+      bundleChannelIDs4 = [(FCUserVector *)self bundleChannelIDs];
+      v12 = [bundleChannelIDs4 objectAtIndex:v10];
 
       if (v12)
       {
-        v13 = [v7 containsObject:v12];
+        v13 = [subscribedBundleChannelIDs containsObject:v12];
       }
 
       else
@@ -996,8 +996,8 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
       CFBitVectorSetBitAtIndex(Mutable, v10, v13);
 
       ++v10;
-      v14 = [(FCUserVector *)self bundleChannelIDs];
-      v15 = [v14 count];
+      bundleChannelIDs5 = [(FCUserVector *)self bundleChannelIDs];
+      v15 = [bundleChannelIDs5 count];
     }
 
     while (v15 > v10);
@@ -1012,34 +1012,34 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
 
   v18 = [MEMORY[0x1E695DF88] dataWithLength:v17 >> 3];
   v19 = CFBitVectorGetCount(Mutable);
-  v20 = [v18 mutableBytes];
+  mutableBytes = [v18 mutableBytes];
   v23.location = 0;
   v23.length = v19;
-  CFBitVectorGetBits(Mutable, v23, v20);
+  CFBitVectorGetBits(Mutable, v23, mutableBytes);
 
   return v18;
 }
 
-- (id)subscribedSportsTagsWithPersonalizationTreatment:(id)a3 tagRanker:(id)a4
+- (id)subscribedSportsTagsWithPersonalizationTreatment:(id)treatment tagRanker:(id)ranker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCUserVector *)self sportsTagIDs];
-  v9 = [v8 count];
+  treatmentCopy = treatment;
+  rankerCopy = ranker;
+  sportsTagIDs = [(FCUserVector *)self sportsTagIDs];
+  v9 = [sportsTagIDs count];
 
   if (v9)
   {
-    v10 = [(FCUserVector *)self sportsTagIDs];
-    v11 = [v10 array];
+    sportsTagIDs2 = [(FCUserVector *)self sportsTagIDs];
+    array = [sportsTagIDs2 array];
 
-    if ([v6 personalizesSportsTagsInUserVector])
+    if ([treatmentCopy personalizesSportsTagsInUserVector])
     {
-      v12 = [v7 rankTagIDsDescending:v11];
+      v12 = [rankerCopy rankTagIDsDescending:array];
 
-      v11 = v12;
+      array = v12;
     }
 
-    v13 = [v11 fc_subarrayWithMaxCount:50];
+    v13 = [array fc_subarrayWithMaxCount:50];
     v14 = [v13 componentsJoinedByString:{@", "}];
     v15 = [v14 dataUsingEncoding:4];
   }
@@ -1052,19 +1052,19 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
   return v15;
 }
 
-- (id)findVector:(id)a3 closestToBins:(id)a4
+- (id)findVector:(id)vector closestToBins:(id)bins
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  vectorCopy = vector;
+  binsCopy = bins;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v5 count] >= 1)
+  if ([vectorCopy count] >= 1)
   {
     v8 = 0;
     do
     {
       v9 = MEMORY[0x1E696AD98];
-      v10 = [v5 objectAtIndexedSubscript:v8];
+      v10 = [vectorCopy objectAtIndexedSubscript:v8];
       [v10 doubleValue];
       v11 = [v9 numberWithDouble:?];
       [v7 addObject:v11];
@@ -1072,7 +1072,7 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
       ++v8;
     }
 
-    while ([v5 count] > v8);
+    while ([vectorCopy count] > v8);
   }
 
   v12 = FCPersonalizationLog;
@@ -1089,9 +1089,9 @@ uint64_t __106__FCUserVector_computePersonalizationVectorWithAggregateStore_pers
   v20[3] = &unk_1E7C3B2C0;
   v13 = v7;
   v21 = v13;
-  v14 = [v6 fc_arrayByTransformingWithBlock:v20];
+  v14 = [binsCopy fc_arrayByTransformingWithBlock:v20];
   v15 = [v14 valueForKeyPath:@"@max.self"];
-  v16 = [v6 objectAtIndexedSubscript:{objc_msgSend(v14, "indexOfObject:", v15)}];
+  v16 = [binsCopy objectAtIndexedSubscript:{objc_msgSend(v14, "indexOfObject:", v15)}];
 
   v17 = FCPersonalizationLog;
   if (os_log_type_enabled(FCPersonalizationLog, OS_LOG_TYPE_DEBUG))

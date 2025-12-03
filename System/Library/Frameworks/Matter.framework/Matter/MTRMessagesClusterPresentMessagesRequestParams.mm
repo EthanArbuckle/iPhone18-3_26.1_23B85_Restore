@@ -1,8 +1,8 @@
 @interface MTRMessagesClusterPresentMessagesRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRMessagesClusterPresentMessagesRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTRMessagesClusterPresentMessagesRequestParams *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     messageID = v2->_messageID;
-    v2->_messageID = v3;
+    v2->_messageID = data;
 
     priority = v2->_priority;
     v2->_priority = &unk_284C3E4C8;
@@ -47,35 +47,35 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMessagesClusterPresentMessagesRequestParams);
-  v5 = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageID];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setMessageID:v5];
+  messageID = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageID];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setMessageID:messageID];
 
-  v6 = [(MTRMessagesClusterPresentMessagesRequestParams *)self priority];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setPriority:v6];
+  priority = [(MTRMessagesClusterPresentMessagesRequestParams *)self priority];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setPriority:priority];
 
-  v7 = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageControl];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setMessageControl:v7];
+  messageControl = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageControl];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setMessageControl:messageControl];
 
-  v8 = [(MTRMessagesClusterPresentMessagesRequestParams *)self startTime];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setStartTime:v8];
+  startTime = [(MTRMessagesClusterPresentMessagesRequestParams *)self startTime];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setStartTime:startTime];
 
-  v9 = [(MTRMessagesClusterPresentMessagesRequestParams *)self duration];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setDuration:v9];
+  duration = [(MTRMessagesClusterPresentMessagesRequestParams *)self duration];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setDuration:duration];
 
-  v10 = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageText];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setMessageText:v10];
+  messageText = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageText];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setMessageText:messageText];
 
-  v11 = [(MTRMessagesClusterPresentMessagesRequestParams *)self responses];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setResponses:v11];
+  responses = [(MTRMessagesClusterPresentMessagesRequestParams *)self responses];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setResponses:responses];
 
-  v12 = [(MTRMessagesClusterPresentMessagesRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setTimedInvokeTimeoutMs:v12];
+  timedInvokeTimeoutMs = [(MTRMessagesClusterPresentMessagesRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v13 = [(MTRMessagesClusterPresentMessagesRequestParams *)self serverSideProcessingTimeout];
-  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setServerSideProcessingTimeout:v13];
+  serverSideProcessingTimeout = [(MTRMessagesClusterPresentMessagesRequestParams *)self serverSideProcessingTimeout];
+  [(MTRMessagesClusterPresentMessagesRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -91,12 +91,12 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v48 = *MEMORY[0x277D85DE8];
-  LOBYTE(v35) = 0;
+  LOBYTE(unsignedIntValue) = 0;
   v36 = 0;
-  LOBYTE(v37) = 0;
+  LOBYTE(unsignedLongLongValue) = 0;
   v38 = 0;
   v33 = 0uLL;
   v34 = 0;
@@ -105,54 +105,54 @@
   v32[0] = 0;
   v32[1] = 0;
   v31 = v32;
-  v4 = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageID];
-  v5 = v4;
-  sub_238DB6950(buf, [v4 bytes], objc_msgSend(v4, "length"));
+  messageID = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageID];
+  v5 = messageID;
+  sub_238DB6950(buf, [messageID bytes], objc_msgSend(messageID, "length"));
 
   v33 = *buf;
-  v6 = [(MTRMessagesClusterPresentMessagesRequestParams *)self priority];
-  LOBYTE(v34) = [v6 unsignedCharValue];
+  priority = [(MTRMessagesClusterPresentMessagesRequestParams *)self priority];
+  LOBYTE(v34) = [priority unsignedCharValue];
 
-  v7 = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageControl];
-  HIBYTE(v34) = [v7 unsignedCharValue];
+  messageControl = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageControl];
+  HIBYTE(v34) = [messageControl unsignedCharValue];
 
-  v8 = [(MTRMessagesClusterPresentMessagesRequestParams *)self startTime];
-  v9 = v8 == 0;
+  startTime = [(MTRMessagesClusterPresentMessagesRequestParams *)self startTime];
+  v9 = startTime == 0;
 
   if (!v9)
   {
-    v35 = 0;
+    unsignedIntValue = 0;
     v36 = 1;
-    v10 = [(MTRMessagesClusterPresentMessagesRequestParams *)self startTime];
-    v35 = [v10 unsignedIntValue];
+    startTime2 = [(MTRMessagesClusterPresentMessagesRequestParams *)self startTime];
+    unsignedIntValue = [startTime2 unsignedIntValue];
   }
 
-  v11 = [(MTRMessagesClusterPresentMessagesRequestParams *)self duration];
-  v12 = v11 == 0;
+  duration = [(MTRMessagesClusterPresentMessagesRequestParams *)self duration];
+  v12 = duration == 0;
 
   if (!v12)
   {
-    v37 = 0;
+    unsignedLongLongValue = 0;
     v38 = 1;
-    v13 = [(MTRMessagesClusterPresentMessagesRequestParams *)self duration];
-    v37 = [v13 unsignedLongLongValue];
+    duration2 = [(MTRMessagesClusterPresentMessagesRequestParams *)self duration];
+    unsignedLongLongValue = [duration2 unsignedLongLongValue];
   }
 
-  v14 = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageText];
-  v15 = v14;
-  sub_238DB9BD8(buf, [v14 UTF8String], objc_msgSend(v14, "lengthOfBytesUsingEncoding:", 4));
+  messageText = [(MTRMessagesClusterPresentMessagesRequestParams *)self messageText];
+  v15 = messageText;
+  sub_238DB9BD8(buf, [messageText UTF8String], objc_msgSend(messageText, "lengthOfBytesUsingEncoding:", 4));
 
   v39 = *buf;
-  v16 = [(MTRMessagesClusterPresentMessagesRequestParams *)self responses];
-  v17 = v16 == 0;
+  responses = [(MTRMessagesClusterPresentMessagesRequestParams *)self responses];
+  v17 = responses == 0;
 
   if (!v17)
   {
     v40 = 1;
     v41 = 0;
     v42 = 0;
-    v18 = [(MTRMessagesClusterPresentMessagesRequestParams *)self responses];
-    v19 = [v18 count] == 0;
+    responses2 = [(MTRMessagesClusterPresentMessagesRequestParams *)self responses];
+    v19 = [responses2 count] == 0;
 
     if (!v19)
     {
@@ -182,8 +182,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v30);
-      v20 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v30);
+      v20 = sub_2393C7114(reader, 21, 256);
       v23 = v28;
       v22 = v20;
     }
@@ -212,19 +212,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRMessagesClusterPresentMessagesRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -235,7 +235,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x41D700000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

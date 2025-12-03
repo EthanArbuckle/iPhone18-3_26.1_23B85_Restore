@@ -1,36 +1,36 @@
 @interface ICFullDeviceInfo
-- (BOOL)isHardwareInfoUpgradable:(ICDeviceHardwareInfo *)a3;
-- (BOOL)isHardwareInfoUpgradableTo2019OSes:(ICDeviceHardwareInfo *)a3;
-- (BOOL)isHardwareInfoUpgradableToSydneyRomeKincaid:(ICDeviceHardwareInfo *)a3;
+- (BOOL)isHardwareInfoUpgradable:(ICDeviceHardwareInfo *)upgradable;
+- (BOOL)isHardwareInfoUpgradableTo2019OSes:(ICDeviceHardwareInfo *)ses;
+- (BOOL)isHardwareInfoUpgradableToSydneyRomeKincaid:(ICDeviceHardwareInfo *)kincaid;
 - (BOOL)shouldBeHidden;
 - (BOOL)upgraded;
 - (BOOL)upgradedTo2019OSes;
-- (BOOL)upgradedToMajor:(int)a3 minor:(int)a4;
+- (BOOL)upgradedToMajor:(int)major minor:(int)minor;
 - (BOOL)upgradedToSydneyRomeKincaid;
-- (ICDeviceHardwareInfo)hardwareInfoFromModelId:(SEL)a3;
-- (ICFullDeviceInfo)initWithName:(id)a3 model:(id)a4 modelDisplayName:(id)a5 softwareVersion:(id)a6;
+- (ICDeviceHardwareInfo)hardwareInfoFromModelId:(SEL)id;
+- (ICFullDeviceInfo)initWithName:(id)name model:(id)model modelDisplayName:(id)displayName softwareVersion:(id)version;
 - (id)debugDescription;
 - (id)description;
-- (unint64_t)hardwareInfoNameFromString:(id)a3;
+- (unint64_t)hardwareInfoNameFromString:(id)string;
 @end
 
 @implementation ICFullDeviceInfo
 
-- (ICFullDeviceInfo)initWithName:(id)a3 model:(id)a4 modelDisplayName:(id)a5 softwareVersion:(id)a6
+- (ICFullDeviceInfo)initWithName:(id)name model:(id)model modelDisplayName:(id)displayName softwareVersion:(id)version
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelCopy = model;
+  displayNameCopy = displayName;
+  versionCopy = version;
   v19.receiver = self;
   v19.super_class = ICFullDeviceInfo;
-  v14 = [(ICMigrationDeviceInfo *)&v19 initWithName:a3];
+  v14 = [(ICMigrationDeviceInfo *)&v19 initWithName:name];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_model, a4);
-    objc_storeStrong(&v15->_modelDisplayName, a5);
-    objc_storeStrong(&v15->_softwareVersion, a6);
-    [(ICFullDeviceInfo *)v15 hardwareInfoFromModelId:v11];
+    objc_storeStrong(&v14->_model, model);
+    objc_storeStrong(&v15->_modelDisplayName, displayName);
+    objc_storeStrong(&v15->_softwareVersion, version);
+    [(ICFullDeviceInfo *)v15 hardwareInfoFromModelId:modelCopy];
     v15->_hardwareInfo.subVersion = v18;
     *&v15->_hardwareInfo.modelName = v17;
   }
@@ -43,10 +43,10 @@
   v12.receiver = self;
   v12.super_class = ICFullDeviceInfo;
   v3 = [(ICFullDeviceInfo *)&v12 description];
-  v4 = [(ICMigrationDeviceInfo *)self name];
-  v5 = [(ICFullDeviceInfo *)self model];
-  v6 = [(ICFullDeviceInfo *)self modelDisplayName];
-  v7 = [(ICFullDeviceInfo *)self softwareVersion];
+  name = [(ICMigrationDeviceInfo *)self name];
+  model = [(ICFullDeviceInfo *)self model];
+  modelDisplayName = [(ICFullDeviceInfo *)self modelDisplayName];
+  softwareVersion = [(ICFullDeviceInfo *)self softwareVersion];
   if ([(ICFullDeviceInfo *)self upgradable])
   {
     v8 = @"YES";
@@ -67,7 +67,7 @@
     v9 = @"NO";
   }
 
-  v10 = [NSString stringWithFormat:@"%@ <name: %@, model: %@, modelDisplayName: %@, OS: %@, Upgradable: %@, Upgraded: %@", v3, v4, v5, v6, v7, v8, v9];
+  v10 = [NSString stringWithFormat:@"%@ <name: %@, model: %@, modelDisplayName: %@, OS: %@, Upgradable: %@, Upgraded: %@", v3, name, model, modelDisplayName, softwareVersion, v8, v9];
 
   return v10;
 }
@@ -77,9 +77,9 @@
   v11.receiver = self;
   v11.super_class = ICFullDeviceInfo;
   v3 = [(ICFullDeviceInfo *)&v11 description];
-  v4 = [(ICFullDeviceInfo *)self model];
-  v5 = [(ICFullDeviceInfo *)self modelDisplayName];
-  v6 = [(ICFullDeviceInfo *)self softwareVersion];
+  model = [(ICFullDeviceInfo *)self model];
+  modelDisplayName = [(ICFullDeviceInfo *)self modelDisplayName];
+  softwareVersion = [(ICFullDeviceInfo *)self softwareVersion];
   if ([(ICFullDeviceInfo *)self upgradable])
   {
     v7 = @"YES";
@@ -100,16 +100,16 @@
     v8 = @"NO";
   }
 
-  v9 = [NSString stringWithFormat:@"%@ <model: %@, modelDisplayName: %@, OS: %@, Upgradable: %@, Upgraded: %@", v3, v4, v5, v6, v7, v8];
+  v9 = [NSString stringWithFormat:@"%@ <model: %@, modelDisplayName: %@, OS: %@, Upgradable: %@, Upgraded: %@", v3, model, modelDisplayName, softwareVersion, v7, v8];
 
   return v9;
 }
 
-- (BOOL)isHardwareInfoUpgradable:(ICDeviceHardwareInfo *)a3
+- (BOOL)isHardwareInfoUpgradable:(ICDeviceHardwareInfo *)upgradable
 {
-  modelName = a3->modelName;
+  modelName = upgradable->modelName;
   result = 1;
-  if (a3->modelName <= 6)
+  if (upgradable->modelName <= 6)
   {
     if (modelName > 3)
     {
@@ -136,7 +136,7 @@
       goto LABEL_17;
     }
 
-    version = a3->version;
+    version = upgradable->version;
     v8 = __OFSUB__(version, 6);
     v6 = version == 6;
     v7 = version - 6 < 0;
@@ -156,7 +156,7 @@
           }
 
 LABEL_11:
-          v5 = a3->version;
+          v5 = upgradable->version;
           v8 = __OFSUB__(v5, 4);
           v6 = v5 == 4;
           v7 = v5 - 4 < 0;
@@ -167,7 +167,7 @@ LABEL_11:
       }
 
 LABEL_17:
-      v9 = a3->version;
+      v9 = upgradable->version;
       v8 = __OFSUB__(v9, 2);
       v6 = v9 == 2;
       v7 = v9 - 2 < 0;
@@ -182,14 +182,14 @@ LABEL_17:
       }
 
 LABEL_18:
-      v10 = a3->version;
+      v10 = upgradable->version;
       v8 = __OFSUB__(v10, 1);
       v6 = v10 == 1;
       v7 = v10 - 1 < 0;
       return !(v7 ^ v8 | v6);
     }
 
-    v12 = a3->version;
+    v12 = upgradable->version;
     v8 = __OFSUB__(v12, 3);
     v6 = v12 == 3;
     v7 = v12 - 3 < 0;
@@ -198,21 +198,21 @@ LABEL_18:
   return !(v7 ^ v8 | v6);
 }
 
-- (BOOL)isHardwareInfoUpgradableTo2019OSes:(ICDeviceHardwareInfo *)a3
+- (BOOL)isHardwareInfoUpgradableTo2019OSes:(ICDeviceHardwareInfo *)ses
 {
-  modelName = a3->modelName;
+  modelName = ses->modelName;
   result = 1;
-  if (a3->modelName <= 6)
+  if (ses->modelName <= 6)
   {
     if (modelName <= 3)
     {
       switch(modelName)
       {
         case 1:
-          v5 = a3->version <= 12;
+          v5 = ses->version <= 12;
           break;
         case 2:
-          v5 = a3->version <= 0;
+          v5 = ses->version <= 0;
           break;
         case 3:
           goto LABEL_20;
@@ -226,7 +226,7 @@ LABEL_18:
     if (modelName == 4)
     {
 LABEL_20:
-      v5 = a3->version <= 5;
+      v5 = ses->version <= 5;
       return !v5;
     }
 
@@ -241,7 +241,7 @@ LABEL_20:
     }
 
 LABEL_19:
-    v5 = a3->version <= 7;
+    v5 = ses->version <= 7;
     return !v5;
   }
 
@@ -249,13 +249,13 @@ LABEL_19:
   {
     if (modelName == 7)
     {
-      v5 = a3->version <= 8;
+      v5 = ses->version <= 8;
       return !v5;
     }
 
     if (modelName == 8)
     {
-      v5 = a3->version <= 4;
+      v5 = ses->version <= 4;
       return !v5;
     }
 
@@ -277,8 +277,8 @@ LABEL_19:
     return modelName != 12;
   }
 
-  version = a3->version;
-  if (version != 5 && (version != 6 || a3->subVersion <= 2))
+  version = ses->version;
+  if (version != 5 && (version != 6 || ses->subVersion <= 2))
   {
     v5 = version <= 6;
     return !v5;
@@ -287,21 +287,21 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)isHardwareInfoUpgradableToSydneyRomeKincaid:(ICDeviceHardwareInfo *)a3
+- (BOOL)isHardwareInfoUpgradableToSydneyRomeKincaid:(ICDeviceHardwareInfo *)kincaid
 {
-  modelName = a3->modelName;
+  modelName = kincaid->modelName;
   result = 1;
-  if (a3->modelName <= 6)
+  if (kincaid->modelName <= 6)
   {
     if (modelName <= 3)
     {
       switch(modelName)
       {
         case 1:
-          v6 = a3->version <= 17;
+          v6 = kincaid->version <= 17;
           break;
         case 2:
-          v6 = a3->version <= 0;
+          v6 = kincaid->version <= 0;
           break;
         case 3:
           goto LABEL_22;
@@ -314,7 +314,7 @@ LABEL_19:
 
     if (modelName == 4)
     {
-      v6 = a3->version <= 6;
+      v6 = kincaid->version <= 6;
       return !v6;
     }
 
@@ -336,13 +336,13 @@ LABEL_19:
     if (modelName == 10)
     {
 LABEL_21:
-      v6 = a3->version <= 9;
+      v6 = kincaid->version <= 9;
       return !v6;
     }
 
     if (modelName == 11)
     {
-      version = a3->version;
+      version = kincaid->version;
       if (version >= 6)
       {
         if (version > 0xE)
@@ -354,7 +354,7 @@ LABEL_21:
         {
           if (version == 6)
           {
-            v6 = a3->subVersion <= 2;
+            v6 = kincaid->subVersion <= 2;
           }
 
           else
@@ -364,7 +364,7 @@ LABEL_21:
               return result;
             }
 
-            v6 = a3->subVersion <= 4;
+            v6 = kincaid->subVersion <= 4;
           }
 
           return !v6;
@@ -386,14 +386,14 @@ LABEL_21:
   {
     if (modelName == 7)
     {
-      v6 = a3->version <= 13;
+      v6 = kincaid->version <= 13;
       return !v6;
     }
 
     if (modelName == 8)
     {
 LABEL_22:
-      v6 = a3->version <= 7;
+      v6 = kincaid->version <= 7;
       return !v6;
     }
 
@@ -403,22 +403,22 @@ LABEL_22:
   return !v5;
 }
 
-- (BOOL)upgradedToMajor:(int)a3 minor:(int)a4
+- (BOOL)upgradedToMajor:(int)major minor:(int)minor
 {
-  v7 = [(ICFullDeviceInfo *)self softwareVersion];
+  softwareVersion = [(ICFullDeviceInfo *)self softwareVersion];
 
-  if (!v7)
+  if (!softwareVersion)
   {
     return 0;
   }
 
   v8 = [NSScanner alloc];
-  v9 = [(ICFullDeviceInfo *)self softwareVersion];
-  v10 = [v8 initWithString:v9];
+  softwareVersion2 = [(ICFullDeviceInfo *)self softwareVersion];
+  v10 = [v8 initWithString:softwareVersion2];
 
   v11 = +[NSCharacterSet decimalDigitCharacterSet];
-  v12 = [v11 invertedSet];
-  [v10 setCharactersToBeSkipped:v12];
+  invertedSet = [v11 invertedSet];
+  [v10 setCharactersToBeSkipped:invertedSet];
 
   v16 = 0;
   if (![v10 scanInt:&v16 + 4] || !objc_msgSend(v10, "scanInt:", &v16))
@@ -432,7 +432,7 @@ LABEL_22:
     goto LABEL_11;
   }
 
-  if (SHIDWORD(v16) <= a3 && (HIDWORD(v16) != a3 || v16 < a4))
+  if (SHIDWORD(v16) <= major && (HIDWORD(v16) != major || v16 < minor))
   {
 LABEL_11:
     v13 = 0;
@@ -447,15 +447,15 @@ LABEL_12:
 
 - (BOOL)upgradedTo2019OSes
 {
-  v3 = [(ICFullDeviceInfo *)self softwareVersion];
+  softwareVersion = [(ICFullDeviceInfo *)self softwareVersion];
 
-  if (!v3)
+  if (!softwareVersion)
   {
     return 0;
   }
 
-  v4 = [(ICFullDeviceInfo *)self softwareVersion];
-  v5 = [v4 hasPrefix:@"OSX"];
+  softwareVersion2 = [(ICFullDeviceInfo *)self softwareVersion];
+  v5 = [softwareVersion2 hasPrefix:@"OSX"];
 
   if (v5)
   {
@@ -482,15 +482,15 @@ LABEL_12:
 
 - (BOOL)upgradedToSydneyRomeKincaid
 {
-  v3 = [(ICFullDeviceInfo *)self softwareVersion];
+  softwareVersion = [(ICFullDeviceInfo *)self softwareVersion];
 
-  if (!v3)
+  if (!softwareVersion)
   {
     return 0;
   }
 
-  v4 = [(ICFullDeviceInfo *)self softwareVersion];
-  v5 = [v4 hasPrefix:@"OSX"];
+  softwareVersion2 = [(ICFullDeviceInfo *)self softwareVersion];
+  v5 = [softwareVersion2 hasPrefix:@"OSX"];
 
   if (v5)
   {
@@ -507,15 +507,15 @@ LABEL_12:
 
 - (BOOL)upgraded
 {
-  v3 = [(ICFullDeviceInfo *)self softwareVersion];
+  softwareVersion = [(ICFullDeviceInfo *)self softwareVersion];
 
-  if (!v3)
+  if (!softwareVersion)
   {
     return 0;
   }
 
-  v4 = [(ICFullDeviceInfo *)self softwareVersion];
-  v5 = [v4 hasPrefix:@"OSX"];
+  softwareVersion2 = [(ICFullDeviceInfo *)self softwareVersion];
+  v5 = [softwareVersion2 hasPrefix:@"OSX"];
 
   if (v5)
   {
@@ -540,7 +540,7 @@ LABEL_12:
   return [(ICFullDeviceInfo *)self upgradedToMajor:v6 minor:v7];
 }
 
-- (ICDeviceHardwareInfo)hardwareInfoFromModelId:(SEL)a3
+- (ICDeviceHardwareInfo)hardwareInfoFromModelId:(SEL)id
 {
   result = a4;
   retstr->version = 0;
@@ -549,30 +549,30 @@ LABEL_12:
   if (result)
   {
     v7 = result;
-    v8 = [(ICDeviceHardwareInfo *)result lowercaseString];
+    lowercaseString = [(ICDeviceHardwareInfo *)result lowercaseString];
 
     v24 = 0;
     v9 = [NSRegularExpression regularExpressionWithPattern:@"([a-z]+)([0-9]+) options:([0-9]+)" error:1, &v24];
-    v10 = [v9 firstMatchInString:v8 options:0 range:{0, objc_msgSend(v8, "length")}];
+    v10 = [v9 firstMatchInString:lowercaseString options:0 range:{0, objc_msgSend(lowercaseString, "length")}];
     v11 = v10;
     if (v10 && [v10 numberOfRanges] == 4)
     {
       v12 = [v11 rangeAtIndex:1];
-      v14 = [v8 substringWithRange:{v12, v13}];
+      v14 = [lowercaseString substringWithRange:{v12, v13}];
       v15 = [(ICFullDeviceInfo *)self hardwareInfoNameFromString:v14];
       retstr->modelName = v15;
       if (v15)
       {
         v16 = [v11 rangeAtIndex:2];
-        v18 = [v8 substringWithRange:{v16, v17}];
-        v19 = [v18 integerValue];
+        v18 = [lowercaseString substringWithRange:{v16, v17}];
+        integerValue = [v18 integerValue];
 
         v20 = [v11 rangeAtIndex:3];
-        v22 = [v8 substringWithRange:{v20, v21}];
-        v23 = [v22 integerValue];
+        v22 = [lowercaseString substringWithRange:{v20, v21}];
+        integerValue2 = [v22 integerValue];
 
-        retstr->version = v19;
-        retstr->subVersion = v23;
+        retstr->version = integerValue;
+        retstr->subVersion = integerValue2;
       }
     }
   }
@@ -580,70 +580,70 @@ LABEL_12:
   return result;
 }
 
-- (unint64_t)hardwareInfoNameFromString:(id)a3
+- (unint64_t)hardwareInfoNameFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"imac"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"imac"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"imacpro"])
+  else if ([stringCopy isEqualToString:@"imacpro"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"macmini"])
+  else if ([stringCopy isEqualToString:@"macmini"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"macpro"])
+  else if ([stringCopy isEqualToString:@"macpro"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"xserve"])
+  else if ([stringCopy isEqualToString:@"xserve"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"macbook"])
+  else if ([stringCopy isEqualToString:@"macbook"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"macbookair"])
+  else if ([stringCopy isEqualToString:@"macbookair"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"macbookpro"])
+  else if ([stringCopy isEqualToString:@"macbookpro"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ipod"])
+  else if ([stringCopy isEqualToString:@"ipod"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"iphone"])
+  else if ([stringCopy isEqualToString:@"iphone"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ipad"])
+  else if ([stringCopy isEqualToString:@"ipad"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"appletv"])
+  else if ([stringCopy isEqualToString:@"appletv"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"audioaccessory"])
+  else if ([stringCopy isEqualToString:@"audioaccessory"])
   {
     v4 = 13;
   }
@@ -658,13 +658,13 @@ LABEL_12:
 
 - (BOOL)shouldBeHidden
 {
-  v3 = [(ICFullDeviceInfo *)self softwareVersion];
-  if ([v3 hasPrefix:@"OSX"])
+  softwareVersion = [(ICFullDeviceInfo *)self softwareVersion];
+  if ([softwareVersion hasPrefix:@"OSX"])
   {
     v4 = 0;
   }
 
-  else if ([v3 hasPrefix:@"iOS"] && (-[ICFullDeviceInfo hardwareInfo](self, "hardwareInfo"), v7 != 12))
+  else if ([softwareVersion hasPrefix:@"iOS"] && (-[ICFullDeviceInfo hardwareInfo](self, "hardwareInfo"), v7 != 12))
   {
     [(ICFullDeviceInfo *)self hardwareInfo];
     v4 = v6 == 13;

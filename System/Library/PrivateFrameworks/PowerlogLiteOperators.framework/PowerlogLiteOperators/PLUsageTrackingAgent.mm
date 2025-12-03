@@ -3,7 +3,7 @@
 + (id)entryEventIntervalDefinitions;
 + (void)load;
 - (PLUsageTrackingAgent)init;
-- (void)logEntriesFromUsageReports:(id)a3;
+- (void)logEntriesFromUsageReports:(id)reports;
 - (void)logEventIntervalUsageTime;
 @end
 
@@ -11,7 +11,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLUsageTrackingAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -44,17 +44,17 @@
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"timestampEnd";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v15[0] = commonTypeDict_DateFormat;
   v14[1] = @"bundleID";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withBundleID];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v15[1] = commonTypeDict_StringFormat_withBundleID;
   v14[2] = @"screenTime";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v15[2] = commonTypeDict_IntegerFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -68,7 +68,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -76,10 +76,10 @@
     v5.receiver = self;
     v5.super_class = PLUsageTrackingAgent;
     self = [(PLAgent *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)logEventIntervalUsageTime
@@ -89,9 +89,9 @@
     v3 = objc_opt_new();
     [(PLUsageTrackingAgent *)self setUsageReporter:v3];
 
-    v4 = [(PLUsageTrackingAgent *)self usageReporter];
+    usageReporter = [(PLUsageTrackingAgent *)self usageReporter];
 
-    if (v4)
+    if (usageReporter)
     {
       v5 = PLLogUsageTracking();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -101,35 +101,35 @@
       }
 
       v6 = objc_opt_new();
-      v7 = [MEMORY[0x277CBEA80] currentCalendar];
-      v8 = [v7 components:60 fromDate:v6];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v8 = [currentCalendar components:60 fromDate:v6];
       [v8 setValue:objc_msgSend(v8 forComponent:{"valueForComponent:", 32) + 1, 32}];
-      v9 = [v7 dateFromComponents:v8];
+      v9 = [currentCalendar dateFromComponents:v8];
 
       v10 = objc_alloc(MEMORY[0x277CCA970]);
       v11 = [v9 dateByAddingTimeInterval:-86400.0];
       v12 = [v10 initWithStartDate:v11 endDate:v9];
 
-      v13 = [(PLUsageTrackingAgent *)self usageReporter];
+      usageReporter2 = [(PLUsageTrackingAgent *)self usageReporter];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __49__PLUsageTrackingAgent_logEventIntervalUsageTime__block_invoke;
       v20[3] = &unk_27825D338;
       v20[4] = self;
-      [v13 fetchReportsDuringInterval:v12 partitionInterval:v20 completionHandler:3600.0];
+      [usageReporter2 fetchReportsDuringInterval:v12 partitionInterval:v20 completionHandler:3600.0];
 
       v14 = [MEMORY[0x277CBEAA8] nearestMidnightAfterDate:v9];
       v15 = objc_alloc(MEMORY[0x277CCA970]);
       v16 = [v14 dateByAddingTimeInterval:-864000.0];
       v17 = [v15 initWithStartDate:v16 endDate:v14];
 
-      v18 = [(PLUsageTrackingAgent *)self usageReporter];
+      usageReporter3 = [(PLUsageTrackingAgent *)self usageReporter];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __49__PLUsageTrackingAgent_logEventIntervalUsageTime__block_invoke_34;
       v19[3] = &unk_27825D338;
       v19[4] = self;
-      [v18 fetchReportsDuringInterval:v17 partitionInterval:v19 completionHandler:86400.0];
+      [usageReporter3 fetchReportsDuringInterval:v17 partitionInterval:v19 completionHandler:86400.0];
     }
   }
 }
@@ -180,12 +180,12 @@ void __49__PLUsageTrackingAgent_logEventIntervalUsageTime__block_invoke_34(uint6
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEntriesFromUsageReports:(id)a3
+- (void)logEntriesFromUsageReports:(id)reports
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  reportsCopy = reports;
+  v5 = reportsCopy;
+  if (reportsCopy && [reportsCopy count])
   {
     v6 = PLLogUsageTracking();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))

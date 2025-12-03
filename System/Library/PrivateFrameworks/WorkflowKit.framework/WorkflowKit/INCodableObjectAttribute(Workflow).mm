@@ -38,7 +38,7 @@
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &off_1F4B00488;
     v7 = objc_msgSendSuper2(&v10, sel_wf_processedParameterValueForValue_, v4);
   }
@@ -51,12 +51,12 @@
 - (id)wf_contentItemForValue:()Workflow
 {
   v4 = a3;
-  v5 = [a1 metadata];
-  v6 = [v5 wf_contentItemForValue:v4];
+  metadata = [self metadata];
+  v6 = [metadata wf_contentItemForValue:v4];
 
   if (!v6)
   {
-    if (![v4 conformsToProtocol:&unk_1F4B0C168] || (objc_msgSend(v4, "wf_contentItemWithCodableAttribute:", a1), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![v4 conformsToProtocol:&unk_1F4B0C168] || (objc_msgSend(v4, "wf_contentItemWithCodableAttribute:", self), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v7 = [MEMORY[0x1E6996D58] itemWithObject:v4];
     }
@@ -71,48 +71,48 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 metadata];
+  metadata = [self metadata];
 
-  if (!v8)
+  if (!metadata)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_17:
-      v38.receiver = a1;
+      v38.receiver = self;
       v38.super_class = &off_1F4B00488;
       v10 = objc_msgSendSuper2(&v38, sel_wf_parameterStateForIntentValue_parameterDefinition_, v6, v7, v36);
       goto LABEL_18;
     }
 
     v14 = v6;
-    v15 = [v14 identifier];
+    identifier = [v14 identifier];
 
-    if (v15)
+    if (identifier)
     {
       v16 = MEMORY[0x1E696AF20];
-      v17 = [v14 identifier];
-      v18 = [v16 componentsWithString:v17];
+      identifier2 = [v14 identifier];
+      v18 = [v16 componentsWithString:identifier2];
 
       if ([v14 type] == 6)
       {
-        v19 = [v18 queryItems];
-        v36 = [v19 objectMatchingKey:@"name" value:@"storeCollectionId"];
+        queryItems = [v18 queryItems];
+        v36 = [queryItems objectMatchingKey:@"name" value:@"storeCollectionId"];
 
-        v20 = [v18 queryItems];
-        v21 = [v20 objectMatchingKey:@"name" value:@"uuid"];
+        queryItems2 = [v18 queryItems];
+        v21 = [queryItems2 objectMatchingKey:@"name" value:@"uuid"];
 
         v22 = [WFiTunesPodcastObject alloc];
         [v14 title];
         v23 = v37 = v18;
-        v24 = [v36 value];
-        v25 = [v21 value];
-        v26 = [(WFiTunesPodcastObject *)v22 initWithName:v23 identifier:v24 podcastUUID:v25 feedURL:0 kind:@"podcast"];
+        value = [v36 value];
+        value2 = [v21 value];
+        value3 = [(WFiTunesPodcastObject *)v22 initWithName:v23 identifier:value podcastUUID:value2 feedURL:0 kind:@"podcast"];
 
         v27 = v21;
         v28 = v36;
         v18 = v37;
-        v10 = [(WFVariableSubstitutableParameterState *)[WFPodcastSubstitutableState alloc] initWithValue:v26];
+        v10 = [(WFVariableSubstitutableParameterState *)[WFPodcastSubstitutableState alloc] initWithValue:value3];
       }
 
       else
@@ -125,10 +125,10 @@ LABEL_17:
         }
 
         v30 = [WFMediaItemState alloc];
-        v31 = [a1 mediaTypeFromIntentMediaType:{objc_msgSend(v14, "type")}];
+        v31 = [self mediaTypeFromIntentMediaType:{objc_msgSend(v14, "type")}];
         v32 = MEMORY[0x1E696AD98];
-        v26 = [v28 value];
-        v33 = [v32 numberWithInteger:{-[WFiTunesPodcastObject integerValue](v26, "integerValue")}];
+        value3 = [v28 value];
+        v33 = [v32 numberWithInteger:{-[WFiTunesPodcastObject integerValue](value3, "integerValue")}];
         v34 = v30;
         v27 = v31;
         v10 = [(WFMediaItemState *)v34 initWithMediaType:v31 persistentID:v33];
@@ -148,12 +148,12 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v9 = [a1 metadata];
-  v10 = [v9 wf_parameterStateForIntentValue:v6 parameterDefinition:v7];
+  metadata2 = [self metadata];
+  v10 = [metadata2 wf_parameterStateForIntentValue:v6 parameterDefinition:v7];
 
   if (!v10)
   {
-    if (![a1 wf_multipleValues])
+    if (![self wf_multipleValues])
     {
       goto LABEL_17;
     }
@@ -170,7 +170,7 @@ LABEL_17:
     v39[1] = 3221225472;
     v39[2] = __90__INCodableObjectAttribute_Workflow__wf_parameterStateForIntentValue_parameterDefinition___block_invoke;
     v39[3] = &unk_1E837B580;
-    v39[4] = a1;
+    v39[4] = self;
     v40 = v7;
     v13 = [v11 if_compactMap:v39];
 
@@ -204,7 +204,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = a1;
+      selfCopy = self;
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
@@ -248,15 +248,15 @@ LABEL_18:
         }
       }
 
-      a1 = v25;
+      self = selfCopy;
     }
 
-    v22 = [a1 metadata];
-    v23 = [v22 wf_processParameterValue:v10 forParameter:v11 parameterState:v12 codableAttribute:a1 completionHandler:v13];
+    metadata = [self metadata];
+    v23 = [metadata wf_processParameterValue:v10 forParameter:v11 parameterState:v12 codableAttribute:self completionHandler:v13];
 
     if ((v23 & 1) == 0)
     {
-      v26.receiver = a1;
+      v26.receiver = self;
       v26.super_class = &off_1F4B00488;
       objc_msgSendSuper2(&v26, sel_wf_getProcessedIntentValueForParameterValue_parameter_parameterState_completionHandler_, v10, v11, v12, v13);
     }
@@ -270,18 +270,18 @@ LABEL_16:
 - (id)wf_updatedParameterDefinition:()Workflow parameterClass:localizer:
 {
   v8 = a5;
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &off_1F4B00488;
   v9 = objc_msgSendSuper2(&v14, sel_wf_updatedParameterDefinition_parameterClass_localizer_, a3, a4, v8);
-  if ([a1 supportsDynamicEnumeration] || (objc_msgSend(a1, "metadata"), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  if ([self supportsDynamicEnumeration] || (objc_msgSend(self, "metadata"), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v12 = v9;
   }
 
   else
   {
-    v11 = [a1 metadata];
-    v12 = [v11 wf_updatedParameterDefinition:v9 forCodableAttribute:a1 localizer:v8];
+    metadata = [self metadata];
+    v12 = [metadata wf_updatedParameterDefinition:v9 forCodableAttribute:self localizer:v8];
   }
 
   return v12;
@@ -289,32 +289,32 @@ LABEL_16:
 
 - (id)wf_parameterClass
 {
-  v1 = [a1 metadata];
-  v2 = [v1 wf_parameterClass];
+  metadata = [self metadata];
+  wf_parameterClass = [metadata wf_parameterClass];
 
-  return v2;
+  return wf_parameterClass;
 }
 
 - (void)wf_objectClass
 {
-  v2 = [a1 metadata];
-  v3 = [v2 wf_objectClass];
-  if (!v3)
+  metadata = [self metadata];
+  wf_objectClass = [metadata wf_objectClass];
+  if (!wf_objectClass)
   {
-    v3 = [a1 wf_facadeClass];
+    wf_objectClass = [self wf_facadeClass];
   }
 
-  v4 = v3;
+  v4 = wf_objectClass;
 
-  return v3;
+  return wf_objectClass;
 }
 
 - (id)wf_facadeClass
 {
-  v1 = [a1 valueTransformer];
-  v2 = [objc_opt_class() transformedValueClass];
+  valueTransformer = [self valueTransformer];
+  transformedValueClass = [objc_opt_class() transformedValueClass];
 
-  return v2;
+  return transformedValueClass;
 }
 
 @end

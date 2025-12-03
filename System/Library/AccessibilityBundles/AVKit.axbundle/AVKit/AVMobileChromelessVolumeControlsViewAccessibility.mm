@@ -1,23 +1,23 @@
 @interface AVMobileChromelessVolumeControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AVMobileChromelessVolumeControlsViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AVMobileChromelessVolumeControlsViewAccessibility)initWithFrame:(CGRect)frame;
 - (id)_accessibilitySliderVolume;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AVMobileChromelessVolumeControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileChromelessVolumeControlsView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceVariable:@"_volumeButton" withType:"AVMobileVolumeChromelessButtonControl"];
-  [v3 validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceVariable:@"_volumeSlider" withType:"AVMobileChromelessSlider"];
-  [v3 validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceMethod:@"volume" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasInstanceMethod:@"volumeControlsView:volumeDidChangeTo:" withFullSignature:{"v", "@", "d", 0}];
-  [v3 validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceMethod:@"_setVolume:forUpdateReason:" withFullSignature:{"v", "d", "Q", 0}];
-  [v3 validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileChromelessVolumeControlsView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceVariable:@"_volumeButton" withType:"AVMobileVolumeChromelessButtonControl"];
+  [validationsCopy validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceVariable:@"_volumeSlider" withType:"AVMobileChromelessSlider"];
+  [validationsCopy validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceMethod:@"volume" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasInstanceMethod:@"volumeControlsView:volumeDidChangeTo:" withFullSignature:{"v", "@", "d", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceMethod:@"_setVolume:forUpdateReason:" withFullSignature:{"v", "d", "Q", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessVolumeControlsView" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,8 +30,8 @@
   objc_initWeak(&v16, v3);
 
   v4 = objc_loadWeakRetained(&v16);
-  v5 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | v5 | *MEMORY[0x29EDC7F60]];
+  accessibilityTraits = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | accessibilityTraits | *MEMORY[0x29EDC7F60]];
 
   v6 = objc_loadWeakRetained(&v16);
   [v6 _setAccessibilityLabelBlock:&__block_literal_global_2];
@@ -116,9 +116,9 @@ void __95__AVMobileChromelessVolumeControlsViewAccessibility__accessibilityLoadA
 - (id)_accessibilitySliderVolume
 {
   v3 = [(AVMobileChromelessVolumeControlsViewAccessibility *)self safeValueForKey:@"volumeSlider"];
-  v4 = [v3 accessibilityUserDefinedValue];
+  accessibilityUserDefinedValue = [v3 accessibilityUserDefinedValue];
 
-  if (v4)
+  if (accessibilityUserDefinedValue)
   {
     [v3 accessibilityUserDefinedValue];
   }
@@ -133,11 +133,11 @@ void __95__AVMobileChromelessVolumeControlsViewAccessibility__accessibilityLoadA
   return v5;
 }
 
-- (AVMobileChromelessVolumeControlsViewAccessibility)initWithFrame:(CGRect)a3
+- (AVMobileChromelessVolumeControlsViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AVMobileChromelessVolumeControlsViewAccessibility;
-  v3 = [(AVMobileChromelessVolumeControlsViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVMobileChromelessVolumeControlsViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AVMobileChromelessVolumeControlsViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

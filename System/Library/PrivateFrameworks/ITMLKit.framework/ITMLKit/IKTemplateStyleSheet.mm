@@ -1,44 +1,44 @@
 @interface IKTemplateStyleSheet
-+ (_xmlDoc)_xmlTreeForTemplateName:(id)a3;
-+ (_xmlDoc)_xmlTreeWithData:(id)a3 error:(id *)a4;
-+ (id)_coalesceNode:(_xmlNode *)a3 overridingNode:(_xmlNode *)a4 forcedTemplateName:(id)a5;
-+ (id)_styleSheetForTemplateName:(id)a3;
-+ (id)_templateNodeWithXMLNode:(_xmlNode *)a3 parentNode:(id)a4;
-+ (id)_templateTreeWithXMLTree:(_xmlNode *)a3 parentNode:(id)a4;
-+ (id)styleSheetForTemplateName:(id)a3;
-+ (void)_coalesceTrees:(_xmlNode *)a3 overridingTree:(_xmlNode *)a4 forcedTemplateName:(id)a5;
-+ (void)_findNodesInXmlTree:(_xmlDoc *)a3 styleNode:(_xmlNode *)a4 templateNode:(_xmlNode *)a5;
-+ (void)_resolveEmbeddedTemplatesInXmlTree:(_xmlNode *)a3;
++ (_xmlDoc)_xmlTreeForTemplateName:(id)name;
++ (_xmlDoc)_xmlTreeWithData:(id)data error:(id *)error;
++ (id)_coalesceNode:(_xmlNode *)node overridingNode:(_xmlNode *)overridingNode forcedTemplateName:(id)name;
++ (id)_styleSheetForTemplateName:(id)name;
++ (id)_templateNodeWithXMLNode:(_xmlNode *)node parentNode:(id)parentNode;
++ (id)_templateTreeWithXMLTree:(_xmlNode *)tree parentNode:(id)node;
++ (id)styleSheetForTemplateName:(id)name;
++ (void)_coalesceTrees:(_xmlNode *)trees overridingTree:(_xmlNode *)tree forcedTemplateName:(id)name;
++ (void)_findNodesInXmlTree:(_xmlDoc *)tree styleNode:(_xmlNode *)node templateNode:(_xmlNode *)templateNode;
++ (void)_resolveEmbeddedTemplatesInXmlTree:(_xmlNode *)tree;
 + (void)loadStyleSheets;
-+ (void)registerStyleSheetURL:(id)a3 parentStyleSheets:(id)a4 forTemplateName:(id)a5;
-- (id)_initWithXMLDoc:(_xmlDoc *)a3 templateName:(id)a4 error:(id *)a5;
-- (id)_styleComposerForNode:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)styleComposerForElement:(id)a3;
++ (void)registerStyleSheetURL:(id)l parentStyleSheets:(id)sheets forTemplateName:(id)name;
+- (id)_initWithXMLDoc:(_xmlDoc *)doc templateName:(id)name error:(id *)error;
+- (id)_styleComposerForNode:(id)node;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)styleComposerForElement:(id)element;
 - (void)setViewElementStylesDirty;
 @end
 
 @implementation IKTemplateStyleSheet
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(IKTemplateStyleSheet *)self templateName];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  templateName = [(IKTemplateStyleSheet *)self templateName];
   v6 = *(v4 + 32);
   v28 = v4;
-  *(v4 + 32) = v5;
+  *(v4 + 32) = templateName;
 
   v7 = MEMORY[0x277CBEB38];
-  v8 = [(IKTemplateStyleSheet *)self templateTree];
-  v9 = [v7 dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  templateTree = [(IKTemplateStyleSheet *)self templateTree];
+  v9 = [v7 dictionaryWithCapacity:{objc_msgSend(templateTree, "count")}];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = [(IKTemplateStyleSheet *)self templateTree];
-  v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  templateTree2 = [(IKTemplateStyleSheet *)self templateTree];
+  v11 = [templateTree2 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
@@ -50,12 +50,12 @@
       {
         if (*v30 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(templateTree2);
         }
 
         v15 = *(*(&v29 + 1) + 8 * v14);
-        v16 = [(IKTemplateStyleSheet *)self templateTree];
-        v17 = [v16 objectForKey:v15];
+        templateTree3 = [(IKTemplateStyleSheet *)self templateTree];
+        v17 = [templateTree3 objectForKey:v15];
         v18 = [v17 copy];
         [v9 setObject:v18 forKey:v15];
 
@@ -63,7 +63,7 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v12 = [templateTree2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v12);
@@ -73,38 +73,38 @@
   v28[2] = v9;
   v20 = v9;
 
-  v21 = [(IKTemplateStyleSheet *)self styleFactory];
-  v22 = [v21 copy];
+  styleFactory = [(IKTemplateStyleSheet *)self styleFactory];
+  v22 = [styleFactory copy];
   v23 = v28[1];
   v28[1] = v22;
 
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v25 = v28[3];
-  v28[3] = v24;
+  v28[3] = dictionary;
 
   v26 = *MEMORY[0x277D85DE8];
   return v28;
 }
 
-+ (void)registerStyleSheetURL:(id)a3 parentStyleSheets:(id)a4 forTemplateName:(id)a5
++ (void)registerStyleSheetURL:(id)l parentStyleSheets:(id)sheets forTemplateName:(id)name
 {
-  v17 = a1;
+  selfCopy = self;
   v25 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v7 = a4;
-  v8 = a5;
+  lCopy = l;
+  sheetsCopy = sheets;
+  nameCopy = name;
   if (registerStyleSheetURL_parentStyleSheets_forTemplateName__onceToken != -1)
   {
     +[IKTemplateStyleSheet registerStyleSheetURL:parentStyleSheets:forTemplateName:];
   }
 
-  if (v7 && [v7 count])
+  if (sheetsCopy && [sheetsCopy count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v7;
+    v9 = sheetsCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
@@ -118,9 +118,9 @@ LABEL_7:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * v12) scheme];
-        v14 = [v13 lowercaseString];
-        v15 = [v14 isEqualToString:@"file"];
+        scheme = [*(*(&v20 + 1) + 8 * v12) scheme];
+        lowercaseString = [scheme lowercaseString];
+        v15 = [lowercaseString isEqualToString:@"file"];
 
         if (!v15)
         {
@@ -141,31 +141,31 @@ LABEL_7:
     }
   }
 
-  if ([v8 length])
+  if ([nameCopy length])
   {
     v9 = v18;
     objc_sync_enter(v9);
-    if (v7)
+    if (sheetsCopy)
     {
-      [sParentPathMap setObject:v7 forKey:v8];
+      [sParentPathMap setObject:sheetsCopy forKey:nameCopy];
     }
 
     else
     {
-      [sParentPathMap removeObjectForKey:v8];
+      [sParentPathMap removeObjectForKey:nameCopy];
     }
 
-    if (v19)
+    if (lCopy)
     {
-      [sFilePathMap setObject:v19 forKey:v8];
+      [sFilePathMap setObject:lCopy forKey:nameCopy];
     }
 
     else
     {
-      [sFilePathMap removeObjectForKey:v8];
+      [sFilePathMap removeObjectForKey:nameCopy];
     }
 
-    [sUnloadedTemplateNames addObject:v8];
+    [sUnloadedTemplateNames addObject:nameCopy];
     objc_sync_exit(v9);
 LABEL_22:
   }
@@ -193,17 +193,17 @@ uint64_t __80__IKTemplateStyleSheet_registerStyleSheetURL_parentStyleSheets_forT
 + (void)loadStyleSheets
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [sUnloadedTemplateNames allObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [sUnloadedTemplateNames allObjects];
   [sUnloadedTemplateNames removeAllObjects];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  obj = v3;
+  obj = allObjects;
   v4 = [obj countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
@@ -226,7 +226,7 @@ uint64_t __80__IKTemplateStyleSheet_registerStyleSheetURL_parentStyleSheets_forT
         v12[2] = __39__IKTemplateStyleSheet_loadStyleSheets__block_invoke;
         v12[3] = &unk_27979B8F8;
         v12[4] = v8;
-        v12[5] = v2;
+        v12[5] = selfCopy;
         [v9 addEvaluationBlock:v12 forKey:v8];
 
         ++v7;
@@ -242,40 +242,40 @@ uint64_t __80__IKTemplateStyleSheet_registerStyleSheetURL_parentStyleSheets_forT
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)styleSheetForTemplateName:(id)a3
++ (id)styleSheetForTemplateName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[IKConcurrentEvaluator idleEvaluator];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:nameCopy];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (id)styleComposerForElement:(id)a3
+- (id)styleComposerForElement:(id)element
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  elementCopy = element;
+  v5 = elementCopy;
+  if (!elementCopy)
   {
     v8 = 0;
     goto LABEL_47;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"templateKeyPath"];
+  v6 = [elementCopy objectForKeyedSubscript:@"templateKeyPath"];
   if (!v6 || (-[IKTemplateStyleSheet styleComposersByKeypath](self, "styleComposersByKeypath"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:v6], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
-    v61 = self;
-    v9 = [MEMORY[0x277CBEB18] array];
+    selfCopy = self;
+    array = [MEMORY[0x277CBEB18] array];
     v10 = [MEMORY[0x277CBEB58] set];
     v11 = v5;
     v12 = 0;
     v62 = v11;
     do
     {
-      v13 = [v11 elementName];
-      if (![IKViewElementFactory isDependentByTagName:v13])
+      elementName = [v11 elementName];
+      if (![IKViewElementFactory isDependentByTagName:elementName])
       {
         if (v12)
         {
@@ -284,35 +284,35 @@ uint64_t __80__IKTemplateStyleSheet_registerStyleSheetURL_parentStyleSheets_forT
 
         else
         {
-          v14 = v13;
+          v14 = elementName;
         }
 
         v15 = v14;
 
-        [v10 addObject:v13];
+        [v10 addObject:elementName];
         v12 = v15;
       }
 
-      [v9 insertObject:v13 atIndex:0];
-      v16 = [v11 parentStyleableElement];
+      [array insertObject:elementName atIndex:0];
+      parentStyleableElement = [v11 parentStyleableElement];
 
-      v11 = v16;
+      v11 = parentStyleableElement;
     }
 
-    while (v16);
+    while (parentStyleableElement);
     v59 = v12;
     v60 = v10;
-    v17 = [v9 componentsJoinedByString:@"."];
-    v18 = [v17 ik_sharedInstance];
+    v17 = [array componentsJoinedByString:@"."];
+    ik_sharedInstance = [v17 ik_sharedInstance];
 
-    v57 = v18;
-    [v62 setObject:v18 forKeyedSubscript:@"templateKeyPath"];
-    v19 = [v9 count];
+    v57 = ik_sharedInstance;
+    [v62 setObject:ik_sharedInstance forKeyedSubscript:@"templateKeyPath"];
+    v19 = [array count];
     v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:v19];
-    v21 = v61;
-    v22 = [(IKTemplateStyleSheet *)v61 templateTree];
-    v23 = [v9 firstObject];
-    v24 = [v22 objectForKey:v23];
+    v21 = selfCopy;
+    templateTree = [(IKTemplateStyleSheet *)selfCopy templateTree];
+    firstObject = [array firstObject];
+    v24 = [templateTree objectForKey:firstObject];
 
     if (!v24)
     {
@@ -327,9 +327,9 @@ uint64_t __80__IKTemplateStyleSheet_registerStyleSheetURL_parentStyleSheets_forT
 
     for (i = 1; i != v19; ++i)
     {
-      v26 = [v9 objectAtIndex:i];
-      v27 = [v24 childNodes];
-      v28 = [v27 objectForKey:v26];
+      v26 = [array objectAtIndex:i];
+      childNodes = [v24 childNodes];
+      v28 = [childNodes objectForKey:v26];
 
       if (v28)
       {
@@ -342,17 +342,17 @@ uint64_t __80__IKTemplateStyleSheet_registerStyleSheetURL_parentStyleSheets_forT
       }
     }
 
-    v21 = v61;
+    v21 = selfCopy;
     if (v24)
     {
 LABEL_18:
-      v31 = [v62 elementName];
+      elementName2 = [v62 elementName];
       v66[0] = MEMORY[0x277D85DD0];
       v66[1] = 3221225472;
       v66[2] = __48__IKTemplateStyleSheet_styleComposerForElement___block_invoke;
       v66[3] = &unk_27979B920;
       v67 = v60;
-      v32 = v31;
+      v32 = elementName2;
       v68 = v32;
       v69 = v59;
       v63 = MEMORY[0x259C21BA0](v66);
@@ -371,10 +371,10 @@ LABEL_18:
 LABEL_23:
         while (1)
         {
-          v33 = [v65 parentNode];
+          parentNode = [v65 parentNode];
 
-          v65 = v33;
-          if (!v33)
+          v65 = parentNode;
+          if (!parentNode)
           {
             break;
           }
@@ -393,9 +393,9 @@ LABEL_23:
               do
               {
                 v39 = v38;
-                v40 = [v9 objectAtIndex:v35];
-                v41 = [v38 childNodes];
-                v42 = [v41 objectForKey:v40];
+                v40 = [array objectAtIndex:v35];
+                childNodes2 = [v38 childNodes];
+                v42 = [childNodes2 objectForKey:v40];
                 v43 = v42;
                 if (v42)
                 {
@@ -441,24 +441,24 @@ LABEL_23:
 
         v38 = 0;
 LABEL_38:
-        v46 = [v62 parentStyleableElement];
-        v21 = v61;
-        v47 = [(IKTemplateStyleSheet *)v61 styleComposerForElement:v46];
+        parentStyleableElement2 = [v62 parentStyleableElement];
+        v21 = selfCopy;
+        v47 = [(IKTemplateStyleSheet *)selfCopy styleComposerForElement:parentStyleableElement2];
 
         v48 = v20;
         if (v65)
         {
-          v49 = [(IKTemplateStyleSheet *)v61 _styleComposerForNode:v38];
+          v49 = [(IKTemplateStyleSheet *)selfCopy _styleComposerForNode:v38];
         }
 
         else
         {
-          v50 = [v47 defaultStyleComposer];
-          v49 = [IKViewElementStyleComposer styleComposerWithDefaultStyleComposer:0 parentStyleComposer:v50 styleList:0 elementStyleOverrides:0];
+          defaultStyleComposer = [v47 defaultStyleComposer];
+          v49 = [IKViewElementStyleComposer styleComposerWithDefaultStyleComposer:0 parentStyleComposer:defaultStyleComposer styleList:0 elementStyleOverrides:0];
         }
 
-        v51 = [(IKTemplateStyleSheet *)v61 styleFactory];
-        v52 = [v51 styleListForClassSelector:0];
+        styleFactory = [(IKTemplateStyleSheet *)selfCopy styleFactory];
+        v52 = [styleFactory styleListForClassSelector:0];
 
         v8 = [IKViewElementStyleComposer styleComposerWithDefaultStyleComposer:v49 parentStyleComposer:v47 styleList:v52 elementStyleOverrides:0];
 
@@ -469,9 +469,9 @@ LABEL_38:
 
       if (v8)
       {
-        v53 = [(IKTemplateStyleSheet *)v21 styleComposersByKeypath];
+        styleComposersByKeypath = [(IKTemplateStyleSheet *)v21 styleComposersByKeypath];
         v6 = v57;
-        [v53 setObject:v8 forKey:v57];
+        [styleComposersByKeypath setObject:v8 forKey:v57];
 
 LABEL_45:
         goto LABEL_46;
@@ -562,10 +562,10 @@ LABEL_8:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(IKTemplateStyleSheet *)self styleComposersByKeypath];
-  v4 = [v3 allValues];
+  styleComposersByKeypath = [(IKTemplateStyleSheet *)self styleComposersByKeypath];
+  allValues = [styleComposersByKeypath allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -577,29 +577,29 @@ LABEL_8:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v8++) setNeedsRecomposition];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(IKTemplateStyleSheet *)self styleFactory];
-  [v9 setViewElementStylesDirty];
+  styleFactory = [(IKTemplateStyleSheet *)self styleFactory];
+  [styleFactory setViewElementStylesDirty];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_styleSheetForTemplateName:(id)a3
++ (id)_styleSheetForTemplateName:(id)name
 {
   v67 = *MEMORY[0x277D85DE8];
-  ptr = a3;
+  ptr = name;
   v4 = ITMLKitGetLogObject(3);
   v5 = ITMLKitGetLogObject(3);
   v6 = os_signpost_id_make_with_pointer(v5, ptr);
@@ -615,10 +615,10 @@ LABEL_8:
   if (v7)
   {
     [IKTemplateStyleSheet _resolveEmbeddedTemplatesInXmlTree:xmlDocGetRootElement(v7)];
-    v8 = a1;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v9 = [sParentPathMap objectForKey:ptr];
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
     v60 = 0u;
     v61 = 0u;
@@ -643,9 +643,9 @@ LABEL_8:
 
           v15 = *(*(&v58 + 1) + 8 * i);
           v57 = 0;
-          v16 = [MEMORY[0x277CCAA00] defaultManager];
-          v17 = [v15 path];
-          v18 = [v16 fileExistsAtPath:v17 isDirectory:&v57];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          path = [v15 path];
+          v18 = [defaultManager fileExistsAtPath:path isDirectory:&v57];
           v19 = v57;
 
           if ((v18 ^ 1 | v19))
@@ -662,8 +662,8 @@ LABEL_8:
           }
 
           v20 = MEMORY[0x277CBEA90];
-          v21 = [v15 path];
-          v22 = [v20 dataWithContentsOfFile:v21];
+          path2 = [v15 path];
+          v22 = [v20 dataWithContentsOfFile:path2];
 
           v23 = ITMLKitGetLogObject(0);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -756,13 +756,13 @@ LABEL_38:
   return v37;
 }
 
-+ (void)_coalesceTrees:(_xmlNode *)a3 overridingTree:(_xmlNode *)a4 forcedTemplateName:(id)a5
++ (void)_coalesceTrees:(_xmlNode *)trees overridingTree:(_xmlNode *)tree forcedTemplateName:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v9 = objc_autoreleasePoolPush();
-  v10 = [a1 _coalesceNode:a3 overridingNode:a4 forcedTemplateName:v8];
+  v10 = [self _coalesceNode:trees overridingNode:tree forcedTemplateName:nameCopy];
   objc_autoreleasePoolPop(v9);
-  for (i = a4->children; i; i = i->next)
+  for (i = tree->children; i; i = i->next)
   {
     if (i->type == XML_ELEMENT_NODE)
     {
@@ -778,38 +778,38 @@ LABEL_38:
 
       else
       {
-        v15 = xmlNewChild(a3, 0, [v12 UTF8String], 0);
+        v15 = xmlNewChild(trees, 0, [v12 UTF8String], 0);
         v16 = v15;
       }
 
-      [IKTemplateStyleSheet _coalesceTrees:v15 overridingTree:i forcedTemplateName:v8];
+      [IKTemplateStyleSheet _coalesceTrees:v15 overridingTree:i forcedTemplateName:nameCopy];
     }
   }
 }
 
-+ (id)_coalesceNode:(_xmlNode *)a3 overridingNode:(_xmlNode *)a4 forcedTemplateName:(id)a5
++ (id)_coalesceNode:(_xmlNode *)node overridingNode:(_xmlNode *)overridingNode forcedTemplateName:(id)name
 {
   v106 = *MEMORY[0x277D85DE8];
-  v89 = a5;
+  nameCopy = name;
   v7 = 0;
-  parent = a3;
-  if (a3 && a4)
+  parent = node;
+  if (node && overridingNode)
   {
-    v100 = [MEMORY[0x277CBEB38] dictionary];
-    v99 = [MEMORY[0x277CBEB38] dictionary];
-    v98 = [MEMORY[0x277CBEB38] dictionary];
-    v97 = [MEMORY[0x277CBEB38] dictionary];
-    v95 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     v8 = 0x277CCA000uLL;
-    v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3->name];
-    v10 = [v9 lowercaseString];
-    v96 = [v10 isEqualToString:@"head"];
+    v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:node->name];
+    lowercaseString = [v9 lowercaseString];
+    v96 = [lowercaseString isEqualToString:@"head"];
 
     v88 = v9;
-    v11 = [v9 lowercaseString];
-    v92 = [v11 isEqualToString:@"document"];
+    lowercaseString2 = [v9 lowercaseString];
+    v92 = [lowercaseString2 isEqualToString:@"document"];
 
-    children = a4->children;
+    children = overridingNode->children;
     if (children)
     {
       v13 = &stru_2866C1E60;
@@ -829,13 +829,13 @@ LABEL_34:
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:children->name];
       if (v92)
       {
-        v16 = [(__CFString *)v13 lowercaseString];
-        v17 = [v16 isEqualToString:@"head"];
+        lowercaseString3 = [(__CFString *)v13 lowercaseString];
+        v17 = [lowercaseString3 isEqualToString:@"head"];
 
         if (v17)
         {
-          xmlNodeSetName(children, [v89 UTF8String]);
-          v18 = v89;
+          xmlNodeSetName(children, [nameCopy UTF8String]);
+          v18 = nameCopy;
 
           v15 = v18;
         }
@@ -893,7 +893,7 @@ LABEL_34:
 LABEL_21:
           if (v30)
           {
-            [v98 setObject:v30 forKey:v19];
+            [dictionary3 setObject:v30 forKey:v19];
           }
 
           v31 = xmlGetProp(children, "overrideclass");
@@ -920,7 +920,7 @@ LABEL_21:
 LABEL_31:
               if (v36)
               {
-                [v97 setObject:v36 forKey:v19];
+                [dictionary4 setObject:v36 forKey:v19];
               }
 
               v13 = v19;
@@ -938,12 +938,12 @@ LABEL_31:
             }
           }
 
-          [v99 setObject:v33 forKey:v19];
+          [dictionary2 setObject:v33 forKey:v19];
           goto LABEL_31;
         }
       }
 
-      [v100 setObject:v27 forKey:v19];
+      [dictionary setObject:v27 forKey:v19];
       goto LABEL_21;
     }
 
@@ -970,13 +970,13 @@ LABEL_64:
       v40 = [*(v8 + 3240) stringWithUTF8String:v37->name];
       if (v92)
       {
-        v41 = [(__CFString *)v38 lowercaseString];
-        v42 = [v41 isEqualToString:@"head"];
+        lowercaseString4 = [(__CFString *)v38 lowercaseString];
+        v42 = [lowercaseString4 isEqualToString:@"head"];
 
         if (v42)
         {
-          xmlNodeSetName(v37, [v89 UTF8String]);
-          v43 = v89;
+          xmlNodeSetName(v37, [nameCopy UTF8String]);
+          v43 = nameCopy;
 
           v40 = v43;
         }
@@ -986,8 +986,8 @@ LABEL_64:
 
       if (v96)
       {
-        v45 = [(__CFString *)v44 lowercaseString];
-        v46 = [v45 isEqualToString:@"style"];
+        lowercaseString5 = [(__CFString *)v44 lowercaseString];
+        v46 = [lowercaseString5 isEqualToString:@"style"];
 
         if (v46)
         {
@@ -1009,15 +1009,15 @@ LABEL_64:
       }
 
       v50 = [MEMORY[0x277CCAE60] valueWithPointer:v37];
-      [v95 setObject:v50 forKey:v44];
+      [dictionary5 setObject:v50 forKey:v44];
 
-      v51 = [v98 valueForKey:v44];
-      v52 = [v100 valueForKey:v44];
-      v53 = [v97 valueForKey:v44];
-      v54 = [v99 valueForKey:v44];
+      v51 = [dictionary3 valueForKey:v44];
+      v52 = [dictionary valueForKey:v44];
+      v53 = [dictionary4 valueForKey:v44];
+      v54 = [dictionary2 valueForKey:v44];
       if (v51)
       {
-        [v98 removeObjectForKey:v44];
+        [dictionary3 removeObjectForKey:v44];
         v55 = xmlGetProp(v37, [@"style" UTF8String]);
         if (v55)
         {
@@ -1025,9 +1025,9 @@ LABEL_64:
           [*(v8 + 3240) stringWithUTF8String:v55];
           v58 = v57 = v44;
           free(v56);
-          v59 = [@"style" UTF8String];
+          uTF8String = [@"style" UTF8String];
           v60 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v58, v51];;
-          xmlSetProp(v37, v59, [v60 UTF8String]);
+          xmlSetProp(v37, uTF8String, [v60 UTF8String]);
 
           v44 = v57;
           v8 = 0x277CCA000;
@@ -1041,7 +1041,7 @@ LABEL_64:
 
       if (v52)
       {
-        [v100 removeObjectForKey:v44];
+        [dictionary removeObjectForKey:v44];
         v61 = xmlGetProp(v37, [@"class" UTF8String]);
         if (!v61)
         {
@@ -1058,9 +1058,9 @@ LABEL_64:
         [*(v8 + 3240) stringWithUTF8String:v61];
         v64 = v63 = v44;
         free(v62);
-        v65 = [@"class" UTF8String];
+        uTF8String2 = [@"class" UTF8String];
         v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v64, v52];
-        xmlSetProp(v37, v65, [v66 UTF8String]);
+        xmlSetProp(v37, uTF8String2, [v66 UTF8String]);
 
         v44 = v63;
         v8 = 0x277CCA000;
@@ -1071,7 +1071,7 @@ LABEL_64:
 LABEL_61:
         if (v54)
         {
-          [v99 removeObjectForKey:v44];
+          [dictionary2 removeObjectForKey:v44];
           xmlSetProp(v37, [@"class" UTF8String], objc_msgSend(v54, "UTF8String"));
         }
 
@@ -1080,7 +1080,7 @@ LABEL_61:
       }
 
 LABEL_60:
-      [v97 removeObjectForKey:v44];
+      [dictionary4 removeObjectForKey:v44];
       xmlSetProp(v37, [@"style" UTF8String], objc_msgSend(v53, "UTF8String"));
       goto LABEL_61;
     }
@@ -1091,17 +1091,17 @@ LABEL_69:
     v87 = v44;
     v90 = v39;
     v67 = [MEMORY[0x277CBEB58] set];
-    v68 = [v98 allKeys];
-    [v67 addObjectsFromArray:v68];
+    allKeys = [dictionary3 allKeys];
+    [v67 addObjectsFromArray:allKeys];
 
-    v69 = [v100 allKeys];
-    [v67 addObjectsFromArray:v69];
+    allKeys2 = [dictionary allKeys];
+    [v67 addObjectsFromArray:allKeys2];
 
-    v70 = [v97 allKeys];
-    [v67 addObjectsFromArray:v70];
+    allKeys3 = [dictionary4 allKeys];
+    [v67 addObjectsFromArray:allKeys3];
 
-    v71 = [v99 allKeys];
-    [v67 addObjectsFromArray:v71];
+    allKeys4 = [dictionary2 allKeys];
+    [v67 addObjectsFromArray:allKeys4];
 
     v103 = 0u;
     v104 = 0u;
@@ -1126,12 +1126,12 @@ LABEL_69:
           v75 = *(*(&v101 + 1) + 8 * i);
           v76 = xmlNewChild(parent, 0, [v75 UTF8String], 0);
           v77 = [MEMORY[0x277CCAE60] valueWithPointer:v76];
-          [v95 setObject:v77 forKey:v75];
+          [dictionary5 setObject:v77 forKey:v75];
 
           if (v96)
           {
-            v78 = [v75 lowercaseString];
-            v79 = [v78 isEqualToString:@"style"];
+            lowercaseString6 = [v75 lowercaseString];
+            v79 = [lowercaseString6 isEqualToString:@"style"];
 
             if (v79)
             {
@@ -1144,25 +1144,25 @@ LABEL_69:
             }
           }
 
-          v80 = [v98 objectForKey:v75];
+          v80 = [dictionary3 objectForKey:v75];
           if (v80)
           {
             xmlSetProp(v76, [@"style" UTF8String], objc_msgSend(v80, "UTF8String"));
           }
 
-          v81 = [v100 objectForKey:v75];
+          v81 = [dictionary objectForKey:v75];
           if (v81)
           {
             xmlSetProp(v76, [@"class" UTF8String], objc_msgSend(v81, "UTF8String"));
           }
 
-          v82 = [v97 objectForKey:v75];
+          v82 = [dictionary4 objectForKey:v75];
           if (v82)
           {
             xmlSetProp(v76, [@"style" UTF8String], objc_msgSend(v82, "UTF8String"));
           }
 
-          v83 = [v99 objectForKey:v75];
+          v83 = [dictionary2 objectForKey:v75];
           if (v83)
           {
             xmlSetProp(v76, [@"class" UTF8String], objc_msgSend(v83, "UTF8String"));
@@ -1175,7 +1175,7 @@ LABEL_69:
       while (v73);
     }
 
-    v7 = [v95 copy];
+    v7 = [dictionary5 copy];
   }
 
   v84 = *MEMORY[0x277D85DE8];
@@ -1183,20 +1183,20 @@ LABEL_69:
   return v7;
 }
 
-+ (_xmlDoc)_xmlTreeForTemplateName:(id)a3
++ (_xmlDoc)_xmlTreeForTemplateName:(id)name
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [sFilePathMap objectForKey:v4];
-  objc_sync_exit(v5);
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [sFilePathMap objectForKey:nameCopy];
+  objc_sync_exit(selfCopy);
 
   if (v6)
   {
     v24 = 0;
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8 isDirectory:&v24];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v6 path];
+    v9 = [defaultManager fileExistsAtPath:path isDirectory:&v24];
     v10 = v24;
 
     if (!v9 || (v10 & 1) != 0)
@@ -1213,8 +1213,8 @@ LABEL_69:
     else
     {
       v11 = MEMORY[0x277CBEA90];
-      v12 = [v6 path];
-      v13 = [v11 dataWithContentsOfFile:v12];
+      path2 = [v6 path];
+      v13 = [v11 dataWithContentsOfFile:path2];
 
       v23 = 0;
       v14 = [IKTemplateStyleSheet _xmlTreeWithData:v13 error:&v23];
@@ -1229,15 +1229,15 @@ LABEL_69:
   return v14;
 }
 
-+ (_xmlDoc)_xmlTreeWithData:(id)a3 error:(id *)a4
++ (_xmlDoc)_xmlTreeWithData:(id)data error:(id *)error
 {
   v5 = *MEMORY[0x277D85DF8];
-  v6 = a3;
+  dataCopy = data;
   xmlSetGenericErrorFunc(v5, MEMORY[0x277D85E30]);
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
 
-  Memory = xmlReadMemory(v7, v8, 0, 0, 4096);
+  Memory = xmlReadMemory(bytes, v8, 0, 0, 4096);
   xmlSetGenericErrorFunc(0, 0);
   v10 = 0;
   if (!Memory)
@@ -1245,22 +1245,22 @@ LABEL_69:
     v10 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ITMLKitErrorDomain" code:200 userInfo:0];
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return Memory;
 }
 
-+ (void)_resolveEmbeddedTemplatesInXmlTree:(_xmlNode *)a3
++ (void)_resolveEmbeddedTemplatesInXmlTree:(_xmlNode *)tree
 {
-  doc = a3->doc;
+  doc = tree->doc;
   cur = 0;
   v5 = 0x279798000uLL;
   [IKTemplateStyleSheet _findNodesInXmlTree:doc styleNode:&cur templateNode:0];
-  children = a3->children;
+  children = tree->children;
   if (children)
   {
     v7 = 0x277CCA000uLL;
@@ -1268,12 +1268,12 @@ LABEL_69:
     {
       if (children->type == XML_ELEMENT_NODE)
       {
-        v8 = [@"embedStyleSheetForTemplate" UTF8String];
-        v9 = xmlHasProp(children, v8);
+        uTF8String = [@"embedStyleSheetForTemplate" UTF8String];
+        v9 = xmlHasProp(children, uTF8String);
         if (v9)
         {
           v10 = v9;
-          Prop = xmlGetProp(children, v8);
+          Prop = xmlGetProp(children, uTF8String);
           if (Prop)
           {
             v12 = Prop;
@@ -1364,9 +1364,9 @@ LABEL_69:
   }
 }
 
-+ (void)_findNodesInXmlTree:(_xmlDoc *)a3 styleNode:(_xmlNode *)a4 templateNode:(_xmlNode *)a5
++ (void)_findNodesInXmlTree:(_xmlDoc *)tree styleNode:(_xmlNode *)node templateNode:(_xmlNode *)templateNode
 {
-  RootElement = xmlDocGetRootElement(a3);
+  RootElement = xmlDocGetRootElement(tree);
   if (!xmlStrcmp(RootElement->name, "document"))
   {
     children = RootElement->children;
@@ -1419,12 +1419,12 @@ LABEL_69:
       v9 = 0;
     }
 
-    if (a5)
+    if (templateNode)
     {
-      *a5 = v9;
+      *templateNode = v9;
     }
 
-    if (a4 && v10)
+    if (node && v10)
     {
       v12 = v10->children;
       if (v12)
@@ -1469,15 +1469,15 @@ LABEL_69:
         v13 = 0;
       }
 
-      *a4 = v13;
+      *node = v13;
     }
   }
 }
 
-- (id)_initWithXMLDoc:(_xmlDoc *)a3 templateName:(id)a4 error:(id *)a5
+- (id)_initWithXMLDoc:(_xmlDoc *)doc templateName:(id)name error:(id *)error
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  nameCopy = name;
   v43.receiver = self;
   v43.super_class = IKTemplateStyleSheet;
   v9 = [(IKTemplateStyleSheet *)&v43 init];
@@ -1487,9 +1487,9 @@ LABEL_69:
   }
 
   v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-  if (a3)
+  if (doc)
   {
-    RootElement = xmlDocGetRootElement(a3);
+    RootElement = xmlDocGetRootElement(doc);
     p_private = &RootElement->_private;
     if (!RootElement)
     {
@@ -1499,14 +1499,14 @@ LABEL_14:
       templateTree = v9->_templateTree;
       v9->_templateTree = v20;
 
-      v22 = [v8 copy];
+      v22 = [nameCopy copy];
       templateName = v9->_templateName;
       v9->_templateName = v22;
 
-      v24 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v16 = 0;
       styleComposersByKeypath = v9->_styleComposersByKeypath;
-      v9->_styleComposersByKeypath = v24;
+      v9->_styleComposersByKeypath = dictionary;
       goto LABEL_15;
     }
 
@@ -1583,10 +1583,10 @@ LABEL_14:
   v9 = 0;
 LABEL_15:
 
-  if (a5)
+  if (error)
   {
     v25 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
 LABEL_18:
@@ -1638,23 +1638,23 @@ void __59__IKTemplateStyleSheet__initWithXMLDoc_templateName_error___block_invok
   }
 }
 
-+ (id)_templateTreeWithXMLTree:(_xmlNode *)a3 parentNode:(id)a4
++ (id)_templateTreeWithXMLTree:(_xmlNode *)tree parentNode:(id)node
 {
-  v6 = a4;
+  nodeCopy = node;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 _templateNodeWithXMLNode:a3 parentNode:v6];
+  v8 = [self _templateNodeWithXMLNode:tree parentNode:nodeCopy];
   objc_autoreleasePoolPop(v7);
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__IKTemplateStyleSheet__templateTreeWithXMLTree_parentNode___block_invoke;
   v15[3] = &unk_27979B998;
-  v16 = v9;
-  v18 = a1;
+  v16 = dictionary;
+  selfCopy = self;
   v10 = v8;
   v17 = v10;
-  v11 = v9;
-  IKXMLEnumerateChildElements(a3, v15);
+  v11 = dictionary;
+  IKXMLEnumerateChildElements(tree, v15);
   [v10 setChildNodes:v11];
   v12 = v17;
   v13 = v10;
@@ -1674,13 +1674,13 @@ void __60__IKTemplateStyleSheet__templateTreeWithXMLTree_parentNode___block_invo
   [v6 setObject:v9 forKey:v8];
 }
 
-+ (id)_templateNodeWithXMLNode:(_xmlNode *)a3 parentNode:(id)a4
++ (id)_templateNodeWithXMLNode:(_xmlNode *)node parentNode:(id)parentNode
 {
   v5 = MEMORY[0x277CCACA8];
-  name = a3->name;
-  v7 = a4;
+  name = node->name;
+  parentNodeCopy = parentNode;
   v8 = [v5 stringWithUTF8String:name];
-  Prop = xmlGetProp(a3, [@"class" UTF8String]);
+  Prop = xmlGetProp(node, [@"class" UTF8String]);
   if (Prop)
   {
     v10 = Prop;
@@ -1693,7 +1693,7 @@ void __60__IKTemplateStyleSheet__templateTreeWithXMLTree_parentNode___block_invo
     v11 = 0;
   }
 
-  v12 = xmlGetProp(a3, [@"style" UTF8String]);
+  v12 = xmlGetProp(node, [@"style" UTF8String]);
   if (v12)
   {
     v13 = v12;
@@ -1708,37 +1708,37 @@ void __60__IKTemplateStyleSheet__templateTreeWithXMLTree_parentNode___block_invo
 
   v15 = [IKTemplateTreeNode alloc];
   v16 = [IKViewElementStyle elementStyleWithSelector:v11 inlineStyleString:v14 filterBlockedStyles:0];
-  v17 = [(IKTemplateTreeNode *)v15 initWithNodeName:v8 styleOverrides:v16 parentNode:v7];
+  v17 = [(IKTemplateTreeNode *)v15 initWithNodeName:v8 styleOverrides:v16 parentNode:parentNodeCopy];
 
   return v17;
 }
 
-- (id)_styleComposerForNode:(id)a3
+- (id)_styleComposerForNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (nodeCopy)
   {
-    v6 = [v4 styleComposer];
+    styleComposer = [nodeCopy styleComposer];
 
-    if (!v6)
+    if (!styleComposer)
     {
-      v7 = [v5 parentNode];
-      v8 = [(IKTemplateStyleSheet *)self _styleComposerForNode:v7];
+      parentNode = [v5 parentNode];
+      v8 = [(IKTemplateStyleSheet *)self _styleComposerForNode:parentNode];
 
-      v9 = [v5 styleOverrides];
-      v10 = [v9 classDescriptorString];
-      v11 = [(IKTemplateStyleSheet *)self styleFactory];
-      v12 = [v11 styleListForClassSelector:v10];
+      styleOverrides = [v5 styleOverrides];
+      classDescriptorString = [styleOverrides classDescriptorString];
+      styleFactory = [(IKTemplateStyleSheet *)self styleFactory];
+      v12 = [styleFactory styleListForClassSelector:classDescriptorString];
 
-      v13 = [IKViewElementStyleComposer styleComposerWithDefaultStyleComposer:0 parentStyleComposer:v8 styleList:v12 elementStyleOverrides:v9];
+      v13 = [IKViewElementStyleComposer styleComposerWithDefaultStyleComposer:0 parentStyleComposer:v8 styleList:v12 elementStyleOverrides:styleOverrides];
       [v5 setStyleComposer:v13];
     }
   }
 
-  v14 = [v5 styleComposer];
+  styleComposer2 = [v5 styleComposer];
 
-  return v14;
+  return styleComposer2;
 }
 
 @end

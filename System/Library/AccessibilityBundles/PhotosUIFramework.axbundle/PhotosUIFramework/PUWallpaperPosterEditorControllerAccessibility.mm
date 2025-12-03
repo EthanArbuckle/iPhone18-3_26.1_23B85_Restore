@@ -1,37 +1,37 @@
 @interface PUWallpaperPosterEditorControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_photoPickerAction;
 - (id)_toggleSpatialPhotoEffectAction;
 @end
 
 @implementation PUWallpaperPosterEditorControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"posterConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"_photoPickerAction" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"_toggleSpatialPhotoEffectAction" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"_canEnableSpatialPhotoEffect" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"_isSpatialPhotoEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"posterConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"_photoPickerAction" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"_toggleSpatialPhotoEffectAction" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"_canEnableSpatialPhotoEffect" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUWallpaperPosterEditorController" hasInstanceMethod:@"_isSpatialPhotoEnabled" withFullSignature:{"B", 0}];
 }
 
 - (id)_photoPickerAction
 {
   v8.receiver = self;
   v8.super_class = PUWallpaperPosterEditorControllerAccessibility;
-  v3 = [(PUWallpaperPosterEditorControllerAccessibility *)&v8 _photoPickerAction];
+  _photoPickerAction = [(PUWallpaperPosterEditorControllerAccessibility *)&v8 _photoPickerAction];
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __68__PUWallpaperPosterEditorControllerAccessibility__photoPickerAction__block_invoke;
   v5[3] = &unk_29F2E8158;
   objc_copyWeak(&v6, &location);
-  [v3 setAccessibilityLabelBlock:v5];
+  [_photoPickerAction setAccessibilityLabelBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 
-  return v3;
+  return _photoPickerAction;
 }
 
 id __68__PUWallpaperPosterEditorControllerAccessibility__photoPickerAction__block_invoke(uint64_t a1)
@@ -60,8 +60,8 @@ id __68__PUWallpaperPosterEditorControllerAccessibility__photoPickerAction__bloc
 {
   v8.receiver = self;
   v8.super_class = PUWallpaperPosterEditorControllerAccessibility;
-  v3 = [(PUWallpaperPosterEditorControllerAccessibility *)&v8 _toggleSpatialPhotoEffectAction];
-  if (v3)
+  _toggleSpatialPhotoEffectAction = [(PUWallpaperPosterEditorControllerAccessibility *)&v8 _toggleSpatialPhotoEffectAction];
+  if (_toggleSpatialPhotoEffectAction)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x29EDCA5F8];
@@ -69,12 +69,12 @@ id __68__PUWallpaperPosterEditorControllerAccessibility__photoPickerAction__bloc
     v5[2] = __81__PUWallpaperPosterEditorControllerAccessibility__toggleSpatialPhotoEffectAction__block_invoke;
     v5[3] = &unk_29F2E8158;
     objc_copyWeak(&v6, &location);
-    [v3 setAccessibilityLabelBlock:v5];
+    [_toggleSpatialPhotoEffectAction setAccessibilityLabelBlock:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return _toggleSpatialPhotoEffectAction;
 }
 
 id __81__PUWallpaperPosterEditorControllerAccessibility__toggleSpatialPhotoEffectAction__block_invoke(uint64_t a1)

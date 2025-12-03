@@ -1,46 +1,46 @@
 @interface PKCloudRecordAssetURL
-- (PKCloudRecordAssetURL)initWithCoder:(id)a3;
-- (PKCloudRecordAssetURL)initWithRecords:(id)a3;
-- (id)_descriptionWithIncludeItem:(BOOL)a3;
+- (PKCloudRecordAssetURL)initWithCoder:(id)coder;
+- (PKCloudRecordAssetURL)initWithRecords:(id)records;
+- (id)_descriptionWithIncludeItem:(BOOL)item;
 - (id)assetData;
 - (id)description;
-- (id)descriptionWithItem:(BOOL)a3;
+- (id)descriptionWithItem:(BOOL)item;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudRecordAssetURL
 
-- (PKCloudRecordAssetURL)initWithRecords:(id)a3
+- (PKCloudRecordAssetURL)initWithRecords:(id)records
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v18.receiver = self;
   v18.super_class = PKCloudRecordAssetURL;
-  v5 = [(PKCloudRecordObject *)&v18 initWithRecords:v4];
+  v5 = [(PKCloudRecordObject *)&v18 initWithRecords:recordsCopy];
   v6 = v5;
   if (v5)
   {
     v5->_fd = -1;
-    v7 = [v4 anyObject];
-    v8 = [v7 recordType];
-    v9 = [v8 isEqualToString:@"RemoteAsset"];
+    anyObject = [recordsCopy anyObject];
+    recordType = [anyObject recordType];
+    v9 = [recordType isEqualToString:@"RemoteAsset"];
 
     if (v9)
     {
-      v10 = [v7 objectForKey:@"asset"];
+      v10 = [anyObject objectForKey:@"asset"];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 fileURL];
-        v13 = open([v12 fileSystemRepresentation], 4);
+        fileURL = [v10 fileURL];
+        v13 = open([fileURL fileSystemRepresentation], 4);
         if (v13 < 0)
         {
           v16 = PKLogFacilityTypeGetObject(0xAuLL);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v20 = v12;
+            v20 = fileURL;
             _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Error trying to open CloudKit remote asset file %@", buf, 0xCu);
           }
         }
@@ -53,14 +53,14 @@
 
       else
       {
-        v12 = PKLogFacilityTypeGetObject(0xAuLL);
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        fileURL = PKLogFacilityTypeGetObject(0xAuLL);
+        if (os_log_type_enabled(fileURL, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v7 recordID];
-          v15 = [v14 recordName];
+          recordID = [anyObject recordID];
+          recordName = [recordID recordName];
           *buf = 138412290;
-          v20 = v15;
-          _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "There is no asset associated with recordName: %@.", buf, 0xCu);
+          v20 = recordName;
+          _os_log_impl(&dword_1AD337000, fileURL, OS_LOG_TYPE_DEFAULT, "There is no asset associated with recordName: %@.", buf, 0xCu);
         }
       }
     }
@@ -124,15 +124,15 @@
   return v12;
 }
 
-- (PKCloudRecordAssetURL)initWithCoder:(id)a3
+- (PKCloudRecordAssetURL)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKCloudRecordAssetURL;
-  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:v4];
+  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9EA0] forKey:@"fd"];
+    v6 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9EA0] forKey:@"fd"];
     v7 = v6;
     if (v6)
     {
@@ -143,23 +143,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PKCloudRecordAssetURL;
-  v4 = a3;
-  [(PKCloudRecordObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKCloudRecordObject *)&v6 encodeWithCoder:coderCopy];
   v5 = xpc_fd_create(self->_fd);
-  [v4 encodeXPCObject:v5 forKey:{@"fd", v6.receiver, v6.super_class}];
+  [coderCopy encodeXPCObject:v5 forKey:{@"fd", v6.receiver, v6.super_class}];
 }
 
-- (id)descriptionWithItem:(BOOL)a3
+- (id)descriptionWithItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = [(PKCloudRecordAssetURL *)self _descriptionWithIncludeItem:?];
   v8.receiver = self;
   v8.super_class = PKCloudRecordAssetURL;
-  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:v3];
+  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:itemCopy];
   [v5 appendFormat:@"\n%@", v6];
 
   return v5;
@@ -176,14 +176,14 @@
   return v3;
 }
 
-- (id)_descriptionWithIncludeItem:(BOOL)a3
+- (id)_descriptionWithIncludeItem:(BOOL)item
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
-  v6 = v5;
-  if (v3)
+  itemCopy = item;
+  string = [MEMORY[0x1E696AD60] string];
+  v6 = string;
+  if (itemCopy)
   {
-    [v5 appendFormat:@"fd: %d", self->_fd];
+    [string appendFormat:@"fd: %d", self->_fd];
   }
 
   return v6;

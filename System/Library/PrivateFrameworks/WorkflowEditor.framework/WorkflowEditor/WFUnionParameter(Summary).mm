@@ -40,12 +40,12 @@
     v7 = v6;
   }
 
-  v10 = [v7 which];
-  if (v10)
+  which = [v7 which];
+  if (which)
   {
-    v11 = [a1 subparameterForState:v7];
-    v12 = [a1 substateFromState:v7];
-    v13 = [objc_opt_class() _slotsForParameter:v11 state:v12];
+    whichSlot2 = [self subparameterForState:v7];
+    v12 = [self substateFromState:v7];
+    v13 = [objc_opt_class() _slotsForParameter:whichSlot2 state:v12];
     v14 = v13;
     if (v13)
     {
@@ -54,16 +54,16 @@
 
     else
     {
-      v16 = [a1 whichSlot];
-      v18 = v16;
+      whichSlot = [self whichSlot];
+      v18 = whichSlot;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
     }
   }
 
   else
   {
-    v11 = [a1 whichSlot];
-    v19 = v11;
+    whichSlot2 = [self whichSlot];
+    v19 = whichSlot2;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
   }
 
@@ -73,10 +73,10 @@
 - (id)whichSlot
 {
   v2 = MEMORY[0x277D7D7B0];
-  v3 = [a1 localizedLabel];
-  v4 = [a1 localizedPlaceholder];
-  v5 = [objc_opt_class() whichSlotKey];
-  v6 = [v2 slotWithLocalizedName:v3 localizedPlaceholder:v4 key:v5];
+  localizedLabel = [self localizedLabel];
+  localizedPlaceholder = [self localizedPlaceholder];
+  whichSlotKey = [objc_opt_class() whichSlotKey];
+  v6 = [v2 slotWithLocalizedName:localizedLabel localizedPlaceholder:localizedPlaceholder key:whichSlotKey];
 
   [v6 setPrefersNoWrapping:1];
 
@@ -86,22 +86,22 @@
 - (NSObject)subparameterForState:()Summary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 which];
-  if (!v4)
+  which = [a3 which];
+  if (!which)
   {
     v10 = 0;
     goto LABEL_17;
   }
 
-  v5 = [a1 subdefinitionForType:v4];
+  v5 = [self subdefinitionForType:which];
   if (v5)
   {
     v6 = [MEMORY[0x277D7C6D8] parameterWithDefinition:v5];
     if (([v6 conformsToProtocol:&unk_2883D7328]& 1) != 0)
     {
-      v7 = [a1 action];
+      action = [self action];
 
-      if (!v7)
+      if (!action)
       {
         v8 = getWFEditorLogObject();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -109,13 +109,13 @@
           v13 = 136315394;
           v14 = "[WFUnionParameter(Summary) subparameterForState:]";
           v15 = 2112;
-          v16 = a1;
+          selfCopy = self;
           _os_log_impl(&dword_2743F0000, v8, OS_LOG_TYPE_ERROR, "%s #### parameter %@ does not have an owning action set.", &v13, 0x16u);
         }
       }
 
-      v9 = [a1 action];
-      [v9 configureParameter:v6];
+      action2 = [self action];
+      [action2 configureParameter:v6];
 
       v6 = v6;
       v10 = v6;
@@ -128,7 +128,7 @@
       v13 = 136315394;
       v14 = "[WFUnionParameter(Summary) subparameterForState:]";
       v15 = 2112;
-      v16 = v4;
+      selfCopy = which;
       _os_log_impl(&dword_2743F0000, v11, OS_LOG_TYPE_ERROR, "%s %@ is not summary-supporting.", &v13, 0x16u);
     }
   }
@@ -141,7 +141,7 @@
       v13 = 136315394;
       v14 = "[WFUnionParameter(Summary) subparameterForState:]";
       v15 = 2112;
-      v16 = v4;
+      selfCopy = which;
       _os_log_impl(&dword_2743F0000, v6, OS_LOG_TYPE_ERROR, "%s %@ has no subdefinition.", &v13, 0x16u);
     }
   }
@@ -161,7 +161,7 @@ LABEL_17:
   v4 = NSClassFromString(v3);
   if (([(objc_class *)v4 isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = [(objc_class *)v4 localizedTypeDescription];
+    localizedTypeDescription = [(objc_class *)v4 localizedTypeDescription];
   }
 
   else
@@ -176,10 +176,10 @@ LABEL_17:
       _os_log_impl(&dword_2743F0000, v6, OS_LOG_TYPE_ERROR, "%s %@ is not a class or is not a subclass of WFContentItem.", &v9, 0x16u);
     }
 
-    v5 = v3;
+    localizedTypeDescription = v3;
   }
 
-  v7 = v5;
+  v7 = localizedTypeDescription;
 
   return v7;
 }
@@ -187,11 +187,11 @@ LABEL_17:
 - (id)substateFromState:()Summary
 {
   v3 = a3;
-  v4 = [v3 which];
-  if (v4)
+  which = [v3 which];
+  if (which)
   {
-    v5 = [v3 states];
-    v6 = [v5 objectForKey:v4];
+    states = [v3 states];
+    v6 = [states objectForKey:which];
   }
 
   else

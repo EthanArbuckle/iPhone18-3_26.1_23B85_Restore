@@ -1,14 +1,14 @@
 @interface JavaUtilCollections_SynchronizedRandomAccessList
-- (JavaUtilCollections_SynchronizedRandomAccessList)initWithJavaUtilList:(id)a3;
+- (JavaUtilCollections_SynchronizedRandomAccessList)initWithJavaUtilList:(id)list;
 - (id)writeReplace;
 @end
 
 @implementation JavaUtilCollections_SynchronizedRandomAccessList
 
-- (JavaUtilCollections_SynchronizedRandomAccessList)initWithJavaUtilList:(id)a3
+- (JavaUtilCollections_SynchronizedRandomAccessList)initWithJavaUtilList:(id)list
 {
-  JavaUtilCollections_SynchronizedCollection_initWithJavaUtilCollection_(self, a3);
-  JreStrongAssign(&self->super.list_, a3);
+  JavaUtilCollections_SynchronizedCollection_initWithJavaUtilCollection_(self, list);
+  JreStrongAssign(&self->super.list_, list);
   return self;
 }
 

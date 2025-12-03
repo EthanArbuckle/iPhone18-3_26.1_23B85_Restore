@@ -21,8 +21,8 @@
 - (void)parentViewControllerHierarchyDidChange
 {
   v14 = *MEMORY[0x1E69E9840];
-  v1 = [a1 childViewControllers];
-  v2 = [v1 copy];
+  childViewControllers = [self childViewControllers];
+  v2 = [childViewControllers copy];
 
   v11 = 0u;
   v12 = 0u;
@@ -64,50 +64,50 @@
 - (SUViewControllerContext)copyArchivableContext
 {
   v2 = objc_alloc_init(SUViewControllerContext);
-  v3 = [a1 section];
-  v4 = [v3 identifier];
-  [(SUViewControllerContext *)v2 setSectionIdentifier:v4];
+  section = [self section];
+  identifier = [section identifier];
+  [(SUViewControllerContext *)v2 setSectionIdentifier:identifier];
 
   return v2;
 }
 
 - (void)dismissAnimated:()SUAdditions
 {
-  v14 = [a1 presentingViewController];
-  v5 = [a1 overlayViewController];
-  v6 = [a1 _popoverController];
-  v7 = v6;
-  if (v5)
+  presentingViewController = [self presentingViewController];
+  overlayViewController = [self overlayViewController];
+  _popoverController = [self _popoverController];
+  tabBarController = _popoverController;
+  if (overlayViewController)
   {
-    v8 = [v5 overlayBackgroundViewController];
-    [v8 dismissOverlay:v5 animated:a3];
+    overlayBackgroundViewController = [overlayViewController overlayBackgroundViewController];
+    [overlayBackgroundViewController dismissOverlay:overlayViewController animated:a3];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (v14)
+  if (presentingViewController)
   {
-    v8 = [MEMORY[0x1E69DD258] transitionSafePerformer:?];
-    [v8 dismissViewControllerAnimated:a3 completion:0];
+    overlayBackgroundViewController = [MEMORY[0x1E69DD258] transitionSafePerformer:?];
+    [overlayBackgroundViewController dismissViewControllerAnimated:a3 completion:0];
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!_popoverController)
   {
-    v7 = [a1 tabBarController];
-    v8 = [v7 transientViewController];
-    if (v8 && [a1 isDescendantOfViewController:v8])
+    tabBarController = [self tabBarController];
+    overlayBackgroundViewController = [tabBarController transientViewController];
+    if (overlayBackgroundViewController && [self isDescendantOfViewController:overlayBackgroundViewController])
     {
-      v10 = [MEMORY[0x1E69DD258] transitionSafePerformer:v7];
+      v10 = [MEMORY[0x1E69DD258] transitionSafePerformer:tabBarController];
       [v10 setTransientViewController:0 animated:a3];
     }
 
     else
     {
       v11 = MEMORY[0x1E69DD258];
-      v12 = [a1 navigationController];
-      v10 = [v11 transitionSafePerformer:v12];
+      navigationController = [self navigationController];
+      v10 = [v11 transitionSafePerformer:navigationController];
 
       v13 = [v10 popViewControllerAnimated:a3];
     }
@@ -115,22 +115,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v9 = [MEMORY[0x1E69DD258] transitionSafePerformer:v6];
+  v9 = [MEMORY[0x1E69DD258] transitionSafePerformer:_popoverController];
 
   [v9 dismissPopoverAnimated:a3];
-  v7 = v9;
+  tabBarController = v9;
 LABEL_6:
 }
 
 - (BOOL)isDescendantOfViewController:()SUAdditions
 {
   v4 = a3;
-  v5 = a1;
-  v6 = v5;
-  for (i = v5 != 0; v6 != v4 && v6; i = v6 != 0)
+  selfCopy = self;
+  parentViewController = selfCopy;
+  for (i = selfCopy != 0; parentViewController != v4 && parentViewController; i = parentViewController != 0)
   {
-    v8 = v6;
-    v6 = [v6 parentViewController];
+    v8 = parentViewController;
+    parentViewController = [parentViewController parentViewController];
   }
 
   return i;
@@ -138,22 +138,22 @@ LABEL_6:
 
 - (BOOL)isInMoreList
 {
-  v2 = [a1 tabBarController];
-  if (!v2)
+  tabBarController = [self tabBarController];
+  if (!tabBarController)
   {
-    v2 = +[SUClientDispatch tabBarController];
-    if (!v2)
+    tabBarController = +[SUClientDispatch tabBarController];
+    if (!tabBarController)
     {
       return 0;
     }
   }
 
-  v3 = v2;
-  v4 = [v2 moreNavigationController];
-  v5 = [a1 navigationController];
-  v6 = [v3 allViewControllers];
-  v7 = [v6 indexOfObjectIdenticalTo:v4];
-  v8 = [v6 indexOfObjectIdenticalTo:v5];
+  v3 = tabBarController;
+  moreNavigationController = [tabBarController moreNavigationController];
+  navigationController = [self navigationController];
+  allViewControllers = [v3 allViewControllers];
+  v7 = [allViewControllers indexOfObjectIdenticalTo:moreNavigationController];
+  v8 = [allViewControllers indexOfObjectIdenticalTo:navigationController];
   v10 = v8 >= v7 && v8 != 0x7FFFFFFFFFFFFFFFLL;
 
   return v10;
@@ -161,64 +161,64 @@ LABEL_6:
 
 - (uint64_t)isRootViewController
 {
-  v2 = [a1 tabBarController];
-  v3 = [a1 navigationController];
-  v4 = v3;
-  if (v2 && v3)
+  tabBarController = [self tabBarController];
+  navigationController = [self navigationController];
+  v4 = navigationController;
+  if (tabBarController && navigationController)
   {
-    v5 = [v2 moreNavigationController];
-    v6 = v5 == v4;
+    moreNavigationController = [tabBarController moreNavigationController];
+    v6 = moreNavigationController == v4;
   }
 
   else
   {
-    if (!v3)
+    if (!navigationController)
     {
-      v11 = [a1 parentViewController];
+      parentViewController = [self parentViewController];
 LABEL_14:
-      v12 = 1;
+      isRootViewController = 1;
       goto LABEL_15;
     }
 
     v6 = 0;
   }
 
-  v7 = [v4 viewControllers];
-  if (v6 >= [v7 count])
+  viewControllers = [v4 viewControllers];
+  if (v6 >= [viewControllers count])
   {
     v9 = 1;
   }
 
   else
   {
-    v8 = [v7 objectAtIndex:v6];
-    v9 = v8 == a1;
+    v8 = [viewControllers objectAtIndex:v6];
+    v9 = v8 == self;
   }
 
-  v10 = [a1 parentViewController];
-  v11 = v10;
+  parentViewController2 = [self parentViewController];
+  parentViewController = parentViewController2;
   if (v9)
   {
     goto LABEL_14;
   }
 
-  v12 = 0;
-  if (v10 != v4 && v10 != v2)
+  isRootViewController = 0;
+  if (parentViewController2 != v4 && parentViewController2 != tabBarController)
   {
-    v12 = [v10 isRootViewController];
+    isRootViewController = [parentViewController2 isRootViewController];
   }
 
 LABEL_15:
 
-  return v12;
+  return isRootViewController;
 }
 
 - (void)keyboardDidHideWithInfo:()SUAdditions
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 childViewControllers];
-  v6 = [v5 copy];
+  childViewControllers = [self childViewControllers];
+  v6 = [childViewControllers copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -255,8 +255,8 @@ LABEL_15:
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 childViewControllers];
-  v6 = [v5 copy];
+  childViewControllers = [self childViewControllers];
+  v6 = [childViewControllers copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -293,8 +293,8 @@ LABEL_15:
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 childViewControllers];
-  v6 = [v5 copy];
+  childViewControllers = [self childViewControllers];
+  v6 = [childViewControllers copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -331,8 +331,8 @@ LABEL_15:
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 childViewControllers];
-  v6 = [v5 copy];
+  childViewControllers = [self childViewControllers];
+  v6 = [childViewControllers copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -367,14 +367,14 @@ LABEL_15:
 
 - (void)resetRestoredContext
 {
-  v1 = [a1 parentViewController];
-  [v1 resetRestoredContext];
+  parentViewController = [self parentViewController];
+  [parentViewController resetRestoredContext];
 }
 
 - (id)_sectionForViewController:()SUAdditions
 {
-  v2 = [a1 parentViewController];
-  v3 = [v2 _sectionForViewController:a1];
+  parentViewController = [self parentViewController];
+  v3 = [parentViewController _sectionForViewController:self];
 
   return v3;
 }
@@ -404,21 +404,21 @@ LABEL_15:
     v6 = 0;
   }
 
-  v10 = [a1 tabBarItem];
-  [v10 setBadgeValue:v19 animated:v6 blink:v9];
+  tabBarItem = [self tabBarItem];
+  [tabBarItem setBadgeValue:v19 animated:v6 blink:v9];
 
-  v11 = [a1 tabBarController];
-  if (!v11)
+  tabBarController = [self tabBarController];
+  if (!tabBarController)
   {
-    v11 = +[SUClientDispatch tabBarController];
+    tabBarController = +[SUClientDispatch tabBarController];
   }
 
-  v12 = [v11 moreNavigationController];
-  v13 = [v12 tabBarItem];
+  moreNavigationController = [tabBarController moreNavigationController];
+  tabBarItem2 = [moreNavigationController tabBarItem];
 
-  if ([a1 isInMoreList])
+  if ([self isInMoreList])
   {
-    v14 = v13;
+    v14 = tabBarItem2;
     v15 = v19;
     v16 = v6;
     v17 = v9;
@@ -426,59 +426,59 @@ LABEL_15:
 
   else
   {
-    v14 = v13;
+    v14 = tabBarItem2;
     v15 = 0;
     v16 = 0;
     v17 = 0;
   }
 
   [v14 setBadgeValue:v15 animated:v16 blink:v17];
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v18 postNotificationName:@"SUViewControllerBadgeDidChangeNotification" object:a1];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SUViewControllerBadgeDidChangeNotification" object:self];
 }
 
 - (id)viewControllerFactory
 {
-  v1 = [a1 parentViewController];
-  v2 = v1;
-  if (v1)
+  parentViewController = [self parentViewController];
+  v2 = parentViewController;
+  if (parentViewController)
   {
-    v3 = [v1 viewControllerFactory];
+    viewControllerFactory = [parentViewController viewControllerFactory];
 LABEL_3:
-    v4 = v3;
+    viewControllerFactory2 = viewControllerFactory;
     goto LABEL_5;
   }
 
   v5 = +[SUClientDispatch clientInterface];
-  v4 = [v5 viewControllerFactory];
+  viewControllerFactory2 = [v5 viewControllerFactory];
 
-  if (!v4)
+  if (!viewControllerFactory2)
   {
-    v3 = objc_alloc_init(SUViewControllerFactory);
+    viewControllerFactory = objc_alloc_init(SUViewControllerFactory);
     goto LABEL_3;
   }
 
 LABEL_5:
 
-  return v4;
+  return viewControllerFactory2;
 }
 
 - (id)su_closestNavigationController
 {
-  v2 = [a1 navigationController];
+  navigationController = [self navigationController];
 
-  if (v2)
+  if (navigationController)
   {
-    v3 = [a1 navigationController];
+    navigationController2 = [self navigationController];
   }
 
   else
   {
-    v4 = [a1 parentViewController];
-    v3 = [v4 su_closestNavigationController];
+    parentViewController = [self parentViewController];
+    navigationController2 = [parentViewController su_closestNavigationController];
   }
 
-  return v3;
+  return navigationController2;
 }
 
 @end

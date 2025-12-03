@@ -15,13 +15,13 @@
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D66E7C8();
 }
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D66E9C4();
 }
 

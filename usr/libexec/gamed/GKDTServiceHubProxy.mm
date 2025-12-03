@@ -1,64 +1,64 @@
 @interface GKDTServiceHubProxy
-- (id)connectionProxyForUseCase:(id)a3;
-- (id)transportWithCredential:(id)a3;
-- (void)acceptInviteWithNotification:(id)a3;
+- (id)connectionProxyForUseCase:(id)case;
+- (id)transportWithCredential:(id)credential;
+- (void)acceptInviteWithNotification:(id)notification;
 - (void)acceptMultiplayerGameInvite;
-- (void)achievementSelected:(id)a3;
-- (void)authenticatedPlayersDidChange:(id)a3 authenticatingBundleID:(id)a4 reply:(id)a5;
+- (void)achievementSelected:(id)selected;
+- (void)authenticatedPlayersDidChange:(id)change authenticatingBundleID:(id)d reply:(id)reply;
 - (void)beginNetworkActivity;
-- (void)cancelGameInvite:(id)a3;
-- (void)cancelInviteWithNotification:(id)a3;
-- (void)challengeCompleted:(id)a3;
-- (void)challengeReceived:(id)a3;
-- (void)completedChallengeSelected:(id)a3;
-- (void)declineInviteWithNotification:(id)a3;
-- (void)didConnectToParticipantWithID:(id)a3;
-- (void)didDisconnectFromParticipantWithID:(id)a3;
-- (void)didReceiveData:(id)a3 reliably:(BOOL)a4 forRecipients:(id)a5 fromSender:(id)a6;
+- (void)cancelGameInvite:(id)invite;
+- (void)cancelInviteWithNotification:(id)notification;
+- (void)challengeCompleted:(id)completed;
+- (void)challengeReceived:(id)received;
+- (void)completedChallengeSelected:(id)selected;
+- (void)declineInviteWithNotification:(id)notification;
+- (void)didConnectToParticipantWithID:(id)d;
+- (void)didDisconnectFromParticipantWithID:(id)d;
+- (void)didReceiveData:(id)data reliably:(BOOL)reliably forRecipients:(id)recipients fromSender:(id)sender;
 - (void)endNetworkActivity;
 - (void)fetchTurnBasedData;
-- (void)friendRequestSelected:(id)a3;
+- (void)friendRequestSelected:(id)selected;
 - (void)metricsValuesChanged;
-- (void)nearbyDataReceivedForPlayerID:(id)a3 deviceID:(id)a4 data:(id)a5;
-- (void)nearbyPlayerFoundForPlayerID:(id)a3 deviceID:(id)a4 discoveryInfo:(id)a5;
-- (void)nearbyPlayerLostForPlayerID:(id)a3 deviceID:(id)a4;
-- (void)presentBannerWithNotification:(id)a3;
-- (void)receivedChallengeSelected:(id)a3;
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4;
-- (void)relayPushNotification:(id)a3;
-- (void)requestSandboxExtension:(id)a3;
+- (void)nearbyDataReceivedForPlayerID:(id)d deviceID:(id)iD data:(id)data;
+- (void)nearbyPlayerFoundForPlayerID:(id)d deviceID:(id)iD discoveryInfo:(id)info;
+- (void)nearbyPlayerLostForPlayerID:(id)d deviceID:(id)iD;
+- (void)presentBannerWithNotification:(id)notification;
+- (void)receivedChallengeSelected:(id)selected;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info;
+- (void)relayPushNotification:(id)notification;
+- (void)requestSandboxExtension:(id)extension;
 - (void)resetNetworkActivity;
-- (void)respondedToNearbyInvite:(id)a3;
-- (void)scoreSelected:(id)a3;
-- (void)setBadgeCount:(unint64_t)a3 forType:(unint64_t)a4;
-- (void)setCurrentGame:(id)a3 serverEnvironment:(int64_t)a4 reply:(id)a5;
-- (void)setDebugMode:(BOOL)a3 bundleID:(id)a4 reply:(id)a5;
-- (void)setPreferencesValues:(id)a3;
-- (void)updateInviteWithNotification:(id)a3;
+- (void)respondedToNearbyInvite:(id)invite;
+- (void)scoreSelected:(id)selected;
+- (void)setBadgeCount:(unint64_t)count forType:(unint64_t)type;
+- (void)setCurrentGame:(id)game serverEnvironment:(int64_t)environment reply:(id)reply;
+- (void)setDebugMode:(BOOL)mode bundleID:(id)d reply:(id)reply;
+- (void)setPreferencesValues:(id)values;
+- (void)updateInviteWithNotification:(id)notification;
 @end
 
 @implementation GKDTServiceHubProxy
 
-- (id)connectionProxyForUseCase:(id)a3
+- (id)connectionProxyForUseCase:(id)case
 {
-  v4 = a3;
-  v5 = [(GKClientProxy *)self connection];
+  caseCopy = case;
+  connection = [(GKClientProxy *)self connection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10011C09C;
   v9[3] = &unk_100361108;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = caseCopy;
+  v6 = caseCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)transportWithCredential:(id)a3
+- (id)transportWithCredential:(id)credential
 {
-  v3 = a3;
+  credentialCopy = credential;
   v4 = +[GKClientProxy gameCenterClient];
-  v5 = [v4 transportWithCredential:v3];
+  v5 = [v4 transportWithCredential:credentialCopy];
 
   return v5;
 }
@@ -108,9 +108,9 @@
   }
 }
 
-- (void)setPreferencesValues:(id)a3
+- (void)setPreferencesValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -124,10 +124,10 @@
   }
 }
 
-- (void)setCurrentGame:(id)a3 serverEnvironment:(int64_t)a4 reply:(id)a5
+- (void)setCurrentGame:(id)game serverEnvironment:(int64_t)environment reply:(id)reply
 {
-  v6 = a3;
-  v7 = a5;
+  gameCopy = game;
+  replyCopy = reply;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -141,11 +141,11 @@
   }
 }
 
-- (void)authenticatedPlayersDidChange:(id)a3 authenticatingBundleID:(id)a4 reply:(id)a5
+- (void)authenticatedPlayersDidChange:(id)change authenticatingBundleID:(id)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  changeCopy = change;
+  dCopy = d;
+  replyCopy = reply;
   v10 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -159,9 +159,9 @@
   }
 }
 
-- (void)requestSandboxExtension:(id)a3
+- (void)requestSandboxExtension:(id)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -175,9 +175,9 @@
   }
 }
 
-- (void)friendRequestSelected:(id)a3
+- (void)friendRequestSelected:(id)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -191,9 +191,9 @@
   }
 }
 
-- (void)respondedToNearbyInvite:(id)a3
+- (void)respondedToNearbyInvite:(id)invite
 {
-  v3 = a3;
+  inviteCopy = invite;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -222,9 +222,9 @@
   }
 }
 
-- (void)presentBannerWithNotification:(id)a3
+- (void)presentBannerWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -253,9 +253,9 @@
   }
 }
 
-- (void)acceptInviteWithNotification:(id)a3
+- (void)acceptInviteWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -269,9 +269,9 @@
   }
 }
 
-- (void)declineInviteWithNotification:(id)a3
+- (void)declineInviteWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -285,9 +285,9 @@
   }
 }
 
-- (void)updateInviteWithNotification:(id)a3
+- (void)updateInviteWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -301,9 +301,9 @@
   }
 }
 
-- (void)cancelInviteWithNotification:(id)a3
+- (void)cancelInviteWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -317,9 +317,9 @@
   }
 }
 
-- (void)cancelGameInvite:(id)a3
+- (void)cancelGameInvite:(id)invite
 {
-  v3 = a3;
+  inviteCopy = invite;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -333,9 +333,9 @@
   }
 }
 
-- (void)relayPushNotification:(id)a3
+- (void)relayPushNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -349,11 +349,11 @@
   }
 }
 
-- (void)nearbyPlayerFoundForPlayerID:(id)a3 deviceID:(id)a4 discoveryInfo:(id)a5
+- (void)nearbyPlayerFoundForPlayerID:(id)d deviceID:(id)iD discoveryInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  infoCopy = info;
   v10 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -367,10 +367,10 @@
   }
 }
 
-- (void)nearbyPlayerLostForPlayerID:(id)a3 deviceID:(id)a4
+- (void)nearbyPlayerLostForPlayerID:(id)d deviceID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v7 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -384,11 +384,11 @@
   }
 }
 
-- (void)nearbyDataReceivedForPlayerID:(id)a3 deviceID:(id)a4 data:(id)a5
+- (void)nearbyDataReceivedForPlayerID:(id)d deviceID:(id)iD data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  dataCopy = data;
   v10 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -402,9 +402,9 @@
   }
 }
 
-- (void)didConnectToParticipantWithID:(id)a3
+- (void)didConnectToParticipantWithID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -418,9 +418,9 @@
   }
 }
 
-- (void)didDisconnectFromParticipantWithID:(id)a3
+- (void)didDisconnectFromParticipantWithID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -434,11 +434,11 @@
   }
 }
 
-- (void)didReceiveData:(id)a3 reliably:(BOOL)a4 forRecipients:(id)a5 fromSender:(id)a6
+- (void)didReceiveData:(id)data reliably:(BOOL)reliably forRecipients:(id)recipients fromSender:(id)sender
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  dataCopy = data;
+  recipientsCopy = recipients;
+  senderCopy = sender;
   v11 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -467,9 +467,9 @@
   }
 }
 
-- (void)receivedChallengeSelected:(id)a3
+- (void)receivedChallengeSelected:(id)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -483,9 +483,9 @@
   }
 }
 
-- (void)completedChallengeSelected:(id)a3
+- (void)completedChallengeSelected:(id)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -499,9 +499,9 @@
   }
 }
 
-- (void)challengeReceived:(id)a3
+- (void)challengeReceived:(id)received
 {
-  v3 = a3;
+  receivedCopy = received;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -515,9 +515,9 @@
   }
 }
 
-- (void)challengeCompleted:(id)a3
+- (void)challengeCompleted:(id)completed
 {
-  v3 = a3;
+  completedCopy = completed;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -531,9 +531,9 @@
   }
 }
 
-- (void)scoreSelected:(id)a3
+- (void)scoreSelected:(id)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -547,9 +547,9 @@
   }
 }
 
-- (void)achievementSelected:(id)a3
+- (void)achievementSelected:(id)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -563,7 +563,7 @@
   }
 }
 
-- (void)setBadgeCount:(unint64_t)a3 forType:(unint64_t)a4
+- (void)setBadgeCount:(unint64_t)count forType:(unint64_t)type
 {
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
@@ -578,23 +578,23 @@
   }
 }
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  infoCopy = info;
   v7 = [(GKDTServiceHubProxy *)self connectionProxyForUseCase:@"refreshContentsForDataType:userInfo"];
-  [v7 refreshContentsForDataType:v4 userInfo:v6];
+  [v7 refreshContentsForDataType:v4 userInfo:infoCopy];
 }
 
-- (void)setDebugMode:(BOOL)a3 bundleID:(id)a4 reply:(id)a5
+- (void)setDebugMode:(BOOL)mode bundleID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
-  [GKClientProxy setDebugMode:v6 bundleID:v9];
+  modeCopy = mode;
+  replyCopy = reply;
+  dCopy = d;
+  [GKClientProxy setDebugMode:modeCopy bundleID:dCopy];
   v10.receiver = self;
   v10.super_class = GKDTServiceHubProxy;
-  [(GKClientProxy *)&v10 setDebugMode:v6 bundleID:v9 reply:v8];
+  [(GKClientProxy *)&v10 setDebugMode:modeCopy bundleID:dCopy reply:replyCopy];
 }
 
 @end

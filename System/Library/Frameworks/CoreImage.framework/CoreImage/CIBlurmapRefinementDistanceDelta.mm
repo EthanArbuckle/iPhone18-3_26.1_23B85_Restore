@@ -20,11 +20,11 @@
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(CIImage *)v6 imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)v6 imageByClampingToExtent];
     inputDistance = self->inputDistance;
     v29 = @"inputRadius";
     v30 = inputDistance;
-    v17 = -[CIImage _imageByRenderingToIntermediate](-[CIImage imageByCroppingToRect:](-[CIImage imageByApplyingFilter:withInputParameters:](v15, "imageByApplyingFilter:withInputParameters:", @"CIGaussianBlur", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1]), "imageByCroppingToRect:", v8, v10, v12, v14), "_imageByRenderingToIntermediate");
+    v17 = -[CIImage _imageByRenderingToIntermediate](-[CIImage imageByCroppingToRect:](-[CIImage imageByApplyingFilter:withInputParameters:](imageByClampingToExtent, "imageByApplyingFilter:withInputParameters:", @"CIGaussianBlur", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1]), "imageByCroppingToRect:", v8, v10, v12, v14), "_imageByRenderingToIntermediate");
     inputSecondaryImage = self->inputSecondaryImage;
     if (inputSecondaryImage)
     {

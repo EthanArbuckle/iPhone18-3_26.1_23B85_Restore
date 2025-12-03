@@ -8,8 +8,8 @@
 
 - (CGRect)scatFrame
 {
-  v3 = [(SCATPointPickerCenterPoint *)self delegate];
-  [v3 scannerFrameForPointPickerCenterPoint:self];
+  delegate = [(SCATPointPickerCenterPoint *)self delegate];
+  [delegate scannerFrameForPointPickerCenterPoint:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -28,8 +28,8 @@
 
 - (CGPath)scatPath
 {
-  v3 = [(SCATPointPickerCenterPoint *)self delegate];
-  v4 = [v3 scannerPathForPointPickerCenterPoint:self];
+  delegate = [(SCATPointPickerCenterPoint *)self delegate];
+  v4 = [delegate scannerPathForPointPickerCenterPoint:self];
 
   return v4;
 }

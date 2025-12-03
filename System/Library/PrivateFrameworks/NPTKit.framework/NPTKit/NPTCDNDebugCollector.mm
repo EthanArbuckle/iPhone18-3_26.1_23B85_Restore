@@ -1,43 +1,43 @@
 @interface NPTCDNDebugCollector
-- (void)startCollectingWithCompletion:(id)a3;
+- (void)startCollectingWithCompletion:(id)completion;
 - (void)stopCollecting;
 @end
 
 @implementation NPTCDNDebugCollector
 
-- (void)startCollectingWithCompletion:(id)a3
+- (void)startCollectingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(NPTCDNDebugCollector *)self setCachedMetadata:v6];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [(NPTCDNDebugCollector *)self cachedMetadata];
-  [v8 setObject:v7 forKeyedSubscript:@"initial_state"];
+  cachedMetadata = [(NPTCDNDebugCollector *)self cachedMetadata];
+  [cachedMetadata setObject:v7 forKeyedSubscript:@"initial_state"];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [(NPTCDNDebugCollector *)self cachedMetadata];
-  [v10 setObject:v9 forKeyedSubscript:@"events"];
+  cachedMetadata2 = [(NPTCDNDebugCollector *)self cachedMetadata];
+  [cachedMetadata2 setObject:v9 forKeyedSubscript:@"events"];
 
-  v11 = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
-  [v11 setTimeoutIntervalForRequest:2.0];
-  [v11 setTimeoutIntervalForResource:2.0];
-  v12 = [MEMORY[0x277CBABB8] sessionWithConfiguration:v11];
+  ephemeralSessionConfiguration = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
+  [ephemeralSessionConfiguration setTimeoutIntervalForRequest:2.0];
+  [ephemeralSessionConfiguration setTimeoutIntervalForResource:2.0];
+  v12 = [MEMORY[0x277CBABB8] sessionWithConfiguration:ephemeralSessionConfiguration];
   [(NPTCDNDebugCollector *)self setSession:v12];
 
   v13 = [MEMORY[0x277CBEBC0] URLWithString:@"http://504sfaa.map.apple-dns.net/json"];
-  v14 = [(NPTCDNDebugCollector *)self session];
+  session = [(NPTCDNDebugCollector *)self session];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __54__NPTCDNDebugCollector_startCollectingWithCompletion___block_invoke;
   v18[3] = &unk_2789D4338;
   v19 = v5;
-  v20 = self;
-  v21 = v4;
-  v15 = v4;
+  selfCopy = self;
+  v21 = completionCopy;
+  v15 = completionCopy;
   v16 = v5;
-  v17 = [v14 dataTaskWithURL:v13 completionHandler:v18];
+  v17 = [session dataTaskWithURL:v13 completionHandler:v18];
 
   [v17 resume];
 }
@@ -128,8 +128,8 @@ LABEL_6:
 
 - (void)stopCollecting
 {
-  v2 = [(NPTCDNDebugCollector *)self session];
-  [v2 invalidateAndCancel];
+  session = [(NPTCDNDebugCollector *)self session];
+  [session invalidateAndCancel];
 }
 
 @end

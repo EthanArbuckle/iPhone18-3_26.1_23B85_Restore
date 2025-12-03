@@ -1,38 +1,38 @@
 @interface _PBFSQLiteFrozenResultRow
-- (double)doubleAtIndex:(unint64_t)a3;
-- (int64_t)integerAtIndex:(unint64_t)a3;
+- (double)doubleAtIndex:(unint64_t)index;
+- (int64_t)integerAtIndex:(unint64_t)index;
 - (uint64_t)_indexForKey:(uint64_t)result;
-- (void)_initWithResultRow:(void *)a1;
+- (void)_initWithResultRow:(void *)row;
 @end
 
 @implementation _PBFSQLiteFrozenResultRow
 
-- (int64_t)integerAtIndex:(unint64_t)a3
+- (int64_t)integerAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_frozenIntegers objectAtIndexedSubscript:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(NSArray *)self->_frozenIntegers objectAtIndexedSubscript:index];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (double)doubleAtIndex:(unint64_t)a3
+- (double)doubleAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_frozenDoubles objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_frozenDoubles objectAtIndexedSubscript:index];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)_initWithResultRow:(void *)a1
+- (void)_initWithResultRow:(void *)row
 {
   v3 = a2;
-  if (a1)
+  if (row)
   {
-    v33.receiver = a1;
+    v33.receiver = row;
     v33.super_class = PFSQLiteResultRow;
     v4 = objc_msgSendSuper2(&v33, sel_init);
-    a1 = v4;
+    row = v4;
     if (v4)
     {
       v4[1] = 0;
@@ -49,7 +49,7 @@
       v17 = OUTLINED_FUNCTION_1_5(v15, v16);
       v18 = objc_alloc(MEMORY[0x1E695DF70]);
       v20 = OUTLINED_FUNCTION_1_5(v18, v19);
-      if (a1[3])
+      if (row[3])
       {
         v21 = 0;
         do
@@ -77,7 +77,7 @@
           ++v21;
         }
 
-        while (v21 < a1[3]);
+        while (v21 < row[3]);
       }
 
       OUTLINED_FUNCTION_2_6([v32 copy], 32);
@@ -89,7 +89,7 @@
     }
   }
 
-  return a1;
+  return row;
 }
 
 - (uint64_t)_indexForKey:(uint64_t)result

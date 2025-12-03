@@ -1,35 +1,35 @@
 @interface GSAsset
 - (BOOL)computeCentroids;
-- (BOOL)computeCovariances:(id *)a3;
-- (BOOL)updateAtTimestepWithTVFile:(id)a3 atTimestep:(unsigned int)a4 error:(id *)a5;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
+- (BOOL)computeCovariances:(id *)covariances;
+- (BOOL)updateAtTimestepWithTVFile:(id)file atTimestep:(unsigned int)timestep error:(id *)error;
+- (BOOL)writeToURL:(id)l error:(id *)error;
 - (CGColorSpace)cgColorSpace;
 - (GSAsset)init;
-- (GSAsset)initWithFile:(id)a3 forDevice:(id)a4 error:(id *)a5;
+- (GSAsset)initWithFile:(id)file forDevice:(id)device error:(id *)error;
 - (__n128)defaultIntrinsics;
 - (__n128)defaultViewMatrix;
 - (__n128)modelMatrix;
-- (apple3dgs)transform:(float32x4_t)a3 error:(float32x4_t)a4;
+- (apple3dgs)transform:(float32x4_t)transform error:(float32x4_t)error;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionJSON;
 - (shared_ptr<apple3dgs::Asset>)impl;
-- (uint64_t)setDefaultIntrinsics:(__n128)a3;
-- (uint64_t)setDefaultViewMatrix:(__n128)a3;
-- (uint64_t)setModelMatrix:(__n128)a3;
-- (void)setAlphas:(id)a3;
-- (void)setAlphas:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6;
-- (void)setCgColorSpace:(CGColorSpace *)a3;
-- (void)setCoords:(id)a3;
-- (void)setCoords:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6;
-- (void)setFeatures:(id)a3;
-- (void)setFeatures:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6;
-- (void)setImpl:(shared_ptr<apple3dgs::Asset>)a3;
-- (void)setRots:(id)a3;
-- (void)setRots:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6;
-- (void)setScales:(id)a3;
-- (void)setScales:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6;
+- (uint64_t)setDefaultIntrinsics:(__n128)intrinsics;
+- (uint64_t)setDefaultViewMatrix:(__n128)matrix;
+- (uint64_t)setModelMatrix:(__n128)matrix;
+- (void)setAlphas:(id)alphas;
+- (void)setAlphas:(id)alphas withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset;
+- (void)setCgColorSpace:(CGColorSpace *)space;
+- (void)setCoords:(id)coords;
+- (void)setCoords:(id)coords withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset;
+- (void)setFeatures:(id)features;
+- (void)setFeatures:(id)features withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset;
+- (void)setImpl:(shared_ptr<apple3dgs::Asset>)impl;
+- (void)setRots:(id)rots;
+- (void)setRots:(id)rots withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset;
+- (void)setScales:(id)scales;
+- (void)setScales:(id)scales withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset;
 @end
 
 @implementation GSAsset
@@ -42,22 +42,22 @@
   operator new();
 }
 
-- (GSAsset)initWithFile:(id)a3 forDevice:(id)a4 error:(id *)a5
+- (GSAsset)initWithFile:(id)file forDevice:(id)device error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  fileCopy = file;
+  deviceCopy = device;
   v10 = [(GSAsset *)self init];
-  v11 = [v8 stringByRemovingPercentEncoding];
-  if (!v11)
+  stringByRemovingPercentEncoding = [fileCopy stringByRemovingPercentEncoding];
+  if (!stringByRemovingPercentEncoding)
   {
-    v11 = v8;
+    stringByRemovingPercentEncoding = fileCopy;
   }
 
-  [(GSAsset *)v10 setPath:v11];
-  v12 = [v11 UTF8String];
+  [(GSAsset *)v10 setPath:stringByRemovingPercentEncoding];
+  uTF8String = [stringByRemovingPercentEncoding UTF8String];
   memset(&v28, 0, sizeof(v28));
-  v13 = (v12 - 1);
+  v13 = (uTF8String - 1);
   do
   {
     v14 = v13->__r_.__value_.__s.__data_[1];
@@ -65,7 +65,7 @@
   }
 
   while (v14);
-  std::string::append[abi:ne200100]<char const*,0>(&v28.__pn_, v12, v13);
+  std::string::append[abi:ne200100]<char const*,0>(&v28.__pn_, uTF8String, v13);
   v15 = std::__fs::filesystem::path::__extension(&v28);
   if (v15.__size_ > 0x7FFFFFFFFFFFFFF7)
   {
@@ -191,7 +191,7 @@ LABEL_42:
         *__p = xmmword_247477B70;
         v26 = xmmword_247477B80;
         v27 = 27;
-        apple3dgs::loadTv(&v28, 0, v9, a5, __dst);
+        apple3dgs::loadTv(&v28, 0, deviceCopy, error, __dst);
         if (v30)
         {
           goto LABEL_43;
@@ -219,7 +219,7 @@ LABEL_26:
   *__p = xmmword_247477B70;
   v26 = xmmword_247477B80;
   v27 = 27;
-  apple3dgs::loadPly(&v28, v9, a5, __dst);
+  apple3dgs::loadPly(&v28, deviceCopy, error, __dst);
   if (v30)
   {
 LABEL_43:
@@ -229,7 +229,7 @@ LABEL_43:
       apple3dgs::Asset::~Asset(__dst);
     }
 
-    apple3dgs::Asset::ComputeCovariance(v10->_impl.__ptr_, 0, a5);
+    apple3dgs::Asset::ComputeCovariance(v10->_impl.__ptr_, 0, error);
     apple3dgs::Asset::ComputeCentroid(v10->_impl.__ptr_, v21);
     v22 = v10;
     if (SHIBYTE(v28.__pn_.__r_.__value_.__r.__words[2]) < 0)
@@ -254,18 +254,18 @@ LABEL_49:
   return v22;
 }
 
-- (BOOL)updateAtTimestepWithTVFile:(id)a3 atTimestep:(unsigned int)a4 error:(id *)a5
+- (BOOL)updateAtTimestepWithTVFile:(id)file atTimestep:(unsigned int)timestep error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 stringByRemovingPercentEncoding];
-  if (!v9)
+  fileCopy = file;
+  stringByRemovingPercentEncoding = [fileCopy stringByRemovingPercentEncoding];
+  if (!stringByRemovingPercentEncoding)
   {
-    v9 = v8;
+    stringByRemovingPercentEncoding = fileCopy;
   }
 
-  v10 = [v9 UTF8String];
+  uTF8String = [stringByRemovingPercentEncoding UTF8String];
   memset(&__p, 0, sizeof(__p));
-  v11 = (v10 - 1);
+  v11 = (uTF8String - 1);
   do
   {
     v12 = v11->__r_.__value_.__s.__data_[1];
@@ -273,11 +273,11 @@ LABEL_49:
   }
 
   while (v12);
-  std::string::append[abi:ne200100]<char const*,0>(&__p, v10, v11);
-  v13 = apple3dgs::updateFromTv(self->_impl.__ptr_, &__p, a4, a5);
+  std::string::append[abi:ne200100]<char const*,0>(&__p, uTF8String, v11);
+  v13 = apple3dgs::updateFromTv(self->_impl.__ptr_, &__p, timestep, error);
   if (v13)
   {
-    apple3dgs::Asset::ComputeCovariance(self->_impl.__ptr_, 0, a5);
+    apple3dgs::Asset::ComputeCovariance(self->_impl.__ptr_, 0, error);
     apple3dgs::Asset::ComputeCentroid(self->_impl.__ptr_, v14);
   }
 
@@ -289,9 +289,9 @@ LABEL_49:
   return v13;
 }
 
-- (BOOL)computeCovariances:(id *)a3
+- (BOOL)computeCovariances:(id *)covariances
 {
-  v4 = apple3dgs::Asset::ComputeCovariance(self->_impl.__ptr_, 0, a3);
+  v4 = apple3dgs::Asset::ComputeCovariance(self->_impl.__ptr_, 0, covariances);
   if (v4)
   {
     ptr = self->_impl.__ptr_;
@@ -310,7 +310,7 @@ LABEL_49:
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GSAsset);
   [(GSAsset *)self impl];
@@ -335,23 +335,23 @@ LABEL_49:
   return v4;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  lCopy = l;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v7 = objc_autoreleasePoolPush();
   if (apple3dgs::Asset::Valid(self->_impl.__ptr_, v8))
   {
     ptr = self->_impl.__ptr_;
-    [v6 path];
-    v10 = [objc_claimAutoreleasedReturnValue() UTF8String];
+    [lCopy path];
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
     memset(&__p, 0, sizeof(__p));
-    v11 = (v10 - 1);
+    v11 = (uTF8String - 1);
     do
     {
       v12 = v11->__r_.__value_.__s.__data_[1];
@@ -359,7 +359,7 @@ LABEL_49:
     }
 
     while (v12);
-    std::string::append[abi:ne200100]<char const*,0>(&__p, v10, v11);
+    std::string::append[abi:ne200100]<char const*,0>(&__p, uTF8String, v11);
     apple3dgs::savePly(&__p, ptr, v13);
   }
 
@@ -380,22 +380,22 @@ LABEL_49:
   v20 = [v16 errorWithDomain:v18 code:-3 userInfo:v19];
 
   objc_autoreleasePoolPop(v7);
-  if (a4 && v20)
+  if (error && v20)
   {
     v21 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v22 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (apple3dgs)transform:(float32x4_t)a3 error:(float32x4_t)a4
+- (apple3dgs)transform:(float32x4_t)transform error:(float32x4_t)error
 {
-  v7 = *(a1 + 136);
+  v7 = *(self + 136);
   v9[0] = a2;
-  v9[1] = a3;
-  v9[2] = a4;
+  v9[1] = transform;
+  v9[2] = error;
   v9[3] = a5;
   return apple3dgs::Asset::Transform(v7, 0, v9, a7);
 }
@@ -498,166 +498,166 @@ LABEL_12:
   nlohmann::json_abi_v3_11_2::detail::external_constructor<(nlohmann::json_abi_v3_11_2::detail::value_t)3>::construct<nlohmann::json_abi_v3_11_2::basic_json<std::map,std::vector,std::string,BOOL,long long,unsigned long long,double,std::allocator,nlohmann::json_abi_v3_11_2::adl_serializer,std::vector<unsigned char>,void>,char const*,0>(v4);
 }
 
-- (void)setCoords:(id)a3
+- (void)setCoords:(id)coords
 {
-  v4 = a3;
+  coordsCopy = coords;
   MinimumStride = apple3dgs::GetMinimumStride(0x1E, v5);
-  v10 = v4;
-  v7 = [v10 contents];
+  v10 = coordsCopy;
+  contents = [v10 contents];
 
   ptr = self->_impl.__ptr_;
   v9 = *(ptr + 16);
   *(ptr + 16) = v10;
 
-  *(ptr + 17) = v7;
+  *(ptr + 17) = contents;
   *(ptr + 18) = 30;
   *(ptr + 19) = MinimumStride;
   *(ptr + 20) = 0;
 }
 
-- (void)setCoords:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6
+- (void)setCoords:(id)coords withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset
 {
-  v13 = a3;
-  v10 = [v13 contents];
+  coordsCopy = coords;
+  contents = [coordsCopy contents];
   ptr = self->_impl.__ptr_;
   v12 = *(ptr + 16);
-  *(ptr + 16) = v13;
+  *(ptr + 16) = coordsCopy;
 
-  *(ptr + 17) = v10;
-  *(ptr + 18) = a4;
-  *(ptr + 19) = a5;
-  *(ptr + 20) = a6;
+  *(ptr + 17) = contents;
+  *(ptr + 18) = format;
+  *(ptr + 19) = stride;
+  *(ptr + 20) = offset;
 }
 
-- (void)setFeatures:(id)a3
+- (void)setFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   MinimumStride = apple3dgs::GetMinimumStride(0x1E, v5);
-  v10 = v4;
-  v7 = [v10 contents];
+  v10 = featuresCopy;
+  contents = [v10 contents];
 
   ptr = self->_impl.__ptr_;
   v9 = *(ptr + 21);
   *(ptr + 21) = v10;
 
-  *(ptr + 22) = v7;
+  *(ptr + 22) = contents;
   *(ptr + 23) = 30;
   *(ptr + 24) = MinimumStride;
   *(ptr + 25) = 0;
 }
 
-- (void)setFeatures:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6
+- (void)setFeatures:(id)features withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset
 {
-  v13 = a3;
-  v10 = [v13 contents];
+  featuresCopy = features;
+  contents = [featuresCopy contents];
   ptr = self->_impl.__ptr_;
   v12 = *(ptr + 21);
-  *(ptr + 21) = v13;
+  *(ptr + 21) = featuresCopy;
 
-  *(ptr + 22) = v10;
-  *(ptr + 23) = a4;
-  *(ptr + 24) = a5;
-  *(ptr + 25) = a6;
+  *(ptr + 22) = contents;
+  *(ptr + 23) = format;
+  *(ptr + 24) = stride;
+  *(ptr + 25) = offset;
 }
 
-- (void)setAlphas:(id)a3
+- (void)setAlphas:(id)alphas
 {
-  v4 = a3;
+  alphasCopy = alphas;
   MinimumStride = apple3dgs::GetMinimumStride(0x1C, v5);
-  v10 = v4;
-  v7 = [v10 contents];
+  v10 = alphasCopy;
+  contents = [v10 contents];
 
   ptr = self->_impl.__ptr_;
   v9 = *(ptr + 26);
   *(ptr + 26) = v10;
 
-  *(ptr + 27) = v7;
+  *(ptr + 27) = contents;
   *(ptr + 28) = 28;
   *(ptr + 29) = MinimumStride;
   *(ptr + 30) = 0;
 }
 
-- (void)setAlphas:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6
+- (void)setAlphas:(id)alphas withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset
 {
-  v13 = a3;
-  v10 = [v13 contents];
+  alphasCopy = alphas;
+  contents = [alphasCopy contents];
   ptr = self->_impl.__ptr_;
   v12 = *(ptr + 26);
-  *(ptr + 26) = v13;
+  *(ptr + 26) = alphasCopy;
 
-  *(ptr + 27) = v10;
-  *(ptr + 28) = a4;
-  *(ptr + 29) = a5;
-  *(ptr + 30) = a6;
+  *(ptr + 27) = contents;
+  *(ptr + 28) = format;
+  *(ptr + 29) = stride;
+  *(ptr + 30) = offset;
 }
 
-- (void)setScales:(id)a3
+- (void)setScales:(id)scales
 {
-  v4 = a3;
+  scalesCopy = scales;
   MinimumStride = apple3dgs::GetMinimumStride(0x1E, v5);
-  v10 = v4;
-  v7 = [v10 contents];
+  v10 = scalesCopy;
+  contents = [v10 contents];
 
   ptr = self->_impl.__ptr_;
   v9 = *(ptr + 31);
   *(ptr + 31) = v10;
 
-  *(ptr + 32) = v7;
+  *(ptr + 32) = contents;
   *(ptr + 33) = 30;
   *(ptr + 34) = MinimumStride;
   *(ptr + 35) = 0;
 }
 
-- (void)setScales:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6
+- (void)setScales:(id)scales withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset
 {
-  v13 = a3;
-  v10 = [v13 contents];
+  scalesCopy = scales;
+  contents = [scalesCopy contents];
   ptr = self->_impl.__ptr_;
   v12 = *(ptr + 31);
-  *(ptr + 31) = v13;
+  *(ptr + 31) = scalesCopy;
 
-  *(ptr + 32) = v10;
-  *(ptr + 33) = a4;
-  *(ptr + 34) = a5;
-  *(ptr + 35) = a6;
+  *(ptr + 32) = contents;
+  *(ptr + 33) = format;
+  *(ptr + 34) = stride;
+  *(ptr + 35) = offset;
 }
 
-- (void)setRots:(id)a3
+- (void)setRots:(id)rots
 {
-  v4 = a3;
+  rotsCopy = rots;
   MinimumStride = apple3dgs::GetMinimumStride(0x1F, v5);
-  v10 = v4;
-  v7 = [v10 contents];
+  v10 = rotsCopy;
+  contents = [v10 contents];
 
   ptr = self->_impl.__ptr_;
   v9 = *(ptr + 36);
   *(ptr + 36) = v10;
 
-  *(ptr + 37) = v7;
+  *(ptr + 37) = contents;
   *(ptr + 38) = 31;
   *(ptr + 39) = MinimumStride;
   *(ptr + 40) = 0;
 }
 
-- (void)setRots:(id)a3 withFormat:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6
+- (void)setRots:(id)rots withFormat:(unint64_t)format stride:(unint64_t)stride offset:(unint64_t)offset
 {
-  v13 = a3;
-  v10 = [v13 contents];
+  rotsCopy = rots;
+  contents = [rotsCopy contents];
   ptr = self->_impl.__ptr_;
   v12 = *(ptr + 36);
-  *(ptr + 36) = v13;
+  *(ptr + 36) = rotsCopy;
 
-  *(ptr + 37) = v10;
-  *(ptr + 38) = a4;
-  *(ptr + 39) = a5;
-  *(ptr + 40) = a6;
+  *(ptr + 37) = contents;
+  *(ptr + 38) = format;
+  *(ptr + 39) = stride;
+  *(ptr + 40) = offset;
 }
 
-- (uint64_t)setModelMatrix:(__n128)a3
+- (uint64_t)setModelMatrix:(__n128)matrix
 {
   v5 = *(result + 136);
   v5[25] = a2;
-  v5[26] = a3;
+  v5[26] = matrix;
   v5[27] = a4;
   v5[28] = a5;
   return result;
@@ -665,7 +665,7 @@ LABEL_12:
 
 - (__n128)modelMatrix
 {
-  v1 = *(a1 + 136);
+  v1 = *(self + 136);
   result = *(v1 + 400);
   v3 = *(v1 + 416);
   v4 = *(v1 + 432);
@@ -673,11 +673,11 @@ LABEL_12:
   return result;
 }
 
-- (uint64_t)setDefaultViewMatrix:(__n128)a3
+- (uint64_t)setDefaultViewMatrix:(__n128)matrix
 {
   v5 = *(result + 136);
   v5[21] = a2;
-  v5[22] = a3;
+  v5[22] = matrix;
   v5[23] = a4;
   v5[24] = a5;
   return result;
@@ -685,7 +685,7 @@ LABEL_12:
 
 - (__n128)defaultViewMatrix
 {
-  v1 = *(a1 + 136);
+  v1 = *(self + 136);
   result = *(v1 + 336);
   v3 = *(v1 + 352);
   v4 = *(v1 + 368);
@@ -693,33 +693,33 @@ LABEL_12:
   return result;
 }
 
-- (uint64_t)setDefaultIntrinsics:(__n128)a3
+- (uint64_t)setDefaultIntrinsics:(__n128)intrinsics
 {
   v4 = *(result + 136);
   v4[29] = a2;
-  v4[30] = a3;
+  v4[30] = intrinsics;
   v4[31] = a4;
   return result;
 }
 
 - (__n128)defaultIntrinsics
 {
-  v1 = *(a1 + 136);
+  v1 = *(self + 136);
   result = *(v1 + 464);
   v3 = *(v1 + 480);
   v4 = *(v1 + 496);
   return result;
 }
 
-- (void)setCgColorSpace:(CGColorSpace *)a3
+- (void)setCgColorSpace:(CGColorSpace *)space
 {
   ptr = self->_impl.__ptr_;
   v4 = *(ptr + 81);
-  if (v4 != a3)
+  if (v4 != space)
   {
     CGColorSpaceRelease(v4);
-    *(ptr + 81) = a3;
-    CGColorSpaceRetain(a3);
+    *(ptr + 81) = space;
+    CGColorSpaceRetain(space);
     *(ptr + 139) = apple3dgs::CGColorSpaceGetTransferFunction(*(ptr + 81), v6);
   }
 }
@@ -752,10 +752,10 @@ LABEL_12:
   return result;
 }
 
-- (void)setImpl:(shared_ptr<apple3dgs::Asset>)a3
+- (void)setImpl:(shared_ptr<apple3dgs::Asset>)impl
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *impl.__ptr_;
+  v3 = *(impl.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

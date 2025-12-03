@@ -1,13 +1,13 @@
 @interface CalendarUnitPickerParameter
 - (NSArray)possibleStates;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation CalendarUnitPickerParameter
 
 - (NSArray)possibleStates
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA62385C();
 
   if (v3)
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CA623950(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1CA623950(stateCopy);
   v7 = v6;
 
   if (v7)

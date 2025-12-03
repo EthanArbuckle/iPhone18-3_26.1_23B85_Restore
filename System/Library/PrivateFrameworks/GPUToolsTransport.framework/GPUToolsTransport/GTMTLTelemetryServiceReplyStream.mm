@@ -1,13 +1,13 @@
 @interface GTMTLTelemetryServiceReplyStream
-- (GTMTLTelemetryServiceReplyStream)initWithObserver:(id)a3;
-- (void)notifyStatistics_:(id)a3 replyConnection:(id)a4;
+- (GTMTLTelemetryServiceReplyStream)initWithObserver:(id)observer;
+- (void)notifyStatistics_:(id)statistics_ replyConnection:(id)connection;
 @end
 
 @implementation GTMTLTelemetryServiceReplyStream
 
-- (GTMTLTelemetryServiceReplyStream)initWithObserver:(id)a3
+- (GTMTLTelemetryServiceReplyStream)initWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = [GTServiceProperties protocolMethods:&unk_2860EF8F8];
   v9.receiver = self;
   v9.super_class = GTMTLTelemetryServiceReplyStream;
@@ -15,16 +15,16 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_observer, a3);
+    objc_storeStrong(&v7->_observer, observer);
   }
 
   return v7;
 }
 
-- (void)notifyStatistics_:(id)a3 replyConnection:(id)a4
+- (void)notifyStatistics_:(id)statistics_ replyConnection:(id)connection
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  statistics_Copy = statistics_;
   v6 = [v4 alloc];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -35,7 +35,7 @@
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v16 = [v6 initWithObjects:{v7, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-  nsobject_classes = xpc_dictionary_get_nsobject_classes(v5, "statistics", v16);
+  nsobject_classes = xpc_dictionary_get_nsobject_classes(statistics_Copy, "statistics", v16);
 
   [(GTMTLTelemetryServiceObserver *)self->_observer notifyStatistics:nsobject_classes];
 }

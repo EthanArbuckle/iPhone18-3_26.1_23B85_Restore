@@ -1,9 +1,9 @@
 @interface KeyValueObserver
 - (KeyValueObserver)init;
-- (id)observeObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5 usingBlock:(id)a6;
+- (id)observeObject:(id)object keyPath:(id)path options:(unint64_t)options usingBlock:(id)block;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation KeyValueObserver
@@ -58,9 +58,9 @@
   [(KeyValueObserver *)&v8 dealloc];
 }
 
-- (id)observeObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5 usingBlock:(id)a6
+- (id)observeObject:(id)object keyPath:(id)path options:(unint64_t)options usingBlock:(id)block
 {
-  v10 = [[KeyValueObserverItem alloc] initWithObject:a3 keyPath:a4 block:a6];
+  v10 = [[KeyValueObserverItem alloc] initWithObject:object keyPath:path block:block];
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -69,11 +69,11 @@
   v13[4] = self;
   v13[5] = v10;
   dispatch_sync(dispatchQueue, v13);
-  [a3 addObserver:self forKeyPath:a4 options:a5 context:v10];
+  [object addObserver:self forKeyPath:path options:options context:v10];
   return v10;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -81,20 +81,20 @@
   v4[2] = sub_10019EB90;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = observer;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = [a6 block];
-  if (v8)
+  block = [context block];
+  if (block)
   {
-    v9 = v8;
-    v10 = self;
+    v9 = block;
+    selfCopy = self;
     v11 = v9[2];
 
-    v11(v9, a5);
+    v11(v9, change);
   }
 }
 

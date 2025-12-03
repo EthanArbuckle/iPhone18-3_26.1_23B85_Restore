@@ -1,37 +1,37 @@
 @interface PublisherViewController
 - (GEOPublisher)publisher;
-- (PublisherViewController)initWithPublisherId:(id)a3 numberOfCollections:(unint64_t)a4 withTraits:(id)a5;
+- (PublisherViewController)initWithPublisherId:(id)id numberOfCollections:(unint64_t)collections withTraits:(id)traits;
 - (PublisherViewControllerDelegate)actionDelegate;
 - (ShareDelegate)shareDelegate;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (void)activateConstraints;
-- (void)activateConstraintsForViewPinnedBelowHeader:(id)a3;
+- (void)activateConstraintsForViewPinnedBelowHeader:(id)header;
 - (void)activateDefaultHeaderConstraints;
 - (void)addCollectionView;
 - (void)addDefaultHeaderView;
 - (void)addErrorView;
 - (void)addLoadingView;
 - (void)addPublisherHeaderView;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)didSelectAllGuidesMenuItem;
 - (void)didSelectAppItem;
-- (void)didSelectShareFromView:(id)a3;
+- (void)didSelectShareFromView:(id)view;
 - (void)didSelectWebsiteItem;
-- (void)handleDismissAction:(id)a3;
-- (void)onTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
+- (void)handleDismissAction:(id)action;
+- (void)onTransitionFromState:(int64_t)state toState:(int64_t)toState;
 - (void)removeCollectionView;
 - (void)removeDefaultHeaderView;
 - (void)removeErrorView;
 - (void)removeLoadingView;
 - (void)resetCollectionViewLayout;
-- (void)routeToCuratedCollection:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)routeToCuratedCollection:(id)collection;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willDismissByGesture;
 @end
 
@@ -55,178 +55,178 @@
 {
   v11 = objc_alloc_init(NSNumberFormatter);
   [v11 setNumberStyle:1];
-  v3 = [(PublisherViewController *)self publisher];
-  v4 = [v3 publisherAttribution];
-  v5 = [v4 applicationAdamId];
-  v6 = [v11 numberFromString:v5];
+  publisher = [(PublisherViewController *)self publisher];
+  publisherAttribution = [publisher publisherAttribution];
+  applicationAdamId = [publisherAttribution applicationAdamId];
+  v6 = [v11 numberFromString:applicationAdamId];
 
   v7 = [[LSApplicationRecord alloc] initWithStoreItemIdentifier:objc_msgSend(v6 error:{"longLongValue"), 0}];
-  v8 = [v7 applicationState];
-  LODWORD(v5) = [v8 isInstalled];
+  applicationState = [v7 applicationState];
+  LODWORD(applicationAdamId) = [applicationState isInstalled];
 
-  if (v5)
+  if (applicationAdamId)
   {
-    v9 = +[LSApplicationWorkspace defaultWorkspace];
-    v10 = [v7 bundleIdentifier];
-    [v9 openApplicationWithBundleID:v10];
+    actionDelegate = +[LSApplicationWorkspace defaultWorkspace];
+    bundleIdentifier = [v7 bundleIdentifier];
+    [actionDelegate openApplicationWithBundleID:bundleIdentifier];
   }
 
   else
   {
-    v9 = [(PublisherViewController *)self actionDelegate];
-    [v9 publisherViewController:self openAppWithAdamId:v6];
+    actionDelegate = [(PublisherViewController *)self actionDelegate];
+    [actionDelegate publisherViewController:self openAppWithAdamId:v6];
   }
 }
 
 - (void)didSelectWebsiteItem
 {
-  v3 = [(PublisherViewController *)self publisher];
-  v4 = [v3 publisherAttribution];
-  v6 = [v4 websiteURL];
+  publisher = [(PublisherViewController *)self publisher];
+  publisherAttribution = [publisher publisherAttribution];
+  websiteURL = [publisherAttribution websiteURL];
 
-  v5 = [(PublisherViewController *)self actionDelegate];
-  [v5 publisherViewController:self openURL:v6];
+  actionDelegate = [(PublisherViewController *)self actionDelegate];
+  [actionDelegate publisherViewController:self openURL:websiteURL];
 }
 
-- (void)didSelectShareFromView:(id)a3
+- (void)didSelectShareFromView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [CuratedCollectionShareItemSource alloc];
-  v6 = [(PublisherViewController *)self publisher];
-  v9 = [(CuratedCollectionShareItemSource *)v5 initWithPublisher:v6];
+  publisher = [(PublisherViewController *)self publisher];
+  v9 = [(CuratedCollectionShareItemSource *)v5 initWithPublisher:publisher];
 
-  v7 = [MUPresentationOptions optionsWithSender:v4];
+  v7 = [MUPresentationOptions optionsWithSender:viewCopy];
 
-  v8 = [(PublisherViewController *)self shareDelegate];
-  [v8 shareItem:v9 presentationOptions:v7 completion:0];
+  shareDelegate = [(PublisherViewController *)self shareDelegate];
+  [shareDelegate shareItem:v9 presentationOptions:v7 completion:0];
 }
 
 - (void)didSelectAllGuidesMenuItem
 {
   if (sub_10000FA08(self) == 5)
   {
-    v3 = [(PublisherViewController *)self actionDelegate];
-    [v3 publisherViewControllerShowAllGuides:self];
+    actionDelegate = [(PublisherViewController *)self actionDelegate];
+    [actionDelegate publisherViewControllerShowAllGuides:self];
   }
 }
 
-- (void)routeToCuratedCollection:(id)a3
+- (void)routeToCuratedCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PublisherViewController *)self actionDelegate];
-  [v5 publisherViewController:self showCuratedGuide:v4];
+  collectionCopy = collection;
+  actionDelegate = [(PublisherViewController *)self actionDelegate];
+  [actionDelegate publisherViewController:self showCuratedGuide:collectionCopy];
 }
 
 - (void)resetCollectionViewLayout
 {
-  v3 = [(PublisherViewController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
-  [v4 invalidateLayout];
+  collectionView = [(PublisherViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   v5 = objc_alloc_init(UICollectionViewFlowLayout);
   [(PublisherViewController *)self setFlowLayout:v5];
 
-  v6 = [(PublisherViewController *)self flowLayout];
-  [v6 setScrollDirection:0];
+  flowLayout = [(PublisherViewController *)self flowLayout];
+  [flowLayout setScrollDirection:0];
 
-  v8 = [(PublisherViewController *)self flowLayout];
-  v7 = [(PublisherViewController *)self collectionView];
-  [v7 setCollectionViewLayout:v8];
+  flowLayout2 = [(PublisherViewController *)self flowLayout];
+  collectionView2 = [(PublisherViewController *)self collectionView];
+  [collectionView2 setCollectionViewLayout:flowLayout2];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 cardHeight];
+  scrollCopy = scroll;
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController cardHeight];
   v7 = v6;
   [(PublisherViewController *)self actualCardHeight];
   v9 = v8;
 
   if (v7 >= v9)
   {
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v11 = v10;
-    v12 = [(PublisherViewController *)self headerHeightConstraint];
-    [v12 constant];
+    headerHeightConstraint = [(PublisherViewController *)self headerHeightConstraint];
+    [headerHeightConstraint constant];
     v14 = v13 - v11;
 
-    v15 = [(PublisherViewController *)self publisherHeaderView];
-    [v15 maximumRequiredHeight];
+    publisherHeaderView = [(PublisherViewController *)self publisherHeaderView];
+    [publisherHeaderView maximumRequiredHeight];
     v17 = v16;
 
-    v18 = [(PublisherViewController *)self publisherHeaderView];
-    [v18 minimumRequiredHeight];
+    publisherHeaderView2 = [(PublisherViewController *)self publisherHeaderView];
+    [publisherHeaderView2 minimumRequiredHeight];
     v20 = v19;
 
     if (v14 <= v17)
     {
-      v22 = [(PublisherViewController *)self publisherHeaderView];
-      [v22 headerHeightChangedWithNewYOffset:v11];
+      publisherHeaderView3 = [(PublisherViewController *)self publisherHeaderView];
+      [publisherHeaderView3 headerHeightChangedWithNewYOffset:v11];
 
       if (v14 >= v20)
       {
-        [v4 contentOffset];
-        [v4 setContentOffset:?];
+        [scrollCopy contentOffset];
+        [scrollCopy setContentOffset:?];
         v20 = v14;
       }
     }
 
     else
     {
-      v21 = [(PublisherViewController *)self publisherHeaderView];
-      [v21 headerHeightChangedWithNewYOffset:v11];
+      publisherHeaderView4 = [(PublisherViewController *)self publisherHeaderView];
+      [publisherHeaderView4 headerHeightChangedWithNewYOffset:v11];
 
       v26.receiver = self;
       v26.super_class = PublisherViewController;
-      [(ContaineeViewController *)&v26 scrollViewDidScroll:v4];
+      [(ContaineeViewController *)&v26 scrollViewDidScroll:scrollCopy];
       v20 = v17;
     }
 
-    v23 = [(PublisherViewController *)self headerHeightConstraint];
-    [v23 setConstant:v20];
+    headerHeightConstraint2 = [(PublisherViewController *)self headerHeightConstraint];
+    [headerHeightConstraint2 setConstant:v20];
 
-    v24 = [(PublisherViewController *)self publisherHeaderView];
-    v25 = [(PublisherViewController *)self headerHeightConstraint];
-    [v25 constant];
-    [v24 adjustLogoImageViewTopConstraint:?];
+    publisherHeaderView5 = [(PublisherViewController *)self publisherHeaderView];
+    headerHeightConstraint3 = [(PublisherViewController *)self headerHeightConstraint];
+    [headerHeightConstraint3 constant];
+    [publisherHeaderView5 adjustLogoImageViewTopConstraint:?];
   }
 
   else
   {
     v27.receiver = self;
     v27.super_class = PublisherViewController;
-    [(ContaineeViewController *)&v27 scrollViewDidScroll:v4];
+    [(ContaineeViewController *)&v27 scrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
+  y = velocity.y;
   v9.receiver = self;
   v9.super_class = PublisherViewController;
-  [(ContaineeViewController *)&v9 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:a4.x];
-  v7 = [(PublisherViewController *)self analyticsManager];
-  v8 = v7;
+  [(ContaineeViewController *)&v9 scrollViewWillEndDragging:dragging withVelocity:offset targetContentOffset:velocity.x];
+  analyticsManager = [(PublisherViewController *)self analyticsManager];
+  v8 = analyticsManager;
   if (y > 0.0)
   {
-    [v7 publisherCollectionsScrolledDown];
+    [analyticsManager publisherCollectionsScrolledDown];
   }
 
   else
   {
-    [v7 publisherCollectionsScrolledUp];
+    [analyticsManager publisherCollectionsScrolledUp];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = PublisherViewController;
-  v7 = a4;
-  [(ContaineeViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(ContaineeViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[4] = self;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -237,49 +237,49 @@
   v8[1] = 3221225472;
   v8[2] = sub_100F37868;
   v8[3] = &unk_101661710;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v16.receiver = self;
   v16.super_class = PublisherViewController;
-  v4 = a3;
-  [(MapsThemeViewController *)&v16 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(MapsThemeViewController *)&v16 traitCollectionDidChange:changeCopy];
   v5 = [(PublisherViewController *)self traitCollection:v16.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
-    v9 = [(PublisherViewController *)self collectionView];
-    v10 = [v9 collectionViewLayout];
-    [v10 invalidateLayout];
+    collectionView = [(PublisherViewController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
 
     v11 = objc_alloc_init(UICollectionViewFlowLayout);
     [(PublisherViewController *)self setFlowLayout:v11];
 
-    v12 = [(PublisherViewController *)self flowLayout];
-    [v12 setScrollDirection:0];
+    flowLayout = [(PublisherViewController *)self flowLayout];
+    [flowLayout setScrollDirection:0];
 
-    v13 = [(PublisherViewController *)self flowLayout];
-    v14 = [(PublisherViewController *)self collectionView];
-    [v14 setCollectionViewLayout:v13];
+    flowLayout2 = [(PublisherViewController *)self flowLayout];
+    collectionView2 = [(PublisherViewController *)self collectionView];
+    [collectionView2 setCollectionViewLayout:flowLayout2];
 
-    v15 = [(PublisherViewController *)self collectionView];
-    [v15 reloadData];
+    collectionView3 = [(PublisherViewController *)self collectionView];
+    [collectionView3 reloadData];
   }
 }
 
 - (void)removeCollectionView
 {
-  v3 = [(PublisherViewController *)self collectionView];
+  collectionView = [(PublisherViewController *)self collectionView];
 
-  if (v3)
+  if (collectionView)
   {
-    v4 = [(PublisherViewController *)self collectionView];
-    [v4 removeFromSuperview];
+    collectionView2 = [(PublisherViewController *)self collectionView];
+    [collectionView2 removeFromSuperview];
 
     [(PublisherViewController *)self setCollectionView:0];
 
@@ -289,12 +289,12 @@
 
 - (void)removeErrorView
 {
-  v3 = [(PublisherViewController *)self errorView];
+  errorView = [(PublisherViewController *)self errorView];
 
-  if (v3)
+  if (errorView)
   {
-    v4 = [(PublisherViewController *)self errorView];
-    [v4 removeFromSuperview];
+    errorView2 = [(PublisherViewController *)self errorView];
+    [errorView2 removeFromSuperview];
 
     [(PublisherViewController *)self setErrorView:0];
   }
@@ -302,20 +302,20 @@
 
 - (void)addErrorView
 {
-  v3 = [(PublisherViewController *)self errorView];
+  errorView = [(PublisherViewController *)self errorView];
 
-  if (!v3)
+  if (!errorView)
   {
-    v4 = [(PublisherViewController *)self dataSource];
-    [v4 clearPublisherData];
+    dataSource = [(PublisherViewController *)self dataSource];
+    [dataSource clearPublisherData];
 
     v5 = objc_alloc_init(ErrorModeView);
     [(PublisherViewController *)self setErrorView:v5];
 
-    v6 = [(PublisherViewController *)self apiController];
-    v7 = [v6 publisherResult];
-    v8 = [v7 publisher];
-    LODWORD(v5) = [v8 isSuppressed];
+    apiController = [(PublisherViewController *)self apiController];
+    publisherResult = [apiController publisherResult];
+    publisher = [publisherResult publisher];
+    LODWORD(v5) = [publisher isSuppressed];
     v9 = +[NSBundle mainBundle];
     v10 = v9;
     if (v5)
@@ -334,14 +334,14 @@
     v14 = [v13 localizedStringForKey:@"[Brooklyn] Error Mode message" value:@"localized string not found" table:0];
 
     v15 = MKCurrentNetworkConnectionFailureDiagnosis();
-    v16 = [(PublisherViewController *)self errorView];
-    v17 = v16;
+    errorView2 = [(PublisherViewController *)self errorView];
+    v17 = errorView2;
     if (v15)
     {
-      [v16 setTitle:v12 andMessage:v14];
+      [errorView2 setTitle:v12 andMessage:v14];
 
       objc_initWeak(&location, self);
-      v18 = [(PublisherViewController *)self errorView];
+      errorView3 = [(PublisherViewController *)self errorView];
       v19 = +[NSBundle mainBundle];
       v20 = [v19 localizedStringForKey:@"Try Again [Brooklyn]" value:@"localized string not found" table:0];
       v21 = +[UIColor systemGray5Color];
@@ -350,7 +350,7 @@
       v30 = sub_100F37E68;
       v31 = &unk_10165D828;
       objc_copyWeak(&v32, &location);
-      [v18 setButtonTitle:v20 glyphName:@"arrow.clockwise" backgroundColor:v21 handler:&v28];
+      [errorView3 setButtonTitle:v20 glyphName:@"arrow.clockwise" backgroundColor:v21 handler:&v28];
 
       objc_destroyWeak(&v32);
       objc_destroyWeak(&location);
@@ -361,30 +361,30 @@
       v22 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubhead];
       [v17 setTitleLabelFont:v22];
 
-      v23 = [(PublisherViewController *)self errorView];
-      [v23 setTitle:v12 andMessage:0];
+      errorView4 = [(PublisherViewController *)self errorView];
+      [errorView4 setTitle:v12 andMessage:0];
     }
 
     v24 = [(PublisherViewController *)self errorView:v28];
     [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v25 = [(ContaineeViewController *)self contentView];
-    v26 = [(PublisherViewController *)self errorView];
-    [v25 addSubview:v26];
+    contentView = [(ContaineeViewController *)self contentView];
+    errorView5 = [(PublisherViewController *)self errorView];
+    [contentView addSubview:errorView5];
 
-    v27 = [(PublisherViewController *)self errorView];
-    [(PublisherViewController *)self activateConstraintsForViewPinnedBelowHeader:v27];
+    errorView6 = [(PublisherViewController *)self errorView];
+    [(PublisherViewController *)self activateConstraintsForViewPinnedBelowHeader:errorView6];
   }
 }
 
 - (void)removeLoadingView
 {
-  v3 = [(PublisherViewController *)self loadingView];
+  loadingView = [(PublisherViewController *)self loadingView];
 
-  if (v3)
+  if (loadingView)
   {
-    v4 = [(PublisherViewController *)self loadingView];
-    [v4 removeFromSuperview];
+    loadingView2 = [(PublisherViewController *)self loadingView];
+    [loadingView2 removeFromSuperview];
 
     [(PublisherViewController *)self setLoadingView:0];
   }
@@ -404,11 +404,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)activateConstraintsForViewPinnedBelowHeader:(id)a3
+- (void)activateConstraintsForViewPinnedBelowHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(PublisherViewController *)self publisherHeaderView];
-  if (v5)
+  headerCopy = header;
+  publisherHeaderView = [(PublisherViewController *)self publisherHeaderView];
+  if (publisherHeaderView)
   {
     [(PublisherViewController *)self publisherHeaderView];
   }
@@ -419,25 +419,25 @@
   }
   v18 = ;
 
-  v21 = [v4 leadingAnchor];
-  v22 = [(ContaineeViewController *)self contentView];
-  v20 = [v22 leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  leadingAnchor = [headerCopy leadingAnchor];
+  contentView = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v23[0] = v19;
-  v16 = [v4 trailingAnchor];
-  v17 = [(ContaineeViewController *)self contentView];
-  v6 = [v17 trailingAnchor];
-  v7 = [v16 constraintEqualToAnchor:v6];
+  trailingAnchor = [headerCopy trailingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[1] = v7;
-  v8 = [v4 topAnchor];
-  v9 = [v18 bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor = [headerCopy topAnchor];
+  bottomAnchor = [v18 bottomAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   v23[2] = v10;
-  v11 = [v4 bottomAnchor];
+  bottomAnchor2 = [headerCopy bottomAnchor];
 
-  v12 = [(ContaineeViewController *)self contentView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  bottomAnchor3 = [contentView3 bottomAnchor];
+  v14 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v23[3] = v14;
   v15 = [NSArray arrayWithObjects:v23 count:4];
   [NSLayoutConstraint activateConstraints:v15];
@@ -445,32 +445,32 @@
 
 - (void)removeDefaultHeaderView
 {
-  v3 = [(ContaineeViewController *)self headerView];
-  [v3 removeFromSuperview];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView removeFromSuperview];
 
-  v24 = [(ContaineeViewController *)self contentView];
-  v22 = [v24 topAnchor];
-  v23 = [(PublisherViewController *)self view];
-  v21 = [v23 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor = [contentView topAnchor];
+  view = [(PublisherViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[0] = v20;
-  v19 = [(ContaineeViewController *)self contentView];
-  v17 = [v19 leadingAnchor];
-  v18 = [(PublisherViewController *)self view];
-  v16 = [v18 leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor = [contentView2 leadingAnchor];
+  view2 = [(PublisherViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v25[1] = v15;
-  v14 = [(ContaineeViewController *)self contentView];
-  v4 = [v14 trailingAnchor];
-  v5 = [(PublisherViewController *)self view];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  view3 = [(PublisherViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25[2] = v7;
-  v8 = [(ContaineeViewController *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(PublisherViewController *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  view4 = [(PublisherViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[3] = v12;
   v13 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v13];
@@ -478,29 +478,29 @@
 
 - (void)activateDefaultHeaderConstraints
 {
-  v23 = [(PublisherViewController *)self defaultHeaderView];
-  v21 = [v23 topAnchor];
-  v22 = [(ContaineeViewController *)self headerView];
-  v20 = [v22 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  defaultHeaderView = [(PublisherViewController *)self defaultHeaderView];
+  topAnchor = [defaultHeaderView topAnchor];
+  headerView = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[0] = v19;
-  v18 = [(PublisherViewController *)self defaultHeaderView];
-  v16 = [v18 leadingAnchor];
-  v17 = [(ContaineeViewController *)self headerView];
-  v15 = [v17 leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  defaultHeaderView2 = [(PublisherViewController *)self defaultHeaderView];
+  leadingAnchor = [defaultHeaderView2 leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[1] = v14;
-  v13 = [(PublisherViewController *)self defaultHeaderView];
-  v3 = [v13 trailingAnchor];
-  v4 = [(ContaineeViewController *)self headerView];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  defaultHeaderView3 = [(PublisherViewController *)self defaultHeaderView];
+  trailingAnchor = [defaultHeaderView3 trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[2] = v6;
-  v7 = [(PublisherViewController *)self defaultHeaderView];
-  v8 = [v7 bottomAnchor];
-  v9 = [(ContaineeViewController *)self headerView];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  defaultHeaderView4 = [(PublisherViewController *)self defaultHeaderView];
+  bottomAnchor = [defaultHeaderView4 bottomAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView4 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v11;
   v12 = [NSArray arrayWithObjects:v24 count:4];
   [NSLayoutConstraint activateConstraints:v12];
@@ -508,92 +508,92 @@
 
 - (void)addDefaultHeaderView
 {
-  v3 = [(PublisherViewController *)self defaultHeaderView];
+  defaultHeaderView = [(PublisherViewController *)self defaultHeaderView];
 
-  if (!v3)
+  if (!defaultHeaderView)
   {
     v4 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [(PublisherViewController *)self setDefaultHeaderView:v4];
 
-    v5 = [(PublisherViewController *)self defaultHeaderView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    defaultHeaderView2 = [(PublisherViewController *)self defaultHeaderView];
+    [defaultHeaderView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(PublisherViewController *)self defaultHeaderView];
+    defaultHeaderView3 = [(PublisherViewController *)self defaultHeaderView];
     LODWORD(v7) = 1148846080;
-    [v6 setContentCompressionResistancePriority:1 forAxis:v7];
+    [defaultHeaderView3 setContentCompressionResistancePriority:1 forAxis:v7];
 
-    v8 = [(PublisherViewController *)self defaultHeaderView];
-    [v8 setDelegate:self];
+    defaultHeaderView4 = [(PublisherViewController *)self defaultHeaderView];
+    [defaultHeaderView4 setDelegate:self];
 
-    v9 = [(PublisherViewController *)self defaultHeaderView];
-    [v9 setHairLineAlpha:0.0];
+    defaultHeaderView5 = [(PublisherViewController *)self defaultHeaderView];
+    [defaultHeaderView5 setHairLineAlpha:0.0];
 
-    v10 = [(PublisherViewController *)self defaultHeaderView];
-    [v10 setHeaderSize:2];
+    defaultHeaderView6 = [(PublisherViewController *)self defaultHeaderView];
+    [defaultHeaderView6 setHeaderSize:2];
 
-    v12 = [(ContaineeViewController *)self headerView];
-    v11 = [(PublisherViewController *)self defaultHeaderView];
-    [v12 addSubview:v11];
+    headerView = [(ContaineeViewController *)self headerView];
+    defaultHeaderView7 = [(PublisherViewController *)self defaultHeaderView];
+    [headerView addSubview:defaultHeaderView7];
   }
 }
 
 - (void)activateConstraints
 {
-  v3 = [(PublisherViewController *)self publisherHeaderView];
-  v4 = [v3 heightAnchor];
-  v5 = [(PublisherViewController *)self publisherHeaderView];
-  [v5 maximumRequiredHeight];
-  v6 = [v4 constraintEqualToConstant:?];
+  publisherHeaderView = [(PublisherViewController *)self publisherHeaderView];
+  heightAnchor = [publisherHeaderView heightAnchor];
+  publisherHeaderView2 = [(PublisherViewController *)self publisherHeaderView];
+  [publisherHeaderView2 maximumRequiredHeight];
+  v6 = [heightAnchor constraintEqualToConstant:?];
   [(PublisherViewController *)self setHeaderHeightConstraint:v6];
 
   v45 = objc_alloc_init(NSMutableArray);
-  v43 = [(PublisherViewController *)self collectionView];
-  v39 = [v43 leadingAnchor];
-  v41 = [(ContaineeViewController *)self contentView];
-  v37 = [v41 leadingAnchor];
-  v35 = [v39 constraintEqualToAnchor:v37];
+  collectionView = [(PublisherViewController *)self collectionView];
+  leadingAnchor = [collectionView leadingAnchor];
+  contentView = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[0] = v35;
-  v33 = [(PublisherViewController *)self collectionView];
-  v29 = [v33 trailingAnchor];
-  v31 = [(ContaineeViewController *)self contentView];
-  v28 = [v31 trailingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  collectionView2 = [(PublisherViewController *)self collectionView];
+  trailingAnchor = [collectionView2 trailingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[1] = v27;
-  v26 = [(PublisherViewController *)self collectionView];
-  v25 = [v26 topAnchor];
-  v7 = [(PublisherViewController *)self publisherHeaderView];
-  v8 = [v7 bottomAnchor];
-  v9 = [v25 constraintEqualToAnchor:v8];
+  collectionView3 = [(PublisherViewController *)self collectionView];
+  topAnchor = [collectionView3 topAnchor];
+  publisherHeaderView3 = [(PublisherViewController *)self publisherHeaderView];
+  bottomAnchor = [publisherHeaderView3 bottomAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   v47[2] = v9;
-  v10 = [(PublisherViewController *)self collectionView];
-  v11 = [v10 bottomAnchor];
-  v12 = [(ContaineeViewController *)self contentView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  collectionView4 = [(PublisherViewController *)self collectionView];
+  bottomAnchor2 = [collectionView4 bottomAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  bottomAnchor3 = [contentView3 bottomAnchor];
+  v14 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v47[3] = v14;
   v15 = [NSArray arrayWithObjects:v47 count:4];
   [v45 addObjectsFromArray:v15];
 
-  v44 = [(PublisherViewController *)self publisherHeaderView];
-  v40 = [v44 topAnchor];
-  v42 = [(ContaineeViewController *)self contentView];
-  v38 = [v42 topAnchor];
-  v36 = [v40 constraintEqualToAnchor:v38];
+  publisherHeaderView4 = [(PublisherViewController *)self publisherHeaderView];
+  topAnchor2 = [publisherHeaderView4 topAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  topAnchor3 = [contentView4 topAnchor];
+  v36 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v46[0] = v36;
-  v34 = [(PublisherViewController *)self publisherHeaderView];
-  v30 = [v34 leadingAnchor];
-  v32 = [(ContaineeViewController *)self contentView];
-  v16 = [v32 leadingAnchor];
-  v17 = [v30 constraintEqualToAnchor:v16];
+  publisherHeaderView5 = [(PublisherViewController *)self publisherHeaderView];
+  leadingAnchor3 = [publisherHeaderView5 leadingAnchor];
+  contentView5 = [(ContaineeViewController *)self contentView];
+  leadingAnchor4 = [contentView5 leadingAnchor];
+  v17 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v46[1] = v17;
-  v18 = [(PublisherViewController *)self publisherHeaderView];
-  v19 = [v18 trailingAnchor];
-  v20 = [(ContaineeViewController *)self contentView];
-  v21 = [v20 trailingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  publisherHeaderView6 = [(PublisherViewController *)self publisherHeaderView];
+  trailingAnchor3 = [publisherHeaderView6 trailingAnchor];
+  contentView6 = [(ContaineeViewController *)self contentView];
+  trailingAnchor4 = [contentView6 trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v46[2] = v22;
-  v23 = [(PublisherViewController *)self headerHeightConstraint];
-  v46[3] = v23;
+  headerHeightConstraint = [(PublisherViewController *)self headerHeightConstraint];
+  v46[3] = headerHeightConstraint;
   v24 = [NSArray arrayWithObjects:v46 count:4];
   [v45 addObjectsFromArray:v24];
 
@@ -603,25 +603,25 @@
 - (void)addCollectionView
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(PublisherViewController *)self apiController];
-  v5 = [v4 collectionResults];
+  apiController = [(PublisherViewController *)self apiController];
+  collectionResults = [apiController collectionResults];
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_100F39348;
   v46[3] = &unk_10165D7E0;
   v6 = v3;
   v47 = v6;
-  [v5 enumerateObjectsUsingBlock:v46];
+  [collectionResults enumerateObjectsUsingBlock:v46];
 
-  v7 = [(PublisherViewController *)self apiController];
-  v8 = [v7 publisherViewIdentifiers];
+  apiController2 = [(PublisherViewController *)self apiController];
+  publisherViewIdentifiers = [apiController2 publisherViewIdentifiers];
 
-  v9 = [(PublisherViewController *)self collectionView];
+  collectionView = [(PublisherViewController *)self collectionView];
 
-  if (v9)
+  if (collectionView)
   {
-    v10 = [(PublisherViewController *)self dataSource];
-    [v10 updateCollections:v6 usingBatchIdentifiers:v8];
+    dataSource = [(PublisherViewController *)self dataSource];
+    [dataSource updateCollections:v6 usingBatchIdentifiers:publisherViewIdentifiers];
   }
 
   else
@@ -629,62 +629,62 @@
     v11 = objc_alloc_init(UICollectionViewFlowLayout);
     [(PublisherViewController *)self setFlowLayout:v11];
 
-    v12 = [(PublisherViewController *)self flowLayout];
-    [v12 setScrollDirection:0];
+    flowLayout = [(PublisherViewController *)self flowLayout];
+    [flowLayout setScrollDirection:0];
 
     v13 = [UICollectionView alloc];
-    v14 = [(ContaineeViewController *)self contentView];
-    [v14 frame];
+    contentView = [(ContaineeViewController *)self contentView];
+    [contentView frame];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(PublisherViewController *)self flowLayout];
-    v24 = [v13 initWithFrame:v23 collectionViewLayout:{v16, v18, v20, v22}];
+    flowLayout2 = [(PublisherViewController *)self flowLayout];
+    v24 = [v13 initWithFrame:flowLayout2 collectionViewLayout:{v16, v18, v20, v22}];
     [(PublisherViewController *)self setCollectionView:v24];
 
-    v25 = [(PublisherViewController *)self apiController];
-    v10 = [v25 publisherViewResultFilters];
+    apiController3 = [(PublisherViewController *)self apiController];
+    dataSource = [apiController3 publisherViewResultFilters];
 
     v26 = [PublisherViewDataSource alloc];
-    v27 = [(PublisherViewController *)self collectionView];
-    v28 = [(PublisherViewController *)self apiController];
-    v29 = [(PublisherViewController *)self analyticsManager];
-    v30 = [(PublisherViewController *)self publisherHeaderView];
-    v31 = [v30 actionManager];
-    v32 = [(PublisherViewDataSource *)v26 initWithCollectionView:v27 usingCuratedCollections:v6 usingPlaceCollectionIds:v8 withResultFilters:v10 withAPIController:v28 withCollectionRoutingDelegate:self usingAnalyticsManager:v29 usingPublisherActionsManager:v31];
+    collectionView2 = [(PublisherViewController *)self collectionView];
+    apiController4 = [(PublisherViewController *)self apiController];
+    analyticsManager = [(PublisherViewController *)self analyticsManager];
+    publisherHeaderView = [(PublisherViewController *)self publisherHeaderView];
+    actionManager = [publisherHeaderView actionManager];
+    v32 = [(PublisherViewDataSource *)v26 initWithCollectionView:collectionView2 usingCuratedCollections:v6 usingPlaceCollectionIds:publisherViewIdentifiers withResultFilters:dataSource withAPIController:apiController4 withCollectionRoutingDelegate:self usingAnalyticsManager:analyticsManager usingPublisherActionsManager:actionManager];
     [(PublisherViewController *)self setDataSource:v32];
 
-    v33 = [(PublisherViewController *)self dataSource];
-    [v33 setDelegate:self];
+    dataSource2 = [(PublisherViewController *)self dataSource];
+    [dataSource2 setDelegate:self];
 
-    v34 = [(PublisherViewController *)self collectionView];
-    [v34 setBounces:1];
+    collectionView3 = [(PublisherViewController *)self collectionView];
+    [collectionView3 setBounces:1];
 
-    v35 = [(PublisherViewController *)self collectionView];
-    [v35 setAlwaysBounceVertical:1];
+    collectionView4 = [(PublisherViewController *)self collectionView];
+    [collectionView4 setAlwaysBounceVertical:1];
 
-    v36 = [(PublisherViewController *)self collectionView];
-    [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
+    collectionView5 = [(PublisherViewController *)self collectionView];
+    [collectionView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v37 = +[UIColor clearColor];
-    v38 = [(PublisherViewController *)self collectionView];
-    [v38 setBackgroundColor:v37];
+    collectionView6 = [(PublisherViewController *)self collectionView];
+    [collectionView6 setBackgroundColor:v37];
 
-    v39 = [(ContaineeViewController *)self contentView];
-    v40 = [(PublisherViewController *)self collectionView];
-    v41 = [(PublisherViewController *)self publisherHeaderView];
-    [v39 insertSubview:v40 belowSubview:v41];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    collectionView7 = [(PublisherViewController *)self collectionView];
+    publisherHeaderView2 = [(PublisherViewController *)self publisherHeaderView];
+    [contentView2 insertSubview:collectionView7 belowSubview:publisherHeaderView2];
   }
 
   objc_initWeak(&location, self);
-  v42 = [(PublisherViewController *)self dataSource];
+  dataSource3 = [(PublisherViewController *)self dataSource];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_100F393C4;
   v43[3] = &unk_101661B98;
   objc_copyWeak(&v44, &location);
-  [v42 displayCollections:v43];
+  [dataSource3 displayCollections:v43];
 
   objc_destroyWeak(&v44);
   objc_destroyWeak(&location);
@@ -692,51 +692,51 @@
 
 - (void)addPublisherHeaderView
 {
-  v3 = [(PublisherViewController *)self publisherHeaderView];
+  publisherHeaderView = [(PublisherViewController *)self publisherHeaderView];
 
-  if (!v3)
+  if (!publisherHeaderView)
   {
-    v4 = [(PublisherViewController *)self publisher];
-    [v4 publisherAttribution];
+    publisher = [(PublisherViewController *)self publisher];
+    [publisher publisherAttribution];
 
-    v23 = [(PublisherViewController *)self publisher];
+    publisher2 = [(PublisherViewController *)self publisher];
     v5 = [PublisherAnalyticsManager alloc];
-    v6 = [v23 identifier];
-    v7 = [v23 publisherAttribution];
-    v8 = [(PublisherAnalyticsManager *)v5 initWithPublisherId:v6 usingAttribution:v7];
+    identifier = [publisher2 identifier];
+    publisherAttribution = [publisher2 publisherAttribution];
+    v8 = [(PublisherAnalyticsManager *)v5 initWithPublisherId:identifier usingAttribution:publisherAttribution];
     [(PublisherViewController *)self setAnalyticsManager:v8];
 
     v9 = [PublisherHeaderView alloc];
-    v10 = [v23 publisherAttribution];
-    v11 = [(PublisherViewController *)self analyticsManager];
-    v12 = [(PublisherHeaderView *)v9 initWithDelegate:self usingPublisherAttribution:v10 usingAnalyticsManager:v11];
+    publisherAttribution2 = [publisher2 publisherAttribution];
+    analyticsManager = [(PublisherViewController *)self analyticsManager];
+    v12 = [(PublisherHeaderView *)v9 initWithDelegate:self usingPublisherAttribution:publisherAttribution2 usingAnalyticsManager:analyticsManager];
     [(PublisherViewController *)self setPublisherHeaderView:v12];
 
     v13 = +[UIColor clearColor];
-    v14 = [(PublisherViewController *)self publisherHeaderView];
-    [v14 setBackgroundColor:v13];
+    publisherHeaderView2 = [(PublisherViewController *)self publisherHeaderView];
+    [publisherHeaderView2 setBackgroundColor:v13];
 
-    v15 = [(PublisherViewController *)self publisherHeaderView];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    publisherHeaderView3 = [(PublisherViewController *)self publisherHeaderView];
+    [publisherHeaderView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v16 = [(PublisherViewController *)self publisherHeaderView];
+    publisherHeaderView4 = [(PublisherViewController *)self publisherHeaderView];
     LODWORD(v17) = 1148846080;
-    [v16 setContentCompressionResistancePriority:0 forAxis:v17];
+    [publisherHeaderView4 setContentCompressionResistancePriority:0 forAxis:v17];
 
-    v18 = [(PublisherViewController *)self publisherHeaderView];
+    publisherHeaderView5 = [(PublisherViewController *)self publisherHeaderView];
     LODWORD(v19) = 1148846080;
-    [v18 setContentHuggingPriority:0 forAxis:v19];
+    [publisherHeaderView5 setContentHuggingPriority:0 forAxis:v19];
 
-    v20 = [(ContaineeViewController *)self contentView];
-    v21 = [(PublisherViewController *)self publisherHeaderView];
-    [v20 addSubview:v21];
+    contentView = [(ContaineeViewController *)self contentView];
+    publisherHeaderView6 = [(PublisherViewController *)self publisherHeaderView];
+    [contentView addSubview:publisherHeaderView6];
 
-    v22 = [(PublisherViewController *)self analyticsManager];
-    [v22 publisherTrayRevealed];
+    analyticsManager2 = [(PublisherViewController *)self analyticsManager];
+    [analyticsManager2 publisherTrayRevealed];
   }
 }
 
-- (void)onTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (void)onTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
   v7 = sub_100F398D0();
   v8 = os_signpost_id_generate(v7);
@@ -749,11 +749,11 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "DisplayingPublisherView", "", buf, 2u);
   }
 
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      if (a4 != 1)
+      if (toState != 1)
       {
         goto LABEL_19;
       }
@@ -761,7 +761,7 @@
 
     else
     {
-      if (a3 != 3 || a4 != 1)
+      if (state != 3 || toState != 1)
       {
         goto LABEL_19;
       }
@@ -773,18 +773,18 @@
     goto LABEL_19;
   }
 
-  if (a3)
+  if (state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      if (a4 == 3)
+      if (toState == 3)
       {
         [(PublisherViewController *)self removeLoadingView];
         [(PublisherViewController *)self removeCollectionView];
         [(PublisherViewController *)self addErrorView];
       }
 
-      else if (a4 == 2)
+      else if (toState == 2)
       {
         [(PublisherViewController *)self removeLoadingView];
         [(PublisherViewController *)self removeDefaultHeaderView];
@@ -795,7 +795,7 @@
     }
   }
 
-  else if (a4 == 1)
+  else if (toState == 1)
   {
     [(PublisherViewController *)self addLoadingView];
     [(PublisherViewController *)self addDefaultHeaderView];
@@ -812,28 +812,28 @@ LABEL_19:
   }
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PublisherViewController *)self apiController];
-  [v5 cancelFetchingPublisher];
+  actionCopy = action;
+  apiController = [(PublisherViewController *)self apiController];
+  [apiController cancelFetchingPublisher];
 
-  v6 = [(PublisherViewController *)self dataSource];
-  [v6 dismissedCollections];
+  dataSource = [(PublisherViewController *)self dataSource];
+  [dataSource dismissedCollections];
 
   v7.receiver = self;
   v7.super_class = PublisherViewController;
-  [(ContaineeViewController *)&v7 handleDismissAction:v4];
+  [(ContaineeViewController *)&v7 handleDismissAction:actionCopy];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v5 = sub_10000FA08(self);
-  if (a3 != 1 || (result = -1.0, v5 != 5))
+  if (layout != 1 || (result = -1.0, v5 != 5))
   {
     v7.receiver = self;
     v7.super_class = PublisherViewController;
-    [(ContaineeViewController *)&v7 heightForLayout:a3];
+    [(ContaineeViewController *)&v7 heightForLayout:layout];
   }
 
   return result;
@@ -841,34 +841,34 @@ LABEL_19:
 
 - (GEOPublisher)publisher
 {
-  v2 = [(PublisherViewController *)self apiController];
-  v3 = [v2 publisherResult];
-  v4 = [v3 publisher];
+  apiController = [(PublisherViewController *)self apiController];
+  publisherResult = [apiController publisherResult];
+  publisher = [publisherResult publisher];
 
-  return v4;
+  return publisher;
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v11.receiver = self;
   v11.super_class = PublisherViewController;
-  [(ContaineeViewController *)&v11 didChangeLayout:a3];
-  v4 = [(PublisherViewController *)self collectionView];
+  [(ContaineeViewController *)&v11 didChangeLayout:layout];
+  collectionView = [(PublisherViewController *)self collectionView];
 
-  if (v4)
+  if (collectionView)
   {
     [(PublisherViewController *)self resetCollectionViewLayout];
-    v5 = [(PublisherViewController *)self collectionView];
-    [v5 setContentOffset:{CGPointZero.x, CGPointZero.y}];
+    collectionView2 = [(PublisherViewController *)self collectionView];
+    [collectionView2 setContentOffset:{CGPointZero.x, CGPointZero.y}];
 
-    v6 = [(PublisherViewController *)self publisherHeaderView];
-    [v6 maximumRequiredHeight];
+    publisherHeaderView = [(PublisherViewController *)self publisherHeaderView];
+    [publisherHeaderView maximumRequiredHeight];
     v8 = v7;
-    v9 = [(PublisherViewController *)self headerHeightConstraint];
-    [v9 setConstant:v8];
+    headerHeightConstraint = [(PublisherViewController *)self headerHeightConstraint];
+    [headerHeightConstraint setConstant:v8];
 
-    v10 = [(PublisherViewController *)self publisherHeaderView];
-    [v10 resetLogoHeight];
+    publisherHeaderView2 = [(PublisherViewController *)self publisherHeaderView];
+    [publisherHeaderView2 resetLogoHeight];
   }
 }
 
@@ -877,26 +877,26 @@ LABEL_19:
   v4.receiver = self;
   v4.super_class = PublisherViewController;
   [(ContaineeViewController *)&v4 willDismissByGesture];
-  v3 = [(PublisherViewController *)self actionDelegate];
-  [v3 publisherViewControllerClearSearch:self];
+  actionDelegate = [(PublisherViewController *)self actionDelegate];
+  [actionDelegate publisherViewControllerClearSearch:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PublisherViewController;
-  [(ContaineeViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PublisherViewController *)self apiController];
-  [v4 cancelFetchingPublisher];
+  [(ContaineeViewController *)&v5 viewWillDisappear:disappear];
+  apiController = [(PublisherViewController *)self apiController];
+  [apiController cancelFetchingPublisher];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PublisherViewController;
-  [(PublisherViewController *)&v5 viewDidAppear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 cardHeight];
+  [(PublisherViewController *)&v5 viewDidAppear:appear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController cardHeight];
   [(PublisherViewController *)self setActualCardHeight:?];
 }
 
@@ -905,54 +905,54 @@ LABEL_19:
   v12.receiver = self;
   v12.super_class = PublisherViewController;
   [(ContaineeViewController *)&v12 viewDidLoad];
-  v3 = [(PublisherViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"PublisherView"];
+  view = [(PublisherViewController *)self view];
+  [view setAccessibilityIdentifier:@"PublisherView"];
 
   objc_initWeak(&location, self);
   v4 = [PublisherAPIController alloc];
-  v5 = [(PublisherViewController *)self publisherId];
+  publisherId = [(PublisherViewController *)self publisherId];
   objc_copyWeak(&v10, &location);
   v6 = [(PublisherViewController *)self traits:_NSConcreteStackBlock];
-  v7 = [(PublisherAPIController *)v4 initWithPublisherId:v5 usingOnStateChangeHandler:&v9 usingTraits:v6];
+  v7 = [(PublisherAPIController *)v4 initWithPublisherId:publisherId usingOnStateChangeHandler:&v9 usingTraits:v6];
   [(PublisherViewController *)self setApiController:v7];
 
-  v8 = [(PublisherViewController *)self apiController];
-  [v8 fetchPublisherViewForKeywordFilter:0 addressFilter:0 onCompletion:&stru_10165D7B8];
+  apiController = [(PublisherViewController *)self apiController];
+  [apiController fetchPublisherViewForKeywordFilter:0 addressFilter:0 onCompletion:&stru_10165D7B8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (PublisherViewController)initWithPublisherId:(id)a3 numberOfCollections:(unint64_t)a4 withTraits:(id)a5
+- (PublisherViewController)initWithPublisherId:(id)id numberOfCollections:(unint64_t)collections withTraits:(id)traits
 {
-  v9 = a3;
-  v10 = a5;
+  idCopy = id;
+  traitsCopy = traits;
   v18.receiver = self;
   v18.super_class = PublisherViewController;
   v11 = [(PublisherViewController *)&v18 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_publisherId, a3);
-    v12->_numberOfCollections = a4;
-    objc_storeStrong(&v12->_traits, a5);
+    objc_storeStrong(&v11->_publisherId, id);
+    v12->_numberOfCollections = collections;
+    objc_storeStrong(&v12->_traits, traits);
     v13 = sub_10000FA08(v12);
-    v14 = [(ContaineeViewController *)v12 cardPresentationController];
-    v15 = v14;
+    cardPresentationController = [(ContaineeViewController *)v12 cardPresentationController];
+    v15 = cardPresentationController;
     if (v13 == 5)
     {
-      [v14 setAllowResizeInFloatingStyle:1];
+      [cardPresentationController setAllowResizeInFloatingStyle:1];
 
-      v16 = [(ContaineeViewController *)v12 cardPresentationController];
-      [v16 setDefaultContaineeLayout:3];
+      cardPresentationController2 = [(ContaineeViewController *)v12 cardPresentationController];
+      [cardPresentationController2 setDefaultContaineeLayout:3];
     }
 
     else
     {
-      [v14 setPresentedModally:1];
+      [cardPresentationController setPresentedModally:1];
 
-      v16 = [(ContaineeViewController *)v12 cardPresentationController];
-      [v16 setTakesAvailableHeight:1];
+      cardPresentationController2 = [(ContaineeViewController *)v12 cardPresentationController];
+      [cardPresentationController2 setTakesAvailableHeight:1];
     }
   }
 

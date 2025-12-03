@@ -1,36 +1,36 @@
 @interface VUIVideoAdvisoryLegendView
-- (CGSize)legendDescriptionSizeThatFits:(CGSize)a3;
-- (CGSize)legendNameSizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)legendDescriptionSizeThatFits:(CGSize)fits;
+- (CGSize)legendNameSizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)legendDescription;
 - (NSString)legendName;
-- (VUIVideoAdvisoryLegendView)initWithLayout:(id)a3;
+- (VUIVideoAdvisoryLegendView)initWithLayout:(id)layout;
 - (void)layoutSubviews;
-- (void)setLegendDescription:(id)a3;
-- (void)setLegendName:(id)a3;
+- (void)setLegendDescription:(id)description;
+- (void)setLegendName:(id)name;
 @end
 
 @implementation VUIVideoAdvisoryLegendView
 
-- (VUIVideoAdvisoryLegendView)initWithLayout:(id)a3
+- (VUIVideoAdvisoryLegendView)initWithLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = VUIVideoAdvisoryLegendView;
   v6 = [(VUIVideoAdvisoryLegendView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_layout, a3);
+    objc_storeStrong(&v6->_layout, layout);
   }
 
   return v7;
 }
 
-- (CGSize)legendNameSizeThatFits:(CGSize)a3
+- (CGSize)legendNameSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(VUIVideoAdvisoryLegendView *)self bounds];
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
@@ -38,17 +38,17 @@
     width = v6;
   }
 
-  v8 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
-  [v8 sizeThatFits:{width, height}];
+  legendNameLabel = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+  [legendNameLabel sizeThatFits:{width, height}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(VUIVideoAdvisoryLegendView *)self layout];
-  v14 = v13;
+  layout = [(VUIVideoAdvisoryLegendView *)self layout];
+  v14 = layout;
   v15 = v12;
   if (v10 > v12)
   {
-    [v13 legendNamePadding];
+    [layout legendNamePadding];
     v17 = v16;
     [v14 legendNamePadding];
     v15 = v10 + v17 + v18;
@@ -61,10 +61,10 @@
   return result;
 }
 
-- (CGSize)legendDescriptionSizeThatFits:(CGSize)a3
+- (CGSize)legendDescriptionSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(VUIVideoAdvisoryLegendView *)self bounds];
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
@@ -72,17 +72,17 @@
     width = v6;
   }
 
-  v8 = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
-  [v8 sizeThatFits:{width, height}];
+  legendDescriptionLabel = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
+  [legendDescriptionLabel sizeThatFits:{width, height}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(VUIVideoAdvisoryLegendView *)self layout];
-  v14 = v13;
+  layout = [(VUIVideoAdvisoryLegendView *)self layout];
+  v14 = layout;
   v15 = v12;
   if (v10 > v12)
   {
-    [v13 legendNamePadding];
+    [layout legendNamePadding];
     v15 = v10 + v16;
   }
 
@@ -93,14 +93,14 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(VUIVideoAdvisoryLegendView *)self legendNameSizeThatFits:?];
   v7 = v6;
-  v8 = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
-  [v8 sizeThatFits:{width, height}];
+  legendDescriptionLabel = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
+  [legendDescriptionLabel sizeThatFits:{width, height}];
   v10 = v9;
 
   if (v7 >= v10)
@@ -124,21 +124,21 @@
   v41.receiver = self;
   v41.super_class = VUIVideoAdvisoryLegendView;
   [(VUIVideoAdvisoryLegendView *)&v41 layoutSubviews];
-  v3 = [(VUIVideoAdvisoryLegendView *)self layout];
+  layout = [(VUIVideoAdvisoryLegendView *)self layout];
   [(VUIVideoAdvisoryLegendView *)self bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(VUIVideoAdvisoryLegendView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(VUIVideoAdvisoryLegendView *)self effectiveUserInterfaceLayoutDirection];
   [(VUIVideoAdvisoryLegendView *)self legendNameSizeThatFits:v5, v7];
   v10 = v9;
-  [v3 legendNameMinWidth];
+  [layout legendNameMinWidth];
   v12 = v11;
   v13 = v5 - v7;
-  v14 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+  legendNameLabel = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
 
-  if (v14)
+  if (legendNameLabel)
   {
-    if (v8 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v15 = v5 - v7;
     }
@@ -168,36 +168,36 @@
       v17 = v7;
     }
 
-    v18 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
-    [v18 setFrame:{v15, 0.0, v17, v7}];
+    legendNameLabel2 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+    [legendNameLabel2 setFrame:{v15, 0.0, v17, v7}];
   }
 
-  v19 = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
-  [v19 sizeThatFits:{v5, v7}];
+  legendDescriptionLabel = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
+  [legendDescriptionLabel sizeThatFits:{v5, v7}];
   v21 = v20;
   v23 = v22;
 
-  if (v8 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
-    [v3 legendsMargin];
+    [layout legendsMargin];
     v25 = v21 + v24;
-    v26 = [v3 descriptionLayout];
-    [v26 margin];
+    descriptionLayout = [layout descriptionLayout];
+    [descriptionLayout margin];
     v28 = v13 - (v25 + v27);
   }
 
   else
   {
-    v26 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
-    if (v26)
+    descriptionLayout = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+    if (descriptionLayout)
     {
-      v29 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
-      [v29 frame];
+      legendNameLabel3 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+      [legendNameLabel3 frame];
       v31 = v30;
-      [v3 legendsMargin];
+      [layout legendsMargin];
       v33 = v31 + v32;
-      v34 = [v3 descriptionLayout];
-      [v34 margin];
+      descriptionLayout2 = [layout descriptionLayout];
+      [descriptionLayout2 margin];
       v28 = v33 + v35 + 0.0;
     }
 
@@ -207,11 +207,11 @@
     }
   }
 
-  v36 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
-  if (v36)
+  legendNameLabel4 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+  if (legendNameLabel4)
   {
-    v37 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
-    [v37 frame];
+    legendNameLabel5 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+    [legendNameLabel5 frame];
     v39 = (v38 - v23) * 0.5;
   }
 
@@ -220,47 +220,47 @@
     v39 = 0.0;
   }
 
-  v40 = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
-  [v40 setFrame:{v28, v39, v21, v23}];
+  legendDescriptionLabel2 = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
+  [legendDescriptionLabel2 setFrame:{v28, v39, v21, v23}];
 }
 
 - (NSString)legendName
 {
-  v2 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
-  v3 = [v2 text];
+  legendNameLabel = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+  text = [legendNameLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setLegendName:(id)a3
+- (void)setLegendName:(id)name
 {
-  v15 = a3;
-  if ([v15 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v4 = [(VUIVideoAdvisoryLegendView *)self layout];
-    v5 = [v4 legendLayout];
-    v6 = [VUILabel labelWithString:v15 textLayout:v5 existingLabel:0];
+    layout = [(VUIVideoAdvisoryLegendView *)self layout];
+    legendLayout = [layout legendLayout];
+    v6 = [VUILabel labelWithString:nameCopy textLayout:legendLayout existingLabel:0];
 
-    v7 = [(VUIVideoAdvisoryLegendView *)self layout];
-    v8 = [v7 legendLayout];
-    [v8 margin];
+    layout2 = [(VUIVideoAdvisoryLegendView *)self layout];
+    legendLayout2 = [layout2 legendLayout];
+    [legendLayout2 margin];
     [v6 setPadding:?];
 
-    v9 = [(VUIVideoAdvisoryLegendView *)self layout];
-    v10 = [v9 legendBackgroundColor];
-    [v6 setBackgroundColor:v10];
+    layout3 = [(VUIVideoAdvisoryLegendView *)self layout];
+    legendBackgroundColor = [layout3 legendBackgroundColor];
+    [v6 setBackgroundColor:legendBackgroundColor];
 
     [v6 setClipsToBounds:1];
-    v11 = [v6 layer];
-    v12 = [(VUIVideoAdvisoryLegendView *)self layout];
-    [v12 legendCornerRadius];
-    [v11 setCornerRadius:?];
+    layer = [v6 layer];
+    layout4 = [(VUIVideoAdvisoryLegendView *)self layout];
+    [layout4 legendCornerRadius];
+    [layer setCornerRadius:?];
 
-    v13 = [v6 layer];
-    [v13 setCompositingFilter:*MEMORY[0x1E6979D98]];
+    layer2 = [v6 layer];
+    [layer2 setCompositingFilter:*MEMORY[0x1E6979D98]];
 
-    v14 = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
-    [v14 removeFromSuperview];
+    legendNameLabel = [(VUIVideoAdvisoryLegendView *)self legendNameLabel];
+    [legendNameLabel removeFromSuperview];
 
     [(VUIVideoAdvisoryLegendView *)self setLegendNameLabel:v6];
     [(VUIVideoAdvisoryLegendView *)self addSubview:v6];
@@ -270,23 +270,23 @@
 
 - (NSString)legendDescription
 {
-  v2 = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
-  v3 = [v2 text];
+  legendDescriptionLabel = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
+  text = [legendDescriptionLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setLegendDescription:(id)a3
+- (void)setLegendDescription:(id)description
 {
-  v8 = a3;
-  if ([v8 length])
+  descriptionCopy = description;
+  if ([descriptionCopy length])
   {
-    v4 = [(VUIVideoAdvisoryLegendView *)self layout];
-    v5 = [v4 descriptionLayout];
-    v6 = [VUILabel labelWithString:v8 textLayout:v5 existingLabel:0];
+    layout = [(VUIVideoAdvisoryLegendView *)self layout];
+    descriptionLayout = [layout descriptionLayout];
+    v6 = [VUILabel labelWithString:descriptionCopy textLayout:descriptionLayout existingLabel:0];
 
-    v7 = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
-    [v7 removeFromSuperview];
+    legendDescriptionLabel = [(VUIVideoAdvisoryLegendView *)self legendDescriptionLabel];
+    [legendDescriptionLabel removeFromSuperview];
 
     [(VUIVideoAdvisoryLegendView *)self setLegendDescriptionLabel:v6];
     [(VUIVideoAdvisoryLegendView *)self addSubview:v6];

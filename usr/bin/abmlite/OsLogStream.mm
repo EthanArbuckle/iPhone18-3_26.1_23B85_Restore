@@ -1,10 +1,10 @@
 @interface OsLogStream
-+ (BOOL)putOsLogStreamToFile:(id)a3 process:(id)a4 imagePath:(id)a5 history:(double)a6;
++ (BOOL)putOsLogStreamToFile:(id)file process:(id)process imagePath:(id)path history:(double)history;
 @end
 
 @implementation OsLogStream
 
-+ (BOOL)putOsLogStreamToFile:(id)a3 process:(id)a4 imagePath:(id)a5 history:(double)a6
++ (BOOL)putOsLogStreamToFile:(id)file process:(id)process imagePath:(id)path history:(double)history
 {
   v10 = objc_autoreleasePoolPush();
   v43 = 0;
@@ -31,15 +31,15 @@
     goto LABEL_29;
   }
 
-  [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:a3 attributes:0, 0];
-  v11 = [NSFileHandle fileHandleForWritingAtPath:a3];
+  [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:file attributes:0, 0];
+  v11 = [NSFileHandle fileHandleForWritingAtPath:file];
   if (!v11)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v30 = [a3 UTF8String];
+      uTF8String = [file UTF8String];
       *buf = 136315138;
-      v52 = *&v30;
+      historyCopy = *&uTF8String;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to create file: %s", buf, 0xCu);
     }
 
@@ -71,7 +71,7 @@ LABEL_36:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v15 = [a4 countByEnumeratingWithState:&v38 objects:v50 count:16];
+  v15 = [process countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v15)
   {
     v16 = *v39;
@@ -81,13 +81,13 @@ LABEL_36:
       {
         if (*v39 != v16)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(process);
         }
 
         [v14 addObject:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"process == %@", *(*(&v38 + 1) + 8 * i))}];
       }
 
-      v15 = [a4 countByEnumeratingWithState:&v38 objects:v50 count:16];
+      v15 = [process countByEnumeratingWithState:&v38 objects:v50 count:16];
     }
 
     while (v15);
@@ -97,7 +97,7 @@ LABEL_36:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = [a5 countByEnumeratingWithState:&v34 objects:v49 count:16];
+  v18 = [path countByEnumeratingWithState:&v34 objects:v49 count:16];
   if (v18)
   {
     v19 = *v35;
@@ -107,13 +107,13 @@ LABEL_36:
       {
         if (*v35 != v19)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(path);
         }
 
         [v14 addObject:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"senderImagePath CONTAINS[cd] %@", *(*(&v34 + 1) + 8 * j))}];
       }
 
-      v18 = [a5 countByEnumeratingWithState:&v34 objects:v49 count:16];
+      v18 = [path countByEnumeratingWithState:&v34 objects:v49 count:16];
     }
 
     while (v18);
@@ -140,16 +140,16 @@ LABEL_36:
   v32[4] = v13;
   [v23 setInvalidationHandler:v32];
   v10 = v31;
-  v24 = [[NSDate dateWithTimeIntervalSinceReferenceDate:?], "dateByAddingTimeInterval:", 0.0 - a6];
+  history = [[NSDate dateWithTimeIntervalSinceReferenceDate:?], "dateByAddingTimeInterval:", 0.0 - history];
   dispatch_group_enter(v13);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v52 = a6;
+    historyCopy = history;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Getting oslog stream: history = %f", buf, 0xCu);
   }
 
-  [v44[5] activateStreamFromDate:v24];
+  [v44[5] activateStreamFromDate:history];
   v25 = dispatch_time(0, 180000000000);
   v26 = dispatch_group_wait(v13, v25);
   v27 = v26 == 0;

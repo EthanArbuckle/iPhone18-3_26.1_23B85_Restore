@@ -1,10 +1,10 @@
 @interface IMDaemonFileProviderRequestHandler
-- (id)_retrieveLocalFileURLForFileTransferWithGUID:(id)a3 options:(int64_t)a4 outTransfer:(id *)a5;
-- (void)_handleExplicitDownloadCompletedNotification:(id)a3;
+- (id)_retrieveLocalFileURLForFileTransferWithGUID:(id)d options:(int64_t)options outTransfer:(id *)transfer;
+- (void)_handleExplicitDownloadCompletedNotification:(id)notification;
 - (void)_setupFileTransferExplicitDownloadNotificationListenersIfNecessary;
-- (void)downloadFileTransferWithLocalURL:(id)a3;
-- (void)retrieveLocalFileURLForFileTransferWithGUID:(id)a3 options:(int64_t)a4;
-- (void)retrieveLocalFileURLForFileTransferWithGUIDs:(id)a3 options:(int64_t)a4;
+- (void)downloadFileTransferWithLocalURL:(id)l;
+- (void)retrieveLocalFileURLForFileTransferWithGUID:(id)d options:(int64_t)options;
+- (void)retrieveLocalFileURLForFileTransferWithGUIDs:(id)ds options:(int64_t)options;
 @end
 
 @implementation IMDaemonFileProviderRequestHandler
@@ -20,17 +20,17 @@
   }
 }
 
-- (void)retrieveLocalFileURLForFileTransferWithGUID:(id)a3 options:(int64_t)a4
+- (void)retrieveLocalFileURLForFileTransferWithGUID:(id)d options:(int64_t)options
 {
-  v6 = a3;
+  dCopy = d;
   v12 = 0;
-  v7 = [(IMDaemonFileProviderRequestHandler *)self _retrieveLocalFileURLForFileTransferWithGUID:v6 options:a4 outTransfer:&v12];
+  v7 = [(IMDaemonFileProviderRequestHandler *)self _retrieveLocalFileURLForFileTransferWithGUID:dCopy options:options outTransfer:&v12];
   v8 = v12;
   if ([v7 length] && v8)
   {
     v9 = +[IMDFileTransferCenter sharedInstance];
-    v10 = [v8 localPath];
-    [v9 _handleFileTransfer:v7 acceptedWithPath:v10 autoRename:1 overwrite:0 options:a4 postNotification:1];
+    localPath = [v8 localPath];
+    [v9 _handleFileTransfer:v7 acceptedWithPath:localPath autoRename:1 overwrite:0 options:options postNotification:1];
   }
 
   if (IMOSLoggingEnabled())
@@ -41,39 +41,39 @@
       *buf = 136315394;
       v14 = "[IMDaemonFileProviderRequestHandler retrieveLocalFileURLForFileTransferWithGUID:options:]";
       v15 = 2112;
-      v16 = v6;
+      v16 = dCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Successfully started explicit download for local file url retrieval of transfer with GUID %@", buf, 0x16u);
     }
   }
 }
 
-- (id)_retrieveLocalFileURLForFileTransferWithGUID:(id)a3 options:(int64_t)a4 outTransfer:(id *)a5
+- (id)_retrieveLocalFileURLForFileTransferWithGUID:(id)d options:(int64_t)options outTransfer:(id *)transfer
 {
-  v8 = a3;
+  dCopy = d;
   [(IMDaemonFileProviderRequestHandler *)self _setupFileTransferExplicitDownloadNotificationListenersIfNecessary];
   v9 = +[IMDFileTransferCenter sharedInstance];
   v20 = 0;
-  v10 = [v9 _retrieveLocalFileURLForFileTransferWithGUID:v8 options:a4 outTransfer:a5 outError:&v20];
+  v10 = [v9 _retrieveLocalFileURLForFileTransferWithGUID:dCopy options:options outTransfer:transfer outError:&v20];
   v11 = v20;
 
   if (v11)
   {
     v12 = +[IMDBroadcastController sharedProvider];
-    v13 = [v12 broadcasterForFileProviderListeners];
-    [v13 fileTransferExplicitDownloadFailed:v8 suggestedRetryGUID:v10 error:v11];
+    broadcasterForFileProviderListeners = [v12 broadcasterForFileProviderListeners];
+    [broadcasterForFileProviderListeners fileTransferExplicitDownloadFailed:dCopy suggestedRetryGUID:v10 error:v11];
 
     v14 = 0;
   }
 
   else
   {
-    if (a5 && [*a5 existsAtLocalPath])
+    if (transfer && [*transfer existsAtLocalPath])
     {
       v15 = +[IMDBroadcastController sharedProvider];
-      v16 = [v15 broadcasterForFileProviderListeners];
-      v17 = [*a5 localPath];
-      v18 = [*a5 createAndPersistLivePhotoBundleIfNecessary];
-      [v16 fileTransfer:v8 explicitDownloadSucceededWithPath:v17 livePhotoBundlePath:v18];
+      broadcasterForFileProviderListeners2 = [v15 broadcasterForFileProviderListeners];
+      localPath = [*transfer localPath];
+      createAndPersistLivePhotoBundleIfNecessary = [*transfer createAndPersistLivePhotoBundleIfNecessary];
+      [broadcasterForFileProviderListeners2 fileTransfer:dCopy explicitDownloadSucceededWithPath:localPath livePhotoBundlePath:createAndPersistLivePhotoBundleIfNecessary];
     }
 
     v14 = v10;
@@ -82,15 +82,15 @@
   return v14;
 }
 
-- (void)retrieveLocalFileURLForFileTransferWithGUIDs:(id)a3 options:(int64_t)a4
+- (void)retrieveLocalFileURLForFileTransferWithGUIDs:(id)ds options:(int64_t)options
 {
-  v6 = a3;
+  dsCopy = ds;
   v7 = objc_alloc_init(NSMutableDictionary);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v9)
   {
@@ -107,7 +107,7 @@
 
         v12 = *(*(&v19 + 1) + 8 * v11);
         v18 = 0;
-        v13 = [(IMDaemonFileProviderRequestHandler *)self _retrieveLocalFileURLForFileTransferWithGUID:v12 options:a4 outTransfer:&v18];
+        v13 = [(IMDaemonFileProviderRequestHandler *)self _retrieveLocalFileURLForFileTransferWithGUID:v12 options:options outTransfer:&v18];
         v14 = v18;
         if ([v13 length])
         {
@@ -137,7 +137,7 @@
   if ([v7 count])
   {
     v16 = +[IMDFileTransferCenter sharedInstance];
-    [v16 _handleFileTransfers:v7 autoRename:1 overwrite:0 options:a4 postNotification:1];
+    [v16 _handleFileTransfers:v7 autoRename:1 overwrite:0 options:options postNotification:1];
 
     if (IMOSLoggingEnabled())
     {
@@ -154,11 +154,11 @@
   }
 }
 
-- (void)_handleExplicitDownloadCompletedNotification:(id)a3
+- (void)_handleExplicitDownloadCompletedNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:IMDFileTransferExplicitDownloadCompletedSuccessKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKey:IMDFileTransferExplicitDownloadCompletedSuccessKey];
 
   if (!v5 && IMOSLoggingEnabled())
   {
@@ -170,14 +170,14 @@
     }
   }
 
-  v7 = [v5 BOOLValue];
-  v8 = [v3 object];
-  v9 = [v8 guid];
-  v10 = [v3 userInfo];
-  v11 = v10;
-  if (v7)
+  bOOLValue = [v5 BOOLValue];
+  object = [notificationCopy object];
+  guid = [object guid];
+  userInfo2 = [notificationCopy userInfo];
+  v11 = userInfo2;
+  if (bOOLValue)
   {
-    v12 = [v10 objectForKey:IMDFileTransferExplicitDownloadCompletedFileURLKey];
+    v12 = [userInfo2 objectForKey:IMDFileTransferExplicitDownloadCompletedFileURLKey];
 
     if (!v12 && IMOSLoggingEnabled())
     {
@@ -189,29 +189,29 @@
       }
     }
 
-    v14 = [v12 path];
+    path = [v12 path];
     if (IMOSLoggingEnabled())
     {
       v15 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v20 = 138412546;
-        v21 = v9;
+        v21 = guid;
         v22 = 2112;
-        v23 = v14;
+        v23 = path;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Explicit download succeeded for GUID %@, located at path %@", &v20, 0x16u);
       }
     }
 
-    v16 = +[IMDBroadcastController sharedProvider];
-    v17 = [v16 broadcasterForFileProviderListeners];
-    v18 = [v8 createAndPersistLivePhotoBundleIfNecessary];
-    [v17 fileTransfer:v9 explicitDownloadSucceededWithPath:v14 livePhotoBundlePath:v18];
+    broadcasterForFileProviderListeners2 = +[IMDBroadcastController sharedProvider];
+    broadcasterForFileProviderListeners = [broadcasterForFileProviderListeners2 broadcasterForFileProviderListeners];
+    createAndPersistLivePhotoBundleIfNecessary = [object createAndPersistLivePhotoBundleIfNecessary];
+    [broadcasterForFileProviderListeners fileTransfer:guid explicitDownloadSucceededWithPath:path livePhotoBundlePath:createAndPersistLivePhotoBundleIfNecessary];
   }
 
   else
   {
-    v12 = [v10 objectForKey:IMDFileTransferExplicitDownloadCompletedErrorKey];
+    v12 = [userInfo2 objectForKey:IMDFileTransferExplicitDownloadCompletedErrorKey];
 
     if (IMOSLoggingEnabled())
     {
@@ -219,24 +219,24 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = 138412546;
-        v21 = v9;
+        v21 = guid;
         v22 = 2112;
         v23 = v12;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Explicit download failed for transfer with GUID %@. error: %@", &v20, 0x16u);
       }
     }
 
-    v14 = +[IMDBroadcastController sharedProvider];
-    v16 = [v14 broadcasterForFileProviderListeners];
-    [v16 fileTransferExplicitDownloadFailed:v9 suggestedRetryGUID:0 error:v12];
+    path = +[IMDBroadcastController sharedProvider];
+    broadcasterForFileProviderListeners2 = [path broadcasterForFileProviderListeners];
+    [broadcasterForFileProviderListeners2 fileTransferExplicitDownloadFailed:guid suggestedRetryGUID:0 error:v12];
   }
 }
 
-- (void)downloadFileTransferWithLocalURL:(id)a3
+- (void)downloadFileTransferWithLocalURL:(id)l
 {
-  v24 = a3;
-  v4 = [v24 absoluteString];
-  v25 = [NSPredicate predicateWithFormat:@"%K = %@", @"filename", v4];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v25 = [NSPredicate predicateWithFormat:@"%K = %@", @"filename", absoluteString];
 
   v5 = +[IMDAttachmentStore sharedInstance];
   v6 = [v5 attachmentsFilteredUsingPredicate:v25 limit:1];
@@ -270,45 +270,45 @@
               *buf = 136315394;
               v31 = "[IMDaemonFileProviderRequestHandler downloadFileTransferWithLocalURL:]";
               v32 = 2112;
-              v33 = v24;
+              v33 = lCopy;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s local file at path %@ already downloaded", buf, 0x16u);
             }
           }
 
           v22 = +[IMDBroadcastController sharedProvider];
-          v23 = [v22 broadcasterForFileProviderListeners];
-          [v23 fileTransferDownloadedSucceededWithLocalURL:v24];
+          broadcasterForFileProviderListeners = [v22 broadcasterForFileProviderListeners];
+          [broadcasterForFileProviderListeners fileTransferDownloadedSucceededWithLocalURL:lCopy];
 
           goto LABEL_21;
         }
 
         [(IMDaemonFileProviderRequestHandler *)self _setupFileTransferExplicitDownloadNotificationListenersIfNecessary];
         v12 = +[IMDFileTransferCenter sharedInstance];
-        v13 = [v11 guid];
-        v14 = [v12 transferForGUID:v13];
+        guid = [v11 guid];
+        v14 = [v12 transferForGUID:guid];
         v15 = v14 == 0;
 
         if (v15)
         {
-          v16 = [v11 guid];
-          [v12 _addTransfer:v11 forGUID:v16 shouldNotify:0];
+          guid2 = [v11 guid];
+          [v12 _addTransfer:v11 forGUID:guid2 shouldNotify:0];
         }
 
         [v12 addHubbleRequestedTransfer:v11];
-        v17 = [v11 guid];
-        v18 = [v11 localPath];
-        [v12 _handleFileTransfer:v17 acceptedWithPath:v18 autoRename:1 overwrite:0 options:0 postNotification:1];
+        guid3 = [v11 guid];
+        localPath = [v11 localPath];
+        [v12 _handleFileTransfer:guid3 acceptedWithPath:localPath autoRename:1 overwrite:0 options:0 postNotification:1];
 
         if (IMOSLoggingEnabled())
         {
           v19 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
-            v20 = [v11 guid];
+            guid4 = [v11 guid];
             *buf = 136315394;
             v31 = "[IMDaemonFileProviderRequestHandler downloadFileTransferWithLocalURL:]";
             v32 = 2112;
-            v33 = v20;
+            v33 = guid4;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%s Successfully started explicit download for local file url retrieval of transfer with GUID %@", buf, 0x16u);
           }
         }

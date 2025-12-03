@@ -1,43 +1,43 @@
 @interface NPKIDVRemoteDeviceCredentialPreflightStatus
-- (NPKIDVRemoteDeviceCredentialPreflightStatus)initWithCoder:(id)a3;
-- (NPKIDVRemoteDeviceCredentialPreflightStatus)initWithCredentialType:(unint64_t)a3 provisionedPassesCount:(unint64_t)a4 preflightSuccessful:(BOOL)a5;
-- (void)encodeWithCoder:(id)a3;
+- (NPKIDVRemoteDeviceCredentialPreflightStatus)initWithCoder:(id)coder;
+- (NPKIDVRemoteDeviceCredentialPreflightStatus)initWithCredentialType:(unint64_t)type provisionedPassesCount:(unint64_t)count preflightSuccessful:(BOOL)successful;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NPKIDVRemoteDeviceCredentialPreflightStatus
 
-- (NPKIDVRemoteDeviceCredentialPreflightStatus)initWithCredentialType:(unint64_t)a3 provisionedPassesCount:(unint64_t)a4 preflightSuccessful:(BOOL)a5
+- (NPKIDVRemoteDeviceCredentialPreflightStatus)initWithCredentialType:(unint64_t)type provisionedPassesCount:(unint64_t)count preflightSuccessful:(BOOL)successful
 {
   v9.receiver = self;
   v9.super_class = NPKIDVRemoteDeviceCredentialPreflightStatus;
   result = [(NPKIDVRemoteDeviceCredentialPreflightStatus *)&v9 init];
   if (result)
   {
-    result->_credentialType = a3;
-    result->_provisionedPassesCount = a4;
-    result->_preflightSuccessful = a5;
+    result->_credentialType = type;
+    result->_provisionedPassesCount = count;
+    result->_preflightSuccessful = successful;
   }
 
   return result;
 }
 
-- (NPKIDVRemoteDeviceCredentialPreflightStatus)initWithCoder:(id)a3
+- (NPKIDVRemoteDeviceCredentialPreflightStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"credentialType"];
-  v6 = [v4 decodeIntegerForKey:@"provisionedPassesCount"];
-  v7 = [v4 decodeBoolForKey:@"preflightSuccessful"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"credentialType"];
+  v6 = [coderCopy decodeIntegerForKey:@"provisionedPassesCount"];
+  v7 = [coderCopy decodeBoolForKey:@"preflightSuccessful"];
 
   return [(NPKIDVRemoteDeviceCredentialPreflightStatus *)self initWithCredentialType:v5 provisionedPassesCount:v6 preflightSuccessful:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   credentialType = self->_credentialType;
-  v5 = a3;
-  [v5 encodeInteger:credentialType forKey:@"credentialType"];
-  [v5 encodeInteger:self->_provisionedPassesCount forKey:@"provisionedPassesCount"];
-  [v5 encodeBool:self->_preflightSuccessful forKey:@"preflightSuccessful"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:credentialType forKey:@"credentialType"];
+  [coderCopy encodeInteger:self->_provisionedPassesCount forKey:@"provisionedPassesCount"];
+  [coderCopy encodeBool:self->_preflightSuccessful forKey:@"preflightSuccessful"];
 }
 
 @end

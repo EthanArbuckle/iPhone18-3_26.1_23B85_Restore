@@ -1,9 +1,9 @@
 @interface AKLoginFieldsViewController
 - (AKAppleIDAuthenticationContext)context;
 - (AKLoginFieldsDelegate)delegate;
-- (AKLoginFieldsViewController)initWithContext:(id)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (AKLoginFieldsViewController)initWithContext:(id)context;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (UITextField)passwordField;
 - (UITextField)usernameField;
 - (id)passwordText;
@@ -17,125 +17,125 @@
 
 @implementation AKLoginFieldsViewController
 
-- (AKLoginFieldsViewController)initWithContext:(id)a3
+- (AKLoginFieldsViewController)initWithContext:(id)context
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, context);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKLoginFieldsViewController;
-  v8 = [(AKLoginFieldsViewController *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKLoginFieldsViewController *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v8->_context, location[0]);
+    objc_storeWeak(&selfCopy->_context, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v8);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = AKLoginFieldsViewController;
   [(AKLoginFieldsViewController *)&v2 viewDidLoad];
-  [(AKLoginFieldsViewController *)v4 _prepareUsernameField];
-  [(AKLoginFieldsViewController *)v4 _preparePasswordField];
+  [(AKLoginFieldsViewController *)selfCopy _prepareUsernameField];
+  [(AKLoginFieldsViewController *)selfCopy _preparePasswordField];
 }
 
 - (id)usernameText
 {
-  v3 = [(AKLoginFieldsViewController *)self usernameField];
-  v4 = [(UITextField *)v3 text];
-  MEMORY[0x277D82BD8](v3);
+  usernameField = [(AKLoginFieldsViewController *)self usernameField];
+  text = [(UITextField *)usernameField text];
+  MEMORY[0x277D82BD8](usernameField);
 
-  return v4;
+  return text;
 }
 
 - (id)passwordText
 {
-  v4 = [(AKLoginFieldsViewController *)self passwordField];
+  passwordField = [(AKLoginFieldsViewController *)self passwordField];
   v7 = 0;
   v5 = 0;
-  if (([(UITextField *)v4 isHidden]& 1) != 0)
+  if (([(UITextField *)passwordField isHidden]& 1) != 0)
   {
     v2 = MEMORY[0x277D82BE0](0);
   }
 
   else
   {
-    v8 = [(AKLoginFieldsViewController *)self passwordField];
+    passwordField2 = [(AKLoginFieldsViewController *)self passwordField];
     v7 = 1;
-    v6 = [(UITextField *)v8 text];
+    text = [(UITextField *)passwordField2 text];
     v5 = 1;
-    v2 = MEMORY[0x277D82BE0](v6);
+    v2 = MEMORY[0x277D82BE0](text);
   }
 
   v10 = v2;
   if (v5)
   {
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](text);
   }
 
   if (v7)
   {
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](passwordField2);
   }
 
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](passwordField);
 
   return v10;
 }
 
 - (void)showPasswordField
 {
-  v2 = [(AKLoginFieldsViewController *)self passwordField];
-  [(UITextField *)v2 setHidden:0];
-  v3 = [(AKLoginFieldsViewController *)self passwordField];
-  [(UITextField *)v3 becomeFirstResponder];
-  MEMORY[0x277D82BD8](v3);
+  passwordField = [(AKLoginFieldsViewController *)self passwordField];
+  [(UITextField *)passwordField setHidden:0];
+  passwordField2 = [(AKLoginFieldsViewController *)self passwordField];
+  [(UITextField *)passwordField2 becomeFirstResponder];
+  MEMORY[0x277D82BD8](passwordField2);
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKLoginFieldsViewController *)v6 delegate];
-  [(AKLoginFieldsDelegate *)v4 loginFieldsDidReturn:v6];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, return);
+  delegate = [(AKLoginFieldsViewController *)selfCopy delegate];
+  [(AKLoginFieldsDelegate *)delegate loginFieldsDidReturn:selfCopy];
+  MEMORY[0x277D82BD8](delegate);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  v22 = a4;
-  v21 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, field);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, string);
   v12 = location[0];
-  v13 = [(AKLoginFieldsViewController *)v21 usernameField];
+  usernameField = [(AKLoginFieldsViewController *)selfCopy usernameField];
   v14 = [v12 isEqual:?];
-  *&v5 = MEMORY[0x277D82BD8](v13).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](usernameField).n128_u64[0];
   if (v14)
   {
-    v18 = [(AKLoginFieldsViewController *)v21 context];
-    v10 = [v18 username];
-    *&v6 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-    if (v10)
+    context = [(AKLoginFieldsViewController *)selfCopy context];
+    username = [context username];
+    *&v6 = MEMORY[0x277D82BD8](username).n128_u64[0];
+    if (username)
     {
       v17 = _AKLogSystem();
       v16 = OS_LOG_TYPE_DEFAULT;
@@ -148,11 +148,11 @@
       }
 
       objc_storeStrong(&v17, 0);
-      [v18 setUsername:0];
+      [context setUsername:0];
     }
 
-    [(AKLoginFieldsViewController *)v21 _hidePasswordIfNeeded];
-    objc_storeStrong(&v18, 0);
+    [(AKLoginFieldsViewController *)selfCopy _hidePasswordIfNeeded];
+    objc_storeStrong(&context, 0);
   }
 
   objc_storeStrong(&v19, 0);
@@ -162,69 +162,69 @@
 
 - (void)_prepareUsernameField
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
-  v7 = [(AKLoginFieldsViewController *)self usernameField];
-  [(UITextField *)v7 setAutocapitalizationType:0];
-  v8 = [(AKLoginFieldsViewController *)v16 usernameField];
-  [(UITextField *)v8 setKeyboardType:7];
-  v9 = [(AKLoginFieldsViewController *)v16 usernameField];
-  [(UITextField *)v9 setTextContentType:*MEMORY[0x277D77090]];
-  v12 = [(AKLoginFieldsViewController *)v16 usernameField];
+  usernameField = [(AKLoginFieldsViewController *)self usernameField];
+  [(UITextField *)usernameField setAutocapitalizationType:0];
+  usernameField2 = [(AKLoginFieldsViewController *)selfCopy usernameField];
+  [(UITextField *)usernameField2 setKeyboardType:7];
+  usernameField3 = [(AKLoginFieldsViewController *)selfCopy usernameField];
+  [(UITextField *)usernameField3 setTextContentType:*MEMORY[0x277D77090]];
+  usernameField4 = [(AKLoginFieldsViewController *)selfCopy usernameField];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v11 localizedStringForKey:@"EMAIL_OR_PHONE_PLACEHOLDER" value:&stru_28358EF68 table:@"Localizable"];
-  [(UITextField *)v12 setPlaceholder:?];
+  [(UITextField *)usernameField4 setPlaceholder:?];
   MEMORY[0x277D82BD8](v10);
   MEMORY[0x277D82BD8](v11);
-  v15[0] = [(AKLoginFieldsViewController *)v16 context];
-  v13 = [v15[0] username];
-  v14 = [v13 length];
-  v2 = MEMORY[0x277D82BD8](v13).n128_u64[0];
+  v15[0] = [(AKLoginFieldsViewController *)selfCopy context];
+  username = [v15[0] username];
+  v14 = [username length];
+  v2 = MEMORY[0x277D82BD8](username).n128_u64[0];
   if (v14)
   {
-    v6 = [v15[0] username];
-    v5 = [(AKLoginFieldsViewController *)v16 usernameField];
-    [(UITextField *)v5 setText:v6];
-    MEMORY[0x277D82BD8](v5);
-    v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    username2 = [v15[0] username];
+    usernameField5 = [(AKLoginFieldsViewController *)selfCopy usernameField];
+    [(UITextField *)usernameField5 setText:username2];
+    MEMORY[0x277D82BD8](usernameField5);
+    v2 = MEMORY[0x277D82BD8](username2).n128_u64[0];
   }
 
   v3 = [v15[0] isUsernameEditable] == 0;
-  v4 = [(AKLoginFieldsViewController *)v16 usernameField];
-  [(UITextField *)v4 setHidden:v3];
-  MEMORY[0x277D82BD8](v4);
+  usernameField6 = [(AKLoginFieldsViewController *)selfCopy usernameField];
+  [(UITextField *)usernameField6 setHidden:v3];
+  MEMORY[0x277D82BD8](usernameField6);
   objc_storeStrong(v15, 0);
 }
 
 - (void)_preparePasswordField
 {
-  v2 = [(AKLoginFieldsViewController *)self passwordField];
-  [(UITextField *)v2 setSecureTextEntry:1];
-  v5 = [(AKLoginFieldsViewController *)self passwordField];
+  passwordField = [(AKLoginFieldsViewController *)self passwordField];
+  [(UITextField *)passwordField setSecureTextEntry:1];
+  passwordField2 = [(AKLoginFieldsViewController *)self passwordField];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v3 = [v4 localizedStringForKey:@"PASSWORD_ALERT_PLACEHOLDER" value:&stru_28358EF68 table:@"Localizable"];
-  [(UITextField *)v5 setPlaceholder:?];
+  [(UITextField *)passwordField2 setPlaceholder:?];
   MEMORY[0x277D82BD8](v3);
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](passwordField2);
 }
 
 - (void)_hidePasswordIfNeeded
 {
-  v7 = [(AKLoginFieldsViewController *)self passwordField];
-  v8 = [(UITextField *)v7 isHidden];
-  *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (!v8)
+  passwordField = [(AKLoginFieldsViewController *)self passwordField];
+  isHidden = [(UITextField *)passwordField isHidden];
+  *&v2 = MEMORY[0x277D82BD8](passwordField).n128_u64[0];
+  if (!isHidden)
   {
-    v3 = [(AKLoginFieldsViewController *)self passwordField];
-    [(UITextField *)v3 setHidden:1];
-    v4 = [(AKLoginFieldsViewController *)self passwordField];
-    [(UITextField *)v4 setText:0];
-    v5 = [(AKLoginFieldsViewController *)self delegate];
-    [(AKLoginFieldsDelegate *)v5 passwordFieldDidHide:self];
-    v6 = [(AKLoginFieldsViewController *)self usernameField];
-    [(UITextField *)v6 becomeFirstResponder];
-    MEMORY[0x277D82BD8](v6);
+    passwordField2 = [(AKLoginFieldsViewController *)self passwordField];
+    [(UITextField *)passwordField2 setHidden:1];
+    passwordField3 = [(AKLoginFieldsViewController *)self passwordField];
+    [(UITextField *)passwordField3 setText:0];
+    delegate = [(AKLoginFieldsViewController *)self delegate];
+    [(AKLoginFieldsDelegate *)delegate passwordFieldDidHide:self];
+    usernameField = [(AKLoginFieldsViewController *)self usernameField];
+    [(UITextField *)usernameField becomeFirstResponder];
+    MEMORY[0x277D82BD8](usernameField);
   }
 }
 

@@ -11,15 +11,15 @@
     [NSDictionary(DiagnosticCase) logSignatureDescription];
   }
 
-  v2 = [a1 objectForKeyedSubscript:@"domain"];
-  v3 = [a1 objectForKeyedSubscript:@"type"];
-  v4 = [a1 objectForKeyedSubscript:@"detected"];
+  v2 = [self objectForKeyedSubscript:@"domain"];
+  v3 = [self objectForKeyedSubscript:@"type"];
+  v4 = [self objectForKeyedSubscript:@"detected"];
   v5 = logSignatureDescription_isInternal;
-  v6 = [a1 objectForKeyedSubscript:@"subtype"];
+  v6 = [self objectForKeyedSubscript:@"subtype"];
   v7 = v6;
   if (v5 == 1)
   {
-    v8 = [a1 objectForKeyedSubscript:@"additional"];
+    v8 = [self objectForKeyedSubscript:@"additional"];
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"{domain:%@, type:%@, subtype:%@, subtypeContext:%@, process:%@}", v2, v3, v7, v8, v4];
   }
 
@@ -37,7 +37,7 @@
 
     v11 = v10;
 
-    v12 = [a1 objectForKeyedSubscript:@"additional"];
+    v12 = [self objectForKeyedSubscript:@"additional"];
     if (v12)
     {
       v13 = @"…";

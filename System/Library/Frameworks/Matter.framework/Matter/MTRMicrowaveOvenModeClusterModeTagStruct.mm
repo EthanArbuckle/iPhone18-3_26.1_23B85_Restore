@@ -1,6 +1,6 @@
 @interface MTRMicrowaveOvenModeClusterModeTagStruct
 - (MTRMicrowaveOvenModeClusterModeTagStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMicrowaveOvenModeClusterModeTagStruct);
-  v5 = [(MTRMicrowaveOvenModeClusterModeTagStruct *)self mfgCode];
-  [(MTRMicrowaveOvenModeClusterModeTagStruct *)v4 setMfgCode:v5];
+  mfgCode = [(MTRMicrowaveOvenModeClusterModeTagStruct *)self mfgCode];
+  [(MTRMicrowaveOvenModeClusterModeTagStruct *)v4 setMfgCode:mfgCode];
 
-  v6 = [(MTRMicrowaveOvenModeClusterModeTagStruct *)self value];
-  [(MTRMicrowaveOvenModeClusterModeTagStruct *)v4 setValue:v6];
+  value = [(MTRMicrowaveOvenModeClusterModeTagStruct *)self value];
+  [(MTRMicrowaveOvenModeClusterModeTagStruct *)v4 setValue:value];
 
   return v4;
 }

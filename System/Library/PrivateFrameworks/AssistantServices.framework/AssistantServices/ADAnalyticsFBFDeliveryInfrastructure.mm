@@ -1,31 +1,31 @@
 @interface ADAnalyticsFBFDeliveryInfrastructure
-- (void)_deliverSerializedWrapper:(id)a3;
-- (void)deliverLogViewerIdentifier:(id)a3;
-- (void)deliverWrappedEvent:(id)a3;
-- (void)deliverWrappedEvents:(id)a3;
+- (void)_deliverSerializedWrapper:(id)wrapper;
+- (void)deliverLogViewerIdentifier:(id)identifier;
+- (void)deliverWrappedEvent:(id)event;
+- (void)deliverWrappedEvents:(id)events;
 @end
 
 @implementation ADAnalyticsFBFDeliveryInfrastructure
 
-- (void)_deliverSerializedWrapper:(id)a3
+- (void)_deliverSerializedWrapper:(id)wrapper
 {
-  if (a3)
+  if (wrapper)
   {
-    v3 = a3;
+    wrapperCopy = wrapper;
     v5 = +[FLLogger sharedLogger];
     v4 = +[SiriAnalyticsOffDeviceTopics unordered];
-    [v5 report:v3 application:v4];
+    [v5 report:wrapperCopy application:v4];
   }
 }
 
-- (void)deliverWrappedEvents:(id)a3
+- (void)deliverWrappedEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -37,7 +37,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         [(ADAnalyticsFBFDeliveryInfrastructure *)self deliverWrappedEvent:*(*(&v9 + 1) + 8 * v8)];
@@ -45,29 +45,29 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)deliverWrappedEvent:(id)a3
+- (void)deliverWrappedEvent:(id)event
 {
-  v4 = [a3 data];
-  [(ADAnalyticsFBFDeliveryInfrastructure *)self _deliverSerializedWrapper:v4];
+  data = [event data];
+  [(ADAnalyticsFBFDeliveryInfrastructure *)self _deliverSerializedWrapper:data];
 }
 
-- (void)deliverLogViewerIdentifier:(id)a3
+- (void)deliverLogViewerIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 longLivedIdentifierUploadingEnabled];
+  longLivedIdentifierUploadingEnabled = [v3 longLivedIdentifierUploadingEnabled];
 
   v5 = +[FLLogger sharedLogger];
-  if (v4)
+  if (longLivedIdentifierUploadingEnabled)
   {
-    v6 = v7;
+    v6 = identifierCopy;
   }
 
   else

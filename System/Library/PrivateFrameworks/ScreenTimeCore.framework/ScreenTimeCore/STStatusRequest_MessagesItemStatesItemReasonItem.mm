@@ -1,9 +1,9 @@
 @interface STStatusRequest_MessagesItemStatesItemReasonItem
 + (NSSet)allowedKeys;
-+ (id)buildRequiredOnlyWithCode:(id)a3;
-+ (id)buildWithCode:(id)a3;
-- (BOOL)loadPayload:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)buildRequiredOnlyWithCode:(id)code;
++ (id)buildWithCode:(id)code;
+- (BOOL)loadPayload:(id)payload error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)serializePayload;
 @end
 
@@ -18,46 +18,46 @@
   return v3;
 }
 
-+ (id)buildWithCode:(id)a3
++ (id)buildWithCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_opt_new();
-  [v4 setCode:v3];
+  [v4 setCode:codeCopy];
 
   return v4;
 }
 
-+ (id)buildRequiredOnlyWithCode:(id)a3
++ (id)buildRequiredOnlyWithCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_opt_new();
-  [v4 setCode:v3];
+  [v4 setCode:codeCopy];
 
   return v4;
 }
 
-- (BOOL)loadPayload:(id)a3 error:(id *)a4
+- (BOOL)loadPayload:(id)payload error:(id *)error
 {
-  v6 = a3;
+  payloadCopy = payload;
   v30 = 0;
-  v7 = [(STStatusRequest_MessagesItemStatesItemReasonItem *)self loadStringFromDictionary:v6 withKey:@"Code" isRequired:1 defaultValue:0 error:&v30];
+  v7 = [(STStatusRequest_MessagesItemStatesItemReasonItem *)self loadStringFromDictionary:payloadCopy withKey:@"Code" isRequired:1 defaultValue:0 error:&v30];
   v8 = v30;
   code = self->_code;
   self->_code = v7;
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   else
   {
-    v11 = [v6 allKeys];
-    v12 = [NSMutableSet setWithArray:v11];
+    allKeys = [payloadCopy allKeys];
+    v12 = [NSMutableSet setWithArray:allKeys];
 
     v13 = +[STStatusRequest_MessagesItemStatesItemReasonItem allowedKeys];
     [v12 minusSet:v13];
@@ -67,8 +67,8 @@
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v25 = v6;
-    v15 = v6;
+    v25 = payloadCopy;
+    v15 = payloadCopy;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v16)
     {
@@ -104,7 +104,7 @@
       self->_ANY = v22;
     }
 
-    v6 = v25;
+    payloadCopy = v25;
   }
 
   return v8 == 0;
@@ -149,11 +149,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = STStatusRequest_MessagesItemStatesItemReasonItem;
-  v4 = [(STStatusRequest_MessagesItemStatesItemReasonItem *)&v10 copyWithZone:a3];
+  v4 = [(STStatusRequest_MessagesItemStatesItemReasonItem *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_code copy];
   v6 = v4[2];
   v4[2] = v5;

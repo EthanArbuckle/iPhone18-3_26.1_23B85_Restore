@@ -1,6 +1,6 @@
 @interface CALNUNUserNotificationCenterFactory
 + (CALNUNUserNotificationCenterFactory)sharedInstance;
-- (id)userNotificationCenterWithBundleIdentifier:(id)a3;
+- (id)userNotificationCenterWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation CALNUNUserNotificationCenterFactory
@@ -24,10 +24,10 @@ uint64_t __53__CALNUNUserNotificationCenterFactory_sharedInstance__block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)userNotificationCenterWithBundleIdentifier:(id)a3
+- (id)userNotificationCenterWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[CALNUNDefaultUserNotificationCenter alloc] initWithBundleIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[CALNUNDefaultUserNotificationCenter alloc] initWithBundleIdentifier:identifierCopy];
 
   return v4;
 }

@@ -1,26 +1,26 @@
 @interface PLPhotoAnalysisTestService
-- (PLPhotoAnalysisTestService)initWithServiceProvider:(id)a3;
+- (PLPhotoAnalysisTestService)initWithServiceProvider:(id)provider;
 - (id)performGetString;
-- (unint64_t)performAsyncLongOperationWithReply:(id)a3;
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4;
+- (unint64_t)performAsyncLongOperationWithReply:(id)reply;
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply;
 @end
 
 @implementation PLPhotoAnalysisTestService
 
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLPhotoAnalysisServiceProvider *)self->_serviceProvider testService];
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  testService = [(PLPhotoAnalysisServiceProvider *)self->_serviceProvider testService];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__PLPhotoAnalysisTestService_cancelOperationsWithIdentifiers_reply___block_invoke;
   v15[3] = &unk_1E7576050;
-  v16 = v6;
-  v9 = v7;
+  v16 = identifiersCopy;
+  v9 = replyCopy;
   v17 = v9;
-  v10 = v6;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v15];
+  v10 = identifiersCopy;
+  v11 = [testService remoteObjectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__PLPhotoAnalysisTestService_cancelOperationsWithIdentifiers_reply___block_invoke_2;
@@ -71,19 +71,19 @@ void __68__PLPhotoAnalysisTestService_cancelOperationsWithIdentifiers_reply___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (unint64_t)performAsyncLongOperationWithReply:(id)a3
+- (unint64_t)performAsyncLongOperationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   add = atomic_fetch_add(&self->_operationID, 1uLL);
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", add];
-  v7 = [(PLPhotoAnalysisServiceProvider *)self->_serviceProvider testService];
+  testService = [(PLPhotoAnalysisServiceProvider *)self->_serviceProvider testService];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__PLPhotoAnalysisTestService_performAsyncLongOperationWithReply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v8 = v4;
+  v8 = replyCopy;
   v15 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
+  v9 = [testService remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__PLPhotoAnalysisTestService_performAsyncLongOperationWithReply___block_invoke_2;
@@ -105,8 +105,8 @@ void __68__PLPhotoAnalysisTestService_cancelOperationsWithIdentifiers_reply___bl
   v15 = 0;
   add = atomic_fetch_add(&self->_operationID, 1uLL);
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", add];
-  v5 = [(PLPhotoAnalysisServiceProvider *)self->_serviceProvider testService];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_219];
+  testService = [(PLPhotoAnalysisServiceProvider *)self->_serviceProvider testService];
+  v6 = [testService synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_219];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__PLPhotoAnalysisTestService_performGetString__block_invoke_2;
@@ -120,16 +120,16 @@ void __68__PLPhotoAnalysisTestService_cancelOperationsWithIdentifiers_reply___bl
   return v7;
 }
 
-- (PLPhotoAnalysisTestService)initWithServiceProvider:(id)a3
+- (PLPhotoAnalysisTestService)initWithServiceProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = PLPhotoAnalysisTestService;
   v6 = [(PLPhotoAnalysisTestService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceProvider, a3);
+    objc_storeStrong(&v6->_serviceProvider, provider);
     atomic_store(0, &v7->_operationID);
   }
 

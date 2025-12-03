@@ -14,7 +14,7 @@
     v7 = malloc_type_calloc(v5, 8uLL, 0x80040B8603338uLL);
     v8 = malloc_type_calloc(v6, 8uLL, 0x80040B8603338uLL);
     [v4 getObjects:v7 range:{0, v6}];
-    [a1 getValues:v8 forProperties:v7 count:v6];
+    [self getValues:v8 forProperties:v7 count:v6];
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     for (i = 0; i != v6; ++i)
     {

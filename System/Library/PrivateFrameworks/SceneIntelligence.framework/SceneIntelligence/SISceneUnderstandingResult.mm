@@ -1,13 +1,13 @@
 @interface SISceneUnderstandingResult
 + (CGSize)outputDimensions;
 - (CGSize)resolution;
-- (SISceneUnderstandingResult)initWithModel:(id)a3;
+- (SISceneUnderstandingResult)initWithModel:(id)model;
 - (_SITensorDim)labelTensorDimensions;
 - (_SITensorDim)normalTensorDimensions;
 - (_SITensorDim)probabilitiesTensorDimensions;
-- (int64_t)writeLabels:(__CVBuffer *)a3;
-- (int64_t)writeNormals:(__CVBuffer *)a3 orientation:(int64_t)a4;
-- (int64_t)writeProbabilities:(__CVBuffer *)a3;
+- (int64_t)writeLabels:(__CVBuffer *)labels;
+- (int64_t)writeNormals:(__CVBuffer *)normals orientation:(int64_t)orientation;
+- (int64_t)writeProbabilities:(__CVBuffer *)probabilities;
 - (void)dealloc;
 @end
 
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (SISceneUnderstandingResult)initWithModel:(id)a3
+- (SISceneUnderstandingResult)initWithModel:(id)model
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = SISceneUnderstandingResult;
   v5 = [(SISceneUnderstandingResult *)&v15 init];
@@ -33,9 +33,9 @@
   {
     v6 = 0uLL;
     v7 = 0uLL;
-    if (v4)
+    if (modelCopy)
     {
-      [v4 labelTensorDimensions];
+      [modelCopy labelTensorDimensions];
       v7 = 0u;
       v6 = 0u;
     }
@@ -47,9 +47,9 @@
     v5->_labelsTensor.storage_type = 65568;
     v8 = 0uLL;
     v9 = 0uLL;
-    if (v4)
+    if (modelCopy)
     {
-      [v4 normalTensorDimensions];
+      [modelCopy normalTensorDimensions];
       v9 = 0u;
       v8 = 0u;
     }
@@ -61,9 +61,9 @@
     v5->_normalsTensor.storage_type = 65568;
     v10 = 0uLL;
     v11 = 0uLL;
-    if (v4)
+    if (modelCopy)
     {
-      [v4 probabilitiesTensorDimensions];
+      [modelCopy probabilitiesTensorDimensions];
       v11 = 0u;
       v10 = 0u;
     }
@@ -91,14 +91,14 @@
   [(SISceneUnderstandingResult *)&v3 dealloc];
 }
 
-- (int64_t)writeNormals:(__CVBuffer *)a3 orientation:(int64_t)a4
+- (int64_t)writeNormals:(__CVBuffer *)normals orientation:(int64_t)orientation
 {
   v37 = *MEMORY[0x277D85DE8];
   width = self->_normalsTensor.width;
   height = self->_normalsTensor.height;
   stride_channels = self->_normalsTensor.stride_channels;
   kdebug_trace();
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(normals);
   IOSurfaceLock(IOSurface, 0, 0);
   BaseAddress = IOSurfaceGetBaseAddress(IOSurface);
   buffer = IOSurface;
@@ -147,14 +147,14 @@ LABEL_18:
       *v13.f32 = vmul_f32(*v13.f32, vrsqrts_f32(v22, vmul_f32(*v13.f32, *v13.f32)));
       *v13.f32 = vmul_f32(*v13.f32, vrsqrts_f32(v22, vmul_f32(*v13.f32, *v13.f32)));
       v23 = vmulq_n_f32(v21, v13.f32[0]);
-      if (a4 > 1)
+      if (orientation > 1)
       {
         break;
       }
 
-      if (a4)
+      if (orientation)
       {
-        if (a4 != 1)
+        if (orientation != 1)
         {
           goto LABEL_12;
         }
@@ -178,7 +178,7 @@ LABEL_17:
       }
     }
 
-    if (a4 == 2)
+    if (orientation == 2)
     {
       v13.f32[0] = -v23.f32[1];
       v13 = vzip1q_s32(v13, v23);
@@ -186,7 +186,7 @@ LABEL_17:
 
     else
     {
-      if (a4 != 3)
+      if (orientation != 3)
       {
 LABEL_12:
         v32 = v23;
@@ -217,12 +217,12 @@ LABEL_19:
   return 0;
 }
 
-- (int64_t)writeProbabilities:(__CVBuffer *)a3
+- (int64_t)writeProbabilities:(__CVBuffer *)probabilities
 {
   width = self->_probabilitiesTensor.width;
   height = self->_probabilitiesTensor.height;
   kdebug_trace();
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(probabilities);
   IOSurfaceLock(IOSurface, 0, 0);
   BaseAddress = IOSurfaceGetBaseAddress(IOSurface);
   BytesPerRow = IOSurfaceGetBytesPerRow(IOSurface);
@@ -268,12 +268,12 @@ LABEL_19:
   return 0;
 }
 
-- (int64_t)writeLabels:(__CVBuffer *)a3
+- (int64_t)writeLabels:(__CVBuffer *)labels
 {
   width = self->_labelsTensor.width;
   height = self->_labelsTensor.height;
   kdebug_trace();
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(labels);
   IOSurfaceLock(IOSurface, 0, 0);
   BaseAddress = IOSurfaceGetBaseAddress(IOSurface);
   BytesPerRow = IOSurfaceGetBytesPerRow(IOSurface);

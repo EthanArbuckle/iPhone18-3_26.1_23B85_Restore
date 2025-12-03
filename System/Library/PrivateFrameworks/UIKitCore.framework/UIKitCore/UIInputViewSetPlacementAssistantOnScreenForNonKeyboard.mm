@@ -1,16 +1,16 @@
 @interface UIInputViewSetPlacementAssistantOnScreenForNonKeyboard
-- (id)horizontalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
-- (id)widthConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
+- (id)horizontalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
+- (id)widthConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
 @end
 
 @implementation UIInputViewSetPlacementAssistantOnScreenForNonKeyboard
 
-- (id)horizontalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)horizontalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  if (a4)
+  if (view)
   {
-    v6 = [MEMORY[0x1E69977A0] constraintWithItem:a4 attribute:1 relatedBy:0 toItem:a5 attribute:1 multiplier:1.0 constant:0.0];
+    v6 = [MEMORY[0x1E69977A0] constraintWithItem:view attribute:1 relatedBy:0 toItem:containerView attribute:1 multiplier:1.0 constant:0.0];
   }
 
   else
@@ -21,69 +21,69 @@
   return v6;
 }
 
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  setCopy = set;
+  viewCopy = view;
+  containerViewCopy = containerView;
+  if (viewCopy)
   {
-    if ([v8 isInputViewPlaceholder])
+    if ([setCopy isInputViewPlaceholder])
     {
       v23.receiver = self;
       v23.super_class = UIInputViewSetPlacementAssistantOnScreenForNonKeyboard;
-      v11 = [(UIInputViewSetPlacementWrapper *)&v23 verticalConstraintForInputViewSet:v8 hostView:v9 containerView:v10];
+      inputAccessoryView = [(UIInputViewSetPlacementWrapper *)&v23 verticalConstraintForInputViewSet:setCopy hostView:viewCopy containerView:containerViewCopy];
       goto LABEL_12;
     }
 
-    v12 = [v8 inputAssistantView];
-    if (v12)
+    inputAssistantView = [setCopy inputAssistantView];
+    if (inputAssistantView)
     {
-      v13 = v12;
-      v14 = [v8 inputAssistantView];
-      v15 = [v14 isDescendantOfView:v10];
+      v13 = inputAssistantView;
+      inputAssistantView2 = [setCopy inputAssistantView];
+      v15 = [inputAssistantView2 isDescendantOfView:containerViewCopy];
 
       if (v15)
       {
-        v16 = [v10 bottomAnchor];
-        v17 = [v8 inputAssistantView];
+        bottomAnchor = [containerViewCopy bottomAnchor];
+        inputAssistantView3 = [setCopy inputAssistantView];
 LABEL_10:
-        v20 = v17;
-        v21 = [v17 bottomAnchor];
-        v11 = [v16 constraintEqualToAnchor:v21 constant:0.0];
+        v20 = inputAssistantView3;
+        bottomAnchor2 = [inputAssistantView3 bottomAnchor];
+        inputAccessoryView = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
 
         goto LABEL_12;
       }
     }
 
-    v11 = [v8 inputAccessoryView];
-    if (!v11)
+    inputAccessoryView = [setCopy inputAccessoryView];
+    if (!inputAccessoryView)
     {
       goto LABEL_12;
     }
 
-    v18 = [v8 inputAccessoryView];
-    v19 = [v18 isDescendantOfView:v10];
+    inputAccessoryView2 = [setCopy inputAccessoryView];
+    v19 = [inputAccessoryView2 isDescendantOfView:containerViewCopy];
 
     if (v19)
     {
-      v16 = [v10 bottomAnchor];
-      v17 = [v8 inputAccessoryView];
+      bottomAnchor = [containerViewCopy bottomAnchor];
+      inputAssistantView3 = [setCopy inputAccessoryView];
       goto LABEL_10;
     }
   }
 
-  v11 = 0;
+  inputAccessoryView = 0;
 LABEL_12:
 
-  return v11;
+  return inputAccessoryView;
 }
 
-- (id)widthConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)widthConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  if (a4)
+  if (view)
   {
-    v6 = [MEMORY[0x1E69977A0] constraintWithItem:a4 attribute:7 relatedBy:0 toItem:a5 attribute:7 multiplier:1.0 constant:0.0];
+    v6 = [MEMORY[0x1E69977A0] constraintWithItem:view attribute:7 relatedBy:0 toItem:containerView attribute:7 multiplier:1.0 constant:0.0];
   }
 
   else

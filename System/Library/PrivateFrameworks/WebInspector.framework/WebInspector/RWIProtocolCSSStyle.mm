@@ -5,31 +5,31 @@
 - (NSString)height;
 - (NSString)width;
 - (RWIProtocolCSSSourceRange)range;
-- (RWIProtocolCSSStyle)initWithCssProperties:(id)a3 shorthandEntries:(id)a4;
+- (RWIProtocolCSSStyle)initWithCssProperties:(id)properties shorthandEntries:(id)entries;
 - (RWIProtocolCSSStyleId)styleId;
-- (void)setCssProperties:(id)a3;
-- (void)setCssText:(id)a3;
-- (void)setHeight:(id)a3;
-- (void)setRange:(id)a3;
-- (void)setShorthandEntries:(id)a3;
-- (void)setStyleId:(id)a3;
-- (void)setWidth:(id)a3;
+- (void)setCssProperties:(id)properties;
+- (void)setCssText:(id)text;
+- (void)setHeight:(id)height;
+- (void)setRange:(id)range;
+- (void)setShorthandEntries:(id)entries;
+- (void)setStyleId:(id)id;
+- (void)setWidth:(id)width;
 @end
 
 @implementation RWIProtocolCSSStyle
 
-- (RWIProtocolCSSStyle)initWithCssProperties:(id)a3 shorthandEntries:(id)a4
+- (RWIProtocolCSSStyle)initWithCssProperties:(id)properties shorthandEntries:(id)entries
 {
   v42 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v27 = a4;
+  propertiesCopy = properties;
+  entriesCopy = entries;
   v39.receiver = self;
   v39.super_class = RWIProtocolCSSStyle;
   v29 = [(RWIProtocolJSONObject *)&v39 init];
   if (v29)
   {
     v6 = MEMORY[0x277CBE660];
-    if (!v28)
+    if (!propertiesCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"cssProperties"}];
     }
@@ -38,7 +38,7 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v28;
+    obj = propertiesCopy;
     v7 = [obj countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v7)
     {
@@ -74,7 +74,7 @@
       while (v7);
     }
 
-    if (!v27)
+    if (!entriesCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*v6 format:{@"required property '%@' cannot be nil", @"shorthandEntries"}];
     }
@@ -83,7 +83,7 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v15 = v27;
+    v15 = entriesCopy;
     v16 = [v15 countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v16)
     {
@@ -128,11 +128,11 @@
   return v29;
 }
 
-- (void)setStyleId:(id)a3
+- (void)setStyleId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyle;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"styleId"];
+  [(RWIProtocolJSONObject *)&v3 setObject:id forKey:@"styleId"];
 }
 
 - (RWIProtocolCSSStyleId)styleId
@@ -190,14 +190,14 @@
   return v7;
 }
 
-- (void)setCssProperties:(id)a3
+- (void)setCssProperties:(id)properties
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = properties;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -261,14 +261,14 @@
   return v2;
 }
 
-- (void)setShorthandEntries:(id)a3
+- (void)setShorthandEntries:(id)entries
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = entries;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -332,11 +332,11 @@
   return v2;
 }
 
-- (void)setCssText:(id)a3
+- (void)setCssText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyle;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"cssText"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"cssText"];
 }
 
 - (NSString)cssText
@@ -348,11 +348,11 @@
   return v2;
 }
 
-- (void)setRange:(id)a3
+- (void)setRange:(id)range
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyle;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"range"];
+  [(RWIProtocolJSONObject *)&v3 setObject:range forKey:@"range"];
 }
 
 - (RWIProtocolCSSSourceRange)range
@@ -410,11 +410,11 @@
   return v7;
 }
 
-- (void)setWidth:(id)a3
+- (void)setWidth:(id)width
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyle;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"width"];
+  [(RWIProtocolJSONObject *)&v3 setString:width forKey:@"width"];
 }
 
 - (NSString)width
@@ -426,11 +426,11 @@
   return v2;
 }
 
-- (void)setHeight:(id)a3
+- (void)setHeight:(id)height
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyle;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"height"];
+  [(RWIProtocolJSONObject *)&v3 setString:height forKey:@"height"];
 }
 
 - (NSString)height

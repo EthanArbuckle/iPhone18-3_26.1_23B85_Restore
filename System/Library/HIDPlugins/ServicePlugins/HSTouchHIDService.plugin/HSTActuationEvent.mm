@@ -1,9 +1,9 @@
 @interface HSTActuationEvent
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (HSTActuationEvent)init;
-- (void)encodeToMap:(void *)a3;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation HSTActuationEvent
@@ -23,21 +23,21 @@
   return v3;
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
-  HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)97,(char)118,(char)101,(char)102,(char)111,(char)114,(char)109,(char)73,(char)68>::Key, self->waveformID);
-  HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)114,(char)101,(char)110,(char)103,(char)116,(char)104>::Key, self->strength);
-  HSUtil::Encoder::encodeFloat(a3, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)97,(char)108,(char)101>::Key, self->scale);
+  HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)119,(char)97,(char)118,(char)101,(char)102,(char)111,(char)114,(char)109,(char)73,(char)68>::Key, self->waveformID);
+  HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)114,(char)101,(char)110,(char)103,(char)116,(char)104>::Key, self->strength);
+  HSUtil::Encoder::encodeFloat(map, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)97,(char)108,(char)101>::Key, self->scale);
   v5 = HSUtil::CoderKey::Literal<(char)116,(char)105,(char)109,(char)101,(char)68,(char)105,(char)108,(char)97,(char)116,(char)105,(char)111,(char)110>::Key;
   timeDilation = self->timeDilation;
 
-  HSUtil::Encoder::encodeFloat(a3, v5, timeDilation);
+  HSUtil::Encoder::encodeFloat(map, v5, timeDilation);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
-  self->waveformID = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)97,(char)118,(char)101,(char)102,(char)111,(char)114,(char)109,(char)73,(char)68>::Key);
-  if (*a3)
+  self->waveformID = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)119,(char)97,(char)118,(char)101,(char)102,(char)111,(char)114,(char)109,(char)73,(char)68>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -49,8 +49,8 @@
     return 0;
   }
 
-  self->strength = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)114,(char)101,(char)110,(char)103,(char)116,(char)104>::Key);
-  if (*a3)
+  self->strength = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)114,(char)101,(char)110,(char)103,(char)116,(char)104>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -62,8 +62,8 @@
     return 0;
   }
 
-  self->scale = HSUtil::Decoder::decodeFloat(a3, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)97,(char)108,(char)101>::Key);
-  if (*a3)
+  self->scale = HSUtil::Decoder::decodeFloat(map, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)97,(char)108,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -75,8 +75,8 @@
     return 0;
   }
 
-  self->timeDilation = HSUtil::Decoder::decodeFloat(a3, HSUtil::CoderKey::Literal<(char)116,(char)105,(char)109,(char)101,(char)68,(char)105,(char)108,(char)97,(char)116,(char)105,(char)111,(char)110>::Key);
-  if (*a3)
+  self->timeDilation = HSUtil::Decoder::decodeFloat(map, HSUtil::CoderKey::Literal<(char)116,(char)105,(char)109,(char)101,(char)68,(char)105,(char)108,(char)97,(char)116,(char)105,(char)111,(char)110>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -91,26 +91,26 @@
   return 1;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xEAu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xEAu, 0);
   }
 
-  [(HSTActuationEvent *)self encodeToMap:a3];
-  if (!*a3)
+  [(HSTActuationEvent *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -119,8 +119,8 @@
   v10 = v5;
   v11 = v5;
   v9 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v9);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v9);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);

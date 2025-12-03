@@ -1,17 +1,17 @@
 @interface CPListMaker
-+ (void)makeListsInChunk:(id)a3;
-+ (void)makeListsInLayoutArea:(id)a3;
-+ (void)makeListsInPage:(id)a3;
-- (BOOL)makeListFrom:(CPListInfo *)a3;
-- (CPListMaker)initWithLayoutArea:(id)a3;
++ (void)makeListsInChunk:(id)chunk;
++ (void)makeListsInLayoutArea:(id)area;
++ (void)makeListsInPage:(id)page;
+- (BOOL)makeListFrom:(CPListInfo *)from;
+- (CPListMaker)initWithLayoutArea:(id)area;
 - (void)dealloc;
 - (void)dispose;
-- (void)fetchTextLine:(id)a3;
-- (void)fetchTextLinesInColumn:(id)a3;
+- (void)fetchTextLine:(id)line;
+- (void)fetchTextLinesInColumn:(id)column;
 - (void)finalize;
-- (void)makeListItemFrom:(CPListInfo *)a3 stopAt:(unsigned int)a4;
+- (void)makeListItemFrom:(CPListInfo *)from stopAt:(unsigned int)at;
 - (void)makeLists;
-- (void)makeListsInColumn:(id)a3;
+- (void)makeListsInColumn:(id)column;
 @end
 
 @implementation CPListMaker
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)makeListsInColumn:(id)a3
+- (void)makeListsInColumn:(id)column
 {
-  [(CPListMaker *)self fetchTextLinesInColumn:a3];
+  [(CPListMaker *)self fetchTextLinesInColumn:column];
   v4 = 0;
   v5 = CGRectNull;
   v8 = 0;
@@ -51,17 +51,17 @@
   }
 }
 
-- (BOOL)makeListFrom:(CPListInfo *)a3
+- (BOOL)makeListFrom:(CPListInfo *)from
 {
   LOBYTE(v5) = 0;
-  var0 = a3->var0;
+  var0 = from->var0;
   v68 = var0;
-  v69 = 0;
+  listSpacerIndex = 0;
   v70 = CGRectNull;
   cf = 0;
   memset(v72, 0, 24);
   *(&v72[1] + 7) = 0;
-  v72[3] = a3->var11;
+  v72[3] = from->var11;
   if (var0 < self->textLineCount)
   {
     v5 = 0;
@@ -69,16 +69,16 @@
     do
     {
       v8 = self->textLines[var0];
-      v9 = [v8 isListItem];
-      LOBYTE(v72[2]) = v9;
-      if (!v9)
+      isListItem = [v8 isListItem];
+      LOBYTE(v72[2]) = isListItem;
+      if (!isListItem)
       {
         goto LABEL_32;
       }
 
-      v69 = [v8 listSpacerIndex];
+      listSpacerIndex = [v8 listSpacerIndex];
       v70 = CGRectNull;
-      [-[NSArray objectAtIndex:](self->spacers objectAtIndex:{v69), "getValue:", &v70}];
+      [-[NSArray objectAtIndex:](self->spacers objectAtIndex:{listSpacerIndex), "getValue:", &v70}];
       v10 = v70.origin.x != INFINITY;
       if (v70.origin.y == INFINITY)
       {
@@ -112,45 +112,45 @@
         cf = v17;
         CFRetain(v17);
         CFRelease(v17);
-        if (v69 == a3->var1)
+        if (listSpacerIndex == from->var1)
         {
-          if (a3->var8)
+          if (from->var8)
           {
             Length = CFStringGetLength(cf);
-            v21.length = a3->var5;
-            var6 = a3->var6;
+            v21.length = from->var5;
+            var6 = from->var6;
             v23 = var6 + LODWORD(v21.length);
             if (LODWORD(v21.length) && Length > v23)
             {
               v21.location = 0;
-              v24 = CFStringCreateWithSubstring(v7, a3->var3, v21);
+              v24 = CFStringCreateWithSubstring(v7, from->var3, v21);
               HasPrefix = CFStringHasPrefix(cf, v24);
               CFRelease(v24);
               if (HasPrefix)
               {
-                var6 = a3->var6;
+                var6 = from->var6;
 LABEL_69:
-                if (!var6 || (v42 = CFStringGetLength(a3->var3), v73.length = a3->var6, v73.location = (v42 - LODWORD(v73.length)), v43 = CFStringCreateWithSubstring(v7, a3->var3, v73), HasSuffix = CFStringHasSuffix(cf, v43), CFRelease(v43), HasSuffix))
+                if (!var6 || (v42 = CFStringGetLength(from->var3), v73.length = from->var6, v73.location = (v42 - LODWORD(v73.length)), v43 = CFStringCreateWithSubstring(v7, from->var3, v73), HasSuffix = CFStringHasSuffix(cf, v43), CFRelease(v43), HasSuffix))
                 {
-                  var5 = a3->var5;
-                  if (*&a3->var5)
+                  var5 = from->var5;
+                  if (*&from->var5)
                   {
-                    v74.length = CFStringGetLength(a3->var3) - (a3->var5 + a3->var6);
+                    v74.length = CFStringGetLength(from->var3) - (from->var5 + from->var6);
                     v74.location = var5;
-                    v46 = CFStringCreateWithSubstring(v7, a3->var3, v74);
-                    v75.length = CFStringGetLength(cf) - (a3->var5 + a3->var6);
+                    v46 = CFStringCreateWithSubstring(v7, from->var3, v74);
+                    v75.length = CFStringGetLength(cf) - (from->var5 + from->var6);
                     v75.location = var5;
                     v47 = CFStringCreateWithSubstring(v7, cf, v75);
                   }
 
                   else
                   {
-                    v46 = CFRetain(a3->var3);
+                    v46 = CFRetain(from->var3);
                     v47 = CFRetain(cf);
                   }
 
                   v48 = v47;
-                  var4 = a3->var4;
+                  var4 = from->var4;
                   if (!var4)
                   {
                     v50 = CFStringCompare(v46, v47, 0) == kCFCompareEqualTo;
@@ -159,7 +159,7 @@ LABEL_69:
 
                   if (CPOrdinalLexerTypedStringToInt(v47, var4, &v72[1] + 1))
                   {
-                    v50 = HIDWORD(v72[1]) == a3->var7 + 1;
+                    v50 = HIDWORD(v72[1]) == from->var7 + 1;
 LABEL_79:
                     v52 = v50;
 LABEL_82:
@@ -167,19 +167,19 @@ LABEL_82:
                     CFRelease(v46);
                     if (v52)
                     {
-                      [(CPListMaker *)self makeListItemFrom:a3 stopAt:v68];
-                      v72[0] = *&a3->var4;
-                      LODWORD(v72[1]) = a3->var6;
-                      CPListInfoCopy(&v68, a3);
+                      [(CPListMaker *)self makeListItemFrom:from stopAt:v68];
+                      v72[0] = *&from->var4;
+                      LODWORD(v72[1]) = from->var6;
+                      CPListInfoCopy(&v68, from);
                       v5 = 1;
-                      a3->var9 = 1;
+                      from->var9 = 1;
                       goto LABEL_99;
                     }
                   }
 
                   else
                   {
-                    v53 = a3->var4;
+                    v53 = from->var4;
                     if (v53 == 4)
                     {
                       v54 = 6;
@@ -205,8 +205,8 @@ LABEL_82:
                       *chars = 0;
                       if (CPOrdinalLexerTypedStringToInt(v48, v55, &v72[1] + 1) && CPOrdinalLexerTypedStringToInt(v46, v55, chars) && (v56 = *chars, HIDWORD(v72[1]) == *chars + 1))
                       {
-                        a3->var4 = v55;
-                        a3->var7 = v56;
+                        from->var4 = v55;
+                        from->var7 = v56;
                         v52 = 1;
                       }
 
@@ -231,7 +231,7 @@ LABEL_82:
             }
 
 LABEL_98:
-            a3->var10 = 1;
+            from->var10 = 1;
             goto LABEL_99;
           }
 
@@ -367,16 +367,16 @@ LABEL_65:
           CFRelease(v51);
           v5 = v59;
 LABEL_77:
-          CPListInfoCopy(&v68, a3);
+          CPListInfoCopy(&v68, from);
           goto LABEL_99;
         }
 
-        if (!a3->var8)
+        if (!from->var8)
         {
           goto LABEL_40;
         }
 
-        if (v70.origin.x + v70.size.width <= a3->var2.origin.x + a3->var2.size.width)
+        if (v70.origin.x + v70.size.width <= from->var2.origin.x + from->var2.size.width)
         {
           goto LABEL_98;
         }
@@ -389,14 +389,14 @@ LABEL_77:
         v65 = 0;
         v66 = 0uLL;
         v64 = 0;
-        v67 = a3;
+        fromCopy = from;
         *(&v66 + 7) = 0;
         v32 = [(CPListMaker *)self makeListFrom:chars];
 
         self->list = list;
         if (!v32)
         {
-          a3->var10 = 1;
+          from->var10 = 1;
         }
 
         v68 = *chars;
@@ -409,7 +409,7 @@ LABEL_77:
       else
       {
 LABEL_32:
-        if (a3->var4)
+        if (from->var4)
         {
           [v8 bounds];
           if (v26 == INFINITY || v27 == INFINITY)
@@ -417,13 +417,13 @@ LABEL_32:
             goto LABEL_98;
           }
 
-          if (a3->var2.origin.x > v26)
+          if (from->var2.origin.x > v26)
           {
             goto LABEL_98;
           }
 
-          y = a3->var2.origin.y;
-          if (y > v27 + v28 || y + a3->var2.size.height < v27)
+          y = from->var2.origin.y;
+          if (y > v27 + v28 || y + from->var2.size.height < v27)
           {
             goto LABEL_98;
           }
@@ -431,23 +431,23 @@ LABEL_32:
       }
 
 LABEL_99:
-      if (a3->var10)
+      if (from->var10)
       {
-        if (a3->var9)
+        if (from->var9)
         {
-          [(CPListMaker *)self makeListItemFrom:a3 stopAt:v68];
-          a3->var9 = 0;
+          [(CPListMaker *)self makeListItemFrom:from stopAt:v68];
+          from->var9 = 0;
         }
 
-        if (a3->var11)
+        if (from->var11)
         {
           break;
         }
 
-        a3->var4 = 0;
-        v57 = (__PAIR64__(v68, a3->var0) - v68) >> 32;
-        a3->var8 = 0;
-        a3->var10 = 0;
+        from->var4 = 0;
+        v57 = (__PAIR64__(v68, from->var0) - v68) >> 32;
+        from->var8 = 0;
+        from->var10 = 0;
       }
 
       else
@@ -462,15 +462,15 @@ LABEL_99:
     while (var0 < self->textLineCount);
   }
 
-  if (a3->var9)
+  if (from->var9)
   {
-    [(CPListMaker *)self makeListItemFrom:a3 stopAt:v68];
-    a3->var9 = 0;
+    [(CPListMaker *)self makeListItemFrom:from stopAt:v68];
+    from->var9 = 0;
   }
 
-  if (v5 && v68 > a3->var0)
+  if (v5 && v68 > from->var0)
   {
-    a3->var0 = v68 - 1;
+    from->var0 = v68 - 1;
   }
 
   if (cf)
@@ -481,32 +481,32 @@ LABEL_99:
   return v5;
 }
 
-- (void)makeListItemFrom:(CPListInfo *)a3 stopAt:(unsigned int)a4
+- (void)makeListItemFrom:(CPListInfo *)from stopAt:(unsigned int)at
 {
-  var0 = a3->var0;
-  if (var0 < a4)
+  var0 = from->var0;
+  if (var0 < at)
   {
     v8 = self->textLines[var0];
-    v9 = [v8 parent];
-    if (v9)
+    parent = [v8 parent];
+    if (parent)
     {
-      v10 = v9;
-      if (v8 != [v9 firstChild])
+      v10 = parent;
+      if (v8 != [parent firstChild])
       {
         v10 = splitParagraphAtTextLine(v10, v8, 0);
       }
 
       v18 = objc_alloc_init(CPParagraphListItem);
-      [(CPParagraphListItem *)v18 setNumber:a3->var7];
-      if (!a3->var9)
+      [(CPParagraphListItem *)v18 setNumber:from->var7];
+      if (!from->var9)
       {
 
         v11 = objc_alloc_init(CPList);
         self->list = v11;
-        [(CPList *)v11 setSpacer:a3->var2.origin.x, a3->var2.origin.y, a3->var2.size.width, a3->var2.size.height];
-        [(CPList *)self->list setType:a3->var4];
-        [(CPList *)self->list setOrdinalPrefixLength:a3->var5];
-        [(CPList *)self->list setOrdinalSuffixLength:a3->var6];
+        [(CPList *)v11 setSpacer:from->var2.origin.x, from->var2.origin.y, from->var2.size.width, from->var2.size.height];
+        [(CPList *)self->list setType:from->var4];
+        [(CPList *)self->list setOrdinalPrefixLength:from->var5];
+        [(CPList *)self->list setOrdinalSuffixLength:from->var6];
       }
 
       if (![(CPList *)self->list containsParagraph:v10])
@@ -514,19 +514,19 @@ LABEL_99:
         [(CPParagraphListItem *)v18 addParagraph:v10];
       }
 
-      v12 = a3->var0 + 1;
-      if (v12 < a4)
+      v12 = from->var0 + 1;
+      if (v12 < at)
       {
-        v13 = ~a3->var0 + a4;
+        v13 = ~from->var0 + at;
         v14 = v12;
         do
         {
           v8 = self->textLines[v14];
-          v15 = [v8 parent];
-          if (v15 != v10 && v15 != 0)
+          parent2 = [v8 parent];
+          if (parent2 != v10 && parent2 != 0)
           {
-            v17 = v15;
-            if (![(CPList *)self->list containsParagraph:v15])
+            v17 = parent2;
+            if (![(CPList *)self->list containsParagraph:parent2])
             {
               [(CPParagraphListItem *)v18 addParagraph:v17];
             }
@@ -554,7 +554,7 @@ LABEL_99:
   }
 }
 
-- (void)fetchTextLinesInColumn:(id)a3
+- (void)fetchTextLinesInColumn:(id)column
 {
   textLines = self->textLines;
   if (textLines)
@@ -563,7 +563,7 @@ LABEL_99:
   }
 
   self->textLineCount = 0;
-  v6 = [a3 countOfFirstDescendantsOfClass:objc_opt_class()];
+  v6 = [column countOfFirstDescendantsOfClass:objc_opt_class()];
   if (v6)
   {
     v7 = malloc_type_malloc(8 * v6, 0x80040B8603338uLL);
@@ -571,7 +571,7 @@ LABEL_99:
     if (v7)
     {
 
-      [a3 map:sel_fetchTextLine_ target:self];
+      [column map:sel_fetchTextLine_ target:self];
     }
   }
 
@@ -581,7 +581,7 @@ LABEL_99:
   }
 }
 
-- (void)fetchTextLine:(id)a3
+- (void)fetchTextLine:(id)line
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -589,13 +589,13 @@ LABEL_99:
     textLines = self->textLines;
     textLineCount = self->textLineCount;
     self->textLineCount = textLineCount + 1;
-    textLines[textLineCount] = a3;
+    textLines[textLineCount] = line;
   }
 
   else
   {
 
-    [a3 map:sel_fetchTextLine_ target:self];
+    [line map:sel_fetchTextLine_ target:self];
   }
 }
 
@@ -626,47 +626,47 @@ LABEL_99:
   }
 }
 
-- (CPListMaker)initWithLayoutArea:(id)a3
+- (CPListMaker)initWithLayoutArea:(id)area
 {
   v6.receiver = self;
   v6.super_class = CPListMaker;
   v4 = [(CPListMaker *)&v6 init];
   if (v4)
   {
-    v4->area = a3;
-    v4->spacers = [objc_msgSend(a3 ancestorOfClass:{objc_opt_class()), "spacers"}];
+    v4->area = area;
+    v4->spacers = [objc_msgSend(area ancestorOfClass:{objc_opt_class()), "spacers"}];
   }
 
   return v4;
 }
 
-+ (void)makeListsInPage:(id)a3
++ (void)makeListsInPage:(id)page
 {
   v4 = objc_opt_class();
 
-  [a3 map:sel_makeListsInChunk_ target:v4];
+  [page map:sel_makeListsInChunk_ target:v4];
 }
 
-+ (void)makeListsInChunk:(id)a3
++ (void)makeListsInChunk:(id)chunk
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    [CPListMaker makeListsInLayoutArea:a3];
+    [CPListMaker makeListsInLayoutArea:chunk];
   }
 
   else
   {
     v4 = objc_opt_class();
 
-    [a3 map:sel_makeListsInChunk_ target:v4];
+    [chunk map:sel_makeListsInChunk_ target:v4];
   }
 }
 
-+ (void)makeListsInLayoutArea:(id)a3
++ (void)makeListsInLayoutArea:(id)area
 {
-  v3 = [[CPListMaker alloc] initWithLayoutArea:a3];
+  v3 = [[CPListMaker alloc] initWithLayoutArea:area];
   [(CPListMaker *)v3 makeLists];
 }
 

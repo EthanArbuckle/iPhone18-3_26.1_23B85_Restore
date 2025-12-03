@@ -1,15 +1,15 @@
 @interface SBMainStatusBarContentAssertion
-- (SBMainStatusBarContentAssertion)initWithIdentifier:(id)a3 forReason:(id)a4;
-- (void)setDateAndTimeVisible:(BOOL)a3;
+- (SBMainStatusBarContentAssertion)initWithIdentifier:(id)identifier forReason:(id)reason;
+- (void)setDateAndTimeVisible:(BOOL)visible;
 @end
 
 @implementation SBMainStatusBarContentAssertion
 
-- (SBMainStatusBarContentAssertion)initWithIdentifier:(id)a3 forReason:(id)a4
+- (SBMainStatusBarContentAssertion)initWithIdentifier:(id)identifier forReason:(id)reason
 {
   v8.receiver = self;
   v8.super_class = SBMainStatusBarContentAssertion;
-  v4 = [(BSSimpleAssertion *)&v8 initWithIdentifier:a3 forReason:a4 invalidationBlock:&__block_literal_global_149_3];
+  v4 = [(BSSimpleAssertion *)&v8 initWithIdentifier:identifier forReason:reason invalidationBlock:&__block_literal_global_149_3];
   v5 = v4;
   if (v4)
   {
@@ -33,11 +33,11 @@ void __64__SBMainStatusBarContentAssertion_initWithIdentifier_forReason___block_
   [v4 relinquishContentAssertion:v5];
 }
 
-- (void)setDateAndTimeVisible:(BOOL)a3
+- (void)setDateAndTimeVisible:(BOOL)visible
 {
-  if (self->_dateAndTimeVisible != a3)
+  if (self->_dateAndTimeVisible != visible)
   {
-    self->_dateAndTimeVisible = a3;
+    self->_dateAndTimeVisible = visible;
     v5 = +[SBMainStatusBarStateProvider sharedInstance];
     [v5 didUpdateContentAssertion:self];
   }

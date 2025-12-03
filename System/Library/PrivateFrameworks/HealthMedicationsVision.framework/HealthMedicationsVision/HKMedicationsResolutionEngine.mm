@@ -4,20 +4,20 @@
 + (id)_databasePath;
 + (id)_visionDirectoryPath;
 - (HKMedicationsResolutionEngine)init;
-- (HKMedicationsResolutionEngine)initWithAssetUrl:(id)a3;
-- (id)hkctl_resolveMedicationsUsing:(id)a3 resultLimit:(int64_t)a4 error:(id *)a5;
-- (void)filter:(id)a3 transcripts:(id)a4 criterion:(float)a5 limit:(int64_t)a6 completionHandler:(id)a7;
-- (void)resetResolverWithCompletionHandler:(id)a3;
-- (void)resolveMedicationsUsing:(id)a3 resultLimit:(int64_t)a4 completionHandler:(id)a5;
+- (HKMedicationsResolutionEngine)initWithAssetUrl:(id)url;
+- (id)hkctl_resolveMedicationsUsing:(id)using resultLimit:(int64_t)limit error:(id *)error;
+- (void)filter:(id)filter transcripts:(id)transcripts criterion:(float)criterion limit:(int64_t)limit completionHandler:(id)handler;
+- (void)resetResolverWithCompletionHandler:(id)handler;
+- (void)resolveMedicationsUsing:(id)using resultLimit:(int64_t)limit completionHandler:(id)handler;
 @end
 
 @implementation HKMedicationsResolutionEngine
 
 + (BOOL)isVisionAssetAvailable
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = +[HKMedicationsResolutionEngine _databasePath];
-  v4 = [v2 fileExistsAtPath:v3];
+  v4 = [defaultManager fileExistsAtPath:v3];
 
   return v4;
 }
@@ -34,9 +34,9 @@
 + (__CFString)_homeMobileDirectoryPath
 {
   objc_opt_self();
-  v0 = [MEMORY[0x277CCAC38] processInfo];
-  v1 = [v0 environment];
-  v2 = [v1 objectForKeyedSubscript:@"SIMULATOR_SHARED_RESOURCES_DIRECTORY"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v2 = [environment objectForKeyedSubscript:@"SIMULATOR_SHARED_RESOURCES_DIRECTORY"];
 
   if (v2)
   {
@@ -81,15 +81,15 @@
   return v2;
 }
 
-- (HKMedicationsResolutionEngine)initWithAssetUrl:(id)a3
+- (HKMedicationsResolutionEngine)initWithAssetUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   v9.receiver = self;
   v9.super_class = HKMedicationsResolutionEngine;
   v5 = [(HKMedicationsResolutionEngine *)&v9 init];
   if (v5)
   {
-    v6 = [[HKMedicationsResolver alloc] initWithAssetUrl:v4];
+    v6 = [[HKMedicationsResolver alloc] initWithAssetUrl:urlCopy];
     [(HKMedicationsResolutionEngine *)v5 setResolver:v6];
 
     v7 = HKCreateSerialDispatchQueue();
@@ -99,18 +99,18 @@
   return v5;
 }
 
-- (void)resetResolverWithCompletionHandler:(id)a3
+- (void)resetResolverWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HKMedicationsResolutionEngine *)self queue];
+  handlerCopy = handler;
+  queue = [(HKMedicationsResolutionEngine *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HKMedicationsResolutionEngine_resetResolverWithCompletionHandler___block_invoke;
   v7[3] = &unk_2796D2A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __68__HKMedicationsResolutionEngine_resetResolverWithCompletionHandler___block_invoke(uint64_t a1)
@@ -123,21 +123,21 @@ void __68__HKMedicationsResolutionEngine_resetResolverWithCompletionHandler___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resolveMedicationsUsing:(id)a3 resultLimit:(int64_t)a4 completionHandler:(id)a5
+- (void)resolveMedicationsUsing:(id)using resultLimit:(int64_t)limit completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(HKMedicationsResolutionEngine *)self queue];
+  usingCopy = using;
+  handlerCopy = handler;
+  queue = [(HKMedicationsResolutionEngine *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__HKMedicationsResolutionEngine_resolveMedicationsUsing_resultLimit_completionHandler___block_invoke;
   block[3] = &unk_2796D2A30;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = usingCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = usingCopy;
+  dispatch_async(queue, block);
 }
 
 void __87__HKMedicationsResolutionEngine_resolveMedicationsUsing_resultLimit_completionHandler___block_invoke(uint64_t a1)
@@ -151,31 +151,31 @@ void __87__HKMedicationsResolutionEngine_resolveMedicationsUsing_resultLimit_com
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)hkctl_resolveMedicationsUsing:(id)a3 resultLimit:(int64_t)a4 error:(id *)a5
+- (id)hkctl_resolveMedicationsUsing:(id)using resultLimit:(int64_t)limit error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(HKMedicationsResolutionEngine *)self resolver];
-  v10 = [v9 resolveText:v8 error:a5];
+  usingCopy = using;
+  resolver = [(HKMedicationsResolutionEngine *)self resolver];
+  v10 = [resolver resolveText:usingCopy error:error];
 
   if (v10)
   {
     v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v11 = [v10 resolvedIds];
+    resolvedIds = [v10 resolvedIds];
     v32 = v10;
-    v33 = v8;
-    if ([v11 count] > a4)
+    v33 = usingCopy;
+    if ([resolvedIds count] > limit)
     {
-      v12 = [v11 subarrayWithRange:{0, a4}];
+      v12 = [resolvedIds subarrayWithRange:{0, limit}];
 
-      v11 = v12;
+      resolvedIds = v12;
     }
 
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v11;
+    obj = resolvedIds;
     v37 = [obj countByEnumeratingWithState:&v44 objects:v51 count:16];
     if (v37)
     {
@@ -207,8 +207,8 @@ void __87__HKMedicationsResolutionEngine_resolveMedicationsUsing_resultLimit_com
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v20 = [v14 subHgIds];
-          v21 = [v20 countByEnumeratingWithState:&v40 objects:v50 count:16];
+          subHgIds = [v14 subHgIds];
+          v21 = [subHgIds countByEnumeratingWithState:&v40 objects:v50 count:16];
           if (v21)
           {
             v22 = v21;
@@ -219,7 +219,7 @@ void __87__HKMedicationsResolutionEngine_resolveMedicationsUsing_resultLimit_com
               {
                 if (*v41 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(subHgIds);
                 }
 
                 v25 = *(*(&v40 + 1) + 8 * i);
@@ -235,7 +235,7 @@ void __87__HKMedicationsResolutionEngine_resolveMedicationsUsing_resultLimit_com
                 [v19 addObject:v29];
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v40 objects:v50 count:16];
+              v22 = [subHgIds countByEnumeratingWithState:&v40 objects:v50 count:16];
             }
 
             while (v22);
@@ -255,7 +255,7 @@ void __87__HKMedicationsResolutionEngine_resolveMedicationsUsing_resultLimit_com
     }
 
     v10 = v32;
-    v8 = v33;
+    usingCopy = v33;
   }
 
   else
@@ -268,26 +268,26 @@ void __87__HKMedicationsResolutionEngine_resolveMedicationsUsing_resultLimit_com
   return v36;
 }
 
-- (void)filter:(id)a3 transcripts:(id)a4 criterion:(float)a5 limit:(int64_t)a6 completionHandler:(id)a7
+- (void)filter:(id)filter transcripts:(id)transcripts criterion:(float)criterion limit:(int64_t)limit completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(HKMedicationsResolutionEngine *)self queue];
+  filterCopy = filter;
+  transcriptsCopy = transcripts;
+  handlerCopy = handler;
+  queue = [(HKMedicationsResolutionEngine *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __86__HKMedicationsResolutionEngine_filter_transcripts_criterion_limit_completionHandler___block_invoke;
   v19[3] = &unk_2796D2A58;
   v19[4] = self;
-  v20 = v12;
-  v24 = a5;
-  v22 = v14;
-  v23 = a6;
-  v21 = v13;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  dispatch_async(v15, v19);
+  v20 = filterCopy;
+  criterionCopy = criterion;
+  v22 = handlerCopy;
+  limitCopy = limit;
+  v21 = transcriptsCopy;
+  v16 = handlerCopy;
+  v17 = transcriptsCopy;
+  v18 = filterCopy;
+  dispatch_async(queue, v19);
 }
 
 void __86__HKMedicationsResolutionEngine_filter_transcripts_criterion_limit_completionHandler___block_invoke(uint64_t a1)

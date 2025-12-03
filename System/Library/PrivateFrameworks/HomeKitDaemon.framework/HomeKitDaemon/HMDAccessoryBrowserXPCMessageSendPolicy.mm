@@ -1,7 +1,7 @@
 @interface HMDAccessoryBrowserXPCMessageSendPolicy
-- (BOOL)canSendWithPolicyParameters:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDAccessoryBrowserXPCMessageSendPolicy)initWithRequiredEntitlements:(unint64_t)a3;
+- (BOOL)canSendWithPolicyParameters:(id)parameters;
+- (BOOL)isEqual:(id)equal;
+- (HMDAccessoryBrowserXPCMessageSendPolicy)initWithRequiredEntitlements:(unint64_t)entitlements;
 - (id)attributeDescriptions;
 @end
 
@@ -22,10 +22,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -34,9 +34,9 @@
   {
     v11.receiver = self;
     v11.super_class = HMDAccessoryBrowserXPCMessageSendPolicy;
-    if ([(HMDXPCMessageSendPolicy *)&v11 isEqual:v4])
+    if ([(HMDXPCMessageSendPolicy *)&v11 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -52,8 +52,8 @@
 
       if (v7)
       {
-        v8 = [(HMDAccessoryBrowserXPCMessageSendPolicy *)self requiredEntitlements];
-        v9 = v8 == [(HMDAccessoryBrowserXPCMessageSendPolicy *)v7 requiredEntitlements];
+        requiredEntitlements = [(HMDAccessoryBrowserXPCMessageSendPolicy *)self requiredEntitlements];
+        v9 = requiredEntitlements == [(HMDAccessoryBrowserXPCMessageSendPolicy *)v7 requiredEntitlements];
       }
 
       else
@@ -71,13 +71,13 @@
   return v9;
 }
 
-- (BOOL)canSendWithPolicyParameters:(id)a3
+- (BOOL)canSendWithPolicyParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = parametersCopy;
   }
 
   else
@@ -89,8 +89,8 @@
   v7 = v6;
   if (v6 && [v6 isBrowsing])
   {
-    v8 = [(HMDAccessoryBrowserXPCMessageSendPolicy *)self requiredEntitlements];
-    v9 = [v7 entitlements] & v8;
+    requiredEntitlements = [(HMDAccessoryBrowserXPCMessageSendPolicy *)self requiredEntitlements];
+    v9 = [v7 entitlements] & requiredEntitlements;
     v10 = v9 == [(HMDAccessoryBrowserXPCMessageSendPolicy *)self requiredEntitlements];
   }
 
@@ -102,14 +102,14 @@
   return v10;
 }
 
-- (HMDAccessoryBrowserXPCMessageSendPolicy)initWithRequiredEntitlements:(unint64_t)a3
+- (HMDAccessoryBrowserXPCMessageSendPolicy)initWithRequiredEntitlements:(unint64_t)entitlements
 {
   v5.receiver = self;
   v5.super_class = HMDAccessoryBrowserXPCMessageSendPolicy;
   result = [(HMDAccessoryBrowserXPCMessageSendPolicy *)&v5 init];
   if (result)
   {
-    result->_requiredEntitlements = a3 | 1;
+    result->_requiredEntitlements = entitlements | 1;
   }
 
   return result;

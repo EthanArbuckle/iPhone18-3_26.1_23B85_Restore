@@ -43,11 +43,11 @@
   [(SBFHomeGrabberSettings *)self setConstrainHitTestRectToSafeAreaInset:1];
   [(SBFHomeGrabberSettings *)self setHitTestOutsetTop:10.0];
   [(SBFHomeGrabberSettings *)self setHitTestOutsetSides:10.0];
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v8 = 0.0;
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v8 = 5.0;
   }
@@ -64,14 +64,14 @@
   [(SBFHomeGrabberSettings *)self setCoverSheetSuppressAnimationForPointerRightEdgeInset:-200.0];
   [(SBFHomeGrabberSettings *)self setBounceTranslation:2.0];
   [(SBFHomeGrabberSettings *)self setBounceReverseAnimationDelay:0.2];
-  v9 = [(SBFHomeGrabberSettings *)self bounceAnimationSettings];
-  [v9 setDefaultValues];
+  bounceAnimationSettings = [(SBFHomeGrabberSettings *)self bounceAnimationSettings];
+  [bounceAnimationSettings setDefaultValues];
 
-  v10 = [(SBFHomeGrabberSettings *)self bounceAnimationSettings];
-  [v10 setDampingRatio:0.375278];
+  bounceAnimationSettings2 = [(SBFHomeGrabberSettings *)self bounceAnimationSettings];
+  [bounceAnimationSettings2 setDampingRatio:0.375278];
 
-  v11 = [(SBFHomeGrabberSettings *)self bounceAnimationSettings];
-  [v11 setResponse:0.36276];
+  bounceAnimationSettings3 = [(SBFHomeGrabberSettings *)self bounceAnimationSettings];
+  [bounceAnimationSettings3 setResponse:0.36276];
 
   v12 = _UISolariumEnabled();
   if (v12)
@@ -104,52 +104,52 @@
     v15 = 3.0;
   }
 
-  v16 = [(SBFHomeGrabberSettings *)self hideAnimationSettings];
+  hideAnimationSettings = [(SBFHomeGrabberSettings *)self hideAnimationSettings];
   v17 = *MEMORY[0x1E69792B8];
   v18 = *(MEMORY[0x1E69792B8] + 4);
   v19 = *(MEMORY[0x1E69792B8] + 8);
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(v13, *MEMORY[0x1E69792B8], v18, v19, v16, v16, 0);
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(v13, *MEMORY[0x1E69792B8], v18, v19, hideAnimationSettings, hideAnimationSettings, 0);
 
-  v20 = [(SBFHomeGrabberSettings *)self unhideAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(v14, v17, v18, v19, v20, v20, 0);
+  unhideAnimationSettings = [(SBFHomeGrabberSettings *)self unhideAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(v14, v17, v18, v19, unhideAnimationSettings, unhideAnimationSettings, 0);
 
-  v21 = [(SBFHomeGrabberSettings *)self lumaResponseAnimationSettings];
+  lumaResponseAnimationSettings = [(SBFHomeGrabberSettings *)self lumaResponseAnimationSettings];
   v35 = CAFrameRateRangeMake(30.0, 120.0, 30.0);
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(v15, v35.minimum, v35.maximum, v35.preferred, v22, v21, 21);
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(v15, v35.minimum, v35.maximum, v35.preferred, v22, lumaResponseAnimationSettings, 21);
 
-  v23 = [(SBFHomeGrabberSettings *)self hideForHomeGestureOwnershipAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.25, v17, v18, v19, v23, v23, 0);
+  hideForHomeGestureOwnershipAnimationSettings = [(SBFHomeGrabberSettings *)self hideForHomeGestureOwnershipAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.25, v17, v18, v19, hideForHomeGestureOwnershipAnimationSettings, hideForHomeGestureOwnershipAnimationSettings, 0);
 
-  v24 = [(SBFHomeGrabberSettings *)self unhideForHomeGestureOwnershipAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.25, v17, v18, v19, v24, v24, 0);
+  unhideForHomeGestureOwnershipAnimationSettings = [(SBFHomeGrabberSettings *)self unhideForHomeGestureOwnershipAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.25, v17, v18, v19, unhideForHomeGestureOwnershipAnimationSettings, unhideForHomeGestureOwnershipAnimationSettings, 0);
 
-  v25 = [(SBFHomeGrabberSettings *)self thinToProminentAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.25, v17, v18, v19, v25, v25, 0);
+  thinToProminentAnimationSettings = [(SBFHomeGrabberSettings *)self thinToProminentAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.25, v17, v18, v19, thinToProminentAnimationSettings, thinToProminentAnimationSettings, 0);
 
-  v26 = [(SBFHomeGrabberSettings *)self prominentToThinAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.25, v17, v18, v19, v26, v26, 0);
+  prominentToThinAnimationSettings = [(SBFHomeGrabberSettings *)self prominentToThinAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.25, v17, v18, v19, prominentToThinAnimationSettings, prominentToThinAnimationSettings, 0);
 
-  v27 = [(SBFHomeGrabberSettings *)self forcedProminentToThinAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.6, v17, v18, v19, v27, v27, 0);
+  forcedProminentToThinAnimationSettings = [(SBFHomeGrabberSettings *)self forcedProminentToThinAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.6, v17, v18, v19, forcedProminentToThinAnimationSettings, forcedProminentToThinAnimationSettings, 0);
 
-  v28 = [(SBFHomeGrabberSettings *)self initialLumaResponseAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.5, v17, v18, v19, v28, v28, 0);
+  initialLumaResponseAnimationSettings = [(SBFHomeGrabberSettings *)self initialLumaResponseAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.5, v17, v18, v19, initialLumaResponseAnimationSettings, initialLumaResponseAnimationSettings, 0);
 
-  v29 = [(SBFHomeGrabberSettings *)self rotationFadeOutAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.1, v17, v18, v19, v29, v29, 0);
+  rotationFadeOutAnimationSettings = [(SBFHomeGrabberSettings *)self rotationFadeOutAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.1, v17, v18, v19, rotationFadeOutAnimationSettings, rotationFadeOutAnimationSettings, 0);
 
-  v30 = [(SBFHomeGrabberSettings *)self rotationFadeInAnimationSettings];
-  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.3, v17, v18, v19, v30, v30, 0);
+  rotationFadeInAnimationSettings = [(SBFHomeGrabberSettings *)self rotationFadeInAnimationSettings];
+  __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(0.3, v17, v18, v19, rotationFadeInAnimationSettings, rotationFadeInAnimationSettings, 0);
 
   [(SBFHomeGrabberSettings *)self setEdgeProtectOverride:0x7FFFFFFFFFFFFFFFLL];
-  v31 = [(SBFHomeGrabberSettings *)self edgeProtectAnimationSettings];
-  [v31 setDefaultValues];
+  edgeProtectAnimationSettings = [(SBFHomeGrabberSettings *)self edgeProtectAnimationSettings];
+  [edgeProtectAnimationSettings setDefaultValues];
 
-  v32 = [(SBFHomeGrabberSettings *)self edgeProtectAnimationSettings];
-  [v32 setResponse:0.444];
+  edgeProtectAnimationSettings2 = [(SBFHomeGrabberSettings *)self edgeProtectAnimationSettings];
+  [edgeProtectAnimationSettings2 setResponse:0.444];
 
-  v33 = [(SBFHomeGrabberSettings *)self edgeProtectAnimationSettings];
-  [v33 setDampingRatio:0.884];
+  edgeProtectAnimationSettings3 = [(SBFHomeGrabberSettings *)self edgeProtectAnimationSettings];
+  [edgeProtectAnimationSettings3 setDampingRatio:0.884];
 }
 
 void __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(double a1, float a2, float a3, float a4, uint64_t a5, void *a6, uint64_t a7)
@@ -195,8 +195,8 @@ void __42__SBFHomeGrabberSettings_setDefaultValues__block_invoke(double a1, floa
   v99[1] = *MEMORY[0x1E69E9840];
   v2 = SBFIsSAETappyHomeAffordanceAvailable();
   v3 = MEMORY[0x1E69C65E0];
-  v4 = [MEMORY[0x1E69C6648] action];
-  v5 = [v3 rowWithTitle:@"Restore Defaults" action:v4];
+  action = [MEMORY[0x1E69C6648] action];
+  v5 = [v3 rowWithTitle:@"Restore Defaults" action:action];
   v99[0] = v5;
   v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v99 count:1];
 

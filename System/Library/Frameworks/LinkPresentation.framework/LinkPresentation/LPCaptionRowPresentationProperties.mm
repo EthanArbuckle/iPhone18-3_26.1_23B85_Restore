@@ -5,7 +5,7 @@
 - (LPCaptionRowPresentationProperties)init;
 - (id)left;
 - (id)right;
-- (void)applyToAllCaptions:(id)a3;
+- (void)applyToAllCaptions:(id)captions;
 @end
 
 @implementation LPCaptionRowPresentationProperties
@@ -88,26 +88,26 @@
 
 - (BOOL)hasAnyContent
 {
-  v3 = [(LPCaptionPresentationProperties *)self->_leading text];
-  if ([v3 length])
+  text = [(LPCaptionPresentationProperties *)self->_leading text];
+  if ([text length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(LPCaptionPresentationProperties *)self->_trailing text];
-    v4 = [v5 length] != 0;
+    text2 = [(LPCaptionPresentationProperties *)self->_trailing text];
+    v4 = [text2 length] != 0;
   }
 
   return v4;
 }
 
-- (void)applyToAllCaptions:(id)a3
+- (void)applyToAllCaptions:(id)captions
 {
-  v4 = a3;
-  v4[2](v4, self->_leading);
-  v4[2](v4, self->_trailing);
+  captionsCopy = captions;
+  captionsCopy[2](captionsCopy, self->_leading);
+  captionsCopy[2](captionsCopy, self->_trailing);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MTMediaLibraryRestorePostflightUtil
 + (id)downloadCandidateMediaItems;
 + (id)postRestoreCandidateMediaItems;
-+ (id)uuidsByRemovingDownloadCandidatesFromEpisodeUuids:(id)a3;
++ (id)uuidsByRemovingDownloadCandidatesFromEpisodeUuids:(id)uuids;
 @end
 
 @implementation MTMediaLibraryRestorePostflightUtil
@@ -48,23 +48,23 @@
   return v8;
 }
 
-+ (id)uuidsByRemovingDownloadCandidatesFromEpisodeUuids:(id)a3
++ (id)uuidsByRemovingDownloadCandidatesFromEpisodeUuids:(id)uuids
 {
-  v4 = a3;
-  if ([v4 count])
+  uuidsCopy = uuids;
+  if ([uuidsCopy count])
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
     v22 = sub_1000089EC;
     v23 = sub_10003B4CC;
-    v5 = v4;
+    v5 = uuidsCopy;
     v24 = v5;
-    v6 = [a1 downloadCandidateMediaItems];
-    v7 = [v6 mt_compactMap:&stru_1004DA6E8];
+    downloadCandidateMediaItems = [self downloadCandidateMediaItems];
+    v7 = [downloadCandidateMediaItems mt_compactMap:&stru_1004DA6E8];
 
     v8 = +[MTDB sharedInstance];
-    v9 = [v8 mainOrPrivateContext];
+    mainOrPrivateContext = [v8 mainOrPrivateContext];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -72,7 +72,7 @@
     v14[3] = &unk_1004DA778;
     v18 = &v19;
     v15 = v5;
-    v10 = v9;
+    v10 = mainOrPrivateContext;
     v16 = v10;
     v11 = v7;
     v17 = v11;
@@ -84,7 +84,7 @@
 
   else
   {
-    v12 = v4;
+    v12 = uuidsCopy;
   }
 
   return v12;

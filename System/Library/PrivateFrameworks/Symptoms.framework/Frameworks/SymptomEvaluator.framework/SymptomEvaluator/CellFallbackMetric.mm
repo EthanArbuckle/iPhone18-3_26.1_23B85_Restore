@@ -1,7 +1,7 @@
 @interface CellFallbackMetric
 - (BOOL)postMetric;
 - (id)description;
-- (id)initCellFallbackMetricWithLevel:(int64_t)a3 policy:(unint64_t)a4 state:(id)a5;
+- (id)initCellFallbackMetricWithLevel:(int64_t)level policy:(unint64_t)policy state:(id)state;
 - (unsigned)_interestingTrigger;
 @end
 
@@ -23,8 +23,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(NSMutableSet *)self->_wifiIngressTriggers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allObjects = [(NSMutableSet *)self->_wifiIngressTriggers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -42,15 +42,15 @@
     {
       if (*v20 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allObjects);
       }
 
-      v10 = [*(*(&v19 + 1) + 8 * v9) unsignedIntValue];
+      unsignedIntValue = [*(*(&v19 + 1) + 8 * v9) unsignedIntValue];
       comingFromState = self->_comingFromState;
       advice = self->_advice;
       if (advice == 3)
       {
-        if (v10 == 33)
+        if (unsignedIntValue == 33)
         {
           v15 = 1;
         }
@@ -60,7 +60,7 @@
           v15 = 999;
         }
 
-        if (v10 == 32)
+        if (unsignedIntValue == 32)
         {
           v15 = 0;
         }
@@ -83,15 +83,15 @@
           goto LABEL_39;
         }
 
-        if (v10 <= 24)
+        if (unsignedIntValue <= 24)
         {
-          if (v10 == 7)
+          if (unsignedIntValue == 7)
           {
             v14 = 1;
             goto LABEL_40;
           }
 
-          if (v10 == 10)
+          if (unsignedIntValue == 10)
           {
             v14 = 0;
             goto LABEL_40;
@@ -102,9 +102,9 @@ LABEL_39:
           goto LABEL_40;
         }
 
-        if (v10 != 25)
+        if (unsignedIntValue != 25)
         {
-          if (v10 == 28)
+          if (unsignedIntValue == 28)
           {
             v14 = 3;
             goto LABEL_40;
@@ -118,7 +118,7 @@ LABEL_39:
 
       else
       {
-        if ((v10 - 21) >= 2)
+        if ((unsignedIntValue - 21) >= 2)
         {
           v13 = 999;
         }
@@ -128,17 +128,17 @@ LABEL_39:
           v13 = 3;
         }
 
-        if (v10 == 20)
+        if (unsignedIntValue == 20)
         {
           v13 = 1;
         }
 
-        if (v10 == 23)
+        if (unsignedIntValue == 23)
         {
           v13 = 2;
         }
 
-        if (v10 == 5)
+        if (unsignedIntValue == 5)
         {
           v13 = 0;
         }
@@ -162,7 +162,7 @@ LABEL_39:
 LABEL_40:
       if (v14 < v7)
       {
-        v6 = v10;
+        v6 = unsignedIntValue;
         v7 = v14;
       }
 
@@ -170,7 +170,7 @@ LABEL_40:
     }
 
     while (v5 != v9);
-    v16 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v16 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
     v5 = v16;
   }
 
@@ -181,18 +181,18 @@ LABEL_49:
   return v6;
 }
 
-- (id)initCellFallbackMetricWithLevel:(int64_t)a3 policy:(unint64_t)a4 state:(id)a5
+- (id)initCellFallbackMetricWithLevel:(int64_t)level policy:(unint64_t)policy state:(id)state
 {
-  v9 = a5;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = CellFallbackMetric;
   v10 = [(CellFallbackMetric *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_advice = a3;
-    v10->_policy = a4;
-    objc_storeStrong(&v10->_state, a5);
+    v10->_advice = level;
+    v10->_policy = policy;
+    objc_storeStrong(&v10->_state, state);
     v11->_adviceHeldForSecs = 0.0;
     v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
     wifiIngressTriggers = v11->_wifiIngressTriggers;
@@ -214,7 +214,7 @@ LABEL_49:
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_INFO, "CFSM Metric: About to post %{private}@ to CA", buf, 0xCu);
   }
 

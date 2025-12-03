@@ -1,69 +1,69 @@
 @interface REMAlarmDueDateDeltaAlertTrigger
-- (BOOL)isEqual:(id)a3;
-- (REMAlarmDueDateDeltaAlertTrigger)initWithCoder:(id)a3;
-- (REMAlarmDueDateDeltaAlertTrigger)initWithDueDateDelta:(id)a3 acknowledgedDate:(id)a4;
-- (REMAlarmDueDateDeltaAlertTrigger)initWithObjectID:(id)a3 dueDateDelta:(id)a4 acknowledgedDate:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (REMAlarmDueDateDeltaAlertTrigger)initWithCoder:(id)coder;
+- (REMAlarmDueDateDeltaAlertTrigger)initWithDueDateDelta:(id)delta acknowledgedDate:(id)date;
+- (REMAlarmDueDateDeltaAlertTrigger)initWithObjectID:(id)d dueDateDelta:(id)delta acknowledgedDate:(id)date;
 - (id)_deepCopy;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAlarmDueDateDeltaAlertTrigger
 
-- (REMAlarmDueDateDeltaAlertTrigger)initWithObjectID:(id)a3 dueDateDelta:(id)a4 acknowledgedDate:(id)a5
+- (REMAlarmDueDateDeltaAlertTrigger)initWithObjectID:(id)d dueDateDelta:(id)delta acknowledgedDate:(id)date
 {
-  v9 = a4;
-  v10 = a5;
+  deltaCopy = delta;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = REMAlarmDueDateDeltaAlertTrigger;
-  v11 = [(REMAlarmTrigger *)&v14 initWithObjectID:a3];
+  v11 = [(REMAlarmTrigger *)&v14 initWithObjectID:d];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dueDateDelta, a4);
-    objc_storeStrong(&v12->_acknowledgedDate, a5);
+    objc_storeStrong(&v11->_dueDateDelta, delta);
+    objc_storeStrong(&v12->_acknowledgedDate, date);
   }
 
   return v12;
 }
 
-- (REMAlarmDueDateDeltaAlertTrigger)initWithDueDateDelta:(id)a3 acknowledgedDate:(id)a4
+- (REMAlarmDueDateDeltaAlertTrigger)initWithDueDateDelta:(id)delta acknowledgedDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  deltaCopy = delta;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = REMAlarmDueDateDeltaAlertTrigger;
   v9 = [(REMAlarmTrigger *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dueDateDelta, a3);
-    objc_storeStrong(&v10->_acknowledgedDate, a4);
+    objc_storeStrong(&v9->_dueDateDelta, delta);
+    objc_storeStrong(&v10->_acknowledgedDate, date);
   }
 
   return v10;
 }
 
-- (REMAlarmDueDateDeltaAlertTrigger)initWithCoder:(id)a3
+- (REMAlarmDueDateDeltaAlertTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = REMAlarmDueDateDeltaAlertTrigger;
-  v5 = [(REMAlarmTrigger *)&v14 initWithCoder:v4];
+  v5 = [(REMAlarmTrigger *)&v14 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectForKey:@"dueDateDelta"];
+  v6 = [coderCopy decodeObjectForKey:@"dueDateDelta"];
   if (v6)
   {
     dueDateDelta = v5->_dueDateDelta;
     v5->_dueDateDelta = v6;
     v8 = v6;
 
-    v9 = [v4 decodeObjectForKey:@"acknowledgedDate"];
+    v9 = [coderCopy decodeObjectForKey:@"acknowledgedDate"];
     acknowledgedDate = v5->_acknowledgedDate;
     v5->_acknowledgedDate = v9;
 
@@ -87,40 +87,40 @@ LABEL_8:
 - (id)_deepCopy
 {
   v3 = [REMAlarmDueDateDeltaAlertTrigger alloc];
-  v4 = [(REMAlarmDueDateDeltaAlertTrigger *)self dueDateDelta];
-  v5 = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
-  v6 = [(REMAlarmDueDateDeltaAlertTrigger *)v3 initWithDueDateDelta:v4 acknowledgedDate:v5];
+  dueDateDelta = [(REMAlarmDueDateDeltaAlertTrigger *)self dueDateDelta];
+  acknowledgedDate = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
+  v6 = [(REMAlarmDueDateDeltaAlertTrigger *)v3 initWithDueDateDelta:dueDateDelta acknowledgedDate:acknowledgedDate];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ([(REMAlarmDueDateDeltaAlertTrigger *)v6 dueDateDelta], v7 = objc_claimAutoreleasedReturnValue(), [(REMAlarmDueDateDeltaAlertTrigger *)self dueDateDelta], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v7 == v8))
     {
-      v11 = [(REMAlarmDueDateDeltaAlertTrigger *)v6 acknowledgedDate];
-      v12 = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
-      if (v11 == v12)
+      acknowledgedDate = [(REMAlarmDueDateDeltaAlertTrigger *)v6 acknowledgedDate];
+      acknowledgedDate2 = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
+      if (acknowledgedDate == acknowledgedDate2)
       {
         v9 = 1;
       }
 
       else
       {
-        v13 = [(REMAlarmDueDateDeltaAlertTrigger *)v6 acknowledgedDate];
-        v14 = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
-        v9 = [v13 isEqual:v14];
+        acknowledgedDate3 = [(REMAlarmDueDateDeltaAlertTrigger *)v6 acknowledgedDate];
+        acknowledgedDate4 = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
+        v9 = [acknowledgedDate3 isEqual:acknowledgedDate4];
       }
     }
 
@@ -135,11 +135,11 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v3 = [(REMAlarmDueDateDeltaAlertTrigger *)self dueDateDelta];
-  v4 = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
-  v5 = [v4 hash];
+  dueDateDelta = [(REMAlarmDueDateDeltaAlertTrigger *)self dueDateDelta];
+  acknowledgedDate = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
+  v5 = [acknowledgedDate hash];
 
-  return v5 ^ v3;
+  return v5 ^ dueDateDelta;
 }
 
 - (id)description
@@ -148,24 +148,24 @@ LABEL_8:
   v9.receiver = self;
   v9.super_class = REMAlarmDueDateDeltaAlertTrigger;
   v4 = [(REMAlarmDueDateDeltaAlertTrigger *)&v9 description];
-  v5 = [(REMAlarmDueDateDeltaAlertTrigger *)self dueDateDelta];
-  v6 = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
-  v7 = [v3 stringWithFormat:@"%@ {dueDateDelta = %@ acknowledgedDate = %@;}", v4, v5, v6];;
+  dueDateDelta = [(REMAlarmDueDateDeltaAlertTrigger *)self dueDateDelta];
+  acknowledgedDate = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
+  v7 = [v3 stringWithFormat:@"%@ {dueDateDelta = %@ acknowledgedDate = %@;}", v4, dueDateDelta, acknowledgedDate];;
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = REMAlarmDueDateDeltaAlertTrigger;
-  v4 = a3;
-  [(REMAlarmTrigger *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(REMAlarmTrigger *)&v7 encodeWithCoder:coderCopy];
   v5 = [(REMAlarmDueDateDeltaAlertTrigger *)self dueDateDelta:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"dueDateDelta"];
+  [coderCopy encodeObject:v5 forKey:@"dueDateDelta"];
 
-  v6 = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
-  [v4 encodeObject:v6 forKey:@"acknowledgedDate"];
+  acknowledgedDate = [(REMAlarmDueDateDeltaAlertTrigger *)self acknowledgedDate];
+  [coderCopy encodeObject:acknowledgedDate forKey:@"acknowledgedDate"];
 }
 
 @end

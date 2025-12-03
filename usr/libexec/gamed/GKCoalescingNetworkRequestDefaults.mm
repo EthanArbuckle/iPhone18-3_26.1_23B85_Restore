@@ -1,19 +1,19 @@
 @interface GKCoalescingNetworkRequestDefaults
-+ (id)_updateRequestBody:(id)a3 newBody:(id)a4;
++ (id)_updateRequestBody:(id)body newBody:(id)newBody;
 @end
 
 @implementation GKCoalescingNetworkRequestDefaults
 
-+ (id)_updateRequestBody:(id)a3 newBody:(id)a4
++ (id)_updateRequestBody:(id)body newBody:(id)newBody
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 mutableCopy];
-  v8 = [NSPropertyListSerialization dataWithPropertyList:v5 format:100 options:0 error:0];
+  newBodyCopy = newBody;
+  bodyCopy = body;
+  v7 = [bodyCopy mutableCopy];
+  v8 = [NSPropertyListSerialization dataWithPropertyList:newBodyCopy format:100 options:0 error:0];
 
-  v9 = [v6 allHTTPHeaderFields];
+  allHTTPHeaderFields = [bodyCopy allHTTPHeaderFields];
 
-  if (v9)
+  if (allHTTPHeaderFields)
   {
     [v7 setValue:0 forHTTPHeaderField:@"Content-Encoding"];
   }

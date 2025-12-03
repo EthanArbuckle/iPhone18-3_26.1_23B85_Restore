@@ -4,10 +4,10 @@
 - (BOOL)isSafariProcess;
 - (BOOL)isSiriProcess;
 - (CGSize)_photoActionSize;
-- (CGSize)_photoSizeForIndex:(unint64_t)a3;
-- (CGSize)sizeForIndex:(unint64_t)a3;
+- (CGSize)_photoSizeForIndex:(unint64_t)index;
+- (CGSize)sizeForIndex:(unint64_t)index;
 - (MKPlaceCardPhotosControllerDelegate)photosControllerDelegate;
-- (MKPlacePhotosViewController)initWithMapItem:(id)a3 mode:(unint64_t)a4 options:(unint64_t)a5;
+- (MKPlacePhotosViewController)initWithMapItem:(id)item mode:(unint64_t)mode options:(unint64_t)options;
 - (_MKInfoCardAnalyticsDelegate)analyticsDelegate;
 - (_MKPlaceViewController)owner;
 - (id)_firstPartyMorePhotosAttributionString;
@@ -15,41 +15,41 @@
 - (id)formattedAttributionString;
 - (id)infoCardChildPossibleActions;
 - (unint64_t)numberOfBigAttributionViews;
-- (void)_adjustScrollIndexByOffset:(int64_t)a3;
+- (void)_adjustScrollIndexByOffset:(int64_t)offset;
 - (void)_applyCornerRadius;
 - (void)_cancelLoadPhotos;
-- (void)_catchScrollNotification:(id)a3;
+- (void)_catchScrollNotification:(id)notification;
 - (void)_createImageViews;
-- (void)_didBecomeActive:(id)a3;
-- (void)_didTapAttributionViewWithPresentingViewController:(id)a3 photoAttributionView:(id)a4;
+- (void)_didBecomeActive:(id)active;
+- (void)_didTapAttributionViewWithPresentingViewController:(id)controller photoAttributionView:(id)view;
 - (void)_loadPhotos;
-- (void)_logUGCAction:(int)a3;
-- (void)_photoSelected:(id)a3;
-- (void)_photoTappedAtIndex:(unint64_t)a3;
-- (void)_setContentVisibility:(int64_t)a3;
+- (void)_logUGCAction:(int)action;
+- (void)_photoSelected:(id)selected;
+- (void)_photoTappedAtIndex:(unint64_t)index;
+- (void)_setContentVisibility:(int64_t)visibility;
 - (void)_updateAlphaAttribution;
 - (void)_updateChevronVisibility;
-- (void)_updatePhotoBackgroundColor:(id)a3;
+- (void)_updatePhotoBackgroundColor:(id)color;
 - (void)addAttributionCell;
 - (void)dealloc;
-- (void)handleHover:(id)a3;
+- (void)handleHover:(id)hover;
 - (void)infoCardThemeChanged;
 - (void)layoutImages;
-- (void)lookAroundContainerView:(id)a3 didAddLookAroundView:(id)a4;
+- (void)lookAroundContainerView:(id)view didAddLookAroundView:(id)aroundView;
 - (void)openURL;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setHoverActive:(BOOL)a3;
-- (void)setShowsBottomHairline:(BOOL)a3;
-- (void)set_mapkit_contentVisibility:(int64_t)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setHoverActive:(BOOL)active;
+- (void)setShowsBottomHairline:(BOOL)hairline;
+- (void)set_mapkit_contentVisibility:(int64_t)visibility;
 - (void)updateAttributionCell;
-- (void)updateAttributionPositionWithOffset:(double)a3;
+- (void)updateAttributionPositionWithOffset:(double)offset;
 - (void)updateBottomHairlineVisibility;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MKPlacePhotosViewController
@@ -91,25 +91,25 @@
   [(MKPlacePhotosViewController *)self scrollViewDidScroll:self->_photosContainerScrollView];
 }
 
-- (void)_setContentVisibility:(int64_t)a3
+- (void)_setContentVisibility:(int64_t)visibility
 {
-  v5 = [(UIViewController *)self _mapkit_contentVisibility];
+  _mapkit_contentVisibility = [(UIViewController *)self _mapkit_contentVisibility];
   v12.receiver = self;
   v12.super_class = MKPlacePhotosViewController;
-  [(UIViewController *)&v12 set_mapkit_contentVisibility:a3];
-  if (v5 != a3)
+  [(UIViewController *)&v12 set_mapkit_contentVisibility:visibility];
+  if (_mapkit_contentVisibility != visibility)
   {
-    v6 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-    v7 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+    lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+    photosControllerDelegate = [(MKPlacePhotosViewController *)self photosControllerDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
-      v10 = [v9 shouldMoveLookAroundStorefrontViewForPlaceCardPhotosController:self];
+      photosControllerDelegate2 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+      v10 = [photosControllerDelegate2 shouldMoveLookAroundStorefrontViewForPlaceCardPhotosController:self];
 
       v11 = v10 ^ 1;
-      if (!v6)
+      if (!lookAroundViewIfPresent)
       {
         goto LABEL_11;
       }
@@ -118,7 +118,7 @@
     else
     {
       v11 = 0;
-      if (!v6)
+      if (!lookAroundViewIfPresent)
       {
 LABEL_11:
 
@@ -128,14 +128,14 @@ LABEL_11:
 
     if ((v11 & 1) == 0)
     {
-      if (a3 == 2)
+      if (visibility == 2)
       {
-        [v6 moveToStandOffView];
+        [lookAroundViewIfPresent moveToStandOffView];
       }
 
-      else if (a3 == 3)
+      else if (visibility == 3)
       {
-        [v6 moveToCloseUpView];
+        [lookAroundViewIfPresent moveToCloseUpView];
       }
     }
 
@@ -143,25 +143,25 @@ LABEL_11:
   }
 }
 
-- (void)set_mapkit_contentVisibility:(int64_t)a3
+- (void)set_mapkit_contentVisibility:(int64_t)visibility
 {
-  v5 = [(MKPlacePhotosViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(MKPlacePhotosViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 != 5)
+  if (userInterfaceIdiom != 5)
   {
 
-    [(MKPlacePhotosViewController *)self _setContentVisibility:a3];
+    [(MKPlacePhotosViewController *)self _setContentVisibility:visibility];
   }
 }
 
 - (id)infoCardChildPossibleActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_externalView)
   {
-    [v3 addObject:&unk_1F1611470];
+    [array addObject:&unk_1F1611470];
   }
 
   if ([(NSArray *)self->_photoViews count])
@@ -189,9 +189,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)_logUGCAction:(int)a3
+- (void)_logUGCAction:(int)action
 {
-  v3 = *&a3;
+  v3 = *&action;
   if ([(MKPlacePhotosViewController *)self isFirstParty])
   {
     v4 = MEMORY[0x1E69A1598];
@@ -200,89 +200,89 @@ LABEL_11:
   }
 }
 
-- (void)lookAroundContainerView:(id)a3 didAddLookAroundView:(id)a4
+- (void)lookAroundContainerView:(id)view didAddLookAroundView:(id)aroundView
 {
-  v10 = a4;
-  v5 = [(MKPlacePhotosViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  aroundViewCopy = aroundView;
+  traitCollection = [(MKPlacePhotosViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v7 = v10;
+    v7 = aroundViewCopy;
     goto LABEL_6;
   }
 
-  v8 = [(UIViewController *)self _mapkit_contentVisibility];
-  if (v8 == 2)
+  _mapkit_contentVisibility = [(UIViewController *)self _mapkit_contentVisibility];
+  if (_mapkit_contentVisibility == 2)
   {
-    [v10 moveToStandOffView];
+    [aroundViewCopy moveToStandOffView];
     goto LABEL_7;
   }
 
-  v9 = v8 == 3;
-  v7 = v10;
+  v9 = _mapkit_contentVisibility == 3;
+  v7 = aroundViewCopy;
   if (v9)
   {
 LABEL_6:
     [v7 moveToCloseUpView];
 LABEL_7:
-    v7 = v10;
+    v7 = aroundViewCopy;
   }
 }
 
-- (void)_didTapAttributionViewWithPresentingViewController:(id)a3 photoAttributionView:(id)a4
+- (void)_didTapAttributionViewWithPresentingViewController:(id)controller photoAttributionView:(id)view
 {
-  v21 = a3;
-  v6 = a4;
-  if (v6)
+  controllerCopy = controller;
+  viewCopy = view;
+  if (viewCopy)
   {
-    v7 = [(MKPlacePhotosViewController *)self analyticsDelegate];
-    if ([v6 type])
+    analyticsDelegate = [(MKPlacePhotosViewController *)self analyticsDelegate];
+    if ([viewCopy type])
     {
       if ([(MKPlacePhotosViewController *)self isFirstParty])
       {
-        [v7 infoCardAnalyticsDidSelectAction:6102 eventValue:@"photo slider" feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+        [analyticsDelegate infoCardAnalyticsDidSelectAction:6102 eventValue:@"photo slider" feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
       }
 
-      v8 = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
-      v9 = [v8 providerID];
-      v10 = [v6 mapItem];
-      v11 = [v10 _attribution];
-      v12 = [v11 providerID];
-      [v7 infoCardAnalyticsDidSelectAction:6023 eventValue:v9 feedbackDelegateSelector:0 actionRichProviderId:v12 classification:0];
+      _mapkit_preferredFirstPhotoVendor = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
+      providerID = [_mapkit_preferredFirstPhotoVendor providerID];
+      mapItem = [viewCopy mapItem];
+      _attribution = [mapItem _attribution];
+      providerID2 = [_attribution providerID];
+      [analyticsDelegate infoCardAnalyticsDidSelectAction:6023 eventValue:providerID feedbackDelegateSelector:0 actionRichProviderId:providerID2 classification:0];
 
-      v13 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
-      LOBYTE(v9) = objc_opt_respondsToSelector();
+      photosControllerDelegate = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+      LOBYTE(providerID) = objc_opt_respondsToSelector();
 
-      if ((v9 & 1) == 0)
+      if ((providerID & 1) == 0)
       {
         goto LABEL_11;
       }
 
-      v14 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
-      [v14 placeCardActionControllerDidSelectViewAllPhotos:0 presentingViewController:v21];
+      photosControllerDelegate2 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+      [photosControllerDelegate2 placeCardActionControllerDidSelectViewAllPhotos:0 presentingViewController:controllerCopy];
     }
 
     else
     {
-      v15 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+      photosControllerDelegate3 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        [v7 infoCardAnalyticsDidSelectAction:2147 eventValue:@"photo slider" feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
-        v14 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
-        [v14 placeCardActionControllerDidSelectAddPhoto:0 presentingViewController:v21 sourceView:v6];
+        [analyticsDelegate infoCardAnalyticsDidSelectAction:2147 eventValue:@"photo slider" feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+        photosControllerDelegate2 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+        [photosControllerDelegate2 placeCardActionControllerDidSelectAddPhoto:0 presentingViewController:controllerCopy sourceView:viewCopy];
       }
 
       else
       {
-        v14 = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
-        v17 = [v14 providerID];
-        v18 = [v6 mapItem];
-        v19 = [v18 _attribution];
-        v20 = [v19 providerID];
-        [v7 infoCardAnalyticsDidSelectAction:6025 eventValue:v17 feedbackDelegateSelector:174 actionRichProviderId:v20 classification:0];
+        photosControllerDelegate2 = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
+        providerID3 = [photosControllerDelegate2 providerID];
+        mapItem2 = [viewCopy mapItem];
+        _attribution2 = [mapItem2 _attribution];
+        providerID4 = [_attribution2 providerID];
+        [analyticsDelegate infoCardAnalyticsDidSelectAction:6025 eventValue:providerID3 feedbackDelegateSelector:174 actionRichProviderId:providerID4 classification:0];
       }
     }
 
@@ -290,12 +290,12 @@ LABEL_11:
   }
 }
 
-- (void)_photoTappedAtIndex:(unint64_t)a3
+- (void)_photoTappedAtIndex:(unint64_t)index
 {
-  v15 = [(MKPlacePhotosViewController *)self analyticsDelegate];
-  if ([(NSArray *)self->_photoViews count]> a3)
+  analyticsDelegate = [(MKPlacePhotosViewController *)self analyticsDelegate];
+  if ([(NSArray *)self->_photoViews count]> index)
   {
-    v5 = [(NSArray *)self->_photoViews objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_photoViews objectAtIndexedSubscript:index];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -315,15 +315,15 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+        photosControllerDelegate = [(MKPlacePhotosViewController *)self photosControllerDelegate];
         v7 = objc_opt_respondsToSelector();
 
         if (v7)
         {
-          v8 = [(NSArray *)self->_photos objectAtIndex:a3];
-          v9 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
-          v10 = [v8 photoID];
-          [v9 placeCardPhotosController:self didSelectViewPhotoWithID:v10 presentingViewController:self];
+          v8 = [(NSArray *)self->_photos objectAtIndex:index];
+          photosControllerDelegate2 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+          photoID = [v8 photoID];
+          [photosControllerDelegate2 placeCardPhotosController:self didSelectViewPhotoWithID:photoID presentingViewController:self];
         }
 
         else
@@ -341,43 +341,43 @@ LABEL_11:
           v11 = 6018;
         }
 
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a3];
-        v13 = [v8 attribution];
-        v14 = [v13 providerID];
-        [v15 infoCardAnalyticsDidSelectAction:v11 eventValue:v12 feedbackDelegateSelector:173 actionRichProviderId:v14 classification:0];
+        index = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", index];
+        attribution = [v8 attribution];
+        providerID = [attribution providerID];
+        [analyticsDelegate infoCardAnalyticsDidSelectAction:v11 eventValue:index feedbackDelegateSelector:173 actionRichProviderId:providerID classification:0];
       }
     }
   }
 }
 
-- (void)_photoSelected:(id)a3
+- (void)_photoSelected:(id)selected
 {
-  [a3 locationInView:self->_photosContainer];
+  [selected locationInView:self->_photosContainer];
   v5 = v4;
   v7 = v6;
   if (self->_externalView)
   {
-    v14 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+    lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
     [(MKLookAroundContainerView *)self->_lookAroundContainerView frame];
     v17.x = v5;
     v17.y = v7;
     if (CGRectContainsPoint(v18, v17))
     {
-      [v14 jumpToCloseUpView];
-      v8 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+      [lookAroundViewIfPresent jumpToCloseUpView];
+      photosControllerDelegate = [(MKPlacePhotosViewController *)self photosControllerDelegate];
       v9 = objc_opt_respondsToSelector();
 
       if (v9)
       {
-        v10 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
-        [v10 placeCardPhotosController:self enterLookAroundForMapItem:self->_mapItem lookAroundView:v14];
+        photosControllerDelegate2 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+        [photosControllerDelegate2 placeCardPhotosController:self enterLookAroundForMapItem:self->_mapItem lookAroundView:lookAroundViewIfPresent];
       }
 
       return;
     }
   }
 
-  v11 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+  photosControllerDelegate3 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
@@ -447,9 +447,9 @@ uint64_t __46__MKPlacePhotosViewController__photoSelected___block_invoke(uint64_
           v15 = [v9 urlForBestPhotoForSize:{v14, v14}];
           if (v15)
           {
-            v16 = [v8 image];
+            image = [v8 image];
 
-            if (!v16)
+            if (!image)
             {
               objc_initWeak(&location, self);
               v17 = +[MKAppImageManager sharedImageManager];
@@ -547,10 +547,10 @@ void __42__MKPlacePhotosViewController__loadPhotos__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_updatePhotoBackgroundColor:(id)a3
+- (void)_updatePhotoBackgroundColor:(id)color
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 normalBackgroundColor];
+  normalBackgroundColor = [color normalBackgroundColor];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -571,7 +571,7 @@ void __42__MKPlacePhotosViewController__loadPhotos__block_invoke(uint64_t a1, vo
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _mapkit_setBackgroundColor:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) _mapkit_setBackgroundColor:{normalBackgroundColor, v10}];
       }
 
       while (v7 != v9);
@@ -587,13 +587,13 @@ void __42__MKPlacePhotosViewController__loadPhotos__block_invoke(uint64_t a1, vo
   v6.receiver = self;
   v6.super_class = MKPlacePhotosViewController;
   [(UIViewController *)&v6 infoCardThemeChanged];
-  v3 = [(UIViewController *)self mk_theme];
-  [(MKPlacePhotosViewController *)self _updatePhotoBackgroundColor:v3];
+  mk_theme = [(UIViewController *)self mk_theme];
+  [(MKPlacePhotosViewController *)self _updatePhotoBackgroundColor:mk_theme];
 
   [(MKPlacePhotosViewController *)self updateAttributionCell];
-  v4 = [(UIViewController *)self mk_theme];
-  v5 = [v4 separatorLineColor];
-  [(UIView *)self->_bottomHairline setBackgroundColor:v5];
+  mk_theme2 = [(UIViewController *)self mk_theme];
+  separatorLineColor = [mk_theme2 separatorLineColor];
+  [(UIView *)self->_bottomHairline setBackgroundColor:separatorLineColor];
 }
 
 - (void)_updateChevronVisibility
@@ -648,23 +648,23 @@ uint64_t __55__MKPlacePhotosViewController__updateChevronVisibility__block_invok
   return [v5 setAlpha:v3];
 }
 
-- (void)setHoverActive:(BOOL)a3
+- (void)setHoverActive:(BOOL)active
 {
-  if (self->_hoverActive != a3)
+  if (self->_hoverActive != active)
   {
-    self->_hoverActive = a3;
+    self->_hoverActive = active;
     [(MKPlacePhotosViewController *)self _updateChevronVisibility];
   }
 }
 
-- (void)handleHover:(id)a3
+- (void)handleHover:(id)hover
 {
-  v4 = ([a3 state] - 1) < 2;
+  v4 = ([hover state] - 1) < 2;
 
   [(MKPlacePhotosViewController *)self setHoverActive:v4];
 }
 
-- (void)_adjustScrollIndexByOffset:(int64_t)a3
+- (void)_adjustScrollIndexByOffset:(int64_t)offset
 {
   [(UIScrollView *)self->_photosContainerScrollView frame];
   Width = CGRectGetWidth(v13);
@@ -672,7 +672,7 @@ uint64_t __55__MKPlacePhotosViewController__updateChevronVisibility__block_invok
   v7 = round(v6 / Width);
   [(UIScrollView *)self->_photosContainerScrollView contentSize];
   v9 = v8 - Width;
-  v10 = v7 + a3;
+  v10 = v7 + offset;
   if (v10 < 0.0)
   {
     v10 = 0.0;
@@ -756,16 +756,16 @@ uint64_t __55__MKPlacePhotosViewController__updateChevronVisibility__block_invok
   }
 }
 
-- (void)_catchScrollNotification:(id)a3
+- (void)_catchScrollNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   parentScrollView = self->_parentScrollView;
-  self->_parentScrollView = v4;
+  self->_parentScrollView = object;
 
   [(MKPlacePhotosViewController *)self _updateAlphaAttribution];
 }
 
-- (void)updateAttributionPositionWithOffset:(double)a3
+- (void)updateAttributionPositionWithOffset:(double)offset
 {
   photosSmallAttributionsView = self->_photosSmallAttributionsView;
   if (!photosSmallAttributionsView)
@@ -776,10 +776,10 @@ uint64_t __55__MKPlacePhotosViewController__updateChevronVisibility__block_invok
   [(UIView *)photosSmallAttributionsView intrinsicContentSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(MKPlacePhotosViewController *)self traitCollection];
-  v11 = [v10 userInterfaceIdiom];
+  traitCollection = [(MKPlacePhotosViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v11 == 5)
+  if (userInterfaceIdiom == 5)
   {
     externalView = self->_externalView;
     if (externalView)
@@ -796,8 +796,8 @@ uint64_t __55__MKPlacePhotosViewController__updateChevronVisibility__block_invok
 
   else
   {
-    v15 = [(MKPlacePhotosViewController *)self view];
-    [v15 directionalLayoutMargins];
+    view = [(MKPlacePhotosViewController *)self view];
+    [view directionalLayoutMargins];
     v17 = v16;
 
     v18 = self->_externalView;
@@ -815,14 +815,14 @@ uint64_t __55__MKPlacePhotosViewController__updateChevronVisibility__block_invok
     v14 = v17 + v20;
   }
 
-  v21 = [(MKPlacePhotosViewController *)self analyticsDelegate];
+  analyticsDelegate = [(MKPlacePhotosViewController *)self analyticsDelegate];
 
-  if (v21)
+  if (analyticsDelegate)
   {
     lastPhotoScrollOffset = self->_lastPhotoScrollOffset;
-    if (lastPhotoScrollOffset >= a3 || self->_photoScrollViewScrollingLeft)
+    if (lastPhotoScrollOffset >= offset || self->_photoScrollViewScrollingLeft)
     {
-      if (lastPhotoScrollOffset <= a3 || self->_photoScrollViewScrollingRight)
+      if (lastPhotoScrollOffset <= offset || self->_photoScrollViewScrollingRight)
       {
         goto LABEL_18;
       }
@@ -839,19 +839,19 @@ uint64_t __55__MKPlacePhotosViewController__updateChevronVisibility__block_invok
       v23 = 6048;
     }
 
-    v24 = [(MKPlacePhotosViewController *)self analyticsDelegate];
-    [v24 infoCardAnalyticsDidSelectAction:v23 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+    analyticsDelegate2 = [(MKPlacePhotosViewController *)self analyticsDelegate];
+    [analyticsDelegate2 infoCardAnalyticsDidSelectAction:v23 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
   }
 
 LABEL_18:
-  self->_lastPhotoScrollOffset = a3;
-  v25 = fmax(v14 - a3, 0.0) + 8.0;
+  self->_lastPhotoScrollOffset = offset;
+  v25 = fmax(v14 - offset, 0.0) + 8.0;
   [(UIScrollView *)self->_photosContainerScrollView frame];
   v26 = CGRectGetHeight(v32) - v9 + -8.0;
   if (self->_isRTL)
   {
-    v27 = [(MKPlacePhotosViewController *)self view];
-    [v27 frame];
+    view2 = [(MKPlacePhotosViewController *)self view];
+    [view2 frame];
     MaxX = CGRectGetMaxX(v33);
 
     v34.origin.x = v25;
@@ -876,16 +876,16 @@ LABEL_18:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v8 = a3;
-  [v8 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v5 = v4;
   if (self->_isRTL)
   {
-    [v8 contentSize];
+    [scrollCopy contentSize];
     v7 = v6 - v5;
-    [v8 frame];
+    [scrollCopy frame];
     v5 = v7 - CGRectGetWidth(v10);
   }
 
@@ -893,10 +893,10 @@ LABEL_18:
   [(MKPlacePhotosViewController *)self _updateChevronVisibility];
 }
 
-- (CGSize)_photoSizeForIndex:(unint64_t)a3
+- (CGSize)_photoSizeForIndex:(unint64_t)index
 {
-  v3 = a3 % 3;
-  if (self->_photosCount <= a3)
+  v3 = index % 3;
+  if (self->_photosCount <= index)
   {
     if (v3 == 2)
     {
@@ -921,7 +921,7 @@ LABEL_18:
 
   else if (v3)
   {
-    v6 = [(NSArray *)self->_photos objectAtIndexedSubscript:a3];
+    v6 = [(NSArray *)self->_photos objectAtIndexedSubscript:index];
     if (v3 == 1)
     {
       v7 = 1;
@@ -932,18 +932,18 @@ LABEL_18:
       v7 = -1;
     }
 
-    v8 = v7 + a3;
-    if (v7 + a3 >= [(NSArray *)self->_photos count])
+    v8 = v7 + index;
+    if (v7 + index >= [(NSArray *)self->_photos count])
     {
-      v9 = a3;
+      indexCopy = index;
     }
 
     else
     {
-      v9 = v8;
+      indexCopy = v8;
     }
 
-    v10 = [(NSArray *)self->_photos objectAtIndexedSubscript:v9];
+    v10 = [(NSArray *)self->_photos objectAtIndexedSubscript:indexCopy];
     if ([v6 format] == 2 && objc_msgSend(v10, "format") == 2)
     {
       v11 = 84.0;
@@ -959,16 +959,16 @@ LABEL_18:
 
   else
   {
-    v13 = [(NSArray *)self->_photos objectAtIndexedSubscript:a3];
-    v14 = [v13 format];
-    if (v14 == 2)
+    v13 = [(NSArray *)self->_photos objectAtIndexedSubscript:index];
+    format = [v13 format];
+    if (format == 2)
     {
       v12 = 226.5;
     }
 
     else
     {
-      v12 = dbl_1A30F7170[v14 == 1];
+      v12 = dbl_1A30F7170[format == 1];
     }
 
     v11 = 170.0;
@@ -1000,9 +1000,9 @@ LABEL_18:
   return result;
 }
 
-- (CGSize)sizeForIndex:(unint64_t)a3
+- (CGSize)sizeForIndex:(unint64_t)index
 {
-  if (self->_photosCount <= a3)
+  if (self->_photosCount <= index)
   {
     [(MKPlacePhotosViewController *)self _photoActionSize];
   }
@@ -1019,12 +1019,12 @@ LABEL_18:
 
 - (void)layoutImages
 {
-  v2 = self;
+  selfCopy = self;
   v70 = *MEMORY[0x1E69E9840];
   [(UIScrollView *)self->_photosContainerScrollView bounds];
   v4 = v3;
   v6 = v5;
-  if ([(NSArray *)v2->_photoViews count])
+  if ([(NSArray *)selfCopy->_photoViews count])
   {
     if (v6 == 0.0 || v4 == 0.0)
     {
@@ -1032,7 +1032,7 @@ LABEL_18:
     }
 
     v7 = *MEMORY[0x1E695F060];
-    if (v2->_externalView)
+    if (selfCopy->_externalView)
     {
       v8 = 170.0;
     }
@@ -1042,7 +1042,7 @@ LABEL_18:
       v8 = *(MEMORY[0x1E695F060] + 8);
     }
 
-    if (v2->_externalView)
+    if (selfCopy->_externalView)
     {
       v9 = 231.5;
     }
@@ -1052,7 +1052,7 @@ LABEL_18:
       v9 = 0.0;
     }
 
-    if (v2->_externalView)
+    if (selfCopy->_externalView)
     {
       v10 = 226.5;
     }
@@ -1065,7 +1065,7 @@ LABEL_18:
 
   else
   {
-    if (!v2->_externalView || v6 == 0.0 || v4 == 0.0)
+    if (!selfCopy->_externalView || v6 == 0.0 || v4 == 0.0)
     {
       return;
     }
@@ -1075,16 +1075,16 @@ LABEL_18:
     v8 = 170.0;
   }
 
-  if (!v2->_mode)
+  if (!selfCopy->_mode)
   {
     v58 = 1088;
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    p_isa = &v2->super.super.super.isa;
+    p_isa = &selfCopy->super.super.super.isa;
     v57 = 1024;
-    obj = v2->_photoViews;
+    obj = selfCopy->_photoViews;
     v18 = [(NSArray *)obj countByEnumeratingWithState:&v64 objects:v69 count:16];
     if (v18)
     {
@@ -1182,21 +1182,21 @@ LABEL_18:
       externalView = 0;
     }
 
-    v2 = p_isa;
+    selfCopy = p_isa;
     [p_isa[131] setHidden:0];
     [p_isa[129] setAlwaysBounceHorizontal:1];
     goto LABEL_63;
   }
 
-  [(UIScrollView *)v2->_photosContainerScrollView bounds];
+  [(UIScrollView *)selfCopy->_photosContainerScrollView bounds];
   Width = CGRectGetWidth(v71);
-  [(UIScrollView *)v2->_photosContainerScrollView bounds];
+  [(UIScrollView *)selfCopy->_photosContainerScrollView bounds];
   Height = CGRectGetHeight(v72);
-  externalView = v2->_externalView;
+  externalView = selfCopy->_externalView;
   v14 = (Width + -2.0) / 1.5;
   if (externalView)
   {
-    if (v2->_photosCount)
+    if (selfCopy->_photosCount)
     {
       v10 = (Width + -2.0) / 1.5;
     }
@@ -1216,8 +1216,8 @@ LABEL_18:
     v15 = 0.0;
   }
 
-  v35 = [(NSArray *)v2->_photoViews count];
-  photoViews = v2->_photoViews;
+  v35 = [(NSArray *)selfCopy->_photoViews count];
+  photoViews = selfCopy->_photoViews;
   if (v35 < 2)
   {
     if ([(NSArray *)photoViews count]!= 1)
@@ -1225,10 +1225,10 @@ LABEL_18:
       goto LABEL_52;
     }
 
-    v38 = [(NSArray *)v2->_photoViews objectAtIndexedSubscript:0];
+    v38 = [(NSArray *)selfCopy->_photoViews objectAtIndexedSubscript:0];
     [v38 setFrame:{v15, 0.0, Width, Height}];
 
-    [(NSArray *)v2->_photoViews objectAtIndexedSubscript:0];
+    [(NSArray *)selfCopy->_photoViews objectAtIndexedSubscript:0];
     externalView = v37 = externalView;
   }
 
@@ -1240,38 +1240,38 @@ LABEL_18:
 
 LABEL_52:
   v39 = Width + -2.0 - v14;
-  if ([(NSArray *)v2->_photoViews count]== 3)
+  if ([(NSArray *)selfCopy->_photoViews count]== 3)
   {
     Height = (Height + -2.0) * 0.5;
     v40 = v14 + v15 + 2.0;
-    v41 = [(NSArray *)v2->_photoViews objectAtIndexedSubscript:1];
+    v41 = [(NSArray *)selfCopy->_photoViews objectAtIndexedSubscript:1];
     [v41 setFrame:{v40, 0.0, v39, Height}];
 
     v42 = Height + 2.0;
     v43 = 2;
-    v44 = [(NSArray *)v2->_photoViews objectAtIndexedSubscript:2];
+    v44 = [(NSArray *)selfCopy->_photoViews objectAtIndexedSubscript:2];
 LABEL_56:
     [v44 setFrame:{v40, v42, v39, Height}];
 
-    v45 = [(NSArray *)v2->_photoViews objectAtIndexedSubscript:v43];
+    v45 = [(NSArray *)selfCopy->_photoViews objectAtIndexedSubscript:v43];
 
     externalView = v45;
     goto LABEL_57;
   }
 
-  if ([(NSArray *)v2->_photoViews count]== 2)
+  if ([(NSArray *)selfCopy->_photoViews count]== 2)
   {
     v40 = v14 + v15 + 2.0;
     v43 = 1;
-    v44 = [(NSArray *)v2->_photoViews objectAtIndexedSubscript:1];
+    v44 = [(NSArray *)selfCopy->_photoViews objectAtIndexedSubscript:1];
     v42 = 0.0;
     goto LABEL_56;
   }
 
 LABEL_57:
-  if (v2->_externalView)
+  if (selfCopy->_externalView)
   {
-    v46 = [(NSArray *)v2->_photoViews count]!= 0;
+    v46 = [(NSArray *)selfCopy->_photoViews count]!= 0;
   }
 
   else
@@ -1279,15 +1279,15 @@ LABEL_57:
     v46 = 0;
   }
 
-  [(UIScrollView *)v2->_photosContainerScrollView setAlwaysBounceHorizontal:v46];
+  [(UIScrollView *)selfCopy->_photosContainerScrollView setAlwaysBounceHorizontal:v46];
 LABEL_63:
-  [(UIView *)v2->_externalView setFrame:0.0, 0.0, v10, v8, v57, v58];
-  photosContainerScrollView = v2->_photosContainerScrollView;
+  [(UIView *)selfCopy->_externalView setFrame:0.0, 0.0, v10, v8, v57, v58];
+  photosContainerScrollView = selfCopy->_photosContainerScrollView;
   [externalView frame];
   MaxX = CGRectGetMaxX(v73);
-  [(UIScrollView *)v2->_photosContainerScrollView frame];
+  [(UIScrollView *)selfCopy->_photosContainerScrollView frame];
   [(UIScrollView *)photosContainerScrollView setContentSize:MaxX, CGRectGetHeight(v74)];
-  if (v2->_isRTL)
+  if (selfCopy->_isRTL)
   {
     [externalView frame];
     v49 = CGRectGetMaxX(v75);
@@ -1295,7 +1295,7 @@ LABEL_63:
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v50 = v2->_photoViews;
+    v50 = selfCopy->_photoViews;
     v51 = [(NSArray *)v50 countByEnumeratingWithState:&v60 objects:v68 count:16];
     if (v51)
     {
@@ -1321,15 +1321,15 @@ LABEL_63:
       while (v52);
     }
 
-    v56 = v2->_externalView;
+    v56 = selfCopy->_externalView;
     if (v56)
     {
       [(UIView *)v56 frame];
-      [(UIView *)v2->_externalView setFrame:v49 - CGRectGetMaxX(v77), v77.origin.y, v77.size.width, v77.size.height];
+      [(UIView *)selfCopy->_externalView setFrame:v49 - CGRectGetMaxX(v77), v77.origin.y, v77.size.width, v77.size.height];
     }
 
-    [(UIScrollView *)v2->_photosContainerScrollView frame];
-    [(UIScrollView *)v2->_photosContainerScrollView setContentOffset:v49 - CGRectGetWidth(v78), 0.0];
+    [(UIScrollView *)selfCopy->_photosContainerScrollView frame];
+    [(UIScrollView *)selfCopy->_photosContainerScrollView setContentOffset:v49 - CGRectGetWidth(v78), 0.0];
   }
 }
 
@@ -1357,11 +1357,11 @@ LABEL_63:
         }
 
         v9 = *(*(&v55 + 1) + 8 * i);
-        v10 = [v9 layer];
-        [v10 setCornerRadius:0.0];
+        layer = [v9 layer];
+        [layer setCornerRadius:0.0];
 
-        v11 = [v9 layer];
-        [v11 setMaskedCorners:0];
+        layer2 = [v9 layer];
+        [layer2 setMaskedCorners:0];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v55 objects:v59 count:16];
@@ -1374,32 +1374,32 @@ LABEL_63:
   if (externalView)
   {
     v13 = externalView;
-    v14 = [(UIView *)v13 layer];
-    [v14 setCornerRadius:4.0];
+    layer3 = [(UIView *)v13 layer];
+    [layer3 setCornerRadius:4.0];
 
-    v15 = [(UIView *)v13 layer];
-    [v15 setMaskedCorners:15];
+    layer4 = [(UIView *)v13 layer];
+    [layer4 setMaskedCorners:15];
 
     v16 = *MEMORY[0x1E69796E8];
-    v17 = [(UIView *)v13 layer];
+    layer5 = [(UIView *)v13 layer];
 
-    [v17 setCornerCurve:v16];
+    [layer5 setCornerCurve:v16];
   }
 
   if (v3)
   {
     if (v3 == 1)
     {
-      v18 = [(NSArray *)self->_photoViews firstObject];
-      v19 = [v18 layer];
-      [v19 setCornerRadius:4.0];
+      firstObject = [(NSArray *)self->_photoViews firstObject];
+      layer6 = [firstObject layer];
+      [layer6 setCornerRadius:4.0];
 
-      v20 = [v18 layer];
-      [v20 setMaskedCorners:15];
+      layer7 = [firstObject layer];
+      [layer7 setMaskedCorners:15];
 
       v21 = *MEMORY[0x1E69796E8];
-      v22 = [v18 layer];
-      [v22 setCornerCurve:v21];
+      layer8 = [firstObject layer];
+      [layer8 setCornerCurve:v21];
     }
 
     else
@@ -1408,127 +1408,127 @@ LABEL_63:
       photoViews = self->_photoViews;
       if (~(3 * (v3 / 3)) + v3 > 1)
       {
-        v18 = [(NSArray *)photoViews firstObject];
-        v25 = [v18 layer];
-        [v25 setCornerRadius:4.0];
+        firstObject = [(NSArray *)photoViews firstObject];
+        layer9 = [firstObject layer];
+        [layer9 setCornerRadius:4.0];
 
-        v26 = [v18 layer];
-        v27 = v26;
+        layer10 = [firstObject layer];
+        v27 = layer10;
         v28 = v3 - 2;
         if (isRTL)
         {
-          [v26 setMaskedCorners:10];
+          [layer10 setMaskedCorners:10];
 
           v21 = *MEMORY[0x1E69796E8];
-          v29 = [v18 layer];
-          [v29 setCornerCurve:v21];
+          layer11 = [firstObject layer];
+          [layer11 setCornerCurve:v21];
 
-          v22 = [(NSArray *)self->_photoViews objectAtIndexedSubscript:v28];
-          v30 = [v22 layer];
-          [v30 setCornerRadius:4.0];
+          layer8 = [(NSArray *)self->_photoViews objectAtIndexedSubscript:v28];
+          v22Layer = [layer8 layer];
+          [v22Layer setCornerRadius:4.0];
 
-          v31 = [v22 layer];
-          [v31 setMaskedCorners:1];
+          v22Layer2 = [layer8 layer];
+          [v22Layer2 setMaskedCorners:1];
 
-          v32 = [v22 layer];
-          [v32 setCornerCurve:v21];
+          v22Layer3 = [layer8 layer];
+          [v22Layer3 setCornerCurve:v21];
 
-          v33 = [(NSArray *)self->_photoViews lastObject];
-          v34 = [v33 layer];
-          [v34 setCornerRadius:4.0];
+          lastObject = [(NSArray *)self->_photoViews lastObject];
+          layer12 = [lastObject layer];
+          [layer12 setCornerRadius:4.0];
 
-          v35 = [v33 layer];
-          v36 = v35;
+          layer13 = [lastObject layer];
+          v36 = layer13;
           v37 = 4;
         }
 
         else
         {
-          [v26 setMaskedCorners:5];
+          [layer10 setMaskedCorners:5];
 
           v21 = *MEMORY[0x1E69796E8];
-          v43 = [v18 layer];
-          [v43 setCornerCurve:v21];
+          layer14 = [firstObject layer];
+          [layer14 setCornerCurve:v21];
 
-          v22 = [(NSArray *)self->_photoViews objectAtIndexedSubscript:v28];
-          v44 = [v22 layer];
-          [v44 setCornerRadius:4.0];
+          layer8 = [(NSArray *)self->_photoViews objectAtIndexedSubscript:v28];
+          v22Layer4 = [layer8 layer];
+          [v22Layer4 setCornerRadius:4.0];
 
-          v45 = [v22 layer];
-          [v45 setMaskedCorners:2];
+          v22Layer5 = [layer8 layer];
+          [v22Layer5 setMaskedCorners:2];
 
-          v46 = [v22 layer];
-          [v46 setCornerCurve:v21];
+          v22Layer6 = [layer8 layer];
+          [v22Layer6 setCornerCurve:v21];
 
-          v33 = [(NSArray *)self->_photoViews lastObject];
-          v47 = [v33 layer];
-          [v47 setCornerRadius:4.0];
+          lastObject = [(NSArray *)self->_photoViews lastObject];
+          layer15 = [lastObject layer];
+          [layer15 setCornerRadius:4.0];
 
-          v35 = [v33 layer];
-          v36 = v35;
+          layer13 = [lastObject layer];
+          v36 = layer13;
           v37 = 8;
         }
 
-        [v35 setMaskedCorners:{v37, v55}];
+        [layer13 setMaskedCorners:{v37, v55}];
 
-        v48 = [v33 layer];
-        [v48 setCornerCurve:v21];
+        layer16 = [lastObject layer];
+        [layer16 setCornerCurve:v21];
       }
 
       else
       {
         if (self->_isRTL)
         {
-          v18 = [(NSArray *)photoViews lastObject];
+          firstObject = [(NSArray *)photoViews lastObject];
           [(NSArray *)self->_photoViews firstObject];
         }
 
         else
         {
-          v18 = [(NSArray *)photoViews firstObject];
+          firstObject = [(NSArray *)photoViews firstObject];
           [(NSArray *)self->_photoViews lastObject];
         }
-        v22 = ;
-        v38 = [v18 layer];
-        [v38 setCornerRadius:4.0];
+        layer8 = ;
+        layer17 = [firstObject layer];
+        [layer17 setCornerRadius:4.0];
 
-        v39 = [v18 layer];
-        [v39 setMaskedCorners:5];
+        layer18 = [firstObject layer];
+        [layer18 setMaskedCorners:5];
 
         v21 = *MEMORY[0x1E69796E8];
-        v40 = [v18 layer];
-        [v40 setCornerCurve:v21];
+        layer19 = [firstObject layer];
+        [layer19 setCornerCurve:v21];
 
-        v41 = [v22 layer];
-        [v41 setCornerRadius:4.0];
+        v22Layer7 = [layer8 layer];
+        [v22Layer7 setCornerRadius:4.0];
 
-        v42 = [v22 layer];
-        [v42 setMaskedCorners:10];
+        v22Layer8 = [layer8 layer];
+        [v22Layer8 setMaskedCorners:10];
 
-        v33 = [v22 layer];
-        [v33 setCornerCurve:v21];
+        lastObject = [layer8 layer];
+        [lastObject setCornerCurve:v21];
       }
     }
 
     if ([(MKPlacePhotosViewController *)self numberOfBigAttributionViews]== 2)
     {
-      v49 = [(MKPhotoBigAttributionView *)self->_secondaryAttributionView layer];
-      [v49 setCornerRadius:4.0];
+      layer20 = [(MKPhotoBigAttributionView *)self->_secondaryAttributionView layer];
+      [layer20 setCornerRadius:4.0];
 
-      v50 = [(MKPhotoBigAttributionView *)self->_secondaryAttributionView layer];
-      [v50 setMaskedCorners:2];
+      layer21 = [(MKPhotoBigAttributionView *)self->_secondaryAttributionView layer];
+      [layer21 setMaskedCorners:2];
 
-      v51 = [(MKPhotoBigAttributionView *)self->_secondaryAttributionView layer];
-      [v51 setCornerCurve:v21];
+      layer22 = [(MKPhotoBigAttributionView *)self->_secondaryAttributionView layer];
+      [layer22 setCornerCurve:v21];
 
-      v52 = [(MKPhotoBigAttributionView *)self->_primaryAttributionView layer];
-      [v52 setCornerRadius:4.0];
+      layer23 = [(MKPhotoBigAttributionView *)self->_primaryAttributionView layer];
+      [layer23 setCornerRadius:4.0];
 
-      v53 = [(MKPhotoBigAttributionView *)self->_primaryAttributionView layer];
-      [v53 setMaskedCorners:8];
+      layer24 = [(MKPhotoBigAttributionView *)self->_primaryAttributionView layer];
+      [layer24 setMaskedCorners:8];
 
-      v54 = [(MKPhotoBigAttributionView *)self->_primaryAttributionView layer];
-      [v54 setCornerCurve:v21];
+      layer25 = [(MKPhotoBigAttributionView *)self->_primaryAttributionView layer];
+      [layer25 setCornerCurve:v21];
     }
   }
 }
@@ -1541,10 +1541,10 @@ LABEL_63:
   }
 
   v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:self->_photosCount];
-  v3 = [(MKPlacePhotosViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(MKPlacePhotosViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 5 && ([MEMORY[0x1E69A2478] modernManager], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isMuninEnabled"), v5, v6) && ((v7 = self->_options & 1, -[MKMapItem _hasLookAroundStorefront](self->_mapItem, "_hasLookAroundStorefront")) ? (v8 = v7 == 0) : (v8 = 0), v8))
+  if (userInterfaceIdiom == 5 && ([MEMORY[0x1E69A2478] modernManager], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isMuninEnabled"), v5, v6) && ((v7 = self->_options & 1, -[MKMapItem _hasLookAroundStorefront](self->_mapItem, "_hasLookAroundStorefront")) ? (v8 = v7 == 0) : (v8 = 0), v8))
   {
     WeakRetained = objc_loadWeakRetained(&self->_photosControllerDelegate);
     v25 = [WeakRetained lookAroundContainerForPlaceCardPhotosController:self];
@@ -1618,8 +1618,8 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if (([v20 BOOLForKey:@"MKPlacecardForceNativePhotoCarousel"] & 1) == 0)
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if (([standardUserDefaults BOOLForKey:@"MKPlacecardForceNativePhotoCarousel"] & 1) == 0)
   {
 
     goto LABEL_28;
@@ -1640,8 +1640,8 @@ LABEL_29:
   photoViews = self->_photoViews;
   self->_photoViews = v27;
 
-  v29 = [(UIViewController *)self mk_theme];
-  [(MKPlacePhotosViewController *)self _updatePhotoBackgroundColor:v29];
+  mk_theme = [(UIViewController *)self mk_theme];
+  [(MKPlacePhotosViewController *)self _updatePhotoBackgroundColor:mk_theme];
 
   [(MKPlacePhotosViewController *)self layoutImages];
   [(MKPlacePhotosViewController *)self _applyCornerRadius];
@@ -1649,38 +1649,38 @@ LABEL_29:
 
 - (void)openURL
 {
-  v6 = [(MKPlacePhotosViewController *)self analyticsDelegate];
-  if (v6)
+  analyticsDelegate = [(MKPlacePhotosViewController *)self analyticsDelegate];
+  if (analyticsDelegate)
   {
-    [v6 infoCardAnalyticsDidSelectAction:6023 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+    [analyticsDelegate infoCardAnalyticsDidSelectAction:6023 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
   }
 
-  v3 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+  photosControllerDelegate = [(MKPlacePhotosViewController *)self photosControllerDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
-    [v5 placeCardActionControllerDidSelectViewAllPhotos:0 presentingViewController:self];
+    photosControllerDelegate2 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+    [photosControllerDelegate2 placeCardActionControllerDidSelectViewAllPhotos:0 presentingViewController:self];
   }
 }
 
 - (id)attributionString
 {
   mapItem = self->_mapItem;
-  v4 = [(MKMapItem *)mapItem _mapkit_preferredFirstPhotoVendor];
+  _mapkit_preferredFirstPhotoVendor = [(MKMapItem *)mapItem _mapkit_preferredFirstPhotoVendor];
   v5 = _MKLocalizedStringFromThisBundle(@"More Photos on %@");
   v6 = _MKLocalizedStringFromThisBundle(@"More Photos on %@");
-  v7 = [(UIViewController *)self mk_theme];
-  if ([v7 isDarkTheme])
+  mk_theme = [(UIViewController *)self mk_theme];
+  if ([mk_theme isDarkTheme])
   {
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    v9 = [(MKMapItem *)mapItem _attributionFor:v4 sourceStringFormat:v5 moreSourceStringFormat:v6 imageTintColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v9 = [(MKMapItem *)mapItem _attributionFor:_mapkit_preferredFirstPhotoVendor sourceStringFormat:v5 moreSourceStringFormat:v6 imageTintColor:whiteColor];
   }
 
   else
   {
-    v9 = [(MKMapItem *)mapItem _attributionFor:v4 sourceStringFormat:v5 moreSourceStringFormat:v6 imageTintColor:0];
+    v9 = [(MKMapItem *)mapItem _attributionFor:_mapkit_preferredFirstPhotoVendor sourceStringFormat:v5 moreSourceStringFormat:v6 imageTintColor:0];
   }
 
   return v9;
@@ -1709,9 +1709,9 @@ LABEL_29:
   [v3 addAttribute:v15 value:v16 range:{0, v14}];
 
   v17 = *MEMORY[0x1E69DB650];
-  v18 = [(UIViewController *)self mk_theme];
-  v19 = [v18 tintColor];
-  [v3 addAttribute:v17 value:v19 range:{0, v14}];
+  mk_theme = [(UIViewController *)self mk_theme];
+  tintColor = [mk_theme tintColor];
+  [v3 addAttribute:v17 value:tintColor range:{0, v14}];
 
   return v3;
 }
@@ -1719,20 +1719,20 @@ LABEL_29:
 - (id)formattedAttributionString
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MKPlacePhotosViewController *)self attributionString];
-  v4 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-  v5 = [v4 mutableCopy];
+  attributionString = [(MKPlacePhotosViewController *)self attributionString];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+  v5 = [defaultParagraphStyle mutableCopy];
 
   [v5 setAlignment:4];
-  v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v3];
+  v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:attributionString];
   v7 = *MEMORY[0x1E69DB688];
   v14[0] = v5;
   v8 = *MEMORY[0x1E69DB650];
   v13[0] = v7;
   v13[1] = v8;
-  v9 = [(UIViewController *)self mk_theme];
-  v10 = [v9 tintColor];
-  v14[1] = v10;
+  mk_theme = [(UIViewController *)self mk_theme];
+  tintColor = [mk_theme tintColor];
+  v14[1] = tintColor;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   [v6 addAttributes:v11 range:{0, objc_msgSend(v6, "length")}];
 
@@ -1744,8 +1744,8 @@ LABEL_29:
   attributionCell = self->_attributionCell;
   if (attributionCell)
   {
-    v3 = [(MKPlacePhotosViewController *)self formattedAttributionString];
-    [(MKPlaceAttributionCell *)attributionCell setAttributionString:v3];
+    formattedAttributionString = [(MKPlacePhotosViewController *)self formattedAttributionString];
+    [(MKPlaceAttributionCell *)attributionCell setAttributionString:formattedAttributionString];
   }
 }
 
@@ -1760,8 +1760,8 @@ LABEL_29:
 
     [(MKPlaceAttributionCell *)self->_attributionCell setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MKPlaceAttributionCell *)self->_attributionCell setCellDelegate:self];
-    v6 = [(MKPlacePhotosViewController *)self view];
-    [v6 addSubview:self->_attributionCell];
+    view = [(MKPlacePhotosViewController *)self view];
+    [view addSubview:self->_attributionCell];
 
     [(MKPlacePhotosViewController *)self updateAttributionCell];
   }
@@ -1772,21 +1772,21 @@ LABEL_29:
   if ([(MKPlacePhotosViewController *)self showsBottomHairline])
   {
     [(UIView *)self->_bottomHairline setHidden:0];
-    v12 = [(MKPlacePhotosViewController *)self view];
-    v3 = [v12 window];
-    v4 = [v3 screen];
-    if (v4)
+    view = [(MKPlacePhotosViewController *)self view];
+    window = [view window];
+    screen = [window screen];
+    if (screen)
     {
-      v5 = [v12 window];
-      v6 = [v5 screen];
-      [v6 nativeScale];
+      window2 = [view window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
       v8 = v7;
     }
 
     else
     {
-      v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v5 nativeScale];
+      window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [window2 nativeScale];
       v8 = v10;
     }
 
@@ -1808,11 +1808,11 @@ LABEL_29:
   }
 }
 
-- (void)setShowsBottomHairline:(BOOL)a3
+- (void)setShowsBottomHairline:(BOOL)hairline
 {
-  if (self->_showsBottomHairline != a3)
+  if (self->_showsBottomHairline != hairline)
   {
-    self->_showsBottomHairline = a3;
+    self->_showsBottomHairline = hairline;
     [(MKPlacePhotosViewController *)self updateBottomHairlineVisibility];
   }
 }
@@ -1824,14 +1824,14 @@ LABEL_29:
   [(MKPlacePhotosViewController *)&v2 dealloc];
 }
 
-- (void)_didBecomeActive:(id)a3
+- (void)_didBecomeActive:(id)active
 {
   if ([(MKPlacePhotosViewController *)self isViewLoaded])
   {
-    v4 = [(MKPlacePhotosViewController *)self view];
-    v5 = [v4 window];
+    view = [(MKPlacePhotosViewController *)self view];
+    window = [view window];
 
-    if (v5)
+    if (window)
     {
 
       [(MKPlacePhotosViewController *)self _loadPhotos];
@@ -1839,50 +1839,50 @@ LABEL_29:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MKPlacePhotosViewController;
-  [(MKPlacePhotosViewController *)&v5 viewWillDisappear:a3];
+  [(MKPlacePhotosViewController *)&v5 viewWillDisappear:disappear];
   self->_isDisappearing = 1;
   [(MKPlacePhotosViewController *)self _cancelLoadPhotos];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"MKStackingScrollNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"MKStackingScrollNotification" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MKPlacePhotosViewController;
-  [(MKPlacePhotosViewController *)&v5 viewWillAppear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MKPlacePhotosViewControllerWillDisplayPhotos" object:self];
+  [(MKPlacePhotosViewController *)&v5 viewWillAppear:appear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MKPlacePhotosViewControllerWillDisplayPhotos" object:self];
 
   self->_isDisappearing = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = MKPlacePhotosViewController;
-  [(MKPlacePhotosViewController *)&v18 viewDidAppear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__catchScrollNotification_ name:@"MKStackingScrollNotification" object:0];
+  [(MKPlacePhotosViewController *)&v18 viewDidAppear:appear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__catchScrollNotification_ name:@"MKStackingScrollNotification" object:0];
 
-  v5 = [(MKPlacePhotosViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(MKPlacePhotosViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   lookAroundContainerView = self->_lookAroundContainerView;
   mapItem = self->_mapItem;
-  v9 = v6 == 5 || [(UIViewController *)self _mapkit_contentVisibility]== 3;
+  v9 = userInterfaceIdiom == 5 || [(UIViewController *)self _mapkit_contentVisibility]== 3;
   [(MKLookAroundContainerView *)lookAroundContainerView setMapItem:mapItem wantsCloseUpView:v9];
-  v10 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-  v11 = v10;
-  if (v10)
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+  v11 = lookAroundViewIfPresent;
+  if (lookAroundViewIfPresent)
   {
     v19 = @"MKLookAroundView";
-    v20[0] = v10;
+    v20[0] = lookAroundViewIfPresent;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   }
 
@@ -1891,8 +1891,8 @@ LABEL_29:
     v12 = 0;
   }
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v13 postNotificationName:@"MKPlacePhotosViewControllerDidDisplayPhotos" object:self userInfo:v12];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"MKPlacePhotosViewControllerDidDisplayPhotos" object:self userInfo:v12];
 
   if (self->_initialAppearanceSignpostID != -1)
   {
@@ -1922,8 +1922,8 @@ LABEL_29:
   v167.receiver = self;
   v167.super_class = MKPlacePhotosViewController;
   [(MKPlacePhotosViewController *)&v167 viewDidLoad];
-  v4 = [(MKPlacePhotosViewController *)self view];
-  [v4 setPreservesSuperviewLayoutMargins:1];
+  view = [(MKPlacePhotosViewController *)self view];
+  [view setPreservesSuperviewLayoutMargins:1];
 
   v5 = objc_alloc(MEMORY[0x1E69DCEF8]);
   v6 = *MEMORY[0x1E695F058];
@@ -1939,15 +1939,15 @@ LABEL_29:
   [(UIScrollView *)self->_photosContainerScrollView setAlwaysBounceVertical:0];
   [(UIScrollView *)self->_photosContainerScrollView setShowsHorizontalScrollIndicator:0];
   [(UIScrollView *)self->_photosContainerScrollView setShowsVerticalScrollIndicator:0];
-  v12 = [(MKPlacePhotosViewController *)self traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [(MKPlacePhotosViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v14 = self->_photosContainerScrollView;
-  if (v13 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [(UIScrollView *)v14 setClipsToBounds:1];
-    v15 = [(UIScrollView *)self->_photosContainerScrollView layer];
-    [v15 setCornerRadius:4.0];
+    layer = [(UIScrollView *)self->_photosContainerScrollView layer];
+    [layer setCornerRadius:4.0];
   }
 
   else
@@ -1956,10 +1956,10 @@ LABEL_29:
   }
 
   objc_storeStrong(&self->_photosContainer, self->_photosContainerScrollView);
-  v16 = [(MKPlacePhotosViewController *)self traitCollection];
-  v17 = [v16 userInterfaceIdiom];
+  traitCollection2 = [(MKPlacePhotosViewController *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v17 == 5)
+  if (userInterfaceIdiom2 == 5)
   {
     v18 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v6, v7, v8, v9}];
     attributionClippingview = self->_attributionClippingview;
@@ -1971,21 +1971,21 @@ LABEL_29:
 
   [(UIScrollView *)self->_photosContainerScrollView setPreservesSuperviewLayoutMargins:1];
   [(UIScrollView *)self->_photosContainerScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v20 = [(MKPlacePhotosViewController *)self view];
-  [v20 addSubview:self->_photosContainerScrollView];
+  view2 = [(MKPlacePhotosViewController *)self view];
+  [view2 addSubview:self->_photosContainerScrollView];
 
   if (self->_attributionClippingview)
   {
-    v21 = [(MKPlacePhotosViewController *)self view];
-    [v21 addSubview:self->_attributionClippingview];
+    view3 = [(MKPlacePhotosViewController *)self view];
+    [view3 addSubview:self->_attributionClippingview];
   }
 
-  v22 = [MEMORY[0x1E695DF70] array];
-  v23 = [(MKPlacePhotosViewController *)self traitCollection];
-  v24 = [v23 userInterfaceIdiom];
+  array = [MEMORY[0x1E695DF70] array];
+  traitCollection3 = [(MKPlacePhotosViewController *)self traitCollection];
+  userInterfaceIdiom3 = [traitCollection3 userInterfaceIdiom];
 
-  v166 = v22;
-  if (v24 == 5)
+  v166 = array;
+  if (userInterfaceIdiom3 == 5)
   {
     v25 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.compact.left"];
     v26 = [MEMORY[0x1E69DC738] buttonWithType:0];
@@ -1993,8 +1993,8 @@ LABEL_29:
     self->_previousPageButton = v26;
 
     [(UIButton *)self->_previousPageButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v28 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(UIButton *)self->_previousPageButton setTintColor:v28];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(UIButton *)self->_previousPageButton setTintColor:systemGrayColor];
 
     [(UIButton *)self->_previousPageButton setAlpha:0.0];
     v162 = v25;
@@ -2004,8 +2004,8 @@ LABEL_29:
     [(UIButton *)v29 setPreferredSymbolConfiguration:v30 forImageInState:0];
 
     [(UIButton *)self->_previousPageButton addTarget:self action:sel__scrollPrevious forControlEvents:64];
-    v31 = [(MKPlacePhotosViewController *)self view];
-    [v31 addSubview:self->_previousPageButton];
+    view4 = [(MKPlacePhotosViewController *)self view];
+    [view4 addSubview:self->_previousPageButton];
 
     v32 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.compact.right"];
     v33 = [MEMORY[0x1E69DC738] buttonWithType:0];
@@ -2013,8 +2013,8 @@ LABEL_29:
     self->_nextPageButton = v33;
 
     [(UIButton *)self->_nextPageButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v35 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(UIButton *)self->_nextPageButton setTintColor:v35];
+    systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(UIButton *)self->_nextPageButton setTintColor:systemGrayColor2];
 
     [(UIButton *)self->_nextPageButton setAlpha:0.0];
     v160 = v32;
@@ -2024,33 +2024,33 @@ LABEL_29:
     [(UIButton *)v36 setPreferredSymbolConfiguration:v37 forImageInState:0];
 
     [(UIButton *)self->_nextPageButton addTarget:self action:sel__scrollNext forControlEvents:64];
-    v38 = [(MKPlacePhotosViewController *)self view];
-    [v38 addSubview:self->_nextPageButton];
+    view5 = [(MKPlacePhotosViewController *)self view];
+    [view5 addSubview:self->_nextPageButton];
 
-    v158 = [(UIView *)self->_attributionClippingview centerXAnchor];
-    v155 = [(UIScrollView *)self->_photosContainerScrollView centerXAnchor];
-    v152 = [v158 constraintEqualToAnchor:v155];
+    centerXAnchor = [(UIView *)self->_attributionClippingview centerXAnchor];
+    centerXAnchor2 = [(UIScrollView *)self->_photosContainerScrollView centerXAnchor];
+    v152 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v174[0] = v152;
-    v149 = [(UIView *)self->_attributionClippingview centerYAnchor];
-    v147 = [(UIScrollView *)self->_photosContainerScrollView centerYAnchor];
-    v145 = [v149 constraintEqualToAnchor:v147];
+    centerYAnchor = [(UIView *)self->_attributionClippingview centerYAnchor];
+    centerYAnchor2 = [(UIScrollView *)self->_photosContainerScrollView centerYAnchor];
+    v145 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v174[1] = v145;
-    v142 = [(UIView *)self->_attributionClippingview heightAnchor];
-    v140 = [(UIScrollView *)self->_photosContainerScrollView heightAnchor];
-    v138 = [v142 constraintEqualToAnchor:v140];
+    heightAnchor = [(UIView *)self->_attributionClippingview heightAnchor];
+    heightAnchor2 = [(UIScrollView *)self->_photosContainerScrollView heightAnchor];
+    v138 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v174[2] = v138;
-    v136 = [(UIView *)self->_attributionClippingview widthAnchor];
-    v134 = [(UIScrollView *)self->_photosContainerScrollView widthAnchor];
-    v133 = [v136 constraintEqualToAnchor:v134];
+    widthAnchor = [(UIView *)self->_attributionClippingview widthAnchor];
+    widthAnchor2 = [(UIScrollView *)self->_photosContainerScrollView widthAnchor];
+    v133 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v174[3] = v133;
-    v39 = [(UIButton *)self->_previousPageButton centerYAnchor];
-    v40 = [(UIScrollView *)self->_photosContainerScrollView centerYAnchor];
-    [v39 constraintEqualToAnchor:v40];
-    v42 = v41 = v22;
+    centerYAnchor3 = [(UIButton *)self->_previousPageButton centerYAnchor];
+    centerYAnchor4 = [(UIScrollView *)self->_photosContainerScrollView centerYAnchor];
+    [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    v42 = v41 = array;
     v174[4] = v42;
-    v43 = [(UIButton *)self->_nextPageButton centerYAnchor];
-    v44 = [(UIScrollView *)self->_photosContainerScrollView centerYAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    centerYAnchor5 = [(UIButton *)self->_nextPageButton centerYAnchor];
+    centerYAnchor6 = [(UIScrollView *)self->_photosContainerScrollView centerYAnchor];
+    v45 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v174[5] = v45;
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v174 count:6];
     [v41 addObjectsFromArray:v46];
@@ -2058,56 +2058,56 @@ LABEL_29:
     v47 = self->_previousPageButton;
     if (self->_isRTL)
     {
-      v48 = [(UIButton *)v47 leadingAnchor];
-      v49 = [(UIScrollView *)self->_photosContainerScrollView trailingAnchor];
-      v50 = [v48 constraintEqualToAnchor:v49 constant:3.0];
+      leadingAnchor = [(UIButton *)v47 leadingAnchor];
+      trailingAnchor = [(UIScrollView *)self->_photosContainerScrollView trailingAnchor];
+      v50 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:3.0];
       v173[0] = v50;
-      v51 = [(UIButton *)self->_nextPageButton trailingAnchor];
-      v52 = [(UIScrollView *)self->_photosContainerScrollView leadingAnchor];
-      v53 = [v51 constraintEqualToAnchor:v52 constant:-3.0];
+      trailingAnchor2 = [(UIButton *)self->_nextPageButton trailingAnchor];
+      leadingAnchor2 = [(UIScrollView *)self->_photosContainerScrollView leadingAnchor];
+      v53 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor2 constant:-3.0];
       v173[1] = v53;
       v54 = v173;
     }
 
     else
     {
-      v48 = [(UIButton *)v47 trailingAnchor];
-      v49 = [(UIScrollView *)self->_photosContainerScrollView leadingAnchor];
-      v50 = [v48 constraintEqualToAnchor:v49 constant:-3.0];
+      leadingAnchor = [(UIButton *)v47 trailingAnchor];
+      trailingAnchor = [(UIScrollView *)self->_photosContainerScrollView leadingAnchor];
+      v50 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:-3.0];
       v172[0] = v50;
-      v51 = [(UIButton *)self->_nextPageButton leadingAnchor];
-      v52 = [(UIScrollView *)self->_photosContainerScrollView trailingAnchor];
-      v53 = [v51 constraintEqualToAnchor:v52 constant:3.0];
+      trailingAnchor2 = [(UIButton *)self->_nextPageButton leadingAnchor];
+      leadingAnchor2 = [(UIScrollView *)self->_photosContainerScrollView trailingAnchor];
+      v53 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor2 constant:3.0];
       v172[1] = v53;
       v54 = v172;
     }
 
     v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
-    v22 = v166;
+    array = v166;
     [v166 addObjectsFromArray:v55];
   }
 
   v56 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:self action:sel_handleHover_];
-  v57 = [(MKPlacePhotosViewController *)self view];
+  view6 = [(MKPlacePhotosViewController *)self view];
   v164 = v56;
-  [v57 addGestureRecognizer:v56];
+  [view6 addGestureRecognizer:v56];
 
   v58 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__photoSelected_];
-  v59 = [(MKPlacePhotosViewController *)self view];
+  view7 = [(MKPlacePhotosViewController *)self view];
   v163 = v58;
-  [v59 addGestureRecognizer:v58];
+  [view7 addGestureRecognizer:v58];
 
   if (![(MKPlacePhotosViewController *)self shouldShowAddPhotoButtons])
   {
-    v60 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v61 = [v60 BOOLForKey:@"MKPlacecardForceNativePhotoCarousel"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v61 = [standardUserDefaults BOOLForKey:@"MKPlacecardForceNativePhotoCarousel"];
 
     if ((v61 & 1) == 0 && self->_mode != 2)
     {
-      v62 = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
-      v63 = [v62 shouldSuppressPhotoAttribution];
+      _mapkit_preferredFirstPhotoVendor = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
+      shouldSuppressPhotoAttribution = [_mapkit_preferredFirstPhotoVendor shouldSuppressPhotoAttribution];
 
-      if ((v63 & 1) == 0 && self->_mode != 3)
+      if ((shouldSuppressPhotoAttribution & 1) == 0 && self->_mode != 3)
       {
         v64 = [[MKPhotoSmallAttributionView alloc] initWithMapItem:self->_mapItem];
         photosSmallAttributionsView = self->_photosSmallAttributionsView;
@@ -2124,8 +2124,8 @@ LABEL_29:
 
           else
           {
-            v67 = [(MKPlacePhotosViewController *)self view];
-            [v67 addSubview:self->_photosSmallAttributionsView];
+            view8 = [(MKPlacePhotosViewController *)self view];
+            [view8 addSubview:self->_photosSmallAttributionsView];
           }
         }
       }
@@ -2153,87 +2153,87 @@ LABEL_29:
     v70 = 163.0;
   }
 
-  v71 = [(UIScrollView *)self->_photosContainerScrollView heightAnchor];
-  v72 = [v71 constraintEqualToConstant:v70];
+  heightAnchor3 = [(UIScrollView *)self->_photosContainerScrollView heightAnchor];
+  v72 = [heightAnchor3 constraintEqualToConstant:v70];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v72;
 
-  v74 = [(UIScrollView *)self->_photosContainerScrollView leadingAnchor];
-  v75 = [(MKPlacePhotosViewController *)self view];
-  v76 = [v75 layoutMarginsGuide];
-  v77 = [v76 leadingAnchor];
-  v78 = [v74 constraintEqualToAnchor:v77];
+  leadingAnchor3 = [(UIScrollView *)self->_photosContainerScrollView leadingAnchor];
+  view9 = [(MKPlacePhotosViewController *)self view];
+  layoutMarginsGuide = [view9 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+  v78 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v79 = [(UIScrollView *)self->_photosContainerScrollView trailingAnchor];
-  v80 = [(MKPlacePhotosViewController *)self view];
-  v81 = [v80 layoutMarginsGuide];
-  v82 = [v81 trailingAnchor];
-  v83 = [v79 constraintEqualToAnchor:v82];
+  trailingAnchor3 = [(UIScrollView *)self->_photosContainerScrollView trailingAnchor];
+  view10 = [(MKPlacePhotosViewController *)self view];
+  layoutMarginsGuide2 = [view10 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+  v83 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
   v171[0] = self->_heightConstraint;
-  v84 = [(UIScrollView *)self->_photosContainerScrollView topAnchor];
-  v85 = [(MKPlacePhotosViewController *)self view];
-  v86 = [v85 topAnchor];
-  v87 = [v84 constraintEqualToAnchor:v86];
+  topAnchor = [(UIScrollView *)self->_photosContainerScrollView topAnchor];
+  view11 = [(MKPlacePhotosViewController *)self view];
+  topAnchor2 = [view11 topAnchor];
+  v87 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v171[1] = v87;
   v171[2] = v78;
   v159 = v83;
   v161 = v78;
   v171[3] = v83;
   v88 = [MEMORY[0x1E695DEC8] arrayWithObjects:v171 count:4];
-  [v22 addObjectsFromArray:v88];
+  [array addObjectsFromArray:v88];
 
   v89 = objc_alloc_init(MEMORY[0x1E69DD250]);
   bottomHairline = self->_bottomHairline;
   self->_bottomHairline = v89;
 
   [(UIView *)self->_bottomHairline setTranslatesAutoresizingMaskIntoConstraints:0];
-  v91 = [(MKPlacePhotosViewController *)self view];
-  [v91 addSubview:self->_bottomHairline];
+  view12 = [(MKPlacePhotosViewController *)self view];
+  [view12 addSubview:self->_bottomHairline];
 
-  v92 = [(UIViewController *)self mk_theme];
-  v93 = [v92 separatorLineColor];
-  [(UIView *)self->_bottomHairline setBackgroundColor:v93];
+  mk_theme = [(UIViewController *)self mk_theme];
+  separatorLineColor = [mk_theme separatorLineColor];
+  [(UIView *)self->_bottomHairline setBackgroundColor:separatorLineColor];
 
   [(UIView *)self->_bottomHairline setHidden:1];
-  v94 = [(UIView *)self->_bottomHairline leadingAnchor];
-  v153 = [(MKPlacePhotosViewController *)self view];
-  v150 = [v153 layoutMarginsGuide];
-  [v150 leadingAnchor];
-  v148 = v156 = v94;
-  v146 = [v94 constraintEqualToAnchor:?];
+  leadingAnchor5 = [(UIView *)self->_bottomHairline leadingAnchor];
+  view13 = [(MKPlacePhotosViewController *)self view];
+  layoutMarginsGuide3 = [view13 layoutMarginsGuide];
+  [layoutMarginsGuide3 leadingAnchor];
+  v148 = v156 = leadingAnchor5;
+  v146 = [leadingAnchor5 constraintEqualToAnchor:?];
   v170[0] = v146;
-  v95 = [(UIView *)self->_bottomHairline trailingAnchor];
-  v143 = [(MKPlacePhotosViewController *)self view];
-  v141 = [v143 layoutMarginsGuide];
-  [v141 trailingAnchor];
-  v139 = v144 = v95;
-  v137 = [v95 constraintEqualToAnchor:?];
+  trailingAnchor5 = [(UIView *)self->_bottomHairline trailingAnchor];
+  view14 = [(MKPlacePhotosViewController *)self view];
+  layoutMarginsGuide4 = [view14 layoutMarginsGuide];
+  [layoutMarginsGuide4 trailingAnchor];
+  v139 = v144 = trailingAnchor5;
+  v137 = [trailingAnchor5 constraintEqualToAnchor:?];
   v170[1] = v137;
-  v96 = [(UIView *)self->_bottomHairline bottomAnchor];
-  v97 = [(MKPlacePhotosViewController *)self view];
-  v98 = [v97 bottomAnchor];
-  v135 = v96;
-  v99 = [v96 constraintEqualToAnchor:v98];
+  bottomAnchor = [(UIView *)self->_bottomHairline bottomAnchor];
+  view15 = [(MKPlacePhotosViewController *)self view];
+  bottomAnchor2 = [view15 bottomAnchor];
+  v135 = bottomAnchor;
+  v99 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v170[2] = v99;
-  v100 = [(UIView *)self->_bottomHairline heightAnchor];
-  v101 = [(MKPlacePhotosViewController *)self view];
-  v102 = [v101 window];
-  v103 = [v102 screen];
-  if (v103)
+  heightAnchor4 = [(UIView *)self->_bottomHairline heightAnchor];
+  view16 = [(MKPlacePhotosViewController *)self view];
+  window = [view16 window];
+  screen = [window screen];
+  if (screen)
   {
-    v104 = [v101 window];
-    v105 = [v104 screen];
-    [v105 nativeScale];
+    window2 = [view16 window];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
     v107 = v106;
 
-    v22 = v166;
+    array = v166;
   }
 
   else
   {
-    v104 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v104 nativeScale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 nativeScale];
     v107 = v108;
   }
 
@@ -2243,10 +2243,10 @@ LABEL_29:
     v109 = 1.0 / v107;
   }
 
-  v110 = [v100 constraintEqualToConstant:v109];
+  v110 = [heightAnchor4 constraintEqualToConstant:v109];
   v170[3] = v110;
   v111 = [MEMORY[0x1E695DEC8] arrayWithObjects:v170 count:4];
-  [v22 addObjectsFromArray:v111];
+  [array addObjectsFromArray:v111];
 
   if (self->_mapItem)
   {
@@ -2256,55 +2256,55 @@ LABEL_29:
   attributionCell = self->_attributionCell;
   if (attributionCell)
   {
-    v113 = [(MKPlaceAttributionCell *)attributionCell bottomAnchor];
-    v114 = [(MKPlacePhotosViewController *)self view];
-    v115 = [v114 bottomAnchor];
-    v116 = [v113 constraintEqualToAnchor:v115];
+    bottomAnchor3 = [(MKPlaceAttributionCell *)attributionCell bottomAnchor];
+    view17 = [(MKPlacePhotosViewController *)self view];
+    bottomAnchor4 = [view17 bottomAnchor];
+    v116 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     bottomConstraint = self->_bottomConstraint;
     self->_bottomConstraint = v116;
 
-    v165 = [(MKPlaceAttributionCell *)self->_attributionCell topAnchor];
-    v151 = [(UIView *)self->_photosContainer bottomAnchor];
-    v118 = [v165 constraintEqualToAnchor:v151];
-    v169[0] = v118;
-    v154 = [(MKPlaceAttributionCell *)self->_attributionCell leadingAnchor];
-    v157 = [(MKPlacePhotosViewController *)self view];
-    v119 = [v157 leadingAnchor];
-    v120 = [(NSLayoutConstraint *)v154 constraintEqualToAnchor:v119];
+    topAnchor3 = [(MKPlaceAttributionCell *)self->_attributionCell topAnchor];
+    bottomAnchor5 = [(UIView *)self->_photosContainer bottomAnchor];
+    bottomAnchor7 = [topAnchor3 constraintEqualToAnchor:bottomAnchor5];
+    v169[0] = bottomAnchor7;
+    leadingAnchor6 = [(MKPlaceAttributionCell *)self->_attributionCell leadingAnchor];
+    view18 = [(MKPlacePhotosViewController *)self view];
+    leadingAnchor7 = [view18 leadingAnchor];
+    v120 = [(NSLayoutConstraint *)leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v169[1] = v120;
-    v121 = [(MKPlaceAttributionCell *)self->_attributionCell trailingAnchor];
-    v122 = [(MKPlacePhotosViewController *)self view];
-    v123 = [v122 trailingAnchor];
-    v124 = [v121 constraintEqualToAnchor:v123];
+    trailingAnchor6 = [(MKPlaceAttributionCell *)self->_attributionCell trailingAnchor];
+    view19 = [(MKPlacePhotosViewController *)self view];
+    trailingAnchor7 = [view19 trailingAnchor];
+    v124 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v169[2] = v124;
     v125 = [MEMORY[0x1E695DEC8] arrayWithObjects:v169 count:3];
     [v166 addObjectsFromArray:v125];
 
-    v126 = v151;
-    v127 = v165;
+    view20 = bottomAnchor5;
+    bottomAnchor6 = topAnchor3;
 
-    v22 = v166;
-    v128 = v154;
+    array = v166;
+    v128 = leadingAnchor6;
   }
 
   else
   {
-    v127 = [(UIScrollView *)self->_photosContainerScrollView bottomAnchor];
-    v126 = [(MKPlacePhotosViewController *)self view];
-    v118 = [v126 bottomAnchor];
-    v129 = [v127 constraintEqualToAnchor:v118];
+    bottomAnchor6 = [(UIScrollView *)self->_photosContainerScrollView bottomAnchor];
+    view20 = [(MKPlacePhotosViewController *)self view];
+    bottomAnchor7 = [view20 bottomAnchor];
+    v129 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v128 = self->_bottomConstraint;
     self->_bottomConstraint = v129;
   }
 
-  [v22 addObject:self->_bottomConstraint];
-  [MEMORY[0x1E696ACD8] activateConstraints:v22];
+  [array addObject:self->_bottomConstraint];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
   [(MKPlacePhotosViewController *)self updateBottomHairlineVisibility];
-  v130 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v130 addObserver:self selector:sel__didBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__didBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
 
-  v131 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v131 addObserver:self selector:sel__willResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__willResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
 
   v132 = MKGetPlaceCardLog();
   if (os_signpost_enabled(v132))
@@ -2314,10 +2314,10 @@ LABEL_29:
   }
 }
 
-- (MKPlacePhotosViewController)initWithMapItem:(id)a3 mode:(unint64_t)a4 options:(unint64_t)a5
+- (MKPlacePhotosViewController)initWithMapItem:(id)item mode:(unint64_t)mode options:(unint64_t)options
 {
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  itemCopy = item;
   v50.receiver = self;
   v50.super_class = MKPlacePhotosViewController;
   v10 = [(MKPlacePhotosViewController *)&v50 init];
@@ -2335,15 +2335,15 @@ LABEL_29:
       _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v13, OS_SIGNPOST_INTERVAL_BEGIN, initialAppearanceSignpostID, "PlacecardPhotosInitialAppearance", &unk_1A30FEA0E, buf, 2u);
     }
 
-    objc_storeStrong(&v10->_mapItem, a3);
-    v10->_mode = a4;
-    v10->_options = a5;
-    v10->_originalMode = a4;
+    objc_storeStrong(&v10->_mapItem, item);
+    v10->_mode = mode;
+    v10->_options = options;
+    v10->_originalMode = mode;
     v10->_photoLoaded = 0;
     v15 = objc_alloc(MEMORY[0x1E695DF70]);
-    v16 = [(MKMapItem *)v10->_mapItem _geoMapItem];
-    v17 = [v16 _photos];
-    v18 = [v15 initWithCapacity:{objc_msgSend(v17, "count")}];
+    _geoMapItem = [(MKMapItem *)v10->_mapItem _geoMapItem];
+    _photos = [_geoMapItem _photos];
+    v18 = [v15 initWithCapacity:{objc_msgSend(_photos, "count")}];
 
     if ([v18 count] >= 4)
     {
@@ -2357,10 +2357,10 @@ LABEL_29:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v21 = [(MKMapItem *)v10->_mapItem _geoMapItem];
-    v22 = [v21 _photos];
+    _geoMapItem2 = [(MKMapItem *)v10->_mapItem _geoMapItem];
+    _photos2 = [_geoMapItem2 _photos];
 
-    v23 = [v22 countByEnumeratingWithState:&v45 objects:v51 count:16];
+    v23 = [_photos2 countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v23)
     {
       v24 = v23;
@@ -2371,14 +2371,14 @@ LABEL_29:
         {
           if (*v46 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(_photos2);
           }
 
           v27 = [[MKMapItemPhoto alloc] initWithGeoMapItemPhoto:*(*(&v45 + 1) + 8 * i)];
           [v18 addObject:v27];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v45 objects:v51 count:16];
+        v24 = [_photos2 countByEnumeratingWithState:&v45 objects:v51 count:16];
       }
 
       while (v24);
@@ -2430,10 +2430,10 @@ LABEL_19:
 
     if (v10->_photosCount >= 4)
     {
-      v36 = [(MKPlacePhotosViewController *)v10 numberOfBigAttributionViews];
+      numberOfBigAttributionViews = [(MKPlacePhotosViewController *)v10 numberOfBigAttributionViews];
       photosCount = v10->_photosCount;
       v38 = photosCount % 3;
-      if (v36 == 2)
+      if (numberOfBigAttributionViews == 2)
       {
         if (!v38)
         {
@@ -2491,8 +2491,8 @@ LABEL_39:
       }
     }
 
-    v43 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10->_canUseFullscreenViewer = [v43 BOOLForKey:@"MKPlacecardForceFullScreenGallery"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v10->_canUseFullscreenViewer = [standardUserDefaults BOOLForKey:@"MKPlacecardForceFullScreenGallery"];
 
     goto LABEL_39;
   }
@@ -2536,29 +2536,29 @@ uint64_t __60__MKPlacePhotosViewController_initWithMapItem_mode_options___block_
 
 - (_MKInfoCardAnalyticsDelegate)analyticsDelegate
 {
-  v3 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
-  v4 = [v3 conformsToProtocol:&unk_1F16469E0];
+  photosControllerDelegate = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+  v4 = [photosControllerDelegate conformsToProtocol:&unk_1F16469E0];
 
   if (v4)
   {
-    v5 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
+    photosControllerDelegate2 = [(MKPlacePhotosViewController *)self photosControllerDelegate];
   }
 
   else
   {
-    v5 = 0;
+    photosControllerDelegate2 = 0;
   }
 
-  return v5;
+  return photosControllerDelegate2;
 }
 
 - (unint64_t)numberOfBigAttributionViews
 {
-  v3 = [(MKPlacePhotosViewController *)self isFirstParty];
+  isFirstParty = [(MKPlacePhotosViewController *)self isFirstParty];
   if ([(MKPlacePhotosViewController *)self shouldShowAddPhotoButtons])
   {
     v4 = 1;
-    if (v3)
+    if (isFirstParty)
     {
       v4 = 2;
     }
@@ -2569,31 +2569,31 @@ uint64_t __60__MKPlacePhotosViewController_initWithMapItem_mode_options___block_
     }
   }
 
-  return v3;
+  return isFirstParty;
 }
 
 - (BOOL)isFirstParty
 {
-  v2 = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
-  v3 = [v2 shouldHandlePhotosLocally];
+  _mapkit_preferredFirstPhotoVendor = [(MKMapItem *)self->_mapItem _mapkit_preferredFirstPhotoVendor];
+  shouldHandlePhotosLocally = [_mapkit_preferredFirstPhotoVendor shouldHandlePhotosLocally];
 
-  return v3;
+  return shouldHandlePhotosLocally;
 }
 
 - (BOOL)isSafariProcess
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.mobilesafari"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
   return v4;
 }
 
 - (BOOL)isParsecProcess
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.Spotlight"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.Spotlight"];
 
   if (v5)
   {
@@ -2605,9 +2605,9 @@ uint64_t __60__MKPlacePhotosViewController_initWithMapItem_mode_options___block_
 
 - (BOOL)isSiriProcess
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.siri"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.siri"];
 
   return v4;
 }

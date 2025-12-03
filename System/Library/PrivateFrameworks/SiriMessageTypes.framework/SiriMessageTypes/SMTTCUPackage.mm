@@ -1,81 +1,81 @@
 @interface SMTTCUPackage
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMTTCUPackage)initWithBuilder:(id)a3;
-- (SMTTCUPackage)initWithCoder:(id)a3;
-- (SMTTCUPackage)initWithTcuId:(id)a3 requestId:(id)a4 tcuState:(int64_t)a5 speechEvent:(int64_t)a6 voiceTriggerPhraseType:(int64_t)a7 siriIntendedInfo:(id)a8 prevTCUIds:(id)a9 startAudioTimeStampInMs:(double)a10 endAudioTimeStampInMs:(double)a11 speechPackage:(id)a12;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SMTTCUPackage)initWithBuilder:(id)builder;
+- (SMTTCUPackage)initWithCoder:(id)coder;
+- (SMTTCUPackage)initWithTcuId:(id)id requestId:(id)requestId tcuState:(int64_t)state speechEvent:(int64_t)event voiceTriggerPhraseType:(int64_t)type siriIntendedInfo:(id)info prevTCUIds:(id)ids startAudioTimeStampInMs:(double)self0 endAudioTimeStampInMs:(double)self1 speechPackage:(id)self2;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMTTCUPackage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tcuId = self->_tcuId;
-  v10 = a3;
-  [v10 encodeObject:tcuId forKey:@"SMTTCUPackage::tcuId"];
-  [v10 encodeObject:self->_requestId forKey:@"SMTTCUPackage::requestId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tcuId forKey:@"SMTTCUPackage::tcuId"];
+  [coderCopy encodeObject:self->_requestId forKey:@"SMTTCUPackage::requestId"];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_tcuState];
-  [v10 encodeObject:v5 forKey:@"SMTTCUPackage::tcuState"];
+  [coderCopy encodeObject:v5 forKey:@"SMTTCUPackage::tcuState"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_speechEvent];
-  [v10 encodeObject:v6 forKey:@"SMTTCUPackage::speechEvent"];
+  [coderCopy encodeObject:v6 forKey:@"SMTTCUPackage::speechEvent"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:self->_voiceTriggerPhraseType];
-  [v10 encodeObject:v7 forKey:@"SMTTCUPackage::voiceTriggerPhraseType"];
+  [coderCopy encodeObject:v7 forKey:@"SMTTCUPackage::voiceTriggerPhraseType"];
 
-  [v10 encodeObject:self->_siriIntendedInfo forKey:@"SMTTCUPackage::siriIntendedInfo"];
-  [v10 encodeObject:self->_prevTCUIds forKey:@"SMTTCUPackage::prevTCUIds"];
+  [coderCopy encodeObject:self->_siriIntendedInfo forKey:@"SMTTCUPackage::siriIntendedInfo"];
+  [coderCopy encodeObject:self->_prevTCUIds forKey:@"SMTTCUPackage::prevTCUIds"];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_startAudioTimeStampInMs];
-  [v10 encodeObject:v8 forKey:@"SMTTCUPackage::startAudioTimeStampInMs"];
+  [coderCopy encodeObject:v8 forKey:@"SMTTCUPackage::startAudioTimeStampInMs"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_endAudioTimeStampInMs];
-  [v10 encodeObject:v9 forKey:@"SMTTCUPackage::endAudioTimeStampInMs"];
+  [coderCopy encodeObject:v9 forKey:@"SMTTCUPackage::endAudioTimeStampInMs"];
 
-  [v10 encodeObject:self->_speechPackage forKey:@"SMTTCUPackage::speechPackage"];
+  [coderCopy encodeObject:self->_speechPackage forKey:@"SMTTCUPackage::speechPackage"];
 }
 
-- (SMTTCUPackage)initWithCoder:(id)a3
+- (SMTTCUPackage)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::tcuId"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::requestId"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::tcuState"];
-  v25 = [v6 integerValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::tcuId"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::requestId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::tcuState"];
+  integerValue = [v6 integerValue];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::speechEvent"];
-  v8 = [v7 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::speechEvent"];
+  integerValue2 = [v7 integerValue];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::voiceTriggerPhraseType"];
-  v10 = [v9 integerValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::voiceTriggerPhraseType"];
+  integerValue3 = [v9 integerValue];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::siriIntendedInfo"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::siriIntendedInfo"];
   v12 = MEMORY[0x277CBEB98];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v3 decodeObjectOfClasses:v14 forKey:@"SMTTCUPackage::prevTCUIds"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"SMTTCUPackage::prevTCUIds"];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::startAudioTimeStampInMs"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::startAudioTimeStampInMs"];
   [v16 doubleValue];
   v18 = v17;
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::endAudioTimeStampInMs"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::endAudioTimeStampInMs"];
   [v19 doubleValue];
   v21 = v20;
 
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::speechPackage"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTCUPackage::speechPackage"];
 
-  v23 = [(SMTTCUPackage *)self initWithTcuId:v4 requestId:v5 tcuState:v25 speechEvent:v8 voiceTriggerPhraseType:v10 siriIntendedInfo:v11 prevTCUIds:v18 startAudioTimeStampInMs:v21 endAudioTimeStampInMs:v15 speechPackage:v22];
+  v23 = [(SMTTCUPackage *)self initWithTcuId:v4 requestId:v5 tcuState:integerValue speechEvent:integerValue2 voiceTriggerPhraseType:integerValue3 siriIntendedInfo:v11 prevTCUIds:v18 startAudioTimeStampInMs:v21 endAudioTimeStampInMs:v15 speechPackage:v22];
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -85,29 +85,29 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       tcuState = self->_tcuState;
       if (tcuState == [(SMTTCUPackage *)v5 tcuState]&& (speechEvent = self->_speechEvent, speechEvent == [(SMTTCUPackage *)v5 speechEvent]) && (voiceTriggerPhraseType = self->_voiceTriggerPhraseType, voiceTriggerPhraseType == [(SMTTCUPackage *)v5 voiceTriggerPhraseType]) && (startAudioTimeStampInMs = self->_startAudioTimeStampInMs, [(SMTTCUPackage *)v5 startAudioTimeStampInMs], startAudioTimeStampInMs == v10) && (endAudioTimeStampInMs = self->_endAudioTimeStampInMs, [(SMTTCUPackage *)v5 endAudioTimeStampInMs], endAudioTimeStampInMs == v12))
       {
-        v15 = [(SMTTCUPackage *)v5 tcuId];
+        tcuId = [(SMTTCUPackage *)v5 tcuId];
         tcuId = self->_tcuId;
-        if (tcuId == v15 || [(NSString *)tcuId isEqual:v15])
+        if (tcuId == tcuId || [(NSString *)tcuId isEqual:tcuId])
         {
-          v17 = [(SMTTCUPackage *)v5 requestId];
+          requestId = [(SMTTCUPackage *)v5 requestId];
           requestId = self->_requestId;
-          if (requestId == v17 || [(NSString *)requestId isEqual:v17])
+          if (requestId == requestId || [(NSString *)requestId isEqual:requestId])
           {
-            v19 = [(SMTTCUPackage *)v5 siriIntendedInfo];
+            siriIntendedInfo = [(SMTTCUPackage *)v5 siriIntendedInfo];
             siriIntendedInfo = self->_siriIntendedInfo;
-            if (siriIntendedInfo == v19 || [(SMTSiriIntendedInfo *)siriIntendedInfo isEqual:v19])
+            if (siriIntendedInfo == siriIntendedInfo || [(SMTSiriIntendedInfo *)siriIntendedInfo isEqual:siriIntendedInfo])
             {
-              v21 = [(SMTTCUPackage *)v5 prevTCUIds];
+              prevTCUIds = [(SMTTCUPackage *)v5 prevTCUIds];
               prevTCUIds = self->_prevTCUIds;
-              if (prevTCUIds == v21 || [(NSArray *)prevTCUIds isEqual:v21])
+              if (prevTCUIds == prevTCUIds || [(NSArray *)prevTCUIds isEqual:prevTCUIds])
               {
-                v23 = [(SMTTCUPackage *)v5 speechPackage];
+                speechPackage = [(SMTTCUPackage *)v5 speechPackage];
                 speechPackage = self->_speechPackage;
-                v13 = speechPackage == v23 || [(AFSpeechPackage *)speechPackage isEqual:v23];
+                v13 = speechPackage == speechPackage || [(AFSpeechPackage *)speechPackage isEqual:speechPackage];
               }
 
               else
@@ -170,7 +170,7 @@
   return v16 ^ v17;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v17.receiver = self;
@@ -208,32 +208,32 @@
   return v15;
 }
 
-- (SMTTCUPackage)initWithTcuId:(id)a3 requestId:(id)a4 tcuState:(int64_t)a5 speechEvent:(int64_t)a6 voiceTriggerPhraseType:(int64_t)a7 siriIntendedInfo:(id)a8 prevTCUIds:(id)a9 startAudioTimeStampInMs:(double)a10 endAudioTimeStampInMs:(double)a11 speechPackage:(id)a12
+- (SMTTCUPackage)initWithTcuId:(id)id requestId:(id)requestId tcuState:(int64_t)state speechEvent:(int64_t)event voiceTriggerPhraseType:(int64_t)type siriIntendedInfo:(id)info prevTCUIds:(id)ids startAudioTimeStampInMs:(double)self0 endAudioTimeStampInMs:(double)self1 speechPackage:(id)self2
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a8;
-  v23 = a9;
-  v24 = a12;
+  idCopy = id;
+  requestIdCopy = requestId;
+  infoCopy = info;
+  idsCopy = ids;
+  packageCopy = package;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __173__SMTTCUPackage_initWithTcuId_requestId_tcuState_speechEvent_voiceTriggerPhraseType_siriIntendedInfo_prevTCUIds_startAudioTimeStampInMs_endAudioTimeStampInMs_speechPackage___block_invoke;
   v32[3] = &unk_2784D5DF0;
-  v33 = v20;
-  v34 = v21;
-  v39 = a6;
-  v40 = a7;
-  v35 = v22;
-  v36 = v23;
-  v41 = a10;
-  v42 = a11;
-  v37 = v24;
-  v38 = a5;
-  v25 = v24;
-  v26 = v23;
-  v27 = v22;
-  v28 = v21;
-  v29 = v20;
+  v33 = idCopy;
+  v34 = requestIdCopy;
+  eventCopy = event;
+  typeCopy = type;
+  v35 = infoCopy;
+  v36 = idsCopy;
+  msCopy = ms;
+  inMsCopy = inMs;
+  v37 = packageCopy;
+  stateCopy = state;
+  v25 = packageCopy;
+  v26 = idsCopy;
+  v27 = infoCopy;
+  v28 = requestIdCopy;
+  v29 = idCopy;
   v30 = [(SMTTCUPackage *)self initWithBuilder:v32];
 
   return v30;
@@ -255,39 +255,39 @@ void __173__SMTTCUPackage_initWithTcuId_requestId_tcuState_speechEvent_voiceTrig
   [v4 setSpeechPackage:*(a1 + 64)];
 }
 
-- (SMTTCUPackage)initWithBuilder:(id)a3
+- (SMTTCUPackage)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v26.receiver = self;
   v26.super_class = SMTTCUPackage;
   v5 = [(SMTTCUPackage *)&v26 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SMTTCUPackageMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SMTTCUPackageMutation *)v7 isDirty])
     {
-      v8 = [(_SMTTCUPackageMutation *)v7 getTcuId];
-      v9 = [v8 copy];
+      getTcuId = [(_SMTTCUPackageMutation *)v7 getTcuId];
+      v9 = [getTcuId copy];
       tcuId = v6->_tcuId;
       v6->_tcuId = v9;
 
-      v11 = [(_SMTTCUPackageMutation *)v7 getRequestId];
-      v12 = [v11 copy];
+      getRequestId = [(_SMTTCUPackageMutation *)v7 getRequestId];
+      v12 = [getRequestId copy];
       requestId = v6->_requestId;
       v6->_requestId = v12;
 
       v6->_tcuState = [(_SMTTCUPackageMutation *)v7 getTcuState];
       v6->_speechEvent = [(_SMTTCUPackageMutation *)v7 getSpeechEvent];
       v6->_voiceTriggerPhraseType = [(_SMTTCUPackageMutation *)v7 getVoiceTriggerPhraseType];
-      v14 = [(_SMTTCUPackageMutation *)v7 getSiriIntendedInfo];
-      v15 = [v14 copy];
+      getSiriIntendedInfo = [(_SMTTCUPackageMutation *)v7 getSiriIntendedInfo];
+      v15 = [getSiriIntendedInfo copy];
       siriIntendedInfo = v6->_siriIntendedInfo;
       v6->_siriIntendedInfo = v15;
 
-      v17 = [(_SMTTCUPackageMutation *)v7 getPrevTCUIds];
-      v18 = [v17 copy];
+      getPrevTCUIds = [(_SMTTCUPackageMutation *)v7 getPrevTCUIds];
+      v18 = [getPrevTCUIds copy];
       prevTCUIds = v6->_prevTCUIds;
       v6->_prevTCUIds = v18;
 
@@ -295,8 +295,8 @@ void __173__SMTTCUPackage_initWithTcuId_requestId_tcuState_speechEvent_voiceTrig
       v6->_startAudioTimeStampInMs = v20;
       [(_SMTTCUPackageMutation *)v7 getEndAudioTimeStampInMs];
       v6->_endAudioTimeStampInMs = v21;
-      v22 = [(_SMTTCUPackageMutation *)v7 getSpeechPackage];
-      v23 = [v22 copy];
+      getSpeechPackage = [(_SMTTCUPackageMutation *)v7 getSpeechPackage];
+      v23 = [getSpeechPackage copy];
       speechPackage = v6->_speechPackage;
       v6->_speechPackage = v23;
 
@@ -307,44 +307,44 @@ void __173__SMTTCUPackage_initWithTcuId_requestId_tcuState_speechEvent_voiceTrig
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SMTTCUPackageMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SMTTCUPackageMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SMTTCUPackage);
-      v7 = [(_SMTTCUPackageMutation *)v5 getTcuId];
-      v8 = [v7 copy];
+      getTcuId = [(_SMTTCUPackageMutation *)v5 getTcuId];
+      v8 = [getTcuId copy];
       tcuId = v6->_tcuId;
       v6->_tcuId = v8;
 
-      v10 = [(_SMTTCUPackageMutation *)v5 getRequestId];
-      v11 = [v10 copy];
+      getRequestId = [(_SMTTCUPackageMutation *)v5 getRequestId];
+      v11 = [getRequestId copy];
       requestId = v6->_requestId;
       v6->_requestId = v11;
 
       v6->_tcuState = [(_SMTTCUPackageMutation *)v5 getTcuState];
       v6->_speechEvent = [(_SMTTCUPackageMutation *)v5 getSpeechEvent];
       v6->_voiceTriggerPhraseType = [(_SMTTCUPackageMutation *)v5 getVoiceTriggerPhraseType];
-      v13 = [(_SMTTCUPackageMutation *)v5 getSiriIntendedInfo];
-      v14 = [v13 copy];
+      getSiriIntendedInfo = [(_SMTTCUPackageMutation *)v5 getSiriIntendedInfo];
+      v14 = [getSiriIntendedInfo copy];
       siriIntendedInfo = v6->_siriIntendedInfo;
       v6->_siriIntendedInfo = v14;
 
-      v16 = [(_SMTTCUPackageMutation *)v5 getPrevTCUIds];
-      v17 = [v16 copy];
+      getPrevTCUIds = [(_SMTTCUPackageMutation *)v5 getPrevTCUIds];
+      v17 = [getPrevTCUIds copy];
       prevTCUIds = v6->_prevTCUIds;
       v6->_prevTCUIds = v17;
 
@@ -352,8 +352,8 @@ void __173__SMTTCUPackage_initWithTcuId_requestId_tcuState_speechEvent_voiceTrig
       v6->_startAudioTimeStampInMs = v19;
       [(_SMTTCUPackageMutation *)v5 getEndAudioTimeStampInMs];
       v6->_endAudioTimeStampInMs = v20;
-      v21 = [(_SMTTCUPackageMutation *)v5 getSpeechPackage];
-      v22 = [v21 copy];
+      getSpeechPackage = [(_SMTTCUPackageMutation *)v5 getSpeechPackage];
+      v22 = [getSpeechPackage copy];
       speechPackage = v6->_speechPackage;
       v6->_speechPackage = v22;
     }

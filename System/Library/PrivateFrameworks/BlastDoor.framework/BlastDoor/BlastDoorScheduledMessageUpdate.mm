@@ -7,7 +7,7 @@
 
 - (BlastDoorMetadata)metadata
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21457970C();
 
   return v3;

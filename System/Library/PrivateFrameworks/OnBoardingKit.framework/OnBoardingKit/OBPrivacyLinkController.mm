@@ -1,27 +1,27 @@
 @interface OBPrivacyLinkController
-+ (id)linkWithBundleAtPath:(id)a3;
-+ (id)linkWithBundleIdentifier:(id)a3;
-+ (id)linkWithBundleIdentifiers:(id)a3;
-+ (id)linkWithBundlesAtPaths:(id)a3;
-+ (id)linkWithPrivacyBundle:(id)a3;
++ (id)linkWithBundleAtPath:(id)path;
++ (id)linkWithBundleIdentifier:(id)identifier;
++ (id)linkWithBundleIdentifiers:(id)identifiers;
++ (id)linkWithBundlesAtPaths:(id)paths;
++ (id)linkWithPrivacyBundle:(id)bundle;
 - (OBBundle)bundle;
 - (OBPrivacyFlow)flow;
 - (OBPrivacyLinkController)init;
-- (OBPrivacyLinkController)initWithBundleIdentifiers:(id)a3;
-- (OBPrivacyLinkController)initWithPrivacyBundle:(id)a3;
-- (OBPrivacyLinkController)initWithPrivacyBundles:(id)a3;
+- (OBPrivacyLinkController)initWithBundleIdentifiers:(id)identifiers;
+- (OBPrivacyLinkController)initWithPrivacyBundle:(id)bundle;
+- (OBPrivacyLinkController)initWithPrivacyBundles:(id)bundles;
 - (id)_privacyPresenter;
 - (void)_linkPressed;
 @end
 
 @implementation OBPrivacyLinkController
 
-+ (id)linkWithBundleIdentifiers:(id)a3
++ (id)linkWithBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v5 = [objc_alloc(objc_msgSend(a1 "_platformSpecificClass"))];
+    v5 = [objc_alloc(objc_msgSend(self "_platformSpecificClass"))];
   }
 
   else
@@ -32,32 +32,32 @@
   return v5;
 }
 
-+ (id)linkWithBundleIdentifier:(id)a3
++ (id)linkWithBundleIdentifier:(id)identifier
 {
-  v4 = [OBBundle bundleWithIdentifier:a3];
-  v5 = [a1 linkWithPrivacyBundle:v4];
+  v4 = [OBBundle bundleWithIdentifier:identifier];
+  v5 = [self linkWithPrivacyBundle:v4];
 
   return v5;
 }
 
-+ (id)linkWithBundleAtPath:(id)a3
++ (id)linkWithBundleAtPath:(id)path
 {
-  v4 = [OBBundle bundleAtPath:a3];
-  v5 = [a1 linkWithPrivacyBundle:v4];
+  v4 = [OBBundle bundleAtPath:path];
+  v5 = [self linkWithPrivacyBundle:v4];
 
   return v5;
 }
 
-+ (id)linkWithBundlesAtPaths:(id)a3
++ (id)linkWithBundlesAtPaths:(id)paths
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -82,18 +82,18 @@
     while (v8);
   }
 
-  v12 = [objc_alloc(objc_msgSend(a1 "_platformSpecificClass"))];
+  v12 = [objc_alloc(objc_msgSend(self "_platformSpecificClass"))];
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-+ (id)linkWithPrivacyBundle:(id)a3
++ (id)linkWithPrivacyBundle:(id)bundle
 {
-  if (a3)
+  if (bundle)
   {
-    v4 = a3;
-    v5 = [objc_alloc(objc_msgSend(a1 "_platformSpecificClass"))];
+    bundleCopy = bundle;
+    v5 = [objc_alloc(objc_msgSend(self "_platformSpecificClass"))];
   }
 
   else
@@ -120,13 +120,13 @@
   return v3;
 }
 
-- (OBPrivacyLinkController)initWithPrivacyBundles:(id)a3
+- (OBPrivacyLinkController)initWithPrivacyBundles:(id)bundles
 {
-  v4 = a3;
+  bundlesCopy = bundles;
   v5 = [(OBPrivacyLinkController *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [bundlesCopy copy];
     bundles = v5->_bundles;
     v5->_bundles = v6;
   }
@@ -134,37 +134,37 @@
   return v5;
 }
 
-- (OBPrivacyLinkController)initWithPrivacyBundle:(id)a3
+- (OBPrivacyLinkController)initWithPrivacyBundle:(id)bundle
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 privacyFlow];
+  bundleCopy = bundle;
+  selfCopy = [bundleCopy privacyFlow];
 
-  if (v5)
+  if (selfCopy)
   {
-    v10[0] = v4;
+    v10[0] = bundleCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     v7 = [(OBPrivacyLinkController *)self initWithPrivacyBundles:v6];
 
     self = v7;
-    v5 = self;
+    selfCopy = self;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return selfCopy;
 }
 
-- (OBPrivacyLinkController)initWithBundleIdentifiers:(id)a3
+- (OBPrivacyLinkController)initWithBundleIdentifiers:(id)identifiers
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[OBBundleManager sharedManager];
-  v6 = [v5 bundlesWithIdentifiers:v4];
+  v6 = [v5 bundlesWithIdentifiers:identifiersCopy];
 
   if ([v6 count])
   {
-    v28 = v4;
-    if (v4)
+    v28 = identifiersCopy;
+    if (identifiersCopy)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v33 = 0u;
@@ -186,8 +186,8 @@
               objc_enumerationMutation(v8);
             }
 
-            v13 = [*(*(&v33 + 1) + 8 * i) identifier];
-            [v7 addObject:v13];
+            identifier = [*(*(&v33 + 1) + 8 * i) identifier];
+            [v7 addObject:identifier];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v33 objects:v40 count:16];
@@ -222,9 +222,9 @@
           }
 
           v20 = *(*(&v29 + 1) + 8 * j);
-          v21 = [v20 privacyFlow];
+          privacyFlow = [v20 privacyFlow];
 
-          if (!v21)
+          if (!privacyFlow)
           {
             v22 = _OBLoggingFacility();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -249,8 +249,8 @@
     }
 
     self = v23;
-    v14 = self;
-    v4 = v28;
+    selfCopy = self;
+    identifiersCopy = v28;
   }
 
   else
@@ -258,31 +258,31 @@
     v7 = _OBLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(OBPrivacyLinkController *)v4 initWithBundleIdentifiers:v7];
+      [(OBPrivacyLinkController *)identifiersCopy initWithBundleIdentifiers:v7];
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v26 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (OBBundle)bundle
 {
   v3 = +[OBBundleManager sharedManager];
-  v4 = [(OBPrivacyLinkController *)self bundles];
-  v5 = [v3 privacyLinkBundleForBundles:v4];
+  bundles = [(OBPrivacyLinkController *)self bundles];
+  v5 = [v3 privacyLinkBundleForBundles:bundles];
 
   return v5;
 }
 
 - (OBPrivacyFlow)flow
 {
-  v2 = [(OBPrivacyLinkController *)self bundle];
-  v3 = [v2 privacyFlow];
+  bundle = [(OBPrivacyLinkController *)self bundle];
+  privacyFlow = [bundle privacyFlow];
 
-  return v3;
+  return privacyFlow;
 }
 
 - (id)_privacyPresenter
@@ -290,8 +290,8 @@
   v27 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_bundleIdentifiers count]>= 2)
   {
-    v3 = [(OBPrivacyLinkController *)self bundles];
-    v4 = [OBPrivacyPresenter presenterForPrivacyUnifiedAboutWithBundles:v3];
+    bundles = [(OBPrivacyLinkController *)self bundles];
+    v4 = [OBPrivacyPresenter presenterForPrivacyUnifiedAboutWithBundles:bundles];
 LABEL_17:
 
     goto LABEL_18;
@@ -299,8 +299,8 @@ LABEL_17:
 
   if (self->_bundleIdentifiers || (-[OBPrivacyLinkController bundle](self, "bundle"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isPlaceholder], v5, v6))
   {
-    v7 = [(OBPrivacyLinkController *)self bundle];
-    v4 = [OBPrivacyPresenter presenterForPrivacySplashWithBundle:v7];
+    bundle = [(OBPrivacyLinkController *)self bundle];
+    v4 = [OBPrivacyPresenter presenterForPrivacySplashWithBundle:bundle];
 
     if (v4)
     {
@@ -310,16 +310,16 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  v8 = [(OBPrivacyLinkController *)self bundles];
-  v9 = [v8 count];
+  bundles2 = [(OBPrivacyLinkController *)self bundles];
+  v9 = [bundles2 count];
 
   if (v9 < 2)
   {
 LABEL_16:
-    v3 = [(OBPrivacyLinkController *)self bundle];
-    v18 = [v3 underlyingBundle];
-    v19 = [v18 bundlePath];
-    v4 = [OBPrivacyPresenter presenterForPrivacySplashWithBundleAtPath:v19];
+    bundles = [(OBPrivacyLinkController *)self bundle];
+    underlyingBundle = [bundles underlyingBundle];
+    bundlePath = [underlyingBundle bundlePath];
+    v4 = [OBPrivacyPresenter presenterForPrivacySplashWithBundleAtPath:bundlePath];
 
     goto LABEL_17;
   }
@@ -329,8 +329,8 @@ LABEL_16:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [(OBPrivacyLinkController *)self bundles];
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  bundles3 = [(OBPrivacyLinkController *)self bundles];
+  v12 = [bundles3 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -341,15 +341,15 @@ LABEL_16:
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(bundles3);
         }
 
-        v16 = [*(*(&v22 + 1) + 8 * i) underlyingBundle];
-        v17 = [v16 bundlePath];
-        [v10 addObject:v17];
+        underlyingBundle2 = [*(*(&v22 + 1) + 8 * i) underlyingBundle];
+        bundlePath2 = [underlyingBundle2 bundlePath];
+        [v10 addObject:bundlePath2];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [bundles3 countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v13);
@@ -372,54 +372,54 @@ LABEL_18:
     _os_log_impl(&dword_1B4FB6000, v3, OS_LOG_TYPE_DEFAULT, "OBPrivacy link pressed!", v23, 2u);
   }
 
-  v4 = [(OBPrivacyLinkController *)self _privacyPresenter];
-  [v4 setPresentingViewController:self];
-  v5 = [(OBPrivacyLinkController *)self displayLanguage];
-  [v4 setDisplayLanguage:v5];
+  _privacyPresenter = [(OBPrivacyLinkController *)self _privacyPresenter];
+  [_privacyPresenter setPresentingViewController:self];
+  displayLanguage = [(OBPrivacyLinkController *)self displayLanguage];
+  [_privacyPresenter setDisplayLanguage:displayLanguage];
 
-  v6 = [(OBPrivacyLinkController *)self allowsOpeningSafari];
-  v7 = [v4 splashController];
-  [v7 setAllowsOpeningSafari:v6];
+  allowsOpeningSafari = [(OBPrivacyLinkController *)self allowsOpeningSafari];
+  splashController = [_privacyPresenter splashController];
+  [splashController setAllowsOpeningSafari:allowsOpeningSafari];
 
-  v8 = [(OBPrivacyLinkController *)self underlineLinks];
-  v9 = [v4 splashController];
-  [v9 setUnderlineLinks:v8];
+  underlineLinks = [(OBPrivacyLinkController *)self underlineLinks];
+  splashController2 = [_privacyPresenter splashController];
+  [splashController2 setUnderlineLinks:underlineLinks];
 
   if (self->_didOverrideShowUnifiedAbout)
   {
-    v10 = [(OBPrivacyLinkController *)self showsLinkToUnifiedAbout];
-    v11 = [v4 splashController];
-    [v11 setShowsLinkToUnifiedAbout:v10];
+    showsLinkToUnifiedAbout = [(OBPrivacyLinkController *)self showsLinkToUnifiedAbout];
+    splashController3 = [_privacyPresenter splashController];
+    [splashController3 setShowsLinkToUnifiedAbout:showsLinkToUnifiedAbout];
   }
 
-  v12 = [(OBPrivacyLinkController *)self customTintColor];
-  [v4 setCustomTintColor:v12];
+  customTintColor = [(OBPrivacyLinkController *)self customTintColor];
+  [_privacyPresenter setCustomTintColor:customTintColor];
 
-  v13 = [(OBPrivacyLinkController *)self displayDeviceType];
-  v14 = [v4 splashController];
-  [v14 setDisplayDeviceType:v13];
+  displayDeviceType = [(OBPrivacyLinkController *)self displayDeviceType];
+  splashController4 = [_privacyPresenter splashController];
+  [splashController4 setDisplayDeviceType:displayDeviceType];
 
-  v15 = [(OBPrivacyLinkController *)self displayLanguage];
-  v16 = [v4 splashController];
-  [v16 setDisplayLanguage:v15];
+  displayLanguage2 = [(OBPrivacyLinkController *)self displayLanguage];
+  splashController5 = [_privacyPresenter splashController];
+  [splashController5 setDisplayLanguage:displayLanguage2];
 
-  [v4 setDarkMode:{-[OBPrivacyLinkController presentedViewControllerShouldUseDarkMode](self, "presentedViewControllerShouldUseDarkMode")}];
-  [v4 setModalPresentationStyle:{-[OBPrivacyLinkController modalPresentationStyle](self, "modalPresentationStyle")}];
-  v17 = [(OBPrivacyLinkController *)self presentingViewController];
-  [v4 setSupportedInterfaceOrientations:{objc_msgSend(v17, "supportedInterfaceOrientations")}];
+  [_privacyPresenter setDarkMode:{-[OBPrivacyLinkController presentedViewControllerShouldUseDarkMode](self, "presentedViewControllerShouldUseDarkMode")}];
+  [_privacyPresenter setModalPresentationStyle:{-[OBPrivacyLinkController modalPresentationStyle](self, "modalPresentationStyle")}];
+  presentingViewController = [(OBPrivacyLinkController *)self presentingViewController];
+  [_privacyPresenter setSupportedInterfaceOrientations:{objc_msgSend(presentingViewController, "supportedInterfaceOrientations")}];
 
-  [v4 present];
+  [_privacyPresenter present];
   v18 = +[OBAnalyticsManager sharedManager];
-  v19 = [(OBPrivacyLinkController *)self bundle];
-  v20 = [v19 identifier];
-  [v18 logTapOnPrivacyLinkWithIdentifier:v20];
+  bundle = [(OBPrivacyLinkController *)self bundle];
+  identifier = [bundle identifier];
+  [v18 logTapOnPrivacyLinkWithIdentifier:identifier];
 
-  v21 = [(OBPrivacyLinkController *)self privacyLinkCallback];
+  privacyLinkCallback = [(OBPrivacyLinkController *)self privacyLinkCallback];
 
-  if (v21)
+  if (privacyLinkCallback)
   {
-    v22 = [(OBPrivacyLinkController *)self privacyLinkCallback];
-    v22[2]();
+    privacyLinkCallback2 = [(OBPrivacyLinkController *)self privacyLinkCallback];
+    privacyLinkCallback2[2]();
   }
 }
 

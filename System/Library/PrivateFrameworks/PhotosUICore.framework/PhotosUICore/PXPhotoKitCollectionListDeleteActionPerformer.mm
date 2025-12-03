@@ -1,19 +1,19 @@
 @interface PXPhotoKitCollectionListDeleteActionPerformer
-- (void)_confirmAndDeleteWithCompletionHandler:(id)a3;
+- (void)_confirmAndDeleteWithCompletionHandler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitCollectionListDeleteActionPerformer
 
-- (void)_confirmAndDeleteWithCompletionHandler:(id)a3
+- (void)_confirmAndDeleteWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXActionPerformer *)self presentationEnvironment];
-  v6 = [v5 canPresentPopovers] ^ 1;
+  handlerCopy = handler;
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  v6 = [presentationEnvironment canPresentPopovers] ^ 1;
 
-  v7 = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
-  v8 = [(PXActionPerformer *)self undoManager];
-  v9 = PXCollectionDeletionAlertControllerForCollection(v7, 0, v6, v8, v4);
+  collectionList = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
+  undoManager = [(PXActionPerformer *)self undoManager];
+  v9 = PXCollectionDeletionAlertControllerForCollection(collectionList, 0, v6, undoManager, handlerCopy);
 
   [(PXActionPerformer *)self presentViewController:v9];
 }

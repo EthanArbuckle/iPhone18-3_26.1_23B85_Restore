@@ -1,15 +1,15 @@
 @interface CDPWalrusStateController
-- (CDPWalrusStateController)initWithContext:(id)a3;
-- (id)_makeAnalyticsEvent:(unint64_t)a3 state:(id)a4 error:(id)a5;
-- (id)combinedWalrusStatus:(id *)a3;
-- (unint64_t)walrusStatus:(id *)a3;
+- (CDPWalrusStateController)initWithContext:(id)context;
+- (id)_makeAnalyticsEvent:(unint64_t)event state:(id)state error:(id)error;
+- (id)combinedWalrusStatus:(id *)status;
+- (unint64_t)walrusStatus:(id *)status;
 - (void)_startObservingWalrusStateChangeNotification;
 - (void)broadcastWalrusStateChange;
-- (void)combinedWalrusStatusWithCompletion:(id)a3;
-- (void)pcsKeysForServices:(id)a3 completion:(id)a4;
-- (void)repairWalrusStatusWithCompletion:(id)a3;
-- (void)updateWalrusStatus:(unint64_t)a3 authenticatedContext:(id)a4 completion:(id)a5;
-- (void)walrusStatusWithCompletion:(id)a3;
+- (void)combinedWalrusStatusWithCompletion:(id)completion;
+- (void)pcsKeysForServices:(id)services completion:(id)completion;
+- (void)repairWalrusStatusWithCompletion:(id)completion;
+- (void)updateWalrusStatus:(unint64_t)status authenticatedContext:(id)context completion:(id)completion;
+- (void)walrusStatusWithCompletion:(id)completion;
 @end
 
 @implementation CDPWalrusStateController
@@ -20,15 +20,15 @@
   [v2 startObservingWalrusStateChangeNotification];
 }
 
-- (CDPWalrusStateController)initWithContext:(id)a3
+- (CDPWalrusStateController)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = CDPWalrusStateController;
   v5 = [(CDPWalrusStateController *)&v9 init];
   if (v5)
   {
-    v6 = [CDPContext preflightContext:v4];
+    v6 = [CDPContext preflightContext:contextCopy];
     context = v5->_context;
     v5->_context = v6;
   }
@@ -36,9 +36,9 @@
   return v5;
 }
 
-- (void)walrusStatusWithCompletion:(id)a3
+- (void)walrusStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1DED99000, "Walrus: Fetching status.", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -48,7 +48,7 @@
   v16[1] = 3221225472;
   v16[2] = __55__CDPWalrusStateController_walrusStatusWithCompletion___block_invoke;
   v16[3] = &unk_1E869D588;
-  v7 = v4;
+  v7 = completionCopy;
   v17 = v7;
   v8 = [(CDPDaemonConnection *)v6 daemonWithErrorHandler:v16];
   context = self->_context;
@@ -97,7 +97,7 @@ void __55__CDPWalrusStateController_walrusStatusWithCompletion___block_invoke_25
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)walrusStatus:(id *)a3
+- (unint64_t)walrusStatus:(id *)status
 {
   v5 = _os_activity_create(&dword_1DED99000, "Walrus: Fetching status.", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -128,9 +128,9 @@ void __55__CDPWalrusStateController_walrusStatusWithCompletion___block_invoke_25
   v11[4] = &v13;
   v11[5] = &v19;
   [v7 walrusStatusWithContext:context completion:v11];
-  if (a3)
+  if (status)
   {
-    *a3 = v14[5];
+    *status = v14[5];
   }
 
   [(CDPWalrusStateController *)self _startObservingWalrusStateChangeNotification];
@@ -182,9 +182,9 @@ void __41__CDPWalrusStateController_walrusStatus___block_invoke_27(uint64_t a1, 
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (void)combinedWalrusStatusWithCompletion:(id)a3
+- (void)combinedWalrusStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1DED99000, "Walrus: Fetching combined status.", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -194,7 +194,7 @@ void __41__CDPWalrusStateController_walrusStatus___block_invoke_27(uint64_t a1, 
   v16[1] = 3221225472;
   v16[2] = __63__CDPWalrusStateController_combinedWalrusStatusWithCompletion___block_invoke;
   v16[3] = &unk_1E869D588;
-  v7 = v4;
+  v7 = completionCopy;
   v17 = v7;
   v8 = [(CDPDaemonConnection *)v6 daemonWithErrorHandler:v16];
   context = self->_context;
@@ -245,7 +245,7 @@ void __63__CDPWalrusStateController_combinedWalrusStatusWithCompletion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)combinedWalrusStatus:(id *)a3
+- (id)combinedWalrusStatus:(id *)status
 {
   v5 = _os_activity_create(&dword_1DED99000, "Walrus: Fetching combined status.", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -278,9 +278,9 @@ void __63__CDPWalrusStateController_combinedWalrusStatusWithCompletion___block_i
   v11[4] = &v13;
   v11[5] = &v19;
   [v7 combinedWalrusStatusWithContext:context completion:v11];
-  if (a3)
+  if (status)
   {
-    *a3 = v14[5];
+    *status = v14[5];
   }
 
   v9 = v20[5];
@@ -335,9 +335,9 @@ void __49__CDPWalrusStateController_combinedWalrusStatus___block_invoke_31(uint6
   *(v14 + 40) = v5;
 }
 
-- (void)repairWalrusStatusWithCompletion:(id)a3
+- (void)repairWalrusStatusWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _os_activity_create(&dword_1DED99000, "Walrus: Repair walrus status.", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -347,7 +347,7 @@ void __49__CDPWalrusStateController_combinedWalrusStatus___block_invoke_31(uint6
   v11[1] = 3221225472;
   v11[2] = __61__CDPWalrusStateController_repairWalrusStatusWithCompletion___block_invoke;
   v11[3] = &unk_1E869D588;
-  v6 = v3;
+  v6 = completionCopy;
   v12 = v6;
   v7 = [(CDPDaemonConnection *)v5 daemonWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -405,17 +405,17 @@ void __54__CDPWalrusStateController_broadcastWalrusStateChange__block_invoke(uin
   }
 }
 
-- (id)_makeAnalyticsEvent:(unint64_t)a3 state:(id)a4 error:(id)a5
+- (id)_makeAnalyticsEvent:(unint64_t)event state:(id)state error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  stateCopy = state;
+  errorCopy = error;
   v10 = [MEMORY[0x1E6985DB0] analyticsEventWithContext:self->_context eventName:@"com.apple.corecdp.walrusStateChange" category:0x1F5A168E0];
   v11 = v10;
   v12 = *MEMORY[0x1E6985E40];
-  if (v9)
+  if (errorCopy)
   {
     [v10 setObject:MEMORY[0x1E695E110] forKeyedSubscript:v12];
-    [v11 populateUnderlyingErrorsStartingWithRootError:v9];
+    [v11 populateUnderlyingErrorsStartingWithRootError:errorCopy];
   }
 
   else
@@ -423,28 +423,28 @@ void __54__CDPWalrusStateController_broadcastWalrusStateChange__block_invoke(uin
     [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v12];
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:event];
   [v11 setObject:v13 forKeyedSubscript:@"targetWalrusStatus"];
 
-  if (v8)
+  if (stateCopy)
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "escrowWalrusStatus")}];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(stateCopy, "escrowWalrusStatus")}];
     [v11 setObject:v14 forKeyedSubscript:@"escrowWalrusStatus"];
 
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "octagonWalrusStatus")}];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(stateCopy, "octagonWalrusStatus")}];
     [v11 setObject:v15 forKeyedSubscript:@"octagonWalrusStatus"];
 
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "pcsWalrusStatus")}];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(stateCopy, "pcsWalrusStatus")}];
     [v11 setObject:v16 forKeyedSubscript:@"pcsWalrusStatus"];
   }
 
   return v11;
 }
 
-- (void)updateWalrusStatus:(unint64_t)a3 authenticatedContext:(id)a4 completion:(id)a5
+- (void)updateWalrusStatus:(unint64_t)status authenticatedContext:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_1DED99000, "Walrus: Updating status", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -455,8 +455,8 @@ void __54__CDPWalrusStateController_broadcastWalrusStateChange__block_invoke(uin
   v18[2] = __79__CDPWalrusStateController_updateWalrusStatus_authenticatedContext_completion___block_invoke;
   v18[3] = &unk_1E869D7F8;
   v18[4] = self;
-  v20 = a3;
-  v12 = v9;
+  statusCopy = status;
+  v12 = completionCopy;
   v19 = v12;
   v13 = [(CDPDaemonConnection *)v11 daemonWithErrorHandler:v18];
   v15[0] = MEMORY[0x1E69E9820];
@@ -464,10 +464,10 @@ void __54__CDPWalrusStateController_broadcastWalrusStateChange__block_invoke(uin
   v15[2] = __79__CDPWalrusStateController_updateWalrusStatus_authenticatedContext_completion___block_invoke_36;
   v15[3] = &unk_1E869D820;
   v15[4] = self;
-  v17 = a3;
+  statusCopy2 = status;
   v14 = v12;
   v16 = v14;
-  [v13 updateWalrusStatus:a3 authenticatedContext:v8 completion:v15];
+  [v13 updateWalrusStatus:status authenticatedContext:contextCopy completion:v15];
 
   os_activity_scope_leave(&state);
 }
@@ -516,10 +516,10 @@ void __79__CDPWalrusStateController_updateWalrusStatus_authenticatedContext_comp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pcsKeysForServices:(id)a3 completion:(id)a4
+- (void)pcsKeysForServices:(id)services completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  servicesCopy = services;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_1DED99000, "Walrus: Fetch PCS Identities", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -529,14 +529,14 @@ void __79__CDPWalrusStateController_updateWalrusStatus_authenticatedContext_comp
   v16[1] = 3221225472;
   v16[2] = __58__CDPWalrusStateController_pcsKeysForServices_completion___block_invoke;
   v16[3] = &unk_1E869D588;
-  v9 = v6;
+  v9 = completionCopy;
   v17 = v9;
   v10 = [(CDPDaemonConnection *)v8 daemonWithErrorHandler:v16];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__CDPWalrusStateController_pcsKeysForServices_completion___block_invoke_38;
   v13[3] = &unk_1E869D848;
-  v11 = v5;
+  v11 = servicesCopy;
   v14 = v11;
   v12 = v9;
   v15 = v12;

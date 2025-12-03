@@ -1,20 +1,20 @@
 @interface RTVisitCluster
-- (BOOL)isCompleteAndExitDateIsEqualToDate:(id)a3;
-- (BOOL)isDateInside:(id)a3;
-- (BOOL)isExitDateBeforeDate:(id)a3;
-- (BOOL)isPartialAndExitDateIsEqualToDate:(id)a3;
-- (RTVisitCluster)initWithPoints:(id)a3 visit:(id)a4;
+- (BOOL)isCompleteAndExitDateIsEqualToDate:(id)date;
+- (BOOL)isDateInside:(id)inside;
+- (BOOL)isExitDateBeforeDate:(id)date;
+- (BOOL)isPartialAndExitDateIsEqualToDate:(id)date;
+- (RTVisitCluster)initWithPoints:(id)points visit:(id)visit;
 @end
 
 @implementation RTVisitCluster
 
-- (RTVisitCluster)initWithPoints:(id)a3 visit:(id)a4
+- (RTVisitCluster)initWithPoints:(id)points visit:(id)visit
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 exit];
-  v10 = v7 | v9;
+  pointsCopy = points;
+  visitCopy = visit;
+  exit = [visitCopy exit];
+  v10 = pointsCopy | exit;
 
   if (!v10)
   {
@@ -29,8 +29,8 @@
     }
   }
 
-  v12 = [v8 exit];
-  v13 = v7 | v12;
+  exit2 = [visitCopy exit];
+  v13 = pointsCopy | exit2;
 
   if (v13)
   {
@@ -40,27 +40,27 @@
     p_isa = &v14->super.isa;
     if (v14)
     {
-      objc_storeStrong(&v14->_points, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v14->_points, points);
+      objc_storeStrong(p_isa + 2, visit);
     }
 
     self = p_isa;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (BOOL)isDateInside:(id)a3
+- (BOOL)isDateInside:(id)inside
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  insideCopy = inside;
+  if (!insideCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -75,8 +75,8 @@
     goto LABEL_7;
   }
 
-  v5 = [(RTVisit *)self->_visit entry];
-  v6 = [v5 isAfterDate:v4];
+  entry = [(RTVisit *)self->_visit entry];
+  v6 = [entry isAfterDate:insideCopy];
 
   if (v6)
   {
@@ -85,20 +85,20 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = ![(RTVisitCluster *)self isExitDateBeforeDate:v4];
+  v7 = ![(RTVisitCluster *)self isExitDateBeforeDate:insideCopy];
 LABEL_8:
 
   return v7;
 }
 
-- (BOOL)isExitDateBeforeDate:(id)a3
+- (BOOL)isExitDateBeforeDate:(id)date
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = [(RTVisit *)self->_visit exit];
-    v6 = [v5 isBeforeDate:v4];
+    exit = [(RTVisit *)self->_visit exit];
+    v6 = [exit isBeforeDate:dateCopy];
   }
 
   else
@@ -119,22 +119,22 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isPartialAndExitDateIsEqualToDate:(id)a3
+- (BOOL)isPartialAndExitDateIsEqualToDate:(id)date
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = [(RTVisit *)self->_visit exit];
-    if (v5)
+    exit = [(RTVisit *)self->_visit exit];
+    if (exit)
     {
       v6 = 0;
     }
 
     else
     {
-      v8 = [(RTVisitLocationPoints *)self->_points lastDate];
-      v6 = [v4 isEqualToDate:v8];
+      lastDate = [(RTVisitLocationPoints *)self->_points lastDate];
+      v6 = [dateCopy isEqualToDate:lastDate];
     }
   }
 
@@ -156,17 +156,17 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isCompleteAndExitDateIsEqualToDate:(id)a3
+- (BOOL)isCompleteAndExitDateIsEqualToDate:(id)date
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = [(RTVisit *)self->_visit exit];
-    if (v5)
+    exit = [(RTVisit *)self->_visit exit];
+    if (exit)
     {
-      v6 = [(RTVisit *)self->_visit exit];
-      v7 = [v4 isEqualToDate:v6];
+      exit2 = [(RTVisit *)self->_visit exit];
+      v7 = [dateCopy isEqualToDate:exit2];
     }
 
     else

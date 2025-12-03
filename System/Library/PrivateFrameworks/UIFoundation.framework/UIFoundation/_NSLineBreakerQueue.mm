@@ -1,25 +1,25 @@
 @interface _NSLineBreakerQueue
-- (_NSLineBreakerQueue)initWithCapacity:(unint64_t)a3;
-- (const)valueAtIndex:(unint64_t)a3;
-- (void)_ensureCapacity:(unint64_t)a3;
-- (void)appendValue:(const void *)a3;
+- (_NSLineBreakerQueue)initWithCapacity:(unint64_t)capacity;
+- (const)valueAtIndex:(unint64_t)index;
+- (void)_ensureCapacity:(unint64_t)capacity;
+- (void)appendValue:(const void *)value;
 - (void)dealloc;
-- (void)enumerateValuesWithBlock:(id)a3;
+- (void)enumerateValuesWithBlock:(id)block;
 - (void)removeAllValues;
-- (void)removeValuesBeforeIndex:(unint64_t)a3;
+- (void)removeValuesBeforeIndex:(unint64_t)index;
 @end
 
 @implementation _NSLineBreakerQueue
 
-- (_NSLineBreakerQueue)initWithCapacity:(unint64_t)a3
+- (_NSLineBreakerQueue)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = _NSLineBreakerQueue;
   v4 = [(_NSLineBreakerQueue *)&v6 init];
   if (v4)
   {
-    v4->_buf = malloc_type_malloc(8 * a3, 0xC0040B8AA526DuLL);
-    v4->_capacity = a3;
+    v4->_buf = malloc_type_malloc(8 * capacity, 0xC0040B8AA526DuLL);
+    v4->_capacity = capacity;
     v4->_end = 0;
     v4->_count = 0;
     v4->_start = 0;
@@ -36,10 +36,10 @@
   [(_NSLineBreakerQueue *)&v3 dealloc];
 }
 
-- (void)_ensureCapacity:(unint64_t)a3
+- (void)_ensureCapacity:(unint64_t)capacity
 {
   capacity = self->_capacity;
-  if (capacity < a3)
+  if (capacity < capacity)
   {
     v5 = self->_capacity;
     do
@@ -48,7 +48,7 @@
       v5 *= 2;
     }
 
-    while (v6 < a3);
+    while (v6 < capacity);
     v7 = malloc_type_realloc(self->_buf, 8 * v6, 0xC0040B8AA526DuLL);
     self->_buf = v7;
     self->_capacity = v6;
@@ -62,7 +62,7 @@
   }
 }
 
-- (void)appendValue:(const void *)a3
+- (void)appendValue:(const void *)value
 {
   [(_NSLineBreakerQueue *)self _ensureCapacity:self->_count + 1];
   count = self->_count;
@@ -76,20 +76,20 @@
     end = self->_end;
   }
 
-  self->_buf[end] = a3;
+  self->_buf[end] = value;
   self->_end = end + 1;
   self->_count = count + 1;
 }
 
-- (const)valueAtIndex:(unint64_t)a3
+- (const)valueAtIndex:(unint64_t)index
 {
-  if (self->_count <= a3)
+  if (self->_count <= index)
   {
     [_NSLineBreakerQueue valueAtIndex:];
   }
 
   capacity = self->_capacity;
-  v4 = self->_start + a3;
+  v4 = self->_start + index;
   if (v4 < capacity)
   {
     capacity = 0;
@@ -98,9 +98,9 @@
   return self->_buf[v4 - capacity];
 }
 
-- (void)enumerateValuesWithBlock:(id)a3
+- (void)enumerateValuesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   v6 = 0;
   do
@@ -110,24 +110,24 @@
       break;
     }
 
-    v4[2](v4, [(_NSLineBreakerQueue *)self valueAtIndex:v5++], &v6);
+    blockCopy[2](blockCopy, [(_NSLineBreakerQueue *)self valueAtIndex:v5++], &v6);
   }
 
   while ((v6 & 1) == 0);
 }
 
-- (void)removeValuesBeforeIndex:(unint64_t)a3
+- (void)removeValuesBeforeIndex:(unint64_t)index
 {
   count = self->_count;
-  v4 = count >= a3;
-  v5 = count - a3;
+  v4 = count >= index;
+  v5 = count - index;
   if (!v4)
   {
     [_NSLineBreakerQueue removeValuesBeforeIndex:];
   }
 
   capacity = self->_capacity;
-  v7 = self->_start + a3;
+  v7 = self->_start + index;
   self->_start = v7;
   v4 = v7 >= capacity;
   v8 = v7 - capacity;

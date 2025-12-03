@@ -5,28 +5,28 @@
 - (NSSet)actions;
 - (NSSet)identifiersOfActionsDisabledOnWatch;
 - (NSString)description;
-- (WFActionRegistry)initWithClient:(unint64_t)a3;
-- (id)actionsForAppWithIdentifier:(id)a3;
-- (id)createActionForSelectingContentOfType:(Class)a3 serializedParameters:(id)a4;
-- (id)createActionWithDonation:(id)a3;
-- (id)createActionWithIdentifier:(id)a3 serializedParameters:(id)a4;
-- (id)createActionWithShortcut:(id)a3 error:(id *)a4;
-- (id)createActionsForSelectingContentOfTypes:(id)a3 serializedParameterArray:(id)a4;
-- (id)defaultSerializedParametersForActionSelectingContentOfType:(Class)a3;
-- (id)placeholderForActionIdentifier:(id)a3 serializedParameters:(id)a4;
-- (id)replacementActionForActionIdentifier:(id)a3 serializedParameters:(id)a4;
-- (id)replacementActionForDonatedIntent:(id)a3;
-- (id)residentCompatibleActionsForHome:(id)a3;
-- (id)residentCompatibleActionsFromActions:(id)a3 inHome:(id)a4;
-- (id)suggestionsForHome:(id)a3 includingRelatedActions:(BOOL)a4;
-- (id)updatedActionForResidentCompatibility:(id)a3 inHome:(id)a4;
+- (WFActionRegistry)initWithClient:(unint64_t)client;
+- (id)actionsForAppWithIdentifier:(id)identifier;
+- (id)createActionForSelectingContentOfType:(Class)type serializedParameters:(id)parameters;
+- (id)createActionWithDonation:(id)donation;
+- (id)createActionWithIdentifier:(id)identifier serializedParameters:(id)parameters;
+- (id)createActionWithShortcut:(id)shortcut error:(id *)error;
+- (id)createActionsForSelectingContentOfTypes:(id)types serializedParameterArray:(id)array;
+- (id)defaultSerializedParametersForActionSelectingContentOfType:(Class)type;
+- (id)placeholderForActionIdentifier:(id)identifier serializedParameters:(id)parameters;
+- (id)replacementActionForActionIdentifier:(id)identifier serializedParameters:(id)parameters;
+- (id)replacementActionForDonatedIntent:(id)intent;
+- (id)residentCompatibleActionsForHome:(id)home;
+- (id)residentCompatibleActionsFromActions:(id)actions inHome:(id)home;
+- (id)suggestionsForHome:(id)home includingRelatedActions:(BOOL)actions;
+- (id)updatedActionForResidentCompatibility:(id)compatibility inHome:(id)home;
 - (unint64_t)state;
-- (void)actionProviderDidChange:(id)a3 updatedActions:(id)a4 removedActions:(id)a5 addedActions:(id)a6;
-- (void)addActions:(id)a3 fromActionProvider:(id)a4;
+- (void)actionProviderDidChange:(id)change updatedActions:(id)actions removedActions:(id)removedActions addedActions:(id)addedActions;
+- (void)addActions:(id)actions fromActionProvider:(id)provider;
 - (void)fill;
-- (void)fillActionProviders:(id)a3;
-- (void)removeActionsWithIdentifiers:(id)a3 fromActionProvider:(id)a4;
-- (void)setActions:(id)a3 forProvider:(id)a4;
+- (void)fillActionProviders:(id)providers;
+- (void)removeActionsWithIdentifiers:(id)identifiers fromActionProvider:(id)provider;
+- (void)setActions:(id)actions forProvider:(id)provider;
 @end
 
 @implementation WFActionRegistry
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __34__WFActionRegistry_sharedRegistry__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRegistry_onceToken_25539 != -1)
   {
     dispatch_once(&sharedRegistry_onceToken_25539, block);
@@ -55,20 +55,20 @@ void __34__WFActionRegistry_sharedRegistry__block_invoke(uint64_t a1)
   sharedRegistry_sharedRegistry_25540 = v1;
 }
 
-- (id)createActionWithShortcut:(id)a3 error:(id *)a4
+- (id)createActionWithShortcut:(id)shortcut error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 intent];
-  if (v7)
+  shortcutCopy = shortcut;
+  intent = [shortcutCopy intent];
+  if (intent)
   {
-    v8 = [(WFActionRegistry *)self replacementActionForDonatedIntent:v7];
+    v8 = [(WFActionRegistry *)self replacementActionForDonatedIntent:intent];
     v9 = v8;
-    if (v8 && ([v8 serializedParametersForDonatedIntent:v7 allowDroppingUnconfigurableValues:1], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v8 && ([v8 serializedParametersForDonatedIntent:intent allowDroppingUnconfigurableValues:1], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v11 = v10;
       v12 = [v9 copyWithSerializedParameters:v10];
-      v13 = [v6 intent];
-      v14 = [v13 _title];
+      intent2 = [shortcutCopy intent];
+      _title = [intent2 _title];
       v15 = v12;
       if (v15)
       {
@@ -91,22 +91,22 @@ void __34__WFActionRegistry_sharedRegistry__block_invoke(uint64_t a1)
 
       v18 = v16;
 
-      [v18 setOverrideLocalizedName:v14];
+      [v18 setOverrideLocalizedName:_title];
     }
 
     else
     {
-      v15 = [WFHandleDonatedIntentAction intentActionWithShortcut:v6 forceExecutionOnPhone:0 groupIdentifier:0 error:a4];
+      v15 = [WFHandleDonatedIntentAction intentActionWithShortcut:shortcutCopy forceExecutionOnPhone:0 groupIdentifier:0 error:error];
     }
   }
 
   else
   {
-    v17 = [v6 userActivity];
+    userActivity = [shortcutCopy userActivity];
 
-    if (v17)
+    if (userActivity)
     {
-      v15 = [WFOpenUserActivityAction userActivityActionWithShortcut:v6 launchOrigin:0 error:a4];
+      v15 = [WFOpenUserActivityAction userActivityActionWithShortcut:shortcutCopy launchOrigin:0 error:error];
     }
 
     else
@@ -118,22 +118,22 @@ void __34__WFActionRegistry_sharedRegistry__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (id)replacementActionForDonatedIntent:(id)a3
+- (id)replacementActionForDonatedIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696E890]) initWithIntent:v4];
-  v6 = [MEMORY[0x1E696E748] sharedResolver];
-  v7 = [v6 resolvedIntentMatchingDescriptor:v5];
+  intentCopy = intent;
+  v5 = [objc_alloc(MEMORY[0x1E696E890]) initWithIntent:intentCopy];
+  mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+  v7 = [mEMORY[0x1E696E748] resolvedIntentMatchingDescriptor:v5];
 
-  v8 = [v7 displayableBundleIdentifier];
-  if (!v8)
+  displayableBundleIdentifier = [v7 displayableBundleIdentifier];
+  if (!displayableBundleIdentifier)
   {
     v17 = 0;
     goto LABEL_40;
   }
 
-  v9 = v8;
-  v10 = v4;
+  v9 = displayableBundleIdentifier;
+  v10 = intentCopy;
   v11 = v9;
   v12 = v10;
   if (!v12)
@@ -190,9 +190,9 @@ LABEL_14:
     }
   }
 
-  v14 = [v12 preferredCallProvider];
+  preferredCallProvider = [v12 preferredCallProvider];
   v15 = @"com.apple.mobilephone.call";
-  if (v14 == 2)
+  if (preferredCallProvider == 2)
   {
     v15 = @"com.apple.facetime.facetime";
   }
@@ -202,10 +202,10 @@ LABEL_14:
 LABEL_15:
   if (!v16)
   {
-    v22 = [v12 typeName];
-    v23 = [&unk_1F4A99C80 objectForKey:v22];
+    typeName = [v12 typeName];
+    v23 = [&unk_1F4A99C80 objectForKey:typeName];
 
-    v24 = [v12 typeName];
+    typeName2 = [v12 typeName];
     if (v23)
     {
       v25 = &unk_1F4A99C80;
@@ -216,22 +216,22 @@ LABEL_15:
       v25 = &unk_1F4A99CA8;
     }
 
-    v16 = [v25 objectForKey:v24];
+    v16 = [v25 objectForKey:typeName2];
   }
 
-  v26 = [v7 extensionBundleIdentifier];
-  v27 = v26;
-  if (v26)
+  extensionBundleIdentifier = [v7 extensionBundleIdentifier];
+  v27 = extensionBundleIdentifier;
+  if (extensionBundleIdentifier)
   {
-    v28 = v26;
+    bundleIdentifier = extensionBundleIdentifier;
   }
 
   else
   {
-    v28 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
   }
 
-  v29 = v28;
+  v29 = bundleIdentifier;
 
   if (!v16 && v29)
   {
@@ -240,8 +240,8 @@ LABEL_15:
       goto LABEL_36;
     }
 
-    v30 = [v12 _className];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v29, v30];
+    _className = [v12 _className];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v29, _className];
   }
 
   if (v16)
@@ -281,10 +281,10 @@ LABEL_40:
   return v17;
 }
 
-- (id)createActionWithDonation:(id)a3
+- (id)createActionWithDonation:(id)donation
 {
-  v4 = [a3 shortcut];
-  v5 = [(WFActionRegistry *)self createActionWithShortcut:v4 error:0];
+  shortcut = [donation shortcut];
+  v5 = [(WFActionRegistry *)self createActionWithShortcut:shortcut error:0];
 
   return v5;
 }
@@ -293,14 +293,14 @@ LABEL_40:
 {
   if ([(WFActionRegistry *)self state]== 2)
   {
-    v3 = [(WFActionRegistry *)self actions];
-    [v3 if_compactMap:&__block_literal_global_24148];
+    actions = [(WFActionRegistry *)self actions];
+    [actions if_compactMap:&__block_literal_global_24148];
   }
 
   else
   {
-    v3 = objc_opt_new();
-    [v3 identifiersOfActionsDisabledOnWatch];
+    actions = objc_opt_new();
+    [actions identifiersOfActionsDisabledOnWatch];
   }
   v4 = ;
 
@@ -332,32 +332,32 @@ id __72__WFActionRegistry_DisabledOnWatch__identifiersOfActionsDisabledOnWatch__
   v8.receiver = self;
   v8.super_class = WFActionRegistry;
   v4 = [(WFActionRegistry *)&v8 description];
-  v5 = [(WFActionRegistry *)self actionsByIdentifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  actionsByIdentifier = [(WFActionRegistry *)self actionsByIdentifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, actionsByIdentifier];
 
   return v6;
 }
 
-- (void)actionProviderDidChange:(id)a3 updatedActions:(id)a4 removedActions:(id)a5 addedActions:(id)a6
+- (void)actionProviderDidChange:(id)change updatedActions:(id)actions removedActions:(id)removedActions addedActions:(id)addedActions
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  changeCopy = change;
+  actionsCopy = actions;
+  removedActionsCopy = removedActions;
+  addedActionsCopy = addedActions;
   stateAccessQueue = self->_stateAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__WFActionRegistry_actionProviderDidChange_updatedActions_removedActions_addedActions___block_invoke;
   block[3] = &unk_1E837C910;
   block[4] = self;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
-  v23 = v13;
-  v15 = v13;
-  v16 = v10;
-  v17 = v11;
-  v18 = v12;
+  v20 = removedActionsCopy;
+  v21 = actionsCopy;
+  v22 = changeCopy;
+  v23 = addedActionsCopy;
+  v15 = addedActionsCopy;
+  v16 = changeCopy;
+  v17 = actionsCopy;
+  v18 = removedActionsCopy;
   dispatch_async(stateAccessQueue, block);
 }
 
@@ -496,15 +496,15 @@ void __87__WFActionRegistry_actionProviderDidChange_updatedActions_removedAction
   [v2 postNotificationName:@"WFActionRegistryFilledNotification" object:*(a1 + 32)];
 }
 
-- (void)addActions:(id)a3 fromActionProvider:(id)a4
+- (void)addActions:(id)actions fromActionProvider:(id)provider
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  actionsCopy = actions;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_stateAccessQueue);
-  if (v7)
+  if (actionsCopy)
   {
-    if (v8)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -512,24 +512,24 @@ void __87__WFActionRegistry_actionProviderDidChange_updatedActions_removedAction
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:411 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:411 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
 
-    if (v8)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:412 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:412 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
 
 LABEL_3:
-  v9 = [(WFActionRegistry *)self actionsByActionProvider];
-  v10 = [v9 objectForKey:v8];
+  actionsByActionProvider = [(WFActionRegistry *)self actionsByActionProvider];
+  v10 = [actionsByActionProvider objectForKey:providerCopy];
   v11 = [v10 mutableCopy];
   v12 = v11;
-  v31 = v8;
+  v31 = providerCopy;
   if (v11)
   {
     v13 = v11;
@@ -542,15 +542,15 @@ LABEL_3:
 
   v14 = v13;
 
-  [v14 unionSet:v7];
-  v15 = [(WFActionRegistry *)self actionsByIdentifier];
-  v16 = [v15 mutableCopy];
+  [v14 unionSet:actionsCopy];
+  actionsByIdentifier = [(WFActionRegistry *)self actionsByIdentifier];
+  v16 = [actionsByIdentifier mutableCopy];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = v7;
+  v17 = actionsCopy;
   v18 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v18)
   {
@@ -567,8 +567,8 @@ LABEL_3:
 
         v22 = *(*(&v32 + 1) + 8 * i);
         v23 = objc_autoreleasePoolPush();
-        v24 = [v22 identifier];
-        [v16 setObject:v22 forKey:v24];
+        identifier = [v22 identifier];
+        [v16 setObject:v22 forKey:identifier];
 
         objc_autoreleasePoolPop(v23);
       }
@@ -583,21 +583,21 @@ LABEL_3:
   actionsByIdentifier = self->_actionsByIdentifier;
   self->_actionsByIdentifier = v25;
 
-  v27 = [(WFActionRegistry *)self actionsByActionProvider];
-  [v27 setObject:v14 forKey:v31];
+  actionsByActionProvider2 = [(WFActionRegistry *)self actionsByActionProvider];
+  [actionsByActionProvider2 setObject:v14 forKey:v31];
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeActionsWithIdentifiers:(id)a3 fromActionProvider:(id)a4
+- (void)removeActionsWithIdentifiers:(id)identifiers fromActionProvider:(id)provider
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_stateAccessQueue);
-  if (v7)
+  if (identifiersCopy)
   {
-    if (v8)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -605,32 +605,32 @@ LABEL_3:
 
   else
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:385 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:385 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifiers"}];
 
-    if (v8)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:386 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:386 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
 
 LABEL_3:
-  v9 = [(WFActionRegistry *)self actionsByActionProvider];
-  v30 = v8;
-  v10 = [v9 objectForKey:v8];
+  actionsByActionProvider = [(WFActionRegistry *)self actionsByActionProvider];
+  v30 = providerCopy;
+  v10 = [actionsByActionProvider objectForKey:providerCopy];
   v11 = [v10 mutableCopy];
 
-  v12 = [(WFActionRegistry *)self actionsByIdentifier];
-  v13 = [v12 mutableCopy];
+  actionsByIdentifier = [(WFActionRegistry *)self actionsByIdentifier];
+  v13 = [actionsByIdentifier mutableCopy];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v14 = v7;
+  v14 = identifiersCopy;
   v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v15)
   {
@@ -664,16 +664,16 @@ LABEL_3:
   }
 
   v22 = [v11 count];
-  v23 = [(WFActionRegistry *)self actionsByActionProvider];
-  v24 = v23;
+  actionsByActionProvider2 = [(WFActionRegistry *)self actionsByActionProvider];
+  v24 = actionsByActionProvider2;
   if (v22)
   {
-    [v23 setObject:v11 forKey:v30];
+    [actionsByActionProvider2 setObject:v11 forKey:v30];
   }
 
   else
   {
-    [v23 removeObjectForKey:v30];
+    [actionsByActionProvider2 removeObjectForKey:v30];
   }
 
   v25 = [v13 copy];
@@ -683,47 +683,47 @@ LABEL_3:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActions:(id)a3 forProvider:(id)a4
+- (void)setActions:(id)actions forProvider:(id)provider
 {
-  v14 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_stateAccessQueue);
-  if (!v7)
+  if (!providerCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
   }
 
-  v8 = [(WFActionRegistry *)self actionsByActionProvider];
-  v9 = [v8 objectForKey:v7];
+  actionsByActionProvider = [(WFActionRegistry *)self actionsByActionProvider];
+  v9 = [actionsByActionProvider objectForKey:providerCopy];
 
-  if (v9 != v14)
+  if (v9 != actionsCopy)
   {
-    v10 = [v9 isEqualToSet:v14];
-    v11 = v14;
+    v10 = [v9 isEqualToSet:actionsCopy];
+    v11 = actionsCopy;
     if ((v10 & 1) == 0)
     {
       if (v9)
       {
         v12 = [v9 if_compactMap:&__block_literal_global_214];
-        [(WFActionRegistry *)self removeActionsWithIdentifiers:v12 fromActionProvider:v7];
+        [(WFActionRegistry *)self removeActionsWithIdentifiers:v12 fromActionProvider:providerCopy];
 
-        v11 = v14;
+        v11 = actionsCopy;
       }
 
       if (v11)
       {
-        [(WFActionRegistry *)self addActions:v14 fromActionProvider:v7];
+        [(WFActionRegistry *)self addActions:actionsCopy fromActionProvider:providerCopy];
       }
     }
   }
 }
 
-- (void)fillActionProviders:(id)a3
+- (void)fillActionProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   dispatch_assert_queue_V2(self->_cacheUpdateAndFillQueue);
-  v5 = [v4 if_map:&__block_literal_global_205_25486];
+  v5 = [providersCopy if_map:&__block_literal_global_205_25486];
   v6 = [v5 mutableCopy];
 
   v15[0] = MEMORY[0x1E69E9820];
@@ -732,17 +732,17 @@ LABEL_3:
   v15[3] = &unk_1E83776B8;
   v7 = v6;
   v16 = v7;
-  [v4 enumerateObjectsUsingBlock:v15];
+  [providersCopy enumerateObjectsUsingBlock:v15];
   stateAccessQueue = self->_stateAccessQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__WFActionRegistry_fillActionProviders___block_invoke_207;
   v11[3] = &unk_1E837C1E8;
-  v12 = v4;
+  v12 = providersCopy;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v9 = v7;
-  v10 = v4;
+  v10 = providersCopy;
   dispatch_async(stateAccessQueue, v11);
 }
 
@@ -919,17 +919,17 @@ void __24__WFActionRegistry_fill__block_invoke_2_202(uint64_t a1)
   [v2 postNotificationName:@"WFActionRegistryFilledNotification" object:*(a1 + 32)];
 }
 
-- (id)actionsForAppWithIdentifier:(id)a3
+- (id)actionsForAppWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFActionRegistry *)self actions];
+  identifierCopy = identifier;
+  actions = [(WFActionRegistry *)self actions];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__WFActionRegistry_actionsForAppWithIdentifier___block_invoke;
   v9[3] = &unk_1E8377670;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 if_compactMap:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [actions if_compactMap:v9];
 
   return v7;
 }
@@ -966,19 +966,19 @@ void __27__WFActionRegistry_actions__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)placeholderForActionIdentifier:(id)a3 serializedParameters:(id)a4
+- (id)placeholderForActionIdentifier:(id)identifier serializedParameters:(id)parameters
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFActionRegistry *)self actionProvidersForLoading];
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  actionProvidersForLoading = [(WFActionRegistry *)self actionProvidersForLoading];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__WFActionRegistry_placeholderForActionIdentifier_serializedParameters___block_invoke;
   v17[3] = &unk_1E8377648;
-  v18 = v6;
-  v9 = v6;
-  v10 = [v8 if_compactMap:v17];
+  v18 = parametersCopy;
+  v9 = parametersCopy;
+  v10 = [actionProvidersForLoading if_compactMap:v17];
 
   if ([v10 count] >= 2)
   {
@@ -992,22 +992,22 @@ void __27__WFActionRegistry_actions__block_invoke(uint64_t a1)
   }
 
   v12 = [WFMissingAction alloc];
-  v13 = [v10 firstObject];
-  v14 = [(WFAction *)v12 initWithIdentifier:v7 definition:v13 serializedParameters:v9];
+  firstObject = [v10 firstObject];
+  v14 = [(WFAction *)v12 initWithIdentifier:identifierCopy definition:firstObject serializedParameters:v9];
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-- (id)replacementActionForActionIdentifier:(id)a3 serializedParameters:(id)a4
+- (id)replacementActionForActionIdentifier:(id)identifier serializedParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = [a3 isEqualToString:@"is.workflow.actions.sirikit.donation.handle"];
+  parametersCopy = parameters;
+  v7 = [identifier isEqualToString:@"is.workflow.actions.sirikit.donation.handle"];
   v8 = 0;
-  if (v6 && v7)
+  if (parametersCopy && v7)
   {
-    v9 = WFExtractDonatedIntentFromSerializedParameters(v6);
+    v9 = WFExtractDonatedIntentFromSerializedParameters(parametersCopy);
     if (v9)
     {
       v10 = v9;
@@ -1194,22 +1194,22 @@ BOOL __96__WFActionRegistry_createActionsWithIdentifiers_serializedParameterArra
   return v3;
 }
 
-- (id)createActionWithIdentifier:(id)a3 serializedParameters:(id)a4
+- (id)createActionWithIdentifier:(id)identifier serializedParameters:(id)parameters
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  if (!identifierCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionRegistry.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
   }
 
-  v17[0] = v7;
+  v17[0] = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  if (v8)
+  if (parametersCopy)
   {
-    v16 = v8;
+    v16 = parametersCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
   }
 
@@ -1219,15 +1219,15 @@ BOOL __96__WFActionRegistry_createActionsWithIdentifiers_serializedParameterArra
   }
 
   v11 = [(WFActionRegistry *)self createActionsWithIdentifiers:v9 serializedParameterArray:v10 forceLocalActionsOnly:0];
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  if (v8)
+  if (parametersCopy)
   {
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return firstObject;
 }
 
 - (unint64_t)state
@@ -1249,7 +1249,7 @@ BOOL __96__WFActionRegistry_createActionsWithIdentifiers_serializedParameterArra
   return v3;
 }
 
-- (WFActionRegistry)initWithClient:(unint64_t)a3
+- (WFActionRegistry)initWithClient:(unint64_t)client
 {
   v42 = *MEMORY[0x1E69E9840];
   v40.receiver = self;
@@ -1260,7 +1260,7 @@ BOOL __96__WFActionRegistry_createActionsWithIdentifiers_serializedParameterArra
     v5 = objc_opt_new();
     v6 = objc_opt_new();
     v7 = +[WFLinkActionProvider sharedProvider];
-    v8 = [[WFIntentActionProvider alloc] initWithOptions:a3 == 1];
+    v8 = [[WFIntentActionProvider alloc] initWithOptions:client == 1];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v6, v5, v7, v8, 0}];
     actionProvidersForLoading = v4->_actionProvidersForLoading;
     v4->_actionProvidersForLoading = v9;
@@ -1303,14 +1303,14 @@ BOOL __96__WFActionRegistry_createActionsWithIdentifiers_serializedParameterArra
     }
 
     v4->_state = 0;
-    v4->_client = a3;
+    v4->_client = client;
     v19 = objc_opt_new();
     actionsByIdentifier = v4->_actionsByIdentifier;
     v4->_actionsByIdentifier = v19;
 
-    v21 = [MEMORY[0x1E696AD18] mapTableWithStrongToStrongObjects];
+    mapTableWithStrongToStrongObjects = [MEMORY[0x1E696AD18] mapTableWithStrongToStrongObjects];
     actionsByActionProvider = v4->_actionsByActionProvider;
-    v4->_actionsByActionProvider = v21;
+    v4->_actionsByActionProvider = mapTableWithStrongToStrongObjects;
 
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v24 = dispatch_queue_create("com.apple.shortcuts.WFActionRegistry.stateAccessQueue", v23);
@@ -1337,7 +1337,7 @@ BOOL __96__WFActionRegistry_createActionsWithIdentifiers_serializedParameterArra
   block[1] = 3221225472;
   block[2] = __35__WFActionRegistry_toolKitRegistry__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (toolKitRegistry_onceToken != -1)
   {
     dispatch_once(&toolKitRegistry_onceToken, block);
@@ -1355,10 +1355,10 @@ void __35__WFActionRegistry_toolKitRegistry__block_invoke(uint64_t a1)
   toolKitRegistry_sharedRegistry = v1;
 }
 
-- (id)defaultSerializedParametersForActionSelectingContentOfType:(Class)a3
+- (id)defaultSerializedParametersForActionSelectingContentOfType:(Class)type
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = WFActionIdentifierForSelectingContentOfType(a3);
+  v3 = WFActionIdentifierForSelectingContentOfType(type);
   v4 = v3;
   if (v3 && [v3 isEqualToString:@"is.workflow.actions.date"])
   {
@@ -1370,9 +1370,9 @@ void __35__WFActionRegistry_toolKitRegistry__block_invoke(uint64_t a1)
     v7 = [(WFVariableString *)v5 initWithVariable:v6];
 
     v8 = [[WFVariableStringParameterState alloc] initWithVariableString:v7];
-    v9 = [(WFVariableStringParameterState *)v8 serializedRepresentation];
+    serializedRepresentation = [(WFVariableStringParameterState *)v8 serializedRepresentation];
 
-    v14[1] = v9;
+    v14[1] = serializedRepresentation;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   }
 
@@ -1386,14 +1386,14 @@ void __35__WFActionRegistry_toolKitRegistry__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)createActionsForSelectingContentOfTypes:(id)a3 serializedParameterArray:(id)a4
+- (id)createActionsForSelectingContentOfTypes:(id)types serializedParameterArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  typesCopy = types;
+  arrayCopy = array;
+  v9 = arrayCopy;
+  if (typesCopy)
   {
-    if (!v8)
+    if (!arrayCopy)
     {
       goto LABEL_5;
     }
@@ -1401,8 +1401,8 @@ void __35__WFActionRegistry_toolKitRegistry__block_invoke(uint64_t a1)
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFActionRegistry+ContentSelection.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"contentItemClasses"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionRegistry+ContentSelection.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"contentItemClasses"}];
 
     if (!v9)
     {
@@ -1410,17 +1410,17 @@ void __35__WFActionRegistry_toolKitRegistry__block_invoke(uint64_t a1)
     }
   }
 
-  v10 = [v7 count];
+  v10 = [typesCopy count];
   if (v10 != [v9 count])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFActionRegistry+ContentSelection.m" lineNumber:65 description:@"Number of content item classes don't match number of serialized parameters passed in."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFActionRegistry+ContentSelection.m" lineNumber:65 description:@"Number of content item classes don't match number of serialized parameters passed in."];
   }
 
 LABEL_5:
-  v11 = [v7 if_compactMap:&__block_literal_global_34574];
+  v11 = [typesCopy if_compactMap:&__block_literal_global_34574];
   v12 = [v11 count];
-  if (v12 == [v7 count])
+  if (v12 == [typesCopy count])
   {
     v13 = [(WFActionRegistry *)self createActionsWithIdentifiers:v11 serializedParameterArray:v9];
   }
@@ -1433,28 +1433,28 @@ LABEL_5:
   return v13;
 }
 
-- (id)createActionForSelectingContentOfType:(Class)a3 serializedParameters:(id)a4
+- (id)createActionForSelectingContentOfType:(Class)type serializedParameters:(id)parameters
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v15[0] = a3;
+  v15[0] = type;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
+  parametersCopy = parameters;
   v7 = [v5 arrayWithObjects:v15 count:1];
   v8 = MEMORY[0x1E695E0F8];
-  if (v6)
+  if (parametersCopy)
   {
-    v8 = v6;
+    v8 = parametersCopy;
   }
 
   v14 = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
 
   v10 = [(WFActionRegistry *)self createActionsForSelectingContentOfTypes:v7 serializedParameterArray:v9];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return firstObject;
 }
 
 + (id)supportedContentItemClassesForContentSelection
@@ -1470,15 +1470,15 @@ LABEL_5:
   return [v2 setWithObjects:{v3, v4, v5, v6, v7, v8, v9, objc_opt_class(), 0}];
 }
 
-- (id)updatedActionForResidentCompatibility:(id)a3 inHome:(id)a4
+- (id)updatedActionForResidentCompatibility:(id)compatibility inHome:(id)home
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 definition];
-  if (v5)
+  compatibilityCopy = compatibility;
+  definition = [compatibilityCopy definition];
+  if (definition)
   {
-    v6 = v5;
-    v7 = [v5 objectForKey:@"Parameters"];
+    v6 = definition;
+    v7 = [definition objectForKey:@"Parameters"];
     v8 = [v7 if_map:&__block_literal_global_44233];
 
     v15 = @"Parameters";
@@ -1492,8 +1492,8 @@ LABEL_5:
     v10 = 0;
   }
 
-  v11 = [v4 serializedParameters];
-  v12 = [v4 copyWithDefinition:v10 serializedParameters:v11];
+  serializedParameters = [compatibilityCopy serializedParameters];
+  v12 = [compatibilityCopy copyWithDefinition:v10 serializedParameters:serializedParameters];
 
   v13 = *MEMORY[0x1E69E9840];
 
@@ -1531,17 +1531,17 @@ id __71__WFActionRegistry_Home__updatedActionForResidentCompatibility_inHome___b
   return v9;
 }
 
-- (id)residentCompatibleActionsFromActions:(id)a3 inHome:(id)a4
+- (id)residentCompatibleActionsFromActions:(id)actions inHome:(id)home
 {
-  v6 = a4;
+  homeCopy = home;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__WFActionRegistry_Home__residentCompatibleActionsFromActions_inHome___block_invoke;
   v10[3] = &unk_1E837A3B8;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a3 if_compactMap:v10];
+  v11 = homeCopy;
+  v7 = homeCopy;
+  v8 = [actions if_compactMap:v10];
 
   return v8;
 }
@@ -1562,15 +1562,15 @@ id __70__WFActionRegistry_Home__residentCompatibleActionsFromActions_inHome___bl
   return v4;
 }
 
-- (id)suggestionsForHome:(id)a3 includingRelatedActions:(BOOL)a4
+- (id)suggestionsForHome:(id)home includingRelatedActions:(BOOL)actions
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  homeCopy = home;
   v7 = [(WFActionRegistry *)self createActionWithIdentifier:@"is.workflow.actions.weather.currentconditions" serializedParameters:0];
   v8 = [(WFActionRegistry *)self createActionWithIdentifier:@"is.workflow.actions.conditional" serializedParameters:0];
   v9 = [(WFActionRegistry *)self createActionWithIdentifier:@"is.workflow.actions.delay" serializedParameters:0];
   v10 = v9;
-  if (a4)
+  if (actions)
   {
     v22[0] = v7;
     v22[1] = v8;
@@ -1595,8 +1595,8 @@ id __70__WFActionRegistry_Home__residentCompatibleActionsFromActions_inHome___bl
   v19[2] = __69__WFActionRegistry_Home__suggestionsForHome_includingRelatedActions___block_invoke;
   v19[3] = &unk_1E837A390;
   v19[4] = self;
-  v20 = v6;
-  v15 = v6;
+  v20 = homeCopy;
+  v15 = homeCopy;
   v16 = [v14 if_map:v19];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1604,11 +1604,11 @@ id __70__WFActionRegistry_Home__residentCompatibleActionsFromActions_inHome___bl
   return v16;
 }
 
-- (id)residentCompatibleActionsForHome:(id)a3
+- (id)residentCompatibleActionsForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(WFActionRegistry *)self actions];
-  v6 = [(WFActionRegistry *)self residentCompatibleActionsFromActions:v5 inHome:v4];
+  homeCopy = home;
+  actions = [(WFActionRegistry *)self actions];
+  v6 = [(WFActionRegistry *)self residentCompatibleActionsFromActions:actions inHome:homeCopy];
 
   return v6;
 }

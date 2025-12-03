@@ -1,10 +1,10 @@
 @interface HDMultiTypeSortedSampleIterator
-- (BOOL)advanceWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)restoreIteratorStateFromData:(id)a3 error:(id *)a4;
+- (BOOL)advanceWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)restoreIteratorStateFromData:(id)data error:(id *)error;
 - (HDMultiTypeSortedSampleIterator)init;
-- (HDMultiTypeSortedSampleIterator)initWithQueryDescriptors:(id)a3 includeDeletedObjects:(BOOL)a4 anchor:(id)a5 sortDescriptors:(id)a6 bufferSize:(int64_t)a7 profile:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HDMultiTypeSortedSampleIterator)initWithQueryDescriptors:(id)descriptors includeDeletedObjects:(BOOL)objects anchor:(id)anchor sortDescriptors:(id)sortDescriptors bufferSize:(int64_t)size profile:(id)profile;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)iteratorStateData;
 - (unint64_t)hash;
 @end
@@ -29,17 +29,17 @@ HDSortedSampleIterator *__138__HDMultiTypeSortedSampleIterator__upstreamIterator
   return v4;
 }
 
-- (HDMultiTypeSortedSampleIterator)initWithQueryDescriptors:(id)a3 includeDeletedObjects:(BOOL)a4 anchor:(id)a5 sortDescriptors:(id)a6 bufferSize:(int64_t)a7 profile:(id)a8
+- (HDMultiTypeSortedSampleIterator)initWithQueryDescriptors:(id)descriptors includeDeletedObjects:(BOOL)objects anchor:(id)anchor sortDescriptors:(id)sortDescriptors bufferSize:(int64_t)size profile:(id)profile
 {
-  v12 = a4;
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (![v15 count])
+  objectsCopy = objects;
+  descriptorsCopy = descriptors;
+  anchorCopy = anchor;
+  sortDescriptorsCopy = sortDescriptors;
+  profileCopy = profile;
+  if (![descriptorsCopy count])
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"HDMultiTypeSortedSampleIterator.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"queryDescriptors.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDMultiTypeSortedSampleIterator.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"queryDescriptors.count > 0"}];
   }
 
   v30.receiver = self;
@@ -47,24 +47,24 @@ HDSortedSampleIterator *__138__HDMultiTypeSortedSampleIterator__upstreamIterator
   v19 = [(HDMultiTypeSortedSampleIterator *)&v30 init];
   if (v19)
   {
-    v20 = [v15 copy];
+    v20 = [descriptorsCopy copy];
     queryDescriptors = v19->_queryDescriptors;
     v19->_queryDescriptors = v20;
 
-    if (v12 && [v17 count])
+    if (objectsCopy && [sortDescriptorsCopy count])
     {
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v19 file:@"HDMultiTypeSortedSampleIterator.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"includeDeletedObjects == NO || (includeDeletedObjects && sortDescriptors.count == 0)"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v19 file:@"HDMultiTypeSortedSampleIterator.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"includeDeletedObjects == NO || (includeDeletedObjects && sortDescriptors.count == 0)"}];
     }
 
-    v19->_includeDeletedObjects = v12;
-    v22 = [v17 copy];
+    v19->_includeDeletedObjects = objectsCopy;
+    v22 = [sortDescriptorsCopy copy];
     sortDescriptors = v19->_sortDescriptors;
     v19->_sortDescriptors = v22;
 
-    v19->_bufferSize = a7;
-    objc_storeWeak(&v19->_profile, v18);
-    v24 = [v16 copy];
+    v19->_bufferSize = size;
+    objc_storeWeak(&v19->_profile, profileCopy);
+    v24 = [anchorCopy copy];
     anchor = v19->_anchor;
     v19->_anchor = v24;
 
@@ -160,10 +160,10 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)advanceWithError:(id *)a3
+- (BOOL)advanceWithError:(id *)error
 {
-  v3 = a3;
-  v4 = self;
+  errorCopy3 = error;
+  selfCopy4 = self;
   v82 = *MEMORY[0x277D85DE8];
   if (!self->_isInitialized)
   {
@@ -196,13 +196,13 @@ LABEL_17:
     iterators = self->_iterators;
     self->_iterators = v19;
 
-    v4 = self;
+    selfCopy4 = self;
     v21 = [(NSMutableArray *)self->_iterators hk_filter:&__block_literal_global_154];
     if ([v21 count])
     {
       v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v23 = objc_loadWeakRetained(&self->_profile);
-      v24 = [v23 database];
+      database = [v23 database];
       v73 = MEMORY[0x277D85DD0];
       v74 = 3221225472;
       v75 = __62__HDMultiTypeSortedSampleIterator__prepareIteratorsWithError___block_invoke_2;
@@ -211,10 +211,10 @@ LABEL_17:
       v77 = v25;
       v78 = v22;
       v26 = v22;
-      v3 = a3;
-      v27 = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:v24 error:a3 block:&v73];
+      errorCopy3 = error;
+      v27 = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:database error:error block:&v73];
 
-      v4 = self;
+      selfCopy4 = self;
       [(NSMutableArray *)self->_iterators removeObjectsInArray:v26];
 
       if (!v27)
@@ -226,13 +226,13 @@ LABEL_17:
     else
     {
 
-      v3 = a3;
+      errorCopy3 = error;
     }
 
-    v4->_isInitialized = 1;
+    selfCopy4->_isInitialized = 1;
   }
 
-  nextIterator = v4->_nextIterator;
+  nextIterator = selfCopy4->_nextIterator;
   if (nextIterator)
   {
     v67 = 0;
@@ -246,10 +246,10 @@ LABEL_17:
         v55 = v31;
         if (v55)
         {
-          if (v3)
+          if (errorCopy3)
           {
             v56 = v55;
-            *v3 = v55;
+            *errorCopy3 = v55;
           }
 
           else
@@ -261,27 +261,27 @@ LABEL_17:
         goto LABEL_43;
       }
 
-      [(NSMutableArray *)v4->_iterators removeObject:v4->_nextIterator];
+      [(NSMutableArray *)selfCopy4->_iterators removeObject:selfCopy4->_nextIterator];
     }
   }
 
-  if (![(NSMutableArray *)v4->_iterators count])
+  if (![(NSMutableArray *)selfCopy4->_iterators count])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:v3 code:900 format:@"All child iterators of the multi-type iterator are exhausted"];
+    [MEMORY[0x277CCA9B8] hk_assignError:errorCopy3 code:900 format:@"All child iterators of the multi-type iterator are exhausted"];
 LABEL_43:
     result = 0;
     goto LABEL_44;
   }
 
-  v32 = [(NSMutableArray *)v4->_iterators firstObject];
-  v33 = v4->_nextIterator;
-  v4->_nextIterator = v32;
+  firstObject = [(NSMutableArray *)selfCopy4->_iterators firstObject];
+  v33 = selfCopy4->_nextIterator;
+  selfCopy4->_nextIterator = firstObject;
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v4->_iterators;
+  obj = selfCopy4->_iterators;
   v62 = [(NSMutableArray *)obj countByEnumeratingWithState:&v63 objects:v72 count:16];
   if (v62)
   {
@@ -296,8 +296,8 @@ LABEL_43:
         }
 
         v35 = *(*(&v63 + 1) + 8 * i);
-        v36 = v4->_sortDescriptors;
-        v37 = v4->_nextIterator;
+        v36 = selfCopy4->_sortDescriptors;
+        v37 = selfCopy4->_nextIterator;
         v38 = v35;
         v39 = v36;
         v68 = 0u;
@@ -320,9 +320,9 @@ LABEL_43:
               }
 
               v45 = *(*(&v68 + 1) + 8 * j);
-              v46 = [(HDSortedSampleIterator *)v37 sample];
-              v47 = [(HDSortedSampleIterator *)v38 sample];
-              v48 = [v45 compareObject:v46 toObject:v47];
+              sample = [(HDSortedSampleIterator *)v37 sample];
+              sample2 = [(HDSortedSampleIterator *)v38 sample];
+              v48 = [v45 compareObject:sample toObject:sample2];
 
               if (v48)
               {
@@ -352,8 +352,8 @@ LABEL_43:
           }
         }
 
-        v49 = [(HDSortedSampleIterator *)v37 objectID];
-        if (v49 >= [(HDSortedSampleIterator *)v38 objectID])
+        objectID = [(HDSortedSampleIterator *)v37 objectID];
+        if (objectID >= [(HDSortedSampleIterator *)v38 objectID])
         {
           v50 = v38;
         }
@@ -366,7 +366,7 @@ LABEL_43:
         v52 = v50;
 LABEL_34:
 
-        v4 = self;
+        selfCopy4 = self;
         v53 = self->_nextIterator;
         self->_nextIterator = v52;
       }
@@ -391,10 +391,10 @@ LABEL_44:
   return v5 ^ [(HDSortedSampleIterator *)self->_nextIterator hash]^ self->_includeDeletedObjects ^ self->_isInitialized;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -404,7 +404,7 @@ LABEL_44:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       queryDescriptors = self->_queryDescriptors;
       v7 = v5->_queryDescriptors;
       v14 = (queryDescriptors == v7 || v7 && [(NSArray *)queryDescriptors isEqualToArray:?]) && ((sortDescriptors = self->_sortDescriptors, v9 = v5->_sortDescriptors, sortDescriptors == v9) || v9 && [(NSArray *)sortDescriptors isEqual:?]) && ((anchor = self->_anchor, v11 = v5->_anchor, anchor == v11) || v11 && [(HKSortedQueryAnchor *)anchor isEqual:?]) && self->_bufferSize == v5->_bufferSize && ((nextIterator = self->_nextIterator, v13 = v5->_nextIterator, nextIterator == v13) || v13 && [(HDSortedSampleIterator *)nextIterator isEqual:?]) && self->_isInitialized == v5->_isInitialized && self->_includeDeletedObjects == v5->_includeDeletedObjects;
@@ -419,7 +419,7 @@ LABEL_44:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [HDMultiTypeSortedSampleIterator alloc];
   if (v5)
@@ -434,15 +434,15 @@ LABEL_44:
     v6 = 0;
   }
 
-  v7 = [(NSArray *)self->_queryDescriptors copyWithZone:a3];
+  v7 = [(NSArray *)self->_queryDescriptors copyWithZone:zone];
   queryDescriptors = v6->_queryDescriptors;
   v6->_queryDescriptors = v7;
 
-  v9 = [(NSArray *)self->_sortDescriptors copyWithZone:a3];
+  v9 = [(NSArray *)self->_sortDescriptors copyWithZone:zone];
   sortDescriptors = v6->_sortDescriptors;
   v6->_sortDescriptors = v9;
 
-  v11 = [(HKSortedQueryAnchor *)self->_anchor copyWithZone:a3];
+  v11 = [(HKSortedQueryAnchor *)self->_anchor copyWithZone:zone];
   anchor = v6->_anchor;
   v6->_anchor = v11;
 
@@ -459,7 +459,7 @@ LABEL_44:
   v17 = [(NSMutableArray *)self->_iterators indexOfObject:self->_nextIterator];
   if (v17 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v18 = [(HDSortedSampleIterator *)self->_nextIterator copyWithZone:a3];
+    v18 = [(HDSortedSampleIterator *)self->_nextIterator copyWithZone:zone];
   }
 
   else
@@ -481,17 +481,17 @@ id __48__HDMultiTypeSortedSampleIterator_copyWithZone___block_invoke(uint64_t a1
   return v2;
 }
 
-- (BOOL)restoreIteratorStateFromData:(id)a3 error:(id *)a4
+- (BOOL)restoreIteratorStateFromData:(id)data error:(id *)error
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dataCopy = data;
   if (self->_isInitialized)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HDMultiTypeSortedSampleIterator.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"!_isInitialized"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDMultiTypeSortedSampleIterator.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"!_isInitialized"}];
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v7 error:a4];
+  v8 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:error];
   if (v8)
   {
     v9 = MEMORY[0x277CBEB98];
@@ -524,10 +524,10 @@ id __48__HDMultiTypeSortedSampleIterator_copyWithZone___block_invoke(uint64_t a1
       anchor = [v8 error];
       if (anchor)
       {
-        if (a4)
+        if (error)
         {
           v16 = anchor;
-          *a4 = anchor;
+          *error = anchor;
         }
 
         else
@@ -550,21 +550,21 @@ id __48__HDMultiTypeSortedSampleIterator_copyWithZone___block_invoke(uint64_t a1
 - (id)iteratorStateData
 {
   v3 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-  v4 = [(HDSortedSampleIterator *)self->_nextIterator nextAnchor];
-  if (v4)
+  nextAnchor = [(HDSortedSampleIterator *)self->_nextIterator nextAnchor];
+  if (nextAnchor)
   {
-    [v3 encodeObject:v4 forKey:@"CurrentAnchor"];
+    [v3 encodeObject:nextAnchor forKey:@"CurrentAnchor"];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB68] null];
-    [v3 encodeObject:v5 forKey:@"CurrentAnchor"];
+    null = [MEMORY[0x277CBEB68] null];
+    [v3 encodeObject:null forKey:@"CurrentAnchor"];
   }
 
-  v6 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
 @end

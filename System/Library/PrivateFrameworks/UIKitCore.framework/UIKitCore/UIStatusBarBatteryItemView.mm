@@ -1,6 +1,6 @@
 @interface UIStatusBarBatteryItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
-- (CGSize)_batteryOffsetWithBackground:(id)a3;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
+- (CGSize)_batteryOffsetWithBackground:(id)background;
 - (double)extraRightPadding;
 - (id)_accessoryImage;
 - (id)_contentsImage;
@@ -11,12 +11,12 @@
 
 @implementation UIStatusBarBatteryItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = [a3 rawData];
-  v6 = (ceilf(*(v5 + 2104) / 5.0) * 5.0);
-  v7 = *(v5 + 2108);
-  v8 = *(v5 + 2536);
+  rawData = [data rawData];
+  v6 = (ceilf(*(rawData + 2104) / 5.0) * 5.0);
+  v7 = *(rawData + 2108);
+  v8 = *(rawData + 2536);
   capacity = self->_capacity;
   v10 = capacity != v6;
   if (capacity != v6)
@@ -41,19 +41,19 @@
   return v10;
 }
 
-- (CGSize)_batteryOffsetWithBackground:(id)a3
+- (CGSize)_batteryOffsetWithBackground:(id)background
 {
-  [a3 size];
+  [background size];
   v5 = v4;
   v7 = v6;
-  v8 = [(UIStatusBarItemView *)self foregroundStyle];
-  v9 = [v8 usesVerticalLayout];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
-  v10 = [(UIStatusBarItemView *)self foregroundStyle];
-  [v10 height];
+  foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+  [foregroundStyle2 height];
   v12 = v11;
 
-  if (v9)
+  if (usesVerticalLayout)
   {
     v13 = v12;
   }
@@ -63,7 +63,7 @@
     v13 = v5;
   }
 
-  if (v9)
+  if (usesVerticalLayout)
   {
     v14 = v7;
   }
@@ -82,44 +82,44 @@
 
 - (id)_accessoryImage
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  v3 = [v2 imageNamed:@"BatteryChargingAccessory"];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v3 = [foregroundStyle imageNamed:@"BatteryChargingAccessory"];
 
   return v3;
 }
 
 - (id)_contentsImage
 {
-  v3 = [(UIStatusBarBatteryItemView *)self _needsAccessoryImage];
-  v4 = v3;
+  _needsAccessoryImage = [(UIStatusBarBatteryItemView *)self _needsAccessoryImage];
+  v4 = _needsAccessoryImage;
   if (self->_batterySaverModeActive)
   {
-    v5 = v3 | 2;
+    v5 = _needsAccessoryImage | 2;
   }
 
   else
   {
-    v5 = v3;
+    v5 = _needsAccessoryImage;
   }
 
-  v6 = [(UIStatusBarBatteryItemView *)self cachedImageSet];
+  cachedImageSet = [(UIStatusBarBatteryItemView *)self cachedImageSet];
 
-  if (v6 && (capacity = self->_capacity, capacity == [(UIStatusBarBatteryItemView *)self cachedCapacity]) && v4 == [(UIStatusBarBatteryItemView *)self cachedImageHasAccessoryImage]&& v5 == [(UIStatusBarBatteryItemView *)self cachedBatteryStyle])
+  if (cachedImageSet && (capacity = self->_capacity, capacity == [(UIStatusBarBatteryItemView *)self cachedCapacity]) && v4 == [(UIStatusBarBatteryItemView *)self cachedImageHasAccessoryImage]&& v5 == [(UIStatusBarBatteryItemView *)self cachedBatteryStyle])
   {
-    v8 = [(UIStatusBarBatteryItemView *)self cachedImageSet];
+    cachedImageSet2 = [(UIStatusBarBatteryItemView *)self cachedImageSet];
   }
 
   else
   {
     v9 = [(UIStatusBarItemView *)self imageWithShadowNamed:@"BatteryDrainingBG"];
-    v10 = [v9 image];
-    [v10 size];
+    image = [v9 image];
+    [image size];
     v12 = v11;
     v14 = v13;
-    v15 = [(UIStatusBarItemView *)self foregroundStyle];
-    v16 = [v15 usesVerticalLayout];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
-    if (v16)
+    if (usesVerticalLayout)
     {
       v17 = v14;
     }
@@ -129,13 +129,13 @@
       v17 = v12;
     }
 
-    if ((v16 & 1) == 0 && v4)
+    if ((usesVerticalLayout & 1) == 0 && v4)
     {
-      v18 = [(UIStatusBarBatteryItemView *)self _accessoryImage];
-      [v18 size];
+      _accessoryImage = [(UIStatusBarBatteryItemView *)self _accessoryImage];
+      [_accessoryImage size];
       v20 = v19;
-      v21 = [(UIStatusBarItemView *)self foregroundStyle];
-      [v21 batteryAccessoryMargin];
+      foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+      [foregroundStyle2 batteryAccessoryMargin];
       v17 = v12 + v20 + v22;
     }
 
@@ -153,69 +153,69 @@
     }
 
     CGContextSaveGState(v25);
-    [(UIStatusBarBatteryItemView *)self _batteryOffsetWithBackground:v10];
+    [(UIStatusBarBatteryItemView *)self _batteryOffsetWithBackground:image];
     v27 = v26;
     v29 = v28;
     if (v4)
     {
-      v30 = [(UIStatusBarItemView *)self foregroundStyle];
-      v31 = [v30 usesVerticalLayout];
+      foregroundStyle3 = [(UIStatusBarItemView *)self foregroundStyle];
+      usesVerticalLayout2 = [foregroundStyle3 usesVerticalLayout];
 
-      if (v31)
+      if (usesVerticalLayout2)
       {
-        v32 = [(UIStatusBarBatteryItemView *)self _accessoryImage];
-        [v32 size];
+        _accessoryImage2 = [(UIStatusBarBatteryItemView *)self _accessoryImage];
+        [_accessoryImage2 size];
         v34 = v33;
-        v35 = [(UIStatusBarItemView *)self foregroundStyle];
-        [v35 batteryAccessoryMargin];
+        foregroundStyle4 = [(UIStatusBarItemView *)self foregroundStyle];
+        [foregroundStyle4 batteryAccessoryMargin];
         v27 = v27 + (v34 + v36) * -0.5;
       }
     }
 
-    v37 = [(UIStatusBarItemView *)self foregroundStyle];
-    [v37 scale];
+    foregroundStyle5 = [(UIStatusBarItemView *)self foregroundStyle];
+    [foregroundStyle5 scale];
     v39 = v38;
 
     CGContextTranslateCTM(v25, round(v27 * v39) / v39, round(v29 * v39) / v39);
-    [v10 drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-    v40 = [(UIStatusBarItemView *)self foregroundStyle];
-    [v40 drawBatteryInsidesWithSize:self->_capacity capacity:v5 style:{v12, v14}];
+    [image drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    foregroundStyle6 = [(UIStatusBarItemView *)self foregroundStyle];
+    [foregroundStyle6 drawBatteryInsidesWithSize:self->_capacity capacity:v5 style:{v12, v14}];
 
     v41 = [(UIStatusBarItemView *)self imageFromImageContextClippedToWidth:v23];
     CGContextRestoreGState(v25);
     [(UIStatusBarItemView *)self endImageContext];
-    v42 = [v9 shadowImage];
-    v8 = [_UILegibilityImageSet imageFromImage:v41 withShadowImage:v42];
+    shadowImage = [v9 shadowImage];
+    cachedImageSet2 = [_UILegibilityImageSet imageFromImage:v41 withShadowImage:shadowImage];
 
-    [(UIStatusBarBatteryItemView *)self setCachedImageSet:v8];
+    [(UIStatusBarBatteryItemView *)self setCachedImageSet:cachedImageSet2];
     [(UIStatusBarBatteryItemView *)self setCachedCapacity:self->_capacity];
     [(UIStatusBarBatteryItemView *)self setCachedImageHasAccessoryImage:v4];
     [(UIStatusBarBatteryItemView *)self setCachedBatteryStyle:v5];
   }
 
-  return v8;
+  return cachedImageSet2;
 }
 
 - (id)contentsImage
 {
-  v3 = [(UIStatusBarBatteryItemView *)self _contentsImage];
+  _contentsImage = [(UIStatusBarBatteryItemView *)self _contentsImage];
   if ([(UIStatusBarItemView *)self _shouldReverseLayoutDirection])
   {
-    v4 = [v3 imageSetWithOrientation:4];
+    v4 = [_contentsImage imageSetWithOrientation:4];
 
-    v3 = v4;
+    _contentsImage = v4;
   }
 
-  return v3;
+  return _contentsImage;
 }
 
 - (double)extraRightPadding
 {
-  v3 = [(UIStatusBarItemView *)self foregroundStyle];
-  v4 = [v3 usesVerticalLayout];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
   result = -1.0;
-  if (v4)
+  if (usesVerticalLayout)
   {
     v6.receiver = self;
     v6.super_class = UIStatusBarBatteryItemView;
@@ -227,9 +227,9 @@
 
 - (void)_updateAccessoryImage
 {
-  v3 = [(UIStatusBarBatteryItemView *)self _needsAccessoryImage];
+  _needsAccessoryImage = [(UIStatusBarBatteryItemView *)self _needsAccessoryImage];
   accessoryView = self->_accessoryView;
-  if (!v3)
+  if (!_needsAccessoryImage)
   {
     v22 = 1;
     goto LABEL_15;
@@ -237,18 +237,18 @@
 
   if (!accessoryView)
   {
-    v5 = [(UIStatusBarBatteryItemView *)self _accessoryImage];
+    _accessoryImage = [(UIStatusBarBatteryItemView *)self _accessoryImage];
     [(UIView *)self bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(UIStatusBarItemView *)self foregroundStyle];
-    v15 = [v14 legibilityStyle];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    legibilityStyle = [foregroundStyle legibilityStyle];
 
-    if (v15)
+    if (legibilityStyle)
     {
-      v16 = [[_UILegibilityView alloc] initWithStyle:v15 image:v5];
+      v16 = [[_UILegibilityView alloc] initWithStyle:legibilityStyle image:_accessoryImage];
       v17 = self->_accessoryView;
       self->_accessoryView = &v16->super;
 
@@ -259,7 +259,7 @@
         v41.size.width = v11;
         v41.size.height = v13;
         MinX = CGRectGetMinX(v41);
-        [v5 size];
+        [_accessoryImage size];
         v20 = MinX + v19 * 0.5;
         v21 = 44;
 LABEL_11:
@@ -268,10 +268,10 @@ LABEL_11:
         v43.size.width = v11;
         v43.size.height = v13;
         MidY = CGRectGetMidY(v43);
-        v31 = [(UIStatusBarItemView *)self foregroundStyle];
-        v32 = [v31 usesVerticalLayout];
+        foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+        usesVerticalLayout = [foregroundStyle2 usesVerticalLayout];
 
-        if (v32)
+        if (usesVerticalLayout)
         {
           v44.origin.x = v7;
           v44.origin.y = v9;
@@ -279,11 +279,11 @@ LABEL_11:
           v44.size.height = v13;
           MidX = CGRectGetMidX(v44);
           v34 = [(UIStatusBarItemView *)self imageWithShadowNamed:@"BatteryDrainingBG"];
-          v35 = [v34 image];
-          [v35 size];
+          image = [v34 image];
+          [image size];
           v37 = MidX + v36 * 0.5;
-          v38 = [(UIStatusBarItemView *)self foregroundStyle];
-          [v38 batteryAccessoryMargin];
+          foregroundStyle3 = [(UIStatusBarItemView *)self foregroundStyle];
+          [foregroundStyle3 batteryAccessoryMargin];
           v20 = v37 + v39 * 0.5;
         }
 
@@ -298,12 +298,12 @@ LABEL_11:
 
     else
     {
-      v23 = v5;
+      v23 = _accessoryImage;
       if ([(UIStatusBarItemView *)self _shouldReverseLayoutDirection])
       {
-        v24 = [v23 CGImage];
+        cGImage = [v23 CGImage];
         [v23 scale];
-        v25 = [UIImage imageWithCGImage:v24 scale:4 orientation:?];
+        v25 = [UIImage imageWithCGImage:cGImage scale:4 orientation:?];
 
         v23 = v25;
       }
@@ -320,7 +320,7 @@ LABEL_11:
     v42.size.width = v11;
     v42.size.height = v13;
     MaxX = CGRectGetMaxX(v42);
-    [v5 size];
+    [_accessoryImage size];
     v20 = MaxX + v29 * -0.5;
     v21 = 41;
     goto LABEL_11;
@@ -335,25 +335,25 @@ LABEL_15:
 
 - (id)accessibilityHUDRepresentation
 {
-  v3 = [(UIStatusBarBatteryItemView *)self _needsAccessoryImage];
-  v4 = v3;
+  _needsAccessoryImage = [(UIStatusBarBatteryItemView *)self _needsAccessoryImage];
+  v4 = _needsAccessoryImage;
   if (self->_batterySaverModeActive)
   {
-    v5 = v3 | 2;
+    v5 = _needsAccessoryImage | 2;
   }
 
   else
   {
-    v5 = v3;
+    v5 = _needsAccessoryImage;
   }
 
   if ([(UIStatusBarBatteryItemView *)self cachedAXHUDCapacity]!= self->_capacity || [(UIStatusBarBatteryItemView *)self cachedAXHUDStyle]!= v5 || ([(UIStatusBarBatteryItemView *)self cachedAXHUDImage], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
-    v7 = [(UIStatusBarItemView *)self foregroundStyle];
-    v8 = [v7 batteryColorForCapacity:self->_capacity style:v5 usingTintColor:0];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    v8 = [foregroundStyle batteryColorForCapacity:self->_capacity style:v5 usingTintColor:0];
 
-    v9 = [(UIView *)self traitCollection];
-    if ([v9 userInterfaceStyle] == 2)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       +[UIColor whiteColor];
     }
@@ -365,10 +365,10 @@ LABEL_15:
     v10 = ;
 
     v11 = (self->_capacity / 100.0);
-    v12 = [(UIStatusBarItemView *)self _shouldReverseLayoutDirection];
-    v13 = [(UIView *)self _screen];
-    [v13 scale];
-    v15 = UIStatusBarCreateHUDBatteryImage(v8, v10, v4, 0, v12, 0, v11, v14);
+    _shouldReverseLayoutDirection = [(UIStatusBarItemView *)self _shouldReverseLayoutDirection];
+    _screen = [(UIView *)self _screen];
+    [_screen scale];
+    v15 = UIStatusBarCreateHUDBatteryImage(v8, v10, v4, 0, _shouldReverseLayoutDirection, 0, v11, v14);
     [(UIStatusBarBatteryItemView *)self setCachedAXHUDImage:v15];
 
     [(UIStatusBarBatteryItemView *)self setCachedAXHUDCapacity:self->_capacity];
@@ -376,8 +376,8 @@ LABEL_15:
   }
 
   v16 = [UIAccessibilityHUDItem alloc];
-  v17 = [(UIStatusBarBatteryItemView *)self cachedAXHUDImage];
-  v18 = [(UIAccessibilityHUDItem *)v16 initWithTitle:0 image:v17 imageInsets:0 scaleImage:0.0, 0.0, 0.0, 0.0];
+  cachedAXHUDImage = [(UIStatusBarBatteryItemView *)self cachedAXHUDImage];
+  v18 = [(UIAccessibilityHUDItem *)v16 initWithTitle:0 image:cachedAXHUDImage imageInsets:0 scaleImage:0.0, 0.0, 0.0, 0.0];
 
   [(UIAccessibilityHUDItem *)v18 setFlattenImage:0];
 

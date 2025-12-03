@@ -1,27 +1,27 @@
 @interface HMDCameraStreamSnapshotCapture
 + (id)logCategory;
-- (HMDCameraStreamSnapshotCapture)initWithWorkQueue:(id)a3 videoStreamInterface:(id)a4 delegate:(id)a5 delegateQueue:(id)a6;
+- (HMDCameraStreamSnapshotCapture)initWithWorkQueue:(id)queue videoStreamInterface:(id)interface delegate:(id)delegate delegateQueue:(id)delegateQueue;
 - (NSString)description;
 - (id)logIdentifier;
-- (void)_callSnapshotDelegate:(_BYTE *)a1;
+- (void)_callSnapshotDelegate:(_BYTE *)delegate;
 - (void)_captureFrame;
 - (void)captureCurrentFrame;
 - (void)captureLastFrame;
-- (void)setCaptureCurrentFrameTimer:(uint64_t)a1;
-- (void)timerDidFire:(id)a3;
-- (void)videoStream:(id)a3 didGetLastDecodedFrame:(id)a4;
+- (void)setCaptureCurrentFrameTimer:(uint64_t)timer;
+- (void)timerDidFire:(id)fire;
+- (void)videoStream:(id)stream didGetLastDecodedFrame:(id)frame;
 @end
 
 @implementation HMDCameraStreamSnapshotCapture
 
-- (void)videoStream:(id)a3 didGetLastDecodedFrame:(id)a4
+- (void)videoStream:(id)stream didGetLastDecodedFrame:(id)frame
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  frameCopy = frame;
   [HMDCameraStreamSnapshotCapture setCaptureCurrentFrameTimer:?];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -32,29 +32,29 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  [(HMDCameraStreamSnapshotCapture *)v9 _callSnapshotDelegate:v7];
+  [(HMDCameraStreamSnapshotCapture *)selfCopy _callSnapshotDelegate:frameCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCaptureCurrentFrameTimer:(uint64_t)a1
+- (void)setCaptureCurrentFrameTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 56), 0);
+    objc_storeStrong((timer + 56), 0);
   }
 }
 
-- (void)_callSnapshotDelegate:(_BYTE *)a1
+- (void)_callSnapshotDelegate:(_BYTE *)delegate
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    if (a1[8] == 1)
+    if (delegate[8] == 1)
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = a1;
+      delegateCopy = delegate;
       v6 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
@@ -65,16 +65,16 @@
       }
 
       objc_autoreleasePoolPop(v4);
-      v8 = [v5 videoStreamInterface];
-      [v8 stopStream];
+      videoStreamInterface = [delegateCopy videoStreamInterface];
+      [videoStreamInterface stopStream];
     }
 
-    if (a1[9] == 1)
+    if (delegate[9] == 1)
     {
-      a1[9] = 0;
+      delegate[9] = 0;
       v9 = v3;
       v10 = objc_autoreleasePoolPush();
-      v11 = a1;
+      delegateCopy2 = delegate;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -85,29 +85,29 @@
       }
 
       objc_autoreleasePoolPop(v10);
-      WeakRetained = objc_loadWeakRetained(v11 + 4);
+      WeakRetained = objc_loadWeakRetained(delegateCopy2 + 4);
       if (objc_opt_respondsToSelector())
       {
-        v15 = *(v11 + 5);
+        v15 = *(delegateCopy2 + 5);
         *&v24 = MEMORY[0x277D85DD0];
         *(&v24 + 1) = 3221225472;
         v25 = __57__HMDCameraStreamSnapshotCapture__callDidGetNewSnapshot___block_invoke;
         v26 = &unk_27868A010;
         v27 = WeakRetained;
-        v28 = v11;
+        v28 = delegateCopy2;
         v29 = v9;
         dispatch_async(v15, &v24);
       }
     }
 
-    if (a1[8] == 1)
+    if (delegate[8] == 1)
     {
-      a1[8] = 0;
+      delegate[8] = 0;
       if (v3)
       {
         v16 = v3;
         v17 = objc_autoreleasePoolPush();
-        v18 = a1;
+        delegateCopy3 = delegate;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
@@ -118,16 +118,16 @@
         }
 
         objc_autoreleasePoolPop(v17);
-        v21 = objc_loadWeakRetained(v18 + 4);
+        v21 = objc_loadWeakRetained(delegateCopy3 + 4);
         if (objc_opt_respondsToSelector())
         {
-          v22 = *(v18 + 5);
+          v22 = *(delegateCopy3 + 5);
           *&v24 = MEMORY[0x277D85DD0];
           *(&v24 + 1) = 3221225472;
           v25 = __58__HMDCameraStreamSnapshotCapture__callDidGetLastSnapshot___block_invoke;
           v26 = &unk_27868A010;
           v27 = v21;
-          v28 = v18;
+          v28 = delegateCopy3;
           v29 = v16;
           dispatch_async(v22, &v24);
         }
@@ -138,10 +138,10 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
@@ -154,11 +154,11 @@
     captureCurrentFrameTimer = 0;
   }
 
-  if (captureCurrentFrameTimer == v4)
+  if (captureCurrentFrameTimer == fireCopy)
   {
     [HMDCameraStreamSnapshotCapture setCaptureCurrentFrameTimer:?];
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -169,7 +169,7 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDCameraStreamSnapshotCapture *)v7 _callSnapshotDelegate:?];
+    [(HMDCameraStreamSnapshotCapture *)selfCopy _callSnapshotDelegate:?];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -223,17 +223,17 @@ void __50__HMDCameraStreamSnapshotCapture_captureLastFrame__block_invoke(uint64_
 - (void)_captureFrame
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
 LABEL_6:
     v6 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  if (a1[7])
+  if (self[7])
   {
     v2 = objc_autoreleasePoolPush();
-    v3 = a1;
+    selfCopy = self;
     v4 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -248,18 +248,18 @@ LABEL_6:
   }
 
   v7 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:2.0];
-  v8 = a1[7];
-  a1[7] = v7;
+  v8 = self[7];
+  self[7] = v7;
 
-  [a1[7] setDelegate:a1];
-  v9 = a1[7];
-  v10 = a1[3];
+  [self[7] setDelegate:self];
+  v9 = self[7];
+  v10 = self[3];
   [v9 setDelegateQueue:v10];
 
-  v11 = [a1 videoStreamInterface];
-  [v11 captureSnapshot];
+  videoStreamInterface = [self videoStreamInterface];
+  [videoStreamInterface captureSnapshot];
 
-  v12 = a1[7];
+  v12 = self[7];
   v13 = *MEMORY[0x277D85DE8];
 
   [v12 resume];
@@ -331,29 +331,29 @@ void __53__HMDCameraStreamSnapshotCapture_captureCurrentFrame__block_invoke(uint
   return [(HMDCameraStreamSnapshotCapture *)self description];
 }
 
-- (HMDCameraStreamSnapshotCapture)initWithWorkQueue:(id)a3 videoStreamInterface:(id)a4 delegate:(id)a5 delegateQueue:(id)a6
+- (HMDCameraStreamSnapshotCapture)initWithWorkQueue:(id)queue videoStreamInterface:(id)interface delegate:(id)delegate delegateQueue:(id)delegateQueue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  interfaceCopy = interface;
+  delegateCopy = delegate;
+  delegateQueueCopy = delegateQueue;
   v20.receiver = self;
   v20.super_class = HMDCameraStreamSnapshotCapture;
   v15 = [(HMDCameraStreamSnapshotCapture *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_workQueue, a3);
-    objc_storeStrong(&v16->_videoStreamInterface, a4);
-    objc_storeWeak(&v16->_delegate, v13);
-    objc_storeStrong(&v16->_delegateQueue, a6);
-    v17 = [v12 sessionID];
+    objc_storeStrong(&v15->_workQueue, queue);
+    objc_storeStrong(&v16->_videoStreamInterface, interface);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_delegateQueue, delegateQueue);
+    sessionID = [interfaceCopy sessionID];
     streamSessionID = v16->_streamSessionID;
-    v16->_streamSessionID = v17;
+    v16->_streamSessionID = sessionID;
 
     v16->_capturingLastFrame = 0;
     v16->_capturingCurrentFrame = 0;
-    [v12 setSnapshotDelegate:v16];
+    [interfaceCopy setSnapshotDelegate:v16];
   }
 
   return v16;

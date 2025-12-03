@@ -1,9 +1,9 @@
 @interface MapScrubberOverlayUIView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)barTouched:(id)a3;
-- (void)barValueChanged:(id)a3;
-- (void)didReceiveMenuAction:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)barTouched:(id)touched;
+- (void)barValueChanged:(id)changed;
+- (void)didReceiveMenuAction:(id)action;
 - (void)doSegmentChange;
 - (void)layoutSubviews;
 - (void)playPauseTapped;
@@ -13,13 +13,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220E366AC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_220E378A4();
   v6 = v5;
 
@@ -30,44 +30,44 @@
   return result;
 }
 
-- (void)barValueChanged:(id)a3
+- (void)barValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_220E38734(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_220E38734(changedCopy);
 }
 
-- (void)barTouched:(id)a3
+- (void)barTouched:(id)touched
 {
-  v4 = a3;
-  v5 = self;
+  touchedCopy = touched;
+  selfCopy = self;
   sub_220E388F4();
 }
 
 - (void)playPauseTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_220E38AD8();
 }
 
 - (void)doSegmentChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_220E38BAC();
 }
 
-- (void)didReceiveMenuAction:(id)a3
+- (void)didReceiveMenuAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_220E38DC4();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v6 = a4;
-  v7 = self;
-  v8 = sub_220E39AD4(a4);
+  eventCopy = event;
+  selfCopy = self;
+  v8 = sub_220E39AD4(event);
 
   return v8;
 }

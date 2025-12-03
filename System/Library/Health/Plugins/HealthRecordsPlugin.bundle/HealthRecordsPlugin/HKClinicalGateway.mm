@@ -1,16 +1,16 @@
 @interface HKClinicalGateway
-- (HKClinicalGateway)initWithDaemonClinicalGateway:(id)a3;
+- (HKClinicalGateway)initWithDaemonClinicalGateway:(id)gateway;
 - (id)clinicalSharingGatewayFeature;
 @end
 
 @implementation HKClinicalGateway
 
-- (HKClinicalGateway)initWithDaemonClinicalGateway:(id)a3
+- (HKClinicalGateway)initWithDaemonClinicalGateway:(id)gateway
 {
-  v5 = a3;
-  v6 = [v5 authSchemaDefinitions];
+  gatewayCopy = gateway;
+  authSchemaDefinitions = [gatewayCopy authSchemaDefinitions];
   v71 = 0;
-  v7 = [HKClinicalGatewayEndpointSchema endpointSchemasFromDefinitions:v6 error:&v71];
+  v7 = [HKClinicalGatewayEndpointSchema endpointSchemasFromDefinitions:authSchemaDefinitions error:&v71];
   v8 = v71;
 
   if (!v7)
@@ -33,9 +33,9 @@
     }
   }
 
-  v10 = [v5 resourceSchemaDefinitions];
+  resourceSchemaDefinitions = [gatewayCopy resourceSchemaDefinitions];
   v70 = 0;
-  v11 = [HKClinicalGatewayEndpointSchema endpointSchemasFromDefinitions:v10 error:&v70];
+  v11 = [HKClinicalGatewayEndpointSchema endpointSchemasFromDefinitions:resourceSchemaDefinitions error:&v70];
   v12 = v70;
 
   if (!v11)
@@ -60,9 +60,9 @@
     }
   }
 
-  v14 = [v5 featureDefinitions];
+  featureDefinitions = [gatewayCopy featureDefinitions];
   v69 = 0;
-  v15 = [HKClinicalGatewayFeature gatewayFeaturesFromDefinitions:v14 error:&v69];
+  v15 = [HKClinicalGatewayFeature gatewayFeaturesFromDefinitions:featureDefinitions error:&v69];
   v16 = v69;
 
   if (v15)
@@ -95,9 +95,9 @@
     v67 = 0;
   }
 
-  v18 = [v5 gatewayVersions];
+  gatewayVersions = [gatewayCopy gatewayVersions];
   v68 = 0;
-  v19 = [HKClinicalGatewayReference gatewayReferencesFromDefinitions:v18 error:&v68];
+  v19 = [HKClinicalGatewayReference gatewayReferencesFromDefinitions:gatewayVersions error:&v68];
   v20 = v68;
 
   v21 = v19;
@@ -125,33 +125,33 @@
   }
 
   v58 = v21;
-  v66 = [v5 externalID];
-  v62 = [v5 title];
-  v60 = [v5 subtitle];
-  v59 = [v5 displayableDescription];
-  v57 = [v5 phoneNumber];
-  v56 = [v5 informationURL];
-  v23 = [v5 passwordResetURL];
-  v55 = [v5 patientPortalURL];
-  v24 = [v5 signupURL];
-  v25 = [v5 lastReportedStatus];
-  if (v25 >= 4)
+  externalID = [gatewayCopy externalID];
+  title = [gatewayCopy title];
+  subtitle = [gatewayCopy subtitle];
+  displayableDescription = [gatewayCopy displayableDescription];
+  phoneNumber = [gatewayCopy phoneNumber];
+  informationURL = [gatewayCopy informationURL];
+  passwordResetURL = [gatewayCopy passwordResetURL];
+  patientPortalURL = [gatewayCopy patientPortalURL];
+  signupURL = [gatewayCopy signupURL];
+  lastReportedStatus = [gatewayCopy lastReportedStatus];
+  if (lastReportedStatus >= 4)
   {
     v26 = 1;
   }
 
   else
   {
-    v26 = v25;
+    v26 = lastReportedStatus;
   }
 
   v53 = v26;
-  v51 = [v5 type];
-  [v5 brand];
+  type = [gatewayCopy type];
+  [gatewayCopy brand];
   v27 = v52 = self;
-  v28 = [v5 country];
-  v29 = [v5 baseURL];
-  [v5 FHIRVersion];
+  country = [gatewayCopy country];
+  baseURL = [gatewayCopy baseURL];
+  [gatewayCopy FHIRVersion];
   v30 = v64 = v20;
   if (v7)
   {
@@ -180,15 +180,15 @@
     v32 = &__NSArray0__struct;
   }
 
-  v54 = -[HKClinicalGateway initWithExternalID:title:subtitle:displayableDescription:phoneNumber:informationURL:passwordResetURL:patientPortalURL:signupURL:status:type:brand:country:baseURL:FHIRVersion:authSchemas:resourceSchemas:features:gatewayVersions:minCompatibleAPIVersion:](v52, "initWithExternalID:title:subtitle:displayableDescription:phoneNumber:informationURL:passwordResetURL:patientPortalURL:signupURL:status:type:brand:country:baseURL:FHIRVersion:authSchemas:resourceSchemas:features:gatewayVersions:minCompatibleAPIVersion:", v66, v62, v60, v59, v57, v56, v23, v55, v24, v53, v51, v27, v28, v29, v30, v31, v11, v32, v58, [v5 minCompatibleAPIVersion]);
+  v54 = -[HKClinicalGateway initWithExternalID:title:subtitle:displayableDescription:phoneNumber:informationURL:passwordResetURL:patientPortalURL:signupURL:status:type:brand:country:baseURL:FHIRVersion:authSchemas:resourceSchemas:features:gatewayVersions:minCompatibleAPIVersion:](v52, "initWithExternalID:title:subtitle:displayableDescription:phoneNumber:informationURL:passwordResetURL:patientPortalURL:signupURL:status:type:brand:country:baseURL:FHIRVersion:authSchemas:resourceSchemas:features:gatewayVersions:minCompatibleAPIVersion:", externalID, title, subtitle, displayableDescription, phoneNumber, informationURL, passwordResetURL, patientPortalURL, signupURL, v53, type, v27, country, baseURL, v30, v31, v11, v32, v58, [gatewayCopy minCompatibleAPIVersion]);
 
   return v54;
 }
 
 - (id)clinicalSharingGatewayFeature
 {
-  v2 = [(HKClinicalGateway *)self features];
-  v3 = [v2 hk_firstObjectPassingTest:&stru_1081E8];
+  features = [(HKClinicalGateway *)self features];
+  v3 = [features hk_firstObjectPassingTest:&stru_1081E8];
 
   return v3;
 }

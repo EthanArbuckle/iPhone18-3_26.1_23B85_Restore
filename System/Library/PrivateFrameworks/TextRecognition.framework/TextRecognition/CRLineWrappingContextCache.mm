@@ -1,6 +1,6 @@
 @interface CRLineWrappingContextCache
 - (CRLineWrappingContextCache)init;
-- (id)contextForLocale:(id)a3;
+- (id)contextForLocale:(id)locale;
 @end
 
 @implementation CRLineWrappingContextCache
@@ -20,18 +20,18 @@
   return v2;
 }
 
-- (id)contextForLocale:(id)a3
+- (id)contextForLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v4];
+  localeCopy = locale;
+  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:localeCopy];
 
   if (!v5)
   {
-    v6 = [[CRLineWrappingContext alloc] initWithLocale:v4];
-    [(NSMutableDictionary *)self->_cache setObject:v6 forKeyedSubscript:v4];
+    v6 = [[CRLineWrappingContext alloc] initWithLocale:localeCopy];
+    [(NSMutableDictionary *)self->_cache setObject:v6 forKeyedSubscript:localeCopy];
   }
 
-  v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:localeCopy];
 
   return v7;
 }

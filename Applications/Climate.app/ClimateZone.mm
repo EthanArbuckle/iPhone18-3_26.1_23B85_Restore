@@ -1,15 +1,15 @@
 @interface ClimateZone
-- (void)register:(id)a3;
+- (void)register:(id)register;
 @end
 
 @implementation ClimateZone
 
-- (void)register:(id)a3
+- (void)register:(id)register
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
 
-  sub_100075140(a3, self);
+  sub_100075140(register, self);
   swift_unknownObjectRelease();
 }
 

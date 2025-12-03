@@ -1,5 +1,5 @@
 @interface MusicKitEditingModelResponse
-- (_TtC16MusicApplication28MusicKitEditingModelResponse)initWithRequest:(id)a3;
+- (_TtC16MusicApplication28MusicKitEditingModelResponse)initWithRequest:(id)request;
 - (id)results;
 @end
 
@@ -7,7 +7,7 @@
 
 - (id)results
 {
-  v2 = self;
+  selfCopy = self;
 
   v3 = sub_AB43E0();
 
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (_TtC16MusicApplication28MusicKitEditingModelResponse)initWithRequest:(id)a3
+- (_TtC16MusicApplication28MusicKitEditingModelResponse)initWithRequest:(id)request
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

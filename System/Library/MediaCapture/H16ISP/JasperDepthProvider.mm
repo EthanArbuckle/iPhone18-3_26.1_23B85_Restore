@@ -1,19 +1,19 @@
 @interface JasperDepthProvider
-- (JasperDepthProvider)initWithDevice:(H16ISPDevice *)a3 andChannel:(unsigned int)a4 andRemote:(H16ISPServicesRemote *)a5;
-- (unint64_t)onlineConfig:(id)a3;
+- (JasperDepthProvider)initWithDevice:(H16ISPDevice *)device andChannel:(unsigned int)channel andRemote:(H16ISPServicesRemote *)remote;
+- (unint64_t)onlineConfig:(id)config;
 @end
 
 @implementation JasperDepthProvider
 
-- (JasperDepthProvider)initWithDevice:(H16ISPDevice *)a3 andChannel:(unsigned int)a4 andRemote:(H16ISPServicesRemote *)a5
+- (JasperDepthProvider)initWithDevice:(H16ISPDevice *)device andChannel:(unsigned int)channel andRemote:(H16ISPServicesRemote *)remote
 {
   v14.receiver = self;
   v14.super_class = JasperDepthProvider;
   result = [(JasperDepthProvider *)&v14 init];
   result->_wakupDone = 1;
-  result->_channel = a4;
-  result->_pDevice = a3;
-  result->_pRemote = a5;
+  result->_channel = channel;
+  result->_pDevice = device;
+  result->_pRemote = remote;
   __asm { FMOV            V0.2S, #30.0 }
 
   *&result->_minFrameRate = _D0;
@@ -22,17 +22,17 @@
   return result;
 }
 
-- (unint64_t)onlineConfig:(id)a3
+- (unint64_t)onlineConfig:(id)config
 {
-  v4 = a3;
-  if ([v4 length] == 960)
+  configCopy = config;
+  if ([configCopy length] == 960)
   {
-    v5 = H16ISP::JasperConfigManager::onlineUpdate(self->_pDevice, self->_channel, [v4 bytes]);
+    v5 = H16ISP::JasperConfigManager::onlineUpdate(self->_pDevice, self->_channel, [configCopy bytes]);
   }
 
   else
   {
-    NSLog(&cfstr_BadPeridotOnli.isa, [v4 length], 960);
+    NSLog(&cfstr_BadPeridotOnli.isa, [configCopy length], 960);
     v5 = 0;
   }
 

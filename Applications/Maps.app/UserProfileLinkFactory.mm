@@ -1,31 +1,31 @@
 @interface UserProfileLinkFactory
-- (id)createModelForType:(int64_t)a3;
-- (id)linkProviderForType:(int64_t)a3;
+- (id)createModelForType:(int64_t)type;
+- (id)linkProviderForType:(int64_t)type;
 @end
 
 @implementation UserProfileLinkFactory
 
-- (id)linkProviderForType:(int64_t)a3
+- (id)linkProviderForType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
-    v5 = 0;
+    sharedInstance = 0;
   }
 
   else
   {
-    v5 = [(__objc2_class *)*off_101652BC0[a3] sharedInstance];
+    sharedInstance = [(__objc2_class *)*off_101652BC0[type] sharedInstance];
   }
 
-  return v5;
+  return sharedInstance;
 }
 
-- (id)createModelForType:(int64_t)a3
+- (id)createModelForType:(int64_t)type
 {
-  v3 = [(UserProfileLinkFactory *)self linkProviderForType:a3];
-  v4 = [v3 createUserProfileLink];
+  v3 = [(UserProfileLinkFactory *)self linkProviderForType:type];
+  createUserProfileLink = [v3 createUserProfileLink];
 
-  return v4;
+  return createUserProfileLink;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CDDCloudKitMessage
 - (CDDCloudKitMessage)init;
-- (CDDCloudKitMessage)initWithCoder:(id)a3;
+- (CDDCloudKitMessage)initWithCoder:(id)coder;
 - (void)dealloc;
 @end
 
@@ -26,14 +26,14 @@
   [(CDDCloudKitMessage *)&v3 dealloc];
 }
 
-- (CDDCloudKitMessage)initWithCoder:(id)a3
+- (CDDCloudKitMessage)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CDDCloudKitMessage;
   v4 = [(CDDCloudKitMessage *)&v6 init];
   if (v4)
   {
-    v4->_identifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v4->_identifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   }
 
   return v4;

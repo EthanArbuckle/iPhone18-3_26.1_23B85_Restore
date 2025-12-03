@@ -1,59 +1,59 @@
 @interface HDSHBreathingDisturbanceAnalysisScheduler
 - (BOOL)_areNotificationsEnabled;
-- (BOOL)_isFeatureOnboardedWithFeatureOnboardingRecord:(id)a3;
+- (BOOL)_isFeatureOnboardedWithFeatureOnboardingRecord:(id)record;
 - (BOOL)_writeDateOfMostRecentSuccessfulAnalysisAttempt;
-- (HDSHBreathingDisturbanceAnalysisScheduler)initWithProfile:(id)a3 featureStatusProvider:(id)a4 featureAvailabilityProviding:(id)a5 currentDateProvider:(id)a6;
-- (HDSHBreathingDisturbanceAnalysisScheduler)initWithProfile:(id)a3 featureStatusProvider:(id)a4 featureAvailabilityProviding:(id)a5 currentDateProvider:(id)a6 protectedDataOperation:(id)a7 profileDidBecomeReadyBlock:(id)a8;
+- (HDSHBreathingDisturbanceAnalysisScheduler)initWithProfile:(id)profile featureStatusProvider:(id)provider featureAvailabilityProviding:(id)providing currentDateProvider:(id)dateProvider;
+- (HDSHBreathingDisturbanceAnalysisScheduler)initWithProfile:(id)profile featureStatusProvider:(id)provider featureAvailabilityProviding:(id)providing currentDateProvider:(id)dateProvider protectedDataOperation:(id)operation profileDidBecomeReadyBlock:(id)block;
 - (id)_getEarliestOnboardingDate;
 - (void)_requestBreathingDisturbanceAnalysisIfNeeded;
-- (void)_runCompletionIfExistsWithResult:(int64_t)a3 retryInterval:(double)a4 shouldUpdateActivityCriteria:(BOOL)a5;
+- (void)_runCompletionIfExistsWithResult:(int64_t)result retryInterval:(double)interval shouldUpdateActivityCriteria:(BOOL)criteria;
 - (void)_updateActivityCriteriaAndResetActivity;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)overrideAnalysisTimeIntervalAndResetActivityWithTimeInterval:(double)a3;
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4;
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)overrideAnalysisTimeIntervalAndResetActivityWithTimeInterval:(double)interval;
+- (void)performPeriodicActivity:(id)activity completion:(id)completion;
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDSHBreathingDisturbanceAnalysisScheduler
 
-- (HDSHBreathingDisturbanceAnalysisScheduler)initWithProfile:(id)a3 featureStatusProvider:(id)a4 featureAvailabilityProviding:(id)a5 currentDateProvider:(id)a6
+- (HDSHBreathingDisturbanceAnalysisScheduler)initWithProfile:(id)profile featureStatusProvider:(id)provider featureAvailabilityProviding:(id)providing currentDateProvider:(id)dateProvider
 {
   v10 = MEMORY[0x277D10800];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[v10 alloc] initWithProfile:v14 debugIdentifier:@"BreathingDisturbanceAnalysisProtectedDataOperation" delegate:self];
-  v16 = [(HDSHBreathingDisturbanceAnalysisScheduler *)self initWithProfile:v14 featureStatusProvider:v13 featureAvailabilityProviding:v12 currentDateProvider:v11 protectedDataOperation:v15 profileDidBecomeReadyBlock:0];
+  dateProviderCopy = dateProvider;
+  providingCopy = providing;
+  providerCopy = provider;
+  profileCopy = profile;
+  v15 = [[v10 alloc] initWithProfile:profileCopy debugIdentifier:@"BreathingDisturbanceAnalysisProtectedDataOperation" delegate:self];
+  v16 = [(HDSHBreathingDisturbanceAnalysisScheduler *)self initWithProfile:profileCopy featureStatusProvider:providerCopy featureAvailabilityProviding:providingCopy currentDateProvider:dateProviderCopy protectedDataOperation:v15 profileDidBecomeReadyBlock:0];
 
   return v16;
 }
 
-- (HDSHBreathingDisturbanceAnalysisScheduler)initWithProfile:(id)a3 featureStatusProvider:(id)a4 featureAvailabilityProviding:(id)a5 currentDateProvider:(id)a6 protectedDataOperation:(id)a7 profileDidBecomeReadyBlock:(id)a8
+- (HDSHBreathingDisturbanceAnalysisScheduler)initWithProfile:(id)profile featureStatusProvider:(id)provider featureAvailabilityProviding:(id)providing currentDateProvider:(id)dateProvider protectedDataOperation:(id)operation profileDidBecomeReadyBlock:(id)block
 {
   v48 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v41 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  profileCopy = profile;
+  providerCopy = provider;
+  providingCopy = providing;
+  dateProviderCopy = dateProvider;
+  operationCopy = operation;
+  blockCopy = block;
   v43.receiver = self;
   v43.super_class = HDSHBreathingDisturbanceAnalysisScheduler;
   v19 = [(HDSHBreathingDisturbanceAnalysisScheduler *)&v43 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_profile, v14);
-    objc_storeStrong(&v20->_featureStatusProvider, a4);
+    objc_storeWeak(&v19->_profile, profileCopy);
+    objc_storeStrong(&v20->_featureStatusProvider, provider);
     v21 = objc_alloc(MEMORY[0x277D10718]);
-    v22 = [v21 initWithCategory:102 domainName:*MEMORY[0x277D62650] profile:{v14, v41}];
+    v22 = [v21 initWithCategory:102 domainName:*MEMORY[0x277D62650] profile:{profileCopy, providerCopy}];
     keyValueDomain = v20->_keyValueDomain;
     v20->_keyValueDomain = v22;
 
-    v24 = [v16 copy];
+    v24 = [dateProviderCopy copy];
     currentDateProvider = v20->_currentDateProvider;
     v20->_currentDateProvider = v24;
 
@@ -62,14 +62,14 @@
     queue = v20->_queue;
     v20->_queue = v26;
 
-    objc_storeStrong(&v20->_featureAvailabilityProviding, a5);
+    objc_storeStrong(&v20->_featureAvailabilityProviding, providing);
     [(HKFeatureAvailabilityProviding *)v20->_featureAvailabilityProviding registerObserver:v20 queue:v20->_queue];
     v20->_useTimeIntervalOverride = 0;
-    v28 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     cachedCalendar = v20->_cachedCalendar;
-    v20->_cachedCalendar = v28;
+    v20->_cachedCalendar = hk_gregorianCalendar;
 
-    v30 = [v18 copy];
+    v30 = [blockCopy copy];
     unitTesting_profileDidBecomeReadyBlock = v20->_unitTesting_profileDidBecomeReadyBlock;
     v20->_unitTesting_profileDidBecomeReadyBlock = v30;
 
@@ -77,7 +77,7 @@
     [WeakRetained registerProfileReadyObserver:v20 queue:0];
 
     v20->_periodicActivityCompletionLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v20->_protectedDataOperation, a7);
+    objc_storeStrong(&v20->_protectedDataOperation, operation);
     protectedDataOperation = v20->_protectedDataOperation;
     v42 = 0;
     LOBYTE(WeakRetained) = [(HDProtectedDataOperation *)protectedDataOperation requestWorkWithPriority:2 error:&v42];
@@ -104,17 +104,17 @@
   return v20;
 }
 
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a6;
-  v9 = [a3 debugIdentifier];
-  v10 = [v9 isEqualToString:@"BreathingDisturbanceAnalysisProtectedDataOperation"];
+  completionCopy = completion;
+  debugIdentifier = [operation debugIdentifier];
+  v10 = [debugIdentifier isEqualToString:@"BreathingDisturbanceAnalysisProtectedDataOperation"];
 
   if (v10)
   {
     [(HDSHBreathingDisturbanceAnalysisScheduler *)self _requestBreathingDisturbanceAnalysisIfNeeded];
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -134,7 +134,7 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v4 = objc_alloc(MEMORY[0x277D107E8]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -151,7 +151,7 @@
   }
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -170,11 +170,11 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4
+- (void)performPeriodicActivity:(id)activity completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  activityCopy = activity;
   _HKInitializeLogging();
   v8 = MEMORY[0x277CCC320];
   v9 = *MEMORY[0x277CCC320];
@@ -187,7 +187,7 @@
     _os_log_impl(&dword_269C02000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Periodic activity interval has been met.", buf, 0xCu);
   }
 
-  v12 = [v7 name];
+  name = [activityCopy name];
 
   os_unfair_lock_lock(&self->_periodicActivityCompletionLock);
   if (self->_periodicActivityCompletion)
@@ -205,12 +205,12 @@
     }
   }
 
-  v14 = [v6 copy];
+  v14 = [completionCopy copy];
   periodicActivityCompletion = self->_periodicActivityCompletion;
   self->_periodicActivityCompletion = v14;
 
   os_unfair_lock_unlock(&self->_periodicActivityCompletionLock);
-  if ([v12 isEqualToString:@"com.apple.healthd.sleep.breathingdisturbanceanalysisactivity"])
+  if ([name isEqualToString:@"com.apple.healthd.sleep.breathingdisturbanceanalysisactivity"])
   {
     protectedDataOperation = self->_protectedDataOperation;
     v35 = 0;
@@ -270,15 +270,15 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 name];
-  if ([v7 isEqualToString:@"com.apple.healthd.sleep.breathingdisturbanceanalysisactivity"])
+  criteriaCopy = criteria;
+  name = [activity name];
+  if ([name isEqualToString:@"com.apple.healthd.sleep.breathingdisturbanceanalysisactivity"])
   {
-    xpc_dictionary_set_BOOL(v6, *MEMORY[0x277D86230], 1);
-    xpc_dictionary_set_BOOL(v6, *MEMORY[0x277D86360], 1);
+    xpc_dictionary_set_BOOL(criteriaCopy, *MEMORY[0x277D86230], 1);
+    xpc_dictionary_set_BOOL(criteriaCopy, *MEMORY[0x277D86360], 1);
     if (self->_useTimeIntervalOverride)
     {
       _HKInitializeLogging();
@@ -306,7 +306,7 @@
       v14 = *MEMORY[0x277D86298];
     }
 
-    xpc_dictionary_set_int64(v6, v13, v14);
+    xpc_dictionary_set_int64(criteriaCopy, v13, v14);
   }
 
   else
@@ -326,7 +326,7 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideAnalysisTimeIntervalAndResetActivityWithTimeInterval:(double)a3
+- (void)overrideAnalysisTimeIntervalAndResetActivityWithTimeInterval:(double)interval
 {
   v13 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -341,20 +341,20 @@
     *&v11[12] = 2048;
     *&v11[14] = analysisTimeInterval;
     *&v11[22] = 2048;
-    v12 = a3;
+    intervalCopy = interval;
     v9 = v7;
     _os_log_impl(&dword_269C02000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Overriding old time interval of %f with new time interval of %f.", v11, 0x20u);
   }
 
-  self->_analysisTimeInterval = a3;
+  self->_analysisTimeInterval = interval;
   self->_useTimeIntervalOverride = 1;
   [(HDSHBreathingDisturbanceAnalysisScheduler *)self _updateActivityCriteriaAndResetActivity:*v11];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runCompletionIfExistsWithResult:(int64_t)a3 retryInterval:(double)a4 shouldUpdateActivityCriteria:(BOOL)a5
+- (void)_runCompletionIfExistsWithResult:(int64_t)result retryInterval:(double)interval shouldUpdateActivityCriteria:(BOOL)criteria
 {
-  v5 = a5;
+  criteriaCopy = criteria;
   v26 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_periodicActivityCompletionLock);
   v9 = [self->_periodicActivityCompletion copy];
@@ -378,11 +378,11 @@
       v22 = 2112;
       v23 = v16;
       v24 = 2048;
-      v25 = a4;
+      intervalCopy = interval;
       _os_log_impl(&dword_269C02000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Calling completion with task result: %@, retry interval %f", &v20, 0x20u);
     }
 
-    v9[2](v9, a3, 0, a4);
+    v9[2](v9, result, 0, interval);
   }
 
   else if (v12)
@@ -394,7 +394,7 @@
     _os_log_impl(&dword_269C02000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] nil completion block; unless healthd has just launched, this is unexpected.", &v20, 0xCu);
   }
 
-  if (v5)
+  if (criteriaCopy)
   {
     [(HDSHBreathingDisturbanceAnalysisScheduler *)self _updateActivityCriteriaAndResetActivity];
   }
@@ -462,7 +462,7 @@ LABEL_6:
   {
     _HKInitializeLogging();
     v5 = *MEMORY[0x277CCC320];
-    v6 = 0;
+    areAllRequirementsSatisfied = 0;
     if (os_log_type_enabled(*MEMORY[0x277CCC320], OS_LOG_TYPE_DEFAULT))
     {
       v7 = v5;
@@ -474,27 +474,27 @@ LABEL_6:
       v9 = v8;
       _os_log_impl(&dword_269C02000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Error getting feature status: %@", buf, 0x16u);
 
-      v6 = 0;
+      areAllRequirementsSatisfied = 0;
     }
   }
 
   else
   {
-    v10 = [v3 requirementsEvaluationByContext];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-    v6 = [v11 areAllRequirementsSatisfied];
+    requirementsEvaluationByContext = [v3 requirementsEvaluationByContext];
+    v11 = [requirementsEvaluationByContext objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+    areAllRequirementsSatisfied = [v11 areAllRequirementsSatisfied];
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v6;
+  return areAllRequirementsSatisfied;
 }
 
-- (BOOL)_isFeatureOnboardedWithFeatureOnboardingRecord:(id)a3
+- (BOOL)_isFeatureOnboardedWithFeatureOnboardingRecord:(id)record
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC320];
@@ -514,7 +514,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 onboardingState] != 2)
+  if ([recordCopy onboardingState] != 2)
   {
     _HKInitializeLogging();
     v10 = *MEMORY[0x277CCC320];
@@ -564,16 +564,16 @@ LABEL_10:
 
   else if ([(HDSHBreathingDisturbanceAnalysisScheduler *)self _isFeatureOnboardedWithFeatureOnboardingRecord:v4])
   {
-    v10 = [v4 earliestDateOfAnyOnboardingCompletion];
+    earliestDateOfAnyOnboardingCompletion = [v4 earliestDateOfAnyOnboardingCompletion];
     goto LABEL_7;
   }
 
-  v10 = 0;
+  earliestDateOfAnyOnboardingCompletion = 0;
 LABEL_7:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return earliestDateOfAnyOnboardingCompletion;
 }
 
 - (void)_requestBreathingDisturbanceAnalysisIfNeeded
@@ -581,15 +581,15 @@ LABEL_7:
   v75 = *MEMORY[0x277D85DE8];
   if ([(HDSHBreathingDisturbanceAnalysisScheduler *)self _areNotificationsEnabled])
   {
-    v3 = [(HDSHBreathingDisturbanceAnalysisScheduler *)self _getEarliestOnboardingDate];
-    if (v3)
+    _getEarliestOnboardingDate = [(HDSHBreathingDisturbanceAnalysisScheduler *)self _getEarliestOnboardingDate];
+    if (_getEarliestOnboardingDate)
     {
       keyValueDomain = self->_keyValueDomain;
       v5 = *MEMORY[0x277D62640];
       v70 = 0;
       v6 = [(HDKeyValueDomain *)keyValueDomain numberForKey:v5 error:&v70];
       v7 = v70;
-      v8 = [v6 integerValue];
+      integerValue = [v6 integerValue];
 
       _HKInitializeLogging();
       v9 = MEMORY[0x277CCC320];
@@ -621,16 +621,16 @@ LABEL_7:
           *buf = 138543618;
           v72 = v22;
           v73 = 2048;
-          v74 = v8;
+          v74 = integerValue;
           v23 = v22;
           _os_log_impl(&dword_269C02000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Number of analysis attempts: %ld.", buf, 0x16u);
         }
 
-        v24 = [HDSHBreathingDisturbanceAnalyzer endDateFromMostRecentlyAnalyzedDateIntervalWithDate:v3 numberOfAnalysisAttempts:v8 calendar:self->_cachedCalendar];
+        v24 = [HDSHBreathingDisturbanceAnalyzer endDateFromMostRecentlyAnalyzedDateIntervalWithDate:_getEarliestOnboardingDate numberOfAnalysisAttempts:integerValue calendar:self->_cachedCalendar];
         v25 = (*(self->_currentDateProvider + 2))();
         cachedCalendar = self->_cachedCalendar;
         v67 = v25;
-        v68 = [HDSHBreathingDisturbanceAnalyzer numberOfExpectedAnalysisAttemptsStartingFromAnchorDate:"numberOfExpectedAnalysisAttemptsStartingFromAnchorDate:referenceDate:calendar:" referenceDate:v3 calendar:?];
+        v68 = [HDSHBreathingDisturbanceAnalyzer numberOfExpectedAnalysisAttemptsStartingFromAnchorDate:"numberOfExpectedAnalysisAttemptsStartingFromAnchorDate:referenceDate:calendar:" referenceDate:_getEarliestOnboardingDate calendar:?];
         _HKInitializeLogging();
         v27 = *v9;
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
@@ -640,7 +640,7 @@ LABEL_7:
           *buf = 138543618;
           v72 = v29;
           v73 = 2048;
-          v74 = v8;
+          v74 = integerValue;
           v30 = v29;
           _os_log_impl(&dword_269C02000, v28, OS_LOG_TYPE_DEFAULT, "[%{public}@] Number of expected analysis attempts: %ld", buf, 0x16u);
         }
@@ -666,7 +666,7 @@ LABEL_7:
           WeakRetained = objc_loadWeakRetained(&self->_profile);
           v39 = [(HDSHBreathingDisturbanceAnalyzer *)v37 initWithProfile:WeakRetained];
 
-          if (v8 >= v68)
+          if (integerValue >= v68)
           {
 LABEL_29:
             v54 = 0;
@@ -678,7 +678,7 @@ LABEL_39:
           {
             while (1)
             {
-              v40 = [(HDSHBreathingDisturbanceAnalyzer *)v39 performBreathingDisturbanceAnalysisWithIsForced:0 date:v3 numberOfAnalysisAttempts:v8];
+              v40 = [(HDSHBreathingDisturbanceAnalyzer *)v39 performBreathingDisturbanceAnalysisWithIsForced:0 date:_getEarliestOnboardingDate numberOfAnalysisAttempts:integerValue];
               _HKInitializeLogging();
               v41 = *v9;
               v42 = *v9;
@@ -697,9 +697,9 @@ LABEL_39:
                 _os_log_impl(&dword_269C02000, v43, OS_LOG_TYPE_DEFAULT, "[%{public}@] Successfully performed analysis! Attempting to update count.", buf, 0xCu);
               }
 
-              ++v8;
+              ++integerValue;
               v46 = self->_keyValueDomain;
-              v47 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
+              v47 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
               v69 = 0;
               v48 = [(HDKeyValueDomain *)v46 setNumber:v47 forKey:v5 error:&v69];
               v49 = v69;
@@ -739,7 +739,7 @@ LABEL_39:
                 }
               }
 
-              if (v68 == v8)
+              if (v68 == integerValue)
               {
                 goto LABEL_29;
               }

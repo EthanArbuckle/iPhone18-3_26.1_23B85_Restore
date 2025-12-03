@@ -1,36 +1,36 @@
 @interface VNRecognizedBodyPointsSpecifier
-- (BOOL)isEqual:(id)a3;
-- (VNRecognizedBodyPointsSpecifier)initWithCoder:(id)a3;
-- (VNRecognizedBodyPointsSpecifier)initWithVCPPersonObservation:(id)a3 originatingRequestSpecifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VNRecognizedBodyPointsSpecifier)initWithCoder:(id)coder;
+- (VNRecognizedBodyPointsSpecifier)initWithVCPPersonObservation:(id)observation originatingRequestSpecifier:(id)specifier;
 - (id)availableGroupKeys;
 - (id)pointKeyGroupLabelsMapping;
-- (id)populatedMLMultiArrayAndReturnError:(id *)a3;
+- (id)populatedMLMultiArrayAndReturnError:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedBodyPointsSpecifier
 
-- (VNRecognizedBodyPointsSpecifier)initWithCoder:(id)a3
+- (VNRecognizedBodyPointsSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VNRecognizedBodyPointsSpecifier;
-  v5 = [(VNRecognizedPointsSpecifier *)&v15 initWithCoder:v4];
+  v5 = [(VNRecognizedPointsSpecifier *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"OrderedKeypoints"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"OrderedKeypoints"];
     orderedPersonKeypoints = v5->_orderedPersonKeypoints;
     v5->_orderedPersonKeypoints = v10;
 
     if (!v5->_orderedPersonKeypoints)
     {
       v13 = [VNError errorForDataUnavailableWithLocalizedDescription:@"ordered keypoints are not available"];
-      [v4 failWithError:v13];
+      [coderCopy failWithError:v13];
 
       v12 = 0;
       goto LABEL_6;
@@ -43,21 +43,21 @@ LABEL_6:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VNRecognizedBodyPointsSpecifier;
-  v4 = a3;
-  [(VNRecognizedPointsSpecifier *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_orderedPersonKeypoints forKey:{@"OrderedKeypoints", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(VNRecognizedPointsSpecifier *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_orderedPersonKeypoints forKey:{@"OrderedKeypoints", v5.receiver, v5.super_class}];
 }
 
-- (id)populatedMLMultiArrayAndReturnError:(id *)a3
+- (id)populatedMLMultiArrayAndReturnError:(id *)error
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  v5 = [(VNRecognizedPointsSpecifier *)self originatingRequestSpecifier];
-  v6 = [v5 requestRevision];
-  if (v6 == 3737841664 || v6 == 1)
+  originatingRequestSpecifier = [(VNRecognizedPointsSpecifier *)self originatingRequestSpecifier];
+  requestRevision = [originatingRequestSpecifier requestRevision];
+  if (requestRevision == 3737841664 || requestRevision == 1)
   {
     v8 = [(NSArray *)self->_orderedPersonKeypoints count];
     v9 = objc_alloc(MEMORY[0x1E695FED0]);
@@ -66,22 +66,22 @@ LABEL_6:
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8 + 1];
     v44[2] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
-    v12 = [v9 initWithShape:v11 dataType:65600 error:a3];
+    v12 = [v9 initWithShape:v11 dataType:65600 error:error];
 
     if (v12)
     {
-      v41 = a3;
-      v43 = v5;
-      v13 = [v12 dataPointer];
-      v14 = [v12 strides];
-      v15 = [v14 objectAtIndexedSubscript:2];
-      v16 = [v15 intValue];
+      errorCopy = error;
+      v43 = originatingRequestSpecifier;
+      dataPointer = [v12 dataPointer];
+      strides = [v12 strides];
+      v15 = [strides objectAtIndexedSubscript:2];
+      intValue = [v15 intValue];
 
-      v42 = v14;
-      v17 = [v14 objectAtIndexedSubscript:1];
-      v18 = [v17 intValue];
+      v42 = strides;
+      v17 = [strides objectAtIndexedSubscript:1];
+      intValue2 = [v17 intValue];
 
-      v19 = v16;
+      v19 = intValue;
       if (v8)
       {
         v20 = 0;
@@ -163,10 +163,10 @@ LABEL_6:
             case 16:
               v31 = 10;
 LABEL_30:
-              v32 = (v13 + 8 * v31 * v19);
+              v32 = (dataPointer + 8 * v31 * v19);
               *v32 = v26;
-              v32[v18] = v28;
-              v32[2 * v18] = v30;
+              v32[intValue2] = v28;
+              v32[2 * intValue2] = v30;
 
               if (v8 != ++v20)
               {
@@ -177,13 +177,13 @@ LABEL_30:
               v34 = v23 * 0.5;
               break;
             default:
-              if (v41)
+              if (errorCopy)
               {
                 v38 = MEMORY[0x1E696AEC0];
                 v39 = [MEMORY[0x1E696AD98] numberWithInt:{v20, v30}];
                 v40 = [v38 stringWithFormat:@"unexpected keypoint type %@", v39];
 
-                *v41 = [VNError errorForOperationFailedErrorWithLocalizedDescription:v40];
+                *errorCopy = [VNError errorForOperationFailedErrorWithLocalizedDescription:v40];
               }
 
               v35 = 0;
@@ -201,13 +201,13 @@ LABEL_30:
         v33 = 0.0;
       }
 
-      v36 = (v13 + 8 * v19);
+      v36 = (dataPointer + 8 * v19);
       *v36 = v33;
-      v36[v18] = v34;
-      v36[2 * v18] = v22;
+      v36[intValue2] = v34;
+      v36[2 * intValue2] = v22;
       v35 = v12;
 LABEL_37:
-      v5 = v43;
+      originatingRequestSpecifier = v43;
     }
 
     else
@@ -216,10 +216,10 @@ LABEL_37:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
-    [VNError errorForUnsupportedRequestSpecifier:v5];
-    *a3 = v35 = 0;
+    [VNError errorForUnsupportedRequestSpecifier:originatingRequestSpecifier];
+    *error = v35 = 0;
   }
 
   else
@@ -295,10 +295,10 @@ void __53__VNRecognizedBodyPointsSpecifier_availableGroupKeys__block_invoke()
   availableGroupKeys_groupKeys = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -307,7 +307,7 @@ void __53__VNRecognizedBodyPointsSpecifier_availableGroupKeys__block_invoke()
   {
     v7.receiver = self;
     v7.super_class = VNRecognizedBodyPointsSpecifier;
-    v5 = [(VNRecognizedPointsSpecifier *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NSArray *)self->_orderedPersonKeypoints isEqualToArray:v4->_orderedPersonKeypoints];
+    v5 = [(VNRecognizedPointsSpecifier *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NSArray *)self->_orderedPersonKeypoints isEqualToArray:equalCopy->_orderedPersonKeypoints];
   }
 
   return v5;
@@ -320,22 +320,22 @@ void __53__VNRecognizedBodyPointsSpecifier_availableGroupKeys__block_invoke()
   return [(NSArray *)self->_orderedPersonKeypoints hash]^ __ROR8__([(VNRecognizedPointsSpecifier *)&v3 hash], 51);
 }
 
-- (VNRecognizedBodyPointsSpecifier)initWithVCPPersonObservation:(id)a3 originatingRequestSpecifier:(id)a4
+- (VNRecognizedBodyPointsSpecifier)initWithVCPPersonObservation:(id)observation originatingRequestSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 keypoints];
-  v8 = [v7 count];
+  specifierCopy = specifier;
+  keypoints = [observation keypoints];
+  v8 = [keypoints count];
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v8 + 2];
   v12 = *MEMORY[0x1E695EFF8];
   v11 = *(MEMORY[0x1E695EFF8] + 8);
-  v13 = [v6 requestRevision];
+  requestRevision = [specifierCopy requestRevision];
   if (v8)
   {
-    v14 = v13;
+    v14 = requestRevision;
     v48 = v10;
-    v43 = self;
-    v44 = v6;
+    selfCopy = self;
+    v44 = specifierCopy;
     v46 = 0;
     v49 = 0;
     v15 = 0;
@@ -345,7 +345,7 @@ void __53__VNRecognizedBodyPointsSpecifier_availableGroupKeys__block_invoke()
     v17 = 0.0;
     do
     {
-      v18 = [v7 objectAtIndex:{v15, v43, v44}];
+      v18 = [keypoints objectAtIndex:{v15, selfCopy, v44}];
       [v18 location];
       v20 = v19;
       v22 = v21;
@@ -398,15 +398,15 @@ void __53__VNRecognizedBodyPointsSpecifier_availableGroupKeys__block_invoke()
       [v48 setObject:v34 forKey:@"root"];
 
       v35 = v46 == 2;
-      self = v43;
-      v6 = v44;
+      self = selfCopy;
+      specifierCopy = v44;
     }
 
     else
     {
       v35 = v46 == 2;
-      self = v43;
-      v6 = v44;
+      self = selfCopy;
+      specifierCopy = v44;
       v10 = v48;
     }
 
@@ -421,7 +421,7 @@ void __53__VNRecognizedBodyPointsSpecifier_availableGroupKeys__block_invoke()
 
   v50.receiver = self;
   v50.super_class = VNRecognizedBodyPointsSpecifier;
-  v39 = [(VNRecognizedPointsSpecifier *)&v50 initWithOriginatingRequestSpecifier:v6 allRecognizedPoints:v10];
+  v39 = [(VNRecognizedPointsSpecifier *)&v50 initWithOriginatingRequestSpecifier:specifierCopy allRecognizedPoints:v10];
   if (v39)
   {
     v40 = [v9 copy];

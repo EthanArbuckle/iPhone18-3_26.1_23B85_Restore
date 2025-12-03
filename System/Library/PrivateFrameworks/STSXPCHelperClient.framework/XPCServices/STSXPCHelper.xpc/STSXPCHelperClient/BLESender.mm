@@ -1,7 +1,7 @@
 @interface BLESender
 - (BLESender)init;
 - (void)dealloc;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation BLESender
@@ -26,25 +26,25 @@
 
 - (void)dealloc
 {
-  v3 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
-  [v3 setDelegate:0];
+  outputStream = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
+  [outputStream setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = BLESender;
   [(BLESender *)&v4 dealloc];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  if (a4 == 4)
+  if (event == 4)
   {
 
-    sub_10001934C(self, a2, a3, 4, self, v4, v5, v6, v8);
+    sub_10001934C(self, a2, stream, 4, self, v4, v5, v6, v8);
   }
 
   else
   {
-    sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[BLESender stream:handleEvent:]", 121, self, @"LE: Stream event %lu on %@", v5, v6, a4);
+    sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[BLESender stream:handleEvent:]", 121, self, @"LE: Stream event %lu on %@", v5, v6, event);
   }
 }
 

@@ -3,10 +3,10 @@
 - (FigPWDKeyExchangeSenderServerHelperProd)init;
 - (int)requestCertURL;
 - (int)requestEndpointURL;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 - (void)dealloc;
-- (void)requestCertDataFromServer:(id)a3;
-- (void)requestKeyDataFromServer:(id)a3 completionHandler:(id)a4;
+- (void)requestCertDataFromServer:(id)server;
+- (void)requestKeyDataFromServer:(id)server completionHandler:(id)handler;
 @end
 
 @implementation FigPWDKeyExchangeSenderServerHelperProd
@@ -147,7 +147,7 @@ intptr_t __56__FigPWDKeyExchangeSenderServerHelperProd_InitializeAMS__block_invo
     v2->_pwdBag = v3;
     v4 = v3;
     v2->_opQueue = objc_alloc_init(MEMORY[0x1E696ADC8]);
-    v5 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
     v16 = 0;
     v17 = &v16;
     v18 = 0x3052000000;
@@ -167,7 +167,7 @@ intptr_t __56__FigPWDKeyExchangeSenderServerHelperProd_InitializeAMS__block_invo
     }
 
     _Block_object_dispose(&v16, 8);
-    v2->_urlSession = [[v6 alloc] initWithConfiguration:v5 delegate:v2 delegateQueue:v2->_opQueue];
+    v2->_urlSession = [[v6 alloc] initWithConfiguration:defaultSessionConfiguration delegate:v2 delegateQueue:v2->_opQueue];
     v16 = 0;
     v17 = &v16;
     v18 = 0x3052000000;
@@ -316,7 +316,7 @@ intptr_t __61__FigPWDKeyExchangeSenderServerHelperProd_requestEndpointURL__block
   return dispatch_semaphore_signal(v4);
 }
 
-- (void)requestCertDataFromServer:(id)a3
+- (void)requestCertDataFromServer:(id)server
 {
   if (!self->_certURL)
   {
@@ -329,7 +329,7 @@ intptr_t __61__FigPWDKeyExchangeSenderServerHelperProd_requestEndpointURL__block
   v7[1] = 3221225472;
   v7[2] = __69__FigPWDKeyExchangeSenderServerHelperProd_requestCertDataFromServer___block_invoke;
   v7[3] = &unk_1E7492280;
-  v7[4] = a3;
+  v7[4] = server;
   [v6 resultWithCompletion:v7];
 }
 
@@ -341,7 +341,7 @@ void __69__FigPWDKeyExchangeSenderServerHelperProd_requestCertDataFromServer___b
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)requestKeyDataFromServer:(id)a3 completionHandler:(id)a4
+- (void)requestKeyDataFromServer:(id)server completionHandler:(id)handler
 {
   if (!self->_endpointURL)
   {
@@ -350,14 +350,14 @@ void __69__FigPWDKeyExchangeSenderServerHelperProd_requestCertDataFromServer___b
 
   v7 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:self->_endpointURL cachePolicy:1 timeoutInterval:3.0];
   [v7 setHTTPMethod:@"POST"];
-  [v7 setHTTPBody:a3];
+  [v7 setHTTPBody:server];
   v8 = [(AMSURLRequestEncoder *)self->_requestEncoder requestByEncodingRequest:v7 parameters:0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__FigPWDKeyExchangeSenderServerHelperProd_requestKeyDataFromServer_completionHandler___block_invoke;
   v9[3] = &unk_1E74922A8;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = handler;
   [v8 resultWithCompletion:v9];
 }
 
@@ -392,10 +392,10 @@ uint64_t __86__FigPWDKeyExchangeSenderServerHelperProd_requestKeyDataFromServer_
   return v6(v4, v5, a3);
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v6 = objc_autoreleasePoolPush();
-  (*(a5 + 2))(a5, 1, 0);
+  (*(handler + 2))(handler, 1, 0);
 
   objc_autoreleasePoolPop(v6);
 }

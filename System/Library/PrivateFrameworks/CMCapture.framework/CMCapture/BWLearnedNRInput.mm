@@ -1,6 +1,6 @@
 @interface BWLearnedNRInput
 - (void)dealloc;
-- (void)setInputFrame:(opaqueCMSampleBuffer *)a3;
+- (void)setInputFrame:(opaqueCMSampleBuffer *)frame;
 @end
 
 @implementation BWLearnedNRInput
@@ -18,9 +18,9 @@
   [(BWStillImageProcessorControllerInput *)&v4 dealloc];
 }
 
-- (void)setInputFrame:(opaqueCMSampleBuffer *)a3
+- (void)setInputFrame:(opaqueCMSampleBuffer *)frame
 {
-  if (a3)
+  if (frame)
   {
     inputFrame = self->_inputFrame;
     if (inputFrame)
@@ -28,7 +28,7 @@
       CFRelease(inputFrame);
     }
 
-    v6 = CFRetain(a3);
+    v6 = CFRetain(frame);
     self->_inputFrame = v6;
     delegate = self->_delegate;
 

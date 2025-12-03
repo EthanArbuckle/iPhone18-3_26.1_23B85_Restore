@@ -8,16 +8,16 @@
 {
   if ([(NSURL *)self hasDirectoryPath])
   {
-    v3 = [(NSURL *)self path];
-    v4 = [NSString stringWithFormat:@"%@/", v3];
+    path = [(NSURL *)self path];
+    path2 = [NSString stringWithFormat:@"%@/", path];
   }
 
   else
   {
-    v4 = [(NSURL *)self path];
+    path2 = [(NSURL *)self path];
   }
 
-  return v4;
+  return path2;
 }
 
 @end

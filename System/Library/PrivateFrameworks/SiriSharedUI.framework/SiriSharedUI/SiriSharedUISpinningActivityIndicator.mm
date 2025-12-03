@@ -1,35 +1,35 @@
 @interface SiriSharedUISpinningActivityIndicator
 - (void)layoutSubviews;
-- (void)setContentLayer:(id)a3;
-- (void)setDotMaskLayer:(id)a3;
+- (void)setContentLayer:(id)layer;
+- (void)setDotMaskLayer:(id)layer;
 - (void)showSpinner;
 @end
 
 @implementation SiriSharedUISpinningActivityIndicator
 
-- (void)setContentLayer:(id)a3
+- (void)setContentLayer:(id)layer
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUISpinningActivityIndicator_contentLayer);
-  *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUISpinningActivityIndicator_contentLayer) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUISpinningActivityIndicator_contentLayer) = layer;
+  layerCopy = layer;
 }
 
-- (void)setDotMaskLayer:(id)a3
+- (void)setDotMaskLayer:(id)layer
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUISpinningActivityIndicator_dotMaskLayer);
-  *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUISpinningActivityIndicator_dotMaskLayer) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SiriSharedUISpinningActivityIndicator_dotMaskLayer) = layer;
+  layerCopy = layer;
 }
 
 - (void)showSpinner
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISpinningActivityIndicator.showSpinner()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISpinningActivityIndicator.layoutSubviews()();
 }
 

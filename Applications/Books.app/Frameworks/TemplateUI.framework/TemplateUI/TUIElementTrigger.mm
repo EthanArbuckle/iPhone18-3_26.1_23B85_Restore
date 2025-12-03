@@ -1,6 +1,6 @@
 @interface TUIElementTrigger
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementTrigger
@@ -17,19 +17,19 @@
   return v3;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  [v8 floatForAttribute:212 node:var0];
-  [v9 setAnchorOffset:?];
-  v10 = [v8 stringForAttribute:138 node:var0];
-  [v9 setName:v10];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  boxCopy = box;
+  [attributesCopy floatForAttribute:212 node:var0];
+  [boxCopy setAnchorOffset:?];
+  v10 = [attributesCopy stringForAttribute:138 node:var0];
+  [boxCopy setName:v10];
 
-  v11 = [v8 stringForAttribute:141 node:var0];
+  v11 = [attributesCopy stringForAttribute:141 node:var0];
 
-  [v9 setObservationMode:{+[TUITriggerBox observationModeFromString:](TUITriggerBox, "observationModeFromString:", v11)}];
+  [boxCopy setObservationMode:{+[TUITriggerBox observationModeFromString:](TUITriggerBox, "observationModeFromString:", v11)}];
 }
 
 @end

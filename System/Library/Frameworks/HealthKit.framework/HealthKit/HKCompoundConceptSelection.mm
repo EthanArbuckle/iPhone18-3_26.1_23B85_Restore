@@ -1,24 +1,24 @@
 @interface HKCompoundConceptSelection
-- (BOOL)isEqual:(id)a3;
-- (HKCompoundConceptSelection)initWithCoder:(id)a3;
-- (HKCompoundConceptSelection)initWithSelections:(id)a3 operationType:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKCompoundConceptSelection)initWithCoder:(id)coder;
+- (HKCompoundConceptSelection)initWithSelections:(id)selections operationType:(unint64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCompoundConceptSelection
 
-- (HKCompoundConceptSelection)initWithSelections:(id)a3 operationType:(unint64_t)a4
+- (HKCompoundConceptSelection)initWithSelections:(id)selections operationType:(unint64_t)type
 {
-  v7 = a3;
-  if (!v7)
+  selectionsCopy = selections;
+  if (!selectionsCopy)
   {
     [HKCompoundConceptSelection initWithSelections:a2 operationType:self];
   }
 
-  if ([v7 count])
+  if ([selectionsCopy count])
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_7;
     }
@@ -27,13 +27,13 @@
   else
   {
     [HKCompoundConceptSelection initWithSelections:a2 operationType:self];
-    if (a4)
+    if (type)
     {
       goto LABEL_7;
     }
   }
 
-  if ([v7 count] != 1)
+  if ([selectionsCopy count] != 1)
   {
     [HKCompoundConceptSelection initWithSelections:a2 operationType:self];
   }
@@ -44,11 +44,11 @@ LABEL_7:
   v8 = [(HKConceptSelection *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [selectionsCopy copy];
     selections = v8->_selections;
     v8->_selections = v9;
 
-    v8->_operationType = a4;
+    v8->_operationType = type;
   }
 
   return v8;
@@ -89,64 +89,64 @@ LABEL_7:
   return v12;
 }
 
-- (HKCompoundConceptSelection)initWithCoder:(id)a3
+- (HKCompoundConceptSelection)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"SelectionsKey"];
-  v9 = [v5 decodeIntegerForKey:@"OperationTypeKey"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"SelectionsKey"];
+  v9 = [coderCopy decodeIntegerForKey:@"OperationTypeKey"];
 
   if (v8)
   {
     self = [(HKCompoundConceptSelection *)self initWithSelections:v8 operationType:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   selections = self->_selections;
-  v5 = a3;
-  [v5 encodeObject:selections forKey:@"SelectionsKey"];
-  [v5 encodeInteger:self->_operationType forKey:@"OperationTypeKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:selections forKey:@"SelectionsKey"];
+  [coderCopy encodeInteger:self->_operationType forKey:@"OperationTypeKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v17.receiver = self;
   v17.super_class = HKCompoundConceptSelection;
-  if ([(HKConceptSelection *)&v17 isEqual:v4])
+  if ([(HKConceptSelection *)&v17 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(HKCompoundConceptSelection *)self operationType];
-    if (v6 == [v5 operationType])
+    v5 = equalCopy;
+    operationType = [(HKCompoundConceptSelection *)self operationType];
+    if (operationType == [v5 operationType])
     {
-      v7 = [(HKCompoundConceptSelection *)self selections];
-      v8 = [v5 selections];
-      v9 = v8;
-      if (v7 == v8)
+      selections = [(HKCompoundConceptSelection *)self selections];
+      selections2 = [v5 selections];
+      v9 = selections2;
+      if (selections == selections2)
       {
 
         goto LABEL_9;
       }
 
-      v10 = [v5 selections];
-      if (v10)
+      selections3 = [v5 selections];
+      if (selections3)
       {
-        v11 = v10;
-        v12 = [(HKCompoundConceptSelection *)self selections];
-        v13 = [v5 selections];
-        v14 = [v12 isEqual:v13];
+        v11 = selections3;
+        selections4 = [(HKCompoundConceptSelection *)self selections];
+        selections5 = [v5 selections];
+        v14 = [selections4 isEqual:selections5];
 
         if ((v14 & 1) == 0)
         {

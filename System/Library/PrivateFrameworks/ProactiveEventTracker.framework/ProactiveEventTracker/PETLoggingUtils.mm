@@ -1,16 +1,16 @@
 @interface PETLoggingUtils
-+ (id)keyStringForEvent:(id)a3 featureId:(id)a4 stringifiedProperties:(id)a5 metaData:(id)a6;
-+ (id)keyStringForStringifiedPairs:(id)a3;
-+ (void)_pushToBuffer:(id)a3 keyStringForStringifiedPairs:(id)a4;
++ (id)keyStringForEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data;
++ (id)keyStringForStringifiedPairs:(id)pairs;
++ (void)_pushToBuffer:(id)buffer keyStringForStringifiedPairs:(id)pairs;
 @end
 
 @implementation PETLoggingUtils
 
-+ (void)_pushToBuffer:(id)a3 keyStringForStringifiedPairs:(id)a4
++ (void)_pushToBuffer:(id)buffer keyStringForStringifiedPairs:(id)pairs
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = [v5 count];
+  bufferCopy = buffer;
+  pairsCopy = pairs;
+  v6 = [pairsCopy count];
   if (v6)
   {
     v7 = v6;
@@ -18,16 +18,16 @@
     v9 = v6 - 1;
     do
     {
-      v10 = [v5 keyAtIndex:v8];
-      [v12 appendString:v10];
+      v10 = [pairsCopy keyAtIndex:v8];
+      [bufferCopy appendString:v10];
 
-      [v12 appendString:@":"];
-      v11 = [v5 valueAtIndex:v8];
-      [v12 appendString:v11];
+      [bufferCopy appendString:@":"];
+      v11 = [pairsCopy valueAtIndex:v8];
+      [bufferCopy appendString:v11];
 
       if (v8 < v9)
       {
-        [v12 appendString:@":"];
+        [bufferCopy appendString:@":"];
       }
 
       ++v8;
@@ -37,37 +37,37 @@
   }
 }
 
-+ (id)keyStringForStringifiedPairs:(id)a3
++ (id)keyStringForStringifiedPairs:(id)pairs
 {
-  v4 = a3;
+  pairsCopy = pairs;
   v5 = objc_opt_new();
-  [a1 _pushToBuffer:v5 keyStringForStringifiedPairs:v4];
+  [self _pushToBuffer:v5 keyStringForStringifiedPairs:pairsCopy];
 
   return v5;
 }
 
-+ (id)keyStringForEvent:(id)a3 featureId:(id)a4 stringifiedProperties:(id)a5 metaData:(id)a6
++ (id)keyStringForEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  propertiesCopy = properties;
+  dataCopy = data;
+  idCopy = id;
+  eventCopy = event;
   v14 = [@"com.apple.proactive." mutableCopy];
-  [v14 appendString:v12];
+  [v14 appendString:idCopy];
 
   [v14 appendString:@"."];
-  [v14 appendString:v13];
+  [v14 appendString:eventCopy];
 
-  if ([v10 count])
+  if ([propertiesCopy count])
   {
     [v14 appendString:@"."];
-    [a1 _pushToBuffer:v14 keyStringForStringifiedPairs:v10];
+    [self _pushToBuffer:v14 keyStringForStringifiedPairs:propertiesCopy];
   }
 
-  if ([v11 count])
+  if ([dataCopy count])
   {
     [v14 appendString:@"."];
-    [a1 _pushToBuffer:v14 keyStringForStringifiedPairs:v11];
+    [self _pushToBuffer:v14 keyStringForStringifiedPairs:dataCopy];
   }
 
   v15 = [v14 copy];

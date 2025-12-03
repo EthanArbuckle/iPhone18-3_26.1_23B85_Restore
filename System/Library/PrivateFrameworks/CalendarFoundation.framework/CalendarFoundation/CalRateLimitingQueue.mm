@@ -1,22 +1,22 @@
 @interface CalRateLimitingQueue
-- (CalRateLimitingQueue)initWithQueue:(id)a3 minimumInterval:(double)a4 andBlock:(id)a5;
+- (CalRateLimitingQueue)initWithQueue:(id)queue minimumInterval:(double)interval andBlock:(id)block;
 - (void)executeBlock;
 @end
 
 @implementation CalRateLimitingQueue
 
-- (CalRateLimitingQueue)initWithQueue:(id)a3 minimumInterval:(double)a4 andBlock:(id)a5
+- (CalRateLimitingQueue)initWithQueue:(id)queue minimumInterval:(double)interval andBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = CalRateLimitingQueue;
   v10 = [(CalRateLimitingQueue *)&v18 init];
   if (v10)
   {
-    if (v8)
+    if (queueCopy)
     {
-      v11 = v8;
+      v11 = queueCopy;
       queue = v10->_queue;
       v10->_queue = v11;
     }
@@ -29,8 +29,8 @@
       v10->_queue = v13;
     }
 
-    v10->_minimumInterval = (a4 * 1000000000.0);
-    v15 = _Block_copy(v9);
+    v10->_minimumInterval = (interval * 1000000000.0);
+    v15 = _Block_copy(blockCopy);
     block = v10->_block;
     v10->_block = v15;
 

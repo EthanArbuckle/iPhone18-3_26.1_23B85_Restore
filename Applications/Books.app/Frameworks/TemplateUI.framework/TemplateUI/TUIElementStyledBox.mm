@@ -1,6 +1,6 @@
 @interface TUIElementStyledBox
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementStyledBox
@@ -17,42 +17,42 @@
   return v3;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  [v10 insetsForAttribute:112 node:a4.var0];
-  [v9 setInsets:?];
-  [v10 floatForAttribute:60 node:a4.var0];
-  [v9 setCornerRadius:?];
-  [v9 setContinuousCorners:{objc_msgSend(v10, "BOOLForAttribute:withDefault:node:", 59, 1, a4.var0)}];
-  v12 = [v10 colorForAttribute:30 node:a4.var0];
-  [v9 setBackgroundColor:v12];
+  boxCopy = box;
+  attributesCopy = attributes;
+  contextCopy = context;
+  [attributesCopy insetsForAttribute:112 node:node.var0];
+  [boxCopy setInsets:?];
+  [attributesCopy floatForAttribute:60 node:node.var0];
+  [boxCopy setCornerRadius:?];
+  [boxCopy setContinuousCorners:{objc_msgSend(attributesCopy, "BOOLForAttribute:withDefault:node:", 59, 1, node.var0)}];
+  v12 = [attributesCopy colorForAttribute:30 node:node.var0];
+  [boxCopy setBackgroundColor:v12];
 
-  [v10 floatForAttribute:190 node:a4.var0];
-  [v9 setShadowRadius:?];
-  [v10 sizeForAttribute:188 node:a4.var0];
-  [v9 setShadowOffset:?];
-  v13 = [v10 colorForAttribute:187 node:a4.var0];
-  [v9 setShadowColor:v13];
+  [attributesCopy floatForAttribute:190 node:node.var0];
+  [boxCopy setShadowRadius:?];
+  [attributesCopy sizeForAttribute:188 node:node.var0];
+  [boxCopy setShadowOffset:?];
+  v13 = [attributesCopy colorForAttribute:187 node:node.var0];
+  [boxCopy setShadowColor:v13];
 
-  [v10 floatForAttribute:189 node:a4.var0];
-  [v9 setShadowOpacity:?];
-  v14 = [v10 colorForAttribute:41 node:a4.var0];
-  [v9 setBorderColor:v14];
+  [attributesCopy floatForAttribute:189 node:node.var0];
+  [boxCopy setShadowOpacity:?];
+  v14 = [attributesCopy colorForAttribute:41 node:node.var0];
+  [boxCopy setBorderColor:v14];
 
-  [v10 floatForAttribute:42 node:a4.var0];
-  [v9 setBorderWidth:?];
-  [v9 setClipsToBounds:{objc_msgSend(v10, "BOOLForAttribute:node:", 50, a4.var0)}];
-  [v9 setAllowsGroupBlending:{objc_msgSend(v10, "BOOLForAttribute:withDefault:node:", 5, 0, a4.var0)}];
-  v15 = [v10 stringForAttribute:37 node:a4.var0];
+  [attributesCopy floatForAttribute:42 node:node.var0];
+  [boxCopy setBorderWidth:?];
+  [boxCopy setClipsToBounds:{objc_msgSend(attributesCopy, "BOOLForAttribute:node:", 50, node.var0)}];
+  [boxCopy setAllowsGroupBlending:{objc_msgSend(attributesCopy, "BOOLForAttribute:withDefault:node:", 5, 0, node.var0)}];
+  v15 = [attributesCopy stringForAttribute:37 node:node.var0];
   v16 = [(TUIBox *)TUIStyledBox blendModeFromString:v15];
-  [v9 setBlendMode:v16];
+  [boxCopy setBlendMode:v16];
 
-  [v9 setGrouped:{objc_msgSend(v10, "BOOLForAttribute:node:", 93, a4.var0)}];
+  [boxCopy setGrouped:{objc_msgSend(attributesCopy, "BOOLForAttribute:node:", 93, node.var0)}];
   v17 = objc_opt_class();
-  v18 = [v10 objectForAttribute:146 node:a4.var0];
+  v18 = [attributesCopy objectForAttribute:146 node:node.var0];
   v19 = TUIDynamicCast(v17, v18);
 
   v23 = 0;
@@ -67,20 +67,20 @@
   [v19 enumerateKeysAndObjectsUsingBlock:v22];
   if (*(v24 + 24) == 1)
   {
-    [v9 setOpacityTriggers:v19];
-    [v9 setOpacity:1.0];
+    [boxCopy setOpacityTriggers:v19];
+    [boxCopy setOpacity:1.0];
   }
 
   else
   {
-    [v10 floatForAttribute:146 withDefault:a4.var0 node:1.0];
+    [attributesCopy floatForAttribute:146 withDefault:node.var0 node:1.0];
     v21 = fmin(v20, 1.0);
     if (v21 < 0.0)
     {
       v21 = 0.0;
     }
 
-    [v9 setOpacity:v21];
+    [boxCopy setOpacity:v21];
   }
 
   _Block_object_dispose(&v23, 8);

@@ -1,13 +1,13 @@
 @interface MSMessageTemplateLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MSMessageTemplateLayout)init;
-- (MSMessageTemplateLayout)initWithCoder:(id)a3;
+- (MSMessageTemplateLayout)initWithCoder:(id)coder;
 - (NSURL)mediaFileURL;
 - (UIImage)image;
 - (id)_sanitizedCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setImage:(UIImage *)image;
 - (void)setMediaFileURL:(NSURL *)mediaFileURL;
 @end
@@ -18,12 +18,12 @@
 {
   v11.receiver = self;
   v11.super_class = MSMessageTemplateLayout;
-  v2 = [(MSMessageLayout *)&v11 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(MSMessageLayout *)&v11 _init];
+  v3 = _init;
+  if (_init)
   {
-    caption = v2->_caption;
-    v2->_caption = &stru_1F4AC0718;
+    caption = _init->_caption;
+    _init->_caption = &stru_1F4AC0718;
 
     subcaption = v3->_subcaption;
     v3->_subcaption = &stru_1F4AC0718;
@@ -44,57 +44,57 @@
   return v3;
 }
 
-- (MSMessageTemplateLayout)initWithCoder:(id)a3
+- (MSMessageTemplateLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MSMessageTemplateLayout;
-  v5 = [(MSMessageLayout *)&v23 _init];
-  if (v5)
+  _init = [(MSMessageLayout *)&v23 _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"caption"];
-    caption = v5->_caption;
-    v5->_caption = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"caption"];
+    caption = _init->_caption;
+    _init->_caption = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subcaption"];
-    subcaption = v5->_subcaption;
-    v5->_subcaption = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subcaption"];
+    subcaption = _init->_subcaption;
+    _init->_subcaption = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trailingCaption"];
-    trailingCaption = v5->_trailingCaption;
-    v5->_trailingCaption = v10;
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trailingCaption"];
+    trailingCaption = _init->_trailingCaption;
+    _init->_trailingCaption = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trailingSubcaption"];
-    trailingSubcaption = v5->_trailingSubcaption;
-    v5->_trailingSubcaption = v12;
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trailingSubcaption"];
+    trailingSubcaption = _init->_trailingSubcaption;
+    _init->_trailingSubcaption = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageTitle"];
-    imageTitle = v5->_imageTitle;
-    v5->_imageTitle = v14;
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageTitle"];
+    imageTitle = _init->_imageTitle;
+    _init->_imageTitle = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageSubitle"];
-    imageSubtitle = v5->_imageSubtitle;
-    v5->_imageSubtitle = v16;
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageSubitle"];
+    imageSubtitle = _init->_imageSubtitle;
+    _init->_imageSubtitle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
-    mediaType = v5->_mediaType;
-    v5->_mediaType = v18;
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
+    mediaType = _init->_mediaType;
+    _init->_mediaType = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaData"];
-    mediaData = v5->_mediaData;
-    v5->_mediaData = v20;
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaData"];
+    mediaData = _init->_mediaData;
+    _init->_mediaData = v20;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeObject:self->_caption forKey:@"caption"];
-  [v13 encodeObject:self->_subcaption forKey:@"subcaption"];
-  [v13 encodeObject:self->_trailingCaption forKey:@"trailingCaption"];
-  [v13 encodeObject:self->_trailingSubcaption forKey:@"trailingSubcaption"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_caption forKey:@"caption"];
+  [coderCopy encodeObject:self->_subcaption forKey:@"subcaption"];
+  [coderCopy encodeObject:self->_trailingCaption forKey:@"trailingCaption"];
+  [coderCopy encodeObject:self->_trailingSubcaption forKey:@"trailingSubcaption"];
   v4 = self->_mediaData;
   v5 = self->_mediaType;
   v6 = v5;
@@ -113,9 +113,9 @@
     image = self->_image;
     if (image)
     {
-      v9 = [(UIImage *)image __ms_PNGData];
+      __ms_PNGData = [(UIImage *)image __ms_PNGData];
 
-      v10 = *MEMORY[0x1E6963860];
+      __ms_UTI = *MEMORY[0x1E6963860];
     }
 
     else
@@ -126,62 +126,62 @@
         goto LABEL_11;
       }
 
-      v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:mediaFileURL options:8 error:0];
+      __ms_PNGData = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:mediaFileURL options:8 error:0];
 
-      v10 = [(NSURL *)self->_mediaFileURL __ms_UTI];
+      __ms_UTI = [(NSURL *)self->_mediaFileURL __ms_UTI];
     }
 
-    v12 = v10;
-    v4 = v9;
+    v12 = __ms_UTI;
+    v4 = __ms_PNGData;
 
     v6 = v12;
   }
 
 LABEL_11:
-  [v13 encodeObject:v6 forKey:@"mediaType"];
-  [v13 encodeObject:v4 forKey:@"mediaData"];
-  [v13 encodeObject:self->_imageTitle forKey:@"imageTitle"];
-  [v13 encodeObject:self->_imageSubtitle forKey:@"imageSubitle"];
+  [coderCopy encodeObject:v6 forKey:@"mediaType"];
+  [coderCopy encodeObject:v4 forKey:@"mediaData"];
+  [coderCopy encodeObject:self->_imageTitle forKey:@"imageTitle"];
+  [coderCopy encodeObject:self->_imageSubtitle forKey:@"imageSubitle"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[MSMessageTemplateLayout allocWithZone:](MSMessageTemplateLayout init];
-  v6 = [(NSString *)self->_caption copyWithZone:a3];
+  v6 = [(NSString *)self->_caption copyWithZone:zone];
   [(MSMessageTemplateLayout *)v5 setCaption:v6];
 
-  v7 = [(NSString *)self->_subcaption copyWithZone:a3];
+  v7 = [(NSString *)self->_subcaption copyWithZone:zone];
   [(MSMessageTemplateLayout *)v5 setSubcaption:v7];
 
-  v8 = [(NSString *)self->_trailingCaption copyWithZone:a3];
+  v8 = [(NSString *)self->_trailingCaption copyWithZone:zone];
   [(MSMessageTemplateLayout *)v5 setTrailingCaption:v8];
 
-  v9 = [(NSString *)self->_trailingSubcaption copyWithZone:a3];
+  v9 = [(NSString *)self->_trailingSubcaption copyWithZone:zone];
   [(MSMessageTemplateLayout *)v5 setTrailingSubcaption:v9];
 
   [(MSMessageTemplateLayout *)v5 setImage:self->_image];
   v10 = [(NSURL *)self->_mediaFileURL copy];
   [(MSMessageTemplateLayout *)v5 setMediaFileURL:v10];
 
-  v11 = [(NSString *)self->_imageTitle copyWithZone:a3];
+  v11 = [(NSString *)self->_imageTitle copyWithZone:zone];
   [(MSMessageTemplateLayout *)v5 setImageTitle:v11];
 
-  v12 = [(NSString *)self->_imageSubtitle copyWithZone:a3];
+  v12 = [(NSString *)self->_imageSubtitle copyWithZone:zone];
   [(MSMessageTemplateLayout *)v5 setImageSubtitle:v12];
 
-  v13 = [(NSData *)self->_mediaData copyWithZone:a3];
+  v13 = [(NSData *)self->_mediaData copyWithZone:zone];
   [(MSMessageTemplateLayout *)v5 setMediaData:v13];
 
-  v14 = [(NSString *)self->_mediaType copyWithZone:a3];
+  v14 = [(NSString *)self->_mediaType copyWithZone:zone];
   [(MSMessageTemplateLayout *)v5 setMediaType:v14];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -191,37 +191,37 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       caption = self->_caption;
-      v7 = [(MSMessageTemplateLayout *)v5 caption];
-      if (caption == v7 || [(NSString *)caption isEqualToString:v7])
+      caption = [(MSMessageTemplateLayout *)v5 caption];
+      if (caption == caption || [(NSString *)caption isEqualToString:caption])
       {
         subcaption = self->_subcaption;
-        v9 = [(MSMessageTemplateLayout *)v5 subcaption];
-        if (subcaption == v9 || [(NSString *)subcaption isEqualToString:v9])
+        subcaption = [(MSMessageTemplateLayout *)v5 subcaption];
+        if (subcaption == subcaption || [(NSString *)subcaption isEqualToString:subcaption])
         {
           trailingCaption = self->_trailingCaption;
-          v11 = [(MSMessageTemplateLayout *)v5 trailingCaption];
-          if (trailingCaption == v11 || [(NSString *)trailingCaption isEqualToString:v11])
+          trailingCaption = [(MSMessageTemplateLayout *)v5 trailingCaption];
+          if (trailingCaption == trailingCaption || [(NSString *)trailingCaption isEqualToString:trailingCaption])
           {
             trailingSubcaption = self->_trailingSubcaption;
-            v13 = [(MSMessageTemplateLayout *)v5 trailingSubcaption];
-            if (trailingSubcaption == v13 || [(NSString *)trailingSubcaption isEqualToString:v13])
+            trailingSubcaption = [(MSMessageTemplateLayout *)v5 trailingSubcaption];
+            if (trailingSubcaption == trailingSubcaption || [(NSString *)trailingSubcaption isEqualToString:trailingSubcaption])
             {
               imageTitle = self->_imageTitle;
-              v15 = [(MSMessageTemplateLayout *)v5 imageTitle];
-              if (imageTitle == v15 || [(NSString *)imageTitle isEqualToString:v15])
+              imageTitle = [(MSMessageTemplateLayout *)v5 imageTitle];
+              if (imageTitle == imageTitle || [(NSString *)imageTitle isEqualToString:imageTitle])
               {
                 imageSubtitle = self->_imageSubtitle;
-                v17 = [(MSMessageTemplateLayout *)v5 imageSubtitle];
-                if (imageSubtitle == v17)
+                imageSubtitle = [(MSMessageTemplateLayout *)v5 imageSubtitle];
+                if (imageSubtitle == imageSubtitle)
                 {
                   v18 = 1;
                 }
 
                 else
                 {
-                  v18 = [(NSString *)imageSubtitle isEqualToString:v17];
+                  v18 = [(NSString *)imageSubtitle isEqualToString:imageSubtitle];
                 }
               }
 
@@ -283,8 +283,8 @@ LABEL_11:
   mediaData = self->_mediaData;
   self->_mediaData = 0;
 
-  v6 = [MEMORY[0x1E695DFB0] null];
-  v7 = [(NSURL *)v10 isEqual:v6];
+  null = [MEMORY[0x1E695DFB0] null];
+  v7 = [(NSURL *)v10 isEqual:null];
 
   v8 = 0;
   if ((v7 & 1) == 0)

@@ -1,31 +1,31 @@
 @interface SSEnvironmentElementDocumentUpdate
 - (BSSettings)bsSettings;
 - (NSString)loggableDescription;
-- (SSEnvironmentElementDocumentUpdate)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SSEnvironmentElementDocumentUpdate)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SSEnvironmentElementDocumentUpdate
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SSEnvironmentElementDocumentUpdate *)self environmentElementIdentifier];
-  [v4 encodeObject:v5 forKey:@"SSEnvironmentElementMetadataUpdateEnvironmentElementIdentifierKey"];
+  coderCopy = coder;
+  environmentElementIdentifier = [(SSEnvironmentElementDocumentUpdate *)self environmentElementIdentifier];
+  [coderCopy encodeObject:environmentElementIdentifier forKey:@"SSEnvironmentElementMetadataUpdateEnvironmentElementIdentifierKey"];
 
-  v6 = [(SSEnvironmentElementDocumentUpdate *)self document];
-  [v4 encodeObject:v6 forKey:@"SSEnvironmentElementMetadataUpdateDocumentKey"];
+  document = [(SSEnvironmentElementDocumentUpdate *)self document];
+  [coderCopy encodeObject:document forKey:@"SSEnvironmentElementMetadataUpdateDocumentKey"];
 }
 
-- (SSEnvironmentElementDocumentUpdate)initWithBSXPCCoder:(id)a3
+- (SSEnvironmentElementDocumentUpdate)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSEnvironmentElementDocumentUpdate *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementMetadataUpdateEnvironmentElementIdentifierKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementMetadataUpdateEnvironmentElementIdentifierKey"];
   environmentElementIdentifier = v5->_environmentElementIdentifier;
   v5->_environmentElementIdentifier = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementMetadataUpdateDocumentKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementMetadataUpdateDocumentKey"];
 
   document = v5->_document;
   v5->_document = v8;
@@ -43,26 +43,26 @@
 
 - (NSString)loggableDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(SSEnvironmentElementDocumentUpdate *)self environmentElementIdentifier];
-  v6 = [v5 shorterLoggableString];
-  v7 = [v4 stringWithFormat:@"element: %@ ", v6];
-  [v3 appendString:v7];
+  environmentElementIdentifier = [(SSEnvironmentElementDocumentUpdate *)self environmentElementIdentifier];
+  shorterLoggableString = [environmentElementIdentifier shorterLoggableString];
+  v7 = [v4 stringWithFormat:@"element: %@ ", shorterLoggableString];
+  [string appendString:v7];
 
-  [v3 appendString:@"metadata: <"];
-  v8 = [(SSEnvironmentElementDocumentUpdate *)self document];
+  [string appendString:@"metadata: <"];
+  document = [(SSEnvironmentElementDocumentUpdate *)self document];
 
-  if (v8)
+  if (document)
   {
-    v9 = [(SSEnvironmentElementDocumentUpdate *)self document];
-    v10 = [v9 loggableDescription];
-    [v3 appendString:v10];
+    document2 = [(SSEnvironmentElementDocumentUpdate *)self document];
+    loggableDescription = [document2 loggableDescription];
+    [string appendString:loggableDescription];
   }
 
-  [v3 appendString:@">"];
+  [string appendString:@">"];
 
-  return v3;
+  return string;
 }
 
 @end

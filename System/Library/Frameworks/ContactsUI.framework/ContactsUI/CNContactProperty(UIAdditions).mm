@@ -7,9 +7,9 @@
 
 - (id)phoneticProperty
 {
-  v2 = [objc_opt_class() phoneticPropertiesMap];
-  v3 = [a1 key];
-  v4 = [v2 valueForKey:v3];
+  phoneticPropertiesMap = [objc_opt_class() phoneticPropertiesMap];
+  v3 = [self key];
+  v4 = [phoneticPropertiesMap valueForKey:v3];
 
   return v4;
 }

@@ -1,12 +1,12 @@
 @interface NUVideoFrameSourceNode
-- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)options;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)time;
 - ($41299696D20B6C925B74A5D5E4D5CC87)originalExtent;
-- (NUVideoFrameSourceNode)initWithSettings:(id)a3;
-- (NUVideoFrameSourceNode)initWithSettings:(id)a3 orientation:(int64_t)a4;
-- (id)_evaluateImagePropertiesWithSourceOptions:(id)a3 error:(id *)a4;
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5;
-- (id)applySourceOptions:(id)a3 image:(id)a4;
+- (NUVideoFrameSourceNode)initWithSettings:(id)settings;
+- (NUVideoFrameSourceNode)initWithSettings:(id)settings orientation:(int64_t)orientation;
+- (id)_evaluateImagePropertiesWithSourceOptions:(id)options error:(id *)error;
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error;
+- (id)applySourceOptions:(id)options image:(id)image;
 - (id)descriptionSubClassHook;
 @end
 
@@ -34,8 +34,8 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)time
 {
   *retstr = **&MEMORY[0x1E6960C70];
-  v4 = [(NURenderNode *)self settings];
-  dictionaryRepresentation = [v4 objectForKeyedSubscript:@"time"];
+  settings = [(NURenderNode *)self settings];
+  dictionaryRepresentation = [settings objectForKeyedSubscript:@"time"];
 
   v5 = dictionaryRepresentation;
   if (dictionaryRepresentation)
@@ -47,10 +47,10 @@
   return result;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)options
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  optionsCopy = options;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_415);
@@ -93,8 +93,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -110,8 +110,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -125,12 +125,12 @@ LABEL_14:
   _NUAssertFailHandler("[NUVideoFrameSourceNode pixelSizeWithSourceOptions:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1083, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v25, v26, v27, v28, v24);
 }
 
-- (id)_evaluateImagePropertiesWithSourceOptions:(id)a3 error:(id *)a4
+- (id)_evaluateImagePropertiesWithSourceOptions:(id)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   v6 = objc_alloc_init(_NUImageProperties);
   [(_NUImageProperties *)v6 setMetadata:MEMORY[0x1E695E0F8]];
-  v7 = [(NUVideoFrameSourceNode *)self pixelSizeWithSourceOptions:v5];
+  v7 = [(NUVideoFrameSourceNode *)self pixelSizeWithSourceOptions:optionsCopy];
   v9 = v8;
 
   [(_NUImageProperties *)v6 setSize:v7, v9];
@@ -139,10 +139,10 @@ LABEL_14:
   return v6;
 }
 
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  optionsCopy = options;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_415);
@@ -185,8 +185,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -202,8 +202,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -217,15 +217,15 @@ LABEL_14:
   _NUAssertFailHandler("[NUVideoFrameSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1067, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v27, v28, v29, v30, v26);
 }
 
-- (id)applySourceOptions:(id)a3 image:(id)a4
+- (id)applySourceOptions:(id)options image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NUSourceNode *)self auxiliaryImageType];
-  v9 = [(NUSourceNode *)self auxiliaryImageType];
-  if (!v8 || (v10 = v9, [(NUSourceNode *)self auxiliaryImageType]== 11) || v10 == 1)
+  optionsCopy = options;
+  imageCopy = image;
+  auxiliaryImageType = [(NUSourceNode *)self auxiliaryImageType];
+  auxiliaryImageType2 = [(NUSourceNode *)self auxiliaryImageType];
+  if (!auxiliaryImageType || (v10 = auxiliaryImageType2, [(NUSourceNode *)self auxiliaryImageType]== 11) || v10 == 1)
   {
-    v12 = [v6 objectForKeyedSubscript:@"applyCleanAperture"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"applyCleanAperture"];
     v13 = v12;
     if (v12)
     {
@@ -233,9 +233,9 @@ LABEL_14:
       v21 = 0u;
       [v12 nu_pixelRect];
       CGAffineTransformMakeTranslation(&v19, -v20, -*(&v20 + 1));
-      v14 = [v7 imageByApplyingTransform:&v19];
+      v14 = [imageCopy imageByApplyingTransform:&v19];
 
-      v7 = [v14 imageByCroppingToRect:{0.0, 0.0, v21, *(&v21 + 1)}];
+      imageCopy = [v14 imageByCroppingToRect:{0.0, 0.0, v21, *(&v21 + 1)}];
     }
 
     else
@@ -247,30 +247,30 @@ LABEL_14:
         v21 = 0u;
         [(NUVideoFrameSourceNode *)self originalExtent];
         CGAffineTransformMakeTranslation(&v19, -v20, -*(&v20 + 1));
-        v15 = [v7 imageByApplyingTransform:&v19];
+        v15 = [imageCopy imageByApplyingTransform:&v19];
 
-        v16 = [MEMORY[0x1E695F658] blackImage];
-        v17 = [v15 imageByCompositingOverImage:v16];
+        blackImage = [MEMORY[0x1E695F658] blackImage];
+        v17 = [v15 imageByCompositingOverImage:blackImage];
 
-        v7 = [v17 imageByCroppingToRect:{0.0, 0.0, v21, *(&v21 + 1)}];
+        imageCopy = [v17 imageByCroppingToRect:{0.0, 0.0, v21, *(&v21 + 1)}];
       }
     }
 
-    v11 = v7;
+    v11 = imageCopy;
   }
 
   else
   {
-    v11 = v7;
+    v11 = imageCopy;
   }
 
   return v11;
 }
 
-- (NUVideoFrameSourceNode)initWithSettings:(id)a3
+- (NUVideoFrameSourceNode)initWithSettings:(id)settings
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingsCopy = settings;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_415);
@@ -314,8 +314,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -331,8 +331,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -348,11 +348,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUVideoFrameSourceNode initWithSettings:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1017, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUVideoFrameSourceNode)initWithSettings:(id)a3 orientation:(int64_t)a4
+- (NUVideoFrameSourceNode)initWithSettings:(id)settings orientation:(int64_t)orientation
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     v13 = NUAssertLogger_530();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -373,8 +373,8 @@ LABEL_14:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v27;
         *&buf[12] = 2114;
@@ -385,8 +385,8 @@ LABEL_14:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -395,7 +395,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUVideoFrameSourceNode initWithSettings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1001, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "settings != nil");
   }
 
-  if ((a4 - 1) >= 8)
+  if ((orientation - 1) >= 8)
   {
     v20 = NUAssertLogger_530();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -416,8 +416,8 @@ LABEL_14:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v37 callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v36;
         *&buf[12] = 2114;
@@ -428,8 +428,8 @@ LABEL_14:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -438,11 +438,11 @@ LABEL_14:
     _NUAssertFailHandler("[NUVideoFrameSourceNode initWithSettings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1002, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "NUOrientationIsValid(orientation)");
   }
 
-  v7 = v6;
+  v7 = settingsCopy;
   v45.receiver = self;
   v45.super_class = NUVideoFrameSourceNode;
-  v8 = [(NUSourceNode *)&v45 initWithSettings:v6];
-  v8->_orientation = a4;
+  v8 = [(NUSourceNode *)&v45 initWithSettings:settingsCopy];
+  v8->_orientation = orientation;
   v9 = [v7 objectForKeyedSubscript:@"originalExtent"];
   v10 = v9;
   if (v9)

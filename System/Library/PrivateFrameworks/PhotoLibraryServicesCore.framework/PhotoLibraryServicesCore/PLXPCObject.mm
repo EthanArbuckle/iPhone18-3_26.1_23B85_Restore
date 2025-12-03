@@ -1,8 +1,8 @@
 @interface PLXPCObject
 + (_xpc_type_s)type;
-- (PLXPCObject)initWithCoder:(id)a3;
-- (PLXPCObject)initWithXPCObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PLXPCObject)initWithCoder:(id)coder;
+- (PLXPCObject)initWithXPCObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLXPCObject
@@ -20,13 +20,13 @@
   objc_exception_throw(v7);
 }
 
-- (PLXPCObject)initWithCoder:(id)a3
+- (PLXPCObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 decodeXPCObjectOfType:objc_msgSend(objc_opt_class() forKey:{"type"), @"_xpcObject"}];
+    v5 = [coderCopy decodeXPCObjectOfType:objc_msgSend(objc_opt_class() forKey:{"type"), @"_xpcObject"}];
   }
 
   else
@@ -39,27 +39,27 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self->_object)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 encodeXPCObject:self->_object forKey:@"_xpcObject"];
+      [coderCopy encodeXPCObject:self->_object forKey:@"_xpcObject"];
     }
   }
 }
 
-- (PLXPCObject)initWithXPCObject:(id)a3
+- (PLXPCObject)initWithXPCObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v6 = [(PLXPCObject *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;

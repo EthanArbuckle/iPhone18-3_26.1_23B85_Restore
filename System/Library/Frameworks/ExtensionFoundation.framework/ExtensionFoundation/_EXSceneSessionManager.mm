@@ -1,10 +1,10 @@
 @interface _EXSceneSessionManager
 + (id)sharedInstance;
 - (id)_init;
-- (id)sessionForIdentifier:(id)a3;
+- (id)sessionForIdentifier:(id)identifier;
 - (id)sessions;
-- (void)addSession:(id)a3;
-- (void)removeSessionForIdentifier:(id)a3;
+- (void)addSession:(id)session;
+- (void)removeSessionForIdentifier:(id)identifier;
 @end
 
 @implementation _EXSceneSessionManager
@@ -36,13 +36,13 @@
   return v2;
 }
 
-- (void)addSession:(id)a3
+- (void)addSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   sessions = self->__sessions;
-  v6 = [v4 identifier];
-  [(NSMutableDictionary *)sessions setObject:v4 forKey:v6];
+  identifier = [sessionCopy identifier];
+  [(NSMutableDictionary *)sessions setObject:sessionCopy forKey:identifier];
 
   v7 = _EXDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -51,20 +51,20 @@
   }
 }
 
-- (id)sessionForIdentifier:(id)a3
+- (id)sessionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(NSMutableDictionary *)self->__sessions objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->__sessions objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (void)removeSessionForIdentifier:(id)a3
+- (void)removeSessionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  [(NSMutableDictionary *)self->__sessions removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->__sessions removeObjectForKey:identifierCopy];
   v5 = _EXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {

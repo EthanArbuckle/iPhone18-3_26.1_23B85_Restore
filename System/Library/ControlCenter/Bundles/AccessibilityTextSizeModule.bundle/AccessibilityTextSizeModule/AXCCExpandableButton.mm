@@ -1,44 +1,44 @@
 @interface AXCCExpandableButton
-+ (double)collapsedHeightWithImageHeight:(double)a3 maximumHeight:(double)a4;
-- (AXCCExpandableButton)initWithFrame:(CGRect)a3;
++ (double)collapsedHeightWithImageHeight:(double)height maximumHeight:(double)maximumHeight;
+- (AXCCExpandableButton)initWithFrame:(CGRect)frame;
 - (AXCCExpandableButtonOption)selectedOption;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)buttonImageSize;
 - (CGSize)maximumExpandedSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (id)initForControlCenter;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (int64_t)_buttonLayoutAxis;
 - (unint64_t)accessibilityTraits;
-- (void)_animateGlyphStateSelected:(BOOL)a3;
+- (void)_animateGlyphStateSelected:(BOOL)selected;
 - (void)_layoutLabels;
 - (void)_layoutSelectionView;
 - (void)_resetSelectionView;
-- (void)_springAnimate:(id)a3;
+- (void)_springAnimate:(id)animate;
 - (void)_updateButtonsVisiblity;
 - (void)_updateSelectionVisiblity;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)didTapButton:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)didTapButton:(id)button;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAxis:(int64_t)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setButtonImageSize:(CGSize)a3;
-- (void)setContentVerticalAlignment:(int64_t)a3;
-- (void)setDisplayMessage:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOptions:(id)a3;
-- (void)setSelectedOptionIndex:(int64_t)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)showMessage:(id)a3;
+- (void)setAxis:(int64_t)axis;
+- (void)setBackgroundView:(id)view;
+- (void)setButtonImageSize:(CGSize)size;
+- (void)setContentVerticalAlignment:(int64_t)alignment;
+- (void)setDisplayMessage:(BOOL)message;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOptions:(id)options;
+- (void)setSelectedOptionIndex:(int64_t)index;
+- (void)setStylingProvider:(id)provider;
+- (void)setTitle:(id)title;
+- (void)showMessage:(id)message;
 - (void)updateContentSizeCategory;
 - (void)updateVisualStyling;
 @end
@@ -50,8 +50,8 @@
   v2 = [(AXCCExpandableButton *)self initWithFrame:*MEMORY[0x29EDB90E0], *(MEMORY[0x29EDB90E0] + 8), *(MEMORY[0x29EDB90E0] + 16), *(MEMORY[0x29EDB90E0] + 24)];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDC0CC8] controlCenterDarkMaterial];
-    [(AXCCExpandableButton *)v2 setBackgroundView:v3];
+    controlCenterDarkMaterial = [MEMORY[0x29EDC0CC8] controlCenterDarkMaterial];
+    [(AXCCExpandableButton *)v2 setBackgroundView:controlCenterDarkMaterial];
 
     [(UILabel *)v2->_titleLabel controlCenterApplyPrimaryContentShadow];
     [(UILabel *)v2->_subtitleLabel controlCenterApplyPrimaryContentShadow];
@@ -62,16 +62,16 @@
   return v2;
 }
 
-- (AXCCExpandableButton)initWithFrame:(CGRect)a3
+- (AXCCExpandableButton)initWithFrame:(CGRect)frame
 {
   v36.receiver = self;
   v36.super_class = AXCCExpandableButton;
-  v3 = [(AXCCExpandableButton *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXCCExpandableButton *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     buttons = v3->_buttons;
-    v3->_buttons = v4;
+    v3->_buttons = array;
 
     v3->_selectedOptionIndex = 0x7FFFFFFFFFFFFFFFLL;
     [(AXCCExpandableButton *)v3 setContentVerticalAlignment:0];
@@ -84,8 +84,8 @@
     backgroundView = v3->_backgroundView;
     v3->_backgroundView = v11;
 
-    v13 = [MEMORY[0x29EDC7A00] systemGroupedBackgroundColor];
-    [(UIView *)v3->_backgroundView setBackgroundColor:v13];
+    systemGroupedBackgroundColor = [MEMORY[0x29EDC7A00] systemGroupedBackgroundColor];
+    [(UIView *)v3->_backgroundView setBackgroundColor:systemGroupedBackgroundColor];
 
     [(AXCCExpandableButton *)v3 addSubview:v3->_backgroundView];
     v14 = objc_opt_new();
@@ -104,8 +104,8 @@
     overlaySelectionView = v3->_overlaySelectionView;
     v3->_overlaySelectionView = v18;
 
-    v20 = [MEMORY[0x29EDC7A00] whiteColor];
-    [(UIView *)v3->_overlaySelectionView setBackgroundColor:v20];
+    whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
+    [(UIView *)v3->_overlaySelectionView setBackgroundColor:whiteColor];
 
     [(UIView *)v3->_overlaySelectionView _setDrawsAsBackdropOverlayWithBlendMode:2];
     [(UIView *)v3->_selectionView addSubview:v3->_overlaySelectionView];
@@ -117,8 +117,8 @@
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
     LODWORD(v23) = 1051931443;
     [(UILabel *)v3->_titleLabel _setHyphenationFactor:v23];
-    v24 = [MEMORY[0x29EDC7A00] labelColor];
-    [(UILabel *)v3->_titleLabel setTextColor:v24];
+    labelColor = [MEMORY[0x29EDC7A00] labelColor];
+    [(UILabel *)v3->_titleLabel setTextColor:labelColor];
 
     [(AXCCExpandableButton *)v3 addSubview:v3->_titleLabel];
     v25 = [objc_alloc(MEMORY[0x29EDC7B38]) initWithFrame:{v7, v8, v9, v10}];
@@ -129,8 +129,8 @@
     [(UILabel *)v3->_subtitleLabel setTextAlignment:1];
     LODWORD(v27) = 1051931443;
     [(UILabel *)v3->_subtitleLabel _setHyphenationFactor:v27];
-    v28 = [MEMORY[0x29EDC7A00] labelColor];
-    [(UILabel *)v3->_subtitleLabel setTextColor:v28];
+    labelColor2 = [MEMORY[0x29EDC7A00] labelColor];
+    [(UILabel *)v3->_subtitleLabel setTextColor:labelColor2];
 
     [(AXCCExpandableButton *)v3 addSubview:v3->_subtitleLabel];
     v29 = [objc_alloc(MEMORY[0x29EDC7B38]) initWithFrame:{v7, v8, v9, v10}];
@@ -142,14 +142,14 @@
     LODWORD(v31) = 1051931443;
     [(UILabel *)v3->_messageLabel _setHyphenationFactor:v31];
     [(UILabel *)v3->_messageLabel setAlpha:0.0];
-    v32 = [MEMORY[0x29EDC7A00] labelColor];
-    [(UILabel *)v3->_messageLabel setTextColor:v32];
+    labelColor3 = [MEMORY[0x29EDC7A00] labelColor];
+    [(UILabel *)v3->_messageLabel setTextColor:labelColor3];
 
     [(AXCCExpandableButton *)v3 addSubview:v3->_messageLabel];
     v33 = [objc_alloc(MEMORY[0x29EDC7BD8]) initWithDelegate:v3];
     [(AXCCExpandableButton *)v3 addInteraction:v33];
-    v34 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v34 addObserver:v3 selector:sel_updateContentSizeCategory name:*MEMORY[0x29EDC8078] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_updateContentSizeCategory name:*MEMORY[0x29EDC8078] object:0];
 
     [(AXCCExpandableButton *)v3 updateContentSizeCategory];
   }
@@ -168,8 +168,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AXCCExpandableButton *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(AXCCExpandableButton *)self traitCollection];
+  [traitCollection displayScale];
 
   axis = self->_axis;
   if (axis)
@@ -260,14 +260,14 @@
 
   [(NSMutableArray *)buttons enumerateObjectsUsingBlock:v18];
 LABEL_8:
-  v23 = [(NSMutableArray *)self->_buttons firstObject];
-  [v23 imageFrame];
+  firstObject = [(NSMutableArray *)self->_buttons firstObject];
+  [firstObject imageFrame];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [(NSMutableArray *)self->_buttons firstObject];
-  [(AXCCExpandableButton *)self convertRect:v32 fromView:v25, v27, v29, v31];
+  firstObject2 = [(NSMutableArray *)self->_buttons firstObject];
+  [(AXCCExpandableButton *)self convertRect:firstObject2 fromView:v25, v27, v29, v31];
   x = v33;
   y = v35;
   v38 = v37;
@@ -359,10 +359,10 @@ LABEL_8:
   [(AXCCExpandableButton *)self _layoutLabels];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (self->_axis && self->_expanded)
   {
     v5 = self->_maximumExpandedSize.height;
@@ -375,7 +375,7 @@ LABEL_8:
 
   else
   {
-    [objc_opt_class() collapsedHeightWithImageHeight:self->_buttonImageSize.height maximumHeight:a3.height];
+    [objc_opt_class() collapsedHeightWithImageHeight:self->_buttonImageSize.height maximumHeight:fits.height];
     v5 = v7 + 0.0;
   }
 
@@ -395,11 +395,11 @@ LABEL_8:
   return result;
 }
 
-+ (double)collapsedHeightWithImageHeight:(double)a3 maximumHeight:(double)a4
++ (double)collapsedHeightWithImageHeight:(double)height maximumHeight:(double)maximumHeight
 {
-  v5 = a3 + 8.0;
-  v6 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v6 scale];
+  v5 = height + 8.0;
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen scale];
 
   v7 = *MEMORY[0x29EDC8088];
   v8 = [MEMORY[0x29EDC76B0] _preferredFontForTextStyle:*MEMORY[0x29EDC8100] maximumContentSizeCategory:*MEMORY[0x29EDC8088]];
@@ -410,39 +410,39 @@ LABEL_8:
   [v11 lineHeight];
   UICeilToScale();
   v13 = v10 + v12;
-  if (v13 < a4)
+  if (v13 < maximumHeight)
   {
-    a4 = v13;
+    maximumHeight = v13;
   }
 
-  return a4;
+  return maximumHeight;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     backgroundView = [(AXCCExpandableButton *)self insertSubview:v7 atIndex:0];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2A1C71028](backgroundView, v5);
+  MEMORY[0x2A1C71028](backgroundView, viewCopy);
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
   v17 = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  providerCopy = provider;
   stylingProvider = self->_stylingProvider;
-  if (stylingProvider != v5)
+  if (stylingProvider != providerCopy)
   {
     [(AXCCVisualStylingProvider *)stylingProvider removeObserver:self];
-    objc_storeStrong(&self->_stylingProvider, a3);
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(AXCCVisualStylingProvider *)self->_stylingProvider addObserver:self];
     [(AXCCExpandableButton *)self updateVisualStyling];
     v14 = 0u;
@@ -465,7 +465,7 @@ LABEL_8:
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v12 + 1) + 8 * v11++) setStylingProvider:{v5, v12}];
+          [*(*(&v12 + 1) + 8 * v11++) setStylingProvider:{providerCopy, v12}];
         }
 
         while (v9 != v11);
@@ -477,30 +477,30 @@ LABEL_8:
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(AXCCExpandableButton *)self setNeedsLayout];
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v5 = a3;
-  objc_storeStrong(&self->_options, a3);
+  optionsCopy = options;
+  objc_storeStrong(&self->_options, options);
   self->_toggleEnabled = 0;
   [(AXCCExpandableButton *)self setSelectedOptionIndex:0x7FFFFFFFFFFFFFFFLL];
-  for (i = -[NSMutableArray count](self->_buttons, "count"); i > [v5 count]; --i)
+  for (i = -[NSMutableArray count](self->_buttons, "count"); i > [optionsCopy count]; --i)
   {
-    v7 = [(NSMutableArray *)self->_buttons lastObject];
+    lastObject = [(NSMutableArray *)self->_buttons lastObject];
     [(NSMutableArray *)self->_buttons removeLastObject];
-    [v7 removeFromSuperview];
+    [lastObject removeFromSuperview];
   }
 
   v8 = [(NSMutableArray *)self->_buttons count];
-  if (v8 < [v5 count])
+  if (v8 < [optionsCopy count])
   {
     v9 = *MEMORY[0x29EDB90E0];
     v10 = *(MEMORY[0x29EDB90E0] + 8);
@@ -516,7 +516,7 @@ LABEL_8:
       ++v8;
     }
 
-    while (v8 < [v5 count]);
+    while (v8 < [optionsCopy count]);
   }
 
   v14[0] = MEMORY[0x29EDCA5F8];
@@ -524,7 +524,7 @@ LABEL_8:
   v14[2] = sub_29C940D04;
   v14[3] = &unk_29F3354A0;
   v14[4] = self;
-  [v5 enumerateObjectsUsingBlock:v14];
+  [optionsCopy enumerateObjectsUsingBlock:v14];
   [(AXCCExpandableButton *)self _updateButtonsVisiblity];
   [(AXCCExpandableButton *)self updateVisualStyling];
   [(AXCCExpandableButton *)self _updateSelectionVisiblity];
@@ -547,13 +547,13 @@ LABEL_8:
   return v4;
 }
 
-- (void)setSelectedOptionIndex:(int64_t)a3
+- (void)setSelectedOptionIndex:(int64_t)index
 {
   v5 = self->_selectedOptionIndex == 0x7FFFFFFFFFFFFFFFLL;
-  self->_selectedOptionIndex = a3;
-  v6 = [(AXCCExpandableButton *)self selectedOption];
-  v7 = [v6 title];
-  [(UILabel *)self->_subtitleLabel setText:v7];
+  self->_selectedOptionIndex = index;
+  selectedOption = [(AXCCExpandableButton *)self selectedOption];
+  title = [selectedOption title];
+  [(UILabel *)self->_subtitleLabel setText:title];
 
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
@@ -565,20 +565,20 @@ LABEL_8:
   [(AXCCExpandableButton *)self _layoutSelectionView];
   [(AXCCExpandableButton *)self _updateSelectionVisiblity];
   [(AXCCExpandableButton *)self _updateButtonsVisiblity];
-  v8 = [(AXCCExpandableButton *)self buttons];
+  buttons = [(AXCCExpandableButton *)self buttons];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = sub_29C9410A4;
   v9[3] = &unk_29F3354E8;
-  v9[4] = a3;
-  [v8 enumerateObjectsUsingBlock:v9];
+  v9[4] = index;
+  [buttons enumerateObjectsUsingBlock:v9];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
   v14 = *MEMORY[0x29EDCA608];
-  self->_axis = a3;
+  self->_axis = axis;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -612,12 +612,12 @@ LABEL_8:
   [(AXCCExpandableButton *)self setNeedsLayout];
 }
 
-- (void)setContentVerticalAlignment:(int64_t)a3
+- (void)setContentVerticalAlignment:(int64_t)alignment
 {
   v15 = *MEMORY[0x29EDCA608];
   v13.receiver = self;
   v13.super_class = AXCCExpandableButton;
-  [(AXCCExpandableButton *)&v13 setContentVerticalAlignment:a3];
+  [(AXCCExpandableButton *)&v13 setContentVerticalAlignment:alignment];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
@@ -649,12 +649,12 @@ LABEL_8:
   }
 }
 
-- (void)setButtonImageSize:(CGSize)a3
+- (void)setButtonImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16 = *MEMORY[0x29EDCA608];
-  self->_buttonImageSize = a3;
+  self->_buttonImageSize = size;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -688,15 +688,15 @@ LABEL_8:
   [(AXCCExpandableButton *)self setNeedsLayout];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
     v6[7] = v3;
     v6[8] = v4;
     if (!self->_toggleEnabled)
     {
-      self->_expanded = a3;
+      self->_expanded = expanded;
       if ([MEMORY[0x29EDC7DA0] _isInAnimationBlock])
       {
         v6[0] = MEMORY[0x29EDCA5F8];
@@ -719,22 +719,22 @@ LABEL_8:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = AXCCExpandableButton;
-  [(AXCCExpandableButton *)&v4 setEnabled:a3];
+  [(AXCCExpandableButton *)&v4 setEnabled:enabled];
   [(AXCCExpandableButton *)self updateVisualStyling];
   [(AXCCExpandableButton *)self _updateButtonsVisiblity];
   [(AXCCExpandableButton *)self _updateSelectionVisiblity];
   [(AXCCExpandableButton *)self _animateGlyphStateSelected:0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = AXCCExpandableButton;
-  [(AXCCExpandableButton *)&v5 setHighlighted:a3];
+  [(AXCCExpandableButton *)&v5 setHighlighted:highlighted];
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = sub_29C9416C8;
@@ -743,9 +743,9 @@ LABEL_8:
   [MEMORY[0x29EDC7DA0] animateWithDuration:v4 animations:0.15];
 }
 
-- (void)showMessage:(id)a3
+- (void)showMessage:(id)message
 {
-  [(UILabel *)self->_messageLabel setText:a3];
+  [(UILabel *)self->_messageLabel setText:message];
   self->_resetTracking = 1;
   [(AXCCExpandableButton *)self _layoutLabels];
   v4[0] = MEMORY[0x29EDCA5F8];
@@ -756,20 +756,20 @@ LABEL_8:
   [MEMORY[0x29EDC7DA0] animateKeyframesWithDuration:0 delay:v4 options:0 animations:2.5 completion:0.0];
 }
 
-- (void)setDisplayMessage:(BOOL)a3
+- (void)setDisplayMessage:(BOOL)message
 {
-  self->_displayMessage = a3;
+  self->_displayMessage = message;
   [(AXCCExpandableButton *)self _updateButtonsVisiblity];
 
   [(AXCCExpandableButton *)self updateVisualStyling];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXCCExpandableButton *)self backgroundView];
-  [v6 frame];
+  y = inside.y;
+  x = inside.x;
+  backgroundView = [(AXCCExpandableButton *)self backgroundView];
+  [backgroundView frame];
   v9.x = x;
   v9.y = y;
   v7 = CGRectContainsPoint(v10, v9);
@@ -777,10 +777,10 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
-  if ([v5 _isPointerTouch])
+  touchCopy = touch;
+  if ([touchCopy _isPointerTouch])
   {
     v6 = 0;
   }
@@ -792,12 +792,12 @@ LABEL_8:
     {
       [(UIView *)self->_selectionView center];
       v9 = v8;
-      [v5 locationInView:self];
+      [touchCopy locationInView:self];
     }
 
     else
     {
-      [v5 locationInView:self];
+      [touchCopy locationInView:self];
       v9 = v11;
       [(UIView *)self->_selectionView center];
     }
@@ -837,7 +837,7 @@ LABEL_8:
       v29 = 3221225472;
       v30 = sub_29C941BD4;
       v31 = &unk_29F335558;
-      v32 = self;
+      selfCopy = self;
       if (!axis)
       {
         v25 = v9 - v22;
@@ -850,7 +850,7 @@ LABEL_8:
       [MEMORY[0x29EDC7DA0] animateWithDuration:&v28 animations:0.1];
       if (v15 != selectedOptionIndex)
       {
-        [(AXCCExpandableButton *)self sendActionsForControlEvents:4096, v28, v29, v30, v31, v32];
+        [(AXCCExpandableButton *)self sendActionsForControlEvents:4096, v28, v29, v30, v31, selfCopy];
       }
     }
 
@@ -866,25 +866,25 @@ LABEL_8:
   return v6;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = AXCCExpandableButton;
-  [(AXCCExpandableButton *)&v5 endTrackingWithTouch:a3 withEvent:a4];
+  [(AXCCExpandableButton *)&v5 endTrackingWithTouch:touch withEvent:event];
   [(AXCCExpandableButton *)self _resetSelectionView];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = AXCCExpandableButton;
-  [(AXCCExpandableButton *)&v4 cancelTrackingWithEvent:a3];
+  [(AXCCExpandableButton *)&v4 cancelTrackingWithEvent:event];
   [(AXCCExpandableButton *)self _resetSelectionView];
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  v4 = [(NSMutableArray *)self->_buttons indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_buttons indexOfObject:button];
   if (self->_toggleEnabled)
   {
     v6[0] = MEMORY[0x29EDCA5F8];
@@ -915,19 +915,19 @@ LABEL_3:
   [(AXCCExpandableButton *)self sendActionsForControlEvents:64];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  if (v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1)
+  beginCopy = begin;
+  view = [beginCopy view];
+  if (view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [v4 numberOfTapsRequired];
+  numberOfTapsRequired = [beginCopy numberOfTapsRequired];
 
-  if (v6 != 1)
+  if (numberOfTapsRequired != 1)
   {
 LABEL_7:
     v7 = 1;
@@ -940,15 +940,15 @@ LABEL_8:
   return v7;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
+  requestCopy = request;
   buttons = self->_buttons;
   v24[0] = MEMORY[0x29EDCA5F8];
   v24[1] = 3221225472;
   v24[2] = sub_29C9420A4;
   v24[3] = &unk_29F3355A8;
-  v8 = v6;
+  v8 = requestCopy;
   v25 = v8;
   v9 = [(NSMutableArray *)buttons indexOfObjectPassingTest:v24];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
@@ -974,16 +974,16 @@ LABEL_8:
   return v10;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [v5 identifier];
-  v7 = [v6 integerValue];
+  regionCopy = region;
+  identifier = [regionCopy identifier];
+  integerValue = [identifier integerValue];
 
   if (self->_toggleEnabled || !self->_expanded)
   {
     v15 = MEMORY[0x29EDC7948];
-    [v5 rect];
+    [regionCopy rect];
     v8 = [v15 bezierPathWithOvalInRect:?];
     v9 = objc_alloc_init(MEMORY[0x29EDC7C18]);
     [v9 setShadowPath:v8];
@@ -995,7 +995,7 @@ LABEL_8:
 
   else
   {
-    if (v7 == self->_selectedOptionIndex)
+    if (integerValue == self->_selectedOptionIndex)
     {
       v8 = [objc_alloc(MEMORY[0x29EDC7D30]) initWithView:self->_selectionView];
       v9 = [MEMORY[0x29EDC7BE0] effectWithPreview:v8];
@@ -1009,7 +1009,7 @@ LABEL_8:
       goto LABEL_7;
     }
 
-    v8 = [(NSMutableArray *)self->_buttons objectAtIndexedSubscript:v7];
+    v8 = [(NSMutableArray *)self->_buttons objectAtIndexedSubscript:integerValue];
     v19 = MEMORY[0x29EDC7948];
     [v8 imageFrame];
     v9 = [v19 bezierPathWithOvalInRect:?];
@@ -1039,9 +1039,9 @@ LABEL_7:
 
 - (void)updateVisualStyling
 {
-  v3 = [(AXCCExpandableButton *)self isEnabled];
+  isEnabled = [(AXCCExpandableButton *)self isEnabled];
   v4 = 0.5;
-  if (v3)
+  if (isEnabled)
   {
     v4 = 1.0;
   }
@@ -1066,9 +1066,9 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    v10 = [(AXCCExpandableButton *)self isEnabled];
+    isEnabled2 = [(AXCCExpandableButton *)self isEnabled];
     stylingProvider = self->_stylingProvider;
-    if ((v10 & 1) == 0)
+    if ((isEnabled2 & 1) == 0)
     {
       [(AXCCVisualStylingProvider *)stylingProvider applyStyle:0 toView:self->_titleLabel];
       [(AXCCVisualStylingProvider *)self->_stylingProvider applyStyle:0 toView:self->_subtitleLabel];
@@ -1128,12 +1128,12 @@ LABEL_21:
 
 - (void)_updateSelectionVisiblity
 {
-  v3 = [(AXCCExpandableButton *)self selectedOption];
-  v7 = [v3 selectedBackgroundColor];
+  selectedOption = [(AXCCExpandableButton *)self selectedOption];
+  selectedBackgroundColor = [selectedOption selectedBackgroundColor];
 
-  if (v7 && [(AXCCExpandableButton *)self isEnabled])
+  if (selectedBackgroundColor && [(AXCCExpandableButton *)self isEnabled])
   {
-    [(UIView *)self->_selectionView setBackgroundColor:v7];
+    [(UIView *)self->_selectionView setBackgroundColor:selectedBackgroundColor];
 LABEL_7:
     v5 = 0.0;
     goto LABEL_8;
@@ -1141,14 +1141,14 @@ LABEL_7:
 
   if (!self->_expanded || self->_selectedOptionIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [MEMORY[0x29EDC7A00] clearColor];
-    [(UIView *)self->_selectionView setBackgroundColor:v4];
+    clearColor = [MEMORY[0x29EDC7A00] clearColor];
+    [(UIView *)self->_selectionView setBackgroundColor:clearColor];
 
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x29EDC7A00] clearColor];
-  [(UIView *)self->_selectionView setBackgroundColor:v6];
+  clearColor2 = [MEMORY[0x29EDC7A00] clearColor];
+  [(UIView *)self->_selectionView setBackgroundColor:clearColor2];
 
   v5 = 0.2;
 LABEL_8:
@@ -1158,8 +1158,8 @@ LABEL_8:
 - (void)_layoutLabels
 {
   [(AXCCExpandableButton *)self bounds];
-  v3 = [(AXCCExpandableButton *)self backgroundView];
-  [v3 frame];
+  backgroundView = [(AXCCExpandableButton *)self backgroundView];
+  [backgroundView frame];
   CGRectGetMaxY(v30);
   UIRectInset();
   v5 = v4;
@@ -1223,17 +1223,17 @@ LABEL_8:
     v11 = v10;
     if (self->_expanded)
     {
-      v12 = [(AXCCExpandableButton *)self isHighlighted];
+      isHighlighted = [(AXCCExpandableButton *)self isHighlighted];
       v13 = 4.0;
       v14 = 2.0;
-      if (!v12)
+      if (!isHighlighted)
       {
         v14 = 4.0;
       }
 
       v5 = v5 + v14;
       v7 = v7 + v14;
-      if (!v12)
+      if (!isHighlighted)
       {
         v13 = 8.0;
       }
@@ -1269,18 +1269,18 @@ LABEL_8:
   }
 }
 
-- (void)_springAnimate:(id)a3
+- (void)_springAnimate:(id)animate
 {
   v3 = MEMORY[0x29EDC7DB8];
-  v4 = a3;
+  animateCopy = animate;
   v5 = objc_alloc_init(v3);
   [v5 setDampingRatio:0.8165 response:0.51302];
-  [MEMORY[0x29EDC7DA0] _animateUsingSpringBehavior:v5 tracking:0 animations:v4 completion:0];
+  [MEMORY[0x29EDC7DA0] _animateUsingSpringBehavior:v5 tracking:0 animations:animateCopy completion:0];
 }
 
-- (void)_animateGlyphStateSelected:(BOOL)a3
+- (void)_animateGlyphStateSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   if (-[AXCCExpandableButton isEnabled](self, "isEnabled") && self->_animating && (-[AXCCExpandableButton selectedOption](self, "selectedOption"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 supportsAnimation], v5, (v6 & 1) != 0))
   {
     v7 = @"animating";
@@ -1288,9 +1288,9 @@ LABEL_8:
 
   else
   {
-    v8 = [(AXCCExpandableButton *)self isEnabled];
+    isEnabled = [(AXCCExpandableButton *)self isEnabled];
     v7 = @"on";
-    if ((v8 & v3) == 0)
+    if ((isEnabled & selectedCopy) == 0)
     {
       v7 = 0;
     }
@@ -1342,23 +1342,23 @@ LABEL_8:
 
 - (id)accessibilityLabel
 {
-  v2 = [(AXCCExpandableButton *)self titleLabel];
-  v3 = [v2 accessibilityLabel];
+  titleLabel = [(AXCCExpandableButton *)self titleLabel];
+  accessibilityLabel = [titleLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(AXCCExpandableButton *)self subtitleLabel];
-  v4 = [v3 accessibilityLabel];
+  subtitleLabel = [(AXCCExpandableButton *)self subtitleLabel];
+  accessibilityLabel = [subtitleLabel accessibilityLabel];
 
-  v5 = [(AXCCExpandableButton *)self messageLabel];
-  v6 = [v5 accessibilityLabel];
+  messageLabel = [(AXCCExpandableButton *)self messageLabel];
+  accessibilityLabel2 = [messageLabel accessibilityLabel];
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
-    v7 = v4;
+    v7 = accessibilityLabel;
   }
 
   else
@@ -1366,19 +1366,19 @@ LABEL_8:
     v7 = 0;
   }
 
-  if ([v6 length])
+  if ([accessibilityLabel2 length])
   {
     if ([v7 length])
     {
       v8 = [v7 stringByAppendingString:{@", "}];
 
-      v9 = [v8 stringByAppendingString:v6];
+      v9 = [v8 stringByAppendingString:accessibilityLabel2];
       v7 = v8;
     }
 
     else
     {
-      v9 = v6;
+      v9 = accessibilityLabel2;
     }
 
     v7 = v9;
@@ -1390,9 +1390,9 @@ LABEL_8:
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDC7F70];
-  v3 = [(AXCCExpandableButton *)self toggleEnabled];
+  toggleEnabled = [(AXCCExpandableButton *)self toggleEnabled];
   v4 = *MEMORY[0x29EDC7FA8];
-  if (v3)
+  if (toggleEnabled)
   {
     v4 = 0;
   }

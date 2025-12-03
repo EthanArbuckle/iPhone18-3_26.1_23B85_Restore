@@ -6,58 +6,58 @@
 - (id)initForTimeline;
 - (id)initForTimelineConfigurationDetermination;
 - (id)toDictionary;
-- (void)readConfig:(id)a3;
+- (void)readConfig:(id)config;
 @end
 
 @implementation GTGPUAPSConfig
 
 - (NSDictionary)grcTrigger
 {
-  v2 = [(GTGPUAPSConfig *)self toDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"KickAndStateTracing"];
+  toDictionary = [(GTGPUAPSConfig *)self toDictionary];
+  v3 = [toDictionary objectForKeyedSubscript:@"KickAndStateTracing"];
 
   return v3;
 }
 
-- (void)readConfig:(id)a3
+- (void)readConfig:(id)config
 {
-  v65 = a3;
-  v4 = [v65 objectForKeyedSubscript:@"SyncDrainMode"];
+  configCopy = config;
+  v4 = [configCopy objectForKeyedSubscript:@"SyncDrainMode"];
   if (v4)
   {
-    v5 = [v65 objectForKeyedSubscript:@"SyncDrainMode"];
+    v5 = [configCopy objectForKeyedSubscript:@"SyncDrainMode"];
     self->_syncDrainMode = [v5 unsignedIntegerValue];
   }
 
-  v6 = [v65 objectForKeyedSubscript:@"Duration"];
+  v6 = [configCopy objectForKeyedSubscript:@"Duration"];
   if (v6)
   {
-    v7 = [v65 objectForKeyedSubscript:@"Duration"];
+    v7 = [configCopy objectForKeyedSubscript:@"Duration"];
     self->_duration = [v7 unsignedIntegerValue];
   }
 
-  v8 = [v65 objectForKeyedSubscript:@"RingBufferSizeInKB"];
+  v8 = [configCopy objectForKeyedSubscript:@"RingBufferSizeInKB"];
   if (v8)
   {
-    v9 = [v65 objectForKeyedSubscript:@"RingBufferSizeInKB"];
+    v9 = [configCopy objectForKeyedSubscript:@"RingBufferSizeInKB"];
     self->_ringBufferSizeInKb = [v9 unsignedIntegerValue];
   }
 
-  v10 = [v65 objectForKeyedSubscript:@"SystemTimePeriod"];
+  v10 = [configCopy objectForKeyedSubscript:@"SystemTimePeriod"];
   if (v10)
   {
-    v11 = [v65 objectForKeyedSubscript:@"SystemTimePeriod"];
+    v11 = [configCopy objectForKeyedSubscript:@"SystemTimePeriod"];
     self->_systemTimePeriod = [v11 unsignedIntegerValue];
   }
 
-  v12 = [v65 objectForKeyedSubscript:@"CliqueAdvanceReason"];
+  v12 = [configCopy objectForKeyedSubscript:@"CliqueAdvanceReason"];
   if (v12)
   {
-    v13 = [v65 objectForKeyedSubscript:@"CliqueAdvanceReason"];
+    v13 = [configCopy objectForKeyedSubscript:@"CliqueAdvanceReason"];
     self->_cliqueAdvanceReason = [v13 BOOLValue];
   }
 
-  v14 = [v65 objectForKeyedSubscript:@"ProfileControl"];
+  v14 = [configCopy objectForKeyedSubscript:@"ProfileControl"];
   v15 = v14;
   if (v14)
   {
@@ -83,7 +83,7 @@
     }
   }
 
-  v22 = [v65 objectForKeyedSubscript:@"CliqueSubSampling"];
+  v22 = [configCopy objectForKeyedSubscript:@"CliqueSubSampling"];
   v23 = v22;
   if (v22)
   {
@@ -102,7 +102,7 @@
     }
   }
 
-  v28 = [v65 objectForKeyedSubscript:@"KickAndStateTracing"];
+  v28 = [configCopy objectForKeyedSubscript:@"KickAndStateTracing"];
   v29 = v28;
   if (v28)
   {
@@ -168,7 +168,7 @@
     }
   }
 
-  v48 = [v65 objectForKeyedSubscript:@"USCConfigOverride"];
+  v48 = [configCopy objectForKeyedSubscript:@"USCConfigOverride"];
   v49 = v48;
   if (v48)
   {

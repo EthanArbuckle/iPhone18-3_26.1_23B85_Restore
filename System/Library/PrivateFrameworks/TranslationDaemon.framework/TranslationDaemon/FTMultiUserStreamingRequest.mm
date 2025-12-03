@@ -1,11 +1,11 @@
 @interface FTMultiUserStreamingRequest
-+ (Class)content_immutableClassForType:(int64_t)a3;
-+ (int64_t)content_typeForImmutableObject:(id)a3;
++ (Class)content_immutableClassForType:(int64_t)type;
++ (int64_t)content_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)content;
 - (FTAudioPacket)contentAsFTAudioPacket;
 - (FTFinishAudio)contentAsFTFinishAudio;
 - (FTMultiUserStartSpeechRequest)contentAsFTMultiUserStartSpeechRequest;
-- (FTMultiUserStreamingRequest)initWithFlatbuffData:(id)a3 root:(const MultiUserStreamingRequest *)a4 verify:(BOOL)a5;
+- (FTMultiUserStreamingRequest)initWithFlatbuffData:(id)data root:(const MultiUserStreamingRequest *)root verify:(BOOL)verify;
 - (FTResetServerEndpointer)contentAsFTResetServerEndpointer;
 - (FTSetAlternateRecognitionSausage)contentAsFTSetAlternateRecognitionSausage;
 - (FTSetEndpointerState)contentAsFTSetEndpointerState;
@@ -13,49 +13,49 @@
 - (FTSetSpeechContext)contentAsFTSetSpeechContext;
 - (FTSetSpeechProfile)contentAsFTSetSpeechProfile;
 - (FTUpdateAudioInfo)contentAsFTUpdateAudioInfo;
-- (Offset<siri::speech::qss_fb::MultiUserStreamingRequest>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::MultiUserStreamingRequest>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)content_type;
 @end
 
 @implementation FTMultiUserStreamingRequest
 
-- (FTMultiUserStreamingRequest)initWithFlatbuffData:(id)a3 root:(const MultiUserStreamingRequest *)a4 verify:(BOOL)a5
+- (FTMultiUserStreamingRequest)initWithFlatbuffData:(id)data root:(const MultiUserStreamingRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTMultiUserStreamingRequest;
   v10 = [(FTMultiUserStreamingRequest *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -72,9 +72,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -430,13 +430,13 @@ LABEL_16:
 
 - (FLTBFBufferAccessor)content
 {
-  v3 = [(FTMultiUserStreamingRequest *)self content_type];
-  v4 = 0;
-  if (v3 > 5)
+  content_type = [(FTMultiUserStreamingRequest *)self content_type];
+  contentAsFTFinishAudio = 0;
+  if (content_type > 5)
   {
-    if (v3 <= 7)
+    if (content_type <= 7)
     {
-      if (v3 == 6)
+      if (content_type == 6)
       {
         [(FTMultiUserStreamingRequest *)self contentAsFTSetEndpointerState];
       }
@@ -449,38 +449,38 @@ LABEL_16:
       goto LABEL_6;
     }
 
-    switch(v3)
+    switch(content_type)
     {
       case 8:
-        v4 = [(FTMultiUserStreamingRequest *)self contentAsFTFinishAudio];
+        contentAsFTFinishAudio = [(FTMultiUserStreamingRequest *)self contentAsFTFinishAudio];
         break;
       case 9:
-        v4 = [(FTMultiUserStreamingRequest *)self contentAsFTResetServerEndpointer];
+        contentAsFTFinishAudio = [(FTMultiUserStreamingRequest *)self contentAsFTResetServerEndpointer];
         break;
       case 10:
-        v4 = [(FTMultiUserStreamingRequest *)self contentAsFTSetAlternateRecognitionSausage];
+        contentAsFTFinishAudio = [(FTMultiUserStreamingRequest *)self contentAsFTSetAlternateRecognitionSausage];
         break;
     }
   }
 
-  else if (v3 <= 2)
+  else if (content_type <= 2)
   {
-    if (v3 == 1)
+    if (content_type == 1)
     {
-      v4 = [(FTMultiUserStreamingRequest *)self contentAsFTMultiUserStartSpeechRequest];
+      contentAsFTFinishAudio = [(FTMultiUserStreamingRequest *)self contentAsFTMultiUserStartSpeechRequest];
     }
 
-    else if (v3 == 2)
+    else if (content_type == 2)
     {
-      v4 = [(FTMultiUserStreamingRequest *)self contentAsFTUpdateAudioInfo];
+      contentAsFTFinishAudio = [(FTMultiUserStreamingRequest *)self contentAsFTUpdateAudioInfo];
     }
   }
 
   else
   {
-    if (v3 != 3)
+    if (content_type != 3)
     {
-      if (v3 == 4)
+      if (content_type == 4)
       {
         [(FTMultiUserStreamingRequest *)self contentAsFTSetSpeechContext];
       }
@@ -490,83 +490,83 @@ LABEL_16:
         [(FTMultiUserStreamingRequest *)self contentAsFTSetSpeechProfile];
       }
 
-      v4 = LABEL_6:;
+      contentAsFTFinishAudio = LABEL_6:;
       goto LABEL_23;
     }
 
-    v4 = [(FTMultiUserStreamingRequest *)self contentAsFTSetRequestOrigin];
+    contentAsFTFinishAudio = [(FTMultiUserStreamingRequest *)self contentAsFTSetRequestOrigin];
   }
 
 LABEL_23:
 
-  return v4;
+  return contentAsFTFinishAudio;
 }
 
-+ (Class)content_immutableClassForType:(int64_t)a3
++ (Class)content_immutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 9)
+  if ((type - 1) > 9)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B8BE0[a3 - 1];
+    v4 = *off_2789B8BE0[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)content_typeForImmutableObject:(id)a3
++ (int64_t)content_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 10;
   }
@@ -579,13 +579,13 @@ LABEL_23:
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::MultiUserStreamingRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::MultiUserStreamingRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTMultiUserStreamingRequest *)self content_type];
+  content_type = [(FTMultiUserStreamingRequest *)self content_type];
   if ([(FTMultiUserStreamingRequest *)self content_type]== 1)
   {
-    v6 = [(FTMultiUserStreamingRequest *)self contentAsFTMultiUserStartSpeechRequest];
-    v7 = [v6 addObjectToBuffer:a3];
+    contentAsFTMultiUserStartSpeechRequest = [(FTMultiUserStreamingRequest *)self contentAsFTMultiUserStartSpeechRequest];
+    v7 = [contentAsFTMultiUserStartSpeechRequest addObjectToBuffer:buffer];
 
     v8 = v7;
   }
@@ -597,8 +597,8 @@ LABEL_23:
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 2)
   {
-    v9 = [(FTMultiUserStreamingRequest *)self contentAsFTUpdateAudioInfo];
-    v10 = [v9 addObjectToBuffer:a3];
+    contentAsFTUpdateAudioInfo = [(FTMultiUserStreamingRequest *)self contentAsFTUpdateAudioInfo];
+    v10 = [contentAsFTUpdateAudioInfo addObjectToBuffer:buffer];
 
     v11 = v10;
   }
@@ -610,8 +610,8 @@ LABEL_23:
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 3)
   {
-    v12 = [(FTMultiUserStreamingRequest *)self contentAsFTSetRequestOrigin];
-    v13 = [v12 addObjectToBuffer:a3];
+    contentAsFTSetRequestOrigin = [(FTMultiUserStreamingRequest *)self contentAsFTSetRequestOrigin];
+    v13 = [contentAsFTSetRequestOrigin addObjectToBuffer:buffer];
 
     v14 = v13;
   }
@@ -623,8 +623,8 @@ LABEL_23:
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 4)
   {
-    v15 = [(FTMultiUserStreamingRequest *)self contentAsFTSetSpeechContext];
-    v16 = [v15 addObjectToBuffer:a3];
+    contentAsFTSetSpeechContext = [(FTMultiUserStreamingRequest *)self contentAsFTSetSpeechContext];
+    v16 = [contentAsFTSetSpeechContext addObjectToBuffer:buffer];
 
     v17 = v16;
   }
@@ -636,8 +636,8 @@ LABEL_23:
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 5)
   {
-    v18 = [(FTMultiUserStreamingRequest *)self contentAsFTSetSpeechProfile];
-    v19 = [v18 addObjectToBuffer:a3];
+    contentAsFTSetSpeechProfile = [(FTMultiUserStreamingRequest *)self contentAsFTSetSpeechProfile];
+    v19 = [contentAsFTSetSpeechProfile addObjectToBuffer:buffer];
 
     v45 = v19;
   }
@@ -649,8 +649,8 @@ LABEL_23:
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 6)
   {
-    v20 = [(FTMultiUserStreamingRequest *)self contentAsFTSetEndpointerState];
-    v21 = [v20 addObjectToBuffer:a3];
+    contentAsFTSetEndpointerState = [(FTMultiUserStreamingRequest *)self contentAsFTSetEndpointerState];
+    v21 = [contentAsFTSetEndpointerState addObjectToBuffer:buffer];
 
     v44 = v21;
   }
@@ -662,8 +662,8 @@ LABEL_23:
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 7)
   {
-    v22 = [(FTMultiUserStreamingRequest *)self contentAsFTAudioPacket];
-    v23 = [v22 addObjectToBuffer:a3];
+    contentAsFTAudioPacket = [(FTMultiUserStreamingRequest *)self contentAsFTAudioPacket];
+    v23 = [contentAsFTAudioPacket addObjectToBuffer:buffer];
 
     v43 = v23;
   }
@@ -675,8 +675,8 @@ LABEL_23:
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 8)
   {
-    v24 = [(FTMultiUserStreamingRequest *)self contentAsFTFinishAudio];
-    v25 = [v24 addObjectToBuffer:a3];
+    contentAsFTFinishAudio = [(FTMultiUserStreamingRequest *)self contentAsFTFinishAudio];
+    v25 = [contentAsFTFinishAudio addObjectToBuffer:buffer];
 
     v42 = v25;
   }
@@ -688,8 +688,8 @@ LABEL_23:
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 9)
   {
-    v26 = [(FTMultiUserStreamingRequest *)self contentAsFTResetServerEndpointer];
-    v27 = [v26 addObjectToBuffer:a3];
+    contentAsFTResetServerEndpointer = [(FTMultiUserStreamingRequest *)self contentAsFTResetServerEndpointer];
+    v27 = [contentAsFTResetServerEndpointer addObjectToBuffer:buffer];
 
     v41 = v27;
   }
@@ -702,9 +702,9 @@ LABEL_23:
   if ([(FTMultiUserStreamingRequest *)self content_type]== 10)
   {
     v28 = v11;
-    v29 = v5;
-    v30 = [(FTMultiUserStreamingRequest *)self contentAsFTSetAlternateRecognitionSausage];
-    v31 = [v30 addObjectToBuffer:a3];
+    v29 = content_type;
+    contentAsFTSetAlternateRecognitionSausage = [(FTMultiUserStreamingRequest *)self contentAsFTSetAlternateRecognitionSausage];
+    v31 = [contentAsFTSetAlternateRecognitionSausage addObjectToBuffer:buffer];
     v32 = v14;
     v33 = v8;
     v34 = v29;
@@ -717,66 +717,66 @@ LABEL_23:
     v32 = v14;
     v28 = v11;
     v33 = v8;
-    v34 = v5;
+    v34 = content_type;
     v39 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v36 = *(a3 + 5);
-  v35 = *(a3 + 6);
-  v37 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v34, 0);
+  *(buffer + 70) = 1;
+  v36 = *(buffer + 5);
+  v35 = *(buffer + 6);
+  v37 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, v34, 0);
   if ([(FTMultiUserStreamingRequest *)self content_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v33);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v33);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v28);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v28);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 3)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v32);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v32);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 4)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v17);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v17);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 5)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v45);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v45);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 6)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v44);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v44);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 7)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v43);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v43);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 8)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v42);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v42);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 9)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v41);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v41);
   }
 
   if ([(FTMultiUserStreamingRequest *)self content_type]== 10)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v40);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v40);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v37 - v35 + v36);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v37 - v35 + v36);
 }
 
 - (id)flatbuffData

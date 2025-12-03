@@ -1,24 +1,24 @@
 @interface LemonadePeopleNamingViewDelegate
 - (_TtC12PhotosUICore32LemonadePeopleNamingViewDelegate)init;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 @end
 
 @implementation LemonadePeopleNamingViewDelegate
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   sub_1A524D224();
   v3 = *sub_1A3CAA3FC();
   sub_1A5246DF4();
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1A4868CE4(v7);
+  pickerCopy = picker;
+  contactCopy = contact;
+  selfCopy = self;
+  sub_1A4868CE4(contactCopy);
 }
 
 - (_TtC12PhotosUICore32LemonadePeopleNamingViewDelegate)init

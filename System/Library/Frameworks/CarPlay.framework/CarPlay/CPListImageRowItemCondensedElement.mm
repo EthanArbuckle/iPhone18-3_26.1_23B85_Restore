@@ -1,11 +1,11 @@
 @interface CPListImageRowItemCondensedElement
 + (CGSize)maximumImageSize;
-- (CPListImageRowItemCondensedElement)initWithCoder:(id)a3;
-- (CPListImageRowItemCondensedElement)initWithImage:(id)a3 imageShape:(int64_t)a4 title:(id)a5 subtitle:(id)a6 accessorySymbolName:(id)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessorySymbolName:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (CPListImageRowItemCondensedElement)initWithCoder:(id)coder;
+- (CPListImageRowItemCondensedElement)initWithImage:(id)image imageShape:(int64_t)shape title:(id)title subtitle:(id)subtitle accessorySymbolName:(id)name;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessorySymbolName:(id)name;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CPListImageRowItemCondensedElement
@@ -25,26 +25,26 @@
   return result;
 }
 
-- (CPListImageRowItemCondensedElement)initWithImage:(id)a3 imageShape:(int64_t)a4 title:(id)a5 subtitle:(id)a6 accessorySymbolName:(id)a7
+- (CPListImageRowItemCondensedElement)initWithImage:(id)image imageShape:(int64_t)shape title:(id)title subtitle:(id)subtitle accessorySymbolName:(id)name
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = CPListImageRowItemCondensedElement;
-  v15 = [(CPListImageRowItemElement *)&v23 initWithImage:a3];
+  v15 = [(CPListImageRowItemElement *)&v23 initWithImage:image];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [titleCopy copy];
     title = v15->_title;
     v15->_title = v16;
 
-    v18 = [v13 copy];
+    v18 = [subtitleCopy copy];
     subtitle = v15->_subtitle;
     v15->_subtitle = v18;
 
-    v15->_imageShape = a4;
-    v20 = [v14 copy];
+    v15->_imageShape = shape;
+    v20 = [nameCopy copy];
     accessorySymbolName = v15->_accessorySymbolName;
     v15->_accessorySymbolName = v20;
   }
@@ -52,12 +52,12 @@
   return v15;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -65,22 +65,22 @@
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (![(NSString *)self->_subtitle isEqualToString:?])
   {
-    objc_storeStrong(&self->_subtitle, a3);
+    objc_storeStrong(&self->_subtitle, subtitle);
     [(CPListImageRowItemElement *)self _setNeedsUpdate];
   }
 }
 
-- (void)setAccessorySymbolName:(id)a3
+- (void)setAccessorySymbolName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_accessorySymbolName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     accessorySymbolName = self->_accessorySymbolName;
     self->_accessorySymbolName = v4;
 
@@ -88,48 +88,48 @@
   }
 }
 
-- (CPListImageRowItemCondensedElement)initWithCoder:(id)a3
+- (CPListImageRowItemCondensedElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CPListImageRowItemCondensedElement;
-  v5 = [(CPListImageRowItemElement *)&v13 initWithCoder:v4];
+  v5 = [(CPListImageRowItemElement *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCondensedElementTitleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCondensedElementTitleKey"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCondensedElementSubtitleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCondensedElementSubtitleKey"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCondensedElementAccessorySymbolNameKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCondensedElementAccessorySymbolNameKey"];
     accessorySymbolName = v5->_accessorySymbolName;
     v5->_accessorySymbolName = v10;
 
-    v5->_imageShape = [v4 decodeIntegerForKey:@"kCPListImageRowItemCondensedElementImageShapeKey"];
+    v5->_imageShape = [coderCopy decodeIntegerForKey:@"kCPListImageRowItemCondensedElementImageShapeKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CPListImageRowItemCondensedElement;
-  v4 = a3;
-  [(CPListImageRowItemElement *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPListImageRowItemElement *)&v8 encodeWithCoder:coderCopy];
   v5 = [(CPListImageRowItemCondensedElement *)self title:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPListImageRowItemCondensedElementTitleKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPListImageRowItemCondensedElementTitleKey"];
 
-  v6 = [(CPListImageRowItemCondensedElement *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"kCPListImageRowItemCondensedElementSubtitleKey"];
+  subtitle = [(CPListImageRowItemCondensedElement *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"kCPListImageRowItemCondensedElementSubtitleKey"];
 
-  v7 = [(CPListImageRowItemCondensedElement *)self accessorySymbolName];
-  [v4 encodeObject:v7 forKey:@"kCPListImageRowItemCondensedElementAccessorySymbolNameKey"];
+  accessorySymbolName = [(CPListImageRowItemCondensedElement *)self accessorySymbolName];
+  [coderCopy encodeObject:accessorySymbolName forKey:@"kCPListImageRowItemCondensedElementAccessorySymbolNameKey"];
 
-  [v4 encodeInteger:-[CPListImageRowItemCondensedElement imageShape](self forKey:{"imageShape"), @"kCPListImageRowItemCondensedElementImageShapeKey"}];
+  [coderCopy encodeInteger:-[CPListImageRowItemCondensedElement imageShape](self forKey:{"imageShape"), @"kCPListImageRowItemCondensedElementImageShapeKey"}];
 }
 
 @end

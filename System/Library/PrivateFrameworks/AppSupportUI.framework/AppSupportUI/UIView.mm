@@ -3,34 +3,34 @@
 - (double)effectiveMaximumLayoutContentSize;
 - (double)effectiveMinimumLayoutContentSize;
 - (nui_size_cache)contentLayoutSizeCache;
-- (objc_object)containerViewInfoCreateIfNeeded:(objc_object *)a1;
+- (objc_object)containerViewInfoCreateIfNeeded:(objc_object *)needed;
 @end
 
 @implementation UIView
 
 - (double)_nui_compactAlignmentInsets
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 alignmentRectInsets];
+  [self alignmentRectInsets];
   v3 = v2;
-  [a1 effectiveBaselineOffsetFromBottom];
-  if ([a1 _hasFontInfoForVerticalBaselineSpacing])
+  [self effectiveBaselineOffsetFromBottom];
+  if ([self _hasFontInfoForVerticalBaselineSpacing])
   {
-    v4 = [a1 _fontInfoForBaselineSpacing];
-    if (v4)
+    _fontInfoForBaselineSpacing = [self _fontInfoForBaselineSpacing];
+    if (_fontInfoForBaselineSpacing)
     {
-      v5 = v4;
-      [a1 effectiveFirstBaselineOffsetFromTop];
+      v5 = _fontInfoForBaselineSpacing;
+      [self effectiveFirstBaselineOffsetFromTop];
       if (v6 != 0.0)
       {
         v7 = v6;
         [v5 capHeight];
         v9 = v8;
-        [a1 _currentScreenScale];
+        [self _currentScreenScale];
         v11 = v10 == 1.0;
         v12 = round(v9 * v10) / v10;
         v13 = round(v9);
@@ -47,14 +47,14 @@
   return v3;
 }
 
-- (objc_object)containerViewInfoCreateIfNeeded:(objc_object *)a1
+- (objc_object)containerViewInfoCreateIfNeeded:(objc_object *)needed
 {
-  if (a1)
+  if (needed)
   {
-    return _NUIContainerViewInfoCreateIfNeeded(a1, a2);
+    return _NUIContainerViewInfoCreateIfNeeded(needed, a2);
   }
 
-  return a1;
+  return needed;
 }
 
 - (nui_size_cache)contentLayoutSizeCache
@@ -69,13 +69,13 @@
 
 - (double)effectiveMinimumLayoutContentSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 0);
-  [(objc_object *)a1 effectiveAlignmentRectInsets];
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 0);
+  [(objc_object *)self effectiveAlignmentRectInsets];
   v4 = v3;
   v6 = v5;
   width = IfNeeded->_minSize.width;
@@ -91,13 +91,13 @@
 
 - (double)effectiveMaximumLayoutContentSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 0);
-  [(objc_object *)a1 effectiveAlignmentRectInsets];
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 0);
+  [(objc_object *)self effectiveAlignmentRectInsets];
   return OUTLINED_FUNCTION_0(MEMORY[0x277CBF3A8], IfNeeded->_maxSize.width - (v3 + v4));
 }
 

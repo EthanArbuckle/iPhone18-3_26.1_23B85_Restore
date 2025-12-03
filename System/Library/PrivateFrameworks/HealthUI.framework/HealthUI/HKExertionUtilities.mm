@@ -1,19 +1,19 @@
 @interface HKExertionUtilities
-+ (id)filterSamplesOfExertionTypeCode:(int64_t)a3 fromExertionSamples:(id)a4;
-+ (id)mostRelevantSampleFromExertionSamples:(id)a3;
-+ (id)mostRelevantValueFromExertionSamples:(id)a3;
++ (id)filterSamplesOfExertionTypeCode:(int64_t)code fromExertionSamples:(id)samples;
++ (id)mostRelevantSampleFromExertionSamples:(id)samples;
++ (id)mostRelevantValueFromExertionSamples:(id)samples;
 @end
 
 @implementation HKExertionUtilities
 
-+ (id)filterSamplesOfExertionTypeCode:(int64_t)a3 fromExertionSamples:(id)a4
++ (id)filterSamplesOfExertionTypeCode:(int64_t)code fromExertionSamples:(id)samples
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__HKExertionUtilities_filterSamplesOfExertionTypeCode_fromExertionSamples___block_invoke;
   v6[3] = &__block_descriptor_40_e26__16__0__HKQuantitySample_8l;
-  v6[4] = a3;
-  v4 = [a4 hk_map:v6];
+  v6[4] = code;
+  v4 = [samples hk_map:v6];
 
   return v4;
 }
@@ -38,15 +38,15 @@ id __75__HKExertionUtilities_filterSamplesOfExertionTypeCode_fromExertionSamples
   return v7;
 }
 
-+ (id)mostRelevantValueFromExertionSamples:(id)a3
++ (id)mostRelevantValueFromExertionSamples:(id)samples
 {
-  v3 = [a1 mostRelevantSampleFromExertionSamples:a3];
+  v3 = [self mostRelevantSampleFromExertionSamples:samples];
   v4 = v3;
   if (v3)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [v3 quantity];
-    [v6 _value];
+    quantity = [v3 quantity];
+    [quantity _value];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -58,16 +58,16 @@ id __75__HKExertionUtilities_filterSamplesOfExertionTypeCode_fromExertionSamples
   return v7;
 }
 
-+ (id)mostRelevantSampleFromExertionSamples:(id)a3
++ (id)mostRelevantSampleFromExertionSamples:(id)samples
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  samplesCopy = samples;
   v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = samplesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -83,10 +83,10 @@ id __75__HKExertionUtilities_filterSamplesOfExertionTypeCode_fromExertionSamples
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 _creationDate];
-        if ([v11 hk_isAfterDate:v4])
+        _creationDate = [v10 _creationDate];
+        if ([_creationDate hk_isAfterDate:v4])
         {
-          v12 = v11;
+          v12 = _creationDate;
 
           v13 = v10;
           v4 = v12;

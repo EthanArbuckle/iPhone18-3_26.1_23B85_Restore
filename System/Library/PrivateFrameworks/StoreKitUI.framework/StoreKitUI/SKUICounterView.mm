@@ -1,14 +1,14 @@
 @interface SKUICounterView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (id)viewForElementIdentifier:(id)a3;
-- (unint64_t)_visibleTimeFieldsForDateFormat:(int64_t)a3;
-- (void)_addNumberViewWithViewElement:(id)a3 context:(id)a4;
-- (void)_addTimeViewWithViewElement:(id)a3 context:(id)a4;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (id)viewForElementIdentifier:(id)identifier;
+- (unint64_t)_visibleTimeFieldsForDateFormat:(int64_t)format;
+- (void)_addNumberViewWithViewElement:(id)element context:(id)context;
+- (void)_addTimeViewWithViewElement:(id)element context:(id)context;
 - (void)_reloadNumberValue;
 - (void)_reloadUpdateTimer;
 - (void)_startUpdateTimer;
@@ -18,10 +18,10 @@
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setAlpha:(double)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setAlpha:(double)alpha;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SKUICounterView
@@ -39,10 +39,10 @@
   [(SKUIViewReuseView *)&v4 dealloc];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -55,10 +55,10 @@
     }
   }
 
-  v17 = [v7 backgroundImageElement];
-  if (v17)
+  backgroundImageElement = [elementCopy backgroundImageElement];
+  if (backgroundImageElement)
   {
-    v18 = [v8 prefetchResourcesForViewElement:v17 reason:a4];
+    v18 = [contextCopy prefetchResourcesForViewElement:backgroundImageElement reason:reason];
   }
 
   else
@@ -69,10 +69,10 @@
   return v18;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -85,10 +85,10 @@
     }
   }
 
-  v15 = [v5 backgroundImageElement];
-  if (v15)
+  backgroundImageElement = [elementCopy backgroundImageElement];
+  if (backgroundImageElement)
   {
-    [v6 sizeForImageElement:v15];
+    [contextCopy sizeForImageElement:backgroundImageElement];
     v17 = v16;
     v19 = v18;
   }
@@ -106,7 +106,7 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -118,10 +118,10 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -134,7 +134,7 @@
     }
   }
 
-  [a1 preferredSizeForViewElement:v7 context:v8];
+  [self preferredSizeForViewElement:elementCopy context:contextCopy];
   v18 = v17;
   v20 = v19;
 
@@ -145,10 +145,10 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -161,10 +161,10 @@
     }
   }
 
-  if (self->_counterElement != v8)
+  if (self->_counterElement != elementCopy)
   {
     [(SKUICounterView *)self _stopUpdateTimer];
-    objc_storeStrong(&self->_counterElement, a3);
+    objc_storeStrong(&self->_counterElement, element);
     numberFormatter = self->_numberFormatter;
     self->_numberFormatter = 0;
   }
@@ -173,21 +173,21 @@
   v23[1] = 3221225472;
   v23[2] = __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke;
   v23[3] = &unk_2781F8450;
-  v19 = v8;
+  v19 = elementCopy;
   v24 = v19;
-  v25 = self;
-  v20 = v9;
+  selfCopy = self;
+  v20 = contextCopy;
   v26 = v20;
   [(SKUIViewReuseView *)self modifyUsingBlock:v23];
-  v21 = [(SKUICounterViewElement *)v19 counterType];
-  if (!v21)
+  counterType = [(SKUICounterViewElement *)v19 counterType];
+  if (!counterType)
   {
     [(SKUICounterView *)self _addTimeViewWithViewElement:v19 context:v20];
     v22 = &OBJC_IVAR___SKUICounterView__numberView;
     goto LABEL_11;
   }
 
-  if (v21 == 1)
+  if (counterType == 1)
   {
     [(SKUICounterView *)self _addNumberViewWithViewElement:v19 context:v20];
     v22 = &OBJC_IVAR___SKUICounterView__timeView;
@@ -218,12 +218,12 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = inset.right;
+  left = inset.left;
+  bottom = inset.bottom;
+  top = inset.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -250,11 +250,11 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -267,10 +267,10 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
     }
   }
 
-  v19 = [(SKUICounterViewElement *)self->_counterElement backgroundImageElement];
-  if (v19 && (v20 = [v9 requestIdentifier], objc_msgSend(v10, "requestIdentifierForViewElement:", v19), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "unsignedIntegerValue"), v21, v20 == v22))
+  backgroundImageElement = [(SKUICounterViewElement *)self->_counterElement backgroundImageElement];
+  if (backgroundImageElement && (v20 = [requestCopy requestIdentifier], objc_msgSend(contextCopy, "requestIdentifierForViewElement:", backgroundImageElement), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "unsignedIntegerValue"), v21, v20 == v22))
   {
-    [(SKUIImageView *)self->_imageView setImage:v8];
+    [(SKUIImageView *)self->_imageView setImage:imageCopy];
     v23 = 1;
   }
 
@@ -282,7 +282,7 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   return v23;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
   if (os_variant_has_internal_content())
   {
@@ -299,7 +299,7 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   return 0;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   if (os_variant_has_internal_content())
   {
@@ -398,9 +398,9 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   {
     if (([v27 isHidden] & 1) == 0)
     {
-      v29 = [(SKUICounterViewElement *)self->_counterElement style];
+      style = [(SKUICounterViewElement *)self->_counterElement style];
       v48 = 0;
-      v30 = SKUIViewElementPaddingForStyle(v29, &v48);
+      v30 = SKUIViewElementPaddingForStyle(style, &v48);
       v46 = v31;
       v47 = v30;
       v32 = v48;
@@ -411,10 +411,10 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
       v38 = v37;
       *&v35 = v14 + (v17 - v35) * 0.5;
       v39 = floorf(*&v35);
-      v40 = [v29 elementPosition];
-      if (v40 <= 9)
+      elementPosition = [style elementPosition];
+      if (elementPosition <= 9)
       {
-        if (((1 << v40) & 0x309) != 0)
+        if (((1 << elementPosition) & 0x309) != 0)
         {
           if (v32)
           {
@@ -444,7 +444,7 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
           }
 
           v44 = v16 + v43;
-          if (((1 << v40) & 0x32) != 0)
+          if (((1 << elementPosition) & 0x32) != 0)
           {
             v34 = v42;
           }
@@ -463,7 +463,7 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   [(SKUICounterView *)self _reloadUpdateTimer];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   if (os_variant_has_internal_content())
   {
@@ -479,13 +479,13 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
 
   v13.receiver = self;
   v13.super_class = SKUICounterView;
-  [(SKUICounterView *)&v13 setAlpha:a3];
+  [(SKUICounterView *)&v13 setAlpha:alpha];
   [(SKUICounterView *)self _reloadUpdateTimer];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -500,14 +500,14 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
 
   v13.receiver = self;
   v13.super_class = SKUICounterView;
-  [(SKUICounterView *)&v13 setHidden:v3];
+  [(SKUICounterView *)&v13 setHidden:hiddenCopy];
   [(SKUICounterView *)self _reloadUpdateTimer];
 }
 
-- (void)_addNumberViewWithViewElement:(id)a3 context:(id)a4
+- (void)_addNumberViewWithViewElement:(id)element context:(id)context
 {
-  v16 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (!self->_numberView)
   {
     v7 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -515,19 +515,19 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
     self->_numberView = v7;
 
     v9 = self->_numberView;
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v9 setBackgroundColor:clearColor];
 
     [(UILabel *)self->_numberView setTextAlignment:1];
   }
 
-  v11 = [v16 style];
+  style = [elementCopy style];
   v12 = self->_numberView;
-  v13 = SKUIViewElementFontWithStyle(v11);
+  v13 = SKUIViewElementFontWithStyle(style);
   [(UILabel *)v12 setFont:v13];
 
-  v14 = [v6 tintColor];
-  v15 = SKUIViewElementPlainColorWithStyle(v11, v14);
+  tintColor = [contextCopy tintColor];
+  v15 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   [(UILabel *)self->_numberView setTextColor:v15];
   [(UILabel *)self->_numberView setHidden:0];
@@ -535,37 +535,37 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   [(SKUICounterView *)self _reloadNumberValue];
 }
 
-- (void)_addTimeViewWithViewElement:(id)a3 context:(id)a4
+- (void)_addTimeViewWithViewElement:(id)element context:(id)context
 {
-  v20 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (!self->_timeView)
   {
     v7 = [SKUICounterTimeView alloc];
-    v8 = [v6 clientContext];
-    v9 = [(SKUICounterTimeView *)v7 initWithClientContext:v8];
+    clientContext = [contextCopy clientContext];
+    v9 = [(SKUICounterTimeView *)v7 initWithClientContext:clientContext];
     timeView = self->_timeView;
     self->_timeView = v9;
 
     v11 = self->_timeView;
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(SKUICounterTimeView *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUICounterTimeView *)v11 setBackgroundColor:clearColor];
   }
 
-  v13 = [v20 style];
+  style = [elementCopy style];
   v14 = self->_timeView;
-  v15 = [v20 endDate];
-  [(SKUICounterTimeView *)v14 setEndDate:v15];
+  endDate = [elementCopy endDate];
+  [(SKUICounterTimeView *)v14 setEndDate:endDate];
 
-  v16 = [v6 tintColor];
-  v17 = SKUIViewElementPlainColorWithStyle(v13, v16);
+  tintColor = [contextCopy tintColor];
+  v17 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   [(SKUICounterTimeView *)self->_timeView setTextColor:v17];
   v18 = self->_timeView;
-  v19 = SKUIViewElementFontWithStyle(v13);
+  v19 = SKUIViewElementFontWithStyle(style);
   [(SKUICounterTimeView *)v18 setValueFont:v19];
 
-  -[SKUICounterTimeView setVisibleFields:](self->_timeView, "setVisibleFields:", -[SKUICounterView _visibleTimeFieldsForDateFormat:](self, "_visibleTimeFieldsForDateFormat:", [v20 dateFormatType]));
+  -[SKUICounterTimeView setVisibleFields:](self->_timeView, "setVisibleFields:", -[SKUICounterView _visibleTimeFieldsForDateFormat:](self, "_visibleTimeFieldsForDateFormat:", [elementCopy dateFormatType]));
   [(SKUICounterTimeView *)self->_timeView setHidden:0];
   [(SKUICounterView *)self addSubview:self->_timeView];
 }
@@ -581,8 +581,8 @@ void __55__SKUICounterView_reloadWithViewElement_width_context___block_invoke(ui
 
     [(NSNumberFormatter *)self->_numberFormatter setNumberStyle:1];
     v6 = self->_numberFormatter;
-    v7 = [(SKUICounterViewElement *)self->_counterElement numberFormat];
-    [(NSNumberFormatter *)v6 setPositiveFormat:v7];
+    numberFormat = [(SKUICounterViewElement *)self->_counterElement numberFormat];
+    [(NSNumberFormatter *)v6 setPositiveFormat:numberFormat];
 
     numberFormatter = self->_numberFormatter;
   }
@@ -677,16 +677,16 @@ void __36__SKUICounterView__startUpdateTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)_visibleTimeFieldsForDateFormat:(int64_t)a3
+- (unint64_t)_visibleTimeFieldsForDateFormat:(int64_t)format
 {
-  if (a3 > 3)
+  if (format > 3)
   {
     return 7;
   }
 
   else
   {
-    return qword_215F40060[a3];
+    return qword_215F40060[format];
   }
 }
 

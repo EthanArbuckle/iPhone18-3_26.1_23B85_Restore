@@ -1,32 +1,32 @@
 @interface _UINavigationParallaxTransition
-- (BOOL)shouldPreemptWithContext:(id)a3;
+- (BOOL)shouldPreemptWithContext:(id)context;
 - (_UINavigationInteractiveTransitionBase)interactionController;
-- (_UINavigationParallaxTransition)initWithCurrentOperation:(int64_t)a3;
+- (_UINavigationParallaxTransition)initWithCurrentOperation:(int64_t)operation;
 - (double)gapBetweenViews;
 - (double)parallaxOffset;
-- (id)_animateOrCreatePropertyAnimatorForTransition:(id)a3;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (id)preemptWithContext:(id)a3;
+- (id)_animateOrCreatePropertyAnimatorForTransition:(id)transition;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (id)preemptWithContext:(id)context;
 - (id)resizedFromContainerView;
 - (id)resizedToContainerView;
-- (id)shadowContainerForKeyboardTransition:(id)a3;
-- (void)_animationWillEnd:(id)a3 didComplete:(BOOL)a4;
+- (id)shadowContainerForKeyboardTransition:(id)transition;
+- (void)_animationWillEnd:(id)end didComplete:(BOOL)complete;
 - (void)_stopTransitionImmediately;
-- (void)animateKeyboard:(id)a3;
-- (void)animatePreemptionSnapshotsWithContext:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
-- (void)completeKeyboard:(id)a3;
-- (void)prepareToAnimateKeyboard:(id)a3;
-- (void)resizeShadow:(id)a3;
+- (void)animateKeyboard:(id)keyboard;
+- (void)animatePreemptionSnapshotsWithContext:(id)context;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
+- (void)completeKeyboard:(id)keyboard;
+- (void)prepareToAnimateKeyboard:(id)keyboard;
+- (void)resizeShadow:(id)shadow;
 @end
 
 @implementation _UINavigationParallaxTransition
 
 - (double)parallaxOffset
 {
-  v3 = [(UIViewControllerContextTransitioning *)self->_transitionContext containerView];
-  [v3 bounds];
+  containerView = [(UIViewControllerContextTransitioning *)self->_transitionContext containerView];
+  [containerView bounds];
   v5 = 0.7;
   if (self->_transitionStyle)
   {
@@ -58,7 +58,7 @@
   return WeakRetained;
 }
 
-- (_UINavigationParallaxTransition)initWithCurrentOperation:(int64_t)a3
+- (_UINavigationParallaxTransition)initWithCurrentOperation:(int64_t)operation
 {
   v11.receiver = self;
   v11.super_class = _UINavigationParallaxTransition;
@@ -66,7 +66,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_operation = a3;
+    v4->_operation = operation;
     v4->__shouldReverseLayoutDirection = [UIApp userInterfaceLayoutDirection] == 1;
     v6 = objc_alloc_init(_UIParallaxOverlayView);
     fromOverlayView = v5->_fromOverlayView;
@@ -84,11 +84,11 @@
 {
   v3 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:self];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v5 = [v3 containerView];
+  containerView = [v3 containerView];
 
   if (has_internal_diagnostics)
   {
-    if (!v5)
+    if (!containerView)
     {
       v12 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -99,7 +99,7 @@
     }
   }
 
-  else if (!v5)
+  else if (!containerView)
   {
     v13 = *(__UILogGetCategoryCachedImpl("Assert", &resizedToContainerView___s_category) + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -109,8 +109,8 @@
     }
   }
 
-  v6 = [v3 containerView];
-  [v6 frame];
+  containerView2 = [v3 containerView];
+  [containerView2 frame];
 
   [(UIView *)self->_containerToView frame];
   v8 = v7;
@@ -126,11 +126,11 @@
 {
   v3 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:self];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v5 = [v3 containerView];
+  containerView = [v3 containerView];
 
   if (has_internal_diagnostics)
   {
-    if (!v5)
+    if (!containerView)
     {
       v12 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -141,7 +141,7 @@
     }
   }
 
-  else if (!v5)
+  else if (!containerView)
   {
     v13 = *(__UILogGetCategoryCachedImpl("Assert", &resizedFromContainerView___s_category) + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -151,8 +151,8 @@
     }
   }
 
-  v6 = [v3 containerView];
-  [v6 frame];
+  containerView2 = [v3 containerView];
+  [containerView2 frame];
 
   [(UIView *)self->_containerFromView frame];
   v8 = v7;
@@ -164,13 +164,13 @@
   return fromOverlayView;
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
   preemptionHandoffData = self->_preemptionHandoffData;
   self->_preemptionHandoffData = 0;
 
-  v5 = [(_UINavigationParallaxTransition *)self interactionController];
-  [v5 _resetInteractionController];
+  interactionController = [(_UINavigationParallaxTransition *)self interactionController];
+  [interactionController _resetInteractionController];
 
   [(UIView *)self->_fromOverlayView removeFromSuperview];
   toOverlayView = self->_toOverlayView;
@@ -178,25 +178,25 @@
   [(UIView *)toOverlayView removeFromSuperview];
 }
 
-- (void)animatePreemptionSnapshotsWithContext:(id)a3
+- (void)animatePreemptionSnapshotsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (self->_preemptionHandoffData)
   {
     v5 = [(UIViewControllerContextTransitioning *)self->_transitionContext viewControllerForKey:@"UITransitionContextFromViewController"];
     v6 = [(UIViewControllerContextTransitioning *)self->_transitionContext viewControllerForKey:@"UITransitionContextToViewController"];
-    v7 = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData fromViewControllerHandoffData];
-    v8 = [v7 viewController];
+    fromViewControllerHandoffData = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData fromViewControllerHandoffData];
+    viewController = [fromViewControllerHandoffData viewController];
 
-    if (v8 == v5 || v8 == v6)
+    if (viewController == v5 || viewController == v6)
     {
       goto LABEL_15;
     }
 
-    v10 = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData fromViewControllerHandoffData];
-    v11 = [v10 snapshot];
+    fromViewControllerHandoffData2 = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData fromViewControllerHandoffData];
+    snapshot = [fromViewControllerHandoffData2 snapshot];
 
-    if (!v11)
+    if (!snapshot)
     {
 LABEL_14:
 
@@ -204,21 +204,21 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v12 = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData fromViewControllerHandoffData];
-    v13 = [v12 containerView];
+    fromViewControllerHandoffData3 = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData fromViewControllerHandoffData];
+    containerView = [fromViewControllerHandoffData3 containerView];
 
-    v14 = [v13 contentView];
-    [v14 addSubview:v11];
+    contentView = [containerView contentView];
+    [contentView addSubview:snapshot];
 
-    v15 = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData isPush];
+    isPush = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData isPush];
     operation = self->_operation;
-    v17 = [v4 containerView];
-    v18 = v17;
-    if (v15)
+    containerView2 = [contextCopy containerView];
+    v18 = containerView2;
+    if (isPush)
     {
       if (operation == 1)
       {
-        [v17 insertSubview:v13 atIndex:0];
+        [containerView2 insertSubview:containerView atIndex:0];
 LABEL_13:
 
         v19 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.35];
@@ -226,8 +226,8 @@ LABEL_13:
         v23[1] = 3221225472;
         v23[2] = __73___UINavigationParallaxTransition_animatePreemptionSnapshotsWithContext___block_invoke;
         v23[3] = &unk_1E70F35B8;
-        v24 = v13;
-        v25 = self;
+        v24 = containerView;
+        selfCopy = self;
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __73___UINavigationParallaxTransition_animatePreemptionSnapshotsWithContext___block_invoke_2;
@@ -242,20 +242,20 @@ LABEL_13:
 
     else if (operation == 1)
     {
-      [v17 insertSubview:v13 belowSubview:self->_containerToView];
+      [containerView2 insertSubview:containerView belowSubview:self->_containerToView];
       goto LABEL_13;
     }
 
-    [v17 addSubview:v13];
+    [containerView2 addSubview:containerView];
     goto LABEL_13;
   }
 
 LABEL_16:
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = [(_UINavigationParallaxTransition *)self _animateOrCreatePropertyAnimatorForTransition:a3];
+  v3 = [(_UINavigationParallaxTransition *)self _animateOrCreatePropertyAnimatorForTransition:transition];
   if (v3)
   {
     v4 = v3;
@@ -264,16 +264,16 @@ LABEL_16:
   }
 }
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v5 traitCollection];
-  v7 = [(_UINavigationParallaxTransition *)self _shouldUseInterruptibleAnimatorWithTraitCollection:v6];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  traitCollection = [containerView traitCollection];
+  v7 = [(_UINavigationParallaxTransition *)self _shouldUseInterruptibleAnimatorWithTraitCollection:traitCollection];
 
   if (v7)
   {
-    v8 = [(_UINavigationParallaxTransition *)self _animateOrCreatePropertyAnimatorForTransition:v4];
+    v8 = [(_UINavigationParallaxTransition *)self _animateOrCreatePropertyAnimatorForTransition:transitionCopy];
   }
 
   else
@@ -284,10 +284,10 @@ LABEL_16:
   return v8;
 }
 
-- (id)_animateOrCreatePropertyAnimatorForTransition:(id)a3
+- (id)_animateOrCreatePropertyAnimatorForTransition:(id)transition
 {
-  v4 = a3;
-  v5 = v4;
+  transitionCopy = transition;
+  v5 = transitionCopy;
   propertyAnimator = self->_propertyAnimator;
   if (propertyAnimator)
   {
@@ -296,30 +296,30 @@ LABEL_16:
 
   else
   {
-    v87 = v4;
-    v8 = v4;
+    v87 = transitionCopy;
+    v8 = transitionCopy;
     [(_UINavigationParallaxTransition *)self setTransitionContext:v8];
     v9 = [(UIViewControllerContextTransitioning *)self->_transitionContext viewControllerForKey:@"UITransitionContextFromViewController"];
     v10 = [(UIViewControllerContextTransitioning *)self->_transitionContext viewControllerForKey:@"UITransitionContextToViewController"];
     v88 = v8;
-    v11 = [v8 containerView];
-    v12 = [v11 traitCollection];
-    v13 = [UIView _fluidParallaxTransitionsEnabledWithTraitCollection:v12];
+    containerView = [v8 containerView];
+    traitCollection = [containerView traitCollection];
+    v13 = [UIView _fluidParallaxTransitionsEnabledWithTraitCollection:traitCollection];
 
     if (v13)
     {
-      v14 = [(_UINavigationParallaxTransition *)self preemptionHandoffData];
-      v15 = [v14 handoffDataForViewController:v9];
+      preemptionHandoffData = [(_UINavigationParallaxTransition *)self preemptionHandoffData];
+      v15 = [preemptionHandoffData handoffDataForViewController:v9];
 
-      v16 = [(_UINavigationParallaxTransition *)self preemptionHandoffData];
-      v17 = [v16 handoffDataForViewController:v10];
+      preemptionHandoffData2 = [(_UINavigationParallaxTransition *)self preemptionHandoffData];
+      v17 = [preemptionHandoffData2 handoffDataForViewController:v10];
 
       v98 = v15;
-      v18 = [v15 containerView];
-      v19 = v18;
-      if (v18)
+      containerView2 = [v15 containerView];
+      v19 = containerView2;
+      if (containerView2)
       {
-        v20 = v18;
+        v20 = containerView2;
       }
 
       else
@@ -329,11 +329,11 @@ LABEL_16:
 
       p_super = &v20->super;
 
-      v26 = [v17 containerView];
-      v27 = v26;
-      if (v26)
+      containerView3 = [v17 containerView];
+      v27 = containerView3;
+      if (containerView3)
       {
-        v28 = v26;
+        v28 = containerView3;
       }
 
       else
@@ -356,9 +356,9 @@ LABEL_16:
       self->_containerToView = v29;
       v34 = v29;
 
-      v94 = [(UIView *)v32 contentView];
+      contentView = [(UIView *)v32 contentView];
 
-      v92 = [(UIView *)v34 contentView];
+      contentView2 = [(UIView *)v34 contentView];
     }
 
     else
@@ -371,8 +371,8 @@ LABEL_16:
       v24 = self->_containerToView;
       self->_containerToView = v23;
 
-      v94 = self->_containerFromView;
-      v92 = self->_containerToView;
+      contentView = self->_containerFromView;
+      contentView2 = self->_containerToView;
       v17 = 0;
       v98 = 0;
     }
@@ -381,29 +381,29 @@ LABEL_16:
     v36 = v35;
     if (v35)
     {
-      v37 = v35;
+      view = v35;
     }
 
     else
     {
-      v37 = [v10 view];
+      view = [v10 view];
     }
 
-    v90 = v37;
+    v90 = view;
 
     v38 = [(UIViewControllerContextTransitioning *)self->_transitionContext viewForKey:@"UITransitionContextFromView"];
     v39 = v38;
     if (v38)
     {
-      v40 = v38;
+      view2 = v38;
     }
 
     else
     {
-      v40 = [v9 view];
+      view2 = [v9 view];
     }
 
-    v41 = v40;
+    v41 = view2;
     v96 = v17;
 
     v189[0] = 0;
@@ -418,7 +418,7 @@ LABEL_16:
     v187[3] = __Block_byref_object_copy__62;
     v187[4] = __Block_byref_object_dispose__62;
     v188 = 0;
-    v42 = [(UIViewControllerContextTransitioning *)self->_transitionContext containerView];
+    containerView4 = [(UIViewControllerContextTransitioning *)self->_transitionContext containerView];
     v184[0] = 0;
     v184[1] = v184;
     v184[2] = 0x4010000000;
@@ -488,7 +488,7 @@ LABEL_16:
     v158[2] = 0x2020000000;
     v158[3] = 0;
     v43 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
-    v44 = [(_UINavigationParallaxTransition *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(_UINavigationParallaxTransition *)self _shouldReverseLayoutDirection];
     [(UIView *)self->_containerToView setBackgroundColor:0];
     [(UIView *)self->_containerFromView setBackgroundColor:0];
     v128[0] = MEMORY[0x1E69E9820];
@@ -499,7 +499,7 @@ LABEL_16:
     v129 = v45;
     v46 = v10;
     v130 = v46;
-    v131 = self;
+    selfCopy = self;
     v139 = v165;
     v47 = v41;
     v132 = v47;
@@ -507,10 +507,10 @@ LABEL_16:
     v48 = v90;
     v133 = v48;
     v141 = v178;
-    v49 = v42;
+    v49 = containerView4;
     v134 = v49;
     v142 = v181;
-    v154 = v44;
+    v154 = _shouldReverseLayoutDirection;
     v143 = v168;
     v144 = v175;
     v145 = v184;
@@ -524,18 +524,18 @@ LABEL_16:
     v149 = v158;
     v150 = v189;
     v151 = v187;
-    v93 = v92;
+    v93 = contentView2;
     v137 = v93;
     v155 = 0;
-    v95 = v94;
+    v95 = contentView;
     v138 = v95;
     v152 = v172;
     v153 = v169;
     v156 = v13;
     v157 = v43;
-    v50 = [v49 _window];
-    v51 = [v50 windowScene];
-    [UIView _performBlockDelayingTriggeringResponderEvents:v128 forScene:v51];
+    _window = [v49 _window];
+    windowScene = [_window windowScene];
+    [UIView _performBlockDelayingTriggeringResponderEvents:v128 forScene:windowScene];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -566,44 +566,44 @@ LABEL_16:
     v118 = v86;
     v56 = v49;
     v119 = v56;
-    v120 = self;
+    selfCopy2 = self;
     v57 = _Block_copy(v113);
     if ([v54 isInteractive])
     {
-      v58 = 3;
+      _completionCurve = 3;
     }
 
     else
     {
-      v58 = [v54 _completionCurve];
+      _completionCurve = [v54 _completionCurve];
     }
 
-    v59 = [v54 containerView];
-    v60 = [v59 traitCollection];
-    v61 = [(_UINavigationParallaxTransition *)self _shouldUseInterruptibleAnimatorWithTraitCollection:v60];
+    containerView5 = [v54 containerView];
+    traitCollection2 = [containerView5 traitCollection];
+    v61 = [(_UINavigationParallaxTransition *)self _shouldUseInterruptibleAnimatorWithTraitCollection:traitCollection2];
 
     if (v61)
     {
-      v62 = [v54 containerView];
-      v63 = [v62 traitCollection];
-      v64 = [UIView _fluidParallaxTransitionsEnabledWithTraitCollection:v63];
+      containerView6 = [v54 containerView];
+      traitCollection3 = [containerView6 traitCollection];
+      v64 = [UIView _fluidParallaxTransitionsEnabledWithTraitCollection:traitCollection3];
 
       if (v64)
       {
         if ([(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData isPush]&& self->_operation == 2)
         {
-          v65 = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData progressValue];
+          progressValue = [(_UIViewControllerAnimatedTransitionHandoffData *)self->_preemptionHandoffData progressValue];
           v66 = 1;
         }
 
         else
         {
-          v65 = 0;
+          progressValue = 0;
           v66 = 0;
         }
 
         [(_UINavigationParallaxTransition *)self transitionDuration:v54];
-        v77 = [UIView _makeHybridPropertyAnimatorWithDuration:v65 progressValue:v66 progressValueReversed:1048616 progressValueUpdateReason:0 springAnimationBehavior:?];
+        v77 = [UIView _makeHybridPropertyAnimatorWithDuration:progressValue progressValue:v66 progressValueReversed:1048616 progressValueUpdateReason:0 springAnimationBehavior:?];
         v112[0] = MEMORY[0x1E69E9820];
         v112[1] = 3221225472;
         v112[2] = __81___UINavigationParallaxTransition__animateOrCreatePropertyAnimatorForTransition___block_invoke_7;
@@ -624,8 +624,8 @@ LABEL_16:
         v79 = +[UIColor clearColor];
         [(UIView *)v78 setBackgroundColor:v79];
 
-        v80 = [v54 containerView];
-        [v80 insertSubview:v78 atIndex:0];
+        containerView7 = [v54 containerView];
+        [containerView7 insertSubview:v78 atIndex:0];
 
         v110[0] = MEMORY[0x1E69E9820];
         v110[1] = 3221225472;
@@ -651,7 +651,7 @@ LABEL_16:
       {
         v73 = [UIViewPropertyAnimator alloc];
         [(_UINavigationParallaxTransition *)self transitionDuration:v54];
-        v74 = [(UIViewPropertyAnimator *)v73 initWithDuration:v58 curve:0 animations:?];
+        v74 = [(UIViewPropertyAnimator *)v73 initWithDuration:_completionCurve curve:0 animations:?];
         -[UIViewPropertyAnimator setUserInteractionEnabled:](v74, "setUserInteractionEnabled:", [v54 _allowUserInteraction]);
         [(UIViewPropertyAnimator *)v74 setScrubsLinearly:0];
         [(UIViewPropertyAnimator *)v74 _setShouldLayoutSubviews:0];
@@ -673,12 +673,12 @@ LABEL_16:
     {
       if ([v54 _allowUserInteraction])
       {
-        v67 = (v58 << 16) | 2;
+        v67 = (_completionCurve << 16) | 2;
       }
 
       else
       {
-        v67 = v58 << 16;
+        v67 = _completionCurve << 16;
       }
 
       if (+[UIViewPropertyAnimator _canEnableTrackingAnimationsWithAnimators])
@@ -758,109 +758,109 @@ LABEL_16:
   return v7;
 }
 
-- (void)_animationWillEnd:(id)a3 didComplete:(BOOL)a4
+- (void)_animationWillEnd:(id)end didComplete:(BOOL)complete
 {
   propertyAnimator = self->_propertyAnimator;
   self->_propertyAnimator = 0;
 }
 
-- (id)shadowContainerForKeyboardTransition:(id)a3
+- (id)shadowContainerForKeyboardTransition:(id)transition
 {
   if (self->_operation == 2)
   {
-    [a3 toKeyboard];
+    [transition toKeyboard];
   }
 
   else
   {
-    [a3 fromKeyboard];
+    [transition fromKeyboard];
   }
   v3 = ;
-  v4 = [v3 superview];
+  superview = [v3 superview];
 
-  return v4;
+  return superview;
 }
 
-- (void)resizeShadow:(id)a3
+- (void)resizeShadow:(id)shadow
 {
-  v13 = a3;
-  [v13 frame];
+  shadowCopy = shadow;
+  [shadowCopy frame];
   v5 = v4;
-  v6 = [v13 superview];
-  [v6 frame];
+  superview = [shadowCopy superview];
+  [superview frame];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(_UINavigationParallaxTransition *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(_UINavigationParallaxTransition *)self _shouldReverseLayoutDirection];
   v12 = v8 - v5;
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v12 = 0.0;
   }
 
-  [v13 setFrame:{v12, 0.0, v5, v10}];
+  [shadowCopy setFrame:{v12, 0.0, v5, v10}];
 }
 
-- (void)prepareToAnimateKeyboard:(id)a3
+- (void)prepareToAnimateKeyboard:(id)keyboard
 {
-  v98 = a3;
-  [v98 fromKeyboardFrame];
+  keyboardCopy = keyboard;
+  [keyboardCopy fromKeyboardFrame];
   v5 = v4;
   v7 = v6;
   v96 = v9;
   v97 = v8;
-  [v98 toKeyboardFrame];
+  [keyboardCopy toKeyboardFrame];
   v11 = v10;
   v94 = v13;
   v95 = v12;
   v15 = v14;
-  v16 = [(_UINavigationParallaxTransition *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(_UINavigationParallaxTransition *)self _shouldReverseLayoutDirection];
   v17 = -v15;
-  if (v16 == (self->_operation == 2))
+  if (_shouldReverseLayoutDirection == (self->_operation == 2))
   {
     v17 = v15;
   }
 
   v18 = v11 + v17;
   v19 = [UIView alloc];
-  v20 = [v98 fromKeyboard];
-  [v20 frame];
+  fromKeyboard = [keyboardCopy fromKeyboard];
+  [fromKeyboard frame];
   v21 = [(UIView *)v19 initWithFrame:?];
 
-  v22 = [v98 fromKeyboard];
-  v23 = [v22 superview];
-  [v23 addSubview:v21];
+  fromKeyboard2 = [keyboardCopy fromKeyboard];
+  superview = [fromKeyboard2 superview];
+  [superview addSubview:v21];
 
-  v24 = [v98 fromKeyboard];
-  [(UIView *)v21 addSubview:v24];
+  fromKeyboard3 = [keyboardCopy fromKeyboard];
+  [(UIView *)v21 addSubview:fromKeyboard3];
 
   v25 = *MEMORY[0x1E695EFF8];
   v26 = *(MEMORY[0x1E695EFF8] + 8);
-  v27 = [v98 fromKeyboard];
-  [v27 frame];
+  fromKeyboard4 = [keyboardCopy fromKeyboard];
+  [fromKeyboard4 frame];
   v29 = v28;
   v31 = v30;
-  v32 = [v98 fromKeyboard];
-  [v32 setFrame:{v25, v26, v29, v31}];
+  fromKeyboard5 = [keyboardCopy fromKeyboard];
+  [fromKeyboard5 setFrame:{v25, v26, v29, v31}];
 
   v33 = [UIView alloc];
-  v34 = [v98 toKeyboard];
-  [v34 frame];
+  toKeyboard = [keyboardCopy toKeyboard];
+  [toKeyboard frame];
   v35 = [(UIView *)v33 initWithFrame:?];
 
-  v36 = [v98 toKeyboard];
-  v37 = [v36 superview];
-  [v37 addSubview:v35];
+  toKeyboard2 = [keyboardCopy toKeyboard];
+  superview2 = [toKeyboard2 superview];
+  [superview2 addSubview:v35];
 
-  v38 = [v98 toKeyboard];
-  [(UIView *)v35 addSubview:v38];
+  toKeyboard3 = [keyboardCopy toKeyboard];
+  [(UIView *)v35 addSubview:toKeyboard3];
 
-  v39 = [v98 toKeyboard];
-  [v39 frame];
+  toKeyboard4 = [keyboardCopy toKeyboard];
+  [toKeyboard4 frame];
   v41 = v40;
   v43 = v42;
-  v44 = [v98 toKeyboard];
-  [v44 setFrame:{v25, v26, v41, v43}];
+  toKeyboard5 = [keyboardCopy toKeyboard];
+  [toKeyboard5 setFrame:{v25, v26, v41, v43}];
 
   [(UIView *)v35 bounds];
   v46 = v45;
@@ -868,16 +868,16 @@ LABEL_16:
   v50 = v49;
   v52 = v51;
   operation = self->_operation;
-  v54 = [v98 fromKeyboard];
-  v55 = v54;
+  fromKeyboard6 = [keyboardCopy fromKeyboard];
+  v55 = fromKeyboard6;
   if (operation == 2)
   {
-    if (!v54 || ([v98 toKeyboard], v56 = objc_claimAutoreleasedReturnValue(), v56, v55, v56))
+    if (!fromKeyboard6 || ([keyboardCopy toKeyboard], v56 = objc_claimAutoreleasedReturnValue(), v56, v55, v56))
     {
-      v57 = [v98 toKeyboard];
+      toKeyboard6 = [keyboardCopy toKeyboard];
 
       v93 = 1.0;
-      if (v57)
+      if (toKeyboard6)
       {
         [(_UINavigationParallaxTransition *)self parallaxOffset];
         v92 = v15;
@@ -899,7 +899,7 @@ LABEL_16:
         v50 = v59;
         v46 = v58;
         v15 = v92;
-        if (v16)
+        if (_shouldReverseLayoutDirection)
         {
           v46 = v46 + v68;
         }
@@ -918,7 +918,7 @@ LABEL_16:
           v15 = v71;
         }
 
-        if (v70 && v16)
+        if (v70 && _shouldReverseLayoutDirection)
         {
           v50 = v72;
         }
@@ -943,22 +943,22 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v73 = [v98 fromKeyboard];
-  if (v73)
+  fromKeyboard7 = [keyboardCopy fromKeyboard];
+  if (fromKeyboard7)
   {
 
     goto LABEL_19;
   }
 
-  v83 = [v98 toKeyboard];
+  toKeyboard7 = [keyboardCopy toKeyboard];
 
   v93 = 0.0;
-  if (v83)
+  if (toKeyboard7)
   {
     [(_UINavigationParallaxTransition *)self gapBetweenViews];
     v85 = v46 + v84;
     v86 = v18 + v84;
-    if (v16)
+    if (_shouldReverseLayoutDirection)
     {
       v46 = v85;
     }
@@ -970,35 +970,35 @@ LABEL_19:
   }
 
 LABEL_22:
-  v75 = [v98 mainContext];
-  v76 = [v75 containerView];
-  v77 = [v76 window];
+  mainContext = [keyboardCopy mainContext];
+  containerView = [mainContext containerView];
+  window = [containerView window];
 
-  if (![v77 isTrackingKeyboard])
+  if (![window isTrackingKeyboard])
   {
     goto LABEL_37;
   }
 
-  v78 = [v98 fromKeyboard];
-  if (v78)
+  fromKeyboard8 = [keyboardCopy fromKeyboard];
+  if (fromKeyboard8)
   {
-    v79 = v78;
-    v80 = [v98 toKeyboard];
+    v79 = fromKeyboard8;
+    toKeyboard8 = [keyboardCopy toKeyboard];
 
-    if (!v80)
+    if (!toKeyboard8)
     {
       v81 = self->_operation;
       if (v81 == 1)
       {
         v82 = 4;
 LABEL_35:
-        [v77 moveKeyboardLayoutGuideOverEdge:v82 layoutViews:1];
+        [window moveKeyboardLayoutGuideOverEdge:v82 layoutViews:1];
         goto LABEL_36;
       }
 
       if (v81 == 2)
       {
-        if (v16)
+        if (_shouldReverseLayoutDirection)
         {
           v82 = 2;
         }
@@ -1014,76 +1014,76 @@ LABEL_35:
   }
 
 LABEL_36:
-  v87 = [v77 _obtainKeyboardLayoutGuideTransitionAssertionForReason:@"UINavigationController parallax transition"];
+  v87 = [window _obtainKeyboardLayoutGuideTransitionAssertionForReason:@"UINavigationController parallax transition"];
   keyboardLayoutGuideTransitionAssertion = self->_keyboardLayoutGuideTransitionAssertion;
   self->_keyboardLayoutGuideTransitionAssertion = v87;
 
 LABEL_37:
   [(UIView *)v21 setFrame:v5, v7, v97, v96];
   [(UIView *)v35 setFrame:v18, v95, v15, v94];
-  if (v16)
+  if (_shouldReverseLayoutDirection)
   {
     [(UIView *)v35 setBounds:v46, v48, v50, v52];
   }
 
   if (!self->_transitionStyle)
   {
-    v89 = [(_UINavigationParallaxTransition *)self shadowContainerForKeyboardTransition:v98];
+    v89 = [(_UINavigationParallaxTransition *)self shadowContainerForKeyboardTransition:keyboardCopy];
     if (v89)
     {
       v90 = [[_UIVerticalEdgeShadowView alloc] initWithWidth:2 edge:9.0];
       [(UIView *)v90 setOpaque:0];
       [(UIView *)v90 setAlpha:v93];
-      v91 = [v89 subviews];
-      [v89 insertSubview:v90 atIndex:{objc_msgSend(v91, "count")}];
+      subviews = [v89 subviews];
+      [v89 insertSubview:v90 atIndex:{objc_msgSend(subviews, "count")}];
 
       [(_UINavigationParallaxTransition *)self resizeShadow:v90];
     }
   }
 }
 
-- (void)animateKeyboard:(id)a3
+- (void)animateKeyboard:(id)keyboard
 {
-  v86 = a3;
+  keyboardCopy = keyboard;
   v4 = [(_UINavigationParallaxTransition *)self shadowContainerForKeyboardTransition:?];
-  v5 = [v4 subviews];
-  v6 = [v5 lastObject];
+  subviews = [v4 subviews];
+  lastObject = [subviews lastObject];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v6 = 0;
+    lastObject = 0;
   }
 
-  v7 = [(_UINavigationParallaxTransition *)self _shouldReverseLayoutDirection];
-  [v86 fromKeyboardFrame];
+  _shouldReverseLayoutDirection = [(_UINavigationParallaxTransition *)self _shouldReverseLayoutDirection];
+  [keyboardCopy fromKeyboardFrame];
   v83 = v11;
   v84 = v10;
   v12 = v9;
   v13 = -v9;
-  if (v7 != (self->_operation == 2))
+  if (_shouldReverseLayoutDirection != (self->_operation == 2))
   {
     v13 = v9;
   }
 
   v14 = v8 + v13;
-  v15 = [v86 fromKeyboard];
-  v16 = [v15 superview];
-  [v16 bounds];
+  fromKeyboard = [keyboardCopy fromKeyboard];
+  superview = [fromKeyboard superview];
+  [superview bounds];
   v85 = v17;
   v78 = v19;
   v79 = v18;
   v82 = v20;
 
-  [v86 toKeyboardFrame];
+  [keyboardCopy toKeyboardFrame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v86 toKeyboard];
-  v30 = [v29 superview];
-  [v30 bounds];
+  toKeyboard = [keyboardCopy toKeyboard];
+  superview2 = [toKeyboard superview];
+  [superview2 bounds];
   v80 = v31;
   v81 = v32;
   v34 = v33;
@@ -1091,21 +1091,21 @@ LABEL_37:
 
   if (self->_operation == 2)
   {
-    [v6 setAlpha:0.0];
-    v37 = [v86 fromKeyboard];
-    if (v37 && (v38 = v37, [v86 toKeyboard], v39 = objc_claimAutoreleasedReturnValue(), v39, v38, !v39))
+    [lastObject setAlpha:0.0];
+    fromKeyboard2 = [keyboardCopy fromKeyboard];
+    if (fromKeyboard2 && (v38 = fromKeyboard2, [keyboardCopy toKeyboard], v39 = objc_claimAutoreleasedReturnValue(), v39, v38, !v39))
     {
       [(_UINavigationParallaxTransition *)self gapBetweenViews];
       v64 = v85;
       v66 = v85 + v65;
       v67 = v14 + v65;
-      if (v7)
+      if (_shouldReverseLayoutDirection)
       {
         v64 = v66;
       }
 
       v85 = v64;
-      if (!v7)
+      if (!_shouldReverseLayoutDirection)
       {
         v14 = v67;
       }
@@ -1113,9 +1113,9 @@ LABEL_37:
 
     else
     {
-      v40 = [v86 toKeyboard];
+      toKeyboard2 = [keyboardCopy toKeyboard];
 
-      if (v40 && v7)
+      if (toKeyboard2 && _shouldReverseLayoutDirection)
       {
         [(_UINavigationParallaxTransition *)self parallaxOffset];
         v76 = v36;
@@ -1139,19 +1139,19 @@ LABEL_37:
     }
 
 LABEL_28:
-    v62 = v86;
+    v62 = keyboardCopy;
     goto LABEL_29;
   }
 
-  [v6 setAlpha:1.0];
-  v50 = [v86 fromKeyboard];
+  [lastObject setAlpha:1.0];
+  fromKeyboard3 = [keyboardCopy fromKeyboard];
 
-  if (!v50)
+  if (!fromKeyboard3)
   {
-    v63 = [v86 fromKeyboard];
-    if (!v63)
+    fromKeyboard4 = [keyboardCopy fromKeyboard];
+    if (!fromKeyboard4)
     {
-      [v86 toKeyboard];
+      [keyboardCopy toKeyboard];
     }
 
     goto LABEL_28;
@@ -1167,13 +1167,13 @@ LABEL_28:
   [(_UINavigationParallaxTransition *)self gapBetweenViews];
   v58 = v56 - v57;
   v59 = v85;
-  if (v7)
+  if (_shouldReverseLayoutDirection)
   {
     v59 = v85 + v58;
   }
 
   v85 = v59;
-  if (!v7)
+  if (!_shouldReverseLayoutDirection)
   {
     v14 = v14 + v58;
   }
@@ -1183,7 +1183,7 @@ LABEL_28:
     v12 = v12 - v58;
     v60 = v82;
     v61 = v82 - v58;
-    if (v7)
+    if (_shouldReverseLayoutDirection)
     {
       v60 = v61;
     }
@@ -1191,45 +1191,45 @@ LABEL_28:
     v82 = v60;
   }
 
-  v62 = v86;
+  v62 = keyboardCopy;
   v28 = v54;
   v26 = v53;
   v24 = v52;
   v34 = v51;
   v36 = v77;
 LABEL_29:
-  v68 = [v62 fromKeyboard];
-  v69 = [v68 superview];
-  [v69 setFrame:{v14, v84, v12, v83}];
+  fromKeyboard5 = [v62 fromKeyboard];
+  superview3 = [fromKeyboard5 superview];
+  [superview3 setFrame:{v14, v84, v12, v83}];
 
-  if (v7)
+  if (_shouldReverseLayoutDirection)
   {
-    v70 = [v86 fromKeyboard];
-    v71 = [v70 superview];
-    [v71 setBounds:{v85, v79, v82, v78}];
+    fromKeyboard6 = [keyboardCopy fromKeyboard];
+    superview4 = [fromKeyboard6 superview];
+    [superview4 setBounds:{v85, v79, v82, v78}];
 
-    v72 = [v86 toKeyboard];
-    v73 = [v72 superview];
-    [v73 setFrame:{v22, v24, v26, v28}];
+    toKeyboard3 = [keyboardCopy toKeyboard];
+    superview5 = [toKeyboard3 superview];
+    [superview5 setFrame:{v22, v24, v26, v28}];
 
-    v74 = [v86 toKeyboard];
-    v75 = [v74 superview];
-    [v75 setBounds:{v80, v34, v81, v36}];
+    toKeyboard4 = [keyboardCopy toKeyboard];
+    superview6 = [toKeyboard4 superview];
+    [superview6 setBounds:{v80, v34, v81, v36}];
   }
 
   else
   {
-    v74 = [v86 toKeyboard];
-    v75 = [v74 superview];
-    [v75 setFrame:{v22, v24, v26, v28}];
+    toKeyboard4 = [keyboardCopy toKeyboard];
+    superview6 = [toKeyboard4 superview];
+    [superview6 setFrame:{v22, v24, v26, v28}];
   }
 
-  [(_UINavigationParallaxTransition *)self resizeShadow:v6];
+  [(_UINavigationParallaxTransition *)self resizeShadow:lastObject];
 }
 
-- (void)completeKeyboard:(id)a3
+- (void)completeKeyboard:(id)keyboard
 {
-  v10 = a3;
+  keyboardCopy = keyboard;
   keyboardLayoutGuideTransitionAssertion = self->_keyboardLayoutGuideTransitionAssertion;
   if (keyboardLayoutGuideTransitionAssertion)
   {
@@ -1238,13 +1238,13 @@ LABEL_29:
     self->_keyboardLayoutGuideTransitionAssertion = 0;
   }
 
-  v6 = [v10 fromKeyboard];
-  v7 = [v6 superview];
-  [v7 removeFromSuperview];
+  fromKeyboard = [keyboardCopy fromKeyboard];
+  superview = [fromKeyboard superview];
+  [superview removeFromSuperview];
 
-  v8 = [v10 toKeyboard];
-  v9 = [v8 superview];
-  [v9 removeFromSuperview];
+  toKeyboard = [keyboardCopy toKeyboard];
+  superview2 = [toKeyboard superview];
+  [superview2 removeFromSuperview];
 }
 
 - (void)_stopTransitionImmediately
@@ -1262,20 +1262,20 @@ LABEL_29:
   else
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v6 = [(_UINavigationParallaxTransition *)self interactionController];
-    v7 = v6;
-    if (v6)
+    interactionController = [(_UINavigationParallaxTransition *)self interactionController];
+    v7 = interactionController;
+    if (interactionController)
     {
-      v8 = [v6 _parent];
+      _parent = [interactionController _parent];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v8 navigationBar];
-        v10 = [v9 _animationIds];
+        navigationBar = [_parent navigationBar];
+        _animationIds = [navigationBar _animationIds];
 
-        if (v10)
+        if (_animationIds)
         {
-          [v5 addObjectsFromArray:v10];
+          [v5 addObjectsFromArray:_animationIds];
         }
       }
 
@@ -1341,20 +1341,20 @@ LABEL_29:
   }
 }
 
-- (BOOL)shouldPreemptWithContext:(id)a3
+- (BOOL)shouldPreemptWithContext:(id)context
 {
-  v3 = [a3 containerView];
-  v4 = [v3 traitCollection];
-  v5 = [UIView _fluidParallaxTransitionsEnabledWithTraitCollection:v4];
+  containerView = [context containerView];
+  traitCollection = [containerView traitCollection];
+  v5 = [UIView _fluidParallaxTransitionsEnabledWithTraitCollection:traitCollection];
 
   return v5;
 }
 
-- (id)preemptWithContext:(id)a3
+- (id)preemptWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:@"UITransitionContextFromViewController"];
-  v6 = [v4 viewControllerForKey:@"UITransitionContextToViewController"];
+  contextCopy = context;
+  v5 = [contextCopy viewControllerForKey:@"UITransitionContextFromViewController"];
+  v6 = [contextCopy viewControllerForKey:@"UITransitionContextToViewController"];
 
   operation = self->_operation;
   [(_UIParallaxDimmingView *)self->_contentDimmingView presentationDimmingAmount];
@@ -1381,9 +1381,9 @@ LABEL_29:
   v11 = [_UIViewControllerAnimatedTransitionViewControllerHandoffData alloc];
   containerFromView = self->_containerFromView;
   v13 = [(UIView *)containerFromView snapshotViewAfterScreenUpdates:0];
-  v14 = [(UIView *)self->_containerFromView layer];
-  v15 = [v14 presentationLayer];
-  [v15 frame];
+  layer = [(UIView *)self->_containerFromView layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -1400,9 +1400,9 @@ LABEL_29:
 
   v31 = [_UIViewControllerAnimatedTransitionViewControllerHandoffData alloc];
   containerToView = self->_containerToView;
-  v33 = [(UIView *)containerToView layer];
-  v34 = [v33 presentationLayer];
-  [v34 frame];
+  layer2 = [(UIView *)containerToView layer];
+  presentationLayer2 = [layer2 presentationLayer];
+  [presentationLayer2 frame];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -1410,15 +1410,15 @@ LABEL_29:
   [(UIView *)self->_containerToView frame];
   v47 = [(_UIViewControllerAnimatedTransitionViewControllerHandoffData *)v31 initWithViewController:v6 containerView:containerToView snapshot:0 frame:v36 targetFrame:v38 dimmingAmount:v40 targetDimmingAmount:v42, v43, v44, v45, v46, *&v9, 0];
 
-  v48 = 0;
+  progressValue = 0;
   if (objc_opt_respondsToSelector())
   {
-    v48 = [(UIViewImplicitlyAnimating *)self->_propertyAnimator progressValue];
+    progressValue = [(UIViewImplicitlyAnimating *)self->_propertyAnimator progressValue];
   }
 
   v49 = self->_captureBackdropView;
   [(_UINavigationParallaxTransition *)self _stopTransitionImmediately];
-  v50 = [[_UIViewControllerAnimatedTransitionHandoffData alloc] initWithFromViewControllerHandoffData:v30 toViewControllerHandoffData:v47 progressValue:v48 captureBackdropView:v49 isPush:self->_operation == 1];
+  v50 = [[_UIViewControllerAnimatedTransitionHandoffData alloc] initWithFromViewControllerHandoffData:v30 toViewControllerHandoffData:v47 progressValue:progressValue captureBackdropView:v49 isPush:self->_operation == 1];
 
   return v50;
 }

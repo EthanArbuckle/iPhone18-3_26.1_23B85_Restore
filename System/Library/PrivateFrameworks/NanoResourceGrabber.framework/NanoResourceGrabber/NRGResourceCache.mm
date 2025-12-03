@@ -1,30 +1,30 @@
 @interface NRGResourceCache
-+ (id)cacheDirPathForAppBundleID:(id)a3 withPairedDeviceStorePath:(id)a4;
++ (id)cacheDirPathForAppBundleID:(id)d withPairedDeviceStorePath:(id)path;
 + (id)cacheDirPathForPairedDevice;
-+ (id)cacheDirPathForPairedDeviceStorePath:(id)a3;
-+ (id)iconCacheDirPathForAppBundleID:(id)a3 withPairedDeviceStorePath:(id)a4;
-+ (void)createCachePathIfNecessaryWithPairedDeviceStorePath:(id)a3;
-+ (void)invalidateBundleID:(id)a3 withPairedDeviceStorePath:(id)a4;
-+ (void)invalidatePairedDevice:(id)a3;
++ (id)cacheDirPathForPairedDeviceStorePath:(id)path;
++ (id)iconCacheDirPathForAppBundleID:(id)d withPairedDeviceStorePath:(id)path;
++ (void)createCachePathIfNecessaryWithPairedDeviceStorePath:(id)path;
++ (void)invalidateBundleID:(id)d withPairedDeviceStorePath:(id)path;
++ (void)invalidatePairedDevice:(id)device;
 @end
 
 @implementation NRGResourceCache
 
-+ (void)invalidateBundleID:(id)a3 withPairedDeviceStorePath:(id)a4
++ (void)invalidateBundleID:(id)d withPairedDeviceStorePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 cacheDirPathForAppBundleID:v6 withPairedDeviceStorePath:v7];
+  dCopy = d;
+  pathCopy = path;
+  v8 = [self cacheDirPathForAppBundleID:dCopy withPairedDeviceStorePath:pathCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v9 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:v8];
 
     if (v10)
     {
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v15 = 0;
-      v12 = [v11 removeItemAtPath:v8 error:&v15];
+      v12 = [defaultManager2 removeItemAtPath:v8 error:&v15];
       v13 = v15;
 
       if ((v12 & 1) == 0)
@@ -53,27 +53,27 @@
   }
 }
 
-+ (void)invalidatePairedDevice:(id)a3
++ (void)invalidatePairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = [a1 cacheDirPathForPairedDeviceStorePath:v4];
+  deviceCopy = device;
+  v5 = [self cacheDirPathForPairedDeviceStorePath:deviceCopy];
   if (!v5)
   {
     v6 = nrg_daemon_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(NRGResourceCache *)v4 invalidatePairedDevice:v6];
+      [(NRGResourceCache *)deviceCopy invalidatePairedDevice:v6];
     }
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v5];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v13 = 0;
-    v10 = [v9 removeItemAtPath:v5 error:&v13];
+    v10 = [defaultManager2 removeItemAtPath:v5 error:&v13];
     v11 = v13;
 
     if ((v10 & 1) == 0)
@@ -100,13 +100,13 @@
   return v3;
 }
 
-+ (id)cacheDirPathForPairedDeviceStorePath:(id)a3
++ (id)cacheDirPathForPairedDeviceStorePath:(id)path
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pathCopy = path;
+  v4 = pathCopy;
+  if (pathCopy)
   {
-    v5 = [v3 stringByAppendingPathComponent:@"com.apple.private.nanoresourcegrabber"];
+    v5 = [pathCopy stringByAppendingPathComponent:@"com.apple.private.nanoresourcegrabber"];
     v6 = [v5 stringByAppendingPathComponent:@"received"];
   }
 
@@ -118,13 +118,13 @@
   return v6;
 }
 
-+ (id)cacheDirPathForAppBundleID:(id)a3 withPairedDeviceStorePath:(id)a4
++ (id)cacheDirPathForAppBundleID:(id)d withPairedDeviceStorePath:(id)path
 {
-  if (a3)
+  if (d)
   {
-    v6 = a3;
-    v7 = [a1 cacheDirPathForPairedDeviceStorePath:a4];
-    v8 = [v7 stringByAppendingPathComponent:v6];
+    dCopy = d;
+    v7 = [self cacheDirPathForPairedDeviceStorePath:path];
+    v8 = [v7 stringByAppendingPathComponent:dCopy];
   }
 
   else
@@ -135,18 +135,18 @@
   return v8;
 }
 
-+ (void)createCachePathIfNecessaryWithPairedDeviceStorePath:(id)a3
++ (void)createCachePathIfNecessaryWithPairedDeviceStorePath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [a1 cacheDirPathForPairedDeviceStorePath:a3];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v3 = [self cacheDirPathForPairedDeviceStorePath:path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v17 = 0;
-    v7 = [v6 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v17];
+    v7 = [defaultManager2 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v17];
     v8 = v17;
 
     if (v7)
@@ -190,9 +190,9 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)iconCacheDirPathForAppBundleID:(id)a3 withPairedDeviceStorePath:(id)a4
++ (id)iconCacheDirPathForAppBundleID:(id)d withPairedDeviceStorePath:(id)path
 {
-  v4 = [a1 cacheDirPathForAppBundleID:a3 withPairedDeviceStorePath:a4];
+  v4 = [self cacheDirPathForAppBundleID:d withPairedDeviceStorePath:path];
   v5 = v4;
   if (v4)
   {

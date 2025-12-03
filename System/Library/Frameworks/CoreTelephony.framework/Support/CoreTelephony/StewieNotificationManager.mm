@@ -1,18 +1,18 @@
 @interface StewieNotificationManager
-- (StewieNotificationManager)initWithQueue:(id)a3 localizationService:(shared_ptr<LocalizationInterface>)a4;
+- (StewieNotificationManager)initWithQueue:(id)queue localizationService:(shared_ptr<LocalizationInterface>)service;
 - (id).cxx_construct;
-- (void)dismissNotification:(id)a3;
-- (void)postNotification:(const void *)a3;
+- (void)dismissNotification:(id)notification;
+- (void)postNotification:(const void *)notification;
 - (void)registerActions;
-- (void)registerOfferCategory:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)registerOfferCategory:(id)category;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation StewieNotificationManager
 
-- (StewieNotificationManager)initWithQueue:(id)a3 localizationService:(shared_ptr<LocalizationInterface>)a4
+- (StewieNotificationManager)initWithQueue:(id)queue localizationService:(shared_ptr<LocalizationInterface>)service
 {
-  v5 = a3;
+  queueCopy = queue;
   v7.receiver = self;
   v7.super_class = StewieNotificationManager;
   if ([(StewieNotificationManager *)&v7 init])
@@ -37,9 +37,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)registerOfferCategory:(id)a3
+- (void)registerOfferCategory:(id)category
 {
-  v21 = a3;
+  categoryCopy = category;
   v4 = sub_100032AC8(self->logger.__ptr_);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -67,13 +67,13 @@
   sub_100005978(buf);
   if (v9 && v10)
   {
-    v11 = [v21 mutableCopy];
+    v11 = [categoryCopy mutableCopy];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_10165320C;
     v22[3] = &unk_101F5D150;
     v23 = @"OffGridModeOfferAlert";
-    v24 = self;
+    selfCopy = self;
     v25 = @"OffGridModeOffer";
     v12 = [NSPredicate predicateWithBlock:v22];
     [v11 filterUsingPredicate:v12];
@@ -110,16 +110,16 @@
   }
 }
 
-- (void)postNotification:(const void *)a3
+- (void)postNotification:(const void *)notification
 {
   v5 = objc_opt_new();
   v6 = v5;
-  if (*a3)
+  if (*notification)
   {
     [v5 setTitle:?];
   }
 
-  if (*(a3 + 1))
+  if (*(notification + 1))
   {
     [v6 setBody:?];
   }
@@ -127,7 +127,7 @@
   v7 = [UNNotificationIcon iconForSystemImageNamed:@"satellite.wave.2.fill"];
   [v6 setIcon:v7];
 
-  if (*(a3 + 4))
+  if (*(notification + 4))
   {
     [v6 setCategoryIdentifier:?];
   }
@@ -138,9 +138,9 @@
   [v6 setShouldIgnoreDowntime:1];
   [v6 setShouldIgnoreDoNotDisturb:1];
   [v6 setShouldPreemptPresentedNotification:1];
-  [v6 setShouldDisplayActionsInline:*(a3 + 41)];
+  [v6 setShouldDisplayActionsInline:*(notification + 41)];
   [v6 setShouldBackgroundDefaultAction:1];
-  if (*(a3 + 40))
+  if (*(notification + 40))
   {
     v8 = 6;
   }
@@ -150,7 +150,7 @@
     v8 = 1;
   }
 
-  v9 = [UNNotificationRequest requestWithIdentifier:*(a3 + 3) content:v6 trigger:0 destinations:v8];
+  v9 = [UNNotificationRequest requestWithIdentifier:*(notification + 3) content:v6 trigger:0 destinations:v8];
   v10 = sub_100032AC8(self->logger.__ptr_);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -162,38 +162,38 @@
   [(UNUserNotificationCenter *)self->fUserNotificationCenter addNotificationRequest:v9 withCompletionHandler:&stru_101F5D170];
 }
 
-- (void)dismissNotification:(id)a3
+- (void)dismissNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100032AC8(self->logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I Dismissing notification: %@", buf, 0xCu);
   }
 
   fUserNotificationCenter = self->fUserNotificationCenter;
-  v8 = v4;
+  v8 = notificationCopy;
   v7 = [NSArray arrayWithObjects:&v8 count:1];
   [(UNUserNotificationCenter *)fUserNotificationCenter removeDeliveredNotificationsWithIdentifiers:v7];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = sub_100032AC8(self->logger.__ptr_);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v7;
+    v11 = responseCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I didReceiveNotificationResponse %@", &v10, 0xCu);
   }
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 

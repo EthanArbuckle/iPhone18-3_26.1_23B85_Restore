@@ -1,13 +1,13 @@
 @interface NUImageExportFormatPNG
 - (NUImageExportFormatPNG)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NUImageExportFormatPNG
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   if (result)
   {
     *(result + 8) = self->_preserveAlpha;

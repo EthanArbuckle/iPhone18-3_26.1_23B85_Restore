@@ -1,15 +1,15 @@
 @interface BBSectionIconVariant
-+ (id)variantWithFormat:(int64_t)a3 applicationIdentifier:(id)a4;
-+ (id)variantWithFormat:(int64_t)a3 dateComponentDetails:(id)a4;
-+ (id)variantWithFormat:(int64_t)a3 imageData:(id)a4;
-+ (id)variantWithFormat:(int64_t)a3 imageName:(id)a4 inBundle:(id)a5;
-+ (id)variantWithFormat:(int64_t)a3 imageName:(id)a4 inBundleAtPath:(id)a5;
-+ (id)variantWithFormat:(int64_t)a3 imagePath:(id)a4;
-+ (id)variantWithFormat:(int64_t)a3 systemImageName:(id)a4;
-+ (id)variantWithFormat:(int64_t)a3 uti:(id)a4;
-- (BBSectionIconVariant)initWithCoder:(id)a3;
-- (BBSectionIconVariant)initWithFormat:(int64_t)a3 imageInfo:(id)a4 imageInfoType:(int64_t)a5 bundlePath:(id)a6 precomposed:(BOOL)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)variantWithFormat:(int64_t)format applicationIdentifier:(id)identifier;
++ (id)variantWithFormat:(int64_t)format dateComponentDetails:(id)details;
++ (id)variantWithFormat:(int64_t)format imageData:(id)data;
++ (id)variantWithFormat:(int64_t)format imageName:(id)name inBundle:(id)bundle;
++ (id)variantWithFormat:(int64_t)format imageName:(id)name inBundleAtPath:(id)path;
++ (id)variantWithFormat:(int64_t)format imagePath:(id)path;
++ (id)variantWithFormat:(int64_t)format systemImageName:(id)name;
++ (id)variantWithFormat:(int64_t)format uti:(id)uti;
+- (BBSectionIconVariant)initWithCoder:(id)coder;
+- (BBSectionIconVariant)initWithFormat:(int64_t)format imageInfo:(id)info imageInfoType:(int64_t)type bundlePath:(id)path precomposed:(BOOL)precomposed;
+- (BOOL)isEqual:(id)equal;
 - (NSData)imageData;
 - (NSDictionary)dateComponentDetails;
 - (NSString)applicationIdentifier;
@@ -17,88 +17,88 @@
 - (NSString)imagePath;
 - (NSString)systemImageName;
 - (NSString)uti;
-- (id)_processImageInfo:(id)a3 imageInfoType:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_processImageInfo:(id)info imageInfoType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setImageInfo:(id)a3 ofType:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setImageInfo:(id)info ofType:(int64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBSectionIconVariant
 
 - (unint64_t)hash
 {
-  v3 = [(BBSectionIconVariant *)self format];
-  v4 = [self->_imageInfo hash] ^ v3 ^ self->_imageInfoType;
-  v5 = [(BBSectionIconVariant *)self bundlePath];
-  v6 = [v5 hash];
+  format = [(BBSectionIconVariant *)self format];
+  v4 = [self->_imageInfo hash] ^ format ^ self->_imageInfoType;
+  bundlePath = [(BBSectionIconVariant *)self bundlePath];
+  v6 = [bundlePath hash];
   v7 = v6 ^ [(BBSectionIconVariant *)self isPrecomposed];
 
   return v4 ^ v7;
 }
 
-+ (id)variantWithFormat:(int64_t)a3 imageData:(id)a4
++ (id)variantWithFormat:(int64_t)format imageData:(id)data
 {
-  v5 = a4;
-  v6 = [[BBSectionIconVariant alloc] initWithFormat:a3 imageInfo:v5 imageInfoType:1 bundlePath:0 precomposed:0];
+  dataCopy = data;
+  v6 = [[BBSectionIconVariant alloc] initWithFormat:format imageInfo:dataCopy imageInfoType:1 bundlePath:0 precomposed:0];
 
   return v6;
 }
 
-+ (id)variantWithFormat:(int64_t)a3 applicationIdentifier:(id)a4
++ (id)variantWithFormat:(int64_t)format applicationIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [[BBSectionIconVariant alloc] initWithFormat:a3 imageInfo:v5 imageInfoType:4 bundlePath:0 precomposed:0];
+  identifierCopy = identifier;
+  v6 = [[BBSectionIconVariant alloc] initWithFormat:format imageInfo:identifierCopy imageInfoType:4 bundlePath:0 precomposed:0];
 
   return v6;
 }
 
-+ (id)variantWithFormat:(int64_t)a3 imagePath:(id)a4
++ (id)variantWithFormat:(int64_t)format imagePath:(id)path
 {
-  v5 = a4;
-  v6 = [[BBSectionIconVariant alloc] initWithFormat:a3 imageInfo:v5 imageInfoType:2 bundlePath:0 precomposed:0];
+  pathCopy = path;
+  v6 = [[BBSectionIconVariant alloc] initWithFormat:format imageInfo:pathCopy imageInfoType:2 bundlePath:0 precomposed:0];
 
   return v6;
 }
 
-+ (id)variantWithFormat:(int64_t)a3 imageName:(id)a4 inBundle:(id)a5
++ (id)variantWithFormat:(int64_t)format imageName:(id)name inBundle:(id)bundle
 {
-  v8 = a4;
-  v9 = [a5 bundlePath];
-  v10 = [a1 variantWithFormat:a3 imageName:v8 inBundleAtPath:v9];
+  nameCopy = name;
+  bundlePath = [bundle bundlePath];
+  v10 = [self variantWithFormat:format imageName:nameCopy inBundleAtPath:bundlePath];
 
   return v10;
 }
 
-+ (id)variantWithFormat:(int64_t)a3 imageName:(id)a4 inBundleAtPath:(id)a5
++ (id)variantWithFormat:(int64_t)format imageName:(id)name inBundleAtPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[BBSectionIconVariant alloc] initWithFormat:a3 imageInfo:v8 imageInfoType:3 bundlePath:v7 precomposed:0];
+  pathCopy = path;
+  nameCopy = name;
+  v9 = [[BBSectionIconVariant alloc] initWithFormat:format imageInfo:nameCopy imageInfoType:3 bundlePath:pathCopy precomposed:0];
 
   return v9;
 }
 
-+ (id)variantWithFormat:(int64_t)a3 systemImageName:(id)a4
++ (id)variantWithFormat:(int64_t)format systemImageName:(id)name
 {
-  v5 = a4;
-  v6 = [[BBSectionIconVariant alloc] initWithFormat:a3 imageInfo:v5 imageInfoType:5 bundlePath:0 precomposed:0];
+  nameCopy = name;
+  v6 = [[BBSectionIconVariant alloc] initWithFormat:format imageInfo:nameCopy imageInfoType:5 bundlePath:0 precomposed:0];
 
   return v6;
 }
 
-+ (id)variantWithFormat:(int64_t)a3 uti:(id)a4
++ (id)variantWithFormat:(int64_t)format uti:(id)uti
 {
-  v5 = a4;
-  v6 = [[BBSectionIconVariant alloc] initWithFormat:a3 imageInfo:v5 imageInfoType:6 bundlePath:0 precomposed:0];
+  utiCopy = uti;
+  v6 = [[BBSectionIconVariant alloc] initWithFormat:format imageInfo:utiCopy imageInfoType:6 bundlePath:0 precomposed:0];
 
   return v6;
 }
 
-+ (id)variantWithFormat:(int64_t)a3 dateComponentDetails:(id)a4
++ (id)variantWithFormat:(int64_t)format dateComponentDetails:(id)details
 {
-  v5 = a4;
-  v6 = [[BBSectionIconVariant alloc] initWithFormat:a3 imageInfo:v5 imageInfoType:7 bundlePath:0 precomposed:0];
+  detailsCopy = details;
+  v6 = [[BBSectionIconVariant alloc] initWithFormat:format imageInfo:detailsCopy imageInfoType:7 bundlePath:0 precomposed:0];
 
   return v6;
 }
@@ -355,10 +355,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
@@ -368,16 +368,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BBSectionIconVariant *)self format];
-      if (v6 == [(BBSectionIconVariant *)v5 format]&& (imageInfo = self->_imageInfo, v8 = v5->_imageInfo, BSEqualObjects()) && self->_imageInfoType == v5->_imageInfoType)
+      v5 = equalCopy;
+      format = [(BBSectionIconVariant *)self format];
+      if (format == [(BBSectionIconVariant *)v5 format]&& (imageInfo = self->_imageInfo, v8 = v5->_imageInfo, BSEqualObjects()) && self->_imageInfoType == v5->_imageInfoType)
       {
-        v9 = [(BBSectionIconVariant *)self bundlePath];
-        v10 = [(BBSectionIconVariant *)v5 bundlePath];
+        bundlePath = [(BBSectionIconVariant *)self bundlePath];
+        bundlePath2 = [(BBSectionIconVariant *)v5 bundlePath];
         if (BSEqualObjects())
         {
-          v11 = [(BBSectionIconVariant *)self isPrecomposed];
-          v12 = v11 ^ [(BBSectionIconVariant *)v5 isPrecomposed]^ 1;
+          isPrecomposed = [(BBSectionIconVariant *)self isPrecomposed];
+          v12 = isPrecomposed ^ [(BBSectionIconVariant *)v5 isPrecomposed]^ 1;
         }
 
         else
@@ -401,7 +401,7 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   imageInfo = self->_imageInfo;
@@ -413,18 +413,18 @@
   return [v4 initWithFormat:format imageInfo:imageInfo imageInfoType:imageInfoType bundlePath:bundlePath precomposed:precomposed];
 }
 
-- (BBSectionIconVariant)initWithCoder:(id)a3
+- (BBSectionIconVariant)initWithCoder:(id)coder
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BBSectionIconVariant *)self init];
   if (v5)
   {
-    if ([v4 decodeIntegerForKey:@"codingVersion"] == 2)
+    if ([coderCopy decodeIntegerForKey:@"codingVersion"] == 2)
     {
-      v6 = [v4 decodeIntegerForKey:@"imageInfoType"];
+      v6 = [coderCopy decodeIntegerForKey:@"imageInfoType"];
       v5->_imageInfoType = v6;
-      v7 = v4;
+      v7 = coderCopy;
       if (v6 == 7)
       {
         v8 = MEMORY[0x277CBEB98];
@@ -456,101 +456,101 @@
 
     else
     {
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
       if (v15)
       {
         [(BBSectionIconVariant *)v5 setImageData:v15];
       }
 
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imagePath"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imagePath"];
       if (v16)
       {
         [(BBSectionIconVariant *)v5 setImageName:v16];
       }
 
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
       if (v16)
       {
         [(BBSectionIconVariant *)v5 setApplicationIdentifier:v17];
       }
     }
 
-    v5->_format = [v4 decodeIntegerForKey:@"format"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundlePath"];
+    v5->_format = [coderCopy decodeIntegerForKey:@"format"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundlePath"];
     bundlePath = v5->_bundlePath;
     v5->_bundlePath = v19;
 
-    v5->_precomposed = [v4 decodeBoolForKey:@"precomposed"];
+    v5->_precomposed = [coderCopy decodeBoolForKey:@"precomposed"];
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:2 forKey:@"codingVersion"];
-  [v4 encodeInteger:self->_format forKey:@"format"];
-  [v4 encodeInteger:self->_imageInfoType forKey:@"imageInfoType"];
-  [v4 encodeObject:self->_imageInfo forKey:@"imageInfo"];
-  [v4 encodeObject:self->_bundlePath forKey:@"bundlePath"];
-  [v4 encodeBool:self->_precomposed forKey:@"precomposed"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:2 forKey:@"codingVersion"];
+  [coderCopy encodeInteger:self->_format forKey:@"format"];
+  [coderCopy encodeInteger:self->_imageInfoType forKey:@"imageInfoType"];
+  [coderCopy encodeObject:self->_imageInfo forKey:@"imageInfo"];
+  [coderCopy encodeObject:self->_bundlePath forKey:@"bundlePath"];
+  [coderCopy encodeBool:self->_precomposed forKey:@"precomposed"];
 }
 
-- (BBSectionIconVariant)initWithFormat:(int64_t)a3 imageInfo:(id)a4 imageInfoType:(int64_t)a5 bundlePath:(id)a6 precomposed:(BOOL)a7
+- (BBSectionIconVariant)initWithFormat:(int64_t)format imageInfo:(id)info imageInfoType:(int64_t)type bundlePath:(id)path precomposed:(BOOL)precomposed
 {
-  v12 = a4;
-  v13 = a6;
+  infoCopy = info;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = BBSectionIconVariant;
   v14 = [(BBSectionIconVariant *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_format = a3;
-    v16 = [(BBSectionIconVariant *)v14 _processImageInfo:v12 imageInfoType:a5];
+    v14->_format = format;
+    v16 = [(BBSectionIconVariant *)v14 _processImageInfo:infoCopy imageInfoType:type];
     imageInfo = v15->_imageInfo;
     v15->_imageInfo = v16;
 
-    v15->_imageInfoType = a5;
-    v18 = [v13 copy];
+    v15->_imageInfoType = type;
+    v18 = [pathCopy copy];
     bundlePath = v15->_bundlePath;
     v15->_bundlePath = v18;
 
-    v15->_precomposed = a7;
+    v15->_precomposed = precomposed;
   }
 
   return v15;
 }
 
-- (id)_processImageInfo:(id)a3 imageInfoType:(int64_t)a4
+- (id)_processImageInfo:(id)info imageInfoType:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  v8 = v6;
-  if (a4 == 1)
+  infoCopy = info;
+  v7 = infoCopy;
+  v8 = infoCopy;
+  if (type == 1)
   {
-    v9 = [v6 copy];
-    v10 = [self bb_objectCache];
-    v8 = [v10 cacheObject:v9];
+    v9 = [infoCopy copy];
+    bb_objectCache = [self bb_objectCache];
+    v8 = [bb_objectCache cacheObject:v9];
   }
 
   return v8;
 }
 
-- (void)_setImageInfo:(id)a3 ofType:(int64_t)a4
+- (void)_setImageInfo:(id)info ofType:(int64_t)type
 {
-  v6 = a3;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
-    self->_imageInfoType = a4;
-    v7 = [(BBSectionIconVariant *)self _processImageInfo:v6 imageInfoType:a4];
+    self->_imageInfoType = type;
+    v7 = [(BBSectionIconVariant *)self _processImageInfo:infoCopy imageInfoType:type];
   }
 
   else
   {
-    if (self->_imageInfoType != a4)
+    if (self->_imageInfoType != type)
     {
       goto LABEL_6;
     }

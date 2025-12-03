@@ -1,26 +1,26 @@
 @interface VCSessionUplinkBandwidthAllocatorOneToOne
-+ (id)valueForNetworkBitrate:(id)a3 networkBitrate:(unsigned int)a4;
-- (BOOL)isEnabledStreamToken:(int64_t)a3;
++ (id)valueForNetworkBitrate:(id)bitrate networkBitrate:(unsigned int)networkBitrate;
+- (BOOL)isEnabledStreamToken:(int64_t)token;
 - (BOOL)isRedundancyEnabled;
-- (BOOL)isStreamGroupEnabled:(unsigned int)a3;
-- (BOOL)shouldUseMinMicBitrate:(unint64_t)a3 streamToken:(int64_t)a4 remainderBitrate:(int64_t)a5;
+- (BOOL)isStreamGroupEnabled:(unsigned int)enabled;
+- (BOOL)shouldUseMinMicBitrate:(unint64_t)bitrate streamToken:(int64_t)token remainderBitrate:(int64_t)remainderBitrate;
 - (BOOL)shouldUseMultipleStreamGroupAlgorithm;
 - (VCSessionUplinkBandwidthAllocatorOneToOne)init;
-- (id)baseNetworkBitrateSplitForTargetBitrate:(unsigned int)a3 baseNetworkBitrate:(unint64_t *)a4;
-- (id)findBitrateSplitForStreamToken:(int64_t)a3 targetBitrate:(unsigned int)a4;
-- (id)streamIDsForStreamToken:(int64_t)a3 targetBitrate:(unsigned int)a4;
-- (id)streamIDsIfStreamTokenIsEnabled:(int64_t)a3;
-- (id)streamIDsIfStreamTokenIsPresent:(int64_t)a3;
-- (id)targetBitratesForStreamToken:(int64_t)a3 targetNetworkBitrate:(unsigned int)a4 preferNetworkBitrates:(BOOL)a5;
-- (unint64_t)findAndSplitExtraBitrateFromCappedStreams:(id)a3 remainderBitrate:(int64_t)a4 currentStreamGroupBitrate:(unint64_t)a5 streamToken:(int64_t)a6 totalRemainderBitrateWeight:(unint64_t)a7;
-- (void)addBandwidthAllocationTableEntry:(id)a3 updateNow:(BOOL)a4;
+- (id)baseNetworkBitrateSplitForTargetBitrate:(unsigned int)bitrate baseNetworkBitrate:(unint64_t *)networkBitrate;
+- (id)findBitrateSplitForStreamToken:(int64_t)token targetBitrate:(unsigned int)bitrate;
+- (id)streamIDsForStreamToken:(int64_t)token targetBitrate:(unsigned int)bitrate;
+- (id)streamIDsIfStreamTokenIsEnabled:(int64_t)enabled;
+- (id)streamIDsIfStreamTokenIsPresent:(int64_t)present;
+- (id)targetBitratesForStreamToken:(int64_t)token targetNetworkBitrate:(unsigned int)bitrate preferNetworkBitrates:(BOOL)bitrates;
+- (unint64_t)findAndSplitExtraBitrateFromCappedStreams:(id)streams remainderBitrate:(int64_t)bitrate currentStreamGroupBitrate:(unint64_t)groupBitrate streamToken:(int64_t)token totalRemainderBitrateWeight:(unint64_t)weight;
+- (void)addBandwidthAllocationTableEntry:(id)entry updateNow:(BOOL)now;
 - (void)dealloc;
-- (void)generateBandwidthAllocationTableWithTierTables:(id)a3 qualityIndices:(id)a4 qualityIndexToStreamToken:(id)a5;
-- (void)getCurrentEnabledTierTables:(id)a3 qualityIndices:(id)a4 qualityIndexToStreamToken:(id)a5;
+- (void)generateBandwidthAllocationTableWithTierTables:(id)tables qualityIndices:(id)indices qualityIndexToStreamToken:(id)token;
+- (void)getCurrentEnabledTierTables:(id)tables qualityIndices:(id)indices qualityIndexToStreamToken:(id)token;
 - (void)init;
 - (void)recomputeAllocationTableIfRequired;
-- (void)setRedundancyEnabled:(BOOL)a3;
-- (void)streamToken:(int64_t)a3 enabled:(BOOL)a4;
+- (void)setRedundancyEnabled:(BOOL)enabled;
+- (void)streamToken:(int64_t)token enabled:(BOOL)enabled;
 @end
 
 @implementation VCSessionUplinkBandwidthAllocatorOneToOne
@@ -77,18 +77,18 @@
   [(VCObject *)&v3 dealloc];
 }
 
-- (void)addBandwidthAllocationTableEntry:(id)a3 updateNow:(BOOL)a4
+- (void)addBandwidthAllocationTableEntry:(id)entry updateNow:(BOOL)now
 {
-  v4 = a4;
+  nowCopy = now;
   [(VCObject *)self lock];
-  if (a3)
+  if (entry)
   {
-    v7 = [a3 streamToken];
-    [(NSMutableDictionary *)self->_streamTokenToEnableMap setObject:MEMORY[0x1E695E110] forKeyedSubscript:v7];
-    [(NSMutableDictionary *)self->_streamTokenToTableEntryMap setObject:a3 forKeyedSubscript:v7];
+    streamToken = [entry streamToken];
+    [(NSMutableDictionary *)self->_streamTokenToEnableMap setObject:MEMORY[0x1E695E110] forKeyedSubscript:streamToken];
+    [(NSMutableDictionary *)self->_streamTokenToTableEntryMap setObject:entry forKeyedSubscript:streamToken];
   }
 
-  if (v4)
+  if (nowCopy)
   {
     [(VCSessionUplinkBandwidthAllocatorOneToOne *)self recomputeAllocationTableIfRequired];
   }
@@ -96,30 +96,30 @@
   [(VCObject *)self unlock];
 }
 
-- (void)streamToken:(int64_t)a3 enabled:(BOOL)a4
+- (void)streamToken:(int64_t)token enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   [(VCObject *)self lock];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:token];
   v8 = [(NSMutableDictionary *)self->_streamTokenToEnableMap objectForKeyedSubscript:v7];
-  if (v8 && [v8 BOOLValue] != v4)
+  if (v8 && [v8 BOOLValue] != enabledCopy)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_streamTokenToEnableMap, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:v4], v7);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_streamTokenToEnableMap, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], v7);
     [(VCSessionUplinkBandwidthAllocatorOneToOne *)self recomputeAllocationTableIfRequired];
   }
 
   [(VCObject *)self unlock];
 }
 
-- (BOOL)isEnabledStreamToken:(int64_t)a3
+- (BOOL)isEnabledStreamToken:(int64_t)token
 {
   [(VCObject *)self lock];
-  LOBYTE(a3) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "BOOLValue"}];
+  LOBYTE(token) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "BOOLValue"}];
   [(VCObject *)self unlock];
-  return a3;
+  return token;
 }
 
-- (void)getCurrentEnabledTierTables:(id)a3 qualityIndices:(id)a4 qualityIndexToStreamToken:(id)a5
+- (void)getCurrentEnabledTierTables:(id)tables qualityIndices:(id)indices qualityIndexToStreamToken:(id)token
 {
   v52 = *MEMORY[0x1E69E9840];
   v48 = 0u;
@@ -148,12 +148,12 @@
         {
           v27 = [(NSMutableDictionary *)self->_streamTokenToTableEntryMap objectForKeyedSubscript:v8];
           v28 = v8;
-          [a3 setObject:objc_msgSend(objc_msgSend(v27 forKeyedSubscript:{"uplinkClient"), "qualityTierTableForStreamToken:", objc_msgSend(v8, "unsignedIntValue")), v8}];
+          [tables setObject:objc_msgSend(objc_msgSend(v27 forKeyedSubscript:{"uplinkClient"), "qualityTierTableForStreamToken:", objc_msgSend(v8, "unsignedIntValue")), v8}];
           v45 = 0u;
           v46 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v9 = [objc_msgSend(a3 objectForKeyedSubscript:{v8), "allKeys"}];
+          v9 = [objc_msgSend(tables objectForKeyedSubscript:{v8), "allKeys"}];
           v10 = [v9 countByEnumeratingWithState:&v43 objects:v42 count:16];
           if (v10)
           {
@@ -169,8 +169,8 @@
                 }
 
                 v14 = *(*(&v43 + 1) + 8 * i);
-                [a4 addObject:v14];
-                if ([a5 objectForKeyedSubscript:v14])
+                [indices addObject:v14];
+                if ([token objectForKeyedSubscript:v14])
                 {
                   if (VRTraceGetErrorLogLevelForModule() >= 5)
                   {
@@ -179,8 +179,8 @@
                     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
                     {
                       v17 = v6;
-                      v18 = [v14 unsignedIntValue];
-                      v19 = FourccToCStr([objc_msgSend(a5 objectForKeyedSubscript:{v14), "unsignedIntValue"}]);
+                      unsignedIntValue = [v14 unsignedIntValue];
+                      v19 = FourccToCStr([objc_msgSend(token objectForKeyedSubscript:{v14), "unsignedIntValue"}]);
                       v20 = FourccToCStr([v27 streamGroupID]);
                       *buf = 136316418;
                       v31 = v15;
@@ -189,7 +189,7 @@
                       v34 = 1024;
                       v35 = 110;
                       v36 = 1024;
-                      v37 = v18;
+                      v37 = unsignedIntValue;
                       v6 = v17;
                       v8 = v28;
                       v38 = 2080;
@@ -203,7 +203,7 @@
 
                 else
                 {
-                  [a5 setObject:v8 forKeyedSubscript:v14];
+                  [token setObject:v8 forKeyedSubscript:v14];
                 }
               }
 
@@ -225,7 +225,7 @@
   }
 }
 
-- (void)generateBandwidthAllocationTableWithTierTables:(id)a3 qualityIndices:(id)a4 qualityIndexToStreamToken:(id)a5
+- (void)generateBandwidthAllocationTableWithTierTables:(id)tables qualityIndices:(id)indices qualityIndexToStreamToken:(id)token
 {
   v27 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -233,7 +233,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [a4 sortedArrayUsingSelector:sel_compare_];
+  obj = [indices sortedArrayUsingSelector:sel_compare_];
   v20 = [obj countByEnumeratingWithState:&v23 objects:v22 count:16];
   if (v20)
   {
@@ -249,13 +249,13 @@
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [a5 objectForKeyedSubscript:v10];
-        v12 = [objc_msgSend(a3 objectForKeyedSubscript:{v11), "objectForKeyedSubscript:", v10}];
+        v11 = [token objectForKeyedSubscript:v10];
+        v12 = [objc_msgSend(tables objectForKeyedSubscript:{v11), "objectForKeyedSubscript:", v10}];
         v21 = 0;
         if ([objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{v11), "uplinkClient"), "shouldCapStream:cappedBitrate:", objc_msgSend(v11, "unsignedIntValue"), &v21}])
         {
-          v13 = [v12 unsignedIntValue];
-          if (v13 > v21)
+          unsignedIntValue = [v12 unsignedIntValue];
+          if (unsignedIntValue > v21)
           {
             continue;
           }
@@ -281,13 +281,13 @@
   }
 }
 
-- (id)streamIDsIfStreamTokenIsPresent:(int64_t)a3
+- (id)streamIDsIfStreamTokenIsPresent:(int64_t)present
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(VCObject *)self lock];
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:a3]))
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:present]))
   {
-    [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "streamID"))}];
+    [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", present)), "streamID"))}];
     v6 = v5;
   }
 
@@ -301,13 +301,13 @@
   return v5;
 }
 
-- (void)setRedundancyEnabled:(BOOL)a3
+- (void)setRedundancyEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(VCObject *)self lock];
-  if (self->_redundancyEnabled != v3)
+  if (self->_redundancyEnabled != enabledCopy)
   {
-    self->_redundancyEnabled = v3;
+    self->_redundancyEnabled = enabledCopy;
     [(VCSessionUplinkBandwidthAllocatorOneToOne *)self recomputeAllocationTableIfRequired];
   }
 
@@ -322,20 +322,20 @@
   return redundancyEnabled;
 }
 
-- (unint64_t)findAndSplitExtraBitrateFromCappedStreams:(id)a3 remainderBitrate:(int64_t)a4 currentStreamGroupBitrate:(unint64_t)a5 streamToken:(int64_t)a6 totalRemainderBitrateWeight:(unint64_t)a7
+- (unint64_t)findAndSplitExtraBitrateFromCappedStreams:(id)streams remainderBitrate:(int64_t)bitrate currentStreamGroupBitrate:(unint64_t)groupBitrate streamToken:(int64_t)token totalRemainderBitrateWeight:(unint64_t)weight
 {
   v37 = *MEMORY[0x1E69E9840];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = [a3 allKeys];
+  obj = [streams allKeys];
   v10 = [obj countByEnumeratingWithState:&v33 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
-    v24 = a6;
-    v25 = a5;
+    tokenCopy = token;
+    groupBitrateCopy = groupBitrate;
     v28 = 0;
     v12 = *v34;
     v13 = 0.0;
@@ -349,11 +349,11 @@
         }
 
         v15 = *(*(&v33 + 1) + 8 * i);
-        v16 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{v15, v24, v25), "uplinkClient"}];
+        v16 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{v15, tokenCopy, groupBitrateCopy), "uplinkClient"}];
         v17 = [v16 remainderBitrateSplitForStreamToken:{objc_msgSend(v15, "unsignedIntValue")}];
-        v18 = [objc_msgSend(a3 objectForKeyedSubscript:{v15), "unsignedIntValue"}];
+        v18 = [objc_msgSend(streams objectForKeyedSubscript:{v15), "unsignedIntValue"}];
         v31 = 0;
-        if ([v16 shouldCapStream:objc_msgSend(v15 cappedBitrate:{"unsignedIntValue"), &v31}] && (v19 = v18 + v17 * a4 / a7, v20 = v19 >= v31, v21 = v19 - v31, v21 != 0 && v20))
+        if ([v16 shouldCapStream:objc_msgSend(v15 cappedBitrate:{"unsignedIntValue"), &v31}] && (v19 = v18 + v17 * bitrate / weight, v20 = v19 >= v31, v21 = v19 - v31, v21 != 0 && v20))
         {
           v28 += v21;
         }
@@ -369,8 +369,8 @@
 
     while (v11);
     v22 = v28;
-    a6 = v24;
-    a5 = v25;
+    token = tokenCopy;
+    groupBitrate = groupBitrateCopy;
   }
 
   else
@@ -384,18 +384,18 @@
     v13 = 1.0;
   }
 
-  return (a5 + (v22 * ([objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a6)), "uplinkClient"), "remainderBitrateSplitForStreamToken:", a6}] / v13)));
+  return (groupBitrate + (v22 * ([objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "uplinkClient"), "remainderBitrateSplitForStreamToken:", token}] / v13)));
 }
 
-- (BOOL)isStreamGroupEnabled:(unsigned int)a3
+- (BOOL)isStreamGroupEnabled:(unsigned int)enabled
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(NSMutableDictionary *)self->_streamTokenToEnableMap allKeys];
+  allKeys = [(NSMutableDictionary *)self->_streamTokenToEnableMap allKeys];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -407,14 +407,14 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         v11 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{v10), "streamGroupID"}];
         if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap objectForKeyedSubscript:{v10), "BOOLValue"}])
         {
-          v12 = v11 == a3;
+          v12 = v11 == enabled;
         }
 
         else
@@ -432,7 +432,7 @@
       }
 
       while (v7 != v9);
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v15 objects:v14 count:16];
       v7 = v6;
       if (v6)
       {
@@ -446,27 +446,27 @@
   return v6;
 }
 
-- (BOOL)shouldUseMinMicBitrate:(unint64_t)a3 streamToken:(int64_t)a4 remainderBitrate:(int64_t)a5
+- (BOOL)shouldUseMinMicBitrate:(unint64_t)bitrate streamToken:(int64_t)token remainderBitrate:(int64_t)remainderBitrate
 {
-  if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a4)), "streamGroupID"}] != 1835623282)
+  if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "streamGroupID"}] != 1835623282)
   {
     return 0;
   }
 
-  v9 = [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a4)), "uplinkClient"), "qualityTierTableForStreamToken:", a4}];
+  v9 = [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "uplinkClient"), "qualityTierTableForStreamToken:", token}];
   v10 = [objc_msgSend(v9 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(objc_msgSend(v9, "allKeys"), "sortedArrayUsingSelector:", sel_compare_), "firstObject")), "unsignedIntegerValue"}];
-  return !a5 && v10 >= a3;
+  return !remainderBitrate && v10 >= bitrate;
 }
 
 - (BOOL)shouldUseMultipleStreamGroupAlgorithm
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_streamTokenToEnableMap allKeys];
+  allKeys = [(NSMutableDictionary *)self->_streamTokenToEnableMap allKeys];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (!v4)
   {
     return 0;
@@ -481,7 +481,7 @@
     {
       if (*v17 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allKeys);
       }
 
       v9 = *(*(&v16 + 1) + 8 * i);
@@ -507,18 +507,18 @@
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v16 objects:v15 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-- (id)baseNetworkBitrateSplitForTargetBitrate:(unsigned int)a3 baseNetworkBitrate:(unint64_t *)a4
+- (id)baseNetworkBitrateSplitForTargetBitrate:(unsigned int)bitrate baseNetworkBitrate:(unint64_t *)networkBitrate
 {
   v20 = *MEMORY[0x1E69E9840];
   v7 = [-[NSMutableDictionary allKeys](self->_bandwithAllocationTable "allKeys")];
-  v8 = [objc_msgSend(v7 "firstObject")];
+  unsignedIntegerValue = [objc_msgSend(v7 "firstObject")];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -538,12 +538,12 @@ LABEL_3:
       }
 
       v13 = *(*(&v16 + 1) + 8 * v12);
-      if ([v13 unsignedIntValue] > a3)
+      if ([v13 unsignedIntValue] > bitrate)
       {
         break;
       }
 
-      v8 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
       if (v10 == ++v12)
       {
         v10 = [v7 countByEnumeratingWithState:&v16 objects:v15 count:16];
@@ -557,14 +557,14 @@ LABEL_3:
     }
   }
 
-  *a4 = v8;
-  return -[NSMutableDictionary objectForKeyedSubscript:](self->_bandwithAllocationTable, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8]);
+  *networkBitrate = unsignedIntegerValue;
+  return -[NSMutableDictionary objectForKeyedSubscript:](self->_bandwithAllocationTable, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue]);
 }
 
-+ (id)valueForNetworkBitrate:(id)a3 networkBitrate:(unsigned int)a4
++ (id)valueForNetworkBitrate:(id)bitrate networkBitrate:(unsigned int)networkBitrate
 {
-  v4 = *&a4;
-  v6 = [objc_msgSend(a3 "allKeys")];
+  v4 = *&networkBitrate;
+  v6 = [objc_msgSend(bitrate "allKeys")];
   v7 = [v6 count] - 1;
   v8 = +[VCArrayUtils insertionIndexForValue:array:](VCArrayUtils, "insertionIndexForValue:array:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4], v6);
   if (v7 >= v8)
@@ -579,14 +579,14 @@ LABEL_3:
 
   v10 = [v6 objectAtIndexedSubscript:v9];
 
-  return [a3 objectForKeyedSubscript:v10];
+  return [bitrate objectForKeyedSubscript:v10];
 }
 
-- (id)targetBitratesForStreamToken:(int64_t)a3 targetNetworkBitrate:(unsigned int)a4 preferNetworkBitrates:(BOOL)a5
+- (id)targetBitratesForStreamToken:(int64_t)token targetNetworkBitrate:(unsigned int)bitrate preferNetworkBitrates:(BOOL)bitrates
 {
-  v5 = *&a4;
+  v5 = *&bitrate;
   v49 = *MEMORY[0x1E69E9840];
-  if (!a5)
+  if (!bitrates)
   {
     if (objc_opt_class() == self)
     {
@@ -638,7 +638,7 @@ LABEL_12:
           WORD2(v46) = 2112;
           *(&v46 + 6) = v8;
           HIWORD(v46) = 2048;
-          v47 = self;
+          selfCopy4 = self;
           v11 = " [%s] %s:%d %@(%p) Media bitrate allocation not supported for U+1, calculating network bitrates";
           v12 = v15;
           v13 = 48;
@@ -656,27 +656,27 @@ LABEL_12:
   }
 
   [(VCObject *)self lock];
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:a3]) && (objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "BOOLValue") & 1) != 0)
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:token]) && (objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "BOOLValue") & 1) != 0)
   {
     if ([(VCSessionUplinkBandwidthAllocatorOneToOne *)self shouldUseMultipleStreamGroupAlgorithm])
     {
-      v17 = [(VCSessionUplinkBandwidthAllocatorOneToOne *)self findBitrateSplitForStreamToken:a3 targetBitrate:v5];
+      v17 = [(VCSessionUplinkBandwidthAllocatorOneToOne *)self findBitrateSplitForStreamToken:token targetBitrate:v5];
       goto LABEL_18;
     }
 
-    v20 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "uplinkClient"}];
+    v20 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "uplinkClient"}];
     if ([(VCSessionUplinkBandwidthAllocatorOneToOne *)self isStreamGroupEnabled:1667329381])
     {
-      v21 = [v20 videoCallMicrophoneBandwidthTable];
+      videoCallMicrophoneBandwidthTable = [v20 videoCallMicrophoneBandwidthTable];
     }
 
     else
     {
-      v21 = [v20 microphoneOnlyBandwidthTable];
+      videoCallMicrophoneBandwidthTable = [v20 microphoneOnlyBandwidthTable];
     }
 
-    v22 = [VCSessionUplinkBandwidthAllocatorOneToOne valueForNetworkBitrate:v21 networkBitrate:v5, *v45, *&v45[16], v46, v47];
-    v23 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "streamGroupID"}];
+    selfCopy4 = [VCSessionUplinkBandwidthAllocatorOneToOne valueForNetworkBitrate:videoCallMicrophoneBandwidthTable networkBitrate:v5, *v45, *&v45[16], v46, selfCopy4];
+    v23 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "streamGroupID"}];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -739,7 +739,7 @@ LABEL_12:
       WORD2(v46) = 2112;
       *(&v46 + 6) = v24;
       HIWORD(v46) = 2048;
-      v47 = self;
+      selfCopy4 = self;
       LOWORD(v48) = 2080;
       *(&v48 + 2) = v33;
       v28 = " [%s] %s:%d %@(%p) Calculate bitrate for streamGroup=%s";
@@ -752,23 +752,23 @@ LABEL_34:
     if (v23 == 1835623282)
     {
       v19 = v16;
-      v18 = v22;
+      v18 = selfCopy4;
       goto LABEL_36;
     }
 
-    if ([v22 unsignedIntValue] >= v5)
+    if ([selfCopy4 unsignedIntValue] >= v5)
     {
       v18 = &unk_1F5799E28;
       goto LABEL_19;
     }
 
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{v5 - objc_msgSend(v22, "unsignedIntValue")}];
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{v5 - objc_msgSend(selfCopy4, "unsignedIntValue")}];
 LABEL_18:
     v18 = v17;
 LABEL_19:
     v19 = v16;
 LABEL_36:
-    [v19 addObject:{v18, *v45, *&v45[8], v46, v47, v48}];
+    [v19 addObject:{v18, *v45, *&v45[8], v46, selfCopy4, v48}];
     goto LABEL_37;
   }
 
@@ -796,7 +796,7 @@ LABEL_36:
       *&v45[22] = 1024;
       LODWORD(v46) = 380;
       WORD2(v46) = 2048;
-      *(&v46 + 6) = a3;
+      *(&v46 + 6) = token;
       v39 = " [%s] %s:%d StreamToken=%ld is disabled";
       v40 = v37;
       v41 = 38;
@@ -844,9 +844,9 @@ LABEL_54:
         WORD2(v46) = 2112;
         *(&v46 + 6) = v35;
         HIWORD(v46) = 2048;
-        v47 = self;
+        selfCopy4 = self;
         LOWORD(v48) = 2048;
-        *(&v48 + 2) = a3;
+        *(&v48 + 2) = token;
         v39 = " [%s] %s:%d %@(%p) StreamToken=%ld is disabled";
         v40 = v43;
         v41 = 58;
@@ -864,9 +864,9 @@ LABEL_54:
         WORD2(v46) = 2112;
         *(&v46 + 6) = v35;
         HIWORD(v46) = 2048;
-        v47 = self;
+        selfCopy4 = self;
         LOWORD(v48) = 2048;
-        *(&v48 + 2) = a3;
+        *(&v48 + 2) = token;
         _os_log_debug_impl(&dword_1DB56E000, v43, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) StreamToken=%ld is disabled", v45, 0x3Au);
       }
     }
@@ -877,21 +877,21 @@ LABEL_37:
   return v16;
 }
 
-- (id)streamIDsIfStreamTokenIsEnabled:(int64_t)a3
+- (id)streamIDsIfStreamTokenIsEnabled:(int64_t)enabled
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:a3]) && objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "BOOLValue"))
+  array = [MEMORY[0x1E695DF70] array];
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:enabled]) && objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToEnableMap, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", enabled)), "BOOLValue"))
   {
-    [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "streamID"))}];
-    return v5;
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", enabled)), "streamID"))}];
+    return array;
   }
 
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 8)
     {
-      return v5;
+      return array;
     }
 
     v7 = VRTraceErrorLogLevelToCSTR();
@@ -901,7 +901,7 @@ LABEL_37:
     {
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        return v5;
+        return array;
       }
 
       v17 = 136315906;
@@ -911,13 +911,13 @@ LABEL_37:
       v21 = 1024;
       v22 = 412;
       v23 = 2048;
-      v24 = a3;
+      enabledCopy = enabled;
       v10 = " [%s] %s:%d StreamToken=%ld is disabled";
       v11 = v8;
       v12 = 38;
 LABEL_16:
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, v10, &v17, v12);
-      return v5;
+      return array;
     }
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -947,7 +947,7 @@ LABEL_16:
       {
         if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          return v5;
+          return array;
         }
 
         v17 = 136316418;
@@ -957,11 +957,11 @@ LABEL_16:
         v21 = 1024;
         v22 = 412;
         v23 = 2112;
-        v24 = v6;
+        enabledCopy = v6;
         v25 = 2048;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2048;
-        v28 = a3;
+        enabledCopy3 = enabled;
         v10 = " [%s] %s:%d %@(%p) StreamToken=%ld is disabled";
         v11 = v14;
         v12 = 58;
@@ -977,24 +977,24 @@ LABEL_16:
         v21 = 1024;
         v22 = 412;
         v23 = 2112;
-        v24 = v6;
+        enabledCopy = v6;
         v25 = 2048;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2048;
-        v28 = a3;
+        enabledCopy3 = enabled;
         _os_log_debug_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) StreamToken=%ld is disabled", &v17, 0x3Au);
       }
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (id)streamIDsForStreamToken:(int64_t)a3 targetBitrate:(unsigned int)a4
+- (id)streamIDsForStreamToken:(int64_t)token targetBitrate:(unsigned int)bitrate
 {
-  v4 = *&a4;
+  v4 = *&bitrate;
   [(VCObject *)self lock];
-  if (-[VCSessionUplinkBandwidthAllocatorOneToOne shouldUseMultipleStreamGroupAlgorithm](self, "shouldUseMultipleStreamGroupAlgorithm") && ![-[VCSessionUplinkBandwidthAllocatorOneToOne findBitrateSplitForStreamToken:targetBitrate:](self findBitrateSplitForStreamToken:a3 targetBitrate:{v4), "intValue"}])
+  if (-[VCSessionUplinkBandwidthAllocatorOneToOne shouldUseMultipleStreamGroupAlgorithm](self, "shouldUseMultipleStreamGroupAlgorithm") && ![-[VCSessionUplinkBandwidthAllocatorOneToOne findBitrateSplitForStreamToken:targetBitrate:](self findBitrateSplitForStreamToken:token targetBitrate:{v4), "intValue"}])
   {
     [(VCObject *)self unlock];
     v9 = MEMORY[0x1E695DF70];
@@ -1004,7 +1004,7 @@ LABEL_16:
 
   else
   {
-    v7 = [(VCSessionUplinkBandwidthAllocatorOneToOne *)self streamIDsIfStreamTokenIsEnabled:a3];
+    v7 = [(VCSessionUplinkBandwidthAllocatorOneToOne *)self streamIDsIfStreamTokenIsEnabled:token];
     [(VCObject *)self unlock];
     return v7;
   }
@@ -1023,28 +1023,28 @@ LABEL_16:
   }
 }
 
-- (id)findBitrateSplitForStreamToken:(int64_t)a3 targetBitrate:(unsigned int)a4
+- (id)findBitrateSplitForStreamToken:(int64_t)token targetBitrate:(unsigned int)bitrate
 {
   v32 = *MEMORY[0x1E69E9840];
   v26 = 0;
-  v7 = [(VCSessionUplinkBandwidthAllocatorOneToOne *)self baseNetworkBitrateSplitForTargetBitrate:*&a4 baseNetworkBitrate:&v26];
+  v7 = [(VCSessionUplinkBandwidthAllocatorOneToOne *)self baseNetworkBitrateSplitForTargetBitrate:*&bitrate baseNetworkBitrate:&v26];
   v8 = 0x1E696A000uLL;
-  v9 = [objc_msgSend(v7 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)), "unsignedIntValue"}];
-  v10 = a4 - v26;
+  v9 = [objc_msgSend(v7 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)), "unsignedIntValue"}];
+  v10 = bitrate - v26;
   v11 = [VCSessionUplinkBandwidthAllocatorOneToOne shouldUseMinMicBitrate:"shouldUseMinMicBitrate:streamToken:remainderBitrate:" streamToken:? remainderBitrate:?];
-  if (a4 <= 0x2710)
+  if (bitrate <= 0x2710)
   {
-    v12 = 10000;
+    bitrateCopy = 10000;
   }
 
   else
   {
-    v12 = a4;
+    bitrateCopy = bitrate;
   }
 
   if (v11)
   {
-    v13 = v12;
+    v13 = bitrateCopy;
   }
 
   else
@@ -1059,14 +1059,14 @@ LABEL_16:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v14 = [v7 allKeys];
-    v15 = [v14 countByEnumeratingWithState:&v28 objects:v27 count:16];
+    allKeys = [v7 allKeys];
+    v15 = [allKeys countByEnumeratingWithState:&v28 objects:v27 count:16];
     if (v15)
     {
       v16 = v15;
       v21 = v7;
       v22 = v13;
-      v23 = a3;
+      tokenCopy = token;
       v17 = *v29;
       v18 = 0.0;
       do
@@ -1075,19 +1075,19 @@ LABEL_16:
         {
           if (*v29 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allKeys);
           }
 
-          v18 = v18 + [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{*(*(&v28 + 1) + 8 * i), v21, v22, v23), "uplinkClient"), "remainderBitrateSplitForStreamToken:", objc_msgSend(*(*(&v28 + 1) + 8 * i), "unsignedIntValue")}];
+          v18 = v18 + [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{*(*(&v28 + 1) + 8 * i), v21, v22, tokenCopy), "uplinkClient"), "remainderBitrateSplitForStreamToken:", objc_msgSend(*(*(&v28 + 1) + 8 * i), "unsignedIntValue")}];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v28 objects:v27 count:16];
+        v16 = [allKeys countByEnumeratingWithState:&v28 objects:v27 count:16];
       }
 
       while (v16);
       v8 = 0x1E696A000;
       LODWORD(v13) = v22;
-      a3 = v23;
+      token = tokenCopy;
       v7 = v21;
     }
 
@@ -1101,9 +1101,9 @@ LABEL_16:
       v18 = 1.0;
     }
 
-    v13 = -[VCSessionUplinkBandwidthAllocatorOneToOne findAndSplitExtraBitrateFromCappedStreams:remainderBitrate:currentStreamGroupBitrate:streamToken:totalRemainderBitrateWeight:](self, "findAndSplitExtraBitrateFromCappedStreams:remainderBitrate:currentStreamGroupBitrate:streamToken:totalRemainderBitrateWeight:", v7, v24, (v13 + (v24 * ([objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(*(v8 + 3480), "numberWithInteger:", a3)), "uplinkClient"), "remainderBitrateSplitForStreamToken:", a3}] / v18))), a3, v18);
+    v13 = -[VCSessionUplinkBandwidthAllocatorOneToOne findAndSplitExtraBitrateFromCappedStreams:remainderBitrate:currentStreamGroupBitrate:streamToken:totalRemainderBitrateWeight:](self, "findAndSplitExtraBitrateFromCappedStreams:remainderBitrate:currentStreamGroupBitrate:streamToken:totalRemainderBitrateWeight:", v7, v24, (v13 + (v24 * ([objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(*(v8 + 3480), "numberWithInteger:", token)), "uplinkClient"), "remainderBitrateSplitForStreamToken:", token}] / v18))), token, v18);
     v25 = 0;
-    if ([objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(*(v8 + 3480), "numberWithInteger:", a3)), "uplinkClient"), "shouldCapStream:cappedBitrate:", a3, &v25}] && v13 >= v25)
+    if ([objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenToTableEntryMap objectForKeyedSubscript:{objc_msgSend(*(v8 + 3480), "numberWithInteger:", token)), "uplinkClient"), "shouldCapStream:cappedBitrate:", token, &v25}] && v13 >= v25)
     {
       v13 = v25;
     }
@@ -1114,7 +1114,7 @@ LABEL_16:
 
 - (void)init
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {

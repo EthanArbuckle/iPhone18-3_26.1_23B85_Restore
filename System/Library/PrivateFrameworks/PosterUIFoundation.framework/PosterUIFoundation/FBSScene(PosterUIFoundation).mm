@@ -9,11 +9,11 @@
 - (PUIPosterSnapshotCaptureController)pui_captureController
 {
   BSDispatchQueueAssertMain();
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
-    v4 = [[PUIPosterSnapshotCaptureController alloc] initWithFBSScene:a1];
-    objc_setAssociatedObject(a1, a2, v4, 0x301);
+    v4 = [[PUIPosterSnapshotCaptureController alloc] initWithFBSScene:self];
+    objc_setAssociatedObject(self, a2, v4, 0x301);
   }
 
   return v4;
@@ -25,8 +25,8 @@
   v4 = a3;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = PUILogCommon();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    clientHandle = PUILogCommon();
+    if (os_log_type_enabled(clientHandle, OS_LOG_TYPE_ERROR))
     {
       [FBSScene(PosterUIFoundation) pui_forwardKeyboardFocusToClientScene:];
     }
@@ -36,8 +36,8 @@
 
   if (PFCurrentDeviceClass() == 2)
   {
-    v5 = PUILogCommon();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    clientHandle = PUILogCommon();
+    if (os_log_type_enabled(clientHandle, OS_LOG_TYPE_ERROR))
     {
       [FBSScene(PosterUIFoundation) pui_forwardKeyboardFocusToClientScene:];
     }
@@ -47,29 +47,29 @@ LABEL_7:
     goto LABEL_18;
   }
 
-  v5 = [v4 clientHandle];
-  v7 = [v4 identityToken];
-  v8 = [v7 stringRepresentation];
+  clientHandle = [v4 clientHandle];
+  identityToken = [v4 identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
 
-  v9 = [a1 identityToken];
-  v10 = [v9 stringRepresentation];
+  identityToken2 = [self identityToken];
+  stringRepresentation2 = [identityToken2 stringRepresentation];
 
-  if (v5 && v8 && v10)
+  if (clientHandle && stringRepresentation && stringRepresentation2)
   {
-    v11 = [MEMORY[0x1E698E3A0] tokenForString:v10];
+    v11 = [MEMORY[0x1E698E3A0] tokenForString:stringRepresentation2];
     v12 = objc_opt_new();
-    v13 = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
-    [v12 setEnvironment:v13];
+    keyboardFocusEnvironment = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
+    [v12 setEnvironment:keyboardFocusEnvironment];
 
     v14 = v12;
     v29 = v11;
     [v12 setToken:v11];
     v15 = objc_opt_new();
-    v16 = [v5 processHandle];
-    v17 = [v16 pid];
+    processHandle = [clientHandle processHandle];
+    v17 = [processHandle pid];
 
     [v15 setPid:v17];
-    v18 = [MEMORY[0x1E698E3A0] tokenForString:v8];
+    v18 = [MEMORY[0x1E698E3A0] tokenForString:stringRepresentation];
     [v15 setToken:v18];
 
     v19 = PUILogCommon();
@@ -80,22 +80,22 @@ LABEL_7:
       *buf = 138544386;
       v31 = v21;
       v32 = 2050;
-      v33 = a1;
+      selfCopy = self;
       v34 = 2114;
-      v35 = v10;
+      v35 = stringRepresentation2;
       v36 = 2114;
-      v37 = v8;
+      v37 = stringRepresentation;
       v38 = 1026;
       v39 = v17;
       _os_log_impl(&dword_1A8C85000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@-%{public}p: host scene %{public}@ deferring keyboard events to client %{public}@ with PID: %{public}d", buf, 0x30u);
     }
 
-    v22 = [MEMORY[0x1E698E3B0] sharedInstance];
+    mEMORY[0x1E698E3B0] = [MEMORY[0x1E698E3B0] sharedInstance];
     v23 = MEMORY[0x1E696AEC0];
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    v26 = [v23 stringWithFormat:@"%@-%p deferring to hosted scene", v25, a1];
-    v6 = [v22 deferEventsMatchingPredicate:v14 toTarget:v15 withReason:v26];
+    v26 = [v23 stringWithFormat:@"%@-%p deferring to hosted scene", v25, self];
+    v6 = [mEMORY[0x1E698E3B0] deferEventsMatchingPredicate:v14 toTarget:v15 withReason:v26];
 
     v27 = v29;
   }
@@ -119,15 +119,15 @@ LABEL_18:
 - (uint64_t)pui_sceneIsReadyToSnapshot:()PosterUIFoundation
 {
   BSDispatchQueueAssertMain();
-  v5 = [a1 clientSettings];
-  v6 = [v5 layers];
+  clientSettings = [self clientSettings];
+  layers = [clientSettings layers];
 
-  if ([v6 count] >= 2)
+  if ([layers count] >= 2)
   {
-    v8 = [a1 clientSettings];
-    v9 = [v8 pui_inExtendedRenderSession];
+    clientSettings2 = [self clientSettings];
+    pui_inExtendedRenderSession = [clientSettings2 pui_inExtendedRenderSession];
 
-    if (!v9)
+    if (!pui_inExtendedRenderSession)
     {
       v10 = 1;
       goto LABEL_8;

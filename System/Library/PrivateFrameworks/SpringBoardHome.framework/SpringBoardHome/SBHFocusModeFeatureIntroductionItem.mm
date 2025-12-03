@@ -1,29 +1,29 @@
 @interface SBHFocusModeFeatureIntroductionItem
-- (BOOL)shouldDisplayFeatureIntroductionAtLocations:(unint64_t)a3;
-- (CGRect)focusModePopoverViewFolderScrollAccessoryFrame:(id)a3;
-- (SBHFocusModeFeatureIntroductionItem)initWithIconManager:(id)a3;
+- (BOOL)shouldDisplayFeatureIntroductionAtLocations:(unint64_t)locations;
+- (CGRect)focusModePopoverViewFolderScrollAccessoryFrame:(id)frame;
+- (SBHFocusModeFeatureIntroductionItem)initWithIconManager:(id)manager;
 - (SBHIconManager)iconManager;
-- (id)focusModePopoverViewActiveFocusMode:(id)a3;
+- (id)focusModePopoverViewActiveFocusMode:(id)mode;
 - (void)_removeActiveFocusModeRequiringIntroduction;
-- (void)_tearDownFocusModePopoverView:(id)a3;
-- (void)displayFeatureIntroductionAtLocations:(unint64_t)a3 presentCompletion:(id)a4 dismissCompletion:(id)a5;
-- (void)focusModePopoverView:(id)a3 closeButtonTappedForIconListView:(id)a4;
-- (void)focusModePopoverView:(id)a3 editPageButtonTappedForIconListView:(id)a4;
+- (void)_tearDownFocusModePopoverView:(id)view;
+- (void)displayFeatureIntroductionAtLocations:(unint64_t)locations presentCompletion:(id)completion dismissCompletion:(id)dismissCompletion;
+- (void)focusModePopoverView:(id)view closeButtonTappedForIconListView:(id)listView;
+- (void)focusModePopoverView:(id)view editPageButtonTappedForIconListView:(id)listView;
 - (void)tearDown;
 @end
 
 @implementation SBHFocusModeFeatureIntroductionItem
 
-- (SBHFocusModeFeatureIntroductionItem)initWithIconManager:(id)a3
+- (SBHFocusModeFeatureIntroductionItem)initWithIconManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = SBHFocusModeFeatureIntroductionItem;
   v5 = [(SBHFocusModeFeatureIntroductionItem *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_iconManager, v4);
+    objc_storeWeak(&v5->_iconManager, managerCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     focusModePopoverViews = v6->_focusModePopoverViews;
     v6->_focusModePopoverViews = v7;
@@ -45,12 +45,12 @@
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_DEFAULT, "[%@] Tear down", buf, 0xCu);
   }
 
-  v6 = [(SBHFocusModeFeatureIntroductionItem *)self focusModePopoverViews];
+  focusModePopoverViews = [(SBHFocusModeFeatureIntroductionItem *)self focusModePopoverViews];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [focusModePopoverViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -62,41 +62,41 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(focusModePopoverViews);
         }
 
         [*(*(&v11 + 1) + 8 * v10++) removeFromSuperview];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [focusModePopoverViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_tearDownFocusModePopoverView:(id)a3
+- (void)_tearDownFocusModePopoverView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHFocusModeFeatureIntroductionItem *)self focusModePopoverViews];
-  [v5 removeObject:v4];
-  [v4 removeFromSuperview];
+  viewCopy = view;
+  focusModePopoverViews = [(SBHFocusModeFeatureIntroductionItem *)self focusModePopoverViews];
+  [focusModePopoverViews removeObject:viewCopy];
+  [viewCopy removeFromSuperview];
 }
 
 - (void)_removeActiveFocusModeRequiringIntroduction
 {
-  v5 = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
-  v2 = [v5 focusModeManager];
-  v3 = [v2 activeFocusMode];
-  v4 = [v3 identifier];
-  [v2 removeFocusModeRequiringIntroduction:v4];
+  iconManager = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
+  focusModeManager = [iconManager focusModeManager];
+  activeFocusMode = [focusModeManager activeFocusMode];
+  identifier = [activeFocusMode identifier];
+  [focusModeManager removeFocusModeRequiringIntroduction:identifier];
 }
 
-- (BOOL)shouldDisplayFeatureIntroductionAtLocations:(unint64_t)a3
+- (BOOL)shouldDisplayFeatureIntroductionAtLocations:(unint64_t)locations
 {
-  v5 = [(SBHFocusModeFeatureIntroductionItem *)self focusModePopoverViews];
-  v6 = [v5 count];
+  focusModePopoverViews = [(SBHFocusModeFeatureIntroductionItem *)self focusModePopoverViews];
+  v6 = [focusModePopoverViews count];
 
   if (v6)
   {
@@ -105,12 +105,12 @@
 
   else
   {
-    v8 = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
-    v9 = [v8 isDockPinnedForRotation];
-    v10 = [v8 interfaceOrientation];
-    if (!v9 || v10 == 1)
+    iconManager = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
+    isDockPinnedForRotation = [iconManager isDockPinnedForRotation];
+    interfaceOrientation = [iconManager interfaceOrientation];
+    if (!isDockPinnedForRotation || interfaceOrientation == 1)
     {
-      v7 = (a3 >> 2) & 1;
+      v7 = (locations >> 2) & 1;
     }
 
     else
@@ -122,7 +122,7 @@
   return v7;
 }
 
-- (void)displayFeatureIntroductionAtLocations:(unint64_t)a3 presentCompletion:(id)a4 dismissCompletion:(id)a5
+- (void)displayFeatureIntroductionAtLocations:(unint64_t)locations presentCompletion:(id)completion dismissCompletion:(id)dismissCompletion
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = SBLogFocusModes();
@@ -135,11 +135,11 @@
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "[%@] Determining if any popovers should be shown for lists revealed by active Focus mode...", buf, 0xCu);
   }
 
-  v9 = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
-  v10 = [v9 rootFolderController];
-  v11 = [v10 contentView];
+  iconManager = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  contentView = [rootFolderController contentView];
   v12 = objc_opt_class();
-  v13 = v11;
+  v13 = contentView;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -167,9 +167,9 @@
   v18[4] = self;
   [v15 enumerateIconListViewsWithOptions:2 usingBlock:v18];
 
-  v16 = [v9 focusModeManager];
-  v17 = [v16 activeFocusMode];
-  if (([v17 isSleepFocus] & 1) == 0)
+  focusModeManager = [iconManager focusModeManager];
+  activeFocusMode = [focusModeManager activeFocusMode];
+  if (([activeFocusMode isSleepFocus] & 1) == 0)
   {
     [(SBHFocusModeFeatureIntroductionItem *)self _removeActiveFocusModeRequiringIntroduction];
   }
@@ -198,40 +198,40 @@ void __113__SBHFocusModeFeatureIntroductionItem_displayFeatureIntroductionAtLoca
   }
 }
 
-- (void)focusModePopoverView:(id)a3 closeButtonTappedForIconListView:(id)a4
+- (void)focusModePopoverView:(id)view closeButtonTappedForIconListView:(id)listView
 {
-  v5 = a3;
+  viewCopy = view;
   [(SBHFocusModeFeatureIntroductionItem *)self _removeActiveFocusModeRequiringIntroduction];
-  [(SBHFocusModeFeatureIntroductionItem *)self _tearDownFocusModePopoverView:v5];
+  [(SBHFocusModeFeatureIntroductionItem *)self _tearDownFocusModePopoverView:viewCopy];
 }
 
-- (void)focusModePopoverView:(id)a3 editPageButtonTappedForIconListView:(id)a4
+- (void)focusModePopoverView:(id)view editPageButtonTappedForIconListView:(id)listView
 {
-  v6 = a4;
-  v7 = a3;
+  listViewCopy = listView;
+  viewCopy = view;
   [(SBHFocusModeFeatureIntroductionItem *)self _removeActiveFocusModeRequiringIntroduction];
-  v8 = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
-  [v8 setEditing:1 fromIconListView:v6];
+  iconManager = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
+  [iconManager setEditing:1 fromIconListView:listViewCopy];
 
-  [(SBHFocusModeFeatureIntroductionItem *)self _tearDownFocusModePopoverView:v7];
+  [(SBHFocusModeFeatureIntroductionItem *)self _tearDownFocusModePopoverView:viewCopy];
 }
 
-- (id)focusModePopoverViewActiveFocusMode:(id)a3
+- (id)focusModePopoverViewActiveFocusMode:(id)mode
 {
-  v3 = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
-  v4 = [v3 focusModeManager];
-  v5 = [v4 activeFocusMode];
+  iconManager = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
+  focusModeManager = [iconManager focusModeManager];
+  activeFocusMode = [focusModeManager activeFocusMode];
 
-  return v5;
+  return activeFocusMode;
 }
 
-- (CGRect)focusModePopoverViewFolderScrollAccessoryFrame:(id)a3
+- (CGRect)focusModePopoverViewFolderScrollAccessoryFrame:(id)frame
 {
-  v3 = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
-  v4 = [v3 rootFolderController];
-  v5 = [v4 contentView];
+  iconManager = [(SBHFocusModeFeatureIntroductionItem *)self iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  contentView = [rootFolderController contentView];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = contentView;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -252,9 +252,9 @@ void __113__SBHFocusModeFeatureIntroductionItem_displayFeatureIntroductionAtLoca
 
   v9 = v8;
 
-  v10 = [v9 scrollAccessoryView];
+  scrollAccessoryView = [v9 scrollAccessoryView];
 
-  [v10 frame];
+  [scrollAccessoryView frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;

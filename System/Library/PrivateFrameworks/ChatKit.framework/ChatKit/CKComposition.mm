@@ -1,134 +1,134 @@
 @interface CKComposition
-+ (BOOL)_shouldCreateMediaObjectForUTIType:(id)a3;
-+ (BOOL)isRTFDocumentWithItemProvider:(id)a3;
-+ (CKComposition)compositionWithMSMessage:(id)a3 appExtensionIdentifier:(id)a4;
-+ (CKComposition)compositionWithMediaObject:(id)a3 subject:(id)a4;
-+ (CKComposition)compositionWithMediaObjects:(id)a3 subject:(id)a4;
-+ (CKComposition)compositionWithPluginDisplayContainer:(id)a3 subject:(id)a4;
-+ (CKComposition)compositionWithShelfMediaObject:(id)a3;
-+ (CKComposition)compositionWithShelfPluginPayload:(id)a3 completionHandler:(id)a4;
-+ (CKComposition)compositionWithText:(id)a3 subject:(id)a4 shelfPluginPayload:(id)a5 completionHandler:(id)a6;
++ (BOOL)_shouldCreateMediaObjectForUTIType:(id)type;
++ (BOOL)isRTFDocumentWithItemProvider:(id)provider;
++ (CKComposition)compositionWithMSMessage:(id)message appExtensionIdentifier:(id)identifier;
++ (CKComposition)compositionWithMediaObject:(id)object subject:(id)subject;
++ (CKComposition)compositionWithMediaObjects:(id)objects subject:(id)subject;
++ (CKComposition)compositionWithPluginDisplayContainer:(id)container subject:(id)subject;
++ (CKComposition)compositionWithShelfMediaObject:(id)object;
++ (CKComposition)compositionWithShelfPluginPayload:(id)payload completionHandler:(id)handler;
++ (CKComposition)compositionWithText:(id)text subject:(id)subject shelfPluginPayload:(id)payload completionHandler:(id)handler;
 + (Class)_LPSharedObjectMetadataClass;
-+ (id)_attributedStringAfterPostProcessingForRichLinksForText:(id)a3;
-+ (id)_compositionWithShelfPluginPayload:(id)a3;
-+ (id)_savedCompositionDataForChatIdentifier:(id)a3 readUsingBlock:(id)a4;
-+ (id)_temporaryURLFromURL:(id)a3;
-+ (id)_transcoderUserInfoFor:(id)a3 filename:(id)a4 type:(id)a5;
-+ (id)_trimUnwantedAttributesFromAttributedString:(id)a3 allowedAttributes:(id)a4;
-+ (id)attributedStringByTransformingNSLinksFromAttributedString:(id)a3;
++ (id)_attributedStringAfterPostProcessingForRichLinksForText:(id)text;
++ (id)_compositionWithShelfPluginPayload:(id)payload;
++ (id)_savedCompositionDataForChatIdentifier:(id)identifier readUsingBlock:(id)block;
++ (id)_temporaryURLFromURL:(id)l;
++ (id)_transcoderUserInfoFor:(id)for filename:(id)filename type:(id)type;
++ (id)_trimUnwantedAttributesFromAttributedString:(id)string allowedAttributes:(id)attributes;
++ (id)attributedStringByTransformingNSLinksFromAttributedString:(id)string;
 + (id)composition;
-+ (id)compositionForMessageParts:(id)a3 preserveSubject:(BOOL)a4 contextIdentifier:(id)a5;
-+ (id)compositionForTUConversationActivity:(id)a3;
-+ (id)compositionForWritingToolsText:(id)a3;
-+ (id)finalCompositionFromAllCompositions:(id)a3;
-+ (id)richestMediaTypeForItemProvider:(id)a3;
-+ (id)savedCompositionForChatIdentifier:(id)a3;
-+ (id)savedCompositionFromData:(id)a3;
-+ (id)trimUnwantedAttributesFromAttributedString:(id)a3;
-+ (void)__ck_valueForItemClass:(Class)a3 forItemProvider:(id)a4 completion:(id)a5;
-+ (void)_createPluginPayloadCompositionFromFileItemProvider:(id)a3 builderContext:(id)a4 collaborationShareOptions:(id)a5 completionHandler:(id)a6;
-+ (void)_fileNameFromFileURLForItemProvider:(id)a3 fileType:(id)a4 completion:(id)a5;
-+ (void)_fileNameFromURLNameForItemProvider:(id)a3 fileType:(id)a4 completion:(id)a5;
-+ (void)_pasteAttributedStringWithItemProvider:(id)a3 builderContext:(id)a4 completionHandler:(id)a5;
-+ (void)_pasteRTFDocumentWithItemProvider:(id)a3 builderContext:(id)a4 completionHandler:(id)a5;
-+ (void)_requestCompositionFromItemProviderForNonCollaboration:(id)a3 builderContext:(id)a4 completion:(id)a5;
-+ (void)compositionFromItemProviders:(id)a3 shareOptions:(id)a4 completionHandler:(id)a5;
-+ (void)compositionFromNonCollaborationItemProviders:(id)a3 builderContext:(id)a4 completionHandler:(id)a5;
-+ (void)createPluginPayloadCompositionFromCloudKitItemProvider:(id)a3 collaborationShareOptions:(id)a4 completionHandler:(id)a5;
-+ (void)createPluginPayloadCompositionFromCollaborativeItemProvider:(id)a3 collaborationShareOptions:(id)a4 completionHandler:(id)a5;
-+ (void)createPluginPayloadCompositionFromItemProvider:(id)a3 builderContext:(id)a4 shareOptions:(id)a5 completionHandler:(id)a6;
-+ (void)dataForPasteboardType:(id)a3 forItemProvider:(id)a4 completion:(id)a5;
-+ (void)deleteCompositionWithChatIdentifier:(id)a3;
-+ (void)filenameForType:(id)a3 forItemProvider:(id)a4 completionHandler:(id)a5;
-+ (void)filenameFromURLTypeForType:(id)a3 forItemProvider:(id)a4 completionHandler:(id)a5;
-+ (void)mediaObjectForItemProvider:(id)a3 completion:(id)a4;
-+ (void)mediaObjectFromItemAtURL:(id)a3 filename:(id)a4 completion:(id)a5;
-+ (void)mediaObjectFromPhotosAsset:(id)a3 completion:(id)a4;
-+ (void)pluginDisplayContainerForItemProvider:(id)a3 completion:(id)a4;
-+ (void)requestCompositionFromItemProvider:(id)a3 shelfMediaObject:(id)a4 builderContext:(id)a5 completion:(id)a6;
-+ (void)requestCompositionFromItemProviders:(id)a3 completion:(id)a4;
-+ (void)requestFilenameForType:(id)a3 forItemProvider:(id)a4 completion:(id)a5;
-+ (void)requestMediaObjectForItemProvider:(id)a3 type:(id)a4 builderContext:(id)a5 completion:(id)a6;
-+ (void)requestMediaObjectsForAttributedString:(id)a3 completion:(id)a4;
-+ (void)requestPluginDisplayContainerForItemProvider:(id)a3 completion:(id)a4;
++ (id)compositionForMessageParts:(id)parts preserveSubject:(BOOL)subject contextIdentifier:(id)identifier;
++ (id)compositionForTUConversationActivity:(id)activity;
++ (id)compositionForWritingToolsText:(id)text;
++ (id)finalCompositionFromAllCompositions:(id)compositions;
++ (id)richestMediaTypeForItemProvider:(id)provider;
++ (id)savedCompositionForChatIdentifier:(id)identifier;
++ (id)savedCompositionFromData:(id)data;
++ (id)trimUnwantedAttributesFromAttributedString:(id)string;
++ (void)__ck_valueForItemClass:(Class)class forItemProvider:(id)provider completion:(id)completion;
++ (void)_createPluginPayloadCompositionFromFileItemProvider:(id)provider builderContext:(id)context collaborationShareOptions:(id)options completionHandler:(id)handler;
++ (void)_fileNameFromFileURLForItemProvider:(id)provider fileType:(id)type completion:(id)completion;
++ (void)_fileNameFromURLNameForItemProvider:(id)provider fileType:(id)type completion:(id)completion;
++ (void)_pasteAttributedStringWithItemProvider:(id)provider builderContext:(id)context completionHandler:(id)handler;
++ (void)_pasteRTFDocumentWithItemProvider:(id)provider builderContext:(id)context completionHandler:(id)handler;
++ (void)_requestCompositionFromItemProviderForNonCollaboration:(id)collaboration builderContext:(id)context completion:(id)completion;
++ (void)compositionFromItemProviders:(id)providers shareOptions:(id)options completionHandler:(id)handler;
++ (void)compositionFromNonCollaborationItemProviders:(id)providers builderContext:(id)context completionHandler:(id)handler;
++ (void)createPluginPayloadCompositionFromCloudKitItemProvider:(id)provider collaborationShareOptions:(id)options completionHandler:(id)handler;
++ (void)createPluginPayloadCompositionFromCollaborativeItemProvider:(id)provider collaborationShareOptions:(id)options completionHandler:(id)handler;
++ (void)createPluginPayloadCompositionFromItemProvider:(id)provider builderContext:(id)context shareOptions:(id)options completionHandler:(id)handler;
++ (void)dataForPasteboardType:(id)type forItemProvider:(id)provider completion:(id)completion;
++ (void)deleteCompositionWithChatIdentifier:(id)identifier;
++ (void)filenameForType:(id)type forItemProvider:(id)provider completionHandler:(id)handler;
++ (void)filenameFromURLTypeForType:(id)type forItemProvider:(id)provider completionHandler:(id)handler;
++ (void)mediaObjectForItemProvider:(id)provider completion:(id)completion;
++ (void)mediaObjectFromItemAtURL:(id)l filename:(id)filename completion:(id)completion;
++ (void)mediaObjectFromPhotosAsset:(id)asset completion:(id)completion;
++ (void)pluginDisplayContainerForItemProvider:(id)provider completion:(id)completion;
++ (void)requestCompositionFromItemProvider:(id)provider shelfMediaObject:(id)object builderContext:(id)context completion:(id)completion;
++ (void)requestCompositionFromItemProviders:(id)providers completion:(id)completion;
++ (void)requestFilenameForType:(id)type forItemProvider:(id)provider completion:(id)completion;
++ (void)requestMediaObjectForItemProvider:(id)provider type:(id)type builderContext:(id)context completion:(id)completion;
++ (void)requestMediaObjectsForAttributedString:(id)string completion:(id)completion;
++ (void)requestPluginDisplayContainerForItemProvider:(id)provider completion:(id)completion;
 - (BOOL)_compositionTextBeginsWithEmbeddedPluginAttachment;
-- (BOOL)_saveCompositionData:(id)a3 atURL:(id)a4 forChatIdentifier:(id)a5;
-- (BOOL)canBundleAttachmentsWithMessageOnService:(id)a3;
+- (BOOL)_saveCompositionData:(id)data atURL:(id)l forChatIdentifier:(id)identifier;
+- (BOOL)canBundleAttachmentsWithMessageOnService:(id)service;
 - (BOOL)compositionIsCollaboration;
 - (BOOL)hasContent;
 - (BOOL)hasNonwhiteSpaceContent;
-- (BOOL)hasNotBeenEdited:(id)a3;
+- (BOOL)hasNotBeenEdited:(id)edited;
 - (BOOL)hasRestorableContent;
 - (BOOL)isCompatibleWithGlassSendAnimation;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isPlainTextEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isPlainTextEqual:(id)equal;
 - (BOOL)isSendAnimated;
 - (BOOL)isTextOnly;
-- (CKComposition)initWithText:(id)a3 subject:(id)a4 shelfPluginPayload:(id)a5 bizIntent:(id)a6;
-- (CKComposition)initWithText:(id)a3 subject:(id)a4 translation:(id)a5 shelfPluginPayload:(id)a6 bizIntent:(id)a7 shelfMediaObject:(id)a8 collaborationOptions:(id)a9 proofreadingInfo:(id)a10;
-- (CKComposition)initWithText:(id)a3 subject:(id)a4 translation:(id)a5 shelfPluginPayload:(id)a6 bizIntent:(id)a7 shelfMediaObject:(id)a8 collaborationShareOptions:(id)a9 proofreadingInfo:(id)a10;
-- (CKComposition)initWithText:(id)a3 subject:(id)a4 translation:(id)a5 shelfPluginPayload:(id)a6 bizIntent:(id)a7 shelfMediaObject:(id)a8 proofreadingInfo:(id)a9;
+- (CKComposition)initWithText:(id)text subject:(id)subject shelfPluginPayload:(id)payload bizIntent:(id)intent;
+- (CKComposition)initWithText:(id)text subject:(id)subject translation:(id)translation shelfPluginPayload:(id)payload bizIntent:(id)intent shelfMediaObject:(id)object collaborationOptions:(id)options proofreadingInfo:(id)self0;
+- (CKComposition)initWithText:(id)text subject:(id)subject translation:(id)translation shelfPluginPayload:(id)payload bizIntent:(id)intent shelfMediaObject:(id)object collaborationShareOptions:(id)options proofreadingInfo:(id)self0;
+- (CKComposition)initWithText:(id)text subject:(id)subject translation:(id)translation shelfPluginPayload:(id)payload bizIntent:(id)intent shelfMediaObject:(id)object proofreadingInfo:(id)info;
 - (Class)balloonViewClass;
 - (IMPluginPayload)firstEmbeddedPluginPayload;
 - (NSArray)mediaObjects;
 - (NSArray)pasteboardItemProviders;
 - (NSArray)pluginDisplayContainers;
-- (id)_attributedStringByReplacingMediaObjectsWithTransferGUIDsInText:(id)a3 transferGUIDs:(id *)a4 mediaObjects:(id *)a5;
-- (id)_attributedStringByTrimmingWhiteSpaceAroundAttachmentsInText:(id)a3;
-- (id)_compositionByAppendingText:(id)a3 isExpirable:(BOOL)a4 shelfPluginPayload:(id)a5 shelfMediaObject:(id)a6 addingNewLineIfNedded:(BOOL)a7;
+- (id)_attributedStringByReplacingMediaObjectsWithTransferGUIDsInText:(id)text transferGUIDs:(id *)ds mediaObjects:(id *)objects;
+- (id)_attributedStringByTrimmingWhiteSpaceAroundAttachmentsInText:(id)text;
+- (id)_compositionByAppendingText:(id)text isExpirable:(BOOL)expirable shelfPluginPayload:(id)payload shelfMediaObject:(id)object addingNewLineIfNedded:(BOOL)nedded;
 - (id)_compositionParts;
-- (id)_messageFromPayload:(id)a3 firstGUID:(id)a4;
-- (id)compositionByAppendingCollaborativeComposition:(id)a3;
-- (id)compositionByAppendingComposition:(id)a3;
-- (id)compositionByAppendingMediaObject:(id)a3;
-- (id)compositionByAppendingMediaObjects:(id)a3;
-- (id)compositionByAppendingPluginDisplayContainer:(id)a3;
-- (id)compositionByAppendingText:(id)a3 shelfPluginPayload:(id)a4 shelfMediaObject:(id)a5 collaborationShareOptions:(id)a6;
-- (id)compositionByRemovingMediaObjects:(id)a3;
-- (id)compositionByReplacingMediaObject:(id)a3 withMediaObject:(id)a4;
-- (id)compositionByReplacingText:(id)a3;
+- (id)_messageFromPayload:(id)payload firstGUID:(id)d;
+- (id)compositionByAppendingCollaborativeComposition:(id)composition;
+- (id)compositionByAppendingComposition:(id)composition;
+- (id)compositionByAppendingMediaObject:(id)object;
+- (id)compositionByAppendingMediaObjects:(id)objects;
+- (id)compositionByAppendingPluginDisplayContainer:(id)container;
+- (id)compositionByAppendingText:(id)text shelfPluginPayload:(id)payload shelfMediaObject:(id)object collaborationShareOptions:(id)options;
+- (id)compositionByRemovingMediaObjects:(id)objects;
+- (id)compositionByReplacingMediaObject:(id)object withMediaObject:(id)mediaObject;
+- (id)compositionByReplacingText:(id)text;
 - (id)description;
 - (id)externalSourceComposition;
-- (id)messageWithGUID:(id)a3;
-- (id)messageWithGUID:(id)a3 superFormatText:(id)a4 superFormatSubject:(id)a5 fileTransferGUIDs:(id)a6 mediaObjects:(id)a7 balloonBundleID:(id)a8 payloadData:(id)a9 messageSummaryInfo:(id)a10;
-- (id)messageWithGUID:(id)a3 superFormatText:(id)a4 superFormatSubject:(id)a5 superFormatTranslation:(id)a6 fileTransferGUIDs:(id)a7 mediaObjects:(id)a8 balloonBundleID:(id)a9 payloadData:(id)a10;
-- (id)messagesFromCompositionFirstGUIDForMessage:(id)a3 sendingService:(id)a4;
-- (id)processedPartsForSuggestedReply:(id)a3;
+- (id)messageWithGUID:(id)d;
+- (id)messageWithGUID:(id)d superFormatText:(id)text superFormatSubject:(id)subject fileTransferGUIDs:(id)ds mediaObjects:(id)objects balloonBundleID:(id)iD payloadData:(id)data messageSummaryInfo:(id)self0;
+- (id)messageWithGUID:(id)d superFormatText:(id)text superFormatSubject:(id)subject superFormatTranslation:(id)translation fileTransferGUIDs:(id)ds mediaObjects:(id)objects balloonBundleID:(id)iD payloadData:(id)self0;
+- (id)messagesFromCompositionFirstGUIDForMessage:(id)message sendingService:(id)service;
+- (id)processedPartsForSuggestedReply:(id)reply;
 - (id)superFormatSubject;
-- (id)superFormatText:(id *)a3;
-- (id)superFormatText:(id)a3 transferGUIDs:(id *)a4 mediaObjects:(id *)a5;
+- (id)superFormatText:(id *)text;
+- (id)superFormatText:(id)text transferGUIDs:(id *)ds mediaObjects:(id *)objects;
 - (unint64_t)hash;
 - (unint64_t)mediaObjectsFileSize;
-- (void)_applyMessagePropertiesTo:(id)a3 pluginPayload:(id)a4;
-- (void)_persistTextToComposition:(id)a3 directoryURL:(id)a4;
+- (void)_applyMessagePropertiesTo:(id)to pluginPayload:(id)payload;
+- (void)_persistTextToComposition:(id)composition directoryURL:(id)l;
 - (void)cleanupCKShareFromComposition;
-- (void)evaluateSendMetricsWithConversation:(id)a3 shareSheetHostBundleIdentifier:(id)a4;
-- (void)removeShareURLForComposition:(id)a3;
-- (void)saveCompositionWithChatIdentifier:(id)a3;
+- (void)evaluateSendMetricsWithConversation:(id)conversation shareSheetHostBundleIdentifier:(id)identifier;
+- (void)removeShareURLForComposition:(id)composition;
+- (void)saveCompositionWithChatIdentifier:(id)identifier;
 @end
 
 @implementation CKComposition
 
 - (BOOL)hasContent
 {
-  v3 = [(CKComposition *)self text];
-  if ([v3 length])
+  text = [(CKComposition *)self text];
+  if ([text length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CKComposition *)self subject];
-    if (v5)
+    subject = [(CKComposition *)self subject];
+    if (subject)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(CKComposition *)self shelfPluginPayload];
-      v4 = v6 != 0;
+      shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+      v4 = shelfPluginPayload != 0;
     }
   }
 
@@ -137,23 +137,23 @@
 
 - (NSArray)mediaObjects
 {
-  v2 = [(CKComposition *)self text];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [v2 length];
+  text = [(CKComposition *)self text];
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = [text length];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __44__CKComposition_CKMediaObject__mediaObjects__block_invoke;
   v14[3] = &unk_1E72F84C8;
-  v5 = v3;
+  v5 = array;
   v15 = v5;
-  [v2 enumerateAttribute:@"MediaObjectForTextAttachment" inRange:0 options:v4 usingBlock:{0, v14}];
+  [text enumerateAttribute:@"MediaObjectForTextAttachment" inRange:0 options:v4 usingBlock:{0, v14}];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __44__CKComposition_CKMediaObject__mediaObjects__block_invoke_2;
   v12 = &unk_1E72F84F0;
   v13 = v5;
   v6 = v5;
-  [v2 enumerateAttribute:@"AdaptiveImageGlyphMediaObject" inRange:0 options:v4 usingBlock:{0, &v9}];
+  [text enumerateAttribute:@"AdaptiveImageGlyphMediaObject" inRange:0 options:v4 usingBlock:{0, &v9}];
   v7 = [v6 copy];
 
   return v7;
@@ -161,37 +161,37 @@
 
 - (void)cleanupCKShareFromComposition
 {
-  v3 = [(CKComposition *)self shelfPluginPayload];
-  v4 = [v3 payloadCollaborationType];
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  payloadCollaborationType = [shelfPluginPayload payloadCollaborationType];
 
-  if (v4 == 2)
+  if (payloadCollaborationType == 2)
   {
-    v5 = [(CKComposition *)self shelfPluginPayload];
-    v6 = [v5 cloudKitShare];
-    v7 = [v6 isCloudKitShareRemovable];
+    shelfPluginPayload2 = [(CKComposition *)self shelfPluginPayload];
+    cloudKitShare = [shelfPluginPayload2 cloudKitShare];
+    isCloudKitShareRemovable = [cloudKitShare isCloudKitShareRemovable];
 
-    if (v7)
+    if (isCloudKitShareRemovable)
     {
-      v8 = [(CKComposition *)self shelfPluginPayload];
-      [(CKComposition *)self removeShareURLForComposition:v8];
+      shelfPluginPayload3 = [(CKComposition *)self shelfPluginPayload];
+      [(CKComposition *)self removeShareURLForComposition:shelfPluginPayload3];
     }
   }
 }
 
-- (void)removeShareURLForComposition:(id)a3
+- (void)removeShareURLForComposition:(id)composition
 {
-  v3 = a3;
+  compositionCopy = composition;
   v4 = MEMORY[0x193AF5EC0](@"CSCloudSharing", @"CloudSharing");
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 cloudKitShare];
-    v6 = [v3 containerSetupInfo];
+    cloudKitShare = [compositionCopy cloudKitShare];
+    containerSetupInfo = [compositionCopy containerSetupInfo];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__CKComposition_Collaboration__removeShareURLForComposition___block_invoke;
     v7[3] = &unk_1E72EC088;
-    v8 = v3;
-    [v4 removeFromShare:v5 containerSetupInfo:v6 completionHandler:v7];
+    v8 = compositionCopy;
+    [v4 removeFromShare:cloudKitShare containerSetupInfo:containerSetupInfo completionHandler:v7];
   }
 }
 
@@ -221,24 +221,24 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
   }
 }
 
-- (CKComposition)initWithText:(id)a3 subject:(id)a4 translation:(id)a5 shelfPluginPayload:(id)a6 bizIntent:(id)a7 shelfMediaObject:(id)a8 collaborationShareOptions:(id)a9 proofreadingInfo:(id)a10
+- (CKComposition)initWithText:(id)text subject:(id)subject translation:(id)translation shelfPluginPayload:(id)payload bizIntent:(id)intent shelfMediaObject:(id)object collaborationShareOptions:(id)options proofreadingInfo:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  textCopy = text;
+  subjectCopy = subject;
+  translationCopy = translation;
+  payloadCopy = payload;
+  intentCopy = intent;
+  objectCopy = object;
+  optionsCopy = options;
+  infoCopy = info;
   v33.receiver = self;
   v33.super_class = CKComposition;
   v24 = [(CKComposition *)&v33 init];
   if (v24)
   {
-    if ([v16 length])
+    if ([textCopy length])
     {
-      v25 = v16;
+      v25 = textCopy;
     }
 
     else
@@ -247,9 +247,9 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
     }
 
     [(CKComposition *)v24 setText:v25];
-    if ([v17 length])
+    if ([subjectCopy length])
     {
-      v26 = v17;
+      v26 = subjectCopy;
     }
 
     else
@@ -258,9 +258,9 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
     }
 
     [(CKComposition *)v24 setSubject:v26];
-    if ([v18 length])
+    if ([translationCopy length])
     {
-      v27 = v18;
+      v27 = translationCopy;
     }
 
     else
@@ -269,12 +269,12 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
     }
 
     [(CKComposition *)v24 setTranslation:v27];
-    v32 = v19;
-    [(CKComposition *)v24 setShelfPluginPayload:v19];
-    v28 = [v20 copy];
+    v32 = payloadCopy;
+    [(CKComposition *)v24 setShelfPluginPayload:payloadCopy];
+    v28 = [intentCopy copy];
     if ([v28 count])
     {
-      v29 = [v20 copy];
+      v29 = [intentCopy copy];
       [(CKComposition *)v24 setBizIntent:v29];
     }
 
@@ -283,39 +283,39 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
       [(CKComposition *)v24 setBizIntent:0];
     }
 
-    [(CKComposition *)v24 setShelfMediaObject:v21];
-    [(CKComposition *)v24 setCollaborationShareOptions:v22];
-    v30 = [v22 optionsGroups];
-    [(CKComposition *)v24 setCollaborationOptions:v30];
+    [(CKComposition *)v24 setShelfMediaObject:objectCopy];
+    [(CKComposition *)v24 setCollaborationShareOptions:optionsCopy];
+    optionsGroups = [optionsCopy optionsGroups];
+    [(CKComposition *)v24 setCollaborationOptions:optionsGroups];
 
-    [(CKComposition *)v24 setProofreadingInfo:v23];
-    v19 = v32;
+    [(CKComposition *)v24 setProofreadingInfo:infoCopy];
+    payloadCopy = v32;
   }
 
   return v24;
 }
 
-- (CKComposition)initWithText:(id)a3 subject:(id)a4 translation:(id)a5 shelfPluginPayload:(id)a6 bizIntent:(id)a7 shelfMediaObject:(id)a8 collaborationOptions:(id)a9 proofreadingInfo:(id)a10
+- (CKComposition)initWithText:(id)text subject:(id)subject translation:(id)translation shelfPluginPayload:(id)payload bizIntent:(id)intent shelfMediaObject:(id)object collaborationOptions:(id)options proofreadingInfo:(id)self0
 {
   v17 = MEMORY[0x1E697B720];
-  v18 = a10;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  v25 = [v17 shareOptionsWithOptionsGroups:a9];
-  v26 = [(CKComposition *)self initWithText:v24 subject:v23 translation:v22 shelfPluginPayload:v21 bizIntent:v20 shelfMediaObject:v19 collaborationShareOptions:v25 proofreadingInfo:v18];
+  infoCopy = info;
+  objectCopy = object;
+  intentCopy = intent;
+  payloadCopy = payload;
+  translationCopy = translation;
+  subjectCopy = subject;
+  textCopy = text;
+  v25 = [v17 shareOptionsWithOptionsGroups:options];
+  v26 = [(CKComposition *)self initWithText:textCopy subject:subjectCopy translation:translationCopy shelfPluginPayload:payloadCopy bizIntent:intentCopy shelfMediaObject:objectCopy collaborationShareOptions:v25 proofreadingInfo:infoCopy];
 
   return v26;
 }
 
 - (BOOL)compositionIsCollaboration
 {
-  v2 = [(CKComposition *)self shelfPluginPayload];
-  v3 = v2;
-  if (v2 && [v2 supportsCollaboration])
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  v3 = shelfPluginPayload;
+  if (shelfPluginPayload && [shelfPluginPayload supportsCollaboration])
   {
     v4 = [v3 sendAsCopy] ^ 1;
   }
@@ -328,24 +328,24 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
   return v4;
 }
 
-- (id)compositionByAppendingText:(id)a3 shelfPluginPayload:(id)a4 shelfMediaObject:(id)a5 collaborationShareOptions:(id)a6
+- (id)compositionByAppendingText:(id)text shelfPluginPayload:(id)payload shelfMediaObject:(id)object collaborationShareOptions:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10 || v11 || v12 || v13)
+  textCopy = text;
+  payloadCopy = payload;
+  objectCopy = object;
+  optionsCopy = options;
+  v14 = optionsCopy;
+  if (textCopy || payloadCopy || objectCopy || optionsCopy)
   {
-    v16 = [(CKComposition *)self text];
-    if (v16)
+    text = [(CKComposition *)self text];
+    if (text)
     {
-      v17 = v16;
-      if (v10)
+      v17 = text;
+      if (textCopy)
       {
-        v18 = [v16 mutableCopy];
-        v19 = [v10 string];
-        v20 = [v19 characterAtIndex:0];
+        v18 = [text mutableCopy];
+        string = [textCopy string];
+        v20 = [string characterAtIndex:0];
 
         if (v20 != 10)
         {
@@ -353,48 +353,48 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
           [v18 appendAttributedString:v21];
         }
 
-        [v18 appendAttributedString:v10];
+        [v18 appendAttributedString:textCopy];
       }
 
       else
       {
-        v18 = v16;
+        v18 = text;
       }
     }
 
     else
     {
-      v18 = v10;
+      v18 = textCopy;
     }
 
-    v22 = [(CKComposition *)self shelfPluginPayload];
-    if (v11)
+    shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+    if (payloadCopy)
     {
-      v23 = v11;
+      v23 = payloadCopy;
 
-      v22 = v23;
+      shelfPluginPayload = v23;
     }
 
-    v24 = [(CKComposition *)self collaborationShareOptions];
+    collaborationShareOptions = [(CKComposition *)self collaborationShareOptions];
     if (v14)
     {
       v25 = v14;
 
-      v24 = v25;
+      collaborationShareOptions = v25;
     }
 
-    v26 = [(CKComposition *)self shelfMediaObject];
-    v39 = v11;
-    v40 = v10;
-    v37 = v12;
+    shelfMediaObject = [(CKComposition *)self shelfMediaObject];
+    v39 = payloadCopy;
+    v40 = textCopy;
+    v37 = objectCopy;
     v38 = v14;
-    if (v12)
+    if (objectCopy)
     {
-      v27 = v12;
+      v27 = objectCopy;
       v28 = v18;
       v29 = v27;
 
-      v26 = v29;
+      shelfMediaObject = v29;
     }
 
     else
@@ -403,44 +403,44 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
     }
 
     v30 = [CKComposition alloc];
-    v31 = [(CKComposition *)self subject];
-    v32 = [(CKComposition *)self translation];
-    v33 = [(CKComposition *)self bizIntent];
-    v34 = [(CKComposition *)self proofreadingInfo];
-    v15 = [(CKComposition *)v30 initWithText:v28 subject:v31 translation:v32 shelfPluginPayload:v22 bizIntent:v33 shelfMediaObject:v26 collaborationShareOptions:v24 proofreadingInfo:v34];
+    subject = [(CKComposition *)self subject];
+    translation = [(CKComposition *)self translation];
+    bizIntent = [(CKComposition *)self bizIntent];
+    proofreadingInfo = [(CKComposition *)self proofreadingInfo];
+    selfCopy = [(CKComposition *)v30 initWithText:v28 subject:subject translation:translation shelfPluginPayload:shelfPluginPayload bizIntent:bizIntent shelfMediaObject:shelfMediaObject collaborationShareOptions:collaborationShareOptions proofreadingInfo:proofreadingInfo];
 
-    v35 = [(CKComposition *)self expressiveSendStyleID];
-    [(CKComposition *)v15 setExpressiveSendStyleID:v35];
+    expressiveSendStyleID = [(CKComposition *)self expressiveSendStyleID];
+    [(CKComposition *)selfCopy setExpressiveSendStyleID:expressiveSendStyleID];
 
-    [(CKComposition *)v15 setShouldHideClearPluginButton:[(CKComposition *)self shouldHideClearPluginButton]];
-    v11 = v39;
-    v10 = v40;
-    v12 = v37;
+    [(CKComposition *)selfCopy setShouldHideClearPluginButton:[(CKComposition *)self shouldHideClearPluginButton]];
+    payloadCopy = v39;
+    textCopy = v40;
+    objectCopy = v37;
     v14 = v38;
   }
 
   else
   {
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (id)compositionByAppendingCollaborativeComposition:(id)a3
+- (id)compositionByAppendingCollaborativeComposition:(id)composition
 {
-  v4 = a3;
-  v5 = [(CKComposition *)self text];
-  v6 = [(CKComposition *)self shelfPluginPayload];
-  v7 = [(CKComposition *)self shelfMediaObject];
-  v8 = [(CKComposition *)self collaborationShareOptions];
-  v9 = [(CKComposition *)self compositionByAppendingText:v5 shelfPluginPayload:v6 shelfMediaObject:v7 collaborationShareOptions:v8];
-  v10 = [v4 text];
-  v11 = [v4 shelfPluginPayload];
-  v12 = [v4 shelfMediaObject];
-  v13 = [v4 collaborationShareOptions];
+  compositionCopy = composition;
+  text = [(CKComposition *)self text];
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  shelfMediaObject = [(CKComposition *)self shelfMediaObject];
+  collaborationShareOptions = [(CKComposition *)self collaborationShareOptions];
+  v9 = [(CKComposition *)self compositionByAppendingText:text shelfPluginPayload:shelfPluginPayload shelfMediaObject:shelfMediaObject collaborationShareOptions:collaborationShareOptions];
+  text2 = [compositionCopy text];
+  shelfPluginPayload2 = [compositionCopy shelfPluginPayload];
+  shelfMediaObject2 = [compositionCopy shelfMediaObject];
+  collaborationShareOptions2 = [compositionCopy collaborationShareOptions];
 
-  v14 = [v9 compositionByAppendingText:v10 shelfPluginPayload:v11 shelfMediaObject:v12 collaborationShareOptions:v13];
+  v14 = [v9 compositionByAppendingText:text2 shelfPluginPayload:shelfPluginPayload2 shelfMediaObject:shelfMediaObject2 collaborationShareOptions:collaborationShareOptions2];
 
   return v14;
 }
@@ -453,14 +453,14 @@ void __61__CKComposition_Collaboration__removeShareURLForComposition___block_inv
     [CKComposition(SendAnimation) isCompatibleWithGlassSendAnimation];
   }
 
-  v3 = [(CKComposition *)self balloonViewClass];
-  v4 = [isCompatibleWithGlassSendAnimation_supportedBalloonViewClasses containsObject:v3];
+  balloonViewClass = [(CKComposition *)self balloonViewClass];
+  v4 = [isCompatibleWithGlassSendAnimation_supportedBalloonViewClasses containsObject:balloonViewClass];
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = NSStringFromClass(v3);
+      v6 = NSStringFromClass(balloonViewClass);
       v8[0] = 67109378;
       v8[1] = v4;
       v9 = 2112;
@@ -488,14 +488,14 @@ void __66__CKComposition_SendAnimation__isCompatibleWithGlassSendAnimation__bloc
 
 - (NSArray)pasteboardItemProviders
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKComposition *)self text];
+  array = [MEMORY[0x1E695DF70] array];
+  text = [(CKComposition *)self text];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
   v5 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v6 = [v4 length];
+  v6 = [text length];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __54__CKComposition_UIPasteboard__pasteboardItemProviders__block_invoke;
@@ -503,20 +503,20 @@ void __66__CKComposition_SendAnimation__isCompatibleWithGlassSendAnimation__bloc
   v21 = &v22;
   v7 = v5;
   v18 = v7;
-  v8 = v4;
+  v8 = text;
   v19 = v8;
-  v20 = self;
+  selfCopy = self;
   [v8 enumerateAttributesInRange:0 options:v6 usingBlock:{0, v17}];
   if (*(v23 + 24) == 1)
   {
     v9 = [[CKAttributedStringItemProviderWriter alloc] initWithAttributedString:v7];
     v10 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v9];
-    [v3 addObject:v10];
+    [array addObject:v10];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __54__CKComposition_UIPasteboard__pasteboardItemProviders__block_invoke_471;
     v15[3] = &unk_1E72F1708;
-    v16 = v3;
+    v16 = array;
     [v8 enumerateAttributesInRange:0 options:v6 usingBlock:{0, v15}];
   }
 
@@ -534,10 +534,10 @@ void __66__CKComposition_SendAnimation__isCompatibleWithGlassSendAnimation__bloc
 
     v9 = [(CKAttributedStringItemProviderWriter *)[CKPlainStringItemProviderWriter alloc] initWithAttributedString:v7];
     v10 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v9];
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
-  v12 = v3;
+  v12 = array;
   _Block_object_dispose(&v22, 8);
 
   return v12;
@@ -713,11 +713,11 @@ void __54__CKComposition_UIPasteboard__pasteboardItemProviders__block_invoke_471
 LABEL_7:
 }
 
-+ (BOOL)_shouldCreateMediaObjectForUTIType:(id)a3
++ (BOOL)_shouldCreateMediaObjectForUTIType:(id)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([&unk_1F04E6978 containsObject:v3])
+  typeCopy = type;
+  if ([&unk_1F04E6978 containsObject:typeCopy])
   {
     LOBYTE(v4) = 0;
   }
@@ -729,8 +729,8 @@ LABEL_7:
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v5 allUTITypes];
-    v4 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allUTITypes = [v5 allUTITypes];
+    v4 = [allUTITypes countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v7 = *v11;
@@ -740,17 +740,17 @@ LABEL_5:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allUTITypes);
         }
 
-        if (UTTypeConformsTo(v3, *(*(&v10 + 1) + 8 * v8)))
+        if (UTTypeConformsTo(typeCopy, *(*(&v10 + 1) + 8 * v8)))
         {
           break;
         }
 
         if (v4 == ++v8)
         {
-          v4 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v4 = [allUTITypes countByEnumeratingWithState:&v10 objects:v14 count:16];
           if (v4)
           {
             goto LABEL_5;
@@ -760,14 +760,14 @@ LABEL_5:
         }
       }
 
-      if ([*MEMORY[0x1E69DE2B0] containsObject:v3] & 1) != 0 || UTTypeEqual(v3, @"public.url-name") || (objc_msgSend(*MEMORY[0x1E69DE2A8], "containsObject:", v3))
+      if ([*MEMORY[0x1E69DE2B0] containsObject:typeCopy] & 1) != 0 || UTTypeEqual(typeCopy, @"public.url-name") || (objc_msgSend(*MEMORY[0x1E69DE2A8], "containsObject:", typeCopy))
       {
         LOBYTE(v4) = 0;
         goto LABEL_22;
       }
 
-      v6 = [MEMORY[0x1E69DCD50] __ck_pasteboardTypeListRTFD];
-      LOBYTE(v4) = ([v6 containsObject:v3] & 1) == 0 && !UTTypeEqual(v3, *MEMORY[0x1E6963888]) && !UTTypeEqual(v3, *MEMORY[0x1E69637E8]) && !UTTypeEqual(v3, *MEMORY[0x1E69638F0]) && UTTypeConformsTo(v3, *MEMORY[0x1E6963870]) == 0;
+      allUTITypes = [MEMORY[0x1E69DCD50] __ck_pasteboardTypeListRTFD];
+      LOBYTE(v4) = ([allUTITypes containsObject:typeCopy] & 1) == 0 && !UTTypeEqual(typeCopy, *MEMORY[0x1E6963888]) && !UTTypeEqual(typeCopy, *MEMORY[0x1E69637E8]) && !UTTypeEqual(typeCopy, *MEMORY[0x1E69638F0]) && UTTypeConformsTo(typeCopy, *MEMORY[0x1E6963870]) == 0;
     }
 
 LABEL_21:
@@ -778,17 +778,17 @@ LABEL_22:
   return v4;
 }
 
-+ (void)mediaObjectForItemProvider:(id)a3 completion:(id)a4
++ (void)mediaObjectForItemProvider:(id)provider completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  completionCopy = completion;
   v8 = +[CKMediaObjectManager sharedInstance];
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x3032000000;
   v33[3] = __Block_byref_object_copy__30;
   v33[4] = __Block_byref_object_dispose__30;
-  v34 = [v6 registeredTypeIdentifiers];
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x2020000000;
@@ -828,15 +828,15 @@ LABEL_22:
   v19 = v26;
   v20 = v24;
   v21 = v33;
-  v23 = a1;
+  selfCopy = self;
   v11 = v8;
   v15 = v11;
-  v12 = v6;
+  v12 = providerCopy;
   v16 = v12;
   v22 = v31;
-  v13 = v7;
+  v13 = completionCopy;
   v17 = v13;
-  [a1 __ck_valueForItemClass:v10 forItemProvider:v12 completion:v14];
+  [self __ck_valueForItemClass:v10 forItemProvider:v12 completion:v14];
 
   _Block_object_dispose(v24, 8);
   _Block_object_dispose(v26, 8);
@@ -1475,15 +1475,15 @@ uint64_t __69__CKComposition_UIPasteboard__mediaObjectForItemProvider_completion
   return v5();
 }
 
-+ (id)_transcoderUserInfoFor:(id)a3 filename:(id)a4 type:(id)a5
++ (id)_transcoderUserInfoFor:(id)for filename:(id)filename type:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  forCopy = for;
+  filenameCopy = filename;
+  typeCopy = type;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  v11 = UTTypeConformsTo(v9, *MEMORY[0x1E6963758]);
-  if (v7 && v11 && [v7 length])
+  v11 = UTTypeConformsTo(typeCopy, *MEMORY[0x1E6963758]);
+  if (forCopy && v11 && [forCopy length])
   {
     v12 = IMIsHEVCWithAlphaVideoFromData();
     if (IMOSLoggingEnabled())
@@ -1491,7 +1491,7 @@ uint64_t __69__CKComposition_UIPasteboard__mediaObjectForItemProvider_completion
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v7 length];
+        v14 = [forCopy length];
         v15 = @"NO";
         if (v12)
         {
@@ -1515,24 +1515,24 @@ uint64_t __69__CKComposition_UIPasteboard__mediaObjectForItemProvider_completion
   return Mutable;
 }
 
-+ (void)pluginDisplayContainerForItemProvider:(id)a3 completion:(id)a4
++ (void)pluginDisplayContainerForItemProvider:(id)provider completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 registeredTypeIdentifiers];
-  if ([v8 containsObject:@"com.apple.MobileSMS.PluginPayload"])
+  providerCopy = provider;
+  completionCopy = completion;
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+  if ([registeredTypeIdentifiers containsObject:@"com.apple.MobileSMS.PluginPayload"])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __80__CKComposition_UIPasteboard__pluginDisplayContainerForItemProvider_completion___block_invoke;
     v9[3] = &unk_1E72F0030;
-    v10 = v7;
-    [a1 dataForPasteboardType:@"com.apple.MobileSMS.PluginPayload" forItemProvider:v6 completion:v9];
+    v10 = completionCopy;
+    [self dataForPasteboardType:@"com.apple.MobileSMS.PluginPayload" forItemProvider:providerCopy completion:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -1548,19 +1548,19 @@ void __80__CKComposition_UIPasteboard__pluginDisplayContainerForItemProvider_com
   }
 }
 
-+ (void)__ck_valueForItemClass:(Class)a3 forItemProvider:(id)a4 completion:(id)a5
++ (void)__ck_valueForItemClass:(Class)class forItemProvider:(id)provider completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  providerCopy = provider;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__CKComposition_UIPasteboard____ck_valueForItemClass_forItemProvider_completion___block_invoke;
   v12[3] = &unk_1E72F1960;
-  v13 = v7;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = [v10 loadObjectOfClass:a3 completionHandler:v12];
+  v13 = providerCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = providerCopy;
+  v11 = [v10 loadObjectOfClass:class completionHandler:v12];
 }
 
 void __81__CKComposition_UIPasteboard____ck_valueForItemClass_forItemProvider_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1596,19 +1596,19 @@ void __81__CKComposition_UIPasteboard____ck_valueForItemClass_forItemProvider_co
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-+ (void)dataForPasteboardType:(id)a3 forItemProvider:(id)a4 completion:(id)a5
++ (void)dataForPasteboardType:(id)type forItemProvider:(id)provider completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  providerCopy = provider;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__CKComposition_UIPasteboard__dataForPasteboardType_forItemProvider_completion___block_invoke;
   v12[3] = &unk_1E72F1988;
-  v13 = v7;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = [v10 loadDataRepresentationForTypeIdentifier:a3 completionHandler:v12];
+  v13 = providerCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = providerCopy;
+  v11 = [v10 loadDataRepresentationForTypeIdentifier:type completionHandler:v12];
 }
 
 void __80__CKComposition_UIPasteboard__dataForPasteboardType_forItemProvider_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1644,34 +1644,34 @@ void __80__CKComposition_UIPasteboard__dataForPasteboardType_forItemProvider_com
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-+ (void)filenameForType:(id)a3 forItemProvider:(id)a4 completionHandler:(id)a5
++ (void)filenameForType:(id)type forItemProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  providerCopy = provider;
+  handlerCopy = handler;
   v11 = +[CKMediaObjectManager sharedInstance];
-  v12 = [v9 registeredTypeIdentifiers];
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
   v34[3] = __Block_byref_object_copy__30;
   v34[4] = __Block_byref_object_dispose__30;
   v35 = 0;
-  v13 = [v9 suggestedName];
-  v14 = v13;
-  if (v13)
+  suggestedName = [providerCopy suggestedName];
+  v14 = suggestedName;
+  if (suggestedName)
   {
-    v15 = [v13 pathExtension];
-    v16 = [v15 length];
+    pathExtension = [suggestedName pathExtension];
+    v16 = [pathExtension length];
 
     if (!v16)
     {
-      v17 = [MEMORY[0x1E6982C40] typeWithIdentifier:v8];
-      v18 = [v17 preferredFilenameExtension];
+      v17 = [MEMORY[0x1E6982C40] typeWithIdentifier:typeCopy];
+      preferredFilenameExtension = [v17 preferredFilenameExtension];
 
-      if (v18)
+      if (preferredFilenameExtension)
       {
-        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v14, v18];
+        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v14, preferredFilenameExtension];
       }
 
       else
@@ -1692,7 +1692,7 @@ void __80__CKComposition_UIPasteboard__dataForPasteboardType_forItemProvider_com
   v29[2] = __81__CKComposition_UIPasteboard__filenameForType_forItemProvider_completionHandler___block_invoke;
   v29[3] = &unk_1E72EEC20;
   v29[4] = &v30;
-  [v12 enumerateObjectsUsingBlock:v29];
+  [registeredTypeIdentifiers enumerateObjectsUsingBlock:v29];
   if (*(v31 + 24) == 1)
   {
     v20 = objc_opt_class();
@@ -1701,18 +1701,18 @@ void __80__CKComposition_UIPasteboard__dataForPasteboardType_forItemProvider_com
     v21[2] = __81__CKComposition_UIPasteboard__filenameForType_forItemProvider_completionHandler___block_invoke_2;
     v21[3] = &unk_1E72F19D8;
     v22 = v11;
-    v23 = v8;
-    v28 = a1;
-    v24 = v9;
-    v26 = v10;
+    v23 = typeCopy;
+    selfCopy = self;
+    v24 = providerCopy;
+    v26 = handlerCopy;
     v25 = v14;
     v27 = v34;
-    [a1 __ck_valueForItemClass:v20 forItemProvider:v24 completion:v21];
+    [self __ck_valueForItemClass:v20 forItemProvider:v24 completion:v21];
   }
 
   else
   {
-    (*(v10 + 2))(v10, v14, 0);
+    (*(handlerCopy + 2))(handlerCopy, v14, 0);
   }
 
   _Block_object_dispose(&v30, 8);
@@ -1813,23 +1813,23 @@ uint64_t __81__CKComposition_UIPasteboard__filenameForType_forItemProvider_compl
   return (*(v3 + 16))(v3, a2);
 }
 
-+ (void)filenameFromURLTypeForType:(id)a3 forItemProvider:(id)a4 completionHandler:(id)a5
++ (void)filenameFromURLTypeForType:(id)type forItemProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  providerCopy = provider;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __92__CKComposition_UIPasteboard__filenameFromURLTypeForType_forItemProvider_completionHandler___block_invoke;
   v14[3] = &unk_1E72F1A00;
-  v17 = v10;
-  v18 = a1;
-  v15 = v9;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
-  [a1 _fileNameFromURLNameForItemProvider:v12 fileType:v11 completion:v14];
+  v17 = handlerCopy;
+  selfCopy = self;
+  v15 = providerCopy;
+  v16 = typeCopy;
+  v11 = typeCopy;
+  v12 = providerCopy;
+  v13 = handlerCopy;
+  [self _fileNameFromURLNameForItemProvider:v12 fileType:v11 completion:v14];
 }
 
 void __92__CKComposition_UIPasteboard__filenameFromURLTypeForType_forItemProvider_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -1859,26 +1859,26 @@ void __92__CKComposition_UIPasteboard__filenameFromURLTypeForType_forItemProvide
   }
 }
 
-+ (void)_fileNameFromURLNameForItemProvider:(id)a3 fileType:(id)a4 completion:(id)a5
++ (void)_fileNameFromURLNameForItemProvider:(id)provider fileType:(id)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 registeredTypeIdentifiers];
-  if ([v11 containsObject:@"public.url-name"])
+  providerCopy = provider;
+  typeCopy = type;
+  completionCopy = completion;
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+  if ([registeredTypeIdentifiers containsObject:@"public.url-name"])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __87__CKComposition_UIPasteboard___fileNameFromURLNameForItemProvider_fileType_completion___block_invoke;
     v12[3] = &unk_1E72F1988;
-    v13 = v9;
-    v14 = v10;
-    [a1 dataForPasteboardType:@"public.url-name" forItemProvider:v8 completion:v12];
+    v13 = typeCopy;
+    v14 = completionCopy;
+    [self dataForPasteboardType:@"public.url-name" forItemProvider:providerCopy completion:v12];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -1912,26 +1912,26 @@ void __87__CKComposition_UIPasteboard___fileNameFromURLNameForItemProvider_fileT
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)_fileNameFromFileURLForItemProvider:(id)a3 fileType:(id)a4 completion:(id)a5
++ (void)_fileNameFromFileURLForItemProvider:(id)provider fileType:(id)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 registeredTypeIdentifiers];
-  if ([v11 containsObject:@"public.file-url"])
+  providerCopy = provider;
+  typeCopy = type;
+  completionCopy = completion;
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+  if ([registeredTypeIdentifiers containsObject:@"public.file-url"])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __87__CKComposition_UIPasteboard___fileNameFromFileURLForItemProvider_fileType_completion___block_invoke;
     v12[3] = &unk_1E72F1988;
-    v13 = v9;
-    v14 = v10;
-    [a1 dataForPasteboardType:@"public.file-url" forItemProvider:v8 completion:v12];
+    v13 = typeCopy;
+    v14 = completionCopy;
+    [self dataForPasteboardType:@"public.file-url" forItemProvider:providerCopy completion:v12];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -1957,19 +1957,19 @@ void __87__CKComposition_UIPasteboard___fileNameFromFileURLForItemProvider_fileT
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)attributedStringByTransformingNSLinksFromAttributedString:(id)a3
++ (id)attributedStringByTransformingNSLinksFromAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 mutableCopy];
+  stringCopy = string;
+  v4 = [stringCopy length];
+  v5 = [stringCopy mutableCopy];
   v6 = *MEMORY[0x1E69DB670];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __89__CKComposition_UIPasteboard__attributedStringByTransformingNSLinksFromAttributedString___block_invoke;
   v14 = &unk_1E72F12B8;
   v15 = v5;
-  v16 = v3;
-  v7 = v3;
+  v16 = stringCopy;
+  v7 = stringCopy;
   v8 = v5;
   [v7 enumerateAttribute:v6 inRange:0 options:v4 usingBlock:{2, &v11}];
   v9 = [v8 copy];
@@ -2047,36 +2047,36 @@ LABEL_17:
 LABEL_18:
 }
 
-+ (id)_trimUnwantedAttributesFromAttributedString:(id)a3 allowedAttributes:(id)a4
++ (id)_trimUnwantedAttributesFromAttributedString:(id)string allowedAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = [a1 attributedStringByTransformingNSLinksFromAttributedString:a3];
+  attributesCopy = attributes;
+  v7 = [self attributedStringByTransformingNSLinksFromAttributedString:string];
   v8 = [v7 mutableCopy];
 
-  [v8 ck_removeAttributesNotIn:v6];
+  [v8 ck_removeAttributesNotIn:attributesCopy];
   v9 = [v8 copy];
 
   return v9;
 }
 
-+ (id)trimUnwantedAttributesFromAttributedString:(id)a3
++ (id)trimUnwantedAttributesFromAttributedString:(id)string
 {
   v4 = MEMORY[0x1E696AAB0];
-  v5 = a3;
-  v6 = [v4 ck_defaultAllowedAttributesForComposition];
-  v7 = [a1 _trimUnwantedAttributesFromAttributedString:v5 allowedAttributes:v6];
+  stringCopy = string;
+  ck_defaultAllowedAttributesForComposition = [v4 ck_defaultAllowedAttributesForComposition];
+  v7 = [self _trimUnwantedAttributesFromAttributedString:stringCopy allowedAttributes:ck_defaultAllowedAttributesForComposition];
 
   return v7;
 }
 
-+ (BOOL)isRTFDocumentWithItemProvider:(id)a3
++ (BOOL)isRTFDocumentWithItemProvider:(id)provider
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [a3 registeredTypeIdentifiers];
+  obj = [provider registeredTypeIdentifiers];
   v3 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v3)
   {
@@ -2095,14 +2095,14 @@ LABEL_18:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v6 identifier];
-        if ([v10 isEqualToString:v11])
+        identifier = [v6 identifier];
+        if ([v10 isEqualToString:identifier])
         {
           goto LABEL_14;
         }
 
-        v12 = [v7 identifier];
-        if ([v10 isEqualToString:v12])
+        identifier2 = [v7 identifier];
+        if ([v10 isEqualToString:identifier2])
         {
 
 LABEL_14:
@@ -2111,8 +2111,8 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v13 = [v8 identifier];
-        v14 = [v10 isEqualToString:v13];
+        identifier3 = [v8 identifier];
+        v14 = [v10 isEqualToString:identifier3];
 
         if (v14)
         {
@@ -2141,22 +2141,22 @@ LABEL_16:
   return v15;
 }
 
-+ (void)_pasteAttributedStringWithItemProvider:(id)a3 builderContext:(id)a4 completionHandler:(id)a5
++ (void)_pasteAttributedStringWithItemProvider:(id)provider builderContext:(id)context completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  contextCopy = context;
+  handlerCopy = handler;
+  providerCopy = provider;
   v11 = objc_opt_class();
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __103__CKComposition_UIPasteboard___pasteAttributedStringWithItemProvider_builderContext_completionHandler___block_invoke;
   v14[3] = &unk_1E72F1A50;
-  v16 = v9;
-  v17 = a1;
-  v15 = v8;
-  v12 = v9;
-  v13 = v8;
-  [a1 __ck_valueForItemClass:v11 forItemProvider:v10 completion:v14];
+  v16 = handlerCopy;
+  selfCopy = self;
+  v15 = contextCopy;
+  v12 = handlerCopy;
+  v13 = contextCopy;
+  [self __ck_valueForItemClass:v11 forItemProvider:providerCopy completion:v14];
 }
 
 void __103__CKComposition_UIPasteboard___pasteAttributedStringWithItemProvider_builderContext_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2489,50 +2489,50 @@ void __103__CKComposition_UIPasteboard___pasteAttributedStringWithItemProvider_b
   }
 }
 
-+ (void)_pasteRTFDocumentWithItemProvider:(id)a3 builderContext:(id)a4 completionHandler:(id)a5
++ (void)_pasteRTFDocumentWithItemProvider:(id)provider builderContext:(id)context completionHandler:(id)handler
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([a1 isRTFDocumentWithItemProvider:v10])
+  providerCopy = provider;
+  contextCopy = context;
+  handlerCopy = handler;
+  if ([self isRTFDocumentWithItemProvider:providerCopy])
   {
-    [a1 _pasteAttributedStringWithItemProvider:v10 builderContext:v8 completionHandler:v9];
+    [self _pasteAttributedStringWithItemProvider:providerCopy builderContext:contextCopy completionHandler:handlerCopy];
   }
 }
 
-+ (void)createPluginPayloadCompositionFromItemProvider:(id)a3 builderContext:(id)a4 shareOptions:(id)a5 completionHandler:(id)a6
++ (void)createPluginPayloadCompositionFromItemProvider:(id)provider builderContext:(id)context shareOptions:(id)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (([v10 hasItemConformingToTypeIdentifier:@"com.apple.cloudkit.sharingsupport.pre"] & 1) != 0 || objc_msgSend(v10, "hasItemConformingToTypeIdentifier:", @"com.apple.cloudkit.sharingsupport.post"))
+  providerCopy = provider;
+  contextCopy = context;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (([providerCopy hasItemConformingToTypeIdentifier:@"com.apple.cloudkit.sharingsupport.pre"] & 1) != 0 || objc_msgSend(providerCopy, "hasItemConformingToTypeIdentifier:", @"com.apple.cloudkit.sharingsupport.post"))
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __124__CKComposition_UIPasteboard__createPluginPayloadCompositionFromItemProvider_builderContext_shareOptions_completionHandler___block_invoke;
     v19[3] = &unk_1E72F16B8;
-    v20 = v13;
-    [a1 createPluginPayloadCompositionFromCloudKitItemProvider:v10 collaborationShareOptions:v12 completionHandler:v19];
+    v20 = handlerCopy;
+    [self createPluginPayloadCompositionFromCloudKitItemProvider:providerCopy collaborationShareOptions:optionsCopy completionHandler:v19];
     v14 = v20;
   }
 
-  else if ([v10 hasItemConformingToTypeIdentifier:*MEMORY[0x1E697B770]])
+  else if ([providerCopy hasItemConformingToTypeIdentifier:*MEMORY[0x1E697B770]])
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __124__CKComposition_UIPasteboard__createPluginPayloadCompositionFromItemProvider_builderContext_shareOptions_completionHandler___block_invoke_530;
     v17[3] = &unk_1E72F16B8;
-    v18 = v13;
-    [a1 createPluginPayloadCompositionFromCollaborativeItemProvider:v10 collaborationShareOptions:v12 completionHandler:v17];
+    v18 = handlerCopy;
+    [self createPluginPayloadCompositionFromCollaborativeItemProvider:providerCopy collaborationShareOptions:optionsCopy completionHandler:v17];
     v14 = v18;
   }
 
   else
   {
-    if (![v10 hasItemConformingToTypeIdentifier:*MEMORY[0x1E6963800]])
+    if (![providerCopy hasItemConformingToTypeIdentifier:*MEMORY[0x1E6963800]])
     {
-      (*(v13 + 2))(v13, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
       goto LABEL_5;
     }
 
@@ -2540,8 +2540,8 @@ void __103__CKComposition_UIPasteboard___pasteAttributedStringWithItemProvider_b
     v15[1] = 3221225472;
     v15[2] = __124__CKComposition_UIPasteboard__createPluginPayloadCompositionFromItemProvider_builderContext_shareOptions_completionHandler___block_invoke_531;
     v15[3] = &unk_1E72F16B8;
-    v16 = v13;
-    [a1 _createPluginPayloadCompositionFromFileItemProvider:v10 builderContext:v11 collaborationShareOptions:v12 completionHandler:v15];
+    v16 = handlerCopy;
+    [self _createPluginPayloadCompositionFromFileItemProvider:providerCopy builderContext:contextCopy collaborationShareOptions:optionsCopy completionHandler:v15];
     v14 = v16;
   }
 
@@ -2662,12 +2662,12 @@ void __124__CKComposition_UIPasteboard__createPluginPayloadCompositionFromItemPr
   v9();
 }
 
-+ (void)_createPluginPayloadCompositionFromFileItemProvider:(id)a3 builderContext:(id)a4 collaborationShareOptions:(id)a5 completionHandler:(id)a6
++ (void)_createPluginPayloadCompositionFromFileItemProvider:(id)provider builderContext:(id)context collaborationShareOptions:(id)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  contextCopy = context;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v14 = OSLogHandleForIMFoundationCategory();
@@ -2678,34 +2678,34 @@ void __124__CKComposition_UIPasteboard__createPluginPayloadCompositionFromItemPr
     }
   }
 
-  v15 = [v10 registeredTypeIdentifiersWithFileOptions:1];
+  v15 = [providerCopy registeredTypeIdentifiersWithFileOptions:1];
   *buf = 0;
   v40 = buf;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__30;
   v43 = __Block_byref_object_dispose__30;
-  v44 = [v15 firstObject];
+  firstObject = [v15 firstObject];
   v37[0] = 0;
   v37[1] = v37;
   v37[2] = 0x3032000000;
   v37[3] = __Block_byref_object_copy__30;
   v37[4] = __Block_byref_object_dispose__30;
-  v38 = [a1 richestMediaTypeForItemProvider:v10];
+  v38 = [self richestMediaTypeForItemProvider:providerCopy];
   if (*(v40 + 5))
   {
-    objc_initWeak(location, a1);
+    objc_initWeak(location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __142__CKComposition_UIPasteboard___createPluginPayloadCompositionFromFileItemProvider_builderContext_collaborationShareOptions_completionHandler___block_invoke;
     aBlock[3] = &unk_1E72F1BB8;
     objc_copyWeak(v35, location);
-    v35[1] = a1;
-    v16 = v10;
+    v35[1] = self;
+    v16 = providerCopy;
     v29 = v16;
     v33 = v37;
-    v30 = v11;
-    v32 = v13;
-    v31 = v12;
+    v30 = contextCopy;
+    v32 = handlerCopy;
+    v31 = optionsCopy;
     v34 = buf;
     v17 = _Block_copy(aBlock);
     if ([*(v40 + 5) isEqualToString:*MEMORY[0x1E697B750]] && objc_msgSend(v16, "hasItemConformingToTypeIdentifier:", @"public.file-url"))
@@ -2751,8 +2751,8 @@ void __124__CKComposition_UIPasteboard__createPluginPayloadCompositionFromItemPr
     v22[1] = 3221225472;
     v22[2] = __142__CKComposition_UIPasteboard___createPluginPayloadCompositionFromFileItemProvider_builderContext_collaborationShareOptions_completionHandler___block_invoke_596;
     v22[3] = &unk_1E72ED700;
-    v23 = v13;
-    [a1 _requestCompositionFromItemProviderForNonCollaboration:v10 builderContext:v11 completion:v22];
+    v23 = handlerCopy;
+    [self _requestCompositionFromItemProviderForNonCollaboration:providerCopy builderContext:contextCopy completion:v22];
   }
 
   _Block_object_dispose(v37, 8);
@@ -3558,14 +3558,14 @@ void __142__CKComposition_UIPasteboard___createPluginPayloadCompositionFromFileI
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-+ (void)createPluginPayloadCompositionFromCloudKitItemProvider:(id)a3 collaborationShareOptions:(id)a4 completionHandler:(id)a5
++ (void)createPluginPayloadCompositionFromCloudKitItemProvider:(id)provider collaborationShareOptions:(id)options completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  optionsCopy = options;
+  handlerCopy = handler;
   v10 = @"com.apple.cloudkit.sharingsupport.pre";
-  if ([v7 hasItemConformingToTypeIdentifier:@"com.apple.cloudkit.sharingsupport.pre"])
+  if ([providerCopy hasItemConformingToTypeIdentifier:@"com.apple.cloudkit.sharingsupport.pre"])
   {
     v11 = @"CKPreSharingContext";
 LABEL_5:
@@ -3586,18 +3586,18 @@ LABEL_5:
     v22[1] = 3221225472;
     v22[2] = __130__CKComposition_UIPasteboard__createPluginPayloadCompositionFromCloudKitItemProvider_collaborationShareOptions_completionHandler___block_invoke;
     v22[3] = &unk_1E72F1CD0;
-    v23 = v8;
-    v24 = v9;
+    v23 = optionsCopy;
+    v24 = handlerCopy;
     v25 = v12;
-    v15 = v9;
-    v16 = [v7 loadObjectOfClass:v14 completionHandler:v22];
+    v15 = handlerCopy;
+    v16 = [providerCopy loadObjectOfClass:v14 completionHandler:v22];
 
     v17 = &v23;
     goto LABEL_15;
   }
 
   v10 = @"com.apple.cloudkit.sharingsupport.post";
-  if ([v7 hasItemConformingToTypeIdentifier:@"com.apple.cloudkit.sharingsupport.post"])
+  if ([providerCopy hasItemConformingToTypeIdentifier:@"com.apple.cloudkit.sharingsupport.post"])
   {
     v11 = @"CKPostSharingContext";
     goto LABEL_5;
@@ -3618,8 +3618,8 @@ LABEL_5:
   v20[2] = __130__CKComposition_UIPasteboard__createPluginPayloadCompositionFromCloudKitItemProvider_collaborationShareOptions_completionHandler___block_invoke_616;
   v20[3] = &unk_1E72EBDB8;
   v17 = &v21;
-  v21 = v9;
-  v19 = v9;
+  v21 = handlerCopy;
+  v19 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v20);
 LABEL_15:
 }
@@ -3836,11 +3836,11 @@ void __130__CKComposition_UIPasteboard__createPluginPayloadCompositionFromCloudK
   (*(*(a1 + 56) + 16))();
 }
 
-+ (void)createPluginPayloadCompositionFromCollaborativeItemProvider:(id)a3 collaborationShareOptions:(id)a4 completionHandler:(id)a5
++ (void)createPluginPayloadCompositionFromCollaborativeItemProvider:(id)provider collaborationShareOptions:(id)options completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -3856,11 +3856,11 @@ void __130__CKComposition_UIPasteboard__createPluginPayloadCompositionFromCloudK
   v15[1] = 3221225472;
   v15[2] = __135__CKComposition_UIPasteboard__createPluginPayloadCompositionFromCollaborativeItemProvider_collaborationShareOptions_completionHandler___block_invoke;
   v15[3] = &unk_1E72F1960;
-  v16 = v8;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = [v7 loadObjectOfClass:v11 completionHandler:v15];
+  v16 = optionsCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = [providerCopy loadObjectOfClass:v11 completionHandler:v15];
 }
 
 void __135__CKComposition_UIPasteboard__createPluginPayloadCompositionFromCollaborativeItemProvider_collaborationShareOptions_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3968,26 +3968,26 @@ void __135__CKComposition_UIPasteboard__createPluginPayloadCompositionFromCollab
   (*(*(a1 + 56) + 16))();
 }
 
-+ (void)compositionFromItemProviders:(id)a3 shareOptions:(id)a4 completionHandler:(id)a5
++ (void)compositionFromItemProviders:(id)providers shareOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 count])
+  providersCopy = providers;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (![providersCopy count])
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __91__CKComposition_UIPasteboard__compositionFromItemProviders_shareOptions_completionHandler___block_invoke;
   v13[3] = &unk_1E72F1CF8;
-  v15 = v10;
-  v16 = a1;
-  v14 = v9;
-  v11 = v10;
-  v12 = v9;
-  [v8 enumerateObjectsUsingBlock:v13];
+  v15 = handlerCopy;
+  selfCopy = self;
+  v14 = optionsCopy;
+  v11 = handlerCopy;
+  v12 = optionsCopy;
+  [providersCopy enumerateObjectsUsingBlock:v13];
 }
 
 void __91__CKComposition_UIPasteboard__compositionFromItemProviders_shareOptions_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -4025,12 +4025,12 @@ uint64_t __91__CKComposition_UIPasteboard__compositionFromItemProviders_shareOpt
   return result;
 }
 
-+ (void)compositionFromNonCollaborationItemProviders:(id)a3 builderContext:(id)a4 completionHandler:(id)a5
++ (void)compositionFromNonCollaborationItemProviders:(id)providers builderContext:(id)context completionHandler:(id)handler
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providersCopy = providers;
+  contextCopy = context;
+  handlerCopy = handler;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
@@ -4042,13 +4042,13 @@ uint64_t __91__CKComposition_UIPasteboard__compositionFromItemProviders_shareOpt
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x2020000000;
-  v41[3] = [v8 count] - 1;
+  v41[3] = [providersCopy count] - 1;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v8 count];
+      v12 = [providersCopy count];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v12;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Beginning paste resolution for {%ld} given item providers.", &buf, 0xCu);
@@ -4060,13 +4060,13 @@ uint64_t __91__CKComposition_UIPasteboard__compositionFromItemProviders_shareOpt
   v53 = 0x3032000000;
   v54 = __Block_byref_object_copy__30;
   v55 = __Block_byref_object_dispose__30;
-  v56 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __109__CKComposition_UIPasteboard__compositionFromNonCollaborationItemProviders_builderContext_completionHandler___block_invoke;
   v40[3] = &unk_1E72F1D20;
   v40[4] = &buf;
-  [v8 enumerateObjectsUsingBlock:v40];
+  [providersCopy enumerateObjectsUsingBlock:v40];
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -4075,13 +4075,13 @@ uint64_t __91__CKComposition_UIPasteboard__compositionFromItemProviders_shareOpt
   v31[1] = 3221225472;
   v31[2] = __109__CKComposition_UIPasteboard__compositionFromNonCollaborationItemProviders_builderContext_completionHandler___block_invoke_2;
   v31[3] = &unk_1E72F1D48;
-  v35 = a1;
-  v13 = v9;
+  selfCopy = self;
+  v13 = contextCopy;
   v32 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v33 = v14;
   v34 = &v36;
-  [v8 enumerateObjectsUsingBlock:v31];
+  [providersCopy enumerateObjectsUsingBlock:v31];
   if (IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
@@ -4106,22 +4106,22 @@ uint64_t __91__CKComposition_UIPasteboard__compositionFromItemProviders_shareOpt
   if ((v37[3] & 1) == 0)
   {
     v17 = [MEMORY[0x1E695DFA8] set];
-    v18 = [v13 wantsInlinedRichLinks];
+    wantsInlinedRichLinks = [v13 wantsInlinedRichLinks];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __109__CKComposition_UIPasteboard__compositionFromNonCollaborationItemProviders_builderContext_completionHandler___block_invoke_620;
     v21[3] = &unk_1E72F1E60;
     p_buf = &buf;
     v26 = v41;
-    v29 = a1;
+    selfCopy2 = self;
     v27 = &v42;
     v24 = v14;
-    v30 = v18;
+    v30 = wantsInlinedRichLinks;
     v19 = v17;
     v22 = v19;
     v23 = v13;
     v28 = &v46;
-    [v8 enumerateObjectsUsingBlock:v21];
+    [providersCopy enumerateObjectsUsingBlock:v21];
   }
 
   if (*(v47 + 24) == 1 && (v43[3] & 1) == 0)
@@ -4858,27 +4858,27 @@ void __109__CKComposition_UIPasteboard__compositionFromNonCollaborationItemProvi
   *v20 = v19 - 1;
 }
 
-+ (id)_attributedStringAfterPostProcessingForRichLinksForText:(id)a3
++ (id)_attributedStringAfterPostProcessingForRichLinksForText:(id)text
 {
   v3 = MEMORY[0x1E696AAB0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
+  textCopy = text;
+  v5 = [[v3 alloc] initWithString:textCopy];
 
-  v6 = [v5 ck_attributedStringByPostProcessingURLTextForRichLinks];
+  ck_attributedStringByPostProcessingURLTextForRichLinks = [v5 ck_attributedStringByPostProcessingURLTextForRichLinks];
 
-  return v6;
+  return ck_attributedStringByPostProcessingURLTextForRichLinks;
 }
 
-+ (id)finalCompositionFromAllCompositions:(id)a3
++ (id)finalCompositionFromAllCompositions:(id)compositions
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  compositionsCopy = compositions;
   v4 = +[CKComposition composition];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = compositionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -4911,18 +4911,18 @@ void __109__CKComposition_UIPasteboard__compositionFromNonCollaborationItemProvi
   return v4;
 }
 
-+ (void)requestPluginDisplayContainerForItemProvider:(id)a3 completion:(id)a4
++ (void)requestPluginDisplayContainerForItemProvider:(id)provider completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __87__CKComposition_UIPasteboard__requestPluginDisplayContainerForItemProvider_completion___block_invoke;
   v9[3] = &unk_1E72F0030;
-  v7 = v6;
+  v7 = completionCopy;
   v10 = v7;
-  v8 = [v5 loadDataRepresentationForTypeIdentifier:@"com.apple.MobileSMS.PluginPayload" completionHandler:v9];
+  v8 = [providerCopy loadDataRepresentationForTypeIdentifier:@"com.apple.MobileSMS.PluginPayload" completionHandler:v9];
 }
 
 void __87__CKComposition_UIPasteboard__requestPluginDisplayContainerForItemProvider_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -4941,15 +4941,15 @@ void __87__CKComposition_UIPasteboard__requestPluginDisplayContainerForItemProvi
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)requestFilenameForType:(id)a3 forItemProvider:(id)a4 completion:(id)a5
++ (void)requestFilenameForType:(id)type forItemProvider:(id)provider completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  providerCopy = provider;
+  completionCopy = completion;
   v10 = +[CKMediaObjectManager sharedInstance];
-  v11 = [v8 registeredTypeIdentifiers];
-  if ([v8 canLoadObjectOfClass:objc_opt_class()])
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+  if ([providerCopy canLoadObjectOfClass:objc_opt_class()])
   {
     v12 = objc_opt_class();
     v23[0] = MEMORY[0x1E69E9820];
@@ -4957,14 +4957,14 @@ void __87__CKComposition_UIPasteboard__requestPluginDisplayContainerForItemProvi
     v23[2] = __81__CKComposition_UIPasteboard__requestFilenameForType_forItemProvider_completion___block_invoke;
     v23[3] = &unk_1E72F1E88;
     v24 = v10;
-    v25 = v7;
-    v26 = v9;
-    v13 = [v8 loadObjectOfClass:v12 completionHandler:v23];
+    v25 = typeCopy;
+    v26 = completionCopy;
+    v13 = [providerCopy loadObjectOfClass:v12 completionHandler:v23];
   }
 
   else
   {
-    v14 = [v11 containsObject:@"public.url-name"];
+    v14 = [registeredTypeIdentifiers containsObject:@"public.url-name"];
     v15 = IMOSLoggingEnabled();
     if (v14)
     {
@@ -4974,7 +4974,7 @@ void __87__CKComposition_UIPasteboard__requestPluginDisplayContainerForItemProvi
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v28 = v8;
+          v28 = providerCopy;
           v29 = 2112;
           v30 = @"public.url-name";
           _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Couldn't instantiate NSString from itemProvider: %@ querying data for %@", buf, 0x16u);
@@ -4986,9 +4986,9 @@ void __87__CKComposition_UIPasteboard__requestPluginDisplayContainerForItemProvi
       v19[2] = __81__CKComposition_UIPasteboard__requestFilenameForType_forItemProvider_completion___block_invoke_638;
       v19[3] = &unk_1E72F1EB0;
       v20 = v10;
-      v21 = v7;
-      v22 = v9;
-      v17 = [v8 loadDataRepresentationForTypeIdentifier:@"public.url-name" completionHandler:v19];
+      v21 = typeCopy;
+      v22 = completionCopy;
+      v17 = [providerCopy loadDataRepresentationForTypeIdentifier:@"public.url-name" completionHandler:v19];
     }
 
     else
@@ -4999,12 +4999,12 @@ void __87__CKComposition_UIPasteboard__requestPluginDisplayContainerForItemProvi
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v28 = v8;
+          v28 = providerCopy;
           _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "No associated string data to create filename for itemProvider: %@", buf, 0xCu);
         }
       }
 
-      (*(v9 + 2))(v9, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -5072,56 +5072,56 @@ void __81__CKComposition_UIPasteboard__requestFilenameForType_forItemProvider_co
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)_requestCompositionFromItemProviderForNonCollaboration:(id)a3 builderContext:(id)a4 completion:(id)a5
++ (void)_requestCompositionFromItemProviderForNonCollaboration:(id)collaboration builderContext:(id)context completion:(id)completion
 {
   v74 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 registeredTypeIdentifiers];
-  if ([v11 containsObject:@"com.apple.MobileSMS.PluginPayload"])
+  collaborationCopy = collaboration;
+  contextCopy = context;
+  completionCopy = completion;
+  registeredTypeIdentifiers = [collaborationCopy registeredTypeIdentifiers];
+  if ([registeredTypeIdentifiers containsObject:@"com.apple.MobileSMS.PluginPayload"])
   {
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __112__CKComposition_UIPasteboard___requestCompositionFromItemProviderForNonCollaboration_builderContext_completion___block_invoke;
     v70[3] = &unk_1E72F1ED8;
-    v71 = v8;
-    v72 = v10;
-    [a1 requestPluginDisplayContainerForItemProvider:v71 completion:v70];
+    v71 = collaborationCopy;
+    v72 = completionCopy;
+    [self requestPluginDisplayContainerForItemProvider:v71 completion:v70];
 
     v12 = v71;
   }
 
   else
   {
-    v12 = [a1 richestMediaTypeForItemProvider:v8];
+    v12 = [self richestMediaTypeForItemProvider:collaborationCopy];
     if (v12)
     {
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __112__CKComposition_UIPasteboard___requestCompositionFromItemProviderForNonCollaboration_builderContext_completion___block_invoke_2;
       v67[3] = &unk_1E72F1F00;
-      v68 = v8;
-      v69 = v10;
-      [a1 requestMediaObjectForItemProvider:v68 type:v12 builderContext:v9 completion:v67];
+      v68 = collaborationCopy;
+      v69 = completionCopy;
+      [self requestMediaObjectForItemProvider:v68 type:v12 builderContext:contextCopy completion:v67];
 
       v13 = v68;
     }
 
     else
     {
-      v14 = [v9 wantsInlinedRichLinks];
-      v15 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v16 = [v15 isRichLinkImprovementsEnabled];
+      wantsInlinedRichLinks = [contextCopy wantsInlinedRichLinks];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isRichLinkImprovementsEnabled = [mEMORY[0x1E69A8070] isRichLinkImprovementsEnabled];
 
-      if (v16 && ([v8 registeredTypeIdentifiers], v17 = objc_claimAutoreleasedReturnValue(), v18 = *MEMORY[0x1E696EC00], v19 = objc_msgSend(v17, "containsObject:", *MEMORY[0x1E696EC00]), v17, (v19 & v14) == 1))
+      if (isRichLinkImprovementsEnabled && ([collaborationCopy registeredTypeIdentifiers], v17 = objc_claimAutoreleasedReturnValue(), v18 = *MEMORY[0x1E696EC00], v19 = objc_msgSend(v17, "containsObject:", *MEMORY[0x1E696EC00]), v17, (v19 & wantsInlinedRichLinks) == 1))
       {
         v64[0] = MEMORY[0x1E69E9820];
         v64[1] = 3221225472;
         v64[2] = __112__CKComposition_UIPasteboard___requestCompositionFromItemProviderForNonCollaboration_builderContext_completion___block_invoke_5;
         v64[3] = &unk_1E72F1988;
-        v65 = v8;
-        v66 = v10;
+        v65 = collaborationCopy;
+        v66 = completionCopy;
         v20 = [v65 loadDataRepresentationForTypeIdentifier:v18 completionHandler:v64];
 
         v13 = v65;
@@ -5129,34 +5129,34 @@ void __81__CKComposition_UIPasteboard__requestFilenameForType_forItemProvider_co
 
       else
       {
-        v21 = [v8 registeredTypeIdentifiers];
-        v22 = [v21 containsObject:@"com.apple.iCal.pasteboard.event"];
+        registeredTypeIdentifiers2 = [collaborationCopy registeredTypeIdentifiers];
+        v22 = [registeredTypeIdentifiers2 containsObject:@"com.apple.iCal.pasteboard.event"];
 
-        if ((v22 & 1) != 0 || ![v8 canLoadObjectOfClass:objc_opt_class()])
+        if ((v22 & 1) != 0 || ![collaborationCopy canLoadObjectOfClass:objc_opt_class()])
         {
-          v25 = [v8 suggestedName];
-          if (!v25)
+          suggestedName = [collaborationCopy suggestedName];
+          if (!suggestedName)
           {
             goto LABEL_29;
           }
 
-          v26 = [v8 suggestedName];
-          v27 = [v26 length];
+          suggestedName2 = [collaborationCopy suggestedName];
+          v27 = [suggestedName2 length];
 
           if (!v27)
           {
             goto LABEL_29;
           }
 
-          v28 = [v8 suggestedName];
-          v29 = [v28 pathExtension];
+          suggestedName3 = [collaborationCopy suggestedName];
+          pathExtension = [suggestedName3 pathExtension];
 
-          if (!v29)
+          if (!pathExtension)
           {
             goto LABEL_29;
           }
 
-          v30 = [v29 length];
+          v30 = [pathExtension length];
 
           if (!v30)
           {
@@ -5187,7 +5187,7 @@ LABEL_19:
               }
 
               v34 = *(*(&v55 + 1) + 8 * v33);
-              if ([v8 hasItemConformingToTypeIdentifier:v34])
+              if ([collaborationCopy hasItemConformingToTypeIdentifier:v34])
               {
                 break;
               }
@@ -5217,7 +5217,7 @@ LABEL_19:
 LABEL_25:
           }
 
-          v36 = [v8 suggestedName];
+          suggestedName4 = [collaborationCopy suggestedName];
           v35 = IMUTITypeForFilename();
 
           if (v35)
@@ -5228,8 +5228,8 @@ LABEL_28:
             v51[2] = __112__CKComposition_UIPasteboard___requestCompositionFromItemProviderForNonCollaboration_builderContext_completion___block_invoke_3_654;
             v51[3] = &unk_1E72F1EB0;
             v52 = v35;
-            v53 = v8;
-            v54 = v10;
+            v53 = collaborationCopy;
+            v54 = completionCopy;
             v13 = v35;
             v37 = [v53 loadDataRepresentationForTypeIdentifier:v13 completionHandler:v51];
           }
@@ -5241,9 +5241,9 @@ LABEL_29:
             aBlock[1] = 3221225472;
             aBlock[2] = __112__CKComposition_UIPasteboard___requestCompositionFromItemProviderForNonCollaboration_builderContext_completion___block_invoke_656;
             aBlock[3] = &unk_1E72EE5D8;
-            v38 = v10;
+            v38 = completionCopy;
             v50 = v38;
-            v39 = v8;
+            v39 = collaborationCopy;
             v49 = v39;
             v40 = _Block_copy(aBlock);
             v46[0] = 0;
@@ -5252,7 +5252,7 @@ LABEL_29:
             v46[3] = __Block_byref_object_copy__30;
             v46[4] = __Block_byref_object_dispose__30;
             v47 = 0;
-            if ([a1 isRTFDocumentWithItemProvider:v39])
+            if ([self isRTFDocumentWithItemProvider:v39])
             {
               v42[0] = MEMORY[0x1E69E9820];
               v42[1] = 3221225472;
@@ -5261,7 +5261,7 @@ LABEL_29:
               v45 = v46;
               v43 = v38;
               v44 = v40;
-              [a1 _pasteRTFDocumentWithItemProvider:v39 builderContext:v9 completionHandler:v42];
+              [self _pasteRTFDocumentWithItemProvider:v39 builderContext:contextCopy completionHandler:v42];
             }
 
             else
@@ -5282,10 +5282,10 @@ LABEL_29:
           v59[1] = 3221225472;
           v59[2] = __112__CKComposition_UIPasteboard___requestCompositionFromItemProviderForNonCollaboration_builderContext_completion___block_invoke_2_649;
           v59[3] = &unk_1E72F1F28;
-          v63 = v14;
-          v60 = v8;
-          v62 = a1;
-          v61 = v10;
+          v63 = wantsInlinedRichLinks;
+          v60 = collaborationCopy;
+          selfCopy = self;
+          v61 = completionCopy;
           v24 = [v60 loadObjectOfClass:v23 completionHandler:v59];
 
           v13 = v60;
@@ -5984,16 +5984,16 @@ void __112__CKComposition_UIPasteboard___requestCompositionFromItemProviderForNo
   }
 }
 
-+ (void)requestCompositionFromItemProvider:(id)a3 shelfMediaObject:(id)a4 builderContext:(id)a5 completion:(id)a6
++ (void)requestCompositionFromItemProvider:(id)provider shelfMediaObject:(id)object builderContext:(id)context completion:(id)completion
 {
-  v9 = a6;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __109__CKComposition_UIPasteboard__requestCompositionFromItemProvider_shelfMediaObject_builderContext_completion___block_invoke;
   v11[3] = &unk_1E72F16B8;
-  v12 = v9;
-  v10 = v9;
-  [a1 createPluginPayloadCompositionFromItemProvider:a3 builderContext:a5 shareOptions:0 completionHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [self createPluginPayloadCompositionFromItemProvider:provider builderContext:context shareOptions:0 completionHandler:v11];
 }
 
 void __109__CKComposition_UIPasteboard__requestCompositionFromItemProvider_shelfMediaObject_builderContext_completion___block_invoke(uint64_t a1, void *a2)
@@ -6010,10 +6010,10 @@ void __109__CKComposition_UIPasteboard__requestCompositionFromItemProvider_shelf
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-+ (void)requestCompositionFromItemProviders:(id)a3 completion:(id)a4
++ (void)requestCompositionFromItemProviders:(id)providers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  providersCopy = providers;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -6026,22 +6026,22 @@ void __109__CKComposition_UIPasteboard__requestCompositionFromItemProvider_shelf
   block[1] = 3221225472;
   block[2] = __78__CKComposition_UIPasteboard__requestCompositionFromItemProviders_completion___block_invoke;
   block[3] = &unk_1E72F1F78;
-  v9 = v7;
+  v9 = completionCopy;
   v19 = v9;
   v20 = v21;
   dispatch_group_notify(v8, MEMORY[0x1E69E96A0], block);
-  if ([v6 count] < 2)
+  if ([providersCopy count] < 2)
   {
     dispatch_group_enter(v8);
-    v11 = [v6 firstObject];
+    firstObject = [providersCopy firstObject];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __78__CKComposition_UIPasteboard__requestCompositionFromItemProviders_completion___block_invoke_4;
     v12[3] = &unk_1E72F2040;
-    v13 = v6;
+    v13 = providersCopy;
     v15 = v21;
     v14 = v8;
-    [a1 requestCompositionFromItemProvider:v11 completion:v12];
+    [self requestCompositionFromItemProvider:firstObject completion:v12];
     v10 = &v13;
   }
 
@@ -6053,8 +6053,8 @@ void __109__CKComposition_UIPasteboard__requestCompositionFromItemProvider_shelf
     v16[3] = &unk_1E72F2018;
     v17[0] = v8;
     v17[1] = v21;
-    v17[2] = a1;
-    [v6 enumerateObjectsUsingBlock:v16];
+    v17[2] = self;
+    [providersCopy enumerateObjectsUsingBlock:v16];
     v10 = v17;
   }
 
@@ -6132,11 +6132,11 @@ void __78__CKComposition_UIPasteboard__requestCompositionFromItemProviders_compl
   dispatch_group_leave(*(a1 + 40));
 }
 
-+ (id)richestMediaTypeForItemProvider:(id)a3
++ (id)richestMediaTypeForItemProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(CKMultiDict);
-  v6 = [v4 registeredTypeIdentifiers];
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
   v7 = +[CKMediaObjectManager sharedInstance];
   v44 = 0;
   v45 = &v44;
@@ -6144,67 +6144,67 @@ void __78__CKComposition_UIPasteboard__requestCompositionFromItemProviders_compl
   v47 = __Block_byref_object_copy__30;
   v48 = __Block_byref_object_dispose__30;
   v49 = 0;
-  if ([v6 containsObject:@"com.apple.sticker.mediaPayload"])
+  if ([registeredTypeIdentifiers containsObject:@"com.apple.sticker.mediaPayload"])
   {
-    v8 = @"com.apple.sticker.mediaPayload";
+    identifier2 = @"com.apple.sticker.mediaPayload";
     goto LABEL_18;
   }
 
-  if ([v6 containsObject:@"com.apple.sticker"])
+  if ([registeredTypeIdentifiers containsObject:@"com.apple.sticker"])
   {
     v9 = *MEMORY[0x1E6982F40];
-    v10 = [*MEMORY[0x1E6982F40] identifier];
-    v11 = [v6 containsObject:v10];
+    identifier = [*MEMORY[0x1E6982F40] identifier];
+    v11 = [registeredTypeIdentifiers containsObject:identifier];
 
     if (v11)
     {
-      v8 = [v9 identifier];
+      identifier2 = [v9 identifier];
       goto LABEL_18;
     }
   }
 
   v12 = MEMORY[0x193AF6190]();
-  if (![v6 containsObject:v12])
+  if (![registeredTypeIdentifiers containsObject:v12])
   {
-    if ([v6 containsObject:@"com.apple.live-photo-bundle"])
+    if ([registeredTypeIdentifiers containsObject:@"com.apple.live-photo-bundle"])
     {
-      v8 = @"com.apple.live-photo-bundle";
+      identifier2 = @"com.apple.live-photo-bundle";
       goto LABEL_17;
     }
 
-    if ([v6 containsObject:@"com.apple.private.live-photo-bundle"])
+    if ([registeredTypeIdentifiers containsObject:@"com.apple.private.live-photo-bundle"])
     {
-      v8 = @"com.apple.private.live-photo-bundle";
+      identifier2 = @"com.apple.private.live-photo-bundle";
       goto LABEL_17;
     }
 
-    if ([v6 containsObject:@"com.apple.photos.object-reference.asset"])
+    if ([registeredTypeIdentifiers containsObject:@"com.apple.photos.object-reference.asset"])
     {
-      v8 = @"com.apple.photos.object-reference.asset";
+      identifier2 = @"com.apple.photos.object-reference.asset";
       goto LABEL_17;
     }
 
-    if ([v6 containsObject:@"com.apple.mapkit.map-item"])
+    if ([registeredTypeIdentifiers containsObject:@"com.apple.mapkit.map-item"])
     {
-      v8 = @"com.apple.mapkit.map-item";
+      identifier2 = @"com.apple.mapkit.map-item";
       goto LABEL_17;
     }
 
-    v15 = [v6 firstObject];
+    firstObject = [registeredTypeIdentifiers firstObject];
     v16 = *MEMORY[0x1E6982F10];
-    v17 = [*MEMORY[0x1E6982F10] identifier];
-    v18 = [v15 isEqualToString:v17];
+    identifier3 = [*MEMORY[0x1E6982F10] identifier];
+    v18 = [firstObject isEqualToString:identifier3];
 
     if (v18)
     {
-      v13 = [v16 identifier];
+      identifier4 = [v16 identifier];
       goto LABEL_8;
     }
 
     v19 = *MEMORY[0x1E69A6890];
-    if ([v6 containsObject:*MEMORY[0x1E69A6890]])
+    if ([registeredTypeIdentifiers containsObject:*MEMORY[0x1E69A6890]])
     {
-      v13 = v19;
+      identifier4 = v19;
       goto LABEL_8;
     }
 
@@ -6212,16 +6212,16 @@ void __78__CKComposition_UIPasteboard__requestCompositionFromItemProviders_compl
     v40[1] = 3221225472;
     v40[2] = __63__CKComposition_UIPasteboard__richestMediaTypeForItemProvider___block_invoke;
     v40[3] = &unk_1E72F1758;
-    v43 = a1;
+    selfCopy = self;
     v20 = v7;
     v41 = v20;
     v21 = v5;
     v42 = v21;
-    [v6 enumerateObjectsUsingBlock:v40];
+    [registeredTypeIdentifiers enumerateObjectsUsingBlock:v40];
     if (![(CKMultiDict *)v21 count])
     {
 LABEL_31:
-      v8 = v45[5];
+      identifier2 = v45[5];
 
       goto LABEL_17;
     }
@@ -6230,7 +6230,7 @@ LABEL_31:
     v37 = &v36;
     v38 = 0x2050000000;
     v39 = 0;
-    v22 = [v20 classes];
+    classes = [v20 classes];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __63__CKComposition_UIPasteboard__richestMediaTypeForItemProvider___block_invoke_2;
@@ -6238,7 +6238,7 @@ LABEL_31:
     v23 = v21;
     v34 = v23;
     v35 = &v36;
-    [v22 enumerateObjectsUsingBlock:v33];
+    [classes enumerateObjectsUsingBlock:v33];
     v24 = [(CKMultiDict *)v23 objectsForKey:v37[3]];
     v25 = v37[3];
     if (v25 == objc_opt_class())
@@ -6254,21 +6254,21 @@ LABEL_31:
         goto LABEL_30;
       }
 
-      v28 = [v24 lastObject];
+      lastObject = [v24 lastObject];
       v27 = v45[5];
-      v45[5] = v28;
+      v45[5] = lastObject;
     }
 
     else
     {
-      v26 = [v37[3] UTITypes];
+      uTITypes = [v37[3] UTITypes];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __63__CKComposition_UIPasteboard__richestMediaTypeForItemProvider___block_invoke_4;
       v29[3] = &unk_1E72EBA68;
       v30 = v24;
       v31 = &v44;
-      [v26 enumerateObjectsUsingBlock:v29];
+      [uTITypes enumerateObjectsUsingBlock:v29];
 
       v27 = v30;
     }
@@ -6278,15 +6278,15 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v13 = v12;
+  identifier4 = v12;
 LABEL_8:
-  v8 = v13;
+  identifier2 = identifier4;
 LABEL_17:
 
 LABEL_18:
   _Block_object_dispose(&v44, 8);
 
-  return v8;
+  return identifier2;
 }
 
 void __63__CKComposition_UIPasteboard__richestMediaTypeForItemProvider___block_invoke(id *a1, void *a2)
@@ -6329,21 +6329,21 @@ void __63__CKComposition_UIPasteboard__richestMediaTypeForItemProvider___block_i
   }
 }
 
-+ (id)_temporaryURLFromURL:(id)a3
++ (id)_temporaryURLFromURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy)
   {
     v25 = 0;
     v26 = &v25;
     v27 = 0x3032000000;
     v28 = __Block_byref_object_copy__30;
     v29 = __Block_byref_object_dispose__30;
-    v5 = v3;
+    v5 = lCopy;
     v30 = v5;
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 isUbiquitousItemAtURL:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v7 = [defaultManager isUbiquitousItemAtURL:v5];
 
     if (v7)
     {
@@ -6365,13 +6365,13 @@ void __63__CKComposition_UIPasteboard__richestMediaTypeForItemProvider___block_i
     }
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
-    v15 = [v26[5] lastPathComponent];
-    v16 = [v12 stringWithFormat:@"%@%@", v14, v15];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    lastPathComponent = [v26[5] lastPathComponent];
+    v16 = [v12 stringWithFormat:@"%@%@", uUIDString, lastPathComponent];
 
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
-    v18 = [v17 im_randomTemporaryFileURLWithFileName:v16];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v18 = [defaultManager2 im_randomTemporaryFileURLWithFileName:v16];
 
     _Block_object_dispose(&v25, 8);
   }
@@ -6411,19 +6411,19 @@ void __52__CKComposition_UIPasteboard___temporaryURLFromURL___block_invoke(uint6
   dispatch_group_leave(*(a1 + 40));
 }
 
-+ (void)mediaObjectFromItemAtURL:(id)a3 filename:(id)a4 completion:(id)a5
++ (void)mediaObjectFromItemAtURL:(id)l filename:(id)filename completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _temporaryURLFromURL:v8];
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  v13 = v12;
+  lCopy = l;
+  filenameCopy = filename;
+  completionCopy = completion;
+  v11 = [self _temporaryURLFromURL:lCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v13 = defaultManager;
   if (v11)
   {
     v23 = 0;
-    [v12 copyItemAtURL:v8 toURL:v11 error:&v23];
+    [defaultManager copyItemAtURL:lCopy toURL:v11 error:&v23];
     v14 = v23;
     if (v14)
     {
@@ -6439,7 +6439,7 @@ void __52__CKComposition_UIPasteboard___temporaryURLFromURL___block_invoke(uint6
         }
       }
 
-      v10[2](v10, 0, v15);
+      completionCopy[2](completionCopy, 0, v15);
     }
 
     else
@@ -6449,8 +6449,8 @@ void __52__CKComposition_UIPasteboard___temporaryURLFromURL___block_invoke(uint6
       block[2] = __76__CKComposition_UIPasteboard__mediaObjectFromItemAtURL_filename_completion___block_invoke;
       block[3] = &unk_1E72F1C80;
       v19 = v11;
-      v20 = v9;
-      v22 = v10;
+      v20 = filenameCopy;
+      v22 = completionCopy;
       v21 = v13;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -6466,13 +6466,13 @@ void __52__CKComposition_UIPasteboard___temporaryURLFromURL___block_invoke(uint6
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v25 = v8;
+        v25 = lCopy;
         _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "Failed to generate a tempURL from a pasteboard item url %@", buf, 0xCu);
       }
     }
 
     v15 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.Messages.CKComposition_UIPasteBoard" code:0 userInfo:0];
-    v10[2](v10, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 }
 
@@ -6502,17 +6502,17 @@ void __76__CKComposition_UIPasteboard__mediaObjectFromItemAtURL_filename_complet
   [*(a1 + 48) removeItemAtURL:*(a1 + 32) error:0];
 }
 
-+ (void)mediaObjectFromPhotosAsset:(id)a3 completion:(id)a4
++ (void)mediaObjectFromPhotosAsset:(id)asset completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
-  v23[3] = [v6 playbackStyle];
+  v23[3] = [assetCopy playbackStyle];
   v22 = 0;
-  v8 = [MEMORY[0x1E69786A8] exportRequestForAsset:v6 error:&v22];
+  v8 = [MEMORY[0x1E69786A8] exportRequestForAsset:assetCopy error:&v22];
   v9 = v22;
   if (v9)
   {
@@ -6521,14 +6521,14 @@ void __76__CKComposition_UIPasteboard__mediaObjectFromItemAtURL_filename_complet
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138412290;
-        v25 = v11;
+        v25 = localizedDescription;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Error creating PHAssetExportRequest: %@", buf, 0xCu);
       }
     }
 
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 
   else
@@ -6536,8 +6536,8 @@ void __76__CKComposition_UIPasteboard__mediaObjectFromItemAtURL_filename_complet
     v12 = objc_alloc_init(MEMORY[0x1E69786B0]);
     [v12 setVariant:1];
     [v12 setShouldBundleComplexAssetResources:1];
-    v13 = [MEMORY[0x1E69A8020] deviceIsLockedDown];
-    if (v13)
+    deviceIsLockedDown = [MEMORY[0x1E69A8020] deviceIsLockedDown];
+    if (deviceIsLockedDown)
     {
       if (IMOSLoggingEnabled())
       {
@@ -6568,14 +6568,14 @@ void __76__CKComposition_UIPasteboard__mediaObjectFromItemAtURL_filename_complet
     }
 
     [v12 setShouldStripLocation:v15];
-    [v12 setShouldStripCaption:v13];
+    [v12 setShouldStripCaption:deviceIsLockedDown];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __69__CKComposition_UIPasteboard__mediaObjectFromPhotosAsset_completion___block_invoke;
     v18[3] = &unk_1E72F2090;
     v20 = v23;
-    v21 = a1;
-    v19 = v7;
+    selfCopy = self;
+    v19 = completionCopy;
     [v8 exportWithOptions:v12 completionHandler:v18];
   }
 
@@ -6650,13 +6650,13 @@ LABEL_9:
 LABEL_17:
 }
 
-+ (void)requestMediaObjectForItemProvider:(id)a3 type:(id)a4 builderContext:(id)a5 completion:(id)a6
++ (void)requestMediaObjectForItemProvider:(id)provider type:(id)type builderContext:(id)context completion:(id)completion
 {
   v83 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v42 = a5;
-  v12 = a6;
+  providerCopy = provider;
+  typeCopy = type;
+  contextCopy = context;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
@@ -6667,7 +6667,7 @@ LABEL_17:
     }
   }
 
-  if (v11)
+  if (typeCopy)
   {
     v14 = +[CKMediaObjectManager sharedInstance];
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -6676,11 +6676,11 @@ LABEL_17:
     aBlock[3] = &unk_1E72F20B8;
     v40 = v14;
     v75 = v40;
-    v15 = v11;
+    v15 = typeCopy;
     v76 = v15;
-    v16 = v10;
+    v16 = providerCopy;
     v77 = v16;
-    v17 = v12;
+    v17 = completionCopy;
     v78 = v17;
     v18 = _Block_copy(aBlock);
     v69[0] = MEMORY[0x1E69E9820];
@@ -6691,7 +6691,7 @@ LABEL_17:
     v70 = v19;
     v20 = v15;
     v71 = v20;
-    v73 = a1;
+    selfCopy = self;
     v21 = v18;
     v72 = v21;
     v41 = _Block_copy(v69);
@@ -6712,8 +6712,8 @@ LABEL_17:
     {
       if (![v20 isEqualToString:@"com.apple.sticker.mediaPayload"])
       {
-        v27 = [*MEMORY[0x1E6982F40] identifier];
-        v28 = [v20 isEqualToString:v27];
+        identifier = [*MEMORY[0x1E6982F40] identifier];
+        v28 = [v20 isEqualToString:identifier];
 
         if (v28)
         {
@@ -6792,7 +6792,7 @@ LABEL_17:
             v51[2] = __96__CKComposition_UIPasteboard__requestMediaObjectForItemProvider_type_builderContext_completion___block_invoke_738;
             v51[3] = &unk_1E72F2270;
             v52 = v19;
-            v54 = a1;
+            selfCopy2 = self;
             v53 = v17;
             v33 = [v52 loadDataRepresentationForTypeIdentifier:v20 completionHandler:v51];
 
@@ -6806,7 +6806,7 @@ LABEL_17:
             v48[2] = __96__CKComposition_UIPasteboard__requestMediaObjectForItemProvider_type_builderContext_completion___block_invoke_3_740;
             v48[3] = &unk_1E72F2298;
             v49 = v17;
-            v50 = a1;
+            selfCopy3 = self;
             v35 = [v19 loadDataRepresentationForTypeIdentifier:@"com.apple.photos.object-reference.asset" completionHandler:v48];
 
             goto LABEL_10;
@@ -6819,7 +6819,7 @@ LABEL_17:
             v45[1] = 3221225472;
             v45[2] = __96__CKComposition_UIPasteboard__requestMediaObjectForItemProvider_type_builderContext_completion___block_invoke_2_753;
             v45[3] = &unk_1E72F22C0;
-            v47 = a1;
+            selfCopy4 = self;
             v46 = v17;
             v37 = [v19 loadObjectOfClass:v36 completionHandler:v45];
 
@@ -6867,7 +6867,7 @@ LABEL_17:
       v64[2] = __96__CKComposition_UIPasteboard__requestMediaObjectForItemProvider_type_builderContext_completion___block_invoke_10;
       v64[3] = &unk_1E72F21D0;
       v66 = v17;
-      v65 = v42;
+      v65 = contextCopy;
       v26 = [v19 loadObjectOfClass:v25 completionHandler:v64];
     }
 
@@ -6882,7 +6882,7 @@ LABEL_10:
     +[CKComposition(UIPasteboard) requestMediaObjectForItemProvider:type:builderContext:completion:];
   }
 
-  (*(v12 + 2))(v12, 0, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0, 0);
 LABEL_46:
 }
 
@@ -7408,10 +7408,10 @@ void __96__CKComposition_UIPasteboard__requestMediaObjectForItemProvider_type_bu
   }
 }
 
-+ (void)requestMediaObjectsForAttributedString:(id)a3 completion:(id)a4
++ (void)requestMediaObjectsForAttributedString:(id)string completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  completionCopy = completion;
   v7 = +[CKMediaObjectManager sharedInstance];
   v21[0] = 0;
   v21[1] = v21;
@@ -7425,11 +7425,11 @@ void __96__CKComposition_UIPasteboard__requestMediaObjectForItemProvider_type_bu
   block[1] = 3221225472;
   block[2] = __81__CKComposition_UIPasteboard__requestMediaObjectsForAttributedString_completion___block_invoke;
   block[3] = &unk_1E72F1F78;
-  v9 = v6;
+  v9 = completionCopy;
   v19 = v9;
   v20 = v21;
   dispatch_group_notify(v8, MEMORY[0x1E69E96A0], block);
-  v10 = [v5 length];
+  v10 = [stringCopy length];
   v11 = *MEMORY[0x1E69DB5F8];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -7440,7 +7440,7 @@ void __96__CKComposition_UIPasteboard__requestMediaObjectForItemProvider_type_bu
   v13 = v7;
   v16 = v13;
   v17 = v21;
-  [v5 enumerateAttribute:v11 inRange:0 options:v10 usingBlock:{0, v14}];
+  [stringCopy enumerateAttribute:v11 inRange:0 options:v10 usingBlock:{0, v14}];
   dispatch_group_leave(v12);
 
   _Block_object_dispose(v21, 8);
@@ -7492,21 +7492,21 @@ void __81__CKComposition_UIPasteboard__requestMediaObjectsForAttributedString_co
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)evaluateSendMetricsWithConversation:(id)a3 shareSheetHostBundleIdentifier:(id)a4
+- (void)evaluateSendMetricsWithConversation:(id)conversation shareSheetHostBundleIdentifier:(id)identifier
 {
   v107 = *MEMORY[0x1E69E9840];
-  v89 = a3;
-  v6 = a4;
+  conversationCopy = conversation;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  v8 = [(CKComposition *)self mediaObjects];
-  v9 = [v8 mutableCopy];
+  mediaObjects = [(CKComposition *)self mediaObjects];
+  v9 = [mediaObjects mutableCopy];
 
-  v80 = self;
-  v10 = [(CKComposition *)self shelfPluginPayload];
+  selfCopy = self;
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = shelfPluginPayload;
   }
 
   else
@@ -7518,18 +7518,18 @@ void __81__CKComposition_UIPasteboard__requestMediaObjectsForAttributedString_co
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 mediaObjectFromPayload];
-    if (v14)
+    mediaObjectFromPayload = [v12 mediaObjectFromPayload];
+    if (mediaObjectFromPayload)
     {
-      [v9 addObject:v14];
+      [v9 addObject:mediaObjectFromPayload];
     }
 
     else
     {
-      v15 = [v13 __ck_photoCompositionMediaObjects];
-      if ([v15 count])
+      __ck_photoCompositionMediaObjects = [v13 __ck_photoCompositionMediaObjects];
+      if ([__ck_photoCompositionMediaObjects count])
       {
-        [v9 addObjectsFromArray:v15];
+        [v9 addObjectsFromArray:__ck_photoCompositionMediaObjects];
       }
     }
   }
@@ -7553,8 +7553,8 @@ void __81__CKComposition_UIPasteboard__requestMediaObjectsForAttributedString_co
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v95 + 1) + 8 * i) metricsCollectorMediaType];
-        [v7 addObject:v21];
+        metricsCollectorMediaType = [*(*(&v95 + 1) + 8 * i) metricsCollectorMediaType];
+        [v7 addObject:metricsCollectorMediaType];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v95 objects:v106 count:16];
@@ -7567,19 +7567,19 @@ void __81__CKComposition_UIPasteboard__requestMediaObjectsForAttributedString_co
   v79 = v16;
   if (CKIsRunningInMessagesViewService())
   {
-    v23 = *MEMORY[0x1E69A7470];
+    pluginBundleID = *MEMORY[0x1E69A7470];
 
     v24 = IMBiomeQueue();
     dispatch_async(v24, &__block_literal_global_134);
 
-    if ([v6 isEqualToString:@"com.apple.mobileslideshow"])
+    if ([identifierCopy isEqualToString:@"com.apple.mobileslideshow"])
     {
       v25 = MEMORY[0x1E69A7478];
     }
 
     else
     {
-      if (![v6 isEqualToString:@"com.apple.mobilesafari"])
+      if (![identifierCopy isEqualToString:@"com.apple.mobilesafari"])
       {
         goto LABEL_33;
       }
@@ -7592,21 +7592,21 @@ void __81__CKComposition_UIPasteboard__requestMediaObjectsForAttributedString_co
 
   else
   {
-    if (!v10)
+    if (!shelfPluginPayload)
     {
-      v23 = v22;
+      pluginBundleID = v22;
       goto LABEL_33;
     }
 
-    v23 = [v10 pluginBundleID];
-    if ([v23 isEqualToString:*MEMORY[0x1E69A6A00]] & 1) != 0 || (IMBalloonExtensionIDWithSuffix(), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v23, "isEqualToString:", v26), v26, (v27))
+    pluginBundleID = [shelfPluginPayload pluginBundleID];
+    if ([pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]] & 1) != 0 || (IMBalloonExtensionIDWithSuffix(), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(pluginBundleID, "isEqualToString:", v26), v26, (v27))
     {
       v28 = MEMORY[0x1E69A7468];
     }
 
     else
     {
-      v30 = [v23 hasSuffix:*MEMORY[0x1E69A6A20]];
+      v30 = [pluginBundleID hasSuffix:*MEMORY[0x1E69A6A20]];
       v28 = MEMORY[0x1E69A7460];
       if (v30)
       {
@@ -7617,16 +7617,16 @@ void __81__CKComposition_UIPasteboard__requestMediaObjectsForAttributedString_co
     v29 = *v28;
   }
 
-  v23 = v29;
+  pluginBundleID = v29;
 LABEL_33:
-  v90 = v23;
+  v90 = pluginBundleID;
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v31 = [v7 allObjects];
-  v32 = [v31 countByEnumeratingWithState:&v91 objects:v105 count:16];
-  v81 = v6;
+  allObjects = [v7 allObjects];
+  v32 = [allObjects countByEnumeratingWithState:&v91 objects:v105 count:16];
+  v81 = identifierCopy;
   if (!v32)
   {
 LABEL_45:
@@ -7636,7 +7636,7 @@ LABEL_45:
 
   v33 = v32;
   v77 = v13;
-  v78 = v10;
+  v78 = shelfPluginPayload;
   v88 = v7;
   v34 = 0;
   v84 = *v92;
@@ -7646,7 +7646,7 @@ LABEL_45:
   v86 = *MEMORY[0x1E69A7428];
   v36 = *MEMORY[0x1E69A7440];
   v85 = *MEMORY[0x1E69A7458];
-  obj = v31;
+  obj = allObjects;
   do
   {
     for (j = 0; j != v33; ++j)
@@ -7663,20 +7663,20 @@ LABEL_45:
         v34 += v39;
       }
 
-      v40 = [v89 recipientCount];
-      v41 = [MEMORY[0x1E69A8168] sharedInstance];
+      recipientCount = [conversationCopy recipientCount];
+      mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
       v104[0] = v38;
       v103[0] = @"type";
       v103[1] = v86;
       v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v39];
       v104[1] = v42;
       v103[2] = v36;
-      v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v40];
+      v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:recipientCount];
       v103[3] = v85;
       v104[2] = v43;
       v104[3] = v90;
       v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:v103 count:4];
-      [v41 trackEvent:v87 withDictionary:v44];
+      [mEMORY[0x1E69A8168] trackEvent:v87 withDictionary:v44];
     }
 
     v33 = [obj countByEnumeratingWithState:&v91 objects:v105 count:16];
@@ -7686,10 +7686,10 @@ LABEL_45:
 
   v7 = v88;
   v13 = v77;
-  v10 = v78;
+  shelfPluginPayload = v78;
   if (v34)
   {
-    v31 = [MEMORY[0x1E69A8168] sharedInstance];
+    allObjects = [MEMORY[0x1E69A8168] sharedInstance];
     v102[0] = *MEMORY[0x1E69A7430];
     v101[0] = @"type";
     v101[1] = v86;
@@ -7698,16 +7698,16 @@ LABEL_45:
     v102[1] = v45;
     v102[2] = v90;
     v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:3];
-    [v31 trackEvent:v87 withDictionary:v46];
+    [allObjects trackEvent:v87 withDictionary:v46];
 
     goto LABEL_45;
   }
 
 LABEL_46:
-  if (v10)
+  if (shelfPluginPayload)
   {
-    v47 = [v10 pluginBundleID];
-    v48 = [v47 containsString:*MEMORY[0x1E69A69F0]];
+    pluginBundleID2 = [shelfPluginPayload pluginBundleID];
+    v48 = [pluginBundleID2 containsString:*MEMORY[0x1E69A69F0]];
 
     v49 = v48 ^ 1;
     if (!v13)
@@ -7729,32 +7729,32 @@ LABEL_46:
   {
     if (([v13 isSticker] & 1) == 0)
     {
-      v50 = [MEMORY[0x1E69A8168] sharedInstance];
-      [v50 trackEvent:*MEMORY[0x1E69A7708]];
+      mEMORY[0x1E69A8168]2 = [MEMORY[0x1E69A8168] sharedInstance];
+      [mEMORY[0x1E69A8168]2 trackEvent:*MEMORY[0x1E69A7708]];
     }
 
-    v51 = [v13 mediaObject];
-    v52 = [v51 needsAnimation];
-    v53 = [MEMORY[0x1E69A8168] sharedInstance];
-    v54 = [v13 isSticker];
+    mediaObject = [v13 mediaObject];
+    needsAnimation = [mediaObject needsAnimation];
+    mEMORY[0x1E69A8168]3 = [MEMORY[0x1E69A8168] sharedInstance];
+    isSticker = [v13 isSticker];
     v55 = MEMORY[0x1E69A7700];
-    if (!v52)
+    if (!needsAnimation)
     {
       v55 = MEMORY[0x1E69A7728];
     }
 
     v56 = MEMORY[0x1E69A76F8];
-    if (!v52)
+    if (!needsAnimation)
     {
       v56 = MEMORY[0x1E69A7720];
     }
 
-    if (!v54)
+    if (!isSticker)
     {
       v55 = v56;
     }
 
-    [v53 trackEvent:*v55];
+    [mEMORY[0x1E69A8168]3 trackEvent:*v55];
 
     goto LABEL_64;
   }
@@ -7762,25 +7762,25 @@ LABEL_46:
 LABEL_60:
   if ((v49 & 1) == 0)
   {
-    v51 = [MEMORY[0x1E69A8168] sharedInstance];
-    v57 = [v10 isUpdate];
+    mediaObject = [MEMORY[0x1E69A8168] sharedInstance];
+    isUpdate = [shelfPluginPayload isUpdate];
     v58 = MEMORY[0x1E69A7730];
-    if (!v57)
+    if (!isUpdate)
     {
       v58 = MEMORY[0x1E69A7710];
     }
 
-    [v51 trackEvent:*v58];
+    [mediaObject trackEvent:*v58];
 LABEL_64:
   }
 
-  if (v10)
+  if (shelfPluginPayload)
   {
-    v59 = [v10 pluginBundleID];
+    pluginBundleID3 = [shelfPluginPayload pluginBundleID];
 
-    if (v59)
+    if (pluginBundleID3)
     {
-      v60 = [v10 pluginBundleID];
+      pluginBundleID4 = [shelfPluginPayload pluginBundleID];
       v61 = IMBalloonBundleIDFromExtensionID();
 
       if (v61 && [v61 hasPrefix:@"com.apple."])
@@ -7789,24 +7789,24 @@ LABEL_64:
         [v62 setObject:v61 forKeyedSubscript:*MEMORY[0x1E69A7568]];
         if ([v61 isEqualToString:*MEMORY[0x1E69A6A18]])
         {
-          v63 = [v10 url];
-          v64 = [v63 host];
+          v63 = [shelfPluginPayload url];
+          host = [v63 host];
 
-          if ([&unk_1F04E6C18 containsObject:v64])
+          if ([&unk_1F04E6C18 containsObject:host])
           {
-            [v62 setObject:v64 forKeyedSubscript:*MEMORY[0x1E69A7560]];
+            [v62 setObject:host forKeyedSubscript:*MEMORY[0x1E69A7560]];
           }
         }
 
-        v65 = [MEMORY[0x1E69A8168] sharedInstance];
-        [v65 trackEvent:*MEMORY[0x1E69A7750] withDictionary:v62];
+        mEMORY[0x1E69A8168]4 = [MEMORY[0x1E69A8168] sharedInstance];
+        [mEMORY[0x1E69A8168]4 trackEvent:*MEMORY[0x1E69A7750] withDictionary:v62];
       }
     }
   }
 
   MainBundle = CFBundleGetMainBundle();
   Identifier = CFBundleGetIdentifier(MainBundle);
-  v68 = [MEMORY[0x1E69A8168] sharedInstance];
+  mEMORY[0x1E69A8168]5 = [MEMORY[0x1E69A8168] sharedInstance];
   v69 = *MEMORY[0x1E69A7698];
   v70 = *MEMORY[0x1E69A7778];
   v100[0] = Identifier;
@@ -7814,14 +7814,14 @@ LABEL_64:
   v99[0] = v70;
   v99[1] = v71;
   v72 = MEMORY[0x1E696AD98];
-  v73 = [(CKComposition *)v80 text];
-  v74 = [v72 numberWithLong:{objc_msgSend(v73, "length")}];
+  text = [(CKComposition *)selfCopy text];
+  v74 = [v72 numberWithLong:{objc_msgSend(text, "length")}];
   v100[1] = v74;
   v99[2] = *MEMORY[0x1E69A7788];
-  v75 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v89, "recipientCount")}];
+  v75 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(conversationCopy, "recipientCount")}];
   v100[2] = v75;
   v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:v99 count:3];
-  [v68 trackEvent:v69 withDictionary:v76];
+  [mEMORY[0x1E69A8168]5 trackEvent:v69 withDictionary:v76];
 }
 
 void __93__CKComposition_Metrics__evaluateSendMetricsWithConversation_shareSheetHostBundleIdentifier___block_invoke()
@@ -7834,20 +7834,20 @@ void __93__CKComposition_Metrics__evaluateSendMetricsWithConversation_shareSheet
   [v3 sendEvent:v2];
 }
 
-- (BOOL)isPlainTextEqual:(id)a3
+- (BOOL)isPlainTextEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [v8 text];
-    v10 = [v9 string];
-    if (!v10)
+    v8 = equalCopy;
+    text = [v8 text];
+    string = [text string];
+    if (!string)
     {
-      v32 = [(CKComposition *)self text];
-      v11 = [v32 string];
-      if (!v11)
+      text2 = [(CKComposition *)self text];
+      string2 = [text2 string];
+      if (!string2)
       {
         v37 = 0;
         v31 = 0;
@@ -7855,66 +7855,66 @@ void __93__CKComposition_Metrics__evaluateSendMetricsWithConversation_shareSheet
         goto LABEL_10;
       }
 
-      v31 = v11;
+      v31 = string2;
     }
 
-    v12 = [v8 text];
-    v3 = [v12 string];
-    v4 = [(CKComposition *)self text];
-    v5 = [v4 string];
-    if (![v3 isEqual:v5])
+    text3 = [v8 text];
+    string3 = [text3 string];
+    text4 = [(CKComposition *)self text];
+    string4 = [text4 string];
+    if (![string3 isEqual:string4])
     {
       v14 = 0;
       goto LABEL_19;
     }
 
-    v37 = v10;
-    v30 = v12;
+    v37 = string;
+    v30 = text3;
     v13 = 1;
 LABEL_10:
-    v15 = [v8 subject];
-    v16 = [v15 string];
+    subject = [v8 subject];
+    string5 = [subject string];
     v36 = v8;
-    if (!v16)
+    if (!string5)
     {
-      v29 = [(CKComposition *)self subject];
-      v17 = [v29 string];
-      if (!v17)
+      subject2 = [(CKComposition *)self subject];
+      string6 = [subject2 string];
+      if (!string6)
       {
         v28 = 0;
         v14 = 1;
         goto LABEL_16;
       }
 
-      v27 = v17;
+      v27 = string6;
     }
 
     [v8 subject];
-    v34 = v9;
-    v18 = v35 = v3;
+    v34 = text;
+    v18 = v35 = string3;
     [v18 string];
-    v19 = v33 = v4;
+    v19 = v33 = text4;
     [(CKComposition *)self subject];
-    v20 = v16;
-    v21 = v15;
-    v23 = v22 = v5;
+    v20 = string5;
+    v21 = subject;
+    v23 = v22 = string4;
     [v23 string];
     v25 = v24 = v13;
     v14 = [v19 isEqual:v25];
 
     v13 = v24;
-    v5 = v22;
-    v15 = v21;
-    v16 = v20;
+    string4 = v22;
+    subject = v21;
+    string5 = v20;
 
-    v4 = v33;
-    v9 = v34;
-    v3 = v35;
+    text4 = v33;
+    text = v34;
+    string3 = v35;
     if (v20)
     {
 LABEL_17:
 
-      v10 = v37;
+      string = v37;
       if (!v13)
       {
         v8 = v36;
@@ -7926,11 +7926,11 @@ LABEL_17:
         goto LABEL_20;
       }
 
-      v12 = v30;
+      text3 = v30;
       v8 = v36;
 LABEL_19:
 
-      if (v10)
+      if (string)
       {
 LABEL_21:
 
@@ -7953,22 +7953,22 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)hasNotBeenEdited:(id)a3
+- (BOOL)hasNotBeenEdited:(id)edited
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isExpressiveTextEnabled];
+  editedCopy = edited;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v6)
+  if (isExpressiveTextEnabled)
   {
-    v7 = [(CKComposition *)self text];
-    v8 = [v4 text];
-    v9 = [v7 isEqualToAttributedString:v8];
+    text = [(CKComposition *)self text];
+    text2 = [editedCopy text];
+    v9 = [text isEqualToAttributedString:text2];
   }
 
   else
   {
-    v9 = [(CKComposition *)self isPlainTextEqual:v4];
+    v9 = [(CKComposition *)self isPlainTextEqual:editedCopy];
   }
 
   return v9;
@@ -7976,16 +7976,16 @@ LABEL_22:
 
 - (id)description
 {
-  v3 = [(CKComposition *)self mediaObjects];
-  v4 = [v3 firstObject];
+  mediaObjects = [(CKComposition *)self mediaObjects];
+  firstObject = [mediaObjects firstObject];
 
-  v5 = v4;
+  v5 = firstObject;
   v29 = MEMORY[0x1E696AEC0];
   v33.receiver = self;
   v33.super_class = CKComposition;
   v32 = [(CKComposition *)&v33 description];
-  v31 = [(CKComposition *)self text];
-  if ([v31 length])
+  text = [(CKComposition *)self text];
+  if ([text length])
   {
     v6 = @"something";
   }
@@ -7996,8 +7996,8 @@ LABEL_22:
   }
 
   v26 = v6;
-  v30 = [(CKComposition *)self subject];
-  if ([v30 length])
+  subject = [(CKComposition *)self subject];
+  if ([subject length])
   {
     v7 = @"something";
   }
@@ -8008,8 +8008,8 @@ LABEL_22:
   }
 
   v25 = v7;
-  v28 = [(CKComposition *)self bizIntent];
-  if ([v28 count])
+  bizIntent = [(CKComposition *)self bizIntent];
+  if ([bizIntent count])
   {
     v8 = @"something";
   }
@@ -8020,8 +8020,8 @@ LABEL_22:
   }
 
   v24 = v8;
-  v27 = [(CKComposition *)self shelfMediaObject];
-  if (v27)
+  shelfMediaObject = [(CKComposition *)self shelfMediaObject];
+  if (shelfMediaObject)
   {
     v9 = @"something";
   }
@@ -8031,8 +8031,8 @@ LABEL_22:
     v9 = @"nothing";
   }
 
-  v10 = [(CKComposition *)self shelfPluginPayload];
-  if (v10)
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  if (shelfPluginPayload)
   {
     v11 = @"something";
   }
@@ -8042,8 +8042,8 @@ LABEL_22:
     v11 = @"nothing";
   }
 
-  v12 = [(CKComposition *)self collaborationShareOptions];
-  if (v12)
+  collaborationShareOptions = [(CKComposition *)self collaborationShareOptions];
+  if (collaborationShareOptions)
   {
     v13 = @"something";
   }
@@ -8053,8 +8053,8 @@ LABEL_22:
     v13 = @"nothing";
   }
 
-  v14 = [(CKComposition *)self proofreadingInfo];
-  if ([v14 count])
+  proofreadingInfo = [(CKComposition *)self proofreadingInfo];
+  if ([proofreadingInfo count])
   {
     v15 = @"something";
   }
@@ -8096,21 +8096,21 @@ LABEL_22:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 text];
-    if (v7 || ([(CKComposition *)self text], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    text = [v6 text];
+    if (text || ([(CKComposition *)self text], (proofreadingInfo2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [v6 text];
-      v9 = [(CKComposition *)self text];
-      v10 = [v8 isEqual:v9];
+      text2 = [v6 text];
+      text3 = [(CKComposition *)self text];
+      v10 = [text2 isEqual:text3];
 
-      if (v7)
+      if (text)
       {
 
         if (v10)
@@ -8145,14 +8145,14 @@ LABEL_22:
     }
 
 LABEL_6:
-    v11 = [v6 subject];
-    if (v11 || ([(CKComposition *)self subject], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    subject = [v6 subject];
+    if (subject || ([(CKComposition *)self subject], (proofreadingInfo2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [v6 subject];
-      v13 = [(CKComposition *)self subject];
-      v14 = [v12 isEqual:v13];
+      subject2 = [v6 subject];
+      subject3 = [(CKComposition *)self subject];
+      v14 = [subject2 isEqual:subject3];
 
-      if (v11)
+      if (subject)
       {
 
         if (v14)
@@ -8187,14 +8187,14 @@ LABEL_6:
     }
 
 LABEL_10:
-    v15 = [v6 shelfPluginPayload];
-    if (v15 || ([(CKComposition *)self shelfPluginPayload], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    shelfPluginPayload = [v6 shelfPluginPayload];
+    if (shelfPluginPayload || ([(CKComposition *)self shelfPluginPayload], (proofreadingInfo2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v16 = [v6 shelfPluginPayload];
-      v17 = [(CKComposition *)self shelfPluginPayload];
-      v18 = [v16 isEqual:v17];
+      shelfPluginPayload2 = [v6 shelfPluginPayload];
+      shelfPluginPayload3 = [(CKComposition *)self shelfPluginPayload];
+      v18 = [shelfPluginPayload2 isEqual:shelfPluginPayload3];
 
-      if (v15)
+      if (shelfPluginPayload)
       {
 
         if (v18)
@@ -8229,14 +8229,14 @@ LABEL_10:
     }
 
 LABEL_14:
-    v19 = [v6 bizIntent];
-    if (v19 || ([(CKComposition *)self bizIntent], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    bizIntent = [v6 bizIntent];
+    if (bizIntent || ([(CKComposition *)self bizIntent], (proofreadingInfo2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v20 = [v6 bizIntent];
-      v21 = [(CKComposition *)self bizIntent];
-      v22 = [v20 isEqual:v21];
+      bizIntent2 = [v6 bizIntent];
+      bizIntent3 = [(CKComposition *)self bizIntent];
+      v22 = [bizIntent2 isEqual:bizIntent3];
 
-      if (v19)
+      if (bizIntent)
       {
 
         if (v22)
@@ -8271,14 +8271,14 @@ LABEL_14:
     }
 
 LABEL_18:
-    v23 = [v6 shelfMediaObject];
-    if (v23 || ([(CKComposition *)self shelfMediaObject], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    shelfMediaObject = [v6 shelfMediaObject];
+    if (shelfMediaObject || ([(CKComposition *)self shelfMediaObject], (proofreadingInfo2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v24 = [v6 shelfMediaObject];
-      v25 = [(CKComposition *)self shelfMediaObject];
-      v26 = [v24 isEqual:v25];
+      shelfMediaObject2 = [v6 shelfMediaObject];
+      shelfMediaObject3 = [(CKComposition *)self shelfMediaObject];
+      v26 = [shelfMediaObject2 isEqual:shelfMediaObject3];
 
-      if (v23)
+      if (shelfMediaObject)
       {
 
         if (v26)
@@ -8313,21 +8313,21 @@ LABEL_18:
     }
 
 LABEL_22:
-    v27 = [v6 proofreadingInfo];
-    if (!v27)
+    proofreadingInfo = [v6 proofreadingInfo];
+    if (!proofreadingInfo)
     {
-      v3 = [(CKComposition *)self proofreadingInfo];
-      if (!v3)
+      proofreadingInfo2 = [(CKComposition *)self proofreadingInfo];
+      if (!proofreadingInfo2)
       {
         goto LABEL_26;
       }
     }
 
-    v28 = [v6 proofreadingInfo];
-    v29 = [(CKComposition *)self proofreadingInfo];
-    v30 = [v28 isEqual:v29];
+    proofreadingInfo3 = [v6 proofreadingInfo];
+    proofreadingInfo4 = [(CKComposition *)self proofreadingInfo];
+    v30 = [proofreadingInfo3 isEqual:proofreadingInfo4];
 
-    if (v27)
+    if (proofreadingInfo)
     {
 
       if (v30)
@@ -8342,28 +8342,28 @@ LABEL_22:
       if (v30)
       {
 LABEL_26:
-        v31 = [v6 collaborationShareOptions];
-        if (!v31)
+        collaborationShareOptions = [v6 collaborationShareOptions];
+        if (!collaborationShareOptions)
         {
-          v3 = [(CKComposition *)self collaborationShareOptions];
-          if (!v3)
+          proofreadingInfo2 = [(CKComposition *)self collaborationShareOptions];
+          if (!proofreadingInfo2)
           {
 LABEL_30:
-            v35 = [v6 sendLaterPluginInfo];
-            if (!v35)
+            sendLaterPluginInfo = [v6 sendLaterPluginInfo];
+            if (!sendLaterPluginInfo)
             {
-              v3 = [(CKComposition *)self sendLaterPluginInfo];
-              if (!v3)
+              proofreadingInfo2 = [(CKComposition *)self sendLaterPluginInfo];
+              if (!proofreadingInfo2)
               {
                 goto LABEL_34;
               }
             }
 
-            v36 = [v6 sendLaterPluginInfo];
-            v37 = [(CKComposition *)self sendLaterPluginInfo];
-            v38 = [v36 isEqual:v37];
+            sendLaterPluginInfo2 = [v6 sendLaterPluginInfo];
+            sendLaterPluginInfo3 = [(CKComposition *)self sendLaterPluginInfo];
+            v38 = [sendLaterPluginInfo2 isEqual:sendLaterPluginInfo3];
 
-            if (v35)
+            if (sendLaterPluginInfo)
             {
 
               if (v38)
@@ -8404,11 +8404,11 @@ LABEL_70:
           }
         }
 
-        v32 = [v6 collaborationShareOptions];
-        v33 = [(CKComposition *)self collaborationShareOptions];
-        v34 = [v32 isEqual:v33];
+        collaborationShareOptions2 = [v6 collaborationShareOptions];
+        collaborationShareOptions3 = [(CKComposition *)self collaborationShareOptions];
+        v34 = [collaborationShareOptions2 isEqual:collaborationShareOptions3];
 
-        if (v31)
+        if (collaborationShareOptions)
         {
 
           if (v34)
@@ -8469,20 +8469,20 @@ LABEL_72:
 
 - (unint64_t)hash
 {
-  v3 = [(CKComposition *)self text];
-  v4 = [v3 hash];
-  v5 = [(CKComposition *)self subject];
-  v6 = [v5 hash] + v4;
-  v7 = [(CKComposition *)self shelfPluginPayload];
-  v8 = [v7 hash];
-  v9 = [(CKComposition *)self bizIntent];
-  v10 = v6 + v8 + [v9 hash];
-  v11 = [(CKComposition *)self shelfMediaObject];
-  v12 = [v11 hash];
-  v13 = [(CKComposition *)self collaborationShareOptions];
-  v14 = v12 + [v13 hash];
-  v15 = [(CKComposition *)self proofreadingInfo];
-  v16 = v14 + [v15 hash];
+  text = [(CKComposition *)self text];
+  v4 = [text hash];
+  subject = [(CKComposition *)self subject];
+  v6 = [subject hash] + v4;
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  v8 = [shelfPluginPayload hash];
+  bizIntent = [(CKComposition *)self bizIntent];
+  v10 = v6 + v8 + [bizIntent hash];
+  shelfMediaObject = [(CKComposition *)self shelfMediaObject];
+  v12 = [shelfMediaObject hash];
+  collaborationShareOptions = [(CKComposition *)self collaborationShareOptions];
+  v14 = v12 + [collaborationShareOptions hash];
+  proofreadingInfo = [(CKComposition *)self proofreadingInfo];
+  v16 = v14 + [proofreadingInfo hash];
 
   return v10 + v16;
 }
@@ -8513,11 +8513,11 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
   return result;
 }
 
-+ (CKComposition)compositionWithShelfPluginPayload:(id)a3 completionHandler:(id)a4
++ (CKComposition)compositionWithShelfPluginPayload:(id)payload completionHandler:(id)handler
 {
   v115 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E69A6170]);
   [v8 startTimingForKey:@"totalTimeInMethod"];
   [v8 startTimingForKey:@"beforeCompletionHandler"];
@@ -8527,7 +8527,7 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
   aBlock[3] = &unk_1E72F8360;
   v9 = v8;
   v109 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v110 = v10;
   v11 = _Block_copy(aBlock);
   [v9 startTimingForKey:@"_compositionWithShelfPluginPayload"];
@@ -8536,7 +8536,7 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
   v104 = 0x3032000000;
   v105 = __Block_byref_object_copy__80;
   v106 = __Block_byref_object_dispose__80;
-  v107 = [a1 _compositionWithShelfPluginPayload:v6];
+  v107 = [self _compositionWithShelfPluginPayload:payloadCopy];
   [v9 stopTimingForKey:@"_compositionWithShelfPluginPayload"];
   if (!v103[5])
   {
@@ -8546,7 +8546,7 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
     v95 = 0x3032000000;
     v96 = __Block_byref_object_copy__80;
     v97 = __Block_byref_object_dispose__80;
-    v98 = [v6 url];
+    v98 = [payloadCopy url];
     if ([v94[5] isFileURL])
     {
       [v9 startTimingForKey:@"BRShareCopyShareURLOperation"];
@@ -8588,46 +8588,46 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
     v86 = v11;
     v67 = _Block_copy(v83);
     v19 = MEMORY[0x1E696ECD8];
-    v20 = [v6 data];
-    v66 = [v19 linkWithDataRepresentationWithoutSubstitutingAttachments:v20];
+    data = [payloadCopy data];
+    v66 = [v19 linkWithDataRepresentationWithoutSubstitutingAttachments:data];
 
-    if ([v6 payloadCollaborationType] == 3)
+    if ([payloadCopy payloadCollaborationType] == 3)
     {
-      v68 = objc_alloc_init(MEMORY[0x1E696ECA0]);
+      cloudKitShare = objc_alloc_init(MEMORY[0x1E696ECA0]);
       v21 = objc_alloc_init(+[CKComposition _LPSharedObjectMetadataClass]);
       if (v21)
       {
         [v18 startTimingForKey:@"IMPayloadCollaborationTypePendingCollaboration"];
-        v22 = [v6 collaborationMetadata];
-        v23 = [v22 title];
-        [v21 setTitle:v23];
+        collaborationMetadata = [payloadCopy collaborationMetadata];
+        title = [collaborationMetadata title];
+        [v21 setTitle:title];
 
-        [v21 setIsCollaboration:{objc_msgSend(v6, "sendAsCopy") ^ 1}];
+        [v21 setIsCollaboration:{objc_msgSend(payloadCopy, "sendAsCopy") ^ 1}];
         v24 = dispatch_queue_create("com.apple.ChatKit.CKComposition.CollaborationHandshakeBundleID", 0);
         v25 = [objc_alloc(MEMORY[0x1E69D37C0]) initWithTargetSerialQueue:v24 synchronous:1];
-        v26 = [v6 collaborationMetadata];
+        collaborationMetadata2 = [payloadCopy collaborationMetadata];
         v76[0] = MEMORY[0x1E69E9820];
         v76[1] = 3221225472;
         v76[2] = __69__CKComposition_compositionWithShelfPluginPayload_completionHandler___block_invoke_3;
         v76[3] = &unk_1E72F83D8;
         v77 = v21;
-        v78 = v68;
+        v78 = cloudKitShare;
         v79 = v18;
         v82 = v67;
         v80 = v66;
-        v81 = v6;
-        [v25 verifySourceBundleIdentifierFromMetadata:v26 timeout:v76 completion:5.0];
+        v81 = payloadCopy;
+        [v25 verifySourceBundleIdentifierFromMetadata:collaborationMetadata2 timeout:v76 completion:5.0];
       }
 
       else
       {
-        (*(v67 + 2))(v67, v68, v66, v6);
+        (*(v67 + 2))(v67, cloudKitShare, v66, payloadCopy);
       }
 
       goto LABEL_52;
     }
 
-    if ([v6 payloadCollaborationType] != 2)
+    if ([payloadCopy payloadCollaborationType] != 2)
     {
       if (IMOSLoggingEnabled())
       {
@@ -8641,26 +8641,26 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
 
       [v18 startTimingForKey:@"startFetchingMetadataForURL"];
       v39 = objc_alloc_init(MEMORY[0x1E696ECE0]);
-      v40 = [v6 url];
-      v41 = [v40 startAccessingSecurityScopedResource];
+      v40 = [payloadCopy url];
+      startAccessingSecurityScopedResource = [v40 startAccessingSecurityScopedResource];
 
       v69[0] = MEMORY[0x1E69E9820];
       v69[1] = 3221225472;
       v69[2] = __69__CKComposition_compositionWithShelfPluginPayload_completionHandler___block_invoke_333;
       v69[3] = &unk_1E72F3DA0;
       v70 = v39;
-      v71 = v6;
-      v75 = v41;
+      v71 = payloadCopy;
+      v75 = startAccessingSecurityScopedResource;
       v72 = v66;
       v73 = v18;
       v74 = v67;
-      v68 = v39;
+      cloudKitShare = v39;
       dispatch_async(MEMORY[0x1E69E96A0], v69);
 
       goto LABEL_52;
     }
 
-    v68 = [v6 cloudKitShare];
+    cloudKitShare = [payloadCopy cloudKitShare];
     if (IMOSLoggingEnabled())
     {
       v27 = OSLogHandleForIMFoundationCategory();
@@ -8671,7 +8671,7 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
       }
     }
 
-    if (!v68)
+    if (!cloudKitShare)
     {
       if (IMOSLoggingEnabled())
       {
@@ -8679,7 +8679,7 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v112 = v6;
+          v112 = payloadCopy;
           _os_log_impl(&dword_19020E000, v42, OS_LOG_TYPE_INFO, "Failed to obtain a CKShare from the plugin payload: %@", buf, 0xCu);
         }
       }
@@ -8689,14 +8689,14 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
 
     [v18 startTimingForKey:@"IMPayloadCollaborationTypeCloudKit"];
     v65 = objc_alloc_init(MEMORY[0x1E696ED30]);
-    v28 = [v68 objectForKeyedSubscript:*MEMORY[0x1E695B828]];
+    v28 = [cloudKitShare objectForKeyedSubscript:*MEMORY[0x1E695B828]];
     [v65 setTitle:v28];
 
-    v29 = [v6 containerSetupInfo];
-    v30 = [v29 containerOptions];
-    v64 = [v30 applicationBundleIdentifierOverrideForContainerAccess];
+    containerSetupInfo = [payloadCopy containerSetupInfo];
+    containerOptions = [containerSetupInfo containerOptions];
+    applicationBundleIdentifierOverrideForContainerAccess = [containerOptions applicationBundleIdentifierOverrideForContainerAccess];
 
-    if (![v64 length])
+    if (![applicationBundleIdentifierOverrideForContainerAccess length])
     {
       if (IMOSLoggingEnabled())
       {
@@ -8709,7 +8709,7 @@ uint64_t __45__CKComposition__LPSharedObjectMetadataClass__block_invoke()
       }
 
 LABEL_49:
-      v47 = [v68 objectForKeyedSubscript:*MEMORY[0x1E695B820]];
+      v47 = [cloudKitShare objectForKeyedSubscript:*MEMORY[0x1E695B820]];
       if (v47)
       {
         v48 = [objc_alloc(MEMORY[0x1E696EC68]) initWithData:v47 MIMEType:@"image/png"];
@@ -8724,16 +8724,16 @@ LABEL_49:
         if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v112 = v64;
+          v112 = applicationBundleIdentifierOverrideForContainerAccess;
           _os_log_impl(&dword_19020E000, v53, OS_LOG_TYPE_INFO, "Falling back to using App Icon for bundleIdentifier:%@", buf, 0xCu);
         }
       }
 
-      if ([v64 length])
+      if ([applicationBundleIdentifierOverrideForContainerAccess length])
       {
-        if (([v64 containsString:@"com.apple."] & 1) == 0)
+        if (([applicationBundleIdentifierOverrideForContainerAccess containsString:@"com.apple."] & 1) == 0)
         {
-          v63 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v64];
+          v63 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:applicationBundleIdentifierOverrideForContainerAccess];
           v55 = objc_alloc(MEMORY[0x1E69A8A30]);
           v56 = +[CKUIBehavior sharedBehaviors];
           [v56 thumbnailSizeForAppIconInCollaborationLinks];
@@ -8753,14 +8753,14 @@ LABEL_49:
 LABEL_51:
           v49 = objc_alloc_init(MEMORY[0x1E696ECF8]);
           [v49 setSpecialization:v65];
-          [v49 setIsCollaboration:{objc_msgSend(v6, "sendAsCopy") ^ 1}];
+          [v49 setIsCollaboration:{objc_msgSend(payloadCopy, "sendAsCopy") ^ 1}];
           v50 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-          v51 = [v6 url];
+          v51 = [payloadCopy url];
           [v50 setOriginalURL:v51];
 
           [v50 setSpecialization:v49];
           [v18 stopTimingForKey:@"IMPayloadCollaborationTypeCloudKit"];
-          (*(v67 + 2))(v67, v50, v66, v6);
+          (*(v67 + 2))(v67, v50, v66, payloadCopy);
 
 LABEL_52:
           _Block_object_dispose(&v93, 8);
@@ -8772,7 +8772,7 @@ LABEL_52:
         if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v112 = v64;
+          v112 = applicationBundleIdentifierOverrideForContainerAccess;
           _os_log_impl(&dword_19020E000, v54, OS_LOG_TYPE_INFO, "Not defaulting an icon for %@. Please file a radar!", buf, 0xCu);
         }
       }
@@ -8795,7 +8795,7 @@ LABEL_52:
       goto LABEL_51;
     }
 
-    v31 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v64 allowPlaceholder:1 error:0];
+    v31 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:applicationBundleIdentifierOverrideForContainerAccess allowPlaceholder:1 error:0];
     v32 = [v31 URL];
 
     if (v32)
@@ -8806,8 +8806,8 @@ LABEL_52:
 
       if (v35)
       {
-        v62 = [v35 infoDictionary];
-        v36 = [v62 objectForKeyedSubscript:@"CFBundleDisplayName"];
+        infoDictionary = [v35 infoDictionary];
+        v36 = [infoDictionary objectForKeyedSubscript:@"CFBundleDisplayName"];
         [v65 setApplication:v36];
         if (IMOSLoggingEnabled())
         {
@@ -8817,7 +8817,7 @@ LABEL_52:
             *buf = 138412546;
             v112 = v36;
             v113 = 2112;
-            v114 = v64;
+            v114 = applicationBundleIdentifierOverrideForContainerAccess;
             _os_log_impl(&dword_19020E000, v37, OS_LOG_TYPE_INFO, "Setting application to:%@ for bundleIdentifier: %@", buf, 0x16u);
           }
         }
@@ -9099,43 +9099,43 @@ void __69__CKComposition_compositionWithShelfPluginPayload_completionHandler___b
   (*(*(a1 + 56) + 16))();
 }
 
-+ (id)_compositionWithShelfPluginPayload:(id)a3
++ (id)_compositionWithShelfPluginPayload:(id)payload
 {
-  v3 = a3;
-  if ([v3 supportsCollaboration])
+  payloadCopy = payload;
+  if ([payloadCopy supportsCollaboration])
   {
     v4 = 0;
     goto LABEL_19;
   }
 
-  v5 = [v3 __ck_urlFromTextBodyForRichLink];
-  if ([v3 shouldSendAsMediaObject])
+  __ck_urlFromTextBodyForRichLink = [payloadCopy __ck_urlFromTextBodyForRichLink];
+  if ([payloadCopy shouldSendAsMediaObject])
   {
-    v6 = [v3 mediaObjectFromPayload];
+    mediaObjectFromPayload = [payloadCopy mediaObjectFromPayload];
     v7 = [CKComposition alloc];
     v8 = 0;
-    v9 = v3;
+    v9 = payloadCopy;
   }
 
   else
   {
-    if (([v3 shouldSendAsRichLink] & 1) != 0 || v5)
+    if (([payloadCopy shouldSendAsRichLink] & 1) != 0 || __ck_urlFromTextBodyForRichLink)
     {
-      if (!v5)
+      if (!__ck_urlFromTextBodyForRichLink)
       {
-        v5 = [v3 url];
+        __ck_urlFromTextBodyForRichLink = [payloadCopy url];
       }
 
-      v13 = [v3 copy];
-      v14 = [MEMORY[0x1E696AEC0] stringGUID];
-      [v13 setMessageGUID:v14];
+      v13 = [payloadCopy copy];
+      stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+      [v13 setMessageGUID:stringGUID];
 
-      v15 = [v5 absoluteString];
-      if ([v15 length])
+      absoluteString = [__ck_urlFromTextBodyForRichLink absoluteString];
+      if ([absoluteString length])
       {
         v16 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v17 = [v5 absoluteString];
-        v18 = [v16 initWithString:v17];
+        absoluteString2 = [__ck_urlFromTextBodyForRichLink absoluteString];
+        v18 = [v16 initWithString:absoluteString2];
         [v13 setText:v18];
       }
 
@@ -9145,20 +9145,20 @@ void __69__CKComposition_compositionWithShelfPluginPayload_completionHandler___b
       }
 
       [v13 setPluginBundleID:*MEMORY[0x1E69A6A18]];
-      [v13 setUrl:v5];
+      [v13 setUrl:__ck_urlFromTextBodyForRichLink];
       v4 = [[CKComposition alloc] initWithText:0 subject:0 shelfPluginPayload:v13];
 
       goto LABEL_18;
     }
 
-    v11 = [v3 shouldSendAsText];
+    shouldSendAsText = [payloadCopy shouldSendAsText];
     v12 = [CKComposition alloc];
-    v5 = [v3 text];
+    __ck_urlFromTextBodyForRichLink = [payloadCopy text];
     v7 = v12;
-    v8 = v5;
-    if (!v11)
+    v8 = __ck_urlFromTextBodyForRichLink;
+    if (!shouldSendAsText)
     {
-      v10 = [(CKComposition *)v12 initWithText:v5 subject:0 shelfPluginPayload:v3 shelfMediaObject:0];
+      v10 = [(CKComposition *)v12 initWithText:__ck_urlFromTextBodyForRichLink subject:0 shelfPluginPayload:payloadCopy shelfMediaObject:0];
       goto LABEL_6;
     }
 
@@ -9175,18 +9175,18 @@ LABEL_19:
   return v4;
 }
 
-+ (CKComposition)compositionWithText:(id)a3 subject:(id)a4 shelfPluginPayload:(id)a5 completionHandler:(id)a6
++ (CKComposition)compositionWithText:(id)text subject:(id)subject shelfPluginPayload:(id)payload completionHandler:(id)handler
 {
-  v9 = a6;
+  handlerCopy = handler;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__80;
   v22 = __Block_byref_object_dispose__80;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[CKComposition alloc] initWithText:v12 subject:v11 shelfPluginPayload:v10];
+  payloadCopy = payload;
+  subjectCopy = subject;
+  textCopy = text;
+  v13 = [[CKComposition alloc] initWithText:textCopy subject:subjectCopy shelfPluginPayload:payloadCopy];
 
   v23 = v13;
   if (v19[5])
@@ -9195,7 +9195,7 @@ LABEL_19:
     v15[1] = 3221225472;
     v15[2] = __82__CKComposition_compositionWithText_subject_shelfPluginPayload_completionHandler___block_invoke;
     v15[3] = &unk_1E72F1F78;
-    v16 = v9;
+    v16 = handlerCopy;
     v17 = &v18;
     dispatch_async(MEMORY[0x1E69E96A0], v15);
   }
@@ -9205,31 +9205,31 @@ LABEL_19:
   return result;
 }
 
-+ (CKComposition)compositionWithMSMessage:(id)a3 appExtensionIdentifier:(id)a4
++ (CKComposition)compositionWithMSMessage:(id)message appExtensionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:v6];
-  v8 = [v7 teamID];
-  v9 = v8;
+  messageCopy = message;
+  identifierCopy = identifier;
+  v7 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:identifierCopy];
+  teamID = [v7 teamID];
+  v9 = teamID;
   v10 = @"0000000000";
-  if (v8)
+  if (teamID)
   {
-    v10 = v8;
+    v10 = teamID;
   }
 
   v11 = v10;
 
-  v12 = [v7 bundleIdentifier];
-  v13 = v12;
-  if (v12)
+  bundleIdentifier = [v7 bundleIdentifier];
+  v13 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v14 = v12;
+    v14 = bundleIdentifier;
   }
 
   else
   {
-    v14 = v6;
+    v14 = identifierCopy;
   }
 
   v15 = v14;
@@ -9237,17 +9237,17 @@ LABEL_19:
   v16 = *MEMORY[0x1E69A69F0];
   v17 = [*MEMORY[0x1E69A69F0] stringByAppendingFormat:@":%@:%@", v11, v15];
 
-  v18 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v19 = [v18 balloonPluginForBundleID:v17];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v19 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v17];
 
-  v20 = [v19 identifier];
-  LODWORD(v16) = [v20 isEqualToString:v16];
+  identifier = [v19 identifier];
+  LODWORD(v16) = [identifier isEqualToString:v16];
 
   if (v16)
   {
     v21 = objc_alloc(MEMORY[0x1E69A5AB0]);
-    v22 = [v19 pluginBundle];
-    v23 = [v21 initWithPluginBundle:v22 pluginKitProxy:v7 extension:0];
+    pluginBundle = [v19 pluginBundle];
+    v23 = [v21 initWithPluginBundle:pluginBundle pluginKitProxy:v7 extension:0];
 
     v19 = v23;
   }
@@ -9255,15 +9255,15 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = [v19 adamID];
-    v25 = [v19 browserDisplayName];
-    v26 = [v19 dataSourceClass];
+    adamID = [v19 adamID];
+    browserDisplayName = [v19 browserDisplayName];
+    dataSourceClass = [v19 dataSourceClass];
     v27 = [v19 __ck_statusJPEGImageDataForTransportWithCompressionFactor:0.2];
-    v28 = [v26 pluginPayloadFromMessagePayload:v5 appIconData:v27 appName:v25 adamID:v24 allowDataPayloads:0];
+    v28 = [dataSourceClass pluginPayloadFromMessagePayload:messageCopy appIconData:v27 appName:browserDisplayName adamID:adamID allowDataPayloads:0];
 
     [v28 setIsFromMe:1];
-    v29 = [v19 identifier];
-    [v28 setPluginBundleID:v29];
+    identifier2 = [v19 identifier];
+    [v28 setPluginBundleID:identifier2];
 
     v30 = [CKComposition _compositionWithShelfPluginPayload:v28];
   }
@@ -9276,34 +9276,34 @@ LABEL_19:
   return v30;
 }
 
-- (CKComposition)initWithText:(id)a3 subject:(id)a4 shelfPluginPayload:(id)a5 bizIntent:(id)a6
+- (CKComposition)initWithText:(id)text subject:(id)subject shelfPluginPayload:(id)payload bizIntent:(id)intent
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_alloc(objc_opt_class()) initWithText:v13 subject:v12 translation:0 shelfPluginPayload:v11 bizIntent:v10 shelfMediaObject:0 proofreadingInfo:0];
+  intentCopy = intent;
+  payloadCopy = payload;
+  subjectCopy = subject;
+  textCopy = text;
+  v14 = [objc_alloc(objc_opt_class()) initWithText:textCopy subject:subjectCopy translation:0 shelfPluginPayload:payloadCopy bizIntent:intentCopy shelfMediaObject:0 proofreadingInfo:0];
 
   return v14;
 }
 
-- (CKComposition)initWithText:(id)a3 subject:(id)a4 translation:(id)a5 shelfPluginPayload:(id)a6 bizIntent:(id)a7 shelfMediaObject:(id)a8 proofreadingInfo:(id)a9
+- (CKComposition)initWithText:(id)text subject:(id)subject translation:(id)translation shelfPluginPayload:(id)payload bizIntent:(id)intent shelfMediaObject:(id)object proofreadingInfo:(id)info
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  textCopy = text;
+  subjectCopy = subject;
+  translationCopy = translation;
+  payloadCopy = payload;
+  intentCopy = intent;
+  objectCopy = object;
+  infoCopy = info;
   v33.receiver = self;
   v33.super_class = CKComposition;
   v22 = [(CKComposition *)&v33 init];
   if (v22)
   {
-    if ([v15 length])
+    if ([textCopy length])
     {
-      v23 = v15;
+      v23 = textCopy;
     }
 
     else
@@ -9312,9 +9312,9 @@ LABEL_19:
     }
 
     [(CKComposition *)v22 setText:v23];
-    if ([v16 length])
+    if ([subjectCopy length])
     {
-      v24 = v16;
+      v24 = subjectCopy;
     }
 
     else
@@ -9323,9 +9323,9 @@ LABEL_19:
     }
 
     [(CKComposition *)v22 setSubject:v24];
-    if ([v17 length])
+    if ([translationCopy length])
     {
-      v25 = v17;
+      v25 = translationCopy;
     }
 
     else
@@ -9334,11 +9334,11 @@ LABEL_19:
     }
 
     [(CKComposition *)v22 setTranslation:v25];
-    [(CKComposition *)v22 setShelfPluginPayload:v18];
-    v26 = [v19 copy];
+    [(CKComposition *)v22 setShelfPluginPayload:payloadCopy];
+    v26 = [intentCopy copy];
     if ([v26 count])
     {
-      v27 = [v19 copy];
+      v27 = [intentCopy copy];
       [(CKComposition *)v22 setBizIntent:v27];
     }
 
@@ -9347,18 +9347,18 @@ LABEL_19:
       [(CKComposition *)v22 setBizIntent:0];
     }
 
-    [(CKComposition *)v22 setShelfMediaObject:v20];
-    [(CKComposition *)v22 setProofreadingInfo:v21];
-    if (v18)
+    [(CKComposition *)v22 setShelfMediaObject:objectCopy];
+    [(CKComposition *)v22 setProofreadingInfo:infoCopy];
+    if (payloadCopy)
     {
-      v28 = [v18 collaborationMetadata];
-      v29 = [v28 userSelectedShareOptions];
+      collaborationMetadata = [payloadCopy collaborationMetadata];
+      userSelectedShareOptions = [collaborationMetadata userSelectedShareOptions];
 
-      if (v29 || ([v18 collaborationMetadata], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "defaultShareOptions"), v29 = objc_claimAutoreleasedReturnValue(), v30, v29))
+      if (userSelectedShareOptions || ([payloadCopy collaborationMetadata], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "defaultShareOptions"), userSelectedShareOptions = objc_claimAutoreleasedReturnValue(), v30, userSelectedShareOptions))
       {
-        [(CKComposition *)v22 setCollaborationShareOptions:v29];
-        v31 = [v29 optionsGroups];
-        [(CKComposition *)v22 setCollaborationOptions:v31];
+        [(CKComposition *)v22 setCollaborationShareOptions:userSelectedShareOptions];
+        optionsGroups = [userSelectedShareOptions optionsGroups];
+        [(CKComposition *)v22 setCollaborationOptions:optionsGroups];
       }
     }
   }
@@ -9374,14 +9374,14 @@ LABEL_19:
   v10 = __Block_byref_object_copy__80;
   v11 = __Block_byref_object_dispose__80;
   v12 = 0;
-  v2 = [(CKComposition *)self text];
-  v3 = [v2 length];
+  text = [(CKComposition *)self text];
+  v3 = [text length];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__CKComposition_firstEmbeddedPluginPayload__block_invoke;
   v6[3] = &unk_1E72F8428;
   v6[4] = &v7;
-  [v2 enumerateAttribute:@"EmbeddedRichLinkConfiguration" inRange:0 options:v3 usingBlock:{0, v6}];
+  [text enumerateAttribute:@"EmbeddedRichLinkConfiguration" inRange:0 options:v3 usingBlock:{0, v6}];
   v4 = v8[5];
 
   _Block_object_dispose(&v7, 8);
@@ -9408,14 +9408,14 @@ void __43__CKComposition_firstEmbeddedPluginPayload__block_invoke(uint64_t a1, v
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(CKComposition *)self text];
-  v3 = [v2 length];
+  text = [(CKComposition *)self text];
+  v3 = [text length];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__CKComposition__compositionTextBeginsWithEmbeddedPluginAttachment__block_invoke;
   v6[3] = &unk_1E72F12E0;
   v6[4] = &v7;
-  [v2 enumerateAttributesInRange:0 options:v3 usingBlock:{0, v6}];
+  [text enumerateAttributesInRange:0 options:v3 usingBlock:{0, v6}];
   v4 = *(v8 + 24);
 
   _Block_object_dispose(&v7, 8);
@@ -9437,10 +9437,10 @@ void __67__CKComposition__compositionTextBeginsWithEmbeddedPluginAttachment__blo
 {
   if ([(CKComposition *)self hasContent])
   {
-    v3 = [(CKComposition *)self text];
-    v4 = [v3 string];
-    v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v6 = [v4 __ck_containsOnlyCharactersFromSet:v5] ^ 1;
+    text = [(CKComposition *)self text];
+    string = [text string];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v6 = [string __ck_containsOnlyCharactersFromSet:whitespaceAndNewlineCharacterSet] ^ 1;
   }
 
   else
@@ -9451,90 +9451,90 @@ void __67__CKComposition__compositionTextBeginsWithEmbeddedPluginAttachment__blo
   return v6;
 }
 
-- (id)compositionByReplacingText:(id)a3
+- (id)compositionByReplacingText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(CKComposition *)self isExpirableComposition];
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(CKComposition *)self subject];
-  v7 = [(CKComposition *)self translation];
-  v8 = [(CKComposition *)self shelfPluginPayload];
-  v9 = [(CKComposition *)self bizIntent];
-  v10 = [(CKComposition *)self shelfMediaObject];
-  v11 = [(CKComposition *)self proofreadingInfo];
-  v12 = [v5 initWithText:v4 subject:v6 translation:v7 shelfPluginPayload:v8 bizIntent:v9 shelfMediaObject:v10 proofreadingInfo:v11];
+  subject = [(CKComposition *)self subject];
+  translation = [(CKComposition *)self translation];
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  bizIntent = [(CKComposition *)self bizIntent];
+  shelfMediaObject = [(CKComposition *)self shelfMediaObject];
+  proofreadingInfo = [(CKComposition *)self proofreadingInfo];
+  v12 = [v5 initWithText:textCopy subject:subject translation:translation shelfPluginPayload:shelfPluginPayload bizIntent:bizIntent shelfMediaObject:shelfMediaObject proofreadingInfo:proofreadingInfo];
 
-  v13 = [(CKComposition *)self expressiveSendStyleID];
-  [v12 setExpressiveSendStyleID:v13];
+  expressiveSendStyleID = [(CKComposition *)self expressiveSendStyleID];
+  [v12 setExpressiveSendStyleID:expressiveSendStyleID];
 
   [v12 setShouldHideClearPluginButton:{-[CKComposition shouldHideClearPluginButton](self, "shouldHideClearPluginButton")}];
-  v14 = [(CKComposition *)self sendLaterPluginInfo];
-  [v12 setSendLaterPluginInfo:v14];
+  sendLaterPluginInfo = [(CKComposition *)self sendLaterPluginInfo];
+  [v12 setSendLaterPluginInfo:sendLaterPluginInfo];
 
   return v12;
 }
 
-- (id)compositionByAppendingComposition:(id)a3
+- (id)compositionByAppendingComposition:(id)composition
 {
-  v4 = a3;
-  v5 = [v4 subject];
-  v6 = -[CKComposition _compositionByAppendingText:isExpirable:shelfPluginPayload:shelfMediaObject:addingNewLineIfNedded:](self, "_compositionByAppendingText:isExpirable:shelfPluginPayload:shelfMediaObject:addingNewLineIfNedded:", v5, [v4 isExpirableComposition], 0, 0, 1);
-  v7 = [v4 text];
-  v8 = [v4 isExpirableComposition];
-  v9 = [v4 shelfPluginPayload];
-  v10 = [v4 shelfMediaObject];
+  compositionCopy = composition;
+  subject = [compositionCopy subject];
+  v6 = -[CKComposition _compositionByAppendingText:isExpirable:shelfPluginPayload:shelfMediaObject:addingNewLineIfNedded:](self, "_compositionByAppendingText:isExpirable:shelfPluginPayload:shelfMediaObject:addingNewLineIfNedded:", subject, [compositionCopy isExpirableComposition], 0, 0, 1);
+  text = [compositionCopy text];
+  isExpirableComposition = [compositionCopy isExpirableComposition];
+  shelfPluginPayload = [compositionCopy shelfPluginPayload];
+  shelfMediaObject = [compositionCopy shelfMediaObject];
 
-  v11 = [v6 _compositionByAppendingText:v7 isExpirable:v8 shelfPluginPayload:v9 shelfMediaObject:v10 addingNewLineIfNedded:1];
+  v11 = [v6 _compositionByAppendingText:text isExpirable:isExpirableComposition shelfPluginPayload:shelfPluginPayload shelfMediaObject:shelfMediaObject addingNewLineIfNedded:1];
 
   return v11;
 }
 
-+ (CKComposition)compositionWithShelfMediaObject:(id)a3
++ (CKComposition)compositionWithShelfMediaObject:(id)object
 {
-  v3 = a3;
-  v4 = [[CKComposition alloc] initWithText:0 subject:0 translation:0 shelfPluginPayload:0 bizIntent:0 shelfMediaObject:v3 proofreadingInfo:0];
+  objectCopy = object;
+  v4 = [[CKComposition alloc] initWithText:0 subject:0 translation:0 shelfPluginPayload:0 bizIntent:0 shelfMediaObject:objectCopy proofreadingInfo:0];
 
   return v4;
 }
 
-+ (id)compositionForTUConversationActivity:(id)a3
++ (id)compositionForTUConversationActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = objc_alloc_init(MEMORY[0x1E696ECA0]);
   v5 = objc_alloc_init(MEMORY[0x1E696ECF0]);
-  v6 = [v3 concatenatedMetadataDescription];
-  v7 = [v6 length];
+  concatenatedMetadataDescription = [activityCopy concatenatedMetadataDescription];
+  v7 = [concatenatedMetadataDescription length];
 
   if (v7)
   {
-    v8 = [v3 concatenatedMetadataDescription];
-    [v5 setTitle:v8];
+    concatenatedMetadataDescription2 = [activityCopy concatenatedMetadataDescription];
+    [v5 setTitle:concatenatedMetadataDescription2];
   }
 
-  v9 = [v3 bundleIdentifier];
-  [v5 setApplicationBundleIdentifier:v9];
+  bundleIdentifier = [activityCopy bundleIdentifier];
+  [v5 setApplicationBundleIdentifier:bundleIdentifier];
 
-  v10 = [v3 localizedApplicationName];
-  if (v10)
+  localizedApplicationName = [activityCopy localizedApplicationName];
+  if (localizedApplicationName)
   {
-    [v5 setApplication:v10];
+    [v5 setApplication:localizedApplicationName];
   }
 
   else
   {
-    v11 = [v3 fallbackApplicationName];
-    [v5 setApplication:v11];
+    fallbackApplicationName = [activityCopy fallbackApplicationName];
+    [v5 setApplication:fallbackApplicationName];
   }
 
-  v12 = [v3 metadata];
-  v13 = [v12 imageData];
+  metadata = [activityCopy metadata];
+  imageData = [metadata imageData];
 
-  if (v13)
+  if (imageData)
   {
     v14 = MEMORY[0x1E69DCAB8];
-    v15 = [v3 metadata];
-    v16 = [v15 imageData];
-    v17 = [v14 imageWithData:v16];
+    metadata2 = [activityCopy metadata];
+    imageData2 = [metadata2 imageData];
+    v17 = [v14 imageWithData:imageData2];
 
     if (v17)
     {
@@ -9548,50 +9548,50 @@ void __67__CKComposition__compositionTextBeginsWithEmbeddedPluginAttachment__blo
   [v19 setMetadata:v4];
   v20 = [v19 dataRepresentationWithOutOfLineAttachments:0];
   v21 = objc_alloc_init(CKBrowserItemPayload);
-  v22 = [MEMORY[0x1E696AEC0] stringGUID];
-  [(CKBrowserItemPayload *)v21 setMessageGUID:v22];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+  [(CKBrowserItemPayload *)v21 setMessageGUID:stringGUID];
 
   [(CKBrowserItemPayload *)v21 setPluginBundleID:*MEMORY[0x1E69A6A18]];
   [(CKBrowserItemPayload *)v21 setData:v20];
   v23 = [[CKComposition alloc] initWithText:0 subject:0 shelfPluginPayload:v21];
-  v24 = [(CKComposition *)v23 shelfPluginPayload];
-  [v24 setGroupActivity:v3];
+  shelfPluginPayload = [(CKComposition *)v23 shelfPluginPayload];
+  [shelfPluginPayload setGroupActivity:activityCopy];
 
   return v23;
 }
 
 - (BOOL)isSendAnimated
 {
-  v3 = [(CKComposition *)self shelfPluginPayload];
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(CKComposition *)self shelfPluginPayload];
+    shelfPluginPayload2 = [(CKComposition *)self shelfPluginPayload];
   }
 
   else
   {
-    v4 = 0;
+    shelfPluginPayload2 = 0;
   }
 
-  v5 = [v4 useDirectSend];
-  return v5 ^ 1;
+  useDirectSend = [shelfPluginPayload2 useDirectSend];
+  return useDirectSend ^ 1;
 }
 
 - (Class)balloonViewClass
 {
-  v3 = [(CKComposition *)self mediaObjects];
-  v4 = [v3 count];
+  mediaObjects = [(CKComposition *)self mediaObjects];
+  v4 = [mediaObjects count];
 
   if (v4)
   {
-    v5 = [(CKComposition *)self mediaObjects];
-    v6 = [v5 lastObject];
+    mediaObjects2 = [(CKComposition *)self mediaObjects];
+    lastObject = [mediaObjects2 lastObject];
 
-    v7 = [v6 mediaType];
-    if (v7 > 4)
+    mediaType = [lastObject mediaType];
+    if (mediaType > 4)
     {
-      if (v7 <= 0xB && (((1 << v7) & 0xAE0) != 0 || v7 == 8 || v7 == 10))
+      if (mediaType <= 0xB && (((1 << mediaType) & 0xAE0) != 0 || mediaType == 8 || mediaType == 10))
       {
         goto LABEL_42;
       }
@@ -9599,20 +9599,20 @@ void __67__CKComposition__compositionTextBeginsWithEmbeddedPluginAttachment__blo
       goto LABEL_29;
     }
 
-    if ((v7 - 2) < 2)
+    if ((mediaType - 2) < 2)
     {
-      v17 = [MEMORY[0x1E69A7FC8] sharedManager];
-      v18 = [v17 isFeatureEnabled];
+      mEMORY[0x1E69A7FC8] = [MEMORY[0x1E69A7FC8] sharedManager];
+      isFeatureEnabled = [mEMORY[0x1E69A7FC8] isFeatureEnabled];
 
-      if (v18 && ([v6 commSafetySensitive] != 1 || objc_msgSend(v6, "isFromMe")))
+      if (isFeatureEnabled && ([lastObject commSafetySensitive] != 1 || objc_msgSend(lastObject, "isFromMe")))
       {
-        [v6 commSafetySensitive];
+        [lastObject commSafetySensitive];
       }
 
       goto LABEL_42;
     }
 
-    if (v7 != 1 && v7 != 4)
+    if (mediaType != 1 && mediaType != 4)
     {
 LABEL_29:
 
@@ -9622,8 +9622,8 @@ LABEL_29:
     goto LABEL_42;
   }
 
-  v8 = [(CKComposition *)self pluginDisplayContainers];
-  v9 = [v8 count];
+  pluginDisplayContainers = [(CKComposition *)self pluginDisplayContainers];
+  v9 = [pluginDisplayContainers count];
 
   if (v9)
   {
@@ -9632,13 +9632,13 @@ LABEL_7:
     goto LABEL_43;
   }
 
-  v11 = [(CKComposition *)self text];
-  v12 = [v11 length];
+  text = [(CKComposition *)self text];
+  v12 = [text length];
 
   if (v12)
   {
-    v13 = [(CKComposition *)self subject];
-    v14 = [v13 length];
+    subject = [(CKComposition *)self subject];
+    v14 = [subject length];
 
     if (v14 || (-[CKComposition text](self, "text"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 __ck_bigEmojiStyle], v15, (v16 - 1) > 2))
     {
@@ -9648,20 +9648,20 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v19 = [(CKComposition *)self shelfPluginPayload];
-  if (!v19)
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  if (!shelfPluginPayload)
   {
 LABEL_30:
     v10 = 0;
     goto LABEL_43;
   }
 
-  v6 = v19;
+  lastObject = shelfPluginPayload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v6 mediaObjectFromPayload];
-    v21 = v20 != 0;
+    mediaObjectFromPayload = [lastObject mediaObjectFromPayload];
+    v21 = mediaObjectFromPayload != 0;
   }
 
   else
@@ -9669,16 +9669,16 @@ LABEL_30:
     v21 = 0;
   }
 
-  v22 = [v6 pluginBundleID];
-  if ([v22 isEqualToString:*MEMORY[0x1E69A6A00]])
+  pluginBundleID = [lastObject pluginBundleID];
+  if ([pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]])
   {
   }
 
   else
   {
-    v23 = [v6 pluginBundleID];
+    pluginBundleID2 = [lastObject pluginBundleID];
     v24 = IMBalloonExtensionIDWithSuffix();
-    v25 = [v23 isEqualToString:v24] | v21;
+    v25 = [pluginBundleID2 isEqualToString:v24] | v21;
 
     if ((v25 & 1) == 0)
     {
@@ -9686,18 +9686,18 @@ LABEL_30:
     }
   }
 
-  v26 = [MEMORY[0x1E69A7FC8] sharedManager];
-  v27 = [v26 isFeatureEnabled];
+  mEMORY[0x1E69A7FC8]2 = [MEMORY[0x1E69A7FC8] sharedManager];
+  isFeatureEnabled2 = [mEMORY[0x1E69A7FC8]2 isFeatureEnabled];
 
-  if (v27)
+  if (isFeatureEnabled2)
   {
-    v28 = [v6 mediaObjectFromPayload];
-    if ([v28 commSafetySensitive] == 1)
+    mediaObjectFromPayload2 = [lastObject mediaObjectFromPayload];
+    if ([mediaObjectFromPayload2 commSafetySensitive] == 1)
     {
-      v29 = [v6 mediaObjectFromPayload];
-      v30 = [v29 isFromMe];
+      mediaObjectFromPayload3 = [lastObject mediaObjectFromPayload];
+      isFromMe = [mediaObjectFromPayload3 isFromMe];
 
-      if (!v30)
+      if (!isFromMe)
       {
         goto LABEL_42;
       }
@@ -9707,8 +9707,8 @@ LABEL_30:
     {
     }
 
-    v31 = [v6 mediaObjectFromPayload];
-    [v31 commSafetySensitive];
+    mediaObjectFromPayload4 = [lastObject mediaObjectFromPayload];
+    [mediaObjectFromPayload4 commSafetySensitive];
   }
 
 LABEL_42:
@@ -9719,15 +9719,15 @@ LABEL_43:
   return v10;
 }
 
-+ (CKComposition)compositionWithPluginDisplayContainer:(id)a3 subject:(id)a4
++ (CKComposition)compositionWithPluginDisplayContainer:(id)container subject:(id)subject
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  containerCopy = container;
+  subjectCopy = subject;
+  if (containerCopy)
   {
     v12 = @"PluginDisplayContainer";
-    v13[0] = v5;
+    v13[0] = containerCopy;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v8 = objc_alloc(MEMORY[0x1E696AAB0]);
     v9 = [v8 initWithString:*MEMORY[0x1E69A5F00] attributes:v7];
@@ -9738,29 +9738,29 @@ LABEL_43:
     v9 = 0;
   }
 
-  v10 = [[CKComposition alloc] initWithText:v9 subject:v6];
+  v10 = [[CKComposition alloc] initWithText:v9 subject:subjectCopy];
 
   return v10;
 }
 
-- (id)compositionByAppendingPluginDisplayContainer:(id)a3
+- (id)compositionByAppendingPluginDisplayContainer:(id)container
 {
-  v4 = [CKComposition compositionWithPluginDisplayContainer:a3 subject:0];
+  v4 = [CKComposition compositionWithPluginDisplayContainer:container subject:0];
   v5 = [(CKComposition *)self compositionByAppendingComposition:v4];
 
   return v5;
 }
 
-+ (CKComposition)compositionWithMediaObject:(id)a3 subject:(id)a4
++ (CKComposition)compositionWithMediaObject:(id)object subject:(id)subject
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  subjectCopy = subject;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v17 = @"AdaptiveImageGlyphMediaObject";
-    v18[0] = v5;
+    v18[0] = objectCopy;
     v7 = MEMORY[0x1E695DF20];
     v8 = v18;
     v9 = &v17;
@@ -9772,10 +9772,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v5)
+  if (objectCopy)
   {
     v15 = @"MediaObjectForTextAttachment";
-    v16 = v5;
+    v16 = objectCopy;
     v7 = MEMORY[0x1E695DF20];
     v8 = &v16;
     v9 = &v15;
@@ -9784,40 +9784,40 @@ LABEL_5:
 
   v12 = 0;
 LABEL_6:
-  v13 = [[CKComposition alloc] initWithText:v12 subject:v6];
+  v13 = [[CKComposition alloc] initWithText:v12 subject:subjectCopy];
 
   return v13;
 }
 
-+ (CKComposition)compositionWithMediaObjects:(id)a3 subject:(id)a4
++ (CKComposition)compositionWithMediaObjects:(id)objects subject:(id)subject
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CKComposition alloc] initWithText:0 subject:v5];
+  subjectCopy = subject;
+  objectsCopy = objects;
+  v7 = [[CKComposition alloc] initWithText:0 subject:subjectCopy];
 
-  v8 = [(CKComposition *)v7 compositionByAppendingMediaObjects:v6];
+  v8 = [(CKComposition *)v7 compositionByAppendingMediaObjects:objectsCopy];
 
   return v8;
 }
 
-- (id)compositionByAppendingMediaObject:(id)a3
+- (id)compositionByAppendingMediaObject:(id)object
 {
-  v4 = [CKComposition compositionWithMediaObject:a3 subject:0];
+  v4 = [CKComposition compositionWithMediaObject:object subject:0];
   v5 = [(CKComposition *)self compositionByAppendingComposition:v4];
 
   return v5;
 }
 
-- (id)compositionByAppendingMediaObjects:(id)a3
+- (id)compositionByAppendingMediaObjects:(id)objects
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
+  objectsCopy = objects;
+  selfCopy = self;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [objectsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -9825,48 +9825,48 @@ LABEL_6:
     do
     {
       v9 = 0;
-      v10 = v5;
+      v10 = selfCopy;
       do
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectsCopy);
         }
 
-        v5 = [(CKComposition *)v10 compositionByAppendingMediaObject:*(*(&v12 + 1) + 8 * v9)];
+        selfCopy = [(CKComposition *)v10 compositionByAppendingMediaObject:*(*(&v12 + 1) + 8 * v9)];
 
         ++v9;
-        v10 = v5;
+        v10 = selfCopy;
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [objectsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)compositionByReplacingMediaObject:(id)a3 withMediaObject:(id)a4
+- (id)compositionByReplacingMediaObject:(id)object withMediaObject:(id)mediaObject
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKComposition *)self text];
-  v9 = [v8 length];
-  v10 = [v8 mutableCopy];
+  objectCopy = object;
+  mediaObjectCopy = mediaObject;
+  text = [(CKComposition *)self text];
+  v9 = [text length];
+  v10 = [text mutableCopy];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __82__CKComposition_CKMediaObject__compositionByReplacingMediaObject_withMediaObject___block_invoke;
   v29[3] = &unk_1E72F8450;
-  v11 = v6;
+  v11 = objectCopy;
   v30 = v11;
   v12 = v10;
   v31 = v12;
-  v13 = v7;
+  v13 = mediaObjectCopy;
   v32 = v13;
-  [v8 enumerateAttribute:@"MediaObjectForTextAttachment" inRange:0 options:v9 usingBlock:{0, v29}];
+  [text enumerateAttribute:@"MediaObjectForTextAttachment" inRange:0 options:v9 usingBlock:{0, v29}];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __82__CKComposition_CKMediaObject__compositionByReplacingMediaObject_withMediaObject___block_invoke_2;
@@ -9877,11 +9877,11 @@ LABEL_6:
   v14 = v13;
   v15 = v12;
   v16 = v11;
-  [v8 enumerateAttribute:@"AdaptiveImageGlyphMediaObject" inRange:0 options:v9 usingBlock:{0, &v22}];
+  [text enumerateAttribute:@"AdaptiveImageGlyphMediaObject" inRange:0 options:v9 usingBlock:{0, &v22}];
   v17 = [CKComposition alloc];
   v18 = [(CKComposition *)self subject:v22];
-  v19 = [(CKComposition *)self shelfPluginPayload];
-  v20 = [(CKComposition *)v17 initWithText:v15 subject:v18 shelfPluginPayload:v19];
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  v20 = [(CKComposition *)v17 initWithText:v15 subject:v18 shelfPluginPayload:shelfPluginPayload];
 
   return v20;
 }
@@ -9906,25 +9906,25 @@ uint64_t __82__CKComposition_CKMediaObject__compositionByReplacingMediaObject_wi
   return result;
 }
 
-- (id)compositionByRemovingMediaObjects:(id)a3
+- (id)compositionByRemovingMediaObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [(CKComposition *)self text];
-  v6 = [v5 mutableCopy];
-  v7 = [v5 length];
+  objectsCopy = objects;
+  text = [(CKComposition *)self text];
+  v6 = [text mutableCopy];
+  v7 = [text length];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __66__CKComposition_CKMediaObject__compositionByRemovingMediaObjects___block_invoke;
   v18 = &unk_1E72F84A0;
-  v19 = v4;
+  v19 = objectsCopy;
   v20 = v6;
   v8 = v6;
-  v9 = v4;
-  [v5 enumerateAttribute:@"MediaObjectForTextAttachment" inRange:0 options:v7 usingBlock:{2, &v15}];
+  v9 = objectsCopy;
+  [text enumerateAttribute:@"MediaObjectForTextAttachment" inRange:0 options:v7 usingBlock:{2, &v15}];
   v10 = [CKComposition alloc];
   v11 = [(CKComposition *)self subject:v15];
-  v12 = [(CKComposition *)self shelfPluginPayload];
-  v13 = [(CKComposition *)v10 initWithText:v8 subject:v11 shelfPluginPayload:v12];
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  v13 = [(CKComposition *)v10 initWithText:v8 subject:v11 shelfPluginPayload:shelfPluginPayload];
 
   return v13;
 }
@@ -9977,16 +9977,16 @@ uint64_t __44__CKComposition_CKMediaObject__mediaObjects__block_invoke_2(uint64_
 
 - (NSArray)pluginDisplayContainers
 {
-  v2 = [(CKComposition *)self text];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [v2 length];
+  text = [(CKComposition *)self text];
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = [text length];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__CKComposition_CKMediaObject__pluginDisplayContainers__block_invoke;
   v7[3] = &unk_1E72EF890;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
-  [v2 enumerateAttribute:@"PluginDisplayContainer" inRange:0 options:v4 usingBlock:{0, v7}];
+  [text enumerateAttribute:@"PluginDisplayContainer" inRange:0 options:v4 usingBlock:{0, v7}];
 
   return v5;
 }
@@ -10006,15 +10006,15 @@ void __55__CKComposition_CKMediaObject__pluginDisplayContainers__block_invoke(ui
 
 - (BOOL)isTextOnly
 {
-  v2 = [(CKComposition *)self text];
-  if ([v2 containsAttribute:@"MediaObjectForTextAttachment"] & 1) != 0 || (objc_msgSend(v2, "containsAttribute:", @"PluginDisplayContainer"))
+  text = [(CKComposition *)self text];
+  if ([text containsAttribute:@"MediaObjectForTextAttachment"] & 1) != 0 || (objc_msgSend(text, "containsAttribute:", @"PluginDisplayContainer"))
   {
     LOBYTE(v3) = 0;
   }
 
   else
   {
-    v3 = [v2 containsAttribute:@"AdaptiveImageGlyphMediaObject"] ^ 1;
+    v3 = [text containsAttribute:@"AdaptiveImageGlyphMediaObject"] ^ 1;
   }
 
   return v3;
@@ -10027,8 +10027,8 @@ void __55__CKComposition_CKMediaObject__pluginDisplayContainers__block_invoke(ui
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(CKComposition *)self mediaObjects];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  mediaObjects = [(CKComposition *)self mediaObjects];
+  v3 = [mediaObjects countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v3)
   {
     v5 = v3;
@@ -10041,12 +10041,12 @@ void __55__CKComposition_CKMediaObject__pluginDisplayContainers__block_invoke(ui
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mediaObjects);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 fileURL];
-        v10 = [v9 absoluteString];
+        fileURL = [v8 fileURL];
+        absoluteString = [fileURL absoluteString];
         v11 = IMFileSizeForItemAtPath();
         v12 = 0;
 
@@ -10055,9 +10055,9 @@ void __55__CKComposition_CKMediaObject__pluginDisplayContainers__block_invoke(ui
           v13 = IMLogHandleForCategory();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
-            v14 = [v8 fileURL];
+            fileURL2 = [v8 fileURL];
             *buf = v16;
-            v22 = v14;
+            v22 = fileURL2;
             v23 = 2112;
             v24 = v12;
             _os_log_error_impl(&dword_19020E000, v13, OS_LOG_TYPE_ERROR, "Unable to get file size for file at path: %@, error: %@", buf, 0x16u);
@@ -10065,7 +10065,7 @@ void __55__CKComposition_CKMediaObject__pluginDisplayContainers__block_invoke(ui
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v5 = [mediaObjects countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v5);
@@ -10077,47 +10077,47 @@ void __55__CKComposition_CKMediaObject__pluginDisplayContainers__block_invoke(ui
 - (id)externalSourceComposition
 {
   v3 = [_CKExternalAudioComposition alloc];
-  v4 = [(CKComposition *)self text];
-  v5 = [(CKComposition *)self subject];
-  v6 = [(CKComposition *)v3 initWithText:v4 subject:v5];
+  text = [(CKComposition *)self text];
+  subject = [(CKComposition *)self subject];
+  v6 = [(CKComposition *)v3 initWithText:text subject:subject];
 
   return v6;
 }
 
 - (id)superFormatSubject
 {
-  v2 = [(CKComposition *)self subject];
-  if (v2)
+  subject = [(CKComposition *)self subject];
+  if (subject)
   {
     v3 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v4 = [v2 string];
-    v5 = [v3 initWithString:v4];
+    string = [subject string];
+    v5 = [v3 initWithString:string];
 
-    v6 = [v5 __im_attributedStringByAssigningMessagePartNumbers];
+    __im_attributedStringByAssigningMessagePartNumbers = [v5 __im_attributedStringByAssigningMessagePartNumbers];
   }
 
   else
   {
-    v6 = 0;
+    __im_attributedStringByAssigningMessagePartNumbers = 0;
   }
 
-  return v6;
+  return __im_attributedStringByAssigningMessagePartNumbers;
 }
 
-- (id)_attributedStringByTrimmingWhiteSpaceAroundAttachmentsInText:(id)a3
+- (id)_attributedStringByTrimmingWhiteSpaceAroundAttachmentsInText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v15 = 1;
-  v5 = [v3 length];
+  v5 = [textCopy length];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __93__CKComposition_IMSuperFormat___attributedStringByTrimmingWhiteSpaceAroundAttachmentsInText___block_invoke;
   v10[3] = &unk_1E72F8518;
-  v6 = v3;
+  v6 = textCopy;
   v11 = v6;
   v13 = v14;
   v7 = v4;
@@ -10183,27 +10183,27 @@ LABEL_19:
   *(*(*(a1 + 48) + 8) + 24) = 0;
 }
 
-- (id)_attributedStringByReplacingMediaObjectsWithTransferGUIDsInText:(id)a3 transferGUIDs:(id *)a4 mediaObjects:(id *)a5
+- (id)_attributedStringByReplacingMediaObjectsWithTransferGUIDsInText:(id)text transferGUIDs:(id *)ds mediaObjects:(id *)objects
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [MEMORY[0x1E695DF70] array];
+  textCopy = text;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v10 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v11 = [v7 length];
+  v11 = [textCopy length];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __123__CKComposition_IMSuperFormat___attributedStringByReplacingMediaObjectsWithTransferGUIDsInText_transferGUIDs_mediaObjects___block_invoke;
   v23 = &unk_1E72EFEE8;
-  v12 = v8;
+  v12 = array;
   v24 = v12;
-  v13 = v9;
+  v13 = array2;
   v25 = v13;
   v26 = v10;
-  v27 = v7;
-  v14 = v7;
+  v27 = textCopy;
+  v14 = textCopy;
   v15 = v10;
   [v14 enumerateAttributesInRange:0 options:v11 usingBlock:{0, &v20}];
-  if (a4)
+  if (ds)
   {
     if ([v12 count])
     {
@@ -10215,10 +10215,10 @@ LABEL_19:
       v16 = 0;
     }
 
-    *a4 = v16;
+    *ds = v16;
   }
 
-  if (a5)
+  if (objects)
   {
     if ([v13 count])
     {
@@ -10230,7 +10230,7 @@ LABEL_19:
       v17 = 0;
     }
 
-    *a5 = v17;
+    *objects = v17;
   }
 
   v18 = [v15 copy];
@@ -10295,16 +10295,16 @@ void __123__CKComposition_IMSuperFormat___attributedStringByReplacingMediaObject
   }
 }
 
-- (id)superFormatText:(id)a3 transferGUIDs:(id *)a4 mediaObjects:(id *)a5
+- (id)superFormatText:(id)text transferGUIDs:(id *)ds mediaObjects:(id *)objects
 {
-  v8 = [(CKComposition *)self _attributedStringByTrimmingWhiteSpaceAroundAttachmentsInText:a3];
+  v8 = [(CKComposition *)self _attributedStringByTrimmingWhiteSpaceAroundAttachmentsInText:text];
   v16 = 0;
   v17 = 0;
   v9 = [(CKComposition *)self _attributedStringByReplacingMediaObjectsWithTransferGUIDsInText:v8 transferGUIDs:&v17 mediaObjects:&v16];
   v10 = v17;
   v11 = v16;
-  v12 = [v9 __im_attributedStringByAssigningMessagePartNumbers];
-  if (a4)
+  __im_attributedStringByAssigningMessagePartNumbers = [v9 __im_attributedStringByAssigningMessagePartNumbers];
+  if (ds)
   {
     if ([v10 count])
     {
@@ -10316,10 +10316,10 @@ void __123__CKComposition_IMSuperFormat___attributedStringByReplacingMediaObject
       v13 = 0;
     }
 
-    *a4 = v13;
+    *ds = v13;
   }
 
-  if (a5)
+  if (objects)
   {
     if ([v11 count])
     {
@@ -10331,20 +10331,20 @@ void __123__CKComposition_IMSuperFormat___attributedStringByReplacingMediaObject
       v14 = 0;
     }
 
-    *a5 = v14;
+    *objects = v14;
   }
 
-  return v12;
+  return __im_attributedStringByAssigningMessagePartNumbers;
 }
 
-- (id)superFormatText:(id *)a3
+- (id)superFormatText:(id *)text
 {
-  v5 = [(CKComposition *)self text];
+  text = [(CKComposition *)self text];
   v11 = 0;
-  v6 = [(CKComposition *)self superFormatText:v5 transferGUIDs:&v11 mediaObjects:0];
+  v6 = [(CKComposition *)self superFormatText:text transferGUIDs:&v11 mediaObjects:0];
   v7 = v11;
   v8 = v7;
-  if (a3)
+  if (text)
   {
     if ([v7 count])
     {
@@ -10356,24 +10356,24 @@ void __123__CKComposition_IMSuperFormat___attributedStringByReplacingMediaObject
       v9 = 0;
     }
 
-    *a3 = v9;
+    *text = v9;
   }
 
   return v6;
 }
 
-- (id)_messageFromPayload:(id)a3 firstGUID:(id)a4
+- (id)_messageFromPayload:(id)payload firstGUID:(id)d
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  dCopy = d;
   v47 = 0;
   v48 = 0;
-  v8 = [v6 __ck_superFormatStringTransferGUIDs:&v48 mediaObjects:&v47];
+  v8 = [payloadCopy __ck_superFormatStringTransferGUIDs:&v48 mediaObjects:&v47];
   v9 = v48;
   v10 = v47;
-  v11 = [v6 userInfo];
-  v12 = [v11 objectForKey:@"DeviceAction"];
+  userInfo = [payloadCopy userInfo];
+  v12 = [userInfo objectForKey:@"DeviceAction"];
 
   if (v12)
   {
@@ -10387,26 +10387,26 @@ void __123__CKComposition_IMSuperFormat___attributedStringByReplacingMediaObject
     v41 = 0;
   }
 
-  v13 = [v6 data];
-  v14 = [v6 pluginBundleID];
-  if (v7)
+  data = [payloadCopy data];
+  pluginBundleID = [payloadCopy pluginBundleID];
+  if (dCopy)
   {
-    v15 = v7;
+    stringGUID = dCopy;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AEC0] stringGUID];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
   }
 
-  v40 = v15;
-  if ([v14 isEqualToString:*MEMORY[0x1E69A6A00]])
+  v40 = stringGUID;
+  if ([pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]])
   {
     goto LABEL_8;
   }
 
   v16 = IMBalloonExtensionIDWithSuffix();
-  if (![v14 isEqualToString:v16])
+  if (![pluginBundleID isEqualToString:v16])
   {
     goto LABEL_13;
   }
@@ -10417,28 +10417,28 @@ void __123__CKComposition_IMSuperFormat___attributedStringByReplacingMediaObject
     goto LABEL_13;
   }
 
-  v17 = [v6 shouldSendAsMediaObject];
+  shouldSendAsMediaObject = [payloadCopy shouldSendAsMediaObject];
 
-  if (v17)
+  if (shouldSendAsMediaObject)
   {
 LABEL_8:
 
-    v13 = 0;
-    v16 = v14;
-    v14 = 0;
+    data = 0;
+    v16 = pluginBundleID;
+    pluginBundleID = 0;
 LABEL_13:
   }
 
   v42 = v10;
-  if ([v6 isUpdate])
+  if ([payloadCopy isUpdate])
   {
     v18 = MEMORY[0x1E69A5BD8];
-    v19 = [v6 associatedMessageGUID];
-    v20 = [v18 breadcrumbMessageWithText:v8 associatedMessageGUID:v19 balloonBundleID:v14 fileTransferGUIDs:v9 payloadData:v13 threadIdentifier:0];
+    associatedMessageGUID = [payloadCopy associatedMessageGUID];
+    v20 = [v18 breadcrumbMessageWithText:v8 associatedMessageGUID:associatedMessageGUID balloonBundleID:pluginBundleID fileTransferGUIDs:v9 payloadData:data threadIdentifier:0];
 
     objc_opt_class();
     v38 = v9;
-    v39 = v7;
+    v39 = dCopy;
     v21 = v8;
     if (objc_opt_isKindOfClass())
     {
@@ -10466,8 +10466,8 @@ LABEL_13:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v43 + 1) + 8 * i) transfer];
-          [v28 setIMMessage:v20];
+          transfer = [*(*(&v43 + 1) + 8 * i) transfer];
+          [transfer setIMMessage:v20];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -10478,30 +10478,30 @@ LABEL_13:
 
     v8 = v21;
     v9 = v38;
-    v7 = v39;
+    dCopy = v39;
   }
 
   else
   {
-    v20 = [(CKComposition *)self messageWithGUID:v40 superFormatText:v8 superFormatSubject:0 fileTransferGUIDs:v9 mediaObjects:v10 balloonBundleID:v14 payloadData:v13 messageSummaryInfo:v41];
+    v20 = [(CKComposition *)self messageWithGUID:v40 superFormatText:v8 superFormatSubject:0 fileTransferGUIDs:v9 mediaObjects:v10 balloonBundleID:pluginBundleID payloadData:data messageSummaryInfo:v41];
   }
 
-  v29 = [v6 datasource];
-  if (v29)
+  datasource = [payloadCopy datasource];
+  if (datasource)
   {
-    v30 = v29;
-    v31 = [v6 isUpdate];
+    v30 = datasource;
+    isUpdate = [payloadCopy isUpdate];
 
-    if ((v31 & 1) == 0)
+    if ((isUpdate & 1) == 0)
     {
-      v32 = [v6 datasource];
-      v33 = [v20 guid];
-      [v32 datasourceWasMovedToNewGuid:v33];
+      datasource2 = [payloadCopy datasource];
+      guid = [v20 guid];
+      [datasource2 datasourceWasMovedToNewGuid:guid];
 
-      v34 = [MEMORY[0x1E69A5AD0] sharedInstance];
-      v35 = [v6 datasource];
-      v36 = [v20 guid];
-      [v34 insertDataSource:v35 forGUID:v36];
+      mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+      datasource3 = [payloadCopy datasource];
+      guid2 = [v20 guid];
+      [mEMORY[0x1E69A5AD0] insertDataSource:datasource3 forGUID:guid2];
     }
   }
 
@@ -10510,11 +10510,11 @@ LABEL_13:
 
 - (id)_compositionParts
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKComposition *)self text];
+  array = [MEMORY[0x1E695DF70] array];
+  text = [(CKComposition *)self text];
   v5 = IMAttributedStringByRemovingTrackingInformation();
 
-  v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
   v7 = [v5 length];
   v26 = 0;
   v27 = &v26;
@@ -10527,9 +10527,9 @@ LABEL_13:
   v25 = &v26;
   v8 = v5;
   v22 = v8;
-  v9 = v6;
+  v9 = whitespaceAndNewlineCharacterSet;
   v23 = v9;
-  v10 = v3;
+  v10 = array;
   v24 = v10;
   [v8 enumerateAttributesInRange:0 options:v7 usingBlock:{0, &v18}];
   v11 = v27[3];
@@ -10592,11 +10592,11 @@ void __49__CKComposition_IMSuperFormat___compositionParts__block_invoke(uint64_t
   }
 }
 
-- (BOOL)canBundleAttachmentsWithMessageOnService:(id)a3
+- (BOOL)canBundleAttachmentsWithMessageOnService:(id)service
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"ForceNoAttachmentsWithMessage"];
+  serviceCopy = service;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"ForceNoAttachmentsWithMessage"];
 
   if (v5)
   {
@@ -10615,25 +10615,25 @@ void __49__CKComposition_IMSuperFormat___compositionParts__block_invoke(uint64_t
 
   else
   {
-    v7 = [v3 supportsCapability:*MEMORY[0x1E69A79B8]];
+    v7 = [serviceCopy supportsCapability:*MEMORY[0x1E69A79B8]];
   }
 
   return v7;
 }
 
-- (void)_applyMessagePropertiesTo:(id)a3 pluginPayload:(id)a4
+- (void)_applyMessagePropertiesTo:(id)to pluginPayload:(id)payload
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v6 pluginBundleID];
-  if ([v7 containsString:*MEMORY[0x1E69A6A38]])
+  toCopy = to;
+  payloadCopy = payload;
+  pluginBundleID = [payloadCopy pluginBundleID];
+  if ([pluginBundleID containsString:*MEMORY[0x1E69A6A38]])
   {
   }
 
   else
   {
-    v8 = [v6 pluginBundleID];
-    v9 = [v8 containsString:*MEMORY[0x1E69A6A40]];
+    pluginBundleID2 = [payloadCopy pluginBundleID];
+    v9 = [pluginBundleID2 containsString:*MEMORY[0x1E69A6A40]];
 
     if (!v9)
     {
@@ -10641,55 +10641,55 @@ void __49__CKComposition_IMSuperFormat___compositionParts__block_invoke(uint64_t
     }
   }
 
-  v10 = [v6 pluginBundleID];
-  [v16 setAssociatedBalloonBundleID:v10];
+  pluginBundleID3 = [payloadCopy pluginBundleID];
+  [toCopy setAssociatedBalloonBundleID:pluginBundleID3];
 
 LABEL_5:
-  v11 = [(CKComposition *)self sourceApplicationID];
+  sourceApplicationID = [(CKComposition *)self sourceApplicationID];
 
-  if (v11)
+  if (sourceApplicationID)
   {
-    v12 = [(CKComposition *)self sourceApplicationID];
-    [v16 setSourceApplicationID:v12];
+    sourceApplicationID2 = [(CKComposition *)self sourceApplicationID];
+    [toCopy setSourceApplicationID:sourceApplicationID2];
   }
 
-  v13 = [v16 guid];
-  v14 = [(CKComposition *)self firstMessageGUIDOverride];
-  v15 = [v13 isEqualToString:v14];
+  guid = [toCopy guid];
+  firstMessageGUIDOverride = [(CKComposition *)self firstMessageGUIDOverride];
+  v15 = [guid isEqualToString:firstMessageGUIDOverride];
 
   if (v15)
   {
-    [v16 setShouldNotifyOnSend:1];
+    [toCopy setShouldNotifyOnSend:1];
   }
 }
 
-- (id)messagesFromCompositionFirstGUIDForMessage:(id)a3 sendingService:(id)a4
+- (id)messagesFromCompositionFirstGUIDForMessage:(id)message sendingService:(id)service
 {
   v102[1] = *MEMORY[0x1E69E9840];
-  v60 = a3;
-  v59 = a4;
-  v66 = [MEMORY[0x1E695DF70] array];
+  messageCopy = message;
+  serviceCopy = service;
+  array = [MEMORY[0x1E695DF70] array];
   v92 = 0;
   v93 = &v92;
   v94 = 0x3032000000;
   v95 = __Block_byref_object_copy__80;
   v96 = __Block_byref_object_dispose__80;
-  v6 = [(CKComposition *)self firstMessageGUIDOverride];
-  v7 = v6;
-  v8 = v60;
-  if (v6)
+  firstMessageGUIDOverride = [(CKComposition *)self firstMessageGUIDOverride];
+  v7 = firstMessageGUIDOverride;
+  v8 = messageCopy;
+  if (firstMessageGUIDOverride)
   {
-    v8 = v6;
+    v8 = firstMessageGUIDOverride;
   }
 
   v97 = v8;
 
-  v9 = [(CKComposition *)self _compositionParts];
-  v10 = [(CKComposition *)self shelfPluginPayload];
+  _compositionParts = [(CKComposition *)self _compositionParts];
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = shelfPluginPayload;
   }
 
   else
@@ -10703,46 +10703,46 @@ LABEL_5:
   v88 = 0x3032000000;
   v89 = __Block_byref_object_copy__80;
   v90 = __Block_byref_object_dispose__80;
-  v91 = [(CKComposition *)self superFormatSubject];
-  v12 = [v9 firstObject];
-  v13 = [(CKComposition *)self superFormatTranslation];
-  v63 = v10;
-  if (v87[5] && (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  superFormatSubject = [(CKComposition *)self superFormatSubject];
+  firstObject = [_compositionParts firstObject];
+  superFormatTranslation = [(CKComposition *)self superFormatTranslation];
+  v63 = shelfPluginPayload;
+  if (v87[5] && (!firstObject || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
-    v14 = [(CKComposition *)self subject];
-    [v9 insertObject:v14 atIndex:0];
-    v58 = v14;
+    subject = [(CKComposition *)self subject];
+    [_compositionParts insertObject:subject atIndex:0];
+    v58 = subject;
 
     v15 = v87[5];
     v87[5] = 0;
 
-    v10 = v63;
+    shelfPluginPayload = v63;
   }
 
   else
   {
-    v58 = v12;
+    v58 = firstObject;
   }
 
-  v67 = v13;
-  v16 = [v10 pluginBundleID];
-  v17 = [v16 isEqualToString:*MEMORY[0x1E69A6A00]];
+  v67 = superFormatTranslation;
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
+  v17 = [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]];
 
-  v18 = [v62 pluginBundleID];
+  pluginBundleID2 = [v62 pluginBundleID];
   v19 = IMBalloonExtensionIDWithSuffix();
-  if ([v18 isEqualToString:v19])
+  if ([pluginBundleID2 isEqualToString:v19])
   {
-    v20 = [v62 shouldSendAsMediaObject];
+    shouldSendAsMediaObject = [v62 shouldSendAsMediaObject];
   }
 
   else
   {
-    v20 = 0;
+    shouldSendAsMediaObject = 0;
   }
 
-  if ((v17 | v20))
+  if ((v17 | shouldSendAsMediaObject))
   {
-    v61 = [v63 __ck_photoCompositionString];
+    __ck_photoCompositionString = [v63 __ck_photoCompositionString];
     goto LABEL_28;
   }
 
@@ -10751,57 +10751,57 @@ LABEL_5:
     if (!v63)
     {
 LABEL_32:
-      v61 = 0;
+      __ck_photoCompositionString = 0;
       goto LABEL_35;
     }
 
-    v25 = [(CKComposition *)self shelfPluginPayload];
-    v26 = [v25 sendAsCopy];
+    shelfPluginPayload2 = [(CKComposition *)self shelfPluginPayload];
+    sendAsCopy = [shelfPluginPayload2 sendAsCopy];
 
-    if (!v26)
+    if (!sendAsCopy)
     {
       v29 = [CKPluginDisplayContainer pluginDisplayContainerWithPluginPayload:v63 composeImage:0];
-      [v9 insertObject:v29 atIndex:0];
-      v61 = 0;
+      [_compositionParts insertObject:v29 atIndex:0];
+      __ck_photoCompositionString = 0;
 LABEL_34:
 
       goto LABEL_35;
     }
 
-    v27 = [(CKComposition *)self shelfMediaObject];
-    v22 = v27;
-    if (v27)
+    shelfMediaObject = [(CKComposition *)self shelfMediaObject];
+    v22 = shelfMediaObject;
+    if (shelfMediaObject)
     {
       v99 = @"MediaObjectForTextAttachment";
-      v100 = v27;
+      v100 = shelfMediaObject;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
       v28 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v61 = [v28 initWithString:*MEMORY[0x1E69A5F00] attributes:v23];
+      __ck_photoCompositionString = [v28 initWithString:*MEMORY[0x1E69A5F00] attributes:v23];
       goto LABEL_24;
     }
 
 LABEL_26:
-    v61 = 0;
+    __ck_photoCompositionString = 0;
     goto LABEL_27;
   }
 
-  v21 = [v62 mediaObjectFromPayload];
-  v22 = v21;
-  if (!v21)
+  mediaObjectFromPayload = [v62 mediaObjectFromPayload];
+  v22 = mediaObjectFromPayload;
+  if (!mediaObjectFromPayload)
   {
     goto LABEL_26;
   }
 
   v101 = @"MediaObjectForTextAttachment";
-  v102[0] = v21;
+  v102[0] = mediaObjectFromPayload;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:&v101 count:1];
   v24 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v61 = [v24 initWithString:*MEMORY[0x1E69A5F00] attributes:v23];
+  __ck_photoCompositionString = [v24 initWithString:*MEMORY[0x1E69A5F00] attributes:v23];
 LABEL_24:
 
 LABEL_27:
 LABEL_28:
-  if (!v61)
+  if (!__ck_photoCompositionString)
   {
     goto LABEL_32;
   }
@@ -10811,19 +10811,19 @@ LABEL_28:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v29 = [v61 mutableCopy];
+      v29 = [__ck_photoCompositionString mutableCopy];
       [v29 appendAttributedString:v58];
       v30 = [v29 copy];
-      [v9 replaceObjectAtIndex:0 withObject:v30];
+      [_compositionParts replaceObjectAtIndex:0 withObject:v30];
 
       goto LABEL_34;
     }
   }
 
-  [v9 insertObject:v61 atIndex:0];
+  [_compositionParts insertObject:__ck_photoCompositionString atIndex:0];
 LABEL_35:
-  v64 = [(CKComposition *)self canBundleAttachmentsWithMessageOnService:v59];
-  v31 = [(CKComposition *)self processedPartsForSuggestedReply:v9];
+  v64 = [(CKComposition *)self canBundleAttachmentsWithMessageOnService:serviceCopy];
+  v31 = [(CKComposition *)self processedPartsForSuggestedReply:_compositionParts];
 
   v84 = 0u;
   v85 = 0u;
@@ -10875,7 +10875,7 @@ LABEL_35:
             if (v45)
             {
               [(CKComposition *)self _applyMessagePropertiesTo:v45 pluginPayload:v63];
-              [v66 addObject:v45];
+              [array addObject:v45];
             }
 
             v46 = v87[5];
@@ -10911,7 +10911,7 @@ LABEL_52:
             v68[4] = self;
             v74 = &v92;
             v69 = v63;
-            v70 = v66;
+            v70 = array;
             v44 = v42;
             v73 = v44;
             v75 = &v86;
@@ -10929,27 +10929,27 @@ LABEL_52:
       if (objc_opt_isKindOfClass())
       {
         v48 = v35;
-        v49 = [v48 pluginPayload];
-        v50 = [(CKComposition *)self _messageFromPayload:v49 firstGUID:v93[5]];
+        pluginPayload = [v48 pluginPayload];
+        v50 = [(CKComposition *)self _messageFromPayload:pluginPayload firstGUID:v93[5]];
 
         v51 = v93[5];
         v93[5] = 0;
 
-        v52 = [(CKComposition *)self shelfPluginPayload];
-        v53 = [v52 groupActivity];
-        [v50 setGroupActivity:v53];
+        shelfPluginPayload3 = [(CKComposition *)self shelfPluginPayload];
+        groupActivity = [shelfPluginPayload3 groupActivity];
+        [v50 setGroupActivity:groupActivity];
 
-        v54 = [(CKComposition *)self sourceApplicationID];
+        sourceApplicationID = [(CKComposition *)self sourceApplicationID];
 
-        if (v54)
+        if (sourceApplicationID)
         {
-          v55 = [(CKComposition *)self sourceApplicationID];
-          [v50 setSourceApplicationID:v55];
+          sourceApplicationID2 = [(CKComposition *)self sourceApplicationID];
+          [v50 setSourceApplicationID:sourceApplicationID2];
         }
 
         if (v50)
         {
-          [v66 addObject:v50];
+          [array addObject:v50];
         }
       }
     }
@@ -10960,7 +10960,7 @@ LABEL_52:
   while (v32);
 LABEL_62:
 
-  v56 = v66;
+  v56 = array;
   _Block_object_dispose(&v86, 8);
 
   _Block_object_dispose(&v92, 8);
@@ -11165,16 +11165,16 @@ void __90__CKComposition_IMSuperFormat__messagesFromCompositionFirstGUIDForMessa
   }
 }
 
-- (id)processedPartsForSuggestedReply:(id)a3
+- (id)processedPartsForSuggestedReply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  replyCopy = reply;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = replyCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -11211,27 +11211,27 @@ void __90__CKComposition_IMSuperFormat__messagesFromCompositionFirstGUIDForMessa
   return v4;
 }
 
-- (id)messageWithGUID:(id)a3 superFormatText:(id)a4 superFormatSubject:(id)a5 superFormatTranslation:(id)a6 fileTransferGUIDs:(id)a7 mediaObjects:(id)a8 balloonBundleID:(id)a9 payloadData:(id)a10
+- (id)messageWithGUID:(id)d superFormatText:(id)text superFormatSubject:(id)subject superFormatTranslation:(id)translation fileTransferGUIDs:(id)ds mediaObjects:(id)objects balloonBundleID:(id)iD payloadData:(id)self0
 {
   v49 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v39 = a4;
-  v38 = a5;
-  v16 = a6;
-  v36 = a7;
-  v35 = a8;
-  v34 = a9;
-  v33 = a10;
+  dCopy = d;
+  textCopy = text;
+  subjectCopy = subject;
+  translationCopy = translation;
+  dsCopy = ds;
+  objectsCopy = objects;
+  iDCopy = iD;
+  dataCopy = data;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __165__CKComposition_IMSuperFormat__messageWithGUID_superFormatText_superFormatSubject_superFormatTranslation_fileTransferGUIDs_mediaObjects_balloonBundleID_payloadData___block_invoke;
   v46[3] = &unk_1E72F85B8;
-  v19 = v18;
+  v19 = array;
   v47 = v19;
-  v37 = v16;
-  [v16 __im_visitMessageParts:v46];
+  v37 = translationCopy;
+  [translationCopy __im_visitMessageParts:v46];
   v32 = v19;
   v42 = 0u;
   v43 = 0u;
@@ -11254,10 +11254,10 @@ void __90__CKComposition_IMSuperFormat__messagesFromCompositionFirstGUIDForMessa
 
         v24 = *(*(&v42 + 1) + 8 * i);
         v25 = objc_alloc(MEMORY[0x1E69A8308]);
-        v26 = [(CKComposition *)self sourceLanguageID];
-        v27 = [(CKComposition *)self destinationLanguageID];
-        v28 = [v24 messagePartBody];
-        v29 = [v25 initWithSourceLanguage:v26 translationLanguage:v27 translatedText:v28];
+        sourceLanguageID = [(CKComposition *)self sourceLanguageID];
+        destinationLanguageID = [(CKComposition *)self destinationLanguageID];
+        messagePartBody = [v24 messagePartBody];
+        v29 = [v25 initWithSourceLanguage:sourceLanguageID translationLanguage:destinationLanguageID translatedText:messagePartBody];
 
         [v24 messagePartIndex];
         IMAddTranslatedMessagePartToMessageSummaryInfo();
@@ -11269,37 +11269,37 @@ void __90__CKComposition_IMSuperFormat__messagesFromCompositionFirstGUIDForMessa
     while (v21);
   }
 
-  v30 = [(CKComposition *)self messageWithGUID:v40 superFormatText:v39 superFormatSubject:v38 fileTransferGUIDs:v36 mediaObjects:v35 balloonBundleID:v34 payloadData:v33 messageSummaryInfo:v17];
+  v30 = [(CKComposition *)self messageWithGUID:dCopy superFormatText:textCopy superFormatSubject:subjectCopy fileTransferGUIDs:dsCopy mediaObjects:objectsCopy balloonBundleID:iDCopy payloadData:dataCopy messageSummaryInfo:v17];
 
   return v30;
 }
 
-- (id)messageWithGUID:(id)a3 superFormatText:(id)a4 superFormatSubject:(id)a5 fileTransferGUIDs:(id)a6 mediaObjects:(id)a7 balloonBundleID:(id)a8 payloadData:(id)a9 messageSummaryInfo:(id)a10
+- (id)messageWithGUID:(id)d superFormatText:(id)text superFormatSubject:(id)subject fileTransferGUIDs:(id)ds mediaObjects:(id)objects balloonBundleID:(id)iD payloadData:(id)data messageSummaryInfo:(id)self0
 {
   v74 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v56 = a5;
-  v57 = a6;
-  v55 = a7;
-  v58 = a8;
-  v59 = a9;
-  v60 = a10;
-  v61 = [(CKComposition *)self expressiveSendStyleID];
-  v18 = [v17 string];
-  v19 = [v18 trimmedString];
-  v20 = [v19 lowercaseString];
-  if ([v20 isEqualToString:@"pew pew"])
+  dCopy = d;
+  textCopy = text;
+  subjectCopy = subject;
+  dsCopy = ds;
+  objectsCopy = objects;
+  iDCopy = iD;
+  dataCopy = data;
+  infoCopy = info;
+  expressiveSendStyleID = [(CKComposition *)self expressiveSendStyleID];
+  string = [textCopy string];
+  trimmedString = [string trimmedString];
+  lowercaseString = [trimmedString lowercaseString];
+  if ([lowercaseString isEqualToString:@"pew pew"])
   {
-    v21 = [MEMORY[0x1E69A8020] supportsScreenEffects];
+    supportsScreenEffects = [MEMORY[0x1E69A8020] supportsScreenEffects];
 
-    if (!v21)
+    if (!supportsScreenEffects)
     {
       goto LABEL_6;
     }
 
-    v18 = v61;
-    v61 = @"com.apple.messages.effect.CKLasersEffect";
+    string = expressiveSendStyleID;
+    expressiveSendStyleID = @"com.apple.messages.effect.CKLasersEffect";
   }
 
   else
@@ -11329,12 +11329,12 @@ LABEL_6:
     v22 |= 0x2000000uLL;
   }
 
-  v23 = [(CKComposition *)self sendLaterPluginInfo];
+  sendLaterPluginInfo = [(CKComposition *)self sendLaterPluginInfo];
 
-  if (v23)
+  if (sendLaterPluginInfo)
   {
-    v24 = [(CKComposition *)self sendLaterPluginInfo];
-    v25 = [v24 selectedDate];
+    sendLaterPluginInfo2 = [(CKComposition *)self sendLaterPluginInfo];
+    selectedDate = [sendLaterPluginInfo2 selectedDate];
 
     v26 = 1;
     v27 = 2;
@@ -11342,7 +11342,7 @@ LABEL_6:
 
   else
   {
-    v25 = [MEMORY[0x1E695DF00] date];
+    selectedDate = [MEMORY[0x1E695DF00] date];
     v27 = 0;
     v26 = 0;
   }
@@ -11354,58 +11354,58 @@ LABEL_6:
   v71 = __Block_byref_object_dispose__80;
   v28 = objc_alloc(MEMORY[0x1E69A5BD8]);
   v29 = v28;
-  if (v16)
+  if (dCopy)
   {
-    v72 = [v28 initWithSender:0 time:v25 text:v17 messageSubject:v56 fileTransferGUIDs:v57 flags:v22 error:0 guid:v16 subject:0 balloonBundleID:v58 payloadData:v59 expressiveSendStyleID:v61 threadIdentifier:0 scheduleType:v27 scheduleState:v26 messageSummaryInfo:v60];
+    v72 = [v28 initWithSender:0 time:selectedDate text:textCopy messageSubject:subjectCopy fileTransferGUIDs:dsCopy flags:v22 error:0 guid:dCopy subject:0 balloonBundleID:iDCopy payloadData:dataCopy expressiveSendStyleID:expressiveSendStyleID threadIdentifier:0 scheduleType:v27 scheduleState:v26 messageSummaryInfo:infoCopy];
   }
 
   else
   {
-    v30 = [MEMORY[0x1E696AEC0] stringGUID];
-    v72 = [v29 initWithSender:0 time:v25 text:v17 messageSubject:v56 fileTransferGUIDs:v57 flags:v22 error:0 guid:v30 subject:0 balloonBundleID:v58 payloadData:v59 expressiveSendStyleID:v61 threadIdentifier:0 scheduleType:v27 scheduleState:v26 messageSummaryInfo:v60];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v72 = [v29 initWithSender:0 time:selectedDate text:textCopy messageSubject:subjectCopy fileTransferGUIDs:dsCopy flags:v22 error:0 guid:stringGUID subject:0 balloonBundleID:iDCopy payloadData:dataCopy expressiveSendStyleID:expressiveSendStyleID threadIdentifier:0 scheduleType:v27 scheduleState:v26 messageSummaryInfo:infoCopy];
   }
 
   v31 = objc_alloc(MEMORY[0x1E69A5BD8]);
-  v32 = v16;
-  if (!v16)
+  stringGUID2 = dCopy;
+  if (!dCopy)
   {
-    v32 = [MEMORY[0x1E696AEC0] stringGUID];
+    stringGUID2 = [MEMORY[0x1E696AEC0] stringGUID];
   }
 
-  v33 = [v31 initWithSender:0 time:v25 text:v17 messageSubject:v56 fileTransferGUIDs:v57 flags:v22 error:0 guid:v32 subject:0 balloonBundleID:v58 payloadData:v59 expressiveSendStyleID:v61 threadIdentifier:0 scheduleType:v27 scheduleState:v26 messageSummaryInfo:v60];
+  v33 = [v31 initWithSender:0 time:selectedDate text:textCopy messageSubject:subjectCopy fileTransferGUIDs:dsCopy flags:v22 error:0 guid:stringGUID2 subject:0 balloonBundleID:iDCopy payloadData:dataCopy expressiveSendStyleID:expressiveSendStyleID threadIdentifier:0 scheduleType:v27 scheduleState:v26 messageSummaryInfo:infoCopy];
   v34 = v68[5];
   v68[5] = v33;
 
-  if (!v16)
+  if (!dCopy)
   {
   }
 
-  v35 = [(CKComposition *)self shelfPluginPayload];
-  if (v35)
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  if (shelfPluginPayload)
   {
-    v36 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v37 = [v36 isGelatoAsyncSendingEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isGelatoAsyncSendingEnabled = [mEMORY[0x1E69A8070] isGelatoAsyncSendingEnabled];
 
-    if (v37)
+    if (isGelatoAsyncSendingEnabled)
     {
-      v38 = [v35 payloadCollaborationType];
-      if (v38 == 2)
+      payloadCollaborationType = [shelfPluginPayload payloadCollaborationType];
+      if (payloadCollaborationType == 2)
       {
         v45 = objc_alloc(MEMORY[0x1E69A7FB8]);
-        v40 = [v35 cloudKitShare];
-        v41 = [v35 containerSetupInfo];
-        v42 = [(CKComposition *)self collaborationShareOptions];
-        v43 = [v45 initWithCKShare:v40 containerSetupInfo:v41 options:v42];
+        cloudKitShare = [shelfPluginPayload cloudKitShare];
+        containerSetupInfo = [shelfPluginPayload containerSetupInfo];
+        collaborationShareOptions = [(CKComposition *)self collaborationShareOptions];
+        v43 = [v45 initWithCKShare:cloudKitShare containerSetupInfo:containerSetupInfo options:collaborationShareOptions];
         goto LABEL_30;
       }
 
-      if (v38 == 3)
+      if (payloadCollaborationType == 3)
       {
         v39 = objc_alloc(MEMORY[0x1E69A7FB8]);
-        v40 = [v35 url];
-        v41 = [(CKComposition *)self collaborationShareOptions];
-        v42 = [v35 collaborationMetadata];
-        v43 = [v39 initWithURL:v40 options:v41 metadata:v42];
+        cloudKitShare = [shelfPluginPayload url];
+        containerSetupInfo = [(CKComposition *)self collaborationShareOptions];
+        collaborationShareOptions = [shelfPluginPayload collaborationMetadata];
+        v43 = [v39 initWithURL:cloudKitShare options:containerSetupInfo metadata:collaborationShareOptions];
 LABEL_30:
         v44 = v43;
 
@@ -11418,20 +11418,20 @@ LABEL_31:
     [v68[5] setCollaborationInitiationRequestInfo:v44];
   }
 
-  v46 = [MEMORY[0x1E69A5B48] sharedInstance];
+  mEMORY[0x1E69A5B48] = [MEMORY[0x1E69A5B48] sharedInstance];
   v47 = v68[5];
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __161__CKComposition_IMSuperFormat__messageWithGUID_superFormatText_superFormatSubject_fileTransferGUIDs_mediaObjects_balloonBundleID_payloadData_messageSummaryInfo___block_invoke;
   v66[3] = &unk_1E72F85E0;
   v66[4] = &v67;
-  [v46 scanMessage:v47 outgoing:1 waitUntilDone:1 completionBlock:v66];
+  [mEMORY[0x1E69A5B48] scanMessage:v47 outgoing:1 waitUntilDone:1 completionBlock:v66];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v48 = v55;
+  v48 = objectsCopy;
   v49 = [v48 countByEnumeratingWithState:&v62 objects:v73 count:16];
   if (v49)
   {
@@ -11445,8 +11445,8 @@ LABEL_31:
           objc_enumerationMutation(v48);
         }
 
-        v52 = [*(*(&v62 + 1) + 8 * i) transfer];
-        [v52 setIMMessage:v68[5]];
+        transfer = [*(*(&v62 + 1) + 8 * i) transfer];
+        [transfer setIMMessage:v68[5]];
       }
 
       v49 = [v48 countByEnumeratingWithState:&v62 objects:v73 count:16];
@@ -11461,15 +11461,15 @@ LABEL_31:
   return v53;
 }
 
-- (id)messageWithGUID:(id)a3
+- (id)messageWithGUID:(id)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v33 = 0;
   v5 = [(CKComposition *)self superFormatText:&v33];
   v6 = v33;
-  v7 = [(CKComposition *)self superFormatSubject];
-  v8 = [(CKComposition *)self expressiveSendStyleID];
+  superFormatSubject = [(CKComposition *)self superFormatSubject];
+  expressiveSendStyleID = [(CKComposition *)self expressiveSendStyleID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -11499,33 +11499,33 @@ LABEL_31:
   v30 = __Block_byref_object_copy__80;
   v31 = __Block_byref_object_dispose__80;
   v10 = objc_alloc(MEMORY[0x1E69A5BD8]);
-  v11 = [MEMORY[0x1E695DF00] date];
-  if (v4)
+  date = [MEMORY[0x1E695DF00] date];
+  if (dCopy)
   {
-    v32 = [v10 initWithSender:0 time:v11 text:v5 messageSubject:v7 fileTransferGUIDs:v6 flags:v9 error:0 guid:v4 subject:0 balloonBundleID:0 payloadData:0 expressiveSendStyleID:v8 threadIdentifier:0];
+    v32 = [v10 initWithSender:0 time:date text:v5 messageSubject:superFormatSubject fileTransferGUIDs:v6 flags:v9 error:0 guid:dCopy subject:0 balloonBundleID:0 payloadData:0 expressiveSendStyleID:expressiveSendStyleID threadIdentifier:0];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AEC0] stringGUID];
-    v32 = [v10 initWithSender:0 time:v11 text:v5 messageSubject:v7 fileTransferGUIDs:v6 flags:v9 error:0 guid:v12 subject:0 balloonBundleID:0 payloadData:0 expressiveSendStyleID:v8 threadIdentifier:0];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v32 = [v10 initWithSender:0 time:date text:v5 messageSubject:superFormatSubject fileTransferGUIDs:v6 flags:v9 error:0 guid:stringGUID subject:0 balloonBundleID:0 payloadData:0 expressiveSendStyleID:expressiveSendStyleID threadIdentifier:0];
   }
 
-  v13 = [MEMORY[0x1E69A5B48] sharedInstance];
+  mEMORY[0x1E69A5B48] = [MEMORY[0x1E69A5B48] sharedInstance];
   v14 = v28[5];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __48__CKComposition_IMSuperFormat__messageWithGUID___block_invoke;
   v26[3] = &unk_1E72F85E0;
   v26[4] = &v27;
-  [v13 scanMessage:v14 outgoing:1 waitUntilDone:1 completionBlock:v26];
+  [mEMORY[0x1E69A5B48] scanMessage:v14 outgoing:1 waitUntilDone:1 completionBlock:v26];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = [(CKComposition *)self mediaObjects];
-  v16 = [v15 countByEnumeratingWithState:&v22 objects:v34 count:16];
+  mediaObjects = [(CKComposition *)self mediaObjects];
+  v16 = [mediaObjects countByEnumeratingWithState:&v22 objects:v34 count:16];
   if (v16)
   {
     v17 = *v23;
@@ -11535,14 +11535,14 @@ LABEL_31:
       {
         if (*v23 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(mediaObjects);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * i) transfer];
-        [v19 setIMMessage:v28[5]];
+        transfer = [*(*(&v22 + 1) + 8 * i) transfer];
+        [transfer setIMMessage:v28[5]];
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v22 objects:v34 count:16];
+      v16 = [mediaObjects countByEnumeratingWithState:&v22 objects:v34 count:16];
     }
 
     while (v16);
@@ -11554,17 +11554,17 @@ LABEL_31:
   return v20;
 }
 
-+ (id)compositionForMessageParts:(id)a3 preserveSubject:(BOOL)a4 contextIdentifier:(id)a5
++ (id)compositionForMessageParts:(id)parts preserveSubject:(BOOL)subject contextIdentifier:(id)identifier
 {
-  v6 = a4;
+  subjectCopy = subject;
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  partsCopy = parts;
+  identifierCopy = identifier;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [partsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -11576,32 +11576,32 @@ LABEL_31:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(partsCopy);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
         if (v11)
         {
-          v15 = [*(*(&v20 + 1) + 8 * i) compositionWithContext:v8];
+          v15 = [*(*(&v20 + 1) + 8 * i) compositionWithContext:identifierCopy];
           v16 = [v11 compositionByAppendingComposition:v15];
 
           v11 = v16;
         }
 
-        else if (v6)
+        else if (subjectCopy)
         {
-          v11 = [*(*(&v20 + 1) + 8 * i) compositionWithContext:v8];
+          v11 = [*(*(&v20 + 1) + 8 * i) compositionWithContext:identifierCopy];
         }
 
         else
         {
           v17 = +[CKComposition composition];
-          v18 = [v14 compositionWithContext:v8];
+          v18 = [v14 compositionWithContext:identifierCopy];
           v11 = [v17 compositionByAppendingComposition:v18];
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [partsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -11615,10 +11615,10 @@ LABEL_31:
   return v11;
 }
 
-- (void)saveCompositionWithChatIdentifier:(id)a3
+- (void)saveCompositionWithChatIdentifier:(id)identifier
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(15);
@@ -11628,7 +11628,7 @@ LABEL_31:
       *buf = 136315394;
       v57 = "[CKComposition(CKPersistentComposition) saveCompositionWithChatIdentifier:]";
       v58 = 2112;
-      v59 = v4;
+      v59 = identifierCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "%s chatIdentifier:%@", buf, 0x16u);
     }
   }
@@ -11636,14 +11636,14 @@ LABEL_31:
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
     v50 = "[CKComposition(CKPersistentComposition) saveCompositionWithChatIdentifier:]";
-    v51 = v4;
+    v51 = identifierCopy;
     _CKLog();
   }
 
-  if (v4)
+  if (identifierCopy)
   {
-    v6 = [v4 im_lastPathComponent];
-    v7 = [v4 isEqualToString:v6];
+    im_lastPathComponent = [identifierCopy im_lastPathComponent];
+    v7 = [identifierCopy isEqualToString:im_lastPathComponent];
 
     if ((v7 & 1) == 0)
     {
@@ -11652,35 +11652,35 @@ LABEL_31:
         v8 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
-          v9 = [v4 im_lastPathComponent];
+          im_lastPathComponent2 = [identifierCopy im_lastPathComponent];
           *buf = 138412546;
-          v57 = v4;
+          v57 = identifierCopy;
           v58 = 2112;
-          v59 = v9;
+          v59 = im_lastPathComponent2;
           _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "chatIdentifier has path specifiers %@. using stripped chatIdentifier instead %@", buf, 0x16u);
         }
       }
 
-      v10 = [v4 im_lastPathComponent];
+      im_lastPathComponent3 = [identifierCopy im_lastPathComponent];
 
-      v4 = v10;
+      identifierCopy = im_lastPathComponent3;
     }
   }
 
   v11 = CKDraftsDirectoryURL();
-  v53 = [v11 URLByAppendingPathComponent:v4 isDirectory:1];
+  v53 = [v11 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
-  v54 = [MEMORY[0x1E696AC08] defaultManager];
-  [v54 createDirectoryAtURL:v53 withIntermediateDirectories:1 attributes:0 error:0];
-  v52 = CKPluginTmpSubDirectoryURL(v4, 0);
-  v12 = [v52 path];
-  v13 = [v54 fileExistsAtPath:v12];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtURL:v53 withIntermediateDirectories:1 attributes:0 error:0];
+  v52 = CKPluginTmpSubDirectoryURL(identifierCopy, 0);
+  path = [v52 path];
+  v13 = [defaultManager fileExistsAtPath:path];
 
   if (v13)
   {
-    v14 = CKPluginDraftDirectoryURL(v4, 0);
-    v15 = [v14 path];
-    v16 = [v54 fileExistsAtPath:v15];
+    v14 = CKPluginDraftDirectoryURL(identifierCopy, 0);
+    path2 = [v14 path];
+    v16 = [defaultManager fileExistsAtPath:path2];
 
     if (IMOSLoggingEnabled())
     {
@@ -11705,11 +11705,11 @@ LABEL_31:
 
     if (v16)
     {
-      [v54 removeItemAtURL:v14 error:0];
+      [defaultManager removeItemAtURL:v14 error:0];
     }
 
     v55 = 0;
-    [v54 copyItemAtURL:v52 toURL:v14 error:{&v55, v50, v51}];
+    [defaultManager copyItemAtURL:v52 toURL:v14 error:{&v55, v50, v51}];
     v19 = v55;
     if (v19 && IMOSLoggingEnabled())
     {
@@ -11729,20 +11729,20 @@ LABEL_31:
 
   if ([(CKComposition *)self isAudioComposition])
   {
-    v23 = [(CKComposition *)self mediaObjects];
-    v24 = [v23 firstObject];
+    mediaObjects = [(CKComposition *)self mediaObjects];
+    firstObject = [mediaObjects firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = [v24 powerLevels];
-      [v21 setObject:v25 forKeyedSubscript:@"audioPowerLevels"];
+      powerLevels = [firstObject powerLevels];
+      [v21 setObject:powerLevels forKeyedSubscript:@"audioPowerLevels"];
     }
 
     else
     {
-      v25 = IMLogHandleForCategory();
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      powerLevels = IMLogHandleForCategory();
+      if (os_log_type_enabled(powerLevels, OS_LOG_TYPE_ERROR))
       {
         [_CKAudioComposition initWithText:subject:powerLevels:];
       }
@@ -11767,8 +11767,8 @@ LABEL_31:
   {
     if (isKindOfClass)
     {
-      v30 = [v26 mediaObject];
-      v31 = v30 == 0;
+      mediaObject = [v26 mediaObject];
+      v31 = mediaObject == 0;
 
       if (v31)
       {
@@ -11777,16 +11777,16 @@ LABEL_31:
 
       else
       {
-        v32 = [v26 mediaObject];
+        mediaObject2 = [v26 mediaObject];
         v33 = [v26 copy];
 
         v34 = [v53 URLByAppendingPathComponent:@"Attachments" isDirectory:1];
-        v35 = [MEMORY[0x1E696AC08] defaultManager];
-        v36 = CKWriteMediaObjectToFileLocation(v32, v34, v35);
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        v36 = CKWriteMediaObjectToFileLocation(mediaObject2, v34, defaultManager2);
 
         [v33 setFileURL:v36];
-        v37 = [v32 transcoderUserInfo];
-        [v33 setUserInfo:v37];
+        transcoderUserInfo = [mediaObject2 transcoderUserInfo];
+        [v33 setUserInfo:transcoderUserInfo];
 
         v38 = v33;
         v26 = v38;
@@ -11808,10 +11808,10 @@ LABEL_31:
   }
 
   [(CKComposition *)self _persistTextToComposition:v21 directoryURL:v53];
-  v40 = [(CKComposition *)self subject];
-  if (v40)
+  subject = [(CKComposition *)self subject];
+  if (subject)
   {
-    v41 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v40 requiringSecureCoding:1 error:0];
+    v41 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:subject requiringSecureCoding:1 error:0];
     [v21 setObject:v41 forKey:@"subject"];
     if (IMOSLoggingEnabled())
     {
@@ -11824,10 +11824,10 @@ LABEL_31:
     }
   }
 
-  v43 = [(CKComposition *)self bizIntent];
-  if (v43)
+  bizIntent = [(CKComposition *)self bizIntent];
+  if (bizIntent)
   {
-    v44 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v43 requiringSecureCoding:1 error:0];
+    v44 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:bizIntent requiringSecureCoding:1 error:0];
     [v21 setObject:v44 forKey:@"bizIntent"];
     if (IMOSLoggingEnabled())
     {
@@ -11840,10 +11840,10 @@ LABEL_31:
     }
   }
 
-  v46 = [(CKComposition *)self sendLaterPluginInfo];
-  if (v46)
+  sendLaterPluginInfo = [(CKComposition *)self sendLaterPluginInfo];
+  if (sendLaterPluginInfo)
   {
-    v47 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v46 requiringSecureCoding:1 error:0];
+    v47 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:sendLaterPluginInfo requiringSecureCoding:1 error:0];
     [v21 setObject:v47 forKey:@"sendLaterPluginInfo"];
     if (IMOSLoggingEnabled())
     {
@@ -11857,19 +11857,19 @@ LABEL_31:
   }
 
   v49 = [MEMORY[0x1E696AE40] dataWithPropertyList:v21 format:100 options:0 error:0];
-  [(CKComposition *)self _saveCompositionData:v49 atURL:v53 forChatIdentifier:v4];
+  [(CKComposition *)self _saveCompositionData:v49 atURL:v53 forChatIdentifier:identifierCopy];
 }
 
-- (void)_persistTextToComposition:(id)a3 directoryURL:(id)a4
+- (void)_persistTextToComposition:(id)composition directoryURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKComposition *)self text];
-  if (v8)
+  compositionCopy = composition;
+  lCopy = l;
+  text = [(CKComposition *)self text];
+  if (text)
   {
-    v9 = [v7 URLByAppendingPathComponent:@"Attachments" isDirectory:1];
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = CKPersistentTextForText(v8, v9, v10);
+    v9 = [lCopy URLByAppendingPathComponent:@"Attachments" isDirectory:1];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = CKPersistentTextForText(text, v9, defaultManager);
 
     if (!v11)
     {
@@ -11887,7 +11887,7 @@ LABEL_31:
     v13 = v16;
     if (v12)
     {
-      [v6 setObject:v12 forKey:@"text"];
+      [compositionCopy setObject:v12 forKey:@"text"];
       if (!IMOSLoggingEnabled())
       {
 LABEL_12:
@@ -11919,15 +11919,15 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)_saveCompositionData:(id)a3 atURL:(id)a4 forChatIdentifier:(id)a5
+- (BOOL)_saveCompositionData:(id)data atURL:(id)l forChatIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 URLByAppendingPathComponent:@"composition.plist" isDirectory:0];
+  dataCopy = data;
+  lCopy = l;
+  identifierCopy = identifier;
+  v10 = [lCopy URLByAppendingPathComponent:@"composition.plist" isDirectory:0];
   v15 = 0;
-  v11 = [v7 writeToURL:v10 options:1073741825 error:&v15];
+  v11 = [dataCopy writeToURL:v10 options:1073741825 error:&v15];
   v12 = v15;
 
   if ((v11 & 1) == 0 && IMOSLoggingEnabled())
@@ -11936,7 +11936,7 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = v9;
+      v17 = identifierCopy;
       v18 = 2112;
       v19 = v12;
       _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Draft (%@) write failure: %@", buf, 0x16u);
@@ -11946,10 +11946,10 @@ LABEL_14:
   return v11;
 }
 
-+ (void)deleteCompositionWithChatIdentifier:(id)a3
++ (void)deleteCompositionWithChatIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(15);
@@ -11959,7 +11959,7 @@ LABEL_14:
       *buf = 136315394;
       v14 = "+[CKComposition(CKPersistentComposition) deleteCompositionWithChatIdentifier:]";
       v15 = 2112;
-      v16 = v3;
+      v16 = identifierCopy;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_DEBUG, "%s chatIdentifier:%@", buf, 0x16u);
     }
   }
@@ -11967,21 +11967,21 @@ LABEL_14:
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
     v11 = "+[CKComposition(CKPersistentComposition) deleteCompositionWithChatIdentifier:]";
-    v12 = v3;
+    v12 = identifierCopy;
     _CKLog();
   }
 
-  v5 = [v3 im_lastPathComponent];
+  im_lastPathComponent = [identifierCopy im_lastPathComponent];
 
-  if ([v5 length])
+  if ([im_lastPathComponent length])
   {
     v6 = CKDraftsDirectoryURL();
-    v7 = [v6 URLByAppendingPathComponent:v5 isDirectory:1];
+    v7 = [v6 URLByAppendingPathComponent:im_lastPathComponent isDirectory:1];
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    [v8 removeItemAtURL:v7 error:0];
-    v9 = CKPluginTmpSubDirectoryURL(v5, 0);
-    [v8 removeItemAtURL:v9 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:v7 error:0];
+    v9 = CKPluginTmpSubDirectoryURL(im_lastPathComponent, 0);
+    [defaultManager removeItemAtURL:v9 error:0];
   }
 
   else
@@ -12005,10 +12005,10 @@ LABEL_14:
   }
 }
 
-+ (id)savedCompositionForChatIdentifier:(id)a3
++ (id)savedCompositionForChatIdentifier:(id)identifier
 {
-  v4 = [a1 savedCompositionDataForChatIdentifier:a3];
-  v5 = [a1 savedCompositionFromData:v4];
+  v4 = [self savedCompositionDataForChatIdentifier:identifier];
+  v5 = [self savedCompositionFromData:v4];
 
   return v5;
 }
@@ -12022,11 +12022,11 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
   return v4;
 }
 
-+ (id)_savedCompositionDataForChatIdentifier:(id)a3 readUsingBlock:(id)a4
++ (id)_savedCompositionDataForChatIdentifier:(id)identifier readUsingBlock:(id)block
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(15);
@@ -12036,7 +12036,7 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
       *buf = 136315394;
       v30 = "+[CKComposition(CKPersistentComposition) _savedCompositionDataForChatIdentifier:readUsingBlock:]";
       v31 = 2112;
-      v32 = v5;
+      v32 = identifierCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_DEBUG, "%s chatIdentifier:%@", buf, 0x16u);
     }
   }
@@ -12044,26 +12044,26 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
     v26 = "+[CKComposition(CKPersistentComposition) _savedCompositionDataForChatIdentifier:readUsingBlock:]";
-    v27 = v5;
+    v27 = identifierCopy;
     _CKLog();
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v5 im_lastPathComponent];
-  if ([v9 length])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  im_lastPathComponent = [identifierCopy im_lastPathComponent];
+  if ([im_lastPathComponent length])
   {
     v10 = CKDraftsDirectoryURL();
-    v11 = [v10 URLByAppendingPathComponent:v9 isDirectory:1];
+    v11 = [v10 URLByAppendingPathComponent:im_lastPathComponent isDirectory:1];
 
-    v12 = CKPluginDraftDirectoryURL(v9, 0);
-    v13 = [v12 path];
-    v14 = [v8 fileExistsAtPath:v13];
+    v12 = CKPluginDraftDirectoryURL(im_lastPathComponent, 0);
+    path = [v12 path];
+    v14 = [defaultManager fileExistsAtPath:path];
 
     if (v14)
     {
-      v15 = CKPluginTmpSubDirectoryURL(v9, 0);
-      v16 = [v15 path];
-      v17 = [v8 fileExistsAtPath:v16];
+      v15 = CKPluginTmpSubDirectoryURL(im_lastPathComponent, 0);
+      path2 = [v15 path];
+      v17 = [defaultManager fileExistsAtPath:path2];
 
       if (IMOSLoggingEnabled())
       {
@@ -12088,11 +12088,11 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
 
       if (v17)
       {
-        [v8 removeItemAtURL:v15 error:0];
+        [defaultManager removeItemAtURL:v15 error:0];
       }
 
       v28 = 0;
-      [v8 copyItemAtURL:v12 toURL:v15 error:&v28];
+      [defaultManager copyItemAtURL:v12 toURL:v15 error:&v28];
       v20 = v28;
       if (IMOSLoggingEnabled())
       {
@@ -12106,7 +12106,7 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
       }
     }
 
-    v22 = v6[2](v6, v11);
+    v22 = blockCopy[2](blockCopy, v11);
     if (v22)
     {
       v23 = [MEMORY[0x1E696AE40] propertyListWithData:v22 options:0 format:0 error:0];
@@ -12143,10 +12143,10 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
   return v23;
 }
 
-+ (id)savedCompositionFromData:(id)a3
++ (id)savedCompositionFromData:(id)data
 {
   *&v62[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(15);
@@ -12165,15 +12165,15 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
     _CKLog();
   }
 
-  v54 = [v3 objectForKey:{@"shelfPluginPayload", v50}];
+  v54 = [dataCopy objectForKey:{@"shelfPluginPayload", v50}];
   if (!v54)
   {
-    v20 = 0;
+    shouldHideAttachments = 0;
     v55 = 0;
     goto LABEL_28;
   }
 
-  v5 = [MEMORY[0x1E69A5AD0] sharedInstance];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
   v60 = 0;
   v55 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v54 error:&v60];
   v6 = v60;
@@ -12190,23 +12190,23 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
     v9 = v8;
     if (isKindOfClass)
     {
-      v10 = [v55 fileURL];
-      v11 = v10 == 0;
+      fileURL = [v55 fileURL];
+      v11 = fileURL == 0;
 
       if (!v11)
       {
         v12 = +[CKMediaObjectManager sharedInstance];
-        v13 = [v55 fileURL];
-        v14 = [v55 userInfo];
-        v15 = [v55 attributionInfo];
+        fileURL2 = [v55 fileURL];
+        userInfo = [v55 userInfo];
+        attributionInfo = [v55 attributionInfo];
         LOBYTE(v51) = [v55 shouldHideAttachments];
-        v16 = [v12 mediaObjectWithFileURL:v13 filename:0 transcoderUserInfo:v14 attributionInfo:v15 adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:v51];
+        v16 = [v12 mediaObjectWithFileURL:fileURL2 filename:0 transcoderUserInfo:userInfo attributionInfo:attributionInfo adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:v51];
 
         if (v16)
         {
           [v55 setMediaObject:v16];
-          v17 = [v16 fileURL];
-          [v55 setFileURL:v17];
+          fileURL3 = [v16 fileURL];
+          [v55 setFileURL:fileURL3];
         }
       }
     }
@@ -12216,9 +12216,9 @@ id __80__CKComposition_CKPersistentComposition__savedCompositionDataForChatIdent
       v18 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v55 pluginBundleID];
+        pluginBundleID = [v55 pluginBundleID];
         *buf = 138412290;
-        *v62 = v19;
+        *v62 = pluginBundleID;
         _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "-> shelf:\n'NSDATA'->'%@'", buf, 0xCu);
       }
     }
@@ -12242,10 +12242,10 @@ LABEL_26:
   }
 
 LABEL_27:
-  v20 = [v55 shouldHideAttachments];
+  shouldHideAttachments = [v55 shouldHideAttachments];
 
 LABEL_28:
-  v53 = [v3 objectForKey:@"text"];
+  v53 = [dataCopy objectForKey:@"text"];
   if (v53)
   {
     v59 = 0;
@@ -12254,7 +12254,7 @@ LABEL_28:
     if (v21)
     {
       v23 = +[CKMediaObjectManager sharedInstance];
-      v52 = CKTextForPersistentText(v21, v23, v20);
+      v52 = CKTextForPersistentText(v21, v23, shouldHideAttachments);
 
       if (IMOSLoggingEnabled())
       {
@@ -12292,7 +12292,7 @@ LABEL_28:
     v52 = 0;
   }
 
-  v26 = [v3 objectForKey:@"subject"];
+  v26 = [dataCopy objectForKey:@"subject"];
   if (!v26)
   {
     v27 = 0;
@@ -12332,7 +12332,7 @@ LABEL_51:
   }
 
 LABEL_53:
-  v31 = [v3 objectForKey:@"bizIntent"];
+  v31 = [dataCopy objectForKey:@"bizIntent"];
   if (!v31)
   {
     v34 = 0;
@@ -12382,7 +12382,7 @@ LABEL_65:
   }
 
 LABEL_67:
-  v40 = [v3 objectForKey:@"sendLaterPluginInfo"];
+  v40 = [dataCopy objectForKey:@"sendLaterPluginInfo"];
   if (!v40)
   {
     v41 = 0;
@@ -12423,10 +12423,10 @@ LABEL_77:
   }
 
 LABEL_79:
-  v45 = [v3 objectForKey:@"audioMessage"];
+  v45 = [dataCopy objectForKey:@"audioMessage"];
   if ([v45 BOOLValue])
   {
-    v46 = [v3 objectForKeyedSubscript:@"audioPowerLevels"];
+    v46 = [dataCopy objectForKeyedSubscript:@"audioPowerLevels"];
     v47 = [[_CKAudioComposition alloc] initWithText:v52 subject:v27 powerLevels:v46];
   }
 
@@ -12449,44 +12449,44 @@ LABEL_79:
   return v48;
 }
 
-- (id)_compositionByAppendingText:(id)a3 isExpirable:(BOOL)a4 shelfPluginPayload:(id)a5 shelfMediaObject:(id)a6 addingNewLineIfNedded:(BOOL)a7
+- (id)_compositionByAppendingText:(id)text isExpirable:(BOOL)expirable shelfPluginPayload:(id)payload shelfMediaObject:(id)object addingNewLineIfNedded:(BOOL)nedded
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11 && !v12 && !v13)
+  neddedCopy = nedded;
+  textCopy = text;
+  payloadCopy = payload;
+  objectCopy = object;
+  v14 = objectCopy;
+  if (!textCopy && !payloadCopy && !objectCopy)
   {
-    v15 = self;
+    selfCopy = self;
     goto LABEL_36;
   }
 
-  v16 = [(CKComposition *)self text];
-  v52 = v12;
-  if (v16)
+  text = [(CKComposition *)self text];
+  v52 = payloadCopy;
+  if (text)
   {
-    v17 = v16;
-    if (v11)
+    v17 = text;
+    if (textCopy)
     {
-      v18 = [v16 mutableCopy];
+      v18 = [text mutableCopy];
       v19 = v18;
-      if (!v7)
+      if (!neddedCopy)
       {
 LABEL_30:
-        [v19 appendAttributedString:v11];
+        [v19 appendAttributedString:textCopy];
 
         goto LABEL_31;
       }
 
       v50 = v18;
-      v20 = [v11 string];
-      v49 = [v20 characterAtIndex:0];
+      string = [textCopy string];
+      v49 = [string characterAtIndex:0];
 
       if ([v17 length])
       {
-        v21 = [v17 string];
-        v22 = [v21 characterAtIndex:{objc_msgSend(v17, "length") - 1}] != 10;
+        string2 = [v17 string];
+        v22 = [string2 characterAtIndex:{objc_msgSend(v17, "length") - 1}] != 10;
       }
 
       else
@@ -12494,7 +12494,7 @@ LABEL_30:
         v22 = 1;
       }
 
-      v48 = [v11 __ck_isOnlyAdaptiveImageGlyphs];
+      __ck_isOnlyAdaptiveImageGlyphs = [textCopy __ck_isOnlyAdaptiveImageGlyphs];
       if ([v17 length])
       {
         v23 = [v17 attributesAtIndex:objc_msgSend(v17 effectiveRange:{"length") - 1, 0}];
@@ -12512,7 +12512,7 @@ LABEL_30:
       v26 = v23;
       v27 = [v23 objectForKeyedSubscript:@"EmbeddedRichLinkConfiguration"];
 
-      v28 = v48;
+      v28 = __ck_isOnlyAdaptiveImageGlyphs;
       if (v24)
       {
         v28 = 0;
@@ -12533,7 +12533,7 @@ LABEL_30:
         v30 = !v29;
         v31 = v30 & v22;
         v19 = v50;
-        v12 = v52;
+        payloadCopy = v52;
         if ((v31 & 1) == 0)
         {
           goto LABEL_29;
@@ -12544,7 +12544,7 @@ LABEL_30:
       {
         v32 = v49 != 10 && v22;
         v19 = v50;
-        v12 = v52;
+        payloadCopy = v52;
         if (v32 != 1)
         {
 LABEL_29:
@@ -12559,68 +12559,68 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v19 = v16;
+    v19 = text;
   }
 
   else
   {
-    v19 = v11;
+    v19 = textCopy;
   }
 
 LABEL_31:
   [(CKComposition *)self isExpirableComposition];
   v34 = objc_opt_class();
-  v35 = [(CKComposition *)self shelfPluginPayload];
-  if (v12)
+  shelfPluginPayload = [(CKComposition *)self shelfPluginPayload];
+  if (payloadCopy)
   {
-    v36 = v12;
+    v36 = payloadCopy;
 
-    v35 = v36;
+    shelfPluginPayload = v36;
   }
 
-  v37 = [(CKComposition *)self shelfMediaObject];
+  shelfMediaObject = [(CKComposition *)self shelfMediaObject];
   v51 = v14;
   v38 = v19;
   if (v14)
   {
     v39 = v14;
 
-    v37 = v39;
+    shelfMediaObject = v39;
   }
 
   v40 = [v34 alloc];
-  v41 = [(CKComposition *)self subject];
-  v42 = [(CKComposition *)self translation];
-  v43 = [(CKComposition *)self bizIntent];
-  v44 = [(CKComposition *)self proofreadingInfo];
-  v15 = [v40 initWithText:v38 subject:v41 translation:v42 shelfPluginPayload:v35 bizIntent:v43 shelfMediaObject:v37 proofreadingInfo:v44];
+  subject = [(CKComposition *)self subject];
+  translation = [(CKComposition *)self translation];
+  bizIntent = [(CKComposition *)self bizIntent];
+  proofreadingInfo = [(CKComposition *)self proofreadingInfo];
+  selfCopy = [v40 initWithText:v38 subject:subject translation:translation shelfPluginPayload:shelfPluginPayload bizIntent:bizIntent shelfMediaObject:shelfMediaObject proofreadingInfo:proofreadingInfo];
 
-  v45 = [(CKComposition *)self expressiveSendStyleID];
-  [(CKComposition *)v15 setExpressiveSendStyleID:v45];
+  expressiveSendStyleID = [(CKComposition *)self expressiveSendStyleID];
+  [(CKComposition *)selfCopy setExpressiveSendStyleID:expressiveSendStyleID];
 
-  [(CKComposition *)v15 setShouldHideClearPluginButton:[(CKComposition *)self shouldHideClearPluginButton]];
-  v46 = [(CKComposition *)self sendLaterPluginInfo];
-  [(CKComposition *)v15 setSendLaterPluginInfo:v46];
+  [(CKComposition *)selfCopy setShouldHideClearPluginButton:[(CKComposition *)self shouldHideClearPluginButton]];
+  sendLaterPluginInfo = [(CKComposition *)self sendLaterPluginInfo];
+  [(CKComposition *)selfCopy setSendLaterPluginInfo:sendLaterPluginInfo];
 
   v14 = v51;
-  v12 = v52;
+  payloadCopy = v52;
 LABEL_36:
 
-  return v15;
+  return selfCopy;
 }
 
-+ (id)compositionForWritingToolsText:(id)a3
++ (id)compositionForWritingToolsText:(id)text
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static CKComposition.composition(forWritingToolsText:)(v4);
+  textCopy = text;
+  v5 = static CKComposition.composition(forWritingToolsText:)(textCopy);
 
   return v5;
 }
 
 - (BOOL)hasRestorableContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKComposition.hasRestorableContent()();
 
   return v3;

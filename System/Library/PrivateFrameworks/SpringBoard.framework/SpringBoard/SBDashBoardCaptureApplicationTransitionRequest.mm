@@ -1,23 +1,23 @@
 @interface SBDashBoardCaptureApplicationTransitionRequest
-- (SBDashBoardCaptureApplicationTransitionRequest)initWithCaptureApplication:(id)a3;
+- (SBDashBoardCaptureApplicationTransitionRequest)initWithCaptureApplication:(id)application;
 - (SBDashBoardCaptureApplicationTransitionRequestDelegate)delegate;
-- (id)_errorWithCode:(int64_t)a3 underlyingError:(id)a4;
+- (id)_errorWithCode:(int64_t)code underlyingError:(id)error;
 - (void)_unlock;
 - (void)initiate;
 @end
 
 @implementation SBDashBoardCaptureApplicationTransitionRequest
 
-- (SBDashBoardCaptureApplicationTransitionRequest)initWithCaptureApplication:(id)a3
+- (SBDashBoardCaptureApplicationTransitionRequest)initWithCaptureApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   v9.receiver = self;
   v9.super_class = SBDashBoardCaptureApplicationTransitionRequest;
   v6 = [(SBDashBoardCaptureApplicationTransitionRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_captureApplication, a3);
+    objc_storeStrong(&v6->_captureApplication, application);
   }
 
   return v7;
@@ -30,33 +30,33 @@
   v3 = SBLogDashBoard();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SBDashBoardCaptureApplicationTransitionRequest *)self captureApplication];
-    v5 = [v4 bundleIdentifier];
+    captureApplication = [(SBDashBoardCaptureApplicationTransitionRequest *)self captureApplication];
+    bundleIdentifier = [captureApplication bundleIdentifier];
     v6 = [(NSSet *)self->_launchActions debugDescription];
     v8 = 138412546;
-    v9 = v5;
+    v9 = bundleIdentifier;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Transition initiated for capture application (%@), launch actions: %@", &v8, 0x16u);
   }
 
-  v7 = [(SBDashBoardCaptureApplicationTransitionRequest *)self delegate];
-  [v7 captureApplicationTransitionRequestWillLaunchApplication:self];
+  delegate = [(SBDashBoardCaptureApplicationTransitionRequest *)self delegate];
+  [delegate captureApplicationTransitionRequestWillLaunchApplication:self];
 
   [(SBDashBoardCaptureApplicationTransitionRequest *)self _unlock];
 }
 
-- (id)_errorWithCode:(int64_t)a3 underlyingError:(id)a4
+- (id)_errorWithCode:(int64_t)code underlyingError:(id)error
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = v6;
-  if (v5)
+  errorCopy = error;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = dictionary;
+  if (errorCopy)
   {
-    [v6 setObject:v5 forKey:*MEMORY[0x277CCA7E8]];
+    [dictionary setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:SBCaptureApplicationTransitionErrorDomain code:a3 userInfo:v7];
+  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:SBCaptureApplicationTransitionErrorDomain code:code userInfo:v7];
 
   return v8;
 }
@@ -64,7 +64,7 @@
 - (void)_unlock
 {
   BSDispatchQueueAssertMain();
-  v3 = [(LCSCaptureApplicationDescribing *)self->_captureApplication bundleIdentifier];
+  bundleIdentifier = [(LCSCaptureApplicationDescribing *)self->_captureApplication bundleIdentifier];
   v4 = objc_alloc_init(SBLockScreenUnlockAndLaunchCaptureApplicationRequest);
   [(SBLockScreenUnlockRequest *)v4 setSource:34];
   [(SBLockScreenUnlockRequest *)v4 setIntent:3];
@@ -76,7 +76,7 @@
   [(SBLockScreenUnlockAndLaunchCaptureApplicationRequest *)v4 setLaunchActions:v5];
 
   v6 = +[SBApplicationController sharedInstanceIfExists];
-  v7 = [v6 applicationWithBundleIdentifier:v3];
+  v7 = [v6 applicationWithBundleIdentifier:bundleIdentifier];
 
   [(SBLockScreenUnlockRequest *)v4 setDestinationApplication:v7];
   v8 = +[SBLockScreenManager sharedInstance];

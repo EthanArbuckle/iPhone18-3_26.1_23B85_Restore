@@ -1,48 +1,48 @@
 @interface WFSleepTrigger
 + (BOOL)isSupportedOnThisDevice;
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 - (BOOL)hasValidConfiguration;
 - (WFSleepTrigger)init;
-- (WFSleepTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFSleepTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
 - (id)localizedPastTenseDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSleepTrigger
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = WFSleepTrigger;
-  v4 = [(WFTrigger *)&v6 copyWithZone:a3];
+  v4 = [(WFTrigger *)&v6 copyWithZone:zone];
   [v4 setSelection:{-[WFSleepTrigger selection](self, "selection")}];
   return v4;
 }
 
-- (WFSleepTrigger)initWithCoder:(id)a3
+- (WFSleepTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFSleepTrigger;
-  v5 = [(WFTrigger *)&v8 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    -[WFSleepTrigger setSelection:](v5, "setSelection:", [v4 decodeIntForKey:@"selection"]);
+    -[WFSleepTrigger setSelection:](v5, "setSelection:", [coderCopy decodeIntForKey:@"selection"]);
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFSleepTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[WFSleepTrigger selection](self forKey:{"selection", v5.receiver, v5.super_class), @"selection"}];
+  coderCopy = coder;
+  [(WFTrigger *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[WFSleepTrigger selection](self forKey:{"selection", v5.receiver, v5.super_class), @"selection"}];
 }
 
 - (id)localizedPastTenseDescription
@@ -74,7 +74,7 @@ LABEL_7:
     v8 = 136315394;
     v9 = "[WFSleepTrigger localizedPastTenseDescription]";
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", &v8, 0x16u);
   }
 
@@ -114,7 +114,7 @@ LABEL_7:
     v8 = 136315394;
     v9 = "[WFSleepTrigger localizedDescriptionWithConfigurationSummary]";
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", &v8, 0x16u);
   }
 
@@ -129,19 +129,19 @@ LABEL_8:
 {
   if ([(WFSleepTrigger *)self selection])
   {
-    v3 = [(WFSleepTrigger *)self selection];
-    if (v3 != 1)
+    selection = [(WFSleepTrigger *)self selection];
+    if (selection != 1)
     {
-      LOBYTE(v3) = [(WFSleepTrigger *)self selection]== 2;
+      LOBYTE(selection) = [(WFSleepTrigger *)self selection]== 2;
     }
   }
 
   else
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(selection) = 1;
   }
 
-  return v3;
+  return selection;
 }
 
 - (WFSleepTrigger)init
@@ -158,19 +158,19 @@ LABEL_8:
   return v3;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Sleep trigger name", @"Sleep");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
 + (BOOL)isSupportedOnThisDevice
 {
-  v2 = [MEMORY[0x1E69E0A90] currentDevice];
-  v3 = [v2 idiom] != 1;
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  v3 = [currentDevice idiom] != 1;
 
   return v3;
 }

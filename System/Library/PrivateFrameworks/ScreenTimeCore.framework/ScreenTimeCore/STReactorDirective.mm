@@ -1,23 +1,23 @@
 @interface STReactorDirective
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReactorDirective:(id)a3;
-- (STReactorDirective)initWithType:(int64_t)a3 data:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReactorDirective:(id)directive;
+- (STReactorDirective)initWithType:(int64_t)type data:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)matchingAny:(id)a3;
+- (id)matchingAny:(id)any;
 - (unint64_t)hash;
 @end
 
 @implementation STReactorDirective
 
-- (STReactorDirective)initWithType:(int64_t)a3 data:(id)a4
+- (STReactorDirective)initWithType:(int64_t)type data:(id)data
 {
   v10.receiver = self;
   v10.super_class = STReactorDirective;
-  v5 = a4;
+  dataCopy = data;
   v6 = [(STReactorDirective *)&v10 init];
-  v6->_type = a3;
-  v7 = [v5 copy];
+  v6->_type = type;
+  v7 = [dataCopy copy];
 
   data = v6->_data;
   v6->_data = v7;
@@ -25,11 +25,11 @@
   return v6;
 }
 
-- (id)matchingAny:(id)a3
+- (id)matchingAny:(id)any
 {
-  v4 = a3;
+  anyCopy = any;
   v5 = [NSNumber numberWithInteger:[(STReactorDirective *)self type]];
-  v6 = [v4 containsObject:v5];
+  v6 = [anyCopy containsObject:v5];
 
   if (v6)
   {
@@ -41,8 +41,8 @@
     v8 = [NSError alloc];
     v9 = STErrorDomain;
     v13 = NSLocalizedDescriptionKey;
-    v14 = self;
-    v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
+    selfCopy = self;
+    v10 = [NSDictionary dictionaryWithObjects:&selfCopy forKeys:&v13 count:1];
     v11 = [v8 initWithDomain:v9 code:44 userInfo:v10];
     v7 = [STResult failure:v11];
   }
@@ -64,25 +64,25 @@
     v5 = off_1001A5300[v4];
   }
 
-  v6 = [(STReactorDirective *)self data];
-  v7 = [NSString stringWithFormat:@"<%@ { Type: %@, Data: %@ }>", v3, v5, v6];
+  data = [(STReactorDirective *)self data];
+  v7 = [NSString stringWithFormat:@"<%@ { Type: %@, Data: %@ }>", v3, v5, data];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   type = self->_type;
   data = self->_data;
 
   return [v4 initWithType:type data:data];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -92,7 +92,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STReactorDirective *)self isEqualToReactorDirective:v4];
+      v5 = [(STReactorDirective *)self isEqualToReactorDirective:equalCopy];
     }
 
     else
@@ -104,27 +104,27 @@
   return v5;
 }
 
-- (BOOL)isEqualToReactorDirective:(id)a3
+- (BOOL)isEqualToReactorDirective:(id)directive
 {
-  v5 = a3;
-  if (self == v5)
+  directiveCopy = directive;
+  if (self == directiveCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v6 = [(STReactorDirective *)self type];
-    if (v6 == [(STReactorDirective *)v5 type])
+    type = [(STReactorDirective *)self type];
+    if (type == [(STReactorDirective *)directiveCopy type])
     {
-      v7 = [(STReactorDirective *)self data];
-      if (v7 || ([(STReactorDirective *)v5 data], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      data = [(STReactorDirective *)self data];
+      if (data || ([(STReactorDirective *)directiveCopy data], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v8 = [(STReactorDirective *)self data];
-        v9 = [(STReactorDirective *)v5 data];
-        v10 = [v8 isEqual:v9];
+        data2 = [(STReactorDirective *)self data];
+        data3 = [(STReactorDirective *)directiveCopy data];
+        v10 = [data2 isEqual:data3];
 
-        if (v7)
+        if (data)
         {
 LABEL_11:
 
@@ -150,11 +150,11 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(STReactorDirective *)self data];
-  v4 = [v3 hash];
-  v5 = [(STReactorDirective *)self type];
+  data = [(STReactorDirective *)self data];
+  v4 = [data hash];
+  type = [(STReactorDirective *)self type];
 
-  return v4 + v5;
+  return v4 + type;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface AllowedFieldValuesTreatmentAction
-- (_TtC9JetEngine33AllowedFieldValuesTreatmentAction)initWithField:(id)a3 configuration:(id)a4;
-- (id)performAction:(id)a3 context:(id)a4;
+- (_TtC9JetEngine33AllowedFieldValuesTreatmentAction)initWithField:(id)field configuration:(id)configuration;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation AllowedFieldValuesTreatmentAction
 
-- (_TtC9JetEngine33AllowedFieldValuesTreatmentAction)initWithField:(id)a3 configuration:(id)a4
+- (_TtC9JetEngine33AllowedFieldValuesTreatmentAction)initWithField:(id)field configuration:(id)configuration
 {
-  if (a3)
+  if (field)
   {
     v4 = sub_1AB460544();
     v6 = v5;
@@ -23,12 +23,12 @@
   return AllowedFieldValuesTreatmentAction.init(field:configuration:)(v4, v6, v7);
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
-  if (a3)
+  if (action)
   {
-    v6 = a4;
-    v7 = self;
+    contextCopy = context;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1AB461494();
     swift_unknownObjectRelease();
@@ -37,8 +37,8 @@
   else
   {
     memset(v18, 0, sizeof(v18));
-    v8 = a4;
-    v9 = self;
+    contextCopy2 = context;
+    selfCopy2 = self;
   }
 
   AllowedFieldValuesTreatmentAction.perform(_:context:)(v18, v19);

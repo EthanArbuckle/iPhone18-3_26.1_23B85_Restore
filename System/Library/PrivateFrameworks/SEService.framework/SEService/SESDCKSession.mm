@@ -1,34 +1,34 @@
 @interface SESDCKSession
-+ (id)requestAssertionForKeyID:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (BOOL)sendPassthroughMessage:(id)a3 error:(id *)a4;
++ (id)requestAssertionForKeyID:(id)d withOptions:(id)options error:(id *)error;
+- (BOOL)sendPassthroughMessage:(id)message error:(id *)error;
 - (SESDCKSessionDelegate)delegate;
 - (SESDCKSessionPassthroughDelegate)passthroughDelegate;
-- (id)cancelRKEAction:(unint64_t)a3;
-- (id)cancelRKEFunction:(id)a3;
-- (id)sendRKEAction:(unint64_t)a3 authorization:(id)a4;
-- (id)sendRKEFunction:(id)a3 action:(id)a4 authorization:(id)a5;
-- (id)setActiveKey:(id)a3;
-- (id)setAuthorization:(id)a3;
-- (id)setSecureElementToken:(id)a3;
-- (void)didEndUnexpectedly:(id)a3;
-- (void)didReceivePassthroughMessage:(id)a3;
-- (void)didStartSession:(id)a3;
+- (id)cancelRKEAction:(unint64_t)action;
+- (id)cancelRKEFunction:(id)function;
+- (id)sendRKEAction:(unint64_t)action authorization:(id)authorization;
+- (id)sendRKEFunction:(id)function action:(id)action authorization:(id)authorization;
+- (id)setActiveKey:(id)key;
+- (id)setAuthorization:(id)authorization;
+- (id)setSecureElementToken:(id)token;
+- (void)didEndUnexpectedly:(id)unexpectedly;
+- (void)didReceivePassthroughMessage:(id)message;
+- (void)didStartSession:(id)session;
 - (void)endSession;
-- (void)sendEvent:(id)a3;
-- (void)sendRKEFunction:(id)a3 action:(id)a4 actionType:(unint64_t)a5 arbitraryData:(id)a6 authorization:(id)a7 completion:(id)a8;
+- (void)sendEvent:(id)event;
+- (void)sendRKEFunction:(id)function action:(id)action actionType:(unint64_t)type arbitraryData:(id)data authorization:(id)authorization completion:(id)completion;
 @end
 
 @implementation SESDCKSession
 
-- (id)setActiveKey:(id)a3
+- (id)setActiveKey:(id)key
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = keyCopy;
     _os_log_impl(&dword_1C7B9A000, v5, OS_LOG_TYPE_INFO, "setActiveKey %@", &buf, 0xCu);
   }
 
@@ -56,7 +56,7 @@
     v24[3] = &unk_1E82D0DF0;
     v24[4] = &v26;
     v24[5] = &buf;
-    [v6 setActiveKey:v4 reply:v24];
+    [v6 setActiveKey:keyCopy reply:v24];
 
     v7 = *(&buf + 1);
     if ((v27[3] & 1) == 0 && !*(*(&buf + 1) + 40))
@@ -71,7 +71,7 @@
     }
 
     aid = self->_aid;
-    if (!v4 || *(v7 + 40))
+    if (!keyCopy || *(v7 + 40))
     {
       self->_aid = 0;
 
@@ -84,7 +84,7 @@
     {
       self->_aid = @"A000000809434343444B417631";
 
-      v13 = v4;
+      v13 = keyCopy;
       activeKeyIdentifier = self->_activeKeyIdentifier;
       self->_activeKeyIdentifier = v13;
       v15 = 1;
@@ -124,10 +124,10 @@
   return v18;
 }
 
-- (id)setSecureElementToken:(id)a3
+- (id)setSecureElementToken:(id)token
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -159,7 +159,7 @@
     v20[3] = &unk_1E82D0DF0;
     v20[4] = &v22;
     v20[5] = buf;
-    [v6 setSecureElementToken:v4 reply:v20];
+    [v6 setSecureElementToken:tokenCopy reply:v20];
 
     v7 = v27;
     if ((v23[3] & 1) == 0 && !*(v27 + 5))
@@ -205,10 +205,10 @@
   return v15;
 }
 
-- (id)setAuthorization:(id)a3
+- (id)setAuthorization:(id)authorization
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  authorizationCopy = authorization;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -240,7 +240,7 @@
     v20[3] = &unk_1E82D0DF0;
     v20[4] = &v22;
     v20[5] = buf;
-    [v6 setAuthorization:v4 reply:v20];
+    [v6 setAuthorization:authorizationCopy reply:v20];
 
     v7 = v27;
     if ((v23[3] & 1) == 0 && !*(v27 + 5))
@@ -286,29 +286,29 @@
   return v15;
 }
 
-- (void)sendRKEFunction:(id)a3 action:(id)a4 actionType:(unint64_t)a5 arbitraryData:(id)a6 authorization:(id)a7 completion:(id)a8
+- (void)sendRKEFunction:(id)function action:(id)action actionType:(unint64_t)type arbitraryData:(id)data authorization:(id)authorization completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  functionCopy = function;
+  actionCopy = action;
+  dataCopy = data;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   v19 = SESDefaultLogObject();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 67109632;
-    *&buf[4] = [v14 unsignedIntValue];
+    *&buf[4] = [functionCopy unsignedIntValue];
     LOWORD(v36) = 1024;
-    *(&v36 + 2) = [v15 unsignedIntValue];
+    *(&v36 + 2) = [actionCopy unsignedIntValue];
     HIWORD(v36) = 1024;
-    LODWORD(v37) = v17 != 0;
+    LODWORD(v37) = authorizationCopy != 0;
     _os_log_impl(&dword_1C7B9A000, v19, OS_LOG_TYPE_INFO, "sendRKEFunction 0x%X action 0x%X authorization %d", buf, 0x14u);
   }
 
   if ([(SESSession *)self state]== 1)
   {
-    if ([v16 length] < 0x41)
+    if ([dataCopy length] < 0x41)
     {
       *buf = 0;
       v36 = buf;
@@ -322,7 +322,7 @@
       v32[3] = &unk_1E82D1170;
       v32[4] = buf;
       v26 = [(SESSession *)self remoteObjectProxyWithErrorHandler:v32];
-      [v26 sendRKEFunction:objc_msgSend(v14 action:"unsignedShortValue") actionType:objc_msgSend(v15 arbitraryData:"unsignedCharValue") authorization:a5 completion:{v16, v17, v18}];
+      [v26 sendRKEFunction:objc_msgSend(functionCopy action:"unsignedShortValue") actionType:objc_msgSend(actionCopy arbitraryData:"unsignedCharValue") authorization:type completion:{dataCopy, authorizationCopy, completionCopy}];
 
       if (*(v36 + 5))
       {
@@ -337,7 +337,7 @@
 
         v29 = *(v36 + 5);
         v30 = SESEnsureError();
-        v18[2](v18, 0, v30);
+        completionCopy[2](completionCopy, 0, v30);
       }
 
       _Block_object_dispose(buf, 8);
@@ -347,9 +347,9 @@
     {
       v20 = SESDefaultLogObject();
       v21 = *MEMORY[0x1E69E5148];
-      [v16 length];
+      [dataCopy length];
       v22 = SESCreateAndLogError();
-      v18[2](v18, 0, v22);
+      completionCopy[2](completionCopy, 0, v22);
     }
   }
 
@@ -358,21 +358,21 @@
     v23 = SESDefaultLogObject();
     v24 = *MEMORY[0x1E69E5148];
     v25 = SESCreateAndLogError();
-    v18[2](v18, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
   }
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cancelRKEFunction:(id)a3
+- (id)cancelRKEFunction:(id)function
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  functionCopy = function;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    *&buf[4] = [v4 unsignedIntValue];
+    *&buf[4] = [functionCopy unsignedIntValue];
     _os_log_impl(&dword_1C7B9A000, v5, OS_LOG_TYPE_INFO, "cancelRKEFunction 0x%X", buf, 8u);
   }
 
@@ -394,14 +394,14 @@
     v22[3] = &unk_1E82D1170;
     v22[4] = buf;
     v6 = [(SESSession *)self synchronousRemoteObjectProxyWithErrorHandler:v22];
-    v7 = [v4 unsignedShortValue];
+    unsignedShortValue = [functionCopy unsignedShortValue];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __35__SESDCKSession_cancelRKEFunction___block_invoke_2;
     v21[3] = &unk_1E82D0DF0;
     v21[4] = &v23;
     v21[5] = buf;
-    [v6 cancelRKEFunction:v7 reply:v21];
+    [v6 cancelRKEFunction:unsignedShortValue reply:v21];
 
     v8 = v30;
     if ((v24[3] & 1) == 0 && !*(v30 + 5))
@@ -447,10 +447,10 @@
   return v16;
 }
 
-- (BOOL)sendPassthroughMessage:(id)a3 error:(id *)a4
+- (BOOL)sendPassthroughMessage:(id)message error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  messageCopy = message;
   v7 = SESDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -460,7 +460,7 @@
 
   if ([(SESSession *)self state]== 1)
   {
-    if ([v6 length] < 0x10000)
+    if ([messageCopy length] < 0x10000)
     {
       *buf = 0;
       v29 = buf;
@@ -484,7 +484,7 @@
       v22[3] = &unk_1E82D0DF0;
       v22[4] = &v24;
       v22[5] = buf;
-      [v12 sendPassthroughMessage:v6 reply:v22];
+      [v12 sendPassthroughMessage:messageCopy reply:v22];
 
       v13 = v29;
       if ((v25[3] & 1) == 0 && !*(v29 + 5))
@@ -512,72 +512,72 @@
         v13 = v29;
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = *(v13 + 5);
+        *error = *(v13 + 5);
         v13 = v29;
       }
 
-      LOBYTE(a4) = *(v13 + 5) == 0;
+      LOBYTE(error) = *(v13 + 5) == 0;
       _Block_object_dispose(&v24, 8);
       _Block_object_dispose(buf, 8);
     }
 
-    else if (a4)
+    else if (error)
     {
       v8 = SESDefaultLogObject();
       v9 = *MEMORY[0x1E69E5148];
-      [v6 length];
-      *a4 = SESCreateAndLogError();
+      [messageCopy length];
+      *error = SESCreateAndLogError();
 
 LABEL_9:
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = SESDefaultLogObject();
     v11 = *MEMORY[0x1E69E5148];
-    *a4 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
 
     goto LABEL_9;
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-+ (id)requestAssertionForKeyID:(id)a3 withOptions:(id)a4 error:(id *)a5
++ (id)requestAssertionForKeyID:(id)d withOptions:(id)options error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  dCopy = d;
   v9 = +[SESSessionManager sharedInstance];
   v14 = 0;
-  v10 = [v9 startDCKAssertionForKeyIdentifier:v8 withOptions:v7 error:&v14];
+  v10 = [v9 startDCKAssertionForKeyIdentifier:dCopy withOptions:optionsCopy error:&v14];
 
   v11 = v14;
-  if (a5)
+  if (error)
   {
     v12 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v10;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = SESDCKSession;
-  [(SESSession *)&v3 didStartSession:a3];
+  [(SESSession *)&v3 didStartSession:session];
 }
 
-- (void)didEndUnexpectedly:(id)a3
+- (void)didEndUnexpectedly:(id)unexpectedly
 {
   v3.receiver = self;
   v3.super_class = SESDCKSession;
-  [(SESSession *)&v3 didEndUnexpectedly:a3];
+  [(SESSession *)&v3 didEndUnexpectedly:unexpectedly];
 }
 
 - (void)endSession
@@ -588,19 +588,19 @@ LABEL_9:
   [(SESDCKSession *)self sendEvent:&unk_1F4762E50];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(SESSession *)self state]== 1)
   {
-    v5 = [(SESSession *)self queue];
+    queue = [(SESSession *)self queue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __27__SESDCKSession_sendEvent___block_invoke;
     v7[3] = &unk_1E82D11C0;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = eventCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -620,9 +620,9 @@ void __27__SESDCKSession_sendEvent___block_invoke(uint64_t a1)
   [v2 sesSession:*(a1 + 32) event:*(a1 + 40)];
 }
 
-- (void)didReceivePassthroughMessage:(id)a3
+- (void)didReceivePassthroughMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if ([(SESSession *)self state]!= 1)
   {
     v7 = SESDefaultLogObject();
@@ -639,9 +639,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v5 = [(SESDCKSession *)self passthroughDelegate];
+  passthroughDelegate = [(SESDCKSession *)self passthroughDelegate];
 
-  if (!v5)
+  if (!passthroughDelegate)
   {
     v7 = SESDefaultLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -654,14 +654,14 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = [(SESSession *)self queue];
+  queue = [(SESSession *)self queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__SESDCKSession_didReceivePassthroughMessage___block_invoke;
   v9[3] = &unk_1E82D11C0;
   v9[4] = self;
-  v10 = v4;
-  dispatch_async(v6, v9);
+  v10 = messageCopy;
+  dispatch_async(queue, v9);
 
 LABEL_10:
 }
@@ -672,7 +672,7 @@ void __46__SESDCKSession_didReceivePassthroughMessage___block_invoke(uint64_t a1
   [v2 sesSession:*(a1 + 32) didReceivePassthroughMessage:*(a1 + 40)];
 }
 
-- (id)sendRKEAction:(unint64_t)a3 authorization:(id)a4
+- (id)sendRKEAction:(unint64_t)action authorization:(id)authorization
 {
   v4 = SESDefaultLogObject();
   v5 = *MEMORY[0x1E69E5148];
@@ -681,7 +681,7 @@ void __46__SESDCKSession_didReceivePassthroughMessage___block_invoke(uint64_t a1
   return v6;
 }
 
-- (id)sendRKEFunction:(id)a3 action:(id)a4 authorization:(id)a5
+- (id)sendRKEFunction:(id)function action:(id)action authorization:(id)authorization
 {
   v5 = SESDefaultLogObject();
   v6 = *MEMORY[0x1E69E5148];
@@ -690,7 +690,7 @@ void __46__SESDCKSession_didReceivePassthroughMessage___block_invoke(uint64_t a1
   return v7;
 }
 
-- (id)cancelRKEAction:(unint64_t)a3
+- (id)cancelRKEAction:(unint64_t)action
 {
   v3 = SESDefaultLogObject();
   v4 = *MEMORY[0x1E69E5148];

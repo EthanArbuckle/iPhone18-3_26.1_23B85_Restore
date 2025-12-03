@@ -1,8 +1,8 @@
 @interface HTHangreporterKickstartTelemetry
-+ (BOOL)collectTailspinSpoolData:(id *)a3 error:(id *)a4;
-+ (BOOL)emitTailspinProcessingEvent:(id)a3 error:(id *)a4;
-+ (unsigned)getHangreporterTailspinsProcessed:(id *)a3;
-+ (unsigned)getSuccessfulTailspinSaves:(id *)a3;
++ (BOOL)collectTailspinSpoolData:(id *)data error:(id *)error;
++ (BOOL)emitTailspinProcessingEvent:(id)event error:(id *)error;
++ (unsigned)getHangreporterTailspinsProcessed:(id *)processed;
++ (unsigned)getSuccessfulTailspinSaves:(id *)saves;
 + (void)_resetHangreporterTailspinsProcessed;
 + (void)_resetKeysForTailspinProcessingTelemetry;
 + (void)_resetSuccessfulTailspinSaves;
@@ -12,7 +12,7 @@
 
 @implementation HTHangreporterKickstartTelemetry
 
-+ (unsigned)getSuccessfulTailspinSaves:(id *)a3
++ (unsigned)getSuccessfulTailspinSaves:(id *)saves
 {
   v4 = sub_100004D34();
   v5 = qword_100067820;
@@ -24,7 +24,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 unsignedIntValue];
+      unsignedIntValue = [v6 unsignedIntValue];
     }
 
     else
@@ -37,24 +37,24 @@
         sub_10002F724();
       }
 
-      if (a3)
+      if (saves)
       {
         v12 = NSLocalizedDescriptionKey;
         v13 = v8;
         v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-        *a3 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:0 userInfo:v10];
+        *saves = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:0 userInfo:v10];
       }
 
-      v7 = -1;
+      unsignedIntValue = -1;
     }
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v7;
+  return unsignedIntValue;
 }
 
 + (void)incrementSuccessfulTailspinSaves
@@ -74,10 +74,10 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 unsignedIntValue];
-    if (v5 != -2)
+    unsignedIntValue = [v4 unsignedIntValue];
+    if (unsignedIntValue != -2)
     {
-      v6 = v5 + 1;
+      v6 = unsignedIntValue + 1;
       v7 = qword_100067820;
 LABEL_6:
       [v7 setInteger:v6 forKey:@"successfulTailspinSaves"];
@@ -107,7 +107,7 @@ LABEL_6:
   [v4 setInteger:0 forKey:@"successfulTailspinSaves"];
 }
 
-+ (unsigned)getHangreporterTailspinsProcessed:(id *)a3
++ (unsigned)getHangreporterTailspinsProcessed:(id *)processed
 {
   v4 = sub_100004D34();
   v5 = qword_100067820;
@@ -119,7 +119,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 unsignedIntValue];
+      unsignedIntValue = [v6 unsignedIntValue];
     }
 
     else
@@ -132,24 +132,24 @@ LABEL_6:
         sub_10002F834();
       }
 
-      if (a3)
+      if (processed)
       {
         v12 = NSLocalizedDescriptionKey;
         v13 = v8;
         v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-        *a3 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:0 userInfo:v10];
+        *processed = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:0 userInfo:v10];
       }
 
-      v7 = -1;
+      unsignedIntValue = -1;
     }
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v7;
+  return unsignedIntValue;
 }
 
 + (void)incrementHangreporterTailspinsProcessed
@@ -169,10 +169,10 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 unsignedIntValue];
-    if (v5 != -2)
+    unsignedIntValue = [v4 unsignedIntValue];
+    if (unsignedIntValue != -2)
     {
-      v6 = v5 + 1;
+      v6 = unsignedIntValue + 1;
       v7 = qword_100067820;
 LABEL_6:
       [v7 setInteger:v6 forKey:@"tailspinsProcessed"];
@@ -209,40 +209,40 @@ LABEL_6:
   +[HTHangreporterKickstartTelemetry _resetSuccessfulTailspinSaves];
 }
 
-+ (BOOL)emitTailspinProcessingEvent:(id)a3 error:(id *)a4
++ (BOOL)emitTailspinProcessingEvent:(id)event error:(id *)error
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = +[HTPrefs sharedPrefs];
-  v7 = [v6 shouldEmitTelemetry];
+  shouldEmitTelemetry = [v6 shouldEmitTelemetry];
 
-  if (v7)
+  if (shouldEmitTelemetry)
   {
-    v8 = [v5 objectForKey:@"successfulTailspinSaves"];
+    v8 = [eventCopy objectForKey:@"successfulTailspinSaves"];
     if (v8)
     {
       v9 = v8;
       [v8 unsignedIntValue];
-      v10 = [v5 objectForKey:@"tailspinsProcessed"];
+      v10 = [eventCopy objectForKey:@"tailspinsProcessed"];
 
       if (v10)
       {
         [v10 unsignedIntValue];
-        v11 = [v5 objectForKey:@"tailspinsUnprocessed"];
+        v11 = [eventCopy objectForKey:@"tailspinsUnprocessed"];
 
         if (v11)
         {
           [v11 unsignedIntValue];
-          v12 = [v5 objectForKey:@"tailspinsInSpool"];
+          v12 = [eventCopy objectForKey:@"tailspinsInSpool"];
 
           if (v12)
           {
             [v12 unsignedIntValue];
-            v13 = [v5 objectForKey:@"tailspinsOverReportingThresholds"];
+            v13 = [eventCopy objectForKey:@"tailspinsOverReportingThresholds"];
 
             if (v13)
             {
               [v13 unsignedIntValue];
-              v14 = [v5 objectForKey:@"oldestTailspinCreationSeconds"];
+              v14 = [eventCopy objectForKey:@"oldestTailspinCreationSeconds"];
 
               if (v14)
               {
@@ -251,14 +251,14 @@ LABEL_6:
                 +[HTHangreporterKickstartTelemetry _resetKeysForTailspinProcessingTelemetry];
 
                 v15 = 0;
-                v16 = 0;
+                eventCopy = 0;
                 v17 = 1;
                 goto LABEL_26;
               }
 
-              v16 = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"oldestTailspinCreationSeconds", v5];
+              eventCopy = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"oldestTailspinCreationSeconds", eventCopy];
               v29 = NSLocalizedDescriptionKey;
-              v30 = v16;
+              v30 = eventCopy;
               v26 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
               v15 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:1 userInfo:v26];
 
@@ -271,9 +271,9 @@ LABEL_6:
 
             else
             {
-              v16 = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"tailspinsOverReportingThresholds", v5];
+              eventCopy = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"tailspinsOverReportingThresholds", eventCopy];
               v31 = NSLocalizedDescriptionKey;
-              v32 = v16;
+              v32 = eventCopy;
               v25 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
               v15 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:1 userInfo:v25];
 
@@ -287,9 +287,9 @@ LABEL_6:
 
           else
           {
-            v16 = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"tailspinsInSpool", v5];
+            eventCopy = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"tailspinsInSpool", eventCopy];
             v33 = NSLocalizedDescriptionKey;
-            v34 = v16;
+            v34 = eventCopy;
             v24 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
             v15 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:1 userInfo:v24];
 
@@ -303,9 +303,9 @@ LABEL_6:
 
         else
         {
-          v16 = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"tailspinsUnprocessed", v5];
+          eventCopy = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"tailspinsUnprocessed", eventCopy];
           v35 = NSLocalizedDescriptionKey;
-          v36 = v16;
+          v36 = eventCopy;
           v23 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
           v15 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:1 userInfo:v23];
 
@@ -319,9 +319,9 @@ LABEL_6:
 
       else
       {
-        v16 = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"tailspinsProcessed", v5];
+        eventCopy = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"tailspinsProcessed", eventCopy];
         v37 = NSLocalizedDescriptionKey;
-        v38 = v16;
+        v38 = eventCopy;
         v22 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
         v15 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:1 userInfo:v22];
 
@@ -335,9 +335,9 @@ LABEL_6:
 
     else
     {
-      v16 = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"successfulTailspinSaves", v5];
+      eventCopy = [NSString stringWithFormat:@"Missing value for key (%@) from tailspinDataDict: %@", @"successfulTailspinSaves", eventCopy];
       v39 = NSLocalizedDescriptionKey;
-      v40 = v16;
+      v40 = eventCopy;
       v21 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       v15 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:1 userInfo:v21];
 
@@ -352,10 +352,10 @@ LABEL_6:
   else
   {
     v18 = +[HTPrefs sharedPrefs];
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"HTPrefs shouldEmitTelemetry=%d, telemetry emission disabled", [v18 shouldEmitTelemetry]);
+    eventCopy = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"HTPrefs shouldEmitTelemetry=%d, telemetry emission disabled", [v18 shouldEmitTelemetry]);
 
     v41 = NSLocalizedDescriptionKey;
-    v42 = v16;
+    v42 = eventCopy;
     v19 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v15 = [NSError errorWithDomain:@"com.apple.hangtracer.telemetry.error" code:2 userInfo:v19];
 
@@ -366,11 +366,11 @@ LABEL_6:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v27 = v15;
     v17 = 0;
-    *a4 = v15;
+    *error = v15;
   }
 
   else
@@ -383,7 +383,7 @@ LABEL_26:
   return v17;
 }
 
-+ (BOOL)collectTailspinSpoolData:(id *)a3 error:(id *)a4
++ (BOOL)collectTailspinSpoolData:(id *)data error:(id *)error
 {
   v79 = 0;
   v6 = sub_100019568("hangreporter", &v79);
@@ -434,11 +434,11 @@ LABEL_4:
       sub_10002FB48();
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v15;
       v9 = 0;
-      *a4 = v15;
+      *error = v15;
     }
 
     else
@@ -508,8 +508,8 @@ LABEL_4:
           }
 
           v27 = *(*(&v72 + 1) + 8 * v26);
-          v28 = [v27 pathExtension];
-          v29 = [v28 isEqualToString:@"tailspin"];
+          pathExtension = [v27 pathExtension];
+          v29 = [pathExtension isEqualToString:@"tailspin"];
 
           if ((v29 & 1) == 0)
           {
@@ -707,7 +707,7 @@ LABEL_72:
           [v55 setObject:v61 forKey:@"tailspinsOverReportingThresholds"];
 
           v62 = v55;
-          *a3 = v55;
+          *data = v55;
 
           v9 = v19 != 0;
           goto LABEL_73;
@@ -723,10 +723,10 @@ LABEL_72:
         sub_10002F9B4();
       }
 
-      if (a4)
+      if (error)
       {
         v54 = v15;
-        *a4 = v15;
+        *error = v15;
       }
     }
 
@@ -745,11 +745,11 @@ LABEL_74:
 
 LABEL_10:
 
-  if (a4)
+  if (error)
   {
     v13 = v7;
     v9 = 0;
-    *a4 = v7;
+    *error = v7;
     goto LABEL_6;
   }
 

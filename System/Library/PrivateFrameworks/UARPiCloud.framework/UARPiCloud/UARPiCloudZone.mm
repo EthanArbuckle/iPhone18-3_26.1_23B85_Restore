@@ -1,25 +1,25 @@
 @interface UARPiCloudZone
 - (CKServerChangeToken)changeToken;
-- (UARPiCloudZone)initWithZoneID:(id)a3 containerID:(id)a4;
-- (void)setChangeToken:(id)a3;
+- (UARPiCloudZone)initWithZoneID:(id)d containerID:(id)iD;
+- (void)setChangeToken:(id)token;
 @end
 
 @implementation UARPiCloudZone
 
-- (UARPiCloudZone)initWithZoneID:(id)a3 containerID:(id)a4
+- (UARPiCloudZone)initWithZoneID:(id)d containerID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = UARPiCloudZone;
   v8 = [(UARPiCloudZone *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     zoneID = v8->_zoneID;
     v8->_zoneID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     containerID = v8->_containerID;
     v8->_containerID = v11;
   }
@@ -27,18 +27,18 @@
   return v8;
 }
 
-- (void)setChangeToken:(id)a3
+- (void)setChangeToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v13 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v13];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v13];
     v6 = v13;
     v7 = MEMORY[0x277CCACA8];
     containerID = self->_containerID;
-    v9 = [(CKRecordZoneID *)self->_zoneID zoneName];
-    v10 = [v7 stringWithFormat:@"%@_%@", containerID, v9];
+    zoneName = [(CKRecordZoneID *)self->_zoneID zoneName];
+    v10 = [v7 stringWithFormat:@"%@_%@", containerID, zoneName];
 
     saveEntryForKey(v5, v10);
   }
@@ -50,16 +50,16 @@
   }
 
   changeToken = self->_changeToken;
-  self->_changeToken = v4;
-  v12 = v4;
+  self->_changeToken = tokenCopy;
+  v12 = tokenCopy;
 }
 
 - (CKServerChangeToken)changeToken
 {
   v3 = MEMORY[0x277CCACA8];
   containerID = self->_containerID;
-  v5 = [(CKRecordZoneID *)self->_zoneID zoneName];
-  v6 = [v3 stringWithFormat:@"%@_%@", containerID, v5];
+  zoneName = [(CKRecordZoneID *)self->_zoneID zoneName];
+  v6 = [v3 stringWithFormat:@"%@_%@", containerID, zoneName];
 
   if (self->_changeToken)
   {

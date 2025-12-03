@@ -2,7 +2,7 @@
 + (BOOL)isAuthorizedToUseContacts;
 + (id)sharedManager;
 - (MFContactsManager)init;
-- (MFContactsManager)initWithContactStore:(id)a3;
+- (MFContactsManager)initWithContactStore:(id)store;
 @end
 
 @implementation MFContactsManager
@@ -51,16 +51,16 @@ uint64_t __46__MFContactsManager_isAuthorizedToUseContacts__block_invoke()
   return v4;
 }
 
-- (MFContactsManager)initWithContactStore:(id)a3
+- (MFContactsManager)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = MFContactsManager;
   v6 = [(MFContactsManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;

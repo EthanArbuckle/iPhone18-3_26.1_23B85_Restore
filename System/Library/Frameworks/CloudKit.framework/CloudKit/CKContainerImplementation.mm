@@ -1,13 +1,13 @@
 @interface CKContainerImplementation
-+ (int)registerForDaemonNotificationsWithKey:(id)a3 callback:(id)a4;
++ (int)registerForDaemonNotificationsWithKey:(id)key callback:(id)callback;
 + (void)initialize;
-+ (void)unregisterForDaemonNotificationsWithToken:(int)a3;
-- (BOOL)__preflightAccountAccessAuthorization:(int64_t *)a3;
++ (void)unregisterForDaemonNotificationsWithToken:(int)token;
+- (BOOL)__preflightAccountAccessAuthorization:(int64_t *)authorization;
 - (BOOL)beginContentAccess;
-- (BOOL)getPersona:(id *)a3 error:(id *)a4;
+- (BOOL)getPersona:(id *)persona error:(id *)error;
 - (BOOL)isContentDiscarded;
 - (CKContainer)unconfiguredWrappingContainer;
-- (CKContainerImplementation)initWithContainerID:(id)a3 options:(id)a4;
+- (CKContainerImplementation)initWithContainerID:(id)d options:(id)options;
 - (CKDatabaseImplementation)organizationCloudDatabaseImplementation;
 - (CKDatabaseImplementation)privateCloudDatabaseImplementation;
 - (CKDatabaseImplementation)publicCloudDatabaseImplementation;
@@ -23,88 +23,88 @@
 - (id)_discretionaryDaemonMachServiceConnection;
 - (id)accountInfoFetchQueue;
 - (id)applicationBundleIdentifierForPush;
-- (id)codeServiceImplementationWithName:(id)a3 databaseScope:(int64_t)a4;
-- (id)codeServiceImplementationWithName:(id)a3 databaseScope:(int64_t)a4 serviceInstanceURL:(id)a5;
-- (id)networkTransferEndpointWithError:(id *)a3;
+- (id)codeServiceImplementationWithName:(id)name databaseScope:(int64_t)scope;
+- (id)codeServiceImplementationWithName:(id)name databaseScope:(int64_t)scope serviceInstanceURL:(id)l;
+- (id)networkTransferEndpointWithError:(id *)error;
 - (id)primaryIdentifier;
-- (id)serverPreferredPushEnvironmentWithError:(id *)a3;
+- (id)serverPreferredPushEnvironmentWithError:(id *)error;
 - (id)setupInfo;
 - (id)sourceApplicationBundleIdentifier;
 - (id)sourceApplicationSecondaryIdentifier;
-- (id)targetPersonaForPersona:(id)a3;
-- (void)_addPreparedConvenienceOperation:(id)a3;
-- (void)_refreshAccountAccessAuthorizationWithCompletionHandler:(id)a3;
-- (void)_scheduleConvenienceOperation:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5;
-- (void)_submitEventMetric:(id)a3 completionHandler:(id)a4;
-- (void)acceptShareMetadata:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)accountInfoWithCompletionHandler:(id)a3;
-- (void)accountStatusWithCompletionHandler:(id)a3;
-- (void)addOperation:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5;
+- (id)targetPersonaForPersona:(id)persona;
+- (void)_addPreparedConvenienceOperation:(id)operation;
+- (void)_refreshAccountAccessAuthorizationWithCompletionHandler:(id)handler;
+- (void)_scheduleConvenienceOperation:(id)operation wrappingContainer:(id)container convenienceConfiguration:(id)configuration;
+- (void)_submitEventMetric:(id)metric completionHandler:(id)handler;
+- (void)acceptShareMetadata:(id)metadata wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)accountInfoWithCompletionHandler:(id)handler;
+- (void)accountStatusWithCompletionHandler:(id)handler;
+- (void)addOperation:(id)operation wrappingContainer:(id)container convenienceConfiguration:(id)configuration;
 - (void)clearContainerFromMetadataCache;
-- (void)clearPILSCacheForLookupInfos:(id)a3;
-- (void)consumeSandboxExtensions:(id)a3 reply:(id)a4;
+- (void)clearPILSCacheForLookupInfos:(id)infos;
+- (void)consumeSandboxExtensions:(id)extensions reply:(id)reply;
 - (void)dealloc;
-- (void)decryptPersonalInfoOnShare:(id)a3 completionHandler:(id)a4;
+- (void)decryptPersonalInfoOnShare:(id)share completionHandler:(id)handler;
 - (void)discardContentIfPossible;
-- (void)discoverAllIdentitiesWithWrappingContainer:(id)a3 convenienceConfiguration:(id)a4 completionHandler:(id)a5;
-- (void)discoverUserIdentityWithEmailAddress:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)discoverUserIdentityWithPhoneNumber:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)discoverUserIdentityWithUserRecordID:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)dropDetachedContainersWithCompletionHandler:(id)a3;
-- (void)dumpDaemonStatusReportToFileHandle:(id)a3 completionHandler:(id)a4;
+- (void)discoverAllIdentitiesWithWrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)discoverUserIdentityWithEmailAddress:(id)address wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)discoverUserIdentityWithPhoneNumber:(id)number wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)discoverUserIdentityWithUserRecordID:(id)d wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)dropDetachedContainersWithCompletionHandler:(id)handler;
+- (void)dumpDaemonStatusReportToFileHandle:(id)handle completionHandler:(id)handler;
 - (void)endContentAccess;
-- (void)fetchAllLongLivedOperationIDsWithCompletionHandler:(id)a3;
-- (void)fetchCurrentDeviceIDWithCompletionHandler:(id)a3;
-- (void)fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:(id)a3;
-- (void)fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:(id)a3;
-- (void)fetchGlobalPerUserBoundaryKeyWithCompletionHandler:(id)a3;
-- (void)fetchLongLivedOperationWithID:(id)a3 wrappingContainer:(id)a4 completionHandler:(id)a5;
-- (void)fetchOrgAdminUserRecordIDWithCompletionHandler:(id)a3;
-- (void)fetchServerEnvironment:(id)a3;
-- (void)fetchShareMetadataWithURL:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)fetchShareParticipantWithEmailAddress:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)fetchShareParticipantWithLookupInfo:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)fetchShareParticipantWithPhoneNumber:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)fetchShareParticipantWithUserRecordID:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)fetchSignatureGeneratorForCurrentUserBoundaryKeyWithCompletionHandler:(id)a3;
-- (void)fetchUserRecordIDWithCompletionHandler:(id)a3;
-- (void)frameworkCachesDirectoryWithCompletionHandler:(id)a3;
-- (void)getCloudCoreSessionValidityError:(id)a3;
-- (void)getNewWebSharingIdentityDataWithCompletionHandler:(id)a3;
-- (void)getOutstandingOperationCountWithCompletionHandler:(id)a3;
-- (void)getPersona:(id)a3;
-- (void)getRegisteredItemCountWithCompletionHandler:(id)a3;
-- (void)handleRecordChanged:(id)a3 changeType:(int64_t)a4 record:(id)a5 error:(id)a6;
-- (void)performBlock:(id)a3;
-- (void)pushEnvironmentWithCompletionHandler:(id)a3;
-- (void)registerForAssetRequests:(id)a3 packageRequests:(id)a4 machServiceName:(id)a5;
-- (void)registerForAssetUploadRequests:(id)a3 machServiceName:(id)a4;
-- (void)registerForPackageUploadRequests:(id)a3 machServiceName:(id)a4;
-- (void)reloadAccountWithCompletionHandler:(id)a3;
-- (void)representativeDataclassEnabledWithCompletionHandler:(id)a3;
-- (void)requestAccessToShareURLs:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)requestApplicationPermission:(unint64_t)a3 completionHandler:(id)a4;
-- (void)resetAllApplicationPermissionsWithCompletionHandler:(id)a3;
-- (void)resolvePersonaValues:(id)a3;
-- (void)serverPreferredPushEnvironmentSynchronous:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)serverPreferredPushEnvironmentWithCompletionHandler:(id)a3;
-- (void)setApplicationPermission:(unint64_t)a3 enabled:(BOOL)a4 completionHandler:(id)a5;
-- (void)setContainerScopedUserID:(id)a3;
-- (void)setFakeError:(id)a3 forNextRequestOfClassName:(id)a4;
-- (void)setFakeResponseOperationResult:(id)a3 forNextRequestOfClassName:(id)a4 forItemID:(id)a5 withLifetime:(int)a6;
-- (void)setOrgAdminUserID:(id)a3;
-- (void)setPushEnvironment:(id)a3;
-- (void)setSourceApplicationBundleIdentifier:(id)a3;
-- (void)setSourceApplicationSecondaryIdentifier:(id)a3;
-- (void)simulateMemoryPressure:(int64_t)a3 completionHandler:(id)a4;
-- (void)statusForApplicationPermission:(unint64_t)a3 completionHandler:(id)a4;
-- (void)statusGroupsForApplicationPermission:(unint64_t)a3 completionHandler:(id)a4;
-- (void)submitEventMetric:(id)a3;
-- (void)submitEventMetric:(id)a3 completionHandler:(id)a4;
-- (void)tossConfigWithCompletionHandler:(id)a3;
-- (void)unregisterFromUploadRequestsWithMachServiceName:(id)a3;
+- (void)fetchAllLongLivedOperationIDsWithCompletionHandler:(id)handler;
+- (void)fetchCurrentDeviceIDWithCompletionHandler:(id)handler;
+- (void)fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:(id)handler;
+- (void)fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:(id)handler;
+- (void)fetchGlobalPerUserBoundaryKeyWithCompletionHandler:(id)handler;
+- (void)fetchLongLivedOperationWithID:(id)d wrappingContainer:(id)container completionHandler:(id)handler;
+- (void)fetchOrgAdminUserRecordIDWithCompletionHandler:(id)handler;
+- (void)fetchServerEnvironment:(id)environment;
+- (void)fetchShareMetadataWithURL:(id)l wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchShareParticipantWithEmailAddress:(id)address wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchShareParticipantWithLookupInfo:(id)info wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchShareParticipantWithPhoneNumber:(id)number wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchShareParticipantWithUserRecordID:(id)d wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchSignatureGeneratorForCurrentUserBoundaryKeyWithCompletionHandler:(id)handler;
+- (void)fetchUserRecordIDWithCompletionHandler:(id)handler;
+- (void)frameworkCachesDirectoryWithCompletionHandler:(id)handler;
+- (void)getCloudCoreSessionValidityError:(id)error;
+- (void)getNewWebSharingIdentityDataWithCompletionHandler:(id)handler;
+- (void)getOutstandingOperationCountWithCompletionHandler:(id)handler;
+- (void)getPersona:(id)persona;
+- (void)getRegisteredItemCountWithCompletionHandler:(id)handler;
+- (void)handleRecordChanged:(id)changed changeType:(int64_t)type record:(id)record error:(id)error;
+- (void)performBlock:(id)block;
+- (void)pushEnvironmentWithCompletionHandler:(id)handler;
+- (void)registerForAssetRequests:(id)requests packageRequests:(id)packageRequests machServiceName:(id)name;
+- (void)registerForAssetUploadRequests:(id)requests machServiceName:(id)name;
+- (void)registerForPackageUploadRequests:(id)requests machServiceName:(id)name;
+- (void)reloadAccountWithCompletionHandler:(id)handler;
+- (void)representativeDataclassEnabledWithCompletionHandler:(id)handler;
+- (void)requestAccessToShareURLs:(id)ls wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)requestApplicationPermission:(unint64_t)permission completionHandler:(id)handler;
+- (void)resetAllApplicationPermissionsWithCompletionHandler:(id)handler;
+- (void)resolvePersonaValues:(id)values;
+- (void)serverPreferredPushEnvironmentSynchronous:(BOOL)synchronous withCompletionHandler:(id)handler;
+- (void)serverPreferredPushEnvironmentWithCompletionHandler:(id)handler;
+- (void)setApplicationPermission:(unint64_t)permission enabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setContainerScopedUserID:(id)d;
+- (void)setFakeError:(id)error forNextRequestOfClassName:(id)name;
+- (void)setFakeResponseOperationResult:(id)result forNextRequestOfClassName:(id)name forItemID:(id)d withLifetime:(int)lifetime;
+- (void)setOrgAdminUserID:(id)d;
+- (void)setPushEnvironment:(id)environment;
+- (void)setSourceApplicationBundleIdentifier:(id)identifier;
+- (void)setSourceApplicationSecondaryIdentifier:(id)identifier;
+- (void)simulateMemoryPressure:(int64_t)pressure completionHandler:(id)handler;
+- (void)statusForApplicationPermission:(unint64_t)permission completionHandler:(id)handler;
+- (void)statusGroupsForApplicationPermission:(unint64_t)permission completionHandler:(id)handler;
+- (void)submitEventMetric:(id)metric;
+- (void)submitEventMetric:(id)metric completionHandler:(id)handler;
+- (void)tossConfigWithCompletionHandler:(id)handler;
+- (void)unregisterFromUploadRequestsWithMachServiceName:(id)name;
 - (void)wipeAllCachesAndDie;
-- (void)withUploadManager:(int)a3 performBlock:(id)a4;
+- (void)withUploadManager:(int)manager performBlock:(id)block;
 @end
 
 @implementation CKContainerImplementation
@@ -136,9 +136,9 @@
 - (id)setupInfo
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!objc_msgSend_hasCachedSetupInfo(v2, v3, v4))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!objc_msgSend_hasCachedSetupInfo(selfCopy, v3, v4))
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -148,24 +148,24 @@
     v5 = ck_log_facility_ck;
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
     {
-      containerID = v2->_containerID;
+      containerID = selfCopy->_containerID;
       v19 = 138412290;
       v20 = containerID;
       _os_log_debug_impl(&dword_1883EA000, v5, OS_LOG_TYPE_DEBUG, "Creating cached setup info for %@", &v19, 0xCu);
     }
 
     v6 = [CKContainerSetupInfo alloc];
-    v7 = v2->_containerID;
-    v10 = objc_msgSend_options(v2, v8, v9);
+    v7 = selfCopy->_containerID;
+    v10 = objc_msgSend_options(selfCopy, v8, v9);
     v12 = objc_msgSend_initWithContainerID_options_(v6, v11, v7, v10);
-    cachedSetupInfo = v2->_cachedSetupInfo;
-    v2->_cachedSetupInfo = v12;
+    cachedSetupInfo = selfCopy->_cachedSetupInfo;
+    selfCopy->_cachedSetupInfo = v12;
 
-    objc_msgSend_setHasCachedSetupInfo_(v2, v14, 1);
+    objc_msgSend_setHasCachedSetupInfo_(selfCopy, v14, 1);
   }
 
-  v15 = v2->_cachedSetupInfo;
-  objc_sync_exit(v2);
+  v15 = selfCopy->_cachedSetupInfo;
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -313,20 +313,20 @@
 
 - (id)sourceApplicationBundleIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sourceApplicationBundleIdentifier_locked;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sourceApplicationBundleIdentifier_locked;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)sourceApplicationSecondaryIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sourceApplicationSecondaryIdentifier_locked;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sourceApplicationSecondaryIdentifier_locked;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -342,9 +342,9 @@
 - (CKDatabaseImplementation)privateCloudDatabaseImplementation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_privateCloudDatabaseImplementation)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_privateCloudDatabaseImplementation)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -354,21 +354,21 @@
     v3 = ck_log_facility_ck;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v13 = objc_msgSend_containerID(v2, v4, v5);
+      v13 = objc_msgSend_containerID(selfCopy, v4, v5);
       v14 = 138412290;
       v15 = v13;
       _os_log_debug_impl(&dword_1883EA000, v3, OS_LOG_TYPE_DEBUG, "Creating private database implementation for container %@", &v14, 0xCu);
     }
 
     v6 = [CKDatabaseImplementation alloc];
-    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v6, v7, v2, 2);
-    privateCloudDatabaseImplementation = v2->_privateCloudDatabaseImplementation;
-    v2->_privateCloudDatabaseImplementation = inited;
+    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v6, v7, selfCopy, 2);
+    privateCloudDatabaseImplementation = selfCopy->_privateCloudDatabaseImplementation;
+    selfCopy->_privateCloudDatabaseImplementation = inited;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_privateCloudDatabaseImplementation;
+  v10 = selfCopy->_privateCloudDatabaseImplementation;
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
@@ -385,9 +385,9 @@
 - (CKDatabaseImplementation)publicCloudDatabaseImplementation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_publicCloudDatabaseImplementation)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_publicCloudDatabaseImplementation)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -397,21 +397,21 @@
     v3 = ck_log_facility_ck;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v13 = objc_msgSend_containerID(v2, v4, v5);
+      v13 = objc_msgSend_containerID(selfCopy, v4, v5);
       v14 = 138412290;
       v15 = v13;
       _os_log_debug_impl(&dword_1883EA000, v3, OS_LOG_TYPE_DEBUG, "Creating public database implementation for container %@", &v14, 0xCu);
     }
 
     v6 = [CKDatabaseImplementation alloc];
-    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v6, v7, v2, 1);
-    publicCloudDatabaseImplementation = v2->_publicCloudDatabaseImplementation;
-    v2->_publicCloudDatabaseImplementation = inited;
+    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v6, v7, selfCopy, 1);
+    publicCloudDatabaseImplementation = selfCopy->_publicCloudDatabaseImplementation;
+    selfCopy->_publicCloudDatabaseImplementation = inited;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_publicCloudDatabaseImplementation;
+  v10 = selfCopy->_publicCloudDatabaseImplementation;
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
@@ -437,9 +437,9 @@
 - (CKDatabaseImplementation)sharedCloudDatabaseImplementation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_sharedCloudDatabaseImplementation)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_sharedCloudDatabaseImplementation)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -449,21 +449,21 @@
     v3 = ck_log_facility_ck;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v13 = objc_msgSend_containerID(v2, v4, v5);
+      v13 = objc_msgSend_containerID(selfCopy, v4, v5);
       v14 = 138412290;
       v15 = v13;
       _os_log_debug_impl(&dword_1883EA000, v3, OS_LOG_TYPE_DEBUG, "Creating shared database implementation for container %@", &v14, 0xCu);
     }
 
     v6 = [CKDatabaseImplementation alloc];
-    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v6, v7, v2, 3);
-    sharedCloudDatabaseImplementation = v2->_sharedCloudDatabaseImplementation;
-    v2->_sharedCloudDatabaseImplementation = inited;
+    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v6, v7, selfCopy, 3);
+    sharedCloudDatabaseImplementation = selfCopy->_sharedCloudDatabaseImplementation;
+    selfCopy->_sharedCloudDatabaseImplementation = inited;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_sharedCloudDatabaseImplementation;
+  v10 = selfCopy->_sharedCloudDatabaseImplementation;
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
@@ -496,13 +496,13 @@
   [(CKContainerImplementation *)&v10 dealloc];
 }
 
-- (CKContainerImplementation)initWithContainerID:(id)a3 options:(id)a4
+- (CKContainerImplementation)initWithContainerID:(id)d options:(id)options
 {
   v193[8] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v10 = a4;
-  v185 = v7;
-  if (!v7)
+  dCopy = d;
+  optionsCopy = options;
+  v185 = dCopy;
+  if (!dCopy)
   {
     v153 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v153, v154, a2, self, @"CKContainer.m", 352, @"Invalid parameter not satisfying: %@", @"containerID != nil");
@@ -516,13 +516,13 @@
     goto LABEL_21;
   }
 
-  if (!v10)
+  if (!optionsCopy)
   {
-    v10 = objc_opt_new();
+    optionsCopy = objc_opt_new();
   }
 
-  v184 = v10;
-  v14 = objc_msgSend_copy(v10, v11, v12);
+  v184 = optionsCopy;
+  v14 = objc_msgSend_copy(optionsCopy, v11, v12);
   v15 = *(v13 + 17);
   *(v13 + 17) = v14;
 
@@ -701,7 +701,7 @@ LABEL_13:
     objc_destroyWeak(&v187);
     objc_destroyWeak(&location);
 
-    v10 = v184;
+    optionsCopy = v184;
 LABEL_21:
 
     v151 = *MEMORY[0x1E69E9840];
@@ -733,9 +733,9 @@ LABEL_21:
 - (CKDatabaseImplementation)organizationCloudDatabaseImplementation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_organizationCloudDatabaseImplementation)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_organizationCloudDatabaseImplementation)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -745,51 +745,51 @@ LABEL_21:
     v3 = ck_log_facility_ck;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v13 = objc_msgSend_containerID(v2, v4, v5);
+      v13 = objc_msgSend_containerID(selfCopy, v4, v5);
       v14 = 138412290;
       v15 = v13;
       _os_log_debug_impl(&dword_1883EA000, v3, OS_LOG_TYPE_DEBUG, "Creating organization database implementation for container %@", &v14, 0xCu);
     }
 
     v6 = [CKDatabaseImplementation alloc];
-    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v6, v7, v2, 4);
-    organizationCloudDatabaseImplementation = v2->_organizationCloudDatabaseImplementation;
-    v2->_organizationCloudDatabaseImplementation = inited;
+    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v6, v7, selfCopy, 4);
+    organizationCloudDatabaseImplementation = selfCopy->_organizationCloudDatabaseImplementation;
+    selfCopy->_organizationCloudDatabaseImplementation = inited;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_organizationCloudDatabaseImplementation;
+  v10 = selfCopy->_organizationCloudDatabaseImplementation;
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (id)codeServiceImplementationWithName:(id)a3 databaseScope:(int64_t)a4
+- (id)codeServiceImplementationWithName:(id)name databaseScope:(int64_t)scope
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v9 = objc_msgSend_numberWithInteger_(v6, v8, a4);
-  v10 = sub_1885381D4(self, v7, v9, 0);
+  nameCopy = name;
+  v9 = objc_msgSend_numberWithInteger_(v6, v8, scope);
+  v10 = sub_1885381D4(self, nameCopy, v9, 0);
 
   return v10;
 }
 
-- (id)codeServiceImplementationWithName:(id)a3 databaseScope:(int64_t)a4 serviceInstanceURL:(id)a5
+- (id)codeServiceImplementationWithName:(id)name databaseScope:(int64_t)scope serviceInstanceURL:(id)l
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a5;
-  v10 = a3;
-  v12 = objc_msgSend_numberWithInteger_(v8, v11, a4);
-  v13 = sub_1885381D4(self, v10, v12, v9);
+  lCopy = l;
+  nameCopy = name;
+  v12 = objc_msgSend_numberWithInteger_(v8, v11, scope);
+  v13 = sub_1885381D4(self, nameCopy, v12, lCopy);
 
   return v13;
 }
 
-- (void)resolvePersonaValues:(id)a3
+- (void)resolvePersonaValues:(id)values
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valuesCopy = values;
   if (objc_msgSend_isSupported(CKPersona, v5, v6))
   {
     if (ck_log_initialization_predicate != -1)
@@ -801,13 +801,13 @@ LABEL_21:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v59 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1883EA000, v7, OS_LOG_TYPE_INFO, "Determining the persona for CKContainer %{public}@", buf, 0xCu);
     }
 
     v56 = 0;
     v57 = 0;
-    Persona_error = objc_msgSend_getPersona_error_(v4, v8, &v57, &v56);
+    Persona_error = objc_msgSend_getPersona_error_(valuesCopy, v8, &v57, &v56);
     v10 = v57;
     v13 = v56;
     if (Persona_error)
@@ -865,7 +865,7 @@ LABEL_21:
       v46 = v45;
       v49 = objc_msgSend_ckShortDescription(self, v47, v48);
       *buf = 138543618;
-      v59 = v49;
+      selfCopy = v49;
       v60 = 2112;
       v61 = v10;
       _os_log_impl(&dword_1883EA000, v46, OS_LOG_TYPE_INFO, "Determined the persona for CKContainer %{public}@: %@", buf, 0x16u);
@@ -885,14 +885,14 @@ LABEL_21:
   v55 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getPersona:(id *)a3 error:(id *)a4
+- (BOOL)getPersona:(id *)persona error:(id *)error
 {
-  if (a3)
+  if (persona)
   {
-    *a3 = objc_msgSend_persona(self, a2, a3);
+    *persona = objc_msgSend_persona(self, a2, persona);
   }
 
-  if (a4)
+  if (error)
   {
     if (self)
     {
@@ -904,7 +904,7 @@ LABEL_21:
       v7 = 0;
     }
 
-    *a4 = v7;
+    *error = v7;
   }
 
   if (self)
@@ -920,10 +920,10 @@ LABEL_21:
   return personaResolutionError == 0;
 }
 
-- (id)targetPersonaForPersona:(id)a3
+- (id)targetPersonaForPersona:(id)persona
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  personaCopy = persona;
   if (!objc_msgSend_isSupported(CKPersona, v4, v5))
   {
     v18 = 0;
@@ -932,9 +932,9 @@ LABEL_21:
 
   v8 = objc_msgSend_currentPersona(CKPersona, v6, v7);
   v11 = v8;
-  if (!v3 || !v8)
+  if (!personaCopy || !v8)
   {
-    if (objc_msgSend_isDataSeparated(v3, v9, v10))
+    if (objc_msgSend_isDataSeparated(personaCopy, v9, v10))
     {
       if (ck_log_initialization_predicate != -1)
       {
@@ -948,7 +948,7 @@ LABEL_21:
       }
 
       v13 = v21;
-      v16 = objc_msgSend_ckShortDescription(v3, v39, v40);
+      v16 = objc_msgSend_ckShortDescription(personaCopy, v39, v40);
       v41 = 138412290;
       v42 = v16;
       v17 = "Determined the target persona is (or may be) data separated, will adopt %@";
@@ -999,7 +999,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (objc_msgSend_isEquivalentToPersona_(v3, v9, v8))
+  if (objc_msgSend_isEquivalentToPersona_(personaCopy, v9, v8))
   {
     goto LABEL_26;
   }
@@ -1016,7 +1016,7 @@ LABEL_26:
   }
 
   v13 = v12;
-  v16 = objc_msgSend_ckShortDescription(v3, v14, v15);
+  v16 = objc_msgSend_ckShortDescription(personaCopy, v14, v15);
   v41 = 138412290;
   v42 = v16;
   v17 = "Determined the current and target persona are not equivalent, will adopt %@";
@@ -1024,7 +1024,7 @@ LABEL_32:
   _os_log_debug_impl(&dword_1883EA000, v13, OS_LOG_TYPE_DEBUG, v17, &v41, 0xCu);
 
 LABEL_14:
-  v18 = v3;
+  v18 = personaCopy;
 LABEL_27:
 
 LABEL_28:
@@ -1033,9 +1033,9 @@ LABEL_28:
   return v18;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v35 = 0;
   v36 = 0;
   Persona_error = objc_msgSend_getPersona_error_(self, v5, &v36, &v35);
@@ -1046,7 +1046,7 @@ LABEL_28:
     v12 = objc_msgSend_targetPersonaForPersona_(self, v8, v7);
     if (!v12)
     {
-      v4[2](v4, 0);
+      blockCopy[2](blockCopy, 0);
       goto LABEL_12;
     }
 
@@ -1071,7 +1071,7 @@ LABEL_11:
         v32[2] = sub_188539328;
         v32[3] = &unk_1E70BC518;
         v33 = v7;
-        v34 = v4;
+        v34 = blockCopy;
         objc_msgSend_performBlock_(v12, v30, v32);
 
         goto LABEL_12;
@@ -1085,13 +1085,13 @@ LABEL_11:
   }
 
   v12 = objc_msgSend_errorWithDomain_code_error_format_(CKPrettyError, v8, @"CKErrorDomain", 5, v9, @"Failed to resolve persona for container");
-  (v4)[2](v4, v12);
+  (blockCopy)[2](blockCopy, v12);
 LABEL_12:
 }
 
-- (void)getPersona:(id)a3
+- (void)getPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   v5 = _os_activity_create(&dword_1883EA000, "client/get-persona", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1100,7 +1100,7 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = sub_188539550;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = personaCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1885395C8;
@@ -1140,7 +1140,7 @@ LABEL_12:
 
 - (NSXPCConnection)discretionaryXPCConnection
 {
-  v3 = self;
+  selfCopy = self;
   v34 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -1148,12 +1148,12 @@ LABEL_12:
   }
 
   objc_msgSend_lock(self, a2, v2);
-  v4 = v3->_discretionaryXPCConnection;
+  v4 = selfCopy->_discretionaryXPCConnection;
   v7 = v4;
-  if (!v3->_hasValidDiscretionaryXPCConnection || v4 == 0)
+  if (!selfCopy->_hasValidDiscretionaryXPCConnection || v4 == 0)
   {
-    objc_initWeak(&location, v3);
-    v24 = objc_msgSend__discretionaryDaemonMachServiceConnection(v3, v9, v10);
+    objc_initWeak(&location, selfCopy);
+    v24 = objc_msgSend__discretionaryDaemonMachServiceConnection(selfCopy, v9, v10);
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -1170,7 +1170,7 @@ LABEL_12:
     v15 = objc_msgSend__CKXPCClientToDiscretionaryDaemonInterface(CKContainer, v13, v14);
     objc_msgSend_setRemoteObjectInterface_(v24, v16, v15);
 
-    v17 = sub_1885AADF8([CKContainerCallbackProxy alloc], v3);
+    v17 = sub_1885AADF8([CKContainerCallbackProxy alloc], selfCopy);
     objc_msgSend_setExportedObject_(v24, v18, v17);
     if (ck_log_initialization_predicate != -1)
     {
@@ -1185,9 +1185,9 @@ LABEL_12:
       _os_log_impl(&dword_1883EA000, v19, OS_LOG_TYPE_INFO, "Created a new connection: %@", buf, 0xCu);
     }
 
-    objc_msgSend_invalidate(v3->_discretionaryXPCConnection, v20, v21);
-    objc_storeStrong(&v3->_discretionaryXPCConnection, v24);
-    v3->_hasValidDiscretionaryXPCConnection = v24 != 0;
+    objc_msgSend_invalidate(selfCopy->_discretionaryXPCConnection, v20, v21);
+    objc_storeStrong(&selfCopy->_discretionaryXPCConnection, v24);
+    selfCopy->_hasValidDiscretionaryXPCConnection = v24 != 0;
     objc_msgSend_resume(v24, v22, v23);
 
     objc_destroyWeak(&v28);
@@ -1200,18 +1200,18 @@ LABEL_12:
     v24 = v4;
   }
 
-  objc_msgSend_unlock(v3->_daemonConnectionLock, v5, v6);
+  objc_msgSend_unlock(selfCopy->_daemonConnectionLock, v5, v6);
   v25 = *MEMORY[0x1E69E9840];
 
   return v24;
 }
 
-- (void)consumeSandboxExtensions:(id)a3 reply:(id)a4
+- (void)consumeSandboxExtensions:(id)extensions reply:(id)reply
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_count(v6, v8, v9))
+  extensionsCopy = extensions;
+  replyCopy = reply;
+  if (objc_msgSend_count(extensionsCopy, v8, v9))
   {
     if (self)
     {
@@ -1226,13 +1226,13 @@ LABEL_12:
     obj = sandboxExtensionHandles;
     objc_sync_enter(obj);
     v11 = objc_alloc(MEMORY[0x1E695DF70]);
-    v14 = objc_msgSend_count(v6, v12, v13);
+    v14 = objc_msgSend_count(extensionsCopy, v12, v13);
     v16 = objc_msgSend_initWithCapacity_(v11, v15, v14);
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v17 = v6;
+    v17 = extensionsCopy;
     v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v48, v56, 16);
     if (v20)
     {
@@ -1320,32 +1320,32 @@ LABEL_12:
     }
 
     sub_1885387A0(self, v30);
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addPreparedConvenienceOperation:(id)a3
+- (void)_addPreparedConvenienceOperation:(id)operation
 {
   if (self)
   {
     self = self->_convenienceOperationQueue;
   }
 
-  objc_msgSend_addOperation_(self, a2, a3);
+  objc_msgSend_addOperation_(self, a2, operation);
 }
 
-- (void)addOperation:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5
+- (void)addOperation:(id)operation wrappingContainer:(id)container convenienceConfiguration:(id)configuration
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
+  operationCopy = operation;
+  containerCopy = container;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1354,25 +1354,25 @@ LABEL_12:
     objc_exception_throw(v18);
   }
 
-  v12 = objc_msgSend_configuration(v19, v10, v11);
-  objc_msgSend_setContainer_(v12, v13, v8);
+  v12 = objc_msgSend_configuration(operationCopy, v10, v11);
+  objc_msgSend_setContainer_(v12, v13, containerCopy);
 
-  objc_msgSend_applyConvenienceConfiguration_(v19, v14, v9);
-  objc_msgSend__addPreparedConvenienceOperation_(self, v15, v19);
+  objc_msgSend_applyConvenienceConfiguration_(operationCopy, v14, configurationCopy);
+  objc_msgSend__addPreparedConvenienceOperation_(self, v15, operationCopy);
 }
 
-- (void)_scheduleConvenienceOperation:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5
+- (void)_scheduleConvenienceOperation:(id)operation wrappingContainer:(id)container convenienceConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a3;
-  objc_msgSend_configureConvenience_(v12, v10, v8);
-  objc_msgSend_addOperation_wrappingContainer_convenienceConfiguration_(self, v11, v12, v9, v8);
+  configurationCopy = configuration;
+  containerCopy = container;
+  operationCopy = operation;
+  objc_msgSend_configureConvenience_(operationCopy, v10, configurationCopy);
+  objc_msgSend_addOperation_wrappingContainer_convenienceConfiguration_(self, v11, operationCopy, containerCopy, configurationCopy);
 }
 
-- (void)statusGroupsForApplicationPermission:(unint64_t)a3 completionHandler:(id)a4
+- (void)statusGroupsForApplicationPermission:(unint64_t)permission completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _os_activity_create(&dword_1883EA000, "client/status-groups-for-application-permission", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1381,12 +1381,12 @@ LABEL_12:
   v13[1] = 3221225472;
   v13[2] = sub_18853B2A0;
   v13[3] = &unk_1E70BC540;
-  v14 = v6;
+  v14 = handlerCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_18853B318;
   v10[3] = &unk_1E70BC6D0;
-  v12 = a3;
+  permissionCopy = permission;
   v8 = v14;
   v11 = v8;
   v9 = v8;
@@ -1399,9 +1399,9 @@ LABEL_12:
   os_activity_scope_leave(&state);
 }
 
-- (void)setApplicationPermission:(unint64_t)a3 enabled:(BOOL)a4 completionHandler:(id)a5
+- (void)setApplicationPermission:(unint64_t)permission enabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = _os_activity_create(&dword_1883EA000, "client/set-application-permission-enabled", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1410,13 +1410,13 @@ LABEL_12:
   v16[1] = 3221225472;
   v16[2] = sub_18853B598;
   v16[3] = &unk_1E70BC540;
-  v17 = v8;
+  v17 = handlerCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_18853B610;
   v12[3] = &unk_1E70BC720;
-  v14 = a3;
-  v15 = a4;
+  permissionCopy = permission;
+  enabledCopy = enabled;
   v10 = v17;
   v13 = v10;
   v11 = v10;
@@ -1429,9 +1429,9 @@ LABEL_12:
   os_activity_scope_leave(&state);
 }
 
-- (void)resetAllApplicationPermissionsWithCompletionHandler:(id)a3
+- (void)resetAllApplicationPermissionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/reset-all-application-permissions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1440,7 +1440,7 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = sub_18853B888;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853B8FC;
@@ -1457,9 +1457,9 @@ LABEL_12:
   os_activity_scope_leave(&state);
 }
 
-- (void)tossConfigWithCompletionHandler:(id)a3
+- (void)tossConfigWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/toss-config", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1468,7 +1468,7 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = sub_18853BB58;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853BBCC;
@@ -1485,19 +1485,19 @@ LABEL_12:
   os_activity_scope_leave(&state);
 }
 
-- (void)setPushEnvironment:(id)a3
+- (void)setPushEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   os_unfair_lock_lock(&unk_1ED4B6058);
   pushEnvironment = self->_pushEnvironment;
-  self->_pushEnvironment = v4;
+  self->_pushEnvironment = environmentCopy;
 
   os_unfair_lock_unlock(&unk_1ED4B6058);
 }
 
-- (void)pushEnvironmentWithCompletionHandler:(id)a3
+- (void)pushEnvironmentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/push-environment", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1511,9 +1511,9 @@ LABEL_12:
 
     if (!v18)
     {
-      if (v4)
+      if (handlerCopy)
       {
-        (*(v4 + 2))(v4, *MEMORY[0x1E698CF20], 0);
+        (*(handlerCopy + 2))(handlerCopy, *MEMORY[0x1E698CF20], 0);
       }
 
       goto LABEL_21;
@@ -1539,7 +1539,7 @@ LABEL_12:
       v23[2] = sub_18853C094;
       v23[3] = &unk_1E70BC748;
       objc_copyWeak(&v25, location);
-      v24 = v4;
+      v24 = handlerCopy;
       objc_msgSend_serverPreferredPushEnvironmentWithCompletionHandler_(self, v22, v23);
 
       objc_destroyWeak(&v25);
@@ -1557,20 +1557,20 @@ LABEL_12:
     {
       LOWORD(location[0]) = 0;
       _os_log_debug_impl(&dword_1883EA000, v20, OS_LOG_TYPE_DEBUG, "Using adopter override push environment", location, 2u);
-      if (!v4)
+      if (!handlerCopy)
       {
         goto LABEL_21;
       }
     }
 
-    else if (!v4)
+    else if (!handlerCopy)
     {
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    (*(v4 + 2))(v4, v18, 0);
+    (*(handlerCopy + 2))(handlerCopy, v18, 0);
     goto LABEL_21;
   }
 
@@ -1584,7 +1584,7 @@ LABEL_21:
   {
     LOWORD(location[0]) = 0;
     _os_log_debug_impl(&dword_1883EA000, v11, OS_LOG_TYPE_DEBUG, "Using cached server preferred push environment", location, 2u);
-    if (!v4)
+    if (!handlerCopy)
     {
       goto LABEL_22;
     }
@@ -1592,10 +1592,10 @@ LABEL_21:
     goto LABEL_6;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
 LABEL_6:
-    (*(v4 + 2))(v4, v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, v10, 0);
   }
 
 LABEL_22:
@@ -1603,9 +1603,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)serverPreferredPushEnvironmentWithCompletionHandler:(id)a3
+- (void)serverPreferredPushEnvironmentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -1618,10 +1618,10 @@ LABEL_22:
     _os_log_debug_impl(&dword_1883EA000, v5, OS_LOG_TYPE_DEBUG, "Fetching server preferred push environment asynchronously", v7, 2u);
   }
 
-  objc_msgSend_serverPreferredPushEnvironmentSynchronous_withCompletionHandler_(self, v6, 0, v4);
+  objc_msgSend_serverPreferredPushEnvironmentSynchronous_withCompletionHandler_(self, v6, 0, handlerCopy);
 }
 
-- (id)serverPreferredPushEnvironmentWithError:(id *)a3
+- (id)serverPreferredPushEnvironmentWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1654,12 +1654,12 @@ LABEL_22:
   v10[4] = &v18;
   v10[5] = &v12;
   objc_msgSend_serverPreferredPushEnvironmentSynchronous_withCompletionHandler_(self, v6, 1, v10);
-  if (a3)
+  if (error)
   {
     v7 = v13[5];
     if (v7)
     {
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -1671,9 +1671,9 @@ LABEL_22:
   return v8;
 }
 
-- (void)serverPreferredPushEnvironmentSynchronous:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)serverPreferredPushEnvironmentSynchronous:(BOOL)synchronous withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _os_activity_create(&dword_1883EA000, "client/server-preferred-push-environment", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1682,7 +1682,7 @@ LABEL_22:
   v12[1] = 3221225472;
   v12[2] = sub_18853C6E0;
   v12[3] = &unk_1E70BC540;
-  v13 = v6;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_18853C758;
@@ -1692,17 +1692,17 @@ LABEL_22:
   v9 = v8;
   if (self)
   {
-    sub_1885397D0(self, a3, 1, 0, v12, v10);
+    sub_1885397D0(self, synchronous, 1, 0, v12, v10);
     v9 = v11;
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (void)setFakeError:(id)a3 forNextRequestOfClassName:(id)a4
+- (void)setFakeError:(id)error forNextRequestOfClassName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  nameCopy = name;
   v8 = _os_activity_create(&dword_1883EA000, "client/set-fake-error", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1711,12 +1711,12 @@ LABEL_22:
   v15[1] = 3221225472;
   v15[2] = sub_18853C9E4;
   v15[3] = &unk_1E70BC048;
-  v16 = v7;
+  v16 = nameCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_18853CAD4;
   v12[3] = &unk_1E70BC7E0;
-  v9 = v6;
+  v9 = errorCopy;
   v13 = v9;
   v10 = v16;
   v14 = v10;
@@ -1730,11 +1730,11 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)setFakeResponseOperationResult:(id)a3 forNextRequestOfClassName:(id)a4 forItemID:(id)a5 withLifetime:(int)a6
+- (void)setFakeResponseOperationResult:(id)result forNextRequestOfClassName:(id)name forItemID:(id)d withLifetime:(int)lifetime
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  resultCopy = result;
+  nameCopy = name;
+  dCopy = d;
   v13 = _os_activity_create(&dword_1883EA000, "client/set-fake-response-operation-result", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1743,18 +1743,18 @@ LABEL_22:
   v23[1] = 3221225472;
   v23[2] = sub_18853CCA4;
   v23[3] = &unk_1E70BC048;
-  v24 = v11;
+  v24 = nameCopy;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_18853CD94;
   v18[3] = &unk_1E70BC808;
-  v14 = v10;
+  v14 = resultCopy;
   v19 = v14;
   v15 = v24;
   v20 = v15;
-  v16 = v12;
+  v16 = dCopy;
   v21 = v16;
-  v22 = a6;
+  lifetimeCopy = lifetime;
   v17 = v16;
   if (self)
   {
@@ -1765,9 +1765,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)getOutstandingOperationCountWithCompletionHandler:(id)a3
+- (void)getOutstandingOperationCountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/get-num-outstanding-operations", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1776,7 +1776,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853CF10;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853CF88;
@@ -1793,9 +1793,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)getRegisteredItemCountWithCompletionHandler:(id)a3
+- (void)getRegisteredItemCountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/get-num-registered-item-count", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1804,7 +1804,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853D1D8;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853D250;
@@ -1821,9 +1821,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)dropDetachedContainersWithCompletionHandler:(id)a3
+- (void)dropDetachedContainersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/drop-detached-containers", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1832,7 +1832,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853D4A0;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853D514;
@@ -1849,21 +1849,21 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchSignatureGeneratorForCurrentUserBoundaryKeyWithCompletionHandler:(id)a3
+- (void)fetchSignatureGeneratorForCurrentUserBoundaryKeyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_18853D694;
   v7[3] = &unk_1E70BC858;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   objc_msgSend_fetchGlobalPerUserBoundaryKeyWithCompletionHandler_(self, v6, v7);
 }
 
-- (void)fetchGlobalPerUserBoundaryKeyWithCompletionHandler:(id)a3
+- (void)fetchGlobalPerUserBoundaryKeyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/fetch-current-user-boundary-key", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1884,7 +1884,7 @@ LABEL_22:
   v11[1] = 3221225472;
   v11[2] = sub_18853D900;
   v11[3] = &unk_1E70BC540;
-  v12 = v4;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_18853DA20;
@@ -1901,10 +1901,10 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)setSourceApplicationBundleIdentifier:(id)a3
+- (void)setSourceApplicationBundleIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -1914,26 +1914,26 @@ LABEL_22:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138543362;
-    v14 = v5;
+    v14 = identifierCopy;
     _os_log_debug_impl(&dword_1883EA000, v6, OS_LOG_TYPE_DEBUG, "setSourceApplicationBundleIdentifier:%{public}@", &v13, 0xCu);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  objc_storeStrong(&v7->_sourceApplicationBundleIdentifier_locked, a3);
-  objc_msgSend_setApplicationBundleIdentifierOverrideForContainerAccess_(v7->_options, v8, v5);
-  objc_msgSend_setApplicationBundleIdentifierOverrideForNetworkAttribution_(v7->_options, v9, v5);
-  objc_msgSend_setApplicationBundleIdentifierOverrideForPushTopicGeneration_(v7->_options, v10, v5);
-  objc_msgSend_setHasCachedSetupInfo_(v7, v11, 0);
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_sourceApplicationBundleIdentifier_locked, identifier);
+  objc_msgSend_setApplicationBundleIdentifierOverrideForContainerAccess_(selfCopy->_options, v8, identifierCopy);
+  objc_msgSend_setApplicationBundleIdentifierOverrideForNetworkAttribution_(selfCopy->_options, v9, identifierCopy);
+  objc_msgSend_setApplicationBundleIdentifierOverrideForPushTopicGeneration_(selfCopy->_options, v10, identifierCopy);
+  objc_msgSend_setHasCachedSetupInfo_(selfCopy, v11, 0);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSourceApplicationSecondaryIdentifier:(id)a3
+- (void)setSourceApplicationSecondaryIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -1943,17 +1943,17 @@ LABEL_22:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138543362;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_debug_impl(&dword_1883EA000, v5, OS_LOG_TYPE_DEBUG, "setSourceApplicationSecondaryIdentifier:%{public}@", &v12, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v9 = objc_msgSend_copy(v4, v7, v8);
-  sourceApplicationSecondaryIdentifier_locked = v6->_sourceApplicationSecondaryIdentifier_locked;
-  v6->_sourceApplicationSecondaryIdentifier_locked = v9;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = objc_msgSend_copy(identifierCopy, v7, v8);
+  sourceApplicationSecondaryIdentifier_locked = selfCopy->_sourceApplicationSecondaryIdentifier_locked;
+  selfCopy->_sourceApplicationSecondaryIdentifier_locked = v9;
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x1E69E9840];
 }
 
@@ -1978,9 +1978,9 @@ LABEL_22:
   os_activity_scope_leave(&v4);
 }
 
-- (void)clearPILSCacheForLookupInfos:(id)a3
+- (void)clearPILSCacheForLookupInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = _os_activity_create(&dword_1883EA000, "client/clear-PILS-cache-for-lookup-infos", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1989,7 +1989,7 @@ LABEL_22:
   v8[1] = 3221225472;
   v8[2] = sub_18853E244;
   v8[3] = &unk_1E70BC8A0;
-  v6 = v4;
+  v6 = infosCopy;
   v9 = v6;
   v7 = v6;
   if (self)
@@ -2001,9 +2001,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)representativeDataclassEnabledWithCompletionHandler:(id)a3
+- (void)representativeDataclassEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/dataclass-enabled", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2012,7 +2012,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853E3AC;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853E494;
@@ -2029,9 +2029,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)getCloudCoreSessionValidityError:(id)a3
+- (void)getCloudCoreSessionValidityError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _os_activity_create(&dword_1883EA000, "client/cloudcore-session-validity", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2040,7 +2040,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853E6E4;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = errorCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853E7CC;
@@ -2057,9 +2057,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchServerEnvironment:(id)a3
+- (void)fetchServerEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = _os_activity_create(&dword_1883EA000, "client/fetch-server-environment", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2068,7 +2068,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853EA44;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = environmentCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853EABC;
@@ -2085,9 +2085,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchCurrentDeviceIDWithCompletionHandler:(id)a3
+- (void)fetchCurrentDeviceIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/fetch-current-device-id", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2096,7 +2096,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853ED0C;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853ED84;
@@ -2113,9 +2113,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:(id)a3
+- (void)fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/fetch-full-name-and-primary-email-on-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2124,7 +2124,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853EFE8;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853F064;
@@ -2141,9 +2141,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:(id)a3
+- (void)fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/fetch-full-name-and-formatted-username-on-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2152,7 +2152,7 @@ LABEL_22:
   v10[1] = 3221225472;
   v10[2] = sub_18853F2F4;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18853F370;
@@ -2169,9 +2169,9 @@ LABEL_22:
   os_activity_scope_leave(&state);
 }
 
-- (void)submitEventMetric:(id)a3
+- (void)submitEventMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   if (byte_1EA919CC8 == 1)
   {
     if (ck_log_initialization_predicate != -1)
@@ -2193,15 +2193,15 @@ LABEL_22:
     v8.opaque[0] = 0;
     v8.opaque[1] = 0;
     os_activity_scope_enter(v6, &v8);
-    objc_msgSend__submitEventMetric_completionHandler_(self, v7, v4, 0);
+    objc_msgSend__submitEventMetric_completionHandler_(self, v7, metricCopy, 0);
     os_activity_scope_leave(&v8);
   }
 }
 
-- (void)submitEventMetric:(id)a3 completionHandler:(id)a4
+- (void)submitEventMetric:(id)metric completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  handlerCopy = handler;
   if (byte_1EA919CC8 == 1)
   {
     if (ck_log_initialization_predicate != -1)
@@ -2216,7 +2216,7 @@ LABEL_22:
       _os_log_debug_impl(&dword_1883EA000, v8, OS_LOG_TYPE_DEBUG, "Not submitting event metric for test host", &v11, 2u);
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -2225,16 +2225,16 @@ LABEL_22:
     v11.opaque[0] = 0;
     v11.opaque[1] = 0;
     os_activity_scope_enter(v9, &v11);
-    objc_msgSend__submitEventMetric_completionHandler_(self, v10, v6, v7);
+    objc_msgSend__submitEventMetric_completionHandler_(self, v10, metricCopy, handlerCopy);
     os_activity_scope_leave(&v11);
   }
 }
 
-- (void)_submitEventMetric:(id)a3 completionHandler:(id)a4
+- (void)_submitEventMetric:(id)metric completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v9 = objc_msgSend_generateEventMetricInfo(a3, v7, v8);
+  handlerCopy = handler;
+  v9 = objc_msgSend_generateEventMetricInfo(metric, v7, v8);
   if (!v9)
   {
     if (ck_log_initialization_predicate != -1)
@@ -2247,18 +2247,18 @@ LABEL_22:
     {
       *buf = 0;
       _os_log_error_impl(&dword_1883EA000, v15, OS_LOG_TYPE_ERROR, "Failed to create CKEventMetricInfo", buf, 2u);
-      if (!v6)
+      if (!handlerCopy)
       {
         goto LABEL_14;
       }
     }
 
-    else if (!v6)
+    else if (!handlerCopy)
     {
       goto LABEL_14;
     }
 
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
     goto LABEL_14;
   }
 
@@ -2282,13 +2282,13 @@ LABEL_22:
   v21[2] = sub_18853F9A4;
   v21[3] = &unk_1E70BC518;
   v22 = v9;
-  v23 = v6;
+  v23 = handlerCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_18853FAD8;
   v17[3] = &unk_1E70BC968;
   v18 = v22;
-  v19 = self;
+  selfCopy = self;
   v20 = v23;
   if (self)
   {
@@ -2299,7 +2299,7 @@ LABEL_14:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)networkTransferEndpointWithError:(id *)a3
+- (id)networkTransferEndpointWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   if (ck_log_initialization_predicate != -1)
@@ -2352,9 +2352,9 @@ LABEL_14:
   v11 = *(*(&buf + 1) + 40);
   *(*(&buf + 1) + 40) = v10;
 
-  if (a3)
+  if (error)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   v12 = v18[5];
@@ -2366,14 +2366,14 @@ LABEL_14:
   return v12;
 }
 
-- (void)handleRecordChanged:(id)a3 changeType:(int64_t)a4 record:(id)a5 error:(id)a6
+- (void)handleRecordChanged:(id)changed changeType:(int64_t)type record:(id)record error:(id)error
 {
-  if (!a6)
+  if (!error)
   {
-    v10 = a5;
-    v11 = a3;
+    recordCopy = record;
+    changedCopy = changed;
     v12 = [CKRecordChange alloc];
-    v21 = objc_msgSend_initWithChangeType_recordID_record_(v12, v13, a4, v11, v10);
+    v21 = objc_msgSend_initWithChangeType_recordID_record_(v12, v13, type, changedCopy, recordCopy);
 
     v16 = objc_msgSend_sharedManager(CKRecordObserverManager, v14, v15);
     v19 = objc_msgSend_unconfiguredWrappingContainer(self, v17, v18);
@@ -2381,10 +2381,10 @@ LABEL_14:
   }
 }
 
-- (void)frameworkCachesDirectoryWithCompletionHandler:(id)a3
+- (void)frameworkCachesDirectoryWithCompletionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -2394,7 +2394,7 @@ LABEL_14:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v14 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1883EA000, v5, OS_LOG_TYPE_DEBUG, "Retrieving client-accessible caches directory for %@", buf, 0xCu);
   }
 
@@ -2402,7 +2402,7 @@ LABEL_14:
   v11[1] = 3221225472;
   v11[2] = sub_188540494;
   v11[3] = &unk_1E70BC540;
-  v12 = v4;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_18854050C;
@@ -2551,10 +2551,10 @@ LABEL_14:
   return v3;
 }
 
-- (void)dumpDaemonStatusReportToFileHandle:(id)a3 completionHandler:(id)a4
+- (void)dumpDaemonStatusReportToFileHandle:(id)handle completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1883EA000, "client/dump-daemon-status-report", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -2563,12 +2563,12 @@ LABEL_14:
   v15[1] = 3221225472;
   v15[2] = sub_188540B88;
   v15[3] = &unk_1E70BC540;
-  v16 = v7;
+  v16 = handlerCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_188540BE8;
   v12[3] = &unk_1E70BCA08;
-  v9 = v6;
+  v9 = handleCopy;
   v13 = v9;
   v10 = v16;
   v14 = v10;
@@ -2631,9 +2631,9 @@ LABEL_14:
   return v33;
 }
 
-- (void)simulateMemoryPressure:(int64_t)a3 completionHandler:(id)a4
+- (void)simulateMemoryPressure:(int64_t)pressure completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -2650,12 +2650,12 @@ LABEL_14:
   v13[1] = 3221225472;
   v13[2] = sub_188541074;
   v13[3] = &unk_1E70BC540;
-  v14 = v6;
+  v14 = handlerCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_188541178;
   v10[3] = &unk_1E70BC6D0;
-  v12 = a3;
+  pressureCopy = pressure;
   v8 = v14;
   v11 = v8;
   v9 = v8;
@@ -2666,20 +2666,20 @@ LABEL_14:
   }
 }
 
-+ (int)registerForDaemonNotificationsWithKey:(id)a3 callback:(id)a4
++ (int)registerForDaemonNotificationsWithKey:(id)key callback:(id)callback
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  callbackCopy = callback;
   out_token = 0;
-  v7 = v5;
+  v7 = keyCopy;
   v10 = objc_msgSend_UTF8String(v7, v8, v9);
   v11 = CKGetGlobalQueue(17);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = sub_1885415B0;
   v19[3] = &unk_1E70BCA30;
-  v12 = v6;
+  v12 = callbackCopy;
   v20 = v12;
   v13 = notify_register_dispatch(v10, &out_token, v11, v19);
 
@@ -2695,7 +2695,7 @@ LABEL_14:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v23 = v5;
+      v23 = keyCopy;
       v24 = 1024;
       v25 = v13;
       _os_log_error_impl(&dword_1883EA000, v14, OS_LOG_TYPE_ERROR, "Failed to register for notifications with key: %@, status: %d", buf, 0x12u);
@@ -2713,7 +2713,7 @@ LABEL_14:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v23 = v5;
+      v23 = keyCopy;
       v24 = 1024;
       v25 = out_token;
       _os_log_impl(&dword_1883EA000, v15, OS_LOG_TYPE_INFO, "Registered for notifications with key: %@, token: %d", buf, 0x12u);
@@ -2726,12 +2726,12 @@ LABEL_14:
   return v16;
 }
 
-+ (void)unregisterForDaemonNotificationsWithToken:(int)a3
++ (void)unregisterForDaemonNotificationsWithToken:(int)token
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 != -1)
+  if (token != -1)
   {
-    notify_cancel(a3);
+    notify_cancel(token);
     if (ck_log_initialization_predicate != -1)
     {
       dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -2741,7 +2741,7 @@ LABEL_14:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = token;
       _os_log_impl(&dword_1883EA000, v4, OS_LOG_TYPE_INFO, "Unregistered for notifications with token: %d", v6, 8u);
     }
   }
@@ -2749,12 +2749,12 @@ LABEL_14:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setContainerScopedUserID:(id)a3
+- (void)setContainerScopedUserID:(id)d
 {
   v4 = qword_1ED4B60E0;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(v4);
-  v8 = objc_msgSend_copy(v5, v6, v7);
+  v8 = objc_msgSend_copy(dCopy, v6, v7);
 
   containerScopedUserID_locked = self->_containerScopedUserID_locked;
   self->_containerScopedUserID_locked = v8;
@@ -2768,44 +2768,44 @@ LABEL_14:
   return orgAdminUserID_locked;
 }
 
-- (void)setOrgAdminUserID:(id)a3
+- (void)setOrgAdminUserID:(id)d
 {
   v4 = qword_1ED4B60E0;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(v4);
-  v8 = objc_msgSend_copy(v5, v6, v7);
+  v8 = objc_msgSend_copy(dCopy, v6, v7);
 
   orgAdminUserID_locked = self->_orgAdminUserID_locked;
   self->_orgAdminUserID_locked = v8;
 }
 
-- (void)fetchUserRecordIDWithCompletionHandler:(id)a3
+- (void)fetchUserRecordIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/fetch-user-record-id", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v6.opaque[0] = 0;
   v6.opaque[1] = 0;
   os_activity_scope_enter(v5, &v6);
-  sub_188541878(self, 0, v4);
+  sub_188541878(self, 0, handlerCopy);
   os_activity_scope_leave(&v6);
 }
 
-- (void)fetchOrgAdminUserRecordIDWithCompletionHandler:(id)a3
+- (void)fetchOrgAdminUserRecordIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/fetch-org-admin-user-record-id", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v6.opaque[0] = 0;
   v6.opaque[1] = 0;
   os_activity_scope_enter(v5, &v6);
-  sub_188541878(self, 1, v4);
+  sub_188541878(self, 1, handlerCopy);
   os_activity_scope_leave(&v6);
 }
 
-- (void)discoverAllIdentitiesWithWrappingContainer:(id)a3 convenienceConfiguration:(id)a4 completionHandler:(id)a5
+- (void)discoverAllIdentitiesWithWrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  containerCopy = container;
   v11 = objc_opt_new();
   v14 = objc_msgSend_array(MEMORY[0x1E695DF70], v12, v13);
   v24[0] = MEMORY[0x1E69E9820];
@@ -2820,58 +2820,58 @@ LABEL_14:
   v21[2] = sub_188542494;
   v21[3] = &unk_1E70BCAF8;
   v22 = v15;
-  v23 = v8;
+  v23 = handlerCopy;
   v17 = v15;
-  v18 = v8;
+  v18 = handlerCopy;
   objc_msgSend_setDiscoverAllUserIdentitiesCompletionBlock_(v11, v19, v21);
-  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v20, v11, v10, v9);
+  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v20, v11, containerCopy, configurationCopy);
 }
 
-- (void)discoverUserIdentityWithEmailAddress:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)discoverUserIdentityWithEmailAddress:(id)address wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  containerCopy = container;
+  addressCopy = address;
   v14 = [CKUserIdentityLookupInfo alloc];
-  v16 = objc_msgSend_initWithEmailAddress_(v14, v15, v13);
+  v16 = objc_msgSend_initWithEmailAddress_(v14, v15, addressCopy);
 
-  sub_1885424B8(self, v16, v12, v11, v10);
+  sub_1885424B8(self, v16, containerCopy, configurationCopy, handlerCopy);
 }
 
-- (void)discoverUserIdentityWithPhoneNumber:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)discoverUserIdentityWithPhoneNumber:(id)number wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  containerCopy = container;
+  numberCopy = number;
   v14 = [CKUserIdentityLookupInfo alloc];
-  v16 = objc_msgSend_initWithPhoneNumber_(v14, v15, v13);
+  v16 = objc_msgSend_initWithPhoneNumber_(v14, v15, numberCopy);
 
-  sub_1885424B8(self, v16, v12, v11, v10);
+  sub_1885424B8(self, v16, containerCopy, configurationCopy, handlerCopy);
 }
 
-- (void)discoverUserIdentityWithUserRecordID:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)discoverUserIdentityWithUserRecordID:(id)d wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  containerCopy = container;
+  dCopy = d;
   v14 = [CKUserIdentityLookupInfo alloc];
-  v16 = objc_msgSend_initWithUserRecordID_(v14, v15, v13);
+  v16 = objc_msgSend_initWithUserRecordID_(v14, v15, dCopy);
 
-  sub_1885424B8(self, v16, v12, v11, v10);
+  sub_1885424B8(self, v16, containerCopy, configurationCopy, handlerCopy);
 }
 
-- (void)fetchShareParticipantWithLookupInfo:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)fetchShareParticipantWithLookupInfo:(id)info wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  infoCopy = info;
+  containerCopy = container;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v14 = [CKFetchShareParticipantsOperation alloc];
-  v35[0] = v10;
+  v35[0] = infoCopy;
   v16 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v15, v35, 1);
   v18 = objc_msgSend_initWithUserIdentityLookupInfos_(v14, v17, v16);
 
@@ -2891,26 +2891,26 @@ LABEL_14:
   v26 = 3221225472;
   v27 = sub_188542C44;
   v28 = &unk_1E70BCB48;
-  v20 = v13;
+  v20 = handlerCopy;
   v30 = v20;
   v31 = v33;
-  v21 = v10;
+  v21 = infoCopy;
   v29 = v21;
   objc_msgSend_setFetchShareParticipantsCompletionBlock_(v18, v22, &v25);
-  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v23, v18, v11, v12, v25, v26, v27, v28);
+  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v23, v18, containerCopy, configurationCopy, v25, v26, v27, v28);
 
   _Block_object_dispose(v33, 8);
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchShareParticipantWithEmailAddress:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)fetchShareParticipantWithEmailAddress:(id)address wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  addressCopy = address;
+  containerCopy = container;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v31 = 0;
-  v14 = _CKCheckArgument("emailAddress", v10, 0, 0, 0, &v31);
+  v14 = _CKCheckArgument("emailAddress", addressCopy, 0, 0, 0, &v31);
   v15 = v31;
   if ((v14 & 1) == 0)
   {
@@ -2925,18 +2925,18 @@ LABEL_14:
   }
 
   v16 = [CKUserIdentityLookupInfo alloc];
-  v18 = objc_msgSend_initWithEmailAddress_(v16, v17, v10);
-  objc_msgSend_fetchShareParticipantWithLookupInfo_wrappingContainer_convenienceConfiguration_completionHandler_(self, v19, v18, v11, v12, v13);
+  v18 = objc_msgSend_initWithEmailAddress_(v16, v17, addressCopy);
+  objc_msgSend_fetchShareParticipantWithLookupInfo_wrappingContainer_convenienceConfiguration_completionHandler_(self, v19, v18, containerCopy, configurationCopy, handlerCopy);
 }
 
-- (void)fetchShareParticipantWithPhoneNumber:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)fetchShareParticipantWithPhoneNumber:(id)number wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  numberCopy = number;
+  containerCopy = container;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v31 = 0;
-  v14 = _CKCheckArgument("phoneNumber", v10, 0, 0, 0, &v31);
+  v14 = _CKCheckArgument("phoneNumber", numberCopy, 0, 0, 0, &v31);
   v15 = v31;
   if ((v14 & 1) == 0)
   {
@@ -2951,18 +2951,18 @@ LABEL_14:
   }
 
   v16 = [CKUserIdentityLookupInfo alloc];
-  v18 = objc_msgSend_initWithPhoneNumber_(v16, v17, v10);
-  objc_msgSend_fetchShareParticipantWithLookupInfo_wrappingContainer_convenienceConfiguration_completionHandler_(self, v19, v18, v11, v12, v13);
+  v18 = objc_msgSend_initWithPhoneNumber_(v16, v17, numberCopy);
+  objc_msgSend_fetchShareParticipantWithLookupInfo_wrappingContainer_convenienceConfiguration_completionHandler_(self, v19, v18, containerCopy, configurationCopy, handlerCopy);
 }
 
-- (void)fetchShareParticipantWithUserRecordID:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)fetchShareParticipantWithUserRecordID:(id)d wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  containerCopy = container;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v31 = 0;
-  v14 = _CKCheckArgument("userRecordID", v10, 0, 1, 0, &v31);
+  v14 = _CKCheckArgument("userRecordID", dCopy, 0, 1, 0, &v31);
   v15 = v31;
   if ((v14 & 1) == 0)
   {
@@ -2977,19 +2977,19 @@ LABEL_14:
   }
 
   v16 = [CKUserIdentityLookupInfo alloc];
-  v18 = objc_msgSend_initWithUserRecordID_(v16, v17, v10);
-  objc_msgSend_fetchShareParticipantWithLookupInfo_wrappingContainer_convenienceConfiguration_completionHandler_(self, v19, v18, v11, v12, v13);
+  v18 = objc_msgSend_initWithUserRecordID_(v16, v17, dCopy);
+  objc_msgSend_fetchShareParticipantWithLookupInfo_wrappingContainer_convenienceConfiguration_completionHandler_(self, v19, v18, containerCopy, configurationCopy, handlerCopy);
 }
 
-- (void)fetchShareMetadataWithURL:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)fetchShareMetadataWithURL:(id)l wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  containerCopy = container;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v48 = 0;
-  v14 = _CKCheckArgument("shareURL", v10, 0, 0, 0, &v48);
+  v14 = _CKCheckArgument("shareURL", lCopy, 0, 0, 0, &v48);
   v15 = v48;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -3010,7 +3010,7 @@ LABEL_14:
   v46[4] = sub_1883EF590;
   v47 = 0;
   v17 = [CKFetchShareMetadataOperation alloc];
-  v49[0] = v10;
+  v49[0] = lCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v49, 1);
   v21 = objc_msgSend_initWithShareURLs_(v17, v20, v19);
 
@@ -3018,7 +3018,7 @@ LABEL_14:
   v43[1] = 3221225472;
   v43[2] = sub_188543380;
   v43[3] = &unk_1E70BCB98;
-  v22 = v10;
+  v22 = lCopy;
   v44 = v22;
   v45 = v46;
   objc_msgSend_setPerShareMetadataBlock_(v21, v23, v43);
@@ -3026,27 +3026,27 @@ LABEL_14:
   v39[1] = 3221225472;
   v39[2] = sub_1885433F8;
   v39[3] = &unk_1E70BCB48;
-  v24 = v13;
+  v24 = handlerCopy;
   v41 = v24;
   v42 = v46;
   v25 = v22;
   v40 = v25;
   objc_msgSend_setFetchShareMetadataCompletionBlock_(v21, v26, v39);
-  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v27, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v27, v21, containerCopy, configurationCopy);
 
   _Block_object_dispose(v46, 8);
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)acceptShareMetadata:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)acceptShareMetadata:(id)metadata wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  containerCopy = container;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v48 = 0;
-  v14 = _CKCheckArgument("metadata", v10, 0, 0, 0, &v48);
+  v14 = _CKCheckArgument("metadata", metadataCopy, 0, 0, 0, &v48);
   v15 = v48;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -3067,7 +3067,7 @@ LABEL_14:
   v46[4] = sub_1883EF590;
   v47 = 0;
   v17 = [CKAcceptSharesOperation alloc];
-  v49[0] = v10;
+  v49[0] = metadataCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v49, 1);
   v21 = objc_msgSend_initWithShareMetadatas_(v17, v20, v19);
 
@@ -3075,7 +3075,7 @@ LABEL_14:
   v43[1] = 3221225472;
   v43[2] = sub_188543774;
   v43[3] = &unk_1E70BCBC0;
-  v22 = v10;
+  v22 = metadataCopy;
   v44 = v22;
   v45 = v46;
   objc_msgSend_setPerShareCompletionBlock_(v21, v23, v43);
@@ -3083,22 +3083,22 @@ LABEL_14:
   v39[1] = 3221225472;
   v39[2] = sub_1885437EC;
   v39[3] = &unk_1E70BCB48;
-  v24 = v13;
+  v24 = handlerCopy;
   v41 = v24;
   v42 = v46;
   v25 = v22;
   v40 = v25;
   objc_msgSend_setAcceptSharesCompletionBlock_(v21, v26, v39);
-  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v27, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v27, v21, containerCopy, configurationCopy);
 
   _Block_object_dispose(v46, 8);
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)decryptPersonalInfoOnShare:(id)a3 completionHandler:(id)a4
+- (void)decryptPersonalInfoOnShare:(id)share completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1883EA000, "client/decrypt-personal-info-on-share", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3107,12 +3107,12 @@ LABEL_14:
   v15[1] = 3221225472;
   v15[2] = sub_188543A44;
   v15[3] = &unk_1E70BC540;
-  v16 = v7;
+  v16 = handlerCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_188543ABC;
   v12[3] = &unk_1E70BCA08;
-  v9 = v6;
+  v9 = shareCopy;
   v13 = v9;
   v10 = v16;
   v14 = v10;
@@ -3126,14 +3126,14 @@ LABEL_14:
   os_activity_scope_leave(&state);
 }
 
-- (void)requestAccessToShareURLs:(id)a3 wrappingContainer:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)requestAccessToShareURLs:(id)ls wrappingContainer:(id)container convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lsCopy = ls;
+  containerCopy = container;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v36 = 0;
-  v14 = _CKCheckArgument("shareURLs", v10, 0, 0, 0, &v36);
+  v14 = _CKCheckArgument("shareURLs", lsCopy, 0, 0, 0, &v36);
   v15 = v36;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -3148,21 +3148,21 @@ LABEL_14:
   }
 
   v17 = [CKShareRequestAccessOperation alloc];
-  v19 = objc_msgSend_initWithShareURLs_(v17, v18, v10);
+  v19 = objc_msgSend_initWithShareURLs_(v17, v18, lsCopy);
   objc_msgSend_setPerShareAccessRequestCompletionBlock_(v19, v20, &unk_1EFA2E708);
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = sub_188543E80;
   v34[3] = &unk_1E70BC540;
-  v35 = v13;
-  v21 = v13;
+  v35 = handlerCopy;
+  v21 = handlerCopy;
   objc_msgSend_setShareRequestAccessCompletionBlock_(v19, v22, v34);
-  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v23, v19, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingContainer_convenienceConfiguration_(self, v23, v19, containerCopy, configurationCopy);
 }
 
-- (void)getNewWebSharingIdentityDataWithCompletionHandler:(id)a3
+- (void)getNewWebSharingIdentityDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/get-new-web-sharing-identity-data", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3171,7 +3171,7 @@ LABEL_14:
   v10[1] = 3221225472;
   v10[2] = sub_188543FF4;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_18854406C;
@@ -3188,9 +3188,9 @@ LABEL_14:
   os_activity_scope_leave(&state);
 }
 
-- (void)_refreshAccountAccessAuthorizationWithCompletionHandler:(id)a3
+- (void)_refreshAccountAccessAuthorizationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/refresh-account-access-authorization", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3201,14 +3201,14 @@ LABEL_14:
   v10[2] = sub_1885442DC;
   v10[3] = &unk_1E70BC940;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(v8, v10);
 
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)__preflightAccountAccessAuthorization:(int64_t *)a3
+- (BOOL)__preflightAccountAccessAuthorization:(int64_t *)authorization
 {
   if (CKIsRunningInSyncBubble())
   {
@@ -3225,7 +3225,7 @@ LABEL_14:
 
   v12 = *MEMORY[0x1E69D5570];
   v13 = TCCAccessPreflight();
-  if (a3)
+  if (authorization)
   {
     if (v13 == 1)
     {
@@ -3242,15 +3242,15 @@ LABEL_14:
       v14 = 1;
     }
 
-    *a3 = v14;
+    *authorization = v14;
   }
 
   return 1;
 }
 
-- (void)accountStatusWithCompletionHandler:(id)a3
+- (void)accountStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/account-status", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3271,17 +3271,17 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = sub_188544FCC;
   v9[3] = &unk_1E70BCC80;
-  v7 = v4;
+  v7 = handlerCopy;
   v10 = v7;
   objc_msgSend_accountInfoWithCompletionHandler_(self, v8, v9);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)accountInfoWithCompletionHandler:(id)a3
+- (void)accountInfoWithCompletionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_signpost(CKSignpost, v5, v6);
   v10 = v7;
   if (v7)
@@ -3343,10 +3343,10 @@ LABEL_14:
   v36 = buf;
   v37 = v38;
   v34 = v10;
-  v35 = v4;
+  v35 = handlerCopy;
   block[4] = self;
   v23 = v10;
-  v24 = v4;
+  v24 = handlerCopy;
   dispatch_async(v22, block);
 
   _Block_object_dispose(v38, 8);
@@ -3356,9 +3356,9 @@ LABEL_14:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reloadAccountWithCompletionHandler:(id)a3
+- (void)reloadAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/reload-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3380,7 +3380,7 @@ LABEL_14:
   v13[1] = 3221225472;
   v13[2] = sub_188546328;
   v13[3] = &unk_1E70BC540;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -3401,10 +3401,10 @@ LABEL_14:
   os_activity_scope_leave(&state);
 }
 
-- (void)statusForApplicationPermission:(unint64_t)a3 completionHandler:(id)a4
+- (void)statusForApplicationPermission:(unint64_t)permission completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v9 = objc_msgSend_signpost(CKSignpost, v7, v8);
   v12 = v9;
   if (v9)
@@ -3435,7 +3435,7 @@ LABEL_14:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
   {
     *v32 = 134217984;
-    v33 = a3;
+    permissionCopy = permission;
     _os_log_debug_impl(&dword_1883EA000, v19, OS_LOG_TYPE_DEBUG, "Fetching application permissions for %lu", v32, 0xCu);
   }
 
@@ -3443,13 +3443,13 @@ LABEL_14:
   v28[1] = 3221225472;
   v28[2] = sub_188546A5C;
   v28[3] = &unk_1E70BCAF8;
-  v30 = v6;
+  v30 = handlerCopy;
   v29 = v12;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = sub_188546BD0;
   v24[3] = &unk_1E70BCDC0;
-  v27 = a3;
+  permissionCopy2 = permission;
   v20 = v30;
   v26 = v20;
   v21 = v29;
@@ -3465,10 +3465,10 @@ LABEL_14:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestApplicationPermission:(unint64_t)a3 completionHandler:(id)a4
+- (void)requestApplicationPermission:(unint64_t)permission completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v9 = objc_msgSend_signpost(CKSignpost, v7, v8);
   v12 = v9;
   if (v9)
@@ -3499,7 +3499,7 @@ LABEL_14:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
   {
     *v32 = 134217984;
-    v33 = a3;
+    permissionCopy = permission;
     _os_log_debug_impl(&dword_1883EA000, v19, OS_LOG_TYPE_DEBUG, "Requesting application permissions: %lu", v32, 0xCu);
   }
 
@@ -3507,13 +3507,13 @@ LABEL_14:
   v28[1] = 3221225472;
   v28[2] = sub_1885471C0;
   v28[3] = &unk_1E70BCAF8;
-  v30 = v6;
+  v30 = handlerCopy;
   v29 = v12;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = sub_188547334;
   v24[3] = &unk_1E70BCDC0;
-  v27 = a3;
+  permissionCopy2 = permission;
   v20 = v30;
   v26 = v20;
   v21 = v29;
@@ -3529,9 +3529,9 @@ LABEL_14:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllLongLivedOperationIDsWithCompletionHandler:(id)a3
+- (void)fetchAllLongLivedOperationIDsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1883EA000, "client/fetch-all-long-lived-operation-ids", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3540,7 +3540,7 @@ LABEL_14:
   v10[1] = 3221225472;
   v10[2] = sub_1885479B4;
   v10[3] = &unk_1E70BC540;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_188547A2C;
@@ -3557,27 +3557,27 @@ LABEL_14:
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchLongLivedOperationWithID:(id)a3 wrappingContainer:(id)a4 completionHandler:(id)a5
+- (void)fetchLongLivedOperationWithID:(id)d wrappingContainer:(id)container completionHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  containerCopy = container;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_1883EA000, "client/fetch-long-lived-operation-with-id", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (v8)
+  if (dCopy)
   {
-    v29[0] = v8;
+    v29[0] = dCopy;
     v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v12, v29, 1);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = sub_188547DE8;
     v20[3] = &unk_1E70BCE38;
-    v21 = v10;
+    v21 = handlerCopy;
     v14 = v13;
-    v15 = v9;
+    v15 = containerCopy;
     v16 = v20;
     v17 = v16;
     if (self)
@@ -3599,9 +3599,9 @@ LABEL_14:
     }
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   os_activity_scope_leave(&state);
@@ -3609,11 +3609,11 @@ LABEL_14:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerForAssetUploadRequests:(id)a3 machServiceName:(id)a4
+- (void)registerForAssetUploadRequests:(id)requests machServiceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  requestsCopy = requests;
+  nameCopy = name;
+  if (!requestsCopy)
   {
     v11 = [CKException alloc];
     v13 = objc_msgSend_initWithName_format_(v11, v12, *MEMORY[0x1E695D940], @"The asset request callback must not be null");
@@ -3624,18 +3624,18 @@ LABEL_14:
   v14[1] = 3221225472;
   v14[2] = sub_188547F84;
   v14[3] = &unk_1E70BCE60;
-  v15 = v7;
-  v16 = v6;
-  v8 = v7;
-  v9 = v6;
+  v15 = nameCopy;
+  v16 = requestsCopy;
+  v8 = nameCopy;
+  v9 = requestsCopy;
   objc_msgSend_withUploadManager_performBlock_(self, v10, 0, v14);
 }
 
-- (void)registerForPackageUploadRequests:(id)a3 machServiceName:(id)a4
+- (void)registerForPackageUploadRequests:(id)requests machServiceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  requestsCopy = requests;
+  nameCopy = name;
+  if (!requestsCopy)
   {
     v11 = [CKException alloc];
     v13 = objc_msgSend_initWithName_format_(v11, v12, *MEMORY[0x1E695D940], @"The package request callback must not be null");
@@ -3646,19 +3646,19 @@ LABEL_14:
   v14[1] = 3221225472;
   v14[2] = sub_1885480D4;
   v14[3] = &unk_1E70BCE60;
-  v15 = v7;
-  v16 = v6;
-  v8 = v7;
-  v9 = v6;
+  v15 = nameCopy;
+  v16 = requestsCopy;
+  v8 = nameCopy;
+  v9 = requestsCopy;
   objc_msgSend_withUploadManager_performBlock_(self, v10, 0, v14);
 }
 
-- (void)withUploadManager:(int)a3 performBlock:(id)a4
+- (void)withUploadManager:(int)manager performBlock:(id)block
 {
-  v26 = a4;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_uploadRequestManagerLock);
   uploadRequestManager_locked = self->_uploadRequestManager_locked;
-  if (!a3 && !uploadRequestManager_locked)
+  if (!manager && !uploadRequestManager_locked)
   {
     v8 = objc_msgSend_sharedOptions(CKBehaviorOptions, 0, v6);
     v9 = sub_1886A4398(v8);
@@ -3674,7 +3674,7 @@ LABEL_14:
     uploadRequestManager_locked = self->_uploadRequestManager_locked;
   }
 
-  if (uploadRequestManager_locked && v26[2]() == 1)
+  if (uploadRequestManager_locked && blockCopy[2]() == 1)
   {
     objc_msgSend_unregister(self->_uploadRequestManager_locked, v23, v24);
     v25 = self->_uploadRequestManager_locked;
@@ -3684,32 +3684,32 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_uploadRequestManagerLock);
 }
 
-- (void)unregisterFromUploadRequestsWithMachServiceName:(id)a3
+- (void)unregisterFromUploadRequestsWithMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_188548324;
   v7[3] = &unk_1E70BCEA8;
-  v8 = v4;
-  v5 = v4;
+  v8 = nameCopy;
+  v5 = nameCopy;
   objc_msgSend_withUploadManager_performBlock_(self, v6, 1, v7);
 }
 
-- (void)registerForAssetRequests:(id)a3 packageRequests:(id)a4 machServiceName:(id)a5
+- (void)registerForAssetRequests:(id)requests packageRequests:(id)packageRequests machServiceName:(id)name
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!(v8 | v9))
+  requestsCopy = requests;
+  packageRequestsCopy = packageRequests;
+  nameCopy = name;
+  if (!(requestsCopy | packageRequestsCopy))
   {
     v22 = [CKException alloc];
     v24 = objc_msgSend_initWithName_format_(v22, v23, *MEMORY[0x1E695D940], @"One of the callbacks must not be null");
     objc_exception_throw(v24);
   }
 
-  v11 = v10;
+  v11 = nameCopy;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -3720,9 +3720,9 @@ LABEL_14:
   {
     v13 = &stru_1EFA32970;
     v14 = @"package";
-    if (v9)
+    if (packageRequestsCopy)
     {
-      v15 = v8 == 0;
+      v15 = requestsCopy == 0;
     }
 
     else
@@ -3738,7 +3738,7 @@ LABEL_14:
     }
 
     *buf = 138543874;
-    if (v8)
+    if (requestsCopy)
     {
       v13 = @"asset";
     }
@@ -3755,12 +3755,12 @@ LABEL_14:
   v25[1] = 3221225472;
   v25[2] = sub_1885485C4;
   v25[3] = &unk_1E70BCED0;
-  v27 = v8;
-  v28 = v9;
+  v27 = requestsCopy;
+  v28 = packageRequestsCopy;
   v26 = v11;
   v17 = v11;
-  v18 = v9;
-  v19 = v8;
+  v18 = packageRequestsCopy;
+  v19 = requestsCopy;
   objc_msgSend_withUploadManager_performBlock_(self, v20, 0, v25);
 
   v21 = *MEMORY[0x1E69E9840];

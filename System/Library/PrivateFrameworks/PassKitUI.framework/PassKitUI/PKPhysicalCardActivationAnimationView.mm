@@ -1,23 +1,23 @@
 @interface PKPhysicalCardActivationAnimationView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (PKPhysicalCardActivationAnimationView)initWithFrame:(CGRect)a3;
+- (PKPhysicalCardActivationAnimationView)initWithFrame:(CGRect)frame;
 - (void)_didFinishPlaying;
 - (void)_invalidate;
 - (void)_removePlayerItem;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setNameOnCard:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setNameOnCard:(id)card;
 - (void)startAnimation;
 @end
 
 @implementation PKPhysicalCardActivationAnimationView
 
-- (PKPhysicalCardActivationAnimationView)initWithFrame:(CGRect)a3
+- (PKPhysicalCardActivationAnimationView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = PKPhysicalCardActivationAnimationView;
-  v3 = [(PKPhysicalCardActivationAnimationView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPhysicalCardActivationAnimationView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!v3)
   {
     return v3;
@@ -86,8 +86,8 @@ LABEL_10:
     playerLayer = v3->_playerLayer;
     v3->_playerLayer = v14;
 
-    v16 = [(PKPhysicalCardActivationAnimationView *)v3 layer];
-    [v16 addSublayer:v3->_playerLayer];
+    layer = [(PKPhysicalCardActivationAnimationView *)v3 layer];
+    [layer addSublayer:v3->_playerLayer];
   }
 
   v17 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -96,8 +96,8 @@ LABEL_10:
   v3->_nameOnCardLabel = v18;
 
   v20 = v3->_nameOnCardLabel;
-  v21 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)v20 setTextColor:v21];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)v20 setTextColor:systemGrayColor];
 
   v22 = v3->_nameOnCardLabel;
   v23 = PKRoundedSystemFontOfSizeAndWeight(10.0, *MEMORY[0x1E69DB958]);
@@ -138,12 +138,12 @@ LABEL_10:
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(AVPlayerLayer *)self->_playerLayer setFrame:v4, v6, v8, v10];
   [MEMORY[0x1E6979518] commit];
-  v11 = [(UILabel *)self->_nameOnCardLabel superview];
+  superview = [(UILabel *)self->_nameOnCardLabel superview];
 
-  if (v11)
+  if (superview)
   {
-    v12 = [(UILabel *)self->_nameOnCardLabel font];
-    [v12 lineHeight];
+    font = [(UILabel *)self->_nameOnCardLabel font];
+    [font lineHeight];
     v14 = v13;
 
     PKFloatRoundToPixel();
@@ -155,12 +155,12 @@ LABEL_10:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &PlayerKVOContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &PlayerKVOContext)
   {
     if (!self->_invalidated && [(AVPlayerItem *)self->_playerItem status]== AVPlayerItemStatusReadyToPlay)
     {
@@ -172,7 +172,7 @@ LABEL_10:
   {
     v13.receiver = self;
     v13.super_class = PKPhysicalCardActivationAnimationView;
-    [(PKPhysicalCardActivationAnimationView *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PKPhysicalCardActivationAnimationView *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -182,8 +182,8 @@ LABEL_10:
   {
     if (self->_playerItem)
     {
-      v3 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v3 addObserver:self selector:sel__didFinishPlaying name:*MEMORY[0x1E6987A10] object:self->_playerItem];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__didFinishPlaying name:*MEMORY[0x1E6987A10] object:self->_playerItem];
 
       self->_playerStarted = 1;
       [(AVPlayerItem *)self->_playerItem addObserver:self forKeyPath:@"status" options:0 context:&PlayerKVOContext];
@@ -197,11 +197,11 @@ LABEL_10:
   }
 }
 
-- (void)setNameOnCard:(id)a3
+- (void)setNameOnCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   v5 = self->_nameOnCard;
-  v6 = v4;
+  v6 = cardCopy;
   v13 = v6;
   if (v5 == v6)
   {
@@ -231,9 +231,9 @@ LABEL_8:
     nameOnCardLabel = self->_nameOnCardLabel;
     if (self->_nameOnCard)
     {
-      v12 = [(UILabel *)nameOnCardLabel superview];
+      superview = [(UILabel *)nameOnCardLabel superview];
 
-      if (!v12)
+      if (!superview)
       {
         [(PKPhysicalCardActivationAnimationView *)self addSubview:self->_nameOnCardLabel];
       }
@@ -274,10 +274,10 @@ LABEL_15:
 {
   if (self->_playerItem)
   {
-    v3 = [(AVPlayer *)self->_player currentItem];
+    currentItem = [(AVPlayer *)self->_player currentItem];
     playerItem = self->_playerItem;
 
-    if (v3 == playerItem)
+    if (currentItem == playerItem)
     {
       player = self->_player;
       CMTimeMake(&v6, 0, 1);

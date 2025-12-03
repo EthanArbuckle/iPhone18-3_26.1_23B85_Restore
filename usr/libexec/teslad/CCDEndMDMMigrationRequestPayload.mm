@@ -8,8 +8,8 @@
 {
   v14.receiver = self;
   v14.super_class = CCDEndMDMMigrationRequestPayload;
-  v3 = [(CCDRequestPayload *)&v14 dictionary];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  dictionary = [(CCDRequestPayload *)&v14 dictionary];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:dictionary];
 
   v5 = [v4 objectForKeyedSubscript:@"device"];
   v6 = [v5 mutableCopy];
@@ -26,11 +26,11 @@
 
   v9 = v8;
 
-  v10 = [(CCDEndMDMMigrationRequestPayload *)self serverUID];
-  [v9 setObject:v10 forKeyedSubscript:@"server_uid"];
+  serverUID = [(CCDEndMDMMigrationRequestPayload *)self serverUID];
+  [v9 setObject:serverUID forKeyedSubscript:@"server_uid"];
 
-  v11 = [(CCDEndMDMMigrationRequestPayload *)self status];
-  [v9 setObject:v11 forKeyedSubscript:@"status"];
+  status = [(CCDEndMDMMigrationRequestPayload *)self status];
+  [v9 setObject:status forKeyedSubscript:@"status"];
 
   [v4 setObject:v9 forKeyedSubscript:@"device"];
   v12 = [v4 copy];

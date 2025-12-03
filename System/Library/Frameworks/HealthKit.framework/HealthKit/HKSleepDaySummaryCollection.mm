@@ -1,7 +1,7 @@
 @interface HKSleepDaySummaryCollection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSleepDaySummaryCollection)init;
-- (HKSleepDaySummaryCollection)initWithSleepDaySummaries:(id)a3;
+- (HKSleepDaySummaryCollection)initWithSleepDaySummaries:(id)summaries;
 - (NSArray)sleepDaySummaries;
 - (int64_t)hash;
 @end
@@ -18,7 +18,7 @@
   return v3;
 }
 
-- (HKSleepDaySummaryCollection)initWithSleepDaySummaries:(id)a3
+- (HKSleepDaySummaryCollection)initWithSleepDaySummaries:(id)summaries
 {
   sub_191BFAE6C(0, &qword_1EADCC4C0, off_1E7375508);
   result = sub_191CC68E8();
@@ -37,8 +37,8 @@
   {
 LABEL_3:
     *(self + OBJC_IVAR___HKSleepDaySummaryCollection_sleepDaySummaries) = result;
-    v6 = [objc_opt_self() sleepMetricsForDaySummaries_];
-    *(self + OBJC_IVAR___HKSleepDaySummaryCollection_metrics) = v6;
+    sleepMetricsForDaySummaries_ = [objc_opt_self() sleepMetricsForDaySummaries_];
+    *(self + OBJC_IVAR___HKSleepDaySummaryCollection_metrics) = sleepMetricsForDaySummaries_;
     v9.receiver = self;
     v9.super_class = HKSleepDaySummaryCollection;
     return [(HKSleepDaySummaryCollection *)&v9 init];
@@ -48,11 +48,11 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_191CC6E18();
     swift_unknownObjectRelease();
@@ -61,7 +61,7 @@ LABEL_3:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = HKSleepDaySummaryCollection.isEqual(_:)(v8);
@@ -72,8 +72,8 @@ LABEL_3:
 
 - (int64_t)hash
 {
-  v2 = self;
-  v3 = [(HKSleepDaySummaryCollection *)v2 sleepDaySummaries];
+  selfCopy = self;
+  sleepDaySummaries = [(HKSleepDaySummaryCollection *)selfCopy sleepDaySummaries];
   sub_191BFAE6C(0, &qword_1EADCC4C0, off_1E7375508);
   sub_191CC68E8();
 

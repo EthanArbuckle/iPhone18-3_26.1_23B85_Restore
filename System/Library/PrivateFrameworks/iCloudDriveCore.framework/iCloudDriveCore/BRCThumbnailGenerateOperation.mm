@@ -1,21 +1,21 @@
 @interface BRCThumbnailGenerateOperation
-- (BRCThumbnailGenerateOperation)initWithDocumentAtURL:(id)a3 targetURL:(id)a4 timeout:(id)a5 sessionContext:(id)a6;
+- (BRCThumbnailGenerateOperation)initWithDocumentAtURL:(id)l targetURL:(id)rL timeout:(id)timeout sessionContext:(id)context;
 - (void)cancel;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRCThumbnailGenerateOperation
 
-- (BRCThumbnailGenerateOperation)initWithDocumentAtURL:(id)a3 targetURL:(id)a4 timeout:(id)a5 sessionContext:(id)a6
+- (BRCThumbnailGenerateOperation)initWithDocumentAtURL:(id)l targetURL:(id)rL timeout:(id)timeout sessionContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  timeoutCopy = timeout;
+  contextCopy = context;
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v11 path];
-  v17 = [v15 stringWithFormat:@"thumbnail-generate/%@", v16];
+  path = [lCopy path];
+  v17 = [v15 stringWithFormat:@"thumbnail-generate/%@", path];
 
   v24.receiver = self;
   v24.super_class = BRCThumbnailGenerateOperation;
@@ -25,15 +25,15 @@
     v19 = [MEMORY[0x277CBC4F8] br_operationGroupWithName:@"ThumbnailGenerate"];
     [(_BRCOperation *)v18 setGroup:v19];
 
-    objc_storeStrong(&v18->_url, a3);
-    objc_storeStrong(&v18->_targetURL, a4);
-    v20 = [v14 tapToRadarManager];
+    objc_storeStrong(&v18->_url, l);
+    objc_storeStrong(&v18->_targetURL, rL);
+    tapToRadarManager = [contextCopy tapToRadarManager];
     tapToRadarManager = v18->_tapToRadarManager;
-    v18->_tapToRadarManager = v20;
+    v18->_tapToRadarManager = tapToRadarManager;
 
-    if (v13)
+    if (timeoutCopy)
     {
-      [v13 doubleValue];
+      [timeoutCopy doubleValue];
       [(_BRCOperation *)v18 setTimeout:?];
     }
 
@@ -52,7 +52,7 @@
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_debug_impl(&dword_223E7A000, log, OS_LOG_TYPE_DEBUG, "[DEBUG] Created QLThumbnailGenerationRequest %@%@", &v4, 0x16u);
@@ -93,15 +93,15 @@ void __37__BRCThumbnailGenerateOperation_main__block_invoke(uint64_t a1, void *a
     [(_BRCOperation *)self timeout];
     v5 = [v3 stringWithFormat:@"Thumbnail generation operation got timeouted after %fs", v4];
     tapToRadarManager = self->_tapToRadarManager;
-    v7 = [MEMORY[0x277CCA9B8] brc_errorThumbnailGenerationOperationTimedOut];
-    [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:v5 description:@"Possible issue in QL keywords:Thumbnail generation operation was running for too long" attachments:MEMORY[0x277CBEBF8] sendFullLog:MEMORY[0x277CBEBF8] displayReason:0 triggerRootCause:@"thumbnail generation encountered an error" additionalDevices:v7, 0];
+    brc_errorThumbnailGenerationOperationTimedOut = [MEMORY[0x277CCA9B8] brc_errorThumbnailGenerationOperationTimedOut];
+    [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:v5 description:@"Possible issue in QL keywords:Thumbnail generation operation was running for too long" attachments:MEMORY[0x277CBEBF8] sendFullLog:MEMORY[0x277CBEBF8] displayReason:0 triggerRootCause:@"thumbnail generation encountered an error" additionalDevices:brc_errorThumbnailGenerationOperationTimedOut, 0];
   }
 
   v8 = MEMORY[0x22AA4A310](self->_saveThumbnailCompletionBlock);
   if (v8)
   {
-    v9 = [MEMORY[0x277CCA9B8] brc_errorOperationCancelled];
-    (v8)[2](v8, v9);
+    brc_errorOperationCancelled = [MEMORY[0x277CCA9B8] brc_errorOperationCancelled];
+    (v8)[2](v8, brc_errorOperationCancelled);
 
     saveThumbnailCompletionBlock = self->_saveThumbnailCompletionBlock;
     self->_saveThumbnailCompletionBlock = 0;
@@ -112,23 +112,23 @@ void __37__BRCThumbnailGenerateOperation_main__block_invoke(uint64_t a1, void *a
   [(_BRCOperation *)&v11 cancel];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   saveThumbnailCompletionBlock = self->_saveThumbnailCompletionBlock;
-  v8 = a3;
+  resultCopy = result;
   v9 = MEMORY[0x22AA4A310](saveThumbnailCompletionBlock);
   v10 = v9;
   if (v9)
   {
-    (*(v9 + 16))(v9, v6);
+    (*(v9 + 16))(v9, errorCopy);
     v11 = self->_saveThumbnailCompletionBlock;
     self->_saveThumbnailCompletionBlock = 0;
   }
 
   v12.receiver = self;
   v12.super_class = BRCThumbnailGenerateOperation;
-  [(_BRCOperation *)&v12 finishWithResult:v8 error:v6];
+  [(_BRCOperation *)&v12 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

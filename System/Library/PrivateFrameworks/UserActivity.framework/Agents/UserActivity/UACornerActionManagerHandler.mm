@@ -3,51 +3,51 @@
 - (BOOL)suspend;
 - (BOOL)suspended;
 - (BOOL)terminate;
-- (UACornerActionManagerHandler)initWithManager:(id)a3 name:(id)a4;
+- (UACornerActionManagerHandler)initWithManager:(id)manager name:(id)name;
 - (id)statusString;
-- (void)setSuspended:(BOOL)a3;
+- (void)setSuspended:(BOOL)suspended;
 @end
 
 @implementation UACornerActionManagerHandler
 
 - (BOOL)suspended
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suspended = v2->_suspended;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suspended = selfCopy->_suspended;
+  objc_sync_exit(selfCopy);
 
   return suspended;
 }
 
 - (BOOL)resume
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suspended = v2->_suspended;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suspended = selfCopy->_suspended;
   if (suspended)
   {
     v4 = sub_100001A30(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [(UACornerActionManagerHandler *)v2 name];
+      name = [(UACornerActionManagerHandler *)selfCopy name];
       v7 = 138543362;
-      v8 = v5;
+      v8 = name;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "HANDLER: %{public}@ is being resumed(was suspended)", &v7, 0xCu);
     }
 
-    v2->_suspended = 0;
+    selfCopy->_suspended = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return suspended;
 }
 
-- (UACornerActionManagerHandler)initWithManager:(id)a3 name:(id)a4
+- (UACornerActionManagerHandler)initWithManager:(id)manager name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = UACornerActionManagerHandler;
   v9 = [(UACornerActionManagerHandler *)&v13 init];
@@ -57,73 +57,73 @@
     uuid = v9->_uuid;
     v9->_uuid = v10;
 
-    objc_storeStrong(&v9->_manager, a3);
-    objc_storeStrong(&v9->_name, a4);
+    objc_storeStrong(&v9->_manager, manager);
+    objc_storeStrong(&v9->_name, name);
     v9->_suspended = 1;
   }
 
   return v9;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_suspended != v3)
+  suspendedCopy = suspended;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_suspended != suspendedCopy)
   {
     v5 = sub_100001A30(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(UACornerActionManagerHandler *)v4 name];
-      v7 = v6;
+      name = [(UACornerActionManagerHandler *)selfCopy name];
+      v7 = name;
       v8 = "resumed";
-      if (v3)
+      if (suspendedCopy)
       {
         v8 = "suspended";
       }
 
       v9 = 138543618;
-      v10 = v6;
+      v10 = name;
       v11 = 2082;
       v12 = v8;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "HANDLER: %{public}@ is being %{public}s", &v9, 0x16u);
     }
 
-    if (v3)
+    if (suspendedCopy)
     {
-      [(UACornerActionManagerHandler *)v4 suspend];
+      [(UACornerActionManagerHandler *)selfCopy suspend];
     }
 
     else
     {
-      [(UACornerActionManagerHandler *)v4 resume];
+      [(UACornerActionManagerHandler *)selfCopy resume];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)suspend
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suspended = v2->_suspended;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suspended = selfCopy->_suspended;
   if (!suspended)
   {
     v4 = sub_100001A30(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [(UACornerActionManagerHandler *)v2 name];
+      name = [(UACornerActionManagerHandler *)selfCopy name];
       v7 = 138543362;
-      v8 = v5;
+      v8 = name;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "HANDLER: %{public}@ is being suspended(was not)", &v7, 0xCu);
     }
 
-    v2->_suspended = 1;
+    selfCopy->_suspended = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return !suspended;
 }
@@ -133,23 +133,23 @@
   v3 = sub_100001A30(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(UACornerActionManagerHandler *)self name];
-    v5 = [(UACornerActionManagerHandler *)self terminated];
+    name = [(UACornerActionManagerHandler *)self name];
+    terminated = [(UACornerActionManagerHandler *)self terminated];
     v6 = &stru_1000C67D0;
-    if (v5)
+    if (terminated)
     {
       v6 = @"(was already terminated)";
     }
 
     v9 = 138543618;
-    v10 = v4;
+    v10 = name;
     v11 = 2114;
     v12 = v6;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "HANDLER: %{public}@ is being terminated %{public}@", &v9, 0x16u);
   }
 
-  v7 = [(UACornerActionManagerHandler *)self terminated];
-  if ((v7 & 1) == 0)
+  terminated2 = [(UACornerActionManagerHandler *)self terminated];
+  if ((terminated2 & 1) == 0)
   {
     if (![(UACornerActionManagerHandler *)self suspended])
     {
@@ -159,13 +159,13 @@
     self->_terminated = 1;
   }
 
-  return v7 ^ 1;
+  return terminated2 ^ 1;
 }
 
 - (id)statusString
 {
-  v3 = [(UACornerActionManagerHandler *)self name];
-  if (v3)
+  name = [(UACornerActionManagerHandler *)self name];
+  if (name)
   {
     [(UACornerActionManagerHandler *)self name];
   }

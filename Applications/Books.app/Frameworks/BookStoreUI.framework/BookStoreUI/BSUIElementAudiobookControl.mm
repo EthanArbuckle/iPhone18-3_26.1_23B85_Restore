@@ -1,6 +1,6 @@
 @interface BSUIElementAudiobookControl
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation BSUIElementAudiobookControl
@@ -17,30 +17,30 @@
   return v3;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v22 = [v10 objectForAttribute:113 node:var0];
-  v12 = [v10 objectForAttribute:150 node:var0];
+  var0 = node.var0;
+  contextCopy = context;
+  attributesCopy = attributes;
+  boxCopy = box;
+  v22 = [attributesCopy objectForAttribute:113 node:var0];
+  v12 = [attributesCopy objectForAttribute:150 node:var0];
 
-  v13 = [v9 manager];
-  v14 = [v13 dynamicRegistry];
-  v15 = [v14 progressProviderForKind:@"audiobookProgress"];
+  manager = [contextCopy manager];
+  dynamicRegistry = [manager dynamicRegistry];
+  v15 = [dynamicRegistry progressProviderForKind:@"audiobookProgress"];
 
   v16 = [v15 dynamicProgressForKind:@"chapterProgress" instance:v22 parameters:v12];
   v17 = BUProtocolCast();
 
-  v18 = [v9 manager];
+  manager2 = [contextCopy manager];
 
-  v19 = [v18 dynamicRegistry];
-  v20 = [v19 stateProviderForKind:@"libraryItem"];
+  dynamicRegistry2 = [manager2 dynamicRegistry];
+  v20 = [dynamicRegistry2 stateProviderForKind:@"libraryItem"];
 
   v21 = [v20 dynamicStateForKind:@"libraryItem" instance:v22 parameters:v12];
-  [v11 setDynamicAudiobookProgress:v17];
-  [v11 setDynamicState:v21];
+  [boxCopy setDynamicAudiobookProgress:v17];
+  [boxCopy setDynamicState:v21];
 }
 
 @end

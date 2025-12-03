@@ -1,68 +1,68 @@
 @interface _GCAppClientProxy
-+ (id)clientProxyWithConnection:(id)a3 server:(id)a4;
++ (id)clientProxyWithConnection:(id)connection server:(id)server;
 + (id)settingsSuiteName;
-- (BOOL)readBooleanValueWithName:(id)a3;
+- (BOOL)readBooleanValueWithName:(id)name;
 - (NSString)bundleIdentifier;
 - (_GCAppClientProxy)init;
-- (id)_initWithConnection:(id)a3 server:(id)a4;
-- (id)addInvalidationHandler:(id)a3;
+- (id)_initWithConnection:(id)connection server:(id)server;
+- (id)addInvalidationHandler:(id)handler;
 - (id)debugDescription;
 - (id)description;
 - (id)redactedDescription;
 - (int)processIdentifier;
 - (void)_invalidate;
-- (void)adaptiveTriggersXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4;
-- (void)batteryXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4;
-- (void)checkClipBufferingEnabledWithReply:(id)a3;
-- (void)checkEmulatedControllerEnabledWithReply:(id)a3;
-- (void)connectToAdaptiveTriggersXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToBatteryXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToControllerServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToLightXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToMotionXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToPhotoVideoXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToPlayerIndicatorXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToSettingsXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToSystemGestureXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
+- (void)adaptiveTriggersXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply;
+- (void)batteryXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply;
+- (void)checkClipBufferingEnabledWithReply:(id)reply;
+- (void)checkEmulatedControllerEnabledWithReply:(id)reply;
+- (void)connectToAdaptiveTriggersXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToBatteryXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToControllerServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToLightXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToMotionXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToPhotoVideoXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToPlayerIndicatorXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToSettingsXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToSystemGestureXPCProxyServiceWithClient:(id)client reply:(id)reply;
 - (void)dealloc;
-- (void)fetchControllerDescriptionsWithReply:(id)a3;
-- (void)generateURLFor:(id)a3 withReply:(id)a4;
-- (void)lightXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4;
-- (void)motionXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)onVideoRecordingStart:(id)a3;
-- (void)onVideoRecordingStopWithURL:(id)a3 reply:(id)a4;
-- (void)pingWithReply:(id)a3;
-- (void)playerIndicatorXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4;
-- (void)setSessionConfiguration:(id)a3;
-- (void)settingsXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4;
-- (void)systemGestureXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4;
-- (void)takeScreenshotWithReply:(id)a3;
+- (void)fetchControllerDescriptionsWithReply:(id)reply;
+- (void)generateURLFor:(id)for withReply:(id)reply;
+- (void)lightXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply;
+- (void)motionXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)onVideoRecordingStart:(id)start;
+- (void)onVideoRecordingStopWithURL:(id)l reply:(id)reply;
+- (void)pingWithReply:(id)reply;
+- (void)playerIndicatorXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply;
+- (void)setSessionConfiguration:(id)configuration;
+- (void)settingsXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply;
+- (void)systemGestureXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply;
+- (void)takeScreenshotWithReply:(id)reply;
 @end
 
 @implementation _GCAppClientProxy
 
-+ (id)clientProxyWithConnection:(id)a3 server:(id)a4
++ (id)clientProxyWithConnection:(id)connection server:(id)server
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithConnection:v7 server:v6];
+  serverCopy = server;
+  connectionCopy = connection;
+  v8 = [[self alloc] _initWithConnection:connectionCopy server:serverCopy];
 
   return v8;
 }
 
-- (id)_initWithConnection:(id)a3 server:(id)a4
+- (id)_initWithConnection:(id)connection server:(id)server
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  serverCopy = server;
   v22.receiver = self;
   v22.super_class = _GCAppClientProxy;
   v9 = [(_GCAppClientProxy *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_server, a4);
-    objc_storeStrong(&v10->_connection, a3);
+    objc_storeStrong(&v9->_server, server);
+    objc_storeStrong(&v10->_connection, connection);
     v11 = objc_opt_new();
     invalidationHandlers = v10->_invalidationHandlers;
     v10->_invalidationHandlers = v11;
@@ -100,23 +100,23 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"GCAppClientProxy.m" lineNumber:109 description:{@"%@ is being deallocated, but is still valid.", a2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"GCAppClientProxy.m" lineNumber:109 description:{@"%@ is being deallocated, but is still valid.", a2}];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v59 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v43 = v12;
-  v44 = v11;
-  v42 = v10;
-  if (self->_server == v11 && [v10 isEqualToString:@"activeControllerDevices"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v43 = changeCopy;
+  v44 = objectCopy;
+  v42 = pathCopy;
+  if (self->_server == objectCopy && [pathCopy isEqualToString:@"activeControllerDevices"])
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-    v14 = self;
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    selfCopy = self;
     v15 = v13;
     if (gc_isInternalBuild())
     {
@@ -125,7 +125,7 @@
 
     v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v17 = v14;
+    v17 = selfCopy;
     objc_sync_enter(v17);
     publishedControllerDescriptions = v17->_publishedControllerDescriptions;
     if (publishedControllerDescriptions)
@@ -157,13 +157,13 @@
               v26 = [(NSMapTable *)v17->_publishedControllerDescriptions objectForKey:v23];
               if (!v26)
               {
-                v41 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                 v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void setActiveDevices(_GCAppClientProxy *__strong, NSSet<id<_GCDeviceControllerProviding>> *__strong)"}];
-                [v41 handleFailureInFunction:v28 file:@"GCAppClientProxy.m" lineNumber:469 description:{@"Bug in %s", "setActiveDevices"}];
+                [currentHandler handleFailureInFunction:v28 file:@"GCAppClientProxy.m" lineNumber:469 description:{@"Bug in %s", "setActiveDevices"}];
               }
 
-              v27 = [v26 identifier];
-              [v45 addObject:v27];
+              identifier = [v26 identifier];
+              [v45 addObject:identifier];
 
               [(NSMapTable *)v17->_publishedControllerDescriptions removeObjectForKey:v23];
             }
@@ -277,7 +277,7 @@ LABEL_38:
 
   v46.receiver = self;
   v46.super_class = _GCAppClientProxy;
-  [(_GCAppClientProxy *)&v46 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(_GCAppClientProxy *)&v46 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_35:
 
   v39 = *MEMORY[0x1E69E9840];
@@ -298,11 +298,11 @@ LABEL_35:
     v6 = "";
   }
 
-  v7 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v8 = [v7 processIdentifier];
-  v9 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v3 stringWithFormat:@"<%@%s client.pid: %i, client.bundleIdentifier: %@>", v4, v6, v8, v10];
+  process = [(_GCIPCIncomingConnection *)self->_connection process];
+  processIdentifier = [process processIdentifier];
+  process2 = [(_GCIPCIncomingConnection *)self->_connection process];
+  bundleIdentifier = [process2 bundleIdentifier];
+  v11 = [v3 stringWithFormat:@"<%@%s client.pid: %i, client.bundleIdentifier: %@>", v4, v6, processIdentifier, bundleIdentifier];
 
   return v11;
 }
@@ -322,11 +322,11 @@ LABEL_35:
     v6 = "";
   }
 
-  v7 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v8 = [v7 processIdentifier];
-  v9 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v3 stringWithFormat:@"<%@%s client.pid: %i, client.bundleIdentifier: %@>", v4, v6, v8, v10];
+  process = [(_GCIPCIncomingConnection *)self->_connection process];
+  processIdentifier = [process processIdentifier];
+  process2 = [(_GCIPCIncomingConnection *)self->_connection process];
+  bundleIdentifier = [process2 bundleIdentifier];
+  v11 = [v3 stringWithFormat:@"<%@%s client.pid: %i, client.bundleIdentifier: %@>", v4, v6, processIdentifier, bundleIdentifier];
 
   return v11;
 }
@@ -347,11 +347,11 @@ LABEL_35:
     v7 = "";
   }
 
-  v8 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v9 = [v8 processIdentifier];
-  v10 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v3 stringWithFormat:@"<%@ %p%s client.pid: %i, client.bundleIdentifier: %@>", v5, self, v7, v9, v11];
+  process = [(_GCIPCIncomingConnection *)self->_connection process];
+  processIdentifier = [process processIdentifier];
+  process2 = [(_GCIPCIncomingConnection *)self->_connection process];
+  bundleIdentifier = [process2 bundleIdentifier];
+  v12 = [v3 stringWithFormat:@"<%@ %p%s client.pid: %i, client.bundleIdentifier: %@>", v5, self, v7, processIdentifier, bundleIdentifier];
 
   return v12;
 }
@@ -370,172 +370,172 @@ LABEL_35:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pingWithReply:(id)a3
+- (void)pingWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __35___GCAppClientProxy_pingWithReply___block_invoke;
   activity_block[3] = &unk_1E8419198;
-  v6 = v3;
-  v4 = v3;
+  v6 = replyCopy;
+  v4 = replyCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Ping", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)setSessionConfiguration:(id)a3
+- (void)setSessionConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45___GCAppClientProxy_setSessionConfiguration___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = configurationCopy;
+  v5 = configurationCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Set Configuration", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
-- (void)connectToControllerServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToControllerServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __64___GCAppClientProxy_connectToControllerServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'Controller Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToPlayerIndicatorXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToPlayerIndicatorXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __77___GCAppClientProxy_connectToPlayerIndicatorXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'Player Indicator XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToLightXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToLightXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __67___GCAppClientProxy_connectToLightXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'Light XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToAdaptiveTriggersXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToAdaptiveTriggersXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __78___GCAppClientProxy_connectToAdaptiveTriggersXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'Adaptive Triggers XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToMotionXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToMotionXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __68___GCAppClientProxy_connectToMotionXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'Motion XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToBatteryXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToBatteryXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __69___GCAppClientProxy_connectToBatteryXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'Battery XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToSettingsXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToSettingsXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __70___GCAppClientProxy_connectToSettingsXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'Settings XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToSystemGestureXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToSystemGestureXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __75___GCAppClientProxy_connectToSystemGestureXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'System Gesture XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToPhotoVideoXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToPhotoVideoXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __72___GCAppClientProxy_connectToPhotoVideoXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Connect 'PhotoVideo XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -553,45 +553,45 @@ LABEL_35:
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v3 = [v2 bundleIdentifier];
+  process = [(_GCIPCIncomingConnection *)self->_connection process];
+  bundleIdentifier = [process bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (int)processIdentifier
 {
-  v2 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v3 = [v2 processIdentifier];
+  process = [(_GCIPCIncomingConnection *)self->_connection process];
+  processIdentifier = [process processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
-- (id)addInvalidationHandler:(id)a3
+- (id)addInvalidationHandler:(id)handler
 {
-  v4 = [a3 copy];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = atomic_load(&v5->_invalid);
+  v4 = [handler copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = atomic_load(&selfCopy->_invalid);
   if (v6)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v7 = 0;
   }
 
   else
   {
-    v8 = [(_GCAppClientProxy *)v5 invalidationHandlers];
-    v9 = [v8 mutableCopy];
+    invalidationHandlers = [(_GCAppClientProxy *)selfCopy invalidationHandlers];
+    v9 = [invalidationHandlers mutableCopy];
 
     v10 = _Block_copy(v4);
     [v9 addObject:v10];
 
-    [(_GCAppClientProxy *)v5 setInvalidationHandlers:v9];
-    objc_sync_exit(v5);
+    [(_GCAppClientProxy *)selfCopy setInvalidationHandlers:v9];
+    objc_sync_exit(selfCopy);
 
-    objc_initWeak(&location, v5);
+    objc_initWeak(&location, selfCopy);
     v11 = [_GCObservation alloc];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -608,134 +608,134 @@ LABEL_35:
   return v7;
 }
 
-- (void)fetchControllerDescriptionsWithReply:(id)a3
+- (void)fetchControllerDescriptionsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __77___GCAppClientProxy_ControllerService__fetchControllerDescriptionsWithReply___block_invoke;
   v6[3] = &unk_1E8418BB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = replyCopy;
+  v5 = replyCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client / Controller Service Server) Fetch Controller Descriptions", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
-- (void)playerIndicatorXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4
+- (void)playerIndicatorXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __111___GCAppClientProxy_PlayerIndicatorXPCProxyService__playerIndicatorXPCProxyServiceClientEndpointConnect_reply___block_invoke;
   activity_block[3] = &unk_1E841AD68;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = connectCopy;
+  v12 = replyCopy;
+  v8 = replyCopy;
+  v9 = connectCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client / Player Indicator XPC Proxy Service) Client Endpoint Connect", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)lightXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4
+- (void)lightXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __91___GCAppClientProxy_LightXPCProxyService__lightXPCProxyServiceClientEndpointConnect_reply___block_invoke;
   activity_block[3] = &unk_1E841AD68;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = connectCopy;
+  v12 = replyCopy;
+  v8 = replyCopy;
+  v9 = connectCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client / Light XPC Proxy Service) Client Endpoint Connect", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)adaptiveTriggersXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4
+- (void)adaptiveTriggersXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __113___GCAppClientProxy_AdaptiveTriggersXPCProxyService__adaptiveTriggersXPCProxyServiceClientEndpointConnect_reply___block_invoke;
   activity_block[3] = &unk_1E841AD68;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = connectCopy;
+  v12 = replyCopy;
+  v8 = replyCopy;
+  v9 = connectCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client / Adaptive Triggers XPC Proxy Service) Client Endpoint Connect", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)motionXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4
+- (void)motionXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __93___GCAppClientProxy_MotionXPCProxyService__motionXPCProxyServiceClientEndpointConnect_reply___block_invoke;
   activity_block[3] = &unk_1E841AD68;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = connectCopy;
+  v12 = replyCopy;
+  v8 = replyCopy;
+  v9 = connectCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client / Motion XPC Proxy Service) Client Endpoint Connect", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)batteryXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4
+- (void)batteryXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __95___GCAppClientProxy_BatteryXPCProxyService__batteryXPCProxyServiceClientEndpointConnect_reply___block_invoke;
   activity_block[3] = &unk_1E841AD68;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = connectCopy;
+  v12 = replyCopy;
+  v8 = replyCopy;
+  v9 = connectCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client / Battery XPC Proxy Service) Client Endpoint Connect", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)systemGestureXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4
+- (void)systemGestureXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __107___GCAppClientProxy_SystemGestureXPCProxyService__systemGestureXPCProxyServiceClientEndpointConnect_reply___block_invoke;
   activity_block[3] = &unk_1E841AD68;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = connectCopy;
+  v12 = replyCopy;
+  v8 = replyCopy;
+  v9 = connectCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client / SystemGesture XPC Proxy Service) Client Endpoint Connect", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)settingsXPCProxyServiceClientEndpointConnect:(id)a3 reply:(id)a4
+- (void)settingsXPCProxyServiceClientEndpointConnect:(id)connect reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __97___GCAppClientProxy_SettingsXPCProxyService__settingsXPCProxyServiceClientEndpointConnect_reply___block_invoke;
   activity_block[3] = &unk_1E841AD68;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = connectCopy;
+  v12 = replyCopy;
+  v8 = replyCopy;
+  v9 = connectCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client / Settings XPC Proxy Service) Client Endpoint Connect", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (BOOL)readBooleanValueWithName:(id)a3
+- (BOOL)readBooleanValueWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (gc_isInternalBuild())
   {
     [_GCAppClientProxy(SettingsXPCProxyService) readBooleanValueWithName:];
@@ -743,16 +743,16 @@ LABEL_35:
 
   v4 = *MEMORY[0x1E695E8B8];
   v5 = +[_GCAppClientProxy settingsSuiteName];
-  v6 = CFPreferencesCopyValue(v3, v5, v4, *MEMORY[0x1E695E8B0]);
+  v6 = CFPreferencesCopyValue(nameCopy, v5, v4, *MEMORY[0x1E695E8B0]);
   v7 = v6;
   if (v6 && ((v8 = CFGetTypeID(v6), v8 == CFBooleanGetTypeID()) || v8 == CFNumberGetTypeID()))
   {
-    v9 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
   if (gc_isInternalBuild())
@@ -760,37 +760,37 @@ LABEL_35:
     [_GCAppClientProxy(SettingsXPCProxyService) readBooleanValueWithName:];
   }
 
-  return v9;
+  return bOOLValue;
 }
 
-- (void)checkEmulatedControllerEnabledWithReply:(id)a3
+- (void)checkEmulatedControllerEnabledWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [(_GCAppClientProxy *)self readBooleanValueWithName:@"emulatedControllerEnabled"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  v4[2](v4, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)checkClipBufferingEnabledWithReply:(id)a3
+- (void)checkClipBufferingEnabledWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [(_GCAppClientProxy *)self readBooleanValueWithName:@"bufferingEnabled"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  v4[2](v4, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)onVideoRecordingStart:(id)a3
+- (void)onVideoRecordingStart:(id)start
 {
-  v3 = a3;
-  v5 = [[GCReplayNotificationOptions alloc] initRecordingStart];
+  startCopy = start;
+  initRecordingStart = [[GCReplayNotificationOptions alloc] initRecordingStart];
   v4 = +[GCNotificationManager sharedInstance];
-  [v4 requestNotification:v5 withReply:v3];
+  [v4 requestNotification:initRecordingStart withReply:startCopy];
 }
 
-- (void)onVideoRecordingStopWithURL:(id)a3 reply:(id)a4
+- (void)onVideoRecordingStopWithURL:(id)l reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  replyCopy = reply;
   if (gc_isInternalBuild())
   {
     [_GCAppClientProxy(GCPhotoVideoXPCProxyService) onVideoRecordingStopWithURL:reply:];
@@ -814,19 +814,19 @@ LABEL_35:
 
   v8 = v7;
   _Block_object_dispose(&v11, 8);
-  v9 = [v7 sharedRecorder];
-  [v9 saveClipToCameraRoll:v5 handler:v6];
+  sharedRecorder = [v7 sharedRecorder];
+  [sharedRecorder saveClipToCameraRoll:lCopy handler:replyCopy];
 }
 
-- (void)generateURLFor:(id)a3 withReply:(id)a4
+- (void)generateURLFor:(id)for withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = MEMORY[0x1E696AEC0];
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a3;
-  v10 = [v8 UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v7 stringWithFormat:@"%@_%@.mp4", v9, v11];
+  forCopy = for;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v7 stringWithFormat:@"%@_%@.mp4", forCopy, uUIDString];
 
   if (gc_isInternalBuild())
   {
@@ -834,18 +834,18 @@ LABEL_35:
   }
 
   v13 = NSTemporaryDirectory();
-  v14 = [v13 stringByExpandingTildeInPath];
+  stringByExpandingTildeInPath = [v13 stringByExpandingTildeInPath];
 
-  v15 = v14;
-  v16 = [v12 lastPathComponent];
-  if (![v16 length] || (objc_msgSend(v16, "isEqualToString:", @".") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"..") & 1) != 0)
+  v15 = stringByExpandingTildeInPath;
+  lastPathComponent = [v12 lastPathComponent];
+  if (![lastPathComponent length] || (objc_msgSend(lastPathComponent, "isEqualToString:", @".") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"..") & 1) != 0)
   {
     v17 = 0;
   }
 
   else
   {
-    v26 = [v15 stringByAppendingPathComponent:v16];
+    v26 = [v15 stringByAppendingPathComponent:lastPathComponent];
     v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:v26 isDirectory:0];
   }
 
@@ -898,12 +898,12 @@ LABEL_22:
 
   v25 = 0;
 LABEL_23:
-  v6[2](v6, v17, v25);
+  replyCopy[2](replyCopy, v17, v25);
 }
 
-- (void)takeScreenshotWithReply:(id)a3
+- (void)takeScreenshotWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (gc_isInternalBuild())
   {
     [_GCAppClientProxy(GCPhotoVideoXPCProxyService) takeScreenshotWithReply:];
@@ -932,13 +932,13 @@ LABEL_23:
   if (objc_opt_respondsToSelector())
   {
     ([v6 methodForSelector:v7])(v6, v7);
-    v3[2](v3, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.GameController.gamecontrollerd.screenshot" code:3328 userInfo:0];
-    (v3)[2](v3, v8);
+    (replyCopy)[2](replyCopy, v8);
   }
 }
 

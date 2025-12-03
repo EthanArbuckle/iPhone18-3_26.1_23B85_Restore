@@ -1,10 +1,10 @@
 @interface DEVPNExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEVPNExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = +[NSFileManager defaultManager];
   v4 = [NSURL fileURLWithPath:@"/Library/Logs/CrashReporter"];
@@ -32,13 +32,13 @@
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 absoluteString];
-        v14 = [v13 rangeOfString:@"com.apple.networking.networkextension.log"];
+        absoluteString = [v12 absoluteString];
+        v14 = [absoluteString rangeOfString:@"com.apple.networking.networkextension.log"];
 
         if (v14 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v15 = [v12 pathExtension];
-          [v6 addObject:v15];
+          pathExtension = [v12 pathExtension];
+          [v6 addObject:pathExtension];
         }
       }
 

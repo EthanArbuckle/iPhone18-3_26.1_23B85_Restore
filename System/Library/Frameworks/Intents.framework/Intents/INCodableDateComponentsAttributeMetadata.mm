@@ -1,6 +1,6 @@
 @interface INCodableDateComponentsAttributeMetadata
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (INCodableDateComponentsAttributeMetadata)initWithCoder:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (INCodableDateComponentsAttributeMetadata)initWithCoder:(id)coder;
 - (id)__INCodableDescriptionDateStyleKey;
 - (id)__INCodableDescriptionFormatKey;
 - (id)__INCodableDescriptionTemplateIDKey;
@@ -19,84 +19,84 @@
 - (id)__INTypeCodableDescriptionTemplateKey;
 - (id)__INTypeCodableDescriptionTimeStyleKey;
 - (id)__INTypeCodableDescriptionTypeKey;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
 - (id)localizedFormatString;
-- (id)localizedFormatStringWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)localizedFormatStringWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableDateComponentsAttributeMetadata
 
 - (id)__INCodableDescriptionTemplateKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTemplateKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTemplateKey;
 }
 
 - (id)__INCodableDescriptionFormatKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataFormatKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataFormatKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataFormatKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataFormatKey;
 }
 
 - (id)__INCodableDescriptionDateStyleKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataDateStyleKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataDateStyleKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataDateStyleKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataDateStyleKey;
 }
 
 - (id)__INCodableDescriptionTimeStyleKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTimeStyleKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTimeStyleKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTimeStyleKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTimeStyleKey;
 }
 
 - (id)__INCodableDescriptionTemplateIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTemplateIDKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateIDKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTemplateIDKey;
 }
 
 - (id)__INCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTypeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTypeKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTypeKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTypeKey;
 }
 
-- (INCodableDateComponentsAttributeMetadata)initWithCoder:(id)a3
+- (INCodableDateComponentsAttributeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = INCodableDateComponentsAttributeMetadata;
-  v5 = [(INCodableAttributeMetadata *)&v14 initWithCoder:v4];
+  v5 = [(INCodableAttributeMetadata *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_format = [v4 decodeIntegerForKey:@"format"];
-    v5->_dateStyle = [v4 decodeIntegerForKey:@"dateStyle"];
-    v5->_timeStyle = [v4 decodeIntegerForKey:@"timeStyle"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_format = [coderCopy decodeIntegerForKey:@"format"];
+    v5->_dateStyle = [coderCopy decodeIntegerForKey:@"dateStyle"];
+    v5->_timeStyle = [coderCopy decodeIntegerForKey:@"timeStyle"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"formatString"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"formatString"];
     formatString = v5->_formatString;
     v5->_formatString = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formatStringID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formatStringID"];
     formatStringID = v5->_formatStringID;
     v5->_formatStringID = v11;
   }
@@ -104,21 +104,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCodableDateComponentsAttributeMetadata;
-  v4 = a3;
-  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_format forKey:@"format"];
-  [v4 encodeInteger:self->_dateStyle forKey:@"dateStyle"];
-  [v4 encodeInteger:self->_timeStyle forKey:@"timeStyle"];
-  [v4 encodeObject:self->_formatString forKey:@"formatString"];
-  [v4 encodeObject:self->_formatStringID forKey:@"formatStringID"];
+  coderCopy = coder;
+  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_format forKey:@"format"];
+  [coderCopy encodeInteger:self->_dateStyle forKey:@"dateStyle"];
+  [coderCopy encodeInteger:self->_timeStyle forKey:@"timeStyle"];
+  [coderCopy encodeObject:self->_formatString forKey:@"formatString"];
+  [coderCopy encodeObject:self->_formatStringID forKey:@"formatStringID"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INCodableDateComponentsAttributeMetadata;
@@ -128,11 +128,11 @@
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -155,13 +155,13 @@
   return v10;
 }
 
-- (id)localizedFormatStringWithLocalizer:(id)a3
+- (id)localizedFormatStringWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableDateComponentsAttributeMetadata *)self formatStringID];
-  v6 = [(INCodableDateComponentsAttributeMetadata *)self formatString];
-  v7 = [(INCodableAttributeMetadata *)self _localizationTable];
-  v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+  localizerCopy = localizer;
+  formatStringID = [(INCodableDateComponentsAttributeMetadata *)self formatStringID];
+  formatString = [(INCodableDateComponentsAttributeMetadata *)self formatString];
+  _localizationTable = [(INCodableAttributeMetadata *)self _localizationTable];
+  v8 = INLocalizedStringFromCodable(formatStringID, formatString, _localizationTable, localizerCopy, 0);
 
   return v8;
 }
@@ -174,98 +174,98 @@
   return v4;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v33[6] = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = INCodableDateComponentsAttributeMetadata;
-  v4 = a3;
-  v26 = [(INCodableAttributeMetadata *)&v31 dictionaryRepresentationWithLocalizer:v4];
-  v30 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTypeKey];
-  v32[0] = v30;
-  v5 = [(INCodableDateComponentsAttributeMetadata *)self type];
+  localizerCopy = localizer;
+  v26 = [(INCodableAttributeMetadata *)&v31 dictionaryRepresentationWithLocalizer:localizerCopy];
+  __INCodableDescriptionTypeKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTypeKey];
+  v32[0] = __INCodableDescriptionTypeKey;
+  type = [(INCodableDateComponentsAttributeMetadata *)self type];
   v6 = @"DateTime";
-  if (v5 == 1)
+  if (type == 1)
   {
     v6 = @"Date";
   }
 
-  if (v5 == 2)
+  if (type == 2)
   {
     v6 = @"Time";
   }
 
   v29 = v6;
   v33[0] = v29;
-  v28 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionFormatKey];
-  v32[1] = v28;
-  v7 = [(INCodableDateComponentsAttributeMetadata *)self format];
+  __INCodableDescriptionFormatKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionFormatKey];
+  v32[1] = __INCodableDescriptionFormatKey;
+  format = [(INCodableDateComponentsAttributeMetadata *)self format];
   v8 = @"Style";
-  if (v7 == 1)
+  if (format == 1)
   {
     v8 = @"Relative";
   }
 
-  if (v7 == 2)
+  if (format == 2)
   {
     v8 = @"Template";
   }
 
   v27 = v8;
   v33[1] = v27;
-  v25 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionDateStyleKey];
-  v32[2] = v25;
-  v9 = [(INCodableDateComponentsAttributeMetadata *)self dateStyle];
-  if (v9 > 3)
+  __INCodableDescriptionDateStyleKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionDateStyleKey];
+  v32[2] = __INCodableDescriptionDateStyleKey;
+  dateStyle = [(INCodableDateComponentsAttributeMetadata *)self dateStyle];
+  if (dateStyle > 3)
   {
     v10 = @"Full";
   }
 
   else
   {
-    v10 = off_1E72833B8[v9];
+    v10 = off_1E72833B8[dateStyle];
   }
 
   v33[2] = v10;
-  v11 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTimeStyleKey];
-  v32[3] = v11;
-  v12 = [(INCodableDateComponentsAttributeMetadata *)self timeStyle];
-  if (v12 > 3)
+  __INCodableDescriptionTimeStyleKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTimeStyleKey];
+  v32[3] = __INCodableDescriptionTimeStyleKey;
+  timeStyle = [(INCodableDateComponentsAttributeMetadata *)self timeStyle];
+  if (timeStyle > 3)
   {
     v13 = @"Full";
   }
 
   else
   {
-    v13 = off_1E72833B8[v12];
+    v13 = off_1E72833B8[timeStyle];
   }
 
   v33[3] = v13;
-  v14 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTemplateKey];
-  v32[4] = v14;
-  v15 = [(INCodableDateComponentsAttributeMetadata *)self localizedFormatStringWithLocalizer:v4];
+  __INCodableDescriptionTemplateKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTemplateKey];
+  v32[4] = __INCodableDescriptionTemplateKey;
+  v15 = [(INCodableDateComponentsAttributeMetadata *)self localizedFormatStringWithLocalizer:localizerCopy];
 
-  v16 = v15;
+  null = v15;
   if (!v15)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[4] = v16;
-  v17 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTemplateIDKey];
-  v32[5] = v17;
-  v18 = [(INCodableDateComponentsAttributeMetadata *)self formatStringID];
-  v19 = v18;
-  if (!v18)
+  v33[4] = null;
+  __INCodableDescriptionTemplateIDKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTemplateIDKey];
+  v32[5] = __INCodableDescriptionTemplateIDKey;
+  formatStringID = [(INCodableDateComponentsAttributeMetadata *)self formatStringID];
+  null2 = formatStringID;
+  if (!formatStringID)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[5] = v19;
+  v33[5] = null2;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:6];
   v21 = [v26 if_dictionaryByAddingEntriesFromDictionary:v20];
 
-  if (!v18)
+  if (!formatStringID)
   {
   }
 
@@ -273,21 +273,21 @@
   {
   }
 
-  v22 = [v21 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v21 if_dictionaryWithNonEmptyValues];
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = INCodableDateComponentsAttributeMetadata;
-  [(INCodableAttributeMetadata *)&v31 updateWithDictionary:v4];
-  v5 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTypeKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  [(INCodableAttributeMetadata *)&v31 updateWithDictionary:dictionaryCopy];
+  __INCodableDescriptionTypeKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTypeKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTypeKey];
 
   if (v6)
   {
@@ -312,8 +312,8 @@
 
   v9 = INCodableDateComponentsAttributeMetadataTypeFromString(v8);
   self->_type = v9;
-  v10 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionFormatKey];
-  v11 = [v4 objectForKeyedSubscript:v10];
+  __INCodableDescriptionFormatKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionFormatKey];
+  v11 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionFormatKey];
 
   if (v11)
   {
@@ -338,8 +338,8 @@
 
   v14 = INCodableDateComponentsAttributeMetadataFormatFromString(v13);
   self->_format = v14;
-  v15 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionDateStyleKey];
-  v16 = [v4 objectForKeyedSubscript:v15];
+  __INCodableDescriptionDateStyleKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionDateStyleKey];
+  v16 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDateStyleKey];
 
   if (v16)
   {
@@ -364,8 +364,8 @@
 
   v19 = INCodableDateComponentsAttributeMetadataStyleFromString(v18);
   self->_dateStyle = v19;
-  v20 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTimeStyleKey];
-  v21 = [v4 objectForKeyedSubscript:v20];
+  __INCodableDescriptionTimeStyleKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTimeStyleKey];
+  v21 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTimeStyleKey];
 
   if (v21)
   {
@@ -390,33 +390,33 @@
 
   v24 = INCodableDateComponentsAttributeMetadataStyleFromString(v23);
   self->_timeStyle = v24;
-  v25 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTemplateKey];
-  v26 = [v4 objectForKeyedSubscript:v25];
+  __INCodableDescriptionTemplateKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTemplateKey];
+  v26 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTemplateKey];
   formatString = self->_formatString;
   self->_formatString = v26;
 
-  v28 = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTemplateIDKey];
-  v29 = [v4 objectForKeyedSubscript:v28];
+  __INCodableDescriptionTemplateIDKey = [(INCodableDateComponentsAttributeMetadata *)self __INCodableDescriptionTemplateIDKey];
+  v29 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTemplateIDKey];
   formatStringID = self->_formatStringID;
   self->_formatStringID = v29;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v17.receiver = a1;
+  representationCopy = representation;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___INCodableDateComponentsAttributeMetadata;
   v18 = 0;
-  v7 = objc_msgSendSuper2(&v17, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v18);
+  v7 = objc_msgSendSuper2(&v17, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v18);
   v8 = v18;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -427,15 +427,15 @@
 
   else
   {
-    v7[5] = [v6 intents_intForKey:@"type"];
-    v7[6] = [v6 intents_intForKey:@"format"];
-    v7[7] = [v6 intents_intForKey:@"dateStyle"];
-    v7[8] = [v6 intents_intForKey:@"timeStyle"];
-    v12 = [v6 intents_stringForKey:@"formatString"];
+    v7[5] = [representationCopy intents_intForKey:@"type"];
+    v7[6] = [representationCopy intents_intForKey:@"format"];
+    v7[7] = [representationCopy intents_intForKey:@"dateStyle"];
+    v7[8] = [representationCopy intents_intForKey:@"timeStyle"];
+    v12 = [representationCopy intents_stringForKey:@"formatString"];
     v13 = v7[9];
     v7[9] = v12;
 
-    v14 = [v6 intents_stringForKey:@"formatStringID"];
+    v14 = [representationCopy intents_stringForKey:@"formatStringID"];
     v15 = v7[10];
     v7[10] = v14;
 
@@ -447,98 +447,98 @@
 
 - (id)__INTypeCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTypeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTypeKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTypeKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTypeKey;
 }
 
 - (id)__INTypeCodableDescriptionTimeStyleKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTimeStyleKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTimeStyleKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTimeStyleKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTimeStyleKey;
 }
 
 - (id)__INTypeCodableDescriptionTemplateIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTemplateIDKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateIDKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTemplateIDKey;
 }
 
 - (id)__INTypeCodableDescriptionTemplateKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTemplateKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTemplateKey;
 }
 
 - (id)__INTypeCodableDescriptionFormatKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataFormatKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataFormatKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataFormatKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataFormatKey;
 }
 
 - (id)__INTypeCodableDescriptionDateStyleKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataDateStyleKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataDateStyleKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataDateStyleKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataDateStyleKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTypeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTypeKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTypeKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTypeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTimeStyleKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTimeStyleKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTimeStyleKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTimeStyleKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTimeStyleKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTemplateIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTemplateIDKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateIDKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTemplateIDKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTemplateKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataTemplateKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataTemplateKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataTemplateKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionFormatKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataFormatKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataFormatKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataFormatKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataFormatKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDateStyleKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableDateComponentsAttributeMetadataDateStyleKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableDateComponentsAttributeMetadataDateStyleKey = [objc_opt_class() __INCodableDateComponentsAttributeMetadataDateStyleKey];
 
-  return v3;
+  return __INCodableDateComponentsAttributeMetadataDateStyleKey;
 }
 
 @end

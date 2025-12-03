@@ -1,6 +1,6 @@
 @interface VEVideoDeghostingDetectionAndTrackingV3
-- (VEVideoDeghostingDetectionAndTrackingV3)initWithMetalContext:(id)a3 imageDimensions:(id)a4 tuningParameters:(id)a5;
-- (int)_convertGGMStatus:(int64_t)a3;
+- (VEVideoDeghostingDetectionAndTrackingV3)initWithMetalContext:(id)context imageDimensions:(id)dimensions tuningParameters:(id)parameters;
+- (int)_convertGGMStatus:(int64_t)status;
 - (int)process;
 - (int)resetState;
 - (void)dealloc;
@@ -69,8 +69,8 @@
         OneFrameFromSampleBuffer = [(VEVideoDeghostingDetectionAndTrackingV3 *)self _convertGGMStatus:[(GGMController *)self->_GGMCtrl processDetection]];
         if (!OneFrameFromSampleBuffer)
         {
-          v9 = [(GGMController *)self->_GGMCtrl detectedGreenGhostInfo];
-          v10 = [v9 objectForKeyedSubscript:@"GhostsInfoMetaData"];
+          detectedGreenGhostInfo = [(GGMController *)self->_GGMCtrl detectedGreenGhostInfo];
+          v10 = [detectedGreenGhostInfo objectForKeyedSubscript:@"GhostsInfoMetaData"];
           v11 = self->_detectionResult;
           self->_detectionResult = v10;
 
@@ -112,9 +112,9 @@
   return 0;
 }
 
-- (int)_convertGGMStatus:(int64_t)a3
+- (int)_convertGGMStatus:(int64_t)status
 {
-  if (a3 == 5)
+  if (status == 5)
   {
     v3 = 2;
   }
@@ -124,7 +124,7 @@
     v3 = 3;
   }
 
-  if (a3)
+  if (status)
   {
     return v3;
   }
@@ -135,10 +135,10 @@
   }
 }
 
-- (VEVideoDeghostingDetectionAndTrackingV3)initWithMetalContext:(id)a3 imageDimensions:(id)a4 tuningParameters:(id)a5
+- (VEVideoDeghostingDetectionAndTrackingV3)initWithMetalContext:(id)context imageDimensions:(id)dimensions tuningParameters:(id)parameters
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  parametersCopy = parameters;
   v20.receiver = self;
   v20.super_class = VEVideoDeghostingDetectionAndTrackingV3;
   v11 = [(VEVideoDeghostingDetectionAndTrackingV3 *)&v20 init];
@@ -147,17 +147,17 @@
     goto LABEL_6;
   }
 
-  v12 = createConfigDictForDetection(0, v10);
+  v12 = createConfigDictForDetection(0, parametersCopy);
   cfgDict = v11->_cfgDict;
   v11->_cfgDict = v12;
 
-  v14 = [v9 commandQueue];
+  commandQueue = [contextCopy commandQueue];
   metalCommandQueue = v11->_metalCommandQueue;
-  v11->_metalCommandQueue = v14;
+  v11->_metalCommandQueue = commandQueue;
 
-  v11->_imageDimensions = a4;
-  objc_storeStrong(&v11->_metalContext, a3);
-  v16 = [[GGMController alloc] initWithConfigDict:v11->_cfgDict metalContext:v11->_metalContext imageDimensions:a4 forDetection:1];
+  v11->_imageDimensions = dimensions;
+  objc_storeStrong(&v11->_metalContext, context);
+  v16 = [[GGMController alloc] initWithConfigDict:v11->_cfgDict metalContext:v11->_metalContext imageDimensions:dimensions forDetection:1];
   GGMCtrl = v11->_GGMCtrl;
   v11->_GGMCtrl = v16;
 

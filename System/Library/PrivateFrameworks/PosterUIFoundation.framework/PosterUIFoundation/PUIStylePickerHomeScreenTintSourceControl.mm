@@ -1,37 +1,37 @@
 @interface PUIStylePickerHomeScreenTintSourceControl
-- (PUIStylePickerHomeScreenTintSourceControl)initWithTintColor:(id)a3 tintSource:(unint64_t)a4 primaryAction:(id)a5;
-- (id)_imageViewForEnabled:(BOOL)a3;
-- (id)_symbolNameForTintSource:(unint64_t)a3;
+- (PUIStylePickerHomeScreenTintSourceControl)initWithTintColor:(id)color tintSource:(unint64_t)source primaryAction:(id)action;
+- (id)_imageViewForEnabled:(BOOL)enabled;
+- (id)_symbolNameForTintSource:(unint64_t)source;
 - (void)_updateSelectionViewMask;
-- (void)setEnabled:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTintColor:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation PUIStylePickerHomeScreenTintSourceControl
 
-- (PUIStylePickerHomeScreenTintSourceControl)initWithTintColor:(id)a3 tintSource:(unint64_t)a4 primaryAction:(id)a5
+- (PUIStylePickerHomeScreenTintSourceControl)initWithTintColor:(id)color tintSource:(unint64_t)source primaryAction:(id)action
 {
-  v8 = a3;
-  v9 = a5;
+  colorCopy = color;
+  actionCopy = action;
   +[PUIStylePickerHomeScreenTintSourceControl defaultDiameter];
   v11 = v10;
   v32.receiver = self;
   v32.super_class = PUIStylePickerHomeScreenTintSourceControl;
-  v12 = [(PUIStylePickerHomeScreenTintSourceControl *)&v32 initWithFrame:v9 primaryAction:0.0, 0.0, v11, v11];
+  v12 = [(PUIStylePickerHomeScreenTintSourceControl *)&v32 initWithFrame:actionCopy primaryAction:0.0, 0.0, v11, v11];
 
   if (v12)
   {
-    [(PUIStylePickerHomeScreenTintSourceControl *)v12 setTintColor:v8];
-    v12->_iconTintSource = a4;
+    [(PUIStylePickerHomeScreenTintSourceControl *)v12 setTintColor:colorCopy];
+    v12->_iconTintSource = source;
     v13 = [[PUITouchPassThroughView alloc] initWithFrame:0.0, 0.0, v11, v11];
-    v14 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    [(PUITouchPassThroughView *)v13 setBackgroundColor:v14];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    [(PUITouchPassThroughView *)v13 setBackgroundColor:systemWhiteColor];
 
     [(PUITouchPassThroughView *)v13 setAlpha:0.06];
-    v15 = [(PUITouchPassThroughView *)v13 layer];
+    layer = [(PUITouchPassThroughView *)v13 layer];
     v16 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-    [v15 setCompositingFilter:v16];
+    [layer setCompositingFilter:v16];
 
     [(PUITouchPassThroughView *)v13 _setCornerRadius:v11 * 0.5];
     backgroundView = v12->_backgroundView;
@@ -40,8 +40,8 @@
 
     [(PUIStylePickerHomeScreenTintSourceControl *)v12 addSubview:v12->_backgroundView];
     v19 = [[PUITouchPassThroughView alloc] initWithFrame:0.0, 0.0, v11, v11];
-    v20 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    [(PUITouchPassThroughView *)v19 setBackgroundColor:v20];
+    systemWhiteColor2 = [MEMORY[0x1E69DC888] systemWhiteColor];
+    [(PUITouchPassThroughView *)v19 setBackgroundColor:systemWhiteColor2];
 
     [(PUITouchPassThroughView *)v19 _setCornerRadius:v11 * 0.5];
     [(PUITouchPassThroughView *)v18 center];
@@ -54,13 +54,13 @@
     [(PUIStylePickerHomeScreenTintSourceControl *)v12 addSubview:v22];
     [(PUIStylePickerHomeScreenTintSourceControl *)v12 _updateSelectionViewMask];
     v23 = [[PUITouchPassThroughView alloc] initWithFrame:0.0, 0.0, 40.6666667, 40.6666667];
-    [(PUITouchPassThroughView *)v23 setBackgroundColor:v8];
+    [(PUITouchPassThroughView *)v23 setBackgroundColor:colorCopy];
     [(PUITouchPassThroughView *)v23 _setCornerRadius:20.3333333];
     [(PUITouchPassThroughView *)v18 center];
     [(PUITouchPassThroughView *)v23 setCenter:?];
-    v24 = [(PUITouchPassThroughView *)v23 layer];
-    v25 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    [v24 setBorderColor:{objc_msgSend(v25, "CGColor")}];
+    layer2 = [(PUITouchPassThroughView *)v23 layer];
+    systemWhiteColor3 = [MEMORY[0x1E69DC888] systemWhiteColor];
+    [layer2 setBorderColor:{objc_msgSend(systemWhiteColor3, "CGColor")}];
 
     colorFillView = v12->_colorFillView;
     v12->_colorFillView = v23;
@@ -81,11 +81,11 @@
   return v12;
 }
 
-- (id)_symbolNameForTintSource:(unint64_t)a3
+- (id)_symbolNameForTintSource:(unint64_t)source
 {
-  if (a3 <= 1)
+  if (source <= 1)
   {
-    if (a3 == 1)
+    if (source == 1)
     {
       v3 = @"eyedropper";
       goto LABEL_13;
@@ -94,13 +94,13 @@
     goto LABEL_8;
   }
 
-  switch(a3)
+  switch(source)
   {
     case 4uLL:
-      v4 = [MEMORY[0x1E69DC938] currentDevice];
-      v5 = [v4 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
       v6 = @"iphone";
-      if (v5 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v6 = @"ipad";
       }
@@ -125,13 +125,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)_imageViewForEnabled:(BOOL)a3
+- (id)_imageViewForEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17[1] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
   v6 = 1.0;
-  if (!v3)
+  if (!enabledCopy)
   {
     v6 = 0.5;
   }
@@ -165,8 +165,8 @@ LABEL_13:
 {
   if ((([(PUIStylePickerHomeScreenTintSourceControl *)self isEnabled]& 1) != 0 || ([(PUIStylePickerHomeScreenTintSourceControl *)self isSelected]& 1) == 0) && self->_tintColor)
   {
-    v13 = [(PUITouchPassThroughView *)self->_selectionView layer];
-    [v13 setMask:0];
+    layer = [(PUITouchPassThroughView *)self->_selectionView layer];
+    [layer setMask:0];
   }
 
   else
@@ -182,35 +182,35 @@ LABEL_13:
     v16.size.width = width;
     v16.size.height = height;
     MidY = CGRectGetMidY(v16);
-    v13 = [MEMORY[0x1E69DC728] bezierPathWithRect:{x, y, width, height}];
+    layer = [MEMORY[0x1E69DC728] bezierPathWithRect:{x, y, width, height}];
     v9 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{MidX + -20.3333333, MidY + -20.3333333, 40.6666667, 40.6666667}];
-    [v13 appendPath:v9];
-    [v13 setUsesEvenOddFillRule:1];
+    [layer appendPath:v9];
+    [layer setUsesEvenOddFillRule:1];
     v10 = objc_alloc_init(MEMORY[0x1E69794A0]);
-    v11 = v13;
-    [v10 setPath:{objc_msgSend(v13, "CGPath")}];
+    v11 = layer;
+    [v10 setPath:{objc_msgSend(layer, "CGPath")}];
     [v10 setFillRule:*MEMORY[0x1E69797F8]];
-    v12 = [(PUITouchPassThroughView *)self->_selectionView layer];
-    [v12 setMask:v10];
+    layer2 = [(PUITouchPassThroughView *)self->_selectionView layer];
+    [layer2 setMask:v10];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(PUIStylePickerHomeScreenTintSourceControl *)self isSelected]!= a3)
+  animatedCopy = animated;
+  selectedCopy = selected;
+  if ([(PUIStylePickerHomeScreenTintSourceControl *)self isSelected]!= selected)
   {
     v9.receiver = self;
     v9.super_class = PUIStylePickerHomeScreenTintSourceControl;
-    [(PUIStylePickerHomeScreenTintSourceControl *)&v9 setSelected:v5];
+    [(PUIStylePickerHomeScreenTintSourceControl *)&v9 setSelected:selectedCopy];
     v7 = 0.0;
-    if (v5)
+    if (selectedCopy)
     {
       v7 = 1.0;
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -237,14 +237,14 @@ uint64_t __66__PUIStylePickerHomeScreenTintSourceControl_setSelected_animated___
   return [v2 _updateSelectionViewMask];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8.receiver = self;
   v8.super_class = PUIStylePickerHomeScreenTintSourceControl;
   [(PUIStylePickerHomeScreenTintSourceControl *)&v8 setEnabled:?];
   [(UIImageView *)self->_imageView removeFromSuperview];
-  v5 = [(PUIStylePickerHomeScreenTintSourceControl *)self _imageViewForEnabled:v3];
+  v5 = [(PUIStylePickerHomeScreenTintSourceControl *)self _imageViewForEnabled:enabledCopy];
   [(PUITouchPassThroughView *)self->_backgroundView center];
   [(UIImageView *)v5 setCenter:?];
   imageView = self->_imageView;
@@ -255,13 +255,13 @@ uint64_t __66__PUIStylePickerHomeScreenTintSourceControl_setSelected_animated___
   [(PUIStylePickerHomeScreenTintSourceControl *)self _updateSelectionViewMask];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_tintColor != v5)
+  colorCopy = color;
+  if (self->_tintColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_tintColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(&self->_tintColor, color);
     colorFillView = self->_colorFillView;
     if (colorFillView)
     {

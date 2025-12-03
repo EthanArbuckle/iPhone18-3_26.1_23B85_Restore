@@ -7,16 +7,16 @@
 - (NSDictionary)invalidatedDecorationIndexPaths;
 - (NSDictionary)invalidatedSupplementaryIndexPaths;
 - (uint64_t)_shouldInvalidatePreferredAttributes;
-- (void)_invalidateSupplementaryElementsOfKind:(id)a3 atIndexPaths:(id)a4;
+- (void)_invalidateSupplementaryElementsOfKind:(id)kind atIndexPaths:(id)paths;
 - (void)_orthogonalSectionsWithContentSizeChanges;
-- (void)_removeInvalidatedDecorationOfKind:(id)a3 indexPath:(id)a4;
-- (void)_removeInvalidatedSupplementaryOfKind:(id)a3 indexPath:(id)a4;
-- (void)_setInvalidateEverything:(BOOL)a3;
-- (void)_setInvalidatedSupplementaryViews:(id)a3;
-- (void)_setPreviousIndexPathsForInteractivelyMovingItems:(id)a3;
-- (void)_setShouldInvalidateCollectionViewContentSize:(BOOL)a3;
-- (void)_setTargetIndexPathsForInteractivelyMovingItems:(id)a3;
-- (void)_setUpdateItems:(id)a3;
+- (void)_removeInvalidatedDecorationOfKind:(id)kind indexPath:(id)path;
+- (void)_removeInvalidatedSupplementaryOfKind:(id)kind indexPath:(id)path;
+- (void)_setInvalidateEverything:(BOOL)everything;
+- (void)_setInvalidatedSupplementaryViews:(id)views;
+- (void)_setPreviousIndexPathsForInteractivelyMovingItems:(id)items;
+- (void)_setShouldInvalidateCollectionViewContentSize:(BOOL)size;
+- (void)_setTargetIndexPathsForInteractivelyMovingItems:(id)items;
+- (void)_setUpdateItems:(id)items;
 - (void)invalidateDecorationElementsOfKind:(NSString *)elementKind atIndexPaths:(NSArray *)indexPaths;
 - (void)invalidateItemsAtIndexPaths:(NSArray *)indexPaths;
 @end
@@ -30,9 +30,9 @@
     v1 = result;
     if (dyld_program_sdk_at_least())
     {
-      v2 = [v1 _intent];
+      _intent = [v1 _intent];
       result = 1;
-      if (v2 <= 0xF && ((1 << v2) & 0x8062) != 0)
+      if (_intent <= 0xF && ((1 << _intent) & 0x8062) != 0)
       {
         return (v1[112] >> 1) & 1;
       }
@@ -49,50 +49,50 @@
 
 - (BOOL)_requiresFullCacheInvalidation
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (a1[112] & 0x10) != 0 || dyld_program_sdk_at_least() && ([a1 invalidateEverything])
+  if (self[112] & 0x10) != 0 || dyld_program_sdk_at_least() && ([self invalidateEverything])
   {
     return 1;
   }
 
-  v2 = [a1 invalidatedItemIndexPaths];
-  if ([v2 count])
+  invalidatedItemIndexPaths = [self invalidatedItemIndexPaths];
+  if ([invalidatedItemIndexPaths count])
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = [a1 invalidatedSupplementaryIndexPaths];
-    if ([v4 count])
+    invalidatedSupplementaryIndexPaths = [self invalidatedSupplementaryIndexPaths];
+    if ([invalidatedSupplementaryIndexPaths count])
     {
       v3 = 0;
     }
 
     else
     {
-      v5 = [a1 invalidatedDecorationIndexPaths];
-      v3 = [v5 count] == 0;
+      invalidatedDecorationIndexPaths = [self invalidatedDecorationIndexPaths];
+      v3 = [invalidatedDecorationIndexPaths count] == 0;
     }
   }
 
-  v6 = [a1 _intent];
-  v7 = v6;
-  if (v6 > 0xF)
+  _intent = [self _intent];
+  v7 = _intent;
+  if (_intent > 0xF)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:sel__requiresFullCacheInvalidation object:a1 file:@"UICollectionViewLayout.m" lineNumber:1002 description:{@"UICollectionView internal bug: Created context with unknown intent: %lld. Context: %@", v7, a1}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__requiresFullCacheInvalidation object:self file:@"UICollectionViewLayout.m" lineNumber:1002 description:{@"UICollectionView internal bug: Created context with unknown intent: %lld. Context: %@", v7, self}];
 
     return 1;
   }
 
-  if (((1 << v6) & 0xE5B) == 0)
+  if (((1 << _intent) & 0xE5B) == 0)
   {
-    return ((1 << v6) & 0x71A4) != 0;
+    return ((1 << _intent) & 0x71A4) != 0;
   }
 
   return v3;
@@ -174,9 +174,9 @@ void __76__UICollectionViewLayoutInvalidationContext_invalidatedDecorationIndexP
   [*(a1 + 32) setObject:v5 forKeyedSubscript:a2];
 }
 
-- (void)_setInvalidatedSupplementaryViews:(id)a3
+- (void)_setInvalidatedSupplementaryViews:(id)views
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(views, "count")}];
   invalidatedSupplementaryIndexPaths = self->_invalidatedSupplementaryIndexPaths;
   self->_invalidatedSupplementaryIndexPaths = v5;
 
@@ -185,7 +185,7 @@ void __76__UICollectionViewLayoutInvalidationContext_invalidatedDecorationIndexP
   v7[2] = __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementaryViews___block_invoke;
   v7[3] = &unk_1E70F6948;
   v7[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  [views enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementaryViews___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -211,9 +211,9 @@ void __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementar
   [*(*(a1 + 32) + 16) setObject:v6 forKeyedSubscript:a2];
 }
 
-- (void)_invalidateSupplementaryElementsOfKind:(id)a3 atIndexPaths:(id)a4
+- (void)_invalidateSupplementaryElementsOfKind:(id)kind atIndexPaths:(id)paths
 {
-  if (a3 && a4)
+  if (kind && paths)
   {
     invalidatedSupplementaryIndexPaths = self->_invalidatedSupplementaryIndexPaths;
     if (!invalidatedSupplementaryIndexPaths)
@@ -225,17 +225,17 @@ void __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementar
       invalidatedSupplementaryIndexPaths = self->_invalidatedSupplementaryIndexPaths;
     }
 
-    v10 = [(NSMutableDictionary *)invalidatedSupplementaryIndexPaths objectForKeyedSubscript:a3];
+    v10 = [(NSMutableDictionary *)invalidatedSupplementaryIndexPaths objectForKeyedSubscript:kind];
     v12 = v10;
     if (v10)
     {
-      [v10 addObjectsFromArray:a4];
+      [v10 addObjectsFromArray:paths];
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:a4];
-      [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexPaths setObject:v11 forKeyedSubscript:a3];
+      v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:paths];
+      [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexPaths setObject:v11 forKeyedSubscript:kind];
     }
   }
 }
@@ -258,19 +258,19 @@ void __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementar
   }
 }
 
-- (void)_removeInvalidatedSupplementaryOfKind:(id)a3 indexPath:(id)a4
+- (void)_removeInvalidatedSupplementaryOfKind:(id)kind indexPath:(id)path
 {
   v7 = [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexPaths objectForKeyedSubscript:?];
   v8 = v7;
   if (v7)
   {
     v10 = v7;
-    [v7 removeObject:a4];
+    [v7 removeObject:path];
     v9 = [v10 count];
     v8 = v10;
     if (!v9)
     {
-      [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexPaths removeObjectForKey:a3];
+      [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexPaths removeObjectForKey:kind];
       v8 = v10;
     }
   }
@@ -302,27 +302,27 @@ void __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementar
   }
 }
 
-- (void)_removeInvalidatedDecorationOfKind:(id)a3 indexPath:(id)a4
+- (void)_removeInvalidatedDecorationOfKind:(id)kind indexPath:(id)path
 {
   v7 = [(NSMutableDictionary *)self->_invalidatedDecorationIndexPaths objectForKeyedSubscript:?];
   v8 = v7;
   if (v7)
   {
     v10 = v7;
-    [v7 removeObject:a4];
+    [v7 removeObject:path];
     v9 = [v10 count];
     v8 = v10;
     if (!v9)
     {
-      [(NSMutableDictionary *)self->_invalidatedDecorationIndexPaths removeObjectForKey:a3];
+      [(NSMutableDictionary *)self->_invalidatedDecorationIndexPaths removeObjectForKey:kind];
       v8 = v10;
     }
   }
 }
 
-- (void)_setInvalidateEverything:(BOOL)a3
+- (void)_setInvalidateEverything:(BOOL)everything
 {
-  if (a3)
+  if (everything)
   {
     v3 = 2;
   }
@@ -335,13 +335,13 @@ void __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementar
   *&self->_invalidationContextFlags = *&self->_invalidationContextFlags & 0xFD | v3;
 }
 
-- (void)_setUpdateItems:(id)a3
+- (void)_setUpdateItems:(id)items
 {
   updateItems = self->_updateItems;
   p_updateItems = &self->_updateItems;
-  if (updateItems != a3)
+  if (updateItems != items)
   {
-    objc_storeStrong(p_updateItems, a3);
+    objc_storeStrong(p_updateItems, items);
   }
 }
 
@@ -352,23 +352,23 @@ void __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementar
   return v2;
 }
 
-- (void)_setPreviousIndexPathsForInteractivelyMovingItems:(id)a3
+- (void)_setPreviousIndexPathsForInteractivelyMovingItems:(id)items
 {
-  if (self->_previousIndexPathsForReorderedItems != a3)
+  if (self->_previousIndexPathsForReorderedItems != items)
   {
-    v5 = [a3 copy];
+    v5 = [items copy];
     previousIndexPathsForReorderedItems = self->_previousIndexPathsForReorderedItems;
     self->_previousIndexPathsForReorderedItems = v5;
   }
 }
 
-- (void)_setTargetIndexPathsForInteractivelyMovingItems:(id)a3
+- (void)_setTargetIndexPathsForInteractivelyMovingItems:(id)items
 {
   targetIndexPathsForReorderedItems = self->_targetIndexPathsForReorderedItems;
   p_targetIndexPathsForReorderedItems = &self->_targetIndexPathsForReorderedItems;
-  if (targetIndexPathsForReorderedItems != a3)
+  if (targetIndexPathsForReorderedItems != items)
   {
-    objc_storeStrong(p_targetIndexPathsForReorderedItems, a3);
+    objc_storeStrong(p_targetIndexPathsForReorderedItems, items);
   }
 }
 
@@ -383,29 +383,29 @@ void __79__UICollectionViewLayoutInvalidationContext__setInvalidatedSupplementar
 
 - (void)_orthogonalSectionsWithContentSizeChanges
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[13];
+    selfCopy = self;
+    v3 = self[13];
     if (!v3)
     {
       v4 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      v5 = v2[13];
-      v2[13] = v4;
+      v5 = selfCopy[13];
+      selfCopy[13] = v4;
 
-      v3 = v2[13];
+      v3 = selfCopy[13];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_setShouldInvalidateCollectionViewContentSize:(BOOL)a3
+- (void)_setShouldInvalidateCollectionViewContentSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4;
   }

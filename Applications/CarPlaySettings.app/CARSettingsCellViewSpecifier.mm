@@ -1,26 +1,26 @@
 @interface CARSettingsCellViewSpecifier
 - (BOOL)canBecomeFocused;
 - (CARSettingsCellViewProtocol)cellView;
-- (CARSettingsCellViewSpecifier)initWithView:(id)a3 actionBlock:(id)a4;
+- (CARSettingsCellViewSpecifier)initWithView:(id)view actionBlock:(id)block;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (void)setFocused:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (void)setFocused:(BOOL)focused;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CARSettingsCellViewSpecifier
 
-- (CARSettingsCellViewSpecifier)initWithView:(id)a3 actionBlock:(id)a4
+- (CARSettingsCellViewSpecifier)initWithView:(id)view actionBlock:(id)block
 {
-  v7 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = CARSettingsCellViewSpecifier;
-  v8 = [(CARSettingsCellSpecifier *)&v11 initWithTitle:0 image:0 icon:0 accessoryType:0 actionBlock:a4];
+  v8 = [(CARSettingsCellSpecifier *)&v11 initWithTitle:0 image:0 icon:0 accessoryType:0 actionBlock:block];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_view, a3);
+    objc_storeStrong(&v8->_view, view);
   }
 
   return v9;
@@ -28,8 +28,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CARSettingsCellViewSpecifier *)self view];
-  [v2 intrinsicContentSize];
+  view = [(CARSettingsCellViewSpecifier *)self view];
+  [view intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -40,12 +40,12 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CARSettingsCellViewSpecifier *)self view];
-  [v5 systemLayoutSizeFittingSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  view = [(CARSettingsCellViewSpecifier *)self view];
+  [view systemLayoutSizeFittingSize:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -58,60 +58,60 @@
 
 - (CARSettingsCellViewProtocol)cellView
 {
-  v3 = [(CARSettingsCellViewSpecifier *)self view];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___CARSettingsCellViewProtocol];
+  view = [(CARSettingsCellViewSpecifier *)self view];
+  v4 = [view conformsToProtocol:&OBJC_PROTOCOL___CARSettingsCellViewProtocol];
 
   if (v4)
   {
-    v5 = [(CARSettingsCellViewSpecifier *)self view];
+    view2 = [(CARSettingsCellViewSpecifier *)self view];
   }
 
   else
   {
-    v5 = 0;
+    view2 = 0;
   }
 
-  return v5;
+  return view2;
 }
 
 - (BOOL)canBecomeFocused
 {
-  v2 = [(CARSettingsCellViewSpecifier *)self view];
-  v3 = [v2 canBecomeFocused];
+  view = [(CARSettingsCellViewSpecifier *)self view];
+  canBecomeFocused = [view canBecomeFocused];
 
-  return v3;
+  return canBecomeFocused;
 }
 
-- (void)setFocused:(BOOL)a3
+- (void)setFocused:(BOOL)focused
 {
-  if (self->_focused != a3)
+  if (self->_focused != focused)
   {
-    v4 = a3;
-    self->_focused = a3;
-    v5 = [(CARSettingsCellViewSpecifier *)self cellView];
-    [v5 setCellFocused:v4];
+    focusedCopy = focused;
+    self->_focused = focused;
+    cellView = [(CARSettingsCellViewSpecifier *)self cellView];
+    [cellView setCellFocused:focusedCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    v4 = a3;
-    self->_highlighted = a3;
-    v5 = [(CARSettingsCellViewSpecifier *)self cellView];
-    [v5 setCellHighlighted:v4];
+    highlightedCopy = highlighted;
+    self->_highlighted = highlighted;
+    cellView = [(CARSettingsCellViewSpecifier *)self cellView];
+    [cellView setCellHighlighted:highlightedCopy];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v4 = a3;
-    self->_selected = a3;
-    v5 = [(CARSettingsCellViewSpecifier *)self cellView];
-    [v5 setCellSelected:v4];
+    selectedCopy = selected;
+    self->_selected = selected;
+    cellView = [(CARSettingsCellViewSpecifier *)self cellView];
+    [cellView setCellSelected:selectedCopy];
   }
 }
 

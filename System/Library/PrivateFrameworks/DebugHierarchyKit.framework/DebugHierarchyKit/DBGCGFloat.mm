@@ -1,13 +1,13 @@
 @interface DBGCGFloat
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withValue:(double)a3;
-- (DBGCGFloat)initWithCGFloat:(double)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withValue:(double)value;
+- (DBGCGFloat)initWithCGFloat:(double)float;
 - (NSString)debugDescription;
 - (NSString)description;
 - (double)CGFloatValue;
 - (id)JSONCompatibleRepresentation;
 - (id)objectValue;
-- (void)setCGFloatValue:(double)a3;
+- (void)setCGFloatValue:(double)value;
 @end
 
 @implementation DBGCGFloat
@@ -29,30 +29,30 @@
   return result;
 }
 
-- (void)setCGFloatValue:(double)a3
+- (void)setCGFloatValue:(double)value
 {
   if ([(DBGCGFloat *)self backingTypeIsDouble])
   {
 
-    [(DBGCGFloat *)self setDoubleValue:a3];
+    [(DBGCGFloat *)self setDoubleValue:value];
   }
 
   else
   {
 
-    *&v5 = a3;
+    *&v5 = value;
     [(DBGCGFloat *)self setFloatValue:v5];
   }
 }
 
-+ (id)withValue:(double)a3
++ (id)withValue:(double)value
 {
-  v3 = [[a1 alloc] initWithCGFloat:a3];
+  v3 = [[self alloc] initWithCGFloat:value];
 
   return v3;
 }
 
-- (DBGCGFloat)initWithCGFloat:(double)a3
+- (DBGCGFloat)initWithCGFloat:(double)float
 {
   v7.receiver = self;
   v7.super_class = DBGCGFloat;
@@ -61,7 +61,7 @@
   if (v4)
   {
     v4->_backingTypeIsDouble = 1;
-    [(DBGCGFloat *)v4 setCGFloatValue:a3];
+    [(DBGCGFloat *)v4 setCGFloatValue:float];
   }
 
   return v5;
@@ -76,8 +76,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGCGFloat *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGCGFloat *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -92,10 +92,10 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if (![a4 isEqualToString:@"CGf"])
+  valueCopy = value;
+  if (![format isEqualToString:@"CGf"])
   {
     goto LABEL_6;
   }
@@ -103,28 +103,28 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 doubleValue];
+    [valueCopy doubleValue];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 dbgCGFloatValue];
+    [valueCopy dbgCGFloatValue];
   }
 
   else
   {
 LABEL_6:
     v9 = 0.0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
 LABEL_9:
-  v10 = [a1 withValue:v9];
+  v10 = [self withValue:v9];
 
   return v10;
 }

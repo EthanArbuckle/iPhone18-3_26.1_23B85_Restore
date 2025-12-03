@@ -33,9 +33,9 @@
 - (void)takeTransaction
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [(STYSignpostsMonitorHelper *)self osTransaction];
+  osTransaction = [(STYSignpostsMonitorHelper *)self osTransaction];
 
-  if (!v3)
+  if (!osTransaction)
   {
     ClassName = object_getClassName(self);
     snprintf(__str, 0x80uLL, "com.apple.sentry.signpostsMonitor.%s", ClassName);
@@ -65,9 +65,9 @@
 - (NSString)name
 {
   v3 = +[STYFrameworkHelper sharedHelper];
-  v4 = [v3 logHandle];
+  logHandle = [v3 logHandle];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_FAULT))
   {
     [(STYSignpostsMonitorHelper *)self name];
   }
@@ -78,9 +78,9 @@
 - (SignpostSupportSubsystemCategoryAllowlist)allowList
 {
   v3 = +[STYFrameworkHelper sharedHelper];
-  v4 = [v3 logHandle];
+  logHandle = [v3 logHandle];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_FAULT))
   {
     [(STYSignpostsMonitorHelper *)self name];
   }
@@ -91,7 +91,7 @@
 - (void)name
 {
   v9 = *MEMORY[0x277D85DE8];
-  object_getClassName(a1);
+  object_getClassName(self);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_14(&dword_2656CE000, v1, v2, "allowList need to be overridden by %s", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];

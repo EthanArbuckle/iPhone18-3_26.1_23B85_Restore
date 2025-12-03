@@ -1,24 +1,24 @@
 @interface CLSTaxonomyBasedModel
-- (BOOL)nodeIsSupported:(id)a3;
-- (BOOL)nodeRefIsSupported:(void *)a3;
-- (CLSTaxonomyBasedModel)initWithSceneTaxonomy:(id)a3;
-- (id)confidenceThresholdBySceneIdentifierForSceneNames:(id)a3 withThresholdType:(unint64_t)a4;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
-- (id)sceneIdentifierBySceneNameForSceneNames:(id)a3;
-- (id)sceneIdentifiersForSceneNames:(id)a3 includingChildScenes:(BOOL)a4;
-- (id)sceneIdentifiersFromSceneClassifications:(id)a3 passingThresholdOfType:(unint64_t)a4;
-- (id)sceneNamesFromSceneClassifications:(id)a3 passingThresholdOfType:(unint64_t)a4;
-- (id)taxonomyNodeForName:(id)a3;
-- (id)taxonomyNodeForSceneIdentifier:(unint64_t)a3;
-- (void)taxonomyNodeRefForName:(id)a3;
-- (void)taxonomyNodeRefForSceneIdentifier:(unint64_t)a3;
+- (BOOL)nodeIsSupported:(id)supported;
+- (BOOL)nodeRefIsSupported:(void *)supported;
+- (CLSTaxonomyBasedModel)initWithSceneTaxonomy:(id)taxonomy;
+- (id)confidenceThresholdBySceneIdentifierForSceneNames:(id)names withThresholdType:(unint64_t)type;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
+- (id)sceneIdentifierBySceneNameForSceneNames:(id)names;
+- (id)sceneIdentifiersForSceneNames:(id)names includingChildScenes:(BOOL)scenes;
+- (id)sceneIdentifiersFromSceneClassifications:(id)classifications passingThresholdOfType:(unint64_t)type;
+- (id)sceneNamesFromSceneClassifications:(id)classifications passingThresholdOfType:(unint64_t)type;
+- (id)taxonomyNodeForName:(id)name;
+- (id)taxonomyNodeForSceneIdentifier:(unint64_t)identifier;
+- (void)taxonomyNodeRefForName:(id)name;
+- (void)taxonomyNodeRefForSceneIdentifier:(unint64_t)identifier;
 @end
 
 @implementation CLSTaxonomyBasedModel
 
-- (void)taxonomyNodeRefForName:(id)a3
+- (void)taxonomyNodeRefForName:(id)name
 {
-  result = [(PFSceneTaxonomy *)self->_sceneTaxonomy nodeRefForName:a3];
+  result = [(PFSceneTaxonomy *)self->_sceneTaxonomy nodeRefForName:name];
   if (result)
   {
     v5 = result;
@@ -36,9 +36,9 @@
   return result;
 }
 
-- (void)taxonomyNodeRefForSceneIdentifier:(unint64_t)a3
+- (void)taxonomyNodeRefForSceneIdentifier:(unint64_t)identifier
 {
-  result = [(PFSceneTaxonomy *)self->_sceneTaxonomy nodeRefForExtendedSceneClassId:a3];
+  result = [(PFSceneTaxonomy *)self->_sceneTaxonomy nodeRefForExtendedSceneClassId:identifier];
   if (result)
   {
     v5 = result;
@@ -56,9 +56,9 @@
   return result;
 }
 
-- (id)taxonomyNodeForName:(id)a3
+- (id)taxonomyNodeForName:(id)name
 {
-  v4 = [(PFSceneTaxonomy *)self->_sceneTaxonomy nodeForName:a3];
+  v4 = [(PFSceneTaxonomy *)self->_sceneTaxonomy nodeForName:name];
   if (v4 && ![(CLSTaxonomyBasedModel *)self nodeIsSupported:v4])
   {
 
@@ -68,9 +68,9 @@
   return v4;
 }
 
-- (id)taxonomyNodeForSceneIdentifier:(unint64_t)a3
+- (id)taxonomyNodeForSceneIdentifier:(unint64_t)identifier
 {
-  v4 = [(PFSceneTaxonomy *)self->_sceneTaxonomy nodeForExtendedSceneClassId:a3];
+  v4 = [(PFSceneTaxonomy *)self->_sceneTaxonomy nodeForExtendedSceneClassId:identifier];
   if (v4 && ![(CLSTaxonomyBasedModel *)self nodeIsSupported:v4])
   {
 
@@ -80,32 +80,32 @@
   return v4;
 }
 
-- (BOOL)nodeRefIsSupported:(void *)a3
+- (BOOL)nodeRefIsSupported:(void *)supported
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"CLSTaxonomyBasedModel.m" lineNumber:265 description:@"Subclasses need to implement this"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CLSTaxonomyBasedModel.m" lineNumber:265 description:@"Subclasses need to implement this"];
 
   return 0;
 }
 
-- (BOOL)nodeIsSupported:(id)a3
+- (BOOL)nodeIsSupported:(id)supported
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"CLSTaxonomyBasedModel.m" lineNumber:260 description:@"Subclasses need to implement this"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CLSTaxonomyBasedModel.m" lineNumber:260 description:@"Subclasses need to implement this"];
 
   return 0;
 }
 
-- (id)sceneIdentifiersFromSceneClassifications:(id)a3 passingThresholdOfType:(unint64_t)a4
+- (id)sceneIdentifiersFromSceneClassifications:(id)classifications passingThresholdOfType:(unint64_t)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  classificationsCopy = classifications;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = classificationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -121,13 +121,13 @@
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 extendedSceneIdentifier];
-        if ([(CLSTaxonomyBasedModel *)self taxonomyNodeRefForSceneIdentifier:v14])
+        extendedSceneIdentifier = [v13 extendedSceneIdentifier];
+        if ([(CLSTaxonomyBasedModel *)self taxonomyNodeRefForSceneIdentifier:extendedSceneIdentifier])
         {
           v15 = 1.79769313e308;
-          if (a4 > 3)
+          if (type > 3)
           {
-            switch(a4)
+            switch(type)
             {
               case 4uLL:
                 PFSceneTaxonomyNodeF1Threshold();
@@ -145,7 +145,7 @@
 
           else
           {
-            switch(a4)
+            switch(type)
             {
               case 1uLL:
                 PFSceneTaxonomyNodeSearchThreshold();
@@ -161,7 +161,7 @@ LABEL_21:
                 [v13 confidence];
                 if (v17 >= v15)
                 {
-                  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v14];
+                  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:extendedSceneIdentifier];
                   [v7 addObject:v18];
                 }
 
@@ -185,16 +185,16 @@ LABEL_21:
   return v7;
 }
 
-- (id)sceneNamesFromSceneClassifications:(id)a3 passingThresholdOfType:(unint64_t)a4
+- (id)sceneNamesFromSceneClassifications:(id)classifications passingThresholdOfType:(unint64_t)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  classificationsCopy = classifications;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = classificationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -213,9 +213,9 @@ LABEL_21:
         if (-[CLSTaxonomyBasedModel taxonomyNodeRefForSceneIdentifier:](self, "taxonomyNodeRefForSceneIdentifier:", [v13 extendedSceneIdentifier]))
         {
           v14 = 1.79769313e308;
-          if (a4 > 3)
+          if (type > 3)
           {
-            switch(a4)
+            switch(type)
             {
               case 4uLL:
                 PFSceneTaxonomyNodeF1Threshold();
@@ -233,7 +233,7 @@ LABEL_21:
 
           else
           {
-            switch(a4)
+            switch(type)
             {
               case 1uLL:
                 PFSceneTaxonomyNodeSearchThreshold();
@@ -273,23 +273,23 @@ LABEL_21:
   return v7;
 }
 
-- (id)confidenceThresholdBySceneIdentifierForSceneNames:(id)a3 withThresholdType:(unint64_t)a4
+- (id)confidenceThresholdBySceneIdentifierForSceneNames:(id)names withThresholdType:(unint64_t)type
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  namesCopy = names;
   v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v6;
+  obj = namesCopy;
   v7 = [obj countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v23;
     v10 = MEMORY[0x277D86220];
-    v19 = a4;
+    typeCopy = type;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -302,9 +302,9 @@ LABEL_21:
         v12 = *(*(&v22 + 1) + 8 * i);
         if ([(CLSTaxonomyBasedModel *)self taxonomyNodeRefForName:v12])
         {
-          if (a4 > 3)
+          if (type > 3)
           {
-            switch(a4)
+            switch(type)
             {
               case 4uLL:
                 PFSceneTaxonomyNodeF1Threshold();
@@ -320,7 +320,7 @@ LABEL_21:
 
           else
           {
-            switch(a4)
+            switch(type)
             {
               case 1uLL:
                 PFSceneTaxonomyNodeSearchThreshold();
@@ -337,7 +337,7 @@ LABEL_22:
                   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:PFSceneTaxonomyNodeExtendedSceneClassId()];
                   [v20 setObject:v15 forKeyedSubscript:v16];
 
-                  a4 = v19;
+                  type = typeCopy;
                   goto LABEL_26;
                 }
 
@@ -351,7 +351,7 @@ LABEL_22:
             *buf = 138412546;
             v27 = v14;
             v28 = 1024;
-            v29 = a4;
+            typeCopy2 = type;
             _os_log_error_impl(&dword_25E5F0000, v10, OS_LOG_TYPE_ERROR, "No confidence threshold found for node with name %@ and thresholdType %d", buf, 0x12u);
           }
 
@@ -379,17 +379,17 @@ LABEL_26:
   return v20;
 }
 
-- (id)sceneIdentifiersForSceneNames:(id)a3 includingChildScenes:(BOOL)a4
+- (id)sceneIdentifiersForSceneNames:(id)names includingChildScenes:(BOOL)scenes
 {
-  v23 = a4;
+  scenesCopy = scenes;
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  namesCopy = names;
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
+  obj = namesCopy;
   v7 = [obj countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v7)
   {
@@ -408,8 +408,8 @@ LABEL_26:
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        v14 = [v13 lowercaseString];
-        if (([v14 isEqualToString:v13] & 1) == 0)
+        lowercaseString = [v13 lowercaseString];
+        if (([lowercaseString isEqualToString:v13] & 1) == 0)
         {
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
@@ -418,7 +418,7 @@ LABEL_26:
             _os_log_impl(&dword_25E5F0000, v11, OS_LOG_TYPE_INFO, "Scene names should be lower case, %@ is not", buf, 0xCu);
           }
 
-          v15 = v14;
+          v15 = lowercaseString;
 
           v13 = v15;
         }
@@ -430,7 +430,7 @@ LABEL_26:
           v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v16, "extendedSceneClassId")}];
           [v6 addObject:v18];
 
-          if (v23)
+          if (scenesCopy)
           {
             v24[0] = MEMORY[0x277D85DD0];
             v24[1] = 3221225472;
@@ -474,16 +474,16 @@ uint64_t __76__CLSTaxonomyBasedModel_sceneIdentifiersForSceneNames_includingChil
   return 0;
 }
 
-- (id)sceneIdentifierBySceneNameForSceneNames:(id)a3
+- (id)sceneIdentifierBySceneNameForSceneNames:(id)names
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = namesCopy;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v6)
   {
@@ -502,8 +502,8 @@ uint64_t __76__CLSTaxonomyBasedModel_sceneIdentifiersForSceneNames_includingChil
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 lowercaseString];
-        if (([v13 isEqualToString:v12] & 1) == 0)
+        lowercaseString = [v12 lowercaseString];
+        if (([lowercaseString isEqualToString:v12] & 1) == 0)
         {
           if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
           {
@@ -512,7 +512,7 @@ uint64_t __76__CLSTaxonomyBasedModel_sceneIdentifiersForSceneNames_includingChil
             _os_log_impl(&dword_25E5F0000, v10, OS_LOG_TYPE_INFO, "Scene names should be lower case, %@ is not", buf, 0xCu);
           }
 
-          v14 = v13;
+          v14 = lowercaseString;
 
           v12 = v14;
         }
@@ -544,7 +544,7 @@ uint64_t __76__CLSTaxonomyBasedModel_sceneIdentifiersForSceneNames_includingChil
   return v5;
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
   signalNodeBySignalIdentifier = self->_signalNodeBySignalIdentifier;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -552,9 +552,9 @@ uint64_t __76__CLSTaxonomyBasedModel_sceneIdentifiersForSceneNames_includingChil
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v7 != v8)
+    if (v7 != null)
     {
       goto LABEL_11;
     }
@@ -562,23 +562,23 @@ uint64_t __76__CLSTaxonomyBasedModel_sceneIdentifiersForSceneNames_includingChil
 
   else
   {
-    v7 = [(CLSTaxonomyBasedModel *)self taxonomyNodeForSceneIdentifier:a3];
+    v7 = [(CLSTaxonomyBasedModel *)self taxonomyNodeForSceneIdentifier:identifier];
     if (v7)
     {
       v9 = [[CLSTaxonomyBasedSignalNode alloc] initWithTaxonomyNode:v7];
       if (v9)
       {
         v10 = self->_signalNodeBySignalIdentifier;
-        v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-        [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:v11];
+        null2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
+        [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:null2];
       }
 
       else
       {
-        v11 = [MEMORY[0x277CBEB68] null];
+        null2 = [MEMORY[0x277CBEB68] null];
         v12 = self->_signalNodeBySignalIdentifier;
-        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-        [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
+        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
+        [(NSMutableDictionary *)v12 setObject:null2 forKeyedSubscript:v13];
       }
 
       goto LABEL_10;
@@ -594,9 +594,9 @@ LABEL_11:
   return v7;
 }
 
-- (CLSTaxonomyBasedModel)initWithSceneTaxonomy:(id)a3
+- (CLSTaxonomyBasedModel)initWithSceneTaxonomy:(id)taxonomy
 {
-  v5 = a3;
+  taxonomyCopy = taxonomy;
   v14.receiver = self;
   v14.super_class = CLSTaxonomyBasedModel;
   v6 = [(CLSTaxonomyBasedModel *)&v14 init];
@@ -610,10 +610,10 @@ LABEL_11:
     signalNodeBySignalIdentifier = v6->_signalNodeBySignalIdentifier;
     v6->_signalNodeBySignalIdentifier = v9;
 
-    objc_storeStrong(&v6->_sceneTaxonomy, a3);
-    v11 = [(PFSceneTaxonomy *)v6->_sceneTaxonomy digest];
+    objc_storeStrong(&v6->_sceneTaxonomy, taxonomy);
+    digest = [(PFSceneTaxonomy *)v6->_sceneTaxonomy digest];
     identifier = v6->_identifier;
-    v6->_identifier = v11;
+    v6->_identifier = digest;
   }
 
   return v6;

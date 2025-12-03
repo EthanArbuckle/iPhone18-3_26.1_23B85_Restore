@@ -1,25 +1,25 @@
 @interface CNContactListPrivacyTitleView
-- (CNContactListPrivacyTitleView)initWithTitle:(id)a3 hasIcon:(BOOL)a4;
-- (id)_titleTextWithIcon:(id)a3;
+- (CNContactListPrivacyTitleView)initWithTitle:(id)title hasIcon:(BOOL)icon;
+- (id)_titleTextWithIcon:(id)icon;
 - (void)_setupTitleLabel;
 - (void)_updateTitleLabel;
-- (void)setHasIcon:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setHasIcon:(BOOL)icon;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CNContactListPrivacyTitleView
 
-- (id)_titleTextWithIcon:(id)a3
+- (id)_titleTextWithIcon:(id)icon
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DCAD8];
-  v4 = a3;
+  iconCopy = icon;
   v5 = [v3 configurationWithPointSize:24.0];
   v6 = MEMORY[0x1E69DCAD8];
-  v7 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  v24[0] = v7;
-  v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v24[1] = v8;
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  v24[0] = systemWhiteColor;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v24[1] = systemBlueColor;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v10 = [v6 configurationWithPaletteColors:v9];
 
@@ -38,7 +38,7 @@
   [v14 appendAttributedString:v17];
 
   v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v19 = [@" " stringByAppendingString:v4];
+  v19 = [@" " stringByAppendingString:iconCopy];
 
   v20 = [v18 initWithString:v19];
   [v14 appendAttributedString:v20];
@@ -69,50 +69,50 @@
   self->_titleLabel = v3;
   v5 = v3;
 
-  v6 = [(UILabel *)v5 font];
-  v7 = [v6 fontDescriptor];
-  v19 = [v7 fontDescriptorWithSymbolicTraits:2];
+  font = [(UILabel *)v5 font];
+  fontDescriptor = [font fontDescriptor];
+  v19 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v8 = [MEMORY[0x1E69DB878] fontWithDescriptor:v19 size:0.0];
   [(UILabel *)v5 setFont:v8];
 
   [(UILabel *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CNContactListPrivacyTitleView *)self _updateTitleLabel];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [(UILabel *)v5 widthAnchor];
-  v11 = [(CNContactListPrivacyTitleView *)self widthAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
-  [v9 addObject:v12];
+  array = [MEMORY[0x1E695DF70] array];
+  widthAnchor = [(UILabel *)v5 widthAnchor];
+  widthAnchor2 = [(CNContactListPrivacyTitleView *)self widthAnchor];
+  v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+  [array addObject:v12];
 
-  v13 = [(UILabel *)v5 centerXAnchor];
-  v14 = [(CNContactListPrivacyTitleView *)self centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
-  [v9 addObject:v15];
+  centerXAnchor = [(UILabel *)v5 centerXAnchor];
+  centerXAnchor2 = [(CNContactListPrivacyTitleView *)self centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v15];
 
-  v16 = [(UILabel *)v5 centerYAnchor];
-  v17 = [(CNContactListPrivacyTitleView *)self centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
-  [v9 addObject:v18];
+  centerYAnchor = [(UILabel *)v5 centerYAnchor];
+  centerYAnchor2 = [(CNContactListPrivacyTitleView *)self centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v18];
 
-  [(CNContactListPrivacyTitleView *)self addConstraints:v9];
+  [(CNContactListPrivacyTitleView *)self addConstraints:array];
   [(CNContactListPrivacyTitleView *)self addSubview:v5];
 }
 
-- (void)setHasIcon:(BOOL)a3
+- (void)setHasIcon:(BOOL)icon
 {
-  if (self->_hasIcon != a3)
+  if (self->_hasIcon != icon)
   {
     v8[9] = v3;
     v8[10] = v4;
-    self->_hasIcon = a3;
+    self->_hasIcon = icon;
     v6 = MEMORY[0x1E69DD250];
-    v7 = [(CNContactListPrivacyTitleView *)self titleLabel];
+    titleLabel = [(CNContactListPrivacyTitleView *)self titleLabel];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __44__CNContactListPrivacyTitleView_setHasIcon___block_invoke;
     v8[3] = &unk_1E74E6A88;
     v8[4] = self;
-    [v6 transitionWithView:v7 duration:5308544 options:v8 animations:0 completion:0.25];
+    [v6 transitionWithView:titleLabel duration:5308544 options:v8 animations:0 completion:0.25];
   }
 }
 
@@ -124,29 +124,29 @@ uint64_t __44__CNContactListPrivacyTitleView_setHasIcon___block_invoke(uint64_t 
   return [v2 layoutIfNeeded];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (v5)
+  titleCopy = title;
+  if (titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_title, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_title, title);
     [(CNContactListPrivacyTitleView *)self _updateTitleLabel];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
-- (CNContactListPrivacyTitleView)initWithTitle:(id)a3 hasIcon:(BOOL)a4
+- (CNContactListPrivacyTitleView)initWithTitle:(id)title hasIcon:(BOOL)icon
 {
-  v7 = a3;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = CNContactListPrivacyTitleView;
   v8 = [(CNContactListPrivacyTitleView *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_title, a3);
-    v9->_hasIcon = a4;
+    objc_storeStrong(&v8->_title, title);
+    v9->_hasIcon = icon;
     [(CNContactListPrivacyTitleView *)v9 _setupTitleLabel];
     v10 = v9;
   }

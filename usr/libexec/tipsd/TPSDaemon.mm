@@ -1,88 +1,88 @@
 @interface TPSDaemon
-- (BOOL)_appXPCConnectionContainsConnection:(id)a3;
-- (BOOL)_assistantXPCConnectionContainsConnection:(id)a3;
-- (BOOL)_discoverabilityXPCConnectionContainsConnection:(id)a3;
-- (BOOL)_supportFlowXPCConnectionContainsConnection:(id)a3;
-- (BOOL)canCheckForNewTipNotification:(id)a3;
-- (BOOL)contentUpdatePostProcessingContentPackage:(id)a3 shouldUpdateNotification:(BOOL)a4 shouldDeferBlock:(id)a5 error:(id)a6;
-- (BOOL)isContentIneligibleDueToViewOnOtherDevices:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_appXPCConnectionContainsConnection:(id)connection;
+- (BOOL)_assistantXPCConnectionContainsConnection:(id)connection;
+- (BOOL)_discoverabilityXPCConnectionContainsConnection:(id)connection;
+- (BOOL)_supportFlowXPCConnectionContainsConnection:(id)connection;
+- (BOOL)canCheckForNewTipNotification:(id)notification;
+- (BOOL)contentUpdatePostProcessingContentPackage:(id)package shouldUpdateNotification:(BOOL)notification shouldDeferBlock:(id)block error:(id)error;
+- (BOOL)isContentIneligibleDueToViewOnOtherDevices:(id)devices;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)multiuserModeOn;
 - (BOOL)setupCompleted;
 - (BOOL)tipsAppInstalled;
 - (BOOL)tipsInValidState;
 - (TPSDaemon)init;
 - (id)analyticsExperiment;
-- (id)contextForIdentifier:(id)a3;
-- (id)contextualInfoForIdentifier:(id)a3;
+- (id)contextForIdentifier:(id)identifier;
+- (id)contextualInfoForIdentifier:(id)identifier;
 - (id)contextualInfoMap;
-- (id)currentExperimentWithDiscoverabilityController:(id)a3;
+- (id)currentExperimentWithDiscoverabilityController:(id)controller;
 - (id)deliveryInfoVersion;
-- (id)displayTypeForIdentifier:(id)a3;
+- (id)displayTypeForIdentifier:(id)identifier;
 - (id)experimentCampID;
 - (id)experimentID;
-- (id)shouldDeferBlockForXPCActivity:(id)a3;
-- (id)xpcActivitySetStateBlockForIdentifier:(id)a3;
-- (unint64_t)hintDisplayedCountForIdentifier:(id)a3;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6;
-- (void)_addAppXPCConnection:(id)a3;
-- (void)_addAssistantXPCConnection:(id)a3;
-- (void)_addDiscoverabilityXPCConnection:(id)a3;
-- (void)_addSupportFlowXPCConnection:(id)a3;
-- (void)_removeAppXPCConnection:(id)a3;
-- (void)_removeAssistantXPCConnection:(id)a3;
-- (void)_removeDiscoverabilityXPCConnection:(id)a3;
-- (void)_removeSupportFlowXPCConnection:(id)a3;
+- (id)shouldDeferBlockForXPCActivity:(id)activity;
+- (id)xpcActivitySetStateBlockForIdentifier:(id)identifier;
+- (unint64_t)hintDisplayedCountForIdentifier:(id)identifier;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler;
+- (void)_addAppXPCConnection:(id)connection;
+- (void)_addAssistantXPCConnection:(id)connection;
+- (void)_addDiscoverabilityXPCConnection:(id)connection;
+- (void)_addSupportFlowXPCConnection:(id)connection;
+- (void)_removeAppXPCConnection:(id)connection;
+- (void)_removeAssistantXPCConnection:(id)connection;
+- (void)_removeDiscoverabilityXPCConnection:(id)connection;
+- (void)_removeSupportFlowXPCConnection:(id)connection;
 - (void)appRemovalCleanupIfNeeded;
-- (void)availableUserGuideIdentifiersWithReply:(id)a3;
+- (void)availableUserGuideIdentifiersWithReply:(id)reply;
 - (void)cancelLegacyBackgroundTaskIfNeeded;
-- (void)cancelQueryWithIdentifier:(id)a3;
-- (void)contentForVariant:(id)a3 completionHandler:(id)a4;
-- (void)contentWithCompletionHandler:(id)a3;
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)donateHintIneligibleReason:(int64_t)a3 contentID:(id)a4 bundleID:(id)a5 context:(id)a6;
-- (void)fetchAssetsWithAssetsConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)fetchDocumentWithIdentifier:(id)a3 reply:(id)a4;
-- (void)findMatchingResultIdFromContexts:(id)a3 reply:(id)a4;
+- (void)cancelQueryWithIdentifier:(id)identifier;
+- (void)contentForVariant:(id)variant completionHandler:(id)handler;
+- (void)contentWithCompletionHandler:(id)handler;
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)donateHintIneligibleReason:(int64_t)reason contentID:(id)d bundleID:(id)iD context:(id)context;
+- (void)fetchAssetsWithAssetsConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchDocumentWithIdentifier:(id)identifier reply:(id)reply;
+- (void)findMatchingResultIdFromContexts:(id)contexts reply:(id)reply;
 - (void)handleDeviceFirstUnlockNotification;
 - (void)handleLanguageDidChangeNotification;
-- (void)hintDisplayedForIdentifier:(id)a3 correlationID:(id)a4 context:(id)a5;
-- (void)immediateNotificationForIdentifiers:(id)a3;
-- (void)indexContentPackage:(id)a3 hmtContentPackage:(id)a4;
+- (void)hintDisplayedForIdentifier:(id)identifier correlationID:(id)d context:(id)context;
+- (void)immediateNotificationForIdentifiers:(id)identifiers;
+- (void)indexContentPackage:(id)package hmtContentPackage:(id)contentPackage;
 - (void)initialize;
-- (void)logAnalyticsEvent:(id)a3;
-- (void)logAnalyticsEvents:(id)a3;
-- (void)logDaemonActiveEventWithReason:(id)a3;
+- (void)logAnalyticsEvent:(id)event;
+- (void)logAnalyticsEvents:(id)events;
+- (void)logDaemonActiveEventWithReason:(id)reason;
 - (void)logForAppTerminate;
-- (void)notificationController:(id)a3 markIdentifier:(id)a4 type:(int64_t)a5 ineligibleWithReason:(int64_t)a6;
-- (void)notificationController:(id)a3 registrableEventReceivedForDocumentIdentifier:(id)a4;
-- (void)performQuery:(id)a3 completion:(id)a4;
+- (void)notificationController:(id)controller markIdentifier:(id)identifier type:(int64_t)type ineligibleWithReason:(int64_t)reason;
+- (void)notificationController:(id)controller registrableEventReceivedForDocumentIdentifier:(id)identifier;
+- (void)performQuery:(id)query completion:(id)completion;
 - (void)prepareForNotifications;
 - (void)processAppInteractedByUser;
-- (void)registerDarwinNotification:(id)a3;
+- (void)registerDarwinNotification:(id)notification;
 - (void)registerForMobileKeyBagLockStatusNotify;
 - (void)registerForNotificationTimingDarwinNotification;
 - (void)registerImmediateNotifications;
 - (void)registerXPCEventHandlers;
-- (void)reindexAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4;
+- (void)reindexAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
 - (void)reloadAppGroupDefaults;
-- (void)removeNotificationForIdentifier:(id)a3;
+- (void)removeNotificationForIdentifier:(id)identifier;
 - (void)resetAllDataIfNeeded;
 - (void)resetBasicDefaults;
-- (void)resolveContextForKeys:(id)a3 reply:(id)a4;
+- (void)resolveContextForKeys:(id)keys reply:(id)reply;
 - (void)showNewTipNotification;
-- (void)supportFlowContentWithCompletionHandler:(id)a3;
+- (void)supportFlowContentWithCompletionHandler:(id)handler;
 - (void)tipsAppActive;
-- (void)tipsManager:(id)a3 eligibilityCompletedWithTipIdentifiers:(id)a4 contextualTipIdentifiers:(id)a5 tipsDeliveryInfoMap:(id)a6 deliveryInfoMap:(id)a7;
-- (void)unregisterDarwinNotification:(id)a3;
+- (void)tipsManager:(id)manager eligibilityCompletedWithTipIdentifiers:(id)identifiers contextualTipIdentifiers:(id)tipIdentifiers tipsDeliveryInfoMap:(id)map deliveryInfoMap:(id)infoMap;
+- (void)unregisterDarwinNotification:(id)notification;
 - (void)unregisterImmediateNotifications;
 - (void)updateNotificationStatus;
-- (void)updateSessionMapWithIdentifier:(id)a3 data:(id)a4;
-- (void)userGuideMapWithCompletionHandler:(id)a3;
-- (void)welcome:(id)a3 contentAvailableRemotelyWithCompletionHandler:(id)a4;
-- (void)welcome:(id)a3 notifyWelcomeDocument:(id)a4;
+- (void)updateSessionMapWithIdentifier:(id)identifier data:(id)data;
+- (void)userGuideMapWithCompletionHandler:(id)handler;
+- (void)welcome:(id)welcome contentAvailableRemotelyWithCompletionHandler:(id)handler;
+- (void)welcome:(id)welcome notifyWelcomeDocument:(id)document;
 @end
 
 @implementation TPSDaemon
@@ -240,9 +240,9 @@
       [(TPSDaemon *)self resetAllDataIfNeeded];
       v4 = +[TPSBluetoothChecker sharedInstance];
       v5 = +[TPSCommonDefines sharedInstance];
-      v6 = [v5 tipStatusController];
+      tipStatusController = [v5 tipStatusController];
       tipStatusController = self->_tipStatusController;
-      self->_tipStatusController = v6;
+      self->_tipStatusController = tipStatusController;
 
       v8 = [[TPSTipsManager alloc] initWithTipStatusController:self->_tipStatusController];
       tipsManager = self->_tipsManager;
@@ -276,25 +276,25 @@
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "discoverability controller %@", &v37, 0xCu);
       }
 
-      v18 = [(TPSTipStatusController *)self->_tipStatusController tipStatusMap];
-      if (![v18 count])
+      tipStatusMap = [(TPSTipStatusController *)self->_tipStatusController tipStatusMap];
+      if (![tipStatusMap count])
       {
         v19 = [TPSAnalyticsProcessingController alloc];
-        v20 = [v18 allValues];
-        v21 = [(TPSDaemon *)self contextualInfoMap];
-        v22 = [(TPSDiscoverabilityController *)self->_discoverabilityController eventsHistoryController];
-        v23 = [v22 contextualEventsForIdentifiers];
-        v24 = [(TPSTipsManager *)self->_tipsManager experiment];
-        v25 = [v19 initWithAllTipStatus:v20 contextualInfoMap:v21 eventHistoryMap:v23 experiment:v24];
+        allValues = [tipStatusMap allValues];
+        contextualInfoMap = [(TPSDaemon *)self contextualInfoMap];
+        eventsHistoryController = [(TPSDiscoverabilityController *)self->_discoverabilityController eventsHistoryController];
+        contextualEventsForIdentifiers = [eventsHistoryController contextualEventsForIdentifiers];
+        experiment = [(TPSTipsManager *)self->_tipsManager experiment];
+        v25 = [v19 initWithAllTipStatus:allValues contextualInfoMap:contextualInfoMap eventHistoryMap:contextualEventsForIdentifiers experiment:experiment];
 
         [v25 resetAnalytics];
       }
 
       [(TPSDaemon *)self cancelLegacyBackgroundTaskIfNeeded];
-      v26 = [(TPSDaemon *)self tipsInValidState];
+      tipsInValidState = [(TPSDaemon *)self tipsInValidState];
       v27 = +[TPSLogger daemon];
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-      if (v26)
+      if (tipsInValidState)
       {
         if (v28)
         {
@@ -314,22 +314,22 @@
 
         [(TPSWelcome *)self->_welcome reconnectWelcomeIfNeeded:1];
         [(TPSDaemon *)self registerImmediateNotifications];
-        v33 = [(TPSDaemon *)self notificationTimingDarwinKey];
+        notificationTimingDarwinKey = [(TPSDaemon *)self notificationTimingDarwinKey];
 
-        if (v33)
+        if (notificationTimingDarwinKey)
         {
-          v34 = [(TPSDaemon *)self notificationController];
-          v35 = [v34 notificationCache];
+          notificationController = [(TPSDaemon *)self notificationController];
+          notificationCache = [notificationController notificationCache];
 
-          v36 = [(TPSDaemon *)self notificationTimingDarwinKey];
-          if (v35)
+          notificationTimingDarwinKey2 = [(TPSDaemon *)self notificationTimingDarwinKey];
+          if (notificationCache)
           {
-            [(TPSDaemon *)self registerDarwinNotification:v36];
+            [(TPSDaemon *)self registerDarwinNotification:notificationTimingDarwinKey2];
           }
 
           else
           {
-            [(TPSDaemon *)self unregisterDarwinNotification:v36];
+            [(TPSDaemon *)self unregisterDarwinNotification:notificationTimingDarwinKey2];
           }
         }
 
@@ -381,20 +381,20 @@
   objc_destroyWeak(&location);
 }
 
-- (id)xpcActivitySetStateBlockForIdentifier:(id)a3
+- (id)xpcActivitySetStateBlockForIdentifier:(id)identifier
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100003C04;
   v6[3] = &unk_100024BB8;
-  v7 = a3;
-  v3 = v7;
+  identifierCopy = identifier;
+  v3 = identifierCopy;
   v4 = objc_retainBlock(v6);
 
   return v4;
 }
 
-- (id)shouldDeferBlockForXPCActivity:(id)a3
+- (id)shouldDeferBlockForXPCActivity:(id)activity
 {
   v9[0] = 0;
   v9[1] = v9;
@@ -404,9 +404,9 @@
   v6[1] = 3221225472;
   v6[2] = sub_100003EAC;
   v6[3] = &unk_100024BE0;
-  v7 = a3;
+  activityCopy = activity;
   v8 = v9;
-  v3 = v7;
+  v3 = activityCopy;
   v4 = objc_retainBlock(v6);
 
   _Block_object_dispose(v9, 8);
@@ -414,16 +414,16 @@
   return v4;
 }
 
-- (BOOL)contentUpdatePostProcessingContentPackage:(id)a3 shouldUpdateNotification:(BOOL)a4 shouldDeferBlock:(id)a5 error:(id)a6
+- (BOOL)contentUpdatePostProcessingContentPackage:(id)package shouldUpdateNotification:(BOOL)notification shouldDeferBlock:(id)block error:(id)error
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12 domain];
-  if ([v13 isEqualToString:TPSTipsManagerErrorDomain])
+  notificationCopy = notification;
+  packageCopy = package;
+  blockCopy = block;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:TPSTipsManagerErrorDomain])
   {
-    v14 = [v12 code] == 4;
+    v14 = [errorCopy code] == 4;
   }
 
   else
@@ -431,7 +431,7 @@
     v14 = 0;
   }
 
-  if (v14 || !v8 || ([(TPSDaemon *)self updateNotificationStatus], !v11))
+  if (v14 || !notificationCopy || ([(TPSDaemon *)self updateNotificationStatus], !blockCopy))
   {
     if (!v14)
     {
@@ -443,19 +443,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v11[2](v11))
+  if (blockCopy[2](blockCopy))
   {
     goto LABEL_12;
   }
 
 LABEL_8:
-  v15 = [(TPSDaemon *)self welcome];
-  v16 = [v15 isReminderCompleted];
+  welcome = [(TPSDaemon *)self welcome];
+  isReminderCompleted = [welcome isReminderCompleted];
 
-  if ((v16 & 1) == 0)
+  if ((isReminderCompleted & 1) == 0)
   {
-    v17 = [(TPSDaemon *)self tipsManager];
-    v18 = [v17 welcomeDocumentFromContentPackage:v10];
+    tipsManager = [(TPSDaemon *)self tipsManager];
+    v18 = [tipsManager welcomeDocumentFromContentPackage:packageCopy];
   }
 
   v19 = 0;
@@ -466,33 +466,33 @@ LABEL_13:
 
 - (void)registerXPCEventHandlers
 {
-  v3 = [(TPSDaemon *)self multiuserModeOn];
+  multiuserModeOn = [(TPSDaemon *)self multiuserModeOn];
   objc_initWeak(&location, self);
-  v4 = [@"com.apple.tipsd.postInstall-utility" UTF8String];
+  uTF8String = [@"com.apple.tipsd.postInstall-utility" UTF8String];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100004734;
   handler[3] = &unk_100024C30;
   objc_copyWeak(&v22, &location);
   handler[4] = self;
-  v23 = v3;
-  xpc_activity_register(v4, XPC_ACTIVITY_CHECK_IN, handler);
-  v5 = [@"com.apple.tipsd.update-content" UTF8String];
+  v23 = multiuserModeOn;
+  xpc_activity_register(uTF8String, XPC_ACTIVITY_CHECK_IN, handler);
+  uTF8String2 = [@"com.apple.tipsd.update-content" UTF8String];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100004920;
   v18[3] = &unk_100024C58;
   objc_copyWeak(&v19, &location);
-  v20 = v3;
-  xpc_activity_register(v5, XPC_ACTIVITY_CHECK_IN, v18);
-  v6 = [@"com.apple.tipsd.analytics-maintenance" UTF8String];
+  v20 = multiuserModeOn;
+  xpc_activity_register(uTF8String2, XPC_ACTIVITY_CHECK_IN, v18);
+  uTF8String3 = [@"com.apple.tipsd.analytics-maintenance" UTF8String];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000049CC;
   v15[3] = &unk_100024C58;
   objc_copyWeak(&v16, &location);
-  v17 = v3;
-  xpc_activity_register(v6, XPC_ACTIVITY_CHECK_IN, v15);
+  v17 = multiuserModeOn;
+  xpc_activity_register(uTF8String3, XPC_ACTIVITY_CHECK_IN, v15);
   v7 = kNSURLSessionLaunchOnDemandNotificationName;
   v8 = &_dispatch_main_q;
   xpc_set_event_stream_handler(v7, &_dispatch_main_q, &stru_100024C98);
@@ -502,7 +502,7 @@ LABEL_13:
   v12[2] = sub_100004C74;
   v12[3] = &unk_100024C58;
   objc_copyWeak(&v13, &location);
-  v14 = v3;
+  v14 = multiuserModeOn;
   xpc_set_event_stream_handler("com.apple.coreduetcontext.client_event_stream", &_dispatch_main_q, v12);
 
   v9[0] = _NSConcreteStackBlock;
@@ -510,7 +510,7 @@ LABEL_13:
   v9[2] = sub_100004E28;
   v9[3] = &unk_100024C30;
   objc_copyWeak(&v10, &location);
-  v11 = v3;
+  v11 = multiuserModeOn;
   v9[4] = self;
   xpc_set_event_stream_handler("com.apple.notifyd.matching", &_dispatch_main_q, v9);
 
@@ -552,8 +552,8 @@ LABEL_13:
   if ([v2 isMultiUser])
   {
     v3 = +[UMUserManager sharedManager];
-    v4 = [v3 currentUser];
-    v5 = [v4 userType] == 1;
+    currentUser = [v3 currentUser];
+    v5 = [currentUser userType] == 1;
   }
 
   else
@@ -584,12 +584,12 @@ LABEL_13:
 - (void)reloadAppGroupDefaults
 {
   v3 = +[TPSCommonDefines sharedInstance];
-  v4 = [v3 reloadAppGroupDefaults];
+  reloadAppGroupDefaults = [v3 reloadAppGroupDefaults];
 
   v5 = +[TPSCommonDefines sharedInstance];
-  v6 = [v5 tipStatusController];
+  tipStatusController = [v5 tipStatusController];
   tipStatusController = self->_tipStatusController;
-  self->_tipStatusController = v6;
+  self->_tipStatusController = tipStatusController;
 
   v9 = self->_tipStatusController;
   discoverabilityController = self->_discoverabilityController;
@@ -612,18 +612,18 @@ LABEL_13:
   else
   {
     self->_notificationTimingDarwinNotificationRegistered = 1;
-    v4 = [(TPSDaemon *)self notificationTimingDarwinKey];
-    [(TPSDaemon *)self registerDarwinNotification:v4];
+    notificationTimingDarwinKey = [(TPSDaemon *)self notificationTimingDarwinKey];
+    [(TPSDaemon *)self registerDarwinNotification:notificationTimingDarwinKey];
   }
 }
 
-- (void)registerDarwinNotification:(id)a3
+- (void)registerDarwinNotification:(id)notification
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  notificationCopy = notification;
+  v4 = notificationCopy;
+  if (notificationCopy)
   {
-    v5 = [v3 cStringUsingEncoding:4];
+    v5 = [notificationCopy cStringUsingEncoding:4];
     v6 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v6, "Notification", v5);
     xpc_set_event();
@@ -637,26 +637,26 @@ LABEL_13:
   }
 }
 
-- (void)unregisterDarwinNotification:(id)a3
+- (void)unregisterDarwinNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
-    v5 = [(TPSDaemon *)self notificationTimingDarwinKey];
-    v6 = [v4 isEqualToString:v5];
+    notificationTimingDarwinKey = [(TPSDaemon *)self notificationTimingDarwinKey];
+    v6 = [notificationCopy isEqualToString:notificationTimingDarwinKey];
 
     if (v6)
     {
       self->_notificationTimingDarwinNotificationRegistered = 0;
     }
 
-    [v4 cStringUsingEncoding:4];
+    [notificationCopy cStringUsingEncoding:4];
     xpc_set_event();
     v7 = +[TPSLogger daemon];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Unregister for %@.", &v8, 0xCu);
     }
   }
@@ -684,9 +684,9 @@ LABEL_13:
 
 - (void)prepareForNotifications
 {
-  v3 = [(TPSDaemon *)self notificationTimingDarwinKey];
+  notificationTimingDarwinKey = [(TPSDaemon *)self notificationTimingDarwinKey];
 
-  if (v3)
+  if (notificationTimingDarwinKey)
   {
 
     [(TPSDaemon *)self registerForNotificationTimingDarwinNotification];
@@ -701,21 +701,21 @@ LABEL_13:
 
 - (void)updateNotificationStatus
 {
-  v3 = [(TPSDaemon *)self notificationController];
-  v4 = [v3 notificationCache];
+  notificationController = [(TPSDaemon *)self notificationController];
+  notificationCache = [notificationController notificationCache];
 
-  if (v4)
+  if (notificationCache)
   {
     if (+[TPSNotificationController supportsRemoteIcon])
     {
-      v5 = [(TPSDaemon *)self notificationController];
+      notificationController2 = [(TPSDaemon *)self notificationController];
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_100005954;
       v6[3] = &unk_100024CC0;
-      v7 = v4;
-      v8 = self;
-      [v5 fetchNotificationAssetIfNeededCompletionHandler:v6];
+      v7 = notificationCache;
+      selfCopy = self;
+      [notificationController2 fetchNotificationAssetIfNeededCompletionHandler:v6];
     }
 
     else
@@ -737,13 +737,13 @@ LABEL_13:
   if ([(TPSDaemon *)self tipsAppInstalled])
   {
     objc_initWeak(buf, self);
-    v4 = [(TPSDaemon *)self notificationController];
+    notificationController = [(TPSDaemon *)self notificationController];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100005BA4;
     v6[3] = &unk_100024CE8;
     objc_copyWeak(&v7, buf);
-    [v4 showNotificationWithCompletionHandler:v6];
+    [notificationController showNotificationWithCompletionHandler:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(buf);
@@ -751,15 +751,15 @@ LABEL_13:
 
   else
   {
-    v5 = [(TPSDaemon *)self notificationController];
-    [v5 clearNotificationCache];
+    notificationController2 = [(TPSDaemon *)self notificationController];
+    [notificationController2 clearNotificationCache];
   }
 }
 
-- (void)indexContentPackage:(id)a3 hmtContentPackage:(id)a4
+- (void)indexContentPackage:(id)package hmtContentPackage:(id)contentPackage
 {
-  v5 = a3;
-  v6 = a4;
+  packageCopy = package;
+  contentPackageCopy = contentPackage;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -771,7 +771,7 @@ LABEL_13:
   v22[1] = 3221225472;
   v22[2] = sub_100006500;
   v22[3] = &unk_100024D60;
-  v8 = v5;
+  v8 = packageCopy;
   v23 = v8;
   v9 = [v7 initWithAsyncBlock:v22];
   v10 = [TPSAsyncBlockOperation alloc];
@@ -787,7 +787,7 @@ LABEL_13:
   v18[1] = 3221225472;
   v18[2] = sub_1000068A0;
   v18[3] = &unk_100024D60;
-  v14 = v6;
+  v14 = contentPackageCopy;
   v19 = v14;
   v15 = [v13 initWithAsyncBlock:v18];
   v16 = objc_alloc_init(NSOperationQueue);
@@ -833,20 +833,20 @@ LABEL_13:
     v8 = [NSURLSession sessionWithConfiguration:v5 delegate:self delegateQueue:v7];
     [(TPSDaemon *)self setTipsFeedURLSession:v8];
 
-    v9 = [(TPSDaemon *)self tipsFeedURLSession];
-    [v9 invalidateAndCancel];
+    tipsFeedURLSession = [(TPSDaemon *)self tipsFeedURLSession];
+    [tipsFeedURLSession invalidateAndCancel];
   }
 }
 
-- (void)logDaemonActiveEventWithReason:(id)a3
+- (void)logDaemonActiveEventWithReason:(id)reason
 {
-  v4 = a3;
-  if (v4)
+  reasonCopy = reason;
+  if (reasonCopy)
   {
     v5 = atomic_load(byte_1000299E0);
     if (v5)
     {
-      v6 = [TPSAnalyticsEventDaemonActive eventWithReason:v4 alreadyRunning:self->_alreadyRunning];
+      v6 = [TPSAnalyticsEventDaemonActive eventWithReason:reasonCopy alreadyRunning:self->_alreadyRunning];
       [v6 log];
 
       self->_alreadyRunning = 1;
@@ -856,27 +856,27 @@ LABEL_13:
   _objc_release_x1();
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler
 {
-  v8 = a5;
+  connectionCopy = connection;
   v9 = TPSAnalyticsDaemonActiveReasonContentCheck;
-  v10 = a6;
+  handlerCopy = handler;
   [(TPSDaemon *)self logDaemonActiveEventWithReason:v9];
   v11 = +[TPSLogger daemon];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000151FC(v8);
+    sub_1000151FC(connectionCopy);
   }
 
-  v10[2](v10, v8);
+  handlerCopy[2](handlerCopy, connectionCopy);
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v5 = a3;
-  v6 = [(TPSDaemon *)self tipsFeedURLSession];
+  sessionCopy = session;
+  tipsFeedURLSession = [(TPSDaemon *)self tipsFeedURLSession];
 
-  if (v6 == v5)
+  if (tipsFeedURLSession == sessionCopy)
   {
     v7 = +[TPSLogger daemon];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -897,9 +897,9 @@ LABEL_13:
   v3 = +[NSUserDefaults standardUserDefaults];
   v25 = [v3 stringForKey:@"TPSLastMajorVersion"];
   v4 = +[TPSCommonDefines sharedInstance];
-  v5 = [v4 majorVersion];
+  majorVersion = [v4 majorVersion];
 
-  v6 = [v25 isEqualToString:v5];
+  v6 = [v25 isEqualToString:majorVersion];
   v7 = +[TPSLogger daemon];
   v8 = v6 ^ 1;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -913,13 +913,13 @@ LABEL_13:
   v10 = [v9 componentsSeparatedByString:@"."];
   if ([v10 count] < 2)
   {
-    v12 = 0;
+    integerValue = 0;
   }
 
   else
   {
     v11 = [v10 objectAtIndexedSubscript:1];
-    v12 = [v11 integerValue];
+    integerValue = [v11 integerValue];
   }
 
   v13 = +[TPSLogger daemon];
@@ -928,7 +928,7 @@ LABEL_13:
     sub_100015280();
   }
 
-  if ([v10 count] < 2 || v12)
+  if ([v10 count] < 2 || integerValue)
   {
     v19 = +[TPSLogger daemon];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1011,10 +1011,10 @@ LABEL_13:
 
   if (v8)
   {
-    [v3 setObject:v5 forKey:@"TPSLastMajorVersion"];
+    [v3 setObject:majorVersion forKey:@"TPSLastMajorVersion"];
     [v3 synchronize];
-    v21 = [(TPSDaemon *)self notificationTimingDarwinKey];
-    [(TPSDaemon *)self unregisterDarwinNotification:v21];
+    notificationTimingDarwinKey = [(TPSDaemon *)self notificationTimingDarwinKey];
+    [(TPSDaemon *)self unregisterDarwinNotification:notificationTimingDarwinKey];
 
     [(TPSDaemon *)self resetBasicDefaults];
     +[TPSWelcome resetWelcomeNotifications];
@@ -1075,9 +1075,9 @@ LABEL_13:
   }
 }
 
-- (BOOL)_assistantXPCConnectionContainsConnection:(id)a3
+- (BOOL)_assistantXPCConnectionContainsConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1087,10 +1087,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_100007818;
   block[3] = &unk_100024E40;
-  v9 = v4;
+  v9 = connectionCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = connectionCopy;
   dispatch_sync(assistantConnectionQueue, block);
   LOBYTE(assistantConnectionQueue) = *(v12 + 24);
 
@@ -1098,9 +1098,9 @@ LABEL_13:
   return assistantConnectionQueue;
 }
 
-- (void)_addAssistantXPCConnection:(id)a3
+- (void)_addAssistantXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   assistantConnectionQueue = self->_assistantConnectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1108,17 +1108,17 @@ LABEL_13:
   block[2] = sub_100007944;
   block[3] = &unk_100024E68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(assistantConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_removeAssistantXPCConnection:(id)a3
+- (void)_removeAssistantXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   assistantConnectionQueue = self->_assistantConnectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1126,17 +1126,17 @@ LABEL_13:
   block[2] = sub_100007A70;
   block[3] = &unk_100024E68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(assistantConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_supportFlowXPCConnectionContainsConnection:(id)a3
+- (BOOL)_supportFlowXPCConnectionContainsConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1146,10 +1146,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_100007BDC;
   block[3] = &unk_100024E40;
-  v9 = v4;
+  v9 = connectionCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = connectionCopy;
   dispatch_sync(supportFlowConnectionQueue, block);
   LOBYTE(supportFlowConnectionQueue) = *(v12 + 24);
 
@@ -1157,9 +1157,9 @@ LABEL_13:
   return supportFlowConnectionQueue;
 }
 
-- (void)_addSupportFlowXPCConnection:(id)a3
+- (void)_addSupportFlowXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   supportFlowConnectionQueue = self->_supportFlowConnectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1167,17 +1167,17 @@ LABEL_13:
   block[2] = sub_100007D08;
   block[3] = &unk_100024E68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(supportFlowConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_removeSupportFlowXPCConnection:(id)a3
+- (void)_removeSupportFlowXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   supportFlowConnectionQueue = self->_supportFlowConnectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1185,17 +1185,17 @@ LABEL_13:
   block[2] = sub_100007E34;
   block[3] = &unk_100024E68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(supportFlowConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_discoverabilityXPCConnectionContainsConnection:(id)a3
+- (BOOL)_discoverabilityXPCConnectionContainsConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1205,10 +1205,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_100007F94;
   block[3] = &unk_100024E40;
-  v9 = v4;
+  v9 = connectionCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = connectionCopy;
   dispatch_sync(assistantConnectionQueue, block);
   LOBYTE(assistantConnectionQueue) = *(v12 + 24);
 
@@ -1216,9 +1216,9 @@ LABEL_13:
   return assistantConnectionQueue;
 }
 
-- (void)_addDiscoverabilityXPCConnection:(id)a3
+- (void)_addDiscoverabilityXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   discoverabilityConnectionQueue = self->_discoverabilityConnectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1226,17 +1226,17 @@ LABEL_13:
   block[2] = sub_1000080C0;
   block[3] = &unk_100024E68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(discoverabilityConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_removeDiscoverabilityXPCConnection:(id)a3
+- (void)_removeDiscoverabilityXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   discoverabilityConnectionQueue = self->_discoverabilityConnectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1244,17 +1244,17 @@ LABEL_13:
   block[2] = sub_1000081EC;
   block[3] = &unk_100024E68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(discoverabilityConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_appXPCConnectionContainsConnection:(id)a3
+- (BOOL)_appXPCConnectionContainsConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v13 = 0;
   v14[0] = &v13;
   v14[1] = 0x2020000000;
@@ -1266,7 +1266,7 @@ LABEL_13:
   block[3] = &unk_100024E40;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = connectionCopy;
   v11 = v6;
   dispatch_sync(appConnectionQueue, block);
   v7 = +[TPSLogger default];
@@ -1281,9 +1281,9 @@ LABEL_13:
   return v8;
 }
 
-- (void)_addAppXPCConnection:(id)a3
+- (void)_addAppXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   appConnectionQueue = self->_appConnectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1291,17 +1291,17 @@ LABEL_13:
   block[2] = sub_1000084DC;
   block[3] = &unk_100024E68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(appConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_removeAppXPCConnection:(id)a3
+- (void)_removeAppXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   appConnectionQueue = self->_appConnectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1309,51 +1309,51 @@ LABEL_13:
   block[2] = sub_10000862C;
   block[3] = &unk_100024E68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(appConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   v9 = atomic_load(byte_1000299E0);
   if (v9)
   {
-    v31 = [v7 valueForEntitlement:@"com.apple.tipsd.access"];
+    v31 = [connectionCopy valueForEntitlement:@"com.apple.tipsd.access"];
     v11 = [v8 valueForEntitlement:@"com.apple.tipsd.tips-app-access"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v31 BOOLValue];
+      bOOLValue = [v31 BOOLValue];
     }
 
     else
     {
-      v12 = 0;
+      bOOLValue = 0;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v11 BOOLValue];
+      bOOLValue2 = [v11 BOOLValue];
     }
 
     else
     {
-      v13 = 0;
+      bOOLValue2 = 0;
     }
 
-    v14 = [v8 serviceName];
-    v15 = [v14 isEqualToString:@"com.apple.tipsd.assistant"];
+    serviceName = [v8 serviceName];
+    v15 = [serviceName isEqualToString:@"com.apple.tipsd.assistant"];
 
-    v16 = [v8 serviceName];
-    v17 = [v16 isEqualToString:@"com.apple.tipsd.supportFlow.analytics"];
+    serviceName2 = [v8 serviceName];
+    v17 = [serviceName2 isEqualToString:@"com.apple.tipsd.supportFlow.analytics"];
 
     v18 = +[TPSLogger daemon];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1361,9 +1361,9 @@ LABEL_13:
       *buf = 138413314;
       v44 = v8;
       v45 = 1024;
-      v46 = v12;
+      v46 = bOOLValue;
       v47 = 1024;
-      v48 = v13;
+      v48 = bOOLValue2;
       v49 = 1024;
       v50 = v15;
       v51 = 1024;
@@ -1421,13 +1421,13 @@ LABEL_13:
     {
       if (!v17)
       {
-        if ((v12 | v13))
+        if ((bOOLValue | bOOLValue2))
         {
           v22 = TPSXPCServerInterface();
           [v8 setExportedInterface:v22];
 
           [v8 setExportedObject:self];
-          if (v13)
+          if (bOOLValue2)
           {
             if (![(TPSDaemon *)self _appXPCConnectionContainsConnection:v8])
             {
@@ -1557,11 +1557,11 @@ LABEL_47:
 - (void)appRemovalCleanupIfNeeded
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(TPSDaemon *)self tipsAppInstalled];
-  if (v4)
+  tipsAppInstalled = [(TPSDaemon *)self tipsAppInstalled];
+  if (tipsAppInstalled)
   {
 LABEL_6:
-    [v3 setBool:v4 forKey:@"TPSTipsAppInstalled"];
+    [v3 setBool:tipsAppInstalled forKey:@"TPSTipsAppInstalled"];
     [v3 synchronize];
     goto LABEL_7;
   }
@@ -1580,8 +1580,8 @@ LABEL_6:
     [v6 log];
 
     [(TPSDaemon *)self resetBasicDefaults];
-    v7 = [(TPSDaemon *)self notificationController];
-    [v7 removeAllNotifications];
+    notificationController = [(TPSDaemon *)self notificationController];
+    [notificationController removeAllNotifications];
 
     goto LABEL_6;
   }
@@ -1599,34 +1599,34 @@ LABEL_7:
 
   [(TPSDaemon *)self reloadAppGroupDefaults];
   [(TPSDaemon *)self processAppInteractedByUser];
-  v4 = [(TPSDaemon *)self notificationController];
-  [v4 clearNotificationCache];
+  notificationController = [(TPSDaemon *)self notificationController];
+  [notificationController clearNotificationCache];
 
-  v5 = [(TPSDaemon *)self notificationController];
-  [v5 clearNotificationCount];
+  notificationController2 = [(TPSDaemon *)self notificationController];
+  [notificationController2 clearNotificationCount];
 }
 
-- (void)removeNotificationForIdentifier:(id)a3
+- (void)removeNotificationForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TPSDaemon *)self notificationController];
-  [v5 removeNotificationWithIdentifier:v4];
+  identifierCopy = identifier;
+  notificationController = [(TPSDaemon *)self notificationController];
+  [notificationController removeNotificationWithIdentifier:identifierCopy];
 }
 
-- (void)hintDisplayedForIdentifier:(id)a3 correlationID:(id)a4 context:(id)a5
+- (void)hintDisplayedForIdentifier:(id)identifier correlationID:(id)d context:(id)context
 {
   discoverabilityController = self->_discoverabilityController;
-  v8 = a4;
-  v12 = a3;
-  [(TPSDiscoverabilityController *)discoverabilityController addHintDisplayedForIdentifier:v12 context:a5];
-  if (v8)
+  dCopy = d;
+  identifierCopy = identifier;
+  [(TPSDiscoverabilityController *)discoverabilityController addHintDisplayedForIdentifier:identifierCopy context:context];
+  if (dCopy)
   {
-    v9 = v8;
+    v9 = dCopy;
   }
 
   else
   {
-    v9 = v12;
+    v9 = identifierCopy;
   }
 
   v10 = v9;
@@ -1645,34 +1645,34 @@ LABEL_7:
 
   if ([(TPSWelcome *)self->_welcome stopWelcomeNotification])
   {
-    v4 = [(TPSDaemon *)self notificationController];
-    v5 = [v4 notificationCache];
-    v6 = [v5 collectionIdentifier];
+    notificationController = [(TPSDaemon *)self notificationController];
+    notificationCache = [notificationController notificationCache];
+    collectionIdentifier = [notificationCache collectionIdentifier];
 
     v7 = +[TPSCommonDefines sharedInstance];
-    [v7 notifiedCollection:v6];
+    [v7 notifiedCollection:collectionIdentifier];
   }
 
-  v8 = [(TPSDaemon *)self notificationTimingDarwinKey];
-  [(TPSDaemon *)self unregisterDarwinNotification:v8];
+  notificationTimingDarwinKey = [(TPSDaemon *)self notificationTimingDarwinKey];
+  [(TPSDaemon *)self unregisterDarwinNotification:notificationTimingDarwinKey];
 }
 
-- (void)logAnalyticsEvent:(id)a3
+- (void)logAnalyticsEvent:(id)event
 {
   v4 = TPSAnalyticsDaemonActiveReasonRealTimeAnalytics;
-  v5 = a3;
+  eventCopy = event;
   [(TPSDaemon *)self logDaemonActiveEventWithReason:v4];
   v6 = +[TPSAnalyticsEventController sharedInstance];
-  [v6 logAnalyticsEvent:v5];
+  [v6 logAnalyticsEvent:eventCopy];
 }
 
-- (void)logAnalyticsEvents:(id)a3
+- (void)logAnalyticsEvents:(id)events
 {
   v4 = TPSAnalyticsDaemonActiveReasonRealTimeAnalytics;
-  v5 = a3;
+  eventsCopy = events;
   [(TPSDaemon *)self logDaemonActiveEventWithReason:v4];
   v6 = +[TPSAnalyticsEventController sharedInstance];
-  [v6 logAnalyticsEvents:v5];
+  [v6 logAnalyticsEvents:eventsCopy];
 }
 
 - (void)handleLanguageDidChangeNotification
@@ -1682,18 +1682,18 @@ LABEL_7:
   {
     v3 = +[TPSCommonDefines sharedInstance];
     v4 = +[NSLocale tps_userLanguageCode];
-    v5 = [v3 userLanguage];
+    userLanguage = [v3 userLanguage];
     v6 = +[TPSLogger daemon];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v12 = v4;
       v13 = 2112;
-      v14 = v5;
+      v14 = userLanguage;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received language did change notification. New language: %@, current language: %@", buf, 0x16u);
     }
 
-    if ([v4 isEqualToString:v5])
+    if ([v4 isEqualToString:userLanguage])
     {
       v7 = +[TPSLogger daemon];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1708,12 +1708,12 @@ LABEL_7:
       [v3 clearDataCache];
       [v3 setUserLanguage:v4];
       +[TPSTipsManager removeWelcomeDocumentCache];
-      v9 = [(TPSDaemon *)self notificationController];
-      [v9 clearNotificationCache];
+      notificationController = [(TPSDaemon *)self notificationController];
+      [notificationController clearNotificationCache];
 
       +[TPSNotificationController removeAssetCacheDirectory];
-      v10 = [(TPSDaemon *)self notificationTimingDarwinKey];
-      [(TPSDaemon *)self unregisterDarwinNotification:v10];
+      notificationTimingDarwinKey = [(TPSDaemon *)self notificationTimingDarwinKey];
+      [(TPSDaemon *)self unregisterDarwinNotification:notificationTimingDarwinKey];
 
       [(TPSDaemon *)self updateContentFromOrigin:1 systemEducationRequest:1 indexContent:1 contextualEligibility:1 widgetEligibility:1 notificationEligibility:0 preferredNotificationIdentifiers:0 shouldDeferBlock:0 completionHandler:&stru_100024F30];
     }
@@ -1755,28 +1755,28 @@ LABEL_7:
   }
 }
 
-- (void)immediateNotificationForIdentifiers:(id)a3
+- (void)immediateNotificationForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[TPSLogger daemon];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 description];
+    v6 = [identifiersCopy description];
     *buf = 138412290;
     v23 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Request immediate notification for %@", buf, 0xCu);
   }
 
-  if ([v4 count])
+  if ([identifiersCopy count])
   {
-    v7 = [(TPSDaemon *)self notificationController];
-    v8 = [v7 notificationCache];
-    v9 = [v8 type];
+    notificationController = [(TPSDaemon *)self notificationController];
+    notificationCache = [notificationController notificationCache];
+    type = [notificationCache type];
 
-    v10 = [(TPSDaemon *)self tipsAppInstalled];
-    if ((v9 - 3) < 0xFFFFFFFFFFFFFFFELL)
+    tipsAppInstalled = [(TPSDaemon *)self tipsAppInstalled];
+    if ((type - 3) < 0xFFFFFFFFFFFFFFFELL)
     {
-      v11 = v10;
+      v11 = tipsAppInstalled;
     }
 
     else
@@ -1792,7 +1792,7 @@ LABEL_7:
       v19[2] = sub_100009ED8;
       v19[3] = &unk_100024F78;
       objc_copyWeak(&v21, buf);
-      v20 = v4;
+      v20 = identifiersCopy;
       [(TPSDaemon *)self updateContentFromOrigin:0 systemEducationRequest:1 indexContent:0 contextualEligibility:0 widgetEligibility:0 notificationEligibility:1 preferredNotificationIdentifiers:v20 shouldDeferBlock:0 completionHandler:v19];
 
       objc_destroyWeak(&v21);
@@ -1801,15 +1801,15 @@ LABEL_7:
 
     else
     {
-      v12 = [(TPSDaemon *)self notificationController];
-      v13 = [v12 notificationCache];
-      v14 = [v13 collectionIdentifier];
-      v15 = [v4 containsObject:v14];
+      notificationController2 = [(TPSDaemon *)self notificationController];
+      notificationCache2 = [notificationController2 notificationCache];
+      collectionIdentifier = [notificationCache2 collectionIdentifier];
+      v15 = [identifiersCopy containsObject:collectionIdentifier];
 
       if ((v15 & 1) == 0)
       {
         v16 = +[TPSCommonDefines sharedInstance];
-        v17 = [NSSet setWithArray:v4];
+        v17 = [NSSet setWithArray:identifiersCopy];
         [v16 activatedCollections:v17];
 
         v18 = +[TPSLogger daemon];
@@ -1823,9 +1823,9 @@ LABEL_7:
   }
 }
 
-- (void)userGuideMapWithCompletionHandler:(id)a3
+- (void)userGuideMapWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[TPSLogger daemon];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1833,16 +1833,16 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Retrieve user guide map.", buf, 2u);
   }
 
-  v6 = [(TPSDaemon *)self tipsManager];
-  v7 = [v6 lastFetchedLanguage];
+  tipsManager = [(TPSDaemon *)self tipsManager];
+  lastFetchedLanguage = [tipsManager lastFetchedLanguage];
   v8 = +[NSLocale tps_userLanguageCode];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [lastFetchedLanguage isEqualToString:v8];
 
-  v10 = [(TPSDaemon *)self tipsManager];
-  v11 = v10;
+  tipsManager2 = [(TPSDaemon *)self tipsManager];
+  v11 = tipsManager2;
   if (!v9)
   {
-    [v10 clearCachedUserGuides];
+    [tipsManager2 clearCachedUserGuides];
 LABEL_9:
 
     objc_initWeak(buf, self);
@@ -1851,7 +1851,7 @@ LABEL_9:
     v13[2] = sub_10000A368;
     v13[3] = &unk_100024FA0;
     objc_copyWeak(&v15, buf);
-    v14 = v4;
+    v14 = handlerCopy;
     [(TPSDaemon *)self updateContentFromOrigin:0 systemEducationRequest:1 indexContent:1 contextualEligibility:0 widgetEligibility:0 notificationEligibility:0 preferredNotificationIdentifiers:0 shouldDeferBlock:0 completionHandler:v13];
 
     objc_destroyWeak(&v15);
@@ -1859,67 +1859,67 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [v10 cachedUserGuideMap];
+  cachedUserGuideMap = [tipsManager2 cachedUserGuideMap];
 
-  if (!v12 || ![v12 count])
+  if (!cachedUserGuideMap || ![cachedUserGuideMap count])
   {
-    v11 = v12;
+    v11 = cachedUserGuideMap;
     goto LABEL_9;
   }
 
-  (*(v4 + 2))(v4, v12, 0);
+  (*(handlerCopy + 2))(handlerCopy, cachedUserGuideMap, 0);
 
 LABEL_10:
 }
 
-- (void)contentWithCompletionHandler:(id)a3
+- (void)contentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TPSDaemon *)self tipsManager];
-  v6 = [v5 hasWidgetDocument];
+  handlerCopy = handler;
+  tipsManager = [(TPSDaemon *)self tipsManager];
+  hasWidgetDocument = [tipsManager hasWidgetDocument];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000A568;
   v8[3] = &unk_100024FC8;
-  v9 = v4;
-  v7 = v4;
-  [(TPSDaemon *)self updateContentFromOrigin:0 systemEducationRequest:0 indexContent:1 contextualEligibility:0 widgetEligibility:v6 ^ 1 notificationEligibility:0 preferredNotificationIdentifiers:0 shouldDeferBlock:0 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(TPSDaemon *)self updateContentFromOrigin:0 systemEducationRequest:0 indexContent:1 contextualEligibility:0 widgetEligibility:hasWidgetDocument ^ 1 notificationEligibility:0 preferredNotificationIdentifiers:0 shouldDeferBlock:0 completionHandler:v8];
 }
 
-- (void)contentForVariant:(id)a3 completionHandler:(id)a4
+- (void)contentForVariant:(id)variant completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TPSDaemon *)self tipsManager];
-  v15 = v6;
+  variantCopy = variant;
+  handlerCopy = handler;
+  tipsManager = [(TPSDaemon *)self tipsManager];
+  v15 = variantCopy;
   v9 = [NSArray arrayWithObjects:&v15 count:1];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000A6A0;
   v12[3] = &unk_100024FF0;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v8 contentForVariantIdentifiers:v9 completionHandler:v12];
+  v13 = variantCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = variantCopy;
+  [tipsManager contentForVariantIdentifiers:v9 completionHandler:v12];
 }
 
-- (void)supportFlowContentWithCompletionHandler:(id)a3
+- (void)supportFlowContentWithCompletionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000A8A4;
   v5[3] = &unk_100024FC8;
-  v6 = a3;
-  v4 = v6;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   [(TPSDaemon *)self updateContentFromOrigin:0 systemEducationRequest:1 indexContent:0 contextualEligibility:0 widgetEligibility:0 notificationEligibility:0 preferredNotificationIdentifiers:0 shouldDeferBlock:0 completionHandler:v5];
 }
 
-- (void)fetchAssetsWithAssetsConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchAssetsWithAssetsConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v7 = +[TPSLogger daemon];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1928,8 +1928,8 @@ LABEL_10:
 
   v8 = objc_alloc_init(NSOperationQueue);
   [v8 setSuspended:1];
-  v9 = [v5 cacheIdentifierForType:0];
-  v10 = [TPSContentURLController assetPathFromAssetConfiguration:v5 type:0];
+  v9 = [configurationCopy cacheIdentifierForType:0];
+  v10 = [TPSContentURLController assetPathFromAssetConfiguration:configurationCopy type:0];
   if ([v9 length] && objc_msgSend(v10, "length"))
   {
     v11 = [[TPSAssetsDownloadOperation alloc] initWithAssetIdentifier:v9 assetURLPath:v10];
@@ -1940,8 +1940,8 @@ LABEL_10:
     v11 = 0;
   }
 
-  v12 = [v5 cacheIdentifierForType:1];
-  v13 = [TPSContentURLController assetPathFromAssetConfiguration:v5 type:1];
+  v12 = [configurationCopy cacheIdentifierForType:1];
+  v13 = [TPSContentURLController assetPathFromAssetConfiguration:configurationCopy type:1];
   if ([v12 length] && objc_msgSend(v13, "length"))
   {
     v14 = [[TPSAssetsDownloadOperation alloc] initWithAssetIdentifier:v12 assetURLPath:v13];
@@ -1960,10 +1960,10 @@ LABEL_10:
   v24 = v15;
   v16 = v14;
   v25 = v16;
-  v26 = v5;
-  v27 = v6;
-  v17 = v6;
-  v18 = v5;
+  v26 = configurationCopy;
+  v27 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = configurationCopy;
   v19 = [NSBlockOperation blockOperationWithBlock:&v20];
   if (v15)
   {
@@ -1981,60 +1981,60 @@ LABEL_10:
   [v8 setSuspended:0];
 }
 
-- (BOOL)isContentIneligibleDueToViewOnOtherDevices:(id)a3
+- (BOOL)isContentIneligibleDueToViewOnOtherDevices:(id)devices
 {
-  v3 = [(TPSTipStatusController *)self->_tipStatusController statusForIdentifier:a3];
+  v3 = [(TPSTipStatusController *)self->_tipStatusController statusForIdentifier:devices];
   if ([v3 isHintDisplayed])
   {
-    v4 = 0;
+    isHintDisplayedOnCloudDevices = 0;
   }
 
   else
   {
-    v4 = [v3 isHintDisplayedOnCloudDevices];
+    isHintDisplayedOnCloudDevices = [v3 isHintDisplayedOnCloudDevices];
   }
 
-  return v4;
+  return isHintDisplayedOnCloudDevices;
 }
 
-- (void)donateHintIneligibleReason:(int64_t)a3 contentID:(id)a4 bundleID:(id)a5 context:(id)a6
+- (void)donateHintIneligibleReason:(int64_t)reason contentID:(id)d bundleID:(id)iD context:(id)context
 {
   discoverabilityController = self->_discoverabilityController;
-  v20 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [NSArray arrayWithObjects:&v20 count:1];
-  [(TPSDiscoverabilityController *)discoverabilityController markHintIneligibleForIdentifiers:v14 bundleID:v12 context:v11 reason:a3, v20];
+  dCopy = d;
+  contextCopy = context;
+  iDCopy = iD;
+  dCopy2 = d;
+  v14 = [NSArray arrayWithObjects:&dCopy count:1];
+  [(TPSDiscoverabilityController *)discoverabilityController markHintIneligibleForIdentifiers:v14 bundleID:iDCopy context:contextCopy reason:reason, dCopy];
 
   v15 = [TPSAnalyticsEventTipNotDisplayed alloc];
-  v16 = [(TPSDiscoverabilityController *)self->_discoverabilityController tipStatusController];
-  v17 = [v16 correlationIdentifierForIdentifier:v13];
-  v18 = [v15 initWithTipID:v13 correlationID:v17 bundleID:v12 reason:a3 context:v11 date:0];
+  tipStatusController = [(TPSDiscoverabilityController *)self->_discoverabilityController tipStatusController];
+  v17 = [tipStatusController correlationIdentifierForIdentifier:dCopy2];
+  v18 = [v15 initWithTipID:dCopy2 correlationID:v17 bundleID:iDCopy reason:reason context:contextCopy date:0];
 
   v19 = +[TPSAnalyticsEventController sharedInstance];
 
   [v19 logAnalyticsEvent:v18];
 }
 
-- (void)welcome:(id)a3 contentAvailableRemotelyWithCompletionHandler:(id)a4
+- (void)welcome:(id)welcome contentAvailableRemotelyWithCompletionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000AFA8;
   v5[3] = &unk_100025068;
-  v6 = self;
-  v7 = a4;
-  v4 = v7;
-  [(TPSDaemon *)v6 updateContentFromOrigin:1 systemEducationRequest:1 indexContent:1 contextualEligibility:0 widgetEligibility:1 notificationEligibility:0 preferredNotificationIdentifiers:0 shouldDeferBlock:0 completionHandler:v5];
+  selfCopy = self;
+  handlerCopy = handler;
+  v4 = handlerCopy;
+  [(TPSDaemon *)selfCopy updateContentFromOrigin:1 systemEducationRequest:1 indexContent:1 contextualEligibility:0 widgetEligibility:1 notificationEligibility:0 preferredNotificationIdentifiers:0 shouldDeferBlock:0 completionHandler:v5];
 }
 
-- (void)welcome:(id)a3 notifyWelcomeDocument:(id)a4
+- (void)welcome:(id)welcome notifyWelcomeDocument:(id)document
 {
-  v8 = a4;
-  v5 = [(TPSDaemon *)self notificationController];
-  v6 = [v8 identifier];
-  v7 = [v5 updateNotificationCacheWithCollectionIdentifier:v6 document:v8 type:1 extensionPayload:0];
+  documentCopy = document;
+  notificationController = [(TPSDaemon *)self notificationController];
+  identifier = [documentCopy identifier];
+  v7 = [notificationController updateNotificationCacheWithCollectionIdentifier:identifier document:documentCopy type:1 extensionPayload:0];
 
   [(TPSDaemon *)self updateNotificationStatus];
 }
@@ -2042,9 +2042,9 @@ LABEL_10:
 - (id)contextualInfoMap
 {
   v3 = [NSMutableDictionary alloc];
-  v4 = [(TPSDaemon *)self usageEventManager];
-  v5 = [v4 contextualInfoMap];
-  v6 = [v3 initWithDictionary:v5];
+  usageEventManager = [(TPSDaemon *)self usageEventManager];
+  contextualInfoMap = [usageEventManager contextualInfoMap];
+  v6 = [v3 initWithDictionary:contextualInfoMap];
 
   discoverabilityController = self->_discoverabilityController;
   if (!discoverabilityController)
@@ -2052,8 +2052,8 @@ LABEL_10:
     discoverabilityController = TPSDiscoverabilityController;
   }
 
-  v8 = [(TPSDiscoverabilityController *)discoverabilityController contextualInfoMap];
-  [v6 addEntriesFromDictionary:v8];
+  contextualInfoMap2 = [(TPSDiscoverabilityController *)discoverabilityController contextualInfoMap];
+  [v6 addEntriesFromDictionary:contextualInfoMap2];
   v9 = [v6 copy];
 
   return v9;
@@ -2061,62 +2061,62 @@ LABEL_10:
 
 - (id)analyticsExperiment
 {
-  v3 = [(TPSDaemon *)self tipsManager];
+  tipsManager = [(TPSDaemon *)self tipsManager];
 
-  if (v3)
+  if (tipsManager)
   {
-    v4 = [(TPSDaemon *)self tipsManager];
-    v5 = [v4 experiment];
+    tipsManager2 = [(TPSDaemon *)self tipsManager];
+    experiment = [tipsManager2 experiment];
   }
 
   else
   {
-    v5 = +[TPSTipsManager experiment];
+    experiment = +[TPSTipsManager experiment];
   }
 
-  return v5;
+  return experiment;
 }
 
 - (id)deliveryInfoVersion
 {
-  v3 = [(TPSDaemon *)self tipsManager];
+  tipsManager = [(TPSDaemon *)self tipsManager];
 
-  if (v3)
+  if (tipsManager)
   {
-    v4 = [(TPSDaemon *)self tipsManager];
-    v5 = [v4 rulesVersion];
+    tipsManager2 = [(TPSDaemon *)self tipsManager];
+    rulesVersion = [tipsManager2 rulesVersion];
   }
 
   else
   {
-    v5 = +[TPSTipsManager rulesVersion];
+    rulesVersion = +[TPSTipsManager rulesVersion];
   }
 
-  return v5;
+  return rulesVersion;
 }
 
-- (id)contextualInfoForIdentifier:(id)a3
+- (id)contextualInfoForIdentifier:(id)identifier
 {
   discoverabilityController = self->_discoverabilityController;
   if (discoverabilityController)
   {
-    v4 = a3;
-    v5 = [(TPSDiscoverabilityController *)discoverabilityController contextualInfoForIdentifier:v4];
+    identifierCopy = identifier;
+    v5 = [(TPSDiscoverabilityController *)discoverabilityController contextualInfoForIdentifier:identifierCopy];
   }
 
   else
   {
-    v6 = a3;
-    v4 = +[TPSDiscoverabilityController contextualInfoMap];
-    v5 = [v4 objectForKeyedSubscript:v6];
+    identifierCopy2 = identifier;
+    identifierCopy = +[TPSDiscoverabilityController contextualInfoMap];
+    v5 = [identifierCopy objectForKeyedSubscript:identifierCopy2];
   }
 
   return v5;
 }
 
-- (id)displayTypeForIdentifier:(id)a3
+- (id)displayTypeForIdentifier:(id)identifier
 {
-  v3 = [(TPSDaemon *)self tipStatusForIdentifier:a3];
+  v3 = [(TPSDaemon *)self tipStatusForIdentifier:identifier];
   v4 = +[TPSAnalyticsCommonDefines displayTypeStringForDisplayType:](TPSAnalyticsCommonDefines, "displayTypeStringForDisplayType:", [v3 displayType]);
 
   return v4;
@@ -2124,124 +2124,124 @@ LABEL_10:
 
 - (id)experimentCampID
 {
-  v3 = [(TPSDaemon *)self analyticsExperiment];
-  v4 = -[TPSDaemon experimentCampIDStringForCamp:](self, "experimentCampIDStringForCamp:", [v3 camp]);
+  analyticsExperiment = [(TPSDaemon *)self analyticsExperiment];
+  v4 = -[TPSDaemon experimentCampIDStringForCamp:](self, "experimentCampIDStringForCamp:", [analyticsExperiment camp]);
 
   return v4;
 }
 
 - (id)experimentID
 {
-  v2 = [(TPSDaemon *)self analyticsExperiment];
-  v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v2 identifier]);
+  analyticsExperiment = [(TPSDaemon *)self analyticsExperiment];
+  v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [analyticsExperiment identifier]);
 
   return v3;
 }
 
-- (id)contextForIdentifier:(id)a3
+- (id)contextForIdentifier:(id)identifier
 {
-  v3 = [(TPSDaemon *)self tipStatusForIdentifier:a3];
-  v4 = [v3 lastDisplayContext];
+  v3 = [(TPSDaemon *)self tipStatusForIdentifier:identifier];
+  lastDisplayContext = [v3 lastDisplayContext];
 
-  return v4;
+  return lastDisplayContext;
 }
 
-- (unint64_t)hintDisplayedCountForIdentifier:(id)a3
+- (unint64_t)hintDisplayedCountForIdentifier:(id)identifier
 {
-  v3 = [(TPSDaemon *)self tipStatusForIdentifier:a3];
-  v4 = [v3 hintDisplayedDates];
-  v5 = [v4 count];
+  v3 = [(TPSDaemon *)self tipStatusForIdentifier:identifier];
+  hintDisplayedDates = [v3 hintDisplayedDates];
+  v5 = [hintDisplayedDates count];
 
   return v5;
 }
 
-- (void)tipsManager:(id)a3 eligibilityCompletedWithTipIdentifiers:(id)a4 contextualTipIdentifiers:(id)a5 tipsDeliveryInfoMap:(id)a6 deliveryInfoMap:(id)a7
+- (void)tipsManager:(id)manager eligibilityCompletedWithTipIdentifiers:(id)identifiers contextualTipIdentifiers:(id)tipIdentifiers tipsDeliveryInfoMap:(id)map deliveryInfoMap:(id)infoMap
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v16 = [NSMutableSet setWithSet:a4];
-  [v16 minusSet:v13];
+  infoMapCopy = infoMap;
+  mapCopy = map;
+  tipIdentifiersCopy = tipIdentifiers;
+  v16 = [NSMutableSet setWithSet:identifiers];
+  [v16 minusSet:tipIdentifiersCopy];
 
-  v14 = [(TPSDaemon *)self usageEventManager];
-  v15 = [v16 allObjects];
-  [v14 updateContextualInfoForIdentifiers:v15 tipsDeliveryInfoMap:v12 deliveryInfoMap:v11];
+  usageEventManager = [(TPSDaemon *)self usageEventManager];
+  allObjects = [v16 allObjects];
+  [usageEventManager updateContextualInfoForIdentifiers:allObjects tipsDeliveryInfoMap:mapCopy deliveryInfoMap:infoMapCopy];
 }
 
-- (BOOL)canCheckForNewTipNotification:(id)a3
+- (BOOL)canCheckForNewTipNotification:(id)notification
 {
-  v3 = [(TPSDaemon *)self welcome];
-  v4 = [v3 shouldShowWelcomeNotification];
+  welcome = [(TPSDaemon *)self welcome];
+  shouldShowWelcomeNotification = [welcome shouldShowWelcomeNotification];
 
-  return v4 ^ 1;
+  return shouldShowWelcomeNotification ^ 1;
 }
 
-- (id)currentExperimentWithDiscoverabilityController:(id)a3
+- (id)currentExperimentWithDiscoverabilityController:(id)controller
 {
-  v3 = [(TPSDaemon *)self tipsManager];
-  v4 = [v3 experiment];
+  tipsManager = [(TPSDaemon *)self tipsManager];
+  experiment = [tipsManager experiment];
 
-  return v4;
+  return experiment;
 }
 
-- (void)notificationController:(id)a3 markIdentifier:(id)a4 type:(int64_t)a5 ineligibleWithReason:(int64_t)a6
+- (void)notificationController:(id)controller markIdentifier:(id)identifier type:(int64_t)type ineligibleWithReason:(int64_t)reason
 {
-  v10 = a3;
-  v11 = a4;
-  if (a5 == 2)
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  if (type == 2)
   {
     v14 = +[TPSCommonDefines sharedInstance];
-    [v14 notifiedCollection:v11];
+    [v14 notifiedCollection:identifierCopy];
 
-    v12 = [(TPSDaemon *)self discoverabilityController];
-    v15 = [v12 tipStatusController];
-    v16 = [v15 correlationIdentifierForIdentifier:v11];
-    v17 = [TPSAnalyticsEventContentIneligible eventWithTipID:v11 correlationID:v16 bundleID:0 context:0 displayType:0 reason:a6 date:0];
+    discoverabilityController = [(TPSDaemon *)self discoverabilityController];
+    tipStatusController = [discoverabilityController tipStatusController];
+    v16 = [tipStatusController correlationIdentifierForIdentifier:identifierCopy];
+    v17 = [TPSAnalyticsEventContentIneligible eventWithTipID:identifierCopy correlationID:v16 bundleID:0 context:0 displayType:0 reason:reason date:0];
     [v17 log];
 
     goto LABEL_5;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
-    v12 = [(TPSDaemon *)self discoverabilityController];
-    v18 = v11;
+    discoverabilityController = [(TPSDaemon *)self discoverabilityController];
+    v18 = identifierCopy;
     v13 = [NSArray arrayWithObjects:&v18 count:1];
-    [v12 markHintIneligibleForIdentifiers:v13 context:0 reason:a6];
+    [discoverabilityController markHintIneligibleForIdentifiers:v13 context:0 reason:reason];
 
 LABEL_5:
   }
 }
 
-- (void)notificationController:(id)a3 registrableEventReceivedForDocumentIdentifier:(id)a4
+- (void)notificationController:(id)controller registrableEventReceivedForDocumentIdentifier:(id)identifier
 {
-  v5 = a4;
-  if ([v5 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v7 = v5;
+    v7 = identifierCopy;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
     [(TPSDaemon *)self immediateNotificationForIdentifiers:v6];
   }
 }
 
-- (void)performQuery:(id)a3 completion:(id)a4
+- (void)performQuery:(id)query completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  queryCopy = query;
   v7 = +[TPSSearchQueryManager shared];
-  [v7 performQuery:v6 completion:v5];
+  [v7 performQuery:queryCopy completion:completionCopy];
 }
 
-- (void)cancelQueryWithIdentifier:(id)a3
+- (void)cancelQueryWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[TPSSearchQueryManager shared];
-  [v4 cancelQueryWithIdentifier:v3];
+  [v4 cancelQueryWithIdentifier:identifierCopy];
 }
 
-- (void)reindexAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)reindexAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[TPSLogger indexing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2249,29 +2249,29 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "reindex all searchableItems request from extension", v7, 2u);
   }
 
-  v6 = [(TPSDaemon *)self tipsManager];
-  [v6 reindexAllSearchableItemsWithCompletionHandler:v4];
+  tipsManager = [(TPSDaemon *)self tipsManager];
+  [tipsManager reindexAllSearchableItemsWithCompletionHandler:handlerCopy];
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8 = +[TPSLogger indexing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 134217984;
-    v11 = [v6 count];
+    v11 = [identifiersCopy count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "reindex reindexSearchableItemsWithIdentifiers request from extension: %lu", &v10, 0xCu);
   }
 
-  v9 = [(TPSDaemon *)self tipsManager];
-  [v9 reindexSearchableItemsWithIdentifiers:v6 completionHandler:v7];
+  tipsManager = [(TPSDaemon *)self tipsManager];
+  [tipsManager reindexSearchableItemsWithIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[TPSLogger indexing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2279,16 +2279,16 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "delete all searchableItems request from extension", v7, 2u);
   }
 
-  v6 = [(TPSDaemon *)self tipsManager];
-  [v6 deleteAllSearchableItemsWithCompletionHandler:v4];
+  tipsManager = [(TPSDaemon *)self tipsManager];
+  [tipsManager deleteAllSearchableItemsWithCompletionHandler:handlerCopy];
 }
 
-- (void)updateSessionMapWithIdentifier:(id)a3 data:(id)a4
+- (void)updateSessionMapWithIdentifier:(id)identifier data:(id)data
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  dataCopy = data;
+  selfCopy = self;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 
@@ -2309,29 +2309,29 @@ LABEL_5:
   static SupportFlowSessionManager.logAllSessions()();
 }
 
-- (void)findMatchingResultIdFromContexts:(id)a3 reply:(id)a4
+- (void)findMatchingResultIdFromContexts:(id)contexts reply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   type metadata accessor for ResultContext();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v5);
-  v7 = self;
+  selfCopy = self;
   sub_100013FB0(v6, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)availableUserGuideIdentifiersWithReply:(id)a3
+- (void)availableUserGuideIdentifiersWithReply:(id)reply
 {
   v5 = sub_10000CEDC(&qword_100029FA0, &qword_100019518);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v18 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = objc_opt_self();
-  v19 = self;
+  selfCopy = self;
   _Block_copy(v9);
   if ([v11 supportsUserGuide])
   {
@@ -2340,8 +2340,8 @@ LABEL_5:
     v13 = swift_allocObject();
     v13[2] = 0;
     v13[3] = 0;
-    v14 = v19;
-    v13[4] = v19;
+    v14 = selfCopy;
+    v13[4] = selfCopy;
     v13[5] = sub_100012C94;
     v13[6] = v10;
     v15 = v14;
@@ -2357,17 +2357,17 @@ LABEL_5:
     (*(v9 + 2))(v9, isa);
 
     _Block_release(v9);
-    v17 = v19;
+    v17 = selfCopy;
   }
 }
 
-- (void)fetchDocumentWithIdentifier:(id)a3 reply:(id)a4
+- (void)fetchDocumentWithIdentifier:(id)identifier reply:(id)reply
 {
   v6 = sub_10000CEDC(&qword_100029FA0, &qword_100019518);
   v7 = *(*(v6 - 8) + 64);
   __chkstk_darwin(v6 - 8);
   v9 = &v18 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = swift_allocObject();
@@ -2382,17 +2382,17 @@ LABEL_5:
   v16[6] = v14;
   v16[7] = v11;
   v16[8] = v13;
-  v17 = self;
+  selfCopy = self;
   sub_10000F0A8(0, 0, v9, &unk_100019568, v16);
 }
 
-- (void)resolveContextForKeys:(id)a3 reply:(id)a4
+- (void)resolveContextForKeys:(id)keys reply:(id)reply
 {
   v7 = sub_10000CEDC(&qword_100029FA0, &qword_100019518);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(reply);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = type metadata accessor for TaskPriority();
@@ -2400,12 +2400,12 @@ LABEL_5:
   v14 = swift_allocObject();
   v14[2] = 0;
   v14[3] = 0;
-  v14[4] = a3;
+  v14[4] = keys;
   v14[5] = self;
   v14[6] = sub_100012A10;
   v14[7] = v12;
-  v15 = a3;
-  v16 = self;
+  keysCopy = keys;
+  selfCopy = self;
   sub_10000F0A8(0, 0, v10, &unk_100019560, v14);
 }
 

@@ -1,17 +1,17 @@
 @interface NFUIServiceServer
-- (void)runService:(id)a3 callback:(id)a4;
-- (void)showPaymentSessionGotoSettingsPrompt:(id)a3;
+- (void)runService:(id)service callback:(id)callback;
+- (void)showPaymentSessionGotoSettingsPrompt:(id)prompt;
 @end
 
 @implementation NFUIServiceServer
 
-- (void)runService:(id)a3 callback:(id)a4
+- (void)runService:(id)service callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 valueForKey:@"Action"];
-  v9 = [v6 valueForKey:@"Parameter"];
-  v10 = [v6 valueForKey:@"UserData"];
+  serviceCopy = service;
+  callbackCopy = callback;
+  v8 = [serviceCopy valueForKey:@"Action"];
+  v9 = [serviceCopy valueForKey:@"Parameter"];
+  v10 = [serviceCopy valueForKey:@"UserData"];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -82,7 +82,7 @@ LABEL_25:
     v12 = v11;
     v13 = object_getClass(self);
     v14 = class_isMetaClass(v13);
-    v15 = v7;
+    v15 = callbackCopy;
     v16 = v9;
     v17 = object_getClassName(self);
     v142 = sel_getName(a2);
@@ -94,7 +94,7 @@ LABEL_25:
 
     v135 = v17;
     v9 = v16;
-    v7 = v15;
+    callbackCopy = v15;
     v12(6, "%c[%{public}s %{public}s]:%i Got message %@ for context %@", v18, v135, v142, 39, v156, v10);
   }
 
@@ -103,7 +103,7 @@ LABEL_25:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = object_getClass(self);
-    v21 = v7;
+    v21 = callbackCopy;
     v22 = v9;
     if (class_isMetaClass(v20))
     {
@@ -118,7 +118,7 @@ LABEL_25:
     *buf = 67110402;
     v169 = v23;
     v9 = v22;
-    v7 = v21;
+    callbackCopy = v21;
     v170 = 2082;
     v171 = object_getClassName(self);
     v172 = 2082;
@@ -140,7 +140,7 @@ LABEL_25:
     v162[1] = 3221225472;
     v162[2] = sub_100005830;
     v162[3] = &unk_10000C730;
-    v163 = v7;
+    v163 = callbackCopy;
     v25 = v10;
     [v24 activate:self context:v10 withCompletion:v162];
 
@@ -154,11 +154,11 @@ LABEL_14:
   {
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v42 = [v9 integerValue];
+      integerValue = [v9 integerValue];
       v43 = +[NFServiceCoreNFCUI instance];
       [v43 setUIOperationMode:0];
 
-      if (v42 == 3)
+      if (integerValue == 3)
       {
         v108 = +[NFServiceCoreNFCUI instance];
         [v108 setUIOperationMode:1];
@@ -166,14 +166,14 @@ LABEL_14:
         v109 = +[NFServiceCoreNFCUI instance];
         [v109 setUIMode:20];
 
-        (*(v7 + 2))(v7, 0, 0);
+        (*(callbackCopy + 2))(callbackCopy, 0, 0);
         v25 = v10;
         v8 = v156;
         goto LABEL_27;
       }
 
       v8 = v156;
-      if (v42 == 2)
+      if (integerValue == 2)
       {
         v44 = +[NFServiceCoreNFCUI instance];
         v45 = v44;
@@ -181,7 +181,7 @@ LABEL_14:
         goto LABEL_93;
       }
 
-      if (v42 == 1)
+      if (integerValue == 1)
       {
         v44 = +[NFServiceCoreNFCUI instance];
         v45 = v44;
@@ -198,7 +198,7 @@ LABEL_93:
         v111 = v110;
         v112 = object_getClass(self);
         v113 = class_isMetaClass(v112);
-        v114 = v7;
+        v114 = callbackCopy;
         v115 = v9;
         v116 = object_getClassName(self);
         v147 = sel_getName(a2);
@@ -212,7 +212,7 @@ LABEL_93:
 
         v140 = v116;
         v9 = v115;
-        v7 = v114;
+        callbackCopy = v114;
         v111(3, "%c[%{public}s %{public}s]:%i Invalid parameter", v117, v140, v147, 75);
       }
 
@@ -260,7 +260,7 @@ LABEL_93:
         v50 = v49;
         v51 = object_getClass(self);
         v52 = class_isMetaClass(v51);
-        v53 = v7;
+        v53 = callbackCopy;
         v54 = v9;
         v55 = object_getClassName(self);
         v144 = sel_getName(a2);
@@ -274,7 +274,7 @@ LABEL_93:
 
         v137 = v55;
         v9 = v54;
-        v7 = v53;
+        callbackCopy = v53;
         v50(3, "%c[%{public}s %{public}s]:%i Invalid parameter", v56, v137, v144, 51);
       }
 
@@ -328,7 +328,7 @@ LABEL_93:
         v48 = +[NFServiceCoreNFCUI instance];
         [v48 tagCount:v47];
 
-        (*(v7 + 2))(v7, 0, 0);
+        (*(callbackCopy + 2))(callbackCopy, 0, 0);
 LABEL_76:
 
         goto LABEL_27;
@@ -342,7 +342,7 @@ LABEL_76:
       v64 = v63;
       v65 = object_getClass(self);
       v66 = class_isMetaClass(v65);
-      v67 = v7;
+      v67 = callbackCopy;
       v68 = v9;
       v69 = object_getClassName(self);
       v145 = sel_getName(a2);
@@ -356,7 +356,7 @@ LABEL_76:
 
       v138 = v69;
       v9 = v68;
-      v7 = v67;
+      callbackCopy = v67;
       v64(3, "%c[%{public}s %{public}s]:%i Invalid parameter", v70, v138, v145, 85);
     }
 
@@ -406,7 +406,7 @@ LABEL_76:
         v62 = +[NFServiceCoreNFCUI instance];
         [v62 setPurpose:v47];
 
-        (*(v7 + 2))(v7, 0, 0);
+        (*(callbackCopy + 2))(callbackCopy, 0, 0);
         v25 = v10;
         goto LABEL_76;
       }
@@ -419,7 +419,7 @@ LABEL_76:
       v79 = v78;
       v80 = object_getClass(self);
       v81 = class_isMetaClass(v80);
-      v82 = v7;
+      v82 = callbackCopy;
       v83 = v9;
       v84 = object_getClassName(self);
       v146 = sel_getName(a2);
@@ -433,7 +433,7 @@ LABEL_76:
 
       v139 = v84;
       v9 = v83;
-      v7 = v82;
+      callbackCopy = v82;
       v79(3, "%c[%{public}s %{public}s]:%i Invalid parameter", v85, v139, v146, 99);
     }
 
@@ -473,7 +473,7 @@ LABEL_76:
 LABEL_75:
     v47 = [NSDictionary dictionaryWithObjects:v76 forKeys:v77 count:1];
     v91 = [NSError errorWithDomain:@"NFUIService" code:2 userInfo:v47];
-    (*(v7 + 2))(v7, 0, v91);
+    (*(callbackCopy + 2))(callbackCopy, 0, v91);
 
     goto LABEL_76;
   }
@@ -484,7 +484,7 @@ LABEL_75:
     [v45 invalidate];
 LABEL_94:
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(callbackCopy + 2))(callbackCopy, 0, 0);
     v25 = v10;
     goto LABEL_27;
   }
@@ -494,14 +494,14 @@ LABEL_94:
   {
     if ([v156 isEqualToString:@"CoreNFCShowPaymentSessionGotoSettingsPrompt"])
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(callbackCopy + 2))(callbackCopy, 0, 0);
       v123 = dispatch_get_global_queue(25, 0);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10000597C;
       block[3] = &unk_10000C780;
       block[4] = self;
-      v159 = v6;
+      v159 = serviceCopy;
       dispatch_async(v123, block);
 
       v26 = v159;
@@ -564,14 +564,14 @@ LABEL_94:
     v40 = 1;
 LABEL_26:
     v41 = [NSError errorWithDomain:@"NFUIService" code:v40 userInfo:v39];
-    (*(v7 + 2))(v7, 0, v41);
+    (*(callbackCopy + 2))(callbackCopy, 0, v41);
 
     goto LABEL_27;
   }
 
-  v92 = [v6 NF_stringForKey:@"launchBundleIdentifier"];
-  v155 = [v6 NF_numberForKey:@"launchReason"];
-  v154 = [v6 NF_numberForKey:@"walletDomain"];
+  v92 = [serviceCopy NF_stringForKey:@"launchBundleIdentifier"];
+  v155 = [serviceCopy NF_numberForKey:@"launchReason"];
+  v154 = [serviceCopy NF_numberForKey:@"walletDomain"];
   if (v92 && [v92 lengthOfBytesUsingEncoding:4] && v155 && v154)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -583,15 +583,15 @@ LABEL_26:
       v152 = class_isMetaClass(v95);
       v153 = object_getClassName(self);
       v151 = sel_getName(a2);
-      v149 = [v155 unsignedIntegerValue];
-      v150 = [v154 integerValue];
+      unsignedIntegerValue = [v155 unsignedIntegerValue];
+      integerValue2 = [v154 integerValue];
       v96 = 43;
       if (!v152)
       {
         v96 = 45;
       }
 
-      v94(6, "%c[%{public}s %{public}s]:%i Launching %{public}@, reason=%lu, domain=%lu", v96, v153, v151, 123, v92, v149, v150);
+      v94(6, "%c[%{public}s %{public}s]:%i Launching %{public}@, reason=%lu, domain=%lu", v96, v153, v151, 123, v92, unsignedIntegerValue, integerValue2);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -612,8 +612,8 @@ LABEL_26:
       v100 = object_getClassName(self);
       v101 = sel_getName(a2);
       v102 = v9;
-      v103 = [v155 unsignedIntegerValue];
-      v104 = [v154 integerValue];
+      unsignedIntegerValue2 = [v155 unsignedIntegerValue];
+      integerValue3 = [v154 integerValue];
       *buf = 67110658;
       v169 = v99;
       v170 = 2082;
@@ -625,22 +625,22 @@ LABEL_26:
       v176 = 2114;
       v177 = v92;
       v178 = 2048;
-      v179 = v103;
+      v179 = unsignedIntegerValue2;
       v9 = v102;
       v25 = v10;
       v180 = 2048;
-      v181 = v104;
+      v181 = integerValue3;
       _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Launching %{public}@, reason=%lu, domain=%lu", buf, 0x40u);
     }
 
     v105 = [v154 integerValue] != 0;
-    v106 = [v155 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v155 unsignedIntegerValue];
     v160[0] = _NSConcreteStackBlock;
     v160[1] = 3221225472;
     v160[2] = sub_100005848;
     v160[3] = &unk_10000C758;
-    v161 = v7;
-    [_TtC11NFUIService26NFWindowSceneEventLauncher launchBundleWithIdentifier:v92 reason:v106 domain:v105 completion:v160];
+    v161 = callbackCopy;
+    [_TtC11NFUIService26NFWindowSceneEventLauncher launchBundleWithIdentifier:v92 reason:unsignedIntegerValue3 domain:v105 completion:v160];
     v107 = v161;
     v8 = v156;
   }
@@ -651,15 +651,15 @@ LABEL_26:
     v167 = @"Invalid parameter";
     v107 = [NSDictionary dictionaryWithObjects:&v167 forKeys:&v166 count:1];
     v124 = [NSError errorWithDomain:@"NFUIService" code:2 userInfo:v107];
-    (*(v7 + 2))(v7, 0, v124);
+    (*(callbackCopy + 2))(callbackCopy, 0, v124);
   }
 
 LABEL_27:
 }
 
-- (void)showPaymentSessionGotoSettingsPrompt:(id)a3
+- (void)showPaymentSessionGotoSettingsPrompt:(id)prompt
 {
-  v65 = a3;
+  promptCopy = prompt;
   context = objc_autoreleasePoolPush();
   v81[0] = kCFUserNotificationAlertHeaderKey;
   v4 = +[NSBundle mainBundle];
@@ -835,8 +835,8 @@ LABEL_27:
 
   if ((responseFlags & 3) == 0)
   {
-    v36 = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Apps/%@", v65];
-    v37 = [NSURL URLWithString:v36];
+    promptCopy = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Apps/%@", promptCopy];
+    v37 = [NSURL URLWithString:promptCopy];
 
     v38 = +[LSApplicationWorkspace defaultWorkspace];
     v67 = 0;
@@ -858,7 +858,7 @@ LABEL_27:
         v45 = 43;
       }
 
-      v41(6, "%c[%{public}s %{public}s]:%i Launched to %@ error %@", v45, v44, v63, 199, v65, v39);
+      v41(6, "%c[%{public}s %{public}s]:%i Launched to %@ error %@", v45, v44, v63, 199, promptCopy, v39);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -887,7 +887,7 @@ LABEL_27:
       v76 = 1024;
       v77 = 199;
       v78 = 2112;
-      *v79 = v65;
+      *v79 = promptCopy;
       *&v79[8] = 2112;
       v80 = v39;
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Launched to %@ error %@", buf, 0x36u);

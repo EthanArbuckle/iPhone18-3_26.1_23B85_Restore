@@ -1,24 +1,24 @@
 @interface MXSampleAnalysisParser
-+ (id)constructPayloadWithReport:(id)a3 withType:(int64_t)a4;
-+ (id)getCallStackForReport:(id)a3 withType:(int64_t)a4;
-+ (id)parseCallTreeFrame:(id)a3 withDepth:(unint64_t)a4;
-+ (void)sendDiagnosticReport:(id)a3 forType:(int64_t)a4 forSourceID:(int64_t)a5;
++ (id)constructPayloadWithReport:(id)report withType:(int64_t)type;
++ (id)getCallStackForReport:(id)report withType:(int64_t)type;
++ (id)parseCallTreeFrame:(id)frame withDepth:(unint64_t)depth;
++ (void)sendDiagnosticReport:(id)report forType:(int64_t)type forSourceID:(int64_t)d;
 @end
 
 @implementation MXSampleAnalysisParser
 
-+ (void)sendDiagnosticReport:(id)a3 forType:(int64_t)a4 forSourceID:(int64_t)a5
++ (void)sendDiagnosticReport:(id)report forType:(int64_t)type forSourceID:(int64_t)d
 {
-  v7 = a3;
-  v8 = v7;
-  if (v7 && ([v7 sampleStore], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(v8, "options"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  reportCopy = report;
+  v8 = reportCopy;
+  if (reportCopy && ([reportCopy sampleStore], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(v8, "options"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v12 = [MXSampleAnalysisParser constructPayloadWithReport:v8 withType:a4];
+    v12 = [MXSampleAnalysisParser constructPayloadWithReport:v8 withType:type];
     if (v12)
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v14 = +[MXSourceManager sharedManager];
-      [v14 sendDiagnostic:v12 forDate:v13 andSourceID:a5];
+      [v14 sendDiagnostic:v12 forDate:date andSourceID:d];
     }
   }
 
@@ -32,27 +32,27 @@
   }
 }
 
-+ (id)constructPayloadWithReport:(id)a3 withType:(int64_t)a4
++ (id)constructPayloadWithReport:(id)report withType:(int64_t)type
 {
   v100[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 sampleStore];
-  v7 = [v6 targetProcess];
-  v8 = [v7 bundleIdentifier];
+  reportCopy = report;
+  sampleStore = [reportCopy sampleStore];
+  targetProcess = [sampleStore targetProcess];
+  bundleIdentifier = [targetProcess bundleIdentifier];
 
-  if (v8)
+  if (bundleIdentifier)
   {
-    v9 = [v6 targetProcess];
-    v10 = +[MXSourceUtilities isMetricKitClient:forUser:](MXSourceUtilities, "isMetricKitClient:forUser:", v8, [v9 uid]);
+    targetProcess2 = [sampleStore targetProcess];
+    v10 = +[MXSourceUtilities isMetricKitClient:forUser:](MXSourceUtilities, "isMetricKitClient:forUser:", bundleIdentifier, [targetProcess2 uid]);
 
     if (v10)
     {
-      v11 = [MXSampleAnalysisParser getCallStackForReport:v5 withType:a4];
+      v11 = [MXSampleAnalysisParser getCallStackForReport:reportCopy withType:type];
       v12 = objc_alloc(MEMORY[0x277CD79F8]);
-      v13 = [v6 targetProcessBundleVersion];
-      v14 = [v6 targetProcess];
-      v15 = [v14 bundleIdentifier];
-      v96 = [v12 initWithRegionFormat:&stru_286A1D018 osVersion:&stru_286A1D018 deviceType:&stru_286A1D018 appBuildVersion:v13 platformArchitecture:&stru_286A1D018 bundleID:v15];
+      targetProcessBundleVersion = [sampleStore targetProcessBundleVersion];
+      targetProcess3 = [sampleStore targetProcess];
+      bundleIdentifier2 = [targetProcess3 bundleIdentifier];
+      v96 = [v12 initWithRegionFormat:&stru_286A1D018 osVersion:&stru_286A1D018 deviceType:&stru_286A1D018 appBuildVersion:targetProcessBundleVersion platformArchitecture:&stru_286A1D018 bundleID:bundleIdentifier2];
 
       v94 = objc_alloc_init(MEMORY[0x277CBEB38]);
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -65,19 +65,19 @@
         +[MXSampleAnalysisParser constructPayloadWithReport:withType:];
       }
 
-      v16 = [v6 eventTimeRange];
-      v17 = [v16 startTime];
-      [v17 wallTime];
+      eventTimeRange = [sampleStore eventTimeRange];
+      startTime = [eventTimeRange startTime];
+      [startTime wallTime];
       v19 = v18;
 
       if (v19 != 0.0)
       {
         v20 = MEMORY[0x277CBEAA8];
-        v21 = [v6 eventTimeRange];
-        v22 = v21;
+        eventTimeRange2 = [sampleStore eventTimeRange];
+        startTime3 = eventTimeRange2;
 LABEL_9:
-        v23 = [v21 startTime];
-        [v23 wallTime];
+        startTime2 = [eventTimeRange2 startTime];
+        [startTime2 wallTime];
         v98 = [v20 dateWithTimeIntervalSinceReferenceDate:?];
 
         goto LABEL_20;
@@ -88,23 +88,23 @@ LABEL_9:
         +[MXSampleAnalysisParser constructPayloadWithReport:withType:];
       }
 
-      v25 = [v6 eventTimeRange];
-      v22 = [v25 startTime];
+      eventTimeRange3 = [sampleStore eventTimeRange];
+      startTime3 = [eventTimeRange3 startTime];
 
-      v26 = [v6 indexOfFirstSampleOnOrAfterTimestamp:v22];
+      v26 = [sampleStore indexOfFirstSampleOnOrAfterTimestamp:startTime3];
       if (v26 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v27 = v26;
-        v28 = [v6 sampleTimestamps];
-        v29 = [v28 objectAtIndexedSubscript:v27];
-        [v22 guessMissingTimesBasedOnTimestamp:v29];
+        sampleTimestamps = [sampleStore sampleTimestamps];
+        v29 = [sampleTimestamps objectAtIndexedSubscript:v27];
+        [startTime3 guessMissingTimesBasedOnTimestamp:v29];
       }
 
-      [v22 wallTime];
+      [startTime3 wallTime];
       if (v30 == 0.0)
       {
-        v72 = [v6 startTime];
-        [v72 wallTime];
+        startTime4 = [sampleStore startTime];
+        [startTime4 wallTime];
         v74 = v73;
 
         v75 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -116,7 +116,7 @@ LABEL_9:
           }
 
           v20 = MEMORY[0x277CBEAA8];
-          v21 = v6;
+          eventTimeRange2 = sampleStore;
           goto LABEL_9;
         }
 
@@ -131,7 +131,7 @@ LABEL_9:
       else
       {
         v31 = MEMORY[0x277CBEAA8];
-        [v22 wallTime];
+        [startTime3 wallTime];
         v32 = [v31 dateWithTimeIntervalSinceReferenceDate:?];
       }
 
@@ -149,26 +149,26 @@ LABEL_20:
       }
 
       v95 = v34;
-      v35 = [v6 targetProcess];
-      v36 = [v35 pid];
-      v37 = [v6 targetProcess];
-      v38 = [v37 bundleIdentifier];
-      v97 = [MXSourceUtilities getSignpostDataforPid:v36 forClient:v38 andEventTimestamp:v98];
+      targetProcess4 = [sampleStore targetProcess];
+      v36 = [targetProcess4 pid];
+      targetProcess5 = [sampleStore targetProcess];
+      bundleIdentifier3 = [targetProcess5 bundleIdentifier];
+      v97 = [MXSourceUtilities getSignpostDataforPid:v36 forClient:bundleIdentifier3 andEventTimestamp:v98];
 
-      if (a4 == 1)
+      if (type == 1)
       {
         v56 = objc_alloc(MEMORY[0x277CCAB10]);
-        v57 = [v6 bytesWritten];
-        v58 = [MEMORY[0x277CCAE18] bytes];
-        v44 = [v56 initWithDoubleValue:v58 unit:v57];
+        bytesWritten = [sampleStore bytesWritten];
+        bytes = [MEMORY[0x277CCAE18] bytes];
+        v44 = [v56 initWithDoubleValue:bytes unit:bytesWritten];
 
-        v59 = [MEMORY[0x277CCAE18] megabytes];
-        v49 = [v44 measurementByConvertingToUnit:v59];
+        megabytes = [MEMORY[0x277CCAE18] megabytes];
+        v49 = [v44 measurementByConvertingToUnit:megabytes];
 
         v60 = objc_alloc(MEMORY[0x277CD7988]);
-        v61 = [v6 targetProcessBundleShortVersion];
+        targetProcessBundleShortVersion = [sampleStore targetProcessBundleShortVersion];
         v39 = v33;
-        v53 = [v60 initWithMetaData:v96 applicationVersion:v61 signpostData:v97 pid:objc_msgSend(v6 totalWritesCaused:"targetProcessId") stackTrace:{v49, v33}];
+        v53 = [v60 initWithMetaData:v96 applicationVersion:targetProcessBundleShortVersion signpostData:v97 pid:objc_msgSend(sampleStore totalWritesCaused:"targetProcessId") stackTrace:{v49, v33}];
 
         if (v53)
         {
@@ -190,24 +190,24 @@ LABEL_20:
       }
 
       v39 = v33;
-      if (!a4)
+      if (!type)
       {
         v40 = objc_alloc(MEMORY[0x277CCAB10]);
-        [v6 cpuUsed];
+        [sampleStore cpuUsed];
         v42 = v41;
-        v43 = [MEMORY[0x277CCADD0] seconds];
-        v44 = [v40 initWithDoubleValue:v43 unit:v42];
+        seconds = [MEMORY[0x277CCADD0] seconds];
+        v44 = [v40 initWithDoubleValue:seconds unit:v42];
 
         v45 = objc_alloc(MEMORY[0x277CCAB10]);
-        [v6 cpuDuration];
+        [sampleStore cpuDuration];
         v47 = v46;
-        v48 = [MEMORY[0x277CCADD0] seconds];
-        v49 = [v45 initWithDoubleValue:v48 unit:v47];
+        seconds2 = [MEMORY[0x277CCADD0] seconds];
+        v49 = [v45 initWithDoubleValue:seconds2 unit:v47];
 
         v50 = objc_alloc(MEMORY[0x277CD7918]);
-        v51 = [v6 targetProcessBundleShortVersion];
+        targetProcessBundleShortVersion2 = [sampleStore targetProcessBundleShortVersion];
         v52 = v96;
-        v53 = [v50 initWithMetaData:v96 applicationVersion:v51 signpostData:v97 pid:objc_msgSend(v6 callStack:"targetProcessId") totalCpuTime:v39 totalSampledTime:{v44, v49}];
+        v53 = [v50 initWithMetaData:v96 applicationVersion:targetProcessBundleShortVersion2 signpostData:v97 pid:objc_msgSend(sampleStore callStack:"targetProcessId") totalCpuTime:v39 totalSampledTime:{v44, v49}];
 
         if (v53)
         {
@@ -233,7 +233,7 @@ LABEL_50:
 LABEL_51:
         if (v55)
         {
-          v99 = v8;
+          v99 = bundleIdentifier;
           v100[0] = v55;
           v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v100 forKeys:&v99 count:1];
         }
@@ -247,20 +247,20 @@ LABEL_51:
       }
 
       v52 = v96;
-      if (a4 != 4)
+      if (type != 4)
       {
-        if (a4 == 3)
+        if (type == 3)
         {
           v85 = objc_alloc(MEMORY[0x277CCAB10]);
-          v86 = [v6 eventTimeRange];
-          [v86 deltaMachAbsTimeSeconds];
+          eventTimeRange4 = [sampleStore eventTimeRange];
+          [eventTimeRange4 deltaMachAbsTimeSeconds];
           v88 = v87;
-          v89 = [MEMORY[0x277CCADD0] seconds];
-          v44 = [v85 initWithDoubleValue:v89 unit:v88];
+          seconds3 = [MEMORY[0x277CCADD0] seconds];
+          v44 = [v85 initWithDoubleValue:seconds3 unit:v88];
 
           v90 = objc_alloc(MEMORY[0x277CD78C0]);
-          v91 = [v6 targetProcessBundleShortVersion];
-          v49 = [v90 initWithMetaData:v96 applicationVersion:v91 signpostData:v97 pid:objc_msgSend(v6 callStack:"targetProcessId") launchDuration:{v39, v44}];
+          targetProcessBundleShortVersion3 = [sampleStore targetProcessBundleShortVersion];
+          v49 = [v90 initWithMetaData:v96 applicationVersion:targetProcessBundleShortVersion3 signpostData:v97 pid:objc_msgSend(sampleStore callStack:"targetProcessId") launchDuration:{v39, v44}];
 
           if (v49)
           {
@@ -282,7 +282,7 @@ LABEL_62:
           goto LABEL_50;
         }
 
-        if (a4 != 2)
+        if (type != 2)
         {
           v55 = 0;
           v54 = v94;
@@ -291,7 +291,7 @@ LABEL_62:
         }
       }
 
-      if (a4 == 2)
+      if (type == 2)
       {
         v62 = 1;
       }
@@ -302,21 +302,21 @@ LABEL_62:
       }
 
       v63 = objc_alloc(MEMORY[0x277CCAB10]);
-      v64 = [v6 eventTimeRange];
-      [v64 deltaMachAbsTimeSeconds];
+      eventTimeRange5 = [sampleStore eventTimeRange];
+      [eventTimeRange5 deltaMachAbsTimeSeconds];
       v66 = v65;
-      v67 = [MEMORY[0x277CCADD0] seconds];
-      v44 = [v63 initWithDoubleValue:v67 unit:v66];
+      seconds4 = [MEMORY[0x277CCADD0] seconds];
+      v44 = [v63 initWithDoubleValue:seconds4 unit:v66];
 
       v68 = objc_alloc(MEMORY[0x277CD79C0]);
-      v69 = [v6 targetProcessBundleShortVersion];
-      v49 = [v68 initWithMetaData:v96 applicationVersion:v69 signpostData:v97 pid:objc_msgSend(v6 callStack:"targetProcessId") hangDuration:v39 hangType:{v44, v62}];
+      targetProcessBundleShortVersion4 = [sampleStore targetProcessBundleShortVersion];
+      v49 = [v68 initWithMetaData:v96 applicationVersion:targetProcessBundleShortVersion4 signpostData:v97 pid:objc_msgSend(sampleStore callStack:"targetProcessId") hangDuration:v39 hangType:{v44, v62}];
 
       if (v49)
       {
         v70 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
         v54 = v94;
-        if (a4 == 2)
+        if (type == 2)
         {
           v71 = v95;
           if (v70)
@@ -358,29 +358,29 @@ LABEL_55:
   return v24;
 }
 
-+ (id)getCallStackForReport:(id)a3 withType:(int64_t)a4
++ (id)getCallStackForReport:(id)report withType:(int64_t)type
 {
-  v5 = a3;
+  reportCopy = report;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v5 sampleStore];
-  v8 = [v5 options];
-  v9 = [v8 aggregateStacksByProcess];
+  sampleStore = [reportCopy sampleStore];
+  options = [reportCopy options];
+  aggregateStacksByProcess = [options aggregateStacksByProcess];
 
-  if (v9)
+  if (aggregateStacksByProcess)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      [MXSampleAnalysisParser getCallStackForReport:v7 withType:?];
+      [MXSampleAnalysisParser getCallStackForReport:sampleStore withType:?];
     }
 
-    v10 = [v7 targetProcess];
+    targetProcess = [sampleStore targetProcess];
 
-    if (v10)
+    if (targetProcess)
     {
-      v11 = [v7 targetProcess];
-      v10 = [v5 callTreeForTask:v11];
+      targetProcess2 = [sampleStore targetProcess];
+      targetProcess = [reportCopy callTreeForTask:targetProcess2];
 
-      v12 = [MXSampleAnalysisParser parseCallTree:v10 isAttributedThread:0];
+      v12 = [MXSampleAnalysisParser parseCallTree:targetProcess isAttributedThread:0];
       if (v12)
       {
         [v6 addObject:v12];
@@ -392,44 +392,44 @@ LABEL_55:
     goto LABEL_24;
   }
 
-  v13 = [v5 options];
-  v14 = [v13 printTargetThreadOnly];
-  if (a4 & 0xFFFFFFFFFFFFFFFELL) == 2 || (v14)
+  options2 = [reportCopy options];
+  printTargetThreadOnly = [options2 printTargetThreadOnly];
+  if (type & 0xFFFFFFFFFFFFFFFELL) == 2 || (printTargetThreadOnly)
   {
 
 LABEL_15:
-    v17 = [v7 targetProcess];
-    v18 = [v17 threads];
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v7, "targetThreadId")}];
-    v20 = [v18 objectForKeyedSubscript:v19];
+    targetProcess3 = [sampleStore targetProcess];
+    threads = [targetProcess3 threads];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(sampleStore, "targetThreadId")}];
+    v20 = [threads objectForKeyedSubscript:v19];
     v21 = v20;
     if (v20)
     {
-      v10 = v20;
+      targetProcess = v20;
     }
 
     else
     {
-      v22 = [v7 targetProcess];
-      v10 = [v22 mainThread];
+      targetProcess4 = [sampleStore targetProcess];
+      targetProcess = [targetProcess4 mainThread];
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       +[MXSampleAnalysisParser getCallStackForReport:withType:];
-      if (!v10)
+      if (!targetProcess)
       {
         goto LABEL_24;
       }
     }
 
-    else if (!v10)
+    else if (!targetProcess)
     {
       goto LABEL_24;
     }
 
-    v23 = [v7 targetProcess];
-    v12 = [v5 callTreeForThread:v10 inTask:v23];
+    targetProcess5 = [sampleStore targetProcess];
+    v12 = [reportCopy callTreeForThread:targetProcess inTask:targetProcess5];
 
     v24 = [MXSampleAnalysisParser parseCallTree:v12 isAttributedThread:1];
     if (v24)
@@ -440,43 +440,43 @@ LABEL_15:
     goto LABEL_23;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
     goto LABEL_15;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [MXSampleAnalysisParser getCallStackForReport:v7 withType:?];
+    [MXSampleAnalysisParser getCallStackForReport:sampleStore withType:?];
   }
 
-  v10 = [v7 targetProcess];
+  targetProcess = [sampleStore targetProcess];
 
-  if (v10)
+  if (targetProcess)
   {
-    v15 = [v7 targetProcess];
-    v10 = [v5 callTreesForThreadsInTask:v15];
+    targetProcess6 = [sampleStore targetProcess];
+    targetProcess = [reportCopy callTreesForThreadsInTask:targetProcess6];
 
-    v16 = [v10 threadCallTrees];
+    threadCallTrees = [targetProcess threadCallTrees];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __57__MXSampleAnalysisParser_getCallStackForReport_withType___block_invoke;
     v28[3] = &unk_2798C8970;
-    v29 = v7;
+    v29 = sampleStore;
     v30 = v6;
-    [v16 enumerateObjectsUsingBlock:v28];
+    [threadCallTrees enumerateObjectsUsingBlock:v28];
 
     v12 = v29;
 LABEL_23:
 
     v25 = objc_alloc(MEMORY[0x277CD7940]);
-    v26 = [v5 options];
-    v10 = [v25 initWithThreadArray:v6 aggregatedByProcess:{objc_msgSend(v26, "aggregateStacksByProcess")}];
+    options3 = [reportCopy options];
+    targetProcess = [v25 initWithThreadArray:v6 aggregatedByProcess:{objc_msgSend(options3, "aggregateStacksByProcess")}];
   }
 
 LABEL_24:
 
-  return v10;
+  return targetProcess;
 }
 
 void __57__MXSampleAnalysisParser_getCallStackForReport_withType___block_invoke(uint64_t a1, void *a2)
@@ -508,42 +508,42 @@ uint64_t __59__MXSampleAnalysisParser_parseCallTree_isAttributedThread___block_i
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)parseCallTreeFrame:(id)a3 withDepth:(unint64_t)a4
++ (id)parseCallTreeFrame:(id)frame withDepth:(unint64_t)depth
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ([v5 frame], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  frameCopy = frame;
+  v6 = frameCopy;
+  if (frameCopy && ([frameCopy frame], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v9 = [v6 childFrames];
+    childFrames = [v6 childFrames];
 
     v10 = 0;
-    if (a4 <= 0x81 && v9)
+    if (depth <= 0x81 && childFrames)
     {
       v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v12 = [v6 childFrames];
+      childFrames2 = [v6 childFrames];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __55__MXSampleAnalysisParser_parseCallTreeFrame_withDepth___block_invoke;
       v26[3] = &unk_2798C89C0;
       v27 = v11;
-      v28 = a4;
+      depthCopy = depth;
       v25 = v11;
-      [v12 enumerateObjectsUsingBlock:v26];
+      [childFrames2 enumerateObjectsUsingBlock:v26];
 
-      v13 = [v6 frame];
-      v14 = [v13 instruction];
+      frame = [v6 frame];
+      instruction = [frame instruction];
 
-      v24 = [v14 binary];
+      binary = [instruction binary];
       v23 = objc_alloc(MEMORY[0x277CD7930]);
-      v15 = [v24 name];
-      v16 = [v24 uuid];
+      name = [binary name];
+      uuid = [binary uuid];
       v17 = MEMORY[0x277CCABB0];
-      v18 = [v6 frame];
-      v19 = [v17 numberWithUnsignedLongLong:{objc_msgSend(v18, "address")}];
-      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v14, "offsetIntoTextSegment")}];
+      frame2 = [v6 frame];
+      v19 = [v17 numberWithUnsignedLongLong:{objc_msgSend(frame2, "address")}];
+      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(instruction, "offsetIntoTextSegment")}];
       v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "sampleCount")}];
-      v10 = [v23 initWithBinaryName:v15 binaryUUID:v16 address:v19 binaryOffset:v20 sampleCount:v21 withDepth:a4 subFrameArray:v25];
+      v10 = [v23 initWithBinaryName:name binaryUUID:uuid address:v19 binaryOffset:v20 sampleCount:v21 withDepth:depth subFrameArray:v25];
     }
   }
 

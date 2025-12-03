@@ -1,21 +1,21 @@
 @interface ICInAppReportEventRequest
-- (ICInAppReportEventRequest)initWithStoreRequestContext:(id)a3 messageIdentifier:(id)a4 params:(id)a5;
+- (ICInAppReportEventRequest)initWithStoreRequestContext:(id)context messageIdentifier:(id)identifier params:(id)params;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICInAppReportEventRequest
 
 - (void)execute
 {
-  v3 = [(ICStoreRequestContext *)self->_storeRequestContext identityStore];
-  v4 = [(ICStoreRequestContext *)self->_storeRequestContext identity];
+  identityStore = [(ICStoreRequestContext *)self->_storeRequestContext identityStore];
+  identity = [(ICStoreRequestContext *)self->_storeRequestContext identity];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36__ICInAppReportEventRequest_execute__block_invoke;
   v5[3] = &unk_1E7BF7B20;
   v5[4] = self;
-  [v3 getPropertiesForUserIdentity:v4 completionHandler:v5];
+  [identityStore getPropertiesForUserIdentity:identity completionHandler:v5];
 }
 
 void __36__ICInAppReportEventRequest_execute__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -206,35 +206,35 @@ void __36__ICInAppReportEventRequest_execute__block_invoke_13(uint64_t a1, uint6
   [*(a1 + 32) finishWithError:v4];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__ICInAppReportEventRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BF77C0;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICInAppReportEventRequest)initWithStoreRequestContext:(id)a3 messageIdentifier:(id)a4 params:(id)a5
+- (ICInAppReportEventRequest)initWithStoreRequestContext:(id)context messageIdentifier:(id)identifier params:(id)params
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  identifierCopy = identifier;
+  paramsCopy = params;
   v19.receiver = self;
   v19.super_class = ICInAppReportEventRequest;
   v12 = [(ICRequestOperation *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_storeRequestContext, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_storeRequestContext, context);
+    v14 = [identifierCopy copy];
     messageIdentifier = v13->_messageIdentifier;
     v13->_messageIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [paramsCopy copy];
     params = v13->_params;
     v13->_params = v16;
   }

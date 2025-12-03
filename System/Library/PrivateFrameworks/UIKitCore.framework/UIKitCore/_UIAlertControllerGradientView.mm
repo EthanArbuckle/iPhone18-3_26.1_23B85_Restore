@@ -1,19 +1,19 @@
 @interface _UIAlertControllerGradientView
-- (void)setGradientColors:(id)a3;
+- (void)setGradientColors:(id)colors;
 @end
 
 @implementation _UIAlertControllerGradientView
 
-- (void)setGradientColors:(id)a3
+- (void)setGradientColors:(id)colors
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  colorsCopy = colors;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = colorsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -41,8 +41,8 @@
     while (v8);
   }
 
-  v12 = [(UIView *)self layer];
-  [v12 setColors:v5];
+  layer = [(UIView *)self layer];
+  [layer setColors:v5];
 }
 
 @end

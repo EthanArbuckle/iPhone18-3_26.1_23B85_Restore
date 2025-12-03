@@ -7,13 +7,13 @@
 - (NSString)byteString
 {
   v3 = +[NSMutableString string];
-  v4 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   if ([(NSData *)self length])
   {
     v5 = 0;
     do
     {
-      [v3 appendFormat:@"%02x", v4[v5++]];
+      [v3 appendFormat:@"%02x", bytes[v5++]];
     }
 
     while (v5 < [(NSData *)self length]);

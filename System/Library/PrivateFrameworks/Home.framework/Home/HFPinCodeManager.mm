@@ -1,22 +1,22 @@
 @interface HFPinCodeManager
-+ (id)asciiStringForLocalizedPINString:(id)a3 error:(id *)a4;
-- (HFPinCodeManager)initWithHome:(id)a3;
-- (id)_buildDataStoreWithAccessoryAccessCodeFetch:(id)a3;
-- (id)_deleteGuestPinCode:(id)a3;
-- (id)_deleteUnknownGuestFromMatterPinCode:(id)a3;
++ (id)asciiStringForLocalizedPINString:(id)string error:(id *)error;
+- (HFPinCodeManager)initWithHome:(id)home;
+- (id)_buildDataStoreWithAccessoryAccessCodeFetch:(id)fetch;
+- (id)_deleteGuestPinCode:(id)code;
+- (id)_deleteUnknownGuestFromMatterPinCode:(id)code;
 - (id)_fetchAccessCodesFromAccessories;
 - (id)_fetchAccessoryConstraints;
 - (id)_fetchCachedAccessoryAccessCodes;
-- (id)_modificationCompletionHandlerForFuture:(id)a3;
-- (id)_submitModificationRequests:(id)a3;
-- (id)_updateGuestPinCodeWithItem:(id)a3 withCodeValue:(id)a4 withUserInfo:(id)a5;
-- (id)addGuestPinCode:(id)a3 withLabel:(id)a4 onAccessories:(id)a5;
-- (id)checkForValidationErrorsWithPINCodeValue:(id)a3 originalPINCode:(id)a4;
+- (id)_modificationCompletionHandlerForFuture:(id)future;
+- (id)_submitModificationRequests:(id)requests;
+- (id)_updateGuestPinCodeWithItem:(id)item withCodeValue:(id)value withUserInfo:(id)info;
+- (id)addGuestPinCode:(id)code withLabel:(id)label onAccessories:(id)accessories;
+- (id)checkForValidationErrorsWithPINCodeValue:(id)value originalPINCode:(id)code;
 - (id)currentUserPinCode;
-- (id)deleteGuestPinCodeWithItem:(id)a3;
-- (id)deleteUserPinCodeWithUser:(id)a3;
-- (id)enablePinCodesForAllUsersOnNewAccessory:(id)a3;
-- (id)enablePinCodesForNewAccessory:(id)a3 forGuestItems:(id)a4;
+- (id)deleteGuestPinCodeWithItem:(id)item;
+- (id)deleteUserPinCodeWithUser:(id)user;
+- (id)enablePinCodesForAllUsersOnNewAccessory:(id)accessory;
+- (id)enablePinCodesForNewAccessory:(id)accessory forGuestItems:(id)items;
 - (id)fetchFromAccessories;
 - (id)fetchFromAccessoryCache;
 - (id)generateNewCodeValue;
@@ -24,41 +24,41 @@
 - (id)guestUserInformation;
 - (id)hasValidConstraints;
 - (id)otherEcosystemGuestPinCodes;
-- (id)pinCodeForCodeValue:(id)a3;
+- (id)pinCodeForCodeValue:(id)value;
 - (id)refreshDataStore;
 - (id)removedUserPINCodes;
-- (id)restoreFullAccessForUserWithItem:(id)a3;
+- (id)restoreFullAccessForUserWithItem:(id)item;
 - (id)revokeAccessForAllRemovedUsers;
-- (id)setPinCodeWithItem:(id)a3 enabled:(BOOL)a4 onAccessories:(id)a5;
-- (id)setUserPinCode:(id)a3 forUser:(id)a4;
-- (id)updateGuestPinCodeWithItem:(id)a3 withCodeValue:(id)a4 withLabel:(id)a5;
-- (id)updateGuestPinCodeWithItem:(id)a3 withLabel:(id)a4;
-- (id)updatePinCodeWithItem:(id)a3 withCodeValue:(id)a4;
+- (id)setPinCodeWithItem:(id)item enabled:(BOOL)enabled onAccessories:(id)accessories;
+- (id)setUserPinCode:(id)code forUser:(id)user;
+- (id)updateGuestPinCodeWithItem:(id)item withCodeValue:(id)value withLabel:(id)label;
+- (id)updateGuestPinCodeWithItem:(id)item withLabel:(id)label;
+- (id)updatePinCodeWithItem:(id)item withCodeValue:(id)value;
 - (id)userPinCodes;
-- (void)_addNewHomeAccessCode:(id)a3 toStore:(id)a4;
-- (void)_fetchPinCodeConstraints:(id)a3;
+- (void)_addNewHomeAccessCode:(id)code toStore:(id)store;
+- (void)_fetchPinCodeConstraints:(id)constraints;
 - (void)_kickoff;
 - (void)_reloadObservers;
-- (void)accessCodeManager:(id)a3 didAddAccessoryAccessCodes:(id)a4;
-- (void)accessCodeManager:(id)a3 didAddHomeAccessCodes:(id)a4;
-- (void)accessCodeManager:(id)a3 didRemoveAccessoryAccessCodes:(id)a4;
-- (void)accessCodeManager:(id)a3 didRemoveHomeAccessCodes:(id)a4;
-- (void)accessCodeManager:(id)a3 didUpdateHomeAccessCodes:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)accessCodeManager:(id)manager didAddAccessoryAccessCodes:(id)codes;
+- (void)accessCodeManager:(id)manager didAddHomeAccessCodes:(id)codes;
+- (void)accessCodeManager:(id)manager didRemoveAccessoryAccessCodes:(id)codes;
+- (void)accessCodeManager:(id)manager didRemoveHomeAccessCodes:(id)codes;
+- (void)accessCodeManager:(id)manager didUpdateHomeAccessCodes:(id)codes;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)executionEnvironmentRunningStateDidChange:(id)a3;
-- (void)fetchPinCodeConstraints:(id)a3;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setFetchInProgress:(int64_t)a3;
+- (void)executionEnvironmentRunningStateDidChange:(id)change;
+- (void)fetchPinCodeConstraints:(id)constraints;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)removeObserver:(id)observer;
+- (void)setFetchInProgress:(int64_t)progress;
 @end
 
 @implementation HFPinCodeManager
 
-- (HFPinCodeManager)initWithHome:(id)a3
+- (HFPinCodeManager)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HFPinCodeManager;
   v6 = [(HFPinCodeManager *)&v14 init];
@@ -70,15 +70,15 @@
     v8 = +[HFExecutionEnvironment sharedInstance];
     [v8 addObserver:v6];
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v9;
+    v6->_observers = weakObjectsHashTable;
 
     v6->_fetchInProgress = 0;
-    objc_storeStrong(&v6->_home, a3);
-    v11 = [v5 createAccessCodeManager];
+    objc_storeStrong(&v6->_home, home);
+    createAccessCodeManager = [homeCopy createAccessCodeManager];
     accessCodeManager = v6->_accessCodeManager;
-    v6->_accessCodeManager = v11;
+    v6->_accessCodeManager = createAccessCodeManager;
 
     [(HMAccessCodeManager *)v6->_accessCodeManager addObserver:v6];
     [(HFPinCodeManager *)v6 _kickoff];
@@ -95,51 +95,51 @@
   [(HFPinCodeManager *)&v3 dealloc];
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 supportsAccessCodes])
+  accessoryCopy = accessory;
+  if ([accessoryCopy supportsAccessCodes])
   {
     v6 = HFLogForCategory(0x37uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = accessoryCopy;
       _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Re-fetching access code constraints because accessory was added %@", &v9, 0xCu);
     }
 
-    v7 = [(HFPinCodeManager *)self _fetchAccessoryConstraints];
+    _fetchAccessoryConstraints = [(HFPinCodeManager *)self _fetchAccessoryConstraints];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 supportsAccessCodes])
+  accessoryCopy = accessory;
+  if ([accessoryCopy supportsAccessCodes])
   {
     v6 = HFLogForCategory(0x37uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = accessoryCopy;
       _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Re-fetching access code constraints because accessory was removed %@", &v9, 0xCu);
     }
 
-    v7 = [(HFPinCodeManager *)self _fetchAccessoryConstraints];
+    _fetchAccessoryConstraints = [(HFPinCodeManager *)self _fetchAccessoryConstraints];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)executionEnvironmentRunningStateDidChange:(id)a3
+- (void)executionEnvironmentRunningStateDidChange:(id)change
 {
-  if (![a3 runningState])
+  if (![change runningState])
   {
-    v4 = [(HFPinCodeManager *)self fetchFromAccessories];
+    fetchFromAccessories = [(HFPinCodeManager *)self fetchFromAccessories];
   }
 }
 
@@ -156,15 +156,15 @@
     _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "Starting to fetch accessory access codes from cache with future: %p", buf, 0xCu);
   }
 
-  v5 = [(HFPinCodeManager *)self accessCodeManager];
+  accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__HFPinCodeManager__fetchCachedAccessoryAccessCodes__block_invoke;
   v10[3] = &unk_277DFA638;
   v6 = v3;
   v11 = v6;
-  v12 = self;
-  [v5 fetchCachedAccessoryAccessCodesWithCompletion:v10];
+  selfCopy = self;
+  [accessCodeManager fetchCachedAccessoryAccessCodesWithCompletion:v10];
 
   v7 = v6;
   v8 = *MEMORY[0x277D85DE8];
@@ -222,17 +222,17 @@ void __52__HFPinCodeManager__fetchCachedAccessoryAccessCodes__block_invoke(uint6
     _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "Starting to fetch accessory access codes directly from accessories with future: %p", buf, 0xCu);
   }
 
-  v5 = [(HFPinCodeManager *)self accessCodeManager];
-  v6 = [(HFPinCodeManager *)self accessCodeManager];
-  v7 = [v6 accessoriesSupportingAccessCodes];
+  accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
+  accessCodeManager2 = [(HFPinCodeManager *)self accessCodeManager];
+  accessoriesSupportingAccessCodes = [accessCodeManager2 accessoriesSupportingAccessCodes];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__HFPinCodeManager__fetchAccessCodesFromAccessories__block_invoke;
   v12[3] = &unk_277DFA638;
   v8 = v3;
   v13 = v8;
-  v14 = self;
-  [v5 fetchAccessCodesFromAccessories:v7 completion:v12];
+  selfCopy = self;
+  [accessCodeManager fetchAccessCodesFromAccessories:accessoriesSupportingAccessCodes completion:v12];
 
   v9 = v8;
   v10 = *MEMORY[0x277D85DE8];
@@ -277,25 +277,25 @@ void __52__HFPinCodeManager__fetchAccessCodesFromAccessories__block_invoke(uint6
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_buildDataStoreWithAccessoryAccessCodeFetch:(id)a3
+- (id)_buildDataStoreWithAccessoryAccessCodeFetch:(id)fetch
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fetchCopy = fetch;
   [(HFPinCodeManager *)self setFetchInProgress:[(HFPinCodeManager *)self fetchInProgress]+ 1];
   v5 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HFPinCodeManager *)self accessCodeManager];
+    accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
     *buf = 138412546;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = v6;
+    v28 = accessCodeManager;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "PIN Code Manager %@, Access Code Manager %@ Starting to build data store", buf, 0x16u);
   }
 
   v7 = objc_alloc_init(MEMORY[0x277D2C900]);
   objc_initWeak(buf, self);
-  v8 = [(HFPinCodeManager *)self accessCodeManager];
+  accessCodeManager2 = [(HFPinCodeManager *)self accessCodeManager];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __64__HFPinCodeManager__buildDataStoreWithAccessoryAccessCodeFetch___block_invoke;
@@ -303,14 +303,14 @@ void __52__HFPinCodeManager__fetchAccessCodesFromAccessories__block_invoke(uint6
   objc_copyWeak(&v23, buf);
   v9 = v7;
   v22 = v9;
-  [v8 fetchHomeAccessCodesWithCompletion:v21];
+  [accessCodeManager2 fetchHomeAccessCodesWithCompletion:v21];
 
   v10 = MEMORY[0x277D2C900];
   v24[0] = v9;
-  v24[1] = v4;
+  v24[1] = fetchCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-  v12 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v13 = [v10 combineAllFutures:v11 ignoringErrors:1 scheduler:v12];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v13 = [v10 combineAllFutures:v11 ignoringErrors:1 scheduler:mainThreadScheduler];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __64__HFPinCodeManager__buildDataStoreWithAccessoryAccessCodeFetch___block_invoke_58;
@@ -594,21 +594,21 @@ void __64__HFPinCodeManager__buildDataStoreWithAccessoryAccessCodeFetch___block_
 - (id)_fetchAccessoryConstraints
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HFPinCodeManager *)self accessCodeManager];
-  v4 = [v3 accessoriesSupportingAccessCodes];
+  accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
+  accessoriesSupportingAccessCodes = [accessCodeManager accessoriesSupportingAccessCodes];
 
   v5 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v15 = [v4 count];
+    v15 = [accessoriesSupportingAccessCodes count];
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Starting to fetch constraints from accessories: %lu", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277D2C900]);
   [(HFPinCodeManager *)self setConstraintsFuture:v6];
   objc_initWeak(buf, self);
-  v7 = [(HFPinCodeManager *)self accessCodeManager];
+  accessCodeManager2 = [(HFPinCodeManager *)self accessCodeManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__HFPinCodeManager__fetchAccessoryConstraints__block_invoke;
@@ -616,7 +616,7 @@ void __64__HFPinCodeManager__buildDataStoreWithAccessoryAccessCodeFetch___block_
   objc_copyWeak(&v13, buf);
   v8 = v6;
   v12 = v8;
-  [v7 fetchAccessCodeConstraintsFromAccessories:v4 completion:v11];
+  [accessCodeManager2 fetchAccessCodeConstraintsFromAccessories:accessoriesSupportingAccessCodes completion:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -666,25 +666,25 @@ void __46__HFPinCodeManager__fetchAccessoryConstraints__block_invoke(uint64_t a1
 
 - (void)_kickoff
 {
-  v3 = [(HFPinCodeManager *)self fetchFromAccessoryCache];
-  v4 = [(HFPinCodeManager *)self fetchFromAccessories];
-  v5 = [(HFPinCodeManager *)self _fetchAccessoryConstraints];
+  fetchFromAccessoryCache = [(HFPinCodeManager *)self fetchFromAccessoryCache];
+  fetchFromAccessories = [(HFPinCodeManager *)self fetchFromAccessories];
+  _fetchAccessoryConstraints = [(HFPinCodeManager *)self _fetchAccessoryConstraints];
 }
 
-- (void)_addNewHomeAccessCode:(id)a3 toStore:(id)a4
+- (void)_addNewHomeAccessCode:(id)code toStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[HFPinCode alloc] initWithHomeAccessCode:v6];
-  v9 = [v6 userInformation];
-  v10 = [v9 user];
+  codeCopy = code;
+  storeCopy = store;
+  v8 = [[HFPinCode alloc] initWithHomeAccessCode:codeCopy];
+  userInformation = [codeCopy userInformation];
+  user = [userInformation user];
 
-  if (v10)
+  if (user)
   {
-    v42 = v9;
-    v11 = [v7 userPINCodes];
-    v12 = [(HFPinCode *)v8 pinCodeValue];
-    v13 = [v11 valueForKey:v12];
+    v42 = userInformation;
+    userPINCodes = [storeCopy userPINCodes];
+    pinCodeValue = [(HFPinCode *)v8 pinCodeValue];
+    v13 = [userPINCodes valueForKey:pinCodeValue];
 
     if (v13)
     {
@@ -696,34 +696,34 @@ void __46__HFPinCodeManager__fetchAccessoryConstraints__block_invoke(uint64_t a1
       }
     }
 
-    v15 = [v7 userPINCodes];
-    v16 = [(HFPinCode *)v8 pinCodeValue];
-    [v15 setValue:v8 forKey:v16];
+    userPINCodes2 = [storeCopy userPINCodes];
+    pinCodeValue2 = [(HFPinCode *)v8 pinCodeValue];
+    [userPINCodes2 setValue:v8 forKey:pinCodeValue2];
 
-    v17 = [(HFPinCodeManager *)self home];
-    v18 = [v17 currentUser];
-    v19 = [v18 uniqueIdentifier];
-    v20 = [v6 userInformation];
-    v21 = [v20 user];
-    v22 = [v21 uniqueIdentifier];
-    v23 = [v19 isEqual:v22];
+    home = [(HFPinCodeManager *)self home];
+    currentUser = [home currentUser];
+    uniqueIdentifier = [currentUser uniqueIdentifier];
+    userInformation2 = [codeCopy userInformation];
+    user2 = [userInformation2 user];
+    uniqueIdentifier2 = [user2 uniqueIdentifier];
+    v23 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
-    v9 = v42;
+    userInformation = v42;
     if (v23)
     {
-      [v7 setCurrentUserPinCode:v8];
+      [storeCopy setCurrentUserPinCode:v8];
     }
   }
 
   else
   {
-    v24 = [v9 removedUserInfo];
+    removedUserInfo = [userInformation removedUserInfo];
 
-    if (v24)
+    if (removedUserInfo)
     {
-      v25 = [v7 userPINCodes];
-      v26 = [(HFPinCode *)v8 pinCodeValue];
-      v27 = [v25 valueForKey:v26];
+      userPINCodes3 = [storeCopy userPINCodes];
+      pinCodeValue3 = [(HFPinCode *)v8 pinCodeValue];
+      v27 = [userPINCodes3 valueForKey:pinCodeValue3];
 
       if (v27)
       {
@@ -735,16 +735,16 @@ void __46__HFPinCodeManager__fetchAccessoryConstraints__block_invoke(uint64_t a1
         }
       }
 
-      v29 = [v7 removedUserPINCodes];
-      v30 = [(HFPinCode *)v8 pinCodeValue];
-      [v29 setValue:v8 forKey:v30];
+      removedUserPINCodes = [storeCopy removedUserPINCodes];
+      pinCodeValue4 = [(HFPinCode *)v8 pinCodeValue];
+      [removedUserPINCodes setValue:v8 forKey:pinCodeValue4];
     }
 
     else
     {
-      v31 = [v7 guestPINCodes];
-      v32 = [(HFPinCode *)v8 pinCodeValue];
-      v33 = [v31 valueForKey:v32];
+      guestPINCodes = [storeCopy guestPINCodes];
+      pinCodeValue5 = [(HFPinCode *)v8 pinCodeValue];
+      v33 = [guestPINCodes valueForKey:pinCodeValue5];
 
       if (!v33)
       {
@@ -758,27 +758,27 @@ void __46__HFPinCodeManager__fetchAccessoryConstraints__block_invoke(uint64_t a1
         _os_log_impl(&dword_20D9BF000, v34, OS_LOG_TYPE_DEFAULT, "Adding a new Guest Pin Code, we seem to already have one with the same value", v43, 2u);
       }
 
-      v35 = [v33 userLabel];
-      v36 = [v35 simpleLabel];
-      v37 = [(HFPinCode *)v8 userLabel];
-      v38 = [v37 simpleLabel];
-      v39 = [v36 isEqualToString:v38];
+      userLabel = [v33 userLabel];
+      simpleLabel = [userLabel simpleLabel];
+      userLabel2 = [(HFPinCode *)v8 userLabel];
+      simpleLabel2 = [userLabel2 simpleLabel];
+      v39 = [simpleLabel isEqualToString:simpleLabel2];
 
       if ((v39 & 1) == 0)
       {
 LABEL_18:
-        v40 = [v7 guestPINCodes];
-        v41 = [(HFPinCode *)v8 pinCodeValue];
-        [v40 setValue:v8 forKey:v41];
+        guestPINCodes2 = [storeCopy guestPINCodes];
+        pinCodeValue6 = [(HFPinCode *)v8 pinCodeValue];
+        [guestPINCodes2 setValue:v8 forKey:pinCodeValue6];
       }
     }
   }
 }
 
-- (void)setFetchInProgress:(int64_t)a3
+- (void)setFetchInProgress:(int64_t)progress
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (progress)
   {
     v4 = 1;
   }
@@ -789,8 +789,8 @@ LABEL_18:
   }
 
   v5 = !v4;
-  self->_fetchInProgress = a3;
-  if (a3 < 0)
+  self->_fetchInProgress = progress;
+  if (progress < 0)
   {
     v6 = objc_opt_class();
     NSLog(&cfstr_Fetchinprogres.isa, v6);
@@ -809,8 +809,8 @@ LABEL_18:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(HFPinCodeManager *)self observers];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [(HFPinCodeManager *)self observers];
+  v8 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -821,7 +821,7 @@ LABEL_18:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observers);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -831,7 +831,7 @@ LABEL_18:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -844,45 +844,45 @@ LABEL_21:
 - (id)fetchFromAccessories
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
+  inProgressFetchFromAccessories = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
 
-  if (v3)
+  if (inProgressFetchFromAccessories)
   {
     v4 = HFLogForCategory(0x37uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
+      inProgressFetchFromAccessories2 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
       *buf = 134217984;
-      v16 = v5;
+      v16 = inProgressFetchFromAccessories2;
       _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "Skipping fetch from accessories because a fetch is already in progress %p", buf, 0xCu);
     }
 
-    v6 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
+    inProgressFetchFromAccessories3 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
   }
 
   else
   {
-    v7 = [(HFPinCodeManager *)self _fetchAccessCodesFromAccessories];
-    v8 = [(HFPinCodeManager *)self _buildDataStoreWithAccessoryAccessCodeFetch:v7];
+    _fetchAccessCodesFromAccessories = [(HFPinCodeManager *)self _fetchAccessCodesFromAccessories];
+    v8 = [(HFPinCodeManager *)self _buildDataStoreWithAccessoryAccessCodeFetch:_fetchAccessCodesFromAccessories];
     [(HFPinCodeManager *)self setInProgressFetchFromAccessories:v8];
 
     objc_initWeak(buf, self);
-    v9 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
+    inProgressFetchFromAccessories4 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __40__HFPinCodeManager_fetchFromAccessories__block_invoke;
     v13[3] = &unk_277DFCD10;
     objc_copyWeak(&v14, buf);
-    v10 = [v9 addCompletionBlock:v13];
+    v10 = [inProgressFetchFromAccessories4 addCompletionBlock:v13];
 
-    v6 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
+    inProgressFetchFromAccessories3 = [(HFPinCodeManager *)self inProgressFetchFromAccessories];
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return inProgressFetchFromAccessories3;
 }
 
 void __40__HFPinCodeManager_fetchFromAccessories__block_invoke(uint64_t a1)
@@ -893,35 +893,35 @@ void __40__HFPinCodeManager_fetchFromAccessories__block_invoke(uint64_t a1)
 
 - (id)fetchFromAccessoryCache
 {
-  v3 = [(HFPinCodeManager *)self _fetchCachedAccessoryAccessCodes];
-  v4 = [(HFPinCodeManager *)self _buildDataStoreWithAccessoryAccessCodeFetch:v3];
+  _fetchCachedAccessoryAccessCodes = [(HFPinCodeManager *)self _fetchCachedAccessoryAccessCodes];
+  v4 = [(HFPinCodeManager *)self _buildDataStoreWithAccessoryAccessCodeFetch:_fetchCachedAccessoryAccessCodes];
 
   return v4;
 }
 
 - (id)refreshDataStore
 {
-  v3 = [(HFPinCodeManager *)self fetchFromAccessoryCache];
-  v4 = [(HFPinCodeManager *)self constraints];
-  v5 = [v4 count];
+  fetchFromAccessoryCache = [(HFPinCodeManager *)self fetchFromAccessoryCache];
+  constraints = [(HFPinCodeManager *)self constraints];
+  v5 = [constraints count];
 
   if (!v5)
   {
-    v6 = [(HFPinCodeManager *)self _fetchAccessoryConstraints];
+    _fetchAccessoryConstraints = [(HFPinCodeManager *)self _fetchAccessoryConstraints];
   }
 
-  v7 = [(HFPinCodeManager *)self fetchFromAccessories];
+  fetchFromAccessories = [(HFPinCodeManager *)self fetchFromAccessories];
 
-  return v3;
+  return fetchFromAccessoryCache;
 }
 
 - (id)userPinCodes
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HFPinCodeManager *)self dataStore];
-  v4 = [v3 userPINCodes];
-  v5 = [v4 allValues];
-  v6 = [v2 futureWithResult:v5];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  userPINCodes = [dataStore userPINCodes];
+  allValues = [userPINCodes allValues];
+  v6 = [v2 futureWithResult:allValues];
 
   return v6;
 }
@@ -929,10 +929,10 @@ void __40__HFPinCodeManager_fetchFromAccessories__block_invoke(uint64_t a1)
 - (id)removedUserPINCodes
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HFPinCodeManager *)self dataStore];
-  v4 = [v3 removedUserPINCodes];
-  v5 = [v4 allValues];
-  v6 = [v2 futureWithResult:v5];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  removedUserPINCodes = [dataStore removedUserPINCodes];
+  allValues = [removedUserPINCodes allValues];
+  v6 = [v2 futureWithResult:allValues];
 
   return v6;
 }
@@ -940,20 +940,20 @@ void __40__HFPinCodeManager_fetchFromAccessories__block_invoke(uint64_t a1)
 - (id)guestPinCodes
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HFPinCodeManager *)self dataStore];
-  v4 = [v3 guestPINCodes];
-  v5 = [v4 allValues];
-  v6 = [v2 futureWithResult:v5];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  guestPINCodes = [dataStore guestPINCodes];
+  allValues = [guestPINCodes allValues];
+  v6 = [v2 futureWithResult:allValues];
 
   return v6;
 }
 
 - (id)guestUserInformation
 {
-  v2 = [(HFPinCodeManager *)self dataStore];
-  v3 = [v2 guestPINCodes];
-  v4 = [v3 allValues];
-  v5 = [v4 na_map:&__block_literal_global_73];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  guestPINCodes = [dataStore guestPINCodes];
+  allValues = [guestPINCodes allValues];
+  v5 = [allValues na_map:&__block_literal_global_73];
 
   return v5;
 }
@@ -961,10 +961,10 @@ void __40__HFPinCodeManager_fetchFromAccessories__block_invoke(uint64_t a1)
 - (id)otherEcosystemGuestPinCodes
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HFPinCodeManager *)self dataStore];
-  v4 = [v3 otherEcosystemGuestPINCodes];
-  v5 = [v4 allValues];
-  v6 = [v2 futureWithResult:v5];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  otherEcosystemGuestPINCodes = [dataStore otherEcosystemGuestPINCodes];
+  allValues = [otherEcosystemGuestPINCodes allValues];
+  v6 = [v2 futureWithResult:allValues];
 
   return v6;
 }
@@ -972,40 +972,40 @@ void __40__HFPinCodeManager_fetchFromAccessories__block_invoke(uint64_t a1)
 - (id)currentUserPinCode
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HFPinCodeManager *)self dataStore];
-  v4 = [v3 currentUserPinCode];
-  v5 = [v2 futureWithResult:v4];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  currentUserPinCode = [dataStore currentUserPinCode];
+  v5 = [v2 futureWithResult:currentUserPinCode];
 
   return v5;
 }
 
-- (id)pinCodeForCodeValue:(id)a3
+- (id)pinCodeForCodeValue:(id)value
 {
   v4 = MEMORY[0x277D2C900];
-  v5 = a3;
-  v6 = [(HFPinCodeManager *)self dataStore];
-  v7 = [v6 pinCodeForCodeValue:v5];
+  valueCopy = value;
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  v7 = [dataStore pinCodeForCodeValue:valueCopy];
 
   v8 = [v4 futureWithResult:v7];
 
   return v8;
 }
 
-- (id)addGuestPinCode:(id)a3 withLabel:(id)a4 onAccessories:(id)a5
+- (id)addGuestPinCode:(id)code withLabel:(id)label onAccessories:(id)accessories
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  labelCopy = label;
+  accessoriesCopy = accessories;
   v11 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v29 = [v10 count];
+    v29 = [accessoriesCopy count];
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Adding guest pin code on %lu accessories", buf, 0xCu);
   }
 
-  if ([v8 length])
+  if ([codeCopy length])
   {
     objc_initWeak(buf, self);
     v12 = MEMORY[0x277D2C900];
@@ -1014,10 +1014,10 @@ void __40__HFPinCodeManager_fetchFromAccessories__block_invoke(uint64_t a1)
     v23[2] = __60__HFPinCodeManager_addGuestPinCode_withLabel_onAccessories___block_invoke;
     v23[3] = &unk_277DFCA88;
     objc_copyWeak(&v27, buf);
-    v24 = v9;
-    v13 = v8;
+    v24 = labelCopy;
+    v13 = codeCopy;
     v25 = v13;
-    v26 = v10;
+    v26 = accessoriesCopy;
     v14 = [v12 futureWithBlock:v23];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -1216,56 +1216,56 @@ id __60__HFPinCodeManager_addGuestPinCode_withLabel_onAccessories___block_invoke
   return v4;
 }
 
-- (id)setUserPinCode:(id)a3 forUser:(id)a4
+- (id)setUserPinCode:(id)code forUser:(id)user
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  userCopy = user;
   v8 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v7;
+    v34 = userCopy;
     _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Setting user pin code for user %@", buf, 0xCu);
   }
 
-  if ([v6 length])
+  if ([codeCopy length])
   {
-    v9 = [(HFPinCodeManager *)self dataStore];
-    v10 = [v9 userPINCodes];
+    dataStore = [(HFPinCodeManager *)self dataStore];
+    userPINCodes = [dataStore userPINCodes];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke;
     v31[3] = &unk_277DFCD80;
-    v11 = v7;
+    v11 = userCopy;
     v32 = v11;
-    v12 = [v10 na_firstKeyPassingTest:v31];
+    v12 = [userPINCodes na_firstKeyPassingTest:v31];
 
     if (v12)
     {
-      v13 = [(HFPinCodeManager *)self dataStore];
-      v14 = [v13 userPINCodes];
-      [v14 removeObjectForKey:v12];
+      dataStore2 = [(HFPinCodeManager *)self dataStore];
+      userPINCodes2 = [dataStore2 userPINCodes];
+      [userPINCodes2 removeObjectForKey:v12];
     }
 
     v15 = [objc_alloc(MEMORY[0x277CD1638]) initWithUser:v11];
-    v16 = [[HFPinCode alloc] initWithLabel:v15 accessCodeValue:v6 accessoryAccessCodes:0];
-    v17 = [(HFPinCodeManager *)self dataStore];
-    v18 = [v17 userPINCodes];
-    [v18 setValue:v16 forKey:v6];
+    v16 = [[HFPinCode alloc] initWithLabel:v15 accessCodeValue:codeCopy accessoryAccessCodes:0];
+    dataStore3 = [(HFPinCodeManager *)self dataStore];
+    userPINCodes3 = [dataStore3 userPINCodes];
+    [userPINCodes3 setValue:v16 forKey:codeCopy];
 
     v19 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v20 = [(HFPinCodeManager *)self accessCodeManager];
-    v21 = [v11 uniqueIdentifier];
+    accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
+    uniqueIdentifier = [v11 uniqueIdentifier];
     v22 = [(HFPinCodeManager *)self _modificationCompletionHandlerForFuture:v19];
-    [v20 setAccessCode:v6 forUserWithUUID:v21 completion:v22];
+    [accessCodeManager setAccessCode:codeCopy forUserWithUUID:uniqueIdentifier completion:v22];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2;
     v29[3] = &unk_277DFA5C0;
     v29[4] = self;
-    v30 = v6;
+    v30 = codeCopy;
     v23 = [v19 flatMap:v29];
 
     v24 = v32;
@@ -1311,13 +1311,13 @@ id __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)deleteGuestPinCodeWithItem:(id)a3
+- (id)deleteGuestPinCodeWithItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:693 description:{@"Invalid parameter not satisfying: %@", @"pinCodeItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:693 description:{@"Invalid parameter not satisfying: %@", @"pinCodeItem"}];
   }
 
   v6 = HFLogForCategory(0x37uLL);
@@ -1327,10 +1327,10 @@ id __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Deleting guest pin code.", buf, 2u);
   }
 
-  v7 = [(HFPinCodeManager *)self dataStore];
-  v8 = [v7 guestPinCodeFromItem:v5];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  v8 = [dataStore guestPinCodeFromItem:itemCopy];
 
-  if ([v5 isUnknownGuestFromMatter])
+  if ([itemCopy isUnknownGuestFromMatter])
   {
     [(HFPinCodeManager *)self _deleteUnknownGuestFromMatterPinCode:v8];
   }
@@ -1344,33 +1344,33 @@ id __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2(uint64_t a1)
   return v9;
 }
 
-- (id)_deleteUnknownGuestFromMatterPinCode:(id)a3
+- (id)_deleteUnknownGuestFromMatterPinCode:(id)code
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  codeCopy = code;
+  if (!codeCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:710 description:{@"Invalid parameter not satisfying: %@", @"pinCode"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:710 description:{@"Invalid parameter not satisfying: %@", @"pinCode"}];
   }
 
-  v6 = [v5 unknownMatterGuestUniqueID];
+  unknownMatterGuestUniqueID = [codeCopy unknownMatterGuestUniqueID];
 
-  if (v6)
+  if (unknownMatterGuestUniqueID)
   {
-    v7 = [(HFPinCodeManager *)self dataStore];
-    v8 = [v7 otherEcosystemGuestPINCodes];
-    v9 = [v5 unknownMatterGuestUniqueID];
-    [v8 removeObjectForKey:v9];
+    dataStore = [(HFPinCodeManager *)self dataStore];
+    otherEcosystemGuestPINCodes = [dataStore otherEcosystemGuestPINCodes];
+    unknownMatterGuestUniqueID2 = [codeCopy unknownMatterGuestUniqueID];
+    [otherEcosystemGuestPINCodes removeObjectForKey:unknownMatterGuestUniqueID2];
 
     [(HFPinCodeManager *)self _reloadObservers];
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v5 accessoryAccessCodes];
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    accessoryAccessCodes = [codeCopy accessoryAccessCodes];
+    v12 = [accessoryAccessCodes countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1381,20 +1381,20 @@ id __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2(uint64_t a1)
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(accessoryAccessCodes);
           }
 
           v16 = [objc_alloc(MEMORY[0x277CD1620]) initWithAccessoryAccessCode:*(*(&v24 + 1) + 8 * i)];
-          [v10 addObject:v16];
+          [array addObject:v16];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [accessoryAccessCodes countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
     }
 
-    v17 = [(HFPinCodeManager *)self _submitModificationRequests:v10];
+    v17 = [(HFPinCodeManager *)self _submitModificationRequests:array];
   }
 
   else
@@ -1405,13 +1405,13 @@ id __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2(uint64_t a1)
       *buf = 136315394;
       v30 = "[HFPinCodeManager _deleteUnknownGuestFromMatterPinCode:]";
       v31 = 2112;
-      v32 = v5;
+      v32 = codeCopy;
       _os_log_error_impl(&dword_20D9BF000, v18, OS_LOG_TYPE_ERROR, "(%s) Expected an unknown guest from Matter PIN Code, but got this: %@", buf, 0x16u);
     }
 
     v19 = MEMORY[0x277D2C900];
-    v10 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-    v17 = [v19 futureWithError:v10];
+    array = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
+    v17 = [v19 futureWithError:array];
   }
 
   v20 = v17;
@@ -1421,32 +1421,32 @@ id __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2(uint64_t a1)
   return v20;
 }
 
-- (id)_deleteGuestPinCode:(id)a3
+- (id)_deleteGuestPinCode:(id)code
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  codeCopy = code;
+  if (!codeCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:735 description:{@"Invalid parameter not satisfying: %@", @"pinCode"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:735 description:{@"Invalid parameter not satisfying: %@", @"pinCode"}];
   }
 
-  v6 = [v5 pinCodeValue];
-  v7 = [v6 length];
+  pinCodeValue = [codeCopy pinCodeValue];
+  v7 = [pinCodeValue length];
 
   if (v7)
   {
-    v8 = [(HFPinCodeManager *)self dataStore];
-    v9 = [v8 guestPINCodes];
-    v10 = [v5 pinCodeValue];
-    [v9 removeObjectForKey:v10];
+    dataStore = [(HFPinCodeManager *)self dataStore];
+    guestPINCodes = [dataStore guestPINCodes];
+    pinCodeValue2 = [codeCopy pinCodeValue];
+    [guestPINCodes removeObjectForKey:pinCodeValue2];
 
     [(HFPinCodeManager *)self _reloadObservers];
     v11 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v12 = [(HFPinCodeManager *)self accessCodeManager];
-    v13 = [v5 pinCodeValue];
+    accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
+    pinCodeValue3 = [codeCopy pinCodeValue];
     v14 = [(HFPinCodeManager *)self _modificationCompletionHandlerForFuture:v11];
-    [v12 removeSimpleLabelAccessCode:v13 completion:v14];
+    [accessCodeManager removeSimpleLabelAccessCode:pinCodeValue3 completion:v14];
   }
 
   else
@@ -1455,14 +1455,14 @@ id __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v5;
+      v22 = codeCopy;
       _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "Attempted to delete a guest PIN Code that has no value: %@", buf, 0xCu);
     }
 
-    v16 = [(HFPinCodeManager *)self fetchFromAccessoryCache];
+    fetchFromAccessoryCache = [(HFPinCodeManager *)self fetchFromAccessoryCache];
     v17 = MEMORY[0x277D2C900];
-    v12 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-    v11 = [v17 futureWithError:v12];
+    accessCodeManager = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
+    v11 = [v17 futureWithError:accessCodeManager];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1470,41 +1470,41 @@ id __43__HFPinCodeManager_setUserPinCode_forUser___block_invoke_2(uint64_t a1)
   return v11;
 }
 
-- (id)deleteUserPinCodeWithUser:(id)a3
+- (id)deleteUserPinCodeWithUser:(id)user
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  userCopy = user;
   v5 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 hf_prettyDescription];
+    hf_prettyDescription = [userCopy hf_prettyDescription];
     *buf = 138412290;
-    v22 = v6;
+    v22 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Deleting user PIN Code for user: %@", buf, 0xCu);
   }
 
-  v7 = [(HFPinCodeManager *)self dataStore];
-  v8 = [v7 userPINCodes];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  userPINCodes = [dataStore userPINCodes];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __46__HFPinCodeManager_deleteUserPinCodeWithUser___block_invoke;
   v19[3] = &unk_277DFCD80;
-  v20 = v4;
-  v9 = v4;
-  v10 = [v8 na_firstKeyPassingTest:v19];
+  v20 = userCopy;
+  v9 = userCopy;
+  v10 = [userPINCodes na_firstKeyPassingTest:v19];
 
   if (v10)
   {
-    v11 = [(HFPinCodeManager *)self dataStore];
-    v12 = [v11 userPINCodes];
-    [v12 removeObjectForKey:v10];
+    dataStore2 = [(HFPinCodeManager *)self dataStore];
+    userPINCodes2 = [dataStore2 userPINCodes];
+    [userPINCodes2 removeObjectForKey:v10];
   }
 
   v13 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v14 = [(HFPinCodeManager *)self accessCodeManager];
-  v15 = [v9 uniqueIdentifier];
+  accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
+  uniqueIdentifier = [v9 uniqueIdentifier];
   v16 = [(HFPinCodeManager *)self _modificationCompletionHandlerForFuture:v13];
-  [v14 setAccessCode:0 forUserWithUUID:v15 completion:v16];
+  [accessCodeManager setAccessCode:0 forUserWithUUID:uniqueIdentifier completion:v16];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -1522,14 +1522,14 @@ uint64_t __46__HFPinCodeManager_deleteUserPinCodeWithUser___block_invoke(uint64_
   return v8;
 }
 
-- (id)updateGuestPinCodeWithItem:(id)a3 withLabel:(id)a4
+- (id)updateGuestPinCodeWithItem:(id)item withLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  itemCopy = item;
+  labelCopy = label;
+  if (!labelCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:788 description:{@"Invalid parameter not satisfying: %@", @"label"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:788 description:{@"Invalid parameter not satisfying: %@", @"label"}];
   }
 
   v9 = HFLogForCategory(0x37uLL);
@@ -1546,9 +1546,9 @@ uint64_t __46__HFPinCodeManager_deleteUserPinCodeWithUser___block_invoke(uint64_
   v16[2] = __57__HFPinCodeManager_updateGuestPinCodeWithItem_withLabel___block_invoke;
   v16[3] = &unk_277DFCDA8;
   objc_copyWeak(&v19, buf);
-  v11 = v7;
+  v11 = itemCopy;
   v17 = v11;
-  v12 = v8;
+  v12 = labelCopy;
   v18 = v12;
   v13 = [v10 futureWithBlock:v16];
 
@@ -1613,14 +1613,14 @@ void __57__HFPinCodeManager_updateGuestPinCodeWithItem_withLabel___block_invoke_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updatePinCodeWithItem:(id)a3 withCodeValue:(id)a4
+- (id)updatePinCodeWithItem:(id)item withCodeValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  itemCopy = item;
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:833 description:{@"Invalid parameter not satisfying: %@", @"newCodeValue"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFPinCodeManager.m" lineNumber:833 description:{@"Invalid parameter not satisfying: %@", @"newCodeValue"}];
   }
 
   v9 = HFLogForCategory(0x37uLL);
@@ -1630,41 +1630,41 @@ void __57__HFPinCodeManager_updateGuestPinCodeWithItem_withLabel___block_invoke_
     _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Updating pin code with new code value", buf, 2u);
   }
 
-  v10 = [v7 user];
-  if (v10)
+  user = [itemCopy user];
+  if (user)
   {
-    v11 = [(HFPinCodeManager *)self setUserPinCode:v8 forUser:v10];
+    v11 = [(HFPinCodeManager *)self setUserPinCode:valueCopy forUser:user];
   }
 
   else
   {
-    v12 = [(HFPinCodeManager *)self dataStore];
-    v13 = [v12 pinCodeFromItem:v7];
+    dataStore = [(HFPinCodeManager *)self dataStore];
+    v13 = [dataStore pinCodeFromItem:itemCopy];
 
-    v14 = [v13 userLabel];
-    v11 = [(HFPinCodeManager *)self _updateGuestPinCodeWithItem:v7 withCodeValue:v8 withUserInfo:v14];
+    userLabel = [v13 userLabel];
+    v11 = [(HFPinCodeManager *)self _updateGuestPinCodeWithItem:itemCopy withCodeValue:valueCopy withUserInfo:userLabel];
   }
 
   return v11;
 }
 
-- (id)updateGuestPinCodeWithItem:(id)a3 withCodeValue:(id)a4 withLabel:(id)a5
+- (id)updateGuestPinCodeWithItem:(id)item withCodeValue:(id)value withLabel:(id)label
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HFPinCodeManager *)self dataStore];
-  v12 = [v11 guestPINCodes];
-  v13 = [v8 pinCodeValue];
-  v14 = [v12 objectForKey:v13];
+  itemCopy = item;
+  valueCopy = value;
+  labelCopy = label;
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  guestPINCodes = [dataStore guestPINCodes];
+  pinCodeValue = [itemCopy pinCodeValue];
+  v14 = [guestPINCodes objectForKey:pinCodeValue];
 
   if (!v14)
   {
-    v18 = [(HFPinCodeManager *)self dataStore];
-    v19 = [v18 userPINCodes];
-    v20 = [v8 pinCodeValue];
-    v21 = [v19 objectForKey:v20];
+    dataStore2 = [(HFPinCodeManager *)self dataStore];
+    userPINCodes = [dataStore2 userPINCodes];
+    pinCodeValue2 = [itemCopy pinCodeValue];
+    v21 = [userPINCodes objectForKey:pinCodeValue2];
 
     v22 = HFLogForCategory(0x37uLL);
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -1688,7 +1688,7 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v25 = [(HFPinCodeManager *)self fetchFromAccessoryCache];
+    fetchFromAccessoryCache = [(HFPinCodeManager *)self fetchFromAccessoryCache];
     v26 = MEMORY[0x277D2C900];
     v16 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
     v17 = [v26 futureWithError:v16];
@@ -1702,8 +1702,8 @@ LABEL_14:
     _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "Updating guest pin code with new code value and label", &v30, 2u);
   }
 
-  v16 = [objc_alloc(MEMORY[0x277CD1638]) initWithSimpleLabel:v10];
-  v17 = [(HFPinCodeManager *)self _updateGuestPinCodeWithItem:v8 withCodeValue:v9 withUserInfo:v16];
+  v16 = [objc_alloc(MEMORY[0x277CD1638]) initWithSimpleLabel:labelCopy];
+  v17 = [(HFPinCodeManager *)self _updateGuestPinCodeWithItem:itemCopy withCodeValue:valueCopy withUserInfo:v16];
 LABEL_10:
   v27 = v17;
 
@@ -1712,19 +1712,19 @@ LABEL_10:
   return v27;
 }
 
-- (id)_updateGuestPinCodeWithItem:(id)a3 withCodeValue:(id)a4 withUserInfo:(id)a5
+- (id)_updateGuestPinCodeWithItem:(id)item withCodeValue:(id)value withUserInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HFPinCodeManager *)self dataStore];
-  v12 = [v11 pinCodeFromItem:v8];
+  itemCopy = item;
+  valueCopy = value;
+  infoCopy = info;
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  v12 = [dataStore pinCodeFromItem:itemCopy];
 
-  v13 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:v9];
-  v14 = [[HFPinCode alloc] initWithLabel:v10 accessCodeValue:v9 accessoryAccessCodes:0];
-  v15 = [(HFPinCodeManager *)self dataStore];
-  v16 = [v12 pinCodeValue];
-  [v15 updateWithPinCode:v14 forOldCodeValue:v16];
+  v13 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:valueCopy];
+  v14 = [[HFPinCode alloc] initWithLabel:infoCopy accessCodeValue:valueCopy accessoryAccessCodes:0];
+  dataStore2 = [(HFPinCodeManager *)self dataStore];
+  pinCodeValue = [v12 pinCodeValue];
+  [dataStore2 updateWithPinCode:v14 forOldCodeValue:pinCodeValue];
 
   [(HFPinCodeManager *)self _reloadObservers];
   v17 = HFLogForCategory(0x37uLL);
@@ -1735,10 +1735,10 @@ LABEL_10:
   }
 
   v18 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v19 = [(HFPinCodeManager *)self accessCodeManager];
-  v20 = [v12 pinCodeValue];
+  accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
+  pinCodeValue2 = [v12 pinCodeValue];
   v21 = [(HFPinCodeManager *)self _modificationCompletionHandlerForFuture:v18];
-  [v19 removeSimpleLabelAccessCode:v20 completion:v21];
+  [accessCodeManager removeSimpleLabelAccessCode:pinCodeValue2 completion:v21];
 
   objc_initWeak(buf, self);
   v28[0] = MEMORY[0x277D85DD0];
@@ -1746,13 +1746,13 @@ LABEL_10:
   v28[2] = __75__HFPinCodeManager__updateGuestPinCodeWithItem_withCodeValue_withUserInfo___block_invoke;
   v28[3] = &unk_277DFCE20;
   objc_copyWeak(&v33, buf);
-  v22 = v10;
+  v22 = infoCopy;
   v29 = v22;
   v23 = v13;
   v30 = v23;
   v24 = v12;
   v31 = v24;
-  v25 = v9;
+  v25 = valueCopy;
   v32 = v25;
   v26 = [v18 flatMap:v28];
 
@@ -1910,17 +1910,17 @@ id __75__HFPinCodeManager__updateGuestPinCodeWithItem_withCodeValue_withUserInfo
   return v7;
 }
 
-- (id)_modificationCompletionHandlerForFuture:(id)a3
+- (id)_modificationCompletionHandlerForFuture:(id)future
 {
-  v4 = a3;
+  futureCopy = future;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__HFPinCodeManager__modificationCompletionHandlerForFuture___block_invoke;
   aBlock[3] = &unk_277DFCCA0;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v5 = v4;
+  v9 = futureCopy;
+  v5 = futureCopy;
   v6 = _Block_copy(aBlock);
 
   objc_destroyWeak(&v10);
@@ -2153,24 +2153,24 @@ LABEL_49:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_submitModificationRequests:(id)a3
+- (id)_submitModificationRequests:(id)requests
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestsCopy = requests;
   v5 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = [v4 count];
+    v12 = [requestsCopy count];
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Called _submitModificationRequests with %lu requests", &v11, 0xCu);
   }
 
-  if ([v4 count])
+  if ([requestsCopy count])
   {
     v6 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v7 = [(HFPinCodeManager *)self accessCodeManager];
+    accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
     v8 = [(HFPinCodeManager *)self _modificationCompletionHandlerForFuture:v6];
-    [v7 submitAccessCodeModificationRequests:v4 completion:v8];
+    [accessCodeManager submitAccessCodeModificationRequests:requestsCopy completion:v8];
   }
 
   else
@@ -2183,19 +2183,19 @@ LABEL_49:
   return v6;
 }
 
-- (id)setPinCodeWithItem:(id)a3 enabled:(BOOL)a4 onAccessories:(id)a5
+- (id)setPinCodeWithItem:(id)item enabled:(BOOL)enabled onAccessories:(id)accessories
 {
-  v6 = a4;
+  enabledCopy = enabled;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  accessoriesCopy = accessories;
   v10 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109378;
-    HIDWORD(buf) = v6;
+    HIDWORD(buf) = enabledCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = accessoriesCopy;
     _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "Setting pin code enabled (%{BOOL}d) on accessories: %@", &buf, 0x12u);
   }
 
@@ -2206,10 +2206,10 @@ LABEL_49:
   v17[2] = __61__HFPinCodeManager_setPinCodeWithItem_enabled_onAccessories___block_invoke;
   v17[3] = &unk_277DFCE98;
   objc_copyWeak(&v20, &buf);
-  v12 = v8;
+  v12 = itemCopy;
   v18 = v12;
-  v21 = v6;
-  v13 = v9;
+  v21 = enabledCopy;
+  v13 = accessoriesCopy;
   v19 = v13;
   v14 = [v11 futureWithBlock:v17];
 
@@ -2403,23 +2403,23 @@ void __61__HFPinCodeManager_setPinCodeWithItem_enabled_onAccessories___block_inv
   }
 }
 
-- (id)enablePinCodesForAllUsersOnNewAccessory:(id)a3
+- (id)enablePinCodesForAllUsersOnNewAccessory:(id)accessory
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v26 = self;
-  v6 = [(HFPinCodeManager *)self dataStore];
-  v7 = [v6 userPINCodes];
-  v8 = [v7 allValues];
+  accessoryCopy = accessory;
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  userPINCodes = [dataStore userPINCodes];
+  allValues = [userPINCodes allValues];
 
   v9 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v34 = [v8 count];
+    v34 = [allValues count];
     v35 = 2112;
-    v36 = v4;
+    v36 = accessoryCopy;
     _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Enabling pin codes for all (%lu) users on accessory: %@", buf, 0x16u);
   }
 
@@ -2427,7 +2427,7 @@ void __61__HFPinCodeManager_setPinCodeWithItem_enabled_onAccessories___block_inv
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = v8;
+  v10 = allValues;
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v11)
   {
@@ -2443,8 +2443,8 @@ void __61__HFPinCodeManager_setPinCodeWithItem_enabled_onAccessories___block_inv
         }
 
         v15 = *(*(&v27 + 1) + 8 * i);
-        v16 = [v15 accessories];
-        v17 = [v16 containsObject:v4];
+        accessories = [v15 accessories];
+        v17 = [accessories containsObject:accessoryCopy];
 
         if (v17)
         {
@@ -2459,13 +2459,13 @@ void __61__HFPinCodeManager_setPinCodeWithItem_enabled_onAccessories___block_inv
         else
         {
           v19 = objc_alloc(MEMORY[0x277CD1648]);
-          v20 = [v15 pinCodeValue];
-          v18 = [v19 initWithStringValue:v20];
+          pinCodeValue = [v15 pinCodeValue];
+          v18 = [v19 initWithStringValue:pinCodeValue];
 
-          v21 = [objc_alloc(MEMORY[0x277CD15F8]) initWithAccessCodeValue:v18 accessory:v4];
-          [v5 addObject:v21];
+          v21 = [objc_alloc(MEMORY[0x277CD15F8]) initWithAccessCodeValue:v18 accessory:accessoryCopy];
+          [array addObject:v21];
 
-          v31 = v4;
+          v31 = accessoryCopy;
           v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
           [v15 addAccessories:v22];
         }
@@ -2477,23 +2477,23 @@ void __61__HFPinCodeManager_setPinCodeWithItem_enabled_onAccessories___block_inv
     while (v12);
   }
 
-  v23 = [(HFPinCodeManager *)v26 _submitModificationRequests:v5];
+  v23 = [(HFPinCodeManager *)selfCopy _submitModificationRequests:array];
 
   v24 = *MEMORY[0x277D85DE8];
 
   return v23;
 }
 
-- (id)enablePinCodesForNewAccessory:(id)a3 forGuestItems:(id)a4
+- (id)enablePinCodesForNewAccessory:(id)accessory forGuestItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  itemsCopy = items;
   v9 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v7;
+    v21 = accessoryCopy;
     _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Enabling pin codes on accessory for provided guests: %@", buf, 0xCu);
   }
 
@@ -2504,10 +2504,10 @@ void __61__HFPinCodeManager_setPinCodeWithItem_enabled_onAccessories___block_inv
   v16[2] = __64__HFPinCodeManager_enablePinCodesForNewAccessory_forGuestItems___block_invoke;
   v16[3] = &unk_277DFCEE8;
   objc_copyWeak(v19, buf);
-  v11 = v8;
+  v11 = itemsCopy;
   v17 = v11;
   v19[1] = a2;
-  v12 = v7;
+  v12 = accessoryCopy;
   v18 = v12;
   v13 = [v10 futureWithBlock:v16];
 
@@ -2617,13 +2617,13 @@ id __64__HFPinCodeManager_enablePinCodesForNewAccessory_forGuestItems___block_in
   }
 
   objc_initWeak(buf, self);
-  v4 = [(HFPinCodeManager *)self constraintsFuture];
+  constraintsFuture = [(HFPinCodeManager *)self constraintsFuture];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HFPinCodeManager_generateNewCodeValue__block_invoke;
   v7[3] = &unk_277DF52E0;
   objc_copyWeak(&v8, buf);
-  v5 = [v4 flatMap:v7];
+  v5 = [constraintsFuture flatMap:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(buf);
@@ -2664,10 +2664,10 @@ id __40__HFPinCodeManager_generateNewCodeValue__block_invoke(uint64_t a1, void *
   return v17;
 }
 
-- (id)checkForValidationErrorsWithPINCodeValue:(id)a3 originalPINCode:(id)a4
+- (id)checkForValidationErrorsWithPINCodeValue:(id)value originalPINCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  codeCopy = code;
   v8 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2676,17 +2676,17 @@ id __40__HFPinCodeManager_generateNewCodeValue__block_invoke(uint64_t a1, void *
   }
 
   objc_initWeak(buf, self);
-  v9 = [(HFPinCodeManager *)self constraintsFuture];
+  constraintsFuture = [(HFPinCodeManager *)self constraintsFuture];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__HFPinCodeManager_checkForValidationErrorsWithPINCodeValue_originalPINCode___block_invoke;
   v14[3] = &unk_277DFCF38;
   objc_copyWeak(&v17, buf);
-  v10 = v6;
+  v10 = valueCopy;
   v15 = v10;
-  v11 = v7;
+  v11 = codeCopy;
   v16 = v11;
-  v12 = [v9 flatMap:v14];
+  v12 = [constraintsFuture flatMap:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -2837,20 +2837,20 @@ uint64_t __77__HFPinCodeManager_checkForValidationErrorsWithPINCodeValue_origina
   return result;
 }
 
-- (id)restoreFullAccessForUserWithItem:(id)a3
+- (id)restoreFullAccessForUserWithItem:(id)item
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = itemCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Restoring full access for user pin code %@", buf, 0xCu);
   }
 
   objc_opt_class();
-  v6 = v4;
+  v6 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -2865,26 +2865,26 @@ uint64_t __77__HFPinCodeManager_checkForValidationErrorsWithPINCodeValue_origina
 
   if (v8)
   {
-    v9 = [(HFPinCodeManager *)self dataStore];
-    v10 = [v9 pinCodeFromItem:v8];
+    dataStore = [(HFPinCodeManager *)self dataStore];
+    v10 = [dataStore pinCodeFromItem:v8];
 
-    v11 = [v10 userLabel];
-    v12 = [v11 user];
+    userLabel = [v10 userLabel];
+    user = [userLabel user];
 
-    if (!v12)
+    if (!user)
     {
       NSLog(&cfstr_RestoreFullAcc.isa);
     }
 
-    v13 = [(HFPinCodeManager *)self accessCodeManager];
-    v14 = [v13 accessoriesSupportingAccessCodes];
+    accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
+    accessoriesSupportingAccessCodes = [accessCodeManager accessoriesSupportingAccessCodes];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __53__HFPinCodeManager_restoreFullAccessForUserWithItem___block_invoke;
     v23[3] = &unk_277DF3888;
     v24 = v10;
     v15 = v10;
-    v16 = [v14 na_filter:v23];
+    v16 = [accessoriesSupportingAccessCodes na_filter:v23];
 
     v17 = [(HFPinCodeManager *)self setPinCodeWithItem:v8 enabled:1 onAccessories:v16];
   }
@@ -2930,17 +2930,17 @@ uint64_t __53__HFPinCodeManager_restoreFullAccessForUserWithItem___block_invoke(
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to remove all deleted users", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(HFPinCodeManager *)self dataStore];
-  v6 = [v5 removedUserPINCodes];
-  v7 = [v6 allValues];
+  dataStore = [(HFPinCodeManager *)self dataStore];
+  removedUserPINCodes = [dataStore removedUserPINCodes];
+  allValues = [removedUserPINCodes allValues];
 
-  v8 = v7;
-  v9 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v8 = allValues;
+  v9 = [allValues countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2954,16 +2954,16 @@ uint64_t __53__HFPinCodeManager_restoreFullAccessForUserWithItem___block_invoke(
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v22 + 1) + 8 * i) userLabel];
-        v14 = [v13 removedUserInfo];
-        v15 = [v14 userUUID];
+        userLabel = [*(*(&v22 + 1) + 8 * i) userLabel];
+        removedUserInfo = [userLabel removedUserInfo];
+        userUUID = [removedUserInfo userUUID];
 
         v16 = objc_alloc_init(MEMORY[0x277D2C900]);
-        v17 = [(HFPinCodeManager *)self accessCodeManager];
+        accessCodeManager = [(HFPinCodeManager *)self accessCodeManager];
         v18 = [(HFPinCodeManager *)self _modificationCompletionHandlerForFuture:v16];
-        [v17 setAccessCode:0 forUserWithUUID:v15 completion:v18];
+        [accessCodeManager setAccessCode:0 forUserWithUUID:userUUID completion:v18];
 
-        [v4 addObject:v16];
+        [array addObject:v16];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -2972,7 +2972,7 @@ uint64_t __53__HFPinCodeManager_restoreFullAccessForUserWithItem___block_invoke(
     while (v10);
   }
 
-  v19 = [MEMORY[0x277D2C900] combineAllFutures:v4];
+  v19 = [MEMORY[0x277D2C900] combineAllFutures:array];
 
   v20 = *MEMORY[0x277D85DE8];
 
@@ -2981,13 +2981,13 @@ uint64_t __53__HFPinCodeManager_restoreFullAccessForUserWithItem___block_invoke(
 
 - (id)hasValidConstraints
 {
-  v3 = [(HFPinCodeManager *)self constraintsFuture];
+  constraintsFuture = [(HFPinCodeManager *)self constraintsFuture];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__HFPinCodeManager_hasValidConstraints__block_invoke;
   v7[3] = &unk_277DF5038;
   v7[4] = self;
-  v4 = [v3 recover:v7];
+  v4 = [constraintsFuture recover:v7];
   v5 = [v4 flatMap:&__block_literal_global_145_2];
 
   return v5;
@@ -3030,52 +3030,52 @@ uint64_t __39__HFPinCodeManager_hasValidConstraints__block_invoke_3(uint64_t a1,
   return [v2 futureWithResult:v5];
 }
 
-- (void)_fetchPinCodeConstraints:(id)a3
+- (void)_fetchPinCodeConstraints:(id)constraints
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  constraintsCopy = constraints;
   v5 = MEMORY[0x277CD1610];
-  v6 = [(HFPinCodeManager *)self constraints];
-  v7 = [v5 greatestLowerBoundForAccessCodeLengthFromConstraints:v6];
+  constraints = [(HFPinCodeManager *)self constraints];
+  v7 = [v5 greatestLowerBoundForAccessCodeLengthFromConstraints:constraints];
 
   v8 = MEMORY[0x277CD1610];
-  v9 = [(HFPinCodeManager *)self constraints];
-  v10 = [v8 leastUpperBoundForAccessCodeLengthFromConstraints:v9];
+  constraints2 = [(HFPinCodeManager *)self constraints];
+  v10 = [v8 leastUpperBoundForAccessCodeLengthFromConstraints:constraints2];
 
   if (v7 < 0 || v10 <= 0)
   {
     v11 = HFLogForCategory(0x37uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(HFPinCodeManager *)self constraints];
+      constraints3 = [(HFPinCodeManager *)self constraints];
       v14 = 134218498;
       v15 = v7;
       v16 = 2048;
       v17 = v10;
       v18 = 2112;
-      v19 = v13;
+      v19 = constraints3;
       _os_log_error_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_ERROR, "Fetching constraints Pin Code, we got a min or max length of zero. min: %ld max: %ld constraints: %@", &v14, 0x20u);
     }
   }
 
-  v4[2](v4, v7, v10);
+  constraintsCopy[2](constraintsCopy, v7, v10);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchPinCodeConstraints:(id)a3
+- (void)fetchPinCodeConstraints:(id)constraints
 {
-  v4 = a3;
+  constraintsCopy = constraints;
   objc_initWeak(&location, self);
-  v5 = [(HFPinCodeManager *)self constraintsFuture];
+  constraintsFuture = [(HFPinCodeManager *)self constraintsFuture];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke;
   v12[3] = &unk_277DFCF80;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = constraintsCopy;
   v13 = v6;
-  v7 = [v5 addSuccessBlock:v12];
+  v7 = [constraintsFuture addSuccessBlock:v12];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2;
@@ -3102,18 +3102,18 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   return v2();
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFPinCodeManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFPinCodeManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFPinCodeManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFPinCodeManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)_reloadObservers
@@ -3122,9 +3122,9 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v3 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFPinCodeManager *)self observers];
+    observers = [(HFPinCodeManager *)self observers];
     *buf = 138412290;
-    v18 = v4;
+    v18 = observers;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Telling observers to reload %@", buf, 0xCu);
   }
 
@@ -3132,8 +3132,8 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(HFPinCodeManager *)self observers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  observers2 = [(HFPinCodeManager *)self observers];
+  v6 = [observers2 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3145,7 +3145,7 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers2);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -3158,7 +3158,7 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [observers2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -3167,15 +3167,15 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeManager:(id)a3 didAddAccessoryAccessCodes:(id)a4
+- (void)accessCodeManager:(id)manager didAddAccessoryAccessCodes:(id)codes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  codesCopy = codes;
   v6 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v28 = [v5 count];
+    v28 = [codesCopy count];
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Received didAddAccessoryAccessCodes notification with %lu new PIN codes", buf, 0xCu);
   }
 
@@ -3183,7 +3183,7 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = codesCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
@@ -3199,11 +3199,11 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 accessCodeValue];
-        v14 = [v13 stringValue];
+        accessCodeValue = [v12 accessCodeValue];
+        stringValue = [accessCodeValue stringValue];
 
-        v15 = [(HFPinCodeManager *)self dataStore];
-        v16 = [v15 pinCodeForCodeValue:v14];
+        dataStore = [(HFPinCodeManager *)self dataStore];
+        v16 = [dataStore pinCodeForCodeValue:stringValue];
 
         if (v16)
         {
@@ -3220,9 +3220,9 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
           }
 
           v18 = [[HFPinCode alloc] initWithAccessoryAccessCode:v12];
-          v19 = [(HFPinCodeManager *)self dataStore];
-          v20 = [v19 guestPINCodes];
-          [v20 setValue:v18 forKey:v14];
+          dataStore2 = [(HFPinCodeManager *)self dataStore];
+          guestPINCodes = [dataStore2 guestPINCodes];
+          [guestPINCodes setValue:v18 forKey:stringValue];
         }
       }
 
@@ -3236,15 +3236,15 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeManager:(id)a3 didRemoveAccessoryAccessCodes:(id)a4
+- (void)accessCodeManager:(id)manager didRemoveAccessoryAccessCodes:(id)codes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  codesCopy = codes;
   v6 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v24 = [v5 count];
+    v24 = [codesCopy count];
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Received didRemoveAccessoryAccessCodes notification with %lu PIN codes", buf, 0xCu);
   }
 
@@ -3252,7 +3252,7 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = codesCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -3268,11 +3268,11 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 accessCodeValue];
-        v14 = [v13 stringValue];
+        accessCodeValue = [v12 accessCodeValue];
+        stringValue = [accessCodeValue stringValue];
 
-        v15 = [(HFPinCodeManager *)self dataStore];
-        v16 = [v15 pinCodeForCodeValue:v14];
+        dataStore = [(HFPinCodeManager *)self dataStore];
+        v16 = [dataStore pinCodeForCodeValue:stringValue];
 
         [v16 removeAccessoryAccessCode:v12];
       }
@@ -3287,15 +3287,15 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeManager:(id)a3 didAddHomeAccessCodes:(id)a4
+- (void)accessCodeManager:(id)manager didAddHomeAccessCodes:(id)codes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  codesCopy = codes;
   v6 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = [v5 count];
+    v21 = [codesCopy count];
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Received didAddHomeAccessCodes notification with %lu new PIN codes", buf, 0xCu);
   }
 
@@ -3303,7 +3303,7 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = codesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -3320,8 +3320,8 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = [(HFPinCodeManager *)self dataStore];
-        [(HFPinCodeManager *)self _addNewHomeAccessCode:v12 toStore:v13];
+        dataStore = [(HFPinCodeManager *)self dataStore];
+        [(HFPinCodeManager *)self _addNewHomeAccessCode:v12 toStore:dataStore];
 
         ++v11;
       }
@@ -3337,15 +3337,15 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeManager:(id)a3 didUpdateHomeAccessCodes:(id)a4
+- (void)accessCodeManager:(id)manager didUpdateHomeAccessCodes:(id)codes
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  codesCopy = codes;
   v6 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v36 = [v5 count];
+    v36 = [codesCopy count];
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Received didUpdateHomeAccessCodes notification with %lu PIN codes", buf, 0xCu);
   }
 
@@ -3353,7 +3353,7 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = codesCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
@@ -3369,41 +3369,41 @@ uint64_t __44__HFPinCodeManager_fetchPinCodeConstraints___block_invoke_2(uint64_
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        v12 = [v11 accessCodeValue];
-        v13 = [v12 stringValue];
+        accessCodeValue = [v11 accessCodeValue];
+        stringValue = [accessCodeValue stringValue];
 
-        v14 = [v11 userInformation];
-        v15 = [v14 user];
+        userInformation = [v11 userInformation];
+        user = [userInformation user];
 
-        v16 = [(HFPinCodeManager *)self dataStore];
-        v17 = v16;
-        if (v15)
+        dataStore = [(HFPinCodeManager *)self dataStore];
+        v17 = dataStore;
+        if (user)
         {
-          v18 = [v16 userPINCodes];
-          v19 = [v18 allValues];
+          userPINCodes = [dataStore userPINCodes];
+          allValues = [userPINCodes allValues];
           v29[0] = MEMORY[0x277D85DD0];
           v29[1] = 3221225472;
           v29[2] = __63__HFPinCodeManager_accessCodeManager_didUpdateHomeAccessCodes___block_invoke;
           v29[3] = &unk_277DFCD58;
           v29[4] = v11;
-          v20 = [v19 na_firstObjectPassingTest:v29];
+          v20 = [allValues na_firstObjectPassingTest:v29];
 
           if (v20)
           {
-            v21 = [v20 copyWithNewPinCodeValue:v13];
-            v22 = [(HFPinCodeManager *)self dataStore];
-            v23 = [v20 pinCodeValue];
-            [v22 updateWithPinCode:v21 forOldCodeValue:v23];
+            v21 = [v20 copyWithNewPinCodeValue:stringValue];
+            dataStore2 = [(HFPinCodeManager *)self dataStore];
+            pinCodeValue = [v20 pinCodeValue];
+            [dataStore2 updateWithPinCode:v21 forOldCodeValue:pinCodeValue];
           }
         }
 
         else
         {
-          v24 = [v16 guestPINCodes];
-          v25 = [v24 objectForKey:v13];
+          guestPINCodes = [dataStore guestPINCodes];
+          v25 = [guestPINCodes objectForKey:stringValue];
 
-          v26 = [v11 userInformation];
-          [v25 setUserLabel:v26];
+          userInformation2 = [v11 userInformation];
+          [v25 setUserLabel:userInformation2];
         }
       }
 
@@ -3430,15 +3430,15 @@ uint64_t __63__HFPinCodeManager_accessCodeManager_didUpdateHomeAccessCodes___blo
   return v9;
 }
 
-- (void)accessCodeManager:(id)a3 didRemoveHomeAccessCodes:(id)a4
+- (void)accessCodeManager:(id)manager didRemoveHomeAccessCodes:(id)codes
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  codesCopy = codes;
   v6 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v27 = [v5 count];
+    v27 = [codesCopy count];
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Received didRemoveHomeAccessCodes notification with %lu PIN codes", buf, 0xCu);
   }
 
@@ -3446,7 +3446,7 @@ uint64_t __63__HFPinCodeManager_accessCodeManager_didUpdateHomeAccessCodes___blo
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = codesCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -3462,22 +3462,22 @@ uint64_t __63__HFPinCodeManager_accessCodeManager_didUpdateHomeAccessCodes___blo
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v21 + 1) + 8 * v11) accessCodeValue];
-        v13 = [v12 stringValue];
+        accessCodeValue = [*(*(&v21 + 1) + 8 * v11) accessCodeValue];
+        stringValue = [accessCodeValue stringValue];
 
-        if (v13)
+        if (stringValue)
         {
-          v14 = [(HFPinCodeManager *)self dataStore];
-          v15 = [v14 userPINCodes];
-          [v15 removeObjectForKey:v13];
+          dataStore = [(HFPinCodeManager *)self dataStore];
+          userPINCodes = [dataStore userPINCodes];
+          [userPINCodes removeObjectForKey:stringValue];
 
-          v16 = [(HFPinCodeManager *)self dataStore];
-          v17 = [v16 guestPINCodes];
-          [v17 removeObjectForKey:v13];
+          dataStore2 = [(HFPinCodeManager *)self dataStore];
+          guestPINCodes = [dataStore2 guestPINCodes];
+          [guestPINCodes removeObjectForKey:stringValue];
 
-          v18 = [(HFPinCodeManager *)self dataStore];
-          v19 = [v18 removedUserPINCodes];
-          [v19 removeObjectForKey:v13];
+          dataStore3 = [(HFPinCodeManager *)self dataStore];
+          removedUserPINCodes = [dataStore3 removedUserPINCodes];
+          [removedUserPINCodes removeObjectForKey:stringValue];
         }
 
         ++v11;
@@ -3494,23 +3494,23 @@ uint64_t __63__HFPinCodeManager_accessCodeManager_didUpdateHomeAccessCodes___blo
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)asciiStringForLocalizedPINString:(id)a3 error:(id *)a4
++ (id)asciiStringForLocalizedPINString:(id)string error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v5, "length")}];
-  if ([v5 length])
+  stringCopy = string;
+  v6 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(stringCopy, "length")}];
+  if ([stringCopy length])
   {
     v7 = 0;
     do
     {
-      v8 = u_charDigitValue([v5 characterAtIndex:v7]);
+      v8 = u_charDigitValue([stringCopy characterAtIndex:v7]);
       if (v8 == -1)
       {
 
-        if (a4)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] errorWithDomain:@"HFErrorDomain" code:82 userInfo:0];
-          *a4 = v6 = 0;
+          *error = v6 = 0;
         }
 
         else
@@ -3522,14 +3522,14 @@ uint64_t __63__HFPinCodeManager_accessCodeManager_didUpdateHomeAccessCodes___blo
       else
       {
         v9 = [MEMORY[0x277CCABB0] numberWithInt:v8];
-        v10 = [v9 stringValue];
-        [v6 appendString:v10];
+        stringValue = [v9 stringValue];
+        [v6 appendString:stringValue];
       }
 
       ++v7;
     }
 
-    while (v7 < [v5 length]);
+    while (v7 < [stringCopy length]);
   }
 
   return v6;

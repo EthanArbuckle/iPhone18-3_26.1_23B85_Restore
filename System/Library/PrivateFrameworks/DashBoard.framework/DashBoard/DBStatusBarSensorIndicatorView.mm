@@ -2,7 +2,7 @@
 - (CGSize)intrinsicContentSize;
 - (DBStatusBarSensorIndicatorView)init;
 - (void)_updateColor;
-- (void)setSensorIndicatorType:(int64_t)a3;
+- (void)setSensorIndicatorType:(int64_t)type;
 @end
 
 @implementation DBStatusBarSensorIndicatorView
@@ -15,8 +15,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(DBStatusBarSensorIndicatorView *)v2 layer];
-    [v4 setCornerRadius:2.0];
+    layer = [(DBStatusBarSensorIndicatorView *)v2 layer];
+    [layer setCornerRadius:2.0];
 
     [(DBStatusBarSensorIndicatorView *)v3 _updateColor];
   }
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (void)setSensorIndicatorType:(int64_t)a3
+- (void)setSensorIndicatorType:(int64_t)type
 {
-  if (self->_sensorIndicatorType != a3)
+  if (self->_sensorIndicatorType != type)
   {
-    self->_sensorIndicatorType = a3;
+    self->_sensorIndicatorType = type;
     [(DBStatusBarSensorIndicatorView *)self _updateColor];
   }
 }
@@ -47,12 +47,12 @@
   if ([(DBStatusBarSensorIndicatorView *)self sensorIndicatorType]== 2)
   {
     [(DBStatusBarSensorIndicatorView *)self setAccessibilityIdentifier:@"DBStatusBarSensorIndicatorTypeCamera"];
-    v3 = [MEMORY[0x277D75348] colorWithDynamicProvider:&__block_literal_global_36];
+    systemOrangeColor = [MEMORY[0x277D75348] colorWithDynamicProvider:&__block_literal_global_36];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] systemOrangeColor];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
     [(DBStatusBarSensorIndicatorView *)self setAccessibilityIdentifier:@"DBStatusBarSensorIndicatorTypeMicrophone"];
   }
 
@@ -62,8 +62,8 @@
   v6[2] = __46__DBStatusBarSensorIndicatorView__updateColor__block_invoke_2;
   v6[3] = &unk_278F014B8;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
+  v7 = systemOrangeColor;
+  v5 = systemOrangeColor;
   [v4 transitionWithView:self duration:0 options:v6 animations:&__block_literal_global_9 completion:0.25];
 }
 

@@ -1,33 +1,33 @@
 @interface PTTestRecipe
-- (BOOL)_wantsEvent:(int64_t)a3;
-- (id)_initWithTitle:(id)a3 prepareBlock:(id)a4 cleanupBlock:(id)a5;
+- (BOOL)_wantsEvent:(int64_t)event;
+- (id)_initWithTitle:(id)title prepareBlock:(id)block cleanupBlock:(id)cleanupBlock;
 - (void)_activate;
 - (void)_deactivate;
-- (void)_handleEvent:(int64_t)a3;
+- (void)_handleEvent:(int64_t)event;
 - (void)invalidate;
 @end
 
 @implementation PTTestRecipe
 
-- (id)_initWithTitle:(id)a3 prepareBlock:(id)a4 cleanupBlock:(id)a5
+- (id)_initWithTitle:(id)title prepareBlock:(id)block cleanupBlock:(id)cleanupBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  blockCopy = block;
+  cleanupBlockCopy = cleanupBlock;
   v19.receiver = self;
   v19.super_class = PTTestRecipe;
   v11 = [(PTTestRecipe *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [blockCopy copy];
     prepareBlock = v11->_prepareBlock;
     v11->_prepareBlock = v14;
 
-    v16 = [v10 copy];
+    v16 = [cleanupBlockCopy copy];
     cleanupBlock = v11->_cleanupBlock;
     v11->_cleanupBlock = v16;
   }
@@ -71,14 +71,14 @@
   self->_invalidationHandler = 0;
 }
 
-- (BOOL)_wantsEvent:(int64_t)a3
+- (BOOL)_wantsEvent:(int64_t)event
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (void)_handleEvent:(int64_t)a3
+- (void)_handleEvent:(int64_t)event
 {
   objc_opt_class();
 

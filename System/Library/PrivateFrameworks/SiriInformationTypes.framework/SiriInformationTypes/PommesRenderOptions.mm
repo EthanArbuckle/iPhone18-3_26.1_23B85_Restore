@@ -1,7 +1,7 @@
 @interface PommesRenderOptions
 - (_TtC21SiriInformationSearch19PommesRenderOptions)init;
-- (_TtC21SiriInformationSearch19PommesRenderOptions)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC21SiriInformationSearch19PommesRenderOptions)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PommesRenderOptions
@@ -16,19 +16,19 @@
   return v4;
 }
 
-- (_TtC21SiriInformationSearch19PommesRenderOptions)initWithCoder:(id)a3
+- (_TtC21SiriInformationSearch19PommesRenderOptions)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized PommesRenderOptions.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized PommesRenderOptions.init(coder:)(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PommesRenderOptions.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PommesRenderOptions.encode(with:)(coderCopy);
 }
 
 @end

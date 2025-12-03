@@ -1,32 +1,32 @@
 @interface VN1JC7R3k4455fKQz0dY1VhQ
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (id)supportedAdjustmentKeysAndReturnError:(id *)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (id)supportedAdjustmentKeysAndReturnError:(id *)error;
 @end
 
 @implementation VN1JC7R3k4455fKQz0dY1VhQ
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 != a4)
+  if (revision != byRevision)
   {
     return 0;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VN1JC7R3k4455fKQz0dY1VhQ;
-  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, a3, a3);
+  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, revision, revision);
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 == 3737841664)
+  if (revision == 3737841664)
   {
     v5 = @"VN6Ukf2f2QO979ttLvyg0ZAQ";
   }
@@ -35,7 +35,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VN1JC7R3k4455fKQz0dY1VhQ;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
@@ -62,17 +62,17 @@ uint64_t __47__VN1JC7R3k4455fKQz0dY1VhQ_privateRevisionsSet__block_invoke(uint64
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (a3 == 1)
+  contextCopy = context;
+  v9 = contextCopy;
+  if (revision == 1)
   {
-    if (a5)
+    if (error)
     {
       [VNError errorForUnsupportedRevision:1 ofRequest:self];
-      *a5 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -83,13 +83,13 @@ uint64_t __47__VN1JC7R3k4455fKQz0dY1VhQ_privateRevisionsSet__block_invoke(uint64
 
   else
   {
-    v11 = [v8 session];
+    session = [contextCopy session];
     v20 = 0;
-    v12 = [(VNRequest *)self applicableDetectorAndOptions:&v20 forRevision:a3 loadedInSession:v11 error:a5];
+    v12 = [(VNRequest *)self applicableDetectorAndOptions:&v20 forRevision:revision loadedInSession:session error:error];
     v13 = v20;
     if (v12)
     {
-      v14 = [v9 imageBufferAndReturnError:a5];
+      v14 = [v9 imageBufferAndReturnError:error];
       v15 = v14;
       if (v14)
       {
@@ -97,9 +97,9 @@ uint64_t __47__VN1JC7R3k4455fKQz0dY1VhQ_privateRevisionsSet__block_invoke(uint64
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
         [v13 setObject:v16 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-        v17 = [v9 qosClass];
+        qosClass = [v9 qosClass];
         [(VNImageBasedRequest *)self regionOfInterest];
-        v18 = [v12 processUsingQualityOfServiceClass:v17 options:v13 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+        v18 = [v12 processUsingQualityOfServiceClass:qosClass options:v13 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
         v10 = v18 != 0;
         if (v18)
         {
@@ -122,12 +122,12 @@ uint64_t __47__VN1JC7R3k4455fKQz0dY1VhQ_privateRevisionsSet__block_invoke(uint64
   return v10;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v11.receiver = self;
   v11.super_class = VN1JC7R3k4455fKQz0dY1VhQ;
-  v6 = [(VNRequest *)&v11 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:[(VNRequest *)self frameworkClass] revision:a3];
+  v6 = [(VNRequest *)&v11 newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:[(VNRequest *)self frameworkClass] revision:revision];
   if (v7)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
@@ -141,15 +141,15 @@ uint64_t __47__VN1JC7R3k4455fKQz0dY1VhQ_privateRevisionsSet__block_invoke(uint64
   return v6;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 3737841664)
+  if (revision == 3737841664)
   {
     v4 = @"VNSliderNetDetectorType";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNImageAnalyzerMultiDetectorType";
 LABEL_5:
@@ -157,10 +157,10 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -173,38 +173,38 @@ LABEL_9:
   return v4;
 }
 
-- (id)supportedAdjustmentKeysAndReturnError:(id *)a3
+- (id)supportedAdjustmentKeysAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
-  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:v5 error:a3];
-  if (v6)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  allPhotosAdjustmentKeys = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:resolvedRevision error:error];
+  if (allPhotosAdjustmentKeys)
   {
-    v7 = v6;
-    if ([(objc_class *)v6 isSubclassOfClass:objc_opt_class()])
+    v7 = allPhotosAdjustmentKeys;
+    if ([(objc_class *)allPhotosAdjustmentKeys isSubclassOfClass:objc_opt_class()])
     {
-      v6 = [(objc_class *)v7 allPhotosAdjustmentKeys];
+      allPhotosAdjustmentKeys = [(objc_class *)v7 allPhotosAdjustmentKeys];
     }
 
     else if ([(objc_class *)v7 isSubclassOfClass:objc_opt_class()])
     {
-      v6 = [(objc_class *)v7 supportedAdjustmentKeys];
+      allPhotosAdjustmentKeys = [(objc_class *)v7 supportedAdjustmentKeys];
     }
 
-    else if (a3)
+    else if (error)
     {
-      v8 = [VNError errorForUnsupportedRevision:v5 ofRequest:self];
+      v8 = [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
       v9 = v8;
-      v6 = 0;
-      *a3 = v8;
+      allPhotosAdjustmentKeys = 0;
+      *error = v8;
     }
 
     else
     {
-      v6 = 0;
+      allPhotosAdjustmentKeys = 0;
     }
   }
 
-  return v6;
+  return allPhotosAdjustmentKeys;
 }
 
 @end

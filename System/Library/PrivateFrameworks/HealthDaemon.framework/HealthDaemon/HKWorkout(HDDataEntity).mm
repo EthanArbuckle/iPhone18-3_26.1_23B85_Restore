@@ -8,11 +8,11 @@
 {
   v12 = a3;
   v13 = a6;
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &off_283D42E88;
   if (objc_msgSendSuper2(&v16, sel_hd_insertRelatedDataWithPersistentID_insertionContext_profile_transaction_error_, v12, a4, a5, v13, a7))
   {
-    v14 = [HDWorkoutEventEntity insertWorkoutEventsFromWorkout:a1 ownerID:v12 transaction:v13 error:a7];
+    v14 = [HDWorkoutEventEntity insertWorkoutEventsFromWorkout:self ownerID:v12 transaction:v13 error:a7];
   }
 
   else

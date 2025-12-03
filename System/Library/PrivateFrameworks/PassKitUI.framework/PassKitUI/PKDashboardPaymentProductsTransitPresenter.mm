@@ -1,40 +1,40 @@
 @interface PKDashboardPaymentProductsTransitPresenter
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
-- (PKDashboardPaymentProductsTransitPresenter)initWithPassGroupView:(id)a3 paymentDataProvider:(id)a4;
-- (id)_actionHandlerForItem:(id)a3 indexPath:(id)a4;
-- (id)_allocViewForTransitItem:(id)a3;
-- (id)_identifierForItem:(id)a3;
-- (id)_passForTransitItem:(id)a3 indexPath:(id)a4;
-- (id)_renewActionForItem:(id)a3 commutePlanIdentifier:(id)a4;
-- (id)_sampleViewForTransitItem:(id)a3;
-- (id)_topUpActionForItem:(id)a3 indexPath:(id)a4 balanceIdentifier:(id)a5;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
+- (PKDashboardPaymentProductsTransitPresenter)initWithPassGroupView:(id)view paymentDataProvider:(id)provider;
+- (id)_actionHandlerForItem:(id)item indexPath:(id)path;
+- (id)_allocViewForTransitItem:(id)item;
+- (id)_identifierForItem:(id)item;
+- (id)_passForTransitItem:(id)item indexPath:(id)path;
+- (id)_renewActionForItem:(id)item commutePlanIdentifier:(id)identifier;
+- (id)_sampleViewForTransitItem:(id)item;
+- (id)_topUpActionForItem:(id)item indexPath:(id)path balanceIdentifier:(id)identifier;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (id)displayableBalancesForTransitItem:(id)a3;
-- (int64_t)_viewTypeForTransitItem:(id)a3;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
-- (void)_configureView:(id *)a3 transitItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)performActionViewControllerDidCancel:(id)a3;
-- (void)performActionViewControllerDidPerformAction:(id)a3;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
+- (id)displayableBalancesForTransitItem:(id)item;
+- (int64_t)_viewTypeForTransitItem:(id)item;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
+- (void)_configureView:(id *)view transitItem:(id)item indexPath:(id)path animated:(BOOL)animated;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)performActionViewControllerDidCancel:(id)cancel;
+- (void)performActionViewControllerDidPerformAction:(id)action;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKDashboardPaymentProductsTransitPresenter
 
-- (PKDashboardPaymentProductsTransitPresenter)initWithPassGroupView:(id)a3 paymentDataProvider:(id)a4
+- (PKDashboardPaymentProductsTransitPresenter)initWithPassGroupView:(id)view paymentDataProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = PKDashboardPaymentProductsTransitPresenter;
   v9 = [(PKDashboardPaymentProductsTransitPresenter *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_passGroupView, a3);
+    objc_storeStrong(&v9->_passGroupView, view);
     v11 = [PKAdjustableSingleCellView alloc];
     v12 = *MEMORY[0x1E695F058];
     v13 = *(MEMORY[0x1E695F058] + 8);
@@ -52,7 +52,7 @@
     sampleSingleCellButtonView = v10->_sampleSingleCellButtonView;
     v10->_sampleSingleCellButtonView = v20;
 
-    objc_storeStrong(&v10->_paymentDataProvider, a4);
+    objc_storeStrong(&v10->_paymentDataProvider, provider);
   }
 
   return v10;
@@ -72,9 +72,9 @@
   return v2;
 }
 
-- (id)_identifierForItem:(id)a3
+- (id)_identifierForItem:(id)item
 {
-  v3 = [(PKDashboardPaymentProductsTransitPresenter *)self _viewTypeForTransitItem:a3];
+  v3 = [(PKDashboardPaymentProductsTransitPresenter *)self _viewTypeForTransitItem:item];
   if (v3 > 2)
   {
     return 0;
@@ -86,20 +86,20 @@
   }
 }
 
-- (int64_t)_viewTypeForTransitItem:(id)a3
+- (int64_t)_viewTypeForTransitItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKDashboardPaymentProductsTransitPresenter *)self displayableBalancesForTransitItem:v4];
+  itemCopy = item;
+  v5 = [(PKDashboardPaymentProductsTransitPresenter *)self displayableBalancesForTransitItem:itemCopy];
   v6 = [v5 count];
-  v7 = [v4 transitItemType];
+  transitItemType = [itemCopy transitItemType];
 
   v8 = 2;
-  if (v7 - 4 >= 2)
+  if (transitItemType - 4 >= 2)
   {
     v8 = 0;
   }
 
-  if (v7 >= 3)
+  if (transitItemType >= 3)
   {
     v9 = v8;
   }
@@ -112,25 +112,25 @@
   return v9;
 }
 
-- (id)displayableBalancesForTransitItem:(id)a3
+- (id)displayableBalancesForTransitItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 transitItemType];
-  switch(v4)
+  itemCopy = item;
+  transitItemType = [itemCopy transitItemType];
+  switch(transitItemType)
   {
     case 2:
-      v5 = [v3 transitBalanceModel];
-      v6 = [v5 displayablePointsBalances];
+      transitBalanceModel = [itemCopy transitBalanceModel];
+      displayablePointsBalances = [transitBalanceModel displayablePointsBalances];
       goto LABEL_7;
     case 1:
-      v5 = [v3 transitBalanceModel];
-      v6 = [v5 displayableCurrencyBalances];
+      transitBalanceModel = [itemCopy transitBalanceModel];
+      displayablePointsBalances = [transitBalanceModel displayableCurrencyBalances];
       goto LABEL_7;
     case 0:
-      v5 = [v3 transitBalanceModel];
-      v6 = [v5 displayableBalances];
+      transitBalanceModel = [itemCopy transitBalanceModel];
+      displayablePointsBalances = [transitBalanceModel displayableBalances];
 LABEL_7:
-      v7 = v6;
+      v7 = displayablePointsBalances;
 
       goto LABEL_9;
   }
@@ -141,53 +141,53 @@ LABEL_9:
   return v7;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKDashboardPaymentProductsTransitPresenter *)self _identifierForItem:v10];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [(PKDashboardPaymentProductsTransitPresenter *)self _identifierForItem:itemCopy];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  [(PKDashboardPaymentProductsTransitPresenter *)self _configureCell:v12 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  [(PKDashboardPaymentProductsTransitPresenter *)self _configureCell:v12 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v12;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 hostedContentView];
-  v13 = v12;
-  if (!v12 || (v14 = [v12 viewType], v14 != -[PKDashboardPaymentProductsTransitPresenter _viewTypeForTransitItem:](self, "_viewTypeForTransitItem:", v9)))
+  itemCopy = item;
+  pathCopy = path;
+  cellCopy = cell;
+  hostedContentView = [cellCopy hostedContentView];
+  v13 = hostedContentView;
+  if (!hostedContentView || (v14 = [hostedContentView viewType], v14 != -[PKDashboardPaymentProductsTransitPresenter _viewTypeForTransitItem:](self, "_viewTypeForTransitItem:", itemCopy)))
   {
-    v15 = [(PKDashboardPaymentProductsTransitPresenter *)self _allocViewForTransitItem:v9];
+    v15 = [(PKDashboardPaymentProductsTransitPresenter *)self _allocViewForTransitItem:itemCopy];
 
     v13 = v15;
   }
 
   v17 = v13;
-  [(PKDashboardPaymentProductsTransitPresenter *)self _configureView:&v17 transitItem:v9 indexPath:v10 animated:0];
+  [(PKDashboardPaymentProductsTransitPresenter *)self _configureView:&v17 transitItem:itemCopy indexPath:pathCopy animated:0];
   v16 = v17;
 
-  [v11 setHostedContentView:v16];
+  [cellCopy setHostedContentView:v16];
 }
 
-- (id)_renewActionForItem:(id)a3 commutePlanIdentifier:(id)a4
+- (id)_renewActionForItem:(id)item commutePlanIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 transitBalanceModel];
-  v7 = [v6 displayableCommutePlanActions];
-  v8 = [v7 pk_objectsPassingTest:&__block_literal_global_91];
+  identifierCopy = identifier;
+  transitBalanceModel = [item transitBalanceModel];
+  displayableCommutePlanActions = [transitBalanceModel displayableCommutePlanActions];
+  v8 = [displayableCommutePlanActions pk_objectsPassingTest:&__block_literal_global_91];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__PKDashboardPaymentProductsTransitPresenter__renewActionForItem_commutePlanIdentifier___block_invoke_2;
   v12[3] = &unk_1E8018AC0;
-  v13 = v5;
-  v9 = v5;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
   v10 = [v8 pk_firstObjectPassingTest:v12];
 
   return v10;
@@ -225,18 +225,18 @@ BOOL __88__PKDashboardPaymentProductsTransitPresenter__renewActionForItem_commut
   return v8;
 }
 
-- (id)_topUpActionForItem:(id)a3 indexPath:(id)a4 balanceIdentifier:(id)a5
+- (id)_topUpActionForItem:(id)item indexPath:(id)path balanceIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [a3 pass];
-  v8 = [v7 activationState];
+  identifierCopy = identifier;
+  pass = [item pass];
+  activationState = [pass activationState];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v7 availableActions];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  availableActions = [pass availableActions];
+  v10 = [availableActions countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -247,16 +247,16 @@ LABEL_3:
     {
       if (*v22 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(availableActions);
       }
 
       v14 = *(*(&v21 + 1) + 8 * v13);
-      if ([v14 type] == 6 || !objc_msgSend(v14, "type") || objc_msgSend(v14, "type") == 1 && ((v8 - 1) < 2 || (objc_msgSend(v14, "unavailableActionBehavior") & 1) != 0))
+      if ([v14 type] == 6 || !objc_msgSend(v14, "type") || objc_msgSend(v14, "type") == 1 && ((activationState - 1) < 2 || (objc_msgSend(v14, "unavailableActionBehavior") & 1) != 0))
       {
         break;
       }
 
-      if ([v14 type] == 1 && objc_msgSend(v6, "pk_hasObjectPassingTest:", &__block_literal_global_31_0) || objc_msgSend(v14, "featured") && (objc_msgSend(v14, "associatedEnteredValueIdentifier"), v15 = objc_claimAutoreleasedReturnValue(), v15, !v15) || (v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __94__PKDashboardPaymentProductsTransitPresenter__topUpActionForItem_indexPath_balanceIdentifier___block_invoke_2, v20[3] = &unk_1E8013098, v20[4] = v14, (objc_msgSend(v6, "pk_hasObjectPassingTest:", v20) & 1) != 0))
+      if ([v14 type] == 1 && objc_msgSend(identifierCopy, "pk_hasObjectPassingTest:", &__block_literal_global_31_0) || objc_msgSend(v14, "featured") && (objc_msgSend(v14, "associatedEnteredValueIdentifier"), v15 = objc_claimAutoreleasedReturnValue(), v15, !v15) || (v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __94__PKDashboardPaymentProductsTransitPresenter__topUpActionForItem_indexPath_balanceIdentifier___block_invoke_2, v20[3] = &unk_1E8013098, v20[4] = v14, (objc_msgSend(identifierCopy, "pk_hasObjectPassingTest:", v20) & 1) != 0))
       {
 LABEL_24:
         v18 = v14;
@@ -265,16 +265,16 @@ LABEL_24:
 
       if ([v14 type] == 1)
       {
-        v16 = [v14 relevantPropertyIdentifier];
-        if (v16)
+        relevantPropertyIdentifier = [v14 relevantPropertyIdentifier];
+        if (relevantPropertyIdentifier)
         {
         }
 
         else
         {
-          v17 = [v14 associatedEnteredValueIdentifier];
+          associatedEnteredValueIdentifier = [v14 associatedEnteredValueIdentifier];
 
-          if (!v17)
+          if (!associatedEnteredValueIdentifier)
           {
             goto LABEL_24;
           }
@@ -283,7 +283,7 @@ LABEL_24:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [availableActions countByEnumeratingWithState:&v21 objects:v25 count:16];
         v18 = 0;
         if (v11)
         {
@@ -379,16 +379,16 @@ LABEL_15:
   return v9;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a6;
+  itemCopy = item;
+  pathCopy = path;
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  v12 = a5 + v11 * -2.0;
-  v13 = v9;
+  v12 = width + v11 * -2.0;
+  v13 = itemCopy;
   v14 = [(PKDashboardPaymentProductsTransitPresenter *)self _sampleViewForTransitItem:v13];
   v22 = v14;
-  [(PKDashboardPaymentProductsTransitPresenter *)self _configureView:&v22 transitItem:v13 indexPath:v10 animated:0];
+  [(PKDashboardPaymentProductsTransitPresenter *)self _configureView:&v22 transitItem:v13 indexPath:pathCopy animated:0];
 
   v15 = v22;
   [v15 sizeThatFits:{v12, 1.79769313e308}];
@@ -402,20 +402,20 @@ LABEL_15:
   return result;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  v8 = a5;
-  if (a3)
+  viewCopy = view;
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v24 = v8;
-      v9 = a4;
-      v10 = [a3 preferredContentSizeCategory];
-      v11 = [v9 preferredContentSizeCategory];
+      v24 = viewCopy;
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v12 = UIContentSizeCategoryCompareToCategory(v10, v11);
-      v8 = v24;
+      v12 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
+      viewCopy = v24;
       if (v12)
       {
         v13 = [PKAdjustableSingleCellView alloc];
@@ -436,20 +436,20 @@ LABEL_15:
         self->_sampleSingleCellButtonView = v22;
 
         [v24 reloadData];
-        v8 = v24;
+        viewCopy = v24;
       }
     }
   }
 }
 
-- (id)_sampleViewForTransitItem:(id)a3
+- (id)_sampleViewForTransitItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKDashboardPaymentProductsTransitPresenter *)self displayableBalancesForTransitItem:v4];
+  itemCopy = item;
+  v5 = [(PKDashboardPaymentProductsTransitPresenter *)self displayableBalancesForTransitItem:itemCopy];
   v6 = [v5 count];
-  v7 = [v4 transitItemType];
+  transitItemType = [itemCopy transitItemType];
 
-  if (v7 < 3)
+  if (transitItemType < 3)
   {
     v8 = 32;
     if (v6 == 1)
@@ -458,9 +458,9 @@ LABEL_15:
     }
   }
 
-  else if (v7 - 4 >= 2)
+  else if (transitItemType - 4 >= 2)
   {
-    if (v7 != 3)
+    if (transitItemType != 3)
     {
       goto LABEL_10;
     }
@@ -479,15 +479,15 @@ LABEL_10:
   return v6;
 }
 
-- (id)_allocViewForTransitItem:(id)a3
+- (id)_allocViewForTransitItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKDashboardPaymentProductsTransitPresenter *)self displayableBalancesForTransitItem:v4];
+  itemCopy = item;
+  v5 = [(PKDashboardPaymentProductsTransitPresenter *)self displayableBalancesForTransitItem:itemCopy];
   v6 = [v5 count];
-  v7 = [v4 transitItemType];
+  transitItemType = [itemCopy transitItemType];
 
   v8 = off_1E8004698;
-  if (v7 < 3)
+  if (transitItemType < 3)
   {
     if (v6 != 1)
     {
@@ -497,7 +497,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if (v7 - 4 < 2)
+  if (transitItemType - 4 < 2)
   {
     v8 = off_1E8006420;
 LABEL_8:
@@ -506,7 +506,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v7 == 3)
+  if (transitItemType == 3)
   {
     goto LABEL_8;
   }
@@ -516,26 +516,26 @@ LABEL_9:
   return v6;
 }
 
-- (void)_configureView:(id *)a3 transitItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)_configureView:(id *)view transitItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v71 = a6;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 transitBalanceModel];
-  v72 = [v11 displayableCommutePlans];
-  v12 = [v72 count];
-  v13 = [(PKDashboardPaymentProductsTransitPresenter *)self displayableBalancesForTransitItem:v9];
+  animatedCopy = animated;
+  itemCopy = item;
+  pathCopy = path;
+  transitBalanceModel = [itemCopy transitBalanceModel];
+  displayableCommutePlans = [transitBalanceModel displayableCommutePlans];
+  v12 = [displayableCommutePlans count];
+  v13 = [(PKDashboardPaymentProductsTransitPresenter *)self displayableBalancesForTransitItem:itemCopy];
   v14 = [v13 count];
-  v15 = [v9 transitItemType];
-  v73 = [(PKDashboardPaymentProductsTransitPresenter *)self _passForTransitItem:v9 indexPath:v10];
+  transitItemType = [itemCopy transitItemType];
+  v73 = [(PKDashboardPaymentProductsTransitPresenter *)self _passForTransitItem:itemCopy indexPath:pathCopy];
   v16 = 0;
-  if (v15 > 2)
+  if (transitItemType > 2)
   {
-    switch(v15)
+    switch(transitItemType)
     {
       case 3:
         v66 = v13;
-        v30 = *a3;
+        v30 = *view;
         [v30 beginUpdates];
         [v30 setPass:v73];
         [v30 setAction:0];
@@ -545,8 +545,8 @@ LABEL_9:
         v86 = 0;
         v87 = 0;
         v85 = &stru_1F3BD7330;
-        v70 = v11;
-        [v11 getDisplayableCommutePlanDetailsForTitle:&v87 value:&v86 subtitle:&v85 isExpired:v88];
+        v70 = transitBalanceModel;
+        [transitBalanceModel getDisplayableCommutePlanDetailsForTitle:&v87 value:&v86 subtitle:&v85 isExpired:v88];
         v31 = v87;
         v32 = v86;
         v33 = v85;
@@ -575,15 +575,15 @@ LABEL_9:
         v42 = ;
         [v30 setSubDetailColor:v42];
 
-        v11 = v70;
+        transitBalanceModel = v70;
         v13 = v66;
         if (v12 == 1)
         {
-          v43 = [v72 firstObject];
-          v44 = [v43 identifier];
-          v45 = [(PKDashboardPaymentProductsTransitPresenter *)self _renewActionForItem:v9 commutePlanIdentifier:v44];
+          firstObject = [displayableCommutePlans firstObject];
+          identifier = [firstObject identifier];
+          v45 = [(PKDashboardPaymentProductsTransitPresenter *)self _renewActionForItem:itemCopy commutePlanIdentifier:identifier];
 
-          v46 = [(PKDashboardPaymentProductsTransitPresenter *)self _actionHandlerForItem:v9 indexPath:v10];
+          v46 = [(PKDashboardPaymentProductsTransitPresenter *)self _actionHandlerForItem:itemCopy indexPath:pathCopy];
           v47 = v46;
           if (v45 && v46 && [v45 isActionAvailable])
           {
@@ -594,7 +594,7 @@ LABEL_9:
           }
         }
 
-        [v30 endUpdates:v71];
+        [v30 endUpdates:animatedCopy];
         v62 = *MEMORY[0x1E69B9AD0];
         v16 = v30;
         [v16 setAccessibilityIdentifier:v62];
@@ -602,7 +602,7 @@ LABEL_9:
         v29 = v65;
         break;
       case 4:
-        v37 = *a3;
+        v37 = *view;
         v79[0] = MEMORY[0x1E69E9820];
         v79[1] = 3221225472;
         v79[2] = __92__PKDashboardPaymentProductsTransitPresenter__configureView_transitItem_indexPath_animated___block_invoke;
@@ -610,17 +610,17 @@ LABEL_9:
         v38 = v37;
         v80 = v38;
         v81 = v73;
-        v82 = v11;
-        [v38 performBatchUpdates:v79 animated:v71];
-        v39 = v10;
+        v82 = transitBalanceModel;
+        [v38 performBatchUpdates:v79 animated:animatedCopy];
+        v39 = pathCopy;
         v40 = v82;
         v16 = v38;
 
-        v10 = v39;
+        pathCopy = v39;
         v29 = v80;
         break;
       case 5:
-        v25 = *a3;
+        v25 = *view;
         v74[0] = MEMORY[0x1E69E9820];
         v74[1] = 3221225472;
         v74[2] = __92__PKDashboardPaymentProductsTransitPresenter__configureView_transitItem_indexPath_animated___block_invoke_2;
@@ -628,14 +628,14 @@ LABEL_9:
         v26 = v25;
         v75 = v26;
         v76 = v73;
-        v77 = v9;
-        v78 = v11;
-        [v26 performBatchUpdates:v74 animated:v71];
-        v27 = v10;
+        v77 = itemCopy;
+        v78 = transitBalanceModel;
+        [v26 performBatchUpdates:v74 animated:animatedCopy];
+        v27 = pathCopy;
         v28 = v78;
         v16 = v26;
 
-        v10 = v27;
+        pathCopy = v27;
         v29 = v75;
         break;
       default:
@@ -645,17 +645,17 @@ LABEL_9:
     goto LABEL_50;
   }
 
-  if (v15 < 3)
+  if (transitItemType < 3)
   {
-    v16 = *a3;
+    v16 = *view;
     [v16 beginUpdates];
     if (v14 == 2)
     {
       v19 = [v13 objectAtIndexedSubscript:0];
-      v36 = [v19 localizedTitle];
-      if (v36)
+      localizedTitle = [v19 localizedTitle];
+      if (localizedTitle)
       {
-        [v16 setLeftTitle:v36];
+        [v16 setLeftTitle:localizedTitle];
       }
 
       else
@@ -664,15 +664,15 @@ LABEL_9:
         [v16 setLeftTitle:v53];
       }
 
-      v54 = [v19 formattedValue];
-      [v16 setLeftDetail:v54];
+      formattedValue = [v19 formattedValue];
+      [v16 setLeftDetail:formattedValue];
 
       [v16 setLeftSubDetail:0];
       v21 = [v13 objectAtIndexedSubscript:1];
-      v55 = [v21 localizedTitle];
-      if (v55)
+      localizedTitle2 = [v21 localizedTitle];
+      if (localizedTitle2)
       {
-        [v16 setRightTitle:v55];
+        [v16 setRightTitle:localizedTitle2];
       }
 
       else
@@ -681,27 +681,27 @@ LABEL_9:
         [v16 setRightTitle:v56];
       }
 
-      v57 = [v21 formattedValue];
-      [v16 setRightDetail:v57];
+      formattedValue2 = [v21 formattedValue];
+      [v16 setRightDetail:formattedValue2];
 
       [v16 setRightSubDetail:0];
       [v16 setPass:v73];
       [v16 setEnableDisclosure:1];
-      [v16 endUpdates:v71];
+      [v16 endUpdates:animatedCopy];
     }
 
     else
     {
-      v69 = a3;
-      v17 = v10;
+      viewCopy = view;
+      v17 = pathCopy;
       v18 = v14 - 1;
       if (v14 != 1)
       {
         v19 = [v13 objectAtIndexedSubscript:0];
-        v41 = [v19 localizedTitle];
-        if (v41)
+        localizedTitle3 = [v19 localizedTitle];
+        if (localizedTitle3)
         {
-          [v16 setLeftTitle:v41];
+          [v16 setLeftTitle:localizedTitle3];
         }
 
         else
@@ -710,8 +710,8 @@ LABEL_9:
           [v16 setLeftTitle:v58];
         }
 
-        v59 = [v19 formattedValue];
-        [v16 setLeftDetail:v59];
+        formattedValue3 = [v19 formattedValue];
+        [v16 setLeftDetail:formattedValue3];
 
         [v16 setLeftSubDetail:0];
         v60 = PKLocalizedPaymentString(&cfstr_PropertySummar_0.isa);
@@ -723,20 +723,20 @@ LABEL_9:
         [v16 setRightSubDetail:0];
         [v16 setPass:v73];
         [v16 setEnableDisclosure:1];
-        [v16 endUpdates:v71];
-        v10 = v17;
-        a3 = v69;
+        [v16 endUpdates:animatedCopy];
+        pathCopy = v17;
+        view = viewCopy;
         goto LABEL_44;
       }
 
       [v16 setAction:0];
       [v16 setActionHandler:0];
       v19 = [v13 objectAtIndexedSubscript:0];
-      v20 = [v19 identifiers];
-      v10 = v17;
-      v21 = [(PKDashboardPaymentProductsTransitPresenter *)self _topUpActionForItem:v9 indexPath:v17 balanceIdentifier:v20];
+      identifiers = [v19 identifiers];
+      pathCopy = v17;
+      v21 = [(PKDashboardPaymentProductsTransitPresenter *)self _topUpActionForItem:itemCopy indexPath:v17 balanceIdentifier:identifiers];
 
-      v22 = [(PKDashboardPaymentProductsTransitPresenter *)self _actionHandlerForItem:v9 indexPath:v17];
+      v22 = [(PKDashboardPaymentProductsTransitPresenter *)self _actionHandlerForItem:itemCopy indexPath:v17];
       v23 = v22;
       if (v21 && v22 && [v21 isActionAvailable])
       {
@@ -746,11 +746,11 @@ LABEL_9:
 
       v67 = v23;
       [v16 setEnableDisclosure:0];
-      v24 = [v19 localizedTitle];
-      a3 = v69;
-      if (v24)
+      localizedTitle4 = [v19 localizedTitle];
+      view = viewCopy;
+      if (localizedTitle4)
       {
-        [v16 setTitle:v24];
+        [v16 setTitle:localizedTitle4];
       }
 
       else
@@ -759,8 +759,8 @@ LABEL_9:
         [v16 setTitle:v49];
       }
 
-      v50 = [v19 formattedValue];
-      [v16 setDetail:v50];
+      formattedValue4 = [v19 formattedValue];
+      [v16 setDetail:formattedValue4];
 
       if ([v73 isAutoTopUpBalance:v19] && objc_msgSend(v73, "isAutoTopEnabled"))
       {
@@ -773,11 +773,11 @@ LABEL_9:
         [v16 setSubDetail:0];
       }
 
-      v52 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v16 setSubDetailColor:v52];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [v16 setSubDetailColor:secondaryLabelColor];
 
       [v16 setPass:v73];
-      [v16 endUpdates:v71];
+      [v16 endUpdates:animatedCopy];
     }
 
 LABEL_44:
@@ -786,7 +786,7 @@ LABEL_44:
 
 LABEL_50:
   v63 = v16;
-  *a3 = v16;
+  *view = v16;
 }
 
 void __92__PKDashboardPaymentProductsTransitPresenter__configureView_transitItem_indexPath_animated___block_invoke(uint64_t a1)
@@ -827,10 +827,10 @@ void __92__PKDashboardPaymentProductsTransitPresenter__configureView_transitItem
   [v6 setTitle:{v7, v8}];
 }
 
-- (id)_actionHandlerForItem:(id)a3 indexPath:(id)a4
+- (id)_actionHandlerForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
@@ -902,108 +902,108 @@ void __78__PKDashboardPaymentProductsTransitPresenter__actionHandlerForItem_inde
   }
 }
 
-- (id)_passForTransitItem:(id)a3 indexPath:(id)a4
+- (id)_passForTransitItem:(id)item indexPath:(id)path
 {
-  v4 = [(PKPassGroupView *)self->_passGroupView frontmostPassView:a3];
-  v5 = [v4 pass];
+  v4 = [(PKPassGroupView *)self->_passGroupView frontmostPassView:item];
+  pass = [v4 pass];
 
-  return v5;
+  return pass;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 hostedContentView];
-  if (!v12)
+  itemCopy = item;
+  pathCopy = path;
+  cellCopy = cell;
+  hostedContentView = [cellCopy hostedContentView];
+  if (!hostedContentView)
   {
-    v12 = [(PKDashboardPaymentProductsTransitPresenter *)self _allocViewForTransitItem:v9];
+    hostedContentView = [(PKDashboardPaymentProductsTransitPresenter *)self _allocViewForTransitItem:itemCopy];
   }
 
-  v14 = v12;
-  [(PKDashboardPaymentProductsTransitPresenter *)self _configureView:&v14 transitItem:v9 indexPath:v10 animated:0];
+  v14 = hostedContentView;
+  [(PKDashboardPaymentProductsTransitPresenter *)self _configureView:&v14 transitItem:itemCopy indexPath:pathCopy animated:0];
   v13 = v14;
 
-  [v11 setHostedContentView:v13];
+  [cellCopy setHostedContentView:v13];
 }
 
-- (void)performActionViewControllerDidCancel:(id)a3
+- (void)performActionViewControllerDidCancel:(id)cancel
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v4 = [v3 presentingViewController];
+  cancelCopy = cancel;
+  [cancelCopy setDelegate:0];
+  presentingViewController = [cancelCopy presentingViewController];
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)performActionViewControllerDidPerformAction:(id)a3
+- (void)performActionViewControllerDidPerformAction:(id)action
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v4 = [v3 presentingViewController];
+  actionCopy = action;
+  [actionCopy setDelegate:0];
+  presentingViewController = [actionCopy presentingViewController];
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 transitItemType] == 4 || objc_msgSend(v8, "transitItemType") == 5)
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  if ([itemCopy transitItemType] == 4 || objc_msgSend(itemCopy, "transitItemType") == 5)
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [v9 cellForItemAtIndexPath:v10];
+    v12 = [viewCopy cellForItemAtIndexPath:pathCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 hostedContentView];
-      v15 = [v14 enableDisclosure];
+      hostedContentView = [v12 hostedContentView];
+      enableDisclosure = [hostedContentView enableDisclosure];
     }
 
     else
     {
-      v15 = 0;
+      enableDisclosure = 0;
     }
 
-    v16 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
-    v17 = [v16 pass];
+    frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+    pass = [frontmostPassView pass];
 
-    if ([v17 activationState])
+    if ([pass activationState])
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v15;
+      v11 = enableDisclosure;
     }
   }
 
   return v11;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = v9;
+  itemCopy = item;
+  controllerCopy = controller;
+  v11 = itemCopy;
   if ([v11 transitItemType] == 5)
   {
-    v12 = [v11 externalActionContent];
-    v13 = [v11 pass];
-    v14 = [(PKPassTransitProductsViewController *)v12 displayName];
+    externalActionContent = [v11 externalActionContent];
+    pass = [v11 pass];
+    displayName = [(PKPassTransitProductsViewController *)externalActionContent displayName];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __121__PKDashboardPaymentProductsTransitPresenter_didSelectItem_inCollectionView_atIndexPath_navigationController_canPresent___block_invoke;
     v36[3] = &unk_1E8014560;
-    v37 = v10;
-    PKPaymentPassActionPerformExternalActionContent(v13, v12, v14, v36);
+    v37 = controllerCopy;
+    PKPaymentPassActionPerformExternalActionContent(pass, externalActionContent, displayName, v36);
 
     v15 = v37;
 LABEL_9:
@@ -1013,32 +1013,32 @@ LABEL_9:
 
   if ([v11 transitItemType] == 4)
   {
-    v16 = [v11 actionGroups];
-    v12 = [v16 firstObject];
+    actionGroups = [v11 actionGroups];
+    externalActionContent = [actionGroups firstObject];
 
-    if ([(PKPassTransitProductsViewController *)v12 hasExternalActionContent])
+    if ([(PKPassTransitProductsViewController *)externalActionContent hasExternalActionContent])
     {
-      v17 = [v11 pass];
-      v18 = [(PKPassTransitProductsViewController *)v12 externalActionContent];
-      v19 = [(PKPassTransitProductsViewController *)v12 title];
+      pass2 = [v11 pass];
+      v12ExternalActionContent = [(PKPassTransitProductsViewController *)externalActionContent externalActionContent];
+      title = [(PKPassTransitProductsViewController *)externalActionContent title];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __121__PKDashboardPaymentProductsTransitPresenter_didSelectItem_inCollectionView_atIndexPath_navigationController_canPresent___block_invoke_2;
       v34[3] = &unk_1E8014560;
       v20 = &v35;
-      v35 = v10;
-      PKPaymentPassActionPerformExternalActionContent(v17, v18, v19, v34);
+      v35 = controllerCopy;
+      PKPaymentPassActionPerformExternalActionContent(pass2, v12ExternalActionContent, title, v34);
     }
 
     else
     {
       v23 = [PKPaymentPassCombinedActionDataController alloc];
-      v24 = [v11 pass];
-      v25 = [v11 actionGroups];
+      pass3 = [v11 pass];
+      actionGroups2 = [v11 actionGroups];
       paymentDataProvider = self->_paymentDataProvider;
-      v27 = [MEMORY[0x1E69B8EF8] sharedService];
-      v28 = [v11 transitBalanceModel];
-      v29 = [(PKPaymentPassCombinedActionDataController *)v23 initWithPass:v24 actionGroups:v25 paymentDataProvider:paymentDataProvider webService:v27 balanceModel:v28 mode:0];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      transitBalanceModel = [v11 transitBalanceModel];
+      v29 = [(PKPaymentPassCombinedActionDataController *)v23 initWithPass:pass3 actionGroups:actionGroups2 paymentDataProvider:paymentDataProvider webService:mEMORY[0x1E69B8EF8] balanceModel:transitBalanceModel mode:0];
       combinedActionController = self->_combinedActionController;
       self->_combinedActionController = v29;
 
@@ -1048,7 +1048,7 @@ LABEL_9:
       v32[2] = __121__PKDashboardPaymentProductsTransitPresenter_didSelectItem_inCollectionView_atIndexPath_navigationController_canPresent___block_invoke_3;
       v32[3] = &unk_1E8018B30;
       v20 = &v33;
-      v33 = v10;
+      v33 = controllerCopy;
       [(PKPaymentPassCombinedActionDataController *)v31 fetchViewController:v32];
     }
 
@@ -1057,11 +1057,11 @@ LABEL_9:
   }
 
   v21 = [PKPassTransitProductsViewController alloc];
-  v22 = [v11 pass];
-  v12 = -[PKPassTransitProductsViewController initWithPaymentPass:transitType:](v21, "initWithPaymentPass:transitType:", v22, [v11 transitItemType]);
+  pass4 = [v11 pass];
+  externalActionContent = -[PKPassTransitProductsViewController initWithPaymentPass:transitType:](v21, "initWithPaymentPass:transitType:", pass4, [v11 transitItemType]);
 
-  objc_storeWeak(&self->_productDetailsController, v12);
-  [v10 pushViewController:v12 animated:1];
+  objc_storeWeak(&self->_productDetailsController, externalActionContent);
+  [controllerCopy pushViewController:externalActionContent animated:1];
 LABEL_10:
 }
 

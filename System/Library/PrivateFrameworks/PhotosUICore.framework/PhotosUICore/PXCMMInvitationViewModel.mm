@@ -1,43 +1,43 @@
 @interface PXCMMInvitationViewModel
 - (PXCMMInvitationViewModel)init;
-- (void)performChanges:(id)a3;
-- (void)setAttributedPosterTitle:(id)a3;
-- (void)setAttributedSubtitle1:(id)a3;
-- (void)setAttributedSubtitle2:(id)a3;
-- (void)setAttributedTitle:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsNew:(BOOL)a3;
-- (void)setOpaqueAncestorBackgroundColor:(id)a3;
-- (void)setOwner:(id)a3;
-- (void)setPosterAsset:(id)a3;
-- (void)setPosterMediaProvider:(id)a3;
-- (void)setPosterSubtitle:(id)a3;
-- (void)setPosterTitle:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setAttributedPosterTitle:(id)title;
+- (void)setAttributedSubtitle1:(id)subtitle1;
+- (void)setAttributedSubtitle2:(id)subtitle2;
+- (void)setAttributedTitle:(id)title;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsNew:(BOOL)new;
+- (void)setOpaqueAncestorBackgroundColor:(id)color;
+- (void)setOwner:(id)owner;
+- (void)setPosterAsset:(id)asset;
+- (void)setPosterMediaProvider:(id)provider;
+- (void)setPosterSubtitle:(id)subtitle;
+- (void)setPosterTitle:(id)title;
 @end
 
 @implementation PXCMMInvitationViewModel
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(PXCMMInvitationViewModel *)self signalChange:512];
   }
 }
 
-- (void)setOpaqueAncestorBackgroundColor:(id)a3
+- (void)setOpaqueAncestorBackgroundColor:(id)color
 {
-  v10 = a3;
-  if (!v10)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationViewModel.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"opaqueAncestorBackgroundColor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationViewModel.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"opaqueAncestorBackgroundColor"}];
   }
 
   v6 = self->_opaqueAncestorBackgroundColor;
   v7 = v6;
-  if (v6 == v10)
+  if (v6 == colorCopy)
   {
   }
 
@@ -47,21 +47,21 @@
 
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_opaqueAncestorBackgroundColor, a3);
+      objc_storeStrong(&self->_opaqueAncestorBackgroundColor, color);
       [(PXCMMInvitationViewModel *)self signalChange:256];
     }
   }
 }
 
-- (void)setAttributedSubtitle2:(id)a3
+- (void)setAttributedSubtitle2:(id)subtitle2
 {
-  v4 = a3;
+  subtitle2Copy = subtitle2;
   attributedSubtitle2 = self->_attributedSubtitle2;
-  if (attributedSubtitle2 != v4)
+  if (attributedSubtitle2 != subtitle2Copy)
   {
-    v9 = v4;
-    v6 = [(NSAttributedString *)attributedSubtitle2 isEqual:v4];
-    v4 = v9;
+    v9 = subtitle2Copy;
+    v6 = [(NSAttributedString *)attributedSubtitle2 isEqual:subtitle2Copy];
+    subtitle2Copy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSAttributedString *)v9 copy];
@@ -69,20 +69,20 @@
       self->_attributedSubtitle2 = v7;
 
       [(PXCMMInvitationViewModel *)self signalChange:128];
-      v4 = v9;
+      subtitle2Copy = v9;
     }
   }
 }
 
-- (void)setAttributedSubtitle1:(id)a3
+- (void)setAttributedSubtitle1:(id)subtitle1
 {
-  v4 = a3;
+  subtitle1Copy = subtitle1;
   attributedSubtitle1 = self->_attributedSubtitle1;
-  if (attributedSubtitle1 != v4)
+  if (attributedSubtitle1 != subtitle1Copy)
   {
-    v9 = v4;
-    v6 = [(NSAttributedString *)attributedSubtitle1 isEqual:v4];
-    v4 = v9;
+    v9 = subtitle1Copy;
+    v6 = [(NSAttributedString *)attributedSubtitle1 isEqual:subtitle1Copy];
+    subtitle1Copy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSAttributedString *)v9 copy];
@@ -90,20 +90,20 @@
       self->_attributedSubtitle1 = v7;
 
       [(PXCMMInvitationViewModel *)self signalChange:64];
-      v4 = v9;
+      subtitle1Copy = v9;
     }
   }
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   attributedTitle = self->_attributedTitle;
-  if (attributedTitle != v4)
+  if (attributedTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSAttributedString *)attributedTitle isEqual:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSAttributedString *)attributedTitle isEqual:titleCopy];
+    titleCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSAttributedString *)v9 copy];
@@ -111,20 +111,20 @@
       self->_attributedTitle = v7;
 
       [(PXCMMInvitationViewModel *)self signalChange:32];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
 
-- (void)setAttributedPosterTitle:(id)a3
+- (void)setAttributedPosterTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   attributedPosterTitle = self->_attributedPosterTitle;
-  if (attributedPosterTitle != v4)
+  if (attributedPosterTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSAttributedString *)attributedPosterTitle isEqual:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSAttributedString *)attributedPosterTitle isEqual:titleCopy];
+    titleCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSAttributedString *)v9 copy];
@@ -132,51 +132,51 @@
       self->_attributedPosterTitle = v7;
 
       [(PXCMMInvitationViewModel *)self signalChange:2];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
 
-- (void)setPosterMediaProvider:(id)a3
+- (void)setPosterMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_posterMediaProvider != v5)
+  providerCopy = provider;
+  if (self->_posterMediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_posterMediaProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_posterMediaProvider, provider);
     [(PXCMMInvitationViewModel *)self signalChange:16];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setPosterAsset:(id)a3
+- (void)setPosterAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_posterAsset != v5)
+  assetCopy = asset;
+  if (self->_posterAsset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_posterAsset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_posterAsset, asset);
     [(PXCMMInvitationViewModel *)self signalChange:8];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
-- (void)setPosterSubtitle:(id)a3
+- (void)setPosterSubtitle:(id)subtitle
 {
-  v5 = a3;
-  if (!v5)
+  subtitleCopy = subtitle;
+  if (!subtitleCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationViewModel.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"posterSubtitle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationViewModel.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"posterSubtitle"}];
 
-    v5 = 0;
+    subtitleCopy = 0;
   }
 
-  if (self->_posterSubtitle != v5)
+  if (self->_posterSubtitle != subtitleCopy)
   {
-    v10 = v5;
-    v6 = [(NSString *)v5 isEqualToString:?];
-    v5 = v10;
+    v10 = subtitleCopy;
+    v6 = [(NSString *)subtitleCopy isEqualToString:?];
+    subtitleCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
@@ -184,27 +184,27 @@
       self->_posterSubtitle = v7;
 
       [(PXCMMInvitationViewModel *)self signalChange:4];
-      v5 = v10;
+      subtitleCopy = v10;
     }
   }
 }
 
-- (void)setPosterTitle:(id)a3
+- (void)setPosterTitle:(id)title
 {
-  v5 = a3;
-  if (!v5)
+  titleCopy = title;
+  if (!titleCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCMMInvitationViewModel.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"posterTitle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMInvitationViewModel.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"posterTitle"}];
 
-    v5 = 0;
+    titleCopy = 0;
   }
 
-  if (self->_posterTitle != v5)
+  if (self->_posterTitle != titleCopy)
   {
-    v10 = v5;
-    v6 = [(NSString *)v5 isEqualToString:?];
-    v5 = v10;
+    v10 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
+    titleCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
@@ -212,37 +212,37 @@
       self->_posterTitle = v7;
 
       [(PXCMMInvitationViewModel *)self signalChange:2];
-      v5 = v10;
+      titleCopy = v10;
     }
   }
 }
 
-- (void)setOwner:(id)a3
+- (void)setOwner:(id)owner
 {
-  v5 = a3;
-  if (self->_owner != v5)
+  ownerCopy = owner;
+  if (self->_owner != ownerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_owner, a3);
+    v6 = ownerCopy;
+    objc_storeStrong(&self->_owner, owner);
     [(PXCMMInvitationViewModel *)self signalChange:1024];
-    v5 = v6;
+    ownerCopy = v6;
   }
 }
 
-- (void)setIsNew:(BOOL)a3
+- (void)setIsNew:(BOOL)new
 {
-  if (self->_isNew != a3)
+  if (self->_isNew != new)
   {
-    self->_isNew = a3;
+    self->_isNew = new;
     [(PXCMMInvitationViewModel *)self signalChange:1];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCMMInvitationViewModel;
-  [(PXCMMInvitationViewModel *)&v3 performChanges:a3];
+  [(PXCMMInvitationViewModel *)&v3 performChanges:changes];
 }
 
 - (PXCMMInvitationViewModel)init
@@ -259,9 +259,9 @@
     posterSubtitle = v3->_posterSubtitle;
     v3->_posterSubtitle = &stru_1F1741150;
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     opaqueAncestorBackgroundColor = v3->_opaqueAncestorBackgroundColor;
-    v3->_opaqueAncestorBackgroundColor = v6;
+    v3->_opaqueAncestorBackgroundColor = clearColor;
   }
 
   return v3;

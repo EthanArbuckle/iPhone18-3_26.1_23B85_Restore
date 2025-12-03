@@ -1,8 +1,8 @@
 @interface TransparencySelfValidationStatus
-- (TransparencySelfValidationStatus)initWithCoder:(id)a3;
-- (TransparencySelfValidationStatus)initWithStatus:(unint64_t)a3 pushToken:(id)a4;
+- (TransparencySelfValidationStatus)initWithCoder:(id)coder;
+- (TransparencySelfValidationStatus)initWithStatus:(unint64_t)status pushToken:(id)token;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransparencySelfValidationStatus
@@ -11,31 +11,31 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = KTResultGetString([(TransparencySelfValidationStatus *)self status]);
-  v5 = [(TransparencySelfValidationStatus *)self pushToken];
-  v6 = [v5 kt_hexString];
-  v7 = [v3 stringWithFormat:@"<TransparencySelfValidationStatus: %@ push: %@>", v4, v6];
+  pushToken = [(TransparencySelfValidationStatus *)self pushToken];
+  kt_hexString = [pushToken kt_hexString];
+  v7 = [v3 stringWithFormat:@"<TransparencySelfValidationStatus: %@ push: %@>", v4, kt_hexString];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(TransparencySelfValidationStatus *)self loggableDatas];
-  [v6 encodeObject:v4 forKey:@"loggableDatas"];
+  coderCopy = coder;
+  loggableDatas = [(TransparencySelfValidationStatus *)self loggableDatas];
+  [coderCopy encodeObject:loggableDatas forKey:@"loggableDatas"];
 
-  v5 = [(TransparencySelfValidationStatus *)self pushToken];
-  [v6 encodeObject:v5 forKey:@"pushToken"];
+  pushToken = [(TransparencySelfValidationStatus *)self pushToken];
+  [coderCopy encodeObject:pushToken forKey:@"pushToken"];
 
-  [v6 encodeInt:-[TransparencySelfValidationStatus status](self forKey:{"status"), @"status"}];
+  [coderCopy encodeInt:-[TransparencySelfValidationStatus status](self forKey:{"status"), @"status"}];
 }
 
-- (TransparencySelfValidationStatus)initWithCoder:(id)a3
+- (TransparencySelfValidationStatus)initWithCoder:(id)coder
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"status"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"status"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
   v7 = [(TransparencySelfValidationStatus *)self initWithStatus:v5 pushToken:v6];
   if (v7)
   {
@@ -45,10 +45,10 @@
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
     v10 = [v8 setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"loggableDatas"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"loggableDatas"];
     [(TransparencySelfValidationStatus *)v7 setLoggableDatas:v11];
 
-    v12 = [(TransparencySelfValidationStatus *)v7 loggableDatas];
+    loggableDatas = [(TransparencySelfValidationStatus *)v7 loggableDatas];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -58,8 +58,8 @@
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v14 = [(TransparencySelfValidationStatus *)v7 loggableDatas];
-      v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      loggableDatas2 = [(TransparencySelfValidationStatus *)v7 loggableDatas];
+      v15 = [loggableDatas2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v15)
       {
         v16 = v15;
@@ -70,7 +70,7 @@
           {
             if (*v24 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(loggableDatas2);
             }
 
             v19 = *(*(&v23 + 1) + 8 * i);
@@ -82,7 +82,7 @@
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v16 = [loggableDatas2 countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v16)
           {
             continue;
@@ -111,25 +111,25 @@ LABEL_14:
   return v20;
 }
 
-- (TransparencySelfValidationStatus)initWithStatus:(unint64_t)a3 pushToken:(id)a4
+- (TransparencySelfValidationStatus)initWithStatus:(unint64_t)status pushToken:(id)token
 {
-  v6 = a4;
-  v7 = KTResultGetString(a3);
+  tokenCopy = token;
+  v7 = KTResultGetString(status);
 
   if (v7 && (v11.receiver = self, v11.super_class = TransparencySelfValidationStatus, v8 = [(TransparencySelfValidationStatus *)&v11 init], (self = v8) != 0))
   {
-    [(TransparencySelfValidationStatus *)v8 setStatus:a3];
-    [(TransparencySelfValidationStatus *)self setPushToken:v6];
+    [(TransparencySelfValidationStatus *)v8 setStatus:status];
+    [(TransparencySelfValidationStatus *)self setPushToken:tokenCopy];
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

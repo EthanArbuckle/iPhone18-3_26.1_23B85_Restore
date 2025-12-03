@@ -1,45 +1,45 @@
 @interface CPLSuggestionPerson
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLSuggestionPerson
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(CPLSuggestionPerson *)self setPersonIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_type = v4[8];
+    self->_type = fromCopy[8];
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_feature = v4[4];
+    self->_feature = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(CPLSuggestionPerson *)self setContext:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -70,16 +70,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_context hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   personIdentifier = self->_personIdentifier;
-  if (personIdentifier | *(v4 + 3))
+  if (personIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)personIdentifier isEqual:?])
     {
@@ -87,16 +87,16 @@ LABEL_3:
     }
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_type != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_type != *(equalCopy + 8))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
 LABEL_16:
     v8 = 0;
@@ -105,19 +105,19 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_feature != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_feature != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_16;
   }
 
   context = self->_context;
-  if (context | *(v4 + 1))
+  if (context | *(equalCopy + 1))
   {
     v8 = [(NSString *)context isEqual:?];
   }
@@ -132,10 +132,10 @@ LABEL_17:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_personIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_personIdentifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -153,52 +153,52 @@ LABEL_17:
     *(v5 + 36) |= 1u;
   }
 
-  v9 = [(NSString *)self->_context copyWithZone:a3];
+  v9 = [(NSString *)self->_context copyWithZone:zone];
   v10 = *(v5 + 8);
   *(v5 + 8) = v9;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_personIdentifier)
   {
-    [v4 setPersonIdentifier:?];
-    v4 = v6;
+    [toCopy setPersonIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_type;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 8) = self->_type;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_feature;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 4) = self->_feature;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_context)
   {
     [v6 setContext:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_personIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -206,7 +206,7 @@ LABEL_17:
   {
     type = self->_type;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -214,24 +214,24 @@ LABEL_17:
   {
     feature = self->_feature;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_context)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   personIdentifier = self->_personIdentifier;
   if (personIdentifier)
   {
-    [v3 setObject:personIdentifier forKey:@"personIdentifier"];
+    [dictionary setObject:personIdentifier forKey:@"personIdentifier"];
   }
 
   has = self->_has;
@@ -264,15 +264,15 @@ LABEL_17:
   v8.receiver = self;
   v8.super_class = CPLSuggestionPerson;
   v4 = [(CPLSuggestionPerson *)&v8 description];
-  v5 = [(CPLSuggestionPerson *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CPLSuggestionPerson *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

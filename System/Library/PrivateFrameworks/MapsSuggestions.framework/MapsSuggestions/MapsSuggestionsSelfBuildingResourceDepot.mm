@@ -1,6 +1,6 @@
 @interface MapsSuggestionsSelfBuildingResourceDepot
-- (MapsSuggestionsSelfBuildingResourceDepot)initWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MapsSuggestionsSelfBuildingResourceDepot)initWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)oneAppGuardian;
 - (id)oneAppProtectionConnector;
 - (id)oneBiome;
@@ -32,436 +32,436 @@
 - (id)oneUser;
 - (id)oneVirtualGarage;
 - (id)oneVirtualGarageConnector;
-- (void)setOneAppGuardian:(id)a3;
-- (void)setOneAppProtectionConnector:(id)a3;
-- (void)setOneBiome:(id)a3;
-- (void)setOneBiomeConnector:(id)a3;
-- (void)setOneContactActivity:(id)a3;
-- (void)setOneContacts:(id)a3;
-- (void)setOneContactsConnector:(id)a3;
-- (void)setOneEventKit:(id)a3;
-- (void)setOneEventKitConnector:(id)a3;
-- (void)setOneFavorites:(id)a3;
-- (void)setOneFindMy:(id)a3;
-- (void)setOneFindMyConnector:(id)a3;
-- (void)setOneFlightRequester:(id)a3;
-- (void)setOneFlightUpdater:(id)a3;
-- (void)setOneInsights:(id)a3;
-- (void)setOneLocationUpdater:(id)a3;
-- (void)setOneMapsSync:(id)a3;
-- (void)setOneMapsSyncConnector:(id)a3;
-- (void)setOneNetworkRequester:(id)a3;
-- (void)setOnePortrait:(id)a3;
-- (void)setOnePortraitConnector:(id)a3;
-- (void)setOneRoutine:(id)a3;
-- (void)setOneRoutineConnector:(id)a3;
-- (void)setOneSourceDelegate:(id)a3;
-- (void)setOneUser:(id)a3;
-- (void)setOneVirtualGarage:(id)a3;
-- (void)setOneVirtualGarageConnector:(id)a3;
+- (void)setOneAppGuardian:(id)guardian;
+- (void)setOneAppProtectionConnector:(id)connector;
+- (void)setOneBiome:(id)biome;
+- (void)setOneBiomeConnector:(id)connector;
+- (void)setOneContactActivity:(id)activity;
+- (void)setOneContacts:(id)contacts;
+- (void)setOneContactsConnector:(id)connector;
+- (void)setOneEventKit:(id)kit;
+- (void)setOneEventKitConnector:(id)connector;
+- (void)setOneFavorites:(id)favorites;
+- (void)setOneFindMy:(id)my;
+- (void)setOneFindMyConnector:(id)connector;
+- (void)setOneFlightRequester:(id)requester;
+- (void)setOneFlightUpdater:(id)updater;
+- (void)setOneInsights:(id)insights;
+- (void)setOneLocationUpdater:(id)updater;
+- (void)setOneMapsSync:(id)sync;
+- (void)setOneMapsSyncConnector:(id)connector;
+- (void)setOneNetworkRequester:(id)requester;
+- (void)setOnePortrait:(id)portrait;
+- (void)setOnePortraitConnector:(id)connector;
+- (void)setOneRoutine:(id)routine;
+- (void)setOneRoutineConnector:(id)connector;
+- (void)setOneSourceDelegate:(id)delegate;
+- (void)setOneUser:(id)user;
+- (void)setOneVirtualGarage:(id)garage;
+- (void)setOneVirtualGarageConnector:(id)connector;
 @end
 
 @implementation MapsSuggestionsSelfBuildingResourceDepot
 
 - (id)oneFlightUpdater
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFlightUpdater = v2->_oneFlightUpdater;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFlightUpdater = selfCopy->_oneFlightUpdater;
   if (!oneFlightUpdater)
   {
-    v4 = [[MapsSuggestionsFlightUpdater alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneFlightUpdater;
-    v2->_oneFlightUpdater = v4;
+    v4 = [[MapsSuggestionsFlightUpdater alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneFlightUpdater;
+    selfCopy->_oneFlightUpdater = v4;
 
-    oneFlightUpdater = v2->_oneFlightUpdater;
+    oneFlightUpdater = selfCopy->_oneFlightUpdater;
   }
 
   v6 = oneFlightUpdater;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneVirtualGarage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneVirtualGarage = v2->_oneVirtualGarage;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneVirtualGarage = selfCopy->_oneVirtualGarage;
   if (!oneVirtualGarage)
   {
-    v4 = [[MapsSuggestionsVirtualGarage alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneVirtualGarage;
-    v2->_oneVirtualGarage = v4;
+    v4 = [[MapsSuggestionsVirtualGarage alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneVirtualGarage;
+    selfCopy->_oneVirtualGarage = v4;
 
-    oneVirtualGarage = v2->_oneVirtualGarage;
+    oneVirtualGarage = selfCopy->_oneVirtualGarage;
   }
 
   v6 = oneVirtualGarage;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneSourceDelegate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_oneSourceDelegate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_oneSourceDelegate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)oneAppGuardian
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneAppGuardian = v2->_oneAppGuardian;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneAppGuardian = selfCopy->_oneAppGuardian;
   if (!oneAppGuardian)
   {
-    v4 = [[MapsSuggestionsAppGuardian alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneAppGuardian;
-    v2->_oneAppGuardian = v4;
+    v4 = [[MapsSuggestionsAppGuardian alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneAppGuardian;
+    selfCopy->_oneAppGuardian = v4;
 
-    oneAppGuardian = v2->_oneAppGuardian;
+    oneAppGuardian = selfCopy->_oneAppGuardian;
   }
 
   v6 = oneAppGuardian;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneAppProtectionConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneAppProtectionConnector = v2->_oneAppProtectionConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneAppProtectionConnector = selfCopy->_oneAppProtectionConnector;
   if (!oneAppProtectionConnector)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealAppProtectionConnector);
-    v5 = v2->_oneAppProtectionConnector;
-    v2->_oneAppProtectionConnector = v4;
+    v5 = selfCopy->_oneAppProtectionConnector;
+    selfCopy->_oneAppProtectionConnector = v4;
 
-    oneAppProtectionConnector = v2->_oneAppProtectionConnector;
+    oneAppProtectionConnector = selfCopy->_oneAppProtectionConnector;
   }
 
   v6 = oneAppProtectionConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneFavoritesStorage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFavoritesStorage = v2->_oneFavoritesStorage;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFavoritesStorage = selfCopy->_oneFavoritesStorage;
   if (!oneFavoritesStorage)
   {
     v4 = objc_alloc_init(MapsSuggestionsMapsSyncShortcutStorage);
-    v5 = v2->_oneFavoritesStorage;
-    v2->_oneFavoritesStorage = v4;
+    v5 = selfCopy->_oneFavoritesStorage;
+    selfCopy->_oneFavoritesStorage = v4;
 
-    oneFavoritesStorage = v2->_oneFavoritesStorage;
+    oneFavoritesStorage = selfCopy->_oneFavoritesStorage;
   }
 
   v6 = oneFavoritesStorage;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneRoutineConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneRoutineConnector = v2->_oneRoutineConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneRoutineConnector = selfCopy->_oneRoutineConnector;
   if (!oneRoutineConnector)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealRoutineConnector);
-    v5 = v2->_oneRoutineConnector;
-    v2->_oneRoutineConnector = v4;
+    v5 = selfCopy->_oneRoutineConnector;
+    selfCopy->_oneRoutineConnector = v4;
 
-    oneRoutineConnector = v2->_oneRoutineConnector;
+    oneRoutineConnector = selfCopy->_oneRoutineConnector;
   }
 
   v6 = oneRoutineConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneNetworkRequester
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneNetworkRequester = v2->_oneNetworkRequester;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneNetworkRequester = selfCopy->_oneNetworkRequester;
   if (!oneNetworkRequester)
   {
-    v4 = [[MapsSuggestionsRealNetworkRequester alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneNetworkRequester;
-    v2->_oneNetworkRequester = v4;
+    v4 = [[MapsSuggestionsRealNetworkRequester alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneNetworkRequester;
+    selfCopy->_oneNetworkRequester = v4;
 
-    oneNetworkRequester = v2->_oneNetworkRequester;
+    oneNetworkRequester = selfCopy->_oneNetworkRequester;
   }
 
   v6 = oneNetworkRequester;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneFlightRequester
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFlightRequester = v2->_oneFlightRequester;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFlightRequester = selfCopy->_oneFlightRequester;
   if (!oneFlightRequester)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealFlightRequester);
-    v5 = v2->_oneFlightRequester;
-    v2->_oneFlightRequester = v4;
+    v5 = selfCopy->_oneFlightRequester;
+    selfCopy->_oneFlightRequester = v4;
 
-    oneFlightRequester = v2->_oneFlightRequester;
+    oneFlightRequester = selfCopy->_oneFlightRequester;
   }
 
   v6 = oneFlightRequester;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneFavorites
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFavorites = v2->_oneFavorites;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFavorites = selfCopy->_oneFavorites;
   if (!oneFavorites)
   {
-    v4 = [[MapsSuggestionsShortcutManager alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneFavorites;
-    v2->_oneFavorites = v4;
+    v4 = [[MapsSuggestionsShortcutManager alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneFavorites;
+    selfCopy->_oneFavorites = v4;
 
-    oneFavorites = v2->_oneFavorites;
+    oneFavorites = selfCopy->_oneFavorites;
   }
 
   v6 = oneFavorites;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneRoutine
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneRoutine = v2->_oneRoutine;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneRoutine = selfCopy->_oneRoutine;
   if (!oneRoutine)
   {
-    v4 = [[MapsSuggestionsRoutine alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneRoutine;
-    v2->_oneRoutine = v4;
+    v4 = [[MapsSuggestionsRoutine alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneRoutine;
+    selfCopy->_oneRoutine = v4;
 
-    oneRoutine = v2->_oneRoutine;
+    oneRoutine = selfCopy->_oneRoutine;
   }
 
   v6 = oneRoutine;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneMapsSyncConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneMapsSyncConnector = v2->_oneMapsSyncConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneMapsSyncConnector = selfCopy->_oneMapsSyncConnector;
   if (!oneMapsSyncConnector)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealMapsSyncConnector);
-    v5 = v2->_oneMapsSyncConnector;
-    v2->_oneMapsSyncConnector = v4;
+    v5 = selfCopy->_oneMapsSyncConnector;
+    selfCopy->_oneMapsSyncConnector = v4;
 
-    oneMapsSyncConnector = v2->_oneMapsSyncConnector;
+    oneMapsSyncConnector = selfCopy->_oneMapsSyncConnector;
   }
 
   v6 = oneMapsSyncConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneContacts
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneContacts = v2->_oneContacts;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneContacts = selfCopy->_oneContacts;
   if (!oneContacts)
   {
-    v4 = [[MapsSuggestionsContacts alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneContacts;
-    v2->_oneContacts = v4;
+    v4 = [[MapsSuggestionsContacts alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneContacts;
+    selfCopy->_oneContacts = v4;
 
-    oneContacts = v2->_oneContacts;
+    oneContacts = selfCopy->_oneContacts;
   }
 
   v6 = oneContacts;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneContactsConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneContactsConnector = v2->_oneContactsConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneContactsConnector = selfCopy->_oneContactsConnector;
   if (!oneContactsConnector)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealContactsConnector);
-    v5 = v2->_oneContactsConnector;
-    v2->_oneContactsConnector = v4;
+    v5 = selfCopy->_oneContactsConnector;
+    selfCopy->_oneContactsConnector = v4;
 
-    oneContactsConnector = v2->_oneContactsConnector;
+    oneContactsConnector = selfCopy->_oneContactsConnector;
   }
 
   v6 = oneContactsConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneVirtualGarageConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneVirtualGarageConnector = v2->_oneVirtualGarageConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneVirtualGarageConnector = selfCopy->_oneVirtualGarageConnector;
   if (!oneVirtualGarageConnector)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealVirtualGarageConnector);
-    v5 = v2->_oneVirtualGarageConnector;
-    v2->_oneVirtualGarageConnector = v4;
+    v5 = selfCopy->_oneVirtualGarageConnector;
+    selfCopy->_oneVirtualGarageConnector = v4;
 
-    oneVirtualGarageConnector = v2->_oneVirtualGarageConnector;
+    oneVirtualGarageConnector = selfCopy->_oneVirtualGarageConnector;
   }
 
   v6 = oneVirtualGarageConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneFavoritesSuggestor
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFavoritesSuggestor = v2->_oneFavoritesSuggestor;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFavoritesSuggestor = selfCopy->_oneFavoritesSuggestor;
   if (!oneFavoritesSuggestor)
   {
-    v4 = [[MapsSuggestionsRoutineShortcutSuggestor alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneFavoritesSuggestor;
-    v2->_oneFavoritesSuggestor = v4;
+    v4 = [[MapsSuggestionsRoutineShortcutSuggestor alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneFavoritesSuggestor;
+    selfCopy->_oneFavoritesSuggestor = v4;
 
-    oneFavoritesSuggestor = v2->_oneFavoritesSuggestor;
+    oneFavoritesSuggestor = selfCopy->_oneFavoritesSuggestor;
   }
 
   v6 = oneFavoritesSuggestor;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneMapsSync
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneMapsSync = v2->_oneMapsSync;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneMapsSync = selfCopy->_oneMapsSync;
   if (!oneMapsSync)
   {
-    v4 = [[MapsSuggestionsMapsSync alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneMapsSync;
-    v2->_oneMapsSync = v4;
+    v4 = [[MapsSuggestionsMapsSync alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneMapsSync;
+    selfCopy->_oneMapsSync = v4;
 
-    oneMapsSync = v2->_oneMapsSync;
+    oneMapsSync = selfCopy->_oneMapsSync;
   }
 
   v6 = oneMapsSync;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneInsights
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneInsights = v2->_oneInsights;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneInsights = selfCopy->_oneInsights;
   if (!oneInsights)
   {
-    v4 = [[MapsSuggestionsRealInsights alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneInsights;
-    v2->_oneInsights = v4;
+    v4 = [[MapsSuggestionsRealInsights alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneInsights;
+    selfCopy->_oneInsights = v4;
 
-    oneInsights = v2->_oneInsights;
+    oneInsights = selfCopy->_oneInsights;
   }
 
   v6 = oneInsights;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)onePortrait
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  onePortrait = v2->_onePortrait;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  onePortrait = selfCopy->_onePortrait;
   if (!onePortrait)
   {
-    v4 = [[MapsSuggestionsPortrait alloc] initFromResourceDepot:v2];
-    v5 = v2->_onePortrait;
-    v2->_onePortrait = v4;
+    v4 = [[MapsSuggestionsPortrait alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_onePortrait;
+    selfCopy->_onePortrait = v4;
 
-    onePortrait = v2->_onePortrait;
+    onePortrait = selfCopy->_onePortrait;
   }
 
   v6 = onePortrait;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)onePortraitConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  onePortraitConnector = v2->_onePortraitConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  onePortraitConnector = selfCopy->_onePortraitConnector;
   if (!onePortraitConnector)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealPortraitConnector);
-    v5 = v2->_onePortraitConnector;
-    v2->_onePortraitConnector = v4;
+    v5 = selfCopy->_onePortraitConnector;
+    selfCopy->_onePortraitConnector = v4;
 
-    onePortraitConnector = v2->_onePortraitConnector;
+    onePortraitConnector = selfCopy->_onePortraitConnector;
   }
 
   v6 = onePortraitConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (MapsSuggestionsSelfBuildingResourceDepot)initWithName:(id)a3
+- (MapsSuggestionsSelfBuildingResourceDepot)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = MapsSuggestionsSelfBuildingResourceDepot;
   v5 = [(MapsSuggestionsSelfBuildingResourceDepot *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -469,9 +469,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   objc_storeStrong(v4 + 1, self->_name);
   objc_storeStrong(v4 + 3, self->_oneNetworkRequester);
   objc_storeStrong(v4 + 4, self->_oneRoutineConnector);
@@ -506,27 +506,27 @@
   return v4;
 }
 
-- (void)setOneSourceDelegate:(id)a3
+- (void)setOneSourceDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   obj = self;
   objc_sync_enter(obj);
   oneSourceDelegate = obj->_oneSourceDelegate;
-  obj->_oneSourceDelegate = v4;
+  obj->_oneSourceDelegate = delegateCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setOneNetworkRequester:(id)a3
+- (void)setOneNetworkRequester:(id)requester
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  requesterCopy = requester;
+  if (requesterCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneNetworkRequester, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneNetworkRequester, requester);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -547,16 +547,16 @@
   }
 }
 
-- (void)setOneRoutineConnector:(id)a3
+- (void)setOneRoutineConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneRoutineConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneRoutineConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -577,16 +577,16 @@
   }
 }
 
-- (void)setOneRoutine:(id)a3
+- (void)setOneRoutine:(id)routine
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  routineCopy = routine;
+  if (routineCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneRoutine, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneRoutine, routine);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -607,16 +607,16 @@
   }
 }
 
-- (void)setOnePortraitConnector:(id)a3
+- (void)setOnePortraitConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_onePortraitConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_onePortraitConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -637,16 +637,16 @@
   }
 }
 
-- (void)setOnePortrait:(id)a3
+- (void)setOnePortrait:(id)portrait
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  portraitCopy = portrait;
+  if (portraitCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_onePortrait, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_onePortrait, portrait);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -667,16 +667,16 @@
   }
 }
 
-- (void)setOneBiomeConnector:(id)a3
+- (void)setOneBiomeConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneBiomeConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneBiomeConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -697,16 +697,16 @@
   }
 }
 
-- (void)setOneBiome:(id)a3
+- (void)setOneBiome:(id)biome
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  biomeCopy = biome;
+  if (biomeCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneBiome, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneBiome, biome);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -727,16 +727,16 @@
   }
 }
 
-- (void)setOneContactActivity:(id)a3
+- (void)setOneContactActivity:(id)activity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  activityCopy = activity;
+  if (activityCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneContactActivity, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneContactActivity, activity);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -757,16 +757,16 @@
   }
 }
 
-- (void)setOneFindMyConnector:(id)a3
+- (void)setOneFindMyConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneFindMyConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneFindMyConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -787,16 +787,16 @@
   }
 }
 
-- (void)setOneFindMy:(id)a3
+- (void)setOneFindMy:(id)my
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  myCopy = my;
+  if (myCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneFindMy, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneFindMy, my);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -817,16 +817,16 @@
   }
 }
 
-- (void)setOneEventKitConnector:(id)a3
+- (void)setOneEventKitConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneEventKitConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneEventKitConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -847,16 +847,16 @@
   }
 }
 
-- (void)setOneEventKit:(id)a3
+- (void)setOneEventKit:(id)kit
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  kitCopy = kit;
+  if (kitCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneEventKit, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneEventKit, kit);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -877,16 +877,16 @@
   }
 }
 
-- (void)setOneVirtualGarageConnector:(id)a3
+- (void)setOneVirtualGarageConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneVirtualGarageConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneVirtualGarageConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -907,16 +907,16 @@
   }
 }
 
-- (void)setOneVirtualGarage:(id)a3
+- (void)setOneVirtualGarage:(id)garage
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  garageCopy = garage;
+  if (garageCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneVirtualGarage, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneVirtualGarage, garage);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -937,16 +937,16 @@
   }
 }
 
-- (void)setOneMapsSyncConnector:(id)a3
+- (void)setOneMapsSyncConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneMapsSyncConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneMapsSyncConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -967,16 +967,16 @@
   }
 }
 
-- (void)setOneMapsSync:(id)a3
+- (void)setOneMapsSync:(id)sync
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  syncCopy = sync;
+  if (syncCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneMapsSync, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneMapsSync, sync);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -997,16 +997,16 @@
   }
 }
 
-- (void)setOneContactsConnector:(id)a3
+- (void)setOneContactsConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneContactsConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneContactsConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1027,16 +1027,16 @@
   }
 }
 
-- (void)setOneContacts:(id)a3
+- (void)setOneContacts:(id)contacts
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  contactsCopy = contacts;
+  if (contactsCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneContacts, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneContacts, contacts);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1057,16 +1057,16 @@
   }
 }
 
-- (void)setOneFavorites:(id)a3
+- (void)setOneFavorites:(id)favorites
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  favoritesCopy = favorites;
+  if (favoritesCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneFavorites, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneFavorites, favorites);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1087,16 +1087,16 @@
   }
 }
 
-- (void)setOneUser:(id)a3
+- (void)setOneUser:(id)user
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  userCopy = user;
+  if (userCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneUser, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneUser, user);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1117,16 +1117,16 @@
   }
 }
 
-- (void)setOneAppProtectionConnector:(id)a3
+- (void)setOneAppProtectionConnector:(id)connector
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneAppProtectionConnector, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneAppProtectionConnector, connector);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1147,16 +1147,16 @@
   }
 }
 
-- (void)setOneAppGuardian:(id)a3
+- (void)setOneAppGuardian:(id)guardian
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  guardianCopy = guardian;
+  if (guardianCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneAppGuardian, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneAppGuardian, guardian);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1177,16 +1177,16 @@
   }
 }
 
-- (void)setOneInsights:(id)a3
+- (void)setOneInsights:(id)insights
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  insightsCopy = insights;
+  if (insightsCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneInsights, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneInsights, insights);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1207,16 +1207,16 @@
   }
 }
 
-- (void)setOneLocationUpdater:(id)a3
+- (void)setOneLocationUpdater:(id)updater
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  updaterCopy = updater;
+  if (updaterCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneLocationUpdater, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneLocationUpdater, updater);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1237,16 +1237,16 @@
   }
 }
 
-- (void)setOneFlightRequester:(id)a3
+- (void)setOneFlightRequester:(id)requester
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  requesterCopy = requester;
+  if (requesterCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneFlightRequester, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneFlightRequester, requester);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1267,16 +1267,16 @@
   }
 }
 
-- (void)setOneFlightUpdater:(id)a3
+- (void)setOneFlightUpdater:(id)updater
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  updaterCopy = updater;
+  if (updaterCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&v6->_oneFlightUpdater, a3);
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_oneFlightUpdater, updater);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1299,213 +1299,213 @@
 
 - (id)oneBiomeConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneBiomeConnector = v2->_oneBiomeConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneBiomeConnector = selfCopy->_oneBiomeConnector;
   if (!oneBiomeConnector)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealBiomeConnector);
-    v5 = v2->_oneBiomeConnector;
-    v2->_oneBiomeConnector = v4;
+    v5 = selfCopy->_oneBiomeConnector;
+    selfCopy->_oneBiomeConnector = v4;
 
-    oneBiomeConnector = v2->_oneBiomeConnector;
+    oneBiomeConnector = selfCopy->_oneBiomeConnector;
   }
 
   v6 = oneBiomeConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneBiome
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneBiome = v2->_oneBiome;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneBiome = selfCopy->_oneBiome;
   if (!oneBiome)
   {
-    v4 = [[MapsSuggestionsBiome alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneBiome;
-    v2->_oneBiome = v4;
+    v4 = [[MapsSuggestionsBiome alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneBiome;
+    selfCopy->_oneBiome = v4;
 
-    oneBiome = v2->_oneBiome;
+    oneBiome = selfCopy->_oneBiome;
   }
 
   v6 = oneBiome;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneContactActivity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneContactActivity = v2->_oneContactActivity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneContactActivity = selfCopy->_oneContactActivity;
   if (!oneContactActivity)
   {
-    v4 = [[_TtC15MapsSuggestions30MapsSuggestionsContactActivity alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneContactActivity;
-    v2->_oneContactActivity = v4;
+    v4 = [[_TtC15MapsSuggestions30MapsSuggestionsContactActivity alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneContactActivity;
+    selfCopy->_oneContactActivity = v4;
 
-    oneContactActivity = v2->_oneContactActivity;
+    oneContactActivity = selfCopy->_oneContactActivity;
   }
 
   v6 = oneContactActivity;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneFindMyConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFindMyConnector = v2->_oneFindMyConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFindMyConnector = selfCopy->_oneFindMyConnector;
   if (!oneFindMyConnector)
   {
     v4 = objc_alloc_init(_TtC15MapsSuggestions34MapsSuggestionsRealFindMyConnector);
-    v5 = v2->_oneFindMyConnector;
-    v2->_oneFindMyConnector = v4;
+    v5 = selfCopy->_oneFindMyConnector;
+    selfCopy->_oneFindMyConnector = v4;
 
-    oneFindMyConnector = v2->_oneFindMyConnector;
+    oneFindMyConnector = selfCopy->_oneFindMyConnector;
   }
 
   v6 = oneFindMyConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneFindMy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFindMy = v2->_oneFindMy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFindMy = selfCopy->_oneFindMy;
   if (!oneFindMy)
   {
-    v4 = [[_TtC15MapsSuggestions21MapsSuggestionsFindMy alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneFindMy;
-    v2->_oneFindMy = v4;
+    v4 = [[_TtC15MapsSuggestions21MapsSuggestionsFindMy alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneFindMy;
+    selfCopy->_oneFindMy = v4;
 
-    oneFindMy = v2->_oneFindMy;
+    oneFindMy = selfCopy->_oneFindMy;
   }
 
   v6 = oneFindMy;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneEventKitConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneEventKitConnector = v2->_oneEventKitConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneEventKitConnector = selfCopy->_oneEventKitConnector;
   if (!oneEventKitConnector)
   {
     v4 = objc_alloc_init(MapsSuggestionsRealEventKitConnector);
-    v5 = v2->_oneEventKitConnector;
-    v2->_oneEventKitConnector = v4;
+    v5 = selfCopy->_oneEventKitConnector;
+    selfCopy->_oneEventKitConnector = v4;
 
-    oneEventKitConnector = v2->_oneEventKitConnector;
+    oneEventKitConnector = selfCopy->_oneEventKitConnector;
   }
 
   v6 = oneEventKitConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneEventKit
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneEventKit = v2->_oneEventKit;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneEventKit = selfCopy->_oneEventKit;
   if (!oneEventKit)
   {
-    v4 = [[MapsSuggestionsEventKit alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneEventKit;
-    v2->_oneEventKit = v4;
+    v4 = [[MapsSuggestionsEventKit alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneEventKit;
+    selfCopy->_oneEventKit = v4;
 
-    oneEventKit = v2->_oneEventKit;
+    oneEventKit = selfCopy->_oneEventKit;
   }
 
   v6 = oneEventKit;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneUser
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneUser = v2->_oneUser;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneUser = selfCopy->_oneUser;
   if (!oneUser)
   {
     v4 = [MapsSuggestionsUser alloc];
-    v5 = [(MapsSuggestionsSelfBuildingResourceDepot *)v2 oneFavorites];
-    v6 = [(MapsSuggestionsSelfBuildingResourceDepot *)v2 oneRoutine];
-    v7 = [(MapsSuggestionsUser *)v4 initWithMeCardReader:v5 routine:v6];
-    v8 = v2->_oneUser;
-    v2->_oneUser = v7;
+    oneFavorites = [(MapsSuggestionsSelfBuildingResourceDepot *)selfCopy oneFavorites];
+    oneRoutine = [(MapsSuggestionsSelfBuildingResourceDepot *)selfCopy oneRoutine];
+    v7 = [(MapsSuggestionsUser *)v4 initWithMeCardReader:oneFavorites routine:oneRoutine];
+    v8 = selfCopy->_oneUser;
+    selfCopy->_oneUser = v7;
 
-    oneUser = v2->_oneUser;
+    oneUser = selfCopy->_oneUser;
   }
 
   v9 = oneUser;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
 - (id)oneFinanceKitConnector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFinanceKitConnector = v2->_oneFinanceKitConnector;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFinanceKitConnector = selfCopy->_oneFinanceKitConnector;
   if (!oneFinanceKitConnector)
   {
     v4 = objc_alloc_init(_TtC15MapsSuggestions38MapsSuggestionsRealFinanceKitConnector);
-    v5 = v2->_oneFinanceKitConnector;
-    v2->_oneFinanceKitConnector = v4;
+    v5 = selfCopy->_oneFinanceKitConnector;
+    selfCopy->_oneFinanceKitConnector = v4;
 
-    oneFinanceKitConnector = v2->_oneFinanceKitConnector;
+    oneFinanceKitConnector = selfCopy->_oneFinanceKitConnector;
   }
 
   v6 = oneFinanceKitConnector;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneFinanceKit
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  oneFinanceKit = v2->_oneFinanceKit;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  oneFinanceKit = selfCopy->_oneFinanceKit;
   if (!oneFinanceKit)
   {
-    v4 = [[_TtC15MapsSuggestions25MapsSuggestionsFinanceKit alloc] initFromResourceDepot:v2];
-    v5 = v2->_oneFinanceKit;
-    v2->_oneFinanceKit = v4;
+    v4 = [[_TtC15MapsSuggestions25MapsSuggestionsFinanceKit alloc] initFromResourceDepot:selfCopy];
+    v5 = selfCopy->_oneFinanceKit;
+    selfCopy->_oneFinanceKit = v4;
 
-    oneFinanceKit = v2->_oneFinanceKit;
+    oneFinanceKit = selfCopy->_oneFinanceKit;
   }
 
   v6 = oneFinanceKit;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)oneLocationUpdater
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_oneLocationUpdater;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_oneLocationUpdater;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

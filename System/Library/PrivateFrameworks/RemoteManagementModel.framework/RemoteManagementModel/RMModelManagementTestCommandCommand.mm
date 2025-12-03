@@ -1,10 +1,10 @@
 @interface RMModelManagementTestCommandCommand
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 echo:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 echo:(id)a4 returnStatus:(id)a5;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier echo:(id)echo;
++ (id)buildWithIdentifier:(id)identifier echo:(id)echo returnStatus:(id)status;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelManagementTestCommandCommand
@@ -23,30 +23,30 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 echo:(id)a4 returnStatus:(id)a5
++ (id)buildWithIdentifier:(id)identifier echo:(id)echo returnStatus:(id)status
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  statusCopy = status;
+  echoCopy = echo;
   v10 = objc_opt_new();
   [v10 setCommandType:@"com.apple.command.management.test"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setCommandIdentifier:v7];
+    [v10 setCommandIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setCommandIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setCommandIdentifier:uUIDString];
   }
 
-  [v10 setPayloadEcho:v9];
+  [v10 setPayloadEcho:echoCopy];
 
-  if (v8)
+  if (statusCopy)
   {
-    v13 = v8;
+    v13 = statusCopy;
   }
 
   else
@@ -59,35 +59,35 @@
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 echo:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier echo:(id)echo
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  echoCopy = echo;
   v7 = objc_opt_new();
   [v7 setCommandType:@"com.apple.command.management.test"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setCommandIdentifier:v5];
+    [v7 setCommandIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setCommandIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setCommandIdentifier:uUIDString];
   }
 
-  [v7 setPayloadEcho:v6];
+  [v7 setPayloadEcho:echoCopy];
 
   return v7;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelManagementTestCommandCommand allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -95,9 +95,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Echo" forKeyPath:@"payloadEcho" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Echo" forKeyPath:@"payloadEcho" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ReturnStatus" forKeyPath:@"payloadReturnStatus" isRequired:0 defaultValue:@"Executed" error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ReturnStatus" forKeyPath:@"payloadReturnStatus" isRequired:0 defaultValue:@"Executed" error:error];
   }
 
   else
@@ -108,25 +108,25 @@
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelManagementTestCommandCommand *)self payloadEcho];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Echo" value:v5 isRequired:1 defaultValue:0];
+  payloadEcho = [(RMModelManagementTestCommandCommand *)self payloadEcho];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Echo" value:payloadEcho isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelManagementTestCommandCommand *)self payloadReturnStatus];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ReturnStatus" value:v6 isRequired:0 defaultValue:@"Executed"];
+  payloadReturnStatus = [(RMModelManagementTestCommandCommand *)self payloadReturnStatus];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ReturnStatus" value:payloadReturnStatus isRequired:0 defaultValue:@"Executed"];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelManagementTestCommandCommand;
-  v4 = [(RMModelCommandBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelCommandBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadEcho copy];
   v6 = v4[5];
   v4[5] = v5;

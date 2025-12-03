@@ -1,36 +1,36 @@
 @interface OspreyMethodCall
-- (OspreyMethodCall)callWithRequestBuilder:(id)a3 messageReceived:(id)a4 completion:(id)a5;
-- (OspreyMethodCall)initWithMethodName:(id)a3 channel:(id)a4 serializeRequest:(id)a5 deserializeResponse:(id)a6 defaultRequestBuilder:(id)a7;
+- (OspreyMethodCall)callWithRequestBuilder:(id)builder messageReceived:(id)received completion:(id)completion;
+- (OspreyMethodCall)initWithMethodName:(id)name channel:(id)channel serializeRequest:(id)request deserializeResponse:(id)response defaultRequestBuilder:(id)builder;
 @end
 
 @implementation OspreyMethodCall
 
-- (OspreyMethodCall)initWithMethodName:(id)a3 channel:(id)a4 serializeRequest:(id)a5 deserializeResponse:(id)a6 defaultRequestBuilder:(id)a7
+- (OspreyMethodCall)initWithMethodName:(id)name channel:(id)channel serializeRequest:(id)request deserializeResponse:(id)response defaultRequestBuilder:(id)builder
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  channelCopy = channel;
+  requestCopy = request;
+  responseCopy = response;
+  builderCopy = builder;
   v27.receiver = self;
   v27.super_class = OspreyMethodCall;
   v17 = [(OspreyMethodCall *)&v27 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [nameCopy copy];
     methodName = v17->_methodName;
     v17->_methodName = v18;
 
-    objc_storeStrong(&v17->_channel, a4);
-    v20 = [v14 copy];
+    objc_storeStrong(&v17->_channel, channel);
+    v20 = [requestCopy copy];
     serializeRequest = v17->_serializeRequest;
     v17->_serializeRequest = v20;
 
-    v22 = [v15 copy];
+    v22 = [responseCopy copy];
     deserializeResponse = v17->_deserializeResponse;
     v17->_deserializeResponse = v22;
 
-    v24 = [v16 copy];
+    v24 = [builderCopy copy];
     defaultRequestBuilder = v17->_defaultRequestBuilder;
     v17->_defaultRequestBuilder = v24;
   }
@@ -38,13 +38,13 @@
   return v17;
 }
 
-- (OspreyMethodCall)callWithRequestBuilder:(id)a3 messageReceived:(id)a4 completion:(id)a5
+- (OspreyMethodCall)callWithRequestBuilder:(id)builder messageReceived:(id)received completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  builderCopy = builder;
+  receivedCopy = received;
+  completionCopy = completion;
   objc_initWeak(&location, self->_deserializeResponse);
-  v11 = MEMORY[0x25F8A5BA0](v8);
+  v11 = MEMORY[0x25F8A5BA0](builderCopy);
   if (self->_defaultRequestBuilder)
   {
     v22[0] = MEMORY[0x277D85DD0];
@@ -52,7 +52,7 @@
     v22[2] = __70__OspreyMethodCall_callWithRequestBuilder_messageReceived_completion___block_invoke;
     v22[3] = &unk_2799F2448;
     v22[4] = self;
-    v23 = v8;
+    v23 = builderCopy;
     v12 = MEMORY[0x25F8A5BA0](v22);
 
     v11 = v12;
@@ -64,10 +64,10 @@
   v19[1] = 3221225472;
   v19[2] = __70__OspreyMethodCall_callWithRequestBuilder_messageReceived_completion___block_invoke_2;
   v19[3] = &unk_2799F2470;
-  v15 = v9;
+  v15 = receivedCopy;
   v20 = v15;
   objc_copyWeak(&v21, &location);
-  v16 = [(OspreyRPC *)channel bidirectionalStreamingRequestWithMethodName:methodName requestBuilder:v11 streamingResponseHandler:v19 completion:v10];
+  v16 = [(OspreyRPC *)channel bidirectionalStreamingRequestWithMethodName:methodName requestBuilder:v11 streamingResponseHandler:v19 completion:completionCopy];
   v17 = [[OspreyMessageProducer alloc] initWithMessageSerializer:self->_serializeRequest streamingContext:v16];
 
   objc_destroyWeak(&v21);

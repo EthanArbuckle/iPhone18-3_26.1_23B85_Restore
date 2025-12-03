@@ -1,5 +1,5 @@
 @interface IMDHandleRecord
-+ (IMDHandleRecord)allocWithZone:(_NSZone *)a3;
++ (IMDHandleRecord)allocWithZone:(_NSZone *)zone;
 + (id)keyPathsToColumns;
 - (NSString)canonicalizedURIString;
 - (_IMDHandleRecordStruct)cfHandleRecord;
@@ -8,7 +8,7 @@
 
 @implementation IMDHandleRecord
 
-+ (IMDHandleRecord)allocWithZone:(_NSZone *)a3
++ (IMDHandleRecord)allocWithZone:(_NSZone *)zone
 {
   v3 = *MEMORY[0x1E695E480];
   IMDHandleRecordGetTypeID();

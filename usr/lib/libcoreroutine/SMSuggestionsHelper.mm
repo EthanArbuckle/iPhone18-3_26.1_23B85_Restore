@@ -1,68 +1,68 @@
 @interface SMSuggestionsHelper
-+ (BOOL)isContactBlocked:(id)a3 error:(id *)a4;
-+ (id)createMasqueradingReferenceLocationFromFenceInfo:(id)a3 placeInference:(id)a4 error:(id *)a5;
-+ (id)createMasqueradingReferenceLocationFromFenceRadius:(double)a3 location:(id)a4 error:(id *)a5;
-+ (id)dedupeSessionConfigurations:(id)a3;
-+ (id)getSMContactInformationFromSMHandle:(id)a3;
-+ (id)getSMHandlesFromFAFamilyMembers:(id)a3 error:(id *)a4;
-+ (id)getSMHandlesFromRTContact:(id)a3 error:(id *)a4;
-+ (id)getSMHandlesFromRTContacts:(id)a3 error:(id *)a4;
-+ (id)placeInferenceFromNPLOI:(id)a3;
-- (SMSuggestionsHelper)initWithAuthorizationManager:(id)a3 contactsManager:(id)a4 deviceLocationPredictor:(id)a5 distanceCalculator:(id)a6 healthKitManager:(id)a7 learnedLocationStore:(id)a8 learnedLocationManager:(id)a9 locationManager:(id)a10 mapServiceManager:(id)a11 navigationManager:(id)a12 sessionStore:(id)a13 eligibilityChecker:(id)a14;
-- (id)_dedupePlaceInferencesWithOrder:(id)a3;
-- (id)_placeInferenceFromLOI:(id)a3;
-- (id)_submitMetricForFetchMostLikelyReceiverHandlesDidComplete:(BOOL)a3 didFetchSessionConfigurations:(BOOL)a4 didFetchEmergencyContacts:(BOOL)a5 didFetchICloudFamily:(BOOL)a6 didFetchFavorites:(BOOL)a7 timeout:(double)a8;
-- (id)_submitMetricForFetchMostLikelySessionDestinationsWithRefreshedLocationDidComplete:(BOOL)a3 didFetchNavigationRouteSummary:(BOOL)a4 didFetchLOIs:(BOOL)a5 didFetchNPLOIs:(BOOL)a6 didFetchSessionConfigurations:(BOOL)a7 timeout:(double)a8;
-- (id)canonicalizeHandles:(id)a3;
-- (void)_computeMostlikelySessionDestinations:(id)a3 closestHome:(id)a4 distanceToClosestHome:(double)a5 nploisWithValidDistanceAndHighConfidence:(id)a6 fenceSizeForMapItem:(id)a7 placeInferences:(id)a8 errors:(id)a9 handler:(id)a10;
-- (void)_fetchMostLikelyReceiverHandlesWithHandler:(id)a3;
-- (void)_fetchMostLikelyReceiverHandlesWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchMostLikelySessionDestinationsWithHandler:(id)a3;
-- (void)_fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler:(id)a3;
-- (void)_filterHandles:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)_getFAFamilyMembersFromAAAFamilyWithHandler:(id)a3;
-- (void)_getNPLOIsWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 handler:(id)a6;
-- (void)_getSessionConfigurationsWithOptions:(id)a3 handler:(id)a4;
-- (void)_onAuthorizationNotification:(id)a3;
-- (void)_refreshCurrentLocationWithHandler:(id)a3;
-- (void)fetchMostLikelyReceiverHandlesWithHandler:(id)a3;
-- (void)fetchMostLikelyReceiverHandlesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchMostLikelySessionDestinationsWithHandler:(id)a3;
-- (void)fetchNumEmergencyRecipientsWithReceiverHandles:(id)a3 handler:(id)a4;
-- (void)fetchNumFavoriteRecipientsWithReceiverHandles:(id)a3 handler:(id)a4;
-- (void)fetchNumiCloudFamilyRecipientsWithReceiverHandles:(id)a3 handler:(id)a4;
-- (void)getEmergencyHandles:(id)a3;
-- (void)getFavoriteContactHandles:(id)a3;
-- (void)getFavoriteHandles:(id)a3;
-- (void)getNPLOIsWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 handler:(id)a6;
-- (void)getSessionConfigurationsWithOptions:(id)a3 handler:(id)a4;
-- (void)getiCloudFamilyHandles:(id)a3;
-- (void)onAuthorizationNotification:(id)a3;
-- (void)refreshCurrentLocationWithHandler:(id)a3;
++ (BOOL)isContactBlocked:(id)blocked error:(id *)error;
++ (id)createMasqueradingReferenceLocationFromFenceInfo:(id)info placeInference:(id)inference error:(id *)error;
++ (id)createMasqueradingReferenceLocationFromFenceRadius:(double)radius location:(id)location error:(id *)error;
++ (id)dedupeSessionConfigurations:(id)configurations;
++ (id)getSMContactInformationFromSMHandle:(id)handle;
++ (id)getSMHandlesFromFAFamilyMembers:(id)members error:(id *)error;
++ (id)getSMHandlesFromRTContact:(id)contact error:(id *)error;
++ (id)getSMHandlesFromRTContacts:(id)contacts error:(id *)error;
++ (id)placeInferenceFromNPLOI:(id)i;
+- (SMSuggestionsHelper)initWithAuthorizationManager:(id)manager contactsManager:(id)contactsManager deviceLocationPredictor:(id)predictor distanceCalculator:(id)calculator healthKitManager:(id)kitManager learnedLocationStore:(id)store learnedLocationManager:(id)locationManager locationManager:(id)self0 mapServiceManager:(id)self1 navigationManager:(id)self2 sessionStore:(id)self3 eligibilityChecker:(id)self4;
+- (id)_dedupePlaceInferencesWithOrder:(id)order;
+- (id)_placeInferenceFromLOI:(id)i;
+- (id)_submitMetricForFetchMostLikelyReceiverHandlesDidComplete:(BOOL)complete didFetchSessionConfigurations:(BOOL)configurations didFetchEmergencyContacts:(BOOL)contacts didFetchICloudFamily:(BOOL)family didFetchFavorites:(BOOL)favorites timeout:(double)timeout;
+- (id)_submitMetricForFetchMostLikelySessionDestinationsWithRefreshedLocationDidComplete:(BOOL)complete didFetchNavigationRouteSummary:(BOOL)summary didFetchLOIs:(BOOL)is didFetchNPLOIs:(BOOL)oIs didFetchSessionConfigurations:(BOOL)configurations timeout:(double)timeout;
+- (id)canonicalizeHandles:(id)handles;
+- (void)_computeMostlikelySessionDestinations:(id)destinations closestHome:(id)home distanceToClosestHome:(double)closestHome nploisWithValidDistanceAndHighConfidence:(id)confidence fenceSizeForMapItem:(id)item placeInferences:(id)inferences errors:(id)errors handler:(id)self0;
+- (void)_fetchMostLikelyReceiverHandlesWithHandler:(id)handler;
+- (void)_fetchMostLikelyReceiverHandlesWithOptions:(id)options handler:(id)handler;
+- (void)_fetchMostLikelySessionDestinationsWithHandler:(id)handler;
+- (void)_fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler:(id)handler;
+- (void)_filterHandles:(id)handles options:(id)options handler:(id)handler;
+- (void)_getFAFamilyMembersFromAAAFamilyWithHandler:(id)handler;
+- (void)_getNPLOIsWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date handler:(id)handler;
+- (void)_getSessionConfigurationsWithOptions:(id)options handler:(id)handler;
+- (void)_onAuthorizationNotification:(id)notification;
+- (void)_refreshCurrentLocationWithHandler:(id)handler;
+- (void)fetchMostLikelyReceiverHandlesWithHandler:(id)handler;
+- (void)fetchMostLikelyReceiverHandlesWithOptions:(id)options handler:(id)handler;
+- (void)fetchMostLikelySessionDestinationsWithHandler:(id)handler;
+- (void)fetchNumEmergencyRecipientsWithReceiverHandles:(id)handles handler:(id)handler;
+- (void)fetchNumFavoriteRecipientsWithReceiverHandles:(id)handles handler:(id)handler;
+- (void)fetchNumiCloudFamilyRecipientsWithReceiverHandles:(id)handles handler:(id)handler;
+- (void)getEmergencyHandles:(id)handles;
+- (void)getFavoriteContactHandles:(id)handles;
+- (void)getFavoriteHandles:(id)handles;
+- (void)getNPLOIsWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date handler:(id)handler;
+- (void)getSessionConfigurationsWithOptions:(id)options handler:(id)handler;
+- (void)getiCloudFamilyHandles:(id)handles;
+- (void)onAuthorizationNotification:(id)notification;
+- (void)refreshCurrentLocationWithHandler:(id)handler;
 @end
 
 @implementation SMSuggestionsHelper
 
-- (SMSuggestionsHelper)initWithAuthorizationManager:(id)a3 contactsManager:(id)a4 deviceLocationPredictor:(id)a5 distanceCalculator:(id)a6 healthKitManager:(id)a7 learnedLocationStore:(id)a8 learnedLocationManager:(id)a9 locationManager:(id)a10 mapServiceManager:(id)a11 navigationManager:(id)a12 sessionStore:(id)a13 eligibilityChecker:(id)a14
+- (SMSuggestionsHelper)initWithAuthorizationManager:(id)manager contactsManager:(id)contactsManager deviceLocationPredictor:(id)predictor distanceCalculator:(id)calculator healthKitManager:(id)kitManager learnedLocationStore:(id)store learnedLocationManager:(id)locationManager locationManager:(id)self0 mapServiceManager:(id)self1 navigationManager:(id)self2 sessionStore:(id)self3 eligibilityChecker:(id)self4
 {
-  v54 = a3;
-  v41 = a4;
-  v19 = a4;
-  v47 = a5;
-  v42 = a6;
-  v46 = a6;
-  v43 = a7;
-  v20 = a7;
-  v44 = a8;
-  v21 = a8;
-  v49 = a9;
+  managerCopy = manager;
+  contactsManagerCopy = contactsManager;
+  contactsManagerCopy2 = contactsManager;
+  predictorCopy = predictor;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  kitManagerCopy = kitManager;
+  kitManagerCopy2 = kitManager;
+  storeCopy = store;
+  storeCopy2 = store;
+  locationManagerCopy = locationManager;
   v53 = a10;
-  v52 = a11;
-  v51 = a12;
-  v50 = a13;
-  v22 = a14;
-  v48 = v22;
-  if (!v54)
+  serviceManagerCopy = serviceManager;
+  navigationManagerCopy = navigationManager;
+  sessionStoreCopy = sessionStore;
+  checkerCopy = checker;
+  v48 = checkerCopy;
+  if (!managerCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -72,20 +72,20 @@
     }
 
     v34 = 0;
-    v23 = v19;
-    v24 = v46;
-    v25 = v47;
-    v26 = v21;
+    v23 = contactsManagerCopy2;
+    v24 = calculatorCopy2;
+    v25 = predictorCopy;
+    v26 = storeCopy2;
     goto LABEL_22;
   }
 
-  v23 = v19;
-  if (!v19)
+  v23 = contactsManagerCopy2;
+  if (!contactsManagerCopy2)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v24 = v46;
-    v25 = v47;
-    v26 = v21;
+    v24 = calculatorCopy2;
+    v25 = predictorCopy;
+    v26 = storeCopy2;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -94,19 +94,19 @@
 
     v34 = 0;
 LABEL_22:
-    v27 = v49;
+    v27 = locationManagerCopy;
 LABEL_45:
-    v33 = self;
+    selfCopy = self;
     goto LABEL_46;
   }
 
-  v24 = v46;
-  v25 = v47;
-  v26 = v21;
-  if (!v47)
+  v24 = calculatorCopy2;
+  v25 = predictorCopy;
+  v26 = storeCopy2;
+  if (!predictorCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v27 = v49;
+    v27 = locationManagerCopy;
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_44;
@@ -119,8 +119,8 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  v27 = v49;
-  if (!v46)
+  v27 = locationManagerCopy;
+  if (!calculatorCopy2)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -133,7 +133,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v20)
+  if (!kitManagerCopy2)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -159,7 +159,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v49)
+  if (!locationManagerCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -185,7 +185,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v52)
+  if (!serviceManagerCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -198,7 +198,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v51)
+  if (!navigationManagerCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -211,7 +211,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v50)
+  if (!sessionStoreCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -224,7 +224,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v22)
+  if (!checkerCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -246,39 +246,39 @@ LABEL_44:
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_authorizationManager, a3);
-    objc_storeStrong(&v29->_contactsManager, v41);
-    objc_storeStrong(&v29->_deviceLocationPredictor, a5);
-    objc_storeStrong(&v29->_distanceCalculator, v42);
-    objc_storeStrong(&v29->_healthKitManager, v43);
-    objc_storeStrong(&v29->_learnedLocationStore, v44);
-    objc_storeStrong(&v29->_learnedLocationManager, a9);
+    objc_storeStrong(&v28->_authorizationManager, manager);
+    objc_storeStrong(&v29->_contactsManager, contactsManagerCopy);
+    objc_storeStrong(&v29->_deviceLocationPredictor, predictor);
+    objc_storeStrong(&v29->_distanceCalculator, calculatorCopy);
+    objc_storeStrong(&v29->_healthKitManager, kitManagerCopy);
+    objc_storeStrong(&v29->_learnedLocationStore, storeCopy);
+    objc_storeStrong(&v29->_learnedLocationManager, locationManager);
     objc_storeStrong(&v29->_locationManager, a10);
-    objc_storeStrong(&v29->_mapServiceManager, a11);
-    objc_storeStrong(&v29->_navigationManager, a12);
-    objc_storeStrong(&v29->_sessionStore, a13);
-    objc_storeStrong(&v29->_eligibilityChecker, a14);
+    objc_storeStrong(&v29->_mapServiceManager, serviceManager);
+    objc_storeStrong(&v29->_navigationManager, navigationManager);
+    objc_storeStrong(&v29->_sessionStore, sessionStore);
+    objc_storeStrong(&v29->_eligibilityChecker, checker);
     latestLocationOfTheDevice = v29->_latestLocationOfTheDevice;
     v29->_latestLocationOfTheDevice = 0;
   }
 
-  v31 = [(SMSuggestionsHelper *)v29 authorizationManager];
+  authorizationManager = [(SMSuggestionsHelper *)v29 authorizationManager];
   v32 = +[(RTNotification *)RTAuthorizationManagerNotificationRoutineEnabled];
-  [v31 addObserver:v29 selector:sel_onAuthorizationNotification_ name:v32];
+  [authorizationManager addObserver:v29 selector:sel_onAuthorizationNotification_ name:v32];
 
-  v33 = v29;
-  v34 = v33;
-  v27 = v49;
+  selfCopy = v29;
+  v34 = selfCopy;
+  v27 = locationManagerCopy;
 LABEL_46:
 
   return v34;
 }
 
-- (void)_getFAFamilyMembersFromAAAFamilyWithHandler:(id)a3
+- (void)_getFAFamilyMembersFromAAAFamilyWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v4 = objc_opt_new();
     v5 = objc_alloc_init(MEMORY[0x277D08280]);
@@ -287,7 +287,7 @@ LABEL_46:
     v7[2] = __67__SMSuggestionsHelper__getFAFamilyMembersFromAAAFamilyWithHandler___block_invoke;
     v7[3] = &unk_2788C9C60;
     v8 = v4;
-    v9 = v3;
+    v9 = handlerCopy;
     v6 = v4;
     [v5 startRequestWithCompletionHandler:v7];
   }
@@ -320,22 +320,22 @@ uint64_t __67__SMSuggestionsHelper__getFAFamilyMembersFromAAAFamilyWithHandler__
   return v4();
 }
 
-- (void)fetchMostLikelyReceiverHandlesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchMostLikelyReceiverHandlesWithOptions:(id)options handler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__SMSuggestionsHelper_fetchMostLikelyReceiverHandlesWithOptions_handler___block_invoke;
     block[3] = &unk_2788C4500;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
-    dispatch_async(v8, block);
+    v11 = optionsCopy;
+    v12 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -352,20 +352,20 @@ uint64_t __67__SMSuggestionsHelper__getFAFamilyMembersFromAAAFamilyWithHandler__
   }
 }
 
-- (void)fetchMostLikelyReceiverHandlesWithHandler:(id)a3
+- (void)fetchMostLikelyReceiverHandlesWithHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __65__SMSuggestionsHelper_fetchMostLikelyReceiverHandlesWithHandler___block_invoke;
     v7[3] = &unk_2788C4938;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -382,20 +382,20 @@ uint64_t __67__SMSuggestionsHelper__getFAFamilyMembersFromAAAFamilyWithHandler__
   }
 }
 
-- (void)_fetchMostLikelyReceiverHandlesWithHandler:(id)a3
+- (void)_fetchMostLikelyReceiverHandlesWithHandler:(id)handler
 {
   v4 = MEMORY[0x277D4AB18];
-  v5 = a3;
-  v6 = [v4 defaultOptions];
-  [(SMSuggestionsHelper *)self _fetchMostLikelyReceiverHandlesWithOptions:v6 handler:v5];
+  handlerCopy = handler;
+  defaultOptions = [v4 defaultOptions];
+  [(SMSuggestionsHelper *)self _fetchMostLikelyReceiverHandlesWithOptions:defaultOptions handler:handlerCopy];
 }
 
-- (void)_fetchMostLikelyReceiverHandlesWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchMostLikelyReceiverHandlesWithOptions:(id)options handler:(id)handler
 {
   v68 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v28 = a4;
-  if (v28)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = dispatch_group_create();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -450,10 +450,10 @@ uint64_t __67__SMSuggestionsHelper__getFAFamilyMembersFromAAAFamilyWithHandler__
     v16 = objc_opt_new();
     v17 = objc_opt_new();
     v18 = objc_opt_new();
-    if (([v30 requireOnlyPastSessionRecipients] & 1) == 0)
+    if (([optionsCopy requireOnlyPastSessionRecipients] & 1) == 0)
     {
       dispatch_group_enter(v14);
-      if ([v30 requireOnlyFavoritedHandles])
+      if ([optionsCopy requireOnlyFavoritedHandles])
       {
         v19 = v54;
         v54[0] = MEMORY[0x277D85DD0];
@@ -506,7 +506,7 @@ uint64_t __67__SMSuggestionsHelper__getFAFamilyMembersFromAAAFamilyWithHandler__
     block[2] = __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handler___block_invoke_5;
     block[3] = &unk_2788C9D00;
     v32 = v14;
-    v33 = self;
+    selfCopy = self;
     v40 = buf;
     v41 = v57;
     v42 = v55;
@@ -516,8 +516,8 @@ uint64_t __67__SMSuggestionsHelper__getFAFamilyMembersFromAAAFamilyWithHandler__
     v35 = v17;
     v36 = v18;
     v37 = v16;
-    v38 = v30;
-    v39 = v28;
+    v38 = optionsCopy;
+    v39 = handlerCopy;
     v22 = v16;
     v23 = v18;
     v24 = v17;
@@ -917,22 +917,22 @@ void __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handle
   (*(v9 + 16))(v9, v10, 0);
 }
 
-- (void)_filterHandles:(id)a3 options:(id)a4 handler:(id)a5
+- (void)_filterHandles:(id)handles options:(id)options handler:(id)handler
 {
   v93 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v36 = v9;
-  v35 = v8;
-  if ([v9 hasNoFilters])
+  handlesCopy = handles;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v36 = optionsCopy;
+  v35 = handlesCopy;
+  if ([optionsCopy hasNoFilters])
   {
-    v10[2](v10, v8, 0);
+    handlerCopy[2](handlerCopy, handlesCopy, 0);
   }
 
   else
   {
-    v34 = v10;
+    v34 = handlerCopy;
     v11 = dispatch_group_create();
     v82[0] = 0;
     v82[1] = v82;
@@ -951,15 +951,15 @@ void __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handle
     v76 = 0x3032000000;
     v77 = __Block_byref_object_copy__61;
     v78 = __Block_byref_object_dispose__61;
-    v12 = v8;
+    v12 = handlesCopy;
     v79 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    if ([v9 requireEligibility])
+    if ([optionsCopy requireEligibility])
     {
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      obj = v8;
+      obj = handlesCopy;
       v13 = [obj countByEnumeratingWithState:&v70 objects:v92 count:16];
       if (v13)
       {
@@ -975,7 +975,7 @@ void __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handle
 
             v16 = *(*(&v70 + 1) + 8 * i);
             dispatch_group_enter(v11);
-            v17 = [(SMSuggestionsHelper *)self eligibilityChecker];
+            eligibilityChecker = [(SMSuggestionsHelper *)self eligibilityChecker];
             v66[0] = MEMORY[0x277D85DD0];
             v66[1] = 3221225472;
             v66[2] = __54__SMSuggestionsHelper__filterHandles_options_handler___block_invoke;
@@ -985,7 +985,7 @@ void __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handle
             v68 = v82;
             v69 = a2;
             v67 = v11;
-            [v17 checkReceiverEligibility:v16 handler:v66];
+            [eligibilityChecker checkReceiverEligibility:v16 handler:v66];
           }
 
           v13 = [obj countByEnumeratingWithState:&v70 objects:v92 count:16];
@@ -1019,8 +1019,8 @@ void __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handle
 
             v21 = *(*(&v62 + 1) + 8 * j);
             dispatch_group_enter(v11);
-            v22 = [(SMSuggestionsHelper *)self contactsManager];
-            v23 = [v21 primaryHandle];
+            contactsManager = [(SMSuggestionsHelper *)self contactsManager];
+            primaryHandle = [v21 primaryHandle];
             v58[0] = MEMORY[0x277D85DD0];
             v58[1] = 3221225472;
             v58[2] = __54__SMSuggestionsHelper__filterHandles_options_handler___block_invoke_61;
@@ -1030,7 +1030,7 @@ void __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handle
             v60 = v80;
             v61 = a2;
             v59 = v11;
-            [v22 fetchContactsFromEmailOrPhoneNumberString:v23 handler:v58];
+            [contactsManager fetchContactsFromEmailOrPhoneNumberString:primaryHandle handler:v58];
           }
 
           v18 = [obja countByEnumeratingWithState:&v62 objects:v91 count:16];
@@ -1107,7 +1107,7 @@ void __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handle
     block[2] = __54__SMSuggestionsHelper__filterHandles_options_handler___block_invoke_64;
     block[3] = &unk_2788C9DF0;
     v44 = v11;
-    v45 = self;
+    selfCopy = self;
     v46 = v12;
     v47 = v36;
     v49 = v82;
@@ -1122,7 +1122,7 @@ void __74__SMSuggestionsHelper__fetchMostLikelyReceiverHandlesWithOptions_handle
     _Block_object_dispose(v80, 8);
 
     _Block_object_dispose(v82, 8);
-    v10 = v34;
+    handlerCopy = v34;
   }
 }
 
@@ -1322,11 +1322,11 @@ LABEL_18:
 LABEL_20:
 }
 
-+ (id)getSMContactInformationFromSMHandle:(id)a3
++ (id)getSMContactInformationFromSMHandle:(id)handle
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1340,25 +1340,25 @@ LABEL_20:
   }
 
   v5 = MEMORY[0x277D4AAE8];
-  v6 = [v3 primaryHandle];
-  v7 = [v5 getSMHandleTypeWithHandle:v6];
+  primaryHandle = [handleCopy primaryHandle];
+  v7 = [v5 getSMHandleTypeWithHandle:primaryHandle];
 
   if (v7 == 1)
   {
     v13 = objc_alloc(MEMORY[0x277D4AA88]);
-    v9 = [v3 primaryHandle];
+    primaryHandle2 = [handleCopy primaryHandle];
     v10 = v13;
     v11 = 0;
-    v12 = v9;
+    v12 = primaryHandle2;
     goto LABEL_9;
   }
 
   if (v7 == 2)
   {
     v8 = objc_alloc(MEMORY[0x277D4AA88]);
-    v9 = [v3 primaryHandle];
+    primaryHandle2 = [handleCopy primaryHandle];
     v10 = v8;
-    v11 = v9;
+    v11 = primaryHandle2;
     v12 = 0;
 LABEL_9:
     v14 = [v10 initWithEmail:v11 phoneNumber:v12];
@@ -1372,22 +1372,22 @@ LABEL_11:
   return v14;
 }
 
-+ (BOOL)isContactBlocked:(id)a3 error:(id *)a4
++ (BOOL)isContactBlocked:(id)blocked error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  blockedCopy = blocked;
+  v7 = blockedCopy;
+  if (blockedCopy)
   {
-    v8 = [v6 email];
+    email = [blockedCopy email];
 
-    if (v8)
+    if (email)
     {
-      v11 = [v7 email];
+      email2 = [v7 email];
       v9 = CMFItemCreateWithEmailAddress();
 
       IsItemBlocked = CMFBlockListIsItemBlocked();
-      LOBYTE(v11) = IsItemBlocked != 0;
+      LOBYTE(email2) = IsItemBlocked != 0;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1425,19 +1425,19 @@ LABEL_28:
 
     else
     {
-      v11 = [v7 phoneNumber];
+      email2 = [v7 phoneNumber];
 
-      if (v11)
+      if (email2)
       {
         v20 = CPPhoneNumberCopyHomeCountryCode();
-        v21 = [v7 phoneNumber];
-        v22 = [v7 phoneNumber];
-        [v22 containsString:@"+"];
+        phoneNumber = [v7 phoneNumber];
+        phoneNumber2 = [v7 phoneNumber];
+        [phoneNumber2 containsString:@"+"];
         v23 = CFPhoneNumberCreate();
 
         v24 = CMFItemCreateWithPhoneNumber();
         v25 = CMFBlockListIsItemBlocked();
-        LOBYTE(v11) = v25 != 0;
+        LOBYTE(email2) = v25 != 0;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v26 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1495,39 +1495,39 @@ LABEL_28:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: contactInformation", &v33, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"contactInformation");
-      *a4 = LOBYTE(v11) = 0;
+      *error = LOBYTE(email2) = 0;
     }
 
     else
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(email2) = 0;
     }
   }
 
-  return v11;
+  return email2;
 }
 
-- (void)getFavoriteHandles:(id)a3
+- (void)getFavoriteHandles:(id)handles
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlesCopy = handles;
+  if (handlesCopy)
   {
     v6 = objc_opt_new();
-    v7 = [(SMSuggestionsHelper *)self contactsManager];
+    contactsManager = [(SMSuggestionsHelper *)self contactsManager];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __42__SMSuggestionsHelper_getFavoriteHandles___block_invoke;
     v9[3] = &unk_2788C6260;
     v9[4] = self;
-    v11 = v5;
+    v11 = handlesCopy;
     v12 = a2;
     v10 = v6;
     v8 = v6;
-    [v7 fetchFavoriteHandlesWithHandler:v9];
+    [contactsManager fetchFavoriteHandlesWithHandler:v9];
   }
 
   else
@@ -1636,24 +1636,24 @@ void __42__SMSuggestionsHelper_getFavoriteHandles___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)getFavoriteContactHandles:(id)a3
+- (void)getFavoriteContactHandles:(id)handles
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlesCopy = handles;
+  if (handlesCopy)
   {
     v6 = objc_opt_new();
-    v7 = [(SMSuggestionsHelper *)self contactsManager];
+    contactsManager = [(SMSuggestionsHelper *)self contactsManager];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __49__SMSuggestionsHelper_getFavoriteContactHandles___block_invoke;
     v9[3] = &unk_2788C6260;
     v9[4] = self;
-    v11 = v5;
+    v11 = handlesCopy;
     v12 = a2;
     v10 = v6;
     v8 = v6;
-    [v7 fetchFavoriteContactsWithHandler:v9];
+    [contactsManager fetchFavoriteContactsWithHandler:v9];
   }
 
   else
@@ -1766,24 +1766,24 @@ void __49__SMSuggestionsHelper_getFavoriteContactHandles___block_invoke_2(uint64
   }
 }
 
-- (void)getEmergencyHandles:(id)a3
+- (void)getEmergencyHandles:(id)handles
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlesCopy = handles;
+  if (handlesCopy)
   {
     v6 = objc_opt_new();
-    v7 = [(SMSuggestionsHelper *)self healthKitManager];
+    healthKitManager = [(SMSuggestionsHelper *)self healthKitManager];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __43__SMSuggestionsHelper_getEmergencyHandles___block_invoke;
     v9[3] = &unk_2788C6260;
     v9[4] = self;
-    v11 = v5;
+    v11 = handlesCopy;
     v12 = a2;
     v10 = v6;
     v8 = v6;
-    [v7 fetchEmergencyContactsWithHandler:v9];
+    [healthKitManager fetchEmergencyContactsWithHandler:v9];
   }
 
   else
@@ -1896,11 +1896,11 @@ void __43__SMSuggestionsHelper_getEmergencyHandles___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)getiCloudFamilyHandles:(id)a3
+- (void)getiCloudFamilyHandles:(id)handles
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlesCopy = handles;
+  if (handlesCopy)
   {
     v6 = objc_opt_new();
     v8[0] = MEMORY[0x277D85DD0];
@@ -1910,7 +1910,7 @@ void __43__SMSuggestionsHelper_getEmergencyHandles___block_invoke_2(uint64_t a1)
     v8[4] = self;
     v11 = a2;
     v9 = v6;
-    v10 = v5;
+    v10 = handlesCopy;
     v7 = v6;
     [(SMSuggestionsHelper *)self _getFAFamilyMembersFromAAAFamilyWithHandler:v8];
   }
@@ -2070,16 +2070,16 @@ void __46__SMSuggestionsHelper_getiCloudFamilyHandles___block_invoke_2(uint64_t 
   }
 }
 
-- (id)canonicalizeHandles:(id)a3
+- (id)canonicalizeHandles:(id)handles
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlesCopy = handles;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = handlesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -2094,10 +2094,10 @@ void __46__SMSuggestionsHelper_getiCloudFamilyHandles___block_invoke_2(uint64_t 
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) canonicalizedHandle];
-        if (v10)
+        canonicalizedHandle = [*(*(&v12 + 1) + 8 * i) canonicalizedHandle];
+        if (canonicalizedHandle)
         {
-          [v4 addObject:v10];
+          [v4 addObject:canonicalizedHandle];
         }
       }
 
@@ -2110,20 +2110,20 @@ void __46__SMSuggestionsHelper_getiCloudFamilyHandles___block_invoke_2(uint64_t 
   return v4;
 }
 
-- (void)fetchNumFavoriteRecipientsWithReceiverHandles:(id)a3 handler:(id)a4
+- (void)fetchNumFavoriteRecipientsWithReceiverHandles:(id)handles handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  handlesCopy = handles;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__SMSuggestionsHelper_fetchNumFavoriteRecipientsWithReceiverHandles_handler___block_invoke;
   v11[3] = &unk_2788C9E18;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = handlesCopy;
+  v13 = handlerCopy;
   v14 = a2;
-  v9 = v7;
-  v10 = v8;
+  v9 = handlesCopy;
+  v10 = handlerCopy;
   [(SMSuggestionsHelper *)self getFavoriteContactHandles:v11];
 }
 
@@ -2174,20 +2174,20 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)fetchNumEmergencyRecipientsWithReceiverHandles:(id)a3 handler:(id)a4
+- (void)fetchNumEmergencyRecipientsWithReceiverHandles:(id)handles handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  handlesCopy = handles;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__SMSuggestionsHelper_fetchNumEmergencyRecipientsWithReceiverHandles_handler___block_invoke;
   v11[3] = &unk_2788C9E18;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = handlesCopy;
+  v13 = handlerCopy;
   v14 = a2;
-  v9 = v7;
-  v10 = v8;
+  v9 = handlesCopy;
+  v10 = handlerCopy;
   [(SMSuggestionsHelper *)self getEmergencyHandles:v11];
 }
 
@@ -2238,20 +2238,20 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)fetchNumiCloudFamilyRecipientsWithReceiverHandles:(id)a3 handler:(id)a4
+- (void)fetchNumiCloudFamilyRecipientsWithReceiverHandles:(id)handles handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  handlesCopy = handles;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__SMSuggestionsHelper_fetchNumiCloudFamilyRecipientsWithReceiverHandles_handler___block_invoke;
   v11[3] = &unk_2788C9E18;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = handlesCopy;
+  v13 = handlerCopy;
   v14 = a2;
-  v9 = v7;
-  v10 = v8;
+  v9 = handlesCopy;
+  v10 = handlerCopy;
   [(SMSuggestionsHelper *)self getiCloudFamilyHandles:v11];
 }
 
@@ -2302,30 +2302,30 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)_submitMetricForFetchMostLikelyReceiverHandlesDidComplete:(BOOL)a3 didFetchSessionConfigurations:(BOOL)a4 didFetchEmergencyContacts:(BOOL)a5 didFetchICloudFamily:(BOOL)a6 didFetchFavorites:(BOOL)a7 timeout:(double)a8
+- (id)_submitMetricForFetchMostLikelyReceiverHandlesDidComplete:(BOOL)complete didFetchSessionConfigurations:(BOOL)configurations didFetchEmergencyContacts:(BOOL)contacts didFetchICloudFamily:(BOOL)family didFetchFavorites:(BOOL)favorites timeout:(double)timeout
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  favoritesCopy = favorites;
+  familyCopy = family;
+  contactsCopy = contacts;
+  configurationsCopy = configurations;
   v25[6] = *MEMORY[0x277D85DE8];
   v24[0] = @"didComplete";
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:complete];
   v25[0] = v13;
   v24[1] = @"didFetchSessionConfigurations";
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:configurationsCopy];
   v25[1] = v14;
   v24[2] = @"didFetchEmergencyContacts";
-  v15 = [MEMORY[0x277CCABB0] numberWithBool:v11];
+  v15 = [MEMORY[0x277CCABB0] numberWithBool:contactsCopy];
   v25[2] = v15;
   v24[3] = @"didFetchICloudFamily";
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v10];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:familyCopy];
   v25[3] = v16;
   v24[4] = @"didFetchFavorites";
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:favoritesCopy];
   v25[4] = v17;
   v24[5] = @"timeout";
-  v18 = [MEMORY[0x277CCABB0] numberWithDouble:a8];
+  v18 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
   v25[5] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:6];
 
@@ -2338,20 +2338,20 @@ LABEL_12:
   return v19;
 }
 
-- (void)fetchMostLikelySessionDestinationsWithHandler:(id)a3
+- (void)fetchMostLikelySessionDestinationsWithHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __69__SMSuggestionsHelper_fetchMostLikelySessionDestinationsWithHandler___block_invoke;
     v7[3] = &unk_2788C4938;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -2368,11 +2368,11 @@ LABEL_12:
   }
 }
 
-- (void)_fetchMostLikelySessionDestinationsWithHandler:(id)a3
+- (void)_fetchMostLikelySessionDestinationsWithHandler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(SMSuggestionsHelper *)self routineEnabled])
     {
@@ -2382,7 +2382,7 @@ LABEL_12:
       v15[3] = &unk_2788C9E40;
       v15[4] = self;
       v17 = a2;
-      v16 = v5;
+      v16 = handlerCopy;
       [(SMSuggestionsHelper *)self _refreshCurrentLocationWithHandler:v15];
     }
 
@@ -2410,7 +2410,7 @@ LABEL_12:
         _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "%@, %@, authorization error, %@", buf, 0x20u);
       }
 
-      (*(v5 + 2))(v5, 0, 0, MEMORY[0x277CBEBF8], v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x277CBEBF8], v10);
     }
   }
 
@@ -2476,11 +2476,11 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
   }
 }
 
-- (void)_fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler:(id)a3
+- (void)_fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler:(id)handler
 {
   v128 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  if (v36)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = dispatch_group_create();
     *buf = 0;
@@ -2514,7 +2514,7 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
     v115[2] = 0x2020000000;
     v116 = 0;
     dispatch_group_enter(v5);
-    v8 = [(SMSuggestionsHelper *)self navigationManager];
+    navigationManager = [(SMSuggestionsHelper *)self navigationManager];
     v106[0] = MEMORY[0x277D85DD0];
     v106[1] = 3221225472;
     v106[2] = __91__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler___block_invoke;
@@ -2531,9 +2531,9 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
     v113 = v117;
     v9 = v5;
     v109 = v9;
-    [v8 fetchNavigationRouteSummaryWithHandler:v106];
+    [navigationManager fetchNavigationRouteSummaryWithHandler:v106];
     v39 = a2;
-    v40 = self;
+    selfCopy = self;
 
     v105[0] = 0;
     v105[1] = v105;
@@ -2576,13 +2576,13 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
           v94 = 0;
           ++*(v100 + 6);
           dispatch_group_enter(v9);
-          v15 = [(SMSuggestionsHelper *)v40 learnedLocationManager];
-          v16 = [v13 unsignedIntegerValue];
+          learnedLocationManager = [(SMSuggestionsHelper *)selfCopy learnedLocationManager];
+          unsignedIntegerValue = [v13 unsignedIntegerValue];
           v78[0] = MEMORY[0x277D85DD0];
           v78[1] = 3221225472;
           v78[2] = __91__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler___block_invoke_127;
           v78[3] = &unk_2788C9EE0;
-          v78[4] = v40;
+          v78[4] = selfCopy;
           v83 = &v99;
           v84 = buf;
           v85 = &v89;
@@ -2593,7 +2593,7 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
           v86 = v105;
           v87 = v103;
           v82 = v37;
-          [v15 fetchLocationsOfInterestWithPlaceType:v16 handler:v78];
+          [learnedLocationManager fetchLocationsOfInterestWithPlaceType:unsignedIntegerValue handler:v78];
 
           _Block_object_dispose(&v89, 8);
           objc_autoreleasePoolPop(v14);
@@ -2616,13 +2616,13 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
     v76[2] = 0x2020000000;
     v77 = 0;
     dispatch_group_enter(v9);
-    v17 = [(SMSuggestionsHelper *)v40 latestLocationOfTheDevice];
-    v18 = [MEMORY[0x277CBEAA8] date];
+    latestLocationOfTheDevice = [(SMSuggestionsHelper *)selfCopy latestLocationOfTheDevice];
+    date = [MEMORY[0x277CBEAA8] date];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
     v69[2] = __91__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler___block_invoke_131;
     v69[3] = &unk_2788C9F30;
-    v69[4] = v40;
+    v69[4] = selfCopy;
     v73 = v76;
     v75 = a2;
     v19 = v38;
@@ -2632,7 +2632,7 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
     v74 = &v89;
     v21 = v9;
     v72 = v21;
-    [(SMSuggestionsHelper *)v40 _getNPLOIsWithOnlyHighConfidence:0 location:v17 date:v18 handler:v69];
+    [(SMSuggestionsHelper *)selfCopy _getNPLOIsWithOnlyHighConfidence:0 location:latestLocationOfTheDevice date:date handler:v69];
 
     v67[0] = 0;
     v67[1] = v67;
@@ -2653,7 +2653,7 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
     v57[1] = 3221225472;
     v57[2] = __91__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler___block_invoke_138;
     v57[3] = &unk_2788C9FF8;
-    v57[4] = v40;
+    v57[4] = selfCopy;
     v62 = v65;
     v64 = a2;
     v25 = v19;
@@ -2665,14 +2665,14 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
     v28 = v21;
     v61 = v28;
     v63 = v67;
-    [(SMSuggestionsHelper *)v40 _getSessionConfigurationsWithOptions:v23 handler:v57];
+    [(SMSuggestionsHelper *)selfCopy _getSessionConfigurationsWithOptions:v23 handler:v57];
     v29 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithRefreshedLocationWithHandler___block_invoke_2_148;
     block[3] = &unk_2788CA048;
     v42 = v28;
-    v43 = v40;
+    v43 = selfCopy;
     v49 = &v99;
     v50 = v76;
     v51 = v67;
@@ -2685,7 +2685,7 @@ void __70__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithHandler___
     v45 = v26;
     v48 = v115;
     v46 = v25;
-    v47 = v36;
+    v47 = handlerCopy;
     v30 = v25;
     v31 = v26;
     v32 = v27;
@@ -4445,30 +4445,30 @@ void __91__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithRefreshedL
   [*(a1 + 32) _computeMostlikelySessionDestinations:*(*(*(a1 + 104) + 8) + 40) closestHome:*(*(*(a1 + 112) + 8) + 40) distanceToClosestHome:*(*(*(a1 + 128) + 8) + 40) nploisWithValidDistanceAndHighConfidence:*(a1 + 40) fenceSizeForMapItem:*(a1 + 48) placeInferences:*(a1 + 56) errors:*(*(*(a1 + 120) + 8) + 24) handler:*(a1 + 64)];
 }
 
-- (id)_submitMetricForFetchMostLikelySessionDestinationsWithRefreshedLocationDidComplete:(BOOL)a3 didFetchNavigationRouteSummary:(BOOL)a4 didFetchLOIs:(BOOL)a5 didFetchNPLOIs:(BOOL)a6 didFetchSessionConfigurations:(BOOL)a7 timeout:(double)a8
+- (id)_submitMetricForFetchMostLikelySessionDestinationsWithRefreshedLocationDidComplete:(BOOL)complete didFetchNavigationRouteSummary:(BOOL)summary didFetchLOIs:(BOOL)is didFetchNPLOIs:(BOOL)oIs didFetchSessionConfigurations:(BOOL)configurations timeout:(double)timeout
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  configurationsCopy = configurations;
+  oIsCopy = oIs;
+  isCopy = is;
+  summaryCopy = summary;
   v25[6] = *MEMORY[0x277D85DE8];
   v24[0] = @"didComplete";
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:complete];
   v25[0] = v13;
   v24[1] = @"didFetchNavigationRouteSummary";
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:summaryCopy];
   v25[1] = v14;
   v24[2] = @"didFetchLOIs";
-  v15 = [MEMORY[0x277CCABB0] numberWithBool:v11];
+  v15 = [MEMORY[0x277CCABB0] numberWithBool:isCopy];
   v25[2] = v15;
   v24[3] = @"didFetchNPLOIs";
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v10];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:oIsCopy];
   v25[3] = v16;
   v24[4] = @"didFetchSessionConfigurations";
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:configurationsCopy];
   v25[4] = v17;
   v24[5] = @"timeout";
-  v18 = [MEMORY[0x277CCABB0] numberWithDouble:a8];
+  v18 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
   v25[5] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:6];
 
@@ -4481,17 +4481,17 @@ void __91__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithRefreshedL
   return v19;
 }
 
-- (void)_computeMostlikelySessionDestinations:(id)a3 closestHome:(id)a4 distanceToClosestHome:(double)a5 nploisWithValidDistanceAndHighConfidence:(id)a6 fenceSizeForMapItem:(id)a7 placeInferences:(id)a8 errors:(id)a9 handler:(id)a10
+- (void)_computeMostlikelySessionDestinations:(id)destinations closestHome:(id)home distanceToClosestHome:(double)closestHome nploisWithValidDistanceAndHighConfidence:(id)confidence fenceSizeForMapItem:(id)item placeInferences:(id)inferences errors:(id)errors handler:(id)self0
 {
   v132 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v106 = a6;
-  v116 = a7;
-  v108 = a8;
-  v107 = a9;
-  v103 = a10;
-  if (v16)
+  destinationsCopy = destinations;
+  homeCopy = home;
+  confidenceCopy = confidence;
+  itemCopy = item;
+  inferencesCopy = inferences;
+  errorsCopy = errors;
+  handlerCopy = handler;
+  if (destinationsCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -4506,21 +4506,21 @@ void __91__SMSuggestionsHelper__fetchMostLikelySessionDestinationsWithRefreshedL
         v126 = 2112;
         v127 = v21;
         v128 = 2117;
-        v129 = v16;
+        v129 = destinationsCopy;
         _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "%@, %@, setting navigation session destination as mostLikelySessionDestination, %{sensitive}@", buf, 0x20u);
       }
     }
 
-    v22 = v16;
+    v22 = destinationsCopy;
     v23 = 3;
 LABEL_7:
     v102 = v23;
     goto LABEL_8;
   }
 
-  if (v17)
+  if (homeCopy)
   {
-    if ([SMSuggestionsHelper isValidDistance:a5])
+    if ([SMSuggestionsHelper isValidDistance:closestHome])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -4535,22 +4535,22 @@ LABEL_7:
           v126 = 2112;
           v127 = v86;
           v128 = 2117;
-          v129 = v17;
+          v129 = homeCopy;
           v130 = 2048;
-          v131 = a5;
+          closestHomeCopy = closestHome;
           _os_log_impl(&dword_2304B3000, v83, OS_LOG_TYPE_INFO, "%@, %@, setting closest home as mostLikelySessionDestination, %{sensitive}@, distance to home, %.3f", buf, 0x2Au);
         }
       }
 
-      v22 = v17;
+      v22 = homeCopy;
       v23 = 2;
       goto LABEL_7;
     }
 
-    if ([v106 count])
+    if ([confidenceCopy count])
     {
-      v87 = [v106 firstObject];
-      v88 = [SMSuggestionsHelper placeInferenceFromNPLOI:v87];
+      firstObject = [confidenceCopy firstObject];
+      v88 = [SMSuggestionsHelper placeInferenceFromNPLOI:firstObject];
 
       v22 = v88;
       if (!v22)
@@ -4561,13 +4561,13 @@ LABEL_7:
           v98 = objc_opt_class();
           v99 = NSStringFromClass(v98);
           v100 = NSStringFromSelector(a2);
-          v101 = [v106 firstObject];
+          firstObject2 = [confidenceCopy firstObject];
           *buf = 138412803;
           v125 = v99;
           v126 = 2112;
           v127 = v100;
           v128 = 2117;
-          v129 = v101;
+          v129 = firstObject2;
           _os_log_error_impl(&dword_2304B3000, v89, OS_LOG_TYPE_ERROR, "%@, %@, placeInference is nil, nploi, %{sensitive}@", buf, 0x20u);
         }
       }
@@ -4598,8 +4598,8 @@ LABEL_7:
   v102 = 0;
   v22 = 0;
 LABEL_8:
-  v24 = [v22 mapItem];
-  v25 = [v116 objectForKey:v24];
+  mapItem = [v22 mapItem];
+  v25 = [itemCopy objectForKey:mapItem];
 
   if (v25)
   {
@@ -4645,7 +4645,7 @@ LABEL_8:
       }
 
       v33 = v22;
-      [v107 addObject:v31];
+      [errorsCopy addObject:v31];
       v30 = v33;
     }
 
@@ -4678,7 +4678,7 @@ LABEL_8:
       v39 = objc_opt_class();
       v40 = NSStringFromClass(v39);
       v41 = NSStringFromSelector(a2);
-      v42 = [v108 count];
+      v42 = [inferencesCopy count];
       *buf = 138412802;
       v125 = v40;
       v126 = 2112;
@@ -4689,7 +4689,7 @@ LABEL_8:
     }
   }
 
-  v43 = [(SMSuggestionsHelper *)self _dedupePlaceInferencesWithOrder:v108];
+  v43 = [(SMSuggestionsHelper *)self _dedupePlaceInferencesWithOrder:inferencesCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v44 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -4710,8 +4710,8 @@ LABEL_8:
   }
 
   v109 = v22;
-  v104 = v17;
-  v105 = v16;
+  v104 = homeCopy;
+  v105 = destinationsCopy;
   v112 = objc_opt_new();
   v118 = 0u;
   v119 = 0u;
@@ -4755,8 +4755,8 @@ LABEL_8:
           }
         }
 
-        v60 = [v54 mapItem];
-        v25 = [v116 objectForKey:v60];
+        mapItem2 = [v54 mapItem];
+        v25 = [itemCopy objectForKey:mapItem2];
 
         v61 = v54;
         v62 = v61;
@@ -4865,42 +4865,42 @@ LABEL_56:
 
   v81 = _RTSafeArray();
   v82 = _RTMultiErrorCreate();
-  v103[2](v103, v109, v102, v112, v82);
+  handlerCopy[2](handlerCopy, v109, v102, v112, v82);
 }
 
-- (void)onAuthorizationNotification:(id)a3
+- (void)onAuthorizationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SMSuggestionsHelper_onAuthorizationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onAuthorizationNotification:(id)a3
+- (void)_onAuthorizationNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTAuthorizationManagerNotificationRoutineEnabled];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    -[SMSuggestionsHelper setRoutineEnabled:](self, "setRoutineEnabled:", [v5 enabled]);
+    -[SMSuggestionsHelper setRoutineEnabled:](self, "setRoutineEnabled:", [notificationCopy enabled]);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(SMSuggestionsHelper *)self routineEnabled];
+        routineEnabled = [(SMSuggestionsHelper *)self routineEnabled];
         v11 = @"NO";
-        if (v10)
+        if (routineEnabled)
         {
           v11 = @"YES";
         }
@@ -4920,11 +4920,11 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v12 = NSStringFromSelector(a2);
-      v13 = [v5 name];
+      name2 = [notificationCopy name];
       v14 = 138412546;
       v15 = v12;
       v16 = 2112;
-      v17 = v13;
+      v17 = name2;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, unhandled notification, %@", &v14, 0x16u);
     }
 
@@ -4932,23 +4932,23 @@ LABEL_10:
   }
 }
 
-- (void)refreshCurrentLocationWithHandler:(id)a3
+- (void)refreshCurrentLocationWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__SMSuggestionsHelper_refreshCurrentLocationWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_refreshCurrentLocationWithHandler:(id)a3
+- (void)_refreshCurrentLocationWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -4964,7 +4964,7 @@ LABEL_10:
   v19 = 0;
   v7 = [RTLocationRequestOptions alloc];
   v8 = [(RTLocationRequestOptions *)v7 initWithDesiredAccuracy:1 horizontalAccuracy:1 maxAge:*MEMORY[0x277CE4208] yieldLastLocation:100.0 timeout:60.0 fallback:4.0 fallbackHorizontalAccuracy:100.0 fallbackMaxAge:3600.0];
-  v9 = [(SMSuggestionsHelper *)self locationManager];
+  locationManager = [(SMSuggestionsHelper *)self locationManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__SMSuggestionsHelper__refreshCurrentLocationWithHandler___block_invoke;
@@ -4975,9 +4975,9 @@ LABEL_10:
   v17 = a2;
   v10 = v8;
   v13 = v10;
-  v11 = v5;
+  v11 = handlerCopy;
   v14 = v11;
-  [v9 fetchCurrentLocationWithOptions:v10 handler:v12];
+  [locationManager fetchCurrentLocationWithOptions:v10 handler:v12];
 
   _Block_object_dispose(v18, 8);
   objc_autoreleasePoolPop(v6);
@@ -5100,29 +5100,29 @@ void __58__SMSuggestionsHelper__refreshCurrentLocationWithHandler___block_invoke
   (*(v27 + 16))(v27, v28, *(a1 + 32));
 }
 
-- (void)getSessionConfigurationsWithOptions:(id)a3 handler:(id)a4
+- (void)getSessionConfigurationsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__SMSuggestionsHelper_getSessionConfigurationsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_getSessionConfigurationsWithOptions:(id)a3 handler:(id)a4
+- (void)_getSessionConfigurationsWithOptions:(id)options handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!optionsCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -5134,22 +5134,22 @@ void __58__SMSuggestionsHelper__refreshCurrentLocationWithHandler___block_invoke
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options (in %s:%d)", buf, 0x12u);
     }
 
-    v10 = [MEMORY[0x277CBEA60] array];
-    v8[2](v8, v10, 0);
+    array = [MEMORY[0x277CBEA60] array];
+    handlerCopy[2](handlerCopy, array, 0);
   }
 
-  v11 = [(SMSuggestionsHelper *)self sessionStore];
+  sessionStore = [(SMSuggestionsHelper *)self sessionStore];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__SMSuggestionsHelper__getSessionConfigurationsWithOptions_handler___block_invoke;
   v14[3] = &unk_2788C5A70;
   v14[4] = self;
-  v15 = v7;
-  v16 = v8;
+  v15 = optionsCopy;
+  v16 = handlerCopy;
   v17 = a2;
-  v12 = v8;
-  v13 = v7;
-  [v11 fetchSessionConfigurationsWithOptions:v13 handler:v14];
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  [sessionStore fetchSessionConfigurationsWithOptions:v13 handler:v14];
 }
 
 void __68__SMSuggestionsHelper__getSessionConfigurationsWithOptions_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5185,32 +5185,32 @@ void __68__SMSuggestionsHelper__getSessionConfigurationsWithOptions_handler___bl
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)getNPLOIsWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 handler:(id)a6
+- (void)getNPLOIsWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date handler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  dateCopy = date;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__SMSuggestionsHelper_getNPLOIsWithOnlyHighConfidence_location_date_handler___block_invoke;
   block[3] = &unk_2788C6440;
-  v21 = a3;
+  confidenceCopy = confidence;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = locationCopy;
+  v19 = dateCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dateCopy;
+  v16 = locationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_getNPLOIsWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 handler:(id)a6
+- (void)_getNPLOIsWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date handler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  locationCopy = location;
+  dateCopy = date;
+  handlerCopy = handler;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -5222,22 +5222,22 @@ void __68__SMSuggestionsHelper__getSessionConfigurationsWithOptions_handler___bl
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__61;
   v24[4] = __Block_byref_object_dispose__61;
-  v25 = [MEMORY[0x277CBEA60] array];
-  v14 = [(SMSuggestionsHelper *)self deviceLocationPredictor];
+  array = [MEMORY[0x277CBEA60] array];
+  deviceLocationPredictor = [(SMSuggestionsHelper *)self deviceLocationPredictor];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __78__SMSuggestionsHelper__getNPLOIsWithOnlyHighConfidence_location_date_handler___block_invoke;
   v17[3] = &unk_2788CA0E0;
   v20 = v24;
   v21 = v26;
-  v15 = v13;
+  v15 = handlerCopy;
   v19 = v15;
   v17[4] = self;
   v22 = a2;
-  v23 = a3;
-  v16 = v11;
+  confidenceCopy = confidence;
+  v16 = locationCopy;
   v18 = v16;
-  [v14 fetchNextPredictedLocationsOfInterestFromLocation:v16 startDate:v12 timeInterval:v17 handler:3600.0];
+  [deviceLocationPredictor fetchNextPredictedLocationsOfInterestFromLocation:v16 startDate:dateCopy timeInterval:v17 handler:3600.0];
 
   _Block_object_dispose(v24, 8);
   _Block_object_dispose(v26, 8);
@@ -5330,11 +5330,11 @@ uint64_t __78__SMSuggestionsHelper__getNPLOIsWithOnlyHighConfidence_location_dat
   return v6 & 1;
 }
 
-+ (id)getSMHandlesFromRTContacts:(id)a3 error:(id *)a4
++ (id)getSMHandlesFromRTContacts:(id)contacts error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  contactsCopy = contacts;
+  if (!contactsCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -5352,7 +5352,7 @@ uint64_t __78__SMSuggestionsHelper__getNPLOIsWithOnlyHighConfidence_location_dat
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v7;
+  v10 = contactsCopy;
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v11)
   {
@@ -5375,10 +5375,10 @@ uint64_t __78__SMSuggestionsHelper__getNPLOIsWithOnlyHighConfidence_location_dat
         v17 = *(*(&v32 + 1) + 8 * v15);
         v18 = objc_autoreleasePoolPush();
         v31 = v16;
-        v19 = [a1 getSMHandlesFromRTContact:v17 error:&v31];
+        v19 = [self getSMHandlesFromRTContact:v17 error:&v31];
         v13 = v31;
 
-        if (a4 && v13)
+        if (error && v13)
         {
           v20 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -5396,7 +5396,7 @@ uint64_t __78__SMSuggestionsHelper__getNPLOIsWithOnlyHighConfidence_location_dat
           }
 
           v21 = v13;
-          *a4 = v13;
+          *error = v13;
           v22 = v9;
 
           objc_autoreleasePoolPop(v18);
@@ -5429,10 +5429,10 @@ uint64_t __78__SMSuggestionsHelper__getNPLOIsWithOnlyHighConfidence_location_dat
     v13 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v23 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v24 = v9;
@@ -5441,11 +5441,11 @@ LABEL_22:
   return v9;
 }
 
-+ (id)getSMHandlesFromRTContact:(id)a3 error:(id *)a4
++ (id)getSMHandlesFromRTContact:(id)contact error:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -5463,9 +5463,9 @@ LABEL_22:
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v37 = v4;
-  v7 = [v4 phoneNumbers];
-  v8 = [v7 countByEnumeratingWithState:&v45 objects:v56 count:16];
+  v37 = contactCopy;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v8 = [phoneNumbers countByEnumeratingWithState:&v45 objects:v56 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5477,7 +5477,7 @@ LABEL_22:
       {
         if (*v46 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(phoneNumbers);
         }
 
         v12 = *(*(&v45 + 1) + 8 * v11);
@@ -5486,15 +5486,15 @@ LABEL_22:
         if (v14)
         {
           v15 = objc_alloc(MEMORY[0x277D4AAE8]);
-          v16 = [MEMORY[0x277CBEA60] array];
-          v17 = [v15 initWithPrimaryHandle:v14 secondaryHandles:v16];
+          array = [MEMORY[0x277CBEA60] array];
+          v17 = [v15 initWithPrimaryHandle:v14 secondaryHandles:array];
           [v6 addObject:v17];
         }
 
         else
         {
-          v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          array = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+          if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
           {
             v18 = objc_opt_class();
             v38 = NSStringFromClass(v18);
@@ -5506,7 +5506,7 @@ LABEL_22:
             v20 = v19;
             v54 = 2112;
             v55 = v12;
-            _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
+            _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
           }
         }
 
@@ -5515,7 +5515,7 @@ LABEL_22:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v45 objects:v56 count:16];
+      v9 = [phoneNumbers countByEnumeratingWithState:&v45 objects:v56 count:16];
     }
 
     while (v9);
@@ -5525,8 +5525,8 @@ LABEL_22:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v21 = [v37 emailAddresses];
-  v22 = [v21 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  emailAddresses = [v37 emailAddresses];
+  v22 = [emailAddresses countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v22)
   {
     v23 = v22;
@@ -5538,7 +5538,7 @@ LABEL_22:
       {
         if (*v42 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v26 = *(*(&v41 + 1) + 8 * v25);
@@ -5547,15 +5547,15 @@ LABEL_22:
         if (v28)
         {
           v29 = objc_alloc(MEMORY[0x277D4AAE8]);
-          v30 = [MEMORY[0x277CBEA60] array];
-          v31 = [v29 initWithPrimaryHandle:v28 secondaryHandles:v30];
+          array2 = [MEMORY[0x277CBEA60] array];
+          v31 = [v29 initWithPrimaryHandle:v28 secondaryHandles:array2];
           [v6 addObject:v31];
         }
 
         else
         {
-          v30 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-          if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+          array2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+          if (os_log_type_enabled(array2, OS_LOG_TYPE_ERROR))
           {
             v32 = objc_opt_class();
             v39 = NSStringFromClass(v32);
@@ -5567,7 +5567,7 @@ LABEL_22:
             v34 = v33;
             v54 = 2112;
             v55 = v26;
-            _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
+            _os_log_error_impl(&dword_2304B3000, array2, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
           }
         }
 
@@ -5576,26 +5576,26 @@ LABEL_22:
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v23 = [emailAddresses countByEnumeratingWithState:&v41 objects:v49 count:16];
     }
 
     while (v23);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return v6;
 }
 
-+ (id)getSMHandlesFromFAFamilyMembers:(id)a3 error:(id *)a4
++ (id)getSMHandlesFromFAFamilyMembers:(id)members error:(id *)error
 {
-  v57 = a4;
+  errorCopy = error;
   v87 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  membersCopy = members;
+  if (!membersCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -5613,7 +5613,7 @@ LABEL_22:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v4;
+  obj = membersCopy;
   v7 = [obj countByEnumeratingWithState:&v74 objects:v86 count:16];
   if (v7)
   {
@@ -5641,8 +5641,8 @@ LABEL_22:
           v63 = v13;
           if (v13)
           {
-            v14 = [v13 phoneNumbers];
-            v15 = [v14 valueForKey:@"value"];
+            phoneNumbers = [v13 phoneNumbers];
+            v15 = [phoneNumbers valueForKey:@"value"];
 
             v72 = 0u;
             v73 = 0u;
@@ -5664,38 +5664,38 @@ LABEL_22:
                   }
 
                   v21 = *(*(&v70 + 1) + 8 * i);
-                  v22 = [v21 stringValue];
+                  stringValue = [v21 stringValue];
 
-                  if (v22)
+                  if (stringValue)
                   {
                     v23 = MEMORY[0x277D1A968];
-                    v24 = [v21 stringValue];
-                    v25 = [v23 validateAndCleanupID:v24];
+                    stringValue2 = [v21 stringValue];
+                    v25 = [v23 validateAndCleanupID:stringValue2];
 
                     if (v25)
                     {
                       v26 = objc_alloc(MEMORY[0x277D4AAE8]);
-                      v27 = [MEMORY[0x277CBEA60] array];
-                      v28 = [v26 initWithPrimaryHandle:v25 secondaryHandles:v27];
+                      array = [MEMORY[0x277CBEA60] array];
+                      v28 = [v26 initWithPrimaryHandle:v25 secondaryHandles:array];
                       [v6 addObject:v28];
                     }
 
                     else
                     {
-                      v27 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-                      if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+                      array = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+                      if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
                       {
                         v29 = objc_opt_class();
                         v30 = NSStringFromClass(v29);
                         v31 = NSStringFromSelector(a2);
-                        v32 = [v21 stringValue];
+                        stringValue3 = [v21 stringValue];
                         *buf = 138412802;
                         v81 = v30;
                         v82 = 2112;
                         v83 = v31;
                         v84 = 2112;
-                        v85 = v32;
-                        _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
+                        v85 = stringValue3;
+                        _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
                       }
                     }
                   }
@@ -5707,15 +5707,15 @@ LABEL_22:
               while (v18);
             }
 
-            v33 = [v63 emailAddresses];
-            v34 = [v33 valueForKey:@"value"];
+            emailAddresses = [v63 emailAddresses];
+            v34 = [emailAddresses valueForKey:@"value"];
 
             v68 = 0u;
             v69 = 0u;
             v66 = 0u;
             v67 = 0u;
-            v35 = v34;
-            v36 = [v35 countByEnumeratingWithState:&v66 objects:v78 count:16];
+            array3 = v34;
+            v36 = [array3 countByEnumeratingWithState:&v66 objects:v78 count:16];
             if (v36)
             {
               v37 = v36;
@@ -5726,7 +5726,7 @@ LABEL_22:
                 {
                   if (*v67 != v38)
                   {
-                    objc_enumerationMutation(v35);
+                    objc_enumerationMutation(array3);
                   }
 
                   v40 = *(*(&v66 + 1) + 8 * j);
@@ -5736,15 +5736,15 @@ LABEL_22:
                     if (v41)
                     {
                       v42 = objc_alloc(MEMORY[0x277D4AAE8]);
-                      v43 = [MEMORY[0x277CBEA60] array];
-                      v44 = [v42 initWithPrimaryHandle:v41 secondaryHandles:v43];
+                      array2 = [MEMORY[0x277CBEA60] array];
+                      v44 = [v42 initWithPrimaryHandle:v41 secondaryHandles:array2];
                       [v6 addObject:v44];
                     }
 
                     else
                     {
-                      v43 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-                      if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+                      array2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+                      if (os_log_type_enabled(array2, OS_LOG_TYPE_ERROR))
                       {
                         v45 = objc_opt_class();
                         v64 = NSStringFromClass(v45);
@@ -5756,13 +5756,13 @@ LABEL_22:
                         v47 = v46;
                         v84 = 2112;
                         v85 = v40;
-                        _os_log_error_impl(&dword_2304B3000, v43, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
+                        _os_log_error_impl(&dword_2304B3000, array2, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
                       }
                     }
                   }
                 }
 
-                v37 = [v35 countByEnumeratingWithState:&v66 objects:v78 count:16];
+                v37 = [array3 countByEnumeratingWithState:&v66 objects:v78 count:16];
               }
 
               while (v37);
@@ -5775,33 +5775,33 @@ LABEL_22:
           else
           {
             v48 = MEMORY[0x277D1A968];
-            v49 = [v11 appleID];
-            v16 = [v48 validateAndCleanupID:v49];
+            appleID = [v11 appleID];
+            v16 = [v48 validateAndCleanupID:appleID];
 
             if (v16)
             {
               v50 = objc_alloc(MEMORY[0x277D4AAE8]);
-              v35 = [MEMORY[0x277CBEA60] array];
-              v51 = [v50 initWithPrimaryHandle:v16 secondaryHandles:v35];
+              array3 = [MEMORY[0x277CBEA60] array];
+              v51 = [v50 initWithPrimaryHandle:v16 secondaryHandles:array3];
               [v6 addObject:v51];
             }
 
             else
             {
-              v35 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-              if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+              array3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+              if (os_log_type_enabled(array3, OS_LOG_TYPE_ERROR))
               {
                 v52 = objc_opt_class();
                 v53 = NSStringFromClass(v52);
                 v54 = NSStringFromSelector(a2);
-                v55 = [v11 appleID];
+                appleID2 = [v11 appleID];
                 *buf = 138412802;
                 v81 = v53;
                 v82 = 2112;
                 v83 = v54;
                 v84 = 2112;
-                v85 = v55;
-                _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
+                v85 = appleID2;
+                _os_log_error_impl(&dword_2304B3000, array3, OS_LOG_TYPE_ERROR, "%@, %@, failed to sanitize handle, %@", buf, 0x20u);
               }
 
               v16 = 0;
@@ -5823,45 +5823,45 @@ LABEL_22:
     while (v8);
   }
 
-  if (v57)
+  if (errorCopy)
   {
-    *v57 = 0;
+    *errorCopy = 0;
   }
 
   return v6;
 }
 
-+ (id)placeInferenceFromNPLOI:(id)a3
++ (id)placeInferenceFromNPLOI:(id)i
 {
   v3 = MEMORY[0x277D011D8];
-  v4 = a3;
+  iCopy = i;
   v19 = [v3 alloc];
-  v20 = [v4 locationOfInterest];
-  v5 = [v20 mapItem];
-  v6 = [v4 locationOfInterest];
-  v7 = +[RTPlaceInferenceManager userSpecificPlaceTypeFromLocationOfInterestType:](RTPlaceInferenceManager, "userSpecificPlaceTypeFromLocationOfInterestType:", [v6 type]);
-  v8 = [v4 locationOfInterest];
-  v9 = +[RTPlaceInferenceManager userSpecificPlaceTypeSourceFromLocationOfInterestTypeSource:](RTPlaceInferenceManager, "userSpecificPlaceTypeSourceFromLocationOfInterestTypeSource:", [v8 typeSource]);
-  v10 = [v4 locationOfInterest];
-  v11 = [v10 location];
-  v12 = [v4 locationOfInterest];
-  [v12 confidence];
+  locationOfInterest = [iCopy locationOfInterest];
+  mapItem = [locationOfInterest mapItem];
+  locationOfInterest2 = [iCopy locationOfInterest];
+  v7 = +[RTPlaceInferenceManager userSpecificPlaceTypeFromLocationOfInterestType:](RTPlaceInferenceManager, "userSpecificPlaceTypeFromLocationOfInterestType:", [locationOfInterest2 type]);
+  locationOfInterest3 = [iCopy locationOfInterest];
+  v9 = +[RTPlaceInferenceManager userSpecificPlaceTypeSourceFromLocationOfInterestTypeSource:](RTPlaceInferenceManager, "userSpecificPlaceTypeSourceFromLocationOfInterestTypeSource:", [locationOfInterest3 typeSource]);
+  locationOfInterest4 = [iCopy locationOfInterest];
+  location = [locationOfInterest4 location];
+  locationOfInterest5 = [iCopy locationOfInterest];
+  [locationOfInterest5 confidence];
   v14 = v13;
-  v15 = [v4 locationOfInterest];
+  locationOfInterest6 = [iCopy locationOfInterest];
 
-  v16 = [v15 identifier];
-  v17 = [v19 initWithMapItem:v5 userType:v7 userTypeSource:v9 placeType:0 referenceLocation:v11 confidence:v16 loiIdentifier:v14];
+  identifier = [locationOfInterest6 identifier];
+  v17 = [v19 initWithMapItem:mapItem userType:v7 userTypeSource:v9 placeType:0 referenceLocation:location confidence:identifier loiIdentifier:v14];
 
   return v17;
 }
 
-+ (id)createMasqueradingReferenceLocationFromFenceInfo:(id)a3 placeInference:(id)a4 error:(id *)a5
++ (id)createMasqueradingReferenceLocationFromFenceInfo:(id)info placeInference:(id)inference error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  infoCopy = info;
+  inferenceCopy = inference;
+  v10 = inferenceCopy;
+  if (!infoCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -5870,7 +5870,7 @@ LABEL_22:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fenceInfo", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = @"fenceInfo";
       goto LABEL_16;
@@ -5879,7 +5879,7 @@ LABEL_22:
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!inferenceCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -5888,7 +5888,7 @@ LABEL_22:
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: placeInference", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = @"placeInference";
       goto LABEL_16;
@@ -5899,7 +5899,7 @@ LABEL_17:
     goto LABEL_28;
   }
 
-  [v8 fenceRadius];
+  [infoCopy fenceRadius];
   if (v11 < 0.0)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -5909,12 +5909,12 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fenceInfo.fenceRadius >= 0", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = @"fenceInfo.fenceRadius >= 0";
 LABEL_16:
       _RTErrorInvalidParameterCreate(v13);
-      *a5 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_28;
     }
 
@@ -5929,9 +5929,9 @@ LABEL_16:
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
       v20 = NSStringFromSelector(a2);
-      [v8 fenceRadius];
+      [infoCopy fenceRadius];
       v22 = v21;
-      v23 = [v8 date];
+      date = [infoCopy date];
       *buf = 138413315;
       v46 = v19;
       v47 = 2112;
@@ -5941,25 +5941,25 @@ LABEL_16:
       v51 = 2048;
       v52 = v22;
       v53 = 2112;
-      v54 = v23;
+      v54 = date;
       _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@, %@, adjusting place inference, %{sensitive}@, with fence radius, %f, from session configuration date, %@", buf, 0x34u);
     }
   }
 
-  [v8 fenceRadius];
+  [infoCopy fenceRadius];
   v25 = v24;
-  v26 = [v10 referenceLocation];
+  referenceLocation = [v10 referenceLocation];
   v44 = 0;
-  v27 = [SMSuggestionsHelper createMasqueradingReferenceLocationFromFenceRadius:v26 location:&v44 error:v25];
+  v27 = [SMSuggestionsHelper createMasqueradingReferenceLocationFromFenceRadius:referenceLocation location:&v44 error:v25];
   v28 = v44;
 
   if (v28)
   {
-    if (a5)
+    if (error)
     {
       v29 = v28;
       v16 = 0;
-      *a5 = v28;
+      *error = v28;
     }
 
     else
@@ -5971,19 +5971,19 @@ LABEL_16:
   else
   {
     v30 = objc_alloc(MEMORY[0x277D011D8]);
-    v31 = [v10 mapItem];
-    v32 = [v10 finerGranularityMapItem];
-    v43 = [v10 userType];
-    v33 = [v10 userTypeSource];
-    v34 = [v10 placeType];
+    mapItem = [v10 mapItem];
+    finerGranularityMapItem = [v10 finerGranularityMapItem];
+    userType = [v10 userType];
+    userTypeSource = [v10 userTypeSource];
+    placeType = [v10 placeType];
     [v10 confidence];
     v36 = v35;
     [v10 finerGranularityMapItemConfidence];
     v38 = v37;
-    v39 = [v10 loiIdentifier];
+    loiIdentifier = [v10 loiIdentifier];
     v40 = v30;
-    v41 = v31;
-    v16 = [v40 initWithMapItem:v31 finerGranularityMapItem:v32 userType:v43 userTypeSource:v33 placeType:v34 referenceLocation:v27 confidence:v36 finerGranularityMapItemConfidence:v38 loiIdentifier:v39];
+    v41 = mapItem;
+    v16 = [v40 initWithMapItem:mapItem finerGranularityMapItem:finerGranularityMapItem userType:userType userTypeSource:userTypeSource placeType:placeType referenceLocation:v27 confidence:v36 finerGranularityMapItemConfidence:v38 loiIdentifier:loiIdentifier];
   }
 
 LABEL_28:
@@ -5991,11 +5991,11 @@ LABEL_28:
   return v16;
 }
 
-+ (id)createMasqueradingReferenceLocationFromFenceRadius:(double)a3 location:(id)a4 error:(id *)a5
++ (id)createMasqueradingReferenceLocationFromFenceRadius:(double)radius location:(id)location error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (!v8)
+  locationCopy = location;
+  if (!locationCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -6004,7 +6004,7 @@ LABEL_28:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location", &v24, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v10 = @"location";
       goto LABEL_11;
@@ -6013,7 +6013,7 @@ LABEL_28:
     goto LABEL_16;
   }
 
-  if (a3 < 0.0)
+  if (radius < 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -6022,12 +6022,12 @@ LABEL_28:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fenceRadius >= 0", &v24, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v10 = @"fenceRadius >= 0";
 LABEL_11:
       _RTErrorInvalidParameterCreate(v10);
-      *a5 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_17;
     }
 
@@ -6037,12 +6037,12 @@ LABEL_16:
   }
 
   v13 = objc_alloc(MEMORY[0x277D01160]);
-  [v8 latitude];
+  [locationCopy latitude];
   v15 = v14;
-  [v8 longitude];
+  [locationCopy longitude];
   v17 = v16;
-  v18 = [v8 date];
-  v12 = [v13 initWithLatitude:v18 longitude:objc_msgSend(v8 horizontalUncertainty:"referenceFrame") date:v15 referenceFrame:{v17, a3}];
+  date = [locationCopy date];
+  v12 = [v13 initWithLatitude:date longitude:objc_msgSend(locationCopy horizontalUncertainty:"referenceFrame") date:v15 referenceFrame:{v17, radius}];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -6067,16 +6067,16 @@ LABEL_17:
   return v12;
 }
 
-+ (id)dedupeSessionConfigurations:(id)a3
++ (id)dedupeSessionConfigurations:(id)configurations
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v3;
+  obj = configurationsCopy;
   v5 = [obj countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v5)
   {
@@ -6099,24 +6099,24 @@ LABEL_17:
 
         v10 = *(*(&v40 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 destination];
-        v13 = [v12 destinationMapItem];
+        destination = [v10 destination];
+        destinationMapItem = [destination destinationMapItem];
 
-        if (!v13)
+        if (!destinationMapItem)
         {
-          v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+          destination3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+          if (os_log_type_enabled(destination3, OS_LOG_TYPE_ERROR))
           {
             v25 = objc_opt_class();
-            v26 = NSStringFromClass(v25);
+            destinationMapItem3 = NSStringFromClass(v25);
             v27 = NSStringFromSelector(a2);
             *buf = v30;
-            v45 = v26;
+            v45 = destinationMapItem3;
             v46 = 2112;
             v47 = v27;
             v48 = 2112;
             v49 = v10;
-            _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "%@, %@, session configuration doesn't have destination map item, %@", buf, 0x20u);
+            _os_log_error_impl(&dword_2304B3000, destination3, OS_LOG_TYPE_ERROR, "%@, %@, session configuration doesn't have destination map item, %@", buf, 0x20u);
 
             goto LABEL_14;
           }
@@ -6126,31 +6126,31 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v14 = [v10 destination];
-        v15 = [v14 destinationMapItem];
-        v16 = [v4 objectForKey:v15];
+        destination2 = [v10 destination];
+        destinationMapItem2 = [destination2 destinationMapItem];
+        v16 = [v4 objectForKey:destinationMapItem2];
         if (!v16)
         {
 
 LABEL_13:
-          v24 = [v10 destination];
-          v26 = [v24 destinationMapItem];
-          [v4 setObject:v10 forKeyedSubscript:v26];
+          destination3 = [v10 destination];
+          destinationMapItem3 = [destination3 destinationMapItem];
+          [v4 setObject:v10 forKeyedSubscript:destinationMapItem3];
 LABEL_14:
 
           goto LABEL_15;
         }
 
         v17 = v16;
-        v39 = [v10 destination];
-        v38 = [v39 destinationMapItem];
-        v18 = [v4 objectForKey:v38];
-        v19 = [v18 sessionStartDate];
-        v20 = [v10 sessionStartDate];
-        [v19 laterDate:v20];
+        destination4 = [v10 destination];
+        destinationMapItem4 = [destination4 destinationMapItem];
+        v18 = [v4 objectForKey:destinationMapItem4];
+        sessionStartDate = [v18 sessionStartDate];
+        sessionStartDate2 = [v10 sessionStartDate];
+        [sessionStartDate laterDate:sessionStartDate2];
         v22 = v21 = v11;
         [v10 sessionStartDate];
-        v23 = v37 = v14;
+        v23 = v37 = destination2;
         v36 = [v22 isEqualToDate:v23];
 
         v11 = v21;
@@ -6176,44 +6176,44 @@ LABEL_16:
     while (v7);
   }
 
-  v28 = [v4 allValues];
+  allValues = [v4 allValues];
 
-  return v28;
+  return allValues;
 }
 
-- (id)_placeInferenceFromLOI:(id)a3
+- (id)_placeInferenceFromLOI:(id)i
 {
   v3 = MEMORY[0x277D011D8];
-  v4 = a3;
+  iCopy = i;
   v18 = [v3 alloc];
-  v19 = [v4 place];
-  v5 = [v19 mapItem];
-  v6 = [v4 place];
-  v7 = +[RTPlaceInferenceManager userSpecificPlaceTypeFromLearnedPlaceType:](RTPlaceInferenceManager, "userSpecificPlaceTypeFromLearnedPlaceType:", [v6 type]);
-  v8 = [v4 place];
-  v9 = +[RTPlaceInferenceManager userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:](RTPlaceInferenceManager, "userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:", [v8 typeSource]);
-  v10 = [v4 location];
-  v11 = [v10 location];
-  v12 = [v4 location];
-  [v12 confidence];
+  place = [iCopy place];
+  mapItem = [place mapItem];
+  place2 = [iCopy place];
+  v7 = +[RTPlaceInferenceManager userSpecificPlaceTypeFromLearnedPlaceType:](RTPlaceInferenceManager, "userSpecificPlaceTypeFromLearnedPlaceType:", [place2 type]);
+  place3 = [iCopy place];
+  v9 = +[RTPlaceInferenceManager userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:](RTPlaceInferenceManager, "userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:", [place3 typeSource]);
+  location = [iCopy location];
+  v10Location = [location location];
+  location2 = [iCopy location];
+  [location2 confidence];
   v14 = v13;
-  v15 = [v4 identifier];
+  identifier = [iCopy identifier];
 
-  v16 = [v18 initWithMapItem:v5 userType:v7 userTypeSource:v9 placeType:0 referenceLocation:v11 confidence:v15 loiIdentifier:v14];
+  v16 = [v18 initWithMapItem:mapItem userType:v7 userTypeSource:v9 placeType:0 referenceLocation:v10Location confidence:identifier loiIdentifier:v14];
 
   return v16;
 }
 
-- (id)_dedupePlaceInferencesWithOrder:(id)a3
+- (id)_dedupePlaceInferencesWithOrder:(id)order
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  orderCopy = order;
   v4 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v3;
+  v5 = orderCopy;
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v6)
   {
@@ -6231,26 +6231,26 @@ LABEL_16:
 
         v10 = *(*(&v22 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 loiIdentifier];
+        loiIdentifier = [v10 loiIdentifier];
 
-        if (v12)
+        if (loiIdentifier)
         {
-          v13 = [v10 loiIdentifier];
-          v14 = [v4 objectForKey:v13];
+          loiIdentifier2 = [v10 loiIdentifier];
+          v14 = [v4 objectForKey:loiIdentifier2];
 
           if (v14)
           {
             goto LABEL_12;
           }
 
-          v15 = [v10 loiIdentifier];
-          [v4 setObject:v10 forKeyedSubscript:v15];
+          loiIdentifier3 = [v10 loiIdentifier];
+          [v4 setObject:v10 forKeyedSubscript:loiIdentifier3];
         }
 
         else
         {
-          v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+          loiIdentifier3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+          if (os_log_type_enabled(loiIdentifier3, OS_LOG_TYPE_ERROR))
           {
             v16 = objc_opt_class();
             v17 = NSStringFromClass(v16);
@@ -6261,7 +6261,7 @@ LABEL_16:
             v29 = v18;
             v30 = 2112;
             v31 = v10;
-            _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "%@, %@, place inference doesn't have LOI identifier, %@", buf, 0x20u);
+            _os_log_error_impl(&dword_2304B3000, loiIdentifier3, OS_LOG_TYPE_ERROR, "%@, %@, place inference doesn't have LOI identifier, %@", buf, 0x20u);
           }
         }
 
@@ -6277,9 +6277,9 @@ LABEL_12:
     while (v7);
   }
 
-  v19 = [v4 allValues];
+  allValues = [v4 allValues];
 
-  return v19;
+  return allValues;
 }
 
 @end

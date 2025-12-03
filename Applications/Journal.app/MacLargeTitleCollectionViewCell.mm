@@ -1,12 +1,12 @@
 @interface MacLargeTitleCollectionViewCell
-- (_TtC7Journal31MacLargeTitleCollectionViewCell)initWithCoder:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC7Journal31MacLargeTitleCollectionViewCell)initWithCoder:(id)coder;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)layoutSubviews;
 @end
 
 @implementation MacLargeTitleCollectionViewCell
 
-- (_TtC7Journal31MacLargeTitleCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal31MacLargeTitleCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC7Journal31MacLargeTitleCollectionViewCell_navigationItemObserver);
   *v4 = 0u;
@@ -22,14 +22,14 @@
   return 0;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100108AB4(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -37,7 +37,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100109264();
 }
 

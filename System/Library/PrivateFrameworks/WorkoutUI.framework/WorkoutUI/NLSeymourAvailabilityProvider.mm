@@ -1,11 +1,11 @@
 @interface NLSeymourAvailabilityProvider
 - (NLSeymourAvailabilityProvider)init;
-- (NLSeymourAvailabilityProvider)initWithDependenciesWrapper:(id)a3;
+- (NLSeymourAvailabilityProvider)initWithDependenciesWrapper:(id)wrapper;
 - (id)observers;
 - (int64_t)availability;
 - (void)notifyObservers;
-- (void)setAvailability:(int64_t)a3;
-- (void)setObservers:(id)a3;
+- (void)setAvailability:(int64_t)availability;
+- (void)setObservers:(id)observers;
 - (void)update;
 @end
 
@@ -18,11 +18,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAvailability:(int64_t)a3
+- (void)setAvailability:(int64_t)availability
 {
   v5 = OBJC_IVAR___NLSeymourAvailabilityProvider_availability;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = availability;
 }
 
 - (id)observers
@@ -32,16 +32,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setObservers:(id)a3
+- (void)setObservers:(id)observers
 {
   v5 = OBJC_IVAR___NLSeymourAvailabilityProvider_observers;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = observers;
+  observersCopy = observers;
 }
 
-- (NLSeymourAvailabilityProvider)initWithDependenciesWrapper:(id)a3
+- (NLSeymourAvailabilityProvider)initWithDependenciesWrapper:(id)wrapper
 {
   v3 = objc_allocWithZone(type metadata accessor for SeymourAvailabilityProvider());
 
@@ -60,13 +60,13 @@
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   SeymourAvailabilityProvider.update()();
 }
 
 - (void)notifyObservers
 {
-  v2 = self;
+  selfCopy = self;
   SeymourAvailabilityProvider.notifyObservers()();
 }
 

@@ -1,8 +1,8 @@
 @interface MFDOpenComposeDelegateConfigurationStore
 + (MFDOpenComposeDelegateConfigurationStore)sharedStore;
 - (id)_init;
-- (id)consumeConfigurationWithIdentifier:(id)a3;
-- (void)registerConfiguration:(id)a3;
+- (id)consumeConfigurationWithIdentifier:(id)identifier;
+- (void)registerConfiguration:(id)configuration;
 @end
 
 @implementation MFDOpenComposeDelegateConfigurationStore
@@ -26,9 +26,9 @@
   return [(MFDOpenComposeDelegateConfigurationStore *)&v3 init];
 }
 
-- (void)registerConfiguration:(id)a3
+- (void)registerConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_lock);
   configurations = self->_configurations;
   if (!configurations)
@@ -40,18 +40,18 @@
     configurations = self->_configurations;
   }
 
-  v7 = [v8 identifier];
-  [(NSMutableDictionary *)configurations setObject:v8 forKeyedSubscript:v7];
+  identifier = [configurationCopy identifier];
+  [(NSMutableDictionary *)configurations setObject:configurationCopy forKeyedSubscript:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)consumeConfigurationWithIdentifier:(id)a3
+- (id)consumeConfigurationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_configurations objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_configurations setObject:0 forKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_configurations objectForKeyedSubscript:identifierCopy];
+  [(NSMutableDictionary *)self->_configurations setObject:0 forKeyedSubscript:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;

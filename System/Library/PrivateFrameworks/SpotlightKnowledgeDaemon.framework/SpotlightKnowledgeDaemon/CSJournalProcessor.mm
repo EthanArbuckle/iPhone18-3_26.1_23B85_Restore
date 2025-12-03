@@ -1,12 +1,12 @@
 @interface CSJournalProcessor
 - (BOOL)isComplete;
-- (BOOL)processNext:(id)a3 completion:(id)a4;
-- (BOOL)setupFromSpotlightDaemonJournalWithParentFd:(int)a3 spotlightBasePath:(const char *)a4;
-- (BOOL)setupFromTopLevelJournalWithParentFd:(int)a3 journalBasePath:(const char *)a4;
-- (BOOL)setupWithParentFd:(int)a3 name:(id)a4;
+- (BOOL)processNext:(id)next completion:(id)completion;
+- (BOOL)setupFromSpotlightDaemonJournalWithParentFd:(int)fd spotlightBasePath:(const char *)path;
+- (BOOL)setupFromTopLevelJournalWithParentFd:(int)fd journalBasePath:(const char *)path;
+- (BOOL)setupWithParentFd:(int)fd name:(id)name;
 - (CSJournalProcessor)init;
 - (id)description;
-- (int)linkFileAtPath:(char *)a3 parentFd:(int)a4 fileName:(const char *)a5;
+- (int)linkFileAtPath:(char *)path parentFd:(int)fd fileName:(const char *)name;
 - (int)retainJournalFd;
 - (int)retainProcessedFd;
 - (int)retainTocFd;
@@ -40,19 +40,19 @@
 - (uint64_t)toc_name;
 - (uint64_t)toc_processed;
 - (uint64_t)toc_retry_counter;
-- (void)_processOffsetAtOffset:(int64_t)a3 completion:(id)a4;
+- (void)_processOffsetAtOffset:(int64_t)offset completion:(id)completion;
 - (void)cooldown;
 - (void)dealloc;
 - (void)deleteFiles;
-- (void)markComplete:(int64_t)a3 processingDone:(BOOL)a4;
+- (void)markComplete:(int64_t)complete processingDone:(BOOL)done;
 - (void)releaseJournalFd;
 - (void)releaseProcessedFd;
 - (void)releaseTocFd;
 - (void)retainJournalFd;
-- (void)retainJournalUsingFd:(int)a3;
+- (void)retainJournalUsingFd:(int)fd;
 - (void)retainProcessedFd;
 - (void)retainTocFd;
-- (void)setItemHandler:(void *)a1;
+- (void)setItemHandler:(void *)handler;
 - (void)warmup;
 @end
 
@@ -83,9 +83,9 @@
     }
 
     v7 = eventListener;
-    v9 = [(CSEventListener *)v7 eventType];
+    eventType = [(CSEventListener *)v7 eventType];
     journal_file_size = self->_journal_file_size;
-    v8 = [v4 initWithFormat:@"<%@:%p:%u; n: %llu pfd: %d offset: %lld jsz: %lld, tsz: %lld err: %d (%@)>", v5, self, v9, self->_journalNumber, self->_parentFD, self->_toc_processed, journal_file_size, self->_toc_file_size, self->_err, self->_key, v13];
+    v8 = [v4 initWithFormat:@"<%@:%p:%u; n: %llu pfd: %d offset: %lld jsz: %lld, tsz: %lld err: %d (%@)>", v5, self, eventType, self->_journalNumber, self->_parentFD, self->_toc_processed, journal_file_size, self->_toc_file_size, self->_err, self->_key, v13];
   }
 
   v11 = v8;
@@ -109,12 +109,12 @@
   return result;
 }
 
-- (BOOL)setupWithParentFd:(int)a3 name:(id)a4
+- (BOOL)setupWithParentFd:(int)fd name:(id)name
 {
   v69 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   memset(&v46, 0, sizeof(v46));
-  if (fstat(a3, &v46) == -1)
+  if (fstat(fd, &v46) == -1)
   {
 LABEL_41:
     v31 = *__error();
@@ -122,7 +122,7 @@ LABEL_41:
   }
 
   st_dev = v46.st_dev;
-  strncpy(__dst, [v6 fileSystemRepresentation], 0xFFuLL);
+  strncpy(__dst, [nameCopy fileSystemRepresentation], 0xFFuLL);
   v8 = strlen(__dst);
   v9 = 0;
   v10 = &__dst[v8];
@@ -221,7 +221,7 @@ LABEL_23:
   snprintf(v10, v27, ".journal");
   v28 = strdup(__dst);
   self->_journal_name = v28;
-  v29 = openat(a3, v28, 0);
+  v29 = openat(fd, v28, 0);
   if (v29 == -1)
   {
     self->_journal_file_size = 0;
@@ -244,7 +244,7 @@ LABEL_23:
 
   *v10 = 0;
   snprintf(v10, v27, ".toc");
-  v33 = openat(a3, __dst, 0);
+  v33 = openat(fd, __dst, 0);
   if (v33 == -1)
   {
     goto LABEL_41;
@@ -306,10 +306,10 @@ LABEL_42:
   return v39;
 }
 
-- (BOOL)setupFromTopLevelJournalWithParentFd:(int)a3 journalBasePath:(const char *)a4
+- (BOOL)setupFromTopLevelJournalWithParentFd:(int)fd journalBasePath:(const char *)path
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a3 == -1 || !self->_dev || (journalIno = self->_journalIno) == 0 || (journalNumber = self->_journalNumber) == 0 || (journal_orig_name = self->_journal_orig_name) == 0 || (journal_cookie = self->_journal_cookie) == 0 || !self->_key)
+  if (fd == -1 || !self->_dev || (journalIno = self->_journalIno) == 0 || (journalNumber = self->_journalNumber) == 0 || (journal_orig_name = self->_journal_orig_name) == 0 || (journal_cookie = self->_journal_cookie) == 0 || !self->_key)
   {
     v17 = -1;
     goto LABEL_15;
@@ -333,8 +333,8 @@ LABEL_42:
   snprintf(__str, 0xFFuLL, "evt_%s_%s_%llu_%llu.journal", journal_orig_name, journal_cookie, journalIno, journalNumber);
   bzero(v24, 0x400uLL);
   bzero(v23, 0x400uLL);
-  journalPathWithProtectionClass(a4, self->_indexType, self->_journal_cookie, self->_journal_orig_name, self->_journalNumber, self->_dev, self->_journalIno, v23);
-  journalTocPathWithProtectionClass(a4, self->_indexType, self->_journal_cookie, self->_journal_orig_name, self->_journalNumber, self->_dev, v24);
+  journalPathWithProtectionClass(path, self->_indexType, self->_journal_cookie, self->_journal_orig_name, self->_journalNumber, self->_dev, self->_journalIno, v23);
+  journalTocPathWithProtectionClass(path, self->_indexType, self->_journal_cookie, self->_journal_orig_name, self->_journalNumber, self->_dev, v24);
   if ([(CSJournalProcessor *)self linkFileAtPath:v23 parentFd:self->_parentFD fileName:__str]== -1)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 2)
@@ -416,10 +416,10 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)setupFromSpotlightDaemonJournalWithParentFd:(int)a3 spotlightBasePath:(const char *)a4
+- (BOOL)setupFromSpotlightDaemonJournalWithParentFd:(int)fd spotlightBasePath:(const char *)path
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a3 == -1 || !self->_dev || (journalIno = self->_journalIno) == 0 || (journalNumber = self->_journalNumber) == 0 || (journal_orig_name = self->_journal_orig_name) == 0 || (journal_cookie = self->_journal_cookie) == 0 || !self->_key)
+  if (fd == -1 || !self->_dev || (journalIno = self->_journalIno) == 0 || (journalNumber = self->_journalNumber) == 0 || (journal_orig_name = self->_journal_orig_name) == 0 || (journal_cookie = self->_journal_cookie) == 0 || !self->_key)
   {
     v17 = -1;
     goto LABEL_15;
@@ -443,8 +443,8 @@ LABEL_15:
   snprintf(__str, 0xFFuLL, "evt_%s_%s_%llu_%llu.journal", journal_orig_name, journal_cookie, journalIno, journalNumber);
   bzero(v24, 0x400uLL);
   bzero(v23, 0x400uLL);
-  journalPathForSpotlightDaemonWithProtectionClass(a4, self->_indexType, self->_journal_orig_name, self->_journalNumber, v23);
-  journalTocPathForSpotlightDaemonWithProtectionClass(a4, self->_indexType, self->_journal_orig_name, self->_journalNumber, v24);
+  journalPathForSpotlightDaemonWithProtectionClass(path, self->_indexType, self->_journal_orig_name, self->_journalNumber, v23);
+  journalTocPathForSpotlightDaemonWithProtectionClass(path, self->_indexType, self->_journal_orig_name, self->_journalNumber, v24);
   if ([(CSJournalProcessor *)self linkFileAtPath:v23 parentFd:self->_parentFD fileName:__str]== -1)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 2)
@@ -588,7 +588,7 @@ LABEL_15:
 - (void)releaseTocFd
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 128);
+  v1 = *(self + 128);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_5_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x1Cu);
@@ -619,23 +619,23 @@ LABEL_15:
 
 - (void)releaseJournalFd
 {
-  OUTLINED_FUNCTION_31(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_31(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_5_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x1Cu);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retainJournalUsingFd:(int)a3
+- (void)retainJournalUsingFd:(int)fd
 {
   os_unfair_lock_lock(&self->_lock);
-  if (a3 < 0 || self->_journal_fd != -1)
+  if (fd < 0 || self->_journal_fd != -1)
   {
     [CSJournalProcessor retainJournalUsingFd:];
   }
 
   v5 = self->_journal_fd_retain_count + 1;
-  self->_journal_fd = a3;
+  self->_journal_fd = fd;
   self->_journal_fd_retain_count = v5;
   os_unfair_lock_unlock(&self->_lock);
   if (SKGLogGetCurrentLoggingLevel() >= 7)
@@ -672,7 +672,7 @@ LABEL_15:
 
 - (void)releaseProcessedFd
 {
-  OUTLINED_FUNCTION_31(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_31(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_5_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x1Cu);
@@ -687,32 +687,32 @@ LABEL_15:
   return v3;
 }
 
-- (void)markComplete:(int64_t)a3 processingDone:(BOOL)a4
+- (void)markComplete:(int64_t)complete processingDone:(BOOL)done
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a3)
+  doneCopy = done;
+  completeCopy = complete;
+  if (!complete)
   {
-    v7 = [(CSJournalProcessor *)self retainTocFd];
-    if (v7 == -1)
+    retainTocFd = [(CSJournalProcessor *)self retainTocFd];
+    if (retainTocFd == -1)
     {
-      v5 = 0;
+      completeCopy = 0;
     }
 
     else
     {
-      v8 = lseek(v7, 0, 2);
-      v5 = v8 & ~(v8 >> 63);
+      v8 = lseek(retainTocFd, 0, 2);
+      completeCopy = v8 & ~(v8 >> 63);
       [(CSJournalProcessor *)self releaseTocFd];
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  self->_toc_complete_size = v5;
+  self->_toc_complete_size = completeCopy;
   self->_complete = 1;
-  self->_processingDone = v4;
+  self->_processingDone = doneCopy;
   os_unfair_lock_unlock(&self->_lock);
-  if (v4 && SKGLogGetCurrentLoggingLevel() >= 7)
+  if (doneCopy && SKGLogGetCurrentLoggingLevel() >= 7)
   {
     v9 = SKGLogUpdaterInit();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -724,7 +724,7 @@ LABEL_15:
 
 - (void)warmup
 {
-  v4 = *a1;
+  v4 = *self;
   v5 = *a2;
   *buf = 67109376;
   *(buf + 1) = v4;
@@ -872,11 +872,11 @@ uint64_t __56__CSJournalProcessor__processOffsetAtOffset_completion___block_invo
   return a1 ^ 1;
 }
 
-- (BOOL)processNext:(id)a3 completion:(id)a4
+- (BOOL)processNext:(id)next completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nextCopy = next;
+  completionCopy = completion;
   if (self->_active)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -885,7 +885,7 @@ uint64_t __56__CSJournalProcessor__processOffsetAtOffset_completion___block_invo
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_231B25000, v8, OS_LOG_TYPE_INFO, "### ignored journal - already active - %@", buf, 0xCu);
       }
     }
@@ -895,8 +895,8 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v9 = [(CSJournalProcessor *)self retainTocFd];
-  if (v9 == -1)
+  retainTocFd = [(CSJournalProcessor *)self retainTocFd];
+  if (retainTocFd == -1)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 5)
     {
@@ -904,7 +904,7 @@ LABEL_28:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_231B25000, v15, OS_LOG_TYPE_INFO, "### ignored journal - failed retainTocFd - %@", buf, 0xCu);
       }
     }
@@ -916,7 +916,7 @@ LABEL_28:
     toc_file_size = self->_toc_file_size;
     if (toc_file_size <= toc_processed)
     {
-      v12 = lseek(v9, 0, 2);
+      v12 = lseek(retainTocFd, 0, 2);
       toc_file_size = v12;
       if (v12 >= 1)
       {
@@ -935,11 +935,11 @@ LABEL_28:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218498;
-        v27 = toc_processed;
+        selfCopy2 = toc_processed;
         v28 = 2048;
         v29 = toc_file_size;
         v30 = 2112;
-        v31 = self;
+        selfCopy4 = self;
         _os_log_debug_impl(&dword_231B25000, v13, OS_LOG_TYPE_DEBUG, "### processing at: %lld file size: %lld - %@", buf, 0x20u);
       }
     }
@@ -953,19 +953,19 @@ LABEL_28:
       aBlock[3] = &unk_27893CEB8;
       aBlock[4] = self;
       v25 = toc_processed;
-      v24 = v7;
+      v24 = completionCopy;
       v17 = _Block_copy(aBlock);
       v18 = +[CSEventListenerTasksManager sharedInstance];
-      v19 = [v18 turboMode];
+      turboMode = [v18 turboMode];
 
-      if (v19)
+      if (turboMode)
       {
         v20 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v17);
 
         v17 = v20;
       }
 
-      dispatch_async(v6, v17);
+      dispatch_async(nextCopy, v17);
 
       goto LABEL_28;
     }
@@ -977,11 +977,11 @@ LABEL_28:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 134218498;
-        v27 = toc_file_size;
+        selfCopy2 = toc_file_size;
         v28 = 2048;
         v29 = toc_file_size;
         v30 = 2112;
-        v31 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_231B25000, v14, OS_LOG_TYPE_INFO, "### ignored journal at: %lld file size: %lld - startOffset == fileSize - %@. We're probably at the end of the file.", buf, 0x20u);
       }
     }
@@ -1166,7 +1166,7 @@ LABEL_22:
       v13 = 67109634;
       v14 = v3;
       v15 = 2112;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2080;
       v18 = journal_name;
       _os_log_impl(&dword_231B25000, v4, OS_LOG_TYPE_INFO, "### unlink (%d) %@ - %s ", &v13, 0x1Cu);
@@ -1188,7 +1188,7 @@ LABEL_22:
       v13 = 67109634;
       v14 = v6;
       v15 = 2112;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2080;
       v18 = toc_name;
       _os_log_impl(&dword_231B25000, v7, OS_LOG_TYPE_INFO, "### unlink (%d) %@ - %s ", &v13, 0x1Cu);
@@ -1210,7 +1210,7 @@ LABEL_22:
       v13 = 67109634;
       v14 = v9;
       v15 = 2112;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2080;
       v18 = processed_name;
       _os_log_impl(&dword_231B25000, v10, OS_LOG_TYPE_INFO, "### unlink (%d) %@ - %s ", &v13, 0x1Cu);
@@ -1220,19 +1220,19 @@ LABEL_22:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int)linkFileAtPath:(char *)a3 parentFd:(int)a4 fileName:(const char *)a5
+- (int)linkFileAtPath:(char *)path parentFd:(int)fd fileName:(const char *)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!path)
   {
     goto LABEL_21;
   }
 
   result = -1;
-  if (a5 && a4 != -1 && *a3 && *a5)
+  if (name && fd != -1 && *path && *name)
   {
     memset(&v22, 0, sizeof(v22));
-    if (stat(a3, &v22) == -1)
+    if (stat(path, &v22) == -1)
     {
       if (SKGLogGetCurrentLoggingLevel() >= 2)
       {
@@ -1251,7 +1251,7 @@ LABEL_22:
       st_dev = v22.st_dev;
       st_ino = v22.st_ino;
       bzero(__s, 0x400uLL);
-      if (fcntl(a4, 50, __s) == -1 || (v12 = strlen(__s)) == 0)
+      if (fcntl(fd, 50, __s) == -1 || (v12 = strlen(__s)) == 0)
       {
         if (SKGLogGetCurrentLoggingLevel() >= 2)
         {
@@ -1267,10 +1267,10 @@ LABEL_22:
 
       else
       {
-        snprintf(&__s[v12], 1024 - v12, "/%s", a5);
+        snprintf(&__s[v12], 1024 - v12, "/%s", name);
         if (stat(__s, &v22) == -1)
         {
-          v15 = link(a3, __s);
+          v15 = link(path, __s);
           CurrentLoggingLevel = SKGLogGetCurrentLoggingLevel();
           if (v15 == -1)
           {
@@ -1287,11 +1287,11 @@ LABEL_22:
 
             v21 = *__error();
             *buf = 138413058;
-            v24 = self;
+            selfCopy2 = self;
             v25 = 1024;
             *v26 = v21;
             *&v26[4] = 2080;
-            *&v26[6] = a3;
+            *&v26[6] = path;
             v27 = 2080;
             *v28 = __s;
             v18 = "### %@ error %d creating hardlink %s to %s";
@@ -1306,7 +1306,7 @@ LABEL_22:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
             {
               *buf = 136315394;
-              v24 = a3;
+              selfCopy2 = path;
               v25 = 2080;
               *v26 = __s;
               _os_log_impl(&dword_231B25000, v17, OS_LOG_TYPE_INFO, "### created hardlink %s to %s", buf, 0x16u);
@@ -1347,7 +1347,7 @@ LABEL_20:
           }
 
           *buf = 138413314;
-          v24 = self;
+          selfCopy2 = self;
           v25 = 1024;
           *v26 = st_dev;
           *&v26[4] = 2048;
@@ -1395,11 +1395,11 @@ LABEL_22:
   return result;
 }
 
-- (void)setItemHandler:(void *)a1
+- (void)setItemHandler:(void *)handler
 {
-  if (a1)
+  if (handler)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 184);
+    objc_setProperty_nonatomic_copy(handler, newValue, newValue, 184);
   }
 }
 
@@ -1463,10 +1463,10 @@ LABEL_22:
   return result;
 }
 
-- (void)_processOffsetAtOffset:(int64_t)a3 completion:(id)a4
+- (void)_processOffsetAtOffset:(int64_t)offset completion:(id)completion
 {
   v170 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   eventListener = self->_eventListener;
   if (eventListener)
   {
@@ -1474,8 +1474,8 @@ LABEL_22:
   }
 
   v123 = eventListener;
-  v8 = [(CSEventListener *)eventListener taskName];
-  v9 = [(CSEventListener *)v123 eventType];
+  taskName = [(CSEventListener *)eventListener taskName];
+  eventType = [(CSEventListener *)v123 eventType];
   v10 = self->_eventListener;
   if (v10)
   {
@@ -1484,21 +1484,21 @@ LABEL_22:
 
   v122 = v10;
   indexType = self->_indexType;
-  v11 = [(CSJournalProcessor *)self retainTocFd];
-  if (v11 == -1)
+  retainTocFd = [(CSJournalProcessor *)self retainTocFd];
+  if (retainTocFd == -1)
   {
     OUTLINED_FUNCTION_4_0();
     v17 = v16;
-    v18(v6);
-    v19 = v6;
+    v18(completionCopy);
+    v19 = completionCopy;
     v20 = v17;
     goto LABEL_16;
   }
 
-  v125 = v9;
-  v127 = v8;
-  v12 = [(CSJournalProcessor *)self retainJournalFd];
-  if (v12 == -1)
+  v125 = eventType;
+  v127 = taskName;
+  retainJournalFd = [(CSJournalProcessor *)self retainJournalFd];
+  if (retainJournalFd == -1)
   {
     [(CSJournalProcessor *)self releaseTocFd];
     OUTLINED_FUNCTION_4_0();
@@ -1508,8 +1508,8 @@ LABEL_22:
   }
 
   bzero(&v164, 0x90uLL);
-  v121 = v11;
-  if (fstat(v11, &v164))
+  v121 = retainTocFd;
+  if (fstat(retainTocFd, &v164))
   {
     if (SKGLogGetCurrentLoggingLevel() >= 2)
     {
@@ -1532,7 +1532,7 @@ LABEL_12:
   }
 
   v24 = (v164.st_size + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0];
-  v25 = mmap(0, v24, 1, 1, v11, 0);
+  v25 = mmap(0, v24, 1, 1, retainTocFd, 0);
   if (v25 == -1)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 2)
@@ -1565,14 +1565,14 @@ LABEL_12:
   *&v119 = v26;
   *(&v119 + 1) = v28;
   makeThreadId();
-  v118 = v12;
+  v118 = retainJournalFd;
   v29 = v24;
   v30 = v25;
   while (2)
   {
-    v31 = a3;
-    v124 = v6;
-    if (!v6)
+    offsetCopy = offset;
+    v124 = completionCopy;
+    if (!completionCopy)
     {
       v25 = 0;
       v77 = 0;
@@ -1584,7 +1584,7 @@ LABEL_12:
     v33 = v29;
     while (1)
     {
-      if (v31 < 0)
+      if (offsetCopy < 0)
       {
         if (SKGLogGetCurrentLoggingLevel() >= 2)
         {
@@ -1592,7 +1592,7 @@ LABEL_12:
           if (OUTLINED_FUNCTION_21(v75))
           {
             v169.st_dev = 134218242;
-            *&v169.st_mode = v31;
+            *&v169.st_mode = offsetCopy;
             WORD2(v169.st_ino) = 2112;
             *(&v169.st_ino + 6) = self;
             OUTLINED_FUNCTION_8();
@@ -1608,8 +1608,8 @@ LABEL_95:
         goto LABEL_96;
       }
 
-      v34 = v31 + 32;
-      if (v31 + 32 <= v164.st_size)
+      v34 = offsetCopy + 32;
+      if (offsetCopy + 32 <= v164.st_size)
       {
         st_size = v164.st_size;
         goto LABEL_31;
@@ -1643,7 +1643,7 @@ LABEL_95:
             v169.st_dev = 138412546;
             *&v169.st_mode = self;
             WORD2(v169.st_ino) = 2048;
-            *(&v169.st_ino + 6) = v31;
+            *(&v169.st_ino + 6) = offsetCopy;
             OUTLINED_FUNCTION_26(&dword_231B25000, v25, v81, "### end of file %@ - %lld", &v169);
           }
 
@@ -1739,11 +1739,11 @@ LABEL_31:
 
       else
       {
-        v50 = *&v120[v31];
-        v51 = *&v120[v31 + 8];
-        v52 = *&v120[v31 + 16];
-        v54 = *&v120[v31 + 24];
-        v53 = *&v120[v31 + 28];
+        v50 = *&v120[offsetCopy];
+        v51 = *&v120[offsetCopy + 8];
+        v52 = *&v120[offsetCopy + 16];
+        v54 = *&v120[offsetCopy + 24];
+        v53 = *&v120[offsetCopy + 28];
         v163 = 1;
         v55 = *(MEMORY[0x277D29508] + 72 * OUTLINED_FUNCTION_30() + 8) + 320 * v158;
         *(v55 + 312) = v43;
@@ -1790,7 +1790,7 @@ LABEL_31:
           v169.st_dev = 134219008;
           *&v169.st_mode = v49;
           WORD2(v169.st_ino) = 2048;
-          *(&v169.st_ino + 6) = v31 + 32;
+          *(&v169.st_ino + 6) = offsetCopy + 32;
           HIWORD(v169.st_gid) = 2048;
           *&v169.st_rdev = v48;
           LOWORD(v169.st_atimespec.tv_sec) = 2048;
@@ -1825,13 +1825,13 @@ LABEL_31:
 
 LABEL_54:
       v32 = v120;
-      v31 += 32;
+      offsetCopy += 32;
       v33 = v117;
       if (!v124)
       {
         v25 = 0;
         v77 = 0;
-        v31 = v34;
+        offsetCopy = v34;
         v78 = v120;
         goto LABEL_97;
       }
@@ -1884,7 +1884,7 @@ LABEL_115:
         *&v167[12] = 2048;
         *&v167[14] = v48 + v45;
         *&v167[22] = 2112;
-        v168 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_231B25000, &v169, OS_LOG_TYPE_ERROR, "### journal journal size %lld expected %llu - %@", v167, 0x20u);
       }
 
@@ -1895,7 +1895,7 @@ LABEL_115:
     *v167 = 0;
     *&v167[8] = v167;
     *&v167[16] = 0x2020000000;
-    LOBYTE(v168) = 0;
+    LOBYTE(selfCopy) = 0;
     v142[0] = MEMORY[0x277D85DD0];
     v142[1] = 3221225472;
     v142[2] = __56__CSJournalProcessor__processOffsetAtOffset_completion___block_invoke;
@@ -1912,7 +1912,7 @@ LABEL_115:
     v61 = v127;
     v155 = v125;
     v143 = v61;
-    v152 = v31 + 32;
+    v152 = offsetCopy + 32;
     v116 = v124;
     v144 = v116;
     v145 = v167;
@@ -1932,7 +1932,7 @@ LABEL_115:
     v62 = v61;
     v141 = v125;
     v129 = v62;
-    v138 = v31 + 32;
+    v138 = offsetCopy + 32;
     v63 = v116;
     v130 = v63;
     v131 = v167;
@@ -1967,10 +1967,10 @@ LABEL_68:
       v65 = SKGLogUpdaterInit();
       if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
       {
-        v71 = [(CSEventListener *)v123 taskName];
-        v72 = [v71 UTF8String];
+        taskName2 = [(CSEventListener *)v123 taskName];
+        uTF8String = [taskName2 UTF8String];
         *v165 = 136315138;
-        v166 = v72;
+        v166 = uTF8String;
         _os_log_impl(&dword_231B25000, v65, OS_LOG_TYPE_INFO, "### Not processing next journal entry for %s because task is cancelled", v165, 0xCu);
       }
 
@@ -1986,9 +1986,9 @@ LABEL_61:
 
     _Block_object_dispose(v167, 8);
     v29 = v117;
-    a3 = v34;
+    offset = v34;
     v30 = v120;
-    v6 = v25;
+    completionCopy = v25;
     if ((v73 & 1) == 0)
     {
       continue;
@@ -1998,7 +1998,7 @@ LABEL_61:
   }
 
   v77 = 0;
-  v31 = v34;
+  offsetCopy = v34;
   v78 = v120;
 LABEL_97:
   munmap(v78, v164.st_size);
@@ -2007,17 +2007,17 @@ LABEL_98:
   [(CSJournalProcessor *)self releaseTocFd];
   if (v25)
   {
-    (*(v25 + 16))(v25, v127, v125, indexType, v77, v31);
-    v6 = v25;
+    (*(v25 + 16))(v25, v127, v125, indexType, v77, offsetCopy);
+    completionCopy = v25;
   }
 
   else
   {
-    v6 = 0;
+    completionCopy = 0;
   }
 
 LABEL_15:
-  v19 = v6;
+  v19 = completionCopy;
   v20 = v127;
 LABEL_16:
 
@@ -2192,9 +2192,9 @@ LABEL_9:
 
 - (uint64_t)managedJournal
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_11(*(a1 + 13));
+    return OUTLINED_FUNCTION_11(*(self + 13));
   }
 
   else
@@ -2684,7 +2684,7 @@ LABEL_9:
 - (void)retainTocFd
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 128);
+  v1 = *(self + 128);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_5_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x1Cu);
@@ -2693,7 +2693,7 @@ LABEL_9:
 
 - (void)retainJournalFd
 {
-  OUTLINED_FUNCTION_31(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_31(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_5_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x1Cu);
@@ -2703,7 +2703,7 @@ LABEL_9:
 - (void)retainProcessedFd
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 136);
+  v1 = *(self + 136);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_5_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x1Cu);

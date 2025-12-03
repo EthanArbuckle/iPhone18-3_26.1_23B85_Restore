@@ -1,10 +1,10 @@
 @interface CVACMBarometerData
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVACMBarometerData)initWithCoder:(id)a3;
++ (id)withData:(id)data;
+- (CVACMBarometerData)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACMBarometerData
@@ -25,33 +25,33 @@
   return v3;
 }
 
-- (CVACMBarometerData)initWithCoder:(id)a3
+- (CVACMBarometerData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CVACMBarometerData;
   v5 = [(CVACMBarometerData *)&v10 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    [v4 decodeFloatForKey:@"pr"];
+    [coderCopy decodeFloatForKey:@"pr"];
     v5->_pressure = v7;
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v8;
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"st"];
-    v5->_sequenceNumber = [v4 decodeInt64ForKey:@"sn"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"st"];
+    v5->_sequenceNumber = [coderCopy decodeInt64ForKey:@"sn"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACMBarometerData classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -69,16 +69,16 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   *&v5 = self->_pressure;
-  [v6 encodeFloat:@"pr" forKey:v5];
-  [v6 encodeDouble:@"t" forKey:self->_timestamp];
-  [v6 encodeInt64:self->_syncTimestamp forKey:@"st"];
-  [v6 encodeInt64:self->_sequenceNumber forKey:@"sn"];
-  [v6 encodeInt64:self->_frameId forKey:@"fi"];
+  [coderCopy encodeFloat:@"pr" forKey:v5];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeInt64:self->_syncTimestamp forKey:@"st"];
+  [coderCopy encodeInt64:self->_sequenceNumber forKey:@"sn"];
+  [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -112,8 +112,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACMBarometerData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACMBarometerData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

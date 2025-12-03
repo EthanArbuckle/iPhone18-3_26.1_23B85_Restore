@@ -1,27 +1,27 @@
 @interface HMDWalletPassLibrary
 + (id)logCategory;
-- (BOOL)isExpressModeEnabledForPassUniqueIdentifier:(id)a3 serialNumber:(id)a4;
-- (BOOL)removePassWithTypeIdentifier:(id)a3 serialNumber:(id)a4 flow:(id)a5;
-- (HMDWalletPassLibrary)initWithWorkQueue:(id)a3;
+- (BOOL)isExpressModeEnabledForPassUniqueIdentifier:(id)identifier serialNumber:(id)number;
+- (BOOL)removePassWithTypeIdentifier:(id)identifier serialNumber:(id)number flow:(id)flow;
+- (HMDWalletPassLibrary)initWithWorkQueue:(id)queue;
 - (HMDWalletPassLibraryDelegate)delegate;
 - (NSSet)walletKeys;
 - (id)createTemporaryPassDirectoryURL;
-- (id)nfcInfoFromPaymentApplication:(id)a3 readerKey:(id)a4 flow:(id)a5;
-- (id)passUniqueIDOfWalletKeyWithTypeIdentifier:(id)a3 serialNumber:(id)a4;
-- (id)urlForWalletKeyWithTypeIdentifier:(id)a3 serialNumber:(id)a4;
-- (id)walletKeyWithTypeIdentifier:(id)a3 serialNumber:(id)a4 flow:(id)a5;
-- (void)addPassAtURL:(id)a3 flow:(id)a4 completion:(id)a5;
-- (void)deleteKeyMaterialForSubCredentialId:(id)a3;
-- (void)enableExpressWithAuthData:(id)a3 passTypeIdentifier:(id)a4 serialNumber:(id)a5 flow:(id)a6 completion:(id)a7;
-- (void)fetchExpressEnablementConflictingPassDescriptionForPassAtURL:(id)a3 completion:(id)a4;
-- (void)fetchExpressEnablementConflictingPassDescriptionForPassAtURL:(id)a3 flow:(id)a4 completion:(id)a5;
-- (void)fetchHomeKeySupportedWithFlow:(id)a3 completion:(id)a4;
-- (void)fetchIsExpressEnabledForPassWithTypeIdentifier:(id)a3 serialNumber:(id)a4 flow:(id)a5 completion:(id)a6;
-- (void)fetchTransactionKeyForPassWithTypeIdentifier:(id)a3 serialNumber:(id)a4 completion:(id)a5;
-- (void)generateHomeKeyNFCInfoWithReaderPublicKey:(id)a3 readerIdentifier:(id)a4 flow:(id)a5 completion:(id)a6;
-- (void)handlePassLibraryDidChangeNotification:(id)a3;
+- (id)nfcInfoFromPaymentApplication:(id)application readerKey:(id)key flow:(id)flow;
+- (id)passUniqueIDOfWalletKeyWithTypeIdentifier:(id)identifier serialNumber:(id)number;
+- (id)urlForWalletKeyWithTypeIdentifier:(id)identifier serialNumber:(id)number;
+- (id)walletKeyWithTypeIdentifier:(id)identifier serialNumber:(id)number flow:(id)flow;
+- (void)addPassAtURL:(id)l flow:(id)flow completion:(id)completion;
+- (void)deleteKeyMaterialForSubCredentialId:(id)id;
+- (void)enableExpressWithAuthData:(id)data passTypeIdentifier:(id)identifier serialNumber:(id)number flow:(id)flow completion:(id)completion;
+- (void)fetchExpressEnablementConflictingPassDescriptionForPassAtURL:(id)l completion:(id)completion;
+- (void)fetchExpressEnablementConflictingPassDescriptionForPassAtURL:(id)l flow:(id)flow completion:(id)completion;
+- (void)fetchHomeKeySupportedWithFlow:(id)flow completion:(id)completion;
+- (void)fetchIsExpressEnabledForPassWithTypeIdentifier:(id)identifier serialNumber:(id)number flow:(id)flow completion:(id)completion;
+- (void)fetchTransactionKeyForPassWithTypeIdentifier:(id)identifier serialNumber:(id)number completion:(id)completion;
+- (void)generateHomeKeyNFCInfoWithReaderPublicKey:(id)key readerIdentifier:(id)identifier flow:(id)flow completion:(id)completion;
+- (void)handlePassLibraryDidChangeNotification:(id)notification;
 - (void)start;
-- (void)updatePassAtURL:(id)a3 flow:(id)a4 completion:(id)a5;
+- (void)updatePassAtURL:(id)l flow:(id)flow completion:(id)completion;
 @end
 
 @implementation HMDWalletPassLibrary
@@ -33,19 +33,19 @@
   return WeakRetained;
 }
 
-- (void)deleteKeyMaterialForSubCredentialId:(id)a3
+- (void)deleteKeyMaterialForSubCredentialId:(id)id
 {
-  v4 = a3;
-  v5 = [(HMDWalletPassLibrary *)self passLibrary];
-  [v5 deleteKeyMaterialForSubCredentialId:v4];
+  idCopy = id;
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+  [passLibrary deleteKeyMaterialForSubCredentialId:idCopy];
 }
 
-- (void)handlePassLibraryDidChangeNotification:(id)a3
+- (void)handlePassLibraryDidChangeNotification:(id)notification
 {
   v50 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v4 = [v33 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D386C8]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D386C8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -82,14 +82,14 @@
         }
 
         v13 = *(*(&v44 + 1) + 8 * i);
-        v14 = [(HMDWalletPassLibrary *)self workQueue];
+        workQueue = [(HMDWalletPassLibrary *)self workQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __63__HMDWalletPassLibrary_handlePassLibraryDidChangeNotification___block_invoke_2;
         block[3] = &unk_27868A750;
         block[4] = self;
         block[5] = v13;
-        dispatch_async(v14, block);
+        dispatch_async(workQueue, block);
       }
 
       v10 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -98,8 +98,8 @@
     while (v10);
   }
 
-  v15 = [v33 userInfo];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D38738]];
+  userInfo2 = [notificationCopy userInfo];
+  v16 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D38738]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -153,7 +153,7 @@
 
         if (!v30)
         {
-          v31 = [(HMDWalletPassLibrary *)self workQueue];
+          workQueue2 = [(HMDWalletPassLibrary *)self workQueue];
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __63__HMDWalletPassLibrary_handlePassLibraryDidChangeNotification___block_invoke_4;
@@ -161,7 +161,7 @@
           v36[4] = self;
           v37 = v27;
           v38 = v29;
-          dispatch_async(v31, v36);
+          dispatch_async(workQueue2, v36);
         }
       }
 
@@ -207,22 +207,22 @@ uint64_t __63__HMDWalletPassLibrary_handlePassLibraryDidChangeNotification___blo
   return isKindOfClass & (v2 != 0);
 }
 
-- (void)fetchTransactionKeyForPassWithTypeIdentifier:(id)a3 serialNumber:(id)a4 completion:(id)a5
+- (void)fetchTransactionKeyForPassWithTypeIdentifier:(id)identifier serialNumber:(id)number completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(HMDWalletPassLibrary *)self passLibrary];
+  numberCopy = number;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __93__HMDWalletPassLibrary_fetchTransactionKeyForPassWithTypeIdentifier_serialNumber_completion___block_invoke;
   v14[3] = &unk_278682098;
-  v15 = v8;
-  v16 = v9;
+  v15 = numberCopy;
+  v16 = completionCopy;
   v14[4] = self;
-  v12 = v8;
-  v13 = v9;
-  [v11 fetchTransactionKeyForPassTypeIdentifier:v10 serialNumber:v12 completionHandler:v14];
+  v12 = numberCopy;
+  v13 = completionCopy;
+  [passLibrary fetchTransactionKeyForPassTypeIdentifier:identifierCopy serialNumber:v12 completionHandler:v14];
 }
 
 void __93__HMDWalletPassLibrary_fetchTransactionKeyForPassWithTypeIdentifier_serialNumber_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -276,104 +276,104 @@ LABEL_9:
   v2 = MEMORY[0x277CBEBC0];
   v3 = HMDCreateHomeKitDaemonCacheDirectory();
   v4 = [v2 fileURLWithPath:v3];
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v4 URLByAppendingPathComponent:v6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [v4 URLByAppendingPathComponent:uUIDString];
 
   return v7;
 }
 
-- (id)nfcInfoFromPaymentApplication:(id)a3 readerKey:(id)a4 flow:(id)a5
+- (id)nfcInfoFromPaymentApplication:(id)application readerKey:(id)key flow:(id)flow
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 secureElementIdentifier];
-  v11 = [v7 applicationIdentifier];
-  v12 = [v7 subcredentials];
-  v13 = [v12 anyObject];
-  v14 = [v13 transactionKey];
+  applicationCopy = application;
+  keyCopy = key;
+  flowCopy = flow;
+  secureElementIdentifier = [applicationCopy secureElementIdentifier];
+  applicationIdentifier = [applicationCopy applicationIdentifier];
+  subcredentials = [applicationCopy subcredentials];
+  anyObject = [subcredentials anyObject];
+  transactionKey = [anyObject transactionKey];
 
-  v15 = [v7 subcredentials];
-  v16 = [v15 anyObject];
-  v47 = [v16 identifier];
+  subcredentials2 = [applicationCopy subcredentials];
+  anyObject2 = [subcredentials2 anyObject];
+  identifier = [anyObject2 identifier];
 
-  v17 = +[HMDHomeWalletKeySecureElementInfo hmdPaymentTypeFromPKPaymentType:flow:](HMDHomeWalletKeySecureElementInfo, "hmdPaymentTypeFromPKPaymentType:flow:", [v7 paymentType], v9);
-  if ([v7 paymentType] == 1003)
+  v17 = +[HMDHomeWalletKeySecureElementInfo hmdPaymentTypeFromPKPaymentType:flow:](HMDHomeWalletKeySecureElementInfo, "hmdPaymentTypeFromPKPaymentType:flow:", [applicationCopy paymentType], flowCopy);
+  if ([applicationCopy paymentType] == 1003)
   {
-    v18 = [v8 identifier];
+    identifier2 = [keyCopy identifier];
   }
 
   else
   {
-    [v8 publicKey];
-    v19 = v10;
-    v20 = v9;
-    v22 = v21 = v8;
-    v18 = [HMDNIST256Utilities identifier16BytesForKey:v22];
+    [keyCopy publicKey];
+    v19 = secureElementIdentifier;
+    v20 = flowCopy;
+    v22 = v21 = keyCopy;
+    identifier2 = [HMDNIST256Utilities identifier16BytesForKey:v22];
 
-    v8 = v21;
-    v9 = v20;
-    v10 = v19;
+    keyCopy = v21;
+    flowCopy = v20;
+    secureElementIdentifier = v19;
   }
 
-  v23 = v11;
-  if (v10 && v11 && v47 && v14 && v18)
+  v23 = applicationIdentifier;
+  if (secureElementIdentifier && applicationIdentifier && identifier && transactionKey && identifier2)
   {
-    if ([v14 length] == 65)
+    if ([transactionKey length] == 65)
     {
       v24 = [HMDHomeWalletKeySecureElementInfo alloc];
-      [v18 hmf_hexadecimalRepresentation];
-      v26 = v25 = v8;
-      v27 = [(HMDHomeWalletKeySecureElementInfo *)v24 initWithDeviceCredentialKey:v14 applicationIdentifier:v23 subCredentialIdentifier:v47 secureElementIdentifier:v10 pairedReaderIdentifier:v26 paymentCredentialType:v17];
+      [identifier2 hmf_hexadecimalRepresentation];
+      v26 = v25 = keyCopy;
+      v27 = [(HMDHomeWalletKeySecureElementInfo *)v24 initWithDeviceCredentialKey:transactionKey applicationIdentifier:v23 subCredentialIdentifier:identifier secureElementIdentifier:secureElementIdentifier pairedReaderIdentifier:v26 paymentCredentialType:v17];
 
-      v8 = v25;
+      keyCopy = v25;
     }
 
     else
     {
-      v34 = v10;
+      v34 = secureElementIdentifier;
       v35 = objc_autoreleasePoolPush();
-      v36 = self;
+      selfCopy = self;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
         v38 = v43 = v35;
-        [v9 UUID];
-        v39 = v46 = v8;
+        [flowCopy UUID];
+        v39 = v46 = keyCopy;
         *buf = 138544130;
         v49 = v38;
         v50 = 2112;
         v51 = v39;
         v52 = 2048;
-        v53 = [v14 length];
+        v53 = [transactionKey length];
         v54 = 2048;
         v55 = 65;
         _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to generate home key nfc info, received unexpected transaction key length: %lu expected: %lu", buf, 0x2Au);
 
-        v8 = v46;
+        keyCopy = v46;
         v35 = v43;
       }
 
       objc_autoreleasePoolPop(v35);
       v27 = 0;
-      v10 = v34;
+      secureElementIdentifier = v34;
     }
   }
 
   else
   {
-    v28 = v10;
+    v28 = secureElementIdentifier;
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v32 = v45 = v8;
-      [v9 UUID];
+      v32 = v45 = keyCopy;
+      [flowCopy UUID];
       v33 = v42 = v29;
       *buf = 138544898;
       v49 = v32;
@@ -384,20 +384,20 @@ LABEL_9:
       v54 = 2112;
       v55 = v23;
       v56 = 2112;
-      v57 = v47;
+      v57 = identifier;
       v58 = 2112;
-      v59 = v14;
+      v59 = transactionKey;
       v60 = 2112;
-      v61 = v18;
+      v61 = identifier2;
       _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to generate home key nfc info because either secureElementIdentifier: %@ is nil or applicationIdentifier: %@ is nil or subCredentialIdentifier: %@ is nil or transactionKey: %@ is nil or readerIdentifier is nil: %@", buf, 0x48u);
 
       v29 = v42;
-      v8 = v45;
+      keyCopy = v45;
     }
 
     objc_autoreleasePoolPop(v29);
     v27 = 0;
-    v10 = v28;
+    secureElementIdentifier = v28;
   }
 
   v40 = *MEMORY[0x277D85DE8];
@@ -405,41 +405,41 @@ LABEL_9:
   return v27;
 }
 
-- (void)generateHomeKeyNFCInfoWithReaderPublicKey:(id)a3 readerIdentifier:(id)a4 flow:(id)a5 completion:(id)a6
+- (void)generateHomeKeyNFCInfoWithReaderPublicKey:(id)key readerIdentifier:(id)identifier flow:(id)flow completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  identifierCopy = identifier;
+  flowCopy = flow;
+  completionCopy = completion;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v12 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v30 = v17;
     v31 = 2112;
-    v32 = v18;
+    v32 = uUID;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] WalletV2Error: Called generateHomeKeyNFCInfo in old pass library", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v19 = [(HMDWalletPassLibrary *)v15 passLibrary];
+  passLibrary = [(HMDWalletPassLibrary *)selfCopy passLibrary];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __99__HMDWalletPassLibrary_generateHomeKeyNFCInfoWithReaderPublicKey_readerIdentifier_flow_completion___block_invoke;
   v24[3] = &unk_278682070;
-  v25 = v11;
-  v26 = v15;
-  v27 = v12;
-  v28 = v13;
-  v20 = v13;
-  v21 = v12;
-  v22 = v11;
-  [v19 generateTransactionKeyWithReaderIdentifier:v22 readerPublicKey:v10 completion:v24];
+  v25 = identifierCopy;
+  v26 = selfCopy;
+  v27 = flowCopy;
+  v28 = completionCopy;
+  v20 = completionCopy;
+  v21 = flowCopy;
+  v22 = identifierCopy;
+  [passLibrary generateTransactionKeyWithReaderIdentifier:v22 readerPublicKey:keyCopy completion:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -551,72 +551,72 @@ void __99__HMDWalletPassLibrary_generateHomeKeyNFCInfoWithReaderPublicKey_reader
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchExpressEnablementConflictingPassDescriptionForPassAtURL:(id)a3 flow:(id)a4 completion:(id)a5
+- (void)fetchExpressEnablementConflictingPassDescriptionForPassAtURL:(id)l flow:(id)flow completion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v46 = a4;
-  v9 = a5;
+  lCopy = l;
+  flowCopy = flow;
+  completionCopy = completion;
   v50 = 0;
-  v45 = v8;
-  v10 = [objc_alloc(MEMORY[0x277D37EE8]) initWithFileURL:v8 error:&v50];
+  v45 = lCopy;
+  v10 = [objc_alloc(MEMORY[0x277D37EE8]) initWithFileURL:lCopy error:&v50];
   v44 = v50;
   if (v10)
   {
     [v10 setOwnsFileURL:1];
     v11 = [MEMORY[0x277D37F98] createWithValidatedFileDataAccessor:v10];
-    v12 = [v11 paymentPass];
+    paymentPass = [v11 paymentPass];
 
-    if (v12)
+    if (paymentPass)
     {
-      v13 = [(HMDWalletPassLibrary *)self secureElementIdentifier];
-      v14 = v13;
-      if (v13)
+      secureElementIdentifier = [(HMDWalletPassLibrary *)self secureElementIdentifier];
+      v14 = secureElementIdentifier;
+      if (secureElementIdentifier)
       {
-        v51 = v13;
+        v51 = secureElementIdentifier;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
-        [v12 updateDevicePaymentApplicationsWithSecureElementIdentifiers:v15];
+        [paymentPass updateDevicePaymentApplicationsWithSecureElementIdentifiers:v15];
 
         v16 = objc_alloc_init(MEMORY[0x277D380F0]);
-        v17 = [objc_alloc(MEMORY[0x277D37E90]) initForPaymentPass:v12 withTechologyTest:&__block_literal_global_57_228159];
+        v17 = [objc_alloc(MEMORY[0x277D37E90]) initForPaymentPass:paymentPass withTechologyTest:&__block_literal_global_57_228159];
         if (v17)
         {
           v18 = objc_alloc(MEMORY[0x277D37E88]);
-          [v12 secureElementPass];
-          v19 = v43 = v12;
+          [paymentPass secureElementPass];
+          v19 = v43 = paymentPass;
           v20 = [v18 initWithPassInformation:v17 forSecureElementPass:v19];
 
-          v12 = v43;
+          paymentPass = v43;
           v47[0] = MEMORY[0x277D85DD0];
           v47[1] = 3221225472;
           v47[2] = __101__HMDWalletPassLibrary_fetchExpressEnablementConflictingPassDescriptionForPassAtURL_flow_completion___block_invoke_58;
           v47[3] = &unk_278687C70;
-          v49 = v9;
+          v49 = completionCopy;
           v47[4] = self;
-          v48 = v46;
+          v48 = flowCopy;
           [v16 conflictingExpressPassIdentifiersForPassConfiguration:v20 withCompletion:v47];
         }
 
         else
         {
           v36 = objc_autoreleasePoolPush();
-          v37 = self;
+          selfCopy = self;
           v38 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
           {
             v39 = HMFGetLogIdentifier();
-            v40 = [v46 UUID];
+            uUID = [flowCopy UUID];
             *buf = 138543618;
             v53 = v39;
             v54 = 2112;
-            v55 = v40;
-            v41 = v40;
+            v55 = uUID;
+            v41 = uUID;
             _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Express pass info is nil", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v36);
           v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-          (*(v9 + 2))(v9, 0, v20);
+          (*(completionCopy + 2))(completionCopy, 0, v20);
           v17 = 0;
         }
       }
@@ -624,70 +624,70 @@ void __99__HMDWalletPassLibrary_generateHomeKeyNFCInfoWithReaderPublicKey_reader
       else
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = self;
+        selfCopy2 = self;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           v34 = HMFGetLogIdentifier();
-          v35 = [v46 UUID];
+          uUID2 = [flowCopy UUID];
           *buf = 138543618;
           v53 = v34;
           v54 = 2112;
-          v55 = v35;
+          v55 = uUID2;
           _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to fetch express conflict, secure element identifier is nil", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v31);
         v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-        (*(v9 + 2))(v9, 0, v16);
+        (*(completionCopy + 2))(completionCopy, 0, v16);
       }
     }
 
     else
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy3 = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v29 = HMFGetLogIdentifier();
-        v30 = [v46 UUID];
+        uUID3 = [flowCopy UUID];
         *buf = 138543874;
         v53 = v29;
         v54 = 2112;
-        v55 = v30;
+        v55 = uUID3;
         v56 = 2112;
-        v57 = v8;
+        v57 = lCopy;
         _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to fetch express conflict, cannot create payment pass at url: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v26);
       v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      (*(v9 + 2))(v9, 0, v14);
+      (*(completionCopy + 2))(completionCopy, 0, v14);
     }
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy4 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [v46 UUID];
+      uUID4 = [flowCopy UUID];
       *buf = 138543874;
       v53 = v24;
       v54 = 2112;
-      v55 = v25;
+      v55 = uUID4;
       v56 = 2112;
-      v57 = v8;
+      v57 = lCopy;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to fetch express conflict, create data accessor for pass at url: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v21);
-    v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (*(v9 + 2))(v9, 0, v12);
+    paymentPass = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+    (*(completionCopy + 2))(completionCopy, 0, paymentPass);
   }
 
   v42 = *MEMORY[0x277D85DE8];
@@ -775,22 +775,22 @@ LABEL_14:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchExpressEnablementConflictingPassDescriptionForPassAtURL:(id)a3 completion:(id)a4
+- (void)fetchExpressEnablementConflictingPassDescriptionForPassAtURL:(id)l completion:(id)completion
 {
   v6 = MEMORY[0x277D0F7B8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 untrackedPlaceholderFlow];
-  [(HMDWalletPassLibrary *)self fetchExpressEnablementConflictingPassDescriptionForPassAtURL:v8 flow:v9 completion:v7];
+  completionCopy = completion;
+  lCopy = l;
+  untrackedPlaceholderFlow = [v6 untrackedPlaceholderFlow];
+  [(HMDWalletPassLibrary *)self fetchExpressEnablementConflictingPassDescriptionForPassAtURL:lCopy flow:untrackedPlaceholderFlow completion:completionCopy];
 }
 
-- (id)passUniqueIDOfWalletKeyWithTypeIdentifier:(id)a3 serialNumber:(id)a4
+- (id)passUniqueIDOfWalletKeyWithTypeIdentifier:(id)identifier serialNumber:(id)number
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDWalletPassLibrary *)self passLibrary];
-  v9 = [v8 passWithPassTypeIdentifier:v6 serialNumber:v7];
+  identifierCopy = identifier;
+  numberCopy = number;
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+  v9 = [passLibrary passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
 
   if (v9)
   {
@@ -811,13 +811,13 @@ LABEL_14:
 
     if (v11)
     {
-      v14 = [v10 uniqueID];
+      uniqueID = [v10 uniqueID];
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -833,14 +833,14 @@ LABEL_14:
       }
 
       objc_autoreleasePoolPop(v19);
-      v14 = 0;
+      uniqueID = 0;
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -848,35 +848,35 @@ LABEL_14:
       v26 = 138543874;
       v27 = v18;
       v28 = 2112;
-      v29 = v6;
+      v29 = identifierCopy;
       v30 = 2112;
-      v31 = v7;
+      v31 = numberCopy;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Unable to find pass with type identifier: %@ and serial number: %@", &v26, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v14 = 0;
+    uniqueID = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return uniqueID;
 }
 
-- (void)fetchIsExpressEnabledForPassWithTypeIdentifier:(id)a3 serialNumber:(id)a4 flow:(id)a5 completion:(id)a6
+- (void)fetchIsExpressEnabledForPassWithTypeIdentifier:(id)identifier serialNumber:(id)number flow:(id)flow completion:(id)completion
 {
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDWalletPassLibrary *)self passLibrary];
-  v15 = [v14 passWithPassTypeIdentifier:v10 serialNumber:v11];
+  identifierCopy = identifier;
+  numberCopy = number;
+  flowCopy = flow;
+  completionCopy = completion;
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+  v15 = [passLibrary passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
 
   if (v15)
   {
-    v45 = v10;
-    v46 = v12;
+    v45 = identifierCopy;
+    v46 = flowCopy;
     v16 = v15;
     objc_opt_class();
     v17 = objc_opt_isKindOfClass() & 1;
@@ -895,17 +895,17 @@ LABEL_14:
     if (v17)
     {
       v20 = objc_alloc_init(MEMORY[0x277D380F0]);
-      v21 = [v16 uniqueID];
-      v22 = [v20 expressPassConfigurationWithPassUniqueIdentifier:v21];
+      uniqueID = [v16 uniqueID];
+      v22 = [v20 expressPassConfigurationWithPassUniqueIdentifier:uniqueID];
 
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v26 = v43 = v11;
-        v41 = [v46 UUID];
+        v26 = v43 = numberCopy;
+        uUID = [v46 UUID];
         [v22 isNFCExpressEnabled];
         HMFBooleanToString();
         v27 = v42 = v19;
@@ -914,7 +914,7 @@ LABEL_14:
         *buf = 138544130;
         v48 = v26;
         v49 = 2112;
-        v50 = v41;
+        v50 = uUID;
         v51 = 2112;
         v52 = v27;
         v53 = 2112;
@@ -922,27 +922,27 @@ LABEL_14:
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Found current express config with expressEnabled: %@, UWBEnabled: %@", buf, 0x2Au);
 
         v19 = v42;
-        v11 = v43;
+        numberCopy = v43;
       }
 
       objc_autoreleasePoolPop(v23);
-      v13[2](v13, [v22 isNFCExpressEnabled], objc_msgSend(v22, "isUWBExpressEnabled"), 0);
+      completionCopy[2](completionCopy, [v22 isNFCExpressEnabled], objc_msgSend(v22, "isUWBExpressEnabled"), 0);
     }
 
     else
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy2 = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
         v37 = v44 = v34;
-        v38 = [v46 UUID];
+        uUID2 = [v46 UUID];
         *buf = 138544130;
         v48 = v37;
         v49 = 2112;
-        v50 = v38;
+        v50 = uUID2;
         v51 = 2112;
         v52 = v16;
         v53 = 2112;
@@ -955,48 +955,48 @@ LABEL_14:
 
       objc_autoreleasePoolPop(v34);
       v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      (v13)[2](v13, 0, 0, v20);
+      (completionCopy)[2](completionCopy, 0, 0, v20);
     }
 
-    v10 = v45;
-    v12 = v46;
+    identifierCopy = v45;
+    flowCopy = v46;
   }
 
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy3 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       v32 = HMFGetLogIdentifier();
-      v33 = [v12 UUID];
+      uUID3 = [flowCopy UUID];
       *buf = 138544130;
       v48 = v32;
       v49 = 2112;
-      v50 = v33;
+      v50 = uUID3;
       v51 = 2112;
-      v52 = v10;
+      v52 = identifierCopy;
       v53 = 2112;
-      v54 = v11;
+      v54 = numberCopy;
       _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Unable to find pass with type identifier: %@ and serial number: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v29);
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    (v13)[2](v13, 0, 0, v19);
+    (completionCopy)[2](completionCopy, 0, 0, v19);
   }
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isExpressModeEnabledForPassUniqueIdentifier:(id)a3 serialNumber:(id)a4
+- (BOOL)isExpressModeEnabledForPassUniqueIdentifier:(id)identifier serialNumber:(id)number
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDWalletPassLibrary *)self passLibrary];
-  v9 = [v8 passWithPassTypeIdentifier:v6 serialNumber:v7];
+  identifierCopy = identifier;
+  numberCopy = number;
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+  v9 = [passLibrary passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
 
   if (v9)
   {
@@ -1018,14 +1018,14 @@ LABEL_14:
     if (v11)
     {
       v14 = objc_alloc_init(MEMORY[0x277D380F0]);
-      v15 = [v10 uniqueID];
-      v16 = [v14 isExpressModeEnabledForPassUniqueIdentifier:v15];
+      uniqueID = [v10 uniqueID];
+      v16 = [v14 isExpressModeEnabledForPassUniqueIdentifier:uniqueID];
     }
 
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -1048,7 +1048,7 @@ LABEL_14:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1056,9 +1056,9 @@ LABEL_14:
       v28 = 138543874;
       v29 = v20;
       v30 = 2112;
-      v31 = v6;
+      v31 = identifierCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = numberCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Unable to find pass with type identifier: %@ and serial number: %@", &v28, 0x20u);
     }
 
@@ -1119,22 +1119,22 @@ void __130__HMDWalletPassLibrary_setExpressSettingsWithAuthData_enableUWB_enable
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableExpressWithAuthData:(id)a3 passTypeIdentifier:(id)a4 serialNumber:(id)a5 flow:(id)a6 completion:(id)a7
+- (void)enableExpressWithAuthData:(id)data passTypeIdentifier:(id)identifier serialNumber:(id)number flow:(id)flow completion:(id)completion
 {
   v63 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(HMDWalletPassLibrary *)self passLibrary];
-  v17 = [v16 passWithPassTypeIdentifier:v12 serialNumber:v13];
+  dataCopy = data;
+  identifierCopy = identifier;
+  numberCopy = number;
+  flowCopy = flow;
+  completionCopy = completion;
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+  v17 = [passLibrary passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
 
   if (v17)
   {
-    v49 = v12;
-    v50 = v14;
-    v48 = v13;
+    v49 = identifierCopy;
+    v50 = flowCopy;
+    v48 = numberCopy;
     v18 = v17;
     objc_opt_class();
     v19 = objc_opt_isKindOfClass() & 1;
@@ -1153,17 +1153,17 @@ void __130__HMDWalletPassLibrary_setExpressSettingsWithAuthData_enableUWB_enable
     if (v19)
     {
       v22 = objc_alloc_init(MEMORY[0x277D380F0]);
-      v23 = [v18 uniqueID];
-      v24 = [v22 expressPassConfigurationWithPassUniqueIdentifier:v23];
+      uniqueID = [v18 uniqueID];
+      v24 = [v22 expressPassConfigurationWithPassUniqueIdentifier:uniqueID];
 
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
         v28 = v45 = v21;
-        [v14 UUID];
+        [flowCopy UUID];
         v29 = v46 = v25;
         [v24 isNFCExpressEnabled];
         v30 = HMFBooleanToString();
@@ -1192,26 +1192,26 @@ void __130__HMDWalletPassLibrary_setExpressSettingsWithAuthData_enableUWB_enable
       v52[1] = 3221225472;
       v52[2] = __98__HMDWalletPassLibrary_enableExpressWithAuthData_passTypeIdentifier_serialNumber_flow_completion___block_invoke_2;
       v52[3] = &unk_278682048;
-      v52[4] = v26;
-      v14 = v50;
+      v52[4] = selfCopy;
+      flowCopy = v50;
       v53 = v50;
-      v54 = v15;
-      [v22 setExpressWithPassConfiguration:v32 credential:v51 handler:v52];
+      v54 = completionCopy;
+      [v22 setExpressWithPassConfiguration:v32 credential:dataCopy handler:v52];
     }
 
     else
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = self;
+      selfCopy2 = self;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
         v41 = HMFGetLogIdentifier();
-        v42 = [v50 UUID];
+        uUID = [v50 UUID];
         *buf = 138544130;
         v56 = v41;
         v57 = 2112;
-        v58 = v42;
+        v58 = uUID;
         v59 = 2112;
         v60 = v18;
         v61 = 2112;
@@ -1222,37 +1222,37 @@ void __130__HMDWalletPassLibrary_setExpressSettingsWithAuthData_enableUWB_enable
 
       objc_autoreleasePoolPop(v38);
       v22 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      (*(v15 + 2))(v15, v22);
-      v14 = v50;
+      (*(completionCopy + 2))(completionCopy, v22);
+      flowCopy = v50;
     }
 
-    v13 = v48;
-    v12 = v49;
+    numberCopy = v48;
+    identifierCopy = v49;
   }
 
   else
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy3 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       v36 = HMFGetLogIdentifier();
-      v37 = [v14 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138544130;
       v56 = v36;
       v57 = 2112;
-      v58 = v37;
+      v58 = uUID2;
       v59 = 2112;
-      v60 = v12;
+      v60 = identifierCopy;
       v61 = 2112;
-      v62 = v13;
+      v62 = numberCopy;
       _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Unable to find pass with type identifier: %@ and serial number: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v33);
     v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    (*(v15 + 2))(v15, v21);
+    (*(completionCopy + 2))(completionCopy, v21);
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -1294,22 +1294,22 @@ void __98__HMDWalletPassLibrary_enableExpressWithAuthData_passTypeIdentifier_ser
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchHomeKeySupportedWithFlow:(id)a3 completion:(id)a4
+- (void)fetchHomeKeySupportedWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDWalletPassLibrary *)self passLibrary];
+  flowCopy = flow;
+  completionCopy = completion;
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
   v9 = objc_alloc_init(MEMORY[0x277D37CF8]);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__HMDWalletPassLibrary_fetchHomeKeySupportedWithFlow_completion___block_invoke;
   v12[3] = &unk_278682000;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v8 canAddSecureElementPassWithConfiguration:v9 completion:v12];
+  v13 = flowCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = flowCopy;
+  [passLibrary canAddSecureElementPassWithConfiguration:v9 completion:v12];
 }
 
 void __65__HMDWalletPassLibrary_fetchHomeKeySupportedWithFlow_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1341,105 +1341,105 @@ void __65__HMDWalletPassLibrary_fetchHomeKeySupportedWithFlow_completion___block
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removePassWithTypeIdentifier:(id)a3 serialNumber:(id)a4 flow:(id)a5
+- (BOOL)removePassWithTypeIdentifier:(id)identifier serialNumber:(id)number flow:(id)flow
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  numberCopy = number;
+  flowCopy = flow;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 UUID];
+    uUID = [flowCopy UUID];
     v29 = 138543618;
     v30 = v14;
     v31 = 2112;
-    v32 = v15;
+    v32 = uUID;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] WalletV2Error: Called removePass in old pass library", &v29, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [(HMDWalletPassLibrary *)v12 passLibrary];
-  v17 = [v16 passWithPassTypeIdentifier:v8 serialNumber:v9];
+  passLibrary = [(HMDWalletPassLibrary *)selfCopy passLibrary];
+  v17 = [passLibrary passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
 
   if (v17)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v12;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v10 UUID];
+      uUID2 = [flowCopy UUID];
       v29 = 138544386;
       v30 = v21;
       v31 = 2112;
-      v32 = v22;
+      v32 = uUID2;
       v33 = 2112;
-      v34 = v8;
+      v34 = identifierCopy;
       v35 = 2112;
-      v36 = v9;
+      v36 = numberCopy;
       v37 = 2112;
       v38 = v17;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Removing pass with identifier: %@ and serial number: %@: %@", &v29, 0x34u);
     }
 
     objc_autoreleasePoolPop(v18);
-    v23 = [(HMDWalletPassLibrary *)v19 passLibrary];
-    [v23 removePass:v17];
+    passLibrary2 = [(HMDWalletPassLibrary *)v19 passLibrary];
+    [passLibrary2 removePass:v17];
 
-    v24 = [(HMDWalletPassLibrary *)v19 walletKeys];
-    v25 = [v24 count] == 0;
+    walletKeys = [(HMDWalletPassLibrary *)v19 walletKeys];
+    v25 = [walletKeys count] == 0;
 
     v26 = +[HMDHomeKeyDataRecorder sharedRecorder];
-    [v26 recordRemovedWalletKeyWithSerialNumber:v9 noWalletKeysRemaining:v25];
+    [v26 recordRemovedWalletKeyWithSerialNumber:numberCopy noWalletKeysRemaining:v25];
   }
 
   v27 = *MEMORY[0x277D85DE8];
   return v17 != 0;
 }
 
-- (id)urlForWalletKeyWithTypeIdentifier:(id)a3 serialNumber:(id)a4
+- (id)urlForWalletKeyWithTypeIdentifier:(id)identifier serialNumber:(id)number
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDWalletPassLibrary *)self passLibrary];
-  v9 = [v8 passWithPassTypeIdentifier:v7 serialNumber:v6];
+  numberCopy = number;
+  identifierCopy = identifier;
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+  v9 = [passLibrary passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
 
-  v10 = [v9 passURL];
+  passURL = [v9 passURL];
 
-  return v10;
+  return passURL;
 }
 
-- (id)walletKeyWithTypeIdentifier:(id)a3 serialNumber:(id)a4 flow:(id)a5
+- (id)walletKeyWithTypeIdentifier:(id)identifier serialNumber:(id)number flow:(id)flow
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  identifierCopy = identifier;
+  numberCopy = number;
+  flowCopy = flow;
+  if (identifierCopy && numberCopy)
   {
-    v11 = [(HMDWalletPassLibrary *)self passLibrary];
-    v12 = [v11 passWithPassTypeIdentifier:v8 serialNumber:v9];
+    passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+    v12 = [passLibrary passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v10 UUID];
+      uUID = [flowCopy UUID];
       v26 = 138544386;
       v27 = v16;
       v28 = 2112;
-      v29 = v17;
+      v29 = uUID;
       v30 = 2112;
-      v31 = v8;
+      v31 = identifierCopy;
       v32 = 2112;
-      v33 = v9;
+      v33 = numberCopy;
       v34 = 2112;
       v35 = v12;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Found pass with identifier: %@ and serial number: %@: %@", &v26, 0x34u);
@@ -1448,7 +1448,7 @@ void __65__HMDWalletPassLibrary_fetchHomeKeySupportedWithFlow_completion___block
     objc_autoreleasePoolPop(v13);
     if (v12)
     {
-      v18 = [[HMDHomeWalletKey alloc] initWithPKPass:v12 flow:v10];
+      v18 = [[HMDHomeWalletKey alloc] initWithPKPass:v12 flow:flowCopy];
     }
 
     else
@@ -1460,20 +1460,20 @@ void __65__HMDWalletPassLibrary_fetchHomeKeySupportedWithFlow_completion___block
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v10 UUID];
+      uUID2 = [flowCopy UUID];
       v26 = 138544130;
       v27 = v22;
       v28 = 2112;
-      v29 = v23;
+      v29 = uUID2;
       v30 = 2112;
-      v31 = v8;
+      v31 = identifierCopy;
       v32 = 2112;
-      v33 = v9;
+      v33 = numberCopy;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Invalid parameter when looking up wallet key. typeIdentifier: %@, serialNumber: %@", &v26, 0x2Au);
     }
 
@@ -1486,35 +1486,35 @@ void __65__HMDWalletPassLibrary_fetchHomeKeySupportedWithFlow_completion___block
   return v18;
 }
 
-- (void)updatePassAtURL:(id)a3 flow:(id)a4 completion:(id)a5
+- (void)updatePassAtURL:(id)l flow:(id)flow completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  flowCopy = flow;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v9 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v22 = v14;
     v23 = 2112;
-    v24 = v15;
+    v24 = uUID;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] WalletV2Error: Called updatePass in old pass library", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [(HMDWalletPassLibrary *)v12 passLibrary];
+  passLibrary = [(HMDWalletPassLibrary *)selfCopy passLibrary];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __56__HMDWalletPassLibrary_updatePassAtURL_flow_completion___block_invoke;
   v19[3] = &unk_278683B50;
-  v20 = v10;
-  v17 = v10;
-  [v16 replaceUnsignedPassAtURL:v8 withCompletionHandler:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [passLibrary replaceUnsignedPassAtURL:lCopy withCompletionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1537,43 +1537,43 @@ void __56__HMDWalletPassLibrary_updatePassAtURL_flow_completion___block_invoke(u
   }
 }
 
-- (void)addPassAtURL:(id)a3 flow:(id)a4 completion:(id)a5
+- (void)addPassAtURL:(id)l flow:(id)flow completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  flowCopy = flow;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v9 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v29 = v14;
     v30 = 2112;
-    v31 = v15;
+    v31 = uUID;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] WalletV2Error: Called addPass in old pass library", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  objc_initWeak(buf, v12);
-  v16 = [(HMDWalletPassLibrary *)v12 passLibrary];
-  v27 = v8;
+  objc_initWeak(buf, selfCopy);
+  passLibrary = [(HMDWalletPassLibrary *)selfCopy passLibrary];
+  v27 = lCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __53__HMDWalletPassLibrary_addPassAtURL_flow_completion___block_invoke;
   v22[3] = &unk_278681FD8;
   objc_copyWeak(&v26, buf);
-  v18 = v9;
+  v18 = flowCopy;
   v23 = v18;
-  v19 = v8;
+  v19 = lCopy;
   v24 = v19;
-  v20 = v10;
+  v20 = completionCopy;
   v25 = v20;
-  [v16 addUnsignedPassesAtURLs:v17 withCompletionHandler:v22];
+  [passLibrary addUnsignedPassesAtURLs:v17 withCompletionHandler:v22];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(buf);
@@ -1622,24 +1622,24 @@ void __53__HMDWalletPassLibrary_addPassAtURL_flow_completion___block_invoke(uint
 
 - (void)start
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = *MEMORY[0x277D386D8];
-  v4 = [(HMDWalletPassLibrary *)self passLibrary];
-  [v5 addObserver:self selector:sel_handlePassLibraryDidChangeNotification_ name:v3 object:v4];
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+  [defaultCenter addObserver:self selector:sel_handlePassLibraryDidChangeNotification_ name:v3 object:passLibrary];
 }
 
 - (NSSet)walletKeys
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HMDWalletPassLibrary *)self passLibrary];
-  v5 = [v4 passes];
+  passLibrary = [(HMDWalletPassLibrary *)self passLibrary];
+  passes = [passLibrary passes];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v5;
+  v6 = passes;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -1655,14 +1655,14 @@ void __53__HMDWalletPassLibrary_addPassAtURL_flow_completion___block_invoke(uint
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 secureElementPass];
-        v13 = [v12 isHomeKeyPass];
+        secureElementPass = [v11 secureElementPass];
+        isHomeKeyPass = [secureElementPass isHomeKeyPass];
 
-        if (v13)
+        if (isHomeKeyPass)
         {
           v14 = [HMDHomeWalletKey alloc];
-          v15 = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
-          v16 = [(HMDHomeWalletKey *)v14 initWithPKPass:v11 flow:v15];
+          untrackedPlaceholderFlow = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
+          v16 = [(HMDHomeWalletKey *)v14 initWithPKPass:v11 flow:untrackedPlaceholderFlow];
 
           [v3 addObject:v16];
         }
@@ -1680,19 +1680,19 @@ void __53__HMDWalletPassLibrary_addPassAtURL_flow_completion___block_invoke(uint
   return v17;
 }
 
-- (HMDWalletPassLibrary)initWithWorkQueue:(id)a3
+- (HMDWalletPassLibrary)initWithWorkQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = HMDWalletPassLibrary;
   v6 = [(HMDWalletPassLibrary *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workQueue, a3);
-    v8 = [MEMORY[0x277D37FC0] sharedInstance];
+    objc_storeStrong(&v6->_workQueue, queue);
+    mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
     passLibrary = v7->_passLibrary;
-    v7->_passLibrary = v8;
+    v7->_passLibrary = mEMORY[0x277D37FC0];
   }
 
   return v7;

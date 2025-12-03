@@ -1,6 +1,6 @@
 @interface QPECRClient
-- (id)generateEntityRequest:(id)a3 entityFilterType:(int64_t)a4 mode:(int64_t)a5 enableBackupSearch:(BOOL)a6;
-- (id)visualIdentifiersWithText:(id)a3 allowPrefixSearch:(BOOL)a4 entityFilterType:(int64_t)a5 includeInferredNames:(BOOL)a6 allowGroundingToNamesAndEmails:(BOOL)a7 useNamesAndEmailsForNonRelations:(BOOL)a8 enableBackupSearch:(BOOL)a9 error:(id *)a10;
+- (id)generateEntityRequest:(id)request entityFilterType:(int64_t)type mode:(int64_t)mode enableBackupSearch:(BOOL)search;
+- (id)visualIdentifiersWithText:(id)text allowPrefixSearch:(BOOL)search entityFilterType:(int64_t)type includeInferredNames:(BOOL)names allowGroundingToNamesAndEmails:(BOOL)emails useNamesAndEmailsForNonRelations:(BOOL)relations enableBackupSearch:(BOOL)backupSearch error:(id *)self0;
 - (void)cooldownAsync;
 - (void)cooldownSync;
 - (void)warmUpAsync;
@@ -12,7 +12,7 @@
 - (void)warmUpSync
 {
   v12 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   OUTLINED_FUNCTION_0();
@@ -33,19 +33,19 @@
   dispatch_async(v4, block);
 }
 
-- (id)generateEntityRequest:(id)a3 entityFilterType:(int64_t)a4 mode:(int64_t)a5 enableBackupSearch:(BOOL)a6
+- (id)generateEntityRequest:(id)request entityFilterType:(int64_t)type mode:(int64_t)mode enableBackupSearch:(BOOL)search
 {
-  v6 = a6;
+  searchCopy = search;
   v9 = MEMORY[0x1E69A9E88];
-  v10 = a3;
+  requestCopy = request;
   v11 = [v9 alloc];
   v12 = &unk_1F45F8C30;
-  if (a4 == 2)
+  if (type == 2)
   {
     v12 = &unk_1F45F8C48;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v13 = &unk_1F45F8C60;
   }
@@ -55,16 +55,16 @@
     v13 = v12;
   }
 
-  if (v6)
+  if (searchCopy)
   {
     BYTE2(v17) = 1;
     LOWORD(v17) = 256;
-    v14 = [v11 initWithText:v10 entityClassFilter:v13 spans:0 mode:0 constraint:0 sourceIDs:0 kgq:0 includeFeatures:v17 includeInferredNames:? enableBackupSearch:?];
+    v14 = [v11 initWithText:requestCopy entityClassFilter:v13 spans:0 mode:0 constraint:0 sourceIDs:0 kgq:0 includeFeatures:v17 includeInferredNames:? enableBackupSearch:?];
   }
 
   else
   {
-    v14 = [v11 initWithText:v10 entityClassFilter:v13 spans:0 mode:a5 constraint:0 includeInferredNames:1];
+    v14 = [v11 initWithText:requestCopy entityClassFilter:v13 spans:0 mode:mode constraint:0 includeInferredNames:1];
   }
 
   v15 = v14;
@@ -72,23 +72,23 @@
   return v15;
 }
 
-- (id)visualIdentifiersWithText:(id)a3 allowPrefixSearch:(BOOL)a4 entityFilterType:(int64_t)a5 includeInferredNames:(BOOL)a6 allowGroundingToNamesAndEmails:(BOOL)a7 useNamesAndEmailsForNonRelations:(BOOL)a8 enableBackupSearch:(BOOL)a9 error:(id *)a10
+- (id)visualIdentifiersWithText:(id)text allowPrefixSearch:(BOOL)search entityFilterType:(int64_t)type includeInferredNames:(BOOL)names allowGroundingToNamesAndEmails:(BOOL)emails useNamesAndEmailsForNonRelations:(BOOL)relations enableBackupSearch:(BOOL)backupSearch error:(id *)self0
 {
-  v89 = a8;
-  v93 = a7;
+  relationsCopy = relations;
+  emailsCopy = emails;
   v137 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = v13;
-  if (!a4)
+  textCopy = text;
+  v14 = textCopy;
+  if (!search)
   {
-    v15 = v13;
-    v16 = [v13 stringByAppendingString:@" "];
+    v15 = textCopy;
+    v16 = [textCopy stringByAppendingString:@" "];
 
     v14 = v16;
   }
 
   v87 = v14;
-  v17 = [(QPECRClient *)self generateEntityRequest:v14 entityFilterType:a5 mode:3 enableBackupSearch:a9];
+  v17 = [(QPECRClient *)self generateEntityRequest:v14 entityFilterType:type mode:3 enableBackupSearch:backupSearch];
   v125 = 0;
   v18 = [(QPECRClient *)self resolveEntitiesWithRequest:v17 error:&v125];
   v19 = v125;
@@ -98,7 +98,7 @@
   {
     v21 = v19;
     v22 = 0;
-    *a10 = v20;
+    *error = v20;
   }
 
   else
@@ -110,10 +110,10 @@
     if (v25)
     {
       v81 = v17;
-      v100 = [MEMORY[0x1E695DF90] dictionary];
-      v26 = [MEMORY[0x1E695DF70] array];
-      v27 = [MEMORY[0x1E695DF70] array];
-      v28 = [MEMORY[0x1E695DF70] array];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
       v121 = 0u;
       v122 = 0u;
       v123 = 0u;
@@ -123,9 +123,9 @@
       if (v85)
       {
         v84 = *v122;
-        v91 = v27;
-        v92 = v26;
-        v90 = v28;
+        v91 = array2;
+        v92 = array;
+        v90 = array3;
         do
         {
           v29 = 0;
@@ -142,8 +142,8 @@
             v118 = 0u;
             v119 = 0u;
             v120 = 0u;
-            v88 = [v30 rankedItems];
-            v95 = [v88 countByEnumeratingWithState:&v117 objects:v135 count:16];
+            rankedItems = [v30 rankedItems];
+            v95 = [rankedItems countByEnumeratingWithState:&v117 objects:v135 count:16];
             if (v95)
             {
               v94 = *v118;
@@ -154,20 +154,20 @@
                 {
                   if (*v118 != v94)
                   {
-                    objc_enumerationMutation(v88);
+                    objc_enumerationMutation(rankedItems);
                   }
 
                   v98 = v31;
                   v32 = *(*(&v117 + 1) + 8 * v31);
-                  v96 = [v32 isRelationshipMatch];
-                  v33 = [v32 identifierInformation];
+                  isRelationshipMatch = [v32 isRelationshipMatch];
+                  identifierInformation = [v32 identifierInformation];
                   v113 = 0u;
                   v114 = 0u;
                   v115 = 0u;
                   v116 = 0u;
-                  v97 = v33;
-                  v99 = [v33 visualIdentifiers];
-                  v34 = [v99 countByEnumeratingWithState:&v113 objects:v134 count:16];
+                  v97 = identifierInformation;
+                  visualIdentifiers = [identifierInformation visualIdentifiers];
+                  v34 = [visualIdentifiers countByEnumeratingWithState:&v113 objects:v134 count:16];
                   if (v34)
                   {
                     v35 = v34;
@@ -178,24 +178,24 @@
                       {
                         if (*v114 != v36)
                         {
-                          objc_enumerationMutation(v99);
+                          objc_enumerationMutation(visualIdentifiers);
                         }
 
                         v38 = [*(*(&v113 + 1) + 8 * i) componentsSeparatedByString:@"/"];
-                        v39 = [v38 firstObject];
-                        v40 = [v39 length];
+                        firstObject = [v38 firstObject];
+                        v40 = [firstObject length];
 
                         if (v40)
                         {
-                          v41 = [v38 firstObject];
-                          v42 = [v100 objectForKeyedSubscript:v41];
+                          firstObject2 = [v38 firstObject];
+                          v42 = [dictionary objectForKeyedSubscript:firstObject2];
 
-                          v43 = [v42 firstObject];
-                          [v43 doubleValue];
+                          firstObject3 = [v42 firstObject];
+                          [firstObject3 doubleValue];
                           v45 = v44;
 
-                          v46 = [v42 lastObject];
-                          [v46 doubleValue];
+                          lastObject = [v42 lastObject];
+                          [lastObject doubleValue];
                           v48 = v47;
 
                           [v32 nameScore];
@@ -217,29 +217,29 @@
                           v54 = [MEMORY[0x1E696AD98] numberWithDouble:v48];
                           v133[1] = v54;
                           v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v133 count:2];
-                          v56 = [v38 firstObject];
-                          [v100 setObject:v55 forKeyedSubscript:v56];
+                          firstObject4 = [v38 firstObject];
+                          [dictionary setObject:v55 forKeyedSubscript:firstObject4];
                         }
                       }
 
-                      v35 = [v99 countByEnumeratingWithState:&v113 objects:v134 count:16];
+                      v35 = [visualIdentifiers countByEnumeratingWithState:&v113 objects:v134 count:16];
                     }
 
                     while (v35);
                   }
 
-                  if (v93 && v96 | v89)
+                  if (emailsCopy && isRelationshipMatch | relationsCopy)
                   {
                     v111 = 0u;
                     v112 = 0u;
                     v109 = 0u;
                     v110 = 0u;
                     v57 = v97;
-                    v58 = [v97 names];
-                    v59 = [v58 countByEnumeratingWithState:&v109 objects:v132 count:16];
-                    v27 = v91;
-                    v26 = v92;
-                    v28 = v90;
+                    names = [v97 names];
+                    v59 = [names countByEnumeratingWithState:&v109 objects:v132 count:16];
+                    array2 = v91;
+                    array = v92;
+                    array3 = v90;
                     if (v59)
                     {
                       v60 = v59;
@@ -250,13 +250,13 @@
                         {
                           if (*v110 != v61)
                           {
-                            objc_enumerationMutation(v58);
+                            objc_enumerationMutation(names);
                           }
 
                           [v92 addObject:*(*(&v109 + 1) + 8 * j)];
                         }
 
-                        v60 = [v58 countByEnumeratingWithState:&v109 objects:v132 count:16];
+                        v60 = [names countByEnumeratingWithState:&v109 objects:v132 count:16];
                       }
 
                       while (v60);
@@ -266,8 +266,8 @@
                     v108 = 0u;
                     v105 = 0u;
                     v106 = 0u;
-                    v63 = [v97 emails];
-                    v64 = [v63 countByEnumeratingWithState:&v105 objects:v131 count:16];
+                    emails = [v97 emails];
+                    v64 = [emails countByEnumeratingWithState:&v105 objects:v131 count:16];
                     if (v64)
                     {
                       v65 = v64;
@@ -278,13 +278,13 @@
                         {
                           if (*v106 != v66)
                           {
-                            objc_enumerationMutation(v63);
+                            objc_enumerationMutation(emails);
                           }
 
                           [v91 addObject:*(*(&v105 + 1) + 8 * k)];
                         }
 
-                        v65 = [v63 countByEnumeratingWithState:&v105 objects:v131 count:16];
+                        v65 = [emails countByEnumeratingWithState:&v105 objects:v131 count:16];
                       }
 
                       while (v65);
@@ -294,8 +294,8 @@
                     v104 = 0u;
                     v101 = 0u;
                     v102 = 0u;
-                    v68 = [v97 contactIdentifiers];
-                    v69 = [v68 countByEnumeratingWithState:&v101 objects:v130 count:16];
+                    contactIdentifiers = [v97 contactIdentifiers];
+                    v69 = [contactIdentifiers countByEnumeratingWithState:&v101 objects:v130 count:16];
                     if (v69)
                     {
                       v70 = v69;
@@ -306,13 +306,13 @@
                         {
                           if (*v102 != v71)
                           {
-                            objc_enumerationMutation(v68);
+                            objc_enumerationMutation(contactIdentifiers);
                           }
 
                           [v90 addObject:*(*(&v101 + 1) + 8 * m)];
                         }
 
-                        v70 = [v68 countByEnumeratingWithState:&v101 objects:v130 count:16];
+                        v70 = [contactIdentifiers countByEnumeratingWithState:&v101 objects:v130 count:16];
                       }
 
                       while (v70);
@@ -323,9 +323,9 @@
 
                   else
                   {
-                    v27 = v91;
-                    v26 = v92;
-                    v28 = v90;
+                    array2 = v91;
+                    array = v92;
+                    array3 = v90;
                     v57 = v97;
                     if (ecrClientLogger_token != -1)
                     {
@@ -346,7 +346,7 @@
                 }
 
                 while (v31 != v95);
-                v95 = [v88 countByEnumeratingWithState:&v117 objects:v135 count:16];
+                v95 = [rankedItems countByEnumeratingWithState:&v117 objects:v135 count:16];
               }
 
               while (v95);
@@ -363,16 +363,16 @@
       }
 
       v126[0] = @"visualIdentifier";
-      v75 = [v100 copy];
+      v75 = [dictionary copy];
       v127[0] = v75;
       v126[1] = @"personNames";
-      v76 = [v26 copy];
+      v76 = [array copy];
       v127[1] = v76;
       v126[2] = @"personEmails";
-      v77 = [v27 copy];
+      v77 = [array2 copy];
       v127[2] = v77;
       v126[3] = @"personContactIdentifiers";
-      v78 = [v28 copy];
+      v78 = [array3 copy];
       v127[3] = v78;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v127 forKeys:v126 count:4];
 
@@ -394,12 +394,12 @@
 - (void)cooldownSync
 {
   v7 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v5 = 138412290;
   v6 = v3;
-  _os_log_debug_impl(&dword_1C6584000, v1, OS_LOG_TYPE_DEBUG, "Cooled down %@", &v5, 0xCu);
+  _os_log_debug_impl(&dword_1C6584000, selfCopy, OS_LOG_TYPE_DEBUG, "Cooled down %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];
 }

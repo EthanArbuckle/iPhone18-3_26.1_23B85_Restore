@@ -1,30 +1,30 @@
 @interface SUGSchemaSUGSuggestionsUIActivity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SUGSchemaSUGSuggestionsUIActivity)initWithDictionary:(id)a3;
-- (SUGSchemaSUGSuggestionsUIActivity)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SUGSchemaSUGSuggestionsUIActivity)initWithDictionary:(id)dictionary;
+- (SUGSchemaSUGSuggestionsUIActivity)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addSuggestionIds:(id)a3;
-- (void)addSuggestions:(id)a3;
-- (void)setHasUiActivity:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestionIds:(id)ids;
+- (void)addSuggestions:(id)suggestions;
+- (void)setHasUiActivity:(BOOL)activity;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUGSchemaSUGSuggestionsUIActivity
 
-- (SUGSchemaSUGSuggestionsUIActivity)initWithDictionary:(id)a3
+- (SUGSchemaSUGSuggestionsUIActivity)initWithDictionary:(id)dictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = SUGSchemaSUGSuggestionsUIActivity;
   v5 = [(SUGSchemaSUGSuggestionsUIActivity *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"suggestionIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"suggestionIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,21 +66,21 @@
       v6 = v7;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"deliveryVehicle"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"deliveryVehicle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGSuggestionsUIActivity setDeliveryVehicle:](v5, "setDeliveryVehicle:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"uiActivity"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"uiActivity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGSuggestionsUIActivity setUiActivity:](v5, "setUiActivity:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"suggestions"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"suggestions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
       v16 = v29;
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"linkId"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,30 +138,30 @@
   return v5;
 }
 
-- (SUGSchemaSUGSuggestionsUIActivity)initWithJSON:(id)a3
+- (SUGSchemaSUGSuggestionsUIActivity)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUGSchemaSUGSuggestionsUIActivity *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUGSchemaSUGSuggestionsUIActivity *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUGSchemaSUGSuggestionsUIActivity *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -175,7 +175,7 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(SUGSchemaSUGSuggestionsUIActivity *)self deliveryVehicle]- 1;
@@ -189,35 +189,35 @@
       v5 = off_1E78E7CF8[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"deliveryVehicle"];
+    [dictionary setObject:v5 forKeyedSubscript:@"deliveryVehicle"];
   }
 
   if (self->_linkId)
   {
-    v6 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    linkId = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_suggestionIds)
   {
-    v9 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestionIds];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"suggestionIds"];
+    suggestionIds = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestionIds];
+    v10 = [suggestionIds copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"suggestionIds"];
   }
 
   if ([(NSArray *)self->_suggestions count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -237,16 +237,16 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          if (v17)
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v11 addObject:v17];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v18 = [MEMORY[0x1E695DFB0] null];
-            [v11 addObject:v18];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -256,7 +256,7 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"suggestions"];
+    [dictionary setObject:array forKeyedSubscript:@"suggestions"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -272,12 +272,12 @@
       v20 = off_1E78E7D48[v19];
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"uiActivity"];
+    [dictionary setObject:v20 forKeyedSubscript:@"uiActivity"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -309,28 +309,28 @@ LABEL_6:
   return v6 ^ [(SISchemaUUID *)self->_linkId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestionIds];
-  v6 = [v4 suggestionIds];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionIds = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestionIds];
+  suggestionIds2 = [equalCopy suggestionIds];
+  if ((suggestionIds != 0) == (suggestionIds2 == 0))
   {
     goto LABEL_23;
   }
 
-  v7 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestionIds];
-  if (v7)
+  suggestionIds3 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestionIds];
+  if (suggestionIds3)
   {
-    v8 = v7;
-    v9 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestionIds];
-    v10 = [v4 suggestionIds];
-    v11 = [v9 isEqual:v10];
+    v8 = suggestionIds3;
+    suggestionIds4 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestionIds];
+    suggestionIds5 = [equalCopy suggestionIds];
+    v11 = [suggestionIds4 isEqual:suggestionIds5];
 
     if (!v11)
     {
@@ -343,7 +343,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v13 = v4[40];
+  v13 = equalCopy[40];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_24;
@@ -352,13 +352,13 @@ LABEL_6:
   if (*&has)
   {
     deliveryVehicle = self->_deliveryVehicle;
-    if (deliveryVehicle != [v4 deliveryVehicle])
+    if (deliveryVehicle != [equalCopy deliveryVehicle])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -370,26 +370,26 @@ LABEL_6:
   if (v15)
   {
     uiActivity = self->_uiActivity;
-    if (uiActivity != [v4 uiActivity])
+    if (uiActivity != [equalCopy uiActivity])
     {
       goto LABEL_24;
     }
   }
 
-  v5 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestions];
-  v6 = [v4 suggestions];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionIds = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestions];
+  suggestionIds2 = [equalCopy suggestions];
+  if ((suggestionIds != 0) == (suggestionIds2 == 0))
   {
     goto LABEL_23;
   }
 
-  v17 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestions];
-  if (v17)
+  suggestions = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestions];
+  if (suggestions)
   {
-    v18 = v17;
-    v19 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestions];
-    v20 = [v4 suggestions];
-    v21 = [v19 isEqual:v20];
+    v18 = suggestions;
+    suggestions2 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestions];
+    suggestions3 = [equalCopy suggestions];
+    v21 = [suggestions2 isEqual:suggestions3];
 
     if (!v21)
     {
@@ -401,17 +401,17 @@ LABEL_6:
   {
   }
 
-  v5 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionIds = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
+  suggestionIds2 = [equalCopy linkId];
+  if ((suggestionIds != 0) == (suggestionIds2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v22 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
-  if (!v22)
+  linkId = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
+  if (!linkId)
   {
 
 LABEL_27:
@@ -419,10 +419,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v23 = v22;
-  v24 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
-  v25 = [v4 linkId];
-  v26 = [v24 isEqual:v25];
+  v23 = linkId;
+  linkId2 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
+  linkId3 = [equalCopy linkId];
+  v26 = [linkId2 isEqual:linkId3];
 
   if (v26)
   {
@@ -436,10 +436,10 @@ LABEL_25:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -508,36 +508,36 @@ LABEL_25:
     while (v13);
   }
 
-  v16 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
+  linkId = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
 
-  if (v16)
+  if (linkId)
   {
-    v17 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
+    linkId2 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addSuggestions:(id)a3
+- (void)addSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   suggestions = self->_suggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!suggestions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_suggestions;
-    self->_suggestions = v6;
+    self->_suggestions = array;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     suggestions = self->_suggestions;
   }
 
-  [(NSArray *)suggestions addObject:v4];
+  [(NSArray *)suggestions addObject:suggestionsCopy];
 }
 
-- (void)setHasUiActivity:(BOOL)a3
+- (void)setHasUiActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     v3 = 2;
   }
@@ -550,39 +550,39 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSuggestionIds:(id)a3
+- (void)addSuggestionIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   suggestionIds = self->_suggestionIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!suggestionIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_suggestionIds;
-    self->_suggestionIds = v6;
+    self->_suggestionIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     suggestionIds = self->_suggestionIds;
   }
 
-  [(NSArray *)suggestionIds addObject:v4];
+  [(NSArray *)suggestionIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = SUGSchemaSUGSuggestionsUIActivity;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SUGSchemaSUGSuggestionsUIActivity *)self suggestions:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(SUGSchemaSUGSuggestionsUIActivity *)self setSuggestions:v7];
 
-  v8 = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  linkId = [(SUGSchemaSUGSuggestionsUIActivity *)self linkId];
+  v9 = [linkId applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(SUGSchemaSUGSuggestionsUIActivity *)self deleteLinkId];
   }

@@ -1,36 +1,36 @@
 @interface FBSOpenApplicationService
 + (BOOL)currentProcessServicesDefaultShellEndpoint;
 + (FBSOpenApplicationService)serviceWithDefaultShellEndpoint;
-+ (FBSOpenApplicationService)serviceWithEndpoint:(id)a3;
-- (BOOL)canOpenApplication:(id)a3 reason:(int64_t *)a4;
++ (FBSOpenApplicationService)serviceWithEndpoint:(id)endpoint;
+- (BOOL)canOpenApplication:(id)application reason:(int64_t *)reason;
 - (FBSOpenApplicationService)init;
-- (id)_initWithEndpoint:(id)a3;
+- (id)_initWithEndpoint:(id)endpoint;
 - (id)_remoteTarget;
-- (void)_openApplication:(id)a3 withOptions:(id)a4 clientHandle:(id)a5 completion:(id)a6;
+- (void)_openApplication:(id)application withOptions:(id)options clientHandle:(id)handle completion:(id)completion;
 - (void)dealloc;
-- (void)openApplication:(id)a3 withOptions:(id)a4 clientHandle:(id)a5 completion:(id)a6;
-- (void)openApplication:(id)a3 withOptions:(id)a4 completion:(id)a5;
+- (void)openApplication:(id)application withOptions:(id)options clientHandle:(id)handle completion:(id)completion;
+- (void)openApplication:(id)application withOptions:(id)options completion:(id)completion;
 @end
 
 @implementation FBSOpenApplicationService
 
 - (id)_remoteTarget
 {
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v3)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     [(BSServiceConnection *)self->_connection activate];
-    v3 = [(BSServiceConnection *)self->_connection remoteTarget];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
   }
 
-  return v3;
+  return remoteTarget;
 }
 
 + (FBSOpenApplicationService)serviceWithDefaultShellEndpoint
 {
-  v2 = [off_1E76BC9E0 environmentAliases];
-  v3 = [off_1E76BCA30 defaultShellMachName];
-  v4 = [v2 resolveMachService:v3];
+  environmentAliases = [off_1E76BC9E0 environmentAliases];
+  defaultShellMachName = [off_1E76BCA30 defaultShellMachName];
+  v4 = [environmentAliases resolveMachService:defaultShellMachName];
 
   v5 = +[FBSOpenApplicationServiceSpecification identifier];
   v6 = [off_1E76BCA30 endpointForMachName:v4 service:v5 instance:0];
@@ -57,9 +57,9 @@
 
 - (FBSOpenApplicationService)init
 {
-  v3 = [off_1E76BC9E0 environmentAliases];
-  v4 = [off_1E76BCA30 defaultShellMachName];
-  v5 = [v3 resolveMachService:v4];
+  environmentAliases = [off_1E76BC9E0 environmentAliases];
+  defaultShellMachName = [off_1E76BCA30 defaultShellMachName];
+  v5 = [environmentAliases resolveMachService:defaultShellMachName];
   v6 = +[FBSOpenApplicationServiceSpecification identifier];
   v7 = [off_1E76BCA30 endpointForMachName:v5 service:v6 instance:0];
   if (v7)
@@ -77,11 +77,11 @@
   return v8;
 }
 
-- (id)_initWithEndpoint:(id)a3
+- (id)_initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   NSClassFromString(&cfstr_Bsserviceconne.isa);
-  if (!v5)
+  if (!endpointCopy)
   {
     [FBSOpenApplicationService _initWithEndpoint:a2];
   }
@@ -92,8 +92,8 @@
   }
 
   v6 = +[FBSOpenApplicationServiceSpecification identifier];
-  v7 = [v5 service];
-  v8 = [v6 isEqualToString:v7];
+  service = [endpointCopy service];
+  v8 = [v6 isEqualToString:service];
 
   if ((v8 & 1) == 0)
   {
@@ -105,7 +105,7 @@
   v9 = [(FBSOpenApplicationService *)&v19 init];
   if (v9)
   {
-    v10 = [off_1E76BCA28 connectionWithEndpoint:v5];
+    v10 = [off_1E76BCA28 connectionWithEndpoint:endpointCopy];
     connection = v9->_connection;
     v9->_connection = v10;
 
@@ -139,42 +139,42 @@ void __47__FBSOpenApplicationService__initWithEndpoint___block_invoke(uint64_t a
   [v4 setInvalidationHandler:&__block_literal_global_26];
 }
 
-+ (FBSOpenApplicationService)serviceWithEndpoint:(id)a3
++ (FBSOpenApplicationService)serviceWithEndpoint:(id)endpoint
 {
-  v3 = a3;
-  v4 = [[FBSOpenApplicationService alloc] _initWithEndpoint:v3];
+  endpointCopy = endpoint;
+  v4 = [[FBSOpenApplicationService alloc] _initWithEndpoint:endpointCopy];
 
   return v4;
 }
 
 + (BOOL)currentProcessServicesDefaultShellEndpoint
 {
-  v2 = [off_1E76BCA30 defaultShellMachName];
+  defaultShellMachName = [off_1E76BCA30 defaultShellMachName];
   v3 = +[FBSOpenApplicationServiceSpecification identifier];
-  v4 = [off_1E76BCA60 bootstrapConfiguration];
-  v5 = [v4 domainForMachName:v2];
+  bootstrapConfiguration = [off_1E76BCA60 bootstrapConfiguration];
+  v5 = [bootstrapConfiguration domainForMachName:defaultShellMachName];
   v6 = [v5 serviceForIdentifier:v3];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (void)openApplication:(id)a3 withOptions:(id)a4 clientHandle:(id)a5 completion:(id)a6
+- (void)openApplication:(id)application withOptions:(id)options clientHandle:(id)handle completion:(id)completion
 {
-  v18 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E696AE30] processInfo];
-  v15 = [v14 bs_jobLabel];
-  v16 = [v15 isEqualToString:@"com.apple.lsd"];
+  applicationCopy = application;
+  optionsCopy = options;
+  handleCopy = handle;
+  completionCopy = completion;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  bs_jobLabel = [processInfo bs_jobLabel];
+  v16 = [bs_jobLabel isEqualToString:@"com.apple.lsd"];
 
   if ((v16 & 1) == 0)
   {
     [FBSOpenApplicationService openApplication:a2 withOptions:? clientHandle:? completion:?];
   }
 
-  v17 = v12;
+  v17 = handleCopy;
   NSClassFromString(&cfstr_Bsprocesshandl.isa);
   if (!v17)
   {
@@ -186,21 +186,21 @@ void __47__FBSOpenApplicationService__initWithEndpoint___block_invoke(uint64_t a
     [FBSOpenApplicationService openApplication:a2 withOptions:? clientHandle:? completion:?];
   }
 
-  [(FBSOpenApplicationService *)self _openApplication:v18 withOptions:v11 clientHandle:v17 completion:v13];
+  [(FBSOpenApplicationService *)self _openApplication:applicationCopy withOptions:optionsCopy clientHandle:v17 completion:completionCopy];
 }
 
-- (BOOL)canOpenApplication:(id)a3 reason:(int64_t *)a4
+- (BOOL)canOpenApplication:(id)application reason:(int64_t *)reason
 {
-  v6 = a3;
-  if (v6)
+  applicationCopy = application;
+  if (applicationCopy)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v7 = [(FBSOpenApplicationService *)self _remoteTarget];
-    v8 = v7;
-    if (v7)
+    _remoteTarget = [(FBSOpenApplicationService *)self _remoteTarget];
+    v8 = _remoteTarget;
+    if (_remoteTarget)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -208,7 +208,7 @@ void __47__FBSOpenApplicationService__initWithEndpoint___block_invoke(uint64_t a
       v13[3] = &unk_1E76BEE38;
       v13[4] = self;
       v13[5] = &v14;
-      [v7 canOpenApplication:v6 completion:v13];
+      [_remoteTarget canOpenApplication:applicationCopy completion:v13];
       v9 = v15;
     }
 
@@ -219,9 +219,9 @@ void __47__FBSOpenApplicationService__initWithEndpoint___block_invoke(uint64_t a
     }
 
     v11 = v9[3];
-    if (a4)
+    if (reason)
     {
-      *a4 = v11;
+      *reason = v11;
     }
 
     v10 = v11 == 0;
@@ -232,9 +232,9 @@ void __47__FBSOpenApplicationService__initWithEndpoint___block_invoke(uint64_t a
   else
   {
     v10 = 0;
-    if (a4)
+    if (reason)
     {
-      *a4 = 2;
+      *reason = 2;
     }
   }
 
@@ -265,23 +265,23 @@ void __55__FBSOpenApplicationService_canOpenApplication_reason___block_invoke(ui
   }
 }
 
-- (void)openApplication:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)openApplication:(id)application withOptions:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [off_1E76BCA18 processHandle];
-  [(FBSOpenApplicationService *)self _openApplication:v10 withOptions:v9 clientHandle:v11 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  applicationCopy = application;
+  processHandle = [off_1E76BCA18 processHandle];
+  [(FBSOpenApplicationService *)self _openApplication:applicationCopy withOptions:optionsCopy clientHandle:processHandle completion:completionCopy];
 }
 
-- (void)_openApplication:(id)a3 withOptions:(id)a4 clientHandle:(id)a5 completion:(id)a6
+- (void)_openApplication:(id)application withOptions:(id)options clientHandle:(id)handle completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v13;
+  applicationCopy = application;
+  optionsCopy = options;
+  handleCopy = handle;
+  completionCopy = completion;
+  v15 = handleCopy;
   if (v15)
   {
     NSClassFromString(&cfstr_Bsprocesshandl.isa);
@@ -291,7 +291,7 @@ void __55__FBSOpenApplicationService_canOpenApplication_reason___block_invoke(ui
     }
   }
 
-  v16 = v11;
+  v16 = applicationCopy;
   if (v16)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
@@ -301,7 +301,7 @@ void __55__FBSOpenApplicationService_canOpenApplication_reason___block_invoke(ui
     }
   }
 
-  v17 = v12;
+  v17 = optionsCopy;
   if (v17)
   {
     NSClassFromString(&cfstr_Fbsopenapplica_5.isa);
@@ -318,26 +318,26 @@ void __55__FBSOpenApplicationService_canOpenApplication_reason___block_invoke(ui
   v18 = v16;
   v36 = v18;
   v19 = MEMORY[0x1A58E80F0](v35);
-  v20 = [(FBSOpenApplicationService *)self _remoteTarget];
-  if (v20)
+  _remoteTarget = [(FBSOpenApplicationService *)self _remoteTarget];
+  if (_remoteTarget)
   {
-    v28 = self;
-    v21 = [v17 actions];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%#04x", arc4random() % 0xFFFF];
-    v23 = [v21 count];
+    selfCopy = self;
+    actions = [v17 actions];
+    0xFFFF = [MEMORY[0x1E696AEC0] stringWithFormat:@"%#04x", arc4random() % 0xFFFF];
+    v23 = [actions count];
     v24 = FBLogCommon();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
     if (v23)
     {
       if (v25)
       {
-        v26 = [v21 fbs_singleLineDescriptionOfBSActions];
+        fbs_singleLineDescriptionOfBSActions = [actions fbs_singleLineDescriptionOfBSActions];
         *buf = 138543874;
-        v38 = v22;
+        v38 = 0xFFFF;
         v39 = 2114;
         v40 = v18;
         v41 = 2114;
-        v42 = v26;
+        v42 = fbs_singleLineDescriptionOfBSActions;
         _os_log_impl(&dword_1A2DBB000, v24, OS_LOG_TYPE_DEFAULT, "[FBSSystemService][%{public}@] Sending request to open %{public}@ with action(s): %{public}@", buf, 0x20u);
       }
     }
@@ -345,7 +345,7 @@ void __55__FBSOpenApplicationService_canOpenApplication_reason___block_invoke(ui
     else if (v25)
     {
       *buf = 138543618;
-      v38 = v22;
+      v38 = 0xFFFF;
       v39 = 2114;
       v40 = v18;
       _os_log_impl(&dword_1A2DBB000, v24, OS_LOG_TYPE_DEFAULT, "[FBSSystemService][%{public}@] Sending request to open %{public}@", buf, 0x16u);
@@ -356,20 +356,20 @@ void __55__FBSOpenApplicationService_canOpenApplication_reason___block_invoke(ui
     v29[2] = __82__FBSOpenApplicationService__openApplication_withOptions_clientHandle_completion___block_invoke_71;
     v29[3] = &unk_1E76BEEB0;
     v33 = v19;
-    v30 = v22;
+    v30 = 0xFFFF;
     v31 = v18;
-    v34 = v14;
-    v32 = v28;
-    v27 = v22;
-    [v20 openApplication:v31 withOptions:v17 originator:v15 requestID:v27 completion:v29];
+    v34 = completionCopy;
+    v32 = selfCopy;
+    v27 = 0xFFFF;
+    [_remoteTarget openApplication:v31 withOptions:v17 originator:v15 requestID:v27 completion:v29];
 
     goto LABEL_16;
   }
 
-  if (v14)
+  if (completionCopy)
   {
-    v21 = (v19)[2](v19, 5, @"System shell connection is invalid.", 0);
-    (*(v14 + 2))(v14, 0, v21);
+    actions = (v19)[2](v19, 5, @"System shell connection is invalid.", 0);
+    (*(completionCopy + 2))(completionCopy, 0, actions);
 LABEL_16:
   }
 }

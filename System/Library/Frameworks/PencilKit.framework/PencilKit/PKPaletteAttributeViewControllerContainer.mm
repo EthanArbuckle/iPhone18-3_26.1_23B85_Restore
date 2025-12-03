@@ -1,21 +1,21 @@
 @interface PKPaletteAttributeViewControllerContainer
 - (CGSize)preferredContentSize;
-- (PKPaletteAttributeViewControllerContainer)initWithContentViewController:(id)a3;
+- (PKPaletteAttributeViewControllerContainer)initWithContentViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaletteAttributeViewControllerContainer
 
-- (PKPaletteAttributeViewControllerContainer)initWithContentViewController:(id)a3
+- (PKPaletteAttributeViewControllerContainer)initWithContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PKPaletteAttributeViewControllerContainer;
   v6 = [(PKPaletteAttributeViewControllerContainer *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentViewController, a3);
+    objc_storeStrong(&v6->_contentViewController, controller);
   }
 
   return v7;
@@ -27,82 +27,82 @@
   v37.receiver = self;
   v37.super_class = PKPaletteAttributeViewControllerContainer;
   [(PKPaletteAttributeViewControllerContainer *)&v37 viewDidLoad];
-  v3 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+  contentViewController = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
 
-  if (v3)
+  if (contentViewController)
   {
-    v4 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    [(PKPaletteAttributeViewControllerContainer *)self addChildViewController:v4];
+    contentViewController2 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    [(PKPaletteAttributeViewControllerContainer *)self addChildViewController:contentViewController2];
 
-    v5 = [(PKPaletteAttributeViewControllerContainer *)self view];
-    v6 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    v7 = [v6 view];
-    [v5 addSubview:v7];
+    view = [(PKPaletteAttributeViewControllerContainer *)self view];
+    contentViewController3 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    view2 = [contentViewController3 view];
+    [view addSubview:view2];
 
-    v8 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    v9 = [v8 view];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentViewController4 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    view3 = [contentViewController4 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v25 = MEMORY[0x1E696ACD8];
-    v36 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    v35 = [v36 view];
-    v33 = [v35 topAnchor];
-    v34 = [(PKPaletteAttributeViewControllerContainer *)self view];
-    v32 = [v34 topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    contentViewController5 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    view4 = [contentViewController5 view];
+    topAnchor = [view4 topAnchor];
+    view5 = [(PKPaletteAttributeViewControllerContainer *)self view];
+    topAnchor2 = [view5 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v38[0] = v31;
-    v30 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    v29 = [v30 view];
-    v27 = [v29 bottomAnchor];
-    v28 = [(PKPaletteAttributeViewControllerContainer *)self view];
-    v26 = [v28 bottomAnchor];
-    v24 = [v27 constraintEqualToAnchor:v26];
+    contentViewController6 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    view6 = [contentViewController6 view];
+    bottomAnchor = [view6 bottomAnchor];
+    view7 = [(PKPaletteAttributeViewControllerContainer *)self view];
+    bottomAnchor2 = [view7 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v38[1] = v24;
-    v23 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    v22 = [v23 view];
-    v20 = [v22 leadingAnchor];
-    v21 = [(PKPaletteAttributeViewControllerContainer *)self view];
-    v10 = [v21 leadingAnchor];
-    v11 = [v20 constraintEqualToAnchor:v10];
+    contentViewController7 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    view8 = [contentViewController7 view];
+    leadingAnchor = [view8 leadingAnchor];
+    view9 = [(PKPaletteAttributeViewControllerContainer *)self view];
+    leadingAnchor2 = [view9 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v38[2] = v11;
-    v12 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    v13 = [v12 view];
-    v14 = [v13 trailingAnchor];
-    v15 = [(PKPaletteAttributeViewControllerContainer *)self view];
-    v16 = [v15 trailingAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    contentViewController8 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    view10 = [contentViewController8 view];
+    trailingAnchor = [view10 trailingAnchor];
+    view11 = [(PKPaletteAttributeViewControllerContainer *)self view];
+    trailingAnchor2 = [view11 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v38[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
     [v25 activateConstraints:v18];
 
-    v19 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    [v19 didMoveToParentViewController:self];
+    contentViewController9 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    [contentViewController9 didMoveToParentViewController:self];
   }
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+  contentViewController = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
 
-  if (v3)
+  if (contentViewController)
   {
-    v4 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
-    [v4 preferredContentSize];
+    contentViewController2 = [(PKPaletteAttributeViewControllerContainer *)self contentViewController];
+    [contentViewController2 preferredContentSize];
     v6 = v5;
     v8 = v7;
 
     if (_UISolariumEnabled())
     {
-      v9 = [(PKPaletteAttributeViewController *)self edgeLocation];
-      if (v9 == 4 || v9 == 1)
+      edgeLocation = [(PKPaletteAttributeViewController *)self edgeLocation];
+      if (edgeLocation == 4 || edgeLocation == 1)
       {
         v8 = v8 + -12.0;
       }
 
       else
       {
-        v14 = [(PKPaletteAttributeViewController *)self edgeLocation];
-        if (v14 == 8 || v14 == 2)
+        edgeLocation2 = [(PKPaletteAttributeViewController *)self edgeLocation];
+        if (edgeLocation2 == 8 || edgeLocation2 == 2)
         {
           v6 = v6 + -12.0;
         }

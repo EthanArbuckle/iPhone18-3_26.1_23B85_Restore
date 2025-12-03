@@ -1,15 +1,15 @@
 @interface IMGridView
 - (BKLibraryDragAndDropDelegate)dragAndDropDelegate;
-- (BOOL)canDeleteCellAtIndex:(int64_t)a3;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
-- (CGPoint)originForCellAtX:(int64_t)a3 Y:(int64_t)a4;
-- (CGRect)rectForCellAtIndex:(int64_t)a3;
+- (BOOL)canDeleteCellAtIndex:(int64_t)index;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
+- (CGPoint)originForCellAtX:(int64_t)x Y:(int64_t)y;
+- (CGRect)rectForCellAtIndex:(int64_t)index;
 - (CGSize)cellSize;
 - (CGSize)cellSpacing;
 - (CGSize)minimumGridSpacing;
 - (IMGridView)init;
-- (IMGridView)initWithCoder:(id)a3;
-- (IMGridView)initWithFrame:(CGRect)a3;
+- (IMGridView)initWithCoder:(id)coder;
+- (IMGridView)initWithFrame:(CGRect)frame;
 - (IMGridViewCell)grabbedCell;
 - (IMGridViewDataSource)dataSource;
 - (IMGridViewDelegate)delegate;
@@ -18,91 +18,91 @@
 - (UIView)pendingCancelView;
 - (UIView)pendingDropView;
 - (_NSRange)rangeOfVisibleCells;
-- (id)_arrayForUpdateAction:(int)a3;
-- (id)_cellWithUniqueIdentifier:(id)a3;
-- (id)_dragInteraction:(id)a3 itemsForSession:(id)a4 atPoint:(CGPoint)a5;
-- (id)_dropOperationForInteraction:(id)a3 session:(id)a4;
-- (id)_installNewCellAtIndex:(int64_t)a3;
-- (id)_reuseArrayForCell:(id)a3;
-- (id)_reuseArrayForIdentifier:(id)a3;
-- (id)cellAtPoint:(CGPoint)a3 ensureSelectionRect:(BOOL)a4;
-- (id)cellForIndex:(int64_t)a3;
-- (id)dequeueReusableCellWithIdentifier:(id)a3;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dragInteraction:(id)a3 sessionForAddingItems:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)rotationCellContainersForSize:(CGSize)a3;
-- (id)visibleCellForIndex:(int64_t)a3;
+- (id)_arrayForUpdateAction:(int)action;
+- (id)_cellWithUniqueIdentifier:(id)identifier;
+- (id)_dragInteraction:(id)interaction itemsForSession:(id)session atPoint:(CGPoint)point;
+- (id)_dropOperationForInteraction:(id)interaction session:(id)session;
+- (id)_installNewCellAtIndex:(int64_t)index;
+- (id)_reuseArrayForCell:(id)cell;
+- (id)_reuseArrayForIdentifier:(id)identifier;
+- (id)cellAtPoint:(CGPoint)point ensureSelectionRect:(BOOL)rect;
+- (id)cellForIndex:(int64_t)index;
+- (id)dequeueReusableCellWithIdentifier:(id)identifier;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dragInteraction:(id)interaction sessionForAddingItems:(id)items withTouchAtPoint:(CGPoint)point;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)rotationCellContainersForSize:(CGSize)size;
+- (id)visibleCellForIndex:(int64_t)index;
 - (id)visibleCells;
 - (int64_t)_calculateNumberOfColumns;
-- (int64_t)_dataSourceIndexFromReorderedIndex:(int64_t)a3;
-- (int64_t)cellColumnsForSize:(CGSize)a3;
-- (int64_t)indexForCell:(id)a3;
-- (int64_t)indexForX:(int64_t)a3 Y:(int64_t)a4;
-- (int64_t)numberOfColumnsForSize:(CGSize)a3;
-- (int64_t)numberOfRowsForSize:(CGSize)a3;
+- (int64_t)_dataSourceIndexFromReorderedIndex:(int64_t)index;
+- (int64_t)cellColumnsForSize:(CGSize)size;
+- (int64_t)indexForCell:(id)cell;
+- (int64_t)indexForX:(int64_t)x Y:(int64_t)y;
+- (int64_t)numberOfColumnsForSize:(CGSize)size;
+- (int64_t)numberOfRowsForSize:(CGSize)size;
 - (int64_t)rowRangeStart;
 - (unint64_t)numberOfColumns;
-- (void)_autoscrollForCell:(id)a3;
-- (void)_autoscrollTimerFired:(id)a3;
+- (void)_autoscrollForCell:(id)cell;
+- (void)_autoscrollTimerFired:(id)fired;
 - (void)_cancelAutoscrollTimer;
 - (void)_endCellAnimations;
 - (void)_hideGrabbedCell;
 - (void)_legalizeAutoscrollDistance;
 - (void)_refreshCells;
-- (void)_restoreGrabbedCell:(id)a3 toOriginalGrabIndex:(int64_t)a4;
+- (void)_restoreGrabbedCell:(id)cell toOriginalGrabIndex:(int64_t)index;
 - (void)_resumeReloads;
 - (void)_setupGridViewCommon;
 - (void)_showGrabbedCell;
-- (void)_stopReordering:(BOOL)a3;
-- (void)_swapGrabbedCell:(id)a3 withOtherCell:(id)a4;
-- (void)_updateGrabbedCellLocation:(CGPoint)a3;
-- (void)_updateItemAtIndex:(unint64_t)a3 updateAction:(int)a4;
-- (void)animateDeletionOfCell:(id)a3;
-- (void)arrangeVisibleCells:(_NSRange)a3;
+- (void)_stopReordering:(BOOL)reordering;
+- (void)_swapGrabbedCell:(id)cell withOtherCell:(id)otherCell;
+- (void)_updateGrabbedCellLocation:(CGPoint)location;
+- (void)_updateItemAtIndex:(unint64_t)index updateAction:(int)action;
+- (void)animateDeletionOfCell:(id)cell;
+- (void)arrangeVisibleCells:(_NSRange)cells;
 - (void)beginUpdates;
 - (void)cleanupAfterRotation;
 - (void)cleanupGrabbedCell;
 - (void)dealloc;
 - (void)deleteCellDidAnimate;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
 - (void)endUpdates;
 - (void)hideCells;
 - (void)invalidateNumberOfColumns;
 - (void)layoutSubviews;
-- (void)performRotationWithDuration:(double)a3;
-- (void)prepareToRotateWithDestinationSize:(CGSize)a3;
+- (void)performRotationWithDuration:(double)duration;
+- (void)prepareToRotateWithDestinationSize:(CGSize)size;
 - (void)reloadAllCells;
 - (void)reloadData;
-- (void)reuseCell:(id)a3;
-- (void)scrollMakingTopmostRowContainCellAtIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)scrollToCellAtIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGrabbedCell:(id)a3;
-- (void)setGridViewHeader:(id)a3;
-- (void)setHideFooterView:(BOOL)a3;
-- (void)setTapToSelectMode:(BOOL)a3;
+- (void)reuseCell:(id)cell;
+- (void)scrollMakingTopmostRowContainCellAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)scrollToCellAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDataSource:(id)source;
+- (void)setDelegate:(id)delegate;
+- (void)setEditing:(BOOL)editing;
+- (void)setFrame:(CGRect)frame;
+- (void)setGrabbedCell:(id)cell;
+- (void)setGridViewHeader:(id)header;
+- (void)setHideFooterView:(BOOL)view;
+- (void)setTapToSelectMode:(BOOL)mode;
 - (void)showCells;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateContentSize;
 @end
 
@@ -156,11 +156,11 @@
   return v3;
 }
 
-- (IMGridView)initWithFrame:(CGRect)a3
+- (IMGridView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = IMGridView;
-  v3 = [(IMGridView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(IMGridView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -170,11 +170,11 @@
   return v4;
 }
 
-- (IMGridView)initWithCoder:(id)a3
+- (IMGridView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IMGridView;
-  v3 = [(IMGridView *)&v6 initWithCoder:a3];
+  v3 = [(IMGridView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -196,9 +196,9 @@
   [(IMGridView *)&v4 dealloc];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -214,21 +214,21 @@
 {
   v4.receiver = self;
   v4.super_class = IMGridView;
-  v2 = [(IMGridView *)&v4 delegate];
+  delegate = [(IMGridView *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(IMGridView *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(IMGridView *)self delegate];
 
-  if (v5 != v4)
+  if (delegate != delegateCopy)
   {
     v17.receiver = self;
     v17.super_class = IMGridView;
-    [(IMGridView *)&v17 setDelegate:v4];
+    [(IMGridView *)&v17 setDelegate:delegateCopy];
     self->_gridFlags = (*&self->_gridFlags & 0xFFFFFFFE | objc_opt_respondsToSelector() & 1);
     if (objc_opt_respondsToSelector())
     {
@@ -354,15 +354,15 @@
   }
 }
 
-- (void)setGridViewHeader:(id)a3
+- (void)setGridViewHeader:(id)header
 {
-  v5 = a3;
+  headerCopy = header;
   gridViewHeader = self->_gridViewHeader;
-  if (gridViewHeader != v5)
+  if (gridViewHeader != headerCopy)
   {
-    v7 = v5;
+    v7 = headerCopy;
     [(UIView *)gridViewHeader removeFromSuperview];
-    objc_storeStrong(&self->_gridViewHeader, a3);
+    objc_storeStrong(&self->_gridViewHeader, header);
     if (v7)
     {
       gridViewHeader = [(IMGridView *)self addSubview:v7];
@@ -372,18 +372,18 @@
   _objc_release_x1(gridViewHeader);
 }
 
-- (int64_t)numberOfColumnsForSize:(CGSize)a3
+- (int64_t)numberOfColumnsForSize:(CGSize)size
 {
-  width = a3.width;
-  [(IMGridView *)self gridInset:a3.width];
+  width = size.width;
+  [(IMGridView *)self gridInset:size.width];
   v6 = width - v5;
   [(IMGridView *)self gridInset];
   return ((v6 - v7 + self->_minimumGridSpacing.width) / (self->_minimumGridSpacing.width + self->_cellSize.width));
 }
 
-- (int64_t)numberOfRowsForSize:(CGSize)a3
+- (int64_t)numberOfRowsForSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   [(IMGridView *)self contentOffset];
   v6 = v5 - self->_gridInset.top;
   [(IMGridView *)self cellSpacing];
@@ -428,16 +428,16 @@
 
 - (CGSize)cellSpacing
 {
-  v3 = [(IMGridView *)self numberOfColumns];
+  numberOfColumns = [(IMGridView *)self numberOfColumns];
   [(IMGridView *)self bounds];
   v5 = v4;
   [(IMGridView *)self gridInset];
   v7 = v6;
   [(IMGridView *)self gridInset];
   v9 = 0.0;
-  if (v3 >= 2)
+  if (numberOfColumns >= 2)
   {
-    v9 = (v5 - v7 - v8 - self->_cellSize.width * v3) / (v3 - 1);
+    v9 = (v5 - v7 - v8 - self->_cellSize.width * numberOfColumns) / (numberOfColumns - 1);
   }
 
   height = self->_minimumGridSpacing.height;
@@ -469,18 +469,18 @@
       numberOfItems = self->_numberOfItems;
     }
 
-    v14 = [(IMGridView *)self numberOfColumns];
-    v15 = (-(v6 - (v11 + 1) * v9) / v9 * v14);
+    numberOfColumns = [(IMGridView *)self numberOfColumns];
+    v15 = (-(v6 - (v11 + 1) * v9) / v9 * numberOfColumns);
     if (v10 <= 0)
     {
       v15 = 0;
     }
 
-    v16 = v14 * v11 - v15;
+    v16 = numberOfColumns * v11 - v15;
     v17 = self->_numberOfItems;
-    if (v17 >= (numberOfItems + 2) * v14)
+    if (v17 >= (numberOfItems + 2) * numberOfColumns)
     {
-      v17 = (numberOfItems + 2) * v14;
+      v17 = (numberOfItems + 2) * numberOfColumns;
     }
 
     v18 = v17 <= v16;
@@ -511,10 +511,10 @@
   return v2;
 }
 
-- (CGRect)rectForCellAtIndex:(int64_t)a3
+- (CGRect)rectForCellAtIndex:(int64_t)index
 {
-  v5 = [(IMGridView *)self numberOfColumns];
-  if (v5 < 1)
+  numberOfColumns = [(IMGridView *)self numberOfColumns];
+  if (numberOfColumns < 1)
   {
     x = CGRectNull.origin.x;
     y = CGRectNull.origin.y;
@@ -524,8 +524,8 @@
 
   else
   {
-    v6 = a3 / v5;
-    v7 = a3 % v5;
+    v6 = index / numberOfColumns;
+    v7 = index % numberOfColumns;
     [(IMGridView *)self cellSpacing];
     v9 = v8;
     v11 = v10;
@@ -554,7 +554,7 @@
   return result;
 }
 
-- (id)visibleCellForIndex:(int64_t)a3
+- (id)visibleCellForIndex:(int64_t)index
 {
   v13 = 0u;
   v14 = 0u;
@@ -576,7 +576,7 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([(IMGridView *)self indexForCell:v10, v13]== a3)
+        if ([(IMGridView *)self indexForCell:v10, v13]== index)
         {
           v11 = v10;
           goto LABEL_11;
@@ -599,9 +599,9 @@ LABEL_11:
   return v11;
 }
 
-- (id)cellForIndex:(int64_t)a3
+- (id)cellForIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
@@ -609,17 +609,17 @@ LABEL_11:
   else
   {
     [(IMGridView *)self layoutIfNeeded];
-    v4 = [(IMGridView *)self visibleCellForIndex:a3];
+    v4 = [(IMGridView *)self visibleCellForIndex:index];
   }
 
   return v4;
 }
 
-- (int64_t)indexForCell:(id)a3
+- (int64_t)indexForCell:(id)cell
 {
-  if (a3)
+  if (cell)
   {
-    return [a3 tag] - 10000;
+    return [cell tag] - 10000;
   }
 
   else
@@ -628,12 +628,12 @@ LABEL_11:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v16.receiver = self;
   v16.super_class = IMGridView;
   [(IMGridView *)&v16 bounds];
@@ -661,12 +661,12 @@ LABEL_11:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *&self->_gridFlags &= ~0x20000u;
   [(IMGridView *)self frame];
   if (width != v9 || height != v8)
@@ -679,10 +679,10 @@ LABEL_11:
   [(IMGridView *)&v11 setFrame:x, y, width, height];
 }
 
-- (void)arrangeVisibleCells:(_NSRange)a3
+- (void)arrangeVisibleCells:(_NSRange)cells
 {
-  length = a3.length;
-  location = a3.location;
+  length = cells.length;
+  location = cells.location;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -787,7 +787,7 @@ LABEL_11:
       while (v7);
     }
 
-    v12 = [(IMGridView *)self rangeOfVisibleCells];
+    rangeOfVisibleCells = [(IMGridView *)self rangeOfVisibleCells];
     v14 = v13;
     v15 = [(NSMutableArray *)self->_visibleCells copy];
     v44 = 0u;
@@ -811,7 +811,7 @@ LABEL_11:
 
           v21 = *(*(&v44 + 1) + 8 * j);
           v22 = [(IMGridView *)self indexForCell:v21, v44];
-          if (v22 < v12 || v22 - v12 >= v14)
+          if (v22 < rangeOfVisibleCells || v22 - rangeOfVisibleCells >= v14)
           {
             [(IMGridView *)self reuseCell:v21];
           }
@@ -825,21 +825,21 @@ LABEL_11:
 
     if ((*(&self->_gridFlags + 2) & 2) == 0)
     {
-      [(IMGridView *)self arrangeVisibleCells:v12, v14];
+      [(IMGridView *)self arrangeVisibleCells:rangeOfVisibleCells, v14];
     }
 
     v24 = objc_autoreleasePoolPush();
-    if (v12 < &v12[v14])
+    if (rangeOfVisibleCells < &rangeOfVisibleCells[v14])
     {
       do
       {
-        v25 = [(IMGridView *)self visibleCellForIndex:v12, v44];
+        v25 = [(IMGridView *)self visibleCellForIndex:rangeOfVisibleCells, v44];
         if (!v25)
         {
-          v26 = [(IMGridView *)self _installNewCellAtIndex:v12];
+          v26 = [(IMGridView *)self _installNewCellAtIndex:rangeOfVisibleCells];
         }
 
-        ++v12;
+        ++rangeOfVisibleCells;
         --v14;
       }
 
@@ -849,24 +849,24 @@ LABEL_11:
     objc_autoreleasePoolPop(v24);
     if ((*(&self->_gridFlags + 2) & 2) == 0)
     {
-      v27 = [(IMGridView *)self footerView];
+      footerView = [(IMGridView *)self footerView];
 
-      if (v27)
+      if (footerView)
       {
-        v28 = [(IMGridView *)self numberOfRows];
+        numberOfRows = [(IMGridView *)self numberOfRows];
         [(IMGridView *)self cellSpacing];
         v30 = v29;
         [(IMGridView *)self cellSize];
         v32 = v30 + v31;
         [(IMGridView *)self gridInset];
-        v34 = v33 + v28 * v32;
+        v34 = v33 + numberOfRows * v32;
         [(IMGridView *)self bounds];
         v36 = v35;
-        v37 = [(IMGridView *)self footerView];
-        [v37 bounds];
+        footerView2 = [(IMGridView *)self footerView];
+        [footerView2 bounds];
         v39 = v38;
-        v40 = [(IMGridView *)self footerView];
-        [v40 setFrame:{0.0, v34, v36, v39}];
+        footerView3 = [(IMGridView *)self footerView];
+        [footerView3 setFrame:{0.0, v34, v36, v39}];
       }
     }
 
@@ -895,14 +895,14 @@ LABEL_11:
 {
   [(IMGridView *)self cellSpacing];
   v4 = v3;
-  v5 = [(IMGridView *)self numberOfRows];
+  numberOfRows = [(IMGridView *)self numberOfRows];
   [(IMGridView *)self bounds];
   x = v18.origin.x;
   y = v18.origin.y;
   width = v18.size.width;
   height = v18.size.height;
   v10 = CGRectGetWidth(v18);
-  v11 = self->_gridInset.top + self->_gridInset.bottom - (v4 - v5 * (v4 + self->_cellSize.height));
+  v11 = self->_gridInset.top + self->_gridInset.bottom - (v4 - numberOfRows * (v4 + self->_cellSize.height));
   if (self->_gridViewHeader)
   {
     v19.origin.x = x;
@@ -930,65 +930,65 @@ LABEL_11:
   [(IMGridView *)self setContentSize:v10, v11];
 }
 
-- (BOOL)canDeleteCellAtIndex:(int64_t)a3
+- (BOOL)canDeleteCellAtIndex:(int64_t)index
 {
   if ((*(&self->_gridFlags + 1) & 1) == 0 || [(IMGridView *)self tapToSelectMode])
   {
     return 0;
   }
 
-  v6 = [(IMGridView *)self delegate];
-  v7 = [v6 gridView:self canDeleteCellAtIndex:a3];
+  delegate = [(IMGridView *)self delegate];
+  v7 = [delegate gridView:self canDeleteCellAtIndex:index];
 
   return v7;
 }
 
-- (id)_installNewCellAtIndex:(int64_t)a3
+- (id)_installNewCellAtIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
-  v6 = a3;
+  indexCopy2 = index;
   if (WeakRetained)
   {
     v7 = [(IMGridView *)self indexForCell:WeakRetained];
     grabIndex = self->_grabIndex;
     if (grabIndex <= v7)
     {
-      if (grabIndex >= v7 || grabIndex > a3 || v7 <= a3)
+      if (grabIndex >= v7 || grabIndex > index || v7 <= index)
       {
-        v6 = a3;
+        indexCopy2 = index;
       }
 
       else
       {
-        v6 = a3 + 1;
+        indexCopy2 = index + 1;
       }
     }
 
     else
     {
-      v10 = v7 < a3 && grabIndex >= a3;
-      v6 = a3 - v10;
+      v10 = v7 < index && grabIndex >= index;
+      indexCopy2 = index - v10;
     }
   }
 
-  v13 = [(IMGridView *)self dataSource];
-  v14 = [v13 gridView:self cellForIndex:v6];
+  dataSource = [(IMGridView *)self dataSource];
+  v14 = [dataSource gridView:self cellForIndex:indexCopy2];
 
   if (v14)
   {
     if (v14 != WeakRetained)
     {
-      [(IMGridView *)self rectForCellAtIndex:a3];
+      [(IMGridView *)self rectForCellAtIndex:index];
       [v14 setFrame:?];
     }
 
-    [v14 setCanDelete:{-[IMGridView canDeleteCellAtIndex:](self, "canDeleteCellAtIndex:", a3)}];
-    [v14 setTag:a3 + 10000];
+    [v14 setCanDelete:{-[IMGridView canDeleteCellAtIndex:](self, "canDeleteCellAtIndex:", index)}];
+    [v14 setTag:index + 10000];
     [v14 setEditing:{-[IMGridView isEditing](self, "isEditing")}];
     [(NSMutableArray *)self->_visibleCells addObject:v14];
-    v15 = [v14 superview];
+    superview = [v14 superview];
 
-    if (v15 != self)
+    if (superview != self)
     {
       [(IMGridView *)self addSubview:v14];
     }
@@ -997,12 +997,12 @@ LABEL_11:
   return v14;
 }
 
-- (id)_reuseArrayForCell:(id)a3
+- (id)_reuseArrayForCell:(id)cell
 {
-  v4 = [a3 reuseIdentifier];
-  if (v4)
+  reuseIdentifier = [cell reuseIdentifier];
+  if (reuseIdentifier)
   {
-    v5 = v4;
+    v5 = reuseIdentifier;
   }
 
   else
@@ -1015,16 +1015,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)_reuseArrayForIdentifier:(id)a3
+- (id)_reuseArrayForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_reusableCells objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_reusableCells objectForKey:identifierCopy];
     if (!v5)
     {
       v5 = +[NSMutableArray array];
-      [(NSMutableDictionary *)self->_reusableCells setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_reusableCells setObject:v5 forKey:identifierCopy];
     }
   }
 
@@ -1036,28 +1036,28 @@ LABEL_11:
   return v5;
 }
 
-- (void)reuseCell:(id)a3
+- (void)reuseCell:(id)cell
 {
-  v4 = a3;
-  if (v4)
+  cellCopy = cell;
+  if (cellCopy)
   {
-    v6 = v4;
+    v6 = cellCopy;
     WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
 
     if (WeakRetained != v6)
     {
       [(NSMutableArray *)self->_visibleCells removeObject:v6];
       [(NSMutableArray *)self->_cellsForReuse addObject:v6];
-      v4 = [(IMGridView *)self setNeedsLayout];
+      cellCopy = [(IMGridView *)self setNeedsLayout];
     }
   }
 
-  _objc_release_x1(v4);
+  _objc_release_x1(cellCopy);
 }
 
-- (id)dequeueReusableCellWithIdentifier:(id)a3
+- (id)dequeueReusableCellWithIdentifier:(id)identifier
 {
-  v4 = [(IMGridView *)self _reuseArrayForIdentifier:a3];
+  v4 = [(IMGridView *)self _reuseArrayForIdentifier:identifier];
   if ([v4 count])
   {
     v5 = [v4 objectAtIndex:0];
@@ -1149,13 +1149,13 @@ LABEL_11:
   [(IMGridView *)self _cancelAutoscrollTimer];
   if (self->_tableReloadingSuspendedCount < 1)
   {
-    v3 = [(IMGridView *)self footerView];
-    [v3 removeFromSuperview];
+    footerView = [(IMGridView *)self footerView];
+    [footerView removeFromSuperview];
 
-    v4 = [(IMGridView *)self delegate];
+    delegate = [(IMGridView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 footerViewForGridView:self];
+      v5 = [delegate footerViewForGridView:self];
     }
 
     else
@@ -1164,16 +1164,16 @@ LABEL_11:
     }
 
     [(IMGridView *)self setFooterView:v5];
-    v6 = [(IMGridView *)self footerView];
+    footerView2 = [(IMGridView *)self footerView];
 
-    if (v6)
+    if (footerView2)
     {
-      v7 = [(IMGridView *)self footerView];
-      [(IMGridView *)self addSubview:v7];
+      footerView3 = [(IMGridView *)self footerView];
+      [(IMGridView *)self addSubview:footerView3];
 
       hideFooterView = self->_hideFooterView;
-      v9 = [(IMGridView *)self footerView];
-      [v9 setHidden:hideFooterView];
+      footerView4 = [(IMGridView *)self footerView];
+      [footerView4 setHidden:hideFooterView];
     }
 
     [(IMGridView *)self setGrabbedCell:0];
@@ -1210,8 +1210,8 @@ LABEL_11:
     }
 
     *&self->_gridFlags &= ~0x1000u;
-    v16 = [(IMGridView *)self dataSource];
-    self->_numberOfItems = [v16 numberOfCellsInGridView:self];
+    dataSource = [(IMGridView *)self dataSource];
+    self->_numberOfItems = [dataSource numberOfCellsInGridView:self];
 
     [(IMGridView *)self setNeedsLayout];
   }
@@ -1237,11 +1237,11 @@ LABEL_11:
   }
 }
 
-- (void)scrollToCellAtIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)scrollToCellAtIndex:(int64_t)index animated:(BOOL)animated
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = a4;
+    animatedCopy = animated;
     [(IMGridView *)self rectForCellAtIndex:?];
     v8 = v7;
     v10 = v9;
@@ -1249,50 +1249,50 @@ LABEL_11:
     v14 = v13;
     [(IMGridView *)self layoutIfNeeded];
 
-    [(IMGridView *)self scrollRectToVisible:v5 animated:v8, v10, v12, v14];
+    [(IMGridView *)self scrollRectToVisible:animatedCopy animated:v8, v10, v12, v14];
   }
 }
 
-- (void)scrollMakingTopmostRowContainCellAtIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)scrollMakingTopmostRowContainCellAtIndex:(int64_t)index animated:(BOOL)animated
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = a4;
-    v8 = [(IMGridView *)self numberOfColumns];
+    animatedCopy = animated;
+    numberOfColumns = [(IMGridView *)self numberOfColumns];
     [(IMGridView *)self bounds];
     v11 = [(IMGridView *)self numberOfRowsForSize:v9, v10];
-    v12 = [(IMGridView *)self numberOfRows];
-    v13 = a3 / v8;
-    if (v12 - a3 / v8 < v11)
+    numberOfRows = [(IMGridView *)self numberOfRows];
+    v13 = index / numberOfColumns;
+    if (numberOfRows - index / numberOfColumns < v11)
     {
-      v13 = (v12 - v11) & ~((v12 - v11) >> 63);
+      v13 = (numberOfRows - v11) & ~((numberOfRows - v11) >> 63);
     }
 
-    [(IMGridView *)self rectForCellAtIndex:v13 * v8];
+    [(IMGridView *)self rectForCellAtIndex:v13 * numberOfColumns];
     v15 = v14;
     [(IMGridView *)self contentOffset];
     v17 = v16;
     [(IMGridView *)self layoutIfNeeded];
 
-    [(IMGridView *)self setContentOffset:v5 animated:v17, v15];
+    [(IMGridView *)self setContentOffset:animatedCopy animated:v17, v15];
   }
 }
 
-- (id)_arrayForUpdateAction:(int)a3
+- (id)_arrayForUpdateAction:(int)action
 {
-  if (a3 == 2)
+  if (action == 2)
   {
     v3 = 192;
   }
 
-  else if (a3 == 1)
+  else if (action == 1)
   {
     v3 = 184;
   }
 
   else
   {
-    if (a3)
+    if (action)
     {
       v8 = 0;
       goto LABEL_11;
@@ -1318,12 +1318,12 @@ LABEL_11:
   return v8;
 }
 
-- (void)_updateItemAtIndex:(unint64_t)a3 updateAction:(int)a4
+- (void)_updateItemAtIndex:(unint64_t)index updateAction:(int)action
 {
-  v4 = *&a4;
+  v4 = *&action;
   [(IMGridView *)self beginUpdates];
   v8 = [(IMGridView *)self _arrayForUpdateAction:v4];
-  v7 = [[IMGridViewUpdateItem alloc] initWithAction:v4 forIndex:a3];
+  v7 = [[IMGridViewUpdateItem alloc] initWithAction:v4 forIndex:index];
   [v8 addObject:v7];
   [(IMGridView *)self endUpdates];
 }
@@ -1374,7 +1374,7 @@ LABEL_11:
           }
 
           v5 = *(*(&v27 + 1) + 8 * i);
-          v6 = [v5 index];
+          index = [v5 index];
           [(IMGridView *)self rangeOfVisibleCells];
           v23 = 0u;
           v24 = 0u;
@@ -1398,7 +1398,7 @@ LABEL_11:
                 }
 
                 v13 = *(*(&v23 + 1) + 8 * j);
-                if ([(IMGridView *)self indexForCell:v13]<= v6)
+                if ([(IMGridView *)self indexForCell:v13]<= index)
                 {
                   v14 = [(IMGridView *)self indexForCell:v13];
                   if (v14 >= [v5 index])
@@ -1464,41 +1464,41 @@ LABEL_11:
 
 - (void)_endCellAnimations
 {
-  v2 = self;
+  selfCopy = self;
   gridFlags = self->_gridFlags;
   if ((*&gridFlags & 0x1000) != 0)
   {
     deleteItems = self->_deleteItems;
     self->_deleteItems = 0;
 
-    insertItems = v2->_insertItems;
-    v2->_insertItems = 0;
+    insertItems = selfCopy->_insertItems;
+    selfCopy->_insertItems = 0;
 
-    reloadItems = v2->_reloadItems;
-    v2->_reloadItems = 0;
+    reloadItems = selfCopy->_reloadItems;
+    selfCopy->_reloadItems = 0;
   }
 
-  v7 = [(NSMutableArray *)v2->_deleteItems count];
-  if (([(NSMutableArray *)v2->_deleteItems count]|| [(NSMutableArray *)v2->_insertItems count]) && v2->_selectedCell)
+  v7 = [(NSMutableArray *)selfCopy->_deleteItems count];
+  if (([(NSMutableArray *)selfCopy->_deleteItems count]|| [(NSMutableArray *)selfCopy->_insertItems count]) && selfCopy->_selectedCell)
   {
-    [(IMGridView *)v2 _cancelCellHighlight];
-    [(IMGridViewCell *)v2->_selectedCell setHighlighted:0];
-    selectedCell = v2->_selectedCell;
-    v2->_selectedCell = 0;
+    [(IMGridView *)selfCopy _cancelCellHighlight];
+    [(IMGridViewCell *)selfCopy->_selectedCell setHighlighted:0];
+    selectedCell = selfCopy->_selectedCell;
+    selfCopy->_selectedCell = 0;
   }
 
-  if ([(NSMutableArray *)v2->_deleteItems count])
+  if ([(NSMutableArray *)selfCopy->_deleteItems count])
   {
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
     v52[2] = sub_6F768;
     v52[3] = &unk_2C7D40;
-    v52[4] = v2;
+    v52[4] = selfCopy;
     v51[0] = _NSConcreteStackBlock;
     v51[1] = 3221225472;
     v51[2] = sub_6F934;
     v51[3] = &unk_2C99D8;
-    v51[4] = v2;
+    v51[4] = selfCopy;
     [UIView animateWithDuration:v52 animations:v51 completion:0.2];
     v9 = 1;
   }
@@ -1508,10 +1508,10 @@ LABEL_11:
     v9 = (*&gridFlags >> 12) & 1;
   }
 
-  if ([(NSMutableArray *)v2->_insertItems count]&& !v2->_deleteAnimationCount)
+  if ([(NSMutableArray *)selfCopy->_insertItems count]&& !selfCopy->_deleteAnimationCount)
   {
     v34 = v7;
-    [(NSMutableArray *)v2->_insertItems sortedArrayUsingSelector:"compareIndexes:"];
+    [(NSMutableArray *)selfCopy->_insertItems sortedArrayUsingSelector:"compareIndexes:"];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
@@ -1520,7 +1520,7 @@ LABEL_11:
     if (v38)
     {
       v36 = *v48;
-      v37 = v2;
+      v37 = selfCopy;
       do
       {
         for (i = 0; i != v38; i = i + 1)
@@ -1535,7 +1535,7 @@ LABEL_11:
           v44 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v12 = v2->_visibleCells;
+          v12 = selfCopy->_visibleCells;
           v13 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v43 objects:v54 count:16];
           if (v13)
           {
@@ -1552,9 +1552,9 @@ LABEL_11:
 
                 v17 = *(*(&v43 + 1) + 8 * j);
                 v18 = [v17 tag] - 10000;
-                v19 = [v11 index];
+                index = [v11 index];
                 v20 = [v17 tag];
-                if (v18 < v19)
+                if (v18 < index)
                 {
                   v21 = v20;
                 }
@@ -1573,10 +1573,10 @@ LABEL_11:
             while (v14);
           }
 
-          v2 = v37;
+          selfCopy = v37;
           ++v37->_numberOfItems;
-          v22 = [(IMGridView *)v37 rangeOfVisibleCells];
-          [(IMGridView *)v37 arrangeVisibleCells:v22, v23];
+          rangeOfVisibleCells = [(IMGridView *)v37 rangeOfVisibleCells];
+          [(IMGridView *)v37 arrangeVisibleCells:rangeOfVisibleCells, v23];
         }
 
         v38 = [obj countByEnumeratingWithState:&v47 objects:v55 count:16];
@@ -1585,16 +1585,16 @@ LABEL_11:
       while (v38);
     }
 
-    v24 = v2->_insertItems;
-    v2->_insertItems = 0;
+    v24 = selfCopy->_insertItems;
+    selfCopy->_insertItems = 0;
 
     v9 = 1;
     v7 = v34;
   }
 
-  if ([(NSMutableArray *)v2->_reloadItems count]&& !v2->_deleteAnimationCount)
+  if ([(NSMutableArray *)selfCopy->_reloadItems count]&& !selfCopy->_deleteAnimationCount)
   {
-    v25 = [(NSMutableArray *)v2->_reloadItems sortedArrayUsingSelector:"compareIndexes:"];
+    v25 = [(NSMutableArray *)selfCopy->_reloadItems sortedArrayUsingSelector:"compareIndexes:"];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -1613,8 +1613,8 @@ LABEL_11:
             objc_enumerationMutation(v25);
           }
 
-          v30 = -[IMGridView visibleCellForIndex:](v2, "visibleCellForIndex:", [*(*(&v39 + 1) + 8 * k) index]);
-          [(IMGridView *)v2 reuseCell:v30];
+          v30 = -[IMGridView visibleCellForIndex:](selfCopy, "visibleCellForIndex:", [*(*(&v39 + 1) + 8 * k) index]);
+          [(IMGridView *)selfCopy reuseCell:v30];
         }
 
         v27 = [v25 countByEnumeratingWithState:&v39 objects:v53 count:16];
@@ -1623,11 +1623,11 @@ LABEL_11:
       while (v27);
     }
 
-    v31 = v2->_reloadItems;
-    v2->_reloadItems = 0;
+    v31 = selfCopy->_reloadItems;
+    selfCopy->_reloadItems = 0;
 
-    v32 = [(IMGridView *)v2 rangeOfVisibleCells];
-    [(IMGridView *)v2 arrangeVisibleCells:v32, v33];
+    rangeOfVisibleCells2 = [(IMGridView *)selfCopy rangeOfVisibleCells];
+    [(IMGridView *)selfCopy arrangeVisibleCells:rangeOfVisibleCells2, v33];
   }
 
   else if (!v9)
@@ -1638,11 +1638,11 @@ LABEL_11:
     }
 
 LABEL_44:
-    [(IMGridView *)v2 _resumeReloads];
+    [(IMGridView *)selfCopy _resumeReloads];
     return;
   }
 
-  [(IMGridView *)v2 setNeedsLayout];
+  [(IMGridView *)selfCopy setNeedsLayout];
   if (!v7)
   {
     goto LABEL_44;
@@ -1676,14 +1676,14 @@ LABEL_44:
   }
 }
 
-- (int64_t)cellColumnsForSize:(CGSize)a3
+- (int64_t)cellColumnsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ((*(&self->_gridFlags + 1) & 8) != 0)
   {
-    v6 = [(IMGridView *)self delegate];
-    v7 = [v6 gridView:self numberOfColumnsForSize:{width, height}];
+    delegate = [(IMGridView *)self delegate];
+    v7 = [delegate gridView:self numberOfColumnsForSize:{width, height}];
 
     return v7;
   }
@@ -1695,19 +1695,19 @@ LABEL_44:
   }
 }
 
-- (id)rotationCellContainersForSize:(CGSize)a3
+- (id)rotationCellContainersForSize:(CGSize)size
 {
   cellContainerMatrix = self->_cellContainerMatrix;
   if (!cellContainerMatrix)
   {
-    height = a3.height;
-    width = a3.width;
+    height = size.height;
+    width = size.width;
     [(IMGridView *)self bounds];
     v9 = [(IMGridView *)self cellColumnsForSize:v7, v8];
-    v10 = [(IMGridView *)self cellColumnsForSize:width, height];
-    if (v9 <= v10)
+    height = [(IMGridView *)self cellColumnsForSize:width, height];
+    if (v9 <= height)
     {
-      v11 = v10;
+      v11 = height;
     }
 
     else
@@ -1750,22 +1750,22 @@ LABEL_44:
   return cellContainerMatrix;
 }
 
-- (int64_t)indexForX:(int64_t)a3 Y:(int64_t)a4
+- (int64_t)indexForX:(int64_t)x Y:(int64_t)y
 {
   [(IMGridView *)self bounds];
   v9 = [(IMGridView *)self cellColumnsForSize:v7, v8];
-  if (v9 <= a3)
+  if (v9 <= x)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return a3 + v9 * a4;
+    return x + v9 * y;
   }
 }
 
-- (CGPoint)originForCellAtX:(int64_t)a3 Y:(int64_t)a4
+- (CGPoint)originForCellAtX:(int64_t)x Y:(int64_t)y
 {
   [(IMGridView *)self rectForCellAtIndex:0];
   v8 = v7;
@@ -1777,16 +1777,16 @@ LABEL_44:
   if ([(IMGridView *)self layoutDirection])
   {
     [(IMGridView *)self bounds];
-    v15 = CGRectGetWidth(v19) - (v8 + self->_gridInset.right + (a3 * v12));
+    v15 = CGRectGetWidth(v19) - (v8 + self->_gridInset.right + (x * v12));
   }
 
   else
   {
-    v15 = self->_gridInset.left + (a3 * v12);
+    v15 = self->_gridInset.left + (x * v12);
   }
 
   v16 = v10 + v14;
-  v17 = self->_gridInset.top + (a4 * v16);
+  v17 = self->_gridInset.top + (y * v16);
   result.y = v17;
   result.x = v15;
   return result;
@@ -1801,10 +1801,10 @@ LABEL_44:
   return v6 & ~(v6 >> 31);
 }
 
-- (void)prepareToRotateWithDestinationSize:(CGSize)a3
+- (void)prepareToRotateWithDestinationSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (([(IMGridView *)self isDecelerating]& 1) == 0)
   {
     [(IMGridView *)self setHideFooterView:1];
@@ -1812,13 +1812,13 @@ LABEL_44:
     self->_oldContentOffset.x = v6;
     self->_oldContentOffset.y = v7;
     *&self->_gridFlags |= 0x2000u;
-    v19 = [(IMGridView *)self rotationCellContainersForSize:width, height];
-    v18 = [v19 count];
+    height = [(IMGridView *)self rotationCellContainersForSize:width, height];
+    v18 = [height count];
     if (v18 >= 1)
     {
       for (i = 0; i != v18; ++i)
       {
-        v9 = [v19 objectAtIndex:{i, v18}];
+        v9 = [height objectAtIndex:{i, v18}];
         v10 = [v9 count];
         if (v10 >= 1)
         {
@@ -1852,7 +1852,7 @@ LABEL_44:
   }
 }
 
-- (void)performRotationWithDuration:(double)a3
+- (void)performRotationWithDuration:(double)duration
 {
   if ((*(&self->_gridFlags + 1) & 0x20) != 0 && ([(IMGridView *)self isDecelerating]& 1) == 0)
   {
@@ -1941,7 +1941,7 @@ LABEL_44:
             v23 = v17;
             v28 = v23;
             [UIView performWithoutAnimation:v27];
-            [v23 crossfadeWithDuration:a3];
+            [v23 crossfadeWithDuration:duration];
 
             _Block_object_dispose(&v33, 8);
           }
@@ -1955,8 +1955,8 @@ LABEL_44:
 {
   if ((*(&self->_gridFlags + 1) & 0x20) != 0 && ([(IMGridView *)self isDecelerating]& 1) == 0)
   {
-    v3 = [(IMGridView *)self footerView];
-    [v3 setAlpha:0.0];
+    footerView = [(IMGridView *)self footerView];
+    [footerView setAlpha:0.0];
 
     [(IMGridView *)self setHideFooterView:0];
     v26[0] = _NSConcreteStackBlock;
@@ -2030,19 +2030,19 @@ LABEL_44:
   }
 }
 
-- (void)setHideFooterView:(BOOL)a3
+- (void)setHideFooterView:(BOOL)view
 {
-  v3 = a3;
-  self->_hideFooterView = a3;
-  v4 = [(IMGridView *)self footerView];
-  [v4 setHidden:v3];
+  viewCopy = view;
+  self->_hideFooterView = view;
+  footerView = [(IMGridView *)self footerView];
+  [footerView setHidden:viewCopy];
 }
 
-- (id)cellAtPoint:(CGPoint)a3 ensureSelectionRect:(BOOL)a4
+- (id)cellAtPoint:(CGPoint)point ensureSelectionRect:(BOOL)rect
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  rectCopy = rect;
+  y = point.y;
+  x = point.x;
   [(IMGridView *)self contentSize];
   v9 = v8;
   [(IMGridView *)self contentSize];
@@ -2058,20 +2058,20 @@ LABEL_44:
   v34.y = y;
   if (CGRectContainsPoint(v36, v34))
   {
-    v18 = [(IMGridView *)self numberOfColumns];
+    numberOfColumns = [(IMGridView *)self numberOfColumns];
     [(IMGridView *)self cellSpacing];
     v20 = ((v19 * 0.5 + y - self->_gridInset.top) / (v19 + self->_cellSize.height));
     v22 = ((v21 * 0.5 + x - self->_gridInset.left) / (v21 + self->_cellSize.width));
-    v23 = [(IMGridView *)self layoutDirection];
-    v24 = v18 + ~v22;
-    if (v23 != 1)
+    layoutDirection = [(IMGridView *)self layoutDirection];
+    v24 = numberOfColumns + ~v22;
+    if (layoutDirection != 1)
     {
       v24 = v22;
     }
 
-    v25 = [(IMGridView *)self cellForIndex:v24 + v18 * v20];
+    v25 = [(IMGridView *)self cellForIndex:v24 + numberOfColumns * v20];
     v26 = v25;
-    if (v4)
+    if (rectCopy)
     {
       [(IMGridView *)self convertPoint:v25 toView:x, y];
       v28 = v27;
@@ -2101,10 +2101,10 @@ LABEL_44:
   return v31;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (([(IMGridView *)self isDecelerating]& 1) == 0 && ([(IMGridView *)self isDragging]& 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
@@ -2113,9 +2113,9 @@ LABEL_44:
     {
       v17.receiver = self;
       v17.super_class = IMGridView;
-      [(IMGridView *)&v17 touchesBegan:v6 withEvent:v7];
-      v9 = [v6 anyObject];
-      [v9 locationInView:self];
+      [(IMGridView *)&v17 touchesBegan:beganCopy withEvent:eventCopy];
+      anyObject = [beganCopy anyObject];
+      [anyObject locationInView:self];
       self->_grabPoint.x = v10;
       self->_grabPoint.y = v11;
       v12 = [(IMGridView *)self cellAtPoint:?];
@@ -2124,8 +2124,8 @@ LABEL_44:
         if ((*&self->_gridFlags & 2) != 0)
         {
           v13 = [(IMGridView *)self indexForCell:v12];
-          v14 = [(IMGridView *)self delegate];
-          v15 = [v14 gridView:self willSelectItemAtIndex:v13];
+          delegate = [(IMGridView *)self delegate];
+          v15 = [delegate gridView:self willSelectItemAtIndex:v13];
 
           if (v13 != v15)
           {
@@ -2154,12 +2154,12 @@ LABEL_44:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  [v8 locationInView:self];
+  movedCopy = moved;
+  eventCopy = event;
+  anyObject = [movedCopy anyObject];
+  [anyObject locationInView:self];
   v10 = v9;
   v12 = v11;
 
@@ -2197,7 +2197,7 @@ LABEL_44:
   {
     v19.receiver = self;
     v19.super_class = IMGridView;
-    [(IMGridView *)&v19 touchesMoved:v6 withEvent:v7];
+    [(IMGridView *)&v19 touchesMoved:movedCopy withEvent:eventCopy];
     if (v15)
     {
       [(IMGridView *)self _cancelCellHighlight];
@@ -2216,22 +2216,22 @@ LABEL_44:
   [(IMGridView *)self setGrabbedCell:0];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   [(IMGridView *)self _cancelAutoscrollTimer];
   [(IMGridView *)self _cancelCellHighlight];
   [(IMGridViewCell *)self->_selectedCell setHighlighted:0];
   WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
-  v9 = [(IMGridView *)self delegate];
+  delegate = [(IMGridView *)self delegate];
   if (WeakRetained)
   {
     v10 = [(IMGridView *)self indexForCell:WeakRetained];
     [(IMGridView *)self cleanupGrabbedCell];
     if (self->_grabIndex != v10 && (*&self->_gridFlags & 0x10) != 0)
     {
-      [v9 gridView:self reorderCellAtIndex:? toIndex:?];
+      [delegate gridView:self reorderCellAtIndex:? toIndex:?];
     }
   }
 
@@ -2239,7 +2239,7 @@ LABEL_44:
   {
     v13.receiver = self;
     v13.super_class = IMGridView;
-    [(IMGridView *)&v13 touchesEnded:v6 withEvent:v7];
+    [(IMGridView *)&v13 touchesEnded:endedCopy withEvent:eventCopy];
     if (self->_selectedCell)
     {
       gridFlags = self->_gridFlags;
@@ -2247,7 +2247,7 @@ LABEL_44:
       {
         if ((*&gridFlags & 8) != 0)
         {
-          [v9 gridView:self updateSelectedCell:?];
+          [delegate gridView:self updateSelectedCell:?];
         }
 
         else if (![(IMGridView *)self isEditing]|| ![(IMGridView *)self tapToSelectMode])
@@ -2255,7 +2255,7 @@ LABEL_44:
           [(IMGridViewCell *)self->_selectedCell setHighlighted:1];
         }
 
-        [v9 gridView:self didSelectItemAtIndex:{-[IMGridView indexForCell:](self, "indexForCell:", self->_selectedCell)}];
+        [delegate gridView:self didSelectItemAtIndex:{-[IMGridView indexForCell:](self, "indexForCell:", self->_selectedCell)}];
       }
     }
   }
@@ -2265,31 +2265,31 @@ LABEL_44:
   self->_selectedCell = 0;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = IMGridView;
-  [(IMGridView *)&v6 touchesCancelled:a3 withEvent:a4];
+  [(IMGridView *)&v6 touchesCancelled:cancelled withEvent:event];
   [(IMGridView *)self _cancelCellHighlight];
   [(IMGridViewCell *)self->_selectedCell setHighlighted:0];
   selectedCell = self->_selectedCell;
   self->_selectedCell = 0;
 }
 
-- (void)animateDeletionOfCell:(id)a3
+- (void)animateDeletionOfCell:(id)cell
 {
   if ((*&self->_gridFlags & 0x80) != 0)
   {
-    v5 = [(IMGridView *)self indexForCell:a3];
-    v6 = [(IMGridView *)self delegate];
-    [v6 gridView:self shouldDeleteItemAtIndex:v5];
+    v5 = [(IMGridView *)self indexForCell:cell];
+    delegate = [(IMGridView *)self delegate];
+    [delegate gridView:self shouldDeleteItemAtIndex:v5];
   }
 }
 
-- (void)_autoscrollForCell:(id)a3
+- (void)_autoscrollForCell:(id)cell
 {
   self->_autoscrollDistance = 0.0;
-  [a3 frame];
+  [cell frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2381,7 +2381,7 @@ LABEL_8:
   self->_autoscrollDistance = v11;
 }
 
-- (void)_autoscrollTimerFired:(id)a3
+- (void)_autoscrollTimerFired:(id)fired
 {
   [(IMGridView *)self _legalizeAutoscrollDistance];
   [(IMGridView *)self contentOffset];
@@ -2399,12 +2399,12 @@ LABEL_8:
   self->_autoscrollTimer = 0;
 }
 
-- (void)setTapToSelectMode:(BOOL)a3
+- (void)setTapToSelectMode:(BOOL)mode
 {
-  v3 = a3;
-  if ([(IMGridView *)self tapToSelectMode]!= a3)
+  modeCopy = mode;
+  if ([(IMGridView *)self tapToSelectMode]!= mode)
   {
-    if (v3)
+    if (modeCopy)
     {
       v5 = 0x10000;
     }
@@ -2420,12 +2420,12 @@ LABEL_8:
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (((((*&self->_gridFlags & 0x4000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_gridFlags & 0x4000) == 0) ^ editing) & 1) == 0)
   {
-    v3 = a3;
-    if (a3)
+    editingCopy = editing;
+    if (editing)
     {
       v5 = 0x4000;
     }
@@ -2455,7 +2455,7 @@ LABEL_8:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * i) setEditing:{v3, v11}];
+          [*(*(&v11 + 1) + 8 * i) setEditing:{editingCopy, v11}];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -2468,19 +2468,19 @@ LABEL_8:
   }
 }
 
-- (id)_cellWithUniqueIdentifier:(id)a3
+- (id)_cellWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(IMGridView *)self rangeOfVisibleCells];
-  if (v6 && (v7 = v5, v8 = v6, v5 < &v5[v6]))
+  identifierCopy = identifier;
+  rangeOfVisibleCells = [(IMGridView *)self rangeOfVisibleCells];
+  if (v6 && (v7 = rangeOfVisibleCells, v8 = v6, rangeOfVisibleCells < &rangeOfVisibleCells[v6]))
   {
     v9 = 0;
     do
     {
-      v10 = [(IMGridView *)self dragAndDropDelegate];
-      v11 = [v10 uniqueIdentifierForCellIndex:v7];
+      dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+      v11 = [dragAndDropDelegate uniqueIdentifierForCellIndex:v7];
 
-      if ([v4 isEqualToString:v11])
+      if ([identifierCopy isEqualToString:v11])
       {
         v12 = [(IMGridView *)self cellForIndex:v7];
 
@@ -2502,30 +2502,30 @@ LABEL_8:
   return v9;
 }
 
-- (int64_t)_dataSourceIndexFromReorderedIndex:(int64_t)a3
+- (int64_t)_dataSourceIndexFromReorderedIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
   if (WeakRetained)
   {
     v6 = [(IMGridView *)self indexForCell:WeakRetained];
     grabIndex = self->_grabIndex;
-    if (v6 != a3)
+    if (v6 != index)
     {
-      v9 = v6 < a3 && grabIndex >= a3;
-      v10 = a3 - v9;
-      if (v6 > a3 && grabIndex <= a3)
+      v9 = v6 < index && grabIndex >= index;
+      v10 = index - v9;
+      if (v6 > index && grabIndex <= index)
       {
-        v12 = a3 + 1;
+        indexCopy = index + 1;
       }
 
       else
       {
-        v12 = a3;
+        indexCopy = index;
       }
 
       if (v6 >= grabIndex)
       {
-        grabIndex = v12;
+        grabIndex = indexCopy;
       }
 
       else
@@ -2537,18 +2537,18 @@ LABEL_8:
 
   else
   {
-    grabIndex = a3;
+    grabIndex = index;
   }
 
   return grabIndex;
 }
 
-- (id)_dragInteraction:(id)a3 itemsForSession:(id)a4 atPoint:(CGPoint)a5
+- (id)_dragInteraction:(id)interaction itemsForSession:(id)session atPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  sessionCopy = session;
   v11 = [(IMGridView *)self cellAtPoint:x, y];
   if (!v11)
   {
@@ -2569,18 +2569,18 @@ LABEL_8:
     v14 = 0;
   }
 
-  v48 = [(IMGridView *)self delegate];
-  v16 = [(IMGridView *)self dragAndDropDelegate];
+  delegate = [(IMGridView *)self delegate];
+  dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
   v17 = [(IMGridView *)self _dataSourceIndexFromReorderedIndex:v12];
-  v18 = [v16 uniqueIdentifierForCellIndex:v17];
+  v18 = [dragAndDropDelegate uniqueIdentifierForCellIndex:v17];
   v15 = 0;
   if (!v18 || v14)
   {
     goto LABEL_40;
   }
 
-  v19 = [(IMGridView *)self draggedCellIDs];
-  v20 = [v19 containsObject:v18];
+  draggedCellIDs = [(IMGridView *)self draggedCellIDs];
+  v20 = [draggedCellIDs containsObject:v18];
 
   if (v20)
   {
@@ -2591,7 +2591,7 @@ LABEL_8:
   gridFlags = self->_gridFlags;
   if ((*&gridFlags & 0x200) != 0)
   {
-    v22 = [v48 gridView:self canReorderCellAtIndex:v17];
+    v22 = [delegate gridView:self canReorderCellAtIndex:v17];
     if ((*&self->_gridFlags & 0x400) == 0)
     {
       goto LABEL_15;
@@ -2609,7 +2609,7 @@ LABEL_8:
 
   if (!isPhone())
   {
-    v23 = [v48 gridView:self canDragCellAtIndex:v17];
+    v23 = [delegate gridView:self canDragCellAtIndex:v17];
     goto LABEL_17;
   }
 
@@ -2617,18 +2617,18 @@ LABEL_15:
   v23 = 0;
 LABEL_17:
   v46 = v22;
-  v47 = v10;
+  v47 = sessionCopy;
   if (((v22 | v23) & 1) == 0)
   {
     v15 = 0;
     goto LABEL_36;
   }
 
-  v24 = [(IMGridView *)self draggedCellIDs];
-  v44 = [v24 count];
+  draggedCellIDs2 = [(IMGridView *)self draggedCellIDs];
+  v44 = [draggedCellIDs2 count];
 
-  v45 = v9;
-  [v16 dragItemsForDataSourceIndex:v17 cellIndex:v12 interaction:v9 session:v10];
+  v45 = interactionCopy;
+  [dragAndDropDelegate dragItemsForDataSourceIndex:v17 cellIndex:v12 interaction:interactionCopy session:sessionCopy];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -2651,7 +2651,7 @@ LABEL_17:
         objc_enumerationMutation(v15);
       }
 
-      v29 = [v16 uniqueIdentifierForDragItem:{*(*(&v50 + 1) + 8 * v28), v44}];
+      v29 = [dragAndDropDelegate uniqueIdentifierForDragItem:{*(*(&v50 + 1) + 8 * v28), v44}];
       if ([v29 length])
       {
         if (!v29)
@@ -2660,8 +2660,8 @@ LABEL_17:
         }
 
 LABEL_25:
-        v37 = [(IMGridView *)self draggedCellIDs];
-        [v37 addObject:v29];
+        draggedCellIDs3 = [(IMGridView *)self draggedCellIDs];
+        [draggedCellIDs3 addObject:v29];
 
         goto LABEL_26;
       }
@@ -2685,26 +2685,26 @@ LABEL_26:
   while (v38);
 LABEL_31:
 
-  v39 = [(IMGridView *)self draggedCellIDs];
-  v40 = [v39 count];
+  draggedCellIDs4 = [(IMGridView *)self draggedCellIDs];
+  v40 = [draggedCellIDs4 count];
 
   if (v44 == &dword_0 + 1 && v40 >= 2)
   {
     [(IMGridView *)self _stopReordering:1];
   }
 
-  v9 = v45;
-  [v16 dragInteraction:v45 session:v47 willAddItems:v15 forInteraction:{0, v44}];
+  interactionCopy = v45;
+  [dragAndDropDelegate dragInteraction:v45 session:v47 willAddItems:v15 forInteraction:{0, v44}];
 LABEL_36:
-  v41 = [(IMGridView *)self draggedCellIDs];
-  v42 = [v41 count] == &dword_0 + 1;
+  draggedCellIDs5 = [(IMGridView *)self draggedCellIDs];
+  v42 = [draggedCellIDs5 count] == &dword_0 + 1;
 
   if (!v49 && (v42 & v46) != 0)
   {
     [(IMGridView *)self setGrabbedCell:v11];
   }
 
-  v10 = v47;
+  sessionCopy = v47;
 LABEL_40:
 
 LABEL_41:
@@ -2712,38 +2712,38 @@ LABEL_41:
   return v15;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IMGridView *)self pendingDropView];
-  if (v8)
+  sessionCopy = session;
+  interactionCopy = interaction;
+  pendingDropView = [(IMGridView *)self pendingDropView];
+  if (pendingDropView)
   {
     [(IMGridView *)self _showGrabbedCell];
-    [v8 setHidden:1];
+    [pendingDropView setHidden:1];
     [(IMGridView *)self setPendingDropView:0];
   }
 
-  v9 = [(IMGridView *)self pendingCancelView];
-  v10 = v9;
-  if (v9)
+  pendingCancelView = [(IMGridView *)self pendingCancelView];
+  v10 = pendingCancelView;
+  if (pendingCancelView)
   {
-    [v9 setHidden:1];
+    [pendingCancelView setHidden:1];
     [(IMGridView *)self setPendingCancelView:0];
   }
 
-  [v6 locationInView:self];
-  v11 = [(IMGridView *)self _dragInteraction:v7 itemsForSession:v6 atPoint:?];
+  [sessionCopy locationInView:self];
+  v11 = [(IMGridView *)self _dragInteraction:interactionCopy itemsForSession:sessionCopy atPoint:?];
 
   return v11;
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  sessionCopy = session;
   if (isPhone())
   {
     v11 = 0;
@@ -2751,150 +2751,150 @@ LABEL_41:
 
   else
   {
-    v11 = [(IMGridView *)self _dragInteraction:v9 itemsForSession:v10 atPoint:x, y];
+    v11 = [(IMGridView *)self _dragInteraction:interactionCopy itemsForSession:sessionCopy atPoint:x, y];
   }
 
   return v11;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_71C84;
   v9[3] = &unk_2CA7F0;
   v9[4] = self;
-  v10 = a3;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
-  [a4 addCompletion:v9];
+  interactionCopy = interaction;
+  sessionCopy = session;
+  v7 = sessionCopy;
+  v8 = interactionCopy;
+  [animator addCompletion:v9];
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IMGridView *)self dragAndDropDelegate];
-  v12 = [v11 dragInteraction:v10 previewForLiftingItem:v9 session:v8];
+  sessionCopy = session;
+  itemCopy = item;
+  interactionCopy = interaction;
+  dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+  v12 = [dragAndDropDelegate dragInteraction:interactionCopy previewForLiftingItem:itemCopy session:sessionCopy];
 
   return v12;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  if (a5 < 2 || !self->_draggingInsideApp)
+  if (operation < 2 || !self->_draggingInsideApp)
   {
-    [(IMGridView *)self _stopReordering:1, a4];
+    [(IMGridView *)self _stopReordering:1, session];
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v11 = a3;
-  v8 = a4;
-  if (a5 < 2 || !self->_draggingInsideApp)
+  interactionCopy = interaction;
+  sessionCopy = session;
+  if (operation < 2 || !self->_draggingInsideApp)
   {
     [(IMGridView *)self _showGrabbedCell];
   }
 
   [(IMGridView *)self _stopReordering:0];
-  v9 = [(IMGridView *)self draggedCellIDs];
-  [v9 removeAllObjects];
+  draggedCellIDs = [(IMGridView *)self draggedCellIDs];
+  [draggedCellIDs removeAllObjects];
 
-  v10 = [(IMGridView *)self dragAndDropDelegate];
-  [v10 dragInteraction:v11 session:v8 didEndWithOperation:a5];
+  dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+  [dragAndDropDelegate dragInteraction:interactionCopy session:sessionCopy didEndWithOperation:operation];
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IMGridView *)self dragAndDropDelegate];
-  [v11 dragInteraction:v10 item:v9 willAnimateCancelWithAnimator:v8];
+  animatorCopy = animator;
+  itemCopy = item;
+  interactionCopy = interaction;
+  dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+  [dragAndDropDelegate dragInteraction:interactionCopy item:itemCopy willAnimateCancelWithAnimator:animatorCopy];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_71F48;
   v12[3] = &unk_2C8FD0;
   v12[4] = self;
-  [v8 addCompletion:v12];
+  [animatorCopy addCompletion:v12];
 }
 
-- (id)dragInteraction:(id)a3 sessionForAddingItems:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction sessionForAddingItems:(id)items withTouchAtPoint:(CGPoint)point
 {
-  v5 = a4;
+  itemsCopy = items;
   v6 = BKMobileDragAndDropLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_1E68E0(v5);
+    sub_1E68E0(itemsCopy);
   }
 
-  v7 = [v5 firstObject];
+  firstObject = [itemsCopy firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  interactionCopy = interaction;
+  sessionCopy = session;
+  itemsCopy = items;
   v12 = BKMobileDragAndDropLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412802;
-    v14 = v9;
+    v14 = interactionCopy;
     v15 = 2112;
-    v16 = v10;
+    v16 = sessionCopy;
     v17 = 2112;
-    v18 = v11;
+    v18 = itemsCopy;
     _os_log_debug_impl(&dword_0, v12, OS_LOG_TYPE_DEBUG, "interaction: %@ session: %@ willAddItems: %@", &v13, 0x20u);
   }
 
   [(IMGridView *)self _showGrabbedCell];
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(IMGridView *)self dragAndDropDelegate];
-  v10 = [v9 dragInteraction:v8 previewForLiftingItem:v7 session:0];
+  itemCopy = item;
+  interactionCopy = interaction;
+  dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+  v10 = [dragAndDropDelegate dragInteraction:interactionCopy previewForLiftingItem:itemCopy session:0];
 
-  v11 = [v10 view];
-  [(IMGridView *)self setPendingCancelView:v11];
+  view = [v10 view];
+  [(IMGridView *)self setPendingCancelView:view];
 
   return v10;
 }
 
-- (id)_dropOperationForInteraction:(id)a3 session:(id)a4
+- (id)_dropOperationForInteraction:(id)interaction session:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IMGridView *)self dragAndDropDelegate];
-  v9 = [v8 dropProposalForInteraction:v7 session:v6];
+  sessionCopy = session;
+  interactionCopy = interaction;
+  dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+  v9 = [dragAndDropDelegate dropProposalForInteraction:interactionCopy session:sessionCopy];
 
   return v9;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IMGridView *)self dragAndDropDelegate];
-  v9 = [v8 dropInteraction:v7 canHandleSession:v6];
+  sessionCopy = session;
+  interactionCopy = interaction;
+  dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+  v9 = [dragAndDropDelegate dropInteraction:interactionCopy canHandleSession:sessionCopy];
 
   return v9;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v5 = a4;
+  enterCopy = enter;
   self->_draggingInsideApp = 1;
-  [v5 locationInView:self];
+  [enterCopy locationInView:self];
   v7 = v6;
   v9 = v8;
   v10 = BKMobileDragAndDropLog();
@@ -2904,11 +2904,11 @@ LABEL_41:
   }
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 locationInView:self];
+  interactionCopy = interaction;
+  updateCopy = update;
+  [updateCopy locationInView:self];
   v9 = v8;
   v11 = v10;
   WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
@@ -2918,16 +2918,16 @@ LABEL_41:
     [(IMGridView *)self _autoscrollForCell:WeakRetained];
   }
 
-  v13 = [(IMGridView *)self _dropOperationForInteraction:v6 session:v7];
+  v13 = [(IMGridView *)self _dropOperationForInteraction:interactionCopy session:updateCopy];
   [v13 setPrefersFullSizePreview:1];
 
   return v13;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v5 = a4;
-  [v5 locationInView:self];
+  exitCopy = exit;
+  [exitCopy locationInView:self];
   v7 = v6;
   v9 = v8;
   v10 = BKMobileDragAndDropLog();
@@ -2940,15 +2940,15 @@ LABEL_41:
   self->_draggingInsideApp = 0;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v11 = a3;
-  v6 = a4;
+  interactionCopy = interaction;
+  dropCopy = drop;
   WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
   if (!WeakRetained)
   {
-    v10 = [(IMGridView *)self dragAndDropDelegate];
-    [v10 performDropForInteraction:v11 session:v6];
+    dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+    [dragAndDropDelegate performDropForInteraction:interactionCopy session:dropCopy];
     goto LABEL_6;
   }
 
@@ -2956,34 +2956,34 @@ LABEL_41:
   if (self->_grabIndex != v8 && (*&self->_gridFlags & 0x10) != 0)
   {
     v9 = v8;
-    v10 = [(IMGridView *)self delegate];
-    [v10 gridView:self reorderCellAtIndex:self->_grabIndex toIndex:v9];
+    dragAndDropDelegate = [(IMGridView *)self delegate];
+    [dragAndDropDelegate gridView:self reorderCellAtIndex:self->_grabIndex toIndex:v9];
 LABEL_6:
   }
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IMGridView *)self dragAndDropDelegate];
-  v12 = [v11 dropInteraction:v10 previewForDroppingItem:v9 withDefault:v8];
+  defaultCopy = default;
+  itemCopy = item;
+  interactionCopy = interaction;
+  dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+  v12 = [dragAndDropDelegate dropInteraction:interactionCopy previewForDroppingItem:itemCopy withDefault:defaultCopy];
 
-  v13 = [v12 view];
-  [(IMGridView *)self setPendingDropView:v13];
+  view = [v12 view];
+  [(IMGridView *)self setPendingDropView:view];
 
   return v12;
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_7266C;
   v5[3] = &unk_2C8FD0;
   v5[4] = self;
-  [a5 addCompletion:{v5, a4}];
+  [animator addCompletion:{v5, item}];
 }
 
 - (void)_hideGrabbedCell
@@ -2992,8 +2992,8 @@ LABEL_6:
   if (WeakRetained && (*&self->_gridFlags & 0x20) != 0)
   {
     v5 = WeakRetained;
-    v4 = [(IMGridView *)self delegate];
-    [v4 gridView:self willGrabCell:v5];
+    delegate = [(IMGridView *)self delegate];
+    [delegate gridView:self willGrabCell:v5];
 
     WeakRetained = v5;
   }
@@ -3003,19 +3003,19 @@ LABEL_6:
 {
   if ((*&self->_gridFlags & 0x40) != 0)
   {
-    v4 = [(IMGridView *)self delegate];
-    [v4 gridViewDidReleaseGrabbedCell:self];
+    delegate = [(IMGridView *)self delegate];
+    [delegate gridViewDidReleaseGrabbedCell:self];
   }
 }
 
-- (void)_stopReordering:(BOOL)a3
+- (void)_stopReordering:(BOOL)reordering
 {
-  v3 = a3;
+  reorderingCopy = reordering;
   [(IMGridView *)self _cancelAutoscrollTimer];
   WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
   grabIndex = self->_grabIndex;
   [(IMGridView *)self cleanupGrabbedCell];
-  if (v3)
+  if (reorderingCopy)
   {
     [(IMGridView *)self _restoreGrabbedCell:WeakRetained toOriginalGrabIndex:grabIndex];
   }
@@ -3026,9 +3026,9 @@ LABEL_6:
   self->_selectedCell = 0;
 }
 
-- (void)setGrabbedCell:(id)a3
+- (void)setGrabbedCell:(id)cell
 {
-  obj = a3;
+  obj = cell;
   WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
   if (WeakRetained != obj)
   {
@@ -3037,8 +3037,8 @@ LABEL_6:
     {
       [(IMGridView *)self setScrollEnabled:0];
       self->_grabIndex = [(IMGridView *)self indexForCell:obj];
-      v5 = [(IMGridView *)self dragAndDropDelegate];
-      v6 = [v5 uniqueIdentifierForCellIndex:self->_grabIndex];
+      dragAndDropDelegate = [(IMGridView *)self dragAndDropDelegate];
+      v6 = [dragAndDropDelegate uniqueIdentifierForCellIndex:self->_grabIndex];
       [(IMGridView *)self setGrabbedCellUniqueID:v6];
 
       [obj setGrabbed:1];
@@ -3054,12 +3054,12 @@ LABEL_6:
   }
 }
 
-- (void)_swapGrabbedCell:(id)a3 withOtherCell:(id)a4
+- (void)_swapGrabbedCell:(id)cell withOtherCell:(id)otherCell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMGridView *)self indexForCell:v6];
-  v9 = [(IMGridView *)self indexForCell:v7];
+  cellCopy = cell;
+  otherCellCopy = otherCell;
+  v8 = [(IMGridView *)self indexForCell:cellCopy];
+  v9 = [(IMGridView *)self indexForCell:otherCellCopy];
   if (v8 != v9)
   {
     v10 = v9;
@@ -3097,8 +3097,8 @@ LABEL_6:
       while (v10 != v13);
     }
 
-    [v6 setTag:v10 + 10000];
-    [v7 setTag:{objc_msgSend(v7, "tag") - v12}];
+    [cellCopy setTag:v10 + 10000];
+    [otherCellCopy setTag:{objc_msgSend(otherCellCopy, "tag") - v12}];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_72AD8;
@@ -3108,12 +3108,12 @@ LABEL_6:
   }
 }
 
-- (void)_restoreGrabbedCell:(id)a3 toOriginalGrabIndex:(int64_t)a4
+- (void)_restoreGrabbedCell:(id)cell toOriginalGrabIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(IMGridView *)self indexForCell:v6];
-  v8 = v7 != a4 && v6 != 0;
-  if (v7 > a4)
+  cellCopy = cell;
+  v7 = [(IMGridView *)self indexForCell:cellCopy];
+  v8 = v7 != index && cellCopy != 0;
+  if (v7 > index)
   {
     v9 = 1;
   }
@@ -3123,7 +3123,7 @@ LABEL_6:
     v9 = -1;
   }
 
-  if (v7 > a4)
+  if (v7 > index)
   {
     v10 = -1;
   }
@@ -3135,36 +3135,36 @@ LABEL_6:
 
   if (v8)
   {
-    for (i = v7 + v10; a4 != i; i += v10)
+    for (i = v7 + v10; index != i; i += v10)
     {
       v12 = [(IMGridView *)self visibleCellForIndex:i];
       [v12 setTag:{objc_msgSend(v12, "tag") + v9}];
     }
 
-    v13 = [(IMGridView *)self visibleCellForIndex:a4];
+    v13 = [(IMGridView *)self visibleCellForIndex:index];
     [v13 setTag:{objc_msgSend(v13, "tag") + v9}];
-    [v6 setTag:a4 + 10000];
+    [cellCopy setTag:index + 10000];
   }
 
-  [(IMGridView *)self rectForCellAtIndex:a4];
-  [v6 setFrame:?];
-  [v6 setAlpha:0.0];
+  [(IMGridView *)self rectForCellAtIndex:index];
+  [cellCopy setFrame:?];
+  [cellCopy setAlpha:0.0];
   [(IMGridView *)self _showGrabbedCell];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_72C7C;
   v15[3] = &unk_2C81D8;
   v18 = v8;
-  v16 = v6;
-  v17 = self;
-  v14 = v6;
+  v16 = cellCopy;
+  selfCopy = self;
+  v14 = cellCopy;
   [UIView animateWithDuration:v15 animations:0.3];
 }
 
-- (void)_updateGrabbedCellLocation:(CGPoint)a3
+- (void)_updateGrabbedCellLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   WeakRetained = objc_loadWeakRetained(&self->_grabbedCell);
   [WeakRetained frame];
   v8 = v7 + y - self->_grabPoint.y;

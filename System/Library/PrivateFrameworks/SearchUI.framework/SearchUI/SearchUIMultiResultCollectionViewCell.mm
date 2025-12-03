@@ -1,28 +1,28 @@
 @interface SearchUIMultiResultCollectionViewCell
 - (BOOL)isExpandable;
 - (BOOL)setupManualFocus;
-- (CGSize)sizeCollectionViewWithSize:(CGSize)a3;
-- (SearchUIMultiResultCollectionViewCell)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGSize)sizeCollectionViewWithSize:(CGSize)size;
+- (SearchUIMultiResultCollectionViewCell)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)viewForForcedFocus;
 - (id)visibleResults;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)removeManualFocus;
 - (void)returnKeyPressed;
-- (void)setDelegate:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)updateExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateWithRowModel:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setSelected:(BOOL)selected;
+- (void)updateExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIMultiResultCollectionViewCell
 
 - (BOOL)isExpandable
 {
-  v2 = [(SearchUICollectionViewCell *)self rowModel];
-  v3 = [v2 results];
-  v4 = [v3 count];
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  results = [rowModel results];
+  v4 = [results count];
   LOBYTE(v4) = v4 > +[SearchUIAppIconUtilities numberOfAppIconsPerRow];
 
   return v4;
@@ -35,26 +35,26 @@
   [(SearchUICollectionViewCell *)&v37 layoutSubviews];
   [(SearchUIMultiResultCollectionViewCell *)self bounds];
   [(SearchUIMultiResultCollectionViewCell *)self sizeCollectionViewWithSize:v3, v4];
-  v5 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
-  if (v5)
+  folderLabelView = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
+  if (folderLabelView)
   {
-    v6 = v5;
-    v7 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
-    v8 = [v7 isHidden];
+    v6 = folderLabelView;
+    folderLabelView2 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
+    isHidden = [folderLabelView2 isHidden];
 
-    if ((v8 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v9 = [MEMORY[0x1E69D91A8] isLTR];
-      v10 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
-      v11 = [v10 visibleCells];
-      v12 = [v11 firstObject];
-      [v12 frame];
+      isLTR = [MEMORY[0x1E69D91A8] isLTR];
+      multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+      visibleCells = [multiCollectionView visibleCells];
+      firstObject = [visibleCells firstObject];
+      [firstObject frame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
 
-      if (v9)
+      if (isLTR)
       {
         [(SearchUIMultiResultCollectionViewCell *)self bounds];
         Width = CGRectGetWidth(v38);
@@ -92,40 +92,40 @@
       v27 = MEMORY[0x1E69D91A8];
       [(SearchUIMultiResultCollectionViewCell *)self bounds];
       v28 = (CGRectGetHeight(v45) - Height) * 0.5;
-      v29 = [(SearchUIMultiResultCollectionViewCell *)self contentView];
-      [v27 deviceScaledRoundedValue:v29 forView:v28];
+      contentView = [(SearchUIMultiResultCollectionViewCell *)self contentView];
+      [v27 deviceScaledRoundedValue:contentView forView:v28];
       v31 = v30;
 
       v32 = MEMORY[0x1E69D91A8];
-      if (v9)
+      if (isLTR)
       {
         [(SearchUIMultiResultCollectionViewCell *)self bounds];
         MinX = CGRectGetWidth(v46) - v25 - MinX;
       }
 
-      v33 = [(SearchUIMultiResultCollectionViewCell *)self contentView];
-      [v32 deviceScaledRoundedValue:v33 forView:MinX];
+      contentView2 = [(SearchUIMultiResultCollectionViewCell *)self contentView];
+      [v32 deviceScaledRoundedValue:contentView2 forView:MinX];
       v35 = v34;
 
-      v36 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
-      [v36 setFrame:{v35, v31, v25, Height}];
+      folderLabelView3 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
+      [folderLabelView3 setFrame:{v35, v31, v25, Height}];
     }
   }
 }
 
 - (id)visibleResults
 {
-  v2 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
-  v3 = [v2 visibleResults];
+  multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+  visibleResults = [multiCollectionView visibleResults];
 
-  return v3;
+  return visibleResults;
 }
 
-- (SearchUIMultiResultCollectionViewCell)initWithFrame:(CGRect)a3
+- (SearchUIMultiResultCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SearchUIMultiResultCollectionViewCell;
-  v3 = [(SearchUICollectionViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SearchUICollectionViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -141,55 +141,55 @@
     v7 = [(SearchUIMultiResultCollectionView *)v6 initWithFrame:v5 collectionViewLayout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(SearchUIMultiResultCollectionViewCell *)v4 setMultiCollectionView:v7];
 
-    v8 = [(SearchUIMultiResultCollectionViewCell *)v4 contentView];
-    v9 = [(SearchUIMultiResultCollectionViewCell *)v4 multiCollectionView];
-    [v8 addSubview:v9];
+    contentView = [(SearchUIMultiResultCollectionViewCell *)v4 contentView];
+    multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)v4 multiCollectionView];
+    [contentView addSubview:multiCollectionView];
   }
 
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SearchUIMultiResultCollectionViewCell;
-  v4 = a3;
-  [(SearchUICollectionViewCell *)&v6 setDelegate:v4];
+  delegateCopy = delegate;
+  [(SearchUICollectionViewCell *)&v6 setDelegate:delegateCopy];
   v5 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView:v6.receiver];
-  [v5 setFeedbackDelegate:v4];
+  [v5 setFeedbackDelegate:delegateCopy];
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v21.receiver = self;
   v21.super_class = SearchUIMultiResultCollectionViewCell;
-  v4 = a3;
-  [(SearchUICollectionViewCell *)&v21 updateWithRowModel:v4];
+  modelCopy = model;
+  [(SearchUICollectionViewCell *)&v21 updateWithRowModel:modelCopy];
   v5 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView:v21.receiver];
-  [v5 updateWithRowModel:v4];
+  [v5 updateWithRowModel:modelCopy];
 
-  v6 = [v4 results];
+  results = [modelCopy results];
 
-  if ([v6 count] == 1 && (objc_msgSend(v6, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "auxiliaryTopText"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, v7, v9))
+  if ([results count] == 1 && (objc_msgSend(results, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "auxiliaryTopText"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, v7, v9))
   {
-    v10 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
+    folderLabelView = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
 
-    if (!v10)
+    if (!folderLabelView)
     {
       v11 = objc_opt_new();
       [(SearchUIMultiResultCollectionViewCell *)self setFolderLabelView:v11];
 
-      v12 = [(SearchUIMultiResultCollectionViewCell *)self contentView];
-      v13 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
-      [v12 addSubview:v13];
+      contentView = [(SearchUIMultiResultCollectionViewCell *)self contentView];
+      folderLabelView2 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
+      [contentView addSubview:folderLabelView2];
     }
 
     v14 = MEMORY[0x1E69D91D0];
-    v15 = [v6 firstObject];
-    v16 = [v15 auxiliaryTopText];
-    v17 = [v14 textWithString:v16];
-    v18 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
-    [v18 setTopText:v17];
+    firstObject = [results firstObject];
+    auxiliaryTopText = [firstObject auxiliaryTopText];
+    v17 = [v14 textWithString:auxiliaryTopText];
+    folderLabelView3 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
+    [folderLabelView3 setTopText:v17];
 
     v19 = 0;
   }
@@ -199,34 +199,34 @@
     v19 = 1;
   }
 
-  v20 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
-  [v20 setHidden:v19];
+  folderLabelView4 = [(SearchUIMultiResultCollectionViewCell *)self folderLabelView];
+  [folderLabelView4 setHidden:v19];
 }
 
-- (void)updateExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)updateExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
-  [v7 setIsExpanded:v5 animated:v4];
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+  [multiCollectionView setIsExpanded:expandedCopy animated:animatedCopy];
 
   [(SearchUIMultiResultCollectionViewCell *)self invalidateIntrinsicContentSize];
-  v8 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
-  [v8 invalidateIntrinsicContentSize];
+  multiCollectionView2 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+  [multiCollectionView2 invalidateIntrinsicContentSize];
 }
 
-- (CGSize)sizeCollectionViewWithSize:(CGSize)a3
+- (CGSize)sizeCollectionViewWithSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView:a3.width];
+  width = size.width;
+  v4 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView:size.width];
   [v4 frame];
   [v4 setFrame:?];
-  v5 = [v4 collectionViewLayout];
-  [v5 invalidateLayout];
+  collectionViewLayout = [v4 collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   [v4 layoutBelowIfNeeded];
-  v6 = [v4 collectionViewLayout];
-  [v6 collectionViewContentSize];
+  collectionViewLayout2 = [v4 collectionViewLayout];
+  [collectionViewLayout2 collectionViewContentSize];
   v8 = v7;
 
   v9 = width;
@@ -236,41 +236,41 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = SearchUIMultiResultCollectionViewCell;
-  v5 = [(SearchUICollectionViewCell *)&v14 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SearchUICollectionViewCell *)&v14 hitTest:event withEvent:test.x, test.y];
   if ([v5 isDescendantOfView:self] && (-[SearchUICollectionViewCell rowModel](self, "rowModel"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "results"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8 == 1))
   {
-    v9 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
-    v10 = [v9 visibleCells];
-    v11 = [v10 firstObject];
-    v12 = [v11 appIconView];
+    multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+    visibleCells = [multiCollectionView visibleCells];
+    firstObject = [visibleCells firstObject];
+    appIconView = [firstObject appIconView];
   }
 
   else
   {
-    v12 = v5;
+    appIconView = v5;
   }
 
-  return v12;
+  return appIconView;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v8 = [(SearchUICollectionViewCell *)self rowModel];
-  v5 = [v8 results];
-  if ([v5 count] != 1)
+  selectedCopy = selected;
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  results = [rowModel results];
+  if ([results count] != 1)
   {
 LABEL_4:
 
     return;
   }
 
-  v6 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
-  if ([v6 highlightFirstCell])
+  multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+  if ([multiCollectionView highlightFirstCell])
   {
 
     goto LABEL_4;
@@ -282,26 +282,26 @@ LABEL_4:
   {
     v9.receiver = self;
     v9.super_class = SearchUIMultiResultCollectionViewCell;
-    [(SearchUICollectionViewCell *)&v9 setSelected:v3];
+    [(SearchUICollectionViewCell *)&v9 setSelected:selectedCopy];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SearchUIMultiResultCollectionViewCell;
-  [(SearchUICollectionViewCell *)&v12 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [(SearchUICollectionViewCell *)self rowModel];
-  v8 = [v7 results];
-  v9 = [v8 count];
+  [(SearchUICollectionViewCell *)&v12 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  results = [rowModel results];
+  v9 = [results count];
 
   if (v9 == 1)
   {
-    v10 = [v6 nextFocusedView];
-    v11 = [(SearchUIMultiResultCollectionViewCell *)self viewForForcedFocus];
+    nextFocusedView = [contextCopy nextFocusedView];
+    viewForForcedFocus = [(SearchUIMultiResultCollectionViewCell *)self viewForForcedFocus];
 
-    if (v10 == v11)
+    if (nextFocusedView == viewForForcedFocus)
     {
       [(SearchUIMultiResultCollectionViewCell *)self setupManualFocus];
     }
@@ -315,35 +315,35 @@ LABEL_4:
 
 - (BOOL)setupManualFocus
 {
-  v2 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
-  [v2 setHighlightFirstCell:1];
+  multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+  [multiCollectionView setHighlightFirstCell:1];
 
   return 1;
 }
 
 - (void)removeManualFocus
 {
-  v2 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
-  [v2 setHighlightFirstCell:0];
+  multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+  [multiCollectionView setHighlightFirstCell:0];
 }
 
 - (void)returnKeyPressed
 {
-  v5 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+  multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
   v2 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-  v3 = [v5 cellForItemAtIndexPath:v2];
-  v4 = [v3 appIconView];
-  [v4 launchIcon];
+  v3 = [multiCollectionView cellForItemAtIndexPath:v2];
+  appIconView = [v3 appIconView];
+  [appIconView launchIcon];
 }
 
 - (id)viewForForcedFocus
 {
-  v2 = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
+  multiCollectionView = [(SearchUIMultiResultCollectionViewCell *)self multiCollectionView];
   v3 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-  v4 = [v2 cellForItemAtIndexPath:v3];
-  v5 = [v4 appIconView];
+  v4 = [multiCollectionView cellForItemAtIndexPath:v3];
+  appIconView = [v4 appIconView];
 
-  return v5;
+  return appIconView;
 }
 
 @end

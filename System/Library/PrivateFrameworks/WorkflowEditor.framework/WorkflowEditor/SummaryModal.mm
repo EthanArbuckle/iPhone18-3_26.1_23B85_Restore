@@ -1,23 +1,23 @@
 @interface SummaryModal
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation SummaryModal
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  SummaryModal.presentationControllerDidDismiss(_:)(v5);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  SummaryModal.presentationControllerDidDismiss(_:)(selfCopy);
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = SummaryModal.adaptivePresentationStyle(for:traitCollection:)(v8, v7);
+  controllerCopy = controller;
+  collectionCopy = collection;
+  selfCopy = self;
+  v9 = SummaryModal.adaptivePresentationStyle(for:traitCollection:)(selfCopy, collectionCopy);
 
   return v9;
 }

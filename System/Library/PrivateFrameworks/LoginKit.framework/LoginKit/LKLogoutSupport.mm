@@ -4,9 +4,9 @@
 - (LKLogoutSupport)init;
 - (id)logoutWarningMessage;
 - (void)_syncPreferencesIfNeeded;
-- (void)logoutToLoginSessionWithCompletionHandler:(id)a3;
-- (void)logoutToLoginUserWithCompletionHandler:(id)a3;
-- (void)logoutToLoginWindowWithCompletionHandler:(id)a3;
+- (void)logoutToLoginSessionWithCompletionHandler:(id)handler;
+- (void)logoutToLoginUserWithCompletionHandler:(id)handler;
+- (void)logoutToLoginWindowWithCompletionHandler:(id)handler;
 @end
 
 @implementation LKLogoutSupport
@@ -27,14 +27,14 @@
 - (BOOL)_canLogoutToLoginSession
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 loginUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  loginUser = [mEMORY[0x277D77BF8] loginUser];
 
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v6 = [v3 userAuxiliaryString];
-  v7 = [v6 isEqualToString:v5];
+  userAuxiliaryString = [loginUser userAuxiliaryString];
+  v7 = [userAuxiliaryString isEqualToString:localeIdentifier];
 
   if ((v7 & 1) == 0)
   {
@@ -42,11 +42,11 @@
     if (os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v3 userAuxiliaryString];
+      userAuxiliaryString2 = [loginUser userAuxiliaryString];
       v19 = 138412546;
-      v20 = v5;
+      v20 = localeIdentifier;
       v21 = 2112;
-      v22 = v10;
+      v22 = userAuxiliaryString2;
       _os_log_impl(&dword_25618F000, v9, OS_LOG_TYPE_DEFAULT, "User locale (%@) is different from login user locale (%@)", &v19, 0x16u);
     }
   }
@@ -62,13 +62,13 @@
     }
   }
 
-  v13 = [MEMORY[0x277D77BF8] sharedManager];
-  v14 = [v13 currentUser];
-  v15 = [v14 isAuditor];
+  mEMORY[0x277D77BF8]2 = [MEMORY[0x277D77BF8] sharedManager];
+  currentUser = [mEMORY[0x277D77BF8]2 currentUser];
+  isAuditor = [currentUser isAuditor];
 
   if (v7)
   {
-    v16 = (CanSupportLoginUI != 0) & (v15 ^ 1);
+    v16 = (CanSupportLoginUI != 0) & (isAuditor ^ 1);
   }
 
   else
@@ -80,9 +80,9 @@
   return v16;
 }
 
-- (void)logoutToLoginSessionWithCompletionHandler:(id)a3
+- (void)logoutToLoginSessionWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = LKLogDefault;
   if (os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT))
   {
@@ -91,13 +91,13 @@
   }
 
   kdebug_trace();
-  v5 = [MEMORY[0x277D77BF8] sharedManager];
-  [v5 logoutToLoginSessionWithCompletionHandler:v3];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  [mEMORY[0x277D77BF8] logoutToLoginSessionWithCompletionHandler:handlerCopy];
 }
 
-- (void)logoutToLoginUserWithCompletionHandler:(id)a3
+- (void)logoutToLoginUserWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = LKLogDefault;
   if (os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,8 +106,8 @@
   }
 
   kdebug_trace();
-  v5 = [MEMORY[0x277D77BF8] sharedManager];
-  [v5 switchToLoginUserWithCompletionHandler:v3];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  [mEMORY[0x277D77BF8] switchToLoginUserWithCompletionHandler:handlerCopy];
 }
 
 - (void)_syncPreferencesIfNeeded
@@ -234,18 +234,18 @@ void __43__LKLogoutSupport__syncPreferencesIfNeeded__block_invoke_12(uint64_t a1
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logoutToLoginWindowWithCompletionHandler:(id)a3
+- (void)logoutToLoginWindowWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(LKLogoutSupport *)self _syncPreferencesIfNeeded];
   if ([(LKLogoutSupport *)self _canLogoutToLoginSession])
   {
-    [(LKLogoutSupport *)self logoutToLoginSessionWithCompletionHandler:v4];
+    [(LKLogoutSupport *)self logoutToLoginSessionWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    [(LKLogoutSupport *)self logoutToLoginUserWithCompletionHandler:v4];
+    [(LKLogoutSupport *)self logoutToLoginUserWithCompletionHandler:handlerCopy];
   }
 }
 
@@ -267,11 +267,11 @@ void __43__LKLogoutSupport__syncPreferencesIfNeeded__block_invoke_12(uint64_t a1
 
 - (BOOL)isCurrentUserAnonymous
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 currentUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentUser = [mEMORY[0x277D77BF8] currentUser];
 
-  LOBYTE(v2) = [v3 isTransientUser];
-  return v2;
+  LOBYTE(mEMORY[0x277D77BF8]) = [currentUser isTransientUser];
+  return mEMORY[0x277D77BF8];
 }
 
 @end

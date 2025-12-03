@@ -9,8 +9,8 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = MEMORY[0x277D75AC8];
-  v6 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v7 = [v5 storyboardWithName:v4 bundle:v6];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  v7 = [v5 storyboardWithName:v4 bundle:jfxBundle];
 
   v8 = [v7 instantiateViewControllerWithIdentifier:v4];
 

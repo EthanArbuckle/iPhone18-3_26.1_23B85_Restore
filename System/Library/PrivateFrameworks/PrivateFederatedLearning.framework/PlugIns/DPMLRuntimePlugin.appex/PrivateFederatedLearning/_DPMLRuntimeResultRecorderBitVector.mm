@@ -1,20 +1,20 @@
 @interface _DPMLRuntimeResultRecorderBitVector
-+ (BOOL)recordData:(id)a3 forKey:(id)a4 metadata:(id)a5 error:(id *)a6;
-+ (BOOL)recordMultipleKeysData:(id)a3 forBaseKey:(id)a4 metadata:(id)a5 error:(id *)a6;
++ (BOOL)recordData:(id)data forKey:(id)key metadata:(id)metadata error:(id *)error;
++ (BOOL)recordMultipleKeysData:(id)data forBaseKey:(id)key metadata:(id)metadata error:(id *)error;
 @end
 
 @implementation _DPMLRuntimeResultRecorderBitVector
 
-+ (BOOL)recordData:(id)a3 forKey:(id)a4 metadata:(id)a5 error:(id *)a6
++ (BOOL)recordData:(id)data forKey:(id)key metadata:(id)metadata error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  metadataCopy = metadata;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v9;
+  v12 = dataCopy;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
@@ -33,12 +33,12 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a6)
+          if (error)
           {
             v19 = [NSString stringWithFormat:@"Wrong value type for BitVector result: %@", objc_opt_class()];
-            *a6 = [_DPMLRuntimeError errorWithCode:400 description:v19];
+            *error = [_DPMLRuntimeError errorWithCode:400 description:v19];
 
-            LOBYTE(a6) = 0;
+            LOBYTE(error) = 0;
           }
 
           v18 = v12;
@@ -56,35 +56,35 @@
     }
   }
 
-  a6 = +[_PFLLog extension];
-  if (os_log_type_enabled(a6, OS_LOG_TYPE_DEBUG))
+  error = +[_PFLLog extension];
+  if (os_log_type_enabled(error, OS_LOG_TYPE_DEBUG))
   {
     sub_10001C0C4(v12);
   }
 
-  v18 = [[_DPBitValueRecorder alloc] initWithKey:v10];
-  LOBYTE(a6) = [v18 recordBitVectors:v12 metadata:v11];
+  v18 = [[_DPBitValueRecorder alloc] initWithKey:keyCopy];
+  LOBYTE(error) = [v18 recordBitVectors:v12 metadata:metadataCopy];
 LABEL_15:
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)recordMultipleKeysData:(id)a3 forBaseKey:(id)a4 metadata:(id)a5 error:(id *)a6
++ (BOOL)recordMultipleKeysData:(id)data forBaseKey:(id)key metadata:(id)metadata error:(id *)error
 {
-  v8 = a3;
-  v37 = a4;
-  v36 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  metadataCopy = metadata;
   v9 = +[_PFLLog extension];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_10001C160(v8);
+    sub_10001C160(dataCopy);
   }
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v8;
+  v10 = dataCopy;
   v11 = [v10 countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v11)
   {
@@ -109,13 +109,13 @@ LABEL_15:
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v17 = [v16 allKeys];
-        v18 = [v17 countByEnumeratingWithState:&v38 objects:v51 count:16];
+        allKeys = [v16 allKeys];
+        v18 = [allKeys countByEnumeratingWithState:&v38 objects:v51 count:16];
         if (v18)
         {
           v19 = v18;
           v32 = v15;
-          obj = v17;
+          obj = allKeys;
           v20 = *v39;
           while (2)
           {
@@ -127,12 +127,12 @@ LABEL_15:
               }
 
               v22 = *(*(&v38 + 1) + 8 * i);
-              v23 = [NSString stringWithFormat:@"%@.%@", v37, v22];
+              v23 = [NSString stringWithFormat:@"%@.%@", keyCopy, v22];
               v24 = objc_opt_class();
               v25 = [v16 objectForKeyedSubscript:v22];
               v50 = v25;
               v26 = [NSArray arrayWithObjects:&v50 count:1];
-              LOBYTE(v24) = [v24 recordData:v26 forKey:v23 metadata:v36 error:a6];
+              LOBYTE(v24) = [v24 recordData:v26 forKey:v23 metadata:metadataCopy error:error];
 
               if ((v24 & 1) == 0)
               {
@@ -164,7 +164,7 @@ LABEL_15:
 
           v13 = 1;
           v10 = v33;
-          v17 = obj;
+          allKeys = obj;
           v14 = v30;
           v12 = v31;
           v15 = v32;

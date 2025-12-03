@@ -11,7 +11,7 @@
     [UIImage(DOCNodeThumbnail) doc_averageColorInRect:];
   }
 
-  [a1 scale];
+  [self scale];
   v11 = a2 * v10;
   v12 = a3 * v10;
   v13 = a4 * v10;
@@ -19,12 +19,12 @@
   data = 0;
   v15 = CGBitmapContextCreate(&data, 1uLL, 1uLL, 8uLL, 4uLL, doc_averageColorInRect__colorSpace, 0x4005u);
   CGContextSetInterpolationQuality(v15, kCGInterpolationLow);
-  v16 = [a1 CGImage];
+  cGImage = [self CGImage];
   v25.origin.x = v11;
   v25.origin.y = v12;
   v25.size.width = v13;
   v25.size.height = v14;
-  v17 = CGImageCreateWithImageInRect(v16, v25);
+  v17 = CGImageCreateWithImageInRect(cGImage, v25);
   v26.origin.x = 0.0;
   v26.origin.y = 0.0;
   v26.size.width = 1.0;

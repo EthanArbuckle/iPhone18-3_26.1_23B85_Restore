@@ -35,76 +35,76 @@ uint64_t __37__ICUIApplicationShim_sharedInstance__block_invoke()
 
 - (BOOL)isSecureScreenShowing
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  v3 = [v2 isSecureScreenShowing];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  isSecureScreenShowing = [delegate isSecureScreenShowing];
 
-  return v3;
+  return isSecureScreenShowing;
 }
 
 - (UIWindow)keyWindow
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  v3 = [v2 keyWindow];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  keyWindow = [delegate keyWindow];
 
-  return v3;
+  return keyWindow;
 }
 
 - (NSArray)windows
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  v3 = [v2 windows];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  windows = [delegate windows];
 
-  return v3;
+  return windows;
 }
 
 - (BOOL)isQuickNoteSessionActive
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  v3 = [v2 isQuickNoteSessionActive];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  isQuickNoteSessionActive = [delegate isQuickNoteSessionActive];
 
-  return v3;
+  return isQuickNoteSessionActive;
 }
 
 - (BOOL)hasClearedInitialSelectedTextIfSecure
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  v3 = [v2 hasClearedInitialSelectedTextIfSecure];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  hasClearedInitialSelectedTextIfSecure = [delegate hasClearedInitialSelectedTextIfSecure];
 
-  return v3;
+  return hasClearedInitialSelectedTextIfSecure;
 }
 
 - (BOOL)hasClearedInitialSearchTextIfSecure
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  v3 = [v2 hasClearedInitialSearchTextIfSecure];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  hasClearedInitialSearchTextIfSecure = [delegate hasClearedInitialSearchTextIfSecure];
 
-  return v3;
+  return hasClearedInitialSearchTextIfSecure;
 }
 
 - (BOOL)hasClearedInitialReplaceTextIfSecure
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  v3 = [v2 hasClearedInitialReplaceTextIfSecure];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  hasClearedInitialReplaceTextIfSecure = [delegate hasClearedInitialReplaceTextIfSecure];
 
-  return v3;
+  return hasClearedInitialReplaceTextIfSecure;
 }
 
 - (void)hasClearedInitialSecureSelectedText
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  [v2 hasClearedInitialSecureSelectedText];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  [delegate hasClearedInitialSecureSelectedText];
 }
 
 - (void)hasClearedInitialSecureSearchText
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  [v2 hasClearedInitialSecureSearchText];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  [delegate hasClearedInitialSecureSearchText];
 }
 
 - (void)hasClearedInitialSecureReplaceText
 {
-  v2 = [(ICUIApplicationShim *)self delegate];
-  [v2 hasClearedInitialSecureReplaceText];
+  delegate = [(ICUIApplicationShim *)self delegate];
+  [delegate hasClearedInitialSecureReplaceText];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface FlexSegmentAssemblyInfo
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -19,21 +19,21 @@
   return v36;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v18 = objc_msgSend_init(v9, v10, v11, v12, v13);
   if (v18)
   {
     v19 = objc_msgSend_segment(self, v14, v15, v16, v17);
-    v23 = objc_msgSend_copyWithZone_(v19, v20, a3, v21, v22);
+    v23 = objc_msgSend_copyWithZone_(v19, v20, zone, v21, v22);
     v24 = v18[1];
     v18[1] = v23;
 
     v18[2] = objc_msgSend_barsUsed(self, v25, v26, v27, v28);
     v33 = objc_msgSend_url(self, v29, v30, v31, v32);
-    v37 = objc_msgSend_copyWithZone_(v33, v34, a3, v35, v36);
+    v37 = objc_msgSend_copyWithZone_(v33, v34, zone, v35, v36);
     v38 = v18[3];
     v18[3] = v37;
 

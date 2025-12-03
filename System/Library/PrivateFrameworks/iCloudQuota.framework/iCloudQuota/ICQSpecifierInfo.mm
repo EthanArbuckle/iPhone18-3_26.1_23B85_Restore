@@ -1,12 +1,12 @@
 @interface ICQSpecifierInfo
-- (ICQSpecifierInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQSpecifierInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQSpecifierInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQSpecifierInfo);
   [(ICQSpecifierInfo *)v4 setIdentifier:self->_identifier];
@@ -20,57 +20,57 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subTitle forKey:@"subTitle"];
-  [v5 encodeObject:self->_iconURL forKey:@"iconURL"];
-  [v5 encodeObject:self->_actionURL forKey:@"actionURL"];
-  [v5 encodeObject:self->_icqLink forKey:@"icqLink"];
-  [v5 encodeObject:self->_actions forKey:@"actions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subTitle forKey:@"subTitle"];
+  [coderCopy encodeObject:self->_iconURL forKey:@"iconURL"];
+  [coderCopy encodeObject:self->_actionURL forKey:@"actionURL"];
+  [coderCopy encodeObject:self->_icqLink forKey:@"icqLink"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
 }
 
-- (ICQSpecifierInfo)initWithCoder:(id)a3
+- (ICQSpecifierInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = ICQSpecifierInfo;
   v5 = [(ICQSpecifierInfo *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
     subTitle = v5->_subTitle;
     v5->_subTitle = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
     iconURL = v5->_iconURL;
     v5->_iconURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
     actionURL = v5->_actionURL;
     v5->_actionURL = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icqLink"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icqLink"];
     icqLink = v5->_icqLink;
     v5->_icqLink = v18;
 
-    v20 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"actions"];
+    v20 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"actions"];
     actions = v5->_actions;
     v5->_actions = v20;
   }

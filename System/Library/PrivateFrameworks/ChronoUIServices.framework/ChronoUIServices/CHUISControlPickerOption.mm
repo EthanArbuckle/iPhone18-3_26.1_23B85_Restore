@@ -1,23 +1,23 @@
 @interface CHUISControlPickerOption
 - (CHUISControlPickerOption)init;
-- (void)setIcon:(id)a3;
-- (void)setTint:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setTint:(id)tint;
 @end
 
 @implementation CHUISControlPickerOption
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
   v4 = *(self + OBJC_IVAR___CHUISControlPickerOption_icon);
-  *(self + OBJC_IVAR___CHUISControlPickerOption_icon) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CHUISControlPickerOption_icon) = icon;
+  iconCopy = icon;
 }
 
-- (void)setTint:(id)a3
+- (void)setTint:(id)tint
 {
   v4 = *(self + OBJC_IVAR___CHUISControlPickerOption_tint);
-  *(self + OBJC_IVAR___CHUISControlPickerOption_tint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CHUISControlPickerOption_tint) = tint;
+  tintCopy = tint;
 }
 
 - (CHUISControlPickerOption)init

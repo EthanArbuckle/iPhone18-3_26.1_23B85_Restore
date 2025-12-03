@@ -1,7 +1,7 @@
 @interface TKHostTokenRegistryTransaction
 - (NSDictionary)tokenExtensions;
-- (TKHostTokenRegistryTransaction)initWithRegistry:(id)a3 name:(id)a4;
-- (id)keychainItemsModified:(id)a3;
+- (TKHostTokenRegistryTransaction)initWithRegistry:(id)registry name:(id)name;
+- (id)keychainItemsModified:(id)modified;
 - (id)markModified;
 - (void)commit;
 - (void)dealloc;
@@ -9,18 +9,18 @@
 
 @implementation TKHostTokenRegistryTransaction
 
-- (TKHostTokenRegistryTransaction)initWithRegistry:(id)a3 name:(id)a4
+- (TKHostTokenRegistryTransaction)initWithRegistry:(id)registry name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  registryCopy = registry;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = TKHostTokenRegistryTransaction;
   v8 = [(TKHostTokenRegistryTransaction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_registry, v6);
-    objc_storeStrong(&v9->_name, a4);
+    objc_storeWeak(&v8->_registry, registryCopy);
+    objc_storeStrong(&v9->_name, name);
   }
 
   return v9;
@@ -56,9 +56,9 @@
   return self;
 }
 
-- (id)keychainItemsModified:(id)a3
+- (id)keychainItemsModified:(id)modified
 {
-  v4 = a3;
+  modifiedCopy = modified;
   WeakRetained = objc_loadWeakRetained(&self->_registry);
 
   if (!WeakRetained)
@@ -67,7 +67,7 @@
   }
 
   v6 = objc_loadWeakRetained(&self->_registry);
-  [v6 keychainItemsModified:v4];
+  [v6 keychainItemsModified:modifiedCopy];
 
   return self;
 }
@@ -75,9 +75,9 @@
 - (NSDictionary)tokenExtensions
 {
   WeakRetained = objc_loadWeakRetained(&self->_registry);
-  v3 = [WeakRetained tokenExtensions];
+  tokenExtensions = [WeakRetained tokenExtensions];
 
-  return v3;
+  return tokenExtensions;
 }
 
 - (void)dealloc

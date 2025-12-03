@@ -1,40 +1,40 @@
 @interface DNDMutableConfiguration
-+ (id)configurationOfType:(unint64_t)a3;
++ (id)configurationOfType:(unint64_t)type;
 + (id)defaultConfiguration;
 - (BOOL)hasSecureData;
-- (id)_configurationForApplicationIdentifier:(id)a3;
-- (void)removeExceptionForApplication:(id)a3;
-- (void)removeExceptionForApplication:(id)a3 thread:(id)a4;
-- (void)removeExceptionForApplicationIdentifier:(id)a3;
-- (void)removeExceptionForApplicationIdentifier:(id)a3 thread:(id)a4;
-- (void)removeExceptionForContact:(id)a3;
-- (void)removeExceptionForContactGroup:(id)a3;
-- (void)removeExceptionForContactType:(unint64_t)a3;
-- (void)removeExceptionForWebApplicationIdentifier:(id)a3;
-- (void)setAllowedApplicationIdentifiers:(id)a3;
-- (void)setAllowedApplications:(id)a3;
-- (void)setAllowedWebApplicationIdentifiers:(id)a3;
-- (void)setDeniedApplicationIdentifiers:(id)a3;
-- (void)setDeniedApplications:(id)a3;
-- (void)setDeniedWebApplicationIdentifiers:(id)a3;
-- (void)setExceptionForApplication:(id)a3;
-- (void)setExceptionForApplication:(id)a3 thread:(id)a4;
-- (void)setExceptionForApplicationIdentifier:(id)a3;
-- (void)setExceptionForApplicationIdentifier:(id)a3 thread:(id)a4;
-- (void)setExceptionForContact:(id)a3;
-- (void)setExceptionForContactGroup:(id)a3;
-- (void)setExceptionForContactType:(unint64_t)a3;
-- (void)setExceptionForWebApplicationIdentifier:(id)a3;
-- (void)setExceptionOfType:(unint64_t)a3 forApplication:(id)a4;
-- (void)setExceptionOfType:(unint64_t)a3 forApplication:(id)a4 thread:(id)a5;
-- (void)setExceptionOfType:(unint64_t)a3 forApplicationIdentifier:(id)a4;
-- (void)setExceptionOfType:(unint64_t)a3 forApplicationIdentifier:(id)a4 thread:(id)a5;
-- (void)setExceptionOfType:(unint64_t)a3 forContact:(id)a4;
-- (void)setExceptionOfType:(unint64_t)a3 forContactGroup:(id)a4;
-- (void)setExceptionOfType:(unint64_t)a3 forContactType:(unint64_t)a4;
-- (void)setMinimumBreakthroughUrgency:(unint64_t)a3 forApplication:(id)a4;
-- (void)setMinimumBreakthroughUrgency:(unint64_t)a3 forApplicationIdentifier:(id)a4;
-- (void)setSenderConfiguration:(id)a3;
+- (id)_configurationForApplicationIdentifier:(id)identifier;
+- (void)removeExceptionForApplication:(id)application;
+- (void)removeExceptionForApplication:(id)application thread:(id)thread;
+- (void)removeExceptionForApplicationIdentifier:(id)identifier;
+- (void)removeExceptionForApplicationIdentifier:(id)identifier thread:(id)thread;
+- (void)removeExceptionForContact:(id)contact;
+- (void)removeExceptionForContactGroup:(id)group;
+- (void)removeExceptionForContactType:(unint64_t)type;
+- (void)removeExceptionForWebApplicationIdentifier:(id)identifier;
+- (void)setAllowedApplicationIdentifiers:(id)identifiers;
+- (void)setAllowedApplications:(id)applications;
+- (void)setAllowedWebApplicationIdentifiers:(id)identifiers;
+- (void)setDeniedApplicationIdentifiers:(id)identifiers;
+- (void)setDeniedApplications:(id)applications;
+- (void)setDeniedWebApplicationIdentifiers:(id)identifiers;
+- (void)setExceptionForApplication:(id)application;
+- (void)setExceptionForApplication:(id)application thread:(id)thread;
+- (void)setExceptionForApplicationIdentifier:(id)identifier;
+- (void)setExceptionForApplicationIdentifier:(id)identifier thread:(id)thread;
+- (void)setExceptionForContact:(id)contact;
+- (void)setExceptionForContactGroup:(id)group;
+- (void)setExceptionForContactType:(unint64_t)type;
+- (void)setExceptionForWebApplicationIdentifier:(id)identifier;
+- (void)setExceptionOfType:(unint64_t)type forApplication:(id)application;
+- (void)setExceptionOfType:(unint64_t)type forApplication:(id)application thread:(id)thread;
+- (void)setExceptionOfType:(unint64_t)type forApplicationIdentifier:(id)identifier;
+- (void)setExceptionOfType:(unint64_t)type forApplicationIdentifier:(id)identifier thread:(id)thread;
+- (void)setExceptionOfType:(unint64_t)type forContact:(id)contact;
+- (void)setExceptionOfType:(unint64_t)type forContactGroup:(id)group;
+- (void)setExceptionOfType:(unint64_t)type forContactType:(unint64_t)contactType;
+- (void)setMinimumBreakthroughUrgency:(unint64_t)urgency forApplication:(id)application;
+- (void)setMinimumBreakthroughUrgency:(unint64_t)urgency forApplicationIdentifier:(id)identifier;
+- (void)setSenderConfiguration:(id)configuration;
 @end
 
 @implementation DNDMutableConfiguration
@@ -46,62 +46,62 @@
   return [DNDMutableConfiguration configurationOfType:v2];
 }
 
-+ (id)configurationOfType:(unint64_t)a3
++ (id)configurationOfType:(unint64_t)type
 {
-  v3 = [(DNDConfiguration *)[DNDMutableConfiguration alloc] _initWithConfigurationType:a3];
+  v3 = [(DNDConfiguration *)[DNDMutableConfiguration alloc] _initWithConfigurationType:type];
 
   return v3;
 }
 
-- (void)setAllowedApplicationIdentifiers:(id)a3
+- (void)setAllowedApplicationIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   allowedApplicationIdentifiers = self->super._allowedApplicationIdentifiers;
   self->super._allowedApplicationIdentifiers = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDeniedApplicationIdentifiers:(id)a3
+- (void)setDeniedApplicationIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   deniedApplicationIdentifiers = self->super._deniedApplicationIdentifiers;
   self->super._deniedApplicationIdentifiers = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAllowedWebApplicationIdentifiers:(id)a3
+- (void)setAllowedWebApplicationIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   allowedWebApplicationIdentifiers = self->super._allowedWebApplicationIdentifiers;
   self->super._allowedWebApplicationIdentifiers = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDeniedWebApplicationIdentifiers:(id)a3
+- (void)setDeniedWebApplicationIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   deniedWebApplicationIdentifiers = self->super._deniedWebApplicationIdentifiers;
   self->super._deniedWebApplicationIdentifiers = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAllowedApplications:(id)a3
+- (void)setAllowedApplications:(id)applications
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  applicationsCopy = applications;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   allowedApplicationIdentifiers = self->super._allowedApplicationIdentifiers;
-  self->super._allowedApplicationIdentifiers = v5;
+  self->super._allowedApplicationIdentifiers = dictionary;
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = applicationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -136,10 +136,10 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeniedApplications:(id)a3
+- (void)setDeniedApplications:(id)applications
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationsCopy = applications;
   v5 = [MEMORY[0x277CBEB58] set];
   deniedApplicationIdentifiers = self->super._deniedApplicationIdentifiers;
   self->super._deniedApplicationIdentifiers = v5;
@@ -148,7 +148,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = applicationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -182,137 +182,137 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSenderConfiguration:(id)a3
+- (void)setSenderConfiguration:(id)configuration
 {
-  v4 = [a3 mutableCopy];
+  v4 = [configuration mutableCopy];
   senderConfiguration = self->super._senderConfiguration;
   self->super._senderConfiguration = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setExceptionForApplication:(id)a3
+- (void)setExceptionForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [[DNDApplicationIdentifier alloc] initWithBundleID:v4];
+  applicationCopy = application;
+  v5 = [[DNDApplicationIdentifier alloc] initWithBundleID:applicationCopy];
 
   [(DNDMutableConfiguration *)self setExceptionForApplicationIdentifier:v5];
 }
 
-- (void)setExceptionForApplicationIdentifier:(id)a3
+- (void)setExceptionForApplicationIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(DNDConfiguration *)self applicationConfigurationType];
-  if (v4 == 1)
+  identifierCopy = identifier;
+  applicationConfigurationType = [(DNDConfiguration *)self applicationConfigurationType];
+  if (applicationConfigurationType == 1)
   {
-    [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers removeObjectForKey:v7];
-    [(NSMutableSet *)self->super._deniedApplicationIdentifiers addObject:v7];
+    [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers removeObjectForKey:identifierCopy];
+    [(NSMutableSet *)self->super._deniedApplicationIdentifiers addObject:identifierCopy];
   }
 
-  else if (!v4)
+  else if (!applicationConfigurationType)
   {
-    [(NSMutableSet *)self->super._deniedApplicationIdentifiers removeObject:v7];
+    [(NSMutableSet *)self->super._deniedApplicationIdentifiers removeObject:identifierCopy];
     allowedApplicationIdentifiers = self->super._allowedApplicationIdentifiers;
     v6 = +[DNDApplicationConfiguration defaultConfiguration];
-    [(NSMutableDictionary *)allowedApplicationIdentifiers setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)allowedApplicationIdentifiers setObject:v6 forKey:identifierCopy];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)removeExceptionForApplication:(id)a3
+- (void)removeExceptionForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [[DNDApplicationIdentifier alloc] initWithBundleID:v4];
+  applicationCopy = application;
+  v5 = [[DNDApplicationIdentifier alloc] initWithBundleID:applicationCopy];
 
   [(DNDMutableConfiguration *)self removeExceptionForApplicationIdentifier:v5];
 }
 
-- (void)removeExceptionForApplicationIdentifier:(id)a3
+- (void)removeExceptionForApplicationIdentifier:(id)identifier
 {
   allowedApplicationIdentifiers = self->super._allowedApplicationIdentifiers;
-  v5 = a3;
-  [(NSMutableDictionary *)allowedApplicationIdentifiers removeObjectForKey:v5];
-  [(NSMutableSet *)self->super._deniedApplicationIdentifiers removeObject:v5];
+  identifierCopy = identifier;
+  [(NSMutableDictionary *)allowedApplicationIdentifiers removeObjectForKey:identifierCopy];
+  [(NSMutableSet *)self->super._deniedApplicationIdentifiers removeObject:identifierCopy];
 }
 
-- (void)setExceptionForApplication:(id)a3 thread:(id)a4
+- (void)setExceptionForApplication:(id)application thread:(id)thread
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[DNDApplicationIdentifier alloc] initWithBundleID:v7];
+  threadCopy = thread;
+  applicationCopy = application;
+  v8 = [[DNDApplicationIdentifier alloc] initWithBundleID:applicationCopy];
 
-  [(DNDMutableConfiguration *)self setExceptionForApplicationIdentifier:v8 thread:v6];
+  [(DNDMutableConfiguration *)self setExceptionForApplicationIdentifier:v8 thread:threadCopy];
 }
 
-- (void)setExceptionForApplicationIdentifier:(id)a3 thread:(id)a4
+- (void)setExceptionForApplicationIdentifier:(id)identifier thread:(id)thread
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(DNDMutableConfiguration *)self _configurationForApplicationIdentifier:v14];
+  identifierCopy = identifier;
+  threadCopy = thread;
+  v7 = [(DNDMutableConfiguration *)self _configurationForApplicationIdentifier:identifierCopy];
   v8 = [v7 mutableCopy];
 
-  v9 = [(DNDConfiguration *)self threadConfigurationType];
-  if (v9 == 1)
+  threadConfigurationType = [(DNDConfiguration *)self threadConfigurationType];
+  if (threadConfigurationType == 1)
   {
-    v12 = [v8 allowedThreads];
-    [v12 removeObject:v6];
+    allowedThreads = [v8 allowedThreads];
+    [allowedThreads removeObject:threadCopy];
 
-    v11 = [v8 deniedThreads];
+    deniedThreads = [v8 deniedThreads];
   }
 
   else
   {
-    if (v9)
+    if (threadConfigurationType)
     {
       goto LABEL_6;
     }
 
-    v10 = [v8 deniedThreads];
-    [v10 removeObject:v6];
+    deniedThreads2 = [v8 deniedThreads];
+    [deniedThreads2 removeObject:threadCopy];
 
-    v11 = [v8 allowedThreads];
+    deniedThreads = [v8 allowedThreads];
   }
 
-  v13 = v11;
-  [v11 addObject:v6];
+  v13 = deniedThreads;
+  [deniedThreads addObject:threadCopy];
 
 LABEL_6:
-  [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers setObject:v8 forKey:v14];
+  [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers setObject:v8 forKey:identifierCopy];
 }
 
-- (void)removeExceptionForApplication:(id)a3 thread:(id)a4
+- (void)removeExceptionForApplication:(id)application thread:(id)thread
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[DNDApplicationIdentifier alloc] initWithBundleID:v7];
+  threadCopy = thread;
+  applicationCopy = application;
+  v8 = [[DNDApplicationIdentifier alloc] initWithBundleID:applicationCopy];
 
-  [(DNDMutableConfiguration *)self removeExceptionForApplicationIdentifier:v8 thread:v6];
+  [(DNDMutableConfiguration *)self removeExceptionForApplicationIdentifier:v8 thread:threadCopy];
 }
 
-- (void)removeExceptionForApplicationIdentifier:(id)a3 thread:(id)a4
+- (void)removeExceptionForApplicationIdentifier:(id)identifier thread:(id)thread
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DNDMutableConfiguration *)self _configurationForApplicationIdentifier:v7];
+  threadCopy = thread;
+  identifierCopy = identifier;
+  v8 = [(DNDMutableConfiguration *)self _configurationForApplicationIdentifier:identifierCopy];
   v11 = [v8 mutableCopy];
 
-  v9 = [v11 allowedThreads];
-  [v9 removeObject:v6];
+  allowedThreads = [v11 allowedThreads];
+  [allowedThreads removeObject:threadCopy];
 
-  v10 = [v11 deniedThreads];
-  [v10 removeObject:v6];
+  deniedThreads = [v11 deniedThreads];
+  [deniedThreads removeObject:threadCopy];
 
-  [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers setObject:v11 forKey:v7];
+  [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers setObject:v11 forKey:identifierCopy];
 }
 
-- (void)setExceptionForWebApplicationIdentifier:(id)a3
+- (void)setExceptionForWebApplicationIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(DNDConfiguration *)self applicationConfigurationType];
-  if (v4)
+  identifierCopy = identifier;
+  applicationConfigurationType = [(DNDConfiguration *)self applicationConfigurationType];
+  if (applicationConfigurationType)
   {
-    if (v4 != 1)
+    if (applicationConfigurationType != 1)
     {
       goto LABEL_6;
     }
@@ -327,191 +327,191 @@ LABEL_6:
     v6 = 48;
   }
 
-  [*(&self->super.super.isa + v6) removeObject:v7];
-  [*(&self->super.super.isa + v5) addObject:v7];
+  [*(&self->super.super.isa + v6) removeObject:identifierCopy];
+  [*(&self->super.super.isa + v5) addObject:identifierCopy];
 LABEL_6:
 }
 
-- (void)removeExceptionForWebApplicationIdentifier:(id)a3
+- (void)removeExceptionForWebApplicationIdentifier:(id)identifier
 {
   allowedWebApplicationIdentifiers = self->super._allowedWebApplicationIdentifiers;
-  v5 = a3;
-  [(NSMutableSet *)allowedWebApplicationIdentifiers removeObject:v5];
-  [(NSMutableSet *)self->super._deniedWebApplicationIdentifiers removeObject:v5];
+  identifierCopy = identifier;
+  [(NSMutableSet *)allowedWebApplicationIdentifiers removeObject:identifierCopy];
+  [(NSMutableSet *)self->super._deniedWebApplicationIdentifiers removeObject:identifierCopy];
 }
 
-- (void)setExceptionForContactType:(unint64_t)a3
+- (void)setExceptionForContactType:(unint64_t)type
 {
-  v5 = [(DNDConfiguration *)self senderConfigurationType];
-  if (v5 == 1)
+  senderConfigurationType = [(DNDConfiguration *)self senderConfigurationType];
+  if (senderConfigurationType == 1)
   {
-    v9 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactTypes];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [v9 removeObject:v10];
+    allowedContactTypes = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactTypes];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    [allowedContactTypes removeObject:v10];
 
-    v8 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactTypes];
+    deniedContactTypes = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactTypes];
   }
 
   else
   {
-    if (v5)
+    if (senderConfigurationType)
     {
       return;
     }
 
-    v6 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactTypes];
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [v6 removeObject:v7];
+    deniedContactTypes2 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactTypes];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    [deniedContactTypes2 removeObject:v7];
 
-    v8 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactTypes];
+    deniedContactTypes = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactTypes];
   }
 
-  v12 = v8;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v12 = deniedContactTypes;
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [v12 addObject:v11];
 }
 
-- (void)removeExceptionForContactType:(unint64_t)a3
+- (void)removeExceptionForContactType:(unint64_t)type
 {
-  v5 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactTypes];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 removeObject:v6];
+  allowedContactTypes = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactTypes];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [allowedContactTypes removeObject:v6];
 
-  v8 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactTypes];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v8 removeObject:v7];
+  deniedContactTypes = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactTypes];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [deniedContactTypes removeObject:v7];
 }
 
-- (void)setExceptionForContactGroup:(id)a3
+- (void)setExceptionForContactGroup:(id)group
 {
-  v9 = a3;
-  v4 = [(DNDConfiguration *)self senderConfigurationType];
-  if (v4 == 1)
+  groupCopy = group;
+  senderConfigurationType = [(DNDConfiguration *)self senderConfigurationType];
+  if (senderConfigurationType == 1)
   {
-    v7 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactGroups];
-    [v7 removeObject:v9];
+    allowedContactGroups = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactGroups];
+    [allowedContactGroups removeObject:groupCopy];
 
-    v6 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactGroups];
+    deniedContactGroups = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactGroups];
   }
 
   else
   {
-    if (v4)
+    if (senderConfigurationType)
     {
       goto LABEL_6;
     }
 
-    v5 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactGroups];
-    [v5 removeObject:v9];
+    deniedContactGroups2 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactGroups];
+    [deniedContactGroups2 removeObject:groupCopy];
 
-    v6 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactGroups];
+    deniedContactGroups = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactGroups];
   }
 
-  v8 = v6;
-  [v6 addObject:v9];
+  v8 = deniedContactGroups;
+  [deniedContactGroups addObject:groupCopy];
 
 LABEL_6:
 }
 
-- (void)removeExceptionForContactGroup:(id)a3
+- (void)removeExceptionForContactGroup:(id)group
 {
   senderConfiguration = self->super._senderConfiguration;
-  v5 = a3;
-  v6 = [(DNDSenderConfiguration *)senderConfiguration allowedContactGroups];
-  [v6 removeObject:v5];
+  groupCopy = group;
+  allowedContactGroups = [(DNDSenderConfiguration *)senderConfiguration allowedContactGroups];
+  [allowedContactGroups removeObject:groupCopy];
 
-  v7 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactGroups];
-  [v7 removeObject:v5];
+  deniedContactGroups = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactGroups];
+  [deniedContactGroups removeObject:groupCopy];
 }
 
-- (void)setExceptionForContact:(id)a3
+- (void)setExceptionForContact:(id)contact
 {
-  v7 = a3;
-  v4 = [(DNDConfiguration *)self senderConfigurationType];
-  if (v4 == 1)
+  contactCopy = contact;
+  senderConfigurationType = [(DNDConfiguration *)self senderConfigurationType];
+  if (senderConfigurationType == 1)
   {
-    [(DNDMutableSenderConfiguration *)self->super._senderConfiguration removeAllowedContactMatchingContact:v7];
-    v5 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContacts];
+    [(DNDMutableSenderConfiguration *)self->super._senderConfiguration removeAllowedContactMatchingContact:contactCopy];
+    deniedContacts = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContacts];
   }
 
   else
   {
-    if (v4)
+    if (senderConfigurationType)
     {
       goto LABEL_6;
     }
 
-    [(DNDMutableSenderConfiguration *)self->super._senderConfiguration removeDeniedContactMatchingContact:v7];
-    v5 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContacts];
+    [(DNDMutableSenderConfiguration *)self->super._senderConfiguration removeDeniedContactMatchingContact:contactCopy];
+    deniedContacts = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContacts];
   }
 
-  v6 = v5;
-  [v5 addObject:v7];
+  v6 = deniedContacts;
+  [deniedContacts addObject:contactCopy];
 
 LABEL_6:
 
   MEMORY[0x2821F9730]();
 }
 
-- (void)removeExceptionForContact:(id)a3
+- (void)removeExceptionForContact:(id)contact
 {
   senderConfiguration = self->super._senderConfiguration;
-  v5 = a3;
-  [(DNDMutableSenderConfiguration *)senderConfiguration removeAllowedContactMatchingContact:v5];
-  [(DNDMutableSenderConfiguration *)self->super._senderConfiguration removeDeniedContactMatchingContact:v5];
+  contactCopy = contact;
+  [(DNDMutableSenderConfiguration *)senderConfiguration removeAllowedContactMatchingContact:contactCopy];
+  [(DNDMutableSenderConfiguration *)self->super._senderConfiguration removeDeniedContactMatchingContact:contactCopy];
 }
 
 - (BOOL)hasSecureData
 {
-  v3 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContacts];
-  v4 = [v3 count];
+  allowedContacts = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContacts];
+  v4 = [allowedContacts count];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContacts];
-  v6 = [v5 count];
+  deniedContacts = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContacts];
+  v6 = [deniedContacts count];
 
   if (v6)
   {
     return 1;
   }
 
-  v7 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactGroups];
-  v8 = [v7 count];
+  allowedContactGroups = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactGroups];
+  v8 = [allowedContactGroups count];
 
   if (v8)
   {
     return 1;
   }
 
-  v9 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactGroups];
-  v10 = [v9 count];
+  deniedContactGroups = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactGroups];
+  v10 = [deniedContactGroups count];
 
   if (v10)
   {
     return 1;
   }
 
-  v11 = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactTypes];
-  v12 = [v11 count];
+  allowedContactTypes = [(DNDSenderConfiguration *)self->super._senderConfiguration allowedContactTypes];
+  v12 = [allowedContactTypes count];
 
   if (v12)
   {
     return 1;
   }
 
-  v13 = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactTypes];
-  v14 = [v13 count];
+  deniedContactTypes = [(DNDSenderConfiguration *)self->super._senderConfiguration deniedContactTypes];
+  v14 = [deniedContactTypes count];
 
   return v14 || [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers count]|| [(NSMutableSet *)self->super._deniedApplicationIdentifiers count]!= 0;
 }
 
-- (id)_configurationForApplicationIdentifier:(id)a3
+- (id)_configurationForApplicationIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers objectForKeyedSubscript:identifier];
   if (!v3)
   {
     v3 = +[DNDApplicationConfiguration defaultConfiguration];
@@ -520,18 +520,18 @@ LABEL_6:
   return v3;
 }
 
-- (void)setExceptionOfType:(unint64_t)a3 forApplicationIdentifier:(id)a4
+- (void)setExceptionOfType:(unint64_t)type forApplicationIdentifier:(id)identifier
 {
-  v6 = a4;
-  v8 = v6;
-  if (a3)
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (type)
   {
-    v7 = v6;
-    if (a3 == 1)
+    v7 = identifierCopy;
+    if (type == 1)
     {
-      v6 = [(DNDConfiguration *)self applicationConfigurationType];
+      identifierCopy = [(DNDConfiguration *)self applicationConfigurationType];
       v7 = v8;
-      if (v6 == 1)
+      if (identifierCopy == 1)
       {
         goto LABEL_4;
       }
@@ -540,26 +540,26 @@ LABEL_6:
 
   else
   {
-    v6 = [(DNDConfiguration *)self applicationConfigurationType];
+    identifierCopy = [(DNDConfiguration *)self applicationConfigurationType];
     v7 = v8;
-    if (!v6)
+    if (!identifierCopy)
     {
 LABEL_4:
-      v6 = [(DNDMutableConfiguration *)self setExceptionForApplicationIdentifier:v8];
+      identifierCopy = [(DNDMutableConfiguration *)self setExceptionForApplicationIdentifier:v8];
       v7 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](identifierCopy, v7);
 }
 
-- (void)setExceptionOfType:(unint64_t)a3 forApplicationIdentifier:(id)a4 thread:(id)a5
+- (void)setExceptionOfType:(unint64_t)type forApplicationIdentifier:(id)identifier thread:(id)thread
 {
-  v9 = a4;
-  v8 = a5;
-  if (a3)
+  identifierCopy = identifier;
+  threadCopy = thread;
+  if (type)
   {
-    if (a3 == 1 && [(DNDConfiguration *)self threadConfigurationType]== 1)
+    if (type == 1 && [(DNDConfiguration *)self threadConfigurationType]== 1)
     {
       goto LABEL_4;
     }
@@ -568,40 +568,40 @@ LABEL_4:
   else if (![(DNDConfiguration *)self threadConfigurationType])
   {
 LABEL_4:
-    [(DNDMutableConfiguration *)self setExceptionForApplicationIdentifier:v9 thread:v8];
+    [(DNDMutableConfiguration *)self setExceptionForApplicationIdentifier:identifierCopy thread:threadCopy];
   }
 }
 
-- (void)setMinimumBreakthroughUrgency:(unint64_t)a3 forApplicationIdentifier:(id)a4
+- (void)setMinimumBreakthroughUrgency:(unint64_t)urgency forApplicationIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(DNDMutableConfiguration *)self _configurationForApplicationIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(DNDMutableConfiguration *)self _configurationForApplicationIdentifier:identifierCopy];
   v8 = [v7 mutableCopy];
 
-  [v8 setMinimumBreakthroughUrgency:a3];
-  [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers setObject:v8 forKey:v6];
+  [v8 setMinimumBreakthroughUrgency:urgency];
+  [(NSMutableDictionary *)self->super._allowedApplicationIdentifiers setObject:v8 forKey:identifierCopy];
 }
 
-- (void)setMinimumBreakthroughUrgency:(unint64_t)a3 forApplication:(id)a4
+- (void)setMinimumBreakthroughUrgency:(unint64_t)urgency forApplication:(id)application
 {
-  v6 = a4;
-  v7 = [[DNDApplicationIdentifier alloc] initWithBundleID:v6];
+  applicationCopy = application;
+  v7 = [[DNDApplicationIdentifier alloc] initWithBundleID:applicationCopy];
 
-  [(DNDMutableConfiguration *)self setMinimumBreakthroughUrgency:a3 forApplicationIdentifier:v7];
+  [(DNDMutableConfiguration *)self setMinimumBreakthroughUrgency:urgency forApplicationIdentifier:v7];
 }
 
-- (void)setExceptionOfType:(unint64_t)a3 forContactGroup:(id)a4
+- (void)setExceptionOfType:(unint64_t)type forContactGroup:(id)group
 {
-  v6 = a4;
-  v8 = v6;
-  if (a3)
+  groupCopy = group;
+  v8 = groupCopy;
+  if (type)
   {
-    v7 = v6;
-    if (a3 == 1)
+    v7 = groupCopy;
+    if (type == 1)
     {
-      v6 = [(DNDConfiguration *)self senderConfigurationType];
+      groupCopy = [(DNDConfiguration *)self senderConfigurationType];
       v7 = v8;
-      if (v6 == 1)
+      if (groupCopy == 1)
       {
         goto LABEL_4;
       }
@@ -610,24 +610,24 @@ LABEL_4:
 
   else
   {
-    v6 = [(DNDConfiguration *)self senderConfigurationType];
+    groupCopy = [(DNDConfiguration *)self senderConfigurationType];
     v7 = v8;
-    if (!v6)
+    if (!groupCopy)
     {
 LABEL_4:
-      v6 = [(DNDMutableConfiguration *)self setExceptionForContactGroup:v8];
+      groupCopy = [(DNDMutableConfiguration *)self setExceptionForContactGroup:v8];
       v7 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](groupCopy, v7);
 }
 
-- (void)setExceptionOfType:(unint64_t)a3 forContactType:(unint64_t)a4
+- (void)setExceptionOfType:(unint64_t)type forContactType:(unint64_t)contactType
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1 || [(DNDConfiguration *)self senderConfigurationType]!= 1)
+    if (type != 1 || [(DNDConfiguration *)self senderConfigurationType]!= 1)
     {
       return;
     }
@@ -638,21 +638,21 @@ LABEL_4:
     return;
   }
 
-  [(DNDMutableConfiguration *)self setExceptionForContactType:a4];
+  [(DNDMutableConfiguration *)self setExceptionForContactType:contactType];
 }
 
-- (void)setExceptionOfType:(unint64_t)a3 forContact:(id)a4
+- (void)setExceptionOfType:(unint64_t)type forContact:(id)contact
 {
-  v6 = a4;
-  v8 = v6;
-  if (a3)
+  contactCopy = contact;
+  v8 = contactCopy;
+  if (type)
   {
-    v7 = v6;
-    if (a3 == 1)
+    v7 = contactCopy;
+    if (type == 1)
     {
-      v6 = [(DNDConfiguration *)self senderConfigurationType];
+      contactCopy = [(DNDConfiguration *)self senderConfigurationType];
       v7 = v8;
-      if (v6 == 1)
+      if (contactCopy == 1)
       {
         goto LABEL_4;
       }
@@ -661,34 +661,34 @@ LABEL_4:
 
   else
   {
-    v6 = [(DNDConfiguration *)self senderConfigurationType];
+    contactCopy = [(DNDConfiguration *)self senderConfigurationType];
     v7 = v8;
-    if (!v6)
+    if (!contactCopy)
     {
 LABEL_4:
-      v6 = [(DNDMutableConfiguration *)self setExceptionForContact:v8];
+      contactCopy = [(DNDMutableConfiguration *)self setExceptionForContact:v8];
       v7 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](contactCopy, v7);
 }
 
-- (void)setExceptionOfType:(unint64_t)a3 forApplication:(id)a4
+- (void)setExceptionOfType:(unint64_t)type forApplication:(id)application
 {
-  v6 = a4;
-  v7 = [[DNDApplicationIdentifier alloc] initWithBundleID:v6];
+  applicationCopy = application;
+  v7 = [[DNDApplicationIdentifier alloc] initWithBundleID:applicationCopy];
 
-  [(DNDMutableConfiguration *)self setExceptionOfType:a3 forApplicationIdentifier:v7];
+  [(DNDMutableConfiguration *)self setExceptionOfType:type forApplicationIdentifier:v7];
 }
 
-- (void)setExceptionOfType:(unint64_t)a3 forApplication:(id)a4 thread:(id)a5
+- (void)setExceptionOfType:(unint64_t)type forApplication:(id)application thread:(id)thread
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[DNDApplicationIdentifier alloc] initWithBundleID:v9];
+  threadCopy = thread;
+  applicationCopy = application;
+  v10 = [[DNDApplicationIdentifier alloc] initWithBundleID:applicationCopy];
 
-  [(DNDMutableConfiguration *)self setExceptionOfType:a3 forApplicationIdentifier:v10 thread:v8];
+  [(DNDMutableConfiguration *)self setExceptionOfType:type forApplicationIdentifier:v10 thread:threadCopy];
 }
 
 @end

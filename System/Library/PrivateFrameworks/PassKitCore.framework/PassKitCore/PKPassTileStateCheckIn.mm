@@ -1,22 +1,22 @@
 @interface PKPassTileStateCheckIn
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (BOOL)isEqualToUnresolvedState:(id)a3;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (BOOL)isEqualToUnresolvedState:(id)state;
 - (PKDateContainer)availableFrom;
-- (PKPassTileStateCheckIn)initWithCoder:(id)a3;
-- (id)createResolvedStateWithBundle:(id)a3 privateBundle:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PKPassTileStateCheckIn)initWithCoder:(id)coder;
+- (id)createResolvedStateWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileStateCheckIn
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PKPassTileStateCheckIn;
-  if ([(PKPassTileState *)&v17 _setUpWithDictionary:v4])
+  if ([(PKPassTileState *)&v17 _setUpWithDictionary:dictionaryCopy])
   {
-    v5 = [v4 PKStringForKey:@"availableFrom"];
+    v5 = [dictionaryCopy PKStringForKey:@"availableFrom"];
     v16 = 0.0;
     v6 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v5, 0, &v16);
     v7 = v6;
@@ -30,7 +30,7 @@
         self->_availableFrom = v10;
       }
 
-      v12 = [v4 PKDictionaryForKey:@"secondaryAccessory"];
+      v12 = [dictionaryCopy PKDictionaryForKey:@"secondaryAccessory"];
       v8 = 1;
       if (v12)
       {
@@ -54,14 +54,14 @@
   return v8;
 }
 
-- (id)createResolvedStateWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedStateWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   v14.receiver = self;
   v14.super_class = PKPassTileStateCheckIn;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPassTileState *)&v14 createResolvedStateWithBundle:v7 privateBundle:v6];
-  v9 = [(PKPassTileAccessory *)self->_secondaryAccessory createResolvedAccessoryWithBundle:v7 privateBundle:v6, v14.receiver, v14.super_class];
+  privateBundleCopy = privateBundle;
+  bundleCopy = bundle;
+  v8 = [(PKPassTileState *)&v14 createResolvedStateWithBundle:bundleCopy privateBundle:privateBundleCopy];
+  v9 = [(PKPassTileAccessory *)self->_secondaryAccessory createResolvedAccessoryWithBundle:bundleCopy privateBundle:privateBundleCopy, v14.receiver, v14.super_class];
 
   v10 = v8[9];
   v8[9] = v9;
@@ -73,19 +73,19 @@
   return v8;
 }
 
-- (PKPassTileStateCheckIn)initWithCoder:(id)a3
+- (PKPassTileStateCheckIn)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPassTileStateCheckIn;
-  v5 = [(PKPassTileState *)&v11 initWithCoder:v4];
+  v5 = [(PKPassTileState *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"availableFrom"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"availableFrom"];
     availableFrom = v5->_availableFrom;
     v5->_availableFrom = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryAccessory"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryAccessory"];
     secondaryAccessory = v5->_secondaryAccessory;
     v5->_secondaryAccessory = v8;
   }
@@ -93,24 +93,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassTileStateCheckIn;
-  v4 = a3;
-  [(PKPassTileState *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_availableFrom forKey:{@"availableFrom", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_secondaryAccessory forKey:@"secondaryAccessory"];
+  coderCopy = coder;
+  [(PKPassTileState *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_availableFrom forKey:{@"availableFrom", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_secondaryAccessory forKey:@"secondaryAccessory"];
 }
 
-- (BOOL)isEqualToUnresolvedState:(id)a3
+- (BOOL)isEqualToUnresolvedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v13.receiver = self;
   v13.super_class = PKPassTileStateCheckIn;
-  if ([(PKPassTileState *)&v13 isEqualToUnresolvedState:v4])
+  if ([(PKPassTileState *)&v13 isEqualToUnresolvedState:stateCopy])
   {
-    v5 = v4;
+    v5 = stateCopy;
     v6 = v5[8];
     availableFrom = self->_availableFrom;
     if (v6)
@@ -171,15 +171,15 @@ LABEL_16:
 
   else
   {
-    v4 = [(PKPassTileState *)self actions];
-    if ([v4 count] == 1)
+    actions = [(PKPassTileState *)self actions];
+    if ([actions count] == 1)
     {
-      v5 = [v4 firstObject];
-      v6 = [v5 availableFrom];
+      firstObject = [actions firstObject];
+      availableFrom = [firstObject availableFrom];
       v7 = MEMORY[0x1E695DFE8];
-      [v5 availableFromOffsetFromUTC];
+      [firstObject availableFromOffsetFromUTC];
       v9 = [v7 timeZoneForSecondsFromGMT:v8];
-      v3 = [[PKDateContainer alloc] initWithDate:v6 timeZone:v9];
+      v3 = [[PKDateContainer alloc] initWithDate:availableFrom timeZone:v9];
     }
 
     else

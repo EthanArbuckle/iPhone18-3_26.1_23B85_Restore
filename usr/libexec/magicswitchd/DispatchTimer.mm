@@ -1,5 +1,5 @@
 @interface DispatchTimer
-- (DispatchTimer)initWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 handlerBlock:(id)a6;
+- (DispatchTimer)initWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period handlerBlock:(id)block;
 - (void)dealloc;
 - (void)fireTimer;
 - (void)invalidate;
@@ -8,20 +8,20 @@
 
 @implementation DispatchTimer
 
-- (DispatchTimer)initWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 handlerBlock:(id)a6
+- (DispatchTimer)initWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period handlerBlock:(id)block
 {
-  v11 = a3;
-  v12 = a6;
+  identifierCopy = identifier;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = DispatchTimer;
   v13 = [(DispatchTimer *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    v14->_delay = a4;
-    v14->_gracePeriod = a5;
-    v15 = objc_retainBlock(v12);
+    objc_storeStrong(&v13->_identifier, identifier);
+    v14->_delay = delay;
+    v14->_gracePeriod = period;
+    v15 = objc_retainBlock(blockCopy);
     handlerBlock = v14->_handlerBlock;
     v14->_handlerBlock = v15;
 
@@ -61,8 +61,8 @@
 - (void)scheduleTimer
 {
   v3 = +[MagicSwitchEnabler sharedInstance];
-  v4 = [v3 workQueue];
-  v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v4);
+  workQueue = [v3 workQueue];
+  v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, workQueue);
 
   v6 = dispatch_time(0, (self->_delay * 1000000000.0));
   dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0);

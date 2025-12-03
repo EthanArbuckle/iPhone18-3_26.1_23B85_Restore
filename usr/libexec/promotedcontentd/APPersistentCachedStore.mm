@@ -1,42 +1,42 @@
 @interface APPersistentCachedStore
-+ (id)createWithStorage:(id)a3;
-+ (id)createWithTotalCostLimit:(int64_t)a3;
-- (BOOL)hasObjectForKey:(id)a3;
-- (BOOL)isObjectAliveForKey:(id)a3;
++ (id)createWithStorage:(id)storage;
++ (id)createWithTotalCostLimit:(int64_t)limit;
+- (BOOL)hasObjectForKey:(id)key;
+- (BOOL)isObjectAliveForKey:(id)key;
 - (id)createTransaction;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 ignoreKeys:(id)a4;
-- (void)enableDiagnosticsWithInterval:(double)a3;
-- (void)evictObjectFromMemoryCacheForKey:(id)a3;
-- (void)executeBlock:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3 transaction:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 transaction:(id)a5;
-- (void)touchObjectForKey:(id)a3;
-- (void)touchObjectForKey:(id)a3 transaction:(id)a4;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key ignoreKeys:(id)keys;
+- (void)enableDiagnosticsWithInterval:(double)interval;
+- (void)evictObjectFromMemoryCacheForKey:(id)key;
+- (void)executeBlock:(id)block;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectForKey:(id)key transaction:(id)transaction;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key transaction:(id)transaction;
+- (void)touchObjectForKey:(id)key;
+- (void)touchObjectForKey:(id)key transaction:(id)transaction;
 @end
 
 @implementation APPersistentCachedStore
 
-+ (id)createWithTotalCostLimit:(int64_t)a3
++ (id)createWithTotalCostLimit:(int64_t)limit
 {
-  v3 = [[APCacheStore alloc] initWithTotalCostLimit:a3];
+  v3 = [[APCacheStore alloc] initWithTotalCostLimit:limit];
 
   return v3;
 }
 
-+ (id)createWithStorage:(id)a3
++ (id)createWithStorage:(id)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   v4 = [APCacheStore alloc];
   v5 = objc_alloc_init(NSCache);
-  v6 = [(APCacheStore *)v4 initWithFileStorage:v3 memoryCache:v5];
+  v6 = [(APCacheStore *)v4 initWithFileStorage:storageCopy memoryCache:v5];
 
   return v6;
 }
 
-- (BOOL)hasObjectForKey:(id)a3
+- (BOOL)hasObjectForKey:(id)key
 {
   v3 = NSStringFromSelector(a2);
   v4 = [NSString stringWithFormat:@"You must override %@ in a subclass", v3];
@@ -45,7 +45,7 @@
   return 0;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v3 = NSStringFromSelector(a2);
   v4 = [NSString stringWithFormat:@"You must override %@ in a subclass", v3];
@@ -54,21 +54,21 @@
   return 0;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v4 = NSStringFromSelector(a2);
   v3 = [NSString stringWithFormat:@"You must override %@ in a subclass", v4];
   APSimulateCrash();
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v5 = NSStringFromSelector(a2);
   v4 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   APSimulateCrash();
 }
 
-- (void)touchObjectForKey:(id)a3
+- (void)touchObjectForKey:(id)key
 {
   v4 = NSStringFromSelector(a2);
   v3 = [NSString stringWithFormat:@"You must override %@ in a subclass", v4];
@@ -89,28 +89,28 @@
   objc_exception_throw(v7);
 }
 
-- (void)executeBlock:(id)a3
+- (void)executeBlock:(id)block
 {
   v4 = NSStringFromSelector(a2);
   v3 = [NSString stringWithFormat:@"You must override %@ in a subclass", v4];
   APSimulateCrash();
 }
 
-- (void)removeObjectForKey:(id)a3 transaction:(id)a4
+- (void)removeObjectForKey:(id)key transaction:(id)transaction
 {
   v5 = NSStringFromSelector(a2);
   v4 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   APSimulateCrash();
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 transaction:(id)a5
+- (void)setObject:(id)object forKey:(id)key transaction:(id)transaction
 {
   v6 = NSStringFromSelector(a2);
   v5 = [NSString stringWithFormat:@"You must override %@ in a subclass", v6];
   APSimulateCrash();
 }
 
-- (BOOL)isObjectAliveForKey:(id)a3
+- (BOOL)isObjectAliveForKey:(id)key
 {
   v3 = NSStringFromSelector(a2);
   v4 = [NSString stringWithFormat:@"You must override %@ in a subclass", v3];
@@ -119,14 +119,14 @@
   return 0;
 }
 
-- (void)evictObjectFromMemoryCacheForKey:(id)a3
+- (void)evictObjectFromMemoryCacheForKey:(id)key
 {
   v4 = NSStringFromSelector(a2);
   v3 = [NSString stringWithFormat:@"You must override %@ in a subclass", v4];
   APSimulateCrash();
 }
 
-- (id)objectForKey:(id)a3 ignoreKeys:(id)a4
+- (id)objectForKey:(id)key ignoreKeys:(id)keys
 {
   v4 = NSStringFromSelector(a2);
   v5 = [NSString stringWithFormat:@"You must override %@ in a subclass", v4];
@@ -135,14 +135,14 @@
   return 0;
 }
 
-- (void)touchObjectForKey:(id)a3 transaction:(id)a4
+- (void)touchObjectForKey:(id)key transaction:(id)transaction
 {
   v5 = NSStringFromSelector(a2);
   v4 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   APSimulateCrash();
 }
 
-- (void)enableDiagnosticsWithInterval:(double)a3
+- (void)enableDiagnosticsWithInterval:(double)interval
 {
   v4 = NSStringFromSelector(a2);
   v3 = [NSString stringWithFormat:@"You must override %@ in a subclass", v4];

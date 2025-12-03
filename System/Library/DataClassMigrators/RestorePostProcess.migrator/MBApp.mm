@@ -1,7 +1,7 @@
 @interface MBApp
-+ (id)appWithPropertyList:(id)a3;
-+ (id)safeHarborWithPath:(id)a3;
-+ (void)_addContainer:(id)a3 toArray:(id)a4 visited:(id)a5;
++ (id)appWithPropertyList:(id)list;
++ (id)safeHarborWithPath:(id)path;
++ (void)_addContainer:(id)container toArray:(id)array visited:(id)visited;
 - (BOOL)isAppUpdating;
 - (BOOL)isPlaceholder;
 - (BOOL)isSystemApp;
@@ -14,17 +14,17 @@
 
 @implementation MBApp
 
-+ (id)appWithPropertyList:(id)a3
++ (id)appWithPropertyList:(id)list
 {
-  v3 = a3;
-  v4 = [(MBContainer *)[MBApp alloc] initWithPropertyList:v3 volumeMountPoint:0];
+  listCopy = list;
+  v4 = [(MBContainer *)[MBApp alloc] initWithPropertyList:listCopy volumeMountPoint:0];
 
   return v4;
 }
 
-+ (id)safeHarborWithPath:(id)a3
++ (id)safeHarborWithPath:(id)path
 {
-  v3 = [a3 stringByAppendingPathComponent:kMBSafeHarborInfoDirName];
+  v3 = [path stringByAppendingPathComponent:kMBSafeHarborInfoDirName];
   v4 = [v3 stringByAppendingPathComponent:kMBSafeHarborInfoPlistFilename];
 
   v5 = [NSDictionary dictionaryWithContentsOfFile:v4];
@@ -43,8 +43,8 @@
 
 - (NSString)entitlementsRelativePath
 {
-  v2 = [(MBApp *)self bundleDir];
-  v3 = sub_2484(v2);
+  bundleDir = [(MBApp *)self bundleDir];
+  v3 = sub_2484(bundleDir);
 
   return v3;
 }
@@ -73,8 +73,8 @@
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [MBAppGroup alloc];
-        v11 = [(MBContainer *)self volumeMountPoint];
-        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:v11];
+        volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:volumeMountPoint];
         [v3 addObject:v12];
       }
 
@@ -111,8 +111,8 @@
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [MBAppPlugin alloc];
-        v11 = [(MBContainer *)self volumeMountPoint];
-        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:v11];
+        volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:volumeMountPoint];
         [v3 addObject:v12];
       }
 
@@ -125,16 +125,16 @@
   return v3;
 }
 
-+ (void)_addContainer:(id)a3 toArray:(id)a4 visited:(id)a5
++ (void)_addContainer:(id)container toArray:(id)array visited:(id)visited
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v10 identifier];
-  if (([v8 containsObject:v9] & 1) == 0)
+  containerCopy = container;
+  arrayCopy = array;
+  visitedCopy = visited;
+  identifier = [containerCopy identifier];
+  if (([visitedCopy containsObject:identifier] & 1) == 0)
   {
-    [v7 addObject:v10];
-    [v8 addObject:v9];
+    [arrayCopy addObject:containerCopy];
+    [visitedCopy addObject:identifier];
   }
 }
 
@@ -147,8 +147,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(MBApp *)self groups];
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  groups = [(MBApp *)self groups];
+  v6 = [groups countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -159,13 +159,13 @@
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groups);
         }
 
         [objc_opt_class() _addContainer:*(*(&v30 + 1) + 8 * i) toArray:v4 visited:v3];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v7 = [groups countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v7);
@@ -196,8 +196,8 @@
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v14 = [v13 groups];
-        v15 = [v14 countByEnumeratingWithState:&v22 objects:v34 count:16];
+        groups2 = [v13 groups];
+        v15 = [groups2 countByEnumeratingWithState:&v22 objects:v34 count:16];
         if (v15)
         {
           v16 = v15;
@@ -208,13 +208,13 @@
             {
               if (*v23 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(groups2);
               }
 
               [objc_opt_class() _addContainer:*(*(&v22 + 1) + 8 * k) toArray:v4 visited:v3];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v22 objects:v34 count:16];
+            v16 = [groups2 countByEnumeratingWithState:&v22 objects:v34 count:16];
           }
 
           while (v16);
@@ -233,17 +233,17 @@
 - (BOOL)isAppUpdating
 {
   v2 = [(NSMutableDictionary *)self->super._plist objectForKeyedSubscript:@"IsUpdating"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPlaceholder
 {
   v2 = [(NSMutableDictionary *)self->super._plist objectForKeyedSubscript:@"IsPlaceholder"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isSystemApp
@@ -264,10 +264,10 @@
 
 - (id)domain
 {
-  v3 = [(MBApp *)self bundleID];
-  v4 = [(MBContainer *)self volumeMountPoint];
-  v5 = [(MBContainer *)self containerDir];
-  v6 = [MBDomain appDomainWithIdentifier:v3 volumeMountPoint:v4 rootPath:v5];
+  bundleID = [(MBApp *)self bundleID];
+  volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+  containerDir = [(MBContainer *)self containerDir];
+  v6 = [MBDomain appDomainWithIdentifier:bundleID volumeMountPoint:volumeMountPoint rootPath:containerDir];
 
   v7 = sub_2D38();
   [v6 setRelativePathsToBackupAndRestore:v7];

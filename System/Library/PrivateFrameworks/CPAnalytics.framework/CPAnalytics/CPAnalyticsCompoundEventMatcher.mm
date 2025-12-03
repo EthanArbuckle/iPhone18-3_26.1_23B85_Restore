@@ -1,24 +1,24 @@
 @interface CPAnalyticsCompoundEventMatcher
-+ (id)andEventMatcherWithSubEventMatchers:(id)a3;
-+ (id)notEventMatcherWithSubEventMatcher:(id)a3;
-+ (id)orEventMatcherWithSubEventMatchers:(id)a3;
-- (BOOL)doesMatch:(id)a3;
-- (CPAnalyticsCompoundEventMatcher)initWithType:(unint64_t)a3 subEventMatchers:(id)a4;
++ (id)andEventMatcherWithSubEventMatchers:(id)matchers;
++ (id)notEventMatcherWithSubEventMatcher:(id)matcher;
++ (id)orEventMatcherWithSubEventMatchers:(id)matchers;
+- (BOOL)doesMatch:(id)match;
+- (CPAnalyticsCompoundEventMatcher)initWithType:(unint64_t)type subEventMatchers:(id)matchers;
 @end
 
 @implementation CPAnalyticsCompoundEventMatcher
 
-- (BOOL)doesMatch:(id)a3
+- (BOOL)doesMatch:(id)match
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CPAnalyticsCompoundEventMatcher *)self type];
-  switch(v5)
+  matchCopy = match;
+  type = [(CPAnalyticsCompoundEventMatcher *)self type];
+  switch(type)
   {
     case 3uLL:
-      v6 = [(CPAnalyticsCompoundEventMatcher *)self subEventMatchers];
-      v14 = [v6 firstObject];
-      LODWORD(v11) = [v14 doesMatch:v4] ^ 1;
+      subEventMatchers = [(CPAnalyticsCompoundEventMatcher *)self subEventMatchers];
+      firstObject = [subEventMatchers firstObject];
+      LODWORD(v11) = [firstObject doesMatch:matchCopy] ^ 1;
 
       goto LABEL_25;
     case 2uLL:
@@ -26,8 +26,8 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v6 = [(CPAnalyticsCompoundEventMatcher *)self subEventMatchers];
-      v11 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      subEventMatchers = [(CPAnalyticsCompoundEventMatcher *)self subEventMatchers];
+      v11 = [subEventMatchers countByEnumeratingWithState:&v17 objects:v25 count:16];
       if (!v11)
       {
         goto LABEL_25;
@@ -40,17 +40,17 @@ LABEL_15:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subEventMatchers);
         }
 
-        if ([*(*(&v17 + 1) + 8 * v13) doesMatch:v4])
+        if ([*(*(&v17 + 1) + 8 * v13) doesMatch:matchCopy])
         {
           break;
         }
 
         if (v11 == ++v13)
         {
-          v11 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          v11 = [subEventMatchers countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v11)
           {
             goto LABEL_15;
@@ -70,8 +70,8 @@ LABEL_25:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v6 = [(CPAnalyticsCompoundEventMatcher *)self subEventMatchers];
-      v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      subEventMatchers = [(CPAnalyticsCompoundEventMatcher *)self subEventMatchers];
+      v7 = [subEventMatchers countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v7)
       {
         v8 = v7;
@@ -82,17 +82,17 @@ LABEL_25:
           {
             if (*v22 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(subEventMatchers);
             }
 
-            if (![*(*(&v21 + 1) + 8 * i) doesMatch:v4])
+            if (![*(*(&v21 + 1) + 8 * i) doesMatch:matchCopy])
             {
               LOBYTE(v11) = 0;
               goto LABEL_25;
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+          v8 = [subEventMatchers countByEnumeratingWithState:&v21 objects:v26 count:16];
           if (v8)
           {
             continue;
@@ -112,17 +112,17 @@ LABEL_26:
   return v11;
 }
 
-- (CPAnalyticsCompoundEventMatcher)initWithType:(unint64_t)a3 subEventMatchers:(id)a4
+- (CPAnalyticsCompoundEventMatcher)initWithType:(unint64_t)type subEventMatchers:(id)matchers
 {
-  v6 = a4;
+  matchersCopy = matchers;
   v12.receiver = self;
   v12.super_class = CPAnalyticsCompoundEventMatcher;
   v7 = [(CPAnalyticsCompoundEventMatcher *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [matchersCopy copy];
     subEventMatchers = v8->_subEventMatchers;
     v8->_subEventMatchers = v9;
   }
@@ -130,12 +130,12 @@ LABEL_26:
   return v8;
 }
 
-+ (id)notEventMatcherWithSubEventMatcher:(id)a3
++ (id)notEventMatcherWithSubEventMatcher:(id)matcher
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10[0] = v4;
+  matcherCopy = matcher;
+  v5 = [self alloc];
+  v10[0] = matcherCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
 
   v7 = [v5 initWithType:3 subEventMatchers:v6];
@@ -144,18 +144,18 @@ LABEL_26:
   return v7;
 }
 
-+ (id)orEventMatcherWithSubEventMatchers:(id)a3
++ (id)orEventMatcherWithSubEventMatchers:(id)matchers
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:2 subEventMatchers:v4];
+  matchersCopy = matchers;
+  v5 = [[self alloc] initWithType:2 subEventMatchers:matchersCopy];
 
   return v5;
 }
 
-+ (id)andEventMatcherWithSubEventMatchers:(id)a3
++ (id)andEventMatcherWithSubEventMatchers:(id)matchers
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:1 subEventMatchers:v4];
+  matchersCopy = matchers;
+  v5 = [[self alloc] initWithType:1 subEventMatchers:matchersCopy];
 
   return v5;
 }

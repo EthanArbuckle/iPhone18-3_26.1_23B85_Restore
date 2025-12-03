@@ -1,55 +1,55 @@
 @interface AMMessagesMainViewController
-- (AMMessagesMainViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didResignActiveWithConversation:(id)a3;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
+- (AMMessagesMainViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didResignActiveWithConversation:(id)conversation;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
 - (void)viewDidLoad;
-- (void)willBecomeActiveWithConversation:(id)a3;
+- (void)willBecomeActiveWithConversation:(id)conversation;
 @end
 
 @implementation AMMessagesMainViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E50();
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_2A65C(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_2A65C(conversationCopy);
 }
 
-- (void)didResignActiveWithConversation:(id)a3
+- (void)didResignActiveWithConversation:(id)conversation
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR___AMMessagesMainViewController_messagesViewController);
   if (v3)
   {
-    v5 = a3;
-    v7 = self;
+    conversationCopy = conversation;
+    selfCopy = self;
     v6 = v3;
-    [v6 didResignActiveWithConversation:v5];
+    [v6 didResignActiveWithConversation:conversationCopy];
     sub_2A31C();
   }
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
-  v4 = self;
-  sub_2AB94(a3);
+  selfCopy = self;
+  sub_2AB94(style);
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = *(&self->super.super.super.super.isa + OBJC_IVAR___AMMessagesMainViewController_messagesViewController);
   if (v5)
   {
     v6 = v4;
     _Block_copy(v4);
-    v7 = self;
+    selfCopy = self;
     v9 = v5;
     sub_2DDC0(v9, v6);
     _Block_release(v6);
@@ -66,9 +66,9 @@
   }
 }
 
-- (AMMessagesMainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AMMessagesMainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_42978();
     v7 = v6;
@@ -80,8 +80,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_2AEF0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_2AEF0(v5, v7, bundle);
 }
 
 @end

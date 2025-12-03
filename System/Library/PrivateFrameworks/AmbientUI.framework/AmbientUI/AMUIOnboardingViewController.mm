@@ -14,8 +14,8 @@
 
   [(AMUIOnboardingContainerView *)self->_onboardingContainerView setDelegate:self];
   v5 = self->_onboardingContainerView;
-  v6 = [(AMUIOnboardingViewController *)self ambientDefaults];
-  [(AMUIOnboardingContainerView *)v5 setAmbientDefaults:v6];
+  ambientDefaults = [(AMUIOnboardingViewController *)self ambientDefaults];
+  [(AMUIOnboardingContainerView *)v5 setAmbientDefaults:ambientDefaults];
 
   v7 = self->_onboardingContainerView;
 

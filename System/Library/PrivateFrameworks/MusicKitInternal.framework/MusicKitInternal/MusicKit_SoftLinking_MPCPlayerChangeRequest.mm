@@ -1,19 +1,19 @@
 @interface MusicKit_SoftLinking_MPCPlayerChangeRequest
-- (MusicKit_SoftLinking_MPCPlayerChangeRequest)initWithCommandRequests:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (MusicKit_SoftLinking_MPCPlayerChangeRequest)initWithCommandRequests:(id)requests;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MusicKit_SoftLinking_MPCPlayerChangeRequest
 
-- (MusicKit_SoftLinking_MPCPlayerChangeRequest)initWithCommandRequests:(id)a3
+- (MusicKit_SoftLinking_MPCPlayerChangeRequest)initWithCommandRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v12.receiver = self;
   v12.super_class = MusicKit_SoftLinking_MPCPlayerChangeRequest;
   v5 = [(MusicKit_SoftLinking_MPCPlayerChangeRequest *)&v12 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = requestsCopy;
     v14 = 0;
     v15 = &v14;
     v16 = 0x2050000000;
@@ -42,16 +42,16 @@
   return v5;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   underlyingChangeRequest = self->_underlyingChangeRequest;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__MusicKit_SoftLinking_MPCPlayerChangeRequest_performWithCompletion___block_invoke;
   v7[3] = &unk_1E84C4370;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(MPCPlayerChangeRequest *)underlyingChangeRequest performWithExtendedStatusCompletion:v7];
 }
 

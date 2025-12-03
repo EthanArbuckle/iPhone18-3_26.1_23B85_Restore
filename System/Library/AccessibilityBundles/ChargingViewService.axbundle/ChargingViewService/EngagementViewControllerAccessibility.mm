@@ -1,15 +1,15 @@
 @interface EngagementViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewDidLoad;
 @end
 
 @implementation EngagementViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EngagementViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"EngagementViewController" hasInstanceMethod:@"engagementDismissButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EngagementViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"EngagementViewController" hasInstanceMethod:@"engagementDismissButton" withFullSignature:{"@", 0}];
 }
 
 - (void)viewDidLoad

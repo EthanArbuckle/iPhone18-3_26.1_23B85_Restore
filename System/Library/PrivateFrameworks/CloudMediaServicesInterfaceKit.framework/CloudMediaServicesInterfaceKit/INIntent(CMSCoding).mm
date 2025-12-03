@@ -7,22 +7,22 @@
 
 - (id)cmsCoded
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [a1 identifier];
-  if (v3)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [self identifier];
+  if (identifier)
   {
-    [v2 setObject:v3 forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
-  v4 = [a1 intentDescription];
-  if (v4)
+  intentDescription = [self intentDescription];
+  if (intentDescription)
   {
-    [v2 setObject:v4 forKey:@"intentDescription"];
+    [dictionary setObject:intentDescription forKey:@"intentDescription"];
   }
 
-  [v2 setObject:@"Intent" forKey:@"class"];
+  [dictionary setObject:@"Intent" forKey:@"class"];
 
-  return v2;
+  return dictionary;
 }
 
 + (id)instanceFromCMSCoded:()CMSCoding

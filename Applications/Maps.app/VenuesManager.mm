@@ -1,58 +1,58 @@
 @interface VenuesManager
-- (BOOL)hasSearchResultsInVenue:(id)a3 forFloorOrdinal:(signed __int16)a4;
-- (BOOL)hasSearchResultsInVenue:(id)a3 matching:(id)a4;
-- (BOOL)isUserAtSameVenueAsCoordinate:(CLLocationCoordinate2D)a3;
-- (BOOL)isUserAtSameVenueAsMapItem:(id)a3;
-- (BOOL)isUserAtVenueWithID:(unint64_t)a3;
-- (BOOL)mapViewShouldHandleTapToDeselect:(id)a3;
+- (BOOL)hasSearchResultsInVenue:(id)venue forFloorOrdinal:(signed __int16)ordinal;
+- (BOOL)hasSearchResultsInVenue:(id)venue matching:(id)matching;
+- (BOOL)isUserAtSameVenueAsCoordinate:(CLLocationCoordinate2D)coordinate;
+- (BOOL)isUserAtSameVenueAsMapItem:(id)item;
+- (BOOL)isUserAtVenueWithID:(unint64_t)d;
+- (BOOL)mapViewShouldHandleTapToDeselect:(id)deselect;
 - (MKMapView)mapView;
 - (MapsUserLocationView)userLocationView;
 - (NSNumber)userLocationFloorOrdinal;
 - (VKVenueBuildingFeatureMarker)venueBuildingWithFocus;
 - (VKVenueFeatureMarker)venueWithFocus;
 - (VenueFloorViewControlling)venueFloorViewController;
-- (VenuesManager)initWithDelegate:(id)a3 mapView:(id)a4 userLocationView:(id)a5;
+- (VenuesManager)initWithDelegate:(id)delegate mapView:(id)view userLocationView:(id)locationView;
 - (VenuesManagerDelegate)delegate;
 - (VenuesStack)venueCardStack;
 - (id)_userVenueMarker;
-- (id)searchResultCountInVenueWithViewController:(id)a3;
-- (id)sortedFloorOrdinalsForVenue:(id)a3;
-- (id)userLocationFloorOrdinalInVenue:(id)a3;
-- (id)venue:(id)a3 buildingWithId:(unint64_t)a4;
-- (id)venueFeatureMarkerAtCoordinate:(CLLocationCoordinate2D)a3;
-- (signed)displayedFloorOrdinalForBuildingsInVenue:(id)a3;
-- (signed)firstAbovegroundFloorOrdinalForVenue:(id)a3;
+- (id)searchResultCountInVenueWithViewController:(id)controller;
+- (id)sortedFloorOrdinalsForVenue:(id)venue;
+- (id)userLocationFloorOrdinalInVenue:(id)venue;
+- (id)venue:(id)venue buildingWithId:(unint64_t)id;
+- (id)venueFeatureMarkerAtCoordinate:(CLLocationCoordinate2D)coordinate;
+- (signed)displayedFloorOrdinalForBuildingsInVenue:(id)venue;
+- (signed)firstAbovegroundFloorOrdinalForVenue:(id)venue;
 - (signed)floorOrdinalWithFocus;
-- (void)_containerWillPresentContainee:(id)a3;
-- (void)addChangeObserver:(id)a3;
+- (void)_containerWillPresentContainee:(id)containee;
+- (void)addChangeObserver:(id)observer;
 - (void)dismissLastPlaceCardViewControllerIfNecessary;
 - (void)displayFloorForCurrentOrPendingSelection;
 - (void)displayFloorForPendingSelection;
-- (void)displayFloorForSelectedLabelMarker:(id)a3;
-- (void)displayFloorForSelectedSearchResult:(id)a3;
-- (void)displayUserLocationFloorOrdinalIfNeededWithVenue:(id)a3 asNewlyFocusedVenue:(BOOL)a4;
-- (void)getMinZoom:(id *)a3 maxZoom:(id *)a4 forDisplayingLabelMarker:(id)a5;
-- (void)getMinZoom:(id *)a3 maxZoom:(id *)a4 resultsForDeterminingRegion:(id *)a5 forDisplayingResults:(id)a6 fromSearch:(id)a7;
-- (void)mapView:(id)a3 didChangeDisplayedFloorOrdinal:(signed __int16)a4 forVenue:(id)a5;
-- (void)mapView:(id)a3 didChangeFocusedVenue:(id)a4 focusedBuilding:(id)a5;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5;
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4;
+- (void)displayFloorForSelectedLabelMarker:(id)marker;
+- (void)displayFloorForSelectedSearchResult:(id)result;
+- (void)displayUserLocationFloorOrdinalIfNeededWithVenue:(id)venue asNewlyFocusedVenue:(BOOL)focusedVenue;
+- (void)getMinZoom:(id *)zoom maxZoom:(id *)maxZoom forDisplayingLabelMarker:(id)marker;
+- (void)getMinZoom:(id *)zoom maxZoom:(id *)maxZoom resultsForDeterminingRegion:(id *)region forDisplayingResults:(id)results fromSearch:(id)search;
+- (void)mapView:(id)view didChangeDisplayedFloorOrdinal:(signed __int16)ordinal forVenue:(id)venue;
+- (void)mapView:(id)view didChangeFocusedVenue:(id)venue focusedBuilding:(id)building;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated;
+- (void)mapView:(id)view didUpdateUserLocation:(id)location;
 - (void)notifyChangeObservers;
-- (void)presentPlaceCardForVenueWithFocusAndAddToHistory:(BOOL)a3 source:(unint64_t)a4 centeringOnVenue:(BOOL)a5;
-- (void)recordVenueVisitWithIdentifier:(id)a3;
+- (void)presentPlaceCardForVenueWithFocusAndAddToHistory:(BOOL)history source:(unint64_t)source centeringOnVenue:(BOOL)venue;
+- (void)recordVenueVisitWithIdentifier:(id)identifier;
 - (void)scheduleEviction;
-- (void)setDisplayedFloorOrdinal:(signed __int16)a3 forBuildingsInVenue:(id)a4;
-- (void)setPendingValuesAndDisplayVenueID:(id)a3 floorOrdinal:(signed __int16)a4;
-- (void)setSearchResultCountInVenue:(id)a3;
-- (void)setVenueCardStack:(id)a3;
-- (void)setVenueFloorViewController:(id)a3;
+- (void)setDisplayedFloorOrdinal:(signed __int16)ordinal forBuildingsInVenue:(id)venue;
+- (void)setPendingValuesAndDisplayVenueID:(id)d floorOrdinal:(signed __int16)ordinal;
+- (void)setSearchResultCountInVenue:(id)venue;
+- (void)setVenueCardStack:(id)stack;
+- (void)setVenueFloorViewController:(id)controller;
 - (void)updateDimmingOutsideVenue;
 - (void)updateFocusedVenueFloor;
 - (void)updateSearchResultCountFromCurrentViewController;
-- (void)updateSearchResultCountFromViewController:(id)a3;
+- (void)updateSearchResultCountFromViewController:(id)controller;
 - (void)updateUserLocation;
 - (void)venueFloorViewControllerStateDidChange;
-- (void)visitedVenuesEvictionTimerFired:(id)a3;
+- (void)visitedVenuesEvictionTimerFired:(id)fired;
 @end
 
 @implementation VenuesManager
@@ -66,10 +66,10 @@
 
 - (VKVenueFeatureMarker)venueWithFocus
 {
-  v2 = [(VenuesManager *)self mapView];
-  v3 = [v2 venueWithFocus];
+  mapView = [(VenuesManager *)self mapView];
+  venueWithFocus = [mapView venueWithFocus];
 
-  return v3;
+  return venueWithFocus;
 }
 
 - (VenueFloorViewControlling)venueFloorViewController
@@ -81,34 +81,34 @@
 
 - (NSNumber)userLocationFloorOrdinal
 {
-  v3 = [(VenuesManager *)self mapView];
-  v4 = [v3 userLocation];
-  v5 = [(VenuesManager *)self venueWithFocus];
-  v6 = [(VenuesManager *)self mapView];
-  v7 = [v4 floorOrdinalInVenue:v5 forMapView:v6];
+  mapView = [(VenuesManager *)self mapView];
+  userLocation = [mapView userLocation];
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
+  mapView2 = [(VenuesManager *)self mapView];
+  v7 = [userLocation floorOrdinalInVenue:venueWithFocus forMapView:mapView2];
 
   return v7;
 }
 
 - (void)updateUserLocation
 {
-  v9 = [(VenuesManager *)self userLocationFloorOrdinal];
-  v3 = [(VenuesManager *)self venueFloorViewController];
-  [v3 setUserLocationFloorOrdinal:v9];
+  userLocationFloorOrdinal = [(VenuesManager *)self userLocationFloorOrdinal];
+  venueFloorViewController = [(VenuesManager *)self venueFloorViewController];
+  [venueFloorViewController setUserLocationFloorOrdinal:userLocationFloorOrdinal];
 
-  v4 = [(VenuesManager *)self floorCard];
-  [v4 userLocationDidChange];
+  floorCard = [(VenuesManager *)self floorCard];
+  [floorCard userLocationDidChange];
 
-  v5 = [(VenuesManager *)self venueWithFocus];
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
   v6 = 0;
-  if (v5 && v9)
+  if (venueWithFocus && userLocationFloorOrdinal)
   {
-    v7 = [(VenuesManager *)self displayedFloorOrdinalForBuildingsInVenue:v5];
-    v6 = v7 != [v9 shortValue];
+    v7 = [(VenuesManager *)self displayedFloorOrdinalForBuildingsInVenue:venueWithFocus];
+    v6 = v7 != [userLocationFloorOrdinal shortValue];
   }
 
-  v8 = [(VenuesManager *)self userLocationView];
-  [v8 _setIsOnAnotherFloorInVenue:v6];
+  userLocationView = [(VenuesManager *)self userLocationView];
+  [userLocationView _setIsOnAnotherFloorInVenue:v6];
 }
 
 - (MapsUserLocationView)userLocationView
@@ -132,11 +132,11 @@
   return WeakRetained;
 }
 
-- (signed)firstAbovegroundFloorOrdinalForVenue:(id)a3
+- (signed)firstAbovegroundFloorOrdinalForVenue:(id)venue
 {
-  v4 = a3;
-  v5 = [(VenuesManager *)self floorOrdinalWithFocus];
-  [(VenuesManager *)self sortedFloorOrdinalsForVenue:v4];
+  venueCopy = venue;
+  floorOrdinalWithFocus = [(VenuesManager *)self floorOrdinalWithFocus];
+  [(VenuesManager *)self sortedFloorOrdinalsForVenue:venueCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -161,7 +161,7 @@ LABEL_3:
         break;
       }
 
-      v5 = [v11 shortValue];
+      floorOrdinalWithFocus = [v11 shortValue];
       if (v8 == ++v10)
       {
         v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -175,19 +175,19 @@ LABEL_3:
     }
   }
 
-  return v5;
+  return floorOrdinalWithFocus;
 }
 
-- (id)sortedFloorOrdinalsForVenue:(id)a3
+- (id)sortedFloorOrdinalsForVenue:(id)venue
 {
-  v3 = a3;
+  venueCopy = venue;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 buildings];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  buildings = [venueCopy buildings];
+  v6 = [buildings countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -198,46 +198,46 @@ LABEL_3:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(buildings);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) floorOrdinals];
-        [v4 addObjectsFromArray:v10];
+        floorOrdinals = [*(*(&v16 + 1) + 8 * i) floorOrdinals];
+        [v4 addObjectsFromArray:floorOrdinals];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [buildings countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [v4 allObjects];
-  v12 = [v11 sortedArrayUsingSelector:"compare:"];
-  v13 = [v12 reverseObjectEnumerator];
-  v14 = [v13 allObjects];
+  allObjects = [v4 allObjects];
+  v12 = [allObjects sortedArrayUsingSelector:"compare:"];
+  reverseObjectEnumerator = [v12 reverseObjectEnumerator];
+  allObjects2 = [reverseObjectEnumerator allObjects];
 
-  return v14;
+  return allObjects2;
 }
 
 - (void)dismissLastPlaceCardViewControllerIfNecessary
 {
-  v3 = [(VenuesManager *)self delegate];
-  v10 = [v3 mapSelectionManagerForVenuesManager:self];
+  delegate = [(VenuesManager *)self delegate];
+  v10 = [delegate mapSelectionManagerForVenuesManager:self];
 
-  v4 = [v10 labelMarker];
-  if ([v4 venueLevelID])
+  labelMarker = [v10 labelMarker];
+  if ([labelMarker venueLevelID])
   {
-    v5 = [v4 venueFloorOrdinal];
-    if (v5 != [(VenuesManager *)self floorOrdinalWithFocus])
+    venueFloorOrdinal = [labelMarker venueFloorOrdinal];
+    if (venueFloorOrdinal != [(VenuesManager *)self floorOrdinalWithFocus])
     {
-      v6 = [v4 venueID];
-      v7 = [(VenuesManager *)self venueWithFocus];
-      v8 = [v7 venueID];
+      venueID = [labelMarker venueID];
+      venueWithFocus = [(VenuesManager *)self venueWithFocus];
+      venueID2 = [venueWithFocus venueID];
 
-      if (v6 == v8)
+      if (venueID == venueID2)
       {
-        v9 = [(VenuesManager *)self delegate];
-        [v9 dismissLastVenuesPlaceCardForVenuesManager:self];
+        delegate2 = [(VenuesManager *)self delegate];
+        [delegate2 dismissLastVenuesPlaceCardForVenuesManager:self];
       }
     }
   }
@@ -247,24 +247,24 @@ LABEL_3:
 {
   if (GEOConfigGetBOOL())
   {
-    v3 = [(VenuesManager *)self venueWithFocus];
+    venueWithFocus = [(VenuesManager *)self venueWithFocus];
 
-    v5 = [(VenuesManager *)self floorOrdinalWithFocus]< 0 && v3 != 0;
-    v6 = [(VenuesManager *)self mapView];
-    [v6 setDimmingOutsideVenueWithFocus:v5];
+    v5 = [(VenuesManager *)self floorOrdinalWithFocus]< 0 && venueWithFocus != 0;
+    mapView = [(VenuesManager *)self mapView];
+    [mapView setDimmingOutsideVenueWithFocus:v5];
   }
 }
 
 - (void)venueFloorViewControllerStateDidChange
 {
-  v3 = [(VenuesManager *)self venueFloorViewController];
-  if (![v3 isOpen])
+  venueFloorViewController = [(VenuesManager *)self venueFloorViewController];
+  if (![venueFloorViewController isOpen])
   {
     goto LABEL_4;
   }
 
-  v4 = [(VenuesManager *)self venueFloorViewController];
-  if ([v4 isHidden])
+  venueFloorViewController2 = [(VenuesManager *)self venueFloorViewController];
+  if ([venueFloorViewController2 isHidden])
   {
 
 LABEL_4:
@@ -272,18 +272,18 @@ LABEL_4:
   }
 
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  if (v9 == 5)
+  if (userInterfaceIdiom == 5)
   {
 LABEL_5:
-    v5 = [(VenuesManager *)self floorCard];
+    floorCard = [(VenuesManager *)self floorCard];
 
-    if (v5)
+    if (floorCard)
     {
-      v6 = [(VenuesManager *)self delegate];
-      v7 = [(VenuesManager *)self floorCard];
-      [v6 venuesManager:self dismissFloorCardViewController:v7];
+      delegate = [(VenuesManager *)self delegate];
+      floorCard2 = [(VenuesManager *)self floorCard];
+      [delegate venuesManager:self dismissFloorCardViewController:floorCard2];
 
       [(VenuesManager *)self setFloorCard:0];
     }
@@ -291,15 +291,15 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v10 = [(VenuesManager *)self floorCard];
+  floorCard3 = [(VenuesManager *)self floorCard];
 
-  if (!v10)
+  if (!floorCard3)
   {
     v11 = [[VenueFloorCardViewController alloc] initWithVenuesManager:self];
     [(VenuesManager *)self addChangeObserver:v11];
     [(VenuesManager *)self setFloorCard:v11];
-    v12 = [(VenuesManager *)self delegate];
-    [v12 venuesManager:self presentFloorCardViewController:v11];
+    delegate2 = [(VenuesManager *)self delegate];
+    [delegate2 venuesManager:self presentFloorCardViewController:v11];
   }
 
 LABEL_7:
@@ -307,57 +307,57 @@ LABEL_7:
   [(VenuesManager *)self updateDimmingOutsideVenue];
 }
 
-- (id)searchResultCountInVenueWithViewController:(id)a3
+- (id)searchResultCountInVenueWithViewController:(id)controller
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___VenuesControlCoordinating] && (objc_opt_respondsToSelector() & 1) != 0)
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___VenuesControlCoordinating] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 searchResultCountInVenue];
+    searchResultCountInVenue = [controllerCopy searchResultCountInVenue];
   }
 
   else
   {
-    v4 = 0;
+    searchResultCountInVenue = 0;
   }
 
-  return v4;
+  return searchResultCountInVenue;
 }
 
-- (void)updateSearchResultCountFromViewController:(id)a3
+- (void)updateSearchResultCountFromViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(VenuesManager *)self floorCard];
+  controllerCopy = controller;
+  floorCard = [(VenuesManager *)self floorCard];
 
-  v5 = v7;
-  if (v4 != v7)
+  v5 = controllerCopy;
+  if (floorCard != controllerCopy)
   {
-    v6 = [(VenuesManager *)self searchResultCountInVenueWithViewController:v7];
+    v6 = [(VenuesManager *)self searchResultCountInVenueWithViewController:controllerCopy];
     [(VenuesManager *)self setSearchResultCountInVenue:v6];
 
-    v5 = v7;
+    v5 = controllerCopy;
   }
 }
 
 - (void)updateSearchResultCountFromCurrentViewController
 {
-  v3 = [(VenuesManager *)self delegate];
-  v4 = [v3 topmostContaineeForVenuesManager:self];
+  delegate = [(VenuesManager *)self delegate];
+  v4 = [delegate topmostContaineeForVenuesManager:self];
 
   [(VenuesManager *)self updateSearchResultCountFromViewController:v4];
 }
 
-- (void)_containerWillPresentContainee:(id)a3
+- (void)_containerWillPresentContainee:(id)containee
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"ContainerContainee"];
+  userInfo = [containee userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"ContainerContainee"];
 
-  v6 = [(VenuesManager *)self venueFloorViewController];
-  if (v6)
+  venueFloorViewController = [(VenuesManager *)self venueFloorViewController];
+  if (venueFloorViewController)
   {
-    v7 = v6;
-    v8 = [(VenuesManager *)self floorCard];
+    v7 = venueFloorViewController;
+    floorCard = [(VenuesManager *)self floorCard];
 
-    if (v5 != v8)
+    if (v5 != floorCard)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -370,9 +370,9 @@ LABEL_7:
 
   v9 = [(NSDictionary *)self->_searchResultCountInVenue copy];
   [(VenuesManager *)self updateSearchResultCountFromViewController:v5];
-  v10 = [(VenuesManager *)self floorCard];
+  floorCard2 = [(VenuesManager *)self floorCard];
 
-  if (v5 != v10)
+  if (v5 != floorCard2)
   {
     v11 = [(VenuesManager *)self searchResultCountInVenueWithViewController:v5];
     if (![NSDictionary dictionary:v9 isEqualToDictionary:v11])
@@ -384,20 +384,20 @@ LABEL_7:
 
 - (void)updateFocusedVenueFloor
 {
-  v2 = self;
-  v3 = [(VenuesManager *)self venueWithFocus];
-  if (v3)
+  selfCopy = self;
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
+  if (venueWithFocus)
   {
-    v4 = [(VenuesManager *)v2 displayedFloorOrdinalForBuildingsInVenue:v3];
-    if ([(VenuesManager *)v2 hasSearchResultsInVenueForAnyFloorOrdinal:v3])
+    v4 = [(VenuesManager *)selfCopy displayedFloorOrdinalForBuildingsInVenue:venueWithFocus];
+    if ([(VenuesManager *)selfCopy hasSearchResultsInVenueForAnyFloorOrdinal:venueWithFocus])
     {
-      if (!-[VenuesManager hasSearchResultsInVenue:forFloorOrdinal:](v2, "hasSearchResultsInVenue:forFloorOrdinal:", v3, v4) || (-[VenuesManager mapView](v2, "mapView"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 displayedFloorIsDefaultForBuildingsInVenue:v3], v5, v6))
+      if (!-[VenuesManager hasSearchResultsInVenue:forFloorOrdinal:](selfCopy, "hasSearchResultsInVenue:forFloorOrdinal:", venueWithFocus, v4) || (-[VenuesManager mapView](selfCopy, "mapView"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 displayedFloorIsDefaultForBuildingsInVenue:venueWithFocus], v5, v6))
       {
-        v7 = [(VenuesManager *)v2 userLocationFloorOrdinalInVenue:v3];
+        v7 = [(VenuesManager *)selfCopy userLocationFloorOrdinalInVenue:venueWithFocus];
         v8 = v7;
-        if (v7 && -[VenuesManager hasSearchResultsInVenue:forFloorOrdinal:](v2, "hasSearchResultsInVenue:forFloorOrdinal:", v3, [v7 shortValue]))
+        if (v7 && -[VenuesManager hasSearchResultsInVenue:forFloorOrdinal:](selfCopy, "hasSearchResultsInVenue:forFloorOrdinal:", venueWithFocus, [v7 shortValue]))
         {
-          v27 = [v8 shortValue];
+          shortValue = [v8 shortValue];
         }
 
         else
@@ -407,7 +407,7 @@ LABEL_7:
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          obj = [(VenuesManager *)v2 searchResultCountInVenue];
+          obj = [(VenuesManager *)selfCopy searchResultCountInVenue];
           v9 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
           if (v9)
           {
@@ -415,7 +415,7 @@ LABEL_7:
             v11 = 0;
             v12 = *v30;
             v26 = v4;
-            v27 = v4;
+            shortValue = v4;
             do
             {
               for (i = 0; i != v10; i = i + 1)
@@ -426,46 +426,46 @@ LABEL_7:
                 }
 
                 v14 = *(*(&v29 + 1) + 8 * i);
-                v15 = [v14 venueID];
-                if (v15 == [v3 venueID])
+                venueID = [v14 venueID];
+                if (venueID == [venueWithFocus venueID])
                 {
-                  v16 = [v14 floorOrdinal];
+                  floorOrdinal = [v14 floorOrdinal];
 
-                  if (v16)
+                  if (floorOrdinal)
                   {
-                    [(VenuesManager *)v2 searchResultCountInVenue];
-                    v18 = v17 = v2;
+                    [(VenuesManager *)selfCopy searchResultCountInVenue];
+                    v18 = v17 = selfCopy;
                     v19 = [v18 objectForKeyedSubscript:v14];
-                    v20 = [v19 unsignedIntegerValue];
+                    unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-                    v2 = v17;
-                    v21 = [v14 floorOrdinal];
-                    v22 = [v21 shortValue];
+                    selfCopy = v17;
+                    floorOrdinal2 = [v14 floorOrdinal];
+                    shortValue2 = [floorOrdinal2 shortValue];
 
-                    if (v20 > v11)
+                    if (unsignedIntegerValue > v11)
                     {
                       goto LABEL_16;
                     }
 
-                    if (v20 == v11)
+                    if (unsignedIntegerValue == v11)
                     {
-                      v23 = v22 - v26;
-                      if ((v22 - v26) < 0)
+                      v23 = shortValue2 - v26;
+                      if ((shortValue2 - v26) < 0)
                       {
-                        v23 = v26 - v22;
+                        v23 = v26 - shortValue2;
                       }
 
-                      v24 = v27 - v26;
+                      v24 = shortValue - v26;
                       if (v24 < 0)
                       {
-                        v24 = v26 - v27;
+                        v24 = v26 - shortValue;
                       }
 
                       if (v23 < v24)
                       {
 LABEL_16:
-                        v27 = v22;
-                        v11 = v20;
+                        shortValue = shortValue2;
+                        v11 = unsignedIntegerValue;
                       }
                     }
                   }
@@ -480,44 +480,44 @@ LABEL_16:
 
           else
           {
-            v27 = v4;
+            shortValue = v4;
           }
 
           v8 = v25;
         }
 
-        [(VenuesManager *)v2 setDisplayedFloorOrdinal:v27 forBuildingsInVenue:v3];
+        [(VenuesManager *)selfCopy setDisplayedFloorOrdinal:shortValue forBuildingsInVenue:venueWithFocus];
       }
     }
   }
 }
 
-- (void)setSearchResultCountInVenue:(id)a3
+- (void)setSearchResultCountInVenue:(id)venue
 {
-  v7 = a3;
+  venueCopy = venue;
   if (![NSDictionary dictionary:self->_searchResultCountInVenue isEqualToDictionary:?])
   {
-    v4 = [v7 copy];
+    v4 = [venueCopy copy];
     searchResultCountInVenue = self->_searchResultCountInVenue;
     self->_searchResultCountInVenue = v4;
 
-    v6 = [(VenuesManager *)self venueFloorViewController];
-    [v6 didChangeSearchResultsInVenue];
+    venueFloorViewController = [(VenuesManager *)self venueFloorViewController];
+    [venueFloorViewController didChangeSearchResultsInVenue];
   }
 }
 
-- (id)venue:(id)a3 buildingWithId:(unint64_t)a4
+- (id)venue:(id)venue buildingWithId:(unint64_t)id
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a3 buildings];
-  v6 = v5;
+  buildings = [venue buildings];
+  v6 = buildings;
   v7 = &__NSArray0__struct;
-  if (v5)
+  if (buildings)
   {
-    v7 = v5;
+    v7 = buildings;
   }
 
   v8 = v7;
@@ -537,7 +537,7 @@ LABEL_16:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 buildingId] == a4)
+        if ([v13 buildingId] == id)
         {
           v14 = v13;
           goto LABEL_13;
@@ -560,15 +560,15 @@ LABEL_13:
   return v14;
 }
 
-- (void)mapView:(id)a3 didChangeDisplayedFloorOrdinal:(signed __int16)a4 forVenue:(id)a5
+- (void)mapView:(id)view didChangeDisplayedFloorOrdinal:(signed __int16)ordinal forVenue:(id)venue
 {
-  v6 = a5;
+  venueCopy = venue;
   [(VenuesManager *)self notifyChangeObservers];
   [(VenuesManager *)self updateUserLocation];
-  v7 = [(VenuesManager *)self pendingDisplayFloorForSelectionVenueID];
-  v8 = [v6 venueID];
+  pendingDisplayFloorForSelectionVenueID = [(VenuesManager *)self pendingDisplayFloorForSelectionVenueID];
+  venueID = [venueCopy venueID];
 
-  if (v7 == v8)
+  if (pendingDisplayFloorForSelectionVenueID == venueID)
   {
     [(VenuesManager *)self setPendingDisplayFloorForSelectionVenueID:0];
   }
@@ -578,20 +578,20 @@ LABEL_13:
   [(VenuesManager *)self updateDimmingOutsideVenue];
 }
 
-- (void)mapView:(id)a3 didChangeFocusedVenue:(id)a4 focusedBuilding:(id)a5
+- (void)mapView:(id)view didChangeFocusedVenue:(id)venue focusedBuilding:(id)building
 {
-  v27 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  viewCopy = view;
+  venueCopy = venue;
+  buildingCopy = building;
+  v10 = buildingCopy;
+  if (venueCopy)
   {
-    [(VenuesManager *)self displayUserLocationFloorOrdinalIfNeededWithVenue:v8 asNewlyFocusedVenue:1];
+    [(VenuesManager *)self displayUserLocationFloorOrdinalIfNeededWithVenue:venueCopy asNewlyFocusedVenue:1];
     [(VenuesManager *)self updateFocusedVenueFloor];
     [(VenuesManager *)self displayFloorForCurrentOrPendingSelection];
   }
 
-  else if (!v9)
+  else if (!buildingCopy)
   {
     [(VenuesManager *)self setSearchVenueIdentifier:0];
     v14 = 0;
@@ -600,9 +600,9 @@ LABEL_13:
   }
 
   v11 = +[GEOAPSharedStateData sharedData];
-  v12 = [v11 venueExperienceShown];
+  venueExperienceShown = [v11 venueExperienceShown];
 
-  if (v12)
+  if (venueExperienceShown)
   {
     goto LABEL_8;
   }
@@ -616,19 +616,19 @@ LABEL_7:
   [GEOAPPortal captureUserAction:v13 target:0 value:0];
 LABEL_8:
   [(VenuesManager *)self updateUserLocation];
-  v16 = [(VenuesManager *)self mapView];
-  v17 = [v16 displayedFloorIsDefaultForBuildingsInVenue:v8];
+  mapView = [(VenuesManager *)self mapView];
+  v17 = [mapView displayedFloorIsDefaultForBuildingsInVenue:venueCopy];
 
   if (v17)
   {
-    v18 = [(VenuesManager *)self venueWithFocus];
+    venueWithFocus = [(VenuesManager *)self venueWithFocus];
 
-    v19 = [(VenuesManager *)self floorOrdinalWithFocus];
-    if (v18)
+    floorOrdinalWithFocus = [(VenuesManager *)self floorOrdinalWithFocus];
+    if (venueWithFocus)
     {
-      v20 = [(VenuesManager *)self searchVenueIdentifier];
-      v21 = [(VenuesManager *)self venueWithFocus];
-      v22 = v20 == [v21 venueID];
+      searchVenueIdentifier = [(VenuesManager *)self searchVenueIdentifier];
+      venueWithFocus2 = [(VenuesManager *)self venueWithFocus];
+      v22 = searchVenueIdentifier == [venueWithFocus2 venueID];
     }
 
     else
@@ -636,33 +636,33 @@ LABEL_8:
       v22 = 1;
     }
 
-    v23 = [v8 mapIdentifier];
-    v24 = [(VenuesManager *)self visitedVenues];
-    v25 = [v24 objectForKeyedSubscript:v23];
+    mapIdentifier = [venueCopy mapIdentifier];
+    visitedVenues = [(VenuesManager *)self visitedVenues];
+    v25 = [visitedVenues objectForKeyedSubscript:mapIdentifier];
 
-    if ((v19 & 0x80000000) == 0 || v22 || v25)
+    if ((floorOrdinalWithFocus & 0x80000000) == 0 || v22 || v25)
     {
-      v26 = [(VenuesManager *)self displayedFloorOrdinalForBuildingsInVenue:v8];
+      v26 = [(VenuesManager *)self displayedFloorOrdinalForBuildingsInVenue:venueCopy];
     }
 
     else
     {
-      v26 = [(VenuesManager *)self firstAbovegroundFloorOrdinalForVenue:v8];
+      v26 = [(VenuesManager *)self firstAbovegroundFloorOrdinalForVenue:venueCopy];
     }
 
-    [(VenuesManager *)self setDisplayedFloorOrdinal:v26 forBuildingsInVenue:v8];
+    [(VenuesManager *)self setDisplayedFloorOrdinal:v26 forBuildingsInVenue:venueCopy];
   }
 
   [(VenuesManager *)self updateDimmingOutsideVenue];
   [(VenuesManager *)self notifyChangeObservers];
 }
 
-- (BOOL)mapViewShouldHandleTapToDeselect:(id)a3
+- (BOOL)mapViewShouldHandleTapToDeselect:(id)deselect
 {
-  v4 = [(VenuesManager *)self venueFloorViewController];
-  v5 = [v4 isOpen];
+  venueFloorViewController = [(VenuesManager *)self venueFloorViewController];
+  isOpen = [venueFloorViewController isOpen];
 
-  if (v5)
+  if (isOpen)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -672,32 +672,32 @@ LABEL_8:
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  return v5 ^ 1;
+  return isOpen ^ 1;
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated
 {
-  v6 = [(VenuesManager *)self venueWithFocus:a3];
+  v6 = [(VenuesManager *)self venueWithFocus:view];
   [(VenuesManager *)self displayUserLocationFloorOrdinalIfNeededWithVenue:v6 asNewlyFocusedVenue:0];
 }
 
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4
+- (void)mapView:(id)view didUpdateUserLocation:(id)location
 {
-  [(VenuesManager *)self updateUserLocation:a3];
-  v5 = [(VenuesManager *)self venueWithFocus];
-  [(VenuesManager *)self displayUserLocationFloorOrdinalIfNeededWithVenue:v5 asNewlyFocusedVenue:0];
+  [(VenuesManager *)self updateUserLocation:view];
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
+  [(VenuesManager *)self displayUserLocationFloorOrdinalIfNeededWithVenue:venueWithFocus asNewlyFocusedVenue:0];
 }
 
-- (void)presentPlaceCardForVenueWithFocusAndAddToHistory:(BOOL)a3 source:(unint64_t)a4 centeringOnVenue:(BOOL)a5
+- (void)presentPlaceCardForVenueWithFocusAndAddToHistory:(BOOL)history source:(unint64_t)source centeringOnVenue:(BOOL)venue
 {
-  v9 = [(VenuesManager *)self venueWithFocus];
-  v10 = v9;
-  if (v9)
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
+  v10 = venueWithFocus;
+  if (venueWithFocus)
   {
-    v11 = [v9 mapIdentifier];
-    if (v11)
+    mapIdentifier = [venueWithFocus mapIdentifier];
+    if (mapIdentifier)
     {
-      v12 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:v11];
+      v12 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:mapIdentifier];
       v13 = +[MKMapService sharedService];
       v21 = v12;
       v14 = [NSArray arrayWithObjects:&v21 count:1];
@@ -709,9 +709,9 @@ LABEL_8:
       v16[2] = sub_100D79E58;
       v16[3] = &unk_101653288;
       objc_copyWeak(v17, &location);
-      v18 = a5;
-      v19 = a3;
-      v17[1] = a4;
+      venueCopy = venue;
+      historyCopy = history;
+      v17[1] = source;
       [v15 submitWithHandler:v16 networkActivity:0];
       objc_destroyWeak(v17);
       objc_destroyWeak(&location);
@@ -735,13 +735,13 @@ LABEL_8:
 
 - (void)displayFloorForCurrentOrPendingSelection
 {
-  v3 = [(VenuesManager *)self delegate];
-  v5 = [v3 mapSelectionManagerForVenuesManager:self];
+  delegate = [(VenuesManager *)self delegate];
+  v5 = [delegate mapSelectionManagerForVenuesManager:self];
 
-  v4 = [v5 labelMarker];
-  if (v4)
+  labelMarker = [v5 labelMarker];
+  if (labelMarker)
   {
-    [(VenuesManager *)self displayFloorForSelectedLabelMarker:v4];
+    [(VenuesManager *)self displayFloorForSelectedLabelMarker:labelMarker];
   }
 
   else
@@ -750,26 +750,26 @@ LABEL_8:
   }
 }
 
-- (void)setPendingValuesAndDisplayVenueID:(id)a3 floorOrdinal:(signed __int16)a4
+- (void)setPendingValuesAndDisplayVenueID:(id)d floorOrdinal:(signed __int16)ordinal
 {
-  v4 = a4;
-  -[VenuesManager setPendingDisplayFloorForSelectionVenueID:](self, "setPendingDisplayFloorForSelectionVenueID:", [a3 venueID]);
-  [(VenuesManager *)self setPendingDisplayFloorForSelectionFloorOrdinal:v4];
+  ordinalCopy = ordinal;
+  -[VenuesManager setPendingDisplayFloorForSelectionVenueID:](self, "setPendingDisplayFloorForSelectionVenueID:", [d venueID]);
+  [(VenuesManager *)self setPendingDisplayFloorForSelectionFloorOrdinal:ordinalCopy];
 
   [(VenuesManager *)self displayFloorForPendingSelection];
 }
 
-- (void)displayFloorForSelectedLabelMarker:(id)a3
+- (void)displayFloorForSelectedLabelMarker:(id)marker
 {
-  v15 = a3;
-  v4 = [v15 featureAnnotation];
-  v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation];
+  markerCopy = marker;
+  featureAnnotation = [markerCopy featureAnnotation];
+  v5 = [featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation];
 
   if (v5)
   {
-    v6 = [v15 featureAnnotation];
-    v7 = [v6 searchResult];
-    v8 = [v7 type] == 3;
+    featureAnnotation2 = [markerCopy featureAnnotation];
+    searchResult = [featureAnnotation2 searchResult];
+    v8 = [searchResult type] == 3;
   }
 
   else
@@ -777,83 +777,83 @@ LABEL_8:
     v8 = 0;
   }
 
-  if ([v15 hasVenueLookInsideFloorOrdinal])
+  if ([markerCopy hasVenueLookInsideFloorOrdinal])
   {
-    v9 = [v15 venueLookInsideFloorOrdinal];
+    venueLookInsideFloorOrdinal = [markerCopy venueLookInsideFloorOrdinal];
 LABEL_8:
-    [(VenuesManager *)self setPendingValuesAndDisplayVenueID:v15 floorOrdinal:v9];
+    [(VenuesManager *)self setPendingValuesAndDisplayVenueID:markerCopy floorOrdinal:venueLookInsideFloorOrdinal];
     goto LABEL_9;
   }
 
-  if ([v15 venueLevelID] != 0 || v8)
+  if ([markerCopy venueLevelID] != 0 || v8)
   {
-    v9 = [v15 venueFloorOrdinal];
+    venueLookInsideFloorOrdinal = [markerCopy venueFloorOrdinal];
     goto LABEL_8;
   }
 
-  if ([v15 venueID])
+  if ([markerCopy venueID])
   {
     WeakRetained = objc_loadWeakRetained(&self->_mapView);
-    v11 = [WeakRetained venueWithID:{objc_msgSend(v15, "venueID")}];
+    v11 = [WeakRetained venueWithID:{objc_msgSend(markerCopy, "venueID")}];
 
-    v12 = [v11 mapIdentifier];
-    if (v12)
+    mapIdentifier = [v11 mapIdentifier];
+    if (mapIdentifier)
     {
-      [(VenuesManager *)self recordVenueVisitWithIdentifier:v12];
-      v13 = [(VenuesManager *)self mapView];
-      v14 = [v13 defaultFloorForBuildingsInVenue:v11];
+      [(VenuesManager *)self recordVenueVisitWithIdentifier:mapIdentifier];
+      mapView = [(VenuesManager *)self mapView];
+      v14 = [mapView defaultFloorForBuildingsInVenue:v11];
 
-      [(VenuesManager *)self setPendingValuesAndDisplayVenueID:v15 floorOrdinal:v14];
+      [(VenuesManager *)self setPendingValuesAndDisplayVenueID:markerCopy floorOrdinal:v14];
     }
   }
 
 LABEL_9:
 }
 
-- (void)displayFloorForSelectedSearchResult:(id)a3
+- (void)displayFloorForSelectedSearchResult:(id)result
 {
-  v4 = [a3 mapItem];
-  v5 = [v4 _venueInfo];
+  mapItem = [result mapItem];
+  _venueInfo = [mapItem _venueInfo];
 
-  if (v5 && ([v5 venueIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_hasVenueID"), v6, v7))
+  if (_venueInfo && ([_venueInfo venueIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_hasVenueID"), v6, v7))
   {
-    v8 = [v5 venueIdentifier];
-    v9 = [v8 venueID];
+    venueIdentifier = [_venueInfo venueIdentifier];
+    venueID = [venueIdentifier venueID];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v5 venueIdentifier];
-    v11 = [v10 componentIdentifiers];
+    venueIdentifier2 = [_venueInfo venueIdentifier];
+    componentIdentifiers = [venueIdentifier2 componentIdentifiers];
 
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
-    if (v12)
+    ordinal = [componentIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
+    if (ordinal)
     {
       v13 = *v19;
       while (2)
       {
-        for (i = 0; i != v12; i = i + 1)
+        for (i = 0; i != ordinal; i = i + 1)
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(componentIdentifiers);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          v16 = [v15 floorInfo];
+          floorInfo = [v15 floorInfo];
 
-          if (v16)
+          if (floorInfo)
           {
-            v17 = [v15 floorInfo];
-            v12 = [v17 ordinal];
+            floorInfo2 = [v15 floorInfo];
+            ordinal = [floorInfo2 ordinal];
 
             goto LABEL_14;
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
-        if (v12)
+        ordinal = [componentIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
+        if (ordinal)
         {
           continue;
         }
@@ -862,24 +862,24 @@ LABEL_9:
       }
     }
 
-    v9 = 0;
+    venueID = 0;
 LABEL_14:
   }
 
   else
   {
-    v12 = 0;
-    v9 = 0;
+    ordinal = 0;
+    venueID = 0;
   }
 
-  [(VenuesManager *)self setPendingDisplayFloorForSelectionVenueID:v9];
-  [(VenuesManager *)self setPendingDisplayFloorForSelectionFloorOrdinal:v12];
+  [(VenuesManager *)self setPendingDisplayFloorForSelectionVenueID:venueID];
+  [(VenuesManager *)self setPendingDisplayFloorForSelectionFloorOrdinal:ordinal];
   [(VenuesManager *)self displayFloorForPendingSelection];
 }
 
-- (void)setVenueCardStack:(id)a3
+- (void)setVenueCardStack:(id)stack
 {
-  obj = a3;
+  obj = stack;
   WeakRetained = objc_loadWeakRetained(&self->_venueCardStack);
 
   if (WeakRetained != obj)
@@ -894,9 +894,9 @@ LABEL_14:
   }
 }
 
-- (void)setVenueFloorViewController:(id)a3
+- (void)setVenueFloorViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_venueFloorViewController);
 
   v5 = obj;
@@ -914,8 +914,8 @@ LABEL_14:
     }
 
     objc_storeWeak(&self->_venueFloorViewController, obj);
-    v10 = [(VenuesManager *)self userLocationFloorOrdinal];
-    [obj setUserLocationFloorOrdinal:v10];
+    userLocationFloorOrdinal = [(VenuesManager *)self userLocationFloorOrdinal];
+    [obj setUserLocationFloorOrdinal:userLocationFloorOrdinal];
 
     v11 = objc_loadWeakRetained(&self->_venueFloorViewController);
     [(VenuesManager *)self addChangeObserver:v11];
@@ -927,37 +927,37 @@ LABEL_14:
   }
 }
 
-- (void)getMinZoom:(id *)a3 maxZoom:(id *)a4 forDisplayingLabelMarker:(id)a5
+- (void)getMinZoom:(id *)zoom maxZoom:(id *)maxZoom forDisplayingLabelMarker:(id)marker
 {
-  v15 = a5;
-  v8 = [(VenuesManager *)self venueWithFocus];
-  v9 = [(VenuesManager *)self venueBuildingWithFocus];
-  if ([v15 venueID] && (v10 = objc_msgSend(v15, "venueID"), v10 == objc_msgSend(v8, "venueID")))
+  markerCopy = marker;
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
+  venueBuildingWithFocus = [(VenuesManager *)self venueBuildingWithFocus];
+  if ([markerCopy venueID] && (v10 = objc_msgSend(markerCopy, "venueID"), v10 == objc_msgSend(venueWithFocus, "venueID")))
   {
-    if ([v15 venueLevelID])
+    if ([markerCopy venueLevelID])
     {
-      v11 = [(VenuesManager *)self mapView];
-      [v11 _zoomLevel];
-      *a3 = [NSNumber numberWithDouble:?];
+      mapView = [(VenuesManager *)self mapView];
+      [mapView _zoomLevel];
+      *zoom = [NSNumber numberWithDouble:?];
 
-      v12 = *a3;
+      v12 = *zoom;
     }
 
     else
     {
-      if ([v15 venueBuildingID] && (v13 = objc_msgSend(v15, "venueBuildingID"), v13 == objc_msgSend(v9, "buildingId")))
+      if ([markerCopy venueBuildingID] && (v13 = objc_msgSend(markerCopy, "venueBuildingID"), v13 == objc_msgSend(venueBuildingWithFocus, "buildingId")))
       {
-        v14 = [(VenuesManager *)self mapView];
-        [v14 zoomToFocusVenueBuilding:v9];
+        mapView2 = [(VenuesManager *)self mapView];
+        [mapView2 zoomToFocusVenueBuilding:venueBuildingWithFocus];
       }
 
       else
       {
-        v14 = [(VenuesManager *)self mapView];
-        [v14 zoomToFocusVenue:v8];
+        mapView2 = [(VenuesManager *)self mapView];
+        [mapView2 zoomToFocusVenue:venueWithFocus];
       }
 
-      *a3 = [NSNumber numberWithDouble:?];
+      *zoom = [NSNumber numberWithDouble:?];
 
       v12 = 0;
     }
@@ -966,22 +966,22 @@ LABEL_14:
   else
   {
     v12 = 0;
-    *a3 = 0;
+    *zoom = 0;
   }
 
-  *a4 = v12;
+  *maxZoom = v12;
 }
 
-- (void)getMinZoom:(id *)a3 maxZoom:(id *)a4 resultsForDeterminingRegion:(id *)a5 forDisplayingResults:(id)a6 fromSearch:(id)a7
+- (void)getMinZoom:(id *)zoom maxZoom:(id *)maxZoom resultsForDeterminingRegion:(id *)region forDisplayingResults:(id)results fromSearch:(id)search
 {
-  v11 = a6;
-  v12 = [a7 venueCategoryItem];
-  v13 = [v12 venueIdentifier];
+  resultsCopy = results;
+  venueCategoryItem = [search venueCategoryItem];
+  venueIdentifier = [venueCategoryItem venueIdentifier];
 
-  if (v13 && [v13 venueID])
+  if (venueIdentifier && [venueIdentifier venueID])
   {
-    v14 = [(VenuesManager *)self mapView];
-    v15 = [v14 venueWithID:{objc_msgSend(v13, "venueID")}];
+    mapView = [(VenuesManager *)self mapView];
+    v15 = [mapView venueWithID:{objc_msgSend(venueIdentifier, "venueID")}];
 
     v69 = v15;
     if (v15)
@@ -990,12 +990,12 @@ LABEL_14:
       v79 = 0u;
       v76 = 0u;
       v77 = 0u;
-      v16 = [v13 componentIdentifiers];
-      v17 = [v16 countByEnumeratingWithState:&v76 objects:v81 count:16];
+      componentIdentifiers = [venueIdentifier componentIdentifiers];
+      v17 = [componentIdentifiers countByEnumeratingWithState:&v76 objects:v81 count:16];
       if (v17)
       {
         v18 = v17;
-        v19 = a3;
+        zoomCopy = zoom;
         v20 = *v77;
         while (2)
         {
@@ -1003,7 +1003,7 @@ LABEL_14:
           {
             if (*v77 != v20)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(componentIdentifiers);
             }
 
             v22 = *(*(&v76 + 1) + 8 * i);
@@ -1018,7 +1018,7 @@ LABEL_14:
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v76 objects:v81 count:16];
+          v18 = [componentIdentifiers countByEnumeratingWithState:&v76 objects:v81 count:16];
           if (v18)
           {
             continue;
@@ -1029,7 +1029,7 @@ LABEL_14:
 
         v24 = 0;
 LABEL_17:
-        a3 = v19;
+        zoom = zoomCopy;
       }
 
       else
@@ -1055,58 +1055,58 @@ LABEL_17:
     v15 = 0;
   }
 
-  v71 = [(VenuesManager *)self venueWithFocus];
-  v26 = [(VenuesManager *)self venueBuildingWithFocus];
-  v65 = self;
-  v66 = v26;
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
+  venueBuildingWithFocus = [(VenuesManager *)self venueBuildingWithFocus];
+  selfCopy = self;
+  v66 = venueBuildingWithFocus;
   v67 = v15;
   if (v15)
   {
-    v27 = [(VenuesManager *)self mapView];
-    [v27 zoomToFocusVenueBuilding:v15];
+    mapView2 = [(VenuesManager *)self mapView];
+    [mapView2 zoomToFocusVenueBuilding:v15];
 LABEL_24:
     v29 = v28;
     v30 = 0;
 LABEL_25:
-    v31 = v71;
+    v31 = venueWithFocus;
     goto LABEL_26;
   }
 
   if (v25)
   {
-    v27 = [(VenuesManager *)self mapView];
-    [v27 zoomToFocusVenue:v69];
+    mapView2 = [(VenuesManager *)self mapView];
+    [mapView2 zoomToFocusVenue:v69];
     goto LABEL_24;
   }
 
-  if (v26)
+  if (venueBuildingWithFocus)
   {
-    v49 = v26;
-    v27 = [(VenuesManager *)self mapView];
-    [v27 zoomToFocusVenueBuilding:v49];
+    v49 = venueBuildingWithFocus;
+    mapView2 = [(VenuesManager *)self mapView];
+    [mapView2 zoomToFocusVenueBuilding:v49];
     v29 = v50;
     v30 = 1;
     goto LABEL_25;
   }
 
-  v31 = v71;
-  if (!v71)
+  v31 = venueWithFocus;
+  if (!venueWithFocus)
   {
-    *a3 = 0;
-    *a4 = 0;
+    *zoom = 0;
+    *maxZoom = 0;
     goto LABEL_51;
   }
 
-  v27 = [(VenuesManager *)self mapView];
-  [v27 zoomToFocusVenue:v71];
+  mapView2 = [(VenuesManager *)self mapView];
+  [mapView2 zoomToFocusVenue:venueWithFocus];
   v29 = v51;
   v30 = 1;
 LABEL_26:
 
   if (v29 <= 0.0)
   {
-    *a3 = 0;
-    *a4 = 0;
+    *zoom = 0;
+    *maxZoom = 0;
     if (v30)
     {
       goto LABEL_35;
@@ -1116,29 +1116,29 @@ LABEL_26:
   }
 
   v32 = [NSNumber numberWithDouble:v29];
-  *a3 = v32;
+  *zoom = v32;
 
-  v33 = [(VenuesManager *)self mapView];
-  [v33 _zoomLevel];
+  mapView3 = [(VenuesManager *)self mapView];
+  [mapView3 _zoomLevel];
   if (v34 < v29)
   {
 
     goto LABEL_34;
   }
 
-  if (!v71)
+  if (!venueWithFocus)
   {
 LABEL_34:
-    *a4 = 0;
-    v31 = v71;
+    *maxZoom = 0;
+    v31 = venueWithFocus;
     if (v30)
     {
       goto LABEL_35;
     }
 
 LABEL_51:
-    v48 = a5;
-    *a5 = [v11 copy];
+    regionCopy2 = region;
+    *region = [resultsCopy copy];
     if (!v31)
     {
       goto LABEL_58;
@@ -1147,27 +1147,27 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  v35 = [(VenuesManager *)self mapView];
-  [v35 _zoomLevel];
-  *a4 = [NSNumber numberWithDouble:?];
+  mapView4 = [(VenuesManager *)self mapView];
+  [mapView4 _zoomLevel];
+  *maxZoom = [NSNumber numberWithDouble:?];
 
-  v31 = v71;
+  v31 = venueWithFocus;
   if (!v30)
   {
     goto LABEL_51;
   }
 
 LABEL_35:
-  v63 = a3;
-  v60 = a4;
-  v61 = v13;
+  zoomCopy2 = zoom;
+  maxZoomCopy = maxZoom;
+  v61 = venueIdentifier;
   v70 = objc_opt_new();
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v62 = v11;
-  v36 = v11;
+  v62 = resultsCopy;
+  v36 = resultsCopy;
   v37 = [v36 countByEnumeratingWithState:&v72 objects:v80 count:16];
   if (v37)
   {
@@ -1183,13 +1183,13 @@ LABEL_35:
         }
 
         v41 = *(*(&v72 + 1) + 8 * j);
-        v42 = [v41 mapItem];
-        v43 = [v42 _venueInfo];
-        v44 = [v43 venueIdentifier];
-        v45 = [v44 venueID];
-        v46 = [v71 venueID];
+        mapItem = [v41 mapItem];
+        _venueInfo = [mapItem _venueInfo];
+        venueIdentifier2 = [_venueInfo venueIdentifier];
+        venueID = [venueIdentifier2 venueID];
+        venueID2 = [venueWithFocus venueID];
 
-        if (v45 == v46)
+        if (venueID == venueID2)
         {
           [v70 addObject:v41];
         }
@@ -1202,37 +1202,37 @@ LABEL_35:
   }
 
   v47 = v70;
-  v48 = a5;
-  *a5 = v47;
+  regionCopy2 = region;
+  *region = v47;
 
-  v13 = v61;
-  v11 = v62;
-  a4 = v60;
-  a3 = v63;
-  v31 = v71;
-  if (v71)
+  venueIdentifier = v61;
+  resultsCopy = v62;
+  maxZoom = maxZoomCopy;
+  zoom = zoomCopy2;
+  v31 = venueWithFocus;
+  if (venueWithFocus)
   {
 LABEL_52:
-    if ([*v48 count] == 1)
+    if ([*regionCopy2 count] == 1)
     {
-      v52 = [*v48 firstObject];
-      v53 = [v52 mapItem];
-      if ([v53 _venueFeatureType] == 4)
+      firstObject = [*regionCopy2 firstObject];
+      mapItem2 = [firstObject mapItem];
+      if ([mapItem2 _venueFeatureType] == 4)
       {
-        v64 = a3;
-        v54 = [v52 mapItem];
-        v55 = [v54 _venueInfo];
-        v56 = [v55 venueIdentifier];
-        v57 = [v56 venueID];
-        v58 = [v71 venueID];
+        zoomCopy3 = zoom;
+        mapItem3 = [firstObject mapItem];
+        _venueInfo2 = [mapItem3 _venueInfo];
+        venueIdentifier3 = [_venueInfo2 venueIdentifier];
+        venueID3 = [venueIdentifier3 venueID];
+        venueID4 = [venueWithFocus venueID];
 
-        if (v57 == v58)
+        if (venueID3 == venueID4)
         {
-          v59 = [(VenuesManager *)v65 mapView];
-          [v59 _zoomLevel];
-          *v64 = [NSNumber numberWithDouble:?];
+          mapView5 = [(VenuesManager *)selfCopy mapView];
+          [mapView5 _zoomLevel];
+          *zoomCopy3 = [NSNumber numberWithDouble:?];
 
-          *a4 = *v64;
+          *maxZoom = *zoomCopy3;
         }
       }
 
@@ -1240,39 +1240,39 @@ LABEL_52:
       {
       }
 
-      v31 = v71;
+      v31 = venueWithFocus;
     }
   }
 
 LABEL_58:
 }
 
-- (BOOL)hasSearchResultsInVenue:(id)a3 forFloorOrdinal:(signed __int16)a4
+- (BOOL)hasSearchResultsInVenue:(id)venue forFloorOrdinal:(signed __int16)ordinal
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100D7AE1C;
   v5[3] = &unk_101653200;
-  v6 = a4;
-  return [(VenuesManager *)self hasSearchResultsInVenue:a3 matching:v5];
+  ordinalCopy = ordinal;
+  return [(VenuesManager *)self hasSearchResultsInVenue:venue matching:v5];
 }
 
-- (BOOL)hasSearchResultsInVenue:(id)a3 matching:(id)a4
+- (BOOL)hasSearchResultsInVenue:(id)venue matching:(id)matching
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  venueCopy = venue;
+  matchingCopy = matching;
+  if (venueCopy)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = [(VenuesManager *)self searchResultCountInVenue];
-    v9 = v8;
+    searchResultCountInVenue = [(VenuesManager *)self searchResultCountInVenue];
+    v9 = searchResultCountInVenue;
     v10 = &__NSArray0__struct;
-    if (v8)
+    if (searchResultCountInVenue)
     {
-      v10 = v8;
+      v10 = searchResultCountInVenue;
     }
 
     v11 = v10;
@@ -1281,7 +1281,7 @@ LABEL_58:
     if (v12)
     {
       v13 = v12;
-      v23 = self;
+      selfCopy = self;
       v14 = *v25;
       while (2)
       {
@@ -1293,16 +1293,16 @@ LABEL_58:
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v16 venueID];
-          if (v17 == [v6 venueID])
+          venueID = [v16 venueID];
+          if (venueID == [venueCopy venueID])
           {
-            if (v7[2](v7, v16))
+            if (matchingCopy[2](matchingCopy, v16))
             {
-              v18 = [(VenuesManager *)v23 searchResultCountInVenue];
-              v19 = [v18 objectForKeyedSubscript:v16];
-              v20 = [v19 shortValue];
+              searchResultCountInVenue2 = [(VenuesManager *)selfCopy searchResultCountInVenue];
+              v19 = [searchResultCountInVenue2 objectForKeyedSubscript:v16];
+              shortValue = [v19 shortValue];
 
-              if (v20)
+              if (shortValue)
               {
                 v21 = 1;
                 goto LABEL_17;
@@ -1333,53 +1333,53 @@ LABEL_17:
   return v21;
 }
 
-- (void)displayUserLocationFloorOrdinalIfNeededWithVenue:(id)a3 asNewlyFocusedVenue:(BOOL)a4
+- (void)displayUserLocationFloorOrdinalIfNeededWithVenue:(id)venue asNewlyFocusedVenue:(BOOL)focusedVenue
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [(VenuesManager *)self mapView];
-  v7 = [v6 userTrackingMode];
+  focusedVenueCopy = focusedVenue;
+  venueCopy = venue;
+  mapView = [(VenuesManager *)self mapView];
+  userTrackingMode = [mapView userTrackingMode];
 
-  if (v7 || v4)
+  if (userTrackingMode || focusedVenueCopy)
   {
-    if (!v4 || (-[VenuesManager mapView](self, "mapView"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 displayedFloorIsDefaultForBuildingsInVenue:v15], v8, v9))
+    if (!focusedVenueCopy || (-[VenuesManager mapView](self, "mapView"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 displayedFloorIsDefaultForBuildingsInVenue:venueCopy], v8, v9))
     {
-      v10 = [(VenuesManager *)self userLocationFloorOrdinalInVenue:v15];
+      v10 = [(VenuesManager *)self userLocationFloorOrdinalInVenue:venueCopy];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 shortValue];
-        v13 = [(VenuesManager *)self mapView];
-        v14 = [v13 displayedFloorOrdinalForBuildingsInVenue:v15];
+        shortValue = [v10 shortValue];
+        mapView2 = [(VenuesManager *)self mapView];
+        v14 = [mapView2 displayedFloorOrdinalForBuildingsInVenue:venueCopy];
 
-        if (v12 != v14)
+        if (shortValue != v14)
         {
-          -[VenuesManager setDisplayedFloorOrdinal:forBuildingsInVenue:](self, "setDisplayedFloorOrdinal:forBuildingsInVenue:", [v11 shortValue], v15);
+          -[VenuesManager setDisplayedFloorOrdinal:forBuildingsInVenue:](self, "setDisplayedFloorOrdinal:forBuildingsInVenue:", [v11 shortValue], venueCopy);
         }
       }
     }
   }
 }
 
-- (id)userLocationFloorOrdinalInVenue:(id)a3
+- (id)userLocationFloorOrdinalInVenue:(id)venue
 {
-  v4 = a3;
-  v5 = [(VenuesManager *)self userLocationFloorOrdinal];
-  if (v5)
+  venueCopy = venue;
+  userLocationFloorOrdinal = [(VenuesManager *)self userLocationFloorOrdinal];
+  if (userLocationFloorOrdinal)
   {
-    v6 = [(VenuesManager *)self mapView];
-    v7 = [v6 userLocation];
-    [v7 coordinate];
+    mapView = [(VenuesManager *)self mapView];
+    userLocation = [mapView userLocation];
+    [userLocation coordinate];
 
-    v8 = [(VenuesManager *)self mapView];
-    v9 = [v8 _mapLayer];
+    mapView2 = [(VenuesManager *)self mapView];
+    _mapLayer = [mapView2 _mapLayer];
     VKLocationCoordinate2DMake();
-    v10 = [v9 venueAtLocation:?];
+    v10 = [_mapLayer venueAtLocation:?];
 
-    v11 = [v10 venueID];
-    if (v11 == [v4 venueID])
+    venueID = [v10 venueID];
+    if (venueID == [venueCopy venueID])
     {
-      v12 = v5;
+      v12 = userLocationFloorOrdinal;
     }
 
     else
@@ -1401,11 +1401,11 @@ LABEL_17:
 - (id)_userVenueMarker
 {
   v3 = +[MKLocationManager sharedLocationManager];
-  v4 = [v3 lastGoodLocation];
+  lastGoodLocation = [v3 lastGoodLocation];
 
-  if (v4 || (+[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isAuthorizedForPreciseLocation], v5, v6))
+  if (lastGoodLocation || (+[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isAuthorizedForPreciseLocation], v5, v6))
   {
-    [v4 coordinate];
+    [lastGoodLocation coordinate];
     v7 = [(VenuesManager *)self venueFeatureMarkerAtCoordinate:?];
   }
 
@@ -1417,95 +1417,95 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)isUserAtVenueWithID:(unint64_t)a3
+- (BOOL)isUserAtVenueWithID:(unint64_t)d
 {
-  v3 = a3;
-  if (a3)
+  dCopy = d;
+  if (d)
   {
-    v4 = [(VenuesManager *)self _userVenueMarker];
-    LOBYTE(v3) = [v4 venueID] == v3;
+    _userVenueMarker = [(VenuesManager *)self _userVenueMarker];
+    LOBYTE(dCopy) = [_userVenueMarker venueID] == dCopy;
   }
 
-  return v3;
+  return dCopy;
 }
 
-- (BOOL)isUserAtSameVenueAsCoordinate:(CLLocationCoordinate2D)a3
+- (BOOL)isUserAtSameVenueAsCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  v3 = self;
-  v4 = [(VenuesManager *)self venueFeatureMarkerAtCoordinate:a3.latitude, a3.longitude];
-  LOBYTE(v3) = -[VenuesManager isUserAtVenueWithID:](v3, "isUserAtVenueWithID:", [v4 venueID]);
+  selfCopy = self;
+  v4 = [(VenuesManager *)self venueFeatureMarkerAtCoordinate:coordinate.latitude, coordinate.longitude];
+  LOBYTE(selfCopy) = -[VenuesManager isUserAtVenueWithID:](selfCopy, "isUserAtVenueWithID:", [v4 venueID]);
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isUserAtSameVenueAsMapItem:(id)a3
+- (BOOL)isUserAtSameVenueAsMapItem:(id)item
 {
-  v4 = [a3 _venueInfo];
-  v5 = [v4 venueIdentifier];
-  LOBYTE(self) = -[VenuesManager isUserAtVenueWithID:](self, "isUserAtVenueWithID:", [v5 venueID]);
+  _venueInfo = [item _venueInfo];
+  venueIdentifier = [_venueInfo venueIdentifier];
+  LOBYTE(self) = -[VenuesManager isUserAtVenueWithID:](self, "isUserAtVenueWithID:", [venueIdentifier venueID]);
 
   return self;
 }
 
-- (id)venueFeatureMarkerAtCoordinate:(CLLocationCoordinate2D)a3
+- (id)venueFeatureMarkerAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v5 = [(VenuesManager *)self mapView];
-  v6 = [v5 _mapLayer];
-  v7 = [v6 venueAtLocation:0 withMarginForError:{latitude, longitude}];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  mapView = [(VenuesManager *)self mapView];
+  _mapLayer = [mapView _mapLayer];
+  v7 = [_mapLayer venueAtLocation:0 withMarginForError:{latitude, longitude}];
 
   return v7;
 }
 
-- (signed)displayedFloorOrdinalForBuildingsInVenue:(id)a3
+- (signed)displayedFloorOrdinalForBuildingsInVenue:(id)venue
 {
-  v4 = a3;
-  v5 = [(VenuesManager *)self mapView];
-  v6 = [v5 displayedFloorOrdinalForBuildingsInVenue:v4];
+  venueCopy = venue;
+  mapView = [(VenuesManager *)self mapView];
+  v6 = [mapView displayedFloorOrdinalForBuildingsInVenue:venueCopy];
 
   return v6;
 }
 
-- (void)setDisplayedFloorOrdinal:(signed __int16)a3 forBuildingsInVenue:(id)a4
+- (void)setDisplayedFloorOrdinal:(signed __int16)ordinal forBuildingsInVenue:(id)venue
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(VenuesManager *)self mapView];
-  [v7 setDisplayedFloorOrdinal:v4 forBuildingsInVenue:v6];
+  ordinalCopy = ordinal;
+  venueCopy = venue;
+  mapView = [(VenuesManager *)self mapView];
+  [mapView setDisplayedFloorOrdinal:ordinalCopy forBuildingsInVenue:venueCopy];
 }
 
 - (signed)floorOrdinalWithFocus
 {
-  v2 = self;
-  v3 = [(VenuesManager *)self venueWithFocus];
-  LOWORD(v2) = [(VenuesManager *)v2 displayedFloorOrdinalForBuildingsInVenue:v3];
+  selfCopy = self;
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
+  LOWORD(selfCopy) = [(VenuesManager *)selfCopy displayedFloorOrdinalForBuildingsInVenue:venueWithFocus];
 
-  return v2;
+  return selfCopy;
 }
 
 - (VKVenueBuildingFeatureMarker)venueBuildingWithFocus
 {
-  v2 = [(VenuesManager *)self mapView];
-  v3 = [v2 venueBuildingWithFocus];
+  mapView = [(VenuesManager *)self mapView];
+  venueBuildingWithFocus = [mapView venueBuildingWithFocus];
 
-  return v3;
+  return venueBuildingWithFocus;
 }
 
-- (void)visitedVenuesEvictionTimerFired:(id)a3
+- (void)visitedVenuesEvictionTimerFired:(id)fired
 {
-  v4 = [(VenuesManager *)self visitedVenues];
-  v5 = [v4 keysOfEntriesPassingTest:&stru_1016531E0];
+  visitedVenues = [(VenuesManager *)self visitedVenues];
+  v5 = [visitedVenues keysOfEntriesPassingTest:&stru_1016531E0];
 
   if ([v5 count])
   {
-    v6 = [(VenuesManager *)self visitedVenues];
-    v7 = [v5 allObjects];
-    [v6 removeObjectsForKeys:v7];
+    visitedVenues2 = [(VenuesManager *)self visitedVenues];
+    allObjects = [v5 allObjects];
+    [visitedVenues2 removeObjectsForKeys:allObjects];
   }
 
-  v8 = [(VenuesManager *)self visitedVenues];
-  v9 = [v8 count];
+  visitedVenues3 = [(VenuesManager *)self visitedVenues];
+  v9 = [visitedVenues3 count];
 
   if (v9)
   {
@@ -1518,36 +1518,36 @@ LABEL_17:
   }
 }
 
-- (void)recordVenueVisitWithIdentifier:(id)a3
+- (void)recordVenueVisitWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSDate date];
-  v6 = [(VenuesManager *)self visitedVenues];
-  [v6 setObject:v5 forKeyedSubscript:v4];
+  visitedVenues = [(VenuesManager *)self visitedVenues];
+  [visitedVenues setObject:v5 forKeyedSubscript:identifierCopy];
 
   [(VenuesManager *)self scheduleEviction];
 }
 
 - (void)scheduleEviction
 {
-  v3 = [(VenuesManager *)self visitedVenuesEvictionTimer];
-  v4 = [v3 isValid];
+  visitedVenuesEvictionTimer = [(VenuesManager *)self visitedVenuesEvictionTimer];
+  isValid = [visitedVenuesEvictionTimer isValid];
 
-  if ((v4 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"visitedVenuesEvictionTimerFired:" selector:0 userInfo:0 repeats:86400.0];
     [(VenuesManager *)self setVisitedVenuesEvictionTimer:v5];
 
-    v6 = [(VenuesManager *)self visitedVenuesEvictionTimer];
-    [v6 setTolerance:8640.0];
+    visitedVenuesEvictionTimer2 = [(VenuesManager *)self visitedVenuesEvictionTimer];
+    [visitedVenuesEvictionTimer2 setTolerance:8640.0];
   }
 }
 
 - (void)notifyChangeObservers
 {
-  v3 = [(VenuesManager *)self venueWithFocus];
-  v4 = [(VenuesManager *)self venueBuildingWithFocus];
-  v5 = [(VenuesManager *)self floorOrdinalWithFocus];
+  venueWithFocus = [(VenuesManager *)self venueWithFocus];
+  venueBuildingWithFocus = [(VenuesManager *)self venueBuildingWithFocus];
+  floorOrdinalWithFocus = [(VenuesManager *)self floorOrdinalWithFocus];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1568,7 +1568,7 @@ LABEL_17:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) didChangeFocusedVenue:v3 focusedBuilding:v4 displayedFloorOrdinal:v5];
+        [*(*(&v11 + 1) + 8 * v10) didChangeFocusedVenue:venueWithFocus focusedBuilding:venueBuildingWithFocus displayedFloorOrdinal:floorOrdinalWithFocus];
         v10 = v10 + 1;
       }
 
@@ -1580,36 +1580,36 @@ LABEL_17:
   }
 }
 
-- (void)addChangeObserver:(id)a3
+- (void)addChangeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = [(NSHashTable *)self->_changeObservers containsObject:v4];
-    v4 = v6;
+    v6 = observerCopy;
+    v5 = [(NSHashTable *)self->_changeObservers containsObject:observerCopy];
+    observerCopy = v6;
     if ((v5 & 1) == 0)
     {
       [(NSHashTable *)self->_changeObservers addObject:v6];
-      v4 = v6;
+      observerCopy = v6;
     }
   }
 }
 
-- (VenuesManager)initWithDelegate:(id)a3 mapView:(id)a4 userLocationView:(id)a5
+- (VenuesManager)initWithDelegate:(id)delegate mapView:(id)view userLocationView:(id)locationView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  viewCopy = view;
+  locationViewCopy = locationView;
   v19.receiver = self;
   v19.super_class = VenuesManager;
   v11 = [(VenuesManager *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeWeak(&v12->_mapView, v9);
-    objc_storeWeak(&v12->_userLocationView, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeWeak(&v12->_mapView, viewCopy);
+    objc_storeWeak(&v12->_userLocationView, locationViewCopy);
     v13 = objc_alloc_init(NSMutableDictionary);
     visitedVenues = v12->_visitedVenues;
     v12->_visitedVenues = v13;

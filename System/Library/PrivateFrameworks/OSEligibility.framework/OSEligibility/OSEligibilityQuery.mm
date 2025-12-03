@@ -1,6 +1,6 @@
 @interface OSEligibilityQuery
 - (OSEligibilityQuery)init;
-- (OSEligibilityQuery)initWithDomain:(unint64_t)a3 bundleID:(id)a4 persona:(id)a5 error:(id *)a6;
+- (OSEligibilityQuery)initWithDomain:(unint64_t)domain bundleID:(id)d persona:(id)persona error:(id *)error;
 - (OS_xpc_object)context;
 - (OS_xpc_object)status;
 @end
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (OSEligibilityQuery)initWithDomain:(unint64_t)a3 bundleID:(id)a4 persona:(id)a5 error:(id *)a6
+- (OSEligibilityQuery)initWithDomain:(unint64_t)domain bundleID:(id)d persona:(id)persona error:(id *)error
 {
   v8 = sub_25D168444();
   v10 = v9;
-  if (a5)
+  if (persona)
   {
     v11 = sub_25D168444();
     v13 = v12;
@@ -39,7 +39,7 @@
     v13 = 0;
   }
 
-  return sub_25D167C38(a3, v8, v10, v11, v13);
+  return sub_25D167C38(domain, v8, v10, v11, v13);
 }
 
 - (OSEligibilityQuery)init

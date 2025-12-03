@@ -1,22 +1,22 @@
 @interface NTKFaceComplicationConfiguration
-+ (id)defaultLocalizedNameForComplicationSlot:(id)a3;
-- (id)localizedNameForComplicationSlot:(id)a3;
++ (id)defaultLocalizedNameForComplicationSlot:(id)slot;
+- (id)localizedNameForComplicationSlot:(id)slot;
 @end
 
 @implementation NTKFaceComplicationConfiguration
 
-- (id)localizedNameForComplicationSlot:(id)a3
+- (id)localizedNameForComplicationSlot:(id)slot
 {
-  v3 = a3;
-  v4 = [objc_opt_class() defaultLocalizedNameForComplicationSlot:v3];
+  slotCopy = slot;
+  v4 = [objc_opt_class() defaultLocalizedNameForComplicationSlot:slotCopy];
 
   return v4;
 }
 
-+ (id)defaultLocalizedNameForComplicationSlot:(id)a3
++ (id)defaultLocalizedNameForComplicationSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"top-left"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"top-left"])
   {
     v4 = @"TOP_LEFT";
 LABEL_14:
@@ -26,73 +26,73 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"top-right"])
+  if ([slotCopy isEqualToString:@"top-right"])
   {
     v4 = @"TOP_RIGHT";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"top"])
+  if ([slotCopy isEqualToString:@"top"])
   {
     v4 = @"TOP";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"bottom-left"])
+  if ([slotCopy isEqualToString:@"bottom-left"])
   {
     v4 = @"BOTTOM_LEFT";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"bottom-right"])
+  if ([slotCopy isEqualToString:@"bottom-right"])
   {
     v4 = @"BOTTOM_RIGHT";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"bottom-center"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"bottom"))
+  if ([slotCopy isEqualToString:@"bottom-center"] & 1) != 0 || (objc_msgSend(slotCopy, "isEqualToString:", @"bottom"))
   {
     v4 = @"BOTTOM";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"center"])
+  if ([slotCopy isEqualToString:@"center"])
   {
     v4 = @"CENTER";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"date"])
+  if ([slotCopy isEqualToString:@"date"])
   {
     v4 = @"DATE";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"monogram"])
+  if ([slotCopy isEqualToString:@"monogram"])
   {
     v4 = @"MONOGRAM";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"subdial-left"])
+  if ([slotCopy isEqualToString:@"subdial-left"])
   {
     v4 = @"SUBDIAL_LEFT";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"subdial-right"])
+  if ([slotCopy isEqualToString:@"subdial-right"])
   {
     v4 = @"SUBDIAL_RIGHT";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"subdial-bottom"])
+  if ([slotCopy isEqualToString:@"subdial-bottom"])
   {
     v4 = @"SUBDIAL_BOTTOM";
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"subdial-top"])
+  if ([slotCopy isEqualToString:@"subdial-top"])
   {
     v4 = @"SUBDIAL_TOP";
     goto LABEL_14;

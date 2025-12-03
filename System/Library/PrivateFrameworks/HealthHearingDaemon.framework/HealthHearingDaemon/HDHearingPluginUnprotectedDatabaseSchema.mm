@@ -1,6 +1,6 @@
 @interface HDHearingPluginUnprotectedDatabaseSchema
 - (NSArray)databaseEntities;
-- (void)registerMigrationStepsForSchemaName:(id)a3 migrator:(id)a4;
+- (void)registerMigrationStepsForSchemaName:(id)name migrator:(id)migrator;
 @end
 
 @implementation HDHearingPluginUnprotectedDatabaseSchema
@@ -15,17 +15,17 @@
   return v2;
 }
 
-- (void)registerMigrationStepsForSchemaName:(id)a3 migrator:(id)a4
+- (void)registerMigrationStepsForSchemaName:(id)name migrator:(id)migrator
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 addMigrationForSchema:v6 toVersion:3 foreignKeyStatus:0 handler:&__block_literal_global_1];
-  [v5 addMigrationForSchema:v6 toVersion:4 foreignKeyStatus:0 handler:&__block_literal_global_304];
-  [v5 addMigrationForSchema:v6 toVersion:5 foreignKeyStatus:0 handler:&__block_literal_global_309];
-  [v5 addMigrationForSchema:v6 toVersion:6 foreignKeyStatus:0 handler:&__block_literal_global_314];
-  [v5 addMigrationForSchema:v6 toVersion:7 foreignKeyStatus:0 handler:&__block_literal_global_316];
-  [v5 addMigrationForSchema:v6 toVersion:8 foreignKeyStatus:0 handler:&__block_literal_global_321];
-  [v5 addMigrationForSchema:v6 toVersion:9 foreignKeyStatus:0 handler:&__block_literal_global_323];
+  migratorCopy = migrator;
+  nameCopy = name;
+  [migratorCopy addMigrationForSchema:nameCopy toVersion:3 foreignKeyStatus:0 handler:&__block_literal_global_1];
+  [migratorCopy addMigrationForSchema:nameCopy toVersion:4 foreignKeyStatus:0 handler:&__block_literal_global_304];
+  [migratorCopy addMigrationForSchema:nameCopy toVersion:5 foreignKeyStatus:0 handler:&__block_literal_global_309];
+  [migratorCopy addMigrationForSchema:nameCopy toVersion:6 foreignKeyStatus:0 handler:&__block_literal_global_314];
+  [migratorCopy addMigrationForSchema:nameCopy toVersion:7 foreignKeyStatus:0 handler:&__block_literal_global_316];
+  [migratorCopy addMigrationForSchema:nameCopy toVersion:8 foreignKeyStatus:0 handler:&__block_literal_global_321];
+  [migratorCopy addMigrationForSchema:nameCopy toVersion:9 foreignKeyStatus:0 handler:&__block_literal_global_323];
 }
 
 uint64_t __89__HDHearingPluginUnprotectedDatabaseSchema_registerMigrationStepsForSchemaName_migrator___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4, uint64_t a5)

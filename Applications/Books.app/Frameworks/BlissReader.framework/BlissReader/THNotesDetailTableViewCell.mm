@@ -1,34 +1,34 @@
 @interface THNotesDetailTableViewCell
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGRect)editControlCenteringRect;
-- (CGRect)p_getFrameForViewWithTag:(int64_t)a3 parentView:(id)a4;
-- (THNotesDetailTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 tableView:(id)a5 sizingDelegate:(id)a6;
-- (void)copy:(id)a3;
+- (CGRect)p_getFrameForViewWithTag:(int64_t)tag parentView:(id)view;
+- (THNotesDetailTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier tableView:(id)view sizingDelegate:(id)delegate;
+- (void)copy:(id)copy;
 - (void)dealloc;
-- (void)p_handleGR:(id)a3;
-- (void)p_hideView:(BOOL)a3 withTag:(int64_t)a4 subViewOf:(id)a5;
-- (void)p_setTransform:(CGAffineTransform *)a3 onViewWithTag:(int64_t)a4 parentView:(id)a5;
-- (void)populateWithCellController:(id)a3 annotation:(id)a4 cellWidth:(double)a5 highlightLayer:(id)a6 highlightTextFrame:(CGRect)a7 editingHighlightLayer:(id)a8 pageNumberString:(id)a9 topAdjustment:(double)a10 showDivider:(BOOL)a11;
-- (void)returnToBook:(id)a3;
-- (void)searchText:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)p_handleGR:(id)r;
+- (void)p_hideView:(BOOL)view withTag:(int64_t)tag subViewOf:(id)of;
+- (void)p_setTransform:(CGAffineTransform *)transform onViewWithTag:(int64_t)tag parentView:(id)view;
+- (void)populateWithCellController:(id)controller annotation:(id)annotation cellWidth:(double)width highlightLayer:(id)layer highlightTextFrame:(CGRect)frame editingHighlightLayer:(id)highlightLayer pageNumberString:(id)string topAdjustment:(double)self0 showDivider:(BOOL)self1;
+- (void)returnToBook:(id)book;
+- (void)searchText:(id)text;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation THNotesDetailTableViewCell
 
-- (THNotesDetailTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 tableView:(id)a5 sizingDelegate:(id)a6
+- (THNotesDetailTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier tableView:(id)view sizingDelegate:(id)delegate
 {
   v18.receiver = self;
   v18.super_class = THNotesDetailTableViewCell;
-  v8 = [(THNotesDetailTableViewCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v8 = [(THNotesDetailTableViewCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    v8->mSizingDelegate = a6;
+    v8->mSizingDelegate = delegate;
     [(THNotesDetailTableViewCell *)v8 setAutoresizesSubviews:1];
     [(THNotesDetailTableViewCell *)v9 setAutoresizingMask:18];
     [-[THNotesDetailTableViewCell contentView](v9 "contentView")];
@@ -46,7 +46,7 @@
     [(THNotesDetailTableViewCell *)v9 frame];
     v13 = v12;
     v15 = v14;
-    [a5 frame];
+    [view frame];
     [(THNotesDetailTableViewCell *)v9 setFrame:v13, v15];
     v16 = objc_alloc_init(THNotesDetailTableViewCellLayoutManager);
     [(THNotesDetailTableViewCellLayoutManager *)v16 setDelegate:v9];
@@ -72,18 +72,18 @@
   [(THNotesDetailTableViewCell *)&v3 dealloc];
 }
 
-- (void)populateWithCellController:(id)a3 annotation:(id)a4 cellWidth:(double)a5 highlightLayer:(id)a6 highlightTextFrame:(CGRect)a7 editingHighlightLayer:(id)a8 pageNumberString:(id)a9 topAdjustment:(double)a10 showDivider:(BOOL)a11
+- (void)populateWithCellController:(id)controller annotation:(id)annotation cellWidth:(double)width highlightLayer:(id)layer highlightTextFrame:(CGRect)frame editingHighlightLayer:(id)highlightLayer pageNumberString:(id)string topAdjustment:(double)self0 showDivider:(BOOL)self1
 {
-  v11 = a11;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  [(THNotesDetailTableViewCell *)self setTableViewCellController:a3];
+  dividerCopy = divider;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(THNotesDetailTableViewCell *)self setTableViewCellController:controller];
   [(UIView *)[(THNotesDetailTableViewCell *)self myView] bounds];
   [-[THNotesDetailTableViewCellController view](self->mTableViewCellController "view")];
   [(UIView *)[(THNotesDetailTableViewCell *)self myView] addSubview:[(THNotesDetailTableViewCellController *)self->mTableViewCellController view]];
-  [(THNotesDetailTableViewCellController *)self->mTableViewCellController populateWithAnnotation:a4 cellWidth:a6 highlightLayer:a8 highlightTextFrame:a9 editingHighlightLayer:v11 pageNumberString:a5 topAdjustment:x showDivider:y, width, height, a10];
+  [(THNotesDetailTableViewCellController *)self->mTableViewCellController populateWithAnnotation:annotation cellWidth:layer highlightLayer:highlightLayer highlightTextFrame:string editingHighlightLayer:dividerCopy pageNumberString:width topAdjustment:x showDivider:y, width, height, adjustment];
   [-[THNotesDetailTableViewCellController view](self->mTableViewCellController "view")];
   [(THNotesDetailTableViewCell *)self frame];
   v26 = v25;
@@ -119,13 +119,13 @@
   {
     -[THNotesDetailTableViewCell setLongPressGR:](self, "setLongPressGR:", [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"p_handleGR:"]);
     [(UILongPressGestureRecognizer *)[(THNotesDetailTableViewCell *)self longPressGR] setDelegate:self];
-    v38 = [(THNotesDetailTableViewCell *)self longPressGR];
+    longPressGR = [(THNotesDetailTableViewCell *)self longPressGR];
 
-    [(THNotesDetailTableViewCell *)self addGestureRecognizer:v38];
+    [(THNotesDetailTableViewCell *)self addGestureRecognizer:longPressGR];
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   if ([(THNotesDetailTableViewCell *)self highlightedText])
   {
@@ -135,7 +135,7 @@
       return;
     }
 
-    v5 = [v4 pasteboardString];
+    pasteboardString = [v4 pasteboardString];
   }
 
   else
@@ -145,11 +145,11 @@
       return;
     }
 
-    v5 = [(THNotesDetailTableViewCell *)self noteText];
+    pasteboardString = [(THNotesDetailTableViewCell *)self noteText];
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = pasteboardString;
+  if (pasteboardString)
   {
     v7 = +[UIPasteboard generalPasteboard];
 
@@ -157,40 +157,40 @@
   }
 }
 
-- (void)returnToBook:(id)a3
+- (void)returnToBook:(id)book
 {
   if ([(THNotesDetailTableViewCellController *)self->mTableViewCellController annotation]&& ([(THAnnotation *)[(THNotesDetailTableViewCellController *)self->mTableViewCellController annotation] annotationIsOrphan]& 1) == 0)
   {
-    v4 = [(THNotesDetailTableViewController *)[(THNotesDetailTableViewCell *)self myTableViewController] delegate];
-    v5 = [(THNotesDetailTableViewCell *)self myTableViewController];
-    v6 = [(THNotesDetailTableViewCellController *)self->mTableViewCellController annotation];
+    delegate = [(THNotesDetailTableViewController *)[(THNotesDetailTableViewCell *)self myTableViewController] delegate];
+    myTableViewController = [(THNotesDetailTableViewCell *)self myTableViewController];
+    annotation = [(THNotesDetailTableViewCellController *)self->mTableViewCellController annotation];
 
-    [(THNotesDetailTableViewControllerDelegate *)v4 tableViewController:v5 navigateToNote:v6];
+    [(THNotesDetailTableViewControllerDelegate *)delegate tableViewController:myTableViewController navigateToNote:annotation];
   }
 }
 
-- (void)searchText:(id)a3
+- (void)searchText:(id)text
 {
   if ([(THNotesDetailTableViewCell *)self highlightedText])
   {
-    v4 = [(THNotesDetailTableViewCell *)self highlightedText];
+    highlightedText = [(THNotesDetailTableViewCell *)self highlightedText];
   }
 
   else
   {
-    v4 = [(THNotesDetailTableViewCell *)self noteText];
+    highlightedText = [(THNotesDetailTableViewCell *)self noteText];
   }
 
-  v5 = v4;
-  v6 = [(THNotesDetailTableViewController *)[(THNotesDetailTableViewCell *)self myTableViewController] delegate];
-  v7 = [(THNotesDetailTableViewCell *)self myTableViewController];
+  v5 = highlightedText;
+  delegate = [(THNotesDetailTableViewController *)[(THNotesDetailTableViewCell *)self myTableViewController] delegate];
+  myTableViewController = [(THNotesDetailTableViewCell *)self myTableViewController];
 
-  [(THNotesDetailTableViewControllerDelegate *)v6 tableViewController:v7 searchBookForText:v5];
+  [(THNotesDetailTableViewControllerDelegate *)delegate tableViewController:myTableViewController searchBookForText:v5];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if ([(THNotesDetailTableViewCell *)self longPressGR]!= a3)
+  if ([(THNotesDetailTableViewCell *)self longPressGR]!= recognizer)
   {
     return 1;
   }
@@ -200,25 +200,25 @@
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [a4 locationInView:{-[THNotesDetailTableViewCellController returnToBook](self->mTableViewCellController, "returnToBook")}];
+  [touch locationInView:{-[THNotesDetailTableViewCellController returnToBook](self->mTableViewCellController, "returnToBook")}];
   v18.x = v16;
   v18.y = v17;
   v19.origin.x = v9;
   v19.origin.y = v11;
   v19.size.width = v13;
   v19.size.height = v15;
-  return !CGRectContainsPoint(v19, v18) && ([(THNotesDetailTableViewCell *)self isEditing]& 1) == 0 && [(THNotesDetailTableViewCell *)self longPressGR]== a3;
+  return !CGRectContainsPoint(v19, v18) && ([(THNotesDetailTableViewCell *)self isEditing]& 1) == 0 && [(THNotesDetailTableViewCell *)self longPressGR]== recognizer;
 }
 
-- (void)p_handleGR:(id)a3
+- (void)p_handleGR:(id)r
 {
   self->mHighlightedText = 0;
 
   self->mNoteText = 0;
-  [a3 locationInView:self];
+  [r locationInView:self];
   v6 = v5;
   v8 = v7;
-  if ([(THNotesDetailTableViewCell *)self longPressGR]== a3)
+  if ([(THNotesDetailTableViewCell *)self longPressGR]== r)
   {
     [(THNotesDetailTableViewCellHighlightView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] highlightView] frame];
     v35.x = v6;
@@ -252,12 +252,12 @@
         height = v24;
         v25 = [+[NSParagraphStyle defaultParagraphStyle](NSParagraphStyle mutableCopy];
         [v25 setLineBreakMode:{-[UILabel lineBreakMode](-[THNotesDetailTableViewCellController noteLabel](-[THNotesDetailTableViewCell tableViewCellController](self, "tableViewCellController"), "noteLabel"), "lineBreakMode")}];
-        v26 = [(UILabel *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] noteLabel] text];
+        text = [(UILabel *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] noteLabel] text];
         v33[0] = NSFontAttributeName;
         v33[1] = NSParagraphStyleAttributeName;
         v34[0] = [(UILabel *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] noteLabel] font];
         v34[1] = v25;
-        [(NSString *)v26 boundingRectWithSize:1 options:[NSDictionary dictionaryWithObjects:v33 forKeys:2 count:?], 0, width, height];
+        [(NSString *)text boundingRectWithSize:1 options:[NSDictionary dictionaryWithObjects:v33 forKeys:2 count:?], 0, width, height];
         v28 = v27;
         v30 = v29;
 
@@ -284,11 +284,11 @@
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if ("copy:" != a3)
+  if ("copy:" != action)
   {
-    return "searchText:" == a3;
+    return "searchText:" == action;
   }
 
   if (![(THNotesDetailTableViewCellController *)self->mTableViewCellController annotation])
@@ -296,15 +296,15 @@
     return 1;
   }
 
-  v6 = [(THNotesDetailTableViewController *)self->mMyTableViewController bookViewController];
+  bookViewController = [(THNotesDetailTableViewController *)self->mMyTableViewController bookViewController];
 
-  return [(THBookViewController *)v6 allowCopy];
+  return [(THBookViewController *)bookViewController allowCopy];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = THNotesDetailTableViewCell;
   [THNotesDetailTableViewCell setEditing:"setEditing:animated:" animated:?];
@@ -313,20 +313,20 @@
   v7 = TSUDynamicCast();
   if (v7)
   {
-    [v7 setEditing:v5 animated:v4];
+    [v7 setEditing:editingCopy animated:animatedCopy];
   }
 
   [(THNotesDetailTableViewCell *)self setNeedsLayout];
 }
 
-- (void)p_hideView:(BOOL)a3 withTag:(int64_t)a4 subViewOf:(id)a5
+- (void)p_hideView:(BOOL)view withTag:(int64_t)tag subViewOf:(id)of
 {
-  v5 = a3;
-  v6 = [a5 viewWithTag:a4];
+  viewCopy = view;
+  v6 = [of viewWithTag:tag];
   if (v6)
   {
     v7 = 1.0;
-    if (v5)
+    if (viewCopy)
     {
       v7 = 0.0;
     }
@@ -335,38 +335,38 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  [CATransaction begin:a3];
+  [CATransaction begin:highlighted];
   [CATransaction setDisableActions:1];
   [-[THNotesDetailTableViewCell selectedBackgroundView](self "selectedBackgroundView")];
 
   +[CATransaction commit];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(UIView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController:a3] highlightColorBar] backgroundColor];
-  v7 = [(UIImageView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] divider] backgroundColor];
+  selectedCopy = selected;
+  backgroundColor = [(UIView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController:selected] highlightColorBar] backgroundColor];
+  backgroundColor2 = [(UIImageView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] divider] backgroundColor];
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   v8.receiver = self;
   v8.super_class = THNotesDetailTableViewCell;
-  [(THNotesDetailTableViewCell *)&v8 setSelected:v4 animated:0];
+  [(THNotesDetailTableViewCell *)&v8 setSelected:selectedCopy animated:0];
   [-[THNotesDetailTableViewCell selectedBackgroundView](self "selectedBackgroundView")];
   +[CATransaction commit];
-  [(UIView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] highlightColorBar] setBackgroundColor:v6];
-  [(UIImageView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] divider] setBackgroundColor:v7];
+  [(UIView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] highlightColorBar] setBackgroundColor:backgroundColor];
+  [(UIImageView *)[(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] divider] setBackgroundColor:backgroundColor2];
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = THNotesDetailTableViewCell;
   [(THNotesDetailTableViewCell *)&v7 willTransitionToState:?];
-  self->mCellState = a3;
-  if (a3 - 1 < 2)
+  self->mCellState = state;
+  if (state - 1 < 2)
   {
     v5 = 0;
     p_mTableViewCellController = &self->mTableViewCellController;
@@ -375,7 +375,7 @@ LABEL_3:
     return;
   }
 
-  if (!a3)
+  if (!state)
   {
     p_mTableViewCellController = &self->mTableViewCellController;
     if (([(THAnnotation *)[(THNotesDetailTableViewCellController *)*p_mTableViewCellController annotation] annotationIsOrphan]& 1) == 0)
@@ -386,9 +386,9 @@ LABEL_3:
   }
 }
 
-- (CGRect)p_getFrameForViewWithTag:(int64_t)a3 parentView:(id)a4
+- (CGRect)p_getFrameForViewWithTag:(int64_t)tag parentView:(id)view
 {
-  v4 = [a4 viewWithTag:a3];
+  v4 = [view viewWithTag:tag];
 
   [v4 frame];
   result.size.height = v8;
@@ -398,21 +398,21 @@ LABEL_3:
   return result;
 }
 
-- (void)p_setTransform:(CGAffineTransform *)a3 onViewWithTag:(int64_t)a4 parentView:(id)a5
+- (void)p_setTransform:(CGAffineTransform *)transform onViewWithTag:(int64_t)tag parentView:(id)view
 {
-  v6 = [a5 viewWithTag:a4];
-  v7 = *&a3->c;
-  v8[0] = *&a3->a;
+  v6 = [view viewWithTag:tag];
+  v7 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v7;
-  v8[2] = *&a3->tx;
+  v8[2] = *&transform->tx;
   [v6 setTransform:v8];
 }
 
 - (CGRect)editControlCenteringRect
 {
-  v2 = [(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] highlightColorBar];
+  highlightColorBar = [(THNotesDetailTableViewCellController *)[(THNotesDetailTableViewCell *)self tableViewCellController] highlightColorBar];
 
-  [(UIView *)v2 frame];
+  [(UIView *)highlightColorBar frame];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

@@ -1,23 +1,23 @@
 @interface UISFetchContentInBackgroundActionResponse
-+ (id)responseWithResult:(unint64_t)a3;
-- (UISFetchContentInBackgroundActionResponse)initWithBackgroundFetchResult:(unint64_t)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
++ (id)responseWithResult:(unint64_t)result;
+- (UISFetchContentInBackgroundActionResponse)initWithBackgroundFetchResult:(unint64_t)result;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (unint64_t)result;
 @end
 
 @implementation UISFetchContentInBackgroundActionResponse
 
-+ (id)responseWithResult:(unint64_t)a3
++ (id)responseWithResult:(unint64_t)result
 {
-  v3 = [[a1 alloc] initWithBackgroundFetchResult:a3];
+  v3 = [[self alloc] initWithBackgroundFetchResult:result];
 
   return v3;
 }
 
-- (UISFetchContentInBackgroundActionResponse)initWithBackgroundFetchResult:(unint64_t)a3
+- (UISFetchContentInBackgroundActionResponse)initWithBackgroundFetchResult:(unint64_t)result
 {
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:result];
   [v5 setObject:v6 forSetting:1];
 
   v9.receiver = self;
@@ -29,16 +29,16 @@
 
 - (unint64_t)result
 {
-  v2 = [(UISFetchContentInBackgroundActionResponse *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(UISFetchContentInBackgroundActionResponse *)self info];
+  v3 = [info objectForSetting:1];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"backgroundFetchResult";
   }

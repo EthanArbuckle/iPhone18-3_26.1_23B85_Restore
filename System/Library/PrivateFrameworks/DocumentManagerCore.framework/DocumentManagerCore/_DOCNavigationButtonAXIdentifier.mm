@@ -7,16 +7,16 @@
 
 + (NSString)backInHistory
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"backInHistory");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"backInHistory");
 
   return v3;
 }
 
 + (NSString)forwardInHistory
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"forwardInHistory");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"forwardInHistory");
 
   return v3;
 }

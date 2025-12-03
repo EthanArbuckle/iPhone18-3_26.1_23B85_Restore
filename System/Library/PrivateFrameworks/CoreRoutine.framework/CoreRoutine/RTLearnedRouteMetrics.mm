@@ -1,91 +1,91 @@
 @interface RTLearnedRouteMetrics
-- (BOOL)isEqual:(id)a3;
-- (RTLearnedRouteMetrics)initWithAllRoutesCountForThisODPair:(unint64_t)a3 allTraversalCountBetweenThisODPair:(unint64_t)a4 routeTraversalCount:(unint64_t)a5 routeTraversalCountOnTravelDayOfWeek:(unint64_t)a6 routeTravelCountOnTravelDayOfWeekHourOfDay:(unint64_t)a7 lastTravelledDate:(id)a8;
-- (RTLearnedRouteMetrics)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTLearnedRouteMetrics)initWithAllRoutesCountForThisODPair:(unint64_t)pair allTraversalCountBetweenThisODPair:(unint64_t)dPair routeTraversalCount:(unint64_t)count routeTraversalCountOnTravelDayOfWeek:(unint64_t)week routeTravelCountOnTravelDayOfWeekHourOfDay:(unint64_t)day lastTravelledDate:(id)date;
+- (RTLearnedRouteMetrics)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLearnedRouteMetrics
 
-- (RTLearnedRouteMetrics)initWithAllRoutesCountForThisODPair:(unint64_t)a3 allTraversalCountBetweenThisODPair:(unint64_t)a4 routeTraversalCount:(unint64_t)a5 routeTraversalCountOnTravelDayOfWeek:(unint64_t)a6 routeTravelCountOnTravelDayOfWeekHourOfDay:(unint64_t)a7 lastTravelledDate:(id)a8
+- (RTLearnedRouteMetrics)initWithAllRoutesCountForThisODPair:(unint64_t)pair allTraversalCountBetweenThisODPair:(unint64_t)dPair routeTraversalCount:(unint64_t)count routeTraversalCountOnTravelDayOfWeek:(unint64_t)week routeTravelCountOnTravelDayOfWeekHourOfDay:(unint64_t)day lastTravelledDate:(id)date
 {
-  v15 = a8;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = RTLearnedRouteMetrics;
   v16 = [(RTLearnedRouteMetrics *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_allRoutesCountForThisODPair = a3;
-    v16->_allTraversalCountBetweenThisODPair = a4;
-    v16->_routeTraversalCount = a5;
-    v16->_routeTraversalCountOnTravelDayOfWeek = a6;
-    v16->_routeTravelCountOnTravelDayOfWeekHourOfDay = a7;
-    objc_storeStrong(&v16->_lastTravelledDate, a8);
+    v16->_allRoutesCountForThisODPair = pair;
+    v16->_allTraversalCountBetweenThisODPair = dPair;
+    v16->_routeTraversalCount = count;
+    v16->_routeTraversalCountOnTravelDayOfWeek = week;
+    v16->_routeTravelCountOnTravelDayOfWeekHourOfDay = day;
+    objc_storeStrong(&v16->_lastTravelledDate, date);
   }
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[RTLearnedRouteMetrics allRoutesCountForThisODPair](self forKey:{"allRoutesCountForThisODPair"), @"allRoutesCountForThisODPair"}];
-  [v4 encodeInteger:-[RTLearnedRouteMetrics allTraversalCountBetweenThisODPair](self forKey:{"allTraversalCountBetweenThisODPair"), @"allTraversalCountBetweenThisODPair"}];
-  [v4 encodeInteger:-[RTLearnedRouteMetrics routeTraversalCount](self forKey:{"routeTraversalCount"), @"routeTraversalCount"}];
-  [v4 encodeInteger:-[RTLearnedRouteMetrics routeTraversalCountOnTravelDayOfWeek](self forKey:{"routeTraversalCountOnTravelDayOfWeek"), @"routeTraversalCountOnTravelDayOfWeek"}];
-  [v4 encodeInteger:-[RTLearnedRouteMetrics routeTravelCountOnTravelDayOfWeekHourOfDay](self forKey:{"routeTravelCountOnTravelDayOfWeekHourOfDay"), @"routeTravelCountOnTravelDayOfWeekHourOfDay"}];
-  v5 = [(RTLearnedRouteMetrics *)self lastTravelledDate];
-  [v4 encodeObject:v5 forKey:@"lastTravelledDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[RTLearnedRouteMetrics allRoutesCountForThisODPair](self forKey:{"allRoutesCountForThisODPair"), @"allRoutesCountForThisODPair"}];
+  [coderCopy encodeInteger:-[RTLearnedRouteMetrics allTraversalCountBetweenThisODPair](self forKey:{"allTraversalCountBetweenThisODPair"), @"allTraversalCountBetweenThisODPair"}];
+  [coderCopy encodeInteger:-[RTLearnedRouteMetrics routeTraversalCount](self forKey:{"routeTraversalCount"), @"routeTraversalCount"}];
+  [coderCopy encodeInteger:-[RTLearnedRouteMetrics routeTraversalCountOnTravelDayOfWeek](self forKey:{"routeTraversalCountOnTravelDayOfWeek"), @"routeTraversalCountOnTravelDayOfWeek"}];
+  [coderCopy encodeInteger:-[RTLearnedRouteMetrics routeTravelCountOnTravelDayOfWeekHourOfDay](self forKey:{"routeTravelCountOnTravelDayOfWeekHourOfDay"), @"routeTravelCountOnTravelDayOfWeekHourOfDay"}];
+  lastTravelledDate = [(RTLearnedRouteMetrics *)self lastTravelledDate];
+  [coderCopy encodeObject:lastTravelledDate forKey:@"lastTravelledDate"];
 }
 
-- (RTLearnedRouteMetrics)initWithCoder:(id)a3
+- (RTLearnedRouteMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"allRoutesCountForThisODPair"];
-  v6 = [v4 decodeIntegerForKey:@"allTraversalCountBetweenThisODPair"];
-  v7 = [v4 decodeIntegerForKey:@"routeTraversalCount"];
-  v8 = [v4 decodeIntegerForKey:@"routeTraversalCountOnTravelDayOfWeek"];
-  v9 = [v4 decodeIntegerForKey:@"routeTravelCountOnTravelDayOfWeekHourOfDay"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastTravelledDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"allRoutesCountForThisODPair"];
+  v6 = [coderCopy decodeIntegerForKey:@"allTraversalCountBetweenThisODPair"];
+  v7 = [coderCopy decodeIntegerForKey:@"routeTraversalCount"];
+  v8 = [coderCopy decodeIntegerForKey:@"routeTraversalCountOnTravelDayOfWeek"];
+  v9 = [coderCopy decodeIntegerForKey:@"routeTravelCountOnTravelDayOfWeekHourOfDay"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastTravelledDate"];
 
   v11 = [(RTLearnedRouteMetrics *)self initWithAllRoutesCountForThisODPair:v5 allTraversalCountBetweenThisODPair:v6 routeTraversalCount:v7 routeTraversalCountOnTravelDayOfWeek:v8 routeTravelCountOnTravelDayOfWeekHourOfDay:v9 lastTravelledDate:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self | v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self | equalCopy)
   {
     v6 = 0;
     if (self)
     {
-      if (v4)
+      if (equalCopy)
       {
-        v21 = [v4 isMemberOfClass:objc_opt_class()];
-        v20 = [(RTLearnedRouteMetrics *)self allRoutesCountForThisODPair];
-        v19 = [v5 allRoutesCountForThisODPair];
-        v18 = [(RTLearnedRouteMetrics *)self allTraversalCountBetweenThisODPair];
-        v8 = [v5 allTraversalCountBetweenThisODPair];
-        v9 = [(RTLearnedRouteMetrics *)self routeTraversalCount];
-        v10 = [v5 routeTraversalCount];
-        v11 = [(RTLearnedRouteMetrics *)self routeTraversalCountOnTravelDayOfWeek];
-        v12 = [v5 routeTraversalCountOnTravelDayOfWeek];
-        v17 = [(RTLearnedRouteMetrics *)self routeTravelCountOnTravelDayOfWeekHourOfDay];
-        v13 = [v5 routeTravelCountOnTravelDayOfWeekHourOfDay];
-        v14 = [(RTLearnedRouteMetrics *)self lastTravelledDate];
-        v15 = [v5 lastTravelledDate];
-        v16 = [v14 isEqualToDate:v15];
+        v21 = [equalCopy isMemberOfClass:objc_opt_class()];
+        allRoutesCountForThisODPair = [(RTLearnedRouteMetrics *)self allRoutesCountForThisODPair];
+        allRoutesCountForThisODPair2 = [v5 allRoutesCountForThisODPair];
+        allTraversalCountBetweenThisODPair = [(RTLearnedRouteMetrics *)self allTraversalCountBetweenThisODPair];
+        allTraversalCountBetweenThisODPair2 = [v5 allTraversalCountBetweenThisODPair];
+        routeTraversalCount = [(RTLearnedRouteMetrics *)self routeTraversalCount];
+        routeTraversalCount2 = [v5 routeTraversalCount];
+        routeTraversalCountOnTravelDayOfWeek = [(RTLearnedRouteMetrics *)self routeTraversalCountOnTravelDayOfWeek];
+        routeTraversalCountOnTravelDayOfWeek2 = [v5 routeTraversalCountOnTravelDayOfWeek];
+        routeTravelCountOnTravelDayOfWeekHourOfDay = [(RTLearnedRouteMetrics *)self routeTravelCountOnTravelDayOfWeekHourOfDay];
+        routeTravelCountOnTravelDayOfWeekHourOfDay2 = [v5 routeTravelCountOnTravelDayOfWeekHourOfDay];
+        lastTravelledDate = [(RTLearnedRouteMetrics *)self lastTravelledDate];
+        lastTravelledDate2 = [v5 lastTravelledDate];
+        v16 = [lastTravelledDate isEqualToDate:lastTravelledDate2];
 
         v6 = 0;
         if (v21)
         {
-          if (v20 == v19 && v18 == v8 && v9 == v10 && v11 == v12)
+          if (allRoutesCountForThisODPair == allRoutesCountForThisODPair2 && allTraversalCountBetweenThisODPair == allTraversalCountBetweenThisODPair2 && routeTraversalCount == routeTraversalCount2 && routeTraversalCountOnTravelDayOfWeek == routeTraversalCountOnTravelDayOfWeek2)
           {
-            v6 = (v17 == v13) & v16;
+            v6 = (routeTravelCountOnTravelDayOfWeekHourOfDay == routeTravelCountOnTravelDayOfWeekHourOfDay2) & v16;
           }
         }
       }
@@ -103,14 +103,14 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTLearnedRouteMetrics *)self allRoutesCountForThisODPair];
-  v5 = [(RTLearnedRouteMetrics *)self allTraversalCountBetweenThisODPair];
-  v6 = [(RTLearnedRouteMetrics *)self routeTraversalCount];
-  v7 = [(RTLearnedRouteMetrics *)self routeTraversalCountOnTravelDayOfWeek];
-  v8 = [(RTLearnedRouteMetrics *)self routeTravelCountOnTravelDayOfWeekHourOfDay];
-  v9 = [(RTLearnedRouteMetrics *)self lastTravelledDate];
-  v10 = [v9 stringFromDate];
-  v11 = [v3 stringWithFormat:@"allRoutesCountForThisODPair, %lu, allTraversalCountBetweenThisODPair, %lu, routeTraversalCount, %lu, routeTraversalCountOnTravelDayOfWeek, %lu, routeTravelCountOnTravelDayOfWeekHourOfDay, %lu, lastTravelledDate, %@", v4, v5, v6, v7, v8, v10];
+  allRoutesCountForThisODPair = [(RTLearnedRouteMetrics *)self allRoutesCountForThisODPair];
+  allTraversalCountBetweenThisODPair = [(RTLearnedRouteMetrics *)self allTraversalCountBetweenThisODPair];
+  routeTraversalCount = [(RTLearnedRouteMetrics *)self routeTraversalCount];
+  routeTraversalCountOnTravelDayOfWeek = [(RTLearnedRouteMetrics *)self routeTraversalCountOnTravelDayOfWeek];
+  routeTravelCountOnTravelDayOfWeekHourOfDay = [(RTLearnedRouteMetrics *)self routeTravelCountOnTravelDayOfWeekHourOfDay];
+  lastTravelledDate = [(RTLearnedRouteMetrics *)self lastTravelledDate];
+  stringFromDate = [lastTravelledDate stringFromDate];
+  v11 = [v3 stringWithFormat:@"allRoutesCountForThisODPair, %lu, allTraversalCountBetweenThisODPair, %lu, routeTraversalCount, %lu, routeTraversalCountOnTravelDayOfWeek, %lu, routeTravelCountOnTravelDayOfWeekHourOfDay, %lu, lastTravelledDate, %@", allRoutesCountForThisODPair, allTraversalCountBetweenThisODPair, routeTraversalCount, routeTraversalCountOnTravelDayOfWeek, routeTravelCountOnTravelDayOfWeekHourOfDay, stringFromDate];
 
   return v11;
 }

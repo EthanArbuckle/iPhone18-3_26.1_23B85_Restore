@@ -19,17 +19,17 @@
 
 + (id)crk_studentDaemonNonCatalystConnection
 {
-  v1 = [a1 crk_studentDaemonConnection];
+  crk_studentDaemonConnection = [self crk_studentDaemonConnection];
   v2 = CRKStudentDaemonXPCInterface();
-  [v1 setRemoteObjectInterface:v2];
+  [crk_studentDaemonConnection setRemoteObjectInterface:v2];
 
-  return v1;
+  return crk_studentDaemonConnection;
 }
 
 + (id)crk_screenshotServiceConnection
 {
   v2 = CRKScreenshotServiceXPCInterface();
-  v3 = [a1 crk_screenshotServiceConnectionWithInterface:v2];
+  v3 = [self crk_screenshotServiceConnectionWithInterface:v2];
 
   return v3;
 }
@@ -37,7 +37,7 @@
 + (id)crk_applicationInfoServiceConnection
 {
   v2 = CRKApplicationInfoServiceXPCInterface();
-  v3 = [a1 crk_screenshotServiceConnectionWithInterface:v2];
+  v3 = [self crk_screenshotServiceConnectionWithInterface:v2];
 
   return v3;
 }
@@ -45,7 +45,7 @@
 + (id)crk_internetDateServiceConnection
 {
   v2 = CRKInternetDateFetchingXPCInterface();
-  v3 = [a1 crk_screenshotServiceConnectionWithInterface:v2];
+  v3 = [self crk_screenshotServiceConnectionWithInterface:v2];
 
   return v3;
 }

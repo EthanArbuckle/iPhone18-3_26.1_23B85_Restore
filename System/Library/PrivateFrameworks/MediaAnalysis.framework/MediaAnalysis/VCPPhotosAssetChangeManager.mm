@@ -1,31 +1,31 @@
 @interface VCPPhotosAssetChangeManager
-+ (id)managerForPhotoLibrary:(id)a3;
-+ (signed)sensitivityFromAnalysis:(id)a3;
-- (VCPPhotosAssetChangeManager)initWithPhotoLibrary:(id)a3;
-- (id)matchPerson:(CGRect)a3 withPHFaces:(id)a4 withMinIOU:(float)a5 iou:(float *)a6;
-- (int)associateTraitsForAsset:(id)a3 withAnalysis:(id)a4 result:(id)a5;
-- (int)associateTraitsForMovieAsset:(id)a3 withAnalysis:(id)a4 result:(id)a5;
-- (int)associateTraitsWithFaceTorspPrints:(id)a3 forAsset:(id)a4 withAnalysis:(id)a5 results:(id)a6;
-- (int)publishPendingChangesWithCancelBlock:(id)a3;
-- (int)updateAsset:(id)a3 analysis:(id)a4 imageOnly:(BOOL)a5 vskResults:(id)a6 cancelBlock:(id)a7;
-- (int)updateImageAsset:(id)a3 analysis:(id)a4 imageOnly:(BOOL)a5 vskResults:(id)a6;
-- (int)updateLegacyAsset:(id)a3 withAnalysis:(id)a4;
-- (int)updateMovieAsset:(id)a3 analysis:(id)a4 imageOnly:(BOOL)a5 vskResults:(id)a6;
++ (id)managerForPhotoLibrary:(id)library;
++ (signed)sensitivityFromAnalysis:(id)analysis;
+- (VCPPhotosAssetChangeManager)initWithPhotoLibrary:(id)library;
+- (id)matchPerson:(CGRect)person withPHFaces:(id)faces withMinIOU:(float)u iou:(float *)iou;
+- (int)associateTraitsForAsset:(id)asset withAnalysis:(id)analysis result:(id)result;
+- (int)associateTraitsForMovieAsset:(id)asset withAnalysis:(id)analysis result:(id)result;
+- (int)associateTraitsWithFaceTorspPrints:(id)prints forAsset:(id)asset withAnalysis:(id)analysis results:(id)results;
+- (int)publishPendingChangesWithCancelBlock:(id)block;
+- (int)updateAsset:(id)asset analysis:(id)analysis imageOnly:(BOOL)only vskResults:(id)results cancelBlock:(id)block;
+- (int)updateImageAsset:(id)asset analysis:(id)analysis imageOnly:(BOOL)only vskResults:(id)results;
+- (int)updateLegacyAsset:(id)asset withAnalysis:(id)analysis;
+- (int)updateMovieAsset:(id)asset analysis:(id)analysis imageOnly:(BOOL)only vskResults:(id)results;
 - (void)dealloc;
 @end
 
 @implementation VCPPhotosAssetChangeManager
 
-- (VCPPhotosAssetChangeManager)initWithPhotoLibrary:(id)a3
+- (VCPPhotosAssetChangeManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = VCPPhotosAssetChangeManager;
   v6 = [(VCPPhotosAssetChangeManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     v8 = +[NSMutableArray array];
     pendingChanges = v7->_pendingChanges;
     v7->_pendingChanges = v8;
@@ -36,18 +36,18 @@
   return v7;
 }
 
-+ (id)managerForPhotoLibrary:(id)a3
++ (id)managerForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy];
 
   return v4;
 }
 
-+ (signed)sensitivityFromAnalysis:(id)a3
++ (signed)sensitivityFromAnalysis:(id)analysis
 {
-  v3 = [a3 vcp_results];
-  v4 = [v3 objectForKeyedSubscript:MediaAnalysisSafetyResultsKey];
+  vcp_results = [analysis vcp_results];
+  v4 = [vcp_results objectForKeyedSubscript:MediaAnalysisSafetyResultsKey];
 
   if (v4 && [v4 count])
   {
@@ -60,27 +60,27 @@
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 intValue];
+        intValue = [v7 intValue];
       }
 
       else
       {
-        v9 = -1;
+        intValue = -1;
       }
     }
 
     else
     {
-      v9 = -1;
+      intValue = -1;
     }
   }
 
   else
   {
-    v9 = -1;
+    intValue = -1;
   }
 
-  return v9;
+  return intValue;
 }
 
 - (void)dealloc
@@ -91,23 +91,23 @@
   [(VCPPhotosAssetChangeManager *)&v3 dealloc];
 }
 
-- (id)matchPerson:(CGRect)a3 withPHFaces:(id)a4 withMinIOU:(float)a5 iou:(float *)a6
+- (id)matchPerson:(CGRect)person withPHFaces:(id)faces withMinIOU:(float)u iou:(float *)iou
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = person.size.height;
+  width = person.size.width;
+  y = person.origin.y;
+  x = person.origin.x;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v11 = a4;
+  facesCopy = faces;
   v12 = 0;
-  v13 = [v11 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  v13 = [facesCopy countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (!v13)
   {
     v45 = 0.0;
-    v38 = v11;
+    v38 = facesCopy;
 LABEL_19:
 
     goto LABEL_20;
@@ -122,7 +122,7 @@ LABEL_19:
     {
       if (*v49 != v14)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(facesCopy);
       }
 
       v16 = *(*(&v48 + 1) + 8 * i);
@@ -173,7 +173,7 @@ LABEL_19:
           v35 = v36 / v34;
         }
 
-        if (v35 > v45 && v35 > a5)
+        if (v35 > v45 && v35 > u)
         {
           v37 = v16;
 
@@ -183,7 +183,7 @@ LABEL_19:
       }
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v48 objects:v56 count:16];
+    v13 = [facesCopy countByEnumeratingWithState:&v48 objects:v56 count:16];
   }
 
   while (v13);
@@ -195,9 +195,9 @@ LABEL_19:
     v40 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v40))
     {
-      v41 = [v12 localIdentifier];
+      localIdentifier = [v12 localIdentifier];
       *buf = 138412546;
-      v53 = v41;
+      v53 = localIdentifier;
       v54 = 2048;
       v55 = v45;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v40, "   [%@] found matchPerson with iou %f", buf, 0x16u);
@@ -209,40 +209,40 @@ LABEL_19:
   }
 
 LABEL_20:
-  if (a6)
+  if (iou)
   {
-    *a6 = v45;
+    *iou = v45;
   }
 
   return v12;
 }
 
-- (int)associateTraitsForMovieAsset:(id)a3 withAnalysis:(id)a4 result:(id)a5
+- (int)associateTraitsForMovieAsset:(id)asset withAnalysis:(id)analysis result:(id)result
 {
-  v52 = a3;
-  v56 = a4;
-  v7 = a5;
+  assetCopy = asset;
+  analysisCopy = analysis;
+  resultCopy = result;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v8 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v8))
     {
-      v9 = [v52 localIdentifier];
+      localIdentifier = [assetCopy localIdentifier];
       LODWORD(buf.start.value) = 138412290;
-      *(&buf.start.value + 4) = v9;
+      *(&buf.start.value + 4) = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "   [%@] Associate PHFace HAR result for movie asset", &buf, 0xCu);
     }
   }
 
   v86 = PHFacePropertySetClustering;
   v10 = [NSArray arrayWithObjects:&v86 count:1];
-  v49 = [v52 vcp_PHFaces:v10];
+  v49 = [assetCopy vcp_PHFaces:v10];
 
   if (v49)
   {
     v11 = [v49 count];
     v12 = 0;
-    if (v7 && v11)
+    if (resultCopy && v11)
     {
       v76 = 0u;
       v77 = 0u;
@@ -262,7 +262,7 @@ LABEL_20:
               objc_enumerationMutation(v13);
             }
 
-            [v7 setObject:&__NSArray0__struct forKeyedSubscript:*(*(&v74 + 1) + 8 * i)];
+            [resultCopy setObject:&__NSArray0__struct forKeyedSubscript:*(*(&v74 + 1) + 8 * i)];
           }
 
           v14 = [v13 countByEnumeratingWithState:&v74 objects:v85 count:16];
@@ -301,18 +301,18 @@ LABEL_20:
 
             v60 = *(*(&v70 + 1) + 8 * v19);
             context = objc_autoreleasePoolPush();
-            v21 = [v56 vcp_queryActionResultForPHFace:v60];
+            v21 = [analysisCopy vcp_queryActionResultForPHFace:v60];
             v59 = v21;
             if (!v21)
             {
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
               {
-                v24 = [v52 localIdentifier];
-                v25 = [v60 localIdentifier];
+                localIdentifier2 = [assetCopy localIdentifier];
+                localIdentifier3 = [v60 localIdentifier];
                 LODWORD(buf.start.value) = 138412546;
-                *(&buf.start.value + 4) = v24;
+                *(&buf.start.value + 4) = localIdentifier2;
                 LOWORD(buf.start.flags) = 2112;
-                *(&buf.start.flags + 2) = v25;
+                *(&buf.start.flags + 2) = localIdentifier3;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, type, "   [%@] No matched action for PHFace %@", &buf, 0x16u);
               }
 
@@ -340,8 +340,8 @@ LABEL_45:
                   v61 = buf.duration.timescale;
                   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
                   {
-                    v26 = [v52 localIdentifier];
-                    v27 = [v60 localIdentifier];
+                    localIdentifier4 = [assetCopy localIdentifier];
+                    localIdentifier5 = [v60 localIdentifier];
                     time.value = value;
                     time.timescale = timescale;
                     time.flags = flags;
@@ -358,9 +358,9 @@ LABEL_45:
                     CMTimeAdd(&v69, &time, &rhs);
                     v29 = CMTimeGetSeconds(&v69);
                     LODWORD(buf.start.value) = v46;
-                    *(&buf.start.value + 4) = v26;
+                    *(&buf.start.value + 4) = localIdentifier4;
                     LOWORD(buf.start.flags) = 2112;
-                    *(&buf.start.flags + 2) = v27;
+                    *(&buf.start.flags + 2) = localIdentifier5;
                     HIWORD(buf.start.epoch) = 2048;
                     buf.duration.value = Seconds;
                     LOWORD(buf.duration.timescale) = 2048;
@@ -430,7 +430,7 @@ LABEL_45:
 
                   if ([v31 count])
                   {
-                    [v7 setObject:v31 forKeyedSubscript:v60];
+                    [resultCopy setObject:v31 forKeyedSubscript:v60];
                   }
 
                   v23 = 0;
@@ -470,15 +470,15 @@ LABEL_53:
 
       if (v12)
       {
-        [v7 removeAllObjects];
+        [resultCopy removeAllObjects];
         if (MediaAnalysisLogLevel() >= 3)
         {
           v44 = VCPLogToOSLogType[3];
           if (os_log_type_enabled(&_os_log_default, v44))
           {
-            v45 = [v52 localIdentifier];
+            localIdentifier6 = [assetCopy localIdentifier];
             LODWORD(buf.start.value) = 138412290;
-            *(&buf.start.value + 4) = v45;
+            *(&buf.start.value + 4) = localIdentifier6;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v44, "   [%@] Failed to populate detection traits", &buf, 0xCu);
           }
         }
@@ -494,21 +494,21 @@ LABEL_53:
   return v12;
 }
 
-- (int)associateTraitsWithFaceTorspPrints:(id)a3 forAsset:(id)a4 withAnalysis:(id)a5 results:(id)a6
+- (int)associateTraitsWithFaceTorspPrints:(id)prints forAsset:(id)asset withAnalysis:(id)analysis results:(id)results
 {
-  v9 = a3;
-  v62 = a4;
-  v10 = a5;
-  v60 = v10;
-  v61 = a6;
-  v59 = v9;
-  if (v10)
+  printsCopy = prints;
+  assetCopy = asset;
+  analysisCopy = analysis;
+  v60 = analysisCopy;
+  resultsCopy = results;
+  v59 = printsCopy;
+  if (analysisCopy)
   {
-    if ([v9 count])
+    if ([printsCopy count])
     {
-      [v62 duration];
-      LODWORD(v10) = 0;
-      if (v61 && v11 > 0.0)
+      [assetCopy duration];
+      LODWORD(analysisCopy) = 0;
+      if (resultsCopy && v11 > 0.0)
       {
         [v60 vcp_actionsAggregated];
         v70 = 0u;
@@ -552,9 +552,9 @@ LABEL_53:
               else
               {
                 v17 = [PHDetectionTrait alloc];
-                v18 = [v12 intValue];
-                [v62 duration];
-                v49 = [v17 initWithType:1 value:v18 score:v55 startTime:v16 duration:0.0 thumbnailIdentifier:v19];
+                intValue = [v12 intValue];
+                [assetCopy duration];
+                v49 = [v17 initWithType:1 value:intValue score:v55 startTime:v16 duration:0.0 thumbnailIdentifier:v19];
                 if (!v49)
                 {
                   goto LABEL_50;
@@ -577,7 +577,7 @@ LABEL_53:
 LABEL_49:
 
 LABEL_50:
-                    LODWORD(v10) = -18;
+                    LODWORD(analysisCopy) = -18;
                     goto LABEL_52;
                   }
                 }
@@ -611,14 +611,14 @@ LABEL_50:
                       }
 
                       v29 = *(*(&v64 + 1) + 8 * v28);
-                      v30 = [v29 torsoprint];
-                      v31 = v30 == 0;
+                      torsoprint = [v29 torsoprint];
+                      v31 = torsoprint == 0;
 
                       if (!v31)
                       {
-                        v32 = [v29 torsoprint];
+                        torsoprint2 = [v29 torsoprint];
                         v63 = 0;
-                        v33 = [v32 computeDistance:v21 withDistanceFunction:0 error:&v63];
+                        v33 = [torsoprint2 computeDistance:v21 withDistanceFunction:0 error:&v63];
                         v34 = v63;
 
                         if (v34)
@@ -675,7 +675,7 @@ LABEL_50:
                   if ((v26 & 0x80000000) == 0)
                   {
                     v38 = [NSNumber numberWithInt:v26];
-                    v39 = [v61 objectForKeyedSubscript:v38];
+                    v39 = [resultsCopy objectForKeyedSubscript:v38];
                     v40 = v39 == 0;
 
                     if (v40)
@@ -684,13 +684,13 @@ LABEL_50:
                       v22 = [NSArray arrayWithObjects:&v72 count:1];
                       v41 = [NSMutableArray arrayWithArray:v22];
                       v42 = [NSNumber numberWithInt:v26];
-                      [v61 setObject:v41 forKeyedSubscript:v42];
+                      [resultsCopy setObject:v41 forKeyedSubscript:v42];
                     }
 
                     else
                     {
                       v22 = [NSNumber numberWithInt:v26];
-                      v41 = [v61 objectForKeyedSubscript:v22];
+                      v41 = [resultsCopy objectForKeyedSubscript:v22];
                       [v41 addObject:v49];
                     }
 
@@ -705,7 +705,7 @@ LABEL_39:
               }
             }
 
-            LODWORD(v10) = 0;
+            LODWORD(analysisCopy) = 0;
             v51 = [obj countByEnumeratingWithState:&v68 objects:v76 count:16];
             if (v51)
             {
@@ -718,7 +718,7 @@ LABEL_39:
 
         else
         {
-          LODWORD(v10) = 0;
+          LODWORD(analysisCopy) = 0;
         }
 
 LABEL_52:
@@ -727,20 +727,20 @@ LABEL_52:
 
     else
     {
-      LODWORD(v10) = 0;
+      LODWORD(analysisCopy) = 0;
     }
   }
 
-  return v10;
+  return analysisCopy;
 }
 
-- (int)associateTraitsForAsset:(id)a3 withAnalysis:(id)a4 result:(id)a5
+- (int)associateTraitsForAsset:(id)asset withAnalysis:(id)analysis result:(id)result
 {
-  v8 = a3;
-  v120 = a4;
-  v9 = a5;
-  v118 = v8;
-  v10 = [v8 vcp_PHFaces:0];
+  assetCopy = asset;
+  analysisCopy = analysis;
+  resultCopy = result;
+  v118 = assetCopy;
+  v10 = [assetCopy vcp_PHFaces:0];
   v119 = v10;
   if (!v10)
   {
@@ -750,9 +750,9 @@ LABEL_52:
 
   v11 = [v10 count];
   v12 = 0;
-  if (v9 && v11)
+  if (resultCopy && v11)
   {
-    v106 = self;
+    selfCopy = self;
     v13 = +[NSMutableDictionary dictionary];
     v147 = 0u;
     v148 = 0u;
@@ -773,16 +773,16 @@ LABEL_52:
           }
 
           v18 = *(*(&v145 + 1) + 8 * i);
-          v19 = [v18 localIdentifier];
-          v20 = v19 == 0;
+          localIdentifier = [v18 localIdentifier];
+          v20 = localIdentifier == 0;
 
           if (!v20)
           {
-            v21 = [v18 localIdentifier];
-            [v13 setObject:v18 forKeyedSubscript:v21];
+            localIdentifier2 = [v18 localIdentifier];
+            [v13 setObject:v18 forKeyedSubscript:localIdentifier2];
           }
 
-          [v9 setObject:&__NSArray0__struct forKeyedSubscript:v18];
+          [resultCopy setObject:&__NSArray0__struct forKeyedSubscript:v18];
         }
 
         v15 = [v14 countByEnumeratingWithState:&v145 objects:v156 count:16];
@@ -795,8 +795,8 @@ LABEL_52:
     v144 = 0u;
     v141 = 0u;
     v142 = 0u;
-    v22 = [v120 vcp_results];
-    obj = [v22 objectForKeyedSubscript:MediaAnalysisHumanActionClassificationResultsKey];
+    vcp_results = [analysisCopy vcp_results];
+    obj = [vcp_results objectForKeyedSubscript:MediaAnalysisHumanActionClassificationResultsKey];
 
     v113 = [obj countByEnumeratingWithState:&v141 objects:v155 count:16];
     if (v113)
@@ -842,18 +842,18 @@ LABEL_52:
             height = v157.size.height;
 
             LODWORD(v34) = 1060320051;
-            v35 = [(VCPPhotosAssetChangeManager *)v106 matchPerson:v14 withPHFaces:0 withMinIOU:x iou:y, width, height, v34];
+            v35 = [(VCPPhotosAssetChangeManager *)selfCopy matchPerson:v14 withPHFaces:0 withMinIOU:x iou:y, width, height, v34];
             if (v35)
             {
               [v13 setObject:v35 forKeyedSubscript:v127];
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
               {
-                v36 = [v118 localIdentifier];
-                v37 = [v35 localIdentifier];
+                localIdentifier3 = [v118 localIdentifier];
+                localIdentifier4 = [v35 localIdentifier];
                 LODWORD(buf.start.value) = 138412802;
-                *(&buf.start.value + 4) = v36;
+                *(&buf.start.value + 4) = localIdentifier3;
                 LOWORD(buf.start.flags) = 2112;
-                *(&buf.start.flags + 2) = v37;
+                *(&buf.start.flags + 2) = localIdentifier4;
                 HIWORD(buf.start.epoch) = 2112;
                 buf.duration.value = v127;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, type, "   [%@] Associated PHFace (%@) with HAR result localIdentifier (%@)", &buf, 0x20u);
@@ -933,15 +933,15 @@ LABEL_33:
                 }
 
 LABEL_91:
-                [v9 removeAllObjects];
+                [resultCopy removeAllObjects];
                 if (MediaAnalysisLogLevel() >= 3)
                 {
                   v92 = VCPLogToOSLogType[3];
                   if (os_log_type_enabled(&_os_log_default, v92))
                   {
-                    v93 = [v118 localIdentifier];
+                    localIdentifier5 = [v118 localIdentifier];
                     LODWORD(buf.start.value) = 138412290;
-                    *(&buf.start.value + 4) = v93;
+                    *(&buf.start.value + 4) = localIdentifier5;
                     _os_log_impl(&_mh_execute_header, &_os_log_default, v92, "   [%@] Failed to populate detection traits", &buf, 0xCu);
                   }
                 }
@@ -956,7 +956,7 @@ LABEL_39:
 
               if ([v44 count])
               {
-                [v9 setObject:v44 forKeyedSubscript:v111];
+                [resultCopy setObject:v44 forKeyedSubscript:v111];
               }
 
 LABEL_42:
@@ -967,9 +967,9 @@ LABEL_42:
             v25 = v127;
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v100))
             {
-              v54 = [v118 localIdentifier];
+              localIdentifier6 = [v118 localIdentifier];
               LODWORD(buf.start.value) = 138412546;
-              *(&buf.start.value + 4) = v54;
+              *(&buf.start.value + 4) = localIdentifier6;
               LOWORD(buf.start.flags) = 2112;
               *(&buf.start.flags + 2) = v127;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v100, "   [%@] No matched PHFace for HAR result localIdentifier (%@)", &buf, 0x16u);
@@ -995,8 +995,8 @@ LABEL_43:
     v135 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v56 = [v120 vcp_results];
-    obj = [v56 objectForKeyedSubscript:MediaAnalysisHumanActionResultsKey];
+    vcp_results2 = [analysisCopy vcp_results];
+    obj = [vcp_results2 objectForKeyedSubscript:MediaAnalysisHumanActionResultsKey];
 
     typea = [obj countByEnumeratingWithState:&v132 objects:v152 count:16];
     if (!typea)
@@ -1049,7 +1049,7 @@ LABEL_51:
       v67 = v158.size.height;
 
       LODWORD(v68) = 1060320051;
-      v69 = [(VCPPhotosAssetChangeManager *)v106 matchPerson:v14 withPHFaces:0 withMinIOU:v64 iou:v65, v66, v67, v68];
+      v69 = [(VCPPhotosAssetChangeManager *)selfCopy matchPerson:v14 withPHFaces:0 withMinIOU:v64 iou:v65, v66, v67, v68];
       if (v69)
       {
         break;
@@ -1061,9 +1061,9 @@ LABEL_51:
         goto LABEL_81;
       }
 
-      v90 = [v118 localIdentifier];
+      localIdentifier7 = [v118 localIdentifier];
       LODWORD(buf.start.value) = v95;
-      *(&buf.start.value + 4) = v90;
+      *(&buf.start.value + 4) = localIdentifier7;
       LOWORD(buf.start.flags) = 2112;
       *(&buf.start.flags + 2) = v114;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v96, "   [%@] No matched PHFace for action result localIdentifier (%@)", &buf, 0x16u);
@@ -1091,12 +1091,12 @@ LABEL_87:
     [v13 setObject:v69 forKeyedSubscript:v114];
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v97))
     {
-      v70 = [v118 localIdentifier];
-      v71 = [v69 localIdentifier];
+      localIdentifier8 = [v118 localIdentifier];
+      localIdentifier9 = [v69 localIdentifier];
       LODWORD(buf.start.value) = 138412802;
-      *(&buf.start.value + 4) = v70;
+      *(&buf.start.value + 4) = localIdentifier8;
       LOWORD(buf.start.flags) = 2112;
-      *(&buf.start.flags + 2) = v71;
+      *(&buf.start.flags + 2) = localIdentifier9;
       HIWORD(buf.start.epoch) = 2112;
       buf.duration.value = v114;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v97, "   [%@] Associated PHFace (%@) with action result localIdentifier (%@)", &buf, 0x20u);
@@ -1129,7 +1129,7 @@ LABEL_61:
 
     v112 = [v13 objectForKeyedSubscript:v114];
     v122 = +[NSMutableArray array];
-    v77 = [v9 objectForKeyedSubscript:v112];
+    v77 = [resultCopy objectForKeyedSubscript:v112];
     [v122 addObjectsFromArray:v77];
 
     v150[0] = *v101;
@@ -1163,10 +1163,10 @@ LABEL_61:
           {
             v84 = [PHDetectionTrait alloc];
             v85 = [v126 objectForKeyedSubscript:v81];
-            v86 = [v85 intValue];
+            intValue = [v85 intValue];
             v87 = [v127 objectForKeyedSubscript:v81];
             [v87 floatValue];
-            v89 = [v84 initWithType:2 value:v86 score:v88 startTime:v72 duration:v73];
+            v89 = [v84 initWithType:2 value:intValue score:v88 startTime:v72 duration:v73];
 
             if (!v89)
             {
@@ -1190,7 +1190,7 @@ LABEL_61:
 
     if ([v122 count])
     {
-      [v9 setObject:v122 forKeyedSubscript:v112];
+      [resultCopy setObject:v122 forKeyedSubscript:v112];
     }
 
     goto LABEL_80;
@@ -1201,14 +1201,14 @@ LABEL_96:
   return v12;
 }
 
-- (int)updateImageAsset:(id)a3 analysis:(id)a4 imageOnly:(BOOL)a5 vskResults:(id)a6
+- (int)updateImageAsset:(id)asset analysis:(id)analysis imageOnly:(BOOL)only vskResults:(id)results
 {
-  v7 = a5;
-  v168 = a3;
-  v169 = a4;
-  v165 = a6;
-  v162 = v7;
-  if (!v7 || ![v168 vcp_isLivePhoto])
+  onlyCopy = only;
+  assetCopy = asset;
+  analysisCopy = analysis;
+  resultsCopy = results;
+  v162 = onlyCopy;
+  if (!onlyCopy || ![assetCopy vcp_isLivePhoto])
   {
     v9 = +[PHAsset vcp_fullAnalysisImageOnlyTypes]| 8;
 LABEL_8:
@@ -1218,18 +1218,18 @@ LABEL_8:
       v13 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v13))
       {
-        v14 = [v168 localIdentifier];
-        [v169 vcp_types];
+        localIdentifier = [assetCopy localIdentifier];
+        [analysisCopy vcp_types];
         v15 = MediaAnalysisTypeShortDescription();
-        v16 = [v169 vcp_types];
+        vcp_types = [analysisCopy vcp_types];
         v17 = MediaAnalysisTypeShortDescription();
-        v18 = [v168 vcp_isLivePhoto];
+        vcp_isLivePhoto = [assetCopy vcp_isLivePhoto];
         *buf = 138413570;
         v19 = @"NO";
-        *&buf[4] = v14;
+        *&buf[4] = localIdentifier;
         *&buf[12] = 2112;
         *&buf[22] = 2048;
-        if (v18)
+        if (vcp_isLivePhoto)
         {
           v20 = @"YES";
         }
@@ -1240,12 +1240,12 @@ LABEL_8:
         }
 
         *&buf[14] = v15;
-        if (v7)
+        if (onlyCopy)
         {
           v19 = @"YES";
         }
 
-        *&buf[24] = v16 & v9;
+        *&buf[24] = vcp_types & v9;
         *v185 = 2112;
         *&v185[2] = v17;
         *&v185[10] = 2112;
@@ -1256,19 +1256,19 @@ LABEL_8:
       }
     }
 
-    if ((v9 & ~[v169 vcp_types]) != 0)
+    if ((v9 & ~[analysisCopy vcp_types]) != 0)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
         v23 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v23))
         {
-          v24 = [v168 localIdentifier];
-          [v169 vcp_types];
+          localIdentifier2 = [assetCopy localIdentifier];
+          [analysisCopy vcp_types];
           v25 = MediaAnalysisTypeDescription();
           v26 = MediaAnalysisTypeDescription();
           *buf = 138412802;
-          *&buf[4] = v24;
+          *&buf[4] = localIdentifier2;
           *&buf[12] = 2112;
           *&buf[14] = v25;
           *&buf[22] = 2112;
@@ -1282,12 +1282,12 @@ LABEL_8:
 
     v21 = objc_alloc_init(VCPImageChangeEntry);
     v166 = v21;
-    [(VCPImageChangeEntry *)v21 setAsset:v168];
-    [(VCPImageChangeEntry *)v21 setImageOnly:v7];
-    if (([v169 vcp_types] & 0x2000000000000) != 0)
+    [(VCPImageChangeEntry *)v21 setAsset:assetCopy];
+    [(VCPImageChangeEntry *)v21 setImageOnly:onlyCopy];
+    if (([analysisCopy vcp_types] & 0x2000000000000) != 0)
     {
-      v28 = [v169 vcp_results];
-      v163 = [v28 objectForKeyedSubscript:MediaAnalysisMiCaImageCaptionResultsKey];
+      vcp_results = [analysisCopy vcp_results];
+      v163 = [vcp_results objectForKeyedSubscript:MediaAnalysisMiCaImageCaptionResultsKey];
 
       if (MediaAnalysisLogLevel() >= 7)
       {
@@ -1295,9 +1295,9 @@ LABEL_8:
         v30 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v30))
         {
-          v31 = [v168 localIdentifier];
+          localIdentifier3 = [assetCopy localIdentifier];
           *buf = 138412546;
-          *&buf[4] = v31;
+          *&buf[4] = localIdentifier3;
           *&buf[12] = 2112;
           *&buf[14] = v163;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v30, "[%@] Update Asset with MediaAnalysisMiCaImageCaptionResultsKey: %@", buf, 0x16u);
@@ -1324,8 +1324,8 @@ LABEL_8:
 
     if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
     {
-      v35 = [v165 imageEmbeddingAsset];
-      v36 = v35 == 0;
+      imageEmbeddingAsset = [resultsCopy imageEmbeddingAsset];
+      v36 = imageEmbeddingAsset == 0;
 
       if (v36)
       {
@@ -1335,9 +1335,9 @@ LABEL_8:
           v38 = VCPLogToOSLogType[4];
           if (os_log_type_enabled(&_os_log_default, v38))
           {
-            v39 = [v168 localIdentifier];
+            localIdentifier4 = [assetCopy localIdentifier];
             *buf = 138412290;
-            *&buf[4] = v39;
+            *&buf[4] = localIdentifier4;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v38, "[%@] No image embedding results, skip updating imageEmbeddingVersion", buf, 0xCu);
           }
         }
@@ -1345,22 +1345,22 @@ LABEL_8:
 
       else
       {
-        -[VCPImageChangeEntry setImageEmbeddingVersion:](v21, "setImageEmbeddingVersion:", [v165 imageEmbeddingVersion]);
+        -[VCPImageChangeEntry setImageEmbeddingVersion:](v21, "setImageEmbeddingVersion:", [resultsCopy imageEmbeddingVersion]);
       }
     }
 
-    if (![v168 vcp_isLivePhoto] || -[VCPImageChangeEntry imageOnly](v21, "imageOnly"))
+    if (![assetCopy vcp_isLivePhoto] || -[VCPImageChangeEntry imageOnly](v21, "imageOnly"))
     {
 LABEL_125:
-      v134 = [v169 vcp_results];
-      v135 = [v134 objectForKeyedSubscript:MediaAnalysisFaceResultsKey];
+      vcp_results2 = [analysisCopy vcp_results];
+      v135 = [vcp_results2 objectForKeyedSubscript:MediaAnalysisFaceResultsKey];
       -[VCPImageChangeEntry setFaceCount:](v21, "setFaceCount:", [v135 count]);
 
       v136 = v166;
-      if (([v169 vcp_types] & 0x40000000) != 0)
+      if (([analysisCopy vcp_types] & 0x40000000) != 0)
       {
         v137 = +[NSMutableDictionary dictionary];
-        v27 = [(VCPPhotosAssetChangeManager *)self associateTraitsForAsset:v168 withAnalysis:v169 result:v137];
+        v27 = [(VCPPhotosAssetChangeManager *)self associateTraitsForAsset:assetCopy withAnalysis:analysisCopy result:v137];
         if (v27)
         {
 LABEL_157:
@@ -1374,22 +1374,22 @@ LABEL_158:
         v136 = v166;
       }
 
-      if ((!v162 || ([v168 vcp_isLivePhoto] & 1) == 0) && objc_msgSend(v168, "mad_isEligibleForComputeSync"))
+      if ((!v162 || ([assetCopy vcp_isLivePhoto] & 1) == 0) && objc_msgSend(assetCopy, "mad_isEligibleForComputeSync"))
       {
-        -[VCPImageChangeEntry setAnalysisStage:](v136, "setAnalysisStage:", [v168 mad_analysisStageAfterCompletingAnalysis:1]);
+        -[VCPImageChangeEntry setAnalysisStage:](v136, "setAnalysisStage:", [assetCopy mad_analysisStageAfterCompletingAnalysis:1]);
         if (MediaAnalysisLogLevel() >= 7)
         {
           v138 = &_os_log_default;
           v139 = VCPLogToOSLogType[7];
           if (os_log_type_enabled(&_os_log_default, v139))
           {
-            v140 = [v168 localIdentifier];
-            v141 = [v168 vcp_typeDescription];
-            v142 = [v169 vcp_analysisDescriptionWithResultDetails:1];
+            localIdentifier5 = [assetCopy localIdentifier];
+            vcp_typeDescription = [assetCopy vcp_typeDescription];
+            v142 = [analysisCopy vcp_analysisDescriptionWithResultDetails:1];
             *buf = 138412802;
-            *&buf[4] = v140;
+            *&buf[4] = localIdentifier5;
             *&buf[12] = 2112;
-            *&buf[14] = v141;
+            *&buf[14] = vcp_typeDescription;
             *&buf[22] = 2112;
             *&buf[24] = v142;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v139, "[%@][%@] Existing image/live photo analysis %@", buf, 0x20u);
@@ -1407,7 +1407,7 @@ LABEL_158:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v146, OS_SIGNPOST_INTERVAL_BEGIN, v144, "VCPPhotosAssetChangeManager_Image_PackComputeSyncPayload", "", buf, 2u);
         }
 
-        v147 = [MADComputeSyncPayloadResults payloadDataForAsset:v168 targetStage:[(VCPImageChangeEntry *)v166 analysisStage] embeddingResults:v165 fullAnalysisResults:v169];
+        v147 = [MADComputeSyncPayloadResults payloadDataForAsset:assetCopy targetStage:[(VCPImageChangeEntry *)v166 analysisStage] embeddingResults:resultsCopy fullAnalysisResults:analysisCopy];
         v148 = VCPSignPostLog();
         v149 = v148;
         if (v144 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v148))
@@ -1427,16 +1427,16 @@ LABEL_158:
           v151 = VCPLogToOSLogType[4];
           if (os_log_type_enabled(&_os_log_default, v151))
           {
-            v152 = [v168 localIdentifier];
-            v153 = [(VCPImageChangeEntry *)v166 analysisStage];
-            v154 = [v168 mediaAnalysisProperties];
-            v155 = [v154 localAnalysisStage];
+            localIdentifier6 = [assetCopy localIdentifier];
+            analysisStage = [(VCPImageChangeEntry *)v166 analysisStage];
+            mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+            localAnalysisStage = [mediaAnalysisProperties localAnalysisStage];
             *buf = 138412802;
-            *&buf[4] = v152;
+            *&buf[4] = localIdentifier6;
             *&buf[12] = 1024;
-            *&buf[14] = v153;
+            *&buf[14] = analysisStage;
             *&buf[18] = 1024;
-            *&buf[20] = v155;
+            *&buf[20] = localAnalysisStage;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v151, "[%@] No compute sync payload generated for target stage %d (current stage %d)", buf, 0x18u);
           }
         }
@@ -1449,10 +1449,10 @@ LABEL_158:
       goto LABEL_158;
     }
 
-    if (([v169 vcp_types] & 0x200000000000) != 0)
+    if (([analysisCopy vcp_types] & 0x200000000000) != 0)
     {
-      v41 = [v169 vcp_results];
-      v159 = [v41 objectForKeyedSubscript:MediaAnalysisMiCaVideoCaptionResultsKey];
+      vcp_results3 = [analysisCopy vcp_results];
+      v159 = [vcp_results3 objectForKeyedSubscript:MediaAnalysisMiCaVideoCaptionResultsKey];
 
       if (MediaAnalysisLogLevel() >= 7)
       {
@@ -1460,9 +1460,9 @@ LABEL_158:
         v43 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v43))
         {
-          v44 = [v168 localIdentifier];
+          localIdentifier7 = [assetCopy localIdentifier];
           *buf = 138412546;
-          *&buf[4] = v44;
+          *&buf[4] = localIdentifier7;
           *&buf[12] = 2112;
           *&buf[14] = v159;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v43, "[%@] Update Asset with MediaAnalysisMiCaVideoCaptionResultsKey: %@", buf, 0x16u);
@@ -1489,8 +1489,8 @@ LABEL_158:
 
     if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
     {
-      v48 = [v165 videoEmbeddingAsset];
-      v49 = v48 == 0;
+      videoEmbeddingAsset = [resultsCopy videoEmbeddingAsset];
+      v49 = videoEmbeddingAsset == 0;
 
       if (v49)
       {
@@ -1500,9 +1500,9 @@ LABEL_158:
           v51 = VCPLogToOSLogType[4];
           if (os_log_type_enabled(&_os_log_default, v51))
           {
-            v52 = [v168 localIdentifier];
+            localIdentifier8 = [assetCopy localIdentifier];
             *buf = 138412290;
-            *&buf[4] = v52;
+            *&buf[4] = localIdentifier8;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v51, "[%@] No video embedding results, skip updating videoEmbeddingVersion", buf, 0xCu);
           }
         }
@@ -1510,14 +1510,14 @@ LABEL_158:
 
       else
       {
-        -[VCPImageChangeEntry setVideoEmbeddingVersion:](v21, "setVideoEmbeddingVersion:", [v165 videoEmbeddingVersion]);
+        -[VCPImageChangeEntry setVideoEmbeddingVersion:](v21, "setVideoEmbeddingVersion:", [resultsCopy videoEmbeddingVersion]);
       }
     }
 
-    if (([v169 vcp_types] & 0x40000) != 0)
+    if (([analysisCopy vcp_types] & 0x40000) != 0)
     {
-      v103 = [v169 vcp_results];
-      v60 = [v103 objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
+      vcp_results4 = [analysisCopy vcp_results];
+      v60 = [vcp_results4 objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
 
       if ([v60 count])
       {
@@ -1541,10 +1541,10 @@ LABEL_158:
         [(VCPImageChangeEntry *)v21 setSummaryTimeRange:buf];
 
         v115 = [v60 objectAtIndexedSubscript:0];
-        v116 = [v115 vcp_flags];
+        vcp_flags = [v115 vcp_flags];
         v117 = [v60 objectAtIndexedSubscript:0];
         [v117 vcp_quality];
-        v119 = v118 * ((v116 >> 19) & 1);
+        v119 = v118 * ((vcp_flags >> 19) & 1);
         *&v119 = v119;
         [(VCPImageChangeEntry *)v21 setAutoplayScore:v119];
 
@@ -1610,8 +1610,8 @@ LABEL_158:
         [(VCPImageChangeEntry *)v21 setBestPlaybackRect:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
       }
 
-      v111 = [v169 vcp_results];
-      v112 = [v111 objectForKeyedSubscript:MediaAnalysisAnimatedStickerResultsKey];
+      vcp_results5 = [analysisCopy vcp_results];
+      v112 = [vcp_results5 objectForKeyedSubscript:MediaAnalysisAnimatedStickerResultsKey];
 
       if ([v112 count])
       {
@@ -1656,8 +1656,8 @@ LABEL_158:
         [(VCPImageChangeEntry *)v21 setAnimatedStickerScore:0.0];
       }
 
-      v127 = [v169 vcp_results];
-      v128 = [v127 objectForKeyedSubscript:MediaAnalysisSettlingEffectsGatingResultsKey];
+      vcp_results6 = [analysisCopy vcp_results];
+      v128 = [vcp_results6 objectForKeyedSubscript:MediaAnalysisSettlingEffectsGatingResultsKey];
 
       if ([v128 count])
       {
@@ -1785,13 +1785,13 @@ LABEL_158:
       }
     }
 
-    if (([v169 vcp_types] & 0x100000) == 0)
+    if (([analysisCopy vcp_types] & 0x100000) == 0)
     {
       goto LABEL_64;
     }
 
-    v59 = [v169 vcp_results];
-    v60 = [v59 objectForKeyedSubscript:MediaAnalysisLivePhotoEffectsResultsKey];
+    vcp_results7 = [analysisCopy vcp_results];
+    v60 = [vcp_results7 objectForKeyedSubscript:MediaAnalysisLivePhotoEffectsResultsKey];
 
     if (![v60 count])
     {
@@ -1799,11 +1799,11 @@ LABEL_63:
 
       v21 = v166;
 LABEL_64:
-      if (([v169 vcp_types] & 0x200000) != 0)
+      if (([analysisCopy vcp_types] & 0x200000) != 0)
       {
         [(VCPImageChangeEntry *)v21 setAudioClassification:0];
-        v65 = [v169 vcp_results];
-        v66 = [v65 objectForKeyedSubscript:MediaAnalysisApplauseResultsKey];
+        vcp_results8 = [analysisCopy vcp_results];
+        v66 = [vcp_results8 objectForKeyedSubscript:MediaAnalysisApplauseResultsKey];
         v67 = [v66 count] == 0;
 
         if (!v67)
@@ -1811,8 +1811,8 @@ LABEL_64:
           [(VCPImageChangeEntry *)v166 setAudioClassification:[(VCPImageChangeEntry *)v166 audioClassification]| 1];
         }
 
-        v68 = [v169 vcp_results];
-        v69 = [v68 objectForKeyedSubscript:MediaAnalysisBabbleResultsKey];
+        vcp_results9 = [analysisCopy vcp_results];
+        v69 = [vcp_results9 objectForKeyedSubscript:MediaAnalysisBabbleResultsKey];
         v70 = [v69 count] == 0;
 
         if (!v70)
@@ -1820,8 +1820,8 @@ LABEL_64:
           [(VCPImageChangeEntry *)v166 setAudioClassification:[(VCPImageChangeEntry *)v166 audioClassification]| 2];
         }
 
-        v71 = [v169 vcp_results];
-        v72 = [v71 objectForKeyedSubscript:MediaAnalysisCheeringResultsKey];
+        vcp_results10 = [analysisCopy vcp_results];
+        v72 = [vcp_results10 objectForKeyedSubscript:MediaAnalysisCheeringResultsKey];
         v73 = [v72 count] == 0;
 
         if (!v73)
@@ -1829,8 +1829,8 @@ LABEL_64:
           [(VCPImageChangeEntry *)v166 setAudioClassification:[(VCPImageChangeEntry *)v166 audioClassification]| 4];
         }
 
-        v74 = [v169 vcp_results];
-        v75 = [v74 objectForKeyedSubscript:MediaAnalysisLaughterResultsKey];
+        vcp_results11 = [analysisCopy vcp_results];
+        v75 = [vcp_results11 objectForKeyedSubscript:MediaAnalysisLaughterResultsKey];
         v76 = [v75 count] == 0;
 
         if (!v76)
@@ -1838,8 +1838,8 @@ LABEL_64:
           [(VCPImageChangeEntry *)v166 setAudioClassification:[(VCPImageChangeEntry *)v166 audioClassification]| 8];
         }
 
-        v77 = [v169 vcp_results];
-        v78 = [v77 objectForKeyedSubscript:MediaAnalysisVoiceResultsKey];
+        vcp_results12 = [analysisCopy vcp_results];
+        v78 = [vcp_results12 objectForKeyedSubscript:MediaAnalysisVoiceResultsKey];
         v79 = [v78 count] == 0;
 
         if (!v79)
@@ -1847,8 +1847,8 @@ LABEL_64:
           [(VCPImageChangeEntry *)v166 setAudioClassification:[(VCPImageChangeEntry *)v166 audioClassification]| 0x10];
         }
 
-        v80 = [v169 vcp_results];
-        v81 = [v80 objectForKeyedSubscript:MediaAnalysisMusicResultsKey];
+        vcp_results13 = [analysisCopy vcp_results];
+        v81 = [vcp_results13 objectForKeyedSubscript:MediaAnalysisMusicResultsKey];
         v82 = [v81 count] == 0;
 
         if (!v82)
@@ -1862,8 +1862,8 @@ LABEL_64:
         v173 = 0u;
         v170 = 0u;
         v171 = 0u;
-        v84 = [v83 allKeys];
-        v85 = [v84 countByEnumeratingWithState:&v170 objects:v183 count:16];
+        allKeys = [v83 allKeys];
+        v85 = [allKeys countByEnumeratingWithState:&v170 objects:v183 count:16];
         if (v85)
         {
           v86 = *v171;
@@ -1873,12 +1873,12 @@ LABEL_64:
             {
               if (*v171 != v86)
               {
-                objc_enumerationMutation(v84);
+                objc_enumerationMutation(allKeys);
               }
 
               v88 = *(*(&v170 + 1) + 8 * i);
-              v89 = [v169 vcp_results];
-              v90 = [v89 objectForKeyedSubscript:v88];
+              vcp_results14 = [analysisCopy vcp_results];
+              v90 = [vcp_results14 objectForKeyedSubscript:v88];
               v91 = [v90 count] == 0;
 
               if (!v91)
@@ -1894,7 +1894,7 @@ LABEL_64:
               }
             }
 
-            v85 = [v84 countByEnumeratingWithState:&v170 objects:v183 count:16];
+            v85 = [allKeys countByEnumeratingWithState:&v170 objects:v183 count:16];
           }
 
           while (v85);
@@ -1904,10 +1904,10 @@ LABEL_64:
         v21 = v166;
       }
 
-      if (([v169 vcp_types] & 0x400000000) != 0)
+      if (([analysisCopy vcp_types] & 0x400000000) != 0)
       {
-        v95 = [v169 vcp_results];
-        v96 = [v95 objectForKeyedSubscript:MediaAnalysisAudioQualityResultsKey];
+        vcp_results15 = [analysisCopy vcp_results];
+        v96 = [vcp_results15 objectForKeyedSubscript:MediaAnalysisAudioQualityResultsKey];
 
         if ([v96 count])
         {
@@ -1934,7 +1934,7 @@ LABEL_64:
         v21 = v166;
       }
 
-      -[VCPImageChangeEntry setScreenTimeDeviceImageSensitivity:](v21, "setScreenTimeDeviceImageSensitivity:", [objc_opt_class() sensitivityFromAnalysis:v169]);
+      -[VCPImageChangeEntry setScreenTimeDeviceImageSensitivity:](v21, "setScreenTimeDeviceImageSensitivity:", [objc_opt_class() sensitivityFromAnalysis:analysisCopy]);
 
       v21 = v166;
       goto LABEL_125;
@@ -1973,9 +1973,9 @@ LABEL_156:
     v10 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v10))
     {
-      v11 = [v168 localIdentifier];
+      localIdentifier9 = [assetCopy localIdentifier];
       *buf = 138412290;
-      *&buf[4] = v11;
+      *&buf[4] = localIdentifier9;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[%@] updateImageAsset : required types is MediaAnalysisTypeNone; skip", buf, 0xCu);
     }
   }
@@ -1987,15 +1987,15 @@ LABEL_159:
   return v27;
 }
 
-- (int)updateMovieAsset:(id)a3 analysis:(id)a4 imageOnly:(BOOL)a5 vskResults:(id)a6
+- (int)updateMovieAsset:(id)asset analysis:(id)analysis imageOnly:(BOOL)only vskResults:(id)results
 {
-  v7 = a5;
-  v9 = a3;
-  v373 = a4;
-  v370 = a6;
-  v372 = v9;
+  onlyCopy = only;
+  assetCopy = asset;
+  analysisCopy = analysis;
+  resultsCopy = results;
+  v372 = assetCopy;
   v371 = objc_alloc_init(VCPMovieChangeEntry);
-  [(VCPMovieChangeEntry *)v371 setAsset:v9];
+  [(VCPMovieChangeEntry *)v371 setAsset:assetCopy];
   v10 = +[PHAsset vcp_fullAnalysisImageOnlyTypes];
   if (MediaAnalysisLogLevel() >= 7)
   {
@@ -2003,18 +2003,18 @@ LABEL_159:
     v12 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v12))
     {
-      v13 = [v9 localIdentifier];
-      [v373 vcp_types];
+      localIdentifier = [assetCopy localIdentifier];
+      [analysisCopy vcp_types];
       v14 = MediaAnalysisTypeDescription();
-      v15 = [v373 vcp_types];
+      vcp_types = [analysisCopy vcp_types];
       MediaAnalysisTypeShortDescription();
-      v17 = v16 = v15 & v10;
+      v17 = v16 = vcp_types & v10;
       v18 = v17;
       *buf = 138413314;
       v19 = @"NO";
-      *&buf[4] = v13;
+      *&buf[4] = localIdentifier;
       *&buf[12] = 2112;
-      if (v7)
+      if (onlyCopy)
       {
         v19 = @"YES";
       }
@@ -2030,16 +2030,16 @@ LABEL_159:
     }
   }
 
-  if (!v10 && v7)
+  if (!v10 && onlyCopy)
   {
     if (MediaAnalysisLogLevel() >= 3)
     {
       v20 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v20))
       {
-        v21 = [v372 localIdentifier];
+        localIdentifier2 = [v372 localIdentifier];
         *buf = 138412290;
-        *&buf[4] = v21;
+        *&buf[4] = localIdentifier2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v20, "[%@] updateMovieAsset : required types is MediaAnalysisTypeNone; skip", buf, 0xCu);
       }
     }
@@ -2049,19 +2049,19 @@ LABEL_18:
     goto LABEL_83;
   }
 
-  if ((v10 & ~[v373 vcp_types]) != 0)
+  if ((v10 & ~[analysisCopy vcp_types]) != 0)
   {
     if (MediaAnalysisLogLevel() >= 3)
     {
       v23 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v23))
       {
-        v24 = [v372 localIdentifier];
-        [v373 vcp_types];
+        localIdentifier3 = [v372 localIdentifier];
+        [analysisCopy vcp_types];
         v25 = MediaAnalysisTypeDescription();
         v26 = MediaAnalysisTypeDescription();
         *buf = 138412802;
-        *&buf[4] = v24;
+        *&buf[4] = localIdentifier3;
         *&buf[12] = 2112;
         *&buf[14] = v25;
         *&buf[22] = 2112;
@@ -2073,10 +2073,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (([v373 vcp_types] & 0x2000000000000) != 0)
+  if (([analysisCopy vcp_types] & 0x2000000000000) != 0)
   {
-    v28 = [v373 vcp_results];
-    v29 = [v28 objectForKeyedSubscript:MediaAnalysisMiCaImageCaptionResultsKey];
+    vcp_results = [analysisCopy vcp_results];
+    v29 = [vcp_results objectForKeyedSubscript:MediaAnalysisMiCaImageCaptionResultsKey];
 
     v22 = v29;
     if (MediaAnalysisLogLevel() >= 7)
@@ -2085,9 +2085,9 @@ LABEL_18:
       v31 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v31))
       {
-        v32 = [v372 localIdentifier];
+        localIdentifier4 = [v372 localIdentifier];
         *buf = 138412546;
-        *&buf[4] = v32;
+        *&buf[4] = localIdentifier4;
         *&buf[12] = 2112;
         *&buf[14] = v29;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v31, "[%@] Update Asset with MediaAnalysisMiCaImageCaptionResultsKey: %@", buf, 0x16u);
@@ -2114,8 +2114,8 @@ LABEL_18:
 
   if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
   {
-    v36 = [v370 imageEmbeddingAsset];
-    v37 = v36 == 0;
+    imageEmbeddingAsset = [resultsCopy imageEmbeddingAsset];
+    v37 = imageEmbeddingAsset == 0;
 
     if (v37)
     {
@@ -2126,9 +2126,9 @@ LABEL_18:
         v39 = VCPLogToOSLogType[4];
         if (os_log_type_enabled(&_os_log_default, v39))
         {
-          v40 = [v372 localIdentifier];
+          localIdentifier5 = [v372 localIdentifier];
           *buf = 138412290;
-          *&buf[4] = v40;
+          *&buf[4] = localIdentifier5;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v39, "[%@] No image embedding results, skip updating imageEmbeddingVersion", buf, 0xCu);
         }
 
@@ -2139,11 +2139,11 @@ LABEL_18:
     else
     {
       v22 = v362;
-      -[VCPMovieChangeEntry setImageEmbeddingVersion:](v371, "setImageEmbeddingVersion:", [v370 imageEmbeddingVersion]);
+      -[VCPMovieChangeEntry setImageEmbeddingVersion:](v371, "setImageEmbeddingVersion:", [resultsCopy imageEmbeddingVersion]);
     }
   }
 
-  if (v7)
+  if (onlyCopy)
   {
     [(VCPMovieChangeEntry *)v371 setImageOnly:1];
     [(NSMutableArray *)self->_pendingChanges addObject:v371];
@@ -2158,18 +2158,18 @@ LABEL_34:
     v42 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v42))
     {
-      v43 = [v372 localIdentifier];
-      [v373 vcp_types];
+      localIdentifier6 = [v372 localIdentifier];
+      [analysisCopy vcp_types];
       v44 = MediaAnalysisTypeShortDescription();
-      v45 = [v373 vcp_types];
+      vcp_types2 = [analysisCopy vcp_types];
       v46 = MediaAnalysisTypeRequiredForMoviePersistence;
       v47 = MediaAnalysisTypeShortDescription();
       *buf = 138413314;
-      *&buf[4] = v43;
+      *&buf[4] = localIdentifier6;
       *&buf[12] = 2112;
       *&buf[14] = v44;
       *&buf[22] = 2048;
-      *&buf[24] = v46 & v45;
+      *&buf[24] = v46 & vcp_types2;
       *v438 = 2112;
       *&v438[2] = v47;
       *&v438[10] = 2112;
@@ -2180,20 +2180,20 @@ LABEL_34:
     v22 = v362;
   }
 
-  v48 = [v373 vcp_types];
-  if ((MediaAnalysisTypeRequiredForMoviePersistence & ~v48) != 0)
+  vcp_types3 = [analysisCopy vcp_types];
+  if ((MediaAnalysisTypeRequiredForMoviePersistence & ~vcp_types3) != 0)
   {
     if (MediaAnalysisLogLevel() >= 3)
     {
       v49 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v49))
       {
-        v50 = [v372 localIdentifier];
-        [v373 vcp_types];
+        localIdentifier7 = [v372 localIdentifier];
+        [analysisCopy vcp_types];
         v51 = MediaAnalysisTypeDescription();
         v52 = MediaAnalysisTypeDescription();
         *buf = 138412802;
-        *&buf[4] = v50;
+        *&buf[4] = localIdentifier7;
         *&buf[12] = 2112;
         *&buf[14] = v51;
         *&buf[22] = 2112;
@@ -2208,10 +2208,10 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (([v373 vcp_types] & 0x200000000000) != 0)
+  if (([analysisCopy vcp_types] & 0x200000000000) != 0)
   {
-    v53 = [v373 vcp_results];
-    v361 = [v53 objectForKeyedSubscript:MediaAnalysisMiCaVideoCaptionResultsKey];
+    vcp_results2 = [analysisCopy vcp_results];
+    v361 = [vcp_results2 objectForKeyedSubscript:MediaAnalysisMiCaVideoCaptionResultsKey];
 
     if ([v361 count])
     {
@@ -2235,8 +2235,8 @@ LABEL_34:
 
   if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
   {
-    v57 = [v370 videoEmbeddingAsset];
-    v58 = v57 == 0;
+    videoEmbeddingAsset = [resultsCopy videoEmbeddingAsset];
+    v58 = videoEmbeddingAsset == 0;
 
     if (v58)
     {
@@ -2246,9 +2246,9 @@ LABEL_34:
         v60 = VCPLogToOSLogType[4];
         if (os_log_type_enabled(&_os_log_default, v60))
         {
-          v61 = [v372 localIdentifier];
+          localIdentifier8 = [v372 localIdentifier];
           *buf = 138412290;
-          *&buf[4] = v61;
+          *&buf[4] = localIdentifier8;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v60, "[%@] No video embedding results, skip updating videoEmbeddingVersion", buf, 0xCu);
         }
       }
@@ -2256,12 +2256,12 @@ LABEL_34:
 
     else
     {
-      -[VCPMovieChangeEntry setVideoEmbeddingVersion:](v371, "setVideoEmbeddingVersion:", [v370 videoEmbeddingVersion]);
+      -[VCPMovieChangeEntry setVideoEmbeddingVersion:](v371, "setVideoEmbeddingVersion:", [resultsCopy videoEmbeddingVersion]);
     }
   }
 
-  v62 = [v373 vcp_results];
-  v360 = [v62 objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
+  vcp_results3 = [analysisCopy vcp_results];
+  v360 = [vcp_results3 objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
 
   if ([v360 count])
   {
@@ -2314,9 +2314,9 @@ LABEL_34:
                     v182 = VCPLogToOSLogType[3];
                     if (os_log_type_enabled(&_os_log_default, v182))
                     {
-                      v183 = [v372 localIdentifier];
+                      localIdentifier9 = [v372 localIdentifier];
                       *buf = 138412290;
-                      *&buf[4] = v183;
+                      *&buf[4] = localIdentifier9;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, v182, "[%@] CGRectIsNull(change.bestPlaybackRect); skip", buf, 0xCu);
                     }
                   }
@@ -2340,9 +2340,9 @@ LABEL_191:
                     v189 = VCPLogToOSLogType[3];
                     if (os_log_type_enabled(&_os_log_default, v189))
                     {
-                      v190 = [v372 localIdentifier];
+                      localIdentifier10 = [v372 localIdentifier];
                       *buf = 138412290;
-                      *&buf[4] = v190;
+                      *&buf[4] = localIdentifier10;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, v189, "[%@] CMTIME_IS_INVALID(change.keyFrameTime); skip", buf, 0xCu);
                     }
                   }
@@ -2351,15 +2351,15 @@ LABEL_191:
                 }
 
                 v191 = [v360 objectAtIndexedSubscript:0];
-                v192 = [v191 vcp_flags];
+                vcp_flags = [v191 vcp_flags];
                 v193 = [v360 objectAtIndexedSubscript:0];
                 [v193 vcp_quality];
-                v195 = v194 * ((v192 >> 19) & 1);
+                v195 = v194 * ((vcp_flags >> 19) & 1);
                 *&v195 = v195;
                 [(VCPMovieChangeEntry *)v371 setAutoplayScore:v195];
 
-                v196 = [v373 vcp_results];
-                v197 = [v196 objectForKeyedSubscript:MediaAnalysisKeyFrameResourceResultsKey];
+                vcp_results4 = [analysisCopy vcp_results];
+                v197 = [vcp_results4 objectForKeyedSubscript:MediaAnalysisKeyFrameResourceResultsKey];
 
                 if ([v197 count])
                 {
@@ -2373,9 +2373,9 @@ LABEL_191:
                       v310 = VCPLogToOSLogType[3];
                       if (os_log_type_enabled(&_os_log_default, v310))
                       {
-                        v311 = [v372 localIdentifier];
+                        localIdentifier11 = [v372 localIdentifier];
                         *buf = 138412290;
-                        *&buf[4] = v311;
+                        *&buf[4] = localIdentifier11;
                         _os_log_impl(&_mh_execute_header, &_os_log_default, v310, "[%@] !(__bridge CGImageRef)keyFrameResourceResults[0]; skip", buf, 0xCu);
                       }
                     }
@@ -2406,9 +2406,9 @@ LABEL_191:
         v80 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v80))
         {
-          v81 = [v372 localIdentifier];
+          localIdentifier12 = [v372 localIdentifier];
           *buf = 138412290;
-          *&buf[4] = v81;
+          *&buf[4] = localIdentifier12;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v80, "[%@] CMTIMERANGE_IS_INVALID(change.summaryTimeRange); skip", buf, 0xCu);
         }
       }
@@ -2419,9 +2419,9 @@ LABEL_191:
       v78 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v78))
       {
-        v79 = [v372 localIdentifier];
+        localIdentifier13 = [v372 localIdentifier];
         *buf = 138412290;
-        *&buf[4] = v79;
+        *&buf[4] = localIdentifier13;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v78, "[%@] Missing summaryResults (!attributes.count); skip", buf, 0xCu);
       }
     }
@@ -2454,9 +2454,9 @@ LABEL_60:
         v83 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v83))
         {
-          v84 = [v372 localIdentifier];
+          localIdentifier14 = [v372 localIdentifier];
           *buf = 138412290;
-          *&buf[4] = v84;
+          *&buf[4] = localIdentifier14;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v83, "[%@] !CGRectIsNormalized(change.bestPlaybackRect); skip", buf, 0xCu);
         }
       }
@@ -2465,7 +2465,7 @@ LABEL_60:
     }
   }
 
-  [v373 vcp_quality];
+  [analysisCopy vcp_quality];
   *&v72 = v72;
   [(VCPMovieChangeEntry *)v371 setVideoScore:v72];
   [(VCPMovieChangeEntry *)v371 videoScore];
@@ -2476,10 +2476,10 @@ LABEL_60:
       v75 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v75))
       {
-        v76 = [v372 localIdentifier];
+        localIdentifier15 = [v372 localIdentifier];
         [(VCPMovieChangeEntry *)v371 videoScore];
         *buf = 138412546;
-        *&buf[4] = v76;
+        *&buf[4] = localIdentifier15;
         *&buf[12] = 2048;
         *&buf[14] = v77;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v75, "[%@] change.videoScore %.3f, expect [0.0, 1.0]; skip", buf, 0x16u);
@@ -2489,8 +2489,8 @@ LABEL_60:
     goto LABEL_79;
   }
 
-  v85 = [v373 vcp_results];
-  v325 = [v85 objectForKeyedSubscript:MediaAnalysisActivityLevelResultsKey];
+  vcp_results5 = [analysisCopy vcp_results];
+  v325 = [vcp_results5 objectForKeyedSubscript:MediaAnalysisActivityLevelResultsKey];
 
   if ([v325 count])
   {
@@ -2507,10 +2507,10 @@ LABEL_60:
         v91 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v91))
         {
-          v92 = [v372 localIdentifier];
+          localIdentifier16 = [v372 localIdentifier];
           [(VCPMovieChangeEntry *)v371 activityScore];
           *buf = 138412546;
-          *&buf[4] = v92;
+          *&buf[4] = localIdentifier16;
           *&buf[12] = 2048;
           *&buf[14] = v93;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v91, "[%@] change.activityScore %.3f, expect [0.0, 1.0]; skip", buf, 0x16u);
@@ -2528,19 +2528,19 @@ LABEL_60:
     [(VCPMovieChangeEntry *)v371 setActivityScore:v86];
   }
 
-  v94 = [v373 vcp_results];
-  v319 = [v94 objectForKeyedSubscript:MediaAnalysisFacePrintResultsKey];
+  vcp_results6 = [analysisCopy vcp_results];
+  v319 = [vcp_results6 objectForKeyedSubscript:MediaAnalysisFacePrintResultsKey];
 
   -[VCPMovieChangeEntry setFaceCount:](v371, "setFaceCount:", [v319 count]);
-  v95 = [v372 photoLibrary];
-  v321 = [v95 librarySpecificFetchOptions];
+  photoLibrary = [v372 photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v436 = PHFacePropertySetClustering;
   v96 = [NSArray arrayWithObjects:&v436 count:1];
-  [v321 setFetchPropertySets:v96];
+  [librarySpecificFetchOptions setFetchPropertySets:v96];
 
-  [v321 setIncludeMediaAnalysisProcessingRangeTypes:2];
-  v312 = [PHFace fetchFacesInAsset:v372 options:v321];
+  [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:2];
+  v312 = [PHFace fetchFacesInAsset:v372 options:librarySpecificFetchOptions];
   v363 = +[NSMutableArray array];
   v417 = 0u;
   v418 = 0u;
@@ -2562,9 +2562,9 @@ LABEL_60:
         }
 
         v101 = *(*(&v415 + 1) + 8 * i);
-        v102 = [v101 faceClusteringProperties];
-        v103 = [v102 groupingIdentifier];
-        v104 = [v103 isEqualToString:kVideoFaceGroupIdentifier];
+        faceClusteringProperties = [v101 faceClusteringProperties];
+        groupingIdentifier = [faceClusteringProperties groupingIdentifier];
+        v104 = [groupingIdentifier isEqualToString:kVideoFaceGroupIdentifier];
 
         if (v104)
         {
@@ -2574,9 +2574,9 @@ LABEL_60:
             v105 = &_os_log_default;
             if (os_log_type_enabled(&_os_log_default, v99))
             {
-              v106 = [v101 localIdentifier];
+              localIdentifier17 = [v101 localIdentifier];
               *buf = 138412290;
-              *&buf[4] = v106;
+              *&buf[4] = localIdentifier17;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v99, "Delete fullrange video face [%@]", buf, 0xCu);
             }
           }
@@ -2592,15 +2592,15 @@ LABEL_60:
   v107 = PHPersonDeleteRequest_ptr;
   if ([v363 count])
   {
-    v108 = [v372 photoLibrary];
+    photoLibrary2 = [v372 photoLibrary];
     v413[0] = _NSConcreteStackBlock;
     v413[1] = 3221225472;
     v413[2] = sub_10015A974;
     v413[3] = &unk_100283210;
     v414 = v363;
     v412 = 0;
-    v109 = [v108 performChangesAndWait:v413 error:&v412];
-    v324 = v412;
+    v109 = [photoLibrary2 performChangesAndWait:v413 error:&v412];
+    array = v412;
 
     if ((v109 & 1) == 0)
     {
@@ -2609,7 +2609,7 @@ LABEL_60:
         v184 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v184))
         {
-          v185 = [v324 description];
+          v185 = [array description];
           *buf = 138412290;
           *&buf[4] = v185;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v184, "Failed to delete faces %@", buf, 0xCu);
@@ -2620,7 +2620,7 @@ LABEL_60:
       v186 = v414;
 LABEL_356:
 
-      v291 = v324;
+      v291 = array;
       goto LABEL_357;
     }
 
@@ -2628,7 +2628,7 @@ LABEL_356:
   }
 
   [(VCPMovieChangeEntry *)v371 setAudioClassification:0];
-  if (([v373 vcp_types] & 0x200000) != 0)
+  if (([analysisCopy vcp_types] & 0x200000) != 0)
   {
     v364 = +[NSMutableSet set];
     v110 = [objc_opt_class() mad_audioTaxonomy:1 useResultsKey:1];
@@ -2636,8 +2636,8 @@ LABEL_356:
     v411 = 0u;
     v408 = 0u;
     v409 = 0u;
-    v111 = [v110 allKeys];
-    v112 = [v111 countByEnumeratingWithState:&v408 objects:v434 count:16];
+    allKeys = [v110 allKeys];
+    v112 = [allKeys countByEnumeratingWithState:&v408 objects:v434 count:16];
     if (!v112)
     {
       goto LABEL_124;
@@ -2650,12 +2650,12 @@ LABEL_356:
       {
         if (*v409 != v113)
         {
-          objc_enumerationMutation(v111);
+          objc_enumerationMutation(allKeys);
         }
 
         v115 = *(*(&v408 + 1) + 8 * j);
-        v116 = [v373 vcp_results];
-        v117 = [v116 objectForKeyedSubscript:v115];
+        vcp_results7 = [analysisCopy vcp_results];
+        v117 = [vcp_results7 objectForKeyedSubscript:v115];
         if ([v117 count])
         {
           [v372 duration];
@@ -2668,16 +2668,16 @@ LABEL_356:
 
           v120 = [PHSceneClassification alloc];
           v121 = [v110 objectForKeyedSubscript:v115];
-          v122 = [v121 longLongValue];
+          longLongValue = [v121 longLongValue];
           y = CGRectNull.origin.y;
           width = CGRectNull.size.width;
           height = CGRectNull.size.height;
           [v372 duration];
-          v116 = [v120 initWithExtendedSceneIdentifier:v122 confidence:3 boundingBox:1.0 startTime:CGRectNull.origin.x duration:y classificationType:{width, height, 0.0, v126}];
+          vcp_results7 = [v120 initWithExtendedSceneIdentifier:longLongValue confidence:3 boundingBox:1.0 startTime:CGRectNull.origin.x duration:y classificationType:{width, height, 0.0, v126}];
 
-          if (v116)
+          if (vcp_results7)
           {
-            [v364 addObject:v116];
+            [v364 addObject:vcp_results7];
           }
         }
 
@@ -2686,7 +2686,7 @@ LABEL_356:
         }
       }
 
-      v112 = [v111 countByEnumeratingWithState:&v408 objects:v434 count:16];
+      v112 = [allKeys countByEnumeratingWithState:&v408 objects:v434 count:16];
       if (!v112)
       {
 LABEL_124:
@@ -2704,16 +2704,16 @@ LABEL_124:
     v128 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v128))
     {
-      v129 = [v372 localIdentifier];
+      localIdentifier18 = [v372 localIdentifier];
       *buf = 138412290;
-      *&buf[4] = v129;
+      *&buf[4] = localIdentifier18;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v128, "publish full-range scene classification result to movie %@", buf, 0xCu);
     }
 
     v107 = PHPersonDeleteRequest_ptr;
   }
 
-  if (([v373 vcp_types] & 0x40000004000) == 0)
+  if (([analysisCopy vcp_types] & 0x40000004000) == 0)
   {
     goto LABEL_232;
   }
@@ -2724,9 +2724,9 @@ LABEL_124:
     v131 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v131))
     {
-      v132 = [v372 localIdentifier];
+      localIdentifier19 = [v372 localIdentifier];
       *buf = 138412290;
-      *&buf[4] = v132;
+      *&buf[4] = localIdentifier19;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v131, "[%@] check scene classification result from full-range video", buf, 0xCu);
     }
   }
@@ -2737,8 +2737,8 @@ LABEL_124:
   v407 = 0u;
   v404 = 0u;
   v405 = 0u;
-  v133 = [v372 sceneClassifications];
-  v134 = [v133 countByEnumeratingWithState:&v404 objects:v433 count:16];
+  sceneClassifications = [v372 sceneClassifications];
+  v134 = [sceneClassifications countByEnumeratingWithState:&v404 objects:v433 count:16];
   if (v134)
   {
     v135 = *v405;
@@ -2748,14 +2748,14 @@ LABEL_124:
       {
         if (*v405 != v135)
         {
-          objc_enumerationMutation(v133);
+          objc_enumerationMutation(sceneClassifications);
         }
 
         v137 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [*(*(&v404 + 1) + 8 * k) extendedSceneIdentifier]);
         [v365 addObject:v137];
       }
 
-      v134 = [v133 countByEnumeratingWithState:&v404 objects:v433 count:16];
+      v134 = [sceneClassifications countByEnumeratingWithState:&v404 objects:v433 count:16];
     }
 
     while (v134);
@@ -2766,8 +2766,8 @@ LABEL_124:
   v403 = 0u;
   v400 = 0u;
   v401 = 0u;
-  v139 = [v373 vcp_results];
-  v345 = [v139 objectForKeyedSubscript:MediaAnalysisClassificationResultsKey];
+  vcp_results8 = [analysisCopy vcp_results];
+  v345 = [vcp_results8 objectForKeyedSubscript:MediaAnalysisClassificationResultsKey];
 
   v140 = [v345 countByEnumeratingWithState:&v400 objects:v432 count:16];
   if (v140)
@@ -2842,8 +2842,8 @@ LABEL_124:
   v395 = 0u;
   v392 = 0u;
   v393 = 0u;
-  v158 = [v373 vcp_results];
-  v336 = [v158 objectForKeyedSubscript:MediaAnalysisSafetyResultsKey];
+  vcp_results9 = [analysisCopy vcp_results];
+  v336 = [vcp_results9 objectForKeyedSubscript:MediaAnalysisSafetyResultsKey];
 
   v159 = [v336 countByEnumeratingWithState:&v392 objects:v430 count:16];
   if (v159)
@@ -2924,8 +2924,8 @@ LABEL_124:
     while (v159);
   }
 
-  v178 = [v373 vcp_results];
-  v326 = [v178 objectForKeyedSubscript:MediaAnalysisVideoSceneThumbnailResultsKey];
+  vcp_results10 = [analysisCopy vcp_results];
+  v326 = [vcp_results10 objectForKeyedSubscript:MediaAnalysisVideoSceneThumbnailResultsKey];
 
   if (v326 && [v326 count])
   {
@@ -2981,9 +2981,9 @@ LABEL_124:
             v207 = &_os_log_default;
             if (os_log_type_enabled(&_os_log_default, v347))
             {
-              v208 = [v205 integerValue];
+              integerValue = [v205 integerValue];
               *buf = 134217984;
-              *&buf[4] = v208;
+              *&buf[4] = integerValue;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v347, "thumbnail ID for scene ID %ld is NULL", buf, 0xCu);
             }
           }
@@ -3015,12 +3015,12 @@ LABEL_208:
             if (v222 > 0.0)
             {
               v223 = [PHSceneClassification alloc];
-              v224 = [v205 longLongValue];
+              longLongValue2 = [v205 longLongValue];
               v225 = CGRectNull.origin.y;
               v226 = CGRectNull.size.width;
               v227 = CGRectNull.size.height;
               [v372 duration];
-              v229 = [v223 initWithExtendedSceneIdentifier:v224 confidence:2 boundingBox:v206 startTime:v221 duration:CGRectNull.origin.x classificationType:v225 thumbnailIdentifier:{v226, v227, 0.0, v228}];
+              v229 = [v223 initWithExtendedSceneIdentifier:longLongValue2 confidence:2 boundingBox:v206 startTime:v221 duration:CGRectNull.origin.x classificationType:v225 thumbnailIdentifier:{v226, v227, 0.0, v228}];
               if (v229)
               {
                 [v333 addObject:v229];
@@ -3029,11 +3029,11 @@ LABEL_208:
                   v230 = &_os_log_default;
                   if (os_log_type_enabled(&_os_log_default, v337))
                   {
-                    v231 = [v372 localIdentifier];
+                    localIdentifier20 = [v372 localIdentifier];
                     contextd = +[PFSceneTaxonomy vcp_sharedTaxonomy];
                     v232 = [contextd mad_sceneNameFromExtendedSceneId:{objc_msgSend(v205, "longLongValue")}];
                     *buf = 138413058;
-                    *&buf[4] = v231;
+                    *&buf[4] = localIdentifier20;
                     *&buf[12] = 2112;
                     *&buf[14] = v232;
                     *&buf[22] = 2048;
@@ -3069,7 +3069,7 @@ LABEL_231:
 
   v107 = PHPersonDeleteRequest_ptr;
 LABEL_232:
-  if (([v373 vcp_types] & 8) == 0)
+  if (([analysisCopy vcp_types] & 8) == 0)
   {
     v27 = 0;
     goto LABEL_297;
@@ -3081,19 +3081,19 @@ LABEL_232:
     v234 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v234))
     {
-      v235 = [v372 localIdentifier];
+      localIdentifier21 = [v372 localIdentifier];
       *buf = 67109378;
       *&buf[4] = 15;
       *&buf[8] = 2112;
-      *&buf[10] = v235;
+      *&buf[10] = localIdentifier21;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v234, "publish full-range video faces (processing version %d) to movie %@", buf, 0x12u);
     }
 
     v107 = PHPersonDeleteRequest_ptr;
   }
 
-  v324 = [v107[147] array];
-  v313 = [v107[147] array];
+  array = [v107[147] array];
+  array2 = [v107[147] array];
   v314 = +[NSMutableDictionary dictionary];
   v383 = 0u;
   v381 = 0u;
@@ -3169,9 +3169,9 @@ LABEL_232:
               v260 = &_os_log_default;
               if (os_log_type_enabled(&_os_log_default, v315))
               {
-                v261 = [v372 localIdentifier];
+                localIdentifier22 = [v372 localIdentifier];
                 *buf = 138412290;
-                *&buf[4] = v261;
+                *&buf[4] = localIdentifier22;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v315, "Failed to decode torsoprint for asset [%@]", buf, 0xCu);
               }
 
@@ -3199,8 +3199,8 @@ LABEL_256:
             if (v256)
             {
               [v244 addObject:v252];
-              [v324 addObject:v256];
-              [v313 addObject:v353];
+              [array addObject:v256];
+              [array2 addObject:v353];
               goto LABEL_275;
             }
 
@@ -3253,7 +3253,7 @@ LABEL_277:
             {
               v246 = +[NSMutableDictionary dictionary];
               v262 = &_os_log_default;
-              if (![(VCPPhotosAssetChangeManager *)self associateTraitsWithFaceTorspPrints:v244 forAsset:v372 withAnalysis:v373 results:v246])
+              if (![(VCPPhotosAssetChangeManager *)self associateTraitsWithFaceTorspPrints:v244 forAsset:v372 withAnalysis:analysisCopy results:v246])
               {
                 v246 = v246;
                 v251 = 0;
@@ -3303,9 +3303,9 @@ LABEL_289:
           v249 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, type))
           {
-            v250 = [v372 localIdentifier];
+            localIdentifier23 = [v372 localIdentifier];
             *buf = 138412290;
-            *&buf[4] = v250;
+            *&buf[4] = localIdentifier23;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "Failed to decode faceprint for asset [%@]", buf, 0xCu);
           }
 
@@ -3321,7 +3321,7 @@ LABEL_290:
         {
 
 LABEL_355:
-          v186 = v313;
+          v186 = array2;
           goto LABEL_356;
         }
 
@@ -3335,18 +3335,18 @@ LABEL_355:
     while (v236);
   }
 
-  [(VCPMovieChangeEntry *)v371 setFacesToAdd:v324];
-  [(VCPMovieChangeEntry *)v371 setFaceThumbnailIds:v313];
+  [(VCPMovieChangeEntry *)v371 setFacesToAdd:array];
+  [(VCPMovieChangeEntry *)v371 setFaceThumbnailIds:array2];
   [(VCPMovieChangeEntry *)v371 setHumanActionsForFacesToAdd:v314];
 
 LABEL_297:
-  if (([v373 vcp_types] & 0x20000) == 0)
+  if (([analysisCopy vcp_types] & 0x20000) == 0)
   {
     goto LABEL_337;
   }
 
-  v265 = [v373 vcp_results];
-  v316 = [v265 objectForKeyedSubscript:MediaAnalysisAnimalPrintResultsKey];
+  vcp_results11 = [analysisCopy vcp_results];
+  v316 = [vcp_results11 objectForKeyedSubscript:MediaAnalysisAnimalPrintResultsKey];
 
   v266 = PHPersonDeleteRequest_ptr;
   if (MediaAnalysisLogLevel() >= 7)
@@ -3355,26 +3355,26 @@ LABEL_297:
     v268 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v268))
     {
-      v269 = [v372 localIdentifier];
+      localIdentifier24 = [v372 localIdentifier];
       *buf = 67109378;
       *&buf[4] = 15;
       *&buf[8] = 2112;
-      *&buf[10] = v269;
+      *&buf[10] = localIdentifier24;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v268, "publish full-range video pets (processing version %d) to movie %@", buf, 0x12u);
     }
 
     v266 = PHPersonDeleteRequest_ptr;
   }
 
-  v313 = [v266[147] array];
-  v323 = [v266[147] array];
-  v328 = [v266[147] array];
+  array2 = [v266[147] array];
+  array3 = [v266[147] array];
+  array4 = [v266[147] array];
   v377 = 0u;
   v378 = 0u;
   v375 = 0u;
   v376 = 0u;
   v270 = v316;
-  v324 = v270;
+  array = v270;
   v271 = [v270 countByEnumeratingWithState:&v375 objects:v426 count:16];
   if (!v271)
   {
@@ -3396,7 +3396,7 @@ LABEL_297:
     {
       if (*v376 != v339)
       {
-        objc_enumerationMutation(v324);
+        objc_enumerationMutation(array);
       }
 
       v273 = *(*(&v375 + 1) + 8 * v272);
@@ -3421,9 +3421,9 @@ LABEL_297:
         v282 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, v332))
         {
-          v283 = [v372 localIdentifier];
+          localIdentifier25 = [v372 localIdentifier];
           *buf = 138412290;
-          *&buf[4] = v283;
+          *&buf[4] = localIdentifier25;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v332, "Failed to decode animalprint for asset [%@]", buf, 0xCu);
         }
 
@@ -3469,11 +3469,11 @@ LABEL_331:
           v286 = [[PHFaceprint alloc] initWithFaceprintData:v281 faceprintVersion:15];
           if (v286)
           {
-            [v313 addObject:v286];
+            [array2 addObject:v286];
             v287 = [v273 objectForKeyedSubscript:*typea];
-            [v323 addObject:v287];
+            [array3 addObject:v287];
 
-            [v328 addObject:v276];
+            [array4 addObject:v276];
             v280 = 0;
           }
 
@@ -3515,8 +3515,8 @@ LABEL_332:
       break;
     }
 
-    v270 = v324;
-    v271 = [v324 countByEnumeratingWithState:&v375 objects:v426 count:16];
+    v270 = array;
+    v271 = [array countByEnumeratingWithState:&v375 objects:v426 count:16];
     if (v271)
     {
       continue;
@@ -3527,15 +3527,15 @@ LABEL_332:
 
 LABEL_336:
 
-  [(VCPMovieChangeEntry *)v371 setAnimalsToAdd:v313];
-  [(VCPMovieChangeEntry *)v371 setAnimalsType:v323];
-  [(VCPMovieChangeEntry *)v371 setAnimalThumbnailIds:v328];
+  [(VCPMovieChangeEntry *)v371 setAnimalsToAdd:array2];
+  [(VCPMovieChangeEntry *)v371 setAnimalsType:array3];
+  [(VCPMovieChangeEntry *)v371 setAnimalThumbnailIds:array4];
 
 LABEL_337:
-  if (([v373 vcp_types] & 0x40000000) != 0)
+  if (([analysisCopy vcp_types] & 0x40000000) != 0)
   {
     v291 = +[NSMutableDictionary dictionary];
-    v27 = [(VCPPhotosAssetChangeManager *)self associateTraitsForMovieAsset:v372 withAnalysis:v373 result:v291];
+    v27 = [(VCPPhotosAssetChangeManager *)self associateTraitsForMovieAsset:v372 withAnalysis:analysisCopy result:v291];
     if (!v27)
     {
       [(VCPMovieChangeEntry *)v371 setHumanActions:v291];
@@ -3549,7 +3549,7 @@ LABEL_357:
   else
   {
 LABEL_340:
-    -[VCPMovieChangeEntry setScreenTimeDeviceImageSensitivity:](v371, "setScreenTimeDeviceImageSensitivity:", [objc_opt_class() sensitivityFromAnalysis:v373]);
+    -[VCPMovieChangeEntry setScreenTimeDeviceImageSensitivity:](v371, "setScreenTimeDeviceImageSensitivity:", [objc_opt_class() sensitivityFromAnalysis:analysisCopy]);
     if ([v372 mad_isEligibleForComputeSync])
     {
       -[VCPMovieChangeEntry setAnalysisStage:](v371, "setAnalysisStage:", [v372 mad_analysisStageAfterCompletingAnalysis:1]);
@@ -3559,13 +3559,13 @@ LABEL_340:
         v293 = VCPLogToOSLogType[6];
         if (os_log_type_enabled(&_os_log_default, v293))
         {
-          v294 = [v372 localIdentifier];
-          v295 = [v372 vcp_typeDescription];
-          v296 = [v373 vcp_analysisDescriptionWithResultDetails:1];
+          localIdentifier26 = [v372 localIdentifier];
+          vcp_typeDescription = [v372 vcp_typeDescription];
+          v296 = [analysisCopy vcp_analysisDescriptionWithResultDetails:1];
           *buf = 138412802;
-          *&buf[4] = v294;
+          *&buf[4] = localIdentifier26;
           *&buf[12] = 2112;
-          *&buf[14] = v295;
+          *&buf[14] = vcp_typeDescription;
           *&buf[22] = 2112;
           *&buf[24] = v296;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v293, "[%@][%@] Existing movie analysis %@", buf, 0x20u);
@@ -3583,7 +3583,7 @@ LABEL_340:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v300, OS_SIGNPOST_INTERVAL_BEGIN, v298, "VCPPhotosAssetChangeManager_Movie_PackComputeSyncPayload", "", buf, 2u);
       }
 
-      v301 = [MADComputeSyncPayloadResults payloadDataForAsset:v372 targetStage:[(VCPMovieChangeEntry *)v371 analysisStage] embeddingResults:v370 fullAnalysisResults:v373];
+      v301 = [MADComputeSyncPayloadResults payloadDataForAsset:v372 targetStage:[(VCPMovieChangeEntry *)v371 analysisStage] embeddingResults:resultsCopy fullAnalysisResults:analysisCopy];
       v302 = VCPSignPostLog();
       v303 = v302;
       if (v298 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v302))
@@ -3603,16 +3603,16 @@ LABEL_340:
         v305 = VCPLogToOSLogType[4];
         if (os_log_type_enabled(&_os_log_default, v305))
         {
-          v306 = [v372 localIdentifier];
-          v307 = [(VCPMovieChangeEntry *)v371 analysisStage];
-          v308 = [v372 mediaAnalysisProperties];
-          v309 = [v308 localAnalysisStage];
+          localIdentifier27 = [v372 localIdentifier];
+          analysisStage = [(VCPMovieChangeEntry *)v371 analysisStage];
+          mediaAnalysisProperties = [v372 mediaAnalysisProperties];
+          localAnalysisStage = [mediaAnalysisProperties localAnalysisStage];
           *buf = 138412802;
-          *&buf[4] = v306;
+          *&buf[4] = localIdentifier27;
           *&buf[12] = 1024;
-          *&buf[14] = v307;
+          *&buf[14] = analysisStage;
           *&buf[18] = 1024;
-          *&buf[20] = v309;
+          *&buf[20] = localAnalysisStage;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v305, "[%@] No compute sync payload generated for target stage %d (current stage %d)", buf, 0x18u);
         }
       }
@@ -3633,17 +3633,17 @@ LABEL_83:
   return v27;
 }
 
-- (int)updateLegacyAsset:(id)a3 withAnalysis:(id)a4
+- (int)updateLegacyAsset:(id)asset withAnalysis:(id)analysis
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 vcp_types] & 0x40000) != 0)
+  assetCopy = asset;
+  analysisCopy = analysis;
+  if (([analysisCopy vcp_types] & 0x40000) != 0)
   {
     v8 = objc_alloc_init(VCPLegacyChangeEntry);
-    [(VCPLegacyChangeEntry *)v8 setAsset:v6];
-    -[VCPLegacyChangeEntry setMediaAnalysisVersion:](v8, "setMediaAnalysisVersion:", [v7 vcp_version]);
-    v9 = [v7 vcp_results];
-    v10 = [v9 objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
+    [(VCPLegacyChangeEntry *)v8 setAsset:assetCopy];
+    -[VCPLegacyChangeEntry setMediaAnalysisVersion:](v8, "setMediaAnalysisVersion:", [analysisCopy vcp_version]);
+    vcp_results = [analysisCopy vcp_results];
+    v10 = [vcp_results objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
 
     if ([v10 count])
     {
@@ -3672,9 +3672,9 @@ LABEL_83:
         [(VCPLegacyChangeEntry *)v8 setSummaryTimeRange:buf];
 
         v21 = [v10 objectAtIndexedSubscript:0];
-        v22 = [v21 vcp_flags];
+        vcp_flags = [v21 vcp_flags];
         v23 = 0.0;
-        if ((v22 & 0x80000) != 0)
+        if ((vcp_flags & 0x80000) != 0)
         {
           *&v23 = 1.0;
         }
@@ -3720,28 +3720,28 @@ LABEL_27:
     [(VCPLegacyChangeEntry *)v8 setSummaryTimeRange:buf];
     [(VCPLegacyChangeEntry *)v8 setAutoplayScore:0.0];
 LABEL_7:
-    if ([v6 mad_isEligibleForComputeSync])
+    if ([assetCopy mad_isEligibleForComputeSync])
     {
-      -[VCPLegacyChangeEntry setAnalysisStage:](v8, "setAnalysisStage:", [v6 mad_analysisStageAfterCompletingAnalysis:1]);
+      -[VCPLegacyChangeEntry setAnalysisStage:](v8, "setAnalysisStage:", [assetCopy mad_analysisStageAfterCompletingAnalysis:1]);
       if (MediaAnalysisLogLevel() >= 6)
       {
         v16 = VCPLogToOSLogType[6];
         if (os_log_type_enabled(&_os_log_default, v16))
         {
-          v17 = [v6 localIdentifier];
-          v18 = [v6 vcp_typeDescription];
-          v19 = [v7 vcp_analysisDescriptionWithResultDetails:1];
+          localIdentifier = [assetCopy localIdentifier];
+          vcp_typeDescription = [assetCopy vcp_typeDescription];
+          v19 = [analysisCopy vcp_analysisDescriptionWithResultDetails:1];
           *buf = 138412802;
-          *&buf[4] = v17;
+          *&buf[4] = localIdentifier;
           *&buf[12] = 2112;
-          *&buf[14] = v18;
+          *&buf[14] = vcp_typeDescription;
           *&buf[22] = 2112;
           *&buf[24] = v19;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "[%@][%@] Existing legacy analysis %@", buf, 0x20u);
         }
       }
 
-      v20 = [MADComputeSyncPayloadResults payloadDataForAsset:v6 targetStage:[(VCPLegacyChangeEntry *)v8 analysisStage] embeddingResults:0 fullAnalysisResults:v7];
+      v20 = [MADComputeSyncPayloadResults payloadDataForAsset:assetCopy targetStage:[(VCPLegacyChangeEntry *)v8 analysisStage] embeddingResults:0 fullAnalysisResults:analysisCopy];
       if (v20)
       {
         [(VCPLegacyChangeEntry *)v8 setComputeSyncPayload:v20];
@@ -3752,16 +3752,16 @@ LABEL_7:
         v24 = VCPLogToOSLogType[4];
         if (os_log_type_enabled(&_os_log_default, v24))
         {
-          v29 = [v6 localIdentifier];
-          v25 = [(VCPLegacyChangeEntry *)v8 analysisStage];
-          v28 = [v6 mediaAnalysisProperties];
-          v26 = [v28 localAnalysisStage];
+          localIdentifier2 = [assetCopy localIdentifier];
+          analysisStage = [(VCPLegacyChangeEntry *)v8 analysisStage];
+          mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+          localAnalysisStage = [mediaAnalysisProperties localAnalysisStage];
           *buf = 138412802;
-          *&buf[4] = v29;
+          *&buf[4] = localIdentifier2;
           *&buf[12] = 1024;
-          *&buf[14] = v25;
+          *&buf[14] = analysisStage;
           *&buf[18] = 1024;
-          *&buf[20] = v26;
+          *&buf[20] = localAnalysisStage;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "[%@] No compute sync payload generated for target stage %d (current stage %d)", buf, 0x18u);
         }
       }
@@ -3776,33 +3776,33 @@ LABEL_28:
   return 0;
 }
 
-- (int)updateAsset:(id)a3 analysis:(id)a4 imageOnly:(BOOL)a5 vskResults:(id)a6 cancelBlock:(id)a7
+- (int)updateAsset:(id)asset analysis:(id)analysis imageOnly:(BOOL)only vskResults:(id)results cancelBlock:(id)block
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  onlyCopy = only;
+  assetCopy = asset;
+  analysisCopy = analysis;
+  resultsCopy = results;
+  blockCopy = block;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v16 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v16))
     {
-      v17 = [v12 localIdentifier];
-      v18 = [v12 vcp_typeDescription];
-      [v13 vcp_types];
+      localIdentifier = [assetCopy localIdentifier];
+      vcp_typeDescription = [assetCopy vcp_typeDescription];
+      [analysisCopy vcp_types];
       v19 = MediaAnalysisTypeDescription();
       v20 = v19;
       v21 = @"NO";
       *buf = 138413058;
-      v45 = v17;
-      if (v9)
+      v45 = localIdentifier;
+      if (onlyCopy)
       {
         v21 = @"YES";
       }
 
       v46 = 2112;
-      *v47 = v18;
+      *v47 = vcp_typeDescription;
       *&v47[8] = 2112;
       v48 = v19;
       v49 = 2112;
@@ -3811,9 +3811,9 @@ LABEL_28:
     }
   }
 
-  v22 = [v13 vcp_dateModified];
-  v23 = [v12 vcp_modificationDate];
-  v24 = [v22 isEqualToDate:v23];
+  vcp_dateModified = [analysisCopy vcp_dateModified];
+  vcp_modificationDate = [assetCopy vcp_modificationDate];
+  v24 = [vcp_dateModified isEqualToDate:vcp_modificationDate];
 
   if ((v24 & 1) == 0)
   {
@@ -3822,15 +3822,15 @@ LABEL_28:
       v28 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v28))
       {
-        v29 = [v12 localIdentifier];
-        v30 = [v13 vcp_dateModified];
-        v31 = [v12 vcp_modificationDate];
+        localIdentifier2 = [assetCopy localIdentifier];
+        vcp_dateModified2 = [analysisCopy vcp_dateModified];
+        vcp_modificationDate2 = [assetCopy vcp_modificationDate];
         *buf = 138412802;
-        v45 = v29;
+        v45 = localIdentifier2;
         v46 = 2112;
-        *v47 = v30;
+        *v47 = vcp_dateModified2;
         *&v47[8] = 2112;
-        v48 = v31;
+        v48 = vcp_modificationDate2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v28, "[%@] analysis vcp_dateModified: %@, but asset vcp_modificationDate: %@; skip updating ...", buf, 0x20u);
       }
     }
@@ -3838,18 +3838,18 @@ LABEL_28:
     goto LABEL_30;
   }
 
-  v25 = [v13 vcp_version];
+  vcp_version = [analysisCopy vcp_version];
   v26 = MediaAnalysisVersion;
-  if (v25 == MediaAnalysisVersion || v9 && (([v12 isVideo] & 1) != 0 || objc_msgSend(v12, "vcp_isLivePhoto")))
+  if (vcp_version == MediaAnalysisVersion || onlyCopy && (([assetCopy isVideo] & 1) != 0 || objc_msgSend(assetCopy, "vcp_isLivePhoto")))
   {
-    if ([v12 isVideo])
+    if ([assetCopy isVideo])
     {
-      v27 = [(VCPPhotosAssetChangeManager *)self updateMovieAsset:v12 analysis:v13 imageOnly:v9 vskResults:v14];
+      v27 = [(VCPPhotosAssetChangeManager *)self updateMovieAsset:assetCopy analysis:analysisCopy imageOnly:onlyCopy vskResults:resultsCopy];
     }
 
     else
     {
-      v27 = [(VCPPhotosAssetChangeManager *)self updateImageAsset:v12 analysis:v13 imageOnly:v9 vskResults:v14];
+      v27 = [(VCPPhotosAssetChangeManager *)self updateImageAsset:assetCopy analysis:analysisCopy imageOnly:onlyCopy vskResults:resultsCopy];
     }
 
 LABEL_22:
@@ -3862,11 +3862,11 @@ LABEL_22:
     goto LABEL_27;
   }
 
-  if ([v13 vcp_version] < v26 && (v32 = objc_msgSend(v13, "vcp_version"), objc_msgSend(v12, "mediaAnalysisProperties"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "mediaAnalysisVersion") < v32, v33, v34))
+  if ([analysisCopy vcp_version] < v26 && (v32 = objc_msgSend(analysisCopy, "vcp_version"), objc_msgSend(assetCopy, "mediaAnalysisProperties"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "mediaAnalysisVersion") < v32, v33, v34))
   {
-    if (([v12 isVideo] & 1) != 0 || objc_msgSend(v12, "vcp_isLivePhoto"))
+    if (([assetCopy isVideo] & 1) != 0 || objc_msgSend(assetCopy, "vcp_isLivePhoto"))
     {
-      v27 = [(VCPPhotosAssetChangeManager *)self updateLegacyAsset:v12 withAnalysis:v13];
+      v27 = [(VCPPhotosAssetChangeManager *)self updateLegacyAsset:assetCopy withAnalysis:analysisCopy];
       goto LABEL_22;
     }
   }
@@ -3876,26 +3876,26 @@ LABEL_22:
     v36 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v36))
     {
-      v43 = [v12 localIdentifier];
-      v37 = [v13 vcp_version];
-      v38 = [v12 mediaAnalysisProperties];
-      v39 = [v38 mediaAnalysisImageVersion];
-      v40 = [v12 mediaAnalysisProperties];
-      v41 = [v40 mediaAnalysisVersion];
+      localIdentifier3 = [assetCopy localIdentifier];
+      vcp_version2 = [analysisCopy vcp_version];
+      mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+      mediaAnalysisImageVersion = [mediaAnalysisProperties mediaAnalysisImageVersion];
+      mediaAnalysisProperties2 = [assetCopy mediaAnalysisProperties];
+      mediaAnalysisVersion = [mediaAnalysisProperties2 mediaAnalysisVersion];
       *buf = 138413058;
-      v45 = v43;
+      v45 = localIdentifier3;
       v46 = 1024;
-      *v47 = v37;
+      *v47 = vcp_version2;
       *&v47[4] = 1024;
-      *&v47[6] = v39;
+      *&v47[6] = mediaAnalysisImageVersion;
       LOWORD(v48) = 1024;
-      *(&v48 + 2) = v41;
+      *(&v48 + 2) = mediaAnalysisVersion;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v36, "[%@] Nothing to update Photos analysis vcp_version %d, Photos mediaAnalysisImageVersion %d, mediaAnalysisVersion %d", buf, 0x1Eu);
     }
   }
 
 LABEL_27:
-  if ([(NSMutableArray *)self->_pendingChanges count]<= 0x63 && self->_pendingResourceChangeCount < 5 || (v35 = [(VCPPhotosAssetChangeManager *)self publishPendingChangesWithCancelBlock:v15]) == 0)
+  if ([(NSMutableArray *)self->_pendingChanges count]<= 0x63 && self->_pendingResourceChangeCount < 5 || (v35 = [(VCPPhotosAssetChangeManager *)self publishPendingChangesWithCancelBlock:blockCopy]) == 0)
   {
 LABEL_30:
     v35 = 0;
@@ -3906,9 +3906,9 @@ LABEL_31:
   return v35;
 }
 
-- (int)publishPendingChangesWithCancelBlock:(id)a3
+- (int)publishPendingChangesWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableArray *)self->_pendingChanges count];
   if (v5)
   {
@@ -3963,7 +3963,7 @@ LABEL_31:
     v16 = objc_retainBlock(v27);
     photoLibrary = self->_photoLibrary;
     v26 = 0;
-    v18 = [(PHPhotoLibrary *)photoLibrary mad_performChangesAndWait:v16 activity:1 cancelBlock:v4 extendTimeoutBlock:&stru_100287550 error:&v26];
+    v18 = [(PHPhotoLibrary *)photoLibrary mad_performChangesAndWait:v16 activity:1 cancelBlock:blockCopy extendTimeoutBlock:&stru_100287550 error:&v26];
     v19 = v26;
     v20 = VCPSignPostLog();
     v21 = v20;

@@ -1,11 +1,11 @@
 @interface AXPidSuspensionInfo
 + (id)shared;
 - (AXPidSuspensionInfo)init;
-- (id)associatedRemotePidCacheForDisplay:(int)a3;
-- (id)associatedRemotePidsForDisplay:(int)a3;
-- (id)suspendedPidsForDisplay:(int)a3;
-- (id)tentativeSuspendedPidsForDisplay:(int)a3;
-- (id)timeoutProbationPidsForDisplay:(int)a3;
+- (id)associatedRemotePidCacheForDisplay:(int)display;
+- (id)associatedRemotePidsForDisplay:(int)display;
+- (id)suspendedPidsForDisplay:(int)display;
+- (id)tentativeSuspendedPidsForDisplay:(int)display;
+- (id)timeoutProbationPidsForDisplay:(int)display;
 @end
 
 @implementation AXPidSuspensionInfo
@@ -57,9 +57,9 @@ uint64_t __29__AXPidSuspensionInfo_shared__block_invoke()
   return v2;
 }
 
-- (id)timeoutProbationPidsForDisplay:(int)a3
+- (id)timeoutProbationPidsForDisplay:(int)display
 {
-  v3 = *&a3;
+  v3 = *&display;
   probationPids = self->_probationPids;
   v6 = [MEMORY[0x1E696AD98] numberWithInt:?];
   v7 = [(NSMutableDictionary *)probationPids objectForKeyedSubscript:v6];
@@ -79,9 +79,9 @@ uint64_t __29__AXPidSuspensionInfo_shared__block_invoke()
   return v13;
 }
 
-- (id)suspendedPidsForDisplay:(int)a3
+- (id)suspendedPidsForDisplay:(int)display
 {
-  v3 = *&a3;
+  v3 = *&display;
   suspendsPids = self->_suspendsPids;
   v6 = [MEMORY[0x1E696AD98] numberWithInt:?];
   v7 = [(NSMutableDictionary *)suspendsPids objectForKeyedSubscript:v6];
@@ -101,9 +101,9 @@ uint64_t __29__AXPidSuspensionInfo_shared__block_invoke()
   return v13;
 }
 
-- (id)associatedRemotePidCacheForDisplay:(int)a3
+- (id)associatedRemotePidCacheForDisplay:(int)display
 {
-  v3 = *&a3;
+  v3 = *&display;
   associatedRemotePidCache = self->_associatedRemotePidCache;
   v6 = [MEMORY[0x1E696AD98] numberWithInt:?];
   v7 = [(NSMutableDictionary *)associatedRemotePidCache objectForKeyedSubscript:v6];
@@ -123,9 +123,9 @@ uint64_t __29__AXPidSuspensionInfo_shared__block_invoke()
   return v13;
 }
 
-- (id)tentativeSuspendedPidsForDisplay:(int)a3
+- (id)tentativeSuspendedPidsForDisplay:(int)display
 {
-  v3 = *&a3;
+  v3 = *&display;
   tentativeSuspendedPids = self->_tentativeSuspendedPids;
   v6 = [MEMORY[0x1E696AD98] numberWithInt:?];
   v7 = [(NSMutableDictionary *)tentativeSuspendedPids objectForKeyedSubscript:v6];
@@ -145,9 +145,9 @@ uint64_t __29__AXPidSuspensionInfo_shared__block_invoke()
   return v13;
 }
 
-- (id)associatedRemotePidsForDisplay:(int)a3
+- (id)associatedRemotePidsForDisplay:(int)display
 {
-  v3 = *&a3;
+  v3 = *&display;
   associatedRemotePids = self->_associatedRemotePids;
   v6 = [MEMORY[0x1E696AD98] numberWithInt:?];
   v7 = [(NSMutableDictionary *)associatedRemotePids objectForKeyedSubscript:v6];

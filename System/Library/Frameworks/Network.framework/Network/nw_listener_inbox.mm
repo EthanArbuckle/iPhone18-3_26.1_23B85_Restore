@@ -2,7 +2,7 @@
 - (BOOL)cancel;
 - (BOOL)resume;
 - (BOOL)suspend;
-- (nw_listener_inbox)initWithDelegate:(id)a3;
+- (nw_listener_inbox)initWithDelegate:(id)delegate;
 @end
 
 @implementation nw_listener_inbox
@@ -21,7 +21,7 @@
       v6 = 136446466;
       v7 = "[nw_listener_inbox resume]";
       v8 = 2114;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v4, OS_LOG_TYPE_INFO, "%{public}s Resuming %{public}@", &v6, 0x16u);
     }
 
@@ -40,7 +40,7 @@
   *buf = 136446466;
   v17 = "[nw_listener_inbox cancel]";
   v18 = 2114;
-  v19 = self;
+  selfCopy5 = self;
   v4 = _os_log_send_and_compose_impl();
 
   type = OS_LOG_TYPE_ERROR;
@@ -61,7 +61,7 @@
       *buf = 136446466;
       v17 = "[nw_listener_inbox cancel]";
       v18 = 2114;
-      v19 = self;
+      selfCopy5 = self;
       v7 = "%{public}s %{public}@ empty cancel";
 LABEL_15:
       v12 = v5;
@@ -83,7 +83,7 @@ LABEL_15:
       *buf = 136446466;
       v17 = "[nw_listener_inbox cancel]";
       v18 = 2114;
-      v19 = self;
+      selfCopy5 = self;
       v7 = "%{public}s %{public}@ empty cancel, backtrace limit exceeded";
       goto LABEL_15;
     }
@@ -111,7 +111,7 @@ LABEL_17:
       *buf = 136446466;
       v17 = "[nw_listener_inbox cancel]";
       v18 = 2114;
-      v19 = self;
+      selfCopy5 = self;
       v7 = "%{public}s %{public}@ empty cancel, no backtrace";
       v12 = v5;
       v13 = v9;
@@ -125,7 +125,7 @@ LABEL_16:
       *buf = 136446722;
       v17 = "[nw_listener_inbox cancel]";
       v18 = 2114;
-      v19 = self;
+      selfCopy5 = self;
       v20 = 2082;
       v21 = backtrace_string;
       _os_log_impl(&dword_181A37000, v5, v9, "%{public}s %{public}@ empty cancel, dumping backtrace:%{public}s", buf, 0x20u);
@@ -157,7 +157,7 @@ LABEL_11:
       v6 = 136446466;
       v7 = "[nw_listener_inbox suspend]";
       v8 = 2114;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v4, OS_LOG_TYPE_INFO, "%{public}s Suspending %{public}@", &v6, 0x16u);
     }
 
@@ -167,17 +167,17 @@ LABEL_11:
   return (v2 & 1) == 0;
 }
 
-- (nw_listener_inbox)initWithDelegate:(id)a3
+- (nw_listener_inbox)initWithDelegate:(id)delegate
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = nw_listener_inbox;
   v6 = [(nw_listener_inbox *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v7->_lock._os_unfair_lock_opaque = 0;
     v8 = v7;
     goto LABEL_3;

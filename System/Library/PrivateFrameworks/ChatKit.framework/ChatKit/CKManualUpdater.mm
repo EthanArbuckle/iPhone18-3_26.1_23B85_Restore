@@ -1,9 +1,9 @@
 @interface CKManualUpdater
-- (CKManualUpdater)initWithTarget:(id)a3 action:(SEL)a4;
+- (CKManualUpdater)initWithTarget:(id)target action:(SEL)action;
 - (SEL)action;
 - (id)description;
 - (id)target;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 - (void)setNeedsUpdate;
 - (void)updateIfNeeded;
 @end
@@ -24,8 +24,8 @@
   if ([(CKManualUpdater *)self needsUpdate])
   {
     [(CKManualUpdater *)self setNeedsUpdate:0];
-    v3 = [(CKManualUpdater *)self target];
-    [v3 performSelector:{-[CKManualUpdater action](self, "action")}];
+    target = [(CKManualUpdater *)self target];
+    [target performSelector:{-[CKManualUpdater action](self, "action")}];
   }
 }
 
@@ -60,35 +60,35 @@
   return v5;
 }
 
-- (CKManualUpdater)initWithTarget:(id)a3 action:(SEL)a4
+- (CKManualUpdater)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v10.receiver = self;
   v10.super_class = CKManualUpdater;
   v7 = [(CKManualUpdater *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CKManualUpdater *)v7 setTarget:v6];
-    [(CKManualUpdater *)v8 setAction:a4];
+    [(CKManualUpdater *)v7 setTarget:targetCopy];
+    [(CKManualUpdater *)v8 setAction:action];
   }
 
   return v8;
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

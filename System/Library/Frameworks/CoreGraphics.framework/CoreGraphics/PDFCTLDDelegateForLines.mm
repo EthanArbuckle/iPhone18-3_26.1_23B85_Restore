@@ -1,16 +1,16 @@
 @interface PDFCTLDDelegateForLines
-- (PDFCTLDDelegateForLines)initWithPageLayout:(void *)a3 quadToPageTransform:(CGAffineTransform *)a4;
-- (int64_t)groupingConstraintForRegion1:(id)a3 region2:(id)a4;
+- (PDFCTLDDelegateForLines)initWithPageLayout:(void *)layout quadToPageTransform:(CGAffineTransform *)transform;
+- (int64_t)groupingConstraintForRegion1:(id)region1 region2:(id)region2;
 @end
 
 @implementation PDFCTLDDelegateForLines
 
-- (int64_t)groupingConstraintForRegion1:(id)a3 region2:(id)a4
+- (int64_t)groupingConstraintForRegion1:(id)region1 region2:(id)region2
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 boundingQuad];
-  [v8 boundingBox];
+  region1Copy = region1;
+  region2Copy = region2;
+  boundingQuad = [region1Copy boundingQuad];
+  [boundingQuad boundingBox];
   v9 = *&self->_quadToPageTransform.c;
   *&v68.a = *&self->_quadToPageTransform.a;
   *&v68.c = v9;
@@ -21,8 +21,8 @@
   width = v70.size.width;
   height = v70.size.height;
 
-  v14 = [v7 boundingQuad];
-  [v14 boundingBox];
+  boundingQuad2 = [region2Copy boundingQuad];
+  [boundingQuad2 boundingBox];
   v15 = *&self->_quadToPageTransform.c;
   *&v68.a = *&self->_quadToPageTransform.a;
   *&v68.c = v15;
@@ -425,17 +425,17 @@ LABEL_75:
   return v36;
 }
 
-- (PDFCTLDDelegateForLines)initWithPageLayout:(void *)a3 quadToPageTransform:(CGAffineTransform *)a4
+- (PDFCTLDDelegateForLines)initWithPageLayout:(void *)layout quadToPageTransform:(CGAffineTransform *)transform
 {
   v9.receiver = self;
   v9.super_class = PDFCTLDDelegateForLines;
   result = [(PDFCTLDDelegateForLines *)&v9 init];
   if (result)
   {
-    result->_layout = a3;
-    v7 = *&a4->a;
-    v8 = *&a4->tx;
-    *&result->_quadToPageTransform.c = *&a4->c;
+    result->_layout = layout;
+    v7 = *&transform->a;
+    v8 = *&transform->tx;
+    *&result->_quadToPageTransform.c = *&transform->c;
     *&result->_quadToPageTransform.tx = v8;
     *&result->_quadToPageTransform.a = v7;
   }

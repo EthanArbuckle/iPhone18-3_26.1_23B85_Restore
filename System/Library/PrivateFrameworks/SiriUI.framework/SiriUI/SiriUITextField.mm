@@ -1,21 +1,21 @@
 @interface SiriUITextField
-+ (id)imageWithImage:(id)a3 tintColor:(id)a4;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)clearButtonRectForBounds:(CGRect)a3;
-- (CGRect)leftViewRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (SiriUITextField)initWithFrame:(CGRect)a3;
++ (id)imageWithImage:(id)image tintColor:(id)color;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds;
+- (CGRect)leftViewRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (SiriUITextField)initWithFrame:(CGRect)frame;
 - (void)_configureClearButton;
 @end
 
 @implementation SiriUITextField
 
-- (SiriUITextField)initWithFrame:(CGRect)a3
+- (SiriUITextField)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SiriUITextField;
-  v3 = [(SiriUITextField *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUITextField *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,25 +35,25 @@
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v3 imageNamed:@"clear" inBundle:v4 compatibleWithTraitCollection:0];
   v6 = [v5 imageWithRenderingMode:2];
-  v12 = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
 
   v7 = objc_opt_class();
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  v9 = [v7 imageWithImage:v12 tintColor:v8];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v9 = [v7 imageWithImage:_imageThatSuppressesAccessibilityHairlineThickening tintColor:whiteColor];
 
-  v10 = [(SiriUITextField *)self _clearButton];
-  [v10 setImage:v9 forState:1];
+  _clearButton = [(SiriUITextField *)self _clearButton];
+  [_clearButton setImage:v9 forState:1];
 
-  v11 = [(SiriUITextField *)self _clearButton];
-  [v11 setImage:v9 forState:0];
+  _clearButton2 = [(SiriUITextField *)self _clearButton];
+  [_clearButton2 setImage:v9 forState:0];
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = a3.origin.x + 10.0;
-  v6 = a3.origin.y + 1.0;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v5 = bounds.origin.x + 10.0;
+  v6 = bounds.origin.y + 1.0;
   [(SiriUITextField *)self clearButtonRect];
   v8 = width - (v7 + 10.0);
   v9 = v5;
@@ -66,7 +66,7 @@
   return result;
 }
 
-- (CGRect)leftViewRectForBounds:(CGRect)a3
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -79,19 +79,19 @@
   return result;
 }
 
-- (CGRect)clearButtonRectForBounds:(CGRect)a3
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
   v21.receiver = self;
   v21.super_class = SiriUITextField;
-  [(SiriUITextField *)&v21 clearButtonRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SiriUITextField *)&v21 clearButtonRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10 + -0.5;
   v12 = MEMORY[0x277CBEAF8];
-  v13 = [MEMORY[0x277CBEAF8] currentLocale];
-  v14 = [v13 languageCode];
-  v15 = [v12 characterDirectionForLanguage:v14];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v15 = [v12 characterDirectionForLanguage:languageCode];
 
   if ((((v15 != 2) ^ SiriLanguageIsRTL()) & 1) == 0)
   {
@@ -115,7 +115,7 @@
   return result;
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -128,14 +128,14 @@
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   if ([(SiriUITextField *)self isFirstResponder])
   {
     v17.receiver = self;
     v17.super_class = SiriUITextField;
-    [(SiriUITextField *)&v17 caretRectForPosition:v4];
+    [(SiriUITextField *)&v17 caretRectForPosition:positionCopy];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -161,23 +161,23 @@
   return result;
 }
 
-+ (id)imageWithImage:(id)a3 tintColor:(id)a4
++ (id)imageWithImage:(id)image tintColor:(id)color
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 size];
+  colorCopy = color;
+  imageCopy = image;
+  [imageCopy size];
   UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
-  [v6 size];
+  [imageCopy size];
   v11 = v10;
   v13 = v12;
   CGContextSetBlendMode(CurrentContext, kCGBlendModeNormal);
-  [v6 drawInRect:{v8, v9, v11, v13}];
+  [imageCopy drawInRect:{v8, v9, v11, v13}];
 
   CGContextSetBlendMode(CurrentContext, kCGBlendModeSourceIn);
-  [v5 setFill];
+  [colorCopy setFill];
 
   v18.origin.x = v8;
   v18.origin.y = v9;

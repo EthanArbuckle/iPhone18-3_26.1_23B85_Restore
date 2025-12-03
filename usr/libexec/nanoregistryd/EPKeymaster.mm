@@ -1,6 +1,6 @@
 @interface EPKeymaster
-- (EPKeymaster)initWithKeyName:(id)a3 shouldExport:(BOOL)a4 unlockAssertionManager:(id)a5 okayToCreateKeyBlock:(id)a6 queue:(id)a7;
-- (id)getAndMigrateKey:(BOOL)a3;
+- (EPKeymaster)initWithKeyName:(id)name shouldExport:(BOOL)export unlockAssertionManager:(id)manager okayToCreateKeyBlock:(id)block queue:(id)queue;
+- (id)getAndMigrateKey:(BOOL)key;
 - (void)createResource;
 - (void)destroyResource;
 - (void)registerForKeychainNotifications;
@@ -10,22 +10,22 @@
 
 @implementation EPKeymaster
 
-- (EPKeymaster)initWithKeyName:(id)a3 shouldExport:(BOOL)a4 unlockAssertionManager:(id)a5 okayToCreateKeyBlock:(id)a6 queue:(id)a7
+- (EPKeymaster)initWithKeyName:(id)name shouldExport:(BOOL)export unlockAssertionManager:(id)manager okayToCreateKeyBlock:(id)block queue:(id)queue
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  managerCopy = manager;
+  blockCopy = block;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = EPKeymaster;
-  v17 = [(EPResourceManager *)&v24 initWithQueue:v16];
+  v17 = [(EPResourceManager *)&v24 initWithQueue:queueCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_name, a3);
-    v18->_shouldExportKey = a4;
-    objc_storeStrong(&v18->_unlockManager, a5);
-    v19 = objc_retainBlock(v15);
+    objc_storeStrong(&v17->_name, name);
+    v18->_shouldExportKey = export;
+    objc_storeStrong(&v18->_unlockManager, manager);
+    v19 = objc_retainBlock(blockCopy);
     okayToCreateKeyBlock = v18->_okayToCreateKeyBlock;
     v18->_okayToCreateKeyBlock = v19;
 
@@ -35,7 +35,7 @@
     block[2] = sub_1000E04C0;
     block[3] = &unk_100175660;
     v23 = v18;
-    dispatch_async(v16, block);
+    dispatch_async(queueCopy, block);
   }
 
   return v18;
@@ -82,16 +82,16 @@
 {
   if (self->_keychainNotifyToken == -1)
   {
-    v2 = self;
-    v3 = [(EPResourceManager *)self queue];
+    selfCopy = self;
+    queue = [(EPResourceManager *)self queue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000E0708;
     handler[3] = &unk_1001759E8;
-    handler[4] = v2;
-    LODWORD(v2) = notify_register_dispatch("com.apple.security.keychainchanged", &v2->_keychainNotifyToken, v3, handler);
+    handler[4] = selfCopy;
+    LODWORD(selfCopy) = notify_register_dispatch("com.apple.security.keychainchanged", &selfCopy->_keychainNotifyToken, queue, handler);
 
-    if (v2)
+    if (selfCopy)
     {
       v4 = nr_daemon_log();
       v5 = os_log_type_enabled(v4, OS_LOG_TYPE_ERROR);
@@ -118,9 +118,9 @@
   }
 }
 
-- (id)getAndMigrateKey:(BOOL)a3
+- (id)getAndMigrateKey:(BOOL)key
 {
-  v3 = a3;
+  keyCopy = key;
   v5 = [EPKeychain retrieveKeyWithName:self->_name keychainGroup:@"com.apple.nanoregistry.migration2"];
   if (v5)
   {
@@ -131,7 +131,7 @@
   if (v16)
   {
     v5 = v16;
-    if (v3)
+    if (keyCopy)
     {
       [EPKeychain storeKeyWithData:v16 name:self->_name keychainGroup:@"com.apple.nanoregistry.migration2"];
     }
@@ -139,7 +139,7 @@
 LABEL_2:
     v6 = [[NRPBMigrationKeyForKeychain alloc] initWithData:v5];
 
-    if (!v3)
+    if (!keyCopy)
     {
       goto LABEL_4;
     }
@@ -148,7 +148,7 @@ LABEL_2:
   }
 
   v6 = 0;
-  if (v3)
+  if (keyCopy)
   {
 LABEL_3:
     v7 = [EPKeychain removeKeyWithName:self->_name keychainGroup:@"com.apple.nanoregistry.migration"];
@@ -163,10 +163,10 @@ LABEL_4:
     {
       v10 = [EPKey keyFromData:v9];
       v6 = v10;
-      if (v3)
+      if (keyCopy)
       {
-        v11 = [(NRPBMigrationKeyForKeychain *)v10 data];
-        v12 = [EPKeychain storeKeyWithData:v11 name:self->_name keychainGroup:@"com.apple.nanoregistry.migration2"];
+        data = [(NRPBMigrationKeyForKeychain *)v10 data];
+        v12 = [EPKeychain storeKeyWithData:data name:self->_name keychainGroup:@"com.apple.nanoregistry.migration2"];
 
         if ((v12 & 1) == 0)
         {
@@ -231,8 +231,8 @@ LABEL_4:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v29 = sub_1000FDEB0(v7);
-          v11 = [v29 SHA256Data];
-          v12 = [v11 base64EncodedStringWithOptions:0];
+          sHA256Data = [v29 SHA256Data];
+          v12 = [sHA256Data base64EncodedStringWithOptions:0];
           v13 = [v12 substringToIndex:6];
           *buf = 138412290;
           v33 = v13;
@@ -319,9 +319,9 @@ LABEL_31:
     v30 = NSLocalizedDescriptionKey;
     v31 = @"Can't create key";
     v23 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    v24 = [NSError errorWithDomain:@"com.apple.nanoregistry" code:555 userInfo:v23];
+    error = [NSError errorWithDomain:@"com.apple.nanoregistry" code:555 userInfo:v23];
 
-    [(EPResourceManager *)self setAvailability:2 withError:v24];
+    [(EPResourceManager *)self setAvailability:2 withError:error];
     clientUnlockAssertion = self->_clientUnlockAssertion;
     self->_clientUnlockAssertion = 0;
 
@@ -336,22 +336,22 @@ LABEL_33:
     {
       if ([(EPResource *)v26 availability]== 1)
       {
-        v27 = self;
+        selfCopy2 = self;
         v28 = 1;
 LABEL_42:
-        [(EPResourceManager *)v27 setAvailability:v28 withError:0];
+        [(EPResourceManager *)selfCopy2 setAvailability:v28 withError:0];
         return;
       }
 
       if ([(EPResource *)self->_clientUnlockAssertion availability]== 2)
       {
-        v24 = [(EPResource *)self->_clientUnlockAssertion error];
-        [(EPResourceManager *)self setAvailability:2 withError:v24];
+        error = [(EPResource *)self->_clientUnlockAssertion error];
+        [(EPResourceManager *)self setAvailability:2 withError:error];
         goto LABEL_33;
       }
     }
 
-    v27 = self;
+    selfCopy2 = self;
     v28 = 0;
     goto LABEL_42;
   }

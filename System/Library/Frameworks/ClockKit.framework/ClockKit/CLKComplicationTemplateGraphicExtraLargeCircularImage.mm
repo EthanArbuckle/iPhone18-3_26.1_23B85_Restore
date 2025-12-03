@@ -1,7 +1,7 @@
 @interface CLKComplicationTemplateGraphicExtraLargeCircularImage
 + (CLKComplicationTemplateGraphicExtraLargeCircularImage)templateWithImageProvider:(CLKFullColorImageProvider *)imageProvider;
 - (CLKComplicationTemplateGraphicExtraLargeCircularImage)initWithImageProvider:(CLKFullColorImageProvider *)imageProvider;
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicExtraLargeCircularImage
@@ -11,11 +11,11 @@
   v4 = imageProvider;
   v8.receiver = self;
   v8.super_class = CLKComplicationTemplateGraphicExtraLargeCircularImage;
-  v5 = [(CLKComplicationTemplate *)&v8 initPrivate];
-  v6 = v5;
-  if (v5)
+  initPrivate = [(CLKComplicationTemplate *)&v8 initPrivate];
+  v6 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicExtraLargeCircularImage *)v5 setImageProvider:v4];
+    [(CLKComplicationTemplateGraphicExtraLargeCircularImage *)initPrivate setImageProvider:v4];
   }
 
   return v6;
@@ -24,23 +24,23 @@
 + (CLKComplicationTemplateGraphicExtraLargeCircularImage)templateWithImageProvider:(CLKFullColorImageProvider *)imageProvider
 {
   v4 = imageProvider;
-  v5 = [[a1 alloc] initWithImageProvider:v4];
+  v5 = [[self alloc] initWithImageProvider:v4];
 
   return v5;
 }
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __103__CLKComplicationTemplateGraphicExtraLargeCircularImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __103__CLKComplicationTemplateGraphicExtraLargeCircularImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE91DA0;
   v9 = *&_enumerateFullColorImageProviderKeysWithBlock___imageDiameter_1624[[(CLKComplicationTemplate *)self sdkVersion]];
   v11 = 0;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&_enumerateFullColorImageProviderKeysWithBlock___pointSize_1625];
-  v4[2](v4, @"imageProvider", 0, 1, v10, 4, &v11, v9, v9, v8, v8, v8 * 0.5);
+  blockCopy[2](blockCopy, @"imageProvider", 0, 1, v10, 4, &v11, v9, v9, v8, v8, v8 * 0.5);
 }
 
 uint64_t __103__CLKComplicationTemplateGraphicExtraLargeCircularImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

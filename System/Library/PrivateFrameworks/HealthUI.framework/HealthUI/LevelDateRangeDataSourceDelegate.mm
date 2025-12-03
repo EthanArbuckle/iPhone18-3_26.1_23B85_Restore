@@ -1,15 +1,15 @@
 @interface LevelDateRangeDataSourceDelegate
 - (_TtC8HealthUI32LevelDateRangeDataSourceDelegate)init;
-- (id)dataForDateRange:(id)a3 timeScope:(int64_t)a4;
+- (id)dataForDateRange:(id)range timeScope:(int64_t)scope;
 @end
 
 @implementation LevelDateRangeDataSourceDelegate
 
-- (id)dataForDateRange:(id)a3 timeScope:(int64_t)a4
+- (id)dataForDateRange:(id)range timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = self;
-  sub_1C3CE5800(v6, a4);
+  rangeCopy = range;
+  selfCopy = self;
+  sub_1C3CE5800(rangeCopy, scope);
 
   sub_1C3C315FC();
   v8 = sub_1C3D202A4();

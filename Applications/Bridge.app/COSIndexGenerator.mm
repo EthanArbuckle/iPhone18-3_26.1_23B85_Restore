@@ -1,13 +1,13 @@
 @interface COSIndexGenerator
-+ (void)consumeSpecifiers:(id)a3;
++ (void)consumeSpecifiers:(id)specifiers;
 @end
 
 @implementation COSIndexGenerator
 
-+ (void)consumeSpecifiers:(id)a3
++ (void)consumeSpecifiers:(id)specifiers
 {
-  v39 = a1;
-  v3 = a3;
+  selfCopy = self;
+  specifiersCopy = specifiers;
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,7 +20,7 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v5 = v3;
+  v5 = specifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v6)
   {
@@ -36,20 +36,20 @@
         }
 
         v10 = *(*(&v43 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:@"NOTIFICATIONS_ID"];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:@"NOTIFICATIONS_ID"];
 
         if (v12)
         {
           v13 = pbb_bridge_log();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v10 name];
-            v15 = [v10 identifier];
+            name = [v10 name];
+            identifier2 = [v10 identifier];
             *buf = 138412546;
-            v48 = v14;
+            v48 = name;
             v49 = 2112;
-            v50 = v15;
+            v50 = identifier2;
             v16 = v13;
             v17 = "Skipped Non-compliant Controller: %@ - %@";
             goto LABEL_14;
@@ -59,19 +59,19 @@
         }
 
         v18 = [v10 propertyForKey:@"SkipIndexing"];
-        v19 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
 
-        if (v19)
+        if (bOOLValue)
         {
           v13 = pbb_bridge_log();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v10 name];
-            v15 = [v10 identifier];
+            name = [v10 name];
+            identifier2 = [v10 identifier];
             *buf = 138412546;
-            v48 = v14;
+            v48 = name;
             v49 = 2112;
-            v50 = v15;
+            v50 = identifier2;
             v16 = v13;
             v17 = "SkipIndexing: %@ - %@";
 LABEL_14:
@@ -128,9 +128,9 @@ LABEL_15:
   {
     if (v32)
     {
-      v33 = [v27 absoluteString];
+      absoluteString = [v27 absoluteString];
       *buf = 138412290;
-      v48 = v33;
+      v48 = absoluteString;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Writing files to %@", buf, 0xCu);
     }
 
@@ -143,11 +143,11 @@ LABEL_15:
       v31 = pbb_bridge_log();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [v27 absoluteString];
+        absoluteString2 = [v27 absoluteString];
         *buf = 138412546;
         v48 = v35;
         v49 = 2112;
-        v50 = v36;
+        v50 = absoluteString2;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Plist and strings file generation failed with error %@, for path: %@", buf, 0x16u);
       }
 
@@ -161,11 +161,11 @@ LABEL_33:
 
   if (v32)
   {
-    v37 = [v27 absoluteString];
+    absoluteString3 = [v27 absoluteString];
     *buf = 138412546;
     v48 = v30;
     v49 = 2112;
-    v50 = v37;
+    v50 = absoluteString3;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Directory creation failed with error %@, for path: %@", buf, 0x16u);
   }
 

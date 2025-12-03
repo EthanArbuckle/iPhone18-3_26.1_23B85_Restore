@@ -1,15 +1,15 @@
 @interface VNSceneprintMLFeatureProvider
 - (NSSet)featureNames;
-- (VNSceneprintMLFeatureProvider)initWithSceneprint:(id)a3 dataType:(int64_t)a4 forKey:(id)a5 originalFeatureProvider:(id)a6;
-- (id)featureValueForName:(id)a3;
+- (VNSceneprintMLFeatureProvider)initWithSceneprint:(id)sceneprint dataType:(int64_t)type forKey:(id)key originalFeatureProvider:(id)provider;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation VNSceneprintMLFeatureProvider
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:self->_sceneprintKey])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:self->_sceneprintKey])
   {
     sceneprint = self->_sceneprint;
     sceneprintDataType = self->_sceneprintDataType;
@@ -23,10 +23,10 @@
 
     else
     {
-      v10 = [v4 UTF8String];
-      v11 = [v8 localizedDescription];
-      [v11 UTF8String];
-      VNValidatedLog(4, @"Unable to obtain data array %s - %s", v12, v13, v14, v15, v16, v17, v10);
+      uTF8String = [nameCopy UTF8String];
+      localizedDescription = [v8 localizedDescription];
+      [localizedDescription UTF8String];
+      VNValidatedLog(4, @"Unable to obtain data array %s - %s", v12, v13, v14, v15, v16, v17, uTF8String);
 
       v9 = 0;
     }
@@ -34,7 +34,7 @@
 
   else
   {
-    v9 = [(MLFeatureProvider *)self->_originalFeatureProvider featureValueForName:v4];
+    v9 = [(MLFeatureProvider *)self->_originalFeatureProvider featureValueForName:nameCopy];
   }
 
   return v9;
@@ -46,31 +46,31 @@
   originalFeatureProvider = self->_originalFeatureProvider;
   if (originalFeatureProvider)
   {
-    v5 = [(MLFeatureProvider *)originalFeatureProvider featureNames];
-    [v3 unionSet:v5];
+    featureNames = [(MLFeatureProvider *)originalFeatureProvider featureNames];
+    [v3 unionSet:featureNames];
   }
 
   return v3;
 }
 
-- (VNSceneprintMLFeatureProvider)initWithSceneprint:(id)a3 dataType:(int64_t)a4 forKey:(id)a5 originalFeatureProvider:(id)a6
+- (VNSceneprintMLFeatureProvider)initWithSceneprint:(id)sceneprint dataType:(int64_t)type forKey:(id)key originalFeatureProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  sceneprintCopy = sceneprint;
+  keyCopy = key;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = VNSceneprintMLFeatureProvider;
   v14 = [(VNSceneprintMLFeatureProvider *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_sceneprint, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_sceneprint, sceneprint);
+    v16 = [keyCopy copy];
     sceneprintKey = v15->_sceneprintKey;
     v15->_sceneprintKey = v16;
 
-    v15->_sceneprintDataType = a4;
-    objc_storeStrong(&v15->_originalFeatureProvider, a6);
+    v15->_sceneprintDataType = type;
+    objc_storeStrong(&v15->_originalFeatureProvider, provider);
   }
 
   return v15;

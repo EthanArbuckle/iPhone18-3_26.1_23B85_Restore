@@ -11,27 +11,27 @@
 {
   v3 = MEMORY[0x1E69DC888];
   v4 = a3;
-  v5 = [v3 clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [v3 clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [v4 setContentInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-  v6 = [v4 textContainer];
+  textContainer = [v4 textContainer];
 
-  [v6 setLineFragmentPadding:0.0];
+  [textContainer setLineFragmentPadding:0.0];
 }
 
 + (id)pkui_plainInteractiveTextViewWithFrame:()PKUIUtilities
 {
-  v6 = [[a1 alloc] initWithFrame:{a2, a3, a4, a5}];
-  [(objc_class *)a1 pkui_styleTextView:v6];
+  v6 = [[self alloc] initWithFrame:{a2, a3, a4, a5}];
+  [(objc_class *)self pkui_styleTextView:v6];
 
   return v6;
 }
 
 + (id)pkui_plainNonInteractiveTextViewWithFrame:()PKUIUtilities
 {
-  v6 = [[a1 alloc] initReadonlyAndUnselectableWithFrame:0 textContainer:{a2, a3, a4, a5}];
-  [(objc_class *)a1 pkui_styleTextView:v6];
+  v6 = [[self alloc] initReadonlyAndUnselectableWithFrame:0 textContainer:{a2, a3, a4, a5}];
+  [(objc_class *)self pkui_styleTextView:v6];
   [v6 setUserInteractionEnabled:0];
   [v6 setScrollEnabled:0];
 
@@ -40,9 +40,9 @@
 
 - (double)pkui_textFrame
 {
-  [a1 frame];
+  [self frame];
   v3 = v2;
-  [a1 textContainerInset];
+  [self textContainerInset];
   return v3 + v4;
 }
 

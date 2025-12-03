@@ -1,22 +1,22 @@
 @interface _BlastDoorASCodableAchievement
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDoubleValue:(BOOL)a3;
-- (void)setHasIntValue:(BOOL)a3;
-- (void)setHasWorkoutActivityType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDoubleValue:(BOOL)value;
+- (void)setHasIntValue:(BOOL)value;
+- (void)setHasWorkoutActivityType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _BlastDoorASCodableAchievement
 
-- (void)setHasDoubleValue:(BOOL)a3
+- (void)setHasDoubleValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIntValue:(BOOL)a3
+- (void)setHasIntValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasWorkoutActivityType:(BOOL)a3
+- (void)setHasWorkoutActivityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -66,8 +66,8 @@
   v9.receiver = self;
   v9.super_class = _BlastDoorASCodableAchievement;
   v4 = [(_BlastDoorASCodableAchievement *)&v9 description];
-  v5 = [(_BlastDoorASCodableAchievement *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_BlastDoorASCodableAchievement *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   v7 = *MEMORY[0x277D85DE8];
 
@@ -76,19 +76,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(_BlastDoorASCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(_BlastDoorASCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   has = self->_has;
   if (has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_completedDate];
-    [v3 setObject:v11 forKey:@"completedDate"];
+    [dictionary setObject:v11 forKey:@"completedDate"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -109,7 +109,7 @@ LABEL_5:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_doubleValue];
-  [v3 setObject:v12 forKey:@"doubleValue"];
+  [dictionary setObject:v12 forKey:@"doubleValue"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -125,39 +125,39 @@ LABEL_6:
 
 LABEL_17:
   v13 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_intValue];
-  [v3 setObject:v13 forKey:@"intValue"];
+  [dictionary setObject:v13 forKey:@"intValue"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     v7 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_workoutActivityType];
-    [v3 setObject:v7 forKey:@"workoutActivityType"];
+    [dictionary setObject:v7 forKey:@"workoutActivityType"];
   }
 
 LABEL_8:
   definitionIdentifier = self->_definitionIdentifier;
   if (definitionIdentifier)
   {
-    [v3 setObject:definitionIdentifier forKey:@"definitionIdentifier"];
+    [dictionary setObject:definitionIdentifier forKey:@"definitionIdentifier"];
   }
 
   templateUniqueName = self->_templateUniqueName;
   if (templateUniqueName)
   {
-    [v3 setObject:templateUniqueName forKey:@"templateUniqueName"];
+    [dictionary setObject:templateUniqueName forKey:@"templateUniqueName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -165,7 +165,7 @@ LABEL_8:
   {
     completedDate = self->_completedDate;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -186,7 +186,7 @@ LABEL_5:
 
   doubleValue = self->_doubleValue;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -202,44 +202,44 @@ LABEL_6:
 LABEL_17:
   intValue = self->_intValue;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     workoutActivityType = self->_workoutActivityType;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
   if (self->_definitionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_templateUniqueName)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v6;
+    [toCopy setSample:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_completedDate;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = *&self->_completedDate;
+    *(toCopy + 64) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -258,8 +258,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = *&self->_doubleValue;
-  *(v4 + 64) |= 2u;
+  *(toCopy + 2) = *&self->_doubleValue;
+  *(toCopy + 64) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -273,33 +273,33 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(v4 + 3) = self->_intValue;
-  *(v4 + 64) |= 4u;
+  *(toCopy + 3) = self->_intValue;
+  *(toCopy + 64) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 4) = self->_workoutActivityType;
-    *(v4 + 64) |= 8u;
+    *(toCopy + 4) = self->_workoutActivityType;
+    *(toCopy + 64) |= 8u;
   }
 
 LABEL_8:
   if (self->_definitionIdentifier)
   {
     [v6 setDefinitionIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_templateUniqueName)
   {
     [v6 setTemplateUniqueName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_BlastDoorASCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_BlastDoorASCodableSample *)self->_sample copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -351,27 +351,27 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSString *)self->_definitionIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_definitionIdentifier copyWithZone:zone];
   v10 = *(v5 + 40);
   *(v5 + 40) = v9;
 
-  v11 = [(NSString *)self->_templateUniqueName copyWithZone:a3];
+  v11 = [(NSString *)self->_templateUniqueName copyWithZone:zone];
   v12 = *(v5 + 56);
   *(v5 + 56) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   sample = self->_sample;
-  if (sample | *(v4 + 6))
+  if (sample | *(equalCopy + 6))
   {
     if (![(_BlastDoorASCodableSample *)sample isEqual:?])
     {
@@ -379,16 +379,16 @@ LABEL_6:
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_completedDate != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_completedDate != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_28:
     v9 = 0;
@@ -397,51 +397,51 @@ LABEL_28:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_doubleValue != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_doubleValue != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_intValue != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_intValue != *(equalCopy + 3))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_workoutActivityType != *(v4 + 4))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_workoutActivityType != *(equalCopy + 4))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   definitionIdentifier = self->_definitionIdentifier;
-  if (definitionIdentifier | *(v4 + 5) && ![(NSString *)definitionIdentifier isEqual:?])
+  if (definitionIdentifier | *(equalCopy + 5) && ![(NSString *)definitionIdentifier isEqual:?])
   {
     goto LABEL_28;
   }
 
   templateUniqueName = self->_templateUniqueName;
-  if (templateUniqueName | *(v4 + 7))
+  if (templateUniqueName | *(equalCopy + 7))
   {
     v9 = [(NSString *)templateUniqueName isEqual:?];
   }
@@ -552,12 +552,12 @@ LABEL_22:
   return v16 ^ [(NSString *)self->_templateUniqueName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = *(v4 + 6);
-  v8 = v4;
+  v6 = *(fromCopy + 6);
+  v8 = fromCopy;
   if (sample)
   {
     if (!v6)
@@ -578,14 +578,14 @@ LABEL_22:
     [(_BlastDoorASCodableAchievement *)self setSample:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 64);
+  v7 = *(fromCopy + 64);
   if (v7)
   {
-    self->_completedDate = *(v4 + 1);
+    self->_completedDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 64);
+    v7 = *(fromCopy + 64);
     if ((v7 & 2) == 0)
     {
 LABEL_9:
@@ -598,14 +598,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 64) & 2) == 0)
+  else if ((*(fromCopy + 64) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_doubleValue = *(v4 + 2);
+  self->_doubleValue = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v7 = *(v4 + 64);
+  v7 = *(fromCopy + 64);
   if ((v7 & 4) == 0)
   {
 LABEL_10:
@@ -618,23 +618,23 @@ LABEL_10:
   }
 
 LABEL_21:
-  self->_intValue = *(v4 + 3);
+  self->_intValue = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 64) & 8) != 0)
+  if ((*(fromCopy + 64) & 8) != 0)
   {
 LABEL_11:
-    self->_workoutActivityType = *(v4 + 4);
+    self->_workoutActivityType = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_BlastDoorASCodableAchievement *)self setDefinitionIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(_BlastDoorASCodableAchievement *)self setTemplateUniqueName:?];
   }

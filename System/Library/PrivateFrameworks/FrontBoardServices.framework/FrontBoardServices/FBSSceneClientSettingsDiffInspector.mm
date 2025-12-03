@@ -1,6 +1,6 @@
 @interface FBSSceneClientSettingsDiffInspector
 - (FBSSceneClientSettingsDiffInspector)init;
-- (void)observeProperty:(SEL)a3 withBlock:(id)a4;
+- (void)observeProperty:(SEL)property withBlock:(id)block;
 @end
 
 @implementation FBSSceneClientSettingsDiffInspector
@@ -22,20 +22,20 @@ void __43__FBSSceneClientSettingsDiffInspector_init__block_invoke()
   v0 = objc_alloc_init(FBSSceneClientSettings);
 }
 
-- (void)observeProperty:(SEL)a3 withBlock:(id)a4
+- (void)observeProperty:(SEL)property withBlock:(id)block
 {
-  v7 = a4;
-  if (!a3)
+  blockCopy = block;
+  if (!property)
   {
     [FBSSceneClientSettingsDiffInspector observeProperty:a2 withBlock:self];
   }
 
-  v11 = v7;
+  v11 = blockCopy;
   v8 = objc_opt_class();
-  v9 = FBSSettingForExtensionSelector(v8, a3);
+  v9 = FBSSettingForExtensionSelector(v8, property);
   if (!v9)
   {
-    [(FBSSceneClientSettingsDiffInspector *)a3 observeProperty:a2 withBlock:self];
+    [(FBSSceneClientSettingsDiffInspector *)property observeProperty:a2 withBlock:self];
   }
 
   v10 = v9;

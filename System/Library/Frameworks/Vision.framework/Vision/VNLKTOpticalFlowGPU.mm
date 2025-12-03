@@ -1,35 +1,35 @@
 @interface VNLKTOpticalFlowGPU
-- (BOOL)_createImagePyramidWithCommandBuffer:(id)a3 in_pixelbuf:(__CVBuffer *)a4 I_idx:(int)a5 error:(id *)a6;
-- (BOOL)_setupBufferAndReturnError:(id *)a3;
-- (BOOL)_setupPipelinesReturnError:(id *)a3;
-- (BOOL)estimateFlowFromReference:(__CVBuffer *)a3 target:(__CVBuffer *)a4 error:(id *)a5;
-- (BOOL)estimateFlowStream:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)setOutputUV:(__CVBuffer *)a3 error:(id *)a4;
-- (VNLKTOpticalFlowGPU)initWithMetalContext:(id)a3 width:(int)a4 height:(int)a5 numScales:(int)a6 error:(id *)a7;
-- (void)_computeFeaturesDerivativesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5;
-- (void)_computeFeaturesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5;
+- (BOOL)_createImagePyramidWithCommandBuffer:(id)buffer in_pixelbuf:(__CVBuffer *)in_pixelbuf I_idx:(int)i_idx error:(id *)error;
+- (BOOL)_setupBufferAndReturnError:(id *)error;
+- (BOOL)_setupPipelinesReturnError:(id *)error;
+- (BOOL)estimateFlowFromReference:(__CVBuffer *)reference target:(__CVBuffer *)target error:(id *)error;
+- (BOOL)estimateFlowStream:(__CVBuffer *)stream error:(id *)error;
+- (BOOL)setOutputUV:(__CVBuffer *)v error:(id *)error;
+- (VNLKTOpticalFlowGPU)initWithMetalContext:(id)context width:(int)width height:(int)height numScales:(int)scales error:(id *)error;
+- (void)_computeFeaturesDerivativesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex;
+- (void)_computeFeaturesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex;
 - (void)_computeOpticalFlow;
-- (void)_doNLRegularizationWithCommandBuffer:(id)a3 in_uv_tex:(id)a4 join_tex:(id)a5 w_tex:(id)a6 out_uv_tex:(id)a7;
-- (void)_doSolverWithCommandBuffer:(VNLKTOpticalFlowGPU *)self scale:(SEL)a2 scale_xy_inv:(id)a3 coeff:(int)a4 in_uv_tex:(id)a5 out_uv_tex:(id)a6 out_w_tex:(id)a7;
-- (void)_downscale2XWithCommandBuffer:(id)a3 in_u32_alias_tex:(id)a4 out_u32_alias_tex:(id)a5;
-- (void)_initMemory:(int)a3 height:(int)a4 numScales:(int)a5;
-- (void)_zeroFlowWithCommandBuffer:(id)a3 uv_tex:(id)a4;
+- (void)_doNLRegularizationWithCommandBuffer:(id)buffer in_uv_tex:(id)in_uv_tex join_tex:(id)join_tex w_tex:(id)w_tex out_uv_tex:(id)out_uv_tex;
+- (void)_doSolverWithCommandBuffer:(VNLKTOpticalFlowGPU *)self scale:(SEL)scale scale_xy_inv:(id)scale_xy_inv coeff:(int)coeff in_uv_tex:(id)in_uv_tex out_uv_tex:(id)out_uv_tex out_w_tex:(id)out_w_tex;
+- (void)_downscale2XWithCommandBuffer:(id)buffer in_u32_alias_tex:(id)in_u32_alias_tex out_u32_alias_tex:(id)out_u32_alias_tex;
+- (void)_initMemory:(int)memory height:(int)height numScales:(int)scales;
+- (void)_zeroFlowWithCommandBuffer:(id)buffer uv_tex:(id)uv_tex;
 - (void)dealloc;
 - (void)waitUntilCompleted;
 @end
 
 @implementation VNLKTOpticalFlowGPU
 
-- (void)_doNLRegularizationWithCommandBuffer:(id)a3 in_uv_tex:(id)a4 join_tex:(id)a5 w_tex:(id)a6 out_uv_tex:(id)a7
+- (void)_doNLRegularizationWithCommandBuffer:(id)buffer in_uv_tex:(id)in_uv_tex join_tex:(id)join_tex w_tex:(id)w_tex out_uv_tex:(id)out_uv_tex
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  bufferCopy = buffer;
+  in_uv_texCopy = in_uv_tex;
+  join_texCopy = join_tex;
+  w_texCopy = w_tex;
+  out_uv_texCopy = out_uv_tex;
   v36 = 0;
-  v34 = [(VNLKTOpticalFlow *)self nlreg_radius];
-  v35 = [(VNLKTOpticalFlow *)self nlreg_padding];
+  nlreg_radius = [(VNLKTOpticalFlow *)self nlreg_radius];
+  nlreg_padding = [(VNLKTOpticalFlow *)self nlreg_padding];
   [(VNLKTOpticalFlow *)self nlreg_sigma_l];
   v18 = v17;
   [(VNLKTOpticalFlow *)self nlreg_sigma_c];
@@ -43,216 +43,216 @@
   *(&v22 + 1) = 1.0 / (v20 + v20);
   *(&v22 + 1) = vdiv_f32(_D3, vadd_f32(__PAIR64__(v23, v31), __PAIR64__(v23, v31)));
   v37 = v22;
-  v29 = [v12 computeCommandEncoder];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
   computePipelines = self->_computePipelines;
-  [v29 setComputePipelineState:self->_computePipelines[8]];
-  [v29 setTexture:v13 atIndex:0];
-  [v29 setTexture:v14 atIndex:1];
-  [v29 setTexture:v15 atIndex:2];
-  [v29 setTexture:v16 atIndex:3];
-  [v29 setBytes:&v34 length:32 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[8]];
+  [computeCommandEncoder setTexture:in_uv_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:join_texCopy atIndex:1];
+  [computeCommandEncoder setTexture:w_texCopy atIndex:2];
+  [computeCommandEncoder setTexture:out_uv_texCopy atIndex:3];
+  [computeCommandEncoder setBytes:&nlreg_radius length:32 atIndex:0];
   LODWORD(self) = [(MTLComputePipelineState *)self->_computePipelines[8] threadExecutionWidth];
   LODWORD(computePipelines) = [(MTLComputePipelineState *)computePipelines[8] maxTotalThreadsPerThreadgroup];
-  v33[0] = (self + [v13 width] / 2 - 1) / self;
-  v33[1] = (computePipelines / self + [v13 height] / 2 - 1) / (computePipelines / self);
+  v33[0] = (self + [in_uv_texCopy width] / 2 - 1) / self;
+  v33[1] = (computePipelines / self + [in_uv_texCopy height] / 2 - 1) / (computePipelines / self);
   v33[2] = 1;
   v32[0] = self;
   v32[1] = computePipelines / self;
   v32[2] = 1;
-  [v29 dispatchThreadgroups:v33 threadsPerThreadgroup:v32];
-  [v29 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v33 threadsPerThreadgroup:v32];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_doSolverWithCommandBuffer:(VNLKTOpticalFlowGPU *)self scale:(SEL)a2 scale_xy_inv:(id)a3 coeff:(int)a4 in_uv_tex:(id)a5 out_uv_tex:(id)a6 out_w_tex:(id)a7
+- (void)_doSolverWithCommandBuffer:(VNLKTOpticalFlowGPU *)self scale:(SEL)scale scale_xy_inv:(id)scale_xy_inv coeff:(int)coeff in_uv_tex:(id)in_uv_tex out_uv_tex:(id)out_uv_tex out_w_tex:(id)out_w_tex
 {
   v12 = v8;
   v13 = v7;
-  v16 = a3;
-  v17 = a5;
-  v32 = a6;
-  v31 = a7;
+  scale_xy_invCopy = scale_xy_inv;
+  in_uv_texCopy = in_uv_tex;
+  out_uv_texCopy = out_uv_tex;
+  out_w_texCopy = out_w_tex;
   maxThreadExecutionWidth = self->_maxThreadExecutionWidth;
-  v19 = vmovn_s64(vcvtq_s64_f64(self->_pyramid_size[a4]));
+  v19 = vmovn_s64(vcvtq_s64_f64(self->_pyramid_size[coeff]));
   v20 = v19.i32[0] - 1;
   v30 = v19.i32[1];
   v39[0] = v19;
   v39[1] = ((v19.i32[0] - 1 + maxThreadExecutionWidth) / maxThreadExecutionWidth * maxThreadExecutionWidth);
   v39[2] = v13;
   v39[3] = v12;
-  v21 = [v16 computeCommandEncoder];
+  computeCommandEncoder = [scale_xy_invCopy computeCommandEncoder];
   computePipelines = self->_computePipelines;
-  [v21 setComputePipelineState:self->_computePipelines[5]];
-  [v21 setTexture:v17 atIndex:0];
-  [v21 setTexture:self->_G0_tex[a4] atIndex:1];
-  [v21 setTexture:self->_G1_tex[a4] atIndex:2];
-  [v21 setTexture:self->_C0_tex[a4] atIndex:3];
-  [v21 setTexture:self->_C1_tex[a4] atIndex:4];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[5]];
+  [computeCommandEncoder setTexture:in_uv_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:self->_G0_tex[coeff] atIndex:1];
+  [computeCommandEncoder setTexture:self->_G1_tex[coeff] atIndex:2];
+  [computeCommandEncoder setTexture:self->_C0_tex[coeff] atIndex:3];
+  [computeCommandEncoder setTexture:self->_C1_tex[coeff] atIndex:4];
   Adiagb_buf = self->_Adiagb_buf;
-  [v21 setBuffer:self->_Adiagb_buf[0] offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_Adiagb_buf[0] offset:0 atIndex:0];
   Ixy_buf = self->_Ixy_buf;
-  [v21 setBuffer:self->_Ixy_buf[0] offset:0 atIndex:1];
-  [v21 setBytes:v39 length:32 atIndex:2];
+  [computeCommandEncoder setBuffer:self->_Ixy_buf[0] offset:0 atIndex:1];
+  [computeCommandEncoder setBytes:v39 length:32 atIndex:2];
   LODWORD(self) = [(MTLComputePipelineState *)self->_computePipelines[5] threadExecutionWidth];
-  v25 = [computePipelines[5] maxTotalThreadsPerThreadgroup];
+  maxTotalThreadsPerThreadgroup = [computePipelines[5] maxTotalThreadsPerThreadgroup];
   v36 = (v20 + self) / self;
-  v37 = (v30 - 1 + v25 / self) / (v25 / self);
+  v37 = (v30 - 1 + maxTotalThreadsPerThreadgroup / self) / (maxTotalThreadsPerThreadgroup / self);
   v38 = 1;
-  v33 = self;
-  v34 = v25 / self;
+  selfCopy3 = self;
+  v34 = maxTotalThreadsPerThreadgroup / self;
   v35 = 1;
-  [v21 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v33];
-  [v21 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v36 threadsPerThreadgroup:&selfCopy3];
+  [computeCommandEncoder endEncoding];
 
-  v26 = [v16 computeCommandEncoder];
-  [v26 setComputePipelineState:computePipelines[6]];
-  [v26 setBuffer:*Adiagb_buf offset:0 atIndex:0];
-  [v26 setBuffer:*Ixy_buf offset:0 atIndex:1];
-  [v26 setBuffer:Adiagb_buf[1] offset:0 atIndex:2];
-  [v26 setBuffer:Ixy_buf[1] offset:0 atIndex:3];
-  [v26 setBytes:v39 length:32 atIndex:4];
+  computeCommandEncoder2 = [scale_xy_invCopy computeCommandEncoder];
+  [computeCommandEncoder2 setComputePipelineState:computePipelines[6]];
+  [computeCommandEncoder2 setBuffer:*Adiagb_buf offset:0 atIndex:0];
+  [computeCommandEncoder2 setBuffer:*Ixy_buf offset:0 atIndex:1];
+  [computeCommandEncoder2 setBuffer:Adiagb_buf[1] offset:0 atIndex:2];
+  [computeCommandEncoder2 setBuffer:Ixy_buf[1] offset:0 atIndex:3];
+  [computeCommandEncoder2 setBytes:v39 length:32 atIndex:4];
   LODWORD(self) = [computePipelines[6] threadExecutionWidth];
-  v27 = [computePipelines[6] maxTotalThreadsPerThreadgroup];
+  maxTotalThreadsPerThreadgroup2 = [computePipelines[6] maxTotalThreadsPerThreadgroup];
   v36 = (v20 + self) / self;
-  v37 = (v30 - 1 + v27 / self) / (v27 / self);
+  v37 = (v30 - 1 + maxTotalThreadsPerThreadgroup2 / self) / (maxTotalThreadsPerThreadgroup2 / self);
   v38 = 1;
-  v33 = self;
-  v34 = v27 / self;
+  selfCopy3 = self;
+  v34 = maxTotalThreadsPerThreadgroup2 / self;
   v35 = 1;
-  [v26 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v33];
-  [v26 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v36 threadsPerThreadgroup:&selfCopy3];
+  [computeCommandEncoder2 endEncoding];
 
-  v28 = [v16 computeCommandEncoder];
-  [v28 setComputePipelineState:computePipelines[7]];
-  [v28 setBuffer:Adiagb_buf[1] offset:0 atIndex:0];
-  [v28 setBuffer:Ixy_buf[1] offset:0 atIndex:1];
-  [v28 setTexture:v17 atIndex:0];
-  [v28 setTexture:v32 atIndex:1];
-  [v28 setTexture:v31 atIndex:2];
-  [v28 setBytes:v39 length:32 atIndex:2];
+  computeCommandEncoder3 = [scale_xy_invCopy computeCommandEncoder];
+  [computeCommandEncoder3 setComputePipelineState:computePipelines[7]];
+  [computeCommandEncoder3 setBuffer:Adiagb_buf[1] offset:0 atIndex:0];
+  [computeCommandEncoder3 setBuffer:Ixy_buf[1] offset:0 atIndex:1];
+  [computeCommandEncoder3 setTexture:in_uv_texCopy atIndex:0];
+  [computeCommandEncoder3 setTexture:out_uv_texCopy atIndex:1];
+  [computeCommandEncoder3 setTexture:out_w_texCopy atIndex:2];
+  [computeCommandEncoder3 setBytes:v39 length:32 atIndex:2];
   LODWORD(self) = [computePipelines[7] threadExecutionWidth];
-  v29 = [computePipelines[7] maxTotalThreadsPerThreadgroup];
+  maxTotalThreadsPerThreadgroup3 = [computePipelines[7] maxTotalThreadsPerThreadgroup];
   v36 = (v20 + self) / self;
-  v37 = (v30 - 1 + v29 / self) / (v29 / self);
+  v37 = (v30 - 1 + maxTotalThreadsPerThreadgroup3 / self) / (maxTotalThreadsPerThreadgroup3 / self);
   v38 = 1;
-  v33 = self;
-  v34 = v29 / self;
+  selfCopy3 = self;
+  v34 = maxTotalThreadsPerThreadgroup3 / self;
   v35 = 1;
-  [v28 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v33];
-  [v28 endEncoding];
+  [computeCommandEncoder3 dispatchThreadgroups:&v36 threadsPerThreadgroup:&selfCopy3];
+  [computeCommandEncoder3 endEncoding];
 }
 
-- (void)_computeFeaturesDerivativesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5
+- (void)_computeFeaturesDerivativesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
+  in_texCopy = in_tex;
+  out_texCopy = out_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
   computePipelines = self->_computePipelines;
-  [v10 setComputePipelineState:self->_computePipelines[4]];
-  [v10 setTexture:v8 atIndex:0];
-  [v10 setTexture:v9 atIndex:1];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[4]];
+  [computeCommandEncoder setTexture:in_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:out_texCopy atIndex:1];
   LODWORD(self) = [(MTLComputePipelineState *)self->_computePipelines[4] threadExecutionWidth];
   LODWORD(computePipelines) = [(MTLComputePipelineState *)computePipelines[4] maxTotalThreadsPerThreadgroup];
-  v13[0] = (self + [v8 width] - 1) / self;
-  v13[1] = (computePipelines / self + [v8 height] - 1) / (computePipelines / self);
+  v13[0] = (self + [in_texCopy width] - 1) / self;
+  v13[1] = (computePipelines / self + [in_texCopy height] - 1) / (computePipelines / self);
   v13[2] = 1;
   v12[0] = self;
   v12[1] = computePipelines / self;
   v12[2] = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_computeFeaturesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5
+- (void)_computeFeaturesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
+  in_texCopy = in_tex;
+  out_texCopy = out_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
   computePipelines = self->_computePipelines;
-  [v10 setComputePipelineState:self->_computePipelines[3]];
-  [v10 setTexture:v8 atIndex:0];
-  [v10 setTexture:v9 atIndex:1];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[3]];
+  [computeCommandEncoder setTexture:in_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:out_texCopy atIndex:1];
   LODWORD(self) = [(MTLComputePipelineState *)self->_computePipelines[3] threadExecutionWidth];
   LODWORD(computePipelines) = [(MTLComputePipelineState *)computePipelines[3] maxTotalThreadsPerThreadgroup];
-  v13[0] = (self + [v8 width] - 1) / self;
-  v13[1] = (computePipelines / self + [v8 height] - 1) / (computePipelines / self);
+  v13[0] = (self + [in_texCopy width] - 1) / self;
+  v13[1] = (computePipelines / self + [in_texCopy height] - 1) / (computePipelines / self);
   v13[2] = 1;
   v12[0] = self;
   v12[1] = computePipelines / self;
   v12[2] = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_downscale2XWithCommandBuffer:(id)a3 in_u32_alias_tex:(id)a4 out_u32_alias_tex:(id)a5
+- (void)_downscale2XWithCommandBuffer:(id)buffer in_u32_alias_tex:(id)in_u32_alias_tex out_u32_alias_tex:(id)out_u32_alias_tex
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
+  in_u32_alias_texCopy = in_u32_alias_tex;
+  out_u32_alias_texCopy = out_u32_alias_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
   computePipelines = self->_computePipelines;
-  [v10 setComputePipelineState:self->_computePipelines[2]];
-  [v10 setTexture:v8 atIndex:0];
-  [v10 setTexture:v9 atIndex:1];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[2]];
+  [computeCommandEncoder setTexture:in_u32_alias_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:out_u32_alias_texCopy atIndex:1];
   LODWORD(self) = [(MTLComputePipelineState *)self->_computePipelines[2] threadExecutionWidth];
   LODWORD(computePipelines) = [(MTLComputePipelineState *)computePipelines[2] maxTotalThreadsPerThreadgroup];
-  v13[0] = (self + [v9 width] - 1) / self;
-  v13[1] = (computePipelines / self + [v9 height] - 1) / (computePipelines / self);
+  v13[0] = (self + [out_u32_alias_texCopy width] - 1) / self;
+  v13[1] = (computePipelines / self + [out_u32_alias_texCopy height] - 1) / (computePipelines / self);
   v13[2] = 1;
   v12[0] = self;
   v12[1] = computePipelines / self;
   v12[2] = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_zeroFlowWithCommandBuffer:(id)a3 uv_tex:(id)a4
+- (void)_zeroFlowWithCommandBuffer:(id)buffer uv_tex:(id)uv_tex
 {
-  v6 = a4;
-  v7 = [a3 computeCommandEncoder];
-  [v7 setComputePipelineState:self->_computePipelines[1]];
-  [v7 setTexture:v6 atIndex:0];
-  v8 = [(MTLComputePipelineState *)self->_computePipelines[1] threadExecutionWidth];
-  v9 = [(MTLComputePipelineState *)self->_computePipelines[1] maxTotalThreadsPerThreadgroup];
-  v11[0] = (v8 + [(VNLKTOpticalFlow *)self width]- 1) / v8;
-  v11[1] = (v9 / v8 + [(VNLKTOpticalFlow *)self height]- 1) / (v9 / v8);
+  uv_texCopy = uv_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[1]];
+  [computeCommandEncoder setTexture:uv_texCopy atIndex:0];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_computePipelines[1] threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_computePipelines[1] maxTotalThreadsPerThreadgroup];
+  v11[0] = (threadExecutionWidth + [(VNLKTOpticalFlow *)self width]- 1) / threadExecutionWidth;
+  v11[1] = (maxTotalThreadsPerThreadgroup / threadExecutionWidth + [(VNLKTOpticalFlow *)self height]- 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
   v11[2] = 1;
-  v10[0] = v8;
-  v10[1] = v9 / v8;
+  v10[0] = threadExecutionWidth;
+  v10[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v10[2] = 1;
-  [v7 dispatchThreadgroups:v11 threadsPerThreadgroup:v10];
-  [v7 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v11 threadsPerThreadgroup:v10];
+  [computeCommandEncoder endEncoding];
 }
 
-- (BOOL)_createImagePyramidWithCommandBuffer:(id)a3 in_pixelbuf:(__CVBuffer *)a4 I_idx:(int)a5 error:(id *)a6
+- (BOOL)_createImagePyramidWithCommandBuffer:(id)buffer in_pixelbuf:(__CVBuffer *)in_pixelbuf I_idx:(int)i_idx error:(id *)error
 {
-  v10 = a3;
-  v11 = [(VNLKTOpticalFlow *)self width];
-  v12 = [(VNLKTOpticalFlow *)self height];
-  v13 = [VNMetalContext bindPixelBufferToMTL2DTexture:a4 pixelFormat:80 plane:a6 error:?];
+  bufferCopy = buffer;
+  width = [(VNLKTOpticalFlow *)self width];
+  height = [(VNLKTOpticalFlow *)self height];
+  v13 = [VNMetalContext bindPixelBufferToMTL2DTexture:in_pixelbuf pixelFormat:80 plane:error error:?];
   if (v13)
   {
-    v14 = [v10 computeCommandEncoder];
-    [v14 setComputePipelineState:self->_computePipelines[0]];
-    [v14 setTexture:v13 atIndex:0];
-    [v14 setTexture:self->_I_tex[a5][0] atIndex:1];
-    v15 = [(MTLComputePipelineState *)self->_computePipelines[0] threadExecutionWidth];
-    v16 = [(MTLComputePipelineState *)self->_computePipelines[0] maxTotalThreadsPerThreadgroup];
-    v22[0] = (v11 + v15 - 1) / v15;
-    v22[1] = (v12 + v16 / v15 - 1) / (v16 / v15);
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:self->_computePipelines[0]];
+    [computeCommandEncoder setTexture:v13 atIndex:0];
+    [computeCommandEncoder setTexture:self->_I_tex[i_idx][0] atIndex:1];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_computePipelines[0] threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_computePipelines[0] maxTotalThreadsPerThreadgroup];
+    v22[0] = (width + threadExecutionWidth - 1) / threadExecutionWidth;
+    v22[1] = (height + maxTotalThreadsPerThreadgroup / threadExecutionWidth - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
     v22[2] = 1;
-    v21[0] = v15;
-    v21[1] = v16 / v15;
+    v21[0] = threadExecutionWidth;
+    v21[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     v21[2] = 1;
-    [v14 dispatchThreadgroups:v22 threadsPerThreadgroup:v21];
-    [v14 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v22 threadsPerThreadgroup:v21];
+    [computeCommandEncoder endEncoding];
 
-    v17 = [(VNLKTOpticalFlow *)self numScales];
-    if (v17 >= 2)
+    numScales = [(VNLKTOpticalFlow *)self numScales];
+    if (numScales >= 2)
     {
-      v18 = v17 - 1;
-      v19 = &self->_I_u32_alias_tex[a5][1];
+      v18 = numScales - 1;
+      v19 = &self->_I_u32_alias_tex[i_idx][1];
       do
       {
-        [(VNLKTOpticalFlowGPU *)self _downscale2XWithCommandBuffer:v10 in_u32_alias_tex:*(v19 - 1) out_u32_alias_tex:*v19];
+        [(VNLKTOpticalFlowGPU *)self _downscale2XWithCommandBuffer:bufferCopy in_u32_alias_tex:*(v19 - 1) out_u32_alias_tex:*v19];
         ++v19;
         --v18;
       }
@@ -266,18 +266,18 @@
 
 - (void)_computeOpticalFlow
 {
-  v3 = [(VNLKTOpticalFlow *)self numScales];
-  v4 = [(VNLKTOpticalFlow *)self numWarpings];
-  v5 = [(VNLKTOpticalFlow *)self useNonLocalRegularization];
-  _VF = __OFSUB__(v3, 1);
-  v7 = (v3 - 1);
+  numScales = [(VNLKTOpticalFlow *)self numScales];
+  numWarpings = [(VNLKTOpticalFlow *)self numWarpings];
+  useNonLocalRegularization = [(VNLKTOpticalFlow *)self useNonLocalRegularization];
+  _VF = __OFSUB__(numScales, 1);
+  v7 = (numScales - 1);
   if (v7 < 0 == _VF)
   {
-    v8 = v5;
+    v8 = useNonLocalRegularization;
     v9 = 0;
     v10 = 0;
     I_tex = self->_I_tex;
-    v40 = !v5;
+    v40 = !useNonLocalRegularization;
     __asm
     {
       FMOV            V10.2S, #1.0
@@ -302,17 +302,17 @@
         v17 = COERCE_DOUBLE(vdiv_f32(vadd_f32(v21, _D11), vadd_f32(v20, _D11)));
       }
 
-      v41 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
 
       v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"LKT:ComputeFlow level %d", v15];
-      [v41 setLabel:v22];
+      [commandBuffer setLabel:v22];
 
       [VNLKTOpticalFlowGPU _computeFeaturesWithCommandBuffer:"_computeFeaturesWithCommandBuffer:in_tex:out_tex:" in_tex:? out_tex:?];
       [VNLKTOpticalFlowGPU _computeFeaturesWithCommandBuffer:"_computeFeaturesWithCommandBuffer:in_tex:out_tex:" in_tex:? out_tex:?];
       [VNLKTOpticalFlowGPU _computeFeaturesDerivativesWithCommandBuffer:"_computeFeaturesDerivativesWithCommandBuffer:in_tex:out_tex:" in_tex:? out_tex:?];
       [VNLKTOpticalFlowGPU _computeFeaturesDerivativesWithCommandBuffer:"_computeFeaturesDerivativesWithCommandBuffer:in_tex:out_tex:" in_tex:? out_tex:?];
-      v23 = v4;
-      if (v4 < 1)
+      v23 = numWarpings;
+      if (numWarpings < 1)
       {
         v25 = 0;
         v29 = 0;
@@ -360,7 +360,7 @@
             v25 = v31;
           }
 
-          [(VNLKTOpticalFlowGPU *)self _doSolverWithCommandBuffer:v41 scale:v15 scale_xy_inv:self->_uv_tex[v10][v16] coeff:v29 in_uv_tex:v25 out_uv_tex:v17 out_w_tex:v18];
+          [(VNLKTOpticalFlowGPU *)self _doSolverWithCommandBuffer:commandBuffer scale:v15 scale_xy_inv:self->_uv_tex[v10][v16] coeff:v29 in_uv_tex:v25 out_uv_tex:v17 out_w_tex:v18];
           v10 ^= 1uLL;
           v24 = v29;
           v16 = v15;
@@ -374,7 +374,7 @@
       }
 
       v7 = v36;
-      v32 = v41;
+      v32 = commandBuffer;
       if (v8)
       {
         if (v15)
@@ -389,9 +389,9 @@
 
         v34 = *v33;
 
-        [(VNLKTOpticalFlowGPU *)self _doNLRegularizationWithCommandBuffer:v41 in_uv_tex:self->_uv_u32_alias_tex[v10][v15] join_tex:self->_I_u32_alias_tex[self->_current_frame_index][v15] w_tex:v25 out_uv_tex:v34];
+        [(VNLKTOpticalFlowGPU *)self _doNLRegularizationWithCommandBuffer:commandBuffer in_uv_tex:self->_uv_u32_alias_tex[v10][v15] join_tex:self->_I_u32_alias_tex[self->_current_frame_index][v15] w_tex:v25 out_uv_tex:v34];
         v10 ^= 1uLL;
-        v32 = v41;
+        v32 = commandBuffer;
       }
 
       else
@@ -401,14 +401,14 @@
 
       [v32 commit];
 
-      v9 = v41;
+      v9 = commandBuffer;
     }
 
     while (v15-- > 0);
   }
 }
 
-- (BOOL)_setupBufferAndReturnError:(id *)a3
+- (BOOL)_setupBufferAndReturnError:(id *)error
 {
   maxThreadExecutionWidth = self->_maxThreadExecutionWidth;
   if (!maxThreadExecutionWidth)
@@ -416,50 +416,50 @@
     return 0;
   }
 
-  v6 = [(VNLKTOpticalFlow *)self width];
-  v7 = [(VNLKTOpticalFlow *)self height];
-  v8 = [(VNLKTOpticalFlow *)self numScales];
-  v9 = v6;
-  v10 = v7;
-  v11 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v6 height:v7 pixelFormatType:843264104 error:a3];
+  width = [(VNLKTOpticalFlow *)self width];
+  height = [(VNLKTOpticalFlow *)self height];
+  numScales = [(VNLKTOpticalFlow *)self numScales];
+  v9 = width;
+  v10 = height;
+  v11 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:843264104 error:error];
   self->_G0_pxbuf = v11;
   if (!v11)
   {
     return 0;
   }
 
-  v71 = v8;
-  v12 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v6 height:v7 pixelFormatType:843264104 error:a3];
+  v71 = numScales;
+  v12 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:843264104 error:error];
   self->_G1_pxbuf = v12;
   if (!v12)
   {
     return 0;
   }
 
-  v13 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v6 height:v7 pixelFormatType:1380411457 error:a3];
+  v13 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:1380411457 error:error];
   self->_C0_pxbuf = v13;
   if (!v13)
   {
     return 0;
   }
 
-  v14 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v6 height:v7 pixelFormatType:1380411457 error:a3];
+  v14 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:1380411457 error:error];
   self->_C1_pxbuf = v14;
   if (!v14)
   {
     return 0;
   }
 
-  v15 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v6 height:v7 pixelFormatType:1278226536 error:a3];
+  v15 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:1278226536 error:error];
   self->_w_pxbuf = v15;
   if (!v15)
   {
     return 0;
   }
 
-  v16 = (maxThreadExecutionWidth + v6 - 1) / maxThreadExecutionWidth * maxThreadExecutionWidth;
+  v16 = (maxThreadExecutionWidth + width - 1) / maxThreadExecutionWidth * maxThreadExecutionWidth;
   mtlContext = self->_mtlContext;
-  v69 = v6;
+  v69 = width;
   if (mtlContext)
   {
     mtlContext = mtlContext->_device;
@@ -467,9 +467,9 @@
 
   v72 = mtlContext;
   v18 = 0;
-  v67 = v7;
-  v19 = 8 * v16 * v7;
-  v20 = 2 * v16 * v7;
+  v67 = height;
+  v19 = 8 * v16 * height;
+  v20 = 2 * v16 * height;
   v21 = 1;
   do
   {
@@ -480,17 +480,17 @@
 
     if (!self->_Adiagb_buf[v18] || (v25 = [(VNMetalContext *)v72 newBufferWithLength:v20 options:0], v26 = self->_Ixy_buf[v18], self->_Ixy_buf[v18] = v25, v26, !self->_Ixy_buf[v18]))
     {
-      if (a3)
+      if (error)
       {
         +[VNError errorForMemoryAllocationFailure];
-        *a3 = v65 = 0;
+        *error = v65 = 0;
         goto LABEL_31;
       }
 
       goto LABEL_30;
     }
 
-    v27 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v9 height:v10 pixelFormatType:843264104 error:a3];
+    v27 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v9 height:v10 pixelFormatType:843264104 error:error];
     self->_uv_pxbuf[v18] = v27;
     if (!v27)
     {
@@ -515,32 +515,32 @@ LABEL_16:
     p_width = &pyramid_size[v29].width;
     *p_width = v28;
     p_width[1] = v31;
-    v35 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:65 pixelFormat:a3 textureSize:v28 plane:v31 error:?];
+    v35 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:65 pixelFormat:error textureSize:v28 plane:v31 error:?];
     v36 = self->_G0_tex[v29];
     self->_G0_tex[v29] = v35;
 
     if (self->_G0_tex[v29])
     {
-      v37 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:65 pixelFormat:a3 textureSize:v28 plane:v31 error:?];
+      v37 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:65 pixelFormat:error textureSize:v28 plane:v31 error:?];
       v38 = self->_G1_tex[v29];
       self->_G1_tex[v29] = v37;
 
       if (self->_G1_tex[v29])
       {
-        v39 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:115 pixelFormat:a3 textureSize:v28 plane:v31 error:?];
+        v39 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:115 pixelFormat:error textureSize:v28 plane:v31 error:?];
         v40 = self->_C0_tex[v29];
         self->_C0_tex[v29] = v39;
 
         if (self->_C0_tex[v29])
         {
-          v41 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:115 pixelFormat:a3 textureSize:v28 plane:v31 error:?];
+          v41 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:115 pixelFormat:error textureSize:v28 plane:v31 error:?];
           v42 = self->_C1_tex[v29];
           self->_C1_tex[v29] = v41;
 
           if (self->_C1_tex[v29])
           {
             v70 = v28;
-            v43 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:25 pixelFormat:a3 textureSize:v28 plane:v31 error:?];
+            v43 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:25 pixelFormat:error textureSize:v28 plane:v31 error:?];
             v44 = self->_w_tex[v29];
             self->_w_tex[v29] = v43;
 
@@ -551,7 +551,7 @@ LABEL_16:
               while (1)
               {
                 v47 = v46;
-                v48 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:65 pixelFormat:a3 textureSize:v32 plane:v33 error:?];
+                v48 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:65 pixelFormat:error textureSize:v32 plane:v33 error:?];
                 v49 = self->_uv_tex[v45];
                 v50 = v49[v29];
                 v49[v29] = v48;
@@ -621,9 +621,9 @@ LABEL_31:
   return v65;
 }
 
-- (BOOL)_setupPipelinesReturnError:(id *)a3
+- (BOOL)_setupPipelinesReturnError:(id *)error
 {
-  v4 = [(VNMetalContext *)self->_mtlContext libraryReturnError:a3];
+  v4 = [(VNMetalContext *)self->_mtlContext libraryReturnError:error];
   if (v4)
   {
     mtlContext = self->_mtlContext;
@@ -635,17 +635,17 @@ LABEL_31:
     v6 = mtlContext;
     v7 = 0;
     v8 = 0;
-    v9 = self;
+    selfCopy = self;
     do
     {
       v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:kKernelNames[v7]];
       v11 = [v4 newFunctionWithName:v10];
 
       v12 = [(VNMetalContext *)v6 newComputePipelineStateWithFunction:v11 error:0];
-      objc_storeStrong(v9->_computePipelines, v12);
-      v13 = [v12 threadExecutionWidth];
+      objc_storeStrong(selfCopy->_computePipelines, v12);
+      threadExecutionWidth = [v12 threadExecutionWidth];
       maxThreadExecutionWidth = self->_maxThreadExecutionWidth;
-      if (v13 > maxThreadExecutionWidth)
+      if (threadExecutionWidth > maxThreadExecutionWidth)
       {
         maxThreadExecutionWidth = [v12 threadExecutionWidth];
       }
@@ -653,7 +653,7 @@ LABEL_31:
       self->_maxThreadExecutionWidth = maxThreadExecutionWidth;
 
       ++v7;
-      v9 = (v9 + 8);
+      selfCopy = (selfCopy + 8);
       v8 = v11;
     }
 
@@ -663,7 +663,7 @@ LABEL_31:
   return v4 != 0;
 }
 
-- (void)_initMemory:(int)a3 height:(int)a4 numScales:(int)a5
+- (void)_initMemory:(int)memory height:(int)height numScales:(int)scales
 {
   self->_maxThreadExecutionWidth = 0;
   self->_G0_pxbuf = 0;
@@ -678,17 +678,17 @@ LABEL_31:
   self->_uv_pxbuf[1] = 0;
 }
 
-- (BOOL)estimateFlowStream:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)estimateFlowStream:(__CVBuffer *)stream error:(id *)error
 {
   if ([(VNLKTOpticalFlow *)self isValid])
   {
-    v7 = [(VNLKTOpticalFlow *)self numScales];
-    v8 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    [v8 setLabel:@"LKT::Pyramid"];
-    [(VNLKTOpticalFlowGPU *)self _zeroFlowWithCommandBuffer:v8 uv_tex:self->_uv_pxbuf[v7 + 1]];
-    if ([(VNLKTOpticalFlowGPU *)self _createImagePyramidWithCommandBuffer:v8 in_pixelbuf:a3 I_idx:self->_current_frame_index error:a4])
+    numScales = [(VNLKTOpticalFlow *)self numScales];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    [commandBuffer setLabel:@"LKT::Pyramid"];
+    [(VNLKTOpticalFlowGPU *)self _zeroFlowWithCommandBuffer:commandBuffer uv_tex:self->_uv_pxbuf[numScales + 1]];
+    if ([(VNLKTOpticalFlowGPU *)self _createImagePyramidWithCommandBuffer:commandBuffer in_pixelbuf:stream I_idx:self->_current_frame_index error:error])
     {
-      [v8 commit];
+      [commandBuffer commit];
 
       self->_current_frame_index ^= 1u;
       [(VNLKTOpticalFlowGPU *)self _computeOpticalFlow];
@@ -696,29 +696,29 @@ LABEL_31:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = [VNError errorForInternalErrorWithLocalizedDescription:@"Optical flow estimation invalid state"];
     v11 = v10;
     result = 0;
-    *a4 = v10;
+    *error = v10;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)estimateFlowFromReference:(__CVBuffer *)a3 target:(__CVBuffer *)a4 error:(id *)a5
+- (BOOL)estimateFlowFromReference:(__CVBuffer *)reference target:(__CVBuffer *)target error:(id *)error
 {
   if ([(VNLKTOpticalFlow *)self isValid])
   {
-    v9 = [(VNLKTOpticalFlow *)self numScales];
-    v10 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    [v10 setLabel:@"LKT::Pyramid"];
-    [(VNLKTOpticalFlowGPU *)self _zeroFlowWithCommandBuffer:v10 uv_tex:self->_uv_pxbuf[v9 + 1]];
-    if ([(VNLKTOpticalFlowGPU *)self _createImagePyramidWithCommandBuffer:v10 in_pixelbuf:a3 I_idx:0 error:a5]&& [(VNLKTOpticalFlowGPU *)self _createImagePyramidWithCommandBuffer:v10 in_pixelbuf:a4 I_idx:1 error:a5])
+    numScales = [(VNLKTOpticalFlow *)self numScales];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    [commandBuffer setLabel:@"LKT::Pyramid"];
+    [(VNLKTOpticalFlowGPU *)self _zeroFlowWithCommandBuffer:commandBuffer uv_tex:self->_uv_pxbuf[numScales + 1]];
+    if ([(VNLKTOpticalFlowGPU *)self _createImagePyramidWithCommandBuffer:commandBuffer in_pixelbuf:reference I_idx:0 error:error]&& [(VNLKTOpticalFlowGPU *)self _createImagePyramidWithCommandBuffer:commandBuffer in_pixelbuf:target I_idx:1 error:error])
     {
-      [v10 commit];
+      [commandBuffer commit];
 
       self->_current_frame_index = 0;
       [(VNLKTOpticalFlowGPU *)self _computeOpticalFlow];
@@ -726,21 +726,21 @@ LABEL_31:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = [VNError errorForInternalErrorWithLocalizedDescription:@"Optical flow estimation invalid state"];
     v13 = v12;
     result = 0;
-    *a5 = v12;
+    *error = v12;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)setOutputUV:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)setOutputUV:(__CVBuffer *)v error:(id *)error
 {
-  if (!a3)
+  if (!v)
   {
     uv_tex_user_ref = self->_uv_tex_user_ref;
     self->_uv_tex_user_ref = 0;
@@ -754,7 +754,7 @@ LABEL_31:
     return 0;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(v);
   if (PixelFormatType == 843264104)
   {
     v8 = 65;
@@ -763,10 +763,10 @@ LABEL_31:
 
   if (PixelFormatType != 843264102)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"Unhandled metal pixel format"];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
       return v10;
     }
 
@@ -775,7 +775,7 @@ LABEL_31:
 
   v8 = 105;
 LABEL_8:
-  v11 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:a3 pixelFormat:v8 textureSize:a4 plane:self->_pyramid_size[0].width error:self->_pyramid_size[0].height];
+  v11 = [(VNMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:v pixelFormat:v8 textureSize:error plane:self->_pyramid_size[0].width error:self->_pyramid_size[0].height];
   v10 = v11 != 0;
   if (v11)
   {
@@ -783,9 +783,9 @@ LABEL_8:
     [(VNLKTOpticalFlow *)self setIsValid:1];
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [VNError errorForInternalErrorWithLocalizedDescription:@"Could not bind pixel buffer to texture"];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Could not bind pixel buffer to texture"];
   }
 
   return v10;
@@ -793,10 +793,10 @@ LABEL_8:
 
 - (void)waitUntilCompleted
 {
-  v2 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v2 setLabel:@"LKT:waitUntilCompleted"];
-  [v2 commit];
-  [v2 waitUntilCompleted];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"LKT:waitUntilCompleted"];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
 - (void)dealloc
@@ -813,17 +813,17 @@ LABEL_8:
   [(VNLKTOpticalFlowGPU *)&v3 dealloc];
 }
 
-- (VNLKTOpticalFlowGPU)initWithMetalContext:(id)a3 width:(int)a4 height:(int)a5 numScales:(int)a6 error:(id *)a7
+- (VNLKTOpticalFlowGPU)initWithMetalContext:(id)context width:(int)width height:(int)height numScales:(int)scales error:(id *)error
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v13 = a3;
+  v8 = *&scales;
+  v9 = *&height;
+  v10 = *&width;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = VNLKTOpticalFlowGPU;
   v14 = [(VNLKTOpticalFlow *)&v20 initWithWidth:v10 height:v9 numScales:v8];
   v15 = v14;
-  if (!v14 || (v14->_current_frame_index = 0, objc_storeStrong(&v14->_mtlContext, a3), [(VNMetalContext *)v13 commandQueueReturnError:a7], v16 = objc_claimAutoreleasedReturnValue(), commandQueue = v15->_commandQueue, v15->_commandQueue = v16, commandQueue, v15->_commandQueue) && ([(VNLKTOpticalFlowGPU *)v15 _initMemory:v10 height:v9 numScales:v8], [(VNLKTOpticalFlowGPU *)v15 _setupPipelinesReturnError:a7]) && [(VNLKTOpticalFlowGPU *)v15 _setupBufferAndReturnError:a7])
+  if (!v14 || (v14->_current_frame_index = 0, objc_storeStrong(&v14->_mtlContext, context), [(VNMetalContext *)contextCopy commandQueueReturnError:error], v16 = objc_claimAutoreleasedReturnValue(), commandQueue = v15->_commandQueue, v15->_commandQueue = v16, commandQueue, v15->_commandQueue) && ([(VNLKTOpticalFlowGPU *)v15 _initMemory:v10 height:v9 numScales:v8], [(VNLKTOpticalFlowGPU *)v15 _setupPipelinesReturnError:error]) && [(VNLKTOpticalFlowGPU *)v15 _setupBufferAndReturnError:error])
   {
     v18 = v15;
   }

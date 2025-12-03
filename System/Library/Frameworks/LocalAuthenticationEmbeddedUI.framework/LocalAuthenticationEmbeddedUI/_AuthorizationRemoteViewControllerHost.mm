@@ -1,23 +1,23 @@
 @interface _AuthorizationRemoteViewControllerHost
 + (id)exportedInterface;
 + (id)serviceViewControllerInterface;
-+ (void)_requestViewController:(id)a3 connectionHandler:(id)a4;
-+ (void)requestViewControllerWithConnectionHandler:(id)a3;
++ (void)_requestViewController:(id)controller connectionHandler:(id)handler;
++ (void)requestViewControllerWithConnectionHandler:(id)handler;
 - (LACUIAuthenticatorUIDelegate)delegate;
-- (void)authenticatorServiceDidFinishWithError:(id)a3 reply:(id)a4;
-- (void)authenticatorServiceDidObtainAuthenticationWithReply:(id)a3;
+- (void)authenticatorServiceDidFinishWithError:(id)error reply:(id)reply;
+- (void)authenticatorServiceDidObtainAuthenticationWithReply:(id)reply;
 - (void)dealloc;
-- (void)startWithConfiguration:(id)a3 reply:(id)a4;
-- (void)stopWithReply:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)startWithConfiguration:(id)configuration reply:(id)reply;
+- (void)stopWithReply:(id)reply;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation _AuthorizationRemoteViewControllerHost
 
-+ (void)requestViewControllerWithConnectionHandler:(id)a3
++ (void)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  handlerCopy = handler;
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = LA_LOG_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -30,21 +30,21 @@
   v10[1] = 3221225472;
   v10[2] = __85___AuthorizationRemoteViewControllerHost_requestViewControllerWithConnectionHandler___block_invoke_2;
   v10[3] = &unk_278A659F8;
-  v11 = v5;
-  v12 = v4;
-  v8 = v4;
-  v9 = v5;
-  [a1 _requestViewController:v7 connectionHandler:v10];
+  v11 = date;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = date;
+  [self _requestViewController:v7 connectionHandler:v10];
 }
 
-+ (void)_requestViewController:(id)a3 connectionHandler:(id)a4
++ (void)_requestViewController:(id)controller connectionHandler:(id)handler
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [v6 serviceViewControllerClassName];
-  v8 = [v6 serviceBundleIdentifier];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  serviceViewControllerClassName = [controllerCopy serviceViewControllerClassName];
+  serviceBundleIdentifier = [controllerCopy serviceBundleIdentifier];
 
-  v9 = [a1 requestViewController:v7 fromServiceWithBundleIdentifier:v8 connectionHandler:v10];
+  v9 = [self requestViewController:serviceViewControllerClassName fromServiceWithBundleIdentifier:serviceBundleIdentifier connectionHandler:handlerCopy];
 }
 
 + (id)exportedInterface
@@ -71,14 +71,14 @@
   return v3;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v6.receiver = self;
   v6.super_class = _AuthorizationRemoteViewControllerHost;
-  v4 = a3;
-  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:v4];
+  errorCopy = error;
+  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:errorCopy];
   v5 = [(_AuthorizationRemoteViewControllerHost *)self delegate:v6.receiver];
-  [v5 sheetDidFinishWithError:v4];
+  [v5 sheetDidFinishWithError:errorCopy];
 }
 
 - (void)dealloc
@@ -88,7 +88,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238BCD000, v3, OS_LOG_TYPE_DEFAULT, "%@ deallocated", buf, 0xCu);
   }
 
@@ -98,46 +98,46 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authenticatorServiceDidFinishWithError:(id)a3 reply:(id)a4
+- (void)authenticatorServiceDidFinishWithError:(id)error reply:(id)reply
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(_AuthorizationRemoteViewControllerHost *)self delegate];
-  [v7 sheetDidFinishWithError:v6];
+  replyCopy = reply;
+  errorCopy = error;
+  delegate = [(_AuthorizationRemoteViewControllerHost *)self delegate];
+  [delegate sheetDidFinishWithError:errorCopy];
 
-  v8[2]();
+  replyCopy[2]();
 }
 
-- (void)authenticatorServiceDidObtainAuthenticationWithReply:(id)a3
+- (void)authenticatorServiceDidObtainAuthenticationWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(_AuthorizationRemoteViewControllerHost *)self delegate];
-  [v5 didProvideAuthorizationRequirementWithReply:v4];
+  replyCopy = reply;
+  delegate = [(_AuthorizationRemoteViewControllerHost *)self delegate];
+  [delegate didProvideAuthorizationRequirementWithReply:replyCopy];
 }
 
-- (void)startWithConfiguration:(id)a3 reply:(id)a4
+- (void)startWithConfiguration:(id)configuration reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71___AuthorizationRemoteViewControllerHost_startWithConfiguration_reply___block_invoke;
   v10[3] = &unk_278A65660;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = replyCopy;
+  v7 = replyCopy;
+  configurationCopy = configuration;
   v9 = [(_UIRemoteViewController *)self serviceViewControllerProxyWithErrorHandler:v10];
-  [v9 startWithConfiguration:v8 reply:v7];
+  [v9 startWithConfiguration:configurationCopy reply:v7];
 }
 
-- (void)stopWithReply:(id)a3
+- (void)stopWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56___AuthorizationRemoteViewControllerHost_stopWithReply___block_invoke;
   v7[3] = &unk_278A65660;
-  v8 = v4;
-  v5 = v4;
+  v8 = replyCopy;
+  v5 = replyCopy;
   v6 = [(_UIRemoteViewController *)self serviceViewControllerProxyWithErrorHandler:v7];
   [v6 stopWithReply:v5];
 }

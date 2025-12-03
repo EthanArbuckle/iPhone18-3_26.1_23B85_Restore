@@ -1,35 +1,35 @@
 @interface _KSSystemTask
-- (_KSSystemTask)initWithName:(id)a3 delay:(unint64_t)a4 handler:(id)a5;
-- (_KSSystemTask)initWithName:(id)a3 isPeriodic:(BOOL)a4 period:(unint64_t)a5 handler:(id)a6;
+- (_KSSystemTask)initWithName:(id)name delay:(unint64_t)delay handler:(id)handler;
+- (_KSSystemTask)initWithName:(id)name isPeriodic:(BOOL)periodic period:(unint64_t)period handler:(id)handler;
 @end
 
 @implementation _KSSystemTask
 
-- (_KSSystemTask)initWithName:(id)a3 isPeriodic:(BOOL)a4 period:(unint64_t)a5 handler:(id)a6
+- (_KSSystemTask)initWithName:(id)name isPeriodic:(BOOL)periodic period:(unint64_t)period handler:(id)handler
 {
   keys[7] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  v13 = 0;
-  if (v10 && v11)
+  nameCopy = name;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  selfCopy = 0;
+  if (nameCopy && handlerCopy)
   {
     v31.receiver = self;
     v31.super_class = _KSSystemTask;
     v14 = [(_KSSystemTask *)&v31 init];
     if (v14)
     {
-      v15 = [v10 copy];
+      v15 = [nameCopy copy];
       name = v14->_name;
       v14->_name = v15;
 
-      v17 = 5;
-      if (a5 > 5)
+      periodCopy = 5;
+      if (period > 5)
       {
-        v17 = a5;
+        periodCopy = period;
       }
 
-      v14->_periodSeconds = v17;
+      v14->_periodSeconds = periodCopy;
       v18 = MEMORY[0x259C41CB0](v12);
       handler = v14->_handler;
       v14->_handler = v18;
@@ -51,7 +51,7 @@
       keys[5] = v25;
       keys[6] = *MEMORY[0x277D86380];
       values[0] = xpc_int64_create(v14->_periodSeconds);
-      values[1] = xpc_BOOL_create(a4);
+      values[1] = xpc_BOOL_create(periodic);
       values[2] = xpc_string_create(*MEMORY[0x277D86350]);
       values[3] = xpc_BOOL_create(1);
       values[4] = xpc_BOOL_create(1);
@@ -67,28 +67,28 @@
     }
 
     self = v14;
-    v13 = self;
+    selfCopy = self;
   }
 
   v29 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
-- (_KSSystemTask)initWithName:(id)a3 delay:(unint64_t)a4 handler:(id)a5
+- (_KSSystemTask)initWithName:(id)name delay:(unint64_t)delay handler:(id)handler
 {
   keys[7] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  v11 = 0;
-  if (v8 && v9)
+  nameCopy = name;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  selfCopy = 0;
+  if (nameCopy && handlerCopy)
   {
     v28.receiver = self;
     v28.super_class = _KSSystemTask;
     v12 = [(_KSSystemTask *)&v28 init];
     if (v12)
     {
-      v13 = [v8 copy];
+      v13 = [nameCopy copy];
       name = v12->_name;
       v12->_name = v13;
 
@@ -112,9 +112,9 @@
       keys[4] = *MEMORY[0x277D863A0];
       keys[5] = v22;
       keys[6] = *MEMORY[0x277D86380];
-      values[0] = xpc_int64_create(a4);
+      values[0] = xpc_int64_create(delay);
       values[1] = xpc_BOOL_create(0);
-      values[2] = xpc_int64_create(a4);
+      values[2] = xpc_int64_create(delay);
       values[3] = xpc_string_create(*MEMORY[0x277D86350]);
       values[4] = xpc_BOOL_create(1);
       values[5] = xpc_BOOL_create(1);
@@ -129,11 +129,11 @@
     }
 
     self = v12;
-    v11 = self;
+    selfCopy = self;
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v11;
+  return selfCopy;
 }
 
 @end

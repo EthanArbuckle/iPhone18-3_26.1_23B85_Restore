@@ -1,8 +1,8 @@
 @interface HMAccessoryAccessCode
-+ (HMAccessoryAccessCode)accessoryAccessCodeWithValue:(id)a3 accessory:(id)a4;
++ (HMAccessoryAccessCode)accessoryAccessCodeWithValue:(id)value accessory:(id)accessory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessoryAccessCode)initWithAccessory:(id)a3 accessCodeValue:(id)a4 uniqueIdentifier:(id)a5 hasRestrictions:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessoryAccessCode)initWithAccessory:(id)accessory accessCodeValue:(id)value uniqueIdentifier:(id)identifier hasRestrictions:(BOOL)restrictions;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)createAccessoryAccessCodeValue;
@@ -15,16 +15,16 @@
 {
   v18[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessoryAccessCode *)self accessory];
-  v5 = [v3 initWithName:@"accessory" value:v4];
+  accessory = [(HMAccessoryAccessCode *)self accessory];
+  v5 = [v3 initWithName:@"accessory" value:accessory];
   v18[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMAccessoryAccessCode *)self accessCodeValue];
-  v8 = [v6 initWithName:@"accessCodeValue" value:v7];
+  accessCodeValue = [(HMAccessoryAccessCode *)self accessCodeValue];
+  v8 = [v6 initWithName:@"accessCodeValue" value:accessCodeValue];
   v18[1] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v10 = [(HMAccessoryAccessCode *)self uniqueIdentifier];
-  v11 = [v9 initWithName:@"uniqueIdentifier" value:v10];
+  uniqueIdentifier = [(HMAccessoryAccessCode *)self uniqueIdentifier];
+  v11 = [v9 initWithName:@"uniqueIdentifier" value:uniqueIdentifier];
   v18[2] = v11;
   v12 = objc_alloc(MEMORY[0x1E69A29C8]);
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMAccessoryAccessCode hasRestrictions](self, "hasRestrictions")}];
@@ -46,25 +46,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessoryAccessCode *)self accessory];
-  v4 = [v3 uniqueIdentifier];
-  v5 = [v4 hash];
-  v6 = [(HMAccessoryAccessCode *)self accessCodeValue];
-  v7 = [v6 hash];
-  v8 = [(HMAccessoryAccessCode *)self uniqueIdentifier];
-  v9 = v7 ^ [v8 hash] ^ v5;
-  v10 = [(HMAccessoryAccessCode *)self hasRestrictions];
+  accessory = [(HMAccessoryAccessCode *)self accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v5 = [uniqueIdentifier hash];
+  accessCodeValue = [(HMAccessoryAccessCode *)self accessCodeValue];
+  v7 = [accessCodeValue hash];
+  uniqueIdentifier2 = [(HMAccessoryAccessCode *)self uniqueIdentifier];
+  v9 = v7 ^ [uniqueIdentifier2 hash] ^ v5;
+  hasRestrictions = [(HMAccessoryAccessCode *)self hasRestrictions];
 
-  return v9 ^ v10;
+  return v9 ^ hasRestrictions;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -78,10 +78,10 @@
     goto LABEL_9;
   }
 
-  v7 = [(HMAccessoryAccessCode *)self accessory];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [v6 accessory];
-  v10 = [v9 uniqueIdentifier];
+  accessory = [(HMAccessoryAccessCode *)self accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  accessory2 = [v6 accessory];
+  uniqueIdentifier2 = [accessory2 uniqueIdentifier];
   v11 = HMFEqualObjects();
 
   if (!v11)
@@ -89,18 +89,18 @@
     goto LABEL_9;
   }
 
-  v12 = [(HMAccessoryAccessCode *)self accessCodeValue];
-  v13 = [v6 accessCodeValue];
+  accessCodeValue = [(HMAccessoryAccessCode *)self accessCodeValue];
+  accessCodeValue2 = [v6 accessCodeValue];
   v14 = HMFEqualObjects();
 
   if (v14)
   {
-    v15 = [(HMAccessoryAccessCode *)self uniqueIdentifier];
-    v16 = [v6 uniqueIdentifier];
-    if (v15 == v16)
+    uniqueIdentifier3 = [(HMAccessoryAccessCode *)self uniqueIdentifier];
+    uniqueIdentifier4 = [v6 uniqueIdentifier];
+    if (uniqueIdentifier3 == uniqueIdentifier4)
     {
-      v19 = [(HMAccessoryAccessCode *)self hasRestrictions];
-      v17 = v19 ^ [v6 hasRestrictions] ^ 1;
+      hasRestrictions = [(HMAccessoryAccessCode *)self hasRestrictions];
+      v17 = hasRestrictions ^ [v6 hasRestrictions] ^ 1;
     }
 
     else
@@ -121,33 +121,33 @@ LABEL_9:
 - (id)createAccessoryAccessCodeValue
 {
   v3 = [HMAccessoryAccessCodeValue alloc];
-  v4 = [(HMAccessoryAccessCode *)self accessory];
-  v5 = [v4 uuid];
-  v6 = [(HMAccessoryAccessCode *)self accessCodeValue];
-  v7 = [(HMAccessoryAccessCode *)self uniqueIdentifier];
-  v8 = [(HMAccessoryAccessCodeValue *)v3 initWithAccessoryUUID:v5 accessCodeValue:v6 uniqueIdentifier:v7 hasRestrictions:[(HMAccessoryAccessCode *)self hasRestrictions]];
+  accessory = [(HMAccessoryAccessCode *)self accessory];
+  uuid = [accessory uuid];
+  accessCodeValue = [(HMAccessoryAccessCode *)self accessCodeValue];
+  uniqueIdentifier = [(HMAccessoryAccessCode *)self uniqueIdentifier];
+  v8 = [(HMAccessoryAccessCodeValue *)v3 initWithAccessoryUUID:uuid accessCodeValue:accessCodeValue uniqueIdentifier:uniqueIdentifier hasRestrictions:[(HMAccessoryAccessCode *)self hasRestrictions]];
 
   return v8;
 }
 
-- (HMAccessoryAccessCode)initWithAccessory:(id)a3 accessCodeValue:(id)a4 uniqueIdentifier:(id)a5 hasRestrictions:(BOOL)a6
+- (HMAccessoryAccessCode)initWithAccessory:(id)accessory accessCodeValue:(id)value uniqueIdentifier:(id)identifier hasRestrictions:(BOOL)restrictions
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  accessoryCopy = accessory;
+  valueCopy = value;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = HMAccessoryAccessCode;
   v14 = [(HMAccessoryAccessCode *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_accessory, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_accessory, accessory);
+    v16 = [valueCopy copy];
     accessCodeValue = v15->_accessCodeValue;
     v15->_accessCodeValue = v16;
 
-    objc_storeStrong(&v15->_uniqueIdentifier, a5);
-    v15->_hasRestrictions = a6;
+    objc_storeStrong(&v15->_uniqueIdentifier, identifier);
+    v15->_hasRestrictions = restrictions;
   }
 
   return v15;
@@ -160,16 +160,16 @@ LABEL_9:
   return NSStringFromClass(v2);
 }
 
-+ (HMAccessoryAccessCode)accessoryAccessCodeWithValue:(id)a3 accessory:(id)a4
++ (HMAccessoryAccessCode)accessoryAccessCodeWithValue:(id)value accessory:(id)accessory
 {
-  v5 = a4;
-  v6 = a3;
+  accessoryCopy = accessory;
+  valueCopy = value;
   v7 = [HMAccessoryAccessCode alloc];
-  v8 = [v6 accessCodeValue];
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v6 hasRestrictions];
+  accessCodeValue = [valueCopy accessCodeValue];
+  uniqueIdentifier = [valueCopy uniqueIdentifier];
+  hasRestrictions = [valueCopy hasRestrictions];
 
-  v11 = [(HMAccessoryAccessCode *)v7 initWithAccessory:v5 accessCodeValue:v8 uniqueIdentifier:v9 hasRestrictions:v10];
+  v11 = [(HMAccessoryAccessCode *)v7 initWithAccessory:accessoryCopy accessCodeValue:accessCodeValue uniqueIdentifier:uniqueIdentifier hasRestrictions:hasRestrictions];
 
   return v11;
 }

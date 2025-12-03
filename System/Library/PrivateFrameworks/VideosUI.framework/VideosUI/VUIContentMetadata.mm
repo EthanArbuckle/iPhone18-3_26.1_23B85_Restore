@@ -15,8 +15,8 @@
 - (NSString)artworkURLFormat;
 - (NSString)previewFrameURLFormat;
 - (NSString)showArtworkURLFormat;
-- (VUIContentMetadata)initWithDictionary:(id)a3;
-- (VUIContentMetadata)initWithTitle:(id)a3 showTitle:(id)a4 seasonTitle:(id)a5 seasonNumber:(id)a6 episodeNumber:(id)a7 artworkURL:(id)a8;
+- (VUIContentMetadata)initWithDictionary:(id)dictionary;
+- (VUIContentMetadata)initWithTitle:(id)title showTitle:(id)showTitle seasonTitle:(id)seasonTitle seasonNumber:(id)number episodeNumber:(id)episodeNumber artworkURL:(id)l;
 - (VUIUpsellOnExitPolicy)upsellOnExitPolicy;
 - (id)backingDictionary;
 - (unint64_t)contentType;
@@ -52,18 +52,18 @@ void __36__VUIContentMetadata_validMediaTags__block_invoke()
   validMediaTags__validMediaTags = v0;
 }
 
-- (VUIContentMetadata)initWithDictionary:(id)a3
+- (VUIContentMetadata)initWithDictionary:(id)dictionary
 {
   v13[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = VUIContentMetadata;
   v5 = [(VUIContentMetadata *)&v11 init];
   if (v5)
   {
-    if ([v4 count])
+    if ([dictionaryCopy count])
     {
-      v6 = [v4 copy];
+      v6 = [dictionaryCopy copy];
       metadataDictionary = v5->_metadataDictionary;
       v5->_metadataDictionary = v6;
     }
@@ -84,26 +84,26 @@ void __36__VUIContentMetadata_validMediaTags__block_invoke()
   return v5;
 }
 
-- (VUIContentMetadata)initWithTitle:(id)a3 showTitle:(id)a4 seasonTitle:(id)a5 seasonNumber:(id)a6 episodeNumber:(id)a7 artworkURL:(id)a8
+- (VUIContentMetadata)initWithTitle:(id)title showTitle:(id)showTitle seasonTitle:(id)seasonTitle seasonNumber:(id)number episodeNumber:(id)episodeNumber artworkURL:(id)l
 {
   v14 = MEMORY[0x1E695DF90];
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v14 dictionary];
-  [v21 vui_setObjectIfNotNil:v20 forKey:@"title"];
+  lCopy = l;
+  episodeNumberCopy = episodeNumber;
+  numberCopy = number;
+  seasonTitleCopy = seasonTitle;
+  showTitleCopy = showTitle;
+  titleCopy = title;
+  dictionary = [v14 dictionary];
+  [dictionary vui_setObjectIfNotNil:titleCopy forKey:@"title"];
 
-  [v21 vui_setObjectIfNotNil:v19 forKey:@"showTitle"];
-  [v21 vui_setObjectIfNotNil:v18 forKey:@"seasonTitle"];
+  [dictionary vui_setObjectIfNotNil:showTitleCopy forKey:@"showTitle"];
+  [dictionary vui_setObjectIfNotNil:seasonTitleCopy forKey:@"seasonTitle"];
 
-  [v21 vui_setObjectIfNotNil:v17 forKey:@"seasonNumber"];
-  [v21 vui_setObjectIfNotNil:v16 forKey:@"episodeNumber"];
+  [dictionary vui_setObjectIfNotNil:numberCopy forKey:@"seasonNumber"];
+  [dictionary vui_setObjectIfNotNil:episodeNumberCopy forKey:@"episodeNumber"];
 
-  [v21 vui_setObjectIfNotNil:v15 forKey:@"artwork"];
-  v22 = [(VUIContentMetadata *)self initWithDictionary:v21];
+  [dictionary vui_setObjectIfNotNil:lCopy forKey:@"artwork"];
+  v22 = [(VUIContentMetadata *)self initWithDictionary:dictionary];
 
   return v22;
 }
@@ -122,15 +122,15 @@ void __36__VUIContentMetadata_validMediaTags__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (NSString)artworkURLFormat
@@ -159,13 +159,13 @@ void __36__VUIContentMetadata_validMediaTags__block_invoke()
 
 - (NSNumber)artworkAspectRatio
 {
-  v3 = [(VUIContentMetadata *)self artworkWidth];
-  v4 = [(VUIContentMetadata *)self artworkHeight];
-  v5 = v4;
+  artworkWidth = [(VUIContentMetadata *)self artworkWidth];
+  artworkHeight = [(VUIContentMetadata *)self artworkHeight];
+  v5 = artworkHeight;
   v6 = 0;
-  if (v3 && v4)
+  if (artworkWidth && artworkHeight)
   {
-    [v4 doubleValue];
+    [artworkHeight doubleValue];
     if (v7 <= 0.0)
     {
       v6 = 0;
@@ -174,7 +174,7 @@ void __36__VUIContentMetadata_validMediaTags__block_invoke()
     else
     {
       v8 = MEMORY[0x1E696AD98];
-      [v3 doubleValue];
+      [artworkWidth doubleValue];
       v10 = v9;
       [v5 doubleValue];
       v6 = [v8 numberWithDouble:v10 / v11];
@@ -302,21 +302,21 @@ void __36__VUIContentMetadata_validMediaTags__block_invoke()
 - (NSNumber)videoResolutionClass
 {
   v2 = [(NSDictionary *)self->_metadataDictionary vui_stringForKey:@"videoResolutionClass"];
-  v3 = [v2 lowercaseString];
+  lowercaseString = [v2 lowercaseString];
 
-  if ([v3 isEqualToString:@"4k"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"uhd"))
+  if ([lowercaseString isEqualToString:@"4k"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"uhd"))
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"hd"])
+  else if ([lowercaseString isEqualToString:@"hd"])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"sd"];
+    v4 = [lowercaseString isEqualToString:@"sd"];
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
@@ -327,26 +327,26 @@ void __36__VUIContentMetadata_validMediaTags__block_invoke()
 - (NSNumber)videoDynamicRange
 {
   v2 = [(NSDictionary *)self->_metadataDictionary vui_stringForKey:@"videoDynamicRange"];
-  v3 = [v2 lowercaseString];
+  lowercaseString = [v2 lowercaseString];
 
-  if ([v3 isEqualToString:@"dolbyvisionhdr"])
+  if ([lowercaseString isEqualToString:@"dolbyvisionhdr"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"hdr"])
+  else if ([lowercaseString isEqualToString:@"hdr"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"hdr10plus"])
+  else if ([lowercaseString isEqualToString:@"hdr10plus"])
   {
     v4 = 4;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"sdr"];
+    v4 = [lowercaseString isEqualToString:@"sdr"];
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:v4];

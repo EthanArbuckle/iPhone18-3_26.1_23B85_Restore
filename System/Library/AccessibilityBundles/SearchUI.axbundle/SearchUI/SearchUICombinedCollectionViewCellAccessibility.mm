@@ -1,16 +1,16 @@
 @interface SearchUICombinedCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SearchUICombinedCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUICardSectionView"];
-  [v3 validateClass:@"SearchUICircleButtonItemView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUICircleButtonItemView"];
 }
 
 - (id)accessibilityLabel
@@ -19,24 +19,24 @@
 
   if (v3)
   {
-    v4 = UIAXStringForAllChildren();
+    accessibilityLabel = UIAXStringForAllChildren();
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SearchUICombinedCollectionViewCellAccessibility;
-    v4 = [(SearchUICombinedCollectionViewCellAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel = [(SearchUICombinedCollectionViewCellAccessibility *)&v6 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v6.receiver = self;
   v6.super_class = SearchUICombinedCollectionViewCellAccessibility;
-  v3 = [(SearchUICombinedCollectionViewCellAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(SearchUICombinedCollectionViewCellAccessibility *)&v6 accessibilityTraits];
   if ([(SearchUICombinedCollectionViewCellAccessibility *)self safeBoolForKey:@"isSelected"])
   {
     v4 = ~*MEMORY[0x29EDC7FC0];
@@ -47,7 +47,7 @@
     v4 = -1;
   }
 
-  return v4 & v3;
+  return v4 & accessibilityTraits;
 }
 
 uint64_t __72__SearchUICombinedCollectionViewCellAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)

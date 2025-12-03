@@ -1,45 +1,45 @@
 @interface CBL2CAPChannel
-- (BOOL)sendMsg:(int)a3 args:(id)a4 withReply:(id)a5;
-- (CBL2CAPChannel)initWithPeer:(id)a3 manager:(id)a4 info:(id)a5;
+- (BOOL)sendMsg:(int)msg args:(id)args withReply:(id)reply;
+- (CBL2CAPChannel)initWithPeer:(id)peer manager:(id)manager info:(id)info;
 - (CBManager)manager;
 - (void)dealloc;
-- (void)handleChannelClosed:(id)a3;
-- (void)handleDataReceived:(id)a3;
+- (void)handleChannelClosed:(id)closed;
+- (void)handleDataReceived:(id)received;
 - (void)managePendingData;
-- (void)readPacketsWithCompletionHandler:(id)a3;
-- (void)sendData:(id)a3 withCompletion:(id)a4;
+- (void)readPacketsWithCompletionHandler:(id)handler;
+- (void)sendData:(id)data withCompletion:(id)completion;
 @end
 
 @implementation CBL2CAPChannel
 
-- (CBL2CAPChannel)initWithPeer:(id)a3 manager:(id)a4 info:(id)a5
+- (CBL2CAPChannel)initWithPeer:(id)peer manager:(id)manager info:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  peerCopy = peer;
+  managerCopy = manager;
+  infoCopy = info;
   v32.receiver = self;
   v32.super_class = CBL2CAPChannel;
   v12 = [(CBL2CAPChannel *)&v32 init];
   if (v12)
   {
-    v13 = [v11 objectForKey:@"kCBMsgArgPSM"];
+    v13 = [infoCopy objectForKey:@"kCBMsgArgPSM"];
     v12->_PSM = [v13 intValue];
 
-    objc_storeStrong(&v12->_peer, a3);
+    objc_storeStrong(&v12->_peer, peer);
     v12->_socketFD = -1;
-    v14 = [v11 objectForKey:@"kCBMsgArgCID"];
+    v14 = [infoCopy objectForKey:@"kCBMsgArgCID"];
     v12->_cid = [v14 intValue];
 
-    v15 = [v11 objectForKey:@"kCBMsgArgOutMTU"];
+    v15 = [infoCopy objectForKey:@"kCBMsgArgOutMTU"];
     v12->_outgoingMTU = [v15 intValue];
 
-    v16 = [v11 objectForKey:@"kCBMsgArgIsIncoming"];
+    v16 = [infoCopy objectForKey:@"kCBMsgArgIsIncoming"];
     v12->_isIncoming = [v16 intValue] != 0;
 
-    v17 = [v11 objectForKey:@"kCBMsgArgMaxQueuedPacketLength"];
+    v17 = [infoCopy objectForKey:@"kCBMsgArgMaxQueuedPacketLength"];
     v12->maxQueuePayloadSize = [v17 intValue];
 
-    objc_storeWeak(&v12->_manager, v10);
+    objc_storeWeak(&v12->_manager, managerCopy);
     if (CBLogInitOnce != -1)
     {
       [CBCharacteristic handleDescriptorsDiscovered:];
@@ -51,11 +51,11 @@
       [CBL2CAPChannel initWithPeer:v18 manager:? info:?];
     }
 
-    v19 = [v11 objectForKeyedSubscript:@"kCBMsgArgSocket"];
+    v19 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgSocket"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v11 objectForKeyedSubscript:@"kCBMsgArgSocket"];
+      v20 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgSocket"];
       v12->_socketFD = [v20 intValue];
 
       v12->_isPacketBased = v12->_socketFD == -1;
@@ -124,34 +124,34 @@ LABEL_14:
     self->_socketFD = -1;
   }
 
-  v4 = [(CBPeer *)self->_peer manager];
-  v5 = [(CBPeer *)self->_peer identifier];
-  [v4 closeL2CAPChannelForPeerUUID:v5 withPsm:{-[CBL2CAPChannel PSM](self, "PSM")}];
+  manager = [(CBPeer *)self->_peer manager];
+  identifier = [(CBPeer *)self->_peer identifier];
+  [manager closeL2CAPChannelForPeerUUID:identifier withPsm:{-[CBL2CAPChannel PSM](self, "PSM")}];
 
   v6.receiver = self;
   v6.super_class = CBL2CAPChannel;
   [(CBL2CAPChannel *)&v6 dealloc];
 }
 
-- (BOOL)sendMsg:(int)a3 args:(id)a4 withReply:(id)a5
+- (BOOL)sendMsg:(int)msg args:(id)args withReply:(id)reply
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  msgCopy = msg;
+  argsCopy = args;
+  replyCopy = reply;
+  if (!argsCopy)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
+    argsCopy = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[CBL2CAPChannel PSM](self, "PSM")}];
-  [v8 setObject:v10 forKeyedSubscript:@"kCBMsgArgPSM"];
+  [argsCopy setObject:v10 forKeyedSubscript:@"kCBMsgArgPSM"];
 
-  v11 = [(CBL2CAPChannel *)self manager];
+  manager = [(CBL2CAPChannel *)self manager];
 
-  if (v11)
+  if (manager)
   {
-    v12 = [(CBL2CAPChannel *)self manager];
-    v13 = [v12 sendMsg:v6 args:v8 withReply:v9];
+    manager2 = [(CBL2CAPChannel *)self manager];
+    v13 = [manager2 sendMsg:msgCopy args:argsCopy withReply:replyCopy];
   }
 
   else
@@ -162,19 +162,19 @@ LABEL_14:
   return v13;
 }
 
-- (void)readPacketsWithCompletionHandler:(id)a3
+- (void)readPacketsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v6 = [WeakRetained getCurrentQueue];
+  getCurrentQueue = [WeakRetained getCurrentQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__CBL2CAPChannel_readPacketsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E811E440;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(getCurrentQueue, v8);
 }
 
 void __51__CBL2CAPChannel_readPacketsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -212,25 +212,25 @@ void __51__CBL2CAPChannel_readPacketsWithCompletionHandler___block_invoke(uint64
   }
 }
 
-- (void)sendData:(id)a3 withCompletion:(id)a4
+- (void)sendData:(id)data withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dataCopy = data;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [CBL2CAPChannel sendData:a2 withCompletion:self];
   }
 
   v9 = objc_opt_new();
-  [v9 setObject:v7 forKeyedSubscript:@"kCBMsgArgData"];
-  v10 = [(CBPeer *)self->_peer identifier];
-  [v9 setObject:v10 forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  [v9 setObject:dataCopy forKeyedSubscript:@"kCBMsgArgData"];
+  identifier = [(CBPeer *)self->_peer identifier];
+  [v9 setObject:identifier forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__CBL2CAPChannel_sendData_withCompletion___block_invoke;
   v13[3] = &unk_1E811CFC8;
-  v11 = v8;
+  v11 = completionCopy;
   v14 = v11;
   if (![(CBL2CAPChannel *)self sendMsg:31 args:v9 withReply:v13])
   {
@@ -289,8 +289,8 @@ LABEL_7:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(NSMutableArray *)*p_incomingPackets reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)*p_incomingPackets reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -306,7 +306,7 @@ LABEL_3:
     {
       if (*v22 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v10 += [*(*(&v21 + 1) + 8 * v13) length];
@@ -319,7 +319,7 @@ LABEL_3:
       v12 = [(NSMutableArray *)*p_incomingPackets count]- v14--;
       if (v9 == ++v13)
       {
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -352,11 +352,11 @@ LABEL_3:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDataReceived:(id)a3
+- (void)handleDataReceived:(id)received
 {
-  v4 = [a3 objectForKey:@"kCBMsgArgData"];
+  v4 = [received objectForKey:@"kCBMsgArgData"];
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v6 = [WeakRetained getCurrentQueue];
+  getCurrentQueue = [WeakRetained getCurrentQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__CBL2CAPChannel_handleDataReceived___block_invoke;
@@ -364,7 +364,7 @@ LABEL_3:
   v8[4] = self;
   v9 = v4;
   v7 = v4;
-  dispatch_async(v6, v8);
+  dispatch_async(getCurrentQueue, v8);
 }
 
 uint64_t __37__CBL2CAPChannel_handleDataReceived___block_invoke(uint64_t a1)
@@ -375,7 +375,7 @@ uint64_t __37__CBL2CAPChannel_handleDataReceived___block_invoke(uint64_t a1)
   return [v2 managePendingData];
 }
 
-- (void)handleChannelClosed:(id)a3
+- (void)handleChannelClosed:(id)closed
 {
   pendingCompletionHandler = self->pendingCompletionHandler;
   if (pendingCompletionHandler)

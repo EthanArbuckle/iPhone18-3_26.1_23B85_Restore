@@ -1,16 +1,16 @@
 @interface VEFrameRateConversionParameters
-- (VEFrameRateConversionParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 interpolationPhase:(id)a6 submissionMode:(int64_t)a7 destinationFrames:(id)a8;
+- (VEFrameRateConversionParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow interpolationPhase:(id)phase submissionMode:(int64_t)mode destinationFrames:(id)frames;
 @end
 
 @implementation VEFrameRateConversionParameters
 
-- (VEFrameRateConversionParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 interpolationPhase:(id)a6 submissionMode:(int64_t)a7 destinationFrames:(id)a8
+- (VEFrameRateConversionParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow interpolationPhase:(id)phase submissionMode:(int64_t)mode destinationFrames:(id)frames
 {
-  v15 = a3;
-  v16 = a4;
-  v27 = a5;
-  v17 = a6;
-  v18 = a8;
+  frameCopy = frame;
+  nextFrameCopy = nextFrame;
+  flowCopy = flow;
+  phaseCopy = phase;
+  framesCopy = frames;
   v28.receiver = self;
   v28.super_class = VEFrameRateConversionParameters;
   v19 = [(VEFrameRateConversionParameters *)&v28 init];
@@ -20,13 +20,13 @@
     goto LABEL_15;
   }
 
-  if (!v15 || !v16)
+  if (!frameCopy || !nextFrameCopy)
   {
     NSLog(&cfstr_FailToToInitia_2.isa);
     goto LABEL_15;
   }
 
-  if (!v17 || !v18 || ![v18 count] || (v20 = objc_msgSend(v17, "count"), v20 != objc_msgSend(v18, "count")))
+  if (!phaseCopy || !framesCopy || ![framesCopy count] || (v20 = objc_msgSend(phaseCopy, "count"), v20 != objc_msgSend(framesCopy, "count")))
   {
     NSLog(&cfstr_FailToToInitia_3.isa);
 LABEL_15:
@@ -34,21 +34,21 @@ LABEL_15:
     goto LABEL_10;
   }
 
-  if (!isSameFormat([v15 buffer], objc_msgSend(v16, "buffer")))
+  if (!isSameFormat([frameCopy buffer], objc_msgSend(nextFrameCopy, "buffer")))
   {
     NSLog(&cfstr_FailToToInitia_4.isa);
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v19->_sourceFrame, a3);
-  objc_storeStrong(&v19->_nextFrame, a4);
-  v21 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v17];
+  objc_storeStrong(&v19->_sourceFrame, frame);
+  objc_storeStrong(&v19->_nextFrame, nextFrame);
+  v21 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:phaseCopy];
   interpolationPhase = v19->_interpolationPhase;
   v19->_interpolationPhase = v21;
 
-  objc_storeStrong(&v19->_opticalFlow, a5);
-  v19->_submissionMode = a7;
-  v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v18];
+  objc_storeStrong(&v19->_opticalFlow, flow);
+  v19->_submissionMode = mode;
+  v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:framesCopy];
   destinationFrames = v19->_destinationFrames;
   v19->_destinationFrames = v23;
 

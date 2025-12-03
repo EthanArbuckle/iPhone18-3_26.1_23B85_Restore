@@ -1,66 +1,66 @@
 @interface SUUIHorizontalLockupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_playAction:(id)a3;
-- (BOOL)_styledImageButtonAction:(id)a3;
-- (BOOL)_toggleButtonAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_playAction:(id)action;
+- (BOOL)_styledImageButtonAction:(id)action;
+- (BOOL)_toggleButtonAction:(id)action;
 - (BOOL)isAccessibilityElement;
-- (BOOL)isAdvertisementView:(id)a3;
+- (BOOL)isAdvertisementView:(id)view;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityFindPlayButton;
 - (id)_accessibilityFindStyledImageButton;
 - (id)_accessibilityFindToggleButton;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilitySupplementaryFooterViews;
-- (id)_accessibilitySupplementaryFooterViewsIncludePlayButton:(BOOL)a3 includeStyledImageButton:(BOOL)a4;
+- (id)_accessibilitySupplementaryFooterViewsIncludePlayButton:(BOOL)button includeStyledImageButton:(BOOL)imageButton;
 - (id)_accessibilitySupplementaryHeaderViews;
 - (id)accessibilityCustomActions;
 - (id)accessibilityElements;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)a3;
+- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)view;
 @end
 
 @implementation SUUIHorizontalLockupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_layout" withType:"SUUIHorizontalLockupLayout"];
-  [v3 validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_viewElementViews" withType:"NSMapTable"];
-  [v3 validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_lockupElement" withType:"SUUILockupViewElement"];
-  [v3 validateClass:@"SUUIHorizontalLockupLayout" hasInstanceMethod:@"columns" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIHorizontalLockupColumn" hasInstanceMethod:@"childViewElements" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIImageView"];
-  [v3 validateClass:@"SUUISectionHeaderView"];
-  [v3 validateClass:@"SUUITextBoxView"];
-  [v3 validateClass:@"SUUIStyledImageButton"];
-  [v3 validateClass:@"SUUIToggleButton"];
-  [v3 validateClass:@"SUUIHorizontalLockupView" hasInstanceMethod:@"_previewMediaURL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIHorizontalLockupView" hasInstanceMethod:@"_resolvePreviewStateAfterTransitionForFlipView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_previewState" withType:"NSInteger"];
-  [v3 validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_previewProgressIndicator" withType:"SUUIPreviewProgressIndicator"];
-  [v3 validateClass:@"SUUIHorizontalLockupView" hasInstanceMethod:@"_previewFrontView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUILockupViewElement" hasInstanceMethod:@"isSelectable" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_layout" withType:"SUUIHorizontalLockupLayout"];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_viewElementViews" withType:"NSMapTable"];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_lockupElement" withType:"SUUILockupViewElement"];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupLayout" hasInstanceMethod:@"columns" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupColumn" hasInstanceMethod:@"childViewElements" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIImageView"];
+  [validationsCopy validateClass:@"SUUISectionHeaderView"];
+  [validationsCopy validateClass:@"SUUITextBoxView"];
+  [validationsCopy validateClass:@"SUUIStyledImageButton"];
+  [validationsCopy validateClass:@"SUUIToggleButton"];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupView" hasInstanceMethod:@"_previewMediaURL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupView" hasInstanceMethod:@"_resolvePreviewStateAfterTransitionForFlipView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_previewState" withType:"NSInteger"];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupView" hasInstanceVariable:@"_previewProgressIndicator" withType:"SUUIPreviewProgressIndicator"];
+  [validationsCopy validateClass:@"SUUIHorizontalLockupView" hasInstanceMethod:@"_previewFrontView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUILockupViewElement" hasInstanceMethod:@"isSelectable" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(SUUIHorizontalLockupViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(SUUIHorizontalLockupViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }
 
-- (BOOL)isAdvertisementView:(id)a3
+- (BOOL)isAdvertisementView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   NSClassFromString(&cfstr_Suuistyledimag.isa);
   v6 = 0;
   if (objc_opt_isKindOfClass())
   {
     v4 = NSProtocolFromString(&cfstr_Suuiadvertisin.isa);
-    v5 = [v3 conformsToProtocol:v4];
+    v5 = [viewCopy conformsToProtocol:v4];
 
     if (v5)
     {
@@ -187,12 +187,12 @@ LABEL_23:
             NSClassFromString(&cfstr_Suuitextboxvie_0.isa);
             if (objc_opt_isKindOfClass())
             {
-              v32 = [MEMORY[0x29EDB8DE8] array];
+              array = [MEMORY[0x29EDB8DE8] array];
               v56[0] = MEMORY[0x29EDCA5F8];
               v56[1] = 3221225472;
               v56[2] = __59__SUUIHorizontalLockupViewAccessibility_accessibilityLabel__block_invoke_3;
               v56[3] = &unk_29F2D8FF0;
-              v21 = v32;
+              v21 = array;
               v57 = v21;
               [v18 accessibilityEnumerateContainerElementsUsingBlock:v56];
             }
@@ -243,8 +243,8 @@ LABEL_24:
                     objc_enumerationMutation(v24);
                   }
 
-                  v30 = [*(*(&v52 + 1) + 8 * v28) accessibilityLabel];
-                  v31 = [v30 stringByReplacingOccurrencesOfString:@"•" withString:{@", "}];
+                  accessibilityLabel = [*(*(&v52 + 1) + 8 * v28) accessibilityLabel];
+                  v31 = [accessibilityLabel stringByReplacingOccurrencesOfString:@"•" withString:{@", "}];
 
                   v38 = v31;
                   v39 = @"__AXStringForVariablesSentinel";
@@ -315,26 +315,26 @@ void __59__SUUIHorizontalLockupViewAccessibility_accessibilityLabel__block_invok
   }
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v26 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilitySupplementaryHeaderViews];
-  v9 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilitySupplementaryFooterViews];
-  if (v8)
+  eventCopy = event;
+  _accessibilitySupplementaryHeaderViews = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilitySupplementaryHeaderViews];
+  _accessibilitySupplementaryFooterViews = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilitySupplementaryFooterViews];
+  if (_accessibilitySupplementaryHeaderViews)
   {
-    v10 = [v8 arrayByAddingObjectsFromArray:v9];
+    v10 = [_accessibilitySupplementaryHeaderViews arrayByAddingObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
-    v9 = v10;
+    _accessibilitySupplementaryFooterViews = v10;
   }
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v9;
+  v11 = _accessibilitySupplementaryFooterViews;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -351,7 +351,7 @@ void __59__SUUIHorizontalLockupViewAccessibility_accessibilityLabel__block_invok
 
         v16 = *(*(&v21 + 1) + 8 * i);
         [(SUUIHorizontalLockupViewAccessibility *)self convertPoint:v16 toView:x, y];
-        v17 = [v16 _accessibilityHitTest:v7 withEvent:?];
+        v17 = [v16 _accessibilityHitTest:eventCopy withEvent:?];
         if ([v17 isAccessibilityElement])
         {
 
@@ -371,7 +371,7 @@ void __59__SUUIHorizontalLockupViewAccessibility_accessibilityLabel__block_invok
 
   v20.receiver = self;
   v20.super_class = SUUIHorizontalLockupViewAccessibility;
-  v17 = [(SUUIHorizontalLockupViewAccessibility *)&v20 _accessibilityHitTest:v7 withEvent:x, y];
+  v17 = [(SUUIHorizontalLockupViewAccessibility *)&v20 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_13:
 
   v18 = *MEMORY[0x29EDCA608];
@@ -382,7 +382,7 @@ LABEL_13:
 - (id)_accessibilitySupplementaryHeaderViews
 {
   v51 = *MEMORY[0x29EDCA608];
-  v37 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v48 = 0;
   v3 = [(SUUIHorizontalLockupViewAccessibility *)self safeValueForKey:@"_layout"];
   v4 = __UIAccessibilitySafeClass();
@@ -465,7 +465,7 @@ LABEL_26:
               NSClassFromString(&v10->isa);
               if ((objc_opt_isKindOfClass() & 1) != 0 && v22)
               {
-                [v37 addObject:v21];
+                [array addObject:v21];
                 [v21 setIsAccessibilityElement:1];
                 v23 = v10;
                 v24 = v9;
@@ -503,7 +503,7 @@ LABEL_26:
 
   v30 = *MEMORY[0x29EDCA608];
 
-  return v37;
+  return array;
 }
 
 - (CGRect)accessibilityFrame
@@ -515,8 +515,8 @@ LABEL_26:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilitySupplementaryFooterViews];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _accessibilitySupplementaryFooterViews = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilitySupplementaryFooterViews];
+  v6 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -528,7 +528,7 @@ LABEL_26:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_accessibilitySupplementaryFooterViews);
         }
 
         [*(*(&v16 + 1) + 8 * v9) bounds];
@@ -537,7 +537,7 @@ LABEL_26:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -552,12 +552,12 @@ LABEL_26:
   return result;
 }
 
-- (id)_accessibilitySupplementaryFooterViewsIncludePlayButton:(BOOL)a3 includeStyledImageButton:(BOOL)a4
+- (id)_accessibilitySupplementaryFooterViewsIncludePlayButton:(BOOL)button includeStyledImageButton:(BOOL)imageButton
 {
-  v36 = a4;
-  v4 = a3;
+  imageButtonCopy = imageButton;
+  buttonCopy = button;
   v49 = *MEMORY[0x29EDCA608];
-  v6 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v46 = 0;
   v7 = [(SUUIHorizontalLockupViewAccessibility *)self safeValueForKey:@"_layout"];
   v8 = __UIAccessibilitySafeClass();
@@ -627,10 +627,10 @@ LABEL_26:
                   }
 
                   [v23 setAccessibilityIdentifier:v25];
-                  if (v36)
+                  if (imageButtonCopy)
                   {
 LABEL_28:
-                    [v6 axSafelyAddObject:v23];
+                    [array axSafelyAddObject:v23];
                   }
                 }
               }
@@ -640,7 +640,7 @@ LABEL_28:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass() & 1) != 0 && ([v23 isAccessibilityElement] & 1) != 0 || (NSClassFromString(&cfstr_Suuiofferview.isa), (objc_opt_isKindOfClass()))
                 {
-                  [v6 addObject:v23];
+                  [array addObject:v23];
                 }
 
                 else
@@ -656,10 +656,10 @@ LABEL_28:
               NSClassFromString(&cfstr_Suuitogglebutt.isa);
               if ((objc_opt_isKindOfClass() & 1) != 0 && [v23 _accessibilityViewIsVisible])
               {
-                [v6 axSafelyAddObject:v23];
+                [array axSafelyAddObject:v23];
               }
 
-              if (v4)
+              if (buttonCopy)
               {
                 NSClassFromString(&cfstr_Suuiplaybutton_0.isa);
                 if (objc_opt_isKindOfClass())
@@ -667,7 +667,7 @@ LABEL_28:
                   if ([v23 _accessibilityViewIsVisible])
                   {
                     [v23 setAccessibilityIdentifier:@"PlayButton"];
-                    [v6 axSafelyAddObject:v23];
+                    [array axSafelyAddObject:v23];
                   }
                 }
 
@@ -676,17 +676,17 @@ LABEL_28:
                   NSClassFromString(&cfstr_Suuiadornedima.isa);
                   if (objc_opt_isKindOfClass())
                   {
-                    v26 = self;
+                    selfCopy = self;
                     v27 = [v23 safeValueForKey:@"_reuseView"];
                     v28 = [v27 safeValueForKey:@"_playButton"];
 
                     if ([v28 _accessibilityViewIsVisible])
                     {
                       [v28 setAccessibilityIdentifier:@"PlayButtonImage"];
-                      [v6 axSafelyAddObject:v28];
+                      [array axSafelyAddObject:v28];
                     }
 
-                    self = v26;
+                    self = selfCopy;
                   }
                 }
               }
@@ -713,13 +713,13 @@ LABEL_28:
     v29 = [(SUUIHorizontalLockupViewAccessibility *)self safeValueForKey:@"_previewProgressIndicator"];
     if (v29)
     {
-      [v6 axSafelyAddObject:v29];
+      [array axSafelyAddObject:v29];
     }
   }
 
   v30 = *MEMORY[0x29EDCA608];
 
-  return v6;
+  return array;
 }
 
 - (id)accessibilityElements
@@ -760,8 +760,8 @@ LABEL_28:
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 accessibilityIdentifier];
-        if ([v8 isEqualToString:@"PlayButton"])
+        accessibilityIdentifier = [v7 accessibilityIdentifier];
+        if ([accessibilityIdentifier isEqualToString:@"PlayButton"])
         {
 
 LABEL_13:
@@ -769,8 +769,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v9 = [v7 accessibilityIdentifier];
-        v10 = [v9 isEqualToString:@"PlayButtonImage"];
+        accessibilityIdentifier2 = [v7 accessibilityIdentifier];
+        v10 = [accessibilityIdentifier2 isEqualToString:@"PlayButtonImage"];
 
         if (v10)
         {
@@ -824,8 +824,8 @@ LABEL_14:
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 accessibilityIdentifier];
-        v9 = [v8 isEqualToString:@"StyledImageButton"];
+        accessibilityIdentifier = [v7 accessibilityIdentifier];
+        v9 = [accessibilityIdentifier isEqualToString:@"StyledImageButton"];
 
         if (v9)
         {
@@ -901,19 +901,19 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_toggleButtonAction:(id)a3
+- (BOOL)_toggleButtonAction:(id)action
 {
-  v3 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindToggleButton];
-  v4 = v3;
-  if (v3)
+  _accessibilityFindToggleButton = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindToggleButton];
+  v4 = _accessibilityFindToggleButton;
+  if (_accessibilityFindToggleButton)
   {
-    v5 = [v3 accessibilityLabel];
+    accessibilityLabel = [_accessibilityFindToggleButton accessibilityLabel];
     v10 = MEMORY[0x29EDCA5F8];
     v11 = v4;
     AXPerformSafeBlock();
     v6 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"activated.toggle");
-    v8 = [v6 stringWithFormat:v7, v5, v10, 3221225472, __61__SUUIHorizontalLockupViewAccessibility__toggleButtonAction___block_invoke, &unk_29F2D8E30];
+    v8 = [v6 stringWithFormat:v7, accessibilityLabel, v10, 3221225472, __61__SUUIHorizontalLockupViewAccessibility__toggleButtonAction___block_invoke, &unk_29F2D8E30];
 
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v8);
   }
@@ -921,88 +921,88 @@ LABEL_11:
   return v4 != 0;
 }
 
-- (BOOL)_styledImageButtonAction:(id)a3
+- (BOOL)_styledImageButtonAction:(id)action
 {
-  v3 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindStyledImageButton];
-  v4 = v3;
-  if (v3)
+  _accessibilityFindStyledImageButton = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindStyledImageButton];
+  v4 = _accessibilityFindStyledImageButton;
+  if (_accessibilityFindStyledImageButton)
   {
-    v5 = [v3 accessibilityActivate];
+    accessibilityActivate = [_accessibilityFindStyledImageButton accessibilityActivate];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityActivate = 0;
   }
 
-  return v5;
+  return accessibilityActivate;
 }
 
-- (BOOL)_playAction:(id)a3
+- (BOOL)_playAction:(id)action
 {
-  v3 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindPlayButton];
-  v4 = v3;
-  if (v3)
+  _accessibilityFindPlayButton = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindPlayButton];
+  v4 = _accessibilityFindPlayButton;
+  if (_accessibilityFindPlayButton)
   {
-    v5 = [v3 accessibilityActivate];
+    accessibilityActivate = [_accessibilityFindPlayButton accessibilityActivate];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityActivate = 0;
   }
 
-  return v5;
+  return accessibilityActivate;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindPlayButton];
-  v5 = v4;
-  if (v4)
+  array = [MEMORY[0x29EDB8DE8] array];
+  _accessibilityFindPlayButton = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindPlayButton];
+  v5 = _accessibilityFindPlayButton;
+  if (_accessibilityFindPlayButton)
   {
-    v6 = [v4 accessibilityLabel];
-    if (!v6)
+    accessibilityLabel = [_accessibilityFindPlayButton accessibilityLabel];
+    if (!accessibilityLabel)
     {
-      v6 = accessibilityLocalizedString(@"play.button");
+      accessibilityLabel = accessibilityLocalizedString(@"play.button");
     }
 
-    v7 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v6 target:self selector:sel__playAction_];
-    [v3 axSafelyAddObject:v7];
+    v7 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:accessibilityLabel target:self selector:sel__playAction_];
+    [array axSafelyAddObject:v7];
   }
 
-  v8 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindStyledImageButton];
-  v9 = v8;
-  if (v8)
+  _accessibilityFindStyledImageButton = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindStyledImageButton];
+  v9 = _accessibilityFindStyledImageButton;
+  if (_accessibilityFindStyledImageButton)
   {
-    v10 = [v8 accessibilityLabel];
-    if (!v10)
+    accessibilityLabel2 = [_accessibilityFindStyledImageButton accessibilityLabel];
+    if (!accessibilityLabel2)
     {
-      v10 = accessibilityLocalizedString(@"more.button");
+      accessibilityLabel2 = accessibilityLocalizedString(@"more.button");
     }
 
     if ([(SUUIHorizontalLockupViewAccessibility *)self isAdvertisementView:v9])
     {
       v11 = accessibilityLocalizedString(@"about.Ad");
 
-      v10 = v11;
+      accessibilityLabel2 = v11;
     }
 
-    v12 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v10 target:self selector:sel__styledImageButtonAction_];
-    [v3 axSafelyAddObject:v12];
+    v12 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:accessibilityLabel2 target:self selector:sel__styledImageButtonAction_];
+    [array axSafelyAddObject:v12];
   }
 
-  v13 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindToggleButton];
-  v14 = v13;
-  if (v13)
+  _accessibilityFindToggleButton = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindToggleButton];
+  v14 = _accessibilityFindToggleButton;
+  if (_accessibilityFindToggleButton)
   {
-    v15 = [v13 accessibilityLabel];
-    v16 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v15 target:self selector:sel__toggleButtonAction_];
-    [v3 axSafelyAddObject:v16];
+    accessibilityLabel3 = [_accessibilityFindToggleButton accessibilityLabel];
+    v16 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:accessibilityLabel3 target:self selector:sel__toggleButtonAction_];
+    [array axSafelyAddObject:v16];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
@@ -1027,15 +1027,15 @@ LABEL_11:
   v13 = 0x2020000000;
   v10.receiver = self;
   v10.super_class = SUUIHorizontalLockupViewAccessibility;
-  v14 = [(SUUIHorizontalLockupViewAccessibility *)&v10 accessibilityTraits];
+  accessibilityTraits = [(SUUIHorizontalLockupViewAccessibility *)&v10 accessibilityTraits];
   v3 = [(SUUIHorizontalLockupViewAccessibility *)self safeValueForKey:@"_lockupElement"];
   v4 = [v3 safeBoolForKey:@"isSelectable"];
 
   if (v4)
   {
-    v5 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindStyledImageButton];
+    _accessibilityFindStyledImageButton = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindStyledImageButton];
 
-    if (!v5)
+    if (!_accessibilityFindStyledImageButton)
     {
       v12[3] |= *MEMORY[0x29EDC7F70];
     }
@@ -1072,11 +1072,11 @@ uint64_t __60__SUUIHorizontalLockupViewAccessibility_accessibilityTraits__block_
 
 - (id)accessibilityValue
 {
-  v2 = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindPlayButton];
-  v3 = [v2 safeValueForKey:@"_indeterminate"];
-  v4 = [v3 BOOLValue];
+  _accessibilityFindPlayButton = [(SUUIHorizontalLockupViewAccessibility *)self _accessibilityFindPlayButton];
+  v3 = [_accessibilityFindPlayButton safeValueForKey:@"_indeterminate"];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = accessibilityLocalizedString(@"indeterminate.playback");
   }
@@ -1089,11 +1089,11 @@ uint64_t __60__SUUIHorizontalLockupViewAccessibility_accessibilityTraits__block_
   return v5;
 }
 
-- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)a3
+- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)view
 {
   v9.receiver = self;
   v9.super_class = SUUIHorizontalLockupViewAccessibility;
-  [(SUUIHorizontalLockupViewAccessibility *)&v9 _resolvePreviewStateAfterTransitionForFlipView:a3];
+  [(SUUIHorizontalLockupViewAccessibility *)&v9 _resolvePreviewStateAfterTransitionForFlipView:view];
   v4 = [(SUUIHorizontalLockupViewAccessibility *)self safeIntegerForKey:@"_previewState"];
   if (v4)
   {

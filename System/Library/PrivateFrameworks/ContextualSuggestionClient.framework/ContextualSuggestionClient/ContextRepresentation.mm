@@ -1,15 +1,15 @@
 @interface ContextRepresentation
 - (_TtC26ContextualSuggestionClient21ContextRepresentation)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ContextRepresentation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ContextRepresentation.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ContextRepresentation.encode(with:)(coderCopy);
 }
 
 - (_TtC26ContextualSuggestionClient21ContextRepresentation)init

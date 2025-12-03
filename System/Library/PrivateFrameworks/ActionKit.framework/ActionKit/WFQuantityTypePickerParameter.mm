@@ -1,14 +1,14 @@
 @interface WFQuantityTypePickerParameter
 - (NSArray)possibleStates;
-- (id)accessoryImageForPossibleState:(id)a3;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)accessoryImageForPossibleState:(id)state;
+- (id)localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation WFQuantityTypePickerParameter
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -27,38 +27,38 @@
 
   v5 = v4;
   _Block_object_dispose(&v21, 8);
-  v6 = [MEMORY[0x277CCD4D8] wf_shortcutsAppHealthStore];
-  v7 = [v4 sharedInstanceForHealthStore:v6];
-  v8 = [v3 value];
-  v9 = [v7 displayTypeForObjectTypeUnifyingBloodPressureTypes:v8];
+  wf_shortcutsAppHealthStore = [MEMORY[0x277CCD4D8] wf_shortcutsAppHealthStore];
+  v7 = [v4 sharedInstanceForHealthStore:wf_shortcutsAppHealthStore];
+  value = [stateCopy value];
+  v9 = [v7 displayTypeForObjectTypeUnifyingBloodPressureTypes:value];
 
   v10 = objc_alloc(MEMORY[0x277D79E20]);
-  v11 = [v9 displayCategory];
-  v12 = [v11 color];
-  v13 = [v10 initWithPlatformColor:v12];
+  displayCategory = [v9 displayCategory];
+  color = [displayCategory color];
+  v13 = [v10 initWithPlatformColor:color];
 
   v14 = objc_alloc(MEMORY[0x277D79FC8]);
-  v15 = [v9 listIcon];
-  v16 = [v14 initWithPlatformImage:v15];
+  listIcon = [v9 listIcon];
+  v16 = [v14 initWithPlatformImage:listIcon];
   v17 = [v16 imageWithRenderingMode:2];
   v18 = [v17 imageWithTintColor:v13];
 
   return v18;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v3 = [a3 value];
-  v4 = [v3 identifier];
+  value = [state value];
+  identifier = [value identifier];
 
-  if (([v4 isEqualToString:*MEMORY[0x277CCC980]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277CCC978]))
+  if (([identifier isEqualToString:*MEMORY[0x277CCC980]] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", *MEMORY[0x277CCC978]))
   {
     v5 = WFLocalizedString(@"Blood Pressure");
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v4];
+    v6 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:identifier];
     if (v6)
     {
       if (objc_opt_respondsToSelector())
@@ -68,14 +68,14 @@
 
       else
       {
-        [WFHealthKitHelper readableSampleTypeIdentifierFromSampleTypeIdentifier:v4];
+        [WFHealthKitHelper readableSampleTypeIdentifierFromSampleTypeIdentifier:identifier];
       }
       v5 = ;
     }
 
     else
     {
-      v7 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:v4];
+      v7 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:identifier];
       if (objc_opt_respondsToSelector())
       {
         [v7 hk_localizedName];
@@ -83,7 +83,7 @@
 
       else
       {
-        [WFHealthKitHelper readableSampleTypeIdentifierFromSampleTypeIdentifier:v4];
+        [WFHealthKitHelper readableSampleTypeIdentifierFromSampleTypeIdentifier:identifier];
       }
       v5 = ;
     }

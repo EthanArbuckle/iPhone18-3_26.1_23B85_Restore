@@ -1,11 +1,11 @@
 @interface CTPNRRequestSentInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTPNRRequestSentInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTPNRRequestSentInfo:(id)info;
 - (CTPNRRequestSentInfo)init;
-- (CTPNRRequestSentInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTPNRRequestSentInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPNRRequestSentInfo
@@ -14,11 +14,11 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", success=%d", -[CTPNRRequestSentInfo success](self, "success")];
-  v4 = [(CTPNRRequestSentInfo *)self token];
-  [v3 appendFormat:@", token=%@", v4];
+  token = [(CTPNRRequestSentInfo *)self token];
+  [v3 appendFormat:@", token=%@", token];
 
-  v5 = [(CTPNRRequestSentInfo *)self timeout];
-  [v3 appendFormat:@", timeout=%@", v5];
+  timeout = [(CTPNRRequestSentInfo *)self timeout];
+  [v3 appendFormat:@", timeout=%@", timeout];
 
   [v3 appendString:@">"];
 
@@ -39,21 +39,21 @@
   return v3;
 }
 
-- (BOOL)isEqualToCTPNRRequestSentInfo:(id)a3
+- (BOOL)isEqualToCTPNRRequestSentInfo:(id)info
 {
-  v8 = a3;
-  if (!v8 || (v9 = -[CTPNRRequestSentInfo success](self, "success"), v9 != [v8 success]))
+  infoCopy = info;
+  if (!infoCopy || (v9 = -[CTPNRRequestSentInfo success](self, "success"), v9 != [infoCopy success]))
   {
     v10 = 0;
     goto LABEL_18;
   }
 
-  v11 = [(CTPNRRequestSentInfo *)self token];
-  if (v11 || ([v8 token], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  token = [(CTPNRRequestSentInfo *)self token];
+  if (token || ([infoCopy token], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(CTPNRRequestSentInfo *)self token];
-    v5 = [v8 token];
-    if (([v4 isEqualToString:v5] & 1) == 0)
+    token2 = [(CTPNRRequestSentInfo *)self token];
+    token3 = [infoCopy token];
+    if (([token2 isEqualToString:token3] & 1) == 0)
     {
 
       v10 = 0;
@@ -68,11 +68,11 @@
     v12 = 0;
   }
 
-  v13 = [(CTPNRRequestSentInfo *)self timeout];
-  if (!v13)
+  timeout = [(CTPNRRequestSentInfo *)self timeout];
+  if (!timeout)
   {
-    v6 = [v8 timeout];
-    if (!v6)
+    timeout2 = [infoCopy timeout];
+    if (!timeout2)
     {
       v10 = 1;
 LABEL_20:
@@ -86,11 +86,11 @@ LABEL_20:
     }
   }
 
-  v14 = [(CTPNRRequestSentInfo *)self timeout];
-  v15 = [v8 timeout];
-  v10 = v14 == v15;
+  timeout3 = [(CTPNRRequestSentInfo *)self timeout];
+  timeout4 = [infoCopy timeout];
+  v10 = timeout3 == timeout4;
 
-  if (!v13)
+  if (!timeout)
   {
     goto LABEL_20;
   }
@@ -101,7 +101,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (!v11)
+  if (!token)
   {
   }
 
@@ -109,10 +109,10 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -120,47 +120,47 @@ LABEL_18:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTPNRRequestSentInfo *)self isEqualToCTPNRRequestSentInfo:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTPNRRequestSentInfo *)self isEqualToCTPNRRequestSentInfo:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CTPNRRequestSentInfo allocWithZone:a3];
+  v4 = [CTPNRRequestSentInfo allocWithZone:zone];
   [(CTPNRRequestSentInfo *)v4 setSuccess:self->_success];
   [(CTPNRRequestSentInfo *)v4 setToken:self->_token];
   [(CTPNRRequestSentInfo *)v4 setTimeout:self->_timeout];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timeout = self->_timeout;
-  v5 = a3;
-  [v5 encodeObject:timeout forKey:@"timeout"];
-  [v5 encodeObject:self->_token forKey:@"push_token"];
-  [v5 encodeBool:self->_success forKey:@"success"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timeout forKey:@"timeout"];
+  [coderCopy encodeObject:self->_token forKey:@"push_token"];
+  [coderCopy encodeBool:self->_success forKey:@"success"];
 }
 
-- (CTPNRRequestSentInfo)initWithCoder:(id)a3
+- (CTPNRRequestSentInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTPNRRequestSentInfo;
   v5 = [(CTPNRRequestSentInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeout"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeout"];
     timeout = v5->_timeout;
     v5->_timeout = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"push_token"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"push_token"];
     token = v5->_token;
     v5->_token = v8;
 
-    v5->_success = [v4 decodeBoolForKey:@"success"];
+    v5->_success = [coderCopy decodeBoolForKey:@"success"];
   }
 
   return v5;

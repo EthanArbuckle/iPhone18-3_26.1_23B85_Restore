@@ -1,10 +1,10 @@
 @interface VMUSimpleSerializer
 - (id).cxx_construct;
 - (id)copyContiguousData;
-- (unsigned)serializeNullTerminatedBytes:(const char *)a3;
-- (unsigned)serializeString:(id)a3;
+- (unsigned)serializeNullTerminatedBytes:(const char *)bytes;
+- (unsigned)serializeString:(id)string;
 - (void)dealloc;
-- (void)serialize64:(unint64_t)a3;
+- (void)serialize64:(unint64_t)serialize64;
 @end
 
 @implementation VMUSimpleSerializer
@@ -30,41 +30,41 @@
   [(VMUSimpleSerializer *)&v5 dealloc];
 }
 
-- (void)serialize64:(unint64_t)a3
+- (void)serialize64:(unint64_t)serialize64
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v4[0] = __ROR8__(a3, 32);
+  v4[0] = __ROR8__(serialize64, 32);
   self->super._intRegion = _appendToBuffer(self->super._intRegion, &self->super._intRegCapacity, &self->super._cursor, v4, 8uLL);
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)serializeString:(id)a3
+- (unsigned)serializeString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_autoreleasePoolPush();
-  LODWORD(self) = -[VMUSimpleSerializer serializeNullTerminatedBytes:](self, "serializeNullTerminatedBytes:", [v4 UTF8String]);
+  LODWORD(self) = -[VMUSimpleSerializer serializeNullTerminatedBytes:](self, "serializeNullTerminatedBytes:", [stringCopy UTF8String]);
   objc_autoreleasePoolPop(v5);
 
   return self;
 }
 
-- (unsigned)serializeNullTerminatedBytes:(const char *)a3
+- (unsigned)serializeNullTerminatedBytes:(const char *)bytes
 {
   LODWORD(v4) = -1;
   __src = -1;
-  if (a3)
+  if (bytes)
   {
-    v16 = a3;
-    v6 = std::__hash_table<std::__hash_value_type<char const*,unsigned int>,std::__unordered_map_hasher<char const*,std::__hash_value_type<char const*,unsigned int>,cstring_callbacks,cstring_callbacks,true>,std::__unordered_map_equal<char const*,std::__hash_value_type<char const*,unsigned int>,cstring_callbacks,cstring_callbacks,true>,std::allocator<std::__hash_value_type<char const*,unsigned int>>>::__emplace_unique_key_args<char const*,char const*,unsigned int &>(&self->_internMap.__table_.__bucket_list_.__ptr_, &v16);
+    bytesCopy = bytes;
+    v6 = std::__hash_table<std::__hash_value_type<char const*,unsigned int>,std::__unordered_map_hasher<char const*,std::__hash_value_type<char const*,unsigned int>,cstring_callbacks,cstring_callbacks,true>,std::__unordered_map_equal<char const*,std::__hash_value_type<char const*,unsigned int>,cstring_callbacks,cstring_callbacks,true>,std::allocator<std::__hash_value_type<char const*,unsigned int>>>::__emplace_unique_key_args<char const*,char const*,unsigned int &>(&self->_internMap.__table_.__bucket_list_.__ptr_, &bytesCopy);
     v7 = v6;
     if (v8)
     {
       __src = self->_internCursor;
       v4 = __src;
-      v9 = strlen(a3);
-      v10 = _appendToBuffer(self->super._stringRegion, &self->super._stringRegCapacity, &self->_internCursor, a3, (v9 + 1));
+      v9 = strlen(bytes);
+      v10 = _appendToBuffer(self->super._stringRegion, &self->super._stringRegCapacity, &self->_internCursor, bytes, (v9 + 1));
       v11 = &v10[v4];
-      if (strcmp(&v10[v4], a3))
+      if (strcmp(&v10[v4], bytes))
       {
         [VMUSimpleSerializer serializeNullTerminatedBytes:];
       }

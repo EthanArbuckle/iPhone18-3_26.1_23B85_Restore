@@ -3,25 +3,25 @@
 + (id)_newFlickerAnimation;
 + (id)_newScaleAnimation;
 - (CGRect)superviewBounds;
-- (PBUIBokehWallpaperCircle)initWithSuperviewBounds:(CGRect)a3 color:(int64_t)a4;
+- (PBUIBokehWallpaperCircle)initWithSuperviewBounds:(CGRect)bounds color:(int64_t)color;
 - (void)_pauseAnimations;
 - (void)_resumeAnimations;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)configureAnimationsWithPhase:(double)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)configureAnimationsWithPhase:(double)phase;
 - (void)randomize;
-- (void)setAnimationsEnabled:(BOOL)a3;
-- (void)setColor:(int64_t)a3;
-- (void)updatePositionWithTime:(double)a3 dx:(double)a4 dy:(double)a5 lockScreen:(BOOL)a6;
+- (void)setAnimationsEnabled:(BOOL)enabled;
+- (void)setColor:(int64_t)color;
+- (void)updatePositionWithTime:(double)time dx:(double)dx dy:(double)dy lockScreen:(BOOL)screen;
 @end
 
 @implementation PBUIBokehWallpaperCircle
 
-- (PBUIBokehWallpaperCircle)initWithSuperviewBounds:(CGRect)a3 color:(int64_t)a4
+- (PBUIBokehWallpaperCircle)initWithSuperviewBounds:(CGRect)bounds color:(int64_t)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v12.receiver = self;
   v12.super_class = PBUIBokehWallpaperCircle;
   v9 = [(PBUIBokehWallpaperCircle *)&v12 init];
@@ -32,7 +32,7 @@
     v9->_superviewBounds.origin.y = y;
     v9->_superviewBounds.size.width = width;
     v9->_superviewBounds.size.height = height;
-    v9->_color = a4;
+    v9->_color = color;
     [(PBUIBokehWallpaperCircle *)v9 randomize];
   }
 
@@ -44,12 +44,12 @@
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   [(PBUIBokehWallpaperCircle *)self setOpacity:0.0];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = ((vcvts_n_f32_s32(rand(), 0x1FuLL) * 130.0) + 40.0);
   v6 = 1.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = 1.5;
   }
@@ -84,19 +84,19 @@
   [v19 commit];
 }
 
-- (void)updatePositionWithTime:(double)a3 dx:(double)a4 dy:(double)a5 lockScreen:(BOOL)a6
+- (void)updatePositionWithTime:(double)time dx:(double)dx dy:(double)dy lockScreen:(BOOL)screen
 {
-  v6 = a6;
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  screenCopy = screen;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v13 = 35.0;
-  if (v6)
+  if (screenCopy)
   {
     v13 = 140.0;
   }
 
-  if (v12 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v14 = v13 * 1.5;
   }
@@ -108,28 +108,28 @@
 
   [(PBUIBokehWallpaperCircle *)self position];
   speed = self->_speed;
-  v17 = v16 + (self->_dxdt + speed * a4 * v14) * 60.0 * a3;
-  v19 = v18 + (self->_dydt + -(a5 * speed) * v14) * 60.0 * a3;
+  v17 = v16 + (self->_dxdt + speed * dx * v14) * 60.0 * time;
+  v19 = v18 + (self->_dydt + -(dy * speed) * v14) * 60.0 * time;
 
   [(PBUIBokehWallpaperCircle *)self setPosition:v17, v19];
 }
 
-- (void)setColor:(int64_t)a3
+- (void)setColor:(int64_t)color
 {
-  self->_color = a3;
-  v4 = [PBUIBokehColorArbiter randomCircleColorForBokehColor:a3];
-  v5 = [v4 cgColor];
+  self->_color = color;
+  v4 = [PBUIBokehColorArbiter randomCircleColorForBokehColor:color];
+  cgColor = [v4 cgColor];
 
-  [(PBUIBokehWallpaperCircle *)self setContentsMultiplyColor:v5];
+  [(PBUIBokehWallpaperCircle *)self setContentsMultiplyColor:cgColor];
 }
 
-- (void)configureAnimationsWithPhase:(double)a3
+- (void)configureAnimationsWithPhase:(double)phase
 {
   [(PBUIBokehWallpaperCircle *)self removeAllAnimations];
   v8 = +[PBUIBokehWallpaperCircle _newFadeAnimation];
   [v8 setDelegate:self];
   [v8 setKeyPath:@"opacity"];
-  [v8 setTimeOffset:a3];
+  [v8 setTimeOffset:phase];
   [(PBUIBokehWallpaperCircle *)self addAnimation:v8 forKey:@"fade"];
   v5 = +[PBUIBokehWallpaperCircle _newFlickerAnimation];
   [v5 setKeyPath:@"opacity"];
@@ -145,13 +145,13 @@
   }
 }
 
-- (void)setAnimationsEnabled:(BOOL)a3
+- (void)setAnimationsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(PBUIBokehWallpaperCircle *)self speed];
-  if ((v5 != 0.0) != v3)
+  if ((v5 != 0.0) != enabledCopy)
   {
-    if (v3)
+    if (enabledCopy)
     {
 
       [(PBUIBokehWallpaperCircle *)self _resumeAnimations];
@@ -193,9 +193,9 @@
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
     [(PBUIBokehWallpaperCircle *)self randomize];
   }

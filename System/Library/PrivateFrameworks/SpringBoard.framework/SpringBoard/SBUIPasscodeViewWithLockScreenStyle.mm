@@ -1,62 +1,62 @@
 @interface SBUIPasscodeViewWithLockScreenStyle
-- (SBUIPasscodeViewWithLockScreenStyle)initWithFrame:(CGRect)a3 includeBlur:(BOOL)a4 passcodeViewGenerator:(id)a5;
+- (SBUIPasscodeViewWithLockScreenStyle)initWithFrame:(CGRect)frame includeBlur:(BOOL)blur passcodeViewGenerator:(id)generator;
 - (void)layoutSubviews;
-- (void)setBlurEnabled:(BOOL)a3;
+- (void)setBlurEnabled:(BOOL)enabled;
 @end
 
 @implementation SBUIPasscodeViewWithLockScreenStyle
 
-- (SBUIPasscodeViewWithLockScreenStyle)initWithFrame:(CGRect)a3 includeBlur:(BOOL)a4 passcodeViewGenerator:(id)a5
+- (SBUIPasscodeViewWithLockScreenStyle)initWithFrame:(CGRect)frame includeBlur:(BOOL)blur passcodeViewGenerator:(id)generator
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  blurCopy = blur;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  generatorCopy = generator;
   v27.receiver = self;
   v27.super_class = SBUIPasscodeViewWithLockScreenStyle;
-  v12 = [(SBUIPasscodeViewWithLockScreenStyle *)&v27 initWithFrame:x, y, width, height];
-  if (v12)
+  height = [(SBUIPasscodeViewWithLockScreenStyle *)&v27 initWithFrame:x, y, width, height];
+  if (height)
   {
-    if (v5)
+    if (blurCopy)
     {
       v13 = objc_alloc(MEMORY[0x277D67998]);
-      [(SBUIPasscodeViewWithLockScreenStyle *)v12 bounds];
+      [(SBUIPasscodeViewWithLockScreenStyle *)height bounds];
       v14 = [v13 initWithFrame:?];
-      backgroundView = v12->_backgroundView;
-      v12->_backgroundView = v14;
+      backgroundView = height->_backgroundView;
+      height->_backgroundView = v14;
 
-      [(SBUIBackgroundView *)v12->_backgroundView setAutoresizingMask:18];
-      [(SBUIBackgroundView *)v12->_backgroundView setBackgroundStyle:3];
-      [(SBUIPasscodeViewWithLockScreenStyle *)v12 addSubview:v12->_backgroundView];
-      [(SBUIPasscodeViewWithLockScreenStyle *)v12 sendSubviewToBack:v12->_backgroundView];
+      [(SBUIBackgroundView *)height->_backgroundView setAutoresizingMask:18];
+      [(SBUIBackgroundView *)height->_backgroundView setBackgroundStyle:3];
+      [(SBUIPasscodeViewWithLockScreenStyle *)height addSubview:height->_backgroundView];
+      [(SBUIPasscodeViewWithLockScreenStyle *)height sendSubviewToBack:height->_backgroundView];
     }
 
     v16 = [MEMORY[0x277D75DF0] settingsForPrivateStyle:2030];
-    v17 = [v16 combinedTintColor];
+    combinedTintColor = [v16 combinedTintColor];
 
-    v18 = v11[2](v11);
-    passcodeView = v12->_passcodeView;
-    v12->_passcodeView = v18;
+    v18 = generatorCopy[2](generatorCopy);
+    passcodeView = height->_passcodeView;
+    height->_passcodeView = v18;
 
-    v20 = v12->_passcodeView;
-    [v17 alphaComponent];
-    v21 = [v17 colorWithAlphaComponent:?];
+    v20 = height->_passcodeView;
+    [combinedTintColor alphaComponent];
+    v21 = [combinedTintColor colorWithAlphaComponent:?];
     [(SBUIPasscodeLockView *)v20 setCustomBackgroundColor:v21];
 
-    [(SBUIPasscodeLockView *)v12->_passcodeView setShowsEmergencyCallButton:0];
-    [(SBUIPasscodeViewWithLockScreenStyle *)v12 addSubview:v12->_passcodeView];
+    [(SBUIPasscodeLockView *)height->_passcodeView setShowsEmergencyCallButton:0];
+    [(SBUIPasscodeViewWithLockScreenStyle *)height addSubview:height->_passcodeView];
     v22 = objc_alloc(MEMORY[0x277D65E00]);
-    v23 = [(SBUIBackgroundView *)v12->_backgroundView backdropView];
-    v24 = [v22 initWithBackdropView:v23];
+    backdropView = [(SBUIBackgroundView *)height->_backgroundView backdropView];
+    v24 = [v22 initWithBackdropView:backdropView];
 
-    [(SBUIPasscodeLockView *)v12->_passcodeView setBackgroundLegibilitySettingsProvider:v24];
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [(SBUIPasscodeViewWithLockScreenStyle *)v12 setBackgroundColor:v25];
+    [(SBUIPasscodeLockView *)height->_passcodeView setBackgroundLegibilitySettingsProvider:v24];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBUIPasscodeViewWithLockScreenStyle *)height setBackgroundColor:clearColor];
   }
 
-  return v12;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -72,10 +72,10 @@
   [(SBUIBackgroundView *)backgroundView setFrame:v4, v6, v8, v10];
 }
 
-- (void)setBlurEnabled:(BOOL)a3
+- (void)setBlurEnabled:(BOOL)enabled
 {
   backgroundView = self->_backgroundView;
-  if (a3)
+  if (enabled)
   {
     v4 = 3;
   }

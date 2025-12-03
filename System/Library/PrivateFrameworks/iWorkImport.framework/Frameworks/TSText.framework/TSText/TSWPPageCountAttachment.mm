@@ -1,15 +1,15 @@
 @interface TSWPPageCountAttachment
-- (id)stringWithPageNumber:(unint64_t)a3 pageCount:(unint64_t)a4 charIndex:(unint64_t)a5;
-- (void)saveToArchiver:(id)a3;
+- (id)stringWithPageNumber:(unint64_t)number pageCount:(unint64_t)count charIndex:(unint64_t)index;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPPageCountAttachment
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DD0A2C, off_2812DC408[134]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276DD0A2C, off_2812DC408[134]);
 
   *(v6 + 16) |= 4u;
   v7 = *(v6 + 40);
@@ -27,16 +27,16 @@
 
   v9.receiver = self;
   v9.super_class = TSWPPageCountAttachment;
-  [(TSWPNumberAttachment *)&v9 saveToArchiver:v4];
+  [(TSWPNumberAttachment *)&v9 saveToArchiver:archiverCopy];
   *(v7 + 16) |= 2u;
   *(v7 + 32) = 1;
 }
 
-- (id)stringWithPageNumber:(unint64_t)a3 pageCount:(unint64_t)a4 charIndex:(unint64_t)a5
+- (id)stringWithPageNumber:(unint64_t)number pageCount:(unint64_t)count charIndex:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = TSWPPageCountAttachment;
-  v5 = [(TSWPNumberAttachment *)&v7 stringWithNumber:a4];
+  v5 = [(TSWPNumberAttachment *)&v7 stringWithNumber:count];
 
   return v5;
 }

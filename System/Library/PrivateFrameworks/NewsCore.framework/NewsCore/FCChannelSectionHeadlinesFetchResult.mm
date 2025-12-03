@@ -1,6 +1,6 @@
 @interface FCChannelSectionHeadlinesFetchResult
 - (FCChannelSectionHeadlinesFetchResult)init;
-- (FCChannelSectionHeadlinesFetchResult)initWithChannel:(id)a3 sectionHeadlinesGroups:(id)a4;
+- (FCChannelSectionHeadlinesFetchResult)initWithChannel:(id)channel sectionHeadlinesGroups:(id)groups;
 @end
 
 @implementation FCChannelSectionHeadlinesFetchResult
@@ -31,20 +31,20 @@
   objc_exception_throw(v6);
 }
 
-- (FCChannelSectionHeadlinesFetchResult)initWithChannel:(id)a3 sectionHeadlinesGroups:(id)a4
+- (FCChannelSectionHeadlinesFetchResult)initWithChannel:(id)channel sectionHeadlinesGroups:(id)groups
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  groupsCopy = groups;
   v14.receiver = self;
   v14.super_class = FCChannelSectionHeadlinesFetchResult;
   v8 = [(FCChannelSectionHeadlinesFetchResult *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [channelCopy copy];
     channel = v8->_channel;
     v8->_channel = v9;
 
-    v11 = [v7 copy];
+    v11 = [groupsCopy copy];
     sectionHeadlinesGroups = v8->_sectionHeadlinesGroups;
     v8->_sectionHeadlinesGroups = v11;
   }

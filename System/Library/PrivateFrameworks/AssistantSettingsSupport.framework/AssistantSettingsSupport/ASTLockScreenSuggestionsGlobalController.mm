@@ -1,21 +1,21 @@
 @interface ASTLockScreenSuggestionsGlobalController
-- (ASTLockScreenSuggestionsGlobalController)initWithOnChangeCallback:(id)a3;
-- (id)isLockScreenSuggestionEnabled:(id)a3;
+- (ASTLockScreenSuggestionsGlobalController)initWithOnChangeCallback:(id)callback;
+- (id)isLockScreenSuggestionEnabled:(id)enabled;
 - (id)specifier;
-- (void)setLockScreenSuggestionsEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setLockScreenSuggestionsEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation ASTLockScreenSuggestionsGlobalController
 
-- (ASTLockScreenSuggestionsGlobalController)initWithOnChangeCallback:(id)a3
+- (ASTLockScreenSuggestionsGlobalController)initWithOnChangeCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v9.receiver = self;
   v9.super_class = ASTLockScreenSuggestionsGlobalController;
   v5 = [(ASTLockScreenSuggestionsGlobalController *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(callbackCopy);
     onChangeCallback = v5->_onChangeCallback;
     v5->_onChangeCallback = v6;
   }
@@ -46,7 +46,7 @@
   return v10;
 }
 
-- (id)isLockScreenSuggestionEnabled:(id)a3
+- (id)isLockScreenSuggestionEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = CFPreferencesCopyAppValue(@"LockScreenSuggestionsDisabled", @"com.apple.lockscreen.shared");
@@ -64,19 +64,19 @@
   return [v3 numberWithBool:v6];
 }
 
-- (void)setLockScreenSuggestionsEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setLockScreenSuggestionsEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v7 = a3;
+  enabledCopy = enabled;
   v5 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.lockscreen.shared"];
-  [v5 setBool:objc_msgSend(v7 forKey:{"BOOLValue") ^ 1, @"LockScreenSuggestionsDisabled"}];
+  [v5 setBool:objc_msgSend(enabledCopy forKey:{"BOOLValue") ^ 1, @"LockScreenSuggestionsDisabled"}];
 
   onChangeCallback = self->_onChangeCallback;
   if (onChangeCallback)
   {
-    onChangeCallback[2](onChangeCallback, [v7 BOOLValue]);
+    onChangeCallback[2](onChangeCallback, [enabledCopy BOOLValue]);
   }
 
-  +[AssistantMetrics didToggle:on:](AssistantMetrics, "didToggle:on:", @"Lockscreen", [v7 BOOLValue]);
+  +[AssistantMetrics didToggle:on:](AssistantMetrics, "didToggle:on:", @"Lockscreen", [enabledCopy BOOLValue]);
   notify_post("com.apple.duetexpertd.prefschanged");
 }
 

@@ -1,48 +1,48 @@
 @interface AKToolController
-+ (void)cascadeAnnotations:(id)a3 onPageController:(id)a4 forPaste:(BOOL)a5;
++ (void)cascadeAnnotations:(id)annotations onPageController:(id)controller forPaste:(BOOL)paste;
 - (AKController)controller;
-- (AKToolController)initWithController:(id)a3;
+- (AKToolController)initWithController:(id)controller;
 - (CGPoint)_defaultCenterForNewAnnotation;
-- (CGRect)_centerBounds:(CGRect)result atPoint:(CGPoint)a4;
-- (CGRect)_defaultRectangleForNewAnnotation:(id)a3 centeredAtPoint:(CGPoint)a4;
-- (CGRect)_validatedRect:(CGRect)a3 fitsInVisibleRegionOfOverlayView:(id)a4 ownedByPageController:(id)a5 centeredAtPoint:(CGPoint)a6;
+- (CGRect)_centerBounds:(CGRect)result atPoint:(CGPoint)point;
+- (CGRect)_defaultRectangleForNewAnnotation:(id)annotation centeredAtPoint:(CGPoint)point;
+- (CGRect)_validatedRect:(CGRect)rect fitsInVisibleRegionOfOverlayView:(id)view ownedByPageController:(id)controller centeredAtPoint:(CGPoint)point;
 - (double)_modelBaseScaleFactorForNewAnnotation;
 - (double)_strokeWidthForNewAnnotation;
-- (id)_defaultHeartTypingAttributesWithFillColor:(id)a3;
+- (id)_defaultHeartTypingAttributesWithFillColor:(id)color;
 - (id)_defaultTextBoxTypingAttributes;
 - (id)_defaultTypingAttributes;
 - (id)_strokeColorForNewAnnotation;
-- (id)createAnnotationOfType:(int64_t)a3 centeredAtPoint:(CGPoint)a4;
-- (unint64_t)_arrowStyleForToolTag:(int64_t)a3;
-- (void)_peripheralAvailabilityDidUpdate:(id)a3;
-- (void)_propagateTextColors:(id)a3;
-- (void)_setRectangleToFitTextOnTextAnnotation:(id)a3;
-- (void)addNewAnnotation:(id)a3 onPageController:(id)a4 shouldSelect:(BOOL)a5 shouldCascade:(BOOL)a6;
+- (id)createAnnotationOfType:(int64_t)type centeredAtPoint:(CGPoint)point;
+- (unint64_t)_arrowStyleForToolTag:(int64_t)tag;
+- (void)_peripheralAvailabilityDidUpdate:(id)update;
+- (void)_propagateTextColors:(id)colors;
+- (void)_setRectangleToFitTextOnTextAnnotation:(id)annotation;
+- (void)addNewAnnotation:(id)annotation onPageController:(id)controller shouldSelect:(BOOL)select shouldCascade:(BOOL)cascade;
 - (void)dealloc;
-- (void)performToolActionForSender:(id)a3;
+- (void)performToolActionForSender:(id)sender;
 - (void)resetToDefaultMode;
-- (void)setToolMode:(unint64_t)a3;
-- (void)updateToolSenderState:(id)a3 enabled:(BOOL)a4;
+- (void)setToolMode:(unint64_t)mode;
+- (void)updateToolSenderState:(id)state enabled:(BOOL)enabled;
 @end
 
 @implementation AKToolController
 
-- (AKToolController)initWithController:(id)a3
+- (AKToolController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AKToolController;
   v5 = [(AKToolController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(AKToolController *)v5 setController:v4];
+    [(AKToolController *)v5 setController:controllerCopy];
     v6->_toolMode = -1;
     [(AKToolController *)v6 setToolMode:0];
     if (+[AKController canConnectToStylus])
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 addObserver:v6 selector:sel__peripheralAvailabilityDidUpdate_ name:@"AKPeripheralAvailabilityManagerAvailabilityNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel__peripheralAvailabilityDidUpdate_ name:@"AKPeripheralAvailabilityManagerAvailabilityNotification" object:0];
     }
   }
 
@@ -51,21 +51,21 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AKToolController;
   [(AKToolController *)&v4 dealloc];
 }
 
-- (void)performToolActionForSender:(id)a3
+- (void)performToolActionForSender:(id)sender
 {
-  v17 = a3;
-  v4 = [v17 tag];
-  v5 = [(AKToolController *)self controller];
-  v6 = [v5 delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v6 requestPermissionForController:v5 toPerformActionFromSender:v4])
+  senderCopy = sender;
+  v4 = [senderCopy tag];
+  controller = [(AKToolController *)self controller];
+  delegate = [controller delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate requestPermissionForController:controller toPerformActionFromSender:v4])
   {
     goto LABEL_22;
   }
@@ -76,7 +76,7 @@
     {
       if ([(AKToolController *)self toolMode]!= 1)
       {
-        v7 = self;
+        selfCopy4 = self;
         v8 = 1;
         goto LABEL_21;
       }
@@ -91,16 +91,16 @@
 
       if ([(AKToolController *)self toolMode]!= 2)
       {
-        v7 = self;
+        selfCopy4 = self;
         v8 = 2;
 LABEL_21:
-        [(AKToolController *)v7 setToolMode:v8];
+        [(AKToolController *)selfCopy4 setToolMode:v8];
         goto LABEL_22;
       }
     }
 
 LABEL_15:
-    v7 = self;
+    selfCopy4 = self;
     v8 = 0;
     goto LABEL_21;
   }
@@ -109,7 +109,7 @@ LABEL_15:
   {
     if ([(AKToolController *)self toolMode]!= 4)
     {
-      v7 = self;
+      selfCopy4 = self;
       v8 = 4;
       goto LABEL_21;
     }
@@ -123,32 +123,32 @@ LABEL_15:
   }
 
 LABEL_16:
-  if ([v17 tag] == 764066)
+  if ([senderCopy tag] == 764066)
   {
     goto LABEL_22;
   }
 
   if ((v4 - 764050) <= 7)
   {
-    v9 = [v5 attributeController];
-    v10 = v9;
+    attributeController = [controller attributeController];
+    v10 = attributeController;
     if (v4 == 764050)
     {
-      v11 = [v9 highlightStyle];
+      highlightStyle = [attributeController highlightStyle];
     }
 
     else
     {
-      v11 = [AKUserInterfaceItemHelper highlightAttributeTagFromHighlightToolTag:v4];
+      highlightStyle = [AKUserInterfaceItemHelper highlightAttributeTagFromHighlightToolTag:v4];
     }
 
-    v14 = v11;
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v6 hasHighlightableSelectionForAnnotationController:v5] & 1) == 0)
+    v14 = highlightStyle;
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate hasHighlightableSelectionForAnnotationController:controller] & 1) == 0)
     {
-      v15 = [(AKToolController *)self toolMode];
-      if (v15 != 3 || v4 == 764050)
+      toolMode = [(AKToolController *)self toolMode];
+      if (toolMode != 3 || v4 == 764050)
       {
-        if (v15 == 3)
+        if (toolMode == 3)
         {
           v16 = 0;
         }
@@ -166,7 +166,7 @@ LABEL_16:
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 controller:v5 performActionForMode:-[AKToolController toolMode](self fromSender:"toolMode") withAttribute:v4 onPageAtIndex:{v14, objc_msgSend(v5, "currentPageIndex")}];
+      [delegate controller:controller performActionForMode:-[AKToolController toolMode](self fromSender:"toolMode") withAttribute:v4 onPageAtIndex:{v14, objc_msgSend(controller, "currentPageIndex")}];
     }
 
     goto LABEL_22;
@@ -181,15 +181,15 @@ LABEL_16:
         goto LABEL_22;
       }
 
-      v13 = [v6 undoManagerForAnnotationController:v5];
-      [v13 registerUndoWithTarget:v6 selector:sel_rotateLeft_ object:self];
-      [v6 rotateRight:v5];
+      v13 = [delegate undoManagerForAnnotationController:controller];
+      [v13 registerUndoWithTarget:delegate selector:sel_rotateLeft_ object:self];
+      [delegate rotateRight:controller];
       goto LABEL_54;
     }
 
     if (v4 == 764063)
     {
-      v13 = [v6 undoManagerForAnnotationController:v5];
+      v13 = [delegate undoManagerForAnnotationController:controller];
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
 LABEL_54:
@@ -199,8 +199,8 @@ LABEL_54:
 
       v12 = v13;
 LABEL_47:
-      [v12 registerUndoWithTarget:v6 selector:sel_rotateRight_ object:self];
-      [v6 rotateLeft:v5];
+      [v12 registerUndoWithTarget:delegate selector:sel_rotateRight_ object:self];
+      [delegate rotateLeft:controller];
       goto LABEL_54;
     }
   }
@@ -219,13 +219,13 @@ LABEL_47:
         goto LABEL_22;
       }
 
-      v12 = [v6 undoManagerForAnnotationController:v5];
+      v12 = [delegate undoManagerForAnnotationController:controller];
       v13 = v12;
       goto LABEL_47;
     }
   }
 
-  [v5 setCreationCascadingMultiplier:0];
+  [controller setCreationCascadingMultiplier:0];
   if (v4 != 764060)
   {
     [(AKToolController *)self _defaultCenterForNewAnnotation];
@@ -236,53 +236,53 @@ LABEL_47:
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 controller:v5 performActionForMode:-[AKToolController toolMode](self fromSender:"toolMode") withAttribute:764060 onPageAtIndex:{763000, objc_msgSend(v5, "currentPageIndex")}];
+    [delegate controller:controller performActionForMode:-[AKToolController toolMode](self fromSender:"toolMode") withAttribute:764060 onPageAtIndex:{763000, objc_msgSend(controller, "currentPageIndex")}];
   }
 
 LABEL_22:
 }
 
-- (void)_propagateTextColors:(id)a3
+- (void)_propagateTextColors:(id)colors
 {
-  v7 = a3;
-  v3 = [v7 typingAttributes];
-  v4 = [v3 objectForKeyedSubscript:@"NSColor"];
+  colorsCopy = colors;
+  typingAttributes = [colorsCopy typingAttributes];
+  v4 = [typingAttributes objectForKeyedSubscript:@"NSColor"];
 
   if (v4)
   {
-    v5 = [v7 typingAttributes];
-    v6 = [v5 objectForKeyedSubscript:@"NSColor"];
-    [v7 setForegroundColor:v6];
+    typingAttributes2 = [colorsCopy typingAttributes];
+    v6 = [typingAttributes2 objectForKeyedSubscript:@"NSColor"];
+    [colorsCopy setForegroundColor:v6];
   }
 }
 
-- (id)createAnnotationOfType:(int64_t)a3 centeredAtPoint:(CGPoint)a4
+- (id)createAnnotationOfType:(int64_t)type centeredAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(AKToolController *)self controller];
-  v9 = [v8 attributeController];
+  y = point.y;
+  x = point.x;
+  controller = [(AKToolController *)self controller];
+  attributeController = [controller attributeController];
   [(AKToolController *)self _modelBaseScaleFactorForNewAnnotation];
   v10 = 0;
   v12 = v11;
-  switch(a3)
+  switch(type)
   {
     case 764000:
     case 764001:
       v10 = objc_opt_new();
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       v22 = objc_opt_self();
       v23 = [(AKToolController *)self _defaultFillColorForAnnotationOfClass:v22];
       [v10 setFillColor:v23];
 
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v24 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v24];
+      _strokeColorForNewAnnotation = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation];
 
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
-      if (a3 == 764001)
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
+      if (type == 764001)
       {
         [v10 setCornerRadius:v12 * 20.0];
       }
@@ -291,32 +291,32 @@ LABEL_22:
     case 764002:
     case 764013:
       v10 = objc_opt_new();
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       v37 = objc_opt_self();
       v38 = [(AKToolController *)self _defaultFillColorForAnnotationOfClass:v37];
       [v10 setFillColor:v38];
 
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v39 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v39];
+      _strokeColorForNewAnnotation2 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation2];
 
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
       goto LABEL_12;
     case 764003:
     case 764004:
     case 764005:
       v10 = objc_opt_new();
-      [v10 setArrowHeadStyle:{-[AKToolController _arrowStyleForToolTag:](self, "_arrowStyleForToolTag:", a3)}];
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setArrowHeadStyle:{-[AKToolController _arrowStyleForToolTag:](self, "_arrowStyleForToolTag:", type)}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v13 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v13];
+      _strokeColorForNewAnnotation3 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation3];
 
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
       [(AKToolController *)self _defaultRectangleForNewAnnotation:v10 centeredAtPoint:x, y];
       v14 = v76.origin.x;
       v15 = v76.origin.y;
@@ -373,18 +373,18 @@ LABEL_22:
       v87.size.width = v57;
       v87.size.height = v58;
       [v10 setEndPoint:{v60, CGRectGetMidY(v87)}];
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v61 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v61];
+      _strokeColorForNewAnnotation4 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation4];
 
       v62 = objc_opt_self();
       v63 = [(AKToolController *)self _defaultFillColorForAnnotationOfClass:v62];
       [v10 setFillColor:v63];
 
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
       [v10 setArrowHeadWidth:v12 * 80.0];
       [v10 setArrowLineWidth:v12 * 40.0];
       [v10 setArrowHeadLength:v12 * 40.0];
@@ -401,36 +401,36 @@ LABEL_22:
       v46 = [(AKToolController *)self _defaultFillColorForAnnotationOfClass:v45];
       [v10 setFillColor:v46];
 
-      v47 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v47];
+      _strokeColorForNewAnnotation5 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation5];
 
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v48 = [v8 attributeController];
-      [v10 setDashed:{objc_msgSend(v48, "strokeIsDashed")}];
+      attributeController2 = [controller attributeController];
+      [v10 setDashed:{objc_msgSend(attributeController2, "strokeIsDashed")}];
 
-      v49 = [v8 attributeController];
-      [v10 setBrushStyle:{objc_msgSend(v49, "brushStyle")}];
+      attributeController3 = [controller attributeController];
+      [v10 setBrushStyle:{objc_msgSend(attributeController3, "brushStyle")}];
 
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       [v10 setPointyBitBaseWidthAngle:25.0];
       goto LABEL_13;
     case 764008:
       v10 = objc_opt_new();
       [(AKToolController *)self _defaultRectangleForNewAnnotation:v10 centeredAtPoint:x, y];
       [v10 setRectangle:?];
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       v41 = objc_opt_self();
       v42 = [(AKToolController *)self _defaultFillColorForAnnotationOfClass:v41];
       [v10 setFillColor:v42];
 
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v43 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v43];
+      _strokeColorForNewAnnotation6 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation6];
 
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
       [v10 setPointCount:5];
       [AKStarAnnotationRenderer defaultInnerRadiusForStar:v10];
       [v10 setInnerRadiusFactor:?];
@@ -439,30 +439,30 @@ LABEL_22:
       v10 = objc_opt_new();
       [(AKToolController *)self _defaultRectangleForNewAnnotation:v10 centeredAtPoint:x, y];
       [v10 setRectangle:?];
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       v67 = objc_opt_self();
       v68 = [(AKToolController *)self _defaultFillColorForAnnotationOfClass:v67];
       [v10 setFillColor:v68];
 
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v69 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v69];
+      _strokeColorForNewAnnotation7 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation7];
 
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
       [v10 setPointCount:6];
       goto LABEL_13;
     case 764010:
       v10 = objc_opt_new();
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v25 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v25];
+      _strokeColorForNewAnnotation8 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation8];
 
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
       v26 = objc_opt_self();
       v27 = [(AKToolController *)self _defaultFillColorForAnnotationOfClass:v26];
       [v10 setFillColor:v27];
@@ -471,27 +471,27 @@ LABEL_12:
       [(AKToolController *)self _defaultRectangleForNewAnnotation:v10 centeredAtPoint:x, y];
       [v10 setRectangle:?];
 LABEL_13:
-      v35 = [(AKToolController *)self _defaultTypingAttributes];
-      [v10 setTypingAttributes:v35];
+      _defaultTypingAttributes = [(AKToolController *)self _defaultTypingAttributes];
+      [v10 setTypingAttributes:_defaultTypingAttributes];
       goto LABEL_14;
     case 764011:
       v10 = objc_opt_new();
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      v32 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v32];
+      _strokeColorForNewAnnotation9 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation9];
 
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
       v33 = objc_opt_self();
       v34 = [(AKToolController *)self _defaultFillColorForAnnotationOfClass:v33];
       [v10 setFillColor:v34];
 
       [(AKToolController *)self _defaultRectangleForNewAnnotation:v10 centeredAtPoint:x, y];
       [v10 setRectangle:?];
-      v35 = [v10 fillColor];
-      v36 = [(AKToolController *)self _defaultHeartTypingAttributesWithFillColor:v35];
+      _defaultTypingAttributes = [v10 fillColor];
+      v36 = [(AKToolController *)self _defaultHeartTypingAttributesWithFillColor:_defaultTypingAttributes];
       [v10 setTypingAttributes:v36];
 
 LABEL_14:
@@ -505,15 +505,15 @@ LABEL_14:
       v10 = objc_opt_new();
       [v10 setFillColor:0];
       [v10 setStrokeWidth:0.0];
-      v28 = [v8 attributeController];
-      [v10 setBrushStyle:{objc_msgSend(v28, "brushStyle")}];
+      attributeController4 = [controller attributeController];
+      [v10 setBrushStyle:{objc_msgSend(attributeController4, "brushStyle")}];
 
       [v10 setDashed:0];
-      v29 = [(AKToolController *)self _defaultTextBoxTypingAttributes];
-      [v10 setTypingAttributes:v29];
+      _defaultTextBoxTypingAttributes = [(AKToolController *)self _defaultTextBoxTypingAttributes];
+      [v10 setTypingAttributes:_defaultTextBoxTypingAttributes];
 
-      v30 = [v10 typingAttributes];
-      v31 = [v30 objectForKeyedSubscript:*MEMORY[0x277D740C0]];
+      typingAttributes = [v10 typingAttributes];
+      v31 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D740C0]];
       [v10 setStrokeColor:v31];
 
       [v10 setRectangle:{0.0, 0.0, 100.0, 100.0}];
@@ -522,27 +522,27 @@ LABEL_15:
       goto LABEL_16;
     case 764018:
       v10 = objc_opt_new();
-      [v10 setHasShadow:{objc_msgSend(v9, "hasShadow")}];
+      [v10 setHasShadow:{objc_msgSend(attributeController, "hasShadow")}];
       [(AKToolController *)self _strokeWidthForNewAnnotation];
       [v10 setStrokeWidth:?];
-      [v10 setDashed:{objc_msgSend(v9, "strokeIsDashed")}];
-      [v10 setBrushStyle:{objc_msgSend(v9, "brushStyle")}];
-      v71 = [(AKToolController *)self _strokeColorForNewAnnotation];
-      [v10 setStrokeColor:v71];
+      [v10 setDashed:{objc_msgSend(attributeController, "strokeIsDashed")}];
+      [v10 setBrushStyle:{objc_msgSend(attributeController, "brushStyle")}];
+      _strokeColorForNewAnnotation10 = [(AKToolController *)self _strokeColorForNewAnnotation];
+      [v10 setStrokeColor:_strokeColorForNewAnnotation10];
 
       [(AKToolController *)self _defaultRectangleForNewAnnotation:v10 centeredAtPoint:x, y];
       [v10 setRectangle:?];
       goto LABEL_16;
     case 764019:
-      v64 = [v8 signatureModelController];
-      v65 = [v64 selectedSignature];
+      signatureModelController = [controller signatureModelController];
+      selectedSignature = [signatureModelController selectedSignature];
 
       v10 = objc_opt_new();
-      [v10 setSignature:v65];
+      [v10 setSignature:selectedSignature];
       [(AKToolController *)self _defaultRectangleForNewAnnotation:v10 centeredAtPoint:x, y];
       [v10 setRectangle:?];
-      v66 = [MEMORY[0x277D75348] blackColor];
-      [v10 setStrokeColor:v66];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [v10 setStrokeColor:blackColor];
 
       goto LABEL_17;
     case 764020:
@@ -571,7 +571,7 @@ LABEL_16:
 
       goto LABEL_17;
     default:
-      if (a3 == 764050)
+      if (type == 764050)
       {
         v72 = os_log_create("com.apple.annotationkit", "Tool Controller");
         if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
@@ -580,8 +580,8 @@ LABEL_16:
         }
 
         v10 = objc_opt_new();
-        v73 = [v9 highlightStyle];
-        if ((v73 - 765200) > 6)
+        highlightStyle = [attributeController highlightStyle];
+        if ((highlightStyle - 765200) > 6)
         {
           v21 = 0;
           v74 = 0;
@@ -589,8 +589,8 @@ LABEL_16:
 
         else
         {
-          v74 = qword_23F4D9400[v73 - 765200];
-          v21 = [AKHighlightAppearanceHelper colorForHighlightAttributeWithTag:v73];
+          v74 = qword_23F4D9400[highlightStyle - 765200];
+          v21 = [AKHighlightAppearanceHelper colorForHighlightAttributeWithTag:highlightStyle];
         }
 
         [v10 setColor:v21];
@@ -599,7 +599,7 @@ LABEL_16:
 
       else
       {
-        if (a3 != 764060)
+        if (type != 764060)
         {
           goto LABEL_17;
         }
@@ -607,7 +607,7 @@ LABEL_16:
         v10 = objc_opt_new();
         [(AKToolController *)self _defaultRectangleForNewAnnotation:v10 centeredAtPoint:x, y];
         [v10 setRectangle:?];
-        v21 = +[AKHighlightAppearanceHelper colorForNoteOfHighlightAttributeTag:](AKHighlightAppearanceHelper, "colorForNoteOfHighlightAttributeTag:", [v9 highlightStyle]);
+        v21 = +[AKHighlightAppearanceHelper colorForNoteOfHighlightAttributeTag:](AKHighlightAppearanceHelper, "colorForNoteOfHighlightAttributeTag:", [attributeController highlightStyle]);
         [v10 setFillColor:v21];
       }
 
@@ -617,65 +617,65 @@ LABEL_17:
   }
 }
 
-- (void)addNewAnnotation:(id)a3 onPageController:(id)a4 shouldSelect:(BOOL)a5 shouldCascade:(BOOL)a6
+- (void)addNewAnnotation:(id)annotation onPageController:(id)controller shouldSelect:(BOOL)select shouldCascade:(BOOL)cascade
 {
-  v6 = a6;
-  v32 = a5;
+  cascadeCopy = cascade;
+  selectCopy = select;
   v34[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(AKToolController *)self controller];
-  v12 = v11;
-  if (v10)
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  controller = [(AKToolController *)self controller];
+  v12 = controller;
+  if (controllerCopy)
   {
-    v13 = v10;
+    currentPageController = controllerCopy;
   }
 
   else
   {
-    v13 = [v11 currentPageController];
+    currentPageController = [controller currentPageController];
   }
 
-  v14 = v13;
-  v15 = [v13 pageModelController];
-  v16 = [v12 delegate];
-  v17 = [v12 author];
-  if (v17)
+  v14 = currentPageController;
+  pageModelController = [currentPageController pageModelController];
+  delegate = [v12 delegate];
+  author = [v12 author];
+  if (author)
   {
-    v18 = v17;
-    v19 = [v9 author];
+    v18 = author;
+    author2 = [annotationCopy author];
 
-    if (!v19)
+    if (!author2)
     {
-      v20 = [v12 author];
-      [v9 setAuthor:v20];
+      author3 = [v12 author];
+      [annotationCopy setAuthor:author3];
     }
   }
 
-  v21 = [v9 modificationDate];
+  modificationDate = [annotationCopy modificationDate];
 
-  if (!v21)
+  if (!modificationDate)
   {
-    v22 = [MEMORY[0x277CBEAA8] date];
-    [v9 setModificationDate:v22];
+    date = [MEMORY[0x277CBEAA8] date];
+    [annotationCopy setModificationDate:date];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 controller:v12 shouldPlaceSingleShotAnnotation:v9 onProposedPageModelController:v15])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate controller:v12 shouldPlaceSingleShotAnnotation:annotationCopy onProposedPageModelController:pageModelController])
   {
-    v23 = v15;
+    v23 = pageModelController;
   }
 
   else
   {
     if (objc_opt_respondsToSelector())
     {
-      v33 = v15;
-      [v16 controller:v12 willPlaceSingleShotAnnotation:v9 onProposedPageModelController:&v33];
+      v33 = pageModelController;
+      [delegate controller:v12 willPlaceSingleShotAnnotation:annotationCopy onProposedPageModelController:&v33];
       v23 = v33;
 
-      v24 = [v14 pageModelController];
+      pageModelController2 = [v14 pageModelController];
 
-      if (v24 != v23)
+      if (pageModelController2 != v23)
       {
         v25 = [v12 pageControllerForPageModelController:v23];
 
@@ -685,15 +685,15 @@ LABEL_17:
 
     else
     {
-      v23 = v15;
+      v23 = pageModelController;
     }
 
-    [v9 originalModelBaseScaleFactor];
+    [annotationCopy originalModelBaseScaleFactor];
     if (v26 == 0.0)
     {
       [(AKToolController *)self _modelBaseScaleFactorForNewAnnotation];
-      [v9 setOriginalModelBaseScaleFactor:?];
-      v27 = v6;
+      [annotationCopy setOriginalModelBaseScaleFactor:?];
+      v27 = cascadeCopy;
     }
 
     else
@@ -701,73 +701,73 @@ LABEL_17:
       v27 = 0;
     }
 
-    if (![v9 originalExifOrientation])
+    if (![annotationCopy originalExifOrientation])
     {
-      [v9 setOriginalExifOrientation:{objc_msgSend(v14, "currentModelToScreenExifOrientation")}];
-      [v9 adjustModelToCompensateForOriginalExif];
+      [annotationCopy setOriginalExifOrientation:{objc_msgSend(v14, "currentModelToScreenExifOrientation")}];
+      [annotationCopy adjustModelToCompensateForOriginalExif];
       if (v27)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(AKToolController *)self _setRectangleToFitTextOnTextAnnotation:v9];
+          [(AKToolController *)self _setRectangleToFitTextOnTextAnnotation:annotationCopy];
         }
       }
     }
 
-    if (v6)
+    if (cascadeCopy)
     {
       v28 = objc_opt_class();
-      v34[0] = v9;
+      v34[0] = annotationCopy;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
       [v28 cascadeAnnotations:v29 onPageController:v14 forPaste:0];
     }
 
     v30 = [v23 mutableArrayValueForKey:@"annotations"];
-    [v30 addObject:v9];
-    v31 = [v12 modelController];
-    [v31 deselectAllAnnotations];
+    [v30 addObject:annotationCopy];
+    modelController = [v12 modelController];
+    [modelController deselectAllAnnotations];
 
-    if (v32)
+    if (selectCopy)
     {
       [v12 setCurrentPageIndex:{objc_msgSend(v14, "pageIndex")}];
-      [v23 selectAnnotation:v9 byExtendingSelection:0];
+      [v23 selectAnnotation:annotationCopy byExtendingSelection:0];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v16 controller:v12 didPlaceSingleShotAnnotation:v9 onPageModelController:v23];
+      [delegate controller:v12 didPlaceSingleShotAnnotation:annotationCopy onPageModelController:v23];
     }
   }
 }
 
-+ (void)cascadeAnnotations:(id)a3 onPageController:(id)a4 forPaste:(BOOL)a5
++ (void)cascadeAnnotations:(id)annotations onPageController:(id)controller forPaste:(BOOL)paste
 {
-  v5 = a5;
+  pasteCopy = paste;
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 controller];
-  v10 = v9;
-  if (!v5)
+  annotationsCopy = annotations;
+  controllerCopy = controller;
+  controller = [controllerCopy controller];
+  v10 = controller;
+  if (!pasteCopy)
   {
-    v11 = [v9 lastCreationCascadingPageController];
+    lastCreationCascadingPageController = [controller lastCreationCascadingPageController];
 
-    if (v11 != v8)
+    if (lastCreationCascadingPageController != controllerCopy)
     {
-      [v10 setLastCreationCascadingPageController:v8];
+      [v10 setLastCreationCascadingPageController:controllerCopy];
       [v10 setCreationCascadingMultiplier:0];
     }
   }
 
-  v12 = [v8 overlayView];
-  [v12 bounds];
+  overlayView = [controllerCopy overlayView];
+  [overlayView bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [v8 convertRectFromOverlayToModel:{v14, v16, v18, v20}];
+  [controllerCopy convertRectFromOverlayToModel:{v14, v16, v18, v20}];
   rect[0] = v21;
   v23 = v22;
   v25 = v24;
@@ -775,7 +775,7 @@ LABEL_17:
   memset(&rect[1], 0, 32);
   v54 = 0u;
   v55 = 0u;
-  v28 = v7;
+  v28 = annotationsCopy;
   v29 = [v28 countByEnumeratingWithState:&rect[1] objects:v56 count:16];
   if (v29)
   {
@@ -795,24 +795,24 @@ LABEL_17:
         }
 
         v33 = *(rect[2] + 8 * i);
-        if (!v5)
+        if (!pasteCopy)
         {
-          v34 = [v10 creationCascadingMultiplier];
-          if (!v34)
+          creationCascadingMultiplier = [v10 creationCascadingMultiplier];
+          if (!creationCascadingMultiplier)
           {
             goto LABEL_14;
           }
 
 LABEL_13:
-          v35 = v34;
-          [v8 modelBaseScaleFactor];
-          [AKGeometryHelper convertScreenToModelOrientationForPoint:v8 relativeToRect:v36 * v35 * 10.0 withPageController:v36 * v35 * -10.0, v52, v51, v50, v49];
+          v35 = creationCascadingMultiplier;
+          [controllerCopy modelBaseScaleFactor];
+          [AKGeometryHelper convertScreenToModelOrientationForPoint:controllerCopy relativeToRect:v36 * v35 * 10.0 withPageController:v36 * v35 * -10.0, v52, v51, v50, v49];
           [v33 translateBy:?];
           goto LABEL_14;
         }
 
-        v34 = [v10 pasteCascadingMultiplier];
-        if (v34)
+        creationCascadingMultiplier = [v10 pasteCascadingMultiplier];
+        if (creationCascadingMultiplier)
         {
           goto LABEL_13;
         }
@@ -897,7 +897,7 @@ LABEL_14:
     while (v30);
   }
 
-  if (v5)
+  if (pasteCopy)
   {
     [v10 setPasteCascadingMultiplier:{objc_msgSend(v10, "pasteCascadingMultiplier") + 1}];
   }
@@ -908,106 +908,106 @@ LABEL_14:
   }
 }
 
-- (void)setToolMode:(unint64_t)a3
+- (void)setToolMode:(unint64_t)mode
 {
-  if (self->_toolMode == a3)
+  if (self->_toolMode == mode)
   {
     return;
   }
 
-  v23 = [(AKToolController *)self controller];
-  if (([v23 isTornDown] & 1) == 0)
+  controller = [(AKToolController *)self controller];
+  if (([controller isTornDown] & 1) == 0)
   {
-    v6 = [v23 delegate];
-    if (a3)
+    delegate = [controller delegate];
+    if (mode)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v6 controllerWillEnterToolMode:v23];
+        [delegate controllerWillEnterToolMode:controller];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v6 controllerWillExitToolMode:v23];
+      [delegate controllerWillExitToolMode:controller];
     }
 
     toolMode = self->_toolMode;
     if (toolMode - 1 < 2)
     {
-      v8 = [v23 legacyDoodleController];
-      [v8 removeOverlay];
+      legacyDoodleController = [controller legacyDoodleController];
+      [legacyDoodleController removeOverlay];
     }
 
     else if (toolMode - 4 >= 2)
     {
-      v9 = v23;
+      v9 = controller;
       if (toolMode)
       {
         goto LABEL_15;
       }
 
-      v10 = [v23 textEditorController];
-      [v10 endEditing];
+      textEditorController = [controller textEditorController];
+      [textEditorController endEditing];
 
-      v8 = [v23 modelController];
-      [v8 deselectAllAnnotations];
+      legacyDoodleController = [controller modelController];
+      [legacyDoodleController deselectAllAnnotations];
     }
 
     else
     {
       [(AKToolController *)self setAllInkEnabled:0];
       [(AKToolController *)self setPencilInkEnabled:0];
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 postNotificationName:@"AKToolController.inkToolStatusUpdated" object:self];
+      legacyDoodleController = [MEMORY[0x277CCAB98] defaultCenter];
+      [legacyDoodleController postNotificationName:@"AKToolController.inkToolStatusUpdated" object:self];
     }
 
-    v9 = v23;
+    v9 = controller;
 LABEL_15:
-    self->_toolMode = a3;
-    if (a3 > 1)
+    self->_toolMode = mode;
+    if (mode > 1)
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
-        v20 = [v9 legacyDoodleController];
-        [v20 setPressureSensitiveDoodleMode:1];
+        legacyDoodleController2 = [v9 legacyDoodleController];
+        [legacyDoodleController2 setPressureSensitiveDoodleMode:1];
 
         goto LABEL_27;
       }
 
-      if (a3 == 4)
+      if (mode == 4)
       {
         [(AKToolController *)self setAllInkEnabled:1];
         [(AKToolController *)self setPencilInkEnabled:1];
-        v13 = [v23 attributeController];
-        v14 = [v13 ink];
+        attributeController = [controller attributeController];
+        v14 = [attributeController ink];
 
         if (!v14)
         {
-          v15 = [v23 attributeController];
-          [v15 setDefaultInk];
+          attributeController2 = [controller attributeController];
+          [attributeController2 setDefaultInk];
         }
 
-        v16 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v16 postNotificationName:@"AKToolController.inkToolStatusUpdated" object:self];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"AKToolController.inkToolStatusUpdated" object:self];
 
-        v17 = [v23 modelController];
-        [v17 deselectAllAnnotations];
+        modelController = [controller modelController];
+        [modelController deselectAllAnnotations];
         goto LABEL_30;
       }
     }
 
     else
     {
-      if (!a3)
+      if (!mode)
       {
-        v18 = [v9 supportForPencilAlwaysDrawsSatisfied];
+        supportForPencilAlwaysDrawsSatisfied = [v9 supportForPencilAlwaysDrawsSatisfied];
         [(AKToolController *)self setAllInkEnabled:0];
-        if (v18)
+        if (supportForPencilAlwaysDrawsSatisfied)
         {
           [(AKToolController *)self setPencilInkEnabled:1];
-          v19 = [v23 attributeController];
-          [v19 resetToLastDrawingInk];
+          attributeController3 = [controller attributeController];
+          [attributeController3 resetToLastDrawingInk];
         }
 
         else
@@ -1015,53 +1015,53 @@ LABEL_15:
           [(AKToolController *)self setPencilInkEnabled:0];
         }
 
-        v17 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v17 postNotificationName:@"AKToolController.inkToolStatusUpdated" object:self];
+        modelController = [MEMORY[0x277CCAB98] defaultCenter];
+        [modelController postNotificationName:@"AKToolController.inkToolStatusUpdated" object:self];
         goto LABEL_30;
       }
 
-      if (a3 == 1)
+      if (mode == 1)
       {
-        v11 = [v9 shouldDrawVariableStrokeDoodles];
-        v12 = [v23 legacyDoodleController];
-        [v12 setPressureSensitiveDoodleMode:v11];
+        shouldDrawVariableStrokeDoodles = [v9 shouldDrawVariableStrokeDoodles];
+        legacyDoodleController3 = [controller legacyDoodleController];
+        [legacyDoodleController3 setPressureSensitiveDoodleMode:shouldDrawVariableStrokeDoodles];
 
 LABEL_27:
-        v17 = [v23 legacyDoodleController];
-        [v17 showOverlay];
+        modelController = [controller legacyDoodleController];
+        [modelController showOverlay];
 LABEL_30:
 
-        v9 = v23;
+        v9 = controller;
       }
     }
 
-    v21 = [v9 toolbarViewController];
-    [v21 revalidateItems];
-    v22 = [v23 modernToolbarView];
-    [v22 revalidateItems];
-    if (a3)
+    toolbarViewController = [v9 toolbarViewController];
+    [toolbarViewController revalidateItems];
+    modernToolbarView = [controller modernToolbarView];
+    [modernToolbarView revalidateItems];
+    if (mode)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v6 controllerDidEnterToolMode:v23];
+        [delegate controllerDidEnterToolMode:controller];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v6 controllerDidExitToolMode:v23];
+      [delegate controllerDidExitToolMode:controller];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)updateToolSenderState:(id)a3 enabled:(BOOL)a4
+- (void)updateToolSenderState:(id)state enabled:(BOOL)enabled
 {
-  v8 = a3;
-  if ([v8 tag] == 764015)
+  stateCopy = state;
+  if ([stateCopy tag] == 764015)
   {
-    v5 = v8;
+    v5 = stateCopy;
     v6 = [(AKToolController *)self toolMode]== 1;
 LABEL_7:
     v7 = v6;
@@ -1070,21 +1070,21 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if ([v8 tag] == 764016)
+  if ([stateCopy tag] == 764016)
   {
-    v5 = v8;
+    v5 = stateCopy;
     v6 = [(AKToolController *)self toolMode]== 2;
     goto LABEL_7;
   }
 
-  if ([v8 tag] == 764017)
+  if ([stateCopy tag] == 764017)
   {
-    v5 = v8;
+    v5 = stateCopy;
     v6 = [(AKToolController *)self toolMode]== 4;
     goto LABEL_7;
   }
 
-  [v8 tag];
+  [stateCopy tag];
 LABEL_11:
 }
 
@@ -1092,11 +1092,11 @@ LABEL_11:
 {
   if ([(AKToolController *)self isInDefaultMode])
   {
-    v3 = [(AKToolController *)self pencilInkEnabled];
-    v4 = [(AKToolController *)self controller];
-    v5 = [v4 supportForPencilAlwaysDrawsSatisfied];
+    pencilInkEnabled = [(AKToolController *)self pencilInkEnabled];
+    controller = [(AKToolController *)self controller];
+    supportForPencilAlwaysDrawsSatisfied = [controller supportForPencilAlwaysDrawsSatisfied];
 
-    if (v3 == v5)
+    if (pencilInkEnabled == supportForPencilAlwaysDrawsSatisfied)
     {
       return;
     }
@@ -1104,16 +1104,16 @@ LABEL_11:
     self->_toolMode = -1;
   }
 
-  v6 = [(AKToolController *)self defaultToolMode];
+  defaultToolMode = [(AKToolController *)self defaultToolMode];
 
-  [(AKToolController *)self setToolMode:v6];
+  [(AKToolController *)self setToolMode:defaultToolMode];
 }
 
 - (double)_modelBaseScaleFactorForNewAnnotation
 {
-  v2 = [(AKToolController *)self controller];
-  v3 = [v2 currentPageController];
-  [v3 modelBaseScaleFactor];
+  controller = [(AKToolController *)self controller];
+  currentPageController = [controller currentPageController];
+  [currentPageController modelBaseScaleFactor];
   v5 = v4;
 
   return v5;
@@ -1121,9 +1121,9 @@ LABEL_11:
 
 - (double)_strokeWidthForNewAnnotation
 {
-  v3 = [(AKToolController *)self controller];
-  v4 = [v3 attributeController];
-  [v4 strokeWidth];
+  controller = [(AKToolController *)self controller];
+  attributeController = [controller attributeController];
+  [attributeController strokeWidth];
   v6 = v5;
 
   if (v6 > 1.0001)
@@ -1137,44 +1137,44 @@ LABEL_11:
 
 - (id)_strokeColorForNewAnnotation
 {
-  v2 = [(AKToolController *)self controller];
-  v3 = [v2 currentPageController];
-  v4 = [v3 pageModelController];
-  v5 = [v2 attributeController];
-  v6 = [v4 selectedAnnotations];
-  if ([v6 count])
+  controller = [(AKToolController *)self controller];
+  currentPageController = [controller currentPageController];
+  pageModelController = [currentPageController pageModelController];
+  attributeController = [controller attributeController];
+  selectedAnnotations = [pageModelController selectedAnnotations];
+  if ([selectedAnnotations count])
   {
-    v7 = [v6 anyObject];
-    if ([v7 conformsToAKStrokedAnnotationProtocol])
+    anyObject = [selectedAnnotations anyObject];
+    if ([anyObject conformsToAKStrokedAnnotationProtocol])
     {
-      v8 = [v7 strokeColor];
+      strokeColor = [anyObject strokeColor];
 LABEL_7:
 
       goto LABEL_9;
     }
   }
 
-  v9 = [v5 ink];
+  v9 = [attributeController ink];
 
   if (v9)
   {
-    v7 = [v5 ink];
-    v10 = [v7 color];
-    v8 = [v10 colorWithAlphaComponent:1.0];
+    anyObject = [attributeController ink];
+    color = [anyObject color];
+    strokeColor = [color colorWithAlphaComponent:1.0];
 
     goto LABEL_7;
   }
 
-  v8 = [v5 strokeColor];
+  strokeColor = [attributeController strokeColor];
 LABEL_9:
 
-  return v8;
+  return strokeColor;
 }
 
-- (CGRect)_centerBounds:(CGRect)result atPoint:(CGPoint)a4
+- (CGRect)_centerBounds:(CGRect)result atPoint:(CGPoint)point
 {
-  v4 = a4.x - result.size.width * 0.5;
-  v5 = a4.y - result.size.height * 0.5;
+  v4 = point.x - result.size.width * 0.5;
+  v5 = point.y - result.size.height * 0.5;
   result.origin.y = v5;
   result.origin.x = v4;
   return result;
@@ -1182,9 +1182,9 @@ LABEL_9:
 
 - (CGPoint)_defaultCenterForNewAnnotation
 {
-  v2 = [(AKToolController *)self controller];
-  v3 = [v2 currentPageController];
-  [v3 visibleRectOfOverlay];
+  controller = [(AKToolController *)self controller];
+  currentPageController = [controller currentPageController];
+  [currentPageController visibleRectOfOverlay];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -1203,49 +1203,49 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)_defaultRectangleForNewAnnotation:(id)a3 centeredAtPoint:(CGPoint)a4
+- (CGRect)_defaultRectangleForNewAnnotation:(id)annotation centeredAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  annotationCopy = annotation;
   [(AKToolController *)self _modelBaseScaleFactorForNewAnnotation];
   v9 = v8;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(AKToolController *)self controller];
-    v11 = [v10 currentPageController];
-    [v11 maxPageRect];
+    controller = [(AKToolController *)self controller];
+    currentPageController = [controller currentPageController];
+    [currentPageController maxPageRect];
     v14 = sqrt(v12 * v13 / 40.0 / 28800.0);
     v15 = v9 * 400.0 * v14;
     v16 = v9 * 72.0 * v14;
-    v17 = v7;
-    v18 = [v17 signature];
-    v19 = [v18 drawing];
+    v17 = annotationCopy;
+    signature = [v17 signature];
+    drawing = [signature drawing];
 
-    v20 = [v17 signature];
-    v21 = v20;
-    if (v19)
+    signature2 = [v17 signature];
+    signature3 = signature2;
+    if (drawing)
     {
-      v22 = [v20 drawing];
-      [v22 bounds];
+      drawing2 = [signature2 drawing];
+      [drawing2 bounds];
       v24 = v23;
       v26 = v25;
     }
 
     else
     {
-      v31 = [v20 path];
+      path = [signature2 path];
 
-      if (!v31)
+      if (!path)
       {
         v24 = *MEMORY[0x277CBF3A8];
         v26 = *(MEMORY[0x277CBF3A8] + 8);
         goto LABEL_11;
       }
 
-      v21 = [v17 signature];
-      [v21 pathBounds];
+      signature3 = [v17 signature];
+      [signature3 pathBounds];
       v24 = v32;
       v26 = v33;
     }
@@ -1277,8 +1277,8 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 image];
-    [v10 size];
+    controller = [annotationCopy image];
+    [controller size];
     v27 = v29;
     v28 = v30;
 LABEL_12:
@@ -1326,10 +1326,10 @@ LABEL_18:
   }
 
 LABEL_13:
-  v38 = [(AKToolController *)self controller];
-  v39 = [v38 currentPageController];
-  v40 = [v39 overlayView];
-  [(AKToolController *)self _validatedRect:v40 fitsInVisibleRegionOfOverlayView:v39 ownedByPageController:x - v27 * 0.5 centeredAtPoint:y - v28 * 0.5, v27, v28, x, y];
+  controller2 = [(AKToolController *)self controller];
+  currentPageController2 = [controller2 currentPageController];
+  overlayView = [currentPageController2 overlayView];
+  [(AKToolController *)self _validatedRect:overlayView fitsInVisibleRegionOfOverlayView:currentPageController2 ownedByPageController:x - v27 * 0.5 centeredAtPoint:y - v28 * 0.5, v27, v28, x, y];
   v42 = v41;
   v44 = v43;
   v46 = v45;
@@ -1346,16 +1346,16 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)_validatedRect:(CGRect)a3 fitsInVisibleRegionOfOverlayView:(id)a4 ownedByPageController:(id)a5 centeredAtPoint:(CGPoint)a6
+- (CGRect)_validatedRect:(CGRect)rect fitsInVisibleRegionOfOverlayView:(id)view ownedByPageController:(id)controller centeredAtPoint:(CGPoint)point
 {
-  rect = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a5;
-  [v9 visibleRectOfOverlay];
-  [v9 convertRectFromModelToOverlay:?];
-  [v9 convertRectFromOverlayToModel:?];
+  rect = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  [controllerCopy visibleRectOfOverlay];
+  [controllerCopy convertRectFromModelToOverlay:?];
+  [controllerCopy convertRectFromOverlayToModel:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1410,7 +1410,7 @@ LABEL_13:
   v49.size.height = rect;
   if (CGRectGetWidth(v49) <= v25 && (v50.origin.x = v43, v50.origin.y = v26, v50.size.width = width, v50.size.height = rect, CGRectGetHeight(v50) <= v42))
   {
-    v33 = rect;
+    rectCopy = rect;
     v35 = v26;
     v34 = v43;
   }
@@ -1464,22 +1464,22 @@ LABEL_13:
     v56.origin.y = v26;
     v56.size.width = v27;
     v56.size.height = rect;
-    v33 = CGRectGetHeight(v56) * v32;
+    rectCopy = CGRectGetHeight(v56) * v32;
     v57.origin.x = v43;
     v57.origin.y = v26;
     v57.size.width = v27;
-    v57.size.height = v33;
-    v34 = a6.x - CGRectGetWidth(v57) * 0.5;
+    v57.size.height = rectCopy;
+    v34 = point.x - CGRectGetWidth(v57) * 0.5;
     v58.origin.x = v34;
     v58.origin.y = v26;
     v58.size.width = v27;
-    v58.size.height = v33;
-    v35 = a6.y - CGRectGetHeight(v58) * 0.5;
+    v58.size.height = rectCopy;
+    v35 = point.y - CGRectGetHeight(v58) * 0.5;
   }
 
   v36 = v34;
   v37 = v27;
-  v38 = v33;
+  v38 = rectCopy;
   result.size.height = v38;
   result.size.width = v37;
   result.origin.y = v35;
@@ -1489,48 +1489,48 @@ LABEL_13:
 
 - (id)_defaultTypingAttributes
 {
-  v2 = [(AKToolController *)self controller];
-  v3 = [v2 attributeController];
-  v4 = [v3 textAttributes];
-  v5 = [v4 mutableCopy];
+  controller = [(AKToolController *)self controller];
+  attributeController = [controller attributeController];
+  textAttributes = [attributeController textAttributes];
+  v5 = [textAttributes mutableCopy];
 
-  v6 = [v3 strokeColor];
+  strokeColor = [attributeController strokeColor];
 
-  if (v6)
+  if (strokeColor)
   {
-    v7 = [v3 strokeColor];
-    [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x277D740C0]];
+    strokeColor2 = [attributeController strokeColor];
+    [v5 setObject:strokeColor2 forKeyedSubscript:*MEMORY[0x277D740C0]];
   }
 
-  v8 = [v3 font];
-  [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x277D740A8]];
+  font = [attributeController font];
+  [v5 setObject:font forKeyedSubscript:*MEMORY[0x277D740A8]];
 
   return v5;
 }
 
 - (id)_defaultTextBoxTypingAttributes
 {
-  v2 = [(AKToolController *)self controller];
-  v3 = [v2 attributeController];
-  v4 = [v3 textAttributes];
-  v5 = [v4 mutableCopy];
+  controller = [(AKToolController *)self controller];
+  attributeController = [controller attributeController];
+  textAttributes = [attributeController textAttributes];
+  v5 = [textAttributes mutableCopy];
 
-  v6 = [v3 font];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277D740A8]];
+  font = [attributeController font];
+  [v5 setObject:font forKeyedSubscript:*MEMORY[0x277D740A8]];
 
   return v5;
 }
 
-- (id)_defaultHeartTypingAttributesWithFillColor:(id)a3
+- (id)_defaultHeartTypingAttributesWithFillColor:(id)color
 {
-  v4 = a3;
-  v5 = [(AKToolController *)self controller];
-  v6 = [v5 attributeController];
-  v7 = [v6 textAttributes];
-  v8 = [v7 mutableCopy];
+  colorCopy = color;
+  controller = [(AKToolController *)self controller];
+  attributeController = [controller attributeController];
+  textAttributes = [attributeController textAttributes];
+  v8 = [textAttributes mutableCopy];
 
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  v10 = [v4 akIsEqualToColor:v9];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v10 = [colorCopy akIsEqualToColor:whiteColor];
 
   if (v10)
   {
@@ -1543,49 +1543,49 @@ LABEL_13:
   }
   v11 = ;
   [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x277D740C0]];
-  v12 = [v6 font];
-  [v8 setObject:v12 forKeyedSubscript:*MEMORY[0x277D740A8]];
+  font = [attributeController font];
+  [v8 setObject:font forKeyedSubscript:*MEMORY[0x277D740A8]];
 
   return v8;
 }
 
-- (void)_setRectangleToFitTextOnTextAnnotation:(id)a3
+- (void)_setRectangleToFitTextOnTextAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(AKToolController *)self controller];
-  v6 = [v5 currentPageController];
+  annotationCopy = annotation;
+  controller = [(AKToolController *)self controller];
+  currentPageController = [controller currentPageController];
   [(AKToolController *)self _defaultCenterForNewAnnotation];
   v8 = 0u;
   v9 = 0u;
   LOBYTE(v7) = 0;
-  [AKTextAnnotationRenderHelper getAnnotationRectangle:"getAnnotationRectangle:textBounds:containerSize:exclusionPaths:isTextClipped:forAnnotation:onPageController:orInContext:shouldAlignToPixels:optionalText:optionalCenter:optionalProposedRectangle:" textBounds:&v8 containerSize:0 exclusionPaths:0 isTextClipped:0 forAnnotation:0 onPageController:v4 orInContext:v6 shouldAlignToPixels:0 optionalText:v7 optionalCenter:0 optionalProposedRectangle:?];
-  [v4 setRectangle:{v8, v9}];
+  [AKTextAnnotationRenderHelper getAnnotationRectangle:"getAnnotationRectangle:textBounds:containerSize:exclusionPaths:isTextClipped:forAnnotation:onPageController:orInContext:shouldAlignToPixels:optionalText:optionalCenter:optionalProposedRectangle:" textBounds:&v8 containerSize:0 exclusionPaths:0 isTextClipped:0 forAnnotation:0 onPageController:annotationCopy orInContext:currentPageController shouldAlignToPixels:0 optionalText:v7 optionalCenter:0 optionalProposedRectangle:?];
+  [annotationCopy setRectangle:{v8, v9}];
 }
 
-- (unint64_t)_arrowStyleForToolTag:(int64_t)a3
+- (unint64_t)_arrowStyleForToolTag:(int64_t)tag
 {
-  if ((a3 - 764003) > 3)
+  if ((tag - 764003) > 3)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return qword_23F4D9438[a3 - 764003];
+    return qword_23F4D9438[tag - 764003];
   }
 }
 
-- (void)_peripheralAvailabilityDidUpdate:(id)a3
+- (void)_peripheralAvailabilityDidUpdate:(id)update
 {
-  v7 = [(AKToolController *)self controller];
-  v3 = [v7 peripheralAvailabilityManager];
-  v4 = [v3 currentAvailability] == 1;
+  controller = [(AKToolController *)self controller];
+  peripheralAvailabilityManager = [controller peripheralAvailabilityManager];
+  v4 = [peripheralAvailabilityManager currentAvailability] == 1;
 
-  v5 = [v7 legacyDoodleController];
-  [v5 setPressureSensitiveDoodleMode:v4];
+  legacyDoodleController = [controller legacyDoodleController];
+  [legacyDoodleController setPressureSensitiveDoodleMode:v4];
 
-  v6 = [v7 legacyDoodleController];
-  [v6 updateStrokeAttributes];
+  legacyDoodleController2 = [controller legacyDoodleController];
+  [legacyDoodleController2 updateStrokeAttributes];
 }
 
 - (AKController)controller

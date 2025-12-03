@@ -1,36 +1,36 @@
 @interface PSSpecifierRedirecter
-- (PSSpecifierRedirecter)initWithSpecifier:(id)a3;
+- (PSSpecifierRedirecter)initWithSpecifier:(id)specifier;
 - (SEL)originalSpecifierGetter;
 - (SEL)originalSpecifierSetter;
 - (id)originalSpecifierTarget;
-- (id)performGetter:(id)a3;
-- (void)performSetter:(id)a3 specifier:(id)a4;
+- (id)performGetter:(id)getter;
+- (void)performSetter:(id)setter specifier:(id)specifier;
 @end
 
 @implementation PSSpecifierRedirecter
 
-- (PSSpecifierRedirecter)initWithSpecifier:(id)a3
+- (PSSpecifierRedirecter)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v8.receiver = self;
   v8.super_class = PSSpecifierRedirecter;
   v5 = [(PSSpecifierRedirecter *)&v8 init];
   if (v5)
   {
-    WeakRetained = objc_loadWeakRetained(&v4[OBJC_IVAR___PSSpecifier_target]);
+    WeakRetained = objc_loadWeakRetained(&specifierCopy[OBJC_IVAR___PSSpecifier_target]);
     objc_storeWeak(&v5->_originalSpecifierTarget, WeakRetained);
 
-    v5->_originalSpecifierGetter = *&v4[OBJC_IVAR___PSSpecifier_getter];
-    v5->_originalSpecifierSetter = *&v4[OBJC_IVAR___PSSpecifier_setter];
+    v5->_originalSpecifierGetter = *&specifierCopy[OBJC_IVAR___PSSpecifier_getter];
+    v5->_originalSpecifierSetter = *&specifierCopy[OBJC_IVAR___PSSpecifier_setter];
   }
 
   return v5;
 }
 
-- (void)performSetter:(id)a3 specifier:(id)a4
+- (void)performSetter:(id)setter specifier:(id)specifier
 {
-  v10 = a3;
-  v6 = a4;
+  setterCopy = setter;
+  specifierCopy = specifier;
   if (self->_originalSpecifierSetter)
   {
     originalSpecifierSetter = self->_originalSpecifierSetter;
@@ -42,10 +42,10 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_originalSpecifierTarget);
-  v9 = sub_673C(originalSpecifierSetter, WeakRetained, v10, v6);
+  v9 = sub_673C(originalSpecifierSetter, WeakRetained, setterCopy, specifierCopy);
 }
 
-- (id)performGetter:(id)a3
+- (id)performGetter:(id)getter
 {
   if (self->_originalSpecifierGetter)
   {
@@ -57,9 +57,9 @@
     originalSpecifierGetter = 0;
   }
 
-  v5 = a3;
+  getterCopy = getter;
   WeakRetained = objc_loadWeakRetained(&self->_originalSpecifierTarget);
-  v7 = sub_673C(originalSpecifierGetter, WeakRetained, v5, 0);
+  v7 = sub_673C(originalSpecifierGetter, WeakRetained, getterCopy, 0);
 
   return v7;
 }

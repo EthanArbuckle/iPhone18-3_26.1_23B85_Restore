@@ -1,19 +1,19 @@
 @interface StoryExportActivityViewController
-- (_TtC15PhotosUIPrivate33StoryExportActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4;
-- (id)_customizationGroupsForActivityViewController:(id)a3;
+- (_TtC15PhotosUIPrivate33StoryExportActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities;
+- (id)_customizationGroupsForActivityViewController:(id)controller;
 - (id)completionWithItemsHandler;
 - (int64_t)modalPresentationStyle;
-- (void)activityViewControllerDidFinishAirdropTransfer:(id)a3;
-- (void)setCompletionWithItemsHandler:(id)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
+- (void)activityViewControllerDidFinishAirdropTransfer:(id)transfer;
+- (void)setCompletionWithItemsHandler:(id)handler;
+- (void)setModalPresentationStyle:(int64_t)style;
 @end
 
 @implementation StoryExportActivityViewController
 
-- (_TtC15PhotosUIPrivate33StoryExportActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4
+- (_TtC15PhotosUIPrivate33StoryExportActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities
 {
   sub_1B3C9C788();
-  if (a4)
+  if (activities)
   {
     sub_1B3710718(0, &unk_1EB854EC0);
     sub_1B3C9C788();
@@ -24,21 +24,21 @@
 
 - (int64_t)modalPresentationStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B37D0E74();
 
   return v3;
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
-  v4 = self;
-  sub_1B37D0EFC(a3);
+  selfCopy = self;
+  sub_1B37D0EFC(style);
 }
 
 - (id)completionWithItemsHandler
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B37D1DA0();
   v5 = v4;
 
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (void)setCompletionWithItemsHandler:(id)a3
+- (void)setCompletionWithItemsHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -71,14 +71,14 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1B37D1EC8(v4, v5);
 }
 
-- (id)_customizationGroupsForActivityViewController:(id)a3
+- (id)_customizationGroupsForActivityViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1B37D2428();
 
   sub_1B3710718(0, &qword_1EB854E30);
@@ -87,10 +87,10 @@
   return v6;
 }
 
-- (void)activityViewControllerDidFinishAirdropTransfer:(id)a3
+- (void)activityViewControllerDidFinishAirdropTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = self;
+  transferCopy = transfer;
+  selfCopy = self;
   sub_1B37D3414();
 }
 

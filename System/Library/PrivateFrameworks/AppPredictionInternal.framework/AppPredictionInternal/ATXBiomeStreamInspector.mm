@@ -1,15 +1,15 @@
 @interface ATXBiomeStreamInspector
-+ (void)_makeStreamJSONForStream:(id)a3 publisher:(id)a4 maxNumEvents:(unint64_t)a5 callback:(id)a6;
-+ (void)makeJSONRepresentationForStreamWithBlock:(id)a3;
-+ (void)makeJSONRepresentationForStreamWithBlock:(id)a3 blendingPublisher:(id)a4 clientPublisher:(id)a5 uiPublisher:(id)a6 spotlightUIPublisher:(id)a7 appLaunchPublisher:(id)a8 appIntentPublisher:(id)a9 inferredModePublisher:(id)a10;
++ (void)_makeStreamJSONForStream:(id)stream publisher:(id)publisher maxNumEvents:(unint64_t)events callback:(id)callback;
++ (void)makeJSONRepresentationForStreamWithBlock:(id)block;
++ (void)makeJSONRepresentationForStreamWithBlock:(id)block blendingPublisher:(id)publisher clientPublisher:(id)clientPublisher uiPublisher:(id)uiPublisher spotlightUIPublisher:(id)iPublisher appLaunchPublisher:(id)launchPublisher appIntentPublisher:(id)intentPublisher inferredModePublisher:(id)self0;
 @end
 
 @implementation ATXBiomeStreamInspector
 
-+ (void)makeJSONRepresentationForStreamWithBlock:(id)a3
++ (void)makeJSONRepresentationForStreamWithBlock:(id)block
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
+  blockCopy = block;
   [v3 timeIntervalSinceReferenceDate];
   v6 = v5 + -7200.0;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
@@ -27,60 +27,60 @@
   v12 = [v28 publisherFromStartTime:v8];
   v27 = BiomeLibrary();
   v26 = [v27 App];
-  v25 = [v26 InFocus];
+  inFocus = [v26 InFocus];
   v24 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
-  v20 = [v25 atx_publisherFromStartTime:v24];
+  v20 = [inFocus atx_publisherFromStartTime:v24];
   v23 = BiomeLibrary();
   v22 = [v23 App];
-  v21 = [v22 Intent];
+  intent = [v22 Intent];
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
-  v14 = [v21 atx_publisherFromStartTime:v13];
+  v14 = [intent atx_publisherFromStartTime:v13];
   v15 = BiomeLibrary();
-  v16 = [v15 UserFocus];
-  v17 = [v16 InferredMode];
+  userFocus = [v15 UserFocus];
+  inferredMode = [userFocus InferredMode];
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
-  v19 = [v17 atx_publisherFromStartTime:v18];
-  [v11 makeJSONRepresentationForStreamWithBlock:v4 blendingPublisher:v34 clientPublisher:v33 uiPublisher:v32 spotlightUIPublisher:v12 appLaunchPublisher:v20 appIntentPublisher:v14 inferredModePublisher:v19];
+  v19 = [inferredMode atx_publisherFromStartTime:v18];
+  [v11 makeJSONRepresentationForStreamWithBlock:blockCopy blendingPublisher:v34 clientPublisher:v33 uiPublisher:v32 spotlightUIPublisher:v12 appLaunchPublisher:v20 appIntentPublisher:v14 inferredModePublisher:v19];
 }
 
-+ (void)makeJSONRepresentationForStreamWithBlock:(id)a3 blendingPublisher:(id)a4 clientPublisher:(id)a5 uiPublisher:(id)a6 spotlightUIPublisher:(id)a7 appLaunchPublisher:(id)a8 appIntentPublisher:(id)a9 inferredModePublisher:(id)a10
++ (void)makeJSONRepresentationForStreamWithBlock:(id)block blendingPublisher:(id)publisher clientPublisher:(id)clientPublisher uiPublisher:(id)uiPublisher spotlightUIPublisher:(id)iPublisher appLaunchPublisher:(id)launchPublisher appIntentPublisher:(id)intentPublisher inferredModePublisher:(id)self0
 {
-  v30 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  blockCopy = block;
+  publisherCopy = publisher;
+  clientPublisherCopy = clientPublisher;
+  uiPublisherCopy = uiPublisher;
+  iPublisherCopy = iPublisher;
+  launchPublisherCopy = launchPublisher;
+  intentPublisherCopy = intentPublisher;
+  modePublisherCopy = modePublisher;
   v23 = objc_autoreleasePoolPush();
-  [a1 _makeStreamJSONForStream:@"blending" publisher:v16 maxNumEvents:500 callback:v30];
+  [self _makeStreamJSONForStream:@"blending" publisher:publisherCopy maxNumEvents:500 callback:blockCopy];
   objc_autoreleasePoolPop(v23);
   v24 = objc_autoreleasePoolPush();
-  [a1 _makeStreamJSONForStream:@"clientModel" publisher:v17 maxNumEvents:250 callback:v30];
+  [self _makeStreamJSONForStream:@"clientModel" publisher:clientPublisherCopy maxNumEvents:250 callback:blockCopy];
   objc_autoreleasePoolPop(v24);
   v25 = objc_autoreleasePoolPush();
-  [a1 _makeStreamJSONForStream:@"ui" publisher:v18 maxNumEvents:2000 callback:v30];
+  [self _makeStreamJSONForStream:@"ui" publisher:uiPublisherCopy maxNumEvents:2000 callback:blockCopy];
   objc_autoreleasePoolPop(v25);
   v26 = objc_autoreleasePoolPush();
-  [a1 _makeStreamJSONForStream:@"spotlightUI" publisher:v19 maxNumEvents:1000 callback:v30];
+  [self _makeStreamJSONForStream:@"spotlightUI" publisher:iPublisherCopy maxNumEvents:1000 callback:blockCopy];
   objc_autoreleasePoolPop(v26);
   v27 = objc_autoreleasePoolPush();
-  [a1 _makeStreamJSONForStream:@"appLaunch" publisher:v20 maxNumEvents:500 callback:v30];
+  [self _makeStreamJSONForStream:@"appLaunch" publisher:launchPublisherCopy maxNumEvents:500 callback:blockCopy];
   objc_autoreleasePoolPop(v27);
   v28 = objc_autoreleasePoolPush();
-  [a1 _makeStreamJSONForStream:@"appIntent" publisher:v21 maxNumEvents:500 callback:v30];
+  [self _makeStreamJSONForStream:@"appIntent" publisher:intentPublisherCopy maxNumEvents:500 callback:blockCopy];
   objc_autoreleasePoolPop(v28);
   v29 = objc_autoreleasePoolPush();
-  [a1 _makeStreamJSONForStream:@"inferredMode" publisher:v22 maxNumEvents:500 callback:v30];
+  [self _makeStreamJSONForStream:@"inferredMode" publisher:modePublisherCopy maxNumEvents:500 callback:blockCopy];
   objc_autoreleasePoolPop(v29);
 }
 
-+ (void)_makeStreamJSONForStream:(id)a3 publisher:(id)a4 maxNumEvents:(unint64_t)a5 callback:(id)a6
++ (void)_makeStreamJSONForStream:(id)stream publisher:(id)publisher maxNumEvents:(unint64_t)events callback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  streamCopy = stream;
+  publisherCopy = publisher;
+  callbackCopy = callback;
   v12 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v12 setDateStyle:1];
   [v12 setTimeStyle:1];
@@ -97,10 +97,10 @@
   v13 = v12;
   v17 = v13;
   v18 = &v20;
-  v19 = a5;
-  v14 = [v10 sinkWithCompletion:&__block_literal_global_32 receiveInput:v16];
+  eventsCopy = events;
+  v14 = [publisherCopy sinkWithCompletion:&__block_literal_global_32 receiveInput:v16];
   v15 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v21[5] options:1 error:0];
-  v11[2](v11, v9, v15);
+  callbackCopy[2](callbackCopy, streamCopy, v15);
 
   _Block_object_dispose(&v20, 8);
 }

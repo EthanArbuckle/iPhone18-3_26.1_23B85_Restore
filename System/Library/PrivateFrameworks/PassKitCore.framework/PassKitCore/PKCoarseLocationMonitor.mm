@@ -1,7 +1,7 @@
 @interface PKCoarseLocationMonitor
 + (id)sharedInstance;
 - (PKCoarseLocationMonitor)init;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation PKCoarseLocationMonitor
@@ -55,16 +55,16 @@ void __31__PKCoarseLocationMonitor_init__block_invoke(uint64_t a1)
   *(v5 + 8) = v4;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKCoarseLocationMonitor_locationManagerDidChangeAuthorization___block_invoke;
   v6[3] = &unk_1E79C4DD8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = authorizationCopy;
+  selfCopy = self;
+  v5 = authorizationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

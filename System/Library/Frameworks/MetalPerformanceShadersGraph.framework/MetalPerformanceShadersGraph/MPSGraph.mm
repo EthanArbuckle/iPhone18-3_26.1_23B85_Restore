@@ -364,227 +364,227 @@
 - (NSArray)whileWithInitialInputs:(NSArray *)initialInputs before:(MPSGraphWhileBeforeBlock)before after:(MPSGraphWhileAfterBlock)after name:(NSString *)name;
 - (NSDictionary)gradientForPrimaryTensor:(MPSGraphTensor *)primaryTensor withTensors:(NSArray *)tensors name:(NSString *)name;
 - (id).cxx_construct;
-- (id)absoluteErrorWithPrimaryTensor:(id)a3 secondaryTensor:(id)a4 reductionType:(unint64_t)a5 name:(id)a6;
-- (id)adamAssignWithInputVariableTensor:(id)a3 momentumVariableTensor:(id)a4 velocityVariableTensor:(id)a5 maximumVelocityVariableTensor:(id)a6 updates:(id)a7 name:(id)a8;
-- (id)adamUpdateWithCurrentLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 valuesTensor:(id)a7 momentumTensor:(id)a8 velocityTensor:(id)a9 maximumVelocityTensor:(id)a10 gradientTensor:(id)a11 name:(id)a12;
-- (id)adamUpdateWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 beta1PowerTensor:(id)a7 beta2PowerTensor:(id)a8 valuesTensor:(id)a9 momentumTensor:(id)a10 velocityTensor:(id)a11 maximumVelocityTensor:(id)a12 gradientTensor:(id)a13 name:(id)a14;
-- (id)adamUpdateWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 iterationTensor:(id)a7 valuesTensor:(id)a8 momentumTensor:(id)a9 velocityTensor:(id)a10 gradientTensor:(id)a11 name:(id)a12;
-- (id)applyAdamWithCurrentLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 variable:(id)a7 momentumVariable:(id)a8 velocityVariable:(id)a9 maximumVelocityVariable:(id)a10 gradientTensor:(id)a11 name:(id)a12;
-- (id)applyAdamWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 beta1PowerTensor:(id)a7 beta2PowerTensor:(id)a8 variable:(id)a9 momentumVariable:(id)a10 velocityVariable:(id)a11 gradientTensor:(id)a12 name:(id)a13;
-- (id)applyAdamWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 iterationTensor:(id)a7 variable:(id)a8 momentumVariable:(id)a9 velocityVariable:(id)a10 gradientTensor:(id)a11 name:(id)a12;
-- (id)avgPooling2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 strides:(id)a5 paddingStyle:(unint64_t)a6 dataLayout:(unint64_t)a7 name:(id)a8;
-- (id)batchNormalizationLayerWithTensor:(id)a3 batchNormalizationGammaInitializer:(id)a4 batchNormalizationBetaInitializer:(id)a5 batchNormalizationMeanInitializer:(id)a6 batchNormalizationVarianceInitializer:(id)a7 batchNormalizationEpsilon:(double)a8 dataLayout:(unint64_t)a9 name:(id)a10;
-- (id)biasAddWithTensor:(id)a3 biases:(id)a4 dataLayout:(unint64_t)a5 name:(id)a6;
-- (id)broadcastGradientArgsForPrimaryTensor:(id)a3 withSecondaryTensor:(id)a4 name:(id)a5;
-- (id)bufferToTensorWithTensor:(id)a3 name:(id)a4;
-- (id)bufferToTensorWithTensor:(id)a3 shape:(id)a4 type:(unsigned int)a5 interleave:(id)a6 isTensorBufferOp:(BOOL)a7 isChannelAndInterleaveSame:(BOOL)a8 name:(id)a9;
-- (id)callSymbolName:(id)a3 inputTensors:(id)a4 outputTypes:(id)a5 name:(id)a6;
-- (id)callWithInputTensors:(id)a3 outputTypes:(id)a4 symbolName:(id)a5 inliningOption:(unint64_t)a6 name:(id)a7;
-- (id)callWithInputTensors:(id)a3 outputTypes:(id)a4 symbolName:(id)a5 name:(id)a6;
-- (id)castBooleansOfInputsTensors:(id)a3;
-- (id)compileWithDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6;
-- (id)convolution2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 outputChannelCount:(unint64_t)a5 strides:(id)a6 activationType:(unsigned int)a7 weightsInitializer:(id)a8 biasesInitializer:(id)a9 batchNormalizationGammaInitializer:(id)a10 batchNormalizationBetaInitializer:(id)a11 batchNormalizationMeanInitializer:(id)a12 batchNormalizationVarianceInitializer:(id)a13 batchNormalizationEpsilon:(double)a14 paddingStyle:(unint64_t)a15 dataLayout:(unint64_t)a16 weightsLayout:(unint64_t)a17 name:(id)a18;
-- (id)convolution2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 outputChannelCount:(unint64_t)a5 strides:(id)a6 activationType:(unsigned int)a7 weightsInitializer:(id)a8 biasesInitializer:(id)a9 paddingStyle:(unint64_t)a10 dataLayout:(unint64_t)a11 weightsLayout:(unint64_t)a12 name:(id)a13;
-- (id)convolution2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 outputChannelCount:(unint64_t)a5 strides:(id)a6 dilationRates:(id)a7 groups:(unint64_t)a8 activationType:(unsigned int)a9 weightsInitializer:(id)a10 biasesInitializer:(id)a11 batchNormalizationGammaInitializer:(id)a12 batchNormalizationBetaInitializer:(id)a13 batchNormalizationMeanInitializer:(id)a14 batchNormalizationVarianceInitializer:(id)a15 batchNormalizationEpsilon:(double)a16 paddingStyle:(unint64_t)a17 dataLayout:(unint64_t)a18 weightsLayout:(unint64_t)a19 name:(id)a20;
-- (id)convolution2DWithDefaultBatchNormalizationLayerWithTensor:(id)a3 kernelSizes:(id)a4 outputChannelCount:(unint64_t)a5 strides:(id)a6 activationType:(unsigned int)a7 weightsInitializer:(id)a8 biasesInitializer:(id)a9 paddingStyle:(unint64_t)a10 dataLayout:(unint64_t)a11 weightsLayout:(unint64_t)a12 name:(id)a13;
-- (id)costVolumeWithRefTensor:(id)a3 inputTensor:(id)a4 coordinatesTensor:(id)a5 windowSizes:(id)a6 layout:(unint64_t)a7 normalizeCoordinates:(BOOL)a8 relativeCoordinates:(BOOL)a9 coordinateIs1DInWidth:(BOOL)a10 similarityType:(unint64_t)a11 name:(id)a12;
-- (id)createTexture:(id)a3 withPixelFormat:(unint64_t)a4 isCompressed:(BOOL)a5 name:(id)a6;
-- (id)cropResizeWithImagesTensor:(id)a3 boxesTensor:(id)a4 boxIndicesTensor:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (id)cropTensor:(id)a3 dimension:(unint64_t)a4 amount_before:(unint64_t)a5 amount_after:(unint64_t)a6 name:(id)a7;
-- (id)cumulativeMaximumReturnIndicesWithTensor:(id)a3 axis:(int64_t)a4 exclusive:(BOOL)a5 reverse:(BOOL)a6 name:(id)a7;
-- (id)cumulativeMinimumReturnIndicesWithTensor:(id)a3 axis:(int64_t)a4 exclusive:(BOOL)a5 reverse:(BOOL)a6 name:(id)a7;
-- (id)currentLearningRateWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 beta1PowerTensor:(id)a6 beta2PowerTensor:(id)a7 name:(id)a8;
+- (id)absoluteErrorWithPrimaryTensor:(id)tensor secondaryTensor:(id)secondaryTensor reductionType:(unint64_t)type name:(id)name;
+- (id)adamAssignWithInputVariableTensor:(id)tensor momentumVariableTensor:(id)variableTensor velocityVariableTensor:(id)velocityVariableTensor maximumVelocityVariableTensor:(id)maximumVelocityVariableTensor updates:(id)updates name:(id)name;
+- (id)adamUpdateWithCurrentLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor valuesTensor:(id)valuesTensor momentumTensor:(id)momentumTensor velocityTensor:(id)velocityTensor maximumVelocityTensor:(id)self0 gradientTensor:(id)self1 name:(id)self2;
+- (id)adamUpdateWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor beta1PowerTensor:(id)powerTensor beta2PowerTensor:(id)beta2PowerTensor valuesTensor:(id)valuesTensor momentumTensor:(id)self0 velocityTensor:(id)self1 maximumVelocityTensor:(id)self2 gradientTensor:(id)self3 name:(id)self4;
+- (id)adamUpdateWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor iterationTensor:(id)iterationTensor valuesTensor:(id)valuesTensor momentumTensor:(id)momentumTensor velocityTensor:(id)self0 gradientTensor:(id)self1 name:(id)self2;
+- (id)applyAdamWithCurrentLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor variable:(id)variable momentumVariable:(id)momentumVariable velocityVariable:(id)velocityVariable maximumVelocityVariable:(id)self0 gradientTensor:(id)self1 name:(id)self2;
+- (id)applyAdamWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor beta1PowerTensor:(id)powerTensor beta2PowerTensor:(id)beta2PowerTensor variable:(id)variable momentumVariable:(id)self0 velocityVariable:(id)self1 gradientTensor:(id)self2 name:(id)self3;
+- (id)applyAdamWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor iterationTensor:(id)iterationTensor variable:(id)variable momentumVariable:(id)momentumVariable velocityVariable:(id)self0 gradientTensor:(id)self1 name:(id)self2;
+- (id)avgPooling2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes strides:(id)strides paddingStyle:(unint64_t)style dataLayout:(unint64_t)layout name:(id)name;
+- (id)batchNormalizationLayerWithTensor:(id)tensor batchNormalizationGammaInitializer:(id)initializer batchNormalizationBetaInitializer:(id)betaInitializer batchNormalizationMeanInitializer:(id)meanInitializer batchNormalizationVarianceInitializer:(id)varianceInitializer batchNormalizationEpsilon:(double)epsilon dataLayout:(unint64_t)layout name:(id)self0;
+- (id)biasAddWithTensor:(id)tensor biases:(id)biases dataLayout:(unint64_t)layout name:(id)name;
+- (id)broadcastGradientArgsForPrimaryTensor:(id)tensor withSecondaryTensor:(id)secondaryTensor name:(id)name;
+- (id)bufferToTensorWithTensor:(id)tensor name:(id)name;
+- (id)bufferToTensorWithTensor:(id)tensor shape:(id)shape type:(unsigned int)type interleave:(id)interleave isTensorBufferOp:(BOOL)op isChannelAndInterleaveSame:(BOOL)same name:(id)name;
+- (id)callSymbolName:(id)name inputTensors:(id)tensors outputTypes:(id)types name:(id)a6;
+- (id)callWithInputTensors:(id)tensors outputTypes:(id)types symbolName:(id)name inliningOption:(unint64_t)option name:(id)a7;
+- (id)callWithInputTensors:(id)tensors outputTypes:(id)types symbolName:(id)name name:(id)a6;
+- (id)castBooleansOfInputsTensors:(id)tensors;
+- (id)compileWithDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations;
+- (id)convolution2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes outputChannelCount:(unint64_t)count strides:(id)strides activationType:(unsigned int)type weightsInitializer:(id)initializer biasesInitializer:(id)biasesInitializer batchNormalizationGammaInitializer:(id)self0 batchNormalizationBetaInitializer:(id)self1 batchNormalizationMeanInitializer:(id)self2 batchNormalizationVarianceInitializer:(id)self3 batchNormalizationEpsilon:(double)self4 paddingStyle:(unint64_t)self5 dataLayout:(unint64_t)self6 weightsLayout:(unint64_t)self7 name:(id)self8;
+- (id)convolution2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes outputChannelCount:(unint64_t)count strides:(id)strides activationType:(unsigned int)type weightsInitializer:(id)initializer biasesInitializer:(id)biasesInitializer paddingStyle:(unint64_t)self0 dataLayout:(unint64_t)self1 weightsLayout:(unint64_t)self2 name:(id)self3;
+- (id)convolution2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes outputChannelCount:(unint64_t)count strides:(id)strides dilationRates:(id)rates groups:(unint64_t)groups activationType:(unsigned int)type weightsInitializer:(id)self0 biasesInitializer:(id)self1 batchNormalizationGammaInitializer:(id)self2 batchNormalizationBetaInitializer:(id)self3 batchNormalizationMeanInitializer:(id)self4 batchNormalizationVarianceInitializer:(id)self5 batchNormalizationEpsilon:(double)self6 paddingStyle:(unint64_t)self7 dataLayout:(unint64_t)self8 weightsLayout:(unint64_t)self9 name:(id)name;
+- (id)convolution2DWithDefaultBatchNormalizationLayerWithTensor:(id)tensor kernelSizes:(id)sizes outputChannelCount:(unint64_t)count strides:(id)strides activationType:(unsigned int)type weightsInitializer:(id)initializer biasesInitializer:(id)biasesInitializer paddingStyle:(unint64_t)self0 dataLayout:(unint64_t)self1 weightsLayout:(unint64_t)self2 name:(id)self3;
+- (id)costVolumeWithRefTensor:(id)tensor inputTensor:(id)inputTensor coordinatesTensor:(id)coordinatesTensor windowSizes:(id)sizes layout:(unint64_t)layout normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates coordinateIs1DInWidth:(BOOL)self0 similarityType:(unint64_t)self1 name:(id)self2;
+- (id)createTexture:(id)texture withPixelFormat:(unint64_t)format isCompressed:(BOOL)compressed name:(id)name;
+- (id)cropResizeWithImagesTensor:(id)tensor boxesTensor:(id)boxesTensor boxIndicesTensor:(id)indicesTensor descriptor:(id)descriptor name:(id)name;
+- (id)cropTensor:(id)tensor dimension:(unint64_t)dimension amount_before:(unint64_t)amount_before amount_after:(unint64_t)amount_after name:(id)name;
+- (id)cumulativeMaximumReturnIndicesWithTensor:(id)tensor axis:(int64_t)axis exclusive:(BOOL)exclusive reverse:(BOOL)reverse name:(id)name;
+- (id)cumulativeMinimumReturnIndicesWithTensor:(id)tensor axis:(int64_t)axis exclusive:(BOOL)exclusive reverse:(BOOL)reverse name:(id)name;
+- (id)currentLearningRateWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor beta1PowerTensor:(id)powerTensor beta2PowerTensor:(id)beta2PowerTensor name:(id)name;
 - (id)debugDescription;
-- (id)decompositionLUWithTensor:(id)a3 name:(id)a4;
-- (id)decompositionWithTensor:(id)a3 descriptor:(id)a4 name:(id)a5;
-- (id)deinterleaveTensor:(id)a3 interleaveFactor:(unint64_t)a4 name:(id)a5;
-- (id)depthwiseConvolution2DDataGradientWithIncomingGradientTensor:(id)a3 weightsTensor:(id)a4 outputShapeTensor:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (id)depthwiseConvolution2DWeightsGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 outputShapeTensor:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (id)depthwiseConvolution3DDataGradientWithIncomingGradientTensor:(id)a3 weightsTensor:(id)a4 outputShapeTensor:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (id)depthwiseConvolution3DWeightsGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 outputShapeTensor:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (id)dequantizeTensor:(id)a3 LUTTensor:(id)a4 axis:(int64_t)a5 name:(id)a6;
-- (id)dequantizeTensor:(id)a3 LUTTensor:(id)a4 name:(id)a5;
-- (id)dequantizeTensor:(id)a3 lutTableTensor:(id)a4 axis:(int64_t)a5 name:(id)a6;
-- (id)dequantizeTensor:(id)a3 lutTableTensor:(id)a4 name:(id)a5;
-- (id)dequantizeTensor:(id)a3 scale:(double)a4 zeroPoint:(double)a5 dtype:(unsigned int)a6 name:(id)a7;
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 dataType:(unsigned int)a5 name:(id)a6;
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPoint:(double)a5 dtype:(unsigned int)a6 axis:(int)a7 name:(id)a8;
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 dataType:(unsigned int)a6 name:(id)a7;
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 dtype:(unsigned int)a6 axis:(int)a7 name:(id)a8;
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 minTensor:(id)a6 dataType:(unsigned int)a7 axis:(int64_t)a8 name:(id)a9;
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 minTensor:(id)a6 dataType:(unsigned int)a7 name:(id)a8;
-- (id)dimensionSizeOfTensor:(id)a3 axes:(id)a4 name:(id)a5;
-- (id)dimensionSizeOfTensor:(id)a3 axesTensor:(id)a4 name:(id)a5;
-- (id)eluGradientWithIncomingGradient:(id)a3 sourceTensor:(id)a4 alpha:(double)a5 name:(id)a6;
-- (id)eluWithTensor:(id)a3 alpha:(double)a4 name:(id)a5;
-- (id)expandTensor:(id)a3 dimension:(unint64_t)a4 name:(id)a5;
-- (id)expandTensor:(id)a3 dimensionTensor:(id)a4 name:(id)a5;
-- (id)fixCastIntTensor:(id)a3 toSignedness:(BOOL)a4 name:(id)a5;
-- (id)fixSignednessOfInputsTensors:(id)a3;
-- (id)fixTypeOfReductionInput:(id)a3;
-- (id)fullyConnectedLayerWithTensor:(id)a3 outputChannelCount:(unint64_t)a4 activationType:(unsigned int)a5 weightsInitializer:(id)a6 biasesInitializer:(id)a7 name:(id)a8;
-- (id)gatherAlongAxisWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 axis:(int64_t)a5 name:(id)a6;
-- (id)getCoordinateValueWithShapeTensor:(id)a3 axisTensor:(id)a4 name:(id)a5;
-- (id)getExecutableForDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 resultsDictionary:(id)a7 executionDescriptor:(id)a8;
-- (id)gradientForPrimaryTensor:(id)a3 withSecondaryTensor:(id)a4 name:(id)a5;
-- (id)interleaveTensor:(id)a3 interleaveFactor:(unint64_t)a4 name:(id)a5;
-- (id)kernelPredictorWithSourceTensor:(id)a3 weightsTensor:(id)a4 layout:(unint64_t)a5 kernelShape:(id)a6 dilationRates:(id)a7 name:(id)a8;
-- (id)kernelPredictorWithSourceTensor:(id)a3 weightsTensor:(id)a4 layout:(unint64_t)a5 kernelShape:(id)a6 name:(id)a7;
-- (id)localConvolutionDataGradientWithIncomingGradientTensor:(id)a3 weightTensor:(id)a4 dataLayout:(unint64_t)a5 kernelShape:(id)a6 dilationRateInX:(unint64_t)a7 dilationRateInY:(unint64_t)a8 name:(id)a9;
-- (id)localConvolutionWeightGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 dataLayout:(unint64_t)a5 kernelShape:(id)a6 dilationRateInX:(unint64_t)a7 dilationRateInY:(unint64_t)a8 name:(id)a9;
-- (id)localConvolutionWithSourceTensor:(id)a3 weightTensor:(id)a4 dataLayout:(unint64_t)a5 kernelShape:(id)a6 dilationRateInX:(unint64_t)a7 dilationRateInY:(unint64_t)a8 name:(id)a9;
-- (id)lossReductionWithTensor:(id)a3 reductionType:(unint64_t)a4 axis:(int64_t *)a5 name:(id)a6;
-- (id)makeListWithElementType:(id)a3 maxSize:(unint64_t)a4 name:(id)a5;
-- (id)makeListWithElementType:(id)a3 name:(id)a4;
-- (id)mathOpsWithTensors:(id)a3 mathOpType:(unint64_t)a4 name:(id)a5;
-- (id)matrixMultiplicationPrimaryGradientWithIncomingGradientTensor:(id)a3 primaryTensor:(id)a4 secondaryTensor:(id)a5 name:(id)a6;
-- (id)matrixMultiplicationSecondaryGradientWithIncomingGradientTensor:(id)a3 primaryTensor:(id)a4 secondaryTensor:(id)a5 name:(id)a6;
-- (id)maxPooling2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 strides:(id)a5 paddingStyle:(unint64_t)a6 dataLayout:(unint64_t)a7 name:(id)a8;
-- (id)momentumUpdateWithBetaTensor:(id)a3 momentumTensor:(id)a4 gradientTensor:(id)a5 name:(id)a6;
-- (id)operationWithName:(id)a3;
-- (id)padGradientWithIncomingGradientTensor:(id)a3 inputTensor:(id)a4 paddingMode:(int64_t)a5 paddingTensor:(id)a6 constantValuesTensor:(id)a7 name:(id)a8;
-- (id)padGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 paddingMode:(int64_t)a5 paddingTensor:(id)a6 name:(id)a7;
-- (id)padTensor:(id)a3 paddingMode:(int64_t)a4 paddingTensor:(id)a5 constantValuesTensor:(id)a6 name:(id)a7;
-- (id)paddingTensorWithLeftPadding:(id)a3 rightPadding:(id)a4;
-- (id)popBackFromList:(id)a3 outputList:(id *)a4 name:(id)a5;
-- (id)progressRandomStateTensor:(id)a3 forShape:(id)a4 name:(id)a5;
-- (id)progressRandomStateTensor:(id)a3 forShapeTensor:(id)a4 name:(id)a5;
-- (id)prunedGradientTensorWithDescriptor:(id)a3 inputTensor:(id)a4 gradientTensor:(id)a5 shape:(id)a6 name:(id)a7;
-- (id)prunedTensorWithDescriptor:(id)a3 tensor:(id)a4 shape:(id)a5 name:(id)a6;
-- (id)pushBackToList:(id)a3 element:(id)a4 name:(id)a5;
-- (id)quantizeTensor:(id)a3 scale:(double)a4 zeroPoint:(double)a5 dtype:(unsigned int)a6 name:(id)a7;
-- (id)quantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPoint:(double)a5 dtype:(unsigned int)a6 axis:(int)a7 name:(id)a8;
-- (id)quantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 dtype:(unsigned int)a6 axis:(int)a7 name:(id)a8;
-- (id)quantizedGatherWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 scaleTensor:(id)a5 zeroPointTensor:(id)a6 minTensor:(id)a7 dequantDataType:(unsigned int)a8 axis:(unint64_t)a9 batchDimensions:(unint64_t)a10 name:(id)a11;
-- (id)rankOfTensor:(id)a3 name:(id)a4;
-- (id)reciprocalSquareRootWithTensor:(id)a3 name:(id)a4;
-- (id)reductionSumWithTensor:(id)a3 axesTensor:(id)a4 name:(id)a5;
-- (id)resizeTensor:(id)a3 sizeTensor:(id)a4 mode:(unint64_t)a5 nearestRoundingMode:(unint64_t)a6 centerResult:(BOOL)a7 alignCorners:(BOOL)a8 layout:(unint64_t)a9 name:(id)a10;
-- (id)resizeTensor:(id)a3 sizeTensor:(id)a4 mode:(unint64_t)a5 nearestRoundingMode:(unint64_t)a6 centerResult:(BOOL)a7 alignCorners:(BOOL)a8 name:(id)a9;
-- (id)resizeTensor:(id)a3 sizeTensor:(id)a4 scaleOffsetTensor:(id)a5 mode:(unint64_t)a6 nearestRoundingMode:(unint64_t)a7 layout:(unint64_t)a8 name:(id)a9;
-- (id)resizeTensor:(id)a3 sizeTensor:(id)a4 scaleTensor:(id)a5 offsetTensor:(id)a6 mode:(unint64_t)a7 nearestRoundingMode:(unint64_t)a8 name:(id)a9;
-- (id)resizeWithGradientTensor:(id)a3 input:(id)a4 mode:(unint64_t)a5 nearestRoundingMode:(unint64_t)a6 centerResult:(BOOL)a7 alignCorners:(BOOL)a8 layout:(unint64_t)a9 name:(id)a10;
-- (id)resizeWithGradientTensor:(id)a3 input:(id)a4 scaleOffsetTensor:(id)a5 mode:(unint64_t)a6 nearestRoundingMode:(unint64_t)a7 layout:(unint64_t)a8 name:(id)a9;
-- (id)resizeWithGradientTensor:(id)a3 input:(id)a4 scaleTensor:(id)a5 offsetTensor:(id)a6 mode:(unint64_t)a7 nearestRoundingMode:(unint64_t)a8 name:(id)a9;
-- (id)runAsyncWithDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 executionDescriptor:(id)a7;
-- (id)runInternalWithMPSCommandBuffer:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 resultsDictionary:(id)a7 executionDescriptor:(id)a8 mpsGraphOwnedCommandBuffer:(BOOL)a9;
-- (id)runInternalWithMPSGraphDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 resultsDictionary:(id)a7 executionDescriptor:(id)a8;
-- (id)runInternalWithMTLCommandQueue:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 resultsDictionary:(id)a7 executionDescriptor:(id)a8;
-- (id)runWithDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 executionDescriptor:(id)a7;
-- (id)sampleGridDataGradientWithIncomingGradientTensor:(id)a3 coordinateTensor:(id)a4 outputShape:(id)a5 normalizeCoordinates:(BOOL)a6 relativeCoordinates:(BOOL)a7 paddingMode:(int64_t)a8 samplingMode:(unint64_t)a9 name:(id)a10;
-- (id)sampleGridDataGradientWithIncomingGradientTensor:(id)a3 coordinateTensor:(id)a4 outputShapeTensor:(id)a5 normalizeCoordinates:(BOOL)a6 relativeCoordinates:(BOOL)a7 paddingMode:(int64_t)a8 samplingMode:(unint64_t)a9 name:(id)a10;
-- (id)sampleGridWithSourceTensor:(id)a3 coordinateTensor:(id)a4 layout:(unint64_t)a5 normalizeCoordinates:(BOOL)a6 relativeCoordinates:(BOOL)a7 alignCorners:(BOOL)a8 paddingMode:(int64_t)a9 samplingMode:(unint64_t)a10 nearestRoundingMode:(unint64_t)a11 constantValue:(double)a12 name:(id)a13;
-- (id)sampleGridWithSourceTensor:(id)a3 coordinateTensor:(id)a4 normalizeCoordinates:(BOOL)a5 relativeCoordinates:(BOOL)a6 paddingMode:(int64_t)a7 samplingMode:(unint64_t)a8 constantValue:(double)a9 name:(id)a10;
-- (id)scaledDotProductAttentionWithQueryTensor:(id)a3 keyTensor:(id)a4 valueTensor:(id)a5 maskTensor:(id)a6 scale:(float)a7 name:(id)a8;
-- (id)scaledDotProductAttentionWithQueryTensor:(id)a3 keyTensor:(id)a4 valueTensor:(id)a5 scale:(float)a6 name:(id)a7;
-- (id)scatterAlongAxisWithDataTensor:(id)a3 updatesTensor:(id)a4 indicesTensor:(id)a5 axis:(int64_t)a6 mode:(int64_t)a7 name:(id)a8;
-- (id)scatterAlongAxisWithDataTensor:(id)a3 updatesTensor:(id)a4 indicesTensor:(id)a5 axis:(int64_t)a6 name:(id)a7;
-- (id)scatterAlongAxisWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 shape:(id)a5 axis:(int64_t)a6 mode:(int64_t)a7 name:(id)a8;
-- (id)scatterAlongAxisWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 shape:(id)a5 axis:(int64_t)a6 name:(id)a7;
-- (id)scatterWithDataTensor:(id)a3 updatesTensor:(id)a4 indicesTensor:(id)a5 axis:(int64_t)a6 name:(id)a7;
-- (id)scatterWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 shape:(id)a5 axis:(int64_t)a6 name:(id)a7;
-- (id)sizeOfTensor:(id)a3 name:(id)a4;
-- (id)sliceGradientTensor:(id)a3 fwdInShapeTensor:(id)a4 startTensor:(id)a5 endTensor:(id)a6 strideTensor:(id)a7 startMask:(unsigned int)a8 endMask:(unsigned int)a9 squeezeMask:(unsigned int)a10 name:(id)a11;
-- (id)sliceGradientTensor:(id)a3 fwdInShapeTensor:(id)a4 startTensor:(id)a5 sizeTensor:(id)a6 squeezeMask:(unsigned int)a7 name:(id)a8;
-- (id)sliceTensor:(id)a3 startTensor:(id)a4 endTensor:(id)a5 strideTensor:(id)a6 startMask:(unsigned int)a7 endMask:(unsigned int)a8 squeezeMask:(unsigned int)a9 name:(id)a10;
-- (id)sliceTensor:(id)a3 startTensor:(id)a4 sizeTensor:(id)a5 squeezeMask:(unsigned int)a6 name:(id)a7;
-- (id)sliceUpdateDataTensor:(id)a3 updateTensor:(id)a4 starts:(id)a5 ends:(id)a6 strides:(id)a7 name:(id)a8;
-- (id)sliceUpdateDataTensor:(id)a3 updateTensor:(id)a4 starts:(id)a5 ends:(id)a6 strides:(id)a7 startMask:(unsigned int)a8 endMask:(unsigned int)a9 squeezeMask:(unsigned int)a10 name:(id)a11;
-- (id)sliceUpdateDataTensor:(id)a3 updateTensor:(id)a4 startsTensor:(id)a5 endsTensor:(id)a6 stridesTensor:(id)a7 name:(id)a8;
-- (id)sliceUpdateDataTensor:(id)a3 updateTensor:(id)a4 startsTensor:(id)a5 endsTensor:(id)a6 stridesTensor:(id)a7 startMask:(unsigned int)a8 endMask:(unsigned int)a9 squeezeMask:(unsigned int)a10 name:(id)a11;
-- (id)solveLUWithDecompositionTensor:(id)a3 rhsTensor:(id)a4 name:(id)a5;
-- (id)solveWithDecompositionTensor:(id)a3 rhsTensor:(id)a4 descriptor:(id)a5 name:(id)a6;
-- (id)squaredErrorWithPrimaryTensor:(id)a3 secondaryTensor:(id)a4 reductionType:(unint64_t)a5 name:(id)a6;
-- (id)squeezeTensor:(id)a3 dimension:(unint64_t)a4 name:(id)a5;
-- (id)squeezeTensor:(id)a3 dimensionTensor:(id)a4 name:(id)a5;
-- (id)stencilWithSourceTensor:(id)a3 weightsTensor:(id)a4 offsets:(id)a5 name:(id)a6;
-- (id)stitchedOpsWithBlock:(id)a3 name:(id)a4;
-- (id)tensorToBufferWithTensor:(id)a3 name:(id)a4;
-- (id)tensorToBufferWithTensor:(id)a3 shape:(id)a4 type:(unsigned int)a5 interleave:(id)a6 isTensorBufferOp:(BOOL)a7 isChannelAndInterleaveSame:(BOOL)a8 name:(id)a9;
-- (id)tileGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 multiplierTensor:(id)a5 name:(id)a6;
-- (id)tileTensor:(id)a3 multiplierTensor:(id)a4 name:(id)a5;
-- (id)tileTensorWithMultiplier:(id)a3;
-- (id)transposeTensor:(id)a3 permute:(id)a4 name:(id)a5;
-- (id)varFromTensorWithTensor:(id)a3 name:(id)a4;
-- (id)variableFromTensorWithTensor:(id)a3 name:(id)a4;
-- (id)velocityUpdateWithBetaTensor:(id)a3 velocityTensor:(id)a4 gradientTensor:(id)a5 name:(id)a6;
+- (id)decompositionLUWithTensor:(id)tensor name:(id)name;
+- (id)decompositionWithTensor:(id)tensor descriptor:(id)descriptor name:(id)name;
+- (id)deinterleaveTensor:(id)tensor interleaveFactor:(unint64_t)factor name:(id)name;
+- (id)depthwiseConvolution2DDataGradientWithIncomingGradientTensor:(id)tensor weightsTensor:(id)weightsTensor outputShapeTensor:(id)shapeTensor descriptor:(id)descriptor name:(id)name;
+- (id)depthwiseConvolution2DWeightsGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor outputShapeTensor:(id)shapeTensor descriptor:(id)descriptor name:(id)name;
+- (id)depthwiseConvolution3DDataGradientWithIncomingGradientTensor:(id)tensor weightsTensor:(id)weightsTensor outputShapeTensor:(id)shapeTensor descriptor:(id)descriptor name:(id)name;
+- (id)depthwiseConvolution3DWeightsGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor outputShapeTensor:(id)shapeTensor descriptor:(id)descriptor name:(id)name;
+- (id)dequantizeTensor:(id)tensor LUTTensor:(id)tTensor axis:(int64_t)axis name:(id)name;
+- (id)dequantizeTensor:(id)tensor LUTTensor:(id)tTensor name:(id)name;
+- (id)dequantizeTensor:(id)tensor lutTableTensor:(id)tableTensor axis:(int64_t)axis name:(id)name;
+- (id)dequantizeTensor:(id)tensor lutTableTensor:(id)tableTensor name:(id)name;
+- (id)dequantizeTensor:(id)tensor scale:(double)scale zeroPoint:(double)point dtype:(unsigned int)dtype name:(id)name;
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor dataType:(unsigned int)type name:(id)name;
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPoint:(double)point dtype:(unsigned int)dtype axis:(int)axis name:(id)name;
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor dataType:(unsigned int)type name:(id)name;
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor dtype:(unsigned int)dtype axis:(int)axis name:(id)name;
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor minTensor:(id)minTensor dataType:(unsigned int)type axis:(int64_t)axis name:(id)name;
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor minTensor:(id)minTensor dataType:(unsigned int)type name:(id)name;
+- (id)dimensionSizeOfTensor:(id)tensor axes:(id)axes name:(id)name;
+- (id)dimensionSizeOfTensor:(id)tensor axesTensor:(id)axesTensor name:(id)name;
+- (id)eluGradientWithIncomingGradient:(id)gradient sourceTensor:(id)tensor alpha:(double)alpha name:(id)name;
+- (id)eluWithTensor:(id)tensor alpha:(double)alpha name:(id)name;
+- (id)expandTensor:(id)tensor dimension:(unint64_t)dimension name:(id)name;
+- (id)expandTensor:(id)tensor dimensionTensor:(id)dimensionTensor name:(id)name;
+- (id)fixCastIntTensor:(id)tensor toSignedness:(BOOL)signedness name:(id)name;
+- (id)fixSignednessOfInputsTensors:(id)tensors;
+- (id)fixTypeOfReductionInput:(id)input;
+- (id)fullyConnectedLayerWithTensor:(id)tensor outputChannelCount:(unint64_t)count activationType:(unsigned int)type weightsInitializer:(id)initializer biasesInitializer:(id)biasesInitializer name:(id)name;
+- (id)gatherAlongAxisWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor axis:(int64_t)axis name:(id)name;
+- (id)getCoordinateValueWithShapeTensor:(id)tensor axisTensor:(id)axisTensor name:(id)name;
+- (id)getExecutableForDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor;
+- (id)gradientForPrimaryTensor:(id)tensor withSecondaryTensor:(id)secondaryTensor name:(id)name;
+- (id)interleaveTensor:(id)tensor interleaveFactor:(unint64_t)factor name:(id)name;
+- (id)kernelPredictorWithSourceTensor:(id)tensor weightsTensor:(id)weightsTensor layout:(unint64_t)layout kernelShape:(id)shape dilationRates:(id)rates name:(id)name;
+- (id)kernelPredictorWithSourceTensor:(id)tensor weightsTensor:(id)weightsTensor layout:(unint64_t)layout kernelShape:(id)shape name:(id)name;
+- (id)localConvolutionDataGradientWithIncomingGradientTensor:(id)tensor weightTensor:(id)weightTensor dataLayout:(unint64_t)layout kernelShape:(id)shape dilationRateInX:(unint64_t)x dilationRateInY:(unint64_t)y name:(id)name;
+- (id)localConvolutionWeightGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor dataLayout:(unint64_t)layout kernelShape:(id)shape dilationRateInX:(unint64_t)x dilationRateInY:(unint64_t)y name:(id)name;
+- (id)localConvolutionWithSourceTensor:(id)tensor weightTensor:(id)weightTensor dataLayout:(unint64_t)layout kernelShape:(id)shape dilationRateInX:(unint64_t)x dilationRateInY:(unint64_t)y name:(id)name;
+- (id)lossReductionWithTensor:(id)tensor reductionType:(unint64_t)type axis:(int64_t *)axis name:(id)name;
+- (id)makeListWithElementType:(id)type maxSize:(unint64_t)size name:(id)name;
+- (id)makeListWithElementType:(id)type name:(id)name;
+- (id)mathOpsWithTensors:(id)tensors mathOpType:(unint64_t)type name:(id)name;
+- (id)matrixMultiplicationPrimaryGradientWithIncomingGradientTensor:(id)tensor primaryTensor:(id)primaryTensor secondaryTensor:(id)secondaryTensor name:(id)name;
+- (id)matrixMultiplicationSecondaryGradientWithIncomingGradientTensor:(id)tensor primaryTensor:(id)primaryTensor secondaryTensor:(id)secondaryTensor name:(id)name;
+- (id)maxPooling2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes strides:(id)strides paddingStyle:(unint64_t)style dataLayout:(unint64_t)layout name:(id)name;
+- (id)momentumUpdateWithBetaTensor:(id)tensor momentumTensor:(id)momentumTensor gradientTensor:(id)gradientTensor name:(id)name;
+- (id)operationWithName:(id)name;
+- (id)padGradientWithIncomingGradientTensor:(id)tensor inputTensor:(id)inputTensor paddingMode:(int64_t)mode paddingTensor:(id)paddingTensor constantValuesTensor:(id)valuesTensor name:(id)name;
+- (id)padGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor paddingMode:(int64_t)mode paddingTensor:(id)paddingTensor name:(id)name;
+- (id)padTensor:(id)tensor paddingMode:(int64_t)mode paddingTensor:(id)paddingTensor constantValuesTensor:(id)valuesTensor name:(id)name;
+- (id)paddingTensorWithLeftPadding:(id)padding rightPadding:(id)rightPadding;
+- (id)popBackFromList:(id)list outputList:(id *)outputList name:(id)name;
+- (id)progressRandomStateTensor:(id)tensor forShape:(id)shape name:(id)name;
+- (id)progressRandomStateTensor:(id)tensor forShapeTensor:(id)shapeTensor name:(id)name;
+- (id)prunedGradientTensorWithDescriptor:(id)descriptor inputTensor:(id)tensor gradientTensor:(id)gradientTensor shape:(id)shape name:(id)name;
+- (id)prunedTensorWithDescriptor:(id)descriptor tensor:(id)tensor shape:(id)shape name:(id)name;
+- (id)pushBackToList:(id)list element:(id)element name:(id)name;
+- (id)quantizeTensor:(id)tensor scale:(double)scale zeroPoint:(double)point dtype:(unsigned int)dtype name:(id)name;
+- (id)quantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPoint:(double)point dtype:(unsigned int)dtype axis:(int)axis name:(id)name;
+- (id)quantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor dtype:(unsigned int)dtype axis:(int)axis name:(id)name;
+- (id)quantizedGatherWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor minTensor:(id)minTensor dequantDataType:(unsigned int)type axis:(unint64_t)axis batchDimensions:(unint64_t)self0 name:(id)self1;
+- (id)rankOfTensor:(id)tensor name:(id)name;
+- (id)reciprocalSquareRootWithTensor:(id)tensor name:(id)name;
+- (id)reductionSumWithTensor:(id)tensor axesTensor:(id)axesTensor name:(id)name;
+- (id)resizeTensor:(id)tensor sizeTensor:(id)sizeTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode centerResult:(BOOL)result alignCorners:(BOOL)corners layout:(unint64_t)layout name:(id)self0;
+- (id)resizeTensor:(id)tensor sizeTensor:(id)sizeTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode centerResult:(BOOL)result alignCorners:(BOOL)corners name:(id)name;
+- (id)resizeTensor:(id)tensor sizeTensor:(id)sizeTensor scaleOffsetTensor:(id)offsetTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode layout:(unint64_t)layout name:(id)name;
+- (id)resizeTensor:(id)tensor sizeTensor:(id)sizeTensor scaleTensor:(id)scaleTensor offsetTensor:(id)offsetTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode name:(id)name;
+- (id)resizeWithGradientTensor:(id)tensor input:(id)input mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode centerResult:(BOOL)result alignCorners:(BOOL)corners layout:(unint64_t)layout name:(id)self0;
+- (id)resizeWithGradientTensor:(id)tensor input:(id)input scaleOffsetTensor:(id)offsetTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode layout:(unint64_t)layout name:(id)name;
+- (id)resizeWithGradientTensor:(id)tensor input:(id)input scaleTensor:(id)scaleTensor offsetTensor:(id)offsetTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode name:(id)name;
+- (id)runAsyncWithDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations executionDescriptor:(id)descriptor;
+- (id)runInternalWithMPSCommandBuffer:(id)buffer feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor mpsGraphOwnedCommandBuffer:(BOOL)commandBuffer;
+- (id)runInternalWithMPSGraphDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor;
+- (id)runInternalWithMTLCommandQueue:(id)queue feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor;
+- (id)runWithDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations executionDescriptor:(id)descriptor;
+- (id)sampleGridDataGradientWithIncomingGradientTensor:(id)tensor coordinateTensor:(id)coordinateTensor outputShape:(id)shape normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates paddingMode:(int64_t)mode samplingMode:(unint64_t)samplingMode name:(id)self0;
+- (id)sampleGridDataGradientWithIncomingGradientTensor:(id)tensor coordinateTensor:(id)coordinateTensor outputShapeTensor:(id)shapeTensor normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates paddingMode:(int64_t)mode samplingMode:(unint64_t)samplingMode name:(id)self0;
+- (id)sampleGridWithSourceTensor:(id)tensor coordinateTensor:(id)coordinateTensor layout:(unint64_t)layout normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates alignCorners:(BOOL)corners paddingMode:(int64_t)mode samplingMode:(unint64_t)self0 nearestRoundingMode:(unint64_t)self1 constantValue:(double)self2 name:(id)self3;
+- (id)sampleGridWithSourceTensor:(id)tensor coordinateTensor:(id)coordinateTensor normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates paddingMode:(int64_t)mode samplingMode:(unint64_t)samplingMode constantValue:(double)value name:(id)self0;
+- (id)scaledDotProductAttentionWithQueryTensor:(id)tensor keyTensor:(id)keyTensor valueTensor:(id)valueTensor maskTensor:(id)maskTensor scale:(float)scale name:(id)name;
+- (id)scaledDotProductAttentionWithQueryTensor:(id)tensor keyTensor:(id)keyTensor valueTensor:(id)valueTensor scale:(float)scale name:(id)name;
+- (id)scatterAlongAxisWithDataTensor:(id)tensor updatesTensor:(id)updatesTensor indicesTensor:(id)indicesTensor axis:(int64_t)axis mode:(int64_t)mode name:(id)name;
+- (id)scatterAlongAxisWithDataTensor:(id)tensor updatesTensor:(id)updatesTensor indicesTensor:(id)indicesTensor axis:(int64_t)axis name:(id)name;
+- (id)scatterAlongAxisWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor shape:(id)shape axis:(int64_t)axis mode:(int64_t)mode name:(id)name;
+- (id)scatterAlongAxisWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor shape:(id)shape axis:(int64_t)axis name:(id)name;
+- (id)scatterWithDataTensor:(id)tensor updatesTensor:(id)updatesTensor indicesTensor:(id)indicesTensor axis:(int64_t)axis name:(id)name;
+- (id)scatterWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor shape:(id)shape axis:(int64_t)axis name:(id)name;
+- (id)sizeOfTensor:(id)tensor name:(id)name;
+- (id)sliceGradientTensor:(id)tensor fwdInShapeTensor:(id)shapeTensor startTensor:(id)startTensor endTensor:(id)endTensor strideTensor:(id)strideTensor startMask:(unsigned int)mask endMask:(unsigned int)endMask squeezeMask:(unsigned int)self0 name:(id)self1;
+- (id)sliceGradientTensor:(id)tensor fwdInShapeTensor:(id)shapeTensor startTensor:(id)startTensor sizeTensor:(id)sizeTensor squeezeMask:(unsigned int)mask name:(id)name;
+- (id)sliceTensor:(id)tensor startTensor:(id)startTensor endTensor:(id)endTensor strideTensor:(id)strideTensor startMask:(unsigned int)mask endMask:(unsigned int)endMask squeezeMask:(unsigned int)squeezeMask name:(id)self0;
+- (id)sliceTensor:(id)tensor startTensor:(id)startTensor sizeTensor:(id)sizeTensor squeezeMask:(unsigned int)mask name:(id)name;
+- (id)sliceUpdateDataTensor:(id)tensor updateTensor:(id)updateTensor starts:(id)starts ends:(id)ends strides:(id)strides name:(id)name;
+- (id)sliceUpdateDataTensor:(id)tensor updateTensor:(id)updateTensor starts:(id)starts ends:(id)ends strides:(id)strides startMask:(unsigned int)mask endMask:(unsigned int)endMask squeezeMask:(unsigned int)self0 name:(id)self1;
+- (id)sliceUpdateDataTensor:(id)tensor updateTensor:(id)updateTensor startsTensor:(id)startsTensor endsTensor:(id)endsTensor stridesTensor:(id)stridesTensor name:(id)name;
+- (id)sliceUpdateDataTensor:(id)tensor updateTensor:(id)updateTensor startsTensor:(id)startsTensor endsTensor:(id)endsTensor stridesTensor:(id)stridesTensor startMask:(unsigned int)mask endMask:(unsigned int)endMask squeezeMask:(unsigned int)self0 name:(id)self1;
+- (id)solveLUWithDecompositionTensor:(id)tensor rhsTensor:(id)rhsTensor name:(id)name;
+- (id)solveWithDecompositionTensor:(id)tensor rhsTensor:(id)rhsTensor descriptor:(id)descriptor name:(id)name;
+- (id)squaredErrorWithPrimaryTensor:(id)tensor secondaryTensor:(id)secondaryTensor reductionType:(unint64_t)type name:(id)name;
+- (id)squeezeTensor:(id)tensor dimension:(unint64_t)dimension name:(id)name;
+- (id)squeezeTensor:(id)tensor dimensionTensor:(id)dimensionTensor name:(id)name;
+- (id)stencilWithSourceTensor:(id)tensor weightsTensor:(id)weightsTensor offsets:(id)offsets name:(id)name;
+- (id)stitchedOpsWithBlock:(id)block name:(id)name;
+- (id)tensorToBufferWithTensor:(id)tensor name:(id)name;
+- (id)tensorToBufferWithTensor:(id)tensor shape:(id)shape type:(unsigned int)type interleave:(id)interleave isTensorBufferOp:(BOOL)op isChannelAndInterleaveSame:(BOOL)same name:(id)name;
+- (id)tileGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor multiplierTensor:(id)multiplierTensor name:(id)name;
+- (id)tileTensor:(id)tensor multiplierTensor:(id)multiplierTensor name:(id)name;
+- (id)tileTensorWithMultiplier:(id)multiplier;
+- (id)transposeTensor:(id)tensor permute:(id)permute name:(id)name;
+- (id)varFromTensorWithTensor:(id)tensor name:(id)name;
+- (id)variableFromTensorWithTensor:(id)tensor name:(id)name;
+- (id)velocityUpdateWithBetaTensor:(id)tensor velocityTensor:(id)velocityTensor gradientTensor:(id)gradientTensor name:(id)name;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(MPSCommandBuffer *)commandBuffer feeds:(MPSGraphTensorDataDictionary *)feeds targetOperations:(NSArray *)targetOperations resultsDictionary:(MPSGraphTensorDataDictionary *)resultsDictionary executionDescriptor:(MPSGraphExecutionDescriptor *)executionDescriptor;
-- (void)runAsyncWithDevice:(id)a3 feeds:(id)a4 targetOperations:(id)a5 resultsDictionary:(id)a6 executionDescriptor:(id)a7;
+- (void)runAsyncWithDevice:(id)device feeds:(id)feeds targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor;
 - (void)runAsyncWithMTLCommandQueue:(id)commandQueue feeds:(MPSGraphTensorDataDictionary *)feeds targetOperations:(NSArray *)targetOperations resultsDictionary:(MPSGraphTensorDataDictionary *)resultsDictionary executionDescriptor:(MPSGraphExecutionDescriptor *)executionDescriptor;
-- (void)runWithDevice:(id)a3 feeds:(id)a4 targetOperations:(id)a5 resultsDictionary:(id)a6 executionDescriptor:(id)a7;
+- (void)runWithDevice:(id)device feeds:(id)feeds targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor;
 - (void)runWithMTLCommandQueue:(id)commandQueue feeds:(MPSGraphTensorDataDictionary *)feeds targetOperations:(NSArray *)targetOperations resultsDictionary:(MPSGraphTensorDataDictionary *)resultsDictionary;
 @end
 
 @implementation MPSGraph
 
-- (id)decompositionLUWithTensor:(id)a3 name:(id)a4
+- (id)decompositionLUWithTensor:(id)tensor name:(id)name
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tensorCopy = tensor;
+  nameCopy = name;
   v8 = [MPSGraphMatrixDecompositionOp alloc];
-  v13[0] = v6;
+  v13[0] = tensorCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
+  v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
 
-  return v11;
+  return outputTensors;
 }
 
-- (id)decompositionWithTensor:(id)a3 descriptor:(id)a4 name:(id)a5
+- (id)decompositionWithTensor:(id)tensor descriptor:(id)descriptor name:(id)name
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  tensorCopy = tensor;
+  nameCopy = name;
   v9 = [MPSGraphMatrixDecompositionOp alloc];
-  v14[0] = v7;
+  v14[0] = tensorCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v11 = [(MPSGraphOperation *)v9 initWithGraph:self inputTensors:v10 controlDependencies:MEMORY[0x1E695E0F0] name:v8];
+  v11 = [(MPSGraphOperation *)v9 initWithGraph:self inputTensors:v10 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v12 = [(MPSGraphOperation *)v11 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v11 outputTensors];
 
-  return v12;
+  return outputTensors;
 }
 
-- (id)sampleGridWithSourceTensor:(id)a3 coordinateTensor:(id)a4 layout:(unint64_t)a5 normalizeCoordinates:(BOOL)a6 relativeCoordinates:(BOOL)a7 alignCorners:(BOOL)a8 paddingMode:(int64_t)a9 samplingMode:(unint64_t)a10 nearestRoundingMode:(unint64_t)a11 constantValue:(double)a12 name:(id)a13
+- (id)sampleGridWithSourceTensor:(id)tensor coordinateTensor:(id)coordinateTensor layout:(unint64_t)layout normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates alignCorners:(BOOL)corners paddingMode:(int64_t)mode samplingMode:(unint64_t)self0 nearestRoundingMode:(unint64_t)self1 constantValue:(double)self2 name:(id)self3
 {
-  v31 = a7;
-  v15 = a6;
+  relativeCoordinatesCopy = relativeCoordinates;
+  coordinatesCopy = coordinates;
   v35[3] = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v33 = a4;
-  v34 = a13;
-  if (a9 == 4)
+  tensorCopy = tensor;
+  coordinateTensorCopy = coordinateTensor;
+  nameCopy = name;
+  if (mode == 4)
   {
-    v20 = 0;
+    modeCopy = 0;
   }
 
   else
   {
-    v20 = a9;
+    modeCopy = mode;
   }
 
-  v32 = v19;
-  v21 = [v19 dataType];
-  v22 = 0.0;
-  if (a9 != 4)
+  v32 = tensorCopy;
+  dataType = [tensorCopy dataType];
+  valueCopy = 0.0;
+  if (mode != 4)
   {
-    v22 = a12;
+    valueCopy = value;
   }
 
-  v23 = [(MPSGraph *)self constantWithScalar:&unk_1F5B75DB8 shape:v21 dataType:v22];
+  v23 = [(MPSGraph *)self constantWithScalar:&unk_1F5B75DB8 shape:dataType dataType:valueCopy];
   v24 = [MPSGraphSampleGridOp alloc];
-  v35[0] = v19;
-  v35[1] = v33;
+  v35[0] = tensorCopy;
+  v35[1] = coordinateTensorCopy;
   v35[2] = v23;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:3];
-  LOBYTE(v30) = a8;
-  v26 = [(MPSGraphSampleGridOp *)v24 initWithGraph:self inputTensors:v25 controlDependencies:MEMORY[0x1E695E0F0] layout:a5 normalizeCoordinates:v15 relativeCoordinates:v31 alignCorners:v30 paddingMode:v20 samplingMode:a10 nearestRoundingMode:a11 name:v34];
+  LOBYTE(v30) = corners;
+  v26 = [(MPSGraphSampleGridOp *)v24 initWithGraph:self inputTensors:v25 controlDependencies:MEMORY[0x1E695E0F0] layout:layout normalizeCoordinates:coordinatesCopy relativeCoordinates:relativeCoordinatesCopy alignCorners:v30 paddingMode:modeCopy samplingMode:samplingMode nearestRoundingMode:roundingMode name:nameCopy];
 
-  v27 = [(MPSGraphOperation *)v26 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v26 outputTensors];
+  v28 = [outputTensors objectAtIndexedSubscript:0];
 
   return v28;
 }
@@ -603,60 +603,60 @@
   return v12;
 }
 
-- (id)sampleGridWithSourceTensor:(id)a3 coordinateTensor:(id)a4 normalizeCoordinates:(BOOL)a5 relativeCoordinates:(BOOL)a6 paddingMode:(int64_t)a7 samplingMode:(unint64_t)a8 constantValue:(double)a9 name:(id)a10
+- (id)sampleGridWithSourceTensor:(id)tensor coordinateTensor:(id)coordinateTensor normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates paddingMode:(int64_t)mode samplingMode:(unint64_t)samplingMode constantValue:(double)value name:(id)self0
 {
-  v10 = [(MPSGraph *)self sampleGridWithSourceTensor:a3 coordinateTensor:a4 layout:1 normalizeCoordinates:a5 relativeCoordinates:a6 alignCorners:0 paddingMode:a9 samplingMode:a7 constantValue:a8 name:a10];
+  v10 = [(MPSGraph *)self sampleGridWithSourceTensor:tensor coordinateTensor:coordinateTensor layout:1 normalizeCoordinates:coordinates relativeCoordinates:relativeCoordinates alignCorners:0 paddingMode:value samplingMode:mode constantValue:samplingMode name:name];
 
   return v10;
 }
 
-- (id)sampleGridDataGradientWithIncomingGradientTensor:(id)a3 coordinateTensor:(id)a4 outputShapeTensor:(id)a5 normalizeCoordinates:(BOOL)a6 relativeCoordinates:(BOOL)a7 paddingMode:(int64_t)a8 samplingMode:(unint64_t)a9 name:(id)a10
+- (id)sampleGridDataGradientWithIncomingGradientTensor:(id)tensor coordinateTensor:(id)coordinateTensor outputShapeTensor:(id)shapeTensor normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates paddingMode:(int64_t)mode samplingMode:(unint64_t)samplingMode name:(id)self0
 {
-  v26 = a7;
-  v11 = a6;
+  relativeCoordinatesCopy = relativeCoordinates;
+  coordinatesCopy = coordinates;
   v27[3] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a10;
-  if (a8 == 4)
+  tensorCopy = tensor;
+  coordinateTensorCopy = coordinateTensor;
+  shapeTensorCopy = shapeTensor;
+  nameCopy = name;
+  if (mode == 4)
   {
-    a8 = 0;
+    mode = 0;
   }
 
-  v25 = v15;
+  v25 = tensorCopy;
   v19 = [MPSGraphSampleGridDataGradientOp alloc];
-  v27[0] = v15;
-  v27[1] = v16;
-  v27[2] = v17;
+  v27[0] = tensorCopy;
+  v27[1] = coordinateTensorCopy;
+  v27[2] = shapeTensorCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:3];
-  v21 = [(MPSGraphSampleGridDataGradientOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] normalizeCoordinates:v11 relativeCoordinates:v26 paddingMode:a8 samplingMode:a9 name:v18];
+  v21 = [(MPSGraphSampleGridDataGradientOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] normalizeCoordinates:coordinatesCopy relativeCoordinates:relativeCoordinatesCopy paddingMode:mode samplingMode:samplingMode name:nameCopy];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
 
-- (id)sampleGridDataGradientWithIncomingGradientTensor:(id)a3 coordinateTensor:(id)a4 outputShape:(id)a5 normalizeCoordinates:(BOOL)a6 relativeCoordinates:(BOOL)a7 paddingMode:(int64_t)a8 samplingMode:(unint64_t)a9 name:(id)a10
+- (id)sampleGridDataGradientWithIncomingGradientTensor:(id)tensor coordinateTensor:(id)coordinateTensor outputShape:(id)shape normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates paddingMode:(int64_t)mode samplingMode:(unint64_t)samplingMode name:(id)self0
 {
-  v24 = a7;
-  v11 = a6;
+  relativeCoordinatesCopy = relativeCoordinates;
+  coordinatesCopy = coordinates;
   v27 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a10;
+  tensorCopy = tensor;
+  coordinateTensorCopy = coordinateTensor;
+  shapeCopy = shape;
+  nameCopy = name;
   v18 = 0;
-  if (a8 == 4)
+  if (mode == 4)
   {
-    a8 = 0;
+    mode = 0;
   }
 
   v26 = xmmword_1E099B5F0;
-  while (v18 < [v16 count])
+  while (v18 < [shapeCopy count])
   {
-    v19 = [v16 objectAtIndexedSubscript:v18];
+    v19 = [shapeCopy objectAtIndexedSubscript:v18];
     *(&v26 + v18) = [v19 intValue];
 
     ++v18;
@@ -665,7 +665,7 @@
   v20 = [MEMORY[0x1E695DEF0] dataWithBytes:&v26 length:16];
   v21 = [(MPSGraph *)self constantWithData:v20 shape:&unk_1F5B75DD0 dataType:536870944];
 
-  v22 = [(MPSGraph *)self sampleGridDataGradientWithIncomingGradientTensor:v25 coordinateTensor:v15 outputShapeTensor:v21 normalizeCoordinates:v11 relativeCoordinates:v24 paddingMode:a8 samplingMode:a9 name:v17];
+  v22 = [(MPSGraph *)self sampleGridDataGradientWithIncomingGradientTensor:tensorCopy coordinateTensor:coordinateTensorCopy outputShapeTensor:v21 normalizeCoordinates:coordinatesCopy relativeCoordinates:relativeCoordinatesCopy paddingMode:mode samplingMode:samplingMode name:nameCopy];
 
   return v22;
 }
@@ -681,8 +681,8 @@
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v13 = [(MPSGraphImToColOp *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v9 name:v10];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -715,8 +715,8 @@
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
   v22 = [(MPSGraphColToImOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 outputShape:v11 name:v13];
 
-  v23 = [(MPSGraphOperation *)v22 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v22 outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
   return v24;
 }
@@ -735,8 +735,8 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphCumulativeBaseOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] exclusive:v9 reverse:v8 name:v13];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -755,8 +755,8 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphCumulativeBaseOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] exclusive:v9 reverse:v8 name:v14];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -775,8 +775,8 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphCumulativeBaseOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] exclusive:v9 reverse:v8 name:v13];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -795,8 +795,8 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphCumulativeBaseOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] exclusive:v9 reverse:v8 name:v14];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -815,8 +815,8 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphCumulativeBaseOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] exclusive:v9 reverse:v8 name:v13];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -835,8 +835,8 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphCumulativeBaseOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] exclusive:v9 reverse:v8 name:v14];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -855,8 +855,8 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphCumulativeBaseOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] exclusive:v9 reverse:v8 name:v13];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -875,8 +875,8 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphCumulativeBaseOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] exclusive:v9 reverse:v8 name:v14];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -937,7 +937,7 @@
   return v5;
 }
 
-- (id)cumulativeMaximumReturnIndicesWithTensor:(id)a3 axis:(int64_t)a4 exclusive:(BOOL)a5 reverse:(BOOL)a6 name:(id)a7
+- (id)cumulativeMaximumReturnIndicesWithTensor:(id)tensor axis:(int64_t)axis exclusive:(BOOL)exclusive reverse:(BOOL)reverse name:(id)name
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -947,7 +947,7 @@
   return 0;
 }
 
-- (id)cumulativeMinimumReturnIndicesWithTensor:(id)a3 axis:(int64_t)a4 exclusive:(BOOL)a5 reverse:(BOOL)a6 name:(id)a7
+- (id)cumulativeMinimumReturnIndicesWithTensor:(id)tensor axis:(int64_t)axis exclusive:(BOOL)exclusive reverse:(BOOL)reverse name:(id)name
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -967,8 +967,8 @@
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v12 = [outputTensors objectAtIndexedSubscript:0];
 
   return v12;
 }
@@ -1055,32 +1055,32 @@
   return v5;
 }
 
-- (id)mathOpsWithTensors:(id)a3 mathOpType:(unint64_t)a4 name:(id)a5
+- (id)mathOpsWithTensors:(id)tensors mathOpType:(unint64_t)type name:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  tensorsCopy = tensors;
+  nameCopy = name;
   v10 = [MPSGraphArithmeticOp alloc];
-  v11 = [(MPSGraphArithmeticOp *)v10 initWithGraph:self inputTensors:v8 controlDependencies:MEMORY[0x1E695E0F0] mathOpType:a4 name:v9];
-  v12 = [(MPSGraphOperation *)v11 outputTensors];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  v11 = [(MPSGraphArithmeticOp *)v10 initWithGraph:self inputTensors:tensorsCopy controlDependencies:MEMORY[0x1E695E0F0] mathOpType:type name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v11 outputTensors];
+  v13 = [outputTensors objectAtIndexedSubscript:0];
 
   return v13;
 }
 
-- (id)fixSignednessOfInputsTensors:(id)a3
+- (id)fixSignednessOfInputsTensors:(id)tensors
 {
   v33 = *MEMORY[0x1E69E9840];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  tensorsCopy = tensors;
+  v5 = [tensorsCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (!v5)
   {
 
 LABEL_25:
-    v10 = v4;
+    v10 = tensorsCopy;
     goto LABEL_26;
   }
 
@@ -1092,7 +1092,7 @@ LABEL_25:
     {
       if (*v28 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(tensorsCopy);
       }
 
       v9 = *(*(&v27 + 1) + 8 * i);
@@ -1100,14 +1100,14 @@ LABEL_25:
       if (*(*MLIRElementType + 136) != &mlir::detail::TypeIDResolver<mlir::IntegerType,void>::id)
       {
 
-        v10 = v4;
+        v10 = tensorsCopy;
         goto LABEL_26;
       }
 
       v6 = v6 || !mlir::Type::isUnsignedInteger(&MLIRElementType);
     }
 
-    v5 = [v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v5 = [tensorsCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v5)
     {
       continue;
@@ -1126,7 +1126,7 @@ LABEL_25:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v21 = v4;
+  v21 = tensorsCopy;
   v11 = [v21 countByEnumeratingWithState:&v22 objects:v31 count:16];
   if (v11)
   {
@@ -1166,16 +1166,16 @@ LABEL_26:
   return v10;
 }
 
-- (id)castBooleansOfInputsTensors:(id)a3
+- (id)castBooleansOfInputsTensors:(id)tensors
 {
-  v21 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x1E69E9840];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  tensorsCopy = tensors;
+  v4 = [tensorsCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (!v4)
   {
 
@@ -1185,19 +1185,19 @@ LABEL_26:
   v5 = 0;
   LOBYTE(v6) = 0;
   v7 = *v28;
-  v8 = 268435488;
+  dataType2 = 268435488;
   do
   {
     for (i = 0; i != v4; ++i)
     {
       if (*v28 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(tensorsCopy);
       }
 
       v10 = *(*(&v27 + 1) + 8 * i);
-      v11 = [v10 dataType];
-      v12 = v11;
+      dataType = [v10 dataType];
+      v12 = dataType;
       if (!v6)
       {
         v6 = [v10 dataType] == -2147483640;
@@ -1207,12 +1207,12 @@ LABEL_26:
         }
 
 LABEL_10:
-        v8 = [v10 dataType];
+        dataType2 = [v10 dataType];
         goto LABEL_11;
       }
 
       v6 = 1;
-      if ((v11 & 0x10000000) != 0)
+      if ((dataType & 0x10000000) != 0)
       {
         goto LABEL_10;
       }
@@ -1222,7 +1222,7 @@ LABEL_11:
       v5 |= (v12 & 0x10000000u) >> 28;
     }
 
-    v4 = [v3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v4 = [tensorsCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
   }
 
   while (v4);
@@ -1230,7 +1230,7 @@ LABEL_11:
   if ((v6 & v5 & 1) == 0)
   {
 LABEL_25:
-    v13 = v3;
+    v13 = tensorsCopy;
     goto LABEL_26;
   }
 
@@ -1239,7 +1239,7 @@ LABEL_25:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = tensorsCopy;
   v14 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v14)
   {
@@ -1257,12 +1257,12 @@ LABEL_25:
         v18 = v17;
         if ([v17 dataType] == -2147483640)
         {
-          v19 = [(MPSGraph *)v21 castTensor:v17 toType:v8 name:0];
+          v19 = [(MPSGraph *)selfCopy castTensor:v17 toType:dataType2 name:0];
 
           v18 = v19;
         }
 
-        [v13 addObject:{v18, v21}];
+        [v13 addObject:{v18, selfCopy}];
       }
 
       v14 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -1396,14 +1396,14 @@ LABEL_26:
   return v9;
 }
 
-- (id)reciprocalSquareRootWithTensor:(id)a3 name:(id)a4
+- (id)reciprocalSquareRootWithTensor:(id)tensor name:(id)name
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v11[0] = v6;
+  tensorCopy = tensor;
+  nameCopy = name;
+  v11[0] = tensorCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v9 = [(MPSGraph *)self mathOpsWithTensors:v8 mathOpType:9 name:v7];
+  v9 = [(MPSGraph *)self mathOpsWithTensors:v8 mathOpType:9 name:nameCopy];
 
   return v9;
 }
@@ -2469,8 +2469,8 @@ LABEL_26:
     if (v74)
     {
       v53 = MEMORY[0x1E696AEC0];
-      v54 = [(MPSGraphTensor *)v19 name];
-      v55 = [v53 stringWithFormat:@"%@ + b", v54];
+      name = [(MPSGraphTensor *)v19 name];
+      v55 = [v53 stringWithFormat:@"%@ + b", name];
       v56 = [(MPSGraph *)self additionWithPrimaryTensor:v19 secondaryTensor:v74 name:v55];
 
       v19 = v56;
@@ -2481,8 +2481,8 @@ LABEL_26:
 
     if ([v22 reverse])
     {
-      v57 = [(MPSGraphTensor *)v19 name];
-      v58 = [(MPSGraph *)self reverseTensor:v19 axes:&unk_1F5B772B8 name:v57];
+      name2 = [(MPSGraphTensor *)v19 name];
+      v58 = [(MPSGraph *)self reverseTensor:v19 axes:&unk_1F5B772B8 name:name2];
 
       v19 = v58;
     }
@@ -2506,8 +2506,8 @@ LABEL_26:
     v69 = [(MPSGraphSingleGateRNNOp *)v59 initWithGraph:self inputTensors:v31 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v22 name:v76];
     if (![v22 training])
     {
-      v68 = [(MPSGraphOperation *)v69 outputTensors];
-      v67 = [v68 objectAtIndexedSubscript:0];
+      outputTensors = [(MPSGraphOperation *)v69 outputTensors];
+      v67 = [outputTensors objectAtIndexedSubscript:0];
       v77 = v67;
       v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
 LABEL_31:
@@ -2515,11 +2515,11 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v68 = [(MPSGraphOperation *)v69 outputTensors];
-    v67 = [v68 objectAtIndexedSubscript:0];
+    outputTensors = [(MPSGraphOperation *)v69 outputTensors];
+    v67 = [outputTensors objectAtIndexedSubscript:0];
     v78[0] = v67;
-    v33 = [(MPSGraphOperation *)v69 outputTensors];
-    v34 = [v33 objectAtIndexedSubscript:1];
+    outputTensors2 = [(MPSGraphOperation *)v69 outputTensors];
+    v34 = [outputTensors2 objectAtIndexedSubscript:1];
     v78[1] = v34;
     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:2];
 LABEL_30:
@@ -2530,65 +2530,65 @@ LABEL_30:
   v22 = [(MPSGraphSingleGateRNNDescriptor *)v18 copy];
 
   [v22 setBidirectional:0];
-  v23 = [(MPSGraphTensor *)v75 shape];
-  if (v23)
+  shape = [(MPSGraphTensor *)v75 shape];
+  if (shape)
   {
-    v24 = [(MPSGraphTensor *)v75 shape];
-    v25 = [v24 objectAtIndexedSubscript:1];
-    v26 = [v25 integerValue];
+    shape2 = [(MPSGraphTensor *)v75 shape];
+    v25 = [shape2 objectAtIndexedSubscript:1];
+    integerValue = [v25 integerValue];
 
-    if ((v26 & 0x8000000000000000) == 0)
+    if ((integerValue & 0x8000000000000000) == 0)
     {
       if (v74)
       {
         v27 = MEMORY[0x1E696AEC0];
-        v28 = [(MPSGraphTensor *)v19 name];
-        v29 = [v27 stringWithFormat:@"%@ + b", v28];
+        name3 = [(MPSGraphTensor *)v19 name];
+        v29 = [v27 stringWithFormat:@"%@ + b", name3];
         v30 = [(MPSGraph *)self additionWithPrimaryTensor:v19 secondaryTensor:v74 name:v29];
 
         v19 = v30;
       }
 
-      v31 = [(MPSGraph *)self sliceTensor:v19 dimension:-1 start:0 length:v26 name:0];
-      v32 = [(MPSGraph *)self sliceTensor:v19 dimension:-1 start:v26 length:v26 name:0];
-      v68 = [(MPSGraph *)self sliceTensor:v75 dimension:0 start:0 length:1 name:0];
+      v31 = [(MPSGraph *)self sliceTensor:v19 dimension:-1 start:0 length:integerValue name:0];
+      v32 = [(MPSGraph *)self sliceTensor:v19 dimension:-1 start:integerValue length:integerValue name:0];
+      outputTensors = [(MPSGraph *)self sliceTensor:v75 dimension:0 start:0 length:1 name:0];
       v67 = [(MPSGraph *)self sliceTensor:v75 dimension:0 start:1 length:1 name:0];
       v69 = [(MPSGraph *)self reverseTensor:v32 axes:&unk_1F5B77270 name:0];
 
-      v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
+      outputTensors2 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
       v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
-      [v33 addObject:v31];
-      [v33 addObject:v68];
+      [outputTensors2 addObject:v31];
+      [outputTensors2 addObject:outputTensors];
       [v34 addObject:v69];
       [v34 addObject:v67];
       if (v73)
       {
-        v35 = [(MPSGraph *)self sliceTensor:v73 dimension:-1 start:0 length:v26 name:0];
-        v36 = [(MPSGraph *)self sliceTensor:v73 dimension:-1 start:v26 length:v26 name:0];
-        [v33 addObject:v35];
+        v35 = [(MPSGraph *)self sliceTensor:v73 dimension:-1 start:0 length:integerValue name:0];
+        v36 = [(MPSGraph *)self sliceTensor:v73 dimension:-1 start:integerValue length:integerValue name:0];
+        [outputTensors2 addObject:v35];
         [v34 addObject:v36];
         v22[9] = 1;
       }
 
       if (v72)
       {
-        v37 = [(MPSGraph *)self sliceTensor:v72 dimension:-1 start:0 length:v26 name:0];
-        v38 = [(MPSGraph *)self sliceTensor:v72 dimension:-1 start:v26 length:v26 name:0];
-        [v33 addObject:v37];
+        v37 = [(MPSGraph *)self sliceTensor:v72 dimension:-1 start:0 length:integerValue name:0];
+        v38 = [(MPSGraph *)self sliceTensor:v72 dimension:-1 start:integerValue length:integerValue name:0];
+        [outputTensors2 addObject:v37];
         [v34 addObject:v38];
         v22[8] = 1;
       }
 
       v39 = [MPSGraphSingleGateRNNOp alloc];
-      v66 = [(MPSGraphSingleGateRNNOp *)v39 initWithGraph:self inputTensors:v33 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v22 name:v76];
+      v66 = [(MPSGraphSingleGateRNNOp *)v39 initWithGraph:self inputTensors:outputTensors2 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v22 name:v76];
       v40 = [MPSGraphSingleGateRNNOp alloc];
       v63 = [(MPSGraphSingleGateRNNOp *)v40 initWithGraph:self inputTensors:v34 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v22 name:v76];
-      v41 = [(MPSGraphOperation *)v63 outputTensors];
-      v42 = [v41 objectAtIndexedSubscript:0];
+      outputTensors3 = [(MPSGraphOperation *)v63 outputTensors];
+      v42 = [outputTensors3 objectAtIndexedSubscript:0];
       v65 = [(MPSGraph *)self reverseTensor:v42 axes:&unk_1F5B77288 name:0];
 
-      v43 = [(MPSGraphOperation *)v66 outputTensors];
-      v44 = [v43 objectAtIndexedSubscript:0];
+      outputTensors4 = [(MPSGraphOperation *)v66 outputTensors];
+      v44 = [outputTensors4 objectAtIndexedSubscript:0];
       v82[0] = v44;
       v82[1] = v65;
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:2];
@@ -2596,12 +2596,12 @@ LABEL_30:
 
       if ([v22 training])
       {
-        v46 = [(MPSGraphOperation *)v63 outputTensors];
-        v47 = [v46 objectAtIndexedSubscript:1];
+        outputTensors5 = [(MPSGraphOperation *)v63 outputTensors];
+        v47 = [outputTensors5 objectAtIndexedSubscript:1];
         v62 = [(MPSGraph *)self reverseTensor:v47 axes:&unk_1F5B772A0 name:0];
 
-        v61 = [(MPSGraphOperation *)v66 outputTensors];
-        v48 = [v61 objectAtIndexedSubscript:1];
+        outputTensors6 = [(MPSGraphOperation *)v66 outputTensors];
+        v48 = [outputTensors6 objectAtIndexedSubscript:1];
         v81[0] = v48;
         v81[1] = v62;
         v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:2];
@@ -2701,25 +2701,25 @@ LABEL_32:
     }
 
     v88 = [[MPSGraphSingleGateRNNGradientOp alloc] initWithGraph:self inputTensors:v97 controlDependencies:0 descriptor:v20 name:v101];
-    v44 = [(MPSGraphOperation *)v88 outputTensors];
-    v45 = [v44 objectAtIndexedSubscript:0];
+    outputTensors = [(MPSGraphOperation *)v88 outputTensors];
+    v45 = [outputTensors objectAtIndexedSubscript:0];
 
     if ([v20 reverse])
     {
-      v46 = [v45 name];
-      v47 = [(MPSGraph *)self reverseTensor:v45 axes:&unk_1F5B77318 name:v46];
+      name = [v45 name];
+      v47 = [(MPSGraph *)self reverseTensor:v45 axes:&unk_1F5B77318 name:name];
 
       v45 = v47;
     }
 
-    v48 = [(MPSGraphOperation *)v88 outputTensors];
-    v86 = [v48 objectAtIndexedSubscript:1];
+    outputTensors2 = [(MPSGraphOperation *)v88 outputTensors];
+    v86 = [outputTensors2 objectAtIndexedSubscript:1];
 
     v25 = v45;
     if (v99)
     {
-      v49 = [(MPSGraphOperation *)v88 outputTensors];
-      v89 = [v49 objectAtIndexedSubscript:2];
+      outputTensors3 = [(MPSGraphOperation *)v88 outputTensors];
+      v89 = [outputTensors3 objectAtIndexedSubscript:2];
 
       v50 = 0x1E696A000uLL;
       if (v95)
@@ -2735,20 +2735,20 @@ LABEL_32:
       if (v95)
       {
 LABEL_24:
-        v51 = [*(v50 + 3776) stringWithFormat:@"%@ dx", v101];
-        v92 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v25 secondaryTensor:v95 name:v51];
+        v101 = [*(v50 + 3776) stringWithFormat:@"%@ dx", v101];
+        v92 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v25 secondaryTensor:v95 name:v101];
 
         v52 = [(MPSGraph *)self flatten2DTensor:v25 axis:-1 name:0];
         v53 = [(MPSGraph *)self flatten2DTensor:v93 axis:-1 name:0];
         v54 = [(MPSGraph *)self transposeTensor:v52 dimension:0 withDimension:1 name:0];
-        v55 = [*(v50 + 3776) stringWithFormat:@"%@ dW", v101];
-        v34 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v54 secondaryTensor:v53 name:v55];
+        v1012 = [*(v50 + 3776) stringWithFormat:@"%@ dW", v101];
+        v34 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v54 secondaryTensor:v53 name:v1012];
 
         if (bias)
         {
 LABEL_25:
-          v56 = [*(v50 + 3776) stringWithFormat:@"%@ db", v101];
-          v87 = [(MPSGraph *)self reductionSumWithTensor:v25 axes:&unk_1F5B77330 name:v56];
+          v1013 = [*(v50 + 3776) stringWithFormat:@"%@ db", v101];
+          v87 = [(MPSGraph *)self reductionSumWithTensor:v25 axes:&unk_1F5B77330 name:v1013];
 
 LABEL_29:
           v43 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:5];
@@ -2794,22 +2794,22 @@ LABEL_28:
   }
 
   [v20 setBidirectional:0];
-  v21 = [(MPSGraphTensor *)v98 shape];
-  if (v21)
+  shape = [(MPSGraphTensor *)v98 shape];
+  if (shape)
   {
-    v22 = [(MPSGraphTensor *)v98 shape];
-    v23 = [v22 objectAtIndexedSubscript:1];
-    v24 = [v23 integerValue];
+    shape2 = [(MPSGraphTensor *)v98 shape];
+    v23 = [shape2 objectAtIndexedSubscript:1];
+    integerValue = [v23 integerValue];
 
-    if ((v24 & 0x8000000000000000) == 0)
+    if ((integerValue & 0x8000000000000000) == 0)
     {
       v97 = [(MPSGraph *)self sliceTensor:v98 dimension:0 start:0 length:1 name:0];
       v88 = [(MPSGraph *)self sliceTensor:v98 dimension:0 start:1 length:1 name:0];
-      v25 = [(MPSGraph *)self sliceTensor:v100 dimension:-1 start:0 length:v24 name:0];
-      v26 = [(MPSGraph *)self sliceTensor:v100 dimension:-1 start:v24 length:v24 name:0];
+      v25 = [(MPSGraph *)self sliceTensor:v100 dimension:-1 start:0 length:integerValue name:0];
+      v26 = [(MPSGraph *)self sliceTensor:v100 dimension:-1 start:integerValue length:integerValue name:0];
       if (v96)
       {
-        v91 = [(MPSGraph *)self sliceTensor:v96 dimension:-1 start:v24 length:v24 name:0];
+        v91 = [(MPSGraph *)self sliceTensor:v96 dimension:-1 start:integerValue length:integerValue name:0];
         v27 = [(MPSGraph *)self sliceTensor:v26 dimension:0 start:-1 length:1 name:0];
         v28 = [(MPSGraph *)self additionWithPrimaryTensor:v27 secondaryTensor:v91 name:0];
         v29 = [(MPSGraph *)self cropTensor:v26 dimension:0 amount_before:0 amount_after:1 name:0];
@@ -2823,15 +2823,15 @@ LABEL_28:
 
       v86 = [(MPSGraph *)self reverseTensor:v26 axes:&unk_1F5B772D0 name:0];
 
-      v89 = [(MPSGraph *)self sliceTensor:v90 dimension:-1 start:0 length:v24 name:0];
-      v32 = [(MPSGraph *)self sliceTensor:v90 dimension:-1 start:v24 length:v24 name:0];
+      v89 = [(MPSGraph *)self sliceTensor:v90 dimension:-1 start:0 length:integerValue name:0];
+      v32 = [(MPSGraph *)self sliceTensor:v90 dimension:-1 start:integerValue length:integerValue name:0];
       v92 = [(MPSGraph *)self reverseTensor:v32 axes:&unk_1F5B772E8 name:0];
 
       if (v94)
       {
         v33 = v99;
-        v34 = [(MPSGraph *)self sliceTensor:v94 dimension:-1 start:0 length:v24 name:0];
-        v87 = [(MPSGraph *)self sliceTensor:v94 dimension:-1 start:v24 length:v24 name:0];
+        v34 = [(MPSGraph *)self sliceTensor:v94 dimension:-1 start:0 length:integerValue name:0];
+        v87 = [(MPSGraph *)self sliceTensor:v94 dimension:-1 start:integerValue length:integerValue name:0];
         if (v99)
         {
           goto LABEL_8;
@@ -2846,14 +2846,14 @@ LABEL_28:
         if (v99)
         {
 LABEL_8:
-          v35 = [(MPSGraph *)self sliceTensor:v33 dimension:-1 start:0 length:v24 name:0];
-          v78 = [(MPSGraph *)self sliceTensor:v33 dimension:-1 start:v24 length:v24 name:0];
+          v35 = [(MPSGraph *)self sliceTensor:v33 dimension:-1 start:0 length:integerValue name:0];
+          v78 = [(MPSGraph *)self sliceTensor:v33 dimension:-1 start:integerValue length:integerValue name:0];
           v79 = v35;
           v36 = v96;
           if (v96)
           {
 LABEL_9:
-            v80 = [(MPSGraph *)self sliceTensor:v36 dimension:-1 start:0 length:v24 name:0];
+            v80 = [(MPSGraph *)self sliceTensor:v36 dimension:-1 start:0 length:integerValue name:0];
             goto LABEL_39;
           }
 
@@ -2900,20 +2900,20 @@ LABEL_39:
             if (v95)
             {
 LABEL_41:
-              v67 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dx", v101];
-              v82 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v63 secondaryTensor:v95 name:v67];
+              v1014 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dx", v101];
+              v82 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v63 secondaryTensor:v95 name:v1014];
 
               v68 = [(MPSGraph *)self flatten2DTensor:v63 axis:-1 name:0];
               v69 = [(MPSGraph *)self flatten2DTensor:v93 axis:-1 name:0];
               v70 = [(MPSGraph *)self transposeTensor:v68 dimension:0 withDimension:1 name:0];
-              v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dW", v101];
-              v72 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v70 secondaryTensor:v69 name:v71];
+              v1015 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dW", v101];
+              v72 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v70 secondaryTensor:v69 name:v1015];
 
               if (bias)
               {
 LABEL_42:
-                v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ db", v101];
-                v74 = [(MPSGraph *)self reductionSumWithTensor:v63 axes:&unk_1F5B77300 name:v73];
+                v1016 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ db", v101];
+                v74 = [(MPSGraph *)self reductionSumWithTensor:v63 axes:&unk_1F5B77300 name:v1016];
 
 LABEL_46:
                 v43 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:5];
@@ -3008,7 +3008,7 @@ LABEL_54:
   v91 = bias;
   v89 = initState;
   v87 = initCell;
-  v20 = self;
+  selfCopy = self;
   v88 = mask;
   v90 = peephole;
   v21 = descriptor;
@@ -3028,8 +3028,8 @@ LABEL_54:
     if (v91)
     {
       v58 = MEMORY[0x1E696AEC0];
-      v59 = [(MPSGraphTensor *)v22 name];
-      v60 = [v58 stringWithFormat:@"%@ + b", v59];
+      name = [(MPSGraphTensor *)v22 name];
+      v60 = [v58 stringWithFormat:@"%@ + b", name];
       v61 = [(MPSGraph *)self additionWithPrimaryTensor:v22 secondaryTensor:v91 name:v60];
 
       v22 = v61;
@@ -3040,8 +3040,8 @@ LABEL_54:
 
     if ([v25 reverse])
     {
-      v62 = [(MPSGraphTensor *)v22 name];
-      v63 = [(MPSGraph *)self reverseTensor:v22 axes:&unk_1F5B773A8 name:v62];
+      name2 = [(MPSGraphTensor *)v22 name];
+      v63 = [(MPSGraph *)self reverseTensor:v22 axes:&unk_1F5B773A8 name:name2];
 
       v22 = v63;
     }
@@ -3077,16 +3077,16 @@ LABEL_54:
     v84 = [(MPSGraphLSTMOp *)v64 initWithGraph:self inputTensors:v34 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v25 name:v93];
     if (([v25 produceCell] & 1) != 0 || objc_msgSend(v25, "training"))
     {
-      v65 = [(MPSGraphOperation *)v84 outputTensors];
+      outputTensors = [(MPSGraphOperation *)v84 outputTensors];
 LABEL_47:
 
       goto LABEL_48;
     }
 
-    v81 = [(MPSGraphOperation *)v84 outputTensors];
-    v80 = [v81 objectAtIndexedSubscript:0];
+    outputTensors2 = [(MPSGraphOperation *)v84 outputTensors];
+    v80 = [outputTensors2 objectAtIndexedSubscript:0];
     v94 = v80;
-    v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v94 count:1];
+    outputTensors = [MEMORY[0x1E695DEC8] arrayWithObjects:&v94 count:1];
 LABEL_46:
 
     goto LABEL_47;
@@ -3095,41 +3095,41 @@ LABEL_46:
   v25 = [(MPSGraphLSTMDescriptor *)v21 copy];
 
   [v25 setBidirectional:0];
-  v26 = [(MPSGraphTensor *)v92 shape];
-  if (v26)
+  shape = [(MPSGraphTensor *)v92 shape];
+  if (shape)
   {
-    v27 = [(MPSGraphTensor *)v92 shape];
-    v28 = [v27 lastObject];
-    v29 = [v28 integerValue];
+    shape2 = [(MPSGraphTensor *)v92 shape];
+    lastObject = [shape2 lastObject];
+    integerValue = [lastObject integerValue];
 
-    if ((v29 & 0x8000000000000000) == 0)
+    if ((integerValue & 0x8000000000000000) == 0)
     {
       if (v91)
       {
         v30 = MEMORY[0x1E696AEC0];
-        v31 = [(MPSGraphTensor *)v22 name];
-        v32 = [v30 stringWithFormat:@"%@ + b", v31];
-        v33 = [(MPSGraph *)v20 additionWithPrimaryTensor:v22 secondaryTensor:v91 name:v32];
+        name3 = [(MPSGraphTensor *)v22 name];
+        v32 = [v30 stringWithFormat:@"%@ + b", name3];
+        v33 = [(MPSGraph *)selfCopy additionWithPrimaryTensor:v22 secondaryTensor:v91 name:v32];
 
         v22 = v33;
       }
 
-      v34 = [(MPSGraph *)v20 sliceTensor:v22 dimension:-1 start:0 length:4 * v29 name:0];
-      v35 = [(MPSGraph *)v20 sliceTensor:v22 dimension:-1 start:4 * v29 length:4 * v29 name:0];
-      v81 = [(MPSGraph *)v20 sliceTensor:v92 dimension:0 start:0 length:1 name:0];
-      v80 = [(MPSGraph *)v20 sliceTensor:v92 dimension:0 start:1 length:1 name:0];
-      v84 = [(MPSGraph *)v20 reverseTensor:v35 axes:&unk_1F5B77348 name:0];
+      v34 = [(MPSGraph *)selfCopy sliceTensor:v22 dimension:-1 start:0 length:4 * integerValue name:0];
+      v35 = [(MPSGraph *)selfCopy sliceTensor:v22 dimension:-1 start:4 * integerValue length:4 * integerValue name:0];
+      outputTensors2 = [(MPSGraph *)selfCopy sliceTensor:v92 dimension:0 start:0 length:1 name:0];
+      v80 = [(MPSGraph *)selfCopy sliceTensor:v92 dimension:0 start:1 length:1 name:0];
+      v84 = [(MPSGraph *)selfCopy reverseTensor:v35 axes:&unk_1F5B77348 name:0];
 
       v82 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
       v83 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
       [v82 addObject:v34];
-      [v82 addObject:v81];
+      [v82 addObject:outputTensors2];
       [v83 addObject:v84];
       [v83 addObject:v80];
       if (v89)
       {
-        v36 = [(MPSGraph *)v20 sliceTensor:v89 dimension:-1 start:0 length:v29 name:0];
-        v37 = [(MPSGraph *)v20 sliceTensor:v89 dimension:-1 start:v29 length:v29 name:0];
+        v36 = [(MPSGraph *)selfCopy sliceTensor:v89 dimension:-1 start:0 length:integerValue name:0];
+        v37 = [(MPSGraph *)selfCopy sliceTensor:v89 dimension:-1 start:integerValue length:integerValue name:0];
         [v82 addObject:v36];
         [v83 addObject:v37];
         v25[9] = 1;
@@ -3137,8 +3137,8 @@ LABEL_46:
 
       if (v87)
       {
-        v38 = [(MPSGraph *)v20 sliceTensor:v87 dimension:-1 start:0 length:v29 name:0];
-        v39 = [(MPSGraph *)v20 sliceTensor:v87 dimension:-1 start:v29 length:v29 name:0];
+        v38 = [(MPSGraph *)selfCopy sliceTensor:v87 dimension:-1 start:0 length:integerValue name:0];
+        v39 = [(MPSGraph *)selfCopy sliceTensor:v87 dimension:-1 start:integerValue length:integerValue name:0];
         [v82 addObject:v38];
         [v83 addObject:v39];
         v25[10] = 1;
@@ -3146,8 +3146,8 @@ LABEL_46:
 
       if (v88)
       {
-        v40 = [(MPSGraph *)v20 sliceTensor:v88 dimension:-1 start:0 length:v29 name:0];
-        v41 = [(MPSGraph *)v20 sliceTensor:v88 dimension:-1 start:v29 length:v29 name:0];
+        v40 = [(MPSGraph *)selfCopy sliceTensor:v88 dimension:-1 start:0 length:integerValue name:0];
+        v41 = [(MPSGraph *)selfCopy sliceTensor:v88 dimension:-1 start:integerValue length:integerValue name:0];
         [v82 addObject:v40];
         [v83 addObject:v41];
         v25[8] = 1;
@@ -3155,40 +3155,40 @@ LABEL_46:
 
       if (v90)
       {
-        v42 = [(MPSGraph *)v20 sliceTensor:v90 dimension:0 start:0 length:1 name:0];
-        v43 = [(MPSGraph *)v20 sliceTensor:v90 dimension:0 start:1 length:1 name:0];
+        v42 = [(MPSGraph *)selfCopy sliceTensor:v90 dimension:0 start:0 length:1 name:0];
+        v43 = [(MPSGraph *)selfCopy sliceTensor:v90 dimension:0 start:1 length:1 name:0];
         [v82 addObject:v42];
         [v83 addObject:v43];
         v25[11] = 1;
       }
 
       v44 = [MPSGraphLSTMOp alloc];
-      v79 = [(MPSGraphLSTMOp *)v44 initWithGraph:v20 inputTensors:v82 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v25 name:v93];
+      v79 = [(MPSGraphLSTMOp *)v44 initWithGraph:selfCopy inputTensors:v82 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v25 name:v93];
       v45 = [MPSGraphLSTMOp alloc];
-      v78 = [(MPSGraphLSTMOp *)v45 initWithGraph:v20 inputTensors:v83 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v25 name:v93];
-      v46 = [(MPSGraphOperation *)v78 outputTensors];
-      v47 = [v46 objectAtIndexedSubscript:0];
-      v77 = [(MPSGraph *)v20 reverseTensor:v47 axes:&unk_1F5B77360 name:0];
+      v78 = [(MPSGraphLSTMOp *)v45 initWithGraph:selfCopy inputTensors:v83 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v25 name:v93];
+      outputTensors3 = [(MPSGraphOperation *)v78 outputTensors];
+      v47 = [outputTensors3 objectAtIndexedSubscript:0];
+      v77 = [(MPSGraph *)selfCopy reverseTensor:v47 axes:&unk_1F5B77360 name:0];
 
-      v48 = [(MPSGraphOperation *)v79 outputTensors];
-      v49 = [v48 objectAtIndexedSubscript:0];
+      outputTensors4 = [(MPSGraphOperation *)v79 outputTensors];
+      v49 = [outputTensors4 objectAtIndexedSubscript:0];
       v100[0] = v49;
       v100[1] = v77;
       v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:2];
-      v76 = [(MPSGraph *)v20 concatTensors:v50 dimension:-1 name:v93];
+      v76 = [(MPSGraph *)selfCopy concatTensors:v50 dimension:-1 name:v93];
 
       if (([v25 produceCell] & 1) != 0 || objc_msgSend(v25, "training"))
       {
-        v51 = [(MPSGraphOperation *)v78 outputTensors];
-        v52 = [v51 objectAtIndexedSubscript:1];
-        v53 = [(MPSGraph *)v20 reverseTensor:v52 axes:&unk_1F5B77378 name:0];
+        outputTensors5 = [(MPSGraphOperation *)v78 outputTensors];
+        v52 = [outputTensors5 objectAtIndexedSubscript:1];
+        v53 = [(MPSGraph *)selfCopy reverseTensor:v52 axes:&unk_1F5B77378 name:0];
 
-        v54 = [(MPSGraphOperation *)v79 outputTensors];
-        v55 = [v54 objectAtIndexedSubscript:1];
+        outputTensors6 = [(MPSGraphOperation *)v79 outputTensors];
+        v55 = [outputTensors6 objectAtIndexedSubscript:1];
         v99[0] = v55;
         v99[1] = v53;
         v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v99 count:2];
-        v57 = [(MPSGraph *)v20 concatTensors:v56 dimension:-1 name:v93];
+        v57 = [(MPSGraph *)selfCopy concatTensors:v56 dimension:-1 name:v93];
       }
 
       else
@@ -3198,22 +3198,22 @@ LABEL_46:
 
       if ([v25 training])
       {
-        v66 = [(MPSGraphOperation *)v78 outputTensors];
-        v67 = [v66 objectAtIndexedSubscript:2];
-        v75 = [(MPSGraph *)v20 reverseTensor:v67 axes:&unk_1F5B77390 name:0];
+        outputTensors7 = [(MPSGraphOperation *)v78 outputTensors];
+        v67 = [outputTensors7 objectAtIndexedSubscript:2];
+        v75 = [(MPSGraph *)selfCopy reverseTensor:v67 axes:&unk_1F5B77390 name:0];
 
-        v68 = [(MPSGraphOperation *)v79 outputTensors];
-        v69 = [v68 objectAtIndexedSubscript:2];
+        outputTensors8 = [(MPSGraphOperation *)v79 outputTensors];
+        v69 = [outputTensors8 objectAtIndexedSubscript:2];
         v98[0] = v69;
         v98[1] = v75;
         v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v98 count:2];
         v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - training state", v93];
-        v72 = [(MPSGraph *)v20 concatTensors:v70 dimension:-1 name:v71];
+        v72 = [(MPSGraph *)selfCopy concatTensors:v70 dimension:-1 name:v71];
 
         v97[0] = v76;
         v97[1] = v57;
         v97[2] = v72;
-        v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:3];
+        outputTensors = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:3];
       }
 
       else
@@ -3231,7 +3231,7 @@ LABEL_46:
           v73 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v95 count:1];
         }
 
-        v65 = v73;
+        outputTensors = v73;
       }
 
       goto LABEL_46;
@@ -3243,10 +3243,10 @@ LABEL_46:
     MTLReportFailure();
   }
 
-  v65 = 0;
+  outputTensors = 0;
 LABEL_48:
 
-  return v65;
+  return outputTensors;
 }
 
 - (NSArray)LSTMWithSourceTensor:(MPSGraphTensor *)source recurrentWeight:(MPSGraphTensor *)recurrentWeight inputWeight:(MPSGraphTensor *)inputWeight bias:(MPSGraphTensor *)bias initState:(MPSGraphTensor *)initState initCell:(MPSGraphTensor *)initCell descriptor:(MPSGraphLSTMDescriptor *)descriptor name:(NSString *)name
@@ -3284,7 +3284,7 @@ LABEL_48:
   v129 = v22;
   v24 = [(MPSGraphLSTMDescriptor *)v23 copy];
   v25 = v130;
-  v26 = self;
+  selfCopy2 = self;
   if (![v24 bidirectional])
   {
     v136 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
@@ -3300,7 +3300,7 @@ LABEL_48:
 
       v56 = v55;
       v25 = v130;
-      v26 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -3343,29 +3343,29 @@ LABEL_48:
       v24[12] = 1;
     }
 
-    v126 = [[MPSGraphLSTMGradientOp alloc] initWithGraph:v26 inputTensors:v136 controlDependencies:0 descriptor:v24 name:v137];
-    v58 = [(MPSGraphOperation *)v126 outputTensors];
-    v59 = [v58 objectAtIndexedSubscript:0];
+    v126 = [[MPSGraphLSTMGradientOp alloc] initWithGraph:selfCopy2 inputTensors:v136 controlDependencies:0 descriptor:v24 name:v137];
+    outputTensors = [(MPSGraphOperation *)v126 outputTensors];
+    v59 = [outputTensors objectAtIndexedSubscript:0];
 
     if ([v24 reverse])
     {
-      v60 = [v59 name];
-      v61 = [(MPSGraph *)self reverseTensor:v59 axes:&unk_1F5B77438 name:v60];
+      name = [v59 name];
+      v61 = [(MPSGraph *)self reverseTensor:v59 axes:&unk_1F5B77438 name:name];
 
       v59 = v61;
     }
 
-    v62 = [(MPSGraphOperation *)v126 outputTensors];
-    v116 = [v62 objectAtIndexedSubscript:1];
+    outputTensors2 = [(MPSGraphOperation *)v126 outputTensors];
+    v116 = [outputTensors2 objectAtIndexedSubscript:1];
 
     v31 = v59;
     if (v22)
     {
-      v63 = [(MPSGraphOperation *)v126 outputTensors];
-      v121 = [v63 objectAtIndexedSubscript:2];
+      outputTensors3 = [(MPSGraphOperation *)v126 outputTensors];
+      v121 = [outputTensors3 objectAtIndexedSubscript:2];
 
       v64 = 3;
-      v65 = self;
+      selfCopy7 = self;
       if (v134)
       {
         goto LABEL_33;
@@ -3376,15 +3376,15 @@ LABEL_48:
     {
       v121 = 0;
       v64 = 2;
-      v65 = self;
+      selfCopy7 = self;
       if (v134)
       {
 LABEL_33:
-        v66 = [(MPSGraphOperation *)v126 outputTensors];
-        v125 = [v66 objectAtIndexedSubscript:v64];
+        outputTensors4 = [(MPSGraphOperation *)v126 outputTensors];
+        v125 = [outputTensors4 objectAtIndexedSubscript:v64];
 
         ++v64;
-        v65 = self;
+        selfCopy7 = self;
         if (v133)
         {
           goto LABEL_34;
@@ -3398,10 +3398,10 @@ LABEL_33:
     if (v133)
     {
 LABEL_34:
-      v67 = [(MPSGraphOperation *)v126 outputTensors];
-      v128 = [v67 objectAtIndexedSubscript:v64];
+      outputTensors5 = [(MPSGraphOperation *)v126 outputTensors];
+      v128 = [outputTensors5 objectAtIndexedSubscript:v64];
 
-      v65 = self;
+      selfCopy7 = self;
       v68 = 0x1E696A000uLL;
       if (v127)
       {
@@ -3417,21 +3417,21 @@ LABEL_39:
     if (v127)
     {
 LABEL_35:
-      v69 = [*(v68 + 3776) stringWithFormat:@"%@ dx", v137];
-      v118 = [(MPSGraph *)v65 matrixMultiplicationWithPrimaryTensor:v31 secondaryTensor:v127 name:v69];
+      v137 = [*(v68 + 3776) stringWithFormat:@"%@ dx", v137];
+      v118 = [(MPSGraph *)selfCopy7 matrixMultiplicationWithPrimaryTensor:v31 secondaryTensor:v127 name:v137];
 
       v70 = [(MPSGraph *)self flatten2DTensor:v31 axis:-1 name:0];
       v71 = [(MPSGraph *)self flatten2DTensor:v122 axis:-1 name:0];
       v72 = [(MPSGraph *)self transposeTensor:v70 dimension:0 withDimension:1 name:0];
-      v73 = [*(v68 + 3776) stringWithFormat:@"%@ dW", v137];
-      v132 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v72 secondaryTensor:v71 name:v73];
+      v1372 = [*(v68 + 3776) stringWithFormat:@"%@ dW", v137];
+      v132 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v72 secondaryTensor:v71 name:v1372];
 
-      v65 = self;
+      selfCopy7 = self;
       if (bias)
       {
 LABEL_36:
-        v74 = [*(v68 + 3776) stringWithFormat:@"%@ db", v137];
-        v117 = [(MPSGraph *)v65 reductionSumWithTensor:v31 axes:&unk_1F5B77450 name:v74];
+        v1373 = [*(v68 + 3776) stringWithFormat:@"%@ db", v137];
+        v117 = [(MPSGraph *)selfCopy7 reductionSumWithTensor:v31 axes:&unk_1F5B77450 name:v1373];
 
 LABEL_42:
         v57 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:7];
@@ -3487,34 +3487,34 @@ LABEL_40:
   }
 
   [v24 setBidirectional:0];
-  v27 = [(MPSGraphTensor *)v130 shape];
-  if (v27)
+  shape = [(MPSGraphTensor *)v130 shape];
+  if (shape)
   {
-    v28 = [(MPSGraphTensor *)v130 shape];
-    v29 = [v28 lastObject];
-    v30 = [v29 integerValue];
+    shape2 = [(MPSGraphTensor *)v130 shape];
+    lastObject = [shape2 lastObject];
+    integerValue = [lastObject integerValue];
 
-    if ((v30 & 0x8000000000000000) == 0)
+    if ((integerValue & 0x8000000000000000) == 0)
     {
       v136 = [(MPSGraph *)self sliceTensor:v130 dimension:0 start:0 length:1 name:0];
       v126 = [(MPSGraph *)self sliceTensor:v130 dimension:0 start:1 length:1 name:0];
-      v31 = [(MPSGraph *)self sliceTensor:v135 dimension:-1 start:0 length:v30 name:0];
-      v32 = [(MPSGraph *)self sliceTensor:v135 dimension:-1 start:v30 length:v30 name:0];
+      v31 = [(MPSGraph *)self sliceTensor:v135 dimension:-1 start:0 length:integerValue name:0];
+      v32 = [(MPSGraph *)self sliceTensor:v135 dimension:-1 start:integerValue length:integerValue name:0];
       v116 = [(MPSGraph *)self reverseTensor:v32 axes:&unk_1F5B773C0 name:0];
 
-      v125 = [(MPSGraph *)self sliceTensor:v120 dimension:-1 start:0 length:4 * v30 name:0];
-      v33 = [(MPSGraph *)self sliceTensor:v120 dimension:-1 start:4 * v30 length:4 * v30 name:0];
+      v125 = [(MPSGraph *)self sliceTensor:v120 dimension:-1 start:0 length:4 * integerValue name:0];
+      v33 = [(MPSGraph *)self sliceTensor:v120 dimension:-1 start:4 * integerValue length:4 * integerValue name:0];
       v128 = [(MPSGraph *)self reverseTensor:v33 axes:&unk_1F5B773D8 name:0];
 
-      v34 = [(MPSGraph *)self sliceTensor:v119 dimension:-1 start:0 length:v30 name:0];
+      v34 = [(MPSGraph *)self sliceTensor:v119 dimension:-1 start:0 length:integerValue name:0];
       v118 = v34;
-      v35 = [(MPSGraph *)self sliceTensor:v119 dimension:-1 start:v30 length:v30 name:0];
+      v35 = [(MPSGraph *)self sliceTensor:v119 dimension:-1 start:integerValue length:integerValue name:0];
       v132 = [(MPSGraph *)self reverseTensor:v35 axes:&unk_1F5B773F0 name:0];
 
       if (v123)
       {
-        v36 = [(MPSGraph *)self sliceTensor:v123 dimension:-1 start:0 length:v30 name:0];
-        v121 = [(MPSGraph *)self sliceTensor:v123 dimension:-1 start:v30 length:v30 name:0];
+        v36 = [(MPSGraph *)self sliceTensor:v123 dimension:-1 start:0 length:integerValue name:0];
+        v121 = [(MPSGraph *)self sliceTensor:v123 dimension:-1 start:integerValue length:integerValue name:0];
         v117 = v36;
         if (v22)
         {
@@ -3548,8 +3548,8 @@ LABEL_6:
       if (v134)
       {
 LABEL_7:
-        v39 = [(MPSGraph *)self sliceTensor:v38 dimension:-1 start:0 length:v30 name:0];
-        v102 = [(MPSGraph *)self sliceTensor:v38 dimension:-1 start:v30 length:v30 name:0];
+        v39 = [(MPSGraph *)self sliceTensor:v38 dimension:-1 start:0 length:integerValue name:0];
+        v102 = [(MPSGraph *)self sliceTensor:v38 dimension:-1 start:integerValue length:integerValue name:0];
         v106 = v39;
         v40 = v133;
         if (v133)
@@ -3567,8 +3567,8 @@ LABEL_56:
       if (v133)
       {
 LABEL_8:
-        v41 = [(MPSGraph *)self sliceTensor:v40 dimension:-1 start:0 length:v30 name:0];
-        v103 = [(MPSGraph *)self sliceTensor:v40 dimension:-1 start:v30 length:v30 name:0];
+        v41 = [(MPSGraph *)self sliceTensor:v40 dimension:-1 start:0 length:integerValue name:0];
+        v103 = [(MPSGraph *)self sliceTensor:v40 dimension:-1 start:integerValue length:integerValue name:0];
         v107 = v41;
         v42 = v124;
         if (v124)
@@ -3586,17 +3586,17 @@ LABEL_57:
       if (v124)
       {
 LABEL_9:
-        v43 = [(MPSGraph *)self sliceTensor:v42 dimension:-1 start:0 length:v30 name:0];
-        v105 = [(MPSGraph *)self sliceTensor:v42 dimension:-1 start:v30 length:v30 name:0];
+        v43 = [(MPSGraph *)self sliceTensor:v42 dimension:-1 start:0 length:integerValue name:0];
+        v105 = [(MPSGraph *)self sliceTensor:v42 dimension:-1 start:integerValue length:integerValue name:0];
         v109 = v43;
         v44 = v131;
         if (v131)
         {
 LABEL_10:
-          v45 = [(MPSGraph *)self sliceTensor:v44 dimension:-1 start:0 length:v30 name:0];
-          v46 = [(MPSGraph *)self sliceTensor:v131 dimension:-1 start:v30 length:v30 name:0];
-          v47 = [(MPSGraphTensor *)v131 shape];
-          if (v47 && (-[MPSGraphTensor shape](v131, "shape"), v48 = objc_claimAutoreleasedReturnValue(), v49 = [v48 count], v48, v47, v49 >= 3))
+          v45 = [(MPSGraph *)self sliceTensor:v44 dimension:-1 start:0 length:integerValue name:0];
+          v46 = [(MPSGraph *)self sliceTensor:v131 dimension:-1 start:integerValue length:integerValue name:0];
+          shape3 = [(MPSGraphTensor *)v131 shape];
+          if (shape3 && (-[MPSGraphTensor shape](v131, "shape"), v48 = objc_claimAutoreleasedReturnValue(), v49 = [v48 count], v48, shape3, v49 >= 3))
           {
             v50 = [(MPSGraph *)self reverseTensor:v46 axes:&unk_1F5B77408 name:0];
 
@@ -3673,20 +3673,20 @@ LABEL_62:
           if (v127)
           {
 LABEL_63:
-            v89 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dx", v137];
-            v90 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v81 secondaryTensor:v127 name:v89];
+            v1374 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dx", v137];
+            v90 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v81 secondaryTensor:v127 name:v1374];
 
             v91 = [(MPSGraph *)self flatten2DTensor:v81 axis:-1 name:0];
             v92 = [(MPSGraph *)self flatten2DTensor:v122 axis:-1 name:0];
             v93 = [(MPSGraph *)self transposeTensor:v91 dimension:0 withDimension:1 name:0];
-            v94 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dW", v137];
-            v95 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v93 secondaryTensor:v92 name:v94];
+            v1375 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dW", v137];
+            v95 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v93 secondaryTensor:v92 name:v1375];
 
             if (bias)
             {
 LABEL_64:
-              v96 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ db", v137];
-              v97 = [(MPSGraph *)self reductionSumWithTensor:v81 axes:&unk_1F5B77420 name:v96];
+              v1376 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ db", v137];
+              v97 = [(MPSGraph *)self reductionSumWithTensor:v81 axes:&unk_1F5B77420 name:v1376];
 
 LABEL_69:
               v57 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:7];
@@ -3810,15 +3810,15 @@ LABEL_79:
     v25 = [(MPSGraphGRUDescriptor *)v19 copy];
 
     [v25 setBidirectional:0];
-    v26 = [(MPSGraphTensor *)v83 shape];
-    if (!v26 || (-[MPSGraphTensor shape](v83, "shape"), v27 = objc_claimAutoreleasedReturnValue(), [v27 lastObject], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "integerValue"), v28, v27, v26, v29 < 0))
+    shape = [(MPSGraphTensor *)v83 shape];
+    if (!shape || (-[MPSGraphTensor shape](v83, "shape"), v27 = objc_claimAutoreleasedReturnValue(), [v27 lastObject], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "integerValue"), v28, v27, shape, v29 < 0))
     {
       if (MTLReportFailureTypeEnabled())
       {
         MTLReportFailure();
       }
 
-      v56 = 0;
+      outputTensors5 = 0;
     }
 
     else
@@ -3826,8 +3826,8 @@ LABEL_79:
       if (v82)
       {
         v30 = MEMORY[0x1E696AEC0];
-        v31 = [v22 name];
-        v32 = [v30 stringWithFormat:@"%@ + b", v31];
+        name = [v22 name];
+        v32 = [v30 stringWithFormat:@"%@ + b", name];
         v33 = [(MPSGraph *)self additionWithPrimaryTensor:v22 secondaryTensor:v82 name:v32];
 
         v22 = v33;
@@ -3877,12 +3877,12 @@ LABEL_79:
       v75 = [(MPSGraphGRUOp *)v42 initWithGraph:self inputTensors:v77 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v25 name:v20];
       v43 = [MPSGraphGRUOp alloc];
       v68 = [(MPSGraphGRUOp *)v43 initWithGraph:self inputTensors:v76 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v25 name:v20];
-      v44 = [(MPSGraphOperation *)v68 outputTensors];
-      v45 = [v44 objectAtIndexedSubscript:0];
+      outputTensors = [(MPSGraphOperation *)v68 outputTensors];
+      v45 = [outputTensors objectAtIndexedSubscript:0];
       v70 = [(MPSGraph *)self reverseTensor:v45 axes:&unk_1F5B77480 name:0];
 
-      v46 = [(MPSGraphOperation *)v75 outputTensors];
-      v47 = [v46 objectAtIndexedSubscript:0];
+      outputTensors2 = [(MPSGraphOperation *)v75 outputTensors];
+      v47 = [outputTensors2 objectAtIndexedSubscript:0];
       v87[0] = v47;
       v87[1] = v70;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:2];
@@ -3890,12 +3890,12 @@ LABEL_79:
 
       if ([v25 training])
       {
-        v49 = [(MPSGraphOperation *)v68 outputTensors];
-        v50 = [v49 objectAtIndexedSubscript:1];
+        outputTensors3 = [(MPSGraphOperation *)v68 outputTensors];
+        v50 = [outputTensors3 objectAtIndexedSubscript:1];
         v67 = [(MPSGraph *)self reverseTensor:v50 axes:&unk_1F5B77498 name:0];
 
-        v51 = [(MPSGraphOperation *)v75 outputTensors];
-        v52 = [v51 objectAtIndexedSubscript:1];
+        outputTensors4 = [(MPSGraphOperation *)v75 outputTensors];
+        v52 = [outputTensors4 objectAtIndexedSubscript:1];
         v86[0] = v52;
         v86[1] = v67;
         v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:2];
@@ -3904,13 +3904,13 @@ LABEL_79:
 
         v85[0] = v69;
         v85[1] = v55;
-        v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:2];
+        outputTensors5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:2];
       }
 
       else
       {
         v84 = v69;
-        v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v84 count:1];
+        outputTensors5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v84 count:1];
       }
     }
   }
@@ -3920,8 +3920,8 @@ LABEL_79:
     if (v82)
     {
       v57 = MEMORY[0x1E696AEC0];
-      v58 = [v22 name];
-      v59 = [v57 stringWithFormat:@"%@ + b", v58];
+      name2 = [v22 name];
+      v59 = [v57 stringWithFormat:@"%@ + b", name2];
       v60 = [(MPSGraph *)self additionWithPrimaryTensor:v22 secondaryTensor:v82 name:v59];
 
       v22 = v60;
@@ -3932,8 +3932,8 @@ LABEL_79:
 
     if ([v25 reverse])
     {
-      v62 = [v22 name];
-      v63 = [(MPSGraph *)self reverseTensor:v22 axes:&unk_1F5B774B0 name:v62];
+      name3 = [v22 name];
+      v63 = [(MPSGraph *)self reverseTensor:v22 axes:&unk_1F5B774B0 name:name3];
 
       v22 = v63;
     }
@@ -3961,10 +3961,10 @@ LABEL_79:
 
     v64 = [MPSGraphGRUOp alloc];
     v65 = [(MPSGraphGRUOp *)v64 initWithGraph:self inputTensors:v61 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v25 name:v20];
-    v56 = [(MPSGraphOperation *)v65 outputTensors];
+    outputTensors5 = [(MPSGraphOperation *)v65 outputTensors];
   }
 
-  return v56;
+  return outputTensors5;
 }
 
 - (NSArray)GRUWithSourceTensor:(MPSGraphTensor *)source recurrentWeight:(MPSGraphTensor *)recurrentWeight inputWeight:(MPSGraphTensor *)inputWeight bias:(MPSGraphTensor *)bias initState:(MPSGraphTensor *)initState descriptor:(MPSGraphGRUDescriptor *)descriptor name:(NSString *)name
@@ -4045,25 +4045,25 @@ LABEL_79:
     }
 
     v107 = [[MPSGraphGRUGradientOp alloc] initWithGraph:self inputTensors:v119 controlDependencies:0 descriptor:v21 name:v121];
-    v50 = [(MPSGraphOperation *)v107 outputTensors];
-    v51 = [v50 objectAtIndexedSubscript:0];
+    outputTensors = [(MPSGraphOperation *)v107 outputTensors];
+    v51 = [outputTensors objectAtIndexedSubscript:0];
 
     if ([v21 reverse])
     {
-      v52 = [v51 name];
-      v53 = [(MPSGraph *)self reverseTensor:v51 axes:&unk_1F5B77528 name:v52];
+      name = [v51 name];
+      v53 = [(MPSGraph *)self reverseTensor:v51 axes:&unk_1F5B77528 name:name];
 
       v51 = v53;
     }
 
-    v54 = [(MPSGraphOperation *)v107 outputTensors];
-    v104 = [v54 objectAtIndexedSubscript:1];
+    outputTensors2 = [(MPSGraphOperation *)v107 outputTensors];
+    v104 = [outputTensors2 objectAtIndexedSubscript:1];
 
     v30 = v51;
     if (v122)
     {
-      v55 = [(MPSGraphOperation *)v107 outputTensors];
-      v106 = [v55 objectAtIndexedSubscript:2];
+      outputTensors3 = [(MPSGraphOperation *)v107 outputTensors];
+      v106 = [outputTensors3 objectAtIndexedSubscript:2];
 
       v56 = 3;
       if (v120)
@@ -4079,8 +4079,8 @@ LABEL_79:
       if (v120)
       {
 LABEL_23:
-        v57 = [(MPSGraphOperation *)v107 outputTensors];
-        v109 = [v57 objectAtIndexedSubscript:v56];
+        outputTensors4 = [(MPSGraphOperation *)v107 outputTensors];
+        v109 = [outputTensors4 objectAtIndexedSubscript:v56];
 
         v58 = 0x1E696A000uLL;
         if (v112)
@@ -4097,20 +4097,20 @@ LABEL_23:
     if (v112)
     {
 LABEL_24:
-      v59 = [*(v58 + 3776) stringWithFormat:@"%@ dx", v121];
-      v111 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v30 secondaryTensor:v112 name:v59];
+      v121 = [*(v58 + 3776) stringWithFormat:@"%@ dx", v121];
+      v111 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v30 secondaryTensor:v112 name:v121];
 
       v60 = [(MPSGraph *)self flatten2DTensor:v30 axis:-1 name:0];
       v61 = [(MPSGraph *)self flatten2DTensor:v108 axis:-1 name:0];
       v62 = [(MPSGraph *)self transposeTensor:v60 dimension:0 withDimension:1 name:0];
-      v63 = [*(v58 + 3776) stringWithFormat:@"%@ dW", v121];
-      v117 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v62 secondaryTensor:v61 name:v63];
+      v1212 = [*(v58 + 3776) stringWithFormat:@"%@ dW", v121];
+      v117 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v62 secondaryTensor:v61 name:v1212];
 
       if (bias)
       {
 LABEL_25:
-        v64 = [*(v58 + 3776) stringWithFormat:@"%@ db", v121];
-        v105 = [(MPSGraph *)self reductionSumWithTensor:v30 axes:&unk_1F5B77540 name:v64];
+        v1213 = [*(v58 + 3776) stringWithFormat:@"%@ db", v121];
+        v105 = [(MPSGraph *)self reductionSumWithTensor:v30 axes:&unk_1F5B77540 name:v1213];
 
 LABEL_33:
         v65 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:7];
@@ -4161,41 +4161,41 @@ LABEL_31:
   }
 
   [v21 setBidirectional:0];
-  v26 = [(MPSGraphTensor *)v114 shape];
-  if (v26)
+  shape = [(MPSGraphTensor *)v114 shape];
+  if (shape)
   {
-    v27 = [(MPSGraphTensor *)v114 shape];
-    v28 = [v27 lastObject];
-    v29 = [v28 integerValue];
+    shape2 = [(MPSGraphTensor *)v114 shape];
+    lastObject = [shape2 lastObject];
+    integerValue = [lastObject integerValue];
 
-    if ((v29 & 0x8000000000000000) == 0)
+    if ((integerValue & 0x8000000000000000) == 0)
     {
       v119 = [(MPSGraph *)self sliceTensor:v114 dimension:0 start:0 length:1 name:0];
       v107 = [(MPSGraph *)self sliceTensor:v114 dimension:0 start:1 length:1 name:0];
-      v30 = [(MPSGraph *)self sliceTensor:v118 dimension:-1 start:0 length:v29 name:0];
-      v31 = [(MPSGraph *)self sliceTensor:v118 dimension:-1 start:v29 length:v29 name:0];
+      v30 = [(MPSGraph *)self sliceTensor:v118 dimension:-1 start:0 length:integerValue name:0];
+      v31 = [(MPSGraph *)self sliceTensor:v118 dimension:-1 start:integerValue length:integerValue name:0];
       v104 = [(MPSGraph *)self reverseTensor:v31 axes:&unk_1F5B774C8 name:0];
 
-      v32 = [v21 resetAfter];
+      resetAfter = [v21 resetAfter];
       v33 = 3;
-      if (v32)
+      if (resetAfter)
       {
         v33 = 4;
       }
 
-      v34 = v33 * v29;
-      v106 = [(MPSGraph *)self sliceTensor:v115 dimension:-1 start:0 length:v33 * v29 name:0];
+      v34 = v33 * integerValue;
+      v106 = [(MPSGraph *)self sliceTensor:v115 dimension:-1 start:0 length:v33 * integerValue name:0];
       v35 = [(MPSGraph *)self sliceTensor:v115 dimension:-1 start:v34 length:v34 name:0];
       v111 = [(MPSGraph *)self reverseTensor:v35 axes:&unk_1F5B774E0 name:0];
 
-      v117 = [(MPSGraph *)self sliceTensor:v116 dimension:-1 start:0 length:v29 name:0];
-      v36 = [(MPSGraph *)self sliceTensor:v116 dimension:-1 start:v29 length:v29 name:0];
+      v117 = [(MPSGraph *)self sliceTensor:v116 dimension:-1 start:0 length:integerValue name:0];
+      v36 = [(MPSGraph *)self sliceTensor:v116 dimension:-1 start:integerValue length:integerValue name:0];
       v105 = [(MPSGraph *)self reverseTensor:v36 axes:&unk_1F5B774F8 name:0];
 
       if (v110)
       {
-        v37 = [(MPSGraph *)self sliceTensor:v110 dimension:-1 start:0 length:v29 name:0];
-        v38 = [(MPSGraph *)self sliceTensor:v110 dimension:-1 start:v29 length:v29 name:0];
+        v37 = [(MPSGraph *)self sliceTensor:v110 dimension:-1 start:0 length:integerValue name:0];
+        v38 = [(MPSGraph *)self sliceTensor:v110 dimension:-1 start:integerValue length:integerValue name:0];
         v109 = v37;
         v39 = v120;
         v90 = v38;
@@ -4214,8 +4214,8 @@ LABEL_31:
         if (v120)
         {
 LABEL_8:
-          v40 = [(MPSGraph *)self sliceTensor:v39 dimension:-1 start:0 length:v29 name:0];
-          v94 = [(MPSGraph *)self sliceTensor:v39 dimension:-1 start:v29 length:v29 name:0];
+          v40 = [(MPSGraph *)self sliceTensor:v39 dimension:-1 start:0 length:integerValue name:0];
+          v94 = [(MPSGraph *)self sliceTensor:v39 dimension:-1 start:integerValue length:integerValue name:0];
           v91 = v40;
           if (v122)
           {
@@ -4232,16 +4232,16 @@ LABEL_8:
       if (v122)
       {
 LABEL_9:
-        v41 = [(MPSGraph *)self sliceTensor:v122 dimension:-1 start:0 length:v29 name:0];
-        v95 = [(MPSGraph *)self sliceTensor:v122 dimension:-1 start:v29 length:v29 name:0];
+        v41 = [(MPSGraph *)self sliceTensor:v122 dimension:-1 start:0 length:integerValue name:0];
+        v95 = [(MPSGraph *)self sliceTensor:v122 dimension:-1 start:integerValue length:integerValue name:0];
         v96 = v41;
         v42 = v113;
-        v43 = self;
+        selfCopy2 = self;
         if (v113)
         {
 LABEL_10:
-          v44 = [(MPSGraph *)v43 sliceTensor:v42 dimension:-1 start:0 length:v29 name:0];
-          [(MPSGraph *)v43 sliceTensor:v113 dimension:-1 start:v29 length:v29 name:0];
+          v44 = [(MPSGraph *)selfCopy2 sliceTensor:v42 dimension:-1 start:0 length:integerValue name:0];
+          [(MPSGraph *)selfCopy2 sliceTensor:v113 dimension:-1 start:integerValue length:integerValue name:0];
           v99 = v97 = v44;
           goto LABEL_46;
         }
@@ -4251,15 +4251,15 @@ LABEL_45:
         v99 = 0;
 LABEL_46:
         [v21 setReverse:0];
-        v102 = [(MPSGraph *)v43 GRUGradientsWithSourceTensor:v108 recurrentWeight:v119 sourceGradient:v30 zState:v106 outputFwd:v117 stateGradient:v97 inputWeight:0 bias:0 initState:v96 mask:v109 secondaryBias:v40 descriptor:v21 name:v121];
+        v102 = [(MPSGraph *)selfCopy2 GRUGradientsWithSourceTensor:v108 recurrentWeight:v119 sourceGradient:v30 zState:v106 outputFwd:v117 stateGradient:v97 inputWeight:0 bias:0 initState:v96 mask:v109 secondaryBias:v40 descriptor:v21 name:v121];
         [v21 setReverse:1];
-        v101 = [(MPSGraph *)v43 GRUGradientsWithSourceTensor:v108 recurrentWeight:v107 sourceGradient:v104 zState:v111 outputFwd:v105 stateGradient:v99 inputWeight:0 bias:0 initState:v95 mask:v38 secondaryBias:v94 descriptor:v21 name:v121];
+        v101 = [(MPSGraph *)selfCopy2 GRUGradientsWithSourceTensor:v108 recurrentWeight:v107 sourceGradient:v104 zState:v111 outputFwd:v105 stateGradient:v99 inputWeight:0 bias:0 initState:v95 mask:v38 secondaryBias:v94 descriptor:v21 name:v121];
         v66 = [v102 objectAtIndexedSubscript:0];
         v128[0] = v66;
         v67 = [v101 objectAtIndexedSubscript:0];
         v128[1] = v67;
         v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:v128 count:2];
-        v92 = [(MPSGraph *)v43 concatTensors:v68 dimension:-1 name:@"dz"];
+        v92 = [(MPSGraph *)selfCopy2 concatTensors:v68 dimension:-1 name:@"dz"];
 
         v69 = [v102 objectAtIndexedSubscript:1];
         v127[0] = v69;
@@ -4312,20 +4312,20 @@ LABEL_48:
         if (v112)
         {
 LABEL_49:
-          v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dx", v121];
-          v100 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v72 secondaryTensor:v112 name:v81];
+          v1214 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dx", v121];
+          v100 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v72 secondaryTensor:v112 name:v1214];
 
           v82 = [(MPSGraph *)self flatten2DTensor:v72 axis:-1 name:0];
           v83 = [(MPSGraph *)self flatten2DTensor:v108 axis:-1 name:0];
           v84 = [(MPSGraph *)self transposeTensor:v82 dimension:0 withDimension:1 name:0];
-          v85 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dW", v121];
-          v86 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v84 secondaryTensor:v83 name:v85];
+          v1215 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ dW", v121];
+          v86 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v84 secondaryTensor:v83 name:v1215];
 
           if (bias)
           {
 LABEL_50:
-            v87 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ db", v121];
-            v88 = [(MPSGraph *)self reductionSumWithTensor:v72 axes:&unk_1F5B77510 name:v87];
+            v1216 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ db", v121];
+            v88 = [(MPSGraph *)self reductionSumWithTensor:v72 axes:&unk_1F5B77510 name:v1216];
 
 LABEL_55:
             v65 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:7];
@@ -4374,7 +4374,7 @@ LABEL_44:
       v95 = 0;
       v96 = 0;
       v42 = v113;
-      v43 = self;
+      selfCopy2 = self;
       if (v113)
       {
         goto LABEL_10;
@@ -4440,9 +4440,9 @@ LABEL_66:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v18 = [(MPSGraphIfElseOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] trueBlock:v11 falseBlock:v12 name:v13];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
 
-  return v19;
+  return outputTensors;
 }
 
 - (NSArray)whileWithInitialInputs:(NSArray *)initialInputs before:(MPSGraphWhileBeforeBlock)before after:(MPSGraphWhileAfterBlock)after name:(NSString *)name
@@ -4453,9 +4453,9 @@ LABEL_66:
   v13 = name;
   v14 = [MPSGraphWhileOp alloc];
   v15 = [(MPSGraphWhileOp *)v14 initWithGraph:self inputTensors:v10 controlDependencies:MEMORY[0x1E695E0F0] beforeBlock:v11 afterBlock:v12 name:v13];
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
 
-  return v16;
+  return outputTensors;
 }
 
 - (NSArray)forLoopWithNumberOfIterations:(MPSGraphTensor *)numberOfIterations initialBodyArguments:(NSArray *)initialBodyArguments body:(MPSGraphForLoopBodyBlock)body name:(NSString *)name
@@ -4497,9 +4497,9 @@ LABEL_66:
   [v24 addObjectsFromArray:v15];
   v25 = [MPSGraphForLoopOp alloc];
   v26 = [(MPSGraphForLoopOp *)v25 initWithGraph:self inputTensors:v24 controlDependencies:MEMORY[0x1E695E0F0] bodyBlock:v30 iterArgs:v15 name:v31];
-  v27 = [(MPSGraphOperation *)v26 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v26 outputTensors];
 
-  return v27;
+  return outputTensors;
 }
 
 - (MPSGraphTensor)depthwiseConvolution2DWithSourceTensor:(MPSGraphTensor *)source weightsTensor:(MPSGraphTensor *)weights descriptor:(MPSGraphDepthwiseConvolution2DOpDescriptor *)descriptor name:(NSString *)name
@@ -4511,22 +4511,22 @@ LABEL_66:
   v98 = name;
   v99 = v9;
   v97 = v10;
-  v11 = [(MPSGraphTensor *)v9 shape];
-  if ([v11 count] != 4)
+  shape = [(MPSGraphTensor *)v9 shape];
+  if ([shape count] != 4)
   {
-    v12 = [(MPSGraphTensor *)v9 shape];
-    [v12 count];
+    shape2 = [(MPSGraphTensor *)v9 shape];
+    [shape2 count];
   }
 
-  v13 = [(MPSGraphTensor *)v9 shape];
-  if ([v13 count] == 4)
+  shape3 = [(MPSGraphTensor *)v9 shape];
+  if ([shape3 count] == 4)
   {
   }
 
   else
   {
-    v14 = [(MPSGraphTensor *)v9 shape];
-    v15 = [v14 count];
+    shape4 = [(MPSGraphTensor *)v9 shape];
+    v15 = [shape4 count];
 
     if (v15 && MTLReportFailureTypeEnabled())
     {
@@ -4534,22 +4534,22 @@ LABEL_66:
     }
   }
 
-  v16 = [(MPSGraphTensor *)v100 shape];
-  if ([v16 count] != 4)
+  shape5 = [(MPSGraphTensor *)v100 shape];
+  if ([shape5 count] != 4)
   {
-    v17 = [(MPSGraphTensor *)v100 shape];
-    [v17 count];
+    shape6 = [(MPSGraphTensor *)v100 shape];
+    [shape6 count];
   }
 
-  v18 = [(MPSGraphTensor *)v100 shape];
-  if ([v18 count] == 4)
+  shape7 = [(MPSGraphTensor *)v100 shape];
+  if ([shape7 count] == 4)
   {
   }
 
   else
   {
-    v19 = [(MPSGraphTensor *)v100 shape];
-    v20 = [v19 count];
+    shape8 = [(MPSGraphTensor *)v100 shape];
+    v20 = [shape8 count];
 
     if (v20 && MTLReportFailureTypeEnabled())
     {
@@ -4557,48 +4557,48 @@ LABEL_66:
     }
   }
 
-  v21 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 strideInX];
-  v22 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 strideInY];
-  v23 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 dilationRateInX];
-  v24 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 dilationRateInY];
-  v25 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingLeft];
-  v26 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingRight];
-  v27 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingTop];
-  v28 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingBottom];
-  v90 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingStyle];
-  v29 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 dataLayout];
-  v91 = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 weightsLayout];
+  strideInX = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 strideInX];
+  strideInY = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 strideInY];
+  dilationRateInX = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 dilationRateInX];
+  dilationRateInY = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 dilationRateInY];
+  paddingLeft = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingLeft];
+  paddingRight = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingRight];
+  paddingTop = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingTop];
+  paddingBottom = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingBottom];
+  paddingStyle = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 paddingStyle];
+  dataLayout = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 dataLayout];
+  weightsLayout = [(MPSGraphDepthwiseConvolution2DOpDescriptor *)v10 weightsLayout];
   v108[0] = &unk_1F5B75800;
-  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v22];
+  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:strideInY];
   v108[1] = v30;
-  v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v21];
+  v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:strideInX];
   v108[2] = v31;
   v95 = [MEMORY[0x1E695DEC8] arrayWithObjects:v108 count:3];
 
   v107[0] = &unk_1F5B75800;
-  v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v24];
+  v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dilationRateInY];
   v107[1] = v32;
-  v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v23];
+  v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dilationRateInX];
   v107[2] = v33;
   v94 = [MEMORY[0x1E695DEC8] arrayWithObjects:v107 count:3];
 
   v106[0] = &unk_1F5B75818;
   v106[1] = &unk_1F5B75818;
-  v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v27];
+  v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:paddingTop];
   v106[2] = v34;
-  v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v28];
+  v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:paddingBottom];
   v106[3] = v35;
-  v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v25];
+  v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:paddingLeft];
   v106[4] = v36;
-  v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v26];
+  v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:paddingRight];
   v106[5] = v37;
   v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:6];
 
   v38 = v100;
   v39 = v38;
-  if (v29 > 6 || ((1 << v29) & 0x51) == 0)
+  if (dataLayout > 6 || ((1 << dataLayout) & 0x51) == 0)
   {
-    if ((v29 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((dataLayout & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       if (MTLReportFailureTypeEnabled())
       {
@@ -4608,9 +4608,9 @@ LABEL_66:
       goto LABEL_46;
     }
 
-    v56 = [(MPSGraphTensor *)v38 shape];
-    v41 = v56;
-    if (!v56 || [v56 count] != 4)
+    shape9 = [(MPSGraphTensor *)v38 shape];
+    v41 = shape9;
+    if (!shape9 || [shape9 count] != 4)
     {
 LABEL_45:
 
@@ -4621,23 +4621,23 @@ LABEL_46:
       v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:2];
       v81 = [(MPSGraphDepthwiseConvolution2DBaseOp *)v79 initWithGraph:self inputTensors:v80 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v10 name:v98];
 
-      v82 = [(MPSGraphOperation *)v81 outputTensors];
-      v83 = [(MPSGraphDepthwiseConvolution3DOp *)v82 objectAtIndexedSubscript:0];
+      outputTensors = [(MPSGraphOperation *)v81 outputTensors];
+      v83 = [(MPSGraphDepthwiseConvolution3DOp *)outputTensors objectAtIndexedSubscript:0];
       v54 = v39;
       goto LABEL_47;
     }
 
-    if (v91 == 3)
+    if (weightsLayout == 3)
     {
       v57 = [v41 objectAtIndexedSubscript:0];
       v58 = [v41 objectAtIndexedSubscript:1];
       v59 = [v41 objectAtIndexedSubscript:2];
-      v89 = [v59 integerValue];
+      integerValue = [v59 integerValue];
 
       v60 = [v41 objectAtIndexedSubscript:3];
-      v61 = [v60 integerValue];
+      integerValue2 = [v60 integerValue];
 
-      if (v89 < 0 || (v47 = v57, v62 = v58, v63 = v39, v61 < 0))
+      if (integerValue < 0 || (v47 = v57, v62 = v58, v63 = v39, integerValue2 < 0))
       {
         v48 = v58;
         v47 = v57;
@@ -4648,24 +4648,24 @@ LABEL_46:
     else
     {
       v74 = [v41 objectAtIndexedSubscript:0];
-      v61 = [v74 integerValue];
+      integerValue2 = [v74 integerValue];
 
       v75 = [v41 objectAtIndexedSubscript:1];
-      v89 = [v75 integerValue];
+      integerValue = [v75 integerValue];
 
       v76 = [v41 objectAtIndexedSubscript:2];
       v77 = [v41 objectAtIndexedSubscript:3];
       v48 = v77;
-      if (v89 < 0 || v61 < 0)
+      if (integerValue < 0 || integerValue2 < 0)
       {
         v47 = v76;
         goto LABEL_44;
       }
 
-      if (v91 == 2)
+      if (weightsLayout == 2)
       {
-        v78 = [(MPSGraphTensor *)v39 name];
-        v63 = [(MPSGraph *)self transposeTensor:v39 permute:&unk_1F5B775D0 name:v78];
+        name = [(MPSGraphTensor *)v39 name];
+        v63 = [(MPSGraph *)self transposeTensor:v39 permute:&unk_1F5B775D0 name:name];
 
         v47 = v76;
         v62 = v48;
@@ -4682,36 +4682,36 @@ LABEL_46:
     v103[0] = &unk_1F5B75800;
     v103[1] = v47;
     v103[2] = v62;
-    v53 = [MEMORY[0x1E696AD98] numberWithInteger:v61 * v89];
-    v103[3] = v53;
+    name4 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue2 * integerValue];
+    v103[3] = name4;
     v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:4];
-    v72 = [v63 name];
+    name2 = [v63 name];
     v73 = v85;
-    v54 = [(MPSGraph *)self reshapeTensor:v63 withShape:v85 name:v72];
+    v54 = [(MPSGraph *)self reshapeTensor:v63 withShape:v85 name:name2];
     v92 = v62;
     v55 = -1;
     goto LABEL_52;
   }
 
-  v40 = [(MPSGraphTensor *)v38 shape];
-  v41 = v40;
-  if (!v40 || [v40 count] != 4)
+  shape10 = [(MPSGraphTensor *)v38 shape];
+  v41 = shape10;
+  if (!shape10 || [shape10 count] != 4)
   {
     goto LABEL_45;
   }
 
-  if (v91 == 3)
+  if (weightsLayout == 3)
   {
     v42 = [v41 objectAtIndexedSubscript:0];
     v92 = [v41 objectAtIndexedSubscript:1];
     v43 = [v41 objectAtIndexedSubscript:2];
-    v44 = [v43 integerValue];
+    integerValue3 = [v43 integerValue];
 
     v45 = [v41 objectAtIndexedSubscript:3];
-    v46 = [v45 integerValue];
+    integerValue4 = [v45 integerValue];
 
     v47 = v42;
-    if (v44 < 0)
+    if (integerValue3 < 0)
     {
       v48 = v92;
     }
@@ -4719,19 +4719,19 @@ LABEL_46:
     else
     {
       v48 = v92;
-      if ((v46 & 0x8000000000000000) == 0)
+      if ((integerValue4 & 0x8000000000000000) == 0)
       {
         v105[0] = &unk_1F5B75800;
         v105[1] = v42;
         v105[2] = v92;
-        v49 = [MEMORY[0x1E696AD98] numberWithInteger:v46 * v44];
+        v49 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue4 * integerValue3];
         v105[3] = v49;
         v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:4];
-        v51 = [(MPSGraphTensor *)v39 name];
-        v52 = [(MPSGraph *)self reshapeTensor:v39 withShape:v50 name:v51];
+        name3 = [(MPSGraphTensor *)v39 name];
+        v52 = [(MPSGraph *)self reshapeTensor:v39 withShape:v50 name:name3];
 
-        v53 = [v52 name];
-        v54 = [(MPSGraph *)self transposeTensor:v52 permute:&unk_1F5B775A0 name:v53];
+        name4 = [v52 name];
+        v54 = [(MPSGraph *)self transposeTensor:v52 permute:&unk_1F5B775A0 name:name4];
         v55 = -3;
         v47 = v42;
 LABEL_53:
@@ -4745,15 +4745,15 @@ LABEL_53:
   }
 
   v64 = [v41 objectAtIndexedSubscript:0];
-  v65 = [v64 integerValue];
+  integerValue5 = [v64 integerValue];
 
   v66 = [v41 objectAtIndexedSubscript:1];
-  v67 = [v66 integerValue];
+  integerValue6 = [v66 integerValue];
 
   v68 = [v41 objectAtIndexedSubscript:2];
   v92 = [v41 objectAtIndexedSubscript:3];
   v69 = v68;
-  if (v67 < 0)
+  if (integerValue6 < 0)
   {
     v48 = v92;
     v47 = v69;
@@ -4762,28 +4762,28 @@ LABEL_53:
 
   v48 = v92;
   v47 = v69;
-  if ((v65 & 0x8000000000000000) != 0)
+  if ((integerValue5 & 0x8000000000000000) != 0)
   {
 LABEL_44:
 
     goto LABEL_45;
   }
 
-  if (v65 >= 2)
+  if (integerValue5 >= 2)
   {
-    v70 = [(MPSGraphTensor *)v39 name];
-    v63 = [(MPSGraph *)self transposeTensor:v39 permute:&unk_1F5B775B8 name:v70];
+    name5 = [(MPSGraphTensor *)v39 name];
+    v63 = [(MPSGraph *)self transposeTensor:v39 permute:&unk_1F5B775B8 name:name5];
 
     v47 = v69;
     v104[0] = &unk_1F5B75800;
-    v53 = [MEMORY[0x1E696AD98] numberWithInteger:v67 * v65];
-    v104[1] = v53;
+    name4 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue6 * integerValue5];
+    v104[1] = name4;
     v104[2] = v69;
     v104[3] = v92;
     v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:4];
-    v72 = [v63 name];
+    name2 = [v63 name];
     v73 = v71;
-    v54 = [(MPSGraph *)self reshapeTensor:v63 withShape:v71 name:v72];
+    v54 = [(MPSGraph *)self reshapeTensor:v63 withShape:v71 name:name2];
     v55 = -3;
 LABEL_52:
 
@@ -4795,46 +4795,46 @@ LABEL_52:
   v54 = v39;
 LABEL_54:
 
-  v81 = [MPSGraphDepthwiseConvolution3DOpDescriptor descriptorWithStrides:v95 dilationRates:v94 paddingValues:v93 paddingStyle:v90];
+  v81 = [MPSGraphDepthwiseConvolution3DOpDescriptor descriptorWithStrides:v95 dilationRates:v94 paddingValues:v93 paddingStyle:paddingStyle];
   [(MPSGraphDepthwiseConvolution2DOp *)v81 setChannelDimensionIndex:v55];
   v86 = [MPSGraphDepthwiseConvolution3DOp alloc];
   v102[0] = v99;
   v102[1] = v54;
   v87 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:2];
-  v82 = [(MPSGraphDepthwiseConvolution3DBaseOp *)v86 initWithGraph:self inputTensors:v87 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v81 name:v98];
+  outputTensors = [(MPSGraphDepthwiseConvolution3DBaseOp *)v86 initWithGraph:self inputTensors:v87 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v81 name:v98];
 
-  v88 = [(MPSGraphOperation *)v82 outputTensors];
-  v83 = [v88 objectAtIndexedSubscript:0];
+  v82OutputTensors = [(MPSGraphOperation *)outputTensors outputTensors];
+  v83 = [v82OutputTensors objectAtIndexedSubscript:0];
 
 LABEL_47:
 
   return v83;
 }
 
-- (id)depthwiseConvolution2DDataGradientWithIncomingGradientTensor:(id)a3 weightsTensor:(id)a4 outputShapeTensor:(id)a5 descriptor:(id)a6 name:(id)a7
+- (id)depthwiseConvolution2DDataGradientWithIncomingGradientTensor:(id)tensor weightsTensor:(id)weightsTensor outputShapeTensor:(id)shapeTensor descriptor:(id)descriptor name:(id)name
 {
   v33[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 shape];
-  if ([v17 count] != 4)
+  tensorCopy = tensor;
+  weightsTensorCopy = weightsTensor;
+  shapeTensorCopy = shapeTensor;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  shape = [tensorCopy shape];
+  if ([shape count] != 4)
   {
-    v18 = [v12 shape];
-    [v18 count];
+    shape2 = [tensorCopy shape];
+    [shape2 count];
   }
 
-  v19 = [v12 shape];
-  if ([v19 count] == 4)
+  shape3 = [tensorCopy shape];
+  if ([shape3 count] == 4)
   {
   }
 
   else
   {
-    v20 = [v12 shape];
-    v21 = [v20 count];
+    shape4 = [tensorCopy shape];
+    v21 = [shape4 count];
 
     if (v21 && MTLReportFailureTypeEnabled())
     {
@@ -4842,22 +4842,22 @@ LABEL_47:
     }
   }
 
-  v22 = [v13 shape];
-  if ([v22 count] != 4)
+  shape5 = [weightsTensorCopy shape];
+  if ([shape5 count] != 4)
   {
-    v23 = [v13 shape];
-    [v23 count];
+    shape6 = [weightsTensorCopy shape];
+    [shape6 count];
   }
 
-  v24 = [v13 shape];
-  if ([v24 count] == 4)
+  shape7 = [weightsTensorCopy shape];
+  if ([shape7 count] == 4)
   {
   }
 
   else
   {
-    v25 = [v13 shape];
-    v26 = [v25 count];
+    shape8 = [weightsTensorCopy shape];
+    v26 = [shape8 count];
 
     if (v26 && MTLReportFailureTypeEnabled())
     {
@@ -4866,14 +4866,14 @@ LABEL_47:
   }
 
   v27 = [MPSGraphDepthwiseConvolution2DDataGradientOp alloc];
-  v33[0] = v12;
-  v33[1] = v13;
-  v33[2] = v14;
+  v33[0] = tensorCopy;
+  v33[1] = weightsTensorCopy;
+  v33[2] = shapeTensorCopy;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
-  v29 = [(MPSGraphDepthwiseConvolution2DBaseOp *)v27 initWithGraph:self inputTensors:v28 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v16];
+  v29 = [(MPSGraphDepthwiseConvolution2DBaseOp *)v27 initWithGraph:self inputTensors:v28 controlDependencies:MEMORY[0x1E695E0F0] descriptor:descriptorCopy name:nameCopy];
 
-  v30 = [(MPSGraphOperation *)v29 outputTensors];
-  v31 = [v30 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v29 outputTensors];
+  v31 = [outputTensors objectAtIndexedSubscript:0];
 
   return v31;
 }
@@ -4910,30 +4910,30 @@ LABEL_47:
   return v21;
 }
 
-- (id)depthwiseConvolution2DWeightsGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 outputShapeTensor:(id)a5 descriptor:(id)a6 name:(id)a7
+- (id)depthwiseConvolution2DWeightsGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor outputShapeTensor:(id)shapeTensor descriptor:(id)descriptor name:(id)name
 {
   v38[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 shape];
-  if ([v17 count] != 4)
+  tensorCopy = tensor;
+  sourceTensorCopy = sourceTensor;
+  shapeTensorCopy = shapeTensor;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  shape = [tensorCopy shape];
+  if ([shape count] != 4)
   {
-    v18 = [v12 shape];
-    [v18 count];
+    shape2 = [tensorCopy shape];
+    [shape2 count];
   }
 
-  v19 = [v12 shape];
-  if ([v19 count] == 4)
+  shape3 = [tensorCopy shape];
+  if ([shape3 count] == 4)
   {
   }
 
   else
   {
-    v20 = [v12 shape];
-    v21 = [v20 count];
+    shape4 = [tensorCopy shape];
+    v21 = [shape4 count];
 
     if (v21 && MTLReportFailureTypeEnabled())
     {
@@ -4941,22 +4941,22 @@ LABEL_47:
     }
   }
 
-  v22 = [v13 shape];
-  if ([v22 count] != 4)
+  shape5 = [sourceTensorCopy shape];
+  if ([shape5 count] != 4)
   {
-    v23 = [v13 shape];
-    [v23 count];
+    shape6 = [sourceTensorCopy shape];
+    [shape6 count];
   }
 
-  v24 = [v13 shape];
-  if ([v24 count] == 4)
+  shape7 = [sourceTensorCopy shape];
+  if ([shape7 count] == 4)
   {
   }
 
   else
   {
-    v25 = [v13 shape];
-    v26 = [v25 count];
+    shape8 = [sourceTensorCopy shape];
+    v26 = [shape8 count];
 
     if (v26 && MTLReportFailureTypeEnabled())
     {
@@ -4964,22 +4964,22 @@ LABEL_47:
     }
   }
 
-  v27 = [v14 shape];
-  if ([v27 count] != 1)
+  shape9 = [shapeTensorCopy shape];
+  if ([shape9 count] != 1)
   {
-    v28 = [v13 shape];
-    [v28 count];
+    shape10 = [sourceTensorCopy shape];
+    [shape10 count];
   }
 
-  v29 = [v14 shape];
-  if ([v29 count] == 1)
+  shape11 = [shapeTensorCopy shape];
+  if ([shape11 count] == 1)
   {
   }
 
   else
   {
-    v30 = [v13 shape];
-    v31 = [v30 count];
+    shape12 = [sourceTensorCopy shape];
+    v31 = [shape12 count];
 
     if (v31 && MTLReportFailureTypeEnabled())
     {
@@ -4988,14 +4988,14 @@ LABEL_47:
   }
 
   v32 = [MPSGraphDepthwiseConvolution2DWeightsGradientOp alloc];
-  v38[0] = v12;
-  v38[1] = v13;
-  v38[2] = v14;
+  v38[0] = tensorCopy;
+  v38[1] = sourceTensorCopy;
+  v38[2] = shapeTensorCopy;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
-  v34 = [(MPSGraphDepthwiseConvolution2DBaseOp *)v32 initWithGraph:self inputTensors:v33 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v16];
+  v34 = [(MPSGraphDepthwiseConvolution2DBaseOp *)v32 initWithGraph:self inputTensors:v33 controlDependencies:MEMORY[0x1E695E0F0] descriptor:descriptorCopy name:nameCopy];
 
-  v35 = [(MPSGraphOperation *)v34 outputTensors];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v34 outputTensors];
+  v36 = [outputTensors objectAtIndexedSubscript:0];
 
   return v36;
 }
@@ -5039,22 +5039,22 @@ LABEL_47:
   v11 = weights;
   v12 = descriptor;
   v13 = name;
-  v14 = [(MPSGraphTensor *)v10 shape];
-  if ([v14 count] <= 3)
+  shape = [(MPSGraphTensor *)v10 shape];
+  if ([shape count] <= 3)
   {
-    v15 = [(MPSGraphTensor *)v10 shape];
-    [v15 count];
+    shape2 = [(MPSGraphTensor *)v10 shape];
+    [shape2 count];
   }
 
-  v16 = [(MPSGraphTensor *)v10 shape];
-  if ([v16 count] >= 4)
+  shape3 = [(MPSGraphTensor *)v10 shape];
+  if ([shape3 count] >= 4)
   {
   }
 
   else
   {
-    v17 = [(MPSGraphTensor *)v10 shape];
-    v18 = [v17 count];
+    shape4 = [(MPSGraphTensor *)v10 shape];
+    v18 = [shape4 count];
 
     if (v18 && MTLReportFailureTypeEnabled())
     {
@@ -5062,22 +5062,22 @@ LABEL_47:
     }
   }
 
-  v19 = [(MPSGraphTensor *)v11 shape];
-  if ([v19 count] != 4)
+  shape5 = [(MPSGraphTensor *)v11 shape];
+  if ([shape5 count] != 4)
   {
-    v20 = [(MPSGraphTensor *)v11 shape];
-    [v20 count];
+    shape6 = [(MPSGraphTensor *)v11 shape];
+    [shape6 count];
   }
 
-  v21 = [(MPSGraphTensor *)v11 shape];
-  if ([v21 count] == 4)
+  shape7 = [(MPSGraphTensor *)v11 shape];
+  if ([shape7 count] == 4)
   {
   }
 
   else
   {
-    v22 = [(MPSGraphTensor *)v11 shape];
-    v23 = [v22 count];
+    shape8 = [(MPSGraphTensor *)v11 shape];
+    v23 = [shape8 count];
 
     if (v23 && MTLReportFailureTypeEnabled())
     {
@@ -5091,36 +5091,36 @@ LABEL_47:
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v26 = [(MPSGraphDepthwiseConvolution3DBaseOp *)v24 initWithGraph:self inputTensors:v25 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v27 = [(MPSGraphOperation *)v26 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v26 outputTensors];
+  v28 = [outputTensors objectAtIndexedSubscript:0];
 
   return v28;
 }
 
-- (id)depthwiseConvolution3DDataGradientWithIncomingGradientTensor:(id)a3 weightsTensor:(id)a4 outputShapeTensor:(id)a5 descriptor:(id)a6 name:(id)a7
+- (id)depthwiseConvolution3DDataGradientWithIncomingGradientTensor:(id)tensor weightsTensor:(id)weightsTensor outputShapeTensor:(id)shapeTensor descriptor:(id)descriptor name:(id)name
 {
   v35[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 shape];
-  if ([v17 count] <= 3)
+  tensorCopy = tensor;
+  weightsTensorCopy = weightsTensor;
+  shapeTensorCopy = shapeTensor;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  shape = [tensorCopy shape];
+  if ([shape count] <= 3)
   {
-    v18 = [v12 shape];
-    [v18 count];
+    shape2 = [tensorCopy shape];
+    [shape2 count];
   }
 
-  v19 = [v12 shape];
-  if ([v19 count] >= 4)
+  shape3 = [tensorCopy shape];
+  if ([shape3 count] >= 4)
   {
   }
 
   else
   {
-    v20 = [v12 shape];
-    v21 = [v20 count];
+    shape4 = [tensorCopy shape];
+    v21 = [shape4 count];
 
     if (v21 && MTLReportFailureTypeEnabled())
     {
@@ -5128,22 +5128,22 @@ LABEL_47:
     }
   }
 
-  v22 = [v13 shape];
-  if ([v22 count] != 4)
+  shape5 = [weightsTensorCopy shape];
+  if ([shape5 count] != 4)
   {
-    v23 = [v13 shape];
-    [v23 count];
+    shape6 = [weightsTensorCopy shape];
+    [shape6 count];
   }
 
-  v24 = [v13 shape];
-  if ([v24 count] == 4)
+  shape7 = [weightsTensorCopy shape];
+  if ([shape7 count] == 4)
   {
   }
 
   else
   {
-    v25 = [v13 shape];
-    v26 = [v25 count];
+    shape8 = [weightsTensorCopy shape];
+    v26 = [shape8 count];
 
     if (v26 && MTLReportFailureTypeEnabled())
     {
@@ -5151,26 +5151,26 @@ LABEL_47:
     }
   }
 
-  if (v14)
+  if (shapeTensorCopy)
   {
-    v35[0] = v12;
-    v35[1] = v13;
-    v35[2] = v14;
+    v35[0] = tensorCopy;
+    v35[1] = weightsTensorCopy;
+    v35[2] = shapeTensorCopy;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:3];
   }
 
   else
   {
-    v34[0] = v12;
-    v34[1] = v13;
+    v34[0] = tensorCopy;
+    v34[1] = weightsTensorCopy;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
   }
 
   v28 = v27;
   v29 = [MPSGraphDepthwiseConvolution3DDataGradientOp alloc];
-  v30 = [(MPSGraphDepthwiseConvolution3DBaseOp *)v29 initWithGraph:self inputTensors:v28 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v16];
-  v31 = [(MPSGraphOperation *)v30 outputTensors];
-  v32 = [v31 objectAtIndexedSubscript:0];
+  v30 = [(MPSGraphDepthwiseConvolution3DBaseOp *)v29 initWithGraph:self inputTensors:v28 controlDependencies:MEMORY[0x1E695E0F0] descriptor:descriptorCopy name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v30 outputTensors];
+  v32 = [outputTensors objectAtIndexedSubscript:0];
 
   return v32;
 }
@@ -5221,8 +5221,8 @@ LABEL_47:
     for (i = 0; i < [(MPSShape *)v13 count]; ++i)
     {
       v21 = [(MPSShape *)v13 objectAtIndexedSubscript:i];
-      v22 = [v21 intValue];
-      *(v32 + i) = v22;
+      intValue = [v21 intValue];
+      *(v32 + i) = intValue;
     }
 
     v23 = [MEMORY[0x1E695DEF0] dataWithBytes:v32 length:4 * v33];
@@ -5247,30 +5247,30 @@ LABEL_47:
   return v27;
 }
 
-- (id)depthwiseConvolution3DWeightsGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 outputShapeTensor:(id)a5 descriptor:(id)a6 name:(id)a7
+- (id)depthwiseConvolution3DWeightsGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor outputShapeTensor:(id)shapeTensor descriptor:(id)descriptor name:(id)name
 {
   v38[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 shape];
-  if ([v17 count] <= 3)
+  tensorCopy = tensor;
+  sourceTensorCopy = sourceTensor;
+  shapeTensorCopy = shapeTensor;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  shape = [tensorCopy shape];
+  if ([shape count] <= 3)
   {
-    v18 = [v12 shape];
-    [v18 count];
+    shape2 = [tensorCopy shape];
+    [shape2 count];
   }
 
-  v19 = [v12 shape];
-  if ([v19 count] >= 4)
+  shape3 = [tensorCopy shape];
+  if ([shape3 count] >= 4)
   {
   }
 
   else
   {
-    v20 = [v12 shape];
-    v21 = [v20 count];
+    shape4 = [tensorCopy shape];
+    v21 = [shape4 count];
 
     if (v21 && MTLReportFailureTypeEnabled())
     {
@@ -5278,22 +5278,22 @@ LABEL_47:
     }
   }
 
-  v22 = [v13 shape];
-  if ([v22 count] <= 3)
+  shape5 = [sourceTensorCopy shape];
+  if ([shape5 count] <= 3)
   {
-    v23 = [v13 shape];
-    [v23 count];
+    shape6 = [sourceTensorCopy shape];
+    [shape6 count];
   }
 
-  v24 = [v13 shape];
-  if ([v24 count] >= 4)
+  shape7 = [sourceTensorCopy shape];
+  if ([shape7 count] >= 4)
   {
   }
 
   else
   {
-    v25 = [v13 shape];
-    v26 = [v25 count];
+    shape8 = [sourceTensorCopy shape];
+    v26 = [shape8 count];
 
     if (v26 && MTLReportFailureTypeEnabled())
     {
@@ -5301,22 +5301,22 @@ LABEL_47:
     }
   }
 
-  v27 = [v14 shape];
-  if ([v27 count] != 1)
+  shape9 = [shapeTensorCopy shape];
+  if ([shape9 count] != 1)
   {
-    v28 = [v13 shape];
-    [v28 count];
+    shape10 = [sourceTensorCopy shape];
+    [shape10 count];
   }
 
-  v29 = [v14 shape];
-  if ([v29 count] == 1)
+  shape11 = [shapeTensorCopy shape];
+  if ([shape11 count] == 1)
   {
   }
 
   else
   {
-    v30 = [v13 shape];
-    v31 = [v30 count];
+    shape12 = [sourceTensorCopy shape];
+    v31 = [shape12 count];
 
     if (v31 && MTLReportFailureTypeEnabled())
     {
@@ -5325,14 +5325,14 @@ LABEL_47:
   }
 
   v32 = [MPSGraphDepthwiseConvolution3DWeightsGradientOp alloc];
-  v38[0] = v12;
-  v38[1] = v13;
-  v38[2] = v14;
+  v38[0] = tensorCopy;
+  v38[1] = sourceTensorCopy;
+  v38[2] = shapeTensorCopy;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
-  v34 = [(MPSGraphDepthwiseConvolution3DBaseOp *)v32 initWithGraph:self inputTensors:v33 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v16];
+  v34 = [(MPSGraphDepthwiseConvolution3DBaseOp *)v32 initWithGraph:self inputTensors:v33 controlDependencies:MEMORY[0x1E695E0F0] descriptor:descriptorCopy name:nameCopy];
 
-  v35 = [(MPSGraphOperation *)v34 outputTensors];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v34 outputTensors];
+  v36 = [outputTensors objectAtIndexedSubscript:0];
 
   return v36;
 }
@@ -5381,8 +5381,8 @@ LABEL_47:
   for (i = 0; i < [(MPSShape *)v13 count]; ++i)
   {
     v21 = [(MPSShape *)v13 objectAtIndexedSubscript:i];
-    v22 = [v21 intValue];
-    *(v32 + i) = v22;
+    intValue = [v21 intValue];
+    *(v32 + i) = intValue;
   }
 
   v23 = [MEMORY[0x1E695DEF0] dataWithBytes:v32 length:4 * v33];
@@ -5401,17 +5401,17 @@ LABEL_47:
   return v27;
 }
 
-- (id)fixTypeOfReductionInput:(id)a3
+- (id)fixTypeOfReductionInput:(id)input
 {
-  v4 = a3;
-  if ([v4 dataType] == -2147483640)
+  inputCopy = input;
+  if ([inputCopy dataType] == -2147483640)
   {
-    v5 = [(MPSGraph *)self castTensor:v4 toType:536870944 name:0];
+    v5 = [(MPSGraph *)self castTensor:inputCopy toType:536870944 name:0];
 
-    v4 = v5;
+    inputCopy = v5;
   }
 
-  return v4;
+  return inputCopy;
 }
 
 - (MPSGraphTensor)reductionSumWithTensor:(MPSGraphTensor *)tensor axis:(NSInteger)axis name:(NSString *)name
@@ -5480,29 +5480,29 @@ LABEL_8:
   return v18;
 }
 
-- (id)reductionSumWithTensor:(id)a3 axesTensor:(id)a4 name:(id)a5
+- (id)reductionSumWithTensor:(id)tensor axesTensor:(id)axesTensor name:(id)name
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPSGraph *)self fixTypeOfReductionInput:v8];
+  tensorCopy = tensor;
+  axesTensorCopy = axesTensor;
+  nameCopy = name;
+  v11 = [(MPSGraph *)self fixTypeOfReductionInput:tensorCopy];
 
   v20[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  if (v9)
+  if (axesTensorCopy)
   {
     v19[0] = v11;
-    v19[1] = v9;
+    v19[1] = axesTensorCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
 
     v12 = v13;
   }
 
   v14 = [MPSGraphReductionSumOp alloc];
-  v15 = [(MPSGraphReductionBaseOp *)v14 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] axes:0 name:v10];
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  v15 = [(MPSGraphReductionBaseOp *)v14 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] axes:0 name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:0];
 
   return v17;
 }
@@ -5553,8 +5553,8 @@ LABEL_8:
 
   v18 = [MPSGraphReductionMaxOp alloc];
   v19 = [(MPSGraphReductionBaseOp *)v18 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] axes:v9 name:v10];
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -5605,8 +5605,8 @@ LABEL_8:
 
   v18 = [MPSGraphReductionMinOp alloc];
   v19 = [(MPSGraphReductionBaseOp *)v18 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] axes:v9 name:v10];
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -5657,8 +5657,8 @@ LABEL_8:
 
   v18 = [MPSGraphReductionMaxPropagateNaNOp alloc];
   v19 = [(MPSGraphReductionBaseOp *)v18 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] axes:v9 name:v10];
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -5709,8 +5709,8 @@ LABEL_8:
 
   v18 = [MPSGraphReductionMinPropagateNaNOp alloc];
   v19 = [(MPSGraphReductionBaseOp *)v18 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] axes:v9 name:v10];
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -5763,8 +5763,8 @@ LABEL_8:
 
   v19 = [MPSGraphReductionProdOp alloc];
   v20 = [(MPSGraphReductionBaseOp *)v19 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] axes:v9 name:v10];
-  v21 = [(MPSGraphOperation *)v20 outputTensors];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v20 outputTensors];
+  v22 = [outputTensors objectAtIndexedSubscript:0];
 
   return v22;
 }
@@ -5783,8 +5783,8 @@ LABEL_8:
 
   v13 = [MPSGraphReductionArgMinOp alloc];
   v14 = [(MPSGraphReductionArgBaseOp *)v13 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] axis:axis name:v9];
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -5803,8 +5803,8 @@ LABEL_8:
 
   v13 = [MPSGraphReductionArgMaxOp alloc];
   v14 = [(MPSGraphReductionArgBaseOp *)v13 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] axis:axis name:v9];
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -5857,8 +5857,8 @@ LABEL_8:
 
   v19 = [MPSGraphReductionAndOp alloc];
   v20 = [(MPSGraphReductionBaseOp *)v19 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] axes:v9 name:v10];
-  v21 = [(MPSGraphOperation *)v20 outputTensors];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v20 outputTensors];
+  v22 = [outputTensors objectAtIndexedSubscript:0];
 
   return v22;
 }
@@ -5909,8 +5909,8 @@ LABEL_8:
 
   v18 = [MPSGraphReductionOrOp alloc];
   v19 = [(MPSGraphReductionBaseOp *)v18 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] axes:v9 name:v10];
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -5948,8 +5948,8 @@ LABEL_8:
 
   v18 = [MPSGraphReductionMeanOp alloc];
   v19 = [(MPSGraphReductionBaseOp *)v18 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] axes:v9 name:v10];
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -5974,9 +5974,9 @@ void __16__MPSGraph_init__block_invoke(mlir *a1)
   ParseEnvironmentOptions("main", "MPSGRAPH_MLIR_CL", "");
 }
 
-- (id)operationWithName:(id)a3
+- (id)operationWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   for (i = 0; ; ++i)
   {
     if (i >= [(NSMutableArray *)self->_operations count])
@@ -5986,8 +5986,8 @@ void __16__MPSGraph_init__block_invoke(mlir *a1)
     }
 
     v6 = [(NSMutableArray *)self->_operations objectAtIndexedSubscript:i];
-    v7 = [v6 name];
-    v8 = [v7 isEqualToString:v4];
+    name = [v6 name];
+    v8 = [name isEqualToString:nameCopy];
 
     if (v8)
     {
@@ -6117,9 +6117,9 @@ LABEL_7:
   return v8;
 }
 
-- (id)compileWithDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6
+- (id)compileWithDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations
 {
-  v6 = [(MPSGraph *)self compileWithDevice:a3 feeds:a4 targetTensors:a5 targetOperations:a6 compilationDescriptor:0];
+  v6 = [(MPSGraph *)self compileWithDevice:device feeds:feeds targetTensors:tensors targetOperations:operations compilationDescriptor:0];
 
   return v6;
 }
@@ -6242,15 +6242,15 @@ LABEL_7:
   {
 LABEL_5:
     v15 = [MPSGraphDevice deviceWithMTLDevice:v14];
-    v16 = [v15 metalDevice];
-    v17 = [v16 newCommandQueue];
+    metalDevice = [v15 metalDevice];
+    newCommandQueue = [metalDevice newCommandQueue];
 
     if (!v13)
     {
       v13 = objc_opt_new();
     }
 
-    v18 = [(MPSGraph *)self runAsyncWithMTLCommandQueue:v17 feeds:v10 targetTensors:v11 targetOperations:v12 executionDescriptor:v13];
+    v18 = [(MPSGraph *)self runAsyncWithMTLCommandQueue:newCommandQueue feeds:v10 targetTensors:v11 targetOperations:v12 executionDescriptor:v13];
 
     goto LABEL_11;
   }
@@ -6313,8 +6313,8 @@ char *__81__MPSGraph_runAsyncWithFeeds_targetTensors_targetOperations_executionD
     v15 = objc_opt_new();
   }
 
-  v16 = [(MPSGraphTensorDataDictionary *)v14 allKeys];
-  v17 = [(MPSGraph *)self runInternalWithMTLCommandQueue:v18 feeds:v12 targetTensors:v16 targetOperations:v13 resultsDictionary:v14 executionDescriptor:v15];
+  allKeys = [(MPSGraphTensorDataDictionary *)v14 allKeys];
+  v17 = [(MPSGraph *)self runInternalWithMTLCommandQueue:v18 feeds:v12 targetTensors:allKeys targetOperations:v13 resultsDictionary:v14 executionDescriptor:v15];
 }
 
 - (MPSGraphTensorDataDictionary)encodeToCommandBuffer:(MPSCommandBuffer *)commandBuffer feeds:(MPSGraphTensorDataDictionary *)feeds targetTensors:(NSArray *)targetTensors targetOperations:(NSArray *)targetOperations executionDescriptor:(MPSGraphExecutionDescriptor *)executionDescriptor
@@ -6347,49 +6347,49 @@ char *__81__MPSGraph_runAsyncWithFeeds_targetTensors_targetOperations_executionD
     v15 = objc_opt_new();
   }
 
-  v16 = [(MPSGraphTensorDataDictionary *)v14 allKeys];
+  allKeys = [(MPSGraphTensorDataDictionary *)v14 allKeys];
   LOBYTE(v18) = 0;
-  v17 = [(MPSGraph *)self runInternalWithMPSCommandBuffer:v19 feeds:v12 targetTensors:v16 targetOperations:v13 resultsDictionary:v14 executionDescriptor:v15 mpsGraphOwnedCommandBuffer:v18];
+  v17 = [(MPSGraph *)self runInternalWithMPSCommandBuffer:v19 feeds:v12 targetTensors:allKeys targetOperations:v13 resultsDictionary:v14 executionDescriptor:v15 mpsGraphOwnedCommandBuffer:v18];
 }
 
-- (id)runInternalWithMTLCommandQueue:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 resultsDictionary:(id)a7 executionDescriptor:(id)a8
+- (id)runInternalWithMTLCommandQueue:(id)queue feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [MEMORY[0x1E6974450] commandBufferFromCommandQueue:a3];
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
+  dictionaryCopy = dictionary;
+  descriptorCopy = descriptor;
+  v19 = [MEMORY[0x1E6974450] commandBufferFromCommandQueue:queue];
   LOBYTE(v22) = 1;
-  v20 = [(MPSGraph *)self runInternalWithMPSCommandBuffer:v19 feeds:v14 targetTensors:v15 targetOperations:v16 resultsDictionary:v17 executionDescriptor:v18 mpsGraphOwnedCommandBuffer:v22];
+  v20 = [(MPSGraph *)self runInternalWithMPSCommandBuffer:v19 feeds:feedsCopy targetTensors:tensorsCopy targetOperations:operationsCopy resultsDictionary:dictionaryCopy executionDescriptor:descriptorCopy mpsGraphOwnedCommandBuffer:v22];
 
   return v20;
 }
 
-- (id)getExecutableForDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 resultsDictionary:(id)a7 executionDescriptor:(id)a8
+- (id)getExecutableForDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor
 {
   v64 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v14 = a4;
-  v49 = a5;
-  v47 = a6;
-  v15 = a7;
-  v48 = a8;
-  v45 = v15;
-  v46 = v14;
-  [v14 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_496];
-  v43 = self;
-  [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v15, "count")}];
+  deviceCopy = device;
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
+  dictionaryCopy = dictionary;
+  descriptorCopy = descriptor;
+  v45 = dictionaryCopy;
+  v46 = feedsCopy;
+  [feedsCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global_496];
+  selfCopy = self;
+  [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v61[0] = 0;
   v61[1] = 0;
   v50 = v60 = v61;
-  if (v15)
+  if (dictionaryCopy)
   {
     v58 = 0uLL;
     v59 = 0uLL;
     v56 = 0uLL;
     v57 = 0uLL;
-    obj = v15;
+    obj = dictionaryCopy;
     v16 = [obj countByEnumeratingWithState:&v56 objects:v63 count:16];
     if (v16)
     {
@@ -6404,7 +6404,7 @@ char *__81__MPSGraph_runAsyncWithFeeds_targetTensors_targetOperations_executionD
           }
 
           v19 = *(*(&v56 + 1) + 8 * i);
-          v20 = [v19 index];
+          index = [v19 index];
           v21 = v61[0];
           if (!v61[0])
           {
@@ -6418,7 +6418,7 @@ LABEL_13:
             {
               v22 = v21;
               v23 = v21[4];
-              if (v20 >= v23)
+              if (index >= v23)
               {
                 break;
               }
@@ -6430,7 +6430,7 @@ LABEL_13:
               }
             }
 
-            if (v23 >= v20)
+            if (v23 >= index)
             {
               break;
             }
@@ -6458,7 +6458,7 @@ LABEL_13:
     v55 = 0uLL;
     v52 = 0uLL;
     v53 = 0uLL;
-    obj = v49;
+    obj = tensorsCopy;
     v24 = [obj countByEnumeratingWithState:&v52 objects:v62 count:16];
     if (v24)
     {
@@ -6473,7 +6473,7 @@ LABEL_13:
           }
 
           v27 = *(*(&v52 + 1) + 8 * j);
-          v28 = [v27 index];
+          index2 = [v27 index];
           v29 = v61[0];
           if (!v61[0])
           {
@@ -6487,7 +6487,7 @@ LABEL_28:
             {
               v30 = v29;
               v31 = v29[4];
-              if (v28 >= v31)
+              if (index2 >= v31)
               {
                 break;
               }
@@ -6499,7 +6499,7 @@ LABEL_28:
               }
             }
 
-            if (v31 >= v28)
+            if (v31 >= index2)
             {
               break;
             }
@@ -6559,9 +6559,9 @@ LABEL_28:
     while (v35 != v61);
   }
 
-  v37 = v44;
+  v37 = deviceCopy;
   v38 = getMPSShapedDictionaryFromDataDictionary(v46);
-  v39 = [v48 compilationDescriptor];
+  compilationDescriptor = [descriptorCopy compilationDescriptor];
   if (v50)
   {
     v40 = v50;
@@ -6569,10 +6569,10 @@ LABEL_28:
 
   else
   {
-    v40 = v49;
+    v40 = tensorsCopy;
   }
 
-  v41 = [(MPSGraph *)v43 compileWithDevice:v37 feeds:v38 targetTensors:v40 targetOperations:v47 compilationDescriptor:v39];
+  v41 = [(MPSGraph *)selfCopy compileWithDevice:v37 feeds:v38 targetTensors:v40 targetOperations:operationsCopy compilationDescriptor:compilationDescriptor];
 
   std::__tree<std::__value_type<unsigned long,MPSGraphTensor * {__strong}>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,MPSGraphTensor * {__strong}>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,MPSGraphTensor * {__strong}>>>::destroy(v61[0]);
 
@@ -6631,23 +6631,23 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   }
 }
 
-- (id)runInternalWithMPSCommandBuffer:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 resultsDictionary:(id)a7 executionDescriptor:(id)a8 mpsGraphOwnedCommandBuffer:(BOOL)a9
+- (id)runInternalWithMPSCommandBuffer:(id)buffer feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor mpsGraphOwnedCommandBuffer:(BOOL)commandBuffer
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v27 = v17;
-  v21 = [v15 device];
-  v22 = [MPSGraphDevice deviceWithMTLDevice:v21];
+  bufferCopy = buffer;
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
+  dictionaryCopy = dictionary;
+  descriptorCopy = descriptor;
+  v27 = tensorsCopy;
+  device = [bufferCopy device];
+  v22 = [MPSGraphDevice deviceWithMTLDevice:device];
 
-  v23 = [(MPSGraph *)self getExecutableForDevice:v22 feeds:v16 targetTensors:v17 targetOperations:v18 resultsDictionary:v19 executionDescriptor:v20];
-  v24 = [[MPSGraphExecutableExecutionDescriptor alloc] initWithGraphExecutionDescriptor:v20];
+  v23 = [(MPSGraph *)self getExecutableForDevice:v22 feeds:feedsCopy targetTensors:tensorsCopy targetOperations:operationsCopy resultsDictionary:dictionaryCopy executionDescriptor:descriptorCopy];
+  v24 = [[MPSGraphExecutableExecutionDescriptor alloc] initWithGraphExecutionDescriptor:descriptorCopy];
   [v23 setOptions:self->_options];
-  v25 = [v23 runInternalWithDevice:v22 commandBuffer:v15 feedsDictionary:v16 resultsDictionary:v19 executableExecutionDescriptor:v24 mpsGraphOwnedCommandBuffer:a9];
-  if (!v20 && MTLReportFailureTypeEnabled())
+  v25 = [v23 runInternalWithDevice:v22 commandBuffer:bufferCopy feedsDictionary:feedsCopy resultsDictionary:dictionaryCopy executableExecutionDescriptor:v24 mpsGraphOwnedCommandBuffer:commandBuffer];
+  if (!descriptorCopy && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
@@ -6655,103 +6655,103 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   return v25;
 }
 
-- (id)runWithDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 executionDescriptor:(id)a7
+- (id)runWithDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations executionDescriptor:(id)descriptor
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v16)
+  deviceCopy = device;
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v16 = objc_opt_new();
-    [v16 setWaitUntilCompleted:1];
+    descriptorCopy = objc_opt_new();
+    [descriptorCopy setWaitUntilCompleted:1];
   }
 
-  v17 = [(MPSGraph *)self runInternalWithMPSGraphDevice:v12 feeds:v13 targetTensors:v14 targetOperations:v15 resultsDictionary:0 executionDescriptor:v16];
+  v17 = [(MPSGraph *)self runInternalWithMPSGraphDevice:deviceCopy feeds:feedsCopy targetTensors:tensorsCopy targetOperations:operationsCopy resultsDictionary:0 executionDescriptor:descriptorCopy];
 
   return v17;
 }
 
-- (void)runWithDevice:(id)a3 feeds:(id)a4 targetOperations:(id)a5 resultsDictionary:(id)a6 executionDescriptor:(id)a7
+- (void)runWithDevice:(id)device feeds:(id)feeds targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v15)
+  deviceCopy = device;
+  feedsCopy = feeds;
+  operationsCopy = operations;
+  dictionaryCopy = dictionary;
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v15 = objc_opt_new();
-    [v15 setWaitUntilCompleted:1];
+    descriptorCopy = objc_opt_new();
+    [descriptorCopy setWaitUntilCompleted:1];
   }
 
-  v16 = [v14 allKeys];
-  v17 = [(MPSGraph *)self runInternalWithMPSGraphDevice:v18 feeds:v12 targetTensors:v16 targetOperations:v13 resultsDictionary:v14 executionDescriptor:v15];
+  allKeys = [dictionaryCopy allKeys];
+  v17 = [(MPSGraph *)self runInternalWithMPSGraphDevice:deviceCopy feeds:feedsCopy targetTensors:allKeys targetOperations:operationsCopy resultsDictionary:dictionaryCopy executionDescriptor:descriptorCopy];
 }
 
-- (id)runAsyncWithDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 executionDescriptor:(id)a7
+- (id)runAsyncWithDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations executionDescriptor:(id)descriptor
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v16)
+  deviceCopy = device;
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v16 = objc_opt_new();
-    [v16 setWaitUntilCompleted:0];
+    descriptorCopy = objc_opt_new();
+    [descriptorCopy setWaitUntilCompleted:0];
   }
 
-  v17 = [(MPSGraph *)self runInternalWithMPSGraphDevice:v12 feeds:v13 targetTensors:v14 targetOperations:v15 resultsDictionary:0 executionDescriptor:v16];
+  v17 = [(MPSGraph *)self runInternalWithMPSGraphDevice:deviceCopy feeds:feedsCopy targetTensors:tensorsCopy targetOperations:operationsCopy resultsDictionary:0 executionDescriptor:descriptorCopy];
 
   return v17;
 }
 
-- (void)runAsyncWithDevice:(id)a3 feeds:(id)a4 targetOperations:(id)a5 resultsDictionary:(id)a6 executionDescriptor:(id)a7
+- (void)runAsyncWithDevice:(id)device feeds:(id)feeds targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v15)
+  deviceCopy = device;
+  feedsCopy = feeds;
+  operationsCopy = operations;
+  dictionaryCopy = dictionary;
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v15 = objc_opt_new();
-    [v15 setWaitUntilCompleted:0];
+    descriptorCopy = objc_opt_new();
+    [descriptorCopy setWaitUntilCompleted:0];
   }
 
-  v16 = [v14 allKeys];
-  v17 = [(MPSGraph *)self runInternalWithMPSGraphDevice:v18 feeds:v12 targetTensors:v16 targetOperations:v13 resultsDictionary:v14 executionDescriptor:v15];
+  allKeys = [dictionaryCopy allKeys];
+  v17 = [(MPSGraph *)self runInternalWithMPSGraphDevice:deviceCopy feeds:feedsCopy targetTensors:allKeys targetOperations:operationsCopy resultsDictionary:dictionaryCopy executionDescriptor:descriptorCopy];
 }
 
-- (id)runInternalWithMPSGraphDevice:(id)a3 feeds:(id)a4 targetTensors:(id)a5 targetOperations:(id)a6 resultsDictionary:(id)a7 executionDescriptor:(id)a8
+- (id)runInternalWithMPSGraphDevice:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations resultsDictionary:(id)dictionary executionDescriptor:(id)descriptor
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v19)
+  deviceCopy = device;
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
+  dictionaryCopy = dictionary;
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v19 = objc_opt_new();
-    [v19 setWaitUntilCompleted:1];
+    descriptorCopy = objc_opt_new();
+    [descriptorCopy setWaitUntilCompleted:1];
   }
 
-  v20 = [v19 compilationDescriptor];
+  compilationDescriptor = [descriptorCopy compilationDescriptor];
 
-  if (!v20)
+  if (!compilationDescriptor)
   {
     v21 = objc_opt_new();
     [v21 setCompilerOptions:self->_compilerOptions];
-    [v19 setCompilationDescriptor:v21];
+    [descriptorCopy setCompilationDescriptor:v21];
   }
 
-  v22 = [(MPSGraph *)self getExecutableForDevice:v14 feeds:v15 targetTensors:v16 targetOperations:v17 resultsDictionary:v18 executionDescriptor:v19];
-  v23 = [[MPSGraphExecutableExecutionDescriptor alloc] initWithGraphExecutionDescriptor:v19];
+  v22 = [(MPSGraph *)self getExecutableForDevice:deviceCopy feeds:feedsCopy targetTensors:tensorsCopy targetOperations:operationsCopy resultsDictionary:dictionaryCopy executionDescriptor:descriptorCopy];
+  v23 = [[MPSGraphExecutableExecutionDescriptor alloc] initWithGraphExecutionDescriptor:descriptorCopy];
   [v22 setOptions:self->_options];
-  v24 = [v22 runInternalWithDevice:v14 commandBuffer:0 feedsDictionary:v15 resultsDictionary:v18 executableExecutionDescriptor:v23 mpsGraphOwnedCommandBuffer:0];
+  v24 = [v22 runInternalWithDevice:deviceCopy commandBuffer:0 feedsDictionary:feedsCopy resultsDictionary:dictionaryCopy executableExecutionDescriptor:v23 mpsGraphOwnedCommandBuffer:0];
 
   return v24;
 }
@@ -6803,8 +6803,8 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   LOBYTE(v30) = alignCorners;
   v26 = [(MPSGraphResizeBaseOp *)v24 initWithGraph:self inputTensors:v25 controlDependencies:MEMORY[0x1E695E0F0] mode:mode nearestRoundingMode:0 centerResult:v11 alignCorners:v30 layout:layout name:v32];
 
-  v27 = [(MPSGraphOperation *)v26 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v26 outputTensors];
+  v28 = [outputTensors objectAtIndexedSubscript:0];
 
   if (v34.__begin_)
   {
@@ -6836,27 +6836,27 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   return v8;
 }
 
-- (id)resizeTensor:(id)a3 sizeTensor:(id)a4 mode:(unint64_t)a5 nearestRoundingMode:(unint64_t)a6 centerResult:(BOOL)a7 alignCorners:(BOOL)a8 layout:(unint64_t)a9 name:(id)a10
+- (id)resizeTensor:(id)tensor sizeTensor:(id)sizeTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode centerResult:(BOOL)result alignCorners:(BOOL)corners layout:(unint64_t)layout name:(id)self0
 {
-  v11 = a7;
+  resultCopy = result;
   v30[2] = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v16 = a4;
-  v17 = a10;
-  v18 = [(MPSGraph *)self fixCastIntTensor:v16 toSignedness:1 name:v17];
+  tensorCopy = tensor;
+  sizeTensorCopy = sizeTensor;
+  nameCopy = name;
+  v18 = [(MPSGraph *)self fixCastIntTensor:sizeTensorCopy toSignedness:1 name:nameCopy];
 
   v27 = v18;
-  v29 = padSizeScaleOffsetForLayout(self, v18, 0, 0, a9, v17);
+  v29 = padSizeScaleOffsetForLayout(self, v18, 0, 0, layout, nameCopy);
   v19 = [MPSGraphResizeOp alloc];
-  v30[0] = v28;
+  v30[0] = tensorCopy;
   v20 = [v29 objectAtIndexedSubscript:0];
   v30[1] = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-  LOBYTE(v26) = a8;
-  v22 = [(MPSGraphResizeBaseOp *)v19 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] mode:a5 nearestRoundingMode:a6 centerResult:v11 alignCorners:v26 layout:a9 name:v17];
+  LOBYTE(v26) = corners;
+  v22 = [(MPSGraphResizeBaseOp *)v19 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] mode:mode nearestRoundingMode:roundingMode centerResult:resultCopy alignCorners:v26 layout:layout name:nameCopy];
 
-  v23 = [(MPSGraphOperation *)v22 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v22 outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
   return v24;
 }
@@ -6882,18 +6882,18 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   return v7;
 }
 
-- (id)resizeTensor:(id)a3 sizeTensor:(id)a4 scaleOffsetTensor:(id)a5 mode:(unint64_t)a6 nearestRoundingMode:(unint64_t)a7 layout:(unint64_t)a8 name:(id)a9
+- (id)resizeTensor:(id)tensor sizeTensor:(id)sizeTensor scaleOffsetTensor:(id)offsetTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode layout:(unint64_t)layout name:(id)name
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v15 = a4;
-  v36 = a5;
-  v16 = a9;
-  v33 = [(MPSGraph *)self fixCastIntTensor:v15 toSignedness:1 name:v16];
+  tensorCopy = tensor;
+  sizeTensorCopy = sizeTensor;
+  offsetTensorCopy = offsetTensor;
+  nameCopy = name;
+  v33 = [(MPSGraph *)self fixCastIntTensor:sizeTensorCopy toSignedness:1 name:nameCopy];
 
-  if (v16)
+  if (nameCopy)
   {
-    v17 = [v16 stringByAppendingString:@"/slice0"];
+    v17 = [nameCopy stringByAppendingString:@"/slice0"];
   }
 
   else
@@ -6901,11 +6901,11 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
     v17 = @"resize/slice0";
   }
 
-  v35 = [(MPSGraph *)self sliceTensor:v36 dimension:0 start:0 length:2 name:v17];
-  if (v16)
+  v35 = [(MPSGraph *)self sliceTensor:offsetTensorCopy dimension:0 start:0 length:2 name:v17];
+  if (nameCopy)
   {
 
-    v18 = [v16 stringByAppendingString:@"/slice1"];
+    v18 = [nameCopy stringByAppendingString:@"/slice1"];
   }
 
   else
@@ -6913,28 +6913,28 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
     v18 = @"resize/slice1";
   }
 
-  v34 = [(MPSGraph *)self sliceTensor:v36 dimension:0 start:2 length:2 name:v18];
-  if (v16)
+  v34 = [(MPSGraph *)self sliceTensor:offsetTensorCopy dimension:0 start:2 length:2 name:v18];
+  if (nameCopy)
   {
   }
 
-  v19 = padSizeScaleOffsetForLayout(self, v33, v35, v34, a8, v16);
+  v19 = padSizeScaleOffsetForLayout(self, v33, v35, v34, layout, nameCopy);
   v20 = [MPSGraphResizeOp alloc];
-  v37[0] = v32;
+  v37[0] = tensorCopy;
   [v19 objectAtIndexedSubscript:0];
-  v31 = v21 = a8;
+  v31 = v21 = layout;
   v37[1] = v31;
   v22 = [v19 objectAtIndexedSubscript:1];
-  v23 = a7;
+  roundingModeCopy = roundingMode;
   v37[2] = v22;
   v24 = [v19 objectAtIndexedSubscript:2];
   v37[3] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
   LOBYTE(v30) = 0;
-  v26 = [(MPSGraphResizeBaseOp *)v20 initWithGraph:self inputTensors:v25 controlDependencies:MEMORY[0x1E695E0F0] mode:a6 nearestRoundingMode:v23 centerResult:0 alignCorners:v30 layout:v21 name:v16];
+  v26 = [(MPSGraphResizeBaseOp *)v20 initWithGraph:self inputTensors:v25 controlDependencies:MEMORY[0x1E695E0F0] mode:mode nearestRoundingMode:roundingModeCopy centerResult:0 alignCorners:v30 layout:v21 name:nameCopy];
 
-  v27 = [(MPSGraphOperation *)v26 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v26 outputTensors];
+  v28 = [outputTensors objectAtIndexedSubscript:0];
 
   return v28;
 }
@@ -6960,17 +6960,17 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   return v8;
 }
 
-- (id)resizeWithGradientTensor:(id)a3 input:(id)a4 mode:(unint64_t)a5 nearestRoundingMode:(unint64_t)a6 centerResult:(BOOL)a7 alignCorners:(BOOL)a8 layout:(unint64_t)a9 name:(id)a10
+- (id)resizeWithGradientTensor:(id)tensor input:(id)input mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode centerResult:(BOOL)result alignCorners:(BOOL)corners layout:(unint64_t)layout name:(id)self0
 {
-  v11 = a7;
+  resultCopy = result;
   v29[2] = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v28 = a4;
-  v16 = a10;
-  v17 = v16;
-  if (v16)
+  tensorCopy = tensor;
+  inputCopy = input;
+  nameCopy = name;
+  v17 = nameCopy;
+  if (nameCopy)
   {
-    v18 = [v16 stringByAppendingString:@"/shapeOf"];
+    v18 = [nameCopy stringByAppendingString:@"/shapeOf"];
   }
 
   else
@@ -6978,20 +6978,20 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
     v18 = @"resizeGrad/shapeOf";
   }
 
-  v19 = [(MPSGraph *)self shapeOfTensor:v28 name:v18];
+  v19 = [(MPSGraph *)self shapeOfTensor:inputCopy name:v18];
   if (v17)
   {
   }
 
   v20 = [MPSGraphResizeGradientOp alloc];
-  v29[0] = v27;
+  v29[0] = tensorCopy;
   v29[1] = v19;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
-  LOBYTE(v26) = a8;
-  v22 = [(MPSGraphResizeBaseOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] mode:a5 nearestRoundingMode:a6 centerResult:v11 alignCorners:v26 layout:a9 name:v17];
+  LOBYTE(v26) = corners;
+  v22 = [(MPSGraphResizeBaseOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] mode:mode nearestRoundingMode:roundingMode centerResult:resultCopy alignCorners:v26 layout:layout name:v17];
 
-  v23 = [(MPSGraphOperation *)v22 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v22 outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
   return v24;
 }
@@ -7017,17 +7017,17 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   return v7;
 }
 
-- (id)resizeWithGradientTensor:(id)a3 input:(id)a4 scaleOffsetTensor:(id)a5 mode:(unint64_t)a6 nearestRoundingMode:(unint64_t)a7 layout:(unint64_t)a8 name:(id)a9
+- (id)resizeWithGradientTensor:(id)tensor input:(id)input scaleOffsetTensor:(id)offsetTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode layout:(unint64_t)layout name:(id)name
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v34 = a4;
-  v35 = a5;
-  v15 = a9;
-  v16 = v15;
-  if (v15)
+  tensorCopy = tensor;
+  inputCopy = input;
+  offsetTensorCopy = offsetTensor;
+  nameCopy = name;
+  v16 = nameCopy;
+  if (nameCopy)
   {
-    v17 = [v15 stringByAppendingString:@"/shapeOf"];
+    v17 = [nameCopy stringByAppendingString:@"/shapeOf"];
   }
 
   else
@@ -7035,7 +7035,7 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
     v17 = @"resizeGrad/shapeOf";
   }
 
-  v31 = [(MPSGraph *)self shapeOfTensor:v34 name:v17];
+  v31 = [(MPSGraph *)self shapeOfTensor:inputCopy name:v17];
   if (v16)
   {
 
@@ -7047,7 +7047,7 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
     v18 = @"resize/slice0";
   }
 
-  v33 = [(MPSGraph *)self sliceTensor:v35 dimension:0 start:0 length:2 name:v18];
+  v33 = [(MPSGraph *)self sliceTensor:offsetTensorCopy dimension:0 start:0 length:2 name:v18];
   if (v16)
   {
 
@@ -7059,14 +7059,14 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
     v19 = @"resize/slice1";
   }
 
-  v32 = [(MPSGraph *)self sliceTensor:v35 dimension:0 start:2 length:2 name:v19];
+  v32 = [(MPSGraph *)self sliceTensor:offsetTensorCopy dimension:0 start:2 length:2 name:v19];
   if (v16)
   {
   }
 
-  v20 = padSizeScaleOffsetForLayout(self, 0, v33, v32, a8, v16);
+  v20 = padSizeScaleOffsetForLayout(self, 0, v33, v32, layout, v16);
   v21 = [MPSGraphResizeGradientOp alloc];
-  v36[0] = v30;
+  v36[0] = tensorCopy;
   v36[1] = v31;
   v22 = [v20 objectAtIndexedSubscript:1];
   v36[2] = v22;
@@ -7074,10 +7074,10 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   v36[3] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
   LOBYTE(v29) = 0;
-  v25 = [(MPSGraphResizeBaseOp *)v21 initWithGraph:self inputTensors:v24 controlDependencies:MEMORY[0x1E695E0F0] mode:a6 nearestRoundingMode:a7 centerResult:0 alignCorners:v29 layout:a8 name:v16];
+  v25 = [(MPSGraphResizeBaseOp *)v21 initWithGraph:self inputTensors:v24 controlDependencies:MEMORY[0x1E695E0F0] mode:mode nearestRoundingMode:roundingMode centerResult:0 alignCorners:v29 layout:layout name:v16];
 
-  v26 = [(MPSGraphOperation *)v25 outputTensors];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v25 outputTensors];
+  v27 = [outputTensors objectAtIndexedSubscript:0];
 
   return v27;
 }
@@ -7103,24 +7103,24 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   return v8;
 }
 
-- (id)resizeTensor:(id)a3 sizeTensor:(id)a4 mode:(unint64_t)a5 nearestRoundingMode:(unint64_t)a6 centerResult:(BOOL)a7 alignCorners:(BOOL)a8 name:(id)a9
+- (id)resizeTensor:(id)tensor sizeTensor:(id)sizeTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode centerResult:(BOOL)result alignCorners:(BOOL)corners name:(id)name
 {
-  v10 = a7;
+  resultCopy = result;
   v26[2] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a9;
-  v18 = [(MPSGraph *)self fixCastIntTensor:v16 toSignedness:1 name:v17];
+  tensorCopy = tensor;
+  sizeTensorCopy = sizeTensor;
+  nameCopy = name;
+  v18 = [(MPSGraph *)self fixCastIntTensor:sizeTensorCopy toSignedness:1 name:nameCopy];
 
   v19 = [MPSGraphResizeOp alloc];
-  v26[0] = v15;
+  v26[0] = tensorCopy;
   v26[1] = v18;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-  LOBYTE(v25) = a8;
-  v21 = [(MPSGraphResizeBaseOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] mode:a5 nearestRoundingMode:a6 centerResult:v10 alignCorners:v25 name:v17];
+  LOBYTE(v25) = corners;
+  v21 = [(MPSGraphResizeBaseOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] mode:mode nearestRoundingMode:roundingMode centerResult:resultCopy alignCorners:v25 name:nameCopy];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
@@ -7146,27 +7146,27 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   return v8;
 }
 
-- (id)resizeTensor:(id)a3 sizeTensor:(id)a4 scaleTensor:(id)a5 offsetTensor:(id)a6 mode:(unint64_t)a7 nearestRoundingMode:(unint64_t)a8 name:(id)a9
+- (id)resizeTensor:(id)tensor sizeTensor:(id)sizeTensor scaleTensor:(id)scaleTensor offsetTensor:(id)offsetTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode name:(id)name
 {
   v28[4] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
-  v20 = [(MPSGraph *)self fixCastIntTensor:v16 toSignedness:1 name:v19];
+  tensorCopy = tensor;
+  sizeTensorCopy = sizeTensor;
+  scaleTensorCopy = scaleTensor;
+  offsetTensorCopy = offsetTensor;
+  nameCopy = name;
+  v20 = [(MPSGraph *)self fixCastIntTensor:sizeTensorCopy toSignedness:1 name:nameCopy];
 
   v21 = [MPSGraphResizeOp alloc];
-  v28[0] = v15;
+  v28[0] = tensorCopy;
   v28[1] = v20;
-  v28[2] = v17;
-  v28[3] = v18;
+  v28[2] = scaleTensorCopy;
+  v28[3] = offsetTensorCopy;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
   LOBYTE(v27) = 0;
-  v23 = [(MPSGraphResizeBaseOp *)v21 initWithGraph:self inputTensors:v22 controlDependencies:MEMORY[0x1E695E0F0] mode:a7 nearestRoundingMode:a8 centerResult:0 alignCorners:v27 name:v19];
+  v23 = [(MPSGraphResizeBaseOp *)v21 initWithGraph:self inputTensors:v22 controlDependencies:MEMORY[0x1E695E0F0] mode:mode nearestRoundingMode:roundingMode centerResult:0 alignCorners:v27 name:nameCopy];
 
-  v24 = [(MPSGraphOperation *)v23 outputTensors];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v23 outputTensors];
+  v25 = [outputTensors objectAtIndexedSubscript:0];
 
   return v25;
 }
@@ -7192,18 +7192,18 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
   return v8;
 }
 
-- (id)resizeWithGradientTensor:(id)a3 input:(id)a4 scaleTensor:(id)a5 offsetTensor:(id)a6 mode:(unint64_t)a7 nearestRoundingMode:(unint64_t)a8 name:(id)a9
+- (id)resizeWithGradientTensor:(id)tensor input:(id)input scaleTensor:(id)scaleTensor offsetTensor:(id)offsetTensor mode:(unint64_t)mode nearestRoundingMode:(unint64_t)roundingMode name:(id)name
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  v19 = v18;
-  if (v18)
+  tensorCopy = tensor;
+  inputCopy = input;
+  scaleTensorCopy = scaleTensor;
+  offsetTensorCopy = offsetTensor;
+  nameCopy = name;
+  v19 = nameCopy;
+  if (nameCopy)
   {
-    v20 = [v18 stringByAppendingString:@"/shapeOf"];
+    v20 = [nameCopy stringByAppendingString:@"/shapeOf"];
   }
 
   else
@@ -7211,22 +7211,22 @@ void __110__MPSGraph_getExecutableForDevice_feeds_targetTensors_targetOperations
     v20 = @"resizeGrad/shapeOf";
   }
 
-  v21 = [(MPSGraph *)self shapeOfTensor:v15 name:v20];
+  v21 = [(MPSGraph *)self shapeOfTensor:inputCopy name:v20];
   if (v19)
   {
   }
 
   v22 = [MPSGraphResizeGradientOp alloc];
-  v30[0] = v29;
+  v30[0] = tensorCopy;
   v30[1] = v21;
-  v30[2] = v16;
-  v30[3] = v17;
+  v30[2] = scaleTensorCopy;
+  v30[3] = offsetTensorCopy;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
   LOBYTE(v28) = 0;
-  v24 = [(MPSGraphResizeBaseOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] mode:a7 nearestRoundingMode:a8 centerResult:0 alignCorners:v28 name:v19];
+  v24 = [(MPSGraphResizeBaseOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] mode:mode nearestRoundingMode:roundingMode centerResult:0 alignCorners:v28 name:v19];
 
-  v25 = [(MPSGraphOperation *)v24 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v24 outputTensors];
+  v26 = [outputTensors objectAtIndexedSubscript:0];
 
   return v26;
 }
@@ -7344,8 +7344,8 @@ LABEL_6:
   *&v24 = epsilon;
   v25 = [(MPSGraphNormalizationOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] epsilon:v21 name:v24];
 
-  v26 = [(MPSGraphOperation *)v25 outputTensors];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v25 outputTensors];
+  v27 = [outputTensors objectAtIndexedSubscript:0];
 
   return v27;
 }
@@ -7362,7 +7362,7 @@ LABEL_6:
   v42 = v17;
   v20 = [(MPSGraph *)self constantWithScalar:&unk_1F5B77720 shape:268435488 dataType:epsilon];
   v40 = v20;
-  v21 = [(MPSGraphTensor *)v16 dataType];
+  dataType = [(MPSGraphTensor *)v16 dataType];
   if (v19)
   {
     v22 = [(NSString *)v19 stringByAppendingFormat:@"/cast"];
@@ -7373,7 +7373,7 @@ LABEL_6:
     v22 = @"normalizationGradient/cast";
   }
 
-  v23 = [(MPSGraph *)self castTensor:v20 toType:v21 name:v22];
+  v23 = [(MPSGraph *)self castTensor:v20 toType:dataType name:v22];
   if (v19)
   {
 
@@ -7495,7 +7495,7 @@ LABEL_6:
   v84 = name;
   v81 = v20;
   v73 = [(MPSGraph *)self constantWithScalar:&unk_1F5B77738 shape:268435488 dataType:epsilon];
-  v21 = [(MPSGraphTensor *)v20 dataType];
+  dataType = [(MPSGraphTensor *)v20 dataType];
   if (v84)
   {
     v22 = [(NSString *)v84 stringByAppendingFormat:@"/cast"];
@@ -7506,7 +7506,7 @@ LABEL_6:
     v22 = @"normalizationGradient/cast";
   }
 
-  v23 = [(MPSGraph *)self castTensor:v73 toType:v21 name:v22];
+  v23 = [(MPSGraph *)self castTensor:v73 toType:dataType name:v22];
   v65 = v23;
   if (v84)
   {
@@ -7598,7 +7598,7 @@ LABEL_6:
   }
 
   v36 = v82;
-  v37 = [(MPSGraphTensor *)v81 dataType];
+  dataType2 = [(MPSGraphTensor *)v81 dataType];
   if (v84)
   {
     v38 = [(NSString *)v84 stringByAppendingFormat:@"/cast"];
@@ -7609,7 +7609,7 @@ LABEL_6:
     v38 = @"batchNormGradient/cast";
   }
 
-  v71 = [(MPSGraph *)self castTensor:v36 toType:v37 name:v38];
+  v71 = [(MPSGraph *)self castTensor:v36 toType:dataType2 name:v38];
   if (v84)
   {
 
@@ -7831,9 +7831,9 @@ LABEL_81:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
   v18 = [(MPSGraphTopKOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] smallest:0 name:v13];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
 
-  return v19;
+  return outputTensors;
 }
 
 - (NSArray)bottomKWithSourceTensor:(MPSGraphTensor *)source axisTensor:(MPSGraphTensor *)axisTensor kTensor:(MPSGraphTensor *)kTensor name:(NSString *)name
@@ -7854,9 +7854,9 @@ LABEL_81:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
   v18 = [(MPSGraphTopKOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] smallest:1 name:v13];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
 
-  return v19;
+  return outputTensors;
 }
 
 - (NSArray)topKWithSourceTensor:(MPSGraphTensor *)source kTensor:(MPSGraphTensor *)kTensor name:(NSString *)name
@@ -7968,8 +7968,8 @@ LABEL_81:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   v20 = [(MPSGraphTopKGradientOp *)v18 initWithGraph:self inputTensors:v19 controlDependencies:MEMORY[0x1E695E0F0] smallest:0 name:v16];
 
-  v21 = [(MPSGraphOperation *)v20 outputTensors];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v20 outputTensors];
+  v22 = [outputTensors objectAtIndexedSubscript:0];
 
   return v22;
 }
@@ -7992,37 +7992,37 @@ LABEL_81:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   v20 = [(MPSGraphTopKGradientOp *)v18 initWithGraph:self inputTensors:v19 controlDependencies:MEMORY[0x1E695E0F0] smallest:1 name:v16];
 
-  v21 = [(MPSGraphOperation *)v20 outputTensors];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v20 outputTensors];
+  v22 = [outputTensors objectAtIndexedSubscript:0];
 
   return v22;
 }
 
-- (id)costVolumeWithRefTensor:(id)a3 inputTensor:(id)a4 coordinatesTensor:(id)a5 windowSizes:(id)a6 layout:(unint64_t)a7 normalizeCoordinates:(BOOL)a8 relativeCoordinates:(BOOL)a9 coordinateIs1DInWidth:(BOOL)a10 similarityType:(unint64_t)a11 name:(id)a12
+- (id)costVolumeWithRefTensor:(id)tensor inputTensor:(id)inputTensor coordinatesTensor:(id)coordinatesTensor windowSizes:(id)sizes layout:(unint64_t)layout normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates coordinateIs1DInWidth:(BOOL)self0 similarityType:(unint64_t)self1 name:(id)self2
 {
-  v33 = a8;
+  coordinatesCopy = coordinates;
   v35[3] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v34 = a12;
-  v30 = v16;
+  tensorCopy = tensor;
+  inputTensorCopy = inputTensor;
+  coordinatesTensorCopy = coordinatesTensor;
+  sizesCopy = sizes;
+  nameCopy = name;
+  v30 = inputTensorCopy;
   v19 = [MPSGraphCostVolumeOp alloc];
-  v35[0] = v15;
-  v35[1] = v16;
-  v35[2] = v17;
+  v35[0] = tensorCopy;
+  v35[1] = inputTensorCopy;
+  v35[2] = coordinatesTensorCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:3];
-  v21 = [v18 objectAtIndexedSubscript:0];
-  v22 = [v21 integerValue];
-  v23 = [v18 objectAtIndexedSubscript:1];
-  v24 = [v23 integerValue];
-  BYTE1(v29) = a10;
+  v21 = [sizesCopy objectAtIndexedSubscript:0];
+  integerValue = [v21 integerValue];
+  v23 = [sizesCopy objectAtIndexedSubscript:1];
+  integerValue2 = [v23 integerValue];
+  BYTE1(v29) = width;
   LOBYTE(v29) = 1;
-  v25 = [(MPSGraphCostVolumeOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] layout:a7 normalizeCoordinates:v33 relativeCoordinates:a9 alignCorners:v29 coordinateIs1DInWidth:0 paddingMode:1 samplingMode:4 nearestRoundingMode:a11 similarityType:v22 windowWidth:v24 windowHeight:v34 name:?];
+  v25 = [(MPSGraphCostVolumeOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] layout:layout normalizeCoordinates:coordinatesCopy relativeCoordinates:relativeCoordinates alignCorners:v29 coordinateIs1DInWidth:0 paddingMode:1 samplingMode:4 nearestRoundingMode:type similarityType:integerValue windowWidth:integerValue2 windowHeight:nameCopy name:?];
 
-  v26 = [(MPSGraphOperation *)v25 outputTensors];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v25 outputTensors];
+  v27 = [outputTensors objectAtIndexedSubscript:0];
 
   return v27;
 }
@@ -8046,8 +8046,8 @@ LABEL_81:
   *&v24 = scoreThreshold;
   v25 = [(MPSGraphNonMaximumSuppressionOp *)v21 initWithGraph:self inputTensors:v22 controlDependencies:MEMORY[0x1E695E0F0] iouThreshold:v11 scoreThreshold:coordinateMode perClassSuppression:v18 coordinateMode:v23 name:v24];
 
-  v26 = [(MPSGraphOperation *)v25 outputTensors];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v25 outputTensors];
+  v27 = [outputTensors objectAtIndexedSubscript:0];
 
   return v27;
 }
@@ -8073,8 +8073,8 @@ LABEL_81:
   *&v26 = scoreThreshold;
   v27 = [(MPSGraphNonMaximumSuppressionOp *)v23 initWithGraph:self inputTensors:v24 controlDependencies:MEMORY[0x1E695E0F0] iouThreshold:v12 scoreThreshold:coordinateMode perClassSuppression:v20 coordinateMode:v25 name:v26];
 
-  v28 = [(MPSGraphOperation *)v27 outputTensors];
-  v29 = [v28 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v27 outputTensors];
+  v29 = [outputTensors objectAtIndexedSubscript:0];
 
   return v29;
 }
@@ -8086,8 +8086,8 @@ LABEL_81:
   v13 = shape;
   v14 = name;
   v15 = [[MPSGraphSparseTensorOp alloc] initWithGraph:self sparseStorageType:sparseStorageType inputTensors:v12 shape:v13 dataType:v8 name:v14];
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:0];
 
   return v17;
 }
@@ -8099,8 +8099,8 @@ LABEL_81:
   v12 = shape;
   v13 = name;
   v14 = [[MPSGraphSparseTensorOp alloc] initWithGraph:self sparseStorageType:[(MPSGraphCreateSparseOpDescriptor *)v10 sparseStorageType] inputTensors:v11 shape:v12 dataType:[(MPSGraphCreateSparseOpDescriptor *)v10 dataType] name:v13];
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -8112,18 +8112,18 @@ LABEL_81:
   v9 = name;
   v10 = [[MPSGraphPlaceholderOp alloc] initWithGraph:self shape:v8 dataType:v6 name:v9];
   placeholderMap = self->_placeholderMap;
-  v12 = [(MPSGraphOperation *)v10 outputTensors];
-  v13 = [v12 objectAtIndexedSubscript:0];
-  v14 = [(MPSGraphOperation *)v10 name];
-  [(NSMutableDictionary *)placeholderMap setObject:v13 forKey:v14];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v13 = [outputTensors objectAtIndexedSubscript:0];
+  name = [(MPSGraphOperation *)v10 name];
+  [(NSMutableDictionary *)placeholderMap setObject:v13 forKey:name];
 
   placeholderArray = self->_placeholderArray;
-  v16 = [(MPSGraphOperation *)v10 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  outputTensors2 = [(MPSGraphOperation *)v10 outputTensors];
+  v17 = [outputTensors2 objectAtIndexedSubscript:0];
   [(NSMutableArray *)placeholderArray addObject:v17];
 
-  v18 = [(MPSGraphOperation *)v10 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors3 = [(MPSGraphOperation *)v10 outputTensors];
+  v19 = [outputTensors3 objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -8152,23 +8152,23 @@ LABEL_81:
     [v11 integerValue];
 
     v12 = [(MPSShape *)v9 objectAtIndexedSubscript:i];
-    v13 = [v12 integerValue];
+    integerValue = [v12 integerValue];
 
-    if (v13 < 0)
+    if (integerValue < 0)
     {
       if (MTLReportFailureTypeEnabled())
       {
         v14 = [(MPSShape *)v9 objectAtIndexedSubscript:i];
         v19 = i;
-        v20 = [v14 integerValue];
+        integerValue2 = [v14 integerValue];
         MTLReportFailure();
       }
     }
   }
 
   v15 = [[MPSGraphConstantOp alloc] initWithGraph:self data:v8 shape:v9 dataType:v5 isSplat:0 name:0];
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:0];
 
   return v17;
 }
@@ -8180,9 +8180,9 @@ LABEL_81:
   if ([(MPSShape *)v8 count]== 1)
   {
     v9 = [(MPSShape *)v8 objectAtIndexedSubscript:0];
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
 
-    if (v10 == -1)
+    if (integerValue == -1)
     {
 
       v8 = MEMORY[0x1E695E0F0];
@@ -8195,15 +8195,15 @@ LABEL_81:
     [v12 integerValue];
 
     v13 = [(MPSShape *)v8 objectAtIndexedSubscript:i];
-    v14 = [v13 integerValue];
+    integerValue2 = [v13 integerValue];
 
-    if (v14 <= 0)
+    if (integerValue2 <= 0)
     {
       if (MTLReportFailureTypeEnabled())
       {
         v15 = [(MPSShape *)v8 objectAtIndexedSubscript:i];
         v21 = i;
-        v22 = [v15 integerValue];
+        integerValue3 = [v15 integerValue];
         MTLReportFailure();
       }
     }
@@ -8211,8 +8211,8 @@ LABEL_81:
 
   v16 = getConstantDataForScalar(v5, scalar);
   v17 = [[MPSGraphConstantOp alloc] initWithGraph:self data:v16 shape:v8 dataType:v5 isSplat:1 name:0];
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -8224,9 +8224,9 @@ LABEL_81:
   if ([(MPSShape *)v10 count]== 1)
   {
     v11 = [(MPSShape *)v10 objectAtIndexedSubscript:0];
-    v12 = [v11 integerValue];
+    integerValue = [v11 integerValue];
 
-    if (v12 == -1)
+    if (integerValue == -1)
     {
 
       v10 = MEMORY[0x1E695E0F0];
@@ -8239,15 +8239,15 @@ LABEL_81:
     [v14 integerValue];
 
     v15 = [(MPSShape *)v10 objectAtIndexedSubscript:i];
-    v16 = [v15 integerValue];
+    integerValue2 = [v15 integerValue];
 
-    if (v16 <= 0)
+    if (integerValue2 <= 0)
     {
       if (MTLReportFailureTypeEnabled())
       {
         v17 = [(MPSShape *)v10 objectAtIndexedSubscript:i];
         v23 = i;
-        v24 = [v17 integerValue];
+        integerValue3 = [v17 integerValue];
         MTLReportFailure();
       }
     }
@@ -8255,8 +8255,8 @@ LABEL_81:
 
   v18 = getConstantDataForComplexScalar(v6, realPart, imaginaryPart);
   v19 = [[MPSGraphConstantOp alloc] initWithGraph:self data:v18 shape:v10 dataType:v6 isSplat:1 name:0];
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -8268,28 +8268,28 @@ LABEL_81:
   v11 = shape;
   v12 = name;
   v13 = [[MPSGraphVariableOp alloc] initWithGraph:self shape:v11 dataType:v7 name:v12];
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
-  v16 = [v15 value];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
+  value = [v15 value];
 
-  v17 = [[MPSGraphVariable alloc] initVariableWithData:v10 value:v16];
+  v17 = [[MPSGraphVariable alloc] initVariableWithData:v10 value:value];
   variable = v13->_variable;
   v13->_variable = v17;
 
   variableOpsMap = self->_variableOpsMap;
-  v20 = [(MPSGraphOperation *)v13 name];
-  [(NSMutableDictionary *)variableOpsMap setObject:v13 forKey:v20];
+  name = [(MPSGraphOperation *)v13 name];
+  [(NSMutableDictionary *)variableOpsMap setObject:v13 forKey:name];
 
   [(NSMutableArray *)self->_variableOps addObject:v13];
-  v21 = [(MPSGraphOperation *)v13 outputTensors];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  outputTensors2 = [(MPSGraphOperation *)v13 outputTensors];
+  v22 = [outputTensors2 objectAtIndexedSubscript:0];
 
   return v22;
 }
 
-- (id)variableFromTensorWithTensor:(id)a3 name:(id)a4
+- (id)variableFromTensorWithTensor:(id)tensor name:(id)name
 {
-  v4 = [(MPSGraph *)self varFromTensorWithTensor:a3 name:0];
+  v4 = [(MPSGraph *)self varFromTensorWithTensor:tensor name:0];
 
   return v4;
 }
@@ -8303,8 +8303,8 @@ LABEL_81:
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v8 = [(MPSGraphOperation *)v6 initWithGraph:self inputTensors:v7 controlDependencies:MEMORY[0x1E695E0F0] name:0];
 
-  v9 = [(MPSGraphOperation *)v8 outputTensors];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v8 outputTensors];
+  v10 = [outputTensors objectAtIndexedSubscript:0];
 
   return v10;
 }
@@ -8324,19 +8324,19 @@ LABEL_81:
   return v13;
 }
 
-- (id)createTexture:(id)a3 withPixelFormat:(unint64_t)a4 isCompressed:(BOOL)a5 name:(id)a6
+- (id)createTexture:(id)texture withPixelFormat:(unint64_t)format isCompressed:(BOOL)compressed name:(id)name
 {
-  v7 = a5;
+  compressedCopy = compressed;
   v18[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  textureCopy = texture;
+  nameCopy = name;
   v12 = [MPSGraphCreateTextureTensorOp alloc];
-  v18[0] = v10;
+  v18[0] = textureCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v14 = [(MPSGraphCreateTextureTensorOp *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] pixelFormat:a4 isCompressed:v7 name:v11];
+  v14 = [(MPSGraphCreateTextureTensorOp *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] pixelFormat:format isCompressed:compressedCopy name:nameCopy];
 
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -8354,8 +8354,8 @@ LABEL_81:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v15 = [(MPSGraphSortOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] descending:v7 name:v11];
 
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:0];
 
   return v17;
 }
@@ -8373,8 +8373,8 @@ LABEL_81:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v15 = [(MPSGraphSortOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] descending:v7 name:v12];
 
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:0];
 
   return v17;
 }
@@ -8406,8 +8406,8 @@ LABEL_81:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v15 = [(MPSGraphArgSortOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] descending:v7 name:v11];
 
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:1];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:1];
 
   return v17;
 }
@@ -8425,8 +8425,8 @@ LABEL_81:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v15 = [(MPSGraphArgSortOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] descending:v7 name:v12];
 
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:1];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:1];
 
   return v17;
 }
@@ -8445,20 +8445,20 @@ LABEL_81:
   return v5;
 }
 
-- (id)biasAddWithTensor:(id)a3 biases:(id)a4 dataLayout:(unint64_t)a5 name:(id)a6
+- (id)biasAddWithTensor:(id)tensor biases:(id)biases dataLayout:(unint64_t)layout name:(id)name
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  tensorCopy = tensor;
+  biasesCopy = biases;
+  nameCopy = name;
   v13 = [MPSGraphBiasAddOp alloc];
-  v19[0] = v10;
-  v19[1] = v11;
+  v19[0] = tensorCopy;
+  v19[1] = biasesCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-  v15 = [(MPSGraphBiasAddOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] dataLayout:a5 name:v12];
+  v15 = [(MPSGraphBiasAddOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] dataLayout:layout name:nameCopy];
 
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:0];
 
   return v17;
 }
@@ -8473,8 +8473,8 @@ LABEL_81:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v12 = [outputTensors objectAtIndexedSubscript:0];
 
   return v12;
 }
@@ -8543,8 +8543,8 @@ LABEL_81:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -8609,8 +8609,8 @@ LABEL_81:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v12 = [outputTensors objectAtIndexedSubscript:0];
 
   return v12;
 }
@@ -8698,8 +8698,8 @@ LABEL_81:
   {
   }
 
-  v13 = [v12 operation];
-  [v13 setStopGradient:1];
+  operation = [v12 operation];
+  [operation setStopGradient:1];
 
   if (v10)
   {
@@ -8802,76 +8802,76 @@ LABEL_81:
   return v18;
 }
 
-- (id)tensorToBufferWithTensor:(id)a3 shape:(id)a4 type:(unsigned int)a5 interleave:(id)a6 isTensorBufferOp:(BOOL)a7 isChannelAndInterleaveSame:(BOOL)a8 name:(id)a9
+- (id)tensorToBufferWithTensor:(id)tensor shape:(id)shape type:(unsigned int)type interleave:(id)interleave isTensorBufferOp:(BOOL)op isChannelAndInterleaveSame:(BOOL)same name:(id)name
 {
-  v12 = *&a5;
+  v12 = *&type;
   v26[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
+  tensorCopy = tensor;
+  shapeCopy = shape;
+  interleaveCopy = interleave;
+  nameCopy = name;
   v19 = [MPSGraphTensorToBufferOp alloc];
-  v26[0] = v15;
+  v26[0] = tensorCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  BYTE1(v25) = a8;
-  LOBYTE(v25) = a7;
-  v21 = [(MPSGraphTensorToBufferOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] shape:v16 type:v12 interleave:v17 isTensorBufferOp:v25 isChannelAndInterleaveSame:v18 name:?];
+  BYTE1(v25) = same;
+  LOBYTE(v25) = op;
+  v21 = [(MPSGraphTensorToBufferOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] shape:shapeCopy type:v12 interleave:interleaveCopy isTensorBufferOp:v25 isChannelAndInterleaveSame:nameCopy name:?];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
 
-- (id)tensorToBufferWithTensor:(id)a3 name:(id)a4
+- (id)tensorToBufferWithTensor:(id)tensor name:(id)name
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tensorCopy = tensor;
+  nameCopy = name;
   v8 = [MPSGraphTensorToBufferOp alloc];
-  v14[0] = v6;
+  v14[0] = tensorCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
+  v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v12 = [outputTensors objectAtIndexedSubscript:0];
 
   return v12;
 }
 
-- (id)bufferToTensorWithTensor:(id)a3 shape:(id)a4 type:(unsigned int)a5 interleave:(id)a6 isTensorBufferOp:(BOOL)a7 isChannelAndInterleaveSame:(BOOL)a8 name:(id)a9
+- (id)bufferToTensorWithTensor:(id)tensor shape:(id)shape type:(unsigned int)type interleave:(id)interleave isTensorBufferOp:(BOOL)op isChannelAndInterleaveSame:(BOOL)same name:(id)name
 {
-  v12 = *&a5;
+  v12 = *&type;
   v26[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
+  tensorCopy = tensor;
+  shapeCopy = shape;
+  interleaveCopy = interleave;
+  nameCopy = name;
   v19 = [MPSGraphBufferToTensorOp alloc];
-  v26[0] = v15;
+  v26[0] = tensorCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  BYTE1(v25) = a8;
-  LOBYTE(v25) = a7;
-  v21 = [(MPSGraphBufferToTensorOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] shape:v16 type:v12 interleave:v17 isTensorBufferOp:v25 isChannelAndInterleaveSame:v18 name:?];
+  BYTE1(v25) = same;
+  LOBYTE(v25) = op;
+  v21 = [(MPSGraphBufferToTensorOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] shape:shapeCopy type:v12 interleave:interleaveCopy isTensorBufferOp:v25 isChannelAndInterleaveSame:nameCopy name:?];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
 
-- (id)bufferToTensorWithTensor:(id)a3 name:(id)a4
+- (id)bufferToTensorWithTensor:(id)tensor name:(id)name
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tensorCopy = tensor;
+  nameCopy = name;
   v8 = [MPSGraphBufferToTensorOp alloc];
-  v14[0] = v6;
+  v14[0] = tensorCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
+  v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v12 = [outputTensors objectAtIndexedSubscript:0];
 
   return v12;
 }
@@ -8889,8 +8889,8 @@ LABEL_81:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(MPSGraphFFTOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -8950,8 +8950,8 @@ LABEL_81:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(MPSGraphRealToHermiteanFFTOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -8990,8 +8990,8 @@ LABEL_81:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(MPSGraphHermiteanToRealFFTOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -9038,8 +9038,8 @@ LABEL_81:
   v10 = learningRateTensor;
   v11 = gradientTensor;
   v12 = name;
-  v13 = [(MPSGraphOperation *)variable outputTensors];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)variable outputTensors];
+  v14 = [outputTensors objectAtIndexedSubscript:0];
 
   v15 = [(MPSGraph *)self stochasticGradientDescentWithLearningRateTensor:v10 valuesTensor:v14 gradientTensor:v11 name:v12];
   if (v12)
@@ -9060,29 +9060,29 @@ LABEL_81:
   return v17;
 }
 
-- (id)momentumUpdateWithBetaTensor:(id)a3 momentumTensor:(id)a4 gradientTensor:(id)a5 name:(id)a6
+- (id)momentumUpdateWithBetaTensor:(id)tensor momentumTensor:(id)momentumTensor gradientTensor:(id)gradientTensor name:(id)name
 {
-  v10 = a3;
-  v26 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  tensorCopy = tensor;
+  momentumTensorCopy = momentumTensor;
+  gradientTensorCopy = gradientTensor;
+  nameCopy = name;
+  v13 = nameCopy;
   v14 = @"momentumUpdate";
-  if (v12)
+  if (nameCopy)
   {
-    v14 = v12;
+    v14 = nameCopy;
   }
 
   v15 = v14;
-  v16 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77810, [v11 dataType], 1.0);
+  v16 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77810, [gradientTensorCopy dataType], 1.0);
   v17 = [(__CFString *)v15 stringByAppendingString:@"/sub"];
-  v18 = [(MPSGraph *)self subtractionWithPrimaryTensor:v16 secondaryTensor:v10 name:v17];
+  v18 = [(MPSGraph *)self subtractionWithPrimaryTensor:v16 secondaryTensor:tensorCopy name:v17];
 
   v19 = [(__CFString *)v15 stringByAppendingString:@"/mul"];
-  v20 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v10 secondaryTensor:v26 name:v19];
+  v20 = [(MPSGraph *)self multiplicationWithPrimaryTensor:tensorCopy secondaryTensor:momentumTensorCopy name:v19];
 
   v21 = [(__CFString *)v15 stringByAppendingString:@"/mul"];
-  v22 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v18 secondaryTensor:v11 name:v21];
+  v22 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v18 secondaryTensor:gradientTensorCopy name:v21];
 
   v23 = [(__CFString *)v15 stringByAppendingString:@"/add"];
   v24 = [(MPSGraph *)self additionWithPrimaryTensor:v20 secondaryTensor:v22 name:v23];
@@ -9090,30 +9090,30 @@ LABEL_81:
   return v24;
 }
 
-- (id)velocityUpdateWithBetaTensor:(id)a3 velocityTensor:(id)a4 gradientTensor:(id)a5 name:(id)a6
+- (id)velocityUpdateWithBetaTensor:(id)tensor velocityTensor:(id)velocityTensor gradientTensor:(id)gradientTensor name:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  tensorCopy = tensor;
+  velocityTensorCopy = velocityTensor;
+  gradientTensorCopy = gradientTensor;
+  nameCopy = name;
+  v14 = nameCopy;
   v15 = @"velocityUpdate";
-  if (v13)
+  if (nameCopy)
   {
-    v15 = v13;
+    v15 = nameCopy;
   }
 
   v16 = v15;
-  v29 = v11;
-  v28 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77828, [v12 dataType], 1.0);
+  v29 = velocityTensorCopy;
+  v28 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77828, [gradientTensorCopy dataType], 1.0);
   v17 = [(__CFString *)v16 stringByAppendingString:@"/sub"];
-  v18 = [(MPSGraph *)self subtractionWithPrimaryTensor:v28 secondaryTensor:v10 name:v17];
+  v18 = [(MPSGraph *)self subtractionWithPrimaryTensor:v28 secondaryTensor:tensorCopy name:v17];
 
   v19 = [(__CFString *)v16 stringByAppendingString:@"/square"];
-  v20 = [(MPSGraph *)self squareWithTensor:v12 name:v19];
+  v20 = [(MPSGraph *)self squareWithTensor:gradientTensorCopy name:v19];
 
   v21 = [(__CFString *)v16 stringByAppendingString:@"/mul"];
-  v22 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v10 secondaryTensor:v11 name:v21];
+  v22 = [(MPSGraph *)self multiplicationWithPrimaryTensor:tensorCopy secondaryTensor:velocityTensorCopy name:v21];
 
   v23 = [(__CFString *)v16 stringByAppendingString:@"/mul"];
   v24 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v18 secondaryTensor:v20 name:v23];
@@ -9124,34 +9124,34 @@ LABEL_81:
   return v26;
 }
 
-- (id)adamAssignWithInputVariableTensor:(id)a3 momentumVariableTensor:(id)a4 velocityVariableTensor:(id)a5 maximumVelocityVariableTensor:(id)a6 updates:(id)a7 name:(id)a8
+- (id)adamAssignWithInputVariableTensor:(id)tensor momentumVariableTensor:(id)variableTensor velocityVariableTensor:(id)velocityVariableTensor maximumVelocityVariableTensor:(id)maximumVelocityVariableTensor updates:(id)updates name:(id)name
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v34 = a4;
-  v33 = a5;
-  v38 = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = v15;
+  tensorCopy = tensor;
+  variableTensorCopy = variableTensor;
+  velocityVariableTensorCopy = velocityVariableTensor;
+  maximumVelocityVariableTensorCopy = maximumVelocityVariableTensor;
+  updatesCopy = updates;
+  nameCopy = name;
+  v16 = nameCopy;
   v17 = @"applyAdam";
-  if (v15)
+  if (nameCopy)
   {
-    v17 = v15;
+    v17 = nameCopy;
   }
 
   v18 = v17;
-  v35 = [v14 objectAtIndexedSubscript:0];
-  v37 = [v14 objectAtIndexedSubscript:1];
-  v36 = [v14 objectAtIndexedSubscript:2];
+  v35 = [updatesCopy objectAtIndexedSubscript:0];
+  v37 = [updatesCopy objectAtIndexedSubscript:1];
+  v36 = [updatesCopy objectAtIndexedSubscript:2];
   v19 = [(__CFString *)v18 stringByAppendingString:@"/assignAdamUpdate/momentum"];
-  v20 = [(MPSGraph *)self assignVariable:v34 withValueOfTensor:v37 name:v19];
+  v20 = [(MPSGraph *)self assignVariable:variableTensorCopy withValueOfTensor:v37 name:v19];
 
   v21 = [(__CFString *)v18 stringByAppendingString:@"/assignAdamUpdate/velocity"];
-  v22 = [(MPSGraph *)self assignVariable:v33 withValueOfTensor:v36 name:v21];
+  v22 = [(MPSGraph *)self assignVariable:velocityVariableTensorCopy withValueOfTensor:v36 name:v21];
 
   v23 = [(__CFString *)v18 stringByAppendingString:@"/assignAdamUpdate"];
-  v24 = [(MPSGraph *)self assignVariable:v32 withValueOfTensor:v35 name:v23];
+  v24 = [(MPSGraph *)self assignVariable:tensorCopy withValueOfTensor:v35 name:v23];
 
   v25 = v24[4];
   v39[0] = v20;
@@ -9159,12 +9159,12 @@ LABEL_81:
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
   [v25 addObjectsFromArray:v26];
 
-  v27 = [v14 count];
-  if (v38 && v27 >= 4)
+  v27 = [updatesCopy count];
+  if (maximumVelocityVariableTensorCopy && v27 >= 4)
   {
-    v28 = [v14 objectAtIndexedSubscript:3];
+    v28 = [updatesCopy objectAtIndexedSubscript:3];
     v29 = [(__CFString *)v18 stringByAppendingString:@"/assignAdamUpdate/maximumVelocity"];
-    v30 = [(MPSGraph *)self assignVariable:v38 withValueOfTensor:v28 name:v29];
+    v30 = [(MPSGraph *)self assignVariable:maximumVelocityVariableTensorCopy withValueOfTensor:v28 name:v29];
 
     [v24[4] addObject:v30];
   }
@@ -9179,42 +9179,42 @@ LABEL_81:
   return v12;
 }
 
-- (id)adamUpdateWithCurrentLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 valuesTensor:(id)a7 momentumTensor:(id)a8 velocityTensor:(id)a9 maximumVelocityTensor:(id)a10 gradientTensor:(id)a11 name:(id)a12
+- (id)adamUpdateWithCurrentLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor valuesTensor:(id)valuesTensor momentumTensor:(id)momentumTensor velocityTensor:(id)velocityTensor maximumVelocityTensor:(id)self0 gradientTensor:(id)self1 name:(id)self2
 {
   v59[4] = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v18 = a4;
-  v52 = a5;
-  v51 = a6;
-  v49 = a7;
-  v19 = a8;
-  v53 = a9;
-  v57 = a10;
-  v20 = a11;
-  v21 = a12;
+  tensorCopy = tensor;
+  beta1TensorCopy = beta1Tensor;
+  beta2TensorCopy = beta2Tensor;
+  epsilonTensorCopy = epsilonTensor;
+  valuesTensorCopy = valuesTensor;
+  momentumTensorCopy = momentumTensor;
+  velocityTensorCopy = velocityTensor;
+  maximumVelocityTensorCopy = maximumVelocityTensor;
+  gradientTensorCopy = gradientTensor;
+  nameCopy = name;
   v22 = @"applyAdam";
-  v47 = v21;
-  if (v21)
+  v47 = nameCopy;
+  if (nameCopy)
   {
-    v22 = v21;
+    v22 = nameCopy;
   }
 
   v23 = v22;
-  v48 = v18;
-  v46 = v19;
-  v54 = v20;
+  v48 = beta1TensorCopy;
+  v46 = momentumTensorCopy;
+  v54 = gradientTensorCopy;
   v24 = [(__CFString *)v23 stringByAppendingString:@"/momentumUpdate"];
-  v56 = [(MPSGraph *)self momentumUpdateWithBetaTensor:v18 momentumTensor:v19 gradientTensor:v20 name:v24];
+  v56 = [(MPSGraph *)self momentumUpdateWithBetaTensor:beta1TensorCopy momentumTensor:momentumTensorCopy gradientTensor:gradientTensorCopy name:v24];
 
   v25 = [(__CFString *)v23 stringByAppendingString:@"/velocityUpdate"];
-  v26 = [(MPSGraph *)self velocityUpdateWithBetaTensor:v52 velocityTensor:v53 gradientTensor:v20 name:v25];
+  v26 = [(MPSGraph *)self velocityUpdateWithBetaTensor:beta2TensorCopy velocityTensor:velocityTensorCopy gradientTensor:gradientTensorCopy name:v25];
 
   v27 = v26;
   v28 = v27;
-  if (v57)
+  if (maximumVelocityTensorCopy)
   {
     v29 = [(__CFString *)v23 stringByAppendingString:@"/maxVelocity"];
-    v30 = [(MPSGraph *)self maximumWithPrimaryTensor:v28 secondaryTensor:v57 name:v29];
+    v30 = [(MPSGraph *)self maximumWithPrimaryTensor:v28 secondaryTensor:maximumVelocityTensorCopy name:v29];
 
     v31 = v30;
     v55 = v31;
@@ -9230,18 +9230,18 @@ LABEL_81:
   v33 = [(MPSGraph *)self squareRootWithTensor:v55 name:v32];
 
   v34 = [(__CFString *)v23 stringByAppendingString:@"/epsilon_add"];
-  v35 = [(MPSGraph *)self additionWithPrimaryTensor:v33 secondaryTensor:v51 name:v34];
+  v35 = [(MPSGraph *)self additionWithPrimaryTensor:v33 secondaryTensor:epsilonTensorCopy name:v34];
 
   v36 = [(__CFString *)v23 stringByAppendingString:@"/multiply"];
-  v37 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v50 secondaryTensor:v56 name:v36];
+  v37 = [(MPSGraph *)self multiplicationWithPrimaryTensor:tensorCopy secondaryTensor:v56 name:v36];
 
   v38 = [(__CFString *)v23 stringByAppendingString:@"/divide"];
   v39 = [(MPSGraph *)self divisionWithPrimaryTensor:v37 secondaryTensor:v35 name:v38];
 
   v40 = [(__CFString *)v23 stringByAppendingString:@"/subtract"];
-  v41 = [(MPSGraph *)self subtractionWithPrimaryTensor:v49 secondaryTensor:v39 name:v40];
+  v41 = [(MPSGraph *)self subtractionWithPrimaryTensor:valuesTensorCopy secondaryTensor:v39 name:v40];
 
-  if (v57)
+  if (maximumVelocityTensorCopy)
   {
     v59[0] = v41;
     v59[1] = v56;
@@ -9265,31 +9265,31 @@ LABEL_81:
   return v44;
 }
 
-- (id)applyAdamWithCurrentLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 variable:(id)a7 momentumVariable:(id)a8 velocityVariable:(id)a9 maximumVelocityVariable:(id)a10 gradientTensor:(id)a11 name:(id)a12
+- (id)applyAdamWithCurrentLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor variable:(id)variable momentumVariable:(id)momentumVariable velocityVariable:(id)velocityVariable maximumVelocityVariable:(id)self0 gradientTensor:(id)self1 name:(id)self2
 {
-  v38 = a3;
-  v37 = a4;
-  v36 = a5;
-  v35 = a6;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v34 = v18;
-  v23 = [a7 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  tensorCopy = tensor;
+  beta1TensorCopy = beta1Tensor;
+  beta2TensorCopy = beta2Tensor;
+  epsilonTensorCopy = epsilonTensor;
+  momentumVariableCopy = momentumVariable;
+  velocityVariableCopy = velocityVariable;
+  maximumVelocityVariableCopy = maximumVelocityVariable;
+  gradientTensorCopy = gradientTensor;
+  nameCopy = name;
+  v34 = momentumVariableCopy;
+  outputTensors = [variable outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
-  v25 = [v18 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors2 = [momentumVariableCopy outputTensors];
+  v26 = [outputTensors2 objectAtIndexedSubscript:0];
 
-  v27 = [v19 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors3 = [velocityVariableCopy outputTensors];
+  v28 = [outputTensors3 objectAtIndexedSubscript:0];
 
-  if (v20)
+  if (maximumVelocityVariableCopy)
   {
-    v29 = [v20 outputTensors];
-    v30 = [v29 objectAtIndexedSubscript:0];
+    outputTensors4 = [maximumVelocityVariableCopy outputTensors];
+    v30 = [outputTensors4 objectAtIndexedSubscript:0];
   }
 
   else
@@ -9297,39 +9297,39 @@ LABEL_81:
     v30 = 0;
   }
 
-  v31 = [(MPSGraph *)self adamUpdateWithCurrentLearningRateTensor:v38 beta1Tensor:v37 beta2Tensor:v36 epsilonTensor:v35 valuesTensor:v24 momentumTensor:v26 velocityTensor:v28 maximumVelocityTensor:v30 gradientTensor:v21 name:v22];
-  v32 = [(MPSGraph *)self adamAssignWithInputVariableTensor:v24 momentumVariableTensor:v26 velocityVariableTensor:v28 maximumVelocityVariableTensor:v30 updates:v31 name:v22];
+  v31 = [(MPSGraph *)self adamUpdateWithCurrentLearningRateTensor:tensorCopy beta1Tensor:beta1TensorCopy beta2Tensor:beta2TensorCopy epsilonTensor:epsilonTensorCopy valuesTensor:v24 momentumTensor:v26 velocityTensor:v28 maximumVelocityTensor:v30 gradientTensor:gradientTensorCopy name:nameCopy];
+  v32 = [(MPSGraph *)self adamAssignWithInputVariableTensor:v24 momentumVariableTensor:v26 velocityVariableTensor:v28 maximumVelocityVariableTensor:v30 updates:v31 name:nameCopy];
 
   return v32;
 }
 
-- (id)currentLearningRateWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 beta1PowerTensor:(id)a6 beta2PowerTensor:(id)a7 name:(id)a8
+- (id)currentLearningRateWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor beta1PowerTensor:(id)powerTensor beta2PowerTensor:(id)beta2PowerTensor name:(id)name
 {
-  v31 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = a8;
-  v15 = v14;
+  tensorCopy = tensor;
+  powerTensorCopy = powerTensor;
+  beta2PowerTensorCopy = beta2PowerTensor;
+  nameCopy = name;
+  v15 = nameCopy;
   v16 = @"applyAdam";
-  if (v14)
+  if (nameCopy)
   {
-    v16 = v14;
+    v16 = nameCopy;
   }
 
   v17 = v16;
-  v30 = v13;
-  v18 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77840, [v12 dataType], 1.0);
+  v30 = beta2PowerTensorCopy;
+  v18 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77840, [powerTensorCopy dataType], 1.0);
   v19 = [(__CFString *)v17 stringByAppendingString:@"/subPowBeta1"];
-  v20 = [(MPSGraph *)self subtractionWithPrimaryTensor:v18 secondaryTensor:v12 name:v19];
+  v20 = [(MPSGraph *)self subtractionWithPrimaryTensor:v18 secondaryTensor:powerTensorCopy name:v19];
 
   v21 = [(__CFString *)v17 stringByAppendingString:@"/subPowBeta2"];
-  v22 = [(MPSGraph *)self subtractionWithPrimaryTensor:v18 secondaryTensor:v13 name:v21];
+  v22 = [(MPSGraph *)self subtractionWithPrimaryTensor:v18 secondaryTensor:beta2PowerTensorCopy name:v21];
 
   v23 = [(__CFString *)v17 stringByAppendingString:@"/sqrtBeta2"];
   v24 = [(MPSGraph *)self squareRootWithTensor:v22 name:v23];
 
   v25 = [(__CFString *)v17 stringByAppendingString:@"/subBeta2"];
-  v26 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v24 secondaryTensor:v31 name:v25];
+  v26 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v24 secondaryTensor:tensorCopy name:v25];
 
   v27 = [(__CFString *)v17 stringByAppendingString:@"/subBeta2"];
   v28 = [(MPSGraph *)self divisionWithPrimaryTensor:v26 secondaryTensor:v20 name:v27];
@@ -9344,148 +9344,148 @@ LABEL_81:
   return v14;
 }
 
-- (id)adamUpdateWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 beta1PowerTensor:(id)a7 beta2PowerTensor:(id)a8 valuesTensor:(id)a9 momentumTensor:(id)a10 velocityTensor:(id)a11 maximumVelocityTensor:(id)a12 gradientTensor:(id)a13 name:(id)a14
+- (id)adamUpdateWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor beta1PowerTensor:(id)powerTensor beta2PowerTensor:(id)beta2PowerTensor valuesTensor:(id)valuesTensor momentumTensor:(id)self0 velocityTensor:(id)self1 maximumVelocityTensor:(id)self2 gradientTensor:(id)self3 name:(id)self4
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v21 = self;
-  v34 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = [(MPSGraph *)self currentLearningRateWithLearningRateTensor:a3 beta1Tensor:v17 beta2Tensor:v18 beta1PowerTensor:a7 beta2PowerTensor:a8 name:v25];
-  v27 = v21;
-  v28 = v20;
-  v29 = [(MPSGraph *)v27 adamUpdateWithCurrentLearningRateTensor:v26 beta1Tensor:v17 beta2Tensor:v18 epsilonTensor:v19 valuesTensor:v20 momentumTensor:v34 velocityTensor:v22 maximumVelocityTensor:v23 gradientTensor:v24 name:v25];
+  beta1TensorCopy = beta1Tensor;
+  beta2TensorCopy = beta2Tensor;
+  epsilonTensorCopy = epsilonTensor;
+  valuesTensorCopy = valuesTensor;
+  selfCopy = self;
+  momentumTensorCopy = momentumTensor;
+  velocityTensorCopy = velocityTensor;
+  maximumVelocityTensorCopy = maximumVelocityTensor;
+  gradientTensorCopy = gradientTensor;
+  nameCopy = name;
+  v26 = [(MPSGraph *)self currentLearningRateWithLearningRateTensor:tensor beta1Tensor:beta1TensorCopy beta2Tensor:beta2TensorCopy beta1PowerTensor:powerTensor beta2PowerTensor:beta2PowerTensor name:nameCopy];
+  v27 = selfCopy;
+  v28 = valuesTensorCopy;
+  v29 = [(MPSGraph *)v27 adamUpdateWithCurrentLearningRateTensor:v26 beta1Tensor:beta1TensorCopy beta2Tensor:beta2TensorCopy epsilonTensor:epsilonTensorCopy valuesTensor:valuesTensorCopy momentumTensor:momentumTensorCopy velocityTensor:velocityTensorCopy maximumVelocityTensor:maximumVelocityTensorCopy gradientTensor:gradientTensorCopy name:nameCopy];
 
   return v29;
 }
 
-- (id)applyAdamWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 beta1PowerTensor:(id)a7 beta2PowerTensor:(id)a8 variable:(id)a9 momentumVariable:(id)a10 velocityVariable:(id)a11 gradientTensor:(id)a12 name:(id)a13
+- (id)applyAdamWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor beta1PowerTensor:(id)powerTensor beta2PowerTensor:(id)beta2PowerTensor variable:(id)variable momentumVariable:(id)self0 velocityVariable:(id)self1 gradientTensor:(id)self2 name:(id)self3
 {
-  v37 = a3;
-  v36 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v18 = a8;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = [a9 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  tensorCopy = tensor;
+  beta1TensorCopy = beta1Tensor;
+  beta2TensorCopy = beta2Tensor;
+  epsilonTensorCopy = epsilonTensor;
+  powerTensorCopy = powerTensor;
+  beta2PowerTensorCopy = beta2PowerTensor;
+  momentumVariableCopy = momentumVariable;
+  velocityVariableCopy = velocityVariable;
+  gradientTensorCopy = gradientTensor;
+  nameCopy = name;
+  outputTensors = [variable outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
-  v25 = [v19 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors2 = [momentumVariableCopy outputTensors];
+  v26 = [outputTensors2 objectAtIndexedSubscript:0];
 
-  v27 = [v20 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors3 = [velocityVariableCopy outputTensors];
+  v28 = [outputTensors3 objectAtIndexedSubscript:0];
 
-  v29 = [(MPSGraph *)self adamUpdateWithLearningRateTensor:v37 beta1Tensor:v36 beta2Tensor:v35 epsilonTensor:v34 beta1PowerTensor:v33 beta2PowerTensor:v18 valuesTensor:v24 momentumTensor:v26 velocityTensor:v28 maximumVelocityTensor:0 gradientTensor:v21 name:v22];
-  v30 = [(MPSGraph *)self adamAssignWithInputVariableTensor:v24 momentumVariableTensor:v26 velocityVariableTensor:v28 maximumVelocityVariableTensor:0 updates:v29 name:v22];
+  v29 = [(MPSGraph *)self adamUpdateWithLearningRateTensor:tensorCopy beta1Tensor:beta1TensorCopy beta2Tensor:beta2TensorCopy epsilonTensor:epsilonTensorCopy beta1PowerTensor:powerTensorCopy beta2PowerTensor:beta2PowerTensorCopy valuesTensor:v24 momentumTensor:v26 velocityTensor:v28 maximumVelocityTensor:0 gradientTensor:gradientTensorCopy name:nameCopy];
+  v30 = [(MPSGraph *)self adamAssignWithInputVariableTensor:v24 momentumVariableTensor:v26 velocityVariableTensor:v28 maximumVelocityVariableTensor:0 updates:v29 name:nameCopy];
 
   return v30;
 }
 
-- (id)adamUpdateWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 iterationTensor:(id)a7 valuesTensor:(id)a8 momentumTensor:(id)a9 velocityTensor:(id)a10 gradientTensor:(id)a11 name:(id)a12
+- (id)adamUpdateWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor iterationTensor:(id)iterationTensor valuesTensor:(id)valuesTensor momentumTensor:(id)momentumTensor velocityTensor:(id)self0 gradientTensor:(id)self1 name:(id)self2
 {
-  v36 = a3;
-  v18 = a4;
-  v19 = a5;
-  v34 = a6;
-  v20 = a7;
-  v21 = a8;
-  v37 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = v24;
+  tensorCopy = tensor;
+  beta1TensorCopy = beta1Tensor;
+  beta2TensorCopy = beta2Tensor;
+  epsilonTensorCopy = epsilonTensor;
+  iterationTensorCopy = iterationTensor;
+  valuesTensorCopy = valuesTensor;
+  momentumTensorCopy = momentumTensor;
+  velocityTensorCopy = velocityTensor;
+  gradientTensorCopy = gradientTensor;
+  nameCopy = name;
+  v25 = nameCopy;
   v26 = @"applyAdam";
-  if (v24)
+  if (nameCopy)
   {
-    v26 = v24;
+    v26 = nameCopy;
   }
 
   v38 = v26;
-  v35 = v18;
-  v33 = v21;
+  v35 = beta1TensorCopy;
+  v33 = valuesTensorCopy;
   v27 = [(__CFString *)v38 stringByAppendingString:@"/beta1Power"];
-  v28 = [(MPSGraph *)self powerWithPrimaryTensor:v18 secondaryTensor:v20 name:v27];
+  v28 = [(MPSGraph *)self powerWithPrimaryTensor:beta1TensorCopy secondaryTensor:iterationTensorCopy name:v27];
 
   v29 = [(__CFString *)v38 stringByAppendingString:@"/beta2Power"];
-  v30 = [(MPSGraph *)self powerWithPrimaryTensor:v19 secondaryTensor:v20 name:v29];
+  v30 = [(MPSGraph *)self powerWithPrimaryTensor:beta2TensorCopy secondaryTensor:iterationTensorCopy name:v29];
 
-  v32 = [(MPSGraph *)self adamUpdateWithLearningRateTensor:v36 beta1Tensor:v35 beta2Tensor:v19 epsilonTensor:v34 beta1PowerTensor:v28 beta2PowerTensor:v30 valuesTensor:v33 momentumTensor:v37 velocityTensor:v22 maximumVelocityTensor:0 gradientTensor:v23 name:v25];
+  v32 = [(MPSGraph *)self adamUpdateWithLearningRateTensor:tensorCopy beta1Tensor:v35 beta2Tensor:beta2TensorCopy epsilonTensor:epsilonTensorCopy beta1PowerTensor:v28 beta2PowerTensor:v30 valuesTensor:v33 momentumTensor:momentumTensorCopy velocityTensor:velocityTensorCopy maximumVelocityTensor:0 gradientTensor:gradientTensorCopy name:v25];
 
   return v32;
 }
 
-- (id)applyAdamWithLearningRateTensor:(id)a3 beta1Tensor:(id)a4 beta2Tensor:(id)a5 epsilonTensor:(id)a6 iterationTensor:(id)a7 variable:(id)a8 momentumVariable:(id)a9 velocityVariable:(id)a10 gradientTensor:(id)a11 name:(id)a12
+- (id)applyAdamWithLearningRateTensor:(id)tensor beta1Tensor:(id)beta1Tensor beta2Tensor:(id)beta2Tensor epsilonTensor:(id)epsilonTensor iterationTensor:(id)iterationTensor variable:(id)variable momentumVariable:(id)momentumVariable velocityVariable:(id)self0 gradientTensor:(id)self1 name:(id)self2
 {
-  v35 = a3;
-  v34 = a4;
-  v33 = a5;
-  v32 = a6;
-  v18 = a7;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = [a8 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  tensorCopy = tensor;
+  beta1TensorCopy = beta1Tensor;
+  beta2TensorCopy = beta2Tensor;
+  epsilonTensorCopy = epsilonTensor;
+  iterationTensorCopy = iterationTensor;
+  momentumVariableCopy = momentumVariable;
+  velocityVariableCopy = velocityVariable;
+  gradientTensorCopy = gradientTensor;
+  nameCopy = name;
+  outputTensors = [variable outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
-  v25 = [v19 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors2 = [momentumVariableCopy outputTensors];
+  v26 = [outputTensors2 objectAtIndexedSubscript:0];
 
-  v27 = [v20 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors3 = [velocityVariableCopy outputTensors];
+  v28 = [outputTensors3 objectAtIndexedSubscript:0];
 
-  v29 = [(MPSGraph *)self adamUpdateWithLearningRateTensor:v35 beta1Tensor:v34 beta2Tensor:v33 epsilonTensor:v32 iterationTensor:v18 valuesTensor:v24 momentumTensor:v26 velocityTensor:v28 gradientTensor:v21 name:v22];
-  v30 = [(MPSGraph *)self adamAssignWithInputVariableTensor:v24 momentumVariableTensor:v26 velocityVariableTensor:v28 maximumVelocityVariableTensor:0 updates:v29 name:v22];
+  v29 = [(MPSGraph *)self adamUpdateWithLearningRateTensor:tensorCopy beta1Tensor:beta1TensorCopy beta2Tensor:beta2TensorCopy epsilonTensor:epsilonTensorCopy iterationTensor:iterationTensorCopy valuesTensor:v24 momentumTensor:v26 velocityTensor:v28 gradientTensor:gradientTensorCopy name:nameCopy];
+  v30 = [(MPSGraph *)self adamAssignWithInputVariableTensor:v24 momentumVariableTensor:v26 velocityVariableTensor:v28 maximumVelocityVariableTensor:0 updates:v29 name:nameCopy];
 
   return v30;
 }
 
-- (id)solveWithDecompositionTensor:(id)a3 rhsTensor:(id)a4 descriptor:(id)a5 name:(id)a6
+- (id)solveWithDecompositionTensor:(id)tensor rhsTensor:(id)rhsTensor descriptor:(id)descriptor name:(id)name
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  tensorCopy = tensor;
+  rhsTensorCopy = rhsTensor;
+  nameCopy = name;
   v12 = [MPSGraphMatrixSolverOp alloc];
-  v13 = [v9 objectAtIndexedSubscript:0];
-  v14 = [v9 objectAtIndexedSubscript:{1, v13}];
+  v13 = [tensorCopy objectAtIndexedSubscript:0];
+  v14 = [tensorCopy objectAtIndexedSubscript:{1, v13}];
   v20[1] = v14;
-  v20[2] = v10;
+  v20[2] = rhsTensorCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
-  v16 = [(MPSGraphOperation *)v12 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] name:v11];
+  v16 = [(MPSGraphOperation *)v12 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
 
-- (id)solveLUWithDecompositionTensor:(id)a3 rhsTensor:(id)a4 name:(id)a5
+- (id)solveLUWithDecompositionTensor:(id)tensor rhsTensor:(id)rhsTensor name:(id)name
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tensorCopy = tensor;
+  rhsTensorCopy = rhsTensor;
+  nameCopy = name;
   v11 = [MPSGraphMatrixSolverOp alloc];
-  v12 = [v8 objectAtIndexedSubscript:0];
-  v13 = [v8 objectAtIndexedSubscript:{1, v12}];
+  v12 = [tensorCopy objectAtIndexedSubscript:0];
+  v13 = [tensorCopy objectAtIndexedSubscript:{1, v12}];
   v19[1] = v13;
-  v19[2] = v9;
+  v19[2] = rhsTensorCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
-  v15 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
+  v15 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:0];
 
   return v17;
 }
@@ -9502,61 +9502,61 @@ LABEL_81:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v15 = [MPSGraphStencilOp alloc];
   v16 = [(MPSGraphStencilOp *)v15 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
 
-- (id)stencilWithSourceTensor:(id)a3 weightsTensor:(id)a4 offsets:(id)a5 name:(id)a6
+- (id)stencilWithSourceTensor:(id)tensor weightsTensor:(id)weightsTensor offsets:(id)offsets name:(id)name
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v21[0] = v10;
-  v21[1] = v11;
+  tensorCopy = tensor;
+  weightsTensorCopy = weightsTensor;
+  offsetsCopy = offsets;
+  nameCopy = name;
+  v21[0] = tensorCopy;
+  v21[1] = weightsTensorCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-  v15 = [MPSGraphStencilOpDescriptor descriptorWithReductionMode:2 offsets:v12 strides:&unk_1F5B77930 dilationRates:&unk_1F5B77948 explicitPadding:&unk_1F5B77960 boundaryMode:4 paddingStyle:0.0 paddingConstant:3];
+  v15 = [MPSGraphStencilOpDescriptor descriptorWithReductionMode:2 offsets:offsetsCopy strides:&unk_1F5B77930 dilationRates:&unk_1F5B77948 explicitPadding:&unk_1F5B77960 boundaryMode:4 paddingStyle:0.0 paddingConstant:3];
   v16 = [MPSGraphStencilOp alloc];
-  v17 = [(MPSGraphStencilOp *)v16 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v13];
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  v17 = [(MPSGraphStencilOp *)v16 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
 
-- (id)eluWithTensor:(id)a3 alpha:(double)a4 name:(id)a5
+- (id)eluWithTensor:(id)tensor alpha:(double)alpha name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B779A8, [v8 dataType], a4);
+  tensorCopy = tensor;
+  nameCopy = name;
+  v10 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B779A8, [tensorCopy dataType], alpha);
   v11 = [MPSGraphEluOp alloc];
-  v17[0] = v8;
+  v17[0] = tensorCopy;
   v17[1] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v9];
+  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
 
-- (id)eluGradientWithIncomingGradient:(id)a3 sourceTensor:(id)a4 alpha:(double)a5 name:(id)a6
+- (id)eluGradientWithIncomingGradient:(id)gradient sourceTensor:(id)tensor alpha:(double)alpha name:(id)name
 {
-  v27 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B779C0, [v10 dataType], a5);
+  gradientCopy = gradient;
+  tensorCopy = tensor;
+  nameCopy = name;
+  v12 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B779C0, [tensorCopy dataType], alpha);
   v26 = v12;
-  v13 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B779D8, [v10 dataType], 0.0);
-  v14 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B779F0, [v10 dataType], 1.0);
-  if (v11)
+  v13 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B779D8, [tensorCopy dataType], 0.0);
+  v14 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B779F0, [tensorCopy dataType], 1.0);
+  if (nameCopy)
   {
-    v15 = [v11 stringByAppendingString:@"/lessThanOrEqualTo"];
+    v15 = [nameCopy stringByAppendingString:@"/lessThanOrEqualTo"];
   }
 
   else
@@ -9564,11 +9564,11 @@ LABEL_81:
     v15 = @"eluGrad/lessThanOrEqualTo";
   }
 
-  v16 = [(MPSGraph *)self greaterThanWithPrimaryTensor:v10 secondaryTensor:v13 name:v15];
-  if (v11)
+  v16 = [(MPSGraph *)self greaterThanWithPrimaryTensor:tensorCopy secondaryTensor:v13 name:v15];
+  if (nameCopy)
   {
 
-    v17 = [v11 stringByAppendingString:@"/eluResult"];
+    v17 = [nameCopy stringByAppendingString:@"/eluResult"];
   }
 
   else
@@ -9576,11 +9576,11 @@ LABEL_81:
     v17 = @"eluGrad/eluResult";
   }
 
-  v18 = [(MPSGraph *)self eluWithTensor:v10 alpha:v17 name:a5];
-  if (v11)
+  v18 = [(MPSGraph *)self eluWithTensor:tensorCopy alpha:v17 name:alpha];
+  if (nameCopy)
   {
 
-    v19 = [v11 stringByAppendingString:@"/negativeRegionGradient"];
+    v19 = [nameCopy stringByAppendingString:@"/negativeRegionGradient"];
   }
 
   else
@@ -9589,10 +9589,10 @@ LABEL_81:
   }
 
   v20 = [(MPSGraph *)self additionWithPrimaryTensor:v18 secondaryTensor:v12 name:v19];
-  if (v11)
+  if (nameCopy)
   {
 
-    v21 = [v11 stringByAppendingString:@"/localGradient"];
+    v21 = [nameCopy stringByAppendingString:@"/localGradient"];
   }
 
   else
@@ -9601,10 +9601,10 @@ LABEL_81:
   }
 
   v22 = [(MPSGraph *)self selectWithPredicateTensor:v16 truePredicateTensor:v14 falsePredicateTensor:v20 name:v21];
-  if (v11)
+  if (nameCopy)
   {
 
-    v23 = [v11 stringByAppendingString:@"/select"];
+    v23 = [nameCopy stringByAppendingString:@"/select"];
   }
 
   else
@@ -9612,48 +9612,48 @@ LABEL_81:
     v23 = @"eluGrad/multiplication";
   }
 
-  v24 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v27 secondaryTensor:v22 name:v23];
-  if (v11)
+  v24 = [(MPSGraph *)self multiplicationWithPrimaryTensor:gradientCopy secondaryTensor:v22 name:v23];
+  if (nameCopy)
   {
   }
 
   return v24;
 }
 
-- (id)prunedTensorWithDescriptor:(id)a3 tensor:(id)a4 shape:(id)a5 name:(id)a6
+- (id)prunedTensorWithDescriptor:(id)descriptor tensor:(id)tensor shape:(id)shape name:(id)name
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  descriptorCopy = descriptor;
+  tensorCopy = tensor;
+  shapeCopy = shape;
+  nameCopy = name;
   v14 = [MPSGraphPruningOp alloc];
-  v20[0] = v11;
+  v20[0] = tensorCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v16 = [(MPSGraphPruningOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] shape:v12 descriptor:v10 name:v13];
+  v16 = [(MPSGraphPruningOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] shape:shapeCopy descriptor:descriptorCopy name:nameCopy];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
 
-- (id)prunedGradientTensorWithDescriptor:(id)a3 inputTensor:(id)a4 gradientTensor:(id)a5 shape:(id)a6 name:(id)a7
+- (id)prunedGradientTensorWithDescriptor:(id)descriptor inputTensor:(id)tensor gradientTensor:(id)gradientTensor shape:(id)shape name:(id)name
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  descriptorCopy = descriptor;
+  tensorCopy = tensor;
+  gradientTensorCopy = gradientTensor;
+  shapeCopy = shape;
+  nameCopy = name;
   v17 = [MPSGraphPruningGradientOp alloc];
-  v23[0] = v13;
-  v23[1] = v14;
+  v23[0] = tensorCopy;
+  v23[1] = gradientTensorCopy;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
-  v19 = [(MPSGraphPruningGradientOp *)v17 initWithGraph:self inputTensors:v18 controlDependencies:MEMORY[0x1E695E0F0] shape:v15 descriptor:v12 name:v16];
+  v19 = [(MPSGraphPruningGradientOp *)v17 initWithGraph:self inputTensors:v18 controlDependencies:MEMORY[0x1E695E0F0] shape:shapeCopy descriptor:descriptorCopy name:nameCopy];
 
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -9665,22 +9665,22 @@ LABEL_81:
   v11 = weights;
   v12 = descriptor;
   v13 = name;
-  v14 = [(MPSGraphTensor *)v10 shape];
-  if ([v14 count] != 4)
+  shape = [(MPSGraphTensor *)v10 shape];
+  if ([shape count] != 4)
   {
-    v15 = [(MPSGraphTensor *)v10 shape];
-    [v15 count];
+    shape2 = [(MPSGraphTensor *)v10 shape];
+    [shape2 count];
   }
 
-  v16 = [(MPSGraphTensor *)v10 shape];
-  if ([v16 count] == 4)
+  shape3 = [(MPSGraphTensor *)v10 shape];
+  if ([shape3 count] == 4)
   {
   }
 
   else
   {
-    v17 = [(MPSGraphTensor *)v10 shape];
-    v18 = [v17 count];
+    shape4 = [(MPSGraphTensor *)v10 shape];
+    v18 = [shape4 count];
 
     if (v18 && MTLReportFailureTypeEnabled())
     {
@@ -9688,22 +9688,22 @@ LABEL_81:
     }
   }
 
-  v19 = [(MPSGraphTensor *)v11 shape];
-  if ([v19 count] != 4)
+  shape5 = [(MPSGraphTensor *)v11 shape];
+  if ([shape5 count] != 4)
   {
-    v20 = [(MPSGraphTensor *)v11 shape];
-    [v20 count];
+    shape6 = [(MPSGraphTensor *)v11 shape];
+    [shape6 count];
   }
 
-  v21 = [(MPSGraphTensor *)v11 shape];
-  if ([v21 count] == 4)
+  shape7 = [(MPSGraphTensor *)v11 shape];
+  if ([shape7 count] == 4)
   {
   }
 
   else
   {
-    v22 = [(MPSGraphTensor *)v11 shape];
-    v23 = [v22 count];
+    shape8 = [(MPSGraphTensor *)v11 shape];
+    v23 = [shape8 count];
 
     if (v23 && MTLReportFailureTypeEnabled())
     {
@@ -9717,8 +9717,8 @@ LABEL_81:
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v26 = [(MPSGraphConvolution2DBaseOp *)v24 initWithGraph:self inputTensors:v25 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v27 = [(MPSGraphOperation *)v26 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v26 outputTensors];
+  v28 = [outputTensors objectAtIndexedSubscript:0];
 
   return v28;
 }
@@ -9731,22 +9731,22 @@ LABEL_81:
   v14 = outputShapeTensor;
   v15 = forwardConvolutionDescriptor;
   v16 = name;
-  v17 = [(MPSGraphTensor *)v12 shape];
-  if ([v17 count] != 4)
+  shape = [(MPSGraphTensor *)v12 shape];
+  if ([shape count] != 4)
   {
-    v18 = [(MPSGraphTensor *)v12 shape];
-    [v18 count];
+    shape2 = [(MPSGraphTensor *)v12 shape];
+    [shape2 count];
   }
 
-  v19 = [(MPSGraphTensor *)v12 shape];
-  if ([v19 count] == 4)
+  shape3 = [(MPSGraphTensor *)v12 shape];
+  if ([shape3 count] == 4)
   {
   }
 
   else
   {
-    v20 = [(MPSGraphTensor *)v12 shape];
-    v21 = [v20 count];
+    shape4 = [(MPSGraphTensor *)v12 shape];
+    v21 = [shape4 count];
 
     if (v21 && MTLReportFailureTypeEnabled())
     {
@@ -9754,22 +9754,22 @@ LABEL_81:
     }
   }
 
-  v22 = [(MPSGraphTensor *)v13 shape];
-  if ([v22 count] != 4)
+  shape5 = [(MPSGraphTensor *)v13 shape];
+  if ([shape5 count] != 4)
   {
-    v23 = [(MPSGraphTensor *)v13 shape];
-    [v23 count];
+    shape6 = [(MPSGraphTensor *)v13 shape];
+    [shape6 count];
   }
 
-  v24 = [(MPSGraphTensor *)v13 shape];
-  if ([v24 count] == 4)
+  shape7 = [(MPSGraphTensor *)v13 shape];
+  if ([shape7 count] == 4)
   {
   }
 
   else
   {
-    v25 = [(MPSGraphTensor *)v13 shape];
-    v26 = [v25 count];
+    shape8 = [(MPSGraphTensor *)v13 shape];
+    v26 = [shape8 count];
 
     if (v26 && MTLReportFailureTypeEnabled())
     {
@@ -9784,8 +9784,8 @@ LABEL_81:
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
   v29 = [(MPSGraphConvolution2DBaseOp *)v27 initWithGraph:self inputTensors:v28 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v16];
 
-  v30 = [(MPSGraphOperation *)v29 outputTensors];
-  v31 = [v30 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v29 outputTensors];
+  v31 = [outputTensors objectAtIndexedSubscript:0];
 
   return v31;
 }
@@ -9830,22 +9830,22 @@ LABEL_81:
   v14 = outputShapeTensor;
   v15 = forwardConvolutionDescriptor;
   v16 = name;
-  v17 = [(MPSGraphTensor *)v12 shape];
-  if ([v17 count] != 4)
+  shape = [(MPSGraphTensor *)v12 shape];
+  if ([shape count] != 4)
   {
-    v18 = [(MPSGraphTensor *)v12 shape];
-    [v18 count];
+    shape2 = [(MPSGraphTensor *)v12 shape];
+    [shape2 count];
   }
 
-  v19 = [(MPSGraphTensor *)v12 shape];
-  if ([v19 count] == 4)
+  shape3 = [(MPSGraphTensor *)v12 shape];
+  if ([shape3 count] == 4)
   {
   }
 
   else
   {
-    v20 = [(MPSGraphTensor *)v12 shape];
-    v21 = [v20 count];
+    shape4 = [(MPSGraphTensor *)v12 shape];
+    v21 = [shape4 count];
 
     if (v21 && MTLReportFailureTypeEnabled())
     {
@@ -9853,22 +9853,22 @@ LABEL_81:
     }
   }
 
-  v22 = [(MPSGraphTensor *)v13 shape];
-  if ([v22 count] != 4)
+  shape5 = [(MPSGraphTensor *)v13 shape];
+  if ([shape5 count] != 4)
   {
-    v23 = [(MPSGraphTensor *)v13 shape];
-    [v23 count];
+    shape6 = [(MPSGraphTensor *)v13 shape];
+    [shape6 count];
   }
 
-  v24 = [(MPSGraphTensor *)v13 shape];
-  if ([v24 count] == 4)
+  shape7 = [(MPSGraphTensor *)v13 shape];
+  if ([shape7 count] == 4)
   {
   }
 
   else
   {
-    v25 = [(MPSGraphTensor *)v13 shape];
-    v26 = [v25 count];
+    shape8 = [(MPSGraphTensor *)v13 shape];
+    v26 = [shape8 count];
 
     if (v26 && MTLReportFailureTypeEnabled())
     {
@@ -9876,22 +9876,22 @@ LABEL_81:
     }
   }
 
-  v27 = [(MPSGraphTensor *)v14 shape];
-  if ([v27 count] != 1)
+  shape9 = [(MPSGraphTensor *)v14 shape];
+  if ([shape9 count] != 1)
   {
-    v28 = [(MPSGraphTensor *)v13 shape];
-    [v28 count];
+    shape10 = [(MPSGraphTensor *)v13 shape];
+    [shape10 count];
   }
 
-  v29 = [(MPSGraphTensor *)v14 shape];
-  if ([v29 count] == 1)
+  shape11 = [(MPSGraphTensor *)v14 shape];
+  if ([shape11 count] == 1)
   {
   }
 
   else
   {
-    v30 = [(MPSGraphTensor *)v13 shape];
-    v31 = [v30 count];
+    shape12 = [(MPSGraphTensor *)v13 shape];
+    v31 = [shape12 count];
 
     if (v31 && MTLReportFailureTypeEnabled())
     {
@@ -9906,8 +9906,8 @@ LABEL_81:
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
   v34 = [(MPSGraphConvolution2DBaseOp *)v32 initWithGraph:self inputTensors:v33 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v16];
 
-  v35 = [(MPSGraphOperation *)v34 outputTensors];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v34 outputTensors];
+  v36 = [outputTensors objectAtIndexedSubscript:0];
 
   return v36;
 }
@@ -9951,22 +9951,22 @@ LABEL_81:
   v11 = weights;
   v12 = descriptor;
   v13 = name;
-  v14 = [(MPSGraphTensor *)v10 shape];
-  if ([v14 count] != 5)
+  shape = [(MPSGraphTensor *)v10 shape];
+  if ([shape count] != 5)
   {
-    v15 = [(MPSGraphTensor *)v10 shape];
-    [v15 count];
+    shape2 = [(MPSGraphTensor *)v10 shape];
+    [shape2 count];
   }
 
-  v16 = [(MPSGraphTensor *)v10 shape];
-  if ([v16 count] == 5)
+  shape3 = [(MPSGraphTensor *)v10 shape];
+  if ([shape3 count] == 5)
   {
   }
 
   else
   {
-    v17 = [(MPSGraphTensor *)v10 shape];
-    v18 = [v17 count];
+    shape4 = [(MPSGraphTensor *)v10 shape];
+    v18 = [shape4 count];
 
     if (v18 && MTLReportFailureTypeEnabled())
     {
@@ -9974,22 +9974,22 @@ LABEL_81:
     }
   }
 
-  v19 = [(MPSGraphTensor *)v11 shape];
-  if ([v19 count] != 5)
+  shape5 = [(MPSGraphTensor *)v11 shape];
+  if ([shape5 count] != 5)
   {
-    v20 = [(MPSGraphTensor *)v11 shape];
-    [v20 count];
+    shape6 = [(MPSGraphTensor *)v11 shape];
+    [shape6 count];
   }
 
-  v21 = [(MPSGraphTensor *)v11 shape];
-  if ([v21 count] == 5)
+  shape7 = [(MPSGraphTensor *)v11 shape];
+  if ([shape7 count] == 5)
   {
   }
 
   else
   {
-    v22 = [(MPSGraphTensor *)v11 shape];
-    v23 = [v22 count];
+    shape8 = [(MPSGraphTensor *)v11 shape];
+    v23 = [shape8 count];
 
     if (v23 && MTLReportFailureTypeEnabled())
     {
@@ -10003,8 +10003,8 @@ LABEL_81:
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v26 = [(MPSGraphConvolution3DBaseOp *)v24 initWithGraph:self inputTensors:v25 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v27 = [(MPSGraphOperation *)v26 outputTensors];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v26 outputTensors];
+  v28 = [outputTensors objectAtIndexedSubscript:0];
 
   return v28;
 }
@@ -10017,22 +10017,22 @@ LABEL_81:
   v14 = outputShapeTensor;
   v15 = forwardConvolutionDescriptor;
   v16 = name;
-  v17 = [(MPSGraphTensor *)v12 shape];
-  if ([v17 count] != 5)
+  shape = [(MPSGraphTensor *)v12 shape];
+  if ([shape count] != 5)
   {
-    v18 = [(MPSGraphTensor *)v12 shape];
-    [v18 count];
+    shape2 = [(MPSGraphTensor *)v12 shape];
+    [shape2 count];
   }
 
-  v19 = [(MPSGraphTensor *)v12 shape];
-  if ([v19 count] == 5)
+  shape3 = [(MPSGraphTensor *)v12 shape];
+  if ([shape3 count] == 5)
   {
   }
 
   else
   {
-    v20 = [(MPSGraphTensor *)v12 shape];
-    v21 = [v20 count];
+    shape4 = [(MPSGraphTensor *)v12 shape];
+    v21 = [shape4 count];
 
     if (v21 && MTLReportFailureTypeEnabled())
     {
@@ -10040,22 +10040,22 @@ LABEL_81:
     }
   }
 
-  v22 = [(MPSGraphTensor *)v13 shape];
-  if ([v22 count] != 5)
+  shape5 = [(MPSGraphTensor *)v13 shape];
+  if ([shape5 count] != 5)
   {
-    v23 = [(MPSGraphTensor *)v13 shape];
-    [v23 count];
+    shape6 = [(MPSGraphTensor *)v13 shape];
+    [shape6 count];
   }
 
-  v24 = [(MPSGraphTensor *)v13 shape];
-  if ([v24 count] == 5)
+  shape7 = [(MPSGraphTensor *)v13 shape];
+  if ([shape7 count] == 5)
   {
   }
 
   else
   {
-    v25 = [(MPSGraphTensor *)v13 shape];
-    v26 = [v25 count];
+    shape8 = [(MPSGraphTensor *)v13 shape];
+    v26 = [shape8 count];
 
     if (v26 && MTLReportFailureTypeEnabled())
     {
@@ -10070,8 +10070,8 @@ LABEL_81:
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
   v29 = [(MPSGraphConvolution3DBaseOp *)v27 initWithGraph:self inputTensors:v28 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v16];
 
-  v30 = [(MPSGraphOperation *)v29 outputTensors];
-  v31 = [v30 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v29 outputTensors];
+  v31 = [outputTensors objectAtIndexedSubscript:0];
 
   return v31;
 }
@@ -10117,22 +10117,22 @@ LABEL_81:
   v14 = outputShapeTensor;
   v15 = forwardConvolutionDescriptor;
   v16 = name;
-  v17 = [(MPSGraphTensor *)v12 shape];
-  if ([v17 count] != 5)
+  shape = [(MPSGraphTensor *)v12 shape];
+  if ([shape count] != 5)
   {
-    v18 = [(MPSGraphTensor *)v12 shape];
-    [v18 count];
+    shape2 = [(MPSGraphTensor *)v12 shape];
+    [shape2 count];
   }
 
-  v19 = [(MPSGraphTensor *)v12 shape];
-  if ([v19 count] == 5)
+  shape3 = [(MPSGraphTensor *)v12 shape];
+  if ([shape3 count] == 5)
   {
   }
 
   else
   {
-    v20 = [(MPSGraphTensor *)v12 shape];
-    v21 = [v20 count];
+    shape4 = [(MPSGraphTensor *)v12 shape];
+    v21 = [shape4 count];
 
     if (v21 && MTLReportFailureTypeEnabled())
     {
@@ -10140,22 +10140,22 @@ LABEL_81:
     }
   }
 
-  v22 = [(MPSGraphTensor *)v13 shape];
-  if ([v22 count] != 5)
+  shape5 = [(MPSGraphTensor *)v13 shape];
+  if ([shape5 count] != 5)
   {
-    v23 = [(MPSGraphTensor *)v13 shape];
-    [v23 count];
+    shape6 = [(MPSGraphTensor *)v13 shape];
+    [shape6 count];
   }
 
-  v24 = [(MPSGraphTensor *)v13 shape];
-  if ([v24 count] == 5)
+  shape7 = [(MPSGraphTensor *)v13 shape];
+  if ([shape7 count] == 5)
   {
   }
 
   else
   {
-    v25 = [(MPSGraphTensor *)v13 shape];
-    v26 = [v25 count];
+    shape8 = [(MPSGraphTensor *)v13 shape];
+    v26 = [shape8 count];
 
     if (v26 && MTLReportFailureTypeEnabled())
     {
@@ -10163,22 +10163,22 @@ LABEL_81:
     }
   }
 
-  v27 = [(MPSGraphTensor *)v14 shape];
-  if ([v27 count] != 1)
+  shape9 = [(MPSGraphTensor *)v14 shape];
+  if ([shape9 count] != 1)
   {
-    v28 = [(MPSGraphTensor *)v13 shape];
-    [v28 count];
+    shape10 = [(MPSGraphTensor *)v13 shape];
+    [shape10 count];
   }
 
-  v29 = [(MPSGraphTensor *)v14 shape];
-  if ([v29 count] == 1)
+  shape11 = [(MPSGraphTensor *)v14 shape];
+  if ([shape11 count] == 1)
   {
   }
 
   else
   {
-    v30 = [(MPSGraphTensor *)v13 shape];
-    v31 = [v30 count];
+    shape12 = [(MPSGraphTensor *)v13 shape];
+    v31 = [shape12 count];
 
     if (v31 && MTLReportFailureTypeEnabled())
     {
@@ -10193,8 +10193,8 @@ LABEL_81:
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
   v34 = [(MPSGraphConvolution3DBaseOp *)v32 initWithGraph:self inputTensors:v33 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v15 name:v16];
 
-  v35 = [(MPSGraphOperation *)v34 outputTensors];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v34 outputTensors];
+  v36 = [outputTensors objectAtIndexedSubscript:0];
 
   return v36;
 }
@@ -10236,8 +10236,8 @@ LABEL_81:
 {
   v6 = name;
   v7 = [objc_alloc(MEMORY[0x1E6974828]) initPhiloxStateDescriptorWithSeed:seed];
-  v8 = [v7 state];
-  v9 = [(MPSGraph *)self randomPhiloxStateTensorWithCounterLow:*v8 counterHigh:v8[1] key:v8[2] name:v6];
+  state = [v7 state];
+  v9 = [(MPSGraph *)self randomPhiloxStateTensorWithCounterLow:*state counterHigh:state[1] key:state[2] name:v6];
 
   return v9;
 }
@@ -10247,51 +10247,51 @@ LABEL_81:
   v10 = name;
   v11 = [MPSGraphInitRandomPhiloxStateOp alloc];
   v12 = [(MPSGraphInitRandomPhiloxStateOp *)v11 initWithGraph:self inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] counterLow:counterLow counterHigh:counterHigh key:key name:v10];
-  v13 = [(MPSGraphOperation *)v12 outputTensors];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v12 outputTensors];
+  v14 = [outputTensors objectAtIndexedSubscript:0];
 
   return v14;
 }
 
-- (id)progressRandomStateTensor:(id)a3 forShape:(id)a4 name:(id)a5
+- (id)progressRandomStateTensor:(id)tensor forShape:(id)shape name:(id)name
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = malloc_type_malloc(4 * [v9 count], 0x100004052888210uLL);
-  for (i = 0; i < [v9 count]; ++i)
+  tensorCopy = tensor;
+  shapeCopy = shape;
+  nameCopy = name;
+  v11 = malloc_type_malloc(4 * [shapeCopy count], 0x100004052888210uLL);
+  for (i = 0; i < [shapeCopy count]; ++i)
   {
-    v13 = [v9 objectAtIndexedSubscript:i];
+    v13 = [shapeCopy objectAtIndexedSubscript:i];
     v11[i] = [v13 intValue];
   }
 
-  v14 = [MEMORY[0x1E695DEF0] dataWithBytes:v11 length:{4 * objc_msgSend(v9, "count")}];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+  v14 = [MEMORY[0x1E695DEF0] dataWithBytes:v11 length:{4 * objc_msgSend(shapeCopy, "count")}];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(shapeCopy, "count")}];
   v20[0] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v17 = [(MPSGraph *)self constantWithData:v14 shape:v16 dataType:32];
 
   free(v11);
-  v18 = [(MPSGraph *)self progressRandomStateTensor:v8 forShapeTensor:v17 name:v10];
+  v18 = [(MPSGraph *)self progressRandomStateTensor:tensorCopy forShapeTensor:v17 name:nameCopy];
 
   return v18;
 }
 
-- (id)progressRandomStateTensor:(id)a3 forShapeTensor:(id)a4 name:(id)a5
+- (id)progressRandomStateTensor:(id)tensor forShapeTensor:(id)shapeTensor name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tensorCopy = tensor;
+  shapeTensorCopy = shapeTensor;
+  nameCopy = name;
   v11 = [MPSGraphUpdateRandomStateOp alloc];
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = tensorCopy;
+  v17[1] = shapeTensorCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
+  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -10365,10 +10365,10 @@ LABEL_81:
   {
   }
 
-  v16 = [(MPSGraphRandomOpDescriptor *)v11 distribution];
-  if (v16)
+  distribution = [(MPSGraphRandomOpDescriptor *)v11 distribution];
+  if (distribution)
   {
-    if (v16 == 1)
+    if (distribution == 1)
     {
       v20 = [MPSGraphRandomNormalOp alloc];
       v31[0] = v15;
@@ -10379,7 +10379,7 @@ LABEL_81:
 
     else
     {
-      if (v16 != 2)
+      if (distribution != 2)
       {
         v21 = 0;
         goto LABEL_18;
@@ -10422,8 +10422,8 @@ LABEL_81:
   }
 
 LABEL_18:
-  v28 = [(MPSGraphOperation *)v21 outputTensors];
-  v29 = [v28 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v29 = [outputTensors objectAtIndexedSubscript:0];
 
   return v29;
 }
@@ -10463,10 +10463,10 @@ LABEL_18:
   v13 = name;
   v35 = [(MPSGraph *)self fixCastIntTensor:v10 toSignedness:1 name:v13];
 
-  v14 = [(MPSGraphRandomOpDescriptor *)v11 distribution];
-  if (v14)
+  distribution = [(MPSGraphRandomOpDescriptor *)v11 distribution];
+  if (distribution)
   {
-    if (v14 == 1)
+    if (distribution == 1)
     {
       v18 = [MPSGraphRandomNormalOp alloc];
       v38[0] = v12;
@@ -10477,7 +10477,7 @@ LABEL_18:
 
     else
     {
-      if (v14 != 2)
+      if (distribution != 2)
       {
         v19 = 0;
         goto LABEL_13;
@@ -10526,11 +10526,11 @@ LABEL_13:
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
   v28 = [(MPSGraphOperation *)v26 initWithGraph:self inputTensors:v27 controlDependencies:MEMORY[0x1E695E0F0] name:v13];
 
-  v29 = [(MPSGraphOperation *)v19 outputTensors];
-  v30 = [v29 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v30 = [outputTensors objectAtIndexedSubscript:0];
   v36[0] = v30;
-  v31 = [(MPSGraphOperation *)v28 outputTensors];
-  v32 = [v31 objectAtIndexedSubscript:0];
+  outputTensors2 = [(MPSGraphOperation *)v28 outputTensors];
+  v32 = [outputTensors2 objectAtIndexedSubscript:0];
   v36[1] = v32;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
 
@@ -10626,8 +10626,8 @@ LABEL_13:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   v20 = [(MPSGraphRandomUniformOp *)v18 initWithGraph:self inputTensors:v19 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v13 name:v9];
 
-  v21 = [(MPSGraphOperation *)v20 outputTensors];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v20 outputTensors];
+  v22 = [outputTensors objectAtIndexedSubscript:0];
 
   return v22;
 }
@@ -10694,11 +10694,11 @@ LABEL_13:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v18 = [(MPSGraphOperation *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] name:v28];
 
-  v19 = [(MPSGraphOperation *)v15 outputTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v20 = [outputTensors objectAtIndexedSubscript:0];
   v29[0] = v20;
-  v21 = [(MPSGraphOperation *)v18 outputTensors];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  outputTensors2 = [(MPSGraphOperation *)v18 outputTensors];
+  v22 = [outputTensors2 objectAtIndexedSubscript:0];
   v29[1] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
 
@@ -10710,7 +10710,7 @@ LABEL_13:
   v8 = tensor;
   v9 = name;
   v10 = [(MPSGraph *)self constantWithScalar:&unk_1F5B77A68 shape:268435488 dataType:rate];
-  v11 = [(MPSGraphTensor *)v8 dataType];
+  dataType = [(MPSGraphTensor *)v8 dataType];
   if (v9)
   {
     v12 = [(NSString *)v9 stringByAppendingFormat:@"/cast"];
@@ -10721,7 +10721,7 @@ LABEL_13:
     v12 = @"dropout/cast";
   }
 
-  v13 = [(MPSGraph *)self castTensor:v10 toType:v11 name:v12];
+  v13 = [(MPSGraph *)self castTensor:v10 toType:dataType name:v12];
   if (v9)
   {
   }
@@ -10764,7 +10764,7 @@ LABEL_13:
   {
   }
 
-  v15 = [(MPSGraphTensor *)v8 dataType];
+  dataType = [(MPSGraphTensor *)v8 dataType];
   if (v11)
   {
     v16 = [(NSString *)v11 stringByAppendingFormat:@"/randomUniform/cast"];
@@ -10775,7 +10775,7 @@ LABEL_13:
     v16 = @"dropout/randomUniform/cast";
   }
 
-  v17 = [(MPSGraph *)self castTensor:v14 toType:v15 name:v16];
+  v17 = [(MPSGraph *)self castTensor:v14 toType:dataType name:v16];
   if (v11)
   {
 
@@ -10792,7 +10792,7 @@ LABEL_13:
   {
   }
 
-  v20 = [(MPSGraphTensor *)v8 dataType];
+  dataType2 = [(MPSGraphTensor *)v8 dataType];
   if (v11)
   {
     v21 = [(NSString *)v11 stringByAppendingFormat:@"/randomUniform/cast"];
@@ -10803,7 +10803,7 @@ LABEL_13:
     v21 = @"dropout/randomUniform/cast";
   }
 
-  v22 = [(MPSGraph *)self castTensor:v19 toType:v20 name:v21];
+  v22 = [(MPSGraph *)self castTensor:v19 toType:dataType2 name:v21];
   if (v11)
   {
 
@@ -10886,22 +10886,22 @@ LABEL_13:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
   v20 = [(MPSGraphScatterNDOp *)v18 initWithGraph:self inputTensors:v19 controlDependencies:MEMORY[0x1E695E0F0] batchDimensions:batchDimensions mode:mode name:v17];
 
-  v21 = [(MPSGraphOperation *)v20 outputTensors];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v20 outputTensors];
+  v22 = [outputTensors objectAtIndexedSubscript:0];
 
   return v22;
 }
 
-- (id)scatterWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 shape:(id)a5 axis:(int64_t)a6 name:(id)a7
+- (id)scatterWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor shape:(id)shape axis:(int64_t)axis name:(id)name
 {
-  v7 = [(MPSGraph *)self scatterWithUpdatesTensor:a3 indicesTensor:a4 shape:a5 axis:a6 mode:0 name:a7];
+  v7 = [(MPSGraph *)self scatterWithUpdatesTensor:tensor indicesTensor:indicesTensor shape:shape axis:axis mode:0 name:name];
 
   return v7;
 }
 
-- (id)scatterWithDataTensor:(id)a3 updatesTensor:(id)a4 indicesTensor:(id)a5 axis:(int64_t)a6 name:(id)a7
+- (id)scatterWithDataTensor:(id)tensor updatesTensor:(id)updatesTensor indicesTensor:(id)indicesTensor axis:(int64_t)axis name:(id)name
 {
-  v7 = [(MPSGraph *)self scatterWithDataTensor:a3 updatesTensor:a4 indicesTensor:a5 axis:a6 mode:0 name:a7];
+  v7 = [(MPSGraph *)self scatterWithDataTensor:tensor updatesTensor:updatesTensor indicesTensor:indicesTensor axis:axis mode:0 name:name];
 
   return v7;
 }
@@ -10940,8 +10940,8 @@ LABEL_13:
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
   v21 = [(MPSGraphScatterOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] axis:axis mode:mode name:v17];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
@@ -11007,36 +11007,36 @@ LABEL_13:
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
   v22 = [(MPSGraphScatterAlongAxisOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] mode:mode name:v18];
 
-  v23 = [(MPSGraphOperation *)v22 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v22 outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
   return v24;
 }
 
-- (id)scatterAlongAxisWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 shape:(id)a5 axis:(int64_t)a6 name:(id)a7
+- (id)scatterAlongAxisWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor shape:(id)shape axis:(int64_t)axis name:(id)name
 {
-  v7 = [(MPSGraph *)self scatterAlongAxis:a6 withUpdatesTensor:a3 indicesTensor:a4 shape:a5 mode:0 name:a7];
+  v7 = [(MPSGraph *)self scatterAlongAxis:axis withUpdatesTensor:tensor indicesTensor:indicesTensor shape:shape mode:0 name:name];
 
   return v7;
 }
 
-- (id)scatterAlongAxisWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 shape:(id)a5 axis:(int64_t)a6 mode:(int64_t)a7 name:(id)a8
+- (id)scatterAlongAxisWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor shape:(id)shape axis:(int64_t)axis mode:(int64_t)mode name:(id)name
 {
-  v8 = [(MPSGraph *)self scatterAlongAxis:a6 withUpdatesTensor:a3 indicesTensor:a4 shape:a5 mode:a7 name:a8];
+  v8 = [(MPSGraph *)self scatterAlongAxis:axis withUpdatesTensor:tensor indicesTensor:indicesTensor shape:shape mode:mode name:name];
 
   return v8;
 }
 
-- (id)scatterAlongAxisWithDataTensor:(id)a3 updatesTensor:(id)a4 indicesTensor:(id)a5 axis:(int64_t)a6 name:(id)a7
+- (id)scatterAlongAxisWithDataTensor:(id)tensor updatesTensor:(id)updatesTensor indicesTensor:(id)indicesTensor axis:(int64_t)axis name:(id)name
 {
-  v7 = [(MPSGraph *)self scatterAlongAxis:a6 withDataTensor:a3 updatesTensor:a4 indicesTensor:a5 mode:0 name:a7];
+  v7 = [(MPSGraph *)self scatterAlongAxis:axis withDataTensor:tensor updatesTensor:updatesTensor indicesTensor:indicesTensor mode:0 name:name];
 
   return v7;
 }
 
-- (id)scatterAlongAxisWithDataTensor:(id)a3 updatesTensor:(id)a4 indicesTensor:(id)a5 axis:(int64_t)a6 mode:(int64_t)a7 name:(id)a8
+- (id)scatterAlongAxisWithDataTensor:(id)tensor updatesTensor:(id)updatesTensor indicesTensor:(id)indicesTensor axis:(int64_t)axis mode:(int64_t)mode name:(id)name
 {
-  v8 = [(MPSGraph *)self scatterAlongAxis:a6 withDataTensor:a3 updatesTensor:a4 indicesTensor:a5 mode:a7 name:a8];
+  v8 = [(MPSGraph *)self scatterAlongAxis:axis withDataTensor:tensor updatesTensor:updatesTensor indicesTensor:indicesTensor mode:mode name:name];
 
   return v8;
 }
@@ -11051,8 +11051,8 @@ LABEL_13:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v12 = [outputTensors objectAtIndexedSubscript:0];
 
   return v12;
 }
@@ -11071,8 +11071,8 @@ LABEL_13:
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v17 = [(MPSGraphGatherNDOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] batchDimensions:batchDimensions name:v12];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -11091,8 +11091,8 @@ LABEL_13:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
   v18 = [(MPSGraphGatherOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] axis:axis batchDimensions:batchDimensions name:v14];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
+  v20 = [outputTensors objectAtIndexedSubscript:0];
 
   return v20;
 }
@@ -11124,47 +11124,47 @@ LABEL_13:
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
   v17 = [(MPSGraphOperation *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] name:v13];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
 
-- (id)gatherAlongAxisWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 axis:(int64_t)a5 name:(id)a6
+- (id)gatherAlongAxisWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor axis:(int64_t)axis name:(id)name
 {
-  v6 = [(MPSGraph *)self gatherAlongAxis:a5 withUpdatesTensor:a3 indicesTensor:a4 name:a6];
+  v6 = [(MPSGraph *)self gatherAlongAxis:axis withUpdatesTensor:tensor indicesTensor:indicesTensor name:name];
 
   return v6;
 }
 
-- (id)quantizedGatherWithUpdatesTensor:(id)a3 indicesTensor:(id)a4 scaleTensor:(id)a5 zeroPointTensor:(id)a6 minTensor:(id)a7 dequantDataType:(unsigned int)a8 axis:(unint64_t)a9 batchDimensions:(unint64_t)a10 name:(id)a11
+- (id)quantizedGatherWithUpdatesTensor:(id)tensor indicesTensor:(id)indicesTensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor minTensor:(id)minTensor dequantDataType:(unsigned int)type axis:(unint64_t)axis batchDimensions:(unint64_t)self0 name:(id)self1
 {
-  v29 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a11;
-  v21 = [(MPSGraph *)self constantWithScalar:536870944 dataType:a9];
-  v22 = [MEMORY[0x1E695DF70] array];
-  [v22 addObject:v29];
-  [v22 addObject:v16];
-  [v22 addObject:v21];
-  [v22 addObject:v17];
-  if (v18)
+  tensorCopy = tensor;
+  indicesTensorCopy = indicesTensor;
+  scaleTensorCopy = scaleTensor;
+  pointTensorCopy = pointTensor;
+  minTensorCopy = minTensor;
+  nameCopy = name;
+  v21 = [(MPSGraph *)self constantWithScalar:536870944 dataType:axis];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:tensorCopy];
+  [array addObject:indicesTensorCopy];
+  [array addObject:v21];
+  [array addObject:scaleTensorCopy];
+  if (pointTensorCopy)
   {
-    [v22 addObject:v18];
+    [array addObject:pointTensorCopy];
   }
 
-  if (v19)
+  if (minTensorCopy)
   {
-    [v22 addObject:v19];
+    [array addObject:minTensorCopy];
   }
 
   v23 = [MPSGraphQuantizedGatherOp alloc];
-  v24 = [(MPSGraphQuantizedGatherOp *)v23 initWithGraph:self inputTensors:v22 controlDependencies:MEMORY[0x1E695E0F0] hasZeroPoint:v18 != 0 hasMin:v19 != 0 dequantDataType:a8 axis:a9 batchDimensions:a10 name:v20];
-  v25 = [(MPSGraphOperation *)v24 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  v24 = [(MPSGraphQuantizedGatherOp *)v23 initWithGraph:self inputTensors:array controlDependencies:MEMORY[0x1E695E0F0] hasZeroPoint:pointTensorCopy != 0 hasMin:minTensorCopy != 0 dequantDataType:type axis:axis batchDimensions:dimensions name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v24 outputTensors];
+  v26 = [outputTensors objectAtIndexedSubscript:0];
 
   return v26;
 }
@@ -11187,14 +11187,14 @@ LABEL_13:
     v14 = @"softMaxCrossEntropy/reductionMaximum";
   }
 
-  v15 = [(MPSGraph *)self reductionMaximumWithTensor:v11 axis:axis name:v14, reductionType];
+  reductionType = [(MPSGraph *)self reductionMaximumWithTensor:v11 axis:axis name:v14, reductionType];
   if (v13)
   {
   }
 
-  v38 = v15;
-  v16 = [v15 operation];
-  [v16 setStopGradient:1];
+  v38 = reductionType;
+  operation = [reductionType operation];
+  [operation setStopGradient:1];
 
   if (v13)
   {
@@ -11206,7 +11206,7 @@ LABEL_13:
     v17 = @"softMaxCrossEntropy/subtraction";
   }
 
-  v18 = [(MPSGraph *)self subtractionWithPrimaryTensor:v11 secondaryTensor:v15 name:v17];
+  v18 = [(MPSGraph *)self subtractionWithPrimaryTensor:v11 secondaryTensor:reductionType name:v17];
   if (v13)
   {
 
@@ -11301,34 +11301,34 @@ LABEL_13:
   return v33;
 }
 
-- (id)lossReductionWithTensor:(id)a3 reductionType:(unint64_t)a4 axis:(int64_t *)a5 name:(id)a6
+- (id)lossReductionWithTensor:(id)tensor reductionType:(unint64_t)type axis:(int64_t *)axis name:(id)name
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 shape];
-  v13 = [v12 count];
+  tensorCopy = tensor;
+  nameCopy = name;
+  shape = [tensorCopy shape];
+  v13 = [shape count];
 
-  if (a5)
+  if (axis)
   {
-    v14 = (v13 & (*a5 >> 63)) + *a5;
-    if (a4 != 2)
+    v14 = (v13 & (*axis >> 63)) + *axis;
+    if (type != 2)
     {
 LABEL_3:
-      if (a4 == 1)
+      if (type == 1)
       {
         v15 = v13 - 1;
         if (v13 >= 1)
         {
-          if (v11)
+          if (nameCopy)
           {
             do
             {
               if (v14 != v15)
               {
-                v18 = [v11 stringByAppendingString:@"/lossReduction"];
-                v16 = [(MPSGraph *)self reductionSumWithTensor:v10 axis:v15 name:v18];
+                v18 = [nameCopy stringByAppendingString:@"/lossReduction"];
+                v16 = [(MPSGraph *)self reductionSumWithTensor:tensorCopy axis:v15 name:v18];
 
-                v10 = v16;
+                tensorCopy = v16;
               }
 
               v17 = v15-- <= 0;
@@ -11343,9 +11343,9 @@ LABEL_3:
             {
               if (v14 != v15)
               {
-                v26 = [(MPSGraph *)self reductionSumWithTensor:v10 axis:v15 name:@"lossReduction"];
+                v26 = [(MPSGraph *)self reductionSumWithTensor:tensorCopy axis:v15 name:@"lossReduction"];
 
-                v10 = v26;
+                tensorCopy = v26;
               }
 
               v17 = v15-- <= 0;
@@ -11363,7 +11363,7 @@ LABEL_3:
   else
   {
     v14 = v13;
-    if (a4 != 2)
+    if (type != 2)
     {
       goto LABEL_3;
     }
@@ -11388,9 +11388,9 @@ LABEL_3:
     while (v13 > v20);
   }
 
-  if (v11)
+  if (nameCopy)
   {
-    v23 = [v11 stringByAppendingString:@"/lossReduction"];
+    v23 = [nameCopy stringByAppendingString:@"/lossReduction"];
   }
 
   else
@@ -11398,16 +11398,16 @@ LABEL_3:
     v23 = @"lossReduction";
   }
 
-  v24 = [(MPSGraph *)self meanOfTensor:v10 axes:v19 name:v23];
+  v24 = [(MPSGraph *)self meanOfTensor:tensorCopy axes:v19 name:v23];
 
-  if (v11)
+  if (nameCopy)
   {
   }
 
-  v10 = v24;
+  tensorCopy = v24;
 LABEL_22:
 
-  return v10;
+  return tensorCopy;
 }
 
 - (MPSGraphTensor)softMaxCrossEntropyGradientWithIncomingGradientTensor:(MPSGraphTensor *)gradientTensor sourceTensor:(MPSGraphTensor *)sourceTensor labelsTensor:(MPSGraphTensor *)labelsTensor axis:(NSInteger)axis reductionType:(MPSGraphLossReductionType)reductionType name:(NSString *)name
@@ -11465,7 +11465,7 @@ LABEL_22:
   v8 = primaryTensor;
   v9 = tensors;
   v10 = name;
-  v11 = self;
+  selfCopy = self;
   v12 = v8;
   v13 = v9;
   v14 = v10;
@@ -11473,7 +11473,7 @@ LABEL_22:
   v39 = v15;
   v16 = v13;
   v40 = v16;
-  v17 = v11;
+  v17 = selfCopy;
   v41 = v17;
   memset(v43, 0, sizeof(v43));
   v44 = 1065353216;
@@ -11518,7 +11518,7 @@ LABEL_22:
     controlFlowPostAutodiff(&v39);
   }
 
-  v27 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v28 = objc_loadWeakRetained(&v15->_parentBlock);
   for (j = 0; j < [(NSArray *)v16 count]; ++j)
   {
@@ -11528,31 +11528,31 @@ LABEL_22:
     if (!v31 && MTLReportFailureTypeEnabled())
     {
       v37 = [(NSArray *)v16 objectAtIndexedSubscript:j];
-      v33 = [v37 operation];
-      v36 = [v33 name];
+      operation = [v37 operation];
+      name = [operation name];
       MTLReportFailure();
     }
 
-    v32 = [(NSArray *)v16 objectAtIndexedSubscript:j, v36];
-    [v27 setObject:v31 forKey:v32];
+    v32 = [(NSArray *)v16 objectAtIndexedSubscript:j, name];
+    [dictionary setObject:v31 forKey:v32];
   }
 
-  v34 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v27];
+  v34 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   Autodiff::~Autodiff(&v39);
 
   return v34;
 }
 
-- (id)gradientForPrimaryTensor:(id)a3 withSecondaryTensor:(id)a4 name:(id)a5
+- (id)gradientForPrimaryTensor:(id)tensor withSecondaryTensor:(id)secondaryTensor name:(id)name
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v15[0] = v9;
+  tensorCopy = tensor;
+  secondaryTensorCopy = secondaryTensor;
+  nameCopy = name;
+  v15[0] = secondaryTensorCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v12 = [(MPSGraph *)self gradientForPrimaryTensor:v8 withTensors:v11 name:v10];
+  v12 = [(MPSGraph *)self gradientForPrimaryTensor:tensorCopy withTensors:v11 name:nameCopy];
 
   [v12 count];
   if ([v12 count] != 1 && MTLReportFailureTypeEnabled())
@@ -11560,36 +11560,36 @@ LABEL_22:
     MTLReportFailure();
   }
 
-  v13 = [v12 objectForKeyedSubscript:v9];
+  v13 = [v12 objectForKeyedSubscript:secondaryTensorCopy];
 
   return v13;
 }
 
-- (id)callSymbolName:(id)a3 inputTensors:(id)a4 outputTypes:(id)a5 name:(id)a6
+- (id)callSymbolName:(id)name inputTensors:(id)tensors outputTypes:(id)types name:(id)a6
 {
-  v6 = [(MPSGraph *)self callWithInputTensors:a4 outputTypes:a5 symbolName:a3 inliningOption:0 name:a6];
+  v6 = [(MPSGraph *)self callWithInputTensors:tensors outputTypes:types symbolName:name inliningOption:0 name:a6];
 
   return v6;
 }
 
-- (id)callWithInputTensors:(id)a3 outputTypes:(id)a4 symbolName:(id)a5 name:(id)a6
+- (id)callWithInputTensors:(id)tensors outputTypes:(id)types symbolName:(id)name name:(id)a6
 {
-  v6 = [(MPSGraph *)self callWithInputTensors:a3 outputTypes:a4 symbolName:a5 inliningOption:0 name:a6];
+  v6 = [(MPSGraph *)self callWithInputTensors:tensors outputTypes:types symbolName:name inliningOption:0 name:a6];
 
   return v6;
 }
 
-- (id)callWithInputTensors:(id)a3 outputTypes:(id)a4 symbolName:(id)a5 inliningOption:(unint64_t)a6 name:(id)a7
+- (id)callWithInputTensors:(id)tensors outputTypes:(id)types symbolName:(id)name inliningOption:(unint64_t)option name:(id)a7
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  tensorsCopy = tensors;
+  typesCopy = types;
+  nameCopy = name;
   v15 = a7;
   v16 = [MPSGraphCallOp alloc];
-  v17 = [(MPSGraphCallOp *)v16 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] outputTypes:v13 symbolName:v14 inliningOption:a6 name:v15];
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
+  v17 = [(MPSGraphCallOp *)v16 initWithGraph:self inputTensors:tensorsCopy controlDependencies:MEMORY[0x1E695E0F0] outputTypes:typesCopy symbolName:nameCopy inliningOption:option name:v15];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
 
-  return v18;
+  return outputTensors;
 }
 
 - (MPSGraphTensor)bandPartWithTensor:(MPSGraphTensor *)inputTensor numLower:(NSInteger)numLower numUpper:(NSInteger)numUpper name:(NSString *)name
@@ -11664,20 +11664,20 @@ LABEL_22:
   return v7;
 }
 
-- (id)cropResizeWithImagesTensor:(id)a3 boxesTensor:(id)a4 boxIndicesTensor:(id)a5 descriptor:(id)a6 name:(id)a7
+- (id)cropResizeWithImagesTensor:(id)tensor boxesTensor:(id)boxesTensor boxIndicesTensor:(id)indicesTensor descriptor:(id)descriptor name:(id)name
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v33 = a4;
-  v12 = a5;
-  v31 = a6;
-  v13 = a7;
-  v14 = v12;
-  LODWORD(a7) = [v14 dataType];
-  if (a7 == [v33 dataType])
+  tensorCopy = tensor;
+  boxesTensorCopy = boxesTensor;
+  indicesTensorCopy = indicesTensor;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  v14 = indicesTensorCopy;
+  LODWORD(name) = [v14 dataType];
+  if (name == [boxesTensorCopy dataType])
   {
     v32 = v14;
-    if (!v13)
+    if (!nameCopy)
     {
       v15 = @"cropResize/expand";
       v16 = 1;
@@ -11689,10 +11689,10 @@ LABEL_22:
 
   else
   {
-    v17 = [v33 dataType];
-    if (v13)
+    dataType = [boxesTensorCopy dataType];
+    if (nameCopy)
     {
-      v18 = [v13 stringByAppendingString:@"/cast"];
+      v18 = [nameCopy stringByAppendingString:@"/cast"];
     }
 
     else
@@ -11700,9 +11700,9 @@ LABEL_22:
       v18 = @"cropResize/cast";
     }
 
-    v32 = [(MPSGraph *)self castTensor:v14 toType:v17 name:v18];
+    v32 = [(MPSGraph *)self castTensor:v14 toType:dataType name:v18];
 
-    if (!v13)
+    if (!nameCopy)
     {
       v15 = @"cropResize/expand";
       v16 = 1;
@@ -11710,7 +11710,7 @@ LABEL_22:
     }
   }
 
-  v15 = [v13 stringByAppendingString:@"/expand"];
+  v15 = [nameCopy stringByAppendingString:@"/expand"];
   v16 = 0;
 LABEL_11:
   [(MPSGraph *)self expandTensor:v32 dimension:1 name:v15];
@@ -11723,22 +11723,22 @@ LABEL_11:
   else
   {
 
-    v20 = [v13 stringByAppendingString:@"/concat1"];
+    v20 = [nameCopy stringByAppendingString:@"/concat1"];
   }
 
-  v21 = [(MPSGraph *)self concatTensor:v19 withTensor:v33 dimension:1 name:v20];
+  v21 = [(MPSGraph *)self concatTensor:v19 withTensor:boxesTensorCopy dimension:1 name:v20];
   if ((v16 & 1) == 0)
   {
   }
 
   v22 = [MPSGraphCropResizeOp alloc];
-  v34[0] = v30;
+  v34[0] = tensorCopy;
   v34[1] = v21;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
-  v24 = [(MPSGraphCropResizeOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v31 name:v13];
+  v24 = [(MPSGraphCropResizeOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] descriptor:descriptorCopy name:nameCopy];
 
-  v25 = [(MPSGraphOperation *)v24 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v24 outputTensors];
+  v26 = [outputTensors objectAtIndexedSubscript:0];
   if (v16)
   {
     v27 = @"cropResize/reshape0";
@@ -11746,7 +11746,7 @@ LABEL_11:
 
   else
   {
-    v27 = [v13 stringByAppendingString:@"/reshape0"];
+    v27 = [nameCopy stringByAppendingString:@"/reshape0"];
   }
 
   v28 = [(MPSGraph *)self squeezeTensor:v26 dimension:1 name:v27];
@@ -11779,8 +11779,8 @@ LABEL_11:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v14 = [(MPSGraphPooling2DBaseOp *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v10 name:v9];
 
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -11796,9 +11796,9 @@ LABEL_11:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v13 = [(MPSGraphPooling2DBaseOp *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v9 name:v10];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
 
-  return v14;
+  return outputTensors;
 }
 
 - (MPSGraphTensor)avgPooling2DWithSourceTensor:(MPSGraphTensor *)source descriptor:(MPSGraphPooling2DOpDescriptor *)descriptor name:(NSString *)name
@@ -11812,8 +11812,8 @@ LABEL_11:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v13 = [(MPSGraphPooling2DBaseOp *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v9 name:v10];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -11831,8 +11831,8 @@ LABEL_11:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(MPSGraphMaxPooling2DGradientOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 gradientWithIndices:0 name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -11858,12 +11858,12 @@ LABEL_11:
       if ([(MPSShape *)v14 count]>= 3)
       {
         v19 = [(MPSShape *)v14 objectAtIndexedSubscript:2];
-        v26 = [v19 intValue];
+        intValue = [v19 intValue];
 
         if ([(MPSShape *)v14 count]>= 4)
         {
           v20 = [(MPSShape *)v14 objectAtIndexedSubscript:3];
-          v27 = [v20 intValue];
+          intValue2 = [v20 intValue];
 
           [(MPSShape *)v14 count];
         }
@@ -11887,13 +11887,13 @@ LABEL_11:
   v14 = outputShape;
   v15 = descriptor;
   v16 = name;
-  v17 = [(MPSGraphPooling2DOpDescriptor *)v15 dataLayout];
-  v18 = [(MPSGraphPooling2DOpDescriptor *)v15 returnIndicesMode];
+  dataLayout = [(MPSGraphPooling2DOpDescriptor *)v15 dataLayout];
+  returnIndicesMode = [(MPSGraphPooling2DOpDescriptor *)v15 returnIndicesMode];
   v19 = v15;
   if ([(MPSGraphPooling2DOpDescriptor *)v19 dilationRateInX]== 1)
   {
     v20 = [(MPSGraphPooling2DOpDescriptor *)v19 dilationRateInY]== 1;
-    if (!v17)
+    if (!dataLayout)
     {
 LABEL_3:
       v21 = 2;
@@ -11904,17 +11904,17 @@ LABEL_3:
   else
   {
     v20 = 0;
-    if (!v17)
+    if (!dataLayout)
     {
       goto LABEL_3;
     }
   }
 
-  if (v17 == 1)
+  if (dataLayout == 1)
   {
     v21 = 3;
 LABEL_7:
-    v22 = v18 == v21 && v20;
+    v22 = returnIndicesMode == v21 && v20;
 
     if (v22)
     {
@@ -11938,8 +11938,8 @@ LABEL_8:
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:3];
   v25 = [(MPSGraphMaxPooling2DGradientOp *)v23 initWithGraph:self inputTensors:v24 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v19 gradientWithIndices:1 name:v16];
 
-  v26 = [(MPSGraphOperation *)v25 outputTensors];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v25 outputTensors];
+  v27 = [outputTensors objectAtIndexedSubscript:0];
 
   return v27;
 }
@@ -11957,8 +11957,8 @@ LABEL_8:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(MPSGraphPooling2DBaseOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -11969,20 +11969,20 @@ LABEL_8:
   v25 = source;
   v8 = name;
   v9 = [(MPSGraphPooling4DOpDescriptor *)descriptor copy];
-  v10 = [v9 kernelSizes];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  kernelSizes = [v9 kernelSizes];
+  v11 = [kernelSizes objectAtIndexedSubscript:0];
   if ([v11 intValue] == 1)
   {
-    v12 = [v9 kernelSizes];
-    v13 = [v12 objectAtIndexedSubscript:1];
+    kernelSizes2 = [v9 kernelSizes];
+    v13 = [kernelSizes2 objectAtIndexedSubscript:1];
     if ([v13 intValue] == 1)
     {
-      v24 = [v9 strides];
-      v14 = [v24 objectAtIndexedSubscript:0];
+      strides = [v9 strides];
+      v14 = [strides objectAtIndexedSubscript:0];
       if ([v14 intValue] == 1)
       {
-        v23 = [v9 strides];
-        v15 = [v23 objectAtIndexedSubscript:1];
+        strides2 = [v9 strides];
+        v15 = [strides2 objectAtIndexedSubscript:1];
         if ([v15 intValue] == 1)
         {
           v16 = 2;
@@ -12017,8 +12017,8 @@ LABEL_8:
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v19 = [(MPSGraphPooling4DBaseOp *)v17 initWithGraph:self inputTensors:v18 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v9 name:v8];
 
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -12034,9 +12034,9 @@ LABEL_8:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v13 = [(MPSGraphPooling4DBaseOp *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v9 name:v10];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
 
-  return v14;
+  return outputTensors;
 }
 
 - (MPSGraphTensor)maxPooling4DGradientWithGradientTensor:(MPSGraphTensor *)gradient indicesTensor:(MPSGraphTensor *)indices outputShape:(MPSShape *)outputShape descriptor:(MPSGraphPooling4DOpDescriptor *)descriptor name:(NSString *)name
@@ -12060,12 +12060,12 @@ LABEL_8:
       if ([(MPSShape *)v14 count]>= 3)
       {
         v19 = [(MPSShape *)v14 objectAtIndexedSubscript:2];
-        v26 = [v19 intValue];
+        intValue = [v19 intValue];
 
         if ([(MPSShape *)v14 count]>= 4)
         {
           v20 = [(MPSShape *)v14 objectAtIndexedSubscript:3];
-          v27 = [v20 intValue];
+          intValue2 = [v20 intValue];
 
           [(MPSShape *)v14 count];
         }
@@ -12089,20 +12089,20 @@ LABEL_8:
   v39 = outputShape;
   v11 = descriptor;
   v40 = name;
-  v12 = [(MPSGraphPooling4DOpDescriptor *)v11 kernelSizes];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  kernelSizes = [(MPSGraphPooling4DOpDescriptor *)v11 kernelSizes];
+  v13 = [kernelSizes objectAtIndexedSubscript:0];
   if ([v13 intValue] == 1)
   {
-    v14 = [(MPSGraphPooling4DOpDescriptor *)v11 kernelSizes];
-    v15 = [v14 objectAtIndexedSubscript:1];
+    kernelSizes2 = [(MPSGraphPooling4DOpDescriptor *)v11 kernelSizes];
+    v15 = [kernelSizes2 objectAtIndexedSubscript:1];
     if ([v15 intValue] == 1)
     {
-      v16 = [(MPSGraphPooling4DOpDescriptor *)v11 strides];
-      v17 = [v16 objectAtIndexedSubscript:0];
+      strides = [(MPSGraphPooling4DOpDescriptor *)v11 strides];
+      v17 = [strides objectAtIndexedSubscript:0];
       if ([v17 intValue] == 1)
       {
-        v18 = [(MPSGraphPooling4DOpDescriptor *)v11 strides];
-        v19 = [v18 objectAtIndexedSubscript:1];
+        strides2 = [(MPSGraphPooling4DOpDescriptor *)v11 strides];
+        v19 = [strides2 objectAtIndexedSubscript:1];
         v20 = [v19 intValue] == 1;
       }
 
@@ -12123,20 +12123,20 @@ LABEL_8:
     v20 = 0;
   }
 
-  v21 = [(MPSGraphPooling4DOpDescriptor *)v11 kernelSizes];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  kernelSizes3 = [(MPSGraphPooling4DOpDescriptor *)v11 kernelSizes];
+  v22 = [kernelSizes3 objectAtIndexedSubscript:0];
   if ([v22 intValue] == 1)
   {
-    v23 = [(MPSGraphPooling4DOpDescriptor *)v11 kernelSizes];
-    v24 = [v23 objectAtIndexedSubscript:3];
+    kernelSizes4 = [(MPSGraphPooling4DOpDescriptor *)v11 kernelSizes];
+    v24 = [kernelSizes4 objectAtIndexedSubscript:3];
     if ([v24 intValue] == 1)
     {
-      v25 = [(MPSGraphPooling4DOpDescriptor *)v11 strides];
-      v26 = [v25 objectAtIndexedSubscript:0];
+      strides3 = [(MPSGraphPooling4DOpDescriptor *)v11 strides];
+      v26 = [strides3 objectAtIndexedSubscript:0];
       if ([v26 intValue] == 1)
       {
-        v35 = [(MPSGraphPooling4DOpDescriptor *)v11 strides];
-        v27 = [v35 objectAtIndexedSubscript:3];
+        strides4 = [(MPSGraphPooling4DOpDescriptor *)v11 strides];
+        v27 = [strides4 objectAtIndexedSubscript:3];
         v28 = [v27 intValue] == 1;
       }
 
@@ -12174,8 +12174,8 @@ LABEL_8:
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:3];
   v31 = [(MPSGraphMaxPool4DGradientOp *)v29 initWithGraph:self inputTensors:v30 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v11 gradientWithIndices:1 name:v40];
 
-  v32 = [(MPSGraphOperation *)v31 outputTensors];
-  v33 = [v32 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v31 outputTensors];
+  v33 = [outputTensors objectAtIndexedSubscript:0];
 
   return v33;
 }
@@ -12193,8 +12193,8 @@ LABEL_8:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(MPSGraphMaxPool4DGradientOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 gradientWithIndices:0 name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -12210,8 +12210,8 @@ LABEL_8:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v13 = [(MPSGraphPooling4DBaseOp *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v9 name:v10];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -12229,8 +12229,8 @@ LABEL_8:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(MPSGraphPooling4DBaseOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -12246,8 +12246,8 @@ LABEL_8:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v13 = [(MPSGraphPooling4DBaseOp *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v9 name:v10];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -12265,8 +12265,8 @@ LABEL_8:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(MPSGraphPooling4DBaseOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] descriptor:v12 name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -12282,8 +12282,8 @@ LABEL_8:
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v12 = [(MPSGraphCastOp *)v10 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] destType:v6 name:v9];
 
-  v13 = [(MPSGraphOperation *)v12 outputTensors];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v12 outputTensors];
+  v14 = [outputTensors objectAtIndexedSubscript:0];
 
   return v14;
 }
@@ -12299,19 +12299,19 @@ LABEL_8:
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v12 = [(MPSGraphReinterpretCastOp *)v10 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] destType:v6 name:v9];
 
-  v13 = [(MPSGraphOperation *)v12 outputTensors];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v12 outputTensors];
+  v14 = [outputTensors objectAtIndexedSubscript:0];
 
   return v14;
 }
 
-- (id)transposeTensor:(id)a3 permute:(id)a4 name:(id)a5
+- (id)transposeTensor:(id)tensor permute:(id)permute name:(id)name
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  MPSShapeToVector<int>(v9, &__p);
+  tensorCopy = tensor;
+  permuteCopy = permute;
+  nameCopy = name;
+  MPSShapeToVector<int>(permuteCopy, &__p);
   v11 = v23 - __p;
   v12 = [MEMORY[0x1E695DEF0] dataWithBytes:? length:?];
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11 >> 2];
@@ -12320,13 +12320,13 @@ LABEL_8:
   v15 = [(MPSGraph *)self constantWithData:v12 shape:v14 dataType:536870944];
 
   v16 = [MPSGraphPermuteOp alloc];
-  v24[0] = v8;
+  v24[0] = tensorCopy;
   v24[1] = v15;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
-  v18 = [(MPSGraphPermuteOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] permute:v9 name:v10];
+  v18 = [(MPSGraphPermuteOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] permute:permuteCopy name:nameCopy];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
+  v20 = [outputTensors objectAtIndexedSubscript:0];
 
   if (__p)
   {
@@ -12361,8 +12361,8 @@ LABEL_8:
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     v15 = [(MPSGraphTransposeOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] dimension:dimensionIndex withDimension:dimensionIndex2 name:v11];
 
-    v16 = [(MPSGraphOperation *)v15 outputTensors];
-    v12 = [v16 objectAtIndexedSubscript:0];
+    outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+    v12 = [outputTensors objectAtIndexedSubscript:0];
   }
 
   return v12;
@@ -12382,8 +12382,8 @@ LABEL_8:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [(MPSGraphOperation *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
 
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -12422,26 +12422,26 @@ LABEL_8:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v16 = [(MPSGraphSliceOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] dimension:dimensionIndex start:start length:length name:v13];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
 
-- (id)cropTensor:(id)a3 dimension:(unint64_t)a4 amount_before:(unint64_t)a5 amount_after:(unint64_t)a6 name:(id)a7
+- (id)cropTensor:(id)tensor dimension:(unint64_t)dimension amount_before:(unint64_t)amount_before amount_after:(unint64_t)amount_after name:(id)name
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
-  v14 = [(MPSGraph *)self constantWithScalar:536870944 dataType:a4];
+  tensorCopy = tensor;
+  nameCopy = name;
+  v14 = [(MPSGraph *)self constantWithScalar:536870944 dataType:dimension];
   v15 = [MPSGraphCropOp alloc];
-  v21[0] = v12;
+  v21[0] = tensorCopy;
   v21[1] = v14;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-  v17 = [(MPSGraphCropOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] dimension_index:a4 amount_before:a5 amount_after:a6 name:v13];
+  v17 = [(MPSGraphCropOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] dimension_index:dimension amount_before:amount_before amount_after:amount_after name:nameCopy];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
+  v19 = [outputTensors objectAtIndexedSubscript:0];
 
   return v19;
 }
@@ -12519,51 +12519,51 @@ LABEL_8:
   return v30;
 }
 
-- (id)sliceTensor:(id)a3 startTensor:(id)a4 endTensor:(id)a5 strideTensor:(id)a6 startMask:(unsigned int)a7 endMask:(unsigned int)a8 squeezeMask:(unsigned int)a9 name:(id)a10
+- (id)sliceTensor:(id)tensor startTensor:(id)startTensor endTensor:(id)endTensor strideTensor:(id)strideTensor startMask:(unsigned int)mask endMask:(unsigned int)endMask squeezeMask:(unsigned int)squeezeMask name:(id)self0
 {
-  v10 = *&a7;
+  v10 = *&mask;
   v29[4] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a10;
-  v27 = v18;
+  tensorCopy = tensor;
+  startTensorCopy = startTensor;
+  endTensorCopy = endTensor;
+  strideTensorCopy = strideTensor;
+  nameCopy = name;
+  v27 = strideTensorCopy;
   v20 = [MPSGraphStridedSliceOp alloc];
-  v29[0] = v15;
-  v29[1] = v16;
-  v29[2] = v17;
-  v29[3] = v18;
+  v29[0] = tensorCopy;
+  v29[1] = startTensorCopy;
+  v29[2] = endTensorCopy;
+  v29[3] = strideTensorCopy;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   LOBYTE(v26) = 0;
-  v22 = [(MPSGraphStridedSliceOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] startMask:v10 endMask:a8 shrinkAxisMask:a9 endIsSize:v26 name:v19];
+  v22 = [(MPSGraphStridedSliceOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] startMask:v10 endMask:endMask shrinkAxisMask:squeezeMask endIsSize:v26 name:nameCopy];
 
-  v23 = [(MPSGraphOperation *)v22 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v22 outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
   return v24;
 }
 
-- (id)sliceTensor:(id)a3 startTensor:(id)a4 sizeTensor:(id)a5 squeezeMask:(unsigned int)a6 name:(id)a7
+- (id)sliceTensor:(id)tensor startTensor:(id)startTensor sizeTensor:(id)sizeTensor squeezeMask:(unsigned int)mask name:(id)name
 {
-  v8 = *&a6;
+  v8 = *&mask;
   v24[4] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77B28, [v14 dataType], 1.0);
+  tensorCopy = tensor;
+  startTensorCopy = startTensor;
+  sizeTensorCopy = sizeTensor;
+  nameCopy = name;
+  v16 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77B28, [sizeTensorCopy dataType], 1.0);
   v17 = [MPSGraphStridedSliceOp alloc];
-  v24[0] = v12;
-  v24[1] = v13;
-  v24[2] = v14;
+  v24[0] = tensorCopy;
+  v24[1] = startTensorCopy;
+  v24[2] = sizeTensorCopy;
   v24[3] = v16;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   LOBYTE(v23) = 1;
-  v19 = [(MPSGraphStridedSliceOp *)v17 initWithGraph:self inputTensors:v18 controlDependencies:MEMORY[0x1E695E0F0] startMask:0 endMask:0 shrinkAxisMask:v8 endIsSize:v23 name:v15];
+  v19 = [(MPSGraphStridedSliceOp *)v17 initWithGraph:self inputTensors:v18 controlDependencies:MEMORY[0x1E695E0F0] startMask:0 endMask:0 shrinkAxisMask:v8 endIsSize:v23 name:nameCopy];
 
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -12642,72 +12642,72 @@ LABEL_8:
   return v33;
 }
 
-- (id)sliceGradientTensor:(id)a3 fwdInShapeTensor:(id)a4 startTensor:(id)a5 endTensor:(id)a6 strideTensor:(id)a7 startMask:(unsigned int)a8 endMask:(unsigned int)a9 squeezeMask:(unsigned int)a10 name:(id)a11
+- (id)sliceGradientTensor:(id)tensor fwdInShapeTensor:(id)shapeTensor startTensor:(id)startTensor endTensor:(id)endTensor strideTensor:(id)strideTensor startMask:(unsigned int)mask endMask:(unsigned int)endMask squeezeMask:(unsigned int)self0 name:(id)self1
 {
   v32[5] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a11;
-  v29 = v19;
-  v30 = v20;
+  tensorCopy = tensor;
+  shapeTensorCopy = shapeTensor;
+  startTensorCopy = startTensor;
+  endTensorCopy = endTensor;
+  strideTensorCopy = strideTensor;
+  nameCopy = name;
+  v29 = endTensorCopy;
+  v30 = strideTensorCopy;
   v22 = [MPSGraphStridedSliceGradientOp alloc];
-  v32[0] = v16;
-  v32[1] = v17;
-  v32[2] = v18;
-  v32[3] = v19;
-  v32[4] = v20;
+  v32[0] = tensorCopy;
+  v32[1] = shapeTensorCopy;
+  v32[2] = startTensorCopy;
+  v32[3] = endTensorCopy;
+  v32[4] = strideTensorCopy;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:5];
   LOBYTE(v28) = 0;
-  v24 = [(MPSGraphStridedSliceGradientOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] startMask:a8 endMask:a9 shrinkAxisMask:a10 endIsSize:v28 name:v21];
+  v24 = [(MPSGraphStridedSliceGradientOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] startMask:mask endMask:endMask shrinkAxisMask:squeezeMask endIsSize:v28 name:nameCopy];
 
-  v25 = [(MPSGraphOperation *)v24 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v24 outputTensors];
+  v26 = [outputTensors objectAtIndexedSubscript:0];
 
   return v26;
 }
 
-- (id)sliceGradientTensor:(id)a3 fwdInShapeTensor:(id)a4 startTensor:(id)a5 sizeTensor:(id)a6 squeezeMask:(unsigned int)a7 name:(id)a8
+- (id)sliceGradientTensor:(id)tensor fwdInShapeTensor:(id)shapeTensor startTensor:(id)startTensor sizeTensor:(id)sizeTensor squeezeMask:(unsigned int)mask name:(id)name
 {
-  v9 = *&a7;
+  v9 = *&mask;
   v27[5] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77B40, [v17 dataType], 1.0);
+  tensorCopy = tensor;
+  shapeTensorCopy = shapeTensor;
+  startTensorCopy = startTensor;
+  sizeTensorCopy = sizeTensor;
+  nameCopy = name;
+  v19 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77B40, [sizeTensorCopy dataType], 1.0);
   v20 = [MPSGraphStridedSliceGradientOp alloc];
-  v27[0] = v14;
-  v27[1] = v15;
-  v27[2] = v16;
-  v27[3] = v17;
+  v27[0] = tensorCopy;
+  v27[1] = shapeTensorCopy;
+  v27[2] = startTensorCopy;
+  v27[3] = sizeTensorCopy;
   v27[4] = v19;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:5];
   LOBYTE(v26) = 1;
-  v22 = [(MPSGraphStridedSliceGradientOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] startMask:0 endMask:0 shrinkAxisMask:v9 endIsSize:v26 name:v18];
+  v22 = [(MPSGraphStridedSliceGradientOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] startMask:0 endMask:0 shrinkAxisMask:v9 endIsSize:v26 name:nameCopy];
 
-  v23 = [(MPSGraphOperation *)v22 outputTensors];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v22 outputTensors];
+  v24 = [outputTensors objectAtIndexedSubscript:0];
 
   return v24;
 }
 
-- (id)sliceUpdateDataTensor:(id)a3 updateTensor:(id)a4 starts:(id)a5 ends:(id)a6 strides:(id)a7 startMask:(unsigned int)a8 endMask:(unsigned int)a9 squeezeMask:(unsigned int)a10 name:(id)a11
+- (id)sliceUpdateDataTensor:(id)tensor updateTensor:(id)updateTensor starts:(id)starts ends:(id)ends strides:(id)strides startMask:(unsigned int)mask endMask:(unsigned int)endMask squeezeMask:(unsigned int)self0 name:(id)self1
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v36 = a4;
-  v17 = a6;
-  v18 = a7;
-  v38 = a11;
-  v33 = v17;
-  v34 = v18;
-  MPSShapeToVector<int>(a5, &v43);
-  MPSShapeToVector<int>(v17, &v41);
-  MPSShapeToVector<int>(v18, &__p);
+  tensorCopy = tensor;
+  updateTensorCopy = updateTensor;
+  endsCopy = ends;
+  stridesCopy = strides;
+  nameCopy = name;
+  v33 = endsCopy;
+  v34 = stridesCopy;
+  MPSShapeToVector<int>(starts, &v43);
+  MPSShapeToVector<int>(endsCopy, &v41);
+  MPSShapeToVector<int>(stridesCopy, &__p);
   v19 = v44 - v43;
   if ((v42 - v41 != v44 - v43 || v40 - __p != v19) && MTLReportFailureTypeEnabled())
   {
@@ -12737,7 +12737,7 @@ LABEL_8:
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
   v30 = [(MPSGraph *)self constantWithData:v27 shape:v29 dataType:536870944];
 
-  v31 = [(MPSGraph *)self sliceUpdateDataTensor:v35 updateTensor:v36 startsTensor:v37 endsTensor:v26 stridesTensor:v30 startMask:a8 endMask:__PAIR64__(a10 squeezeMask:a9) name:v38];
+  v31 = [(MPSGraph *)self sliceUpdateDataTensor:tensorCopy updateTensor:updateTensorCopy startsTensor:v37 endsTensor:v26 stridesTensor:v30 startMask:mask endMask:__PAIR64__(squeezeMask squeezeMask:endMask) name:nameCopy];
 
   if (__p)
   {
@@ -12760,42 +12760,42 @@ LABEL_8:
   return v31;
 }
 
-- (id)sliceUpdateDataTensor:(id)a3 updateTensor:(id)a4 startsTensor:(id)a5 endsTensor:(id)a6 stridesTensor:(id)a7 startMask:(unsigned int)a8 endMask:(unsigned int)a9 squeezeMask:(unsigned int)a10 name:(id)a11
+- (id)sliceUpdateDataTensor:(id)tensor updateTensor:(id)updateTensor startsTensor:(id)startsTensor endsTensor:(id)endsTensor stridesTensor:(id)stridesTensor startMask:(unsigned int)mask endMask:(unsigned int)endMask squeezeMask:(unsigned int)self0 name:(id)self1
 {
   v31[5] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a11;
-  v28 = v19;
-  v29 = v20;
+  tensorCopy = tensor;
+  updateTensorCopy = updateTensor;
+  startsTensorCopy = startsTensor;
+  endsTensorCopy = endsTensor;
+  stridesTensorCopy = stridesTensor;
+  nameCopy = name;
+  v28 = endsTensorCopy;
+  v29 = stridesTensorCopy;
   v22 = [MPSGraphStridedSliceUpdateOp alloc];
-  v31[0] = v16;
-  v31[1] = v17;
-  v31[2] = v18;
-  v31[3] = v19;
-  v31[4] = v20;
+  v31[0] = tensorCopy;
+  v31[1] = updateTensorCopy;
+  v31[2] = startsTensorCopy;
+  v31[3] = endsTensorCopy;
+  v31[4] = stridesTensorCopy;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:5];
-  v24 = [(MPSGraphStridedSliceUpdateOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] startMask:a8 endMask:a9 shrinkAxisMask:a10 name:v21];
+  v24 = [(MPSGraphStridedSliceUpdateOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] startMask:mask endMask:endMask shrinkAxisMask:squeezeMask name:nameCopy];
 
-  v25 = [(MPSGraphOperation *)v24 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v24 outputTensors];
+  v26 = [outputTensors objectAtIndexedSubscript:0];
 
   return v26;
 }
 
-- (id)sliceUpdateDataTensor:(id)a3 updateTensor:(id)a4 startsTensor:(id)a5 endsTensor:(id)a6 stridesTensor:(id)a7 name:(id)a8
+- (id)sliceUpdateDataTensor:(id)tensor updateTensor:(id)updateTensor startsTensor:(id)startsTensor endsTensor:(id)endsTensor stridesTensor:(id)stridesTensor name:(id)name
 {
-  v8 = [(MPSGraph *)self sliceUpdateDataTensor:a3 updateTensor:a4 startsTensor:a5 endsTensor:a6 stridesTensor:a7 startMask:0 endMask:0 squeezeMask:a8 name:?];
+  v8 = [(MPSGraph *)self sliceUpdateDataTensor:tensor updateTensor:updateTensor startsTensor:startsTensor endsTensor:endsTensor stridesTensor:stridesTensor startMask:0 endMask:0 squeezeMask:name name:?];
 
   return v8;
 }
 
-- (id)sliceUpdateDataTensor:(id)a3 updateTensor:(id)a4 starts:(id)a5 ends:(id)a6 strides:(id)a7 name:(id)a8
+- (id)sliceUpdateDataTensor:(id)tensor updateTensor:(id)updateTensor starts:(id)starts ends:(id)ends strides:(id)strides name:(id)name
 {
-  v8 = [(MPSGraph *)self sliceUpdateDataTensor:a3 updateTensor:a4 starts:a5 ends:a6 strides:a7 startMask:0 endMask:0 squeezeMask:a8 name:?];
+  v8 = [(MPSGraph *)self sliceUpdateDataTensor:tensor updateTensor:updateTensor starts:starts ends:ends strides:strides startMask:0 endMask:0 squeezeMask:name name:?];
 
   return v8;
 }
@@ -12813,8 +12813,8 @@ LABEL_8:
 
   v15 = [MPSGraphConcatOp alloc];
   v16 = [(MPSGraphConcatOp *)v15 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] dimension:dimensionIndex interleave:v7 name:v11];
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -12831,8 +12831,8 @@ LABEL_8:
 
   v13 = [MPSGraphConcatOp alloc];
   v14 = [(MPSGraphConcatOp *)v13 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] dimension:dimensionIndex interleave:0 name:v9];
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -12851,17 +12851,17 @@ LABEL_8:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
   v16 = [(MPSGraphConcatOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] dimension:dimensionIndex interleave:0 name:v12];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
 
-- (id)tileTensorWithMultiplier:(id)a3
+- (id)tileTensorWithMultiplier:(id)multiplier
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  MPSShapeToVector<unsigned long long>(v4, &__p);
+  multiplierCopy = multiplier;
+  MPSShapeToVector<unsigned long long>(multiplierCopy, &__p);
   v5 = (v12 - __p) >> 3;
   if (v12 != __p)
   {
@@ -12888,20 +12888,20 @@ LABEL_8:
   return v9;
 }
 
-- (id)tileTensor:(id)a3 multiplierTensor:(id)a4 name:(id)a5
+- (id)tileTensor:(id)tensor multiplierTensor:(id)multiplierTensor name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tensorCopy = tensor;
+  multiplierTensorCopy = multiplierTensor;
+  nameCopy = name;
   v11 = [MPSGraphTileOp alloc];
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = tensorCopy;
+  v17[1] = multiplierTensorCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
+  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -12916,21 +12916,21 @@ LABEL_8:
   return v11;
 }
 
-- (id)tileGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 multiplierTensor:(id)a5 name:(id)a6
+- (id)tileGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor multiplierTensor:(id)multiplierTensor name:(id)name
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v20[0] = v10;
-  v20[1] = v11;
-  v20[2] = v12;
+  tensorCopy = tensor;
+  sourceTensorCopy = sourceTensor;
+  multiplierTensorCopy = multiplierTensor;
+  nameCopy = name;
+  v20[0] = tensorCopy;
+  v20[1] = sourceTensorCopy;
+  v20[2] = multiplierTensorCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
   v15 = [MPSGraphTileGradientOp alloc];
-  v16 = [(MPSGraphOperation *)v15 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] name:v13];
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  v16 = [(MPSGraphOperation *)v15 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
@@ -12946,13 +12946,13 @@ LABEL_8:
   return v14;
 }
 
-- (id)paddingTensorWithLeftPadding:(id)a3 rightPadding:(id)a4
+- (id)paddingTensorWithLeftPadding:(id)padding rightPadding:(id)rightPadding
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  MPSShapeToVector<unsigned long long>(v6, &v18);
-  MPSShapeToVector<unsigned long long>(v7, &__p);
+  paddingCopy = padding;
+  rightPaddingCopy = rightPadding;
+  MPSShapeToVector<unsigned long long>(paddingCopy, &v18);
+  MPSShapeToVector<unsigned long long>(rightPaddingCopy, &__p);
   v9 = v18;
   v8 = v19;
   v10 = v19 - v18;
@@ -13011,27 +13011,27 @@ LABEL_8:
   return v18;
 }
 
-- (id)padTensor:(id)a3 paddingMode:(int64_t)a4 paddingTensor:(id)a5 constantValuesTensor:(id)a6 name:(id)a7
+- (id)padTensor:(id)tensor paddingMode:(int64_t)mode paddingTensor:(id)paddingTensor constantValuesTensor:(id)valuesTensor name:(id)name
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (a4 == 4)
+  tensorCopy = tensor;
+  paddingTensorCopy = paddingTensor;
+  valuesTensorCopy = valuesTensor;
+  nameCopy = name;
+  if (mode == 4)
   {
-    a4 = 0;
+    mode = 0;
   }
 
   v16 = [MPSGraphPadOp alloc];
-  v22[0] = v12;
-  v22[1] = v13;
-  v22[2] = v14;
+  v22[0] = tensorCopy;
+  v22[1] = paddingTensorCopy;
+  v22[2] = valuesTensorCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
-  v18 = [(MPSGraphPadOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] paddingMode:a4 name:v15];
+  v18 = [(MPSGraphPadOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] paddingMode:mode name:nameCopy];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
+  v20 = [outputTensors objectAtIndexedSubscript:0];
 
   return v20;
 }
@@ -13059,8 +13059,8 @@ LABEL_8:
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   v24 = [(MPSGraphSpaceToDepth2DOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] blockSize:blockSize usePixelShuffleOrder:v9 name:v18];
 
-  v25 = [(MPSGraphOperation *)v24 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v24 outputTensors];
+  v26 = [outputTensors objectAtIndexedSubscript:0];
 
   return v26;
 }
@@ -13088,8 +13088,8 @@ LABEL_8:
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   v24 = [(MPSGraphDepthToSpace2DOp *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] blockSize:blockSize usePixelShuffleOrder:v9 name:v18];
 
-  v25 = [(MPSGraphOperation *)v24 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v24 outputTensors];
+  v26 = [outputTensors objectAtIndexedSubscript:0];
 
   return v26;
 }
@@ -13141,8 +13141,8 @@ LABEL_8:
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
   v23 = [(MPSGraphSpaceToBatchOp *)v21 initWithGraph:self inputTensors:v22 controlDependencies:MEMORY[0x1E695E0F0] usePixelShuffleOrder:v9 name:v18];
 
-  v24 = [(MPSGraphOperation *)v23 outputTensors];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v23 outputTensors];
+  v25 = [outputTensors objectAtIndexedSubscript:0];
 
   return v25;
 }
@@ -13207,8 +13207,8 @@ LABEL_8:
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
   v23 = [(MPSGraphBatchToSpaceOp *)v21 initWithGraph:self inputTensors:v22 controlDependencies:MEMORY[0x1E695E0F0] usePixelShuffleOrder:v9 name:v18];
 
-  v24 = [(MPSGraphOperation *)v23 outputTensors];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v23 outputTensors];
+  v25 = [outputTensors objectAtIndexedSubscript:0];
 
   return v25;
 }
@@ -13266,8 +13266,8 @@ LABEL_8:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [(MPSGraphOperation *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
 
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -13282,8 +13282,8 @@ LABEL_8:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v12 = [outputTensors objectAtIndexedSubscript:0];
 
   return v12;
 }
@@ -13362,37 +13362,37 @@ LABEL_8:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [(MPSGraphOperation *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
 
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
 
-- (id)padGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 paddingMode:(int64_t)a5 paddingTensor:(id)a6 name:(id)a7
+- (id)padGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor paddingMode:(int64_t)mode paddingTensor:(id)paddingTensor name:(id)name
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v23[0] = v12;
-  v23[1] = v13;
-  v23[2] = v14;
+  tensorCopy = tensor;
+  sourceTensorCopy = sourceTensor;
+  paddingTensorCopy = paddingTensor;
+  nameCopy = name;
+  v23[0] = tensorCopy;
+  v23[1] = sourceTensorCopy;
+  v23[2] = paddingTensorCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
   v17 = [MPSGraphPadGradientOp alloc];
-  if (a5 == 4)
+  if (mode == 4)
   {
-    v18 = 0;
+    modeCopy = 0;
   }
 
   else
   {
-    v18 = a5;
+    modeCopy = mode;
   }
 
-  v19 = [(MPSGraphPadGradientOp *)v17 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] paddingMode:v18 name:v15];
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  v19 = [(MPSGraphPadGradientOp *)v17 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] paddingMode:modeCopy name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -13419,27 +13419,27 @@ LABEL_8:
   return v20;
 }
 
-- (id)padGradientWithIncomingGradientTensor:(id)a3 inputTensor:(id)a4 paddingMode:(int64_t)a5 paddingTensor:(id)a6 constantValuesTensor:(id)a7 name:(id)a8
+- (id)padGradientWithIncomingGradientTensor:(id)tensor inputTensor:(id)inputTensor paddingMode:(int64_t)mode paddingTensor:(id)paddingTensor constantValuesTensor:(id)valuesTensor name:(id)name
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
-  if (a5 == 4)
+  tensorCopy = tensor;
+  inputTensorCopy = inputTensor;
+  paddingTensorCopy = paddingTensor;
+  nameCopy = name;
+  if (mode == 4)
   {
-    a5 = 0;
+    mode = 0;
   }
 
   v17 = [MPSGraphPadGradientOp alloc];
-  v23[0] = v13;
-  v23[1] = v14;
-  v23[2] = v15;
+  v23[0] = tensorCopy;
+  v23[1] = inputTensorCopy;
+  v23[2] = paddingTensorCopy;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
-  v19 = [(MPSGraphPadGradientOp *)v17 initWithGraph:self inputTensors:v18 controlDependencies:MEMORY[0x1E695E0F0] paddingMode:a5 name:v16];
+  v19 = [(MPSGraphPadGradientOp *)v17 initWithGraph:self inputTensors:v18 controlDependencies:MEMORY[0x1E695E0F0] paddingMode:mode name:nameCopy];
 
-  v20 = [(MPSGraphOperation *)v19 outputTensors];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v19 outputTensors];
+  v21 = [outputTensors objectAtIndexedSubscript:0];
 
   return v21;
 }
@@ -13449,13 +13449,13 @@ LABEL_8:
   v23[1] = *MEMORY[0x1E69E9840];
   v6 = tensor;
   v7 = name;
-  v8 = [(MPSGraphTensor *)v6 shape];
-  v9 = isStaticShape(v8);
+  shape = [(MPSGraphTensor *)v6 shape];
+  v9 = isStaticShape(shape);
 
   if (v9)
   {
-    v10 = [(MPSGraphTensor *)v6 shape];
-    MPSShapeToVector<unsigned long long>(v10, &__p);
+    shape2 = [(MPSGraphTensor *)v6 shape];
+    MPSShapeToVector<unsigned long long>(shape2, &__p);
 
     if (v21 != __p)
     {
@@ -13487,47 +13487,47 @@ LABEL_8:
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
     v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
 
-    v14 = [(MPSGraphOperation *)v13 outputTensors];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+    v15 = [outputTensors objectAtIndexedSubscript:0];
   }
 
   return v15;
 }
 
-- (id)rankOfTensor:(id)a3 name:(id)a4
+- (id)rankOfTensor:(id)tensor name:(id)name
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 shape];
+  tensorCopy = tensor;
+  nameCopy = name;
+  shape = [tensorCopy shape];
 
-  if (v8)
+  if (shape)
   {
-    v9 = [v6 shape];
-    v10 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77B88, 536870944, [v9 count]);
+    shape2 = [tensorCopy shape];
+    v10 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77B88, 536870944, [shape2 count]);
   }
 
   else
   {
     v11 = [MPSGraphRankOp alloc];
-    v16[0] = v6;
+    v16[0] = tensorCopy;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
+    v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-    v14 = [(MPSGraphOperation *)v13 outputTensors];
-    v10 = [v14 objectAtIndexedSubscript:0];
+    outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+    v10 = [outputTensors objectAtIndexedSubscript:0];
   }
 
   return v10;
 }
 
-- (id)sizeOfTensor:(id)a3 name:(id)a4
+- (id)sizeOfTensor:(id)tensor name:(id)name
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 shape];
-  v9 = isStaticShape(v8);
+  tensorCopy = tensor;
+  nameCopy = name;
+  shape = [tensorCopy shape];
+  v9 = isStaticShape(shape);
 
   if (v9)
   {
@@ -13535,16 +13535,16 @@ LABEL_8:
     v11 = 1;
     while (1)
     {
-      v12 = [v6 shape];
-      v13 = [v12 count];
+      shape2 = [tensorCopy shape];
+      v13 = [shape2 count];
 
       if (v10 >= v13)
       {
         break;
       }
 
-      v14 = [v6 shape];
-      v15 = [v14 objectAtIndexedSubscript:v10];
+      shape3 = [tensorCopy shape];
+      v15 = [shape3 objectAtIndexedSubscript:v10];
       v11 *= [v15 unsignedIntegerValue];
 
       ++v10;
@@ -13556,24 +13556,24 @@ LABEL_8:
   else
   {
     v16 = [MPSGraphSizeOp alloc];
-    v22[0] = v6;
+    v22[0] = tensorCopy;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    v18 = [(MPSGraphOperation *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
+    v18 = [(MPSGraphOperation *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-    v19 = [(MPSGraphOperation *)v18 outputTensors];
-    v20 = [v19 objectAtIndexedSubscript:0];
+    outputTensors = [(MPSGraphOperation *)v18 outputTensors];
+    v20 = [outputTensors objectAtIndexedSubscript:0];
   }
 
   return v20;
 }
 
-- (id)dimensionSizeOfTensor:(id)a3 axes:(id)a4 name:(id)a5
+- (id)dimensionSizeOfTensor:(id)tensor axes:(id)axes name:(id)name
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  MPSShapeToVector<unsigned long long>(v9, &__p);
+  tensorCopy = tensor;
+  axesCopy = axes;
+  nameCopy = name;
+  MPSShapeToVector<unsigned long long>(axesCopy, &__p);
   if (v18 != __p)
   {
     if (((v18 - __p) & 0x8000000000000000) == 0)
@@ -13590,7 +13590,7 @@ LABEL_8:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v14 = [(MPSGraph *)self constantWithData:v11 shape:v13 dataType:536870944];
 
-  v15 = [(MPSGraph *)self dimensionSizeOfTensor:v8 axesTensor:v14 name:v10];
+  v15 = [(MPSGraph *)self dimensionSizeOfTensor:tensorCopy axesTensor:v14 name:nameCopy];
 
   if (__p)
   {
@@ -13601,20 +13601,20 @@ LABEL_8:
   return v15;
 }
 
-- (id)dimensionSizeOfTensor:(id)a3 axesTensor:(id)a4 name:(id)a5
+- (id)dimensionSizeOfTensor:(id)tensor axesTensor:(id)axesTensor name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tensorCopy = tensor;
+  axesTensorCopy = axesTensor;
+  nameCopy = name;
   v11 = [MPSGraphDimensionSizeOp alloc];
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = tensorCopy;
+  v17[1] = axesTensorCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
+  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -13633,8 +13633,8 @@ LABEL_8:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [(MPSGraphOperation *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
 
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
@@ -13699,20 +13699,20 @@ LABEL_8:
   return v22;
 }
 
-- (id)broadcastGradientArgsForPrimaryTensor:(id)a3 withSecondaryTensor:(id)a4 name:(id)a5
+- (id)broadcastGradientArgsForPrimaryTensor:(id)tensor withSecondaryTensor:(id)secondaryTensor name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tensorCopy = tensor;
+  secondaryTensorCopy = secondaryTensor;
+  nameCopy = name;
   v11 = [MPSGraphBroadcastGradientArgsOp alloc];
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = tensorCopy;
+  v17[1] = secondaryTensorCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
+  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
@@ -13727,8 +13727,8 @@ LABEL_8:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v10 = [(MPSGraphOperation *)v8 initWithGraph:self inputTensors:v9 controlDependencies:MEMORY[0x1E695E0F0] name:v7];
 
-  v11 = [(MPSGraphOperation *)v10 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v10 outputTensors];
+  v12 = [outputTensors objectAtIndexedSubscript:0];
 
   return v12;
 }
@@ -13790,35 +13790,35 @@ LABEL_8:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [(MPSGraphOperation *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
 
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
 
-- (id)squeezeTensor:(id)a3 dimensionTensor:(id)a4 name:(id)a5
+- (id)squeezeTensor:(id)tensor dimensionTensor:(id)dimensionTensor name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tensorCopy = tensor;
+  dimensionTensorCopy = dimensionTensor;
+  nameCopy = name;
   v11 = [MPSGraphSqueezeOp alloc];
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = tensorCopy;
+  v17[1] = dimensionTensorCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
+  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
 
-- (id)squeezeTensor:(id)a3 dimension:(unint64_t)a4 name:(id)a5
+- (id)squeezeTensor:(id)tensor dimension:(unint64_t)dimension name:(id)name
 {
-  v7 = a3;
-  v8 = [(MPSGraph *)self constantWithScalar:&unk_1F5B77BD0 shape:536870944 dataType:a4];
-  v9 = [(MPSGraph *)self squeezeTensor:v7 dimensionTensor:v8 name:0];
+  tensorCopy = tensor;
+  v8 = [(MPSGraph *)self constantWithScalar:&unk_1F5B77BD0 shape:536870944 dataType:dimension];
+  v9 = [(MPSGraph *)self squeezeTensor:tensorCopy dimensionTensor:v8 name:0];
 
   return v9;
 }
@@ -13880,36 +13880,36 @@ LABEL_8:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [(MPSGraphOperation *)v12 initWithGraph:self inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
 
-  v15 = [(MPSGraphOperation *)v14 outputTensors];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v14 outputTensors];
+  v16 = [outputTensors objectAtIndexedSubscript:0];
 
   return v16;
 }
 
-- (id)expandTensor:(id)a3 dimensionTensor:(id)a4 name:(id)a5
+- (id)expandTensor:(id)tensor dimensionTensor:(id)dimensionTensor name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tensorCopy = tensor;
+  dimensionTensorCopy = dimensionTensor;
+  nameCopy = name;
   v11 = [MPSGraphExpandOp alloc];
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = tensorCopy;
+  v17[1] = dimensionTensorCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
+  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
 
-- (id)expandTensor:(id)a3 dimension:(unint64_t)a4 name:(id)a5
+- (id)expandTensor:(id)tensor dimension:(unint64_t)dimension name:(id)name
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MPSGraph *)self constantWithScalar:&unk_1F5B77C00 shape:536870944 dataType:a4];
-  v11 = [(MPSGraph *)self expandTensor:v8 dimensionTensor:v10 name:v9];
+  tensorCopy = tensor;
+  nameCopy = name;
+  v10 = [(MPSGraph *)self constantWithScalar:&unk_1F5B77C00 shape:536870944 dataType:dimension];
+  v11 = [(MPSGraph *)self expandTensor:tensorCopy dimensionTensor:v10 name:nameCopy];
 
   return v11;
 }
@@ -13954,9 +13954,9 @@ LABEL_8:
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
   v17 = [(MPSGraphSplitOp *)v15 initWithGraph:self inputTensors:v16 controlDependencies:MEMORY[0x1E695E0F0] dimension:axis name:v12];
 
-  v18 = [(MPSGraphOperation *)v17 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v17 outputTensors];
 
-  return v18;
+  return outputTensors;
 }
 
 - (NSArray)splitTensor:(MPSGraphTensor *)tensor numSplits:(NSUInteger)numSplits axis:(NSInteger)axis name:(NSString *)name
@@ -13971,9 +13971,9 @@ LABEL_8:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v15 = [(MPSGraphSplitOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] dimension:axis numSplits:numSplits name:v11];
 
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
 
-  return v16;
+  return outputTensors;
 }
 
 - (MPSGraphTensor)stackTensors:(NSArray *)inputTensors axis:(NSInteger)axis name:(NSString *)name
@@ -14103,27 +14103,27 @@ LABEL_8:
   return v15;
 }
 
-- (id)getCoordinateValueWithShapeTensor:(id)a3 axisTensor:(id)a4 name:(id)a5
+- (id)getCoordinateValueWithShapeTensor:(id)tensor axisTensor:(id)axisTensor name:(id)name
 {
-  v5 = [(MPSGraph *)self coordinateAlongAxisTensor:a4 withShapeTensor:a3 name:a5];
+  v5 = [(MPSGraph *)self coordinateAlongAxisTensor:axisTensor withShapeTensor:tensor name:name];
 
   return v5;
 }
 
-- (id)fixCastIntTensor:(id)a3 toSignedness:(BOOL)a4 name:(id)a5
+- (id)fixCastIntTensor:(id)tensor toSignedness:(BOOL)signedness name:(id)name
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 dataType];
-  if (v10 > 536870943)
+  signednessCopy = signedness;
+  tensorCopy = tensor;
+  nameCopy = name;
+  dataType = [tensorCopy dataType];
+  if (dataType > 536870943)
   {
-    if (v10 != 536870944)
+    if (dataType != 536870944)
     {
-      if (v10 != 536870976)
+      if (dataType != 536870976)
       {
 LABEL_11:
-        v12 = v8;
+        v12 = tensorCopy;
         goto LABEL_17;
       }
 
@@ -14131,7 +14131,7 @@ LABEL_11:
     }
 
 LABEL_12:
-    if (v6)
+    if (signednessCopy)
     {
       v13 = 536870944;
     }
@@ -14141,7 +14141,7 @@ LABEL_12:
       v13 = 32;
     }
 
-    if (v10 == v13)
+    if (dataType == v13)
     {
       goto LABEL_11;
     }
@@ -14149,18 +14149,18 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  if (v10 == 32)
+  if (dataType == 32)
   {
     goto LABEL_12;
   }
 
-  if (v10 != 64)
+  if (dataType != 64)
   {
     goto LABEL_11;
   }
 
 LABEL_7:
-  if (v6)
+  if (signednessCopy)
   {
     v11 = 536870976;
   }
@@ -14170,195 +14170,195 @@ LABEL_7:
     v11 = 64;
   }
 
-  if (v10 == v11)
+  if (dataType == v11)
   {
     goto LABEL_11;
   }
 
 LABEL_16:
-  v12 = [MPSGraph castTensor:"castTensor:toType:name:" toType:v8 name:?];
+  v12 = [MPSGraph castTensor:"castTensor:toType:name:" toType:tensorCopy name:?];
 LABEL_17:
   v14 = v12;
 
   return v14;
 }
 
-- (id)interleaveTensor:(id)a3 interleaveFactor:(unint64_t)a4 name:(id)a5
+- (id)interleaveTensor:(id)tensor interleaveFactor:(unint64_t)factor name:(id)name
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  tensorCopy = tensor;
+  nameCopy = name;
   v10 = [MPSGraphInterleaveOp alloc];
-  v16[0] = v8;
+  v16[0] = tensorCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v12 = [(MPSGraphInterleaveOp *)v10 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] interleaveFactor:a4 name:v9];
+  v12 = [(MPSGraphInterleaveOp *)v10 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] interleaveFactor:factor name:nameCopy];
 
-  v13 = [(MPSGraphOperation *)v12 outputTensors];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v12 outputTensors];
+  v14 = [outputTensors objectAtIndexedSubscript:0];
 
   return v14;
 }
 
-- (id)deinterleaveTensor:(id)a3 interleaveFactor:(unint64_t)a4 name:(id)a5
+- (id)deinterleaveTensor:(id)tensor interleaveFactor:(unint64_t)factor name:(id)name
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  tensorCopy = tensor;
+  nameCopy = name;
   v10 = [MPSGraphDeinterleaveOp alloc];
-  v16[0] = v8;
+  v16[0] = tensorCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v12 = [(MPSGraphDeinterleaveOp *)v10 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] interleaveFactor:a4 name:v9];
+  v12 = [(MPSGraphDeinterleaveOp *)v10 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] interleaveFactor:factor name:nameCopy];
 
-  v13 = [(MPSGraphOperation *)v12 outputTensors];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v12 outputTensors];
+  v14 = [outputTensors objectAtIndexedSubscript:0];
 
   return v14;
 }
 
-- (id)makeListWithElementType:(id)a3 maxSize:(unint64_t)a4 name:(id)a5
+- (id)makeListWithElementType:(id)type maxSize:(unint64_t)size name:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  nameCopy = name;
   v10 = [MPSGraphMakeListOp alloc];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a4];
-  v12 = [(MPSGraphMakeListOp *)v10 initWithGraph:self inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] elementType:v8 maxSize:v11 name:v9];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:size];
+  v12 = [(MPSGraphMakeListOp *)v10 initWithGraph:self inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] elementType:typeCopy maxSize:v11 name:nameCopy];
 
-  v13 = [(MPSGraphOperation *)v12 outputTensors];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v12 outputTensors];
+  v14 = [outputTensors objectAtIndexedSubscript:0];
 
   return v14;
 }
 
-- (id)makeListWithElementType:(id)a3 name:(id)a4
+- (id)makeListWithElementType:(id)type name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  nameCopy = name;
   v8 = [MPSGraphMakeListOp alloc];
-  v9 = [(MPSGraphMakeListOp *)v8 initWithGraph:self inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] elementType:v6 maxSize:0 name:v7];
-  v10 = [(MPSGraphOperation *)v9 outputTensors];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  v9 = [(MPSGraphMakeListOp *)v8 initWithGraph:self inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] elementType:typeCopy maxSize:0 name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v9 outputTensors];
+  v11 = [outputTensors objectAtIndexedSubscript:0];
 
   return v11;
 }
 
-- (id)pushBackToList:(id)a3 element:(id)a4 name:(id)a5
+- (id)pushBackToList:(id)list element:(id)element name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listCopy = list;
+  elementCopy = element;
+  nameCopy = name;
   v11 = [MPSGraphListPushBackOp alloc];
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = listCopy;
+  v17[1] = elementCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
+  v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
 
-- (id)popBackFromList:(id)a3 outputList:(id *)a4 name:(id)a5
+- (id)popBackFromList:(id)list outputList:(id *)outputList name:(id)name
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  listCopy = list;
+  nameCopy = name;
   v10 = [MPSGraphListPopBackOp alloc];
-  v17[0] = v8;
+  v17[0] = listCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v12 = [(MPSGraphOperation *)v10 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] name:v9];
+  v12 = [(MPSGraphOperation *)v10 initWithGraph:self inputTensors:v11 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v13 = [(MPSGraphOperation *)v12 outputTensors];
-  *a4 = [v13 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v12 outputTensors];
+  *outputList = [outputTensors objectAtIndexedSubscript:0];
 
-  v14 = [(MPSGraphOperation *)v12 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:1];
+  outputTensors2 = [(MPSGraphOperation *)v12 outputTensors];
+  v15 = [outputTensors2 objectAtIndexedSubscript:1];
 
   return v15;
 }
 
-- (id)localConvolutionWithSourceTensor:(id)a3 weightTensor:(id)a4 dataLayout:(unint64_t)a5 kernelShape:(id)a6 dilationRateInX:(unint64_t)a7 dilationRateInY:(unint64_t)a8 name:(id)a9
+- (id)localConvolutionWithSourceTensor:(id)tensor weightTensor:(id)weightTensor dataLayout:(unint64_t)layout kernelShape:(id)shape dilationRateInX:(unint64_t)x dilationRateInY:(unint64_t)y name:(id)name
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
+  tensorCopy = tensor;
+  weightTensorCopy = weightTensor;
+  shapeCopy = shape;
+  nameCopy = name;
   v19 = [MPSGraphLocalConvolutionOp alloc];
-  v25[0] = v15;
-  v25[1] = v16;
+  v25[0] = tensorCopy;
+  v25[1] = weightTensorCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
-  v21 = [(MPSGraphLocalConvolutionOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] dataLayout:a5 kernelShape:v17 dilationRateInX:a7 dilationRateInY:a8 name:v18];
+  v21 = [(MPSGraphLocalConvolutionOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] dataLayout:layout kernelShape:shapeCopy dilationRateInX:x dilationRateInY:y name:nameCopy];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
 
-- (id)localConvolutionWeightGradientWithIncomingGradientTensor:(id)a3 sourceTensor:(id)a4 dataLayout:(unint64_t)a5 kernelShape:(id)a6 dilationRateInX:(unint64_t)a7 dilationRateInY:(unint64_t)a8 name:(id)a9
+- (id)localConvolutionWeightGradientWithIncomingGradientTensor:(id)tensor sourceTensor:(id)sourceTensor dataLayout:(unint64_t)layout kernelShape:(id)shape dilationRateInX:(unint64_t)x dilationRateInY:(unint64_t)y name:(id)name
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
+  tensorCopy = tensor;
+  sourceTensorCopy = sourceTensor;
+  shapeCopy = shape;
+  nameCopy = name;
   v19 = [MPSGraphLocalConvolutionWeightGradientOp alloc];
-  v25[0] = v15;
-  v25[1] = v16;
+  v25[0] = tensorCopy;
+  v25[1] = sourceTensorCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
-  v21 = [(MPSGraphLocalConvolutionWeightGradientOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] dataLayout:a5 kernelShape:v17 dilationRateInX:a7 dilationRateInY:a8 name:v18];
+  v21 = [(MPSGraphLocalConvolutionWeightGradientOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] dataLayout:layout kernelShape:shapeCopy dilationRateInX:x dilationRateInY:y name:nameCopy];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
 
-- (id)localConvolutionDataGradientWithIncomingGradientTensor:(id)a3 weightTensor:(id)a4 dataLayout:(unint64_t)a5 kernelShape:(id)a6 dilationRateInX:(unint64_t)a7 dilationRateInY:(unint64_t)a8 name:(id)a9
+- (id)localConvolutionDataGradientWithIncomingGradientTensor:(id)tensor weightTensor:(id)weightTensor dataLayout:(unint64_t)layout kernelShape:(id)shape dilationRateInX:(unint64_t)x dilationRateInY:(unint64_t)y name:(id)name
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
+  tensorCopy = tensor;
+  weightTensorCopy = weightTensor;
+  shapeCopy = shape;
+  nameCopy = name;
   v19 = [MPSGraphLocalConvolutionDataGradientOp alloc];
-  v25[0] = v15;
-  v25[1] = v16;
+  v25[0] = tensorCopy;
+  v25[1] = weightTensorCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
-  v21 = [(MPSGraphLocalConvolutionDataGradientOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] dataLayout:a5 kernelShape:v17 dilationRateInX:a7 dilationRateInY:a8 name:v18];
+  v21 = [(MPSGraphLocalConvolutionDataGradientOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] dataLayout:layout kernelShape:shapeCopy dilationRateInX:x dilationRateInY:y name:nameCopy];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
 
-- (id)batchNormalizationLayerWithTensor:(id)a3 batchNormalizationGammaInitializer:(id)a4 batchNormalizationBetaInitializer:(id)a5 batchNormalizationMeanInitializer:(id)a6 batchNormalizationVarianceInitializer:(id)a7 batchNormalizationEpsilon:(double)a8 dataLayout:(unint64_t)a9 name:(id)a10
+- (id)batchNormalizationLayerWithTensor:(id)tensor batchNormalizationGammaInitializer:(id)initializer batchNormalizationBetaInitializer:(id)betaInitializer batchNormalizationMeanInitializer:(id)meanInitializer batchNormalizationVarianceInitializer:(id)varianceInitializer batchNormalizationEpsilon:(double)epsilon dataLayout:(unint64_t)layout name:(id)self0
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v63 = a4;
-  v62 = a5;
-  v18 = a6;
-  v61 = a7;
-  v19 = a10;
-  v20 = v17;
+  tensorCopy = tensor;
+  initializerCopy = initializer;
+  betaInitializerCopy = betaInitializer;
+  meanInitializerCopy = meanInitializer;
+  varianceInitializerCopy = varianceInitializer;
+  nameCopy = name;
+  v20 = tensorCopy;
   v21 = v20;
-  if (v18 || v63 || v62 || (v22 = v20, v61))
+  if (meanInitializerCopy || initializerCopy || betaInitializerCopy || (v22 = v20, varianceInitializerCopy))
   {
-    v23 = [v20 shape];
-    v57 = v23;
-    if (a9)
+    shape = [v20 shape];
+    v57 = shape;
+    if (layout)
     {
-      if (a9 == 1)
+      if (layout == 1)
       {
-        v24 = [v23 objectAtIndexedSubscript:3];
-        v25 = [v24 unsignedIntegerValue];
+        v24 = [shape objectAtIndexedSubscript:3];
+        unsignedIntegerValue = [v24 unsignedIntegerValue];
         v26 = &unk_1F5B77C78;
 
-        if (!v19)
+        if (!nameCopy)
         {
 LABEL_8:
           v27 = [@"batchNormalization" stringByAppendingString:@"/mean"];
@@ -14366,9 +14366,9 @@ LABEL_15:
           v29 = v27;
           v59 = [(MPSGraph *)self meanOfTensor:v21 axes:v26 name:v27];
 
-          if (v19)
+          if (nameCopy)
           {
-            [v19 stringByAppendingString:@"/batchNormalization/variance"];
+            [nameCopy stringByAppendingString:@"/batchNormalization/variance"];
           }
 
           else
@@ -14378,15 +14378,15 @@ LABEL_15:
           v30 = ;
           v58 = [(MPSGraph *)self varianceOfTensor:v21 meanTensor:v59 axes:v26 name:v30];
 
-          if (v63)
+          if (initializerCopy)
           {
-            v31 = [v63 initializedDataWithNumberOfValues:v25 dataType:268435488];
-            v32 = [MEMORY[0x1E696AD98] numberWithInteger:v25];
+            v31 = [initializerCopy initializedDataWithNumberOfValues:unsignedIntegerValue dataType:268435488];
+            v32 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue];
             v67[0] = v32;
             v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:1];
-            if (v19)
+            if (nameCopy)
             {
-              [v19 stringByAppendingString:@"/batchNormalization/gammaVariable"];
+              [nameCopy stringByAppendingString:@"/batchNormalization/gammaVariable"];
             }
 
             else
@@ -14397,8 +14397,8 @@ LABEL_15:
             v60 = [(MPSGraph *)self variableWithData:v31 shape:v33 dataType:268435488 name:v34];
 
             traininableHighLevelOpVariables = self->_traininableHighLevelOpVariables;
-            v36 = [v60 operation];
-            [(NSMutableArray *)traininableHighLevelOpVariables addObject:v36];
+            operation = [v60 operation];
+            [(NSMutableArray *)traininableHighLevelOpVariables addObject:operation];
           }
 
           else
@@ -14406,15 +14406,15 @@ LABEL_15:
             v60 = 0;
           }
 
-          if (v62)
+          if (betaInitializerCopy)
           {
-            v37 = [v62 initializedDataWithNumberOfValues:v25 dataType:268435488];
-            v38 = [MEMORY[0x1E696AD98] numberWithInteger:v25];
+            v37 = [betaInitializerCopy initializedDataWithNumberOfValues:unsignedIntegerValue dataType:268435488];
+            v38 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue];
             v66 = v38;
             v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
-            if (v19)
+            if (nameCopy)
             {
-              [v19 stringByAppendingString:@"/batchNormalization/betaVariable"];
+              [nameCopy stringByAppendingString:@"/batchNormalization/betaVariable"];
             }
 
             else
@@ -14425,8 +14425,8 @@ LABEL_15:
             v40 = [(MPSGraph *)self variableWithData:v37 shape:v39 dataType:268435488 name:v41];
 
             v42 = self->_traininableHighLevelOpVariables;
-            v43 = [v40 operation];
-            [(NSMutableArray *)v42 addObject:v43];
+            operation2 = [v40 operation];
+            [(NSMutableArray *)v42 addObject:operation2];
           }
 
           else
@@ -14434,15 +14434,15 @@ LABEL_15:
             v40 = 0;
           }
 
-          if (v18)
+          if (meanInitializerCopy)
           {
-            v44 = [v18 initializedDataWithNumberOfValues:v25 dataType:268435488];
-            v45 = [MEMORY[0x1E696AD98] numberWithInteger:v25];
+            v44 = [meanInitializerCopy initializedDataWithNumberOfValues:unsignedIntegerValue dataType:268435488];
+            v45 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue];
             v65 = v45;
             v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
-            if (v19)
+            if (nameCopy)
             {
-              [v19 stringByAppendingString:@"/batchNormalization/runningMeanVariable"];
+              [nameCopy stringByAppendingString:@"/batchNormalization/runningMeanVariable"];
             }
 
             else
@@ -14458,15 +14458,15 @@ LABEL_15:
             v56 = 0;
           }
 
-          if (v61)
+          if (varianceInitializerCopy)
           {
-            v48 = [v61 initializedDataWithNumberOfValues:v25 dataType:268435488];
-            v49 = [MEMORY[0x1E696AD98] numberWithInteger:v25];
+            v48 = [varianceInitializerCopy initializedDataWithNumberOfValues:unsignedIntegerValue dataType:268435488];
+            v49 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue];
             v64 = v49;
             v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
-            if (v19)
+            if (nameCopy)
             {
-              [v19 stringByAppendingString:@"/batchNormalization/runningVarianceVariable"];
+              [nameCopy stringByAppendingString:@"/batchNormalization/runningVarianceVariable"];
             }
 
             else
@@ -14482,9 +14482,9 @@ LABEL_15:
             v51 = 0;
           }
 
-          if (v19)
+          if (nameCopy)
           {
-            [v19 stringByAppendingString:@"/batchNormalization/normalization"];
+            [nameCopy stringByAppendingString:@"/batchNormalization/normalization"];
           }
 
           else
@@ -14492,7 +14492,7 @@ LABEL_15:
             [@"conv2DLayer" stringByAppendingString:@"/batchNormalization/normalization"];
           }
           v53 = ;
-          *&v54 = a8;
+          *&v54 = epsilon;
           v22 = [(MPSGraph *)self normalizationWithTensor:v21 meanTensor:v59 varianceTensor:v58 gammaTensor:v60 betaTensor:v40 epsilon:v53 name:v54];
 
           goto LABEL_46;
@@ -14506,9 +14506,9 @@ LABEL_15:
           MTLReportFailure();
         }
 
-        v25 = 0;
+        unsignedIntegerValue = 0;
         v26 = 0;
-        if (!v19)
+        if (!nameCopy)
         {
           goto LABEL_8;
         }
@@ -14517,17 +14517,17 @@ LABEL_15:
 
     else
     {
-      v28 = [v23 objectAtIndexedSubscript:1];
-      v25 = [v28 unsignedIntegerValue];
+      v28 = [shape objectAtIndexedSubscript:1];
+      unsignedIntegerValue = [v28 unsignedIntegerValue];
       v26 = &unk_1F5B77C60;
 
-      if (!v19)
+      if (!nameCopy)
       {
         goto LABEL_8;
       }
     }
 
-    v27 = [v19 stringByAppendingString:@"/batchNormalization/mean"];
+    v27 = [nameCopy stringByAppendingString:@"/batchNormalization/mean"];
     goto LABEL_15;
   }
 
@@ -14536,57 +14536,57 @@ LABEL_46:
   return v22;
 }
 
-- (id)convolution2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 outputChannelCount:(unint64_t)a5 strides:(id)a6 dilationRates:(id)a7 groups:(unint64_t)a8 activationType:(unsigned int)a9 weightsInitializer:(id)a10 biasesInitializer:(id)a11 batchNormalizationGammaInitializer:(id)a12 batchNormalizationBetaInitializer:(id)a13 batchNormalizationMeanInitializer:(id)a14 batchNormalizationVarianceInitializer:(id)a15 batchNormalizationEpsilon:(double)a16 paddingStyle:(unint64_t)a17 dataLayout:(unint64_t)a18 weightsLayout:(unint64_t)a19 name:(id)a20
+- (id)convolution2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes outputChannelCount:(unint64_t)count strides:(id)strides dilationRates:(id)rates groups:(unint64_t)groups activationType:(unsigned int)type weightsInitializer:(id)self0 biasesInitializer:(id)self1 batchNormalizationGammaInitializer:(id)self2 batchNormalizationBetaInitializer:(id)self3 batchNormalizationMeanInitializer:(id)self4 batchNormalizationVarianceInitializer:(id)self5 batchNormalizationEpsilon:(double)self6 paddingStyle:(unint64_t)self7 dataLayout:(unint64_t)self8 weightsLayout:(unint64_t)self9 name:(id)name
 {
   v83[4] = *MEMORY[0x1E69E9840];
-  v79 = a3;
-  v24 = a4;
-  v78 = a6;
-  v77 = a7;
-  v67 = a10;
-  v75 = a11;
-  v74 = a12;
-  v73 = a13;
-  v72 = a14;
-  v70 = a15;
-  v25 = a20;
-  v69 = v24;
-  v26 = [v24 objectAtIndexedSubscript:0];
-  v27 = [v26 unsignedIntegerValue];
+  tensorCopy = tensor;
+  sizesCopy = sizes;
+  stridesCopy = strides;
+  ratesCopy = rates;
+  initializerCopy = initializer;
+  biasesInitializerCopy = biasesInitializer;
+  gammaInitializerCopy = gammaInitializer;
+  betaInitializerCopy = betaInitializer;
+  meanInitializerCopy = meanInitializer;
+  varianceInitializerCopy = varianceInitializer;
+  nameCopy = name;
+  v69 = sizesCopy;
+  v26 = [sizesCopy objectAtIndexedSubscript:0];
+  unsignedIntegerValue = [v26 unsignedIntegerValue];
 
-  v28 = [v24 objectAtIndexedSubscript:1];
-  v29 = [v28 unsignedIntegerValue];
+  v28 = [sizesCopy objectAtIndexedSubscript:1];
+  unsignedIntegerValue2 = [v28 unsignedIntegerValue];
 
-  v66 = [v79 shape];
-  if (!a18)
+  shape = [tensorCopy shape];
+  if (!layout)
   {
-    v30 = [v66 objectAtIndexedSubscript:1];
-    v31 = [v30 unsignedIntegerValue];
+    v30 = [shape objectAtIndexedSubscript:1];
+    unsignedIntegerValue3 = [v30 unsignedIntegerValue];
 LABEL_5:
-    v32 = v31;
+    v32 = unsignedIntegerValue3;
 
-    if (a19 != 2)
+    if (weightsLayout != 2)
     {
       goto LABEL_6;
     }
 
 LABEL_11:
-    v33 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v33 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v82[0] = v33;
     v34 = [MEMORY[0x1E696AD98] numberWithInteger:v32];
     v82[1] = v34;
-    v35 = [MEMORY[0x1E696AD98] numberWithInteger:v27];
+    v35 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue];
     v82[2] = v35;
-    v36 = [MEMORY[0x1E696AD98] numberWithInteger:v29];
+    v36 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue2];
     v82[3] = v36;
     v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:4];
     goto LABEL_12;
   }
 
-  if (a18 == 1)
+  if (layout == 1)
   {
-    v30 = [v66 objectAtIndexedSubscript:3];
-    v31 = [v30 unsignedIntegerValue];
+    v30 = [shape objectAtIndexedSubscript:3];
+    unsignedIntegerValue3 = [v30 unsignedIntegerValue];
     goto LABEL_5;
   }
 
@@ -14596,21 +14596,21 @@ LABEL_11:
   }
 
   v32 = 0;
-  if (a19 == 2)
+  if (weightsLayout == 2)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
-  if (a19 == 3)
+  if (weightsLayout == 3)
   {
-    v33 = [MEMORY[0x1E696AD98] numberWithInteger:v27];
+    v33 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue];
     v83[0] = v33;
-    v34 = [MEMORY[0x1E696AD98] numberWithInteger:v29];
+    v34 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue2];
     v83[1] = v34;
     v35 = [MEMORY[0x1E696AD98] numberWithInteger:v32];
     v83[2] = v35;
-    v36 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v36 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v83[3] = v36;
     v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:4];
 LABEL_12:
@@ -14625,10 +14625,10 @@ LABEL_12:
 
   v68 = 0;
 LABEL_16:
-  v37 = [v67 initializedDataWithNumberOfValues:v27 * a5 * v29 * v32 dataType:268435488];
-  if (v25)
+  v37 = [initializerCopy initializedDataWithNumberOfValues:unsignedIntegerValue * count * unsignedIntegerValue2 * v32 dataType:268435488];
+  if (nameCopy)
   {
-    [v25 stringByAppendingString:@"/weightsVariable"];
+    [nameCopy stringByAppendingString:@"/weightsVariable"];
   }
 
   else
@@ -14639,21 +14639,21 @@ LABEL_16:
   v76 = [(MPSGraph *)self variableWithData:v37 shape:v68 dataType:268435488 name:v38];
 
   traininableHighLevelOpVariables = self->_traininableHighLevelOpVariables;
-  v40 = [v76 operation];
-  [(NSMutableArray *)traininableHighLevelOpVariables addObject:v40];
+  operation = [v76 operation];
+  [(NSMutableArray *)traininableHighLevelOpVariables addObject:operation];
 
-  v41 = [v78 objectAtIndexedSubscript:1];
-  v42 = [v41 integerValue];
-  v43 = [v78 objectAtIndexedSubscript:0];
-  v44 = [v43 integerValue];
-  v45 = [v77 objectAtIndexedSubscript:1];
-  v46 = [v45 integerValue];
-  v47 = [v77 objectAtIndexedSubscript:0];
-  v48 = +[MPSGraphConvolution2DOpDescriptor descriptorWithStrideInX:strideInY:dilationRateInX:dilationRateInY:groups:paddingStyle:dataLayout:weightsLayout:](MPSGraphConvolution2DOpDescriptor, "descriptorWithStrideInX:strideInY:dilationRateInX:dilationRateInY:groups:paddingStyle:dataLayout:weightsLayout:", v42, v44, v46, [v47 integerValue], a8, a17, a18, a19);
+  v41 = [stridesCopy objectAtIndexedSubscript:1];
+  integerValue = [v41 integerValue];
+  v43 = [stridesCopy objectAtIndexedSubscript:0];
+  integerValue2 = [v43 integerValue];
+  v45 = [ratesCopy objectAtIndexedSubscript:1];
+  integerValue3 = [v45 integerValue];
+  v47 = [ratesCopy objectAtIndexedSubscript:0];
+  v48 = +[MPSGraphConvolution2DOpDescriptor descriptorWithStrideInX:strideInY:dilationRateInX:dilationRateInY:groups:paddingStyle:dataLayout:weightsLayout:](MPSGraphConvolution2DOpDescriptor, "descriptorWithStrideInX:strideInY:dilationRateInX:dilationRateInY:groups:paddingStyle:dataLayout:weightsLayout:", integerValue, integerValue2, integerValue3, [v47 integerValue], groups, style, layout, weightsLayout);
 
-  if (v25)
+  if (nameCopy)
   {
-    [v25 stringByAppendingString:@"/conv2D"];
+    [nameCopy stringByAppendingString:@"/conv2D"];
   }
 
   else
@@ -14661,19 +14661,19 @@ LABEL_16:
     [@"conv2DLayer" stringByAppendingString:@"/conv2D"];
   }
   v49 = ;
-  v50 = [(MPSGraph *)self convolution2DWithSourceTensor:v79 weightsTensor:v76 descriptor:v48 name:v49];
+  v50 = [(MPSGraph *)self convolution2DWithSourceTensor:tensorCopy weightsTensor:v76 descriptor:v48 name:v49];
 
   v51 = v50;
   v52 = v51;
-  if (v75)
+  if (biasesInitializerCopy)
   {
-    v53 = [v75 initializedDataWithNumberOfValues:a5 dataType:268435488];
-    v54 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v53 = [biasesInitializerCopy initializedDataWithNumberOfValues:count dataType:268435488];
+    v54 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v81 = v54;
     v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v81 count:1];
-    if (v25)
+    if (nameCopy)
     {
-      [v25 stringByAppendingString:@"/biasAddVariable"];
+      [nameCopy stringByAppendingString:@"/biasAddVariable"];
     }
 
     else
@@ -14684,12 +14684,12 @@ LABEL_16:
     v57 = [(MPSGraph *)self variableWithData:v53 shape:v55 dataType:268435488 name:v56];
 
     v58 = self->_traininableHighLevelOpVariables;
-    v59 = [v57 operation];
-    [(NSMutableArray *)v58 addObject:v59];
+    operation2 = [v57 operation];
+    [(NSMutableArray *)v58 addObject:operation2];
 
-    if (v25)
+    if (nameCopy)
     {
-      [v25 stringByAppendingString:@"/biasAdd"];
+      [nameCopy stringByAppendingString:@"/biasAdd"];
     }
 
     else
@@ -14700,20 +14700,20 @@ LABEL_16:
     v52 = [(MPSGraph *)self additionWithPrimaryTensor:v51 secondaryTensor:v57 name:v60];
   }
 
-  if (v74 || v73 || v72 || v70)
+  if (gammaInitializerCopy || betaInitializerCopy || meanInitializerCopy || varianceInitializerCopy)
   {
-    v61 = [(MPSGraph *)self batchNormalizationLayerWithTensor:v52 batchNormalizationGammaInitializer:v74 batchNormalizationBetaInitializer:v73 batchNormalizationMeanInitializer:v72 batchNormalizationVarianceInitializer:v70 batchNormalizationEpsilon:a18 dataLayout:a16 name:v25];
+    v61 = [(MPSGraph *)self batchNormalizationLayerWithTensor:v52 batchNormalizationGammaInitializer:gammaInitializerCopy batchNormalizationBetaInitializer:betaInitializerCopy batchNormalizationMeanInitializer:meanInitializerCopy batchNormalizationVarianceInitializer:varianceInitializerCopy batchNormalizationEpsilon:layout dataLayout:epsilon name:nameCopy];
 
     v52 = v61;
-    if (a9 != 1)
+    if (type != 1)
     {
       goto LABEL_41;
     }
 
 LABEL_37:
-    if (v25)
+    if (nameCopy)
     {
-      [v25 stringByAppendingString:@"/reLU"];
+      [nameCopy stringByAppendingString:@"/reLU"];
     }
 
     else
@@ -14727,7 +14727,7 @@ LABEL_37:
     goto LABEL_41;
   }
 
-  if (a9 == 1)
+  if (type == 1)
   {
     goto LABEL_37;
   }
@@ -14737,62 +14737,62 @@ LABEL_41:
   return v52;
 }
 
-- (id)convolution2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 outputChannelCount:(unint64_t)a5 strides:(id)a6 activationType:(unsigned int)a7 weightsInitializer:(id)a8 biasesInitializer:(id)a9 batchNormalizationGammaInitializer:(id)a10 batchNormalizationBetaInitializer:(id)a11 batchNormalizationMeanInitializer:(id)a12 batchNormalizationVarianceInitializer:(id)a13 batchNormalizationEpsilon:(double)a14 paddingStyle:(unint64_t)a15 dataLayout:(unint64_t)a16 weightsLayout:(unint64_t)a17 name:(id)a18
+- (id)convolution2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes outputChannelCount:(unint64_t)count strides:(id)strides activationType:(unsigned int)type weightsInitializer:(id)initializer biasesInitializer:(id)biasesInitializer batchNormalizationGammaInitializer:(id)self0 batchNormalizationBetaInitializer:(id)self1 batchNormalizationMeanInitializer:(id)self2 batchNormalizationVarianceInitializer:(id)self3 batchNormalizationEpsilon:(double)self4 paddingStyle:(unint64_t)self5 dataLayout:(unint64_t)self6 weightsLayout:(unint64_t)self7 name:(id)self8
 {
-  LODWORD(v20) = a7;
-  v18 = [(MPSGraph *)self convolution2DLayerWithTensor:a3 kernelSizes:a4 outputChannelCount:a5 strides:a6 dilationRates:&unk_1F5B77C90 groups:1 activationType:a14 weightsInitializer:v20 biasesInitializer:a8 batchNormalizationGammaInitializer:a9 batchNormalizationBetaInitializer:a10 batchNormalizationMeanInitializer:a11 batchNormalizationVarianceInitializer:a12 batchNormalizationEpsilon:a13 paddingStyle:a15 dataLayout:a16 weightsLayout:a17 name:a18];
+  LODWORD(v20) = type;
+  v18 = [(MPSGraph *)self convolution2DLayerWithTensor:tensor kernelSizes:sizes outputChannelCount:count strides:strides dilationRates:&unk_1F5B77C90 groups:1 activationType:epsilon weightsInitializer:v20 biasesInitializer:initializer batchNormalizationGammaInitializer:biasesInitializer batchNormalizationBetaInitializer:gammaInitializer batchNormalizationMeanInitializer:betaInitializer batchNormalizationVarianceInitializer:meanInitializer batchNormalizationEpsilon:varianceInitializer paddingStyle:style dataLayout:layout weightsLayout:weightsLayout name:name];
 
   return v18;
 }
 
-- (id)convolution2DWithDefaultBatchNormalizationLayerWithTensor:(id)a3 kernelSizes:(id)a4 outputChannelCount:(unint64_t)a5 strides:(id)a6 activationType:(unsigned int)a7 weightsInitializer:(id)a8 biasesInitializer:(id)a9 paddingStyle:(unint64_t)a10 dataLayout:(unint64_t)a11 weightsLayout:(unint64_t)a12 name:(id)a13
+- (id)convolution2DWithDefaultBatchNormalizationLayerWithTensor:(id)tensor kernelSizes:(id)sizes outputChannelCount:(unint64_t)count strides:(id)strides activationType:(unsigned int)type weightsInitializer:(id)initializer biasesInitializer:(id)biasesInitializer paddingStyle:(unint64_t)self0 dataLayout:(unint64_t)self1 weightsLayout:(unint64_t)self2 name:(id)self3
 {
-  v32 = a3;
-  v31 = a4;
-  v30 = a6;
-  v18 = a8;
-  v19 = a9;
-  v20 = a13;
-  v29 = v18;
+  tensorCopy = tensor;
+  sizesCopy = sizes;
+  stridesCopy = strides;
+  initializerCopy = initializer;
+  biasesInitializerCopy = biasesInitializer;
+  nameCopy = name;
+  v29 = initializerCopy;
   v21 = +[MPSGraphVariableInitializer initializerWithOnes];
   v28 = +[MPSGraphVariableInitializer initializerWithZeros];
   v22 = +[MPSGraphVariableInitializer initializerWithZeros];
   v23 = +[MPSGraphVariableInitializer initializerWithZeros];
-  LODWORD(v26) = a7;
-  v24 = [(MPSGraph *)self convolution2DLayerWithTensor:v32 kernelSizes:v31 outputChannelCount:a5 strides:v30 dilationRates:&unk_1F5B77CA8 groups:1 activationType:0.001 weightsInitializer:v26 biasesInitializer:v29 batchNormalizationGammaInitializer:v19 batchNormalizationBetaInitializer:v21 batchNormalizationMeanInitializer:v28 batchNormalizationVarianceInitializer:v22 batchNormalizationEpsilon:v23 paddingStyle:a10 dataLayout:a11 weightsLayout:a12 name:v20];
+  LODWORD(v26) = type;
+  v24 = [(MPSGraph *)self convolution2DLayerWithTensor:tensorCopy kernelSizes:sizesCopy outputChannelCount:count strides:stridesCopy dilationRates:&unk_1F5B77CA8 groups:1 activationType:0.001 weightsInitializer:v26 biasesInitializer:v29 batchNormalizationGammaInitializer:biasesInitializerCopy batchNormalizationBetaInitializer:v21 batchNormalizationMeanInitializer:v28 batchNormalizationVarianceInitializer:v22 batchNormalizationEpsilon:v23 paddingStyle:style dataLayout:layout weightsLayout:weightsLayout name:nameCopy];
 
   return v24;
 }
 
-- (id)convolution2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 outputChannelCount:(unint64_t)a5 strides:(id)a6 activationType:(unsigned int)a7 weightsInitializer:(id)a8 biasesInitializer:(id)a9 paddingStyle:(unint64_t)a10 dataLayout:(unint64_t)a11 weightsLayout:(unint64_t)a12 name:(id)a13
+- (id)convolution2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes outputChannelCount:(unint64_t)count strides:(id)strides activationType:(unsigned int)type weightsInitializer:(id)initializer biasesInitializer:(id)biasesInitializer paddingStyle:(unint64_t)self0 dataLayout:(unint64_t)self1 weightsLayout:(unint64_t)self2 name:(id)self3
 {
-  LODWORD(v15) = a7;
-  v13 = [(MPSGraph *)self convolution2DLayerWithTensor:a3 kernelSizes:a4 outputChannelCount:a5 strides:a6 dilationRates:&unk_1F5B77CC0 groups:1 activationType:0.001 weightsInitializer:v15 biasesInitializer:a8 batchNormalizationGammaInitializer:a9 batchNormalizationBetaInitializer:0 batchNormalizationMeanInitializer:0 batchNormalizationVarianceInitializer:0 batchNormalizationEpsilon:0 paddingStyle:a10 dataLayout:a11 weightsLayout:a12 name:a13];
+  LODWORD(v15) = type;
+  v13 = [(MPSGraph *)self convolution2DLayerWithTensor:tensor kernelSizes:sizes outputChannelCount:count strides:strides dilationRates:&unk_1F5B77CC0 groups:1 activationType:0.001 weightsInitializer:v15 biasesInitializer:initializer batchNormalizationGammaInitializer:biasesInitializer batchNormalizationBetaInitializer:0 batchNormalizationMeanInitializer:0 batchNormalizationVarianceInitializer:0 batchNormalizationEpsilon:0 paddingStyle:style dataLayout:layout weightsLayout:weightsLayout name:name];
 
   return v13;
 }
 
-- (id)fullyConnectedLayerWithTensor:(id)a3 outputChannelCount:(unint64_t)a4 activationType:(unsigned int)a5 weightsInitializer:(id)a6 biasesInitializer:(id)a7 name:(id)a8
+- (id)fullyConnectedLayerWithTensor:(id)tensor outputChannelCount:(unint64_t)count activationType:(unsigned int)type weightsInitializer:(id)initializer biasesInitializer:(id)biasesInitializer name:(id)name
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v42 = a6;
-  v43 = a7;
-  v14 = a8;
-  v40 = [v13 shape];
-  v15 = [v40 objectAtIndexedSubscript:{objc_msgSend(v40, "count") - 1}];
-  v16 = [v15 unsignedIntegerValue];
+  tensorCopy = tensor;
+  initializerCopy = initializer;
+  biasesInitializerCopy = biasesInitializer;
+  nameCopy = name;
+  shape = [tensorCopy shape];
+  v15 = [shape objectAtIndexedSubscript:{objc_msgSend(shape, "count") - 1}];
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:v16];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:unsignedIntegerValue];
   v45[0] = v17;
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:count];
   v45[1] = v18;
   v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
 
-  v19 = [v42 initializedDataWithNumberOfValues:v16 * a4 dataType:268435488];
-  if (v14)
+  v19 = [initializerCopy initializedDataWithNumberOfValues:unsignedIntegerValue * count dataType:268435488];
+  if (nameCopy)
   {
-    [v14 stringByAppendingString:@"/weightsVariable"];
+    [nameCopy stringByAppendingString:@"/weightsVariable"];
   }
 
   else
@@ -14803,12 +14803,12 @@ LABEL_41:
   v21 = [(MPSGraph *)self variableWithData:v19 shape:v41 dataType:268435488 name:v20];
 
   traininableHighLevelOpVariables = self->_traininableHighLevelOpVariables;
-  v23 = [v21 operation];
-  [(NSMutableArray *)traininableHighLevelOpVariables addObject:v23];
+  operation = [v21 operation];
+  [(NSMutableArray *)traininableHighLevelOpVariables addObject:operation];
 
-  if (v14)
+  if (nameCopy)
   {
-    [v14 stringByAppendingString:@"/matMul"];
+    [nameCopy stringByAppendingString:@"/matMul"];
   }
 
   else
@@ -14816,19 +14816,19 @@ LABEL_41:
     [@"fullyConnectedLayer" stringByAppendingString:@"/matMul"];
   }
   v24 = ;
-  v25 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v13 secondaryTensor:v21 name:v24];
+  v25 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:tensorCopy secondaryTensor:v21 name:v24];
 
   v26 = v25;
   v27 = v26;
-  if (v43)
+  if (biasesInitializerCopy)
   {
-    v28 = [v43 initializedDataWithNumberOfValues:a4 dataType:268435488];
-    v29 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v28 = [biasesInitializerCopy initializedDataWithNumberOfValues:count dataType:268435488];
+    v29 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v44 = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-    if (v14)
+    if (nameCopy)
     {
-      [v14 stringByAppendingString:@"/biasAddVariable"];
+      [nameCopy stringByAppendingString:@"/biasAddVariable"];
     }
 
     else
@@ -14839,12 +14839,12 @@ LABEL_41:
     v32 = [(MPSGraph *)self variableWithData:v28 shape:v30 dataType:268435488 name:v31];
 
     v33 = self->_traininableHighLevelOpVariables;
-    v34 = [v32 operation];
-    [(NSMutableArray *)v33 addObject:v34];
+    operation2 = [v32 operation];
+    [(NSMutableArray *)v33 addObject:operation2];
 
-    if (v14)
+    if (nameCopy)
     {
-      [v14 stringByAppendingString:@"/biasAdd"];
+      [nameCopy stringByAppendingString:@"/biasAdd"];
     }
 
     else
@@ -14855,11 +14855,11 @@ LABEL_41:
     v27 = [(MPSGraph *)self additionWithPrimaryTensor:v26 secondaryTensor:v32 name:v35];
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
-    if (v14)
+    if (nameCopy)
     {
-      [v14 stringByAppendingString:@"/reLU"];
+      [nameCopy stringByAppendingString:@"/reLU"];
     }
 
     else
@@ -14875,150 +14875,150 @@ LABEL_41:
   return v27;
 }
 
-- (id)maxPooling2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 strides:(id)a5 paddingStyle:(unint64_t)a6 dataLayout:(unint64_t)a7 name:(id)a8
+- (id)maxPooling2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes strides:(id)strides paddingStyle:(unint64_t)style dataLayout:(unint64_t)layout name:(id)name
 {
-  v27 = a3;
-  v11 = a4;
-  v12 = a5;
-  v26 = a8;
-  v13 = [v11 objectAtIndexedSubscript:1];
-  v14 = [v13 integerValue];
-  v15 = [v11 objectAtIndexedSubscript:0];
-  v16 = [v15 integerValue];
-  v17 = [v12 objectAtIndexedSubscript:1];
-  v18 = [v17 integerValue];
-  v19 = [v12 objectAtIndexedSubscript:0];
-  v20 = +[MPSGraphPooling2DOpDescriptor descriptorWithKernelWidth:kernelHeight:strideInX:strideInY:paddingStyle:dataLayout:](MPSGraphPooling2DOpDescriptor, "descriptorWithKernelWidth:kernelHeight:strideInX:strideInY:paddingStyle:dataLayout:", v14, v16, v18, [v19 integerValue], a6, a7);
+  tensorCopy = tensor;
+  sizesCopy = sizes;
+  stridesCopy = strides;
+  nameCopy = name;
+  v13 = [sizesCopy objectAtIndexedSubscript:1];
+  integerValue = [v13 integerValue];
+  v15 = [sizesCopy objectAtIndexedSubscript:0];
+  integerValue2 = [v15 integerValue];
+  v17 = [stridesCopy objectAtIndexedSubscript:1];
+  integerValue3 = [v17 integerValue];
+  v19 = [stridesCopy objectAtIndexedSubscript:0];
+  v20 = +[MPSGraphPooling2DOpDescriptor descriptorWithKernelWidth:kernelHeight:strideInX:strideInY:paddingStyle:dataLayout:](MPSGraphPooling2DOpDescriptor, "descriptorWithKernelWidth:kernelHeight:strideInX:strideInY:paddingStyle:dataLayout:", integerValue, integerValue2, integerValue3, [v19 integerValue], style, layout);
 
-  v21 = [(MPSGraph *)self maxPooling2DWithSourceTensor:v27 descriptor:v20 name:v26];
+  v21 = [(MPSGraph *)self maxPooling2DWithSourceTensor:tensorCopy descriptor:v20 name:nameCopy];
 
   return v21;
 }
 
-- (id)avgPooling2DLayerWithTensor:(id)a3 kernelSizes:(id)a4 strides:(id)a5 paddingStyle:(unint64_t)a6 dataLayout:(unint64_t)a7 name:(id)a8
+- (id)avgPooling2DLayerWithTensor:(id)tensor kernelSizes:(id)sizes strides:(id)strides paddingStyle:(unint64_t)style dataLayout:(unint64_t)layout name:(id)name
 {
-  v27 = a3;
-  v11 = a4;
-  v12 = a5;
-  v26 = a8;
-  v13 = [v11 objectAtIndexedSubscript:1];
-  v14 = [v13 integerValue];
-  v15 = [v11 objectAtIndexedSubscript:0];
-  v16 = [v15 integerValue];
-  v17 = [v12 objectAtIndexedSubscript:1];
-  v18 = [v17 integerValue];
-  v19 = [v12 objectAtIndexedSubscript:0];
-  v20 = +[MPSGraphPooling2DOpDescriptor descriptorWithKernelWidth:kernelHeight:strideInX:strideInY:paddingStyle:dataLayout:](MPSGraphPooling2DOpDescriptor, "descriptorWithKernelWidth:kernelHeight:strideInX:strideInY:paddingStyle:dataLayout:", v14, v16, v18, [v19 integerValue], a6, a7);
+  tensorCopy = tensor;
+  sizesCopy = sizes;
+  stridesCopy = strides;
+  nameCopy = name;
+  v13 = [sizesCopy objectAtIndexedSubscript:1];
+  integerValue = [v13 integerValue];
+  v15 = [sizesCopy objectAtIndexedSubscript:0];
+  integerValue2 = [v15 integerValue];
+  v17 = [stridesCopy objectAtIndexedSubscript:1];
+  integerValue3 = [v17 integerValue];
+  v19 = [stridesCopy objectAtIndexedSubscript:0];
+  v20 = +[MPSGraphPooling2DOpDescriptor descriptorWithKernelWidth:kernelHeight:strideInX:strideInY:paddingStyle:dataLayout:](MPSGraphPooling2DOpDescriptor, "descriptorWithKernelWidth:kernelHeight:strideInX:strideInY:paddingStyle:dataLayout:", integerValue, integerValue2, integerValue3, [v19 integerValue], style, layout);
 
-  v21 = [(MPSGraph *)self avgPooling2DWithSourceTensor:v27 descriptor:v20 name:v26];
+  v21 = [(MPSGraph *)self avgPooling2DWithSourceTensor:tensorCopy descriptor:v20 name:nameCopy];
 
   return v21;
 }
 
-- (id)absoluteErrorWithPrimaryTensor:(id)a3 secondaryTensor:(id)a4 reductionType:(unint64_t)a5 name:(id)a6
+- (id)absoluteErrorWithPrimaryTensor:(id)tensor secondaryTensor:(id)secondaryTensor reductionType:(unint64_t)type name:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = @"absoluteError";
-  if (a6)
+  tensorCopy = tensor;
+  secondaryTensorCopy = secondaryTensor;
+  nameCopy = @"absoluteError";
+  if (name)
   {
-    v12 = a6;
+    nameCopy = name;
   }
 
-  v13 = v12;
+  v13 = nameCopy;
   v14 = [(__CFString *)v13 stringByAppendingString:@"/subtraction"];
-  v15 = [(MPSGraph *)self subtractionWithPrimaryTensor:v10 secondaryTensor:v11 name:v14];
+  v15 = [(MPSGraph *)self subtractionWithPrimaryTensor:tensorCopy secondaryTensor:secondaryTensorCopy name:v14];
 
   v16 = [(__CFString *)v13 stringByAppendingString:@"/absolute"];
   v17 = [(MPSGraph *)self absoluteWithTensor:v15 name:v16];
 
-  v18 = [(MPSGraph *)self lossReductionWithTensor:v17 reductionType:a5 axis:0 name:v13];
+  v18 = [(MPSGraph *)self lossReductionWithTensor:v17 reductionType:type axis:0 name:v13];
 
   return v18;
 }
 
-- (id)squaredErrorWithPrimaryTensor:(id)a3 secondaryTensor:(id)a4 reductionType:(unint64_t)a5 name:(id)a6
+- (id)squaredErrorWithPrimaryTensor:(id)tensor secondaryTensor:(id)secondaryTensor reductionType:(unint64_t)type name:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = @"squaredError";
-  if (a6)
+  tensorCopy = tensor;
+  secondaryTensorCopy = secondaryTensor;
+  nameCopy = @"squaredError";
+  if (name)
   {
-    v12 = a6;
+    nameCopy = name;
   }
 
-  v13 = v12;
+  v13 = nameCopy;
   v14 = [(__CFString *)v13 stringByAppendingString:@"/subtraction"];
-  v15 = [(MPSGraph *)self subtractionWithPrimaryTensor:v10 secondaryTensor:v11 name:v14];
+  v15 = [(MPSGraph *)self subtractionWithPrimaryTensor:tensorCopy secondaryTensor:secondaryTensorCopy name:v14];
 
   v16 = [(__CFString *)v13 stringByAppendingString:@"/square"];
   v17 = [(MPSGraph *)self squareWithTensor:v15 name:v16];
 
   v18 = v17;
   v19 = v18;
-  if (!a5)
+  if (!type)
   {
-    v20 = -[MPSGraph constantWithScalar:dataType:](self, "constantWithScalar:dataType:", [v10 dataType], 0.5);
+    v20 = -[MPSGraph constantWithScalar:dataType:](self, "constantWithScalar:dataType:", [tensorCopy dataType], 0.5);
     v21 = [(__CFString *)v13 stringByAppendingString:@"/mul"];
     v19 = [(MPSGraph *)self multiplicationWithPrimaryTensor:v18 secondaryTensor:v20 name:v21];
   }
 
-  v22 = [(MPSGraph *)self lossReductionWithTensor:v19 reductionType:a5 axis:0 name:v13];
+  v22 = [(MPSGraph *)self lossReductionWithTensor:v19 reductionType:type axis:0 name:v13];
 
   return v22;
 }
 
-- (id)kernelPredictorWithSourceTensor:(id)a3 weightsTensor:(id)a4 layout:(unint64_t)a5 kernelShape:(id)a6 name:(id)a7
+- (id)kernelPredictorWithSourceTensor:(id)tensor weightsTensor:(id)weightsTensor layout:(unint64_t)layout kernelShape:(id)shape name:(id)name
 {
-  v7 = [(MPSGraph *)self kernelPredictorWithSourceTensor:a3 weightsTensor:a4 layout:a5 kernelShape:a6 dilationRates:&unk_1F5B77CD8 name:a7];
+  v7 = [(MPSGraph *)self kernelPredictorWithSourceTensor:tensor weightsTensor:weightsTensor layout:layout kernelShape:shape dilationRates:&unk_1F5B77CD8 name:name];
 
   return v7;
 }
 
-- (id)kernelPredictorWithSourceTensor:(id)a3 weightsTensor:(id)a4 layout:(unint64_t)a5 kernelShape:(id)a6 dilationRates:(id)a7 name:(id)a8
+- (id)kernelPredictorWithSourceTensor:(id)tensor weightsTensor:(id)weightsTensor layout:(unint64_t)layout kernelShape:(id)shape dilationRates:(id)rates name:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = @"kernelPredictor";
-  if (a8)
+  tensorCopy = tensor;
+  weightsTensorCopy = weightsTensor;
+  shapeCopy = shape;
+  ratesCopy = rates;
+  nameCopy = @"kernelPredictor";
+  if (name)
   {
-    v18 = a8;
+    nameCopy = name;
   }
 
-  v19 = v18;
-  v20 = [v17 objectAtIndexedSubscript:0];
-  v21 = [v20 integerValue];
-  v22 = [v17 objectAtIndexedSubscript:1];
-  v23 = -[MPSGraph localConvolutionWithSourceTensor:weightTensor:dataLayout:kernelShape:dilationRateInX:dilationRateInY:name:](self, "localConvolutionWithSourceTensor:weightTensor:dataLayout:kernelShape:dilationRateInX:dilationRateInY:name:", v14, v15, a5, v16, v21, [v22 integerValue], v19);
+  v19 = nameCopy;
+  v20 = [ratesCopy objectAtIndexedSubscript:0];
+  integerValue = [v20 integerValue];
+  v22 = [ratesCopy objectAtIndexedSubscript:1];
+  v23 = -[MPSGraph localConvolutionWithSourceTensor:weightTensor:dataLayout:kernelShape:dilationRateInX:dilationRateInY:name:](self, "localConvolutionWithSourceTensor:weightTensor:dataLayout:kernelShape:dilationRateInX:dilationRateInY:name:", tensorCopy, weightsTensorCopy, layout, shapeCopy, integerValue, [v22 integerValue], v19);
 
   return v23;
 }
 
-- (id)stitchedOpsWithBlock:(id)a3 name:(id)a4
+- (id)stitchedOpsWithBlock:(id)block name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  nameCopy = name;
   v8 = [MPSGraphStitchedOp alloc];
-  v9 = [(MPSGraphStitchedOp *)v8 initWithGraph:self withBlock:v6 inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] name:v7];
-  v10 = [(MPSGraphOperation *)v9 outputTensors];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  v9 = [(MPSGraphStitchedOp *)v8 initWithGraph:self withBlock:blockCopy inputTensors:MEMORY[0x1E695E0F0] controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v9 outputTensors];
+  v11 = [outputTensors objectAtIndexedSubscript:0];
 
   return v11;
 }
 
-- (id)varFromTensorWithTensor:(id)a3 name:(id)a4
+- (id)varFromTensorWithTensor:(id)tensor name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[MPSGraphVariableFromTensorOp alloc] initWithGraph:self tensor:v6 name:v7];
-  v9 = [(MPSGraphOperation *)v8 outputTensors];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  tensorCopy = tensor;
+  nameCopy = name;
+  v8 = [[MPSGraphVariableFromTensorOp alloc] initWithGraph:self tensor:tensorCopy name:nameCopy];
+  outputTensors = [(MPSGraphOperation *)v8 outputTensors];
+  v10 = [outputTensors objectAtIndexedSubscript:0];
   [v10 value];
 
-  v11 = [(MPSGraphOperation *)v8 outputTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  outputTensors2 = [(MPSGraphOperation *)v8 outputTensors];
+  v12 = [outputTensors2 objectAtIndexedSubscript:0];
 
   return v12;
 }
@@ -15035,22 +15035,22 @@ LABEL_41:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v13 = [(MPSGraphOperation *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] name:v10];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
 
-- (id)matrixMultiplicationPrimaryGradientWithIncomingGradientTensor:(id)a3 primaryTensor:(id)a4 secondaryTensor:(id)a5 name:(id)a6
+- (id)matrixMultiplicationPrimaryGradientWithIncomingGradientTensor:(id)tensor primaryTensor:(id)primaryTensor secondaryTensor:(id)secondaryTensor name:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  tensorCopy = tensor;
+  primaryTensorCopy = primaryTensor;
+  secondaryTensorCopy = secondaryTensor;
+  nameCopy = name;
+  v14 = nameCopy;
+  if (nameCopy)
   {
-    v15 = [v13 stringByAppendingString:@"/transpose"];
+    v15 = [nameCopy stringByAppendingString:@"/transpose"];
   }
 
   else
@@ -15058,26 +15058,26 @@ LABEL_41:
     v15 = @"matMulGrad/transpose";
   }
 
-  v16 = [(MPSGraph *)self transposeTensor:v12 dimension:-1 withDimension:-2 name:v15];
+  v16 = [(MPSGraph *)self transposeTensor:secondaryTensorCopy dimension:-1 withDimension:-2 name:v15];
   if (v14)
   {
   }
 
-  v17 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v10 secondaryTensor:v16 name:v14];
+  v17 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:tensorCopy secondaryTensor:v16 name:v14];
 
   return v17;
 }
 
-- (id)matrixMultiplicationSecondaryGradientWithIncomingGradientTensor:(id)a3 primaryTensor:(id)a4 secondaryTensor:(id)a5 name:(id)a6
+- (id)matrixMultiplicationSecondaryGradientWithIncomingGradientTensor:(id)tensor primaryTensor:(id)primaryTensor secondaryTensor:(id)secondaryTensor name:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  tensorCopy = tensor;
+  primaryTensorCopy = primaryTensor;
+  secondaryTensorCopy = secondaryTensor;
+  nameCopy = name;
+  v14 = nameCopy;
+  if (nameCopy)
   {
-    v15 = [v13 stringByAppendingString:@"/transpose"];
+    v15 = [nameCopy stringByAppendingString:@"/transpose"];
   }
 
   else
@@ -15085,12 +15085,12 @@ LABEL_41:
     v15 = @"matMulGrad/transpose";
   }
 
-  v16 = [(MPSGraph *)self transposeTensor:v11 dimension:-1 withDimension:-2 name:v15];
+  v16 = [(MPSGraph *)self transposeTensor:primaryTensorCopy dimension:-1 withDimension:-2 name:v15];
   if (v14)
   {
   }
 
-  v17 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v16 secondaryTensor:v10 name:v14];
+  v17 = [(MPSGraph *)self matrixMultiplicationWithPrimaryTensor:v16 secondaryTensor:tensorCopy name:v14];
 
   return v17;
 }
@@ -15108,46 +15108,46 @@ LABEL_41:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v15 = [(MPSGraphHammingDistanceOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] resultDataType:v7 name:v12];
 
-  v16 = [(MPSGraphOperation *)v15 outputTensors];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v15 outputTensors];
+  v17 = [outputTensors objectAtIndexedSubscript:0];
 
   return v17;
 }
 
-- (id)scaledDotProductAttentionWithQueryTensor:(id)a3 keyTensor:(id)a4 valueTensor:(id)a5 maskTensor:(id)a6 scale:(float)a7 name:(id)a8
+- (id)scaledDotProductAttentionWithQueryTensor:(id)tensor keyTensor:(id)keyTensor valueTensor:(id)valueTensor maskTensor:(id)maskTensor scale:(float)scale name:(id)name
 {
   v28[5] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = v17;
+  tensorCopy = tensor;
+  keyTensorCopy = keyTensor;
+  valueTensorCopy = valueTensor;
+  maskTensorCopy = maskTensor;
+  nameCopy = name;
+  v19 = maskTensorCopy;
   v20 = v19;
   if (!v19)
   {
-    v20 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77DB0, [v14 dataType], 0.0);
+    v20 = -[MPSGraph constantWithScalar:shape:dataType:](self, "constantWithScalar:shape:dataType:", &unk_1F5B77DB0, [tensorCopy dataType], 0.0);
   }
 
-  v21 = -[MPSGraph constantWithScalar:dataType:](self, "constantWithScalar:dataType:", [v14 dataType], a7);
+  v21 = -[MPSGraph constantWithScalar:dataType:](self, "constantWithScalar:dataType:", [tensorCopy dataType], scale);
   v22 = [MPSGraphScaledDotProductAttentionOp alloc];
-  v28[0] = v14;
-  v28[1] = v15;
-  v28[2] = v16;
+  v28[0] = tensorCopy;
+  v28[1] = keyTensorCopy;
+  v28[2] = valueTensorCopy;
   v28[3] = v20;
   v28[4] = v21;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:5];
-  v24 = [(MPSGraphOperation *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] name:v18];
+  v24 = [(MPSGraphOperation *)v22 initWithGraph:self inputTensors:v23 controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
-  v25 = [(MPSGraphOperation *)v24 outputTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v24 outputTensors];
+  v26 = [outputTensors objectAtIndexedSubscript:0];
 
   return v26;
 }
 
-- (id)scaledDotProductAttentionWithQueryTensor:(id)a3 keyTensor:(id)a4 valueTensor:(id)a5 scale:(float)a6 name:(id)a7
+- (id)scaledDotProductAttentionWithQueryTensor:(id)tensor keyTensor:(id)keyTensor valueTensor:(id)valueTensor scale:(float)scale name:(id)name
 {
-  v7 = [(MPSGraph *)self scaledDotProductAttentionWithQueryTensor:a3 keyTensor:a4 valueTensor:a5 maskTensor:0 scale:a7 name:?];
+  v7 = [(MPSGraph *)self scaledDotProductAttentionWithQueryTensor:tensor keyTensor:keyTensor valueTensor:valueTensor maskTensor:0 scale:name name:?];
 
   return v7;
 }
@@ -15167,8 +15167,8 @@ LABEL_41:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
   v18 = [(MPSGraphQuantizeOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] dataType:v8 axis:0 name:v13];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
+  v20 = [outputTensors objectAtIndexedSubscript:0];
 
   return v20;
 }
@@ -15188,8 +15188,8 @@ LABEL_41:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
   v18 = [(MPSGraphDequantizeOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] dataType:v8 axis:0 name:v13];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
+  v20 = [outputTensors objectAtIndexedSubscript:0];
 
   return v20;
 }
@@ -15232,8 +15232,8 @@ LABEL_41:
   v20 = [MEMORY[0x1E696AD98] numberWithInteger:axis];
   v21 = [(MPSGraphQuantizeOp *)v18 initWithGraph:self inputTensors:v19 controlDependencies:MEMORY[0x1E695E0F0] dataType:v10 axis:v20 name:v17];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
@@ -15254,190 +15254,190 @@ LABEL_41:
   v20 = [MEMORY[0x1E696AD98] numberWithInteger:axis];
   v21 = [(MPSGraphDequantizeOp *)v18 initWithGraph:self inputTensors:v19 controlDependencies:MEMORY[0x1E695E0F0] dataType:v10 axis:v20 name:v17];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
 
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 minTensor:(id)a6 dataType:(unsigned int)a7 axis:(int64_t)a8 name:(id)a9
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor minTensor:(id)minTensor dataType:(unsigned int)type axis:(int64_t)axis name:(id)name
 {
-  v10 = *&a7;
+  v10 = *&type;
   v27[4] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
+  tensorCopy = tensor;
+  scaleTensorCopy = scaleTensor;
+  pointTensorCopy = pointTensor;
+  minTensorCopy = minTensor;
+  nameCopy = name;
   v20 = [MPSGraphDequantizeOp alloc];
-  v27[0] = v15;
-  v27[1] = v16;
-  v27[2] = v17;
-  v27[3] = v18;
+  v27[0] = tensorCopy;
+  v27[1] = scaleTensorCopy;
+  v27[2] = pointTensorCopy;
+  v27[3] = minTensorCopy;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
-  v22 = [MEMORY[0x1E696AD98] numberWithInteger:a8];
-  v23 = [(MPSGraphDequantizeOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] dataType:v10 axis:v22 name:v19];
+  v22 = [MEMORY[0x1E696AD98] numberWithInteger:axis];
+  v23 = [(MPSGraphDequantizeOp *)v20 initWithGraph:self inputTensors:v21 controlDependencies:MEMORY[0x1E695E0F0] dataType:v10 axis:v22 name:nameCopy];
 
-  v24 = [(MPSGraphOperation *)v23 outputTensors];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v23 outputTensors];
+  v25 = [outputTensors objectAtIndexedSubscript:0];
 
   return v25;
 }
 
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 minTensor:(id)a6 dataType:(unsigned int)a7 name:(id)a8
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor minTensor:(id)minTensor dataType:(unsigned int)type name:(id)name
 {
-  v9 = *&a7;
+  v9 = *&type;
   v25[4] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  tensorCopy = tensor;
+  scaleTensorCopy = scaleTensor;
+  pointTensorCopy = pointTensor;
+  minTensorCopy = minTensor;
+  nameCopy = name;
   v19 = [MPSGraphDequantizeOp alloc];
-  v25[0] = v14;
-  v25[1] = v15;
-  v25[2] = v16;
-  v25[3] = v17;
+  v25[0] = tensorCopy;
+  v25[1] = scaleTensorCopy;
+  v25[2] = pointTensorCopy;
+  v25[3] = minTensorCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
-  v21 = [(MPSGraphDequantizeOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] dataType:v9 axis:0 name:v18];
+  v21 = [(MPSGraphDequantizeOp *)v19 initWithGraph:self inputTensors:v20 controlDependencies:MEMORY[0x1E695E0F0] dataType:v9 axis:0 name:nameCopy];
 
-  v22 = [(MPSGraphOperation *)v21 outputTensors];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v21 outputTensors];
+  v23 = [outputTensors objectAtIndexedSubscript:0];
 
   return v23;
 }
 
-- (id)quantizeTensor:(id)a3 scale:(double)a4 zeroPoint:(double)a5 dtype:(unsigned int)a6 name:(id)a7
+- (id)quantizeTensor:(id)tensor scale:(double)scale zeroPoint:(double)point dtype:(unsigned int)dtype name:(id)name
 {
-  v7 = [(MPSGraph *)self quantizeTensor:a3 scale:*&a6 zeroPoint:a7 dataType:a4 name:a5];
+  v7 = [(MPSGraph *)self quantizeTensor:tensor scale:*&dtype zeroPoint:name dataType:scale name:point];
 
   return v7;
 }
 
-- (id)dequantizeTensor:(id)a3 scale:(double)a4 zeroPoint:(double)a5 dtype:(unsigned int)a6 name:(id)a7
+- (id)dequantizeTensor:(id)tensor scale:(double)scale zeroPoint:(double)point dtype:(unsigned int)dtype name:(id)name
 {
-  v7 = [(MPSGraph *)self dequantizeTensor:a3 scale:*&a6 zeroPoint:a7 dataType:a4 name:a5];
+  v7 = [(MPSGraph *)self dequantizeTensor:tensor scale:*&dtype zeroPoint:name dataType:scale name:point];
 
   return v7;
 }
 
-- (id)quantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPoint:(double)a5 dtype:(unsigned int)a6 axis:(int)a7 name:(id)a8
+- (id)quantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPoint:(double)point dtype:(unsigned int)dtype axis:(int)axis name:(id)name
 {
-  v8 = [(MPSGraph *)self quantizeTensor:a3 scaleTensor:a4 zeroPoint:*&a6 dataType:a7 axis:a8 name:a5];
+  v8 = [(MPSGraph *)self quantizeTensor:tensor scaleTensor:scaleTensor zeroPoint:*&dtype dataType:axis axis:name name:point];
 
   return v8;
 }
 
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPoint:(double)a5 dtype:(unsigned int)a6 axis:(int)a7 name:(id)a8
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPoint:(double)point dtype:(unsigned int)dtype axis:(int)axis name:(id)name
 {
-  v8 = [(MPSGraph *)self dequantizeTensor:a3 scaleTensor:a4 zeroPoint:*&a6 dataType:a7 axis:a8 name:a5];
+  v8 = [(MPSGraph *)self dequantizeTensor:tensor scaleTensor:scaleTensor zeroPoint:*&dtype dataType:axis axis:name name:point];
 
   return v8;
 }
 
-- (id)quantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 dtype:(unsigned int)a6 axis:(int)a7 name:(id)a8
+- (id)quantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor dtype:(unsigned int)dtype axis:(int)axis name:(id)name
 {
-  v8 = [(MPSGraph *)self quantizeTensor:a3 scaleTensor:a4 zeroPointTensor:a5 dataType:*&a6 axis:a7 name:a8];
+  v8 = [(MPSGraph *)self quantizeTensor:tensor scaleTensor:scaleTensor zeroPointTensor:pointTensor dataType:*&dtype axis:axis name:name];
 
   return v8;
 }
 
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 dtype:(unsigned int)a6 axis:(int)a7 name:(id)a8
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor dtype:(unsigned int)dtype axis:(int)axis name:(id)name
 {
-  v8 = [(MPSGraph *)self dequantizeTensor:a3 scaleTensor:a4 zeroPointTensor:a5 dataType:*&a6 axis:a7 name:a8];
+  v8 = [(MPSGraph *)self dequantizeTensor:tensor scaleTensor:scaleTensor zeroPointTensor:pointTensor dataType:*&dtype axis:axis name:name];
 
   return v8;
 }
 
-- (id)dequantizeTensor:(id)a3 LUTTensor:(id)a4 name:(id)a5
+- (id)dequantizeTensor:(id)tensor LUTTensor:(id)tTensor name:(id)name
 {
-  v5 = [(MPSGraph *)self dequantizeTensor:a3 lutTableTensor:a4 name:a5];
+  v5 = [(MPSGraph *)self dequantizeTensor:tensor lutTableTensor:tTensor name:name];
 
   return v5;
 }
 
-- (id)dequantizeTensor:(id)a3 LUTTensor:(id)a4 axis:(int64_t)a5 name:(id)a6
+- (id)dequantizeTensor:(id)tensor LUTTensor:(id)tTensor axis:(int64_t)axis name:(id)name
 {
-  v6 = [(MPSGraph *)self dequantizeTensor:a3 lutTableTensor:a4 axis:a5 name:a6];
+  v6 = [(MPSGraph *)self dequantizeTensor:tensor lutTableTensor:tTensor axis:axis name:name];
 
   return v6;
 }
 
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 zeroPointTensor:(id)a5 dataType:(unsigned int)a6 name:(id)a7
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor zeroPointTensor:(id)pointTensor dataType:(unsigned int)type name:(id)name
 {
-  v8 = *&a6;
+  v8 = *&type;
   v22[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  tensorCopy = tensor;
+  scaleTensorCopy = scaleTensor;
+  pointTensorCopy = pointTensor;
+  nameCopy = name;
   v16 = [MPSGraphDequantizeOp alloc];
-  v22[0] = v12;
-  v22[1] = v13;
-  v22[2] = v14;
+  v22[0] = tensorCopy;
+  v22[1] = scaleTensorCopy;
+  v22[2] = pointTensorCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
-  v18 = [(MPSGraphDequantizeOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] dataType:v8 axis:0 name:v15];
+  v18 = [(MPSGraphDequantizeOp *)v16 initWithGraph:self inputTensors:v17 controlDependencies:MEMORY[0x1E695E0F0] dataType:v8 axis:0 name:nameCopy];
 
-  v19 = [(MPSGraphOperation *)v18 outputTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v18 outputTensors];
+  v20 = [outputTensors objectAtIndexedSubscript:0];
 
   return v20;
 }
 
-- (id)dequantizeTensor:(id)a3 scaleTensor:(id)a4 dataType:(unsigned int)a5 name:(id)a6
+- (id)dequantizeTensor:(id)tensor scaleTensor:(id)scaleTensor dataType:(unsigned int)type name:(id)name
 {
-  v7 = *&a5;
+  v7 = *&type;
   v20[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  tensorCopy = tensor;
+  scaleTensorCopy = scaleTensor;
+  nameCopy = name;
   v13 = [(MPSGraph *)self constantWithScalar:536870920 dataType:0.0];
   v14 = [MPSGraphDequantizeOp alloc];
-  v20[0] = v10;
-  v20[1] = v11;
+  v20[0] = tensorCopy;
+  v20[1] = scaleTensorCopy;
   v20[2] = v13;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
-  v16 = [(MPSGraphDequantizeOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] dataType:v7 axis:0 name:v12];
+  v16 = [(MPSGraphDequantizeOp *)v14 initWithGraph:self inputTensors:v15 controlDependencies:MEMORY[0x1E695E0F0] dataType:v7 axis:0 name:nameCopy];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }
 
-- (id)dequantizeTensor:(id)a3 lutTableTensor:(id)a4 name:(id)a5
+- (id)dequantizeTensor:(id)tensor lutTableTensor:(id)tableTensor name:(id)name
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tensorCopy = tensor;
+  tableTensorCopy = tableTensor;
+  nameCopy = name;
   v11 = [MPSGraphDequantizeLUTOp alloc];
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = tensorCopy;
+  v17[1] = tableTensorCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MPSGraphDequantizeLUTOp *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] axis:0 name:v10];
+  v13 = [(MPSGraphDequantizeLUTOp *)v11 initWithGraph:self inputTensors:v12 controlDependencies:MEMORY[0x1E695E0F0] axis:0 name:nameCopy];
 
-  v14 = [(MPSGraphOperation *)v13 outputTensors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v13 outputTensors];
+  v15 = [outputTensors objectAtIndexedSubscript:0];
 
   return v15;
 }
 
-- (id)dequantizeTensor:(id)a3 lutTableTensor:(id)a4 axis:(int64_t)a5 name:(id)a6
+- (id)dequantizeTensor:(id)tensor lutTableTensor:(id)tableTensor axis:(int64_t)axis name:(id)name
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  tensorCopy = tensor;
+  tableTensorCopy = tableTensor;
+  nameCopy = name;
   v13 = [MPSGraphDequantizeLUTOp alloc];
-  v20[0] = v10;
-  v20[1] = v11;
+  v20[0] = tensorCopy;
+  v20[1] = tableTensorCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-  v16 = [(MPSGraphDequantizeLUTOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] axis:v15 name:v12];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:axis];
+  v16 = [(MPSGraphDequantizeLUTOp *)v13 initWithGraph:self inputTensors:v14 controlDependencies:MEMORY[0x1E695E0F0] axis:v15 name:nameCopy];
 
-  v17 = [(MPSGraphOperation *)v16 outputTensors];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)v16 outputTensors];
+  v18 = [outputTensors objectAtIndexedSubscript:0];
 
   return v18;
 }

@@ -1,40 +1,40 @@
 @interface TUVoucher
-+ (id)voucherFromMessagingData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVoucher:(id)a3;
-- (TUVoucher)initWithCoder:(id)a3;
-- (TUVoucher)initWithHandle:(id)a3 tokenPrefixedURI:(id)a4 data:(id)a5 encryptedData:(id)a6;
-- (TUVoucher)initWithVoucher:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)voucherFromMessagingData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVoucher:(id)voucher;
+- (TUVoucher)initWithCoder:(id)coder;
+- (TUVoucher)initWithHandle:(id)handle tokenPrefixedURI:(id)i data:(id)data encryptedData:(id)encryptedData;
+- (TUVoucher)initWithVoucher:(id)voucher;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)messagingData;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUVoucher
 
-- (TUVoucher)initWithHandle:(id)a3 tokenPrefixedURI:(id)a4 data:(id)a5 encryptedData:(id)a6
+- (TUVoucher)initWithHandle:(id)handle tokenPrefixedURI:(id)i data:(id)data encryptedData:(id)encryptedData
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  handleCopy = handle;
+  iCopy = i;
+  dataCopy = data;
+  encryptedDataCopy = encryptedData;
   v23.receiver = self;
   v23.super_class = TUVoucher;
   v15 = [(TUVoucher *)&v23 init];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [encryptedDataCopy copy];
     encryptedData = v15->_encryptedData;
     v15->_encryptedData = v16;
 
-    objc_storeStrong(&v15->_handle, a3);
-    v18 = [v12 copy];
+    objc_storeStrong(&v15->_handle, handle);
+    v18 = [iCopy copy];
     tokenPrefixedURI = v15->_tokenPrefixedURI;
     v15->_tokenPrefixedURI = v18;
 
-    v20 = [v13 copy];
+    v20 = [dataCopy copy];
     unsafeData = v15->_unsafeData;
     v15->_unsafeData = v20;
   }
@@ -42,31 +42,31 @@
   return v15;
 }
 
-- (TUVoucher)initWithVoucher:(id)a3
+- (TUVoucher)initWithVoucher:(id)voucher
 {
-  v4 = a3;
+  voucherCopy = voucher;
   v19.receiver = self;
   v19.super_class = TUVoucher;
   v5 = [(TUVoucher *)&v19 init];
   if (v5)
   {
-    v6 = [v4 encryptedData];
-    v7 = [v6 copy];
+    encryptedData = [voucherCopy encryptedData];
+    v7 = [encryptedData copy];
     encryptedData = v5->_encryptedData;
     v5->_encryptedData = v7;
 
-    v9 = [v4 handle];
-    v10 = [v9 copy];
+    handle = [voucherCopy handle];
+    v10 = [handle copy];
     handle = v5->_handle;
     v5->_handle = v10;
 
-    v12 = [v4 tokenPrefixedURI];
-    v13 = [v12 copy];
+    tokenPrefixedURI = [voucherCopy tokenPrefixedURI];
+    v13 = [tokenPrefixedURI copy];
     tokenPrefixedURI = v5->_tokenPrefixedURI;
     v5->_tokenPrefixedURI = v13;
 
-    v15 = [v4 unsafeData];
-    v16 = [v15 copy];
+    unsafeData = [voucherCopy unsafeData];
+    v16 = [unsafeData copy];
     unsafeData = v5->_unsafeData;
     v5->_unsafeData = v16;
   }
@@ -74,9 +74,9 @@
   return v5;
 }
 
-- (TUVoucher)initWithCoder:(id)a3
+- (TUVoucher)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = TUVoucher;
   v5 = [(TUVoucher *)&v23 init];
@@ -84,25 +84,25 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_encryptedData);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     encryptedData = v5->_encryptedData;
     v5->_encryptedData = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_handle);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     handle = v5->_handle;
     v5->_handle = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_tokenPrefixedURI);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     tokenPrefixedURI = v5->_tokenPrefixedURI;
     v5->_tokenPrefixedURI = v16;
 
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(sel_unsafeData);
-    v20 = [v4 decodeObjectOfClass:v18 forKey:v19];
+    v20 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
     unsafeData = v5->_unsafeData;
     v5->_unsafeData = v20;
   }
@@ -110,29 +110,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   encryptedData = self->_encryptedData;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_encryptedData);
-  [v5 encodeObject:encryptedData forKey:v6];
+  [coderCopy encodeObject:encryptedData forKey:v6];
 
   handle = self->_handle;
   v8 = NSStringFromSelector(sel_handle);
-  [v5 encodeObject:handle forKey:v8];
+  [coderCopy encodeObject:handle forKey:v8];
 
   tokenPrefixedURI = self->_tokenPrefixedURI;
   v10 = NSStringFromSelector(sel_tokenPrefixedURI);
-  [v5 encodeObject:tokenPrefixedURI forKey:v10];
+  [coderCopy encodeObject:tokenPrefixedURI forKey:v10];
 
   unsafeData = self->_unsafeData;
   v12 = NSStringFromSelector(sel_unsafeData);
-  [v5 encodeObject:unsafeData forKey:v12];
+  [coderCopy encodeObject:unsafeData forKey:v12];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUVoucher allocWithZone:a3];
+  v4 = [TUVoucher allocWithZone:zone];
 
   return [(TUVoucher *)v4 initWithVoucher:self];
 }
@@ -141,18 +141,18 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   v4 = NSStringFromSelector(sel_handle);
-  v5 = [(TUVoucher *)self handle];
-  [v3 appendFormat:@" %@=%@", v4, v5];
+  handle = [(TUVoucher *)self handle];
+  [v3 appendFormat:@" %@=%@", v4, handle];
 
   v6 = NSStringFromSelector(sel_tokenPrefixedURI);
-  v7 = [(TUVoucher *)self tokenPrefixedURI];
-  [v3 appendFormat:@" %@=%@", v6, v7];
+  tokenPrefixedURI = [(TUVoucher *)self tokenPrefixedURI];
+  [v3 appendFormat:@" %@=%@", v6, tokenPrefixedURI];
 
-  v8 = [(TUVoucher *)self data];
-  [v3 appendFormat:@" unsafeDataHash=%tu", objc_msgSend(v8, "hash")];
+  data = [(TUVoucher *)self data];
+  [v3 appendFormat:@" unsafeDataHash=%tu", objc_msgSend(data, "hash")];
 
-  v9 = [(TUVoucher *)self encryptedData];
-  [v3 appendFormat:@" encryptedDataHash=%tu", objc_msgSend(v9, "hash")];
+  encryptedData = [(TUVoucher *)self encryptedData];
+  [v3 appendFormat:@" encryptedDataHash=%tu", objc_msgSend(encryptedData, "hash")];
 
   [v3 appendString:@">"];
   v10 = [v3 copy];
@@ -171,25 +171,25 @@
 - (id)messagingData
 {
   v2 = [CSDMessagingVoucher voucherWithTUVoucher:self];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
-+ (id)voucherFromMessagingData:(id)a3
++ (id)voucherFromMessagingData:(id)data
 {
-  v3 = a3;
-  v4 = [[CSDMessagingVoucher alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[CSDMessagingVoucher alloc] initWithData:dataCopy];
 
-  v5 = [(CSDMessagingVoucher *)v4 tuVoucher];
+  tuVoucher = [(CSDMessagingVoucher *)v4 tuVoucher];
 
-  return v5;
+  return tuVoucher;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -197,30 +197,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUVoucher *)self isEqualToVoucher:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUVoucher *)self isEqualToVoucher:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToVoucher:(id)a3
+- (BOOL)isEqualToVoucher:(id)voucher
 {
-  v4 = a3;
+  voucherCopy = voucher;
   encryptedData = self->_encryptedData;
-  v6 = [v4 encryptedData];
-  if ([(NSData *)encryptedData isEqualToData:v6])
+  encryptedData = [voucherCopy encryptedData];
+  if ([(NSData *)encryptedData isEqualToData:encryptedData])
   {
     handle = self->_handle;
-    v8 = [v4 handle];
-    if ([(TUHandle *)handle isEqualToHandle:v8])
+    handle = [voucherCopy handle];
+    if ([(TUHandle *)handle isEqualToHandle:handle])
     {
       tokenPrefixedURI = self->_tokenPrefixedURI;
-      v10 = [v4 tokenPrefixedURI];
-      if ([(NSString *)tokenPrefixedURI isEqualToString:v10])
+      tokenPrefixedURI = [voucherCopy tokenPrefixedURI];
+      if ([(NSString *)tokenPrefixedURI isEqualToString:tokenPrefixedURI])
       {
         unsafeData = self->_unsafeData;
-        v12 = [v4 unsafeData];
-        v13 = [(NSData *)unsafeData isEqualToData:v12];
+        unsafeData = [voucherCopy unsafeData];
+        v13 = [(NSData *)unsafeData isEqualToData:unsafeData];
       }
 
       else

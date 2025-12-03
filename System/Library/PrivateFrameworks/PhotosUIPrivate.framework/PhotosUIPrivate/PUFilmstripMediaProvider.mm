@@ -1,18 +1,18 @@
 @interface PUFilmstripMediaProvider
-- (PUFilmstripMediaProvider)initWithAVAsset:(id)a3 videoComposition:(id)a4;
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
+- (PUFilmstripMediaProvider)initWithAVAsset:(id)asset videoComposition:(id)composition;
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
 - (void)_deliverPendingResults;
 - (void)_deliverPlaceholderImage;
-- (void)_deliverResult:(id)a3;
-- (void)_didGenerateImage:(id)a3 error:(id)a4 requestedTime:(id *)a5 actualTime:(id *)a6 generatorResult:(int64_t)a7 forResult:(id)a8;
-- (void)_generateImageForResult:(id)a3;
-- (void)_handleSourceTimeLoadedForAsset:(id)a3 time:(double)a4 targetSize:(CGSize)a5 contentMode:(int64_t)a6 requestNumber:(int64_t)a7;
+- (void)_deliverResult:(id)result;
+- (void)_didGenerateImage:(id)image error:(id)error requestedTime:(id *)time actualTime:(id *)actualTime generatorResult:(int64_t)result forResult:(id)forResult;
+- (void)_generateImageForResult:(id)result;
+- (void)_handleSourceTimeLoadedForAsset:(id)asset time:(double)time targetSize:(CGSize)size contentMode:(int64_t)mode requestNumber:(int64_t)number;
 - (void)cancelAllRequests;
-- (void)cancelImageRequest:(int)a3;
+- (void)cancelImageRequest:(int)request;
 - (void)dealloc;
-- (void)setDeliversImagesInOrder:(BOOL)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setTimeTolerance:(double)a3;
+- (void)setDeliversImagesInOrder:(BOOL)order;
+- (void)setPlaceholderImage:(id)image;
+- (void)setTimeTolerance:(double)tolerance;
 @end
 
 @implementation PUFilmstripMediaProvider
@@ -74,10 +74,10 @@ void __52__PUFilmstripMediaProvider__deliverPlaceholderImage__block_invoke_3(uin
   (a3)[2](v7, v4, v8);
 }
 
-- (void)_deliverResult:(id)a3
+- (void)_deliverResult:(id)result
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "requestNumber")}];
+  resultCopy = result;
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(resultCopy, "requestNumber")}];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -96,9 +96,9 @@ void __52__PUFilmstripMediaProvider__deliverPlaceholderImage__block_invoke_3(uin
   v7 = v17[5];
   if (v7)
   {
-    v8 = [v4 image];
-    v9 = [v4 resultInfo];
-    (*(v7 + 16))(v7, v8, v9);
+    image = [resultCopy image];
+    resultInfo = [resultCopy resultInfo];
+    (*(v7 + 16))(v7, image, resultInfo);
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -143,17 +143,17 @@ void __43__PUFilmstripMediaProvider__deliverResult___block_invoke(void *a1)
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
     while (1)
     {
-      v4 = [v21[5] firstObject];
-      v5 = [v4 isReadyForDelivery];
+      firstObject = [v21[5] firstObject];
+      isReadyForDelivery = [firstObject isReadyForDelivery];
 
-      if (!v5)
+      if (!isReadyForDelivery)
       {
         break;
       }
 
-      v6 = [v21[5] firstObject];
-      [(PUFilmstripMediaProvider *)self _deliverResult:v6];
-      [v3 addObject:v6];
+      firstObject2 = [v21[5] firstObject];
+      [(PUFilmstripMediaProvider *)self _deliverResult:firstObject2];
+      [v3 addObject:firstObject2];
       [v21[5] removeObjectAtIndex:0];
     }
 
@@ -242,68 +242,68 @@ uint64_t __50__PUFilmstripMediaProvider__deliverPendingResults__block_invoke_3(u
   return [v7 removeObjectsInArray:v8];
 }
 
-- (void)_didGenerateImage:(id)a3 error:(id)a4 requestedTime:(id *)a5 actualTime:(id *)a6 generatorResult:(int64_t)a7 forResult:(id)a8
+- (void)_didGenerateImage:(id)image error:(id)error requestedTime:(id *)time actualTime:(id *)actualTime generatorResult:(int64_t)result forResult:(id)forResult
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
+  imageCopy = image;
+  errorCopy = error;
+  forResultCopy = forResult;
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v13)
+  if (imageCopy)
   {
     imageCache = self->__imageCache;
-    v18 = [v15 asset];
-    [(NSCache *)imageCache setObject:v13 forKey:v18];
+    asset = [forResultCopy asset];
+    [(NSCache *)imageCache setObject:imageCopy forKey:asset];
   }
 
-  if (a7 == 2)
+  if (result == 2)
   {
     [v16 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6978DE8]];
   }
 
-  else if (!v13 || a7 == 1)
+  else if (!imageCopy || result == 1)
   {
     v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v19 setObject:@"AVAssetImageGenerator failed to generate an image for the requested time" forKeyedSubscript:*MEMORY[0x1E696A578]];
-    if (v14)
+    if (errorCopy)
     {
-      [v19 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      [v19 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
     }
 
     v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PUFilmstripMediaProviderErrorDomain" code:1 userInfo:v19];
     [v16 setObject:v20 forKeyedSubscript:*MEMORY[0x1E6978DF0]];
   }
 
-  [v15 setImage:v13];
-  [v15 setResultInfo:v16];
-  v21 = *&a6->var0;
-  var3 = a6->var3;
-  [v15 setActualTime:&v21];
-  [v15 setIsReadyForDelivery:1];
+  [forResultCopy setImage:imageCopy];
+  [forResultCopy setResultInfo:v16];
+  v21 = *&actualTime->var0;
+  var3 = actualTime->var3;
+  [forResultCopy setActualTime:&v21];
+  [forResultCopy setIsReadyForDelivery:1];
   px_dispatch_on_main_queue();
 }
 
-- (void)_generateImageForResult:(id)a3
+- (void)_generateImageForResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __52__PUFilmstripMediaProvider__generateImageForResult___block_invoke;
   v25[3] = &unk_1E7B80C38;
   v25[4] = self;
-  v5 = v4;
+  v5 = resultCopy;
   v26 = v5;
   [(PUFilmstripMediaProvider *)self _performIvarWrite:v25];
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PUFilmstripMediaProvider *)self _imageGenerator];
-  v8 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v8 scale];
+  _imageGenerator = [(PUFilmstripMediaProvider *)self _imageGenerator];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen scale];
   v10 = v9;
 
   [v5 targetSize];
-  [v7 setMaximumSize:{v10 * v11, v10 * v12}];
+  [_imageGenerator setMaximumSize:{v10 * v11, v10 * v12}];
   memset(&v24, 0, sizeof(v24));
-  v13 = [v5 asset];
-  [v13 sourceTime];
+  asset = [v5 asset];
+  [asset sourceTime];
   CMTimeMakeWithSeconds(&v24, v14, 600);
 
   objc_initWeak(&location, self);
@@ -312,9 +312,9 @@ uint64_t __50__PUFilmstripMediaProvider__deliverPendingResults__block_invoke_3(u
   v18[1] = 3221225472;
   v18[2] = __52__PUFilmstripMediaProvider__generateImageForResult___block_invoke_2;
   v18[3] = &unk_1E7B771B0;
-  v19 = v7;
+  v19 = _imageGenerator;
   v22 = v24;
-  v16 = v7;
+  v16 = _imageGenerator;
   objc_copyWeak(&v21, &location);
   v17 = v5;
   v20 = v17;
@@ -403,7 +403,7 @@ uint64_t __45__PUFilmstripMediaProvider_cancelAllRequests__block_invoke(uint64_t
   return [v2 removeAllObjects];
 }
 
-- (void)cancelImageRequest:(int)a3
+- (void)cancelImageRequest:(int)request
 {
   v9[0] = 0;
   v9[1] = v9;
@@ -417,7 +417,7 @@ uint64_t __45__PUFilmstripMediaProvider_cancelAllRequests__block_invoke(uint64_t
   v7[3] = &unk_1E7B77160;
   v7[4] = self;
   v7[5] = v9;
-  v8 = a3;
+  requestCopy = request;
   [(PUFilmstripMediaProvider *)self _performIvarRead:v7];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -425,7 +425,7 @@ uint64_t __45__PUFilmstripMediaProvider_cancelAllRequests__block_invoke(uint64_t
   v5[3] = &unk_1E7B77160;
   v5[4] = self;
   v5[5] = v9;
-  v6 = a3;
+  requestCopy2 = request;
   [(PUFilmstripMediaProvider *)self _performIvarWrite:v5];
   [(PUFilmstripMediaProvider *)self _deliverPendingResults];
   _Block_object_dispose(v9, 8);
@@ -449,15 +449,15 @@ void __47__PUFilmstripMediaProvider_cancelImageRequest___block_invoke_2(uint64_t
   [v2 removeObjectForKey:v3];
 }
 
-- (void)_handleSourceTimeLoadedForAsset:(id)a3 time:(double)a4 targetSize:(CGSize)a5 contentMode:(int64_t)a6 requestNumber:(int64_t)a7
+- (void)_handleSourceTimeLoadedForAsset:(id)asset time:(double)time targetSize:(CGSize)size contentMode:(int64_t)mode requestNumber:(int64_t)number
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
   v13 = objc_alloc_init(PUFilmstripMediaProviderResult);
-  [(PUFilmstripMediaProviderResult *)v13 setAsset:v12];
+  [(PUFilmstripMediaProviderResult *)v13 setAsset:assetCopy];
 
-  if (a6 == 1)
+  if (mode == 1)
   {
     if (width <= height)
     {
@@ -471,13 +471,13 @@ void __47__PUFilmstripMediaProvider_cancelImageRequest___block_invoke_2(uint64_t
   }
 
   [(PUFilmstripMediaProviderResult *)v13 setTargetSize:width, height];
-  [(PUFilmstripMediaProviderResult *)v13 setRequestNumber:a7];
+  [(PUFilmstripMediaProviderResult *)v13 setRequestNumber:number];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __102__PUFilmstripMediaProvider__handleSourceTimeLoadedForAsset_time_targetSize_contentMode_requestNumber___block_invoke;
   v15[3] = &unk_1E7B7F350;
   v16 = v13;
-  v17 = a7;
+  numberCopy = number;
   v15[4] = self;
   v14 = v13;
   [(PUFilmstripMediaProvider *)self _performIvarWrite:v15];
@@ -492,17 +492,17 @@ void __102__PUFilmstripMediaProvider__handleSourceTimeLoadedForAsset_time_target
   [v2 setObject:v1 forKeyedSubscript:v3];
 }
 
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v33[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v16 = handlerCopy;
   LODWORD(v17) = 0;
-  if (v13 && v15)
+  if (assetCopy && handlerCopy)
   {
     if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
     {
@@ -511,7 +511,7 @@ void __102__PUFilmstripMediaProvider__handleSourceTimeLoadedForAsset_time_target
 
     else
     {
-      v19 = [(NSCache *)self->__imageCache objectForKey:v13];
+      v19 = [(NSCache *)self->__imageCache objectForKey:assetCopy];
       if (v19)
       {
         (v16)[2](v16, v19, 0);
@@ -520,8 +520,8 @@ void __102__PUFilmstripMediaProvider__handleSourceTimeLoadedForAsset_time_target
 
       else
       {
-        v20 = [(PUFilmstripMediaProvider *)self placeholderImage];
-        if (v20)
+        placeholderImage = [(PUFilmstripMediaProvider *)self placeholderImage];
+        if (placeholderImage)
         {
           v21 = *MEMORY[0x1E6978E50];
           v32[0] = @"PHImageResultIsPlaceholderKey";
@@ -529,17 +529,17 @@ void __102__PUFilmstripMediaProvider__handleSourceTimeLoadedForAsset_time_target
           v33[0] = MEMORY[0x1E695E118];
           v33[1] = MEMORY[0x1E695E118];
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
-          (v16)[2](v16, v20, v22);
+          (v16)[2](v16, placeholderImage, v22);
         }
 
-        v23 = [(PUFilmstripMediaProvider *)self _requestNumber];
+        _requestNumber = [(PUFilmstripMediaProvider *)self _requestNumber];
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v29[2] = __94__PUFilmstripMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
         v29[3] = &unk_1E7B7D790;
-        v17 = (v23 + 1);
+        v17 = (_requestNumber + 1);
         v29[4] = self;
-        v31 = v23 + 1;
+        v31 = _requestNumber + 1;
         v30 = v16;
         [(PUFilmstripMediaProvider *)self _performIvarWrite:v29];
         [(PUFilmstripMediaProvider *)self _setRequestNumber:v17];
@@ -549,10 +549,10 @@ void __102__PUFilmstripMediaProvider__handleSourceTimeLoadedForAsset_time_target
         v25[2] = __94__PUFilmstripMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke_2;
         v25[3] = &unk_1E7B77138;
         objc_copyWeak(v27, &location);
-        v26 = v13;
+        v26 = assetCopy;
         v27[1] = *&width;
         v27[2] = *&height;
-        v27[3] = a5;
+        v27[3] = mode;
         v27[4] = v17;
         [v26 loadSourceTimeWithCompletionHandler:v25];
 
@@ -599,54 +599,54 @@ void __94__PUFilmstripMediaProvider_requestImageForAsset_targetSize_contentMode_
   }
 }
 
-- (void)setDeliversImagesInOrder:(BOOL)a3
+- (void)setDeliversImagesInOrder:(BOOL)order
 {
-  if (self->_deliversImagesInOrder != a3)
+  if (self->_deliversImagesInOrder != order)
   {
-    self->_deliversImagesInOrder = a3;
-    if (!a3)
+    self->_deliversImagesInOrder = order;
+    if (!order)
     {
       [(PUFilmstripMediaProvider *)self _deliverPendingResults];
     }
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v5 = a3;
-  if (self->_placeholderImage != v5)
+  imageCopy = image;
+  if (self->_placeholderImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_placeholderImage, image);
     [(PUFilmstripMediaProvider *)self _deliverPlaceholderImage];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setTimeTolerance:(double)a3
+- (void)setTimeTolerance:(double)tolerance
 {
-  self->_timeTolerance = a3;
+  self->_timeTolerance = tolerance;
   imageGenerator = self->__imageGenerator;
-  v5 = a3 * 0.5;
-  CMTimeMakeWithSeconds(&v7, a3 * 0.5, 100);
+  v5 = tolerance * 0.5;
+  CMTimeMakeWithSeconds(&v7, tolerance * 0.5, 100);
   [(AVAssetImageGenerator *)imageGenerator setRequestedTimeToleranceAfter:&v7];
   v6 = self->__imageGenerator;
   CMTimeMakeWithSeconds(&v7, v5, 100);
   [(AVAssetImageGenerator *)v6 setRequestedTimeToleranceBefore:&v7];
 }
 
-- (PUFilmstripMediaProvider)initWithAVAsset:(id)a3 videoComposition:(id)a4
+- (PUFilmstripMediaProvider)initWithAVAsset:(id)asset videoComposition:(id)composition
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  compositionCopy = composition;
   v34.receiver = self;
   v34.super_class = PUFilmstripMediaProvider;
   v8 = [(PUFilmstripMediaProvider *)&v34 init];
   if (v8)
   {
-    if (v6)
+    if (assetCopy)
     {
-      v9 = [objc_alloc(MEMORY[0x1E6987E68]) initWithAsset:v6];
+      v9 = [objc_alloc(MEMORY[0x1E6987E68]) initWithAsset:assetCopy];
       imageGenerator = v8->__imageGenerator;
       v8->__imageGenerator = v9;
 
@@ -657,15 +657,15 @@ void __94__PUFilmstripMediaProvider_requestImageForAsset_targetSize_contentMode_
       v12 = v8->__imageGenerator;
       CMTimeMake(&v33, 1, 2);
       [(AVAssetImageGenerator *)v12 setRequestedTimeToleranceBefore:&v33];
-      [(AVAssetImageGenerator *)v8->__imageGenerator setVideoComposition:v7];
-      v13 = [(AVAssetImageGenerator *)v8->__imageGenerator customVideoCompositor];
+      [(AVAssetImageGenerator *)v8->__imageGenerator setVideoComposition:compositionCopy];
+      customVideoCompositor = [(AVAssetImageGenerator *)v8->__imageGenerator customVideoCompositor];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v15 = [(AVAssetImageGenerator *)v8->__imageGenerator customVideoCompositor];
-        [v15 setLabel:@"PUFilmstripMediaProvider"];
+        customVideoCompositor2 = [(AVAssetImageGenerator *)v8->__imageGenerator customVideoCompositor];
+        [customVideoCompositor2 setLabel:@"PUFilmstripMediaProvider"];
       }
     }
 

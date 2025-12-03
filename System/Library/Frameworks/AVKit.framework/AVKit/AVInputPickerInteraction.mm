@@ -1,6 +1,6 @@
 @interface AVInputPickerInteraction
 - (AVInputPickerInteraction)init;
-- (AVInputPickerInteraction)initWithAudioSession:(id)a3;
+- (AVInputPickerInteraction)initWithAudioSession:(id)session;
 - (AVInputPickerInteractionDelegate)delegate;
 - (void)_beginDismissingProcess;
 - (void)dismiss;
@@ -18,10 +18,10 @@
 
 - (void)_beginDismissingProcess
 {
-  v3 = [(AVInputPickerInteraction *)self delegate];
+  delegate = [(AVInputPickerInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 inputPickerInteractionWillBeginDismissing:self];
+    [delegate inputPickerInteractionWillBeginDismissing:self];
   }
 
   objc_initWeak(&location, self);
@@ -68,37 +68,37 @@ void __51__AVInputPickerInteraction__beginDismissingProcess__block_invoke(uint64
 {
   if (!self->_presented)
   {
-    v3 = [(AVInputPickerInteraction *)self delegate];
+    delegate = [(AVInputPickerInteraction *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(AVInputPickerInteraction *)self delegate];
-      [v5 inputPickerInteractionWillBeginPresenting:self];
+      delegate2 = [(AVInputPickerInteraction *)self delegate];
+      [delegate2 inputPickerInteractionWillBeginPresenting:self];
     }
 
-    v6 = [(UIView *)self->_view window];
-    v7 = [v6 rootViewController];
+    window = [(UIView *)self->_view window];
+    rootViewController = [window rootViewController];
 
-    v8 = [v7 presentedViewController];
+    presentedViewController = [rootViewController presentedViewController];
 
-    if (v8)
+    if (presentedViewController)
     {
       do
       {
-        v9 = [v7 presentedViewController];
+        presentedViewController2 = [rootViewController presentedViewController];
 
-        v10 = [v9 presentedViewController];
+        v9PresentedViewController = [presentedViewController2 presentedViewController];
 
-        v7 = v9;
+        rootViewController = presentedViewController2;
       }
 
-      while (v10);
+      while (v9PresentedViewController);
     }
 
     else
     {
-      v9 = v7;
+      presentedViewController2 = rootViewController;
     }
 
     objc_initWeak(&location, self);
@@ -122,7 +122,7 @@ void __51__AVInputPickerInteraction__beginDismissingProcess__block_invoke(uint64
     v14[3] = &unk_1E7209C40;
     objc_copyWeak(&v15, &from);
     objc_copyWeak(&v16, &location);
-    [v9 presentViewController:v13 animated:0 completion:v14];
+    [presentedViewController2 presentViewController:v13 animated:0 completion:v14];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v18);
@@ -167,14 +167,14 @@ void __35__AVInputPickerInteraction_present__block_invoke_3(uint64_t a1)
   }
 }
 
-- (AVInputPickerInteraction)initWithAudioSession:(id)a3
+- (AVInputPickerInteraction)initWithAudioSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = [(AVInputPickerInteraction *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioSession, a3);
+    objc_storeStrong(&v6->_audioSession, session);
   }
 
   return v7;
@@ -187,9 +187,9 @@ void __35__AVInputPickerInteraction_present__block_invoke_3(uint64_t a1)
   v2 = [(AVInputPickerInteraction *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6958460] sharedInstance];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
     audioSession = v2->_audioSession;
-    v2->_audioSession = v3;
+    v2->_audioSession = mEMORY[0x1E6958460];
 
     v2->_presented = 0;
   }

@@ -1,27 +1,27 @@
 @interface SBAssistantWindow
 - (BOOL)allowsTouchPassThrough;
-- (SBAssistantWindow)initWithWindowScene:(id)a3 role:(id)a4 debugName:(id)a5;
-- (id)_hitTest:(CGPoint)a3 withEvent:(id)a4 windowServerHitTestWindow:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (SBAssistantWindow)initWithWindowScene:(id)scene role:(id)role debugName:(id)name;
+- (id)_hitTest:(CGPoint)test withEvent:(id)event windowServerHitTestWindow:(id)window;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)hostedSceneIdentityTokens;
 - (void)_usesWindowServerHitTesting;
 - (void)dealloc;
-- (void)setAllowsTouchPassThrough:(BOOL)a3;
+- (void)setAllowsTouchPassThrough:(BOOL)through;
 @end
 
 @implementation SBAssistantWindow
 
-- (SBAssistantWindow)initWithWindowScene:(id)a3 role:(id)a4 debugName:(id)a5
+- (SBAssistantWindow)initWithWindowScene:(id)scene role:(id)role debugName:(id)name
 {
-  v8 = a3;
+  sceneCopy = scene;
   v15.receiver = self;
   v15.super_class = SBAssistantWindow;
-  v9 = [(SBWindow *)&v15 initWithWindowScene:v8 rootViewController:0 layoutStrategy:0 role:a4 debugName:a5];
+  v9 = [(SBWindow *)&v15 initWithWindowScene:sceneCopy rootViewController:0 layoutStrategy:0 role:role debugName:name];
   if (v9)
   {
     v10 = [SBAssistantRootViewController alloc];
-    v11 = [v8 screen];
-    v12 = [(SBAssistantRootViewController *)v10 initWithScreen:v11];
+    screen = [sceneCopy screen];
+    v12 = [(SBAssistantRootViewController *)v10 initWithScreen:screen];
     v14.receiver = v9;
     v14.super_class = SBAssistantWindow;
     [(SBAssistantWindow *)&v14 setRootViewController:v12];
@@ -44,11 +44,11 @@
   [(SBWindow *)&v3 dealloc];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBAssistantWindow;
-  v5 = [(SBAssistantWindow *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBAssistantWindow *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -65,17 +65,17 @@
   return v7;
 }
 
-- (id)_hitTest:(CGPoint)a3 withEvent:(id)a4 windowServerHitTestWindow:(id)a5
+- (id)_hitTest:(CGPoint)test withEvent:(id)event windowServerHitTestWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  windowCopy = window;
   if ([(SBAssistantWindow *)self allowsTouchPassThrough])
   {
-    if (self != v10)
+    if (self != windowCopy)
     {
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
@@ -85,15 +85,15 @@
 
   else
   {
-    v14 = self;
-    v12 = &v14;
+    selfCopy = self;
+    v12 = &selfCopy;
   }
 
   v12->super_class = SBAssistantWindow;
-  v11 = [(objc_super *)v12 _hitTest:v9 withEvent:v10 windowServerHitTestWindow:x, y, v14];
+  selfCopy = [(objc_super *)v12 _hitTest:eventCopy withEvent:windowCopy windowServerHitTestWindow:x, y, selfCopy];
 LABEL_7:
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)hostedSceneIdentityTokens
@@ -105,19 +105,19 @@ LABEL_7:
   v12 = __Block_byref_object_copy__145;
   v13 = __Block_byref_object_dispose__145;
   v14 = 0;
-  v2 = [(UIWindow *)self _sbWindowScene];
-  v3 = [v2 assistantController];
-  v4 = [v3 isVisible];
+  _sbWindowScene = [(UIWindow *)self _sbWindowScene];
+  assistantController = [_sbWindowScene assistantController];
+  isVisible = [assistantController isVisible];
 
-  if (v4)
+  if (isVisible)
   {
-    v5 = [MEMORY[0x277D0AAD8] sharedInstance];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __46__SBAssistantWindow_hostedSceneIdentityTokens__block_invoke;
     v8[3] = &unk_2783ACCF0;
     v8[4] = &v9;
-    [v5 enumerateScenesWithBlock:v8];
+    [mEMORY[0x277D0AAD8] enumerateScenesWithBlock:v8];
   }
 
   if (v10[5])
@@ -167,27 +167,27 @@ void __46__SBAssistantWindow_hostedSceneIdentityTokens__block_invoke(uint64_t a1
 
 - (BOOL)allowsTouchPassThrough
 {
-  v2 = [(SBAssistantWindow *)self layer];
-  v3 = [v2 hitTestsAsOpaque];
+  layer = [(SBAssistantWindow *)self layer];
+  hitTestsAsOpaque = [layer hitTestsAsOpaque];
 
-  return v3 ^ 1;
+  return hitTestsAsOpaque ^ 1;
 }
 
-- (void)setAllowsTouchPassThrough:(BOOL)a3
+- (void)setAllowsTouchPassThrough:(BOOL)through
 {
-  v3 = a3;
-  v4 = [(SBAssistantWindow *)self layer];
-  [v4 setHitTestsAsOpaque:!v3];
+  throughCopy = through;
+  layer = [(SBAssistantWindow *)self layer];
+  [layer setHitTestsAsOpaque:!throughCopy];
 }
 
 - (void)_usesWindowServerHitTesting
 {
-  if (a1)
+  if (self)
   {
-    return [a1 allowsTouchPassThrough];
+    return [self allowsTouchPassThrough];
   }
 
-  return a1;
+  return self;
 }
 
 @end

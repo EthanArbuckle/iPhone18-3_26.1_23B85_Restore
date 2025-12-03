@@ -1,7 +1,7 @@
 @interface _IDSSessionStore
 + (id)sharedInstance;
 - (_IDSSessionStore)init;
-- (id)sessionForAccount:(id)a3 fromID:(id)a4 identifier:(id)a5 transportType:(id)a6;
+- (id)sessionForAccount:(id)account fromID:(id)d identifier:(id)identifier transportType:(id)type;
 @end
 
 @implementation _IDSSessionStore
@@ -25,43 +25,43 @@
   v2 = [(_IDSSessionStore *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     sessionBySessionID = v2->_sessionBySessionID;
-    v2->_sessionBySessionID = v3;
+    v2->_sessionBySessionID = strongToWeakObjectsMapTable;
   }
 
   return v2;
 }
 
-- (id)sessionForAccount:(id)a3 fromID:(id)a4 identifier:(id)a5 transportType:(id)a6
+- (id)sessionForAccount:(id)account fromID:(id)d identifier:(id)identifier transportType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accountCopy = account;
+  dCopy = d;
+  identifierCopy = identifier;
+  typeCopy = type;
   if (_os_feature_enabled_impl())
   {
     v14 = +[IDSInternalQueueController sharedInstance];
-    v15 = [v14 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v14 assertQueueIsCurrent];
 
-    if (v15)
+    if (assertQueueIsCurrent)
     {
-      v16 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
-        sub_195B30818(v16);
+        sub_195B30818(utilities);
       }
     }
 
-    if (!v12 || ([(NSMapTable *)self->_sessionBySessionID objectForKey:v12], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!identifierCopy || ([(NSMapTable *)self->_sessionBySessionID objectForKey:identifierCopy], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v18 = [IDSSession alloc];
-      v19 = [MEMORY[0x1E695DFD8] setWithObject:v11];
-      v17 = -[IDSSession _initWithAccount:destinations:transportType:uniqueID:](v18, "_initWithAccount:destinations:transportType:uniqueID:", v10, v19, [v13 integerValue], v12);
+      v19 = [MEMORY[0x1E695DFD8] setWithObject:dCopy];
+      v17 = -[IDSSession _initWithAccount:destinations:transportType:uniqueID:](v18, "_initWithAccount:destinations:transportType:uniqueID:", accountCopy, v19, [typeCopy integerValue], identifierCopy);
 
-      if (v12)
+      if (identifierCopy)
       {
-        [(NSMapTable *)self->_sessionBySessionID setObject:v17 forKey:v12];
+        [(NSMapTable *)self->_sessionBySessionID setObject:v17 forKey:identifierCopy];
       }
     }
   }
@@ -69,8 +69,8 @@
   else
   {
     v20 = [IDSSession alloc];
-    v21 = [MEMORY[0x1E695DFD8] setWithObject:v11];
-    v17 = -[IDSSession _initWithAccount:destinations:transportType:uniqueID:](v20, "_initWithAccount:destinations:transportType:uniqueID:", v10, v21, [v13 integerValue], v12);
+    v21 = [MEMORY[0x1E695DFD8] setWithObject:dCopy];
+    v17 = -[IDSSession _initWithAccount:destinations:transportType:uniqueID:](v20, "_initWithAccount:destinations:transportType:uniqueID:", accountCopy, v21, [typeCopy integerValue], identifierCopy);
   }
 
   return v17;

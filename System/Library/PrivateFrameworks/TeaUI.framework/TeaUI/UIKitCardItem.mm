@@ -1,29 +1,29 @@
 @interface UIKitCardItem
-- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3;
+- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)frame;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier;
 @end
 
 @implementation UIKitCardItem
 
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D80727E4(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_1D80727E4(identifierCopy);
 }
 
-- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)a3
+- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)frame
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D8072C50(v4);
+  frameCopy = frame;
+  selfCopy = self;
+  sub_1D8072C50(frameCopy);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1D8072EDC();
 }
 

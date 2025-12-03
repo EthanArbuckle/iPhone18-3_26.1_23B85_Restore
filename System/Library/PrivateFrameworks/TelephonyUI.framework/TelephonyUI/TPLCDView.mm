@@ -4,20 +4,20 @@
 - (CGRect)_labelFrame;
 - (CGRect)_text1Frame;
 - (CGRect)fullSizedContentViewFrame;
-- (TPLCDView)initWithDefaultSizeForOrientation:(int64_t)a3;
+- (TPLCDView)initWithDefaultSizeForOrientation:(int64_t)orientation;
 - (double)_labelVInset;
 - (void)_resetContentViewFrame;
 - (void)blinkLabel;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentsAlpha:(double)a3;
-- (void)setLabel:(id)a3 animate:(BOOL)a4;
-- (void)setLabelFontSize:(double)a3;
-- (void)setLayoutAsLabelled:(BOOL)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setSubImage:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextFontSize:(double)a3;
+- (void)setContentsAlpha:(double)alpha;
+- (void)setLabel:(id)label animate:(BOOL)animate;
+- (void)setLabelFontSize:(double)size;
+- (void)setLayoutAsLabelled:(BOOL)labelled;
+- (void)setShadowColor:(id)color;
+- (void)setSubImage:(id)image;
+- (void)setText:(id)text;
+- (void)setTextFontSize:(double)size;
 @end
 
 @implementation TPLCDView
@@ -27,8 +27,8 @@
   [(TPLCDView *)self bounds];
   v3 = v2;
   v5 = v4;
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v8 = v7;
   v10 = v9;
 
@@ -58,11 +58,11 @@
   [(TPLCDView *)self setNeedsLayout];
 }
 
-- (TPLCDView)initWithDefaultSizeForOrientation:(int64_t)a3
+- (TPLCDView)initWithDefaultSizeForOrientation:(int64_t)orientation
 {
   v8.receiver = self;
   v8.super_class = TPLCDView;
-  v3 = [(TPLCDBar *)&v8 initWithDefaultSizeForOrientation:a3];
+  v3 = [(TPLCDBar *)&v8 initWithDefaultSizeForOrientation:orientation];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -80,29 +80,29 @@
 
 - (BOOL)shouldCenterContentView
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v4 & 0xFFFFFFFFFFFFFFFBLL) == 1 && self->_imageView != 0;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && self->_imageView != 0;
 }
 
-- (void)setContentsAlpha:(double)a3
+- (void)setContentsAlpha:(double)alpha
 {
   [(TPLCDTextView *)self->_textView setAlpha:?];
-  [(TPLCDTextView *)self->_labelView setAlpha:a3];
+  [(TPLCDTextView *)self->_labelView setAlpha:alpha];
   imageView = self->_imageView;
 
-  [(TPLCDSubImageView *)imageView setAlpha:a3];
+  [(TPLCDSubImageView *)imageView setAlpha:alpha];
 }
 
 - (double)_labelVInset
 {
-  v3 = [(TPLCDView *)self subImage];
+  subImage = [(TPLCDView *)self subImage];
 
   [(UIView *)self->_contentView bounds];
   v4 = floor(CGRectGetMidY(v7));
   v5 = 5.0;
-  if (!v3)
+  if (!subImage)
   {
     v5 = 18.0;
   }
@@ -110,16 +110,16 @@
   return v4 + v5;
 }
 
-- (void)setTextFontSize:(double)a3
+- (void)setTextFontSize:(double)size
 {
   textView = self->_textView;
-  v4 = [MEMORY[0x1E69DB878] _thinSystemFontOfSize:a3];
+  v4 = [MEMORY[0x1E69DB878] _thinSystemFontOfSize:size];
   [(TPLCDTextView *)textView setFont:v4];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   [(TPLCDView *)self _resetContentViewFrame];
   textView = self->_textView;
   if (!textView)
@@ -137,7 +137,7 @@
     textView = self->_textView;
   }
 
-  [(TPLCDTextView *)textView setText:v9];
+  [(TPLCDTextView *)textView setText:textCopy];
   [(TPLCDView *)self layoutIfNeeded];
 }
 
@@ -312,9 +312,9 @@
   contentView = self->_contentView;
   [(TPLCDView *)self fullSizedContentViewFrame];
   [(UIView *)contentView setFrame:?];
-  v4 = [(TPLCDView *)self shouldCenterText];
-  [(TPLCDTextView *)self->_textView setCenterText:v4];
-  [(TPLCDTextView *)self->_labelView setCenterText:v4];
+  shouldCenterText = [(TPLCDView *)self shouldCenterText];
+  [(TPLCDTextView *)self->_textView setCenterText:shouldCenterText];
+  [(TPLCDTextView *)self->_labelView setCenterText:shouldCenterText];
   v5 = 0.0;
   v6 = 0.0;
   if (self->_imageView)
@@ -375,19 +375,19 @@
   [(TPLCDView *)self setNeedsLayout];
 }
 
-- (void)setLabelFontSize:(double)a3
+- (void)setLabelFontSize:(double)size
 {
   labelView = self->_labelView;
-  v4 = [MEMORY[0x1E69DB878] systemFontOfSize:a3];
+  v4 = [MEMORY[0x1E69DB878] systemFontOfSize:size];
   [(TPLCDTextView *)labelView setFont:v4];
 }
 
-- (void)setLabel:(id)a3 animate:(BOOL)a4
+- (void)setLabel:(id)label animate:(BOOL)animate
 {
-  v4 = a4;
-  v16 = a3;
+  animateCopy = animate;
+  labelCopy = label;
   [(TPLCDView *)self _resetContentViewFrame];
-  if (v4)
+  if (animateCopy)
   {
     [MEMORY[0x1E69DD250] beginAnimations:@"lcdViewFadeLabelOut" context:self->_labelView];
     [MEMORY[0x1E69DD250] setAnimationDuration:0.5];
@@ -399,7 +399,7 @@
     self->_labelView = 0;
   }
 
-  v7 = [v16 length];
+  v7 = [labelCopy length];
   v8 = self->_labelView;
   if (v7)
   {
@@ -420,7 +420,7 @@
       v8 = self->_labelView;
     }
 
-    [(TPLCDTextView *)v8 setText:v16];
+    [(TPLCDTextView *)v8 setText:labelCopy];
   }
 
   else if (v8)
@@ -430,7 +430,7 @@
     self->_labelView = 0;
   }
 
-  if (v4)
+  if (animateCopy)
   {
     v15 = self->_labelView;
     if (v15)
@@ -448,14 +448,14 @@
 
 - (void)blinkLabel
 {
-  v16 = [MEMORY[0x1E6979390] animation];
-  [v16 setKeyPath:@"hidden"];
+  animation = [MEMORY[0x1E6979390] animation];
+  [animation setKeyPath:@"hidden"];
   v3 = MEMORY[0x1E695DEC8];
   LODWORD(v4) = 1.0;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
   v7 = [v3 arrayWithObjects:{v5, v6, 0}];
-  [v16 setValues:v7];
+  [animation setValues:v7];
 
   v8 = MEMORY[0x1E695DEC8];
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
@@ -464,35 +464,35 @@
   LODWORD(v12) = 1.0;
   v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
   v14 = [v8 arrayWithObjects:{v9, v11, v13, 0}];
-  [v16 setKeyTimes:v14];
+  [animation setKeyTimes:v14];
 
-  [v16 setDuration:0.3];
-  [v16 setCalculationMode:*MEMORY[0x1E69795A0]];
+  [animation setDuration:0.3];
+  [animation setCalculationMode:*MEMORY[0x1E69795A0]];
   LODWORD(v15) = 3.0;
-  [v16 setRepeatCount:v15];
-  [(TPLCDTextView *)self->_labelView addAnimation:v16 forKey:@"hidden"];
+  [animation setRepeatCount:v15];
+  [(TPLCDTextView *)self->_labelView addAnimation:animation forKey:@"hidden"];
 }
 
-- (void)setSubImage:(id)a3
+- (void)setSubImage:(id)image
 {
-  v8 = a3;
+  imageCopy = image;
   [(TPLCDView *)self _resetContentViewFrame];
   imageView = self->_imageView;
-  if (v8 && !imageView)
+  if (imageCopy && !imageView)
   {
-    v5 = [[TPLCDSubImageView alloc] initWithDefaultSize];
+    initWithDefaultSize = [[TPLCDSubImageView alloc] initWithDefaultSize];
     v6 = self->_imageView;
-    self->_imageView = v5;
+    self->_imageView = initWithDefaultSize;
 
     [(UIView *)self->_contentView addSubview:self->_imageView];
     imageView = self->_imageView;
 LABEL_5:
     [(TPLCDSubImageView *)imageView setAutoresizingMask:41];
-    [(TPLCDSubImageView *)self->_imageView setImage:v8];
+    [(TPLCDSubImageView *)self->_imageView setImage:imageCopy];
     goto LABEL_6;
   }
 
-  if (v8)
+  if (imageCopy)
   {
     goto LABEL_5;
   }
@@ -508,22 +508,22 @@ LABEL_6:
   [(TPLCDView *)self layoutIfNeeded];
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
   textView = self->_textView;
-  v5 = a3;
-  [(TPLCDTextView *)textView setShadowColor:v5];
-  [(TPLCDTextView *)self->_labelView setShadowColor:v5];
+  colorCopy = color;
+  [(TPLCDTextView *)textView setShadowColor:colorCopy];
+  [(TPLCDTextView *)self->_labelView setShadowColor:colorCopy];
 }
 
-- (void)setLayoutAsLabelled:(BOOL)a3
+- (void)setLayoutAsLabelled:(BOOL)labelled
 {
   v7 = *(self + 448);
-  if ((v7 & 1) != a3)
+  if ((v7 & 1) != labelled)
   {
     v10 = v3;
-    *(self + 448) = v7 & 0xFE | a3;
-    if (!a3)
+    *(self + 448) = v7 & 0xFE | labelled;
+    if (!labelled)
     {
       [(TPLCDTextView *)self->_labelView removeFromSuperview];
       labelView = self->_labelView;

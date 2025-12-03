@@ -1,49 +1,49 @@
 @interface WFContextualActionSpotlightSyncService
 + (BOOL)didCompleteAppShortcutDomainMigration;
 + (int64_t)contextualActionsIndexVersion;
-+ (void)setContextualActionsIndexVersion:(int64_t)a3;
++ (void)setContextualActionsIndexVersion:(int64_t)version;
 + (void)setDidCompleteAppShortcutDomainMigration;
-- (WFContextualActionSpotlightSyncService)initWithDaemonTaskScheduler:(id)a3 databaseProvider:(id)a4;
-- (void)applicationWasRegisteredWithCompletion:(id)a3;
-- (void)availableActivitiesDidChangeForManager:(id)a3;
-- (void)cellularSettingsUpdatedWithCompletion:(id)a3;
-- (void)collectionsDidChangeWithCompletion:(id)a3;
-- (void)dataSourceDidReload:(id)a3;
+- (WFContextualActionSpotlightSyncService)initWithDaemonTaskScheduler:(id)scheduler databaseProvider:(id)provider;
+- (void)applicationWasRegisteredWithCompletion:(id)completion;
+- (void)availableActivitiesDidChangeForManager:(id)manager;
+- (void)cellularSettingsUpdatedWithCompletion:(id)completion;
+- (void)collectionsDidChangeWithCompletion:(id)completion;
+- (void)dataSourceDidReload:(id)reload;
 - (void)dealloc;
-- (void)domainCleanerDidClearDomains:(id)a3;
-- (void)indexAppShortcutsForBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)migrateAppShortcutsAndReindexAllItemsIfNeededWithCompletion:(id)a3;
-- (void)queue_fetchWipeAndIndexActionsInDomainWithDescriptiveName:(id)a3 identifiers:(id)a4 batchSize:(unint64_t)a5 fetcher:(id)a6 completionBlock:(id)a7;
-- (void)queue_getAlarmContextualActionsWithCompletionHandler:(id)a3;
-- (void)queue_getAppShortcutContextualActionsForBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)queue_getFocusModeContextualActionsWithCompletionHandler:(id)a3;
-- (void)queue_getFolderAppEntityContextualActionsWithCompletionHandler:(id)a3;
-- (void)queue_getStaticContextualActionsWithCompletionHandler:(id)a3;
-- (void)queue_getToggleSettingContextualActionsWithCompletionHandler:(id)a3;
-- (void)queue_v2GetAppShortcutContextualActionsForBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)queue_wipeIndexIfNotMigratedToNewDomainIdentifiersWithCompletionHandler:(id)a3;
-- (void)receiveAutoShortcutsUpdatedNotification:(id)a3 completion:(id)a4;
-- (void)reindexAllSearchableItemsIfNeeded:(BOOL)a3 completion:(id)a4;
-- (void)reindexAllSearchableItemsWithCompletion:(id)a3;
-- (void)reindexSearchableItems:(unint64_t)a3 appShortcutBundleIdentifiers:(id)a4 completion:(id)a5;
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
-- (void)spotlightPreferencesChangedWithCompletion:(id)a3;
-- (void)startWithCompletion:(id)a3;
-- (void)systemLanguageUpdatedWithCompletion:(id)a3;
+- (void)domainCleanerDidClearDomains:(id)domains;
+- (void)indexAppShortcutsForBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)migrateAppShortcutsAndReindexAllItemsIfNeededWithCompletion:(id)completion;
+- (void)queue_fetchWipeAndIndexActionsInDomainWithDescriptiveName:(id)name identifiers:(id)identifiers batchSize:(unint64_t)size fetcher:(id)fetcher completionBlock:(id)block;
+- (void)queue_getAlarmContextualActionsWithCompletionHandler:(id)handler;
+- (void)queue_getAppShortcutContextualActionsForBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)queue_getFocusModeContextualActionsWithCompletionHandler:(id)handler;
+- (void)queue_getFolderAppEntityContextualActionsWithCompletionHandler:(id)handler;
+- (void)queue_getStaticContextualActionsWithCompletionHandler:(id)handler;
+- (void)queue_getToggleSettingContextualActionsWithCompletionHandler:(id)handler;
+- (void)queue_v2GetAppShortcutContextualActionsForBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)queue_wipeIndexIfNotMigratedToNewDomainIdentifiersWithCompletionHandler:(id)handler;
+- (void)receiveAutoShortcutsUpdatedNotification:(id)notification completion:(id)completion;
+- (void)reindexAllSearchableItemsIfNeeded:(BOOL)needed completion:(id)completion;
+- (void)reindexAllSearchableItemsWithCompletion:(id)completion;
+- (void)reindexSearchableItems:(unint64_t)items appShortcutBundleIdentifiers:(id)identifiers completion:(id)completion;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
+- (void)spotlightPreferencesChangedWithCompletion:(id)completion;
+- (void)startWithCompletion:(id)completion;
+- (void)systemLanguageUpdatedWithCompletion:(id)completion;
 @end
 
 @implementation WFContextualActionSpotlightSyncService
 
-- (void)domainCleanerDidClearDomains:(id)a3
+- (void)domainCleanerDidClearDomains:(id)domains
 {
-  v4 = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
+  daemonTaskScheduler = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __71__WFContextualActionSpotlightSyncService_domainCleanerDidClearDomains___block_invoke;
   v5[3] = &unk_2788FF898;
   v5[4] = self;
-  [v4 executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.domainCleanerDidClearDomains" priority:0 handler:v5];
+  [daemonTaskScheduler executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.domainCleanerDidClearDomains" priority:0 handler:v5];
 }
 
 void __71__WFContextualActionSpotlightSyncService_domainCleanerDidClearDomains___block_invoke(uint64_t a1, void *a2)
@@ -70,10 +70,10 @@ void __71__WFContextualActionSpotlightSyncService_domainCleanerDidClearDomains__
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)spotlightPreferencesChangedWithCompletion:(id)a3
+- (void)spotlightPreferencesChangedWithCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -82,14 +82,14 @@ void __71__WFContextualActionSpotlightSyncService_domainCleanerDidClearDomains__
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Spotlight preferences updated, triggering App Shortcut sync", &v7, 0xCu);
   }
 
-  [(WFContextualActionSpotlightSyncService *)self reindexSearchableItems:4 appShortcutBundleIdentifiers:0 completion:v4];
+  [(WFContextualActionSpotlightSyncService *)self reindexSearchableItems:4 appShortcutBundleIdentifiers:0 completion:completionCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cellularSettingsUpdatedWithCompletion:(id)a3
+- (void)cellularSettingsUpdatedWithCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -98,14 +98,14 @@ void __71__WFContextualActionSpotlightSyncService_domainCleanerDidClearDomains__
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Cellular settings updated, triggering toggle sync", &v7, 0xCu);
   }
 
-  [(WFContextualActionSpotlightSyncService *)self reindexSearchableItems:8 appShortcutBundleIdentifiers:0 completion:v4];
+  [(WFContextualActionSpotlightSyncService *)self reindexSearchableItems:8 appShortcutBundleIdentifiers:0 completion:completionCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemLanguageUpdatedWithCompletion:(id)a3
+- (void)systemLanguageUpdatedWithCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -114,25 +114,25 @@ void __71__WFContextualActionSpotlightSyncService_domainCleanerDidClearDomains__
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s System language updated, triggering full reindex", &v7, 0xCu);
   }
 
-  [(WFContextualActionSpotlightSyncService *)self reindexAllSearchableItemsWithCompletion:v4];
+  [(WFContextualActionSpotlightSyncService *)self reindexAllSearchableItemsWithCompletion:completionCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  daemonTaskScheduler = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __119__WFContextualActionSpotlightSyncService_searchableIndex_reindexSearchableItemsWithIdentifiers_acknowledgementHandler___block_invoke;
   v12[3] = &unk_2788FF910;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.reindexSearchableItemsWithIdentifiers" priority:0 handler:v12];
+  v13 = identifiersCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifiersCopy;
+  [daemonTaskScheduler executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.reindexSearchableItemsWithIdentifiers" priority:0 handler:v12];
 }
 
 void __119__WFContextualActionSpotlightSyncService_searchableIndex_reindexSearchableItemsWithIdentifiers_acknowledgementHandler___block_invoke(uint64_t a1, void *a2)
@@ -179,18 +179,18 @@ uint64_t __119__WFContextualActionSpotlightSyncService_searchableIndex_reindexSe
   return v2();
 }
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
+  handlerCopy = handler;
+  daemonTaskScheduler = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __110__WFContextualActionSpotlightSyncService_searchableIndex_reindexAllSearchableItemsWithAcknowledgementHandler___block_invoke;
   v8[3] = &unk_2788FF8E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.reindexAllSearchableItemsWithAcknowledgementHandler" priority:0 handler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [daemonTaskScheduler executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.reindexAllSearchableItemsWithAcknowledgementHandler" priority:0 handler:v8];
 }
 
 void __110__WFContextualActionSpotlightSyncService_searchableIndex_reindexAllSearchableItemsWithAcknowledgementHandler___block_invoke(uint64_t a1, void *a2)
@@ -226,15 +226,15 @@ uint64_t __110__WFContextualActionSpotlightSyncService_searchableIndex_reindexAl
   return v2();
 }
 
-- (void)dataSourceDidReload:(id)a3
+- (void)dataSourceDidReload:(id)reload
 {
-  v4 = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
+  daemonTaskScheduler = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __62__WFContextualActionSpotlightSyncService_dataSourceDidReload___block_invoke;
   v5[3] = &unk_2788FF898;
   v5[4] = self;
-  [v4 executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.alarmDataSourceDidReload" priority:0 handler:v5];
+  [daemonTaskScheduler executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.alarmDataSourceDidReload" priority:0 handler:v5];
 }
 
 void __62__WFContextualActionSpotlightSyncService_dataSourceDidReload___block_invoke(uint64_t a1, void *a2)
@@ -261,11 +261,11 @@ void __62__WFContextualActionSpotlightSyncService_dataSourceDidReload___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receiveAutoShortcutsUpdatedNotification:(id)a3 completion:(id)a4
+- (void)receiveAutoShortcutsUpdatedNotification:(id)notification completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  notificationCopy = notification;
   v8 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -274,18 +274,18 @@ void __62__WFContextualActionSpotlightSyncService_dataSourceDidReload___block_in
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_INFO, "%s App Shortcuts updated, triggering re-index", &v12, 0xCu);
   }
 
-  v9 = [v7 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D23A60]];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D23A60]];
 
-  [(WFContextualActionSpotlightSyncService *)self reindexSearchableItems:4 appShortcutBundleIdentifiers:v10 completion:v6];
+  [(WFContextualActionSpotlightSyncService *)self reindexSearchableItems:4 appShortcutBundleIdentifiers:v10 completion:completionCopy];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationWasRegisteredWithCompletion:(id)a3
+- (void)applicationWasRegisteredWithCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -294,14 +294,14 @@ void __62__WFContextualActionSpotlightSyncService_dataSourceDidReload___block_in
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Shortcuts app installed, triggering force sync", &v7, 0xCu);
   }
 
-  [(WFContextualActionSpotlightSyncService *)self reindexAllSearchableItemsIfNeeded:1 completion:v4];
+  [(WFContextualActionSpotlightSyncService *)self reindexAllSearchableItemsIfNeeded:1 completion:completionCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collectionsDidChangeWithCompletion:(id)a3
+- (void)collectionsDidChangeWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -314,22 +314,22 @@ void __62__WFContextualActionSpotlightSyncService_dataSourceDidReload___block_in
   v8[1] = 3221225472;
   v8[2] = __77__WFContextualActionSpotlightSyncService_collectionsDidChangeWithCompletion___block_invoke;
   v8[3] = &unk_2788FF3C8;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   [(WFContextualActionSpotlightSyncService *)self reindexSearchableItems:32 appShortcutBundleIdentifiers:0 completion:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availableActivitiesDidChangeForManager:(id)a3
+- (void)availableActivitiesDidChangeForManager:(id)manager
 {
-  v4 = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
+  daemonTaskScheduler = [(WFContextualActionSpotlightSyncService *)self daemonTaskScheduler];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __81__WFContextualActionSpotlightSyncService_availableActivitiesDidChangeForManager___block_invoke;
   v5[3] = &unk_2788FF898;
   v5[4] = self;
-  [v4 executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.availableActivitiesDidChangeForManager" priority:0 handler:v5];
+  [daemonTaskScheduler executeAsyncTaskWithIdentifier:@"WFContextualActionSpotlightSyncService.availableActivitiesDidChangeForManager" priority:0 handler:v5];
 }
 
 void __81__WFContextualActionSpotlightSyncService_availableActivitiesDidChangeForManager___block_invoke(uint64_t a1, void *a2)
@@ -356,16 +356,16 @@ void __81__WFContextualActionSpotlightSyncService_availableActivitiesDidChangeFo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queue_wipeIndexIfNotMigratedToNewDomainIdentifiersWithCompletionHandler:(id)a3
+- (void)queue_wipeIndexIfNotMigratedToNewDomainIdentifiersWithCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  v6 = [v5 valueForKey:*MEMORY[0x277D7CF98]];
+  handlerCopy = handler;
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  v6 = [workflowUserDefaults valueForKey:*MEMORY[0x277D7CF98]];
 
   if (v6)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -378,14 +378,14 @@ void __81__WFContextualActionSpotlightSyncService_availableActivitiesDidChangeFo
       _os_log_impl(&dword_23103C000, v7, OS_LOG_TYPE_DEFAULT, "%s Device is using old domain identifiers for contextual actions. Wiping the index.", buf, 0xCu);
     }
 
-    v8 = [(WFContextualActionSpotlightSyncService *)self index];
+    index = [(WFContextualActionSpotlightSyncService *)self index];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __114__WFContextualActionSpotlightSyncService_queue_wipeIndexIfNotMigratedToNewDomainIdentifiersWithCompletionHandler___block_invoke;
     v10[3] = &unk_2788FF4B8;
     v10[4] = self;
-    v11 = v4;
-    [v8 deleteAllSearchableItemsWithCompletionHandler:v10];
+    v11 = handlerCopy;
+    [index deleteAllSearchableItemsWithCompletionHandler:v10];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -437,16 +437,16 @@ uint64_t __114__WFContextualActionSpotlightSyncService_queue_wipeIndexIfNotMigra
   return result;
 }
 
-- (void)queue_v2GetAppShortcutContextualActionsForBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)queue_v2GetAppShortcutContextualActionsForBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFContextualActionSpotlightSyncService *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  queue = [(WFContextualActionSpotlightSyncService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v9 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
   v11 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -458,20 +458,20 @@ uint64_t __114__WFContextualActionSpotlightSyncService_queue_wipeIndexIfNotMigra
 
   v12 = [objc_alloc(MEMORY[0x277D7C130]) initWithAppShortcutsDenyListEnvironment:2 environment:2];
   v33 = 0;
-  v13 = [v12 fetchAppShortcutsForBundleIdentifiers:v6 localeIdentifier:v10 error:&v33];
+  v13 = [v12 fetchAppShortcutsForBundleIdentifiers:identifiersCopy localeIdentifier:localeIdentifier error:&v33];
   v14 = v33;
   if (!v14)
   {
-    if (v6)
+    if (identifiersCopy)
     {
-      v17 = v6;
+      allKeys = identifiersCopy;
       v18 = getWFSpotlightSyncLogObject();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v35 = "[WFContextualActionSpotlightSyncService queue_v2GetAppShortcutContextualActionsForBundleIdentifiers:completionHandler:]";
         v36 = 2112;
-        v37 = v17;
+        v37 = allKeys;
         v19 = "%s Indexing app shortcuts for bundle identifiers: %@";
         v20 = v18;
         v21 = 22;
@@ -482,7 +482,7 @@ LABEL_12:
 
     else
     {
-      v17 = [v13 allKeys];
+      allKeys = [v13 allKeys];
       v18 = getWFSpotlightSyncLogObject();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -508,9 +508,9 @@ LABEL_12:
     v25[3] = &unk_2788FF7F8;
     v25[4] = self;
     v26 = v22;
-    v27 = v7;
+    v27 = handlerCopy;
     v23 = v22;
-    [v17 if_flatMapAsynchronously:v28 completionHandler:v25];
+    [allKeys if_flatMapAsynchronously:v28 completionHandler:v25];
 
     goto LABEL_14;
   }
@@ -525,16 +525,16 @@ LABEL_12:
     _os_log_impl(&dword_23103C000, v15, OS_LOG_TYPE_ERROR, "%s Failed to get App Shortcuts: %@", buf, 0x16u);
   }
 
-  v16 = [(WFContextualActionSpotlightSyncService *)self queue];
+  queue2 = [(WFContextualActionSpotlightSyncService *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __120__WFContextualActionSpotlightSyncService_queue_v2GetAppShortcutContextualActionsForBundleIdentifiers_completionHandler___block_invoke;
   block[3] = &unk_2788FF680;
-  v32 = v7;
+  v32 = handlerCopy;
   v31 = v14;
-  dispatch_async(v16, block);
+  dispatch_async(queue2, block);
 
-  v17 = v32;
+  allKeys = v32;
 LABEL_14:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -713,25 +713,25 @@ id __120__WFContextualActionSpotlightSyncService_queue_v2GetAppShortcutContextua
   return v11;
 }
 
-- (void)queue_getAppShortcutContextualActionsForBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)queue_getAppShortcutContextualActionsForBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFContextualActionSpotlightSyncService *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  queue = [(WFContextualActionSpotlightSyncService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v9 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
   v11 = WFInstalledAppsEnumerator();
-  v12 = [v11 allObjects];
+  allObjects = [v11 allObjects];
 
-  if ([v12 count])
+  if ([allObjects count])
   {
-    v13 = [(WFContextualActionSpotlightSyncService *)self databaseProvider];
+    databaseProvider = [(WFContextualActionSpotlightSyncService *)self databaseProvider];
     v29 = 0;
-    v14 = [v13 databaseWithError:&v29];
+    v14 = [databaseProvider databaseWithError:&v29];
     v15 = v29;
 
     v16 = getWFSpotlightSyncLogObject();
@@ -751,10 +751,10 @@ id __120__WFContextualActionSpotlightSyncService_queue_v2GetAppShortcutContextua
       v22[2] = __118__WFContextualActionSpotlightSyncService_queue_getAppShortcutContextualActionsForBundleIdentifiers_completionHandler___block_invoke_284;
       v22[3] = &unk_2788FF820;
       v22[4] = self;
-      v25 = v7;
-      v23 = v6;
+      v25 = handlerCopy;
+      v23 = identifiersCopy;
       v24 = v14;
-      [v18 autoShortcutsForLocaleIdentifier:v10 completion:v22];
+      [v18 autoShortcutsForLocaleIdentifier:localeIdentifier completion:v22];
     }
 
     else
@@ -768,14 +768,14 @@ id __120__WFContextualActionSpotlightSyncService_queue_v2GetAppShortcutContextua
         _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_ERROR, "%s Failed to access the Shortcuts database, can't check whether app shortcuts should or should not be in Spotlight: %@", buf, 0x16u);
       }
 
-      v20 = [(WFContextualActionSpotlightSyncService *)self queue];
+      queue2 = [(WFContextualActionSpotlightSyncService *)self queue];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __118__WFContextualActionSpotlightSyncService_queue_getAppShortcutContextualActionsForBundleIdentifiers_completionHandler___block_invoke_282;
       v26[3] = &unk_2788FF680;
-      v28 = v7;
+      v28 = handlerCopy;
       v27 = v15;
-      dispatch_async(v20, v26);
+      dispatch_async(queue2, v26);
 
       v18 = v28;
     }
@@ -783,13 +783,13 @@ id __120__WFContextualActionSpotlightSyncService_queue_v2GetAppShortcutContextua
 
   else
   {
-    v19 = [(WFContextualActionSpotlightSyncService *)self queue];
+    queue3 = [(WFContextualActionSpotlightSyncService *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __118__WFContextualActionSpotlightSyncService_queue_getAppShortcutContextualActionsForBundleIdentifiers_completionHandler___block_invoke;
     block[3] = &unk_2788FF730;
-    v31 = v7;
-    dispatch_async(v19, block);
+    v31 = handlerCopy;
+    dispatch_async(queue3, block);
 
     v15 = v31;
   }
@@ -1207,32 +1207,32 @@ uint64_t __118__WFContextualActionSpotlightSyncService_queue_getAppShortcutConte
   return v6 ^ 1u;
 }
 
-- (void)indexAppShortcutsForBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)indexAppShortcutsForBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  if (identifiersCopy)
   {
-    v8 = [v6 if_map:&__block_literal_global_274];
+    v8 = [identifiersCopy if_map:&__block_literal_global_274];
   }
 
   else
   {
     v9 = WFInstalledAppsEnumerator();
-    v10 = [v9 allObjects];
+    allObjects = [v9 allObjects];
 
-    v8 = [v10 if_map:&__block_literal_global_277];
+    v8 = [allObjects if_map:&__block_literal_global_277];
   }
 
-  v11 = [(WFContextualActionSpotlightSyncService *)self appShortcutBatchSize];
+  appShortcutBatchSize = [(WFContextualActionSpotlightSyncService *)self appShortcutBatchSize];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __98__WFContextualActionSpotlightSyncService_indexAppShortcutsForBundleIdentifiers_completionHandler___block_invoke_3;
   v13[3] = &unk_2788FF708;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
-  [(WFContextualActionSpotlightSyncService *)self queue_fetchWipeAndIndexActionsInDomainWithDescriptiveName:@"app shortcuts" identifiers:v8 batchSize:v11 fetcher:v13 completionBlock:v7];
+  v14 = identifiersCopy;
+  v12 = identifiersCopy;
+  [(WFContextualActionSpotlightSyncService *)self queue_fetchWipeAndIndexActionsInDomainWithDescriptiveName:@"app shortcuts" identifiers:v8 batchSize:appShortcutBatchSize fetcher:v13 completionBlock:handlerCopy];
 }
 
 id __98__WFContextualActionSpotlightSyncService_indexAppShortcutsForBundleIdentifiers_completionHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -1244,17 +1244,17 @@ id __98__WFContextualActionSpotlightSyncService_indexAppShortcutsForBundleIdenti
   return v4;
 }
 
-- (void)queue_getFolderAppEntityContextualActionsWithCompletionHandler:(id)a3
+- (void)queue_getFolderAppEntityContextualActionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFContextualActionSpotlightSyncService *)self databaseProvider];
-  v9 = [v5 databaseWithError:0];
+  handlerCopy = handler;
+  databaseProvider = [(WFContextualActionSpotlightSyncService *)self databaseProvider];
+  v9 = [databaseProvider databaseWithError:0];
 
-  v6 = [v9 sortedVisibleFolders];
-  v7 = [v6 descriptors];
+  sortedVisibleFolders = [v9 sortedVisibleFolders];
+  descriptors = [sortedVisibleFolders descriptors];
 
-  v8 = [v7 if_map:&__block_literal_global_271];
-  v4[2](v4, v8, 0);
+  v8 = [descriptors if_map:&__block_literal_global_271];
+  handlerCopy[2](handlerCopy, v8, 0);
 }
 
 _TtC14VoiceShortcuts27WFAppEntityContextualAction *__105__WFContextualActionSpotlightSyncService_queue_getFolderAppEntityContextualActionsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1269,19 +1269,19 @@ _TtC14VoiceShortcuts27WFAppEntityContextualAction *__105__WFContextualActionSpot
   return v6;
 }
 
-- (void)queue_getAlarmContextualActionsWithCompletionHandler:(id)a3
+- (void)queue_getAlarmContextualActionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFContextualActionSpotlightSyncService *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(WFContextualActionSpotlightSyncService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __95__WFContextualActionSpotlightSyncService_queue_getAlarmContextualActionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_2788FF680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1334,21 +1334,21 @@ void __95__WFContextualActionSpotlightSyncService_queue_getAlarmContextualAction
   dispatch_async(v17, block);
 }
 
-- (void)queue_getFocusModeContextualActionsWithCompletionHandler:(id)a3
+- (void)queue_getFocusModeContextualActionsWithCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFContextualActionSpotlightSyncService *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(WFContextualActionSpotlightSyncService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [getFCActivityManagerClass() sharedActivityManager];
-  v7 = [v6 availableActivities];
+  sharedActivityManager = [getFCActivityManagerClass() sharedActivityManager];
+  availableActivities = [sharedActivityManager availableActivities];
   v8 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v7;
+  v9 = availableActivities;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -1364,8 +1364,8 @@ void __95__WFContextualActionSpotlightSyncService_queue_getAlarmContextualAction
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 activityIdentifier];
-        [v8 setObject:v14 forKeyedSubscript:v15];
+        activityIdentifier = [v14 activityIdentifier];
+        [v8 setObject:v14 forKeyedSubscript:activityIdentifier];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -1375,19 +1375,19 @@ void __95__WFContextualActionSpotlightSyncService_queue_getAlarmContextualAction
   }
 
   v16 = [v8 copy];
-  v17 = [v16 allValues];
+  allValues = [v16 allValues];
 
-  v18 = [v17 if_compactMap:&__block_literal_global_266];
-  v19 = [(WFContextualActionSpotlightSyncService *)self queue];
+  v18 = [allValues if_compactMap:&__block_literal_global_266];
+  queue2 = [(WFContextualActionSpotlightSyncService *)self queue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __99__WFContextualActionSpotlightSyncService_queue_getFocusModeContextualActionsWithCompletionHandler___block_invoke_2;
   v23[3] = &unk_2788FF680;
   v24 = v18;
-  v25 = v4;
+  v25 = handlerCopy;
   v20 = v18;
-  v21 = v4;
-  dispatch_async(v19, v23);
+  v21 = handlerCopy;
+  dispatch_async(queue2, v23);
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -1423,12 +1423,12 @@ id __99__WFContextualActionSpotlightSyncService_queue_getFocusModeContextualActi
   return v3;
 }
 
-- (void)queue_getToggleSettingContextualActionsWithCompletionHandler:(id)a3
+- (void)queue_getToggleSettingContextualActionsWithCompletionHandler:(id)handler
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFContextualActionSpotlightSyncService *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(WFContextualActionSpotlightSyncService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = WFToggleAccessibilityContextualActions();
@@ -1444,65 +1444,65 @@ id __99__WFContextualActionSpotlightSyncService_queue_getFocusModeContextualActi
   v19 = v10;
   [v9 enumerateObjectsUsingBlock:v18];
 
-  v11 = [(WFContextualActionSpotlightSyncService *)self queue];
+  queue2 = [(WFContextualActionSpotlightSyncService *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __103__WFContextualActionSpotlightSyncService_queue_getToggleSettingContextualActionsWithCompletionHandler___block_invoke;
   v15[3] = &unk_2788FF680;
   v16 = v10;
-  v17 = v4;
+  v17 = handlerCopy;
   v12 = v10;
-  v13 = v4;
-  dispatch_async(v11, v15);
+  v13 = handlerCopy;
+  dispatch_async(queue2, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queue_getStaticContextualActionsWithCompletionHandler:(id)a3
+- (void)queue_getStaticContextualActionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFContextualActionSpotlightSyncService *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(WFContextualActionSpotlightSyncService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = WFStaticContextualActionDefinitionsForSurface();
-  v7 = [(WFContextualActionSpotlightSyncService *)self queue];
+  queue2 = [(WFContextualActionSpotlightSyncService *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __96__WFContextualActionSpotlightSyncService_queue_getStaticContextualActionsWithCompletionHandler___block_invoke;
   v10[3] = &unk_2788FF680;
   v11 = v6;
-  v12 = v4;
+  v12 = handlerCopy;
   v8 = v6;
-  v9 = v4;
-  dispatch_async(v7, v10);
+  v9 = handlerCopy;
+  dispatch_async(queue2, v10);
 }
 
-- (void)queue_fetchWipeAndIndexActionsInDomainWithDescriptiveName:(id)a3 identifiers:(id)a4 batchSize:(unint64_t)a5 fetcher:(id)a6 completionBlock:(id)a7
+- (void)queue_fetchWipeAndIndexActionsInDomainWithDescriptiveName:(id)name identifiers:(id)identifiers batchSize:(unint64_t)size fetcher:(id)fetcher completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(WFContextualActionSpotlightSyncService *)self queue];
-  dispatch_assert_queue_V2(v16);
+  nameCopy = name;
+  identifiersCopy = identifiers;
+  fetcherCopy = fetcher;
+  blockCopy = block;
+  queue = [(WFContextualActionSpotlightSyncService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v17 = _os_activity_create(&dword_23103C000, "contextual actions indexing stage", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __146__WFContextualActionSpotlightSyncService_queue_fetchWipeAndIndexActionsInDomainWithDescriptiveName_identifiers_batchSize_fetcher_completionBlock___block_invoke;
   block[3] = &unk_2788FF638;
-  v24 = v12;
-  v25 = self;
-  v28 = v14;
-  v29 = v15;
+  v24 = nameCopy;
+  selfCopy = self;
+  v28 = fetcherCopy;
+  v29 = blockCopy;
   v26 = v17;
-  v27 = v13;
-  v30 = a5;
-  v18 = v13;
-  v19 = v15;
+  v27 = identifiersCopy;
+  sizeCopy = size;
+  v18 = identifiersCopy;
+  v19 = blockCopy;
   v20 = v17;
-  v21 = v14;
-  v22 = v12;
+  v21 = fetcherCopy;
+  v22 = nameCopy;
   os_activity_apply(v20, block);
 }
 
@@ -1934,10 +1934,10 @@ uint64_t __146__WFContextualActionSpotlightSyncService_queue_fetchWipeAndIndexAc
   return result;
 }
 
-- (void)reindexAllSearchableItemsWithCompletion:(id)a3
+- (void)reindexAllSearchableItemsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1946,15 +1946,15 @@ uint64_t __146__WFContextualActionSpotlightSyncService_queue_fetchWipeAndIndexAc
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Triggering full wipe and reindex of all items", buf, 0xCu);
   }
 
-  v6 = [(WFContextualActionSpotlightSyncService *)self index];
+  index = [(WFContextualActionSpotlightSyncService *)self index];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __82__WFContextualActionSpotlightSyncService_reindexAllSearchableItemsWithCompletion___block_invoke;
   v9[3] = &unk_2788FF4B8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  [v6 deleteAllSearchableItemsWithCompletionHandler:v9];
+  v10 = completionCopy;
+  v7 = completionCopy;
+  [index deleteAllSearchableItemsWithCompletionHandler:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1990,22 +1990,22 @@ void __82__WFContextualActionSpotlightSyncService_reindexAllSearchableItemsWithC
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reindexSearchableItems:(unint64_t)a3 appShortcutBundleIdentifiers:(id)a4 completion:(id)a5
+- (void)reindexSearchableItems:(unint64_t)items appShortcutBundleIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WFContextualActionSpotlightSyncService *)self queue];
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  queue = [(WFContextualActionSpotlightSyncService *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __105__WFContextualActionSpotlightSyncService_reindexSearchableItems_appShortcutBundleIdentifiers_completion___block_invoke;
   v13[3] = &unk_2788FF490;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = identifiersCopy;
+  v15 = completionCopy;
+  itemsCopy = items;
+  v11 = completionCopy;
+  v12 = identifiersCopy;
+  dispatch_async(queue, v13);
 }
 
 void __105__WFContextualActionSpotlightSyncService_reindexSearchableItems_appShortcutBundleIdentifiers_completion___block_invoke(uint64_t a1)
@@ -2357,11 +2357,11 @@ void __105__WFContextualActionSpotlightSyncService_reindexSearchableItems_appSho
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reindexAllSearchableItemsIfNeeded:(BOOL)a3 completion:(id)a4
+- (void)reindexAllSearchableItemsIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v4 = a3;
+  neededCopy = needed;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[WFContextualActionSpotlightSyncService contextualActionsIndexVersion];
   v8 = getWFSpotlightSyncLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2377,9 +2377,9 @@ void __105__WFContextualActionSpotlightSyncService_reindexSearchableItems_appSho
 
   v9 = getWFSpotlightSyncLogObject();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v7 != 31 || v4)
+  if (v7 != 31 || neededCopy)
   {
-    if (v4)
+    if (neededCopy)
     {
       if (v10)
       {
@@ -2403,7 +2403,7 @@ LABEL_14:
     v13[1] = 3221225472;
     v13[2] = __87__WFContextualActionSpotlightSyncService_reindexAllSearchableItemsIfNeeded_completion___block_invoke;
     v13[3] = &unk_2788FF3C8;
-    v14 = v6;
+    v14 = completionCopy;
     [(WFContextualActionSpotlightSyncService *)self reindexAllSearchableItemsWithCompletion:v13];
 
     goto LABEL_16;
@@ -2416,9 +2416,9 @@ LABEL_14:
     _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEFAULT, "%s Contextual actions index doesn't need to be updated", buf, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_16:
@@ -2444,10 +2444,10 @@ uint64_t __87__WFContextualActionSpotlightSyncService_reindexAllSearchableItemsI
   return result;
 }
 
-- (void)migrateAppShortcutsAndReindexAllItemsIfNeededWithCompletion:(id)a3
+- (void)migrateAppShortcutsAndReindexAllItemsIfNeededWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[WFContextualActionSpotlightSyncService didCompleteAppShortcutDomainMigration];
   v6 = getWFSpotlightSyncLogObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -2460,7 +2460,7 @@ uint64_t __87__WFContextualActionSpotlightSyncService_reindexAllSearchableItemsI
       _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEFAULT, "%s App Shortcuts domain don't need migration, skipping", buf, 0xCu);
     }
 
-    [(WFContextualActionSpotlightSyncService *)self reindexAllSearchableItemsIfNeeded:0 completion:v4];
+    [(WFContextualActionSpotlightSyncService *)self reindexAllSearchableItemsIfNeeded:0 completion:completionCopy];
   }
 
   else
@@ -2472,17 +2472,17 @@ uint64_t __87__WFContextualActionSpotlightSyncService_reindexAllSearchableItemsI
       _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEFAULT, "%s App Shortcuts need migration, wiping existing App Shortcuts", buf, 0xCu);
     }
 
-    v8 = [(WFContextualActionSpotlightSyncService *)self index];
-    v9 = [MEMORY[0x277D79DF0] legacySpotlightDomainIdentifier];
-    v14 = v9;
+    index = [(WFContextualActionSpotlightSyncService *)self index];
+    legacySpotlightDomainIdentifier = [MEMORY[0x277D79DF0] legacySpotlightDomainIdentifier];
+    v14 = legacySpotlightDomainIdentifier;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __102__WFContextualActionSpotlightSyncService_migrateAppShortcutsAndReindexAllItemsIfNeededWithCompletion___block_invoke;
     v12[3] = &unk_2788FF4B8;
     v12[4] = self;
-    v13 = v4;
-    [v8 deleteSearchableItemsWithDomainIdentifiers:v10 completionHandler:v12];
+    v13 = completionCopy;
+    [index deleteSearchableItemsWithDomainIdentifiers:v10 completionHandler:v12];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2525,15 +2525,15 @@ void __102__WFContextualActionSpotlightSyncService_migrateAppShortcutsAndReindex
 
 - (void)dealloc
 {
-  v3 = [getFCActivityManagerClass() sharedActivityManager];
-  [v3 removeObserver:self];
+  sharedActivityManager = [getFCActivityManagerClass() sharedActivityManager];
+  [sharedActivityManager removeObserver:self];
 
-  v4 = [(WFContextualActionSpotlightSyncService *)self alarmDataSource];
+  alarmDataSource = [(WFContextualActionSpotlightSyncService *)self alarmDataSource];
 
-  if (v4)
+  if (alarmDataSource)
   {
-    v5 = [(WFContextualActionSpotlightSyncService *)self alarmDataSource];
-    [v5 unregisterObserver:self];
+    alarmDataSource2 = [(WFContextualActionSpotlightSyncService *)self alarmDataSource];
+    [alarmDataSource2 unregisterObserver:self];
   }
 
   v6.receiver = self;
@@ -2541,11 +2541,11 @@ void __102__WFContextualActionSpotlightSyncService_migrateAppShortcutsAndReindex
   [(WFContextualActionSpotlightSyncService *)&v6 dealloc];
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [getFCActivityManagerClass() sharedActivityManager];
-  [v5 addObserver:self];
+  completionCopy = completion;
+  sharedActivityManager = [getFCActivityManagerClass() sharedActivityManager];
+  [sharedActivityManager addObserver:self];
 
   v19 = 0;
   v20 = &v19;
@@ -2589,15 +2589,15 @@ void __102__WFContextualActionSpotlightSyncService_migrateAppShortcutsAndReindex
   self->_alarmDataSource = v11;
 
   [(MTAlarmDataSource *)self->_alarmDataSource registerObserver:self];
-  v13 = [(MTAlarmDataSource *)self->_alarmDataSource reloadAlarms];
-  [(WFContextualActionSpotlightSyncService *)self migrateAppShortcutsAndReindexAllItemsIfNeededWithCompletion:v4];
+  reloadAlarms = [(MTAlarmDataSource *)self->_alarmDataSource reloadAlarms];
+  [(WFContextualActionSpotlightSyncService *)self migrateAppShortcutsAndReindexAllItemsIfNeededWithCompletion:completionCopy];
 }
 
-- (WFContextualActionSpotlightSyncService)initWithDaemonTaskScheduler:(id)a3 databaseProvider:(id)a4
+- (WFContextualActionSpotlightSyncService)initWithDaemonTaskScheduler:(id)scheduler databaseProvider:(id)provider
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
   if ([MEMORY[0x277CC34A8] isIndexingAvailable])
   {
     v21.receiver = self;
@@ -2605,7 +2605,7 @@ void __102__WFContextualActionSpotlightSyncService_migrateAppShortcutsAndReindex
     v9 = [(WFContextualActionSpotlightSyncService *)&v21 init];
     if (!v9)
     {
-      v18 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -2617,8 +2617,8 @@ void __102__WFContextualActionSpotlightSyncService_migrateAppShortcutsAndReindex
     queue = v10->_queue;
     v10->_queue = v13;
 
-    objc_storeStrong(&v10->_daemonTaskScheduler, a3);
-    objc_storeStrong(&v10->_databaseProvider, a4);
+    objc_storeStrong(&v10->_daemonTaskScheduler, scheduler);
+    objc_storeStrong(&v10->_databaseProvider, provider);
     v15 = objc_alloc(MEMORY[0x277CC34A8]);
     v16 = [v15 initWithName:@"voiceshortcuts-contextualaction-spotlight-index-name" bundleIdentifier:*MEMORY[0x277D7A338]];
     index = v10->_index;
@@ -2626,7 +2626,7 @@ void __102__WFContextualActionSpotlightSyncService_migrateAppShortcutsAndReindex
 
     [(CSSearchableIndex *)v10->_index setIndexDelegate:v10];
     self = v10;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -2639,38 +2639,38 @@ void __102__WFContextualActionSpotlightSyncService_migrateAppShortcutsAndReindex
       _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_DEBUG, "%s Spotlight indexing is not available.", buf, 0xCu);
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
 LABEL_8:
   v19 = *MEMORY[0x277D85DE8];
-  return v18;
+  return selfCopy;
 }
 
-+ (void)setContextualActionsIndexVersion:(int64_t)a3
++ (void)setContextualActionsIndexVersion:(int64_t)version
 {
-  v4 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  [v4 setInteger:a3 forKey:@"WFContextualActionsIndexVersion"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  [workflowUserDefaults setInteger:version forKey:@"WFContextualActionsIndexVersion"];
 }
 
 + (int64_t)contextualActionsIndexVersion
 {
-  v2 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  v3 = [v2 integerForKey:@"WFContextualActionsIndexVersion"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  v3 = [workflowUserDefaults integerForKey:@"WFContextualActionsIndexVersion"];
 
   return v3;
 }
 
 + (void)setDidCompleteAppShortcutDomainMigration
 {
-  v2 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  [v2 setBool:1 forKey:@"WFAutoShortcutContextualActionDomainMigration"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  [workflowUserDefaults setBool:1 forKey:@"WFAutoShortcutContextualActionDomainMigration"];
 }
 
 + (BOOL)didCompleteAppShortcutDomainMigration
 {
-  v2 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFAutoShortcutContextualActionDomainMigration"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  v3 = [workflowUserDefaults BOOLForKey:@"WFAutoShortcutContextualActionDomainMigration"];
 
   return v3;
 }

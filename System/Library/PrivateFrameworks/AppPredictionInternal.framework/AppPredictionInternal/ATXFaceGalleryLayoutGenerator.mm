@@ -1,75 +1,75 @@
 @interface ATXFaceGalleryLayoutGenerator
-+ (id)_descriptorsByDeduplicatingExtensionsInDescriptors:(id)a3;
-- (ATXFaceGalleryLayoutGenerator)initWithDescriptors:(id)a3 complicationProvider:(id)a4 complicationDescriptorProvider:(id)a5 parameters:(id)a6 dayZero:(BOOL)a7 locale:(id)a8;
-- (BOOL)_complicationExistsOnSystem:(id)a3;
-- (BOOL)_descriptorIsEligibleForComplications:(id)a3;
++ (id)_descriptorsByDeduplicatingExtensionsInDescriptors:(id)descriptors;
+- (ATXFaceGalleryLayoutGenerator)initWithDescriptors:(id)descriptors complicationProvider:(id)provider complicationDescriptorProvider:(id)descriptorProvider parameters:(id)parameters dayZero:(BOOL)zero locale:(id)locale;
+- (BOOL)_complicationExistsOnSystem:(id)system;
+- (BOOL)_descriptorIsEligibleForComplications:(id)complications;
 - (BOOL)_isFocusUser;
-- (BOOL)_shouldExcludePhotosDescriptor:(id)a3 appProtectionInfo:(id)a4;
-- (BOOL)isDescriptor:(id)a3 availableInAssetParameter:(id)a4;
-- (BOOL)isDescriptorFromGalleryItem:(id)a3 availableInAssetParameter:(id)a4;
-- (BOOL)shouldAddDescriptorFromExtension:(id)a3 descriptorIdentifierInAsset:(id)a4 withSemanticType:(int64_t)a5 assetParametersToFilterOut:(id)a6;
-- (BOOL)shouldRemoveDescriptorFromFeatured:(id)a3 withDescriptorsToRemove:(id)a4;
+- (BOOL)_shouldExcludePhotosDescriptor:(id)descriptor appProtectionInfo:(id)info;
+- (BOOL)isDescriptor:(id)descriptor availableInAssetParameter:(id)parameter;
+- (BOOL)isDescriptorFromGalleryItem:(id)item availableInAssetParameter:(id)parameter;
+- (BOOL)shouldAddDescriptorFromExtension:(id)extension descriptorIdentifierInAsset:(id)asset withSemanticType:(int64_t)type assetParametersToFilterOut:(id)out;
+- (BOOL)shouldRemoveDescriptorFromFeatured:(id)featured withDescriptorsToRemove:(id)remove;
 - (NSArray)rankedFeaturedDescriptors;
 - (id)_candidateFeaturedDescriptors;
-- (id)_generateSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5 assetDescriptors:(id)a6 otherParameters:(id)a7 semanticType:(int64_t)a8;
-- (id)_generatedFeaturedSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5;
+- (id)_generateSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id assetDescriptors:(id)descriptors otherParameters:(id)parameters semanticType:(int64_t)type;
+- (id)_generatedFeaturedSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
 - (id)_generatedFocusSection;
-- (id)_generatedHeroSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5 heroSectionOrder:(id)a6;
-- (id)_generatedPhotoShuffleSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5;
-- (id)_generatedSpatialPhotosSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5;
-- (id)_inlineComplicationForDescriptor:(id)a3;
-- (id)_itemFromDescriptor:(id)a3 shouldShowDisplayName:(BOOL)a4 shouldShowComplications:(BOOL)a5 systemSuggestedComplicationSet:(id)a6 systemSuggestedLandscapeComplicationSet:(id)a7;
-- (id)_itemsFromDescriptors:(id)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6 shouldShowDisplayName:(BOOL)a7 shouldShowComplications:(BOOL)a8 limit:(id)a9;
-- (id)_landscapeSetsFromLandscapeSetsDict:(id)a3;
-- (id)_localizedSubtitleTextWithSemanticType:(int64_t)a3;
+- (id)_generatedHeroSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id heroSectionOrder:(id)order;
+- (id)_generatedPhotoShuffleSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
+- (id)_generatedSpatialPhotosSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
+- (id)_inlineComplicationForDescriptor:(id)descriptor;
+- (id)_itemFromDescriptor:(id)descriptor shouldShowDisplayName:(BOOL)name shouldShowComplications:(BOOL)complications systemSuggestedComplicationSet:(id)set systemSuggestedLandscapeComplicationSet:(id)complicationSet;
+- (id)_itemsFromDescriptors:(id)descriptors widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id shouldShowDisplayName:(BOOL)name shouldShowComplications:(BOOL)complications limit:(id)limit;
+- (id)_landscapeSetsFromLandscapeSetsDict:(id)dict;
+- (id)_localizedSubtitleTextWithSemanticType:(int64_t)type;
 - (id)_localizedTitleForWeatherAndAstronomySection;
-- (id)_localizedTitleTextWithSemanticType:(int64_t)a3;
+- (id)_localizedTitleTextWithSemanticType:(int64_t)type;
 - (id)_localizedTitleforOSVersionSection;
-- (id)_modularComplicationsForDescriptor:(id)a3 systemSuggestionComplications:(id)a4;
-- (id)_modularLandscapeComplicationsForDescriptor:(id)a3 systemSuggestionComplications:(id)a4;
-- (id)_shuffledSuggestableComplicationSetsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5;
-- (id)descriptorsToRemoveFromSectionWithSemanticType:(int64_t)a3 parameters:(id)a4;
-- (id)generatedConfigurationWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5;
-- (id)putPhotoShuffleAndSpatialSceneInTheTopPositions:(id)a3;
-- (void)_processDescriptors:(id)a3;
+- (id)_modularComplicationsForDescriptor:(id)descriptor systemSuggestionComplications:(id)complications;
+- (id)_modularLandscapeComplicationsForDescriptor:(id)descriptor systemSuggestionComplications:(id)complications;
+- (id)_shuffledSuggestableComplicationSetsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
+- (id)descriptorsToRemoveFromSectionWithSemanticType:(int64_t)type parameters:(id)parameters;
+- (id)generatedConfigurationWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
+- (id)putPhotoShuffleAndSpatialSceneInTheTopPositions:(id)positions;
+- (void)_processDescriptors:(id)descriptors;
 @end
 
 @implementation ATXFaceGalleryLayoutGenerator
 
-- (ATXFaceGalleryLayoutGenerator)initWithDescriptors:(id)a3 complicationProvider:(id)a4 complicationDescriptorProvider:(id)a5 parameters:(id)a6 dayZero:(BOOL)a7 locale:(id)a8
+- (ATXFaceGalleryLayoutGenerator)initWithDescriptors:(id)descriptors complicationProvider:(id)provider complicationDescriptorProvider:(id)descriptorProvider parameters:(id)parameters dayZero:(BOOL)zero locale:(id)locale
 {
-  v14 = a3;
-  v23 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  descriptorsCopy = descriptors;
+  providerCopy = provider;
+  descriptorProviderCopy = descriptorProvider;
+  parametersCopy = parameters;
+  localeCopy = locale;
   v24.receiver = self;
   v24.super_class = ATXFaceGalleryLayoutGenerator;
   v18 = [(ATXFaceGalleryLayoutGenerator *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_complicationProvider, a4);
-    objc_storeStrong(&v19->_complicationDescriptorProvider, a5);
-    v19->_dayZero = a7;
-    objc_storeStrong(&v19->_locale, a8);
+    objc_storeStrong(&v18->_complicationProvider, provider);
+    objc_storeStrong(&v19->_complicationDescriptorProvider, descriptorProvider);
+    v19->_dayZero = zero;
+    objc_storeStrong(&v19->_locale, locale);
     v20 = +[ATXComplicationSuggestionParameters sharedInstance];
     complicationParameters = v19->_complicationParameters;
     v19->_complicationParameters = v20;
 
-    objc_storeStrong(&v19->_parameters, a6);
-    [(ATXFaceGalleryLayoutGenerator *)v19 _processDescriptors:v14];
+    objc_storeStrong(&v19->_parameters, parameters);
+    [(ATXFaceGalleryLayoutGenerator *)v19 _processDescriptors:descriptorsCopy];
   }
 
   return v19;
 }
 
-- (id)generatedConfigurationWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5
+- (id)generatedConfigurationWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
   v95 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v86 = a4;
-  v85 = a5;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
   v9 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -79,7 +79,7 @@
   }
 
   v10 = objc_opt_new();
-  v87 = [(ATXFaceGalleryLayoutGenerator *)self _generatedFeaturedSectionWithWidgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v86 bundleIdToCompanionBundleId:v85];
+  v87 = [(ATXFaceGalleryLayoutGenerator *)self _generatedFeaturedSectionWithWidgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
   parameters = self->_parameters;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -93,12 +93,12 @@
   }
 
   v84 = v12;
-  v13 = [(ATXFaceSuggestionParameters *)v12 sectionOrder];
-  v14 = v13;
+  sectionOrder = [(ATXFaceSuggestionParameters *)v12 sectionOrder];
+  v14 = sectionOrder;
   v15 = MEMORY[0x277CBEBF8];
-  if (v13)
+  if (sectionOrder)
   {
-    v15 = v13;
+    v15 = sectionOrder;
   }
 
   v16 = v15;
@@ -122,8 +122,8 @@
   {
     v27 = v26;
     v28 = *v89;
-    v82 = v8;
-    v83 = self;
+    v82 = dataCopy;
+    selfCopy = self;
     do
     {
       v29 = 0;
@@ -156,12 +156,12 @@
           if ([v30 isEqualToString:@"Focus"])
           {
 
-            v31 = [(ATXFaceGalleryLayoutGenerator *)self _generatedFocusSection];
+            _generatedFocusSection = [(ATXFaceGalleryLayoutGenerator *)self _generatedFocusSection];
 LABEL_26:
-            v30 = v31;
-            if (v31)
+            v30 = _generatedFocusSection;
+            if (_generatedFocusSection)
             {
-              [v10 addObject:v31];
+              [v10 addObject:_generatedFocusSection];
             }
 
 LABEL_18:
@@ -172,11 +172,11 @@ LABEL_18:
           if ([v30 isEqualToString:@"Hero"])
           {
 
-            v32 = [(ATXFaceSuggestionParameters *)v84 heroSectionOrder];
-            v30 = v32;
-            if (v32)
+            heroSectionOrder = [(ATXFaceSuggestionParameters *)v84 heroSectionOrder];
+            v30 = heroSectionOrder;
+            if (heroSectionOrder)
             {
-              v33 = v32;
+              v33 = heroSectionOrder;
             }
 
             else
@@ -184,39 +184,39 @@ LABEL_18:
               v33 = MEMORY[0x277CBEBF8];
             }
 
-            v34 = [(ATXFaceGalleryLayoutGenerator *)self _generatedHeroSectionWithWidgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v86 bundleIdToCompanionBundleId:v85 heroSectionOrder:v33, v82];
+            v34 = [(ATXFaceGalleryLayoutGenerator *)self _generatedHeroSectionWithWidgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy heroSectionOrder:v33, v82];
             [v10 addObject:v34];
 
-            self = v83;
+            self = selfCopy;
             goto LABEL_18;
           }
 
           if ([v30 isEqualToString:@"PhotoShuffle"])
           {
 
-            v31 = [(ATXFaceGalleryLayoutGenerator *)self _generatedPhotoShuffleSectionWithWidgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v86 bundleIdToCompanionBundleId:v85];
+            _generatedFocusSection = [(ATXFaceGalleryLayoutGenerator *)self _generatedPhotoShuffleSectionWithWidgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
             goto LABEL_26;
           }
 
           if ([v30 isEqualToString:@"WeatherAndAstronomy"])
           {
 
-            v35 = [(ATXFaceSuggestionParameters *)v84 weatherAndAstronomySectionDescriptors];
-            v36 = v35;
+            weatherAndAstronomySectionDescriptors = [(ATXFaceSuggestionParameters *)v84 weatherAndAstronomySectionDescriptors];
+            v36 = weatherAndAstronomySectionDescriptors;
             v37 = MEMORY[0x277CBEBF8];
-            if (v35)
+            if (weatherAndAstronomySectionDescriptors)
             {
-              v37 = v35;
+              v37 = weatherAndAstronomySectionDescriptors;
             }
 
-            v38 = v8;
+            v38 = dataCopy;
             v39 = v37;
 
-            self = v83;
-            v40 = v83;
+            self = selfCopy;
+            v40 = selfCopy;
             v41 = v38;
-            v43 = v85;
-            v42 = v86;
+            v43 = idCopy;
+            v42 = launchDataCopy;
             v44 = v39;
             v45 = v84;
             v46 = 6;
@@ -225,22 +225,22 @@ LABEL_18:
           else if ([v30 isEqualToString:@"Kaleidoscope"])
           {
 
-            v47 = [(ATXFaceSuggestionParameters *)v84 kaleidoscopeSectionDescriptors];
-            v48 = v47;
+            kaleidoscopeSectionDescriptors = [(ATXFaceSuggestionParameters *)v84 kaleidoscopeSectionDescriptors];
+            v48 = kaleidoscopeSectionDescriptors;
             v49 = MEMORY[0x277CBEBF8];
-            if (v47)
+            if (kaleidoscopeSectionDescriptors)
             {
-              v49 = v47;
+              v49 = kaleidoscopeSectionDescriptors;
             }
 
-            v50 = v8;
+            v50 = dataCopy;
             v39 = v49;
 
-            self = v83;
-            v40 = v83;
+            self = selfCopy;
+            v40 = selfCopy;
             v41 = v50;
-            v43 = v85;
-            v42 = v86;
+            v43 = idCopy;
+            v42 = launchDataCopy;
             v44 = v39;
             v45 = v84;
             v46 = 7;
@@ -249,22 +249,22 @@ LABEL_18:
           else if ([v30 isEqualToString:@"Emoji"])
           {
 
-            v51 = [(ATXFaceSuggestionParameters *)v84 emojiSectionDescriptors];
-            v52 = v51;
+            emojiSectionDescriptors = [(ATXFaceSuggestionParameters *)v84 emojiSectionDescriptors];
+            v52 = emojiSectionDescriptors;
             v53 = MEMORY[0x277CBEBF8];
-            if (v51)
+            if (emojiSectionDescriptors)
             {
-              v53 = v51;
+              v53 = emojiSectionDescriptors;
             }
 
-            v54 = v8;
+            v54 = dataCopy;
             v39 = v53;
 
-            self = v83;
-            v40 = v83;
+            self = selfCopy;
+            v40 = selfCopy;
             v41 = v54;
-            v43 = v85;
-            v42 = v86;
+            v43 = idCopy;
+            v42 = launchDataCopy;
             v44 = v39;
             v45 = v84;
             v46 = 8;
@@ -273,22 +273,22 @@ LABEL_18:
           else if ([v30 isEqualToString:@"Unity"])
           {
 
-            v55 = [(ATXFaceSuggestionParameters *)v84 unitySectionDescriptors];
-            v56 = v55;
+            unitySectionDescriptors = [(ATXFaceSuggestionParameters *)v84 unitySectionDescriptors];
+            v56 = unitySectionDescriptors;
             v57 = MEMORY[0x277CBEBF8];
-            if (v55)
+            if (unitySectionDescriptors)
             {
-              v57 = v55;
+              v57 = unitySectionDescriptors;
             }
 
-            v58 = v8;
+            v58 = dataCopy;
             v39 = v57;
 
-            self = v83;
-            v40 = v83;
+            self = selfCopy;
+            v40 = selfCopy;
             v41 = v58;
-            v43 = v85;
-            v42 = v86;
+            v43 = idCopy;
+            v42 = launchDataCopy;
             v44 = v39;
             v45 = v84;
             v46 = 9;
@@ -297,22 +297,22 @@ LABEL_18:
           else if ([v30 isEqualToString:@"Pride"])
           {
 
-            v59 = [(ATXFaceSuggestionParameters *)v84 prideSectionDescriptors];
-            v60 = v59;
+            prideSectionDescriptors = [(ATXFaceSuggestionParameters *)v84 prideSectionDescriptors];
+            v60 = prideSectionDescriptors;
             v61 = MEMORY[0x277CBEBF8];
-            if (v59)
+            if (prideSectionDescriptors)
             {
-              v61 = v59;
+              v61 = prideSectionDescriptors;
             }
 
-            v62 = v8;
+            v62 = dataCopy;
             v39 = v61;
 
-            self = v83;
-            v40 = v83;
+            self = selfCopy;
+            v40 = selfCopy;
             v41 = v62;
-            v43 = v85;
-            v42 = v86;
+            v43 = idCopy;
+            v42 = launchDataCopy;
             v44 = v39;
             v45 = v84;
             v46 = 10;
@@ -321,22 +321,22 @@ LABEL_18:
           else if ([v30 isEqualToString:@"OSVersion"])
           {
 
-            v63 = [(ATXFaceSuggestionParameters *)v84 osVersionSectionDescriptors];
-            v64 = v63;
+            osVersionSectionDescriptors = [(ATXFaceSuggestionParameters *)v84 osVersionSectionDescriptors];
+            v64 = osVersionSectionDescriptors;
             v65 = MEMORY[0x277CBEBF8];
-            if (v63)
+            if (osVersionSectionDescriptors)
             {
-              v65 = v63;
+              v65 = osVersionSectionDescriptors;
             }
 
-            v66 = v8;
+            v66 = dataCopy;
             v39 = v65;
 
-            self = v83;
-            v40 = v83;
+            self = selfCopy;
+            v40 = selfCopy;
             v41 = v66;
-            v43 = v85;
-            v42 = v86;
+            v43 = idCopy;
+            v42 = launchDataCopy;
             v44 = v39;
             v45 = v84;
             v46 = 11;
@@ -345,22 +345,22 @@ LABEL_18:
           else if ([v30 isEqualToString:@"Collections"])
           {
 
-            v67 = [(ATXFaceSuggestionParameters *)v84 collectionsSectionDescriptors];
-            v68 = v67;
+            collectionsSectionDescriptors = [(ATXFaceSuggestionParameters *)v84 collectionsSectionDescriptors];
+            v68 = collectionsSectionDescriptors;
             v69 = MEMORY[0x277CBEBF8];
-            if (v67)
+            if (collectionsSectionDescriptors)
             {
-              v69 = v67;
+              v69 = collectionsSectionDescriptors;
             }
 
-            v70 = v8;
+            v70 = dataCopy;
             v39 = v69;
 
-            self = v83;
-            v40 = v83;
+            self = selfCopy;
+            v40 = selfCopy;
             v41 = v70;
-            v43 = v85;
-            v42 = v86;
+            v43 = idCopy;
+            v42 = launchDataCopy;
             v44 = v39;
             v45 = v84;
             v46 = 12;
@@ -373,29 +373,29 @@ LABEL_18:
               if ([v30 isEqualToString:@"SpatialPhotos"])
               {
 
-                v31 = [(ATXFaceGalleryLayoutGenerator *)self _generatedSpatialPhotosSectionWithWidgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v86 bundleIdToCompanionBundleId:v85];
+                _generatedFocusSection = [(ATXFaceGalleryLayoutGenerator *)self _generatedSpatialPhotosSectionWithWidgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
                 goto LABEL_26;
               }
 
               goto LABEL_18;
             }
 
-            v71 = [(ATXFaceSuggestionParameters *)v84 colorSectionDescriptors];
-            v72 = v71;
+            colorSectionDescriptors = [(ATXFaceSuggestionParameters *)v84 colorSectionDescriptors];
+            v72 = colorSectionDescriptors;
             v73 = MEMORY[0x277CBEBF8];
-            if (v71)
+            if (colorSectionDescriptors)
             {
-              v73 = v71;
+              v73 = colorSectionDescriptors;
             }
 
-            v74 = v8;
+            v74 = dataCopy;
             v39 = v73;
 
-            self = v83;
-            v40 = v83;
+            self = selfCopy;
+            v40 = selfCopy;
             v41 = v74;
-            v43 = v85;
-            v42 = v86;
+            v43 = idCopy;
+            v42 = launchDataCopy;
             v44 = v39;
             v45 = v84;
             v46 = 13;
@@ -408,7 +408,7 @@ LABEL_18:
             [v10 addObject:v75];
           }
 
-          v8 = v82;
+          dataCopy = v82;
         }
 
 LABEL_21:
@@ -432,30 +432,30 @@ LABEL_21:
   return v79;
 }
 
-- (void)_processDescriptors:(id)a3
+- (void)_processDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [(ATXFaceSuggestionParameters *)self->_parameters hiddenRegions];
-  v9 = [(ATXFaceSuggestionParameters *)self->_parameters allowedDescriptorsForRegions];
+  hiddenRegions = [(ATXFaceSuggestionParameters *)self->_parameters hiddenRegions];
+  allowedDescriptorsForRegions = [(ATXFaceSuggestionParameters *)self->_parameters allowedDescriptorsForRegions];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __53__ATXFaceGalleryLayoutGenerator__processDescriptors___block_invoke;
   v24 = &unk_2785A1518;
-  v25 = self;
-  v26 = v8;
-  v27 = v9;
+  selfCopy = self;
+  v26 = hiddenRegions;
+  v27 = allowedDescriptorsForRegions;
   v28 = v5;
   v29 = v6;
   v30 = v7;
   v10 = v7;
   v11 = v6;
   v12 = v5;
-  v13 = v9;
-  v14 = v8;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v21];
+  v13 = allowedDescriptorsForRegions;
+  v14 = hiddenRegions;
+  [descriptorsCopy enumerateKeysAndObjectsUsingBlock:&v21];
 
   v15 = [v12 copy];
   allHeroDescriptors = self->_allHeroDescriptors;
@@ -673,13 +673,13 @@ LABEL_39:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_generatedHeroSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5 heroSectionOrder:(id)a6
+- (id)_generatedHeroSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id heroSectionOrder:(id)order
 {
   v95 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v70 = a4;
-  v69 = a5;
-  v11 = a6;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
+  orderCopy = order;
   v12 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -691,15 +691,15 @@ LABEL_39:
     _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "%s: %lu hero descriptors", buf, 0x16u);
   }
 
-  v71 = v11;
-  v68 = v10;
+  v71 = orderCopy;
+  v68 = dataCopy;
 
   v14 = objc_opt_new();
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v67 = self;
+  selfCopy = self;
   v15 = self->_allHeroDescriptors;
   v16 = [(NSArray *)v15 countByEnumeratingWithState:&v84 objects:v90 count:16];
   if (!v16)
@@ -729,12 +729,12 @@ LABEL_39:
       v22 = *(*(&v84 + 1) + 8 * i);
       if (isPhotosDescriptor(v22))
       {
-        v23 = [v22 identifier];
-        v24 = [v23 hasPrefix:@"CreateAFacePhotos"];
+        identifier = [v22 identifier];
+        v24 = [identifier hasPrefix:@"CreateAFacePhotos"];
 
         if (v24)
         {
-          v25 = v19;
+          extensionBundleIdentifier = v19;
           v19 = v22;
           goto LABEL_25;
         }
@@ -747,12 +747,12 @@ LABEL_39:
       v26 = v22;
       if (isPhotosDescriptor(v26))
       {
-        v27 = [v26 identifier];
-        v28 = [v27 hasPrefix:@"CreateAFacePeople"];
+        identifier2 = [v26 identifier];
+        v28 = [identifier2 hasPrefix:@"CreateAFacePeople"];
 
         if (v28)
         {
-          v25 = v18;
+          extensionBundleIdentifier = v18;
           v18 = v26;
           goto LABEL_25;
         }
@@ -765,12 +765,12 @@ LABEL_39:
       v29 = v26;
       if (isPhotosDescriptor(v29))
       {
-        v30 = [v29 identifier];
-        v31 = [v30 hasPrefix:@"CreateAFaceShuffle"];
+        identifier3 = [v29 identifier];
+        v31 = [identifier3 hasPrefix:@"CreateAFaceShuffle"];
 
         if (v31)
         {
-          v25 = v74;
+          extensionBundleIdentifier = v74;
           v74 = v29;
           goto LABEL_25;
         }
@@ -783,12 +783,12 @@ LABEL_39:
       v32 = v29;
       if (isPhotosDescriptor(v32))
       {
-        v33 = [v32 identifier];
-        v34 = [v33 hasPrefix:@"CreateAFaceLivePhoto"];
+        identifier4 = [v32 identifier];
+        v34 = [identifier4 hasPrefix:@"CreateAFaceLivePhoto"];
 
         if (v34)
         {
-          v25 = v75;
+          extensionBundleIdentifier = v75;
           v75 = v32;
           goto LABEL_25;
         }
@@ -798,8 +798,8 @@ LABEL_39:
       {
       }
 
-      v25 = [v32 extensionBundleIdentifier];
-      [v14 setObject:v32 forKeyedSubscript:v25];
+      extensionBundleIdentifier = [v32 extensionBundleIdentifier];
+      [v14 setObject:v32 forKeyedSubscript:extensionBundleIdentifier];
 LABEL_25:
     }
 
@@ -902,8 +902,8 @@ LABEL_50:
     while (v47);
   }
 
-  v55 = [v73 allValues];
-  if ([v55 count])
+  allValues = [v73 allValues];
+  if ([allValues count])
   {
     v56 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_FAULT))
@@ -911,11 +911,11 @@ LABEL_50:
       [ATXFaceGalleryLayoutGenerator _generatedHeroSectionWithWidgetDescriptorsAdditionalData:v73 aggregatedAppLaunchData:v56 bundleIdToCompanionBundleId:? heroSectionOrder:?];
     }
 
-    [v35 addObjectsFromArray:v55];
+    [v35 addObjectsFromArray:allValues];
   }
 
   v57 = [v35 copy];
-  v58 = [(ATXFaceGalleryLayoutGenerator *)v67 _itemsFromDescriptors:v57 widgetDescriptorsAdditionalData:v68 aggregatedAppLaunchData:v70 bundleIdToCompanionBundleId:v69 shouldShowDisplayName:1 shouldShowComplications:0 limit:0];
+  v58 = [(ATXFaceGalleryLayoutGenerator *)selfCopy _itemsFromDescriptors:v57 widgetDescriptorsAdditionalData:v68 aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy shouldShowDisplayName:1 shouldShowComplications:0 limit:0];
 
   v78 = 0u;
   v79 = 0u;
@@ -951,22 +951,22 @@ LABEL_50:
   return v64;
 }
 
-- (id)_generatedFeaturedSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5
+- (id)_generatedFeaturedSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
   if (self->_dayZero)
   {
-    v11 = [(ATXFaceSuggestionParameters *)self->_parameters dayZeroFeaturedDescriptors];
-    if ([v11 count] > 5)
+    dayZeroFeaturedDescriptors = [(ATXFaceSuggestionParameters *)self->_parameters dayZeroFeaturedDescriptors];
+    if ([dayZeroFeaturedDescriptors count] > 5)
     {
       goto LABEL_7;
     }
 
-    v12 = __atxlog_handle_lock_screen();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    rankedFeaturedDescriptors = __atxlog_handle_lock_screen();
+    if (os_log_type_enabled(rankedFeaturedDescriptors, OS_LOG_TYPE_FAULT))
     {
       [ATXFaceGalleryLayoutGenerator _generatedFeaturedSectionWithWidgetDescriptorsAdditionalData:aggregatedAppLaunchData:bundleIdToCompanionBundleId:];
     }
@@ -974,9 +974,9 @@ LABEL_50:
 
   else
   {
-    v12 = [(ATXFaceGalleryLayoutGenerator *)self rankedFeaturedDescriptors];
-    v13 = [objc_opt_class() _descriptorsByDeduplicatingExtensionsInDescriptors:v12];
-    v11 = [(ATXFaceGalleryLayoutGenerator *)self putPhotoShuffleAndSpatialSceneInTheTopPositions:v13];
+    rankedFeaturedDescriptors = [(ATXFaceGalleryLayoutGenerator *)self rankedFeaturedDescriptors];
+    v13 = [objc_opt_class() _descriptorsByDeduplicatingExtensionsInDescriptors:rankedFeaturedDescriptors];
+    dayZeroFeaturedDescriptors = [(ATXFaceGalleryLayoutGenerator *)self putPhotoShuffleAndSpatialSceneInTheTopPositions:v13];
   }
 
 LABEL_7:
@@ -986,15 +986,15 @@ LABEL_7:
     *buf = 136315394;
     v54 = "[ATXFaceGalleryLayoutGenerator _generatedFeaturedSectionWithWidgetDescriptorsAdditionalData:aggregatedAppLaunchData:bundleIdToCompanionBundleId:]";
     v55 = 2112;
-    v56 = v11;
+    v56 = dayZeroFeaturedDescriptors;
     _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "%s: ranked descriptors for featured section: %@", buf, 0x16u);
   }
 
-  v38 = v11;
-  v39 = v10;
-  if (v11)
+  v38 = dayZeroFeaturedDescriptors;
+  v39 = idCopy;
+  if (dayZeroFeaturedDescriptors)
   {
-    v15 = v11;
+    v15 = dayZeroFeaturedDescriptors;
   }
 
   else
@@ -1002,9 +1002,9 @@ LABEL_7:
     v15 = MEMORY[0x277CBEBF8];
   }
 
-  v40 = v9;
-  v41 = v8;
-  [(ATXFaceGalleryLayoutGenerator *)self _itemsFromDescriptors:v15 widgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v9 bundleIdToCompanionBundleId:v10 shouldShowDisplayName:1 shouldShowComplications:1 limit:&unk_283A57A70];
+  v40 = launchDataCopy;
+  v41 = dataCopy;
+  [(ATXFaceGalleryLayoutGenerator *)self _itemsFromDescriptors:v15 widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy shouldShowDisplayName:1 shouldShowComplications:1 limit:&unk_283A57A70];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -1025,12 +1025,12 @@ LABEL_7:
 
         v20 = *(*(&v47 + 1) + 8 * i);
         [v20 setSource:2];
-        v21 = [(ATXFaceSuggestionParameters *)self->_parameters osVersionSectionDescriptors];
-        v22 = v21;
+        osVersionSectionDescriptors = [(ATXFaceSuggestionParameters *)self->_parameters osVersionSectionDescriptors];
+        v22 = osVersionSectionDescriptors;
         v23 = MEMORY[0x277CBEBF8];
-        if (v21)
+        if (osVersionSectionDescriptors)
         {
-          v23 = v21;
+          v23 = osVersionSectionDescriptors;
         }
 
         v24 = v23;
@@ -1056,8 +1056,8 @@ LABEL_7:
 
               if ([(ATXFaceGalleryLayoutGenerator *)self isDescriptorFromGalleryItem:v20 availableInAssetParameter:*(*(&v43 + 1) + 8 * j)])
               {
-                v30 = [(ATXFaceGalleryLayoutGenerator *)self _localizedTitleforOSVersionSection];
-                [v20 setLocalizedDisplayName:v30];
+                _localizedTitleforOSVersionSection = [(ATXFaceGalleryLayoutGenerator *)self _localizedTitleforOSVersionSection];
+                [v20 setLocalizedDisplayName:_localizedTitleforOSVersionSection];
               }
             }
 
@@ -1094,15 +1094,15 @@ LABEL_7:
   return v35;
 }
 
-- (id)putPhotoShuffleAndSpatialSceneInTheTopPositions:(id)a3
+- (id)putPhotoShuffleAndSpatialSceneInTheTopPositions:(id)positions
 {
-  v3 = a3;
-  if ([v3 count])
+  positionsCopy = positions;
+  if ([positionsCopy count])
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-    v6 = [MEMORY[0x277CCAB58] indexSet];
-    if ([v3 count])
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
+    if ([positionsCopy count])
     {
       v7 = 0;
       do
@@ -1112,7 +1112,7 @@ LABEL_7:
           break;
         }
 
-        v8 = [v3 objectAtIndexedSubscript:v7];
+        v8 = [positionsCopy objectAtIndexedSubscript:v7];
         if ([v4 count] > 1 || (v9 = isSpatialPhotosDescriptor(v8), v10 = v4, (v9 & 1) == 0))
         {
           if ([v5 count] > 1)
@@ -1129,18 +1129,18 @@ LABEL_7:
         }
 
         [v10 addObject:v8];
-        [v6 addIndex:v7];
+        [indexSet addIndex:v7];
 
         ++v7;
       }
 
-      while (v7 < [v3 count]);
+      while (v7 < [positionsCopy count]);
     }
 
     if ([v4 count] || objc_msgSend(v5, "count"))
     {
-      v12 = [v3 mutableCopy];
-      [v12 removeObjectsAtIndexes:v6];
+      v12 = [positionsCopy mutableCopy];
+      [v12 removeObjectsAtIndexes:indexSet];
       v13 = [v4 arrayByAddingObjectsFromArray:v5];
       v14 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v13, "count")}];
       [v12 insertObjects:v13 atIndexes:v14];
@@ -1150,13 +1150,13 @@ LABEL_7:
 
     else
     {
-      v15 = v3;
+      v15 = positionsCopy;
     }
   }
 
   else
   {
-    v15 = v3;
+    v15 = positionsCopy;
   }
 
   return v15;
@@ -1164,10 +1164,10 @@ LABEL_7:
 
 - (NSArray)rankedFeaturedDescriptors
 {
-  v3 = [(ATXFaceGalleryLayoutGenerator *)self _candidateFeaturedDescriptors];
+  _candidateFeaturedDescriptors = [(ATXFaceGalleryLayoutGenerator *)self _candidateFeaturedDescriptors];
   v4 = [ATXFaceSuggestionScorer alloc];
   parameters = self->_parameters;
-  v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v3];
+  v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:_candidateFeaturedDescriptors];
   v7 = [(ATXFaceSuggestionScorer *)v4 initWithParameters:parameters descriptors:v6];
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -1176,7 +1176,7 @@ LABEL_7:
   v12[3] = &unk_2785A1540;
   v13 = v7;
   v8 = v7;
-  v9 = [v3 _pas_mappedArrayWithTransform:v12];
+  v9 = [_candidateFeaturedDescriptors _pas_mappedArrayWithTransform:v12];
   v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_238];
 
   return v10;
@@ -1356,12 +1356,12 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_shouldExcludePhotosDescriptor:(id)a3 appProtectionInfo:(id)a4
+- (BOOL)_shouldExcludePhotosDescriptor:(id)descriptor appProtectionInfo:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (isPhotosDescriptor(v5) && [v6 bundleIdIsLockedOrHiddenByUserPreference:@"com.apple.mobileslideshow"])
+  descriptorCopy = descriptor;
+  infoCopy = info;
+  if (isPhotosDescriptor(descriptorCopy) && [infoCopy bundleIdIsLockedOrHiddenByUserPreference:@"com.apple.mobileslideshow"])
   {
     v7 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1369,7 +1369,7 @@ LABEL_11:
       v11 = 136315394;
       v12 = "[ATXFaceGalleryLayoutGenerator _shouldExcludePhotosDescriptor:appProtectionInfo:]";
       v13 = 2112;
-      v14 = v5;
+      v14 = descriptorCopy;
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "%s: Photos app is locked. Skipping descriptor: %@", &v11, 0x16u);
     }
 
@@ -1385,17 +1385,17 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_descriptorsByDeduplicatingExtensionsInDescriptors:(id)a3
++ (id)_descriptorsByDeduplicatingExtensionsInDescriptors:(id)descriptors
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = objc_opt_new();
   v39 = objc_opt_new();
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v5 = v3;
+  v5 = descriptorsCopy;
   v6 = [v5 countByEnumeratingWithState:&v47 objects:v56 count:16];
   if (v6)
   {
@@ -1411,11 +1411,11 @@ LABEL_11:
         }
 
         v10 = *(*(&v47 + 1) + 8 * i);
-        v11 = [v10 extensionBundleIdentifier];
-        if ([v11 isEqualToString:@"com.apple.WatchFacesWallpaperSupport.Unity2025Poster"])
+        extensionBundleIdentifier = [v10 extensionBundleIdentifier];
+        if ([extensionBundleIdentifier isEqualToString:@"com.apple.WatchFacesWallpaperSupport.Unity2025Poster"])
         {
-          v12 = [v10 identifier];
-          v13 = [v12 hasPrefix:@"unity"];
+          identifier = [v10 identifier];
+          v13 = [identifier hasPrefix:@"unity"];
 
           if (v13)
           {
@@ -1464,13 +1464,13 @@ LABEL_13:
       }
 
       v21 = *(*(&v43 + 1) + 8 * j);
-      v22 = [v21 extensionBundleIdentifier];
-      if (![v4 containsObject:v22])
+      extensionBundleIdentifier2 = [v21 extensionBundleIdentifier];
+      if (![v4 containsObject:extensionBundleIdentifier2])
       {
 
 LABEL_24:
-        v25 = [v21 extensionBundleIdentifier];
-        if ([v25 isEqualToString:v19])
+        extensionBundleIdentifier3 = [v21 extensionBundleIdentifier];
+        if ([extensionBundleIdentifier3 isEqualToString:v19])
         {
           goto LABEL_29;
         }
@@ -1479,14 +1479,14 @@ LABEL_24:
         v27 = v17;
         v28 = v18;
         v29 = v14;
-        v30 = [v21 extensionBundleIdentifier];
-        if ([v30 isEqualToString:@"com.apple.WatchFacesWallpaperSupport.ExtragalacticPoster"])
+        extensionBundleIdentifier4 = [v21 extensionBundleIdentifier];
+        if ([extensionBundleIdentifier4 isEqualToString:@"com.apple.WatchFacesWallpaperSupport.ExtragalacticPoster"])
         {
           goto LABEL_28;
         }
 
-        v31 = [v21 extensionBundleIdentifier];
-        if ([v31 isEqualToString:@"com.apple.WatchFacesWallpaperSupport.RhizomePoster"])
+        extensionBundleIdentifier5 = [v21 extensionBundleIdentifier];
+        if ([extensionBundleIdentifier5 isEqualToString:@"com.apple.WatchFacesWallpaperSupport.RhizomePoster"])
         {
 
 LABEL_28:
@@ -1514,8 +1514,8 @@ LABEL_35:
 
         else
         {
-          v34 = [v21 extensionBundleIdentifier];
-          v40 = [v34 isEqualToString:@"com.apple.WatchFacesWallpaperSupport.Unity2025Poster"];
+          extensionBundleIdentifier6 = [v21 extensionBundleIdentifier];
+          v40 = [extensionBundleIdentifier6 isEqualToString:@"com.apple.WatchFacesWallpaperSupport.Unity2025Poster"];
 
           v16 = v39;
           v14 = v29;
@@ -1528,8 +1528,8 @@ LABEL_35:
             goto LABEL_30;
           }
 
-          v35 = [v21 extensionBundleIdentifier];
-          [v41 addObject:v35];
+          extensionBundleIdentifier7 = [v21 extensionBundleIdentifier];
+          [v41 addObject:extensionBundleIdentifier7];
         }
 
         v32 = v16;
@@ -1567,12 +1567,12 @@ LABEL_38:
   return v36;
 }
 
-- (id)_generatedPhotoShuffleSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5
+- (id)_generatedPhotoShuffleSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
   v11 = [(NSDictionary *)self->_nonHeroDescriptorsByExtensionBundleId objectForKeyedSubscript:@"com.apple.mobileslideshow.PhotosPosterProvider"];
   v12 = v11;
   if (v11)
@@ -1601,8 +1601,8 @@ LABEL_38:
       _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_DEFAULT, "%s: shuffle should show display name: %{BOOL}d", buf, 0x12u);
     }
 
-    v40 = v9;
-    v18 = [(ATXFaceGalleryLayoutGenerator *)self _itemsFromDescriptors:v15 widgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v9 bundleIdToCompanionBundleId:v10 shouldShowDisplayName:v16 > 1 shouldShowComplications:0 limit:&unk_283A57A88];
+    v40 = launchDataCopy;
+    v18 = [(ATXFaceGalleryLayoutGenerator *)self _itemsFromDescriptors:v15 widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy shouldShowDisplayName:v16 > 1 shouldShowComplications:0 limit:&unk_283A57A88];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -1631,11 +1631,11 @@ LABEL_38:
     }
 
     v39 = v14;
-    v41 = v8;
+    v41 = dataCopy;
     v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v24 = [v23 localizedStringForKey:@"FACE_GALLERY_SECTION_DESCRIPTIVE_TEXT_PHOTO_SHUFFLE" value:&stru_2839A6058 table:0];
 
-    v25 = v10;
+    v25 = idCopy;
     if ([MEMORY[0x277D42590] isiPad])
     {
       v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1677,9 +1677,9 @@ LABEL_38:
 
     v36 = [v32 initWithLocalizedTitle:v34 symbolImageName:0 symbolColorName:0 localizedSubtitle:v28 localizedDescriptiveText:v29 unityDescription:v29 type:v35 items:v18 semanticType:5];
 
-    v9 = v40;
-    v8 = v41;
-    v10 = v25;
+    launchDataCopy = v40;
+    dataCopy = v41;
+    idCopy = v25;
     v14 = v39;
   }
 
@@ -1701,12 +1701,12 @@ LABEL_38:
   return v36;
 }
 
-- (id)_generatedSpatialPhotosSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5
+- (id)_generatedSpatialPhotosSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
   v11 = [(NSDictionary *)self->_nonHeroDescriptorsByExtensionBundleId objectForKeyedSubscript:@"com.apple.mobileslideshow.PhotosPosterProvider"];
   v12 = v11;
   if (v11)
@@ -1724,7 +1724,7 @@ LABEL_38:
   v15 = [v14 _pas_filteredArrayWithTest:&__block_literal_global_114];
   if ([v15 count])
   {
-    v16 = [(ATXFaceGalleryLayoutGenerator *)self _itemsFromDescriptors:v15 widgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v9 bundleIdToCompanionBundleId:v10 shouldShowDisplayName:0 shouldShowComplications:1 limit:&unk_283A57A88];
+    v16 = [(ATXFaceGalleryLayoutGenerator *)self _itemsFromDescriptors:v15 widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy shouldShowDisplayName:0 shouldShowComplications:1 limit:&unk_283A57A88];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -1778,8 +1778,8 @@ LABEL_38:
 
 - (BOOL)_isFocusUser
 {
-  v2 = [MEMORY[0x277CEB440] sharedInstance];
-  v3 = [v2 dndModeUUIDForDNDModeSemanticType:3];
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+  v3 = [mEMORY[0x277CEB440] dndModeUUIDForDNDModeSemanticType:3];
 
   if (v3)
   {
@@ -1797,7 +1797,7 @@ LABEL_38:
         break;
       }
 
-      v7 = [v2 dndModeUUIDForDNDModeSemanticType:v5];
+      v7 = [mEMORY[0x277CEB440] dndModeUUIDForDNDModeSemanticType:v5];
 
       v5 = v6 + 1;
     }
@@ -1848,25 +1848,25 @@ LABEL_38:
   return v11;
 }
 
-- (id)_generateSectionWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5 assetDescriptors:(id)a6 otherParameters:(id)a7 semanticType:(int64_t)a8
+- (id)_generateSectionWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id assetDescriptors:(id)descriptors otherParameters:(id)parameters semanticType:(int64_t)type
 {
   v78 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v56 = a4;
-  v55 = a5;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
+  descriptorsCopy = descriptors;
+  parametersCopy = parameters;
   v16 = objc_opt_new();
-  v54 = v15;
-  if ([v14 count])
+  v54 = parametersCopy;
+  if ([descriptorsCopy count])
   {
-    v17 = [(ATXFaceGalleryLayoutGenerator *)self descriptorsToRemoveFromSectionWithSemanticType:a8 parameters:v15];
+    v17 = [(ATXFaceGalleryLayoutGenerator *)self descriptorsToRemoveFromSectionWithSemanticType:type parameters:parametersCopy];
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v53 = v14;
-    obj = v14;
+    v53 = descriptorsCopy;
+    obj = descriptorsCopy;
     v60 = [obj countByEnumeratingWithState:&v71 objects:v77 count:16];
     if (v60)
     {
@@ -1886,17 +1886,17 @@ LABEL_38:
           if ([v19 containsString:@":"])
           {
             v20 = [v19 componentsSeparatedByString:@":"];
-            v21 = [v20 firstObject];
+            firstObject = [v20 firstObject];
 
             v22 = [v19 componentsSeparatedByString:@":"];
-            v23 = [v22 lastObject];
+            lastObject = [v22 lastObject];
 
-            v19 = v21;
+            v19 = firstObject;
           }
 
           else
           {
-            v23 = &stru_2839A6058;
+            lastObject = &stru_2839A6058;
           }
 
           v61 = v19;
@@ -1923,7 +1923,7 @@ LABEL_38:
                 }
 
                 v31 = *(*(&v67 + 1) + 8 * i);
-                if ([(ATXFaceGalleryLayoutGenerator *)self shouldAddDescriptorFromExtension:v31 descriptorIdentifierInAsset:v23 withSemanticType:a8 assetParametersToFilterOut:v17])
+                if ([(ATXFaceGalleryLayoutGenerator *)self shouldAddDescriptorFromExtension:v31 descriptorIdentifierInAsset:lastObject withSemanticType:type assetParametersToFilterOut:v17])
                 {
                   [v16 addObject:v31];
                 }
@@ -1946,7 +1946,7 @@ LABEL_38:
     }
 
     v32 = [v16 copy];
-    v33 = [(ATXFaceGalleryLayoutGenerator *)self _itemsFromDescriptors:v32 widgetDescriptorsAdditionalData:v57 aggregatedAppLaunchData:v56 bundleIdToCompanionBundleId:v55 shouldShowDisplayName:0 shouldShowComplications:1 limit:&unk_283A57A88];
+    v33 = [(ATXFaceGalleryLayoutGenerator *)self _itemsFromDescriptors:v32 widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy shouldShowDisplayName:0 shouldShowComplications:1 limit:&unk_283A57A88];
 
     v65 = 0u;
     v66 = 0u;
@@ -1977,16 +1977,16 @@ LABEL_38:
     }
 
     v39 = objc_alloc(MEMORY[0x277CEB528]);
-    v40 = [(ATXFaceGalleryLayoutGenerator *)self _localizedTitleTextWithSemanticType:a8];
-    v41 = [(ATXFaceGalleryLayoutGenerator *)self _localizedSubtitleTextWithSemanticType:a8];
-    v42 = [v39 initWithLocalizedTitle:v40 symbolImageName:0 symbolColorName:0 localizedSubtitle:v41 localizedDescriptiveText:0 unityDescription:0 type:1 items:v34 semanticType:a8];
+    v40 = [(ATXFaceGalleryLayoutGenerator *)self _localizedTitleTextWithSemanticType:type];
+    v41 = [(ATXFaceGalleryLayoutGenerator *)self _localizedSubtitleTextWithSemanticType:type];
+    v42 = [v39 initWithLocalizedTitle:v40 symbolImageName:0 symbolColorName:0 localizedSubtitle:v41 localizedDescriptiveText:0 unityDescription:0 type:1 items:v34 semanticType:type];
 
     v43 = v53;
   }
 
   else
   {
-    v43 = v14;
+    v43 = descriptorsCopy;
     v17 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
@@ -2009,21 +2009,21 @@ uint64_t __183__ATXFaceGalleryLayoutGenerator__generateSectionWithWidgetDescript
   return v3 ^ 1u;
 }
 
-- (id)_itemsFromDescriptors:(id)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6 shouldShowDisplayName:(BOOL)a7 shouldShowComplications:(BOOL)a8 limit:(id)a9
+- (id)_itemsFromDescriptors:(id)descriptors widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id shouldShowDisplayName:(BOOL)name shouldShowComplications:(BOOL)complications limit:(id)limit
 {
-  v56 = a8;
-  v52 = a7;
+  complicationsCopy = complications;
+  nameCopy = name;
   v62 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v46 = a9;
-  v17 = [(ATXFaceGalleryLayoutGenerator *)self _shuffledSuggestableComplicationSetsWithWidgetDescriptorsAdditionalData:v14 aggregatedAppLaunchData:v15 bundleIdToCompanionBundleId:v16];
-  v48 = v15;
-  v49 = v14;
-  v47 = v16;
-  [(ATXFaceGalleryLayoutGeneratorComplicationProviding *)self->_complicationProvider landscapeModularSetsDictsWithWidgetDescriptorsAdditionalData:v14 aggregatedAppLaunchData:v15 bundleIdToCompanionBundleId:v16 portraitSets:v17];
+  descriptorsCopy = descriptors;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
+  limitCopy = limit;
+  v17 = [(ATXFaceGalleryLayoutGenerator *)self _shuffledSuggestableComplicationSetsWithWidgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
+  v48 = launchDataCopy;
+  v49 = dataCopy;
+  v47 = idCopy;
+  [(ATXFaceGalleryLayoutGeneratorComplicationProviding *)self->_complicationProvider landscapeModularSetsDictsWithWidgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy portraitSets:v17];
   v45 = v55 = self;
   v54 = [(ATXFaceGalleryLayoutGenerator *)self _landscapeSetsFromLandscapeSetsDict:?];
   v18 = objc_opt_new();
@@ -2031,7 +2031,7 @@ uint64_t __183__ATXFaceGalleryLayoutGenerator__generateSectionWithWidgetDescript
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v13;
+  obj = descriptorsCopy;
   v53 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v53)
   {
@@ -2048,7 +2048,7 @@ uint64_t __183__ATXFaceGalleryLayoutGenerator__generateSectionWithWidgetDescript
         }
 
         v21 = *(*(&v57 + 1) + 8 * v20);
-        v22 = v56 && [(ATXFaceGalleryLayoutGenerator *)v55 _descriptorIsEligibleForComplications:*(*(&v57 + 1) + 8 * v20)];
+        v22 = complicationsCopy && [(ATXFaceGalleryLayoutGenerator *)v55 _descriptorIsEligibleForComplications:*(*(&v57 + 1) + 8 * v20)];
         if ([v17 count])
         {
           v23 = v19 % [v17 count];
@@ -2086,8 +2086,8 @@ LABEL_21:
           goto LABEL_22;
         }
 
-        v25 = [v21 galleryOptions];
-        if ([v25 allowsSystemSuggestedComplications])
+        galleryOptions = [v21 galleryOptions];
+        if ([galleryOptions allowsSystemSuggestedComplications])
         {
           v26 = [v17 count];
 
@@ -2104,13 +2104,13 @@ LABEL_21:
 
         v27 = 0;
 LABEL_28:
-        v34 = [v21 extensionBundleIdentifier];
-        if ([v34 isEqualToString:@"com.apple.GradientPoster.GradientPosterExtension"])
+        extensionBundleIdentifier = [v21 extensionBundleIdentifier];
+        if ([extensionBundleIdentifier isEqualToString:@"com.apple.GradientPoster.GradientPosterExtension"])
         {
 
 LABEL_31:
-          v37 = [v21 galleryOptions];
-          if (![v37 allowsSystemSuggestedComplications])
+          galleryOptions2 = [v21 galleryOptions];
+          if (![galleryOptions2 allowsSystemSuggestedComplications])
           {
             goto LABEL_35;
           }
@@ -2118,16 +2118,16 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v35 = [v21 extensionBundleIdentifier];
-        v36 = [v35 isEqualToString:@"com.apple.WallpaperKit.CollectionsPoster"];
+        extensionBundleIdentifier2 = [v21 extensionBundleIdentifier];
+        v36 = [extensionBundleIdentifier2 isEqualToString:@"com.apple.WallpaperKit.CollectionsPoster"];
 
         if (v36)
         {
           goto LABEL_31;
         }
 
-        v37 = [v21 galleryOptions];
-        if (![v37 allowsSystemSuggestedComplicationsInLandscape])
+        galleryOptions2 = [v21 galleryOptions];
+        if (![galleryOptions2 allowsSystemSuggestedComplicationsInLandscape])
         {
 LABEL_35:
 
@@ -2144,13 +2144,13 @@ LABEL_32:
 
         v28 = [v54 objectAtIndexedSubscript:v24];
 LABEL_22:
-        v29 = [(ATXFaceGalleryLayoutGenerator *)v55 _itemFromDescriptor:v21 shouldShowDisplayName:v52 shouldShowComplications:v56 systemSuggestedComplicationSet:v27 systemSuggestedLandscapeComplicationSet:v28];
+        v29 = [(ATXFaceGalleryLayoutGenerator *)v55 _itemFromDescriptor:v21 shouldShowDisplayName:nameCopy shouldShowComplications:complicationsCopy systemSuggestedComplicationSet:v27 systemSuggestedLandscapeComplicationSet:v28];
         [v18 addObject:v29];
-        v30 = [v29 complications];
-        v31 = [v30 count];
+        complications = [v29 complications];
+        v31 = [complications count];
 
-        v32 = [v29 landscapeComplications];
-        v33 = v31 | [v32 count];
+        landscapeComplications = [v29 landscapeComplications];
+        v33 = v31 | [landscapeComplications count];
 
         if (v33)
         {
@@ -2168,9 +2168,9 @@ LABEL_22:
     while (v39);
   }
 
-  if (v46 && (v40 = [v46 unsignedIntegerValue], v40 < objc_msgSend(v18, "count")))
+  if (limitCopy && (v40 = [limitCopy unsignedIntegerValue], v40 < objc_msgSend(v18, "count")))
   {
-    v41 = [v18 subarrayWithRange:{0, objc_msgSend(v46, "unsignedIntegerValue")}];
+    v41 = [v18 subarrayWithRange:{0, objc_msgSend(limitCopy, "unsignedIntegerValue")}];
   }
 
   else
@@ -2185,19 +2185,19 @@ LABEL_22:
   return v42;
 }
 
-- (id)_itemFromDescriptor:(id)a3 shouldShowDisplayName:(BOOL)a4 shouldShowComplications:(BOOL)a5 systemSuggestedComplicationSet:(id)a6 systemSuggestedLandscapeComplicationSet:(id)a7
+- (id)_itemFromDescriptor:(id)descriptor shouldShowDisplayName:(BOOL)name shouldShowComplications:(BOOL)complications systemSuggestedComplicationSet:(id)set systemSuggestedLandscapeComplicationSet:(id)complicationSet
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v39 = v10;
-  if (v10)
+  complicationsCopy = complications;
+  nameCopy = name;
+  descriptorCopy = descriptor;
+  setCopy = set;
+  complicationSetCopy = complicationSet;
+  v39 = nameCopy;
+  if (nameCopy)
   {
     v15 = MEMORY[0x277CEB3B0];
-    v16 = [v12 extensionBundleIdentifier];
-    v42 = [v15 localizedNameForExtensionBundleId:v16];
+    extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+    v42 = [v15 localizedNameForExtensionBundleId:extensionBundleIdentifier];
   }
 
   else
@@ -2205,17 +2205,17 @@ LABEL_22:
     v42 = 0;
   }
 
-  v40 = v14;
-  v41 = v13;
-  if (v9)
+  v40 = complicationSetCopy;
+  v41 = setCopy;
+  if (complicationsCopy)
   {
-    v17 = [v13 complications];
-    v18 = [(ATXFaceGalleryLayoutGenerator *)self _modularComplicationsForDescriptor:v12 systemSuggestionComplications:v17];
+    complications = [setCopy complications];
+    v18 = [(ATXFaceGalleryLayoutGenerator *)self _modularComplicationsForDescriptor:descriptorCopy systemSuggestionComplications:complications];
 
-    v19 = [v14 complications];
-    v20 = [(ATXFaceGalleryLayoutGenerator *)self _modularLandscapeComplicationsForDescriptor:v12 systemSuggestionComplications:v19];
+    complications2 = [complicationSetCopy complications];
+    v20 = [(ATXFaceGalleryLayoutGenerator *)self _modularLandscapeComplicationsForDescriptor:descriptorCopy systemSuggestionComplications:complications2];
 
-    v21 = [(ATXFaceGalleryLayoutGenerator *)self _inlineComplicationForDescriptor:v12];
+    v21 = [(ATXFaceGalleryLayoutGenerator *)self _inlineComplicationForDescriptor:descriptorCopy];
   }
 
   else
@@ -2227,18 +2227,18 @@ LABEL_22:
 
   v22 = objc_alloc(MEMORY[0x277CEB520]);
   v23 = objc_opt_new();
-  v24 = [v23 UUIDString];
-  v25 = [v12 identifier];
-  v26 = [v12 extensionBundleIdentifier];
+  uUIDString = [v23 UUIDString];
+  identifier = [descriptorCopy identifier];
+  extensionBundleIdentifier2 = [descriptorCopy extensionBundleIdentifier];
   v27 = [MEMORY[0x277CF0BC8] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-  v28 = [v22 initWithIdentifier:v24 descriptorIdentifier:v25 extensionBundleIdentifier:v26 localizedDisplayName:v42 modeSemanticType:0 titleFontName:&stru_2839A6058 titleColor:v27 subtitleComplication:v21 layoutType:0 complications:v18 landscapeComplications:v20];
+  v28 = [v22 initWithIdentifier:uUIDString descriptorIdentifier:identifier extensionBundleIdentifier:extensionBundleIdentifier2 localizedDisplayName:v42 modeSemanticType:0 titleFontName:&stru_2839A6058 titleColor:v27 subtitleComplication:v21 layoutType:0 complications:v18 landscapeComplications:v20];
 
   [v28 setSource:5];
   if (v39)
   {
-    v29 = [v12 galleryOptions];
-    v30 = [v29 displayNameLocalizationKey];
-    [v28 setDisplayNameLocalizationKey:v30];
+    galleryOptions = [descriptorCopy galleryOptions];
+    displayNameLocalizationKey = [galleryOptions displayNameLocalizationKey];
+    [v28 setDisplayNameLocalizationKey:displayNameLocalizationKey];
   }
 
   else
@@ -2246,46 +2246,46 @@ LABEL_22:
     [v28 setDisplayNameLocalizationKey:0];
   }
 
-  v31 = [v12 galleryOptions];
-  v32 = [v31 spokenNameLocalizationKey];
-  [v28 setSpokenNameLocalizationKey:v32];
+  galleryOptions2 = [descriptorCopy galleryOptions];
+  spokenNameLocalizationKey = [galleryOptions2 spokenNameLocalizationKey];
+  [v28 setSpokenNameLocalizationKey:spokenNameLocalizationKey];
 
-  v33 = [v12 galleryOptions];
-  v34 = [v33 descriptiveTextLocalizationKey];
-  [v28 setDescriptiveTextLocalizationKey:v34];
+  galleryOptions3 = [descriptorCopy galleryOptions];
+  descriptiveTextLocalizationKey = [galleryOptions3 descriptiveTextLocalizationKey];
+  [v28 setDescriptiveTextLocalizationKey:descriptiveTextLocalizationKey];
 
-  v35 = [v12 score];
-  [v28 setScore:v35];
+  score = [descriptorCopy score];
+  [v28 setScore:score];
 
-  v36 = [v12 galleryOptions];
-  [v28 setBlankTemplate:{objc_msgSend(v36, "isHero")}];
+  galleryOptions4 = [descriptorCopy galleryOptions];
+  [v28 setBlankTemplate:{objc_msgSend(galleryOptions4, "isHero")}];
 
-  v37 = [v12 galleryOptions];
-  [v28 setShouldShowAsShuffleStack:{objc_msgSend(v37, "shouldShowAsShuffleStack")}];
+  galleryOptions5 = [descriptorCopy galleryOptions];
+  [v28 setShouldShowAsShuffleStack:{objc_msgSend(galleryOptions5, "shouldShowAsShuffleStack")}];
 
   return v28;
 }
 
-- (id)_inlineComplicationForDescriptor:(id)a3
+- (id)_inlineComplicationForDescriptor:(id)descriptor
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   if ([(ATXComplicationSuggestionParameters *)self->_complicationParameters showPreviewsInPosterGallery])
   {
-    v5 = [v4 galleryOptions];
-    v6 = [v5 inlineComplication];
+    galleryOptions = [descriptorCopy galleryOptions];
+    inlineComplication = [galleryOptions inlineComplication];
 
-    if (v6)
+    if (inlineComplication)
     {
-      v7 = [v4 galleryOptions];
-      v8 = [v7 inlineComplication];
-      v9 = [(ATXFaceGalleryLayoutGenerator *)self _complicationExistsOnSystem:v8];
+      galleryOptions2 = [descriptorCopy galleryOptions];
+      inlineComplication2 = [galleryOptions2 inlineComplication];
+      v9 = [(ATXFaceGalleryLayoutGenerator *)self _complicationExistsOnSystem:inlineComplication2];
 
       if (v9)
       {
-        v10 = [v4 galleryOptions];
-        v11 = [v10 inlineComplication];
-        v12 = [v11 copy];
+        galleryOptions3 = [descriptorCopy galleryOptions];
+        inlineComplication3 = [galleryOptions3 inlineComplication];
+        v12 = [inlineComplication3 copy];
 
         [v12 setSource:5];
         goto LABEL_9;
@@ -2294,10 +2294,10 @@ LABEL_22:
       v13 = __atxlog_handle_lock_screen();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v4 galleryOptions];
-        v15 = [v14 inlineComplication];
+        galleryOptions4 = [descriptorCopy galleryOptions];
+        inlineComplication4 = [galleryOptions4 inlineComplication];
         v18 = 138412290;
-        v19 = v15;
+        v19 = inlineComplication4;
         _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "Not showing complication since no matching chrono descriptor exists on system: %@", &v18, 0xCu);
       }
     }
@@ -2311,20 +2311,20 @@ LABEL_9:
   return v12;
 }
 
-- (id)_modularComplicationsForDescriptor:(id)a3 systemSuggestionComplications:(id)a4
+- (id)_modularComplicationsForDescriptor:(id)descriptor systemSuggestionComplications:(id)complications
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  complicationsCopy = complications;
   if ([(ATXComplicationSuggestionParameters *)self->_complicationParameters showPreviewsInPosterGallery])
   {
-    v8 = [v6 galleryOptions];
-    v9 = [v8 modularComplications];
+    galleryOptions = [descriptorCopy galleryOptions];
+    modularComplications = [galleryOptions modularComplications];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __98__ATXFaceGalleryLayoutGenerator__modularComplicationsForDescriptor_systemSuggestionComplications___block_invoke;
     v15[3] = &unk_2785A15D0;
     v15[4] = self;
-    v10 = [v9 _pas_mappedArrayWithTransform:v15];
+    v10 = [modularComplications _pas_mappedArrayWithTransform:v15];
     v11 = v10;
     if (v10)
     {
@@ -2333,7 +2333,7 @@ LABEL_9:
 
     else
     {
-      v12 = v7;
+      v12 = complicationsCopy;
     }
 
     v13 = v12;
@@ -2375,20 +2375,20 @@ id __98__ATXFaceGalleryLayoutGenerator__modularComplicationsForDescriptor_system
   return v4;
 }
 
-- (id)_modularLandscapeComplicationsForDescriptor:(id)a3 systemSuggestionComplications:(id)a4
+- (id)_modularLandscapeComplicationsForDescriptor:(id)descriptor systemSuggestionComplications:(id)complications
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  complicationsCopy = complications;
   if (-[ATXComplicationSuggestionParameters showPreviewsInPosterGallery](self->_complicationParameters, "showPreviewsInPosterGallery") && [MEMORY[0x277D42590] isiPad])
   {
-    v8 = [v6 galleryOptions];
-    v9 = [v8 modularLandscapeComplications];
+    galleryOptions = [descriptorCopy galleryOptions];
+    modularLandscapeComplications = [galleryOptions modularLandscapeComplications];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __107__ATXFaceGalleryLayoutGenerator__modularLandscapeComplicationsForDescriptor_systemSuggestionComplications___block_invoke;
     v15[3] = &unk_2785A15D0;
     v15[4] = self;
-    v10 = [v9 _pas_mappedArrayWithTransform:v15];
+    v10 = [modularLandscapeComplications _pas_mappedArrayWithTransform:v15];
     v11 = v10;
     if (v10)
     {
@@ -2397,7 +2397,7 @@ id __98__ATXFaceGalleryLayoutGenerator__modularComplicationsForDescriptor_system
 
     else
     {
-      v12 = v7;
+      v12 = complicationsCopy;
     }
 
     v13 = v12;
@@ -2439,17 +2439,17 @@ id __107__ATXFaceGalleryLayoutGenerator__modularLandscapeComplicationsForDescrip
   return v4;
 }
 
-- (BOOL)_complicationExistsOnSystem:(id)a3
+- (BOOL)_complicationExistsOnSystem:(id)system
 {
-  v4 = a3;
-  v5 = [(ATXFaceGalleryLayoutGeneratorComplicationDescriptorProviding *)self->_complicationDescriptorProvider allWidgetDescriptorsAllowedOnLockscreen];
+  systemCopy = system;
+  allWidgetDescriptorsAllowedOnLockscreen = [(ATXFaceGalleryLayoutGeneratorComplicationDescriptorProviding *)self->_complicationDescriptorProvider allWidgetDescriptorsAllowedOnLockscreen];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__ATXFaceGalleryLayoutGenerator__complicationExistsOnSystem___block_invoke;
   v9[3] = &unk_2785A15F8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_containsObjectPassingTest:v9];
+  v10 = systemCopy;
+  v6 = systemCopy;
+  v7 = [allWidgetDescriptorsAllowedOnLockscreen bs_containsObjectPassingTest:v9];
 
   return v7;
 }
@@ -2484,18 +2484,18 @@ uint64_t __61__ATXFaceGalleryLayoutGenerator__complicationExistsOnSystem___block
   return v8;
 }
 
-- (id)_shuffledSuggestableComplicationSetsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5
+- (id)_shuffledSuggestableComplicationSetsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
   v11 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [(ATXFaceGalleryLayoutGeneratorComplicationProviding *)self->_complicationProvider modularSetsWithWidgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v9 bundleIdToCompanionBundleId:v10, 0];
+  v12 = [(ATXFaceGalleryLayoutGeneratorComplicationProviding *)self->_complicationProvider modularSetsWithWidgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy, 0];
   v13 = [v12 _pas_shuffledArrayUsingRng:0];
 
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -2527,16 +2527,16 @@ uint64_t __61__ATXFaceGalleryLayoutGenerator__complicationExistsOnSystem___block
   return v18;
 }
 
-- (id)_landscapeSetsFromLandscapeSetsDict:(id)a3
+- (id)_landscapeSetsFromLandscapeSetsDict:(id)dict
 {
   v63 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictCopy = dict;
   v54 = objc_opt_new();
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v4 = v3;
+  v4 = dictCopy;
   v5 = [v4 countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v5)
   {
@@ -2560,15 +2560,15 @@ uint64_t __61__ATXFaceGalleryLayoutGenerator__complicationExistsOnSystem___block
 
         v10 = *(*(&v58 + 1) + 8 * v9);
         v11 = [v10 objectForKeyedSubscript:v56];
-        v12 = [v11 complications];
+        complications = [v11 complications];
 
         v13 = [v10 objectForKeyedSubscript:v55];
-        v14 = [v13 complications];
+        complications2 = [v13 complications];
 
         v15 = [v10 objectForKeyedSubscript:v8];
-        v16 = [v15 complications];
+        complications3 = [v15 complications];
 
-        if ([v12 count] == 2 && objc_msgSend(v14, "count") == 2 && objc_msgSend(v16, "count") == 4)
+        if ([complications count] == 2 && objc_msgSend(complications2, "count") == 2 && objc_msgSend(complications3, "count") == 4)
         {
           v17 = objc_opt_new();
           if (v7 > 1)
@@ -2580,52 +2580,52 @@ uint64_t __61__ATXFaceGalleryLayoutGenerator__complicationExistsOnSystem___block
                 goto LABEL_21;
               }
 
-              v26 = [v12 objectAtIndexedSubscript:0];
+              v26 = [complications objectAtIndexedSubscript:0];
               [v17 addObject:v26];
 
-              v27 = [v12 objectAtIndexedSubscript:1];
+              v27 = [complications objectAtIndexedSubscript:1];
               [v17 addObject:v27];
 
-              v28 = [v16 objectAtIndexedSubscript:0];
+              v28 = [complications3 objectAtIndexedSubscript:0];
               [v17 addObject:v28];
 
-              v29 = [v16 objectAtIndexedSubscript:1];
+              v29 = [complications3 objectAtIndexedSubscript:1];
               [v17 addObject:v29];
 
-              v30 = [v16 objectAtIndexedSubscript:2];
+              v30 = [complications3 objectAtIndexedSubscript:2];
               [v17 addObject:v30];
 
-              v31 = [v16 objectAtIndexedSubscript:3];
+              v31 = [complications3 objectAtIndexedSubscript:3];
               [v17 addObject:v31];
 
-              v32 = v14;
+              v32 = complications2;
               v33 = 0;
               goto LABEL_17;
             }
 
-            v42 = [v16 objectAtIndexedSubscript:0];
+            v42 = [complications3 objectAtIndexedSubscript:0];
             [v17 addObject:v42];
 
-            v43 = [v16 objectAtIndexedSubscript:1];
+            v43 = [complications3 objectAtIndexedSubscript:1];
             [v17 addObject:v43];
 
-            v44 = [v14 objectAtIndexedSubscript:0];
+            v44 = [complications2 objectAtIndexedSubscript:0];
             [v17 addObject:v44];
 
-            v45 = [v12 objectAtIndexedSubscript:0];
+            v45 = [complications objectAtIndexedSubscript:0];
             [v17 addObject:v45];
 
-            v46 = [v16 objectAtIndexedSubscript:2];
+            v46 = [complications3 objectAtIndexedSubscript:2];
             [v17 addObject:v46];
 
-            v47 = [v16 objectAtIndexedSubscript:3];
+            v47 = [complications3 objectAtIndexedSubscript:3];
             [v17 addObject:v47];
 
-            v24 = v14;
+            v24 = complications2;
             v25 = 1;
 LABEL_19:
             v40 = [v24 objectAtIndexedSubscript:v25];
-            v41 = v12;
+            v41 = complications;
           }
 
           else
@@ -2634,25 +2634,25 @@ LABEL_19:
             {
               if (v7 == 1)
               {
-                v18 = [v16 objectAtIndexedSubscript:0];
+                v18 = [complications3 objectAtIndexedSubscript:0];
                 [v17 addObject:v18];
 
-                v19 = [v16 objectAtIndexedSubscript:1];
+                v19 = [complications3 objectAtIndexedSubscript:1];
                 [v17 addObject:v19];
 
-                v20 = [v16 objectAtIndexedSubscript:2];
+                v20 = [complications3 objectAtIndexedSubscript:2];
                 [v17 addObject:v20];
 
-                v21 = [v16 objectAtIndexedSubscript:3];
+                v21 = [complications3 objectAtIndexedSubscript:3];
                 [v17 addObject:v21];
 
-                v22 = [v14 objectAtIndexedSubscript:0];
+                v22 = [complications2 objectAtIndexedSubscript:0];
                 [v17 addObject:v22];
 
-                v23 = [v14 objectAtIndexedSubscript:1];
+                v23 = [complications2 objectAtIndexedSubscript:1];
                 [v17 addObject:v23];
 
-                v24 = v12;
+                v24 = complications;
                 v25 = 0;
                 goto LABEL_19;
               }
@@ -2665,29 +2665,29 @@ LABEL_21:
               goto LABEL_22;
             }
 
-            v34 = [v16 objectAtIndexedSubscript:0];
+            v34 = [complications3 objectAtIndexedSubscript:0];
             [v17 addObject:v34];
 
-            v35 = [v16 objectAtIndexedSubscript:1];
+            v35 = [complications3 objectAtIndexedSubscript:1];
             [v17 addObject:v35];
 
-            v36 = [v12 objectAtIndexedSubscript:0];
+            v36 = [complications objectAtIndexedSubscript:0];
             [v17 addObject:v36];
 
-            v37 = [v16 objectAtIndexedSubscript:2];
+            v37 = [complications3 objectAtIndexedSubscript:2];
             [v17 addObject:v37];
 
-            v38 = [v16 objectAtIndexedSubscript:3];
+            v38 = [complications3 objectAtIndexedSubscript:3];
             [v17 addObject:v38];
 
-            v39 = [v14 objectAtIndexedSubscript:0];
+            v39 = [complications2 objectAtIndexedSubscript:0];
             [v17 addObject:v39];
 
-            v32 = v12;
+            v32 = complications;
             v33 = 1;
 LABEL_17:
             v40 = [v32 objectAtIndexedSubscript:v33];
-            v41 = v14;
+            v41 = complications2;
           }
 
           [v17 addObject:v40];
@@ -2717,15 +2717,15 @@ LABEL_22:
   return v54;
 }
 
-- (BOOL)_descriptorIsEligibleForComplications:(id)a3
+- (BOOL)_descriptorIsEligibleForComplications:(id)complications
 {
   parameters = self->_parameters;
-  v4 = a3;
-  v5 = [(ATXFaceSuggestionParameters *)parameters extensionBundleIdsEligibleForComplicationsInFaceGallery];
-  v6 = [v4 extensionBundleIdentifier];
+  complicationsCopy = complications;
+  extensionBundleIdsEligibleForComplicationsInFaceGallery = [(ATXFaceSuggestionParameters *)parameters extensionBundleIdsEligibleForComplicationsInFaceGallery];
+  extensionBundleIdentifier = [complicationsCopy extensionBundleIdentifier];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(complicationsCopy) = [extensionBundleIdsEligibleForComplicationsInFaceGallery containsObject:extensionBundleIdentifier];
+  return complicationsCopy;
 }
 
 - (id)_localizedTitleForWeatherAndAstronomySection
@@ -2760,14 +2760,14 @@ LABEL_22:
   return v3;
 }
 
-- (id)_localizedTitleTextWithSemanticType:(int64_t)a3
+- (id)_localizedTitleTextWithSemanticType:(int64_t)type
 {
   v3 = &stru_2839A6058;
-  if (a3 > 9)
+  if (type > 9)
   {
-    if (a3 > 11)
+    if (type > 11)
     {
-      if (a3 == 12)
+      if (type == 12)
       {
         v4 = MEMORY[0x277CEB3B0];
         v5 = @"com.apple.WallpaperKit.CollectionsPoster";
@@ -2775,7 +2775,7 @@ LABEL_22:
 
       else
       {
-        if (a3 != 13)
+        if (type != 13)
         {
           goto LABEL_20;
         }
@@ -2787,23 +2787,23 @@ LABEL_22:
       goto LABEL_18;
     }
 
-    if (a3 == 10)
+    if (type == 10)
     {
       v4 = MEMORY[0x277CEB3B0];
       v5 = @"com.apple.PridePoster.PridePosterExtension";
 LABEL_18:
-      v6 = [v4 localizedNameForExtensionBundleId:v5];
+      _localizedTitleforOSVersionSection = [v4 localizedNameForExtensionBundleId:v5];
       goto LABEL_19;
     }
 
-    v6 = [(ATXFaceGalleryLayoutGenerator *)self _localizedTitleforOSVersionSection];
+    _localizedTitleforOSVersionSection = [(ATXFaceGalleryLayoutGenerator *)self _localizedTitleforOSVersionSection];
   }
 
   else
   {
-    if (a3 > 7)
+    if (type > 7)
     {
-      if (a3 != 8)
+      if (type != 8)
       {
         v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v3 = [v7 localizedStringForKey:@"FACE_GALLERY_SECTION_TITLE_UNITY" value:&stru_2839A6058 table:0];
@@ -2816,9 +2816,9 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    if (a3 != 6)
+    if (type != 6)
     {
-      if (a3 != 7)
+      if (type != 7)
       {
         goto LABEL_20;
       }
@@ -2828,20 +2828,20 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v6 = [(ATXFaceGalleryLayoutGenerator *)self _localizedTitleForWeatherAndAstronomySection];
+    _localizedTitleforOSVersionSection = [(ATXFaceGalleryLayoutGenerator *)self _localizedTitleForWeatherAndAstronomySection];
   }
 
 LABEL_19:
-  v3 = v6;
+  v3 = _localizedTitleforOSVersionSection;
 LABEL_20:
 
   return v3;
 }
 
-- (id)_localizedSubtitleTextWithSemanticType:(int64_t)a3
+- (id)_localizedSubtitleTextWithSemanticType:(int64_t)type
 {
-  v3 = a3 - 6;
-  if (a3 - 6) <= 5 && ((0x39u >> v3))
+  v3 = type - 6;
+  if (type - 6) <= 5 && ((0x39u >> v3))
   {
     v4 = off_2785A1618[v3];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2856,24 +2856,24 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)shouldAddDescriptorFromExtension:(id)a3 descriptorIdentifierInAsset:(id)a4 withSemanticType:(int64_t)a5 assetParametersToFilterOut:(id)a6
+- (BOOL)shouldAddDescriptorFromExtension:(id)extension descriptorIdentifierInAsset:(id)asset withSemanticType:(int64_t)type assetParametersToFilterOut:(id)out
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (a5 > 10)
+  extensionCopy = extension;
+  assetCopy = asset;
+  outCopy = out;
+  v13 = outCopy;
+  if (type > 10)
   {
-    if (a5 != 11)
+    if (type != 11)
     {
-      if (a5 == 12)
+      if (type == 12)
       {
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v14 = v12;
+        v14 = outCopy;
         v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v15)
         {
@@ -2888,7 +2888,7 @@ LABEL_20:
                 objc_enumerationMutation(v14);
               }
 
-              if ([(ATXFaceGalleryLayoutGenerator *)self isDescriptor:v10 availableInAssetParameter:*(*(&v25 + 1) + 8 * i), v25])
+              if ([(ATXFaceGalleryLayoutGenerator *)self isDescriptor:extensionCopy availableInAssetParameter:*(*(&v25 + 1) + 8 * i), v25])
               {
 
                 goto LABEL_22;
@@ -2912,10 +2912,10 @@ LABEL_20:
 
   else
   {
-    if (a5 == 6)
+    if (type == 6)
     {
-      v21 = [v10 extensionBundleIdentifier];
-      v22 = [v21 isEqualToString:@"com.apple.weather.poster"];
+      extensionBundleIdentifier = [extensionCopy extensionBundleIdentifier];
+      v22 = [extensionBundleIdentifier isEqualToString:@"com.apple.weather.poster"];
 
       if (v22 && ([MEMORY[0x277CEB3B8] isInstalledForBundle:@"com.apple.weather"] & 1) == 0)
       {
@@ -2927,7 +2927,7 @@ LABEL_22:
       goto LABEL_20;
     }
 
-    if (a5 != 9 || ![v11 length])
+    if (type != 9 || ![assetCopy length])
     {
 LABEL_20:
       v20 = 1;
@@ -2935,26 +2935,26 @@ LABEL_20:
     }
   }
 
-  v19 = [v10 identifier];
-  v20 = [v19 hasPrefix:v11];
+  identifier = [extensionCopy identifier];
+  v20 = [identifier hasPrefix:assetCopy];
 
 LABEL_23:
   v23 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (id)descriptorsToRemoveFromSectionWithSemanticType:(int64_t)a3 parameters:(id)a4
+- (id)descriptorsToRemoveFromSectionWithSemanticType:(int64_t)type parameters:(id)parameters
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 12)
+  parametersCopy = parameters;
+  v6 = parametersCopy;
+  if (type == 12)
   {
-    v7 = [v5 descriptorsToRemoveFromCollections];
-    v8 = v7;
+    descriptorsToRemoveFromCollections = [parametersCopy descriptorsToRemoveFromCollections];
+    v8 = descriptorsToRemoveFromCollections;
     v9 = MEMORY[0x277CBEBF8];
-    if (v7)
+    if (descriptorsToRemoveFromCollections)
     {
-      v10 = v7;
+      v10 = descriptorsToRemoveFromCollections;
     }
 
     else
@@ -2964,11 +2964,11 @@ LABEL_23:
 
     v11 = v10;
 
-    v12 = [v6 osVersionSectionDescriptors];
-    v13 = v12;
-    if (v12)
+    osVersionSectionDescriptors = [v6 osVersionSectionDescriptors];
+    v13 = osVersionSectionDescriptors;
+    if (osVersionSectionDescriptors)
     {
-      v14 = v12;
+      v14 = osVersionSectionDescriptors;
     }
 
     else
@@ -2992,19 +2992,19 @@ LABEL_23:
   return v16;
 }
 
-- (BOOL)isDescriptorFromGalleryItem:(id)a3 availableInAssetParameter:(id)a4
+- (BOOL)isDescriptorFromGalleryItem:(id)item availableInAssetParameter:(id)parameter
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 extensionBundleIdentifier];
-  v8 = [v6 componentsSeparatedByString:@":"];
-  v9 = [v8 firstObject];
-  if ([v7 isEqualToString:v9])
+  itemCopy = item;
+  parameterCopy = parameter;
+  extensionBundleIdentifier = [itemCopy extensionBundleIdentifier];
+  v8 = [parameterCopy componentsSeparatedByString:@":"];
+  firstObject = [v8 firstObject];
+  if ([extensionBundleIdentifier isEqualToString:firstObject])
   {
-    v10 = [v5 descriptorIdentifier];
-    v11 = [v6 componentsSeparatedByString:@":"];
-    v12 = [v11 lastObject];
-    v13 = [v10 hasPrefix:v12];
+    descriptorIdentifier = [itemCopy descriptorIdentifier];
+    v11 = [parameterCopy componentsSeparatedByString:@":"];
+    lastObject = [v11 lastObject];
+    v13 = [descriptorIdentifier hasPrefix:lastObject];
   }
 
   else
@@ -3015,19 +3015,19 @@ LABEL_23:
   return v13;
 }
 
-- (BOOL)isDescriptor:(id)a3 availableInAssetParameter:(id)a4
+- (BOOL)isDescriptor:(id)descriptor availableInAssetParameter:(id)parameter
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 extensionBundleIdentifier];
-  v8 = [v6 componentsSeparatedByString:@":"];
-  v9 = [v8 firstObject];
-  if ([v7 isEqualToString:v9])
+  descriptorCopy = descriptor;
+  parameterCopy = parameter;
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  v8 = [parameterCopy componentsSeparatedByString:@":"];
+  firstObject = [v8 firstObject];
+  if ([extensionBundleIdentifier isEqualToString:firstObject])
   {
-    v10 = [v5 identifier];
-    v11 = [v6 componentsSeparatedByString:@":"];
-    v12 = [v11 lastObject];
-    v13 = [v10 hasPrefix:v12];
+    identifier = [descriptorCopy identifier];
+    v11 = [parameterCopy componentsSeparatedByString:@":"];
+    lastObject = [v11 lastObject];
+    v13 = [identifier hasPrefix:lastObject];
   }
 
   else
@@ -3038,16 +3038,16 @@ LABEL_23:
   return v13;
 }
 
-- (BOOL)shouldRemoveDescriptorFromFeatured:(id)a3 withDescriptorsToRemove:(id)a4
+- (BOOL)shouldRemoveDescriptorFromFeatured:(id)featured withDescriptorsToRemove:(id)remove
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  featuredCopy = featured;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  removeCopy = remove;
+  v8 = [removeCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3058,17 +3058,17 @@ LABEL_23:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(removeCopy);
         }
 
-        if ([(ATXFaceGalleryLayoutGenerator *)self isDescriptor:v6 availableInAssetParameter:*(*(&v15 + 1) + 8 * i), v15])
+        if ([(ATXFaceGalleryLayoutGenerator *)self isDescriptor:featuredCopy availableInAssetParameter:*(*(&v15 + 1) + 8 * i), v15])
         {
           v12 = 1;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [removeCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;

@@ -4,21 +4,21 @@
 - (SBWindowScene)activePointerWindowScene;
 - (SBWindowScene)activeTouchDownOriginatedWindowScene;
 - (SBWindowScene)activeWindowScene;
-- (id)_windowSceneForEvent:(id)a3;
-- (void)_handleActiveDisplayQualifyingEventInWindowScene:(id)a3 source:(id)a4;
-- (void)addActiveDisplayWindowSceneObserver:(id)a3;
-- (void)addPointerInteractionObserver:(id)a3;
-- (void)eventSnifferHandledPointerInteractionQualifyingEvent:(id)a3;
-- (void)eventSnifferHandledPointerTouchDown:(id)a3;
-- (void)eventSnifferHandledPointerTouchUp:(id)a3;
-- (void)eventSnifferHandledQualifyingContinuityTouch:(id)a3;
-- (void)eventSnifferHandledQualifyingScroll:(id)a3;
-- (void)eventSnifferHandledTouchInteractionQualifyingEvent:(id)a3;
-- (void)handleSendEvent:(id)a3;
-- (void)removeActiveDisplayWindowSceneObserver:(id)a3;
-- (void)updateActiveWindowScene:(id)a3 forUserInteraction:(id)a4;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (id)_windowSceneForEvent:(id)event;
+- (void)_handleActiveDisplayQualifyingEventInWindowScene:(id)scene source:(id)source;
+- (void)addActiveDisplayWindowSceneObserver:(id)observer;
+- (void)addPointerInteractionObserver:(id)observer;
+- (void)eventSnifferHandledPointerInteractionQualifyingEvent:(id)event;
+- (void)eventSnifferHandledPointerTouchDown:(id)down;
+- (void)eventSnifferHandledPointerTouchUp:(id)up;
+- (void)eventSnifferHandledQualifyingContinuityTouch:(id)touch;
+- (void)eventSnifferHandledQualifyingScroll:(id)scroll;
+- (void)eventSnifferHandledTouchInteractionQualifyingEvent:(id)event;
+- (void)handleSendEvent:(id)event;
+- (void)removeActiveDisplayWindowSceneObserver:(id)observer;
+- (void)updateActiveWindowScene:(id)scene forUserInteraction:(id)interaction;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBMultiDisplayUserInteractionCoordinator
@@ -37,19 +37,19 @@
   v2 = [(SBMultiDisplayUserInteractionCoordinator *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     sceneToEventSniffers = v2->_sceneToEventSniffers;
-    v2->_sceneToEventSniffers = v3;
+    v2->_sceneToEventSniffers = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (void)handleSendEvent:(id)a3
+- (void)handleSendEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBMultiDisplayUserInteractionCoordinator *)self _windowSceneForEvent:v4];
+  eventCopy = event;
+  v5 = [(SBMultiDisplayUserInteractionCoordinator *)self _windowSceneForEvent:eventCopy];
   if (v5)
   {
     v13 = 0u;
@@ -72,7 +72,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) handleEvent:v4];
+          [*(*(&v11 + 1) + 8 * v10++) handleEvent:eventCopy];
         }
 
         while (v8 != v10);
@@ -91,44 +91,44 @@
   return WeakRetained;
 }
 
-- (void)addPointerInteractionObserver:(id)a3
+- (void)addPointerInteractionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   pointerInteractionObservers = self->_pointerInteractionObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!pointerInteractionObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_pointerInteractionObservers;
-    self->_pointerInteractionObservers = v6;
+    self->_pointerInteractionObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     pointerInteractionObservers = self->_pointerInteractionObservers;
   }
 
-  [(NSHashTable *)pointerInteractionObservers addObject:v4];
+  [(NSHashTable *)pointerInteractionObservers addObject:observerCopy];
 }
 
-- (void)updateActiveWindowScene:(id)a3 forUserInteraction:(id)a4
+- (void)updateActiveWindowScene:(id)scene forUserInteraction:(id)interaction
 {
-  v8 = a3;
-  v7 = a4;
-  if (!v7)
+  sceneCopy = scene;
+  interactionCopy = interaction;
+  if (!interactionCopy)
   {
     [SBMultiDisplayUserInteractionCoordinator updateActiveWindowScene:a2 forUserInteraction:self];
   }
 
-  [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:v8 source:v7];
+  [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:sceneCopy source:interactionCopy];
 }
 
-- (id)_windowSceneForEvent:(id)a3
+- (id)_windowSceneForEvent:(id)event
 {
-  [a3 _hidEvent];
+  [event _hidEvent];
   v4 = BKSHIDEventGetBaseAttributes();
-  v5 = [v4 contextID];
-  if (v5)
+  contextID = [v4 contextID];
+  if (contextID)
   {
-    v6 = [MEMORY[0x277D75DA0] _windowWithContextId:v5];
+    v6 = [MEMORY[0x277D75DA0] _windowWithContextId:contextID];
   }
 
   else
@@ -136,11 +136,11 @@
     v6 = 0;
   }
 
-  v7 = [v6 _fbsDisplayIdentity];
-  if (v7)
+  _fbsDisplayIdentity = [v6 _fbsDisplayIdentity];
+  if (_fbsDisplayIdentity)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [WeakRetained windowSceneForDisplayIdentity:v7];
+    v9 = [WeakRetained windowSceneForDisplayIdentity:_fbsDisplayIdentity];
   }
 
   else
@@ -151,31 +151,31 @@
   return v9;
 }
 
-- (void)_handleActiveDisplayQualifyingEventInWindowScene:(id)a3 source:(id)a4
+- (void)_handleActiveDisplayQualifyingEventInWindowScene:(id)scene source:(id)source
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_activeDisplayWindowScene);
-  if (v6)
+  if (sceneCopy)
   {
-    objc_storeWeak(&self->_activeDisplayWindowScene, v6);
-    if (WeakRetained != v6)
+    objc_storeWeak(&self->_activeDisplayWindowScene, sceneCopy);
+    if (WeakRetained != sceneCopy)
     {
       v9 = SBLogActiveDisplay();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = SBStringForActiveDisplayTrackingMethodology(1);
-        v11 = [WeakRetained _sceneIdentifier];
-        v12 = [v6 _sceneIdentifier];
+        _sceneIdentifier = [WeakRetained _sceneIdentifier];
+        _sceneIdentifier2 = [sceneCopy _sceneIdentifier];
         *buf = 138544130;
         v24 = v10;
         v25 = 2114;
-        v26 = v11;
+        v26 = _sceneIdentifier;
         v27 = 2114;
-        v28 = v12;
+        v28 = _sceneIdentifier2;
         v29 = 2114;
-        v30 = v7;
+        v30 = sourceCopy;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating active display from: %{public}@ to %{public}@ source: %{public}@", buf, 0x2Au);
       }
 
@@ -199,7 +199,7 @@
               objc_enumerationMutation(v13);
             }
 
-            [*(*(&v18 + 1) + 8 * v17++) multiDisplayUserInteractionCoordinator:self updatedActiveWindowScene:{v6, v18}];
+            [*(*(&v18 + 1) + 8 * v17++) multiDisplayUserInteractionCoordinator:self updatedActiveWindowScene:{sceneCopy, v18}];
           }
 
           while (v15 != v17);
@@ -212,27 +212,27 @@
   }
 }
 
-- (void)addActiveDisplayWindowSceneObserver:(id)a3
+- (void)addActiveDisplayWindowSceneObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   activeWindowSceneObservers = self->_activeWindowSceneObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!activeWindowSceneObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_activeWindowSceneObservers;
-    self->_activeWindowSceneObservers = v6;
+    self->_activeWindowSceneObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     activeWindowSceneObservers = self->_activeWindowSceneObservers;
   }
 
-  [(NSHashTable *)activeWindowSceneObservers addObject:v4];
+  [(NSHashTable *)activeWindowSceneObservers addObject:observerCopy];
 }
 
-- (void)removeActiveDisplayWindowSceneObserver:(id)a3
+- (void)removeActiveDisplayWindowSceneObserver:(id)observer
 {
-  [(NSHashTable *)self->_activeWindowSceneObservers removeObject:a3];
+  [(NSHashTable *)self->_activeWindowSceneObservers removeObject:observer];
   if (![(NSHashTable *)self->_activeWindowSceneObservers count])
   {
     activeWindowSceneObservers = self->_activeWindowSceneObservers;
@@ -240,66 +240,66 @@
   }
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(_SBScrollEventSniffer *)v4 isContinuityDisplayWindowScene])
+  connectCopy = connect;
+  if ([(_SBScrollEventSniffer *)connectCopy isContinuityDisplayWindowScene])
   {
     v5 = objc_alloc_init(_SBScrollEventSniffer);
     [(_SBScrollEventSniffer *)v5 setDelegate:self];
-    [(_SBScrollEventSniffer *)v5 setWindowScene:v4];
+    [(_SBScrollEventSniffer *)v5 setWindowScene:connectCopy];
     v6 = objc_alloc_init(_SBContinuityTouchEventSniffer);
     [(_SBContinuityTouchEventSniffer *)v6 setDelegate:self];
-    [(_SBContinuityTouchEventSniffer *)v6 setWindowScene:v4];
+    [(_SBContinuityTouchEventSniffer *)v6 setWindowScene:connectCopy];
     sceneToEventSniffers = self->_sceneToEventSniffers;
     v13[0] = v5;
     v13[1] = v6;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
-    [(NSMapTable *)sceneToEventSniffers setObject:v8 forKey:v4];
+    [(NSMapTable *)sceneToEventSniffers setObject:v8 forKey:connectCopy];
   }
 
   else
   {
     v5 = objc_alloc_init(_SBPointerTouchDownEventSniffer);
     [(_SBScrollEventSniffer *)v5 setDelegate:self];
-    [(_SBScrollEventSniffer *)v5 setWindowScene:v4];
+    [(_SBScrollEventSniffer *)v5 setWindowScene:connectCopy];
     v6 = objc_alloc_init(_SBTouchInteractionEventSniffer);
     [(_SBContinuityTouchEventSniffer *)v6 setDelegate:self];
-    [(_SBContinuityTouchEventSniffer *)v6 setWindowScene:v4];
+    [(_SBContinuityTouchEventSniffer *)v6 setWindowScene:connectCopy];
     v8 = objc_alloc_init(_SBPointerInteractionEventSniffer);
     [(_SBPointerInteractionEventSniffer *)v8 setDelegate:self];
-    [(_SBPointerInteractionEventSniffer *)v8 setWindowScene:v4];
+    [(_SBPointerInteractionEventSniffer *)v8 setWindowScene:connectCopy];
     v9 = objc_alloc_init(_SBScrollEventSniffer);
     [(_SBScrollEventSniffer *)v9 setDelegate:self];
-    [(_SBScrollEventSniffer *)v9 setWindowScene:v4];
+    [(_SBScrollEventSniffer *)v9 setWindowScene:connectCopy];
     v10 = self->_sceneToEventSniffers;
     v12[0] = v5;
     v12[1] = v6;
     v12[2] = v8;
     v12[3] = v9;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:4];
-    [(NSMapTable *)v10 setObject:v11 forKey:v4];
+    [(NSMapTable *)v10 setObject:v11 forKey:connectCopy];
 
-    v4 = v9;
+    connectCopy = v9;
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMapTable *)self->_sceneToEventSniffers removeObjectForKey:v4];
+  disconnectCopy = disconnect;
+  [(NSMapTable *)self->_sceneToEventSniffers removeObjectForKey:disconnectCopy];
   WeakRetained = objc_loadWeakRetained(&self->_activeTouchDownOriginatedWindowScene);
   v6 = WeakRetained;
-  if (WeakRetained && WeakRetained == v4)
+  if (WeakRetained && WeakRetained == disconnectCopy)
   {
     v7 = SBLogPointer();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 _sceneIdentifier];
+      _sceneIdentifier = [v6 _sceneIdentifier];
       v11 = 138543362;
-      v12 = v8;
+      v12 = _sceneIdentifier;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Clearing pointer touch down window scene: %{public}@ - scene disconnected", &v11, 0xCu);
     }
 
@@ -308,24 +308,24 @@
 
   v9 = objc_loadWeakRetained(&self->_activeDisplayWindowScene);
 
-  if (v9 == v4)
+  if (v9 == disconnectCopy)
   {
     objc_storeWeak(&self->_activeDisplayWindowScene, 0);
   }
 
   v10 = objc_loadWeakRetained(&self->_activePointerWindowScene);
 
-  if (v10 == v4)
+  if (v10 == disconnectCopy)
   {
     objc_storeWeak(&self->_activePointerWindowScene, 0);
   }
 }
 
-- (void)eventSnifferHandledPointerTouchDown:(id)a3
+- (void)eventSnifferHandledPointerTouchDown:(id)down
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 windowScene];
-  if (v4)
+  windowScene = [down windowScene];
+  if (windowScene)
   {
     WeakRetained = objc_loadWeakRetained(&self->_activeTouchDownOriginatedWindowScene);
     v6 = SBLogPointer();
@@ -334,9 +334,9 @@
     {
       if (v7)
       {
-        v8 = [WeakRetained _sceneIdentifier];
+        _sceneIdentifier = [WeakRetained _sceneIdentifier];
         v10 = 138543362;
-        v11 = v8;
+        v11 = _sceneIdentifier;
         _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Pointer touch down window scene: %{public}@ but we're already tracking it down in scene", &v10, 0xCu);
       }
     }
@@ -345,18 +345,18 @@
     {
       if (v7)
       {
-        v9 = [v4 _sceneIdentifier];
+        _sceneIdentifier2 = [windowScene _sceneIdentifier];
         v10 = 138543362;
-        v11 = v9;
+        v11 = _sceneIdentifier2;
         _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Setting pointer touch down window scene: %{public}@", &v10, 0xCu);
       }
 
-      objc_storeWeak(&self->_activeTouchDownOriginatedWindowScene, v4);
+      objc_storeWeak(&self->_activeTouchDownOriginatedWindowScene, windowScene);
     }
   }
 }
 
-- (void)eventSnifferHandledPointerTouchUp:(id)a3
+- (void)eventSnifferHandledPointerTouchUp:(id)up
 {
   v9 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_activeTouchDownOriginatedWindowScene);
@@ -365,9 +365,9 @@
     v5 = SBLogPointer();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [WeakRetained _sceneIdentifier];
+      _sceneIdentifier = [WeakRetained _sceneIdentifier];
       v7 = 138543362;
-      v8 = v6;
+      v8 = _sceneIdentifier;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Clearing pointer touch down window scene: %{public}@ - touch up", &v7, 0xCu);
     }
 
@@ -375,40 +375,40 @@
   }
 }
 
-- (void)eventSnifferHandledTouchInteractionQualifyingEvent:(id)a3
+- (void)eventSnifferHandledTouchInteractionQualifyingEvent:(id)event
 {
-  v4 = [a3 windowScene];
-  if (v4)
+  windowScene = [event windowScene];
+  if (windowScene)
   {
-    v5 = v4;
-    [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:v4 source:@"touch"];
-    v4 = v5;
+    v5 = windowScene;
+    [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:windowScene source:@"touch"];
+    windowScene = v5;
   }
 }
 
-- (void)eventSnifferHandledPointerInteractionQualifyingEvent:(id)a3
+- (void)eventSnifferHandledPointerInteractionQualifyingEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_activePointerWindowScene);
-  v6 = [v4 windowScene];
-  if (v6)
+  windowScene = [eventCopy windowScene];
+  if (windowScene)
   {
-    objc_storeWeak(&self->_activePointerWindowScene, v6);
-    if (WeakRetained != v6)
+    objc_storeWeak(&self->_activePointerWindowScene, windowScene);
+    if (WeakRetained != windowScene)
     {
       v7 = SBLogActiveDisplay();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = SBStringForActiveDisplayTrackingMethodology(1);
-        v9 = [WeakRetained _sceneIdentifier];
-        v10 = [v6 _sceneIdentifier];
+        _sceneIdentifier = [WeakRetained _sceneIdentifier];
+        _sceneIdentifier2 = [windowScene _sceneIdentifier];
         *buf = 138543874;
         v22 = v8;
         v23 = 2114;
-        v24 = v9;
+        v24 = _sceneIdentifier;
         v25 = 2114;
-        v26 = v10;
+        v26 = _sceneIdentifier2;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating active pointer display from: %{public}@ to %{public}@", buf, 0x20u);
       }
 
@@ -432,7 +432,7 @@
               objc_enumerationMutation(v11);
             }
 
-            [*(*(&v16 + 1) + 8 * v15++) pointerDidMoveToFromWindowScene:WeakRetained toWindowScene:v6];
+            [*(*(&v16 + 1) + 8 * v15++) pointerDidMoveToFromWindowScene:WeakRetained toWindowScene:windowScene];
           }
 
           while (v13 != v15);
@@ -444,28 +444,28 @@
     }
   }
 
-  [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:v6 source:@"pointer"];
+  [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:windowScene source:@"pointer"];
 }
 
-- (void)eventSnifferHandledQualifyingScroll:(id)a3
+- (void)eventSnifferHandledQualifyingScroll:(id)scroll
 {
-  v4 = [a3 windowScene];
-  if (v4)
+  windowScene = [scroll windowScene];
+  if (windowScene)
   {
-    v5 = v4;
-    [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:v4 source:@"scroll"];
-    v4 = v5;
+    v5 = windowScene;
+    [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:windowScene source:@"scroll"];
+    windowScene = v5;
   }
 }
 
-- (void)eventSnifferHandledQualifyingContinuityTouch:(id)a3
+- (void)eventSnifferHandledQualifyingContinuityTouch:(id)touch
 {
-  v4 = [a3 windowScene];
-  if (v4)
+  windowScene = [touch windowScene];
+  if (windowScene)
   {
-    v5 = v4;
-    [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:v4 source:@"continuity touch"];
-    v4 = v5;
+    v5 = windowScene;
+    [(SBMultiDisplayUserInteractionCoordinator *)self _handleActiveDisplayQualifyingEventInWindowScene:windowScene source:@"continuity touch"];
+    windowScene = v5;
   }
 }
 

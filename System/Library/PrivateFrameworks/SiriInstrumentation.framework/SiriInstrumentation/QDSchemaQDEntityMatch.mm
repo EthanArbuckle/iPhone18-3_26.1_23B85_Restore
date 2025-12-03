@@ -1,46 +1,46 @@
 @interface QDSchemaQDEntityMatch
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDEntityMatch)initWithDictionary:(id)a3;
-- (QDSchemaQDEntityMatch)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (QDSchemaQDEntityMatch)initWithDictionary:(id)dictionary;
+- (QDSchemaQDEntityMatch)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)matchingTransformsAtIndex:(unint64_t)a3;
+- (int)matchingTransformsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addMatchingTransforms:(int)a3;
-- (void)setHasEndIndex:(BOOL)a3;
-- (void)setHasMatchScore:(BOOL)a3;
-- (void)setHasMatcher:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatchingTransforms:(int)transforms;
+- (void)setHasEndIndex:(BOOL)index;
+- (void)setHasMatchScore:(BOOL)score;
+- (void)setHasMatcher:(BOOL)matcher;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDEntityMatch
 
-- (QDSchemaQDEntityMatch)initWithDictionary:(id)a3
+- (QDSchemaQDEntityMatch)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = QDSchemaQDEntityMatch;
   v5 = [(QDSchemaQDEntityMatch *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startIndex"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[QDSchemaQDEntityMatch setStartIndex:](v5, "setStartIndex:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"endIndex"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"endIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[QDSchemaQDEntityMatch setEndIndex:](v5, "setEndIndex:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"matchingTransforms"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"matchingTransforms"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,14 +85,14 @@
       v6 = v21;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"matcher"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"matcher"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[QDSchemaQDEntityMatch setMatcher:](v5, "setMatcher:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"matchScore"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"matchScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(QDSchemaQDEntityMatch *)v5 setMatchScore:?];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"originAppBundleId"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"originAppBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,30 +114,30 @@
   return v5;
 }
 
-- (QDSchemaQDEntityMatch)initWithJSON:(id)a3
+- (QDSchemaQDEntityMatch)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDEntityMatch *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDEntityMatch *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDEntityMatch *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -150,7 +150,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -163,7 +163,7 @@ LABEL_20:
     v15 = MEMORY[0x1E696AD98];
     [(QDSchemaQDEntityMatch *)self matchScore];
     v16 = [v15 numberWithFloat:?];
-    [v3 setObject:v16 forKeyedSubscript:@"matchScore"];
+    [dictionary setObject:v16 forKeyedSubscript:@"matchScore"];
 
     if ((*&self->_has & 4) == 0)
     {
@@ -174,7 +174,7 @@ LABEL_20:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[QDSchemaQDEntityMatch endIndex](self, "endIndex")}];
-  [v3 setObject:v14 forKeyedSubscript:@"endIndex"];
+  [dictionary setObject:v14 forKeyedSubscript:@"endIndex"];
 
   has = self->_has;
   if ((has & 8) != 0)
@@ -189,14 +189,14 @@ LABEL_3:
   }
 
 LABEL_4:
-  v5 = [(QDSchemaQDEntityMatch *)self matcher];
+  matcher = [(QDSchemaQDEntityMatch *)self matcher];
   v6 = @"QDSPANMATCHERTYPE_UNKNOWN";
-  if (v5 == 1)
+  if (matcher == 1)
   {
     v6 = @"QDSPANMATCHERTYPE_SIRI_ENTITY_MATCHER";
   }
 
-  if (v5 == 2)
+  if (matcher == 2)
   {
     v7 = @"QDSPANMATCHERTYPE_GLOBAL_ENTITY_MATCHER";
   }
@@ -206,31 +206,31 @@ LABEL_4:
     v7 = v6;
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"matcher"];
+  [dictionary setObject:v7 forKeyedSubscript:@"matcher"];
 LABEL_10:
   if ([(NSArray *)self->_matchingTransforms count])
   {
-    v8 = [(QDSchemaQDEntityMatch *)self matchingTransforms];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"matchingTransforms"];
+    matchingTransforms = [(QDSchemaQDEntityMatch *)self matchingTransforms];
+    v9 = [matchingTransforms copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"matchingTransforms"];
   }
 
   if (self->_originAppBundleId)
   {
-    v10 = [(QDSchemaQDEntityMatch *)self originAppBundleId];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"originAppBundleId"];
+    originAppBundleId = [(QDSchemaQDEntityMatch *)self originAppBundleId];
+    v11 = [originAppBundleId copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"originAppBundleId"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[QDSchemaQDEntityMatch startIndex](self, "startIndex")}];
-    [v3 setObject:v12 forKeyedSubscript:@"startIndex"];
+    [dictionary setObject:v12 forKeyedSubscript:@"startIndex"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -311,16 +311,16 @@ LABEL_8:
   return v4 ^ v3 ^ v8 ^ v13 ^ v5 ^ [(NSString *)self->_originAppBundleId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -329,13 +329,13 @@ LABEL_8:
   if (*&has)
   {
     startIndex = self->_startIndex;
-    if (startIndex != [v4 startIndex])
+    if (startIndex != [equalCopy startIndex])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -347,26 +347,26 @@ LABEL_8:
   if (v8)
   {
     endIndex = self->_endIndex;
-    if (endIndex != [v4 endIndex])
+    if (endIndex != [equalCopy endIndex])
     {
       goto LABEL_26;
     }
   }
 
-  v10 = [(QDSchemaQDEntityMatch *)self matchingTransforms];
-  v11 = [v4 matchingTransforms];
-  if ((v10 != 0) == (v11 == 0))
+  matchingTransforms = [(QDSchemaQDEntityMatch *)self matchingTransforms];
+  matchingTransforms2 = [equalCopy matchingTransforms];
+  if ((matchingTransforms != 0) == (matchingTransforms2 == 0))
   {
     goto LABEL_25;
   }
 
-  v12 = [(QDSchemaQDEntityMatch *)self matchingTransforms];
-  if (v12)
+  matchingTransforms3 = [(QDSchemaQDEntityMatch *)self matchingTransforms];
+  if (matchingTransforms3)
   {
-    v13 = v12;
-    v14 = [(QDSchemaQDEntityMatch *)self matchingTransforms];
-    v15 = [v4 matchingTransforms];
-    v16 = [v14 isEqual:v15];
+    v13 = matchingTransforms3;
+    matchingTransforms4 = [(QDSchemaQDEntityMatch *)self matchingTransforms];
+    matchingTransforms5 = [equalCopy matchingTransforms];
+    v16 = [matchingTransforms4 isEqual:matchingTransforms5];
 
     if (!v16)
     {
@@ -380,7 +380,7 @@ LABEL_8:
 
   v17 = self->_has;
   v18 = (*&v17 >> 2) & 1;
-  v19 = v4[40];
+  v19 = equalCopy[40];
   if (v18 != ((v19 >> 2) & 1))
   {
     goto LABEL_26;
@@ -389,13 +389,13 @@ LABEL_8:
   if (v18)
   {
     matcher = self->_matcher;
-    if (matcher != [v4 matcher])
+    if (matcher != [equalCopy matcher])
     {
       goto LABEL_26;
     }
 
     v17 = self->_has;
-    v19 = v4[40];
+    v19 = equalCopy[40];
   }
 
   v21 = (*&v17 >> 3) & 1;
@@ -407,24 +407,24 @@ LABEL_8:
   if (v21)
   {
     matchScore = self->_matchScore;
-    [v4 matchScore];
+    [equalCopy matchScore];
     if (matchScore != v23)
     {
       goto LABEL_26;
     }
   }
 
-  v10 = [(QDSchemaQDEntityMatch *)self originAppBundleId];
-  v11 = [v4 originAppBundleId];
-  if ((v10 != 0) == (v11 == 0))
+  matchingTransforms = [(QDSchemaQDEntityMatch *)self originAppBundleId];
+  matchingTransforms2 = [equalCopy originAppBundleId];
+  if ((matchingTransforms != 0) == (matchingTransforms2 == 0))
   {
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v24 = [(QDSchemaQDEntityMatch *)self originAppBundleId];
-  if (!v24)
+  originAppBundleId = [(QDSchemaQDEntityMatch *)self originAppBundleId];
+  if (!originAppBundleId)
   {
 
 LABEL_29:
@@ -432,10 +432,10 @@ LABEL_29:
     goto LABEL_27;
   }
 
-  v25 = v24;
-  v26 = [(QDSchemaQDEntityMatch *)self originAppBundleId];
-  v27 = [v4 originAppBundleId];
-  v28 = [v26 isEqual:v27];
+  v25 = originAppBundleId;
+  originAppBundleId2 = [(QDSchemaQDEntityMatch *)self originAppBundleId];
+  originAppBundleId3 = [equalCopy originAppBundleId];
+  v28 = [originAppBundleId2 isEqual:originAppBundleId3];
 
   if (v28)
   {
@@ -449,10 +449,10 @@ LABEL_27:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -506,17 +506,17 @@ LABEL_27:
     PBDataWriterWriteFloatField();
   }
 
-  v12 = [(QDSchemaQDEntityMatch *)self originAppBundleId];
+  originAppBundleId = [(QDSchemaQDEntityMatch *)self originAppBundleId];
 
-  if (v12)
+  if (originAppBundleId)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setHasMatchScore:(BOOL)a3
+- (void)setHasMatchScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -529,9 +529,9 @@ LABEL_27:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMatcher:(BOOL)a3
+- (void)setHasMatcher:(BOOL)matcher
 {
-  if (a3)
+  if (matcher)
   {
     v3 = 4;
   }
@@ -544,23 +544,23 @@ LABEL_27:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)matchingTransformsAtIndex:(unint64_t)a3
+- (int)matchingTransformsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_matchingTransforms objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_matchingTransforms objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addMatchingTransforms:(int)a3
+- (void)addMatchingTransforms:(int)transforms
 {
-  v3 = *&a3;
+  v3 = *&transforms;
   matchingTransforms = self->_matchingTransforms;
   if (!matchingTransforms)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matchingTransforms;
-    self->_matchingTransforms = v6;
+    self->_matchingTransforms = array;
 
     matchingTransforms = self->_matchingTransforms;
   }
@@ -569,9 +569,9 @@ LABEL_27:
   [(NSArray *)matchingTransforms addObject:v8];
 }
 
-- (void)setHasEndIndex:(BOOL)a3
+- (void)setHasEndIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -584,13 +584,13 @@ LABEL_27:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = QDSchemaQDEntityMatch;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

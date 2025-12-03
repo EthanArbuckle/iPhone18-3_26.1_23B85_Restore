@@ -9,9 +9,9 @@
 {
   v26 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = [a1 query];
-  v4 = v3;
-  if (v3 && [v3 length])
+  query = [self query];
+  v4 = query;
+  if (query && [query length])
   {
     v5 = [v4 componentsSeparatedByString:@"&"];
     v21 = 0u;
@@ -76,12 +76,12 @@
     goto LABEL_7;
   }
 
-  v6 = [a1 absoluteString];
-  v7 = [a1 query];
-  v8 = v6;
+  absoluteString = [self absoluteString];
+  query = [self query];
+  v8 = absoluteString;
   v9 = v8;
   v10 = v8;
-  if (v7)
+  if (query)
   {
     v11 = [v8 rangeOfString:@"?"];
     v10 = v9;
@@ -91,21 +91,21 @@
     }
   }
 
-  v12 = [a1 CNFQueryDictionary];
-  v13 = [v12 mutableCopy];
+  cNFQueryDictionary = [self CNFQueryDictionary];
+  v13 = [cNFQueryDictionary mutableCopy];
 
   [v13 addEntriesFromDictionary:v5];
   v14 = _queryStringFromCNFQueryDictionary(v13);
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@?%@", v10, v14];
-  v16 = [MEMORY[0x277CBEBC0] URLWithString:v15];
+  selfCopy = [MEMORY[0x277CBEBC0] URLWithString:v15];
 
-  if (!v16)
+  if (!selfCopy)
   {
 LABEL_7:
-    v16 = a1;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

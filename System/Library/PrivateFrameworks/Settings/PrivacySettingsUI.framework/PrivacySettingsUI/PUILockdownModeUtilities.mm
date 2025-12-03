@@ -1,6 +1,6 @@
 @interface PUILockdownModeUtilities
 + (BOOL)getCanShowLockdownMode;
-+ (BOOL)isCaptivePortalModeIgnoredForContainerPath:(id)a3;
++ (BOOL)isCaptivePortalModeIgnoredForContainerPath:(id)path;
 + (BOOL)isLockdownModeEnabled;
 + (BOOL)isLockdownModeEnabledInAccount;
 @end
@@ -27,32 +27,32 @@
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 sharedManager];
-  v5 = [v4 isSharedIPad];
+  sharedManager = [v2 sharedManager];
+  isSharedIPad = [sharedManager isSharedIPad];
 
-  return v5 ^ 1;
+  return isSharedIPad ^ 1;
 }
 
 + (BOOL)isLockdownModeEnabled
 {
-  v2 = [getLockdownModeManagerClass() shared];
-  v3 = [v2 enabled];
+  shared = [getLockdownModeManagerClass() shared];
+  enabled = [shared enabled];
 
-  return v3;
+  return enabled;
 }
 
 + (BOOL)isLockdownModeEnabledInAccount
 {
-  v2 = [getLockdownModeManagerClass() shared];
-  v3 = [v2 enabledInAccount];
+  shared = [getLockdownModeManagerClass() shared];
+  enabledInAccount = [shared enabledInAccount];
 
-  return v3;
+  return enabledInAccount;
 }
 
-+ (BOOL)isCaptivePortalModeIgnoredForContainerPath:(id)a3
++ (BOOL)isCaptivePortalModeIgnoredForContainerPath:(id)path
 {
-  v3 = a3;
-  v4 = [get_WKSystemPreferencesClass() isCaptivePortalModeIgnored:v3];
+  pathCopy = path;
+  v4 = [get_WKSystemPreferencesClass() isCaptivePortalModeIgnored:pathCopy];
 
   return v4;
 }

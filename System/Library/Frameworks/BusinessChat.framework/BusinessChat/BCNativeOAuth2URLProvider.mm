@@ -1,115 +1,115 @@
 @interface BCNativeOAuth2URLProvider
-+ (id)URLProviderWithDictionary:(id)a3;
-- (BCNativeOAuth2URLProvider)initWithCoder:(id)a3;
-- (BOOL)shouldHandleRedirectURI:(id)a3;
++ (id)URLProviderWithDictionary:(id)dictionary;
+- (BCNativeOAuth2URLProvider)initWithCoder:(id)coder;
+- (BOOL)shouldHandleRedirectURI:(id)i;
 - (NSString)debugDescription;
-- (id)_initWithAuthorizationURL:(void *)a3 accessTokenURL:(void *)a4 clientSecret:(void *)a5 clientIdentifier:(void *)a6 responseEncryptionKey:(void *)a7 scope:(void *)a8 state:(void *)a9 responseType:;
+- (id)_initWithAuthorizationURL:(void *)l accessTokenURL:(void *)rL clientSecret:(void *)secret clientIdentifier:(void *)identifier responseEncryptionKey:(void *)key scope:(void *)scope state:(void *)state responseType:;
 - (id)authenticationSessionURL;
-- (id)tokenExchangeBodyWithCode:(id)a3;
+- (id)tokenExchangeBodyWithCode:(id)code;
 - (id)tokenExchangeURL;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCNativeOAuth2URLProvider
 
-+ (id)URLProviderWithDictionary:(id)a3
++ (id)URLProviderWithDictionary:(id)dictionary
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"authorizationUrl"];
-  v5 = [MEMORY[0x277CBEB68] null];
-  if (v4 == v5)
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"authorizationUrl"];
+  null = [MEMORY[0x277CBEB68] null];
+  if (v4 == null)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:@"authorizationUrl"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"authorizationUrl"];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"accessTokenUrl"];
-  v8 = [MEMORY[0x277CBEB68] null];
-  if (v7 == v8)
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"accessTokenUrl"];
+  null2 = [MEMORY[0x277CBEB68] null];
+  if (v7 == null2)
   {
     v42 = 0;
   }
 
   else
   {
-    v42 = [v3 objectForKeyedSubscript:@"accessTokenUrl"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"accessTokenUrl"];
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"clientIdentifier"];
-  v10 = [MEMORY[0x277CBEB68] null];
-  if (v9 == v10)
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"clientIdentifier"];
+  null3 = [MEMORY[0x277CBEB68] null];
+  if (v9 == null3)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [v3 objectForKeyedSubscript:@"clientIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"clientIdentifier"];
   }
 
-  v12 = [v3 objectForKeyedSubscript:@"clientSecret"];
-  v13 = [MEMORY[0x277CBEB68] null];
-  if (v12 == v13)
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"clientSecret"];
+  null4 = [MEMORY[0x277CBEB68] null];
+  if (v12 == null4)
   {
     v41 = 0;
   }
 
   else
   {
-    v41 = [v3 objectForKeyedSubscript:@"clientSecret"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"clientSecret"];
   }
 
-  v14 = [v3 objectForKeyedSubscript:@"responseType"];
-  v15 = [MEMORY[0x277CBEB68] null];
-  if (v14 == v15)
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"responseType"];
+  null5 = [MEMORY[0x277CBEB68] null];
+  if (v14 == null5)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v3 objectForKeyedSubscript:@"responseType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"responseType"];
   }
 
-  v17 = [v3 objectForKeyedSubscript:@"responseEncryptionKey"];
-  v18 = [MEMORY[0x277CBEB68] null];
-  if (v17 == v18)
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"responseEncryptionKey"];
+  null6 = [MEMORY[0x277CBEB68] null];
+  if (v17 == null6)
   {
     v19 = 0;
   }
 
   else
   {
-    v19 = [v3 objectForKeyedSubscript:@"responseEncryptionKey"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"responseEncryptionKey"];
   }
 
-  v20 = [v3 objectForKeyedSubscript:@"state"];
-  v21 = [MEMORY[0x277CBEB68] null];
-  if (v20 == v21)
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"state"];
+  null7 = [MEMORY[0x277CBEB68] null];
+  if (v20 == null7)
   {
     v40 = 0;
   }
 
   else
   {
-    v40 = [v3 objectForKeyedSubscript:@"state"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"state"];
   }
 
-  v22 = [v3 objectForKeyedSubscript:@"scope"];
-  v23 = [MEMORY[0x277CBEB68] null];
-  if (v22 == v23)
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"scope"];
+  null8 = [MEMORY[0x277CBEB68] null];
+  if (v22 == null8)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = [v3 objectForKeyedSubscript:@"scope"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"scope"];
   }
 
   if (!v11)
@@ -298,92 +298,92 @@ LABEL_55:
   return v36;
 }
 
-- (id)_initWithAuthorizationURL:(void *)a3 accessTokenURL:(void *)a4 clientSecret:(void *)a5 clientIdentifier:(void *)a6 responseEncryptionKey:(void *)a7 scope:(void *)a8 state:(void *)a9 responseType:
+- (id)_initWithAuthorizationURL:(void *)l accessTokenURL:(void *)rL clientSecret:(void *)secret clientIdentifier:(void *)identifier responseEncryptionKey:(void *)key scope:(void *)scope state:(void *)state responseType:
 {
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v20 = a8;
-  v17 = a9;
-  if (a1)
+  lCopy = l;
+  rLCopy = rL;
+  secretCopy = secret;
+  identifierCopy = identifier;
+  keyCopy = key;
+  scopeCopy = scope;
+  stateCopy = state;
+  if (self)
   {
-    v27.receiver = a1;
+    v27.receiver = self;
     v27.super_class = BCNativeOAuth2URLProvider;
     v18 = objc_msgSendSuper2(&v27, sel_init);
-    a1 = v18;
+    self = v18;
     if (v18)
     {
       objc_storeStrong(v18 + 7, a2);
-      objc_storeStrong(a1 + 8, a3);
-      objc_storeStrong(a1 + 2, a4);
-      objc_storeStrong(a1 + 1, a5);
-      objc_storeStrong(a1 + 5, a9);
-      objc_storeStrong(a1 + 6, a6);
-      objc_storeStrong(a1 + 4, a8);
-      objc_storeStrong(a1 + 3, a7);
+      objc_storeStrong(self + 8, l);
+      objc_storeStrong(self + 2, rL);
+      objc_storeStrong(self + 1, secret);
+      objc_storeStrong(self + 5, state);
+      objc_storeStrong(self + 6, identifier);
+      objc_storeStrong(self + 4, scope);
+      objc_storeStrong(self + 3, key);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accessTokenURL = self->_accessTokenURL;
-  v5 = a3;
-  [v5 encodeObject:accessTokenURL forKey:@"accessTokenUrl"];
-  [v5 encodeObject:self->_authorizationURL forKey:@"authorizationUrl"];
-  [v5 encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
-  [v5 encodeObject:self->_clientSecret forKey:@"clientSecret"];
-  [v5 encodeObject:self->_responseType forKey:@"responseType"];
-  [v5 encodeObject:self->_responseEncryptionKey forKey:@"responseEncryptionKey"];
-  [v5 encodeObject:self->_scope forKey:@"scope"];
-  [v5 encodeObject:self->_state forKey:@"state"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accessTokenURL forKey:@"accessTokenUrl"];
+  [coderCopy encodeObject:self->_authorizationURL forKey:@"authorizationUrl"];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
+  [coderCopy encodeObject:self->_clientSecret forKey:@"clientSecret"];
+  [coderCopy encodeObject:self->_responseType forKey:@"responseType"];
+  [coderCopy encodeObject:self->_responseEncryptionKey forKey:@"responseEncryptionKey"];
+  [coderCopy encodeObject:self->_scope forKey:@"scope"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
 }
 
-- (BCNativeOAuth2URLProvider)initWithCoder:(id)a3
+- (BCNativeOAuth2URLProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = BCNativeOAuth2URLProvider;
   v5 = [(BCNativeOAuth2URLProvider *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessTokenUrl"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessTokenUrl"];
     accessTokenURL = v5->_accessTokenURL;
     v5->_accessTokenURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizationUrl"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizationUrl"];
     authorizationURL = v5->_authorizationURL;
     v5->_authorizationURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientSecret"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientSecret"];
     clientSecret = v5->_clientSecret;
     v5->_clientSecret = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"responseType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responseType"];
     responseType = v5->_responseType;
     v5->_responseType = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"responseEncryptionKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responseEncryptionKey"];
     responseEncryptionKey = v5->_responseEncryptionKey;
     v5->_responseEncryptionKey = v16;
 
     v18 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"scope"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"scope"];
     scope = v5->_scope;
     v5->_scope = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     state = v5->_state;
     v5->_state = v23;
   }
@@ -448,13 +448,13 @@ LABEL_55:
   return v15;
 }
 
-- (BOOL)shouldHandleRedirectURI:(id)a3
+- (BOOL)shouldHandleRedirectURI:(id)i
 {
-  v3 = [a3 absoluteString];
-  v4 = [v3 lowercaseString];
+  absoluteString = [i absoluteString];
+  lowercaseString = [absoluteString lowercaseString];
 
-  LOBYTE(v3) = [v4 hasPrefix:@"https://auth.businesschat.apple.com"];
-  return v3;
+  LOBYTE(absoluteString) = [lowercaseString hasPrefix:@"https://auth.businesschat.apple.com"];
+  return absoluteString;
 }
 
 - (id)tokenExchangeURL
@@ -464,14 +464,14 @@ LABEL_55:
   return v2;
 }
 
-- (id)tokenExchangeBodyWithCode:(id)a3
+- (id)tokenExchangeBodyWithCode:(id)code
 {
   v20[4] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACE0];
-  v5 = a3;
+  codeCopy = code;
   v6 = objc_alloc_init(v4);
   v7 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"client_id" value:self->_clientIdentifier];
-  v8 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"code" value:v5];
+  v8 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"code" value:codeCopy];
 
   v9 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"grant_type" value:@"authorization_code"];
   v10 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"redirect_uri" value:@"https://auth.businesschat.apple.com"];
@@ -498,9 +498,9 @@ LABEL_55:
     [v6 setQueryItems:v12];
   }
 
-  v14 = [v6 query];
-  v15 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v16 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:v15];
+  query = [v6 query];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v16 = [query stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v17 = *MEMORY[0x277D85DE8];
 

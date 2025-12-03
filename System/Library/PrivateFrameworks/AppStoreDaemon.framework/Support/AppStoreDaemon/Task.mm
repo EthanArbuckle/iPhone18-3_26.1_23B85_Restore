@@ -1,11 +1,11 @@
 @interface Task
-- (BOOL)runTaskReturningError:(id *)a3;
+- (BOOL)runTaskReturningError:(id *)error;
 - (Task)init;
-- (Task)initWithLogKey:(id)a3;
+- (Task)initWithLogKey:(id)key;
 - (Task)initWithoutKeepAlive;
-- (void)completeWithError:(id)a3;
+- (void)completeWithError:(id)error;
 - (void)completeWithSuccess;
-- (void)runTaskWithCompletionHandler:(id)a3;
+- (void)runTaskWithCompletionHandler:(id)handler;
 @end
 
 @implementation Task
@@ -31,25 +31,25 @@
   return v2;
 }
 
-- (Task)initWithLogKey:(id)a3
+- (Task)initWithLogKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v17.receiver = self;
   v17.super_class = Task;
   v5 = [(Task *)&v17 init];
   if (v5)
   {
-    if (v4)
+    if (keyCopy)
     {
-      if ([v4 hasCategory])
+      if ([keyCopy hasCategory])
       {
-        v6 = [v4 description];
+        v6 = [keyCopy description];
         v7 = [NSString stringWithFormat:@"[%@", v6];
       }
 
       else
       {
-        v7 = [v4 description];
+        v7 = [keyCopy description];
       }
 
       v11 = objc_opt_class();
@@ -91,9 +91,9 @@
   return v2;
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -102,12 +102,12 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2114;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%{public}@ completing with error: %{public}@", &v9, 0x16u);
   }
 
   [(NSLock *)self->_lock lock];
-  objc_setProperty_atomic_copy(self, v6, v4, 32);
+  objc_setProperty_atomic_copy(self, v6, errorCopy, 32);
   self->_success = 0;
   [(NSLock *)self->_lock unlock];
 }
@@ -130,19 +130,19 @@
   [(NSLock *)self->_lock unlock];
 }
 
-- (BOOL)runTaskReturningError:(id *)a3
+- (BOOL)runTaskReturningError:(id *)error
 {
   if ([(Task *)self isAsynchronous])
   {
     v5 = [TaskQueue alloc];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = sub_100284C30(&v5->super.isa, v7);
+    completionBlock = sub_100284C30(&v5->super.isa, v7);
 
-    if (v8)
+    if (completionBlock)
     {
-      [v8[1] addOperation:self];
-      [v8[1] waitUntilAllOperationsAreFinished];
+      [completionBlock[1] addOperation:self];
+      [completionBlock[1] waitUntilAllOperationsAreFinished];
     }
 
 LABEL_10:
@@ -164,8 +164,8 @@ LABEL_10:
 
   if (self)
   {
-    v8 = [(Task *)self completionBlock];
-    if (v8)
+    completionBlock = [(Task *)self completionBlock];
+    if (completionBlock)
     {
       [(Task *)self setCompletionBlock:0];
       v12 = dispatch_get_global_queue(21, 0);
@@ -174,7 +174,7 @@ LABEL_10:
       v16[2] = sub_1002D86E0;
       v16[3] = &unk_10051B790;
       v16[4] = self;
-      v17 = v8;
+      v17 = completionBlock;
       dispatch_async(v12, v16);
     }
 
@@ -182,7 +182,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  if (a3)
+  if (error)
   {
     if (self)
     {
@@ -194,15 +194,15 @@ LABEL_11:
       v13 = 0;
     }
 
-    *a3 = v13;
+    *error = v13;
   }
 
   return self && self->_success;
 }
 
-- (void)runTaskWithCompletionHandler:(id)a3
+- (void)runTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [TaskQueue alloc];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -218,8 +218,8 @@ LABEL_11:
   v10[2] = sub_1002D865C;
   v10[3] = &unk_10051B790;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   sub_100284D9C(v8, v10);
 }
 

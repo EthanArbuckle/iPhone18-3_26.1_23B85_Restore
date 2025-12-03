@@ -1,26 +1,26 @@
 @interface ZWSenderIDGenerationCountPair
-- (BOOL)isEqual:(id)a3;
-- (ZWSenderIDGenerationCountPair)initWithSenderID:(unint64_t)a3 generationCount:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ZWSenderIDGenerationCountPair)initWithSenderID:(unint64_t)d generationCount:(int64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ZWSenderIDGenerationCountPair
 
-- (ZWSenderIDGenerationCountPair)initWithSenderID:(unint64_t)a3 generationCount:(int64_t)a4
+- (ZWSenderIDGenerationCountPair)initWithSenderID:(unint64_t)d generationCount:(int64_t)count
 {
   v7.receiver = self;
   v7.super_class = ZWSenderIDGenerationCountPair;
   result = [(ZWSenderIDGenerationCountPair *)&v7 init];
   if (result)
   {
-    result->_senderID = a3;
-    result->_generationCount = a4;
+    result->_senderID = d;
+    result->_generationCount = count;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ZWSenderIDGenerationCountPair alloc];
   senderID = self->_senderID;
@@ -29,18 +29,18 @@
   return [(ZWSenderIDGenerationCountPair *)v4 initWithSenderID:senderID generationCount:generationCount];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 senderID];
-    if (v6 == [(ZWSenderIDGenerationCountPair *)self senderID])
+    v5 = equalCopy;
+    senderID = [v5 senderID];
+    if (senderID == [(ZWSenderIDGenerationCountPair *)self senderID])
     {
-      v7 = [v5 generationCount];
-      v8 = v7 == [(ZWSenderIDGenerationCountPair *)self generationCount];
+      generationCount = [v5 generationCount];
+      v8 = generationCount == [(ZWSenderIDGenerationCountPair *)self generationCount];
     }
 
     else

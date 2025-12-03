@@ -1,12 +1,12 @@
 @interface CKDPResponseOperationResultErrorExtension
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPResponseOperationResultErrorExtension
@@ -48,61 +48,61 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_extensionName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     typeCode = self->_typeCode;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_extensionPayload)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   extensionName = self->_extensionName;
-  v8 = v4;
+  v8 = toCopy;
   if (extensionName)
   {
-    objc_msgSend_setExtensionName_(v4, v5, extensionName);
-    v4 = v8;
+    objc_msgSend_setExtensionName_(toCopy, v5, extensionName);
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_typeCode;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 6) = self->_typeCode;
+    *(toCopy + 28) |= 1u;
   }
 
   extensionPayload = self->_extensionPayload;
   if (extensionPayload)
   {
     objc_msgSend_setExtensionPayload_(v8, v5, extensionPayload);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_extensionName, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_extensionName, v11, zone);
   v13 = *(v10 + 8);
   *(v10 + 8) = v12;
 
@@ -112,24 +112,24 @@
     *(v10 + 28) |= 1u;
   }
 
-  v15 = objc_msgSend_copyWithZone_(self->_extensionPayload, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_extensionPayload, v14, zone);
   v16 = *(v10 + 16);
   *(v10 + 16) = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_11;
   }
 
   extensionName = self->_extensionName;
-  v9 = v4[1];
+  v9 = equalCopy[1];
   if (extensionName | v9)
   {
     if (!objc_msgSend_isEqual_(extensionName, v7, v9))
@@ -138,16 +138,16 @@
     }
   }
 
-  v10 = *(v4 + 28);
+  v10 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_typeCode != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_typeCode != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     isEqual = 0;
@@ -155,7 +155,7 @@ LABEL_11:
   }
 
   extensionPayload = self->_extensionPayload;
-  v12 = v4[2];
+  v12 = equalCopy[2];
   if (extensionPayload | v12)
   {
     isEqual = objc_msgSend_isEqual_(extensionPayload, v7, v12);
@@ -187,28 +187,28 @@ LABEL_12:
   return v7 ^ v4 ^ objc_msgSend_hash(self->_extensionPayload, v5, v6);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = *(v4 + 1);
-  v8 = v4;
+  fromCopy = from;
+  v6 = *(fromCopy + 1);
+  v8 = fromCopy;
   if (v6)
   {
     objc_msgSend_setExtensionName_(self, v5, v6);
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_typeCode = *(v4 + 6);
+    self->_typeCode = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   if (v7)
   {
     objc_msgSend_setExtensionPayload_(self, v5, v7);
-    v4 = v8;
+    fromCopy = v8;
   }
 }
 

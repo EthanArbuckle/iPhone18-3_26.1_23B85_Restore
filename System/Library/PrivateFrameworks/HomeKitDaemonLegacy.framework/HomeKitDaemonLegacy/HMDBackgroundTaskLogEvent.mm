@@ -1,5 +1,5 @@
 @interface HMDBackgroundTaskLogEvent
-- (HMDBackgroundTaskLogEvent)initWithTask:(id)a3 didFire:(BOOL)a4 now:(id)a5;
+- (HMDBackgroundTaskLogEvent)initWithTask:(id)task didFire:(BOOL)fire now:(id)now;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)description;
 @end
@@ -43,21 +43,21 @@
   return v8;
 }
 
-- (HMDBackgroundTaskLogEvent)initWithTask:(id)a3 didFire:(BOOL)a4 now:(id)a5
+- (HMDBackgroundTaskLogEvent)initWithTask:(id)task didFire:(BOOL)fire now:(id)now
 {
-  v8 = a3;
-  v9 = a5;
+  taskCopy = task;
+  nowCopy = now;
   v18.receiver = self;
   v18.super_class = HMDBackgroundTaskLogEvent;
   v10 = [(HMMLogEvent *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    v10->_didFire = a4;
-    if (a4)
+    v10->_didFire = fire;
+    if (fire)
     {
-      v12 = [v8 expectedFireDate];
-      [v9 timeIntervalSinceDate:v12];
+      expectedFireDate = [taskCopy expectedFireDate];
+      [nowCopy timeIntervalSinceDate:expectedFireDate];
       v11->_fireDelay = v13;
     }
 
@@ -66,9 +66,9 @@
       v10->_fireDelay = 0.0;
     }
 
-    v14 = [v8 expectedFireDate];
-    v15 = [v8 scheduledDate];
-    [v14 timeIntervalSinceDate:v15];
+    expectedFireDate2 = [taskCopy expectedFireDate];
+    scheduledDate = [taskCopy scheduledDate];
+    [expectedFireDate2 timeIntervalSinceDate:scheduledDate];
     v11->_scheduledToExpectedFireInterval = v16;
   }
 

@@ -1,33 +1,33 @@
 @interface UIIndexBarAccessoryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsDelegateSelectable;
-- (BOOL)_didSelectEntry:(id)a3 atIndex:(int64_t)a4 location:(CGPoint)a5;
+- (BOOL)_didSelectEntry:(id)entry atIndex:(int64_t)index location:(CGPoint)location;
 - (BOOL)isAccessibilityElement;
-- (id)_accessibiityDisplayEntryNearestToContentOffset:(double)a3;
+- (id)_accessibiityDisplayEntryNearestToContentOffset:(double)offset;
 - (id)_accessibilityTableIndexTitles;
 - (id)_axEntries;
-- (id)_axLabelForEntry:(uint64_t)a1;
+- (id)_axLabelForEntry:(uint64_t)entry;
 - (id)accessibilityFlowToElements;
 - (id)accessibilityUserInputLabels;
 - (uint64_t)_axCurrentPosition;
-- (void)_accessibilityJumpToTableIndex:(id)a3;
-- (void)_accessibilityMoveToIndexAtPosition:(void *)a1;
-- (void)_axMoveToFirstVisibleIndex:(int64_t)a3;
-- (void)_axPostNotificationForEntry:(uint64_t)a1;
+- (void)_accessibilityJumpToTableIndex:(id)index;
+- (void)_accessibilityMoveToIndexAtPosition:(void *)position;
+- (void)_axMoveToFirstVisibleIndex:(int64_t)index;
+- (void)_axPostNotificationForEntry:(uint64_t)entry;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 @end
 
 @implementation UIIndexBarAccessoryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v12 = location;
   v11 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIIndexBarAccessoryView";
   v5 = @"UIIndexBarView";
   [location[0] validateClass:? isKindOfClass:?];
@@ -55,33 +55,33 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UIIndexBarAccessoryViewAccessibility *)self safeValueForKey:@"scrollView"];
-  v4 = [(UIIndexBarAccessoryViewAccessibility *)v7 _axEntries];
+  _axEntries = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axEntries];
   v5 = 0;
-  if ([v4 count])
+  if ([_axEntries count])
   {
     objc_opt_class();
-    v3 = 1;
+    _accessibilityIsDelegateSelectable = 1;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v3 = [(UIIndexBarAccessoryViewAccessibility *)v7 _accessibilityIsDelegateSelectable];
+      _accessibilityIsDelegateSelectable = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _accessibilityIsDelegateSelectable];
     }
 
-    v5 = v3;
+    v5 = _accessibilityIsDelegateSelectable;
   }
 
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](_axEntries);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
 - (id)_axEntries
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeArrayForKey:@"entries"];
+    v2 = [self safeArrayForKey:@"entries"];
   }
 
   else
@@ -109,19 +109,19 @@
 - (void)accessibilityIncrement
 {
   v17 = *MEMORY[0x29EDCA608];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = [(UIIndexBarAccessoryViewAccessibility *)self _axCurrentPosition];
-  v3 = [(UIIndexBarAccessoryViewAccessibility *)v15 _axEntries];
-  v4 = v13 == [v3 count] - 1;
-  MEMORY[0x29EDC9740](v3);
+  _axCurrentPosition = [(UIIndexBarAccessoryViewAccessibility *)self _axCurrentPosition];
+  _axEntries = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axEntries];
+  v4 = _axCurrentPosition == [_axEntries count] - 1;
+  MEMORY[0x29EDC9740](_axEntries);
   v12 = v4;
-  while (v13 > 0)
+  while (_axCurrentPosition > 0)
   {
-    v11 = [(UIIndexBarAccessoryViewAccessibility *)v15 _axEntries];
-    v10 = [v11 objectAtIndexedSubscript:v13];
-    v9[1] = (v13 - 1);
-    v9[0] = [v11 objectAtIndexedSubscript:v13 - 1];
+    _axEntries2 = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axEntries];
+    v10 = [_axEntries2 objectAtIndexedSubscript:_axCurrentPosition];
+    v9[1] = (_axCurrentPosition - 1);
+    v9[0] = [_axEntries2 objectAtIndexedSubscript:_axCurrentPosition - 1];
     v8 = [v10 safeValueForKey:?];
     location = [v9[0] safeValueForKey:@"indexPath"];
     if (v8 && location)
@@ -135,7 +135,7 @@
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         log = oslog;
-        __os_log_helper_16_2_1_8_64(v16, v15);
+        __os_log_helper_16_2_1_8_64(v16, selfCopy);
         _os_log_error_impl(&dword_29C4D6000, log, OS_LOG_TYPE_ERROR, "Unexpectedly had no index paths for index bar in collection view: %@", v16, 0xCu);
       }
 
@@ -147,40 +147,40 @@
     objc_storeStrong(&v8, 0);
     objc_storeStrong(v9, 0);
     objc_storeStrong(&v10, 0);
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&_axEntries2, 0);
     if (v6)
     {
       break;
     }
 
-    --v13;
+    --_axCurrentPosition;
   }
 
-  if (v13 > 0)
+  if (_axCurrentPosition > 0)
   {
     if (v12)
     {
-      [(UIIndexBarAccessoryViewAccessibility *)v15 _axMoveToFirstVisibleIndex:v13];
+      [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axMoveToFirstVisibleIndex:_axCurrentPosition];
     }
 
     else
     {
-      [(UIIndexBarAccessoryViewAccessibility *)v15 _accessibilityMoveToIndexAtPosition:?];
+      [(UIIndexBarAccessoryViewAccessibility *)selfCopy _accessibilityMoveToIndexAtPosition:?];
     }
   }
 }
 
 - (uint64_t)_axCurrentPosition
 {
-  v11 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     return 0;
   }
 
   v9 = 0;
   objc_opt_class();
-  v4 = [v11 safeValueForKey:@"scrollView"];
+  v4 = [selfCopy safeValueForKey:@"scrollView"];
   v8 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v7 = MEMORY[0x29EDC9748](v8);
@@ -189,7 +189,7 @@
   [v7 contentOffset];
   v6[1] = v1;
   v6[2] = v2;
-  v6[0] = [(UIIndexBarAccessoryViewAccessibility *)v11 _accessibiityDisplayEntryNearestToContentOffset:*&v2];
+  v6[0] = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _accessibiityDisplayEntryNearestToContentOffset:*&v2];
   v5 = 0;
   if (v6[0])
   {
@@ -202,48 +202,48 @@
   return v12;
 }
 
-- (void)_accessibilityMoveToIndexAtPosition:(void *)a1
+- (void)_accessibilityMoveToIndexAtPosition:(void *)position
 {
-  v12 = a1;
+  positionCopy = position;
   v11 = a2;
-  if (a1)
+  if (position)
   {
-    v2 = [(UIIndexBarAccessoryViewAccessibility *)v12 _axEntries];
-    v10 = [v2 objectAtIndexedSubscript:v11];
-    MEMORY[0x29EDC9740](v2);
+    _axEntries = [(UIIndexBarAccessoryViewAccessibility *)positionCopy _axEntries];
+    v10 = [_axEntries objectAtIndexedSubscript:v11];
+    MEMORY[0x29EDC9740](_axEntries);
     v3 = MEMORY[0x29EDCA5F8];
     v4 = -1073741824;
     v5 = 0;
     v6 = __76__UIIndexBarAccessoryViewAccessibility__accessibilityMoveToIndexAtPosition___block_invoke;
     v7 = &unk_29F30CF28;
-    v8 = MEMORY[0x29EDC9748](v12);
+    v8 = MEMORY[0x29EDC9748](positionCopy);
     v9[0] = MEMORY[0x29EDC9748](v10);
     v9[1] = v11;
     AXPerformSafeBlock();
-    [(UIIndexBarAccessoryViewAccessibility *)v12 _axPostNotificationForEntry:v10];
+    [(UIIndexBarAccessoryViewAccessibility *)positionCopy _axPostNotificationForEntry:v10];
     objc_storeStrong(v9, 0);
     objc_storeStrong(&v8, 0);
     objc_storeStrong(&v10, 0);
   }
 }
 
-- (void)_axMoveToFirstVisibleIndex:(int64_t)a3
+- (void)_axMoveToFirstVisibleIndex:(int64_t)index
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = [(UIIndexBarAccessoryViewAccessibility *)self _axEntries];
+  indexCopy = index;
+  _axEntries = [(UIIndexBarAccessoryViewAccessibility *)self _axEntries];
   while (1)
   {
     v7 = 0;
-    if ((v12 & 0x8000000000000000) == 0)
+    if ((indexCopy & 0x8000000000000000) == 0)
     {
-      v6 = v12;
+      v6 = indexCopy;
       v7 = 0;
-      if (v6 < [v11 count])
+      if (v6 < [_axEntries count])
       {
-        v5 = [(UIIndexBarAccessoryViewAccessibility *)v14 _axCurrentPosition];
-        v7 = v5 == [v11 count] - 1;
+        _axCurrentPosition = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axCurrentPosition];
+        v7 = _axCurrentPosition == [_axEntries count] - 1;
       }
     }
 
@@ -252,32 +252,32 @@
       break;
     }
 
-    v10 = [v11 objectAtIndexedSubscript:v12 - 1];
-    v4 = [v11 objectAtIndexedSubscript:v12];
+    v10 = [_axEntries objectAtIndexedSubscript:indexCopy - 1];
+    v4 = [_axEntries objectAtIndexedSubscript:indexCopy];
     v9 = [v4 safeValueForKey:?];
     *&v3 = MEMORY[0x29EDC9740](v4).n128_u64[0];
     location = [v10 safeValueForKey:{@"indexPath", v3}];
     if (v9 && location && ([v9 isEqual:location] & 1) == 0)
     {
-      [(UIIndexBarAccessoryViewAccessibility *)v14 _accessibilityMoveToIndexAtPosition:v12];
+      [(UIIndexBarAccessoryViewAccessibility *)selfCopy _accessibilityMoveToIndexAtPosition:indexCopy];
     }
 
-    --v12;
+    --indexCopy;
     objc_storeStrong(&location, 0);
     objc_storeStrong(&v9, 0);
     objc_storeStrong(&v10, 0);
   }
 
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&_axEntries, 0);
 }
 
 - (void)accessibilityDecrement
 {
-  v4 = [(UIIndexBarAccessoryViewAccessibility *)self _axCurrentPosition];
-  v2 = [(UIIndexBarAccessoryViewAccessibility *)self _axEntries];
-  v3 = [v2 count];
-  MEMORY[0x29EDC9740](v2);
-  if (v4 < v3 - 1)
+  _axCurrentPosition = [(UIIndexBarAccessoryViewAccessibility *)self _axCurrentPosition];
+  _axEntries = [(UIIndexBarAccessoryViewAccessibility *)self _axEntries];
+  v3 = [_axEntries count];
+  MEMORY[0x29EDC9740](_axEntries);
+  if (_axCurrentPosition < v3 - 1)
   {
     [(UIIndexBarAccessoryViewAccessibility *)self _accessibilityMoveToIndexAtPosition:?];
   }
@@ -286,11 +286,11 @@
 - (id)_accessibilityTableIndexTitles
 {
   v16 = *MEMORY[0x29EDCA608];
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [MEMORY[0x29EDB8DE8] array];
   memset(__b, 0, sizeof(__b));
-  obj = [(UIIndexBarAccessoryViewAccessibility *)v14 _axEntries];
+  obj = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axEntries];
   v9 = [obj countByEnumeratingWithState:__b objects:v15 count:16];
   if (v9)
   {
@@ -306,7 +306,7 @@
       }
 
       v12 = *(__b[1] + 8 * v6);
-      location = [(UIIndexBarAccessoryViewAccessibility *)v14 _axLabelForEntry:v12];
+      location = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axLabelForEntry:v12];
       if ([location length])
       {
         [v13[0] addObject:location];
@@ -333,12 +333,12 @@
   return v3;
 }
 
-- (id)_axLabelForEntry:(uint64_t)a1
+- (id)_axLabelForEntry:(uint64_t)entry
 {
-  v14 = a1;
+  entryCopy = entry;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v14)
+  if (entryCopy)
   {
     v11 = 0;
     v10 = [location safeIntegerForKey:@"type"];
@@ -390,27 +390,27 @@
 - (id)accessibilityFlowToElements
 {
   v39 = *MEMORY[0x29EDCA608];
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
   if ([(UIIndexBarAccessoryViewAccessibility *)self _axDidSelectEntry])
   {
-    v32.receiver = v36;
+    v32.receiver = selfCopy;
     v32.super_class = UIIndexBarAccessoryViewAccessibility;
-    v33 = [(UIIndexBarAccessoryViewAccessibility *)&v32 accessibilityFlowToElements];
-    v31 = [(UIIndexBarAccessoryViewAccessibility *)v36 _axEntries];
-    if ([v31 count])
+    accessibilityFlowToElements = [(UIIndexBarAccessoryViewAccessibility *)&v32 accessibilityFlowToElements];
+    _axEntries = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axEntries];
+    if ([_axEntries count])
     {
-      v30 = [(UIIndexBarAccessoryViewAccessibility *)v36 _axCurrentPosition];
-      if ((v30 & 0x8000000000000000) != 0 || v30 >= [v31 count])
+      _axCurrentPosition = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axCurrentPosition];
+      if ((_axCurrentPosition & 0x8000000000000000) != 0 || _axCurrentPosition >= [_axEntries count])
       {
-        v5 = v30;
-        v6 = [v31 count];
+        v5 = _axCurrentPosition;
+        v6 = [_axEntries count];
         _AXAssert();
       }
 
-      if ((v30 & 0x8000000000000000) == 0 && v30 < [v31 count])
+      if ((_axCurrentPosition & 0x8000000000000000) == 0 && _axCurrentPosition < [_axEntries count])
       {
-        v29 = [v31 objectAtIndexedSubscript:v30];
+        v29 = [_axEntries objectAtIndexedSubscript:_axCurrentPosition];
         v27 = 0;
         objc_opt_class();
         v17 = [v29 safeValueForKey:@"indexPath"];
@@ -419,14 +419,14 @@
         v25 = MEMORY[0x29EDC9748](v26);
         objc_storeStrong(&v26, 0);
         v28 = v25;
-        v24 = [(UIIndexBarAccessoryViewAccessibility *)v36 safeValueForKey:@"scrollView"];
+        v24 = [(UIIndexBarAccessoryViewAccessibility *)selfCopy safeValueForKey:@"scrollView"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v23 = MEMORY[0x29EDC9748](v24);
-          v14 = [v23 indexPathsForVisibleItems];
-          v22 = [v14 sortedArrayUsingSelector:sel_compare_];
-          MEMORY[0x29EDC9740](v14);
+          indexPathsForVisibleItems = [v23 indexPathsForVisibleItems];
+          v22 = [indexPathsForVisibleItems sortedArrayUsingSelector:sel_compare_];
+          MEMORY[0x29EDC9740](indexPathsForVisibleItems);
           memset(__b, 0, sizeof(__b));
           obj = MEMORY[0x29EDC9748](v22);
           v16 = [obj countByEnumeratingWithState:__b objects:v38 count:16];
@@ -444,17 +444,17 @@
               }
 
               v21 = *(__b[1] + 8 * v12);
-              v9 = [v21 section];
-              if (v9 >= [v28 section])
+              section = [v21 section];
+              if (section >= [v28 section])
               {
                 v8 = [v23 cellForItemAtIndexPath:v21];
-                v7 = [MEMORY[0x29EDC7328] options];
+                options = [MEMORY[0x29EDC7328] options];
                 v19 = [v8 _accessibilityLeafDescendantsWithCount:1 options:?];
-                MEMORY[0x29EDC9740](v7);
+                MEMORY[0x29EDC9740](options);
                 *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
                 if ([v19 count])
                 {
-                  objc_storeStrong(&v33, v19);
+                  objc_storeStrong(&accessibilityFlowToElements, v19);
                   v18 = 4;
                 }
 
@@ -494,29 +494,29 @@
       }
     }
 
-    v37 = MEMORY[0x29EDC9748](v33);
-    objc_storeStrong(&v31, 0);
-    objc_storeStrong(&v33, 0);
+    accessibilityFlowToElements2 = MEMORY[0x29EDC9748](accessibilityFlowToElements);
+    objc_storeStrong(&_axEntries, 0);
+    objc_storeStrong(&accessibilityFlowToElements, 0);
   }
 
   else
   {
-    v34.receiver = v36;
+    v34.receiver = selfCopy;
     v34.super_class = UIIndexBarAccessoryViewAccessibility;
-    v37 = [(UIIndexBarAccessoryViewAccessibility *)&v34 accessibilityFlowToElements];
+    accessibilityFlowToElements2 = [(UIIndexBarAccessoryViewAccessibility *)&v34 accessibilityFlowToElements];
   }
 
-  v3 = v37;
+  v3 = accessibilityFlowToElements2;
 
   return v3;
 }
 
-- (id)_accessibiityDisplayEntryNearestToContentOffset:(double)a3
+- (id)_accessibiityDisplayEntryNearestToContentOffset:(double)offset
 {
   *&v18 = a2;
-  *(&v18 + 1) = a3;
-  v17 = a1;
-  if (a1)
+  *(&v18 + 1) = offset;
+  selfCopy = self;
+  if (self)
   {
     v10 = 0;
     v11 = &v10;
@@ -525,12 +525,12 @@
     v14 = __Block_byref_object_copy__11;
     v15 = __Block_byref_object_dispose__11;
     v16 = 0;
-    v9 = [v17 safeValueForKey:@"delegate"];
+    v9 = [selfCopy safeValueForKey:@"delegate"];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v17 safeArrayForKey:@"displayEntries"];
+      v5 = [selfCopy safeArrayForKey:@"displayEntries"];
       v6 = MEMORY[0x29EDC9748](v9);
-      v7[0] = MEMORY[0x29EDC9748](v17);
+      v7[0] = MEMORY[0x29EDC9748](selfCopy);
       v8 = v18;
       v7[1] = &v10;
       [v5 enumerateObjectsUsingBlock:?];
@@ -631,12 +631,12 @@ __n128 __88__UIIndexBarAccessoryViewAccessibility__accessibiityDisplayEntryNeare
   return result;
 }
 
-- (void)_accessibilityJumpToTableIndex:(id)a3
+- (void)_accessibilityJumpToTableIndex:(id)index
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, index);
   if ([location[0] length])
   {
     v15 = [location[0] rangeOfComposedCharacterSequenceAtIndex:0];
@@ -647,8 +647,8 @@ __n128 __88__UIIndexBarAccessoryViewAccessibility__accessibiityDisplayEntryNeare
     MEMORY[0x29EDC9740](v5);
   }
 
-  v14 = [(UIIndexBarAccessoryViewAccessibility *)v18 _axEntries];
-  v6 = v14;
+  _axEntries = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axEntries];
+  v6 = _axEntries;
   v7 = MEMORY[0x29EDCA5F8];
   v8 = -1073741824;
   v9 = 0;
@@ -658,11 +658,11 @@ __n128 __88__UIIndexBarAccessoryViewAccessibility__accessibiityDisplayEntryNeare
   v13 = [v6 indexOfObjectPassingTest:&v7];
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(UIIndexBarAccessoryViewAccessibility *)v18 _accessibilityMoveToIndexAtPosition:v13];
+    [(UIIndexBarAccessoryViewAccessibility *)selfCopy _accessibilityMoveToIndexAtPosition:v13];
   }
 
   objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&_axEntries, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -678,15 +678,15 @@ BOOL __71__UIIndexBarAccessoryViewAccessibility__accessibilityJumpToTableIndex__
   return v5;
 }
 
-- (void)_axPostNotificationForEntry:(uint64_t)a1
+- (void)_axPostNotificationForEntry:(uint64_t)entry
 {
-  v5 = a1;
+  entryCopy = entry;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v5)
+  if (entryCopy)
   {
     notification = *MEMORY[0x29EDC7478];
-    v3 = [(UIIndexBarAccessoryViewAccessibility *)v5 _axLabelForEntry:?];
+    v3 = [(UIIndexBarAccessoryViewAccessibility *)entryCopy _axLabelForEntry:?];
     UIAccessibilityPostNotification(notification, v3);
     MEMORY[0x29EDC9740](v3);
   }
@@ -714,24 +714,24 @@ uint64_t __76__UIIndexBarAccessoryViewAccessibility__accessibilityMoveToIndexAtP
   return v3 & 1;
 }
 
-- (BOOL)_didSelectEntry:(id)a3 atIndex:(int64_t)a4 location:(CGPoint)a5
+- (BOOL)_didSelectEntry:(id)entry atIndex:(int64_t)index location:(CGPoint)location
 {
-  v14 = a5;
-  v13 = self;
+  locationCopy = location;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
-  v10 = [(UIIndexBarAccessoryViewAccessibility *)v13 _axCurrentPosition];
-  v8.receiver = v13;
+  objc_storeStrong(location, entry);
+  indexCopy = index;
+  _axCurrentPosition = [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axCurrentPosition];
+  v8.receiver = selfCopy;
   v8.super_class = UIIndexBarAccessoryViewAccessibility;
-  v9 = [(UIIndexBarAccessoryViewAccessibility *)&v8 _didSelectEntry:location[0] atIndex:a4 location:v14.x, v14.y];
+  v9 = [(UIIndexBarAccessoryViewAccessibility *)&v8 _didSelectEntry:location[0] atIndex:index location:locationCopy.x, locationCopy.y];
   if (v9)
   {
-    [(UIIndexBarAccessoryViewAccessibility *)v13 _axDidSelectEntry:1];
-    if (v10 != v11)
+    [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axDidSelectEntry:1];
+    if (_axCurrentPosition != indexCopy)
     {
-      [(UIIndexBarAccessoryViewAccessibility *)v13 _axPostNotificationForEntry:?];
+      [(UIIndexBarAccessoryViewAccessibility *)selfCopy _axPostNotificationForEntry:?];
     }
   }
 

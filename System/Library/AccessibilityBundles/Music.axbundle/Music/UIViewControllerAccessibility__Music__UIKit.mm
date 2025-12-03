@@ -1,29 +1,29 @@
 @interface UIViewControllerAccessibility__Music__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsViewControllerInLibrary;
-- (void)didChangeVoiceOverOrSwitchControlStatus:(id)a3;
+- (void)didChangeVoiceOverOrSwitchControlStatus:(id)status;
 - (void)viewDidLoad;
 @end
 
 @implementation UIViewControllerAccessibility__Music__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Music.LibraryAlbumsViewController"];
-  [v3 validateClass:@"Music.LibraryArtistsListViewController"];
-  [v3 validateClass:@"Music.LibraryArtistDetailViewController"];
-  [v3 validateClass:@"Music.LibraryGenresViewController"];
-  [v3 validateClass:@"Music.LibraryComposersViewController"];
-  [v3 validateClass:@"Music.LibraryPlaylistsViewController"];
-  [v3 validateClass:@"Music.LibraryMusicVideosViewController"];
-  [v3 validateClass:@"Music.LibraryMainViewController"];
-  [v3 validateClass:@"Music.LibraryRecentlyAddedViewController"];
-  [v3 validateClass:@"Music.LibrarySongsViewController"];
-  [v3 validateClass:@"Music.LibraryTVShowsMoviesViewController"];
-  [v3 validateClass:@"Music.LibraryTVEpisodesViewController"];
-  [v3 validateClass:@"Music.LibraryDownloadingViewController"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"navigationItem" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Music.LibraryAlbumsViewController"];
+  [validationsCopy validateClass:@"Music.LibraryArtistsListViewController"];
+  [validationsCopy validateClass:@"Music.LibraryArtistDetailViewController"];
+  [validationsCopy validateClass:@"Music.LibraryGenresViewController"];
+  [validationsCopy validateClass:@"Music.LibraryComposersViewController"];
+  [validationsCopy validateClass:@"Music.LibraryPlaylistsViewController"];
+  [validationsCopy validateClass:@"Music.LibraryMusicVideosViewController"];
+  [validationsCopy validateClass:@"Music.LibraryMainViewController"];
+  [validationsCopy validateClass:@"Music.LibraryRecentlyAddedViewController"];
+  [validationsCopy validateClass:@"Music.LibrarySongsViewController"];
+  [validationsCopy validateClass:@"Music.LibraryTVShowsMoviesViewController"];
+  [validationsCopy validateClass:@"Music.LibraryTVEpisodesViewController"];
+  [validationsCopy validateClass:@"Music.LibraryDownloadingViewController"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"navigationItem" withFullSignature:{"@", 0}];
 }
 
 - (void)viewDidLoad
@@ -31,11 +31,11 @@
   v5.receiver = self;
   v5.super_class = UIViewControllerAccessibility__Music__UIKit;
   [(UIViewControllerAccessibility__Music__UIKit *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:self selector:sel_didChangeVoiceOverOrSwitchControlStatus_ name:*MEMORY[0x29EDC8000] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_didChangeVoiceOverOrSwitchControlStatus_ name:*MEMORY[0x29EDC8000] object:0];
 
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 addObserver:self selector:sel_didChangeVoiceOverOrSwitchControlStatus_ name:*MEMORY[0x29EDC7F48] object:0];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_didChangeVoiceOverOrSwitchControlStatus_ name:*MEMORY[0x29EDC7F48] object:0];
 
   [(UIViewControllerAccessibility__Music__UIKit *)self didChangeVoiceOverOrSwitchControlStatus:0];
   if ([(UIViewControllerAccessibility__Music__UIKit *)self _axIsViewControllerInLibrary])
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)didChangeVoiceOverOrSwitchControlStatus:(id)a3
+- (void)didChangeVoiceOverOrSwitchControlStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   objc_opt_class();
   v5 = [(UIViewControllerAccessibility__Music__UIKit *)self safeValueForKey:@"navigationItem"];
   v6 = __UIAccessibilityCastAsClass();

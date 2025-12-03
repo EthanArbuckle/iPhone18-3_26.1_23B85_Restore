@@ -1,18 +1,18 @@
 @interface CNFRegEditablePhoneTableCell
-- ($2D6F231FED87FA8D411482BD0BBB798B)suggestionsForString:(id)a3 inputIndex:(unsigned int)a4;
-- (CNFRegEditablePhoneTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- ($2D6F231FED87FA8D411482BD0BBB798B)suggestionsForString:(id)string inputIndex:(unsigned int)index;
+- (CNFRegEditablePhoneTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)countryCode;
 - (void)dealloc;
-- (void)setValueChangedTarget:(id)a3 action:(SEL)a4 specifier:(id)a5;
+- (void)setValueChangedTarget:(id)target action:(SEL)action specifier:(id)specifier;
 @end
 
 @implementation CNFRegEditablePhoneTableCell
 
-- (CNFRegEditablePhoneTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNFRegEditablePhoneTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CNFRegEditablePhoneTableCell;
-  v4 = [(PSEditableTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSEditableTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -33,12 +33,12 @@
   [(CNFRegEditableTableCell *)&v3 dealloc];
 }
 
-- (void)setValueChangedTarget:(id)a3 action:(SEL)a4 specifier:(id)a5
+- (void)setValueChangedTarget:(id)target action:(SEL)action specifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = CNFRegEditablePhoneTableCell;
-  [(CNFRegEditableTableCell *)&v11 setValueChangedTarget:a3 action:a4 specifier:?];
-  v7 = [a5 propertyForKey:@"cnf-phoneFieldCountryCodeSelector"];
+  [(CNFRegEditableTableCell *)&v11 setValueChangedTarget:target action:action specifier:?];
+  v7 = [specifier propertyForKey:@"cnf-phoneFieldCountryCodeSelector"];
   if (v7)
   {
     v8 = NSSelectorFromString(v7);
@@ -59,14 +59,14 @@
   v3 = *(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FBF0]);
   if (!v3 || (countryCodeSelector = self->_countryCodeSelector) == 0 || (v5 = self->_countryCodeSelector, (v6 = [v3 performSelector:countryCodeSelector]) == 0))
   {
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v6 = [v7 objectForKey:*MEMORY[0x277CBE690]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v6 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
   }
 
   return [v6 lowercaseString];
 }
 
-- ($2D6F231FED87FA8D411482BD0BBB798B)suggestionsForString:(id)a3 inputIndex:(unsigned int)a4
+- ($2D6F231FED87FA8D411482BD0BBB798B)suggestionsForString:(id)string inputIndex:(unsigned int)index
 {
   [(CNFRegEditablePhoneTableCell *)self countryCode];
   previousValue = self->_previousValue;

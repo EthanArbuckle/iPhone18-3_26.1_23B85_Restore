@@ -1,22 +1,22 @@
 @interface IMAPServiceBodyLoadMonitor
 + (id)_headersToPreserve;
-- (BOOL)progressiveBodyLoadHasStartedForRecord:(void *)a3;
-- (id)_createHeaderDictionaryForData:(id)a3;
-- (id)initForService:(id)a3;
-- (void)_activityCompleted:(id)a3;
-- (void)_postDataAvailableWithUserInfo:(id)a3;
+- (BOOL)progressiveBodyLoadHasStartedForRecord:(void *)record;
+- (id)_createHeaderDictionaryForData:(id)data;
+- (id)initForService:(id)service;
+- (void)_activityCompleted:(id)completed;
+- (void)_postDataAvailableWithUserInfo:(id)info;
 - (void)dealloc;
-- (void)lengthsOfBodyLoadForRecord:(void *)a3 expected:(unsigned int *)a4 current:(unsigned int *)a5;
-- (void)progressiveMimeParser:(id)a3 beganDataForMimePart:(id)a4;
-- (void)progressiveMimeParser:(id)a3 failedWithError:(id)a4;
-- (void)progressiveMimeParser:(id)a3 finishedMimePart:(id)a4;
+- (void)lengthsOfBodyLoadForRecord:(void *)record expected:(unsigned int *)expected current:(unsigned int *)current;
+- (void)progressiveMimeParser:(id)parser beganDataForMimePart:(id)part;
+- (void)progressiveMimeParser:(id)parser failedWithError:(id)error;
+- (void)progressiveMimeParser:(id)parser finishedMimePart:(id)part;
 @end
 
 @implementation IMAPServiceBodyLoadMonitor
 
 + (id)_headersToPreserve
 {
-  [a1 mf_lock];
+  [self mf_lock];
   if (!qword_10010D7A0)
   {
     v3 = [[NSArray alloc] initWithObjects:{@"x-applevm-duration", 0}];
@@ -24,23 +24,23 @@
     qword_10010D7A0 = v3;
   }
 
-  [a1 mf_unlock];
+  [self mf_unlock];
   v5 = qword_10010D7A0;
 
   return v5;
 }
 
-- (id)initForService:(id)a3
+- (id)initForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v17.receiver = self;
   v17.super_class = IMAPServiceBodyLoadMonitor;
   v5 = [(IMAPServiceBodyLoadMonitor *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_service, v4);
-    v6->mambaID = [v4 getServiceObjLogPrefix];
+    objc_storeWeak(&v5->_service, serviceCopy);
+    v6->mambaID = [serviceCopy getServiceObjLogPrefix];
     v7 = +[NSMapTable strongToStrongObjectsMapTable];
     loadContextsByLibraryId = v6->_loadContextsByLibraryId;
     v6->_loadContextsByLibraryId = v7;
@@ -59,7 +59,7 @@
       v24 = 2048;
       v25 = v6;
       v26 = 2112;
-      v27 = v4;
+      v27 = serviceCopy;
       v12 = v11;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p with service %@ created", buf, 0x34u);
     }
@@ -91,7 +91,7 @@
     v12 = 2112;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v6 = v13;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p deleted", buf, 0x2Au);
   }
@@ -101,10 +101,10 @@
   [(IMAPServiceBodyLoadMonitor *)&v7 dealloc];
 }
 
-- (id)_createHeaderDictionaryForData:(id)a3
+- (id)_createHeaderDictionaryForData:(id)data
 {
-  v3 = a3;
-  v4 = [[MFMessageHeaders alloc] initWithHeaderData:v3 encoding:0xFFFFFFFFLL];
+  dataCopy = data;
+  v4 = [[MFMessageHeaders alloc] initWithHeaderData:dataCopy encoding:0xFFFFFFFFLL];
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = H_CONTENT_TYPE;
   v7 = [v4 firstHeaderForKey:H_CONTENT_TYPE];
@@ -121,13 +121,13 @@
     [v5 setObject:v9 forKey:v8];
   }
 
-  v10 = [objc_opt_class() _headersToPreserve];
-  v11 = [v10 count];
+  _headersToPreserve = [objc_opt_class() _headersToPreserve];
+  v11 = [_headersToPreserve count];
   if (v11)
   {
     for (i = 0; i != v11; ++i)
     {
-      v13 = [v10 objectAtIndex:i];
+      v13 = [_headersToPreserve objectAtIndex:i];
       v14 = [v4 firstHeaderForKey:v13];
 
       if (v14)
@@ -147,22 +147,22 @@
   return v5;
 }
 
-- (void)_activityCompleted:(id)a3
+- (void)_activityCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = v5;
-  if (v5)
+  completedCopy = completed;
+  userInfo = [completedCopy userInfo];
+  v6 = userInfo;
+  if (userInfo)
   {
-    v7 = [v5 objectForKey:@"VVTaskType"];
-    v8 = [v7 intValue];
+    v7 = [userInfo objectForKey:@"VVTaskType"];
+    intValue = [v7 intValue];
 
     v9 = [v6 objectForKey:@"VVRecord"];
-    if (v9 && v8 == 2)
+    if (v9 && intValue == 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_service);
-      v12 = [WeakRetained getAccountStore];
-      v13 = sub_100092784(v12, v9);
+      getAccountStore = [WeakRetained getAccountStore];
+      v13 = sub_100092784(getAccountStore, v9);
 
       [(IMAPServiceBodyLoadMonitor *)self mf_lock];
       if (v13 >= 1)
@@ -184,9 +184,9 @@
           }
 
           [v14 cleanUpErroredFile];
-          v17 = [(IMAPServiceBodyLoadMonitor *)self loadContextsByLibraryId];
+          loadContextsByLibraryId = [(IMAPServiceBodyLoadMonitor *)self loadContextsByLibraryId];
           v18 = [NSNumber numberWithInt:v13];
-          [v17 removeObjectForKey:v18];
+          [loadContextsByLibraryId removeObjectForKey:v18];
         }
       }
 
@@ -195,13 +195,13 @@
   }
 }
 
-- (BOOL)progressiveBodyLoadHasStartedForRecord:(void *)a3
+- (BOOL)progressiveBodyLoadHasStartedForRecord:(void *)record
 {
-  if (a3)
+  if (record)
   {
     WeakRetained = objc_loadWeakRetained(&self->_service);
-    v6 = [WeakRetained getAccountStore];
-    v7 = sub_100092784(v6, a3);
+    getAccountStore = [WeakRetained getAccountStore];
+    v7 = sub_100092784(getAccountStore, record);
 
     if (v7 < 1)
     {
@@ -219,26 +219,26 @@
   v10 = v9;
   if (v9)
   {
-    v8 = [v9 loadHasStarted];
+    loadHasStarted = [v9 loadHasStarted];
   }
 
   else
   {
-    v8 = 0;
+    loadHasStarted = 0;
   }
 
   [(IMAPServiceBodyLoadMonitor *)self mf_unlock];
 
-  return v8;
+  return loadHasStarted;
 }
 
-- (void)lengthsOfBodyLoadForRecord:(void *)a3 expected:(unsigned int *)a4 current:(unsigned int *)a5
+- (void)lengthsOfBodyLoadForRecord:(void *)record expected:(unsigned int *)expected current:(unsigned int *)current
 {
-  if (a3)
+  if (record)
   {
     WeakRetained = objc_loadWeakRetained(&self->_service);
-    v9 = [WeakRetained getAccountStore];
-    v10 = sub_100092784(v9, a3);
+    getAccountStore = [WeakRetained getAccountStore];
+    v10 = sub_100092784(getAccountStore, record);
 
     if (v10 < 1)
     {
@@ -255,43 +255,43 @@
   v12 = [(IMAPServiceBodyLoadMonitor *)self contextForLibraryId:v10 create:0];
   if (v12)
   {
-    if (a4)
+    if (expected)
     {
-      *a4 = [v12 expectedLength];
+      *expected = [v12 expectedLength];
     }
 
-    if (a5)
+    if (current)
     {
-      *a5 = [v12 currentOffset];
+      *current = [v12 currentOffset];
     }
   }
 
   [(IMAPServiceBodyLoadMonitor *)self mf_unlock];
 }
 
-- (void)progressiveMimeParser:(id)a3 beganDataForMimePart:(id)a4
+- (void)progressiveMimeParser:(id)parser beganDataForMimePart:(id)part
 {
-  v6 = a3;
-  v7 = a4;
+  parserCopy = parser;
+  partCopy = part;
   v8 = sub_100015F94();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     mambaID = self->mambaID;
-    v10 = [v7 type];
+    type = [partCopy type];
     *buf = 136315650;
     v57 = mambaID;
     v58 = 2080;
     v59 = " ";
     v60 = 2112;
-    v61 = v10;
+    v61 = type;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%sVVPARSE BEGIN DATA for type [%@]", buf, 0x20u);
   }
 
-  v11 = [v7 type];
-  if ([v11 isEqualToString:@"audio"])
+  type2 = [partCopy type];
+  if ([type2 isEqualToString:@"audio"])
   {
-    v12 = [v7 subtype];
-    v13 = [v12 isEqualToString:@"amr"];
+    subtype = [partCopy subtype];
+    v13 = [subtype isEqualToString:@"amr"];
   }
 
   else
@@ -300,77 +300,77 @@
   }
 
   v14 = +[MFAttachmentManager defaultManager];
-  v15 = [v7 attachmentURLs];
-  v16 = [v15 firstObject];
-  v17 = [v14 attachmentForURL:v16 error:0];
+  attachmentURLs = [partCopy attachmentURLs];
+  firstObject = [attachmentURLs firstObject];
+  v17 = [v14 attachmentForURL:firstObject error:0];
 
-  if ((v13 & 1) != 0 || [v7 isAttachment] && (objc_msgSend(v17, "inferredMimeType"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isEqualToString:", @"audio/amr"), v29, v30))
+  if ((v13 & 1) != 0 || [partCopy isAttachment] && (objc_msgSend(v17, "inferredMimeType"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isEqualToString:", @"audio/amr"), v29, v30))
   {
-    v18 = [v6 context];
-    v19 = [v7 contentTransferEncoding];
-    v55 = [v7 dispositionParameterForKey:@"size"];
-    v54 = [v7 preservedHeaderValueForKey:@"x-applevm-duration"];
-    v20 = [v19 isEqualToString:@"base64"];
-    *(v18 + 64) = *(v18 + 64) & 0xFE | v20;
-    if (!((v19 == 0) | v20 & 1))
+    context = [parserCopy context];
+    contentTransferEncoding = [partCopy contentTransferEncoding];
+    v55 = [partCopy dispositionParameterForKey:@"size"];
+    v54 = [partCopy preservedHeaderValueForKey:@"x-applevm-duration"];
+    v20 = [contentTransferEncoding isEqualToString:@"base64"];
+    *(context + 64) = *(context + 64) & 0xFE | v20;
+    if (!((contentTransferEncoding == 0) | v20 & 1))
     {
-      v27 = sub_100015F94();
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+      path = sub_100015F94();
+      if (os_log_type_enabled(path, OS_LOG_TYPE_DEFAULT))
       {
         v31 = self->mambaID;
         *buf = 136315394;
         v57 = v31;
         v58 = 2080;
         v59 = " ";
-        _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "#I %s%sBad content transfer encoding; skipping body load", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, path, OS_LOG_TYPE_DEFAULT, "#I %s%sBad content transfer encoding; skipping body load", buf, 0x16u);
       }
 
       goto LABEL_39;
     }
 
-    v21 = *(v18 + 24) == 0x7FFFFFFF;
+    v21 = *(context + 24) == 0x7FFFFFFF;
     WeakRetained = objc_loadWeakRetained(&self->_service);
     v23 = WeakRetained;
     if (v21)
     {
-      v24 = [WeakRetained accountDir];
-      v26 = sub_1000856A8(v24, v25);
-      v27 = [v26 path];
+      accountDir = [WeakRetained accountDir];
+      v26 = sub_1000856A8(accountDir, v25);
+      path = [v26 path];
 
       v28 = 0;
     }
 
     else
     {
-      v32 = [WeakRetained getAccountStore];
-      v28 = sub_1000931E8(v32, *(v18 + 24));
+      getAccountStore = [WeakRetained getAccountStore];
+      v28 = sub_1000931E8(getAccountStore, *(context + 24));
 
       if (!v28)
       {
-        v27 = 0;
+        path = 0;
 LABEL_39:
 
         goto LABEL_40;
       }
 
-      v33 = [v54 intValue];
-      if (v33)
+      intValue = [v54 intValue];
+      if (intValue)
       {
         v34 = objc_loadWeakRetained(&self->_service);
-        v35 = [v34 getAccountStore];
-        sub_100092944(v35, v28, v33);
+        getAccountStore2 = [v34 getAccountStore];
+        sub_100092944(getAccountStore2, v28, intValue);
 
         v36 = objc_loadWeakRetained(&self->_service);
-        v37 = [v36 getAccountStore];
-        [v37 save];
+        getAccountStore3 = [v36 getAccountStore];
+        [getAccountStore3 save];
       }
 
       v23 = objc_loadWeakRetained(&self->_service);
-      v24 = [v23 getAccountStore];
-      v27 = sub_100092DDC(v24, v28);
+      accountDir = [v23 getAccountStore];
+      path = sub_100092DDC(accountDir, v28);
     }
 
-    if (v27)
+    if (path)
     {
       v38 = sub_100015F94();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -381,16 +381,16 @@ LABEL_39:
         v58 = 2080;
         v59 = " ";
         v60 = 2112;
-        v61 = v27;
+        v61 = path;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "#I %s%sVVPARSE COPYING DATA TO %@", buf, 0x20u);
       }
 
-      v40 = v27;
-      v41 = open([v27 fileSystemRepresentation], 1538, 448);
-      *(v18 + 28) = v41;
+      v40 = path;
+      v41 = open([path fileSystemRepresentation], 1538, 448);
+      *(context + 28) = v41;
       if (v41 < 0)
       {
-        v47 = [[NSString alloc] initWithFormat:@"Unable to open file for writing: %@", v27];
+        v47 = [[NSString alloc] initWithFormat:@"Unable to open file for writing: %@", path];
         v48 = [NSError errorWithDomain:kVVErrorDomain code:1010 localizedDescription:v47];
         v49 = +[MFActivityMonitor currentTracebleMonitor];
         [v49 setError:v48];
@@ -401,35 +401,35 @@ LABEL_39:
         if ([v55 length])
         {
           v42 = objc_alloc_init(NSMutableDictionary);
-          v43 = *(v18 + 48);
-          *(v18 + 48) = v42;
+          v43 = *(context + 48);
+          *(context + 48) = v42;
 
           v44 = [NSNumber alloc];
           v45 = objc_loadWeakRetained(&self->_service);
           if (v45)
           {
             self = objc_loadWeakRetained(&self->_service);
-            v46 = [(IMAPServiceBodyLoadMonitor *)self currentTaskType];
+            currentTaskType = [(IMAPServiceBodyLoadMonitor *)self currentTaskType];
           }
 
           else
           {
-            v46 = 0;
+            currentTaskType = 0;
           }
 
-          v50 = [v44 initWithInt:v46];
+          v50 = [v44 initWithInt:currentTaskType];
           if (v45)
           {
           }
 
-          [*(v18 + 48) setObject:v50 forKey:@"VVTaskType"];
-          v52 = [v55 intValue];
-          v53 = [[NSNumber alloc] initWithUnsignedInt:v52];
-          [*(v18 + 48) setObject:v53 forKey:@"VVExpectedDataLength"];
-          [v18 setExpectedLength:v52];
+          [*(context + 48) setObject:v50 forKey:@"VVTaskType"];
+          intValue2 = [v55 intValue];
+          v53 = [[NSNumber alloc] initWithUnsignedInt:intValue2];
+          [*(context + 48) setObject:v53 forKey:@"VVExpectedDataLength"];
+          [context setExpectedLength:intValue2];
           if (v28)
           {
-            [*(v18 + 48) setObject:v28 forKey:@"VVRecord"];
+            [*(context + 48) setObject:v28 forKey:@"VVRecord"];
           }
         }
 
@@ -447,7 +447,7 @@ LABEL_39:
           }
         }
 
-        [v18 writeDataIfNeeded];
+        [context writeDataIfNeeded];
       }
     }
 
@@ -462,29 +462,29 @@ LABEL_39:
 LABEL_40:
 }
 
-- (void)progressiveMimeParser:(id)a3 finishedMimePart:(id)a4
+- (void)progressiveMimeParser:(id)parser finishedMimePart:(id)part
 {
-  v6 = a3;
-  v7 = a4;
+  parserCopy = parser;
+  partCopy = part;
   v8 = sub_100015F94();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     mambaID = self->mambaID;
-    v10 = [v7 type];
+    type = [partCopy type];
     v16 = 136315650;
     v17 = mambaID;
     v18 = 2080;
     v19 = " ";
     v20 = 2112;
-    v21 = v10;
+    v21 = type;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%sVVPARSE FINISH for type [%@]", &v16, 0x20u);
   }
 
-  v11 = [v6 context];
-  v12 = v11;
-  if (v11 && (v11[7] & 0x80000000) == 0)
+  context = [parserCopy context];
+  v12 = context;
+  if (context && (context[7] & 0x80000000) == 0)
   {
-    [v11 setMimePartFinishedLoading:1];
+    [context setMimePartFinishedLoading:1];
     [v12 writeDataIfNeeded];
     close(v12[7]);
     v12[7] = -1;
@@ -503,9 +503,9 @@ LABEL_40:
   }
 }
 
-- (void)_postDataAvailableWithUserInfo:(id)a3
+- (void)_postDataAvailableWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = sub_100015F94();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -518,19 +518,19 @@ LABEL_40:
     v14 = 2112;
     v15 = WeakRetained;
     v16 = 2112;
-    v17 = v4;
+    v17 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sPosting VVServiceDataAvailableNotification service %@ with userInfo %@", &v10, 0x2Au);
   }
 
   v8 = +[NSNotificationCenter defaultCenter];
   v9 = objc_loadWeakRetained(&self->_service);
-  [v8 postNotificationName:@"VVServiceDataAvailableNotification" object:v9 userInfo:v4];
+  [v8 postNotificationName:@"VVServiceDataAvailableNotification" object:v9 userInfo:infoCopy];
 }
 
-- (void)progressiveMimeParser:(id)a3 failedWithError:(id)a4
+- (void)progressiveMimeParser:(id)parser failedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  parserCopy = parser;
+  errorCopy = error;
   v8 = sub_100015F94();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -540,18 +540,18 @@ LABEL_40:
     v15 = 2080;
     v16 = " ";
     v17 = 2112;
-    v18 = v7;
+    v18 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%sVVPARSE FAIL with error %@", &v13, 0x20u);
   }
 
   v10 = +[MFActivityMonitor currentTracebleMonitor];
-  [v10 setError:v7];
+  [v10 setError:errorCopy];
 
-  v11 = [v6 context];
-  v12 = v11;
-  if (v11 && (v11[7] & 0x80000000) == 0)
+  context = [parserCopy context];
+  v12 = context;
+  if (context && (context[7] & 0x80000000) == 0)
   {
-    [v11 cleanUpErroredFile];
+    [context cleanUpErroredFile];
   }
 }
 

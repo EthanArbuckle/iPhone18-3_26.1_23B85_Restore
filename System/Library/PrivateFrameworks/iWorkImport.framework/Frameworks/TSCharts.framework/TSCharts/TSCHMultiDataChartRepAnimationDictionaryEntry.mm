@@ -2,14 +2,14 @@
 + (id)entry;
 - (TSCHMultiDataChartRepAnimationDictionaryEntry)init;
 - (id)animation;
-- (void)addAnimation:(id)a3 animationInfo:(id)a4;
+- (void)addAnimation:(id)animation animationInfo:(id)info;
 @end
 
 @implementation TSCHMultiDataChartRepAnimationDictionaryEntry
 
 + (id)entry
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -29,14 +29,14 @@
   return v2;
 }
 
-- (void)addAnimation:(id)a3 animationInfo:(id)a4
+- (void)addAnimation:(id)animation animationInfo:(id)info
 {
-  v87 = a3;
-  v6 = a4;
-  v11 = v6;
+  animationCopy = animation;
+  infoCopy = info;
+  v11 = infoCopy;
   if (self->_animationInfo)
   {
-    v12 = objc_msgSend_timingFunction(v6, v7, v8, v9, v10);
+    v12 = objc_msgSend_timingFunction(infoCopy, v7, v8, v9, v10);
     v17 = objc_msgSend_timingFunction(self->_animationInfo, v13, v14, v15, v16);
     isEqual = objc_msgSend_isEqual_(v12, v18, v19, v20, v21, v17);
 
@@ -76,12 +76,12 @@
 
   else
   {
-    v85 = objc_msgSend_copy(v6, v7, v8, v9, v10);
+    v85 = objc_msgSend_copy(infoCopy, v7, v8, v9, v10);
     animationInfo = self->_animationInfo;
     self->_animationInfo = v85;
   }
 
-  objc_msgSend_addObject_(self->_animations, v57, v58, v59, v60, v87);
+  objc_msgSend_addObject_(self->_animations, v57, v58, v59, v60, animationCopy);
 }
 
 - (id)animation

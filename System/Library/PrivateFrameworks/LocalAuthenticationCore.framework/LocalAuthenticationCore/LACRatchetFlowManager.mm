@@ -1,35 +1,35 @@
 @interface LACRatchetFlowManager
-- (LACRatchetFlowManager)initWithPresenter:(id)a3 uiManager:(id)a4;
-- (void)dismissWithCompletion:(id)a3;
-- (void)showCoolOffSheetWithOptions:(id)a3 presentationCompletion:(id)a4 sheetCompletion:(id)a5;
+- (LACRatchetFlowManager)initWithPresenter:(id)presenter uiManager:(id)manager;
+- (void)dismissWithCompletion:(id)completion;
+- (void)showCoolOffSheetWithOptions:(id)options presentationCompletion:(id)completion sheetCompletion:(id)sheetCompletion;
 @end
 
 @implementation LACRatchetFlowManager
 
-- (LACRatchetFlowManager)initWithPresenter:(id)a3 uiManager:(id)a4
+- (LACRatchetFlowManager)initWithPresenter:(id)presenter uiManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  presenterCopy = presenter;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = LACRatchetFlowManager;
   v9 = [(LACRatchetFlowManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presenter, a3);
-    objc_storeStrong(&v10->_uiManager, a4);
+    objc_storeStrong(&v9->_presenter, presenter);
+    objc_storeStrong(&v10->_uiManager, manager);
   }
 
   return v10;
 }
 
-- (void)showCoolOffSheetWithOptions:(id)a3 presentationCompletion:(id)a4 sheetCompletion:(id)a5
+- (void)showCoolOffSheetWithOptions:(id)options presentationCompletion:(id)completion sheetCompletion:(id)sheetCompletion
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   if (v10)
   {
     v11 = swift_allocObject();
@@ -56,13 +56,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v9, &closure #1 in LACRatchetFlowManager.transition(to:with:style:completion:)partial apply, v14);
 }
 
-- (void)dismissWithCompletion:(id)a3
+- (void)dismissWithCompletion:(id)completion
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();

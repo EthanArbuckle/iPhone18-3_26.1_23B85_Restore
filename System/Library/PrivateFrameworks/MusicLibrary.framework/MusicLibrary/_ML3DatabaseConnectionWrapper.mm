@@ -1,5 +1,5 @@
 @interface _ML3DatabaseConnectionWrapper
-- (_ML3DatabaseConnectionWrapper)initWithConnection:(id)a3;
+- (_ML3DatabaseConnectionWrapper)initWithConnection:(id)connection;
 - (id)debugDescription;
 - (id)description;
 @end
@@ -29,16 +29,16 @@
   return v6;
 }
 
-- (_ML3DatabaseConnectionWrapper)initWithConnection:(id)a3
+- (_ML3DatabaseConnectionWrapper)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = _ML3DatabaseConnectionWrapper;
   v6 = [(_ML3DatabaseConnectionWrapper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     owningThread = v7->_owningThread;
     v7->_owningThread = 0;
 

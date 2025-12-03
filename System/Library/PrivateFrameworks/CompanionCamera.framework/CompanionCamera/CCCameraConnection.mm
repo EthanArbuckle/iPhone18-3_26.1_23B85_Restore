@@ -35,54 +35,54 @@
 - (void)_performPreviewStateTransitionsIfNeeded;
 - (void)_zoomTimerFired;
 - (void)burstCaptureDidStop;
-- (void)burstCaptureNumberOfPhotosDidChange:(unint64_t)a3;
+- (void)burstCaptureNumberOfPhotosDidChange:(unint64_t)change;
 - (void)burstCaptureWillStart;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4;
-- (void)cameraViewfinderSession:(id)a3 didCapturePhotoWithStatus:(int)a4 thumbnailData:(id)a5 timestamp:(id *)a6;
-- (void)cameraViewfinderSessionPreviewStreamDidOpen:(id)a3;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end;
+- (void)cameraViewfinderSession:(id)session didCapturePhotoWithStatus:(int)status thumbnailData:(id)data timestamp:(id *)timestamp;
+- (void)cameraViewfinderSessionPreviewStreamDidOpen:(id)open;
 - (void)captureDeviceDidChange;
-- (void)captureDeviceDidChange:(int64_t)a3;
+- (void)captureDeviceDidChange:(int64_t)change;
 - (void)countdownCanceled;
 - (void)dealloc;
-- (void)didPauseCaptureTimerWithPauseTime:(id)a3;
-- (void)didResumeCaptureTimerWithNewStartTime:(id)a3;
+- (void)didPauseCaptureTimerWithPauseTime:(id)time;
+- (void)didResumeCaptureTimerWithNewStartTime:(id)time;
 - (void)didStartCaptureTimer;
 - (void)didStopCapture;
-- (void)didUpdateShallowDepthOfFieldStatus:(int64_t)a3;
-- (void)didUpdateStereoCaptureStatus:(int64_t)a3;
+- (void)didUpdateShallowDepthOfFieldStatus:(int64_t)status;
+- (void)didUpdateStereoCaptureStatus:(int64_t)status;
 - (void)flashModeDidChange;
 - (void)hdrModeDidChange;
 - (void)irisModeDidChange;
-- (void)modeSelected:(int64_t)a3;
+- (void)modeSelected:(int64_t)selected;
 - (void)open;
 - (void)sharedLibraryModeDidChange;
 - (void)sharedLibrarySupportDidChange;
-- (void)switchedOrientation:(int64_t)a3;
-- (void)takePhotoWithCountdown:(unint64_t)a3;
+- (void)switchedOrientation:(int64_t)orientation;
+- (void)takePhotoWithCountdown:(unint64_t)countdown;
 - (void)willStartCapturing;
-- (void)xpc_beginBurstCaptureWithReply:(id)a3;
+- (void)xpc_beginBurstCaptureWithReply:(id)reply;
 - (void)xpc_cancelCountdown;
-- (void)xpc_endBurstCaptureWithReply:(id)a3;
-- (void)xpc_ensureSwitchedToOneOfSupportedCaptureModes:(id)a3 reply:(id)a4;
-- (void)xpc_fetchCurrentStateIncludingSupportedCaptureModes:(BOOL)a3 reply:(id)a4;
-- (void)xpc_pauseCaptureWithReply:(id)a3;
-- (void)xpc_resumeCaptureWithReply:(id)a3;
-- (void)xpc_setCaptureDevice:(int64_t)a3 reply:(id)a4;
-- (void)xpc_setCaptureMode:(int64_t)a3 reply:(id)a4;
-- (void)xpc_setFlashMode:(int64_t)a3;
-- (void)xpc_setFocusPoint:(id)a3;
-- (void)xpc_setHDRMode:(int64_t)a3;
-- (void)xpc_setIrisMode:(int64_t)a3;
-- (void)xpc_setPreviewEndpoint:(id)a3;
-- (void)xpc_setSharedLibraryMode:(int64_t)a3;
-- (void)xpc_setZoom:(float)a3 reply:(id)a4;
-- (void)xpc_setZoomMagnification:(float)a3 reply:(id)a4;
-- (void)xpc_startCaptureWithMode:(int64_t)a3 reply:(id)a4;
-- (void)xpc_stopCaptureWithReply:(id)a3;
+- (void)xpc_endBurstCaptureWithReply:(id)reply;
+- (void)xpc_ensureSwitchedToOneOfSupportedCaptureModes:(id)modes reply:(id)reply;
+- (void)xpc_fetchCurrentStateIncludingSupportedCaptureModes:(BOOL)modes reply:(id)reply;
+- (void)xpc_pauseCaptureWithReply:(id)reply;
+- (void)xpc_resumeCaptureWithReply:(id)reply;
+- (void)xpc_setCaptureDevice:(int64_t)device reply:(id)reply;
+- (void)xpc_setCaptureMode:(int64_t)mode reply:(id)reply;
+- (void)xpc_setFlashMode:(int64_t)mode;
+- (void)xpc_setFocusPoint:(id)point;
+- (void)xpc_setHDRMode:(int64_t)mode;
+- (void)xpc_setIrisMode:(int64_t)mode;
+- (void)xpc_setPreviewEndpoint:(id)endpoint;
+- (void)xpc_setSharedLibraryMode:(int64_t)mode;
+- (void)xpc_setZoom:(float)zoom reply:(id)reply;
+- (void)xpc_setZoomMagnification:(float)magnification reply:(id)reply;
+- (void)xpc_startCaptureWithMode:(int64_t)mode reply:(id)reply;
+- (void)xpc_stopCaptureWithReply:(id)reply;
 - (void)xpc_suspend;
 - (void)xpc_toggleCameraDevice;
-- (void)zoomDidChange:(double)a3;
+- (void)zoomDidChange:(double)change;
 @end
 
 @implementation CCCameraConnection
@@ -174,9 +174,9 @@
     v4 = +[ViewfinderReliability sharedInstance];
     [v4 logEvent:8];
 
-    v5 = [MEMORY[0x277CF3B78] cameraViewfinder];
+    cameraViewfinder = [MEMORY[0x277CF3B78] cameraViewfinder];
     remoteViewfinder = self->_remoteViewfinder;
-    self->_remoteViewfinder = v5;
+    self->_remoteViewfinder = cameraViewfinder;
 
     [(FigCameraViewfinder *)self->_remoteViewfinder setDelegate:self queue:MEMORY[0x277D85CD0]];
     v7 = self->_remoteViewfinder;
@@ -501,12 +501,12 @@ void __43__CCCameraConnection_burstCaptureWillStart__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)burstCaptureNumberOfPhotosDidChange:(unint64_t)a3
+- (void)burstCaptureNumberOfPhotosDidChange:(unint64_t)change
 {
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
     v5 = [(NSXPCConnection *)self->_xpc remoteObjectProxyWithErrorHandler:&__block_literal_global_100];
-    [v5 xpc_burstCaptureNumberOfPhotosDidChange:a3];
+    [v5 xpc_burstCaptureNumberOfPhotosDidChange:change];
   }
 }
 
@@ -611,9 +611,9 @@ void __40__CCCameraConnection_willStartCapturing__block_invoke(uint64_t a1, void
     _os_log_impl(&dword_243CBC000, v3, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", &v9, 0x1Cu);
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   captureStartDate = self->_captureStartDate;
-  self->_captureStartDate = v4;
+  self->_captureStartDate = date;
 
   self->_capturingPaused = 0;
   capturePauseDate = self->_capturePauseDate;
@@ -638,10 +638,10 @@ void __42__CCCameraConnection_didStartCaptureTimer__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)didPauseCaptureTimerWithPauseTime:(id)a3
+- (void)didPauseCaptureTimerWithPauseTime:(id)time
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  timeCopy = time;
   v6 = nanocamera_log_control();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -655,7 +655,7 @@ void __42__CCCameraConnection_didStartCaptureTimer__block_invoke(uint64_t a1, vo
   }
 
   self->_capturingPaused = 1;
-  objc_storeStrong(&self->_capturePauseDate, a3);
+  objc_storeStrong(&self->_capturePauseDate, time);
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
     v7 = [(NSXPCConnection *)self->_xpc remoteObjectProxyWithErrorHandler:&__block_literal_global_109];
@@ -675,10 +675,10 @@ void __56__CCCameraConnection_didPauseCaptureTimerWithPauseTime___block_invoke(u
   }
 }
 
-- (void)didResumeCaptureTimerWithNewStartTime:(id)a3
+- (void)didResumeCaptureTimerWithNewStartTime:(id)time
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  timeCopy = time;
   v6 = nanocamera_log_control();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -691,7 +691,7 @@ void __56__CCCameraConnection_didPauseCaptureTimerWithPauseTime___block_invoke(u
     _os_log_impl(&dword_243CBC000, v6, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", &v10, 0x1Cu);
   }
 
-  objc_storeStrong(&self->_captureStartDate, a3);
+  objc_storeStrong(&self->_captureStartDate, time);
   self->_capturingPaused = 0;
   capturePauseDate = self->_capturePauseDate;
   self->_capturePauseDate = 0;
@@ -699,7 +699,7 @@ void __56__CCCameraConnection_didPauseCaptureTimerWithPauseTime___block_invoke(u
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
     v8 = [(NSXPCConnection *)self->_xpc remoteObjectProxyWithErrorHandler:&__block_literal_global_111];
-    [v8 xpc_didResumeCaptureTimerWithDate:v5];
+    [v8 xpc_didResumeCaptureTimerWithDate:timeCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -757,7 +757,7 @@ void __36__CCCameraConnection_didStopCapture__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)captureDeviceDidChange:(int64_t)a3
+- (void)captureDeviceDidChange:(int64_t)change
 {
   v5 = nanocamera_log_control();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -768,7 +768,7 @@ void __36__CCCameraConnection_didStopCapture__block_invoke(uint64_t a1, void *a2
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
     v6 = [(NSXPCConnection *)self->_xpc remoteObjectProxyWithErrorHandler:&__block_literal_global_115];
-    [v6 xpc_captureDeviceDidChange:a3];
+    [v6 xpc_captureDeviceDidChange:change];
   }
 }
 
@@ -782,7 +782,7 @@ void __45__CCCameraConnection_captureDeviceDidChange___block_invoke(uint64_t a1,
   }
 }
 
-- (void)modeSelected:(int64_t)a3
+- (void)modeSelected:(int64_t)selected
 {
   v5 = nanocamera_log_control();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -793,7 +793,7 @@ void __45__CCCameraConnection_captureDeviceDidChange___block_invoke(uint64_t a1,
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
     v6 = [(NSXPCConnection *)self->_xpc remoteObjectProxyWithErrorHandler:&__block_literal_global_117];
-    [v6 xpc_captureModeSelected:a3];
+    [v6 xpc_captureModeSelected:selected];
   }
 }
 
@@ -815,18 +815,18 @@ void __35__CCCameraConnection_modeSelected___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)switchedOrientation:(int64_t)a3
+- (void)switchedOrientation:(int64_t)orientation
 {
   v5 = nanocamera_log_control();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(CCCameraConnection *)a3 switchedOrientation:v5];
+    [(CCCameraConnection *)orientation switchedOrientation:v5];
   }
 
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
     v6 = [(NSXPCConnection *)self->_xpc remoteObjectProxyWithErrorHandler:&__block_literal_global_119];
-    [v6 xpc_orientationChanged:a3];
+    [v6 xpc_orientationChanged:orientation];
   }
 }
 
@@ -874,12 +874,12 @@ void __39__CCCameraConnection_countdownCanceled__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)zoomDidChange:(double)a3
+- (void)zoomDidChange:(double)change
 {
-  if (vabdd_f64(a3, self->_lastSentZoomAmount) >= 0.05 && self->_previewEndpoint)
+  if (vabdd_f64(change, self->_lastSentZoomAmount) >= 0.05 && self->_previewEndpoint)
   {
-    v4 = a3;
-    self->_pendingZoomAmount = v4;
+    changeCopy = change;
+    self->_pendingZoomAmount = changeCopy;
     zoomTimer = self->_zoomTimer;
     v6 = dispatch_time(0, 50000000);
 
@@ -909,13 +909,13 @@ void __37__CCCameraConnection__zoomTimerFired__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)didUpdateShallowDepthOfFieldStatus:(int64_t)a3
+- (void)didUpdateShallowDepthOfFieldStatus:(int64_t)status
 {
-  self->_shallowDepthOfFieldStatus = a3;
+  self->_shallowDepthOfFieldStatus = status;
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
     v5 = [(NSXPCConnection *)self->_xpc remoteObjectProxyWithErrorHandler:&__block_literal_global_125];
-    [v5 xpc_didUpdateShallowDepthOfFieldStatus:a3];
+    [v5 xpc_didUpdateShallowDepthOfFieldStatus:status];
   }
 }
 
@@ -929,13 +929,13 @@ void __57__CCCameraConnection_didUpdateShallowDepthOfFieldStatus___block_invoke(
   }
 }
 
-- (void)didUpdateStereoCaptureStatus:(int64_t)a3
+- (void)didUpdateStereoCaptureStatus:(int64_t)status
 {
-  self->_stereoCaptureStatus = a3;
+  self->_stereoCaptureStatus = status;
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
     v5 = [(NSXPCConnection *)self->_xpc remoteObjectProxyWithErrorHandler:&__block_literal_global_127];
-    [v5 xpc_didUpdateStereoCaptureStatus:a3];
+    [v5 xpc_didUpdateStereoCaptureStatus:status];
   }
 }
 
@@ -1063,11 +1063,11 @@ void __48__CCCameraConnection_sharedLibraryModeDidChange__block_invoke(uint64_t 
   }
 }
 
-- (void)xpc_ensureSwitchedToOneOfSupportedCaptureModes:(id)a3 reply:(id)a4
+- (void)xpc_ensureSwitchedToOneOfSupportedCaptureModes:(id)modes reply:(id)reply
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modesCopy = modes;
+  replyCopy = reply;
   v8 = nanocamera_log_control();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1085,10 +1085,10 @@ void __48__CCCameraConnection_sharedLibraryModeDidChange__block_invoke(uint64_t 
   block[2] = __75__CCCameraConnection_xpc_ensureSwitchedToOneOfSupportedCaptureModes_reply___block_invoke;
   block[3] = &unk_278DEF130;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = modesCopy;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = modesCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1153,7 +1153,7 @@ uint64_t __75__CCCameraConnection_xpc_ensureSwitchedToOneOfSupportedCaptureModes
   return result;
 }
 
-- (void)takePhotoWithCountdown:(unint64_t)a3
+- (void)takePhotoWithCountdown:(unint64_t)countdown
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = nanocamera_log_control();
@@ -1173,7 +1173,7 @@ uint64_t __75__CCCameraConnection_xpc_ensureSwitchedToOneOfSupportedCaptureModes
   v7[2] = __45__CCCameraConnection_takePhotoWithCountdown___block_invoke;
   v7[3] = &unk_278DEF158;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = countdown;
   dispatch_async(MEMORY[0x277D85CD0], v7);
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -1184,10 +1184,10 @@ void __45__CCCameraConnection_takePhotoWithCountdown___block_invoke(uint64_t a1)
   [WeakRetained cameraConnection:*(a1 + 32) takePhotoWithCountdown:*(a1 + 40)];
 }
 
-- (void)xpc_beginBurstCaptureWithReply:(id)a3
+- (void)xpc_beginBurstCaptureWithReply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v5 = nanocamera_log_control();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1205,8 +1205,8 @@ void __45__CCCameraConnection_takePhotoWithCountdown___block_invoke(uint64_t a1)
   v8[2] = __53__CCCameraConnection_xpc_beginBurstCaptureWithReply___block_invoke;
   v8[3] = &unk_278DEF180;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1239,10 +1239,10 @@ uint64_t __53__CCCameraConnection_xpc_beginBurstCaptureWithReply___block_invoke(
   return result;
 }
 
-- (void)xpc_endBurstCaptureWithReply:(id)a3
+- (void)xpc_endBurstCaptureWithReply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v5 = nanocamera_log_control();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1260,8 +1260,8 @@ uint64_t __53__CCCameraConnection_xpc_beginBurstCaptureWithReply___block_invoke(
   v8[2] = __51__CCCameraConnection_xpc_endBurstCaptureWithReply___block_invoke;
   v8[3] = &unk_278DEF180;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1294,10 +1294,10 @@ uint64_t __51__CCCameraConnection_xpc_endBurstCaptureWithReply___block_invoke(ui
   return result;
 }
 
-- (void)xpc_setCaptureDevice:(int64_t)a3 reply:(id)a4
+- (void)xpc_setCaptureDevice:(int64_t)device reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   v7 = nanocamera_log_control();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1314,10 +1314,10 @@ uint64_t __51__CCCameraConnection_xpc_endBurstCaptureWithReply___block_invoke(ui
   block[1] = 3221225472;
   block[2] = __49__CCCameraConnection_xpc_setCaptureDevice_reply___block_invoke;
   block[3] = &unk_278DEF1A8;
-  v11 = v6;
-  v12 = a3;
+  v11 = replyCopy;
+  deviceCopy = device;
   block[4] = self;
-  v8 = v6;
+  v8 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1345,10 +1345,10 @@ uint64_t __49__CCCameraConnection_xpc_setCaptureDevice_reply___block_invoke(void
   return result;
 }
 
-- (void)xpc_setCaptureMode:(int64_t)a3 reply:(id)a4
+- (void)xpc_setCaptureMode:(int64_t)mode reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   v7 = nanocamera_log_control();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1365,10 +1365,10 @@ uint64_t __49__CCCameraConnection_xpc_setCaptureDevice_reply___block_invoke(void
   block[1] = 3221225472;
   block[2] = __47__CCCameraConnection_xpc_setCaptureMode_reply___block_invoke;
   block[3] = &unk_278DEF1A8;
-  v11 = v6;
-  v12 = a3;
+  v11 = replyCopy;
+  modeCopy = mode;
   block[4] = self;
-  v8 = v6;
+  v8 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1396,10 +1396,10 @@ uint64_t __47__CCCameraConnection_xpc_setCaptureMode_reply___block_invoke(void *
   return result;
 }
 
-- (void)xpc_startCaptureWithMode:(int64_t)a3 reply:(id)a4
+- (void)xpc_startCaptureWithMode:(int64_t)mode reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   v7 = nanocamera_log_control();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1416,10 +1416,10 @@ uint64_t __47__CCCameraConnection_xpc_setCaptureMode_reply___block_invoke(void *
   block[1] = 3221225472;
   block[2] = __53__CCCameraConnection_xpc_startCaptureWithMode_reply___block_invoke;
   block[3] = &unk_278DEF1A8;
-  v11 = v6;
-  v12 = a3;
+  v11 = replyCopy;
+  modeCopy = mode;
   block[4] = self;
-  v8 = v6;
+  v8 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1455,10 +1455,10 @@ uint64_t __53__CCCameraConnection_xpc_startCaptureWithMode_reply___block_invoke(
   return result;
 }
 
-- (void)xpc_pauseCaptureWithReply:(id)a3
+- (void)xpc_pauseCaptureWithReply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v5 = nanocamera_log_control();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1476,8 +1476,8 @@ uint64_t __53__CCCameraConnection_xpc_startCaptureWithMode_reply___block_invoke(
   v8[2] = __48__CCCameraConnection_xpc_pauseCaptureWithReply___block_invoke;
   v8[3] = &unk_278DEF180;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1505,10 +1505,10 @@ uint64_t __48__CCCameraConnection_xpc_pauseCaptureWithReply___block_invoke(uint6
   return result;
 }
 
-- (void)xpc_resumeCaptureWithReply:(id)a3
+- (void)xpc_resumeCaptureWithReply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v5 = nanocamera_log_control();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1526,8 +1526,8 @@ uint64_t __48__CCCameraConnection_xpc_pauseCaptureWithReply___block_invoke(uint6
   v8[2] = __49__CCCameraConnection_xpc_resumeCaptureWithReply___block_invoke;
   v8[3] = &unk_278DEF180;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1555,10 +1555,10 @@ uint64_t __49__CCCameraConnection_xpc_resumeCaptureWithReply___block_invoke(uint
   return result;
 }
 
-- (void)xpc_stopCaptureWithReply:(id)a3
+- (void)xpc_stopCaptureWithReply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v5 = nanocamera_log_control();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1576,8 +1576,8 @@ uint64_t __49__CCCameraConnection_xpc_resumeCaptureWithReply___block_invoke(uint
   v8[2] = __47__CCCameraConnection_xpc_stopCaptureWithReply___block_invoke;
   v8[3] = &unk_278DEF180;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1646,10 +1646,10 @@ void __33__CCCameraConnection_xpc_suspend__block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpc_setPreviewEndpoint:(id)a3
+- (void)xpc_setPreviewEndpoint:(id)endpoint
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = nanocamera_log_preview();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1667,8 +1667,8 @@ void __33__CCCameraConnection_xpc_suspend__block_invoke(uint64_t a1)
   v8[2] = __45__CCCameraConnection_xpc_setPreviewEndpoint___block_invoke;
   v8[3] = &unk_278DEF1F8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = endpointCopy;
+  v6 = endpointCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1691,13 +1691,13 @@ uint64_t __45__CCCameraConnection_xpc_setPreviewEndpoint___block_invoke(uint64_t
   }
 }
 
-- (void)xpc_setFocusPoint:(id)a3
+- (void)xpc_setFocusPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v9 = 0uLL;
-  if (!strcmp([v4 objCType], "{CGPoint=dd}"))
+  if (!strcmp([pointCopy objCType], "{CGPoint=dd}"))
   {
-    [v4 getValue:&v9];
+    [pointCopy getValue:&v9];
     v6 = nanocamera_log_control();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -2173,17 +2173,17 @@ void __40__CCCameraConnection_xpc_setFocusPoint___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)xpc_fetchCurrentStateIncludingSupportedCaptureModes:(BOOL)a3 reply:(id)a4
+- (void)xpc_fetchCurrentStateIncludingSupportedCaptureModes:(BOOL)modes reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__CCCameraConnection_xpc_fetchCurrentStateIncludingSupportedCaptureModes_reply___block_invoke;
   block[3] = &unk_278DEF248;
-  v10 = a3;
+  modesCopy = modes;
   block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = replyCopy;
+  v7 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2525,17 +2525,17 @@ void __41__CCCameraConnection_xpc_cancelCountdown__block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpc_setZoom:(float)a3 reply:(id)a4
+- (void)xpc_setZoom:(float)zoom reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__CCCameraConnection_xpc_setZoom_reply___block_invoke;
   block[3] = &unk_278DEF270;
-  v10 = a3;
+  zoomCopy = zoom;
   block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = replyCopy;
+  v7 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2570,17 +2570,17 @@ uint64_t __40__CCCameraConnection_xpc_setZoom_reply___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)xpc_setZoomMagnification:(float)a3 reply:(id)a4
+- (void)xpc_setZoomMagnification:(float)magnification reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__CCCameraConnection_xpc_setZoomMagnification_reply___block_invoke;
   block[3] = &unk_278DEF270;
-  v10 = a3;
+  magnificationCopy = magnification;
   block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = replyCopy;
+  v7 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2614,14 +2614,14 @@ uint64_t __53__CCCameraConnection_xpc_setZoomMagnification_reply___block_invoke(
   return result;
 }
 
-- (void)xpc_setFlashMode:(int64_t)a3
+- (void)xpc_setFlashMode:(int64_t)mode
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __39__CCCameraConnection_xpc_setFlashMode___block_invoke;
   v3[3] = &unk_278DEF158;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mode;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -2637,14 +2637,14 @@ void __39__CCCameraConnection_xpc_setFlashMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpc_setHDRMode:(int64_t)a3
+- (void)xpc_setHDRMode:(int64_t)mode
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __37__CCCameraConnection_xpc_setHDRMode___block_invoke;
   v3[3] = &unk_278DEF158;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mode;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -2660,14 +2660,14 @@ void __37__CCCameraConnection_xpc_setHDRMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpc_setIrisMode:(int64_t)a3
+- (void)xpc_setIrisMode:(int64_t)mode
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __38__CCCameraConnection_xpc_setIrisMode___block_invoke;
   v3[3] = &unk_278DEF158;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mode;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -2683,14 +2683,14 @@ void __38__CCCameraConnection_xpc_setIrisMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpc_setSharedLibraryMode:(int64_t)a3
+- (void)xpc_setSharedLibraryMode:(int64_t)mode
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __47__CCCameraConnection_xpc_setSharedLibraryMode___block_invoke;
   v3[3] = &unk_278DEF158;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mode;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -2861,10 +2861,10 @@ void __44__CCCameraConnection_xpc_toggleCameraDevice__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  beginCopy = begin;
   v7 = nanocamera_log_preview();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2880,7 +2880,7 @@ void __44__CCCameraConnection_xpc_toggleCameraDevice__block_invoke(uint64_t a1)
   v8 = +[ViewfinderReliability sharedInstance];
   [v8 logEvent:10];
 
-  objc_storeStrong(&self->_remoteViewfinderSession, a4);
+  objc_storeStrong(&self->_remoteViewfinderSession, begin);
   self->_remoteViewfinderSessionState = 1;
   if ([(CCCameraConnection *)self _shouldReportEvent])
   {
@@ -2904,10 +2904,10 @@ void __65__CCCameraConnection_cameraViewfinder_viewfinderSessionDidBegin___block
   }
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  endCopy = end;
   v6 = nanocamera_log_preview();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2924,7 +2924,7 @@ void __65__CCCameraConnection_cameraViewfinder_viewfinderSessionDidBegin___block
   [v7 logEvent:11];
 
   remoteViewfinderSession = self->_remoteViewfinderSession;
-  if (remoteViewfinderSession != v5)
+  if (remoteViewfinderSession != endCopy)
   {
     v9 = nanocamera_log_preview();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2962,7 +2962,7 @@ void __63__CCCameraConnection_cameraViewfinder_viewfinderSessionDidEnd___block_i
   }
 }
 
-- (void)cameraViewfinderSession:(id)a3 didCapturePhotoWithStatus:(int)a4 thumbnailData:(id)a5 timestamp:(id *)a6
+- (void)cameraViewfinderSession:(id)session didCapturePhotoWithStatus:(int)status thumbnailData:(id)data timestamp:(id *)timestamp
 {
   v14 = *MEMORY[0x277D85DE8];
   v6 = nanocamera_log_preview();
@@ -2980,10 +2980,10 @@ void __63__CCCameraConnection_cameraViewfinder_viewfinderSessionDidEnd___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cameraViewfinderSessionPreviewStreamDidOpen:(id)a3
+- (void)cameraViewfinderSessionPreviewStreamDidOpen:(id)open
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  openCopy = open;
   v5 = nanocamera_log_preview();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3001,7 +3001,7 @@ void __63__CCCameraConnection_cameraViewfinder_viewfinderSessionDidEnd___block_i
 
   p_remoteViewfinderSession = &self->_remoteViewfinderSession;
   remoteViewfinderSession = self->_remoteViewfinderSession;
-  if (!remoteViewfinderSession || remoteViewfinderSession == v4)
+  if (!remoteViewfinderSession || remoteViewfinderSession == openCopy)
   {
     self->_currentPreviewState = 2;
     [(CCCameraConnection *)self _performPreviewStateTransitionsIfNeeded];

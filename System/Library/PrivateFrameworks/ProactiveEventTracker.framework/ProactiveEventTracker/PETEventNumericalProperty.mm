@@ -1,25 +1,25 @@
 @interface PETEventNumericalProperty
-- (BOOL)isValidValue:(id)a3;
-- (PETEventNumericalProperty)initWithName:(id)a3 range:(_NSRange)a4 clampValues:(BOOL)a5;
+- (BOOL)isValidValue:(id)value;
+- (PETEventNumericalProperty)initWithName:(id)name range:(_NSRange)range clampValues:(BOOL)values;
 - (_NSRange)validRange;
-- (id)_loggingKeyStringRepresentationForValue:(id)a3;
+- (id)_loggingKeyStringRepresentationForValue:(id)value;
 - (id)description;
-- (unint64_t)_unsignedIntegerValueForNumericValue:(id)a3;
+- (unint64_t)_unsignedIntegerValueForNumericValue:(id)value;
 @end
 
 @implementation PETEventNumericalProperty
 
-- (unint64_t)_unsignedIntegerValueForNumericValue:(id)a3
+- (unint64_t)_unsignedIntegerValueForNumericValue:(id)value
 {
   if (self->_clampValues)
   {
     p_validRange = &self->_validRange;
     location = self->_validRange.location;
-    v6 = [a3 unsignedIntegerValue];
+    unsignedIntegerValue = [value unsignedIntegerValue];
     v7 = p_validRange->location + p_validRange->length - 1;
-    if (v6 < v7)
+    if (unsignedIntegerValue < v7)
     {
-      v7 = v6;
+      v7 = unsignedIntegerValue;
     }
 
     if (location <= v7)
@@ -36,18 +36,18 @@
   else
   {
 
-    return [a3 unsignedIntegerValue];
+    return [value unsignedIntegerValue];
   }
 }
 
-- (id)_loggingKeyStringRepresentationForValue:(id)a3
+- (id)_loggingKeyStringRepresentationForValue:(id)value
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(PETEventNumericalProperty *)self isValidValue:v4])
+  valueCopy = value;
+  if ([(PETEventNumericalProperty *)self isValidValue:valueCopy])
   {
     v11 = 0;
-    v5 = [(PETEventNumericalProperty *)self _unsignedIntegerValueForNumericValue:v4];
+    v5 = [(PETEventNumericalProperty *)self _unsignedIntegerValueForNumericValue:valueCopy];
     v6 = &v11;
     do
     {
@@ -70,9 +70,9 @@
   return v8;
 }
 
-- (BOOL)isValidValue:(id)a3
+- (BOOL)isValidValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -83,10 +83,10 @@
 
     else
     {
-      v6 = [v4 unsignedIntegerValue];
+      unsignedIntegerValue = [valueCopy unsignedIntegerValue];
       location = self->_validRange.location;
-      v9 = v6 >= location;
-      v8 = v6 - location;
+      v9 = unsignedIntegerValue >= location;
+      v8 = unsignedIntegerValue - location;
       v9 = !v9 || v8 >= self->_validRange.length;
       v5 = !v9;
     }
@@ -113,25 +113,25 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PETEventProperty *)self name];
+  name = [(PETEventProperty *)self name];
   v5 = NSStringFromRange(self->_validRange);
-  v6 = [v3 stringWithFormat:@"Numerical: Name=%@ Range=%@", v4, v5];
+  v6 = [v3 stringWithFormat:@"Numerical: Name=%@ Range=%@", name, v5];
 
   return v6;
 }
 
-- (PETEventNumericalProperty)initWithName:(id)a3 range:(_NSRange)a4 clampValues:(BOOL)a5
+- (PETEventNumericalProperty)initWithName:(id)name range:(_NSRange)range clampValues:(BOOL)values
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = PETEventNumericalProperty;
-  result = [(PETEventProperty *)&v9 initWithName:a3];
+  result = [(PETEventProperty *)&v9 initWithName:name];
   if (result)
   {
     result->_validRange.location = location;
     result->_validRange.length = length;
-    result->_clampValues = a5;
+    result->_clampValues = values;
   }
 
   return result;

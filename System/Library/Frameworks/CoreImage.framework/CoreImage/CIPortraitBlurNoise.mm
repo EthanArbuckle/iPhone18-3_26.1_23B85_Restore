@@ -48,18 +48,18 @@ id __35__CIPortraitBlurNoise__kernelMetal__block_invoke()
   v6 = v5;
   if ([(NSNumber *)self->inputUseMetal BOOLValue])
   {
-    v7 = [(CIPortraitBlurNoise *)self _kernelMetal];
+    _kernelMetal = [(CIPortraitBlurNoise *)self _kernelMetal];
   }
 
   else
   {
-    v7 = [(CIPortraitBlurNoise *)self _kernel];
+    _kernelMetal = [(CIPortraitBlurNoise *)self _kernel];
   }
 
-  v8 = v7;
-  if (!v7)
+  _kernel = _kernelMetal;
+  if (!_kernelMetal)
   {
-    v8 = [(CIPortraitBlurNoise *)self _kernel];
+    _kernel = [(CIPortraitBlurNoise *)self _kernel];
   }
 
   [(CIImage *)self->inputImage extent];
@@ -75,7 +75,7 @@ id __35__CIPortraitBlurNoise__kernelMetal__block_invoke()
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v22 = @"kCIKernelOutputFormat";
   v23 = [MEMORY[0x1E696AD98] numberWithInt:264];
-  return [v8 applyWithExtent:v20 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v23, &v22, 1), v10, v12, v14, v16}];
+  return [_kernel applyWithExtent:v20 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v23, &v22, 1), v10, v12, v14, v16}];
 }
 
 @end

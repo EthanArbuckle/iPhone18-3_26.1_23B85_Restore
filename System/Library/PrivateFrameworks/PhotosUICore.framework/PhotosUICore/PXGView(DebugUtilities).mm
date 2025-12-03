@@ -8,9 +8,9 @@
 
 + (id)dumpAllViews
 {
-  v0 = [MEMORY[0x1E696AC08] defaultManager];
-  v1 = [v0 temporaryDirectory];
-  v2 = [off_1E7721708 dumpAllViewsToDirectory:v1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v2 = [off_1E7721708 dumpAllViewsToDirectory:temporaryDirectory];
 
   return v2;
 }
@@ -43,7 +43,7 @@
   v5[3] = &unk_1E77362B0;
   v3 = v2;
   v6 = v3;
-  [a1 enumerateAllViewsUsingBlock:v5];
+  [self enumerateAllViewsUsingBlock:v5];
 
   return v3;
 }

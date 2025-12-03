@@ -1,17 +1,17 @@
 @interface NTKBatteryCircularSmallComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (void)_updateForTemplateChange;
 @end
 
 @implementation NTKBatteryCircularSmallComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isCompatibleWithFamily:4];
+    v4 = [templateCopy isCompatibleWithFamily:4];
   }
 
   else
@@ -24,12 +24,12 @@
 
 - (void)_updateForTemplateChange
 {
-  v9 = [(NTKCircularComplicationView *)self complicationTemplate];
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
   v3 = [NTKRing alloc];
-  [v9 level];
+  [complicationTemplate level];
   v4 = [(NTKRing *)v3 initWithFillFraction:0 style:?];
   [(NTKCircularSmallRingComplicationView *)self updateRingWithRingDescription:v4];
-  if ([v9 charging])
+  if ([complicationTemplate charging])
   {
     v5 = 2;
   }
@@ -39,12 +39,12 @@
     v5 = 1;
   }
 
-  [v9 level];
+  [complicationTemplate level];
   *&v6 = v6;
   v7 = [NTKBatteryUtilities colorForLevel:v5 andState:v6];
   [(NTKCircularSmallRingComplicationView *)self updateRingWithOverrideColor:v7];
-  v8 = [v9 textProvider];
-  [(NTKCircularSmallRingTextComplicationView *)self _updateLabelWithTextProvider:v8];
+  textProvider = [complicationTemplate textProvider];
+  [(NTKCircularSmallRingTextComplicationView *)self _updateLabelWithTextProvider:textProvider];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface CarplayStaticEventDetailsTableViewCell
-- (CarplayStaticEventDetailsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CarplayStaticEventDetailsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_createPrimaryView;
 - (id)_createSecondaryView;
 - (id)_createTertiaryView;
 - (void)_updateLabelFilters;
 - (void)cellWasTapped;
-- (void)updateWithEvent:(id)a3;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation CarplayStaticEventDetailsTableViewCell
 
-- (CarplayStaticEventDetailsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CarplayStaticEventDetailsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v174.receiver = self;
   v174.super_class = CarplayStaticEventDetailsTableViewCell;
-  v4 = [(CarplayStaticEventDetailsTableViewCell *)&v174 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CarplayStaticEventDetailsTableViewCell *)&v174 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -29,30 +29,30 @@
       v5->_colorBarView = v7;
 
       [(UIView *)v5->_colorBarView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v9 = [(UIView *)v5->_colorBarView layer];
-      [v9 setCornerRadius:1.75];
+      layer = [(UIView *)v5->_colorBarView layer];
+      [layer setCornerRadius:1.75];
 
       [(CarplayStaticEventDetailsTableViewCell *)v5 addSubview:v5->_colorBarView];
     }
 
-    v10 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createPrimaryView];
+    _createPrimaryView = [(CarplayStaticEventDetailsTableViewCell *)v5 _createPrimaryView];
     titleView = v5->_titleView;
-    v5->_titleView = v10;
+    v5->_titleView = _createPrimaryView;
 
-    v12 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createSecondaryView];
+    _createSecondaryView = [(CarplayStaticEventDetailsTableViewCell *)v5 _createSecondaryView];
     locationView = v5->_locationView;
-    v5->_locationView = v12;
+    v5->_locationView = _createSecondaryView;
 
     v14 = +[UIColor labelColor];
     [(UILabel *)v5->_locationView setTextColor:v14];
 
-    v15 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createSecondaryView];
+    _createSecondaryView2 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createSecondaryView];
     dateView = v5->_dateView;
-    v5->_dateView = v15;
+    v5->_dateView = _createSecondaryView2;
 
-    v17 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createSecondaryView];
+    _createSecondaryView3 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createSecondaryView];
     timeView = v5->_timeView;
-    v5->_timeView = v17;
+    v5->_timeView = _createSecondaryView3;
 
     [(CarplayStaticEventDetailsTableViewCell *)v5 addSubview:v5->_titleView];
     [(CarplayStaticEventDetailsTableViewCell *)v5 addSubview:v5->_locationView];
@@ -60,180 +60,180 @@
     [(CarplayStaticEventDetailsTableViewCell *)v5 addSubview:v5->_timeView];
     if (CalSystemSolariumEnabled())
     {
-      v19 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createTertiaryView];
+      _createTertiaryView = [(CarplayStaticEventDetailsTableViewCell *)v5 _createTertiaryView];
       additionalLabelView = v5->_additionalLabelView;
-      v5->_additionalLabelView = v19;
+      v5->_additionalLabelView = _createTertiaryView;
 
-      v21 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createTertiaryView];
+      _createTertiaryView2 = [(CarplayStaticEventDetailsTableViewCell *)v5 _createTertiaryView];
       bottomLabelView = v5->_bottomLabelView;
-      v5->_bottomLabelView = v21;
+      v5->_bottomLabelView = _createTertiaryView2;
 
       [(CarplayStaticEventDetailsTableViewCell *)v5 addSubview:v5->_additionalLabelView];
       [(CarplayStaticEventDetailsTableViewCell *)v5 addSubview:v5->_bottomLabelView];
     }
 
-    v23 = [(UILabel *)v5->_dateView font];
-    [v23 _scaledValueForValue:20.0];
+    font = [(UILabel *)v5->_dateView font];
+    [font _scaledValueForValue:20.0];
     v25 = v24;
 
-    v26 = [(UILabel *)v5->_timeView font];
-    [v26 _scaledValueForValue:24.0];
+    font2 = [(UILabel *)v5->_timeView font];
+    [font2 _scaledValueForValue:24.0];
     v28 = v27;
 
-    v29 = [(UILabel *)v5->_timeView font];
-    [v29 _scaledValueForValue:28.0];
+    font3 = [(UILabel *)v5->_timeView font];
+    [font3 _scaledValueForValue:28.0];
     v31 = v30;
 
-    v32 = [(UILabel *)v5->_dateView font];
-    [v32 _scaledValueForValue:24.0];
+    font4 = [(UILabel *)v5->_dateView font];
+    [font4 _scaledValueForValue:24.0];
     v34 = v33;
 
-    v35 = [(UILabel *)v5->_dateView font];
-    [v35 _scaledValueForValue:28.0];
+    font5 = [(UILabel *)v5->_dateView font];
+    [font5 _scaledValueForValue:28.0];
     v37 = v36;
 
-    v38 = [(UILabel *)v5->_locationView font];
-    [v38 _scaledValueForValue:28.0];
+    font6 = [(UILabel *)v5->_locationView font];
+    [font6 _scaledValueForValue:28.0];
     v40 = v39;
 
-    v41 = [(UILabel *)v5->_timeView firstBaselineAnchor];
-    v42 = [(UILabel *)v5->_dateView lastBaselineAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:v25];
+    firstBaselineAnchor = [(UILabel *)v5->_timeView firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v5->_dateView lastBaselineAnchor];
+    v43 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v25];
     timeBaselineToDateBaselineConstraint = v5->_timeBaselineToDateBaselineConstraint;
     v5->_timeBaselineToDateBaselineConstraint = v43;
 
-    v45 = [(UILabel *)v5->_timeView firstBaselineAnchor];
-    v46 = [(UILabel *)v5->_titleView lastBaselineAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46 constant:v28];
+    firstBaselineAnchor2 = [(UILabel *)v5->_timeView firstBaselineAnchor];
+    lastBaselineAnchor2 = [(UILabel *)v5->_titleView lastBaselineAnchor];
+    v47 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:v28];
     timeBaselineToTitleBaselineConstraint = v5->_timeBaselineToTitleBaselineConstraint;
     v5->_timeBaselineToTitleBaselineConstraint = v47;
 
-    v49 = [(UILabel *)v5->_timeView firstBaselineAnchor];
-    v50 = [(UILabel *)v5->_locationView lastBaselineAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:v31];
+    firstBaselineAnchor3 = [(UILabel *)v5->_timeView firstBaselineAnchor];
+    lastBaselineAnchor3 = [(UILabel *)v5->_locationView lastBaselineAnchor];
+    v51 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor3 constant:v31];
     timeBaselineToLocationBaselineConstraint = v5->_timeBaselineToLocationBaselineConstraint;
     v5->_timeBaselineToLocationBaselineConstraint = v51;
 
-    v53 = [(UILabel *)v5->_dateView firstBaselineAnchor];
-    v54 = [(UILabel *)v5->_titleView lastBaselineAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54 constant:v34];
+    firstBaselineAnchor4 = [(UILabel *)v5->_dateView firstBaselineAnchor];
+    lastBaselineAnchor4 = [(UILabel *)v5->_titleView lastBaselineAnchor];
+    v55 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor4 constant:v34];
     dateBaselineToTitleBaselineConstraint = v5->_dateBaselineToTitleBaselineConstraint;
     v5->_dateBaselineToTitleBaselineConstraint = v55;
 
-    v57 = [(UILabel *)v5->_dateView firstBaselineAnchor];
-    v58 = [(UILabel *)v5->_locationView lastBaselineAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58 constant:v37];
+    firstBaselineAnchor5 = [(UILabel *)v5->_dateView firstBaselineAnchor];
+    lastBaselineAnchor5 = [(UILabel *)v5->_locationView lastBaselineAnchor];
+    v59 = [firstBaselineAnchor5 constraintEqualToAnchor:lastBaselineAnchor5 constant:v37];
     dateBaselineToLocationBaselineConstraint = v5->_dateBaselineToLocationBaselineConstraint;
     v5->_dateBaselineToLocationBaselineConstraint = v59;
 
-    v61 = [(UILabel *)v5->_locationView firstBaselineAnchor];
-    v62 = [(UILabel *)v5->_titleView lastBaselineAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62 constant:v40];
+    firstBaselineAnchor6 = [(UILabel *)v5->_locationView firstBaselineAnchor];
+    lastBaselineAnchor6 = [(UILabel *)v5->_titleView lastBaselineAnchor];
+    v63 = [firstBaselineAnchor6 constraintEqualToAnchor:lastBaselineAnchor6 constant:v40];
     locationBaselineToTitleBaselineConstraint = v5->_locationBaselineToTitleBaselineConstraint;
     v5->_locationBaselineToTitleBaselineConstraint = v63;
 
     if (CalSystemSolariumEnabled())
     {
-      v65 = [(UILabel *)v5->_timeView lastBaselineAnchor];
-      v66 = [(UIView *)v5->_colorBarView lastBaselineAnchor];
-      v67 = [v65 constraintEqualToAnchor:v66 constant:-5.0];
+      lastBaselineAnchor7 = [(UILabel *)v5->_timeView lastBaselineAnchor];
+      lastBaselineAnchor8 = [(UIView *)v5->_colorBarView lastBaselineAnchor];
+      v67 = [lastBaselineAnchor7 constraintEqualToAnchor:lastBaselineAnchor8 constant:-5.0];
       timeBottomToBottomAnchorConstraint = v5->_timeBottomToBottomAnchorConstraint;
       v5->_timeBottomToBottomAnchorConstraint = v67;
 
-      v69 = [(UILabel *)v5->_additionalLabelView firstBaselineAnchor];
-      v70 = [(UILabel *)v5->_timeView lastBaselineAnchor];
-      v71 = [v69 constraintEqualToAnchor:v70 constant:v25];
+      firstBaselineAnchor7 = [(UILabel *)v5->_additionalLabelView firstBaselineAnchor];
+      lastBaselineAnchor9 = [(UILabel *)v5->_timeView lastBaselineAnchor];
+      v71 = [firstBaselineAnchor7 constraintEqualToAnchor:lastBaselineAnchor9 constant:v25];
       additionalLabelToTimeBaselineConstraint = v5->_additionalLabelToTimeBaselineConstraint;
       v5->_additionalLabelToTimeBaselineConstraint = v71;
 
-      v73 = [(UILabel *)v5->_additionalLabelView lastBaselineAnchor];
-      v74 = [(UIView *)v5->_colorBarView lastBaselineAnchor];
-      v75 = [v73 constraintEqualToAnchor:v74 constant:-5.0];
+      lastBaselineAnchor10 = [(UILabel *)v5->_additionalLabelView lastBaselineAnchor];
+      lastBaselineAnchor11 = [(UIView *)v5->_colorBarView lastBaselineAnchor];
+      v75 = [lastBaselineAnchor10 constraintEqualToAnchor:lastBaselineAnchor11 constant:-5.0];
       additionalLabelToBottomAnchorConstraint = v5->_additionalLabelToBottomAnchorConstraint;
       v5->_additionalLabelToBottomAnchorConstraint = v75;
 
-      v77 = [(UILabel *)v5->_bottomLabelView firstBaselineAnchor];
-      v78 = [(UILabel *)v5->_additionalLabelView lastBaselineAnchor];
-      v79 = [v77 constraintEqualToAnchor:v78 constant:v25];
+      firstBaselineAnchor8 = [(UILabel *)v5->_bottomLabelView firstBaselineAnchor];
+      lastBaselineAnchor12 = [(UILabel *)v5->_additionalLabelView lastBaselineAnchor];
+      v79 = [firstBaselineAnchor8 constraintEqualToAnchor:lastBaselineAnchor12 constant:v25];
       bottomLabelToAdditionalLabelBaselineConstraint = v5->_bottomLabelToAdditionalLabelBaselineConstraint;
       v5->_bottomLabelToAdditionalLabelBaselineConstraint = v79;
 
-      v81 = [(UILabel *)v5->_bottomLabelView lastBaselineAnchor];
-      v82 = [(UIView *)v5->_colorBarView lastBaselineAnchor];
-      v83 = [v81 constraintEqualToAnchor:v82 constant:-5.0];
+      lastBaselineAnchor13 = [(UILabel *)v5->_bottomLabelView lastBaselineAnchor];
+      lastBaselineAnchor14 = [(UIView *)v5->_colorBarView lastBaselineAnchor];
+      v83 = [lastBaselineAnchor13 constraintEqualToAnchor:lastBaselineAnchor14 constant:-5.0];
       bottomLabelToBottomAnchorConstraint = v5->_bottomLabelToBottomAnchorConstraint;
       v5->_bottomLabelToBottomAnchorConstraint = v83;
 
-      v172 = [(UIView *)v5->_colorBarView leadingAnchor];
-      v170 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
-      v168 = [v172 constraintEqualToAnchor:v170 constant:8.0];
+      leadingAnchor = [(UIView *)v5->_colorBarView leadingAnchor];
+      leadingAnchor2 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
+      v168 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
       v177[0] = v168;
-      v166 = [(UIView *)v5->_colorBarView topAnchor];
-      v164 = [(CarplayStaticEventDetailsTableViewCell *)v5 topAnchor];
-      v162 = [v166 constraintEqualToAnchor:v164 constant:8.0];
+      topAnchor = [(UIView *)v5->_colorBarView topAnchor];
+      topAnchor2 = [(CarplayStaticEventDetailsTableViewCell *)v5 topAnchor];
+      v162 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
       v177[1] = v162;
-      v160 = [(UIView *)v5->_colorBarView widthAnchor];
-      v158 = [v160 constraintEqualToConstant:3.5];
+      widthAnchor = [(UIView *)v5->_colorBarView widthAnchor];
+      v158 = [widthAnchor constraintEqualToConstant:3.5];
       v177[2] = v158;
-      v156 = [(UIView *)v5->_colorBarView bottomAnchor];
-      v154 = [(CarplayStaticEventDetailsTableViewCell *)v5 bottomAnchor];
-      v152 = [v156 constraintEqualToAnchor:v154 constant:-8.0];
+      bottomAnchor = [(UIView *)v5->_colorBarView bottomAnchor];
+      bottomAnchor2 = [(CarplayStaticEventDetailsTableViewCell *)v5 bottomAnchor];
+      v152 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
       v177[3] = v152;
-      v150 = [(UILabel *)v5->_titleView firstBaselineAnchor];
-      v149 = [(UIView *)v5->_colorBarView topAnchor];
-      v147 = [v150 constraintEqualToAnchor:v149 constant:20.0];
+      firstBaselineAnchor9 = [(UILabel *)v5->_titleView firstBaselineAnchor];
+      topAnchor3 = [(UIView *)v5->_colorBarView topAnchor];
+      v147 = [firstBaselineAnchor9 constraintEqualToAnchor:topAnchor3 constant:20.0];
       v177[4] = v147;
-      v145 = [(UILabel *)v5->_titleView leadingAnchor];
-      v143 = [(UIView *)v5->_colorBarView leadingAnchor];
-      v141 = [v145 constraintEqualToAnchor:v143 constant:12.0];
+      leadingAnchor3 = [(UILabel *)v5->_titleView leadingAnchor];
+      leadingAnchor4 = [(UIView *)v5->_colorBarView leadingAnchor];
+      v141 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:12.0];
       v177[5] = v141;
-      v139 = [(UILabel *)v5->_titleView trailingAnchor];
-      v137 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v135 = [v139 constraintEqualToAnchor:v137];
+      trailingAnchor = [(UILabel *)v5->_titleView trailingAnchor];
+      trailingAnchor2 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v135 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v177[6] = v135;
-      v132 = [(UILabel *)v5->_locationView leadingAnchor];
-      v130 = [(UIView *)v5->_colorBarView leadingAnchor];
-      v129 = [v132 constraintEqualToAnchor:v130 constant:12.0];
+      leadingAnchor5 = [(UILabel *)v5->_locationView leadingAnchor];
+      leadingAnchor6 = [(UIView *)v5->_colorBarView leadingAnchor];
+      v129 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:12.0];
       v177[7] = v129;
-      v128 = [(UILabel *)v5->_locationView trailingAnchor];
-      v127 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v126 = [v128 constraintEqualToAnchor:v127];
+      trailingAnchor3 = [(UILabel *)v5->_locationView trailingAnchor];
+      trailingAnchor4 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v126 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v177[8] = v126;
-      v125 = [(UILabel *)v5->_dateView leadingAnchor];
-      v124 = [(UIView *)v5->_colorBarView leadingAnchor];
-      v123 = [v125 constraintEqualToAnchor:v124 constant:12.0];
+      leadingAnchor7 = [(UILabel *)v5->_dateView leadingAnchor];
+      leadingAnchor8 = [(UIView *)v5->_colorBarView leadingAnchor];
+      v123 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:12.0];
       v177[9] = v123;
-      v122 = [(UILabel *)v5->_dateView trailingAnchor];
-      v121 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v120 = [v122 constraintEqualToAnchor:v121];
+      trailingAnchor5 = [(UILabel *)v5->_dateView trailingAnchor];
+      trailingAnchor6 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v120 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       v177[10] = v120;
-      v119 = [(UILabel *)v5->_timeView firstBaselineAnchor];
-      v118 = [(UILabel *)v5->_dateView lastBaselineAnchor];
-      v117 = [v119 constraintEqualToAnchor:v118 constant:v25];
+      firstBaselineAnchor10 = [(UILabel *)v5->_timeView firstBaselineAnchor];
+      lastBaselineAnchor15 = [(UILabel *)v5->_dateView lastBaselineAnchor];
+      v117 = [firstBaselineAnchor10 constraintEqualToAnchor:lastBaselineAnchor15 constant:v25];
       v177[11] = v117;
-      v116 = [(UILabel *)v5->_timeView leadingAnchor];
-      v115 = [(UIView *)v5->_colorBarView leadingAnchor];
-      v114 = [v116 constraintEqualToAnchor:v115 constant:12.0];
+      leadingAnchor9 = [(UILabel *)v5->_timeView leadingAnchor];
+      leadingAnchor10 = [(UIView *)v5->_colorBarView leadingAnchor];
+      v114 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:12.0];
       v177[12] = v114;
-      v113 = [(UILabel *)v5->_timeView trailingAnchor];
-      v112 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v111 = [v113 constraintEqualToAnchor:v112];
+      trailingAnchor7 = [(UILabel *)v5->_timeView trailingAnchor];
+      trailingAnchor8 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v111 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
       v177[13] = v111;
-      v110 = [(UILabel *)v5->_additionalLabelView leadingAnchor];
-      v109 = [(UIView *)v5->_colorBarView leadingAnchor];
-      v108 = [v110 constraintEqualToAnchor:v109 constant:12.0];
+      leadingAnchor11 = [(UILabel *)v5->_additionalLabelView leadingAnchor];
+      leadingAnchor12 = [(UIView *)v5->_colorBarView leadingAnchor];
+      v108 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:12.0];
       v177[14] = v108;
-      v107 = [(UILabel *)v5->_additionalLabelView trailingAnchor];
-      v85 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v86 = [v107 constraintEqualToAnchor:v85];
+      trailingAnchor9 = [(UILabel *)v5->_additionalLabelView trailingAnchor];
+      trailingAnchor10 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v86 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
       v177[15] = v86;
-      v87 = [(UILabel *)v5->_bottomLabelView leadingAnchor];
-      v88 = [(UIView *)v5->_colorBarView leadingAnchor];
-      v89 = [v87 constraintEqualToAnchor:v88 constant:12.0];
+      leadingAnchor13 = [(UILabel *)v5->_bottomLabelView leadingAnchor];
+      leadingAnchor14 = [(UIView *)v5->_colorBarView leadingAnchor];
+      v89 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14 constant:12.0];
       v177[16] = v89;
-      v90 = [(UILabel *)v5->_bottomLabelView trailingAnchor];
-      v91 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v92 = [v90 constraintEqualToAnchor:v91];
+      trailingAnchor11 = [(UILabel *)v5->_bottomLabelView trailingAnchor];
+      trailingAnchor12 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v92 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
       v177[17] = v92;
       v93 = [NSArray arrayWithObjects:v177 count:18];
       [NSLayoutConstraint activateConstraints:v93];
@@ -241,45 +241,45 @@
 
     else
     {
-      v173 = [(UILabel *)v5->_titleView firstBaselineAnchor];
-      v171 = [(CarplayStaticEventDetailsTableViewCell *)v5 topAnchor];
-      v169 = [v173 constraintEqualToAnchor:v171 constant:20.0];
+      firstBaselineAnchor11 = [(UILabel *)v5->_titleView firstBaselineAnchor];
+      topAnchor4 = [(CarplayStaticEventDetailsTableViewCell *)v5 topAnchor];
+      v169 = [firstBaselineAnchor11 constraintEqualToAnchor:topAnchor4 constant:20.0];
       v176[0] = v169;
-      v167 = [(UILabel *)v5->_titleView leadingAnchor];
-      v165 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
-      v163 = [v167 constraintEqualToAnchor:v165 constant:12.0];
+      leadingAnchor15 = [(UILabel *)v5->_titleView leadingAnchor];
+      leadingAnchor16 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
+      v163 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16 constant:12.0];
       v176[1] = v163;
-      v161 = [(UILabel *)v5->_titleView trailingAnchor];
-      v159 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v157 = [v161 constraintEqualToAnchor:v159];
+      trailingAnchor13 = [(UILabel *)v5->_titleView trailingAnchor];
+      trailingAnchor14 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v157 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
       v176[2] = v157;
-      v155 = [(UILabel *)v5->_locationView leadingAnchor];
-      v153 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
-      v151 = [v155 constraintEqualToAnchor:v153 constant:12.0];
+      leadingAnchor17 = [(UILabel *)v5->_locationView leadingAnchor];
+      leadingAnchor18 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
+      v151 = [leadingAnchor17 constraintEqualToAnchor:leadingAnchor18 constant:12.0];
       v176[3] = v151;
-      v148 = [(UILabel *)v5->_locationView trailingAnchor];
-      v146 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v144 = [v148 constraintEqualToAnchor:v146];
+      trailingAnchor15 = [(UILabel *)v5->_locationView trailingAnchor];
+      trailingAnchor16 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v144 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16];
       v176[4] = v144;
-      v142 = [(UILabel *)v5->_dateView leadingAnchor];
-      v140 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
-      v138 = [v142 constraintEqualToAnchor:v140 constant:12.0];
+      leadingAnchor19 = [(UILabel *)v5->_dateView leadingAnchor];
+      leadingAnchor20 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
+      v138 = [leadingAnchor19 constraintEqualToAnchor:leadingAnchor20 constant:12.0];
       v176[5] = v138;
-      v136 = [(UILabel *)v5->_dateView trailingAnchor];
-      v134 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v133 = [v136 constraintEqualToAnchor:v134];
+      trailingAnchor17 = [(UILabel *)v5->_dateView trailingAnchor];
+      trailingAnchor18 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v133 = [trailingAnchor17 constraintEqualToAnchor:trailingAnchor18];
       v176[6] = v133;
-      v131 = [(UILabel *)v5->_timeView leadingAnchor];
-      v94 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
-      v95 = [v131 constraintEqualToAnchor:v94 constant:12.0];
+      leadingAnchor21 = [(UILabel *)v5->_timeView leadingAnchor];
+      leadingAnchor22 = [(CarplayStaticEventDetailsTableViewCell *)v5 leadingAnchor];
+      v95 = [leadingAnchor21 constraintEqualToAnchor:leadingAnchor22 constant:12.0];
       v176[7] = v95;
-      v96 = [(UILabel *)v5->_timeView trailingAnchor];
-      v97 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
-      v98 = [v96 constraintEqualToAnchor:v97];
+      trailingAnchor19 = [(UILabel *)v5->_timeView trailingAnchor];
+      trailingAnchor20 = [(CarplayStaticEventDetailsTableViewCell *)v5 trailingAnchor];
+      v98 = [trailingAnchor19 constraintEqualToAnchor:trailingAnchor20];
       v176[8] = v98;
-      v99 = [(UILabel *)v5->_timeView lastBaselineAnchor];
-      v100 = [(CarplayStaticEventDetailsTableViewCell *)v5 bottomAnchor];
-      v101 = [v99 constraintEqualToAnchor:v100 constant:-14.0];
+      lastBaselineAnchor16 = [(UILabel *)v5->_timeView lastBaselineAnchor];
+      bottomAnchor3 = [(CarplayStaticEventDetailsTableViewCell *)v5 bottomAnchor];
+      v101 = [lastBaselineAnchor16 constraintEqualToAnchor:bottomAnchor3 constant:-14.0];
       v176[9] = v101;
       v102 = [NSArray arrayWithObjects:v176 count:10];
       [NSLayoutConstraint activateConstraints:v102];
@@ -298,23 +298,23 @@
 
 - (void)_updateLabelFilters
 {
-  v3 = [(CarplayStaticEventDetailsTableViewCell *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(CarplayStaticEventDetailsTableViewCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v5 = &kCAFilterPlusL;
-  if (v4 != 2)
+  if (userInterfaceStyle != 2)
   {
     v5 = &kCAFilterPlusD;
   }
 
   v10 = [CAFilter filterWithType:*v5];
 
-  v6 = [(CarplayStaticEventDetailsTableViewCell *)self additionalLabelView];
-  v7 = [v6 layer];
-  [v7 setCompositingFilter:v10];
+  additionalLabelView = [(CarplayStaticEventDetailsTableViewCell *)self additionalLabelView];
+  layer = [additionalLabelView layer];
+  [layer setCompositingFilter:v10];
 
-  v8 = [(CarplayStaticEventDetailsTableViewCell *)self bottomLabelView];
-  v9 = [v8 layer];
-  [v9 setCompositingFilter:v10];
+  bottomLabelView = [(CarplayStaticEventDetailsTableViewCell *)self bottomLabelView];
+  layer2 = [bottomLabelView layer];
+  [layer2 setCompositingFilter:v10];
 }
 
 - (id)_createPrimaryView
@@ -324,8 +324,8 @@
   v4 = +[UIColor labelColor];
   [v3 setTextColor:v4];
 
-  v5 = [(CarplayStaticEventDetailsTableViewCell *)self _titleFont];
-  [v3 setFont:v5];
+  _titleFont = [(CarplayStaticEventDetailsTableViewCell *)self _titleFont];
+  [v3 setFont:_titleFont];
 
   v6 = +[UIColor clearColor];
   [v3 setBackgroundColor:v6];
@@ -342,8 +342,8 @@
   v4 = +[UIColor _carSystemPrimaryColor];
   [v3 setTextColor:v4];
 
-  v5 = [(CarplayStaticEventDetailsTableViewCell *)self traitCollection];
-  v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout compatibleWithTraitCollection:v5];
+  traitCollection = [(CarplayStaticEventDetailsTableViewCell *)self traitCollection];
+  v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout compatibleWithTraitCollection:traitCollection];
   [v3 setFont:v6];
 
   return v3;
@@ -356,70 +356,70 @@
   v4 = +[UIColor _carSystemTertiaryColor];
   [v3 setTextColor:v4];
 
-  v5 = [(CarplayStaticEventDetailsTableViewCell *)self traitCollection];
-  v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout compatibleWithTraitCollection:v5];
+  traitCollection = [(CarplayStaticEventDetailsTableViewCell *)self traitCollection];
+  v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout compatibleWithTraitCollection:traitCollection];
   [v3 setFont:v6];
 
-  v7 = [v3 layer];
-  [v7 setAllowsGroupBlending:0];
+  layer = [v3 layer];
+  [layer setAllowsGroupBlending:0];
 
   return v3;
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
-  v4 = a3;
-  [(CarplayStaticEventDetailsTableViewCell *)self setEvent:v4];
-  v5 = [v4 virtualConference];
-  v6 = [v5 joinMethods];
-  v7 = [v6 firstObject];
-  v8 = [v7 URL];
+  eventCopy = event;
+  [(CarplayStaticEventDetailsTableViewCell *)self setEvent:eventCopy];
+  virtualConference = [eventCopy virtualConference];
+  joinMethods = [virtualConference joinMethods];
+  firstObject = [joinMethods firstObject];
+  v8 = [firstObject URL];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    conferenceURLForDisplay = v8;
   }
 
   else
   {
-    v10 = [v4 conferenceURLForDisplay];
+    conferenceURLForDisplay = [eventCopy conferenceURLForDisplay];
   }
 
-  v11 = v10;
+  v11 = conferenceURLForDisplay;
 
-  v12 = [v4 virtualConference];
-  v13 = [v12 joinMethods];
-  v14 = [v13 firstObject];
-  v15 = [v14 isBroadcast];
+  virtualConference2 = [eventCopy virtualConference];
+  joinMethods2 = [virtualConference2 joinMethods];
+  firstObject2 = [joinMethods2 firstObject];
+  isBroadcast = [firstObject2 isBroadcast];
 
-  v16 = [CUIKLocationDescriptionGenerator conferenceStringForURL:v11 conferenceURLIsBroadcast:v15 options:96];
-  v17 = !+[CarplayUtilities eventCanDialIn:](CarplayUtilities, "eventCanDialIn:", v4) && [v16 length] != 0;
+  v16 = [CUIKLocationDescriptionGenerator conferenceStringForURL:v11 conferenceURLIsBroadcast:isBroadcast options:96];
+  v17 = !+[CarplayUtilities eventCanDialIn:](CarplayUtilities, "eventCanDialIn:", eventCopy) && [v16 length] != 0;
   v100 = v11;
-  if ([CarplayUtilities eventCanNavigate:v4])
+  if ([CarplayUtilities eventCanNavigate:eventCopy])
   {
     v18 = 0;
   }
 
   else
   {
-    v19 = [(CarplayStaticEventDetailsTableViewCell *)self event];
-    v20 = [v19 location];
-    v18 = [v20 length] != 0;
+    event = [(CarplayStaticEventDetailsTableViewCell *)self event];
+    location = [event location];
+    v18 = [location length] != 0;
   }
 
   v21 = v17 || v18;
-  v22 = [(CarplayStaticEventDetailsTableViewCell *)self locationBaselineToTitleBaselineConstraint];
-  v23 = v22;
+  locationBaselineToTitleBaselineConstraint = [(CarplayStaticEventDetailsTableViewCell *)self locationBaselineToTitleBaselineConstraint];
+  v23 = locationBaselineToTitleBaselineConstraint;
   v101 = v16;
   if (!v17 && !v18)
   {
-    [v22 setActive:0];
+    [locationBaselineToTitleBaselineConstraint setActive:0];
 
     [(UILabel *)self->_locationView setText:0];
     goto LABEL_23;
   }
 
-  [v22 setActive:1];
+  [locationBaselineToTitleBaselineConstraint setActive:1];
 
   if (!v17)
   {
@@ -432,15 +432,15 @@
     goto LABEL_16;
   }
 
-  v24 = [v16 string];
-  v25 = [CarplayUtilities numberOfLinesInString:v24];
+  string = [v16 string];
+  v25 = [CarplayUtilities numberOfLinesInString:string];
 
   if (v18)
   {
 LABEL_16:
-    v26 = [(CarplayStaticEventDetailsTableViewCell *)self event];
-    v27 = [v26 location];
-    v25 += [CarplayUtilities numberOfLinesInString:v27];
+    event2 = [(CarplayStaticEventDetailsTableViewCell *)self event];
+    location2 = [event2 location];
+    v25 += [CarplayUtilities numberOfLinesInString:location2];
   }
 
 LABEL_17:
@@ -449,9 +449,9 @@ LABEL_17:
   if (v18)
   {
     v29 = [NSAttributedString alloc];
-    v30 = [(CarplayStaticEventDetailsTableViewCell *)self event];
-    v31 = [v30 location];
-    v32 = [v29 initWithString:v31];
+    event3 = [(CarplayStaticEventDetailsTableViewCell *)self event];
+    location3 = [event3 location];
+    v32 = [v29 initWithString:location3];
     [v28 appendAttributedString:v32];
 
     if (v17)
@@ -477,7 +477,7 @@ LABEL_21:
 
 LABEL_23:
   v35 = CalSystemSolariumEnabled();
-  v36 = [(CarplayStaticEventDetailsTableViewCell *)self event];
+  event4 = [(CarplayStaticEventDetailsTableViewCell *)self event];
   if (v35)
   {
     memset(&v102[9], 0, 32);
@@ -500,12 +500,12 @@ LABEL_23:
 
     else
     {
-      v43 = [(CarplayStaticEventDetailsTableViewCell *)self event];
-      v44 = [v43 recurrenceRules];
-      v95 = [v44 objectAtIndexedSubscript:0];
+      event5 = [(CarplayStaticEventDetailsTableViewCell *)self event];
+      recurrenceRules = [event5 recurrenceRules];
+      v95 = [recurrenceRules objectAtIndexedSubscript:0];
 
-      v45 = [(CarplayStaticEventDetailsTableViewCell *)self event];
-      v46 = [v45 startDate];
+      event6 = [(CarplayStaticEventDetailsTableViewCell *)self event];
+      startDate = [event6 startDate];
       v92 = CUIKStringForRecurrenceRule();
 
       v94 = [UIImage systemImageNamed:@"repeat"];
@@ -522,23 +522,23 @@ LABEL_23:
       [(UILabel *)self->_additionalLabelView setAttributedText:v52];
     }
 
-    v58 = [(UILabel *)self->_additionalLabelView text];
+    text = [(UILabel *)self->_additionalLabelView text];
     v59 = 1;
     v60 = 1;
-    if (!v58)
+    if (!text)
     {
-      v61 = [(UILabel *)self->_additionalLabelView attributedText];
-      v60 = v61 != 0;
+      attributedText = [(UILabel *)self->_additionalLabelView attributedText];
+      v60 = attributedText != 0;
     }
 
-    v62 = [(CarplayStaticEventDetailsTableViewCell *)self timeBaselineToDateBaselineConstraint];
-    [v62 setActive:1];
+    timeBaselineToDateBaselineConstraint = [(CarplayStaticEventDetailsTableViewCell *)self timeBaselineToDateBaselineConstraint];
+    [timeBaselineToDateBaselineConstraint setActive:1];
 
-    v63 = [(CarplayStaticEventDetailsTableViewCell *)self dateBaselineToTitleBaselineConstraint];
-    [v63 setActive:(v21 & 1) == 0];
+    dateBaselineToTitleBaselineConstraint = [(CarplayStaticEventDetailsTableViewCell *)self dateBaselineToTitleBaselineConstraint];
+    [dateBaselineToTitleBaselineConstraint setActive:(v21 & 1) == 0];
 
-    v64 = [(CarplayStaticEventDetailsTableViewCell *)self dateBaselineToLocationBaselineConstraint];
-    [v64 setActive:v21 & 1];
+    dateBaselineToLocationBaselineConstraint = [(CarplayStaticEventDetailsTableViewCell *)self dateBaselineToLocationBaselineConstraint];
+    [dateBaselineToLocationBaselineConstraint setActive:v21 & 1];
 
     if (v40)
     {
@@ -578,20 +578,20 @@ LABEL_23:
       v56 = v100;
     }
 
-    v73 = [(CarplayStaticEventDetailsTableViewCell *)self timeBottomToBottomAnchorConstraint];
-    [v73 setActive:v66];
+    timeBottomToBottomAnchorConstraint = [(CarplayStaticEventDetailsTableViewCell *)self timeBottomToBottomAnchorConstraint];
+    [timeBottomToBottomAnchorConstraint setActive:v66];
 
-    v74 = [(CarplayStaticEventDetailsTableViewCell *)self additionalLabelToBottomAnchorConstraint];
-    [v74 setActive:v65 ^ 1u];
+    additionalLabelToBottomAnchorConstraint = [(CarplayStaticEventDetailsTableViewCell *)self additionalLabelToBottomAnchorConstraint];
+    [additionalLabelToBottomAnchorConstraint setActive:v65 ^ 1u];
 
-    v75 = [(CarplayStaticEventDetailsTableViewCell *)self additionalLabelToTimeBaselineConstraint];
-    [v75 setActive:v59];
+    additionalLabelToTimeBaselineConstraint = [(CarplayStaticEventDetailsTableViewCell *)self additionalLabelToTimeBaselineConstraint];
+    [additionalLabelToTimeBaselineConstraint setActive:v59];
 
-    v76 = [(CarplayStaticEventDetailsTableViewCell *)self bottomLabelToAdditionalLabelBaselineConstraint];
-    [v76 setActive:v67];
+    bottomLabelToAdditionalLabelBaselineConstraint = [(CarplayStaticEventDetailsTableViewCell *)self bottomLabelToAdditionalLabelBaselineConstraint];
+    [bottomLabelToAdditionalLabelBaselineConstraint setActive:v67];
 
-    v77 = [(CarplayStaticEventDetailsTableViewCell *)self bottomLabelToBottomAnchorConstraint];
-    [v77 setActive:v67];
+    bottomLabelToBottomAnchorConstraint = [(CarplayStaticEventDetailsTableViewCell *)self bottomLabelToBottomAnchorConstraint];
+    [bottomLabelToBottomAnchorConstraint setActive:v67];
   }
 
   else
@@ -656,20 +656,20 @@ LABEL_23:
       v72 = 1;
     }
 
-    v78 = [(CarplayStaticEventDetailsTableViewCell *)self timeBaselineToDateBaselineConstraint];
-    [v78 setActive:v72];
+    timeBaselineToDateBaselineConstraint2 = [(CarplayStaticEventDetailsTableViewCell *)self timeBaselineToDateBaselineConstraint];
+    [timeBaselineToDateBaselineConstraint2 setActive:v72];
 
-    v79 = [(CarplayStaticEventDetailsTableViewCell *)self timeBaselineToTitleBaselineConstraint];
-    [v79 setActive:v69];
+    timeBaselineToTitleBaselineConstraint = [(CarplayStaticEventDetailsTableViewCell *)self timeBaselineToTitleBaselineConstraint];
+    [timeBaselineToTitleBaselineConstraint setActive:v69];
 
-    v80 = [(CarplayStaticEventDetailsTableViewCell *)self timeBaselineToLocationBaselineConstraint];
-    [v80 setActive:v70];
+    timeBaselineToLocationBaselineConstraint = [(CarplayStaticEventDetailsTableViewCell *)self timeBaselineToLocationBaselineConstraint];
+    [timeBaselineToLocationBaselineConstraint setActive:v70];
 
-    v81 = [(CarplayStaticEventDetailsTableViewCell *)self dateBaselineToTitleBaselineConstraint];
-    [v81 setActive:v71];
+    dateBaselineToTitleBaselineConstraint2 = [(CarplayStaticEventDetailsTableViewCell *)self dateBaselineToTitleBaselineConstraint];
+    [dateBaselineToTitleBaselineConstraint2 setActive:v71];
 
-    v77 = [(CarplayStaticEventDetailsTableViewCell *)self dateBaselineToLocationBaselineConstraint];
-    [v77 setActive:(v55 & 1) == 0];
+    bottomLabelToBottomAnchorConstraint = [(CarplayStaticEventDetailsTableViewCell *)self dateBaselineToLocationBaselineConstraint];
+    [bottomLabelToBottomAnchorConstraint setActive:(v55 & 1) == 0];
     v56 = v100;
     v40 = v68;
     v37 = v97;
@@ -681,37 +681,37 @@ LABEL_53:
   v53 = v99;
 LABEL_54:
 
-  v82 = [(CarplayStaticEventDetailsTableViewCell *)self event];
-  v83 = [v82 status];
+  event7 = [(CarplayStaticEventDetailsTableViewCell *)self event];
+  status = [event7 status];
 
-  if (v83 == 3)
+  if (status == 3)
   {
     v84 = [NSAttributedString alloc];
-    v85 = [(CarplayStaticEventDetailsTableViewCell *)self event];
-    v86 = [v85 title];
+    event8 = [(CarplayStaticEventDetailsTableViewCell *)self event];
+    title = [event8 title];
     v103 = NSStrikethroughStyleAttributeName;
     v104 = &off_100219CD0;
     v87 = [NSDictionary dictionaryWithObjects:&v104 forKeys:&v103 count:1];
-    v88 = [v84 initWithString:v86 attributes:v87];
+    v88 = [v84 initWithString:title attributes:v87];
     [(UILabel *)self->_titleView setAttributedText:v88];
   }
 
   else
   {
-    v85 = [(CarplayStaticEventDetailsTableViewCell *)self event];
-    v86 = [v85 title];
-    [(UILabel *)self->_titleView setText:v86];
+    event8 = [(CarplayStaticEventDetailsTableViewCell *)self event];
+    title = [event8 title];
+    [(UILabel *)self->_titleView setText:title];
   }
 
   if (CalSystemSolariumEnabled())
   {
-    v89 = [(CarplayStaticEventDetailsTableViewCell *)self traitCollection];
+    traitCollection = [(CarplayStaticEventDetailsTableViewCell *)self traitCollection];
     v102[0] = _NSConcreteStackBlock;
     v102[1] = 3221225472;
     v102[2] = sub_10014C63C;
     v102[3] = &unk_10020EB00;
     v102[4] = self;
-    [v89 performAsCurrentTraitCollection:v102];
+    [traitCollection performAsCurrentTraitCollection:v102];
   }
 }
 

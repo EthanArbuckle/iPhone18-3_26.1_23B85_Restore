@@ -1,26 +1,26 @@
 @interface USXPCListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation USXPCListenerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 serviceName];
+  connectionCopy = connection;
+  serviceName = [connectionCopy serviceName];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    sub_100066078(v5, v4);
+    sub_100066078(serviceName, connectionCopy);
   }
 
-  if ([v5 isEqualToString:USMachServiceNameUsageTrackingPrivate])
+  if ([serviceName isEqualToString:USMachServiceNameUsageTrackingPrivate])
   {
     v6 = USTrackingAgentPrivateConnection_ptr;
-    if (([USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v4]& 1) == 0)
+    if (([USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:connectionCopy]& 1) == 0)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        sub_100066198(v4);
+        sub_100066198(connectionCopy);
       }
 
 LABEL_12:
@@ -31,11 +31,11 @@ LABEL_12:
 
   else
   {
-    if (([v5 isEqualToString:USMachServiceNameUsageTracking] & 1) == 0)
+    if (([serviceName isEqualToString:USMachServiceNameUsageTracking] & 1) == 0)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        sub_100066118(v5);
+        sub_100066118(serviceName);
       }
 
       goto LABEL_12;
@@ -44,12 +44,12 @@ LABEL_12:
     v6 = USTrackingAgentConnection_ptr;
   }
 
-  v7 = [*v6 newInterface];
-  [v4 setExportedInterface:v7];
+  newInterface = [*v6 newInterface];
+  [connectionCopy setExportedInterface:newInterface];
   v8 = objc_opt_new();
-  [v4 setExportedObject:v8];
+  [connectionCopy setExportedObject:v8];
 
-  [v4 resume];
+  [connectionCopy resume];
   v9 = 1;
 LABEL_13:
 

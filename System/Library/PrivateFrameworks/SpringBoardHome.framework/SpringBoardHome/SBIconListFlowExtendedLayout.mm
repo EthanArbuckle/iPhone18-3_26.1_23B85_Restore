@@ -1,14 +1,14 @@
 @interface SBIconListFlowExtendedLayout
-- (CGSize)iconSpacingForOrientation:(int64_t)a3;
+- (CGSize)iconSpacingForOrientation:(int64_t)orientation;
 @end
 
 @implementation SBIconListFlowExtendedLayout
 
-- (CGSize)iconSpacingForOrientation:(int64_t)a3
+- (CGSize)iconSpacingForOrientation:(int64_t)orientation
 {
-  v5 = [(SBIconListGridLayout *)self layoutConfiguration];
-  [v5 listSizeForIconSpacingCalculation];
-  if ((a3 - 3) >= 2)
+  layoutConfiguration = [(SBIconListGridLayout *)self layoutConfiguration];
+  [layoutConfiguration listSizeForIconSpacingCalculation];
+  if ((orientation - 3) >= 2)
   {
     v8 = v6;
   }
@@ -18,12 +18,12 @@
     v8 = v7;
   }
 
-  if ((a3 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     v7 = v6;
   }
 
-  v9 = SBHIconListLayoutListIconSpacingForListSize(self, a3, v8, v7);
+  v9 = SBHIconListLayoutListIconSpacingForListSize(self, orientation, v8, v7);
   v11 = v10;
 
   v12 = v9;

@@ -1,8 +1,8 @@
 @interface TSPObjectSerializationDecoder
 - (TSPObjectSerializationDecoder)init;
-- (TSPObjectSerializationDecoder)initWithEncodedData:(id)a3;
-- (id)newReadChannelForDataWithIdentifier:(int64_t)a3 info:(id)a4;
-- (id)newReadChannelForLocator:(id)a3;
+- (TSPObjectSerializationDecoder)initWithEncodedData:(id)data;
+- (id)newReadChannelForDataWithIdentifier:(int64_t)identifier info:(id)info;
+- (id)newReadChannelForLocator:(id)locator;
 @end
 
 @implementation TSPObjectSerializationDecoder
@@ -23,25 +23,25 @@
   objc_exception_throw(v13);
 }
 
-- (TSPObjectSerializationDecoder)initWithEncodedData:(id)a3
+- (TSPObjectSerializationDecoder)initWithEncodedData:(id)data
 {
-  v4 = a3;
-  v7 = objc_msgSend_length(v4, v5, v6);
+  dataCopy = data;
+  v7 = objc_msgSend_length(dataCopy, v5, v6);
   if (v7 > 0xB)
   {
     v53.receiver = self;
     v53.super_class = TSPObjectSerializationDecoder;
-    v9 = [(TSPObjectSerializationDecoder *)&v53 init];
-    if (v9)
+    selfCopy = [(TSPObjectSerializationDecoder *)&v53 init];
+    if (selfCopy)
     {
-      v12 = objc_msgSend_tsp_dispatchData(v4, v10, v11);
-      v13 = *(v9 + 1);
-      *(v9 + 1) = v12;
+      v12 = objc_msgSend_tsp_dispatchData(dataCopy, v10, v11);
+      v13 = *(selfCopy + 1);
+      *(selfCopy + 1) = v12;
 
-      *(v9 + 2) = v7;
+      *(selfCopy + 2) = v7;
       size_ptr = 0;
       buffer_ptr = 0;
-      subrange = dispatch_data_create_subrange(*(v9 + 1), v7 - 4, 4uLL);
+      subrange = dispatch_data_create_subrange(*(selfCopy + 1), v7 - 4, 4uLL);
       v15 = dispatch_data_create_map(subrange, &buffer_ptr, &size_ptr);
 
       if (*buffer_ptr != *" TSPN3TSP20DatabaseOutputStreamE")
@@ -58,7 +58,7 @@ LABEL_20:
         goto LABEL_25;
       }
 
-      v16 = dispatch_data_create_subrange(*(v9 + 1), v7 - 12, 8uLL);
+      v16 = dispatch_data_create_subrange(*(selfCopy + 1), v7 - 12, 8uLL);
       v17 = dispatch_data_create_map(v16, &buffer_ptr, &size_ptr);
 
       v18 = *buffer_ptr;
@@ -77,7 +77,7 @@ LABEL_20:
 
       sub_276A00FEC(v48);
       v21 = v20 - 12;
-      v22 = dispatch_data_create_subrange(*(v9 + 1), v18, v21);
+      v22 = dispatch_data_create_subrange(*(selfCopy + 1), v18, v21);
       sub_276A01048(v48, v22);
 
       v41[0] = 0;
@@ -100,8 +100,8 @@ LABEL_20:
         v24 = v39[6];
         v25 = objc_alloc(MEMORY[0x277CBEB38]);
         v27 = objc_msgSend_initWithCapacity_(v25, v26, v24);
-        v28 = *(v9 + 3);
-        *(v9 + 3) = v27;
+        v28 = *(selfCopy + 3);
+        *(selfCopy + 3) = v27;
 
         if (v24 >= 1)
         {
@@ -113,7 +113,7 @@ LABEL_20:
             v33 = objc_msgSend_tsp_initWithProtobufString_(v31, v32, v30[3] & 0xFFFFFFFFFFFFFFFELL);
             v34 = [TSPObjectSerializationDirectoryEntry alloc];
             v36 = objc_msgSend_initWithOffset_size_(v34, v35, v30[4], v30[5]);
-            objc_msgSend_setObject_forKeyedSubscript_(*(v9 + 3), v37, v36, v33);
+            objc_msgSend_setObject_forKeyedSubscript_(*(selfCopy + 3), v37, v36, v33);
 
             v29 += 8;
             --v24;
@@ -137,8 +137,8 @@ LABEL_20:
       }
     }
 
-    v9 = v9;
-    v8 = v9;
+    selfCopy = selfCopy;
+    v8 = selfCopy;
     goto LABEL_25;
   }
 
@@ -148,15 +148,15 @@ LABEL_20:
   }
 
   v8 = 0;
-  v9 = self;
+  selfCopy = self;
 LABEL_25:
 
   return v8;
 }
 
-- (id)newReadChannelForLocator:(id)a3
+- (id)newReadChannelForLocator:(id)locator
 {
-  v4 = objc_msgSend_objectForKeyedSubscript_(self->_directory, a2, a3);
+  v4 = objc_msgSend_objectForKeyedSubscript_(self->_directory, a2, locator);
   v7 = v4;
   if (!v4)
   {
@@ -188,9 +188,9 @@ LABEL_8:
   return v12;
 }
 
-- (id)newReadChannelForDataWithIdentifier:(int64_t)a3 info:(id)a4
+- (id)newReadChannelForDataWithIdentifier:(int64_t)identifier info:(id)info
 {
-  v5 = objc_msgSend_digest(a4, a2, a3);
+  v5 = objc_msgSend_digest(info, a2, identifier);
   v8 = objc_msgSend_digestString(v5, v6, v7);
   ChannelForLocator = objc_msgSend_newReadChannelForLocator_(self, v9, v8);
 

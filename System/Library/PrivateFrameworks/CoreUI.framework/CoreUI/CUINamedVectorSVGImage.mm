@@ -1,5 +1,5 @@
 @interface CUINamedVectorSVGImage
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4;
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size;
 - (CGSVGDocument)svgDocument;
 @end
 
@@ -7,16 +7,16 @@
 
 - (CGSVGDocument)svgDocument
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 svgDocument];
+  return [(CUIThemeRendition *)_rendition svgDocument];
 }
 
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (a3 == 0.0)
+  height = size.height;
+  width = size.width;
+  if (factor == 0.0)
   {
     [CUINamedVectorSVGImage rasterizeImageUsingScaleFactor:forTargetSize:];
   }
@@ -26,14 +26,14 @@
     [CUINamedVectorSVGImage rasterizeImageUsingScaleFactor:forTargetSize:];
   }
 
-  v8 = [(CUINamedLookup *)self name];
-  _CUILog(3, "[CUINamedVectorImage (%@)]", v9, v10, v11, v12, v13, v14, v8);
+  name = [(CUINamedLookup *)self name];
+  _CUILog(3, "[CUINamedVectorImage (%@)]", v9, v10, v11, v12, v13, v14, name);
   [(CUINamedVectorSVGImage *)self svgDocument];
   CGSVGDocumentGetCanvasSize();
   v16 = v15;
   v18 = v17;
-  v19 = floor(width * a3);
-  v20 = floor(height * a3);
+  v19 = floor(width * factor);
+  v20 = floor(height * factor);
   if ([(CUIRenditionKey *)[(CUINamedLookup *)self renditionKey] themeDisplayGamut]&& CGSVGDocumentContainsWideGamutContent())
   {
     v21 = 4097;

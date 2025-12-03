@@ -1,88 +1,88 @@
 @interface AXAirPodSettingsManager
 + (id)sharedInstance;
-- (BOOL)_supportsCapability:(int)a3 forDeviceAddress:(id)a4 capabilityName:(id)a5;
-- (BOOL)_supportsCaseTonesForDeviceAddress:(id)a3;
-- (BOOL)_supportsCaseTonesVolumeForDeviceAddress:(id)a3;
-- (BOOL)isAirPodProduct:(id)a3;
-- (BOOL)nps_caseTonesEnabledForDeviceAddress:(id)a3;
-- (BOOL)nps_noiseCancellationEnabledWithOneUnitForDeviceAddress:(id)a3;
-- (BOOL)nps_volumeSwipeEnabledForDeviceAddress:(id)a3;
+- (BOOL)_supportsCapability:(int)capability forDeviceAddress:(id)address capabilityName:(id)name;
+- (BOOL)_supportsCaseTonesForDeviceAddress:(id)address;
+- (BOOL)_supportsCaseTonesVolumeForDeviceAddress:(id)address;
+- (BOOL)isAirPodProduct:(id)product;
+- (BOOL)nps_caseTonesEnabledForDeviceAddress:(id)address;
+- (BOOL)nps_noiseCancellationEnabledWithOneUnitForDeviceAddress:(id)address;
+- (BOOL)nps_volumeSwipeEnabledForDeviceAddress:(id)address;
 - (BOOL)pairedAirPodsSupportSpatialAudio;
-- (BOOL)supportsCaseTonesForDeviceAddress:(id)a3;
-- (BOOL)supportsCaseTonesVolumeForDeviceAddress:(id)a3;
-- (BOOL)supportsHoldDurationForDeviceAddress:(id)a3;
-- (BOOL)supportsNoiseCancellationEnabledForDeviceAddress:(id)a3;
+- (BOOL)supportsCaseTonesForDeviceAddress:(id)address;
+- (BOOL)supportsCaseTonesVolumeForDeviceAddress:(id)address;
+- (BOOL)supportsHoldDurationForDeviceAddress:(id)address;
+- (BOOL)supportsNoiseCancellationEnabledForDeviceAddress:(id)address;
 - (BOOL)supportsSpatialAudio;
-- (BOOL)supportsSpatialAudioForDeviceAddress:(id)a3;
-- (BOOL)supportsTapSpeedForDeviceAddress:(id)a3;
-- (BOOL)supportsVolumeSwipeForDeviceAddress:(id)a3;
+- (BOOL)supportsSpatialAudioForDeviceAddress:(id)address;
+- (BOOL)supportsTapSpeedForDeviceAddress:(id)address;
+- (BOOL)supportsVolumeSwipeForDeviceAddress:(id)address;
 - (NSArray)pairedAirPods;
-- (float)nps_caseTonesVolumeForDeviceAddress:(id)a3;
-- (float)nps_holdDurationForDeviceAddress:(id)a3;
-- (float)nps_tapSpeedForDeviceAddress:(id)a3;
-- (float)nps_toneVolumeForDeviceAddress:(id)a3;
-- (float)nps_volumeSwipeDurationForDeviceAddress:(id)a3;
-- (id)_deviceWithDeviceAddress:(id)a3;
-- (id)_nps_airPodsDictionaryForPreference:(id)a3;
+- (float)nps_caseTonesVolumeForDeviceAddress:(id)address;
+- (float)nps_holdDurationForDeviceAddress:(id)address;
+- (float)nps_tapSpeedForDeviceAddress:(id)address;
+- (float)nps_toneVolumeForDeviceAddress:(id)address;
+- (float)nps_volumeSwipeDurationForDeviceAddress:(id)address;
+- (id)_deviceWithDeviceAddress:(id)address;
+- (id)_nps_airPodsDictionaryForPreference:(id)preference;
 - (id)_pairedAirPods;
-- (id)_productIdentifierForBTDevice:(id)a3;
+- (id)_productIdentifierForBTDevice:(id)device;
 - (id)accessibilityDomainAccessor;
 - (id)disambiguationString;
 - (id)initSharedInstance;
 - (id)titleAndAssetNameForSettings;
 - (id)titleForSettings;
 - (int64_t)_pairedProductsFlags;
-- (unsigned)caseTonesVolumeForDeviceAddress:(id)a3;
-- (unsigned)nps_defaultToneVolumeForDeviceAddress:(id)a3;
-- (void)_accessoryEventForManager:(BTAccessoryManagerImpl *)a3 event:(int)a4 device:(BTDeviceImpl *)a5 state:(int)a6;
+- (unsigned)caseTonesVolumeForDeviceAddress:(id)address;
+- (unsigned)nps_defaultToneVolumeForDeviceAddress:(id)address;
+- (void)_accessoryEventForManager:(BTAccessoryManagerImpl *)manager event:(int)event device:(BTDeviceImpl *)device state:(int)state;
 - (void)_applySettings;
-- (void)_applySettingsForAddress:(id)a3;
-- (void)_didConnectWithSession:(BTSessionImpl *)a3;
+- (void)_applySettingsForAddress:(id)address;
+- (void)_didConnectWithSession:(BTSessionImpl *)session;
 - (void)_didDisconnect;
-- (void)_nps_updateAirPodsDictionaryForPreference:(id)a3 deviceAddress:(id)a4 value:(id)a5;
+- (void)_nps_updateAirPodsDictionaryForPreference:(id)preference deviceAddress:(id)address value:(id)value;
 - (void)_probeAccessories;
-- (void)_retrieveSettingsForAddress:(id)a3;
-- (void)_retrieveSettingsFromDevices:(id)a3;
-- (void)_saveDeviceInfoForAddress:(id)a3 productID:(unsigned int)a4 bluetoothDevice:(BTDeviceImpl *)a5;
-- (void)_serviceEventForDevice:(BTDeviceImpl *)a3 serviceMask:(unsigned int)a4 eventType:(int)a5 specificEvent:(unsigned int)a6 result:(int)a7;
-- (void)_sessionEventForSession:(BTSessionImpl *)a3 event:(int)a4 result:(int)a5;
+- (void)_retrieveSettingsForAddress:(id)address;
+- (void)_retrieveSettingsFromDevices:(id)devices;
+- (void)_saveDeviceInfoForAddress:(id)address productID:(unsigned int)d bluetoothDevice:(BTDeviceImpl *)device;
+- (void)_serviceEventForDevice:(BTDeviceImpl *)device serviceMask:(unsigned int)mask eventType:(int)type specificEvent:(unsigned int)event result:(int)result;
+- (void)_sessionEventForSession:(BTSessionImpl *)session event:(int)event result:(int)result;
 - (void)dealloc;
-- (void)nps_setCaseTonesEnabled:(BOOL)a3 forDeviceAddress:(id)a4;
-- (void)nps_setCaseTonesVolume:(float)a3 forDeviceAddress:(id)a4;
-- (void)nps_setHoldDuration:(float)a3 forDeviceAddress:(id)a4;
-- (void)nps_setNoiseCancellationEnabledWithOneUnit:(BOOL)a3 forDeviceAddress:(id)a4;
-- (void)nps_setTapSpeed:(float)a3 forDeviceAddress:(id)a4;
-- (void)nps_setToneVolume:(float)a3 forDeviceAddress:(id)a4;
-- (void)nps_setVolumeSwipeDuration:(float)a3 forDeviceAddress:(id)a4;
-- (void)nps_setVolumeSwipeEnabled:(BOOL)a3 forDeviceAddress:(id)a4;
-- (void)setCaseTonesEnabled:(BOOL)a3 forDeviceAddress:(id)a4;
-- (void)setCaseTonesVolume:(unsigned int)a3 forDeviceAddress:(id)a4;
-- (void)setHoldDuration:(float)a3 forDeviceAddress:(id)a4;
-- (void)setNoiseCancellationEnabledWithOneUnit:(BOOL)a3 forDeviceAddress:(id)a4;
-- (void)setTapSpeed:(float)a3 forDeviceAddress:(id)a4;
-- (void)setToneVolume:(unsigned int)a3 forDeviceAddress:(id)a4;
-- (void)setVolumeSwipeDuration:(float)a3 forDeviceAddress:(id)a4;
-- (void)setVolumeSwipeEnabled:(BOOL)a3 forDeviceAddress:(id)a4;
-- (void)startWithCallback:(id)a3;
+- (void)nps_setCaseTonesEnabled:(BOOL)enabled forDeviceAddress:(id)address;
+- (void)nps_setCaseTonesVolume:(float)volume forDeviceAddress:(id)address;
+- (void)nps_setHoldDuration:(float)duration forDeviceAddress:(id)address;
+- (void)nps_setNoiseCancellationEnabledWithOneUnit:(BOOL)unit forDeviceAddress:(id)address;
+- (void)nps_setTapSpeed:(float)speed forDeviceAddress:(id)address;
+- (void)nps_setToneVolume:(float)volume forDeviceAddress:(id)address;
+- (void)nps_setVolumeSwipeDuration:(float)duration forDeviceAddress:(id)address;
+- (void)nps_setVolumeSwipeEnabled:(BOOL)enabled forDeviceAddress:(id)address;
+- (void)setCaseTonesEnabled:(BOOL)enabled forDeviceAddress:(id)address;
+- (void)setCaseTonesVolume:(unsigned int)volume forDeviceAddress:(id)address;
+- (void)setHoldDuration:(float)duration forDeviceAddress:(id)address;
+- (void)setNoiseCancellationEnabledWithOneUnit:(BOOL)unit forDeviceAddress:(id)address;
+- (void)setTapSpeed:(float)speed forDeviceAddress:(id)address;
+- (void)setToneVolume:(unsigned int)volume forDeviceAddress:(id)address;
+- (void)setVolumeSwipeDuration:(float)duration forDeviceAddress:(id)address;
+- (void)setVolumeSwipeEnabled:(BOOL)enabled forDeviceAddress:(id)address;
+- (void)startWithCallback:(id)callback;
 @end
 
 @implementation AXAirPodSettingsManager
 
-- (id)_productIdentifierForBTDevice:(id)a3
+- (id)_productIdentifierForBTDevice:(id)device
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 vendorId];
-  v6 = [v4 productId];
+  deviceCopy = device;
+  vendorId = [deviceCopy vendorId];
+  productId = [deviceCopy productId];
 
-  return [v3 stringWithFormat:@"%d, %d", v5, v6];
+  return [v3 stringWithFormat:@"%d, %d", vendorId, productId];
 }
 
 - (NSArray)pairedAirPods
 {
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v3 = [(AXAirPodSettingsManager *)self _pairedAirPods];
+    _pairedAirPods = [(AXAirPodSettingsManager *)self _pairedAirPods];
   }
 
   else
@@ -103,12 +103,12 @@
     dispatch_async(MEMORY[0x1E69E96A0], v7);
     v5 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v4, v5);
-    v3 = v9[5];
+    _pairedAirPods = v9[5];
 
     _Block_object_dispose(&v8, 8);
   }
 
-  return v3;
+  return _pairedAirPods;
 }
 
 uint64_t __40__AXAirPodSettingsManager_pairedAirPods__block_invoke(uint64_t a1)
@@ -125,11 +125,11 @@ uint64_t __40__AXAirPodSettingsManager_pairedAirPods__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
     v3 = MEMORY[0x1E696AD98];
-    v4 = [MEMORY[0x1E698F468] sharedInstance];
-    v5 = [v3 numberWithBool:{objc_msgSend(v4, "enabled")}];
+    mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+    v5 = [v3 numberWithBool:{objc_msgSend(mEMORY[0x1E698F468], "enabled")}];
     v6 = MEMORY[0x1E696AD98];
-    v7 = [MEMORY[0x1E698F468] sharedInstance];
-    v8 = [v6 numberWithUnsignedInt:{objc_msgSend(v7, "bluetoothState")}];
+    mEMORY[0x1E698F468]2 = [MEMORY[0x1E698F468] sharedInstance];
+    v8 = [v6 numberWithUnsignedInt:{objc_msgSend(mEMORY[0x1E698F468]2, "bluetoothState")}];
     *buf = 138412546;
     v18 = v5;
     v19 = 2112;
@@ -137,16 +137,16 @@ uint64_t __40__AXAirPodSettingsManager_pairedAirPods__block_invoke(uint64_t a1)
     _os_log_impl(&dword_18B15E000, v2, OS_LOG_TYPE_DEFAULT, "state: %@ %@", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E698F468] sharedInstance];
-  v11 = [v10 pairedDevices];
+  array = [MEMORY[0x1E695DF70] array];
+  mEMORY[0x1E698F468]3 = [MEMORY[0x1E698F468] sharedInstance];
+  pairedDevices = [mEMORY[0x1E698F468]3 pairedDevices];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __41__AXAirPodSettingsManager__pairedAirPods__block_invoke;
   v15[3] = &unk_1E71EA6B0;
-  v12 = v9;
+  v12 = array;
   v16 = v12;
-  [v11 enumerateObjectsUsingBlock:v15];
+  [pairedDevices enumerateObjectsUsingBlock:v15];
 
   v13 = AXLogAirPodSettings();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -215,8 +215,8 @@ uint64_t __47__AXAirPodSettingsManager_supportsSpatialAudio__block_invoke()
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AXAirPodSettingsManager *)self pairedAirPods];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  pairedAirPods = [(AXAirPodSettingsManager *)self pairedAirPods];
+  v3 = [pairedAirPods countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -227,7 +227,7 @@ uint64_t __47__AXAirPodSettingsManager_supportsSpatialAudio__block_invoke()
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pairedAirPods);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -238,7 +238,7 @@ uint64_t __47__AXAirPodSettingsManager_supportsSpatialAudio__block_invoke()
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [pairedAirPods countByEnumeratingWithState:&v10 objects:v14 count:16];
       v8 = 0;
       if (v4)
       {
@@ -265,13 +265,13 @@ LABEL_13:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(AXAirPodSettingsManager *)self pairedAirPods];
+  pairedAirPods = [(AXAirPodSettingsManager *)self pairedAirPods];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__AXAirPodSettingsManager__pairedProductsFlags__block_invoke;
   v5[3] = &unk_1E71EA6D8;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [pairedAirPods enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -303,10 +303,10 @@ LABEL_13:
 - (id)titleForSettings
 {
   v3 = AXAirPodsLocalizedStringForKey(@"AirPodTitle");
-  v4 = [(AXAirPodSettingsManager *)self _pairedProductsFlags];
-  if ((v4 & 2) != 0)
+  _pairedProductsFlags = [(AXAirPodSettingsManager *)self _pairedProductsFlags];
+  if ((_pairedProductsFlags & 2) != 0)
   {
-    if (v4)
+    if (_pairedProductsFlags)
     {
       v5 = @"AirPodTitleBoth";
     }
@@ -328,12 +328,12 @@ LABEL_13:
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v3 = AXAirPodsLocalizedStringForKey(@"AirPodTitle");
-  v4 = [(AXAirPodSettingsManager *)self _pairedProductsFlags];
+  _pairedProductsFlags = [(AXAirPodSettingsManager *)self _pairedProductsFlags];
   v5 = @"airpods";
-  if ((v4 & 2) != 0)
+  if ((_pairedProductsFlags & 2) != 0)
   {
-    v6 = (v4 & 1) == 0;
-    if (v4)
+    v6 = (_pairedProductsFlags & 1) == 0;
+    if (_pairedProductsFlags)
     {
       v7 = @"AirPodTitleBoth";
     }
@@ -371,14 +371,14 @@ LABEL_13:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [(AXAirPodSettingsManager *)self pairedAirPods];
+  pairedAirPods = [(AXAirPodSettingsManager *)self pairedAirPods];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__AXAirPodSettingsManager_disambiguationString__block_invoke;
   v8[3] = &unk_1E71EA700;
   v8[4] = &v13;
   v8[5] = &v9;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [pairedAirPods enumerateObjectsUsingBlock:v8];
 
   if (*(v10 + 24) == 1)
   {
@@ -425,32 +425,32 @@ LABEL_13:
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isAirPodProduct:(id)a3
+- (BOOL)isAirPodProduct:(id)product
 {
-  v3 = a3;
-  v4 = [v3 vendorId] == 76 && (objc_msgSend(v3, "productId") == 8206 || objc_msgSend(v3, "productId") == 8202 || objc_msgSend(v3, "productId") == 8211 || objc_msgSend(v3, "productId") == 8212 || objc_msgSend(v3, "productId") == 8228 || objc_msgSend(v3, "productId") == 8217 || objc_msgSend(v3, "productId") == 8219 || objc_msgSend(v3, "productId") == 8222 || objc_msgSend(v3, "productId") == 8231 || objc_msgSend(v3, "productId") == 8223);
+  productCopy = product;
+  v4 = [productCopy vendorId] == 76 && (objc_msgSend(productCopy, "productId") == 8206 || objc_msgSend(productCopy, "productId") == 8202 || objc_msgSend(productCopy, "productId") == 8211 || objc_msgSend(productCopy, "productId") == 8212 || objc_msgSend(productCopy, "productId") == 8228 || objc_msgSend(productCopy, "productId") == 8217 || objc_msgSend(productCopy, "productId") == 8219 || objc_msgSend(productCopy, "productId") == 8222 || objc_msgSend(productCopy, "productId") == 8231 || objc_msgSend(productCopy, "productId") == 8223);
 
   return v4;
 }
 
-- (id)_deviceWithDeviceAddress:(id)a3
+- (id)_deviceWithDeviceAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(AXAirPodSettingsManager *)self pairedAirPods];
+  pairedAirPods = [(AXAirPodSettingsManager *)self pairedAirPods];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke;
   v9[3] = &unk_1E71EA728;
-  v6 = v4;
+  v6 = addressCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [pairedAirPods enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -471,21 +471,21 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   }
 }
 
-- (BOOL)_supportsCapability:(int)a3 forDeviceAddress:(id)a4 capabilityName:(id)a5
+- (BOOL)_supportsCapability:(int)capability forDeviceAddress:(id)address capabilityName:(id)name
 {
-  v6 = *&a3;
+  v6 = *&capability;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:a4];
+  nameCopy = name;
+  v9 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:address];
   v10 = [v9 getAACPCapabilityInteger:v6];
-  v11 = [v9 connected];
+  connected = [v9 connected];
   v12 = AXLogAirPodSettings();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:v11];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:connected];
     v17 = 138413058;
-    v18 = v8;
+    v18 = nameCopy;
     v19 = 2112;
     v20 = v9;
     v21 = 2112;
@@ -497,7 +497,7 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
 
   if (v10)
   {
-    v15 = v11;
+    v15 = connected;
   }
 
   else
@@ -508,76 +508,76 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   return v15;
 }
 
-- (BOOL)supportsTapSpeedForDeviceAddress:(id)a3
+- (BOOL)supportsTapSpeedForDeviceAddress:(id)address
 {
-  v3 = self;
-  v4 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:a3];
-  LOBYTE(v3) = [(AXAirPodSettingsManager *)v3 isAirPodProduct:v4];
+  selfCopy = self;
+  v4 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:address];
+  LOBYTE(selfCopy) = [(AXAirPodSettingsManager *)selfCopy isAirPodProduct:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)setTapSpeed:(float)a3 forDeviceAddress:(id)a4
+- (void)setTapSpeed:(float)speed forDeviceAddress:(id)address
 {
-  v7 = a4;
+  addressCopy = address;
   _AXSSetAirPodsTapSpeed();
-  *&v6 = a3;
-  [(AXAirPodSettingsManager *)self nps_setTapSpeed:v7 forDeviceAddress:v6];
+  *&v6 = speed;
+  [(AXAirPodSettingsManager *)self nps_setTapSpeed:addressCopy forDeviceAddress:v6];
 }
 
-- (BOOL)supportsNoiseCancellationEnabledForDeviceAddress:(id)a3
+- (BOOL)supportsNoiseCancellationEnabledForDeviceAddress:(id)address
 {
-  v3 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:a3];
+  v3 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:address];
   v4 = [v3 vendorId] == 76 && (objc_msgSend(v3, "productId") == 8206 || objc_msgSend(v3, "productId") == 8210 || objc_msgSend(v3, "productId") == 8212 || objc_msgSend(v3, "productId") == 8228 || objc_msgSend(v3, "productId") == 8219 || objc_msgSend(v3, "productId") == 8231 || objc_msgSend(v3, "productId") == 8221 || objc_msgSend(v3, "productId") == 8239);
 
   return v4;
 }
 
-- (void)setNoiseCancellationEnabledWithOneUnit:(BOOL)a3 forDeviceAddress:(id)a4
+- (void)setNoiseCancellationEnabledWithOneUnit:(BOOL)unit forDeviceAddress:(id)address
 {
-  v4 = a3;
+  unitCopy = unit;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  addressCopy = address;
   v7 = AXLogAirPodSettings();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:unitCopy];
     v9 = 138412546;
     v10 = v8;
     v11 = 2112;
-    v12 = v6;
+    v12 = addressCopy;
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_DEFAULT, "Setting noise cancellation with one bud enabled: %@ for: %@", &v9, 0x16u);
   }
 
   _AXSSetAirPodsNoiseCancellationWithOneUnit();
-  [(AXAirPodSettingsManager *)self nps_setNoiseCancellationEnabledWithOneUnit:v4 forDeviceAddress:v6];
+  [(AXAirPodSettingsManager *)self nps_setNoiseCancellationEnabledWithOneUnit:unitCopy forDeviceAddress:addressCopy];
 }
 
-- (BOOL)_supportsCaseTonesForDeviceAddress:(id)a3
+- (BOOL)_supportsCaseTonesForDeviceAddress:(id)address
 {
-  if (!a3)
+  if (!address)
   {
     return 0;
   }
 
   v3 = [(NSMutableDictionary *)self->_deviceInfo objectForKey:?];
   v4 = [v3 objectForKey:@"CaseTonesKey"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)supportsCaseTonesForDeviceAddress:(id)a3
+- (BOOL)supportsCaseTonesForDeviceAddress:(id)address
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:a3];
+  v4 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:address];
   v5 = -[AXAirPodSettingsManager _supportsCaseTonesForProductID:](self, "_supportsCaseTonesForProductID:", [v4 productId]);
-  v6 = [v4 connected];
+  connected = [v4 connected];
   v7 = AXLogAirPodSettings();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:connected];
     v11 = 138412802;
     v12 = v4;
     v13 = 2112;
@@ -587,55 +587,55 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_DEFAULT, "BT Device supports Case Tones: %@ = %@ and connected %@", &v11, 0x20u);
   }
 
-  return v6 & v5;
+  return connected & v5;
 }
 
-- (void)setCaseTonesEnabled:(BOOL)a3 forDeviceAddress:(id)a4
+- (void)setCaseTonesEnabled:(BOOL)enabled forDeviceAddress:(id)address
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  addressCopy = address;
   v7 = AXLogAirPodSettings();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
     v9 = 138412546;
     v10 = v8;
     v11 = 2112;
-    v12 = v6;
+    v12 = addressCopy;
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_DEFAULT, "Setting case tones enabled %@ for %@", &v9, 0x16u);
   }
 
   _AXSSetHeadsetCaseTonesEnabled();
-  [(AXAirPodSettingsManager *)self nps_setCaseTonesEnabled:v4 forDeviceAddress:v6];
+  [(AXAirPodSettingsManager *)self nps_setCaseTonesEnabled:enabledCopy forDeviceAddress:addressCopy];
 }
 
-- (BOOL)_supportsCaseTonesVolumeForDeviceAddress:(id)a3
+- (BOOL)_supportsCaseTonesVolumeForDeviceAddress:(id)address
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_deviceInfo objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_deviceInfo objectForKey:addressCopy];
     v6 = [v5 objectForKey:@"CaseTonesKey"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     v8 = [v5 objectForKey:@"CaseTonesVolumeKey"];
-    v9 = [v8 BOOLValue];
+    bOOLValue2 = [v8 BOOLValue];
 
     v10 = AXLogAirPodSettings();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412802;
-      v14 = v4;
+      v14 = addressCopy;
       v15 = 1024;
-      v16 = v7;
+      v16 = bOOLValue;
       v17 = 1024;
-      v18 = v9;
+      v18 = bOOLValue2;
       _os_log_impl(&dword_18B15E000, v10, OS_LOG_TYPE_DEFAULT, "BT Device has AACP Capability Case Tones Volume: %@ = %d, %d", &v13, 0x18u);
     }
 
-    v11 = v7 & v9;
+    v11 = bOOLValue & bOOLValue2;
   }
 
   else
@@ -646,12 +646,12 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   return v11;
 }
 
-- (BOOL)supportsCaseTonesVolumeForDeviceAddress:(id)a3
+- (BOOL)supportsCaseTonesVolumeForDeviceAddress:(id)address
 {
-  v4 = a3;
-  if ([(AXAirPodSettingsManager *)self supportsCaseTonesForDeviceAddress:v4])
+  addressCopy = address;
+  if ([(AXAirPodSettingsManager *)self supportsCaseTonesForDeviceAddress:addressCopy])
   {
-    v5 = [(AXAirPodSettingsManager *)self _supportsCapability:51 forDeviceAddress:v4 capabilityName:@"Case Tones Volume"];
+    v5 = [(AXAirPodSettingsManager *)self _supportsCapability:51 forDeviceAddress:addressCopy capabilityName:@"Case Tones Volume"];
   }
 
   else
@@ -662,20 +662,20 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   return v5;
 }
 
-- (unsigned)caseTonesVolumeForDeviceAddress:(id)a3
+- (unsigned)caseTonesVolumeForDeviceAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 headsetCaseTonesVolumeForDeviceAddress:v3];
+  v5 = [v4 headsetCaseTonesVolumeForDeviceAddress:addressCopy];
 
   return v5;
 }
 
-- (void)setCaseTonesVolume:(unsigned int)a3 forDeviceAddress:(id)a4
+- (void)setCaseTonesVolume:(unsigned int)volume forDeviceAddress:(id)address
 {
-  v4 = *&a3;
+  v4 = *&volume;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  addressCopy = address;
   v7 = AXLogAirPodSettings();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -683,22 +683,22 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
     v11 = 138412546;
     v12 = v8;
     v13 = 2112;
-    v14 = v6;
+    v14 = addressCopy;
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_DEFAULT, "Setting case tones volume %@ for %@", &v11, 0x16u);
   }
 
   v9 = +[AXSettings sharedInstance];
-  [v9 setHeadsetCaseTonesVolume:v4 forDeviceAddress:v6];
+  [v9 setHeadsetCaseTonesVolume:v4 forDeviceAddress:addressCopy];
 
   *&v10 = v4;
-  [(AXAirPodSettingsManager *)self nps_setCaseTonesVolume:v6 forDeviceAddress:v10];
+  [(AXAirPodSettingsManager *)self nps_setCaseTonesVolume:addressCopy forDeviceAddress:v10];
 }
 
-- (void)setToneVolume:(unsigned int)a3 forDeviceAddress:(id)a4
+- (void)setToneVolume:(unsigned int)volume forDeviceAddress:(id)address
 {
-  v4 = *&a3;
+  v4 = *&volume;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  addressCopy = address;
   v7 = AXLogAirPodSettings();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -706,59 +706,59 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
     v10 = 138412546;
     v11 = v8;
     v12 = 2112;
-    v13 = v6;
+    v13 = addressCopy;
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_DEFAULT, "Setting tone volume %@ for %@", &v10, 0x16u);
   }
 
   _AXSSetAirPodsToneVolume();
   *&v9 = v4;
-  [(AXAirPodSettingsManager *)self nps_setToneVolume:v6 forDeviceAddress:v9];
+  [(AXAirPodSettingsManager *)self nps_setToneVolume:addressCopy forDeviceAddress:v9];
 }
 
-- (BOOL)supportsHoldDurationForDeviceAddress:(id)a3
+- (BOOL)supportsHoldDurationForDeviceAddress:(id)address
 {
-  v3 = self;
-  v4 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:a3];
-  LOBYTE(v3) = [(AXAirPodSettingsManager *)v3 isAirPodProduct:v4];
+  selfCopy = self;
+  v4 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:address];
+  LOBYTE(selfCopy) = [(AXAirPodSettingsManager *)selfCopy isAirPodProduct:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)setHoldDuration:(float)a3 forDeviceAddress:(id)a4
+- (void)setHoldDuration:(float)duration forDeviceAddress:(id)address
 {
-  v7 = a4;
+  addressCopy = address;
   _AXSSetAirPodsHoldDuration();
-  *&v6 = a3;
-  [(AXAirPodSettingsManager *)self nps_setHoldDuration:v7 forDeviceAddress:v6];
+  *&v6 = duration;
+  [(AXAirPodSettingsManager *)self nps_setHoldDuration:addressCopy forDeviceAddress:v6];
 }
 
-- (BOOL)supportsVolumeSwipeForDeviceAddress:(id)a3
+- (BOOL)supportsVolumeSwipeForDeviceAddress:(id)address
 {
-  v3 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:a3];
+  v3 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:address];
   v4 = [v3 vendorId] == 76 && (objc_msgSend(v3, "productId") == 8212 || objc_msgSend(v3, "productId") == 8228 || objc_msgSend(v3, "productId") == 8231);
 
   return v4;
 }
 
-- (void)setVolumeSwipeEnabled:(BOOL)a3 forDeviceAddress:(id)a4
+- (void)setVolumeSwipeEnabled:(BOOL)enabled forDeviceAddress:(id)address
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  addressCopy = address;
   _AXSSetAirPodsVolumeSwipeEnabled();
-  [(AXAirPodSettingsManager *)self nps_setVolumeSwipeEnabled:v4 forDeviceAddress:v6];
+  [(AXAirPodSettingsManager *)self nps_setVolumeSwipeEnabled:enabledCopy forDeviceAddress:addressCopy];
 }
 
-- (void)setVolumeSwipeDuration:(float)a3 forDeviceAddress:(id)a4
+- (void)setVolumeSwipeDuration:(float)duration forDeviceAddress:(id)address
 {
-  v7 = a4;
+  addressCopy = address;
   _AXSSetAirPodsVolumeSwipeDuration();
-  *&v6 = a3;
-  [(AXAirPodSettingsManager *)self nps_setVolumeSwipeDuration:v7 forDeviceAddress:v6];
+  *&v6 = duration;
+  [(AXAirPodSettingsManager *)self nps_setVolumeSwipeDuration:addressCopy forDeviceAddress:v6];
 }
 
-- (BOOL)supportsSpatialAudioForDeviceAddress:(id)a3
+- (BOOL)supportsSpatialAudioForDeviceAddress:(id)address
 {
-  v3 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:a3];
+  v3 = [(AXAirPodSettingsManager *)self _deviceWithDeviceAddress:address];
   v4 = [v3 vendorId] != 76 || objc_msgSend(v3, "productId") != 8203 && objc_msgSend(v3, "productId") != 8230 && objc_msgSend(v3, "productId") != 8218;
 
   return v4;
@@ -766,13 +766,13 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
 
 - (id)accessibilityDomainAccessor
 {
-  v2 = [MEMORY[0x1E69B36C0] sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  mEMORY[0x1E69B36C0] = [MEMORY[0x1E69B36C0] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x1E69B36C0] getActivePairedDevice];
 
-  if (v3 && ([v3 valueForProperty:*MEMORY[0x1E69B35D8]], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "BOOLValue"), v4, (v5 & 1) == 0))
+  if (getActivePairedDevice && ([getActivePairedDevice valueForProperty:*MEMORY[0x1E69B35D8]], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "BOOLValue"), v4, (v5 & 1) == 0))
   {
     v7 = objc_alloc(MEMORY[0x1E69B3588]);
-    v6 = [v7 initWithDomain:*MEMORY[0x1E69E4BB0] pairedDevice:v3];
+    v6 = [v7 initWithDomain:*MEMORY[0x1E69E4BB0] pairedDevice:getActivePairedDevice];
   }
 
   else
@@ -783,62 +783,62 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   return v6;
 }
 
-- (id)_nps_airPodsDictionaryForPreference:(id)a3
+- (id)_nps_airPodsDictionaryForPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [(AXAirPodSettingsManager *)self accessibilityDomainAccessor];
-  v6 = [v5 synchronize];
-  v7 = [v5 dictionaryForKey:v4];
+  preferenceCopy = preference;
+  accessibilityDomainAccessor = [(AXAirPodSettingsManager *)self accessibilityDomainAccessor];
+  synchronize = [accessibilityDomainAccessor synchronize];
+  v7 = [accessibilityDomainAccessor dictionaryForKey:preferenceCopy];
 
   return v7;
 }
 
-- (void)_nps_updateAirPodsDictionaryForPreference:(id)a3 deviceAddress:(id)a4 value:(id)a5
+- (void)_nps_updateAirPodsDictionaryForPreference:(id)preference deviceAddress:(id)address value:(id)value
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  preferenceCopy = preference;
+  addressCopy = address;
+  valueCopy = value;
   v11 = AXLogAirPodSettings();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v25 = v9;
+    v25 = addressCopy;
     v26 = 2112;
-    v27 = v8;
+    v27 = preferenceCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = valueCopy;
     _os_log_impl(&dword_18B15E000, v11, OS_LOG_TYPE_INFO, "[NPS] Updating device %@, %@ => %@", buf, 0x20u);
   }
 
-  if ([v8 length] && (v12 = objc_msgSend(v9, "length"), v10) && v12)
+  if ([preferenceCopy length] && (v12 = objc_msgSend(addressCopy, "length"), valueCopy) && v12)
   {
-    v13 = [(AXAirPodSettingsManager *)self accessibilityDomainAccessor];
-    if (v13)
+    accessibilityDomainAccessor = [(AXAirPodSettingsManager *)self accessibilityDomainAccessor];
+    if (accessibilityDomainAccessor)
     {
-      v14 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v8];
+      v14 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:preferenceCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v14 mutableCopy];
+        dictionary = [v14 mutableCopy];
       }
 
       else
       {
-        v15 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v16 = v15;
-      [v15 setObject:v10 forKeyedSubscript:v9];
-      [v13 setObject:v16 forKey:v8];
-      v17 = [v13 synchronize];
+      v16 = dictionary;
+      [dictionary setObject:valueCopy forKeyedSubscript:addressCopy];
+      [accessibilityDomainAccessor setObject:v16 forKey:preferenceCopy];
+      synchronize = [accessibilityDomainAccessor synchronize];
       v18 = objc_opt_new();
-      v19 = [v13 domain];
+      domain = [accessibilityDomainAccessor domain];
       v20 = MEMORY[0x1E695DFD8];
-      v23 = v8;
+      v23 = preferenceCopy;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
       v22 = [v20 setWithArray:v21];
-      [v18 synchronizeNanoDomain:v19 keys:v22];
+      [v18 synchronizeNanoDomain:domain keys:v22];
     }
 
     else
@@ -854,21 +854,21 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
 
   else
   {
-    v13 = AXLogAirPodSettings();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    accessibilityDomainAccessor = AXLogAirPodSettings();
+    if (os_log_type_enabled(accessibilityDomainAccessor, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_18B15E000, v13, OS_LOG_TYPE_INFO, "[NPS] invalid parameters!", buf, 2u);
+      _os_log_impl(&dword_18B15E000, accessibilityDomainAccessor, OS_LOG_TYPE_INFO, "[NPS] invalid parameters!", buf, 2u);
     }
   }
 }
 
-- (float)nps_tapSpeedForDeviceAddress:(id)a3
+- (float)nps_tapSpeedForDeviceAddress:(id)address
 {
   v4 = *MEMORY[0x1E69E4C18];
-  v5 = a3;
+  addressCopy = address;
   v6 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v4];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:addressCopy];
 
   v8 = 0.25;
   if (v7)
@@ -884,52 +884,52 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   return v8;
 }
 
-- (void)nps_setTapSpeed:(float)a3 forDeviceAddress:(id)a4
+- (void)nps_setTapSpeed:(float)speed forDeviceAddress:(id)address
 {
   v6 = *MEMORY[0x1E69E4C18];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  *&v9 = a3;
+  addressCopy = address;
+  *&v9 = speed;
   v10 = [v7 numberWithFloat:v9];
-  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:v8 value:v10];
+  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:addressCopy value:v10];
 }
 
-- (BOOL)nps_noiseCancellationEnabledWithOneUnitForDeviceAddress:(id)a3
+- (BOOL)nps_noiseCancellationEnabledWithOneUnitForDeviceAddress:(id)address
 {
   v4 = *MEMORY[0x1E69E4BF8];
-  v5 = a3;
+  addressCopy = address;
   v6 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v4];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:addressCopy];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)nps_setNoiseCancellationEnabledWithOneUnit:(BOOL)a3 forDeviceAddress:(id)a4
+- (void)nps_setNoiseCancellationEnabledWithOneUnit:(BOOL)unit forDeviceAddress:(id)address
 {
-  v4 = a3;
+  unitCopy = unit;
   v6 = *MEMORY[0x1E69E4BF8];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  v9 = [v7 numberWithBool:v4];
-  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:v8 value:v9];
+  addressCopy = address;
+  v9 = [v7 numberWithBool:unitCopy];
+  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:addressCopy value:v9];
 }
 
-- (float)nps_holdDurationForDeviceAddress:(id)a3
+- (float)nps_holdDurationForDeviceAddress:(id)address
 {
   v4 = *MEMORY[0x1E69E4BE8];
-  v5 = a3;
+  addressCopy = address;
   v6 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v4];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:addressCopy];
 
   v8 = 0.5;
   if (v7)
@@ -945,42 +945,42 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   return v8;
 }
 
-- (void)nps_setHoldDuration:(float)a3 forDeviceAddress:(id)a4
+- (void)nps_setHoldDuration:(float)duration forDeviceAddress:(id)address
 {
   v6 = *MEMORY[0x1E69E4BE8];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  *&v9 = a3;
+  addressCopy = address;
+  *&v9 = duration;
   v10 = [v7 numberWithFloat:v9];
-  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:v8 value:v10];
+  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:addressCopy value:v10];
 }
 
-- (unsigned)nps_defaultToneVolumeForDeviceAddress:(id)a3
+- (unsigned)nps_defaultToneVolumeForDeviceAddress:(id)address
 {
   v4 = *MEMORY[0x1E69E4BD8];
-  v5 = a3;
+  addressCopy = address;
   v6 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v4];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:addressCopy];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
   }
 
   else
   {
-    v8 = 80;
+    unsignedIntValue = 80;
   }
 
-  return v8;
+  return unsignedIntValue;
 }
 
-- (float)nps_toneVolumeForDeviceAddress:(id)a3
+- (float)nps_toneVolumeForDeviceAddress:(id)address
 {
   v4 = *MEMORY[0x1E69E4C10];
-  v5 = a3;
+  addressCopy = address;
   v6 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v4];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:addressCopy];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -996,52 +996,52 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   return v9;
 }
 
-- (void)nps_setToneVolume:(float)a3 forDeviceAddress:(id)a4
+- (void)nps_setToneVolume:(float)volume forDeviceAddress:(id)address
 {
   v6 = *MEMORY[0x1E69E4C10];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  *&v9 = a3;
+  addressCopy = address;
+  *&v9 = volume;
   v10 = [v7 numberWithFloat:v9];
-  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:v8 value:v10];
+  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:addressCopy value:v10];
 }
 
-- (BOOL)nps_volumeSwipeEnabledForDeviceAddress:(id)a3
+- (BOOL)nps_volumeSwipeEnabledForDeviceAddress:(id)address
 {
   v4 = *MEMORY[0x1E69E4C38];
-  v5 = a3;
+  addressCopy = address;
   v6 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v4];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:addressCopy];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)nps_setVolumeSwipeEnabled:(BOOL)a3 forDeviceAddress:(id)a4
+- (void)nps_setVolumeSwipeEnabled:(BOOL)enabled forDeviceAddress:(id)address
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = *MEMORY[0x1E69E4C38];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  v9 = [v7 numberWithBool:v4];
-  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:v8 value:v9];
+  addressCopy = address;
+  v9 = [v7 numberWithBool:enabledCopy];
+  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:addressCopy value:v9];
 }
 
-- (float)nps_volumeSwipeDurationForDeviceAddress:(id)a3
+- (float)nps_volumeSwipeDurationForDeviceAddress:(id)address
 {
   v4 = *MEMORY[0x1E69E4C28];
-  v5 = a3;
+  addressCopy = address;
   v6 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v4];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:addressCopy];
 
   v8 = 0.5;
   if (v7)
@@ -1057,73 +1057,73 @@ void __52__AXAirPodSettingsManager__deviceWithDeviceAddress___block_invoke(uint6
   return v8;
 }
 
-- (void)nps_setVolumeSwipeDuration:(float)a3 forDeviceAddress:(id)a4
+- (void)nps_setVolumeSwipeDuration:(float)duration forDeviceAddress:(id)address
 {
   v6 = *MEMORY[0x1E69E4C28];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  *&v9 = a3;
+  addressCopy = address;
+  *&v9 = duration;
   v10 = [v7 numberWithFloat:v9];
-  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:v8 value:v10];
+  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v6 deviceAddress:addressCopy value:v10];
 }
 
-- (BOOL)nps_caseTonesEnabledForDeviceAddress:(id)a3
+- (BOOL)nps_caseTonesEnabledForDeviceAddress:(id)address
 {
-  v4 = a3;
-  if (!v4)
+  addressCopy = address;
+  if (!addressCopy)
   {
     goto LABEL_6;
   }
 
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 headsetCaseTonesEnabledPreference];
-  v7 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v6];
+  headsetCaseTonesEnabledPreference = [v5 headsetCaseTonesEnabledPreference];
+  v7 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:headsetCaseTonesEnabledPreference];
 
-  v8 = [v7 objectForKeyedSubscript:v4];
+  v8 = [v7 objectForKeyedSubscript:addressCopy];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
 LABEL_6:
     v7 = +[AXSettings sharedInstance];
-    v9 = [v7 headsetCaseTonesEnabledDefaultValue];
+    headsetCaseTonesEnabledDefaultValue = [v7 headsetCaseTonesEnabledDefaultValue];
     goto LABEL_7;
   }
 
-  v9 = [v8 BOOLValue];
+  headsetCaseTonesEnabledDefaultValue = [v8 BOOLValue];
 
 LABEL_7:
-  return v9;
+  return headsetCaseTonesEnabledDefaultValue;
 }
 
-- (void)nps_setCaseTonesEnabled:(BOOL)a3 forDeviceAddress:(id)a4
+- (void)nps_setCaseTonesEnabled:(BOOL)enabled forDeviceAddress:(id)address
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  addressCopy = address;
   v9 = +[AXSettings sharedInstance];
-  v7 = [v9 headsetCaseTonesEnabledPreference];
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v7 deviceAddress:v6 value:v8];
+  headsetCaseTonesEnabledPreference = [v9 headsetCaseTonesEnabledPreference];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:headsetCaseTonesEnabledPreference deviceAddress:addressCopy value:v8];
 }
 
-- (float)nps_caseTonesVolumeForDeviceAddress:(id)a3
+- (float)nps_caseTonesVolumeForDeviceAddress:(id)address
 {
-  v4 = a3;
-  if (!v4)
+  addressCopy = address;
+  if (!addressCopy)
   {
     goto LABEL_6;
   }
 
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 headsetCaseTonesVolumePreference];
-  v7 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:v6];
+  headsetCaseTonesVolumePreference = [v5 headsetCaseTonesVolumePreference];
+  v7 = [(AXAirPodSettingsManager *)self _nps_airPodsDictionaryForPreference:headsetCaseTonesVolumePreference];
 
-  v8 = [v7 objectForKeyedSubscript:v4];
+  v8 = [v7 objectForKeyedSubscript:addressCopy];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
 LABEL_6:
     v7 = +[AXAirPodSettingsManager sharedInstance];
-    v10 = [v7 defaultCaseTonesVolumeForDeviceAddress:v4];
+    v10 = [v7 defaultCaseTonesVolumeForDeviceAddress:addressCopy];
     goto LABEL_7;
   }
 
@@ -1134,17 +1134,17 @@ LABEL_7:
   return v10;
 }
 
-- (void)nps_setCaseTonesVolume:(float)a3 forDeviceAddress:(id)a4
+- (void)nps_setCaseTonesVolume:(float)volume forDeviceAddress:(id)address
 {
-  v6 = a4;
+  addressCopy = address;
   v10 = +[AXSettings sharedInstance];
-  v7 = [v10 headsetCaseTonesVolumePreference];
-  *&v8 = a3;
+  headsetCaseTonesVolumePreference = [v10 headsetCaseTonesVolumePreference];
+  *&v8 = volume;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:v7 deviceAddress:v6 value:v9];
+  [(AXAirPodSettingsManager *)self _nps_updateAirPodsDictionaryForPreference:headsetCaseTonesVolumePreference deviceAddress:addressCopy value:v9];
 }
 
-- (void)_serviceEventForDevice:(BTDeviceImpl *)a3 serviceMask:(unsigned int)a4 eventType:(int)a5 specificEvent:(unsigned int)a6 result:(int)a7
+- (void)_serviceEventForDevice:(BTDeviceImpl *)device serviceMask:(unsigned int)mask eventType:(int)type specificEvent:(unsigned int)event result:(int)result
 {
   delayTimer = self->_delayTimer;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1152,10 +1152,10 @@ LABEL_7:
   v8[2] = __93__AXAirPodSettingsManager__serviceEventForDevice_serviceMask_eventType_specificEvent_result___block_invoke;
   v8[3] = &unk_1E71E9B98;
   v8[4] = self;
-  [(AXDispatchTimer *)delayTimer afterDelay:v8 processBlock:*&a4, *&a5, *&a6, *&a7, 0.5];
+  [(AXDispatchTimer *)delayTimer afterDelay:v8 processBlock:*&mask, *&type, *&event, *&result, 0.5];
 }
 
-- (void)_accessoryEventForManager:(BTAccessoryManagerImpl *)a3 event:(int)a4 device:(BTDeviceImpl *)a5 state:(int)a6
+- (void)_accessoryEventForManager:(BTAccessoryManagerImpl *)manager event:(int)event device:(BTDeviceImpl *)device state:(int)state
 {
   delayTimer = self->_delayTimer;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1163,7 +1163,7 @@ LABEL_7:
   v7[2] = __72__AXAirPodSettingsManager__accessoryEventForManager_event_device_state___block_invoke;
   v7[3] = &unk_1E71E9B98;
   v7[4] = self;
-  [(AXDispatchTimer *)delayTimer afterDelay:v7 processBlock:*&a4, a5, *&a6, 0.5];
+  [(AXDispatchTimer *)delayTimer afterDelay:v7 processBlock:*&event, device, *&state, 0.5];
 }
 
 uint64_t __72__AXAirPodSettingsManager__accessoryEventForManager_event_device_state___block_invoke(uint64_t a1)
@@ -1179,11 +1179,11 @@ uint64_t __72__AXAirPodSettingsManager__accessoryEventForManager_event_device_st
   return [*v1 _retrieveSettingsFromDevices:*(*v1 + 7)];
 }
 
-- (void)_sessionEventForSession:(BTSessionImpl *)a3 event:(int)a4 result:(int)a5
+- (void)_sessionEventForSession:(BTSessionImpl *)session event:(int)event result:(int)result
 {
-  if ((a4 - 1) >= 3)
+  if ((event - 1) >= 3)
   {
-    if (a4)
+    if (event)
     {
       return;
     }
@@ -1195,9 +1195,9 @@ uint64_t __72__AXAirPodSettingsManager__accessoryEventForManager_event_device_st
       _os_log_impl(&dword_18B15E000, v9, OS_LOG_TYPE_DEFAULT, "BTSession attached.", buf, 2u);
     }
 
-    if (!a5)
+    if (!result)
     {
-      [(AXAirPodSettingsManager *)self _didConnectWithSession:a3];
+      [(AXAirPodSettingsManager *)self _didConnectWithSession:session];
       return;
     }
 
@@ -1211,27 +1211,27 @@ uint64_t __72__AXAirPodSettingsManager__accessoryEventForManager_event_device_st
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_DEFAULT, "BTSession detached.", v10, 2u);
   }
 
-  if (self->_session == a3)
+  if (self->_session == session)
   {
 LABEL_10:
     [(AXAirPodSettingsManager *)self _didDisconnect];
   }
 }
 
-- (void)_didConnectWithSession:(BTSessionImpl *)a3
+- (void)_didConnectWithSession:(BTSessionImpl *)session
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = AXLogAirPodSettings();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = session;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "Connecting to BT session for AirPod settings: %d", buf, 8u);
   }
 
   if (!self->_session)
   {
-    self->_session = a3;
+    self->_session = session;
     BTAccessoryManagerGetDefault();
     BTLocalDeviceGetDefault();
     v11 = 0;
@@ -1247,12 +1247,12 @@ LABEL_10:
     block[3] = &unk_1E71E9B98;
     block[4] = self;
     dispatch_async(queue, block);
-    v7 = [(AXAirPodSettingsManager *)self readyBlock];
+    readyBlock = [(AXAirPodSettingsManager *)self readyBlock];
 
-    if (v7)
+    if (readyBlock)
     {
-      v8 = [(AXAirPodSettingsManager *)self readyBlock];
-      dispatch_async(MEMORY[0x1E69E96A0], v8);
+      readyBlock2 = [(AXAirPodSettingsManager *)self readyBlock];
+      dispatch_async(MEMORY[0x1E69E96A0], readyBlock2);
     }
   }
 }
@@ -1287,16 +1287,16 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_18B15E000, a2, OS_LOG_TYPE_ERROR, "BTLocalDeviceGetConnectedDevices failed: %d", v2, 8u);
 }
 
-- (void)_saveDeviceInfoForAddress:(id)a3 productID:(unsigned int)a4 bluetoothDevice:(BTDeviceImpl *)a5
+- (void)_saveDeviceInfoForAddress:(id)address productID:(unsigned int)d bluetoothDevice:(BTDeviceImpl *)device
 {
-  v5 = *&a4;
+  v5 = *&d;
   v20[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  addressCopy = address;
+  if (addressCopy)
   {
     if ([(AXAirPodSettingsManager *)self _supportsCaseTonesForProductID:v5])
     {
@@ -1308,13 +1308,13 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       v20[1] = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
 
-      [(NSMutableDictionary *)self->_deviceInfo setValue:v10 forKey:v7];
+      [(NSMutableDictionary *)self->_deviceInfo setValue:v10 forKey:addressCopy];
       v11 = AXLogAirPodSettings();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = [MEMORY[0x1E696AD98] numberWithInt:AACPCapabilityInteger];
         *buf = 138412802;
-        v14 = v7;
+        v14 = addressCopy;
         v15 = 1024;
         v16 = 0;
         v17 = 2112;
@@ -1325,20 +1325,20 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
 
     else
     {
-      [(NSMutableDictionary *)self->_deviceInfo removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_deviceInfo removeObjectForKey:addressCopy];
     }
   }
 }
 
-- (void)_retrieveSettingsFromDevices:(id)a3
+- (void)_retrieveSettingsFromDevices:(id)devices
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  devicesCopy = devices;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [devicesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1350,14 +1350,14 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devicesCopy);
         }
 
         [(AXAirPodSettingsManager *)self _retrieveSettingsForAddress:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [devicesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1419,11 +1419,11 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_retrieveSettingsForAddress:(id)a3
+- (void)_retrieveSettingsForAddress:(id)address
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 UTF8String];
+  addressCopy = address;
+  [addressCopy UTF8String];
   BTDeviceAddressFromString();
   if (!BTDeviceFromAddress())
   {
@@ -1438,7 +1438,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
         *buf = 67109634;
         *v35 = v7;
         *&v35[4] = 2112;
-        *&v35[6] = v4;
+        *&v35[6] = addressCopy;
         *&v35[14] = 1024;
         *&v35[16] = 0;
         _os_log_error_impl(&dword_18B15E000, v8, OS_LOG_TYPE_ERROR, "could not get click speed [%d] for air pods: %@ -> [%d]", buf, 0x18u);
@@ -1457,7 +1457,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *v35 = v4;
+        *v35 = addressCopy;
         *&v35[8] = 1024;
         *&v35[10] = 0;
         _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_DEFAULT, "retrieved click speed for air pods: %@ -> [%d]", buf, 0x12u);
@@ -1492,7 +1492,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
         *buf = 67109634;
         *v35 = v12;
         *&v35[4] = 2112;
-        *&v35[6] = v4;
+        *&v35[6] = addressCopy;
         *&v35[14] = 1024;
         *&v35[16] = 0;
         _os_log_error_impl(&dword_18B15E000, v13, OS_LOG_TYPE_ERROR, "could not get hold duration [%d] for air pods: %@ -> [%d]", buf, 0x18u);
@@ -1511,7 +1511,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *v35 = v4;
+        *v35 = addressCopy;
         *&v35[8] = 1024;
         *&v35[10] = 0;
         _os_log_impl(&dword_18B15E000, v13, OS_LOG_TYPE_DEFAULT, "retrieved hold duration for air pods: %@ -> [%d]", buf, 0x12u);
@@ -1528,7 +1528,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
         *buf = 67109634;
         *v35 = v16;
         *&v35[4] = 2112;
-        *&v35[6] = v4;
+        *&v35[6] = addressCopy;
         *&v35[14] = 1024;
         *&v35[16] = 2;
         _os_log_error_impl(&dword_18B15E000, v17, OS_LOG_TYPE_ERROR, "could not get one bud mode[%d]: %@ -> %d", buf, 0x18u);
@@ -1546,7 +1546,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *v35 = v4;
+        *v35 = addressCopy;
         *&v35[8] = 1024;
         *&v35[10] = 2;
         _os_log_impl(&dword_18B15E000, v17, OS_LOG_TYPE_DEFAULT, "retrieved one bud noise cancel for air pods: %@ -> [%d]", buf, 0x12u);
@@ -1562,7 +1562,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
         *buf = 67109634;
         *v35 = v18;
         *&v35[4] = 2112;
-        *&v35[6] = v4;
+        *&v35[6] = addressCopy;
         *&v35[14] = 1024;
         *&v35[16] = 2;
         _os_log_error_impl(&dword_18B15E000, v20, OS_LOG_TYPE_ERROR, "could not get volume swipe mode[%d]: %@ -> %d", buf, 0x18u);
@@ -1581,7 +1581,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *v35 = v4;
+        *v35 = addressCopy;
         *&v35[8] = 1024;
         *&v35[10] = 2;
         _os_log_impl(&dword_18B15E000, v20, OS_LOG_TYPE_DEFAULT, "retrieved volume swipe enabled for air pods: %@ -> [%d]", buf, 0x12u);
@@ -1598,7 +1598,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
         *buf = 67109634;
         *v35 = v22;
         *&v35[4] = 2112;
-        *&v35[6] = v4;
+        *&v35[6] = addressCopy;
         *&v35[14] = 1024;
         *&v35[16] = 0;
         _os_log_error_impl(&dword_18B15E000, v23, OS_LOG_TYPE_ERROR, "could not get volume swipe duration [%d] for air pods: %@ -> [%d]", buf, 0x18u);
@@ -1617,14 +1617,14 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *v35 = v4;
+        *v35 = addressCopy;
         *&v35[8] = 1024;
         *&v35[10] = 0;
         _os_log_impl(&dword_18B15E000, v23, OS_LOG_TYPE_DEFAULT, "retrieved volume swipe duration for air pods: %@ -> [%d]", buf, 0x12u);
       }
     }
 
-    if (![(AXAirPodSettingsManager *)self _supportsCaseTonesForDeviceAddress:v4])
+    if (![(AXAirPodSettingsManager *)self _supportsCaseTonesForDeviceAddress:addressCopy])
     {
       goto LABEL_57;
     }
@@ -1639,7 +1639,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
         *buf = 67109634;
         *v35 = v25;
         *&v35[4] = 2112;
-        *&v35[6] = v4;
+        *&v35[6] = addressCopy;
         *&v35[14] = 1024;
         *&v35[16] = 2;
         _os_log_error_impl(&dword_18B15E000, v27, OS_LOG_TYPE_ERROR, "could not get case tones mode[%d]: %@ -> %d, ignoring case tones volume", buf, 0x18u);
@@ -1657,13 +1657,13 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *v35 = v4;
+        *v35 = addressCopy;
         *&v35[8] = 1024;
         *&v35[10] = 0;
         _os_log_impl(&dword_18B15E000, v26, OS_LOG_TYPE_DEFAULT, "retrieved case tones enabled for beats: %@ -> [%d]", buf, 0x12u);
       }
 
-      if (![(AXAirPodSettingsManager *)self _supportsCaseTonesVolumeForDeviceAddress:v4])
+      if (![(AXAirPodSettingsManager *)self _supportsCaseTonesVolumeForDeviceAddress:addressCopy])
       {
         goto LABEL_57;
       }
@@ -1681,12 +1681,12 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
       else
       {
         v28 = +[AXSettings sharedInstance];
-        v29 = [v28 headsetCaseTonesVolumeForDeviceAddress:v4];
+        v29 = [v28 headsetCaseTonesVolumeForDeviceAddress:addressCopy];
 
         if (v29)
         {
           v30 = +[AXSettings sharedInstance];
-          [v30 setHeadsetCaseTonesVolume:0 forDeviceAddress:v4];
+          [v30 setHeadsetCaseTonesVolume:0 forDeviceAddress:addressCopy];
         }
 
         v27 = AXLogAirPodSettings();
@@ -1695,7 +1695,7 @@ uint64_t __41__AXAirPodSettingsManager__didDisconnect__block_invoke(uint64_t a1)
           v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:0];
           v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v29];
           *buf = 138412802;
-          *v35 = v4;
+          *v35 = addressCopy;
           *&v35[8] = 2112;
           *&v35[10] = v31;
           *&v35[18] = 2112;
@@ -1719,21 +1719,21 @@ LABEL_57:
 LABEL_58:
 }
 
-- (void)_applySettingsForAddress:(id)a3
+- (void)_applySettingsForAddress:(id)address
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressCopy = address;
   v5 = AXLogAirPodSettings();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v59 = v4;
+    *v59 = addressCopy;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "Applying AirPod settings for %@", buf, 0xCu);
   }
 
   WORD2(v57) = 0;
   LODWORD(v57) = 0;
-  [v4 UTF8String];
+  [addressCopy UTF8String];
   BTDeviceAddressFromString();
   v56 = 0;
   if (BTDeviceFromAddress())
@@ -1766,7 +1766,7 @@ LABEL_6:
     *&v59[18] = 2112;
     *&v59[20] = v14;
     v60 = 2112;
-    v61 = v4;
+    v61 = addressCopy;
     _os_log_impl(&dword_18B15E000, v11, OS_LOG_TYPE_DEFAULT, "Set tone volume: %@ (%@/%@) on %@", buf, 0x2Au);
   }
 
@@ -1775,7 +1775,7 @@ LABEL_6:
     v15 = AXLogAirPodSettings();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(AXAirPodSettingsManager *)v4 _applySettingsForAddress:v9];
+      [(AXAirPodSettingsManager *)addressCopy _applySettingsForAddress:v9];
     }
   }
 
@@ -1813,7 +1813,7 @@ LABEL_19:
     *&v59[8] = 1024;
     *&v59[10] = v18;
     *&v59[14] = 2112;
-    *&v59[16] = v4;
+    *&v59[16] = addressCopy;
     _os_log_impl(&dword_18B15E000, v20, OS_LOG_TYPE_DEFAULT, "Set click speed: [%f > %d] on %@", buf, 0x1Cu);
   }
 
@@ -1823,7 +1823,7 @@ LABEL_19:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *v59 = v4;
+      *v59 = addressCopy;
       *&v59[8] = 2048;
       *&v59[10] = v17;
       *&v59[18] = 1024;
@@ -1864,7 +1864,7 @@ LABEL_31:
     *buf = 67109378;
     *v59 = v24;
     *&v59[4] = 2112;
-    *&v59[6] = v4;
+    *&v59[6] = addressCopy;
     _os_log_impl(&dword_18B15E000, v26, OS_LOG_TYPE_DEFAULT, "Set hold duration mode: %d on %@", buf, 0x12u);
   }
 
@@ -1874,7 +1874,7 @@ LABEL_31:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *v59 = v4;
+      *v59 = addressCopy;
       *&v59[8] = 2048;
       *&v59[10] = v23;
       *&v59[18] = 1024;
@@ -1902,7 +1902,7 @@ LABEL_31:
     *&v59[4] = 1024;
     *&v59[6] = v29;
     *&v59[10] = 2112;
-    *&v59[12] = v4;
+    *&v59[12] = addressCopy;
     _os_log_impl(&dword_18B15E000, v30, OS_LOG_TYPE_DEFAULT, "Set noise cancellation with one bud, enabled: %d, BT value: %d on %@", buf, 0x18u);
   }
 
@@ -1976,7 +1976,7 @@ LABEL_61:
     *buf = 67109378;
     *v59 = v39;
     *&v59[4] = 2112;
-    *&v59[6] = v4;
+    *&v59[6] = addressCopy;
     _os_log_impl(&dword_18B15E000, v41, OS_LOG_TYPE_DEFAULT, "Set volume swipe duration mode: %d on %@", buf, 0x12u);
   }
 
@@ -1986,7 +1986,7 @@ LABEL_61:
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *v59 = v4;
+      *v59 = addressCopy;
       *&v59[8] = 2048;
       *&v59[10] = v38;
       *&v59[18] = 1024;
@@ -2000,7 +2000,7 @@ LABEL_61:
   {
     v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v29];
     *buf = 138413826;
-    *v59 = v4;
+    *v59 = addressCopy;
     *&v59[8] = 2048;
     *&v59[10] = v17;
     *&v59[18] = 2048;
@@ -2016,7 +2016,7 @@ LABEL_61:
     _os_log_impl(&dword_18B15E000, v43, OS_LOG_TYPE_DEFAULT, "Set click and hold speed for AirPods: %@ [click %f, hold %f, ANC: (BT:%@, setting:%d)] Vol Swipe [%d, %lf]", buf, 0x40u);
   }
 
-  if ([(AXAirPodSettingsManager *)self _supportsCaseTonesForDeviceAddress:v4])
+  if ([(AXAirPodSettingsManager *)self _supportsCaseTonesForDeviceAddress:addressCopy])
   {
     v45 = _AXSHeadsetCaseTonesEnabled();
     if (v45)
@@ -2050,10 +2050,10 @@ LABEL_61:
       }
     }
 
-    if ([(AXAirPodSettingsManager *)self _supportsCaseTonesVolumeForDeviceAddress:v4, v56])
+    if ([(AXAirPodSettingsManager *)self _supportsCaseTonesVolumeForDeviceAddress:addressCopy, v56])
     {
       v51 = +[AXSettings sharedInstance];
-      v52 = [v51 headsetCaseTonesVolumeForDeviceAddress:v4];
+      v52 = [v51 headsetCaseTonesVolumeForDeviceAddress:addressCopy];
 
       v53 = BTAccessoryManagerSendControlCommand();
       v54 = AXLogAirPodSettings();
@@ -2063,7 +2063,7 @@ LABEL_61:
         *buf = 138412546;
         *v59 = v55;
         *&v59[8] = 2112;
-        *&v59[10] = v4;
+        *&v59[10] = addressCopy;
         _os_log_impl(&dword_18B15E000, v54, OS_LOG_TYPE_DEFAULT, "Set case tones volume: %@ on %@", buf, 0x16u);
       }
 
@@ -2072,7 +2072,7 @@ LABEL_61:
         v6 = AXLogAirPodSettings();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
-          [(AXAirPodSettingsManager *)v4 _applySettingsForAddress:v52];
+          [(AXAirPodSettingsManager *)addressCopy _applySettingsForAddress:v52];
         }
 
         goto LABEL_6;
@@ -2112,9 +2112,9 @@ LABEL_85:
   return v2;
 }
 
-- (void)startWithCallback:(id)a3
+- (void)startWithCallback:(id)callback
 {
-  [(AXAirPodSettingsManager *)self setReadyBlock:a3];
+  [(AXAirPodSettingsManager *)self setReadyBlock:callback];
   v17 = sessionEventCallback;
   if (BTSessionAttachWithQueue())
   {
@@ -2143,8 +2143,8 @@ LABEL_85:
   CFNotificationCenterAddObserver(v11, 0, _prefChangedCallback, *MEMORY[0x1E69E4D88], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   v12 = CFNotificationCenterGetDarwinNotifyCenter();
   v13 = +[AXSettings sharedInstance];
-  v14 = [v13 headsetCaseTonesVolumeChangedNotification];
-  CFNotificationCenterAddObserver(v12, 0, _prefChangedCallback, v14, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  headsetCaseTonesVolumeChangedNotification = [v13 headsetCaseTonesVolumeChangedNotification];
+  CFNotificationCenterAddObserver(v12, 0, _prefChangedCallback, headsetCaseTonesVolumeChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
   v15 = AXLogAirPodSettings();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))

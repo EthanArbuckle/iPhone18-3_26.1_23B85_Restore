@@ -2,11 +2,11 @@
 + (id)archivedClasses;
 + (id)log;
 - (DEDBugSession)session;
-- (DEDTestingFinisher)initWithCoder:(id)a3;
-- (DEDTestingFinisher)initWithConfiguration:(id)a3 session:(id)a4;
-- (id)flattenDirectories:(id)a3 progressHandler:(id)a4;
-- (void)finishSession:(id)a3 withConfiguration:(id)a4;
-- (void)writeData:(id)a3 filename:(id)a4;
+- (DEDTestingFinisher)initWithCoder:(id)coder;
+- (DEDTestingFinisher)initWithConfiguration:(id)configuration session:(id)session;
+- (id)flattenDirectories:(id)directories progressHandler:(id)handler;
+- (void)finishSession:(id)session withConfiguration:(id)configuration;
+- (void)writeData:(id)data filename:(id)filename;
 @end
 
 @implementation DEDTestingFinisher
@@ -31,22 +31,22 @@ void __25__DEDTestingFinisher_log__block_invoke()
   log_log_0 = v0;
 }
 
-- (DEDTestingFinisher)initWithConfiguration:(id)a3 session:(id)a4
+- (DEDTestingFinisher)initWithConfiguration:(id)configuration session:(id)session
 {
   v7.receiver = self;
   v7.super_class = DEDTestingFinisher;
-  v4 = a4;
+  sessionCopy = session;
   v5 = [(DEDTestingFinisher *)&v7 init];
-  objc_storeWeak(&v5->_session, v4);
+  objc_storeWeak(&v5->_session, sessionCopy);
 
   return v5;
 }
 
-- (void)finishSession:(id)a3 withConfiguration:(id)a4
+- (void)finishSession:(id)session withConfiguration:(id)configuration
 {
   v86 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v63 = self;
+  sessionCopy = session;
+  selfCopy = self;
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -59,8 +59,8 @@ void __25__DEDTestingFinisher_log__block_invoke()
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v8 = [v5 allExtensionIdentifiers];
-  v9 = [v8 countByEnumeratingWithState:&v76 objects:v85 count:16];
+  allExtensionIdentifiers = [sessionCopy allExtensionIdentifiers];
+  v9 = [allExtensionIdentifiers countByEnumeratingWithState:&v76 objects:v85 count:16];
   if (v9)
   {
     v10 = v9;
@@ -71,22 +71,22 @@ void __25__DEDTestingFinisher_log__block_invoke()
       {
         if (*v77 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allExtensionIdentifiers);
         }
 
-        v13 = [*(*(&v76 + 1) + 8 * i) stringValue];
-        [v7 addObject:v13];
+        stringValue = [*(*(&v76 + 1) + 8 * i) stringValue];
+        [v7 addObject:stringValue];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v76 objects:v85 count:16];
+      v10 = [allExtensionIdentifiers countByEnumeratingWithState:&v76 objects:v85 count:16];
     }
 
     while (v10);
   }
 
   v14 = objc_opt_new();
-  v15 = [v5 identifier];
-  v16 = [v14 directoryForBugSessionIdentifier:v15];
+  identifier = [sessionCopy identifier];
+  v16 = [v14 directoryForBugSessionIdentifier:identifier];
 
   v57 = v16;
   v17 = [MEMORY[0x277D051E0] lsDir:v16];
@@ -111,8 +111,8 @@ void __25__DEDTestingFinisher_log__block_invoke()
         }
 
         v22 = *(*(&v72 + 1) + 8 * j);
-        v23 = [v22 lastPathComponent];
-        if ([v7 containsObject:v23])
+        lastPathComponent = [v22 lastPathComponent];
+        if ([v7 containsObject:lastPathComponent])
         {
           v24 = [MEMORY[0x277D051E0] isValidDirectory:v22];
 
@@ -144,12 +144,12 @@ void __25__DEDTestingFinisher_log__block_invoke()
   v70[1] = 3221225472;
   v70[2] = __54__DEDTestingFinisher_finishSession_withConfiguration___block_invoke;
   v70[3] = &unk_278F660D0;
-  v26 = v5;
+  v26 = sessionCopy;
   v71 = v26;
   v27 = MEMORY[0x24C1E5320](v70);
   v28 = [[DEDCompressionDebouncer alloc] initWithTrigger:v27 interval:1.0];
-  v29 = [(DEDCompressionDebouncer *)v28 handler];
-  v30 = [(DEDTestingFinisher *)v63 flattenDirectories:v58 progressHandler:v29];
+  handler = [(DEDCompressionDebouncer *)v28 handler];
+  v30 = [(DEDTestingFinisher *)selfCopy flattenDirectories:v58 progressHandler:handler];
 
   v31 = [objc_opt_class() log];
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -160,9 +160,9 @@ void __25__DEDTestingFinisher_log__block_invoke()
   }
 
   v32 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v33 = [v32 temporaryDirectory];
-  v34 = [v26 identifier];
-  v35 = [v33 URLByAppendingPathComponent:v34];
+  temporaryDirectory = [v32 temporaryDirectory];
+  identifier2 = [v26 identifier];
+  v35 = [temporaryDirectory URLByAppendingPathComponent:identifier2];
 
   v69 = 0;
   v61 = v35;
@@ -208,8 +208,8 @@ void __25__DEDTestingFinisher_log__block_invoke()
           }
 
           v47 = *(*(&v65 + 1) + 8 * k);
-          v48 = [v47 lastPathComponent];
-          v49 = [v61 URLByAppendingPathComponent:v48];
+          lastPathComponent2 = [v47 lastPathComponent];
+          v49 = [v61 URLByAppendingPathComponent:lastPathComponent2];
           v64 = 0;
           [v62 copyItemAtURL:v47 toURL:v49 error:&v64];
           v50 = v64;
@@ -264,7 +264,7 @@ void __25__DEDTestingFinisher_log__block_invoke()
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (DEDTestingFinisher)initWithCoder:(id)a3
+- (DEDTestingFinisher)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = DEDTestingFinisher;
@@ -279,17 +279,17 @@ void __25__DEDTestingFinisher_log__block_invoke()
   return [v2 setWithObject:v3];
 }
 
-- (id)flattenDirectories:(id)a3 progressHandler:(id)a4
+- (id)flattenDirectories:(id)directories progressHandler:(id)handler
 {
   v70 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v33 = a4;
+  directoriesCopy = directories;
+  handlerCopy = handler;
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v5;
+  obj = directoriesCopy;
   v6 = [obj countByEnumeratingWithState:&v60 objects:v69 count:16];
   v7 = 0;
   if (v6)
@@ -401,7 +401,7 @@ void __25__DEDTestingFinisher_log__block_invoke()
                 v39[2] = __57__DEDTestingFinisher_flattenDirectories_progressHandler___block_invoke;
                 v39[3] = &unk_278F660F8;
                 v41 = &v44;
-                v40 = v33;
+                v40 = handlerCopy;
                 v42 = v15;
                 v43 = v7;
                 v23 = [v22 archiveDirectoryAt:v20 deleteOriginal:1 progressHandler:v39];
@@ -456,25 +456,25 @@ void __25__DEDTestingFinisher_log__block_invoke()
   return v36;
 }
 
-- (void)writeData:(id)a3 filename:(id)a4
+- (void)writeData:(id)data filename:(id)filename
 {
-  v6 = a4;
-  v7 = a3;
+  filenameCopy = filename;
+  dataCopy = data;
   v8 = objc_opt_new();
-  v9 = [(DEDTestingFinisher *)self session];
-  v10 = [v9 identifier];
-  v11 = [v8 directoryForBugSessionIdentifier:v10];
+  session = [(DEDTestingFinisher *)self session];
+  identifier = [session identifier];
+  v11 = [v8 directoryForBugSessionIdentifier:identifier];
 
   v12 = [v11 URLByAppendingPathComponent:@"sendData"];
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [v12 path];
-  v15 = [v13 fileExistsAtPath:v14];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v12 path];
+  v15 = [defaultManager fileExistsAtPath:path];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v23 = 0;
-    [v16 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v23];
+    [defaultManager2 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v23];
     v17 = v23;
 
     if (v17)
@@ -487,9 +487,9 @@ void __25__DEDTestingFinisher_log__block_invoke()
     }
   }
 
-  v19 = [v12 URLByAppendingPathComponent:v6];
+  v19 = [v12 URLByAppendingPathComponent:filenameCopy];
   v22 = 0;
-  [v7 writeToURL:v19 options:2 error:&v22];
+  [dataCopy writeToURL:v19 options:2 error:&v22];
 
   v20 = v22;
   if (v20)

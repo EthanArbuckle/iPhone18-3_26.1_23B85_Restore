@@ -1,68 +1,68 @@
 @interface BKContentReloadView
-- (BKContentReloadView)initWithFrame:(CGRect)a3 theme:(id)a4 delegate:(id)a5;
+- (BKContentReloadView)initWithFrame:(CGRect)frame theme:(id)theme delegate:(id)delegate;
 - (BKContentReloadViewDelegate)delegate;
 - (UIButton)button;
 - (UILabel)label;
 - (UIStackView)stackView;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 - (void)_updateColors;
-- (void)setTheme:(id)a3;
+- (void)setTheme:(id)theme;
 @end
 
 @implementation BKContentReloadView
 
-- (BKContentReloadView)initWithFrame:(CGRect)a3 theme:(id)a4 delegate:(id)a5
+- (BKContentReloadView)initWithFrame:(CGRect)frame theme:(id)theme delegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  themeCopy = theme;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = BKContentReloadView;
-  v13 = [(BKContentReloadView *)&v34 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(BKContentReloadView *)&v34 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    [(BKContentReloadView *)v13 setDelegate:v12];
-    v15 = [(BKContentReloadView *)v14 stackView];
-    [(BKContentReloadView *)v14 addSubview:v15];
-    v31 = [v15 widthAnchor];
-    v30 = [(BKContentReloadView *)v14 widthAnchor];
-    v29 = [v31 constraintLessThanOrEqualToAnchor:v30 constant:-24.0];
+    [(BKContentReloadView *)height setDelegate:delegateCopy];
+    stackView = [(BKContentReloadView *)v14 stackView];
+    [(BKContentReloadView *)v14 addSubview:stackView];
+    widthAnchor = [stackView widthAnchor];
+    widthAnchor2 = [(BKContentReloadView *)v14 widthAnchor];
+    v29 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 constant:-24.0];
     v35[0] = v29;
-    v28 = [v15 heightAnchor];
-    v27 = [(BKContentReloadView *)v14 heightAnchor];
-    [v28 constraintLessThanOrEqualToAnchor:v27 constant:-56.0];
-    v16 = v32 = v12;
+    heightAnchor = [stackView heightAnchor];
+    heightAnchor2 = [(BKContentReloadView *)v14 heightAnchor];
+    [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2 constant:-56.0];
+    v16 = v32 = delegateCopy;
     v35[1] = v16;
-    v17 = [v15 centerYAnchor];
-    v18 = [(BKContentReloadView *)v14 centerYAnchor];
-    [v17 constraintEqualToAnchor:v18];
-    v19 = v33 = v11;
+    centerYAnchor = [stackView centerYAnchor];
+    centerYAnchor2 = [(BKContentReloadView *)v14 centerYAnchor];
+    [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    v19 = v33 = themeCopy;
     v35[2] = v19;
-    v20 = [v15 centerXAnchor];
-    v21 = [(BKContentReloadView *)v14 centerXAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    centerXAnchor = [stackView centerXAnchor];
+    centerXAnchor2 = [(BKContentReloadView *)v14 centerXAnchor];
+    v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v35[3] = v22;
     v23 = [NSArray arrayWithObjects:v35 count:4];
     [NSLayoutConstraint activateConstraints:v23];
 
-    v11 = v33;
+    themeCopy = v33;
     [(BKContentReloadView *)v14 setTheme:v33];
     v24 = +[UITraitCollection bc_allAPITraits];
     v25 = [(BKContentReloadView *)v14 registerForTraitChanges:v24 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
 
-    v12 = v32;
+    delegateCopy = v32;
   }
 
   return v14;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  objc_storeStrong(&self->_theme, a3);
+  objc_storeStrong(&self->_theme, theme);
 
   [(BKContentReloadView *)self _updateColors];
 }
@@ -73,10 +73,10 @@
   if (!stackView)
   {
     v4 = [UIStackView alloc];
-    v5 = [(BKContentReloadView *)self label];
-    v11[0] = v5;
-    v6 = [(BKContentReloadView *)self button];
-    v11[1] = v6;
+    label = [(BKContentReloadView *)self label];
+    v11[0] = label;
+    button = [(BKContentReloadView *)self button];
+    v11[1] = button;
     v7 = [NSArray arrayWithObjects:v11 count:2];
     v8 = [v4 initWithArrangedSubviews:v7];
     v9 = self->_stackView;
@@ -128,7 +128,7 @@
   button = self->_button;
   if (!button)
   {
-    v4 = [(BKContentReloadView *)self theme];
+    theme = [(BKContentReloadView *)self theme];
     v5 = +[UIButtonConfiguration filledButtonConfiguration];
     v6 = AEBundle();
     v7 = [v6 localizedStringForKey:@"Reload Book" value:&stru_1E7188 table:0];
@@ -136,11 +136,11 @@
 
     [v5 setTitleAlignment:2];
     [v5 setCornerStyle:4];
-    v8 = [v4 finishedButtonBackgroundColor];
-    [v5 setBaseBackgroundColor:v8];
+    finishedButtonBackgroundColor = [theme finishedButtonBackgroundColor];
+    [v5 setBaseBackgroundColor:finishedButtonBackgroundColor];
 
-    v9 = [v4 finishedButtonTextColor];
-    [v5 setBaseForegroundColor:v9];
+    finishedButtonTextColor = [theme finishedButtonTextColor];
+    [v5 setBaseForegroundColor:finishedButtonTextColor];
 
     objc_initWeak(&location, self);
     v14[0] = _NSConcreteStackBlock;
@@ -166,42 +166,42 @@
 
 - (void)_updateColors
 {
-  v13 = [(BKContentReloadView *)self theme];
-  v3 = [(BKContentReloadView *)self theme];
-  if ([v3 overlayContentBackgroundColor])
+  theme = [(BKContentReloadView *)self theme];
+  theme2 = [(BKContentReloadView *)self theme];
+  if ([theme2 overlayContentBackgroundColor])
   {
-    v4 = +[UIColor whiteColor];
-    [(BKContentReloadView *)self setBackgroundColor:v4];
+    traitCollection = +[UIColor whiteColor];
+    [(BKContentReloadView *)self setBackgroundColor:traitCollection];
   }
 
   else
   {
-    v4 = [(BKContentReloadView *)self traitCollection];
-    v5 = [v13 backgroundColorForTraitCollection:v4];
+    traitCollection = [(BKContentReloadView *)self traitCollection];
+    v5 = [theme backgroundColorForTraitCollection:traitCollection];
     [(BKContentReloadView *)self setBackgroundColor:v5];
   }
 
-  v6 = [v13 contentTextColor];
-  v7 = [(BKContentReloadView *)self label];
-  [v7 setTextColor:v6];
+  contentTextColor = [theme contentTextColor];
+  label = [(BKContentReloadView *)self label];
+  [label setTextColor:contentTextColor];
 
-  v8 = [(BKContentReloadView *)self button];
-  v9 = [v8 configuration];
-  v10 = [v9 copy];
+  button = [(BKContentReloadView *)self button];
+  configuration = [button configuration];
+  v10 = [configuration copy];
 
-  v11 = [v13 buttonColor];
-  [v10 setBaseBackgroundColor:v11];
+  buttonColor = [theme buttonColor];
+  [v10 setBaseBackgroundColor:buttonColor];
 
   v12 = +[UIColor whiteColor];
   [v10 setBaseForegroundColor:v12];
 
-  [v8 setConfiguration:v10];
+  [button setConfiguration:v10];
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = [(BKContentReloadView *)self delegate];
-  [v4 reloadViewDidBeginReloading:self];
+  delegate = [(BKContentReloadView *)self delegate];
+  [delegate reloadViewDidBeginReloading:self];
 }
 
 - (BKContentReloadViewDelegate)delegate

@@ -1,5 +1,5 @@
 @interface MapsSuggestionsGeoServicesFeeler
-- (MapsSuggestionsGeoServicesFeeler)initWithDelegate:(id)a3 name:(id)a4;
+- (MapsSuggestionsGeoServicesFeeler)initWithDelegate:(id)delegate name:(id)name;
 - (double)updateSignals;
 @end
 
@@ -7,28 +7,28 @@
 
 - (double)updateSignals
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    signalPack = v2->_signalPack;
+    signalPack = selfCopy->_signalPack;
     *&v4 = GEOGetUserTransportTypePreference();
     [(MapsSuggestionsMutableSignalPack *)signalPack writeSignalValue:19 forType:v4];
   }
 
-  sub_100003DF0(&v2->super.super.super.isa);
-  sub_100003E60(v2, &v6);
+  sub_100003DF0(&selfCopy->super.super.super.isa);
+  sub_100003E60(selfCopy, &v6);
   return v6;
 }
 
-- (MapsSuggestionsGeoServicesFeeler)initWithDelegate:(id)a3 name:(id)a4
+- (MapsSuggestionsGeoServicesFeeler)initWithDelegate:(id)delegate name:(id)name
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, delegate);
+  nameCopy = name;
   v7 = objc_loadWeakRetained(&location);
   v13.receiver = self;
   v13.super_class = MapsSuggestionsGeoServicesFeeler;
-  v8 = [(MapsSuggestionsBaseFeeler *)&v13 initWithDelegate:v7 name:v6];
+  v8 = [(MapsSuggestionsBaseFeeler *)&v13 initWithDelegate:v7 name:nameCopy];
 
   if (v8)
   {

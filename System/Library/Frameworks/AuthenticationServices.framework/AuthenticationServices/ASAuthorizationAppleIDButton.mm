@@ -1,15 +1,15 @@
 @interface ASAuthorizationAppleIDButton
 + (ASAuthorizationAppleIDButton)buttonWithType:(ASAuthorizationAppleIDButtonType)type style:(ASAuthorizationAppleIDButtonStyle)style;
 - (ASAuthorizationAppleIDButton)initWithAuthorizationButtonType:(ASAuthorizationAppleIDButtonType)type authorizationButtonStyle:(ASAuthorizationAppleIDButtonStyle)style;
-- (ASAuthorizationAppleIDButton)initWithCoder:(id)a3;
+- (ASAuthorizationAppleIDButton)initWithCoder:(id)coder;
 - (CGSize)intrinsicContentSize;
 - (id)accessibilityLabel;
 - (int64_t)_ak_buttonStyle;
 - (int64_t)_ak_buttonType;
 - (void)_createHighlightFilterIfNecessary;
-- (void)_drawRect:(CGRect)a3 inView:(id)a4;
-- (void)_performAnimationToSetHighlighted:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_drawRect:(CGRect)rect inView:(id)view;
+- (void)_performAnimationToSetHighlighted:(BOOL)highlighted;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)setCornerRadius:(CGFloat)cornerRadius;
 @end
@@ -43,30 +43,30 @@
   return v9;
 }
 
-- (ASAuthorizationAppleIDButton)initWithCoder:(id)a3
+- (ASAuthorizationAppleIDButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ASAuthorizationAppleIDButton;
-  v5 = [(ASAuthorizationAppleIDButton *)&v7 initWithCoder:v4];
+  v5 = [(ASAuthorizationAppleIDButton *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v5->_style = [v4 decodeIntegerForKey:@"_style"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"_style"];
     _ASAuthorizationButtonInitialize(v5);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ASAuthorizationAppleIDButton;
-  v4 = a3;
-  [(ASAuthorizationAppleIDButton *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"_type", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_style forKey:@"_style"];
+  coderCopy = coder;
+  [(ASAuthorizationAppleIDButton *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"_type", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_style forKey:@"_style"];
 }
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
@@ -78,19 +78,19 @@
   }
 }
 
-- (void)_drawRect:(CGRect)a3 inView:(id)a4
+- (void)_drawRect:(CGRect)rect inView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v7 = [v5 _screen];
-  [v7 scale];
+  _screen = [viewCopy _screen];
+  [_screen scale];
 
   [(ASAuthorizationAppleIDButton *)self _ak_buttonType];
   [(ASAuthorizationAppleIDButton *)self _ak_buttonStyle];
-  [v5 bounds];
+  [viewCopy bounds];
   cornerRadius = self->_cornerRadius;
   v9 = AKCreateAppleIDButtonImageWithCornerRadius();
-  [v5 bounds];
+  [viewCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -139,36 +139,36 @@
 
     v11[0] = self->_highlightFilter;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    v9 = [(ASAuthorizationAppleIDButton *)self layer];
-    [v9 setFilters:v8];
+    layer = [(ASAuthorizationAppleIDButton *)self layer];
+    [layer setFilters:v8];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performAnimationToSetHighlighted:(BOOL)a3
+- (void)_performAnimationToSetHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   [(ASAuthorizationAppleIDButton *)self _createHighlightFilterIfNecessary];
-  v12 = [(ASAuthorizationAppleIDButton *)self layer];
+  layer = [(ASAuthorizationAppleIDButton *)self layer];
   v5 = 0.6;
-  if (!v3)
+  if (!highlightedCopy)
   {
     v5 = 1.0;
   }
 
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:v5 alpha:?];
   v7 = MEMORY[0x1E69DC888];
-  v8 = [v12 valueForKeyPath:@"filters.highlightFilter.inputColor"];
+  v8 = [layer valueForKeyPath:@"filters.highlightFilter.inputColor"];
   v9 = [v7 colorWithCGColor:v8];
 
-  [v12 setValue:objc_msgSend(v6 forKeyPath:{"CGColor"), @"filters.highlightFilter.inputColor"}];
+  [layer setValue:objc_msgSend(v6 forKeyPath:{"CGColor"), @"filters.highlightFilter.inputColor"}];
   v10 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.highlightFilter.inputColor"];
   [v10 setDuration:0.15];
   [v10 setFillMode:*MEMORY[0x1E69797E8]];
   [v10 setFromValue:{objc_msgSend(v9, "CGColor")}];
   [v10 setToValue:{objc_msgSend(v6, "CGColor")}];
-  v11 = [v12 ak_addAdditiveAnimation:v10];
+  v11 = [layer ak_addAdditiveAnimation:v10];
 }
 
 - (int64_t)_ak_buttonType

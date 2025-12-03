@@ -1,45 +1,45 @@
 @interface HUCCFillerMosaicCell
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation HUCCFillerMosaicCell
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
+  fakeCellLayer = [(HUCCFillerMosaicCell *)self fakeCellLayer];
 
-  if (!v4)
+  if (!fakeCellLayer)
   {
-    v5 = [MEMORY[0x277CD9ED0] layer];
-    [(HUCCFillerMosaicCell *)self setFakeCellLayer:v5];
+    layer = [MEMORY[0x277CD9ED0] layer];
+    [(HUCCFillerMosaicCell *)self setFakeCellLayer:layer];
 
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
-    v7 = [v6 CGColor];
-    v8 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
-    [v8 setBackgroundColor:v7];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    cGColor = [systemWhiteColor CGColor];
+    fakeCellLayer2 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
+    [fakeCellLayer2 setBackgroundColor:cGColor];
 
-    v9 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
+    fakeCellLayer3 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
     LODWORD(v10) = 1025758986;
-    [v9 setOpacity:v10];
+    [fakeCellLayer3 setOpacity:v10];
 
     CCUICompactModuleContinuousCornerRadius();
     v12 = v11;
-    v13 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
-    [v13 setCornerRadius:v12];
+    fakeCellLayer4 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
+    [fakeCellLayer4 setCornerRadius:v12];
 
-    v14 = [(HUCCFillerMosaicCell *)self layer];
-    v15 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
-    [v14 addSublayer:v15];
+    layer2 = [(HUCCFillerMosaicCell *)self layer];
+    fakeCellLayer5 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
+    [layer2 addSublayer:fakeCellLayer5];
   }
 
-  v25 = [(HUCCFillerMosaicCell *)self layer];
-  [v25 bounds];
+  layer3 = [(HUCCFillerMosaicCell *)self layer];
+  [layer3 bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
-  [v24 setFrame:{v17, v19, v21, v23}];
+  fakeCellLayer6 = [(HUCCFillerMosaicCell *)self fakeCellLayer];
+  [fakeCellLayer6 setFrame:{v17, v19, v21, v23}];
 }
 
 @end

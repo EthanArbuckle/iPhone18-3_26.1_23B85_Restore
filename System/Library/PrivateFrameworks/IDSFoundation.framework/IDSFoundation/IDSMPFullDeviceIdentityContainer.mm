@@ -1,62 +1,62 @@
 @interface IDSMPFullDeviceIdentityContainer
-+ (id)_identityWithLegacyFullIdentity:(id)a3 ngmFullDeviceIdentity:(id)a4 ngmVersion:(id)a5 legacyFullIdentitySerializedData:(id)a6 queue:(id)a7 error:(id *)a8;
-+ (id)identityWithDataRepresentation:(id)a3 queue:(id)a4 error:(id *)a5;
++ (id)_identityWithLegacyFullIdentity:(id)identity ngmFullDeviceIdentity:(id)deviceIdentity ngmVersion:(id)version legacyFullIdentitySerializedData:(id)data queue:(id)queue error:(id *)error;
++ (id)identityWithDataRepresentation:(id)representation queue:(id)queue error:(id *)error;
 - (BOOL)hasLegacyIdentity;
 - (BOOL)hasNGMIdentity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldRollNGMEncryptionIdentity;
-- (BOOL)updateNGMIdentityWithRegisteredTicket:(id)a3 error:(id *)a4;
-- (IDSMPFullDeviceIdentityContainer)initWithFullLegacyIdentity:(id)a3 ngmFullDeviceidentity:(id)a4 ngmVersion:(id)a5 legacyFullIdentitySerializedData:(id)a6 queue:(id)a7;
-- (id)_legacyUnsealMessage:(id)a3 signedByPublicIdentity:(id)a4 error:(id *)a5;
-- (id)_ngmSynchronouslyUnsealMessage:(id)a3 signedByPublicIdentity:(id)a4 error:(id *)a5;
-- (id)_ngmUnsealMessage:(id)a3 authenticatedData:(id)a4 messageType:(int64_t)a5 guid:(id)a6 sendingURI:(id)a7 sendingPushToken:(id)a8 receivingURI:(id)a9 receivingPushToken:(id)a10 signedByPublicIdentity:(id)a11;
-- (id)_ngmValidateEncryptingAndSigningIdentity:(id)a3 forMessage:(id)a4;
-- (id)_paddyUnsealMessage:(id)a3 sendingURI:(id)a4 sendingPushToken:(id)a5 receivingURI:(id)a6 receivingPushToken:(id)a7 signedByPublicIdentity:(id)a8;
-- (id)batchSignWithNGMIdentity:(id)a3 forType:(int64_t)a4 error:(id *)a5;
-- (id)dataRepresentationWithError:(id *)a3;
+- (BOOL)updateNGMIdentityWithRegisteredTicket:(id)ticket error:(id *)error;
+- (IDSMPFullDeviceIdentityContainer)initWithFullLegacyIdentity:(id)identity ngmFullDeviceidentity:(id)deviceidentity ngmVersion:(id)version legacyFullIdentitySerializedData:(id)data queue:(id)queue;
+- (id)_legacyUnsealMessage:(id)message signedByPublicIdentity:(id)identity error:(id *)error;
+- (id)_ngmSynchronouslyUnsealMessage:(id)message signedByPublicIdentity:(id)identity error:(id *)error;
+- (id)_ngmUnsealMessage:(id)message authenticatedData:(id)data messageType:(int64_t)type guid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)self0 signedByPublicIdentity:(id)self1;
+- (id)_ngmValidateEncryptingAndSigningIdentity:(id)identity forMessage:(id)message;
+- (id)_paddyUnsealMessage:(id)message sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken signedByPublicIdentity:(id)identity;
+- (id)batchSignWithNGMIdentity:(id)identity forType:(int64_t)type error:(id *)error;
+- (id)dataRepresentationWithError:(id *)error;
 - (id)debugDescription;
 - (id)description;
-- (id)ngmKeyRollingTicketWithError:(id *)a3;
-- (id)publicIdentityWithError:(id *)a3;
-- (id)signDataWithNGMIdentity:(id)a3 forType:(int64_t)a4 error:(id *)a5;
-- (id)unsealMessage:(id)a3 authenticatedData:(id)a4 messageType:(int64_t)a5 guid:(id)a6 sendingURI:(id)a7 sendingPushToken:(id)a8 receivingURI:(id)a9 receivingPushToken:(id)a10 signedByPublicIdentity:(id)a11 usingIdentityWithIdentifier:(id)a12;
-- (id)unsealMessage:(id)a3 signedByPublicIdentity:(id)a4 usingIdentityWithIdentifier:(id)a5 error:(id *)a6;
+- (id)ngmKeyRollingTicketWithError:(id *)error;
+- (id)publicIdentityWithError:(id *)error;
+- (id)signDataWithNGMIdentity:(id)identity forType:(int64_t)type error:(id *)error;
+- (id)unsealMessage:(id)message authenticatedData:(id)data messageType:(int64_t)type guid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)self0 signedByPublicIdentity:(id)self1 usingIdentityWithIdentifier:(id)self2;
+- (id)unsealMessage:(id)message signedByPublicIdentity:(id)identity usingIdentityWithIdentifier:(id)identifier error:(id *)error;
 - (unint64_t)hash;
-- (void)accessNGMIdentityOnQueue:(id)a3;
+- (void)accessNGMIdentityOnQueue:(id)queue;
 - (void)eraseNGMIdentityFromKeychain;
 @end
 
 @implementation IDSMPFullDeviceIdentityContainer
 
-- (void)accessNGMIdentityOnQueue:(id)a3
+- (void)accessNGMIdentityOnQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(IDSMPFullDeviceIdentityContainer *)self queue];
+  queueCopy = queue;
+  queue = [(IDSMPFullDeviceIdentityContainer *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1A7B19E78;
   v7[3] = &unk_1E77DD0F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performSyncBlock:v7];
+  v8 = queueCopy;
+  v6 = queueCopy;
+  [queue performSyncBlock:v7];
 }
 
-+ (id)identityWithDataRepresentation:(id)a3 queue:(id)a4 error:(id *)a5
++ (id)identityWithDataRepresentation:(id)representation queue:(id)queue error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AE40] propertyListWithData:v7 options:0 format:0 error:a5];
+  representationCopy = representation;
+  queueCopy = queue;
+  v9 = [MEMORY[0x1E696AE40] propertyListWithData:representationCopy options:0 format:0 error:error];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v10 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      if (a5)
+      if (error)
       {
-        v29 = *a5;
+        v29 = *error;
       }
 
       else
@@ -67,7 +67,7 @@
       *buf = 138543875;
       v43 = v29;
       v44 = 2113;
-      v45 = v7;
+      v45 = representationCopy;
       v46 = 2113;
       v47 = v9;
       _os_log_fault_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_FAULT, "Failed to deserialize plist - failed to create IDSMPFullDeviceIdentityContainer from data {error: %{public}@, dataRepresentation: %{private}@, dict: %{private}@}", buf, 0x20u);
@@ -79,15 +79,15 @@
   v10 = [v9 objectForKeyedSubscript:@"kLegacyFullIdentityKey"];
   if (v10)
   {
-    v11 = [IDSMPFullLegacyIdentity identityWithData:v10 error:a5];
+    v11 = [IDSMPFullLegacyIdentity identityWithData:v10 error:error];
     if (!v11)
     {
       v12 = +[IDSFoundationLog accountIdentity];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        if (a5)
+        if (error)
         {
-          v33 = *a5;
+          v33 = *error;
         }
 
         else
@@ -100,7 +100,7 @@
         v44 = 2113;
         v45 = v10;
         v46 = 2113;
-        v47 = v7;
+        v47 = representationCopy;
         _os_log_error_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_ERROR, "Failed to deserialize IDSMPFullLegacyIdentity -- failed to create IDSMPFullDeviceIdentityContainer from data {error: %{public}@, legacyData: %{private}@, dataRepresentation: %{private}@}", buf, 0x20u);
       }
 
@@ -111,7 +111,7 @@
     v12 = [v9 objectForKeyedSubscript:@"kNGMFullDeviceIdentity"];
     v13 = [v9 objectForKeyedSubscript:@"kNGMVersion"];
     v14 = v13;
-    v36 = v8;
+    v36 = queueCopy;
     if ((!v12 || v13) && (!v13 || v12))
     {
       if (v12)
@@ -122,10 +122,10 @@
         v25 = [IDSNGMFullDeviceIdentity identityWithDataRepresentation:v12 error:&v37];
         v26 = v37;
         objc_autoreleasePoolPop(v24);
-        if (a5 && v26)
+        if (error && v26)
         {
           v27 = v26;
-          *a5 = v26;
+          *error = v26;
         }
 
         v14 = v23;
@@ -135,9 +135,9 @@
           v17 = v26;
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            if (a5)
+            if (error)
             {
-              v34 = *a5;
+              v34 = *error;
             }
 
             else
@@ -203,12 +203,12 @@
         _os_log_fault_impl(&dword_1A7AD9000, v15, OS_LOG_TYPE_FAULT, "Corrupt IDSMPFullDeviceIdentityContainer dataRepresentation, mismatch nullability for kNGMVersion an dkNGMFullDeviceIdentity - Failed to create IDSMPFullDeviceIdentityContainer {dict: %{private}@, ngmVersion: %{public}@, ngmData: %{private}@}", buf, 0x20u);
       }
 
-      if (!a5)
+      if (!error)
       {
         v20 = 0;
 LABEL_43:
 
-        v8 = v36;
+        queueCopy = v36;
 LABEL_44:
 
         goto LABEL_45;
@@ -226,7 +226,7 @@ LABEL_44:
       v39 = v17;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       [v18 errorWithDomain:@"IDSMPIdentityErrorDomain" code:-1000 userInfo:v19];
-      *a5 = v20 = 0;
+      *error = v20 = 0;
     }
 
 LABEL_42:
@@ -240,7 +240,7 @@ LABEL_42:
     sub_1A7E10BD4();
   }
 
-  if (!a5)
+  if (!error)
   {
 LABEL_15:
     v20 = 0;
@@ -252,7 +252,7 @@ LABEL_15:
   v41 = @"IDSMPFullDeviceIdentityContainer dataRepresentation missing legacyData}";
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
   [v22 errorWithDomain:@"IDSMPIdentityErrorDomain" code:-1000 userInfo:v11];
-  *a5 = v20 = 0;
+  *error = v20 = 0;
 LABEL_45:
 
 LABEL_46:
@@ -260,19 +260,19 @@ LABEL_46:
   return v20;
 }
 
-+ (id)_identityWithLegacyFullIdentity:(id)a3 ngmFullDeviceIdentity:(id)a4 ngmVersion:(id)a5 legacyFullIdentitySerializedData:(id)a6 queue:(id)a7 error:(id *)a8
++ (id)_identityWithLegacyFullIdentity:(id)identity ngmFullDeviceIdentity:(id)deviceIdentity ngmVersion:(id)version legacyFullIdentitySerializedData:(id)data queue:(id)queue error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v14)
+  identityCopy = identity;
+  deviceIdentityCopy = deviceIdentity;
+  versionCopy = version;
+  dataCopy = data;
+  queueCopy = queue;
+  if (identityCopy)
   {
-    if (!v15 || v16)
+    if (!deviceIdentityCopy || versionCopy)
     {
-      if (v15 || !v16)
+      if (deviceIdentityCopy || !versionCopy)
       {
         goto LABEL_13;
       }
@@ -287,7 +287,7 @@ LABEL_46:
 
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:v19];
 LABEL_13:
-    a8 = [[a1 alloc] initWithFullLegacyIdentity:v14 ngmFullDeviceidentity:v15 ngmVersion:v16 legacyFullIdentitySerializedData:v17 queue:v18];
+    error = [[self alloc] initWithFullLegacyIdentity:identityCopy ngmFullDeviceidentity:deviceIdentityCopy ngmVersion:versionCopy legacyFullIdentitySerializedData:dataCopy queue:queueCopy];
     goto LABEL_14;
   }
 
@@ -297,73 +297,73 @@ LABEL_13:
     sub_1A7E10C48();
   }
 
-  if (a8)
+  if (error)
   {
     v21 = MEMORY[0x1E696ABC0];
     v24 = *MEMORY[0x1E696A278];
     v25[0] = @"Failed to create IDSMPFullDeviceIdentityContainer becuase we are missing the legacyFullIdentity";
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    *a8 = [v21 errorWithDomain:@"IDSMPIdentityErrorDomain" code:-1000 userInfo:v22];
+    *error = [v21 errorWithDomain:@"IDSMPIdentityErrorDomain" code:-1000 userInfo:v22];
 
-    a8 = 0;
+    error = 0;
   }
 
 LABEL_14:
 
-  return a8;
+  return error;
 }
 
-- (IDSMPFullDeviceIdentityContainer)initWithFullLegacyIdentity:(id)a3 ngmFullDeviceidentity:(id)a4 ngmVersion:(id)a5 legacyFullIdentitySerializedData:(id)a6 queue:(id)a7
+- (IDSMPFullDeviceIdentityContainer)initWithFullLegacyIdentity:(id)identity ngmFullDeviceidentity:(id)deviceidentity ngmVersion:(id)version legacyFullIdentitySerializedData:(id)data queue:(id)queue
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identityCopy = identity;
+  deviceidentityCopy = deviceidentity;
+  versionCopy = version;
+  dataCopy = data;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = IDSMPFullDeviceIdentityContainer;
   v17 = [(IDSMPFullDeviceIdentityContainer *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_legacyFullIdentity, a3);
-    objc_storeStrong(&v18->_ngmFullDeviceIdentity, a4);
-    objc_storeStrong(&v18->_ngmVersion, a5);
-    objc_storeStrong(&v18->_cachedLegacySerializedData, a6);
-    objc_storeStrong(&v18->_queue, a7);
+    objc_storeStrong(&v17->_legacyFullIdentity, identity);
+    objc_storeStrong(&v18->_ngmFullDeviceIdentity, deviceidentity);
+    objc_storeStrong(&v18->_ngmVersion, version);
+    objc_storeStrong(&v18->_cachedLegacySerializedData, data);
+    objc_storeStrong(&v18->_queue, queue);
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-    if (v6 && (v7 = v6, [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+    v5 = equalCopy;
+    ngmVersion = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+    if (ngmVersion && (v7 = ngmVersion, [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
     {
-      v9 = [v5 ngmVersion];
-      if (!v9 || (v10 = v9, [v5 ngmFullDeviceIdentity], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+      ngmVersion2 = [v5 ngmVersion];
+      if (!ngmVersion2 || (v10 = ngmVersion2, [v5 ngmFullDeviceIdentity], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
       {
         v18 = 0;
         goto LABEL_13;
       }
 
-      v12 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-      v13 = [v5 legacyFullIdentity];
-      if ([v12 isEqual:v13])
+      legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+      legacyFullIdentity2 = [v5 legacyFullIdentity];
+      if ([legacyFullIdentity isEqual:legacyFullIdentity2])
       {
-        v14 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-        v15 = [v5 ngmVersion];
-        if ([v14 isEqual:v15])
+        ngmVersion3 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+        ngmVersion4 = [v5 ngmVersion];
+        if ([ngmVersion3 isEqual:ngmVersion4])
         {
-          v16 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
-          v17 = [v5 ngmFullDeviceIdentity];
-          v18 = [v16 isEqual:v17];
+          ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+          ngmFullDeviceIdentity2 = [v5 ngmFullDeviceIdentity];
+          v18 = [ngmFullDeviceIdentity isEqual:ngmFullDeviceIdentity2];
         }
 
         else
@@ -380,9 +380,9 @@ LABEL_14:
 
     else
     {
-      v12 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-      v13 = [v5 legacyFullIdentity];
-      v18 = [v12 isEqual:v13];
+      legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+      legacyFullIdentity2 = [v5 legacyFullIdentity];
+      v18 = [legacyFullIdentity isEqual:legacyFullIdentity2];
     }
 
 LABEL_13:
@@ -397,18 +397,18 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-  v4 = [v3 hash];
-  v5 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-  v6 = [v5 hash];
-  v7 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+  legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+  v4 = [legacyFullIdentity hash];
+  ngmVersion = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+  v6 = [ngmVersion hash];
+  ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
   v8 = v4 ^ v6;
-  v9 = [v7 hash] ^ 0x11;
+  v9 = [ngmFullDeviceIdentity hash] ^ 0x11;
 
   return v8 ^ v9;
 }
 
-- (id)publicIdentityWithError:(id *)a3
+- (id)publicIdentityWithError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -417,10 +417,10 @@ LABEL_14:
   v24 = sub_1A7B1AD64;
   v25 = sub_1A7B1AD74;
   v26 = 0;
-  v5 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+  legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
   v6 = (v22 + 5);
   obj = v22[5];
-  v7 = [v5 publicIdentityWithError:&obj];
+  v7 = [legacyFullIdentity publicIdentityWithError:&obj];
   objc_storeStrong(v6, obj);
 
   if (v7)
@@ -431,9 +431,9 @@ LABEL_14:
     v31 = sub_1A7B1AD64;
     v32 = sub_1A7B1AD74;
     v33 = 0;
-    v8 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+    ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
 
-    if (v8)
+    if (ngmFullDeviceIdentity)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
@@ -454,9 +454,9 @@ LABEL_14:
         }
 
         v13 = 0;
-        if (a3)
+        if (error)
         {
-          *a3 = v22[5];
+          *error = v22[5];
         }
 
         goto LABEL_14;
@@ -468,8 +468,8 @@ LABEL_14:
       v9 = v29[5];
     }
 
-    v17 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-    v13 = [IDSMPPublicDeviceIdentityContainer identityWithLegacyPublicIdentity:v7 ngmPublicDeviceIdentity:v9 ngmVersion:v17 error:a3];
+    ngmVersion = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+    v13 = [IDSMPPublicDeviceIdentityContainer identityWithLegacyPublicIdentity:v7 ngmPublicDeviceIdentity:v9 ngmVersion:ngmVersion error:error];
 
 LABEL_14:
     _Block_object_dispose(&v28, 8);
@@ -486,9 +486,9 @@ LABEL_14:
   }
 
   v13 = 0;
-  if (a3)
+  if (error)
   {
-    *a3 = v22[5];
+    *error = v22[5];
   }
 
 LABEL_15:
@@ -498,7 +498,7 @@ LABEL_15:
   return v13;
 }
 
-- (id)dataRepresentationWithError:(id *)a3
+- (id)dataRepresentationWithError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -510,8 +510,8 @@ LABEL_15:
 
   else
   {
-    v8 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-    v7 = [v8 dataRepresentationWithError:a3];
+    legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+    v7 = [legacyFullIdentity dataRepresentationWithError:error];
 
     objc_storeStrong(&self->_cachedLegacySerializedData, v7);
     if (!v7)
@@ -529,15 +529,15 @@ LABEL_15:
   }
 
   [v5 setObject:v7 forKeyedSubscript:@"kLegacyFullIdentityKey"];
-  v9 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
-  if (!v9)
+  ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+  if (!ngmFullDeviceIdentity)
   {
     goto LABEL_16;
   }
 
-  v10 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+  ngmVersion = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
 
-  if (!v10)
+  if (!ngmVersion)
   {
     goto LABEL_16;
   }
@@ -545,7 +545,7 @@ LABEL_15:
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v33 = sub_1A7B1AD64;
+  selfCopy2 = sub_1A7B1AD64;
   v34 = sub_1A7B1AD74;
   v35 = 0;
   v22 = 0;
@@ -561,12 +561,12 @@ LABEL_15:
   v21[4] = buf;
   v21[5] = &v22;
   [(IDSMPFullDeviceIdentityContainer *)self accessNGMIdentityOnQueue:v21];
-  if (a3)
+  if (error)
   {
     v11 = v23[5];
     if (v11)
     {
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -574,18 +574,18 @@ LABEL_15:
   if (v12)
   {
     [v5 setObject:*(*&buf[8] + 40) forKeyedSubscript:@"kNGMFullDeviceIdentity"];
-    v13 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-    [v5 setObject:v13 forKeyedSubscript:@"kNGMVersion"];
+    ngmVersion2 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+    [v5 setObject:ngmVersion2 forKeyedSubscript:@"kNGMVersion"];
   }
 
   else
   {
-    v13 = +[IDSFoundationLog accountIdentity];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    ngmVersion2 = +[IDSFoundationLog accountIdentity];
+    if (os_log_type_enabled(ngmVersion2, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (error)
       {
-        v20 = *a3;
+        v20 = *error;
       }
 
       else
@@ -596,8 +596,8 @@ LABEL_15:
       *v28 = 138543619;
       v29 = v20;
       v30 = 2113;
-      v31 = self;
-      _os_log_error_impl(&dword_1A7AD9000, v13, OS_LOG_TYPE_ERROR, "Failed to serialize - failed to serialize IDSMPFullDeviceIdentityContainer {error: %{public}@, container: %{private}@}", v28, 0x16u);
+      selfCopy = self;
+      _os_log_error_impl(&dword_1A7AD9000, ngmVersion2, OS_LOG_TYPE_ERROR, "Failed to serialize - failed to serialize IDSMPFullDeviceIdentityContainer {error: %{public}@, container: %{private}@}", v28, 0x16u);
     }
   }
 
@@ -607,7 +607,7 @@ LABEL_15:
   if (v12)
   {
 LABEL_16:
-    v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:a3];
+    v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:error];
     v14 = v16;
     if (v16)
     {
@@ -620,9 +620,9 @@ LABEL_16:
       v17 = +[IDSFoundationLog accountIdentity];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        if (a3)
+        if (error)
         {
-          v19 = *a3;
+          v19 = *error;
         }
 
         else
@@ -635,7 +635,7 @@ LABEL_16:
         *&buf[12] = 2113;
         *&buf[14] = v5;
         *&buf[22] = 2113;
-        v33 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_FAULT, "Failed to create plist - failed to serialize IDSMPFullDeviceIdentityContainer {error: %{public}@, dict: %{private}@, container: %{private}@}", buf, 0x20u);
       }
 
@@ -653,14 +653,14 @@ LABEL_21:
   return v15;
 }
 
-- (id)unsealMessage:(id)a3 signedByPublicIdentity:(id)a4 usingIdentityWithIdentifier:(id)a5 error:(id *)a6
+- (id)unsealMessage:(id)message signedByPublicIdentity:(id)identity usingIdentityWithIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v12)
+  messageCopy = message;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (v11)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -669,7 +669,7 @@ LABEL_21:
   else
   {
     sub_1A7E10DF8();
-    if (v11)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -677,17 +677,17 @@ LABEL_21:
 
   sub_1A7E10E6C();
 LABEL_3:
-  if ([v12 isEqualToString:@"pair"])
+  if ([identifierCopy isEqualToString:@"pair"])
   {
-    v13 = [(IDSMPFullDeviceIdentityContainer *)self _legacyUnsealMessage:v10 signedByPublicIdentity:v11 error:a6];
+    v13 = [(IDSMPFullDeviceIdentityContainer *)self _legacyUnsealMessage:messageCopy signedByPublicIdentity:identityCopy error:error];
 LABEL_7:
     v14 = v13;
     goto LABEL_11;
   }
 
-  if ([v12 isEqualToString:@"pair-ec"])
+  if ([identifierCopy isEqualToString:@"pair-ec"])
   {
-    v13 = [(IDSMPFullDeviceIdentityContainer *)self _ngmSynchronouslyUnsealMessage:v10 signedByPublicIdentity:v11 error:a6];
+    v13 = [(IDSMPFullDeviceIdentityContainer *)self _ngmSynchronouslyUnsealMessage:messageCopy signedByPublicIdentity:identityCopy error:error];
     goto LABEL_7;
   }
 
@@ -703,21 +703,21 @@ LABEL_11:
   return v14;
 }
 
-- (id)unsealMessage:(id)a3 authenticatedData:(id)a4 messageType:(int64_t)a5 guid:(id)a6 sendingURI:(id)a7 sendingPushToken:(id)a8 receivingURI:(id)a9 receivingPushToken:(id)a10 signedByPublicIdentity:(id)a11 usingIdentityWithIdentifier:(id)a12
+- (id)unsealMessage:(id)message authenticatedData:(id)data messageType:(int64_t)type guid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)self0 signedByPublicIdentity:(id)self1 usingIdentityWithIdentifier:(id)self2
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v43 = a4;
-  v42 = a6;
-  v41 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  if (v21)
+  messageCopy = message;
+  dataCopy = data;
+  guidCopy = guid;
+  iCopy = i;
+  tokenCopy = token;
+  rICopy = rI;
+  pushTokenCopy = pushToken;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (v20)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -726,7 +726,7 @@ LABEL_11:
   else
   {
     sub_1A7E10F6C();
-    if (v20)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -734,23 +734,23 @@ LABEL_11:
 
   sub_1A7E10FE0();
 LABEL_3:
-  v22 = v16;
-  if (![v21 isEqualToString:@"pair"])
+  v22 = messageCopy;
+  if (![identifierCopy isEqualToString:@"pair"])
   {
-    v27 = v42;
-    if (([v21 isEqualToString:@"pair-ec"] & 1) != 0 || objc_msgSend(v21, "isEqualToString:", @"pair-tetra"))
+    v27 = guidCopy;
+    if (([identifierCopy isEqualToString:@"pair-ec"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"pair-tetra"))
     {
-      v28 = v16;
-      v29 = v43;
-      v30 = v41;
-      v31 = [(IDSMPFullDeviceIdentityContainer *)self _ngmUnsealMessage:v28 authenticatedData:v43 messageType:a5 guid:v42 sendingURI:v41 sendingPushToken:v17 receivingURI:v18 receivingPushToken:v19 signedByPublicIdentity:v20];
+      v28 = messageCopy;
+      v29 = dataCopy;
+      v30 = iCopy;
+      v31 = [(IDSMPFullDeviceIdentityContainer *)self _ngmUnsealMessage:v28 authenticatedData:dataCopy messageType:type guid:guidCopy sendingURI:iCopy sendingPushToken:tokenCopy receivingURI:rICopy receivingPushToken:pushTokenCopy signedByPublicIdentity:identityCopy];
     }
 
     else
     {
-      v29 = v43;
-      v30 = v41;
-      if (![v21 isEqualToString:@"paddy"])
+      v29 = dataCopy;
+      v30 = iCopy;
+      if (![identifierCopy isEqualToString:@"paddy"])
       {
         v34 = +[IDSFoundationLog accountIdentity];
         if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
@@ -766,21 +766,21 @@ LABEL_3:
         v38 = [v36 errorWithDomain:@"IDSMPIdentityErrorDomain" code:-1000 userInfo:v37];
 
         [v35 failWithError:v38];
-        v32 = [v35 promise];
+        promise = [v35 promise];
 
         goto LABEL_12;
       }
 
-      v31 = [(IDSMPFullDeviceIdentityContainer *)self _paddyUnsealMessage:v22 sendingURI:v41 sendingPushToken:v17 receivingURI:v18 receivingPushToken:v19 signedByPublicIdentity:v20];
+      v31 = [(IDSMPFullDeviceIdentityContainer *)self _paddyUnsealMessage:v22 sendingURI:iCopy sendingPushToken:tokenCopy receivingURI:rICopy receivingPushToken:pushTokenCopy signedByPublicIdentity:identityCopy];
     }
 
-    v32 = v31;
+    promise = v31;
     goto LABEL_13;
   }
 
   v23 = objc_alloc_init(MEMORY[0x1E69956F8]);
   v44 = 0;
-  v24 = [(IDSMPFullDeviceIdentityContainer *)self _legacyUnsealMessage:v16 signedByPublicIdentity:v20 error:&v44];
+  v24 = [(IDSMPFullDeviceIdentityContainer *)self _legacyUnsealMessage:messageCopy signedByPublicIdentity:identityCopy error:&v44];
   v25 = v44;
   if (v24)
   {
@@ -793,55 +793,55 @@ LABEL_3:
     [v23 failWithError:v25];
   }
 
-  v32 = [v23 promise];
+  promise = [v23 promise];
 
 LABEL_12:
-  v27 = v42;
-  v29 = v43;
-  v30 = v41;
+  v27 = guidCopy;
+  v29 = dataCopy;
+  v30 = iCopy;
 LABEL_13:
 
-  return v32;
+  return promise;
 }
 
-- (id)_ngmValidateEncryptingAndSigningIdentity:(id)a3 forMessage:(id)a4
+- (id)_ngmValidateEncryptingAndSigningIdentity:(id)identity forMessage:(id)message
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  messageCopy = message;
   v8 = 0x1E77DB000uLL;
   v9 = +[IDSFoundationLog accountIdentity];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
-    v11 = [v6 ngmPublicDeviceIdentity];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "length")}];
+    ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+    ngmPublicDeviceIdentity = [identityCopy ngmPublicDeviceIdentity];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(messageCopy, "length")}];
     *buf = 138478339;
-    v36 = v10;
+    v36 = ngmFullDeviceIdentity;
     v37 = 2113;
-    v38 = v11;
+    v38 = ngmPublicDeviceIdentity;
     v39 = 2113;
     v40 = v12;
     _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "Unsealing message using ngm identities {encryptingIdentity: %{private}@, signingIdentity: %{private}@, message.length: %{private}@}", buf, 0x20u);
   }
 
-  v13 = [v6 ngmPublicDeviceIdentity];
-  if (v13)
+  ngmPublicDeviceIdentity2 = [identityCopy ngmPublicDeviceIdentity];
+  if (ngmPublicDeviceIdentity2)
   {
-    v14 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
-    if (v14)
+    ngmFullDeviceIdentity2 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+    if (ngmFullDeviceIdentity2)
     {
-      v15 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-      if (v15)
+      ngmVersion = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+      if (ngmVersion)
       {
-        v16 = v15;
-        v17 = [v6 ngmVersion];
-        if (v17)
+        v16 = ngmVersion;
+        ngmVersion2 = [identityCopy ngmVersion];
+        if (ngmVersion2)
         {
-          v18 = v17;
-          v19 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-          v20 = [v6 ngmVersion];
-          if ([v19 isEqualToNumber:v20])
+          v18 = ngmVersion2;
+          ngmVersion3 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+          ngmVersion4 = [identityCopy ngmVersion];
+          if ([ngmVersion3 isEqualToNumber:ngmVersion4])
           {
 
 LABEL_15:
@@ -849,8 +849,8 @@ LABEL_15:
             goto LABEL_24;
           }
 
-          v23 = [v6 ngmVersion];
-          v34 = +[IDSNGMProtocolVersion isVersionSupported:](IDSNGMProtocolVersion, "isVersionSupported:", [v23 intValue]);
+          ngmVersion5 = [identityCopy ngmVersion];
+          v34 = +[IDSNGMProtocolVersion isVersionSupported:](IDSNGMProtocolVersion, "isVersionSupported:", [ngmVersion5 intValue]);
 
           v8 = 0x1E77DB000;
           if (v34)
@@ -865,31 +865,31 @@ LABEL_15:
       }
 
       v24 = MEMORY[0x1E696AEC0];
-      v25 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-      v26 = [v6 ngmVersion];
-      v22 = [v24 stringWithFormat:@"Unable to ngm unseal message due to mismatching versions {encryptingIdentity.ngmVersion: %@, signingIdentity.ngmVersion: %@}", v25, v26];
+      ngmVersion6 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+      ngmVersion7 = [identityCopy ngmVersion];
+      v22 = [v24 stringWithFormat:@"Unable to ngm unseal message due to mismatching versions {encryptingIdentity.ngmVersion: %@, signingIdentity.ngmVersion: %@}", ngmVersion6, ngmVersion7];
 
       v27 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v27 setObject:v22 forKeyedSubscript:*MEMORY[0x1E696A278]];
-      v28 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+      ngmVersion8 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
 
-      if (v28)
+      if (ngmVersion8)
       {
-        v29 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-        [v27 setObject:v29 forKeyedSubscript:@"encryptingIdentityNGMVersion"];
+        ngmVersion9 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+        [v27 setObject:ngmVersion9 forKeyedSubscript:@"encryptingIdentityNGMVersion"];
       }
 
-      v30 = [v6 ngmVersion];
+      ngmVersion10 = [identityCopy ngmVersion];
 
-      if (v30)
+      if (ngmVersion10)
       {
-        v31 = [v6 ngmVersion];
-        [v27 setObject:v31 forKeyedSubscript:@"signingIdentityNGMVersion"];
+        ngmVersion11 = [identityCopy ngmVersion];
+        [v27 setObject:ngmVersion11 forKeyedSubscript:@"signingIdentityNGMVersion"];
       }
 
       v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:14 userInfo:v27];
-      v32 = [*(v8 + 2592) accountIdentity];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+      accountIdentity = [*(v8 + 2592) accountIdentity];
+      if (os_log_type_enabled(accountIdentity, OS_LOG_TYPE_ERROR))
       {
         sub_1A7E11054();
       }
@@ -909,8 +909,8 @@ LABEL_15:
   else
   {
     v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:12 userInfo:0];
-    v14 = +[IDSFoundationLog accountIdentity];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    ngmFullDeviceIdentity2 = +[IDSFoundationLog accountIdentity];
+    if (os_log_type_enabled(ngmFullDeviceIdentity2, OS_LOG_TYPE_ERROR))
     {
       sub_1A7E1119C();
     }
@@ -921,20 +921,20 @@ LABEL_24:
   return v21;
 }
 
-- (id)_ngmSynchronouslyUnsealMessage:(id)a3 signedByPublicIdentity:(id)a4 error:(id *)a5
+- (id)_ngmSynchronouslyUnsealMessage:(id)message signedByPublicIdentity:(id)identity error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IDSMPFullDeviceIdentityContainer *)self _ngmValidateEncryptingAndSigningIdentity:v9 forMessage:v8];
+  messageCopy = message;
+  identityCopy = identity;
+  v10 = [(IDSMPFullDeviceIdentityContainer *)self _ngmValidateEncryptingAndSigningIdentity:identityCopy forMessage:messageCopy];
   v11 = v10;
   if (v10)
   {
-    if (a5)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -962,8 +962,8 @@ LABEL_24:
     v18[2] = sub_1A7B1BE84;
     v18[3] = &unk_1E77DD140;
     v21 = &v23;
-    v19 = v8;
-    v20 = v9;
+    v19 = messageCopy;
+    v20 = identityCopy;
     v22 = &v29;
     [(IDSMPFullDeviceIdentityContainer *)self accessNGMIdentityOnQueue:v18];
     v14 = v24[5];
@@ -982,7 +982,7 @@ LABEL_24:
         v16 = 0;
       }
 
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:15 userInfo:v16];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:15 userInfo:v16];
 
       v14 = v24[5];
     }
@@ -996,29 +996,29 @@ LABEL_24:
   return v13;
 }
 
-- (id)_ngmUnsealMessage:(id)a3 authenticatedData:(id)a4 messageType:(int64_t)a5 guid:(id)a6 sendingURI:(id)a7 sendingPushToken:(id)a8 receivingURI:(id)a9 receivingPushToken:(id)a10 signedByPublicIdentity:(id)a11
+- (id)_ngmUnsealMessage:(id)message authenticatedData:(id)data messageType:(int64_t)type guid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)self0 signedByPublicIdentity:(id)self1
 {
   v72 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v47 = a4;
-  v46 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v45 = self;
-  v48 = v16;
-  v22 = [(IDSMPFullDeviceIdentityContainer *)self _ngmValidateEncryptingAndSigningIdentity:v21 forMessage:v16];
+  messageCopy = message;
+  dataCopy = data;
+  guidCopy = guid;
+  iCopy = i;
+  tokenCopy = token;
+  rICopy = rI;
+  pushTokenCopy = pushToken;
+  identityCopy = identity;
+  selfCopy = self;
+  v48 = messageCopy;
+  v22 = [(IDSMPFullDeviceIdentityContainer *)self _ngmValidateEncryptingAndSigningIdentity:identityCopy forMessage:messageCopy];
   v23 = objc_alloc_init(MEMORY[0x1E69956F8]);
   v24 = v23;
   if (v22)
   {
     [v23 failWithError:v22];
-    v26 = v46;
-    v25 = v47;
+    v26 = guidCopy;
+    v25 = dataCopy;
 LABEL_21:
-    v31 = [v24 promise];
+    promise = [v24 promise];
     goto LABEL_22;
   }
 
@@ -1028,15 +1028,15 @@ LABEL_21:
   aBlock[3] = &unk_1E77DD168;
   v27 = v23;
   v61 = v27;
-  v62 = self;
-  v28 = v17;
-  v29 = v21;
+  selfCopy2 = self;
+  v28 = iCopy;
+  v29 = identityCopy;
   v63 = v29;
   v30 = _Block_copy(aBlock);
-  v31 = v18;
+  promise = tokenCopy;
   if (v28)
   {
-    v32 = v18 == 0;
+    v32 = tokenCopy == 0;
   }
 
   else
@@ -1044,33 +1044,33 @@ LABEL_21:
     v32 = 1;
   }
 
-  v34 = v32 || v19 == 0 || v20 == 0;
+  v34 = v32 || rICopy == 0 || pushTokenCopy == 0;
   v35 = !v34;
   v43 = v35;
   v42 = v30;
   if (v34)
   {
     v38 = +[IDSFoundationLog accountIdentity];
-    v17 = v28;
+    iCopy = v28;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
       v65 = v28;
       v66 = 2112;
-      v67 = v18;
+      v67 = tokenCopy;
       v68 = 2112;
-      v69 = v19;
+      v69 = rICopy;
       v70 = 2112;
-      v71 = v20;
+      v71 = pushTokenCopy;
       _os_log_error_impl(&dword_1A7AD9000, v38, OS_LOG_TYPE_ERROR, "Failed to unseal message - one or more required fields is nil {sendingURI: %@ sendingPushToken: %@ receivingURI: %@ receivingPushToken: %@}", buf, 0x2Au);
     }
 
     v39 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:20 userInfo:0];
     [v27 failWithError:v39];
 
-    v31 = [v27 promise];
-    v26 = v46;
-    v25 = v47;
+    promise = [v27 promise];
+    v26 = guidCopy;
+    v25 = dataCopy;
     v37 = v42;
   }
 
@@ -1083,21 +1083,21 @@ LABEL_21:
     v50 = v48;
     v36 = v28;
     v41 = v28;
-    v25 = v47;
-    v51 = v47;
-    v59 = a5;
-    v26 = v46;
-    v52 = v46;
+    v25 = dataCopy;
+    v51 = dataCopy;
+    typeCopy = type;
+    v26 = guidCopy;
+    v52 = guidCopy;
     v53 = v36;
-    v18 = v31;
-    v54 = v31;
-    v55 = v19;
-    v56 = v20;
+    tokenCopy = promise;
+    v54 = promise;
+    v55 = rICopy;
+    v56 = pushTokenCopy;
     v57 = v29;
     v58 = v42;
-    [(IDSMPFullDeviceIdentityContainer *)v45 accessNGMIdentityOnQueue:v49];
+    [(IDSMPFullDeviceIdentityContainer *)selfCopy accessNGMIdentityOnQueue:v49];
 
-    v17 = v41;
+    iCopy = v41;
     v37 = v42;
   }
 
@@ -1108,38 +1108,38 @@ LABEL_21:
 
 LABEL_22:
 
-  return v31;
+  return promise;
 }
 
-- (id)_legacyUnsealMessage:(id)a3 signedByPublicIdentity:(id)a4 error:(id *)a5
+- (id)_legacyUnsealMessage:(id)message signedByPublicIdentity:(id)identity error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  messageCopy = message;
+  identityCopy = identity;
   v10 = +[IDSFoundationLog accountIdentity];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-    v12 = [v9 legacyPublicIdentity];
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "length")}];
+    legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+    legacyPublicIdentity = [identityCopy legacyPublicIdentity];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(messageCopy, "length")}];
     *buf = 138478339;
-    v30 = v11;
+    v30 = legacyFullIdentity;
     v31 = 2113;
-    v32 = v12;
+    v32 = legacyPublicIdentity;
     v33 = 2113;
     v34 = v13;
     _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "Unsealing message using legacy identities {encryptingIdentity: %{private}@, signingIdentity: %{private}@, message.length: %{private}@}", buf, 0x20u);
   }
 
-  v14 = [v9 legacyPublicIdentity];
-  if (v14)
+  legacyPublicIdentity2 = [identityCopy legacyPublicIdentity];
+  if (legacyPublicIdentity2)
   {
-    v15 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-    v16 = v15;
-    if (v15)
+    legacyFullIdentity2 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+    v16 = legacyFullIdentity2;
+    if (legacyFullIdentity2)
     {
       v26 = 0;
-      v17 = [v15 verifyAndExposeData:v8 withSigner:v14 error:&v26];
+      v17 = [legacyFullIdentity2 verifyAndExposeData:messageCopy withSigner:legacyPublicIdentity2 error:&v26];
       v18 = v26;
       if (!v17)
       {
@@ -1147,7 +1147,7 @@ LABEL_22:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           v24 = [(IDSMPFullDeviceIdentityContainer *)self debugDescription];
-          v25 = [v9 debugDescription];
+          v25 = [identityCopy debugDescription];
           *buf = 138543875;
           v30 = v18;
           v31 = 2113;
@@ -1157,7 +1157,7 @@ LABEL_22:
           _os_log_error_impl(&dword_1A7AD9000, v19, OS_LOG_TYPE_ERROR, "MessageProtection failed to decrypt with legacy identities - fail to unseal message {error: %{public}@, encryptingIdentity: %{private}@, signingIdentity:%{private}@}", buf, 0x20u);
         }
 
-        if (a5)
+        if (error)
         {
           if (v18)
           {
@@ -1171,7 +1171,7 @@ LABEL_22:
             v20 = 0;
           }
 
-          *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:11 userInfo:v20];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:11 userInfo:v20];
         }
       }
     }
@@ -1184,10 +1184,10 @@ LABEL_22:
         sub_1A7E112E8();
       }
 
-      if (a5)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:10 userInfo:0];
-        *a5 = v17 = 0;
+        *error = v17 = 0;
       }
 
       else
@@ -1205,10 +1205,10 @@ LABEL_22:
       sub_1A7E11380();
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ids.IDSDecryptionErrorDomain" code:9 userInfo:0];
-      *a5 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -1220,15 +1220,15 @@ LABEL_22:
   return v17;
 }
 
-- (id)_paddyUnsealMessage:(id)a3 sendingURI:(id)a4 sendingPushToken:(id)a5 receivingURI:(id)a6 receivingPushToken:(id)a7 signedByPublicIdentity:(id)a8
+- (id)_paddyUnsealMessage:(id)message sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken signedByPublicIdentity:(id)identity
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(IDSMPFullDeviceIdentityContainer *)self _ngmValidateEncryptingAndSigningIdentity:v19 forMessage:v14];
+  messageCopy = message;
+  iCopy = i;
+  tokenCopy = token;
+  rICopy = rI;
+  pushTokenCopy = pushToken;
+  identityCopy = identity;
+  v20 = [(IDSMPFullDeviceIdentityContainer *)self _ngmValidateEncryptingAndSigningIdentity:identityCopy forMessage:messageCopy];
   v21 = objc_alloc_init(MEMORY[0x1E69956F8]);
   v22 = v21;
   if (v20)
@@ -1243,12 +1243,12 @@ LABEL_22:
     aBlock[2] = sub_1A7B1CCCC;
     aBlock[3] = &unk_1E77DD1B8;
     aBlock[4] = self;
-    v33 = v14;
-    v23 = v18;
-    v24 = v17;
-    v25 = v16;
-    v26 = v15;
-    v27 = v19;
+    v33 = messageCopy;
+    v23 = pushTokenCopy;
+    v24 = rICopy;
+    v25 = tokenCopy;
+    v26 = iCopy;
+    v27 = identityCopy;
     v46 = v27;
     v47 = v22;
     v28 = _Block_copy(aBlock);
@@ -1262,27 +1262,27 @@ LABEL_22:
     v41 = v24;
     v42 = v23;
     v29 = v27;
-    v15 = v26;
-    v16 = v25;
-    v17 = v24;
-    v18 = v23;
-    v14 = v33;
+    iCopy = v26;
+    tokenCopy = v25;
+    rICopy = v24;
+    pushTokenCopy = v23;
+    messageCopy = v33;
     v43 = v29;
     v44 = v28;
     v30 = v28;
     [(IDSMPFullDeviceIdentityContainer *)self accessNGMIdentityOnQueue:&v34];
   }
 
-  v31 = [v22 promise];
+  promise = [v22 promise];
 
-  return v31;
+  return promise;
 }
 
 - (void)eraseNGMIdentityFromKeychain
 {
-  v3 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+  ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
 
-  if (v3)
+  if (ngmFullDeviceIdentity)
   {
 
     [(IDSMPFullDeviceIdentityContainer *)self accessNGMIdentityOnQueue:&unk_1F1AAA140];
@@ -1308,21 +1308,21 @@ LABEL_22:
 
 - (BOOL)hasNGMIdentity
 {
-  v2 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
-  v3 = v2 != 0;
+  ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+  v3 = ngmFullDeviceIdentity != 0;
 
   return v3;
 }
 
 - (BOOL)hasLegacyIdentity
 {
-  v2 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-  v3 = v2 != 0;
+  legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+  v3 = legacyFullIdentity != 0;
 
   return v3;
 }
 
-- (id)ngmKeyRollingTicketWithError:(id *)a3
+- (id)ngmKeyRollingTicketWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1343,12 +1343,12 @@ LABEL_22:
   v7[4] = &v14;
   v7[5] = &v8;
   [(IDSMPFullDeviceIdentityContainer *)self accessNGMIdentityOnQueue:v7];
-  if (a3)
+  if (error)
   {
     v4 = v9[5];
     if (v4)
     {
-      *a3 = v4;
+      *error = v4;
     }
   }
 
@@ -1360,9 +1360,9 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)updateNGMIdentityWithRegisteredTicket:(id)a3 error:(id *)a4
+- (BOOL)updateNGMIdentityWithRegisteredTicket:(id)ticket error:(id *)error
 {
-  v6 = a3;
+  ticketCopy = ticket;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1378,16 +1378,16 @@ LABEL_22:
   v11[2] = sub_1A7B1D4F4;
   v11[3] = &unk_1E77DD250;
   v13 = &v21;
-  v7 = v6;
+  v7 = ticketCopy;
   v12 = v7;
   v14 = &v15;
   [(IDSMPFullDeviceIdentityContainer *)self accessNGMIdentityOnQueue:v11];
-  if (a4)
+  if (error)
   {
     v8 = v16[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -1399,9 +1399,9 @@ LABEL_22:
   return v9;
 }
 
-- (id)signDataWithNGMIdentity:(id)a3 forType:(int64_t)a4 error:(id *)a5
+- (id)signDataWithNGMIdentity:(id)identity forType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
+  identityCopy = identity;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1419,17 +1419,17 @@ LABEL_22:
   v13[2] = sub_1A7B1D6FC;
   v13[3] = &unk_1E77DD278;
   v15 = &v18;
-  v9 = v8;
+  v9 = identityCopy;
   v16 = &v24;
-  v17 = a4;
+  typeCopy = type;
   v14 = v9;
   [(IDSMPFullDeviceIdentityContainer *)self accessNGMIdentityOnQueue:v13];
-  if (a5)
+  if (error)
   {
     v10 = v25[5];
     if (v10)
     {
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -1441,9 +1441,9 @@ LABEL_22:
   return v11;
 }
 
-- (id)batchSignWithNGMIdentity:(id)a3 forType:(int64_t)a4 error:(id *)a5
+- (id)batchSignWithNGMIdentity:(id)identity forType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
+  identityCopy = identity;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1461,17 +1461,17 @@ LABEL_22:
   v13[2] = sub_1A7B1D92C;
   v13[3] = &unk_1E77DD278;
   v15 = &v18;
-  v9 = v8;
+  v9 = identityCopy;
   v16 = &v24;
-  v17 = a4;
+  typeCopy = type;
   v14 = v9;
   [(IDSMPFullDeviceIdentityContainer *)self accessNGMIdentityOnQueue:v13];
-  if (a5)
+  if (error)
   {
     v10 = v25[5];
     if (v10)
     {
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -1487,10 +1487,10 @@ LABEL_22:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-  v6 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
-  v7 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-  v8 = [v3 stringWithFormat:@"<%@: %p legacyFullIdentity: %@, ngmFullDeviceIdentity: %@, ngmVersion: %@>", v4, self, v5, v6, v7];
+  legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+  ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+  ngmVersion = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+  v8 = [v3 stringWithFormat:@"<%@: %p legacyFullIdentity: %@, ngmFullDeviceIdentity: %@, ngmVersion: %@>", v4, self, legacyFullIdentity, ngmFullDeviceIdentity, ngmVersion];
 
   return v8;
 }
@@ -1499,12 +1499,12 @@ LABEL_22:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
-  v6 = [v5 debugDescription];
-  v7 = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
-  v8 = [v7 debugDescription];
-  v9 = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
-  v10 = [v3 stringWithFormat:@"<%@: %p legacyFullIdentity: %@, ngmFullDeviceIdentity: %@, ngmVersion: %@>", v4, self, v6, v8, v9];
+  legacyFullIdentity = [(IDSMPFullDeviceIdentityContainer *)self legacyFullIdentity];
+  v6 = [legacyFullIdentity debugDescription];
+  ngmFullDeviceIdentity = [(IDSMPFullDeviceIdentityContainer *)self ngmFullDeviceIdentity];
+  v8 = [ngmFullDeviceIdentity debugDescription];
+  ngmVersion = [(IDSMPFullDeviceIdentityContainer *)self ngmVersion];
+  v10 = [v3 stringWithFormat:@"<%@: %p legacyFullIdentity: %@, ngmFullDeviceIdentity: %@, ngmVersion: %@>", v4, self, v6, v8, ngmVersion];
 
   return v10;
 }

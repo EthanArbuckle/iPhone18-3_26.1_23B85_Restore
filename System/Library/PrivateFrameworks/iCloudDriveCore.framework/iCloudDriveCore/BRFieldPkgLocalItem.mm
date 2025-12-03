@@ -1,20 +1,20 @@
 @interface BRFieldPkgLocalItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGenerationID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGenerationID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BRFieldPkgLocalItem
 
-- (void)setHasGenerationID:(BOOL)a3
+- (void)setHasGenerationID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -33,30 +33,30 @@
   v8.receiver = self;
   v8.super_class = BRFieldPkgLocalItem;
   v4 = [(BRFieldPkgLocalItem *)&v8 description];
-  v5 = [(BRFieldPkgLocalItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BRFieldPkgLocalItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   item = self->_item;
   if (item)
   {
-    v5 = [(BRFieldPkgItem *)item dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"item"];
+    dictionaryRepresentation = [(BRFieldPkgItem *)item dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"item"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_fileID];
-  [v3 setObject:v6 forKey:@"fileID"];
+  [dictionary setObject:v6 forKey:@"fileID"];
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_generationID];
-    [v3 setObject:v8 forKey:@"generationID"];
+    [dictionary setObject:v8 forKey:@"generationID"];
 
     has = self->_has;
   }
@@ -64,27 +64,27 @@
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_size];
-    [v3 setObject:v9 forKey:@"size"];
+    [dictionary setObject:v9 forKey:@"size"];
   }
 
   xattrs = self->_xattrs;
   if (xattrs)
   {
-    [v3 setObject:xattrs forKey:@"xattrs"];
+    [dictionary setObject:xattrs forKey:@"xattrs"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_item)
   {
     [BRFieldPkgLocalItem writeTo:];
   }
 
-  v10 = v4;
+  v10 = toCopy;
   PBDataWriterWriteSubmessage();
   fileID = self->_fileID;
   PBDataWriterWriteInt64Field();
@@ -110,37 +110,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v6 = a3;
-  [v6 setItem:self->_item];
-  v4 = v6;
-  *(v6 + 1) = self->_fileID;
+  toCopy = to;
+  [toCopy setItem:self->_item];
+  v4 = toCopy;
+  *(toCopy + 1) = self->_fileID;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v6 + 6) = self->_generationID;
-    *(v6 + 48) |= 2u;
+    *(toCopy + 6) = self->_generationID;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v6 + 2) = self->_size;
-    *(v6 + 48) |= 1u;
+    *(toCopy + 2) = self->_size;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_xattrs)
   {
-    [v6 setXattrs:?];
-    v4 = v6;
+    [toCopy setXattrs:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(BRFieldPkgItem *)self->_item copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(BRFieldPkgItem *)self->_item copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -159,23 +159,23 @@
     *(v5 + 48) |= 1u;
   }
 
-  v9 = [(NSData *)self->_xattrs copyWithZone:a3];
+  v9 = [(NSData *)self->_xattrs copyWithZone:zone];
   v10 = *(v5 + 40);
   *(v5 + 40) = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   item = self->_item;
-  if (item | *(v4 + 4))
+  if (item | *(equalCopy + 4))
   {
     if (![(BRFieldPkgItem *)item isEqual:?])
     {
@@ -183,21 +183,21 @@
     }
   }
 
-  if (self->_fileID != *(v4 + 1))
+  if (self->_fileID != *(equalCopy + 1))
   {
     goto LABEL_17;
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_generationID != *(v4 + 6))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_generationID != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_17:
     v8 = 0;
@@ -206,19 +206,19 @@ LABEL_17:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_size != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_size != *(equalCopy + 2))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_17;
   }
 
   xattrs = self->_xattrs;
-  if (xattrs | *(v4 + 5))
+  if (xattrs | *(equalCopy + 5))
   {
     v8 = [(NSData *)xattrs isEqual:?];
   }
@@ -260,12 +260,12 @@ LABEL_18:
   return (2654435761 * fileID) ^ v3 ^ v4 ^ v6 ^ [(NSData *)self->_xattrs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   item = self->_item;
-  v6 = *(v4 + 4);
-  v8 = v4;
+  v6 = *(fromCopy + 4);
+  v8 = fromCopy;
   if (item)
   {
     if (!v6)
@@ -286,24 +286,24 @@ LABEL_18:
     [(BRFieldPkgLocalItem *)self setItem:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  self->_fileID = *(v4 + 1);
-  v7 = *(v4 + 48);
+  self->_fileID = *(fromCopy + 1);
+  v7 = *(fromCopy + 48);
   if ((v7 & 2) != 0)
   {
-    self->_generationID = *(v4 + 6);
+    self->_generationID = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v7 = *(v4 + 48);
+    v7 = *(fromCopy + 48);
   }
 
   if (v7)
   {
-    self->_size = *(v4 + 2);
+    self->_size = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BRFieldPkgLocalItem *)self setXattrs:?];
   }

@@ -1,29 +1,29 @@
 @interface BLSHInternalTapToRadarDialog
-- (BLSHInternalTapToRadarDialog)initWithDescriptor:(id)a3 log:(id)a4;
+- (BLSHInternalTapToRadarDialog)initWithDescriptor:(id)descriptor log:(id)log;
 - (BOOL)_shouldIgnore;
-- (void)_alertDidDismiss:(int64_t)a3;
+- (void)_alertDidDismiss:(int64_t)dismiss;
 - (void)_cancel;
 - (void)_file;
 - (void)_gotError;
 - (void)_ignore;
-- (void)presentWithCompletion:(id)a3;
+- (void)presentWithCompletion:(id)completion;
 @end
 
 @implementation BLSHInternalTapToRadarDialog
 
-- (BLSHInternalTapToRadarDialog)initWithDescriptor:(id)a3 log:(id)a4
+- (BLSHInternalTapToRadarDialog)initWithDescriptor:(id)descriptor log:(id)log
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  descriptorCopy = descriptor;
+  logCopy = log;
+  v9 = logCopy;
   if (__dialog)
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    if (os_log_type_enabled(logCopy, OS_LOG_TYPE_FAULT))
     {
       [BLSHInternalTapToRadarDialog initWithDescriptor:v9 log:?];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -34,27 +34,27 @@
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_descriptor, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v11->_descriptor, descriptor);
+      objc_storeStrong(p_isa + 2, log);
       objc_storeStrong(&__dialog, p_isa);
     }
 
     self = p_isa;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
   v21[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if ((os_variant_has_internal_ui() & 1) == 0)
   {
 LABEL_5:
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_10;
   }
 
@@ -69,24 +69,24 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = [(BLSHTapToRadarDescriptor *)self->_descriptor ttrPromptMessage];
-  v7 = v6;
-  if (v6)
+  ttrPromptMessage = [(BLSHTapToRadarDescriptor *)self->_descriptor ttrPromptMessage];
+  v7 = ttrPromptMessage;
+  if (ttrPromptMessage)
   {
-    v8 = v6;
+    radarDescription = ttrPromptMessage;
   }
 
   else
   {
-    v8 = [(BLSHTapToRadarDescriptor *)self->_descriptor radarDescription];
+    radarDescription = [(BLSHTapToRadarDescriptor *)self->_descriptor radarDescription];
   }
 
-  v9 = v8;
+  v9 = radarDescription;
 
   v20[0] = *MEMORY[0x277CBF188];
-  v10 = [(BLSHTapToRadarDescriptor *)self->_descriptor ttrPromptHeader];
+  ttrPromptHeader = [(BLSHTapToRadarDescriptor *)self->_descriptor ttrPromptHeader];
   v11 = *MEMORY[0x277CBF198];
-  v21[0] = v10;
+  v21[0] = ttrPromptHeader;
   v21[1] = v9;
   v12 = *MEMORY[0x277CBF1E8];
   v20[1] = v11;
@@ -104,7 +104,7 @@ LABEL_5:
   presentWithCompletion____blsWatchdogAlertRunLoopSource = CFUserNotificationCreateRunLoopSource(0, presentWithCompletion____blsAlertUserNotification, _blsAlertCallback, 99);
   Current = CFRunLoopGetCurrent();
   CFRunLoopAddSource(Current, presentWithCompletion____blsWatchdogAlertRunLoopSource, *MEMORY[0x277CBF048]);
-  v17 = [v4 copy];
+  v17 = [completionCopy copy];
   completion = self->_completion;
   self->_completion = v17;
 
@@ -112,7 +112,7 @@ LABEL_10:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_alertDidDismiss:(int64_t)a3
+- (void)_alertDidDismiss:(int64_t)dismiss
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = __dialog;
@@ -122,19 +122,19 @@ LABEL_10:
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    dismissCopy = dismiss;
     _os_log_impl(&dword_21FD11000, log, OS_LOG_TYPE_DEFAULT, "_alertDidDismiss: ttrDialogResult=%ld", &v9, 0xCu);
   }
 
-  if (a3 > 1)
+  if (dismiss > 1)
   {
-    if (a3 == 2)
+    if (dismiss == 2)
     {
       [(BLSHInternalTapToRadarDialog *)self _ignore];
       goto LABEL_14;
     }
 
-    if (a3 == 3)
+    if (dismiss == 3)
     {
       [(BLSHInternalTapToRadarDialog *)self _gotError];
       goto LABEL_14;
@@ -143,13 +143,13 @@ LABEL_10:
 
   else
   {
-    if (!a3)
+    if (!dismiss)
     {
       [(BLSHInternalTapToRadarDialog *)self _cancel];
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (dismiss == 1)
     {
       [(BLSHInternalTapToRadarDialog *)self _file];
       goto LABEL_14;
@@ -159,7 +159,7 @@ LABEL_10:
   v7 = self->_log;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
   {
-    [(BLSHInternalTapToRadarDialog *)a3 _alertDidDismiss:v7];
+    [(BLSHInternalTapToRadarDialog *)dismiss _alertDidDismiss:v7];
   }
 
 LABEL_14:
@@ -200,9 +200,9 @@ void __37__BLSHInternalTapToRadarDialog__file__block_invoke(uint64_t a1, uint64_
 
 - (BOOL)_shouldIgnore
 {
-  v2 = [(BLSHTapToRadarDescriptor *)self->_descriptor designation];
+  designation = [(BLSHTapToRadarDescriptor *)self->_descriptor designation];
 
-  return [BLSHInternalTapToRadarIgnorer shouldIgnoreDesignation:v2];
+  return [BLSHInternalTapToRadarIgnorer shouldIgnoreDesignation:designation];
 }
 
 - (void)_ignore

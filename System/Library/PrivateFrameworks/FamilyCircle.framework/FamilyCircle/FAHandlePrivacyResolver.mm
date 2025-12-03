@@ -1,6 +1,6 @@
 @interface FAHandlePrivacyResolver
 + (id)getFamilyCircle;
-+ (id)privacySafeInvitees:(id)a3;
++ (id)privacySafeInvitees:(id)invitees;
 + (void)getFamilyCircle;
 @end
 
@@ -25,12 +25,12 @@
   return v3;
 }
 
-+ (id)privacySafeInvitees:(id)a3
++ (id)privacySafeInvitees:(id)invitees
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  inviteesCopy = invitees;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [MEMORY[0x1E695DF70] arrayWithArray:v3];
+  v5 = [MEMORY[0x1E695DF70] arrayWithArray:inviteesCopy];
   v6 = [v5 count];
   if (v6 >= 1)
   {
@@ -58,7 +58,7 @@
     if (v12)
     {
       v27 = v5;
-      v28 = v3;
+      v28 = inviteesCopy;
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
@@ -83,21 +83,21 @@
             v20 = v19;
             if (v19)
             {
-              v21 = [v19 appleID];
+              appleID = [v19 appleID];
 
-              if (v21)
+              if (appleID)
               {
-                v22 = [v20 appleID];
-                [v4 addObject:v22];
+                appleID2 = [v20 appleID];
+                [v4 addObject:appleID2];
 
                 v23 = _FALogSystem();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
                 {
-                  v24 = [v20 appleID];
+                  appleID3 = [v20 appleID];
                   *buf = 138412546;
                   v34 = v18;
                   v35 = 2112;
-                  v36 = v24;
+                  v36 = appleID3;
                   _os_log_impl(&dword_1B70B0000, v23, OS_LOG_TYPE_DEFAULT, "Replaced %@ with %@ in invitee list", buf, 0x16u);
                 }
               }
@@ -111,7 +111,7 @@
       }
 
       v5 = v27;
-      v3 = v28;
+      inviteesCopy = v28;
     }
   }
 
@@ -124,7 +124,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B70B0000, a2, OS_LOG_TYPE_ERROR, "FAFetchFamilyCircleRequest failed %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

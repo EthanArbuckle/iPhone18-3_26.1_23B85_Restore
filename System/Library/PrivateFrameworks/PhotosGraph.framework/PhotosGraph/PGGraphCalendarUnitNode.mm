@@ -5,21 +5,21 @@
 + (MANodeFilter)weekOfMonthFilter;
 + (MANodeFilter)weekOfYearFilter;
 + (MANodeFilter)yearFilter;
-+ (PGCalendarUnitMonthDayValue)monthDayValueForMonthDayNode:(id)a3;
-+ (PGCalendarUnitMonthDayValue)monthDayValueForMonthDayNodeCalendarUnitValue:(int64_t)a3;
-+ (id)propertiesForMonth:(int64_t)a3 day:(int64_t)a4;
-+ (id)propertiesWithCalendarUnitValue:(int64_t)a3;
-+ (id)yearIntervalForYearCalendarUnitValue:(int64_t)a3;
-- (BOOL)hasProperties:(id)a3;
++ (PGCalendarUnitMonthDayValue)monthDayValueForMonthDayNode:(id)node;
++ (PGCalendarUnitMonthDayValue)monthDayValueForMonthDayNodeCalendarUnitValue:(int64_t)value;
++ (id)propertiesForMonth:(int64_t)month day:(int64_t)day;
++ (id)propertiesWithCalendarUnitValue:(int64_t)value;
++ (id)yearIntervalForYearCalendarUnitValue:(int64_t)value;
+- (BOOL)hasProperties:(id)properties;
 - (MANodeFilter)uniquelyIdentifyingFilter;
 - (NSString)description;
 - (NSString)featureIdentifier;
-- (PGGraphCalendarUnitNode)initWithCalendarUnit:(unint64_t)a3 value:(int64_t)a4;
-- (PGGraphCalendarUnitNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
+- (PGGraphCalendarUnitNode)initWithCalendarUnit:(unint64_t)unit value:(int64_t)value;
+- (PGGraphCalendarUnitNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
 - (id)collection;
 - (id)label;
 - (id)propertyDictionary;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (unint64_t)featureType;
 @end
 
@@ -37,8 +37,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphCalendarUnitNode *)self label];
-  v7 = [v3 stringWithFormat:@"%@|%@|%d", v5, v6, *(self + 16)];
+  label = [(PGGraphCalendarUnitNode *)self label];
+  v7 = [v3 stringWithFormat:@"%@|%@|%d", v5, label, *(self + 16)];
 
   return v7;
 }
@@ -66,10 +66,10 @@
 - (MANodeFilter)uniquelyIdentifyingFilter
 {
   v3 = objc_alloc(MEMORY[0x277D22C78]);
-  v4 = [(PGGraphCalendarUnitNode *)self label];
-  v5 = [(PGGraphCalendarUnitNode *)self domain];
-  v6 = [(PGGraphCalendarUnitNode *)self propertyDictionary];
-  v7 = [v3 initWithLabel:v4 domain:v5 properties:v6];
+  label = [(PGGraphCalendarUnitNode *)self label];
+  domain = [(PGGraphCalendarUnitNode *)self domain];
+  propertyDictionary = [(PGGraphCalendarUnitNode *)self propertyDictionary];
+  v7 = [v3 initWithLabel:label domain:domain properties:propertyDictionary];
 
   return v7;
 }
@@ -92,17 +92,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PGGraphCalendarUnitNode *)self label];
-  v5 = [v3 stringWithFormat:@"%@ (%d)", v4, *(self + 16)];
+  label = [(PGGraphCalendarUnitNode *)self label];
+  v5 = [v3 stringWithFormat:@"%@ (%d)", label, *(self + 16)];
 
   return v5;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"name"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"name"])
   {
     if (*(self + 16) == -1)
     {
@@ -122,7 +122,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = keyCopy;
       _os_log_fault_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "Unsupported property '%@' accessed on PGGraphCalendarUnitNode.", &v9, 0xCu);
     }
 
@@ -160,11 +160,11 @@
   return v4;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"name"];
     v7 = v6;
@@ -179,11 +179,11 @@
   return v8;
 }
 
-- (PGGraphCalendarUnitNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphCalendarUnitNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  labelCopy = label;
+  propertiesCopy = properties;
+  v9 = labelCopy;
   if ([v9 isEqualToString:@"Day"])
   {
     v10 = 1;
@@ -220,24 +220,24 @@
     v10 = 6;
   }
 
-  v11 = [v8 objectForKeyedSubscript:@"name"];
-  v12 = [v11 integerValue];
+  v11 = [propertiesCopy objectForKeyedSubscript:@"name"];
+  integerValue = [v11 integerValue];
 
-  v13 = [(PGGraphCalendarUnitNode *)self initWithCalendarUnit:v10 value:v12];
+  v13 = [(PGGraphCalendarUnitNode *)self initWithCalendarUnit:v10 value:integerValue];
   return v13;
 }
 
-- (PGGraphCalendarUnitNode)initWithCalendarUnit:(unint64_t)a3 value:(int64_t)a4
+- (PGGraphCalendarUnitNode)initWithCalendarUnit:(unint64_t)unit value:(int64_t)value
 {
-  v4 = a4;
-  v5 = a3;
+  valueCopy = value;
+  unitCopy = unit;
   v7.receiver = self;
   v7.super_class = PGGraphCalendarUnitNode;
   result = [(PGGraphNode *)&v7 init];
   if (result)
   {
-    *(result + 34) = v5;
-    *(result + 16) = v4;
+    *(result + 34) = unitCopy;
+    *(result + 16) = valueCopy;
   }
 
   return result;
@@ -285,17 +285,17 @@
   return v2;
 }
 
-+ (id)yearIntervalForYearCalendarUnitValue:(int64_t)a3
++ (id)yearIntervalForYearCalendarUnitValue:(int64_t)value
 {
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v5 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v5 setYear:a3];
+  [v5 setYear:value];
   [v5 setMonth:1];
   [v5 setDay:1];
-  v6 = [v4 dateFromComponents:v5];
+  v6 = [currentCalendar dateFromComponents:v5];
   v11 = v6;
   v12 = 0.0;
-  [v4 rangeOfUnit:4 startDate:&v11 interval:&v12 forDate:v6];
+  [currentCalendar rangeOfUnit:4 startDate:&v11 interval:&v12 forDate:v6];
   v7 = v11;
 
   v8 = objc_alloc(MEMORY[0x277CCA970]);
@@ -304,30 +304,30 @@
   return v9;
 }
 
-+ (PGCalendarUnitMonthDayValue)monthDayValueForMonthDayNode:(id)a3
++ (PGCalendarUnitMonthDayValue)monthDayValueForMonthDayNode:(id)node
 {
-  v4 = [a3 calendarUnitValue];
+  calendarUnitValue = [node calendarUnitValue];
 
-  v5 = [a1 monthDayValueForMonthDayNodeCalendarUnitValue:v4];
+  v5 = [self monthDayValueForMonthDayNodeCalendarUnitValue:calendarUnitValue];
   result.var1 = v6;
   result.var0 = v5;
   return result;
 }
 
-+ (PGCalendarUnitMonthDayValue)monthDayValueForMonthDayNodeCalendarUnitValue:(int64_t)a3
++ (PGCalendarUnitMonthDayValue)monthDayValueForMonthDayNodeCalendarUnitValue:(int64_t)value
 {
-  v3 = a3 / 100;
-  v4 = a3 % 100;
+  v3 = value / 100;
+  v4 = value % 100;
   result.var1 = v4;
   result.var0 = v3;
   return result;
 }
 
-+ (id)propertiesWithCalendarUnitValue:(int64_t)a3
++ (id)propertiesWithCalendarUnitValue:(int64_t)value
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"name";
-  v3 = [MEMORY[0x277CCABB0] numberWithLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithLong:value];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -336,11 +336,11 @@
   return v4;
 }
 
-+ (id)propertiesForMonth:(int64_t)a3 day:(int64_t)a4
++ (id)propertiesForMonth:(int64_t)month day:(int64_t)day
 {
-  v5 = [a1 encodedMonthDayForMonth:a3 day:a4];
+  v5 = [self encodedMonthDayForMonth:month day:day];
 
-  return [a1 propertiesWithCalendarUnitValue:v5];
+  return [self propertiesWithCalendarUnitValue:v5];
 }
 
 @end

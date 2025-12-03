@@ -1,18 +1,18 @@
 @interface NUMultipleSourceContainerNode
-- (NUMultipleSourceContainerNode)initWithAssetIdentifier:(id)a3;
-- (NUMultipleSourceContainerNode)initWithSourceNodes:(id)a3 assetIdentifier:(id)a4;
+- (NUMultipleSourceContainerNode)initWithAssetIdentifier:(id)identifier;
+- (NUMultipleSourceContainerNode)initWithSourceNodes:(id)nodes assetIdentifier:(id)identifier;
 - (id)description;
-- (id)resolveSourceNodeForPipelineState:(id)a3 foundScale:(id *)a4 error:(id *)a5;
-- (id)sourceNodeForPipelineState:(id)a3 error:(id *)a4;
+- (id)resolveSourceNodeForPipelineState:(id)state foundScale:(id *)scale error:(id *)error;
+- (id)sourceNodeForPipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUMultipleSourceContainerNode
 
-- (id)sourceNodeForPipelineState:(id)a3 error:(id *)a4
+- (id)sourceNodeForPipelineState:(id)state error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  stateCopy = state;
+  if (!error)
   {
     v11 = NUAssertLogger_8665();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -33,8 +33,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v18;
         v29 = 2114;
@@ -45,8 +45,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -55,11 +55,11 @@
     _NUAssertFailHandler("[NUMultipleSourceContainerNode sourceNodeForPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 339, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [(NUMultipleSourceContainerNode *)self primarySourceNode];
-  if ([v8 load:a4] && objc_msgSend(v8, "isValid:", a4))
+  v7 = stateCopy;
+  primarySourceNode = [(NUMultipleSourceContainerNode *)self primarySourceNode];
+  if ([primarySourceNode load:error] && objc_msgSend(primarySourceNode, "isValid:", error))
   {
-    v9 = v8;
+    v9 = primarySourceNode;
   }
 
   else
@@ -70,11 +70,11 @@
   return v9;
 }
 
-- (id)resolveSourceNodeForPipelineState:(id)a3 foundScale:(id *)a4 error:(id *)a5
+- (id)resolveSourceNodeForPipelineState:(id)state foundScale:(id *)scale error:(id *)error
 {
   v89 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a5)
+  stateCopy = state;
+  if (!error)
   {
     v45 = NUAssertLogger_8665();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -95,8 +95,8 @@
         v52 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v53 = MEMORY[0x1E696AF00];
         v54 = v52;
-        v55 = [v53 callStackSymbols];
-        v56 = [v55 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v53 callStackSymbols];
+        v56 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v86 = v52;
         v87 = 2114;
@@ -107,8 +107,8 @@
 
     else if (v49)
     {
-      v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v51 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v51 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v86 = v51;
       _os_log_error_impl(&dword_1C0184000, v48, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -117,20 +117,20 @@
     _NUAssertFailHandler("[NUMultipleSourceContainerNode resolveSourceNodeForPipelineState:foundScale:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 251, @"Invalid parameter not satisfying: %s", v57, v58, v59, v60, "error != NULL");
   }
 
-  v9 = v8;
-  v10 = [(NUMultipleSourceContainerNode *)self primarySourceNode];
-  if (![v10 load:a5] || !objc_msgSend(v10, "isValid:", a5))
+  v9 = stateCopy;
+  primarySourceNode = [(NUMultipleSourceContainerNode *)self primarySourceNode];
+  if (![primarySourceNode load:error] || !objc_msgSend(primarySourceNode, "isValid:", error))
   {
     v42 = 0;
     goto LABEL_40;
   }
 
-  v11 = [v9 mediaComponentType];
+  mediaComponentType = [v9 mediaComponentType];
   v12 = self->_sources;
   if ([(NSArray *)v12 count])
   {
-    v70 = [v9 scale];
-    if (v70 >= 1 && v13 > 0)
+    scale = [v9 scale];
+    if (scale >= 1 && v13 > 0)
     {
       v68 = v13;
       v14 = NUScaleZero;
@@ -145,11 +145,11 @@
       v18 = [(NSArray *)v17 countByEnumeratingWithState:&v80 objects:v84 count:16];
       if (v18)
       {
-        v62 = a5;
-        v63 = a4;
-        v61 = self;
+        errorCopy = error;
+        scaleCopy = scale;
+        selfCopy = self;
         v64 = v12;
-        v65 = v10;
+        v65 = primarySourceNode;
         v69 = v9;
         v66 = 0;
         v67 = 0;
@@ -199,25 +199,25 @@
                     goto LABEL_23;
                   }
 
-                  v31 = [v27 renderScale];
+                  renderScale = [v27 renderScale];
                   v33 = v32;
-                  if (NUScaleCompare(v31, v32, v70, v68) < 0 && (NUScaleCompare(v31, v33, v74, v29) & 0x8000000000000000) == 0)
+                  if (NUScaleCompare(renderScale, v32, scale, v68) < 0 && (NUScaleCompare(renderScale, v33, v74, v29) & 0x8000000000000000) == 0)
                   {
                     v34 = v23;
 
-                    v74 = v31;
+                    v74 = renderScale;
                     v29 = v33;
                     v67 = v34;
                   }
 
-                  if (NUScaleCompare(v31, v33, v70, v68) < 0)
+                  if (NUScaleCompare(renderScale, v33, scale, v68) < 0)
                   {
 LABEL_23:
-                    v31 = v20;
+                    renderScale = v20;
                     v33 = v73;
                   }
 
-                  else if (NUScaleCompare(v31, v33, v20, v73) <= 0)
+                  else if (NUScaleCompare(renderScale, v33, v20, v73) <= 0)
                   {
                     v35 = v23;
 
@@ -226,19 +226,19 @@ LABEL_23:
 
                   else
                   {
-                    v31 = v20;
+                    renderScale = v20;
                     v33 = v73;
                   }
                 }
 
                 else
                 {
-                  v31 = v20;
+                  renderScale = v20;
                   v33 = v73;
                   v19 = v28;
                 }
 
-                v20 = v31;
+                v20 = renderScale;
                 v73 = v33;
                 v14 = v74;
                 v15 = v29;
@@ -262,7 +262,7 @@ LABEL_23:
 
         while (v36);
 
-        v10 = v65;
+        primarySourceNode = v65;
         v37 = v66;
         v38 = v66;
         v39 = v67;
@@ -270,8 +270,8 @@ LABEL_23:
         if (v66 || (v38 = v67, v20 = v14, v40 = v15, v67))
         {
           v41 = v38;
-          v63->var0 = v20;
-          v63->var1 = v40;
+          scaleCopy->var0 = v20;
+          scaleCopy->var1 = v40;
           v42 = v41;
           v9 = v69;
           v12 = v64;
@@ -282,8 +282,8 @@ LABEL_38:
 
         v9 = v69;
         v12 = v64;
-        self = v61;
-        a5 = v62;
+        self = selfCopy;
+        error = errorCopy;
       }
 
       else
@@ -295,18 +295,18 @@ LABEL_38:
       [NUError errorWithCode:5 reason:@"Couldn't find any matching source node" object:self underlyingError:v19];
       v37 = 0;
       v39 = 0;
-      *a5 = v42 = 0;
+      *error = v42 = 0;
       goto LABEL_38;
     }
 
-    *a4 = NUScaleUnknown;
+    *scale = NUScaleUnknown;
     v42 = [(NSArray *)v12 objectAtIndexedSubscript:0];
   }
 
   else
   {
-    v43 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
-    *a5 = [NUError missingError:@"No matching source for type" object:v43];
+    v43 = [MEMORY[0x1E696AD98] numberWithInteger:mediaComponentType];
+    *error = [NUError missingError:@"No matching source for type" object:v43];
 
     v42 = 0;
   }
@@ -349,12 +349,12 @@ LABEL_40:
   return v3;
 }
 
-- (NUMultipleSourceContainerNode)initWithSourceNodes:(id)a3 assetIdentifier:(id)a4
+- (NUMultipleSourceContainerNode)initWithSourceNodes:(id)nodes assetIdentifier:(id)identifier
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  nodesCopy = nodes;
+  identifierCopy = identifier;
+  if (![nodesCopy count])
   {
     v19 = NUAssertLogger_8665();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -375,8 +375,8 @@ LABEL_40:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v26;
         v43 = 2114;
@@ -387,8 +387,8 @@ LABEL_40:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -399,17 +399,17 @@ LABEL_40:
 
   v39.receiver = self;
   v39.super_class = NUMultipleSourceContainerNode;
-  v8 = [(NUSourceContainerNode *)&v39 initWithAssetIdentifier:v7];
-  v9 = [v6 copy];
+  v8 = [(NUSourceContainerNode *)&v39 initWithAssetIdentifier:identifierCopy];
+  v9 = [nodesCopy copy];
   sources = v8->_sources;
   v8->_sources = v9;
 
-  v11 = [(NUMultipleSourceContainerNode *)v8 primarySourceNode];
+  primarySourceNode = [(NUMultipleSourceContainerNode *)v8 primarySourceNode];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = v6;
+  v12 = nodesCopy;
   v13 = [v12 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v13)
   {
@@ -426,9 +426,9 @@ LABEL_40:
         }
 
         v17 = *(*(&v35 + 1) + 8 * v16);
-        if (v17 != v11)
+        if (v17 != primarySourceNode)
         {
-          [v17 setOriginalNode:v11];
+          [v17 setOriginalNode:primarySourceNode];
         }
 
         ++v16;
@@ -444,10 +444,10 @@ LABEL_40:
   return v8;
 }
 
-- (NUMultipleSourceContainerNode)initWithAssetIdentifier:(id)a3
+- (NUMultipleSourceContainerNode)initWithAssetIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_317_8646);
@@ -491,8 +491,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -508,8 +508,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

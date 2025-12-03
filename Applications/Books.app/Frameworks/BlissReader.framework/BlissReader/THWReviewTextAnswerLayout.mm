@@ -1,22 +1,22 @@
 @interface THWReviewTextAnswerLayout
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
 - (CGRect)labelFrame;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)adjustedInsets;
-- (THWReviewTextAnswerLayout)initWithChoice:(id)a3 index:(unint64_t)a4 delegate:(id)a5;
+- (THWReviewTextAnswerLayout)initWithChoice:(id)choice index:(unint64_t)index delegate:(id)delegate;
 - (double)p_maxTextWidth;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
 - (double)textWidth;
 - (id)childInfosForLayout;
 - (id)computeLayoutGeometry;
 - (id)p_wpLayout;
 - (void)dealloc;
-- (void)setHorizontalOffset:(double)a3;
+- (void)setHorizontalOffset:(double)offset;
 @end
 
 @implementation THWReviewTextAnswerLayout
 
-- (THWReviewTextAnswerLayout)initWithChoice:(id)a3 index:(unint64_t)a4 delegate:(id)a5
+- (THWReviewTextAnswerLayout)initWithChoice:(id)choice index:(unint64_t)index delegate:(id)delegate
 {
   v11.receiver = self;
   v11.super_class = THWReviewTextAnswerLayout;
@@ -24,10 +24,10 @@
   v9 = v8;
   if (v8)
   {
-    v8->_index = a4;
-    v8->_choice = a3;
-    v9->_delegate = a5;
-    v9->_styleProvider = [[THWReviewTextAnswerStyleProvider alloc] initWithIndex:a4 storage:[(THWReviewChoice *)v9->_choice contentStorage] listLabelStyle:[(THWReviewTextAnswerLayoutDelegate *)v9->_delegate reviewTextAnswerLayoutListLabelParagraphStyle:v9]];
+    v8->_index = index;
+    v8->_choice = choice;
+    v9->_delegate = delegate;
+    v9->_styleProvider = [[THWReviewTextAnswerStyleProvider alloc] initWithIndex:index storage:[(THWReviewChoice *)v9->_choice contentStorage] listLabelStyle:[(THWReviewTextAnswerLayoutDelegate *)v9->_delegate reviewTextAnswerLayoutListLabelParagraphStyle:v9]];
   }
 
   return v9;
@@ -67,7 +67,7 @@
   return v6;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -80,10 +80,10 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   horizontalOffset = self->_horizontalOffset;
   v7 = 0.0;
   result.size.height = height;
@@ -102,21 +102,21 @@
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a3)
+  if (index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a5)
+  if (outWidth)
   {
-    *a5 = a4;
+    *outWidth = width;
   }
 
-  if (a6)
+  if (gap)
   {
-    *a6 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;
@@ -157,12 +157,12 @@
   return result;
 }
 
-- (void)setHorizontalOffset:(double)a3
+- (void)setHorizontalOffset:(double)offset
 {
-  if (self->_horizontalOffset != a3)
+  if (self->_horizontalOffset != offset)
   {
     [-[THWReviewTextAnswerLayout p_wpLayout](self "p_wpLayout")];
-    self->_horizontalOffset = a3;
+    self->_horizontalOffset = offset;
   }
 }
 
@@ -172,11 +172,11 @@
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v6 = [(THWReviewTextAnswerLayout *)self p_wpLayout];
-  if (v6)
+  p_wpLayout = [(THWReviewTextAnswerLayout *)self p_wpLayout];
+  if (p_wpLayout)
   {
-    v7 = v6;
-    v8 = [objc_msgSend(v6 "columns")];
+    v7 = p_wpLayout;
+    v8 = [objc_msgSend(p_wpLayout "columns")];
     if ([v8 countLines])
     {
       [v8 labelBoundsOfLineFragmentAtIndex:0];

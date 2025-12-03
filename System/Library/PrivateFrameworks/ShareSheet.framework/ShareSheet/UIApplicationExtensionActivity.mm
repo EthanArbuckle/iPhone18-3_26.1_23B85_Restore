@@ -1,13 +1,13 @@
 @interface UIApplicationExtensionActivity
-+ (id)_applicationExtensionActivitiesForItems:(id)a3;
-+ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)a3 extensionItemDataRequest:(id)a4;
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
++ (id)_applicationExtensionActivitiesForItems:(id)items;
++ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)values extensionItemDataRequest:(id)request;
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (BOOL)_isServiceExtension;
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)containingAppBundleIdentifier;
 - (NSString)debugDescription;
-- (UIApplicationExtensionActivity)initWithApplicationExtension:(id)a3;
+- (UIApplicationExtensionActivity)initWithApplicationExtension:(id)extension;
 - (UIViewController)presenterViewController;
 - (_UIActivityBundleHelper)activityBundleHelper;
 - (id)_actionImage;
@@ -18,27 +18,27 @@
 - (id)activityType;
 - (int64_t)activityCategory;
 - (void)_cleanup;
-- (void)_instantiateExtensionViewControllerWithInputItems:(id)a3;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
+- (void)_instantiateExtensionViewControllerWithInputItems:(id)items;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
 - (void)_presentExtensionViewControllerIfPossible;
 - (void)dealloc;
-- (void)prepareWithActivityExtensionItemData:(id)a3;
-- (void)prepareWithActivityItems:(id)a3;
-- (void)setApplicationExtension:(id)a3;
+- (void)prepareWithActivityExtensionItemData:(id)data;
+- (void)prepareWithActivityItems:(id)items;
+- (void)setApplicationExtension:(id)extension;
 @end
 
 @implementation UIApplicationExtensionActivity
 
-- (UIApplicationExtensionActivity)initWithApplicationExtension:(id)a3
+- (UIApplicationExtensionActivity)initWithApplicationExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v9.receiver = self;
   v9.super_class = UIApplicationExtensionActivity;
   v5 = [(UIActivity *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(UIApplicationExtensionActivity *)v5 setApplicationExtension:v4];
+    [(UIApplicationExtensionActivity *)v5 setApplicationExtension:extensionCopy];
     v7 = v6;
   }
 
@@ -57,19 +57,19 @@
 
 - (int64_t)activityCategory
 {
-  v3 = [(UIApplicationExtensionActivity *)self overrideActivityCategory];
-  if (v3)
+  overrideActivityCategory = [(UIApplicationExtensionActivity *)self overrideActivityCategory];
+  if (overrideActivityCategory)
   {
-    v4 = [(UIApplicationExtensionActivity *)self overrideActivityCategory];
-    v5 = [v4 intValue];
+    overrideActivityCategory2 = [(UIApplicationExtensionActivity *)self overrideActivityCategory];
+    intValue = [overrideActivityCategory2 intValue];
   }
 
   else
   {
-    v5 = [objc_opt_class() activityCategory];
+    intValue = [objc_opt_class() activityCategory];
   }
 
-  return v5;
+  return intValue;
 }
 
 - (NSString)debugDescription
@@ -78,83 +78,83 @@
   v9.receiver = self;
   v9.super_class = UIApplicationExtensionActivity;
   v4 = [(UIActivity *)&v9 description];
-  v5 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v6 = [v5 identifier];
-  v7 = [v3 stringWithFormat:@"%@ {extension = %@}", v4, v6];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  identifier = [applicationExtension identifier];
+  v7 = [v3 stringWithFormat:@"%@ {extension = %@}", v4, identifier];
 
   return v7;
 }
 
-- (void)setApplicationExtension:(id)a3
+- (void)setApplicationExtension:(id)extension
 {
-  objc_storeStrong(&self->_applicationExtension, a3);
-  v5 = a3;
-  v6 = [v5 _plugIn];
+  objc_storeStrong(&self->_applicationExtension, extension);
+  extensionCopy = extension;
+  _plugIn = [extensionCopy _plugIn];
 
-  self->_installationDate = [v6 timestamp];
+  self->_installationDate = [_plugIn timestamp];
 }
 
 - (NSString)containingAppBundleIdentifier
 {
-  v2 = [(UIApplicationExtensionActivity *)self activityBundleHelper];
-  v3 = [v2 bundleProxy];
-  v4 = [v3 containingBundle];
+  activityBundleHelper = [(UIApplicationExtensionActivity *)self activityBundleHelper];
+  bundleProxy = [activityBundleHelper bundleProxy];
+  containingBundle = [bundleProxy containingBundle];
 
-  v5 = [v4 bundleIdentifier];
+  bundleIdentifier = [containingBundle bundleIdentifier];
 
-  return v5;
+  return bundleIdentifier;
 }
 
 - (id)activityType
 {
-  v2 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v3 = [v2 identifier];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  identifier = [applicationExtension identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)activityTitle
 {
-  v3 = [(UIApplicationExtensionActivity *)self activityCategory];
-  v4 = [(UIApplicationExtensionActivity *)self activityBundleHelper];
-  v5 = [v4 bundleProxy];
+  activityCategory = [(UIApplicationExtensionActivity *)self activityCategory];
+  activityBundleHelper = [(UIApplicationExtensionActivity *)self activityBundleHelper];
+  bundleProxy = [activityBundleHelper bundleProxy];
 
-  if (v3 == 1)
+  if (activityCategory == 1)
   {
-    v6 = [v5 containingBundle];
-    v7 = v6;
-    if (v6)
+    containingBundle = [bundleProxy containingBundle];
+    v7 = containingBundle;
+    if (containingBundle)
     {
-      v8 = v6;
+      v8 = containingBundle;
     }
 
     else
     {
-      v8 = v5;
+      v8 = bundleProxy;
     }
 
     v9 = v8;
 
-    v5 = v9;
+    bundleProxy = v9;
   }
 
-  v10 = [(UIActivity *)self preferredLocalizations];
+  preferredLocalizations = [(UIActivity *)self preferredLocalizations];
 
-  if (!v10 || (-[UIActivity preferredLocalizations](self, "preferredLocalizations"), v11 = objc_claimAutoreleasedReturnValue(), [v5 localizedNameWithPreferredLocalizations:v11 useShortNameOnly:0], v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
+  if (!preferredLocalizations || (-[UIActivity preferredLocalizations](self, "preferredLocalizations"), v11 = objc_claimAutoreleasedReturnValue(), [bundleProxy localizedNameWithPreferredLocalizations:v11 useShortNameOnly:0], v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
   {
-    v13 = [v5 localizedName];
-    v14 = v13;
-    if (v13)
+    localizedName = [bundleProxy localizedName];
+    v14 = localizedName;
+    if (localizedName)
     {
-      v15 = v13;
+      localizedShortName = localizedName;
     }
 
     else
     {
-      v15 = [v5 localizedShortName];
+      localizedShortName = [bundleProxy localizedShortName];
     }
 
-    v12 = v15;
+    v12 = localizedShortName;
   }
 
   return v12;
@@ -162,12 +162,12 @@
 
 - (id)_activityImage
 {
-  v3 = [(UIApplicationExtensionActivity *)self activityCategory];
-  v4 = [(UIApplicationExtensionActivity *)self activityBundleHelper];
-  v5 = [(UIActivity *)self contentSizeCategory];
-  v6 = [v4 imageForApplicationIconFormat:10 activityCategory:v3 contentSizeCategory:v5 userInterfaceStyle:-[UIActivity userInterfaceStyle](self, "userInterfaceStyle")];
+  activityCategory = [(UIApplicationExtensionActivity *)self activityCategory];
+  activityBundleHelper = [(UIApplicationExtensionActivity *)self activityBundleHelper];
+  contentSizeCategory = [(UIActivity *)self contentSizeCategory];
+  v6 = [activityBundleHelper imageForApplicationIconFormat:10 activityCategory:activityCategory contentSizeCategory:contentSizeCategory userInterfaceStyle:-[UIActivity userInterfaceStyle](self, "userInterfaceStyle")];
 
-  if (!v3 || !v6)
+  if (!activityCategory || !v6)
   {
     v7 = [objc_opt_class() _activityImageForActionRepresentationImage:v6];
 
@@ -179,9 +179,9 @@
 
 - (id)_activityImageUTI
 {
-  v2 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v3 = [v2 attributes];
-  v4 = [v3 objectForKeyedSubscript:@"NSExtensionIconUTI"];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  attributes = [applicationExtension attributes];
+  v4 = [attributes objectForKeyedSubscript:@"NSExtensionIconUTI"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -201,34 +201,34 @@ LABEL_5:
 
 - (id)_activitySettingsImage
 {
-  v3 = [(UIApplicationExtensionActivity *)self activityCategory];
-  if (v3)
+  activityCategory = [(UIApplicationExtensionActivity *)self activityCategory];
+  if (activityCategory)
   {
-    v4 = [(UIApplicationExtensionActivity *)self activityBundleHelper];
-    v5 = [(UIActivity *)self contentSizeCategory];
-    v3 = [v4 imageForApplicationIconFormat:0 activityCategory:v3 contentSizeCategory:v5 userInterfaceStyle:-[UIActivity userInterfaceStyle](self, "userInterfaceStyle")];
+    activityBundleHelper = [(UIApplicationExtensionActivity *)self activityBundleHelper];
+    contentSizeCategory = [(UIActivity *)self contentSizeCategory];
+    activityCategory = [activityBundleHelper imageForApplicationIconFormat:0 activityCategory:activityCategory contentSizeCategory:contentSizeCategory userInterfaceStyle:-[UIActivity userInterfaceStyle](self, "userInterfaceStyle")];
   }
 
-  return v3;
+  return activityCategory;
 }
 
 - (id)_actionImage
 {
-  v3 = [(UIApplicationExtensionActivity *)self activityBundleHelper];
-  v4 = [(UIActivity *)self contentSizeCategory];
-  v5 = [v3 imageForApplicationIconFormat:10 activityCategory:0 contentSizeCategory:v4 userInterfaceStyle:-[UIActivity userInterfaceStyle](self, "userInterfaceStyle")];
+  activityBundleHelper = [(UIApplicationExtensionActivity *)self activityBundleHelper];
+  contentSizeCategory = [(UIActivity *)self contentSizeCategory];
+  v5 = [activityBundleHelper imageForApplicationIconFormat:10 activityCategory:0 contentSizeCategory:contentSizeCategory userInterfaceStyle:-[UIActivity userInterfaceStyle](self, "userInterfaceStyle")];
 
   v6 = objc_opt_class();
-  v7 = [(UIActivity *)self contentSizeCategory];
-  v8 = [v6 _actionImageForActionRepresentationImage:v5 contentSizeCategory:v7];
+  contentSizeCategory2 = [(UIActivity *)self contentSizeCategory];
+  v8 = [v6 _actionImageForActionRepresentationImage:v5 contentSizeCategory:contentSizeCategory2];
 
   return v8;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [(UIApplicationExtensionActivity *)self activityType];
-  v4 = [v3 isEqualToString:@"com.apple.CloudSharingUI.CreateiCloudLinkExtension"];
+  activityType = [(UIApplicationExtensionActivity *)self activityType];
+  v4 = [activityType isEqualToString:@"com.apple.CloudSharingUI.CreateiCloudLinkExtension"];
 
   if (!v4)
   {
@@ -240,62 +240,62 @@ LABEL_5:
 
 - (BOOL)_isServiceExtension
 {
-  v2 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v3 = [v2 extensionPointIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.services"];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  extensionPointIdentifier = [applicationExtension extensionPointIdentifier];
+  v4 = [extensionPointIdentifier isEqualToString:@"com.apple.services"];
 
   return v4;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIApplicationExtensionActivity *)self _injectedExtensionItem];
-  v6 = v5;
-  if (v5)
+  itemsCopy = items;
+  _injectedExtensionItem = [(UIApplicationExtensionActivity *)self _injectedExtensionItem];
+  v6 = _injectedExtensionItem;
+  if (_injectedExtensionItem)
   {
-    v11[0] = v5;
+    v11[0] = _injectedExtensionItem;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
-    v4 = v7;
+    itemsCopy = v7;
   }
 
-  v8 = [(UIApplicationExtensionActivity *)self extensionItemDataRequest];
-  if (!v8)
+  extensionItemDataRequest = [(UIApplicationExtensionActivity *)self extensionItemDataRequest];
+  if (!extensionItemDataRequest)
   {
-    v9 = [(UIApplicationExtensionActivity *)self activityType];
-    v8 = [UISUIActivityExtensionItemDataRequest requestForActivity:self activityType:v9];
+    activityType = [(UIApplicationExtensionActivity *)self activityType];
+    extensionItemDataRequest = [UISUIActivityExtensionItemDataRequest requestForActivity:self activityType:activityType];
   }
 
-  v10 = [objc_opt_class() preparedActivityExtensionItemDataForActivityItemValues:v4 extensionItemDataRequest:v8];
+  v10 = [objc_opt_class() preparedActivityExtensionItemDataForActivityItemValues:itemsCopy extensionItemDataRequest:extensionItemDataRequest];
   [(UIApplicationExtensionActivity *)self prepareWithActivityExtensionItemData:v10];
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(UIApplicationExtensionActivity *)self originalFileURL];
+  originalFileURL = [(UIApplicationExtensionActivity *)self originalFileURL];
 
-  if (v8)
+  if (originalFileURL)
   {
-    v9 = [(UIApplicationExtensionActivity *)self originalFileURL];
-    v10 = v9;
-    [v9 fileSystemRepresentation];
+    originalFileURL2 = [(UIApplicationExtensionActivity *)self originalFileURL];
+    v10 = originalFileURL2;
+    [originalFileURL2 fileSystemRepresentation];
     v11 = sandbox_extension_issue_file();
 
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v11];
     v13 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithItem:v12 typeIdentifier:@"sandbox-token"];
     v21[0] = v13;
-    v14 = [(UIApplicationExtensionActivity *)self originalFileURL];
-    v21[1] = v14;
+    originalFileURL3 = [(UIApplicationExtensionActivity *)self originalFileURL];
+    v21[1] = originalFileURL3;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     [(UIApplicationExtensionActivity *)self prepareWithActivityItems:v15];
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -306,8 +306,8 @@ LABEL_5:
     v17[2] = __71__UIApplicationExtensionActivity__prepareWithActivityItems_completion___block_invoke;
     v17[3] = &unk_1E71F9A70;
     objc_copyWeak(&v19, &location);
-    v18 = v7;
-    [v16 loadSendCopyRepresentationIfNeededForActivityItems:v6 completion:v17];
+    v18 = completionCopy;
+    [v16 loadSendCopyRepresentationIfNeededForActivityItems:itemsCopy completion:v17];
 
     objc_destroyWeak(&v19);
   }
@@ -336,10 +336,10 @@ uint64_t __71__UIApplicationExtensionActivity__prepareWithActivityItems_completi
   return v3();
 }
 
-- (void)prepareWithActivityExtensionItemData:(id)a3
+- (void)prepareWithActivityExtensionItemData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 extensionItems];
+  dataCopy = data;
+  extensionItems = [dataCopy extensionItems];
   if ([(UIApplicationExtensionActivity *)self _isServiceExtension])
   {
     objc_initWeak(&location, self);
@@ -348,32 +348,32 @@ uint64_t __71__UIApplicationExtensionActivity__prepareWithActivityItems_completi
     v16[2] = __71__UIApplicationExtensionActivity_prepareWithActivityExtensionItemData___block_invoke;
     v16[3] = &unk_1E71FABA0;
     objc_copyWeak(&v17, &location);
-    v6 = [(UIApplicationExtensionActivity *)self applicationExtension];
-    [v6 set_requestPostCompletionBlockWithItems:v16];
+    applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+    [applicationExtension set_requestPostCompletionBlockWithItems:v16];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __71__UIApplicationExtensionActivity_prepareWithActivityExtensionItemData___block_invoke_23;
     v14[3] = &unk_1E71FABC8;
     objc_copyWeak(&v15, &location);
-    v7 = [(UIApplicationExtensionActivity *)self applicationExtension];
-    [v7 setRequestCancellationBlock:v14];
+    applicationExtension2 = [(UIApplicationExtensionActivity *)self applicationExtension];
+    [applicationExtension2 setRequestCancellationBlock:v14];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __71__UIApplicationExtensionActivity_prepareWithActivityExtensionItemData___block_invoke_26;
     v12[3] = &unk_1E71FABF0;
     objc_copyWeak(&v13, &location);
-    v8 = [(UIApplicationExtensionActivity *)self applicationExtension];
-    [v8 setRequestInterruptionBlock:v12];
+    applicationExtension3 = [(UIApplicationExtensionActivity *)self applicationExtension];
+    [applicationExtension3 setRequestInterruptionBlock:v12];
 
-    v9 = [(UIApplicationExtensionActivity *)self applicationExtension];
+    applicationExtension4 = [(UIApplicationExtensionActivity *)self applicationExtension];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __71__UIApplicationExtensionActivity_prepareWithActivityExtensionItemData___block_invoke_34;
     v10[3] = &unk_1E71FABC8;
     objc_copyWeak(&v11, &location);
-    [v9 beginExtensionRequestWithInputItems:v5 completion:v10];
+    [applicationExtension4 beginExtensionRequestWithInputItems:extensionItems completion:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&v13);
@@ -384,7 +384,7 @@ uint64_t __71__UIApplicationExtensionActivity__prepareWithActivityItems_completi
 
   else
   {
-    [(UIApplicationExtensionActivity *)self _instantiateExtensionViewControllerWithInputItems:v5];
+    [(UIApplicationExtensionActivity *)self _instantiateExtensionViewControllerWithInputItems:extensionItems];
   }
 }
 
@@ -518,61 +518,61 @@ uint64_t __71__UIApplicationExtensionActivity_prepareWithActivityExtensionItemDa
   }
 }
 
-+ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)a3 extensionItemDataRequest:(id)a4
++ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)values extensionItemDataRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  valuesCopy = values;
   v8 = objc_alloc_init(UISUIActivityExtensionItemData);
-  v9 = [a1 _activityExtensionItemsForActivityItemValues:v7 extensionItemDataRequest:v6];
+  v9 = [self _activityExtensionItemsForActivityItemValues:valuesCopy extensionItemDataRequest:requestCopy];
 
   [(UISUIActivityExtensionItemData *)v8 setExtensionItems:v9];
 
   return v8;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  [(UIApplicationExtensionActivity *)self setPresenterViewController:a3];
-  [(UIApplicationExtensionActivity *)self setPresenterCompletion:v7];
+  completionCopy = completion;
+  [(UIApplicationExtensionActivity *)self setPresenterViewController:controller];
+  [(UIApplicationExtensionActivity *)self setPresenterCompletion:completionCopy];
 
   [(UIApplicationExtensionActivity *)self _presentExtensionViewControllerIfPossible];
   return 1;
 }
 
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(UIApplicationExtensionActivity *)self extensionViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  extensionViewController = [(UIApplicationExtensionActivity *)self extensionViewController];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __89__UIApplicationExtensionActivity__dismissActivityFromViewController_animated_completion___block_invoke;
   v20 = &unk_1E71FA0F0;
-  v21 = self;
-  v22 = v9;
-  v11 = v9;
+  selfCopy = self;
+  v22 = completionCopy;
+  v11 = completionCopy;
   v12 = MEMORY[0x18CFF58E0](&v17);
   v13 = v12;
-  if (v8)
+  if (controllerCopy)
   {
-    v14 = v8;
+    v14 = controllerCopy;
   }
 
   else
   {
-    if (!v10)
+    if (!extensionViewController)
     {
       (*(v12 + 16))(v12);
       v15 = 0;
       goto LABEL_6;
     }
 
-    v14 = v10;
+    v14 = extensionViewController;
   }
 
-  [v14 dismissViewControllerAnimated:v6 completion:{v13, v17, v18, v19, v20, v21, v22}];
+  [v14 dismissViewControllerAnimated:animatedCopy completion:{v13, v17, v18, v19, v20, selfCopy, v22}];
   v15 = 1;
 LABEL_6:
 
@@ -599,14 +599,14 @@ uint64_t __89__UIApplicationExtensionActivity__dismissActivityFromViewController
 - (void)_cleanup
 {
   [(UIApplicationExtensionActivity *)self setPresenterCompletion:0];
-  v3 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  [v3 set_requestPostCompletionBlockWithItems:0];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  [applicationExtension set_requestPostCompletionBlockWithItems:0];
 
-  v4 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  [v4 setRequestCancellationBlock:0];
+  applicationExtension2 = [(UIApplicationExtensionActivity *)self applicationExtension];
+  [applicationExtension2 setRequestCancellationBlock:0];
 
-  v5 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  [v5 setRequestInterruptionBlock:0];
+  applicationExtension3 = [(UIApplicationExtensionActivity *)self applicationExtension];
+  [applicationExtension3 setRequestInterruptionBlock:0];
 
   [(UIApplicationExtensionActivity *)self setExtensionContextIdentifier:0];
   [(UIApplicationExtensionActivity *)self setExtensionViewController:0];
@@ -620,8 +620,8 @@ uint64_t __89__UIApplicationExtensionActivity__dismissActivityFromViewController
   activityBundleHelper = self->_activityBundleHelper;
   if (!activityBundleHelper)
   {
-    v4 = [(UIApplicationExtensionActivity *)self applicationExtension];
-    v5 = [_UIActivityBundleHelper activityBundleHelperForExtension:v4];
+    applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+    v5 = [_UIActivityBundleHelper activityBundleHelperForExtension:applicationExtension];
     v6 = self->_activityBundleHelper;
     self->_activityBundleHelper = v5;
 
@@ -631,44 +631,44 @@ uint64_t __89__UIApplicationExtensionActivity__dismissActivityFromViewController
   return activityBundleHelper;
 }
 
-- (void)_instantiateExtensionViewControllerWithInputItems:(id)a3
+- (void)_instantiateExtensionViewControllerWithInputItems:(id)items
 {
-  v4 = a3;
-  v5 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v6 = [v5 identifier];
+  itemsCopy = items;
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  identifier = [applicationExtension identifier];
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __84__UIApplicationExtensionActivity__instantiateExtensionViewControllerWithInputItems___block_invoke;
   v18[3] = &unk_1E71FABA0;
   objc_copyWeak(&v19, &location);
-  v7 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  [v7 set_requestPostCompletionBlockWithItems:v18];
+  applicationExtension2 = [(UIApplicationExtensionActivity *)self applicationExtension];
+  [applicationExtension2 set_requestPostCompletionBlockWithItems:v18];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__UIApplicationExtensionActivity__instantiateExtensionViewControllerWithInputItems___block_invoke_40;
   v16[3] = &unk_1E71FABC8;
   objc_copyWeak(&v17, &location);
-  v8 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  [v8 setRequestCancellationBlock:v16];
+  applicationExtension3 = [(UIApplicationExtensionActivity *)self applicationExtension];
+  [applicationExtension3 setRequestCancellationBlock:v16];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__UIApplicationExtensionActivity__instantiateExtensionViewControllerWithInputItems___block_invoke_42;
   v14[3] = &unk_1E71FABF0;
   objc_copyWeak(&v15, &location);
-  v9 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  [v9 setRequestInterruptionBlock:v14];
+  applicationExtension4 = [(UIApplicationExtensionActivity *)self applicationExtension];
+  [applicationExtension4 setRequestInterruptionBlock:v14];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__UIApplicationExtensionActivity__instantiateExtensionViewControllerWithInputItems___block_invoke_44;
   v11[3] = &unk_1E71FAC40;
   objc_copyWeak(&v13, &location);
-  v10 = v6;
+  v10 = identifier;
   v12 = v10;
-  [v5 instantiateViewControllerWithInputItems:v4 connectionHandler:v11];
+  [applicationExtension instantiateViewControllerWithInputItems:itemsCopy connectionHandler:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -815,16 +815,16 @@ uint64_t __84__UIApplicationExtensionActivity__instantiateExtensionViewControlle
 
 - (void)_presentExtensionViewControllerIfPossible
 {
-  v3 = [(UIApplicationExtensionActivity *)self extensionViewController];
-  if (v3)
+  extensionViewController = [(UIApplicationExtensionActivity *)self extensionViewController];
+  if (extensionViewController)
   {
-    v14 = v3;
-    v4 = [(UIApplicationExtensionActivity *)self presenterViewController];
-    if (v4)
+    v14 = extensionViewController;
+    presenterViewController = [(UIApplicationExtensionActivity *)self presenterViewController];
+    if (presenterViewController)
     {
-      v5 = [(UIApplicationExtensionActivity *)self applicationExtension];
-      v6 = [v5 infoDictionary];
-      v7 = [v6 objectForKeyedSubscript:@"NSExtension"];
+      applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+      infoDictionary = [applicationExtension infoDictionary];
+      v7 = [infoDictionary objectForKeyedSubscript:@"NSExtension"];
 
       v8 = [v7 objectForKeyedSubscript:@"NSExtensionActionWantsFullScreenPresentation"];
       if ([v8 BOOLValue])
@@ -848,14 +848,14 @@ uint64_t __84__UIApplicationExtensionActivity__instantiateExtensionViewControlle
       }
 
       [v14 setModalPresentationStyle:v9];
-      v12 = [v14 view];
-      [v12 setTintAdjustmentMode:1];
+      view = [v14 view];
+      [view setTintAdjustmentMode:1];
 
-      v13 = [(UIApplicationExtensionActivity *)self presenterCompletion];
-      [v4 presentViewController:v14 animated:1 completion:v13];
+      presenterCompletion = [(UIApplicationExtensionActivity *)self presenterCompletion];
+      [presenterViewController presentViewController:v14 animated:1 completion:presenterCompletion];
     }
 
-    v3 = v14;
+    extensionViewController = v14;
   }
 }
 
@@ -866,14 +866,14 @@ uint64_t __84__UIApplicationExtensionActivity__instantiateExtensionViewControlle
   return WeakRetained;
 }
 
-+ (id)_applicationExtensionActivitiesForItems:(id)a3
++ (id)_applicationExtensionActivitiesForItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = [_UIActivityMatchingContext alloc];
   v5 = [(_UIActivityMatchingContext *)v4 initWithActivityItems:MEMORY[0x1E695E0F0] itemValues:MEMORY[0x1E695E0F0]];
   [(_UIActivityMatchingContext *)v5 setIsContentManaged:0];
   [(_UIActivityMatchingContext *)v5 setShouldMatchOnlyUserElectedExtensions:1];
-  v6 = _NSExtensionItemsFromActivityItemValues(v3);
+  v6 = _NSExtensionItemsFromActivityItemValues(itemsCopy);
 
   v7 = [_UIActivityApplicationExtensionDiscovery extensionMatchingDictionariesForExtensionItems:v6];
   [(_UIActivityMatchingContext *)v5 setActivityItemValueExtensionMatchingDictionaries:v7];

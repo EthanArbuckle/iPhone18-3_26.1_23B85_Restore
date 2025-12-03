@@ -1,23 +1,23 @@
 @interface WiFiPickerManager_Swift
 - (WiFiPickerManager_Swift)init;
-- (WiFiPickerManager_Swift)initWithConfiguration:(id)a3 context:(id)a4;
-- (void)updateCurrentNetwork:(id)a3;
-- (void)updateScannedNetworks:(id)a3;
-- (void)updateScannedNetworksWithInfo:(id)a3;
+- (WiFiPickerManager_Swift)initWithConfiguration:(id)configuration context:(id)context;
+- (void)updateCurrentNetwork:(id)network;
+- (void)updateScannedNetworks:(id)networks;
+- (void)updateScannedNetworksWithInfo:(id)info;
 @end
 
 @implementation WiFiPickerManager_Swift
 
-- (WiFiPickerManager_Swift)initWithConfiguration:(id)a3 context:(id)a4
+- (WiFiPickerManager_Swift)initWithConfiguration:(id)configuration context:(id)context
 {
-  v5 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v6 = sub_27417C70C(v5, a4);
+  v6 = sub_27417C70C(configurationCopy, context);
 
   return v6;
 }
 
-- (void)updateCurrentNetwork:(id)a3
+- (void)updateCurrentNetwork:(id)network
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280937E30, &qword_2741CDC20);
   v6 = *(*(v5 - 8) + 64);
@@ -26,20 +26,20 @@
   v9 = sub_2741C80DC();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   sub_2741C80AC();
-  v10 = a3;
-  v11 = self;
-  v12 = v10;
+  networkCopy = network;
+  selfCopy = self;
+  v12 = networkCopy;
   v13 = sub_2741C809C();
   v14 = swift_allocObject();
   v15 = MEMORY[0x277D85700];
   v14[2] = v13;
   v14[3] = v15;
-  v14[4] = v11;
+  v14[4] = selfCopy;
   v14[5] = v12;
   sub_2740CE980(0, 0, v8, &unk_2741D6160, v14);
 }
 
-- (void)updateScannedNetworks:(id)a3
+- (void)updateScannedNetworks:(id)networks
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280937E30, &qword_2741CDC20);
   v5 = *(*(v4 - 8) + 64);
@@ -50,18 +50,18 @@
   v9 = sub_2741C80DC();
   (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   sub_2741C80AC();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_2741C809C();
   v12 = swift_allocObject();
   v13 = MEMORY[0x277D85700];
   v12[2] = v11;
   v12[3] = v13;
-  v12[4] = v10;
+  v12[4] = selfCopy;
   v12[5] = v8;
   sub_2740CE980(0, 0, v7, &unk_2741D6158, v12);
 }
 
-- (void)updateScannedNetworksWithInfo:(id)a3
+- (void)updateScannedNetworksWithInfo:(id)info
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280937E30, &qword_2741CDC20);
   v5 = *(*(v4 - 8) + 64);
@@ -72,14 +72,14 @@
   v9 = sub_2741C80DC();
   (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   sub_2741C80AC();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_2741C809C();
   v12 = swift_allocObject();
   v13 = MEMORY[0x277D85700];
   v12[2] = v11;
   v12[3] = v13;
   v12[4] = v8;
-  v12[5] = v10;
+  v12[5] = selfCopy;
   sub_2740CE980(0, 0, v7, &unk_2741D6150, v12);
 }
 

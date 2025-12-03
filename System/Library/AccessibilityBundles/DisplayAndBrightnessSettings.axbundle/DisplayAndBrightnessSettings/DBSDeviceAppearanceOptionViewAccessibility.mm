@@ -1,17 +1,17 @@
 @interface DBSDeviceAppearanceOptionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation DBSDeviceAppearanceOptionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DBSDeviceAppearanceOptionView" hasInstanceMethod:@"_label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DBSDeviceAppearanceOptionView" hasInstanceMethod:@"_checkmarkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DBSCheckmarkView" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DBSDeviceAppearanceOptionView" hasInstanceMethod:@"_label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DBSDeviceAppearanceOptionView" hasInstanceMethod:@"_checkmarkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DBSCheckmarkView" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -32,9 +32,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(DBSDeviceAppearanceOptionViewAccessibility *)self safeUIViewForKey:@"_label"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

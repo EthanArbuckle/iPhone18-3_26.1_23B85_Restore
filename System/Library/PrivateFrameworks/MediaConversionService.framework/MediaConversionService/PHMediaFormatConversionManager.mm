@@ -1,54 +1,54 @@
 @interface PHMediaFormatConversionManager
 - (PHMediaFormatConversionManager)init;
-- (id)jobForConversionRequest:(id)a3 completionHandler:(id)a4;
-- (id)rootAncestorRequestForRequest:(id)a3;
+- (id)jobForConversionRequest:(id)request completionHandler:(id)handler;
+- (id)rootAncestorRequestForRequest:(id)request;
 - (id)ut_objectsToBeDeallocatedWithReceiver;
-- (void)cancellationRequestedForJob:(id)a3;
-- (void)configureTransferBehaviorUserPreferenceForRequest:(id)a3;
-- (void)enqueueConversionRequest:(id)a3 completionHandler:(id)a4;
+- (void)cancellationRequestedForJob:(id)job;
+- (void)configureTransferBehaviorUserPreferenceForRequest:(id)request;
+- (void)enqueueConversionRequest:(id)request completionHandler:(id)handler;
 - (void)invalidate;
-- (void)performConversionRequest:(id)a3 completionHandler:(id)a4;
+- (void)performConversionRequest:(id)request completionHandler:(id)handler;
 - (void)preflightAllRelatedRequestsForCurrentJob;
-- (void)preflightConversionRequest:(id)a3;
-- (void)preflightConversionRequest:(id)a3 completionHandler:(id)a4;
+- (void)preflightConversionRequest:(id)request;
+- (void)preflightConversionRequest:(id)request completionHandler:(id)handler;
 - (void)processQueuedJobs;
-- (void)setDirectoryForTemporaryFiles:(id)a3;
-- (void)setTransferBehaviorUserPreferenceOverride:(id)a3;
+- (void)setDirectoryForTemporaryFiles:(id)files;
+- (void)setTransferBehaviorUserPreferenceOverride:(id)override;
 - (void)setupConversionImplementation;
-- (void)validateLivePhotoPairingIdentifierConfigurationForRequest:(id)a3;
+- (void)validateLivePhotoPairingIdentifierConfigurationForRequest:(id)request;
 @end
 
 @implementation PHMediaFormatConversionManager
 
 - (id)ut_objectsToBeDeallocatedWithReceiver
 {
-  v3 = [(PHMediaFormatConversionManager *)self conversionImplementation];
+  conversionImplementation = [(PHMediaFormatConversionManager *)self conversionImplementation];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PHMediaFormatConversionManager *)self conversionImplementation];
-    v6 = [v5 ut_objectsToBeDeallocatedWithReceiver];
+    conversionImplementation2 = [(PHMediaFormatConversionManager *)self conversionImplementation];
+    ut_objectsToBeDeallocatedWithReceiver = [conversionImplementation2 ut_objectsToBeDeallocatedWithReceiver];
   }
 
   else
   {
-    v6 = 0;
+    ut_objectsToBeDeallocatedWithReceiver = 0;
   }
 
-  return v6;
+  return ut_objectsToBeDeallocatedWithReceiver;
 }
 
 - (void)invalidate
 {
-  v4 = [(PHMediaFormatConversionManager *)self stateQueue];
+  stateQueue = [(PHMediaFormatConversionManager *)self stateQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __44__PHMediaFormatConversionManager_invalidate__block_invoke;
   v5[3] = &unk_27989B7E0;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_sync(v4, v5);
+  dispatch_sync(stateQueue, v5);
 }
 
 void __44__PHMediaFormatConversionManager_invalidate__block_invoke(uint64_t a1)
@@ -111,18 +111,18 @@ void __44__PHMediaFormatConversionManager_invalidate__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancellationRequestedForJob:(id)a3
+- (void)cancellationRequestedForJob:(id)job
 {
-  v4 = a3;
-  v5 = [(PHMediaFormatConversionManager *)self stateQueue];
+  jobCopy = job;
+  stateQueue = [(PHMediaFormatConversionManager *)self stateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__PHMediaFormatConversionManager_cancellationRequestedForJob___block_invoke;
   v7[3] = &unk_27989B6F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = jobCopy;
+  selfCopy = self;
+  v6 = jobCopy;
+  dispatch_sync(stateQueue, v7);
 }
 
 void __62__PHMediaFormatConversionManager_cancellationRequestedForJob___block_invoke(uint64_t a1)
@@ -151,15 +151,15 @@ void __62__PHMediaFormatConversionManager_cancellationRequestedForJob___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)jobForConversionRequest:(id)a3 completionHandler:(id)a4
+- (id)jobForConversionRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = objc_opt_new();
-  [v8 setConversionRequest:v6];
-  [v8 setCompletionHandler:v7];
-  v9 = [v6 progress];
-  v10 = [v9 cancellationHandler];
+  [v8 setConversionRequest:requestCopy];
+  [v8 setCompletionHandler:handlerCopy];
+  progress = [requestCopy progress];
+  cancellationHandler = [progress cancellationHandler];
 
   objc_initWeak(&location, v8);
   objc_initWeak(&from, self);
@@ -169,10 +169,10 @@ void __62__PHMediaFormatConversionManager_cancellationRequestedForJob___block_in
   v14[3] = &unk_27989B7B8;
   objc_copyWeak(&v16, &from);
   objc_copyWeak(&v17, &location);
-  v11 = v10;
+  v11 = cancellationHandler;
   v15 = v11;
-  v12 = [v6 progress];
-  [v12 setCancellationHandler:v14];
+  progress2 = [requestCopy progress];
+  [progress2 setCancellationHandler:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v16);
@@ -198,28 +198,28 @@ void __76__PHMediaFormatConversionManager_jobForConversionRequest_completionHand
   }
 }
 
-- (id)rootAncestorRequestForRequest:(id)a3
+- (id)rootAncestorRequestForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 parentRequest];
-  if (v4)
+  requestCopy = request;
+  parentRequest = [requestCopy parentRequest];
+  if (parentRequest)
   {
-    v5 = v4;
+    parentRequest2 = parentRequest;
     do
     {
-      v6 = v5;
+      v6 = parentRequest2;
 
-      v5 = [v6 parentRequest];
+      parentRequest2 = [v6 parentRequest];
 
-      v3 = v6;
+      requestCopy = v6;
     }
 
-    while (v5);
+    while (parentRequest2);
   }
 
   else
   {
-    v6 = v3;
+    v6 = requestCopy;
   }
 
   return v6;
@@ -227,19 +227,19 @@ void __76__PHMediaFormatConversionManager_jobForConversionRequest_completionHand
 
 - (void)preflightAllRelatedRequestsForCurrentJob
 {
-  v4 = [(PHMediaFormatConversionManager *)self currentlyProcessingJob];
-  v5 = [v4 conversionRequest];
-  v6 = [(PHMediaFormatConversionManager *)self rootAncestorRequestForRequest:v5];
+  currentlyProcessingJob = [(PHMediaFormatConversionManager *)self currentlyProcessingJob];
+  conversionRequest = [currentlyProcessingJob conversionRequest];
+  v6 = [(PHMediaFormatConversionManager *)self rootAncestorRequestForRequest:conversionRequest];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__PHMediaFormatConversionManager_preflightAllRelatedRequestsForCurrentJob__block_invoke;
   v9[3] = &unk_27989B790;
   v9[4] = self;
-  v10 = v4;
-  v11 = v5;
+  v10 = currentlyProcessingJob;
+  v11 = conversionRequest;
   v12 = a2;
-  v7 = v5;
-  v8 = v4;
+  v7 = conversionRequest;
+  v8 = currentlyProcessingJob;
   [(PHMediaFormatConversionManager *)self preflightConversionRequest:v6 completionHandler:v9];
 }
 
@@ -311,30 +311,30 @@ uint64_t __74__PHMediaFormatConversionManager_preflightAllRelatedRequestsForCurr
   return [v8 processQueuedJobs];
 }
 
-- (void)validateLivePhotoPairingIdentifierConfigurationForRequest:(id)a3
+- (void)validateLivePhotoPairingIdentifierConfigurationForRequest:(id)request
 {
-  v7 = a3;
-  if (([v7 livePhotoPairingIdentifierBehavior] - 3) <= 1)
+  requestCopy = request;
+  if (([requestCopy livePhotoPairingIdentifierBehavior] - 3) <= 1)
   {
-    v5 = [v7 livePhotoPairingIdentifier];
+    livePhotoPairingIdentifier = [requestCopy livePhotoPairingIdentifier];
 
-    if (!v5)
+    if (!livePhotoPairingIdentifier)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2271 description:@"Unexpected nil pairing identifier"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2271 description:@"Unexpected nil pairing identifier"];
     }
   }
 }
 
-- (void)performConversionRequest:(id)a3 completionHandler:(id)a4
+- (void)performConversionRequest:(id)request completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requestCopy = request;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (requestCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -342,8 +342,8 @@ uint64_t __74__PHMediaFormatConversionManager_preflightAllRelatedRequestsForCurr
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2238 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2238 description:{@"Invalid parameter not satisfying: %@", @"request"}];
 
     if (v9)
     {
@@ -351,50 +351,50 @@ uint64_t __74__PHMediaFormatConversionManager_preflightAllRelatedRequestsForCurr
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2239 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2239 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  if ([v7 isCompositeRequest])
+  if ([requestCopy isCompositeRequest])
   {
 LABEL_16:
     v9[2](v9);
     goto LABEL_17;
   }
 
-  v10 = [v7 backwardsCompatibilityStatus];
+  backwardsCompatibilityStatus = [requestCopy backwardsCompatibilityStatus];
   v11 = MEMORY[0x277CE1CB8];
-  v12 = [v7 source];
-  v13 = [v12 fileType];
-  v14 = [v11 typeWithIdentifier:v13];
+  source = [requestCopy source];
+  fileType = [source fileType];
+  v14 = [v11 typeWithIdentifier:fileType];
 
-  if (![v7 requiresPassthroughConversion])
+  if (![requestCopy requiresPassthroughConversion])
   {
 LABEL_10:
-    if (v10 == 2)
+    if (backwardsCompatibilityStatus == 2)
     {
       goto LABEL_11;
     }
 
 LABEL_12:
-    if ([v7 backwardsCompatibilityStatus] != 1)
+    if ([requestCopy backwardsCompatibilityStatus] != 1)
     {
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    [v7 setStatus:4];
-    v18 = [v7 source];
-    v19 = [PHMediaFormatConversionDestination destinationForConversionReturningUnchangedSource:v18];
-    [v7 setDestination:v19];
+    [requestCopy setStatus:4];
+    source2 = [requestCopy source];
+    v19 = [PHMediaFormatConversionDestination destinationForConversionReturningUnchangedSource:source2];
+    [requestCopy setDestination:v19];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v15 = [v7 source];
-  if ([v15 mediaType] != 1)
+  source3 = [requestCopy source];
+  if ([source3 mediaType] != 1)
   {
 
     goto LABEL_10;
@@ -402,27 +402,27 @@ LABEL_14:
 
   v16 = [v14 isEqual:*MEMORY[0x277CE1E40]];
 
-  if (v10 != 2)
+  if (backwardsCompatibilityStatus != 2)
   {
     goto LABEL_12;
   }
 
   if ((v16 & 1) == 0)
   {
-    [v7 setStatus:5];
+    [requestCopy setStatus:5];
     v17 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CCA450];
     v25[0] = @"Passthrough video conversion is only available for QuickTime input format";
-    v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v19 = [v17 errorWithDomain:@"PHMediaFormatConversionErrorDomain" code:4 userInfo:v18];
-    [v7 setError:v19];
+    source2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
+    v19 = [v17 errorWithDomain:@"PHMediaFormatConversionErrorDomain" code:4 userInfo:source2];
+    [requestCopy setError:v19];
     goto LABEL_14;
   }
 
 LABEL_11:
-  [(PHMediaFormatConversionManager *)self validateLivePhotoPairingIdentifierConfigurationForRequest:v7];
-  v20 = [(PHMediaFormatConversionManager *)self conversionImplementation];
-  [v20 performConversionRequest:v7 completionHandler:v9];
+  [(PHMediaFormatConversionManager *)self validateLivePhotoPairingIdentifierConfigurationForRequest:requestCopy];
+  conversionImplementation = [(PHMediaFormatConversionManager *)self conversionImplementation];
+  [conversionImplementation performConversionRequest:requestCopy completionHandler:v9];
 
 LABEL_17:
   v21 = *MEMORY[0x277D85DE8];
@@ -431,73 +431,73 @@ LABEL_17:
 - (void)processQueuedJobs
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = [(PHMediaFormatConversionManager *)self stateQueue];
-  dispatch_assert_queue_V2(v4);
+  stateQueue = [(PHMediaFormatConversionManager *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
   if ([(PHMediaFormatConversionManager *)self state]!= 1)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PHMediaFormatConversionManager *)self currentlyProcessingJob];
-  if (v5)
+  currentlyProcessingJob = [(PHMediaFormatConversionManager *)self currentlyProcessingJob];
+  if (currentlyProcessingJob)
   {
 
     goto LABEL_4;
   }
 
-  v11 = [(PHMediaFormatConversionManager *)self queuedJobs];
-  v12 = [v11 count];
+  queuedJobs = [(PHMediaFormatConversionManager *)self queuedJobs];
+  v12 = [queuedJobs count];
 
   if (!v12)
   {
 LABEL_4:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v6 = [(PHMediaFormatConversionManager *)self state];
-      v7 = [(PHMediaFormatConversionManager *)self currentlyProcessingJob];
-      v8 = [v7 conversionRequest];
-      v9 = [v8 identifier];
-      v10 = [(PHMediaFormatConversionManager *)self queuedJobs];
+      state = [(PHMediaFormatConversionManager *)self state];
+      currentlyProcessingJob2 = [(PHMediaFormatConversionManager *)self currentlyProcessingJob];
+      conversionRequest = [currentlyProcessingJob2 conversionRequest];
+      identifier = [conversionRequest identifier];
+      queuedJobs2 = [(PHMediaFormatConversionManager *)self queuedJobs];
       *buf = 134218498;
-      v23 = v6;
+      v23 = state;
       v24 = 2112;
-      v25 = v9;
+      v25 = identifier;
       v26 = 2048;
-      v27 = [v10 count];
+      v27 = [queuedJobs2 count];
       _os_log_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Process queued jobs: not starting job, state: %ld, current request: %@, queued job count: %lu", buf, 0x20u);
     }
 
     goto LABEL_15;
   }
 
-  v13 = [(NSMutableArray *)self->_queuedJobs firstObject];
-  v14 = [(PHMediaFormatConversionManager *)self queuedJobs];
-  [v14 removeObjectAtIndex:0];
+  firstObject = [(NSMutableArray *)self->_queuedJobs firstObject];
+  queuedJobs3 = [(PHMediaFormatConversionManager *)self queuedJobs];
+  [queuedJobs3 removeObjectAtIndex:0];
 
-  [(PHMediaFormatConversionManager *)self setCurrentlyProcessingJob:v13];
-  v15 = [v13 conversionRequest];
-  if ([v15 status] != 2)
+  [(PHMediaFormatConversionManager *)self setCurrentlyProcessingJob:firstObject];
+  conversionRequest2 = [firstObject conversionRequest];
+  if ([conversionRequest2 status] != 2)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    v19 = [v15 statusString];
-    [v18 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2203 description:{@"Unexpected request state %@", v19}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    statusString = [conversionRequest2 statusString];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2203 description:{@"Unexpected request state %@", statusString}];
   }
 
-  [v15 setStatus:3];
-  if ([v15 preflighted])
+  [conversionRequest2 setStatus:3];
+  if ([conversionRequest2 preflighted])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v16 = [v15 identifier];
+      identifier2 = [conversionRequest2 identifier];
       *buf = 138543618;
-      v23 = v13;
+      v23 = firstObject;
       v24 = 2114;
-      v25 = v16;
+      v25 = identifier2;
       _os_log_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Process queued jobs: starting job %{public}@ for request %{public}@", buf, 0x16u);
     }
 
-    objc_initWeak(buf, v13);
+    objc_initWeak(buf, firstObject);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __51__PHMediaFormatConversionManager_processQueuedJobs__block_invoke;
@@ -505,7 +505,7 @@ LABEL_4:
     objc_copyWeak(v21, buf);
     v21[1] = a2;
     v20[4] = self;
-    [(PHMediaFormatConversionManager *)self performConversionRequest:v15 completionHandler:v20];
+    [(PHMediaFormatConversionManager *)self performConversionRequest:conversionRequest2 completionHandler:v20];
     objc_destroyWeak(v21);
     objc_destroyWeak(buf);
   }
@@ -598,31 +598,31 @@ uint64_t __51__PHMediaFormatConversionManager_processQueuedJobs__block_invoke_2(
   return [v4 processQueuedJobs];
 }
 
-- (void)setDirectoryForTemporaryFiles:(id)a3
+- (void)setDirectoryForTemporaryFiles:(id)files
 {
-  v5 = a3;
-  v6 = [(NSURL *)v5 path];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  filesCopy = files;
+  path = [(NSURL *)filesCopy path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v8 = [v7 fileExistsAtPath:v6 isDirectory:&v15];
-  v9 = [v7 isWritableFileAtPath:v6];
+  v8 = [defaultManager fileExistsAtPath:path isDirectory:&v15];
+  v9 = [defaultManager isWritableFileAtPath:path];
   v10 = v9;
   if (!v8)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2186 description:{@"Invalid temporary directory URL parameter '%@' not satisfying exists && isDirectory && isWritable (%d/%d/%d)", v5, 0, v15, v10}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2186 description:{@"Invalid temporary directory URL parameter '%@' not satisfying exists && isDirectory && isWritable (%d/%d/%d)", filesCopy, 0, v15, v10}];
 
 LABEL_6:
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2187 description:{@"Invalid parameter not satisfying: %@", @"exists && isDirectory && isWritable"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2187 description:{@"Invalid parameter not satisfying: %@", @"exists && isDirectory && isWritable"}];
 
     goto LABEL_3;
   }
 
   if ((v15 & v9 & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2186 description:{@"Invalid temporary directory URL parameter '%@' not satisfying exists && isDirectory && isWritable (%d/%d/%d)", v5, 1, v15, v10}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2186 description:{@"Invalid temporary directory URL parameter '%@' not satisfying exists && isDirectory && isWritable (%d/%d/%d)", filesCopy, 1, v15, v10}];
 
     if ((v15 & v10 & 1) == 0)
     {
@@ -632,33 +632,33 @@ LABEL_6:
 
 LABEL_3:
   directoryForTemporaryFiles = self->_directoryForTemporaryFiles;
-  self->_directoryForTemporaryFiles = v5;
+  self->_directoryForTemporaryFiles = filesCopy;
 }
 
-- (void)setTransferBehaviorUserPreferenceOverride:(id)a3
+- (void)setTransferBehaviorUserPreferenceOverride:(id)override
 {
-  v4 = MEMORY[0x259C84340](a3, a2);
+  v4 = MEMORY[0x259C84340](override, a2);
   transferBehaviorUserPreferenceOverride = self->_transferBehaviorUserPreferenceOverride;
   self->_transferBehaviorUserPreferenceOverride = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)configureTransferBehaviorUserPreferenceForRequest:(id)a3
+- (void)configureTransferBehaviorUserPreferenceForRequest:(id)request
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PHMediaFormatConversionManager *)self conversionImplementation];
-  v6 = [v5 transferBehaviorUserPreference];
+  requestCopy = request;
+  conversionImplementation = [(PHMediaFormatConversionManager *)self conversionImplementation];
+  transferBehaviorUserPreference = [conversionImplementation transferBehaviorUserPreference];
 
   transferBehaviorUserPreferenceOverride = self->_transferBehaviorUserPreferenceOverride;
   if (transferBehaviorUserPreferenceOverride)
   {
-    v8 = transferBehaviorUserPreferenceOverride[2](transferBehaviorUserPreferenceOverride, v4);
+    v8 = transferBehaviorUserPreferenceOverride[2](transferBehaviorUserPreferenceOverride, requestCopy);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v10 = 134218240;
-      v11 = v6;
+      v11 = transferBehaviorUserPreference;
       v12 = 2048;
       v13 = v8;
       _os_log_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Media conversion transfer user preference overridden from %ld to %ld", &v10, 0x16u);
@@ -667,29 +667,29 @@ LABEL_3:
 
   else
   {
-    v8 = v6;
+    v8 = transferBehaviorUserPreference;
   }
 
-  [v4 setTransferBehaviorUserPreference:v8];
+  [requestCopy setTransferBehaviorUserPreference:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preflightConversionRequest:(id)a3 completionHandler:(id)a4
+- (void)preflightConversionRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHMediaFormatConversionManager *)self preflightQueue];
+  requestCopy = request;
+  handlerCopy = handler;
+  preflightQueue = [(PHMediaFormatConversionManager *)self preflightQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__PHMediaFormatConversionManager_preflightConversionRequest_completionHandler___block_invoke;
   block[3] = &unk_27989B718;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
+  dispatch_async(preflightQueue, block);
 }
 
 void __79__PHMediaFormatConversionManager_preflightConversionRequest_completionHandler___block_invoke(uint64_t a1)
@@ -699,65 +699,65 @@ void __79__PHMediaFormatConversionManager_preflightConversionRequest_completionH
   dispatch_async(v2, *(a1 + 48));
 }
 
-- (void)preflightConversionRequest:(id)a3
+- (void)preflightConversionRequest:(id)request
 {
-  v4 = a3;
-  [(PHMediaFormatConversionManager *)self configureTransferBehaviorUserPreferenceForRequest:v4];
-  [v4 setDirectoryForTemporaryFiles:self->_directoryForTemporaryFiles];
-  [v4 preflightWithConversionManager:self];
+  requestCopy = request;
+  [(PHMediaFormatConversionManager *)self configureTransferBehaviorUserPreferenceForRequest:requestCopy];
+  [requestCopy setDirectoryForTemporaryFiles:self->_directoryForTemporaryFiles];
+  [requestCopy preflightWithConversionManager:self];
 }
 
-- (void)enqueueConversionRequest:(id)a3 completionHandler:(id)a4
+- (void)enqueueConversionRequest:(id)request completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 status] != 1)
+  requestCopy = request;
+  handlerCopy = handler;
+  if ([requestCopy status] != 1)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2102 description:{@"Invalid parameter not satisfying: %@", @"conversionRequest.status == PHMediaFormatRequestStatusInitialized"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2102 description:{@"Invalid parameter not satisfying: %@", @"conversionRequest.status == PHMediaFormatRequestStatusInitialized"}];
   }
 
-  if ([v7 isCompositeRequest])
+  if ([requestCopy isCompositeRequest])
   {
-    [v7 enqueueSubrequestsOnConversionManager:self];
+    [requestCopy enqueueSubrequestsOnConversionManager:self];
   }
 
-  v9 = [v7 source];
-  v10 = [v9 renderOriginatingSignature];
+  source = [requestCopy source];
+  renderOriginatingSignature = [source renderOriginatingSignature];
 
-  if (v10 == @"PHMediaFormatConversionUnknownFutureIdentifierPlaceholder")
+  if (renderOriginatingSignature == @"PHMediaFormatConversionUnknownFutureIdentifierPlaceholder")
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2109 description:@"Invalid attempt to enqueue a request using an identifier placeholder. The placeholder may only be used for preflight."];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:2109 description:@"Invalid attempt to enqueue a request using an identifier placeholder. The placeholder may only be used for preflight."];
   }
 
-  if (![v7 requiresSinglePassVideoConversion])
+  if (![requestCopy requiresSinglePassVideoConversion])
   {
     goto LABEL_10;
   }
 
   v11 = objc_opt_new();
   [v11 setMediaType:1];
-  [v11 generateTemporaryOutputFileURLForRequest:v7];
-  [v11 enableSinglePassVideoConversionWithTargetLength:{objc_msgSend(v7, "estimatedOutputFileLength")}];
+  [v11 generateTemporaryOutputFileURLForRequest:requestCopy];
+  [v11 enableSinglePassVideoConversionWithTargetLength:{objc_msgSend(requestCopy, "estimatedOutputFileLength")}];
   v21 = 0;
   v12 = [v11 createTemporaryOutputDirectoryWithError:&v21];
   v13 = v21;
   if (v12)
   {
-    [v7 setDestination:v11];
+    [requestCopy setDestination:v11];
 
 LABEL_10:
-    v14 = [(PHMediaFormatConversionManager *)self stateQueue];
+    stateQueue = [(PHMediaFormatConversionManager *)self stateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__PHMediaFormatConversionManager_enqueueConversionRequest_completionHandler___block_invoke;
     block[3] = &unk_27989B718;
     block[4] = self;
-    v19 = v7;
-    v20 = v8;
-    dispatch_sync(v14, block);
+    v19 = requestCopy;
+    v20 = handlerCopy;
+    dispatch_sync(stateQueue, block);
 
     goto LABEL_14;
   }
@@ -769,9 +769,9 @@ LABEL_10:
     _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to create format conversion output temporary directory: %@", buf, 0xCu);
   }
 
-  [v7 setError:v13];
-  [v7 setStatus:5];
-  v8[2](v8);
+  [requestCopy setError:v13];
+  [requestCopy setStatus:5];
+  handlerCopy[2](handlerCopy);
 
 LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
@@ -832,9 +832,9 @@ void __77__PHMediaFormatConversionManager_enqueueConversionRequest_completionHan
   v2 = [(PHMediaFormatConversionManager *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     queuedJobs = v2->_queuedJobs;
-    v2->_queuedJobs = v3;
+    v2->_queuedJobs = array;
 
     v5 = dispatch_queue_create("com.apple.photos.mediaformatconversion.state", 0);
     stateQueue = v2->_stateQueue;

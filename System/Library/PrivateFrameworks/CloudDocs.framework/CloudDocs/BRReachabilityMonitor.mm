@@ -3,9 +3,9 @@
 - (BOOL)isCellularNetwork;
 - (BOOL)isNetworkReachable;
 - (BRReachabilityMonitor)init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BRReachabilityMonitor
@@ -110,9 +110,9 @@ uint64_t __50__BRReachabilityMonitor_sharedReachabilityMonitor__block_invoke()
   v2 = [(BRReachabilityMonitor *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     reachabilityObservers = v2->_reachabilityObservers;
-    v2->_reachabilityObservers = v3;
+    v2->_reachabilityObservers = weakObjectsHashTable;
 
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(v5, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -251,17 +251,17 @@ uint64_t __42__BRReachabilityMonitor_isCellularNetwork__block_invoke(uint64_t re
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__BRReachabilityMonitor_addObserver___block_invoke;
   v7[3] = &unk_1E7A14A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -282,17 +282,17 @@ uint64_t __37__BRReachabilityMonitor_addObserver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__BRReachabilityMonitor_removeObserver___block_invoke;
   v7[3] = &unk_1E7A14A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 

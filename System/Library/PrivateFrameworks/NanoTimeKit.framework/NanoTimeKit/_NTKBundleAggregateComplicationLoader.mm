@@ -1,14 +1,14 @@
 @interface _NTKBundleAggregateComplicationLoader
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_loadClassesUsingBlock:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_loadClassesUsingBlock:(id)block;
 @end
 
 @implementation _NTKBundleAggregateComplicationLoader
 
-- (void)_loadClassesUsingBlock:(id)a3
+- (void)_loadClassesUsingBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -29,7 +29,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _loadClassesUsingBlock:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) _loadClassesUsingBlock:{blockCopy, v10}];
       }
 
       while (v7 != v9);
@@ -40,10 +40,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSOrderedSet *)self->_loaders copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSOrderedSet *)self->_loaders copyWithZone:zone];
   [v5 setLoaders:v6];
 
   return v5;

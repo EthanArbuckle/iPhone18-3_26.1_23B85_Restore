@@ -2,138 +2,138 @@
 - (BOOL)_acceptsKeyboardFocus;
 - (BOOL)_allowsInitiallyDismissedPresentation;
 - (BOOL)_allowsNonModalPresentation;
-- (BOOL)_hasExistingSceneSettingsPresentationModeForLayoutState:(id)a3;
+- (BOOL)_hasExistingSceneSettingsPresentationModeForLayoutState:(id)state;
 - (BOOL)_isAmbientPresentationActive;
 - (BOOL)_isCallConnectedForScene;
-- (BOOL)_isDismissedForLayoutState:(id)a3;
+- (BOOL)_isDismissedForLayoutState:(id)state;
 - (BOOL)_isInSwitcherModel;
 - (BOOL)_isShowingInPIP;
 - (BOOL)_sceneSupportsHandlingDeviceLock;
-- (BOOL)_shouldConsiderScenePrimaryForLayoutState:(id)a3;
+- (BOOL)_shouldConsiderScenePrimaryForLayoutState:(id)state;
 - (BOOL)_shouldExcludeFromSwitcherWhenDismissed;
 - (BOOL)_shouldUseTransientOverlayForFullScreenPresentation;
-- (BOOL)_systemControlsShouldPresentAsEmbeddedForLayoutState:(id)a3;
-- (BOOL)disablesSystemVolumeHUDForCategory:(id)a3;
+- (BOOL)_systemControlsShouldPresentAsEmbeddedForLayoutState:(id)state;
+- (BOOL)disablesSystemVolumeHUDForCategory:(id)category;
 - (BOOL)disallowsLockHardwareButtonDoublePress;
-- (BOOL)handleAccessoryAttachWithCompletion:(id)a3;
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)handleAccessoryAttachWithCompletion:(id)completion;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)isFullscreenCallInSwitcher;
 - (BOOL)isShowingOnEmbeddedDisplay;
-- (BOOL)sceneHandle:(id)a3 didReceiveAction:(id)a4;
-- (BOOL)supportsBecomingVisibleWhenUnlockingFromSource:(int)a3 wakingDisplay:(BOOL)a4;
-- (CGRect)_presentedBannerBoundsInWindowScene:(id)a3;
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4;
-- (SBInCallPresentationSession)initWithSceneHandle:(id)a3 workspace:(id)a4 bannerManager:(id)a5 lockScreenManager:(id)a6 deactivationManager:(id)a7 mainSwitcherCoordinator:(id)a8 backlightController:(id)a9 keyboardFocusController:(id)a10 springBoard:(id)a11 setupManager:(id)a12 uiController:(id)a13 pipCoordinator:(id)a14 lockoutStateProvider:(id)a15;
+- (BOOL)sceneHandle:(id)handle didReceiveAction:(id)action;
+- (BOOL)supportsBecomingVisibleWhenUnlockingFromSource:(int)source wakingDisplay:(BOOL)display;
+- (CGRect)_presentedBannerBoundsInWindowScene:(id)scene;
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity;
+- (SBInCallPresentationSession)initWithSceneHandle:(id)handle workspace:(id)workspace bannerManager:(id)manager lockScreenManager:(id)screenManager deactivationManager:(id)deactivationManager mainSwitcherCoordinator:(id)coordinator backlightController:(id)controller keyboardFocusController:(id)self0 springBoard:(id)self1 setupManager:(id)self2 uiController:(id)self3 pipCoordinator:(id)self4 lockoutStateProvider:(id)self5;
 - (SBInCallPresentationSessionDelegate)delegate;
 - (SBWindowScene)windowScene;
 - (UIEdgeInsets)preferredPIPDodgingInsets;
-- (id)_acquireAssertionForAnalyticsSource:(id)a3;
+- (id)_acquireAssertionForAnalyticsSource:(id)source;
 - (id)_clientSettingsIfExists;
 - (id)_createTransientOverlayViewController;
 - (id)_inCallSceneClientSettingsDiffInspector;
 - (id)_layoutStateTransitionCoordinator;
 - (id)_sceneManager;
 - (id)_screen;
-- (id)bannerUnfurlSourceContextForTransitionRequest:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)bannerUnfurlSourceContextForTransitionRequest:(id)request;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)hostedAppSceneHandle;
 - (id)hostedAppSceneHandles;
-- (id)layoutStateForApplicationTransitionContext:(id)a3;
-- (id)overrideAppSceneEntityForLaunchingApplication:(id)a3;
-- (id)previousLayoutStateForApplicationTransitionContext:(id)a3;
+- (id)layoutStateForApplicationTransitionContext:(id)context;
+- (id)overrideAppSceneEntityForLaunchingApplication:(id)application;
+- (id)previousLayoutStateForApplicationTransitionContext:(id)context;
 - (id)succinctDescription;
-- (int64_t)_currentPresentationModeForLayoutState:(id)a3;
-- (int64_t)sceneElement:(id)a3 decisionForLaunchActionOfAppWithBundleIdentifier:(id)a4 persistenceIdentifier:(id)a5;
-- (unint64_t)_incrementPresentationModeRevisionIDWithReason:(id)a3;
+- (int64_t)_currentPresentationModeForLayoutState:(id)state;
+- (int64_t)sceneElement:(id)element decisionForLaunchActionOfAppWithBundleIdentifier:(id)identifier persistenceIdentifier:(id)persistenceIdentifier;
+- (unint64_t)_incrementPresentationModeRevisionIDWithReason:(id)reason;
 - (void)_activeJindoElementIfNeeded;
-- (void)_addSystemAnimationDeactivationReason:(id)a3;
-- (void)_addSystemGestureDeactivationReason:(id)a3;
-- (void)_appendToMutableInCallSceneSettings:(id)a3 presentationMode:(int64_t)a4 shouldPresentAsEmbedded:(BOOL)a5;
-- (void)_configureTransitionRequest:(id)a3 forPresentingTransientOverlay:(id)a4 animated:(BOOL)a5;
+- (void)_addSystemAnimationDeactivationReason:(id)reason;
+- (void)_addSystemGestureDeactivationReason:(id)reason;
+- (void)_appendToMutableInCallSceneSettings:(id)settings presentationMode:(int64_t)mode shouldPresentAsEmbedded:(BOOL)embedded;
+- (void)_configureTransitionRequest:(id)request forPresentingTransientOverlay:(id)overlay animated:(BOOL)animated;
 - (void)_createJindoElement;
 - (void)_createJindoElementIfNeeded;
 - (void)_destroySceneEntityIfExists;
-- (void)_dispatchBlockToMainEventQueueWithReason:(id)a3 block:(id)a4;
-- (void)_handleRequestInCallKeyboardFocusAction:(id)a3;
-- (void)_handleRequestInCallPresentationModeAction:(id)a3;
-- (void)_handleTransitionToSceneHandle:(id)a3 sceneManager:(id)a4;
-- (void)_insertIntoSwitcherAsDismissedWithAnalyticsSource:(id)a3 transitionValidator:(id)a4 completion:(id)a5;
+- (void)_dispatchBlockToMainEventQueueWithReason:(id)reason block:(id)block;
+- (void)_handleRequestInCallKeyboardFocusAction:(id)action;
+- (void)_handleRequestInCallPresentationModeAction:(id)action;
+- (void)_handleTransitionToSceneHandle:(id)handle sceneManager:(id)manager;
+- (void)_insertIntoSwitcherAsDismissedWithAnalyticsSource:(id)source transitionValidator:(id)validator completion:(id)completion;
 - (void)_invalidateJindoElementIfNeeded;
-- (void)_notifySceneOfDeviceLockFromSource:(int)a3 completion:(id)a4;
-- (void)_performBannerDismissalTransitionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5;
-- (void)_performBannerPresentationTransitionWithAnalyticsSource:(id)a3 completion:(id)a4;
-- (void)_performBannerToFullScreenPresentationTransitionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5;
-- (void)_performBannerToTransientOverlayPresentationTransitionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5;
-- (void)_performBlockUsingMainEventQueueWithReason:(id)a3 handler:(id)a4;
-- (void)_performPresentationWithRequestedPresentationMode:(int64_t)a3 isUserInitiated:(BOOL)a4 animated:(BOOL)a5 analyticsSource:(id)a6 completion:(id)a7;
-- (void)_performSceneUpdateTransactionWithContext:(id)a3;
-- (void)_performSwitcherDismissalTransitionAnimated:(BOOL)a3 shouldDestroyScene:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6;
-- (void)_performSwitcherPresentationTransitionAnimated:(BOOL)a3 isUserInitiated:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6;
-- (void)_performTransientOverlayDismissalTransitionAnimated:(BOOL)a3 shouldInsertIntoSwitcherModel:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6;
-- (void)_performTransientOverlayPresentationTransitionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5;
-- (void)_prepareForTransientOverlayPresentationTransactionWithAnimation:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5;
-- (void)_presentWithRequestedConfiguration:(id)a3 animated:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6;
-- (void)_removeFromSwitcherForPrefersHiddenWhenDismissedWithValidator:(id)a3;
-- (void)_removeSystemAnimationDeactivationReason:(id)a3;
-- (void)_removeSystemGestureDeactivationReason:(id)a3;
-- (void)_requestInCallKeyboardFocus:(id)a3;
+- (void)_notifySceneOfDeviceLockFromSource:(int)source completion:(id)completion;
+- (void)_performBannerDismissalTransitionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion;
+- (void)_performBannerPresentationTransitionWithAnalyticsSource:(id)source completion:(id)completion;
+- (void)_performBannerToFullScreenPresentationTransitionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion;
+- (void)_performBannerToTransientOverlayPresentationTransitionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion;
+- (void)_performBlockUsingMainEventQueueWithReason:(id)reason handler:(id)handler;
+- (void)_performPresentationWithRequestedPresentationMode:(int64_t)mode isUserInitiated:(BOOL)initiated animated:(BOOL)animated analyticsSource:(id)source completion:(id)completion;
+- (void)_performSceneUpdateTransactionWithContext:(id)context;
+- (void)_performSwitcherDismissalTransitionAnimated:(BOOL)animated shouldDestroyScene:(BOOL)scene analyticsSource:(id)source completion:(id)completion;
+- (void)_performSwitcherPresentationTransitionAnimated:(BOOL)animated isUserInitiated:(BOOL)initiated analyticsSource:(id)source completion:(id)completion;
+- (void)_performTransientOverlayDismissalTransitionAnimated:(BOOL)animated shouldInsertIntoSwitcherModel:(BOOL)model analyticsSource:(id)source completion:(id)completion;
+- (void)_performTransientOverlayPresentationTransitionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion;
+- (void)_prepareForTransientOverlayPresentationTransactionWithAnimation:(BOOL)animation analyticsSource:(id)source completion:(id)completion;
+- (void)_presentWithRequestedConfiguration:(id)configuration animated:(BOOL)animated analyticsSource:(id)source completion:(id)completion;
+- (void)_removeFromSwitcherForPrefersHiddenWhenDismissedWithValidator:(id)validator;
+- (void)_removeSystemAnimationDeactivationReason:(id)reason;
+- (void)_removeSystemGestureDeactivationReason:(id)reason;
+- (void)_requestInCallKeyboardFocus:(id)focus;
 - (void)_sendShowNoticeForSystemControlsActionIfNeeded;
-- (void)_setNonModalPresentationActive:(BOOL)a3;
-- (void)_setTransientOverlayPresentationActive:(BOOL)a3;
-- (void)_uiLockStateDidChange:(id)a3;
+- (void)_setNonModalPresentationActive:(BOOL)active;
+- (void)_setTransientOverlayPresentationActive:(BOOL)active;
+- (void)_uiLockStateDidChange:(id)change;
 - (void)_updateActiveAppearance;
-- (void)_updateAmbientPresentationSettingsForInCallSettings:(id)a3;
-- (void)_updateAppStatusBarSettingsAssertionForLayoutState:(id)a3;
-- (void)_updateKeyboardFocusPreventionAssertionWithLayoutState:(id)a3;
-- (void)_updatePIPInsetsForExpanseHUDForUnlockedEnvironmentMode:(int64_t)a3 shouldConsiderPrimary:(BOOL)a4;
+- (void)_updateAmbientPresentationSettingsForInCallSettings:(id)settings;
+- (void)_updateAppStatusBarSettingsAssertionForLayoutState:(id)state;
+- (void)_updateKeyboardFocusPreventionAssertionWithLayoutState:(id)state;
+- (void)_updatePIPInsetsForExpanseHUDForUnlockedEnvironmentMode:(int64_t)mode shouldConsiderPrimary:(BOOL)primary;
 - (void)_updateSceneDeactivationAssertions;
-- (void)_updateSceneHandleToObserveForSendingShowNoticeForSystemControlsAction:(id)a3;
+- (void)_updateSceneHandleToObserveForSendingShowNoticeForSystemControlsAction:(id)action;
 - (void)_updateSceneSettingsForAmbientPresentationSettingsUpdate;
 - (void)_updateSystemControlsShouldPresentAsEmbedded;
-- (void)_updateVisibilityInSwitcherForPrefersHiddenWhenDismissedIfNeededForLayoutState:(id)a3;
-- (void)_windowedAccessoryDidAttachOrDetach:(id)a3;
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5;
-- (void)applicationSceneHandle:(id)a3 appendToSceneSettings:(id)a4 fromRequestContext:(id)a5 entity:(id)a6;
-- (void)applicationSceneHandle:(id)a3 appendToTransitionContext:(id)a4 fromRequestContext:(id)a5 entity:(id)a6;
-- (void)dismissAndFinalizeSceneDestructionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5;
-- (void)dismissAnimated:(BOOL)a3 shouldFinalizeSceneDestruction:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6;
-- (void)ensureInclusionInSwitcherForRestoreFromPIPWithCompletion:(id)a3;
+- (void)_updateVisibilityInSwitcherForPrefersHiddenWhenDismissedIfNeededForLayoutState:(id)state;
+- (void)_windowedAccessoryDidAttachOrDetach:(id)detach;
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation;
+- (void)applicationSceneHandle:(id)handle appendToSceneSettings:(id)settings fromRequestContext:(id)context entity:(id)entity;
+- (void)applicationSceneHandle:(id)handle appendToTransitionContext:(id)context fromRequestContext:(id)requestContext entity:(id)entity;
+- (void)dismissAndFinalizeSceneDestructionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion;
+- (void)dismissAnimated:(BOOL)animated shouldFinalizeSceneDestruction:(BOOL)destruction analyticsSource:(id)source completion:(id)completion;
+- (void)ensureInclusionInSwitcherForRestoreFromPIPWithCompletion:(id)completion;
 - (void)handleActionButtonPressed;
-- (void)handleDeviceLockFromSource:(int)a3 completion:(id)a4;
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3;
-- (void)inCallBannerPresentableViewController:(id)a3 didDisappearWithReason:(id)a4;
-- (void)inCallBannerPresentableViewController:(id)a3 viewWillTransitionSizeWithAnimationSettings:(id)a4;
-- (void)inCallBannerPresentableViewControllerCallConnectedStatusChanged:(id)a3;
-- (void)inCallBannerPresentableViewControllerDidCrossDefaultDraggingThreshold:(id)a3;
-- (void)inCallBannerPresentableViewControllerWillAppear:(id)a3;
-- (void)inCallTransientOverlayViewController:(id)a3 didAppearAnimated:(BOOL)a4;
-- (void)inCallTransientOverlayViewController:(id)a3 didDisappearAnimated:(BOOL)a4;
-- (void)inCallTransientOverlayViewController:(id)a3 viewWillTransitionSizeWithAnimationSettings:(id)a4;
-- (void)inCallTransientOverlayViewControllerDidUpdateAmbientPresentationIsAmbientPresented:(BOOL)a3 ambientDisplayStyle:(int64_t)a4;
-- (void)inCallTransientOverlayViewControllerRequestsDismissal:(id)a3;
+- (void)handleDeviceLockFromSource:(int)source completion:(id)completion;
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation;
+- (void)inCallBannerPresentableViewController:(id)controller didDisappearWithReason:(id)reason;
+- (void)inCallBannerPresentableViewController:(id)controller viewWillTransitionSizeWithAnimationSettings:(id)settings;
+- (void)inCallBannerPresentableViewControllerCallConnectedStatusChanged:(id)changed;
+- (void)inCallBannerPresentableViewControllerDidCrossDefaultDraggingThreshold:(id)threshold;
+- (void)inCallBannerPresentableViewControllerWillAppear:(id)appear;
+- (void)inCallTransientOverlayViewController:(id)controller didAppearAnimated:(BOOL)animated;
+- (void)inCallTransientOverlayViewController:(id)controller didDisappearAnimated:(BOOL)animated;
+- (void)inCallTransientOverlayViewController:(id)controller viewWillTransitionSizeWithAnimationSettings:(id)settings;
+- (void)inCallTransientOverlayViewControllerDidUpdateAmbientPresentationIsAmbientPresented:(BOOL)presented ambientDisplayStyle:(int64_t)style;
+- (void)inCallTransientOverlayViewControllerRequestsDismissal:(id)dismissal;
 - (void)invalidate;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)presentWithRequestedConfiguration:(id)a3 animated:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6;
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneHandle:(id)a3 replacedWithSceneHandle:(id)a4;
-- (void)sceneWithIdentifier:(id)a3 didChangeBackgroundActivitiesToSuppressTo:(id)a4;
-- (void)setNonModalPresentationsSuppressed:(BOOL)a3;
-- (void)transitionToSceneHandleIfNeeded:(id)a3;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)presentWithRequestedConfiguration:(id)configuration animated:(BOOL)animated analyticsSource:(id)source completion:(id)completion;
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)sceneHandle:(id)handle replacedWithSceneHandle:(id)sceneHandle;
+- (void)sceneWithIdentifier:(id)identifier didChangeBackgroundActivitiesToSuppressTo:(id)to;
+- (void)setNonModalPresentationsSuppressed:(BOOL)suppressed;
+- (void)transitionToSceneHandleIfNeeded:(id)needed;
 @end
 
 @implementation SBInCallPresentationSession
 
 - (id)_clientSettingsIfExists
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v3 = [v2 clientSettings];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  clientSettings = [sceneIfExists clientSettings];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = clientSettings;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -201,67 +201,67 @@
   return inCallSceneClientSettingsDiffInspector;
 }
 
-- (SBInCallPresentationSession)initWithSceneHandle:(id)a3 workspace:(id)a4 bannerManager:(id)a5 lockScreenManager:(id)a6 deactivationManager:(id)a7 mainSwitcherCoordinator:(id)a8 backlightController:(id)a9 keyboardFocusController:(id)a10 springBoard:(id)a11 setupManager:(id)a12 uiController:(id)a13 pipCoordinator:(id)a14 lockoutStateProvider:(id)a15
+- (SBInCallPresentationSession)initWithSceneHandle:(id)handle workspace:(id)workspace bannerManager:(id)manager lockScreenManager:(id)screenManager deactivationManager:(id)deactivationManager mainSwitcherCoordinator:(id)coordinator backlightController:(id)controller keyboardFocusController:(id)self0 springBoard:(id)self1 setupManager:(id)self2 uiController:(id)self3 pipCoordinator:(id)self4 lockoutStateProvider:(id)self5
 {
-  v20 = a3;
-  v50 = a4;
-  v40 = a5;
-  v21 = a5;
-  v22 = v20;
-  v49 = v21;
-  v48 = a6;
-  v47 = a7;
-  v52 = a8;
-  v46 = a9;
-  v45 = a10;
-  v44 = a11;
-  v43 = a12;
-  v53 = a13;
-  v42 = a14;
-  v41 = a15;
+  handleCopy = handle;
+  workspaceCopy = workspace;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  v22 = handleCopy;
+  v49 = managerCopy2;
+  screenManagerCopy = screenManager;
+  deactivationManagerCopy = deactivationManager;
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
+  focusControllerCopy = focusController;
+  boardCopy = board;
+  setupManagerCopy = setupManager;
+  uiControllerCopy = uiController;
+  pipCoordinatorCopy = pipCoordinator;
+  providerCopy = provider;
   v56.receiver = self;
   v56.super_class = SBInCallPresentationSession;
   v23 = [(SBInCallPresentationSession *)&v56 init];
   v24 = v23;
   if (v23)
   {
-    [(SBInCallPresentationSession *)v23 transitionToSceneHandleIfNeeded:v20];
-    objc_storeStrong(&v24->_workspace, a4);
-    objc_storeStrong(&v24->_springBoard, a11);
-    objc_storeStrong(&v24->_bannerManager, v40);
-    objc_storeStrong(&v24->_lockScreenManager, a6);
-    objc_storeStrong(&v24->_deactivationManager, a7);
-    objc_storeStrong(&v24->_mainSwitcherCoordinator, a8);
-    objc_storeStrong(&v24->_backlightController, a9);
-    objc_storeStrong(&v24->_keyboardFocusCoordinator, a10);
-    objc_storeStrong(&v24->_setupManager, a12);
-    objc_storeStrong(&v24->_pipControllerCoordinator, a14);
-    objc_storeStrong(&v24->_lockoutStateProvider, a15);
+    [(SBInCallPresentationSession *)v23 transitionToSceneHandleIfNeeded:handleCopy];
+    objc_storeStrong(&v24->_workspace, workspace);
+    objc_storeStrong(&v24->_springBoard, board);
+    objc_storeStrong(&v24->_bannerManager, managerCopy);
+    objc_storeStrong(&v24->_lockScreenManager, screenManager);
+    objc_storeStrong(&v24->_deactivationManager, deactivationManager);
+    objc_storeStrong(&v24->_mainSwitcherCoordinator, coordinator);
+    objc_storeStrong(&v24->_backlightController, controller);
+    objc_storeStrong(&v24->_keyboardFocusCoordinator, focusController);
+    objc_storeStrong(&v24->_setupManager, setupManager);
+    objc_storeStrong(&v24->_pipControllerCoordinator, pipCoordinator);
+    objc_storeStrong(&v24->_lockoutStateProvider, provider);
     v25 = objc_alloc(MEMORY[0x277CF0C28]);
     v26 = MEMORY[0x277CCACA8];
-    v27 = [(SBDeviceApplicationSceneHandle *)v24->_sceneHandle sceneIdentifier];
-    v28 = [v26 stringWithFormat:@"SBInCallPresentationSession-%@", v27];
+    sceneIdentifier = [(SBDeviceApplicationSceneHandle *)v24->_sceneHandle sceneIdentifier];
+    v28 = [v26 stringWithFormat:@"SBInCallPresentationSession-%@", sceneIdentifier];
     v29 = [v25 initWithName:v28 onQueue:MEMORY[0x277D85CD0]];
     localEventQueue = v24->_localEventQueue;
     v24->_localEventQueue = v29;
 
-    v31 = [MEMORY[0x277CCAB98] defaultCenter];
-    v32 = [(SBApplicationSceneHandle *)v24->_sceneHandle application];
-    v33 = [(SBDeviceApplicationSceneHandle *)v24->_sceneHandle sceneIdentifier];
-    v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBInCallPresentationSession - %@", v33];
-    if (v32)
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    application = [(SBApplicationSceneHandle *)v24->_sceneHandle application];
+    sceneIdentifier2 = [(SBDeviceApplicationSceneHandle *)v24->_sceneHandle sceneIdentifier];
+    v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBInCallPresentationSession - %@", sceneIdentifier2];
+    if (application)
     {
-      v35 = [v32 bundleIdentifier];
-      v36 = [v52 acquireAllowHiddenAppAssertionForBundleIdentifier:v35 reason:v34];
+      bundleIdentifier = [application bundleIdentifier];
+      v36 = [coordinatorCopy acquireAllowHiddenAppAssertionForBundleIdentifier:bundleIdentifier reason:v34];
       allowHiddenAppAssertion = v24->_allowHiddenAppAssertion;
       v24->_allowHiddenAppAssertion = v36;
     }
 
-    [v31 addObserver:v24 selector:sel__uiLockStateDidChange_ name:*MEMORY[0x277D67A48] object:0];
+    [defaultCenter addObserver:v24 selector:sel__uiLockStateDidChange_ name:*MEMORY[0x277D67A48] object:0];
     [(SpringBoard *)v24->_springBoard addActiveOrientationObserver:v24];
-    objc_storeStrong(&v24->_uiController, a13);
+    objc_storeStrong(&v24->_uiController, uiController);
     v24->_isAttachedToWindowedAccessory = [(SBUIController *)v24->_uiController isConnectedToWindowedAccessory];
-    [v31 addObserver:v24 selector:sel__windowedAccessoryDidAttachOrDetach_ name:@"SBUIWindowedAccessoryDidAttachOrDetachNotification" object:v53];
+    [defaultCenter addObserver:v24 selector:sel__windowedAccessoryDidAttachOrDetach_ name:@"SBUIWindowedAccessoryDidAttachOrDetachNotification" object:uiControllerCopy];
     objc_initWeak(&location, v24);
     objc_copyWeak(&v54, &location);
     v38 = BSLogAddStateCaptureBlockWithTitle();
@@ -269,7 +269,7 @@
     objc_destroyWeak(&v54);
     objc_destroyWeak(&location);
 
-    v22 = v20;
+    v22 = handleCopy;
   }
 
   return v24;
@@ -283,29 +283,29 @@ id __255__SBInCallPresentationSession_initWithSceneHandle_workspace_bannerManage
   return v2;
 }
 
-- (void)transitionToSceneHandleIfNeeded:(id)a3
+- (void)transitionToSceneHandleIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 sceneManager];
-  [(SBInCallPresentationSession *)self _handleTransitionToSceneHandle:v4 sceneManager:v5];
+  neededCopy = needed;
+  sceneManager = [neededCopy sceneManager];
+  [(SBInCallPresentationSession *)self _handleTransitionToSceneHandle:neededCopy sceneManager:sceneManager];
 }
 
-- (void)_handleTransitionToSceneHandle:(id)a3 sceneManager:(id)a4
+- (void)_handleTransitionToSceneHandle:(id)handle sceneManager:(id)manager
 {
-  v7 = a3;
+  handleCopy = handle;
   v8 = self->_sceneHandle;
-  v9 = a4;
-  v10 = [(SBInCallPresentationSession *)self _sceneManager];
+  managerCopy = manager;
+  _sceneManager = [(SBInCallPresentationSession *)self _sceneManager];
 
-  if (v8 != v7 || v10 != v9)
+  if (v8 != handleCopy || _sceneManager != managerCopy)
   {
-    v48 = [(SBInCallPresentationSession *)self delegate];
-    if (v8 && v8 != v7)
+    delegate = [(SBInCallPresentationSession *)self delegate];
+    if (v8 && v8 != handleCopy)
     {
-      v12 = [(SBDeviceApplicationSceneHandle *)v7 sceneIfExists];
-      v13 = [(SBDeviceApplicationSceneHandle *)v8 sceneIfExists];
+      sceneIfExists = [(SBDeviceApplicationSceneHandle *)handleCopy sceneIfExists];
+      sceneIfExists2 = [(SBDeviceApplicationSceneHandle *)v8 sceneIfExists];
 
-      if (v12 != v13)
+      if (sceneIfExists != sceneIfExists2)
       {
         v14 = SBLogInCallPresentation();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -317,56 +317,56 @@ id __255__SBInCallPresentationSession_initWithSceneHandle_workspace_bannerManage
       [(SBApplicationSceneHandle *)v8 removeSceneUpdateContributer:self];
       [(SBDeviceApplicationSceneHandle *)v8 removeActionConsumer:self];
       [(SBDeviceApplicationSceneHandle *)v8 removeObserver:self];
-      v15 = [(SBDeviceApplicationSceneHandle *)v8 statusBarStateProvider];
-      [v15 removeStatusBarObserver:self];
+      statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)v8 statusBarStateProvider];
+      [statusBarStateProvider removeStatusBarObserver:self];
     }
 
-    if (v10 != v9)
+    if (_sceneManager != managerCopy)
     {
-      v16 = [(SBInCallPresentationSession *)self _layoutStateTransitionCoordinator];
-      [v16 removeObserver:self];
+      _layoutStateTransitionCoordinator = [(SBInCallPresentationSession *)self _layoutStateTransitionCoordinator];
+      [_layoutStateTransitionCoordinator removeObserver:self];
       [(BSInvalidatable *)self->_ignoreSuspendedUnderLockAssertion invalidate];
       ignoreSuspendedUnderLockAssertion = self->_ignoreSuspendedUnderLockAssertion;
       self->_ignoreSuspendedUnderLockAssertion = 0;
     }
 
-    objc_storeStrong(&self->_sceneHandle, a3);
-    v18 = [SBApp windowSceneManager];
-    v19 = [(SBDeviceApplicationSceneHandle *)v7 displayIdentity];
-    v20 = [v18 windowSceneForDisplayIdentity:v19];
+    objc_storeStrong(&self->_sceneHandle, handle);
+    windowSceneManager = [SBApp windowSceneManager];
+    displayIdentity = [(SBDeviceApplicationSceneHandle *)handleCopy displayIdentity];
+    v20 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v45 = [WeakRetained isMainDisplayWindowScene];
-    v21 = [v20 isMainDisplayWindowScene];
+    isMainDisplayWindowScene = [WeakRetained isMainDisplayWindowScene];
+    isMainDisplayWindowScene2 = [v20 isMainDisplayWindowScene];
     v47 = v20;
     objc_storeWeak(&self->_windowScene, v20);
-    if (v8 != v7)
+    if (v8 != handleCopy)
     {
       [(SBApplicationSceneHandle *)self->_sceneHandle addSceneUpdateContributer:self];
       [(SBDeviceApplicationSceneHandle *)self->_sceneHandle addActionConsumer:self];
       [(SBDeviceApplicationSceneHandle *)self->_sceneHandle addObserver:self];
-      v22 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
-      [v22 addStatusBarObserver:self];
+      statusBarStateProvider2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
+      [statusBarStateProvider2 addStatusBarObserver:self];
     }
 
-    v23 = [(SBInCallPresentationSession *)self _layoutStateTransitionCoordinator];
-    [v23 addObserver:self];
-    v24 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
-    if (v24)
+    _layoutStateTransitionCoordinator2 = [(SBInCallPresentationSession *)self _layoutStateTransitionCoordinator];
+    [_layoutStateTransitionCoordinator2 addObserver:self];
+    sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
+    if (sceneIdentifier)
     {
       if (!self->_ignoreSuspendedUnderLockAssertion)
       {
         if ([(SBInCallPresentationSession *)self _isValidForSceneUpdates])
         {
-          v25 = [(SBInCallPresentationSession *)self _sceneManager];
+          _sceneManager2 = [(SBInCallPresentationSession *)self _sceneManager];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBInCallPresentationSession - %@", v24];
-            v28 = [(SBInCallPresentationSession *)self _sceneManager];
-            v29 = [v28 acquireIgnoreSuspendedUnderLockAssertionForSceneIdentifier:v24 reason:v27];
+            v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBInCallPresentationSession - %@", sceneIdentifier];
+            _sceneManager3 = [(SBInCallPresentationSession *)self _sceneManager];
+            v29 = [_sceneManager3 acquireIgnoreSuspendedUnderLockAssertionForSceneIdentifier:sceneIdentifier reason:v27];
             v30 = self->_ignoreSuspendedUnderLockAssertion;
             self->_ignoreSuspendedUnderLockAssertion = v29;
           }
@@ -375,9 +375,9 @@ id __255__SBInCallPresentationSession_initWithSceneHandle_workspace_bannerManage
     }
 
     v31 = [SBInCallPresentationSceneUpdateContext alloc];
-    v32 = [(SBInCallPresentationSession *)self _screen];
-    v33 = [v32 fixedCoordinateSpace];
-    [v33 bounds];
+    _screen = [(SBInCallPresentationSession *)self _screen];
+    fixedCoordinateSpace = [_screen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v35 = v34;
     v37 = v36;
     v39 = v38;
@@ -387,11 +387,11 @@ id __255__SBInCallPresentationSession_initWithSceneHandle_workspace_bannerManage
     v50[1] = 3221225472;
     v50[2] = __75__SBInCallPresentationSession__handleTransitionToSceneHandle_sceneManager___block_invoke;
     v50[3] = &unk_2783B3DE0;
-    v53 = v45;
-    v54 = v21;
-    v51 = v48;
-    v52 = self;
-    v43 = v48;
+    v53 = isMainDisplayWindowScene;
+    v54 = isMainDisplayWindowScene2;
+    v51 = delegate;
+    selfCopy = self;
+    v43 = delegate;
     v44 = [(SBInCallPresentationSceneUpdateContext *)v31 initWithReferenceFrame:v42 analyticsSource:v50 transitionRequestBuilderBlock:v35, v37, v39, v41];
 
     [(SBInCallPresentationSceneUpdateContext *)v44 setExecutionTarget:1];
@@ -441,37 +441,37 @@ uint64_t __75__SBInCallPresentationSession__handleTransitionToSceneHandle_sceneM
 
 - (id)succinctDescription
 {
-  v2 = [(SBInCallPresentationSession *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBInCallPresentationSession *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBInCallPresentationSession *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBInCallPresentationSession *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBInCallPresentationSession *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBInCallPresentationSession *)self succinctDescriptionBuilder];
   v6 = self->_systemGestureSceneDeactivationAssertion != 0;
   v7 = self->_systemAnimationSceneDeactivationAssertion != 0;
-  v8 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
+  sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__SBInCallPresentationSession_descriptionBuilderWithMultilinePrefix___block_invoke;
   v12[3] = &unk_2783B2708;
-  v9 = v5;
+  v9 = succinctDescriptionBuilder;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v16 = v7;
-  [v9 appendBodySectionWithName:v8 multilinePrefix:v4 block:v12];
+  [v9 appendBodySectionWithName:sceneIdentifier multilinePrefix:prefixCopy block:v12];
 
   v10 = v9;
   return v9;
@@ -528,8 +528,8 @@ id __69__SBInCallPresentationSession_descriptionBuilderWithMultilinePrefix___blo
 
 - (void)invalidate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBInCallPresentationSession.m" lineNumber:355 description:@"Attempting to -invalidate twice; this is unsupported."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBInCallPresentationSession.m" lineNumber:355 description:@"Attempting to -invalidate twice; this is unsupported."];
 }
 
 - (id)hostedAppSceneHandle
@@ -564,36 +564,36 @@ id __69__SBInCallPresentationSession_descriptionBuilderWithMultilinePrefix___blo
   return v3;
 }
 
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:@"SBInCallPresentationSession.m" lineNumber:436 description:{@"%@ should never be called", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBInCallPresentationSession.m" lineNumber:436 description:{@"%@ should never be called", v5}];
 }
 
-- (void)applicationSceneHandle:(id)a3 appendToSceneSettings:(id)a4 fromRequestContext:(id)a5 entity:(id)a6
+- (void)applicationSceneHandle:(id)handle appendToSceneSettings:(id)settings fromRequestContext:(id)context entity:(id)entity
 {
-  v9 = a4;
-  if (self->_sceneHandle == a3)
+  settingsCopy = settings;
+  if (self->_sceneHandle == handle)
   {
-    v15 = v9;
-    v10 = a5;
-    v11 = [v10 layoutState];
-    v12 = [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:v11];
+    v15 = settingsCopy;
+    contextCopy = context;
+    layoutState = [contextCopy layoutState];
+    v12 = [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:layoutState];
 
-    v13 = [v10 layoutState];
+    layoutState2 = [contextCopy layoutState];
 
-    v14 = [(SBInCallPresentationSession *)self _systemControlsShouldPresentAsEmbeddedForLayoutState:v13];
+    v14 = [(SBInCallPresentationSession *)self _systemControlsShouldPresentAsEmbeddedForLayoutState:layoutState2];
     [(SBInCallPresentationSession *)self _appendToMutableInCallSceneSettings:v15 presentationMode:v12 shouldPresentAsEmbedded:v14];
-    v9 = v15;
+    settingsCopy = v15;
   }
 }
 
-- (void)_appendToMutableInCallSceneSettings:(id)a3 presentationMode:(int64_t)a4 shouldPresentAsEmbedded:(BOOL)a5
+- (void)_appendToMutableInCallSceneSettings:(id)settings presentationMode:(int64_t)mode shouldPresentAsEmbedded:(BOOL)embedded
 {
-  v5 = a5;
+  embeddedCopy = embedded;
   *&v27[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  settingsCopy = settings;
   v9 = SBLogInCallPresentation();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -603,19 +603,19 @@ id __69__SBInCallPresentationSession_descriptionBuilderWithMultilinePrefix___blo
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Setting presentation mode on scene settings: %{public}@", buf, 0xCu);
   }
 
-  [v8 setInterruptionPolicy:3];
-  [v8 setInCallPresentationMode:a4];
-  if (a4)
+  [settingsCopy setInterruptionPolicy:3];
+  [settingsCopy setInCallPresentationMode:mode];
+  if (mode)
   {
-    v11 = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
+    isUILocked = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
   }
 
   else
   {
-    v11 = 0;
+    isUILocked = 0;
   }
 
-  [v8 setBeingShownAboveCoverSheet:v11];
+  [settingsCopy setBeingShownAboveCoverSheet:isUILocked];
   isAttachedToWindowedAccessory = self->_isAttachedToWindowedAccessory;
   [(SBUIController *)self->_uiController visibleScreenCoordinatesForWindowedAccessory];
   v14 = v13;
@@ -637,45 +637,45 @@ id __69__SBInCallPresentationSession_descriptionBuilderWithMultilinePrefix___blo
     _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "Setting device attachedToWindowedAccessory: %{BOOL}u windowedAccessoryCutoutFrameInScreen: %{public}@", buf, 0x12u);
   }
 
-  [v8 setAttachedToWindowedAccessory:isAttachedToWindowedAccessory];
-  [v8 setWindowedAccessoryCutoutFrameInScreen:{v14, v16, v18, v20}];
-  [v8 setScreenSharingPresentation:self->_isScreenSharingPresentation];
-  [v8 setRequestedPresentationConfigurationIdentifier:self->_requestedPresentationConfigurationIdentifier];
-  [v8 setSystemControlsShouldPresentAsEmbedded:v5];
-  if (a4 == 1)
+  [settingsCopy setAttachedToWindowedAccessory:isAttachedToWindowedAccessory];
+  [settingsCopy setWindowedAccessoryCutoutFrameInScreen:{v14, v16, v18, v20}];
+  [settingsCopy setScreenSharingPresentation:self->_isScreenSharingPresentation];
+  [settingsCopy setRequestedPresentationConfigurationIdentifier:self->_requestedPresentationConfigurationIdentifier];
+  [settingsCopy setSystemControlsShouldPresentAsEmbedded:embeddedCopy];
+  if (mode == 1)
   {
     v23 = objc_alloc(MEMORY[0x277CF0BE8]);
     +[SBInCallBannerPresentableViewController cornerRadius];
     v24 = [v23 initWithCornerRadius:?];
-    [v8 setCornerRadiusConfiguration:v24];
+    [settingsCopy setCornerRadiusConfiguration:v24];
   }
 
   [(SBInCallPresentationSession *)self _updateActiveAppearance];
-  [(SBInCallPresentationSession *)self _updateAmbientPresentationSettingsForInCallSettings:v8];
+  [(SBInCallPresentationSession *)self _updateAmbientPresentationSettingsForInCallSettings:settingsCopy];
 }
 
-- (void)applicationSceneHandle:(id)a3 appendToTransitionContext:(id)a4 fromRequestContext:(id)a5 entity:(id)a6
+- (void)applicationSceneHandle:(id)handle appendToTransitionContext:(id)context fromRequestContext:(id)requestContext entity:(id)entity
 {
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (self->_sceneHandle != a3)
+  requestContextCopy = requestContext;
+  if (self->_sceneHandle != handle)
   {
     goto LABEL_12;
   }
 
   assertionAnalyticSources = self->_assertionAnalyticSources;
-  v11 = a4;
-  v12 = [(NSMutableArray *)assertionAnalyticSources lastObject];
-  if (!v12)
+  contextCopy = context;
+  lastObject = [(NSMutableArray *)assertionAnalyticSources lastObject];
+  if (!lastObject)
   {
-    v13 = [v9 request];
-    v14 = [v13 source];
+    request = [requestContextCopy request];
+    source = [request source];
 
-    if ((v14 - 11) >= 2)
+    if ((source - 11) >= 2)
     {
-      if (v14 != 20)
+      if (source != 20)
       {
-        v12 = 0;
+        lastObject = 0;
         goto LABEL_9;
       }
 
@@ -687,7 +687,7 @@ id __69__SBInCallPresentationSession_descriptionBuilderWithMultilinePrefix___blo
       v15 = MEMORY[0x277D67F18];
     }
 
-    v12 = *v15;
+    lastObject = *v15;
   }
 
 LABEL_9:
@@ -695,19 +695,19 @@ LABEL_9:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = v12;
+    v18 = lastObject;
     _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "Setting analytics source on transition context: %{public}@", &v17, 0xCu);
   }
 
-  [v11 SBSUI_setInCallAnalyticsSource:v12];
+  [contextCopy SBSUI_setInCallAnalyticsSource:lastObject];
 LABEL_12:
 }
 
-- (id)bannerUnfurlSourceContextForTransitionRequest:(id)a3
+- (id)bannerUnfurlSourceContextForTransitionRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 applicationContext];
-  v5 = [v4 entityForLayoutRole:1];
+  applicationContext = [request applicationContext];
+  v5 = [applicationContext entityForLayoutRole:1];
 
   if ([v5 isDeviceApplicationSceneEntity])
   {
@@ -760,11 +760,11 @@ LABEL_13:
   return v12;
 }
 
-- (void)inCallBannerPresentableViewControllerDidCrossDefaultDraggingThreshold:(id)a3
+- (void)inCallBannerPresentableViewControllerDidCrossDefaultDraggingThreshold:(id)threshold
 {
-  v4 = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
+  isUILocked = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
   v5 = *MEMORY[0x277D67EB8];
-  if (v4)
+  if (isUILocked)
   {
 
     [(SBInCallPresentationSession *)self _performBannerToTransientOverlayPresentationTransitionAnimated:1 analyticsSource:v5 completion:0];
@@ -777,38 +777,38 @@ LABEL_13:
   }
 }
 
-- (void)inCallBannerPresentableViewControllerWillAppear:(id)a3
+- (void)inCallBannerPresentableViewControllerWillAppear:(id)appear
 {
   [(SBInCallPresentationSession *)self _addSystemAnimationDeactivationReason:@"banner"];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained layoutStateProvider];
-  v5 = [v4 layoutState];
-  [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:v5];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
+  [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:layoutState];
 }
 
-- (void)inCallBannerPresentableViewController:(id)a3 didDisappearWithReason:(id)a4
+- (void)inCallBannerPresentableViewController:(id)controller didDisappearWithReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  controllerCopy = controller;
   [(SBInCallPresentationSession *)self _removeSystemAnimationDeactivationReason:@"banner"];
-  [(SBInCallBannerPresentableViewController *)v7 invalidate];
+  [(SBInCallBannerPresentableViewController *)controllerCopy invalidate];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v9 = [WeakRetained layoutStateProvider];
-  v10 = [v9 layoutState];
-  [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:v10];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
+  [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:layoutState];
 
   bannerPresentableViewController = self->_bannerPresentableViewController;
-  if (bannerPresentableViewController == v7)
+  if (bannerPresentableViewController == controllerCopy)
   {
     self->_bannerPresentableViewController = 0;
   }
 
   [(SBInCallPresentationSession *)self _setNonModalPresentationActive:0];
-  if (([v6 isEqualToString:@"_SBInCallBannerRevocationReasonBannerUnfurl"] & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"_SBInCallBannerRevocationReasonSessionRequest") & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"_SBInCallBannerRevocationReasonTransientOverlayPresentation") & 1) == 0)
+  if (([reasonCopy isEqualToString:@"_SBInCallBannerRevocationReasonBannerUnfurl"] & 1) == 0 && (objc_msgSend(reasonCopy, "isEqualToString:", @"_SBInCallBannerRevocationReasonSessionRequest") & 1) == 0 && (objc_msgSend(reasonCopy, "isEqualToString:", @"_SBInCallBannerRevocationReasonTransientOverlayPresentation") & 1) == 0)
   {
     workspace = self->_workspace;
-    v13 = [WeakRetained _fbsDisplayConfiguration];
-    v14 = [(SBMainWorkspace *)workspace createRequestWithOptions:0 displayConfiguration:v13];
+    _fbsDisplayConfiguration = [WeakRetained _fbsDisplayConfiguration];
+    v14 = [(SBMainWorkspace *)workspace createRequestWithOptions:0 displayConfiguration:_fbsDisplayConfiguration];
 
     v15 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationSceneHandle:self->_sceneHandle];
     v38[0] = MEMORY[0x277D85DD0];
@@ -819,8 +819,8 @@ LABEL_13:
     v16 = v15;
     [v14 modifyApplicationContext:v38];
     [v14 finalize];
-    v17 = [v14 applicationContext];
-    [v17 frameForApplicationSceneEntity:v16];
+    applicationContext = [v14 applicationContext];
+    [applicationContext frameForApplicationSceneEntity:v16];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -831,17 +831,17 @@ LABEL_13:
     v36[1] = 3221225472;
     v36[2] = __92__SBInCallPresentationSession_inCallBannerPresentableViewController_didDisappearWithReason___block_invoke_2;
     v36[3] = &unk_2783A98F0;
-    v37 = v17;
-    v28 = v17;
+    v37 = applicationContext;
+    v28 = applicationContext;
     v29 = [(SBInCallPresentationSceneUpdateContext *)v26 initWithReferenceFrame:v27 analyticsSource:v36 transitionRequestBuilderBlock:v19, v21, v23, v25];
     v30 = MEMORY[0x277D85DD0];
     v31 = 3221225472;
     v32 = __92__SBInCallPresentationSession_inCallBannerPresentableViewController_didDisappearWithReason___block_invoke_4;
     v33 = &unk_2783B3E08;
-    v34 = self;
+    selfCopy = self;
     v35 = WeakRetained;
     [(SBInCallPresentationSceneUpdateContext *)v29 setPostSceneUpdateHandler:&v30];
-    [(SBInCallPresentationSession *)self _performSceneUpdateTransactionWithContext:v29, v30, v31, v32, v33, v34];
+    [(SBInCallPresentationSession *)self _performSceneUpdateTransactionWithContext:v29, v30, v31, v32, v33, selfCopy];
   }
 }
 
@@ -898,42 +898,42 @@ void __92__SBInCallPresentationSession_inCallBannerPresentableViewController_did
   }
 }
 
-- (void)inCallBannerPresentableViewControllerCallConnectedStatusChanged:(id)a3
+- (void)inCallBannerPresentableViewControllerCallConnectedStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained inCallClientPresentationSession:self callConnectedStatusChangedForPresentableViewController:v4];
+  [WeakRetained inCallClientPresentationSession:self callConnectedStatusChangedForPresentableViewController:changedCopy];
 }
 
-- (void)inCallTransientOverlayViewController:(id)a3 didAppearAnimated:(BOOL)a4
+- (void)inCallTransientOverlayViewController:(id)controller didAppearAnimated:(BOOL)animated
 {
-  v8 = a3;
+  controllerCopy = controller;
   if (self->_preventsBannersWhenPresentedAsOverlay)
   {
-    v5 = [v8 _sbWindowScene];
+    _sbWindowScene = [controllerCopy _sbWindowScene];
 
-    if (v5)
+    if (_sbWindowScene)
     {
       bannerManager = self->_bannerManager;
-      v7 = [v8 _sbWindowScene];
-      [(SBBannerManager *)bannerManager dismissAllBannersInWindowScene:v7 animated:1 reason:@"SBInCallPresentationSession requests dismissall of all banners"];
+      _sbWindowScene2 = [controllerCopy _sbWindowScene];
+      [(SBBannerManager *)bannerManager dismissAllBannersInWindowScene:_sbWindowScene2 animated:1 reason:@"SBInCallPresentationSession requests dismissall of all banners"];
     }
   }
 
   [(SBInCallPresentationSession *)self _removeSystemAnimationDeactivationReason:@"transientOverlay"];
 }
 
-- (void)inCallTransientOverlayViewController:(id)a3 didDisappearAnimated:(BOOL)a4
+- (void)inCallTransientOverlayViewController:(id)controller didDisappearAnimated:(BOOL)animated
 {
-  v5 = a3;
+  controllerCopy = controller;
   [(SBInCallPresentationSession *)self _removeSystemAnimationDeactivationReason:@"transientOverlay"];
-  [(SBInCallTransientOverlayViewController *)v5 invalidate];
+  [(SBInCallTransientOverlayViewController *)controllerCopy invalidate];
   [(BSInvalidatable *)self->_suppressHomeIndicatorWhileAttachedToWindowedAccessoryAssertion invalidate];
   suppressHomeIndicatorWhileAttachedToWindowedAccessoryAssertion = self->_suppressHomeIndicatorWhileAttachedToWindowedAccessoryAssertion;
   self->_suppressHomeIndicatorWhileAttachedToWindowedAccessoryAssertion = 0;
 
   transientOverlayViewController = self->_transientOverlayViewController;
-  if (transientOverlayViewController == v5)
+  if (transientOverlayViewController == controllerCopy)
   {
     self->_transientOverlayViewController = 0;
   }
@@ -942,9 +942,9 @@ void __92__SBInCallPresentationSession_inCallBannerPresentableViewController_did
   {
     [(SBInCallPresentationSession *)self _setTransientOverlayPresentationActive:0];
     v8 = [SBInCallPresentationSceneUpdateContext alloc];
-    v9 = [(SBInCallPresentationSession *)self _screen];
-    v10 = [v9 fixedCoordinateSpace];
-    [v10 bounds];
+    _screen = [(SBInCallPresentationSession *)self _screen];
+    fixedCoordinateSpace = [_screen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v11 = [(SBInCallPresentationSceneUpdateContext *)v8 initWithReferenceFrame:*MEMORY[0x277D67EE0] analyticsSource:&__block_literal_global_125 transitionRequestBuilderBlock:?];
 
     [(SBInCallPresentationSceneUpdateContext *)v11 setExecutionTarget:1];
@@ -992,24 +992,24 @@ void __89__SBInCallPresentationSession_inCallTransientOverlayViewController_didD
   [v6 addAppLayoutForDisplayItem:v4 completion:v8];
 }
 
-- (void)inCallTransientOverlayViewControllerRequestsDismissal:(id)a3
+- (void)inCallTransientOverlayViewControllerRequestsDismissal:(id)dismissal
 {
   self->_isHandlingTransientOverlayDismissalRequest = 1;
-  v4 = [(SBInCallPresentationSession *)self _shouldExcludeFromSwitcherWhenDismissed];
+  _shouldExcludeFromSwitcherWhenDismissed = [(SBInCallPresentationSession *)self _shouldExcludeFromSwitcherWhenDismissed];
   v5 = *MEMORY[0x277D67EE0];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __85__SBInCallPresentationSession_inCallTransientOverlayViewControllerRequestsDismissal___block_invoke;
   v6[3] = &unk_2783A9398;
   v6[4] = self;
-  [(SBInCallPresentationSession *)self _performTransientOverlayDismissalTransitionAnimated:1 shouldInsertIntoSwitcherModel:!v4 analyticsSource:v5 completion:v6];
+  [(SBInCallPresentationSession *)self _performTransientOverlayDismissalTransitionAnimated:1 shouldInsertIntoSwitcherModel:!_shouldExcludeFromSwitcherWhenDismissed analyticsSource:v5 completion:v6];
 }
 
-- (void)inCallTransientOverlayViewControllerDidUpdateAmbientPresentationIsAmbientPresented:(BOOL)a3 ambientDisplayStyle:(int64_t)a4
+- (void)inCallTransientOverlayViewControllerDidUpdateAmbientPresentationIsAmbientPresented:(BOOL)presented ambientDisplayStyle:(int64_t)style
 {
   v11 = *MEMORY[0x277D85DE8];
-  self->_isAmbientPresented = a3;
-  self->_ambientDisplayStyle = a4;
+  self->_isAmbientPresented = presented;
+  self->_ambientDisplayStyle = style;
   if ([(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
     v5 = SBLogInCallPresentation();
@@ -1028,17 +1028,17 @@ void __89__SBInCallPresentationSession_inCallTransientOverlayViewController_didD
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = objc_opt_class();
-  v7 = [v5 fromLayoutState];
-  v12 = SBSafeCast(v6, v7);
+  fromLayoutState = [contextCopy fromLayoutState];
+  v12 = SBSafeCast(v6, fromLayoutState);
 
   v8 = objc_opt_class();
-  v9 = [v5 toLayoutState];
+  toLayoutState = [contextCopy toLayoutState];
 
-  v10 = SBSafeCast(v8, v9);
+  v10 = SBSafeCast(v8, toLayoutState);
 
   if ((BSEqualObjects() & 1) == 0 && !self->_isPerformingSwitcherPresentation && ![(SBLockScreenManager *)self->_lockScreenManager isUIUnlocking]&& ![(SBLockScreenManager *)self->_lockScreenManager isUILocked])
   {
@@ -1050,31 +1050,31 @@ void __89__SBInCallPresentationSession_inCallTransientOverlayViewController_didD
   -[SBInCallPresentationSession _updatePIPInsetsForExpanseHUDForUnlockedEnvironmentMode:shouldConsiderPrimary:](self, "_updatePIPInsetsForExpanseHUDForUnlockedEnvironmentMode:shouldConsiderPrimary:", [v10 unlockedEnvironmentMode], -[SBInCallPresentationSession _shouldConsiderScenePrimaryForLayoutState:](self, "_shouldConsiderScenePrimaryForLayoutState:", v10));
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   v8 = objc_opt_class();
-  v9 = [v7 fromLayoutState];
-  v10 = SBSafeCast(v8, v9);
+  fromLayoutState = [contextCopy fromLayoutState];
+  v10 = SBSafeCast(v8, fromLayoutState);
 
   v11 = objc_opt_class();
-  v12 = [v7 toLayoutState];
+  toLayoutState = [contextCopy toLayoutState];
 
-  v13 = SBSafeCast(v11, v12);
+  v13 = SBSafeCast(v11, toLayoutState);
 
-  LODWORD(v12) = [(SBInCallPresentationSession *)self _shouldConsiderScenePrimaryForLayoutState:v10];
+  LODWORD(toLayoutState) = [(SBInCallPresentationSession *)self _shouldConsiderScenePrimaryForLayoutState:v10];
   v14 = [(SBInCallPresentationSession *)self _shouldConsiderScenePrimaryForLayoutState:v13];
   v15 = v14;
-  if (v12 && !v14)
+  if (toLayoutState && !v14)
   {
-    v16 = [(SBInCallPresentationSession *)self sceneHandle];
-    v17 = [v16 sceneIdentifier];
+    sceneHandle = [(SBInCallPresentationSession *)self sceneHandle];
+    sceneIdentifier = [sceneHandle sceneIdentifier];
 
-    v18 = [v10 elementWithIdentifier:v17];
-    v19 = [v6 sceneEntityFrameProvider];
-    v20 = [v18 workspaceEntity];
-    [v19 sceneEntityFrameForWorkspaceEntity:v20 inLayoutState:v10];
+    v18 = [v10 elementWithIdentifier:sceneIdentifier];
+    sceneEntityFrameProvider = [coordinatorCopy sceneEntityFrameProvider];
+    workspaceEntity = [v18 workspaceEntity];
+    [sceneEntityFrameProvider sceneEntityFrameForWorkspaceEntity:workspaceEntity inLayoutState:v10];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -1106,14 +1106,14 @@ LABEL_6:
   if (![(SBInCallPresentationSession *)self _hasExistingSceneSettingsPresentationModeForLayoutState:v13])
   {
     v33 = [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:v13];
-    v17 = [(SBInCallPresentationSession *)self sceneHandle];
-    v19 = [v17 sceneIfExists];
+    sceneIdentifier = [(SBInCallPresentationSession *)self sceneHandle];
+    sceneEntityFrameProvider = [sceneIdentifier sceneIfExists];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __102__SBInCallPresentationSession_layoutStateTransitionCoordinator_transitionDidEndWithTransitionContext___block_invoke_4;
     v34[3] = &__block_descriptor_40_e33_v16__0__FBSMutableSceneSettings_8l;
     v34[4] = v33;
-    [v19 updateSettingsWithBlock:v34];
+    [sceneEntityFrameProvider updateSettingsWithBlock:v34];
     goto LABEL_6;
   }
 
@@ -1171,25 +1171,25 @@ void __102__SBInCallPresentationSession_layoutStateTransitionCoordinator_transit
   }
 }
 
-- (void)_updatePIPInsetsForExpanseHUDForUnlockedEnvironmentMode:(int64_t)a3 shouldConsiderPrimary:(BOOL)a4
+- (void)_updatePIPInsetsForExpanseHUDForUnlockedEnvironmentMode:(int64_t)mode shouldConsiderPrimary:(BOOL)primary
 {
-  v4 = a4;
+  primaryCopy = primary;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
   v7 = *MEMORY[0x277D768C8];
   v8 = *(MEMORY[0x277D768C8] + 8);
   v9 = *(MEMORY[0x277D768C8] + 16);
   v10 = *(MEMORY[0x277D768C8] + 24);
-  if (a3 == 3 && v4)
+  if (mode == 3 && primaryCopy)
   {
     v11 = [(SBPIPControllerCoordinator *)self->_pipControllerCoordinator controllerForType:0];
     v12 = [v11 isPictureInPictureWindowVisibleOnWindowScene:WeakRetained];
 
     if (v12)
     {
-      v13 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-      v14 = [v13 clientSettings];
+      sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+      clientSettings = [sceneIfExists clientSettings];
       v15 = objc_opt_class();
-      v16 = v14;
+      v16 = clientSettings;
       if (v15)
       {
         if (objc_opt_isKindOfClass())
@@ -1231,28 +1231,28 @@ void __102__SBInCallPresentationSession_layoutStateTransitionCoordinator_transit
     v32 = v31;
     v34 = v33;
 
-    v35 = [WeakRetained pictureInPictureManager];
-    [v35 applyPictureInPictureInsets:8 forSource:{v28, v30, v32, v34}];
+    pictureInPictureManager = [WeakRetained pictureInPictureManager];
+    [pictureInPictureManager applyPictureInPictureInsets:8 forSource:{v28, v30, v32, v34}];
   }
 }
 
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation
 {
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v9 = [SBInCallPresentationSceneUpdateContext alloc];
-    v10 = [(SBInCallPresentationSession *)self _screen];
-    v11 = [v10 fixedCoordinateSpace];
-    [v11 bounds];
+    _screen = [(SBInCallPresentationSession *)self _screen];
+    fixedCoordinateSpace = [_screen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v12 = *MEMORY[0x277D67EF8];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __120__SBInCallPresentationSession_activeInterfaceOrientationDidChangeToOrientation_willAnimateWithDuration_fromOrientation___block_invoke;
     v15[3] = &__block_descriptor_40_e42_v16__0__SBMainWorkspaceTransitionRequest_8l;
-    v15[4] = a3;
+    v15[4] = orientation;
     v13 = [(SBInCallPresentationSceneUpdateContext *)v9 initWithReferenceFrame:v12 analyticsSource:v15 transitionRequestBuilderBlock:?];
 
     [(SBInCallPresentationSceneUpdateContext *)v13 setExecutionTarget:1];
@@ -1261,7 +1261,7 @@ void __102__SBInCallPresentationSession_layoutStateTransitionCoordinator_transit
     v14[2] = __120__SBInCallPresentationSession_activeInterfaceOrientationDidChangeToOrientation_willAnimateWithDuration_fromOrientation___block_invoke_3;
     v14[3] = &unk_2783B3E70;
     v14[4] = self;
-    v14[5] = a3;
+    v14[5] = orientation;
     [(SBInCallPresentationSceneUpdateContext *)v13 setValidatorHandler:v14];
     [(SBInCallPresentationSession *)self _performSceneUpdateTransactionWithContext:v13];
   }
@@ -1312,9 +1312,9 @@ uint64_t __120__SBInCallPresentationSession_activeInterfaceOrientationDidChangeT
   }
 }
 
-- (BOOL)handleAccessoryAttachWithCompletion:(id)a3
+- (BOOL)handleAccessoryAttachWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_isAttachedToWindowedAccessory && ![(SBLockScreenManager *)self->_lockScreenManager isUILocked]&& [(SBInCallPresentationSession *)self _isValidForSceneUpdates]&& !self->_isTransientOverlayPresentationActive && ([(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = *MEMORY[0x277D67F28];
@@ -1322,7 +1322,7 @@ uint64_t __120__SBInCallPresentationSession_activeInterfaceOrientationDidChangeT
     v9[1] = 3221225472;
     v9[2] = __67__SBInCallPresentationSession_handleAccessoryAttachWithCompletion___block_invoke;
     v9[3] = &unk_2783A9C70;
-    v10 = v4;
+    v10 = completionCopy;
     [(SBInCallPresentationSession *)self _performTransientOverlayPresentationTransitionAnimated:0 analyticsSource:v6 completion:v9];
 
     v7 = 1;
@@ -1346,18 +1346,18 @@ void __67__SBInCallPresentationSession_handleAccessoryAttachWithCompletion___blo
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_windowedAccessoryDidAttachOrDetach:(id)a3
+- (void)_windowedAccessoryDidAttachOrDetach:(id)detach
 {
   v27 = *MEMORY[0x277D85DE8];
   sceneHandle = self->_sceneHandle;
-  v5 = a3;
-  v6 = [(SBDeviceApplicationSceneHandle *)sceneHandle sceneIfExists];
-  v7 = [v5 userInfo];
+  detachCopy = detach;
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)sceneHandle sceneIfExists];
+  userInfo = [detachCopy userInfo];
 
-  v8 = [v7 objectForKey:@"SBUIWindowedAccessoryAttachedKey"];
-  v9 = [v8 BOOLValue];
+  v8 = [userInfo objectForKey:@"SBUIWindowedAccessoryAttachedKey"];
+  bOOLValue = [v8 BOOLValue];
 
-  self->_isAttachedToWindowedAccessory = v9;
+  self->_isAttachedToWindowedAccessory = bOOLValue;
   if ([(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
     [(SBUIController *)self->_uiController visibleScreenCoordinatesForWindowedAccessory];
@@ -1374,7 +1374,7 @@ void __67__SBInCallPresentationSession_handleAccessoryAttachWithCompletion___blo
       v22[3] = v17;
       v19 = [MEMORY[0x277CCAE60] valueWithBytes:v22 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
       *buf = 67109378;
-      v24 = v9;
+      v24 = bOOLValue;
       v25 = 2114;
       v26 = v19;
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "Updating scene settings to attachedToWindowedAccessory: %{BOOL}u windowedAccessoryCutoutFrameInScreen: %{public}@", buf, 0x12u);
@@ -1384,12 +1384,12 @@ void __67__SBInCallPresentationSession_handleAccessoryAttachWithCompletion___blo
     v20[1] = 3221225472;
     v20[2] = __67__SBInCallPresentationSession__windowedAccessoryDidAttachOrDetach___block_invoke;
     v20[3] = &__block_descriptor_65_e33_v16__0__FBSMutableSceneSettings_8l;
-    v21 = v9;
+    v21 = bOOLValue;
     v20[4] = v11;
     v20[5] = v13;
     v20[6] = v15;
     v20[7] = v17;
-    [v6 updateSettingsWithBlock:v20];
+    [sceneIfExists updateSettingsWithBlock:v20];
   }
 }
 
@@ -1405,10 +1405,10 @@ void __67__SBInCallPresentationSession__windowedAccessoryDidAttachOrDetach___blo
 {
   v43 = *MEMORY[0x277D85DE8];
   v3 = self->_deactivationManager;
-  v4 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  if ([v4 isValid])
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  if ([sceneIfExists isValid])
   {
-    v5 = [v4 identifier];
+    identifier = [sceneIfExists identifier];
     v34 = 0;
     v35 = &v34;
     v36 = 0x3032000000;
@@ -1423,11 +1423,11 @@ void __67__SBInCallPresentationSession__windowedAccessoryDidAttachOrDetach___blo
     v6 = MEMORY[0x223D6F7F0](v33);
     if ([(NSMutableSet *)self->_activeSystemAnimationDeactivationReasons count])
     {
-      v7 = [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
+      _isValidForSceneUpdates = [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
       p_systemAnimationSceneDeactivationAssertion = &self->_systemAnimationSceneDeactivationAssertion;
-      if (((v7 ^ (self->_systemAnimationSceneDeactivationAssertion == 0)) & 1) == 0)
+      if (((_isValidForSceneUpdates ^ (self->_systemAnimationSceneDeactivationAssertion == 0)) & 1) == 0)
       {
-        if (v7)
+        if (_isValidForSceneUpdates)
         {
           v9 = [(UIApplicationSceneDeactivationManager *)v3 newAssertionWithReason:5];
           v10 = *p_systemAnimationSceneDeactivationAssertion;
@@ -1438,7 +1438,7 @@ void __67__SBInCallPresentationSession__windowedAccessoryDidAttachOrDetach___blo
           v31[1] = 3221225472;
           v31[2] = __65__SBInCallPresentationSession__updateSceneDeactivationAssertions__block_invoke_2;
           v31[3] = &unk_2783ADD00;
-          v32 = v5;
+          v32 = identifier;
           [(UIApplicationSceneDeactivationAssertion *)v11 acquireWithPredicate:v31 transitionContext:0];
           v12 = v32;
 LABEL_8:
@@ -1468,14 +1468,14 @@ LABEL_7:
 LABEL_10:
     if ([(NSMutableSet *)self->_activeSystemGestureDeactivationReasons count])
     {
-      v14 = [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
-      if ((v14 ^ (self->_systemGestureSceneDeactivationAssertion == 0)))
+      _isValidForSceneUpdates2 = [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
+      if ((_isValidForSceneUpdates2 ^ (self->_systemGestureSceneDeactivationAssertion == 0)))
       {
         goto LABEL_18;
       }
 
       p_systemGestureSceneDeactivationAssertion = &self->_systemGestureSceneDeactivationAssertion;
-      if (v14)
+      if (_isValidForSceneUpdates2)
       {
         v16 = [(UIApplicationSceneDeactivationManager *)v3 newAssertionWithReason:0];
         v17 = *p_systemGestureSceneDeactivationAssertion;
@@ -1486,7 +1486,7 @@ LABEL_10:
         v29[1] = 3221225472;
         v29[2] = __65__SBInCallPresentationSession__updateSceneDeactivationAssertions__block_invoke_3;
         v29[3] = &unk_2783ADD00;
-        v30 = v5;
+        v30 = identifier;
         [(UIApplicationSceneDeactivationAssertion *)v18 acquireWithPredicate:v29 transitionContext:0];
         v19 = v30;
 LABEL_17:
@@ -1536,7 +1536,7 @@ LABEL_30:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v41 = self;
+          selfCopy = self;
           _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_DEFAULT, "Updated deactivation assertions for session %{public}@", buf, 0xCu);
         }
 
@@ -1603,23 +1603,23 @@ uint64_t __65__SBInCallPresentationSession__updateSceneDeactivationAssertions__b
   return v4;
 }
 
-- (void)inCallBannerPresentableViewController:(id)a3 viewWillTransitionSizeWithAnimationSettings:(id)a4
+- (void)inCallBannerPresentableViewController:(id)controller viewWillTransitionSizeWithAnimationSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  settingsCopy = settings;
   bannerManager = self->_bannerManager;
-  v9 = [(SBBannerManager *)bannerManager windowSceneForPresentable:v6];
+  v9 = [(SBBannerManager *)bannerManager windowSceneForPresentable:controllerCopy];
   v10 = [(SBBannerManager *)bannerManager layoutManagerInWindowScene:v9];
 
   if (self->_isNonModalPresentationActive && v10 != 0)
   {
-    v12 = [v6 interfaceOrientation];
-    v13 = [MEMORY[0x277D75418] currentDevice];
-    v14 = [v13 userInterfaceIdiom];
+    interfaceOrientation = [controllerCopy interfaceOrientation];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v12)
+    if (interfaceOrientation)
     {
-      v15 = (v14 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+      v15 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
     }
 
     else
@@ -1629,19 +1629,19 @@ uint64_t __65__SBInCallPresentationSession__updateSceneDeactivationAssertions__b
 
     if (!v15)
     {
-      v12 = 1;
+      interfaceOrientation = 1;
     }
 
-    v16 = [v6 view];
-    v17 = [v16 superview];
-    [v17 bounds];
+    view = [controllerCopy view];
+    superview = [view superview];
+    [superview bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    v26 = [(SBInCallPresentationSession *)self _screen];
-    [v10 useableContainerFrameInContainerBounds:v26 onScreen:{v19, v21, v23, v25}];
+    _screen = [(SBInCallPresentationSession *)self _screen];
+    [v10 useableContainerFrameInContainerBounds:_screen onScreen:{v19, v21, v23, v25}];
     v28 = v27;
     v60 = v29;
     v61 = v27;
@@ -1649,23 +1649,23 @@ uint64_t __65__SBInCallPresentationSession__updateSceneDeactivationAssertions__b
     v32 = v31;
     v34 = v33;
 
-    v35 = [(SBInCallPresentationSession *)self _screen];
-    [v35 scale];
+    _screen2 = [(SBInCallPresentationSession *)self _screen];
+    [_screen2 scale];
     [v10 presentedFrameForContentWithPreferredSize:v32 inUseableContainerFrame:v34 containerBounds:v28 scale:{v30, v32, v34, *&v19, *&v21, *&v23, *&v25, v36}];
     v38 = v37;
     v40 = v39;
 
-    [v6 preferredContentSizeWithPresentationSize:v38 containerSize:{v40, v23, v25}];
+    [controllerCopy preferredContentSizeWithPresentationSize:v38 containerSize:{v40, v23, v25}];
     v42 = v41;
     v44 = v43;
-    v45 = [(SBInCallPresentationSession *)self _screen];
-    [v45 scale];
+    _screen3 = [(SBInCallPresentationSession *)self _screen];
+    [_screen3 scale];
     [v10 presentedFrameForContentWithPreferredSize:v42 inUseableContainerFrame:v44 containerBounds:v61 scale:{v60, v32, v34, *&v19, *&v21, *&v23, *&v25, v46}];
 
     BSRectWithSize();
-    v47 = [(SBInCallPresentationSession *)self _screen];
-    v48 = [v47 fixedCoordinateSpace];
-    [v48 bounds];
+    _screen4 = [(SBInCallPresentationSession *)self _screen];
+    fixedCoordinateSpace = [_screen4 fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     _UIWindowConvertRectFromOrientationToOrientation();
     v50 = v49;
     v52 = v51;
@@ -1678,8 +1678,8 @@ uint64_t __65__SBInCallPresentationSession__updateSceneDeactivationAssertions__b
     v62[1] = 3221225472;
     v62[2] = __113__SBInCallPresentationSession_inCallBannerPresentableViewController_viewWillTransitionSizeWithAnimationSettings___block_invoke;
     v62[3] = &unk_2783B3F08;
-    v64 = v12;
-    v63 = v7;
+    v64 = interfaceOrientation;
+    v63 = settingsCopy;
     v59 = [(SBInCallPresentationSceneUpdateContext *)v57 initWithReferenceFrame:v58 analyticsSource:v62 transitionRequestBuilderBlock:v50, v52, v54, v56];
     [(SBInCallPresentationSceneUpdateContext *)v59 setExecutionTarget:1];
     [(SBInCallPresentationSession *)self _performSceneUpdateTransactionWithContext:v59];
@@ -1707,16 +1707,16 @@ void __113__SBInCallPresentationSession_inCallBannerPresentableViewController_vi
   [v4 setFencesAnimations:1];
 }
 
-- (void)_dispatchBlockToMainEventQueueWithReason:(id)a3 block:(id)a4
+- (void)_dispatchBlockToMainEventQueueWithReason:(id)reason block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__SBInCallPresentationSession__dispatchBlockToMainEventQueueWithReason_block___block_invoke;
   v8[3] = &unk_2783B3F30;
-  v9 = v6;
-  v7 = v6;
-  [(SBInCallPresentationSession *)self _performBlockUsingMainEventQueueWithReason:a3 handler:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(SBInCallPresentationSession *)self _performBlockUsingMainEventQueueWithReason:reason handler:v8];
 }
 
 void __78__SBInCallPresentationSession__dispatchBlockToMainEventQueueWithReason_block___block_invoke(uint64_t a1, void *a2)
@@ -1728,24 +1728,24 @@ void __78__SBInCallPresentationSession__dispatchBlockToMainEventQueueWithReason_
   v4[2]();
 }
 
-- (void)_performBlockUsingMainEventQueueWithReason:(id)a3 handler:(id)a4
+- (void)_performBlockUsingMainEventQueueWithReason:(id)reason handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWorkspace *)self->_workspace eventQueue];
-  objc_initWeak(&location, v8);
+  reasonCopy = reason;
+  handlerCopy = handler;
+  eventQueue = [(SBWorkspace *)self->_workspace eventQueue];
+  objc_initWeak(&location, eventQueue);
   v9 = MEMORY[0x277D0AB18];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __82__SBInCallPresentationSession__performBlockUsingMainEventQueueWithReason_handler___block_invoke;
   v16 = &unk_2783AACB8;
   objc_copyWeak(&v19, &location);
-  v10 = v6;
+  v10 = reasonCopy;
   v17 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   v18 = v11;
   v12 = [v9 eventWithName:v10 handler:&v13];
-  [v8 executeOrAppendEvent:{v12, v13, v14, v15, v16}];
+  [eventQueue executeOrAppendEvent:{v12, v13, v14, v15, v16}];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -1772,19 +1772,19 @@ void __82__SBInCallPresentationSession__performBlockUsingMainEventQueueWithReaso
   }
 }
 
-- (void)inCallTransientOverlayViewController:(id)a3 viewWillTransitionSizeWithAnimationSettings:(id)a4
+- (void)inCallTransientOverlayViewController:(id)controller viewWillTransitionSizeWithAnimationSettings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   if (self->_isTransientOverlayPresentationActive)
   {
-    v7 = a3;
-    v8 = [v7 interfaceOrientation];
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    controllerCopy = controller;
+    interfaceOrientation = [controllerCopy interfaceOrientation];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8)
+    if (interfaceOrientation)
     {
-      v11 = (v10 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+      v11 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
     }
 
     else
@@ -1794,16 +1794,16 @@ void __82__SBInCallPresentationSession__performBlockUsingMainEventQueueWithReaso
 
     if (!v11)
     {
-      v8 = 1;
+      interfaceOrientation = 1;
     }
 
-    v12 = [v7 contentView];
+    contentView = [controllerCopy contentView];
 
-    [v12 bounds];
+    [contentView bounds];
     BSRectWithSize();
-    v13 = [(SBInCallPresentationSession *)self _screen];
-    v14 = [v13 fixedCoordinateSpace];
-    [v14 bounds];
+    _screen = [(SBInCallPresentationSession *)self _screen];
+    fixedCoordinateSpace = [_screen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     _UIWindowConvertRectFromOrientationToOrientation();
     v16 = v15;
     v18 = v17;
@@ -1816,8 +1816,8 @@ void __82__SBInCallPresentationSession__performBlockUsingMainEventQueueWithReaso
     v27 = 3221225472;
     v28 = __112__SBInCallPresentationSession_inCallTransientOverlayViewController_viewWillTransitionSizeWithAnimationSettings___block_invoke;
     v29 = &unk_2783B3F08;
-    v31 = v8;
-    v30 = v6;
+    v31 = interfaceOrientation;
+    v30 = settingsCopy;
     v25 = [(SBInCallPresentationSceneUpdateContext *)v23 initWithReferenceFrame:v24 analyticsSource:&v26 transitionRequestBuilderBlock:v16, v18, v20, v22];
     [(SBInCallPresentationSceneUpdateContext *)v25 setExecutionTarget:1, v26, v27, v28, v29];
     [(SBInCallPresentationSession *)self _performSceneUpdateTransactionWithContext:v25];
@@ -1845,37 +1845,37 @@ void __112__SBInCallPresentationSession_inCallTransientOverlayViewController_vie
   [v4 setFencesAnimations:1];
 }
 
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v7 = [WeakRetained layoutStateProvider];
-  v8 = [v7 layoutState];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:v8];
-  [(SBInCallPresentationSession *)self _updateVisibilityInSwitcherForPrefersHiddenWhenDismissedIfNeededForLayoutState:v8];
+  [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:layoutState];
+  [(SBInCallPresentationSession *)self _updateVisibilityInSwitcherForPrefersHiddenWhenDismissedIfNeededForLayoutState:layoutState];
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
-  v6 = a4;
-  if ([a3 isEqual:self->_sceneHandle])
+  sceneCopy = scene;
+  if ([handle isEqual:self->_sceneHandle])
   {
-    [v6 addObserver:self];
+    [sceneCopy addObserver:self];
   }
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v9 = a3;
-  v6 = [a4 settingsDiff];
+  handleCopy = handle;
+  settingsDiff = [settings settingsDiff];
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandleToObserveForShowSystemControlsAction);
-  if ([v9 isEqual:self->_sceneHandle])
+  if ([handleCopy isEqual:self->_sceneHandle])
   {
-    v8 = [(SBInCallPresentationSession *)self _inCallSceneClientSettingsDiffInspector];
-    [v8 inspectDiff:v6 withContext:0];
+    _inCallSceneClientSettingsDiffInspector = [(SBInCallPresentationSession *)self _inCallSceneClientSettingsDiffInspector];
+    [_inCallSceneClientSettingsDiffInspector inspectDiff:settingsDiff withContext:0];
   }
 
-  else if (WeakRetained && [v9 isEqual:WeakRetained])
+  else if (WeakRetained && [handleCopy isEqual:WeakRetained])
   {
     [(SBInCallPresentationSession *)self _sendShowNoticeForSystemControlsActionIfNeeded];
   }
@@ -1965,18 +1965,18 @@ void __70__SBInCallPresentationSession__inCallSceneClientSettingsDiffInspector__
   }
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeBackgroundActivitiesToSuppressTo:(id)a4
+- (void)sceneWithIdentifier:(id)identifier didChangeBackgroundActivitiesToSuppressTo:(id)to
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v5 = [WeakRetained layoutStateProvider];
-  v6 = [v5 layoutState];
-  [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:v6];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
+  [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:layoutState];
 }
 
-- (BOOL)sceneHandle:(id)a3 didReceiveAction:(id)a4
+- (BOOL)sceneHandle:(id)handle didReceiveAction:(id)action
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1984,21 +1984,21 @@ void __70__SBInCallPresentationSession__inCallSceneClientSettingsDiffInspector__
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "SBSUIInCallDestroySceneAction received for %{public}@", buf, 0xCu);
     }
 
-    v7 = v5;
+    v7 = actionCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v7 destructionReason];
-    v10 = [v7 analyticsSource];
+    destructionReason = [v7 destructionReason];
+    analyticsSource = [v7 analyticsSource];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __60__SBInCallPresentationSession_sceneHandle_didReceiveAction___block_invoke;
     v14[3] = &unk_2783A9398;
     v15 = v7;
     v11 = v7;
-    [WeakRetained inCallClientPresentationSession:self handleDestroySceneActionWithReason:v9 analyticsSource:v10 completion:v14];
+    [WeakRetained inCallClientPresentationSession:self handleDestroySceneActionWithReason:destructionReason analyticsSource:analyticsSource completion:v14];
   }
 
   else
@@ -2006,7 +2006,7 @@ void __70__SBInCallPresentationSession__inCallSceneClientSettingsDiffInspector__
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SBInCallPresentationSession *)self _handleRequestInCallPresentationModeAction:v5];
+      [(SBInCallPresentationSession *)self _handleRequestInCallPresentationModeAction:actionCopy];
     }
 
     else
@@ -2018,7 +2018,7 @@ void __70__SBInCallPresentationSession__inCallSceneClientSettingsDiffInspector__
         goto LABEL_10;
       }
 
-      [(SBInCallPresentationSession *)self _handleRequestInCallKeyboardFocusAction:v5];
+      [(SBInCallPresentationSession *)self _handleRequestInCallKeyboardFocusAction:actionCopy];
     }
   }
 
@@ -2038,35 +2038,35 @@ void __60__SBInCallPresentationSession_sceneHandle_didReceiveAction___block_invo
   }
 }
 
-- (void)_handleRequestInCallPresentationModeAction:(id)a3
+- (void)_handleRequestInCallPresentationModeAction:(id)action
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = SBLogInCallPresentation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 requestedPresentationMode];
+    [actionCopy requestedPresentationMode];
     v6 = SBSInCallPresentationModeDescription();
     *buf = 138543362;
     v18 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Handling SBSUIInCallRequestPresentationModeAction with presentation mode: %{public}@", buf, 0xCu);
   }
 
-  if (![v4 requestedPresentationMode])
+  if (![actionCopy requestedPresentationMode])
   {
     preferredDismissalPrimaryElement = self->_preferredDismissalPrimaryElement;
     self->_preferredDismissalPrimaryElement = 0;
   }
 
-  v8 = [v4 requestedPresentationMode];
-  [(SBInCallPresentationSession *)self setShouldIgnoreHomeIndicatorAutoHiddenClientSettings:v8 == 3];
-  v9 = 0;
-  if (v8 == 3 && !self->_isScreenSharingPresentation)
+  requestedPresentationMode = [actionCopy requestedPresentationMode];
+  [(SBInCallPresentationSession *)self setShouldIgnoreHomeIndicatorAutoHiddenClientSettings:requestedPresentationMode == 3];
+  isUserInitiated = 0;
+  if (requestedPresentationMode == 3 && !self->_isScreenSharingPresentation)
   {
-    v9 = [v4 isUserInitiated];
+    isUserInitiated = [actionCopy isUserInitiated];
   }
 
-  self->_transientOverlayShouldAlwaysPreventHomeGestureDismissal = v9;
+  self->_transientOverlayShouldAlwaysPreventHomeGestureDismissal = isUserInitiated;
   [(SBInCallTransientOverlayViewController *)self->_transientOverlayViewController setShouldAlwaysPreventHomeGestureDismissal:?];
   if (self->_isNonModalPresentationActive)
   {
@@ -2075,40 +2075,40 @@ void __60__SBInCallPresentationSession_sceneHandle_didReceiveAction___block_invo
     {
       if (![(SBInCallBannerPresentableViewController *)bannerPresentableViewController isPresented])
       {
-        v11 = [v4 analyticsSource];
-        [(SBInCallPresentationSession *)self _performBannerDismissalTransitionAnimated:0 analyticsSource:v11 completion:&__block_literal_global_136];
+        analyticsSource = [actionCopy analyticsSource];
+        [(SBInCallPresentationSession *)self _performBannerDismissalTransitionAnimated:0 analyticsSource:analyticsSource completion:&__block_literal_global_136];
       }
     }
   }
 
-  if ([v4 requestedPresentationMode] == 2 && (-[SBInCallPresentationSession _isAmbientPresentationActive](self, "_isAmbientPresentationActive") || -[SBInCallPresentationSession _isProximityReaderPresented](self, "_isProximityReaderPresented")))
+  if ([actionCopy requestedPresentationMode] == 2 && (-[SBInCallPresentationSession _isAmbientPresentationActive](self, "_isAmbientPresentationActive") || -[SBInCallPresentationSession _isProximityReaderPresented](self, "_isProximityReaderPresented")))
   {
-    [v4 sendCompletionResponseWithSuccess:0];
+    [actionCopy sendCompletionResponseWithSuccess:0];
   }
 
   else
   {
-    v12 = [v4 requestedPresentationMode];
-    v13 = [v4 isUserInitiated];
-    v14 = [v4 analyticsSource];
+    requestedPresentationMode2 = [actionCopy requestedPresentationMode];
+    isUserInitiated2 = [actionCopy isUserInitiated];
+    analyticsSource2 = [actionCopy analyticsSource];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __74__SBInCallPresentationSession__handleRequestInCallPresentationModeAction___block_invoke_2;
     v15[3] = &unk_2783A9398;
-    v16 = v4;
-    [(SBInCallPresentationSession *)self _performPresentationWithRequestedPresentationMode:v12 isUserInitiated:v13 animated:1 analyticsSource:v14 completion:v15];
+    v16 = actionCopy;
+    [(SBInCallPresentationSession *)self _performPresentationWithRequestedPresentationMode:requestedPresentationMode2 isUserInitiated:isUserInitiated2 animated:1 analyticsSource:analyticsSource2 completion:v15];
   }
 }
 
-- (void)_requestInCallKeyboardFocus:(id)a3
+- (void)_requestInCallKeyboardFocus:(id)focus
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  focusCopy = focus;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained layoutStateProvider];
-  v7 = [v6 layoutState];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  v8 = [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:v7];
+  v8 = [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:layoutState];
   if ((v8 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v9 = v8;
@@ -2125,24 +2125,24 @@ void __60__SBInCallPresentationSession_sceneHandle_didReceiveAction___block_invo
   {
     if (!self->_preventKeyboardFocusAssertion)
     {
-      v11 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle scene];
-      if (v11)
+      scene = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle scene];
+      if (scene)
       {
-        v12 = v11;
-        [(SBKeyboardFocusControlling *)self->_keyboardFocusCoordinator userFocusRequestForScene:v11 reason:@"SBSUIInCallRequestKeyboardFocusAction" completion:v4];
+        v12 = scene;
+        [(SBKeyboardFocusControlling *)self->_keyboardFocusCoordinator userFocusRequestForScene:scene reason:@"SBSUIInCallRequestKeyboardFocusAction" completion:focusCopy];
 
         goto LABEL_8;
       }
     }
   }
 
-  v4[2](v4, 0);
+  focusCopy[2](focusCopy, 0);
 LABEL_8:
 }
 
-- (void)_handleRequestInCallKeyboardFocusAction:(id)a3
+- (void)_handleRequestInCallKeyboardFocusAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = SBLogInCallPresentation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2150,34 +2150,34 @@ LABEL_8:
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Handling SBSUIInCallRequestKeyboardFocusAction", buf, 2u);
   }
 
-  if ([v4 isUserInitiated])
+  if ([actionCopy isUserInitiated])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __71__SBInCallPresentationSession__handleRequestInCallKeyboardFocusAction___block_invoke;
     v6[3] = &unk_2783A9398;
-    v7 = v4;
+    v7 = actionCopy;
     [(SBInCallPresentationSession *)self _requestInCallKeyboardFocus:v6];
   }
 
   else
   {
-    [v4 sendCompletionResponseWithSuccess:0];
+    [actionCopy sendCompletionResponseWithSuccess:0];
   }
 }
 
-- (void)ensureInclusionInSwitcherForRestoreFromPIPWithCompletion:(id)a3
+- (void)ensureInclusionInSwitcherForRestoreFromPIPWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SBInCallPresentationSession *)self _isInSwitcherModel];
+  completionCopy = completion;
+  _isInSwitcherModel = [(SBInCallPresentationSession *)self _isInSwitcherModel];
   if (![(SBInCallPresentationSession *)self _isValidForSceneUpdates]|| self->_isNonModalPresentationActive || self->_isTransientOverlayPresentationActive)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
-  else if (v5)
+  else if (_isInSwitcherModel)
   {
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -2188,7 +2188,7 @@ LABEL_8:
     v7[2] = __88__SBInCallPresentationSession_ensureInclusionInSwitcherForRestoreFromPIPWithCompletion___block_invoke;
     v7[3] = &unk_2783B0350;
     v7[4] = self;
-    [(SBInCallPresentationSession *)self _insertIntoSwitcherAsDismissedWithAnalyticsSource:v6 transitionValidator:v7 completion:v4];
+    [(SBInCallPresentationSession *)self _insertIntoSwitcherAsDismissedWithAnalyticsSource:v6 transitionValidator:v7 completion:completionCopy];
   }
 }
 
@@ -2233,12 +2233,12 @@ uint64_t __88__SBInCallPresentationSession_ensureInclusionInSwitcherForRestoreFr
   return v10;
 }
 
-- (id)overrideAppSceneEntityForLaunchingApplication:(id)a3
+- (id)overrideAppSceneEntityForLaunchingApplication:(id)application
 {
-  if ([a3 isFaceTime] && -[SBInCallPresentationSession _isValidForSceneUpdates](self, "_isValidForSceneUpdates") && !self->_isScreenSharingPresentation)
+  if ([application isFaceTime] && -[SBInCallPresentationSession _isValidForSceneUpdates](self, "_isValidForSceneUpdates") && !self->_isScreenSharingPresentation)
   {
-    v4 = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
-    if (([v4 shouldNeverBeShownWhenLaunchingFaceTime] & 1) != 0 || (-[SBDeviceApplicationSceneHandle isContentReady](self->_sceneHandle, "isContentReady") & 1) == 0)
+    _clientSettingsIfExists = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
+    if (([_clientSettingsIfExists shouldNeverBeShownWhenLaunchingFaceTime] & 1) != 0 || (-[SBDeviceApplicationSceneHandle isContentReady](self->_sceneHandle, "isContentReady") & 1) == 0)
     {
     }
 
@@ -2260,16 +2260,16 @@ LABEL_10:
   return v6;
 }
 
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene
 {
   v9 = *MEMORY[0x277D85DE8];
-  if ([a3 isEqual:{self->_sceneHandle, a4}])
+  if ([handle isEqual:{self->_sceneHandle, scene}])
   {
     v5 = SBLogInCallPresentation();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "FBScene for %{public}@ was destroyed.", &v7, 0xCu);
     }
 
@@ -2281,40 +2281,40 @@ LABEL_10:
   }
 }
 
-- (void)sceneHandle:(id)a3 replacedWithSceneHandle:(id)a4
+- (void)sceneHandle:(id)handle replacedWithSceneHandle:(id)sceneHandle
 {
-  v6 = a4;
-  if ([(SBDeviceApplicationSceneHandle *)self->_sceneHandle isEqual:a3])
+  sceneHandleCopy = sceneHandle;
+  if ([(SBDeviceApplicationSceneHandle *)self->_sceneHandle isEqual:handle])
   {
-    [(SBInCallPresentationSession *)self transitionToSceneHandleIfNeeded:v6];
+    [(SBInCallPresentationSession *)self transitionToSceneHandleIfNeeded:sceneHandleCopy];
   }
 }
 
-- (id)layoutStateForApplicationTransitionContext:(id)a3
+- (id)layoutStateForApplicationTransitionContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 request];
-  v5 = [v4 layoutStateForApplicationTransitionContext:v3];
+  contextCopy = context;
+  request = [contextCopy request];
+  v5 = [request layoutStateForApplicationTransitionContext:contextCopy];
 
   return v5;
 }
 
-- (id)previousLayoutStateForApplicationTransitionContext:(id)a3
+- (id)previousLayoutStateForApplicationTransitionContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 request];
-  v5 = [v4 previousLayoutStateForApplicationTransitionContext:v3];
+  contextCopy = context;
+  request = [contextCopy request];
+  v5 = [request previousLayoutStateForApplicationTransitionContext:contextCopy];
 
   return v5;
 }
 
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 request];
-  [v8 applicationTransitionContext:v6 frameForApplicationSceneEntity:v7];
+  contextCopy = context;
+  entityCopy = entity;
+  request = [contextCopy request];
+  [request applicationTransitionContext:contextCopy frameForApplicationSceneEntity:entityCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -2340,7 +2340,7 @@ LABEL_3:
       }
 
       v22 = *(*(&v32 + 1) + 8 * v21);
-      if ([v22 isAnalogousToEntity:{v7, v32}])
+      if ([v22 isAnalogousToEntity:{entityCopy, v32}])
       {
         break;
       }
@@ -2386,23 +2386,23 @@ LABEL_13:
   return result;
 }
 
-- (unint64_t)_incrementPresentationModeRevisionIDWithReason:(id)a3
+- (unint64_t)_incrementPresentationModeRevisionIDWithReason:(id)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   ++self->_presentationModeRevisionID;
   v5 = SBLogInCallPresentation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_presentationModeRevisionID];
-    v7 = [(SBInCallPresentationSession *)self sceneHandle];
-    v8 = [v7 persistenceIdentifier];
+    sceneHandle = [(SBInCallPresentationSession *)self sceneHandle];
+    persistenceIdentifier = [sceneHandle persistenceIdentifier];
     v11 = 138412802;
     v12 = v6;
     v13 = 2114;
-    v14 = v8;
+    v14 = persistenceIdentifier;
     v15 = 2114;
-    v16 = v4;
+    v16 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "_incrementPresentationModeRevisionIDWithReason: %@ %{public}@ %{public}@", &v11, 0x20u);
   }
 
@@ -2410,10 +2410,10 @@ LABEL_13:
   return presentationModeRevisionID;
 }
 
-- (void)_performSwitcherPresentationTransitionAnimated:(BOOL)a3 isUserInitiated:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6
+- (void)_performSwitcherPresentationTransitionAnimated:(BOOL)animated isUserInitiated:(BOOL)initiated analyticsSource:(id)source completion:(id)completion
 {
-  v11 = a5;
-  v12 = a6;
+  sourceCopy = source;
+  completionCopy = completion;
   if ([(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
     v13 = NSStringFromSelector(a2);
@@ -2427,8 +2427,8 @@ LABEL_13:
     v50[4] = self;
     v16 = v15;
     v51 = v16;
-    v52 = a3;
-    v53 = a4;
+    animatedCopy = animated;
+    initiatedCopy = initiated;
     v17 = MEMORY[0x223D6F7F0](v50);
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
@@ -2438,8 +2438,8 @@ LABEL_13:
     v49 = v14;
     v18 = v17;
     v47 = v18;
-    v48 = v12;
-    v19 = v11;
+    v48 = completionCopy;
+    v19 = sourceCopy;
     v46 = v19;
     v20 = MEMORY[0x223D6F7F0](v45);
     if ([(SBDeviceApplicationSceneHandle *)self->_sceneHandle contentState])
@@ -2451,13 +2451,13 @@ LABEL_13:
     {
       workspace = self->_workspace;
       WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-      v28 = [WeakRetained _fbsDisplayConfiguration];
-      v29 = [(SBMainWorkspace *)workspace createRequestWithOptions:0 displayConfiguration:v28];
+      _fbsDisplayConfiguration = [WeakRetained _fbsDisplayConfiguration];
+      v29 = [(SBMainWorkspace *)workspace createRequestWithOptions:0 displayConfiguration:_fbsDisplayConfiguration];
 
       (*(v18 + 2))(v18, v29);
       [v29 finalize];
-      v30 = [v29 applicationContext];
-      [v30 frameForApplicationSceneEntity:v16];
+      applicationContext = [v29 applicationContext];
+      [applicationContext frameForApplicationSceneEntity:v16];
       v32 = v31;
       v34 = v33;
       v36 = v35;
@@ -2489,18 +2489,18 @@ LABEL_13:
     }
 
     v22 = +[SBDefaults localDefaults];
-    v23 = [v22 inCallPresentationDefaults];
-    v24 = [v23 assertNoZombieInCallScenes];
+    inCallPresentationDefaults = [v22 inCallPresentationDefaults];
+    assertNoZombieInCallScenes = [inCallPresentationDefaults assertNoZombieInCallScenes];
 
-    if (v24)
+    if (assertNoZombieInCallScenes)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"SBInCallPresentationSession.m" lineNumber:1179 description:{@"ICSZOMBIE: Found a zombie ICS presentation %@", self}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBInCallPresentationSession.m" lineNumber:1179 description:{@"ICSZOMBIE: Found a zombie ICS presentation %@", self}];
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -2663,13 +2663,13 @@ uint64_t __121__SBInCallPresentationSession__performSwitcherPresentationTransiti
   return v13;
 }
 
-- (void)_insertIntoSwitcherAsDismissedWithAnalyticsSource:(id)a3 transitionValidator:(id)a4 completion:(id)a5
+- (void)_insertIntoSwitcherAsDismissedWithAnalyticsSource:(id)source transitionValidator:(id)validator completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  validatorCopy = validator;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v13 = [WeakRetained switcherController];
+  switcherController = [WeakRetained switcherController];
   v14 = NSStringFromSelector(a2);
   v15 = [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v14];
 
@@ -2679,14 +2679,14 @@ uint64_t __121__SBInCallPresentationSession__performSwitcherPresentationTransiti
   v40[2] = __112__SBInCallPresentationSession__insertIntoSwitcherAsDismissedWithAnalyticsSource_transitionValidator_completion___block_invoke;
   v40[3] = &unk_2783B4070;
   v40[4] = self;
-  v17 = v13;
+  v17 = switcherController;
   v41 = v17;
-  v18 = v11;
+  v18 = completionCopy;
   v43 = v18;
   v45 = v15;
-  v19 = v10;
+  v19 = validatorCopy;
   v44 = v19;
-  v20 = v9;
+  v20 = sourceCopy;
   v42 = v20;
   v21 = MEMORY[0x223D6F7F0](v40);
   if ([(SBDeviceApplicationSceneHandle *)self->_sceneHandle contentState])
@@ -2697,12 +2697,12 @@ uint64_t __121__SBInCallPresentationSession__performSwitcherPresentationTransiti
   else
   {
     workspace = self->_workspace;
-    v23 = [WeakRetained _fbsDisplayConfiguration];
-    v24 = [(SBMainWorkspace *)workspace createRequestWithOptions:2 displayConfiguration:v23];
+    _fbsDisplayConfiguration = [WeakRetained _fbsDisplayConfiguration];
+    v24 = [(SBMainWorkspace *)workspace createRequestWithOptions:2 displayConfiguration:_fbsDisplayConfiguration];
 
     [v24 finalize];
-    v35 = [v24 applicationContext];
-    [v35 frameForApplicationSceneEntity:v16];
+    applicationContext = [v24 applicationContext];
+    [applicationContext frameForApplicationSceneEntity:v16];
     v26 = v25;
     v28 = v27;
     v30 = v29;
@@ -2843,9 +2843,9 @@ void __112__SBInCallPresentationSession__insertIntoSwitcherAsDismissedWithAnalyt
   [v3 setInterfaceOrientation:{objc_msgSend(v2, "interfaceOrientation")}];
 }
 
-- (void)_removeFromSwitcherForPrefersHiddenWhenDismissedWithValidator:(id)a3
+- (void)_removeFromSwitcherForPrefersHiddenWhenDismissedWithValidator:(id)validator
 {
-  v5 = a3;
+  validatorCopy = validator;
   v6 = NSStringFromSelector(a2);
   v7 = [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v6];
 
@@ -2854,10 +2854,10 @@ void __112__SBInCallPresentationSession__insertIntoSwitcherAsDismissedWithAnalyt
   v10[1] = 3221225472;
   v10[2] = __93__SBInCallPresentationSession__removeFromSwitcherForPrefersHiddenWhenDismissedWithValidator___block_invoke;
   v10[3] = &unk_2783B4098;
-  v11 = v5;
+  v11 = validatorCopy;
   v12 = v7;
   v10[4] = self;
-  v9 = v5;
+  v9 = validatorCopy;
   [(SBMainWorkspace *)workspace requestTransitionWithOptions:2 builder:0 validator:v10];
 }
 
@@ -2883,23 +2883,23 @@ uint64_t __93__SBInCallPresentationSession__removeFromSwitcherForPrefersHiddenWh
   return v8;
 }
 
-- (void)_performTransientOverlayPresentationTransitionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5
+- (void)_performTransientOverlayPresentationTransitionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion
 {
-  v6 = a3;
-  v9 = a4;
-  v10 = a5;
+  animatedCopy = animated;
+  sourceCopy = source;
+  completionCopy = completion;
   v11 = NSStringFromSelector(a2);
   v12 = [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v11];
 
-  v13 = v6 && [(SBBacklightController *)self->_backlightController screenIsOn];
+  v13 = animatedCopy && [(SBBacklightController *)self->_backlightController screenIsOn];
   workspace = self->_workspace;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __113__SBInCallPresentationSession__performTransientOverlayPresentationTransitionAnimated_analyticsSource_completion___block_invoke;
   v18[3] = &unk_2783B40E8;
   v21 = v13;
-  v19 = v9;
-  v20 = v10;
+  v19 = sourceCopy;
+  v20 = completionCopy;
   v18[4] = self;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -2907,8 +2907,8 @@ uint64_t __93__SBInCallPresentationSession__removeFromSwitcherForPrefersHiddenWh
   v17[3] = &unk_2783B3E70;
   v17[4] = self;
   v17[5] = v12;
-  v15 = v9;
-  v16 = v10;
+  v15 = sourceCopy;
+  v16 = completionCopy;
   [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 builder:v18 validator:v17];
 }
 
@@ -2954,10 +2954,10 @@ uint64_t __113__SBInCallPresentationSession__performTransientOverlayPresentation
   return v4;
 }
 
-- (void)_performBannerToFullScreenPresentationTransitionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5
+- (void)_performBannerToFullScreenPresentationTransitionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  completionCopy = completion;
   v11 = NSStringFromSelector(a2);
   v12 = [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v11];
 
@@ -2967,21 +2967,21 @@ uint64_t __113__SBInCallPresentationSession__performTransientOverlayPresentation
   v31[3] = __Block_byref_object_copy__44;
   v31[4] = __Block_byref_object_dispose__44;
   v32 = 0;
-  v13 = [SBApp windowSceneManager];
-  v14 = [v13 windowSceneForSceneHandle:self->_sceneHandle];
+  windowSceneManager = [SBApp windowSceneManager];
+  v14 = [windowSceneManager windowSceneForSceneHandle:self->_sceneHandle];
 
   v15 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationSceneHandle:self->_sceneHandle];
   workspace = self->_workspace;
-  v17 = [v14 _sbDisplayConfiguration];
+  _sbDisplayConfiguration = [v14 _sbDisplayConfiguration];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __115__SBInCallPresentationSession__performBannerToFullScreenPresentationTransitionAnimated_analyticsSource_completion___block_invoke;
   v26[3] = &unk_2783B4138;
   v26[4] = self;
-  v30 = a3;
+  animatedCopy = animated;
   v27 = v15;
   v29 = v31;
-  v18 = v10;
+  v18 = completionCopy;
   v28 = v18;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -2990,11 +2990,11 @@ uint64_t __113__SBInCallPresentationSession__performTransientOverlayPresentation
   v24 = v31;
   v25 = v12;
   v21[4] = self;
-  v19 = v9;
+  v19 = sourceCopy;
   v22 = v19;
   v20 = v27;
   v23 = v20;
-  [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 displayConfiguration:v17 builder:v26 validator:v21];
+  [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 displayConfiguration:_sbDisplayConfiguration builder:v26 validator:v21];
 
   _Block_object_dispose(v31, 8);
 }
@@ -3187,10 +3187,10 @@ uint64_t __115__SBInCallPresentationSession__performBannerToFullScreenPresentati
   return v36;
 }
 
-- (void)_performBannerToTransientOverlayPresentationTransitionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5
+- (void)_performBannerToTransientOverlayPresentationTransitionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  completionCopy = completion;
   v11 = NSStringFromSelector(a2);
   v12 = [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v11];
 
@@ -3199,9 +3199,9 @@ uint64_t __115__SBInCallPresentationSession__performBannerToFullScreenPresentati
   v17[1] = 3221225472;
   v17[2] = __121__SBInCallPresentationSession__performBannerToTransientOverlayPresentationTransitionAnimated_analyticsSource_completion___block_invoke;
   v17[3] = &unk_2783B40E8;
-  v20 = a3;
-  v18 = v9;
-  v19 = v10;
+  animatedCopy = animated;
+  v18 = sourceCopy;
+  v19 = completionCopy;
   v17[4] = self;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -3209,8 +3209,8 @@ uint64_t __115__SBInCallPresentationSession__performBannerToFullScreenPresentati
   v16[3] = &unk_2783B3E70;
   v16[4] = self;
   v16[5] = v12;
-  v14 = v9;
-  v15 = v10;
+  v14 = sourceCopy;
+  v15 = completionCopy;
   [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 builder:v17 validator:v16];
 }
 
@@ -3266,16 +3266,16 @@ uint64_t __121__SBInCallPresentationSession__performBannerToTransientOverlayPres
   return v3;
 }
 
-- (void)_performBannerPresentationTransitionWithAnalyticsSource:(id)a3 completion:(id)a4
+- (void)_performBannerPresentationTransitionWithAnalyticsSource:(id)source completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  completionCopy = completion;
   v9 = NSStringFromSelector(a2);
   v10 = [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v9];
 
   [(SBInCallPresentationSession *)self _setNonModalPresentationActive:1];
-  v11 = [(SBInCallPresentationSession *)self windowScene];
-  [(SBInCallPresentationSession *)self _presentedBannerBoundsInWindowScene:v11];
+  windowScene = [(SBInCallPresentationSession *)self windowScene];
+  [(SBInCallPresentationSession *)self _presentedBannerBoundsInWindowScene:windowScene];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -3284,12 +3284,12 @@ uint64_t __121__SBInCallPresentationSession__performBannerToTransientOverlayPres
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v20 = [WeakRetained inCallClientPresentationSessionInterfaceOrientationForBannerPresentation:self];
 
-  v21 = [MEMORY[0x277D75418] currentDevice];
-  v22 = [v21 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (v20)
   {
-    v23 = (v22 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v23 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
   }
 
   else
@@ -3307,9 +3307,9 @@ uint64_t __121__SBInCallPresentationSession__performBannerToTransientOverlayPres
     v24 = 1;
   }
 
-  v25 = [(SBInCallPresentationSession *)self _screen];
-  v26 = [v25 fixedCoordinateSpace];
-  [v26 bounds];
+  _screen = [(SBInCallPresentationSession *)self _screen];
+  fixedCoordinateSpace = [_screen fixedCoordinateSpace];
+  [fixedCoordinateSpace bounds];
   _UIWindowConvertRectFromOrientationToOrientation();
   v28 = v27;
   v30 = v29;
@@ -3322,22 +3322,22 @@ uint64_t __121__SBInCallPresentationSession__performBannerToTransientOverlayPres
   v46[2] = __98__SBInCallPresentationSession__performBannerPresentationTransitionWithAnalyticsSource_completion___block_invoke;
   v46[3] = &__block_descriptor_40_e42_v16__0__SBMainWorkspaceTransitionRequest_8l;
   v46[4] = v24;
-  v36 = [(SBInCallPresentationSceneUpdateContext *)v35 initWithReferenceFrame:v7 analyticsSource:v46 transitionRequestBuilderBlock:v28, v30, v32, v34];
+  v36 = [(SBInCallPresentationSceneUpdateContext *)v35 initWithReferenceFrame:sourceCopy analyticsSource:v46 transitionRequestBuilderBlock:v28, v30, v32, v34];
   [(SBInCallPresentationSceneUpdateContext *)v36 setExecutionTarget:1];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __98__SBInCallPresentationSession__performBannerPresentationTransitionWithAnalyticsSource_completion___block_invoke_3;
   v39[3] = &unk_2783B4188;
-  v40 = v7;
+  v40 = sourceCopy;
   v41 = v10;
   v42 = v13;
   v43 = v15;
   v44 = v17;
   v45 = v38;
   v39[4] = self;
-  v37 = v7;
+  v37 = sourceCopy;
   [(SBInCallPresentationSceneUpdateContext *)v36 setPostSceneUpdateHandler:v39];
-  [(SBInCallPresentationSceneUpdateContext *)v36 setCompletionHandler:v8];
+  [(SBInCallPresentationSceneUpdateContext *)v36 setCompletionHandler:completionCopy];
 
   [(SBInCallPresentationSession *)self _performSceneUpdateTransactionWithContext:v36];
 }
@@ -3416,20 +3416,20 @@ void __98__SBInCallPresentationSession__performBannerPresentationTransitionWithA
   }
 }
 
-- (void)setNonModalPresentationsSuppressed:(BOOL)a3
+- (void)setNonModalPresentationsSuppressed:(BOOL)suppressed
 {
-  if (self->_nonModalPresentationsSuppressed != a3)
+  if (self->_nonModalPresentationsSuppressed != suppressed)
   {
-    self->_nonModalPresentationsSuppressed = a3;
-    if (!a3)
+    self->_nonModalPresentationsSuppressed = suppressed;
+    if (!suppressed)
     {
       jindoElement = self->_jindoElement;
       if (jindoElement)
       {
         if (!self->_jindoInvalidatable && [(SBSystemApertureSceneElement *)jindoElement isReadyForPresentation]&& !self->_isInvalidated)
         {
-          v7 = [SBApp systemApertureControllerForMainDisplay];
-          v5 = [v7 registerElement:self->_jindoElement];
+          systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+          v5 = [systemApertureControllerForMainDisplay registerElement:self->_jindoElement];
           jindoInvalidatable = self->_jindoInvalidatable;
           self->_jindoInvalidatable = v5;
         }
@@ -3452,21 +3452,21 @@ void __98__SBInCallPresentationSession__performBannerPresentationTransitionWithA
   objc_initWeak(&location, self);
   v3 = objc_alloc_init(MEMORY[0x277D67E40]);
   v4 = MEMORY[0x277D46F50];
-  v5 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v6 = [v5 processState];
-  v7 = [v4 identifierWithPid:{objc_msgSend(v6, "pid")}];
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  processState = [application processState];
+  v7 = [v4 identifierWithPid:{objc_msgSend(processState, "pid")}];
 
   v8 = [MEMORY[0x277D46F48] handleForIdentifier:v7 error:0];
-  v9 = [v8 identity];
-  v10 = [MEMORY[0x277D0ADA8] identityForProcessIdentity:v9];
-  v11 = [SBApp systemApertureControllerForMainDisplay];
+  identity = [v8 identity];
+  v10 = [MEMORY[0x277D0ADA8] identityForProcessIdentity:identity];
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
   v12 = [SBSystemApertureSceneElement alloc];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __50__SBInCallPresentationSession__createJindoElement__block_invoke;
   v17[3] = &unk_2783AD550;
   objc_copyWeak(&v19, &location);
-  v13 = v11;
+  v13 = systemApertureControllerForMainDisplay;
   v18 = v13;
   v14 = [(SBSystemApertureSceneElement *)v12 initWithSceneSpecification:v3 sceneClientIdentity:v10 statusBarBackgroundActivitiesSuppresser:v13 readyForPresentationHandler:v17];
   jindoElement = self->_jindoElement;
@@ -3503,8 +3503,8 @@ void __50__SBInCallPresentationSession__createJindoElement__block_invoke(uint64_
   if (jindoElement && ![(SBSystemApertureSceneElement *)jindoElement isActivated])
   {
     v5 = objc_alloc_init(MEMORY[0x277CF0C80]);
-    v4 = [(SBApplicationSceneHandle *)self->_sceneHandle persistenceIdentifier];
-    [v5 SBUISA_setString:v4 forSetting:3213026];
+    persistenceIdentifier = [(SBApplicationSceneHandle *)self->_sceneHandle persistenceIdentifier];
+    [v5 SBUISA_setString:persistenceIdentifier forSetting:3213026];
 
     [(SBSystemApertureSceneElement *)self->_jindoElement activateWithInitialOtherClientSettings:v5];
   }
@@ -3531,16 +3531,16 @@ void __50__SBInCallPresentationSession__createJindoElement__block_invoke(uint64_
   }
 }
 
-- (int64_t)sceneElement:(id)a3 decisionForLaunchActionOfAppWithBundleIdentifier:(id)a4 persistenceIdentifier:(id)a5
+- (int64_t)sceneElement:(id)element decisionForLaunchActionOfAppWithBundleIdentifier:(id)identifier persistenceIdentifier:(id)persistenceIdentifier
 {
-  v7 = a5;
+  persistenceIdentifierCopy = persistenceIdentifier;
   sceneHandle = self->_sceneHandle;
-  v9 = a4;
-  v10 = [(SBApplicationSceneHandle *)sceneHandle application];
-  v11 = [v10 bundleIdentifier];
+  identifierCopy = identifier;
+  application = [(SBApplicationSceneHandle *)sceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
   v12 = BSEqualStrings();
 
-  if ((v12 & 1) != 0 || !v9 && (-[SBApplicationSceneHandle persistenceIdentifier](self->_sceneHandle, "persistenceIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v7 isEqualToString:v16], v16, v17))
+  if ((v12 & 1) != 0 || !identifierCopy && (-[SBApplicationSceneHandle persistenceIdentifier](self->_sceneHandle, "persistenceIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [persistenceIdentifierCopy isEqualToString:v16], v16, v17))
   {
     v13 = objc_alloc(MEMORY[0x277D67BA0]);
     v14 = 1;
@@ -3556,11 +3556,11 @@ void __50__SBInCallPresentationSession__createJindoElement__block_invoke(uint64_
   return v14;
 }
 
-- (void)_performBannerDismissalTransitionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5
+- (void)_performBannerDismissalTransitionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion
 {
-  v6 = a3;
-  v21 = a4;
-  v9 = a5;
+  animatedCopy = animated;
+  sourceCopy = source;
+  completionCopy = completion;
   if (!self->_isNonModalPresentationActive)
   {
     [SBInCallPresentationSession _performBannerDismissalTransitionAnimated:a2 analyticsSource:self completion:?];
@@ -3569,9 +3569,9 @@ void __50__SBInCallPresentationSession__createJindoElement__block_invoke(uint64_
   v10 = NSStringFromSelector(a2);
   [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v10];
 
-  if (v9)
+  if (completionCopy)
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     bannerDidDisappearHandlerByUUID = self->_bannerDidDisappearHandlerByUUID;
     if (!bannerDidDisappearHandlerByUUID)
     {
@@ -3582,34 +3582,34 @@ void __50__SBInCallPresentationSession__createJindoElement__block_invoke(uint64_
       bannerDidDisappearHandlerByUUID = self->_bannerDidDisappearHandlerByUUID;
     }
 
-    v15 = MEMORY[0x223D6F7F0](v9);
-    [(NSMutableDictionary *)bannerDidDisappearHandlerByUUID setObject:v15 forKey:v11];
+    v15 = MEMORY[0x223D6F7F0](completionCopy);
+    [(NSMutableDictionary *)bannerDidDisappearHandlerByUUID setObject:v15 forKey:uUID];
   }
 
   else
   {
-    v11 = 0;
+    uUID = 0;
   }
 
   bannerManager = self->_bannerManager;
   v17 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:self->_bannerPresentableViewController];
-  v18 = [(SBBannerManager *)bannerManager revokePresentablesWithIdentification:v17 reason:@"_SBInCallBannerRevocationReasonSessionRequest" options:0 animated:v6 userInfo:0 error:0];
+  v18 = [(SBBannerManager *)bannerManager revokePresentablesWithIdentification:v17 reason:@"_SBInCallBannerRevocationReasonSessionRequest" options:0 animated:animatedCopy userInfo:0 error:0];
 
   if (!v18)
   {
-    if (v11)
+    if (uUID)
     {
-      v19 = [(NSMutableDictionary *)self->_bannerDidDisappearHandlerByUUID objectForKey:v11];
+      v19 = [(NSMutableDictionary *)self->_bannerDidDisappearHandlerByUUID objectForKey:uUID];
 
       if (v19)
       {
-        [(NSMutableDictionary *)self->_bannerDidDisappearHandlerByUUID removeObjectForKey:v11];
-        v9[2](v9, 0);
+        [(NSMutableDictionary *)self->_bannerDidDisappearHandlerByUUID removeObjectForKey:uUID];
+        completionCopy[2](completionCopy, 0);
       }
     }
   }
 
-  if (!v6 || ![(SBInCallBannerPresentableViewController *)self->_bannerPresentableViewController _appearState])
+  if (!animatedCopy || ![(SBInCallBannerPresentableViewController *)self->_bannerPresentableViewController _appearState])
   {
     bannerPresentableViewController = self->_bannerPresentableViewController;
     self->_bannerPresentableViewController = 0;
@@ -3618,11 +3618,11 @@ void __50__SBInCallPresentationSession__createJindoElement__block_invoke(uint64_
   }
 }
 
-- (void)_performSwitcherDismissalTransitionAnimated:(BOOL)a3 shouldDestroyScene:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6
+- (void)_performSwitcherDismissalTransitionAnimated:(BOOL)animated shouldDestroyScene:(BOOL)scene analyticsSource:(id)source completion:(id)completion
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
+  sceneCopy = scene;
+  sourceCopy = source;
+  completionCopy = completion;
   v12 = NSStringFromSelector(a2);
   v13 = [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v12];
 
@@ -3632,22 +3632,22 @@ void __50__SBInCallPresentationSession__createJindoElement__block_invoke(uint64_
   v28[3] = __Block_byref_object_copy__44;
   v28[4] = __Block_byref_object_dispose__44;
   v29 = 0;
-  if (v7)
+  if (sceneCopy)
   {
     [(SBInCallPresentationSession *)self _invalidateJindoElementIfNeeded];
   }
 
   workspace = self->_workspace;
-  v15 = [(SBInCallPresentationSession *)self windowScene];
-  v16 = [v15 _fbsDisplayConfiguration];
+  windowScene = [(SBInCallPresentationSession *)self windowScene];
+  _fbsDisplayConfiguration = [windowScene _fbsDisplayConfiguration];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __121__SBInCallPresentationSession__performSwitcherDismissalTransitionAnimated_shouldDestroyScene_analyticsSource_completion___block_invoke;
   v24[3] = &unk_2783B41D8;
-  v27 = v7;
+  v27 = sceneCopy;
   v24[4] = self;
   v26 = v28;
-  v17 = v11;
+  v17 = completionCopy;
   v25 = v17;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -3655,11 +3655,11 @@ void __50__SBInCallPresentationSession__createJindoElement__block_invoke(uint64_
   v19[3] = &unk_2783B4200;
   v21 = v28;
   v22 = v13;
-  v23 = v7;
+  v23 = sceneCopy;
   v19[4] = self;
-  v18 = v10;
+  v18 = sourceCopy;
   v20 = v18;
-  [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 displayConfiguration:v16 builder:v24 validator:v19];
+  [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v24 validator:v19];
 
   _Block_object_dispose(v28, 8);
 }
@@ -3868,10 +3868,10 @@ LABEL_11:
   return 1;
 }
 
-- (void)_performTransientOverlayDismissalTransitionAnimated:(BOOL)a3 shouldInsertIntoSwitcherModel:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6
+- (void)_performTransientOverlayDismissalTransitionAnimated:(BOOL)animated shouldInsertIntoSwitcherModel:(BOOL)model analyticsSource:(id)source completion:(id)completion
 {
-  v11 = a5;
-  v12 = a6;
+  sourceCopy = source;
+  completionCopy = completion;
   v13 = NSStringFromSelector(a2);
   v14 = [(SBInCallPresentationSession *)self _incrementPresentationModeRevisionIDWithReason:v13];
 
@@ -3888,12 +3888,12 @@ LABEL_11:
   v24[2] = __140__SBInCallPresentationSession__performTransientOverlayDismissalTransitionAnimated_shouldInsertIntoSwitcherModel_analyticsSource_completion___block_invoke;
   v24[3] = &unk_2783B4250;
   v17 = v15;
-  v29 = a3;
-  v30 = a4;
+  animatedCopy = animated;
+  modelCopy = model;
   v25 = v17;
-  v26 = self;
+  selfCopy = self;
   v28 = v31;
-  v18 = v12;
+  v18 = completionCopy;
   v27 = v18;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -3902,7 +3902,7 @@ LABEL_11:
   v22 = v31;
   v23 = v14;
   v20[4] = self;
-  v19 = v11;
+  v19 = sourceCopy;
   v21 = v19;
   [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 builder:v24 validator:v20];
 
@@ -3981,18 +3981,18 @@ BOOL __140__SBInCallPresentationSession__performTransientOverlayDismissalTransit
   return v5 == v6;
 }
 
-- (void)_performPresentationWithRequestedPresentationMode:(int64_t)a3 isUserInitiated:(BOOL)a4 animated:(BOOL)a5 analyticsSource:(id)a6 completion:(id)a7
+- (void)_performPresentationWithRequestedPresentationMode:(int64_t)mode isUserInitiated:(BOOL)initiated animated:(BOOL)animated analyticsSource:(id)source completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = v13;
-  if (a3 > 1)
+  animatedCopy = animated;
+  initiatedCopy = initiated;
+  sourceCopy = source;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (mode > 1)
   {
-    if (a3 != 2)
+    if (mode != 2)
     {
-      if (a3 != 3)
+      if (mode != 3)
       {
         goto LABEL_29;
       }
@@ -4004,8 +4004,8 @@ BOOL __140__SBInCallPresentationSession__performTransientOverlayDismissalTransit
         v20[1] = 3221225472;
         v20[2] = __133__SBInCallPresentationSession__performPresentationWithRequestedPresentationMode_isUserInitiated_animated_analyticsSource_completion___block_invoke_4;
         v20[3] = &unk_2783A9C70;
-        v21 = v13;
-        [(SBInCallPresentationSession *)self _performBannerToTransientOverlayPresentationTransitionAnimated:v8 analyticsSource:v12 completion:v20];
+        v21 = completionCopy;
+        [(SBInCallPresentationSession *)self _performBannerToTransientOverlayPresentationTransitionAnimated:animatedCopy analyticsSource:sourceCopy completion:v20];
         v16 = v21;
       }
 
@@ -4015,8 +4015,8 @@ BOOL __140__SBInCallPresentationSession__performTransientOverlayDismissalTransit
         v18[1] = 3221225472;
         v18[2] = __133__SBInCallPresentationSession__performPresentationWithRequestedPresentationMode_isUserInitiated_animated_analyticsSource_completion___block_invoke_5;
         v18[3] = &unk_2783A9C70;
-        v19 = v13;
-        [(SBInCallPresentationSession *)self _performTransientOverlayPresentationTransitionAnimated:v8 analyticsSource:v12 completion:v18];
+        v19 = completionCopy;
+        [(SBInCallPresentationSession *)self _performTransientOverlayPresentationTransitionAnimated:animatedCopy analyticsSource:sourceCopy completion:v18];
         v16 = v19;
       }
 
@@ -4042,7 +4042,7 @@ LABEL_14:
       v26[2] = __133__SBInCallPresentationSession__performPresentationWithRequestedPresentationMode_isUserInitiated_animated_analyticsSource_completion___block_invoke_183;
       v26[3] = &unk_2783A9C70;
       v27 = v14;
-      [(SBInCallPresentationSession *)self _performTransientOverlayPresentationTransitionAnimated:v8 analyticsSource:v12 completion:v26];
+      [(SBInCallPresentationSession *)self _performTransientOverlayPresentationTransitionAnimated:animatedCopy analyticsSource:sourceCopy completion:v26];
       v16 = v27;
     }
 
@@ -4053,7 +4053,7 @@ LABEL_14:
       v24[2] = __133__SBInCallPresentationSession__performPresentationWithRequestedPresentationMode_isUserInitiated_animated_analyticsSource_completion___block_invoke_2;
       v24[3] = &unk_2783A9C70;
       v25 = v14;
-      [(SBInCallPresentationSession *)self _performBannerToFullScreenPresentationTransitionAnimated:v8 analyticsSource:v12 completion:v24];
+      [(SBInCallPresentationSession *)self _performBannerToFullScreenPresentationTransitionAnimated:animatedCopy analyticsSource:sourceCopy completion:v24];
       v16 = v25;
     }
 
@@ -4064,7 +4064,7 @@ LABEL_14:
       v22[2] = __133__SBInCallPresentationSession__performPresentationWithRequestedPresentationMode_isUserInitiated_animated_analyticsSource_completion___block_invoke_3;
       v22[3] = &unk_2783A9C70;
       v23 = v14;
-      [(SBInCallPresentationSession *)self _performSwitcherPresentationTransitionAnimated:v8 isUserInitiated:v9 analyticsSource:v12 completion:v22];
+      [(SBInCallPresentationSession *)self _performSwitcherPresentationTransitionAnimated:animatedCopy isUserInitiated:initiatedCopy analyticsSource:sourceCopy completion:v22];
       v16 = v23;
     }
 
@@ -4073,19 +4073,19 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!a3)
+  if (!mode)
   {
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __133__SBInCallPresentationSession__performPresentationWithRequestedPresentationMode_isUserInitiated_animated_analyticsSource_completion___block_invoke;
     v30[3] = &unk_2783A9C70;
-    v31 = v13;
-    [(SBInCallPresentationSession *)self dismissAnimated:v8 shouldFinalizeSceneDestruction:0 analyticsSource:v12 completion:v30];
+    v31 = completionCopy;
+    [(SBInCallPresentationSession *)self dismissAnimated:animatedCopy shouldFinalizeSceneDestruction:0 analyticsSource:sourceCopy completion:v30];
     v16 = v31;
     goto LABEL_28;
   }
 
-  if (a3 != 1)
+  if (mode != 1)
   {
     goto LABEL_29;
   }
@@ -4102,7 +4102,7 @@ LABEL_28:
     v28[2] = __133__SBInCallPresentationSession__performPresentationWithRequestedPresentationMode_isUserInitiated_animated_analyticsSource_completion___block_invoke_182;
     v28[3] = &unk_2783A9C70;
     v29 = v14;
-    [(SBInCallPresentationSession *)self _performNonModalPresentationTransitionWithAnalyticsSource:v12 completion:v28];
+    [(SBInCallPresentationSession *)self _performNonModalPresentationTransitionWithAnalyticsSource:sourceCopy completion:v28];
     v16 = v29;
     goto LABEL_28;
   }
@@ -4199,13 +4199,13 @@ uint64_t __133__SBInCallPresentationSession__performPresentationWithRequestedPre
   return result;
 }
 
-- (void)_uiLockStateDidChange:(id)a3
+- (void)_uiLockStateDidChange:(id)change
 {
   [(SBInCallPresentationSession *)self _updateSceneDeactivationAssertions];
   v4 = [SBInCallPresentationSceneUpdateContext alloc];
-  v5 = [(SBInCallPresentationSession *)self _screen];
-  v6 = [v5 fixedCoordinateSpace];
-  [v6 bounds];
+  _screen = [(SBInCallPresentationSession *)self _screen];
+  fixedCoordinateSpace = [_screen fixedCoordinateSpace];
+  [fixedCoordinateSpace bounds];
   v7 = [(SBInCallPresentationSceneUpdateContext *)v4 initWithReferenceFrame:*MEMORY[0x277D67ED0] analyticsSource:&__block_literal_global_185 transitionRequestBuilderBlock:?];
 
   [(SBInCallPresentationSceneUpdateContext *)v7 setExecutionTarget:1];
@@ -4233,36 +4233,36 @@ uint64_t __53__SBInCallPresentationSession__uiLockStateDidChange___block_invoke_
   return v2 ^ 1;
 }
 
-- (void)presentWithRequestedConfiguration:(id)a3 animated:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6
+- (void)presentWithRequestedConfiguration:(id)configuration animated:(BOOL)animated analyticsSource:(id)source completion:(id)completion
 {
-  v8 = a4;
+  animatedCopy = animated;
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  configurationCopy = configuration;
+  sourceCopy = source;
+  completionCopy = completion;
   v13 = SBLogInCallPresentation();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v10;
+    v20 = configurationCopy;
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ handling presentation request with config %{public}@", buf, 0x16u);
   }
 
-  self->_preventsBannersWhenPresentedAsOverlay = [v10 shouldPreventBannersWhenPresentedAsOverlay];
-  self->_prefersContinuityDisplayForFullScreenPresentation = [v10 shouldPreferContinuityDisplayForFullScreenPresentation];
-  if (([v10 isScreenSharingPresentation] & 1) != 0 || objc_msgSend(v10, "preferredPresentationMode") != 3)
+  self->_preventsBannersWhenPresentedAsOverlay = [configurationCopy shouldPreventBannersWhenPresentedAsOverlay];
+  self->_prefersContinuityDisplayForFullScreenPresentation = [configurationCopy shouldPreferContinuityDisplayForFullScreenPresentation];
+  if (([configurationCopy isScreenSharingPresentation] & 1) != 0 || objc_msgSend(configurationCopy, "preferredPresentationMode") != 3)
   {
-    v14 = 0;
+    isUserInitiated = 0;
   }
 
   else
   {
-    v14 = [v10 isUserInitiated];
+    isUserInitiated = [configurationCopy isUserInitiated];
   }
 
-  self->_transientOverlayShouldAlwaysPreventHomeGestureDismissal = v14;
+  self->_transientOverlayShouldAlwaysPreventHomeGestureDismissal = isUserInitiated;
   if ([(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
     self->_hasBegunHandlingPresentationRequest = 1;
@@ -4271,8 +4271,8 @@ uint64_t __53__SBInCallPresentationSession__uiLockStateDidChange___block_invoke_
     v15[2] = __101__SBInCallPresentationSession_presentWithRequestedConfiguration_animated_analyticsSource_completion___block_invoke;
     v15[3] = &unk_2783A98A0;
     v15[4] = self;
-    v16 = v12;
-    [(SBInCallPresentationSession *)self _presentWithRequestedConfiguration:v10 animated:v8 analyticsSource:v11 completion:v15];
+    v16 = completionCopy;
+    [(SBInCallPresentationSession *)self _presentWithRequestedConfiguration:configurationCopy animated:animatedCopy analyticsSource:sourceCopy completion:v15];
   }
 }
 
@@ -4288,33 +4288,33 @@ uint64_t __101__SBInCallPresentationSession_presentWithRequestedConfiguration_an
   return result;
 }
 
-- (void)_presentWithRequestedConfiguration:(id)a3 animated:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6
+- (void)_presentWithRequestedConfiguration:(id)configuration animated:(BOOL)animated analyticsSource:(id)source completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 preferredPresentationMode];
-  v14 = [v10 isUserInitiated];
-  self->_isScreenSharingPresentation = [v10 isScreenSharingPresentation];
-  v15 = [v10 identifier];
+  animatedCopy = animated;
+  configurationCopy = configuration;
+  sourceCopy = source;
+  completionCopy = completion;
+  preferredPresentationMode = [configurationCopy preferredPresentationMode];
+  isUserInitiated = [configurationCopy isUserInitiated];
+  self->_isScreenSharingPresentation = [configurationCopy isScreenSharingPresentation];
+  identifier = [configurationCopy identifier];
   requestedPresentationConfigurationIdentifier = self->_requestedPresentationConfigurationIdentifier;
-  self->_requestedPresentationConfigurationIdentifier = v15;
+  self->_requestedPresentationConfigurationIdentifier = identifier;
 
   if ([(SBInCallPresentationSession *)self _isProximityReaderPresented])
   {
-    v13 = 0;
+    preferredPresentationMode = 0;
   }
 
-  if ([v10 supportsSystemAperture])
+  if ([configurationCopy supportsSystemAperture])
   {
     [(SBInCallPresentationSession *)self _createJindoElementIfNeeded];
-    if (v13 == 1)
+    if (preferredPresentationMode == 1)
     {
       if (![(SBInCallPresentationSession *)self _allowsNonModalPresentation])
       {
-        v13 = 1;
-        if (![v10 supportsAmbient])
+        preferredPresentationMode = 1;
+        if (![configurationCopy supportsAmbient])
         {
           goto LABEL_16;
         }
@@ -4322,11 +4322,11 @@ uint64_t __101__SBInCallPresentationSession_presentWithRequestedConfiguration_an
         goto LABEL_8;
       }
 
-      v13 = self->_jindoElement == 0;
+      preferredPresentationMode = self->_jindoElement == 0;
     }
   }
 
-  if (([v10 supportsAmbient] & 1) == 0)
+  if (([configurationCopy supportsAmbient] & 1) == 0)
   {
     goto LABEL_9;
   }
@@ -4335,7 +4335,7 @@ LABEL_8:
   if (![(SBInCallPresentationSession *)self _isAmbientPresentationActive])
   {
 LABEL_9:
-    if (v13)
+    if (preferredPresentationMode)
     {
       goto LABEL_16;
     }
@@ -4343,7 +4343,7 @@ LABEL_9:
 
   if ([(SBInCallPresentationSession *)self _allowsInitiallyDismissedPresentation])
   {
-    [v10 requiresDismissedPresentationmode];
+    [configurationCopy requiresDismissedPresentationmode];
     goto LABEL_17;
   }
 
@@ -4353,18 +4353,18 @@ LABEL_9:
     [SBInCallPresentationSession _presentWithRequestedConfiguration:animated:analyticsSource:completion:];
   }
 
-  v13 = 2;
+  preferredPresentationMode = 2;
 LABEL_16:
-  if (![v10 requiresDismissedPresentationmode])
+  if (![configurationCopy requiresDismissedPresentationmode])
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __102__SBInCallPresentationSession__presentWithRequestedConfiguration_animated_analyticsSource_completion___block_invoke_3;
     v21[3] = &unk_2783B3B78;
     v21[4] = self;
-    v22 = v12;
-    v20 = v12;
-    [(SBInCallPresentationSession *)self _performPresentationWithRequestedPresentationMode:v13 isUserInitiated:v14 animated:v8 analyticsSource:v11 completion:v21];
+    v22 = completionCopy;
+    v20 = completionCopy;
+    [(SBInCallPresentationSession *)self _performPresentationWithRequestedPresentationMode:preferredPresentationMode isUserInitiated:isUserInitiated animated:animatedCopy analyticsSource:sourceCopy completion:v21];
     v19 = v22;
     goto LABEL_19;
   }
@@ -4380,9 +4380,9 @@ LABEL_17:
   v23[1] = 3221225472;
   v23[2] = __102__SBInCallPresentationSession__presentWithRequestedConfiguration_animated_analyticsSource_completion___block_invoke_2;
   v23[3] = &unk_2783A9C70;
-  v24 = v12;
-  v18 = v12;
-  [(SBInCallPresentationSession *)self _insertIntoSwitcherAsDismissedWithAnalyticsSource:v11 transitionValidator:v25 completion:v23];
+  v24 = completionCopy;
+  v18 = completionCopy;
+  [(SBInCallPresentationSession *)self _insertIntoSwitcherAsDismissedWithAnalyticsSource:sourceCopy transitionValidator:v25 completion:v23];
   v19 = v24;
 LABEL_19:
 }
@@ -4411,21 +4411,21 @@ uint64_t __102__SBInCallPresentationSession__presentWithRequestedConfiguration_a
   return [v3 _activeJindoElementIfNeeded];
 }
 
-- (void)dismissAndFinalizeSceneDestructionAnimated:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5
+- (void)dismissAndFinalizeSceneDestructionAnimated:(BOOL)animated analyticsSource:(id)source completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  sourceCopy = source;
+  completionCopy = completion;
   self->_hasReceivedFinalizeSceneDestructionRequest = 1;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __101__SBInCallPresentationSession_dismissAndFinalizeSceneDestructionAnimated_analyticsSource_completion___block_invoke;
   v12[3] = &unk_2783B42A0;
-  v15 = a3;
-  v13 = v8;
-  v14 = v9;
+  animatedCopy = animated;
+  v13 = sourceCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v10 = v8;
-  v11 = v9;
+  v10 = sourceCopy;
+  v11 = completionCopy;
   [(SBInCallPresentationSession *)self _dispatchBlockToMainEventQueueWithReason:@"SBInCallPresentationSession - dismissAndFinalizeSceneDestructionAnimated" block:v12];
 }
 
@@ -4479,13 +4479,13 @@ uint64_t __101__SBInCallPresentationSession_dismissAndFinalizeSceneDestructionAn
   return result;
 }
 
-- (void)dismissAnimated:(BOOL)a3 shouldFinalizeSceneDestruction:(BOOL)a4 analyticsSource:(id)a5 completion:(id)a6
+- (void)dismissAnimated:(BOOL)animated shouldFinalizeSceneDestruction:(BOOL)destruction analyticsSource:(id)source completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  destructionCopy = destruction;
+  animatedCopy = animated;
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  sourceCopy = source;
+  completionCopy = completion;
   v12 = SBLogInCallPresentation();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -4510,9 +4510,9 @@ uint64_t __101__SBInCallPresentationSession_dismissAndFinalizeSceneDestructionAn
   v26[3] = &unk_2783B42F0;
   v28 = v31;
   v29 = buf;
-  v30 = v7;
+  v30 = destructionCopy;
   v26[4] = self;
-  v13 = v11;
+  v13 = completionCopy;
   v27 = v13;
   v14 = MEMORY[0x223D6F7F0](v26);
   v15 = v14;
@@ -4524,7 +4524,7 @@ uint64_t __101__SBInCallPresentationSession_dismissAndFinalizeSceneDestructionAn
     v24[2] = __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneDestruction_analyticsSource_completion___block_invoke_3;
     v24[3] = &unk_2783A9C70;
     v25 = v14;
-    [(SBInCallPresentationSession *)self _performTransientOverlayDismissalTransitionAnimated:v8 shouldInsertIntoSwitcherModel:0 analyticsSource:v10 completion:v24];
+    [(SBInCallPresentationSession *)self _performTransientOverlayDismissalTransitionAnimated:animatedCopy shouldInsertIntoSwitcherModel:0 analyticsSource:sourceCopy completion:v24];
   }
 
   if (self->_isNonModalPresentationActive)
@@ -4535,7 +4535,7 @@ uint64_t __101__SBInCallPresentationSession_dismissAndFinalizeSceneDestructionAn
     v22[2] = __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneDestruction_analyticsSource_completion___block_invoke_4;
     v22[3] = &unk_2783A9C70;
     v23 = v15;
-    [(SBInCallPresentationSession *)self _performNonModalDismissalTransitionAnimated:v8 analyticsSource:v10 completion:v22];
+    [(SBInCallPresentationSession *)self _performNonModalDismissalTransitionAnimated:animatedCopy analyticsSource:sourceCopy completion:v22];
   }
 
   ++*(*&buf[8] + 24);
@@ -4544,12 +4544,12 @@ uint64_t __101__SBInCallPresentationSession_dismissAndFinalizeSceneDestructionAn
   v18[2] = __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneDestruction_analyticsSource_completion___block_invoke_5;
   v18[3] = &unk_2783AAC18;
   v18[4] = self;
-  v21 = v8;
-  v16 = v10;
+  v21 = animatedCopy;
+  v16 = sourceCopy;
   v19 = v16;
   v17 = v15;
   v20 = v17;
-  [(SBInCallPresentationSession *)self _performSwitcherDismissalTransitionAnimated:v8 shouldDestroyScene:v7 analyticsSource:v16 completion:v18];
+  [(SBInCallPresentationSession *)self _performSwitcherDismissalTransitionAnimated:animatedCopy shouldDestroyScene:destructionCopy analyticsSource:v16 completion:v18];
   (*(v17 + 2))(v17, 1, 0);
 
   _Block_object_dispose(v31, 8);
@@ -4689,27 +4689,27 @@ uint64_t __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneD
 
 - (BOOL)disallowsLockHardwareButtonDoublePress
 {
-  v3 = [(SBInCallPresentationSession *)self supportsHandlingDeviceLock];
-  if (v3)
+  supportsHandlingDeviceLock = [(SBInCallPresentationSession *)self supportsHandlingDeviceLock];
+  if (supportsHandlingDeviceLock)
   {
-    LOBYTE(v3) = ![(SBInCallPresentationSession *)self _isCallConnectedForScene];
+    LOBYTE(supportsHandlingDeviceLock) = ![(SBInCallPresentationSession *)self _isCallConnectedForScene];
   }
 
-  return v3;
+  return supportsHandlingDeviceLock;
 }
 
-- (BOOL)supportsBecomingVisibleWhenUnlockingFromSource:(int)a3 wakingDisplay:(BOOL)a4
+- (BOOL)supportsBecomingVisibleWhenUnlockingFromSource:(int)source wakingDisplay:(BOOL)display
 {
   if (![(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
     return 0;
   }
 
-  v7 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v8 = v7;
-  if (v7)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  v8 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v9 = [v7 clientSettings];
+    clientSettings = [sceneIfExists clientSettings];
     if ([(SBInCallPresentationSession *)self _isAmbientPresentationActive])
     {
       v10 = 0;
@@ -4717,14 +4717,14 @@ uint64_t __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneD
 
     else
     {
-      v11 = [v9 shouldBecomeVisibleWhenWakingDisplay];
-      v12 = (a3 - 31) < 2;
-      if (a4)
+      shouldBecomeVisibleWhenWakingDisplay = [clientSettings shouldBecomeVisibleWhenWakingDisplay];
+      v12 = (source - 31) < 2;
+      if (display)
       {
-        v12 = v11;
+        v12 = shouldBecomeVisibleWhenWakingDisplay;
       }
 
-      if (v11)
+      if (shouldBecomeVisibleWhenWakingDisplay)
       {
         v10 = v12;
       }
@@ -4744,9 +4744,9 @@ uint64_t __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneD
   return v10;
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  if (a3)
+  if (press)
   {
     v3 = 4;
   }
@@ -4759,14 +4759,14 @@ uint64_t __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneD
   return [(SBDeviceApplicationSceneHandle *)self->_sceneHandle handleHardwareButtonEventType:v3];
 }
 
-- (void)handleDeviceLockFromSource:(int)a3 completion:(id)a4
+- (void)handleDeviceLockFromSource:(int)source completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
-  v15 = v6;
+  v4 = *&source;
+  completionCopy = completion;
+  v15 = completionCopy;
   if (self->_isHandlingDeviceLock)
   {
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
@@ -4778,11 +4778,11 @@ uint64_t __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneD
       v9 = self->_deviceLockHandlingCompletionHandlers;
       self->_deviceLockHandlingCompletionHandlers = v8;
 
-      v6 = v15;
+      completionCopy = v15;
       deviceLockHandlingCompletionHandlers = self->_deviceLockHandlingCompletionHandlers;
     }
 
-    v10 = MEMORY[0x223D6F7F0](v6);
+    v10 = MEMORY[0x223D6F7F0](completionCopy);
     [(NSMutableArray *)deviceLockHandlingCompletionHandlers addObject:v10];
 
     goto LABEL_15;
@@ -4790,7 +4790,7 @@ uint64_t __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneD
 
   if (![(SBInCallPresentationSession *)self _sceneSupportsHandlingDeviceLock])
   {
-    v6 = v15;
+    completionCopy = v15;
     if (!v15)
     {
       goto LABEL_16;
@@ -4801,7 +4801,7 @@ uint64_t __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneD
   }
 
   self->_isHandlingDeviceLock = 1;
-  v6 = v15;
+  completionCopy = v15;
   if (v15)
   {
     v11 = self->_deviceLockHandlingCompletionHandlers;
@@ -4817,14 +4817,14 @@ uint64_t __105__SBInCallPresentationSession_dismissAnimated_shouldFinalizeSceneD
     v14 = MEMORY[0x223D6F7F0]();
     [(NSMutableArray *)v11 addObject:v14];
 
-    v6 = v15;
+    completionCopy = v15;
   }
 
   if (v4 != 24)
   {
     [(SBInCallPresentationSession *)self _notifySceneOfDeviceLockFromSource:v4 completion:v15];
 LABEL_15:
-    v6 = v15;
+    completionCopy = v15;
   }
 
 LABEL_16:
@@ -4834,35 +4834,35 @@ LABEL_16:
 {
   if (!self->_isScreenSharingPresentation)
   {
-    v3 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-    if (v3)
+    sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+    if (sceneIfExists)
     {
-      v6 = v3;
+      v6 = sceneIfExists;
       v4 = [objc_alloc(MEMORY[0x277D67BD0]) initWithInfo:0 responder:0];
       v5 = [MEMORY[0x277CBEB98] setWithObject:v4];
       [v6 sendActions:v5];
 
-      v3 = v6;
+      sceneIfExists = v6;
     }
   }
 }
 
-- (void)_notifySceneOfDeviceLockFromSource:(int)a3 completion:(id)a4
+- (void)_notifySceneOfDeviceLockFromSource:(int)source completion:(id)completion
 {
-  v6 = a3 == 3;
+  v6 = source == 3;
   v46[7] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  completionCopy = completion;
   v8 = 2 * v6;
-  if (a3 == 1)
+  if (source == 1)
   {
     v8 = 1;
   }
 
-  v30 = v7;
+  v30 = completionCopy;
   v31 = v8;
-  v9 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v10 = [v9 clientProcess];
-  v11 = [v10 pid];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  clientProcess = [sceneIfExists clientProcess];
+  v11 = [clientProcess pid];
 
   if (v11 == -1)
   {
@@ -4872,18 +4872,18 @@ LABEL_16:
   else
   {
     v12 = [MEMORY[0x277D47008] targetWithPid:v11];
-    v13 = [MEMORY[0x277D46DF0] grantWithUserInteractivity];
-    v46[0] = v13;
-    v14 = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
-    v46[1] = v14;
+    grantWithUserInteractivity = [MEMORY[0x277D46DF0] grantWithUserInteractivity];
+    v46[0] = grantWithUserInteractivity;
+    grantWithForegroundPriority = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
+    v46[1] = grantWithForegroundPriority;
     v15 = [MEMORY[0x277D46FD0] withReason:10002];
     v46[2] = v15;
-    v16 = [MEMORY[0x277D46E30] grant];
-    v46[3] = v16;
-    v17 = [MEMORY[0x277D46EF8] grant];
-    v46[4] = v17;
-    v18 = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
-    v46[5] = v18;
+    grant = [MEMORY[0x277D46E30] grant];
+    v46[3] = grant;
+    grant2 = [MEMORY[0x277D46EF8] grant];
+    v46[4] = grant2;
+    grantWithForegroundPriority2 = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
+    v46[5] = grantWithForegroundPriority2;
     v19 = [MEMORY[0x277D46FC0] grantWithResistance:40];
     v46[6] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:7];
@@ -4897,7 +4897,7 @@ LABEL_16:
   v42[2] = 0x3032000000;
   v42[3] = __Block_byref_object_copy__44;
   v42[4] = __Block_byref_object_dispose__44;
-  v43 = self;
+  selfCopy = self;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -4907,9 +4907,9 @@ LABEL_16:
   v22 = SBLogInCallPresentation();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
+    sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
     *buf = 138543362;
-    v45 = v23;
+    v45 = sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "Handing device lock to %{public}@", buf, 0xCu);
   }
 
@@ -4926,9 +4926,9 @@ LABEL_16:
   v27 = v37[5];
   v37[5] = v26;
 
-  v28 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle scene];
+  scene = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle scene];
   v29 = [MEMORY[0x277CBEB98] setWithObject:v37[5]];
-  [v28 sendActions:v29];
+  [scene sendActions:v29];
 
   _Block_object_dispose(&v36, 8);
   _Block_object_dispose(v42, 8);
@@ -5025,26 +5025,26 @@ void __77__SBInCallPresentationSession__notifySceneOfDeviceLockFromSource_comple
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v5 = [WeakRetained layoutStateProvider];
-  v6 = [v5 layoutState];
-  v2 = [(SBInCallPresentationSession *)self _isShowingFullScreenForLayoutState:v6]&& !self->_isTransientOverlayPresentationActive && [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
+  _isValidForSceneUpdates = [(SBInCallPresentationSession *)self _isShowingFullScreenForLayoutState:layoutState]&& !self->_isTransientOverlayPresentationActive && [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
 
-  return v2;
+  return _isValidForSceneUpdates;
 }
 
-- (BOOL)disablesSystemVolumeHUDForCategory:(id)a3
+- (BOOL)disablesSystemVolumeHUDForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained layoutStateProvider];
-  v7 = [v6 layoutState];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  v8 = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
-  v9 = [v8 audioCategoriesDisablingVolumeHUD];
+  _clientSettingsIfExists = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
+  audioCategoriesDisablingVolumeHUD = [_clientSettingsIfExists audioCategoriesDisablingVolumeHUD];
 
-  if (v9)
+  if (audioCategoriesDisablingVolumeHUD)
   {
-    v10 = [v9 count] == 0;
+    v10 = [audioCategoriesDisablingVolumeHUD count] == 0;
   }
 
   else
@@ -5052,11 +5052,11 @@ void __77__SBInCallPresentationSession__notifySceneOfDeviceLockFromSource_comple
     v10 = 0;
   }
 
-  v11 = [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:v7];
+  v11 = [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:layoutState];
   v12 = v11 != 0;
   if (v11 && !v10)
   {
-    v12 = [v9 containsObject:v4];
+    v12 = [audioCategoriesDisablingVolumeHUD containsObject:categoryCopy];
   }
 
   return v12;
@@ -5065,24 +5065,24 @@ void __77__SBInCallPresentationSession__notifySceneOfDeviceLockFromSource_comple
 - (BOOL)isShowingOnEmbeddedDisplay
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained _fbsDisplayIdentity];
-  v4 = [v3 isMainDisplay];
+  _fbsDisplayIdentity = [WeakRetained _fbsDisplayIdentity];
+  isMainDisplay = [_fbsDisplayIdentity isMainDisplay];
 
-  return v4;
+  return isMainDisplay;
 }
 
-- (void)_prepareForTransientOverlayPresentationTransactionWithAnimation:(BOOL)a3 analyticsSource:(id)a4 completion:(id)a5
+- (void)_prepareForTransientOverlayPresentationTransactionWithAnimation:(BOOL)animation analyticsSource:(id)source completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  sourceCopy = source;
+  completionCopy = completion;
   v10 = SBLogInCallPresentation();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v22 = "[SBInCallPresentationSession _prepareForTransientOverlayPresentationTransactionWithAnimation:analyticsSource:completion:]";
     v23 = 2114;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "%s %{public}@", buf, 0x16u);
   }
 
@@ -5091,10 +5091,10 @@ void __77__SBInCallPresentationSession__notifySceneOfDeviceLockFromSource_comple
   v17[2] = __122__SBInCallPresentationSession__prepareForTransientOverlayPresentationTransactionWithAnimation_analyticsSource_completion___block_invoke;
   v17[3] = &unk_2783AAC68;
   v17[4] = self;
-  v11 = v8;
+  v11 = sourceCopy;
   v18 = v11;
-  v20 = a3;
-  v12 = v9;
+  animationCopy = animation;
+  v12 = completionCopy;
   v19 = v12;
   v13 = MEMORY[0x223D6F7F0](v17);
   v14 = v13;
@@ -5243,16 +5243,16 @@ void __122__SBInCallPresentationSession__prepareForTransientOverlayPresentationT
 - (BOOL)_isInSwitcherModel
 {
   mainSwitcherCoordinator = self->_mainSwitcherCoordinator;
-  v3 = [(SBApplicationSceneHandle *)self->_sceneHandle displayItemRepresentation];
-  LOBYTE(mainSwitcherCoordinator) = [(SBMainSwitcherControllerCoordinator *)mainSwitcherCoordinator hasAppLayoutForDisplayItem:v3];
+  displayItemRepresentation = [(SBApplicationSceneHandle *)self->_sceneHandle displayItemRepresentation];
+  LOBYTE(mainSwitcherCoordinator) = [(SBMainSwitcherControllerCoordinator *)mainSwitcherCoordinator hasAppLayoutForDisplayItem:displayItemRepresentation];
 
   return mainSwitcherCoordinator;
 }
 
-- (id)_acquireAssertionForAnalyticsSource:(id)a3
+- (id)_acquireAssertionForAnalyticsSource:(id)source
 {
-  v4 = a3;
-  if (v4 && !self->_isInvalidated)
+  sourceCopy = source;
+  if (sourceCopy && !self->_isInvalidated)
   {
     assertionAnalyticSources = self->_assertionAnalyticSources;
     if (!assertionAnalyticSources)
@@ -5264,7 +5264,7 @@ void __122__SBInCallPresentationSession__prepareForTransientOverlayPresentationT
       assertionAnalyticSources = self->_assertionAnalyticSources;
     }
 
-    [(NSMutableArray *)assertionAnalyticSources addObject:v4];
+    [(NSMutableArray *)assertionAnalyticSources addObject:sourceCopy];
     objc_initWeak(&location, self);
     v9 = objc_alloc(MEMORY[0x277CF0CE8]);
     v11[0] = MEMORY[0x277D85DD0];
@@ -5272,7 +5272,7 @@ void __122__SBInCallPresentationSession__prepareForTransientOverlayPresentationT
     v11[2] = __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___block_invoke;
     v11[3] = &unk_2783AEA48;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
+    v12 = sourceCopy;
     v5 = [v9 initWithIdentifier:@"SBInCallPresentationSession" forReason:v12 invalidationBlock:v11];
 
     objc_destroyWeak(&v13);
@@ -5316,9 +5316,9 @@ void __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___blo
 
   else
   {
-    v4 = [(SBLockScreenManager *)self->_lockScreenManager lockScreenEnvironment];
-    v5 = [v4 behaviorSuppressor];
-    if ([v5 suppressesBanners])
+    lockScreenEnvironment = [(SBLockScreenManager *)self->_lockScreenManager lockScreenEnvironment];
+    behaviorSuppressor = [lockScreenEnvironment behaviorSuppressor];
+    if ([behaviorSuppressor suppressesBanners])
     {
       LOBYTE(v2) = 0;
     }
@@ -5334,8 +5334,8 @@ void __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___blo
 
 - (BOOL)_allowsInitiallyDismissedPresentation
 {
-  v3 = [(SBInCallPresentationSession *)self _allowsNonModalPresentation];
-  v4 = [(SBInCallPresentationSession *)self _isProximityReaderPresented]|| v3;
+  _allowsNonModalPresentation = [(SBInCallPresentationSession *)self _allowsNonModalPresentation];
+  v4 = [(SBInCallPresentationSession *)self _isProximityReaderPresented]|| _allowsNonModalPresentation;
   if ([(SBLockScreenManager *)self->_lockScreenManager isUILocked])
   {
     LOBYTE(v4) = v4 & (self->_jindoElement != 0);
@@ -5344,9 +5344,9 @@ void __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___blo
   return ([(SBInCallPresentationSession *)self _isAmbientPresentationActive]| v4) & 1;
 }
 
-- (int64_t)_currentPresentationModeForLayoutState:(id)a3
+- (int64_t)_currentPresentationModeForLayoutState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (self->_isTransientOverlayPresentationActive)
   {
     if (self->_hasAdoptedFullscreenOverlayAPI)
@@ -5365,7 +5365,7 @@ void __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___blo
     v5 = 1;
   }
 
-  else if ((![(SBLockScreenManager *)self->_lockScreenManager isUILocked]|| [(SBLockScreenManager *)self->_lockScreenManager isUIUnlocking]) && v4 && [(SBInCallPresentationSession *)self _shouldConsiderScenePrimaryForLayoutState:v4])
+  else if ((![(SBLockScreenManager *)self->_lockScreenManager isUILocked]|| [(SBLockScreenManager *)self->_lockScreenManager isUIUnlocking]) && stateCopy && [(SBInCallPresentationSession *)self _shouldConsiderScenePrimaryForLayoutState:stateCopy])
   {
     v5 = 2;
   }
@@ -5378,10 +5378,10 @@ void __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___blo
   return v5;
 }
 
-- (BOOL)_isDismissedForLayoutState:(id)a3
+- (BOOL)_isDismissedForLayoutState:(id)state
 {
-  v4 = a3;
-  v5 = !self->_isNonModalPresentationActive && !self->_isTransientOverlayPresentationActive && [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:v4]== 0;
+  stateCopy = state;
+  v5 = !self->_isNonModalPresentationActive && !self->_isTransientOverlayPresentationActive && [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:stateCopy]== 0;
 
   return v5;
 }
@@ -5389,15 +5389,15 @@ void __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___blo
 - (void)_destroySceneEntityIfExists
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
 
-  if (v3)
+  if (sceneIfExists)
   {
     v4 = SBLogInCallPresentation();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Destroying scene entity: %{public}@", &v6, 0xCu);
     }
 
@@ -5406,16 +5406,16 @@ void __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___blo
   }
 }
 
-- (BOOL)_hasExistingSceneSettingsPresentationModeForLayoutState:(id)a3
+- (BOOL)_hasExistingSceneSettingsPresentationModeForLayoutState:(id)state
 {
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v6 = v5;
-  if (v5)
+  stateCopy = state;
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  v6 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v7 = [v5 settings];
-    v8 = [v7 inCallPresentationMode];
-    v9 = v8 == [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:v4];
+    settings = [sceneIfExists settings];
+    inCallPresentationMode = [settings inCallPresentationMode];
+    v9 = inCallPresentationMode == [(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:stateCopy];
   }
 
   else
@@ -5426,81 +5426,81 @@ void __67__SBInCallPresentationSession__acquireAssertionForAnalyticsSource___blo
   return v9;
 }
 
-- (void)_addSystemGestureDeactivationReason:(id)a3
+- (void)_addSystemGestureDeactivationReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   activeSystemGestureDeactivationReasons = self->_activeSystemGestureDeactivationReasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!activeSystemGestureDeactivationReasons)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->_activeSystemGestureDeactivationReasons;
     self->_activeSystemGestureDeactivationReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     activeSystemGestureDeactivationReasons = self->_activeSystemGestureDeactivationReasons;
   }
 
-  [(NSMutableSet *)activeSystemGestureDeactivationReasons addObject:v4];
+  [(NSMutableSet *)activeSystemGestureDeactivationReasons addObject:reasonCopy];
   [(SBInCallPresentationSession *)self _updateSceneDeactivationAssertions];
 }
 
-- (void)_removeSystemGestureDeactivationReason:(id)a3
+- (void)_removeSystemGestureDeactivationReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(NSMutableSet *)self->_activeSystemGestureDeactivationReasons containsObject:?])
   {
-    [(NSMutableSet *)self->_activeSystemGestureDeactivationReasons removeObject:v4];
+    [(NSMutableSet *)self->_activeSystemGestureDeactivationReasons removeObject:reasonCopy];
     [(SBInCallPresentationSession *)self _updateSceneDeactivationAssertions];
   }
 }
 
-- (void)_addSystemAnimationDeactivationReason:(id)a3
+- (void)_addSystemAnimationDeactivationReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   activeSystemAnimationDeactivationReasons = self->_activeSystemAnimationDeactivationReasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!activeSystemAnimationDeactivationReasons)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->_activeSystemAnimationDeactivationReasons;
     self->_activeSystemAnimationDeactivationReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     activeSystemAnimationDeactivationReasons = self->_activeSystemAnimationDeactivationReasons;
   }
 
-  [(NSMutableSet *)activeSystemAnimationDeactivationReasons addObject:v4];
+  [(NSMutableSet *)activeSystemAnimationDeactivationReasons addObject:reasonCopy];
   [(SBInCallPresentationSession *)self _updateSceneDeactivationAssertions];
 }
 
-- (void)_removeSystemAnimationDeactivationReason:(id)a3
+- (void)_removeSystemAnimationDeactivationReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(NSMutableSet *)self->_activeSystemAnimationDeactivationReasons containsObject:?])
   {
-    [(NSMutableSet *)self->_activeSystemAnimationDeactivationReasons removeObject:v4];
+    [(NSMutableSet *)self->_activeSystemAnimationDeactivationReasons removeObject:reasonCopy];
     [(SBInCallPresentationSession *)self _updateSceneDeactivationAssertions];
   }
 }
 
-- (void)_configureTransitionRequest:(id)a3 forPresentingTransientOverlay:(id)a4 animated:(BOOL)a5
+- (void)_configureTransitionRequest:(id)request forPresentingTransientOverlay:(id)overlay animated:(BOOL)animated
 {
-  v7 = a4;
-  v8 = a3;
+  overlayCopy = overlay;
+  requestCopy = request;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v8 setEventLabelWithFormat:@"PresentInCallTransientOverlay = %@", v10];
+  [requestCopy setEventLabelWithFormat:@"PresentInCallTransientOverlay = %@", v10];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __98__SBInCallPresentationSession__configureTransitionRequest_forPresentingTransientOverlay_animated___block_invoke;
   v12[3] = &unk_2783A9E50;
-  v13 = v7;
-  v14 = a5;
-  v11 = v7;
-  [v8 modifyTransientOverlayContext:v12];
-  [v8 modifyApplicationContext:&__block_literal_global_220_0];
+  v13 = overlayCopy;
+  animatedCopy = animated;
+  v11 = overlayCopy;
+  [requestCopy modifyTransientOverlayContext:v12];
+  [requestCopy modifyApplicationContext:&__block_literal_global_220_0];
 }
 
 void __98__SBInCallPresentationSession__configureTransitionRequest_forPresentingTransientOverlay_animated___block_invoke(uint64_t a1, void *a2)
@@ -5522,14 +5522,14 @@ void __98__SBInCallPresentationSession__configureTransitionRequest_forPresenting
   return v3;
 }
 
-- (void)_performSceneUpdateTransactionWithContext:(id)a3
+- (void)_performSceneUpdateTransactionWithContext:(id)context
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = SBLogInCallPresentation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 referenceFrame];
+    [contextCopy referenceFrame];
     v6 = BSNSStringFromCGRect();
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v6;
@@ -5540,15 +5540,15 @@ void __98__SBInCallPresentationSession__configureTransitionRequest_forPresenting
   entityToSceneUpdateContext = self->_entityToSceneUpdateContext;
   if (!entityToSceneUpdateContext)
   {
-    v9 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v10 = self->_entityToSceneUpdateContext;
-    self->_entityToSceneUpdateContext = v9;
+    self->_entityToSceneUpdateContext = strongToStrongObjectsMapTable;
 
     entityToSceneUpdateContext = self->_entityToSceneUpdateContext;
   }
 
-  [(NSMapTable *)entityToSceneUpdateContext setObject:v4 forKey:v7];
-  v38 = [v4 analyticsSource];
+  [(NSMapTable *)entityToSceneUpdateContext setObject:contextCopy forKey:v7];
+  analyticsSource = [contextCopy analyticsSource];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v71 = 0x3032000000;
@@ -5564,7 +5564,7 @@ void __98__SBInCallPresentationSession__configureTransitionRequest_forPresenting
   objc_copyWeak(&v68, &location);
   v11 = v7;
   v65 = v11;
-  v12 = v4;
+  v12 = contextCopy;
   v66 = v12;
   v13 = MEMORY[0x223D6F7F0](v64);
   v59[0] = MEMORY[0x277D85DD0];
@@ -5573,28 +5573,28 @@ void __98__SBInCallPresentationSession__configureTransitionRequest_forPresenting
   v59[3] = &unk_2783AA1A0;
   v14 = v12;
   v60 = v14;
-  v61 = self;
+  selfCopy = self;
   v37 = v11;
   v62 = v37;
   v15 = v13;
   v63 = v15;
   v16 = MEMORY[0x223D6F7F0](v59);
-  v17 = [v14 validatorHandler];
+  validatorHandler = [v14 validatorHandler];
   [v14 setValidatorHandler:0];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __73__SBInCallPresentationSession__performSceneUpdateTransactionWithContext___block_invoke_5;
   v56[3] = &unk_2783B43B8;
   objc_copyWeak(&v58, &location);
-  v18 = v17;
+  v18 = validatorHandler;
   v56[4] = self;
   v57 = v18;
   v19 = MEMORY[0x223D6F7F0](v56);
-  v20 = [v14 executionTarget];
+  executionTarget = [v14 executionTarget];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v22 = [WeakRetained _fbsDisplayConfiguration];
+  _fbsDisplayConfiguration = [WeakRetained _fbsDisplayConfiguration];
 
-  switch(v20)
+  switch(executionTarget)
   {
     case 0:
       workspace = self->_workspace;
@@ -5610,8 +5610,8 @@ void __98__SBInCallPresentationSession__configureTransitionRequest_forPresenting
       v42[4] = self;
       v44 = v19;
       v45 = &buf;
-      v43 = v38;
-      [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 displayConfiguration:v22 builder:v46 validator:v42, v37];
+      v43 = analyticsSource;
+      [(SBMainWorkspace *)workspace requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v46 validator:v42, v37];
 
       v23 = v47;
       goto LABEL_15;
@@ -5624,38 +5624,38 @@ void __98__SBInCallPresentationSession__configureTransitionRequest_forPresenting
       v48[3] = &unk_2783B4408;
       v23 = v32;
       v49 = v23;
-      v50 = self;
-      v51 = v22;
+      selfCopy2 = self;
+      v51 = _fbsDisplayConfiguration;
       v53 = v16;
       v54 = v19;
       v55 = &buf;
-      v52 = v38;
+      v52 = analyticsSource;
       v34 = [v33 eventWithName:@"SceneUpdate" handler:{v48, v37}];
       [(BSEventQueue *)v23 executeOrInsertEvent:v34 atPosition:1];
 
 LABEL_15:
       break;
     case 2:
-      v23 = [(SBMainWorkspace *)self->_workspace createRequestWithOptions:0 displayConfiguration:v22, v37];
+      v23 = [(SBMainWorkspace *)self->_workspace createRequestWithOptions:0 displayConfiguration:_fbsDisplayConfiguration, v37];
       (v16)[2](v16, v23);
       if ((v19)[2](v19, v23))
       {
-        v24 = [(SBInCallPresentationSession *)self _acquireAssertionForAnalyticsSource:v38];
+        v24 = [(SBInCallPresentationSession *)self _acquireAssertionForAnalyticsSource:analyticsSource];
         v25 = *(*(&buf + 1) + 40);
         *(*(&buf + 1) + 40) = v24;
 
-        v26 = [(BSEventQueue *)v23 transactionProvider];
-        v27 = (v26)[2](v26, v23);
+        transactionProvider = [(BSEventQueue *)v23 transactionProvider];
+        v27 = (transactionProvider)[2](transactionProvider, v23);
 
         v28 = v27;
-        v29 = [(BSEventQueue *)v23 completionBlock];
+        completionBlock = [(BSEventQueue *)v23 completionBlock];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __73__SBInCallPresentationSession__performSceneUpdateTransactionWithContext___block_invoke_11;
         v39[3] = &unk_2783A9C98;
         v30 = v28;
         v40 = v30;
-        v31 = v29;
+        v31 = completionBlock;
         v41 = v31;
         [v30 setCompletionBlock:v39];
         [v30 begin];
@@ -5663,11 +5663,11 @@ LABEL_15:
 
       else
       {
-        v36 = [(BSEventQueue *)v23 completionBlock];
-        v30 = v36;
-        if (v36)
+        completionBlock2 = [(BSEventQueue *)v23 completionBlock];
+        v30 = completionBlock2;
+        if (completionBlock2)
         {
-          (*(v36 + 16))(v36, 0);
+          (*(completionBlock2 + 16))(completionBlock2, 0);
         }
       }
 
@@ -5902,20 +5902,20 @@ void __73__SBInCallPresentationSession__performSceneUpdateTransactionWithContext
   }
 }
 
-- (CGRect)_presentedBannerBoundsInWindowScene:(id)a3
+- (CGRect)_presentedBannerBoundsInWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [v4 screen];
-  [v5 scale];
+  sceneCopy = scene;
+  screen = [sceneCopy screen];
+  [screen scale];
   v38 = v6;
-  [v5 bounds];
+  [screen bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(SBBannerManager *)self->_bannerManager layoutManagerInWindowScene:v4];
+  v15 = [(SBBannerManager *)self->_bannerManager layoutManagerInWindowScene:sceneCopy];
 
-  [v15 useableContainerFrameInContainerBounds:v5 onScreen:{v8, v10, v12, v14}];
+  [v15 useableContainerFrameInContainerBounds:screen onScreen:{v8, v10, v12, v14}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -5947,53 +5947,53 @@ void __73__SBInCallPresentationSession__performSceneUpdateTransactionWithContext
 
 - (BOOL)_sceneSupportsHandlingDeviceLock
 {
-  v2 = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
-  v3 = [v2 supportsDeviceLockActions];
+  _clientSettingsIfExists = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
+  supportsDeviceLockActions = [_clientSettingsIfExists supportsDeviceLockActions];
 
-  return v3;
+  return supportsDeviceLockActions;
 }
 
 - (BOOL)_isCallConnectedForScene
 {
-  v2 = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
-  v3 = [v2 isCallConnected];
+  _clientSettingsIfExists = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
+  isCallConnected = [_clientSettingsIfExists isCallConnected];
 
-  return v3;
+  return isCallConnected;
 }
 
 - (BOOL)_acceptsKeyboardFocus
 {
-  v3 = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
-  if ([v3 acceptsKeyboardFocus])
+  _clientSettingsIfExists = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
+  if ([_clientSettingsIfExists acceptsKeyboardFocus])
   {
-    v4 = [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
+    _isValidForSceneUpdates = [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
   }
 
   else
   {
-    v4 = 0;
+    _isValidForSceneUpdates = 0;
   }
 
-  return v4;
+  return _isValidForSceneUpdates;
 }
 
-- (void)_setNonModalPresentationActive:(BOOL)a3
+- (void)_setNonModalPresentationActive:(BOOL)active
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (self->_isNonModalPresentationActive != a3)
+  if (self->_isNonModalPresentationActive != active)
   {
-    self->_isNonModalPresentationActive = a3;
+    self->_isNonModalPresentationActive = active;
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v6 = [WeakRetained layoutStateProvider];
-    v7 = [v6 layoutState];
+    layoutStateProvider = [WeakRetained layoutStateProvider];
+    layoutState = [layoutStateProvider layoutState];
 
-    [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:v7];
-    [(SBInCallPresentationSession *)self _updateKeyboardFocusPreventionAssertionWithLayoutState:v7];
+    [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:layoutState];
+    [(SBInCallPresentationSession *)self _updateKeyboardFocusPreventionAssertionWithLayoutState:layoutState];
   }
 
-  if (!a3)
+  if (!active)
   {
-    v8 = [(NSMutableDictionary *)self->_bannerDidDisappearHandlerByUUID allValues];
+    allValues = [(NSMutableDictionary *)self->_bannerDidDisappearHandlerByUUID allValues];
     bannerDidDisappearHandlerByUUID = self->_bannerDidDisappearHandlerByUUID;
     self->_bannerDidDisappearHandlerByUUID = 0;
 
@@ -6001,7 +6001,7 @@ void __73__SBInCallPresentationSession__performSceneUpdateTransactionWithContext
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = v8;
+    v10 = allValues;
     v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
@@ -6030,33 +6030,33 @@ void __73__SBInCallPresentationSession__performSceneUpdateTransactionWithContext
   }
 }
 
-- (void)_setTransientOverlayPresentationActive:(BOOL)a3
+- (void)_setTransientOverlayPresentationActive:(BOOL)active
 {
-  if (self->_isTransientOverlayPresentationActive != a3)
+  if (self->_isTransientOverlayPresentationActive != active)
   {
-    self->_isTransientOverlayPresentationActive = a3;
+    self->_isTransientOverlayPresentationActive = active;
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v6 = [WeakRetained layoutStateProvider];
-    v7 = [v6 layoutState];
+    layoutStateProvider = [WeakRetained layoutStateProvider];
+    layoutState = [layoutStateProvider layoutState];
 
-    [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:v7];
-    [(SBInCallPresentationSession *)self _updateKeyboardFocusPreventionAssertionWithLayoutState:v7];
+    [(SBInCallPresentationSession *)self _updateAppStatusBarSettingsAssertionForLayoutState:layoutState];
+    [(SBInCallPresentationSession *)self _updateKeyboardFocusPreventionAssertionWithLayoutState:layoutState];
   }
 }
 
-- (BOOL)_shouldConsiderScenePrimaryForLayoutState:(id)a3
+- (BOOL)_shouldConsiderScenePrimaryForLayoutState:(id)state
 {
-  v4 = a3;
-  v5 = [(SBInCallPresentationSession *)self sceneHandle];
-  v6 = [v5 sceneIdentifier];
+  stateCopy = state;
+  sceneHandle = [(SBInCallPresentationSession *)self sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
 
-  v7 = [v4 elementWithIdentifier:v6];
+  v7 = [stateCopy elementWithIdentifier:sceneIdentifier];
 
   if (v7)
   {
-    if ([v4 unlockedEnvironmentMode] == 3)
+    if ([stateCopy unlockedEnvironmentMode] == 3)
     {
-      LODWORD(v7) = !SBPeekConfigurationIsValid([v4 peekConfiguration]);
+      LODWORD(v7) = !SBPeekConfigurationIsValid([stateCopy peekConfiguration]);
     }
 
     else
@@ -6083,31 +6083,31 @@ void __73__SBInCallPresentationSession__performSceneUpdateTransactionWithContext
 - (BOOL)_isShowingInPIP
 {
   v3 = objc_opt_class();
-  v4 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v5 = [v4 settings];
-  v6 = SBSafeCast(v3, v5);
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  settings = [sceneIfExists settings];
+  v6 = SBSafeCast(v3, settings);
 
   if (v6)
   {
-    v7 = [v6 pg_hasVisiblePIPContent];
+    pg_hasVisiblePIPContent = [v6 pg_hasVisiblePIPContent];
   }
 
   else
   {
-    v7 = 0;
+    pg_hasVisiblePIPContent = 0;
   }
 
-  return v7;
+  return pg_hasVisiblePIPContent;
 }
 
-- (void)_updateAppStatusBarSettingsAssertionForLayoutState:(id)a3
+- (void)_updateAppStatusBarSettingsAssertionForLayoutState:(id)state
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
-  v6 = [v5 backgroundActivitiesToSuppress];
+  stateCopy = state;
+  statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
+  backgroundActivitiesToSuppress = [statusBarStateProvider backgroundActivitiesToSuppress];
 
-  if (-[SBInCallPresentationSession _isValidForSceneUpdates](self, "_isValidForSceneUpdates") && (-[SBInCallPresentationSession _isShowingFullScreenForLayoutState:](self, "_isShowingFullScreenForLayoutState:", v4) || self->_isNonModalPresentationActive && ((bannerPresentableViewController = self->_bannerPresentableViewController) == 0 || -[SBInCallBannerPresentableViewController isPresented](bannerPresentableViewController, "isPresented")) || -[SBInCallPresentationSession _isShowingInPIP](self, "_isShowingInPIP")) && [v6 count])
+  if (-[SBInCallPresentationSession _isValidForSceneUpdates](self, "_isValidForSceneUpdates") && (-[SBInCallPresentationSession _isShowingFullScreenForLayoutState:](self, "_isShowingFullScreenForLayoutState:", stateCopy) || self->_isNonModalPresentationActive && ((bannerPresentableViewController = self->_bannerPresentableViewController) == 0 || -[SBInCallBannerPresentableViewController isPresented](bannerPresentableViewController, "isPresented")) || -[SBInCallPresentationSession _isShowingInPIP](self, "_isShowingInPIP")) && [backgroundActivitiesToSuppress count])
   {
     appStatusBarSettingsAssertion = self->_appStatusBarSettingsAssertion;
     if (!appStatusBarSettingsAssertion)
@@ -6115,20 +6115,20 @@ void __73__SBInCallPresentationSession__performSceneUpdateTransactionWithContext
 LABEL_11:
       [(SBWindowSceneStatusBarSettingsAssertion *)appStatusBarSettingsAssertion invalidate];
       WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-      v13 = [WeakRetained statusBarManager];
+      statusBarManager = [WeakRetained statusBarManager];
 
-      v14 = [v13 assertionManager];
+      assertionManager = [statusBarManager assertionManager];
       v15 = objc_alloc_init(SBMutableStatusBarSettings);
-      [(SBMutableStatusBarSettings *)v15 setBackgroundActivitiesToSuppress:v6];
+      [(SBMutableStatusBarSettings *)v15 setBackgroundActivitiesToSuppress:backgroundActivitiesToSuppress];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = [v14 newSettingsAssertionWithSettings:v15 atLevel:8 reason:v17];
+      v18 = [assertionManager newSettingsAssertionWithSettings:v15 atLevel:8 reason:v17];
       v19 = self->_appStatusBarSettingsAssertion;
       self->_appStatusBarSettingsAssertion = v18;
 
       v20 = self->_appStatusBarSettingsAssertion;
-      v21 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-      [(SBWindowSceneStatusBarSettingsAssertion *)v20 acquireWithAnimationParameters:v21];
+      initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+      [(SBWindowSceneStatusBarSettingsAssertion *)v20 acquireWithAnimationParameters:initWithDefaultParameters];
 
       v22 = SBLogInCallPresentation();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -6137,7 +6137,7 @@ LABEL_11:
         v41 = 138543618;
         v42 = v23;
         v43 = 2114;
-        v44 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "Acquired app status bar settings assertion %{public}@  for %{public}@", &v41, 0x16u);
       }
 
@@ -6145,8 +6145,8 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v9 = [(SBWindowSceneStatusBarSettingsAssertion *)appStatusBarSettingsAssertion settings];
-    v10 = [v9 backgroundActivitiesToSuppress];
+    settings = [(SBWindowSceneStatusBarSettingsAssertion *)appStatusBarSettingsAssertion settings];
+    backgroundActivitiesToSuppress2 = [settings backgroundActivitiesToSuppress];
     v11 = BSEqualSets();
 
     if ((v11 & 1) == 0)
@@ -6165,23 +6165,23 @@ LABEL_18:
       v41 = 138543618;
       v42 = v25;
       v43 = 2114;
-      v44 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_DEFAULT, "Invalidated app status bar settings assertion %{public}@  for %{public}@", &v41, 0x16u);
     }
 
     v26 = self->_appStatusBarSettingsAssertion;
-    v27 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [(SBWindowSceneStatusBarSettingsAssertion *)v26 invalidateWithAnimationParameters:v27];
+    initWithDefaultParameters2 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [(SBWindowSceneStatusBarSettingsAssertion *)v26 invalidateWithAnimationParameters:initWithDefaultParameters2];
 
-    v13 = self->_appStatusBarSettingsAssertion;
+    statusBarManager = self->_appStatusBarSettingsAssertion;
     self->_appStatusBarSettingsAssertion = 0;
     goto LABEL_18;
   }
 
 LABEL_19:
-  v28 = [SBApp windowSceneManager];
-  v29 = [v28 connectedWindowScenes];
-  v30 = [v29 bs_firstObjectPassingTest:&__block_literal_global_237];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
+  v30 = [connectedWindowScenes bs_firstObjectPassingTest:&__block_literal_global_237];
 
   if (!v30 || ![(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
@@ -6191,20 +6191,20 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v31 = [(SBWindowSceneStatusBarSettingsAssertion *)self->_continuityDisplayAppStatusBarSettingsAssertion settings];
-  v32 = [v31 backgroundActivitiesToSuppress];
+  settings2 = [(SBWindowSceneStatusBarSettingsAssertion *)self->_continuityDisplayAppStatusBarSettingsAssertion settings];
+  backgroundActivitiesToSuppress3 = [settings2 backgroundActivitiesToSuppress];
   v33 = BSEqualSets();
 
   if ((v33 & 1) == 0)
   {
     continuityDisplayAppStatusBarSettingsAssertion = objc_alloc_init(SBMutableStatusBarSettings);
-    [(SBMutableStatusBarSettings *)continuityDisplayAppStatusBarSettingsAssertion setBackgroundActivitiesToSuppress:v6];
+    [(SBMutableStatusBarSettings *)continuityDisplayAppStatusBarSettingsAssertion setBackgroundActivitiesToSuppress:backgroundActivitiesToSuppress];
     [(SBWindowSceneStatusBarSettingsAssertion *)self->_continuityDisplayAppStatusBarSettingsAssertion invalidate];
-    v35 = [v30 statusBarManager];
-    v36 = [v35 assertionManager];
+    statusBarManager2 = [v30 statusBarManager];
+    assertionManager2 = [statusBarManager2 assertionManager];
     v37 = objc_opt_class();
     v38 = NSStringFromClass(v37);
-    v39 = [v36 newSettingsAssertionWithSettings:continuityDisplayAppStatusBarSettingsAssertion atLevel:8 reason:v38];
+    v39 = [assertionManager2 newSettingsAssertionWithSettings:continuityDisplayAppStatusBarSettingsAssertion atLevel:8 reason:v38];
     v40 = self->_continuityDisplayAppStatusBarSettingsAssertion;
     self->_continuityDisplayAppStatusBarSettingsAssertion = v39;
 
@@ -6213,11 +6213,11 @@ LABEL_24:
   }
 }
 
-- (void)_updateKeyboardFocusPreventionAssertionWithLayoutState:(id)a3
+- (void)_updateKeyboardFocusPreventionAssertionWithLayoutState:(id)state
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (-[SBInCallPresentationSession _acceptsKeyboardFocus](self, "_acceptsKeyboardFocus") || self->_isTransientOverlayPresentationActive || (-[SBDeviceApplicationSceneHandle sceneIdentifier](self->_sceneHandle, "sceneIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), [v4 elementWithIdentifier:v5], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  stateCopy = state;
+  if (-[SBInCallPresentationSession _acceptsKeyboardFocus](self, "_acceptsKeyboardFocus") || self->_isTransientOverlayPresentationActive || (-[SBDeviceApplicationSceneHandle sceneIdentifier](self->_sceneHandle, "sceneIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), [stateCopy elementWithIdentifier:v5], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
     if (self->_preventKeyboardFocusAssertion)
     {
@@ -6225,7 +6225,7 @@ LABEL_24:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Invalidating keyboard focus prevention assertion for session: %{public}@", buf, 0xCu);
       }
 
@@ -6238,8 +6238,8 @@ LABEL_8:
 
   else if (!self->_preventKeyboardFocusAssertion && !self->_isInvalidated)
   {
-    v9 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-    preventKeyboardFocusAssertion = [v9 identityToken];
+    sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+    preventKeyboardFocusAssertion = [sceneIfExists identityToken];
 
     if (preventKeyboardFocusAssertion)
     {
@@ -6247,14 +6247,14 @@ LABEL_8:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Acquiring keyboard focus prevention assertion for session: %{public}@", buf, 0xCu);
       }
 
       keyboardFocusCoordinator = self->_keyboardFocusCoordinator;
       v12 = MEMORY[0x277CCACA8];
-      v13 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
-      v14 = [v12 stringWithFormat:@"SBInCallPresentationSession-%@", v13];
+      sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
+      v14 = [v12 stringWithFormat:@"SBInCallPresentationSession-%@", sceneIdentifier];
       v15 = [(SBKeyboardFocusControlling *)keyboardFocusCoordinator preventFocusForSceneWithIdentityToken:preventKeyboardFocusAssertion reason:v14];
       v16 = self->_preventKeyboardFocusAssertion;
       self->_preventKeyboardFocusAssertion = v15;
@@ -6264,9 +6264,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)_systemControlsShouldPresentAsEmbeddedForLayoutState:(id)a3
+- (BOOL)_systemControlsShouldPresentAsEmbeddedForLayoutState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (self->_isScreenSharingPresentation || ![(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
     v5 = 0;
@@ -6277,17 +6277,17 @@ LABEL_8:
     v5 = 1;
   }
 
-  else if (v4)
+  else if (stateCopy)
   {
-    v5 = ([(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:v4]& 0xFFFFFFFFFFFFFFFELL) == 2;
+    v5 = ([(SBInCallPresentationSession *)self _currentPresentationModeForLayoutState:stateCopy]& 0xFFFFFFFFFFFFFFFELL) == 2;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v8 = [WeakRetained layoutStateProvider];
-    v9 = [v8 layoutState];
-    v5 = [(SBInCallPresentationSession *)self _isShowingFullScreenForLayoutState:v9];
+    layoutStateProvider = [WeakRetained layoutStateProvider];
+    layoutState = [layoutStateProvider layoutState];
+    v5 = [(SBInCallPresentationSession *)self _isShowingFullScreenForLayoutState:layoutState];
   }
 
   return v5;
@@ -6295,7 +6295,7 @@ LABEL_8:
 
 - (void)_updateSystemControlsShouldPresentAsEmbedded
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
   if ([(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
     v4[0] = MEMORY[0x277D85DD0];
@@ -6303,7 +6303,7 @@ LABEL_8:
     v4[2] = __75__SBInCallPresentationSession__updateSystemControlsShouldPresentAsEmbedded__block_invoke;
     v4[3] = &unk_2783ACB10;
     v4[4] = self;
-    [v3 updateSettingsWithBlock:v4];
+    [sceneIfExists updateSettingsWithBlock:v4];
   }
 }
 
@@ -6330,20 +6330,20 @@ void __75__SBInCallPresentationSession__updateSystemControlsShouldPresentAsEmbed
   }
 }
 
-- (void)_updateSceneHandleToObserveForSendingShowNoticeForSystemControlsAction:(id)a3
+- (void)_updateSceneHandleToObserveForSendingShowNoticeForSystemControlsAction:(id)action
 {
-  v17 = a3;
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  actionCopy = action;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1 && !self->_isScreenSharingPresentation)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && !self->_isScreenSharingPresentation)
   {
     WeakRetained = objc_loadWeakRetained(&self->_sceneHandleToObserveForShowSystemControlsAction);
-    if ([v17 unlockedEnvironmentMode] == 3 && (objc_msgSend(v17, "elements"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 1))
+    if ([actionCopy unlockedEnvironmentMode] == 3 && (objc_msgSend(actionCopy, "elements"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 1))
     {
-      v9 = [v17 elementWithRole:1];
-      v10 = [v9 entityGenerator];
-      v11 = v10[2]();
+      v9 = [actionCopy elementWithRole:1];
+      entityGenerator = [v9 entityGenerator];
+      v11 = entityGenerator[2]();
 
       v12 = objc_opt_class();
       v13 = v11;
@@ -6367,25 +6367,25 @@ void __75__SBInCallPresentationSession__updateSystemControlsShouldPresentAsEmbed
 
       v16 = v14;
 
-      v15 = [v16 sceneHandle];
+      sceneHandle = [v16 sceneHandle];
 
-      if ([v15 isEqual:self->_sceneHandle])
+      if ([sceneHandle isEqual:self->_sceneHandle])
       {
 
-        v15 = 0;
+        sceneHandle = 0;
       }
     }
 
     else
     {
-      v15 = 0;
+      sceneHandle = 0;
     }
 
-    if (WeakRetained != v15)
+    if (WeakRetained != sceneHandle)
     {
       [WeakRetained removeObserver:self];
-      objc_storeWeak(&self->_sceneHandleToObserveForShowSystemControlsAction, v15);
-      [v15 addObserver:self];
+      objc_storeWeak(&self->_sceneHandleToObserveForShowSystemControlsAction, sceneHandle);
+      [sceneHandle addObserver:self];
       [(SBInCallPresentationSession *)self _sendShowNoticeForSystemControlsActionIfNeeded];
     }
   }
@@ -6394,20 +6394,20 @@ void __75__SBInCallPresentationSession__updateSystemControlsShouldPresentAsEmbed
 - (void)_sendShowNoticeForSystemControlsActionIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandleToObserveForShowSystemControlsAction);
-  v10 = [WeakRetained sceneIfExists];
+  sceneIfExists = [WeakRetained sceneIfExists];
 
-  v4 = [v10 uiClientSettings];
+  uiClientSettings = [sceneIfExists uiClientSettings];
   observedSceneHandlePrefersHomeIndicatorAutoHidden = self->_observedSceneHandlePrefersHomeIndicatorAutoHidden;
-  if (observedSceneHandlePrefersHomeIndicatorAutoHidden != [v4 homeIndicatorAutoHidden])
+  if (observedSceneHandlePrefersHomeIndicatorAutoHidden != [uiClientSettings homeIndicatorAutoHidden])
   {
-    v6 = [v4 homeIndicatorAutoHidden];
-    self->_observedSceneHandlePrefersHomeIndicatorAutoHidden = v6;
-    if ((v6 & 1) == 0 && ![(SBLockScreenManager *)self->_lockScreenManager isUILocked]&& ([(SpringBoard *)self->_springBoard activeInterfaceOrientation]- 3) <= 1)
+    homeIndicatorAutoHidden = [uiClientSettings homeIndicatorAutoHidden];
+    self->_observedSceneHandlePrefersHomeIndicatorAutoHidden = homeIndicatorAutoHidden;
+    if ((homeIndicatorAutoHidden & 1) == 0 && ![(SBLockScreenManager *)self->_lockScreenManager isUILocked]&& ([(SpringBoard *)self->_springBoard activeInterfaceOrientation]- 3) <= 1)
     {
       v7 = [objc_alloc(MEMORY[0x277D67BC8]) initWithInfo:0 responder:0];
-      v8 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+      sceneIfExists2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
       v9 = [MEMORY[0x277CBEB98] setWithObject:v7];
-      [v8 sendActions:v9];
+      [sceneIfExists2 sendActions:v9];
     }
   }
 }
@@ -6416,8 +6416,8 @@ void __75__SBInCallPresentationSession__updateSystemControlsShouldPresentAsEmbed
 {
   if ([(SBInCallPresentationSession *)self _isValidForSceneUpdates])
   {
-    v3 = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
-    if (([v3 prefersHiddenWhenDismissed] & 1) != 0 || -[SBSetupManager isInSetupMode](self->_setupManager, "isInSetupMode"))
+    _clientSettingsIfExists = [(SBInCallPresentationSession *)self _clientSettingsIfExists];
+    if (([_clientSettingsIfExists prefersHiddenWhenDismissed] & 1) != 0 || -[SBSetupManager isInSetupMode](self->_setupManager, "isInSetupMode"))
     {
       v4 = 1;
     }
@@ -6445,27 +6445,27 @@ void __75__SBInCallPresentationSession__updateSystemControlsShouldPresentAsEmbed
   return v4;
 }
 
-- (void)_updateVisibilityInSwitcherForPrefersHiddenWhenDismissedIfNeededForLayoutState:(id)a3
+- (void)_updateVisibilityInSwitcherForPrefersHiddenWhenDismissedIfNeededForLayoutState:(id)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(SBMainSwitcherControllerCoordinator *)self->_mainSwitcherCoordinator isAnySwitcherVisible]&& [(SBInCallPresentationSession *)self _isDismissedForLayoutState:v4])
+  stateCopy = state;
+  if (![(SBMainSwitcherControllerCoordinator *)self->_mainSwitcherCoordinator isAnySwitcherVisible]&& [(SBInCallPresentationSession *)self _isDismissedForLayoutState:stateCopy])
   {
-    v5 = [(SBInCallPresentationSession *)self _isInSwitcherModel];
+    _isInSwitcherModel = [(SBInCallPresentationSession *)self _isInSwitcherModel];
     if ([(SBInCallPresentationSession *)self _shouldExcludeFromSwitcherWhenDismissed])
     {
-      if ((v5 & 1) == 0)
+      if ((_isInSwitcherModel & 1) == 0)
       {
         goto LABEL_17;
       }
 
-      v6 = 0;
+      _isValidForSceneUpdates = 0;
     }
 
     else
     {
-      v6 = [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
-      if (v5 == v6)
+      _isValidForSceneUpdates = [(SBInCallPresentationSession *)self _isValidForSceneUpdates];
+      if (_isInSwitcherModel == _isValidForSceneUpdates)
       {
         goto LABEL_17;
       }
@@ -6477,19 +6477,19 @@ void __75__SBInCallPresentationSession__updateSystemControlsShouldPresentAsEmbed
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = @"removing from";
-        if (v6)
+        if (_isValidForSceneUpdates)
         {
           v8 = @"adding to";
         }
 
         *buf = 138543618;
-        v13 = self;
+        selfCopy = self;
         v14 = 2114;
         v15 = v8;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "_updateSwitcherVisibilityIfDismissed: %{public}@ %{public}@ switcher model", buf, 0x16u);
       }
 
-      if (v6)
+      if (_isValidForSceneUpdates)
       {
         v9 = *MEMORY[0x277D67EC8];
         v11[0] = MEMORY[0x277D85DD0];
@@ -6566,44 +6566,44 @@ uint64_t __110__SBInCallPresentationSession__updateVisibilityInSwitcherForPrefer
 - (id)_sceneManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained sceneManager];
+  sceneManager = [WeakRetained sceneManager];
 
-  return v3;
+  return sceneManager;
 }
 
 - (id)_screen
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained screen];
+  screen = [WeakRetained screen];
 
-  return v3;
+  return screen;
 }
 
 - (void)_updateSceneSettingsForAmbientPresentationSettingsUpdate
 {
-  v3 = [(SBInCallPresentationSession *)self sceneHandle];
-  v4 = [v3 sceneIfExists];
+  sceneHandle = [(SBInCallPresentationSession *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __87__SBInCallPresentationSession__updateSceneSettingsForAmbientPresentationSettingsUpdate__block_invoke;
   v5[3] = &unk_2783ACB10;
   v5[4] = self;
-  [v4 updateSettingsWithBlock:v5];
+  [sceneIfExists updateSettingsWithBlock:v5];
 }
 
-- (void)_updateAmbientPresentationSettingsForInCallSettings:(id)a3
+- (void)_updateAmbientPresentationSettingsForInCallSettings:(id)settings
 {
-  v4 = a3;
-  if ([v4 conformsToExtension:objc_opt_class()])
+  settingsCopy = settings;
+  if ([settingsCopy conformsToExtension:objc_opt_class()])
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 setAmbientPresented:{-[SBInCallPresentationSession _isAmbientPresentationActive](self, "_isAmbientPresentationActive")}];
+      [settingsCopy setAmbientPresented:{-[SBInCallPresentationSession _isAmbientPresentationActive](self, "_isAmbientPresentationActive")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v4 setAmbientDisplayStyle:self->_ambientDisplayStyle];
+      [settingsCopy setAmbientDisplayStyle:self->_ambientDisplayStyle];
     }
   }
 }
@@ -6615,19 +6615,19 @@ uint64_t __110__SBInCallPresentationSession__updateVisibilityInSwitcherForPrefer
     return 1;
   }
 
-  v3 = self;
-  v4 = [(SBInCallPresentationSession *)self delegate];
-  LOBYTE(v3) = [v4 inCallClientPresentationSessionAmbientPresentationActive:v3];
+  selfCopy = self;
+  delegate = [(SBInCallPresentationSession *)self delegate];
+  LOBYTE(selfCopy) = [delegate inCallClientPresentationSessionAmbientPresentationActive:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)_layoutStateTransitionCoordinator
 {
-  v2 = [(SBInCallPresentationSession *)self windowScene];
-  v3 = [v2 layoutStateTransitionCoordinator];
+  windowScene = [(SBInCallPresentationSession *)self windowScene];
+  layoutStateTransitionCoordinator = [windowScene layoutStateTransitionCoordinator];
 
-  return v3;
+  return layoutStateTransitionCoordinator;
 }
 
 - (SBInCallPresentationSessionDelegate)delegate

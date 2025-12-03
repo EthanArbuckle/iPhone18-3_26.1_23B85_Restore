@@ -3,9 +3,9 @@
 + (UIEdgeInsets)preferredAlignmentRectInsets;
 - (CGSize)preferredContentSize;
 - (UISwitchControl)switchControl;
-- (UISwitchVisualElement)initWithFrame:(CGRect)a3;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (UISwitchVisualElement)initWithFrame:(CGRect)frame;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation UISwitchVisualElement
@@ -17,11 +17,11 @@
   return WeakRetained;
 }
 
-- (UISwitchVisualElement)initWithFrame:(CGRect)a3
+- (UISwitchVisualElement)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UISwitchVisualElement;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -54,22 +54,22 @@
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = 0.5;
-  if (a3)
+  if (enabled)
   {
     v5 = 1.0;
   }
 
   [(UIView *)self setAlpha:v5];
-  self->_enabled = v3;
+  self->_enabled = enabledCopy;
 
-  [(UIView *)self setUserInteractionEnabled:v3];
+  [(UIView *)self setUserInteractionEnabled:enabledCopy];
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   if (([objc_opt_class() isFixedSize] & 1) == 0)
   {

@@ -1,25 +1,25 @@
 @interface PHVoicemailVoiceMemoActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (PHVoicemailVoiceMemoActivity)initWithVoicemail:(id)a3 contactStore:(id)a4;
-- (id)URLItemWithExportedURL:(id)a3 localizedTitle:(id)a4;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (PHVoicemailVoiceMemoActivity)initWithVoicemail:(id)voicemail contactStore:(id)store;
+- (id)URLItemWithExportedURL:(id)l localizedTitle:(id)title;
 - (id)activityTitle;
 - (void)performActivity;
 @end
 
 @implementation PHVoicemailVoiceMemoActivity
 
-- (PHVoicemailVoiceMemoActivity)initWithVoicemail:(id)a3 contactStore:(id)a4
+- (PHVoicemailVoiceMemoActivity)initWithVoicemail:(id)voicemail contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  voicemailCopy = voicemail;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = PHVoicemailVoiceMemoActivity;
   v9 = [(PHVoicemailVoiceMemoActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_voicemail, a3);
-    objc_storeStrong(&v10->_contactStore, a4);
+    objc_storeStrong(&v9->_voicemail, voicemail);
+    objc_storeStrong(&v10->_contactStore, store);
   }
 
   return v10;
@@ -27,26 +27,26 @@
 
 - (id)activityTitle
 {
-  v2 = [objc_opt_class() applicationProxy];
-  v3 = [v2 localizedName];
+  applicationProxy = [objc_opt_class() applicationProxy];
+  localizedName = [applicationProxy localizedName];
 
-  return v3;
+  return localizedName;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = a3;
-  v4 = [objc_opt_class() applicationProxy];
-  v5 = [v4 appState];
-  if ([v5 isInstalled] && objc_msgSend(v3, "count") == 1)
+  itemsCopy = items;
+  applicationProxy = [objc_opt_class() applicationProxy];
+  appState = [applicationProxy appState];
+  if ([appState isInstalled] && objc_msgSend(itemsCopy, "count") == 1)
   {
-    v6 = [v3 objectAtIndexedSubscript:0];
+    v6 = [itemsCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v3 objectAtIndexedSubscript:0];
-      v8 = [v7 pathExtension];
-      v9 = [v8 isEqualToString:@"m4a"];
+      v7 = [itemsCopy objectAtIndexedSubscript:0];
+      pathExtension = [v7 pathExtension];
+      v9 = [pathExtension isEqualToString:@"m4a"];
     }
 
     else
@@ -65,12 +65,12 @@
 
 - (void)performActivity
 {
-  v3 = [(PHVoicemailVoiceMemoActivity *)self voicemail];
-  v4 = [v3 dataURL];
+  voicemail = [(PHVoicemailVoiceMemoActivity *)self voicemail];
+  dataURL = [voicemail dataURL];
 
-  v5 = [(PHVoicemailVoiceMemoActivity *)self voicemail];
-  v6 = [(PHVoicemailVoiceMemoActivity *)self contactStore];
-  v7 = [v5 displayNameUsingContactStore:v6];
+  voicemail2 = [(PHVoicemailVoiceMemoActivity *)self voicemail];
+  contactStore = [(PHVoicemailVoiceMemoActivity *)self contactStore];
+  v7 = [voicemail2 displayNameUsingContactStore:contactStore];
 
   if (!v7)
   {
@@ -83,24 +83,24 @@
   v11 = [NSString stringWithFormat:v10, v7];
 
   v12 = CUTWeakLinkClass();
-  v13 = [(PHVoicemailVoiceMemoActivity *)self voicemail];
-  v14 = [v13 date];
+  voicemail3 = [(PHVoicemailVoiceMemoActivity *)self voicemail];
+  date = [voicemail3 date];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __47__PHVoicemailVoiceMemoActivity_performActivity__block_invoke;
   v15[3] = &unk_1002869C8;
   v15[4] = self;
-  [v12 importRecordingWithSourceAudioURL:v4 name:v11 date:v14 completionHandler:v15];
+  [v12 importRecordingWithSourceAudioURL:dataURL name:v11 date:date completionHandler:v15];
 }
 
-- (id)URLItemWithExportedURL:(id)a3 localizedTitle:(id)a4
+- (id)URLItemWithExportedURL:(id)l localizedTitle:(id)title
 {
-  v6 = a4;
-  v7 = a3;
+  titleCopy = title;
+  lCopy = l;
   v8 = [PHVoicemailVoiceMemoURLItem alloc];
-  v9 = [(PHVoicemailVoiceMemoActivity *)self voicemail];
-  v10 = [v9 date];
-  v11 = [(PHVoicemailVoiceMemoURLItem *)v8 initWithVoiceMemoURL:v7 voiceMemoName:v6 voiceMemoDate:v10];
+  voicemail = [(PHVoicemailVoiceMemoActivity *)self voicemail];
+  date = [voicemail date];
+  v11 = [(PHVoicemailVoiceMemoURLItem *)v8 initWithVoiceMemoURL:lCopy voiceMemoName:titleCopy voiceMemoDate:date];
 
   return v11;
 }

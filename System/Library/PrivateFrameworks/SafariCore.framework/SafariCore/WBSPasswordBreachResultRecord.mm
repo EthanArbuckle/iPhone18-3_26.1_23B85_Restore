@@ -1,46 +1,46 @@
 @interface WBSPasswordBreachResultRecord
 - (NSDictionary)dictionaryRepresentation;
-- (WBSPasswordBreachResultRecord)initWithDictionaryRepresentation:(id)a3;
-- (WBSPasswordBreachResultRecord)initWithPersistentIdentifier:(id)a3 result:(unint64_t)a4 dateLastModified:(id)a5;
+- (WBSPasswordBreachResultRecord)initWithDictionaryRepresentation:(id)representation;
+- (WBSPasswordBreachResultRecord)initWithPersistentIdentifier:(id)identifier result:(unint64_t)result dateLastModified:(id)modified;
 @end
 
 @implementation WBSPasswordBreachResultRecord
 
-- (WBSPasswordBreachResultRecord)initWithPersistentIdentifier:(id)a3 result:(unint64_t)a4 dateLastModified:(id)a5
+- (WBSPasswordBreachResultRecord)initWithPersistentIdentifier:(id)identifier result:(unint64_t)result dateLastModified:(id)modified
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  modifiedCopy = modified;
   v15.receiver = self;
   v15.super_class = WBSPasswordBreachResultRecord;
   v11 = [(WBSPasswordBreachResultRecord *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_persistentIdentifier, a3);
-    v12->_result = a4;
-    objc_storeStrong(&v12->_dateLastModified, a5);
+    objc_storeStrong(&v11->_persistentIdentifier, identifier);
+    v12->_result = result;
+    objc_storeStrong(&v12->_dateLastModified, modified);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (WBSPasswordBreachResultRecord)initWithDictionaryRepresentation:(id)a3
+- (WBSPasswordBreachResultRecord)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 safari_dataForKey:@"PersistentIdentifier"];
+  representationCopy = representation;
+  v5 = [representationCopy safari_dataForKey:@"PersistentIdentifier"];
   if (v5)
   {
-    v6 = [v4 safari_numberForKey:@"Result"];
+    v6 = [representationCopy safari_numberForKey:@"Result"];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 unsignedIntegerValue];
-      v9 = [v4 safari_dateForKey:@"DateLastModified"];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
+      v9 = [representationCopy safari_dateForKey:@"DateLastModified"];
       if (v9)
       {
-        self = [(WBSPasswordBreachResultRecord *)self initWithPersistentIdentifier:v5 result:v8 dateLastModified:v9];
-        v10 = self;
+        self = [(WBSPasswordBreachResultRecord *)self initWithPersistentIdentifier:v5 result:unsignedIntegerValue dateLastModified:v9];
+        selfCopy = self;
       }
 
       else
@@ -51,7 +51,7 @@
           [(WBSPasswordBreachResultRecord *)v27 initWithDictionaryRepresentation:v28, v29, v30, v31, v32, v33, v34];
         }
 
-        v10 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -63,7 +63,7 @@
         [(WBSPasswordBreachResultRecord *)v19 initWithDictionaryRepresentation:v20, v21, v22, v23, v24, v25, v26];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -75,10 +75,10 @@
       [(WBSPasswordBreachResultRecord *)v11 initWithDictionaryRepresentation:v12, v13, v14, v15, v16, v17, v18];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation

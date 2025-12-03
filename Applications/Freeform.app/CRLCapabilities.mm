@@ -4,9 +4,9 @@
 - (BOOL)p_isMetalCapable;
 - (CGSize)maximumHardcodedTextureSize;
 - (CGSize)maximumImageSize;
-- (CGSize)maximumMetalTextureSizeForDevice:(id)a3;
+- (CGSize)maximumMetalTextureSizeForDevice:(id)device;
 - (CRLCapabilities)init;
-- (id)metalCapabilitiesForDevice:(id)a3;
+- (id)metalCapabilitiesForDevice:(id)device;
 - (unint64_t)physicalMemory;
 - (void)p_setupDevice;
 @end
@@ -464,7 +464,7 @@ LABEL_19:
   return result;
 }
 
-- (CGSize)maximumMetalTextureSizeForDevice:(id)a3
+- (CGSize)maximumMetalTextureSizeForDevice:(id)device
 {
   if ([(CRLCapabilities *)self isMetalCapable])
   {
@@ -508,10 +508,10 @@ LABEL_19:
   return result;
 }
 
-- (id)metalCapabilitiesForDevice:(id)a3
+- (id)metalCapabilitiesForDevice:(id)device
 {
-  v3 = a3;
-  if (!v3)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -545,11 +545,11 @@ LABEL_19:
     sub_101387230();
   }
 
-  v7 = [qword_101A35280 objectForKey:v3];
+  v7 = [qword_101A35280 objectForKey:deviceCopy];
   if (!v7)
   {
-    v7 = [[CRLMetalDeviceCapabilities alloc] initWithDevice:v3];
-    [qword_101A35280 setObject:v7 forKey:v3];
+    v7 = [[CRLMetalDeviceCapabilities alloc] initWithDevice:deviceCopy];
+    [qword_101A35280 setObject:v7 forKey:deviceCopy];
   }
 
   return v7;
@@ -566,9 +566,9 @@ LABEL_19:
 - (unint64_t)physicalMemory
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 physicalMemory];
+  physicalMemory = [v2 physicalMemory];
 
-  return v3;
+  return physicalMemory;
 }
 
 - (BOOL)hasHEVCHardwareEncoding

@@ -1,32 +1,32 @@
 @interface NTAWorldClockPreferencesListenerObserver
-- (BOOL)isEqual:(id)a3;
-- (NTAWorldClockPreferencesListenerObserver)initWithQueue:(id)a3 block:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NTAWorldClockPreferencesListenerObserver)initWithQueue:(id)queue block:(id)block;
 - (unint64_t)hash;
 @end
 
 @implementation NTAWorldClockPreferencesListenerObserver
 
-- (NTAWorldClockPreferencesListenerObserver)initWithQueue:(id)a3 block:(id)a4
+- (NTAWorldClockPreferencesListenerObserver)initWithQueue:(id)queue block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = NTAWorldClockPreferencesListenerObserver;
   v8 = [(NTAWorldClockPreferencesListenerObserver *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(NTAWorldClockPreferencesListenerObserver *)v8 setQueue:v6];
-    [(NTAWorldClockPreferencesListenerObserver *)v9 setBlock:v7];
+    [(NTAWorldClockPreferencesListenerObserver *)v8 setQueue:queueCopy];
+    [(NTAWorldClockPreferencesListenerObserver *)v9 setBlock:blockCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -36,14 +36,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NTAWorldClockPreferencesListenerObserver *)v5 queue];
-      v7 = [(NTAWorldClockPreferencesListenerObserver *)self queue];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      queue = [(NTAWorldClockPreferencesListenerObserver *)v5 queue];
+      queue2 = [(NTAWorldClockPreferencesListenerObserver *)self queue];
+      if ([queue isEqual:queue2])
       {
-        v8 = [(NTAWorldClockPreferencesListenerObserver *)v5 block];
-        v9 = [(NTAWorldClockPreferencesListenerObserver *)self block];
-        v10 = v8 == v9;
+        block = [(NTAWorldClockPreferencesListenerObserver *)v5 block];
+        block2 = [(NTAWorldClockPreferencesListenerObserver *)self block];
+        v10 = block == block2;
       }
 
       else
@@ -63,8 +63,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NTAWorldClockPreferencesListenerObserver *)self queue];
-  v3 = [v2 hash];
+  queue = [(NTAWorldClockPreferencesListenerObserver *)self queue];
+  v3 = [queue hash];
 
   return v3;
 }

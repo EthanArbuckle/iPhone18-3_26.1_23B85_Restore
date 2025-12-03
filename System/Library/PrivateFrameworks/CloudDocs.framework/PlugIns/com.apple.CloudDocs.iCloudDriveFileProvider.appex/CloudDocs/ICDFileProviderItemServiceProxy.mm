@@ -1,42 +1,42 @@
 @interface ICDFileProviderItemServiceProxy
-- (BOOL)_hasAccessToAppLibraryID:(id)a3;
+- (BOOL)_hasAccessToAppLibraryID:(id)d;
 - (BOOL)_isAppLibraryProxyEntitled;
-- (ICDFileProviderItemServiceProxy)initWithItemIdentifier:(id)a3 domainIdentifier:(id)a4 operationQueue:(id)a5 clientPrivilegesDescriptor:(id)a6;
+- (ICDFileProviderItemServiceProxy)initWithItemIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier operationQueue:(id)queue clientPrivilegesDescriptor:(id)descriptor;
 - (id)remoteObject;
-- (void)boostFilePresenter:(id)a3;
-- (void)capabilityWhenTryingToReparentToNewParent:(id)a3 domain:(id)a4 reply:(id)a5;
-- (void)copyShareIDWithReply:(id)a3;
-- (void)getAttributeValues:(id)a3 reply:(id)a4;
-- (void)getClientSaltingVerificationKeys:(id)a3;
-- (void)getCreatorNameComponents:(id)a3;
-- (void)getServerContentSignature:(id)a3;
-- (void)getServerSaltingKeys:(id)a3;
-- (void)getiWorkNeedsShareMigrate:(id)a3;
-- (void)getiWorkPublishingBadgingStatus:(id)a3;
-- (void)getiWorkPublishingInfo:(id)a3;
-- (void)launchItemCountMismatchChecks:(id)a3;
-- (void)refreshSharingState:(id)a3;
-- (void)unboostFilePresenter:(id)a3;
+- (void)boostFilePresenter:(id)presenter;
+- (void)capabilityWhenTryingToReparentToNewParent:(id)parent domain:(id)domain reply:(id)reply;
+- (void)copyShareIDWithReply:(id)reply;
+- (void)getAttributeValues:(id)values reply:(id)reply;
+- (void)getClientSaltingVerificationKeys:(id)keys;
+- (void)getCreatorNameComponents:(id)components;
+- (void)getServerContentSignature:(id)signature;
+- (void)getServerSaltingKeys:(id)keys;
+- (void)getiWorkNeedsShareMigrate:(id)migrate;
+- (void)getiWorkPublishingBadgingStatus:(id)status;
+- (void)getiWorkPublishingInfo:(id)info;
+- (void)launchItemCountMismatchChecks:(id)checks;
+- (void)refreshSharingState:(id)state;
+- (void)unboostFilePresenter:(id)presenter;
 @end
 
 @implementation ICDFileProviderItemServiceProxy
 
-- (ICDFileProviderItemServiceProxy)initWithItemIdentifier:(id)a3 domainIdentifier:(id)a4 operationQueue:(id)a5 clientPrivilegesDescriptor:(id)a6
+- (ICDFileProviderItemServiceProxy)initWithItemIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier operationQueue:(id)queue clientPrivilegesDescriptor:(id)descriptor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
+  queueCopy = queue;
+  descriptorCopy = descriptor;
   v18.receiver = self;
   v18.super_class = ICDFileProviderItemServiceProxy;
   v15 = [(ICDFileProviderItemServiceProxy *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_itemIdentifier, a3);
-    objc_storeStrong(&v16->_domainIdentifier, a4);
-    objc_storeStrong(&v16->_operationQueue, a5);
-    objc_storeStrong(&v16->_clientPrivilegesDescriptor, a6);
+    objc_storeStrong(&v15->_itemIdentifier, identifier);
+    objc_storeStrong(&v16->_domainIdentifier, domainIdentifier);
+    objc_storeStrong(&v16->_operationQueue, queue);
+    objc_storeStrong(&v16->_clientPrivilegesDescriptor, descriptor);
   }
 
   return v16;
@@ -53,17 +53,17 @@
 
 - (BOOL)_isAppLibraryProxyEntitled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCClientPrivilegesDescriptor *)v2->_clientPrivilegesDescriptor isProxyEntitled];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isProxyEntitled = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPrivilegesDescriptor isProxyEntitled];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return isProxyEntitled;
 }
 
-- (BOOL)_hasAccessToAppLibraryID:(id)a3
+- (BOOL)_hasAccessToAppLibraryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(ICDFileProviderItemServiceProxy *)self _isAppLibraryProxyEntitled]|| ![(ICDFileProviderItemServiceProxy *)self _isSandboxed])
   {
     v8 = 1;
@@ -71,12 +71,12 @@
 
   else
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(BRCClientPrivilegesDescriptor *)v5->_clientPrivilegesDescriptor appLibraryIDs];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    appLibraryIDs = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPrivilegesDescriptor appLibraryIDs];
+    objc_sync_exit(selfCopy);
 
-    if (![v6 count] || v4 && !objc_msgSend(v6, "containsObject:", v4) || (clientPrivilegesDescriptor = v5->_clientPrivilegesDescriptor, v8 = 1, -[BRCClientPrivilegesDescriptor cloudEnabledStatusWithHasSession:](clientPrivilegesDescriptor, "cloudEnabledStatusWithHasSession:", 1) != 1))
+    if (![appLibraryIDs count] || dCopy && !objc_msgSend(appLibraryIDs, "containsObject:", dCopy) || (clientPrivilegesDescriptor = selfCopy->_clientPrivilegesDescriptor, v8 = 1, -[BRCClientPrivilegesDescriptor cloudEnabledStatusWithHasSession:](clientPrivilegesDescriptor, "cloudEnabledStatusWithHasSession:", 1) != 1))
     {
       v8 = 0;
     }
@@ -85,54 +85,54 @@
   return v8;
 }
 
-- (void)boostFilePresenter:(id)a3
+- (void)boostFilePresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-  v6 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+  presenterCopy = presenter;
+  remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+  itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000D8EC;
   v8[3] = &unk_100044598;
-  v9 = v4;
-  v7 = v4;
-  [v5 boostFilePresenterForItemIdentifier:v6 reply:v8];
+  v9 = presenterCopy;
+  v7 = presenterCopy;
+  [remoteObject boostFilePresenterForItemIdentifier:itemIdentifier reply:v8];
 }
 
-- (void)unboostFilePresenter:(id)a3
+- (void)unboostFilePresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-  v6 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
-  v11 = v6;
+  presenterCopy = presenter;
+  remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+  itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+  v11 = itemIdentifier;
   v7 = [NSArray arrayWithObjects:&v11 count:1];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000DB18;
   v9[3] = &unk_100044598;
-  v10 = v4;
-  v8 = v4;
-  [v5 unboostFilePresenterForItemIdentifiers:v7 reply:v9];
+  v10 = presenterCopy;
+  v8 = presenterCopy;
+  [remoteObject unboostFilePresenterForItemIdentifiers:v7 reply:v9];
 }
 
-- (void)capabilityWhenTryingToReparentToNewParent:(id)a3 domain:(id)a4 reply:(id)a5
+- (void)capabilityWhenTryingToReparentToNewParent:(id)parent domain:(id)domain reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(ICDFileProviderItemServiceProxy *)self domainIdentifier];
-  v12 = [v11 isEqual:v10];
+  parentCopy = parent;
+  replyCopy = reply;
+  domainCopy = domain;
+  domainIdentifier = [(ICDFileProviderItemServiceProxy *)self domainIdentifier];
+  v12 = [domainIdentifier isEqual:domainCopy];
 
   if (v12)
   {
-    v13 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-    v14 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+    remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+    itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10000DE54;
     v19[3] = &unk_100044B80;
-    v20 = v9;
-    [v13 capabilityWhenTryingToReparentItemIdentifier:v14 toNewParent:v8 reply:v19];
+    v20 = replyCopy;
+    [remoteObject capabilityWhenTryingToReparentItemIdentifier:itemIdentifier toNewParent:parentCopy reply:v19];
 
     v15 = v20;
   }
@@ -156,70 +156,70 @@
     }
 
     v15 = +[NSError brc_errorAccountMismatch];
-    (*(v9 + 2))(v9, 4, v15);
+    (*(replyCopy + 2))(replyCopy, 4, v15);
   }
 }
 
-- (void)getAttributeValues:(id)a3 reply:(id)a4
+- (void)getAttributeValues:(id)values reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-  v9 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+  replyCopy = reply;
+  valuesCopy = values;
+  remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+  itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000E4F0;
   v11[3] = &unk_100044BF8;
-  v12 = v6;
-  v10 = v6;
-  [v8 getAttributeValues:v7 forItemIdentifier:v9 reply:v11];
+  v12 = replyCopy;
+  v10 = replyCopy;
+  [remoteObject getAttributeValues:valuesCopy forItemIdentifier:itemIdentifier reply:v11];
 }
 
-- (void)getiWorkPublishingInfo:(id)a3
+- (void)getiWorkPublishingInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-  v6 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+  infoCopy = info;
+  remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+  itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000E6E8;
   v8[3] = &unk_100044C20;
-  v9 = v4;
-  v7 = v4;
-  [v5 getiWorkPublishingInfoForItemIdentifier:v6 reply:v8];
+  v9 = infoCopy;
+  v7 = infoCopy;
+  [remoteObject getiWorkPublishingInfoForItemIdentifier:itemIdentifier reply:v8];
 }
 
-- (void)getiWorkPublishingBadgingStatus:(id)a3
+- (void)getiWorkPublishingBadgingStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-  v6 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+  statusCopy = status;
+  remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+  itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000EB00;
   v8[3] = &unk_100044C48;
-  v9 = v4;
-  v7 = v4;
-  [v5 getiWorkPublishingBadgingStatusForItemIdentifier:v6 reply:v8];
+  v9 = statusCopy;
+  v7 = statusCopy;
+  [remoteObject getiWorkPublishingBadgingStatusForItemIdentifier:itemIdentifier reply:v8];
 }
 
-- (void)getiWorkNeedsShareMigrate:(id)a3
+- (void)getiWorkNeedsShareMigrate:(id)migrate
 {
-  v4 = a3;
-  v5 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-  v6 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+  migrateCopy = migrate;
+  remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+  itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000ECF0;
   v8[3] = &unk_100044C70;
-  v9 = v4;
-  v7 = v4;
-  [v5 getiWorkNeedsShareMigrateForItemIdentifier:v6 reply:v8];
+  v9 = migrateCopy;
+  v7 = migrateCopy;
+  [remoteObject getiWorkNeedsShareMigrateForItemIdentifier:itemIdentifier reply:v8];
 }
 
-- (void)refreshSharingState:(id)a3
+- (void)refreshSharingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   memset(v16, 0, sizeof(v16));
   sub_100001C50(1, "[ICDFileProviderItemServiceProxy refreshSharingState:]", 173, 0, v16);
   v5 = brc_bread_crumbs();
@@ -235,19 +235,19 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v7 = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
-  v8 = [v7 isAutomationEntitled];
+  clientPrivilegesDescriptor = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
+  isAutomationEntitled = [clientPrivilegesDescriptor isAutomationEntitled];
 
-  if (v8)
+  if (isAutomationEntitled)
   {
-    v9 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-    v10 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+    remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+    itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000F1CC;
     v12[3] = &unk_100044598;
-    v13 = v4;
-    [v9 refreshSharingStateForItemIdentifier:v10 reply:v12];
+    v13 = stateCopy;
+    [remoteObject refreshSharingStateForItemIdentifier:itemIdentifier reply:v12];
 
     v11 = v13;
   }
@@ -259,16 +259,16 @@
     v14[1] = 3221225472;
     v14[2] = sub_10000F0BC;
     v14[3] = &unk_100044598;
-    v15 = v4;
+    v15 = stateCopy;
     sub_10000F0BC(v14, v11);
   }
 
   sub_100001DE4(v16);
 }
 
-- (void)launchItemCountMismatchChecks:(id)a3
+- (void)launchItemCountMismatchChecks:(id)checks
 {
-  v4 = a3;
+  checksCopy = checks;
   memset(v16, 0, sizeof(v16));
   sub_100001C50(1, "[ICDFileProviderItemServiceProxy launchItemCountMismatchChecks:]", 184, 0, v16);
   v5 = brc_bread_crumbs();
@@ -284,19 +284,19 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v7 = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
-  v8 = [v7 isAutomationEntitled];
+  clientPrivilegesDescriptor = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
+  isAutomationEntitled = [clientPrivilegesDescriptor isAutomationEntitled];
 
-  if (v8)
+  if (isAutomationEntitled)
   {
-    v9 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-    v10 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+    remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+    itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000F6A4;
     v12[3] = &unk_100044C70;
-    v13 = v4;
-    [v9 launchItemCountMismatchChecksForItemIdentifier:v10 reply:v12];
+    v13 = checksCopy;
+    [remoteObject launchItemCountMismatchChecksForItemIdentifier:itemIdentifier reply:v12];
 
     v11 = v13;
   }
@@ -308,44 +308,44 @@
     v14[1] = 3221225472;
     v14[2] = sub_10000F584;
     v14[3] = &unk_100044598;
-    v15 = v4;
+    v15 = checksCopy;
     sub_10000F584(v14, v11);
   }
 
   sub_100001DE4(v16);
 }
 
-- (void)copyShareIDWithReply:(id)a3
+- (void)copyShareIDWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-  v6 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+  replyCopy = reply;
+  remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+  itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000F894;
   v8[3] = &unk_100044C98;
-  v9 = v4;
-  v7 = v4;
-  [v5 copyShareIDForItemIdentifier:v6 reply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [remoteObject copyShareIDForItemIdentifier:itemIdentifier reply:v8];
 }
 
-- (void)getCreatorNameComponents:(id)a3
+- (void)getCreatorNameComponents:(id)components
 {
-  v4 = a3;
-  v5 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-  v6 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+  componentsCopy = components;
+  remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+  itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000FA8C;
   v8[3] = &unk_100044CC0;
-  v9 = v4;
-  v7 = v4;
-  [v5 getCreatorNameComponentsForItemIdentifier:v6 reply:v8];
+  v9 = componentsCopy;
+  v7 = componentsCopy;
+  [remoteObject getCreatorNameComponentsForItemIdentifier:itemIdentifier reply:v8];
 }
 
-- (void)getClientSaltingVerificationKeys:(id)a3
+- (void)getClientSaltingVerificationKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   memset(v13, 0, sizeof(v13));
   sub_100001C50(1, "[ICDFileProviderItemServiceProxy getClientSaltingVerificationKeys:]", 209, 0, v13);
   v5 = brc_bread_crumbs();
@@ -361,34 +361,34 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v7 = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
-  v8 = [v7 isAutomationEntitled];
+  clientPrivilegesDescriptor = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
+  isAutomationEntitled = [clientPrivilegesDescriptor isAutomationEntitled];
 
-  if (v8)
+  if (isAutomationEntitled)
   {
-    v9 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-    v10 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
-    [v9 getClientSaltingVerificationKeysAtItemIdentifier:v10 reply:v4];
+    remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+    itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+    [remoteObject getClientSaltingVerificationKeysAtItemIdentifier:itemIdentifier reply:keysCopy];
   }
 
   else
   {
-    v9 = [NSError br_errorWithDomain:BRCloudDocsErrorDomain code:26 description:@"%s privilege required", "isAutomationEntitled"];
+    remoteObject = [NSError br_errorWithDomain:BRCloudDocsErrorDomain code:26 description:@"%s privilege required", "isAutomationEntitled"];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10000FE08;
     v11[3] = &unk_100044598;
-    v12 = v4;
-    sub_10000FE08(v11, v9);
-    v10 = v12;
+    v12 = keysCopy;
+    sub_10000FE08(v11, remoteObject);
+    itemIdentifier = v12;
   }
 
   sub_100001DE4(v13);
 }
 
-- (void)getServerSaltingKeys:(id)a3
+- (void)getServerSaltingKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   memset(v13, 0, sizeof(v13));
   sub_100001C50(1, "[ICDFileProviderItemServiceProxy getServerSaltingKeys:]", 218, 0, v13);
   v5 = brc_bread_crumbs();
@@ -404,34 +404,34 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v7 = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
-  v8 = [v7 isAutomationEntitled];
+  clientPrivilegesDescriptor = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
+  isAutomationEntitled = [clientPrivilegesDescriptor isAutomationEntitled];
 
-  if (v8)
+  if (isAutomationEntitled)
   {
-    v9 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-    v10 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
-    [v9 getServerSaltingKeysAtItemIdentifier:v10 reply:v4];
+    remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+    itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+    [remoteObject getServerSaltingKeysAtItemIdentifier:itemIdentifier reply:keysCopy];
   }
 
   else
   {
-    v9 = [NSError br_errorWithDomain:BRCloudDocsErrorDomain code:26 description:@"%s privilege required", "isAutomationEntitled"];
+    remoteObject = [NSError br_errorWithDomain:BRCloudDocsErrorDomain code:26 description:@"%s privilege required", "isAutomationEntitled"];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10001019C;
     v11[3] = &unk_100044598;
-    v12 = v4;
-    sub_10001019C(v11, v9);
-    v10 = v12;
+    v12 = keysCopy;
+    sub_10001019C(v11, remoteObject);
+    itemIdentifier = v12;
   }
 
   sub_100001DE4(v13);
 }
 
-- (void)getServerContentSignature:(id)a3
+- (void)getServerContentSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   memset(v13, 0, sizeof(v13));
   sub_100001C50(1, "[ICDFileProviderItemServiceProxy getServerContentSignature:]", 227, 0, v13);
   v5 = brc_bread_crumbs();
@@ -447,26 +447,26 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v7 = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
-  v8 = [v7 isAutomationEntitled];
+  clientPrivilegesDescriptor = [(ICDFileProviderItemServiceProxy *)self clientPrivilegesDescriptor];
+  isAutomationEntitled = [clientPrivilegesDescriptor isAutomationEntitled];
 
-  if (v8)
+  if (isAutomationEntitled)
   {
-    v9 = [(ICDFileProviderItemServiceProxy *)self remoteObject];
-    v10 = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
-    [v9 getServerContentSignatureAtItemIdentifier:v10 reply:v4];
+    remoteObject = [(ICDFileProviderItemServiceProxy *)self remoteObject];
+    itemIdentifier = [(ICDFileProviderItemServiceProxy *)self itemIdentifier];
+    [remoteObject getServerContentSignatureAtItemIdentifier:itemIdentifier reply:signatureCopy];
   }
 
   else
   {
-    v9 = [NSError br_errorWithDomain:BRCloudDocsErrorDomain code:26 description:@"%s privilege required", "isAutomationEntitled"];
+    remoteObject = [NSError br_errorWithDomain:BRCloudDocsErrorDomain code:26 description:@"%s privilege required", "isAutomationEntitled"];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100010530;
     v11[3] = &unk_100044598;
-    v12 = v4;
-    sub_100010530(v11, v9);
-    v10 = v12;
+    v12 = signatureCopy;
+    sub_100010530(v11, remoteObject);
+    itemIdentifier = v12;
   }
 
   sub_100001DE4(v13);

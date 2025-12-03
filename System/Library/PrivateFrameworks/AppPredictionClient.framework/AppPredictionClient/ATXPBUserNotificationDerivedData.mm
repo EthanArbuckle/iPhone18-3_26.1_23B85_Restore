@@ -1,29 +1,29 @@
 @interface ATXPBUserNotificationDerivedData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
-- (void)addScores:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addScores:(id)scores;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUserNotificationDerivedData
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBUserNotificationDerivedData *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 objectForKeyedSubscript:@"scores"];
+      v6 = [nCopy objectForKeyedSubscript:@"scores"];
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
@@ -73,22 +73,22 @@
   return v4;
 }
 
-- (void)addScores:(id)a3
+- (void)addScores:(id)scores
 {
-  v4 = a3;
+  scoresCopy = scores;
   scores = self->_scores;
-  v8 = v4;
+  v8 = scoresCopy;
   if (!scores)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_scores;
     self->_scores = v6;
 
-    v4 = v8;
+    scoresCopy = v8;
     scores = self->_scores;
   }
 
-  [(NSMutableArray *)scores addObject:v4];
+  [(NSMutableArray *)scores addObject:scoresCopy];
 }
 
 - (id)description
@@ -97,8 +97,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBUserNotificationDerivedData;
   v4 = [(ATXPBUserNotificationDerivedData *)&v8 description];
-  v5 = [(ATXPBUserNotificationDerivedData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUserNotificationDerivedData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -106,7 +106,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_scores count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_scores, "count")}];
@@ -129,8 +129,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -139,16 +139,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"scores"];
+    [dictionary setObject:v4 forKey:@"scores"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -181,29 +181,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(ATXPBUserNotificationDerivedData *)self scoresCount])
   {
-    [v8 clearScores];
-    v4 = [(ATXPBUserNotificationDerivedData *)self scoresCount];
-    if (v4)
+    [toCopy clearScores];
+    scoresCount = [(ATXPBUserNotificationDerivedData *)self scoresCount];
+    if (scoresCount)
     {
-      v5 = v4;
+      v5 = scoresCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBUserNotificationDerivedData *)self scoresAtIndex:i];
-        [v8 addScores:v7];
+        [toCopy addScores:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -224,7 +224,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addScores:v11];
 
         ++v10;
@@ -240,13 +240,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     scores = self->_scores;
-    if (scores | v4[1])
+    if (scores | equalCopy[1])
     {
       v6 = [(NSMutableArray *)scores isEqual:?];
     }
@@ -265,14 +265,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

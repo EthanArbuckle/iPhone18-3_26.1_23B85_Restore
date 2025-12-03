@@ -1,23 +1,23 @@
 @interface VSAMSAppsValueTransformer
-- (BOOL)responseDeviceFamilies:(id)a3 compatibleWithDevice:(id)a4;
-- (id)platformAttributes:(id)a3 forDevice:(id)a4;
-- (id)transformedValue:(id)a3;
+- (BOOL)responseDeviceFamilies:(id)families compatibleWithDevice:(id)device;
+- (id)platformAttributes:(id)attributes forDevice:(id)device;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSAMSAppsValueTransformer
 
-- (BOOL)responseDeviceFamilies:(id)a3 compatibleWithDevice:(id)a4
+- (BOOL)responseDeviceFamilies:(id)families compatibleWithDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 stringForAMSDeviceFamilies];
-  v8 = [v5 containsObject:v7];
+  familiesCopy = families;
+  deviceCopy = device;
+  stringForAMSDeviceFamilies = [deviceCopy stringForAMSDeviceFamilies];
+  v8 = [familiesCopy containsObject:stringForAMSDeviceFamilies];
 
-  v9 = [v6 bincompatPlatform];
+  bincompatPlatform = [deviceCopy bincompatPlatform];
 
-  if (v9)
+  if (bincompatPlatform)
   {
-    v10 = [v5 containsObject:v9];
+    v10 = [familiesCopy containsObject:bincompatPlatform];
   }
 
   else
@@ -30,19 +30,19 @@
   return v11 & 1;
 }
 
-- (id)platformAttributes:(id)a3 forDevice:(id)a4
+- (id)platformAttributes:(id)attributes forDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 stringForAMSPlatformAttributes];
-  v8 = [v5 vs_dictionaryForKey:v7];
+  attributesCopy = attributes;
+  deviceCopy = device;
+  stringForAMSPlatformAttributes = [deviceCopy stringForAMSPlatformAttributes];
+  v8 = [attributesCopy vs_dictionaryForKey:stringForAMSPlatformAttributes];
 
   if (!v8)
   {
-    v9 = [v6 bincompatOS];
-    if (v9)
+    bincompatOS = [deviceCopy bincompatOS];
+    if (bincompatOS)
     {
-      v8 = [v5 vs_dictionaryForKey:v9];
+      v8 = [attributesCopy vs_dictionaryForKey:bincompatOS];
     }
 
     else
@@ -54,9 +54,9 @@
   return v8;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -70,7 +70,7 @@
       [v5 raise:v6 format:{@"Unexpectedly, value was %@, instead of NSDictionary.", v8}];
     }
 
-    v9 = v4;
+    v9 = valueCopy;
     v10 = [v9 vs_stringForKey:@"id"];
     v11 = [v9 vs_dictionaryForKey:@"attributes"];
     if (v11)
@@ -79,29 +79,29 @@
       v13 = [v11 vs_stringForKey:@"name"];
       v14 = [v12 vs_stringForKey:@"artistName"];
       v15 = [v12 vs_arrayOfStringsForKey:@"deviceFamilies"];
-      v16 = [MEMORY[0x277CE2238] currentDevice];
-      if ([(VSAMSAppsValueTransformer *)self responseDeviceFamilies:v15 compatibleWithDevice:v16])
+      currentDevice = [MEMORY[0x277CE2238] currentDevice];
+      if ([(VSAMSAppsValueTransformer *)self responseDeviceFamilies:v15 compatibleWithDevice:currentDevice])
       {
         v47 = v15;
         v45 = [v12 vs_dictionaryForKey:@"platformAttributes"];
-        v46 = v16;
+        v46 = currentDevice;
         v17 = [VSAMSAppsValueTransformer platformAttributes:"platformAttributes:forDevice:" forDevice:?];
         v51 = [v17 vs_stringForKey:@"bundleId"];
         v18 = [v17 vs_numberForKey:@"hasInAppPurchases"];
-        v33 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
 
         v44 = [v17 vs_numberForKey:@"isXROSCompatible"];
         v43 = [v17 vs_dictionaryForKey:@"artwork"];
         v50 = [v43 vs_stringForKey:@"url"];
         v42 = [v17 vs_arrayForKey:@"offers"];
-        v19 = [v42 firstObject];
-        v40 = [v19 vs_arrayForKey:@"assets"];
-        v39 = [v40 firstObject];
-        [v39 vs_numberForKey:@"size"];
+        firstObject = [v42 firstObject];
+        v40 = [firstObject vs_arrayForKey:@"assets"];
+        firstObject2 = [v40 firstObject];
+        [firstObject2 vs_numberForKey:@"size"];
         v38 = v37 = v17;
         v49 = [v17 vs_numberForKey:@"externalVersionId"];
-        v41 = v19;
-        v36 = [v19 vs_stringForKey:@"buyParams"];
+        v41 = firstObject;
+        v36 = [firstObject vs_stringForKey:@"buyParams"];
         v20 = [v12 vs_stringForKey:@"url"];
         v34 = [v12 vs_dictionaryForKey:@"contentRatingsBySystem"];
         v21 = [v34 vs_dictionaryForKey:@"appsApple"];
@@ -111,7 +111,7 @@
         v35 = v9;
         v30 = [v9 vs_dictionaryForKey:@"meta"];
         v23 = [v30 vs_numberForKey:@"defaultApp"];
-        v24 = [v23 BOOLValue];
+        bOOLValue2 = [v23 BOOLValue];
 
         v25 = objc_alloc_init(VSAppDescription);
         v48 = v13;
@@ -129,20 +129,20 @@
 
         [(VSAppDescription *)v25 setRating:v22];
         [(VSAppDescription *)v25 setContentRank:v32];
-        [(VSAppDescription *)v25 setOffersInAppPurchases:v33];
+        [(VSAppDescription *)v25 setOffersInAppPurchases:bOOLValue];
         [(VSAppDescription *)v25 setArtworkURLTemplate:v50];
-        v28 = [v49 stringValue];
-        [(VSAppDescription *)v25 setExternalVersionID:v28];
+        stringValue = [v49 stringValue];
+        [(VSAppDescription *)v25 setExternalVersionID:stringValue];
 
         [(VSAppDescription *)v25 setBuyParams:v36];
-        [(VSAppDescription *)v25 setDefaultAppForProvider:v24];
+        [(VSAppDescription *)v25 setDefaultAppForProvider:bOOLValue2];
         [(VSAppDescription *)v25 setDeviceFamilies:v47];
         [(VSAppDescription *)v25 setAppSizeBytes:v38];
         [(VSAppDescription *)v25 setVisionOSCompatible:v44];
 
         v15 = v47;
         v13 = v48;
-        v16 = v46;
+        currentDevice = v46;
         v9 = v35;
       }
 

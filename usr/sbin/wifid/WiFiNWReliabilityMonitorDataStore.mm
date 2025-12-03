@@ -1,21 +1,21 @@
 @interface WiFiNWReliabilityMonitorDataStore
-- (BOOL)addSample:(id)a3;
-- (WiFiNWReliabilityMonitorDataStore)initWithMetric:(unint64_t)a3 withMaxSamples:(unint64_t)a4;
+- (BOOL)addSample:(id)sample;
+- (WiFiNWReliabilityMonitorDataStore)initWithMetric:(unint64_t)metric withMaxSamples:(unint64_t)samples;
 - (void)dealloc;
-- (void)getSamples:(id)a3;
+- (void)getSamples:(id)samples;
 @end
 
 @implementation WiFiNWReliabilityMonitorDataStore
 
-- (WiFiNWReliabilityMonitorDataStore)initWithMetric:(unint64_t)a3 withMaxSamples:(unint64_t)a4
+- (WiFiNWReliabilityMonitorDataStore)initWithMetric:(unint64_t)metric withMaxSamples:(unint64_t)samples
 {
   v10.receiver = self;
   v10.super_class = WiFiNWReliabilityMonitorDataStore;
   v6 = [(WiFiNWReliabilityMonitorDataStore *)&v10 init];
   if (v6 && (+[NSMutableArray array], v7 = objc_claimAutoreleasedReturnValue(), buffer = v6->_buffer, v6->_buffer = v7, buffer, v6->_buffer))
   {
-    v6->_metric = a3;
-    v6->_maxSamples = a4;
+    v6->_metric = metric;
+    v6->_maxSamples = samples;
   }
 
   else
@@ -42,9 +42,9 @@
   [(WiFiNWReliabilityMonitorDataStore *)&v5 dealloc];
 }
 
-- (BOOL)addSample:(id)a3
+- (BOOL)addSample:(id)sample
 {
-  [(NSMutableArray *)self->_buffer insertObject:a3 atIndex:0];
+  [(NSMutableArray *)self->_buffer insertObject:sample atIndex:0];
   if ([(NSMutableArray *)self->_buffer count]> self->_maxSamples)
   {
     [(NSMutableArray *)self->_buffer removeLastObject];
@@ -53,9 +53,9 @@
   return 1;
 }
 
-- (void)getSamples:(id)a3
+- (void)getSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
@@ -76,7 +76,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, *(*(&v10 + 1) + 8 * v9), &v14);
+      samplesCopy[2](samplesCopy, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;

@@ -1,6 +1,6 @@
 @interface CalendarAssistantUIHeaderView
 + (double)headerHeight;
-- (CalendarAssistantUIHeaderView)initWithReuseIdentifier:(id)a3;
+- (CalendarAssistantUIHeaderView)initWithReuseIdentifier:(id)identifier;
 - (UILabel)overlayLabel;
 - (void)_createSeparators;
 - (void)_setUpBackgroundView;
@@ -8,11 +8,11 @@
 
 @implementation CalendarAssistantUIHeaderView
 
-- (CalendarAssistantUIHeaderView)initWithReuseIdentifier:(id)a3
+- (CalendarAssistantUIHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = CalendarAssistantUIHeaderView;
-  v3 = [(CalendarAssistantUIHeaderView *)&v15 initWithReuseIdentifier:a3];
+  v3 = [(CalendarAssistantUIHeaderView *)&v15 initWithReuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -21,12 +21,12 @@
     calTextLabel = v4->_calTextLabel;
     v4->_calTextLabel = v5;
 
-    v7 = [objc_opt_class() _primaryFont];
-    [(UILabel *)v4->_calTextLabel setFont:v7];
+    _primaryFont = [objc_opt_class() _primaryFont];
+    [(UILabel *)v4->_calTextLabel setFont:_primaryFont];
 
     [(UILabel *)v4->_calTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(CalendarAssistantUIHeaderView *)v4 contentView];
-    [v8 addSubview:v4->_calTextLabel];
+    contentView = [(CalendarAssistantUIHeaderView *)v4 contentView];
+    [contentView addSubview:v4->_calTextLabel];
 
     LODWORD(v9) = 1148846080;
     [(UILabel *)v4->_calTextLabel setContentCompressionResistancePriority:0 forAxis:v9];
@@ -50,8 +50,8 @@
 
 + (double)headerHeight
 {
-  v2 = [a1 _primaryFont];
-  [v2 lineHeight];
+  _primaryFont = [self _primaryFont];
+  [_primaryFont lineHeight];
   CalCeilToScreenScale();
   v4 = v3;
 
@@ -65,17 +65,17 @@
   [v3 setBackgroundColor:v4];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(CalendarAssistantUIHeaderView *)self contentView];
-  [v5 addSubview:v3];
+  contentView = [(CalendarAssistantUIHeaderView *)self contentView];
+  [contentView addSubview:v3];
 
-  v6 = [(CalendarAssistantUIHeaderView *)self contentView];
-  v7 = [NSLayoutConstraint constraintWithItem:v3 attribute:5 relatedBy:0 toItem:v6 attribute:5 multiplier:1.0 constant:0.0];
+  contentView2 = [(CalendarAssistantUIHeaderView *)self contentView];
+  v7 = [NSLayoutConstraint constraintWithItem:v3 attribute:5 relatedBy:0 toItem:contentView2 attribute:5 multiplier:1.0 constant:0.0];
   v15[0] = v7;
-  v8 = [(CalendarAssistantUIHeaderView *)self contentView];
-  v9 = [NSLayoutConstraint constraintWithItem:v3 attribute:4 relatedBy:0 toItem:v8 attribute:4 multiplier:1.0 constant:0.0];
+  contentView3 = [(CalendarAssistantUIHeaderView *)self contentView];
+  v9 = [NSLayoutConstraint constraintWithItem:v3 attribute:4 relatedBy:0 toItem:contentView3 attribute:4 multiplier:1.0 constant:0.0];
   v15[1] = v9;
-  v10 = [(CalendarAssistantUIHeaderView *)self contentView];
-  v11 = [NSLayoutConstraint constraintWithItem:v3 attribute:7 relatedBy:0 toItem:v10 attribute:7 multiplier:1.0 constant:0.0];
+  contentView4 = [(CalendarAssistantUIHeaderView *)self contentView];
+  v11 = [NSLayoutConstraint constraintWithItem:v3 attribute:7 relatedBy:0 toItem:contentView4 attribute:7 multiplier:1.0 constant:0.0];
   v15[2] = v11;
   EKUISeparatorLineThickness();
   v13 = [NSLayoutConstraint constraintWithItem:v3 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v12];

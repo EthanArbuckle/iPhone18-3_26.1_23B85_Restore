@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __70__NSProcessInfo_SafariCoreExtras__safari_operatingSystemVersionString__block_invoke;
   block[3] = &unk_1E7CF16E0;
-  block[4] = a1;
+  block[4] = self;
   if (safari_operatingSystemVersionString_onceToken != -1)
   {
     dispatch_once(&safari_operatingSystemVersionString_onceToken, block);

@@ -27,15 +27,15 @@
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 value];
-  v6 = [a1 tu_predicateForConversationLinkDescriptorsWithInvitedHandleValue:v5];
+  value = [v4 value];
+  v6 = [self tu_predicateForConversationLinkDescriptorsWithInvitedHandleValue:value];
 
-  v7 = [v4 normalizedValue];
+  normalizedValue = [v4 normalizedValue];
 
-  if (v7)
+  if (normalizedValue)
   {
-    v8 = [v4 normalizedValue];
-    v9 = [a1 tu_predicateForConversationLinkDescriptorsWithInvitedHandleNormalizedValue:v8];
+    normalizedValue2 = [v4 normalizedValue];
+    v9 = [self tu_predicateForConversationLinkDescriptorsWithInvitedHandleNormalizedValue:normalizedValue2];
     v18[0] = v9;
     v18[1] = v6;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
@@ -45,7 +45,7 @@
     v6 = v11;
   }
 
-  v12 = [a1 tu_predicateForConversationLinkDescriptorsWithInvitedHandleType:{objc_msgSend(v4, "type")}];
+  v12 = [self tu_predicateForConversationLinkDescriptorsWithInvitedHandleType:{objc_msgSend(v4, "type")}];
   v17[0] = v12;
   v17[1] = v6;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
@@ -61,15 +61,15 @@
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 value];
-  v6 = [a1 tu_predicateForConversationLinkDescriptorsWithOriginatorHandleValue:v5];
+  value = [v4 value];
+  v6 = [self tu_predicateForConversationLinkDescriptorsWithOriginatorHandleValue:value];
 
-  v7 = [v4 normalizedValue];
+  normalizedValue = [v4 normalizedValue];
 
-  if (v7)
+  if (normalizedValue)
   {
-    v8 = [v4 normalizedValue];
-    v9 = [a1 tu_predicateForConversationLinkDescriptorsWithOriginatorHandleNormalizedValue:v8];
+    normalizedValue2 = [v4 normalizedValue];
+    v9 = [self tu_predicateForConversationLinkDescriptorsWithOriginatorHandleNormalizedValue:normalizedValue2];
     v18[0] = v9;
     v18[1] = v6;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
@@ -79,7 +79,7 @@
     v6 = v11;
   }
 
-  v12 = [a1 tu_predicateForConversationLinkDescriptorsWithOriginatorHandleType:{objc_msgSend(v4, "type")}];
+  v12 = [self tu_predicateForConversationLinkDescriptorsWithOriginatorHandleType:{objc_msgSend(v4, "type")}];
   v17[0] = v12;
   v17[1] = v6;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];

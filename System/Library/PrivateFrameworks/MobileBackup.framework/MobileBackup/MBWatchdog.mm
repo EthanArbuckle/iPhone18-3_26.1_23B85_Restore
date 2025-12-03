@@ -1,6 +1,6 @@
 @interface MBWatchdog
 - (MBWatchdog)init;
-- (MBWatchdog)initWithName:(id)a3;
+- (MBWatchdog)initWithName:(id)name;
 - (void)_invokeTimeoutBlock;
 - (void)_scheduleTimer;
 - (void)resume;
@@ -9,15 +9,15 @@
 
 @implementation MBWatchdog
 
-- (MBWatchdog)initWithName:(id)a3
+- (MBWatchdog)initWithName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     __assert_rtn("[MBWatchdog initWithName:]", "MBWatchdog.m", 22, "name");
   }
 
-  v5 = v4;
+  v5 = nameCopy;
   v19.receiver = self;
   v19.super_class = MBWatchdog;
   v6 = [(MBWatchdog *)&v19 init];
@@ -25,9 +25,9 @@
   if (v6)
   {
     v6->_timeout = 30.0;
-    v8 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     queue = v7->_queue;
     v7->_queue = v10;
 

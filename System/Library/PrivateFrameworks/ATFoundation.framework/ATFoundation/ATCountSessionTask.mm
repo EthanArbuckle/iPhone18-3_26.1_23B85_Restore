@@ -1,5 +1,5 @@
 @interface ATCountSessionTask
-- (ATCountSessionTask)initWithMaximumCount:(unint64_t)a3;
+- (ATCountSessionTask)initWithMaximumCount:(unint64_t)count;
 - (void)start;
 @end
 
@@ -37,7 +37,7 @@ void __27__ATCountSessionTask_start__block_invoke(uint64_t a1)
   }
 }
 
-- (ATCountSessionTask)initWithMaximumCount:(unint64_t)a3
+- (ATCountSessionTask)initWithMaximumCount:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = ATCountSessionTask;
@@ -45,7 +45,7 @@ void __27__ATCountSessionTask_start__block_invoke(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    [(ATSessionTask *)v4 setTotalItemCount:a3];
+    [(ATSessionTask *)v4 setTotalItemCount:count];
   }
 
   return v5;

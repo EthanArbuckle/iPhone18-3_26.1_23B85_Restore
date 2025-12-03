@@ -6,13 +6,13 @@
 - (id).cxx_construct;
 - (void)configureXPCListener;
 - (void)dealloc;
-- (void)forwardEvent:(void *)a3 forUid:()basic_string<char;
+- (void)forwardEvent:(void *)event forUid:()basic_string<char;
 - (void)getDeviceForUID:()basic_string<char;
-- (void)handleListenerEvent:(void *)a3;
-- (void)publishAndRegisterDevice:(int)a3 withArgs:(void *)a4 uid:()basic_string<char device:()std:(std::allocator<char>> *)a5 :char_traits<char>;
-- (void)removeXpcClient:(void *)a3;
+- (void)handleListenerEvent:(void *)event;
+- (void)publishAndRegisterDevice:(int)device withArgs:(void *)args uid:()basic_string<char device:()std:(std::allocator<char>> *)std :char_traits<char>;
+- (void)removeXpcClient:(void *)client;
 - (void)republishAllAudioDevices;
-- (void)sendMsg:(int)a3 withArgs:(void *)a4 uid:()basic_string<char;
+- (void)sendMsg:(int)msg withArgs:(void *)args uid:()basic_string<char;
 @end
 
 @implementation AudioDeviceManager
@@ -69,16 +69,16 @@
   }
 }
 
-- (void)handleListenerEvent:(void *)a3
+- (void)handleListenerEvent:(void *)event
 {
-  type = xpc_get_type(a3);
+  type = xpc_get_type(event);
   if (type == &_xpc_type_connection)
   {
     v7 = qword_100BCE8D0;
     if (os_log_type_enabled(qword_100BCE8D0, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = a3;
+      eventCopy = event;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AudioDeviceManager received new xpc connection from %p", &v10, 0xCu);
     }
 
@@ -87,7 +87,7 @@
 
   if (type == &_xpc_type_error)
   {
-    string = xpc_dictionary_get_string(a3, _xpc_error_key_description);
+    string = xpc_dictionary_get_string(event, _xpc_error_key_description);
     v9 = qword_100BCE8D0;
     if (os_log_type_enabled(qword_100BCE8D0, OS_LOG_TYPE_ERROR))
     {
@@ -97,7 +97,7 @@
 
   else
   {
-    v5 = xpc_copy_description(a3);
+    v5 = xpc_copy_description(event);
     v6 = qword_100BCE8D0;
     if (os_log_type_enabled(qword_100BCE8D0, OS_LOG_TYPE_ERROR))
     {
@@ -108,14 +108,14 @@
   }
 }
 
-- (void)publishAndRegisterDevice:(int)a3 withArgs:(void *)a4 uid:()basic_string<char device:()std:(std::allocator<char>> *)a5 :char_traits<char>
+- (void)publishAndRegisterDevice:(int)device withArgs:(void *)args uid:()basic_string<char device:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v6 = v5;
-  v9 = *&a3;
-  var1 = *(&a5->var0.var1 + 23);
+  v9 = *&device;
+  var1 = *(&std->var0.var1 + 23);
   if ((var1 & 0x8000000000000000) != 0)
   {
-    var1 = a5->var0.var1.var1;
+    var1 = std->var0.var1.var1;
   }
 
   v12 = qword_100BCE8D0;
@@ -145,10 +145,10 @@
 LABEL_8:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    var0 = a5;
-    if (*(&a5->var0.var1 + 23) < 0)
+    var0 = std;
+    if (*(&std->var0.var1 + 23) < 0)
     {
-      var0 = a5->var0.var1.var0;
+      var0 = std->var0.var1.var0;
     }
 
     *buf = 136446466;
@@ -161,20 +161,20 @@ LABEL_8:
   *buf = 0;
   *&buf[8] = 0;
   sub_100007F88(buf, &self->audioDeviceMapMutex);
-  v16 = a5;
-  *(sub_10043E1FC(&self->audioDevices, a5) + 56) = v6;
-  if (*(&a5->var0.var1 + 23) < 0)
+  stdCopy = std;
+  *(sub_10043E1FC(&self->audioDevices, std) + 56) = v6;
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    sub_100008904(__p, a5->var0.var1.var0, a5->var0.var1.var1);
+    sub_100008904(__p, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    *__p = *a5->var0.var0.var0;
-    v15 = *(&a5->var0.var1 + 2);
+    *__p = *std->var0.var0.var0;
+    v15 = *(&std->var0.var1 + 2);
   }
 
-  [(AudioDeviceManager *)self sendMsg:v9 withArgs:a4 uid:__p];
+  [(AudioDeviceManager *)self sendMsg:v9 withArgs:args uid:__p];
   if (SHIBYTE(v15) < 0)
   {
     operator delete(__p[0]);
@@ -183,11 +183,11 @@ LABEL_8:
   sub_1000088CC(buf);
 }
 
-- (void)sendMsg:(int)a3 withArgs:(void *)a4 uid:()basic_string<char
+- (void)sendMsg:(int)msg withArgs:(void *)args uid:()basic_string<char
 {
   *keys = *off_100AF6268;
   v35 = "kBTAudioMsgArgs";
-  values = xpc_int64_create(a3);
+  values = xpc_int64_create(msg);
   var0 = a5;
   if (*(&a5->var0.var1 + 23) < 0)
   {
@@ -195,8 +195,8 @@ LABEL_8:
   }
 
   object = xpc_string_create(var0);
-  v33 = a4;
-  if (a4)
+  argsCopy = args;
+  if (args)
   {
     v10 = 3;
   }
@@ -217,13 +217,13 @@ LABEL_8:
     }
 
     *buf = 67109378;
-    *v28 = a3;
+    *v28 = msg;
     *&v28[4] = 2082;
     *&v28[6] = v24;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Sending XPC message %d for %{public}s", buf, 0x12u);
   }
 
-  if (a3 == 4)
+  if (msg == 4)
   {
     if ((*(&a5->var0.var1 + 23) & 0x8000000000000000) != 0)
     {
@@ -370,7 +370,7 @@ LABEL_24:
   sub_1000088CC(v9);
 }
 
-- (void)forwardEvent:(void *)a3 forUid:()basic_string<char
+- (void)forwardEvent:(void *)event forUid:()basic_string<char
 {
   var0 = a4;
   v7 = &a4->var0.var1 + 23;
@@ -398,7 +398,7 @@ LABEL_24:
       sub_10082C858(v7, var0, v9);
     }
 
-    sub_1003CA350(v8, a3);
+    sub_1003CA350(v8, event);
   }
 
   else if (os_log_type_enabled(qword_100BCE8D0, OS_LOG_TYPE_ERROR))
@@ -408,7 +408,7 @@ LABEL_24:
       var0 = var0->var0.var1.var0;
     }
 
-    int64 = xpc_dictionary_get_int64(a3, "kBTAudioMsgId");
+    int64 = xpc_dictionary_get_int64(event, "kBTAudioMsgId");
     *buf = 136446466;
     v13 = var0;
     v14 = 1024;
@@ -521,13 +521,13 @@ LABEL_7:
   return result;
 }
 
-- (void)removeXpcClient:(void *)a3
+- (void)removeXpcClient:(void *)client
 {
   v5 = qword_100BCE8D0;
   if (os_log_type_enabled(qword_100BCE8D0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = sub_1000BC720(a3);
+    v10 = sub_1000BC720(client);
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "AudioDeviceManager removing xpc client for connection %p", &v9, 0xCu);
   }
 
@@ -535,7 +535,7 @@ LABEL_7:
   end = self->xpcClients.__end_;
   if (begin != end)
   {
-    while (*begin != a3)
+    while (*begin != client)
     {
       if (++begin == end)
       {
@@ -550,7 +550,7 @@ LABEL_7:
       {
         do
         {
-          if (*v8 != a3)
+          if (*v8 != client)
           {
             *begin++ = *v8;
           }
@@ -570,9 +570,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  if (a3)
+  if (client)
   {
-    sub_10064B070(a3);
+    sub_10064B070(client);
     operator delete();
   }
 }

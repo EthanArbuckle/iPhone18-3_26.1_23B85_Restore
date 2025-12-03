@@ -1,21 +1,21 @@
 @interface NEDNSQuery
-- (NEDNSQuery)initWithName:(id)a3 recordType:(int64_t)a4 recordClass:(int64_t)a5;
+- (NEDNSQuery)initWithName:(id)name recordType:(int64_t)type recordClass:(int64_t)class;
 @end
 
 @implementation NEDNSQuery
 
-- (NEDNSQuery)initWithName:(id)a3 recordType:(int64_t)a4 recordClass:(int64_t)a5
+- (NEDNSQuery)initWithName:(id)name recordType:(int64_t)type recordClass:(int64_t)class
 {
-  v9 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = NEDNSQuery;
   v10 = [(NEDNSQuery *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_name, a3);
-    v11->_recordType = a4;
-    v11->_recordClass = a5;
+    objc_storeStrong(&v10->_name, name);
+    v11->_recordType = type;
+    v11->_recordClass = class;
   }
 
   return v11;

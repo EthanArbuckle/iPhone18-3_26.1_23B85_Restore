@@ -1,34 +1,34 @@
 @interface ICSTimeZoneBlock
-- (BOOL)validate:(id *)a3;
+- (BOOL)validate:(id *)validate;
 - (ICSDate)dtstart;
 - (NSArray)rrule;
 - (NSArray)tzname;
-- (id)computeTimeZoneChangeListFromDate:(id)a3 toDate:(id)a4;
-- (int64_t)compare:(id)a3;
+- (id)computeTimeZoneChangeListFromDate:(id)date toDate:(id)toDate;
+- (int64_t)compare:(id)compare;
 - (int64_t)tzoffsetfrom;
 - (int64_t)tzoffsetto;
-- (void)setRrule:(id)a3;
-- (void)setTzname:(id)a3;
-- (void)setTzoffsetfrom:(int64_t)a3;
-- (void)setTzoffsetto:(int64_t)a3;
+- (void)setRrule:(id)rrule;
+- (void)setTzname:(id)tzname;
+- (void)setTzoffsetfrom:(int64_t)tzoffsetfrom;
+- (void)setTzoffsetto:(int64_t)tzoffsetto;
 @end
 
 @implementation ICSTimeZoneBlock
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ICSTimeZoneBlock *)self dtstart];
-  v6 = [v5 value];
-  v7 = [v4 dtstart];
+  compareCopy = compare;
+  dtstart = [(ICSTimeZoneBlock *)self dtstart];
+  value = [dtstart value];
+  dtstart2 = [compareCopy dtstart];
 
-  v8 = [v7 value];
-  v9 = [v6 compare:v8];
+  value2 = [dtstart2 value];
+  v9 = [value compare:value2];
 
   return v9;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v5 = [(ICSComponent *)self propertiesForName:@"DTSTART"];
 
@@ -47,10 +47,10 @@
         {
           v17.receiver = self;
           v17.super_class = ICSTimeZoneBlock;
-          return [(ICSComponent *)&v17 validate:a3];
+          return [(ICSComponent *)&v17 validate:validate];
         }
 
-        if (a3)
+        if (validate)
         {
           v11 = MEMORY[0x277CCA9B8];
           v12 = MEMORY[0x277CBEAC0];
@@ -58,11 +58,11 @@
           v14 = @"RDATE and RRULE cannot both be set for VTIMEZONE.";
 LABEL_15:
           v16 = [v12 dictionaryWithObject:v14 forKey:v13];
-          *a3 = [v11 errorWithDomain:@"com.apple.iCalendar" code:1000 userInfo:v16];
+          *validate = [v11 errorWithDomain:@"com.apple.iCalendar" code:1000 userInfo:v16];
         }
       }
 
-      else if (a3)
+      else if (validate)
       {
         v11 = MEMORY[0x277CCA9B8];
         v12 = MEMORY[0x277CBEAC0];
@@ -72,7 +72,7 @@ LABEL_15:
       }
     }
 
-    else if (a3)
+    else if (validate)
     {
       v11 = MEMORY[0x277CCA9B8];
       v12 = MEMORY[0x277CBEAC0];
@@ -82,7 +82,7 @@ LABEL_15:
     }
   }
 
-  else if (a3)
+  else if (validate)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = MEMORY[0x277CBEAC0];
@@ -97,21 +97,21 @@ LABEL_15:
 - (ICSDate)dtstart
 {
   v2 = [(ICSComponent *)self propertiesForName:@"DTSTART"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setRrule:(id)a3
+- (void)setRrule:(id)rrule
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  rruleCopy = rrule;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = rruleCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -130,7 +130,7 @@ LABEL_15:
         v11 = *(*(&v15 + 1) + 8 * v10);
         v12 = [ICSProperty alloc];
         v13 = [(ICSProperty *)v12 initWithValue:v11 type:5029, v15];
-        [v5 addObject:v13];
+        [array addObject:v13];
 
         ++v10;
       }
@@ -142,14 +142,14 @@ LABEL_15:
     while (v8);
   }
 
-  [(ICSComponent *)self setProperties:v5 forName:@"RRULE"];
+  [(ICSComponent *)self setProperties:array forName:@"RRULE"];
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (NSArray)rrule
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ICSComponent *)self propertiesForName:@"RRULE"];
   v12 = 0u;
   v13 = 0u;
@@ -169,8 +169,8 @@ LABEL_15:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) value];
-        [v3 addObject:v9];
+        value = [*(*(&v12 + 1) + 8 * i) value];
+        [array addObject:value];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -181,13 +181,13 @@ LABEL_15:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)tzname
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ICSComponent *)self propertiesForName:@"TZNAME"];
   v12 = 0u;
   v13 = 0u;
@@ -207,8 +207,8 @@ LABEL_15:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) value];
-        [v3 addObject:v9];
+        value = [*(*(&v12 + 1) + 8 * i) value];
+        [array addObject:value];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -219,19 +219,19 @@ LABEL_15:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (void)setTzname:(id)a3
+- (void)setTzname:(id)tzname
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  tznameCopy = tzname;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = tznameCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -250,7 +250,7 @@ LABEL_15:
         v11 = *(*(&v15 + 1) + 8 * v10);
         v12 = [ICSProperty alloc];
         v13 = [(ICSProperty *)v12 initWithValue:v11 type:5007, v15];
-        [v5 addObject:v13];
+        [array addObject:v13];
 
         ++v10;
       }
@@ -262,54 +262,54 @@ LABEL_15:
     while (v8);
   }
 
-  [(ICSComponent *)self setProperties:v5 forName:@"TZNAME"];
+  [(ICSComponent *)self setProperties:array forName:@"TZNAME"];
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (int64_t)tzoffsetfrom
 {
   v2 = [(ICSComponent *)self propertiesForName:@"TZOFFSETFROM"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 integerValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  integerValue = [value integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (void)setTzoffsetfrom:(int64_t)a3
+- (void)setTzoffsetfrom:(int64_t)tzoffsetfrom
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:tzoffsetfrom];
   [(ICSComponent *)self setPropertyValue:v4 type:5018 forName:@"TZOFFSETFROM"];
 }
 
 - (int64_t)tzoffsetto
 {
   v2 = [(ICSComponent *)self propertiesForName:@"TZOFFSETTO"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 integerValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  integerValue = [value integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (void)setTzoffsetto:(int64_t)a3
+- (void)setTzoffsetto:(int64_t)tzoffsetto
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:tzoffsetto];
   [(ICSComponent *)self setPropertyValue:v4 type:5018 forName:@"TZOFFSETTO"];
 }
 
-- (id)computeTimeZoneChangeListFromDate:(id)a3 toDate:(id)a4
+- (id)computeTimeZoneChangeListFromDate:(id)date toDate:(id)toDate
 {
   v69 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v50 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [(ICSTimeZoneBlock *)self dtstart];
-  v8 = [v7 value];
+  dateCopy = date;
+  toDateCopy = toDate;
+  array = [MEMORY[0x277CBEB18] array];
+  dtstart = [(ICSTimeZoneBlock *)self dtstart];
+  value = [dtstart value];
 
-  v9 = [(ICSTimeZoneBlock *)self tzoffsetfrom];
-  v10 = [(ICSTimeZoneBlock *)self tzoffsetto];
-  v11 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:v9];
+  tzoffsetfrom = [(ICSTimeZoneBlock *)self tzoffsetfrom];
+  tzoffsetto = [(ICSTimeZoneBlock *)self tzoffsetto];
+  v11 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:tzoffsetfrom];
   v12 = objc_alloc(MEMORY[0x277CBEA80]);
   v49 = [v12 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   v46 = v11;
@@ -318,9 +318,9 @@ LABEL_15:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v43 = self;
+  selfCopy = self;
   obj = [(ICSTimeZoneBlock *)self rrule];
-  v47 = v8;
+  v47 = value;
   v48 = [obj countByEnumeratingWithState:&v62 objects:v68 count:16];
   if (v48)
   {
@@ -336,9 +336,9 @@ LABEL_15:
         }
 
         v51 = v13;
-        v14 = [*(*(&v62 + 1) + 8 * v13) occurrencesForStartDate:v8 fromDate:v53 toDate:v50 inTimeZone:v46];
-        v15 = [v53 components];
-        v16 = [v49 dateFromComponents:v15];
+        v14 = [*(*(&v62 + 1) + 8 * v13) occurrencesForStartDate:value fromDate:dateCopy toDate:toDateCopy inTimeZone:v46];
+        components = [dateCopy components];
+        v16 = [v49 dateFromComponents:components];
 
         v60 = 0u;
         v61 = 0u;
@@ -364,8 +364,8 @@ LABEL_15:
               {
                 v23 = [ICSTimeZoneChange alloc];
                 [v22 timeIntervalSinceReferenceDate];
-                v24 = [(ICSTimeZoneChange *)v23 initWithTimeInterval:v10 tzOffsetTo:?];
-                [v6 addObject:v24];
+                v24 = [(ICSTimeZoneChange *)v23 initWithTimeInterval:tzoffsetto tzOffsetTo:?];
+                [array addObject:v24];
               }
             }
 
@@ -376,7 +376,7 @@ LABEL_15:
         }
 
         v13 = v51 + 1;
-        v8 = v47;
+        value = v47;
       }
 
       while (v51 + 1 != v48);
@@ -390,8 +390,8 @@ LABEL_15:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v52 = [(ICSTimeZoneBlock *)v43 rdate];
-  v25 = [v52 countByEnumeratingWithState:&v54 objects:v66 count:16];
+  rdate = [(ICSTimeZoneBlock *)selfCopy rdate];
+  v25 = [rdate countByEnumeratingWithState:&v54 objects:v66 count:16];
   if (v25)
   {
     v26 = v25;
@@ -402,52 +402,52 @@ LABEL_15:
       {
         if (*v55 != v27)
         {
-          objc_enumerationMutation(v52);
+          objc_enumerationMutation(rdate);
         }
 
         v29 = *(*(&v54 + 1) + 8 * j);
-        v30 = [v29 value];
-        if ([v53 compare:v30] == -1)
+        value2 = [v29 value];
+        if ([dateCopy compare:value2] == -1)
         {
-          v31 = [v29 value];
-          v32 = [v50 compare:v31];
+          value3 = [v29 value];
+          v32 = [toDateCopy compare:value3];
 
           if (v32 == -1)
           {
             continue;
           }
 
-          v33 = [v29 value];
-          v34 = [v33 components];
-          v30 = [v49 dateFromComponents:v34];
+          value4 = [v29 value];
+          components2 = [value4 components];
+          value2 = [v49 dateFromComponents:components2];
 
           v35 = [ICSTimeZoneChange alloc];
-          [v30 timeIntervalSinceReferenceDate];
-          v36 = [(ICSTimeZoneChange *)v35 initWithTimeInterval:v10 tzOffsetTo:?];
-          [v6 addObject:v36];
+          [value2 timeIntervalSinceReferenceDate];
+          v36 = [(ICSTimeZoneChange *)v35 initWithTimeInterval:tzoffsetto tzOffsetTo:?];
+          [array addObject:v36];
         }
       }
 
-      v26 = [v52 countByEnumeratingWithState:&v54 objects:v66 count:16];
+      v26 = [rdate countByEnumeratingWithState:&v54 objects:v66 count:16];
     }
 
     while (v26);
   }
 
-  if (![v6 count] && objc_msgSend(v53, "compare:", v47) == -1 && objc_msgSend(v50, "compare:", v47) != -1)
+  if (![array count] && objc_msgSend(dateCopy, "compare:", v47) == -1 && objc_msgSend(toDateCopy, "compare:", v47) != -1)
   {
-    v37 = [v47 components];
-    v38 = [v49 dateFromComponents:v37];
+    components3 = [v47 components];
+    v38 = [v49 dateFromComponents:components3];
 
     v39 = [ICSTimeZoneChange alloc];
     [v38 timeIntervalSinceReferenceDate];
-    v40 = [(ICSTimeZoneChange *)v39 initWithTimeInterval:v10 tzOffsetTo:?];
-    [v6 addObject:v40];
+    v40 = [(ICSTimeZoneChange *)v39 initWithTimeInterval:tzoffsetto tzOffsetTo:?];
+    [array addObject:v40];
   }
 
   v41 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
 @end

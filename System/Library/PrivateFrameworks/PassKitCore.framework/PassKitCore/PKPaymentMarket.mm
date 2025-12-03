@@ -1,25 +1,25 @@
 @interface PKPaymentMarket
-- (BOOL)containsLocation:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsLocation:(id)location;
+- (BOOL)isEqual:(id)equal;
 - (NSString)name;
 - (NSString)notificationAssetIdentifier;
-- (PKPaymentMarket)initWithCoder:(id)a3;
-- (PKPaymentMarket)initWithDictionary:(id)a3 forDeviceClass:(id)a4 version:(id)a5;
-- (double)shortestDistanceFromLocation:(id)a3;
-- (id)_geoFenceWithDictionary:(id)a3;
+- (PKPaymentMarket)initWithCoder:(id)coder;
+- (PKPaymentMarket)initWithDictionary:(id)dictionary forDeviceClass:(id)class version:(id)version;
+- (double)shortestDistanceFromLocation:(id)location;
+- (id)_geoFenceWithDictionary:(id)dictionary;
 - (id)analyticsReportingNameValue;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentMarket
 
-- (PKPaymentMarket)initWithDictionary:(id)a3 forDeviceClass:(id)a4 version:(id)a5
+- (PKPaymentMarket)initWithDictionary:(id)dictionary forDeviceClass:(id)class version:(id)version
 {
   v104 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  classCopy = class;
+  versionCopy = version;
   v99.receiver = self;
   v99.super_class = PKPaymentMarket;
   v11 = [(PKPaymentMarket *)&v99 init];
@@ -28,7 +28,7 @@
     goto LABEL_55;
   }
 
-  v12 = [v8 PKStringForKey:@"Type"];
+  v12 = [dictionaryCopy PKStringForKey:@"Type"];
   v13 = v12;
   if (v12)
   {
@@ -55,7 +55,7 @@
 
   v11->_type = v14;
 
-  v16 = [v8 PKStringForKey:@"Classification"];
+  v16 = [dictionaryCopy PKStringForKey:@"Classification"];
   v17 = v16;
   if (v16)
   {
@@ -86,29 +86,29 @@
   }
 
   v11->_classification = v18;
-  v19 = [v8 PKStringForKey:@"Identifier"];
+  v19 = [dictionaryCopy PKStringForKey:@"Identifier"];
   v20 = [v19 copy];
   identifier = v11->_identifier;
   v11->_identifier = v20;
 
-  v22 = [v8 PKStringForKey:@"Region"];
+  v22 = [dictionaryCopy PKStringForKey:@"Region"];
   v23 = [v22 copy];
   region = v11->_region;
   v11->_region = v23;
 
-  v25 = [v8 PKDictionaryForKey:@"LocalizedName"];
+  v25 = [dictionaryCopy PKDictionaryForKey:@"LocalizedName"];
   v26 = [v25 copy];
   localizedNames = v11->_localizedNames;
   v11->_localizedNames = v26;
 
-  v28 = [v8 PKStringForKey:@"NotificationAssetIdentifier"];
+  v28 = [dictionaryCopy PKStringForKey:@"NotificationAssetIdentifier"];
   v29 = [v28 copy];
   notificationAssetIdentifier = v11->_notificationAssetIdentifier;
   v11->_notificationAssetIdentifier = v29;
 
   v11->_expressUpgradeHideDisableAction = 0;
   v11->_expressUpgradePromoteDuration = 604800.0;
-  v31 = [v8 PKDictionaryForKey:@"OpenLoopExpressUpgrade"];
+  v31 = [dictionaryCopy PKDictionaryForKey:@"OpenLoopExpressUpgrade"];
   v32 = PKOverrideMarketGeoExpressUpgradePromotionDuration();
   v33 = PKOverrideMarketGeoExpressUpgradeHideDisableExpressModeAction();
   if (v32)
@@ -141,13 +141,13 @@
 
   if (v33)
   {
-    v40 = [v33 BOOLValue];
+    bOOLValue = [v33 BOOLValue];
     v41 = PKLogFacilityTypeGetObject(0xDuLL);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       v42 = @"NO";
       v43 = v11->_identifier;
-      if (v40)
+      if (bOOLValue)
       {
         v42 = @"YES";
       }
@@ -166,10 +166,10 @@
 
   if (v44)
   {
-    v40 = [v31 PKBoolForKey:@"HideDisableExpressAction"];
+    bOOLValue = [v31 PKBoolForKey:@"HideDisableExpressAction"];
 LABEL_33:
     v45 = 1;
-    if (!v40)
+    if (!bOOLValue)
     {
       v45 = 2;
     }
@@ -177,7 +177,7 @@ LABEL_33:
     v11->_expressUpgradeHideDisableAction = v45;
   }
 
-  v46 = [v8 PKDictionaryForKey:@"RenotifyCampaigns"];
+  v46 = [dictionaryCopy PKDictionaryForKey:@"RenotifyCampaigns"];
   renotifyCampaigns = v11->_renotifyCampaigns;
   v11->_renotifyCampaigns = v46;
 
@@ -232,7 +232,7 @@ LABEL_33:
   v84 = v33;
   v85 = v32;
   v86 = v31;
-  v56 = [v8 PKArrayForKey:@"GeoFences"];
+  v56 = [dictionaryCopy PKArrayForKey:@"GeoFences"];
   v57 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v96[0] = MEMORY[0x1E69E9820];
   v96[1] = 3221225472;
@@ -252,13 +252,13 @@ LABEL_33:
   aBlock[1] = 3221225472;
   aBlock[2] = __61__PKPaymentMarket_initWithDictionary_forDeviceClass_version___block_invoke_2;
   aBlock[3] = &unk_1E79C9460;
-  v89 = v8;
-  v62 = v8;
+  v89 = dictionaryCopy;
+  v62 = dictionaryCopy;
   v93 = v62;
-  v87 = v10;
-  v94 = v10;
-  v88 = v9;
-  v95 = v9;
+  v87 = versionCopy;
+  v94 = versionCopy;
+  v88 = classCopy;
+  v95 = classCopy;
   v63 = _Block_copy(aBlock);
   v64 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v65 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -287,32 +287,32 @@ LABEL_33:
   v77 = v76;
   if (v76)
   {
-    v78 = [v76 BOOLValue];
+    bOOLValue2 = [v76 BOOLValue];
   }
 
   else
   {
-    v78 = 1;
+    bOOLValue2 = 1;
   }
 
-  v58->_productsRequiredForRegion = v78;
+  v58->_productsRequiredForRegion = bOOLValue2;
   v79 = [v62 objectForKey:@"shouldConsiderCellularRegion"];
   if (v79 || ([v62 objectForKey:@"shouldConsiderCelluarRegion"], (v79 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v80 = v79;
-    v81 = [v79 BOOLValue];
+    bOOLValue3 = [v79 BOOLValue];
   }
 
   else
   {
-    v81 = 1;
+    bOOLValue3 = 1;
   }
 
-  v58->_shouldConsiderCellularRegion = v81;
+  v58->_shouldConsiderCellularRegion = bOOLValue3;
 
-  v9 = v88;
-  v8 = v89;
-  v10 = v87;
+  classCopy = v88;
+  dictionaryCopy = v89;
+  versionCopy = v87;
 LABEL_55:
 
   return v11;
@@ -370,104 +370,104 @@ void __61__PKPaymentMarket_initWithDictionary_forDeviceClass_version___block_inv
   }
 }
 
-- (PKPaymentMarket)initWithCoder:(id)a3
+- (PKPaymentMarket)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = PKPaymentMarket;
   v5 = [(PKPaymentMarket *)&v46 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_classification = [v4 decodeIntegerForKey:@"classification"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_classification = [coderCopy decodeIntegerForKey:@"classification"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     region = v5->_region;
     v5->_region = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"localizedNames"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"localizedNames"];
     localizedNames = v5->_localizedNames;
     v5->_localizedNames = v13;
 
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"geoFences"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"geoFences"];
     geoFences = v5->_geoFences;
     v5->_geoFences = v18;
 
     v20 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"supportedCredentialTypes"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"supportedCredentialTypes"];
     supportedCredentialTypes = v5->_supportedCredentialTypes;
     v5->_supportedCredentialTypes = v23;
 
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"expressCredentialTypes"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"expressCredentialTypes"];
     expressCredentialTypes = v5->_expressCredentialTypes;
     v5->_expressCredentialTypes = v28;
 
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"supportedTransitNetworks"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"supportedTransitNetworks"];
     supportedTransitNetworks = v5->_supportedTransitNetworks;
     v5->_supportedTransitNetworks = v33;
 
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"expressTransitNetworks"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"expressTransitNetworks"];
     expressTransitNetworks = v5->_expressTransitNetworks;
     v5->_expressTransitNetworks = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notificationAssetIdentifier"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notificationAssetIdentifier"];
     notificationAssetIdentifier = v5->_notificationAssetIdentifier;
     v5->_notificationAssetIdentifier = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"renotifyCampaigns"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"renotifyCampaigns"];
     renotifyCampaigns = v5->_renotifyCampaigns;
     v5->_renotifyCampaigns = v42;
 
-    [v4 decodeDoubleForKey:@"expressUpgradePromotionDuration"];
+    [coderCopy decodeDoubleForKey:@"expressUpgradePromotionDuration"];
     v5->_expressUpgradePromoteDuration = v44;
-    v5->_expressUpgradeHideDisableAction = [v4 decodeIntegerForKey:@"expressUpgradeHideDisableAction"];
-    v5->_productsRequiredForRegion = [v4 decodeBoolForKey:@"productsRequiredForRegion"];
-    v5->_shouldConsiderCellularRegion = [v4 decodeBoolForKey:@"shouldConsiderCellularRegion"];
+    v5->_expressUpgradeHideDisableAction = [coderCopy decodeIntegerForKey:@"expressUpgradeHideDisableAction"];
+    v5->_productsRequiredForRegion = [coderCopy decodeBoolForKey:@"productsRequiredForRegion"];
+    v5->_shouldConsiderCellularRegion = [coderCopy decodeBoolForKey:@"shouldConsiderCellularRegion"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_classification forKey:@"classification"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_region forKey:@"region"];
-  [v5 encodeObject:self->_localizedNames forKey:@"localizedNames"];
-  [v5 encodeObject:self->_geoFences forKey:@"geoFences"];
-  [v5 encodeObject:self->_supportedCredentialTypes forKey:@"supportedCredentialTypes"];
-  [v5 encodeObject:self->_expressCredentialTypes forKey:@"expressCredentialTypes"];
-  [v5 encodeObject:self->_supportedTransitNetworks forKey:@"supportedTransitNetworks"];
-  [v5 encodeObject:self->_expressTransitNetworks forKey:@"expressTransitNetworks"];
-  [v5 encodeObject:self->_notificationAssetIdentifier forKey:@"notificationAssetIdentifier"];
-  [v5 encodeObject:self->_renotifyCampaigns forKey:@"renotifyCampaigns"];
-  [v5 encodeDouble:@"expressUpgradePromotionDuration" forKey:self->_expressUpgradePromoteDuration];
-  [v5 encodeInteger:self->_expressUpgradeHideDisableAction forKey:@"expressUpgradeHideDisableAction"];
-  [v5 encodeBool:self->_productsRequiredForRegion forKey:@"productsRequiredForRegion"];
-  [v5 encodeBool:self->_shouldConsiderCellularRegion forKey:@"shouldConsiderCellularRegion"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_classification forKey:@"classification"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_region forKey:@"region"];
+  [coderCopy encodeObject:self->_localizedNames forKey:@"localizedNames"];
+  [coderCopy encodeObject:self->_geoFences forKey:@"geoFences"];
+  [coderCopy encodeObject:self->_supportedCredentialTypes forKey:@"supportedCredentialTypes"];
+  [coderCopy encodeObject:self->_expressCredentialTypes forKey:@"expressCredentialTypes"];
+  [coderCopy encodeObject:self->_supportedTransitNetworks forKey:@"supportedTransitNetworks"];
+  [coderCopy encodeObject:self->_expressTransitNetworks forKey:@"expressTransitNetworks"];
+  [coderCopy encodeObject:self->_notificationAssetIdentifier forKey:@"notificationAssetIdentifier"];
+  [coderCopy encodeObject:self->_renotifyCampaigns forKey:@"renotifyCampaigns"];
+  [coderCopy encodeDouble:@"expressUpgradePromotionDuration" forKey:self->_expressUpgradePromoteDuration];
+  [coderCopy encodeInteger:self->_expressUpgradeHideDisableAction forKey:@"expressUpgradeHideDisableAction"];
+  [coderCopy encodeBool:self->_productsRequiredForRegion forKey:@"productsRequiredForRegion"];
+  [coderCopy encodeBool:self->_shouldConsiderCellularRegion forKey:@"shouldConsiderCellularRegion"];
 }
 
 - (id)description
@@ -477,32 +477,32 @@ void __61__PKPaymentMarket_initWithDictionary_forDeviceClass_version___block_inv
   v10.super_class = PKPaymentMarket;
   v4 = [(PKPaymentMarket *)&v10 description];
   identifier = self->_identifier;
-  v6 = [(PKPaymentMarket *)self notificationAssetIdentifier];
-  v7 = [(PKPaymentMarket *)self englishName];
-  v8 = [v3 stringWithFormat:@"%@ { Identifier: %@, NotificationAssetIdentifier: %@, Name: %@, RenotifyCampaigns: %@ }", v4, identifier, v6, v7, self->_renotifyCampaigns];
+  notificationAssetIdentifier = [(PKPaymentMarket *)self notificationAssetIdentifier];
+  englishName = [(PKPaymentMarket *)self englishName];
+  v8 = [v3 stringWithFormat:@"%@ { Identifier: %@, NotificationAssetIdentifier: %@, Name: %@, RenotifyCampaigns: %@ }", v4, identifier, notificationAssetIdentifier, englishName, self->_renotifyCampaigns];
 
   return v8;
 }
 
 - (id)analyticsReportingNameValue
 {
-  v3 = [(PKPaymentMarket *)self englishName];
-  v4 = v3;
-  if (!v3)
+  englishName = [(PKPaymentMarket *)self englishName];
+  name = englishName;
+  if (!englishName)
   {
-    v4 = [(PKPaymentMarket *)self name];
+    name = [(PKPaymentMarket *)self name];
   }
 
-  v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v6 = [name stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  if (!v3)
+  if (!englishName)
   {
   }
 
   if ([v6 length])
   {
-    v7 = v6;
+    identifier = v6;
   }
 
   else
@@ -513,10 +513,10 @@ void __61__PKPaymentMarket_initWithDictionary_forDeviceClass_version___block_inv
       identifier = @"unknown";
     }
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Market ID: %@", identifier];
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"Market ID: %@", identifier];
   }
 
-  v9 = v7;
+  v9 = identifier;
 
   return v9;
 }
@@ -524,8 +524,8 @@ void __61__PKPaymentMarket_initWithDictionary_forDeviceClass_version___block_inv
 - (NSString)name
 {
   localizedNames = self->_localizedNames;
-  v3 = [MEMORY[0x1E695DF58] pk_deviceLanguage];
-  v4 = [(NSDictionary *)localizedNames PKStringForKey:v3];
+  pk_deviceLanguage = [MEMORY[0x1E695DF58] pk_deviceLanguage];
+  v4 = [(NSDictionary *)localizedNames PKStringForKey:pk_deviceLanguage];
 
   return v4;
 }
@@ -541,9 +541,9 @@ void __61__PKPaymentMarket_initWithDictionary_forDeviceClass_version___block_inv
   return notificationAssetIdentifier;
 }
 
-- (BOOL)containsLocation:(id)a3
+- (BOOL)containsLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -553,7 +553,7 @@ void __61__PKPaymentMarket_initWithDictionary_forDeviceClass_version___block_inv
   v8[1] = 3221225472;
   v8[2] = __36__PKPaymentMarket_containsLocation___block_invoke;
   v8[3] = &unk_1E79C9488;
-  v6 = v4;
+  v6 = locationCopy;
   v9 = v6;
   v10 = &v11;
   [(NSSet *)geoFences enumerateObjectsUsingBlock:v8];
@@ -575,9 +575,9 @@ uint64_t __36__PKPaymentMarket_containsLocation___block_invoke(uint64_t a1, void
   return result;
 }
 
-- (double)shortestDistanceFromLocation:(id)a3
+- (double)shortestDistanceFromLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v13 = 0;
   v14 = &v13;
   v5 = *MEMORY[0x1E6985C30];
@@ -588,7 +588,7 @@ uint64_t __36__PKPaymentMarket_containsLocation___block_invoke(uint64_t a1, void
   v10[1] = 3221225472;
   v10[2] = __48__PKPaymentMarket_shortestDistanceFromLocation___block_invoke;
   v10[3] = &unk_1E79C9488;
-  v7 = v4;
+  v7 = locationCopy;
   v11 = v7;
   v12 = &v13;
   [(NSSet *)geoFences enumerateObjectsUsingBlock:v10];
@@ -610,16 +610,16 @@ uint64_t __48__PKPaymentMarket_shortestDistanceFromLocation___block_invoke(uint6
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
     identifier = self->_identifier;
-    v8 = v4[10];
+    v8 = equalCopy[10];
     if (identifier && v8)
     {
       v6 = [(NSString *)identifier isEqual:?];
@@ -634,15 +634,15 @@ uint64_t __48__PKPaymentMarket_shortestDistanceFromLocation___block_invoke(uint6
   return v6;
 }
 
-- (id)_geoFenceWithDictionary:(id)a3
+- (id)_geoFenceWithDictionary:(id)dictionary
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"Type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"Type"];
   v5 = v4;
   if (v4 && [v4 isEqual:@"circle"])
   {
-    v6 = [[PKPaymentMarketCircularGeoFence alloc] initWithDictionary:v3];
+    v6 = [[PKPaymentMarketCircularGeoFence alloc] initWithDictionary:dictionaryCopy];
   }
 
   else

@@ -1,42 +1,42 @@
 @interface iCloudMailAccountProviderSwift
 - (iCloudMailAccountProviderSwift)init;
-- (iCloudMailAccountProviderSwift)initWithPresenter:(id)a3 appleAccount:(id)a4 accountStore:(id)a5;
-- (void)presentWith:(BOOL)a3 completion:(id)a4;
-- (void)presentWith:(id)a3;
+- (iCloudMailAccountProviderSwift)initWithPresenter:(id)presenter appleAccount:(id)account accountStore:(id)store;
+- (void)presentWith:(BOOL)with completion:(id)completion;
+- (void)presentWith:(id)with;
 @end
 
 @implementation iCloudMailAccountProviderSwift
 
-- (iCloudMailAccountProviderSwift)initWithPresenter:(id)a3 appleAccount:(id)a4 accountStore:(id)a5
+- (iCloudMailAccountProviderSwift)initWithPresenter:(id)presenter appleAccount:(id)account accountStore:(id)store
 {
   *(&self->super.isa + OBJC_IVAR___iCloudMailAccountProviderSwift____lazy_storage___legacyMailCreator) = 0;
-  *(&self->super.isa + OBJC_IVAR___iCloudMailAccountProviderSwift_presenter) = a3;
-  *(&self->super.isa + OBJC_IVAR___iCloudMailAccountProviderSwift_appleAccount) = a4;
-  *(&self->super.isa + OBJC_IVAR___iCloudMailAccountProviderSwift_accountStore) = a5;
+  *(&self->super.isa + OBJC_IVAR___iCloudMailAccountProviderSwift_presenter) = presenter;
+  *(&self->super.isa + OBJC_IVAR___iCloudMailAccountProviderSwift_appleAccount) = account;
+  *(&self->super.isa + OBJC_IVAR___iCloudMailAccountProviderSwift_accountStore) = store;
   v12.receiver = self;
   v12.super_class = type metadata accessor for iCloudMailAccountProviderSwift();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  presenterCopy = presenter;
+  accountCopy = account;
+  storeCopy = store;
   return [(iCloudMailAccountProviderSwift *)&v12 init];
 }
 
-- (void)presentWith:(BOOL)a3 completion:(id)a4
+- (void)presentWith:(BOOL)with completion:(id)completion
 {
-  v4 = a3;
-  v6 = _Block_copy(a4);
+  withCopy = with;
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  sub_2755400C0(v4, sub_275541878, v7);
+  selfCopy = self;
+  sub_2755400C0(withCopy, sub_275541878, v7);
 }
 
-- (void)presentWith:(id)a3
+- (void)presentWith:(id)with
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(with);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_2755409DC(sub_275541860, v5);
 }
 

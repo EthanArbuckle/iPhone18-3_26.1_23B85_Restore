@@ -1,41 +1,41 @@
 @interface TSCH3DChartElementSceneObjectProcessItems
-+ (id)processItemsWithSceneObject:(id)a3 properties:(id)a4 pipeline:(id)a5;
++ (id)processItemsWithSceneObject:(id)object properties:(id)properties pipeline:(id)pipeline;
 - (BOOL)p_delayedItemsAreUnique;
-- (TSCH3DChartElementSceneObjectProcessItems)initWithSceneObject:(id)a3 properties:(id)a4 pipeline:(id)a5;
-- (id)elementInfoWithSeries:(id)a3 position:(void *)a4;
-- (void)p_processElementInfoWithSeries:(id)a3 position:(void *)a4;
+- (TSCH3DChartElementSceneObjectProcessItems)initWithSceneObject:(id)object properties:(id)properties pipeline:(id)pipeline;
+- (id)elementInfoWithSeries:(id)series position:(void *)position;
+- (void)p_processElementInfoWithSeries:(id)series position:(void *)position;
 - (void)performItemsProcessing;
-- (void)processDelayedItemsWithOpacity:(float)a3;
+- (void)processDelayedItemsWithOpacity:(float)opacity;
 - (void)processItems;
 @end
 
 @implementation TSCH3DChartElementSceneObjectProcessItems
 
-+ (id)processItemsWithSceneObject:(id)a3 properties:(id)a4 pipeline:(id)a5
++ (id)processItemsWithSceneObject:(id)object properties:(id)properties pipeline:(id)pipeline
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 alloc];
-  v16 = objc_msgSend_initWithSceneObject_properties_pipeline_(v11, v12, v13, v14, v15, v8, v9, v10);
+  objectCopy = object;
+  propertiesCopy = properties;
+  pipelineCopy = pipeline;
+  v11 = [self alloc];
+  v16 = objc_msgSend_initWithSceneObject_properties_pipeline_(v11, v12, v13, v14, v15, objectCopy, propertiesCopy, pipelineCopy);
 
   return v16;
 }
 
-- (TSCH3DChartElementSceneObjectProcessItems)initWithSceneObject:(id)a3 properties:(id)a4 pipeline:(id)a5
+- (TSCH3DChartElementSceneObjectProcessItems)initWithSceneObject:(id)object properties:(id)properties pipeline:(id)pipeline
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  propertiesCopy = properties;
+  pipelineCopy = pipeline;
   v16.receiver = self;
   v16.super_class = TSCH3DChartElementSceneObjectProcessItems;
   v11 = [(TSCH3DChartElementSceneObjectProcessItems *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_sceneObject, v8);
-    objc_storeStrong(&v12->_properties, a4);
-    objc_storeStrong(&v12->_pipeline, a5);
+    objc_storeWeak(&v11->_sceneObject, objectCopy);
+    objc_storeStrong(&v12->_properties, properties);
+    objc_storeStrong(&v12->_pipeline, pipeline);
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     delayedItems = v12->_delayedItems;
     v12->_delayedItems = v13;
@@ -44,16 +44,16 @@
   return v12;
 }
 
-- (id)elementInfoWithSeries:(id)a3 position:(void *)a4
+- (id)elementInfoWithSeries:(id)series position:(void *)position
 {
-  v6 = a3;
+  seriesCopy = series;
   pipeline = self->_pipeline;
   properties = self->_properties;
-  v24 = *a4;
+  v24 = *position;
   v12 = objc_msgSend_useBoundsGeometry(self, v9, v24, v10, v11);
   HIBYTE(v23) = objc_msgSend_geometryOnly(self, v13, v14, v15, v16);
   LOBYTE(v23) = 0;
-  v21 = objc_msgSend_infoWithPipeline_properties_series_index_useBoundsGeometry_twoPasses_transparent_geometryOnly_(TSCH3DRenderElementInfo, v17, v18, v19, v20, pipeline, properties, v6, &v24, v12, 0, v23);
+  v21 = objc_msgSend_infoWithPipeline_properties_series_index_useBoundsGeometry_twoPasses_transparent_geometryOnly_(TSCH3DRenderElementInfo, v17, v18, v19, v20, pipeline, properties, seriesCopy, &v24, v12, 0, v23);
 
   return v21;
 }
@@ -164,9 +164,9 @@ LABEL_20:
   return v20;
 }
 
-- (void)processDelayedItemsWithOpacity:(float)a3
+- (void)processDelayedItemsWithOpacity:(float)opacity
 {
-  if (objc_msgSend_count(self->_delayedItems, a2, *&a3, v3, v4))
+  if (objc_msgSend_count(self->_delayedItems, a2, *&opacity, v3, v4))
   {
     v12 = objc_msgSend_processor(self->_pipeline, v8, v9, v10, v11);
     v16[0] = MEMORY[0x277D85DD0];
@@ -175,14 +175,14 @@ LABEL_20:
     v16[3] = &unk_27A6B6530;
     v16[4] = self;
     v16[5] = a2;
-    v17 = a3;
+    opacityCopy = opacity;
     objc_msgSend_performBlockWithProcessor_block_(TSCH3DRenderProcessorMatrixSession, v13, COERCE_DOUBLE(3221225472), v14, v15, v12, v16);
   }
 }
 
-- (void)p_processElementInfoWithSeries:(id)a3 position:(void *)a4
+- (void)p_processElementInfoWithSeries:(id)series position:(void *)position
 {
-  v34 = objc_msgSend_elementInfoWithSeries_position_(self, a2, v4, v5, v6, a3, a4);
+  v34 = objc_msgSend_elementInfoWithSeries_position_(self, a2, v4, v5, v6, series, position);
   WeakRetained = objc_loadWeakRetained(&self->_sceneObject);
   v13 = objc_msgSend_scene(self->_pipeline, v9, v10, v11, v12);
   v18 = objc_msgSend_delegateFromScene_(WeakRetained, v14, v15, v16, v17, v13);

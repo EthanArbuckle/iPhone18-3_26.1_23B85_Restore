@@ -2,8 +2,8 @@
 - (HistoryEntryRecentsItemProtocol)historyItem;
 - (NSUUID)id;
 - (_TtC4Maps30HistoryEntryRecentsItemWrapper)init;
-- (_TtC4Maps30HistoryEntryRecentsItemWrapper)initWithTitle:(id)a3 subtitle:(id)a4 historyItem:(id)a5;
-- (void)setId:(id)a3;
+- (_TtC4Maps30HistoryEntryRecentsItemWrapper)initWithTitle:(id)title subtitle:(id)subtitle historyItem:(id)item;
+- (void)setId:(id)id;
 @end
 
 @implementation HistoryEntryRecentsItemWrapper
@@ -30,7 +30,7 @@
   return v8.super.isa;
 }
 
-- (void)setId:(id)a3
+- (void)setId:(id)id
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -40,22 +40,22 @@
   v8 = OBJC_IVAR____TtC4Maps30HistoryEntryRecentsItemWrapper_id;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
 
-- (_TtC4Maps30HistoryEntryRecentsItemWrapper)initWithTitle:(id)a3 subtitle:(id)a4 historyItem:(id)a5
+- (_TtC4Maps30HistoryEntryRecentsItemWrapper)initWithTitle:(id)title subtitle:(id)subtitle historyItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   swift_unknownObjectRetain();
   UUID.init()();
-  v10 = v8;
+  v10 = titleCopy;
   *(self + OBJC_IVAR____TtC4Maps30HistoryEntryRecentsItemWrapper_title) = String.init(_:)(v10);
-  v11 = v9;
+  v11 = subtitleCopy;
   *(self + OBJC_IVAR____TtC4Maps30HistoryEntryRecentsItemWrapper_subtitle) = String.init(_:)(v11);
-  *(self + OBJC_IVAR____TtC4Maps30HistoryEntryRecentsItemWrapper_historyItem) = a5;
+  *(self + OBJC_IVAR____TtC4Maps30HistoryEntryRecentsItemWrapper_historyItem) = item;
   v14.receiver = self;
   v14.super_class = type metadata accessor for HistoryEntryRecentsItemWrapper(0);
   v12 = [(HistoryEntryRecentsItemWrapper *)&v14 init];

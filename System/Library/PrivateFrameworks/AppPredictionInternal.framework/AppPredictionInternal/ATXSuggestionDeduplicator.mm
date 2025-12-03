@@ -1,30 +1,30 @@
 @interface ATXSuggestionDeduplicator
 - (ATXSuggestionDeduplicator)init;
-- (BOOL)_bundleIdsAreRemoteAndNativeEquivalents:(id)a3 otherBundleId:(id)a4;
-- (BOOL)_isContactsWidgetIntent:(id)a3 overlappingContactsWithOtherContactsWidgetIntent:(id)a4;
-- (BOOL)_isWidget:(id)a3 showingContentOfAction:(id)a4;
-- (BOOL)_isWidget:(id)a3 showingContentOfInfoSuggestion:(id)a4;
-- (BOOL)executableSpecsAreDuplicates:(id)a3 otherExecutableSpec:(id)a4;
-- (BOOL)isWidget:(id)a3 showingIdenticalContentOfSuggestion:(id)a4;
-- (BOOL)suggestionIsDuplicate:(id)a3 appsOnHomeScreenPageAtIndex:(unint64_t)a4;
-- (BOOL)suggestionIsDuplicate:(id)a3 existingSuggestions:(id)a4 shouldCompareAcrossTypes:(BOOL)a5;
-- (BOOL)suggestionIsDuplicate:(id)a3 otherApps:(id)a4;
-- (BOOL)suggestionIsDuplicateAppOrWidget:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5;
-- (BOOL)suggestionsAreDuplicateActionAndLinkAction:(id)a3 otherSuggestion:(id)a4;
-- (BOOL)suggestionsAreDuplicateAppAndAction:(id)a3 otherSuggestion:(id)a4;
-- (BOOL)suggestionsAreDuplicateAppAndLinkAction:(id)a3 otherSuggestion:(id)a4;
-- (BOOL)suggestionsAreDuplicateWidgetAndAction:(id)a3 otherSuggestion:(id)a4;
-- (BOOL)widgetExtensionIdIsDuplicate:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5;
-- (BOOL)widgetExtensionIdIsPinned:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5;
-- (BOOL)widgetSuggestionIsDuplicate:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5;
-- (BOOL)widgetSuggestionIsPinned:(id)a3 homeScreenPage:(id)a4 excludingStackConfigId:(id)a5;
-- (id)_initWithVisibleAppsByPage:(id)a3;
-- (id)duplicateWidgetForWidgetSuggestion:(id)a3 otherWidgets:(id)a4;
+- (BOOL)_bundleIdsAreRemoteAndNativeEquivalents:(id)equivalents otherBundleId:(id)id;
+- (BOOL)_isContactsWidgetIntent:(id)intent overlappingContactsWithOtherContactsWidgetIntent:(id)widgetIntent;
+- (BOOL)_isWidget:(id)widget showingContentOfAction:(id)action;
+- (BOOL)_isWidget:(id)widget showingContentOfInfoSuggestion:(id)suggestion;
+- (BOOL)executableSpecsAreDuplicates:(id)duplicates otherExecutableSpec:(id)spec;
+- (BOOL)isWidget:(id)widget showingIdenticalContentOfSuggestion:(id)suggestion;
+- (BOOL)suggestionIsDuplicate:(id)duplicate appsOnHomeScreenPageAtIndex:(unint64_t)index;
+- (BOOL)suggestionIsDuplicate:(id)duplicate existingSuggestions:(id)suggestions shouldCompareAcrossTypes:(BOOL)types;
+- (BOOL)suggestionIsDuplicate:(id)duplicate otherApps:(id)apps;
+- (BOOL)suggestionIsDuplicateAppOrWidget:(id)widget homeScreenPageConfig:(id)config excludingStackConfigId:(id)id;
+- (BOOL)suggestionsAreDuplicateActionAndLinkAction:(id)action otherSuggestion:(id)suggestion;
+- (BOOL)suggestionsAreDuplicateAppAndAction:(id)action otherSuggestion:(id)suggestion;
+- (BOOL)suggestionsAreDuplicateAppAndLinkAction:(id)action otherSuggestion:(id)suggestion;
+- (BOOL)suggestionsAreDuplicateWidgetAndAction:(id)action otherSuggestion:(id)suggestion;
+- (BOOL)widgetExtensionIdIsDuplicate:(id)duplicate homeScreenPageConfig:(id)config excludingStackConfigId:(id)id;
+- (BOOL)widgetExtensionIdIsPinned:(id)pinned homeScreenPageConfig:(id)config excludingStackConfigId:(id)id;
+- (BOOL)widgetSuggestionIsDuplicate:(id)duplicate homeScreenPageConfig:(id)config excludingStackConfigId:(id)id;
+- (BOOL)widgetSuggestionIsPinned:(id)pinned homeScreenPage:(id)page excludingStackConfigId:(id)id;
+- (id)_initWithVisibleAppsByPage:(id)page;
+- (id)duplicateWidgetForWidgetSuggestion:(id)suggestion otherWidgets:(id)widgets;
 - (id)executableClassStringsToUnarchiveDuringComparison;
-- (id)pinnedWidgetIdentifiablesWithExtensionId:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5 shouldStopAfterFindingFirstOne:(BOOL)a6;
-- (id)stacksToConsiderForLeftOfHomeForStackId:(id)a3 stacksOnPage:(id)a4;
-- (id)stacksWithDuplicateWidgetExtensionId:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5;
-- (id)stacksWithDuplicateWidgetSuggestion:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5;
+- (id)pinnedWidgetIdentifiablesWithExtensionId:(id)id homeScreenPageConfig:(id)config excludingStackConfigId:(id)configId shouldStopAfterFindingFirstOne:(BOOL)one;
+- (id)stacksToConsiderForLeftOfHomeForStackId:(id)id stacksOnPage:(id)page;
+- (id)stacksWithDuplicateWidgetExtensionId:(id)id homeScreenPageConfig:(id)config excludingStackConfigId:(id)configId;
+- (id)stacksWithDuplicateWidgetSuggestion:(id)suggestion homeScreenPageConfig:(id)config excludingStackConfigId:(id)id;
 @end
 
 @implementation ATXSuggestionDeduplicator
@@ -32,37 +32,37 @@
 - (ATXSuggestionDeduplicator)init
 {
   v3 = +[_ATXAppIconState sharedInstance];
-  v4 = [v3 nonFolderAppSetOnPages];
-  v5 = [(ATXSuggestionDeduplicator *)self _initWithVisibleAppsByPage:v4];
+  nonFolderAppSetOnPages = [v3 nonFolderAppSetOnPages];
+  v5 = [(ATXSuggestionDeduplicator *)self _initWithVisibleAppsByPage:nonFolderAppSetOnPages];
 
   return v5;
 }
 
-- (id)_initWithVisibleAppsByPage:(id)a3
+- (id)_initWithVisibleAppsByPage:(id)page
 {
-  v5 = a3;
+  pageCopy = page;
   v9.receiver = self;
   v9.super_class = ATXSuggestionDeduplicator;
   v6 = [(ATXSuggestionDeduplicator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_visibleAppsByPage, a3);
+    objc_storeStrong(&v6->_visibleAppsByPage, page);
   }
 
   return v7;
 }
 
-- (BOOL)suggestionIsDuplicate:(id)a3 existingSuggestions:(id)a4 shouldCompareAcrossTypes:(BOOL)a5
+- (BOOL)suggestionIsDuplicate:(id)duplicate existingSuggestions:(id)suggestions shouldCompareAcrossTypes:(BOOL)types
 {
-  v27 = a5;
+  typesCopy = types;
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  duplicateCopy = duplicate;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = a4;
+  obj = suggestions;
   v7 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v7)
   {
@@ -79,24 +79,24 @@
 
         v10 = *(*(&v31 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 executableSpecification];
-        v13 = [v12 executableType];
-        v14 = [v6 executableSpecification];
-        v15 = [v14 executableType];
+        executableSpecification = [v10 executableSpecification];
+        executableType = [executableSpecification executableType];
+        executableSpecification2 = [duplicateCopy executableSpecification];
+        executableType2 = [executableSpecification2 executableType];
 
-        if (v13 == v15)
+        if (executableType == executableType2)
         {
-          v16 = [v10 executableSpecification];
-          v17 = [v16 executableClassString];
-          v18 = [v6 executableSpecification];
-          v19 = [v18 executableClassString];
-          v20 = [v17 isEqualToString:v19];
+          executableSpecification3 = [v10 executableSpecification];
+          executableClassString = [executableSpecification3 executableClassString];
+          executableSpecification4 = [duplicateCopy executableSpecification];
+          executableClassString2 = [executableSpecification4 executableClassString];
+          v20 = [executableClassString isEqualToString:executableClassString2];
 
           if (v20)
           {
-            v21 = [v6 executableSpecification];
-            v22 = [v10 executableSpecification];
-            v23 = [(ATXSuggestionDeduplicator *)self executableSpecsAreDuplicates:v21 otherExecutableSpec:v22];
+            executableSpecification5 = [duplicateCopy executableSpecification];
+            executableSpecification6 = [v10 executableSpecification];
+            v23 = [(ATXSuggestionDeduplicator *)self executableSpecsAreDuplicates:executableSpecification5 otherExecutableSpec:executableSpecification6];
 
             if (v23)
             {
@@ -105,7 +105,7 @@
           }
         }
 
-        else if (v27 && ([(ATXSuggestionDeduplicator *)self suggestionsAreDuplicateAppAndAction:v6 otherSuggestion:v10]|| [(ATXSuggestionDeduplicator *)self suggestionsAreDuplicateAppAndLinkAction:v6 otherSuggestion:v10]|| [(ATXSuggestionDeduplicator *)self suggestionsAreDuplicateWidgetAndAction:v6 otherSuggestion:v10]|| [(ATXSuggestionDeduplicator *)self suggestionsAreDuplicateActionAndLinkAction:v6 otherSuggestion:v10]))
+        else if (typesCopy && ([(ATXSuggestionDeduplicator *)self suggestionsAreDuplicateAppAndAction:duplicateCopy otherSuggestion:v10]|| [(ATXSuggestionDeduplicator *)self suggestionsAreDuplicateAppAndLinkAction:duplicateCopy otherSuggestion:v10]|| [(ATXSuggestionDeduplicator *)self suggestionsAreDuplicateWidgetAndAction:duplicateCopy otherSuggestion:v10]|| [(ATXSuggestionDeduplicator *)self suggestionsAreDuplicateActionAndLinkAction:duplicateCopy otherSuggestion:v10]))
         {
 LABEL_18:
           objc_autoreleasePoolPop(v11);
@@ -133,19 +133,19 @@ LABEL_19:
   return v24;
 }
 
-- (BOOL)suggestionsAreDuplicateAppAndAction:(id)a3 otherSuggestion:(id)a4
+- (BOOL)suggestionsAreDuplicateAppAndAction:(id)action otherSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 executableSpecification];
-  if ([v7 executableType] == 2)
+  actionCopy = action;
+  suggestionCopy = suggestion;
+  executableSpecification = [actionCopy executableSpecification];
+  if ([executableSpecification executableType] == 2)
   {
-    v8 = [v6 executableSpecification];
-    v9 = [v8 executableType];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableType = [executableSpecification2 executableType];
 
-    v10 = v5;
-    v11 = v6;
-    if (v9 == 1)
+    v10 = actionCopy;
+    v11 = suggestionCopy;
+    if (executableType == 1)
     {
       goto LABEL_7;
     }
@@ -155,35 +155,35 @@ LABEL_19:
   {
   }
 
-  v12 = [v5 executableSpecification];
-  if ([v12 executableType] == 1)
+  executableSpecification3 = [actionCopy executableSpecification];
+  if ([executableSpecification3 executableType] == 1)
   {
-    v13 = [v6 executableSpecification];
-    v14 = [v13 executableType];
+    executableSpecification4 = [suggestionCopy executableSpecification];
+    executableType2 = [executableSpecification4 executableType];
 
-    v10 = v6;
-    v11 = v5;
-    if (v14 != 2)
+    v10 = suggestionCopy;
+    v11 = actionCopy;
+    if (executableType2 != 2)
     {
       v25 = 0;
       goto LABEL_20;
     }
 
 LABEL_7:
-    v12 = v10;
+    executableSpecification3 = v10;
     v15 = v11;
-    v16 = [v12 executableSpecification];
-    v17 = [v16 executableClassString];
+    v12ExecutableSpecification = [executableSpecification3 executableSpecification];
+    executableClassString = [v12ExecutableSpecification executableClassString];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v17 isEqualToString:v19];
+    v20 = [executableClassString isEqualToString:v19];
 
     if (v20)
     {
-      v21 = [v12 executableSpecification];
-      v22 = [v21 executableObject];
+      v12ExecutableSpecification2 = [executableSpecification3 executableSpecification];
+      executableObject = [v12ExecutableSpecification2 executableObject];
 
-      v23 = [v22 bundleId];
+      bundleId = [executableObject bundleId];
       v24 = ATXBundleIdReplacementForBundleId();
     }
 
@@ -192,16 +192,16 @@ LABEL_7:
       v24 = 0;
     }
 
-    v26 = [v15 executableSpecification];
-    v27 = [v26 executableClassString];
+    executableSpecification5 = [v15 executableSpecification];
+    executableClassString2 = [executableSpecification5 executableClassString];
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    v30 = [v27 isEqualToString:v29];
+    v30 = [executableClassString2 isEqualToString:v29];
 
     if (v30)
     {
-      v31 = [v15 executableSpecification];
-      v32 = [v31 executableObject];
+      executableSpecification6 = [v15 executableSpecification];
+      executableObject2 = [executableSpecification6 executableObject];
 
       v33 = ATXBundleIdReplacementForBundleId();
 
@@ -230,19 +230,19 @@ LABEL_20:
   return v25;
 }
 
-- (BOOL)suggestionsAreDuplicateAppAndLinkAction:(id)a3 otherSuggestion:(id)a4
+- (BOOL)suggestionsAreDuplicateAppAndLinkAction:(id)action otherSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 executableSpecification];
-  if ([v7 executableType] == 10)
+  actionCopy = action;
+  suggestionCopy = suggestion;
+  executableSpecification = [actionCopy executableSpecification];
+  if ([executableSpecification executableType] == 10)
   {
-    v8 = [v6 executableSpecification];
-    v9 = [v8 executableType];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableType = [executableSpecification2 executableType];
 
-    v10 = v5;
-    v11 = v6;
-    if (v9 == 1)
+    v10 = actionCopy;
+    v11 = suggestionCopy;
+    if (executableType == 1)
     {
       goto LABEL_7;
     }
@@ -252,35 +252,35 @@ LABEL_20:
   {
   }
 
-  v12 = [v5 executableSpecification];
-  if ([v12 executableType] == 1)
+  executableSpecification3 = [actionCopy executableSpecification];
+  if ([executableSpecification3 executableType] == 1)
   {
-    v13 = [v6 executableSpecification];
-    v14 = [v13 executableType];
+    executableSpecification4 = [suggestionCopy executableSpecification];
+    executableType2 = [executableSpecification4 executableType];
 
-    v10 = v6;
-    v11 = v5;
-    if (v14 != 10)
+    v10 = suggestionCopy;
+    v11 = actionCopy;
+    if (executableType2 != 10)
     {
       v25 = 0;
       goto LABEL_20;
     }
 
 LABEL_7:
-    v12 = v10;
+    executableSpecification3 = v10;
     v15 = v11;
-    v16 = [v12 executableSpecification];
-    v17 = [v16 executableClassString];
+    v12ExecutableSpecification = [executableSpecification3 executableSpecification];
+    executableClassString = [v12ExecutableSpecification executableClassString];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v17 isEqualToString:v19];
+    v20 = [executableClassString isEqualToString:v19];
 
     if (v20)
     {
-      v21 = [v12 executableSpecification];
-      v22 = [v21 executableObject];
+      v12ExecutableSpecification2 = [executableSpecification3 executableSpecification];
+      executableObject = [v12ExecutableSpecification2 executableObject];
 
-      v23 = [v22 bundleId];
+      bundleId = [executableObject bundleId];
       v24 = ATXBundleIdReplacementForBundleId();
     }
 
@@ -289,16 +289,16 @@ LABEL_7:
       v24 = 0;
     }
 
-    v26 = [v15 executableSpecification];
-    v27 = [v26 executableClassString];
+    executableSpecification5 = [v15 executableSpecification];
+    executableClassString2 = [executableSpecification5 executableClassString];
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    v30 = [v27 isEqualToString:v29];
+    v30 = [executableClassString2 isEqualToString:v29];
 
     if (v30)
     {
-      v31 = [v15 executableSpecification];
-      v32 = [v31 executableObject];
+      executableSpecification6 = [v15 executableSpecification];
+      executableObject2 = [executableSpecification6 executableObject];
 
       v33 = ATXBundleIdReplacementForBundleId();
 
@@ -327,19 +327,19 @@ LABEL_20:
   return v25;
 }
 
-- (BOOL)suggestionsAreDuplicateActionAndLinkAction:(id)a3 otherSuggestion:(id)a4
+- (BOOL)suggestionsAreDuplicateActionAndLinkAction:(id)action otherSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 executableSpecification];
-  if ([v7 executableType] == 2)
+  actionCopy = action;
+  suggestionCopy = suggestion;
+  executableSpecification = [actionCopy executableSpecification];
+  if ([executableSpecification executableType] == 2)
   {
-    v8 = [v6 executableSpecification];
-    v9 = [v8 executableType];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableType = [executableSpecification2 executableType];
 
-    v10 = v5;
-    v11 = v6;
-    if (v9 == 10)
+    v10 = actionCopy;
+    v11 = suggestionCopy;
+    if (executableType == 10)
     {
       goto LABEL_7;
     }
@@ -349,35 +349,35 @@ LABEL_20:
   {
   }
 
-  v12 = [v5 executableSpecification];
-  if ([v12 executableType] == 10)
+  executableSpecification3 = [actionCopy executableSpecification];
+  if ([executableSpecification3 executableType] == 10)
   {
-    v13 = [v6 executableSpecification];
-    v14 = [v13 executableType];
+    executableSpecification4 = [suggestionCopy executableSpecification];
+    executableType2 = [executableSpecification4 executableType];
 
-    v10 = v6;
-    v11 = v5;
-    if (v14 != 2)
+    v10 = suggestionCopy;
+    v11 = actionCopy;
+    if (executableType2 != 2)
     {
       v25 = 0;
       goto LABEL_20;
     }
 
 LABEL_7:
-    v12 = v10;
+    executableSpecification3 = v10;
     v15 = v11;
-    v16 = [v12 executableSpecification];
-    v17 = [v16 executableClassString];
+    v12ExecutableSpecification = [executableSpecification3 executableSpecification];
+    executableClassString = [v12ExecutableSpecification executableClassString];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v17 isEqualToString:v19];
+    v20 = [executableClassString isEqualToString:v19];
 
     if (v20)
     {
-      v21 = [v12 executableSpecification];
-      v22 = [v21 executableObject];
+      v12ExecutableSpecification2 = [executableSpecification3 executableSpecification];
+      executableObject = [v12ExecutableSpecification2 executableObject];
 
-      v23 = [v22 bundleId];
+      bundleId = [executableObject bundleId];
       v24 = ATXBundleIdReplacementForBundleId();
     }
 
@@ -386,18 +386,18 @@ LABEL_7:
       v24 = 0;
     }
 
-    v26 = [v15 executableSpecification];
-    v27 = [v26 executableClassString];
+    executableSpecification5 = [v15 executableSpecification];
+    executableClassString2 = [executableSpecification5 executableClassString];
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    v30 = [v27 isEqualToString:v29];
+    v30 = [executableClassString2 isEqualToString:v29];
 
     if (v30)
     {
-      v31 = [v15 executableSpecification];
-      v32 = [v31 executableObject];
+      executableSpecification6 = [v15 executableSpecification];
+      executableObject2 = [executableSpecification6 executableObject];
 
-      v33 = [v32 bundleId];
+      bundleId2 = [executableObject2 bundleId];
       v34 = ATXBundleIdReplacementForBundleId();
 
       if (v24 && v34 && ([v24 isEqualToString:v34] & 1) != 0)
@@ -425,19 +425,19 @@ LABEL_20:
   return v25;
 }
 
-- (BOOL)suggestionsAreDuplicateWidgetAndAction:(id)a3 otherSuggestion:(id)a4
+- (BOOL)suggestionsAreDuplicateWidgetAndAction:(id)action otherSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 executableSpecification];
-  if ([v7 executableType] == 2)
+  actionCopy = action;
+  suggestionCopy = suggestion;
+  executableSpecification = [actionCopy executableSpecification];
+  if ([executableSpecification executableType] == 2)
   {
-    v8 = [v6 executableSpecification];
-    v9 = [v8 executableType];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableType = [executableSpecification2 executableType];
 
-    v10 = v5;
-    v11 = v6;
-    if (v9 == 3)
+    v10 = actionCopy;
+    v11 = suggestionCopy;
+    if (executableType == 3)
     {
       goto LABEL_7;
     }
@@ -447,8 +447,8 @@ LABEL_20:
   {
   }
 
-  v12 = [v5 executableSpecification];
-  if ([v12 executableType] != 3)
+  executableSpecification3 = [actionCopy executableSpecification];
+  if ([executableSpecification3 executableType] != 3)
   {
     v32 = 0;
 LABEL_18:
@@ -456,53 +456,53 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v13 = [v6 executableSpecification];
-  v14 = [v13 executableType];
+  executableSpecification4 = [suggestionCopy executableSpecification];
+  executableType2 = [executableSpecification4 executableType];
 
-  v10 = v6;
-  v11 = v5;
-  if (v14 == 2)
+  v10 = suggestionCopy;
+  v11 = actionCopy;
+  if (executableType2 == 2)
   {
 LABEL_7:
-    v12 = v10;
+    executableSpecification3 = v10;
     v15 = v11;
-    v16 = [v12 executableSpecification];
-    v17 = [v16 executableClassString];
+    v12ExecutableSpecification = [executableSpecification3 executableSpecification];
+    executableClassString = [v12ExecutableSpecification executableClassString];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v17 isEqualToString:v19];
+    v20 = [executableClassString isEqualToString:v19];
 
     if (!v20)
     {
       goto LABEL_13;
     }
 
-    v21 = [v12 executableSpecification];
-    v22 = [v21 executableObject];
+    v12ExecutableSpecification2 = [executableSpecification3 executableSpecification];
+    executableObject = [v12ExecutableSpecification2 executableObject];
 
-    v23 = [v22 intent];
+    intent = [executableObject intent];
 
-    if (v23)
+    if (intent)
     {
-      v24 = [v15 executableSpecification];
-      v25 = [v24 executableClassString];
+      executableSpecification5 = [v15 executableSpecification];
+      executableClassString2 = [executableSpecification5 executableClassString];
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
-      v28 = [v25 isEqualToString:v27];
+      v28 = [executableClassString2 isEqualToString:v27];
 
       if (!v28)
       {
         goto LABEL_15;
       }
 
-      v29 = [v15 executableSpecification];
-      v30 = [v29 executableObject];
+      executableSpecification6 = [v15 executableSpecification];
+      executableObject2 = [executableSpecification6 executableObject];
 
-      v31 = [v30 intent];
+      intent2 = [executableObject2 intent];
 
-      if (v31)
+      if (intent2)
       {
-        v32 = [ATXActionToWidgetConverter isWidgetIntent:v31 validConversionFromActionIntent:v23];
+        v32 = [ATXActionToWidgetConverter isWidgetIntent:intent2 validConversionFromActionIntent:intent];
       }
 
       else
@@ -527,17 +527,17 @@ LABEL_19:
   return v32;
 }
 
-- (BOOL)_bundleIdsAreRemoteAndNativeEquivalents:(id)a3 otherBundleId:(id)a4
+- (BOOL)_bundleIdsAreRemoteAndNativeEquivalents:(id)equivalents otherBundleId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  if (ATXIsRemoteAppBundleId() && (v7 = ATXIsRemoteAppBundleId(), v8 = v5, v9 = v6, !v7) || ATXIsRemoteAppBundleId() && (v10 = ATXIsRemoteAppBundleId(), v8 = v6, v9 = v5, (v10 & 1) == 0))
+  equivalentsCopy = equivalents;
+  idCopy = id;
+  if (ATXIsRemoteAppBundleId() && (v7 = ATXIsRemoteAppBundleId(), v8 = equivalentsCopy, v9 = idCopy, !v7) || ATXIsRemoteAppBundleId() && (v10 = ATXIsRemoteAppBundleId(), v8 = idCopy, v9 = equivalentsCopy, (v10 & 1) == 0))
   {
     v12 = v8;
     v13 = v9;
     v14 = ATXBundleIdForRemoteBundleId();
-    v15 = [MEMORY[0x277CF9650] sharedCategories];
-    v16 = [v15 bundleIDForPlatform:*MEMORY[0x277CF9648] fromBundleID:v14 platform:*MEMORY[0x277CF9640]];
+    mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
+    v16 = [mEMORY[0x277CF9650] bundleIDForPlatform:*MEMORY[0x277CF9648] fromBundleID:v14 platform:*MEMORY[0x277CF9640]];
 
     v11 = v16 && ([v16 isEqualToString:v13] & 1) != 0;
   }
@@ -550,38 +550,38 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)executableSpecsAreDuplicates:(id)a3 otherExecutableSpec:(id)a4
+- (BOOL)executableSpecsAreDuplicates:(id)duplicates otherExecutableSpec:(id)spec
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 executableType];
-  if (v8 == [v7 executableType] && objc_msgSend(v6, "executableType") && objc_msgSend(v6, "executableType") != 11 && (objc_msgSend(v6, "executableClassString"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "executableClassString"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqualToString:", v10), v10, v9, v11))
+  duplicatesCopy = duplicates;
+  specCopy = spec;
+  executableType = [duplicatesCopy executableType];
+  if (executableType == [specCopy executableType] && objc_msgSend(duplicatesCopy, "executableType") && objc_msgSend(duplicatesCopy, "executableType") != 11 && (objc_msgSend(duplicatesCopy, "executableClassString"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(specCopy, "executableClassString"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqualToString:", v10), v10, v9, v11))
   {
-    v12 = [(ATXSuggestionDeduplicator *)self executableClassStringsToUnarchiveDuringComparison];
-    v13 = [v6 executableClassString];
-    v14 = [v12 containsObject:v13];
+    executableClassStringsToUnarchiveDuringComparison = [(ATXSuggestionDeduplicator *)self executableClassStringsToUnarchiveDuringComparison];
+    executableClassString = [duplicatesCopy executableClassString];
+    v14 = [executableClassStringsToUnarchiveDuringComparison containsObject:executableClassString];
 
     if ((v14 & 1) == 0)
     {
-      v19 = [v6 executableIdentifier];
-      v21 = [v7 executableIdentifier];
-      LOBYTE(v26) = [v19 isEqualToString:v21];
+      executableIdentifier = [duplicatesCopy executableIdentifier];
+      executableIdentifier2 = [specCopy executableIdentifier];
+      LOBYTE(widgetKind3) = [executableIdentifier isEqualToString:executableIdentifier2];
 LABEL_58:
 
       goto LABEL_12;
     }
 
-    v15 = [v6 executableClassString];
+    executableClassString2 = [duplicatesCopy executableClassString];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v18 = [v15 isEqualToString:v17];
+    v18 = [executableClassString2 isEqualToString:v17];
 
     if (v18)
     {
-      v19 = [v6 executableObject];
-      v20 = [v7 executableObject];
-      v21 = v20;
-      if (v19 && v20)
+      executableIdentifier = [duplicatesCopy executableObject];
+      executableObject = [specCopy executableObject];
+      executableIdentifier2 = executableObject;
+      if (executableIdentifier && executableObject)
       {
         goto LABEL_9;
       }
@@ -595,35 +595,35 @@ LABEL_58:
 LABEL_24:
 
 LABEL_25:
-      LOBYTE(v26) = 1;
+      LOBYTE(widgetKind3) = 1;
       goto LABEL_58;
     }
 
-    v28 = [v6 executableClassString];
+    executableClassString3 = [duplicatesCopy executableClassString];
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
-    v31 = [v28 isEqualToString:v30];
+    v31 = [executableClassString3 isEqualToString:v30];
 
     if (v31)
     {
-      v32 = [v6 executableObject];
-      v33 = [v7 executableObject];
-      v34 = v33;
-      if (v32 && v33)
+      executableObject2 = [duplicatesCopy executableObject];
+      executableObject3 = [specCopy executableObject];
+      v34 = executableObject3;
+      if (executableObject2 && executableObject3)
       {
-        if (![(ATXSuggestionDeduplicator *)self _bundleIdsAreRemoteAndNativeEquivalents:v32 otherBundleId:v33])
+        if (![(ATXSuggestionDeduplicator *)self _bundleIdsAreRemoteAndNativeEquivalents:executableObject2 otherBundleId:executableObject3])
         {
-          if ([v6 executableType] == 1 && objc_msgSend(v7, "executableType") == 1)
+          if ([duplicatesCopy executableType] == 1 && objc_msgSend(specCopy, "executableType") == 1)
           {
             v35 = ATXBundleIdReplacementForBundleId();
 
             v36 = ATXBundleIdReplacementForBundleId();
 
             v34 = v36;
-            v32 = v35;
+            executableObject2 = v35;
           }
 
-          LOBYTE(v26) = [v32 isEqual:v34];
+          LOBYTE(widgetKind3) = [executableObject2 isEqual:v34];
           goto LABEL_40;
         }
       }
@@ -637,56 +637,56 @@ LABEL_25:
         }
       }
 
-      LOBYTE(v26) = 1;
+      LOBYTE(widgetKind3) = 1;
 LABEL_40:
 
       goto LABEL_12;
     }
 
-    v45 = [v6 executableClassString];
+    executableClassString4 = [duplicatesCopy executableClassString];
     v46 = objc_opt_class();
     v47 = NSStringFromClass(v46);
-    v48 = [v45 isEqualToString:v47];
+    v48 = [executableClassString4 isEqualToString:v47];
 
     if (v48)
     {
-      v19 = [v6 executableObject];
-      v21 = [v7 executableObject];
-      v49 = [v19 appBundleIdentifier];
-      v50 = [v21 appBundleIdentifier];
-      v51 = [v49 isEqualToString:v50];
+      executableIdentifier = [duplicatesCopy executableObject];
+      executableIdentifier2 = [specCopy executableObject];
+      appBundleIdentifier = [executableIdentifier appBundleIdentifier];
+      appBundleIdentifier2 = [executableIdentifier2 appBundleIdentifier];
+      v51 = [appBundleIdentifier isEqualToString:appBundleIdentifier2];
 
       if (!v51)
       {
         goto LABEL_57;
       }
 
-      v52 = [v19 widgetBundleIdentifier];
-      v53 = [v21 widgetBundleIdentifier];
-      v54 = [v52 isEqualToString:v53];
+      widgetBundleIdentifier = [executableIdentifier widgetBundleIdentifier];
+      widgetBundleIdentifier2 = [executableIdentifier2 widgetBundleIdentifier];
+      v54 = [widgetBundleIdentifier isEqualToString:widgetBundleIdentifier2];
 
       if (!v54)
       {
         goto LABEL_57;
       }
 
-      if (([v19 isFallback] & 1) == 0 && (objc_msgSend(v21, "isFallback") & 1) == 0)
+      if (([executableIdentifier isFallback] & 1) == 0 && (objc_msgSend(executableIdentifier2, "isFallback") & 1) == 0)
       {
-        v55 = [v19 intent];
-        if (v55)
+        intent = [executableIdentifier intent];
+        if (intent)
         {
 
           goto LABEL_51;
         }
 
-        v79 = [v21 intent];
+        intent2 = [executableIdentifier2 intent];
 
-        if (v79)
+        if (intent2)
         {
 LABEL_51:
-          v80 = [v19 intent];
-          v81 = [v21 intent];
-          v82 = [v80 atx_isEqualToIntent:v81];
+          intent3 = [executableIdentifier intent];
+          intent4 = [executableIdentifier2 intent];
+          v82 = [intent3 atx_isEqualToIntent:intent4];
 
           if (!v82)
           {
@@ -695,32 +695,32 @@ LABEL_51:
         }
       }
 
-      v83 = [v19 widgetKind];
-      if (v83)
+      widgetKind = [executableIdentifier widgetKind];
+      if (widgetKind)
       {
       }
 
       else
       {
-        v84 = [v21 widgetKind];
+        widgetKind2 = [executableIdentifier2 widgetKind];
 
-        if (!v84)
+        if (!widgetKind2)
         {
           goto LABEL_25;
         }
       }
 
-      v26 = [v21 widgetKind];
+      widgetKind3 = [executableIdentifier2 widgetKind];
 
-      if (!v26)
+      if (!widgetKind3)
       {
         goto LABEL_58;
       }
 
-      v85 = [v19 widgetKind];
-      v86 = widgetKindForDeduping(v85);
-      v87 = [v21 widgetKind];
-      v88 = widgetKindForDeduping(v87);
+      widgetKind4 = [executableIdentifier widgetKind];
+      v86 = widgetKindForDeduping(widgetKind4);
+      widgetKind5 = [executableIdentifier2 widgetKind];
+      v88 = widgetKindForDeduping(widgetKind5);
       v89 = [v86 isEqualToString:v88];
 
       if (v89)
@@ -729,21 +729,21 @@ LABEL_51:
       }
 
 LABEL_57:
-      LOBYTE(v26) = 0;
+      LOBYTE(widgetKind3) = 0;
       goto LABEL_58;
     }
 
-    v64 = [v6 executableClassString];
+    executableClassString5 = [duplicatesCopy executableClassString];
     v65 = objc_opt_class();
     v66 = NSStringFromClass(v65);
-    v67 = [v64 isEqualToString:v66];
+    v67 = [executableClassString5 isEqualToString:v66];
 
     if (v67)
     {
-      v19 = [v6 executableObject];
-      v21 = [v7 executableObject];
-      LODWORD(v26) = [v19 isEqual:v21];
-      if (!v26)
+      executableIdentifier = [duplicatesCopy executableObject];
+      executableIdentifier2 = [specCopy executableObject];
+      LODWORD(widgetKind3) = [executableIdentifier isEqual:executableIdentifier2];
+      if (!widgetKind3)
       {
         goto LABEL_58;
       }
@@ -751,39 +751,39 @@ LABEL_57:
       v23 = __atxlog_handle_blending();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        [(ATXSuggestionDeduplicator *)v19 executableSpecsAreDuplicates:v21 otherExecutableSpec:v23];
+        [(ATXSuggestionDeduplicator *)executableIdentifier executableSpecsAreDuplicates:executableIdentifier2 otherExecutableSpec:v23];
       }
 
       goto LABEL_35;
     }
 
-    v68 = [v6 executableClassString];
+    executableClassString6 = [duplicatesCopy executableClassString];
     v69 = objc_opt_class();
     v70 = NSStringFromClass(v69);
-    LODWORD(v26) = [v68 isEqualToString:v70];
+    LODWORD(widgetKind3) = [executableClassString6 isEqualToString:v70];
 
-    if (v26)
+    if (widgetKind3)
     {
-      v19 = [v6 executableObject];
-      v71 = [v7 executableObject];
-      v21 = v71;
-      if (v19 && v71)
+      executableIdentifier = [duplicatesCopy executableObject];
+      executableObject4 = [specCopy executableObject];
+      executableIdentifier2 = executableObject4;
+      if (executableIdentifier && executableObject4)
       {
 LABEL_9:
-        v22 = [v19 bundleId];
+        bundleId = [executableIdentifier bundleId];
         v23 = ATXBundleIdReplacementForBundleId();
 
-        v24 = [v21 bundleId];
+        bundleId2 = [executableIdentifier2 bundleId];
         v25 = ATXBundleIdReplacementForBundleId();
 
         if (([v23 isEqualToString:v25]& 1) != 0)
         {
-          LOBYTE(v26) = 1;
+          LOBYTE(widgetKind3) = 1;
         }
 
         else
         {
-          LOBYTE(v26) = [v19 isEqual:v21];
+          LOBYTE(widgetKind3) = [executableIdentifier isEqual:executableIdentifier2];
         }
 
 LABEL_35:
@@ -802,12 +802,12 @@ LABEL_35:
 
   else
   {
-    LOBYTE(v26) = 0;
+    LOBYTE(widgetKind3) = 0;
   }
 
 LABEL_12:
 
-  return v26;
+  return widgetKind3;
 }
 
 - (id)executableClassStringsToUnarchiveDuringComparison
@@ -846,32 +846,32 @@ void __78__ATXSuggestionDeduplicator_executableClassStringsToUnarchiveDuringComp
   objc_autoreleasePoolPop(v0);
 }
 
-- (BOOL)isWidget:(id)a3 showingIdenticalContentOfSuggestion:(id)a4
+- (BOOL)isWidget:(id)widget showingIdenticalContentOfSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 executableSpecification];
-  v9 = [v8 executableType];
+  widgetCopy = widget;
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v9 == 3)
+  if (executableType == 3)
   {
-    v10 = [v7 atxInfoSuggestionExecutableObject];
-    v11 = [(ATXSuggestionDeduplicator *)self _isWidget:v6 showingContentOfInfoSuggestion:v10];
+    atxInfoSuggestionExecutableObject = [suggestionCopy atxInfoSuggestionExecutableObject];
+    v11 = [(ATXSuggestionDeduplicator *)self _isWidget:widgetCopy showingContentOfInfoSuggestion:atxInfoSuggestionExecutableObject];
   }
 
   else
   {
-    v12 = [v7 executableSpecification];
-    v13 = [v12 executableType];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableType2 = [executableSpecification2 executableType];
 
-    if (v13 != 2)
+    if (executableType2 != 2)
     {
       v14 = 0;
       goto LABEL_7;
     }
 
-    v10 = [v7 atxActionExecutableObject];
-    v11 = [(ATXSuggestionDeduplicator *)self _isWidget:v6 showingContentOfAction:v10];
+    atxInfoSuggestionExecutableObject = [suggestionCopy atxActionExecutableObject];
+    v11 = [(ATXSuggestionDeduplicator *)self _isWidget:widgetCopy showingContentOfAction:atxInfoSuggestionExecutableObject];
   }
 
   v14 = v11;
@@ -880,93 +880,93 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)_isWidget:(id)a3 showingContentOfInfoSuggestion:(id)a4
+- (BOOL)_isWidget:(id)widget showingContentOfInfoSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  widgetCopy = widget;
+  suggestionCopy = suggestion;
+  if (!suggestionCopy)
   {
     goto LABEL_22;
   }
 
-  v8 = [v6 extensionBundleId];
-  v9 = [v7 widgetBundleIdentifier];
-  v10 = [v8 isEqualToString:v9];
+  extensionBundleId = [widgetCopy extensionBundleId];
+  widgetBundleIdentifier = [suggestionCopy widgetBundleIdentifier];
+  v10 = [extensionBundleId isEqualToString:widgetBundleIdentifier];
 
   if (!v10)
   {
     goto LABEL_22;
   }
 
-  v11 = [v6 extensionBundleId];
-  if (![v11 isEqualToString:@"com.apple.PeopleViewService.PeopleWidget-iOS"] || (objc_msgSend(v6, "intent"), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  extensionBundleId2 = [widgetCopy extensionBundleId];
+  if (![extensionBundleId2 isEqualToString:@"com.apple.PeopleViewService.PeopleWidget-iOS"] || (objc_msgSend(widgetCopy, "intent"), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
 LABEL_8:
-    v18 = [v6 widgetKind];
-    v19 = widgetKindForDeduping(v18);
-    v20 = [v7 widgetKind];
-    v21 = widgetKindForDeduping(v20);
+    widgetKind = [widgetCopy widgetKind];
+    v19 = widgetKindForDeduping(widgetKind);
+    widgetKind2 = [suggestionCopy widgetKind];
+    v21 = widgetKindForDeduping(widgetKind2);
     v22 = [v19 isEqualToString:v21];
 
     if (v22)
     {
-      if ([v7 isFallback])
+      if ([suggestionCopy isFallback])
       {
 LABEL_16:
         v17 = 1;
         goto LABEL_23;
       }
 
-      v23 = [v7 widgetBundleIdentifier];
-      if ([v23 isEqualToString:@"com.apple.mobilecal.CalendarWidgetExtension"])
+      widgetBundleIdentifier2 = [suggestionCopy widgetBundleIdentifier];
+      if ([widgetBundleIdentifier2 isEqualToString:@"com.apple.mobilecal.CalendarWidgetExtension"])
       {
 LABEL_15:
 
         goto LABEL_16;
       }
 
-      v24 = [v7 criterion];
-      if ([v24 isEqualToString:@"ATXWeatherWakeUp"])
+      criterion = [suggestionCopy criterion];
+      if ([criterion isEqualToString:@"ATXWeatherWakeUp"])
       {
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v25 = [v7 widgetBundleIdentifier];
-      if ([v25 isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"])
+      widgetBundleIdentifier3 = [suggestionCopy widgetBundleIdentifier];
+      if ([widgetBundleIdentifier3 isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"])
       {
 
         goto LABEL_14;
       }
 
-      v26 = [v7 widgetBundleIdentifier];
-      v27 = [v26 isEqualToString:@"com.apple.Fitness.FitnessWidget"];
+      widgetBundleIdentifier4 = [suggestionCopy widgetBundleIdentifier];
+      v27 = [widgetBundleIdentifier4 isEqualToString:@"com.apple.Fitness.FitnessWidget"];
 
       if (v27)
       {
         goto LABEL_16;
       }
 
-      v28 = [v7 intent];
-      if (v28)
+      intent = [suggestionCopy intent];
+      if (intent)
       {
       }
 
       else
       {
-        v29 = [v6 intent];
+        intent2 = [widgetCopy intent];
 
-        if (!v29)
+        if (!intent2)
         {
           goto LABEL_16;
         }
       }
 
-      v30 = [v7 intent];
-      v31 = [v6 intent];
-      v32 = [v30 atx_isEqualToIntent:v31];
+      intent3 = [suggestionCopy intent];
+      intent4 = [widgetCopy intent];
+      v32 = [intent3 atx_isEqualToIntent:intent4];
 
       if (v32)
       {
@@ -980,85 +980,85 @@ LABEL_22:
   }
 
   v13 = v12;
-  v14 = [v7 intent];
+  intent5 = [suggestionCopy intent];
 
-  if (!v14)
+  if (!intent5)
   {
     goto LABEL_8;
   }
 
-  v15 = [v6 intent];
-  v16 = [v7 intent];
-  v17 = [(ATXSuggestionDeduplicator *)self _isContactsWidgetIntent:v15 overlappingContactsWithOtherContactsWidgetIntent:v16];
+  intent6 = [widgetCopy intent];
+  intent7 = [suggestionCopy intent];
+  v17 = [(ATXSuggestionDeduplicator *)self _isContactsWidgetIntent:intent6 overlappingContactsWithOtherContactsWidgetIntent:intent7];
 
 LABEL_23:
   return v17;
 }
 
-- (BOOL)_isContactsWidgetIntent:(id)a3 overlappingContactsWithOtherContactsWidgetIntent:(id)a4
+- (BOOL)_isContactsWidgetIntent:(id)intent overlappingContactsWithOtherContactsWidgetIntent:(id)widgetIntent
 {
-  v5 = a4;
-  v6 = [ATXSuggestionPreprocessor contactIdsAssociatedWithContactsWidgetIntent:a3];
-  v7 = [ATXSuggestionPreprocessor contactIdsAssociatedWithContactsWidgetIntent:v5];
+  widgetIntentCopy = widgetIntent;
+  v6 = [ATXSuggestionPreprocessor contactIdsAssociatedWithContactsWidgetIntent:intent];
+  v7 = [ATXSuggestionPreprocessor contactIdsAssociatedWithContactsWidgetIntent:widgetIntentCopy];
 
-  LOBYTE(v5) = [v6 intersectsSet:v7];
-  return v5;
+  LOBYTE(widgetIntentCopy) = [v6 intersectsSet:v7];
+  return widgetIntentCopy;
 }
 
-- (BOOL)_isWidget:(id)a3 showingContentOfAction:(id)a4
+- (BOOL)_isWidget:(id)widget showingContentOfAction:(id)action
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 intent];
-  if (v7)
+  widgetCopy = widget;
+  actionCopy = action;
+  intent = [widgetCopy intent];
+  if (intent)
   {
-    v8 = [v6 intent];
+    intent2 = [actionCopy intent];
 
-    if (v8)
+    if (intent2)
     {
-      v9 = [v5 intent];
-      v10 = [v6 intent];
-      LOBYTE(v7) = [ATXActionToWidgetConverter isWidgetIntent:v9 validConversionFromActionIntent:v10];
+      intent3 = [widgetCopy intent];
+      intent4 = [actionCopy intent];
+      LOBYTE(intent) = [ATXActionToWidgetConverter isWidgetIntent:intent3 validConversionFromActionIntent:intent4];
     }
 
     else
     {
-      LOBYTE(v7) = 0;
+      LOBYTE(intent) = 0;
     }
   }
 
-  return v7;
+  return intent;
 }
 
-- (BOOL)suggestionIsDuplicateAppOrWidget:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5
+- (BOOL)suggestionIsDuplicateAppOrWidget:(id)widget homeScreenPageConfig:(id)config excludingStackConfigId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = -[ATXSuggestionDeduplicator widgetSuggestionIsDuplicate:homeScreenPageConfig:excludingStackConfigId:](self, "widgetSuggestionIsDuplicate:homeScreenPageConfig:excludingStackConfigId:", v8, v9, a5) || -[ATXSuggestionDeduplicator suggestionIsDuplicate:appsOnHomeScreenPageAtIndex:](self, "suggestionIsDuplicate:appsOnHomeScreenPageAtIndex:", v8, [v9 pageIndex]);
+  widgetCopy = widget;
+  configCopy = config;
+  v10 = -[ATXSuggestionDeduplicator widgetSuggestionIsDuplicate:homeScreenPageConfig:excludingStackConfigId:](self, "widgetSuggestionIsDuplicate:homeScreenPageConfig:excludingStackConfigId:", widgetCopy, configCopy, id) || -[ATXSuggestionDeduplicator suggestionIsDuplicate:appsOnHomeScreenPageAtIndex:](self, "suggestionIsDuplicate:appsOnHomeScreenPageAtIndex:", widgetCopy, [configCopy pageIndex]);
 
   return v10;
 }
 
-- (BOOL)widgetSuggestionIsDuplicate:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5
+- (BOOL)widgetSuggestionIsDuplicate:(id)duplicate homeScreenPageConfig:(id)config excludingStackConfigId:(id)id
 {
-  v5 = [(ATXSuggestionDeduplicator *)self stacksWithDuplicateWidgetSuggestion:a3 homeScreenPageConfig:a4 excludingStackConfigId:a5];
+  v5 = [(ATXSuggestionDeduplicator *)self stacksWithDuplicateWidgetSuggestion:duplicate homeScreenPageConfig:config excludingStackConfigId:id];
   v6 = [v5 count] != 0;
 
   return v6;
 }
 
-- (BOOL)widgetSuggestionIsPinned:(id)a3 homeScreenPage:(id)a4 excludingStackConfigId:(id)a5
+- (BOOL)widgetSuggestionIsPinned:(id)pinned homeScreenPage:(id)page excludingStackConfigId:(id)id
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 executableSpecification];
-  v12 = [v11 executableType];
+  pinnedCopy = pinned;
+  pageCopy = page;
+  idCopy = id;
+  executableSpecification = [pinnedCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v12 == 3)
+  if (executableType == 3)
   {
-    [(ATXSuggestionDeduplicator *)self stacksWithDuplicateWidgetSuggestion:v8 homeScreenPageConfig:v9 excludingStackConfigId:v10];
+    [(ATXSuggestionDeduplicator *)self stacksWithDuplicateWidgetSuggestion:pinnedCopy homeScreenPageConfig:pageCopy excludingStackConfigId:idCopy];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -1078,8 +1078,8 @@ LABEL_23:
 
           v17 = *(*(&v23 + 1) + 8 * i);
           v18 = objc_autoreleasePoolPush();
-          v19 = [v17 widgets];
-          v20 = [v19 count];
+          widgets = [v17 widgets];
+          v20 = [widgets count];
 
           objc_autoreleasePoolPop(v18);
           if (v20 == 1)
@@ -1111,33 +1111,33 @@ LABEL_13:
   return v14;
 }
 
-- (id)stacksWithDuplicateWidgetSuggestion:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5
+- (id)stacksWithDuplicateWidgetSuggestion:(id)suggestion homeScreenPageConfig:(id)config excludingStackConfigId:(id)id
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 executableSpecification];
-  v12 = [v11 executableType];
+  suggestionCopy = suggestion;
+  configCopy = config;
+  idCopy = id;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v12 == 3)
+  if (executableType == 3)
   {
     v30 = objc_opt_new();
-    v13 = [v9 stacks];
-    v14 = [v9 pageIndex];
-    v29 = v9;
-    if (v14 == *MEMORY[0x277CEBAE8])
+    stacks = [configCopy stacks];
+    pageIndex = [configCopy pageIndex];
+    v29 = configCopy;
+    if (pageIndex == *MEMORY[0x277CEBAE8])
     {
-      v15 = [(ATXSuggestionDeduplicator *)self stacksToConsiderForLeftOfHomeForStackId:v10 stacksOnPage:v13];
+      v15 = [(ATXSuggestionDeduplicator *)self stacksToConsiderForLeftOfHomeForStackId:idCopy stacksOnPage:stacks];
 
-      v13 = v15;
+      stacks = v15;
     }
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v16 = v13;
+    v16 = stacks;
     v17 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v17)
     {
@@ -1153,10 +1153,10 @@ LABEL_13:
           }
 
           v21 = *(*(&v31 + 1) + 8 * i);
-          if (v10)
+          if (idCopy)
           {
-            v22 = [*(*(&v31 + 1) + 8 * i) identifier];
-            v23 = [v22 isEqualToString:v10];
+            identifier = [*(*(&v31 + 1) + 8 * i) identifier];
+            v23 = [identifier isEqualToString:idCopy];
 
             if (v23)
             {
@@ -1164,8 +1164,8 @@ LABEL_13:
             }
           }
 
-          v24 = [v21 widgets];
-          v25 = [(ATXSuggestionDeduplicator *)self duplicateWidgetForWidgetSuggestion:v8 otherWidgets:v24];
+          widgets = [v21 widgets];
+          v25 = [(ATXSuggestionDeduplicator *)self duplicateWidgetForWidgetSuggestion:suggestionCopy otherWidgets:widgets];
 
           if (v25)
           {
@@ -1180,7 +1180,7 @@ LABEL_13:
     }
 
     v26 = [v30 copy];
-    v9 = v29;
+    configCopy = v29;
   }
 
   else
@@ -1193,21 +1193,21 @@ LABEL_13:
   return v26;
 }
 
-- (id)stacksToConsiderForLeftOfHomeForStackId:(id)a3 stacksOnPage:(id)a4
+- (id)stacksToConsiderForLeftOfHomeForStackId:(id)id stacksOnPage:(id)page
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  idCopy = id;
+  pageCopy = page;
+  v7 = pageCopy;
+  if (idCopy)
   {
     v8 = objc_opt_new();
     v25 = objc_opt_new();
-    v9 = [MEMORY[0x277D41B98] sharedInstance];
-    v24 = [v9 lohStacksToConsiderAboveAndBelowForDeduplication];
+    mEMORY[0x277D41B98] = [MEMORY[0x277D41B98] sharedInstance];
+    lohStacksToConsiderAboveAndBelowForDeduplication = [mEMORY[0x277D41B98] lohStacksToConsiderAboveAndBelowForDeduplication];
 
-    v10 = [MEMORY[0x277D41B98] sharedInstance];
-    v23 = [v10 lohStacksToConsiderAboveAndBelowForDeduplication];
+    mEMORY[0x277D41B98]2 = [MEMORY[0x277D41B98] sharedInstance];
+    lohStacksToConsiderAboveAndBelowForDeduplication2 = [mEMORY[0x277D41B98]2 lohStacksToConsiderAboveAndBelowForDeduplication];
 
     v28 = 0u;
     v29 = 0u;
@@ -1234,8 +1234,8 @@ LABEL_13:
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [v17 identifier];
-        v19 = [v18 isEqualToString:v5];
+        identifier = [v17 identifier];
+        v19 = [identifier isEqualToString:idCopy];
 
         if (v19)
         {
@@ -1245,7 +1245,7 @@ LABEL_13:
         if (v14)
         {
           [v25 addObject:v17];
-          if ([v25 count] == v23)
+          if ([v25 count] == lohStacksToConsiderAboveAndBelowForDeduplication2)
           {
             goto LABEL_16;
           }
@@ -1256,7 +1256,7 @@ LABEL_10:
         }
 
         [v8 addObject:v17];
-        if ([v8 count] > v24)
+        if ([v8 count] > lohStacksToConsiderAboveAndBelowForDeduplication)
         {
           [v8 removeObjectAtIndex:0];
         }
@@ -1276,7 +1276,7 @@ LABEL_16:
     }
   }
 
-  v8 = v6;
+  v8 = pageCopy;
 LABEL_18:
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1284,17 +1284,17 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)widgetExtensionIdIsDuplicate:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5
+- (BOOL)widgetExtensionIdIsDuplicate:(id)duplicate homeScreenPageConfig:(id)config excludingStackConfigId:(id)id
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  duplicateCopy = duplicate;
+  idCopy = id;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [a4 stacks];
-  v10 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  stacks = [config stacks];
+  v10 = [stacks countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1308,18 +1308,18 @@ LABEL_18:
       {
         if (*v34 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(stacks);
         }
 
         v14 = *(*(&v33 + 1) + 8 * v13);
-        if (!v8 || ([*(*(&v33 + 1) + 8 * v13) identifier], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", v8), v15, (v16 & 1) == 0))
+        if (!idCopy || ([*(*(&v33 + 1) + 8 * v13) identifier], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", idCopy), v15, (v16 & 1) == 0))
         {
           v31 = 0u;
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v17 = [v14 widgets];
-          v18 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          widgets = [v14 widgets];
+          v18 = [widgets countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v18)
           {
             v19 = v18;
@@ -1330,11 +1330,11 @@ LABEL_18:
               {
                 if (*v30 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(widgets);
                 }
 
-                v22 = [*(*(&v29 + 1) + 8 * i) extensionBundleId];
-                v23 = [v22 isEqualToString:v7];
+                extensionBundleId = [*(*(&v29 + 1) + 8 * i) extensionBundleId];
+                v23 = [extensionBundleId isEqualToString:duplicateCopy];
 
                 if (v23)
                 {
@@ -1344,7 +1344,7 @@ LABEL_18:
                 }
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v19 = [widgets countByEnumeratingWithState:&v29 objects:v37 count:16];
               if (v19)
               {
                 continue;
@@ -1362,7 +1362,7 @@ LABEL_18:
       }
 
       while (v13 != v11);
-      v11 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v11 = [stacks countByEnumeratingWithState:&v33 objects:v38 count:16];
       v24 = 0;
     }
 
@@ -1380,26 +1380,26 @@ LABEL_22:
   return v24;
 }
 
-- (BOOL)widgetExtensionIdIsPinned:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5
+- (BOOL)widgetExtensionIdIsPinned:(id)pinned homeScreenPageConfig:(id)config excludingStackConfigId:(id)id
 {
-  v5 = [(ATXSuggestionDeduplicator *)self pinnedWidgetIdentifiablesWithExtensionId:a3 homeScreenPageConfig:a4 excludingStackConfigId:a5 shouldStopAfterFindingFirstOne:1];
+  v5 = [(ATXSuggestionDeduplicator *)self pinnedWidgetIdentifiablesWithExtensionId:pinned homeScreenPageConfig:config excludingStackConfigId:id shouldStopAfterFindingFirstOne:1];
   v6 = [v5 count] != 0;
 
   return v6;
 }
 
-- (id)pinnedWidgetIdentifiablesWithExtensionId:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5 shouldStopAfterFindingFirstOne:(BOOL)a6
+- (id)pinnedWidgetIdentifiablesWithExtensionId:(id)id homeScreenPageConfig:(id)config excludingStackConfigId:(id)configId shouldStopAfterFindingFirstOne:(BOOL)one
 {
-  v6 = a6;
+  oneCopy = one;
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  configCopy = config;
+  configIdCopy = configId;
   v13 = objc_opt_new();
-  v28 = v11;
-  v29 = v10;
-  v27 = v12;
-  [(ATXSuggestionDeduplicator *)self stacksWithDuplicateWidgetExtensionId:v10 homeScreenPageConfig:v11 excludingStackConfigId:v12];
+  v28 = configCopy;
+  v29 = idCopy;
+  v27 = configIdCopy;
+  [(ATXSuggestionDeduplicator *)self stacksWithDuplicateWidgetExtensionId:idCopy homeScreenPageConfig:configCopy excludingStackConfigId:configIdCopy];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -1420,16 +1420,16 @@ LABEL_22:
 
         v19 = *(*(&v30 + 1) + 8 * i);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 widgets];
-        v22 = [v21 count];
+        widgets = [v19 widgets];
+        v22 = [widgets count];
 
         if (v22 == 1)
         {
-          v23 = [v19 widgets];
-          v24 = [v23 firstObject];
-          [v13 addObject:v24];
+          widgets2 = [v19 widgets];
+          firstObject = [widgets2 firstObject];
+          [v13 addObject:firstObject];
 
-          if (v6)
+          if (oneCopy)
           {
             objc_autoreleasePoolPop(v20);
             goto LABEL_12;
@@ -1456,19 +1456,19 @@ LABEL_12:
   return v13;
 }
 
-- (id)stacksWithDuplicateWidgetExtensionId:(id)a3 homeScreenPageConfig:(id)a4 excludingStackConfigId:(id)a5
+- (id)stacksWithDuplicateWidgetExtensionId:(id)id homeScreenPageConfig:(id)config excludingStackConfigId:(id)configId
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v24 = v8;
+  idCopy = id;
+  configCopy = config;
+  configIdCopy = configId;
+  v24 = configCopy;
   v25 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = [v8 stacks];
+  obj = [configCopy stacks];
   v28 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v28)
   {
@@ -1483,10 +1483,10 @@ LABEL_12:
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
-        if (v9)
+        if (configIdCopy)
         {
-          v12 = [*(*(&v33 + 1) + 8 * i) identifier];
-          v13 = [v12 isEqualToString:v9];
+          identifier = [*(*(&v33 + 1) + 8 * i) identifier];
+          v13 = [identifier isEqualToString:configIdCopy];
 
           if (v13)
           {
@@ -1498,8 +1498,8 @@ LABEL_12:
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v14 = [v11 widgets];
-        v15 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        widgets = [v11 widgets];
+        v15 = [widgets countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v15)
         {
           v16 = v15;
@@ -1510,11 +1510,11 @@ LABEL_12:
             {
               if (*v30 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(widgets);
               }
 
-              v19 = [*(*(&v29 + 1) + 8 * j) extensionBundleId];
-              v20 = [v19 isEqualToString:v7];
+              extensionBundleId = [*(*(&v29 + 1) + 8 * j) extensionBundleId];
+              v20 = [extensionBundleId isEqualToString:idCopy];
 
               if (v20)
               {
@@ -1523,7 +1523,7 @@ LABEL_12:
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v16 = [widgets countByEnumeratingWithState:&v29 objects:v37 count:16];
             if (v16)
             {
               continue;
@@ -1548,17 +1548,17 @@ LABEL_18:
   return v21;
 }
 
-- (BOOL)suggestionIsDuplicate:(id)a3 appsOnHomeScreenPageAtIndex:(unint64_t)a4
+- (BOOL)suggestionIsDuplicate:(id)duplicate appsOnHomeScreenPageAtIndex:(unint64_t)index
 {
-  v6 = a3;
+  duplicateCopy = duplicate;
   v7 = objc_autoreleasePoolPush();
   visibleAppsByPage = self->_visibleAppsByPage;
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v10 = [(NSDictionary *)visibleAppsByPage objectForKeyedSubscript:v9];
 
   if ([v10 count])
   {
-    v11 = [(ATXSuggestionDeduplicator *)self suggestionIsDuplicate:v6 otherApps:v10];
+    v11 = [(ATXSuggestionDeduplicator *)self suggestionIsDuplicate:duplicateCopy otherApps:v10];
   }
 
   else
@@ -1570,19 +1570,19 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)suggestionIsDuplicate:(id)a3 otherApps:(id)a4
+- (BOOL)suggestionIsDuplicate:(id)duplicate otherApps:(id)apps
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 executableSpecification];
-  v8 = [v7 executableType];
+  duplicateCopy = duplicate;
+  appsCopy = apps;
+  executableSpecification = [duplicateCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v8 == 1)
+  if (executableType == 1)
   {
-    v9 = [v5 executableSpecification];
-    v10 = [v9 executableObject];
+    executableSpecification2 = [duplicateCopy executableSpecification];
+    executableObject = [executableSpecification2 executableObject];
 
-    v11 = v10 && ([v6 containsObject:v10] & 1) != 0;
+    v11 = executableObject && ([appsCopy containsObject:executableObject] & 1) != 0;
   }
 
   else
@@ -1593,35 +1593,35 @@ LABEL_18:
   return v11;
 }
 
-- (id)duplicateWidgetForWidgetSuggestion:(id)a3 otherWidgets:(id)a4
+- (id)duplicateWidgetForWidgetSuggestion:(id)suggestion otherWidgets:(id)widgets
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 executableSpecification];
-  v9 = [v8 executableType];
+  suggestionCopy = suggestion;
+  widgetsCopy = widgets;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v9 != 3)
+  if (executableType != 3)
   {
     goto LABEL_12;
   }
 
-  v10 = [v6 executableSpecification];
-  v11 = [v10 executableClassString];
+  executableSpecification2 = [suggestionCopy executableSpecification];
+  executableClassString = [executableSpecification2 executableClassString];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v11 isEqualToString:v13];
+  v14 = [executableClassString isEqualToString:v13];
 
   if (v14)
   {
-    v15 = [v6 executableSpecification];
-    v16 = [v15 executableObject];
+    executableSpecification3 = [suggestionCopy executableSpecification];
+    executableObject = [executableSpecification3 executableObject];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = v7;
+    v17 = widgetsCopy;
     v18 = [v17 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v18)
     {
@@ -1637,7 +1637,7 @@ LABEL_18:
           }
 
           v22 = *(*(&v26 + 1) + 8 * i);
-          if ([(ATXSuggestionDeduplicator *)self _isWidget:v22 showingContentOfInfoSuggestion:v16, v26])
+          if ([(ATXSuggestionDeduplicator *)self _isWidget:v22 showingContentOfInfoSuggestion:executableObject, v26])
           {
             v23 = v22;
             goto LABEL_14;

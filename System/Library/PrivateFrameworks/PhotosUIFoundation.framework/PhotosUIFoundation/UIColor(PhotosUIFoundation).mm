@@ -8,7 +8,7 @@
 - (double)px_contrastRatioToColor:()PhotosUIFoundation
 {
   v4 = a3;
-  [a1 px_luminance];
+  [self px_luminance];
   v6 = v5;
   [v4 px_luminance];
   v8 = v7;
@@ -38,7 +38,7 @@
 
 - (double)px_luminance
 {
-  v1 = [MEMORY[0x1E695F610] colorWithCGColor:{objc_msgSend(a1, "CGColor")}];
+  v1 = [MEMORY[0x1E695F610] colorWithCGColor:{objc_msgSend(self, "CGColor")}];
   [v1 red];
   if (v2 >= 0.03928)
   {

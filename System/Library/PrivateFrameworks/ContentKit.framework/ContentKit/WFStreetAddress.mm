@@ -1,20 +1,20 @@
 @interface WFStreetAddress
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (id)streetAddressWithPlacemark:(id)a3 label:(id)a4;
-+ (id)streetAddressWithPostalAddress:(id)a3 label:(id)a4;
-+ (id)streetAddressWithStreet:(id)a3 subLocality:(id)a4 city:(id)a5 subAdministrativeArea:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9 isoCountryCode:(id)a10 label:(id)a11;
-+ (id)streetAddressWithTextCheckingResult:(id)a3;
-+ (id)streetAddressesInString:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (id)streetAddressWithPlacemark:(id)placemark label:(id)label;
++ (id)streetAddressWithPostalAddress:(id)address label:(id)label;
++ (id)streetAddressWithStreet:(id)street subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)country isoCountryCode:(id)self0 label:(id)self1;
++ (id)streetAddressWithTextCheckingResult:(id)result;
++ (id)streetAddressesInString:(id)string error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (CNPostalAddress)postalAddress;
 - (NSString)addressString;
 - (NSString)localizedLabel;
 - (NSString)shortAddressString;
 - (NSString)street;
 - (NSString)wfName;
-- (WFStreetAddress)initWithPostalAddress:(id)a3 placemark:(id)a4 formattedAddress:(id)a5 label:(id)a6;
-- (WFStreetAddress)initWithStreet:(id)a3 subLocality:(id)a4 city:(id)a5 subAdministrativeArea:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9 isoCountryCode:(id)a10 placemark:(id)a11 formattedAddress:(id)a12 label:(id)a13;
-- (WFStreetAddress)streetAddressWithLabel:(id)a3;
+- (WFStreetAddress)initWithPostalAddress:(id)address placemark:(id)placemark formattedAddress:(id)formattedAddress label:(id)label;
+- (WFStreetAddress)initWithStreet:(id)street subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)country isoCountryCode:(id)self0 placemark:(id)self1 formattedAddress:(id)self2 label:(id)self3;
+- (WFStreetAddress)streetAddressWithLabel:(id)label;
 - (id)wfSerializedRepresentation;
 - (unint64_t)hash;
 @end
@@ -53,30 +53,30 @@
 - (unint64_t)hash
 {
   v18 = [(NSString *)self->_street hash];
-  v20 = [(WFStreetAddress *)self subLocality];
-  v17 = [v20 hash];
-  v19 = [(WFStreetAddress *)self city];
-  v16 = [v19 hash];
-  v3 = [(WFStreetAddress *)self subAdministrativeArea];
-  v15 = [v3 hash];
-  v4 = [(WFStreetAddress *)self state];
-  v5 = [v4 hash];
-  v6 = [(WFStreetAddress *)self postalCode];
-  v7 = [v6 hash];
-  v8 = [(WFStreetAddress *)self country];
-  v9 = [v8 hash];
-  v10 = [(WFStreetAddress *)self isoCountryCode];
-  v11 = [v10 hash];
-  v12 = [(WFStreetAddress *)self label];
-  v13 = v7 ^ v9 ^ v11 ^ [v12 hash] ^ 0x390AF033;
+  subLocality = [(WFStreetAddress *)self subLocality];
+  v17 = [subLocality hash];
+  city = [(WFStreetAddress *)self city];
+  v16 = [city hash];
+  subAdministrativeArea = [(WFStreetAddress *)self subAdministrativeArea];
+  v15 = [subAdministrativeArea hash];
+  state = [(WFStreetAddress *)self state];
+  v5 = [state hash];
+  postalCode = [(WFStreetAddress *)self postalCode];
+  v7 = [postalCode hash];
+  country = [(WFStreetAddress *)self country];
+  v9 = [country hash];
+  isoCountryCode = [(WFStreetAddress *)self isoCountryCode];
+  v11 = [isoCountryCode hash];
+  label = [(WFStreetAddress *)self label];
+  v13 = v7 ^ v9 ^ v11 ^ [label hash] ^ 0x390AF033;
 
   return v18 ^ v17 ^ v16 ^ v15 ^ v5 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v22 = 1;
   }
@@ -84,56 +84,56 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((street = self->_street, street == v4->_street) || [(NSString *)street isEqualToString:?]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((street = self->_street, street == equalCopy->_street) || [(NSString *)street isEqualToString:?]))
     {
-      v6 = [(WFStreetAddress *)self subLocality];
-      v7 = [(WFStreetAddress *)v4 subLocality];
-      if (v6 == v7 || [v6 isEqualToString:v7])
+      subLocality = [(WFStreetAddress *)self subLocality];
+      subLocality2 = [(WFStreetAddress *)equalCopy subLocality];
+      if (subLocality == subLocality2 || [subLocality isEqualToString:subLocality2])
       {
-        v8 = [(WFStreetAddress *)self city];
-        v9 = [(WFStreetAddress *)v4 city];
-        if (v8 == v9 || [v8 isEqualToString:v9])
+        city = [(WFStreetAddress *)self city];
+        city2 = [(WFStreetAddress *)equalCopy city];
+        if (city == city2 || [city isEqualToString:city2])
         {
-          v10 = [(WFStreetAddress *)self subAdministrativeArea];
-          v11 = [(WFStreetAddress *)v4 subAdministrativeArea];
-          if (v10 == v11 || [v10 isEqualToString:v11])
+          subAdministrativeArea = [(WFStreetAddress *)self subAdministrativeArea];
+          subAdministrativeArea2 = [(WFStreetAddress *)equalCopy subAdministrativeArea];
+          if (subAdministrativeArea == subAdministrativeArea2 || [subAdministrativeArea isEqualToString:subAdministrativeArea2])
           {
-            v12 = [(WFStreetAddress *)self state];
-            v13 = [(WFStreetAddress *)v4 state];
-            if (v12 == v13 || [v12 isEqualToString:v13])
+            state = [(WFStreetAddress *)self state];
+            state2 = [(WFStreetAddress *)equalCopy state];
+            if (state == state2 || [state isEqualToString:state2])
             {
-              v30 = v10;
-              v31 = v13;
-              v14 = [(WFStreetAddress *)self postalCode];
-              v15 = [(WFStreetAddress *)v4 postalCode];
-              if (v14 == v15 || [v14 isEqualToString:v15])
+              v30 = subAdministrativeArea;
+              v31 = state2;
+              postalCode = [(WFStreetAddress *)self postalCode];
+              postalCode2 = [(WFStreetAddress *)equalCopy postalCode];
+              if (postalCode == postalCode2 || [postalCode isEqualToString:postalCode2])
               {
-                v28 = v11;
-                v29 = v15;
-                v16 = [(WFStreetAddress *)self country];
-                v17 = [(WFStreetAddress *)v4 country];
-                v27 = v16;
-                if (v16 == v17 || [v16 isEqualToString:v17])
+                v28 = subAdministrativeArea2;
+                v29 = postalCode2;
+                country = [(WFStreetAddress *)self country];
+                country2 = [(WFStreetAddress *)equalCopy country];
+                v27 = country;
+                if (country == country2 || [country isEqualToString:country2])
                 {
-                  v26 = v17;
-                  v18 = [(WFStreetAddress *)self isoCountryCode];
-                  v19 = [(WFStreetAddress *)v4 isoCountryCode];
-                  if (v18 == v19 || [v18 isEqualToString:v19])
+                  v26 = country2;
+                  isoCountryCode = [(WFStreetAddress *)self isoCountryCode];
+                  isoCountryCode2 = [(WFStreetAddress *)equalCopy isoCountryCode];
+                  if (isoCountryCode == isoCountryCode2 || [isoCountryCode isEqualToString:isoCountryCode2])
                   {
-                    v20 = [(WFStreetAddress *)self label:v19];
-                    v21 = [(WFStreetAddress *)v4 label];
-                    if (v20 == v21)
+                    v20 = [(WFStreetAddress *)self label:isoCountryCode2];
+                    label = [(WFStreetAddress *)equalCopy label];
+                    if (v20 == label)
                     {
                       v22 = 1;
                     }
 
                     else
                     {
-                      v22 = [v20 isEqualToString:v21];
+                      v22 = [v20 isEqualToString:label];
                     }
 
-                    v19 = v24;
-                    v12 = v25;
+                    isoCountryCode2 = v24;
+                    state = v25;
                   }
 
                   else
@@ -141,7 +141,7 @@
                     v22 = 0;
                   }
 
-                  v17 = v26;
+                  country2 = v26;
                 }
 
                 else
@@ -149,8 +149,8 @@
                   v22 = 0;
                 }
 
-                v11 = v28;
-                v15 = v29;
+                subAdministrativeArea2 = v28;
+                postalCode2 = v29;
               }
 
               else
@@ -158,8 +158,8 @@
                 v22 = 0;
               }
 
-              v10 = v30;
-              v13 = v31;
+              subAdministrativeArea = v30;
+              state2 = v31;
             }
 
             else
@@ -197,10 +197,10 @@
 
 - (NSString)localizedLabel
 {
-  v2 = [(WFStreetAddress *)self label];
-  if (v2)
+  label = [(WFStreetAddress *)self label];
+  if (label)
   {
-    v3 = [WFContactLabeledValue localizedStringForLabel:v2];
+    v3 = [WFContactLabeledValue localizedStringForLabel:label];
   }
 
   else
@@ -213,8 +213,8 @@
 
 - (NSString)wfName
 {
-  v2 = [(WFStreetAddress *)self addressString];
-  v3 = [v2 componentsSeparatedByString:@"\n"];
+  addressString = [(WFStreetAddress *)self addressString];
+  v3 = [addressString componentsSeparatedByString:@"\n"];
   v4 = [v3 componentsJoinedByString:{@", "}];
 
   return v4;
@@ -245,27 +245,27 @@
     v6 = v5;
     _Block_object_dispose(&v22, 8);
     v7 = objc_opt_new();
-    v8 = [(WFStreetAddress *)self placemark];
-    v9 = [v8 name];
-    v10 = [(WFStreetAddress *)self postalAddress];
-    v11 = [v10 street];
-    if ([v9 isEqualToString:v11])
+    placemark = [(WFStreetAddress *)self placemark];
+    name = [placemark name];
+    postalAddress = [(WFStreetAddress *)self postalAddress];
+    street = [postalAddress street];
+    if ([name isEqualToString:street])
     {
-      v12 = 0;
+      name2 = 0;
     }
 
     else
     {
-      v13 = [(WFStreetAddress *)self placemark];
-      v12 = [v13 name];
+      placemark2 = [(WFStreetAddress *)self placemark];
+      name2 = [placemark2 name];
     }
 
-    v14 = [(WFStreetAddress *)self postalAddress];
-    v15 = [v7 attributedStringFromPostalAddress:v14 name:v12 organization:0 attributes:0];
-    v16 = [v15 string];
+    postalAddress2 = [(WFStreetAddress *)self postalAddress];
+    v15 = [v7 attributedStringFromPostalAddress:postalAddress2 name:name2 organization:0 attributes:0];
+    string = [v15 string];
 
-    v17 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-    v18 = [(__CFString *)v16 rangeOfCharacterFromSet:v17];
+    alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+    v18 = [(__CFString *)string rangeOfCharacterFromSet:alphanumericCharacterSet];
 
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -274,7 +274,7 @@
 
     else
     {
-      v19 = v16;
+      v19 = string;
     }
 
     objc_storeStrong(p_addressString, v19);
@@ -290,51 +290,51 @@
   street = self->_street;
   if (street)
   {
-    v3 = street;
+    name = street;
   }
 
   else
   {
-    v4 = [(WFStreetAddress *)self placemark];
-    v3 = [v4 name];
+    placemark = [(WFStreetAddress *)self placemark];
+    name = [placemark name];
   }
 
-  return v3;
+  return name;
 }
 
 - (NSString)shortAddressString
 {
-  v3 = [(WFStreetAddress *)self street];
-  v4 = v3;
-  if (v3)
+  street = [(WFStreetAddress *)self street];
+  v4 = street;
+  if (street)
   {
-    v5 = v3;
+    v5 = street;
   }
 
   else
   {
-    v6 = [(WFStreetAddress *)self city];
-    v7 = v6;
-    if (v6)
+    city = [(WFStreetAddress *)self city];
+    v7 = city;
+    if (city)
     {
-      v5 = v6;
+      v5 = city;
     }
 
     else
     {
-      v8 = [(WFStreetAddress *)self state];
-      v9 = v8;
-      if (v8)
+      state = [(WFStreetAddress *)self state];
+      v9 = state;
+      if (state)
       {
-        v10 = v8;
+        country = state;
       }
 
       else
       {
-        v10 = [(WFStreetAddress *)self country];
+        country = [(WFStreetAddress *)self country];
       }
 
-      v5 = v10;
+      v5 = country;
     }
   }
 
@@ -365,68 +365,68 @@
     v5 = v4;
     _Block_object_dispose(&v27, 8);
     v6 = objc_opt_new();
-    v7 = [(WFStreetAddress *)self street];
+    street = [(WFStreetAddress *)self street];
 
-    if (v7)
+    if (street)
     {
-      v8 = [(WFStreetAddress *)self street];
-      [v6 setStreet:v8];
+      street2 = [(WFStreetAddress *)self street];
+      [v6 setStreet:street2];
     }
 
-    v9 = [(WFStreetAddress *)self subLocality];
+    subLocality = [(WFStreetAddress *)self subLocality];
 
-    if (v9)
+    if (subLocality)
     {
-      v10 = [(WFStreetAddress *)self subLocality];
-      [v6 setSubLocality:v10];
+      subLocality2 = [(WFStreetAddress *)self subLocality];
+      [v6 setSubLocality:subLocality2];
     }
 
-    v11 = [(WFStreetAddress *)self city];
+    city = [(WFStreetAddress *)self city];
 
-    if (v11)
+    if (city)
     {
-      v12 = [(WFStreetAddress *)self city];
-      [v6 setCity:v12];
+      city2 = [(WFStreetAddress *)self city];
+      [v6 setCity:city2];
     }
 
-    v13 = [(WFStreetAddress *)self subAdministrativeArea];
+    subAdministrativeArea = [(WFStreetAddress *)self subAdministrativeArea];
 
-    if (v13)
+    if (subAdministrativeArea)
     {
-      v14 = [(WFStreetAddress *)self subAdministrativeArea];
-      [v6 setSubAdministrativeArea:v14];
+      subAdministrativeArea2 = [(WFStreetAddress *)self subAdministrativeArea];
+      [v6 setSubAdministrativeArea:subAdministrativeArea2];
     }
 
-    v15 = [(WFStreetAddress *)self state];
+    state = [(WFStreetAddress *)self state];
 
-    if (v15)
+    if (state)
     {
-      v16 = [(WFStreetAddress *)self state];
-      [v6 setState:v16];
+      state2 = [(WFStreetAddress *)self state];
+      [v6 setState:state2];
     }
 
-    v17 = [(WFStreetAddress *)self postalCode];
+    postalCode = [(WFStreetAddress *)self postalCode];
 
-    if (v17)
+    if (postalCode)
     {
-      v18 = [(WFStreetAddress *)self postalCode];
-      [v6 setPostalCode:v18];
+      postalCode2 = [(WFStreetAddress *)self postalCode];
+      [v6 setPostalCode:postalCode2];
     }
 
-    v19 = [(WFStreetAddress *)self country];
+    country = [(WFStreetAddress *)self country];
 
-    if (v19)
+    if (country)
     {
-      v20 = [(WFStreetAddress *)self country];
-      [v6 setCountry:v20];
+      country2 = [(WFStreetAddress *)self country];
+      [v6 setCountry:country2];
     }
 
-    v21 = [(WFStreetAddress *)self isoCountryCode];
+    isoCountryCode = [(WFStreetAddress *)self isoCountryCode];
 
-    if (v21)
+    if (isoCountryCode)
     {
-      v22 = [(WFStreetAddress *)self isoCountryCode];
-      [v6 setISOCountryCode:v22];
+      isoCountryCode2 = [(WFStreetAddress *)self isoCountryCode];
+      [v6 setISOCountryCode:isoCountryCode2];
     }
 
     v23 = [v6 copy];
@@ -439,82 +439,82 @@
   return postalAddress;
 }
 
-- (WFStreetAddress)streetAddressWithLabel:(id)a3
+- (WFStreetAddress)streetAddressWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v16 = objc_alloc(objc_opt_class());
-  v17 = [(WFStreetAddress *)self street];
-  v15 = [(WFStreetAddress *)self subLocality];
-  v5 = [(WFStreetAddress *)self city];
-  v6 = [(WFStreetAddress *)self subAdministrativeArea];
-  v7 = [(WFStreetAddress *)self state];
-  v8 = [(WFStreetAddress *)self postalCode];
-  v9 = [(WFStreetAddress *)self country];
-  v10 = [(WFStreetAddress *)self isoCountryCode];
-  v11 = [(WFStreetAddress *)self placemark];
-  v12 = [(WFStreetAddress *)self addressString];
-  v13 = [v16 initWithStreet:v17 subLocality:v15 city:v5 subAdministrativeArea:v6 state:v7 postalCode:v8 country:v9 isoCountryCode:v10 placemark:v11 formattedAddress:v12 label:v4];
+  street = [(WFStreetAddress *)self street];
+  subLocality = [(WFStreetAddress *)self subLocality];
+  city = [(WFStreetAddress *)self city];
+  subAdministrativeArea = [(WFStreetAddress *)self subAdministrativeArea];
+  state = [(WFStreetAddress *)self state];
+  postalCode = [(WFStreetAddress *)self postalCode];
+  country = [(WFStreetAddress *)self country];
+  isoCountryCode = [(WFStreetAddress *)self isoCountryCode];
+  placemark = [(WFStreetAddress *)self placemark];
+  addressString = [(WFStreetAddress *)self addressString];
+  v13 = [v16 initWithStreet:street subLocality:subLocality city:city subAdministrativeArea:subAdministrativeArea state:state postalCode:postalCode country:country isoCountryCode:isoCountryCode placemark:placemark formattedAddress:addressString label:labelCopy];
 
   return v13;
 }
 
-- (WFStreetAddress)initWithStreet:(id)a3 subLocality:(id)a4 city:(id)a5 subAdministrativeArea:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9 isoCountryCode:(id)a10 placemark:(id)a11 formattedAddress:(id)a12 label:(id)a13
+- (WFStreetAddress)initWithStreet:(id)street subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)country isoCountryCode:(id)self0 placemark:(id)self1 formattedAddress:(id)self2 label:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v54 = a5;
-  v53 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
+  streetCopy = street;
+  localityCopy = locality;
+  cityCopy = city;
+  areaCopy = area;
+  stateCopy = state;
+  codeCopy = code;
+  countryCopy = country;
+  countryCodeCopy = countryCode;
+  placemarkCopy = placemark;
+  addressCopy = address;
+  labelCopy = label;
   v27 = [(WFStreetAddress *)self init];
   if (v27)
   {
-    v28 = [v18 copy];
+    v28 = [streetCopy copy];
     street = v27->_street;
     v27->_street = v28;
 
-    v30 = [v19 copy];
+    v30 = [localityCopy copy];
     subLocality = v27->_subLocality;
     v27->_subLocality = v30;
 
-    v32 = [v54 copy];
+    v32 = [cityCopy copy];
     city = v27->_city;
     v27->_city = v32;
 
-    v34 = [v53 copy];
+    v34 = [areaCopy copy];
     subAdministrativeArea = v27->_subAdministrativeArea;
     v27->_subAdministrativeArea = v34;
 
-    v36 = [v20 copy];
+    v36 = [stateCopy copy];
     state = v27->_state;
     v27->_state = v36;
 
-    v38 = [v21 copy];
+    v38 = [codeCopy copy];
     postalCode = v27->_postalCode;
     v27->_postalCode = v38;
 
-    v40 = [v22 copy];
+    v40 = [countryCopy copy];
     country = v27->_country;
     v27->_country = v40;
 
-    v42 = [v23 copy];
+    v42 = [countryCodeCopy copy];
     isoCountryCode = v27->_isoCountryCode;
     v27->_isoCountryCode = v42;
 
-    v44 = [v24 copy];
+    v44 = [placemarkCopy copy];
     placemark = v27->_placemark;
     v27->_placemark = v44;
 
-    v46 = [v25 copy];
+    v46 = [addressCopy copy];
     addressString = v27->_addressString;
     v27->_addressString = v46;
 
-    v48 = [v26 copy];
+    v48 = [labelCopy copy];
     label = v27->_label;
     v27->_label = v48;
 
@@ -524,38 +524,38 @@
   return v27;
 }
 
-- (WFStreetAddress)initWithPostalAddress:(id)a3 placemark:(id)a4 formattedAddress:(id)a5 label:(id)a6
+- (WFStreetAddress)initWithPostalAddress:(id)address placemark:(id)placemark formattedAddress:(id)formattedAddress label:(id)label
 {
-  v6 = a3;
-  if (a3)
+  selfCopy = address;
+  if (address)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v13 = v6;
-    v23 = [(WFStreetAddress *)v13 street];
-    v22 = [(WFStreetAddress *)v13 subLocality];
-    v14 = [(WFStreetAddress *)v13 city];
-    v15 = [(WFStreetAddress *)v13 subAdministrativeArea];
-    v16 = [(WFStreetAddress *)v13 state];
-    v20 = [(WFStreetAddress *)v13 postalCode];
-    v21 = [(WFStreetAddress *)v13 country];
-    v17 = [(WFStreetAddress *)v13 ISOCountryCode];
+    labelCopy = label;
+    formattedAddressCopy = formattedAddress;
+    placemarkCopy = placemark;
+    v13 = selfCopy;
+    street = [(WFStreetAddress *)v13 street];
+    subLocality = [(WFStreetAddress *)v13 subLocality];
+    city = [(WFStreetAddress *)v13 city];
+    subAdministrativeArea = [(WFStreetAddress *)v13 subAdministrativeArea];
+    state = [(WFStreetAddress *)v13 state];
+    postalCode = [(WFStreetAddress *)v13 postalCode];
+    country = [(WFStreetAddress *)v13 country];
+    iSOCountryCode = [(WFStreetAddress *)v13 ISOCountryCode];
 
-    v18 = [(WFStreetAddress *)self initWithStreet:v23 subLocality:v22 city:v14 subAdministrativeArea:v15 state:v16 postalCode:v20 country:v21 isoCountryCode:v17 placemark:v12 formattedAddress:v11 label:v10];
+    v18 = [(WFStreetAddress *)self initWithStreet:street subLocality:subLocality city:city subAdministrativeArea:subAdministrativeArea state:state postalCode:postalCode country:country isoCountryCode:iSOCountryCode placemark:placemarkCopy formattedAddress:formattedAddressCopy label:labelCopy];
     self = v18;
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressplacemark"];
-  v23 = a1;
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressplacemark"];
+  selfCopy = self;
   v24 = v5;
   if ([v5 length])
   {
@@ -589,55 +589,55 @@
     v22 = 0;
   }
 
-  v20 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressstreet"];
-  v10 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresssublocality"];
-  v11 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresscity"];
-  v12 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresssubadministrativearea"];
-  v13 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressstate"];
-  v21 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresspostalcode"];
-  v14 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresscountry"];
-  v15 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressisocountrycode"];
-  v16 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressstring"];
-  v17 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresslabel"];
-  v19 = [[v23 alloc] initWithStreet:v20 subLocality:v10 city:v11 subAdministrativeArea:v12 state:v13 postalCode:v21 country:v14 isoCountryCode:v15 placemark:v9 formattedAddress:v16 label:v17];
+  v20 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressstreet"];
+  v10 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresssublocality"];
+  v11 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresscity"];
+  v12 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresssubadministrativearea"];
+  v13 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressstate"];
+  v21 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresspostalcode"];
+  v14 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresscountry"];
+  v15 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressisocountrycode"];
+  v16 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addressstring"];
+  v17 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.addresslabel"];
+  v19 = [[selfCopy alloc] initWithStreet:v20 subLocality:v10 city:v11 subAdministrativeArea:v12 state:v13 postalCode:v21 country:v14 isoCountryCode:v15 placemark:v9 formattedAddress:v16 label:v17];
 
   return v19;
 }
 
-+ (id)streetAddressWithPostalAddress:(id)a3 label:(id)a4
++ (id)streetAddressWithPostalAddress:(id)address label:(id)label
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPostalAddress:v7 placemark:0 formattedAddress:0 label:v6];
+  labelCopy = label;
+  addressCopy = address;
+  v8 = [[self alloc] initWithPostalAddress:addressCopy placemark:0 formattedAddress:0 label:labelCopy];
 
   return v8;
 }
 
-+ (id)streetAddressWithPlacemark:(id)a3 label:(id)a4
++ (id)streetAddressWithPlacemark:(id)placemark label:(id)label
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v9 = WFCNPostalAddressFromCLPlacemark(v7);
-  v10 = [v8 initWithPostalAddress:v9 placemark:v7 formattedAddress:0 label:v6];
+  labelCopy = label;
+  placemarkCopy = placemark;
+  v8 = [self alloc];
+  v9 = WFCNPostalAddressFromCLPlacemark(placemarkCopy);
+  v10 = [v8 initWithPostalAddress:v9 placemark:placemarkCopy formattedAddress:0 label:labelCopy];
 
   return v10;
 }
 
-+ (id)streetAddressWithStreet:(id)a3 subLocality:(id)a4 city:(id)a5 subAdministrativeArea:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9 isoCountryCode:(id)a10 label:(id)a11
++ (id)streetAddressWithStreet:(id)street subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)country isoCountryCode:(id)self0 label:(id)self1
 {
-  if (a3 || a4 || a5 || a6 || a7 || a8 || a9 || a10)
+  if (street || locality || city || area || state || code || country || countryCode)
   {
-    v19 = a11;
-    v20 = a10;
-    v21 = a9;
-    v22 = a8;
-    v23 = a7;
-    v24 = a6;
-    v25 = a5;
-    v26 = a4;
-    v27 = a3;
-    v18 = [[a1 alloc] initWithStreet:v27 subLocality:v26 city:v25 subAdministrativeArea:v24 state:v23 postalCode:v22 country:v21 isoCountryCode:v20 placemark:0 formattedAddress:0 label:v19];
+    labelCopy = label;
+    countryCodeCopy = countryCode;
+    countryCopy = country;
+    codeCopy = code;
+    stateCopy = state;
+    areaCopy = area;
+    cityCopy = city;
+    localityCopy = locality;
+    streetCopy = street;
+    v18 = [[self alloc] initWithStreet:streetCopy subLocality:localityCopy city:cityCopy subAdministrativeArea:areaCopy state:stateCopy postalCode:codeCopy country:countryCopy isoCountryCode:countryCodeCopy placemark:0 formattedAddress:0 label:labelCopy];
   }
 
   else
@@ -648,33 +648,33 @@
   return v18;
 }
 
-+ (id)streetAddressWithTextCheckingResult:(id)a3
++ (id)streetAddressWithTextCheckingResult:(id)result
 {
-  v4 = [a3 components];
-  v5 = [v4 objectForKey:*MEMORY[0x277CCA6E8]];
-  v6 = [v4 objectForKey:*MEMORY[0x277CCA6B0]];
-  v7 = [v4 objectForKey:*MEMORY[0x277CCA6E0]];
-  v8 = [v4 objectForKey:*MEMORY[0x277CCA6F0]];
-  v9 = [v4 objectForKey:*MEMORY[0x277CCA6B8]];
-  v10 = [a1 streetAddressWithStreet:v5 subLocality:0 city:v6 subAdministrativeArea:0 state:v7 postalCode:v8 country:v9 isoCountryCode:0 label:0];
+  components = [result components];
+  v5 = [components objectForKey:*MEMORY[0x277CCA6E8]];
+  v6 = [components objectForKey:*MEMORY[0x277CCA6B0]];
+  v7 = [components objectForKey:*MEMORY[0x277CCA6E0]];
+  v8 = [components objectForKey:*MEMORY[0x277CCA6F0]];
+  v9 = [components objectForKey:*MEMORY[0x277CCA6B8]];
+  v10 = [self streetAddressWithStreet:v5 subLocality:0 city:v6 subAdministrativeArea:0 state:v7 postalCode:v8 country:v9 isoCountryCode:0 label:0];
 
   return v10;
 }
 
-+ (id)streetAddressesInString:(id)a3 error:(id *)a4
++ (id)streetAddressesInString:(id)string error:(id *)error
 {
-  if (a3)
+  if (string)
   {
-    v4 = [WFDataDetector resultsForString:a3 ofTypes:16 error:a4];
-    v5 = [v4 streetAddresses];
+    v4 = [WFDataDetector resultsForString:string ofTypes:16 error:error];
+    streetAddresses = [v4 streetAddresses];
   }
 
   else
   {
-    v5 = MEMORY[0x277CBEBF8];
+    streetAddresses = MEMORY[0x277CBEBF8];
   }
 
-  return v5;
+  return streetAddresses;
 }
 
 @end

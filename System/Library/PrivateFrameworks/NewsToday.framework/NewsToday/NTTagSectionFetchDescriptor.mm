@@ -1,9 +1,9 @@
 @interface NTTagSectionFetchDescriptor
 - (NTTagSectionFetchDescriptor)init;
-- (NTTagSectionFetchDescriptor)initWithTagConfiguration:(id)a3 appConfiguration:(id)a4 purchasedTagIDs:(id)a5 bundleSubscriptionProvider:(id)a6;
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5;
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3;
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3;
+- (NTTagSectionFetchDescriptor)initWithTagConfiguration:(id)configuration appConfiguration:(id)appConfiguration purchasedTagIDs:(id)ds bundleSubscriptionProvider:(id)provider;
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items;
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer;
+- (void)configureCatchUpOperationWithFetchRequest:(id)request;
 @end
 
 @implementation NTTagSectionFetchDescriptor
@@ -34,23 +34,23 @@
   objc_exception_throw(v6);
 }
 
-- (NTTagSectionFetchDescriptor)initWithTagConfiguration:(id)a3 appConfiguration:(id)a4 purchasedTagIDs:(id)a5 bundleSubscriptionProvider:(id)a6
+- (NTTagSectionFetchDescriptor)initWithTagConfiguration:(id)configuration appConfiguration:(id)appConfiguration purchasedTagIDs:(id)ds bundleSubscriptionProvider:(id)provider
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  appConfigurationCopy = appConfiguration;
+  dsCopy = ds;
+  providerCopy = provider;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTagSectionFetchDescriptor initWithTagConfiguration:appConfiguration:purchasedTagIDs:bundleSubscriptionProvider:];
-    if (v11)
+    if (appConfigurationCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v11)
+  else if (appConfigurationCopy)
   {
     goto LABEL_6;
   }
@@ -66,63 +66,63 @@ LABEL_6:
   v14 = [(NTTagSectionFetchDescriptor *)&v31 init];
   if (v14)
   {
-    v15 = [v10 tagID];
-    v16 = [[NTCatchUpOperationTagRequest alloc] initWithTagTodaySectionSpecificConfig:v10 tagID:v15];
+    tagID = [configurationCopy tagID];
+    v16 = [[NTCatchUpOperationTagRequest alloc] initWithTagTodaySectionSpecificConfig:configurationCopy tagID:tagID];
     tagRequest = v14->_tagRequest;
     v14->_tagRequest = v16;
 
     v18 = objc_opt_new();
-    [v18 setCutoffTime:{objc_msgSend(v10, "cutoffTime")}];
-    [v18 setHeadlinesPerFeedFetchCount:{objc_msgSend(v10, "headlinesPerFeedFetchCount")}];
+    [v18 setCutoffTime:{objc_msgSend(configurationCopy, "cutoffTime")}];
+    [v18 setHeadlinesPerFeedFetchCount:{objc_msgSend(configurationCopy, "headlinesPerFeedFetchCount")}];
     [v18 setFeedMaxCount:0];
     [v18 setFeedItemMaxCount:0];
     [v18 setSubscriptionsFetchCount:1];
-    [v18 setFetchingBin:{objc_msgSend(v10, "fetchingBin")}];
-    v30 = v11;
+    [v18 setFetchingBin:{objc_msgSend(configurationCopy, "fetchingBin")}];
+    v30 = appConfigurationCopy;
     v19 = [NTForYouRequest alloc];
-    v20 = v13;
-    v21 = v12;
+    v20 = providerCopy;
+    v21 = dsCopy;
     v22 = objc_opt_new();
     v23 = objc_opt_new();
-    v32[0] = v15;
+    v32[0] = tagID;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
     v25 = v19;
-    v11 = v30;
-    v26 = [(NTForYouRequest *)v25 initWithForYouTodaySectionSpecificConfig:v18 appConfiguration:v30 topStoriesChannelID:0 localNewsTagID:0 hiddenFeedIDs:v22 allowPaidBundleFeed:0 mutedTagIDs:v23 purchasedTagIDs:v21 rankedAllSubscribedTagIDs:v24 bundleSubscriptionProvider:v20 throttlingIdentifier:v15];
+    appConfigurationCopy = v30;
+    v26 = [(NTForYouRequest *)v25 initWithForYouTodaySectionSpecificConfig:v18 appConfiguration:v30 topStoriesChannelID:0 localNewsTagID:0 hiddenFeedIDs:v22 allowPaidBundleFeed:0 mutedTagIDs:v23 purchasedTagIDs:v21 rankedAllSubscribedTagIDs:v24 bundleSubscriptionProvider:v20 throttlingIdentifier:tagID];
     forYouRequest = v14->_forYouRequest;
     v14->_forYouRequest = v26;
 
-    v12 = v21;
-    v13 = v20;
+    dsCopy = v21;
+    providerCopy = v20;
   }
 
   v28 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3
+- (void)configureCatchUpOperationWithFetchRequest:(id)request
 {
-  v5 = a3;
-  v4 = [(NTTagSectionFetchDescriptor *)self forYouRequest];
-  [v5 setForYouRequest:v4];
+  requestCopy = request;
+  forYouRequest = [(NTTagSectionFetchDescriptor *)self forYouRequest];
+  [requestCopy setForYouRequest:forYouRequest];
 
-  [v5 setForYouEnabled:1];
-  [v5 setForYouSource:1];
+  [requestCopy setForYouEnabled:1];
+  [requestCopy setForYouSource:1];
 }
 
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer
 {
-  v3 = [MEMORY[0x277D31038] transformationWithPersonalizer:a3 configurationSet:17];
+  v3 = [MEMORY[0x277D31038] transformationWithPersonalizer:personalizer configurationSet:17];
   v4 = [[NTFeedTransformationItemFeedTransformation alloc] initWithFeedItemTransformation:v3];
 
   return v4;
 }
 
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items
 {
-  v7 = a3;
-  v8 = [a5 fc_arrayByTransformingWithBlock:&__block_literal_global_9];
-  v9 = [[NTFeedTransformationIncrementalPersonalizedDiversifiedLimit alloc] initWithFunctionProvider:v7 limit:a4 priorFeedItems:v8];
+  personalizerCopy = personalizer;
+  v8 = [items fc_arrayByTransformingWithBlock:&__block_literal_global_9];
+  v9 = [[NTFeedTransformationIncrementalPersonalizedDiversifiedLimit alloc] initWithFunctionProvider:personalizerCopy limit:limit priorFeedItems:v8];
 
   v10 = [[NTFeedTransformationItemFeedTransformation alloc] initWithFeedItemTransformation:v9];
 

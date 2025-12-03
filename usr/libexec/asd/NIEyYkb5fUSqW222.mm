@@ -1,12 +1,12 @@
 @interface NIEyYkb5fUSqW222
 - (BOOL)hasActiveCalls;
 - (NIEyYkb5fUSqW222)init;
-- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)a3;
-- (void)compute:(_KUwyEjpVZR65eUyl *)a3 UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)a4 SFkZRA5Ek9YzhDRs:(unsigned int)a5 jAVr67FQ6j4EzsgV:(id)a6 i4KDOQicW9Xd5WBz:(id)a7 TWWnmIjkBlMfHmma:(id)a8 withCompletion:(id)a9;
-- (void)computeHash:(_KUwyEjpVZR65eUyl *)a3 jAVr67FQ6j4EzsgV:(id)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 withCompletion:(id)a7;
-- (void)computeSCSSignalsWithCompletion:(id)a3;
-- (void)computeTUSignalsWithCompletion:(id)a3;
-- (void)endSignpost:(_eipjLVDiD7LNwlPc *)a3 signpostId:(unint64_t)a4;
+- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)signpost;
+- (void)compute:(_KUwyEjpVZR65eUyl *)compute UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)ue1 SFkZRA5Ek9YzhDRs:(unsigned int)rs jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)computeHash:(_KUwyEjpVZR65eUyl *)hash jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)computeSCSSignalsWithCompletion:(id)completion;
+- (void)computeTUSignalsWithCompletion:(id)completion;
+- (void)endSignpost:(_eipjLVDiD7LNwlPc *)signpost signpostId:(unint64_t)id;
 @end
 
 @implementation NIEyYkb5fUSqW222
@@ -31,12 +31,12 @@
   return v2;
 }
 
-- (void)compute:(_KUwyEjpVZR65eUyl *)a3 UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)a4 SFkZRA5Ek9YzhDRs:(unsigned int)a5 jAVr67FQ6j4EzsgV:(id)a6 i4KDOQicW9Xd5WBz:(id)a7 TWWnmIjkBlMfHmma:(id)a8 withCompletion:(id)a9
+- (void)compute:(_KUwyEjpVZR65eUyl *)compute UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)ue1 SFkZRA5Ek9YzhDRs:(unsigned int)rs jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v30 = a6;
-  v29 = a7;
-  v13 = a8;
-  v14 = a9;
+  vCopy = v;
+  bzCopy = bz;
+  hmmaCopy = hmma;
+  completionCopy = completion;
   v15 = objc_opt_new();
   v54[0] = 0;
   v54[1] = v54;
@@ -59,7 +59,7 @@
   v50[2] = 0x2020000000;
   v50[3] = 0;
   v16 = dispatch_group_create();
-  dispatch_time(0, 1000000 * a3->var3);
+  dispatch_time(0, 1000000 * compute->var3);
   v17 = os_signpost_id_generate(qword_1006DF780);
   v18 = qword_1006DF780;
   v19 = v18;
@@ -69,7 +69,7 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "ss", "enableTelemetry=YES", buf, 2u);
   }
 
-  var1 = a3->var1;
+  var1 = compute->var1;
   if (var1 == 1)
   {
     LOBYTE(v22) = 1;
@@ -78,13 +78,13 @@
 
   if (var1 == 2)
   {
-    var0 = a3->var4.var0.var0;
+    var0 = compute->var4.var0.var0;
     if ((var0 & 1) == 0)
     {
       if ((var0 & 2) == 0)
       {
-        v27 = [[kjAS9HuCdR1m5txL alloc] initWithGyF0atX3JpCKc9pK:&__NSArray0__struct qfSDGTGvqd3Hruzg:0, v29, v30];
-        v14[2](v14, v27);
+        vCopy = [[kjAS9HuCdR1m5txL alloc] initWithGyF0atX3JpCKc9pK:&__NSArray0__struct qfSDGTGvqd3Hruzg:0, bzCopy, vCopy];
+        completionCopy[2](completionCopy, vCopy);
         goto LABEL_19;
       }
 
@@ -102,7 +102,7 @@ LABEL_9:
     v47 = v51;
     v46 = v16;
     v48 = v54;
-    [(NIEyYkb5fUSqW222 *)self computeSCSSignalsWithCompletion:v45, v29, v30];
+    [(NIEyYkb5fUSqW222 *)self computeSCSSignalsWithCompletion:v45, bzCopy, vCopy];
 
     v23 = 1;
     if ((v22 & 1) == 0)
@@ -122,10 +122,10 @@ LABEL_18:
       v36 = v52;
       v37 = v50;
       v38 = v17;
-      v33 = v14;
+      v33 = completionCopy;
       dispatch_group_notify(v16, queue, block);
 
-      v27 = v32;
+      vCopy = v32;
       goto LABEL_19;
     }
 
@@ -152,8 +152,8 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v26, OS_SIGNPOST_INTERVAL_END, v17, "ss", "", buf, 2u);
   }
 
-  v27 = [[kjAS9HuCdR1m5txL alloc] initWithGyF0atX3JpCKc9pK:0 qfSDGTGvqd3Hruzg:176008, v29, v30];
-  v14[2](v14, v27);
+  vCopy = [[kjAS9HuCdR1m5txL alloc] initWithGyF0atX3JpCKc9pK:0 qfSDGTGvqd3Hruzg:176008, bzCopy, vCopy];
+  completionCopy[2](completionCopy, vCopy);
 LABEL_19:
 
   _Block_object_dispose(v50, 8);
@@ -163,9 +163,9 @@ LABEL_19:
   _Block_object_dispose(v54, 8);
 }
 
-- (void)computeSCSSignalsWithCompletion:(id)a3
+- (void)computeSCSSignalsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -193,7 +193,7 @@ LABEL_19:
   v13 = v17;
   v14 = v5;
   v12 = v16;
-  v9 = v4;
+  v9 = completionCopy;
   v11 = v9;
   [(ASScreenContinuityServicesHelper *)scsHelper loadScreenMirroringStatusWithCompletionHandler:v10];
 
@@ -201,9 +201,9 @@ LABEL_19:
   _Block_object_dispose(v17, 8);
 }
 
-- (void)computeTUSignalsWithCompletion:(id)a3
+- (void)computeTUSignalsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -220,10 +220,10 @@ LABEL_19:
   v7[2] = sub_1000252D8;
   v7[3] = &unk_10068FFA8;
   v7[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v9 = v11;
   v10 = v12;
-  v6 = v4;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 
   _Block_object_dispose(v11, 8);
@@ -252,32 +252,32 @@ LABEL_19:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_END, v2, "ss_2", "", v11, 2u);
   }
 
-  v9 = [v6 BOOLValue];
-  return v9;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
-- (void)computeHash:(_KUwyEjpVZR65eUyl *)a3 jAVr67FQ6j4EzsgV:(id)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 withCompletion:(id)a7
+- (void)computeHash:(_KUwyEjpVZR65eUyl *)hash jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v8 = a7;
+  completionCopy = completion;
   v9 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:0];
   [v9 encodeInt64:0xE5FAC2E77EC39DECLL forKey:@"0x5563"];
-  if (a3->var1 == 2)
+  if (hash->var1 == 2)
   {
-    [v9 encodeInt64:a3->var4.var0.var0 forKey:@"0x57e6"];
+    [v9 encodeInt64:hash->var4.var0.var0 forKey:@"0x57e6"];
   }
 
-  v8[2](v8, [Yp00msaYdVlZesvU cv2QAcQ2CDdiHuN6:v9]);
+  completionCopy[2](completionCopy, [Yp00msaYdVlZesvU cv2QAcQ2CDdiHuN6:v9]);
 }
 
-- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)a3
+- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)signpost
 {
   v4 = os_signpost_id_generate(qword_1006DF788);
   v5 = qword_1006DF788;
   v6 = v5;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
-    profileIDPrefix = a3->profileIDPrefix;
-    dataframeIndex = a3->dataframeIndex;
+    profileIDPrefix = signpost->profileIDPrefix;
+    dataframeIndex = signpost->dataframeIndex;
     v10[0] = 67240448;
     v10[1] = profileIDPrefix;
     v11 = 1026;
@@ -288,19 +288,19 @@ LABEL_19:
   return v4;
 }
 
-- (void)endSignpost:(_eipjLVDiD7LNwlPc *)a3 signpostId:(unint64_t)a4
+- (void)endSignpost:(_eipjLVDiD7LNwlPc *)signpost signpostId:(unint64_t)id
 {
   v6 = qword_1006DF788;
   v7 = v6;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+  if (id - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
-    profileIDPrefix = a3->profileIDPrefix;
-    dataframeIndex = a3->dataframeIndex;
+    profileIDPrefix = signpost->profileIDPrefix;
+    dataframeIndex = signpost->dataframeIndex;
     v10[0] = 67240448;
     v10[1] = profileIDPrefix;
     v11 = 1026;
     v12 = dataframeIndex;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, a4, "ss", "p=%{public,signpost.telemetry:number1}d,i=%{public,signpost.telemetry:number2}d", v10, 0xEu);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, id, "ss", "p=%{public,signpost.telemetry:number1}d,i=%{public,signpost.telemetry:number2}d", v10, 0xEu);
   }
 }
 

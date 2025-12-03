@@ -1,8 +1,8 @@
 @interface CrossfireManager
 - (CrossfireManager)init;
-- (id)createMetricsEventsForEventType:(unsigned __int8)a3 context:(id)a4;
-- (void)_handleAnalyticsUsageSwitchChange:(id)a3;
-- (void)decorateMetricsEvent:(id)a3 context:(id)a4;
+- (id)createMetricsEventsForEventType:(unsigned __int8)type context:(id)context;
+- (void)_handleAnalyticsUsageSwitchChange:(id)change;
+- (void)decorateMetricsEvent:(id)event context:(id)context;
 @end
 
 @implementation CrossfireManager
@@ -35,9 +35,9 @@
 
     v13 = +[NSNotificationCenter defaultCenter];
     v14 = sub_1003BBF50();
-    v15 = [v14 isHRNMode];
+    isHRNMode = [v14 isHRNMode];
 
-    if ((v15 & 1) == 0)
+    if ((isHRNMode & 1) == 0)
     {
       [v13 addObserver:v2 selector:"_handleAnalyticsUsageSwitchChange:" name:MCEffectiveSettingsChangedNotification object:0];
     }
@@ -55,12 +55,12 @@
   return v2;
 }
 
-- (id)createMetricsEventsForEventType:(unsigned __int8)a3 context:(id)a4
+- (id)createMetricsEventsForEventType:(unsigned __int8)type context:(id)context
 {
-  v4 = a3;
-  v6 = a4;
+  typeCopy = type;
+  contextCopy = context;
   v7 = objc_opt_new();
-  v8 = sub_1002AAAA4(self, v4, v6);
+  v8 = sub_1002AAAA4(self, typeCopy, contextCopy);
   if ([v8 count])
   {
     v19 = 0u;
@@ -82,7 +82,7 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = sub_1002A989C(self, *(*(&v17 + 1) + 8 * i), v4, v6);
+          v14 = sub_1002A989C(self, *(*(&v17 + 1) + 8 * i), typeCopy, contextCopy);
           [v7 addObject:{v14, v17}];
         }
 
@@ -98,41 +98,41 @@
   return v15;
 }
 
-- (void)decorateMetricsEvent:(id)a3 context:(id)a4
+- (void)decorateMetricsEvent:(id)event context:(id)context
 {
-  v21 = a3;
-  v6 = a4;
+  eventCopy = event;
+  contextCopy = context;
   osBuild = self->_osBuild;
   if (osBuild)
   {
-    sub_1003D84C4(v21, osBuild);
+    sub_1003D84C4(eventCopy, osBuild);
   }
 
   platform = self->_platform;
   if (platform)
   {
-    sub_1003D853C(v21, platform);
+    sub_1003D853C(eventCopy, platform);
   }
 
-  [v21 setAnonymous:1];
-  if (v6)
+  [eventCopy setAnonymous:1];
+  if (contextCopy)
   {
-    sub_1003D87FC(v21, v6[15]);
-    v9 = v6[11];
+    sub_1003D87FC(eventCopy, contextCopy[15]);
+    v9 = contextCopy[11];
   }
 
   else
   {
-    sub_1003D87FC(v21, 0);
+    sub_1003D87FC(eventCopy, 0);
     v9 = 0;
   }
 
-  sub_1003D878C(v21, v9);
-  sub_1003D886C(v21, 1);
-  if (v21 && *(v21 + 25) == 1 && (*(v21 + 24) | 4) != 5)
+  sub_1003D878C(eventCopy, v9);
+  sub_1003D886C(eventCopy, 1);
+  if (eventCopy && *(eventCopy + 25) == 1 && (*(eventCopy + 24) | 4) != 5)
   {
-    v10 = v21[9];
-    v11 = v6;
+    v10 = eventCopy[9];
+    v11 = contextCopy;
     v25 = 0;
     v26 = &v25;
     v27 = 0x3032000000;
@@ -157,43 +157,43 @@
       v15 = sub_1003B3308(v14);
       if (v15)
       {
-        sub_1003D7A2C(v21, v15);
+        sub_1003D7A2C(eventCopy, v15);
       }
 
       v16 = sub_1003B32D0(v14);
       if (v16)
       {
-        sub_1003D79B4(v21, v16);
+        sub_1003D79B4(eventCopy, v16);
       }
 
       v17 = sub_1003B3340(v14);
       if (v17)
       {
-        sub_1003D7C0C(v21, v17);
+        sub_1003D7C0C(eventCopy, v17);
       }
 
       v18 = sub_10023E0F8(v14, @"clip_affiliate_token");
       if (v18)
       {
-        sub_1003D7834(v21, v18);
+        sub_1003D7834(eventCopy, v18);
       }
 
       v19 = sub_10023E0F8(v14, @"clip_campaign_token");
       if (v19)
       {
-        sub_1003D78B4(v21, v19);
+        sub_1003D78B4(eventCopy, v19);
       }
 
       v20 = sub_10023E0F8(v14, @"clip_provider_token");
       if (v20)
       {
-        sub_1003D7934(v21, v20);
+        sub_1003D7934(eventCopy, v20);
       }
     }
   }
 }
 
-- (void)_handleAnalyticsUsageSwitchChange:(id)a3
+- (void)_handleAnalyticsUsageSwitchChange:(id)change
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;

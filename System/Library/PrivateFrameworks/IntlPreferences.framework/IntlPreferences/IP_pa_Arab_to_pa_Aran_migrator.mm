@@ -1,16 +1,16 @@
 @interface IP_pa_Arab_to_pa_Aran_migrator
-- (id)performMigrationForPreferences:(id)a3;
+- (id)performMigrationForPreferences:(id)preferences;
 @end
 
 @implementation IP_pa_Arab_to_pa_Aran_migrator
 
-- (id)performMigrationForPreferences:(id)a3
+- (id)performMigrationForPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if ([(ISMigrator *)self previousVersionIsOlderThanMacOS:@"10.15" iOS:@"17A" watchOS:@"17R" tvOS:@"17J"])
   {
-    v5 = [v4 mutableCopy];
-    v6 = [v4 objectForKeyedSubscript:@"AppleLanguages"];
+    v5 = [preferencesCopy mutableCopy];
+    v6 = [preferencesCopy objectForKeyedSubscript:@"AppleLanguages"];
     v7 = [v6 mutableCopy];
 
     v18[0] = MEMORY[0x277D85DD0];
@@ -21,7 +21,7 @@
     v19 = v8;
     [v8 enumerateObjectsUsingBlock:v18];
     [v5 setObject:v8 forKeyedSubscript:@"AppleLanguages"];
-    v9 = [v4 objectForKeyedSubscript:@"AppleLocale"];
+    v9 = [preferencesCopy objectForKeyedSubscript:@"AppleLocale"];
     v10 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v9];
     v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]];
     if ([v11 isEqualToString:@"pa"])
@@ -47,7 +47,7 @@
 
   else
   {
-    v5 = v4;
+    v5 = preferencesCopy;
   }
 
   return v5;

@@ -1,17 +1,17 @@
 @interface _UIShareInvitationModalAddParticipantController
 - (NSString)continueActionTitle;
-- (_UIShareInvitationModalAddParticipantController)initWithCurrentAddresses:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setCompletion:(id)a3;
-- (void)setContinueActionTitle:(id)a3;
+- (_UIShareInvitationModalAddParticipantController)initWithCurrentAddresses:(id)addresses;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setCompletion:(id)completion;
+- (void)setContinueActionTitle:(id)title;
 @end
 
 @implementation _UIShareInvitationModalAddParticipantController
 
-- (_UIShareInvitationModalAddParticipantController)initWithCurrentAddresses:(id)a3
+- (_UIShareInvitationModalAddParticipantController)initWithCurrentAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [[_UIShareInvitationAddParticipantController alloc] initWithCurrentAddresses:v4];
+  addressesCopy = addresses;
+  v5 = [[_UIShareInvitationAddParticipantController alloc] initWithCurrentAddresses:addressesCopy];
 
   v9.receiver = self;
   v9.super_class = _UIShareInvitationModalAddParticipantController;
@@ -26,30 +26,30 @@
   return v7;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = [(_UIShareInvitationModalAddParticipantController *)self completion];
-  v3[2](v3, 1, &__NSArray0__struct);
+  completion = [(_UIShareInvitationModalAddParticipantController *)self completion];
+  completion[2](completion, 1, &__NSArray0__struct);
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_completion != v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (self->_completion != completionCopy)
   {
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
     completion = self->_completion;
     self->_completion = v6;
 
     objc_initWeak(&location, self);
-    v8 = [(_UIShareInvitationModalAddParticipantController *)self addParticipantController];
+    addParticipantController = [(_UIShareInvitationModalAddParticipantController *)self addParticipantController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100005A08;
     v9[3] = &unk_100106E28;
     objc_copyWeak(&v10, &location);
-    [v8 setCompletion:v9];
+    [addParticipantController setCompletion:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -58,21 +58,21 @@
 
 - (NSString)continueActionTitle
 {
-  v2 = [(_UIShareInvitationModalAddParticipantController *)self addParticipantController];
-  v3 = [v2 navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  v5 = [v4 title];
+  addParticipantController = [(_UIShareInvitationModalAddParticipantController *)self addParticipantController];
+  navigationItem = [addParticipantController navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  title = [rightBarButtonItem title];
 
-  return v5;
+  return title;
 }
 
-- (void)setContinueActionTitle:(id)a3
+- (void)setContinueActionTitle:(id)title
 {
-  v4 = a3;
-  v7 = [(_UIShareInvitationModalAddParticipantController *)self addParticipantController];
-  v5 = [v7 navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setTitle:v4];
+  titleCopy = title;
+  addParticipantController = [(_UIShareInvitationModalAddParticipantController *)self addParticipantController];
+  navigationItem = [addParticipantController navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setTitle:titleCopy];
 }
 
 @end

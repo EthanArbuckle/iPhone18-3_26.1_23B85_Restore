@@ -1,31 +1,31 @@
 @interface AMSUITouchForwardingView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation AMSUITouchForwardingView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v26.receiver = self;
   v26.super_class = AMSUITouchForwardingView;
-  v8 = [(AMSUITouchForwardingView *)&v26 hitTest:v7 withEvent:x, y];
+  v8 = [(AMSUITouchForwardingView *)&v26 hitTest:eventCopy withEvent:x, y];
   v9 = v8;
   if (v8 == self)
   {
-    v11 = [(AMSUITouchForwardingView *)self passthroughViews];
+    passthroughViews = [(AMSUITouchForwardingView *)self passthroughViews];
 
-    if (v11)
+    if (passthroughViews)
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v12 = [(AMSUITouchForwardingView *)self passthroughViews];
-      v13 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      passthroughViews2 = [(AMSUITouchForwardingView *)self passthroughViews];
+      v13 = [passthroughViews2 countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v13)
       {
         v14 = v13;
@@ -36,14 +36,14 @@
           {
             if (*v23 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(passthroughViews2);
             }
 
             v17 = *(*(&v22 + 1) + 8 * i);
             if (v17)
             {
               [(AMSUITouchForwardingView *)self convertPoint:*(*(&v22 + 1) + 8 * i) toView:x, y];
-              v18 = [v17 hitTest:v7 withEvent:?];
+              v18 = [v17 hitTest:eventCopy withEvent:?];
               if (v18)
               {
                 v19 = v18;
@@ -53,7 +53,7 @@
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+          v14 = [passthroughViews2 countByEnumeratingWithState:&v22 objects:v27 count:16];
           if (v14)
           {
             continue;
@@ -64,15 +64,15 @@
       }
     }
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = v8;
+    selfCopy = v8;
   }
 
-  v19 = v10;
+  v19 = selfCopy;
 LABEL_16:
 
   v20 = *MEMORY[0x1E69E9840];

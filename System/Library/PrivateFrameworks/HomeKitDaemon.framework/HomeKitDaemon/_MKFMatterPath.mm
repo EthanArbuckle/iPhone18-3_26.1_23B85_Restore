@@ -1,8 +1,8 @@
 @interface _MKFMatterPath
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)_validateParentsForInsertOrUpdate:(id *)a3;
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)_validateParentsForInsertOrUpdate:(id *)update;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 - (MKFHome)home;
 - (MKFMatterPathDatabaseID)databaseID;
 - (NSArray)actionCommands;
@@ -16,33 +16,33 @@
 - (NSArray)matterBulletinRegistrations
 {
   v2 = [(_MKFMatterPath *)self valueForKey:@"matterBulletinRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)eventAttributes
 {
   v2 = [(_MKFMatterPath *)self valueForKey:@"eventAttributes_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)actionCommands
 {
   v2 = [(_MKFMatterPath *)self valueForKey:@"actionCommands_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFHome)home
 {
-  v2 = [(_MKFMatterPath *)self accessory];
-  v3 = [v2 home];
+  accessory = [(_MKFMatterPath *)self accessory];
+  home = [accessory home];
 
-  return v3;
+  return home;
 }
 
 - (MKFMatterPathDatabaseID)databaseID
@@ -52,7 +52,7 @@
   return v2;
 }
 
-- (BOOL)_validateParentsForInsertOrUpdate:(id *)a3
+- (BOOL)_validateParentsForInsertOrUpdate:(id *)update
 {
   v5 = +[HMDCoreData featuresDataSource];
   if (![v5 isRVCEnabled])
@@ -60,9 +60,9 @@
     goto LABEL_21;
   }
 
-  v6 = [(_MKFMatterPath *)self entity];
+  entity = [(_MKFMatterPath *)self entity];
   v7 = +[_MKFMatterPath entity];
-  v8 = [v6 isKindOfEntity:v7];
+  v8 = [entity isKindOfEntity:v7];
 
   if (v8)
   {
@@ -83,9 +83,9 @@
           v15 = v14;
           if (v12 && v13 || v12 | v13 && v14)
           {
-            if (a3)
+            if (update)
             {
-              *a3 = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"only attribute/command/event can be set"];
+              *update = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"only attribute/command/event can be set"];
             }
 
             goto LABEL_19;
@@ -97,19 +97,19 @@ LABEL_21:
         }
       }
 
-      if (a3)
+      if (update)
       {
         v17 = @"both endpoint and cluster are needed";
 LABEL_18:
         [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:v17];
-        *a3 = v16 = 0;
+        *update = v16 = 0;
 LABEL_22:
 
         return v16;
       }
     }
 
-    else if (a3)
+    else if (update)
     {
       v17 = @"at least on accessory is required";
       goto LABEL_18;
@@ -123,38 +123,38 @@ LABEL_19:
   return 1;
 }
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(_MKFMatterPath *)v6 modelID];
+    modelID = [(_MKFMatterPath *)selfCopy modelID];
     v14 = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v9;
+    v17 = modelID;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Validating matter path (%@) for insert or update", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if (a3)
+  if (update)
   {
-    *a3 = 0;
+    *update = 0;
   }
 
-  if ([(_MKFMatterPath *)v6 _validateParentsForInsertOrUpdate:a3])
+  if ([(_MKFMatterPath *)selfCopy _validateParentsForInsertOrUpdate:update])
   {
-    v10 = [(_MKFMatterPath *)v6 accessory];
-    v11 = v10 != 0;
+    accessory = [(_MKFMatterPath *)selfCopy accessory];
+    v11 = accessory != 0;
 
-    if (a3 && !v10)
+    if (update && !accessory)
     {
-      [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"at least one accessory is required" managedObject:v6 attributeName:@"accessory"];
-      *a3 = v11 = 0;
+      [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"at least one accessory is required" managedObject:selfCopy attributeName:@"accessory"];
+      *update = v11 = 0;
     }
   }
 
@@ -179,9 +179,9 @@ LABEL_19:
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -202,15 +202,15 @@ LABEL_19:
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 hmd_modelID];
+      hmd_modelID = [v4 hmd_modelID];
     }
 
     else
     {
-      v6 = 0;
+      hmd_modelID = 0;
     }
 
-    return v6;
+    return hmd_modelID;
   }
 
   else

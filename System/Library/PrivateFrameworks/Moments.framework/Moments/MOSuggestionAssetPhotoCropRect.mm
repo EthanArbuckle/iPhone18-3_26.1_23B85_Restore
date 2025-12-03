@@ -1,19 +1,19 @@
 @interface MOSuggestionAssetPhotoCropRect
 - (CGRect)cgRect;
-- (MOSuggestionAssetPhotoCropRect)initWithCGRect:(CGRect)a3;
-- (MOSuggestionAssetPhotoCropRect)initWithCoder:(id)a3;
+- (MOSuggestionAssetPhotoCropRect)initWithCGRect:(CGRect)rect;
+- (MOSuggestionAssetPhotoCropRect)initWithCoder:(id)coder;
 - (double)aspectRatio;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionAssetPhotoCropRect
 
-- (MOSuggestionAssetPhotoCropRect)initWithCGRect:(CGRect)a3
+- (MOSuggestionAssetPhotoCropRect)initWithCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = MOSuggestionAssetPhotoCropRect;
   result = [(MOSuggestionAssetPhotoCropRect *)&v8 init];
@@ -53,31 +53,31 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   x = self->_x;
-  v5 = a3;
-  [v5 encodeDouble:@"kCoderKeyPhotoCropRectX" forKey:x];
-  [v5 encodeDouble:@"kCoderKeyPhotoCropRectY" forKey:self->_y];
-  [v5 encodeDouble:@"kCoderKeyPhotoCropRectWidth" forKey:self->_width];
-  [v5 encodeDouble:@"kCoderKeyPhotoCropRectHeight" forKey:self->_height];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"kCoderKeyPhotoCropRectX" forKey:x];
+  [coderCopy encodeDouble:@"kCoderKeyPhotoCropRectY" forKey:self->_y];
+  [coderCopy encodeDouble:@"kCoderKeyPhotoCropRectWidth" forKey:self->_width];
+  [coderCopy encodeDouble:@"kCoderKeyPhotoCropRectHeight" forKey:self->_height];
 }
 
-- (MOSuggestionAssetPhotoCropRect)initWithCoder:(id)a3
+- (MOSuggestionAssetPhotoCropRect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MOSuggestionAssetPhotoCropRect;
   v5 = [(MOSuggestionAssetPhotoCropRect *)&v11 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"kCoderKeyPhotoCropRectX"];
+    [coderCopy decodeDoubleForKey:@"kCoderKeyPhotoCropRectX"];
     v5->_x = v6;
-    [v4 decodeDoubleForKey:@"kCoderKeyPhotoCropRectY"];
+    [coderCopy decodeDoubleForKey:@"kCoderKeyPhotoCropRectY"];
     v5->_y = v7;
-    [v4 decodeDoubleForKey:@"kCoderKeyPhotoCropRectWidth"];
+    [coderCopy decodeDoubleForKey:@"kCoderKeyPhotoCropRectWidth"];
     v5->_width = v8;
-    [v4 decodeDoubleForKey:@"kCoderKeyPhotoCropRectHeight"];
+    [coderCopy decodeDoubleForKey:@"kCoderKeyPhotoCropRectHeight"];
     v5->_height = v9;
   }
 

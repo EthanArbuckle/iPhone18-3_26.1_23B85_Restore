@@ -1,56 +1,56 @@
 @interface HMIFaceprint
-+ (id)sentinelFaceprintWithUUID:(id)a3 modelUUID:(id)a4 faceCropUUID:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)sentinelFaceprintWithUUID:(id)d modelUUID:(id)iD faceCropUUID:(id)uID;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSentinelFaceprint;
-- (HMIFaceprint)initWithCoder:(id)a3;
-- (HMIFaceprint)initWithUUID:(id)a3 data:(id)a4 modelUUID:(id)a5 faceCropUUID:(id)a6;
+- (HMIFaceprint)initWithCoder:(id)coder;
+- (HMIFaceprint)initWithUUID:(id)d data:(id)data modelUUID:(id)iD faceCropUUID:(id)uID;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIFaceprint
 
-+ (id)sentinelFaceprintWithUUID:(id)a3 modelUUID:(id)a4 faceCropUUID:(id)a5
++ (id)sentinelFaceprintWithUUID:(id)d modelUUID:(id)iD faceCropUUID:(id)uID
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  uIDCopy = uID;
+  iDCopy = iD;
+  dCopy = d;
   v10 = [HMIFaceprint alloc];
-  v11 = [MEMORY[0x277CBEA90] data];
-  v12 = [(HMIFaceprint *)v10 initWithUUID:v9 data:v11 modelUUID:v8 faceCropUUID:v7];
+  data = [MEMORY[0x277CBEA90] data];
+  v12 = [(HMIFaceprint *)v10 initWithUUID:dCopy data:data modelUUID:iDCopy faceCropUUID:uIDCopy];
 
   return v12;
 }
 
-- (HMIFaceprint)initWithUUID:(id)a3 data:(id)a4 modelUUID:(id)a5 faceCropUUID:(id)a6
+- (HMIFaceprint)initWithUUID:(id)d data:(id)data modelUUID:(id)iD faceCropUUID:(id)uID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  dCopy = d;
+  dataCopy = data;
+  iDCopy = iD;
+  uIDCopy = uID;
+  if (!dCopy)
   {
     [HMIPersonFaceCrop initWithUUID:dataRepresentation:dateCreated:faceBoundingBox:personUUID:source:];
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!dataCopy)
   {
 LABEL_9:
     [HMIFaceprint initWithUUID:data:modelUUID:faceCropUUID:];
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!iDCopy)
   {
 LABEL_10:
     [HMIFaceprint initWithUUID:data:modelUUID:faceCropUUID:];
     goto LABEL_11;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = uIDCopy;
+  if (!uIDCopy)
   {
 LABEL_11:
     v25 = [HMIFaceprint initWithUUID:data:modelUUID:faceCropUUID:];
@@ -62,15 +62,15 @@ LABEL_11:
   v15 = [(HMIFaceprint *)&v27 init];
   if (v15)
   {
-    v16 = [v10 copy];
+    v16 = [dCopy copy];
     UUID = v15->_UUID;
     v15->_UUID = v16;
 
-    v18 = [v11 copy];
+    v18 = [dataCopy copy];
     data = v15->_data;
     v15->_data = v18;
 
-    v20 = [v12 copy];
+    v20 = [iDCopy copy];
     modelUUID = v15->_modelUUID;
     v15->_modelUUID = v20;
 
@@ -86,20 +86,20 @@ LABEL_11:
 {
   v17[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMIFaceprint *)self UUID];
-  v5 = [v3 initWithName:@"UUID" value:v4];
+  uUID = [(HMIFaceprint *)self UUID];
+  v5 = [v3 initWithName:@"UUID" value:uUID];
   v17[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMIFaceprint *)self data];
-  v8 = [v6 initWithName:@"Data" value:v7];
+  data = [(HMIFaceprint *)self data];
+  v8 = [v6 initWithName:@"Data" value:data];
   v17[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMIFaceprint *)self modelUUID];
-  v11 = [v9 initWithName:@"Model UUID" value:v10];
+  modelUUID = [(HMIFaceprint *)self modelUUID];
+  v11 = [v9 initWithName:@"Model UUID" value:modelUUID];
   v17[2] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(HMIFaceprint *)self faceCropUUID];
-  v14 = [v12 initWithName:@"Face Crop UUID" value:v13];
+  faceCropUUID = [(HMIFaceprint *)self faceCropUUID];
+  v14 = [v12 initWithName:@"Face Crop UUID" value:faceCropUUID];
   v17[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
 
@@ -108,20 +108,20 @@ LABEL_11:
 
 - (BOOL)isSentinelFaceprint
 {
-  v2 = [(HMIFaceprint *)self data];
-  v3 = [MEMORY[0x277CBEA90] data];
-  v4 = [v2 isEqualToData:v3];
+  data = [(HMIFaceprint *)self data];
+  data2 = [MEMORY[0x277CBEA90] data];
+  v4 = [data isEqualToData:data2];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -132,21 +132,21 @@ LABEL_11:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMIFaceprint *)self UUID];
-    v8 = [v6 UUID];
-    if ([v7 isEqual:v8])
+    uUID = [(HMIFaceprint *)self UUID];
+    uUID2 = [v6 UUID];
+    if ([uUID isEqual:uUID2])
     {
-      v9 = [(HMIFaceprint *)self data];
-      v10 = [v6 data];
-      if ([v9 isEqualToData:v10])
+      data = [(HMIFaceprint *)self data];
+      data2 = [v6 data];
+      if ([data isEqualToData:data2])
       {
-        v11 = [(HMIFaceprint *)self modelUUID];
-        v12 = [v6 modelUUID];
-        if ([v11 isEqual:v12])
+        modelUUID = [(HMIFaceprint *)self modelUUID];
+        modelUUID2 = [v6 modelUUID];
+        if ([modelUUID isEqual:modelUUID2])
         {
-          v16 = [(HMIFaceprint *)self faceCropUUID];
-          v13 = [v6 faceCropUUID];
-          v14 = [v16 isEqual:v13];
+          faceCropUUID = [(HMIFaceprint *)self faceCropUUID];
+          faceCropUUID2 = [v6 faceCropUUID];
+          v14 = [faceCropUUID isEqual:faceCropUUID2];
         }
 
         else
@@ -177,36 +177,36 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(HMIFaceprint *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(HMIFaceprint *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMIFaceprint *)self UUID];
-  [v4 encodeObject:v5 forKey:@"HMIFP.ck.u"];
+  coderCopy = coder;
+  uUID = [(HMIFaceprint *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"HMIFP.ck.u"];
 
-  v6 = [(HMIFaceprint *)self data];
-  [v4 encodeObject:v6 forKey:@"HMIFP.ck.d"];
+  data = [(HMIFaceprint *)self data];
+  [coderCopy encodeObject:data forKey:@"HMIFP.ck.d"];
 
-  v7 = [(HMIFaceprint *)self modelUUID];
-  [v4 encodeObject:v7 forKey:@"HMIFP.ck.mu"];
+  modelUUID = [(HMIFaceprint *)self modelUUID];
+  [coderCopy encodeObject:modelUUID forKey:@"HMIFP.ck.mu"];
 
-  v8 = [(HMIFaceprint *)self faceCropUUID];
-  [v4 encodeObject:v8 forKey:@"HMIFP.ck.fcu"];
+  faceCropUUID = [(HMIFaceprint *)self faceCropUUID];
+  [coderCopy encodeObject:faceCropUUID forKey:@"HMIFP.ck.fcu"];
 }
 
-- (HMIFaceprint)initWithCoder:(id)a3
+- (HMIFaceprint)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIFP.ck.u"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIFP.ck.d"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIFP.ck.mu"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIFP.ck.fcu"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIFP.ck.u"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIFP.ck.d"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIFP.ck.mu"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIFP.ck.fcu"];
   v9 = v8;
   if (v5)
   {
@@ -221,7 +221,7 @@ LABEL_11:
   if (v10 || v6 == 0 || v7 == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -245,8 +245,8 @@ LABEL_11:
 
   else
   {
-    v16 = [(HMIFaceprint *)self initWithUUID:v5 data:v6 modelUUID:v7 faceCropUUID:v8];
-    v17 = v16;
+    selfCopy = [(HMIFaceprint *)self initWithUUID:v5 data:v6 modelUUID:v7 faceCropUUID:v8];
+    v17 = selfCopy;
   }
 
   return v17;

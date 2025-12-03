@@ -1,78 +1,78 @@
 @interface AKAccountRecoveryStepVerifyPhoneNumber
-- (BOOL)canProcessResponse:(id)a3;
-- (id)_matchingAttributesWithPhoneNumber:(id)a3 linkRowElements:(id)a4;
-- (id)_promptForPhoneNumberWithModel:(id)a3;
-- (void)_beginVerifyPhoneNumberWithResponse:(id)a3 model:(id)a4 completion:(id)a5;
-- (void)_processPhoneNumber:(id)a3 response:(id)a4 model:(id)a5 completion:(id)a6;
-- (void)_sendSMSCodeWithModel:(id)a3 completion:(id)a4;
-- (void)_verifyPhoneNumberWithModel:(id)a3 completion:(id)a4;
-- (void)processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5;
+- (BOOL)canProcessResponse:(id)response;
+- (id)_matchingAttributesWithPhoneNumber:(id)number linkRowElements:(id)elements;
+- (id)_promptForPhoneNumberWithModel:(id)model;
+- (void)_beginVerifyPhoneNumberWithResponse:(id)response model:(id)model completion:(id)completion;
+- (void)_processPhoneNumber:(id)number response:(id)response model:(id)model completion:(id)completion;
+- (void)_sendSMSCodeWithModel:(id)model completion:(id)completion;
+- (void)_verifyPhoneNumberWithModel:(id)model completion:(id)completion;
+- (void)processResponse:(id)response model:(id)model withCompletion:(id)completion;
 @end
 
 @implementation AKAccountRecoveryStepVerifyPhoneNumber
 
-- (void)processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5
+- (void)processResponse:(id)response model:(id)model withCompletion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, model);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKAccountRecoveryStepVerifyPhoneNumber *)v10 _beginVerifyPhoneNumberWithResponse:location[0] model:v8 completion:v7];
+  objc_storeStrong(&v7, completion);
+  [(AKAccountRecoveryStepVerifyPhoneNumber *)selfCopy _beginVerifyPhoneNumberWithResponse:location[0] model:v8 completion:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)canProcessResponse:(id)a3
+- (BOOL)canProcessResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] data];
+  objc_storeStrong(location, response);
+  data = [location[0] data];
   v9 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"navigationBar" error:?];
-  MEMORY[0x1E69E5920](v4);
-  v7 = [v9 firstObject];
-  v6 = [v7 objectForKeyedSubscript:@"title"];
-  v5 = [v6 lowercaseString];
-  v8 = [v5 containsString:@"phone number"];
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](data);
+  firstObject = [v9 firstObject];
+  v6 = [firstObject objectForKeyedSubscript:@"title"];
+  lowercaseString = [v6 lowercaseString];
+  v8 = [lowercaseString containsString:@"phone number"];
+  MEMORY[0x1E69E5920](lowercaseString);
   MEMORY[0x1E69E5920](v6);
-  MEMORY[0x1E69E5920](v7);
+  MEMORY[0x1E69E5920](firstObject);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
   return v8 & 1;
 }
 
-- (void)_beginVerifyPhoneNumberWithResponse:(id)a3 model:(id)a4 completion:(id)a5
+- (void)_beginVerifyPhoneNumberWithResponse:(id)response model:(id)model completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, model);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v15 = [location[0] data];
+  objc_storeStrong(&v20, completion);
+  data = [location[0] data];
   v19 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"multiChoice" error:?];
-  MEMORY[0x1E69E5920](v15);
+  MEMORY[0x1E69E5920](data);
   if ([v19 count] == 1)
   {
-    v12 = [v21 cliUtilities];
-    v11 = [v21 configuration];
-    v10 = [v19 firstObject];
-    v9 = [location[0] httpResponse];
-    [v12 updateConfiguration:v11 fromXMLAttributes:v10 response:?];
-    MEMORY[0x1E69E5920](v9);
-    MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v11);
-    MEMORY[0x1E69E5920](v12);
-    [(AKAccountRecoveryStepVerifyPhoneNumber *)v23 _verifyPhoneNumberWithModel:v21 completion:v20];
+    cliUtilities = [v21 cliUtilities];
+    configuration = [v21 configuration];
+    firstObject = [v19 firstObject];
+    httpResponse = [location[0] httpResponse];
+    [cliUtilities updateConfiguration:configuration fromXMLAttributes:firstObject response:?];
+    MEMORY[0x1E69E5920](httpResponse);
+    MEMORY[0x1E69E5920](firstObject);
+    MEMORY[0x1E69E5920](configuration);
+    MEMORY[0x1E69E5920](cliUtilities);
+    [(AKAccountRecoveryStepVerifyPhoneNumber *)selfCopy _verifyPhoneNumberWithModel:v21 completion:v20];
   }
 
   else
@@ -103,46 +103,46 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifyPhoneNumberWithModel:(id)a3 completion:(id)a4
+- (void)_verifyPhoneNumberWithModel:(id)model completion:(id)completion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
-  v31 = [(AKAccountRecoveryStepVerifyPhoneNumber *)v34 _promptForPhoneNumberWithModel:location[0]];
-  v30 = [location[0] configuration];
-  if (v30)
+  objc_storeStrong(&v32, completion);
+  v31 = [(AKAccountRecoveryStepVerifyPhoneNumber *)selfCopy _promptForPhoneNumberWithModel:location[0]];
+  configuration = [location[0] configuration];
+  if (configuration)
   {
-    v4 = [v30 request];
-    v25 = [v4 mutableCopy];
-    MEMORY[0x1E69E5920](v4);
-    v7 = [location[0] cliUtilities];
+    request = [configuration request];
+    v25 = [request mutableCopy];
+    MEMORY[0x1E69E5920](request);
+    cliUtilities = [location[0] cliUtilities];
     v5 = v25;
     v35 = @"number";
     v36[0] = v31;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-    [v7 signXMLRequest:v5 withPostbackDictionary:?];
+    [cliUtilities signXMLRequest:v5 withPostbackDictionary:?];
     MEMORY[0x1E69E5920](v6);
-    MEMORY[0x1E69E5920](v7);
-    v8 = [v30 resourceLoadDelegate];
-    [v8 signRequest:v25];
-    MEMORY[0x1E69E5920](v8);
-    v10 = [location[0] cliUtilities];
+    MEMORY[0x1E69E5920](cliUtilities);
+    resourceLoadDelegate = [configuration resourceLoadDelegate];
+    [resourceLoadDelegate signRequest:v25];
+    MEMORY[0x1E69E5920](resourceLoadDelegate);
+    cliUtilities2 = [location[0] cliUtilities];
     v9 = v25;
     v16 = MEMORY[0x1E69E9820];
     v17 = -1073741824;
     v18 = 0;
     v19 = __81__AKAccountRecoveryStepVerifyPhoneNumber__verifyPhoneNumberWithModel_completion___block_invoke;
     v20 = &unk_1E73D41B0;
-    v21 = MEMORY[0x1E69E5928](v34);
+    v21 = MEMORY[0x1E69E5928](selfCopy);
     v22 = MEMORY[0x1E69E5928](v31);
     v23 = MEMORY[0x1E69E5928](location[0]);
     v24 = MEMORY[0x1E69E5928](v32);
-    [v10 beginDataTaskWithRequest:v9 completionHandler:&v16];
-    MEMORY[0x1E69E5920](v10);
+    [cliUtilities2 beginDataTaskWithRequest:v9 completionHandler:&v16];
+    MEMORY[0x1E69E5920](cliUtilities2);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v23, 0);
     objc_storeStrong(&v22, 0);
@@ -175,7 +175,7 @@
     v26 = 1;
   }
 
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&configuration, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(&v32, 0);
   objc_storeStrong(location, 0);
@@ -201,51 +201,51 @@ void __81__AKAccountRecoveryStepVerifyPhoneNumber__verifyPhoneNumberWithModel_co
   objc_storeStrong(location, 0);
 }
 
-- (void)_processPhoneNumber:(id)a3 response:(id)a4 model:(id)a5 completion:(id)a6
+- (void)_processPhoneNumber:(id)number response:(id)response model:(id)model completion:(id)completion
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, response);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
+  objc_storeStrong(&v36, model);
   v35 = 0;
-  objc_storeStrong(&v35, a6);
-  v24 = [v37 data];
+  objc_storeStrong(&v35, completion);
+  data = [v37 data];
   v34 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"multiChoice" error:?];
-  MEMORY[0x1E69E5920](v24);
-  v25 = [v37 data];
+  MEMORY[0x1E69E5920](data);
+  data2 = [v37 data];
   v33 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"linkRow" error:?];
-  MEMORY[0x1E69E5920](v25);
+  MEMORY[0x1E69E5920](data2);
   if ([v34 count])
   {
-    v20 = [v36 cliUtilities];
-    v19 = [v36 configuration];
-    v18 = [v34 firstObject];
-    v17 = [v37 httpResponse];
-    [v20 updateConfiguration:v19 fromXMLAttributes:v18 response:?];
-    MEMORY[0x1E69E5920](v17);
-    MEMORY[0x1E69E5920](v18);
-    MEMORY[0x1E69E5920](v19);
-    MEMORY[0x1E69E5920](v20);
-    [(AKAccountRecoveryStepVerifyPhoneNumber *)v39 _sendSMSCodeWithModel:v36 completion:v35];
+    cliUtilities = [v36 cliUtilities];
+    configuration = [v36 configuration];
+    firstObject = [v34 firstObject];
+    httpResponse = [v37 httpResponse];
+    [cliUtilities updateConfiguration:configuration fromXMLAttributes:firstObject response:?];
+    MEMORY[0x1E69E5920](httpResponse);
+    MEMORY[0x1E69E5920](firstObject);
+    MEMORY[0x1E69E5920](configuration);
+    MEMORY[0x1E69E5920](cliUtilities);
+    [(AKAccountRecoveryStepVerifyPhoneNumber *)selfCopy _sendSMSCodeWithModel:v36 completion:v35];
   }
 
   else if ([v33 count])
   {
-    v32 = [(AKAccountRecoveryStepVerifyPhoneNumber *)v39 _matchingAttributesWithPhoneNumber:location[0] linkRowElements:v33];
+    v32 = [(AKAccountRecoveryStepVerifyPhoneNumber *)selfCopy _matchingAttributesWithPhoneNumber:location[0] linkRowElements:v33];
     if (v32)
     {
-      v16 = [v36 cliUtilities];
-      v15 = [v36 configuration];
-      v14 = [v37 httpResponse];
-      [v16 updateConfiguration:v15 fromXMLAttributes:v32 response:?];
-      MEMORY[0x1E69E5920](v14);
-      MEMORY[0x1E69E5920](v15);
-      MEMORY[0x1E69E5920](v16);
-      [(AKAccountRecoveryStepVerifyPhoneNumber *)v39 _sendSMSCodeWithModel:v36 completion:v35];
+      cliUtilities2 = [v36 cliUtilities];
+      configuration2 = [v36 configuration];
+      httpResponse2 = [v37 httpResponse];
+      [cliUtilities2 updateConfiguration:configuration2 fromXMLAttributes:v32 response:?];
+      MEMORY[0x1E69E5920](httpResponse2);
+      MEMORY[0x1E69E5920](configuration2);
+      MEMORY[0x1E69E5920](cliUtilities2);
+      [(AKAccountRecoveryStepVerifyPhoneNumber *)selfCopy _sendSMSCodeWithModel:v36 completion:v35];
     }
 
     else
@@ -303,15 +303,15 @@ void __81__AKAccountRecoveryStepVerifyPhoneNumber__verifyPhoneNumberWithModel_co
   objc_storeStrong(location, 0);
 }
 
-- (id)_matchingAttributesWithPhoneNumber:(id)a3 linkRowElements:(id)a4
+- (id)_matchingAttributesWithPhoneNumber:(id)number linkRowElements:(id)elements
 {
   v22 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, elements);
   v18 = 0;
   memset(__b, 0, sizeof(__b));
   v11 = MEMORY[0x1E69E5928](v19);
@@ -373,36 +373,36 @@ void __81__AKAccountRecoveryStepVerifyPhoneNumber__verifyPhoneNumberWithModel_co
   return v5;
 }
 
-- (void)_sendSMSCodeWithModel:(id)a3 completion:(id)a4
+- (void)_sendSMSCodeWithModel:(id)model completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v16 = [location[0] configuration];
-  v5 = [v16 request];
-  v15 = [v5 mutableCopy];
-  MEMORY[0x1E69E5920](v5);
-  v6 = [location[0] cliUtilities];
-  [v6 signXMLRequest:v15];
-  MEMORY[0x1E69E5920](v6);
-  v7 = [v16 resourceLoadDelegate];
-  [v7 signRequest:v15];
-  MEMORY[0x1E69E5920](v7);
-  v9 = [location[0] cliUtilities];
+  objc_storeStrong(&v17, completion);
+  configuration = [location[0] configuration];
+  request = [configuration request];
+  v15 = [request mutableCopy];
+  MEMORY[0x1E69E5920](request);
+  cliUtilities = [location[0] cliUtilities];
+  [cliUtilities signXMLRequest:v15];
+  MEMORY[0x1E69E5920](cliUtilities);
+  resourceLoadDelegate = [configuration resourceLoadDelegate];
+  [resourceLoadDelegate signRequest:v15];
+  MEMORY[0x1E69E5920](resourceLoadDelegate);
+  cliUtilities2 = [location[0] cliUtilities];
   v8 = v15;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __75__AKAccountRecoveryStepVerifyPhoneNumber__sendSMSCodeWithModel_completion___block_invoke;
   v13 = &unk_1E73D41D8;
   v14 = MEMORY[0x1E69E5928](v17);
-  [v9 beginDataTaskWithRequest:v8 completionHandler:?];
-  MEMORY[0x1E69E5920](v9);
+  [cliUtilities2 beginDataTaskWithRequest:v8 completionHandler:?];
+  MEMORY[0x1E69E5920](cliUtilities2);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&configuration, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
 }
@@ -426,26 +426,26 @@ void __75__AKAccountRecoveryStepVerifyPhoneNumber__sendSMSCodeWithModel_completi
   objc_storeStrong(location, 0);
 }
 
-- (id)_promptForPhoneNumberWithModel:(id)a3
+- (id)_promptForPhoneNumberWithModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] context];
-  v8 = [v7 phoneNumber];
-  MEMORY[0x1E69E5920](v7);
-  if (![v8 length])
+  objc_storeStrong(location, model);
+  context = [location[0] context];
+  phoneNumber = [context phoneNumber];
+  MEMORY[0x1E69E5920](context);
+  if (![phoneNumber length])
   {
     AKPrint(@"Enter one of your trusted phone numbers to continue: ");
     v3 = AKReadLine(1024);
-    v4 = v8;
-    v8 = v3;
+    v4 = phoneNumber;
+    phoneNumber = v3;
     MEMORY[0x1E69E5920](v4);
   }
 
-  v6 = MEMORY[0x1E69E5928](v8);
-  objc_storeStrong(&v8, 0);
+  v6 = MEMORY[0x1E69E5928](phoneNumber);
+  objc_storeStrong(&phoneNumber, 0);
   objc_storeStrong(location, 0);
 
   return v6;

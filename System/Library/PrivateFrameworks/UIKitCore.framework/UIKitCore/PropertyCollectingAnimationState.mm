@@ -1,6 +1,6 @@
 @interface PropertyCollectingAnimationState
 - (_TtC5UIKit32PropertyCollectingAnimationState)init;
-- (id)actionForLayer:(id)a3 forKey:(id)a4 forView:(id)a5;
+- (id)actionForLayer:(id)layer forKey:(id)key forView:(id)view;
 @end
 
 @implementation PropertyCollectingAnimationState
@@ -17,9 +17,9 @@
   return v5;
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4 forView:(id)a5
+- (id)actionForLayer:(id)layer forKey:(id)key forView:(id)view
 {
-  if (a4)
+  if (key)
   {
     v8 = sub_18A4A7288();
     v10 = v9;
@@ -31,10 +31,10 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
-  v14 = sub_188A8EF40(a3, v8, v10, a5);
+  layerCopy = layer;
+  viewCopy = view;
+  selfCopy = self;
+  v14 = sub_188A8EF40(layer, v8, v10, view);
 
   return v14;
 }

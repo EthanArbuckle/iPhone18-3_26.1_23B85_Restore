@@ -1,40 +1,40 @@
 @interface SISchemaUUFRSaid
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUUFRSaid)initWithDictionary:(id)a3;
-- (SISchemaUUFRSaid)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUUFRSaid)initWithDictionary:(id)dictionary;
+- (SISchemaUUFRSaid)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasResponseCategory:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasResponseCategory:(BOOL)category;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUUFRSaid
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceViewClass)
   {
-    v4 = [(SISchemaUUFRSaid *)self aceViewClass];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"aceViewClass"];
+    aceViewClass = [(SISchemaUUFRSaid *)self aceViewClass];
+    v5 = [aceViewClass copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"aceViewClass"];
   }
 
   if (self->_aceViewID)
   {
-    v6 = [(SISchemaUUFRSaid *)self aceViewID];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"aceViewID"];
+    aceViewID = [(SISchemaUUFRSaid *)self aceViewID];
+    v7 = [aceViewID copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"aceViewID"];
   }
 
   if (self->_dialogIdentifier)
   {
-    v8 = [(SISchemaUUFRSaid *)self dialogIdentifier];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"dialogIdentifier"];
+    dialogIdentifier = [(SISchemaUUFRSaid *)self dialogIdentifier];
+    v9 = [dialogIdentifier copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"dialogIdentifier"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -50,22 +50,22 @@
       v11 = off_1E78E6E18[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"responseCategory"];
+    [dictionary setObject:v11 forKeyedSubscript:@"responseCategory"];
   }
 
   if (self->_siriResponseContext)
   {
-    v12 = [(SISchemaUUFRSaid *)self siriResponseContext];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    siriResponseContext = [(SISchemaUUFRSaid *)self siriResponseContext];
+    dictionaryRepresentation = [siriResponseContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"siriResponseContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"siriResponseContext"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"siriResponseContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriResponseContext"];
     }
   }
 
@@ -82,39 +82,39 @@
       v16 = off_1E78E6E88[v15];
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"sonicResponse"];
+    [dictionary setObject:v16 forKeyedSubscript:@"sonicResponse"];
   }
 
   if (self->_subRequestId)
   {
-    v17 = [(SISchemaUUFRSaid *)self subRequestId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    subRequestId = [(SISchemaUUFRSaid *)self subRequestId];
+    dictionaryRepresentation2 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"subRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"subRequestId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (SISchemaUUFRSaid)initWithDictionary:(id)a3
+- (SISchemaUUFRSaid)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = SISchemaUUFRSaid;
   v5 = [(SISchemaUUFRSaid *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dialogIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dialogIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@
       [(SISchemaUUFRSaid *)v5 setDialogIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"siriResponseContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"siriResponseContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,7 +130,7 @@
       [(SISchemaUUFRSaid *)v5 setSiriResponseContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"aceViewID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"aceViewID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,7 +138,7 @@
       [(SISchemaUUFRSaid *)v5 setAceViewID:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"aceViewClass"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"aceViewClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,21 +146,21 @@
       [(SISchemaUUFRSaid *)v5 setAceViewClass:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"sonicResponse"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"sonicResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUUFRSaid setSonicResponse:](v5, "setSonicResponse:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"responseCategory"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"responseCategory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUUFRSaid setResponseCategory:](v5, "setResponseCategory:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -174,30 +174,30 @@
   return v5;
 }
 
-- (SISchemaUUFRSaid)initWithJSON:(id)a3
+- (SISchemaUUFRSaid)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUUFRSaid *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUUFRSaid *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUUFRSaid *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -238,28 +238,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(SISchemaUUID *)self->_subRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = [(SISchemaUUFRSaid *)self dialogIdentifier];
-  v6 = [v4 dialogIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  dialogIdentifier = [(SISchemaUUFRSaid *)self dialogIdentifier];
+  dialogIdentifier2 = [equalCopy dialogIdentifier];
+  if ((dialogIdentifier != 0) == (dialogIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v7 = [(SISchemaUUFRSaid *)self dialogIdentifier];
-  if (v7)
+  dialogIdentifier3 = [(SISchemaUUFRSaid *)self dialogIdentifier];
+  if (dialogIdentifier3)
   {
-    v8 = v7;
-    v9 = [(SISchemaUUFRSaid *)self dialogIdentifier];
-    v10 = [v4 dialogIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = dialogIdentifier3;
+    dialogIdentifier4 = [(SISchemaUUFRSaid *)self dialogIdentifier];
+    dialogIdentifier5 = [equalCopy dialogIdentifier];
+    v11 = [dialogIdentifier4 isEqual:dialogIdentifier5];
 
     if (!v11)
     {
@@ -271,20 +271,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(SISchemaUUFRSaid *)self siriResponseContext];
-  v6 = [v4 siriResponseContext];
-  if ((v5 != 0) == (v6 == 0))
+  dialogIdentifier = [(SISchemaUUFRSaid *)self siriResponseContext];
+  dialogIdentifier2 = [equalCopy siriResponseContext];
+  if ((dialogIdentifier != 0) == (dialogIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v12 = [(SISchemaUUFRSaid *)self siriResponseContext];
-  if (v12)
+  siriResponseContext = [(SISchemaUUFRSaid *)self siriResponseContext];
+  if (siriResponseContext)
   {
-    v13 = v12;
-    v14 = [(SISchemaUUFRSaid *)self siriResponseContext];
-    v15 = [v4 siriResponseContext];
-    v16 = [v14 isEqual:v15];
+    v13 = siriResponseContext;
+    siriResponseContext2 = [(SISchemaUUFRSaid *)self siriResponseContext];
+    siriResponseContext3 = [equalCopy siriResponseContext];
+    v16 = [siriResponseContext2 isEqual:siriResponseContext3];
 
     if (!v16)
     {
@@ -296,20 +296,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(SISchemaUUFRSaid *)self aceViewID];
-  v6 = [v4 aceViewID];
-  if ((v5 != 0) == (v6 == 0))
+  dialogIdentifier = [(SISchemaUUFRSaid *)self aceViewID];
+  dialogIdentifier2 = [equalCopy aceViewID];
+  if ((dialogIdentifier != 0) == (dialogIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v17 = [(SISchemaUUFRSaid *)self aceViewID];
-  if (v17)
+  aceViewID = [(SISchemaUUFRSaid *)self aceViewID];
+  if (aceViewID)
   {
-    v18 = v17;
-    v19 = [(SISchemaUUFRSaid *)self aceViewID];
-    v20 = [v4 aceViewID];
-    v21 = [v19 isEqual:v20];
+    v18 = aceViewID;
+    aceViewID2 = [(SISchemaUUFRSaid *)self aceViewID];
+    aceViewID3 = [equalCopy aceViewID];
+    v21 = [aceViewID2 isEqual:aceViewID3];
 
     if (!v21)
     {
@@ -321,20 +321,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(SISchemaUUFRSaid *)self aceViewClass];
-  v6 = [v4 aceViewClass];
-  if ((v5 != 0) == (v6 == 0))
+  dialogIdentifier = [(SISchemaUUFRSaid *)self aceViewClass];
+  dialogIdentifier2 = [equalCopy aceViewClass];
+  if ((dialogIdentifier != 0) == (dialogIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v22 = [(SISchemaUUFRSaid *)self aceViewClass];
-  if (v22)
+  aceViewClass = [(SISchemaUUFRSaid *)self aceViewClass];
+  if (aceViewClass)
   {
-    v23 = v22;
-    v24 = [(SISchemaUUFRSaid *)self aceViewClass];
-    v25 = [v4 aceViewClass];
-    v26 = [v24 isEqual:v25];
+    v23 = aceViewClass;
+    aceViewClass2 = [(SISchemaUUFRSaid *)self aceViewClass];
+    aceViewClass3 = [equalCopy aceViewClass];
+    v26 = [aceViewClass2 isEqual:aceViewClass3];
 
     if (!v26)
     {
@@ -347,7 +347,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v28 = v4[56];
+  v28 = equalCopy[56];
   if ((*&has & 1) != (v28 & 1))
   {
     goto LABEL_34;
@@ -356,13 +356,13 @@ LABEL_3:
   if (*&has)
   {
     sonicResponse = self->_sonicResponse;
-    if (sonicResponse != [v4 sonicResponse])
+    if (sonicResponse != [equalCopy sonicResponse])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v28 = v4[56];
+    v28 = equalCopy[56];
   }
 
   v30 = (*&has >> 1) & 1;
@@ -374,23 +374,23 @@ LABEL_3:
   if (v30)
   {
     responseCategory = self->_responseCategory;
-    if (responseCategory != [v4 responseCategory])
+    if (responseCategory != [equalCopy responseCategory])
     {
       goto LABEL_34;
     }
   }
 
-  v5 = [(SISchemaUUFRSaid *)self subRequestId];
-  v6 = [v4 subRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  dialogIdentifier = [(SISchemaUUFRSaid *)self subRequestId];
+  dialogIdentifier2 = [equalCopy subRequestId];
+  if ((dialogIdentifier != 0) == (dialogIdentifier2 == 0))
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v32 = [(SISchemaUUFRSaid *)self subRequestId];
-  if (!v32)
+  subRequestId = [(SISchemaUUFRSaid *)self subRequestId];
+  if (!subRequestId)
   {
 
 LABEL_37:
@@ -398,10 +398,10 @@ LABEL_37:
     goto LABEL_35;
   }
 
-  v33 = v32;
-  v34 = [(SISchemaUUFRSaid *)self subRequestId];
-  v35 = [v4 subRequestId];
-  v36 = [v34 isEqual:v35];
+  v33 = subRequestId;
+  subRequestId2 = [(SISchemaUUFRSaid *)self subRequestId];
+  subRequestId3 = [equalCopy subRequestId];
+  v36 = [subRequestId2 isEqual:subRequestId3];
 
   if (v36)
   {
@@ -415,34 +415,34 @@ LABEL_35:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(SISchemaUUFRSaid *)self dialogIdentifier];
+  toCopy = to;
+  dialogIdentifier = [(SISchemaUUFRSaid *)self dialogIdentifier];
 
-  if (v4)
+  if (dialogIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaUUFRSaid *)self siriResponseContext];
+  siriResponseContext = [(SISchemaUUFRSaid *)self siriResponseContext];
 
-  if (v5)
+  if (siriResponseContext)
   {
-    v6 = [(SISchemaUUFRSaid *)self siriResponseContext];
+    siriResponseContext2 = [(SISchemaUUFRSaid *)self siriResponseContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(SISchemaUUFRSaid *)self aceViewID];
+  aceViewID = [(SISchemaUUFRSaid *)self aceViewID];
 
-  if (v7)
+  if (aceViewID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(SISchemaUUFRSaid *)self aceViewClass];
+  aceViewClass = [(SISchemaUUFRSaid *)self aceViewClass];
 
-  if (v8)
+  if (aceViewClass)
   {
     PBDataWriterWriteStringField();
   }
@@ -459,21 +459,21 @@ LABEL_35:
     PBDataWriterWriteInt32Field();
   }
 
-  v10 = [(SISchemaUUFRSaid *)self subRequestId];
+  subRequestId = [(SISchemaUUFRSaid *)self subRequestId];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (subRequestId)
   {
-    v12 = [(SISchemaUUFRSaid *)self subRequestId];
+    subRequestId2 = [(SISchemaUUFRSaid *)self subRequestId];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasResponseCategory:(BOOL)a3
+- (void)setHasResponseCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 2;
   }
@@ -486,31 +486,31 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SISchemaUUFRSaid;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(SISchemaUUFRSaid *)self deleteDialogIdentifier];
   }
 
-  v6 = [(SISchemaUUFRSaid *)self siriResponseContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  siriResponseContext = [(SISchemaUUFRSaid *)self siriResponseContext];
+  v7 = [siriResponseContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaUUFRSaid *)self deleteSiriResponseContext];
   }
 
-  v9 = [(SISchemaUUFRSaid *)self subRequestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  subRequestId = [(SISchemaUUFRSaid *)self subRequestId];
+  v10 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaUUFRSaid *)self deleteSubRequestId];
   }

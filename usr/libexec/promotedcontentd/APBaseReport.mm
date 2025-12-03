@@ -1,37 +1,37 @@
 @interface APBaseReport
 + (id)reportFrequencyStringKey;
-- (APBaseReport)initWithReportDate:(id)a3 purpose:(int64_t)a4 reportEventCount:(id)a5;
+- (APBaseReport)initWithReportDate:(id)date purpose:(int64_t)purpose reportEventCount:(id)count;
 - (id)_createBranchForEnvironments;
 - (id)_createProperties;
 - (id)_eventCountDictionary;
-- (void)setReportDate:(id)a3;
+- (void)setReportDate:(id)date;
 @end
 
 @implementation APBaseReport
 
-- (APBaseReport)initWithReportDate:(id)a3 purpose:(int64_t)a4 reportEventCount:(id)a5
+- (APBaseReport)initWithReportDate:(id)date purpose:(int64_t)purpose reportEventCount:(id)count
 {
-  v8 = a3;
-  v9 = a5;
+  dateCopy = date;
+  countCopy = count;
   v19.receiver = self;
   v19.super_class = APBaseReport;
   v10 = [(APBaseReport *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    v10->_purpose = a4;
-    v12 = [[APReportDate alloc] initWithDate:v8];
+    v10->_purpose = purpose;
+    v12 = [[APReportDate alloc] initWithDate:dateCopy];
     reportDate = v11->_reportDate;
     v11->_reportDate = v12;
 
-    objc_storeStrong(&v11->_reportEventCount, a5);
-    v14 = [(APBaseReport *)v11 _createProperties];
+    objc_storeStrong(&v11->_reportEventCount, count);
+    _createProperties = [(APBaseReport *)v11 _createProperties];
     properties = v11->_properties;
-    v11->_properties = v14;
+    v11->_properties = _createProperties;
 
-    v16 = [(APBaseReport *)v11 _createBranchForEnvironments];
+    _createBranchForEnvironments = [(APBaseReport *)v11 _createBranchForEnvironments];
     environmentToBranchDic = v11->_environmentToBranchDic;
-    v11->_environmentToBranchDic = v16;
+    v11->_environmentToBranchDic = _createBranchForEnvironments;
   }
 
   return v11;
@@ -39,14 +39,14 @@
 
 + (id)reportFrequencyStringKey
 {
-  v2 = [objc_opt_class() reportFrequency];
+  reportFrequency = [objc_opt_class() reportFrequency];
   v3 = @"1d";
-  if (v2 == 1902)
+  if (reportFrequency == 1902)
   {
     v3 = @"1w";
   }
 
-  if (v2 == 1903)
+  if (reportFrequency == 1903)
   {
     return @"1m";
   }
@@ -57,17 +57,17 @@
   }
 }
 
-- (void)setReportDate:(id)a3
+- (void)setReportDate:(id)date
 {
-  objc_storeStrong(&self->_reportDate, a3);
-  v9 = a3;
-  v5 = [(APBaseReport *)self _createProperties];
+  objc_storeStrong(&self->_reportDate, date);
+  dateCopy = date;
+  _createProperties = [(APBaseReport *)self _createProperties];
   properties = self->_properties;
-  self->_properties = v5;
+  self->_properties = _createProperties;
 
-  v7 = [(APBaseReport *)self _createBranchForEnvironments];
+  _createBranchForEnvironments = [(APBaseReport *)self _createBranchForEnvironments];
   environmentToBranchDic = self->_environmentToBranchDic;
-  self->_environmentToBranchDic = v7;
+  self->_environmentToBranchDic = _createBranchForEnvironments;
 }
 
 - (id)_createProperties
@@ -100,15 +100,15 @@
 
 - (id)_createBranchForEnvironments
 {
-  v2 = [(APBaseReport *)self _eventCountDictionary];
-  if ([v2 count])
+  _eventCountDictionary = [(APBaseReport *)self _eventCountDictionary];
+  if ([_eventCountDictionary count])
   {
     v20 = objc_alloc_init(NSMutableDictionary);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = [v2 allKeys];
+    obj = [_eventCountDictionary allKeys];
     v3 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v3)
     {
@@ -125,8 +125,8 @@
 
           v6 = *(*(&v25 + 1) + 8 * i);
           v7 = objc_alloc_init(NSMutableSet);
-          v8 = v2;
-          v9 = [v2 objectForKey:v6];
+          v8 = _eventCountDictionary;
+          v9 = [_eventCountDictionary objectForKey:v6];
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
@@ -145,10 +145,10 @@
                   objc_enumerationMutation(v9);
                 }
 
-                v14 = [*(*(&v21 + 1) + 8 * j) branch];
-                if (v14)
+                branch = [*(*(&v21 + 1) + 8 * j) branch];
+                if (branch)
                 {
-                  [v7 addObjectsFromArray:v14];
+                  [v7 addObjectsFromArray:branch];
                 }
               }
 
@@ -158,10 +158,10 @@
             while (v11);
           }
 
-          v15 = [v7 allObjects];
-          [v20 setObject:v15 forKey:v6];
+          allObjects = [v7 allObjects];
+          [v20 setObject:allObjects forKey:v6];
 
-          v2 = v8;
+          _eventCountDictionary = v8;
         }
 
         v4 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];

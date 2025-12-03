@@ -1,41 +1,41 @@
 @interface HDWorkoutEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (BOOL)enumerateCondensedWorkoutsWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)replaceExistingObject:(id)a3 existingObjectID:(id)a4 replacementObject:(id)a5 replacementObjectID:(id)a6 profile:(id)a7 transaction:(id)a8 error:(id *)a9;
-+ (BOOL)workoutActivityType:(unint64_t *)a3 associatedWithRouteUUID:(id)a4 transaction:(id)a5 error:(id *)a6;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (BOOL)enumerateCondensedWorkoutsWithPredicate:(id)predicate profile:(id)profile error:(id *)error handler:(id)handler;
++ (BOOL)replaceExistingObject:(id)object existingObjectID:(id)d replacementObject:(id)replacementObject replacementObjectID:(id)iD profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (BOOL)workoutActivityType:(unint64_t *)type associatedWithRouteUUID:(id)d transaction:(id)transaction error:(id *)error;
 + (id)_codableCondensedWorkoutProperties;
 + (id)_primaryActivityJoinClause;
-+ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)a3;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)maxValueForProperty:(id)a3 predicate:(id)a4 database:(id)a5 error:(id *)a6;
-+ (id)mergeDataObject:(id)a3 provenance:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7 insertHandler:(id)a8;
-+ (id)orderingTermForSortDescriptor:(id)a3;
-- (BOOL)getCondenserVersion:(int64_t *)a3 date:(id *)a4 profile:(id)a5 error:(id *)a6;
-- (BOOL)isCondenserVersionLessThan:(int64_t)a3 transaction:(id)a4;
-- (BOOL)updateCondenserVersion:(int64_t)a3 date:(id)a4 transaction:(id)a5 error:(id *)a6;
-- (id)codableCondensedWorkoutWithTransaction:(id)a3 error:(id *)a4;
-- (id)mainWorkoutActivityTypeWithTransaction:(id)a3 error:(id *)a4;
-- (id)totalDistanceInCanonicalUnitWithTransaction:(id)a3 error:(id *)a4;
-- (id)workoutDurationWithTransaction:(id)a3 error:(id *)a4;
-- (id)workoutStartDateWithTransaction:(id)a3 error:(id *)a4;
++ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)transaction;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)joinClausesForProperty:(id)property;
++ (id)maxValueForProperty:(id)property predicate:(id)predicate database:(id)database error:(id *)error;
++ (id)mergeDataObject:(id)object provenance:(id)provenance profile:(id)profile transaction:(id)transaction error:(id *)error insertHandler:(id)handler;
++ (id)orderingTermForSortDescriptor:(id)descriptor;
+- (BOOL)getCondenserVersion:(int64_t *)version date:(id *)date profile:(id)profile error:(id *)error;
+- (BOOL)isCondenserVersionLessThan:(int64_t)than transaction:(id)transaction;
+- (BOOL)updateCondenserVersion:(int64_t)version date:(id)date transaction:(id)transaction error:(id *)error;
+- (id)codableCondensedWorkoutWithTransaction:(id)transaction error:(id *)error;
+- (id)mainWorkoutActivityTypeWithTransaction:(id)transaction error:(id *)error;
+- (id)totalDistanceInCanonicalUnitWithTransaction:(id)transaction error:(id *)error;
+- (id)workoutDurationWithTransaction:(id)transaction error:(id *)error;
+- (id)workoutStartDateWithTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDWorkoutEntity
 
-+ (id)orderingTermForSortDescriptor:(id)a3
++ (id)orderingTermForSortDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 key];
-  v6 = [v4 ascending];
+  descriptorCopy = descriptor;
+  v5 = [descriptorCopy key];
+  ascending = [descriptorCopy ascending];
   if ([v5 isEqualToString:*MEMORY[0x277CCCF50]])
   {
     v7 = MEMORY[0x277D10B68];
     v8 = objc_opt_class();
     v9 = @"activities.duration";
 LABEL_11:
-    v10 = [v7 orderingTermWithProperty:v9 entityClass:v8 ascending:v6];
+    v10 = [v7 orderingTermWithProperty:v9 entityClass:v8 ascending:ascending];
     goto LABEL_12;
   }
 
@@ -71,64 +71,64 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___HDWorkoutEntity;
-  v10 = objc_msgSendSuper2(&v13, sel_orderingTermForSortDescriptor_, v4);
+  v10 = objc_msgSendSuper2(&v13, sel_orderingTermForSortDescriptor_, descriptorCopy);
 LABEL_12:
   v11 = v10;
 
   return v11;
 }
 
-+ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)a3
++ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)transaction
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___HDWorkoutEntity;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v8, sel_deleteStatementsForRelatedEntitiesWithTransaction_, v3);
+  transactionCopy = transaction;
+  v4 = objc_msgSendSuper2(&v8, sel_deleteStatementsForRelatedEntitiesWithTransaction_, transactionCopy);
   v5 = [v4 mutableCopy];
 
-  v6 = [HDWorkoutEventEntity deleteStatementForWorkoutEventsWithTransaction:v3];
+  v6 = [HDWorkoutEventEntity deleteStatementForWorkoutEventsWithTransaction:transactionCopy];
 
   [v5 addObject:v6];
 
   return v5;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  databaseCopy = database;
+  dCopy = d;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"HDWorkoutEntity.m" lineNumber:133 description:{@"Subclasses must override %s", "+[HDWorkoutEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDWorkoutEntity.m" lineNumber:133 description:{@"Subclasses must override %s", "+[HDWorkoutEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __81__HDWorkoutEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v30[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v30[4] = a1;
+  v30[4] = self;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __81__HDWorkoutEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke_2;
   v27[3] = &unk_278613038;
-  v16 = v14;
+  v16 = dCopy;
   v28 = v16;
-  v17 = v12;
+  v17 = objectCopy;
   v29 = v17;
-  if ([v13 executeCachedStatementForKey:&insertDataObject_withProvenance_inDatabase_persistentID_error__insertKey_1 error:a7 SQLGenerator:v30 bindingHandler:v27 enumerationHandler:0] && (objc_msgSend(v17, "_subActivities"), v18 = objc_claimAutoreleasedReturnValue(), v19 = +[HDWorkoutActivityEntity insertSubActivities:ownerID:database:error:](HDWorkoutActivityEntity, "insertSubActivities:ownerID:database:error:", v18, objc_msgSend(v16, "longLongValue"), v13, a7), v18, v19))
+  if ([databaseCopy executeCachedStatementForKey:&insertDataObject_withProvenance_inDatabase_persistentID_error__insertKey_1 error:error SQLGenerator:v30 bindingHandler:v27 enumerationHandler:0] && (objc_msgSend(v17, "_subActivities"), v18 = objc_claimAutoreleasedReturnValue(), v19 = +[HDWorkoutActivityEntity insertSubActivities:ownerID:database:error:](HDWorkoutActivityEntity, "insertSubActivities:ownerID:database:error:", v18, objc_msgSend(v16, "longLongValue"), databaseCopy, error), v18, v19))
   {
-    v20 = [v17 _primaryActivity];
+    _primaryActivity = [v17 _primaryActivity];
 
     v21 = v16;
-    if (v20)
+    if (_primaryActivity)
     {
-      v22 = [v17 _primaryActivity];
-      v23 = +[HDWorkoutActivityEntity insertPrimaryActivity:ownerID:database:error:](HDWorkoutActivityEntity, "insertPrimaryActivity:ownerID:database:error:", v22, [v16 longLongValue], v13, a7);
+      _primaryActivity2 = [v17 _primaryActivity];
+      v23 = +[HDWorkoutActivityEntity insertPrimaryActivity:ownerID:database:error:](HDWorkoutActivityEntity, "insertPrimaryActivity:ownerID:database:error:", _primaryActivity2, [v16 longLongValue], databaseCopy, error);
 
       if (v23)
       {
@@ -201,32 +201,32 @@ uint64_t __81__HDWorkoutEntity_insertDataObject_withProvenance_inDatabase_persis
   }
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addWorkouts:a3];
+    [collection addWorkouts:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[_HDWorkoutEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [[_HDWorkoutEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isEqualToString:@"activities.activity_type"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"activities.duration"))
+  propertyCopy = property;
+  if (([propertyCopy isEqualToString:@"activities.activity_type"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"activities.duration"))
   {
     v5 = +[HDWorkoutEntity _primaryActivityJoinClause];
     v6 = [MEMORY[0x277CBEB98] setWithObject:v5];
@@ -261,11 +261,11 @@ uint64_t __81__HDWorkoutEntity_insertDataObject_withProvenance_inDatabase_persis
             objc_enumerationMutation(v5);
           }
 
-          if ([v4 isEqualToString:*(*(&v21 + 1) + 8 * i)])
+          if ([propertyCopy isEqualToString:*(*(&v21 + 1) + 8 * i)])
           {
-            v14 = [v5 objectForKeyedSubscript:v4];
+            v14 = [v5 objectForKeyedSubscript:propertyCopy];
             v15 = +[HDWorkoutEntity _primaryActivityJoinClause];
-            v16 = v4;
+            v16 = propertyCopy;
             objc_opt_self();
             if ([v16 isEqualToString:@"active_energy.quantity"])
             {
@@ -311,9 +311,9 @@ uint64_t __81__HDWorkoutEntity_insertDataObject_withProvenance_inDatabase_persis
       }
     }
 
-    v20.receiver = a1;
+    v20.receiver = self;
     v20.super_class = &OBJC_METACLASS___HDWorkoutEntity;
-    v6 = objc_msgSendSuper2(&v20, sel_joinClausesForProperty_, v4);
+    v6 = objc_msgSendSuper2(&v20, sel_joinClausesForProperty_, propertyCopy);
   }
 
   v7 = v6;
@@ -335,7 +335,7 @@ LABEL_5:
   return v3;
 }
 
-+ (id)maxValueForProperty:(id)a3 predicate:(id)a4 database:(id)a5 error:(id *)a6
++ (id)maxValueForProperty:(id)property predicate:(id)predicate database:(id)database error:(id *)error
 {
   v24[5] = *MEMORY[0x277D85DE8];
   v23[0] = @"duration";
@@ -349,11 +349,11 @@ LABEL_5:
   v23[4] = @"total_flights_climbed";
   v24[4] = @"flights_climbed.quantity";
   v10 = MEMORY[0x277CBEAC0];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  databaseCopy = database;
+  predicateCopy = predicate;
+  propertyCopy = property;
   v14 = [v10 dictionaryWithObjects:v24 forKeys:v23 count:5];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  v15 = [v14 objectForKeyedSubscript:propertyCopy];
   v16 = v15;
   if (v15)
   {
@@ -362,45 +362,45 @@ LABEL_5:
 
   else
   {
-    v17 = v13;
+    v17 = propertyCopy;
   }
 
   v18 = v17;
 
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = &OBJC_METACLASS___HDWorkoutEntity;
-  v19 = objc_msgSendSuper2(&v22, sel_maxValueForProperty_predicate_database_error_, v18, v12, v11, a6);
+  v19 = objc_msgSendSuper2(&v22, sel_maxValueForProperty_predicate_database_error_, v18, predicateCopy, databaseCopy, error);
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-+ (BOOL)replaceExistingObject:(id)a3 existingObjectID:(id)a4 replacementObject:(id)a5 replacementObjectID:(id)a6 profile:(id)a7 transaction:(id)a8 error:(id *)a9
++ (BOOL)replaceExistingObject:(id)object existingObjectID:(id)d replacementObject:(id)replacementObject replacementObjectID:(id)iD profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
+  objectCopy = object;
+  replacementObjectCopy = replacementObject;
+  profileCopy = profile;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:a1 file:@"HDWorkoutEntity.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"[existingObject isKindOfClass:[HKWorkout class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDWorkoutEntity.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"[existingObject isKindOfClass:[HKWorkout class]]"}];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v46 = [MEMORY[0x277CCA890] currentHandler];
-    [v46 handleFailureInMethod:a2 object:a1 file:@"HDWorkoutEntity.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"[replacementObject isKindOfClass:[HKWorkout class]]"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDWorkoutEntity.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"[replacementObject isKindOfClass:[HKWorkout class]]"}];
   }
 
-  v16 = a9;
-  v17 = v13;
-  v53 = v14;
-  v18 = [v53 _subActivities];
-  v19 = [v18 count];
+  errorCopy3 = error;
+  v17 = objectCopy;
+  v53 = replacementObjectCopy;
+  _subActivities = [v53 _subActivities];
+  v19 = [_subActivities count];
 
   if (v19)
   {
@@ -408,14 +408,14 @@ LABEL_5:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v20 = [v17 _subActivities];
-    v52 = [v20 countByEnumeratingWithState:&v59 objects:v65 count:16];
+    _subActivities2 = [v17 _subActivities];
+    v52 = [_subActivities2 countByEnumeratingWithState:&v59 objects:v65 count:16];
     if (v52)
     {
       v51 = *v60;
       v48 = v17;
-      v49 = v15;
-      obj = v20;
+      v49 = profileCopy;
+      obj = _subActivities2;
       while (2)
       {
         for (i = 0; i != v52; ++i)
@@ -426,11 +426,11 @@ LABEL_5:
           }
 
           v22 = *(*(&v59 + 1) + 8 * i);
-          v23 = [v22 startDate];
-          v24 = [v22 endDate];
-          v25 = [v17 UUID];
+          startDate = [v22 startDate];
+          endDate = [v22 endDate];
+          uUID = [v17 UUID];
           v26 = HDReferenceForAssociatableObject(v22);
-          v27 = [HDAssociationEntity objectUUIDsAssociatedWithObjectUUID:v25 subObjectReference:v26 excludeDeleted:1 profile:v15 error:v16];
+          v27 = [HDAssociationEntity objectUUIDsAssociatedWithObjectUUID:uUID subObjectReference:v26 excludeDeleted:1 profile:profileCopy error:errorCopy3];
 
           if ([v27 count])
           {
@@ -439,8 +439,8 @@ LABEL_5:
             v58 = 0u;
             v55 = 0u;
             v56 = 0u;
-            v28 = [v53 _subActivities];
-            v29 = [v28 countByEnumeratingWithState:&v55 objects:v64 count:16];
+            _subActivities3 = [v53 _subActivities];
+            v29 = [_subActivities3 countByEnumeratingWithState:&v55 objects:v64 count:16];
             if (v29)
             {
               v30 = v29;
@@ -451,15 +451,15 @@ LABEL_14:
               {
                 if (*v56 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(_subActivities3);
                 }
 
                 v33 = *(*(&v55 + 1) + 8 * v32);
-                v34 = [v33 startDate];
-                v35 = [v33 endDate];
-                [v23 timeIntervalSinceDate:v34];
+                startDate2 = [v33 startDate];
+                endDate2 = [v33 endDate];
+                [startDate timeIntervalSinceDate:startDate2];
                 v37 = fabs(v36);
-                [v24 timeIntervalSinceDate:v35];
+                [endDate timeIntervalSinceDate:endDate2];
                 if (v37 <= 0.001 && fabs(v38) <= 0.001)
                 {
                   break;
@@ -467,7 +467,7 @@ LABEL_14:
 
                 if (v30 == ++v32)
                 {
-                  v30 = [v28 countByEnumeratingWithState:&v55 objects:v64 count:16];
+                  v30 = [_subActivities3 countByEnumeratingWithState:&v55 objects:v64 count:16];
                   if (v30)
                   {
                     goto LABEL_14;
@@ -477,13 +477,13 @@ LABEL_14:
                 }
               }
 
-              v39 = [v53 UUID];
+              uUID2 = [v53 UUID];
               v40 = HDReferenceForAssociatableObject(v33);
-              v15 = v49;
+              profileCopy = v49;
               v27 = v54;
-              v50 = [HDAssociationEntity associateSampleUUIDs:v54 withSampleUUID:v39 type:1 behavior:0 destinationSubObjectReference:v40 lastInsertedEntityID:0 profile:v49 error:a9];
+              v50 = [HDAssociationEntity associateSampleUUIDs:v54 withSampleUUID:uUID2 type:1 behavior:0 destinationSubObjectReference:v40 lastInsertedEntityID:0 profile:v49 error:error];
 
-              v16 = a9;
+              errorCopy3 = error;
               v17 = v48;
               if (v50)
               {
@@ -491,22 +491,22 @@ LABEL_14:
               }
 
               v42 = 0;
-              v41 = obj;
+              dataManager = obj;
               goto LABEL_29;
             }
 
 LABEL_21:
 
             v17 = v48;
-            v15 = v49;
-            v16 = a9;
+            profileCopy = v49;
+            errorCopy3 = error;
             v27 = v54;
           }
 
 LABEL_23:
         }
 
-        v20 = obj;
+        _subActivities2 = obj;
         v52 = [obj countByEnumeratingWithState:&v59 objects:v65 count:16];
         if (v52)
         {
@@ -518,12 +518,12 @@ LABEL_23:
     }
   }
 
-  if ([HDAssociationEntity copyAssociationsFromObject:v17 toObject:v53 type:1 behavior:0 profile:v15 error:v16])
+  if ([HDAssociationEntity copyAssociationsFromObject:v17 toObject:v53 type:1 behavior:0 profile:profileCopy error:errorCopy3])
   {
-    v41 = [v15 dataManager];
+    dataManager = [profileCopy dataManager];
     v63 = v17;
-    v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
-    v42 = [v41 deleteDataObjects:v23 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:v16];
+    startDate = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
+    v42 = [dataManager deleteDataObjects:startDate restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:errorCopy3];
 LABEL_29:
   }
 
@@ -536,14 +536,14 @@ LABEL_29:
   return v42;
 }
 
-+ (id)mergeDataObject:(id)a3 provenance:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7 insertHandler:(id)a8
++ (id)mergeDataObject:(id)object provenance:(id)provenance profile:(id)profile transaction:(id)transaction error:(id *)error insertHandler:(id)handler
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v48 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  objectCopy = object;
+  provenanceCopy = provenance;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -551,12 +551,12 @@ LABEL_29:
     goto LABEL_35;
   }
 
-  v47 = v14;
-  v18 = [v47 _primaryActivity];
+  v47 = objectCopy;
+  _primaryActivity = [v47 _primaryActivity];
 
-  if (v18)
+  if (_primaryActivity)
   {
-    v46 = [v16 databaseForEntityClass:objc_opt_class()];
+    v46 = [transactionCopy databaseForEntityClass:objc_opt_class()];
     v59 = 0;
     v60 = &v59;
     v61 = 0x2020000000;
@@ -566,7 +566,7 @@ LABEL_29:
     v57[1] = 3221225472;
     v57[2] = __86__HDWorkoutEntity_mergeDataObject_provenance_profile_transaction_error_insertHandler___block_invoke;
     v57[3] = &__block_descriptor_40_e15___NSString_8__0l;
-    v57[4] = a1;
+    v57[4] = self;
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __86__HDWorkoutEntity_mergeDataObject_provenance_profile_transaction_error_insertHandler___block_invoke_2;
@@ -601,10 +601,10 @@ LABEL_33:
       {
         v36 = v25;
         v25 = v36;
-        if (a7)
+        if (error)
         {
           v37 = v36;
-          *a7 = v25;
+          *error = v25;
         }
 
         else
@@ -615,10 +615,10 @@ LABEL_33:
 
       else
       {
-        v29 = [v19 _primaryActivity];
+        _primaryActivity2 = [v19 _primaryActivity];
         v30 = v60[3];
         v52 = v25;
-        v31 = [HDWorkoutActivityEntity insertPrimaryActivity:v29 ownerID:v30 database:v46 error:&v52];
+        v31 = [HDWorkoutActivityEntity insertPrimaryActivity:_primaryActivity2 ownerID:v30 database:v46 error:&v52];
         v45 = v52;
 
         if (v31)
@@ -634,7 +634,7 @@ LABEL_33:
           v49[2] = __86__HDWorkoutEntity_mergeDataObject_provenance_profile_transaction_error_insertHandler___block_invoke_4;
           v49[3] = &unk_278614508;
           v50 = v19;
-          v33 = [a1 updateProperties:v44 predicate:v43 database:v46 error:&v51 bindingHandler:v49];
+          v33 = [self updateProperties:v44 predicate:v43 database:v46 error:&v51 bindingHandler:v49];
           v25 = v51;
 
           if (v33)
@@ -648,10 +648,10 @@ LABEL_33:
             v39 = v38;
             if (v38)
             {
-              if (a7)
+              if (error)
               {
                 v40 = v38;
-                *a7 = v39;
+                *error = v39;
               }
 
               else
@@ -671,10 +671,10 @@ LABEL_33:
         v25 = v34;
         if (v34)
         {
-          if (a7)
+          if (error)
           {
             v35 = v34;
-            *a7 = v25;
+            *error = v25;
           }
 
           else
@@ -693,11 +693,11 @@ LABEL_33:
       v24 = v27;
       if (v27)
       {
-        if (a7)
+        if (error)
         {
           v28 = v27;
           v26 = 0;
-          *a7 = v24;
+          *error = v24;
         }
 
         else
@@ -717,7 +717,7 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a7 code:1401 description:@"Ignoring synced workout for merge because it does not have a primary activity"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:1401 description:@"Ignoring synced workout for merge because it does not have a primary activity"];
   v26 = 0;
 LABEL_34:
 
@@ -759,28 +759,28 @@ void __86__HDWorkoutEntity_mergeDataObject_provenance_profile_transaction_error_
   JUMPOUT(0x22AAC6BA0);
 }
 
-- (BOOL)updateCondenserVersion:(int64_t)a3 date:(id)a4 transaction:(id)a5 error:(id *)a6
+- (BOOL)updateCondenserVersion:(int64_t)version date:(id)date transaction:(id)transaction error:(id *)error
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v10 = a4;
+  dateCopy = date;
   v21[0] = @"condenser_version";
   v21[1] = @"condenser_date";
   v11 = MEMORY[0x277CBEA60];
-  v12 = a5;
+  transactionCopy = transaction;
   v13 = [v11 arrayWithObjects:v21 count:2];
-  v14 = [v12 databaseForEntity:self];
+  v14 = [transactionCopy databaseForEntity:self];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __65__HDWorkoutEntity_updateCondenserVersion_date_transaction_error___block_invoke;
   v18[3] = &unk_278616B10;
-  v19 = v10;
-  v20 = a3;
-  v15 = v10;
-  LOBYTE(a6) = [(HDSQLiteEntity *)self updateProperties:v13 database:v14 error:a6 bindingHandler:v18];
+  v19 = dateCopy;
+  versionCopy = version;
+  v15 = dateCopy;
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v13 database:v14 error:error bindingHandler:v18];
 
   v16 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 void __65__HDWorkoutEntity_updateCondenserVersion_date_transaction_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -791,14 +791,14 @@ void __65__HDWorkoutEntity_updateCondenserVersion_date_transaction_error___block
   JUMPOUT(0x22AAC6B50);
 }
 
-- (BOOL)isCondenserVersionLessThan:(int64_t)a3 transaction:(id)a4
+- (BOOL)isCondenserVersionLessThan:(int64_t)than transaction:(id)transaction
 {
-  v6 = [a4 databaseForEntity:self];
+  v6 = [transaction databaseForEntity:self];
   v7 = [(HDSQLiteEntity *)self numberForProperty:@"condenser_version" database:v6];
 
   if (v7)
   {
-    v8 = [v7 integerValue] < a3;
+    v8 = [v7 integerValue] < than;
   }
 
   else
@@ -809,10 +809,10 @@ void __65__HDWorkoutEntity_updateCondenserVersion_date_transaction_error___block
   return v8;
 }
 
-- (BOOL)getCondenserVersion:(int64_t *)a3 date:(id *)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)getCondenserVersion:(int64_t *)version date:(id *)date profile:(id)profile error:(id *)error
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  profileCopy = profile;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -826,25 +826,25 @@ void __65__HDWorkoutEntity_updateCondenserVersion_date_transaction_error___block
   v27[0] = @"condenser_version";
   v27[1] = @"condenser_date";
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
-  v12 = [v10 database];
+  database = [profileCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__HDWorkoutEntity_getCondenserVersion_date_profile_error___block_invoke;
   v16[3] = &unk_278617F30;
   v16[4] = &v23;
   v16[5] = &v17;
-  v13 = [(HDHealthEntity *)self getValuesForProperties:v11 healthDatabase:v12 error:a6 handler:v16];
+  v13 = [(HDHealthEntity *)self getValuesForProperties:v11 healthDatabase:database error:error handler:v16];
 
   if (v13)
   {
-    if (a3)
+    if (version)
     {
-      *a3 = v24[3];
+      *version = v24[3];
     }
 
-    if (a4)
+    if (date)
     {
-      *a4 = v18[5];
+      *date = v18[5];
     }
   }
 
@@ -866,23 +866,23 @@ uint64_t __58__HDWorkoutEntity_getCondenserVersion_date_profile_error___block_in
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)enumerateCondensedWorkoutsWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)enumerateCondensedWorkoutsWithPredicate:(id)predicate profile:(id)profile error:(id *)error handler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 database];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__HDWorkoutEntity_enumerateCondensedWorkoutsWithPredicate_profile_error_handler___block_invoke;
   v16[3] = &unk_27861B6E8;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a5) = [a1 performReadTransactionWithHealthDatabase:v12 error:a5 block:v16];
+  v18 = handlerCopy;
+  selfCopy = self;
+  v17 = predicateCopy;
+  v13 = handlerCopy;
+  v14 = predicateCopy;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a5;
+  return error;
 }
 
 uint64_t __81__HDWorkoutEntity_enumerateCondensedWorkoutsWithPredicate_profile_error_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -974,13 +974,13 @@ uint64_t __81__HDWorkoutEntity_enumerateCondensedWorkoutsWithPredicate_profile_e
   return v10;
 }
 
-- (id)codableCondensedWorkoutWithTransaction:(id)a3 error:(id *)a4
+- (id)codableCondensedWorkoutWithTransaction:(id)transaction error:(id *)error
 {
   v6 = MEMORY[0x277CCD150];
-  v7 = a3;
+  transactionCopy = transaction;
   v8 = objc_alloc_init(v6);
   v9 = +[HDWorkoutEntity _codableCondensedWorkoutProperties];
-  v10 = [v7 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -988,9 +988,9 @@ uint64_t __81__HDWorkoutEntity_enumerateCondensedWorkoutsWithPredicate_profile_e
   v15[3] = &unk_27861F670;
   v16 = v8;
   v11 = v8;
-  LODWORD(a4) = [(HDSQLiteEntity *)self getValuesForProperties:v9 database:v10 error:a4 handler:v15];
+  LODWORD(error) = [(HDSQLiteEntity *)self getValuesForProperties:v9 database:protectedDatabase error:error handler:v15];
 
-  if (a4)
+  if (error)
   {
     v12 = v11;
   }
@@ -1036,18 +1036,18 @@ void __64__HDWorkoutEntity_codableCondensedWorkoutWithTransaction_error___block_
   }
 }
 
-- (id)mainWorkoutActivityTypeWithTransaction:(id)a3 error:(id *)a4
+- (id)mainWorkoutActivityTypeWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [HDWorkoutActivityEntity activityTypeForPrimaryActivityOwnerID:[(HDSQLiteEntity *)self persistentID] transaction:v6 error:a4];
+  transactionCopy = transaction;
+  v7 = [HDWorkoutActivityEntity activityTypeForPrimaryActivityOwnerID:[(HDSQLiteEntity *)self persistentID] transaction:transactionCopy error:error];
 
   return v7;
 }
 
-- (id)workoutStartDateWithTransaction:(id)a3 error:(id *)a4
+- (id)workoutStartDateWithTransaction:(id)transaction error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transactionCopy = transaction;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1056,15 +1056,15 @@ void __64__HDWorkoutEntity_codableCondensedWorkoutWithTransaction_error___block_
   v19 = 0;
   v20[0] = @"start_date";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v8 = [v6 databaseForEntity:self];
+  v8 = [transactionCopy databaseForEntity:self];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__HDWorkoutEntity_workoutStartDateWithTransaction_error___block_invoke;
   v13[3] = &unk_278618B98;
   v13[4] = &v14;
-  LODWORD(a4) = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v8 error:a4 handler:v13];
+  LODWORD(error) = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v8 error:error handler:v13];
 
-  if (a4)
+  if (error)
   {
     v9 = v15[5];
   }
@@ -1092,33 +1092,33 @@ uint64_t __57__HDWorkoutEntity_workoutStartDateWithTransaction_error___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)workoutDurationWithTransaction:(id)a3 error:(id *)a4
+- (id)workoutDurationWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [HDWorkoutActivityEntity durationForPrimaryActivityOwnerID:[(HDSQLiteEntity *)self persistentID] transaction:v6 error:a4];
+  transactionCopy = transaction;
+  v7 = [HDWorkoutActivityEntity durationForPrimaryActivityOwnerID:[(HDSQLiteEntity *)self persistentID] transaction:transactionCopy error:error];
 
   return v7;
 }
 
-- (id)totalDistanceInCanonicalUnitWithTransaction:(id)a3 error:(id *)a4
+- (id)totalDistanceInCanonicalUnitWithTransaction:(id)transaction error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transactionCopy = transaction;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   v17[0] = @"total_distance";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v8 = [v6 databaseForEntity:self];
+  v8 = [transactionCopy databaseForEntity:self];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__HDWorkoutEntity_totalDistanceInCanonicalUnitWithTransaction_error___block_invoke;
   v12[3] = &unk_278618B98;
   v12[4] = &v13;
-  LODWORD(a4) = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v8 error:a4 handler:v12];
+  LODWORD(error) = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v8 error:error handler:v12];
 
-  if (a4)
+  if (error)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:v14[3]];
   }
@@ -1142,33 +1142,33 @@ uint64_t __69__HDWorkoutEntity_totalDistanceInCanonicalUnitWithTransaction_error
   return result;
 }
 
-+ (BOOL)workoutActivityType:(unint64_t *)a3 associatedWithRouteUUID:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)workoutActivityType:(unint64_t *)type associatedWithRouteUUID:(id)d transaction:(id)transaction error:(id *)error
 {
-  v21 = a4;
+  dCopy = d;
   v19 = MEMORY[0x277CCACA8];
-  v20 = a5;
-  v18 = [a1 disambiguatedDatabaseTable];
+  transactionCopy = transaction;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
   v8 = +[(HDSQLiteSchemaEntity *)HDWorkoutActivityEntity];
   v9 = +[(HDSQLiteSchemaEntity *)HDAssociationEntity];
   v10 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
   v11 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
   v12 = +[(HDSQLiteSchemaEntity *)HDPendingAssociationEntity];
-  v13 = [v19 stringWithFormat:@"SELECT %@ FROM %@ INNER JOIN %@ AS %@ ON %@ = %@ WHERE                                               %@ AND                                               (%@ IN (SELECT %@ FROM %@ INNER JOIN %@ ON %@=%@ WHERE %@ = ?)                                                 OR                                                 %@ IN (SELECT %@ FROM %@ INNER JOIN %@ ON %@=%@ WHERE %@ = ?))", @"activities.activity_type", v18, v8, @"activities", @"data_id", @"owner_id", @"is_primary_activity", @"data_id", @"destination_object_id", v9, v10, @"source_object_id", @"data_id", @"uuid", @"data_id", @"data_id", v11, v12, @"uuid", @"parent_uuid", @"child_uuid", 0];
+  v13 = [v19 stringWithFormat:@"SELECT %@ FROM %@ INNER JOIN %@ AS %@ ON %@ = %@ WHERE                                               %@ AND                                               (%@ IN (SELECT %@ FROM %@ INNER JOIN %@ ON %@=%@ WHERE %@ = ?)                                                 OR                                                 %@ IN (SELECT %@ FROM %@ INNER JOIN %@ ON %@=%@ WHERE %@ = ?))", @"activities.activity_type", disambiguatedDatabaseTable, v8, @"activities", @"data_id", @"owner_id", @"is_primary_activity", @"data_id", @"destination_object_id", v9, v10, @"source_object_id", @"data_id", @"uuid", @"data_id", @"data_id", v11, v12, @"uuid", @"parent_uuid", @"child_uuid", 0];
 
-  v14 = [v20 databaseForEntityClass:objc_opt_class()];
+  v14 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __81__HDWorkoutEntity_workoutActivityType_associatedWithRouteUUID_transaction_error___block_invoke;
   v25[3] = &unk_278614860;
-  v26 = v21;
+  v26 = dCopy;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __81__HDWorkoutEntity_workoutActivityType_associatedWithRouteUUID_transaction_error___block_invoke_2;
   v24[3] = &__block_descriptor_40_e26_B24__0__HDSQLiteRow__8__16l;
-  v24[4] = a3;
-  v15 = v21;
-  v16 = [v14 executeSQL:v13 error:a6 bindingHandler:v25 enumerationHandler:v24];
+  v24[4] = type;
+  v15 = dCopy;
+  v16 = [v14 executeSQL:v13 error:error bindingHandler:v25 enumerationHandler:v24];
 
   return v16;
 }

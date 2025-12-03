@@ -1,15 +1,15 @@
 @interface NTKExactitudesFontLoader
-+ (id)_fontVariationAttributesFromDictionary:(id)a3;
-+ (id)fontWithAttributes:(id)a3 size:(double)a4;
++ (id)_fontVariationAttributesFromDictionary:(id)dictionary;
++ (id)fontWithAttributes:(id)attributes size:(double)size;
 @end
 
 @implementation NTKExactitudesFontLoader
 
-+ (id)fontWithAttributes:(id)a3 size:(double)a4
++ (id)fontWithAttributes:(id)attributes size:(double)size
 {
-  v6 = a3;
-  v7 = [CLKFont systemFontOfSize:a4 weight:UIFontWeightRegular];
-  v8 = [a1 _fontVariationAttributesFromDictionary:v6];
+  attributesCopy = attributes;
+  v7 = [CLKFont systemFontOfSize:size weight:UIFontWeightRegular];
+  v8 = [self _fontVariationAttributesFromDictionary:attributesCopy];
 
   v9 = [NSDictionary dictionaryWithObject:v8 forKey:kCTFontVariationAttribute];
   v24[0] = v9;
@@ -27,20 +27,20 @@
   v24[2] = v11;
   v12 = [NSArray arrayWithObjects:v24 count:3];
 
-  v13 = [v7 fontDescriptor];
+  fontDescriptor = [v7 fontDescriptor];
   v18 = UIFontDescriptorFeatureSettingsAttribute;
   v19 = v12;
   v14 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  v15 = [v13 fontDescriptorByAddingAttributes:v14];
+  v15 = [fontDescriptor fontDescriptorByAddingAttributes:v14];
 
-  v16 = [CLKFont fontWithDescriptor:v15 size:a4];
+  v16 = [CLKFont fontWithDescriptor:v15 size:size];
 
   return v16;
 }
 
-+ (id)_fontVariationAttributesFromDictionary:(id)a3
++ (id)_fontVariationAttributesFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -52,7 +52,7 @@
   v6[2] = sub_2FC8;
   v6[3] = &unk_30990;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 

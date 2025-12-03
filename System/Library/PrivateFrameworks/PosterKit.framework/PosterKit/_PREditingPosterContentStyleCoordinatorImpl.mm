@@ -1,25 +1,25 @@
 @interface _PREditingPosterContentStyleCoordinatorImpl
-- (_PREditingPosterContentStyleCoordinatorImpl)initWithStyle:(id)a3;
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3;
+- (_PREditingPosterContentStyleCoordinatorImpl)initWithStyle:(id)style;
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied;
 - (id)variationSupportingStyle;
-- (void)setVariation:(double)a3 glassStyleApplied:(BOOL)a4;
+- (void)setVariation:(double)variation glassStyleApplied:(BOOL)applied;
 @end
 
 @implementation _PREditingPosterContentStyleCoordinatorImpl
 
-- (_PREditingPosterContentStyleCoordinatorImpl)initWithStyle:(id)a3
+- (_PREditingPosterContentStyleCoordinatorImpl)initWithStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v10.receiver = self;
   v10.super_class = _PREditingPosterContentStyleCoordinatorImpl;
   v6 = [(_PREditingPosterContentStyleCoordinatorImpl *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_style, a3);
-    if ([v5 allowsVariation])
+    objc_storeStrong(&v6->_style, style);
+    if ([styleCopy allowsVariation])
     {
-      [v5 variation];
+      [styleCopy variation];
       v7->_variation = v8;
     }
   }
@@ -29,37 +29,37 @@
 
 - (id)variationSupportingStyle
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v4 = [v3 allowsVariation];
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v4)
+  if (allowsVariation)
   {
-    v5 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    style2 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
   }
 
   else
   {
-    v5 = 0;
+    style2 = 0;
   }
 
-  return v5;
+  return style2;
 }
 
-- (void)setVariation:(double)a3 glassStyleApplied:(BOOL)a4
+- (void)setVariation:(double)variation glassStyleApplied:(BOOL)applied
 {
-  v6 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v7 = [v6 allowsVariation];
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v7 && self->_variation != a3)
+  if (allowsVariation && self->_variation != variation)
   {
-    self->_variation = a3;
-    v9 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v8 = [v9 copyWithVariation:a3];
+    self->_variation = variation;
+    style2 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    v8 = [style2 copyWithVariation:variation];
     [(_PREditingPosterContentStyleCoordinatorImpl *)self setStyle:v8];
   }
 }
 
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied
 {
   itemView = self->_itemView;
   if (!itemView)

@@ -1,38 +1,38 @@
 @interface SDAutoUnlockWiFiManager
 + (id)sharedManager;
-- (BOOL)_addWiFiRequest:(id)a3;
-- (BOOL)_peerFoundInStateInfo:(id)a3;
+- (BOOL)_addWiFiRequest:(id)request;
+- (BOOL)_peerFoundInStateInfo:(id)info;
 - (SDAutoUnlockWiFiManager)init;
-- (void)__handleAWDLDisabledIfNeededForRequest:(id)a3;
+- (void)__handleAWDLDisabledIfNeededForRequest:(id)request;
 - (void)_addObservers;
-- (void)_cancelWiFiRequest:(id)a3;
+- (void)_cancelWiFiRequest:(id)request;
 - (void)_createNISession;
 - (void)_disableRangeableNI;
 - (void)_enableRangeableIfNeededNI;
 - (void)_handleAWDLTimerFired;
-- (void)_handleNetworkStarted:(id)a3 request:(id)a4 error:(int64_t)a5;
-- (void)_handleNetworkStoppedWithError:(id)a3 error:(int64_t)a4;
-- (void)_handleVirtualInterfacesChanged:(id)a3;
+- (void)_handleNetworkStarted:(id)started request:(id)request error:(int64_t)error;
+- (void)_handleNetworkStoppedWithError:(id)error error:(int64_t)a4;
+- (void)_handleVirtualInterfacesChanged:(id)changed;
 - (void)_invalidateAWDLTimer;
 - (void)_invalidateCurrentRequest;
-- (void)_invalidateWiFiRequest:(id)a3;
+- (void)_invalidateWiFiRequest:(id)request;
 - (void)_processRequestQueue;
 - (void)_resetManagerState;
 - (void)_restartAWDLTimer;
-- (void)_startAWDLWithInfo:(id)a3;
+- (void)_startAWDLWithInfo:(id)info;
 - (void)_startRangingWithNI;
 - (void)_stopAWDL;
-- (void)cancelWiFiRequest:(id)a3;
-- (void)handleNetworkStarted:(id)a3 request:(id)a4 error:(int64_t)a5;
-- (void)handleNetworkStoppedWithError:(id)a3 error:(int64_t)a4;
-- (void)handleVirtualInterfacesChanged:(id)a3;
-- (void)rangingReportEventForWiFiInterfaceWithName:(id)a3 data:(id)a4 error:(id)a5;
-- (void)scheduleWiFiRequest:(id)a3;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 didReceiveRangingAuthRecommendation:(BOOL)a4 forObject:(id)a5;
+- (void)cancelWiFiRequest:(id)request;
+- (void)handleNetworkStarted:(id)started request:(id)request error:(int64_t)error;
+- (void)handleNetworkStoppedWithError:(id)error error:(int64_t)a4;
+- (void)handleVirtualInterfacesChanged:(id)changed;
+- (void)rangingReportEventForWiFiInterfaceWithName:(id)name data:(id)data error:(id)error;
+- (void)scheduleWiFiRequest:(id)request;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session didReceiveRangingAuthRecommendation:(BOOL)recommendation forObject:(id)object;
 - (void)start;
-- (void)updateWiFiRequest:(id)a3 setRangingPeer:(id)a4;
+- (void)updateWiFiRequest:(id)request setRangingPeer:(id)peer;
 @end
 
 @implementation SDAutoUnlockWiFiManager
@@ -70,13 +70,13 @@
 
 - (void)start
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E57D8;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 
   [(SDAutoUnlockWiFiManager *)self _createNISession];
 }
@@ -94,39 +94,39 @@
 
 - (void)_addObservers
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"handleVirtualInterfacesChanged:" name:@"com.apple.sharingd.VirtualInterfacesChanged" object:0];
 }
 
-- (BOOL)_addWiFiRequest:(id)a3
+- (BOOL)_addWiFiRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = auto_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 identifier];
+    identifier = [requestCopy identifier];
     v12 = 136315650;
     v13 = "[SDAutoUnlockWiFiManager _addWiFiRequest:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = requestCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s request: %@ identifier: %@", &v12, 0x20u);
   }
 
-  v8 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
-  v9 = [v8 containsObject:v4];
+  wifiRequestQueue = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
+  v9 = [wifiRequestQueue containsObject:requestCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
-    [v10 addObject:v4];
+    wifiRequestQueue2 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
+    [wifiRequestQueue2 addObject:requestCopy];
 
     [(SDAutoUnlockWiFiManager *)self _processRequestQueue];
   }
@@ -134,24 +134,24 @@
   return 1;
 }
 
-- (void)_invalidateWiFiRequest:(id)a3
+- (void)_invalidateWiFiRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(__CFString *)v4 identifier];
+    identifier = [(__CFString *)requestCopy identifier];
     *buf = 136315650;
     v28 = "[SDAutoUnlockWiFiManager _invalidateWiFiRequest:]";
     v29 = 2112;
-    v30 = v4;
+    v30 = requestCopy;
     v31 = 2112;
-    v32 = v6;
+    v32 = identifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s request: %@ identifier: %@", buf, 0x20u);
   }
 
-  v7 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  v8 = [v7 isEqual:v4];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  v8 = [currentRequest isEqual:requestCopy];
 
   if (v8)
   {
@@ -165,8 +165,8 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    v9 = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
-    if (v9 || [(SDAutoUnlockWiFiManager *)self awdlStartFailed])
+    awdlNetwork = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
+    if (awdlNetwork || [(SDAutoUnlockWiFiManager *)self awdlStartFailed])
     {
 
       goto LABEL_8;
@@ -190,7 +190,7 @@ LABEL_8:
         v21 = @"NO";
       }
 
-      v22 = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
+      awdlNetwork2 = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
       if ([(SDAutoUnlockWiFiManager *)self awdlStartFailed])
       {
         v23 = @"YES";
@@ -201,10 +201,10 @@ LABEL_8:
         v23 = @"NO";
       }
 
-      v24 = [(SDAutoUnlockWiFiManager *)self awdlTimerFired];
+      awdlTimerFired = [(SDAutoUnlockWiFiManager *)self awdlTimerFired];
       *buf = 136316162;
       v28 = "[SDAutoUnlockWiFiManager _invalidateWiFiRequest:]";
-      if (v24)
+      if (awdlTimerFired)
       {
         v25 = @"YES";
       }
@@ -217,7 +217,7 @@ LABEL_8:
       v29 = 2112;
       v30 = v21;
       v31 = 2112;
-      v32 = v22;
+      v32 = awdlNetwork2;
       v33 = 2112;
       v34 = v23;
       v35 = 2112;
@@ -225,169 +225,169 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s Waiting for network before disable. awdlStarting: %@, awdlNetwork: %@, awdlStartFailed: %@, awdlTimerFired: %@", buf, 0x34u);
     }
 
-    v26 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    [v26 setWaitingForNetworkToDisable:1];
+    currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    [currentRequest2 setWaitingForNetworkToDisable:1];
   }
 
   else
   {
-    v10 = [(__CFString *)v4 identifier];
-    v11 = [NSPredicate predicateWithFormat:@"identifier == %@", v10];
+    identifier2 = [(__CFString *)requestCopy identifier];
+    v11 = [NSPredicate predicateWithFormat:@"identifier == %@", identifier2];
 
-    v12 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
-    v13 = [v12 filteredArrayUsingPredicate:v11];
-    v14 = [v13 firstObject];
+    wifiRequestQueue = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
+    v13 = [wifiRequestQueue filteredArrayUsingPredicate:v11];
+    firstObject = [v13 firstObject];
 
-    v15 = auto_unlock_log();
-    v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    wifiRequestQueue2 = auto_unlock_log();
+    v16 = os_log_type_enabled(wifiRequestQueue2, OS_LOG_TYPE_DEFAULT);
+    if (firstObject)
     {
       if (v16)
       {
-        v17 = [(__CFString *)v14 identifier];
-        v18 = [(__CFString *)v14 waitingForNetworkToDisable];
+        identifier3 = [(__CFString *)firstObject identifier];
+        waitingForNetworkToDisable = [(__CFString *)firstObject waitingForNetworkToDisable];
         *buf = 136315906;
         v28 = "[SDAutoUnlockWiFiManager _invalidateWiFiRequest:]";
         v29 = 2112;
-        v30 = v14;
+        v30 = firstObject;
         v31 = 2112;
-        v32 = v17;
+        v32 = identifier3;
         v33 = 1024;
-        LODWORD(v34) = v18;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s removing  non current request: %@ identifier: %@ waitingForNetworkToDisable: %d", buf, 0x26u);
+        LODWORD(v34) = waitingForNetworkToDisable;
+        _os_log_impl(&_mh_execute_header, wifiRequestQueue2, OS_LOG_TYPE_DEFAULT, "%s removing  non current request: %@ identifier: %@ waitingForNetworkToDisable: %d", buf, 0x26u);
       }
 
-      v15 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
-      [v15 removeObject:v14];
+      wifiRequestQueue2 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
+      [wifiRequestQueue2 removeObject:firstObject];
     }
 
     else if (v16)
     {
-      v19 = [(__CFString *)v4 identifier];
+      identifier4 = [(__CFString *)requestCopy identifier];
       *buf = 136315650;
       v28 = "[SDAutoUnlockWiFiManager _invalidateWiFiRequest:]";
       v29 = 2112;
-      v30 = v4;
+      v30 = requestCopy;
       v31 = 2112;
-      v32 = v19;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s request(%@) not found !! identifier: %@", buf, 0x20u);
+      v32 = identifier4;
+      _os_log_impl(&_mh_execute_header, wifiRequestQueue2, OS_LOG_TYPE_DEFAULT, "%s request(%@) not found !! identifier: %@", buf, 0x20u);
     }
   }
 
 LABEL_16:
 }
 
-- (void)scheduleWiFiRequest:(id)a3
+- (void)scheduleWiFiRequest:(id)request
 {
-  v5 = a3;
-  v6 = [(SDAutoUnlockWiFiManager *)self queue];
+  requestCopy = request;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E608C;
   block[3] = &unk_1008CF8F0;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = requestCopy;
+  v7 = requestCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)cancelWiFiRequest:(id)a3
+- (void)cancelWiFiRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v5 = [(SDAutoUnlockWiFiManager *)self queue];
+    queue = [(SDAutoUnlockWiFiManager *)self queue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1001E62A8;
     v6[3] = &unk_1008CE028;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = requestCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)updateWiFiRequest:(id)a3 setRangingPeer:(id)a4
+- (void)updateWiFiRequest:(id)request setRangingPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SDAutoUnlockWiFiManager *)self queue];
+  requestCopy = request;
+  peerCopy = peer;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001E6388;
   v11[3] = &unk_1008CE028;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = requestCopy;
+  v13 = peerCopy;
+  v9 = peerCopy;
+  v10 = requestCopy;
+  dispatch_async(queue, v11);
 }
 
 - (void)_processRequestQueue
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
 
-  if (v4)
+  if (currentRequest)
   {
-    v5 = auto_unlock_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    firstObject = auto_unlock_log();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-      v7 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-      v8 = [v7 identifier];
+      currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+      currentRequest3 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+      identifier = [currentRequest3 identifier];
       *buf = 136315906;
       v23 = "[SDAutoUnlockWiFiManager _processRequestQueue]";
       v24 = 1024;
       *v25 = 324;
       *&v25[4] = 2112;
-      *&v25[6] = v6;
+      *&v25[6] = currentRequest2;
       v26 = 2112;
-      v27 = v8;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %d Already processing request: %@ identifier: %@", buf, 0x26u);
+      v27 = identifier;
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "%s: %d Already processing request: %@ identifier: %@", buf, 0x26u);
     }
   }
 
   else
   {
-    v9 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
-    v5 = [v9 firstObject];
+    wifiRequestQueue = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
+    firstObject = [wifiRequestQueue firstObject];
 
-    if (v5)
+    if (firstObject)
     {
-      v10 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
-      [v10 removeObjectAtIndex:0];
+      wifiRequestQueue2 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
+      [wifiRequestQueue2 removeObjectAtIndex:0];
 
-      [(SDAutoUnlockWiFiManager *)self setCurrentRequest:v5];
+      [(SDAutoUnlockWiFiManager *)self setCurrentRequest:firstObject];
       v11 = auto_unlock_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
+        wifiRequestQueue3 = [(SDAutoUnlockWiFiManager *)self wifiRequestQueue];
         *buf = 67109120;
-        LODWORD(v23) = [v12 count];
+        LODWORD(v23) = [wifiRequestQueue3 count];
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Processing current request, with %d items in the request queue", buf, 8u);
       }
 
-      v13 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-      v14 = [v13 queueAvailableHandler];
+      currentRequest4 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+      queueAvailableHandler = [currentRequest4 queueAvailableHandler];
 
-      if (v14)
+      if (queueAvailableHandler)
       {
         objc_initWeak(buf, self);
-        v15 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-        v16 = [v15 queueAvailableHandler];
+        currentRequest5 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+        queueAvailableHandler2 = [currentRequest5 queueAvailableHandler];
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_1001E6720;
         v19[3] = &unk_1008D3B00;
         v19[4] = self;
-        v5 = v5;
-        v20 = v5;
+        firstObject = firstObject;
+        v20 = firstObject;
         objc_copyWeak(&v21, buf);
-        (v16)[2](v16, v19);
+        (queueAvailableHandler2)[2](queueAvailableHandler2, v19);
 
         objc_destroyWeak(&v21);
         objc_destroyWeak(buf);
@@ -398,11 +398,11 @@ LABEL_16:
         v17 = auto_unlock_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+          currentRequest6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
           *buf = 136315394;
           v23 = "[SDAutoUnlockWiFiManager _processRequestQueue]";
           v24 = 2112;
-          *v25 = v18;
+          *v25 = currentRequest6;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s no queueAvailableHandler. Invalidating current request %@", buf, 0x16u);
         }
 
@@ -412,11 +412,11 @@ LABEL_16:
   }
 }
 
-- (void)_cancelWiFiRequest:(id)a3
+- (void)_cancelWiFiRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = auto_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -424,28 +424,28 @@ LABEL_16:
     v8 = 136315394;
     v9 = "[SDAutoUnlockWiFiManager _cancelWiFiRequest:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = requestCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s %@", &v8, 0x16u);
   }
 
-  if (v4)
+  if (requestCopy)
   {
-    [v4 setInvalidationHandler:0];
+    [requestCopy setInvalidationHandler:0];
     v7 = +[SDAutoUnlockWiFiManager sharedManager];
-    [v7 _invalidateWiFiRequest:v4];
+    [v7 _invalidateWiFiRequest:requestCopy];
 
-    if (([v4 invalidateCalled] & 1) == 0)
+    if (([requestCopy invalidateCalled] & 1) == 0)
     {
-      [v4 setInvalidateCalled:1];
-      [v4 _invalidate];
+      [requestCopy setInvalidateCalled:1];
+      [requestCopy _invalidate];
     }
   }
 }
 
 - (void)_resetManagerState
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = auto_unlock_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -462,27 +462,27 @@ LABEL_16:
 
 - (void)_invalidateCurrentRequest
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = auto_unlock_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v7 = [v6 identifier];
+    currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    identifier = [currentRequest2 identifier];
     v9 = 136315650;
     v10 = "[SDAutoUnlockWiFiManager _invalidateCurrentRequest]";
     v11 = 2112;
-    v12 = v5;
+    v12 = currentRequest;
     v13 = 2112;
-    v14 = v7;
+    v14 = identifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s current Request: %@ identifier: %@", &v9, 0x20u);
   }
 
   [(SDAutoUnlockWiFiManager *)self _resetManagerState];
-  v8 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  [(SDAutoUnlockWiFiManager *)self _cancelWiFiRequest:v8];
+  currentRequest3 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  [(SDAutoUnlockWiFiManager *)self _cancelWiFiRequest:currentRequest3];
 
   [(SDAutoUnlockWiFiManager *)self setCurrentRequest:0];
   [(SDAutoUnlockWiFiManager *)self _processRequestQueue];
@@ -490,23 +490,23 @@ LABEL_16:
 
 - (void)_startRangingWithNI
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  v5 = [v4 rangingPeer];
-  v6 = [v5 niRangingPeer];
-  v25 = v6;
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  rangingPeer = [currentRequest rangingPeer];
+  niRangingPeer = [rangingPeer niRangingPeer];
+  v25 = niRangingPeer;
   v7 = [NSArray arrayWithObjects:&v25 count:1];
 
   v8 = auto_unlock_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SDAutoUnlockWiFiManager *)self niSession];
+    niSession = [(SDAutoUnlockWiFiManager *)self niSession];
     v10 = @"YES";
     v20 = "[SDAutoUnlockWiFiManager _startRangingWithNI]";
     v19 = 136315650;
-    if (!v9)
+    if (!niSession)
     {
       v10 = @"NO";
     }
@@ -518,57 +518,57 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Starting ranging (manager: %@, peers: %@)", &v19, 0x20u);
   }
 
-  v11 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  [v11 rangingTimeout];
+  currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  [currentRequest2 rangingTimeout];
 
   v12 = [NIRangingAuthConfiguration alloc];
   v13 = [v7 objectAtIndexedSubscript:0];
-  v14 = [v13 macAddress];
+  macAddress = [v13 macAddress];
   v15 = [v7 objectAtIndexedSubscript:0];
-  v16 = [v15 secureRangingKeyID];
-  v17 = [v12 initAsResponder:0 macAddress:v14 key:v16];
+  secureRangingKeyID = [v15 secureRangingKeyID];
+  v17 = [v12 initAsResponder:0 macAddress:macAddress key:secureRangingKeyID];
 
-  v18 = [(SDAutoUnlockWiFiManager *)self niSession];
-  [v18 runWithConfiguration:v17];
+  niSession2 = [(SDAutoUnlockWiFiManager *)self niSession];
+  [niSession2 runWithConfiguration:v17];
 
   kdebug_trace();
 }
 
 - (void)_enableRangeableIfNeededNI
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  v5 = [v4 isRangingInitiator];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  isRangingInitiator = [currentRequest isRangingInitiator];
 
-  if ((v5 & 1) == 0)
+  if ((isRangingInitiator & 1) == 0)
   {
-    v6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v7 = [v6 rangingPeer];
+    currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    rangingPeer = [currentRequest2 rangingPeer];
 
-    if (v7)
+    if (rangingPeer)
     {
-      v8 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-      v9 = [v8 rangingPeer];
-      v10 = [v9 niRangingPeer];
+      currentRequest3 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+      rangingPeer2 = [currentRequest3 rangingPeer];
+      niRangingPeer = [rangingPeer2 niRangingPeer];
 
-      if (v10)
+      if (niRangingPeer)
       {
-        v11 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-        v12 = [v11 rangingPeer];
-        v13 = [v12 niRangingPeer];
-        v32 = v13;
+        currentRequest4 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+        rangingPeer3 = [currentRequest4 rangingPeer];
+        niRangingPeer2 = [rangingPeer3 niRangingPeer];
+        v32 = niRangingPeer2;
         v14 = [NSArray arrayWithObjects:&v32 count:1];
 
         v15 = auto_unlock_log();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(SDAutoUnlockWiFiManager *)self niSession];
+          niSession = [(SDAutoUnlockWiFiManager *)self niSession];
           v17 = @"YES";
           v27 = "[SDAutoUnlockWiFiManager _enableRangeableIfNeededNI]";
           v26 = 136315650;
-          if (!v16)
+          if (!niSession)
           {
             v17 = @"NO";
           }
@@ -582,16 +582,16 @@ LABEL_16:
 
         v18 = [NIRangingAuthConfiguration alloc];
         v19 = [v14 objectAtIndexedSubscript:0];
-        v20 = [v19 macAddress];
+        macAddress = [v19 macAddress];
         v21 = [v14 objectAtIndexedSubscript:0];
-        v22 = [v21 secureRangingKeyID];
-        v23 = [v18 initAsResponder:1 macAddress:v20 key:v22];
+        secureRangingKeyID = [v21 secureRangingKeyID];
+        v23 = [v18 initAsResponder:1 macAddress:macAddress key:secureRangingKeyID];
 
-        v24 = [(SDAutoUnlockWiFiManager *)self niSession];
-        [v24 runWithConfiguration:v23];
+        niSession2 = [(SDAutoUnlockWiFiManager *)self niSession];
+        [niSession2 runWithConfiguration:v23];
 
-        v25 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-        [v25 setRangeable:1];
+        currentRequest5 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+        [currentRequest5 setRangeable:1];
       }
 
       else
@@ -617,28 +617,28 @@ LABEL_16:
 
 - (void)_disableRangeableNI
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  v5 = [v4 rangeable];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  rangeable = [currentRequest rangeable];
 
-  if (v5)
+  if (rangeable)
   {
-    v6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v7 = [v6 rangingPeer];
-    v8 = [v7 niRangingPeer];
-    v20 = v8;
+    currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    rangingPeer = [currentRequest2 rangingPeer];
+    niRangingPeer = [rangingPeer niRangingPeer];
+    v20 = niRangingPeer;
     v9 = [NSArray arrayWithObjects:&v20 count:1];
 
     v10 = auto_unlock_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SDAutoUnlockWiFiManager *)self niSession];
+      niSession = [(SDAutoUnlockWiFiManager *)self niSession];
       v12 = @"YES";
       v15 = "[SDAutoUnlockWiFiManager _disableRangeableNI]";
       v14 = 136315650;
-      if (!v11)
+      if (!niSession)
       {
         v12 = @"NO";
       }
@@ -650,21 +650,21 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s stopRangingFromPeers (manager: %@, peers: %@)", &v14, 0x20u);
     }
 
-    v13 = [(SDAutoUnlockWiFiManager *)self niSession];
-    [v13 invalidate];
+    niSession2 = [(SDAutoUnlockWiFiManager *)self niSession];
+    [niSession2 invalidate];
 
     [(SDAutoUnlockWiFiManager *)self _createNISession];
   }
 }
 
-- (void)session:(id)a3 didReceiveRangingAuthRecommendation:(BOOL)a4 forObject:(id)a5
+- (void)session:(id)session didReceiveRangingAuthRecommendation:(BOOL)recommendation forObject:(id)object
 {
-  v5 = a4;
-  v7 = a5;
+  recommendationCopy = recommendation;
+  objectCopy = object;
   v8 = auto_unlock_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (recommendationCopy)
     {
       v9 = @"YES";
     }
@@ -674,36 +674,36 @@ LABEL_16:
       v9 = @"NO";
     }
 
-    v10 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v11 = [v10 rangingPeer];
-    v12 = [v11 niRangingPeer];
-    [v7 distance];
+    currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    rangingPeer = [currentRequest rangingPeer];
+    niRangingPeer = [rangingPeer niRangingPeer];
+    [objectCopy distance];
     *buf = 136315906;
     v23 = "[SDAutoUnlockWiFiManager session:didReceiveRangingAuthRecommendation:forObject:]";
     v24 = 2112;
     v25 = v9;
     v26 = 2112;
-    v27 = v12;
+    v27 = niRangingPeer;
     v28 = 2048;
     v29 = v13;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s should authenticate: %@, peer: %@, distance: %fm", buf, 0x2Au);
   }
 
-  v14 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  v15 = [v14 rangingPeer];
-  v16 = [v15 niRangingPeer];
+  currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  rangingPeer2 = [currentRequest2 rangingPeer];
+  niRangingPeer2 = [rangingPeer2 niRangingPeer];
 
-  if (v16)
+  if (niRangingPeer2)
   {
-    v17 = [(SDAutoUnlockWiFiManager *)self queue];
+    queue = [(SDAutoUnlockWiFiManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001E75BC;
     block[3] = &unk_1008CF940;
     block[4] = self;
-    v20 = v7;
-    v21 = v5;
-    dispatch_async(v17, block);
+    v20 = objectCopy;
+    v21 = recommendationCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -716,23 +716,23 @@ LABEL_16:
   }
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(SDAutoUnlockWiFiManager *)self queue];
+  errorCopy = error;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001E77EC;
   v8[3] = &unk_1008CE028;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = auto_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -741,7 +741,7 @@ LABEL_16:
   }
 
   [(SDAutoUnlockWiFiManager *)self _createNISession];
-  if ([v5 code] == -10008)
+  if ([errorCopy code] == -10008)
   {
     v7 = auto_unlock_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -753,54 +753,54 @@ LABEL_16:
 
   else
   {
-    v8 = [(SDAutoUnlockWiFiManager *)self queue];
+    queue = [(SDAutoUnlockWiFiManager *)self queue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1001E79FC;
     v9[3] = &unk_1008CE028;
     v9[4] = self;
-    v10 = v5;
-    dispatch_async(v8, v9);
+    v10 = errorCopy;
+    dispatch_async(queue, v9);
   }
 }
 
-- (void)_startAWDLWithInfo:(id)a3
+- (void)_startAWDLWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 awdlInfo];
+  awdlInfo = [infoCopy awdlInfo];
   v7 = auto_unlock_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 identifier];
+    identifier = [infoCopy identifier];
     v18 = 136315906;
     v19 = "[SDAutoUnlockWiFiManager _startAWDLWithInfo:]";
     v20 = 2112;
-    v21 = v4;
+    v21 = infoCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = identifier;
     v24 = 2112;
-    v25 = v6;
+    v25 = awdlInfo;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Starting AWDL request: %@ identifier: %@ info: %@", &v18, 0x2Au);
   }
 
   v9 = +[SDStatusMonitor sharedMonitor];
-  v10 = [v9 awdlDevice];
+  awdlDevice = [v9 awdlDevice];
 
-  if (!v10)
+  if (!awdlDevice)
   {
-    v16 = auto_unlock_log();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    currentRequest2 = auto_unlock_log();
+    if (os_log_type_enabled(currentRequest2, OS_LOG_TYPE_ERROR))
     {
-      sub_1001E9BD8(v4);
+      sub_1001E9BD8(infoCopy);
     }
 
     goto LABEL_11;
   }
 
-  [[SDAutoUnlockWiFiManagerContext alloc] initWithRequest:v4 wiFiManager:self];
+  [[SDAutoUnlockWiFiManagerContext alloc] initWithRequest:infoCopy wiFiManager:self];
   started = WiFiDeviceClientStartNetwork();
   if (!started)
   {
@@ -813,19 +813,19 @@ LABEL_16:
   v13 = auto_unlock_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    sub_1001E9B10(v4);
+    sub_1001E9B10(infoCopy);
   }
 
   [(SDAutoUnlockWiFiManager *)self setAwdlStartFailed:1];
   [(SDAutoUnlockWiFiManager *)self setAwdlStarting:0];
-  v14 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  v15 = [v14 awdlStartedHandler];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  awdlStartedHandler = [currentRequest awdlStartedHandler];
 
-  if (v15)
+  if (awdlStartedHandler)
   {
-    v16 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v17 = [v16 awdlStartedHandler];
-    v17[2](v17, 0, v12);
+    currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    awdlStartedHandler2 = [currentRequest2 awdlStartedHandler];
+    awdlStartedHandler2[2](awdlStartedHandler2, 0, v12);
 
 LABEL_11:
   }
@@ -835,34 +835,34 @@ LABEL_13:
 
 - (void)_stopAWDL
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
+  awdlNetwork = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
 
-  if (v4)
+  if (awdlNetwork)
   {
     v5 = +[SDStatusMonitor sharedMonitor];
     [v5 awdlDevice];
 
     v6 = [SDAutoUnlockWiFiManagerContext alloc];
-    v7 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    [(SDAutoUnlockWiFiManagerContext *)v6 initWithRequest:v7 wiFiManager:self];
+    currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    [(SDAutoUnlockWiFiManagerContext *)v6 initWithRequest:currentRequest wiFiManager:self];
 
-    v8 = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
+    awdlNetwork2 = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
     v9 = WiFiDeviceClientStopNetwork();
 
     v10 = auto_unlock_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-      v12 = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
+      currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+      awdlNetwork3 = [(SDAutoUnlockWiFiManager *)self awdlNetwork];
       v13 = 136315906;
       v14 = "[SDAutoUnlockWiFiManager _stopAWDL]";
       v15 = 2112;
-      v16 = v11;
+      v16 = currentRequest2;
       v17 = 2112;
-      v18 = v12;
+      v18 = awdlNetwork3;
       v19 = 1024;
       v20 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Stopping AWDL currentRequest: %@ network %@, error %d", &v13, 0x26u);
@@ -874,32 +874,32 @@ LABEL_13:
   [(SDAutoUnlockWiFiManager *)self _resetManagerState];
 }
 
-- (void)__handleAWDLDisabledIfNeededForRequest:(id)a3
+- (void)__handleAWDLDisabledIfNeededForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(SDAutoUnlockWiFiManager *)self _invalidateAWDLTimer];
-  v6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  if (v6)
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  if (currentRequest)
   {
-    v7 = v6;
-    v8 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v9 = [v4 isEqual:v8];
+    v7 = currentRequest;
+    currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    v9 = [requestCopy isEqual:currentRequest2];
 
     if (v9)
     {
       v10 = auto_unlock_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v4 identifier];
+        identifier = [requestCopy identifier];
         v12 = 136315650;
         v13 = "[SDAutoUnlockWiFiManager __handleAWDLDisabledIfNeededForRequest:]";
         v14 = 2112;
-        v15 = v4;
+        v15 = requestCopy;
         v16 = 2112;
-        v17 = v11;
+        v17 = identifier;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s AWDL went down. Invalidating current request: %@ identifier: %@", &v12, 0x20u);
       }
 
@@ -910,8 +910,8 @@ LABEL_13:
 
 - (void)_restartAWDLTimer
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = auto_unlock_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -921,41 +921,41 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Restarting AWDL bring up timer", buf, 0xCu);
   }
 
-  v5 = [(SDAutoUnlockWiFiManager *)self awdlTimer];
-  v6 = v5 == 0;
+  awdlTimer = [(SDAutoUnlockWiFiManager *)self awdlTimer];
+  v6 = awdlTimer == 0;
 
   if (v6)
   {
     objc_initWeak(buf, self);
-    v7 = [(SDAutoUnlockWiFiManager *)self queue];
+    queue2 = [(SDAutoUnlockWiFiManager *)self queue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001E84EC;
     v12[3] = &unk_1008CDD98;
     objc_copyWeak(&v13, buf);
-    v8 = sub_1001F0548(0, v7, v12);
+    v8 = sub_1001F0548(0, queue2, v12);
     [(SDAutoUnlockWiFiManager *)self setAwdlTimer:v8];
 
-    v9 = [(SDAutoUnlockWiFiManager *)self awdlTimer];
-    dispatch_resume(v9);
+    awdlTimer2 = [(SDAutoUnlockWiFiManager *)self awdlTimer];
+    dispatch_resume(awdlTimer2);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
   }
 
-  v10 = [(SDAutoUnlockWiFiManager *)self awdlTimer];
+  awdlTimer3 = [(SDAutoUnlockWiFiManager *)self awdlTimer];
   v11 = sub_1001F0530(30.0);
-  sub_1001F05F0(v10, v11);
+  sub_1001F05F0(awdlTimer3, v11);
 }
 
 - (void)_invalidateAWDLTimer
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SDAutoUnlockWiFiManager *)self awdlTimer];
+  awdlTimer = [(SDAutoUnlockWiFiManager *)self awdlTimer];
 
-  if (v4)
+  if (awdlTimer)
   {
     v5 = auto_unlock_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -965,8 +965,8 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Invalidating AWDL bring up timer", &v7, 0xCu);
     }
 
-    v6 = [(SDAutoUnlockWiFiManager *)self awdlTimer];
-    dispatch_source_cancel(v6);
+    awdlTimer2 = [(SDAutoUnlockWiFiManager *)self awdlTimer];
+    dispatch_source_cancel(awdlTimer2);
 
     [(SDAutoUnlockWiFiManager *)self setAwdlTimer:0];
   }
@@ -974,8 +974,8 @@ LABEL_13:
 
 - (void)_handleAWDLTimerFired
 {
-  v3 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = auto_unlock_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -985,10 +985,10 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s AWDL bring up timer fired", &v8, 0xCu);
   }
 
-  v5 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  v6 = [v5 waitingForNetworkToDisable];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  waitingForNetworkToDisable = [currentRequest waitingForNetworkToDisable];
 
-  if (v6)
+  if (waitingForNetworkToDisable)
   {
     v7 = auto_unlock_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1007,17 +1007,17 @@ LABEL_13:
   }
 }
 
-- (BOOL)_peerFoundInStateInfo:(id)a3
+- (BOOL)_peerFoundInStateInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-  v7 = [v6 rangingPeer];
-  v8 = [v7 macAddressData];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  rangingPeer = [currentRequest rangingPeer];
+  macAddressData = [rangingPeer macAddressData];
 
-  v9 = [v4 objectForKeyedSubscript:@"LINK_CHANGED_PEER_LIST"];
+  v9 = [infoCopy objectForKeyedSubscript:@"LINK_CHANGED_PEER_LIST"];
   v10 = auto_unlock_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1048,7 +1048,7 @@ LABEL_13:
         }
 
         v16 = [*(*(&v20 + 1) + 8 * i) objectForKeyedSubscript:{@"STATION_MAC", v20}];
-        v17 = [v8 isEqualToData:v16];
+        v17 = [macAddressData isEqualToData:v16];
 
         if (v17)
         {
@@ -1073,36 +1073,36 @@ LABEL_13:
   return v18;
 }
 
-- (void)handleVirtualInterfacesChanged:(id)a3
+- (void)handleVirtualInterfacesChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(SDAutoUnlockWiFiManager *)self queue];
+  changedCopy = changed;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001E8D34;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_handleVirtualInterfacesChanged:(id)a3
+- (void)_handleVirtualInterfacesChanged:(id)changed
 {
-  v4 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
 
-  if (v5)
+  if (currentRequest)
   {
-    v6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v7 = [v6 isRangingInitiator];
+    currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    isRangingInitiator = [currentRequest2 isRangingInitiator];
 
-    if (v7)
+    if (isRangingInitiator)
     {
       v8 = +[SDStatusMonitor sharedMonitor];
-      v9 = [v8 awdlState];
+      awdlState = [v8 awdlState];
 
       v10 = auto_unlock_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1110,21 +1110,21 @@ LABEL_13:
         *v26 = 136315394;
         *&v26[4] = "[SDAutoUnlockWiFiManager _handleVirtualInterfacesChanged:]";
         *&v26[12] = 2112;
-        *&v26[14] = v9;
+        *&v26[14] = awdlState;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Received state from awdl: %@", v26, 0x16u);
       }
 
-      v11 = [v9 objectForKeyedSubscript:@"LINK_CHANGED_IS_LINKDOWN"];
-      v12 = [v11 BOOLValue];
+      v11 = [awdlState objectForKeyedSubscript:@"LINK_CHANGED_IS_LINKDOWN"];
+      bOOLValue = [v11 BOOLValue];
 
-      v13 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-      v14 = [v13 calledAWDLStarted];
+      currentRequest3 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+      calledAWDLStarted = [currentRequest3 calledAWDLStarted];
 
       v15 = auto_unlock_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = @"YES";
-        if (v12)
+        if (bOOLValue)
         {
           v17 = @"NO";
         }
@@ -1138,7 +1138,7 @@ LABEL_13:
         *&v26[4] = "[SDAutoUnlockWiFiManager _handleVirtualInterfacesChanged:]";
         *&v26[12] = 2112;
         *&v26[14] = v17;
-        if (!v14)
+        if (!calledAWDLStarted)
         {
           v16 = @"NO";
         }
@@ -1148,7 +1148,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s linkup: %@, calledAWDLStarted: %@", v26, 0x20u);
       }
 
-      if (v12)
+      if (bOOLValue)
       {
         if ([(SDAutoUnlockWiFiManager *)self awdlStarting])
         {
@@ -1162,52 +1162,52 @@ LABEL_13:
 
         else
         {
-          v20 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-          [(SDAutoUnlockWiFiManager *)self __handleAWDLDisabledIfNeededForRequest:v20];
+          currentRequest4 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+          [(SDAutoUnlockWiFiManager *)self __handleAWDLDisabledIfNeededForRequest:currentRequest4];
         }
       }
 
       else
       {
-        if (v14)
+        if (calledAWDLStarted)
         {
           v19 = 0;
         }
 
         else
         {
-          v21 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-          [v21 setCalledAWDLStarted:1];
+          currentRequest5 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+          [currentRequest5 setCalledAWDLStarted:1];
 
-          v22 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-          v23 = [v22 awdlStartedHandler];
+          currentRequest6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+          awdlStartedHandler = [currentRequest6 awdlStartedHandler];
 
-          v19 = v23 != 0;
-          if (v23)
+          v19 = awdlStartedHandler != 0;
+          if (awdlStartedHandler)
           {
-            v24 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-            v25 = [v24 awdlStartedHandler];
-            (v25)[2](v25, v9, 0);
+            currentRequest7 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+            awdlStartedHandler2 = [currentRequest7 awdlStartedHandler];
+            (awdlStartedHandler2)[2](awdlStartedHandler2, awdlState, 0);
           }
 
           else
           {
-            v24 = auto_unlock_log();
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+            currentRequest7 = auto_unlock_log();
+            if (os_log_type_enabled(currentRequest7, OS_LOG_TYPE_ERROR))
             {
               sub_1001E9CD0(self);
             }
           }
         }
 
-        [(SDAutoUnlockWiFiManager *)self _startRangingIfPeerFoundInStateInfo:v9 awdlUpSameTime:v19, *v26, *&v26[16]];
+        [(SDAutoUnlockWiFiManager *)self _startRangingIfPeerFoundInStateInfo:awdlState awdlUpSameTime:v19, *v26, *&v26[16]];
       }
     }
 
     else
     {
-      v9 = auto_unlock_log();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      awdlState = auto_unlock_log();
+      if (os_log_type_enabled(awdlState, OS_LOG_TYPE_DEBUG))
       {
         sub_1001E9C90();
       }
@@ -1215,145 +1215,145 @@ LABEL_13:
   }
 }
 
-- (void)rangingReportEventForWiFiInterfaceWithName:(id)a3 data:(id)a4 error:(id)a5
+- (void)rangingReportEventForWiFiInterfaceWithName:(id)name data:(id)data error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SDAutoUnlockWiFiManager *)self queue];
+  dataCopy = data;
+  errorCopy = error;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E9184;
   block[3] = &unk_1008CE900;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = dataCopy;
+  v14 = errorCopy;
+  selfCopy = self;
+  v10 = errorCopy;
+  v11 = dataCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)handleNetworkStarted:(id)a3 request:(id)a4 error:(int64_t)a5
+- (void)handleNetworkStarted:(id)started request:(id)request error:(int64_t)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SDAutoUnlockWiFiManager *)self queue];
+  startedCopy = started;
+  requestCopy = request;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001E93BC;
   v13[3] = &unk_1008D08B8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = startedCopy;
+  v15 = requestCopy;
+  errorCopy = error;
+  v11 = requestCopy;
+  v12 = startedCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)_handleNetworkStarted:(id)a3 request:(id)a4 error:(int64_t)a5
+- (void)_handleNetworkStarted:(id)started request:(id)request error:(int64_t)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v10);
+  startedCopy = started;
+  requestCopy = request;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = auto_unlock_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 identifier];
+    identifier = [requestCopy identifier];
     v24 = 136315650;
     v25 = "[SDAutoUnlockWiFiManager _handleNetworkStarted:request:error:]";
     v26 = 2112;
-    v27 = v9;
+    v27 = requestCopy;
     v28 = 2112;
-    v29 = v12;
+    v29 = identifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s request: %@ identifier: %@", &v24, 0x20u);
   }
 
   [(SDAutoUnlockWiFiManager *)self _invalidateAWDLTimer];
-  v13 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+  currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
 
-  if (v13 == v9)
+  if (currentRequest == requestCopy)
   {
-    [(SDAutoUnlockWiFiManager *)self setAwdlNetwork:v8];
+    [(SDAutoUnlockWiFiManager *)self setAwdlNetwork:startedCopy];
     [(SDAutoUnlockWiFiManager *)self setAwdlStarting:0];
-    v14 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-    v15 = [v14 waitingForNetworkToDisable];
+    currentRequest2 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    waitingForNetworkToDisable = [currentRequest2 waitingForNetworkToDisable];
 
-    if (v15)
+    if (waitingForNetworkToDisable)
     {
       [(SDAutoUnlockWiFiManager *)self _invalidateCurrentRequest];
     }
 
     else
     {
-      v16 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-      v17 = [v16 calledAWDLStarted];
+      currentRequest3 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+      calledAWDLStarted = [currentRequest3 calledAWDLStarted];
 
-      if ((v17 & 1) == 0)
+      if ((calledAWDLStarted & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
           [(SDAutoUnlockWiFiManager *)self setAwdlStartFailed:1];
           v18 = auto_unlock_log();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            sub_1001E9D74(a5, v18);
+            sub_1001E9D74(error, v18);
           }
         }
 
-        v19 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-        [v19 setCalledAWDLStarted:1];
+        currentRequest4 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+        [currentRequest4 setCalledAWDLStarted:1];
 
-        v20 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-        v21 = [v20 awdlStartedHandler];
+        currentRequest5 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+        awdlStartedHandler = [currentRequest5 awdlStartedHandler];
 
-        if (v21)
+        if (awdlStartedHandler)
         {
-          v22 = [(SDAutoUnlockWiFiManager *)self currentRequest];
-          v23 = [v22 awdlStartedHandler];
-          v23[2](v23, 0, a5);
+          currentRequest6 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+          awdlStartedHandler2 = [currentRequest6 awdlStartedHandler];
+          awdlStartedHandler2[2](awdlStartedHandler2, 0, error);
         }
       }
     }
   }
 }
 
-- (void)handleNetworkStoppedWithError:(id)a3 error:(int64_t)a4
+- (void)handleNetworkStoppedWithError:(id)error error:(int64_t)a4
 {
-  v6 = a3;
-  v7 = [(SDAutoUnlockWiFiManager *)self queue];
+  errorCopy = error;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E96E4;
   block[3] = &unk_1008CF8F0;
   block[4] = self;
-  v10 = v6;
+  v10 = errorCopy;
   v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = errorCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_handleNetworkStoppedWithError:(id)a3 error:(int64_t)a4
+- (void)_handleNetworkStoppedWithError:(id)error error:(int64_t)a4
 {
-  v5 = a3;
-  v6 = [(SDAutoUnlockWiFiManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  queue = [(SDAutoUnlockWiFiManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = auto_unlock_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SDAutoUnlockWiFiManager *)self currentRequest];
+    currentRequest = [(SDAutoUnlockWiFiManager *)self currentRequest];
     v9 = 136315650;
     v10 = "[SDAutoUnlockWiFiManager _handleNetworkStoppedWithError:error:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = errorCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = currentRequest;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s AWDL disabled request: %@ currentRequest: %@", &v9, 0x20u);
   }
 
-  [(SDAutoUnlockWiFiManager *)self __handleAWDLDisabledIfNeededForRequest:v5];
+  [(SDAutoUnlockWiFiManager *)self __handleAWDLDisabledIfNeededForRequest:errorCopy];
 }
 
 @end

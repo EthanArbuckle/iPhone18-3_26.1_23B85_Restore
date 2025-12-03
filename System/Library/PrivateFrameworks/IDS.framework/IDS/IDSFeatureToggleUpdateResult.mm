@@ -1,10 +1,10 @@
 @interface IDSFeatureToggleUpdateResult
-+ (id)resultWithError:(unint64_t)a3;
++ (id)resultWithError:(unint64_t)error;
 + (id)successfulResult;
-- (IDSFeatureToggleUpdateResult)initWithCoder:(id)a3;
-- (IDSFeatureToggleUpdateResult)initWithError:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IDSFeatureToggleUpdateResult)initWithCoder:(id)coder;
+- (IDSFeatureToggleUpdateResult)initWithError:(unint64_t)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSFeatureToggleUpdateResult
@@ -16,45 +16,45 @@
   return v2;
 }
 
-+ (id)resultWithError:(unint64_t)a3
++ (id)resultWithError:(unint64_t)error
 {
-  v3 = [[IDSFeatureToggleUpdateResult alloc] initWithError:a3];
+  v3 = [[IDSFeatureToggleUpdateResult alloc] initWithError:error];
 
   return v3;
 }
 
-- (IDSFeatureToggleUpdateResult)initWithError:(unint64_t)a3
+- (IDSFeatureToggleUpdateResult)initWithError:(unint64_t)error
 {
   v5.receiver = self;
   v5.super_class = IDSFeatureToggleUpdateResult;
   result = [(IDSFeatureToggleUpdateResult *)&v5 init];
   if (result)
   {
-    result->_error = a3;
+    result->_error = error;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IDSFeatureToggleUpdateResult alloc];
-  v5 = [(IDSFeatureToggleUpdateResult *)self error];
+  error = [(IDSFeatureToggleUpdateResult *)self error];
 
-  return [(IDSFeatureToggleUpdateResult *)v4 initWithError:v5];
+  return [(IDSFeatureToggleUpdateResult *)v4 initWithError:error];
 }
 
-- (IDSFeatureToggleUpdateResult)initWithCoder:(id)a3
+- (IDSFeatureToggleUpdateResult)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"err"];
+  v4 = [coder decodeIntegerForKey:@"err"];
 
   return [(IDSFeatureToggleUpdateResult *)self initWithError:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[IDSFeatureToggleUpdateResult error](self forKey:{"error"), @"err"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[IDSFeatureToggleUpdateResult error](self forKey:{"error"), @"err"}];
 }
 
 @end

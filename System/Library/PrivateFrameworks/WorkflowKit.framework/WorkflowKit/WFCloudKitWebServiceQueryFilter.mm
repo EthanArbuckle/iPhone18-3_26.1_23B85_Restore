@@ -1,74 +1,74 @@
 @interface WFCloudKitWebServiceQueryFilter
-+ (id)filterWithCombinationOf:(id)a3 by:(unint64_t)a4;
-+ (id)filterWithComparisonOf:(id)a3 toInt:(int64_t)a4 by:(unint64_t)a5;
-+ (id)filterWithComparisonOf:(id)a3 toString:(id)a4 by:(unint64_t)a5;
-+ (id)filterWithComparisonOf:(id)a3 toStringArray:(id)a4 by:(unint64_t)a5;
-- (id)stringRepresentationWithRecordType:(id)a3;
++ (id)filterWithCombinationOf:(id)of by:(unint64_t)by;
++ (id)filterWithComparisonOf:(id)of toInt:(int64_t)int by:(unint64_t)by;
++ (id)filterWithComparisonOf:(id)of toString:(id)string by:(unint64_t)by;
++ (id)filterWithComparisonOf:(id)of toStringArray:(id)array by:(unint64_t)by;
+- (id)stringRepresentationWithRecordType:(id)type;
 @end
 
 @implementation WFCloudKitWebServiceQueryFilter
 
-- (id)stringRepresentationWithRecordType:(id)a3
+- (id)stringRepresentationWithRecordType:(id)type
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceQueryFilter.m" lineNumber:65 description:@"-[WFCloudKitWebServiceQueryFilter stringRepresentationWithRecordType:] should be overridden by subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceQueryFilter.m" lineNumber:65 description:@"-[WFCloudKitWebServiceQueryFilter stringRepresentationWithRecordType:] should be overridden by subclass"];
 
   return 0;
 }
 
-+ (id)filterWithComparisonOf:(id)a3 toStringArray:(id)a4 by:(unint64_t)a5
++ (id)filterWithComparisonOf:(id)of toStringArray:(id)array by:(unint64_t)by
 {
-  v7 = a4;
-  v8 = a3;
+  arrayCopy = array;
+  ofCopy = of;
   v9 = objc_opt_new();
-  [v9 setRecordKey:v8];
+  [v9 setRecordKey:ofCopy];
 
-  v10 = [v7 if_map:&__block_literal_global_45754];
+  v10 = [arrayCopy if_map:&__block_literal_global_45754];
 
   v11 = [v10 componentsJoinedByString:{@", "}];
   [v9 setValue:v11];
 
-  [v9 setType:a5];
+  [v9 setType:by];
 
   return v9;
 }
 
-+ (id)filterWithComparisonOf:(id)a3 toInt:(int64_t)a4 by:(unint64_t)a5
++ (id)filterWithComparisonOf:(id)of toInt:(int64_t)int by:(unint64_t)by
 {
-  v7 = a3;
+  ofCopy = of;
   v8 = objc_opt_new();
-  [v8 setRecordKey:v7];
+  [v8 setRecordKey:ofCopy];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a4];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", int];
   [v8 setValue:v9];
 
-  [v8 setType:a5];
+  [v8 setType:by];
 
   return v8;
 }
 
-+ (id)filterWithComparisonOf:(id)a3 toString:(id)a4 by:(unint64_t)a5
++ (id)filterWithComparisonOf:(id)of toString:(id)string by:(unint64_t)by
 {
-  v7 = a4;
-  v8 = a3;
+  stringCopy = string;
+  ofCopy = of;
   v9 = objc_opt_new();
-  [v9 setRecordKey:v8];
+  [v9 setRecordKey:ofCopy];
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", v7];
+  stringCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", stringCopy];
 
-  [v9 setValue:v10];
-  [v9 setType:a5];
+  [v9 setValue:stringCopy];
+  [v9 setType:by];
 
   return v9;
 }
 
-+ (id)filterWithCombinationOf:(id)a3 by:(unint64_t)a4
++ (id)filterWithCombinationOf:(id)of by:(unint64_t)by
 {
-  v5 = a3;
+  ofCopy = of;
   v6 = objc_opt_new();
-  [v6 setFilters:v5];
+  [v6 setFilters:ofCopy];
 
-  [v6 setType:a4];
+  [v6 setType:by];
 
   return v6;
 }

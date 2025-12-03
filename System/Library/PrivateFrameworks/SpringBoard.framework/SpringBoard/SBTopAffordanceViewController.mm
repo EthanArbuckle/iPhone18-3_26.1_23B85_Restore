@@ -1,57 +1,57 @@
 @interface SBTopAffordanceViewController
 + (UIImageSymbolConfiguration)symbolConfiguration;
-+ (id)imageForAction:(int64_t)a3 interfaceOrientation:(int64_t)a4;
-+ (id)landscapeImageNameForAction:(int64_t)a3;
-+ (id)portraitImageNameForAction:(int64_t)a3;
-- (BOOL)_dismissIfNeededWithLocation:(CGPoint)a3 window:(id)a4;
++ (id)imageForAction:(int64_t)action interfaceOrientation:(int64_t)orientation;
++ (id)landscapeImageNameForAction:(int64_t)action;
++ (id)portraitImageNameForAction:(int64_t)action;
+- (BOOL)_dismissIfNeededWithLocation:(CGPoint)location window:(id)window;
 - (BOOL)isExpanded;
 - (BOOL)isLumaTrackingEnabled;
-- (BOOL)transientUIHandledTouch:(id)a3 withSystemGestureRecognizer:(id)a4;
-- (SBTopAffordanceViewController)initWithDeviceApplicationSceneHandle:(id)a3;
+- (BOOL)transientUIHandledTouch:(id)touch withSystemGestureRecognizer:(id)recognizer;
+- (SBTopAffordanceViewController)initWithDeviceApplicationSceneHandle:(id)handle;
 - (SBTopAffordanceViewControllerDelegate)delegate;
 - (SBWindowControlsLayout)windowControlsLayout;
-- (UIEdgeInsets)_safeAreaEdgeInsetsForSettings:(id)a3;
+- (UIEdgeInsets)_safeAreaEdgeInsetsForSettings:(id)settings;
 - (id)_createAlphaAnimatableProperty;
-- (id)_localizedMenuTitleForKey:(id)a3;
+- (id)_localizedMenuTitleForKey:(id)key;
 - (id)_makeDotsView;
 - (id)_makeLumaTrackingView;
 - (id)_makePillBackgroundContainerView;
 - (id)_makePillContentsView;
 - (id)_windowControlsAccessibilityIdentifier;
 - (id)effectiveWindowControlsView;
-- (void)_requestPerformShortcutActionWithType:(int64_t)a3;
-- (void)_setSystemPointerInteractionEnabled:(BOOL)a3;
+- (void)_requestPerformShortcutActionWithType:(int64_t)type;
+- (void)_setSystemPointerInteractionEnabled:(BOOL)enabled;
 - (void)_updateStyleForOverrideUserInterfaceStyle;
-- (void)_updateWindowControlsLayoutAnimated:(BOOL)a3 previousLayout:(SBWindowControlsLayout *)a4;
-- (void)affordancePresenceController:(id)a3 didChangeToPresence:(int64_t)a4;
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4;
+- (void)_updateWindowControlsLayoutAnimated:(BOOL)animated previousLayout:(SBWindowControlsLayout *)layout;
+- (void)affordancePresenceController:(id)controller didChangeToPresence:(int64_t)presence;
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated;
 - (void)loadView;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5;
-- (void)setHidden:(BOOL)a3;
-- (void)setHidden:(BOOL)a3 forReason:(id)a4 animated:(BOOL)a5;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLumaTrackingEnabled:(BOOL)a3;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
-- (void)setWindowControlsLayout:(SBWindowControlsLayout *)a3;
-- (void)topAffordanceDotsViewWillDismissMenu:(id)a3;
-- (void)topAffordanceDotsViewWillPresentMenu:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transientUI:(id)a3 wasIndirectPannedToDismissFromGestureRecognizer:(id)a4;
-- (void)updateTopAffordanceContextMenuWithOptions:(int64_t)a3 selectedActionType:(int64_t)a4 layout:(SBWindowControlsLayout *)a5 hidden:(BOOL)a6 interfaceOrientation:(int64_t)a7;
-- (void)updateWindowControlsLayout:(SBWindowControlsLayout *)a3;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHidden:(BOOL)hidden forReason:(id)reason animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLumaTrackingEnabled:(BOOL)enabled;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
+- (void)setWindowControlsLayout:(SBWindowControlsLayout *)layout;
+- (void)topAffordanceDotsViewWillDismissMenu:(id)menu;
+- (void)topAffordanceDotsViewWillPresentMenu:(id)menu;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transientUI:(id)i wasIndirectPannedToDismissFromGestureRecognizer:(id)recognizer;
+- (void)updateTopAffordanceContextMenuWithOptions:(int64_t)options selectedActionType:(int64_t)type layout:(SBWindowControlsLayout *)layout hidden:(BOOL)hidden interfaceOrientation:(int64_t)orientation;
+- (void)updateWindowControlsLayout:(SBWindowControlsLayout *)layout;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)windowControlsViewController:(id)a3 didRequestAction:(unint64_t)a4;
-- (void)windowControlsViewController:(id)a3 didRequestArrangeWithConfiguration:(unint64_t)a4;
-- (void)windowControlsViewController:(id)a3 didRequestMoveToDisplay:(unint64_t)a4;
-- (void)windowControlsViewController:(id)a3 didRequestSlideOverAction:(unint64_t)a4;
-- (void)windowControlsViewController:(id)a3 didRequestTileToPosition:(unint64_t)a4;
-- (void)windowControlsViewControllerDidRequestAddAnotherWindow:(id)a3;
-- (void)windowControlsViewControllerWillCollapse:(id)a3;
-- (void)windowControlsViewControllerWillExpand:(id)a3;
+- (void)windowControlsViewController:(id)controller didRequestAction:(unint64_t)action;
+- (void)windowControlsViewController:(id)controller didRequestArrangeWithConfiguration:(unint64_t)configuration;
+- (void)windowControlsViewController:(id)controller didRequestMoveToDisplay:(unint64_t)display;
+- (void)windowControlsViewController:(id)controller didRequestSlideOverAction:(unint64_t)action;
+- (void)windowControlsViewController:(id)controller didRequestTileToPosition:(unint64_t)position;
+- (void)windowControlsViewControllerDidRequestAddAnotherWindow:(id)window;
+- (void)windowControlsViewControllerWillCollapse:(id)collapse;
+- (void)windowControlsViewControllerWillExpand:(id)expand;
 @end
 
 @implementation SBTopAffordanceViewController
@@ -78,74 +78,74 @@ void __52__SBTopAffordanceViewController_symbolConfiguration__block_invoke()
   symbolConfiguration_symbolConfiguration = v1;
 }
 
-+ (id)imageForAction:(int64_t)a3 interfaceOrientation:(int64_t)a4
++ (id)imageForAction:(int64_t)action interfaceOrientation:(int64_t)orientation
 {
-  v7 = [a1 symbolConfiguration];
-  v8 = a4 - 1;
+  symbolConfiguration = [self symbolConfiguration];
+  v8 = orientation - 1;
   v9 = MEMORY[0x277D755B8];
   if (v8 >= 2)
   {
-    [a1 landscapeImageNameForAction:a3];
+    [self landscapeImageNameForAction:action];
   }
 
   else
   {
-    [a1 portraitImageNameForAction:a3];
+    [self portraitImageNameForAction:action];
   }
   v10 = ;
-  v11 = [v9 systemImageNamed:v10 withConfiguration:v7];
+  v11 = [v9 systemImageNamed:v10 withConfiguration:symbolConfiguration];
 
   v12 = [v11 imageWithRenderingMode:2];
 
   return v12;
 }
 
-+ (id)portraitImageNameForAction:(int64_t)a3
++ (id)portraitImageNameForAction:(int64_t)action
 {
-  if (a3 >> 31)
+  if (action >> 31)
   {
     v3 = @"rectangle.portrait.inset.filled";
     goto LABEL_32;
   }
 
-  if ((a3 & 2) != 0)
+  if ((action & 2) != 0)
   {
     v3 = @"rectangle.inset.fill";
     goto LABEL_32;
   }
 
-  if ((a3 & 4) != 0)
+  if ((action & 4) != 0)
   {
     v3 = @"rectangle.center.inset.fill";
     goto LABEL_32;
   }
 
-  if ((a3 & 8) != 0)
+  if ((action & 8) != 0)
   {
     v3 = @"plus.rectangle.on.rectangle";
     goto LABEL_32;
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((action & 0x10) != 0)
   {
     v3 = @"minus.rectangle";
     goto LABEL_32;
   }
 
-  if ((~a3 & 0x3C001E0) == 0)
+  if ((~action & 0x3C001E0) == 0)
   {
 LABEL_7:
     v3 = @"rectangle.portrait.split.2x1";
     goto LABEL_32;
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((action & 0x20) != 0)
   {
-    v5 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v6 = @"rectangle.portrait.lefthalf.inset.filled";
     v7 = @"rectangle.portrait.righthalf.inset.filled";
 LABEL_29:
-    if (v5 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v6 = v7;
     }
@@ -154,75 +154,75 @@ LABEL_29:
     goto LABEL_32;
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((action & 0x40) != 0)
   {
-    v5 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v6 = @"rectangle.portrait.righthalf.inset.filled";
     v7 = @"rectangle.portrait.lefthalf.inset.filled";
     goto LABEL_29;
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((action & 0x80) != 0)
   {
     v3 = @"square.tophalf.filled";
   }
 
-  else if ((a3 & 0x100) != 0)
+  else if ((action & 0x100) != 0)
   {
     v3 = @"square.bottomhalf.filled";
   }
 
   else
   {
-    if ((a3 & 0x200) != 0)
+    if ((action & 0x200) != 0)
     {
       goto LABEL_7;
     }
 
-    if ((a3 & 0x2000) != 0)
+    if ((action & 0x2000) != 0)
     {
       v3 = @"square.grid.2x2";
     }
 
-    else if ((a3 & 0x4000) != 0)
+    else if ((action & 0x4000) != 0)
     {
       v3 = @"rectangle.split.3x1";
     }
 
-    else if ((a3 & 0x8000) != 0)
+    else if ((action & 0x8000) != 0)
     {
       v3 = @"inset.filled.lefthalf.topright.bottomright.rectangle";
     }
 
-    else if ((a3 & 0x40000) != 0)
+    else if ((action & 0x40000) != 0)
     {
       v3 = @"display";
     }
 
-    else if ((a3 & 0x80000) != 0)
+    else if ((action & 0x80000) != 0)
     {
       v3 = @"ipad";
     }
 
-    else if ((a3 & 0x100000) != 0)
+    else if ((action & 0x100000) != 0)
     {
       v3 = @"xmark";
     }
 
-    else if ((a3 & 0x4000000) != 0)
+    else if ((action & 0x4000000) != 0)
     {
       v3 = @"arrowtriangle.forward.inset.filled.trailingthird.rectangle";
     }
 
-    else if ((a3 & 0x8000000) != 0)
+    else if ((action & 0x8000000) != 0)
     {
       v3 = @"arrowtriangle.backward.inset.filled.trailingthird.rectangle";
     }
 
     else
     {
-      v4 = [MEMORY[0x277CCA890] currentHandler];
-      [v4 handleFailureInMethod:a2 object:a1 file:@"SBTopAffordanceViewController.m" lineNumber:324 description:@"Invalid options with no corresponding image"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBTopAffordanceViewController.m" lineNumber:324 description:@"Invalid options with no corresponding image"];
 
       v3 = &stru_283094718;
     }
@@ -233,46 +233,46 @@ LABEL_32:
   return v3;
 }
 
-+ (id)landscapeImageNameForAction:(int64_t)a3
++ (id)landscapeImageNameForAction:(int64_t)action
 {
-  if ((a3 & 0xFFFFFFFF80000002) != 0)
+  if ((action & 0xFFFFFFFF80000002) != 0)
   {
     v3 = @"rectangle.inset.fill";
     goto LABEL_30;
   }
 
-  if ((a3 & 4) != 0)
+  if ((action & 4) != 0)
   {
     v3 = @"rectangle.center.inset.fill";
     goto LABEL_30;
   }
 
-  if ((a3 & 8) != 0)
+  if ((action & 8) != 0)
   {
     v3 = @"plus.rectangle.on.rectangle";
     goto LABEL_30;
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((action & 0x10) != 0)
   {
     v3 = @"minus.rectangle";
     goto LABEL_30;
   }
 
-  if ((~a3 & 0x3C001E0) == 0)
+  if ((~action & 0x3C001E0) == 0)
   {
 LABEL_7:
     v3 = @"rectangle.split.2x1";
     goto LABEL_30;
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((action & 0x20) != 0)
   {
-    v5 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v6 = @"rectangle.lefthalf.inset.fill";
     v7 = @"rectangle.righthalf.inset.fill";
 LABEL_27:
-    if (v5 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v6 = v7;
     }
@@ -281,75 +281,75 @@ LABEL_27:
     goto LABEL_30;
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((action & 0x40) != 0)
   {
-    v5 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v6 = @"rectangle.righthalf.inset.fill";
     v7 = @"rectangle.lefthalf.inset.fill";
     goto LABEL_27;
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((action & 0x80) != 0)
   {
     v3 = @"square.tophalf.filled";
   }
 
-  else if ((a3 & 0x100) != 0)
+  else if ((action & 0x100) != 0)
   {
     v3 = @"square.bottomhalf.filled";
   }
 
   else
   {
-    if ((a3 & 0x200) != 0)
+    if ((action & 0x200) != 0)
     {
       goto LABEL_7;
     }
 
-    if ((a3 & 0x2000) != 0)
+    if ((action & 0x2000) != 0)
     {
       v3 = @"square.grid.2x2";
     }
 
-    else if ((a3 & 0x4000) != 0)
+    else if ((action & 0x4000) != 0)
     {
       v3 = @"rectangle.split.3x1";
     }
 
-    else if ((a3 & 0x8000) != 0)
+    else if ((action & 0x8000) != 0)
     {
       v3 = @"inset.filled.lefthalf.topright.bottomright.rectangle";
     }
 
-    else if ((a3 & 0x40000) != 0)
+    else if ((action & 0x40000) != 0)
     {
       v3 = @"display";
     }
 
-    else if ((a3 & 0x80000) != 0)
+    else if ((action & 0x80000) != 0)
     {
       v3 = @"ipad.landscape";
     }
 
-    else if ((a3 & 0x100000) != 0)
+    else if ((action & 0x100000) != 0)
     {
       v3 = @"xmark";
     }
 
-    else if ((a3 & 0x4000000) != 0)
+    else if ((action & 0x4000000) != 0)
     {
       v3 = @"arrowtriangle.forward.inset.filled.trailingthird.rectangle";
     }
 
-    else if ((a3 & 0x8000000) != 0)
+    else if ((action & 0x8000000) != 0)
     {
       v3 = @"arrowtriangle.backward.inset.filled.trailingthird.rectangle";
     }
 
     else
     {
-      v4 = [MEMORY[0x277CCA890] currentHandler];
-      [v4 handleFailureInMethod:a2 object:a1 file:@"SBTopAffordanceViewController.m" lineNumber:381 description:@"Invalid options with no corresponding image"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBTopAffordanceViewController.m" lineNumber:381 description:@"Invalid options with no corresponding image"];
 
       v3 = &stru_283094718;
     }
@@ -360,9 +360,9 @@ LABEL_30:
   return v3;
 }
 
-- (SBTopAffordanceViewController)initWithDeviceApplicationSceneHandle:(id)a3
+- (SBTopAffordanceViewController)initWithDeviceApplicationSceneHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v16.receiver = self;
   v16.super_class = SBTopAffordanceViewController;
   v6 = [(SBTopAffordanceViewController *)&v16 initWithNibName:0 bundle:0];
@@ -370,15 +370,15 @@ LABEL_30:
   if (v6)
   {
     v6->_highlighted = 0;
-    objc_storeStrong(&v6->_sceneHandle, a3);
+    objc_storeStrong(&v6->_sceneHandle, handle);
     [(SBDeviceApplicationSceneHandle *)v7->_sceneHandle addObserver:v7];
     v8 = [MEMORY[0x277CF0CF0] settingsWithMass:2.0 stiffness:400.0 damping:45.0];
     styleSettings = v7->_styleSettings;
     v7->_styleSettings = v8;
 
     v10 = [SBAffordancePresenceController alloc];
-    v11 = [(SBDeviceApplicationSceneHandle *)v7->_sceneHandle _windowScene];
-    v12 = [(SBAffordancePresenceController *)v10 initWithDelegate:v7 windowScene:v11];
+    _windowScene = [(SBDeviceApplicationSceneHandle *)v7->_sceneHandle _windowScene];
+    v12 = [(SBAffordancePresenceController *)v10 initWithDelegate:v7 windowScene:_windowScene];
     affordancePresenceController = v7->_affordancePresenceController;
     v7->_affordancePresenceController = v12;
 
@@ -395,8 +395,8 @@ LABEL_30:
 {
   [(UIViewFloatAnimatableProperty *)self->_alphaAnimatableProperty invalidate];
   [(SBDeviceApplicationSceneHandle *)self->_sceneHandle removeObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBTopAffordanceViewController;
@@ -417,19 +417,19 @@ LABEL_30:
   v54.receiver = self;
   v54.super_class = SBTopAffordanceViewController;
   [(SBTopAffordanceViewController *)&v54 viewDidLoad];
-  v3 = [(SBTopAffordanceViewController *)self view];
+  view = [(SBTopAffordanceViewController *)self view];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v4 = [(SBTopAffordanceViewController *)self _makeLumaTrackingView];
+    _makeLumaTrackingView = [(SBTopAffordanceViewController *)self _makeLumaTrackingView];
     lumaTrackingView = self->_lumaTrackingView;
-    self->_lumaTrackingView = v4;
+    self->_lumaTrackingView = _makeLumaTrackingView;
 
-    [v3 addSubview:self->_lumaTrackingView];
+    [view addSubview:self->_lumaTrackingView];
   }
 
-  v6 = [(SBTopAffordanceViewController *)self _makeDotsView];
+  _makeDotsView = [(SBTopAffordanceViewController *)self _makeDotsView];
   dotsView = self->_dotsView;
-  self->_dotsView = v6;
+  self->_dotsView = _makeDotsView;
 
   if (_UISolariumEnabled())
   {
@@ -437,30 +437,30 @@ LABEL_30:
     windowControlsViewController = self->_windowControlsViewController;
     self->_windowControlsViewController = v8;
 
-    v10 = [(SWKWindowControlsViewController *)self->_windowControlsViewController view];
-    [v10 bounds];
+    view2 = [(SWKWindowControlsViewController *)self->_windowControlsViewController view];
+    [view2 bounds];
     self->_windowControlsInitialSize.width = v11;
     self->_windowControlsInitialSize.height = v12;
 
     [(SWKWindowControlsViewController *)self->_windowControlsViewController unfocus];
     [(SBTopAffordanceViewController *)self bs_addChildViewController:self->_windowControlsViewController];
-    v13 = [(SWKWindowControlsViewController *)self->_windowControlsViewController view];
-    v14 = [(SBTopAffordanceViewController *)self _windowControlsAccessibilityIdentifier];
-    [(SBTopAffordanceDotsView *)v13 setAccessibilityIdentifier:v14];
+    view3 = [(SWKWindowControlsViewController *)self->_windowControlsViewController view];
+    _windowControlsAccessibilityIdentifier = [(SBTopAffordanceViewController *)self _windowControlsAccessibilityIdentifier];
+    [(SBTopAffordanceDotsView *)view3 setAccessibilityIdentifier:_windowControlsAccessibilityIdentifier];
   }
 
   else
   {
-    [v3 addSubview:self->_dotsView];
-    v13 = self->_dotsView;
+    [view addSubview:self->_dotsView];
+    view3 = self->_dotsView;
   }
 
-  v15 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
-  v16 = [v15 switcherController];
-  v17 = [v16 windowManagementContext];
-  v18 = [v17 isFlexibleWindowingEnabled];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
+  switcherController = [_windowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v18)
+  if (isFlexibleWindowingEnabled)
   {
     if (_UISolariumEnabled())
     {
@@ -474,31 +474,31 @@ LABEL_30:
     }
 
     v27 = +[SBAppSwitcherDomain rootSettings];
-    v24 = [v27 windowingSettings];
+    windowingSettings = [v27 windowingSettings];
 
-    [v24 threeDotsTopAffordanceTopEdgeOffset];
+    [windowingSettings threeDotsTopAffordanceTopEdgeOffset];
     v29 = v28;
-    [v24 threeDotsTopAffordanceLeadingEdgeOffset];
+    [windowingSettings threeDotsTopAffordanceLeadingEdgeOffset];
     v31 = v30;
-    v32 = [(SBTopAffordanceDotsView *)v13 leftAnchor];
-    v33 = [v3 leftAnchor];
-    v21 = [v32 constraintEqualToAnchor:v33 constant:v31];
+    leftAnchor = [(SBTopAffordanceDotsView *)view3 leftAnchor];
+    leftAnchor2 = [view leftAnchor];
+    v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v31];
 
-    v25 = [(SBTopAffordanceDotsView *)v13 centerYAnchor];
-    v34 = [v3 topAnchor];
-    v26 = [v25 constraintEqualToAnchor:v34 constant:v29];
+    centerYAnchor = [(SBTopAffordanceDotsView *)view3 centerYAnchor];
+    topAnchor = [view topAnchor];
+    v26 = [centerYAnchor constraintEqualToAnchor:topAnchor constant:v29];
   }
 
   else
   {
-    v22 = [(SBTopAffordanceDotsView *)v13 centerXAnchor];
-    v23 = [v3 centerXAnchor];
-    v21 = [v22 constraintEqualToAnchor:v23];
+    centerXAnchor = [(SBTopAffordanceDotsView *)view3 centerXAnchor];
+    centerXAnchor2 = [view centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v24 = [(SBTopAffordanceDotsView *)v13 centerYAnchor];
-    v25 = [v3 topAnchor];
+    windowingSettings = [(SBTopAffordanceDotsView *)view3 centerYAnchor];
+    centerYAnchor = [view topAnchor];
     [(SBTopAffordanceViewController *)self _defaultCenterYOffset];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:?];
+    v26 = [windowingSettings constraintEqualToAnchor:centerYAnchor constant:?];
   }
 
   v35 = objc_opt_new();
@@ -516,49 +516,49 @@ LABEL_30:
 LABEL_15:
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v52 = [(_UILumaTrackingBackdropView *)self->_lumaTrackingView centerXAnchor];
-    v51 = [(SBTopAffordanceDotsView *)v13 centerXAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    centerXAnchor3 = [(_UILumaTrackingBackdropView *)self->_lumaTrackingView centerXAnchor];
+    centerXAnchor4 = [(SBTopAffordanceDotsView *)view3 centerXAnchor];
+    v50 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v55[0] = v50;
-    v49 = [(_UILumaTrackingBackdropView *)self->_lumaTrackingView topAnchor];
-    v48 = [(SBTopAffordanceDotsView *)v13 topAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    topAnchor2 = [(_UILumaTrackingBackdropView *)self->_lumaTrackingView topAnchor];
+    topAnchor3 = [(SBTopAffordanceDotsView *)view3 topAnchor];
+    v47 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v55[1] = v47;
-    v36 = [(_UILumaTrackingBackdropView *)self->_lumaTrackingView widthAnchor];
-    v37 = [v36 constraintEqualToConstant:32.0];
+    widthAnchor = [(_UILumaTrackingBackdropView *)self->_lumaTrackingView widthAnchor];
+    v37 = [widthAnchor constraintEqualToConstant:32.0];
     v55[2] = v37;
-    v38 = [(_UILumaTrackingBackdropView *)self->_lumaTrackingView heightAnchor];
-    [v38 constraintEqualToConstant:32.0];
+    heightAnchor = [(_UILumaTrackingBackdropView *)self->_lumaTrackingView heightAnchor];
+    [heightAnchor constraintEqualToConstant:32.0];
     v39 = v21;
-    v41 = v40 = v3;
+    v41 = v40 = view;
     v55[3] = v41;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:4];
     [v20 addObjectsFromArray:v42];
 
-    v3 = v40;
+    view = v40;
     v21 = v39;
   }
 
   if ([v20 count])
   {
-    [v3 addConstraints:v20];
+    [view addConstraints:v20];
   }
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v43 = [(SBAffordancePresenceController *)self->_affordancePresenceController currentPresence];
+    currentPresence = [(SBAffordancePresenceController *)self->_affordancePresenceController currentPresence];
     v44 = 0.0;
-    if (!v43)
+    if (!currentPresence)
     {
       v44 = 1.0;
     }
 
-    [(SBTopAffordanceDotsView *)v13 setAlpha:v44];
+    [(SBTopAffordanceDotsView *)view3 setAlpha:v44];
   }
 
-  v45 = [(SBTopAffordanceViewController *)self _createAlphaAnimatableProperty];
+  _createAlphaAnimatableProperty = [(SBTopAffordanceViewController *)self _createAlphaAnimatableProperty];
   alphaAnimatableProperty = self->_alphaAnimatableProperty;
-  self->_alphaAnimatableProperty = v45;
+  self->_alphaAnimatableProperty = _createAlphaAnimatableProperty;
 }
 
 - (void)viewWillLayoutSubviews
@@ -572,28 +572,28 @@ LABEL_15:
   [(SBTopAffordanceViewController *)self _updateWindowControlsLayoutAnimated:0 previousLayout:v4];
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = SBTopAffordanceViewController;
-  [(SBTopAffordanceViewController *)&v4 setOverrideUserInterfaceStyle:a3];
+  [(SBTopAffordanceViewController *)&v4 setOverrideUserInterfaceStyle:style];
   [(SBTopAffordanceViewController *)self _updateStyleForOverrideUserInterfaceStyle];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
     v8 = v3;
     v9 = v4;
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     styleSettings = self->_styleSettings;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__SBTopAffordanceViewController_setHighlighted___block_invoke;
     v6[3] = &unk_2783A9F58;
     v6[4] = self;
-    v7 = a3;
+    highlightedCopy = highlighted;
     [MEMORY[0x277CF0D38] animateWithSettings:styleSettings actions:v6];
   }
 }
@@ -609,19 +609,19 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
 
 - (BOOL)isExpanded
 {
-  v2 = [(SBTopAffordanceViewController *)self dotsView];
-  v3 = [v2 isHeld];
+  dotsView = [(SBTopAffordanceViewController *)self dotsView];
+  isHeld = [dotsView isHeld];
 
-  return v3;
+  return isHeld;
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
   if ([(SBTopAffordanceViewController *)self isExpanded])
   {
-    v5 = [(SBTopAffordanceViewController *)self dotsView];
-    v4 = [v5 contextMenuInteraction];
-    [v4 dismissMenu];
+    dotsView = [(SBTopAffordanceViewController *)self dotsView];
+    contextMenuInteraction = [dotsView contextMenuInteraction];
+    [contextMenuInteraction dismissMenu];
   }
 }
 
@@ -638,16 +638,16 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
   }
 }
 
-- (void)setLumaTrackingEnabled:(BOOL)a3
+- (void)setLumaTrackingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ((_UISolariumEnabled() & 1) == 0 && [(_UILumaTrackingBackdropView *)self->_lumaTrackingView isPaused]== v3)
+  enabledCopy = enabled;
+  if ((_UISolariumEnabled() & 1) == 0 && [(_UILumaTrackingBackdropView *)self->_lumaTrackingView isPaused]== enabledCopy)
   {
     lumaTrackingView = self->_lumaTrackingView;
-    if (v3)
+    if (enabledCopy)
     {
-      v7 = [(SBTopAffordanceViewController *)self traitCollection];
-      if ([v7 userInterfaceStyle] == 2)
+      traitCollection = [(SBTopAffordanceViewController *)self traitCollection];
+      if ([traitCollection userInterfaceStyle] == 2)
       {
         v6 = 2;
       }
@@ -668,19 +668,19 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
   }
 }
 
-- (void)setWindowControlsLayout:(SBWindowControlsLayout *)a3
+- (void)setWindowControlsLayout:(SBWindowControlsLayout *)layout
 {
   p_windowControlsLayout = &self->_windowControlsLayout;
   style = self->_windowControlsLayout.style;
-  v7 = a3->style == style && a3->underlapsStatusBar == self->_windowControlsLayout.underlapsStatusBar;
-  if (!v7 || (a3->margin.x == self->_windowControlsLayout.margin.x ? (v8 = a3->margin.y == self->_windowControlsLayout.margin.y) : (v8 = 0), !v8))
+  v7 = layout->style == style && layout->underlapsStatusBar == self->_windowControlsLayout.underlapsStatusBar;
+  if (!v7 || (layout->margin.x == self->_windowControlsLayout.margin.x ? (v8 = layout->margin.y == self->_windowControlsLayout.margin.y) : (v8 = 0), !v8))
   {
     v17 = v3;
     v18 = v4;
     v15 = *&self->_windowControlsLayout.underlapsStatusBar;
     y = self->_windowControlsLayout.margin.y;
-    margin = a3->margin;
-    *&p_windowControlsLayout->style = *&a3->style;
+    margin = layout->margin;
+    *&p_windowControlsLayout->style = *&layout->style;
     self->_windowControlsLayout.margin = margin;
     v10 = p_windowControlsLayout->style;
     if (style)
@@ -695,7 +695,7 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
 
     if (!v11)
     {
-      self->_effectiveWindowControlsLayoutMargin = a3->margin;
+      self->_effectiveWindowControlsLayoutMargin = layout->margin;
     }
 
     v12 = style;
@@ -709,32 +709,32 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(SBTopAffordanceViewController *)self windowControlsView];
+    windowControlsView = [(SBTopAffordanceViewController *)self windowControlsView];
   }
 
   else
   {
-    v3 = self->_dotsView;
+    windowControlsView = self->_dotsView;
   }
 
-  return v3;
+  return windowControlsView;
 }
 
-- (BOOL)_dismissIfNeededWithLocation:(CGPoint)a3 window:(id)a4
+- (BOOL)_dismissIfNeededWithLocation:(CGPoint)location window:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  windowCopy = window;
   LODWORD(v8) = [(SWKWindowControlsViewController *)self->_windowControlsViewController isPresentingMenu];
   if ([(SBTopAffordanceViewController *)self isExpanded]|| v8)
   {
-    v9 = [(SBTopAffordanceViewController *)self view];
-    v10 = [v7 screen];
-    v11 = [v10 fixedCoordinateSpace];
+    view = [(SBTopAffordanceViewController *)self view];
+    screen = [windowCopy screen];
+    fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-    [v7 convertPoint:v11 toCoordinateSpace:{x, y}];
-    [v9 convertPoint:v11 fromCoordinateSpace:?];
-    v12 = [v9 hitTest:0 withEvent:?];
+    [windowCopy convertPoint:fixedCoordinateSpace toCoordinateSpace:{x, y}];
+    [view convertPoint:fixedCoordinateSpace fromCoordinateSpace:?];
+    v12 = [view hitTest:0 withEvent:?];
 
     if (v12)
     {
@@ -759,81 +759,81 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
   return v8;
 }
 
-- (BOOL)transientUIHandledTouch:(id)a3 withSystemGestureRecognizer:(id)a4
+- (BOOL)transientUIHandledTouch:(id)touch withSystemGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v6 = [v5 view];
-  [v5 locationInView:v6];
+  touchCopy = touch;
+  view = [touchCopy view];
+  [touchCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v5 window];
-  v12 = [v5 view];
-  [v11 convertPoint:v12 fromView:{v8, v10}];
+  window = [touchCopy window];
+  view2 = [touchCopy view];
+  [window convertPoint:view2 fromView:{v8, v10}];
   v14 = v13;
   v16 = v15;
 
-  v17 = [v5 window];
+  window2 = [touchCopy window];
 
-  LOBYTE(self) = [(SBTopAffordanceViewController *)self _dismissIfNeededWithLocation:v17 window:v14, v16];
+  LOBYTE(self) = [(SBTopAffordanceViewController *)self _dismissIfNeededWithLocation:window2 window:v14, v16];
   return self;
 }
 
-- (void)transientUI:(id)a3 wasIndirectPannedToDismissFromGestureRecognizer:(id)a4
+- (void)transientUI:(id)i wasIndirectPannedToDismissFromGestureRecognizer:(id)recognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 view];
-  [v6 locationInView:v8];
+  recognizerCopy = recognizer;
+  iCopy = i;
+  view = [recognizerCopy view];
+  [recognizerCopy locationInView:view];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v7 window];
-  v14 = [v6 view];
+  window = [iCopy window];
+  view2 = [recognizerCopy view];
 
-  [v13 convertPoint:v14 fromView:{v10, v12}];
+  [window convertPoint:view2 fromView:{v10, v12}];
   v16 = v15;
   v18 = v17;
 
-  v19 = [v7 window];
+  window2 = [iCopy window];
 
-  [(SBTopAffordanceViewController *)self _dismissIfNeededWithLocation:v19 window:v16, v18];
+  [(SBTopAffordanceViewController *)self _dismissIfNeededWithLocation:window2 window:v16, v18];
 }
 
-- (void)affordancePresenceController:(id)a3 didChangeToPresence:(int64_t)a4
+- (void)affordancePresenceController:(id)controller didChangeToPresence:(int64_t)presence
 {
   v5 = 0.0;
-  if (!a4)
+  if (!presence)
   {
     v5 = 1.0;
   }
 
-  [(SBTopAffordanceDotsView *)self->_dotsView setAlpha:a3, v5];
+  [(SBTopAffordanceDotsView *)self->_dotsView setAlpha:controller, v5];
   margin = self->_windowControlsLayout.margin;
   v7[0] = *&self->_windowControlsLayout.style;
   v7[1] = margin;
   [(SBTopAffordanceViewController *)self _updateWindowControlsLayoutAnimated:1 previousLayout:v7];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = SBTopAffordanceViewController;
-  v4 = a3;
-  [(SBTopAffordanceViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SBTopAffordanceViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(SBTopAffordanceViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(SBTopAffordanceViewController *)self _updateStyleForOverrideUserInterfaceStyle];
   }
 }
 
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level
 {
-  if (a4 == 2)
+  if (level == 2)
   {
     v4 = 2;
   }
@@ -846,15 +846,15 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
   [(SBTopAffordanceViewController *)self setOverrideUserInterfaceStyle:v4];
 }
 
-- (void)updateWindowControlsLayout:(SBWindowControlsLayout *)a3
+- (void)updateWindowControlsLayout:(SBWindowControlsLayout *)layout
 {
-  margin = a3->margin;
-  v4[0] = *&a3->style;
+  margin = layout->margin;
+  v4[0] = *&layout->style;
   v4[1] = margin;
   [(SBTopAffordanceViewController *)self setWindowControlsLayout:v4];
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
   margin = self->_windowControlsLayout.margin;
   v5[0] = *&self->_windowControlsLayout.style;
@@ -862,9 +862,9 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
   [(SBTopAffordanceViewController *)self _updateWindowControlsLayoutAnimated:1 previousLayout:v5];
 }
 
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
-  if ([a4 ui_containsChangesToSceneSafeAreaSettings])
+  if ([diff ui_containsChangesToSceneSafeAreaSettings])
   {
     margin = self->_windowControlsLayout.margin;
     v7[0] = *&self->_windowControlsLayout.style;
@@ -873,24 +873,24 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
   }
 }
 
-- (void)_requestPerformShortcutActionWithType:(int64_t)a3
+- (void)_requestPerformShortcutActionWithType:(int64_t)type
 {
   v14[2] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:a3];
+  [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:type];
 
   v13[0] = *MEMORY[0x277D67690];
-  v6 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v7 = [v6 bundleIdentifier];
-  v14[0] = v7;
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
+  v14[0] = bundleIdentifier;
   v13[1] = *MEMORY[0x277D67698];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v14[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v10 = MEMORY[0x277D65DD0];
   v11 = v9;
-  v12 = [v10 sharedInstance];
-  [v12 emitEvent:50 withPayload:v11];
+  sharedInstance = [v10 sharedInstance];
+  [sharedInstance emitEvent:50 withPayload:v11];
 }
 
 - (id)_makeLumaTrackingView
@@ -916,9 +916,9 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
   [v5 topAffordanceHitTestExtendRight];
   [(SBTopAffordanceDotsView *)v4 setHitTestEdgeInsets:v7, v9, v11, -v12];
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v15 = [v14 bundleIdentifier];
-  v16 = [v13 stringWithFormat:@"top-affordance:%@", v15];
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
+  v16 = [v13 stringWithFormat:@"top-affordance:%@", bundleIdentifier];
   [(SBTopAffordanceDotsView *)v4 setAccessibilityIdentifier:v16];
 
   [(SBTopAffordanceDotsView *)v4 setHidden:self->_hidden];
@@ -931,9 +931,9 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
 - (id)_windowControlsAccessibilityIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v2 stringWithFormat:@"window-controls:%@", v4];
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
+  v5 = [v2 stringWithFormat:@"window-controls:%@", bundleIdentifier];
 
   return v5;
 }
@@ -954,25 +954,25 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
   return v2;
 }
 
-- (void)updateTopAffordanceContextMenuWithOptions:(int64_t)a3 selectedActionType:(int64_t)a4 layout:(SBWindowControlsLayout *)a5 hidden:(BOOL)a6 interfaceOrientation:(int64_t)a7
+- (void)updateTopAffordanceContextMenuWithOptions:(int64_t)options selectedActionType:(int64_t)type layout:(SBWindowControlsLayout *)layout hidden:(BOOL)hidden interfaceOrientation:(int64_t)orientation
 {
-  v176 = a6;
+  hiddenCopy = hidden;
   v227[2] = *MEMORY[0x277D85DE8];
-  margin = a5->margin;
-  location = *&a5->style;
+  margin = layout->margin;
+  location = *&layout->style;
   v225 = margin;
   [(SBTopAffordanceViewController *)self setWindowControlsLayout:&location];
-  if (self->_optionsMask == a3 && self->_interfaceOrientation == a7 && self->_selectedActionType == a4)
+  if (self->_optionsMask == options && self->_interfaceOrientation == orientation && self->_selectedActionType == type)
   {
     goto LABEL_135;
   }
 
   objc_initWeak(&location, self);
-  v180 = [MEMORY[0x277CBEB18] array];
-  v179 = [MEMORY[0x277CBEB18] array];
-  if ((a3 & 2) != 0)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  if ((options & 2) != 0)
   {
-    v10 = [SBTopAffordanceViewController imageForAction:2 interfaceOrientation:a7];
+    v10 = [SBTopAffordanceViewController imageForAction:2 interfaceOrientation:orientation];
     v11 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_MAXIMIZATION_ZOOM"];
     maximizationZoomAction = self->_maximizationZoomAction;
     if (maximizationZoomAction)
@@ -997,18 +997,18 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
       objc_destroyWeak(&v223);
     }
 
-    [v180 addObject:self->_maximizationZoomAction];
+    [array addObject:self->_maximizationZoomAction];
   }
 
   else
   {
-    if ((a3 & 4) == 0)
+    if ((options & 4) == 0)
     {
       v10 = 0;
       goto LABEL_16;
     }
 
-    v10 = [SBTopAffordanceViewController imageForAction:4 interfaceOrientation:a7];
+    v10 = [SBTopAffordanceViewController imageForAction:4 interfaceOrientation:orientation];
     v11 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_MAXIMIZATION_UNZOOM"];
     maximizationUnzoomAction = self->_maximizationUnzoomAction;
     if (maximizationUnzoomAction)
@@ -1033,18 +1033,18 @@ uint64_t __48__SBTopAffordanceViewController_setHighlighted___block_invoke(uint6
       objc_destroyWeak(&v221);
     }
 
-    [v180 addObject:self->_maximizationUnzoomAction];
+    [array addObject:self->_maximizationUnzoomAction];
   }
 
 LABEL_16:
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
     addToSetAction = self->_addToSetAction;
     if (!addToSetAction)
     {
       v21 = MEMORY[0x277D750C8];
       v22 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_ADD_TO_SET"];
-      v23 = [SBTopAffordanceViewController imageForAction:8 interfaceOrientation:a7];
+      v23 = [SBTopAffordanceViewController imageForAction:8 interfaceOrientation:orientation];
       v218[0] = MEMORY[0x277D85DD0];
       v218[1] = 3221225472;
       v218[2] = __129__SBTopAffordanceViewController_updateTopAffordanceContextMenuWithOptions_selectedActionType_layout_hidden_interfaceOrientation___block_invoke_3;
@@ -1059,17 +1059,17 @@ LABEL_16:
       addToSetAction = self->_addToSetAction;
     }
 
-    [v180 addObject:addToSetAction];
+    [array addObject:addToSetAction];
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((options & 0x10) != 0)
   {
     removeFromSetAction = self->_removeFromSetAction;
     if (!removeFromSetAction)
     {
       v27 = MEMORY[0x277D750C8];
       v28 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_REMOVE_FROM_SET"];
-      v29 = [SBTopAffordanceViewController imageForAction:16 interfaceOrientation:a7];
+      v29 = [SBTopAffordanceViewController imageForAction:16 interfaceOrientation:orientation];
       v216[0] = MEMORY[0x277D85DD0];
       v216[1] = 3221225472;
       v216[2] = __129__SBTopAffordanceViewController_updateTopAffordanceContextMenuWithOptions_selectedActionType_layout_hidden_interfaceOrientation___block_invoke_4;
@@ -1084,12 +1084,12 @@ LABEL_16:
       removeFromSetAction = self->_removeFromSetAction;
     }
 
-    [v180 addObject:removeFromSetAction];
+    [array addObject:removeFromSetAction];
   }
 
-  if (a3 >> 31)
+  if (options >> 31)
   {
-    v32 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:a7];
+    v32 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:orientation];
 
     fullScreenAction = self->_fullScreenAction;
     if (fullScreenAction)
@@ -1114,8 +1114,8 @@ LABEL_16:
       objc_destroyWeak(&v215);
     }
 
-    [v180 addObject:self->_fullScreenAction];
-    v38 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:a7];
+    [array addObject:self->_fullScreenAction];
+    v38 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:orientation];
 
     p_splitViewAction = &self->_splitViewAction;
     splitViewAction = self->_splitViewAction;
@@ -1141,7 +1141,7 @@ LABEL_16:
       objc_destroyWeak(&v213);
     }
 
-    v45 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:a7];
+    v45 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:orientation];
 
     primarySplitAction = self->_primarySplitAction;
     if (primarySplitAction)
@@ -1176,7 +1176,7 @@ LABEL_16:
       objc_destroyWeak(&v211);
     }
 
-    v10 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:a7];
+    v10 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:orientation];
 
     sideSplitAction = self->_sideSplitAction;
     if (sideSplitAction)
@@ -1211,7 +1211,7 @@ LABEL_16:
       objc_destroyWeak(&v209);
     }
 
-    if (a3 < 0xFFFFFFFF80000000)
+    if (options < 0xFFFFFFFF80000000)
     {
       splitViewMenu = self->_splitViewMenu;
       self->_splitViewMenu = 0;
@@ -1221,7 +1221,7 @@ LABEL_16:
     {
       v58 = MEMORY[0x277D75710];
       v59 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_SPLIT_VIEW"];
-      v60 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:a7];
+      v60 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:orientation];
       v61 = self->_sideSplitAction;
       v227[0] = self->_primarySplitAction;
       v227[1] = v61;
@@ -1236,14 +1236,14 @@ LABEL_16:
       [(UIMenu *)self->_splitViewMenu _sb_setSurfacesSelectionState:1];
     }
 
-    [v180 addObject:*p_splitViewAction];
+    [array addObject:*p_splitViewAction];
   }
 
-  if ((a3 & 0x3C001E0) != 0)
+  if ((options & 0x3C001E0) != 0)
   {
-    if ((a3 & 0x20) != 0)
+    if ((options & 0x20) != 0)
     {
-      v67 = [SBTopAffordanceViewController imageForAction:32 interfaceOrientation:a7];
+      v67 = [SBTopAffordanceViewController imageForAction:32 interfaceOrientation:orientation];
 
       tileLeftAction = self->_tileLeftAction;
       if (tileLeftAction)
@@ -1287,9 +1287,9 @@ LABEL_16:
       v67 = v10;
     }
 
-    if ((a3 & 0x40) != 0)
+    if ((options & 0x40) != 0)
     {
-      v75 = [SBTopAffordanceViewController imageForAction:64 interfaceOrientation:a7];
+      v75 = [SBTopAffordanceViewController imageForAction:64 interfaceOrientation:orientation];
 
       tileRightAction = self->_tileRightAction;
       if (tileRightAction)
@@ -1333,9 +1333,9 @@ LABEL_16:
       v75 = v67;
     }
 
-    if ((a3 & 0x80) != 0)
+    if ((options & 0x80) != 0)
     {
-      v83 = [SBTopAffordanceViewController imageForAction:128 interfaceOrientation:a7];
+      v83 = [SBTopAffordanceViewController imageForAction:128 interfaceOrientation:orientation];
 
       tileTopAction = self->_tileTopAction;
       if (tileTopAction)
@@ -1369,9 +1369,9 @@ LABEL_16:
       v83 = v75;
     }
 
-    if ((a3 & 0x100) != 0)
+    if ((options & 0x100) != 0)
     {
-      v10 = [SBTopAffordanceViewController imageForAction:256 interfaceOrientation:a7];
+      v10 = [SBTopAffordanceViewController imageForAction:256 interfaceOrientation:orientation];
 
       tileBottomAction = self->_tileBottomAction;
       if (tileBottomAction)
@@ -1405,11 +1405,11 @@ LABEL_16:
       v10 = v83;
     }
 
-    if ((a3 & 0x3C001E0) == 0x3C001E0)
+    if ((options & 0x3C001E0) == 0x3C001E0)
     {
       v95 = MEMORY[0x277D75710];
       v96 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_TILE_MANUAL"];
-      v97 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:a7];
+      v97 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:orientation];
       v98 = self->_tileRightAction;
       v226[0] = self->_tileLeftAction;
       v226[1] = v98;
@@ -1433,14 +1433,14 @@ LABEL_16:
       self->_tileMenu = 0;
     }
 
-    [v180 addObject:*p_tileMenu];
+    [array addObject:*p_tileMenu];
   }
 
-  if ((a3 & 0xE200) != 0)
+  if ((options & 0xE200) != 0)
   {
-    if ((a3 & 0x200) != 0)
+    if ((options & 0x200) != 0)
     {
-      v106 = [SBTopAffordanceViewController imageForAction:512 interfaceOrientation:a7];
+      v106 = [SBTopAffordanceViewController imageForAction:512 interfaceOrientation:orientation];
 
       arrangeLeftAndRightAction = self->_arrangeLeftAndRightAction;
       if (arrangeLeftAndRightAction)
@@ -1474,9 +1474,9 @@ LABEL_16:
       v106 = v10;
     }
 
-    if ((a3 & 0x2000) != 0)
+    if ((options & 0x2000) != 0)
     {
-      v113 = [SBTopAffordanceViewController imageForAction:0x2000 interfaceOrientation:a7];
+      v113 = [SBTopAffordanceViewController imageForAction:0x2000 interfaceOrientation:orientation];
 
       arrangeGridEvenFourAction = self->_arrangeGridEvenFourAction;
       if (arrangeGridEvenFourAction)
@@ -1510,9 +1510,9 @@ LABEL_16:
       v113 = v106;
     }
 
-    if ((a3 & 0x4000) != 0)
+    if ((options & 0x4000) != 0)
     {
-      v120 = [SBTopAffordanceViewController imageForAction:0x4000 interfaceOrientation:a7];
+      v120 = [SBTopAffordanceViewController imageForAction:0x4000 interfaceOrientation:orientation];
 
       arrangeThirdsAction = self->_arrangeThirdsAction;
       if (arrangeThirdsAction)
@@ -1546,9 +1546,9 @@ LABEL_16:
       v120 = v113;
     }
 
-    if ((a3 & 0x8000) != 0)
+    if ((options & 0x8000) != 0)
     {
-      v10 = [SBTopAffordanceViewController imageForAction:0x8000 interfaceOrientation:a7];
+      v10 = [SBTopAffordanceViewController imageForAction:0x8000 interfaceOrientation:orientation];
 
       arrangeLeftAndQuartersAction = self->_arrangeLeftAndQuartersAction;
       if (arrangeLeftAndQuartersAction)
@@ -1589,19 +1589,19 @@ LABEL_16:
     [v132 bs_safeAddObject:self->_arrangeGridEvenFourAction];
     v133 = MEMORY[0x277D75710];
     v134 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_TILE_AUTO"];
-    v135 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:a7];
+    v135 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:orientation];
     v136 = [v133 menuWithTitle:v134 image:v135 identifier:@"top-affordance-tile-auto-sub-menu" options:32 children:v132];
     arrangeMenu = self->_arrangeMenu;
     self->_arrangeMenu = v136;
 
     [(UIMenu *)self->_arrangeMenu setAccessibilityIdentifier:@"top-affordance-tile-auto-sub-menu"];
     [(UIMenu *)self->_arrangeMenu setPreferredElementSize:1];
-    [v180 addObject:self->_arrangeMenu];
+    [array addObject:self->_arrangeMenu];
   }
 
-  if (a3 >> 31)
+  if (options >> 31)
   {
-    v138 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:a7];
+    v138 = [SBTopAffordanceViewController imageForAction:0xFFFFFFFF80000000 interfaceOrientation:orientation];
 
     v139 = MEMORY[0x277D750C8];
     v140 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_SLIDE_OVER"];
@@ -1617,7 +1617,7 @@ LABEL_16:
 
     [(UIAction *)self->_slideOverAction setAccessibilityIdentifier:@"top-affordance-slide-over-button"];
     [(UIAction *)self->_slideOverAction setImage:v138];
-    [v180 addObject:self->_slideOverAction];
+    [array addObject:self->_slideOverAction];
     objc_destroyWeak(v191);
   }
 
@@ -1626,14 +1626,14 @@ LABEL_16:
     v138 = v10;
   }
 
-  if ((a3 & 0x100000) != 0)
+  if ((options & 0x100000) != 0)
   {
     closeAction = self->_closeAction;
     if (!closeAction)
     {
       v144 = MEMORY[0x277D750C8];
       v145 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_CLOSE"];
-      v146 = [SBTopAffordanceViewController imageForAction:0x100000 interfaceOrientation:a7];
+      v146 = [SBTopAffordanceViewController imageForAction:0x100000 interfaceOrientation:orientation];
       v188[0] = MEMORY[0x277D85DD0];
       v188[1] = 3221225472;
       v188[2] = __129__SBTopAffordanceViewController_updateTopAffordanceContextMenuWithOptions_selectedActionType_layout_hidden_interfaceOrientation___block_invoke_18;
@@ -1657,9 +1657,9 @@ LABEL_16:
     v178 = 0;
   }
 
-  if ((a3 & 0xC0000) != 0)
+  if ((options & 0xC0000) != 0)
   {
-    if ((a3 & 0x40000) != 0)
+    if ((options & 0x40000) != 0)
     {
       v149 = 18;
     }
@@ -1669,7 +1669,7 @@ LABEL_16:
       v149 = 19;
     }
 
-    if ((a3 & 0x40000) != 0)
+    if ((options & 0x40000) != 0)
     {
       v150 = 0x40000;
     }
@@ -1679,10 +1679,10 @@ LABEL_16:
       v150 = 0x80000;
     }
 
-    v151 = [SBTopAffordanceViewController imageForAction:v150 interfaceOrientation:a7];
+    v151 = [SBTopAffordanceViewController imageForAction:v150 interfaceOrientation:orientation];
 
     v152 = @"TOP_AFFORDANCE_MENU_TITLE_MOVE_TO_EXTERNAL_DISPLAY";
-    if ((a3 & 0x40000) == 0)
+    if ((options & 0x40000) == 0)
     {
       v152 = @"TOP_AFFORDANCE_MENU_TITLE_MOVE_TO_MAIN_DISPLAY";
     }
@@ -1703,10 +1703,10 @@ LABEL_16:
     [(UIAction *)self->_moveToDisplayAction setAccessibilityIdentifier:@"top-affordance-move-to-other-display-button"];
     [(UIAction *)self->_moveToDisplayAction setTitle:v154];
     [(UIAction *)self->_moveToDisplayAction setImage:v151];
-    [v180 addObject:self->_moveToDisplayAction];
+    [array addObject:self->_moveToDisplayAction];
     objc_destroyWeak(v187);
 
-    if ((a3 & 0x4000000) == 0)
+    if ((options & 0x4000000) == 0)
     {
       goto LABEL_118;
     }
@@ -1715,7 +1715,7 @@ LABEL_16:
   else
   {
     v151 = v138;
-    if ((a3 & 0x4000000) == 0)
+    if ((options & 0x4000000) == 0)
     {
 LABEL_118:
       enterSlideOverAction = self->_enterSlideOverAction;
@@ -1725,7 +1725,7 @@ LABEL_118:
     }
   }
 
-  v159 = [SBTopAffordanceViewController imageForAction:0x4000000 interfaceOrientation:a7];
+  v159 = [SBTopAffordanceViewController imageForAction:0x4000000 interfaceOrientation:orientation];
 
   enterSlideOverAction = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_ENTER_SLIDE_OVER"];
   v160 = MEMORY[0x277D750C8];
@@ -1742,13 +1742,13 @@ LABEL_118:
   [(UIAction *)self->_enterSlideOverAction setAccessibilityIdentifier:@"top-affordance-enter-slide-over"];
   [(UIAction *)self->_enterSlideOverAction setTitle:enterSlideOverAction];
   [(UIAction *)self->_enterSlideOverAction setImage:v159];
-  [v180 addObject:self->_enterSlideOverAction];
+  [array addObject:self->_enterSlideOverAction];
   objc_destroyWeak(v185);
 LABEL_121:
 
-  if ((a3 & 0x8000000) != 0)
+  if ((options & 0x8000000) != 0)
   {
-    v164 = [SBTopAffordanceViewController imageForAction:0x8000000 interfaceOrientation:a7];
+    v164 = [SBTopAffordanceViewController imageForAction:0x8000000 interfaceOrientation:orientation];
 
     v163 = [(SBTopAffordanceViewController *)self _localizedMenuTitleForKey:@"TOP_AFFORDANCE_MENU_TITLE_EXIT_SLIDE_OVER"];
     v165 = MEMORY[0x277D750C8];
@@ -1765,7 +1765,7 @@ LABEL_121:
     [(UIAction *)self->_exitSlideOverAction setAccessibilityIdentifier:@"top-affordance-exit-slide-over"];
     [(UIAction *)self->_exitSlideOverAction setTitle:v163];
     [(UIAction *)self->_exitSlideOverAction setImage:v164];
-    [v180 addObject:self->_exitSlideOverAction];
+    [array addObject:self->_exitSlideOverAction];
     objc_destroyWeak(v183);
   }
 
@@ -1793,7 +1793,7 @@ LABEL_121:
   [(UIAction *)self->_arrangeLeftAndQuartersAction setState:0];
   [(UIAction *)self->_enterSlideOverAction setState:0];
   [(UIAction *)self->_exitSlideOverAction setState:0];
-  switch(a4)
+  switch(type)
   {
     case '%':
       p_fullScreenAction = &self->_fullScreenAction;
@@ -1810,35 +1810,35 @@ LABEL_131:
   }
 
   p_fullScreenAction = &self->_slideOverAction;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 0x28)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 0x28)
   {
     goto LABEL_131;
   }
 
 LABEL_132:
-  v170 = [MEMORY[0x277D75710] menuWithTitle:&stru_283094718 image:0 identifier:0 options:1 children:v180];
-  [v179 addObject:v170];
+  v170 = [MEMORY[0x277D75710] menuWithTitle:&stru_283094718 image:0 identifier:0 options:1 children:array];
+  [array2 addObject:v170];
   if (v178)
   {
-    [v179 addObject:v178];
+    [array2 addObject:v178];
   }
 
-  v171 = [MEMORY[0x277D75710] menuWithTitle:&stru_283094718 image:0 identifier:@"top-affordance-context-menu" options:1 children:v179];
+  v171 = [MEMORY[0x277D75710] menuWithTitle:&stru_283094718 image:0 identifier:@"top-affordance-context-menu" options:1 children:array2];
   menu = self->_menu;
   self->_menu = v171;
 
   [(SBTopAffordanceDotsView *)self->_dotsView setShowsMenuAsPrimaryAction:1];
   [(SBTopAffordanceDotsView *)self->_dotsView setMenu:self->_menu];
-  [(SWKWindowControlsViewController *)self->_windowControlsViewController setElements:SBWindowControlsElementsFromTopAffordanceOptionsMask(a3)];
-  self->_optionsMask = a3;
-  self->_interfaceOrientation = a7;
-  self->_selectedActionType = a4;
+  [(SWKWindowControlsViewController *)self->_windowControlsViewController setElements:SBWindowControlsElementsFromTopAffordanceOptionsMask(options)];
+  self->_optionsMask = options;
+  self->_interfaceOrientation = orientation;
+  self->_selectedActionType = type;
 
   objc_destroyWeak(&location);
 LABEL_135:
-  if (self->_hidden != v176)
+  if (self->_hidden != hiddenCopy)
   {
-    self->_hidden = v176;
+    self->_hidden = hiddenCopy;
     [(SBTopAffordanceDotsView *)self->_dotsView setHidden:?];
     v173 = self->_windowControlsLayout.margin;
     location = *&self->_windowControlsLayout.style;
@@ -1850,9 +1850,9 @@ LABEL_135:
   {
     if (self->_hidden)
     {
-      v174 = [(SBTopAffordanceViewController *)self dotsView];
-      v175 = [v174 contextMenuInteraction];
-      [v175 dismissMenu];
+      dotsView = [(SBTopAffordanceViewController *)self dotsView];
+      contextMenuInteraction = [dotsView contextMenuInteraction];
+      [contextMenuInteraction dismissMenu];
     }
   }
 }
@@ -2009,43 +2009,43 @@ void __129__SBTopAffordanceViewController_updateTopAffordanceContextMenuWithOpti
 
 - (void)_updateStyleForOverrideUserInterfaceStyle
 {
-  v2 = [(SBTopAffordanceViewController *)self view];
-  [v2 layoutIfNeeded];
+  view = [(SBTopAffordanceViewController *)self view];
+  [view layoutIfNeeded];
 }
 
-- (void)_setSystemPointerInteractionEnabled:(BOOL)a3
+- (void)_setSystemPointerInteractionEnabled:(BOOL)enabled
 {
-  if (self->_isSystemPointerInteractionEnabled != a3)
+  if (self->_isSystemPointerInteractionEnabled != enabled)
   {
-    self->_isSystemPointerInteractionEnabled = a3;
+    self->_isSystemPointerInteractionEnabled = enabled;
     [(SBTopAffordanceDotsView *)self->_dotsView setPointerInteractionEnabled:?];
   }
 }
 
-- (id)_localizedMenuTitleForKey:(id)a3
+- (id)_localizedMenuTitleForKey:(id)key
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
-  v5 = [v3 mainBundle];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_283094718 table:@"SpringBoard"];
+  keyCopy = key;
+  mainBundle = [v3 mainBundle];
+  v6 = [mainBundle localizedStringForKey:keyCopy value:&stru_283094718 table:@"SpringBoard"];
 
   return v6;
 }
 
-- (void)_updateWindowControlsLayoutAnimated:(BOOL)a3 previousLayout:(SBWindowControlsLayout *)a4
+- (void)_updateWindowControlsLayoutAnimated:(BOOL)animated previousLayout:(SBWindowControlsLayout *)layout
 {
-  v5 = a3;
-  v7 = [(SWKWindowControlsViewController *)self->_windowControlsViewController viewIfLoaded];
-  if (v7)
+  animatedCopy = animated;
+  viewIfLoaded = [(SWKWindowControlsViewController *)self->_windowControlsViewController viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v8 = [(SBAffordancePresenceController *)self->_affordancePresenceController currentPresence];
-    v9 = v8;
-    v10 = (a4->style | 4) == 4 || v8 != 0;
-    v11 = (self->_windowControlsLayout.style | 4) == 4 || v8 || self->_hidden;
-    v12 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v12 setDampingRatio:1.0];
-    [v12 setResponse:0.43];
-    if (v5)
+    currentPresence = [(SBAffordancePresenceController *)self->_affordancePresenceController currentPresence];
+    v9 = currentPresence;
+    v10 = (layout->style | 4) == 4 || currentPresence != 0;
+    v11 = (self->_windowControlsLayout.style | 4) == 4 || currentPresence || self->_hidden;
+    initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [initWithDefaultValues setDampingRatio:1.0];
+    [initWithDefaultValues setResponse:0.43];
+    if (animatedCopy)
     {
       if (v9)
       {
@@ -2085,14 +2085,14 @@ void __129__SBTopAffordanceViewController_updateTopAffordanceContextMenuWithOpti
     v21[3] = &unk_2783A8BC8;
     v21[4] = self;
     *&v21[5] = v15;
-    [MEMORY[0x277D75D18] sb_animateWithSettings:v12 mode:v14 animations:v21 completion:0];
+    [MEMORY[0x277D75D18] sb_animateWithSettings:initWithDefaultValues mode:v14 animations:v21 completion:0];
     v16 = 3;
     if (v10 || v11)
     {
       v16 = 4;
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       v17 = v16;
     }
@@ -2108,8 +2108,8 @@ void __129__SBTopAffordanceViewController_updateTopAffordanceContextMenuWithOpti
     v19[2] = __84__SBTopAffordanceViewController__updateWindowControlsLayoutAnimated_previousLayout___block_invoke_2;
     v19[3] = &unk_2783A92D8;
     v19[4] = self;
-    v20 = v7;
-    [v18 sb_animateWithSettings:v12 mode:v17 animations:v19 completion:0];
+    v20 = viewIfLoaded;
+    [v18 sb_animateWithSettings:initWithDefaultValues mode:v17 animations:v19 completion:0];
   }
 }
 
@@ -2168,8 +2168,8 @@ void __84__SBTopAffordanceViewController__updateWindowControlsLayoutAnimated_pre
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D75D38]);
   [v3 setValue:0.0];
-  v4 = [(SBTopAffordanceViewController *)self view];
-  objc_initWeak(&location, v4);
+  view = [(SBTopAffordanceViewController *)self view];
+  objc_initWeak(&location, view);
 
   objc_initWeak(&from, v3);
   v5 = MEMORY[0x277D75D18];
@@ -2210,14 +2210,14 @@ void __63__SBTopAffordanceViewController__createAlphaAnimatableProperty__block_i
   }
 }
 
-- (UIEdgeInsets)_safeAreaEdgeInsetsForSettings:(id)a3
+- (UIEdgeInsets)_safeAreaEdgeInsetsForSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [v3 ui_safeAreaSettings];
-  v5 = [v4 safeAreaEdgeInsetResolver];
-  v6 = [v3 interfaceOrientation];
+  settingsCopy = settings;
+  ui_safeAreaSettings = [settingsCopy ui_safeAreaSettings];
+  safeAreaEdgeInsetResolver = [ui_safeAreaSettings safeAreaEdgeInsetResolver];
+  interfaceOrientation = [settingsCopy interfaceOrientation];
 
-  [v5 safeAreaEdgeInsetsForOrientation:v6];
+  [safeAreaEdgeInsetResolver safeAreaEdgeInsetsForOrientation:interfaceOrientation];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -2234,90 +2234,90 @@ void __63__SBTopAffordanceViewController__createAlphaAnimatableProperty__block_i
   return result;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBTopAffordanceViewController.m" lineNumber:1252 description:@"-setHidden: is unavailable on SBTopAffordanceViewController"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBTopAffordanceViewController.m" lineNumber:1252 description:@"-setHidden: is unavailable on SBTopAffordanceViewController"];
 }
 
-- (void)setHidden:(BOOL)a3 forReason:(id)a4 animated:(BOOL)a5
+- (void)setHidden:(BOOL)hidden forReason:(id)reason animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  reasonCopy = reason;
+  if (hiddenCopy)
   {
-    [(SBTopAffordanceViewController *)self dismissAnimated:v5];
+    [(SBTopAffordanceViewController *)self dismissAnimated:animatedCopy];
   }
 
-  [(SBAffordancePresenceController *)self->_affordancePresenceController setHidden:v6 forReason:v8 animated:v5];
+  [(SBAffordancePresenceController *)self->_affordancePresenceController setHidden:hiddenCopy forReason:reasonCopy animated:animatedCopy];
 }
 
-- (void)topAffordanceDotsViewWillPresentMenu:(id)a3
+- (void)topAffordanceDotsViewWillPresentMenu:(id)menu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained topAffordanceViewControllerWillPresentMenu:self];
 
-  v7 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
-  v5 = [v7 transientUIInteractionManager];
-  [v5 registerParticipantForTapToDismiss:self];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
+  transientUIInteractionManager = [_windowScene transientUIInteractionManager];
+  [transientUIInteractionManager registerParticipantForTapToDismiss:self];
 
-  v6 = [v7 transientUIInteractionManager];
-  [v6 registerParticipantForIndirectPanToDismiss:self];
+  transientUIInteractionManager2 = [_windowScene transientUIInteractionManager];
+  [transientUIInteractionManager2 registerParticipantForIndirectPanToDismiss:self];
 }
 
-- (void)topAffordanceDotsViewWillDismissMenu:(id)a3
+- (void)topAffordanceDotsViewWillDismissMenu:(id)menu
 {
-  v6 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
-  v4 = [v6 transientUIInteractionManager];
-  [v4 unregisterParticipantForTapToDismiss:self];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
+  transientUIInteractionManager = [_windowScene transientUIInteractionManager];
+  [transientUIInteractionManager unregisterParticipantForTapToDismiss:self];
 
-  v5 = [v6 transientUIInteractionManager];
-  [v5 unregisterParticipantForIndirectPanToDismiss:self];
+  transientUIInteractionManager2 = [_windowScene transientUIInteractionManager];
+  [transientUIInteractionManager2 unregisterParticipantForIndirectPanToDismiss:self];
 }
 
-- (void)windowControlsViewController:(id)a3 didRequestAction:(unint64_t)a4
+- (void)windowControlsViewController:(id)controller didRequestAction:(unint64_t)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (a4 <= 3)
+  if (action <= 3)
   {
     v7 = WeakRetained;
-    [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:qword_21F8A8758[a4]];
+    [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:qword_21F8A8758[action]];
     _SBWindowControlsAnalyticsLogAction();
     WeakRetained = v7;
   }
 }
 
-- (void)windowControlsViewController:(id)a3 didRequestTileToPosition:(unint64_t)a4
+- (void)windowControlsViewController:(id)controller didRequestTileToPosition:(unint64_t)position
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (a4 <= 3)
+  if (position <= 3)
   {
     v7 = WeakRetained;
-    [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:a4 + 5];
+    [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:position + 5];
     _SBWindowControlsAnalyticsLogAction();
     WeakRetained = v7;
   }
 }
 
-- (void)windowControlsViewController:(id)a3 didRequestArrangeWithConfiguration:(unint64_t)a4
+- (void)windowControlsViewController:(id)controller didRequestArrangeWithConfiguration:(unint64_t)configuration
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (a4 <= 4)
+  if (configuration <= 4)
   {
     v7 = WeakRetained;
-    [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:qword_21F8A8798[a4]];
+    [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:qword_21F8A8798[configuration]];
     _SBWindowControlsAnalyticsLogAction();
     WeakRetained = v7;
   }
 }
 
-- (void)windowControlsViewController:(id)a3 didRequestMoveToDisplay:(unint64_t)a4
+- (void)windowControlsViewController:(id)controller didRequestMoveToDisplay:(unint64_t)display
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (a4)
+  if (display)
   {
-    if (a4 != 1)
+    if (display != 1)
     {
       goto LABEL_6;
     }
@@ -2337,7 +2337,7 @@ void __63__SBTopAffordanceViewController__createAlphaAnimatableProperty__block_i
 LABEL_6:
 }
 
-- (void)windowControlsViewControllerDidRequestAddAnotherWindow:(id)a3
+- (void)windowControlsViewControllerDidRequestAddAnotherWindow:(id)window
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained topAffordanceViewController:self requestsPerformShortcutActionWithType:3];
@@ -2345,32 +2345,32 @@ LABEL_6:
   _SBWindowControlsAnalyticsLogAction();
 }
 
-- (void)windowControlsViewControllerWillExpand:(id)a3
+- (void)windowControlsViewControllerWillExpand:(id)expand
 {
-  v6 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
-  v4 = [v6 transientUIInteractionManager];
-  [v4 registerParticipantForTapToDismiss:self];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
+  transientUIInteractionManager = [_windowScene transientUIInteractionManager];
+  [transientUIInteractionManager registerParticipantForTapToDismiss:self];
 
-  v5 = [v6 transientUIInteractionManager];
-  [v5 registerParticipantForIndirectPanToDismiss:self];
+  transientUIInteractionManager2 = [_windowScene transientUIInteractionManager];
+  [transientUIInteractionManager2 registerParticipantForIndirectPanToDismiss:self];
 }
 
-- (void)windowControlsViewControllerWillCollapse:(id)a3
+- (void)windowControlsViewControllerWillCollapse:(id)collapse
 {
-  v6 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
-  v4 = [v6 transientUIInteractionManager];
-  [v4 unregisterParticipantForTapToDismiss:self];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle _windowScene];
+  transientUIInteractionManager = [_windowScene transientUIInteractionManager];
+  [transientUIInteractionManager unregisterParticipantForTapToDismiss:self];
 
-  v5 = [v6 transientUIInteractionManager];
-  [v5 unregisterParticipantForIndirectPanToDismiss:self];
+  transientUIInteractionManager2 = [_windowScene transientUIInteractionManager];
+  [transientUIInteractionManager2 unregisterParticipantForIndirectPanToDismiss:self];
 }
 
-- (void)windowControlsViewController:(id)a3 didRequestSlideOverAction:(unint64_t)a4
+- (void)windowControlsViewController:(id)controller didRequestSlideOverAction:(unint64_t)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (a4)
+  if (action)
   {
-    if (a4 != 1)
+    if (action != 1)
     {
       goto LABEL_6;
     }

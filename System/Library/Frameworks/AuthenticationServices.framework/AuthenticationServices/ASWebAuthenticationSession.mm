@@ -1,18 +1,18 @@
 @interface ASWebAuthenticationSession
-+ (void)handleSSOExtensionIdentifier:(id *)a3;
-- (BOOL)_areAdditionalHeaderFieldsValid:(id)a3;
-- (BOOL)_isForbiddenHeaderFieldName:(id)a3 value:(id)a4;
-- (BOOL)_validateAdditionalHeaderFieldsDryRun:(BOOL)a3;
-- (id)presentationAnchorForAuthorizationController:(id)a3;
++ (void)handleSSOExtensionIdentifier:(id *)identifier;
+- (BOOL)_areAdditionalHeaderFieldsValid:(id)valid;
+- (BOOL)_isForbiddenHeaderFieldName:(id)name value:(id)value;
+- (BOOL)_validateAdditionalHeaderFieldsDryRun:(BOOL)run;
+- (id)presentationAnchorForAuthorizationController:(id)controller;
 - (id)presentationContextProvider;
-- (void)_cancelWithError:(id)a3;
+- (void)_cancelWithError:(id)error;
 - (void)_invalidate;
-- (void)_setNetworkAttributionApplicationBundleIdentifier:(id)a3;
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4;
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4;
+- (void)_setNetworkAttributionApplicationBundleIdentifier:(id)identifier;
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization;
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error;
 - (void)cancel;
 - (void)setPrefersEphemeralWebBrowserSession:(BOOL)prefersEphemeralWebBrowserSession;
-- (void)setProxiedAssociatedDomains:(id)a3;
+- (void)setProxiedAssociatedDomains:(id)domains;
 @end
 
 @implementation ASWebAuthenticationSession
@@ -77,21 +77,21 @@ void __102__ASWebAuthenticationSession_initWithURL_callback_usingEphemeralSessio
   }
 }
 
-- (void)setProxiedAssociatedDomains:(id)a3
+- (void)setProxiedAssociatedDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   if (([(SFAuthenticationSession *)self->_authenticationSession isSessionStarted]& 1) == 0)
   {
-    [(SFAuthenticationSession *)self->_authenticationSession setProxiedAssociatedDomains:v4];
+    [(SFAuthenticationSession *)self->_authenticationSession setProxiedAssociatedDomains:domainsCopy];
   }
 }
 
-- (void)_setNetworkAttributionApplicationBundleIdentifier:(id)a3
+- (void)_setNetworkAttributionApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (([(SFAuthenticationSession *)self->_authenticationSession isSessionStarted]& 1) == 0)
   {
-    [(SFAuthenticationSession *)self->_authenticationSession _setNetworkAttributionApplicationBundleIdentifier:v4];
+    [(SFAuthenticationSession *)self->_authenticationSession _setNetworkAttributionApplicationBundleIdentifier:identifierCopy];
   }
 }
 
@@ -102,23 +102,23 @@ void __102__ASWebAuthenticationSession_initWithURL_callback_usingEphemeralSessio
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_cancelWithError:(id)a3
+- (void)_cancelWithError:(id)error
 {
   (*(self->_originalCompletionHandler + 2))();
   originalCompletionHandler = self->_originalCompletionHandler;
   self->_originalCompletionHandler = 0;
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   ssoProvider = self->_ssoProvider;
   self->_ssoProvider = 0;
 
   authorizationController = self->_authorizationController;
   self->_authorizationController = 0;
 
-  if ([v7 safari_matchesErrorDomain:@"com.apple.AuthenticationServices.AuthorizationError" andCode:1003])
+  if ([errorCopy safari_matchesErrorDomain:@"com.apple.AuthenticationServices.AuthorizationError" andCode:1003])
   {
     [(ASWebAuthenticationSession *)self performSelectorOnMainThread:sel__startDryRun_ withObject:MEMORY[0x1E695E110] waitUntilDone:0];
   }
@@ -130,24 +130,24 @@ void __102__ASWebAuthenticationSession_initWithURL_callback_usingEphemeralSessio
   }
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization
 {
-  v13 = a4;
+  authorizationCopy = authorization;
   ssoProvider = self->_ssoProvider;
   self->_ssoProvider = 0;
 
   authorizationController = self->_authorizationController;
   self->_authorizationController = 0;
 
-  v7 = [v13 credential];
+  credential = [authorizationCopy credential];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v13 credential];
-    v10 = [v9 authenticatedResponse];
-    v11 = [v10 URL];
+    credential2 = [authorizationCopy credential];
+    authenticatedResponse = [credential2 authenticatedResponse];
+    v11 = [authenticatedResponse URL];
 
     if ([(ASWebAuthenticationSessionCallback *)self->_callback matchesURL:v11])
     {
@@ -163,14 +163,14 @@ void __102__ASWebAuthenticationSession_initWithURL_callback_usingEphemeralSessio
 
   else
   {
-    v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1002 userInfo:0];
+    credential2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AuthenticationServices.AuthorizationError" code:1002 userInfo:0];
     (*(self->_originalCompletionHandler + 2))();
   }
 
   [(ASWebAuthenticationSession *)self _invalidate];
 }
 
-- (id)presentationAnchorForAuthorizationController:(id)a3
+- (id)presentationAnchorForAuthorizationController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationContextProvider);
   v5 = [WeakRetained presentationAnchorForWebAuthenticationSession:self];
@@ -178,17 +178,17 @@ void __102__ASWebAuthenticationSession_initWithURL_callback_usingEphemeralSessio
   return v5;
 }
 
-+ (void)handleSSOExtensionIdentifier:(id *)a3
++ (void)handleSSOExtensionIdentifier:(id *)identifier
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__ASWebAuthenticationSession_handleSSOExtensionIdentifier___block_invoke;
   v6[3] = &__block_descriptor_64_e20_v20__0B8__NSError_12l;
-  v3 = *&a3->var0[4];
-  v7 = *a3->var0;
+  v3 = *&identifier->var0[4];
+  v7 = *identifier->var0;
   v8 = v3;
-  v4 = *&a3->var0[4];
-  v5[0] = *a3->var0;
+  v4 = *&identifier->var0[4];
+  v5[0] = *identifier->var0;
   v5[1] = v4;
   [MEMORY[0x1E698B128] isExtensionProcessWithAuditToken:v5 completion:v6];
 }
@@ -223,11 +223,11 @@ void __59__ASWebAuthenticationSession_handleSSOExtensionIdentifier___block_invok
   return WeakRetained;
 }
 
-- (BOOL)_validateAdditionalHeaderFieldsDryRun:(BOOL)a3
+- (BOOL)_validateAdditionalHeaderFieldsDryRun:(BOOL)run
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = [(ASWebAuthenticationSession *)self additionalHeaderFields];
-  v6 = [(ASWebAuthenticationSession *)self _areAdditionalHeaderFieldsValid:v5];
+  additionalHeaderFields = [(ASWebAuthenticationSession *)self additionalHeaderFields];
+  v6 = [(ASWebAuthenticationSession *)self _areAdditionalHeaderFieldsValid:additionalHeaderFields];
 
   if (!v6)
   {
@@ -241,13 +241,13 @@ void __59__ASWebAuthenticationSession_handleSSOExtensionIdentifier___block_invok
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       [(ASWebAuthenticationSession(Shared) *)v9 _validateAdditionalHeaderFieldsDryRun:v10];
-      if (a3)
+      if (run)
       {
         goto LABEL_5;
       }
     }
 
-    else if (a3)
+    else if (run)
     {
 LABEL_5:
 
@@ -263,17 +263,17 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_areAdditionalHeaderFieldsValid:(id)a3
+- (BOOL)_areAdditionalHeaderFieldsValid:(id)valid
 {
-  v4 = a3;
-  if ([v4 count])
+  validCopy = valid;
+  if ([validCopy count])
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __70__ASWebAuthenticationSession_Shared___areAdditionalHeaderFieldsValid___block_invoke;
     v7[3] = &unk_1E7AF8E88;
     v7[4] = self;
-    v5 = [v4 safari_containsEntryPassingTest:v7] ^ 1;
+    v5 = [validCopy safari_containsEntryPassingTest:v7] ^ 1;
   }
 
   else
@@ -284,10 +284,10 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_isForbiddenHeaderFieldName:(id)a3 value:(id)a4
+- (BOOL)_isForbiddenHeaderFieldName:(id)name value:(id)value
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -306,7 +306,7 @@ LABEL_3:
         objc_enumerationMutation(&unk_1F28F0530);
       }
 
-      if ([v4 safari_isCaseInsensitiveEqualToString:*(*(&v20 + 1) + 8 * v8)])
+      if ([nameCopy safari_isCaseInsensitiveEqualToString:*(*(&v20 + 1) + 8 * v8)])
       {
         break;
       }
@@ -349,7 +349,7 @@ LABEL_11:
         objc_enumerationMutation(&unk_1F28F0548);
       }
 
-      if ([v4 safari_hasCaseInsensitivePrefix:*(*(&v16 + 1) + 8 * v12)])
+      if ([nameCopy safari_hasCaseInsensitivePrefix:*(*(&v16 + 1) + 8 * v12)])
       {
         break;
       }

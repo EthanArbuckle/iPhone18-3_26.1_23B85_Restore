@@ -1,49 +1,49 @@
 @interface EFSQLColumnValueSource
-- (EFSQLColumnValueSource)initWithColumn:(id)a3 sourceTableAlias:(id)a4 columnAlias:(id)a5;
-- (id)comparisonExpressionForValue:(id)a3 predicateOperator:(unint64_t)a4;
+- (EFSQLColumnValueSource)initWithColumn:(id)column sourceTableAlias:(id)alias columnAlias:(id)columnAlias;
+- (id)comparisonExpressionForValue:(id)value predicateOperator:(unint64_t)operator;
 @end
 
 @implementation EFSQLColumnValueSource
 
-- (EFSQLColumnValueSource)initWithColumn:(id)a3 sourceTableAlias:(id)a4 columnAlias:(id)a5
+- (EFSQLColumnValueSource)initWithColumn:(id)column sourceTableAlias:(id)alias columnAlias:(id)columnAlias
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  columnCopy = column;
+  aliasCopy = alias;
+  columnAliasCopy = columnAlias;
+  if (aliasCopy)
   {
-    v11 = v9;
+    name = aliasCopy;
   }
 
   else
   {
-    v12 = [v8 table];
-    v11 = [v12 name];
+    table = [columnCopy table];
+    name = [table name];
   }
 
-  v13 = [v8 table];
-  v14 = [v13 name];
+  table2 = [columnCopy table];
+  name2 = [table2 name];
   v21.receiver = self;
   v21.super_class = EFSQLColumnValueSource;
-  v15 = [(EFSQLValueSource *)&v21 initWithTableName:v14 selectResultAlias:v10];
+  v15 = [(EFSQLValueSource *)&v21 initWithTableName:name2 selectResultAlias:columnAliasCopy];
 
   if (v15)
   {
     v16 = [EFSQLColumnExpression alloc];
-    v17 = [v8 name];
-    v18 = [(EFSQLColumnExpression *)v16 initWithName:v17 table:v11];
+    name3 = [columnCopy name];
+    v18 = [(EFSQLColumnExpression *)v16 initWithName:name3 table:name];
     columnExpression = v15->_columnExpression;
     v15->_columnExpression = v18;
 
-    objc_storeStrong(&v15->_columnAlias, a5);
+    objc_storeStrong(&v15->_columnAlias, columnAlias);
   }
 
   return v15;
 }
 
-- (id)comparisonExpressionForValue:(id)a3 predicateOperator:(unint64_t)a4
+- (id)comparisonExpressionForValue:(id)value predicateOperator:(unint64_t)operator
 {
-  v4 = [(EFSQLColumnExpression *)self->_columnExpression expressionForPredicateOperatorType:a4 constantValue:a3];
+  v4 = [(EFSQLColumnExpression *)self->_columnExpression expressionForPredicateOperatorType:operator constantValue:value];
 
   return v4;
 }

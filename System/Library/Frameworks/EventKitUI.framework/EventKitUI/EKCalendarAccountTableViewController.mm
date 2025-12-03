@@ -1,31 +1,31 @@
 @interface EKCalendarAccountTableViewController
 - (EKCalendar)calendar;
-- (EKCalendarAccountTableViewController)initWithCalendar:(id)a3 andStore:(id)a4;
+- (EKCalendarAccountTableViewController)initWithCalendar:(id)calendar andStore:(id)store;
 - (EKCalendarAccountTableViewControllerDelegate)delegate;
 - (EKEventStore)eventStore;
 - (NSMutableArray)accounts;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)loadView;
 - (void)resetBackgroundColor;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation EKCalendarAccountTableViewController
 
-- (EKCalendarAccountTableViewController)initWithCalendar:(id)a3 andStore:(id)a4
+- (EKCalendarAccountTableViewController)initWithCalendar:(id)calendar andStore:(id)store
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = EKCalendarAccountTableViewController;
   v8 = [(EKCalendarAccountTableViewController *)&v16 initWithStyle:2];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_eventStore, v7);
-    objc_storeWeak(&v9->_calendar, v6);
+    objc_storeWeak(&v8->_eventStore, storeCopy);
+    objc_storeWeak(&v9->_calendar, calendarCopy);
     objc_initWeak(&location, v9);
     v17[0] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -58,17 +58,17 @@ void __66__EKCalendarAccountTableViewController_initWithCalendar_andStore___bloc
   v4 = [v3 localizedStringForKey:@"Accounts - Account Picker" value:@"Accounts" table:0];
   [(EKCalendarAccountTableViewController *)self setTitle:v4];
 
-  v5 = [(EKCalendarAccountTableViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"EKCalendarAccountCell"];
+  tableView = [(EKCalendarAccountTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"EKCalendarAccountCell"];
 
   [(EKCalendarAccountTableViewController *)self resetBackgroundColor];
 }
 
 - (void)resetBackgroundColor
 {
-  v3 = [(UIViewController *)self isPresentedInsidePopover];
-  v5 = [(EKCalendarAccountTableViewController *)self tableView];
-  if (v3)
+  isPresentedInsidePopover = [(UIViewController *)self isPresentedInsidePopover];
+  tableView = [(EKCalendarAccountTableViewController *)self tableView];
+  if (isPresentedInsidePopover)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -78,7 +78,7 @@ void __66__EKCalendarAccountTableViewController_initWithCalendar_andStore___bloc
     [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
   v4 = ;
-  [v5 setBackgroundColor:v4];
+  [tableView setBackgroundColor:v4];
 }
 
 - (NSMutableArray)accounts
@@ -93,9 +93,9 @@ void __66__EKCalendarAccountTableViewController_initWithCalendar_andStore___bloc
     v22 = 0u;
     v23 = 0u;
     WeakRetained = objc_loadWeakRetained(&self->_eventStore);
-    v6 = [WeakRetained sources];
+    sources = [WeakRetained sources];
 
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v7 = [sources countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (!v7)
     {
       goto LABEL_20;
@@ -110,22 +110,22 @@ void __66__EKCalendarAccountTableViewController_initWithCalendar_andStore___bloc
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sources);
         }
 
         v11 = *(*(&v20 + 1) + 8 * v10);
         v12 = objc_loadWeakRetained(&self->_calendar);
-        v13 = [v12 isSubscribed];
+        isSubscribed = [v12 isSubscribed];
 
-        if (v13)
+        if (isSubscribed)
         {
           if ([v11 isDelegate])
           {
             goto LABEL_15;
           }
 
-          v14 = [v11 constraints];
-          if ([v14 supportsSubscribedCalendars])
+          constraints = [v11 constraints];
+          if ([constraints supportsSubscribedCalendars])
           {
 
 LABEL_14:
@@ -133,9 +133,9 @@ LABEL_14:
             goto LABEL_15;
           }
 
-          v15 = [v11 sourceType];
+          sourceType = [v11 sourceType];
 
-          if (v15 == 4)
+          if (sourceType == 4)
           {
             goto LABEL_14;
           }
@@ -151,7 +151,7 @@ LABEL_15:
       }
 
       while (v8 != v10);
-      v16 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v16 = [sources countByEnumeratingWithState:&v20 objects:v24 count:16];
       v8 = v16;
       if (!v16)
       {
@@ -170,32 +170,32 @@ LABEL_20:
   return v3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(EKCalendarAccountTableViewController *)self accounts:a3];
+  v4 = [(EKCalendarAccountTableViewController *)self accounts:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"EKCalendarAccountCell" forIndexPath:v6];
-  v8 = [(EKCalendarAccountTableViewController *)self accounts];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"EKCalendarAccountCell" forIndexPath:pathCopy];
+  accounts = [(EKCalendarAccountTableViewController *)self accounts];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [accounts objectAtIndexedSubscript:v9];
 
   v11 = CalDisplayedTitleForSourceAsCalendarTarget(v10);
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v11];
 
-  v13 = [(EKCalendarAccountTableViewController *)self currentSourceIdentifier];
-  v14 = [v10 sourceIdentifier];
-  LODWORD(v12) = [v13 isEqualToString:v14];
+  currentSourceIdentifier = [(EKCalendarAccountTableViewController *)self currentSourceIdentifier];
+  sourceIdentifier = [v10 sourceIdentifier];
+  LODWORD(textLabel) = [currentSourceIdentifier isEqualToString:sourceIdentifier];
 
-  if (v12)
+  if (textLabel)
   {
     v15 = 3;
   }
@@ -210,13 +210,13 @@ LABEL_20:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(EKCalendarAccountTableViewController *)self accounts];
-  v7 = [v5 row];
+  pathCopy = path;
+  accounts = [(EKCalendarAccountTableViewController *)self accounts];
+  v7 = [pathCopy row];
 
-  v14 = [v6 objectAtIndexedSubscript:v7];
+  v14 = [accounts objectAtIndexedSubscript:v7];
 
   WeakRetained = objc_loadWeakRetained(&self->_calendar);
   [WeakRetained setSource:v14];
@@ -224,19 +224,19 @@ LABEL_20:
   v9 = objc_loadWeakRetained(&self->_calendar);
   [v9 setDisplayOrder:{objc_msgSend(v14, "displayOrderForNewCalendar")}];
 
-  v10 = [v14 sourceIdentifier];
-  [(EKCalendarAccountTableViewController *)self setCurrentSourceIdentifier:v10];
+  sourceIdentifier = [v14 sourceIdentifier];
+  [(EKCalendarAccountTableViewController *)self setCurrentSourceIdentifier:sourceIdentifier];
 
-  v11 = [(EKCalendarAccountTableViewController *)self tableView];
-  [v11 reloadData];
+  tableView = [(EKCalendarAccountTableViewController *)self tableView];
+  [tableView reloadData];
 
-  v12 = [(EKCalendarAccountTableViewController *)self delegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  delegate = [(EKCalendarAccountTableViewController *)self delegate];
+  LOBYTE(accounts) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (accounts)
   {
-    v13 = [(EKCalendarAccountTableViewController *)self delegate];
-    [v13 accountTableViewController:self selectedSourceChanged:v14];
+    delegate2 = [(EKCalendarAccountTableViewController *)self delegate];
+    [delegate2 accountTableViewController:self selectedSourceChanged:v14];
   }
 }
 

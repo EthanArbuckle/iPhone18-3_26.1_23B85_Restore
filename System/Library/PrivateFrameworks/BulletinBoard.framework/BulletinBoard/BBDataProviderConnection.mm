@@ -1,23 +1,23 @@
 @interface BBDataProviderConnection
-- (BBDataProviderConnection)initWithServiceName:(id)a3 onQueue:(id)a4;
-- (id)_addDataProvider:(id)a3 withCompletionHandler:(id)a4;
-- (id)addDataProvider:(id)a3 withCompletionHandler:(id)a4;
+- (BBDataProviderConnection)initWithServiceName:(id)name onQueue:(id)queue;
+- (id)_addDataProvider:(id)provider withCompletionHandler:(id)handler;
+- (id)addDataProvider:(id)provider withCompletionHandler:(id)handler;
 - (void)_invalidate;
-- (void)_queue_setServerProxy:(id)a3;
-- (void)addParentSectionInfo:(id)a3 displayName:(id)a4 icon:(id)a5 universalSectionID:(id)a6;
+- (void)_queue_setServerProxy:(id)proxy;
+- (void)addParentSectionInfo:(id)info displayName:(id)name icon:(id)icon universalSectionID:(id)d;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeDataProviderWithSectionID:(id)a3;
-- (void)setServerProxy:(id)a3;
+- (void)removeDataProviderWithSectionID:(id)d;
+- (void)setServerProxy:(id)proxy;
 @end
 
 @implementation BBDataProviderConnection
 
-- (BBDataProviderConnection)initWithServiceName:(id)a3 onQueue:(id)a4
+- (BBDataProviderConnection)initWithServiceName:(id)name onQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  nameCopy = name;
+  queueCopy = queue;
+  if (!nameCopy)
   {
     [BBDataProviderConnection initWithServiceName:a2 onQueue:self];
   }
@@ -26,10 +26,10 @@
   v10 = v9;
   if (v9)
   {
-    [(BBDataProviderConnection *)v9 setServiceName:v7];
-    if (v8)
+    [(BBDataProviderConnection *)v9 setServiceName:nameCopy];
+    if (queueCopy)
     {
-      v11 = v8;
+      v11 = queueCopy;
       clientCalloutQueue = v10->_clientCalloutQueue;
       v10->_clientCalloutQueue = v11;
     }
@@ -84,31 +84,31 @@
   [(BBDataProviderConnection *)&v4 dealloc];
 }
 
-- (void)setServerProxy:(id)a3
+- (void)setServerProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__BBDataProviderConnection_setServerProxy___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = proxyCopy;
+  v6 = proxyCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_setServerProxy:(id)a3
+- (void)_queue_setServerProxy:(id)proxy
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  proxyCopy = proxy;
   dispatch_assert_queue_V2(self->_queue);
   serverProxy = self->_serverProxy;
-  if (serverProxy != v5)
+  if (serverProxy != proxyCopy)
   {
-    v29 = v5;
+    v29 = proxyCopy;
     v28 = serverProxy != 0;
-    objc_storeStrong(&self->_serverProxy, a3);
+    objc_storeStrong(&self->_serverProxy, proxy);
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
@@ -143,8 +143,8 @@
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v12 = [(NSMutableDictionary *)self->_parentFactoriesBySectionID allValues];
-      v13 = [v12 countByEnumeratingWithState:&v46 objects:v55 count:16];
+      allValues = [(NSMutableDictionary *)self->_parentFactoriesBySectionID allValues];
+      v13 = [allValues countByEnumeratingWithState:&v46 objects:v55 count:16];
       if (v13)
       {
         v14 = *v47;
@@ -154,13 +154,13 @@
           {
             if (*v47 != v14)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(allValues);
             }
 
             [(BBDataProviderConnectionServerProxy *)self->_serverProxy addParentSectionFactory:*(*(&v46 + 1) + 8 * j)];
           }
 
-          v13 = [v12 countByEnumeratingWithState:&v46 objects:v55 count:16];
+          v13 = [allValues countByEnumeratingWithState:&v46 objects:v55 count:16];
         }
 
         while (v13);
@@ -230,12 +230,12 @@
 
       objc_destroyWeak(&from);
       objc_destroyWeak(&location);
-      v5 = v29;
+      proxyCopy = v29;
     }
 
     else
     {
-      v5 = 0;
+      proxyCopy = 0;
       if (serverProxy)
       {
         dispatch_suspend(self->_connectionQueue);
@@ -359,16 +359,16 @@ void __50__BBDataProviderConnection__queue_setServerProxy___block_invoke_4(uint6
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addDataProvider:(id)a3 withCompletionHandler:(id)a4
+- (id)addDataProvider:(id)provider withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__BBDataProviderConnection_addDataProvider_withCompletionHandler___block_invoke;
   v10[3] = &unk_278D2A6C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(BBDataProviderConnection *)self _addDataProvider:a3 withCompletionHandler:v10];
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [(BBDataProviderConnection *)self _addDataProvider:provider withCompletionHandler:v10];
 
   return v8;
 }
@@ -384,10 +384,10 @@ uint64_t __66__BBDataProviderConnection_addDataProvider_withCompletionHandler___
   return result;
 }
 
-- (id)_addDataProvider:(id)a3 withCompletionHandler:(id)a4
+- (id)_addDataProvider:(id)provider withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -399,12 +399,12 @@ uint64_t __66__BBDataProviderConnection_addDataProvider_withCompletionHandler___
   v13[1] = 3221225472;
   v13[2] = __67__BBDataProviderConnection__addDataProvider_withCompletionHandler___block_invoke;
   v13[3] = &unk_278D2A768;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
+  v14 = providerCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
   v17 = &v18;
-  v9 = v7;
-  v10 = v6;
+  v9 = handlerCopy;
+  v10 = providerCopy;
   dispatch_sync(queue, v13);
   v11 = v19[5];
 
@@ -509,26 +509,26 @@ uint64_t __67__BBDataProviderConnection__addDataProvider_withCompletionHandler__
   return result;
 }
 
-- (void)addParentSectionInfo:(id)a3 displayName:(id)a4 icon:(id)a5 universalSectionID:(id)a6
+- (void)addParentSectionInfo:(id)info displayName:(id)name icon:(id)icon universalSectionID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  infoCopy = info;
+  nameCopy = name;
+  iconCopy = icon;
+  dCopy = d;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__BBDataProviderConnection_addParentSectionInfo_displayName_icon_universalSectionID___block_invoke;
   block[3] = &unk_278D2A790;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v24 = self;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = infoCopy;
+  v21 = nameCopy;
+  v22 = iconCopy;
+  v23 = dCopy;
+  selfCopy = self;
+  v15 = dCopy;
+  v16 = iconCopy;
+  v17 = nameCopy;
+  v18 = infoCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -546,17 +546,17 @@ void __85__BBDataProviderConnection_addParentSectionInfo_displayName_icon_univer
   [*(*(a1 + 64) + 32) addParentSectionFactory:v2];
 }
 
-- (void)removeDataProviderWithSectionID:(id)a3
+- (void)removeDataProviderWithSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   connectionQueue = self->_connectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__BBDataProviderConnection_removeDataProviderWithSectionID___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(connectionQueue, v7);
 }
 
@@ -575,8 +575,8 @@ void __60__BBDataProviderConnection_removeDataProviderWithSectionID___block_invo
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMutableDictionary *)self->_dataProvidersBySectionID allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  allKeys = [(NSMutableDictionary *)self->_dataProvidersBySectionID allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -587,7 +587,7 @@ void __60__BBDataProviderConnection_removeDataProviderWithSectionID___block_invo
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -596,7 +596,7 @@ void __60__BBDataProviderConnection_removeDataProviderWithSectionID___block_invo
         [(BBDataProviderConnectionServerProxy *)self->_serverProxy removeDataProviderWithSectionID:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v5);

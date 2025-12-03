@@ -1,6 +1,6 @@
 @interface HDCloudSyncIgnoredErrorsOperation
-- (HDCloudSyncIgnoredErrorsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncIgnoredErrorsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 operation:(id)a5;
+- (HDCloudSyncIgnoredErrorsOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncIgnoredErrorsOperation)initWithConfiguration:(id)configuration cloudState:(id)state operation:(id)operation;
 - (id)description;
 - (void)main;
 - (void)skip;
@@ -8,7 +8,7 @@
 
 @implementation HDCloudSyncIgnoredErrorsOperation
 
-- (HDCloudSyncIgnoredErrorsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncIgnoredErrorsOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -18,16 +18,16 @@
   return 0;
 }
 
-- (HDCloudSyncIgnoredErrorsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 operation:(id)a5
+- (HDCloudSyncIgnoredErrorsOperation)initWithConfiguration:(id)configuration cloudState:(id)state operation:(id)operation
 {
-  v8 = a5;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = HDCloudSyncIgnoredErrorsOperation;
-  v9 = [(HDCloudSyncOperation *)&v12 initWithConfiguration:a3 cloudState:a4];
+  v9 = [(HDCloudSyncOperation *)&v12 initWithConfiguration:configuration cloudState:state];
   v10 = v9;
   if (v9)
   {
-    [(HDCloudSyncIgnoredErrorsOperation *)v9 setOperation:v8];
+    [(HDCloudSyncIgnoredErrorsOperation *)v9 setOperation:operationCopy];
   }
 
   return v10;
@@ -35,42 +35,42 @@
 
 - (void)main
 {
-  v4 = [(HDCloudSyncIgnoredErrorsOperation *)self operation];
-  if (!v4)
+  operation = [(HDCloudSyncIgnoredErrorsOperation *)self operation];
+  if (!operation)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDCloudSyncIgnoredErrorsOperation.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"operation != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncIgnoredErrorsOperation.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"operation != nil"}];
   }
 
-  v5 = [(HDCloudSyncOperation *)self cloudState];
-  [v4 setCloudState:v5];
+  cloudState = [(HDCloudSyncOperation *)self cloudState];
+  [operation setCloudState:cloudState];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __41__HDCloudSyncIgnoredErrorsOperation_main__block_invoke;
   v15[3] = &unk_278613060;
   v15[4] = self;
-  [v4 setOnSuccess:v15];
+  [operation setOnSuccess:v15];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __41__HDCloudSyncIgnoredErrorsOperation_main__block_invoke_2;
   v14[3] = &unk_278613088;
   v14[4] = self;
-  [v4 setOnError:v14];
-  v6 = [v4 progress];
-  v7 = [v6 totalUnitCount];
-  v8 = [(HDCloudSyncOperation *)self progress];
-  [v8 setTotalUnitCount:v7];
+  [operation setOnError:v14];
+  progress = [operation progress];
+  totalUnitCount = [progress totalUnitCount];
+  progress2 = [(HDCloudSyncOperation *)self progress];
+  [progress2 setTotalUnitCount:totalUnitCount];
 
-  v9 = [(HDCloudSyncOperation *)self progress];
-  [v9 setCompletedUnitCount:0];
+  progress3 = [(HDCloudSyncOperation *)self progress];
+  [progress3 setCompletedUnitCount:0];
 
-  v10 = [(HDCloudSyncOperation *)self progress];
-  v11 = [v4 progress];
-  v12 = [v4 progress];
-  [v10 addChild:v11 withPendingUnitCount:{objc_msgSend(v12, "totalUnitCount")}];
+  progress4 = [(HDCloudSyncOperation *)self progress];
+  progress5 = [operation progress];
+  progress6 = [operation progress];
+  [progress4 addChild:progress5 withPendingUnitCount:{objc_msgSend(progress6, "totalUnitCount")}];
 
-  [v4 start];
+  [operation start];
 }
 
 uint64_t __41__HDCloudSyncIgnoredErrorsOperation_main__block_invoke(uint64_t a1, void *a2)
@@ -112,15 +112,15 @@ void __41__HDCloudSyncIgnoredErrorsOperation_main__block_invoke_2(uint64_t a1, v
   v4.receiver = self;
   v4.super_class = HDCloudSyncIgnoredErrorsOperation;
   [(HDCloudSyncOperation *)&v4 skip];
-  v3 = [(HDCloudSyncIgnoredErrorsOperation *)self operation];
-  [v3 skip];
+  operation = [(HDCloudSyncIgnoredErrorsOperation *)self operation];
+  [operation skip];
 }
 
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDCloudSyncIgnoredErrorsOperation *)self operation];
-  v4 = [v2 stringWithFormat:@"[! %@]", v3];
+  operation = [(HDCloudSyncIgnoredErrorsOperation *)self operation];
+  v4 = [v2 stringWithFormat:@"[! %@]", operation];
 
   return v4;
 }

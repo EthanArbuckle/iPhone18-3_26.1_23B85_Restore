@@ -1,10 +1,10 @@
 @interface PUIProblemReportingController
 + (BOOL)isProblemReportingEnabled;
 - (AFSettingsConnection)assistantSettingsConnection;
-- (BOOL)shouldShowAppleIdImprovementSpecifiersForAccount:(id)a3;
+- (BOOL)shouldShowAppleIdImprovementSpecifiersForAccount:(id)account;
 - (BOOL)shouldShowFitnessPlusSpecifiers;
 - (BOOL)shouldShowIdentityVerificationSpecifiers;
-- (BOOL)shouldShowiCloudSpecifiersForAccount:(id)a3;
+- (BOOL)shouldShowiCloudSpecifiersForAccount:(id)account;
 - (CIDVUIIdentityProofingDataSharingFlowManager)identityProofingDataSharingManager;
 - (HKHealthStore)healthStore;
 - (NSArray)appActivitySpecifiers;
@@ -24,48 +24,48 @@
 - (PSSpecifier)spinnerSpecifier;
 - (PUIBankConnectAnalyticsConsentCoordinator)bankConnectAnalyticsConsentCoordinator;
 - (PUIFitnessPlusAnalyticsConsentCoordinator)fitnessPlusAnalyticsConsentCoordinator;
-- (id)analyticsSpecifiersIncludingIndependentSpecifiers:(BOOL)a3 includeDependentSpecifiers:(BOOL)a4;
+- (id)analyticsSpecifiersIncludingIndependentSpecifiers:(BOOL)specifiers includeDependentSpecifiers:(BOOL)dependentSpecifiers;
 - (id)appleIdImprovementSpecifiers;
-- (id)automatedFeedbackEnabled:(id)a3;
-- (id)getCurrentImproveSiriAndDictationValueForSpecifier:(id)a3;
-- (id)getImproveAssistiveVoiceValueForSpecifier:(id)a3;
+- (id)automatedFeedbackEnabled:(id)enabled;
+- (id)getCurrentImproveSiriAndDictationValueForSpecifier:(id)specifier;
+- (id)getImproveAssistiveVoiceValueForSpecifier:(id)specifier;
 - (id)iCloudSpecifiers;
-- (id)improveARLocationAccuracyForSpecifier:(id)a3;
+- (id)improveARLocationAccuracyForSpecifier:(id)specifier;
 - (id)loadPrivacySettingsBundle;
-- (id)problemReportingEnabled:(id)a3;
+- (id)problemReportingEnabled:(id)enabled;
 - (id)shouldShareAppActivityWithAppDevelopers;
-- (id)shouldShareBankConnectDataForSpecifier:(id)a3;
-- (id)shouldShareFitnessPlusDataForSpecifier:(id)a3;
-- (id)shouldShareHandwashingDataForSpecifier:(id)a3;
-- (id)shouldShareHealthDataForSpecifier:(id)a3;
-- (id)shouldShareHealthRecordsDataForSpecifier:(id)a3;
-- (id)shouldShareIdentityVerificationData:(id)a3;
-- (id)shouldShareSafetyDataForSpecifier:(id)a3;
-- (id)shouldShareWheelchairDataForSpecifier:(id)a3;
-- (id)shouldShareiCloudAnalytics:(id)a3;
+- (id)shouldShareBankConnectDataForSpecifier:(id)specifier;
+- (id)shouldShareFitnessPlusDataForSpecifier:(id)specifier;
+- (id)shouldShareHandwashingDataForSpecifier:(id)specifier;
+- (id)shouldShareHealthDataForSpecifier:(id)specifier;
+- (id)shouldShareHealthRecordsDataForSpecifier:(id)specifier;
+- (id)shouldShareIdentityVerificationData:(id)data;
+- (id)shouldShareSafetyDataForSpecifier:(id)specifier;
+- (id)shouldShareWheelchairDataForSpecifier:(id)specifier;
+- (id)shouldShareiCloudAnalytics:(id)analytics;
 - (id)specifiers;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)automatedFeedbackLinkTapped;
 - (void)checkDiagnosticsSessionAvailability;
-- (void)launchDiagnosticsSession:(id)a3;
+- (void)launchDiagnosticsSession:(id)session;
 - (void)provideNavigationDonations;
-- (void)setAutomatedFeedbackEnabled:(id)a3 specifier:(id)a4;
-- (void)setBoolValue:(BOOL)a3 forIdMSConfigKey:(id)a4 completion:(id)a5;
-- (void)setImproveARLocationAccuracy:(id)a3 specifier:(id)a4;
-- (void)setImproveAssistiveVoiceValue:(id)a3 specifier:(id)a4;
-- (void)setImproveSiriAndDictationValue:(id)a3 specifier:(id)a4;
-- (void)setProblemReportingEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setShouldShareAppActivityWithAppDevelopers:(id)a3 specifier:(id)a4;
-- (void)setShouldShareAppleIdImprovementAnalytics:(id)a3 specifier:(id)a4;
-- (void)setShouldShareBankConnectData:(id)a3 specifier:(id)a4;
-- (void)setShouldShareFitnessPlusData:(id)a3 specifier:(id)a4;
-- (void)setShouldShareHandwashingData:(id)a3 specifier:(id)a4;
-- (void)setShouldShareHealthData:(id)a3 specifier:(id)a4;
-- (void)setShouldShareHealthRecordsData:(id)a3 specifier:(id)a4;
-- (void)setShouldShareIdentityVerificationData:(id)a3 specifier:(id)a4;
-- (void)setShouldShareSafetyData:(id)a3 specifier:(id)a4;
-- (void)setShouldShareWheelchairData:(id)a3 specifier:(id)a4;
-- (void)setShouldShareiCloudAnalytics:(id)a3 specifier:(id)a4;
+- (void)setAutomatedFeedbackEnabled:(id)enabled specifier:(id)specifier;
+- (void)setBoolValue:(BOOL)value forIdMSConfigKey:(id)key completion:(id)completion;
+- (void)setImproveARLocationAccuracy:(id)accuracy specifier:(id)specifier;
+- (void)setImproveAssistiveVoiceValue:(id)value specifier:(id)specifier;
+- (void)setImproveSiriAndDictationValue:(id)value specifier:(id)specifier;
+- (void)setProblemReportingEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setShouldShareAppActivityWithAppDevelopers:(id)developers specifier:(id)specifier;
+- (void)setShouldShareAppleIdImprovementAnalytics:(id)analytics specifier:(id)specifier;
+- (void)setShouldShareBankConnectData:(id)data specifier:(id)specifier;
+- (void)setShouldShareFitnessPlusData:(id)data specifier:(id)specifier;
+- (void)setShouldShareHandwashingData:(id)data specifier:(id)specifier;
+- (void)setShouldShareHealthData:(id)data specifier:(id)specifier;
+- (void)setShouldShareHealthRecordsData:(id)data specifier:(id)specifier;
+- (void)setShouldShareIdentityVerificationData:(id)data specifier:(id)specifier;
+- (void)setShouldShareSafetyData:(id)data specifier:(id)specifier;
+- (void)setShouldShareWheelchairData:(id)data specifier:(id)specifier;
+- (void)setShouldShareiCloudAnalytics:(id)analytics specifier:(id)specifier;
 - (void)showAboutAnalyticsSheet;
 - (void)showAboutAppAnalyticsSheet;
 - (void)showAboutAppleIdImprovementAnalyticsSheet;
@@ -78,14 +78,14 @@
 - (void)showAboutImproveAssistiveVoiceFeatures;
 - (void)showAboutImproveSiriAnalyticsSheet;
 - (void)showAboutSafetyDataSheet;
-- (void)showAboutSheetWithTitle:(id)a3 content:(id)a4;
+- (void)showAboutSheetWithTitle:(id)title content:(id)content;
 - (void)showAboutWheelchairDataSheet;
 - (void)showAboutiCloudAnalyticsSheet;
 - (void)showImproveARLocationAccuracyDataSheet;
-- (void)snapshot:(id)a3;
-- (void)updateAppleIdImprovementForSpecifierID:(id)a3;
-- (void)updateHealthRecordsPreferenceForSpecifierID:(id)a3;
-- (void)updateiCloudAnalyticsForSpecifierID:(id)a3;
+- (void)snapshot:(id)snapshot;
+- (void)updateAppleIdImprovementForSpecifierID:(id)d;
+- (void)updateHealthRecordsPreferenceForSpecifierID:(id)d;
+- (void)updateiCloudAnalyticsForSpecifierID:(id)d;
 @end
 
 @implementation PUIProblemReportingController
@@ -105,15 +105,15 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = PUI_BundleForPrivacySettingsFramework();
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"PROBLEM_REPORTING" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"PROBLEM_REPORTING" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -160,15 +160,15 @@ LABEL_4:
   [v4 setRemoteObjectInterface:v5];
 
   [v4 resume];
-  v6 = [v4 remoteObjectProxy];
+  remoteObjectProxy = [v4 remoteObjectProxy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__PUIProblemReportingController_checkDiagnosticsSessionAvailability__block_invoke;
   v9[3] = &unk_279BA10D8;
   v10 = v4;
-  v11 = self;
+  selfCopy = self;
   v7 = v4;
-  [v6 checkAvailabilityWithReply:v9];
+  [remoteObjectProxy checkAvailabilityWithReply:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -245,35 +245,35 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)launchDiagnosticsSession:(id)a3
+- (void)launchDiagnosticsSession:(id)session
 {
   v3 = MEMORY[0x277CBEBC0];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"diagnostics://"];
   v6 = [v3 URLWithString:v4];
 
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  [v5 openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
 }
 
 + (BOOL)isProblemReportingEnabled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25E58]] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E58]] == 1;
 
   return v3;
 }
 
-- (void)showAboutSheetWithTitle:(id)a3 content:(id)a4
+- (void)showAboutSheetWithTitle:(id)title content:(id)content
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [[ProblemReportingAboutController alloc] initWithTitle:v7 content:v6];
+  contentCopy = content;
+  titleCopy = title;
+  v11 = [[ProblemReportingAboutController alloc] initWithTitle:titleCopy content:contentCopy];
 
   v8 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v11];
   [v8 setModalPresentationStyle:2];
   v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_dismissAboutSheet_];
-  v10 = [(ProblemReportingAboutController *)v11 navigationItem];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem = [(ProblemReportingAboutController *)v11 navigationItem];
+  [navigationItem setRightBarButtonItem:v9];
 
   [(PUIProblemReportingController *)self presentViewController:v8 animated:1 completion:0];
 }
@@ -413,10 +413,10 @@ LABEL_9:
 
 - (void)showAboutSafetyDataSheet
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v5 = [getOBPrivacyPresenterClass() presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.improveSafetyFeatures"];
     [v5 setPresentingViewController:self];
@@ -480,19 +480,19 @@ LABEL_9:
   [(PUIProblemReportingController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)setBoolValue:(BOOL)a3 forIdMSConfigKey:(id)a4 completion:(id)a5
+- (void)setBoolValue:(BOOL)value forIdMSConfigKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CB8F48] defaultStore];
-  v10 = [v9 aa_primaryAppleAccount];
-  v11 = v10;
-  if (v10)
+  valueCopy = value;
+  keyCopy = key;
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v11 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    v12 = [v10 aa_altDSID];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
     v13 = @"0";
-    if (v6)
+    if (valueCopy)
     {
       v13 = @"1";
     }
@@ -503,9 +503,9 @@ LABEL_9:
     v16[1] = 3221225472;
     v16[2] = __74__PUIProblemReportingController_setBoolValue_forIdMSConfigKey_completion___block_invoke;
     v16[3] = &unk_279BA1100;
-    v17 = v7;
-    v18 = v8;
-    [v15 setConfigurationInfo:v14 forIdentifier:v17 forAltDSID:v12 completion:v16];
+    v17 = keyCopy;
+    v18 = completionCopy;
+    [v15 setConfigurationInfo:v14 forIdentifier:v17 forAltDSID:aa_altDSID completion:v16];
   }
 }
 
@@ -573,18 +573,18 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAppleIdImprovementForSpecifierID:(id)a3
+- (void)updateAppleIdImprovementForSpecifierID:(id)d
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
-    v5 = [MEMORY[0x277CB8F48] defaultStore];
-    v6 = [v5 aa_primaryAppleAccount];
-    v7 = v6;
-    if (v6)
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+    v7 = aa_primaryAppleAccount;
+    if (aa_primaryAppleAccount)
     {
-      v8 = [v6 aa_altDSID];
+      aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
       v9 = objc_alloc_init(getAKAppleIDAuthenticationControllerClass());
       objc_initWeak(&location, self);
       v16[0] = @"com.apple.idms.config.privacy.icloud.data";
@@ -594,8 +594,8 @@ LABEL_11:
       v12[2] = __72__PUIProblemReportingController_updateAppleIdImprovementForSpecifierID___block_invoke;
       v12[3] = &unk_279BA1150;
       objc_copyWeak(&v14, &location);
-      v13 = v4;
-      [v9 configurationInfoWithIdentifiers:v10 forAltDSID:v8 completion:v12];
+      v13 = dCopy;
+      [v9 configurationInfoWithIdentifiers:v10 forAltDSID:aa_altDSID completion:v12];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -660,16 +660,16 @@ void __72__PUIProblemReportingController_updateAppleIdImprovementForSpecifierID_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateiCloudAnalyticsForSpecifierID:(id)a3
+- (void)updateiCloudAnalyticsForSpecifierID:(id)d
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CB8F48] defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v7 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    v8 = [v6 aa_altDSID];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
     v9 = objc_alloc_init(getAKAppleIDAuthenticationControllerClass());
     objc_initWeak(&location, self);
     v16[0] = @"com.apple.idms.config.privacy.icloud.data";
@@ -679,8 +679,8 @@ void __72__PUIProblemReportingController_updateAppleIdImprovementForSpecifierID_
     v12[2] = __69__PUIProblemReportingController_updateiCloudAnalyticsForSpecifierID___block_invoke;
     v12[3] = &unk_279BA1150;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
-    [v9 configurationInfoWithIdentifiers:v10 forAltDSID:v8 completion:v12];
+    v13 = dCopy;
+    [v9 configurationInfoWithIdentifiers:v10 forAltDSID:aa_altDSID completion:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -744,7 +744,7 @@ void __69__PUIProblemReportingController_updateiCloudAnalyticsForSpecifierID___b
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)problemReportingEnabled:(id)a3
+- (id)problemReportingEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = +[PUIProblemReportingController isProblemReportingEnabled];
@@ -752,18 +752,18 @@ void __69__PUIProblemReportingController_updateiCloudAnalyticsForSpecifierID___b
   return [v3 numberWithBool:v4];
 }
 
-- (void)setProblemReportingEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setProblemReportingEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
-  v9 = [MEMORY[0x277D262A0] sharedConnection];
-  v10 = [v9 effectiveBoolValueForSetting:*MEMORY[0x277D25E58]];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v10 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E58]];
 
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v12)
+  if (sf_isInternalInstall)
   {
     v13 = v10 == 1;
   }
@@ -773,14 +773,14 @@ void __69__PUIProblemReportingController_updateiCloudAnalyticsForSpecifierID___b
     v13 = 0;
   }
 
-  if (!v13 || (keyExistsAndHasValidFormat = 0, AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MCInternalOverrideDiagnosticEnforcement", *MEMORY[0x277CBF008], &keyExistsAndHasValidFormat), (v8 & 1) != 0) || AppBooleanValue)
+  if (!v13 || (keyExistsAndHasValidFormat = 0, AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MCInternalOverrideDiagnosticEnforcement", *MEMORY[0x277CBF008], &keyExistsAndHasValidFormat), (bOOLValue & 1) != 0) || AppBooleanValue)
   {
-    v14 = [getNRPairedDeviceRegistryClass() sharedInstance];
-    v15 = [v14 isPaired];
+    sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+    isPaired = [sharedInstance isPaired];
 
-    if (v15)
+    if (isPaired)
     {
-      if (v8)
+      if (bOOLValue)
       {
         v16 = @"DIAGNOSTICS_MIRRORED_ALERT_TITLE_ON";
       }
@@ -799,7 +799,7 @@ void __69__PUIProblemReportingController_updateiCloudAnalyticsForSpecifierID___b
       v34[2] = __73__PUIProblemReportingController_setProblemReportingEnabled_forSpecifier___block_invoke_2;
       v34[3] = &unk_279BA1178;
       v34[4] = self;
-      v35 = v7;
+      v35 = specifierCopy;
       v21 = [v19 actionWithTitle:v20 style:1 handler:v34];
       [v18 addAction:v21];
 
@@ -810,7 +810,7 @@ void __69__PUIProblemReportingController_updateiCloudAnalyticsForSpecifierID___b
       v32[2] = __73__PUIProblemReportingController_setProblemReportingEnabled_forSpecifier___block_invoke_3;
       v32[3] = &unk_279BA0C68;
       v32[4] = self;
-      v33 = v8;
+      v33 = bOOLValue;
       v24 = [v22 actionWithTitle:v23 style:0 handler:v32];
       [v18 addAction:v24];
 
@@ -819,10 +819,10 @@ void __69__PUIProblemReportingController_updateiCloudAnalyticsForSpecifierID___b
 
     else
     {
-      [(PUIProblemReportingController *)self setProblemReportingEnabled:v8];
-      if (PUIIsUserParcElisabethEligible() && v8)
+      [(PUIProblemReportingController *)self setProblemReportingEnabled:bOOLValue];
+      if (PUIIsUserParcElisabethEligible() && bOOLValue)
       {
-        [(PUIProblemReportingController *)self setShouldShareAppActivityWithAppDevelopers:v6 specifier:v7];
+        [(PUIProblemReportingController *)self setShouldShareAppActivityWithAppDevelopers:enabledCopy specifier:specifierCopy];
       }
     }
   }
@@ -843,7 +843,7 @@ void __69__PUIProblemReportingController_updateiCloudAnalyticsForSpecifierID___b
     v36[2] = __73__PUIProblemReportingController_setProblemReportingEnabled_forSpecifier___block_invoke;
     v36[3] = &unk_279BA10B0;
     v36[4] = self;
-    v37 = v7;
+    v37 = specifierCopy;
     [(PUIProblemReportingController *)self presentViewController:v28 animated:1 completion:v36];
   }
 }
@@ -865,14 +865,14 @@ void __60__PUIProblemReportingController_setProblemReportingEnabled___block_invo
   }
 }
 
-- (void)snapshot:(id)a3
+- (void)snapshot:(id)snapshot
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v18 = v4;
+  snapshotCopy = snapshot;
+  v18 = snapshotCopy;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
-  v6 = [(PUIProblemReportingController *)self spinnerSpecifier];
-  v17 = v6;
+  spinnerSpecifier = [(PUIProblemReportingController *)self spinnerSpecifier];
+  v17 = spinnerSpecifier;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
   [(PUIProblemReportingController *)self replaceContiguousSpecifiers:v5 withSpecifiers:v7 animated:1];
 
@@ -910,13 +910,13 @@ LABEL_4:
   v10 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.FilesystemMetadataSnapshotService"];
   [v10 setRemoteObjectInterface:v9];
   [v10 resume];
-  v11 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __42__PUIProblemReportingController_snapshot___block_invoke;
   v15[3] = &unk_279BA11F0;
   v15[4] = self;
-  v12 = [v11 generateFilesystemMetadataSnapshotWithOptions:0 reply:v15];
+  v12 = [remoteObjectProxy generateFilesystemMetadataSnapshotWithOptions:0 reply:v15];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -981,7 +981,7 @@ void __42__PUIProblemReportingController_snapshot___block_invoke_2(uint64_t a1)
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   if (PUIIsUserParcElisabethEligible())
   {
     v6 = @"PROBLEM_REPORTING_EXPLANATION_ALT";
@@ -995,25 +995,25 @@ void __42__PUIProblemReportingController_snapshot___block_invoke_2(uint64_t a1)
   v7 = PUI_LocalizedStringForProblemReporting(v6);
   v8 = PUI_LocalizedStringForProblemReporting(@"ABOUT_DIAGNOSTICS_LINK");
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:v7, v8];
-  [v5 setIdentifier:@"PROBLEM_REPORTING_GROUP"];
+  [emptyGroupSpecifier setIdentifier:@"PROBLEM_REPORTING_GROUP"];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v5 setProperty:v11 forKey:*MEMORY[0x277D3FF48]];
+  [emptyGroupSpecifier setProperty:v11 forKey:*MEMORY[0x277D3FF48]];
 
-  [v5 setProperty:v9 forKey:*MEMORY[0x277D3FF70]];
+  [emptyGroupSpecifier setProperty:v9 forKey:*MEMORY[0x277D3FF70]];
   v33 = v9;
   v34 = v8;
   v36.location = [v9 rangeOfString:v8];
   v12 = NSStringFromRange(v36);
-  [v5 setProperty:v12 forKey:*MEMORY[0x277D3FF58]];
+  [emptyGroupSpecifier setProperty:v12 forKey:*MEMORY[0x277D3FF58]];
 
   v13 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-  [v5 setProperty:v13 forKey:*MEMORY[0x277D3FF68]];
+  [emptyGroupSpecifier setProperty:v13 forKey:*MEMORY[0x277D3FF68]];
 
-  [v5 setProperty:@"showAboutAnalyticsSheet" forKey:*MEMORY[0x277D3FF50]];
-  [(NSArray *)v4 addObject:v5];
-  v14 = [getNRPairedDeviceRegistryClass() sharedInstance];
-  LODWORD(v9) = [v14 isPaired];
+  [emptyGroupSpecifier setProperty:@"showAboutAnalyticsSheet" forKey:*MEMORY[0x277D3FF50]];
+  [(NSArray *)v4 addObject:emptyGroupSpecifier];
+  sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+  LODWORD(v9) = [sharedInstance isPaired];
 
   if (v9)
   {
@@ -1028,20 +1028,20 @@ void __42__PUIProblemReportingController_snapshot___block_invoke_2(uint64_t a1)
   v16 = PUI_LocalizedStringForProblemReporting(v15);
   v17 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v16 target:self set:sel_setProblemReportingEnabled_forSpecifier_ get:sel_problemReportingEnabled_ detail:0 cell:6 edit:0];
   [(NSArray *)v4 addObject:v17];
-  v18 = [MEMORY[0x277D262A0] sharedConnection];
-  if ([v18 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25E58]])
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  if ([mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25E58]])
   {
-    v19 = 0;
+    isDiagnosticSubmissionModificationAllowed = 0;
   }
 
   else
   {
-    v20 = [MEMORY[0x277D262A0] sharedConnection];
-    v19 = [v20 isDiagnosticSubmissionModificationAllowed];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    isDiagnosticSubmissionModificationAllowed = [mEMORY[0x277D262A0]2 isDiagnosticSubmissionModificationAllowed];
   }
 
-  v21 = [MEMORY[0x277D75418] currentDevice];
-  if (([v21 sf_isInternalInstall] & 1) == 0 && !v19)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (([currentDevice sf_isInternalInstall] & 1) == 0 && !isDiagnosticSubmissionModificationAllowed)
   {
 
 LABEL_15:
@@ -1067,15 +1067,15 @@ LABEL_16:
     [v25 setIdentifier:@"DIAGNOSTIC_USAGE_DATA"];
     [v25 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D400F8]];
     [(NSArray *)v4 addObject:v25];
-    v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v27 = [v26 BOOLForKey:@"FilesystemMetadataSnapshotEnabled"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v27 = [standardUserDefaults BOOLForKey:@"FilesystemMetadataSnapshotEnabled"];
 
     if (v27)
     {
-      v28 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-      [(NSArray *)v4 addObject:v28];
-      v29 = [(PUIProblemReportingController *)self filesystemMetadataSnapshotSpecifier];
-      [(NSArray *)v4 addObject:v29];
+      emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      [(NSArray *)v4 addObject:emptyGroupSpecifier2];
+      filesystemMetadataSnapshotSpecifier = [(PUIProblemReportingController *)self filesystemMetadataSnapshotSpecifier];
+      [(NSArray *)v4 addObject:filesystemMetadataSnapshotSpecifier];
     }
 
     v7 = v32;
@@ -1134,8 +1134,8 @@ LABEL_21:
 
   if ([(PUIProblemReportingController *)self isAppAndAccessoryAnalyticsAllowedFeatureEnabled])
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
-    if ([v3 hasAppAndAccessoryAnalyticsAllowedBeenSet])
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    if ([mEMORY[0x277D262A0] hasAppAndAccessoryAnalyticsAllowedBeenSet])
     {
 
 LABEL_8:
@@ -1145,10 +1145,10 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    v5 = [v4 isAppAnalyticsAllowed];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    isAppAnalyticsAllowed = [mEMORY[0x277D262A0]2 isAppAnalyticsAllowed];
 
-    if ((v5 & 1) == 0)
+    if ((isAppAnalyticsAllowed & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -1178,10 +1178,10 @@ LABEL_9:
   [v13 setProperty:@"showAboutAppAnalyticsSheet" forKey:*MEMORY[0x277D3FF50]];
   v18 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v9 target:self set:sel_setShouldShareAppActivityWithAppDevelopers_specifier_ get:sel_shouldShareAppActivityWithAppDevelopers detail:0 cell:6 edit:0];
   [v18 setProperty:@"SHARE_WITH_APP_DEVELOPERS" forKey:*MEMORY[0x277D3FFB8]];
-  v19 = [MEMORY[0x277D262A0] sharedConnection];
-  v20 = [v19 isDiagnosticSubmissionModificationAllowed];
+  mEMORY[0x277D262A0]3 = [MEMORY[0x277D262A0] sharedConnection];
+  isDiagnosticSubmissionModificationAllowed = [mEMORY[0x277D262A0]3 isDiagnosticSubmissionModificationAllowed];
 
-  if ((v20 & 1) == 0)
+  if ((isDiagnosticSubmissionModificationAllowed & 1) == 0)
   {
     [v18 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
@@ -1232,14 +1232,14 @@ LABEL_12:
   return assistantSettingsConnection;
 }
 
-- (id)getCurrentImproveSiriAndDictationValueForSpecifier:(id)a3
+- (id)getCurrentImproveSiriAndDictationValueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 isOnDeviceOnlyDictationForced];
+  specifierCopy = specifier;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isOnDeviceOnlyDictationForced = [mEMORY[0x277D262A0] isOnDeviceOnlyDictationForced];
 
   v7 = MEMORY[0x277CBEC28];
-  if ((v6 & 1) == 0)
+  if ((isOnDeviceOnlyDictationForced & 1) == 0)
   {
     objc_initWeak(&location, self);
     v16 = 0;
@@ -1247,7 +1247,7 @@ LABEL_12:
     v18 = 0x2020000000;
     v19 = 0;
     v8 = dispatch_semaphore_create(0);
-    v9 = [(PUIProblemReportingController *)self assistantSettingsConnection];
+    assistantSettingsConnection = [(PUIProblemReportingController *)self assistantSettingsConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __84__PUIProblemReportingController_getCurrentImproveSiriAndDictationValueForSpecifier___block_invoke;
@@ -1256,7 +1256,7 @@ LABEL_12:
     v14 = &v16;
     v10 = v8;
     v13 = v10;
-    [v9 getSiriDataSharingOptInStatusWithCompletion:v12];
+    [assistantSettingsConnection getSiriDataSharingOptInStatusWithCompletion:v12];
 
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     if (v17[3] == 1)
@@ -1288,14 +1288,14 @@ void __84__PUIProblemReportingController_getCurrentImproveSiriAndDictationValueF
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)setImproveSiriAndDictationValue:(id)a3 specifier:(id)a4
+- (void)setImproveSiriAndDictationValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [v6 BOOLValue];
-  v9 = [(PUIProblemReportingController *)self assistantSettingsConnection];
-  if (v8)
+  bOOLValue = [valueCopy BOOLValue];
+  assistantSettingsConnection = [(PUIProblemReportingController *)self assistantSettingsConnection];
+  if (bOOLValue)
   {
     v10 = 1;
   }
@@ -1310,9 +1310,9 @@ void __84__PUIProblemReportingController_getCurrentImproveSiriAndDictationValueF
   v12[2] = __75__PUIProblemReportingController_setImproveSiriAndDictationValue_specifier___block_invoke;
   v12[3] = &unk_279BA1268;
   objc_copyWeak(&v14, &location);
-  v11 = v6;
+  v11 = valueCopy;
   v13 = v11;
-  [v9 setSiriDataSharingOptInStatus:v10 propagateToHomeAccessories:0 source:7 reason:@"Privacy" completion:v12];
+  [assistantSettingsConnection setSiriDataSharingOptInStatus:v10 propagateToHomeAccessories:0 source:7 reason:@"Privacy" completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1350,14 +1350,14 @@ void __75__PUIProblemReportingController_setImproveSiriAndDictationValue_specifi
   [WeakRetained reloadSpecifierID:@"IMPROVE_SIRI"];
 }
 
-- (void)setImproveAssistiveVoiceValue:(id)a3 specifier:(id)a4
+- (void)setImproveAssistiveVoiceValue:(id)value specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [value BOOLValue];
 
-  MEMORY[0x2821F01A0](v4);
+  MEMORY[0x2821F01A0](bOOLValue);
 }
 
-- (id)getImproveAssistiveVoiceValueForSpecifier:(id)a3
+- (id)getImproveAssistiveVoiceValueForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = _AXSAudioDonationSiriImprovementEnabled();
@@ -1365,11 +1365,11 @@ void __75__PUIProblemReportingController_setImproveSiriAndDictationValue_specifi
   return [v3 numberWithUnsignedChar:v4];
 }
 
-- (id)analyticsSpecifiersIncludingIndependentSpecifiers:(BOOL)a3 includeDependentSpecifiers:(BOOL)a4
+- (id)analyticsSpecifiersIncludingIndependentSpecifiers:(BOOL)specifiers includeDependentSpecifiers:(BOOL)dependentSpecifiers
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  dependentSpecifiersCopy = dependentSpecifiers;
+  specifiersCopy = specifiers;
+  array = [MEMORY[0x277CBEB18] array];
   if (MGGetBoolAnswer())
   {
     v8 = MGGetBoolAnswer();
@@ -1381,83 +1381,83 @@ void __75__PUIProblemReportingController_setImproveSiriAndDictationValue_specifi
   }
 
   v9 = MGGetBoolAnswer();
-  if (v5)
+  if (specifiersCopy)
   {
-    v10 = [(PUIProblemReportingController *)self iCloudSpecifiers];
-    [v7 addObjectsFromArray:v10];
+    iCloudSpecifiers = [(PUIProblemReportingController *)self iCloudSpecifiers];
+    [array addObjectsFromArray:iCloudSpecifiers];
 
     if (_os_feature_enabled_impl())
     {
-      v11 = [(PUIProblemReportingController *)self appleIdImprovementSpecifiers];
-      [v7 addObjectsFromArray:v11];
+      appleIdImprovementSpecifiers = [(PUIProblemReportingController *)self appleIdImprovementSpecifiers];
+      [array addObjectsFromArray:appleIdImprovementSpecifiers];
     }
   }
 
-  if (v4)
+  if (dependentSpecifiersCopy)
   {
-    v12 = [MEMORY[0x277D262A0] sharedConnection];
-    v13 = [v12 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D00]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v13 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D00]];
 
     if ((v13 & 1) == 0 && (PUIIsUserParcElisabethEligible() & 1) == 0)
     {
-      v14 = [(PUIProblemReportingController *)self appActivitySpecifiers];
-      [v7 addObjectsFromArray:v14];
+      appActivitySpecifiers = [(PUIProblemReportingController *)self appActivitySpecifiers];
+      [array addObjectsFromArray:appActivitySpecifiers];
     }
 
-    v15 = [(PUIProblemReportingController *)self automatedFeedbackSpecifiers];
-    [v7 addObjectsFromArray:v15];
+    automatedFeedbackSpecifiers = [(PUIProblemReportingController *)self automatedFeedbackSpecifiers];
+    [array addObjectsFromArray:automatedFeedbackSpecifiers];
   }
 
-  if (v5)
+  if (specifiersCopy)
   {
-    v16 = [(PUIProblemReportingController *)self bankConnectDataSpecifiers];
-    [v7 addObjectsFromArray:v16];
+    bankConnectDataSpecifiers = [(PUIProblemReportingController *)self bankConnectDataSpecifiers];
+    [array addObjectsFromArray:bankConnectDataSpecifiers];
 
-    v17 = [(PUIProblemReportingController *)self fitnessPlusDataSpecifiers];
-    [v7 addObjectsFromArray:v17];
+    fitnessPlusDataSpecifiers = [(PUIProblemReportingController *)self fitnessPlusDataSpecifiers];
+    [array addObjectsFromArray:fitnessPlusDataSpecifiers];
   }
 
-  v18 = v4 & v8;
-  if ((v4 & v8) == 1)
+  v18 = dependentSpecifiersCopy & v8;
+  if ((dependentSpecifiersCopy & v8) == 1)
   {
-    v19 = [(PUIProblemReportingController *)self handwashingDataSpecifiers];
-    [v7 addObjectsFromArray:v19];
+    handwashingDataSpecifiers = [(PUIProblemReportingController *)self handwashingDataSpecifiers];
+    [array addObjectsFromArray:handwashingDataSpecifiers];
   }
 
-  if ((v4 & v9) == 1)
+  if ((dependentSpecifiersCopy & v9) == 1)
   {
-    v20 = [(PUIProblemReportingController *)self healthDataSpecifiers];
-    [v7 addObjectsFromArray:v20];
+    healthDataSpecifiers = [(PUIProblemReportingController *)self healthDataSpecifiers];
+    [array addObjectsFromArray:healthDataSpecifiers];
   }
 
-  if (v4)
+  if (dependentSpecifiersCopy)
   {
-    v21 = [(PUIProblemReportingController *)self identityVerificationDataSpecifiers];
-    [v7 addObjectsFromArray:v21];
+    identityVerificationDataSpecifiers = [(PUIProblemReportingController *)self identityVerificationDataSpecifiers];
+    [array addObjectsFromArray:identityVerificationDataSpecifiers];
 
-    v22 = [MEMORY[0x277D75418] currentDevice];
-    v23 = [v22 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v23 != 1)
+    if (userInterfaceIdiom != 1)
     {
-      v24 = [(PUIProblemReportingController *)self safetyDataSpecifiers];
-      [v7 addObjectsFromArray:v24];
+      safetyDataSpecifiers = [(PUIProblemReportingController *)self safetyDataSpecifiers];
+      [array addObjectsFromArray:safetyDataSpecifiers];
     }
   }
 
-  if (v5)
+  if (specifiersCopy)
   {
-    v25 = [(PUIProblemReportingController *)self improveSiriSpecifiers];
-    [v7 addObjectsFromArray:v25];
+    improveSiriSpecifiers = [(PUIProblemReportingController *)self improveSiriSpecifiers];
+    [array addObjectsFromArray:improveSiriSpecifiers];
 
-    v26 = [(PUIProblemReportingController *)self improveAssistiveVoiceSpecifiers];
-    [v7 addObjectsFromArray:v26];
+    improveAssistiveVoiceSpecifiers = [(PUIProblemReportingController *)self improveAssistiveVoiceSpecifiers];
+    [array addObjectsFromArray:improveAssistiveVoiceSpecifiers];
   }
 
   if (v18)
   {
-    v27 = [(PUIProblemReportingController *)self wheelchairDataSpecifiers];
-    [v7 addObjectsFromArray:v27];
+    wheelchairDataSpecifiers = [(PUIProblemReportingController *)self wheelchairDataSpecifiers];
+    [array addObjectsFromArray:wheelchairDataSpecifiers];
   }
 
   v34 = 0;
@@ -1484,37 +1484,37 @@ void __75__PUIProblemReportingController_setImproveSiriAndDictationValue_specifi
 
   if (v28())
   {
-    v30 = [(PUIProblemReportingController *)self improveARLocationAccuracySpecifiers];
-    [v7 addObjectsFromArray:v30];
+    improveARLocationAccuracySpecifiers = [(PUIProblemReportingController *)self improveARLocationAccuracySpecifiers];
+    [array addObjectsFromArray:improveARLocationAccuracySpecifiers];
   }
 
-  return v7;
+  return array;
 }
 
-- (id)shouldShareiCloudAnalytics:(id)a3
+- (id)shouldShareiCloudAnalytics:(id)analytics
 {
-  v3 = [(PUIProblemReportingController *)self readPreferenceValue:a3];
+  v3 = [(PUIProblemReportingController *)self readPreferenceValue:analytics];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "BOOLValue")}];
 
   return v4;
 }
 
-- (void)setShouldShareiCloudAnalytics:(id)a3 specifier:(id)a4
+- (void)setShouldShareiCloudAnalytics:(id)analytics specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  analyticsCopy = analytics;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [v6 BOOLValue];
+  bOOLValue = [analyticsCopy BOOLValue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__PUIProblemReportingController_setShouldShareiCloudAnalytics_specifier___block_invoke;
   v11[3] = &unk_279BA1290;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = analyticsCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = specifierCopy;
   v13 = v10;
-  [(PUIProblemReportingController *)self setBoolValue:v8 forIdMSConfigKey:@"com.apple.idms.config.privacy.icloud.data" completion:v11];
+  [(PUIProblemReportingController *)self setBoolValue:bOOLValue forIdMSConfigKey:@"com.apple.idms.config.privacy.icloud.data" completion:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1535,45 +1535,45 @@ void __73__PUIProblemReportingController_setShouldShareiCloudAnalytics_specifier
   }
 }
 
-- (BOOL)shouldShowiCloudSpecifiersForAccount:(id)a3
+- (BOOL)shouldShowiCloudSpecifiersForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 objectForKey:@"shouldShowiCloudSpecifiers"];
+  accountCopy = account;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"shouldShowiCloudSpecifiers"];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
   v17 = 0;
-  if (v4)
+  if (accountCopy)
   {
-    v8 = [v4 aa_altDSID];
+    aa_altDSID = [accountCopy aa_altDSID];
     getAKAppleIDAuthenticationControllerClass();
     v9 = objc_opt_new();
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __70__PUIProblemReportingController_shouldShowiCloudSpecifiersForAccount___block_invoke;
     v11[3] = &unk_279BA12B8;
-    v13 = self;
+    selfCopy = self;
     v14 = v16;
-    v15 = v7;
+    v15 = bOOLValue;
     v12 = @"shouldShowiCloudSpecifiers";
-    [v9 fetchUserInformationForAltDSID:v8 completion:v11];
+    [v9 fetchUserInformationForAltDSID:aa_altDSID completion:v11];
   }
 
   _Block_object_dispose(v16, 8);
 
-  return v7;
+  return bOOLValue;
 }
 
 void __70__PUIProblemReportingController_shouldShowiCloudSpecifiersForAccount___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1700,22 +1700,22 @@ LABEL_23:
   }
 }
 
-- (void)setShouldShareAppleIdImprovementAnalytics:(id)a3 specifier:(id)a4
+- (void)setShouldShareAppleIdImprovementAnalytics:(id)analytics specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  analyticsCopy = analytics;
+  specifierCopy = specifier;
   if (_os_feature_enabled_impl())
   {
     objc_initWeak(&location, self);
-    v8 = [v6 BOOLValue];
+    bOOLValue = [analyticsCopy BOOLValue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __85__PUIProblemReportingController_setShouldShareAppleIdImprovementAnalytics_specifier___block_invoke;
     v9[3] = &unk_279BA1290;
     objc_copyWeak(&v12, &location);
-    v10 = v6;
-    v11 = v7;
-    [(PUIProblemReportingController *)self setBoolValue:v8 forIdMSConfigKey:@"com.apple.idms.config.privacy.appleaccount.access" completion:v9];
+    v10 = analyticsCopy;
+    v11 = specifierCopy;
+    [(PUIProblemReportingController *)self setBoolValue:bOOLValue forIdMSConfigKey:@"com.apple.idms.config.privacy.appleaccount.access" completion:v9];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -1794,42 +1794,42 @@ void __85__PUIProblemReportingController_setShouldShareAppleIdImprovementAnalyti
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldShowAppleIdImprovementSpecifiersForAccount:(id)a3
+- (BOOL)shouldShowAppleIdImprovementSpecifiersForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (_os_feature_enabled_impl())
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6 = [v5 objectForKey:@"shouldShowAppleIdImprovementSpecifiers"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v6 = [standardUserDefaults objectForKey:@"shouldShowAppleIdImprovementSpecifiers"];
 
     if (v6)
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 1;
+      bOOLValue = 1;
     }
 
     v16[0] = 0;
     v16[1] = v16;
     v16[2] = 0x2020000000;
     v17 = 0;
-    if (v4)
+    if (accountCopy)
     {
-      v8 = [v4 aa_altDSID];
+      aa_altDSID = [accountCopy aa_altDSID];
       getAKAppleIDAuthenticationControllerClass();
       v9 = objc_opt_new();
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __82__PUIProblemReportingController_shouldShowAppleIdImprovementSpecifiersForAccount___block_invoke;
       v11[3] = &unk_279BA12E0;
-      v13 = self;
+      selfCopy = self;
       v14 = v16;
-      v15 = v7;
+      v15 = bOOLValue;
       v12 = @"shouldShowAppleIdImprovementSpecifiers";
-      [v9 getUserInformationForAltDSID:v8 completion:v11];
+      [v9 getUserInformationForAltDSID:aa_altDSID completion:v11];
     }
 
     _Block_object_dispose(v16, 8);
@@ -1837,10 +1837,10 @@ void __85__PUIProblemReportingController_setShouldShareAppleIdImprovementAnalyti
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 void __82__PUIProblemReportingController_shouldShowAppleIdImprovementSpecifiersForAccount___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1904,8 +1904,8 @@ void __82__PUIProblemReportingController_shouldShowAppleIdImprovementSpecifiersF
     v15 = [v13 preferenceSpecifierNamed:v14 target:self set:sel_setImproveSiriAndDictationValue_specifier_ get:sel_getCurrentImproveSiriAndDictationValueForSpecifier_ detail:0 cell:6 edit:0];
 
     [v15 setIdentifier:@"IMPROVE_SIRI"];
-    v16 = [MEMORY[0x277D262A0] sharedConnection];
-    LODWORD(v14) = [v16 isOnDeviceOnlyDictationForced];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    LODWORD(v14) = [mEMORY[0x277D262A0] isOnDeviceOnlyDictationForced];
 
     if (v14)
     {
@@ -1981,9 +1981,9 @@ LABEL_2:
     goto LABEL_10;
   }
 
-  v5 = [MEMORY[0x277CB8F48] defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
-  if (v6 && (PSUsedByManagedAccount() & 1) == 0 && [(PUIProblemReportingController *)self shouldShowiCloudSpecifiersForAccount:v6])
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount && (PSUsedByManagedAccount() & 1) == 0 && [(PUIProblemReportingController *)self shouldShowiCloudSpecifiersForAccount:aa_primaryAppleAccount])
   {
     v7 = PUI_LocalizedStringForProblemReporting(@"ICLOUD_ANALYTICS_EXPLANATION");
     v8 = PUI_LocalizedStringForProblemReporting(@"ABOUT_ICLOUD_ANALYTICS_LINK");
@@ -2011,8 +2011,8 @@ LABEL_2:
     [v17 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FEF0]];
     [v17 setProperty:@"com.apple.Preferences" forKey:*MEMORY[0x277D3FEF8]];
     [v17 setProperty:@"AllowiCloudAnalytics" forKey:*MEMORY[0x277D3FFF0]];
-    v18 = [MEMORY[0x277D262A0] sharedConnection];
-    LOBYTE(v16) = [v18 isDiagnosticSubmissionModificationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    LOBYTE(v16) = [mEMORY[0x277D262A0] isDiagnosticSubmissionModificationAllowed];
 
     if ((v16 & 1) == 0)
     {
@@ -2046,9 +2046,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
-  if (v4 && (PSUsedByManagedAccount() & 1) == 0 && [(PUIProblemReportingController *)self shouldShowAppleIdImprovementSpecifiersForAccount:v4])
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount && (PSUsedByManagedAccount() & 1) == 0 && [(PUIProblemReportingController *)self shouldShowAppleIdImprovementSpecifiersForAccount:aa_primaryAppleAccount])
   {
     v5 = PUI_LocalizedStringForProblemReporting(@"APPLEID_ANALYTICS_EXPLANATION");
     v6 = PUI_LocalizedStringForProblemReporting(@"ABOUT_APPLEID_ANALYTICS_LINK");
@@ -2076,8 +2076,8 @@ LABEL_9:
     [v15 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FEF0]];
     [v15 setProperty:@"com.apple.Preferences" forKey:*MEMORY[0x277D3FEF8]];
     [v15 setProperty:@"AllowAppleIdImprovementAnalytics" forKey:*MEMORY[0x277D3FFF0]];
-    v16 = [MEMORY[0x277D262A0] sharedConnection];
-    LOBYTE(v14) = [v16 isDiagnosticSubmissionModificationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    LOBYTE(v14) = [mEMORY[0x277D262A0] isDiagnosticSubmissionModificationAllowed];
 
     if ((v14 & 1) == 0)
     {
@@ -2102,12 +2102,12 @@ LABEL_10:
 
 - (void)automatedFeedbackLinkTapped
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v2 = [MEMORY[0x277CBEBC0] URLWithString:@"https://www.apple.com/legal/privacy"];
-  [v3 openURL:v2 configuration:0 completionHandler:0];
+  [defaultWorkspace openURL:v2 configuration:0 completionHandler:0];
 }
 
-- (id)automatedFeedbackEnabled:(id)a3
+- (id)automatedFeedbackEnabled:(id)enabled
 {
   v3 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.symptomsd-diag"];
   v4 = [v3 valueForKey:@"autoFeedbackAssistantEnable"];
@@ -2115,14 +2115,14 @@ LABEL_10:
   return v4;
 }
 
-- (void)setAutomatedFeedbackEnabled:(id)a3 specifier:(id)a4
+- (void)setAutomatedFeedbackEnabled:(id)enabled specifier:(id)specifier
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
+  enabledCopy = enabled;
   v7 = [[v4 alloc] initWithSuiteName:@"com.apple.symptomsd-diag"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v7 setBool:v6 forKey:@"autoFeedbackAssistantEnable"];
+  [v7 setBool:bOOLValue forKey:@"autoFeedbackAssistantEnable"];
 }
 
 - (NSArray)fitnessPlusDataSpecifiers
@@ -2210,20 +2210,20 @@ LABEL_10:
   return identityProofingDataSharingManager;
 }
 
-- (id)shouldShareIdentityVerificationData:(id)a3
+- (id)shouldShareIdentityVerificationData:(id)data
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"shouldShareIdentityVerificationData"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"shouldShareIdentityVerificationData"];
 
-  v6 = [(PUIProblemReportingController *)self identityProofingDataSharingManager];
+  identityProofingDataSharingManager = [(PUIProblemReportingController *)self identityProofingDataSharingManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__PUIProblemReportingController_shouldShareIdentityVerificationData___block_invoke;
   v9[3] = &unk_279BA1308;
   v12 = v5;
   v10 = @"shouldShareIdentityVerificationData";
-  v11 = self;
-  [v6 fetchUserConsent:v9];
+  selfCopy = self;
+  [identityProofingDataSharingManager fetchUserConsent:v9];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:v5];
 
@@ -2255,18 +2255,18 @@ void __69__PUIProblemReportingController_shouldShareIdentityVerificationData___b
 
 - (BOOL)shouldShowIdentityVerificationSpecifiers
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"shouldShowIdentityVerificationSpecifiers"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"shouldShowIdentityVerificationSpecifiers"];
 
-  v5 = [(PUIProblemReportingController *)self identityProofingDataSharingManager];
+  identityProofingDataSharingManager = [(PUIProblemReportingController *)self identityProofingDataSharingManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__PUIProblemReportingController_shouldShowIdentityVerificationSpecifiers__block_invoke;
   v7[3] = &unk_279BA1330;
   v10 = v4;
   v8 = @"shouldShowIdentityVerificationSpecifiers";
-  v9 = self;
-  [v5 checkUserConsent:v7];
+  selfCopy = self;
+  [identityProofingDataSharingManager checkUserConsent:v7];
 
   return v4;
 }
@@ -2305,23 +2305,23 @@ void __73__PUIProblemReportingController_shouldShowIdentityVerificationSpecifier
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setShouldShareIdentityVerificationData:(id)a3 specifier:(id)a4
+- (void)setShouldShareIdentityVerificationData:(id)data specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [(PUIProblemReportingController *)self identityProofingDataSharingManager];
-  v9 = [v6 BOOLValue] ^ 1;
+  identityProofingDataSharingManager = [(PUIProblemReportingController *)self identityProofingDataSharingManager];
+  v9 = [dataCopy BOOLValue] ^ 1;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__PUIProblemReportingController_setShouldShareIdentityVerificationData_specifier___block_invoke;
   v12[3] = &unk_279BA1380;
   objc_copyWeak(&v15, &location);
-  v10 = v6;
+  v10 = dataCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = specifierCopy;
   v14 = v11;
-  [v8 didChangeUserConsent:v9 completion:v12];
+  [identityProofingDataSharingManager didChangeUserConsent:v9 completion:v12];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -2444,8 +2444,8 @@ void __82__PUIProblemReportingController_setShouldShareIdentityVerificationData_
     v14 = [v12 preferenceSpecifierNamed:v13 target:self set:sel_setShouldShareHealthData_specifier_ get:sel_shouldShareHealthDataForSpecifier_ detail:0 cell:6 edit:0];
 
     [v14 setProperty:@"SHARE_HEALTH_DATA" forKey:*MEMORY[0x277D3FFB8]];
-    v15 = [MEMORY[0x277D262A0] sharedConnection];
-    LOBYTE(v13) = [v15 isDiagnosticSubmissionModificationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    LOBYTE(v13) = [mEMORY[0x277D262A0] isDiagnosticSubmissionModificationAllowed];
 
     if ((v13 & 1) == 0)
     {
@@ -2468,10 +2468,10 @@ void __82__PUIProblemReportingController_setShouldShareIdentityVerificationData_
 
 - (void)showAboutBankConnectDataSheet
 {
-  v3 = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
-  v5 = [v3 privacyBundleIdentifier];
+  bankConnectAnalyticsConsentCoordinator = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
+  privacyBundleIdentifier = [bankConnectAnalyticsConsentCoordinator privacyBundleIdentifier];
 
-  v4 = [getOBPrivacyPresenterClass() presenterForPrivacySplashWithIdentifier:v5];
+  v4 = [getOBPrivacyPresenterClass() presenterForPrivacySplashWithIdentifier:privacyBundleIdentifier];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
@@ -2531,15 +2531,15 @@ void __82__PUIProblemReportingController_setShouldShareIdentityVerificationData_
     aBlock[3] = &unk_279BA13A8;
     objc_copyWeak(&v24, &location);
     v16 = _Block_copy(aBlock);
-    v17 = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
-    [v17 registerForUpdatesWithHandler:v16];
+    bankConnectAnalyticsConsentCoordinator = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
+    [bankConnectAnalyticsConsentCoordinator registerForUpdatesWithHandler:v16];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
   }
 
-  v18 = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
-  if ([v18 showPreference])
+  bankConnectAnalyticsConsentCoordinator2 = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
+  if ([bankConnectAnalyticsConsentCoordinator2 showPreference])
   {
     v19 = self->_bankConnectDataSpecifiers;
   }
@@ -2575,30 +2575,30 @@ void __58__PUIProblemReportingController_bankConnectDataSpecifiers__block_invoke
   }
 }
 
-- (id)shouldShareBankConnectDataForSpecifier:(id)a3
+- (id)shouldShareBankConnectDataForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "shouldShare")}];
+  bankConnectAnalyticsConsentCoordinator = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
+  v5 = [v3 numberWithBool:{objc_msgSend(bankConnectAnalyticsConsentCoordinator, "shouldShare")}];
 
   return v5;
 }
 
-- (void)setShouldShareBankConnectData:(id)a3 specifier:(id)a4
+- (void)setShouldShareBankConnectData:(id)data specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  dataCopy = data;
+  specifierCopy = specifier;
+  bOOLValue = [dataCopy BOOLValue];
   objc_initWeak(&location, self);
-  v9 = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
+  bankConnectAnalyticsConsentCoordinator = [(PUIProblemReportingController *)self bankConnectAnalyticsConsentCoordinator];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__PUIProblemReportingController_setShouldShareBankConnectData_specifier___block_invoke;
   v11[3] = &unk_279BA13F8;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = specifierCopy;
   v12 = v10;
-  [v9 setAnalyticsConsent:v8 completion:v11];
+  [bankConnectAnalyticsConsentCoordinator setAnalyticsConsent:bOOLValue completion:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -2672,31 +2672,31 @@ void __73__PUIProblemReportingController_setShouldShareBankConnectData_specifier
   return fitnessPlusAnalyticsConsentCoordinator;
 }
 
-- (id)shouldShareFitnessPlusDataForSpecifier:(id)a3
+- (id)shouldShareFitnessPlusDataForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PUIProblemReportingController *)self fitnessPlusAnalyticsConsentCoordinator];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "fetchAnalyticsConsent")}];
+  fitnessPlusAnalyticsConsentCoordinator = [(PUIProblemReportingController *)self fitnessPlusAnalyticsConsentCoordinator];
+  v5 = [v3 numberWithBool:{objc_msgSend(fitnessPlusAnalyticsConsentCoordinator, "fetchAnalyticsConsent")}];
 
   return v5;
 }
 
-- (void)setShouldShareFitnessPlusData:(id)a3 specifier:(id)a4
+- (void)setShouldShareFitnessPlusData:(id)data specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  dataCopy = data;
+  specifierCopy = specifier;
+  bOOLValue = [dataCopy BOOLValue];
   objc_initWeak(&location, self);
-  v9 = [(PUIProblemReportingController *)self fitnessPlusAnalyticsConsentCoordinator];
+  fitnessPlusAnalyticsConsentCoordinator = [(PUIProblemReportingController *)self fitnessPlusAnalyticsConsentCoordinator];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__PUIProblemReportingController_setShouldShareFitnessPlusData_specifier___block_invoke;
   v11[3] = &unk_279BA1448;
   objc_copyWeak(&v13, &location);
-  v14 = v8;
-  v10 = v7;
+  v14 = bOOLValue;
+  v10 = specifierCopy;
   v12 = v10;
-  [v9 setAnalyticsConsent:v8 completion:v11];
+  [fitnessPlusAnalyticsConsentCoordinator setAnalyticsConsent:bOOLValue completion:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -2735,18 +2735,18 @@ void __73__PUIProblemReportingController_setShouldShareFitnessPlusData_specifier
 
 - (BOOL)shouldShowFitnessPlusSpecifiers
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"shouldShowFitnessPlusSpecifiers"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"shouldShowFitnessPlusSpecifiers"];
 
-  v5 = [(PUIProblemReportingController *)self fitnessPlusAnalyticsConsentCoordinator];
+  fitnessPlusAnalyticsConsentCoordinator = [(PUIProblemReportingController *)self fitnessPlusAnalyticsConsentCoordinator];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__PUIProblemReportingController_shouldShowFitnessPlusSpecifiers__block_invoke;
   v7[3] = &unk_279BA1470;
   v10 = v4;
   v8 = @"shouldShowFitnessPlusSpecifiers";
-  v9 = self;
-  [v5 fetchSubscriptionStatusWithCompletion:v7];
+  selfCopy = self;
+  [fitnessPlusAnalyticsConsentCoordinator fetchSubscriptionStatusWithCompletion:v7];
 
   return v4;
 }
@@ -2769,21 +2769,21 @@ void __64__PUIProblemReportingController_shouldShowFitnessPlusSpecifiers__block_
   }
 }
 
-- (id)shouldShareHealthDataForSpecifier:(id)a3
+- (id)shouldShareHealthDataForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v3 numberWithInt:{objc_msgSend(v4, "effectiveBoolValueForSetting:", *MEMORY[0x277D25F18]) == 1}];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [v3 numberWithInt:{objc_msgSend(mEMORY[0x277D262A0], "effectiveBoolValueForSetting:", *MEMORY[0x277D25F18]) == 1}];
 
   return v5;
 }
 
-- (void)setShouldShareHealthData:(id)a3 specifier:(id)a4
+- (void)setShouldShareHealthData:(id)data specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  specifierCopy = specifier;
   HealthAppAnalyticsStoreClass = getHealthAppAnalyticsStoreClass();
-  v8 = [v5 BOOLValue];
+  bOOLValue = [dataCopy BOOLValue];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -2806,7 +2806,7 @@ void __64__PUIProblemReportingController_shouldShowFitnessPlusSpecifiers__block_
     _Unwind_Resume(v12);
   }
 
-  [HealthAppAnalyticsStoreClass setUserDidAccept:v8 currentAgreement:*v9 completion:&__block_literal_global_965];
+  [HealthAppAnalyticsStoreClass setUserDidAccept:bOOLValue currentAgreement:*v9 completion:&__block_literal_global_965];
 }
 
 void __68__PUIProblemReportingController_setShouldShareHealthData_specifier___block_invoke(uint64_t a1, char a2, void *a3)
@@ -2855,8 +2855,8 @@ void __68__PUIProblemReportingController_setShouldShareHealthData_specifier___bl
     v14 = [v12 preferenceSpecifierNamed:v13 target:self set:sel_setShouldShareHealthRecordsData_specifier_ get:sel_shouldShareHealthRecordsDataForSpecifier_ detail:0 cell:6 edit:0];
 
     [v14 setProperty:@"SHARE_HEALTH_RECORDS_DATA" forKey:*MEMORY[0x277D3FFB8]];
-    v15 = [MEMORY[0x277D262A0] sharedConnection];
-    LOBYTE(v13) = [v15 isDiagnosticSubmissionModificationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    LOBYTE(v13) = [mEMORY[0x277D262A0] isDiagnosticSubmissionModificationAllowed];
 
     if ((v13 & 1) == 0)
     {
@@ -2910,9 +2910,9 @@ void __68__PUIProblemReportingController_setShouldShareHealthData_specifier___bl
   return healthStore;
 }
 
-- (void)updateHealthRecordsPreferenceForSpecifierID:(id)a3
+- (void)updateHealthRecordsPreferenceForSpecifierID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
   v18 = 0;
   v19 = &v18;
@@ -2933,8 +2933,8 @@ void __68__PUIProblemReportingController_setShouldShareHealthData_specifier___bl
   v6 = v5;
   _Block_object_dispose(&v18, 8);
   v7 = [v5 alloc];
-  v8 = [(PUIProblemReportingController *)self healthStore];
-  v9 = [v7 initWithHealthStore:v8];
+  healthStore = [(PUIProblemReportingController *)self healthStore];
+  v9 = [v7 initWithHealthStore:healthStore];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2944,7 +2944,7 @@ void __68__PUIProblemReportingController_setShouldShareHealthData_specifier___bl
   v12[4] = self;
   v10 = v9;
   v13 = v10;
-  v11 = v4;
+  v11 = dCopy;
   v14 = v11;
   [v10 fetchCurrentDeviceSupportsImproveHealthRecordsDataSubmissionOptionWithCompletion:v12];
 
@@ -3071,21 +3071,21 @@ void __77__PUIProblemReportingController_updateHealthRecordsPreferenceForSpecifi
   [v3 reloadSpecifierID:*(a1 + 32) animated:1];
 }
 
-- (id)shouldShareHealthRecordsDataForSpecifier:(id)a3
+- (id)shouldShareHealthRecordsDataForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PUIProblemReportingController *)self shouldShareHealthRecordsData];
+  shouldShareHealthRecordsData = [(PUIProblemReportingController *)self shouldShareHealthRecordsData];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:shouldShareHealthRecordsData];
 }
 
-- (void)setShouldShareHealthRecordsData:(id)a3 specifier:(id)a4
+- (void)setShouldShareHealthRecordsData:(id)data specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  specifierCopy = specifier;
   objc_initWeak(location, self);
   HealthAppAnalyticsStoreClass = getHealthAppAnalyticsStoreClass();
-  v9 = [v6 BOOLValue];
+  bOOLValue = [dataCopy BOOLValue];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -3113,12 +3113,12 @@ void __77__PUIProblemReportingController_updateHealthRecordsPreferenceForSpecifi
     v16[1] = 3221225472;
     v16[2] = __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifier___block_invoke;
     v16[3] = &unk_279BA1530;
-    v14 = v6;
+    v14 = dataCopy;
     v17 = v14;
     objc_copyWeak(&v19, location);
-    v15 = v7;
+    v15 = specifierCopy;
     v18 = v15;
-    [HealthAppAnalyticsStoreClass setUserDidAccept:v9 currentAgreement:v13 completion:v16];
+    [HealthAppAnalyticsStoreClass setUserDidAccept:bOOLValue currentAgreement:v13 completion:v16];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(location);
@@ -3218,8 +3218,8 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
     v14 = [v12 preferenceSpecifierNamed:v13 target:self set:sel_setShouldShareWheelchairData_specifier_ get:sel_shouldShareWheelchairDataForSpecifier_ detail:0 cell:6 edit:0];
 
     [v14 setProperty:@"SHARE_WHEELCHAIR_DATA" forKey:*MEMORY[0x277D3FFB8]];
-    v15 = [MEMORY[0x277D262A0] sharedConnection];
-    LOBYTE(v13) = [v15 isDiagnosticSubmissionModificationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    LOBYTE(v13) = [mEMORY[0x277D262A0] isDiagnosticSubmissionModificationAllowed];
 
     if ((v13 & 1) == 0)
     {
@@ -3240,23 +3240,23 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
   return wheelchairDataSpecifiers;
 }
 
-- (id)shouldShareWheelchairDataForSpecifier:(id)a3
+- (id)shouldShareWheelchairDataForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v3 numberWithInt:{objc_msgSend(v4, "effectiveBoolValueForSetting:", *MEMORY[0x277D260F8]) == 1}];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [v3 numberWithInt:{objc_msgSend(mEMORY[0x277D262A0], "effectiveBoolValueForSetting:", *MEMORY[0x277D260F8]) == 1}];
 
   return v5;
 }
 
-- (void)setShouldShareWheelchairData:(id)a3 specifier:(id)a4
+- (void)setShouldShareWheelchairData:(id)data specifier:(id)specifier
 {
   v4 = MEMORY[0x277D262A0];
-  v5 = a3;
-  v7 = [v4 sharedConnection];
-  v6 = [v5 BOOLValue];
+  dataCopy = data;
+  sharedConnection = [v4 sharedConnection];
+  bOOLValue = [dataCopy BOOLValue];
 
-  [v7 setBoolValue:v6 forSetting:*MEMORY[0x277D260F8]];
+  [sharedConnection setBoolValue:bOOLValue forSetting:*MEMORY[0x277D260F8]];
 }
 
 - (NSArray)handwashingDataSpecifiers
@@ -3287,10 +3287,10 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
     v14 = [v12 preferenceSpecifierNamed:v13 target:self set:sel_setShouldShareHandwashingData_specifier_ get:sel_shouldShareHandwashingDataForSpecifier_ detail:0 cell:6 edit:0];
 
     [v14 setProperty:@"SHARE_WHEELCHAIR_DATA" forKey:*MEMORY[0x277D3FFB8]];
-    v15 = [MEMORY[0x277D262A0] sharedConnection];
-    v16 = [v15 isDiagnosticSubmissionModificationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isDiagnosticSubmissionModificationAllowed = [mEMORY[0x277D262A0] isDiagnosticSubmissionModificationAllowed];
 
-    if ((v16 & 1) == 0)
+    if ((isDiagnosticSubmissionModificationAllowed & 1) == 0)
     {
       [v14 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     }
@@ -3309,23 +3309,23 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
   return handwashingDataSpecifiers;
 }
 
-- (id)shouldShareHandwashingDataForSpecifier:(id)a3
+- (id)shouldShareHandwashingDataForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v3 numberWithInt:{objc_msgSend(v4, "effectiveBoolValueForSetting:", @"allowHandWashingDataSubmission"}];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [v3 numberWithInt:{objc_msgSend(mEMORY[0x277D262A0], "effectiveBoolValueForSetting:", @"allowHandWashingDataSubmission"}];
 
   return v5;
 }
 
-- (void)setShouldShareHandwashingData:(id)a3 specifier:(id)a4
+- (void)setShouldShareHandwashingData:(id)data specifier:(id)specifier
 {
   v4 = MEMORY[0x277D262A0];
-  v5 = a3;
-  v7 = [v4 sharedConnection];
-  v6 = [v5 BOOLValue];
+  dataCopy = data;
+  sharedConnection = [v4 sharedConnection];
+  bOOLValue = [dataCopy BOOLValue];
 
-  [v7 setBoolValue:v6 forSetting:@"allowHandWashingDataSubmission"];
+  [sharedConnection setBoolValue:bOOLValue forSetting:@"allowHandWashingDataSubmission"];
 }
 
 - (NSArray)safetyDataSpecifiers
@@ -3333,10 +3333,10 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
   v22[2] = *MEMORY[0x277D85DE8];
   if (!self->_safetyDataSpecifiers)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 != 1)
+    if (userInterfaceIdiom != 1)
     {
       v5 = PUI_LocalizedStringForProblemReporting(@"SAFETY_DATA_EXPLANATION");
       v6 = PUI_LocalizedStringForProblemReporting(@"SAFETY_DATA_LINK");
@@ -3360,8 +3360,8 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
       v15 = [v13 preferenceSpecifierNamed:v14 target:self set:sel_setShouldShareSafetyData_specifier_ get:sel_shouldShareSafetyDataForSpecifier_ detail:0 cell:6 edit:0];
 
       [v15 setProperty:@"SHARE_SAFETY_DATA" forKey:*MEMORY[0x277D3FFB8]];
-      v16 = [MEMORY[0x277D262A0] sharedConnection];
-      LOBYTE(v14) = [v16 isDiagnosticSubmissionModificationAllowed];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      LOBYTE(v14) = [mEMORY[0x277D262A0] isDiagnosticSubmissionModificationAllowed];
 
       if ((v14 & 1) == 0)
       {
@@ -3382,23 +3382,23 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
   return v19;
 }
 
-- (id)shouldShareSafetyDataForSpecifier:(id)a3
+- (id)shouldShareSafetyDataForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v3 numberWithInt:{objc_msgSend(v4, "effectiveBoolValueForSetting:", @"allowSafetyDataSubmission"}];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [v3 numberWithInt:{objc_msgSend(mEMORY[0x277D262A0], "effectiveBoolValueForSetting:", @"allowSafetyDataSubmission"}];
 
   return v5;
 }
 
-- (void)setShouldShareSafetyData:(id)a3 specifier:(id)a4
+- (void)setShouldShareSafetyData:(id)data specifier:(id)specifier
 {
   v4 = MEMORY[0x277D262A0];
-  v5 = a3;
-  v7 = [v4 sharedConnection];
-  v6 = [v5 BOOLValue];
+  dataCopy = data;
+  sharedConnection = [v4 sharedConnection];
+  bOOLValue = [dataCopy BOOLValue];
 
-  [v7 setBoolValue:v6 forSetting:@"allowSafetyDataSubmission"];
+  [sharedConnection setBoolValue:bOOLValue forSetting:@"allowSafetyDataSubmission"];
 }
 
 - (NSArray)improveARLocationAccuracySpecifiers
@@ -3433,16 +3433,16 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
     [v15 setProperty:@"IMPROVE_AR_LOCATION_ACCURACY_DATA" forKey:*MEMORY[0x277D3FFB8]];
     if (PSGEOVisualLocalizationCrowdsourcingIsAllowed())
     {
-      v16 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
       v17 = [(PUIProblemReportingController *)self improveARLocationAccuracyForSpecifier:v15];
-      v16 = [v17 BOOLValue];
+      bOOLValue = [v17 BOOLValue];
     }
 
-    v18 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+    v18 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     [v15 setProperty:v18 forKey:*MEMORY[0x277D3FF38]];
 
     v23[0] = v8;
@@ -3459,20 +3459,20 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
   return improveARLocationAccuracySpecifiers;
 }
 
-- (void)setImproveARLocationAccuracy:(id)a3 specifier:(id)a4
+- (void)setImproveARLocationAccuracy:(id)accuracy specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 BOOLValue] && (PSGEOVisualLocalizationCrowdsourcingIsAllowed() & 1) == 0)
+  accuracyCopy = accuracy;
+  specifierCopy = specifier;
+  if ([accuracyCopy BOOLValue] && (PSGEOVisualLocalizationCrowdsourcingIsAllowed() & 1) == 0)
   {
-    [v7 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-    v11 = [v7 identifier];
-    [(PUIProblemReportingController *)self reloadSpecifierID:v11];
+    [specifierCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    identifier = [specifierCopy identifier];
+    [(PUIProblemReportingController *)self reloadSpecifierID:identifier];
   }
 
   else
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [accuracyCopy BOOLValue];
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
@@ -3495,13 +3495,13 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
       _Unwind_Resume(v13);
     }
 
-    v9(v8);
+    v9(bOOLValue);
   }
 }
 
-- (id)improveARLocationAccuracyForSpecifier:(id)a3
+- (id)improveARLocationAccuracyForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = MEMORY[0x277CCABB0];
   v11 = 0;
   v12 = &v11;
@@ -3537,9 +3537,9 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
   if (!v4)
   {
     v5 = +[PUIProblemReportingController isProblemReportingEnabled];
-    v6 = [(PUIProblemReportingController *)self baseSpecifiers];
+    baseSpecifiers = [(PUIProblemReportingController *)self baseSpecifiers];
     v7 = [(PUIProblemReportingController *)self analyticsSpecifiersIncludingIndependentSpecifiers:1 includeDependentSpecifiers:v5];
-    v8 = [v6 arrayByAddingObjectsFromArray:v7];
+    v8 = [baseSpecifiers arrayByAddingObjectsFromArray:v7];
 
     v9 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v8;
@@ -3560,41 +3560,41 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
 
 - (id)shouldShareAppActivityWithAppDevelopers
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 hasAppAndAccessoryAnalyticsAllowedBeenSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  hasAppAndAccessoryAnalyticsAllowedBeenSet = [mEMORY[0x277D262A0] hasAppAndAccessoryAnalyticsAllowedBeenSet];
 
   v4 = MEMORY[0x277CCABB0];
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = v5;
-  if (v3)
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = mEMORY[0x277D262A0]2;
+  if (hasAppAndAccessoryAnalyticsAllowedBeenSet)
   {
-    [v4 numberWithBool:{objc_msgSend(v5, "isAppAndAccessoryAnalyticsAllowed")}];
+    [v4 numberWithBool:{objc_msgSend(mEMORY[0x277D262A0]2, "isAppAndAccessoryAnalyticsAllowed")}];
   }
 
   else
   {
-    [v4 numberWithInt:{objc_msgSend(v5, "effectiveBoolValueForSetting:", *MEMORY[0x277D25D00]) == 1}];
+    [v4 numberWithInt:{objc_msgSend(mEMORY[0x277D262A0]2, "effectiveBoolValueForSetting:", *MEMORY[0x277D25D00]) == 1}];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)setShouldShareAppActivityWithAppDevelopers:(id)a3 specifier:(id)a4
+- (void)setShouldShareAppActivityWithAppDevelopers:(id)developers specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [MEMORY[0x277D262A0] sharedConnection];
-  [v6 setBoolValue:v5 forSetting:*MEMORY[0x277D25D00]];
+  bOOLValue = [developers BOOLValue];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setBoolValue:bOOLValue forSetting:*MEMORY[0x277D25D00]];
 
   if ([(PUIProblemReportingController *)self isAppAndAccessoryAnalyticsAllowedFeatureEnabled])
   {
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    v8 = [v7 hasAppAndAccessoryAnalyticsAllowedBeenSet];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    hasAppAndAccessoryAnalyticsAllowedBeenSet = [mEMORY[0x277D262A0]2 hasAppAndAccessoryAnalyticsAllowedBeenSet];
 
-    v9 = [MEMORY[0x277D262A0] sharedConnection];
-    [v9 setBoolValue:v5 forSetting:*MEMORY[0x277D25D08]];
+    mEMORY[0x277D262A0]3 = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0]3 setBoolValue:bOOLValue forSetting:*MEMORY[0x277D25D08]];
 
-    if ((v8 & 1) == 0)
+    if ((hasAppAndAccessoryAnalyticsAllowedBeenSet & 1) == 0)
     {
       appActivitySpecifiers = self->_appActivitySpecifiers;
       self->_appActivitySpecifiers = 0;
@@ -3604,15 +3604,15 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PUIProblemReportingController *)self specifierAtIndex:[(PUIProblemReportingController *)self indexForIndexPath:v5]];
-  v7 = [v6 identifier];
+  pathCopy = path;
+  v6 = [(PUIProblemReportingController *)self specifierAtIndex:[(PUIProblemReportingController *)self indexForIndexPath:pathCopy]];
+  identifier = [v6 identifier];
 
-  if ([v7 isEqualToString:@"START_DIAGNOSTICS_WITH_APPLE_SUPPORT"])
+  if ([identifier isEqualToString:@"START_DIAGNOSTICS_WITH_APPLE_SUPPORT"])
   {
-    v8 = [(PUIProblemReportingController *)self specifierAtIndex:[(PUIProblemReportingController *)self indexForIndexPath:v5]];
+    v8 = [(PUIProblemReportingController *)self specifierAtIndex:[(PUIProblemReportingController *)self indexForIndexPath:pathCopy]];
     [(PUIProblemReportingController *)self launchDiagnosticsSession:v8];
 
     v9 = 0;
@@ -3620,7 +3620,7 @@ void __75__PUIProblemReportingController_setShouldShareHealthRecordsData_specifi
 
   else
   {
-    v9 = v5;
+    v9 = pathCopy;
   }
 
   return v9;

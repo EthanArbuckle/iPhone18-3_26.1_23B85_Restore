@@ -1,28 +1,28 @@
 @interface EligibilityEngine
 + (id)sharedInstance;
-- (BOOL)_onQueue_saveDomainAnswerOutputsWithError:(id *)a3;
-- (BOOL)_onQueue_saveDomainsWithError:(id *)a3;
-- (BOOL)_onQueue_serializeOverrideDataToDiskWithError:(id *)a3;
-- (BOOL)_sendNotification:(id)a3;
-- (BOOL)_serializeObject:(id)a3 toURL:(id)a4 withError:(id *)a5;
-- (BOOL)dumpToDirectory:(id)a3 withError:(id *)a4;
-- (BOOL)forceDomainAnswer:(unint64_t)a3 answer:(unint64_t)a4 context:(id)a5 withError:(id *)a6;
-- (BOOL)forceDomainSetAnswers:(unint64_t)a3 answer:(unint64_t)a4 context:(id)a5 withError:(id *)a6;
-- (BOOL)resetAllDomainsWithError:(id *)a3;
-- (BOOL)resetDomain:(unint64_t)a3 withError:(id *)a4;
-- (BOOL)setInput:(unint64_t)a3 to:(id)a4 status:(unint64_t)a5 fromProcess:(id)a6 withError:(id *)a7;
+- (BOOL)_onQueue_saveDomainAnswerOutputsWithError:(id *)error;
+- (BOOL)_onQueue_saveDomainsWithError:(id *)error;
+- (BOOL)_onQueue_serializeOverrideDataToDiskWithError:(id *)error;
+- (BOOL)_sendNotification:(id)notification;
+- (BOOL)_serializeObject:(id)object toURL:(id)l withError:(id *)error;
+- (BOOL)dumpToDirectory:(id)directory withError:(id *)error;
+- (BOOL)forceDomainAnswer:(unint64_t)answer answer:(unint64_t)a4 context:(id)context withError:(id *)error;
+- (BOOL)forceDomainSetAnswers:(unint64_t)answers answer:(unint64_t)answer context:(id)context withError:(id *)error;
+- (BOOL)resetAllDomainsWithError:(id *)error;
+- (BOOL)resetDomain:(unint64_t)domain withError:(id *)error;
+- (BOOL)setInput:(unint64_t)input to:(id)to status:(unint64_t)status fromProcess:(id)process withError:(id *)error;
 - (EligibilityEngine)init;
-- (id)_decodeObjectOfClasses:(id)a3 atURL:(id)a4 withError:(id *)a5;
+- (id)_decodeObjectOfClasses:(id)classes atURL:(id)l withError:(id *)error;
 - (id)_loadCurrentEligibilityOnDisk;
-- (id)_loadOverridesWithError:(id *)a3;
-- (id)_onQueue_finalEligibilityDictionaryForDomain:(id)a3;
+- (id)_loadOverridesWithError:(id *)error;
+- (id)_onQueue_finalEligibilityDictionaryForDomain:(id)domain;
 - (id)_onQueue_urlToDomainData;
-- (id)internalStateWithError:(id *)a3;
-- (id)stateDumpWithError:(id *)a3;
-- (void)_onQueue_handleRecompute:(id)a3;
+- (id)internalStateWithError:(id *)error;
+- (id)stateDumpWithError:(id *)error;
+- (void)_onQueue_handleRecompute:(id)recompute;
 - (void)_onQueue_notifySADSupportFramework;
 - (void)_onQueue_recomputeAllDomainAnswers;
-- (void)_onQueue_recomputeAnswerForDomain:(id)a3;
+- (void)_onQueue_recomputeAnswerForDomain:(id)domain;
 - (void)_onQueue_sendNotifications;
 - (void)asyncUpdateAndRecomputeAllAnswers;
 - (void)recomputeAllDomainAnswers;
@@ -34,20 +34,20 @@
 - (void)scheduleDailyRecompute
 {
   v3 = +[BGSystemTaskScheduler sharedScheduler];
-  v4 = [(EligibilityEngine *)self internalQueue];
+  internalQueue = [(EligibilityEngine *)self internalQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000294A4;
   v5[3] = &unk_100046A68;
   v5[4] = self;
-  [v3 registerForTaskWithIdentifier:@"com.apple.eligibility.recompute" usingQueue:v4 launchHandler:v5];
+  [v3 registerForTaskWithIdentifier:@"com.apple.eligibility.recompute" usingQueue:internalQueue launchHandler:v5];
 }
 
-- (void)_onQueue_handleRecompute:(id)a3
+- (void)_onQueue_handleRecompute:(id)recompute
 {
-  v4 = a3;
-  v5 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  recomputeCopy = recompute;
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   if (qword_10005D560 != -1)
   {
@@ -61,7 +61,7 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "com.apple.os_eligibility.DailyRecompute", "", buf, 2u);
   }
 
-  v7 = [v4 identifier];
+  identifier = [recomputeCopy identifier];
   *buf = 0;
   v21 = buf;
   v22 = 0x2020000000;
@@ -70,10 +70,10 @@
   v17[1] = 3221225472;
   v17[2] = sub_100029898;
   v17[3] = &unk_100046A18;
-  v8 = v7;
+  v8 = identifier;
   v18 = v8;
   v19 = buf;
-  [v4 setExpirationHandler:v17];
+  [recomputeCopy setExpirationHandler:v17];
   v9 = sub_10001F638();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -105,7 +105,7 @@
   {
 LABEL_12:
     v16 = 0;
-    v12 = [v4 setTaskExpiredWithRetryAfter:&v16 error:0.0];
+    v12 = [recomputeCopy setTaskExpiredWithRetryAfter:&v16 error:0.0];
     v13 = v16;
     if ((v12 & 1) == 0)
     {
@@ -119,7 +119,7 @@ LABEL_12:
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s: Failed to expire task with error: %@", v24, 0x16u);
       }
 
-      [v4 setTaskCompleted];
+      [recomputeCopy setTaskCompleted];
     }
   }
 
@@ -137,7 +137,7 @@ LABEL_12:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v15, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "com.apple.os_eligibility.DailyRecompute", "", v24, 2u);
     }
 
-    [v4 setTaskCompleted];
+    [recomputeCopy setTaskCompleted];
     v13 = 0;
   }
 
@@ -146,18 +146,18 @@ LABEL_12:
 
 - (void)asyncUpdateAndRecomputeAllAnswers
 {
-  v3 = [(EligibilityEngine *)self internalQueue];
+  internalQueue = [(EligibilityEngine *)self internalQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100029A34;
   v4[3] = &unk_1000469A0;
   v4[4] = self;
-  sub_100025F54(v3, v4);
+  sub_100025F54(internalQueue, v4);
 }
 
-- (BOOL)dumpToDirectory:(id)a3 withError:(id *)a4
+- (BOOL)dumpToDirectory:(id)directory withError:(id *)error
 {
-  v6 = [a3 URLByAppendingPathComponent:@"state.plist" isDirectory:0];
+  v6 = [directory URLByAppendingPathComponent:@"state.plist" isDirectory:0];
   v17 = 0;
   v7 = [(EligibilityEngine *)self stateDumpWithError:&v17];
   v8 = v17;
@@ -200,11 +200,11 @@ LABEL_12:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v9;
     v12 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -218,52 +218,52 @@ LABEL_13:
   return v12;
 }
 
-- (id)stateDumpWithError:(id *)a3
+- (id)stateDumpWithError:(id *)error
 {
   v4 = objc_opt_new();
-  v5 = [(EligibilityEngine *)self internalQueue];
+  internalQueue = [(EligibilityEngine *)self internalQueue];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100029CFC;
   v12 = &unk_1000469C8;
   v13 = v4;
-  v14 = self;
+  selfCopy = self;
   v6 = v4;
-  dispatch_sync(v5, &v9);
+  dispatch_sync(internalQueue, &v9);
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (id)internalStateWithError:(id *)a3
+- (id)internalStateWithError:(id *)error
 {
   v4 = objc_opt_new();
-  v5 = [(EligibilityEngine *)self internalQueue];
+  internalQueue = [(EligibilityEngine *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002A114;
   block[3] = &unk_1000469A0;
   v10 = v4;
   v6 = v4;
-  dispatch_sync(v5, block);
+  dispatch_sync(internalQueue, block);
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (BOOL)forceDomainSetAnswers:(unint64_t)a3 answer:(unint64_t)a4 context:(id)a5 withError:(id *)a6
+- (BOOL)forceDomainSetAnswers:(unint64_t)answers answer:(unint64_t)answer context:(id)context withError:(id *)error
 {
-  v10 = a5;
+  contextCopy = context;
   v11 = +[GlobalConfiguration sharedInstance];
-  v12 = [v11 supportsForcedAnswers];
+  supportsForcedAnswers = [v11 supportsForcedAnswers];
 
-  if (v12)
+  if (supportsForcedAnswers)
   {
-    if (v10)
+    if (contextCopy)
     {
-      type = xpc_get_type(v10);
+      type = xpc_get_type(contextCopy);
       if (type != &_xpc_type_dictionary)
       {
         v14 = type;
@@ -293,24 +293,24 @@ LABEL_13:
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v29 = 0;
-    v20 = [(EligibilityEngine *)self internalQueue];
+    internalQueue = [(EligibilityEngine *)self internalQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002A4B4;
     block[3] = &unk_100046A40;
-    v26 = a3;
-    v27 = a4;
+    answersCopy = answers;
+    answerCopy = answer;
     block[4] = self;
     v24 = v19;
     v25 = buf;
     v21 = v19;
-    dispatch_sync(v20, block);
+    dispatch_sync(internalQueue, block);
 
     v18 = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
 
     v16 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -324,14 +324,14 @@ LABEL_13:
     *buf = 136315394;
     *&buf[4] = "[EligibilityEngine forceDomainSetAnswers:answer:context:withError:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = answers;
     _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s: Attempting to force domain set %llu on a device that doesn't support forcing an answer", buf, 0x16u);
   }
 
   v16 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
 LABEL_10:
   v18 = 0;
-  if (!a6)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -340,7 +340,7 @@ LABEL_15:
   if ((v18 & 1) == 0)
   {
     v16 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
 LABEL_17:
@@ -348,20 +348,20 @@ LABEL_17:
   return v18 & 1;
 }
 
-- (BOOL)forceDomainAnswer:(unint64_t)a3 answer:(unint64_t)a4 context:(id)a5 withError:(id *)a6
+- (BOOL)forceDomainAnswer:(unint64_t)answer answer:(unint64_t)a4 context:(id)context withError:(id *)error
 {
-  v10 = a5;
-  if (a3 - 1 >= 0x85)
+  contextCopy = context;
+  if (answer - 1 >= 0x85)
   {
     v17 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     goto LABEL_12;
   }
 
-  v11 = off_100046010[a3 - 1];
+  v11 = off_100046010[answer - 1];
   v12 = +[GlobalConfiguration sharedInstance];
-  v13 = [v12 supportsForcedAnswers];
+  supportsForcedAnswers = [v12 supportsForcedAnswers];
 
-  if ((v13 & 1) == 0)
+  if ((supportsForcedAnswers & 1) == 0)
   {
     v18 = sub_10001F638();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -376,7 +376,7 @@ LABEL_17:
     v17 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
 LABEL_12:
     v19 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -384,9 +384,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v10)
+  if (contextCopy)
   {
-    type = xpc_get_type(v10);
+    type = xpc_get_type(contextCopy);
     if (type != &_xpc_type_dictionary)
     {
       v15 = type;
@@ -416,24 +416,24 @@ LABEL_12:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v30 = 0;
-  v22 = [(EligibilityEngine *)self internalQueue];
+  internalQueue = [(EligibilityEngine *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002AA34;
   block[3] = &unk_100046A40;
-  v27 = a3;
+  answerCopy = answer;
   v28 = a4;
   block[4] = self;
   v25 = v21;
   v26 = buf;
   v23 = v21;
-  dispatch_sync(v22, block);
+  dispatch_sync(internalQueue, block);
 
   v19 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
 
   v17 = 0;
-  if (!a6)
+  if (!error)
   {
     goto LABEL_15;
   }
@@ -442,7 +442,7 @@ LABEL_13:
   if ((v19 & 1) == 0)
   {
     v17 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
 LABEL_15:
@@ -450,25 +450,25 @@ LABEL_15:
   return v19 & 1;
 }
 
-- (BOOL)resetAllDomainsWithError:(id *)a3
+- (BOOL)resetAllDomainsWithError:(id *)error
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   v5 = +[GlobalConfiguration sharedInstance];
-  v6 = [v5 supportsForcedAnswers];
+  supportsForcedAnswers = [v5 supportsForcedAnswers];
 
-  if (v6)
+  if (supportsForcedAnswers)
   {
-    v7 = [(EligibilityEngine *)self internalQueue];
+    internalQueue = [(EligibilityEngine *)self internalQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10002AC6C;
     v12[3] = &unk_100046A18;
     v12[4] = self;
     v12[5] = &v13;
-    dispatch_sync(v7, v12);
+    dispatch_sync(internalQueue, v12);
 
     v8 = 0;
   }
@@ -487,10 +487,10 @@ LABEL_15:
   }
 
   v10 = *(v14 + 24);
-  if (a3 && (v14[3] & 1) == 0)
+  if (error && (v14[3] & 1) == 0)
   {
     v8 = v8;
-    *a3 = v8;
+    *error = v8;
     v10 = *(v14 + 24);
   }
 
@@ -498,19 +498,19 @@ LABEL_15:
   return v10 & 1;
 }
 
-- (BOOL)resetDomain:(unint64_t)a3 withError:(id *)a4
+- (BOOL)resetDomain:(unint64_t)domain withError:(id *)error
 {
-  if (a3 - 1 >= 0x85)
+  if (domain - 1 >= 0x85)
   {
     v12 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     goto LABEL_9;
   }
 
-  v7 = off_100046010[a3 - 1];
+  v7 = off_100046010[domain - 1];
   v8 = +[GlobalConfiguration sharedInstance];
-  v9 = [v8 supportsForcedAnswers];
+  supportsForcedAnswers = [v8 supportsForcedAnswers];
 
-  if ((v9 & 1) == 0)
+  if ((supportsForcedAnswers & 1) == 0)
   {
     v13 = sub_10001F638();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -525,7 +525,7 @@ LABEL_15:
     v12 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
 LABEL_9:
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -537,20 +537,20 @@ LABEL_9:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v17 = 0;
-  v10 = [(EligibilityEngine *)self internalQueue];
+  internalQueue = [(EligibilityEngine *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002AF14;
   block[3] = &unk_1000469F0;
   block[5] = buf;
-  block[6] = a3;
+  block[6] = domain;
   block[4] = self;
-  dispatch_sync(v10, block);
+  dispatch_sync(internalQueue, block);
 
   v11 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
   v12 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -559,7 +559,7 @@ LABEL_10:
   if ((v11 & 1) == 0)
   {
     v12 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_12:
@@ -567,19 +567,19 @@ LABEL_12:
   return v11 & 1;
 }
 
-- (BOOL)setInput:(unint64_t)a3 to:(id)a4 status:(unint64_t)a5 fromProcess:(id)a6 withError:(id *)a7
+- (BOOL)setInput:(unint64_t)input to:(id)to status:(unint64_t)status fromProcess:(id)process withError:(id *)error
 {
-  v12 = a4;
-  v13 = a6;
-  if (a3 > 13)
+  toCopy = to;
+  processCopy = process;
+  if (input > 13)
   {
-    if (a3 > 15)
+    if (input > 15)
     {
-      if (a3 != 16)
+      if (input != 16)
       {
-        if (a3 == 17)
+        if (input == 17)
         {
-          v14 = [[ShiptoLocationInput alloc] initWithShiptoLocation:v12 status:a5 process:v13];
+          v14 = [[ShiptoLocationInput alloc] initWithShiptoLocation:toCopy status:status process:processCopy];
           if (!v14)
           {
             goto LABEL_23;
@@ -596,9 +596,9 @@ LABEL_12:
 
     else
     {
-      if (a3 != 14)
+      if (input != 14)
       {
-        v14 = [[BirthdateInput alloc] initWithDate:v12 status:a5 process:v13];
+        v14 = [[BirthdateInput alloc] initWithDate:toCopy status:status process:processCopy];
         if (!v14)
         {
           goto LABEL_23;
@@ -610,7 +610,7 @@ LABEL_12:
       v15 = InitialSetupLocationInput;
     }
 
-    v14 = [[v15 alloc] initWithLocations:v12 status:a5 process:v13];
+    v14 = [[v15 alloc] initWithLocations:toCopy status:status process:processCopy];
     if (v14)
     {
       goto LABEL_27;
@@ -631,13 +631,13 @@ LABEL_23:
     goto LABEL_37;
   }
 
-  if (a3 > 3)
+  if (input > 3)
   {
-    if (a3 != 4)
+    if (input != 4)
     {
-      if (a3 == 9)
+      if (input == 9)
       {
-        v14 = [[GreymatterQueueInput alloc] initOnQueue:v12 status:a5 process:v13];
+        v14 = [[GreymatterQueueInput alloc] initOnQueue:toCopy status:status process:processCopy];
         if (!v14)
         {
           goto LABEL_23;
@@ -656,7 +656,7 @@ LABEL_31:
       *buf = 136315394;
       v36 = "[EligibilityEngine setInput:to:status:fromProcess:withError:]";
       v37 = 2048;
-      v38 = a3;
+      inputCopy = input;
       v17 = "%s: Unsupported eligibility input type %llu";
       v18 = v16;
       v19 = 22;
@@ -665,11 +665,11 @@ LABEL_37:
 LABEL_32:
 
       v26 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      if (a7)
+      if (error)
       {
         v26 = v26;
         v27 = 0;
-        *a7 = v26;
+        *error = v26;
       }
 
       else
@@ -680,7 +680,7 @@ LABEL_32:
       goto LABEL_35;
     }
 
-    v14 = [[DeviceLocaleInput alloc] initWithDeviceLocale:v12 status:a5 process:v13];
+    v14 = [[DeviceLocaleInput alloc] initWithDeviceLocale:toCopy status:status process:processCopy];
     if (v14)
     {
       goto LABEL_27;
@@ -689,9 +689,9 @@ LABEL_32:
     goto LABEL_23;
   }
 
-  if (a3 == 1)
+  if (input == 1)
   {
-    v14 = [[LocatedCountryInput alloc] initWithCountryCodes:v12 status:a5 process:v13];
+    v14 = [[LocatedCountryInput alloc] initWithCountryCodes:toCopy status:status process:processCopy];
     if (!v14)
     {
       goto LABEL_23;
@@ -700,12 +700,12 @@ LABEL_32:
     goto LABEL_27;
   }
 
-  if (a3 != 2)
+  if (input != 2)
   {
     goto LABEL_31;
   }
 
-  v14 = [[CountryBillingInput alloc] initWithBillingCountry:v12 status:a5 process:v13];
+  v14 = [[CountryBillingInput alloc] initWithBillingCountry:toCopy status:status process:processCopy];
   if (!v14)
   {
     goto LABEL_23;
@@ -718,21 +718,21 @@ LABEL_27:
   v32 = &unk_1000469C8;
   v20 = v14;
   v33 = v20;
-  v34 = self;
+  selfCopy = self;
   v21 = objc_retainBlock(&v29);
   v22 = [GlobalConfiguration sharedInstance:v29];
-  v23 = [v22 testMode];
+  testMode = [v22 testMode];
 
-  v24 = [(EligibilityEngine *)self internalQueue];
-  v25 = v24;
-  if (v23)
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  v25 = internalQueue;
+  if (testMode)
   {
-    dispatch_sync(v24, v21);
+    dispatch_sync(internalQueue, v21);
   }
 
   else
   {
-    sub_100025F54(v24, v21);
+    sub_100025F54(internalQueue, v21);
   }
 
   v26 = 0;
@@ -744,11 +744,11 @@ LABEL_35:
 
 - (void)_onQueue_recomputeAllDomainAnswers
 {
-  v3 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v4 = +[MobileAssetManager sharedInstance];
-  v5 = [v4 domains];
+  domains = [v4 domains];
 
   if (qword_10005D560 != -1)
   {
@@ -766,7 +766,7 @@ LABEL_35:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = domains;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v8)
   {
@@ -824,56 +824,56 @@ LABEL_35:
   }
 }
 
-- (void)_onQueue_recomputeAnswerForDomain:(id)a3
+- (void)_onQueue_recomputeAnswerForDomain:(id)domain
 {
-  v13 = a3;
-  v4 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v4);
+  domainCopy = domain;
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v5 = [(EligibilityEngine *)self _onQueue_finalEligibilityDictionaryForDomain:v13];
-  v6 = [(EligibilityEngine *)self domainToAnswer];
-  v7 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v13 domain]);
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v5 = [(EligibilityEngine *)self _onQueue_finalEligibilityDictionaryForDomain:domainCopy];
+  domainToAnswer = [(EligibilityEngine *)self domainToAnswer];
+  v7 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [domainCopy domain]);
+  v8 = [domainToAnswer objectForKeyedSubscript:v7];
 
   if (([v5 isEqualToDictionary:v8] & 1) == 0)
   {
-    v9 = [(EligibilityEngine *)self notificationsToSend];
-    v10 = [v13 domainChangeNotificationName];
-    [v9 addObject:v10];
+    notificationsToSend = [(EligibilityEngine *)self notificationsToSend];
+    domainChangeNotificationName = [domainCopy domainChangeNotificationName];
+    [notificationsToSend addObject:domainChangeNotificationName];
 
-    v11 = [(EligibilityEngine *)self domainToAnswer];
-    v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v13 domain]);
-    [v11 setObject:v5 forKeyedSubscript:v12];
+    domainToAnswer2 = [(EligibilityEngine *)self domainToAnswer];
+    v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [domainCopy domain]);
+    [domainToAnswer2 setObject:v5 forKeyedSubscript:v12];
   }
 }
 
 - (void)recomputeAllDomainAnswers
 {
-  v3 = [(EligibilityEngine *)self internalQueue];
+  internalQueue = [(EligibilityEngine *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B8E8;
   block[3] = &unk_1000469A0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalQueue, block);
 }
 
 - (void)_onQueue_sendNotifications
 {
-  v3 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [(EligibilityEngine *)self notificationsToSend];
-  if ([v4 count])
+  notificationsToSend = [(EligibilityEngine *)self notificationsToSend];
+  if ([notificationsToSend count])
   {
-    [v4 addObject:@"com.apple.os-eligibility-domain.change"];
+    [notificationsToSend addObject:@"com.apple.os-eligibility-domain.change"];
   }
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 copy];
+  v5 = [notificationsToSend copy];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -891,7 +891,7 @@ LABEL_35:
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([(EligibilityEngine *)self _sendNotification:v10])
         {
-          [v4 removeObject:v10];
+          [notificationsToSend removeObject:v10];
         }
       }
 
@@ -902,10 +902,10 @@ LABEL_35:
   }
 }
 
-- (BOOL)_sendNotification:(id)a3
+- (BOOL)_sendNotification:(id)notification
 {
-  v3 = [a3 UTF8String];
-  v4 = notify_post(v3);
+  uTF8String = [notification UTF8String];
+  v4 = notify_post(uTF8String);
   if (v4)
   {
     v5 = sub_10001F638();
@@ -914,7 +914,7 @@ LABEL_35:
       v7 = 136315650;
       v8 = "[EligibilityEngine _sendNotification:]";
       v9 = 2080;
-      v10 = v3;
+      v10 = uTF8String;
       v11 = 1024;
       v12 = v4;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s: Could not post domain change notification %s: %u", &v7, 0x1Cu);
@@ -924,10 +924,10 @@ LABEL_35:
   return v4 == 0;
 }
 
-- (BOOL)_onQueue_saveDomainAnswerOutputsWithError:(id *)a3
+- (BOOL)_onQueue_saveDomainAnswerOutputsWithError:(id *)error
 {
-  v5 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v14 = 0;
   v15 = &v14;
@@ -935,7 +935,7 @@ LABEL_35:
   v17 = sub_10002BCA0;
   v18 = sub_10002BCB0;
   v19 = 0;
-  v6 = [(EligibilityEngine *)self _onQueue_urlToDomainData];
+  _onQueue_urlToDomainData = [(EligibilityEngine *)self _onQueue_urlToDomainData];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -946,11 +946,11 @@ LABEL_35:
   v9[3] = &unk_100046978;
   v9[4] = &v14;
   v9[5] = &v10;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
+  [_onQueue_urlToDomainData enumerateKeysAndObjectsUsingBlock:v9];
   v7 = *(v11 + 24);
-  if (a3 && (v11[3] & 1) == 0)
+  if (error && (v11[3] & 1) == 0)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -961,44 +961,44 @@ LABEL_35:
 
 - (id)_onQueue_urlToDomainData
 {
-  v3 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v4 = objc_opt_new();
-  v5 = [(EligibilityEngine *)self domainToAnswer];
+  domainToAnswer = [(EligibilityEngine *)self domainToAnswer];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002BF34;
   v9[3] = &unk_100046950;
   v10 = v4;
   v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [domainToAnswer enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (id)_onQueue_finalEligibilityDictionaryForDomain:(id)a3
+- (id)_onQueue_finalEligibilityDictionaryForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  domainCopy = domain;
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v6 = [(EligibilityEngine *)self eligibilityOverrides];
-  v7 = [v6 overrideResultDictionaryForDomain:{objc_msgSend(v4, "domain")}];
+  eligibilityOverrides = [(EligibilityEngine *)self eligibilityOverrides];
+  v7 = [eligibilityOverrides overrideResultDictionaryForDomain:{objc_msgSend(domainCopy, "domain")}];
 
   if (v7)
   {
-    v8 = v7;
+    answerDictionary = v7;
   }
 
   else
   {
-    v8 = [v4 answerDictionary];
+    answerDictionary = [domainCopy answerDictionary];
   }
 
-  v9 = v8;
+  v9 = answerDictionary;
 
   return v9;
 }
@@ -1007,31 +1007,31 @@ LABEL_35:
 {
   if (&_SADSEligiblilityDidChange)
   {
-    v3 = [(EligibilityEngine *)self internalQueue];
-    dispatch_assert_queue_V2(v3);
+    internalQueue = [(EligibilityEngine *)self internalQueue];
+    dispatch_assert_queue_V2(internalQueue);
 
     v4 = objc_opt_new();
-    v5 = [(EligibilityEngine *)self domainToAnswer];
+    domainToAnswer = [(EligibilityEngine *)self domainToAnswer];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10002C32C;
     v8[3] = &unk_100046950;
     v9 = v4;
     v6 = v4;
-    [v5 enumerateKeysAndObjectsUsingBlock:v8];
+    [domainToAnswer enumerateKeysAndObjectsUsingBlock:v8];
 
     v7 = [v6 copy];
     SADSEligiblilityDidChange();
   }
 }
 
-- (BOOL)_onQueue_serializeOverrideDataToDiskWithError:(id *)a3
+- (BOOL)_onQueue_serializeOverrideDataToDiskWithError:(id *)error
 {
-  v5 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v6 = [(EligibilityEngine *)self eligibilityOverrides];
-  if (v6)
+  eligibilityOverrides = [(EligibilityEngine *)self eligibilityOverrides];
+  if (eligibilityOverrides)
   {
     v17 = 0;
     v7 = sub_1000282D8(&v17);
@@ -1040,7 +1040,7 @@ LABEL_35:
     {
       v9 = [v7 URLByAppendingPathComponent:@"Library/Caches/NeverRestore/eligibility_overrides.data" isDirectory:0];
       v16 = v8;
-      v10 = [(EligibilityEngine *)self _serializeObject:v6 toURL:v9 withError:&v16];
+      v10 = [(EligibilityEngine *)self _serializeObject:eligibilityOverrides toURL:v9 withError:&v16];
       v11 = v16;
 
       if (v10)
@@ -1079,11 +1079,11 @@ LABEL_16:
       v9 = 0;
     }
 
-    if (a3)
+    if (error)
     {
       v14 = v8;
       v12 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -1101,16 +1101,16 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)_serializeObject:(id)a3 toURL:(id)a4 withError:(id *)a5
+- (BOOL)_serializeObject:(id)object toURL:(id)l withError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  lCopy = l;
   v9 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v9 encodeObject:v7 forKey:NSKeyedArchiveRootObjectKey];
-  v10 = [v9 encodedData];
+  [v9 encodeObject:objectCopy forKey:NSKeyedArchiveRootObjectKey];
+  encodedData = [v9 encodedData];
 
   v18 = 0;
-  v11 = [v10 writeToURL:v8 options:268435457 error:&v18];
+  v11 = [encodedData writeToURL:lCopy options:268435457 error:&v18];
   v12 = v18;
   if (v11)
   {
@@ -1122,23 +1122,23 @@ LABEL_17:
     v14 = sub_10001F638();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v8 path];
+      path = [lCopy path];
       *buf = 136315906;
       v20 = "[EligibilityEngine _serializeObject:toURL:withError:]";
       v21 = 2112;
-      v22 = v7;
+      v22 = objectCopy;
       v23 = 2112;
-      v24 = v16;
+      v24 = path;
       v25 = 2112;
       v26 = v12;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s: Failed to write data %@ to disk at %@: %@", buf, 0x2Au);
     }
 
-    if (a5)
+    if (error)
     {
       v15 = v12;
       v13 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -1150,10 +1150,10 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)_onQueue_saveDomainsWithError:(id *)a3
+- (BOOL)_onQueue_saveDomainsWithError:(id *)error
 {
-  v5 = [(EligibilityEngine *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  internalQueue = [(EligibilityEngine *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   if (qword_10005D560 != -1)
   {
@@ -1175,11 +1175,11 @@ LABEL_17:
   {
     v11 = v8;
 LABEL_13:
-    if (a3)
+    if (error)
     {
       v14 = v11;
       v13 = 0;
-      *a3 = v11;
+      *error = v11;
     }
 
     else
@@ -1469,7 +1469,7 @@ LABEL_46:
   return v2;
 }
 
-- (id)_loadOverridesWithError:(id *)a3
+- (id)_loadOverridesWithError:(id *)error
 {
   v15 = 0;
   v5 = sub_1000282D8(&v15);
@@ -1516,11 +1516,11 @@ LABEL_46:
     v7 = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v12 = v6;
     v9 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
   else
@@ -1533,33 +1533,33 @@ LABEL_13:
   return v9;
 }
 
-- (id)_decodeObjectOfClasses:(id)a3 atURL:(id)a4 withError:(id *)a5
+- (id)_decodeObjectOfClasses:(id)classes atURL:(id)l withError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  classesCopy = classes;
+  lCopy = l;
   v26 = 0;
-  v9 = [NSData dataWithContentsOfURL:v8 options:3 error:&v26];
+  v9 = [NSData dataWithContentsOfURL:lCopy options:3 error:&v26];
   v10 = v26;
-  v11 = v10;
+  error2 = v10;
   if (!v9)
   {
-    v16 = [v10 domain];
-    if ([v16 isEqualToString:NSCocoaErrorDomain])
+    domain = [v10 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v17 = [v11 code];
+      code = [error2 code];
 
-      if (v17 == 260)
+      if (code == 260)
       {
         v18 = sub_10001F638();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v8 path];
+          path = [lCopy path];
           *buf = 136315650;
           v28 = "[EligibilityEngine _decodeObjectOfClasses:atURL:withError:]";
           v29 = 2112;
-          v30 = v19;
+          v30 = path;
           v31 = 2112;
-          v32 = v11;
+          v32 = error2;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s: URL %@ doesn't exist yet: %@", buf, 0x20u);
 LABEL_26:
 
@@ -1577,13 +1577,13 @@ LABEL_26:
     v18 = sub_10001F638();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v8 path];
+      path = [lCopy path];
       *buf = 136315650;
       v28 = "[EligibilityEngine _decodeObjectOfClasses:atURL:withError:]";
       v29 = 2112;
-      v30 = v19;
+      v30 = path;
       v31 = 2112;
-      v32 = v11;
+      v32 = error2;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s: Failed to deserialize data in %@: %@", buf, 0x20u);
       goto LABEL_26;
     }
@@ -1592,11 +1592,11 @@ LABEL_14:
     v12 = 0;
 LABEL_18:
 
-    if (a5)
+    if (error)
     {
-      v21 = v11;
+      v21 = error2;
       v15 = 0;
-      *a5 = v11;
+      *error = error2;
     }
 
     else
@@ -1604,7 +1604,7 @@ LABEL_18:
       v15 = 0;
     }
 
-    v13 = v11;
+    v13 = error2;
     goto LABEL_22;
   }
 
@@ -1625,28 +1625,28 @@ LABEL_18:
     }
 
     v12 = 0;
-    v11 = v13;
+    error2 = v13;
     goto LABEL_18;
   }
 
-  v14 = [v12 decodeObjectOfClasses:v7 forKey:NSKeyedArchiveRootObjectKey];
+  v14 = [v12 decodeObjectOfClasses:classesCopy forKey:NSKeyedArchiveRootObjectKey];
   if (!v14)
   {
     v20 = sub_10001F638();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v8 path];
-      v24 = [v12 error];
+      path2 = [lCopy path];
+      error = [v12 error];
       *buf = 136315650;
       v28 = "[EligibilityEngine _decodeObjectOfClasses:atURL:withError:]";
       v29 = 2112;
-      v30 = v23;
+      v30 = path2;
       v31 = 2112;
-      v32 = v24;
+      v32 = error;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s: Failed to decode data at %@ : %@", buf, 0x20u);
     }
 
-    v11 = [v12 error];
+    error2 = [v12 error];
     v18 = v13;
     goto LABEL_18;
   }
@@ -1692,9 +1692,9 @@ LABEL_22:
     notificationsToSend = v3->_notificationsToSend;
     v3->_notificationsToSend = v9;
 
-    v11 = [(EligibilityEngine *)v3 _loadCurrentEligibilityOnDisk];
+    _loadCurrentEligibilityOnDisk = [(EligibilityEngine *)v3 _loadCurrentEligibilityOnDisk];
     domainToAnswer = v3->_domainToAnswer;
-    v3->_domainToAnswer = v11;
+    v3->_domainToAnswer = _loadCurrentEligibilityOnDisk;
 
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("com.apple.eligibility.EligibilityEngine.internal", v13);
@@ -1714,7 +1714,7 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = sub_10002DA10;
   block[3] = &unk_100046900;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10005D550 != -1)
   {
     dispatch_once(&qword_10005D550, block);

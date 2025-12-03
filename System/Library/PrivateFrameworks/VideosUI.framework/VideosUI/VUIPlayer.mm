@@ -1,10 +1,10 @@
 @interface VUIPlayer
 + (id)savedPreferredAudioLanguageCode;
 + (void)initialize;
-+ (void)updateSupplementaryAvailableAudioLanguageCodes:(id)a3;
-- (VUIPlayer)initWithName:(id)a3;
++ (void)updateSupplementaryAvailableAudioLanguageCodes:(id)codes;
+- (VUIPlayer)initWithName:(id)name;
 - (void)_configurePlayerForCurrentNetworkSettingsAndMediaItem;
-- (void)_videoPlaybackSettingsDidChange:(id)a3;
+- (void)_videoPlaybackSettingsDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -25,29 +25,29 @@ void __23__VUIPlayer_initialize__block_invoke()
   sLogObject_1 = v0;
 }
 
-- (VUIPlayer)initWithName:(id)a3
+- (VUIPlayer)initWithName:(id)name
 {
   v15 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = VUIPlayer;
-  v3 = [(VUIPlayer *)&v12 initWithName:a3];
+  v3 = [(VUIPlayer *)&v12 initWithName:name];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__currentMediaItemDidChange_ name:*MEMORY[0x1E69D5F10] object:v3];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__currentMediaItemDidChange_ name:*MEMORY[0x1E69D5F10] object:v3];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = +[VUIPlaybackSettings sharedSettings];
-    [v5 addObserver:v3 selector:sel__videoPlaybackSettingsDidChange_ name:@"VUIPlaybackSettingsUserPreferencesDidChange" object:v6];
+    [defaultCenter2 addObserver:v3 selector:sel__videoPlaybackSettingsDidChange_ name:@"VUIPlaybackSettingsUserPreferencesDidChange" object:v6];
 
     v7 = +[VUIPlaybackSettings sharedSettings];
-    v8 = [v7 cellularDataPlaybackEnabled];
+    cellularDataPlaybackEnabled = [v7 cellularDataPlaybackEnabled];
 
     v9 = sLogObject_1;
     if (os_log_type_enabled(sLogObject_1, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"not ";
-      if (v8)
+      if (cellularDataPlaybackEnabled)
       {
         v10 = &stru_1F5DB25C0;
       }
@@ -57,7 +57,7 @@ void __23__VUIPlayer_initialize__block_invoke()
       _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "Use Cellular Data for Playback setting is %@enabled", buf, 0xCu);
     }
 
-    [(VUIPlayer *)v3 setAllowsCellularUsage:v8];
+    [(VUIPlayer *)v3 setAllowsCellularUsage:cellularDataPlaybackEnabled];
   }
 
   return v3;
@@ -65,8 +65,8 @@ void __23__VUIPlayer_initialize__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIPlayer;
@@ -76,29 +76,29 @@ void __23__VUIPlayer_initialize__block_invoke()
 + (id)savedPreferredAudioLanguageCode
 {
   v2 = +[VUIPlaybackSettings sharedSettings];
-  v3 = [v2 preferredAudioLanguageCode];
+  preferredAudioLanguageCode = [v2 preferredAudioLanguageCode];
 
-  return v3;
+  return preferredAudioLanguageCode;
 }
 
-+ (void)updateSupplementaryAvailableAudioLanguageCodes:(id)a3
++ (void)updateSupplementaryAvailableAudioLanguageCodes:(id)codes
 {
-  v3 = a3;
+  codesCopy = codes;
   v4 = +[VUIPlaybackSettings sharedSettings];
-  [v4 updateSupplementaryAvailableAudioLanguageCodes:v3];
+  [v4 updateSupplementaryAvailableAudioLanguageCodes:codesCopy];
 }
 
-- (void)_videoPlaybackSettingsDidChange:(id)a3
+- (void)_videoPlaybackSettingsDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = +[VUIPlaybackSettings sharedSettings];
-  v5 = [v4 cellularDataPlaybackEnabled];
+  cellularDataPlaybackEnabled = [v4 cellularDataPlaybackEnabled];
 
   v6 = sLogObject_1;
   if (os_log_type_enabled(sLogObject_1, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"not ";
-    if (v5)
+    if (cellularDataPlaybackEnabled)
     {
       v7 = &stru_1F5DB25C0;
     }
@@ -108,23 +108,23 @@ void __23__VUIPlayer_initialize__block_invoke()
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "After settings change, Use Cellular Data for Playback setting is %@enabled", &v8, 0xCu);
   }
 
-  [(VUIPlayer *)self setAllowsCellularUsage:v5];
+  [(VUIPlayer *)self setAllowsCellularUsage:cellularDataPlaybackEnabled];
   [(VUIPlayer *)self _configurePlayerForCurrentNetworkSettingsAndMediaItem];
 }
 
 - (void)_configurePlayerForCurrentNetworkSettingsAndMediaItem
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPlayer *)self currentMediaItem];
-  v4 = v3;
-  if (!v3)
+  currentMediaItem = [(VUIPlayer *)self currentMediaItem];
+  v4 = currentMediaItem;
+  if (!currentMediaItem)
   {
     goto LABEL_43;
   }
 
-  v5 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C80]];
-  v6 = [v5 BOOLValue];
-  if (v6)
+  v5 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C80]];
+  bOOLValue = [v5 BOOLValue];
+  if (bOOLValue)
   {
     v7 = 1;
     v8 = 1;
@@ -139,8 +139,8 @@ void __23__VUIPlayer_initialize__block_invoke()
     v7 = [v10 preferredCellularPlaybackQuality] == 0;
   }
 
-  v11 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v12 = [v11 networkType];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  networkType = [mEMORY[0x1E69E4428] networkType];
 
   v13 = sLogObject_1;
   if (os_log_type_enabled(sLogObject_1, OS_LOG_TYPE_DEFAULT))
@@ -162,7 +162,7 @@ void __23__VUIPlayer_initialize__block_invoke()
     *&v40[12] = 2112;
     *&v40[14] = v15;
     v16 = @"NO";
-    if (v6)
+    if (bOOLValue)
     {
       v16 = @"YES";
     }
@@ -176,11 +176,11 @@ void __23__VUIPlayer_initialize__block_invoke()
   if (os_log_type_enabled(sLogObject_1, OS_LOG_TYPE_DEFAULT))
   {
     v18 = @"Unknown";
-    if (v12 > 99)
+    if (networkType > 99)
     {
-      if (v12 > 1000)
+      if (networkType > 1000)
       {
-        switch(v12)
+        switch(networkType)
         {
           case 1001:
             v18 = @"Bridged WiFi";
@@ -196,14 +196,14 @@ void __23__VUIPlayer_initialize__block_invoke()
         goto LABEL_17;
       }
 
-      if (v12 != 100)
+      if (networkType != 100)
       {
-        if (v12 == 500)
+        if (networkType == 500)
         {
           v18 = @"Bluetooth";
         }
 
-        else if (v12 == 1000)
+        else if (networkType == 1000)
         {
           v18 = @"WiFi";
         }
@@ -212,21 +212,21 @@ void __23__VUIPlayer_initialize__block_invoke()
       }
     }
 
-    else if ((v12 - 1) >= 8)
+    else if ((networkType - 1) >= 8)
     {
 LABEL_17:
       v19 = MEMORY[0x1E69E4428];
       v20 = v17;
-      v21 = [v19 sharedMonitor];
-      v22 = [v21 isCurrentNetworkLinkExpensive];
+      sharedMonitor = [v19 sharedMonitor];
+      isCurrentNetworkLinkExpensive = [sharedMonitor isCurrentNetworkLinkExpensive];
       *v40 = 134218498;
       v23 = @"NO";
-      if (v22)
+      if (isCurrentNetworkLinkExpensive)
       {
         v23 = @"YES";
       }
 
-      *&v40[4] = v12;
+      *&v40[4] = networkType;
       *&v40[12] = 2112;
       *&v40[14] = v18;
       *&v40[22] = 2112;

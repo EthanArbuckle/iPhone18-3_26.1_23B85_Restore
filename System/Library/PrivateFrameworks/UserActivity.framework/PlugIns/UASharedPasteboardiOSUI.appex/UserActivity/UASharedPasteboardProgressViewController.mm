@@ -20,26 +20,26 @@
 {
   v3 = [[SFProgressAlertView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(SFProgressAlertView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(UASharedPasteboardProgressViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(UASharedPasteboardProgressViewController *)self view];
+  [view addSubview:v3];
 
   v5 = _NSDictionaryOfVariableBindings(@"progressView", v3, 0);
   v16 = @"padding";
   v17 = &off_100004368;
   v6 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-  v7 = [(UASharedPasteboardProgressViewController *)self view];
+  view2 = [(UASharedPasteboardProgressViewController *)self view];
   v8 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-padding-[progressView]-padding-|", 0, v6, v5);
-  [v7 addConstraints:v8];
+  [view2 addConstraints:v8];
 
-  v9 = [(UASharedPasteboardProgressViewController *)self view];
+  view3 = [(UASharedPasteboardProgressViewController *)self view];
   v10 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[progressView]-padding-|" options:0 metrics:v6 views:v5];
-  [v9 addConstraints:v10];
+  [view3 addConstraints:v10];
 
   v11 = [NSLayoutConstraint constraintWithItem:v3 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:24.0];
   [(SFProgressAlertView *)v3 addConstraint:v11];
 
-  v12 = [(UASharedPasteboardProgressViewController *)self view];
-  [v12 bounds];
+  view4 = [(UASharedPasteboardProgressViewController *)self view];
+  [view4 bounds];
   v14 = v13;
 
   [&off_100004368 floatValue];

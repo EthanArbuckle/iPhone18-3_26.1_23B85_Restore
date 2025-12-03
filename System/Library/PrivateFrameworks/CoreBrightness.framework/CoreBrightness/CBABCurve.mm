@@ -1,54 +1,54 @@
 @interface CBABCurve
-- ($599F175E452E455E49EC8439362DB023)provideDefaultPreferencesWithConfiguration:(SEL)a3;
-- (BOOL)setLux:(float)a3;
-- (CBABCurve)initWithConfiguration:(id)a3;
-- (CBABCurve)initWithUUID:(id)a3 vendorID:(id)a4 andProductID:(id)a5;
+- ($599F175E452E455E49EC8439362DB023)provideDefaultPreferencesWithConfiguration:(SEL)configuration;
+- (BOOL)setLux:(float)lux;
+- (CBABCurve)initWithConfiguration:(id)configuration;
+- (CBABCurve)initWithUUID:(id)d vendorID:(id)iD andProductID:(id)productID;
 - (id)copyUserPrefState;
 - (id)description;
 - (void)dealloc;
 - (void)resetToDefaultState;
-- (void)setSavedPrefences:(id)a3;
-- (void)updateALSParametersForDisplayBrightness:(float)a3;
+- (void)setSavedPrefences:(id)prefences;
+- (void)updateALSParametersForDisplayBrightness:(float)brightness;
 @end
 
 @implementation CBABCurve
 
-- (CBABCurve)initWithUUID:(id)a3 vendorID:(id)a4 andProductID:(id)a5
+- (CBABCurve)initWithUUID:(id)d vendorID:(id)iD andProductID:(id)productID
 {
   context = objc_autoreleasePoolPush();
   v8 = objc_alloc_init(CBABCurveConfiguration);
-  [(CBABCurveConfiguration *)v8 setVendorID:a4];
-  [(CBABCurveConfiguration *)v8 setProductID:a5];
-  [(CBABCurveConfiguration *)v8 setUuid:a3];
+  [(CBABCurveConfiguration *)v8 setVendorID:iD];
+  [(CBABCurveConfiguration *)v8 setProductID:productID];
+  [(CBABCurveConfiguration *)v8 setUuid:d];
   v7 = [(CBABCurve *)self initWithConfiguration:v8];
   objc_autoreleasePoolPop(context);
   return v7;
 }
 
-- (CBABCurve)initWithConfiguration:(id)a3
+- (CBABCurve)initWithConfiguration:(id)configuration
 {
   v66 = *MEMORY[0x1E69E9840];
-  v56 = self;
+  selfCopy = self;
   v55 = a2;
-  v54 = a3;
+  configurationCopy = configuration;
   self->_logHandle = os_log_create("com.apple.CoreBrightness.CBABCurve", "default");
-  v53.receiver = v56;
+  v53.receiver = selfCopy;
   v53.super_class = CBABCurve;
-  v56 = [(CBABCurve *)&v53 init];
-  if (v56)
+  selfCopy = [(CBABCurve *)&v53 init];
+  if (selfCopy)
   {
-    v56->maximumBrightness = 1.0;
-    v56->minimumBrightness = 0.001;
-    v3 = MEMORY[0x1E69E5928](v54);
-    v56->config = v3;
-    v56->currentLux = 300.0;
-    v56->_scaleFactor = 1.0;
-    [objc_msgSend(v54 "minBrightness")];
+    selfCopy->maximumBrightness = 1.0;
+    selfCopy->minimumBrightness = 0.001;
+    v3 = MEMORY[0x1E69E5928](configurationCopy);
+    selfCopy->config = v3;
+    selfCopy->currentLux = 300.0;
+    selfCopy->_scaleFactor = 1.0;
+    [objc_msgSend(configurationCopy "minBrightness")];
     v52 = v4;
-    v56->shouldClampLowLux = float_equal(v4, 1.0);
-    if (v56->_logHandle)
+    selfCopy->shouldClampLowLux = float_equal(v4, 1.0);
+    if (selfCopy->_logHandle)
     {
-      logHandle = v56->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -70,7 +70,7 @@
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      if (v56->shouldClampLowLux)
+      if (selfCopy->shouldClampLowLux)
       {
         v5 = "YES";
       }
@@ -89,7 +89,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v47 = [v48 objectForKey:{objc_msgSend(v54, "uuid")}];
+      v47 = [v48 objectForKey:{objc_msgSend(configurationCopy, "uuid")}];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -101,13 +101,13 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v28 = [v45 unsignedIntValue];
-            v56->_version = v28;
-            if (v28 == 1)
+            unsignedIntValue = [v45 unsignedIntValue];
+            selfCopy->_version = unsignedIntValue;
+            if (unsignedIntValue == 1)
             {
-              if (v56->_logHandle)
+              if (selfCopy->_logHandle)
               {
-                v27 = v56->_logHandle;
+                v27 = selfCopy->_logHandle;
               }
 
               else
@@ -129,26 +129,26 @@
               v43 = OS_LOG_TYPE_INFO;
               if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
               {
-                __os_log_helper_16_0_1_8_0(v64, v56->_version);
+                __os_log_helper_16_0_1_8_0(v64, selfCopy->_version);
                 _os_log_impl(&dword_1DE8E5000, v44, v43, "upgrading curve from version %lu", v64, 0xCu);
               }
 
-              if ([v54 isBuiltin] & 1) != 0 && (objc_msgSend(v54, "isEnergySaving"))
+              if ([configurationCopy isBuiltin] & 1) != 0 && (objc_msgSend(configurationCopy, "isEnergySaving"))
               {
                 v49 = 0;
               }
 
               else
               {
-                v56->_version = 2;
+                selfCopy->_version = 2;
               }
             }
 
-            else if (v28 != 2)
+            else if (unsignedIntValue != 2)
             {
-              if (v56->_logHandle)
+              if (selfCopy->_logHandle)
               {
-                v25 = v56->_logHandle;
+                v25 = selfCopy->_logHandle;
               }
 
               else
@@ -190,7 +190,7 @@
           if (objc_opt_isKindOfClass())
           {
             [v45 floatValue];
-            v56->pref.e1 = v6;
+            selfCopy->pref.e1 = v6;
           }
 
           else
@@ -203,7 +203,7 @@
           if (objc_opt_isKindOfClass())
           {
             [v45 floatValue];
-            v56->pref.e2 = v7;
+            selfCopy->pref.e2 = v7;
           }
 
           else
@@ -216,7 +216,7 @@
           if (objc_opt_isKindOfClass())
           {
             [v45 floatValue];
-            v56->pref.bl1 = v8;
+            selfCopy->pref.bl1 = v8;
           }
 
           else
@@ -229,7 +229,7 @@
           if (objc_opt_isKindOfClass())
           {
             [v45 floatValue];
-            v56->pref.bl2 = v9;
+            selfCopy->pref.bl2 = v9;
           }
 
           else
@@ -242,7 +242,7 @@
           if (objc_opt_isKindOfClass())
           {
             [v45 floatValue];
-            v56->pref.eThresh = v10;
+            selfCopy->pref.eThresh = v10;
           }
 
           else
@@ -253,9 +253,9 @@
 
         else
         {
-          if (v56->_logHandle)
+          if (selfCopy->_logHandle)
           {
-            v21 = v56->_logHandle;
+            v21 = selfCopy->_logHandle;
           }
 
           else
@@ -277,7 +277,7 @@
           v38 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            __os_log_helper_16_2_1_8_66(v63, [v54 productID]);
+            __os_log_helper_16_2_1_8_66(v63, [configurationCopy productID]);
             _os_log_impl(&dword_1DE8E5000, v39, v38, "no curve preferences for the display %{public}@", v63, 0xCu);
           }
 
@@ -287,9 +287,9 @@
 
       else
       {
-        if (v56->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v19 = v56->_logHandle;
+          v19 = selfCopy->_logHandle;
         }
 
         else
@@ -311,7 +311,7 @@
         v36 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_2_1_8_66(v62, [v54 productID]);
+          __os_log_helper_16_2_1_8_66(v62, [configurationCopy productID]);
           _os_log_impl(&dword_1DE8E5000, v37, v36, "no preferences for the display %{public}@", v62, 0xCu);
         }
 
@@ -321,9 +321,9 @@
 
     else
     {
-      if (v56->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v17 = v56->_logHandle;
+        v17 = selfCopy->_logHandle;
       }
 
       else
@@ -357,20 +357,20 @@
     *&v11 = MEMORY[0x1E69E5920](v48).n128_u64[0];
     if (v49)
     {
-      e1 = v56->pref.e1;
-      e2 = v56->pref.e2;
-      bl1 = v56->pref.bl1;
-      bl2 = v56->pref.bl2;
-      eThresh = v56->pref.eThresh;
+      e1 = selfCopy->pref.e1;
+      e2 = selfCopy->pref.e2;
+      bl1 = selfCopy->pref.bl1;
+      bl2 = selfCopy->pref.bl2;
+      eThresh = selfCopy->pref.eThresh;
     }
 
     else
     {
-      v56->_version = 2;
-      v13 = v56;
-      if (v56)
+      selfCopy->_version = 2;
+      v13 = selfCopy;
+      if (selfCopy)
       {
-        [(CBABCurve *)v56 provideDefaultPreferencesWithConfiguration:v54, v11];
+        [(CBABCurve *)selfCopy provideDefaultPreferencesWithConfiguration:configurationCopy, v11];
       }
 
       else
@@ -385,31 +385,31 @@
   }
 
   *MEMORY[0x1E69E9840];
-  return v56;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   *&v2 = MEMORY[0x1E69E5920](self->config).n128_u64[0];
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBABCurve;
   [(CBABCurve *)&v3 dealloc];
 }
 
 - (id)description
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"\nCurrent Lux: %f\nPreferences\ne1: %f, e2: %f \nbl1: %f, bl2: %f\nminBrightness: %f\nmaxBrightness: %f scaler: %f", self->currentLux, self->pref.e1, self->pref.e2, self->pref.bl1, self->pref.bl2, self->minimumBrightness, self->maximumBrightness, self->_scaleFactor, a2, self];
 }
 
-- ($599F175E452E455E49EC8439362DB023)provideDefaultPreferencesWithConfiguration:(SEL)a3
+- ($599F175E452E455E49EC8439362DB023)provideDefaultPreferencesWithConfiguration:(SEL)configuration
 {
   v29 = *MEMORY[0x1E69E9840];
-  v26 = self;
-  v25 = a3;
+  selfCopy = self;
+  configurationCopy = configuration;
   v24 = a4;
   *&retstr->var0 = 0;
   *&retstr->var2 = 0;
@@ -425,9 +425,9 @@
     retstr->var0 = v5;
     *&v4 = 0.341785 * (500.0 / *&v23);
     retstr->var1 = *&v4;
-    if (v26->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v26->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -457,9 +457,9 @@
 
   else if ([objc_msgSend(v24 "vendorID")] == 1552 && (objc_msgSend(objc_msgSend(v24, "productID"), "unsignedIntegerValue") == 44606 || objc_msgSend(objc_msgSend(v24, "productID"), "unsignedIntegerValue") == 44602))
   {
-    if (v26->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v12 = v26->_logHandle;
+      v12 = selfCopy->_logHandle;
     }
 
     else
@@ -492,9 +492,9 @@
 
   else
   {
-    if (v26->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v10 = v26->_logHandle;
+      v10 = selfCopy->_logHandle;
     }
 
     else
@@ -531,17 +531,17 @@
   return result;
 }
 
-- (BOOL)setLux:(float)a3
+- (BOOL)setLux:(float)lux
 {
   v25 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  if (a3 >= 0.0)
+  luxCopy = lux;
+  if (lux >= 0.0)
   {
-    if (a3 <= 5000.0)
+    if (lux <= 5000.0)
     {
-      if (self->shouldClampLowLux && a3 < 1.0)
+      if (self->shouldClampLowLux && lux < 1.0)
       {
-        v18 = 1.0;
+        luxCopy = 1.0;
         if (self->_logHandle)
         {
           logHandle = self->_logHandle;
@@ -563,7 +563,7 @@
 
     else
     {
-      v18 = 5000.0;
+      luxCopy = 5000.0;
       if (self->_logHandle)
       {
         v15 = self->_logHandle;
@@ -591,7 +591,7 @@
       }
     }
 
-    self->currentLux = v18;
+    self->currentLux = luxCopy;
     [(CBABCurve *)self getScaledBL2];
     v9 = v3;
     [(CBABCurve *)self getScaledBL1];
@@ -654,7 +654,7 @@
 
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_0_1_8_0(v24, COERCE__INT64(v18));
+      __os_log_helper_16_0_1_8_0(v24, COERCE__INT64(luxCopy));
       _os_log_error_impl(&dword_1DE8E5000, v17, OS_LOG_TYPE_ERROR, "lux value (%f) is < 0", v24, 0xCu);
     }
 
@@ -665,7 +665,7 @@
   return v20 & 1;
 }
 
-- (void)updateALSParametersForDisplayBrightness:(float)a3
+- (void)updateALSParametersForDisplayBrightness:(float)brightness
 {
   v47 = *MEMORY[0x1E69E9840];
   if (self->currentLux <= 5000.0)
@@ -728,13 +728,13 @@
     self->currentLux = v3;
   }
 
-  v4 = (a3 * 500.0) * 72.0 / (500.0 - (self->currentLux - 72.0 * self->currentLux));
+  v4 = (brightness * 500.0) * 72.0 / (500.0 - (self->currentLux - 72.0 * self->currentLux));
   v33 = v4;
-  v5 = (a3 * 500.0) * 3.0 / (500.0 - (self->currentLux - 3.0 * self->currentLux));
+  v5 = (brightness * 500.0) * 3.0 / (500.0 - (self->currentLux - 3.0 * self->currentLux));
   v32 = v5;
-  v6 = (a3 * 500.0) / (500.0 - (self->currentLux - 3.0 * self->currentLux));
+  v6 = (brightness * 500.0) / (500.0 - (self->currentLux - 3.0 * self->currentLux));
   v31 = v6;
-  v7 = (a3 * 500.0) / (500.0 - (self->currentLux - 72.0 * self->currentLux));
+  v7 = (brightness * 500.0) / (500.0 - (self->currentLux - 72.0 * self->currentLux));
   v36 = (v33 - v7) / 500.0;
   v34 = (v32 - v31) / 500.0;
   if (self->_logHandle)
@@ -768,10 +768,10 @@
   if (self->currentLux <= self->pref.eThresh)
   {
     [(CBABCurve *)self getScaledBL2];
-    v39 = fmaxf(fminf((v13 - a3) / (self->pref.e2 - self->currentLux), v37), v35);
-    *&v14 = a3 + (v39 * (self->pref.e1 - self->currentLux));
+    v39 = fmaxf(fminf((v13 - brightness) / (self->pref.e2 - self->currentLux), v37), v35);
+    *&v14 = brightness + (v39 * (self->pref.e1 - self->currentLux));
     [(CBABCurve *)self setScaledBL1:v14];
-    *&v15 = a3 + (v39 * (self->pref.e2 - self->currentLux));
+    *&v15 = brightness + (v39 * (self->pref.e2 - self->currentLux));
     [(CBABCurve *)self setScaledBL2:v15];
     if (self->_logHandle)
     {
@@ -798,7 +798,7 @@
       [(CBABCurve *)self getScaledBL1];
       *&v18 = v16;
       [(CBABCurve *)self getScaledBL2];
-      __os_log_helper_16_0_6_8_0_8_0_8_0_8_0_8_0_8_0(v42, v18, COERCE__INT64(v17), COERCE__INT64(self->_scaleFactor), COERCE__INT64(v39), COERCE__INT64(a3), COERCE__INT64(self->currentLux));
+      __os_log_helper_16_0_6_8_0_8_0_8_0_8_0_8_0_8_0(v42, v18, COERCE__INT64(v17), COERCE__INT64(self->_scaleFactor), COERCE__INT64(v39), COERCE__INT64(brightness), COERCE__INT64(self->currentLux));
       _os_log_impl(&dword_1DE8E5000, v20, OS_LOG_TYPE_INFO, "BELOW Bl1: %f BL2: %f (scaler=%f) slope: %f linBT: %f lux: %f\n", v42, 0x3Eu);
     }
   }
@@ -806,17 +806,17 @@
   else
   {
     [(CBABCurve *)self getScaledBL1];
-    v38 = fmaxf(fminf((a3 - *&v8) / (self->currentLux - self->pref.e1), v37), v35);
+    v38 = fmaxf(fminf((brightness - *&v8) / (self->currentLux - self->pref.e1), v37), v35);
     if (self->currentLux < 150.0)
     {
       self->pref.e2 = 150.0;
-      *&v8 = a3 + (v38 * (self->pref.e2 - self->currentLux));
+      *&v8 = brightness + (v38 * (self->pref.e2 - self->currentLux));
     }
 
     else
     {
       self->pref.e2 = self->currentLux;
-      *&v8 = a3;
+      *&v8 = brightness;
     }
 
     [(CBABCurve *)self setScaledBL2:v8];
@@ -849,7 +849,7 @@
       [(CBABCurve *)self getScaledBL1];
       *&v21 = v11;
       [(CBABCurve *)self getScaledBL2];
-      __os_log_helper_16_0_5_8_0_8_0_8_0_8_0_8_0(v43, v21, COERCE__INT64(v12), COERCE__INT64(v38), COERCE__INT64(a3), COERCE__INT64(self->currentLux));
+      __os_log_helper_16_0_5_8_0_8_0_8_0_8_0_8_0(v43, v21, COERCE__INT64(v12), COERCE__INT64(v38), COERCE__INT64(brightness), COERCE__INT64(self->currentLux));
       _os_log_debug_impl(&dword_1DE8E5000, v23, OS_LOG_TYPE_DEBUG, "ABOVE Bl1: %f BL2: %f slope: %f linBT: %f lux: %f\n", v43, 0x34u);
     }
   }
@@ -859,11 +859,11 @@
 
 - (void)resetToDefaultState
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   if (self->_logHandle)
   {
-    logHandle = v13->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -891,10 +891,10 @@
     _os_log_impl(&dword_1DE8E5000, log, type, "Curve reset to default state", v9, 2u);
   }
 
-  v2 = v13;
-  if (v13)
+  v2 = selfCopy;
+  if (selfCopy)
   {
-    [(CBABCurve *)v13 provideDefaultPreferencesWithConfiguration:v13->config];
+    [(CBABCurve *)selfCopy provideDefaultPreferencesWithConfiguration:selfCopy->config];
   }
 
   else
@@ -924,19 +924,19 @@
   return v8;
 }
 
-- (void)setSavedPrefences:(id)a3
+- (void)setSavedPrefences:(id)prefences
 {
-  if (a3)
+  if (prefences)
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"Lux1", "floatValue"}];
+    [objc_msgSend(prefences objectForKeyedSubscript:{@"Lux1", "floatValue"}];
     self->pref.e1 = v3;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"Lux2", "floatValue"}];
+    [objc_msgSend(prefences objectForKeyedSubscript:{@"Lux2", "floatValue"}];
     self->pref.e2 = v4;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"Backlight1", "floatValue"}];
+    [objc_msgSend(prefences objectForKeyedSubscript:{@"Backlight1", "floatValue"}];
     self->pref.bl1 = v5;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"Backlight2", "floatValue"}];
+    [objc_msgSend(prefences objectForKeyedSubscript:{@"Backlight2", "floatValue"}];
     self->pref.bl2 = v6;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"LuxThreshold", "floatValue"}];
+    [objc_msgSend(prefences objectForKeyedSubscript:{@"LuxThreshold", "floatValue"}];
     self->pref.eThresh = v7;
   }
 }

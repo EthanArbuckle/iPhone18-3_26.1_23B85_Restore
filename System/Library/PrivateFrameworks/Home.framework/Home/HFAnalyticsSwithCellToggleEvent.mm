@@ -1,15 +1,15 @@
 @interface HFAnalyticsSwithCellToggleEvent
-- (HFAnalyticsSwithCellToggleEvent)initWithData:(id)a3;
+- (HFAnalyticsSwithCellToggleEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsSwithCellToggleEvent
 
-- (HFAnalyticsSwithCellToggleEvent)initWithData:(id)a3
+- (HFAnalyticsSwithCellToggleEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"switchCellIsOn"];
+  v5 = [dataCopy objectForKeyedSubscript:@"switchCellIsOn"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"sourceViewController"];
+  v8 = [dataCopy objectForKeyedSubscript:@"sourceViewController"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -47,7 +47,7 @@
   if (v11)
   {
     objc_opt_class();
-    v12 = [v4 objectForKeyedSubscript:@"overrideItemClassName"];
+    v12 = [dataCopy objectForKeyedSubscript:@"overrideItemClassName"];
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -70,7 +70,7 @@
     else
     {
       objc_opt_class();
-      v17 = [v4 objectForKeyedSubscript:@"item"];
+      v17 = [dataCopy objectForKeyedSubscript:@"item"];
       if (objc_opt_isKindOfClass())
       {
         v18 = v17;
@@ -89,12 +89,12 @@
       v11->_itemClassName = v21;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"switchCellToggleTitle"];
+    v22 = [dataCopy objectForKeyedSubscript:@"switchCellToggleTitle"];
     toggleTitle = v11->_toggleTitle;
     v11->_toggleTitle = v22;
 
     objc_opt_class();
-    v24 = [v4 objectForKeyedSubscript:@"sourceViewControllerOverrideClassName"];
+    v24 = [dataCopy objectForKeyedSubscript:@"sourceViewControllerOverrideClassName"];
     if (objc_opt_isKindOfClass())
     {
       v25 = v24;
@@ -136,10 +136,10 @@
 
 LABEL_29:
     objc_storeStrong(&v11->_isOn, v6);
-    v30 = [MEMORY[0x277CCAC38] processInfo];
-    v31 = [v30 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     processName = v11->_processName;
-    v11->_processName = v31;
+    v11->_processName = processName;
   }
 
   return v11;
@@ -149,23 +149,23 @@ LABEL_29:
 {
   v11.receiver = self;
   v11.super_class = HFAnalyticsSwithCellToggleEvent;
-  v3 = [(HFAnalyticsEvent *)&v11 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v11 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsSwithCellToggleEvent *)self itemClassName];
-  [v4 na_safeSetObject:v5 forKey:@"item"];
+  itemClassName = [(HFAnalyticsSwithCellToggleEvent *)self itemClassName];
+  [v4 na_safeSetObject:itemClassName forKey:@"item"];
 
-  v6 = [(HFAnalyticsSwithCellToggleEvent *)self toggleTitle];
-  [v4 na_safeSetObject:v6 forKey:@"switchCellToggleTitle"];
+  toggleTitle = [(HFAnalyticsSwithCellToggleEvent *)self toggleTitle];
+  [v4 na_safeSetObject:toggleTitle forKey:@"switchCellToggleTitle"];
 
-  v7 = [(HFAnalyticsSwithCellToggleEvent *)self sourceViewControllerClassName];
-  [v4 na_safeSetObject:v7 forKey:@"sourceViewController"];
+  sourceViewControllerClassName = [(HFAnalyticsSwithCellToggleEvent *)self sourceViewControllerClassName];
+  [v4 na_safeSetObject:sourceViewControllerClassName forKey:@"sourceViewController"];
 
-  v8 = [(HFAnalyticsSwithCellToggleEvent *)self isOn];
-  [v4 na_safeSetObject:v8 forKey:@"switchCellIsOn"];
+  isOn = [(HFAnalyticsSwithCellToggleEvent *)self isOn];
+  [v4 na_safeSetObject:isOn forKey:@"switchCellIsOn"];
 
-  v9 = [(HFAnalyticsSwithCellToggleEvent *)self processName];
-  [v4 na_safeSetObject:v9 forKey:@"processName"];
+  processName = [(HFAnalyticsSwithCellToggleEvent *)self processName];
+  [v4 na_safeSetObject:processName forKey:@"processName"];
 
   [v4 na_safeSetObject:&unk_282524198 forKey:@"homeAppEventCount"];
 

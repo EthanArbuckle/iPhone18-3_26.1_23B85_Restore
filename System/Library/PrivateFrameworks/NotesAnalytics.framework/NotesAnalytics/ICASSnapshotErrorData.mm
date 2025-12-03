@@ -1,22 +1,22 @@
 @interface ICASSnapshotErrorData
-- (ICASSnapshotErrorData)initWithErrorDomain:(id)a3 errorCode:(id)a4;
+- (ICASSnapshotErrorData)initWithErrorDomain:(id)domain errorCode:(id)code;
 - (id)toDict;
 @end
 
 @implementation ICASSnapshotErrorData
 
-- (ICASSnapshotErrorData)initWithErrorDomain:(id)a3 errorCode:(id)a4
+- (ICASSnapshotErrorData)initWithErrorDomain:(id)domain errorCode:(id)code
 {
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  codeCopy = code;
   v12.receiver = self;
   v12.super_class = ICASSnapshotErrorData;
   v9 = [(ICASSnapshotErrorData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_errorDomain, a3);
-    objc_storeStrong(&v10->_errorCode, a4);
+    objc_storeStrong(&v9->_errorDomain, domain);
+    objc_storeStrong(&v10->_errorCode, code);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"errorDomain";
-  v3 = [(ICASSnapshotErrorData *)self errorDomain];
-  if (v3)
+  errorDomain = [(ICASSnapshotErrorData *)self errorDomain];
+  if (errorDomain)
   {
-    v4 = [(ICASSnapshotErrorData *)self errorDomain];
+    errorDomain2 = [(ICASSnapshotErrorData *)self errorDomain];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    errorDomain2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = errorDomain2;
   v12[1] = @"errorCode";
-  v13[0] = v4;
-  v6 = [(ICASSnapshotErrorData *)self errorCode];
-  if (v6)
+  v13[0] = errorDomain2;
+  errorCode = [(ICASSnapshotErrorData *)self errorCode];
+  if (errorCode)
   {
-    v7 = [(ICASSnapshotErrorData *)self errorCode];
+    errorCode2 = [(ICASSnapshotErrorData *)self errorCode];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    errorCode2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = errorCode2;
+  v13[1] = errorCode2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

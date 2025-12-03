@@ -1,65 +1,65 @@
 @interface RAPMenuQuestion
 + (id)localizedHeaderText;
-+ (id)menuForReport:(id)a3 state:(id)a4 onlyShowIncidents:(BOOL)a5;
++ (id)menuForReport:(id)report state:(id)state onlyShowIncidents:(BOOL)incidents;
 - (BOOL)_isRecursivelyComplete;
-- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)a3;
+- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)category;
 - (NSArray)allMenuItems;
 - (NSArray)mainMenuItems;
 - (NSArray)mainMenuQuestionCategories;
 - (NSArray)menuItems;
-- (id)menuItemForIndexPath:(id)a3;
-- (id)menuItemWithFollowUpQuestionCategory:(int64_t)a3;
-- (unint64_t)numberOfMenuItemsInSection:(unint64_t)a3;
+- (id)menuItemForIndexPath:(id)path;
+- (id)menuItemWithFollowUpQuestionCategory:(int64_t)category;
+- (unint64_t)numberOfMenuItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)removeMenuItemForFollowUpQuestionCategory:(int64_t)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)removeMenuItemForFollowUpQuestionCategory:(int64_t)category;
 - (void)resetMenu;
-- (void)setSelectedMenuItem:(id)a3;
+- (void)setSelectedMenuItem:(id)item;
 @end
 
 @implementation RAPMenuQuestion
 
 - (BOOL)_isRecursivelyComplete
 {
-  v3 = [(RAPMenuItem *)self->_selectedMenuItem _isRecursivelyComplete];
-  if (v3)
+  _isRecursivelyComplete = [(RAPMenuItem *)self->_selectedMenuItem _isRecursivelyComplete];
+  if (_isRecursivelyComplete)
   {
     v5.receiver = self;
     v5.super_class = RAPMenuQuestion;
-    LOBYTE(v3) = [(RAPQuestion *)&v5 _isRecursivelyComplete];
+    LOBYTE(_isRecursivelyComplete) = [(RAPQuestion *)&v5 _isRecursivelyComplete];
   }
 
-  return v3;
+  return _isRecursivelyComplete;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(RAPMenuQuestion *)self selectedMenuItem];
-  [v5 _fillSubmissionParameters:v4];
+  parametersCopy = parameters;
+  selectedMenuItem = [(RAPMenuQuestion *)self selectedMenuItem];
+  [selectedMenuItem _fillSubmissionParameters:parametersCopy];
 }
 
-- (void)setSelectedMenuItem:(id)a3
+- (void)setSelectedMenuItem:(id)item
 {
-  v5 = a3;
-  if (self->_selectedMenuItem != v5)
+  itemCopy = item;
+  if (self->_selectedMenuItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedMenuItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_selectedMenuItem, item);
     [(RAPQuestion *)self _setComplete:v6 != 0 allowInvokingDidChange:0];
     [(RAPQuestion *)self _didChange];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)removeMenuItemForFollowUpQuestionCategory:(int64_t)a3
+- (void)removeMenuItemForFollowUpQuestionCategory:(int64_t)category
 {
   menuItemsByKind = self->_menuItemsByKind;
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:category];
   [(NSMutableDictionary *)menuItemsByKind removeObjectForKey:v4];
 }
 
-- (id)menuItemWithFollowUpQuestionCategory:(int64_t)a3
+- (id)menuItemWithFollowUpQuestionCategory:(int64_t)category
 {
   menuItemsByKind = self->_menuItemsByKind;
   v6 = [NSNumber numberWithInteger:?];
@@ -67,7 +67,7 @@
 
   if (!v7)
   {
-    v7 = [(RAPMenuQuestion *)self _newMenuItemWithFollowUpQuestionCategory:a3];
+    v7 = [(RAPMenuQuestion *)self _newMenuItemWithFollowUpQuestionCategory:category];
     if (!self->_menuItemsByKind)
     {
       v8 = objc_alloc_init(NSMutableDictionary);
@@ -78,7 +78,7 @@
     if (v7)
     {
       v10 = self->_menuItemsByKind;
-      v11 = [NSNumber numberWithInteger:a3];
+      v11 = [NSNumber numberWithInteger:category];
       [(NSMutableDictionary *)v10 setObject:v7 forKeyedSubscript:v11];
     }
   }
@@ -92,21 +92,21 @@
   if (!allMenuItems)
   {
     v4 = +[NSMutableArray array];
-    v5 = [(RAPMenuQuestion *)self menuItems];
-    v6 = [v5 count];
+    menuItems = [(RAPMenuQuestion *)self menuItems];
+    v6 = [menuItems count];
 
     if (v6)
     {
       v7 = 0;
       do
       {
-        v8 = [(RAPMenuQuestion *)self menuItems];
-        v9 = [v8 objectAtIndexedSubscript:v7];
+        menuItems2 = [(RAPMenuQuestion *)self menuItems];
+        v9 = [menuItems2 objectAtIndexedSubscript:v7];
         [v4 addObjectsFromArray:v9];
 
         ++v7;
-        v10 = [(RAPMenuQuestion *)self menuItems];
-        v11 = [v10 count];
+        menuItems3 = [(RAPMenuQuestion *)self menuItems];
+        v11 = [menuItems3 count];
       }
 
       while (v7 < v11);
@@ -126,12 +126,12 @@
 {
   if (!self->_menuItems)
   {
-    v3 = [(RAPMenuQuestion *)self mainMenuItems];
+    mainMenuItems = [(RAPMenuQuestion *)self mainMenuItems];
 
-    if (v3)
+    if (mainMenuItems)
     {
-      v4 = [(RAPMenuQuestion *)self mainMenuItems];
-      v10 = v4;
+      mainMenuItems2 = [(RAPMenuQuestion *)self mainMenuItems];
+      v10 = mainMenuItems2;
       v5 = [NSArray arrayWithObjects:&v10 count:1];
       menuItems = self->_menuItems;
       self->_menuItems = v5;
@@ -146,11 +146,11 @@
   return v8;
 }
 
-- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)a3
+- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)category
 {
-  v4 = [(RAPMenuQuestion *)self mainMenuQuestionCategories];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 containsObject:v5];
+  mainMenuQuestionCategories = [(RAPMenuQuestion *)self mainMenuQuestionCategories];
+  v5 = [NSNumber numberWithInteger:category];
+  v6 = [mainMenuQuestionCategories containsObject:v5];
 
   return v6;
 }
@@ -173,15 +173,15 @@
   if (!mainMenuItems)
   {
     v4 = +[NSMutableArray array];
-    v5 = [(RAPMenuQuestion *)self mainMenuQuestionCategories];
+    mainMenuQuestionCategories = [(RAPMenuQuestion *)self mainMenuQuestionCategories];
     v10 = _NSConcreteStackBlock;
     v11 = 3221225472;
     v12 = sub_1006CE2EC;
     v13 = &unk_10162DD18;
-    v14 = self;
+    selfCopy = self;
     v15 = v4;
     v6 = v4;
-    [v5 enumerateObjectsUsingBlock:&v10];
+    [mainMenuQuestionCategories enumerateObjectsUsingBlock:&v10];
 
     v7 = [v6 copy];
     v8 = self->_mainMenuItems;
@@ -193,22 +193,22 @@
   return mainMenuItems;
 }
 
-- (id)menuItemForIndexPath:(id)a3
+- (id)menuItemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RAPMenuQuestion *)self menuItems];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  menuItems = [(RAPMenuQuestion *)self menuItems];
+  v6 = [menuItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [v4 item];
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  item = [pathCopy item];
+  v8 = [v6 objectAtIndexedSubscript:item];
 
   return v8;
 }
 
-- (unint64_t)numberOfMenuItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfMenuItemsInSection:(unint64_t)section
 {
-  v4 = [(RAPMenuQuestion *)self menuItems];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  menuItems = [(RAPMenuQuestion *)self menuItems];
+  v5 = [menuItems objectAtIndexedSubscript:section];
 
   v6 = [v5 count];
   return v6;
@@ -216,8 +216,8 @@
 
 - (unint64_t)numberOfSections
 {
-  v2 = [(RAPMenuQuestion *)self menuItems];
-  v3 = [v2 count];
+  menuItems = [(RAPMenuQuestion *)self menuItems];
+  v3 = [menuItems count];
 
   return v3;
 }
@@ -234,26 +234,26 @@
   self->_mainMenuItems = 0;
 }
 
-+ (id)menuForReport:(id)a3 state:(id)a4 onlyShowIncidents:(BOOL)a5
++ (id)menuForReport:(id)report state:(id)state onlyShowIncidents:(BOOL)incidents
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v5)
+  incidentsCopy = incidents;
+  reportCopy = report;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (incidentsCopy)
   {
     v10 = RAPMainIncidentQuestion;
   }
 
   else
   {
-    v11 = [v8 reportedPlace];
+    reportedPlace = [stateCopy reportedPlace];
 
-    if (v11)
+    if (reportedPlace)
     {
       v12 = [RAPPlaceMenuQuestion alloc];
-      v13 = [v9 reportedPlace];
-      v14 = [(RAPPlaceMenuQuestion *)v12 initWithReport:v7 reportedPlace:v13];
+      reportedPlace2 = [v9 reportedPlace];
+      v14 = [(RAPPlaceMenuQuestion *)v12 initWithReport:reportCopy reportedPlace:reportedPlace2];
 
       goto LABEL_7;
     }
@@ -261,7 +261,7 @@
     v10 = RAPMainQuestion;
   }
 
-  v14 = [[v10 alloc] initWithReport:v7 parentQuestion:0];
+  v14 = [[v10 alloc] initWithReport:reportCopy parentQuestion:0];
 LABEL_7:
 
   return v14;

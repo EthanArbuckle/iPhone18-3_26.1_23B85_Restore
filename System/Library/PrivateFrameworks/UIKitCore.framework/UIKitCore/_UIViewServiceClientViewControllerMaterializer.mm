@@ -1,29 +1,29 @@
 @interface _UIViewServiceClientViewControllerMaterializer
-- (id)initWithSessionManager:(void *)a3 requestedViewControllerClass:(void *)a4 contextToken:(__CFString *)a5 outError:;
-- (id)materializedViewControllerOfClassName:(void *)a1 withError:(void *)a2;
+- (id)initWithSessionManager:(void *)manager requestedViewControllerClass:(void *)class contextToken:(__CFString *)token outError:;
+- (id)materializedViewControllerOfClassName:(void *)name withError:(void *)error;
 - (void)prepareViewControllerExtensionContext;
 @end
 
 @implementation _UIViewServiceClientViewControllerMaterializer
 
-- (id)initWithSessionManager:(void *)a3 requestedViewControllerClass:(void *)a4 contextToken:(__CFString *)a5 outError:
+- (id)initWithSessionManager:(void *)manager requestedViewControllerClass:(void *)class contextToken:(__CFString *)token outError:
 {
   v102[1] = *MEMORY[0x1E69E9840];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  if (a1)
+  managerCopy = manager;
+  classCopy = class;
+  if (self)
   {
-    v88.receiver = a1;
+    v88.receiver = self;
     v88.super_class = _UIViewServiceClientViewControllerMaterializer;
     v13 = objc_msgSendSuper2(&v88, sel_init);
-    a1 = v13;
+    self = v13;
     if (v13)
     {
       objc_storeStrong(v13 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
-      if (a1[5])
+      objc_storeStrong(self + 2, manager);
+      objc_storeStrong(self + 3, class);
+      if (self[5])
       {
         v83 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"!_serviceViewController"];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@
           v91 = 2114;
           v92 = v86;
           v93 = 2048;
-          v94 = a1;
+          selfCopy2 = self;
           v95 = 2114;
           v96 = @"_UIViewServiceClientViewControllerMaterializer.m";
           v97 = 1024;
@@ -52,10 +52,10 @@
         JUMPOUT(0x189EF4BFCLL);
       }
 
-      v14 = [a1[1] requiresExtensionContext];
-      if (a1[3])
+      requiresExtensionContext = [self[1] requiresExtensionContext];
+      if (self[3])
       {
-        v15 = v14 == 0;
+        v15 = requiresExtensionContext == 0;
       }
 
       else
@@ -66,14 +66,14 @@
       if (v15)
       {
         v16 = 0;
-        v18 = 0;
+        _sharedExtensionContextVendor = 0;
         v17 = 0;
       }
 
       else
       {
-        v18 = [MEMORY[0x1E696B0F8] _sharedExtensionContextVendor];
-        v19 = [v18 _extensionContextForUUID:a1[3]];
+        _sharedExtensionContextVendor = [MEMORY[0x1E696B0F8] _sharedExtensionContextVendor];
+        v19 = [_sharedExtensionContextVendor _extensionContextForUUID:self[3]];
         if (v19)
         {
           v17 = v19;
@@ -82,7 +82,7 @@
 
         else
         {
-          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to find extensionContext for contextToken: %@. This is indicative of a host issue, where it may have crashed or invalidated the connection before the view service request completed.", a1[3]];
+          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to find extensionContext for contextToken: %@. This is indicative of a host issue, where it may have crashed or invalidated the connection before the view service request completed.", self[3]];
           v21 = MEMORY[0x1E696ABC0];
           v22 = *MEMORY[0x1E696A250];
           v101 = @"Unable to find NSExtensionContext";
@@ -105,8 +105,8 @@
       }
 
       v26 = v16;
-      v27 = a1[4];
-      a1[4] = v17;
+      v27 = self[4];
+      self[4] = v17;
 
       if (v26)
       {
@@ -114,15 +114,15 @@
       }
 
       v89 = 0;
-      v28 = [a1[1] viewControllerClassName];
-      v29 = [a1[1] mainStoryboardName];
-      [a1[1] isExtensionService];
-      [a1[1] requiresExtensionContext];
-      if (a1[4] || [a1[1] isExtensionService] && (objc_msgSend(a1[1], "requiresExtensionContext") & 1) == 0)
+      viewControllerClassName = [self[1] viewControllerClassName];
+      mainStoryboardName = [self[1] mainStoryboardName];
+      [self[1] isExtensionService];
+      [self[1] requiresExtensionContext];
+      if (self[4] || [self[1] isExtensionService] && (objc_msgSend(self[1], "requiresExtensionContext") & 1) == 0)
       {
-        if ((v28 == 0) == (v29 == 0))
+        if ((viewControllerClassName == 0) == (mainStoryboardName == 0))
         {
-          if (v28 | v29)
+          if (viewControllerClassName | mainStoryboardName)
           {
             v33 = @"Either NSExtensionMainStoryboard or NSExtensionPrincipalClass must be specified in the extension's Info.plist file but not both.";
           }
@@ -150,50 +150,50 @@
           v39 = v37;
           v89 = v37;
 
-          v32 = 0;
+          instantiateInitialViewController = 0;
         }
 
-        else if (v29)
+        else if (mainStoryboardName)
         {
-          v30 = [MEMORY[0x1E696AAE8] mainBundle];
-          v31 = [UIStoryboard storyboardWithName:v29 bundle:v30];
+          mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+          v31 = [UIStoryboard storyboardWithName:mainStoryboardName bundle:mainBundle];
 
-          v32 = [v31 instantiateInitialViewController];
+          instantiateInitialViewController = [v31 instantiateInitialViewController];
         }
 
         else
         {
-          v32 = [_UIViewServiceClientViewControllerMaterializer materializedViewControllerOfClassName:v28 withError:&v89];
+          instantiateInitialViewController = [_UIViewServiceClientViewControllerMaterializer materializedViewControllerOfClassName:viewControllerClassName withError:&v89];
         }
       }
 
       else
       {
-        v32 = 0;
+        instantiateInitialViewController = 0;
       }
 
       v26 = v89;
-      v40 = a1[5];
-      a1[5] = v32;
+      v40 = self[5];
+      self[5] = instantiateInitialViewController;
 
       if (v26)
       {
         goto LABEL_58;
       }
 
-      v41 = a1[5];
+      v41 = self[5];
       if (v41)
       {
         goto LABEL_32;
       }
 
-      v48 = a1[2];
+      v48 = self[2];
       v101 = 0;
       v49 = v48;
       if (v49)
       {
-        v50 = [MEMORY[0x1E696AAE8] mainBundle];
-        v51 = [v50 objectForInfoDictionaryKey:@"UIViewServicePermittedViewControllerClasses"];
+        mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+        v51 = [mainBundle2 objectForInfoDictionaryKey:@"UIViewServicePermittedViewControllerClasses"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -228,15 +228,15 @@ LABEL_53:
 LABEL_57:
 
             v26 = v101;
-            v75 = a1[5];
-            a1[5] = v71;
+            v75 = self[5];
+            self[5] = v71;
 
             if (v26)
             {
               goto LABEL_58;
             }
 
-            v41 = a1[5];
+            v41 = self[5];
             if (!v41)
             {
               v79 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_serviceViewController"];
@@ -250,7 +250,7 @@ LABEL_57:
                 v91 = 2114;
                 v92 = v82;
                 v93 = 2048;
-                v94 = a1;
+                selfCopy2 = self;
                 v95 = 2114;
                 v96 = @"_UIViewServiceClientViewControllerMaterializer.m";
                 v97 = 1024;
@@ -267,15 +267,15 @@ LABEL_57:
             }
 
 LABEL_32:
-            [a1[1] didCreateServiceViewController:v41 contextToken:a1[3]];
-            v42 = a1[5];
+            [self[1] didCreateServiceViewController:v41 contextToken:self[3]];
+            v42 = self[5];
             v102[0] = 0;
             v43 = v42;
-            v44 = [a1[1] containingViewControllerClassName];
-            v45 = v44;
-            if (v44)
+            containingViewControllerClassName = [self[1] containingViewControllerClassName];
+            v45 = containingViewControllerClassName;
+            if (containingViewControllerClassName)
             {
-              v46 = [_UIViewServiceClientViewControllerMaterializer materializedViewControllerOfClassName:v44 withError:v102];
+              v46 = [_UIViewServiceClientViewControllerMaterializer materializedViewControllerOfClassName:containingViewControllerClassName withError:v102];
               if (v46)
               {
                 objc_opt_class();
@@ -302,15 +302,15 @@ LABEL_32:
             }
 
             v26 = v102[0];
-            v62 = a1[6];
-            a1[6] = v46;
+            v62 = self[6];
+            self[6] = v46;
 
             if (!v26)
             {
-              v63 = a1[6];
+              v63 = self[6];
               if (!v63)
               {
-                v63 = a1[5];
+                v63 = self[5];
               }
 
               v64 = v63;
@@ -319,11 +319,11 @@ LABEL_32:
             }
 
 LABEL_58:
-            if (a5)
+            if (token)
             {
               v76 = v26;
               v64 = 0;
-              *a5 = v26;
+              *token = v26;
             }
 
             else
@@ -333,8 +333,8 @@ LABEL_58:
 
 LABEL_61:
 
-            v77 = a1[7];
-            a1[7] = v64;
+            v77 = self[7];
+            self[7] = v64;
 
             goto LABEL_62;
           }
@@ -384,15 +384,15 @@ LABEL_61:
 
 LABEL_62:
 
-  return a1;
+  return self;
 }
 
 - (void)prepareViewControllerExtensionContext
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 40))
+    if (!*(self + 40))
     {
       v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"can not prepare extension context for failed view controller materialization"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -405,7 +405,7 @@ LABEL_62:
         v9 = 2114;
         v10 = v5;
         v11 = 2048;
-        v12 = a1;
+        selfCopy = self;
         v13 = 2114;
         v14 = @"_UIViewServiceClientViewControllerMaterializer.m";
         v15 = 1024;
@@ -421,20 +421,20 @@ LABEL_62:
       JUMPOUT(0x189EF4DC8);
     }
 
-    if (*(a1 + 32))
+    if (*(self + 32))
     {
-      v6 = [MEMORY[0x1E696B0F8] _sharedExtensionContextVendor];
-      [v6 _setPrincipalObject:*(a1 + 40) forUUID:*(a1 + 24)];
-      [*(a1 + 56) beginRequestWithExtensionContext:*(a1 + 32)];
+      _sharedExtensionContextVendor = [MEMORY[0x1E696B0F8] _sharedExtensionContextVendor];
+      [_sharedExtensionContextVendor _setPrincipalObject:*(self + 40) forUUID:*(self + 24)];
+      [*(self + 56) beginRequestWithExtensionContext:*(self + 32)];
     }
   }
 }
 
-- (id)materializedViewControllerOfClassName:(void *)a1 withError:(void *)a2
+- (id)materializedViewControllerOfClassName:(void *)name withError:(void *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = NSClassFromString(v3);
+  nameCopy = name;
+  v4 = NSClassFromString(nameCopy);
   if (v4)
   {
     v5 = v4;
@@ -447,8 +447,8 @@ LABEL_62:
     v14 = MEMORY[0x1E696ABC0];
     v15 = *MEMORY[0x1E696A250];
     v20 = @"Class Not UIViewController subclass";
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Service Side Class %@ not UIViewControllerSubclass", v3];
-    v21 = v16;
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Service Side Class %@ not UIViewControllerSubclass", nameCopy];
+    v21 = nameCopy;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v11 = [v14 errorWithDomain:v15 code:967221 userInfo:v17];
 
@@ -467,8 +467,8 @@ LABEL_62:
     v7 = MEMORY[0x1E696ABC0];
     v8 = *MEMORY[0x1E696A250];
     v24 = @"Class Not Found";
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"View Controller Class %@ not found service side", v3];
-    v25[0] = v9;
+    nameCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"View Controller Class %@ not found service side", nameCopy];
+    v25[0] = nameCopy2;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v11 = [v7 errorWithDomain:v8 code:967220 userInfo:v10];
 
@@ -483,10 +483,10 @@ LABEL_8:
     }
   }
 
-  if (a2)
+  if (error)
   {
     v18 = v11;
-    *a2 = v11;
+    *error = v11;
   }
 
   v6 = 0;

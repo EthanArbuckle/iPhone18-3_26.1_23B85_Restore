@@ -1,19 +1,19 @@
 @interface AWDIMessageCloudKitValidatePurgeableAttachment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAttachmentSize:(BOOL)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasLinkQuality:(BOOL)a3;
-- (void)setHasOperationalErrorCode:(BOOL)a3;
-- (void)setHasValidatedAttachment:(BOOL)a3;
-- (void)setHasValidationErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAttachmentSize:(BOOL)size;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasLinkQuality:(BOOL)quality;
+- (void)setHasOperationalErrorCode:(BOOL)code;
+- (void)setHasValidatedAttachment:(BOOL)attachment;
+- (void)setHasValidationErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIMessageCloudKitValidatePurgeableAttachment
@@ -27,9 +27,9 @@
   [(AWDIMessageCloudKitValidatePurgeableAttachment *)&v3 dealloc];
 }
 
-- (void)setHasValidatedAttachment:(BOOL)a3
+- (void)setHasValidatedAttachment:(BOOL)attachment
 {
-  if (a3)
+  if (attachment)
   {
     v3 = 32;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAttachmentSize:(BOOL)a3
+- (void)setHasAttachmentSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasOperationalErrorCode:(BOOL)a3
+- (void)setHasOperationalErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 16;
   }
@@ -72,9 +72,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasValidationErrorCode:(BOOL)a3
+- (void)setHasValidationErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 64;
   }
@@ -87,9 +87,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasLinkQuality:(BOOL)a3
+- (void)setHasLinkQuality:(BOOL)quality
 {
-  if (a3)
+  if (quality)
   {
     v3 = 8;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -126,11 +126,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -149,29 +149,29 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_validatedAttachment), @"validatedAttachment"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_validatedAttachment), @"validatedAttachment"}];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_attachmentSize), @"attachmentSize"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_attachmentSize), @"attachmentSize"}];
   }
 
 LABEL_5:
   operationalErrorDomain = self->_operationalErrorDomain;
   if (operationalErrorDomain)
   {
-    [v3 setObject:operationalErrorDomain forKey:@"operationalErrorDomain"];
+    [dictionary setObject:operationalErrorDomain forKey:@"operationalErrorDomain"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_operationalErrorCode), @"operationalErrorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_operationalErrorCode), @"operationalErrorCode"}];
   }
 
   validationErrorDomain = self->_validationErrorDomain;
   if (validationErrorDomain)
   {
-    [v3 setObject:validationErrorDomain forKey:@"validationErrorDomain"];
+    [dictionary setObject:validationErrorDomain forKey:@"validationErrorDomain"];
   }
 
   v7 = self->_has;
@@ -183,16 +183,16 @@ LABEL_5:
     }
 
 LABEL_20:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_14;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_validationErrorCode), @"validationErrorCode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_validationErrorCode), @"validationErrorCode"}];
   v7 = self->_has;
   if ((v7 & 8) != 0)
   {
@@ -203,13 +203,13 @@ LABEL_13:
   if ((v7 & 4) != 0)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -299,13 +299,13 @@ LABEL_20:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 56) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 56) |= 1u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -324,37 +324,37 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 10) = self->_validatedAttachment;
-  *(a3 + 56) |= 0x20u;
+  *(to + 10) = self->_validatedAttachment;
+  *(to + 56) |= 0x20u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 4) = self->_attachmentSize;
-    *(a3 + 56) |= 2u;
+    *(to + 4) = self->_attachmentSize;
+    *(to + 56) |= 2u;
   }
 
 LABEL_5:
   if (self->_operationalErrorDomain)
   {
-    [a3 setOperationalErrorDomain:?];
+    [to setOperationalErrorDomain:?];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(a3 + 7) = self->_operationalErrorCode;
-    *(a3 + 56) |= 0x10u;
+    *(to + 7) = self->_operationalErrorCode;
+    *(to + 56) |= 0x10u;
   }
 
   if (self->_validationErrorDomain)
   {
-    [a3 setValidationErrorDomain:?];
+    [to setValidationErrorDomain:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(a3 + 11) = self->_validationErrorCode;
-    *(a3 + 56) |= 0x40u;
+    *(to + 11) = self->_validationErrorCode;
+    *(to + 56) |= 0x40u;
     v6 = self->_has;
     if ((v6 & 8) == 0)
     {
@@ -373,21 +373,21 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(a3 + 6) = self->_linkQuality;
-  *(a3 + 56) |= 8u;
+  *(to + 6) = self->_linkQuality;
+  *(to + 56) |= 8u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_14:
-  *(a3 + 5) = self->_connectionType;
-  *(a3 + 56) |= 4u;
+  *(to + 5) = self->_connectionType;
+  *(to + 56) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -423,14 +423,14 @@ LABEL_4:
 
 LABEL_5:
 
-  *(v6 + 32) = [(NSString *)self->_operationalErrorDomain copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_operationalErrorDomain copyWithZone:zone];
   if ((*&self->_has & 0x10) != 0)
   {
     *(v6 + 28) = self->_operationalErrorCode;
     *(v6 + 56) |= 0x10u;
   }
 
-  *(v6 + 48) = [(NSString *)self->_validationErrorDomain copyWithZone:a3];
+  *(v6 + 48) = [(NSString *)self->_validationErrorDomain copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x40) == 0)
   {
@@ -469,22 +469,22 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 56);
+    v7 = *(equal + 56);
     if (has)
     {
-      if ((*(a3 + 56) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 56) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_42;
       }
     }
 
-    else if (*(a3 + 56))
+    else if (*(equal + 56))
     {
 LABEL_42:
       LOBYTE(v5) = 0;
@@ -493,32 +493,32 @@ LABEL_42:
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 56) & 0x20) == 0 || self->_validatedAttachment != *(a3 + 10))
+      if ((*(equal + 56) & 0x20) == 0 || self->_validatedAttachment != *(equal + 10))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 56) & 0x20) != 0)
+    else if ((*(equal + 56) & 0x20) != 0)
     {
       goto LABEL_42;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 56) & 2) == 0 || self->_attachmentSize != *(a3 + 4))
+      if ((*(equal + 56) & 2) == 0 || self->_attachmentSize != *(equal + 4))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 56) & 2) != 0)
+    else if ((*(equal + 56) & 2) != 0)
     {
       goto LABEL_42;
     }
 
     operationalErrorDomain = self->_operationalErrorDomain;
-    if (operationalErrorDomain | *(a3 + 4))
+    if (operationalErrorDomain | *(equal + 4))
     {
       v5 = [(NSString *)operationalErrorDomain isEqual:?];
       if (!v5)
@@ -529,22 +529,22 @@ LABEL_42:
       has = self->_has;
     }
 
-    v9 = *(a3 + 56);
+    v9 = *(equal + 56);
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 56) & 0x10) == 0 || self->_operationalErrorCode != *(a3 + 7))
+      if ((*(equal + 56) & 0x10) == 0 || self->_operationalErrorCode != *(equal + 7))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 56) & 0x10) != 0)
+    else if ((*(equal + 56) & 0x10) != 0)
     {
       goto LABEL_42;
     }
 
     validationErrorDomain = self->_validationErrorDomain;
-    if (validationErrorDomain | *(a3 + 6))
+    if (validationErrorDomain | *(equal + 6))
     {
       v5 = [(NSString *)validationErrorDomain isEqual:?];
       if (!v5)
@@ -557,34 +557,34 @@ LABEL_42:
 
     if ((has & 0x40) != 0)
     {
-      if ((*(a3 + 56) & 0x40) == 0 || self->_validationErrorCode != *(a3 + 11))
+      if ((*(equal + 56) & 0x40) == 0 || self->_validationErrorCode != *(equal + 11))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 56) & 0x40) != 0)
+    else if ((*(equal + 56) & 0x40) != 0)
     {
       goto LABEL_42;
     }
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 56) & 8) == 0 || self->_linkQuality != *(a3 + 6))
+      if ((*(equal + 56) & 8) == 0 || self->_linkQuality != *(equal + 6))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 56) & 8) != 0)
+    else if ((*(equal + 56) & 8) != 0)
     {
       goto LABEL_42;
     }
 
-    LOBYTE(v5) = (*(a3 + 56) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 56) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 56) & 4) == 0 || self->_connectionType != *(a3 + 5))
+      if ((*(equal + 56) & 4) == 0 || self->_connectionType != *(equal + 5))
       {
         goto LABEL_42;
       }
@@ -684,14 +684,14 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v7 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 56);
+  v5 = *(from + 56);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 56);
+    v5 = *(from + 56);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -704,43 +704,43 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 56) & 0x20) == 0)
+  else if ((*(from + 56) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_validatedAttachment = *(a3 + 10);
+  self->_validatedAttachment = *(from + 10);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 56) & 2) != 0)
+  if ((*(from + 56) & 2) != 0)
   {
 LABEL_4:
-    self->_attachmentSize = *(a3 + 4);
+    self->_attachmentSize = *(from + 4);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDIMessageCloudKitValidatePurgeableAttachment *)self setOperationalErrorDomain:?];
   }
 
-  if ((*(a3 + 56) & 0x10) != 0)
+  if ((*(from + 56) & 0x10) != 0)
   {
-    self->_operationalErrorCode = *(a3 + 7);
+    self->_operationalErrorCode = *(from + 7);
     *&self->_has |= 0x10u;
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDIMessageCloudKitValidatePurgeableAttachment *)self setValidationErrorDomain:?];
   }
 
-  v6 = *(a3 + 56);
+  v6 = *(from + 56);
   if ((v6 & 0x40) != 0)
   {
-    self->_validationErrorCode = *(a3 + 11);
+    self->_validationErrorCode = *(from + 11);
     *&self->_has |= 0x40u;
-    v6 = *(a3 + 56);
+    v6 = *(from + 56);
     if ((v6 & 8) == 0)
     {
 LABEL_13:
@@ -753,20 +753,20 @@ LABEL_13:
     }
   }
 
-  else if ((*(a3 + 56) & 8) == 0)
+  else if ((*(from + 56) & 8) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_linkQuality = *(a3 + 6);
+  self->_linkQuality = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 56) & 4) == 0)
+  if ((*(from + 56) & 4) == 0)
   {
     return;
   }
 
 LABEL_14:
-  self->_connectionType = *(a3 + 5);
+  self->_connectionType = *(from + 5);
   *&self->_has |= 4u;
 }
 

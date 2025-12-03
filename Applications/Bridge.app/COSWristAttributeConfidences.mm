@@ -1,74 +1,74 @@
 @interface COSWristAttributeConfidences
-- (COSWristAttributeConfidences)initWithObservationTime:(double)a3;
-- (COSWristAttributeConfidences)initWithObservationTime:(double)a3 none:(double)a4 invalid:(double)a5 lr:(double)a6 ll:(double)a7 rr:(double)a8 rl:(double)a9 palm:(double)a10 dock:(double)a11;
-- (void)addConfidences:(id)a3;
-- (void)divideConfidencesBy:(int64_t)a3;
+- (COSWristAttributeConfidences)initWithObservationTime:(double)time;
+- (COSWristAttributeConfidences)initWithObservationTime:(double)time none:(double)none invalid:(double)invalid lr:(double)lr ll:(double)ll rr:(double)rr rl:(double)rl palm:(double)self0 dock:(double)self1;
+- (void)addConfidences:(id)confidences;
+- (void)divideConfidencesBy:(int64_t)by;
 @end
 
 @implementation COSWristAttributeConfidences
 
-- (COSWristAttributeConfidences)initWithObservationTime:(double)a3 none:(double)a4 invalid:(double)a5 lr:(double)a6 ll:(double)a7 rr:(double)a8 rl:(double)a9 palm:(double)a10 dock:(double)a11
+- (COSWristAttributeConfidences)initWithObservationTime:(double)time none:(double)none invalid:(double)invalid lr:(double)lr ll:(double)ll rr:(double)rr rl:(double)rl palm:(double)self0 dock:(double)self1
 {
   v20.receiver = self;
   v20.super_class = COSWristAttributeConfidences;
   result = [(COSWristAttributeConfidences *)&v20 init];
   if (result)
   {
-    result->_observationTime = a3;
-    result->_none = a4;
-    result->_invalid = a5;
-    result->_leftWristRightCrown = a6;
-    result->_leftWristLeftCrown = a7;
-    result->_rightWristRightCrown = a8;
-    result->_rightWristLeftCrown = a9;
-    result->_palm = a10;
-    result->_dock = a11;
+    result->_observationTime = time;
+    result->_none = none;
+    result->_invalid = invalid;
+    result->_leftWristRightCrown = lr;
+    result->_leftWristLeftCrown = ll;
+    result->_rightWristRightCrown = rr;
+    result->_rightWristLeftCrown = rl;
+    result->_palm = palm;
+    result->_dock = dock;
   }
 
   return result;
 }
 
-- (COSWristAttributeConfidences)initWithObservationTime:(double)a3
+- (COSWristAttributeConfidences)initWithObservationTime:(double)time
 {
   v5.receiver = self;
   v5.super_class = COSWristAttributeConfidences;
   result = [(COSWristAttributeConfidences *)&v5 init];
   if (result)
   {
-    result->_observationTime = a3;
+    result->_observationTime = time;
   }
 
   return result;
 }
 
-- (void)addConfidences:(id)a3
+- (void)addConfidences:(id)confidences
 {
-  v4 = a3;
-  [v4 none];
+  confidencesCopy = confidences;
+  [confidencesCopy none];
   self->_none = v5 + self->_none;
-  [v4 invalid];
+  [confidencesCopy invalid];
   self->_invalid = v6 + self->_invalid;
-  [v4 leftWristRightCrown];
+  [confidencesCopy leftWristRightCrown];
   self->_leftWristRightCrown = v7 + self->_leftWristRightCrown;
-  [v4 leftWristLeftCrown];
+  [confidencesCopy leftWristLeftCrown];
   self->_leftWristLeftCrown = v8 + self->_leftWristLeftCrown;
-  [v4 rightWristRightCrown];
+  [confidencesCopy rightWristRightCrown];
   self->_rightWristRightCrown = v9 + self->_rightWristRightCrown;
-  [v4 rightWristLeftCrown];
+  [confidencesCopy rightWristLeftCrown];
   self->_rightWristLeftCrown = v10;
-  [v4 palm];
+  [confidencesCopy palm];
   self->_palm = v11 + self->_palm;
-  [v4 dock];
+  [confidencesCopy dock];
   v13 = v12;
 
   self->_dock = v13 + self->_dock;
 }
 
-- (void)divideConfidencesBy:(int64_t)a3
+- (void)divideConfidencesBy:(int64_t)by
 {
-  if (a3)
+  if (by)
   {
-    v3 = vdupq_lane_s64(COERCE__INT64(a3), 0);
+    v3 = vdupq_lane_s64(COERCE__INT64(by), 0);
     v4 = vdivq_f64(*&self->_leftWristRightCrown, v3);
     *&self->_none = vdivq_f64(*&self->_none, v3);
     *&self->_leftWristRightCrown = v4;

@@ -1,9 +1,9 @@
 @interface HDFHIRExtensionProcessor
-+ (id)extensionsForURL:(id)a3 inJSONDictionary:(id)a4 error:(id *)a5;
++ (id)extensionsForURL:(id)l inJSONDictionary:(id)dictionary error:(id *)error;
 - (HDFHIRExtensionProcessor)init;
-- (HDFHIRExtensionProcessor)initWithResource:(id)a3;
-- (id)findUnsupportedModifierExtensions:(id *)a3;
-- (int64_t)visitor:(id)a3 willVisitArray:(id)a4;
+- (HDFHIRExtensionProcessor)initWithResource:(id)resource;
+- (id)findUnsupportedModifierExtensions:(id *)extensions;
+- (int64_t)visitor:(id)visitor willVisitArray:(id)array;
 @end
 
 @implementation HDFHIRExtensionProcessor
@@ -18,15 +18,15 @@
   return 0;
 }
 
-- (HDFHIRExtensionProcessor)initWithResource:(id)a3
+- (HDFHIRExtensionProcessor)initWithResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v9.receiver = self;
   v9.super_class = HDFHIRExtensionProcessor;
   v5 = [(HDFHIRExtensionProcessor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resourceCopy copy];
     resource = v5->_resource;
     v5->_resource = v6;
   }
@@ -34,30 +34,30 @@
   return v5;
 }
 
-+ (id)extensionsForURL:(id)a3 inJSONDictionary:(id)a4 error:(id *)a5
++ (id)extensionsForURL:(id)l inJSONDictionary:(id)dictionary error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [HDFHIRExtensionProcessor extensionsForURL:a2 inJSONDictionary:a1 error:?];
+    [HDFHIRExtensionProcessor extensionsForURL:a2 inJSONDictionary:self error:?];
   }
 
   v20 = 0;
-  v11 = [v10 hk_safeArrayIfExistsForKeyPath:@"extension" error:&v20];
+  v11 = [dictionaryCopy hk_safeArrayIfExistsForKeyPath:@"extension" error:&v20];
   v12 = v20;
   v13 = v12;
   if (v11)
   {
-    v14 = [HDFHIRExtensionElement FHIRExtensionElementsFromJSONExtensionObject:v11 error:a5];
+    v14 = [HDFHIRExtensionElement FHIRExtensionElementsFromJSONExtensionObject:v11 error:error];
     if (v14)
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __68__HDFHIRExtensionProcessor_extensionsForURL_inJSONDictionary_error___block_invoke;
       v18[3] = &unk_2796E2C10;
-      v19 = v9;
+      v19 = lCopy;
       v15 = [v14 hk_filter:v18];
     }
 
@@ -69,11 +69,11 @@
 
   else if (v12)
   {
-    if (a5)
+    if (error)
     {
       v16 = v12;
       v15 = 0;
-      *a5 = v13;
+      *error = v13;
     }
 
     else
@@ -99,11 +99,11 @@ uint64_t __68__HDFHIRExtensionProcessor_extensionsForURL_inJSONDictionary_error_
   return v4;
 }
 
-- (id)findUnsupportedModifierExtensions:(id *)a3
+- (id)findUnsupportedModifierExtensions:(id *)extensions
 {
   v5 = MEMORY[0x277CCD568];
-  v6 = [(HDFHIRResourceObject *)self->_resource JSONObject];
-  v7 = [v5 visitorWithJSONObject:v6 delegate:self error:a3];
+  jSONObject = [(HDFHIRResourceObject *)self->_resource JSONObject];
+  v7 = [v5 visitorWithJSONObject:jSONObject delegate:self error:extensions];
 
   if (v7)
   {
@@ -123,31 +123,31 @@ uint64_t __68__HDFHIRExtensionProcessor_extensionsForURL_inJSONDictionary_error_
   return v9;
 }
 
-- (int64_t)visitor:(id)a3 willVisitArray:(id)a4
+- (int64_t)visitor:(id)visitor willVisitArray:(id)array
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  visitorCopy = visitor;
+  arrayCopy = array;
   if (!self->_collectingUnsupportedModifierExtensions)
   {
     [HDFHIRExtensionProcessor visitor:a2 willVisitArray:self];
   }
 
-  v9 = [v7 lastKeyPathComponent];
-  v10 = [v9 isEqualToString:@"modifierExtension"];
+  lastKeyPathComponent = [visitorCopy lastKeyPathComponent];
+  v10 = [lastKeyPathComponent isEqualToString:@"modifierExtension"];
 
   if (v10)
   {
     v40 = 0;
-    v11 = [HDFHIRExtensionElement FHIRExtensionElementsFromJSONExtensionObject:v8 error:&v40];
+    v11 = [HDFHIRExtensionElement FHIRExtensionElementsFromJSONExtensionObject:arrayCopy error:&v40];
     v12 = v40;
     v13 = v12;
     if (v11)
     {
       v31 = v12;
-      v33 = v8;
-      v34 = v7;
-      v35 = [v7 allKeyPathComponents];
+      v33 = arrayCopy;
+      v34 = visitorCopy;
+      allKeyPathComponents = [visitorCopy allKeyPathComponents];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
@@ -175,7 +175,7 @@ uint64_t __68__HDFHIRExtensionProcessor_extensionsForURL_inJSONDictionary_error_
             {
               v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
               v22 = [v21 description];
-              v23 = [v35 arrayByAddingObject:v22];
+              v23 = [allKeyPathComponents arrayByAddingObject:v22];
 
               v24 = [HDFHIRExtensionElementResult alloc];
               v25 = [v23 componentsJoinedByString:@"."];
@@ -195,8 +195,8 @@ uint64_t __68__HDFHIRExtensionProcessor_extensionsForURL_inJSONDictionary_error_
         while (v16);
       }
 
-      v8 = v33;
-      v7 = v34;
+      arrayCopy = v33;
+      visitorCopy = v34;
       v13 = v31;
       v11 = v32;
     }

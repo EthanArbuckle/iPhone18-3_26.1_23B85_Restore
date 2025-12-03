@@ -1,16 +1,16 @@
 @interface CKShareSystemFieldsTransformer
-- (id)reverseTransformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
 @end
 
 @implementation CKShareSystemFieldsTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v3 = a3;
+    valueCopy = value;
     v9 = 0;
-    v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v3 error:&v9];
+    v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:valueCopy error:&v9];
 
     v5 = v9;
     if (v5)

@@ -1,14 +1,14 @@
 @interface PUPickerExtensionVendorContext
 - (_PUPickerExtensionContextVendorInterface)delegate;
-- (void)_deselectItemsWithIdentifiers:(id)a3;
-- (void)_moveItemWithIdentifier:(id)a3 afterIdentifier:(id)a4;
-- (void)_overrideSelectedItemsWithIdentifiers:(id)a3;
-- (void)_popViewControllerWithReply:(id)a3;
-- (void)_searchWithString:(id)a3;
-- (void)_startActivityIndicatorsForAssetsWithIdentifiers:(id)a3;
-- (void)_stopActivityIndicatorsForAssetsWithIdentifiers:(id)a3;
-- (void)_updateConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)_updatePickerUsingUpdateConfiguration:(id)a3;
+- (void)_deselectItemsWithIdentifiers:(id)identifiers;
+- (void)_moveItemWithIdentifier:(id)identifier afterIdentifier:(id)afterIdentifier;
+- (void)_overrideSelectedItemsWithIdentifiers:(id)identifiers;
+- (void)_popViewControllerWithReply:(id)reply;
+- (void)_searchWithString:(id)string;
+- (void)_startActivityIndicatorsForAssetsWithIdentifiers:(id)identifiers;
+- (void)_stopActivityIndicatorsForAssetsWithIdentifiers:(id)identifiers;
+- (void)_updateConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)_updatePickerUsingUpdateConfiguration:(id)configuration;
 @end
 
 @implementation PUPickerExtensionVendorContext
@@ -44,13 +44,13 @@ void __65__PUPickerExtensionVendorContext__scrollContentToInitialPosition__block
   [v1 _scrollContentToInitialPosition];
 }
 
-- (void)_popViewControllerWithReply:(id)a3
+- (void)_popViewControllerWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v5 = [(PUPickerExtensionVendorContext *)self delegate];
-    [v5 _popViewControllerWithReply:v4];
+    delegate = [(PUPickerExtensionVendorContext *)self delegate];
+    [delegate _popViewControllerWithReply:replyCopy];
   }
 
   else
@@ -60,7 +60,7 @@ void __65__PUPickerExtensionVendorContext__scrollContentToInitialPosition__block
     v6[2] = __62__PUPickerExtensionVendorContext__popViewControllerWithReply___block_invoke;
     v6[3] = &unk_1E83F7840;
     v6[4] = self;
-    v7 = v4;
+    v7 = replyCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], v6);
   }
 }
@@ -71,10 +71,10 @@ void __62__PUPickerExtensionVendorContext__popViewControllerWithReply___block_in
   [v2 _popViewControllerWithReply:*(a1 + 40)];
 }
 
-- (void)_searchWithString:(id)a3
+- (void)_searchWithString:(id)string
 {
-  v4 = a3;
-  v3 = v4;
+  stringCopy = string;
+  v3 = stringCopy;
   pl_dispatch_on_main_queue();
 }
 
@@ -84,10 +84,10 @@ void __52__PUPickerExtensionVendorContext__searchWithString___block_invoke(uint6
   [v2 _searchWithString:*(a1 + 40)];
 }
 
-- (void)_overrideSelectedItemsWithIdentifiers:(id)a3
+- (void)_overrideSelectedItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v3 = v4;
+  identifiersCopy = identifiers;
+  v3 = identifiersCopy;
   pl_dispatch_on_main_queue();
 }
 
@@ -97,12 +97,12 @@ void __72__PUPickerExtensionVendorContext__overrideSelectedItemsWithIdentifiers_
   [v2 _overrideSelectedItemsWithIdentifiers:*(a1 + 40)];
 }
 
-- (void)_moveItemWithIdentifier:(id)a3 afterIdentifier:(id)a4
+- (void)_moveItemWithIdentifier:(id)identifier afterIdentifier:(id)afterIdentifier
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  identifierCopy = identifier;
+  afterIdentifierCopy = afterIdentifier;
+  v6 = afterIdentifierCopy;
+  v7 = identifierCopy;
   pl_dispatch_on_main_queue();
 }
 
@@ -112,10 +112,10 @@ void __74__PUPickerExtensionVendorContext__moveItemWithIdentifier_afterIdentifie
   [v2 _moveItemWithIdentifier:*(a1 + 40) afterIdentifier:*(a1 + 48)];
 }
 
-- (void)_deselectItemsWithIdentifiers:(id)a3
+- (void)_deselectItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v3 = v4;
+  identifiersCopy = identifiers;
+  v3 = identifiersCopy;
   pl_dispatch_on_main_queue();
 }
 
@@ -125,10 +125,10 @@ void __64__PUPickerExtensionVendorContext__deselectItemsWithIdentifiers___block_
   [v2 _deselectItemsWithIdentifiers:*(a1 + 40)];
 }
 
-- (void)_stopActivityIndicatorsForAssetsWithIdentifiers:(id)a3
+- (void)_stopActivityIndicatorsForAssetsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v3 = v4;
+  identifiersCopy = identifiers;
+  v3 = identifiersCopy;
   pl_dispatch_on_main_queue();
 }
 
@@ -138,10 +138,10 @@ void __82__PUPickerExtensionVendorContext__stopActivityIndicatorsForAssetsWithId
   [v2 _stopActivityIndicatorsForAssetsWithIdentifiers:*(a1 + 40)];
 }
 
-- (void)_startActivityIndicatorsForAssetsWithIdentifiers:(id)a3
+- (void)_startActivityIndicatorsForAssetsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v3 = v4;
+  identifiersCopy = identifiers;
+  v3 = identifiersCopy;
   pl_dispatch_on_main_queue();
 }
 
@@ -151,10 +151,10 @@ void __83__PUPickerExtensionVendorContext__startActivityIndicatorsForAssetsWithI
   [v2 _startActivityIndicatorsForAssetsWithIdentifiers:*(a1 + 40)];
 }
 
-- (void)_updatePickerUsingUpdateConfiguration:(id)a3
+- (void)_updatePickerUsingUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  v3 = v4;
+  configurationCopy = configuration;
+  v3 = configurationCopy;
   pl_dispatch_on_main_queue();
 }
 
@@ -164,12 +164,12 @@ void __72__PUPickerExtensionVendorContext__updatePickerUsingUpdateConfiguration_
   [v2 _updatePickerUsingUpdateConfiguration:*(a1 + 40)];
 }
 
-- (void)_updateConfiguration:(id)a3 completionHandler:(id)a4
+- (void)_updateConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  v7 = configurationCopy;
   pl_dispatch_on_main_queue();
 }
 

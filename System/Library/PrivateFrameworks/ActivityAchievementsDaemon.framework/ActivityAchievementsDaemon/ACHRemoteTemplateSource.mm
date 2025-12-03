@@ -1,15 +1,15 @@
 @interface ACHRemoteTemplateSource
-- (ACHRemoteTemplateSource)initWithMobileAssetProvider:(id)a3 backCompatWriter:(id)a4 remoteTemplateAvailabilityKeyProvider:(id)a5;
+- (ACHRemoteTemplateSource)initWithMobileAssetProvider:(id)provider backCompatWriter:(id)writer remoteTemplateAvailabilityKeyProvider:(id)keyProvider;
 - (ACHTemplateAssetSourceDelegate)assetSourceDelegate;
-- (id)_resourceAssetURLForTemplate:(id)a3;
+- (id)_resourceAssetURLForTemplate:(id)template;
 - (id)buildVersion;
-- (id)stickerBundleURLForTemplate:(id)a3;
-- (int64_t)mobileAssetVersionForTemplate:(id)a3;
-- (void)_addAssetVersionsByUniqueNameToDictionary:(id)a3 fromAsset:(id)a4;
-- (void)_addURLsByUniqueNameToDictionary:(id)a3 fromAsset:(id)a4;
-- (void)_removeURLsByUniqueNameFromDictionary:(id)a3 fromAsset:(id)a4;
+- (id)stickerBundleURLForTemplate:(id)template;
+- (int64_t)mobileAssetVersionForTemplate:(id)template;
+- (void)_addAssetVersionsByUniqueNameToDictionary:(id)dictionary fromAsset:(id)asset;
+- (void)_addURLsByUniqueNameToDictionary:(id)dictionary fromAsset:(id)asset;
+- (void)_removeURLsByUniqueNameFromDictionary:(id)dictionary fromAsset:(id)asset;
 - (void)dealloc;
-- (void)templatesForDate:(id)a3 completion:(id)a4;
+- (void)templatesForDate:(id)date completion:(id)completion;
 @end
 
 @implementation ACHRemoteTemplateSource
@@ -34,38 +34,38 @@
   return buildVersionOverride;
 }
 
-- (ACHRemoteTemplateSource)initWithMobileAssetProvider:(id)a3 backCompatWriter:(id)a4 remoteTemplateAvailabilityKeyProvider:(id)a5
+- (ACHRemoteTemplateSource)initWithMobileAssetProvider:(id)provider backCompatWriter:(id)writer remoteTemplateAvailabilityKeyProvider:(id)keyProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  writerCopy = writer;
+  keyProviderCopy = keyProvider;
   v29.receiver = self;
   v29.super_class = ACHRemoteTemplateSource;
   v12 = [(ACHRemoteTemplateSource *)&v29 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mobileAssetProvider, a3);
-    objc_storeStrong(&v13->_backCompatAvailabilityKeyWriter, a4);
-    objc_storeStrong(&v13->_remoteTemplateAvailabilityKeyProvider, a5);
+    objc_storeStrong(&v12->_mobileAssetProvider, provider);
+    objc_storeStrong(&v13->_backCompatAvailabilityKeyWriter, writer);
+    objc_storeStrong(&v13->_remoteTemplateAvailabilityKeyProvider, keyProvider);
     v14 = HKCreateSerialDispatchQueue();
     queue = v13->_queue;
     v13->_queue = v14;
 
-    v16 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     resourceAssetURLsByUniqueName = v13->_resourceAssetURLsByUniqueName;
-    v13->_resourceAssetURLsByUniqueName = v16;
+    v13->_resourceAssetURLsByUniqueName = dictionary;
 
-    v18 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
     stickerAssetURLsByUniqueName = v13->_stickerAssetURLsByUniqueName;
-    v13->_stickerAssetURLsByUniqueName = v18;
+    v13->_stickerAssetURLsByUniqueName = dictionary2;
 
-    v20 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary3 = [MEMORY[0x277CBEAC0] dictionary];
     assetVersionsByUniqueName = v13->_assetVersionsByUniqueName;
-    v13->_assetVersionsByUniqueName = v20;
+    v13->_assetVersionsByUniqueName = dictionary3;
 
     objc_initWeak(&location, v13);
-    v22 = [*MEMORY[0x277CE8C18] UTF8String];
+    uTF8String = [*MEMORY[0x277CE8C18] UTF8String];
     v23 = MEMORY[0x277D85CD0];
     v24 = MEMORY[0x277D85CD0];
     v26[0] = MEMORY[0x277D85DD0];
@@ -73,7 +73,7 @@
     v26[2] = __110__ACHRemoteTemplateSource_initWithMobileAssetProvider_backCompatWriter_remoteTemplateAvailabilityKeyProvider___block_invoke;
     v26[3] = &unk_2784907F8;
     objc_copyWeak(&v27, &location);
-    notify_register_dispatch(v22, &v13->_availabilityChangeToken, v23, v26);
+    notify_register_dispatch(uTF8String, &v13->_availabilityChangeToken, v23, v26);
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -102,31 +102,31 @@ void __110__ACHRemoteTemplateSource_initWithMobileAssetProvider_backCompatWriter
   [(ACHRemoteTemplateSource *)&v3 dealloc];
 }
 
-- (void)templatesForDate:(id)a3 completion:(id)a4
+- (void)templatesForDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dateCopy = date;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v9 = [v8 isStandalonePhoneFitnessMode];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isStandalonePhoneFitnessMode = [mEMORY[0x277CCDD30] isStandalonePhoneFitnessMode];
 
-    if (v9)
+    if (isStandalonePhoneFitnessMode)
     {
       v10 = objc_alloc_init(MEMORY[0x277CBEB98]);
-      (*(v7 + 2))(v7, v10, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v10, 0, 0);
     }
 
     else
     {
-      v11 = [(ACHRemoteTemplateSource *)self mobileAssetProvider];
+      mobileAssetProvider = [(ACHRemoteTemplateSource *)self mobileAssetProvider];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __55__ACHRemoteTemplateSource_templatesForDate_completion___block_invoke;
       v12[3] = &unk_278491830;
       v12[4] = self;
-      v13 = v7;
-      [v11 availableAssetsWithCompletion:v12];
+      v13 = completionCopy;
+      [mobileAssetProvider availableAssetsWithCompletion:v12];
     }
   }
 }
@@ -334,25 +334,25 @@ LABEL_13:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)stickerBundleURLForTemplate:(id)a3
+- (id)stickerBundleURLForTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__9;
   v16 = __Block_byref_object_dispose__9;
   v17 = 0;
-  v5 = [(ACHRemoteTemplateSource *)self queue];
+  queue = [(ACHRemoteTemplateSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__ACHRemoteTemplateSource_stickerBundleURLForTemplate___block_invoke;
   block[3] = &unk_278491010;
-  v10 = v4;
+  v10 = templateCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = templateCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -370,30 +370,30 @@ void __55__ACHRemoteTemplateSource_stickerBundleURLForTemplate___block_invoke(ui
   *(v4 + 40) = v3;
 }
 
-- (int64_t)mobileAssetVersionForTemplate:(id)a3
+- (int64_t)mobileAssetVersionForTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__9;
   v16 = __Block_byref_object_dispose__9;
   v17 = 0;
-  v5 = [(ACHRemoteTemplateSource *)self queue];
+  queue = [(ACHRemoteTemplateSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ACHRemoteTemplateSource_mobileAssetVersionForTemplate___block_invoke;
   block[3] = &unk_278491010;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = templateCopy;
   v10 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
-  v7 = [v13[5] integerValue];
+  integerValue = [v13[5] integerValue];
   _Block_object_dispose(&v12, 8);
 
-  return v7;
+  return integerValue;
 }
 
 void __57__ACHRemoteTemplateSource_mobileAssetVersionForTemplate___block_invoke(uint64_t a1)
@@ -414,25 +414,25 @@ void __39__ACHRemoteTemplateSource_buildVersion__block_invoke()
   buildVersion_buildNumber = v0;
 }
 
-- (id)_resourceAssetURLForTemplate:(id)a3
+- (id)_resourceAssetURLForTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__9;
   v16 = __Block_byref_object_dispose__9;
   v17 = 0;
-  v5 = [(ACHRemoteTemplateSource *)self queue];
+  queue = [(ACHRemoteTemplateSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__ACHRemoteTemplateSource__resourceAssetURLForTemplate___block_invoke;
   block[3] = &unk_278491010;
-  v10 = v4;
+  v10 = templateCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = templateCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -450,41 +450,41 @@ void __56__ACHRemoteTemplateSource__resourceAssetURLForTemplate___block_invoke(u
   *(v4 + 40) = v3;
 }
 
-- (void)_addURLsByUniqueNameToDictionary:(id)a3 fromAsset:(id)a4
+- (void)_addURLsByUniqueNameToDictionary:(id)dictionary fromAsset:(id)asset
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 attributes];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277CE8D80]];
+  assetCopy = asset;
+  dictionaryCopy = dictionary;
+  attributes = [assetCopy attributes];
+  v9 = [attributes objectForKeyedSubscript:*MEMORY[0x277CE8D80]];
 
-  v8 = [v5 getLocalFileUrl];
+  getLocalFileUrl = [assetCopy getLocalFileUrl];
 
-  [v6 setObject:v8 forKeyedSubscript:v9];
+  [dictionaryCopy setObject:getLocalFileUrl forKeyedSubscript:v9];
 }
 
-- (void)_removeURLsByUniqueNameFromDictionary:(id)a3 fromAsset:(id)a4
+- (void)_removeURLsByUniqueNameFromDictionary:(id)dictionary fromAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [a4 attributes];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CE8D80]];
+  dictionaryCopy = dictionary;
+  attributes = [asset attributes];
+  v7 = [attributes objectForKeyedSubscript:*MEMORY[0x277CE8D80]];
 
-  [v5 setObject:0 forKeyedSubscript:v7];
+  [dictionaryCopy setObject:0 forKeyedSubscript:v7];
 }
 
-- (void)_addAssetVersionsByUniqueNameToDictionary:(id)a3 fromAsset:(id)a4
+- (void)_addAssetVersionsByUniqueNameToDictionary:(id)dictionary fromAsset:(id)asset
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 attributes];
-  v12 = [v7 objectForKeyedSubscript:*MEMORY[0x277CE8D80]];
+  assetCopy = asset;
+  dictionaryCopy = dictionary;
+  attributes = [assetCopy attributes];
+  v12 = [attributes objectForKeyedSubscript:*MEMORY[0x277CE8D80]];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v5 attributes];
+  attributes2 = [assetCopy attributes];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D288E8]];
+  v10 = [attributes2 objectForKeyedSubscript:*MEMORY[0x277D288E8]];
   v11 = [v8 numberWithInteger:{objc_msgSend(v10, "integerValue")}];
 
-  [v6 setObject:v11 forKeyedSubscript:v12];
+  [dictionaryCopy setObject:v11 forKeyedSubscript:v12];
 }
 
 - (ACHTemplateAssetSourceDelegate)assetSourceDelegate

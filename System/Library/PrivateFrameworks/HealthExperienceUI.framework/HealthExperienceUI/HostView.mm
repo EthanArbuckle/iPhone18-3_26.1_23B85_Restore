@@ -6,7 +6,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   HostView.description.getter();
 
   v3 = sub_1BA4A6758();

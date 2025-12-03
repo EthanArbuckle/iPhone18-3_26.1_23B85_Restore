@@ -1,41 +1,41 @@
 @interface CameraSensorAnomalyViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGPoint)originPoint;
 - (CGRect)rectangle;
-- (id)findDevice:(id)a3;
+- (id)findDevice:(id)device;
 - (int64_t)setupCameraPreview;
-- (int64_t)setupSessionForDevice:(id)a3;
+- (int64_t)setupSessionForDevice:(id)device;
 - (void)addPanGesture;
 - (void)addTapGesture;
 - (void)addedRectangleView;
 - (void)cancel;
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
 - (void)cleanUp;
-- (void)continueButtonPressed:(id)a3;
+- (void)continueButtonPressed:(id)pressed;
 - (void)disableAdaptationAndBlueLightReduction;
-- (void)endTestWithStatusCode:(id)a3;
+- (void)endTestWithStatusCode:(id)code;
 - (void)flashTapped;
 - (void)flipTapped;
 - (void)hideCameraView;
-- (void)panOccurred:(id)a3;
+- (void)panOccurred:(id)occurred;
 - (void)parseResults;
 - (void)removeDrawingModeViews;
-- (void)removeResultWithTag:(int64_t)a3;
-- (void)removeShape:(id)a3;
+- (void)removeResultWithTag:(int64_t)tag;
+- (void)removeShape:(id)shape;
 - (void)resetBrightness;
 - (void)resetColorAdjustmentStates;
-- (void)retakeButtonPressed:(id)a3;
+- (void)retakeButtonPressed:(id)pressed;
 - (void)saveAndMaximizeBrightness;
 - (void)saveColorAdjustmentStates;
-- (void)scrollViewDidZoom:(id)a3;
+- (void)scrollViewDidZoom:(id)zoom;
 - (void)setupCamera;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)showCameraView;
 - (void)start;
-- (void)takePictureWithHandler:(id)a3;
-- (void)tapOccurred:(id)a3;
+- (void)takePictureWithHandler:(id)handler;
+- (void)tapOccurred:(id)occurred;
 - (void)updateViewConstraints;
-- (void)usePhotoButtonPressed:(id)a3;
+- (void)usePhotoButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -49,68 +49,68 @@
   [(CameraSensorAnomalyViewController *)&v3 viewDidLoad];
 }
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(CameraSensorAnomalyViewController *)self setInputs:a3, a4];
+  [(CameraSensorAnomalyViewController *)self setInputs:inputs, responder];
   [(CameraSensorAnomalyViewController *)self setCurrentTag:1];
   [(CameraSensorAnomalyViewController *)self setDrawingMode:0];
   v5 = objc_alloc_init(NSMutableArray);
   [(CameraSensorAnomalyViewController *)self setAllResults:v5];
 
   [(CameraSensorAnomalyViewController *)self setExclavesStatus:0];
-  v6 = [(CameraSensorAnomalyViewController *)self inputs];
-  v7 = [v6 disableAmbientLightAdaptation];
+  inputs = [(CameraSensorAnomalyViewController *)self inputs];
+  disableAmbientLightAdaptation = [inputs disableAmbientLightAdaptation];
 
-  if (v7)
+  if (disableAmbientLightAdaptation)
   {
     v8 = objc_alloc_init(CBClient);
     [(CameraSensorAnomalyViewController *)self setClient:v8];
 
-    v9 = [(CameraSensorAnomalyViewController *)self client];
-    v10 = [v9 blueLightClient];
-    [(CameraSensorAnomalyViewController *)self setBlueLightClient:v10];
+    client = [(CameraSensorAnomalyViewController *)self client];
+    blueLightClient = [client blueLightClient];
+    [(CameraSensorAnomalyViewController *)self setBlueLightClient:blueLightClient];
 
-    v11 = [(CameraSensorAnomalyViewController *)self client];
-    v12 = [v11 adaptationClient];
-    [(CameraSensorAnomalyViewController *)self setAdaptationClient:v12];
+    client2 = [(CameraSensorAnomalyViewController *)self client];
+    adaptationClient = [client2 adaptationClient];
+    [(CameraSensorAnomalyViewController *)self setAdaptationClient:adaptationClient];
   }
 
   v13 = +[DSTestAutomation sharedInstance];
-  v14 = [v13 testAutomationEnabled];
+  testAutomationEnabled = [v13 testAutomationEnabled];
 
-  if (v14)
+  if (testAutomationEnabled)
   {
     v33[0] = @"predicates";
     v31 = @"identifier";
-    v30 = [(CameraSensorAnomalyViewController *)self inputs];
-    v29 = [v30 identifier];
-    v32 = v29;
+    inputs2 = [(CameraSensorAnomalyViewController *)self inputs];
+    identifier = [inputs2 identifier];
+    v32 = identifier;
     v28 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v34[0] = v28;
     v33[1] = @"minimumSquareLength";
-    v27 = [(CameraSensorAnomalyViewController *)self inputs];
-    [v27 minimumSquareLength];
+    inputs3 = [(CameraSensorAnomalyViewController *)self inputs];
+    [inputs3 minimumSquareLength];
     v26 = [NSNumber numberWithFloat:?];
     v34[1] = v26;
     v33[2] = @"enableMaxBrightness";
-    v25 = [(CameraSensorAnomalyViewController *)self inputs];
-    v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v25 enableMaxBrightness]);
+    inputs4 = [(CameraSensorAnomalyViewController *)self inputs];
+    v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [inputs4 enableMaxBrightness]);
     v34[2] = v15;
     v33[3] = @"flashModeOn";
-    v16 = [(CameraSensorAnomalyViewController *)self inputs];
-    v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v16 flashModeOn]);
+    inputs5 = [(CameraSensorAnomalyViewController *)self inputs];
+    v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [inputs5 flashModeOn]);
     v34[3] = v17;
     v33[4] = @"viewfinderInstruction";
-    v18 = [(CameraSensorAnomalyViewController *)self inputs];
-    v19 = [v18 viewfinderInstruction];
-    v34[4] = v19;
+    inputs6 = [(CameraSensorAnomalyViewController *)self inputs];
+    viewfinderInstruction = [inputs6 viewfinderInstruction];
+    v34[4] = viewfinderInstruction;
     v33[5] = @"drawColor";
-    v20 = [(CameraSensorAnomalyViewController *)self inputs];
-    v21 = [v20 drawColor];
-    v34[5] = v21;
+    inputs7 = [(CameraSensorAnomalyViewController *)self inputs];
+    drawColor = [inputs7 drawColor];
+    v34[5] = drawColor;
     v33[6] = @"disableAmbientLightAdaptation";
-    v22 = [(CameraSensorAnomalyViewController *)self inputs];
-    v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v22 disableAmbientLightAdaptation]);
+    inputs8 = [(CameraSensorAnomalyViewController *)self inputs];
+    v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [inputs8 disableAmbientLightAdaptation]);
     v34[6] = v23;
     v24 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:7];
     [DSTestAutomation postConfiguration:v24];
@@ -120,21 +120,21 @@
 - (void)start
 {
   v3 = +[UIColor blackColor];
-  v4 = [(CameraSensorAnomalyViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(CameraSensorAnomalyViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(CameraSensorAnomalyViewController *)self inputs];
-  LODWORD(v4) = [v5 enableMaxBrightness];
+  inputs = [(CameraSensorAnomalyViewController *)self inputs];
+  LODWORD(view) = [inputs enableMaxBrightness];
 
-  if (v4)
+  if (view)
   {
     [(CameraSensorAnomalyViewController *)self saveAndMaximizeBrightness];
   }
 
-  v6 = [(CameraSensorAnomalyViewController *)self inputs];
-  v7 = [v6 disableAmbientLightAdaptation];
+  inputs2 = [(CameraSensorAnomalyViewController *)self inputs];
+  disableAmbientLightAdaptation = [inputs2 disableAmbientLightAdaptation];
 
-  if (v7)
+  if (disableAmbientLightAdaptation)
   {
     [(CameraSensorAnomalyViewController *)self saveColorAdjustmentStates];
     [(CameraSensorAnomalyViewController *)self disableAdaptationAndBlueLightReduction];
@@ -156,34 +156,34 @@
 - (void)cleanUp
 {
   [(CameraSensorAnomalyViewController *)self resetBrightness];
-  v3 = [(CameraSensorAnomalyViewController *)self inputs];
-  v4 = [v3 disableAmbientLightAdaptation];
+  inputs = [(CameraSensorAnomalyViewController *)self inputs];
+  disableAmbientLightAdaptation = [inputs disableAmbientLightAdaptation];
 
-  if (v4)
+  if (disableAmbientLightAdaptation)
   {
     [(CameraSensorAnomalyViewController *)self resetColorAdjustmentStates];
   }
 
-  v5 = [(CameraSensorAnomalyViewController *)self session];
+  session = [(CameraSensorAnomalyViewController *)self session];
 
-  if (v5)
+  if (session)
   {
-    v6 = [(CameraSensorAnomalyViewController *)self session];
-    v7 = [v6 isRunning];
+    session2 = [(CameraSensorAnomalyViewController *)self session];
+    isRunning = [session2 isRunning];
 
-    if (v7)
+    if (isRunning)
     {
-      v8 = [(CameraSensorAnomalyViewController *)self session];
-      [v8 stopRunning];
+      session3 = [(CameraSensorAnomalyViewController *)self session];
+      [session3 stopRunning];
 
       v9 = +[DSTestAutomation sharedInstance];
-      v10 = [v9 testAutomationEnabled];
+      testAutomationEnabled = [v9 testAutomationEnabled];
 
-      if (v10)
+      if (testAutomationEnabled)
       {
         v11 = +[NSNotificationCenter defaultCenter];
-        v12 = [(CameraSensorAnomalyViewController *)self session];
-        [v11 removeObserver:self name:AVCaptureSessionDidStartRunningNotification object:v12];
+        session4 = [(CameraSensorAnomalyViewController *)self session];
+        [v11 removeObserver:self name:AVCaptureSessionDidStartRunningNotification object:session4];
       }
 
       [(CameraSensorAnomalyViewController *)self setSession:0];
@@ -195,83 +195,83 @@
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(CameraSensorAnomalyViewController *)self inputs];
-    v4 = [v3 identifier];
+    inputs = [(CameraSensorAnomalyViewController *)self inputs];
+    identifier = [inputs identifier];
     *buf = 138412290;
-    v34 = v4;
+    v34 = identifier;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "self.inputs.identifier: %@", buf, 0xCu);
   }
 
-  v5 = [(CameraSensorAnomalyViewController *)self inputs];
-  v6 = [v5 identifier];
-  v7 = [(CameraSensorAnomalyViewController *)self findDevice:v6];
+  inputs2 = [(CameraSensorAnomalyViewController *)self inputs];
+  identifier2 = [inputs2 identifier];
+  v7 = [(CameraSensorAnomalyViewController *)self findDevice:identifier2];
 
   objc_initWeak(buf, self);
   if (!v7)
   {
-    v8 = -3;
+    setupCameraPreview = -3;
 LABEL_8:
-    v30 = [NSNumber numberWithInteger:v8];
+    v30 = [NSNumber numberWithInteger:setupCameraPreview];
     [(CameraSensorAnomalyViewController *)self endTestWithStatusCode:v30];
 
     goto LABEL_9;
   }
 
-  v8 = [(CameraSensorAnomalyViewController *)self setupSessionForDevice:v7];
-  if (v8)
+  setupCameraPreview = [(CameraSensorAnomalyViewController *)self setupSessionForDevice:v7];
+  if (setupCameraPreview)
   {
     goto LABEL_8;
   }
 
-  v8 = [(CameraSensorAnomalyViewController *)self setupCameraPreview];
-  if (v8)
+  setupCameraPreview = [(CameraSensorAnomalyViewController *)self setupCameraPreview];
+  if (setupCameraPreview)
   {
     goto LABEL_8;
   }
 
   v9 = +[NSNotificationCenter defaultCenter];
-  v10 = [(CameraSensorAnomalyViewController *)self session];
+  session = [(CameraSensorAnomalyViewController *)self session];
   v11 = +[NSOperationQueue mainQueue];
-  v12 = [v9 addObserverForName:AVCaptureSessionRuntimeErrorNotification object:v10 queue:v11 usingBlock:&stru_100014430];
+  v12 = [v9 addObserverForName:AVCaptureSessionRuntimeErrorNotification object:session queue:v11 usingBlock:&stru_100014430];
 
   v13 = +[NSNotificationCenter defaultCenter];
-  v14 = [(CameraSensorAnomalyViewController *)self session];
+  session2 = [(CameraSensorAnomalyViewController *)self session];
   v15 = +[NSOperationQueue mainQueue];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100002B0C;
   v31[3] = &unk_100014458;
   objc_copyWeak(&v32, buf);
-  v16 = [v13 addObserverForName:AVCaptureSessionDidStartRunningNotification object:v14 queue:v15 usingBlock:v31];
+  v16 = [v13 addObserverForName:AVCaptureSessionDidStartRunningNotification object:session2 queue:v15 usingBlock:v31];
 
   v17 = +[NSNotificationCenter defaultCenter];
-  v18 = [(CameraSensorAnomalyViewController *)self session];
+  session3 = [(CameraSensorAnomalyViewController *)self session];
   v19 = +[NSOperationQueue mainQueue];
-  v20 = [v17 addObserverForName:AVCaptureSessionDidStopRunningNotification object:v18 queue:v19 usingBlock:&stru_100014478];
+  v20 = [v17 addObserverForName:AVCaptureSessionDidStopRunningNotification object:session3 queue:v19 usingBlock:&stru_100014478];
 
   v21 = +[NSNotificationCenter defaultCenter];
-  v22 = [(CameraSensorAnomalyViewController *)self session];
+  session4 = [(CameraSensorAnomalyViewController *)self session];
   v23 = +[NSOperationQueue mainQueue];
-  v24 = [v21 addObserverForName:AVCaptureSessionWasInterruptedNotification object:v22 queue:v23 usingBlock:&stru_100014498];
+  v24 = [v21 addObserverForName:AVCaptureSessionWasInterruptedNotification object:session4 queue:v23 usingBlock:&stru_100014498];
 
   v25 = +[NSNotificationCenter defaultCenter];
-  v26 = [(CameraSensorAnomalyViewController *)self session];
+  session5 = [(CameraSensorAnomalyViewController *)self session];
   v27 = +[NSOperationQueue mainQueue];
-  v28 = [v25 addObserverForName:AVCaptureSessionInterruptionEndedNotification object:v26 queue:v27 usingBlock:&stru_1000144B8];
+  v28 = [v25 addObserverForName:AVCaptureSessionInterruptionEndedNotification object:session5 queue:v27 usingBlock:&stru_1000144B8];
 
   [(CameraSensorAnomalyViewController *)self showCameraView];
-  v29 = [(CameraSensorAnomalyViewController *)self session];
-  [v29 startRunning];
+  session6 = [(CameraSensorAnomalyViewController *)self session];
+  [session6 startRunning];
 
   objc_destroyWeak(&v32);
 LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (id)findDevice:(id)a3
+- (id)findDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Front"])
+  deviceCopy = device;
+  if ([deviceCopy isEqualToString:@"Front"])
   {
     v4 = &AVCaptureDeviceTypeBuiltInWideAngleCamera;
     v5 = 2;
@@ -279,24 +279,24 @@ LABEL_9:
 
   else
   {
-    if ([v3 isEqualToString:@"Rear"])
+    if ([deviceCopy isEqualToString:@"Rear"])
     {
       v4 = &AVCaptureDeviceTypeBuiltInWideAngleCamera;
     }
 
-    else if ([v3 isEqualToString:@"RearTelephoto"])
+    else if ([deviceCopy isEqualToString:@"RearTelephoto"])
     {
       v4 = &AVCaptureDeviceTypeBuiltInTelephotoCamera;
     }
 
-    else if ([v3 isEqualToString:@"RearSuperWide"])
+    else if ([deviceCopy isEqualToString:@"RearSuperWide"])
     {
       v4 = &AVCaptureDeviceTypeBuiltInUltraWideCamera;
     }
 
     else
     {
-      if (![v3 isEqualToString:@"RearSynced"])
+      if (![deviceCopy isEqualToString:@"RearSynced"])
       {
         v7 = 0;
         goto LABEL_18;
@@ -316,24 +316,24 @@ LABEL_9:
     v8 = [NSArray arrayWithObjects:&v21 count:1];
     v9 = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:v8 mediaType:AVMediaTypeVideo position:v5];
 
-    v10 = [v9 devices];
-    v11 = [v10 count];
+    devices = [v9 devices];
+    v11 = [devices count];
 
     if (v11)
     {
-      v12 = [v9 devices];
-      v13 = [v12 firstObject];
+      devices2 = [v9 devices];
+      firstObject = [devices2 firstObject];
 
-      if (v13)
+      if (firstObject)
       {
         v14 = DiagnosticLogHandleForCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v13 deviceType];
+          deviceType = [firstObject deviceType];
           v17 = 138412546;
-          v18 = v13;
+          v18 = firstObject;
           v19 = 2112;
-          v20 = v15;
+          v20 = deviceType;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Requested device found: %@, %@", &v17, 0x16u);
         }
 
@@ -353,46 +353,46 @@ LABEL_18:
     sub_100009174();
   }
 
-  v13 = 0;
+  firstObject = 0;
 LABEL_21:
 
-  return v13;
+  return firstObject;
 }
 
-- (int64_t)setupSessionForDevice:(id)a3
+- (int64_t)setupSessionForDevice:(id)device
 {
   v19 = 0;
-  v4 = [AVCaptureDeviceInput deviceInputWithDevice:a3 error:&v19];
+  v4 = [AVCaptureDeviceInput deviceInputWithDevice:device error:&v19];
   v5 = v19;
   if (v4)
   {
     v6 = objc_alloc_init(AVCapturePhotoOutput);
     [(CameraSensorAnomalyViewController *)self setOutput:v6];
 
-    v7 = [(CameraSensorAnomalyViewController *)self output];
-    [v7 setLivePhotoCaptureEnabled:0];
+    output = [(CameraSensorAnomalyViewController *)self output];
+    [output setLivePhotoCaptureEnabled:0];
 
     v8 = objc_alloc_init(AVCaptureSession);
     [(CameraSensorAnomalyViewController *)self setSession:v8];
 
-    v9 = [(CameraSensorAnomalyViewController *)self session];
-    [v9 setSessionPreset:AVCaptureSessionPresetPhoto];
+    session = [(CameraSensorAnomalyViewController *)self session];
+    [session setSessionPreset:AVCaptureSessionPresetPhoto];
 
-    v10 = [(CameraSensorAnomalyViewController *)self session];
-    if ([v10 canAddInput:v4])
+    session2 = [(CameraSensorAnomalyViewController *)self session];
+    if ([session2 canAddInput:v4])
     {
-      v11 = [(CameraSensorAnomalyViewController *)self session];
-      v12 = [(CameraSensorAnomalyViewController *)self output];
-      v13 = [v11 canAddOutput:v12];
+      session3 = [(CameraSensorAnomalyViewController *)self session];
+      output2 = [(CameraSensorAnomalyViewController *)self output];
+      v13 = [session3 canAddOutput:output2];
 
       if (v13)
       {
-        v14 = [(CameraSensorAnomalyViewController *)self session];
-        [v14 addInput:v4];
+        session4 = [(CameraSensorAnomalyViewController *)self session];
+        [session4 addInput:v4];
 
-        v15 = [(CameraSensorAnomalyViewController *)self session];
-        v16 = [(CameraSensorAnomalyViewController *)self output];
-        [v15 addOutput:v16];
+        session5 = [(CameraSensorAnomalyViewController *)self session];
+        output3 = [(CameraSensorAnomalyViewController *)self output];
+        [session5 addOutput:output3];
 
         v17 = 0;
         goto LABEL_12;
@@ -403,8 +403,8 @@ LABEL_21:
     {
     }
 
-    v15 = DiagnosticLogHandleForCategory();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    session5 = DiagnosticLogHandleForCategory();
+    if (os_log_type_enabled(session5, OS_LOG_TYPE_ERROR))
     {
       sub_1000091E8();
     }
@@ -414,8 +414,8 @@ LABEL_21:
 
   else
   {
-    v15 = DiagnosticLogHandleForCategory();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    session5 = DiagnosticLogHandleForCategory();
+    if (os_log_type_enabled(session5, OS_LOG_TYPE_ERROR))
     {
       sub_100009228();
     }
@@ -431,20 +431,20 @@ LABEL_12:
 - (int64_t)setupCameraPreview
 {
   v3 = [UIView alloc];
-  v4 = [(CameraSensorAnomalyViewController *)self view];
-  [v4 bounds];
+  view = [(CameraSensorAnomalyViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
   [(CameraSensorAnomalyViewController *)self setPreviewView:v5];
 
-  v6 = [(CameraSensorAnomalyViewController *)self session];
-  v7 = [AVCaptureVideoPreviewLayer layerWithSession:v6];
+  session = [(CameraSensorAnomalyViewController *)self session];
+  v7 = [AVCaptureVideoPreviewLayer layerWithSession:session];
 
   if (v7)
   {
     [v7 setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    v8 = [(CameraSensorAnomalyViewController *)self inputs];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqualToString:@"Front"];
+    inputs = [(CameraSensorAnomalyViewController *)self inputs];
+    identifier = [inputs identifier];
+    v10 = [identifier isEqualToString:@"Front"];
 
     if (v10)
     {
@@ -456,39 +456,39 @@ LABEL_12:
       v11 = 90.0;
     }
 
-    v14 = [v7 connection];
-    [v14 setVideoRotationAngle:v11];
+    connection = [v7 connection];
+    [connection setVideoRotationAngle:v11];
 
-    v15 = [(CameraSensorAnomalyViewController *)self previewView];
-    [v15 bounds];
+    previewView = [(CameraSensorAnomalyViewController *)self previewView];
+    [previewView bounds];
     [v7 setFrame:?];
 
     v16 = [CameraTargetView alloc];
-    v17 = [(CameraSensorAnomalyViewController *)self previewView];
-    [v17 bounds];
+    previewView2 = [(CameraSensorAnomalyViewController *)self previewView];
+    [previewView2 bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v26 = +[UIColor orangeColor];
-    v27 = [(CameraSensorAnomalyViewController *)self inputs];
-    v28 = [v27 viewfinderInstruction];
-    v29 = [(CameraTargetView *)v16 initWithFrame:v26 color:v28 thickness:3 instructionText:v19 presentationOptions:v21, v23, v25, 2.0];
+    inputs2 = [(CameraSensorAnomalyViewController *)self inputs];
+    viewfinderInstruction = [inputs2 viewfinderInstruction];
+    v29 = [(CameraTargetView *)v16 initWithFrame:v26 color:viewfinderInstruction thickness:3 instructionText:v19 presentationOptions:v21, v23, v25, 2.0];
     [(CameraSensorAnomalyViewController *)self setOverlayView:v29];
 
-    v30 = [(CameraSensorAnomalyViewController *)self overlayView];
-    [v30 setUserInteractionEnabled:1];
+    overlayView = [(CameraSensorAnomalyViewController *)self overlayView];
+    [overlayView setUserInteractionEnabled:1];
 
-    v31 = [(CameraSensorAnomalyViewController *)self overlayView];
-    [v31 setDelegate:self];
+    overlayView2 = [(CameraSensorAnomalyViewController *)self overlayView];
+    [overlayView2 setDelegate:self];
 
-    v32 = [(CameraSensorAnomalyViewController *)self previewView];
-    v33 = [v32 layer];
-    [v33 addSublayer:v7];
+    previewView3 = [(CameraSensorAnomalyViewController *)self previewView];
+    layer = [previewView3 layer];
+    [layer addSublayer:v7];
 
-    v34 = [(CameraSensorAnomalyViewController *)self previewView];
-    v35 = [(CameraSensorAnomalyViewController *)self overlayView];
-    [v34 addSubview:v35];
+    previewView4 = [(CameraSensorAnomalyViewController *)self previewView];
+    overlayView3 = [(CameraSensorAnomalyViewController *)self overlayView];
+    [previewView4 addSubview:overlayView3];
 
     v13 = 0;
   }
@@ -509,14 +509,14 @@ LABEL_12:
 
 - (void)showCameraView
 {
-  v3 = [(CameraSensorAnomalyViewController *)self view];
-  v4 = [(CameraSensorAnomalyViewController *)self previewView];
-  [v3 addSubview:v4];
+  view = [(CameraSensorAnomalyViewController *)self view];
+  previewView = [(CameraSensorAnomalyViewController *)self previewView];
+  [view addSubview:previewView];
 
   v5 = +[DSTestAutomation sharedInstance];
-  LODWORD(v3) = [v5 testAutomationEnabled];
+  LODWORD(view) = [v5 testAutomationEnabled];
 
-  if (v3)
+  if (view)
   {
 
     [DSTestAutomation postInteractiveTestEvent:@"ViewDidChange" info:&off_100014FF0];
@@ -525,8 +525,8 @@ LABEL_12:
 
 - (void)hideCameraView
 {
-  v2 = [(CameraSensorAnomalyViewController *)self previewView];
-  [v2 removeFromSuperview];
+  previewView = [(CameraSensorAnomalyViewController *)self previewView];
+  [previewView removeFromSuperview];
 }
 
 - (void)addPanGesture
@@ -534,23 +534,23 @@ LABEL_12:
   v3 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"panOccurred:"];
   [(CameraSensorAnomalyViewController *)self setPanGesture:v3];
 
-  v4 = [(CameraSensorAnomalyViewController *)self panGesture];
-  [v4 setMinimumNumberOfTouches:1];
+  panGesture = [(CameraSensorAnomalyViewController *)self panGesture];
+  [panGesture setMinimumNumberOfTouches:1];
 
-  v5 = [(CameraSensorAnomalyViewController *)self panGesture];
-  [v5 setDelegate:self];
+  panGesture2 = [(CameraSensorAnomalyViewController *)self panGesture];
+  [panGesture2 setDelegate:self];
 
-  v8 = [(CameraSensorAnomalyViewController *)self currentImageView];
-  v6 = [v8 drawableView];
-  v7 = [(CameraSensorAnomalyViewController *)self panGesture];
-  [v6 addGestureRecognizer:v7];
+  currentImageView = [(CameraSensorAnomalyViewController *)self currentImageView];
+  drawableView = [currentImageView drawableView];
+  panGesture3 = [(CameraSensorAnomalyViewController *)self panGesture];
+  [drawableView addGestureRecognizer:panGesture3];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CameraSensorAnomalyViewController *)self panGesture];
-  if (v5 != v4)
+  beginCopy = begin;
+  panGesture = [(CameraSensorAnomalyViewController *)self panGesture];
+  if (panGesture != beginCopy)
   {
     v6 = 1;
 LABEL_6:
@@ -558,12 +558,12 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [v4 numberOfTouches];
+  numberOfTouches = [beginCopy numberOfTouches];
 
-  if (v7 != 1)
+  if (numberOfTouches != 1)
   {
-    v5 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v5 zoomScale];
+    panGesture = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [panGesture zoomScale];
     v6 = v8 <= 1.0;
     goto LABEL_6;
   }
@@ -579,25 +579,25 @@ LABEL_7:
   v3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"tapOccurred:"];
   [(CameraSensorAnomalyViewController *)self setTapGesture:v3];
 
-  v4 = [(CameraSensorAnomalyViewController *)self tapGesture];
-  [v4 setDelegate:self];
+  tapGesture = [(CameraSensorAnomalyViewController *)self tapGesture];
+  [tapGesture setDelegate:self];
 
-  v7 = [(CameraSensorAnomalyViewController *)self currentImageView];
-  v5 = [v7 drawableView];
-  v6 = [(CameraSensorAnomalyViewController *)self tapGesture];
-  [v5 addGestureRecognizer:v6];
+  currentImageView = [(CameraSensorAnomalyViewController *)self currentImageView];
+  drawableView = [currentImageView drawableView];
+  tapGesture2 = [(CameraSensorAnomalyViewController *)self tapGesture];
+  [drawableView addGestureRecognizer:tapGesture2];
 }
 
-- (void)panOccurred:(id)a3
+- (void)panOccurred:(id)occurred
 {
-  v54 = a3;
-  if ([v54 numberOfTouches] <= 1)
+  occurredCopy = occurred;
+  if ([occurredCopy numberOfTouches] <= 1)
   {
-    if ([v54 state] == 1)
+    if ([occurredCopy state] == 1)
     {
-      v5 = [(CameraSensorAnomalyViewController *)self currentImageView];
-      v6 = [v5 drawableView];
-      [v54 locationInView:v6];
+      currentImageView = [(CameraSensorAnomalyViewController *)self currentImageView];
+      drawableView = [currentImageView drawableView];
+      [occurredCopy locationInView:drawableView];
       [(CameraSensorAnomalyViewController *)self setOriginPoint:?];
 
       [(CameraSensorAnomalyViewController *)self setIsDrawing:1];
@@ -605,13 +605,13 @@ LABEL_7:
 
     if ([(CameraSensorAnomalyViewController *)self isDrawing])
     {
-      v7 = [v54 state];
-      v8 = [(CameraSensorAnomalyViewController *)self currentImageView];
-      v9 = [v8 drawableView];
-      v10 = v9;
-      if (v7 == 3)
+      state = [occurredCopy state];
+      currentImageView2 = [(CameraSensorAnomalyViewController *)self currentImageView];
+      drawableView2 = [currentImageView2 drawableView];
+      v10 = drawableView2;
+      if (state == 3)
       {
-        [v9 endDrawing];
+        [drawableView2 endDrawing];
 
         [(CameraSensorAnomalyViewController *)self addedRectangleView];
         [(CameraSensorAnomalyViewController *)self setIsDrawing:0];
@@ -619,13 +619,13 @@ LABEL_7:
 
       else
       {
-        [v54 locationInView:v9];
+        [occurredCopy locationInView:drawableView2];
         v12 = v11;
         v14 = v13;
 
-        v15 = [(CameraSensorAnomalyViewController *)self currentImageView];
-        v16 = [v15 drawableView];
-        [v16 bounds];
+        currentImageView3 = [(CameraSensorAnomalyViewController *)self currentImageView];
+        drawableView3 = [currentImageView3 drawableView];
+        [drawableView3 bounds];
         v56.x = v12;
         v56.y = v14;
         v17 = CGRectContainsPoint(v57, v56);
@@ -634,8 +634,8 @@ LABEL_7:
         {
           [(CameraSensorAnomalyViewController *)self originPoint];
           v19 = vabdd_f64(v18, v12);
-          v20 = [(CameraSensorAnomalyViewController *)self inputs];
-          [v20 minimumSquareLength];
+          inputs = [(CameraSensorAnomalyViewController *)self inputs];
+          [inputs minimumSquareLength];
           v22 = v21;
           [(CameraSensorAnomalyViewController *)self originPoint];
           v24 = v23;
@@ -664,8 +664,8 @@ LABEL_7:
 
             else
             {
-              v16 = [(CameraSensorAnomalyViewController *)self inputs];
-              [v16 minimumSquareLength];
+              drawableView3 = [(CameraSensorAnomalyViewController *)self inputs];
+              [drawableView3 minimumSquareLength];
               v26 = v26 - v27;
               v28 = 1;
             }
@@ -673,8 +673,8 @@ LABEL_7:
 
           [(CameraSensorAnomalyViewController *)self originPoint];
           v30 = vabdd_f64(v29, v14);
-          v31 = [(CameraSensorAnomalyViewController *)self inputs];
-          [v31 minimumSquareLength];
+          inputs2 = [(CameraSensorAnomalyViewController *)self inputs];
+          [inputs2 minimumSquareLength];
           v33 = v32;
           [(CameraSensorAnomalyViewController *)self originPoint];
           v35 = v34;
@@ -703,8 +703,8 @@ LABEL_7:
 
             else
             {
-              v3 = [(CameraSensorAnomalyViewController *)self inputs];
-              [v3 minimumSquareLength];
+              inputs3 = [(CameraSensorAnomalyViewController *)self inputs];
+              [inputs3 minimumSquareLength];
               v37 = v37 - v38;
               v39 = 1;
             }
@@ -712,8 +712,8 @@ LABEL_7:
 
           [(CameraSensorAnomalyViewController *)self originPoint];
           v41 = vabdd_f64(v40, v12);
-          v42 = [(CameraSensorAnomalyViewController *)self inputs];
-          [v42 minimumSquareLength];
+          inputs4 = [(CameraSensorAnomalyViewController *)self inputs];
+          [inputs4 minimumSquareLength];
           v44 = v43;
 
           if (v41 >= v44)
@@ -728,8 +728,8 @@ LABEL_7:
 
           [(CameraSensorAnomalyViewController *)self originPoint];
           v47 = vabdd_f64(v46, v14);
-          v48 = [(CameraSensorAnomalyViewController *)self inputs];
-          [v48 minimumSquareLength];
+          inputs5 = [(CameraSensorAnomalyViewController *)self inputs];
+          [inputs5 minimumSquareLength];
           v50 = v49;
 
           if (v47 >= v50)
@@ -751,10 +751,10 @@ LABEL_7:
           {
           }
 
-          v52 = [(CameraSensorAnomalyViewController *)self currentImageView];
-          v53 = [v52 drawableView];
+          currentImageView4 = [(CameraSensorAnomalyViewController *)self currentImageView];
+          drawableView4 = [currentImageView4 drawableView];
           [(CameraSensorAnomalyViewController *)self rectangle];
-          [v53 updateDrawing:?];
+          [drawableView4 updateDrawing:?];
         }
       }
     }
@@ -763,42 +763,42 @@ LABEL_7:
   _objc_release_x1();
 }
 
-- (void)tapOccurred:(id)a3
+- (void)tapOccurred:(id)occurred
 {
-  v4 = a3;
-  v5 = [(CameraSensorAnomalyViewController *)self currentImageView];
-  v6 = [v5 drawableView];
-  [v4 locationInView:v6];
+  occurredCopy = occurred;
+  currentImageView = [(CameraSensorAnomalyViewController *)self currentImageView];
+  drawableView = [currentImageView drawableView];
+  [occurredCopy locationInView:drawableView];
   v8 = v7;
   v10 = v9;
 
   [(CameraSensorAnomalyViewController *)self setOriginPoint:v8, v10];
   [(CameraSensorAnomalyViewController *)self originPoint];
   v12 = v11;
-  v13 = [(CameraSensorAnomalyViewController *)self inputs];
-  [v13 minimumSquareLength];
+  inputs = [(CameraSensorAnomalyViewController *)self inputs];
+  [inputs minimumSquareLength];
   v15 = v12 - (v14 * 0.5);
   [(CameraSensorAnomalyViewController *)self originPoint];
   v17 = v16;
-  v18 = [(CameraSensorAnomalyViewController *)self inputs];
-  [v18 minimumSquareLength];
+  inputs2 = [(CameraSensorAnomalyViewController *)self inputs];
+  [inputs2 minimumSquareLength];
   v20 = v17 - (v19 * 0.5);
-  v21 = [(CameraSensorAnomalyViewController *)self inputs];
-  [v21 minimumSquareLength];
+  inputs3 = [(CameraSensorAnomalyViewController *)self inputs];
+  [inputs3 minimumSquareLength];
   v23 = v22;
-  v24 = [(CameraSensorAnomalyViewController *)self inputs];
-  [v24 minimumSquareLength];
+  inputs4 = [(CameraSensorAnomalyViewController *)self inputs];
+  [inputs4 minimumSquareLength];
   [(CameraSensorAnomalyViewController *)self setRectangle:v15, v20, v23, v25];
 
   [(CameraSensorAnomalyViewController *)self addedRectangleView];
 }
 
-- (void)removeShape:(id)a3
+- (void)removeShape:(id)shape
 {
-  v4 = [a3 view];
-  v5 = [(CameraSensorAnomalyViewController *)self inputs];
-  v6 = [v5 drawColor];
-  [v4 setBackgroundColor:v6];
+  view = [shape view];
+  inputs = [(CameraSensorAnomalyViewController *)self inputs];
+  drawColor = [inputs drawColor];
+  [view setBackgroundColor:drawColor];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"REMOVE_ITEM" value:&stru_100014B00 table:0];
@@ -810,9 +810,9 @@ LABEL_7:
   v20[1] = 3221225472;
   v20[2] = sub_100004064;
   v20[3] = &unk_1000144E0;
-  v12 = v4;
+  v12 = view;
   v21 = v12;
-  v22 = self;
+  selfCopy = self;
   v13 = [UIAlertAction actionWithTitle:v11 style:2 handler:v20];
   [v9 addAction:v13];
 
@@ -837,38 +837,38 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CameraSensorAnomalyViewController *)self inputs];
-  v12 = [v11 drawColor];
+  inputs = [(CameraSensorAnomalyViewController *)self inputs];
+  drawColor = [inputs drawColor];
   v13 = +[UIColor clearColor];
-  v14 = [DSShapeView rectangleWithFrame:v12 borderColor:v13 fillColor:v4, v6, v8, v10];
+  v14 = [DSShapeView rectangleWithFrame:drawColor borderColor:v13 fillColor:v4, v6, v8, v10];
 
   [v14 setTag:{-[CameraSensorAnomalyViewController currentTag](self, "currentTag")}];
   [(CameraSensorAnomalyViewController *)self setCurrentTag:[(CameraSensorAnomalyViewController *)self currentTag]+ 1];
   v15 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"removeShape:"];
   [v14 addGestureRecognizer:v15];
 
-  v16 = [(CameraSensorAnomalyViewController *)self currentImageView];
-  v17 = [v16 drawableView];
-  [v17 addSubview:v14];
+  currentImageView = [(CameraSensorAnomalyViewController *)self currentImageView];
+  drawableView = [currentImageView drawableView];
+  [drawableView addSubview:v14];
 
-  v18 = [(CameraSensorAnomalyViewController *)self currentImageView];
-  v19 = [v18 drawableView];
+  currentImageView2 = [(CameraSensorAnomalyViewController *)self currentImageView];
+  drawableView2 = [currentImageView2 drawableView];
   [v14 frame];
   v21 = v20;
   v23 = v22;
-  v24 = [(CameraSensorAnomalyViewController *)self view];
-  [v19 convertPoint:v24 toView:{v21, v23}];
+  view = [(CameraSensorAnomalyViewController *)self view];
+  [drawableView2 convertPoint:view toView:{v21, v23}];
   v26 = v25;
   v28 = v27;
 
   v43[0] = @"xPos";
-  v42 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-  [v42 zoomScale];
+  imageScrollView = [(CameraSensorAnomalyViewController *)self imageScrollView];
+  [imageScrollView zoomScale];
   v30 = [NSNumber numberWithDouble:v26 / v29];
   v44[0] = v30;
   v43[1] = @"yPos";
-  v31 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-  [v31 zoomScale];
+  imageScrollView2 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+  [imageScrollView2 zoomScale];
   v33 = [NSNumber numberWithDouble:v28 / v32];
   v44[1] = v33;
   v43[2] = @"width";
@@ -888,20 +888,20 @@ LABEL_7:
   v44[5] = v39;
   v40 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:6];
 
-  v41 = [(CameraSensorAnomalyViewController *)self allResults];
-  [v41 addObject:v40];
+  allResults = [(CameraSensorAnomalyViewController *)self allResults];
+  [allResults addObject:v40];
 }
 
 - (void)removeDrawingModeViews
 {
-  v3 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-  [v3 removeFromSuperview];
+  imageScrollView = [(CameraSensorAnomalyViewController *)self imageScrollView];
+  [imageScrollView removeFromSuperview];
 
-  v4 = [(CameraSensorAnomalyViewController *)self bottomBar];
-  [v4 removeFromSuperview];
+  bottomBar = [(CameraSensorAnomalyViewController *)self bottomBar];
+  [bottomBar removeFromSuperview];
 }
 
-- (void)retakeButtonPressed:(id)a3
+- (void)retakeButtonPressed:(id)pressed
 {
   [(CameraSensorAnomalyViewController *)self removeDrawingModeViews];
   [(CameraSensorAnomalyViewController *)self setDrawingMode:0];
@@ -909,36 +909,36 @@ LABEL_7:
   [(CameraSensorAnomalyViewController *)self showCameraView];
 }
 
-- (void)usePhotoButtonPressed:(id)a3
+- (void)usePhotoButtonPressed:(id)pressed
 {
-  v4 = [(CameraSensorAnomalyViewController *)self retakeButton];
-  [v4 setHidden:1];
+  retakeButton = [(CameraSensorAnomalyViewController *)self retakeButton];
+  [retakeButton setHidden:1];
 
-  v5 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-  [v5 setHidden:1];
+  usePhotoButton = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+  [usePhotoButton setHidden:1];
 
-  v6 = [(CameraSensorAnomalyViewController *)self continueButton];
-  [v6 setHidden:0];
+  continueButton = [(CameraSensorAnomalyViewController *)self continueButton];
+  [continueButton setHidden:0];
 
-  v7 = [(CameraSensorAnomalyViewController *)self currentImageView];
-  [v7 setUserInteractionEnabled:1];
+  currentImageView = [(CameraSensorAnomalyViewController *)self currentImageView];
+  [currentImageView setUserInteractionEnabled:1];
 
-  v8 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-  [v8 setMaximumZoomScale:3.0];
+  imageScrollView = [(CameraSensorAnomalyViewController *)self imageScrollView];
+  [imageScrollView setMaximumZoomScale:3.0];
 
   [(CameraSensorAnomalyViewController *)self addPanGesture];
   [(CameraSensorAnomalyViewController *)self addTapGesture];
   v9 = +[DSTestAutomation sharedInstance];
-  LODWORD(v8) = [v9 testAutomationEnabled];
+  LODWORD(imageScrollView) = [v9 testAutomationEnabled];
 
-  if (v8)
+  if (imageScrollView)
   {
 
     [DSTestAutomation postInteractiveTestEvent:@"ViewDidChange" info:&off_100015018];
   }
 }
 
-- (void)continueButtonPressed:(id)a3
+- (void)continueButtonPressed:(id)pressed
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"CAMERA_SENSOR_ANOMALY_TOOL_COMPLETE_TITLE" value:&stru_100014B00 table:0];
@@ -964,15 +964,15 @@ LABEL_7:
   [(CameraSensorAnomalyViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)endTestWithStatusCode:(id)a3
+- (void)endTestWithStatusCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   [(CameraSensorAnomalyViewController *)self cleanUp];
-  v5 = [(CameraSensorAnomalyViewController *)self exclavesStatus];
-  v6 = [DAExclavesSupport testResultOverrideForExclavesStatus:v5 originalResult:v4];
+  exclavesStatus = [(CameraSensorAnomalyViewController *)self exclavesStatus];
+  v6 = [DAExclavesSupport testResultOverrideForExclavesStatus:exclavesStatus originalResult:codeCopy];
 
-  v7 = [(CameraSensorAnomalyViewController *)self result];
-  [v7 setStatusCode:v6];
+  result = [(CameraSensorAnomalyViewController *)self result];
+  [result setStatusCode:v6];
 
   [(CameraSensorAnomalyViewController *)self parseResults];
 
@@ -981,9 +981,9 @@ LABEL_7:
 
 - (void)parseResults
 {
-  v3 = [(CameraSensorAnomalyViewController *)self result];
-  v4 = [v3 statusCode];
-  v5 = [v4 isEqualToNumber:&off_100014F40];
+  result = [(CameraSensorAnomalyViewController *)self result];
+  statusCode = [result statusCode];
+  v5 = [statusCode isEqualToNumber:&off_100014F40];
 
   if (v5)
   {
@@ -993,22 +993,22 @@ LABEL_7:
       sub_1000092DC();
     }
 
-    v7 = [(CameraSensorAnomalyViewController *)self result];
-    [v7 setData:&__NSDictionary0__struct];
+    result2 = [(CameraSensorAnomalyViewController *)self result];
+    [result2 setData:&__NSDictionary0__struct];
   }
 
   else
   {
     v8 = [NSMutableArray alloc];
-    v9 = [(CameraSensorAnomalyViewController *)self allResults];
-    v7 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+    allResults = [(CameraSensorAnomalyViewController *)self allResults];
+    result2 = [v8 initWithCapacity:{objc_msgSend(allResults, "count")}];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v10 = [(CameraSensorAnomalyViewController *)self allResults];
-    v11 = [v10 countByEnumeratingWithState:&v34 objects:v40 count:16];
+    allResults2 = [(CameraSensorAnomalyViewController *)self allResults];
+    v11 = [allResults2 countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1020,32 +1020,32 @@ LABEL_7:
         {
           if (*v35 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allResults2);
           }
 
           v15 = [*(*(&v34 + 1) + 8 * v14) mutableCopy];
           [v15 removeObjectForKey:@"tag"];
-          [v7 addObject:v15];
+          [result2 addObject:v15];
 
           v14 = v14 + 1;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v12 = [allResults2 countByEnumeratingWithState:&v34 objects:v40 count:16];
       }
 
       while (v12);
     }
 
-    v16 = [v7 copy];
+    v16 = [result2 copy];
     [(CameraSensorAnomalyViewController *)self setAllResults:v16];
 
     v17 = objc_alloc_init(NSMutableDictionary);
-    v18 = [(CameraSensorAnomalyViewController *)self view];
-    v19 = [v18 window];
-    v20 = [v19 windowScene];
-    v21 = [v20 screen];
-    [v21 bounds];
+    view = [(CameraSensorAnomalyViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
+    [screen bounds];
     v23 = v22;
     v25 = v24;
 
@@ -1056,33 +1056,33 @@ LABEL_7:
     v27 = [NSNumber numberWithDouble:v25];
     v39[1] = v27;
     v38[2] = @"anomaliesDetected";
-    v28 = [(CameraSensorAnomalyViewController *)self allResults];
-    v39[2] = v28;
+    allResults3 = [(CameraSensorAnomalyViewController *)self allResults];
+    v39[2] = allResults3;
     v29 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:3];
 
     [v17 addEntriesFromDictionary:v29];
-    v30 = [(CameraSensorAnomalyViewController *)self exclavesStatus];
+    exclavesStatus = [(CameraSensorAnomalyViewController *)self exclavesStatus];
 
-    if (v30)
+    if (exclavesStatus)
     {
-      v31 = [(CameraSensorAnomalyViewController *)self exclavesStatus];
-      [v17 addEntriesFromDictionary:v31];
+      exclavesStatus2 = [(CameraSensorAnomalyViewController *)self exclavesStatus];
+      [v17 addEntriesFromDictionary:exclavesStatus2];
     }
 
     v32 = [v17 copy];
-    v33 = [(CameraSensorAnomalyViewController *)self result];
-    [v33 setData:v32];
+    result3 = [(CameraSensorAnomalyViewController *)self result];
+    [result3 setData:v32];
   }
 }
 
-- (void)removeResultWithTag:(int64_t)a3
+- (void)removeResultWithTag:(int64_t)tag
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CameraSensorAnomalyViewController *)self allResults];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allResults = [(CameraSensorAnomalyViewController *)self allResults];
+  v6 = [allResults countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1093,23 +1093,23 @@ LABEL_7:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allResults);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"tag"];
-        v12 = [v11 integerValue];
+        integerValue = [v11 integerValue];
 
-        if (v12 == a3)
+        if (integerValue == tag)
         {
-          v13 = [(CameraSensorAnomalyViewController *)self allResults];
-          [v13 removeObject:v10];
+          allResults2 = [(CameraSensorAnomalyViewController *)self allResults];
+          [allResults2 removeObject:v10];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allResults countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -1126,56 +1126,56 @@ LABEL_11:
 {
   v6 = 0;
   memset(v5, 0, sizeof(v5));
-  v3 = [(CameraSensorAnomalyViewController *)self blueLightClient];
-  [v3 getBlueLightStatus:v5];
+  blueLightClient = [(CameraSensorAnomalyViewController *)self blueLightClient];
+  [blueLightClient getBlueLightStatus:v5];
 
   [(CameraSensorAnomalyViewController *)self setBlueLightStatusActive:LOBYTE(v5[0])];
-  v4 = [(CameraSensorAnomalyViewController *)self adaptationClient];
-  -[CameraSensorAnomalyViewController setColorAdaptationStatus:](self, "setColorAdaptationStatus:", [v4 getEnabled]);
+  adaptationClient = [(CameraSensorAnomalyViewController *)self adaptationClient];
+  -[CameraSensorAnomalyViewController setColorAdaptationStatus:](self, "setColorAdaptationStatus:", [adaptationClient getEnabled]);
 }
 
 - (void)resetColorAdjustmentStates
 {
-  v3 = [(CameraSensorAnomalyViewController *)self blueLightClient];
-  [v3 setActive:{-[CameraSensorAnomalyViewController blueLightStatusActive](self, "blueLightStatusActive")}];
+  blueLightClient = [(CameraSensorAnomalyViewController *)self blueLightClient];
+  [blueLightClient setActive:{-[CameraSensorAnomalyViewController blueLightStatusActive](self, "blueLightStatusActive")}];
 
-  v4 = [(CameraSensorAnomalyViewController *)self adaptationClient];
-  [v4 setEnabled:{-[CameraSensorAnomalyViewController colorAdaptationStatus](self, "colorAdaptationStatus")}];
+  adaptationClient = [(CameraSensorAnomalyViewController *)self adaptationClient];
+  [adaptationClient setEnabled:{-[CameraSensorAnomalyViewController colorAdaptationStatus](self, "colorAdaptationStatus")}];
 }
 
 - (void)disableAdaptationAndBlueLightReduction
 {
-  v3 = [(CameraSensorAnomalyViewController *)self blueLightClient];
-  [v3 setActive:0];
+  blueLightClient = [(CameraSensorAnomalyViewController *)self blueLightClient];
+  [blueLightClient setActive:0];
 
-  v4 = [(CameraSensorAnomalyViewController *)self adaptationClient];
-  [v4 setEnabled:0];
+  adaptationClient = [(CameraSensorAnomalyViewController *)self adaptationClient];
+  [adaptationClient setEnabled:0];
 }
 
 - (void)saveAndMaximizeBrightness
 {
   BKSDisplayBrightnessGetCurrent();
   [(CameraSensorAnomalyViewController *)self setOriginalScreenBrightness:?];
-  v6 = [(CameraSensorAnomalyViewController *)self view];
-  v3 = [v6 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 screen];
-  [v5 setBrightness:1.0];
+  view = [(CameraSensorAnomalyViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  [screen setBrightness:1.0];
 }
 
 - (void)resetBrightness
 {
-  v3 = [(CameraSensorAnomalyViewController *)self inputs];
-  v4 = [v3 enableMaxBrightness];
+  inputs = [(CameraSensorAnomalyViewController *)self inputs];
+  enableMaxBrightness = [inputs enableMaxBrightness];
 
-  if (v4)
+  if (enableMaxBrightness)
   {
-    v9 = [(CameraSensorAnomalyViewController *)self view];
-    v5 = [v9 window];
-    v6 = [v5 windowScene];
-    v7 = [v6 screen];
+    view = [(CameraSensorAnomalyViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
     [(CameraSensorAnomalyViewController *)self originalScreenBrightness];
-    [v7 setBrightness:v8];
+    [screen setBrightness:v8];
   }
 }
 
@@ -1199,74 +1199,74 @@ LABEL_11:
   }
 }
 
-- (void)takePictureWithHandler:(id)a3
+- (void)takePictureWithHandler:(id)handler
 {
-  [(CameraSensorAnomalyViewController *)self setPhotoCaptureCompletionHandler:a3];
+  [(CameraSensorAnomalyViewController *)self setPhotoCaptureCompletionHandler:handler];
   v6 = +[AVCapturePhotoSettings photoSettings];
-  v4 = [(CameraSensorAnomalyViewController *)self inputs];
-  [v6 setFlashMode:{objc_msgSend(v4, "flashModeOn")}];
+  inputs = [(CameraSensorAnomalyViewController *)self inputs];
+  [v6 setFlashMode:{objc_msgSend(inputs, "flashModeOn")}];
 
-  v5 = [(CameraSensorAnomalyViewController *)self output];
-  [v5 capturePhotoWithSettings:v6 delegate:self];
+  output = [(CameraSensorAnomalyViewController *)self output];
+  [output capturePhotoWithSettings:v6 delegate:self];
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
+  errorCopy = error;
+  photoCopy = photo;
   [(CameraSensorAnomalyViewController *)self hideCameraView];
-  v9 = [(CameraSensorAnomalyViewController *)self photoCaptureCompletionHandler];
+  photoCaptureCompletionHandler = [(CameraSensorAnomalyViewController *)self photoCaptureCompletionHandler];
 
-  if (v9)
+  if (photoCaptureCompletionHandler)
   {
-    v10 = [(CameraSensorAnomalyViewController *)self photoCaptureCompletionHandler];
-    v10[2]();
+    photoCaptureCompletionHandler2 = [(CameraSensorAnomalyViewController *)self photoCaptureCompletionHandler];
+    photoCaptureCompletionHandler2[2]();
 
     [(CameraSensorAnomalyViewController *)self setPhotoCaptureCompletionHandler:0];
   }
 
   v11 = [CameraSensorAnomalyTestImageView alloc];
-  v12 = [(CameraSensorAnomalyViewController *)self view];
-  [v12 frame];
+  view = [(CameraSensorAnomalyViewController *)self view];
+  [view frame];
   v13 = [(CameraSensorAnomalyTestImageView *)v11 initWithFrame:?];
   [(CameraSensorAnomalyViewController *)self setCurrentImageView:v13];
 
-  v14 = [v8 fileDataRepresentation];
+  fileDataRepresentation = [photoCopy fileDataRepresentation];
 
-  v188 = v14;
-  if (!v14)
+  v188 = fileDataRepresentation;
+  if (!fileDataRepresentation)
   {
     goto LABEL_10;
   }
 
-  v15 = [(CameraSensorAnomalyViewController *)self view];
-  v16 = [v15 window];
-  v17 = [v16 windowScene];
-  v18 = [v17 screen];
-  [v18 scale];
-  v19 = [UIImage imageWithData:v14 scale:?];
+  view2 = [(CameraSensorAnomalyViewController *)self view];
+  window = [view2 window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  [screen scale];
+  v19 = [UIImage imageWithData:fileDataRepresentation scale:?];
 
   if (v19)
   {
-    v187 = v7;
+    v187 = errorCopy;
     [(CameraSensorAnomalyViewController *)self setDrawingMode:1];
-    v20 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v20 setImage:v19];
+    currentImageView = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [currentImageView setImage:v19];
 
-    v21 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v21 bounds];
+    currentImageView2 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [currentImageView2 bounds];
     v23 = v22;
-    v24 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    v25 = [v24 image];
-    [v25 size];
+    currentImageView3 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    image = [currentImageView3 image];
+    [image size];
     v27 = v23 / v26;
 
-    v28 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v28 bounds];
+    currentImageView4 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [currentImageView4 bounds];
     v30 = v29;
-    v31 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    v32 = [v31 image];
-    [v32 size];
+    currentImageView5 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    image2 = [currentImageView5 image];
+    [image2 size];
     v34 = v30 / v33;
 
     if (v27 < v34)
@@ -1274,103 +1274,103 @@ LABEL_11:
       v34 = v27;
     }
 
-    v35 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    v36 = [v35 image];
-    [v36 size];
+    currentImageView6 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    image3 = [currentImageView6 image];
+    [image3 size];
     v37 = v34;
     v39 = v38 * v37;
 
-    v40 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    v41 = [v40 image];
-    [v41 size];
+    currentImageView7 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    image4 = [currentImageView7 image];
+    [image4 size];
     *&v37 = v42 * v37;
 
-    v43 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v43 frame];
+    currentImageView8 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [currentImageView8 frame];
     v44 = *&v37;
     v46 = (v45 - v44) * 0.5;
 
-    v47 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v47 setFrame:{0.0, v46, v39, v44}];
+    currentImageView9 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [currentImageView9 setFrame:{0.0, v46, v39, v44}];
 
     v48 = [DADrawableView alloc];
-    v49 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v49 frame];
+    currentImageView10 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [currentImageView10 frame];
     v51 = v50;
-    v52 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v52 frame];
+    currentImageView11 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [currentImageView11 frame];
     v54 = v53;
     v55 = +[UIColor clearColor];
-    v56 = [(CameraSensorAnomalyViewController *)self inputs];
-    v57 = [v56 drawColor];
-    v58 = [(DADrawableView *)v48 initWithFrame:v55 rectangleFillColor:v57 rectangleEdgeColor:0.0, 0.0, v51, v54];
-    v59 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v59 setDrawableView:v58];
+    inputs = [(CameraSensorAnomalyViewController *)self inputs];
+    drawColor = [inputs drawColor];
+    v58 = [(DADrawableView *)v48 initWithFrame:v55 rectangleFillColor:drawColor rectangleEdgeColor:0.0, 0.0, v51, v54];
+    currentImageView12 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [currentImageView12 setDrawableView:v58];
 
-    v60 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    v61 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    v62 = [v61 drawableView];
-    [v60 addSubview:v62];
+    currentImageView13 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    currentImageView14 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    drawableView = [currentImageView14 drawableView];
+    [currentImageView13 addSubview:drawableView];
 
     v63 = [UIScrollView alloc];
-    v64 = [(CameraSensorAnomalyViewController *)self view];
-    [v64 frame];
+    view3 = [(CameraSensorAnomalyViewController *)self view];
+    [view3 frame];
     v66 = v65;
-    v67 = [(CameraSensorAnomalyViewController *)self view];
-    [v67 frame];
+    view4 = [(CameraSensorAnomalyViewController *)self view];
+    [view4 frame];
     v69 = [v63 initWithFrame:{0.0, 0.0, v66, v68 - 85.0}];
     [(CameraSensorAnomalyViewController *)self setImageScrollView:v69];
 
-    v70 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    v71 = [v70 drawableView];
-    [v71 frame];
+    currentImageView15 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    drawableView2 = [currentImageView15 drawableView];
+    [drawableView2 frame];
     v73 = v72;
     v75 = v74;
-    v76 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v76 setContentSize:{v73, v75}];
+    imageScrollView = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [imageScrollView setContentSize:{v73, v75}];
 
-    v77 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v77 setShowsHorizontalScrollIndicator:0];
+    imageScrollView2 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [imageScrollView2 setShowsHorizontalScrollIndicator:0];
 
-    v78 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v78 setShowsVerticalScrollIndicator:0];
+    imageScrollView3 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [imageScrollView3 setShowsVerticalScrollIndicator:0];
 
-    v79 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v79 setScrollsToTop:0];
+    imageScrollView4 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [imageScrollView4 setScrollsToTop:0];
 
-    v80 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v80 setDelegate:self];
+    imageScrollView5 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [imageScrollView5 setDelegate:self];
 
-    v81 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v81 setBouncesZoom:1];
+    imageScrollView6 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [imageScrollView6 setBouncesZoom:1];
 
-    v82 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v82 setDecelerationRate:UIScrollViewDecelerationRateFast];
+    imageScrollView7 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [imageScrollView7 setDecelerationRate:UIScrollViewDecelerationRateFast];
 
-    v83 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    v84 = [v83 panGestureRecognizer];
-    [v84 setMinimumNumberOfTouches:2];
+    imageScrollView8 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    panGestureRecognizer = [imageScrollView8 panGestureRecognizer];
+    [panGestureRecognizer setMinimumNumberOfTouches:2];
 
-    v85 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    v86 = [v85 panGestureRecognizer];
-    [v86 setEnabled:0];
+    imageScrollView9 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    panGestureRecognizer2 = [imageScrollView9 panGestureRecognizer];
+    [panGestureRecognizer2 setEnabled:0];
 
-    v87 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    v88 = [(CameraSensorAnomalyViewController *)self currentImageView];
-    [v87 addSubview:v88];
+    imageScrollView10 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    currentImageView16 = [(CameraSensorAnomalyViewController *)self currentImageView];
+    [imageScrollView10 addSubview:currentImageView16];
 
     v89 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(CameraSensorAnomalyViewController *)self setBottomBar:v89];
 
-    v90 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    [v90 setOpaque:0];
+    bottomBar = [(CameraSensorAnomalyViewController *)self bottomBar];
+    [bottomBar setOpaque:0];
 
     v91 = [UIColor colorWithWhite:0.0 alpha:0.5];
-    v92 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    [v92 setBackgroundColor:v91];
+    bottomBar2 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    [bottomBar2 setBackgroundColor:v91];
 
-    v93 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    [v93 setTranslatesAutoresizingMaskIntoConstraints:0];
+    bottomBar3 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    [bottomBar3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v94 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     v95 = [UIFont fontWithDescriptor:v94 size:18.0];
@@ -1378,177 +1378,177 @@ LABEL_11:
     v96 = [UIButton buttonWithType:1];
     [(CameraSensorAnomalyViewController *)self setRetakeButton:v96];
 
-    v97 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    [v97 setOpaque:0];
+    retakeButton = [(CameraSensorAnomalyViewController *)self retakeButton];
+    [retakeButton setOpaque:0];
 
     v98 = +[UIColor clearColor];
-    v99 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    [v99 setBackgroundColor:v98];
+    retakeButton2 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    [retakeButton2 setBackgroundColor:v98];
 
-    v100 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v101 = [v100 titleLabel];
-    [v101 setContentMode:7];
+    retakeButton3 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    titleLabel = [retakeButton3 titleLabel];
+    [titleLabel setContentMode:7];
 
-    v102 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v103 = [v102 titleLabel];
-    [v103 setTextAlignment:1];
+    retakeButton4 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    titleLabel2 = [retakeButton4 titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
-    v104 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v105 = [v104 titleLabel];
-    [v105 setLineBreakMode:4];
+    retakeButton5 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    titleLabel3 = [retakeButton5 titleLabel];
+    [titleLabel3 setLineBreakMode:4];
 
-    v106 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v107 = [v106 titleLabel];
-    [v107 setFont:v95];
+    retakeButton6 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    titleLabel4 = [retakeButton6 titleLabel];
+    [titleLabel4 setFont:v95];
 
-    v108 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v109 = [v108 titleLabel];
-    [v109 setNumberOfLines:1];
+    retakeButton7 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    titleLabel5 = [retakeButton7 titleLabel];
+    [titleLabel5 setNumberOfLines:1];
 
-    v110 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    retakeButton8 = [(CameraSensorAnomalyViewController *)self retakeButton];
     v111 = +[NSBundle mainBundle];
     v112 = [v111 localizedStringForKey:@"RETAKE" value:&stru_100014B00 table:0];
-    [v110 setTitle:v112 forState:0];
+    [retakeButton8 setTitle:v112 forState:0];
 
-    v113 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    retakeButton9 = [(CameraSensorAnomalyViewController *)self retakeButton];
     v114 = +[UIColor whiteColor];
-    [v113 setTitleColor:v114 forState:0];
+    [retakeButton9 setTitleColor:v114 forState:0];
 
-    v115 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    [v115 sizeToFit];
+    retakeButton10 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    [retakeButton10 sizeToFit];
 
-    v116 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    [v116 addTarget:self action:"retakeButtonPressed:" forControlEvents:64];
+    retakeButton11 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    [retakeButton11 addTarget:self action:"retakeButtonPressed:" forControlEvents:64];
 
-    v117 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    [v117 setTranslatesAutoresizingMaskIntoConstraints:0];
+    retakeButton12 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    [retakeButton12 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v118 = [UIButton buttonWithType:1];
     [(CameraSensorAnomalyViewController *)self setUsePhotoButton:v118];
 
-    v119 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    [v119 setOpaque:0];
+    usePhotoButton = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    [usePhotoButton setOpaque:0];
 
     v120 = +[UIColor clearColor];
-    v121 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    [v121 setBackgroundColor:v120];
+    usePhotoButton2 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    [usePhotoButton2 setBackgroundColor:v120];
 
-    v122 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v123 = [v122 titleLabel];
-    [v123 setContentMode:7];
+    usePhotoButton3 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    titleLabel6 = [usePhotoButton3 titleLabel];
+    [titleLabel6 setContentMode:7];
 
-    v124 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v125 = [v124 titleLabel];
-    [v125 setTextAlignment:1];
+    usePhotoButton4 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    titleLabel7 = [usePhotoButton4 titleLabel];
+    [titleLabel7 setTextAlignment:1];
 
-    v126 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v127 = [v126 titleLabel];
-    [v127 setLineBreakMode:4];
+    usePhotoButton5 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    titleLabel8 = [usePhotoButton5 titleLabel];
+    [titleLabel8 setLineBreakMode:4];
 
-    v128 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v129 = [v128 titleLabel];
-    [v129 setFont:v95];
+    usePhotoButton6 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    titleLabel9 = [usePhotoButton6 titleLabel];
+    [titleLabel9 setFont:v95];
 
-    v130 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v131 = [v130 titleLabel];
-    [v131 setNumberOfLines:1];
+    usePhotoButton7 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    titleLabel10 = [usePhotoButton7 titleLabel];
+    [titleLabel10 setNumberOfLines:1];
 
-    v132 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    usePhotoButton8 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
     v133 = +[NSBundle mainBundle];
     v134 = [v133 localizedStringForKey:@"USE_PHOTO" value:&stru_100014B00 table:0];
-    [v132 setTitle:v134 forState:0];
+    [usePhotoButton8 setTitle:v134 forState:0];
 
-    v135 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    usePhotoButton9 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
     v136 = +[UIColor whiteColor];
-    [v135 setTitleColor:v136 forState:0];
+    [usePhotoButton9 setTitleColor:v136 forState:0];
 
-    v137 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    [v137 sizeToFit];
+    usePhotoButton10 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    [usePhotoButton10 sizeToFit];
 
-    v138 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    [v138 addTarget:self action:"usePhotoButtonPressed:" forControlEvents:64];
+    usePhotoButton11 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    [usePhotoButton11 addTarget:self action:"usePhotoButtonPressed:" forControlEvents:64];
 
-    v139 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    [v139 setTranslatesAutoresizingMaskIntoConstraints:0];
+    usePhotoButton12 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    [usePhotoButton12 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v140 = [UIButton buttonWithType:1];
     [(CameraSensorAnomalyViewController *)self setContinueButton:v140];
 
-    v141 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v141 setOpaque:0];
+    continueButton = [(CameraSensorAnomalyViewController *)self continueButton];
+    [continueButton setOpaque:0];
 
     v142 = +[UIColor clearColor];
-    v143 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v143 setBackgroundColor:v142];
+    continueButton2 = [(CameraSensorAnomalyViewController *)self continueButton];
+    [continueButton2 setBackgroundColor:v142];
 
-    v144 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v145 = [v144 titleLabel];
-    [v145 setContentMode:7];
+    continueButton3 = [(CameraSensorAnomalyViewController *)self continueButton];
+    titleLabel11 = [continueButton3 titleLabel];
+    [titleLabel11 setContentMode:7];
 
-    v146 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v147 = [v146 titleLabel];
-    [v147 setTextAlignment:1];
+    continueButton4 = [(CameraSensorAnomalyViewController *)self continueButton];
+    titleLabel12 = [continueButton4 titleLabel];
+    [titleLabel12 setTextAlignment:1];
 
-    v148 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v149 = [v148 titleLabel];
-    [v149 setLineBreakMode:4];
+    continueButton5 = [(CameraSensorAnomalyViewController *)self continueButton];
+    titleLabel13 = [continueButton5 titleLabel];
+    [titleLabel13 setLineBreakMode:4];
 
-    v150 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v151 = [v150 titleLabel];
-    [v151 setFont:v95];
+    continueButton6 = [(CameraSensorAnomalyViewController *)self continueButton];
+    titleLabel14 = [continueButton6 titleLabel];
+    [titleLabel14 setFont:v95];
 
-    v152 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v153 = [v152 titleLabel];
-    [v153 setNumberOfLines:1];
+    continueButton7 = [(CameraSensorAnomalyViewController *)self continueButton];
+    titleLabel15 = [continueButton7 titleLabel];
+    [titleLabel15 setNumberOfLines:1];
 
-    v154 = [(CameraSensorAnomalyViewController *)self continueButton];
+    continueButton8 = [(CameraSensorAnomalyViewController *)self continueButton];
     v155 = +[NSBundle mainBundle];
     v156 = [v155 localizedStringForKey:@"CONTINUE" value:&stru_100014B00 table:0];
-    [v154 setTitle:v156 forState:0];
+    [continueButton8 setTitle:v156 forState:0];
 
-    v157 = [(CameraSensorAnomalyViewController *)self continueButton];
+    continueButton9 = [(CameraSensorAnomalyViewController *)self continueButton];
     v158 = +[UIColor whiteColor];
-    [v157 setTitleColor:v158 forState:0];
+    [continueButton9 setTitleColor:v158 forState:0];
 
-    v159 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v159 sizeToFit];
+    continueButton10 = [(CameraSensorAnomalyViewController *)self continueButton];
+    [continueButton10 sizeToFit];
 
-    v160 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v160 addTarget:self action:"continueButtonPressed:" forControlEvents:64];
+    continueButton11 = [(CameraSensorAnomalyViewController *)self continueButton];
+    [continueButton11 addTarget:self action:"continueButtonPressed:" forControlEvents:64];
 
-    v161 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v161 setTranslatesAutoresizingMaskIntoConstraints:0];
+    continueButton12 = [(CameraSensorAnomalyViewController *)self continueButton];
+    [continueButton12 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v162 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v162 setHidden:1];
+    continueButton13 = [(CameraSensorAnomalyViewController *)self continueButton];
+    [continueButton13 setHidden:1];
 
-    v163 = [(CameraSensorAnomalyViewController *)self view];
-    [v163 setNeedsUpdateConstraints];
+    view5 = [(CameraSensorAnomalyViewController *)self view];
+    [view5 setNeedsUpdateConstraints];
 
-    v164 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v165 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    [v164 addSubview:v165];
+    bottomBar4 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    retakeButton13 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    [bottomBar4 addSubview:retakeButton13];
 
-    v166 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v167 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    [v166 addSubview:v167];
+    bottomBar5 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    usePhotoButton13 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    [bottomBar5 addSubview:usePhotoButton13];
 
-    v168 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v169 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v168 addSubview:v169];
+    bottomBar6 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    continueButton14 = [(CameraSensorAnomalyViewController *)self continueButton];
+    [bottomBar6 addSubview:continueButton14];
 
-    v170 = [(CameraSensorAnomalyViewController *)self view];
-    v171 = [(CameraSensorAnomalyViewController *)self imageScrollView];
-    [v170 addSubview:v171];
+    view6 = [(CameraSensorAnomalyViewController *)self view];
+    imageScrollView11 = [(CameraSensorAnomalyViewController *)self imageScrollView];
+    [view6 addSubview:imageScrollView11];
 
-    v172 = [(CameraSensorAnomalyViewController *)self view];
-    v173 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    [v172 addSubview:v173];
+    view7 = [(CameraSensorAnomalyViewController *)self view];
+    bottomBar7 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    [view7 addSubview:bottomBar7];
 
     v174 = +[DSTestAutomation sharedInstance];
-    LODWORD(v173) = [v174 testAutomationEnabled];
+    LODWORD(bottomBar7) = [v174 testAutomationEnabled];
 
-    if (v173)
+    if (bottomBar7)
     {
       [DSTestAutomation postInteractiveTestEvent:@"ViewDidChange" info:&off_100015040];
     }
@@ -1565,7 +1565,7 @@ LABEL_10:
       sub_10000931C();
     }
 
-    v175 = v7;
+    v175 = errorCopy;
     v177 = +[NSBundle mainBundle];
     v178 = [v177 localizedStringForKey:@"UIIMPC_ERROR_TITLE" value:&stru_100014B00 table:0];
     v179 = +[NSBundle mainBundle];
@@ -1596,13 +1596,13 @@ LABEL_10:
   }
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  [a3 bounds];
+  [zoom bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(CameraSensorAnomalyViewController *)self currentImageView];
-  [v8 frame];
+  currentImageView = [(CameraSensorAnomalyViewController *)self currentImageView];
+  [currentImageView frame];
   v10 = v9;
   v12 = v11;
 
@@ -1626,8 +1626,8 @@ LABEL_10:
     v14 = (v7 - v12) * 0.5;
   }
 
-  v15 = [(CameraSensorAnomalyViewController *)self currentImageView];
-  [v15 setFrame:{v13, v14, v10, v12}];
+  currentImageView2 = [(CameraSensorAnomalyViewController *)self currentImageView];
+  [currentImageView2 setFrame:{v13, v14, v10, v12}];
 }
 
 - (void)updateViewConstraints
@@ -1637,107 +1637,107 @@ LABEL_10:
   [(CameraSensorAnomalyViewController *)&v73 updateViewConstraints];
   if ([(CameraSensorAnomalyViewController *)self drawingMode])
   {
-    v3 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v4 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v5 = [(CameraSensorAnomalyViewController *)self view];
-    [v5 frame];
-    v7 = [NSLayoutConstraint constraintWithItem:v4 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v6];
-    [v3 addConstraint:v7];
+    bottomBar = [(CameraSensorAnomalyViewController *)self bottomBar];
+    bottomBar2 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    view = [(CameraSensorAnomalyViewController *)self view];
+    [view frame];
+    v7 = [NSLayoutConstraint constraintWithItem:bottomBar2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v6];
+    [bottomBar addConstraint:v7];
 
-    v8 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v9 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v10 = [NSLayoutConstraint constraintWithItem:v9 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:85.0];
-    [v8 addConstraint:v10];
+    bottomBar3 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    bottomBar4 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    v10 = [NSLayoutConstraint constraintWithItem:bottomBar4 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:85.0];
+    [bottomBar3 addConstraint:v10];
 
-    v11 = [(CameraSensorAnomalyViewController *)self view];
-    v12 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v13 = [(CameraSensorAnomalyViewController *)self view];
-    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:9 relatedBy:0 toItem:v13 attribute:9 multiplier:1.0 constant:0.0];
-    [v11 addConstraint:v14];
+    view2 = [(CameraSensorAnomalyViewController *)self view];
+    bottomBar5 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    view3 = [(CameraSensorAnomalyViewController *)self view];
+    v14 = [NSLayoutConstraint constraintWithItem:bottomBar5 attribute:9 relatedBy:0 toItem:view3 attribute:9 multiplier:1.0 constant:0.0];
+    [view2 addConstraint:v14];
 
-    v15 = [(CameraSensorAnomalyViewController *)self view];
-    v16 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v17 = [(CameraSensorAnomalyViewController *)self view];
-    v18 = [NSLayoutConstraint constraintWithItem:v16 attribute:4 relatedBy:0 toItem:v17 attribute:4 multiplier:1.0 constant:0.0];
-    [v15 addConstraint:v18];
+    view4 = [(CameraSensorAnomalyViewController *)self view];
+    bottomBar6 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    view5 = [(CameraSensorAnomalyViewController *)self view];
+    v18 = [NSLayoutConstraint constraintWithItem:bottomBar6 attribute:4 relatedBy:0 toItem:view5 attribute:4 multiplier:1.0 constant:0.0];
+    [view4 addConstraint:v18];
 
-    v19 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v20 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v21 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    [v21 frame];
-    v23 = [NSLayoutConstraint constraintWithItem:v20 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v22];
-    [v19 addConstraint:v23];
+    retakeButton = [(CameraSensorAnomalyViewController *)self retakeButton];
+    retakeButton2 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    retakeButton3 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    [retakeButton3 frame];
+    v23 = [NSLayoutConstraint constraintWithItem:retakeButton2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v22];
+    [retakeButton addConstraint:v23];
 
-    v24 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v25 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v26 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    [v26 frame];
-    v28 = [NSLayoutConstraint constraintWithItem:v25 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v27];
-    [v24 addConstraint:v28];
+    retakeButton4 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    retakeButton5 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    retakeButton6 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    [retakeButton6 frame];
+    v28 = [NSLayoutConstraint constraintWithItem:retakeButton5 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v27];
+    [retakeButton4 addConstraint:v28];
 
-    v29 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v30 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v31 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v32 = [NSLayoutConstraint constraintWithItem:v30 attribute:5 relatedBy:0 toItem:v31 attribute:5 multiplier:1.0 constant:15.0];
-    [v29 addConstraint:v32];
+    bottomBar7 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    retakeButton7 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    bottomBar8 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    v32 = [NSLayoutConstraint constraintWithItem:retakeButton7 attribute:5 relatedBy:0 toItem:bottomBar8 attribute:5 multiplier:1.0 constant:15.0];
+    [bottomBar7 addConstraint:v32];
 
-    v33 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v34 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v35 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v36 = [NSLayoutConstraint constraintWithItem:v34 attribute:10 relatedBy:0 toItem:v35 attribute:10 multiplier:1.0 constant:0.0];
-    [v33 addConstraint:v36];
+    bottomBar9 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    retakeButton8 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    bottomBar10 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    v36 = [NSLayoutConstraint constraintWithItem:retakeButton8 attribute:10 relatedBy:0 toItem:bottomBar10 attribute:10 multiplier:1.0 constant:0.0];
+    [bottomBar9 addConstraint:v36];
 
-    v37 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v38 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v39 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    [v39 frame];
-    v41 = [NSLayoutConstraint constraintWithItem:v38 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v40];
-    [v37 addConstraint:v41];
+    usePhotoButton = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    usePhotoButton2 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    usePhotoButton3 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    [usePhotoButton3 frame];
+    v41 = [NSLayoutConstraint constraintWithItem:usePhotoButton2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v40];
+    [usePhotoButton addConstraint:v41];
 
-    v42 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v43 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v44 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    [v44 frame];
-    v46 = [NSLayoutConstraint constraintWithItem:v43 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v45];
-    [v42 addConstraint:v46];
+    usePhotoButton4 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    usePhotoButton5 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    usePhotoButton6 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    [usePhotoButton6 frame];
+    v46 = [NSLayoutConstraint constraintWithItem:usePhotoButton5 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v45];
+    [usePhotoButton4 addConstraint:v46];
 
-    v47 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v48 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v49 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v50 = [NSLayoutConstraint constraintWithItem:v48 attribute:6 relatedBy:0 toItem:v49 attribute:6 multiplier:1.0 constant:15.0];
-    [v47 addConstraint:v50];
+    bottomBar11 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    bottomBar12 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    usePhotoButton7 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    v50 = [NSLayoutConstraint constraintWithItem:bottomBar12 attribute:6 relatedBy:0 toItem:usePhotoButton7 attribute:6 multiplier:1.0 constant:15.0];
+    [bottomBar11 addConstraint:v50];
 
-    v51 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v52 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
-    v53 = [(CameraSensorAnomalyViewController *)self retakeButton];
-    v54 = [NSLayoutConstraint constraintWithItem:v52 attribute:10 relatedBy:0 toItem:v53 attribute:10 multiplier:1.0 constant:0.0];
-    [v51 addConstraint:v54];
+    bottomBar13 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    usePhotoButton8 = [(CameraSensorAnomalyViewController *)self usePhotoButton];
+    retakeButton9 = [(CameraSensorAnomalyViewController *)self retakeButton];
+    v54 = [NSLayoutConstraint constraintWithItem:usePhotoButton8 attribute:10 relatedBy:0 toItem:retakeButton9 attribute:10 multiplier:1.0 constant:0.0];
+    [bottomBar13 addConstraint:v54];
 
-    v55 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v56 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v57 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v57 frame];
-    v59 = [NSLayoutConstraint constraintWithItem:v56 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v58];
-    [v55 addConstraint:v59];
+    continueButton = [(CameraSensorAnomalyViewController *)self continueButton];
+    continueButton2 = [(CameraSensorAnomalyViewController *)self continueButton];
+    continueButton3 = [(CameraSensorAnomalyViewController *)self continueButton];
+    [continueButton3 frame];
+    v59 = [NSLayoutConstraint constraintWithItem:continueButton2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v58];
+    [continueButton addConstraint:v59];
 
-    v60 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v61 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v62 = [(CameraSensorAnomalyViewController *)self continueButton];
-    [v62 frame];
-    v64 = [NSLayoutConstraint constraintWithItem:v61 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v63];
-    [v60 addConstraint:v64];
+    continueButton4 = [(CameraSensorAnomalyViewController *)self continueButton];
+    continueButton5 = [(CameraSensorAnomalyViewController *)self continueButton];
+    continueButton6 = [(CameraSensorAnomalyViewController *)self continueButton];
+    [continueButton6 frame];
+    v64 = [NSLayoutConstraint constraintWithItem:continueButton5 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v63];
+    [continueButton4 addConstraint:v64];
 
-    v65 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v66 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v67 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v68 = [NSLayoutConstraint constraintWithItem:v66 attribute:9 relatedBy:0 toItem:v67 attribute:9 multiplier:1.0 constant:0.0];
-    [v65 addConstraint:v68];
+    bottomBar14 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    continueButton7 = [(CameraSensorAnomalyViewController *)self continueButton];
+    bottomBar15 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    v68 = [NSLayoutConstraint constraintWithItem:continueButton7 attribute:9 relatedBy:0 toItem:bottomBar15 attribute:9 multiplier:1.0 constant:0.0];
+    [bottomBar14 addConstraint:v68];
 
-    v69 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v70 = [(CameraSensorAnomalyViewController *)self continueButton];
-    v71 = [(CameraSensorAnomalyViewController *)self bottomBar];
-    v72 = [NSLayoutConstraint constraintWithItem:v70 attribute:10 relatedBy:0 toItem:v71 attribute:10 multiplier:1.0 constant:0.0];
-    [v69 addConstraint:v72];
+    bottomBar16 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    continueButton8 = [(CameraSensorAnomalyViewController *)self continueButton];
+    bottomBar17 = [(CameraSensorAnomalyViewController *)self bottomBar];
+    v72 = [NSLayoutConstraint constraintWithItem:continueButton8 attribute:10 relatedBy:0 toItem:bottomBar17 attribute:10 multiplier:1.0 constant:0.0];
+    [bottomBar16 addConstraint:v72];
   }
 }
 

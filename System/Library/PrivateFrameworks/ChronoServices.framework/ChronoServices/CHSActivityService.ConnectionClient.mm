@@ -1,11 +1,11 @@
 @interface CHSActivityService.ConnectionClient
 - (_TtCE14ChronoServicesCSo18CHSActivityService16ConnectionClient)init;
-- (void)activityDidUpdate:(id)a3 payloadID:(id)a4;
+- (void)activityDidUpdate:(id)update payloadID:(id)d;
 @end
 
 @implementation CHSActivityService.ConnectionClient
 
-- (void)activityDidUpdate:(id)a3 payloadID:(id)a4
+- (void)activityDidUpdate:(id)update payloadID:(id)d
 {
   v5 = sub_195FA08B8();
   v7 = v6;
@@ -16,7 +16,7 @@
   {
     v12 = v8;
     v13 = *&self->activityPayloadUpdateHandler[OBJC_IVAR____TtCE14ChronoServicesCSo18CHSActivityService16ConnectionClient_activityPayloadUpdateHandler];
-    v14 = self;
+    selfCopy = self;
     sub_195ECF998(v11);
     v11(v5, v7, v12, v10);
 

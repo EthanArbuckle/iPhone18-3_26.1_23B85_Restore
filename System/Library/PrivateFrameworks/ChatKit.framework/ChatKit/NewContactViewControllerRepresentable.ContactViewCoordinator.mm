@@ -1,7 +1,7 @@
 @interface NewContactViewControllerRepresentable.ContactViewCoordinator
 - (_TtCV7ChatKit37NewContactViewControllerRepresentable22ContactViewCoordinator)init;
 - (void)backAction;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 @end
 
 @implementation NewContactViewControllerRepresentable.ContactViewCoordinator
@@ -15,7 +15,7 @@
   }
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtCV7ChatKit37NewContactViewControllerRepresentable22ContactViewCoordinator_navigationController);
   if (v4)

@@ -1,13 +1,13 @@
 @interface NBBackupiCloud
 - (NBBackupiCloud)init;
-- (void)backupList:(id)a3;
-- (void)backupPayloadForID:(id)a3 completion:(id)a4;
-- (void)createBackupsAndPruneAtDate:(id)a3 withPayload:(id)a4 completion:(id)a5;
-- (void)createInitialBackup:(id)a3;
-- (void)createManualBackupWithCompletion:(id)a3;
-- (void)deleteBackupWithID:(id)a3 completion:(id)a4;
-- (void)restoreBackupWithID:(id)a3 completion:(id)a4;
-- (void)restoreBackupWithURL:(id)a3 completion:(id)a4;
+- (void)backupList:(id)list;
+- (void)backupPayloadForID:(id)d completion:(id)completion;
+- (void)createBackupsAndPruneAtDate:(id)date withPayload:(id)payload completion:(id)completion;
+- (void)createInitialBackup:(id)backup;
+- (void)createManualBackupWithCompletion:(id)completion;
+- (void)deleteBackupWithID:(id)d completion:(id)completion;
+- (void)restoreBackupWithID:(id)d completion:(id)completion;
+- (void)restoreBackupWithURL:(id)l completion:(id)completion;
 @end
 
 @implementation NBBackupiCloud
@@ -34,89 +34,89 @@
   return v7;
 }
 
-- (void)backupList:(id)a3
+- (void)backupList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002B50;
   v7[3] = &unk_10002C740;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listCopy;
+  v6 = listCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)restoreBackupWithID:(id)a3 completion:(id)a4
+- (void)restoreBackupWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002D40;
   block[3] = &unk_10002C848;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)deleteBackupWithID:(id)a3 completion:(id)a4
+- (void)deleteBackupWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002FB8;
   block[3] = &unk_10002C848;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)restoreBackupWithURL:(id)a3 completion:(id)a4
+- (void)restoreBackupWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000031AC;
   block[3] = &unk_10002C848;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = lCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)backupPayloadForID:(id)a3 completion:(id)a4
+- (void)backupPayloadForID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000033B4;
   block[3] = &unk_10002C848;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)createInitialBackup:(id)a3
+- (void)createInitialBackup:(id)backup
 {
   manager = self->_manager;
   if (!manager)
@@ -136,9 +136,9 @@
   [(NBiCloudBackupManager *)manager createInitialBackup:v7];
 }
 
-- (void)createManualBackupWithCompletion:(id)a3
+- (void)createManualBackupWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   manager = self->_manager;
   if (!manager)
   {
@@ -154,14 +154,14 @@
   v9[2] = sub_100003720;
   v9[3] = &unk_10002C820;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(NBiCloudBackupManager *)manager createManualBackup:v9];
 }
 
-- (void)createBackupsAndPruneAtDate:(id)a3 withPayload:(id)a4 completion:(id)a5
+- (void)createBackupsAndPruneAtDate:(id)date withPayload:(id)payload completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   manager = self->_manager;
   if (!manager)
   {
@@ -177,8 +177,8 @@
   v11[2] = sub_100003848;
   v11[3] = &unk_10002C820;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(NBiCloudBackupManager *)manager createBackupsAndPruneAtDate:0 withPayload:0 completion:v11];
 }
 

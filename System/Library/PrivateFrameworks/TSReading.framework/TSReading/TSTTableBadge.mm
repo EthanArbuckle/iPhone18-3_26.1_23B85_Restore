@@ -1,23 +1,23 @@
 @interface TSTTableBadge
-+ (id)badgeWithType:(int)a3 color:(id)a4 viewScale:(double)a5 frame:(CGRect)a6;
++ (id)badgeWithType:(int)type color:(id)color viewScale:(double)scale frame:(CGRect)frame;
 - (CGRect)frame;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation TSTTableBadge
 
-+ (id)badgeWithType:(int)a3 color:(id)a4 viewScale:(double)a5 frame:(CGRect)a6
++ (id)badgeWithType:(int)type color:(id)color viewScale:(double)scale frame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = *&a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = *&type;
   v13 = objc_alloc_init(TSTTableBadge);
   [(TSTTableBadge *)v13 setBadgeType:v12];
-  [(TSTTableBadge *)v13 setColor:a4];
-  [(TSTTableBadge *)v13 setViewScale:a5];
+  [(TSTTableBadge *)v13 setColor:color];
+  [(TSTTableBadge *)v13 setViewScale:scale];
   [(TSTTableBadge *)v13 setFrame:x, y, width, height];
   return v13;
 }
@@ -29,17 +29,17 @@
   [(TSTTableBadge *)&v3 dealloc];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = [(TSTTableBadge *)self badgeType];
-  switch(v5)
+  badgeType = [(TSTTableBadge *)self badgeType];
+  switch(badgeType)
   {
     case 3:
       [(TSTTableBadge *)self viewScale];
       v17 = v16;
       [(TSTTableBadge *)self frame];
 
-      TSTTableBadgeDrawCellErrorIndicator(a3, v17, v18, v19, v20, v21);
+      TSTTableBadgeDrawCellErrorIndicator(context, v17, v18, v19, v20, v21);
       break;
     case 2:
 
@@ -51,15 +51,15 @@
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      v14 = [(TSTTableBadge *)self color];
-      CGContextSaveGState(a3);
+      color = [(TSTTableBadge *)self color];
+      CGContextSaveGState(context);
       v15 = newTSTTableBadgeCellCommentBadgePath(v7, v9, v11, v13);
-      CGContextAddPath(a3, v15);
-      CGContextSetFillColorWithColor(a3, [(TSUColor *)v14 CGColor]);
-      CGContextFillPath(a3);
+      CGContextAddPath(context, v15);
+      CGContextSetFillColorWithColor(context, [(TSUColor *)color CGColor]);
+      CGContextFillPath(context);
       CGPathRelease(v15);
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
       break;
   }
 }

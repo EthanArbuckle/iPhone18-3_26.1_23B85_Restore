@@ -11,12 +11,12 @@
   v6 = a3;
   if (![v6 targetIsSystem])
   {
-    v13 = [v6 originatorEntitlements];
-    if ([v6 ignoreRestrictions] & 1) != 0 || (-[NSObject rb_hasEntitlementDomain:](v13, "rb_hasEntitlementDomain:", 16))
+    originatorEntitlements = [v6 originatorEntitlements];
+    if ([v6 ignoreRestrictions] & 1) != 0 || (-[NSObject rb_hasEntitlementDomain:](originatorEntitlements, "rb_hasEntitlementDomain:", 16))
     {
-      v15 = [v6 savedEndowments];
-      v16 = [a1 key];
-      v17 = [v15 objectForKey:v16];
+      savedEndowments = [v6 savedEndowments];
+      v16 = [self key];
+      v17 = [savedEndowments objectForKey:v16];
       v14 = v17 != 0;
 
       if (!a4 || v17)
@@ -31,7 +31,7 @@
       v21 = *MEMORY[0x277D47048];
       v33[0] = v20;
       v33[1] = v21;
-      v22 = [a1 description];
+      v22 = [self description];
       v34[1] = v22;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
       *a4 = [v18 errorWithDomain:v19 code:2 userInfo:v23];
@@ -39,7 +39,7 @@
       v24 = rbs_general_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        [(RBSSavedEndowmentGrant(RBProcessState) *)v15 isValidForContext:a1 withError:v24];
+        [(RBSSavedEndowmentGrant(RBProcessState) *)savedEndowments isValidForContext:self withError:v24];
       }
     }
 
@@ -61,15 +61,15 @@ LABEL_19:
       v28 = *MEMORY[0x277D47048];
       v35[0] = v27;
       v35[1] = v28;
-      v29 = [a1 description];
+      v29 = [self description];
       v36[1] = v29;
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
       *a4 = [v25 errorWithDomain:v26 code:3 userInfo:v30];
 
-      v15 = rbs_general_log();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      savedEndowments = rbs_general_log();
+      if (os_log_type_enabled(savedEndowments, OS_LOG_TYPE_ERROR))
       {
-        [RBSSavedEndowmentGrant(RBProcessState) isValidForContext:v13 withError:v15];
+        [RBSSavedEndowmentGrant(RBProcessState) isValidForContext:originatorEntitlements withError:savedEndowments];
       }
     }
 
@@ -88,15 +88,15 @@ LABEL_18:
     v10 = *MEMORY[0x277D47048];
     v37[0] = v9;
     v37[1] = v10;
-    v11 = [a1 description];
+    v11 = [self description];
     v38[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
     *a4 = [v7 errorWithDomain:v8 code:2 userInfo:v12];
 
-    v13 = rbs_general_log();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    originatorEntitlements = rbs_general_log();
+    if (os_log_type_enabled(originatorEntitlements, OS_LOG_TYPE_ERROR))
     {
-      [RBSSavedEndowmentGrant(RBProcessState) isValidForContext:v6 withError:v13];
+      [RBSSavedEndowmentGrant(RBProcessState) isValidForContext:v6 withError:originatorEntitlements];
     }
 
     goto LABEL_5;
@@ -114,20 +114,20 @@ LABEL_20:
   v25 = *MEMORY[0x277D85DE8];
   v8 = a3;
   v9 = a5;
-  v10 = [v9 savedEndowments];
-  v11 = [a1 key];
-  v12 = [v10 objectForKey:v11];
+  savedEndowments = [v9 savedEndowments];
+  v11 = [self key];
+  v12 = [savedEndowments objectForKey:v11];
 
   if (v12)
   {
     v22 = v8;
     v13 = objc_alloc(MEMORY[0x277D46E90]);
-    v14 = [a1 endowmentNamespace];
-    v15 = [v9 target];
-    v16 = [v15 environment];
+    endowmentNamespace = [self endowmentNamespace];
+    target = [v9 target];
+    environment = [target environment];
     v17 = RBSEndowmentEncode();
-    v18 = [v9 assertionID];
-    v19 = [v13 _initWithNamespace:v14 environment:v16 encodedEndowment:v17 originatingIdentifier:v18 attributePath:a4];
+    assertionID = [v9 assertionID];
+    v19 = [v13 _initWithNamespace:endowmentNamespace environment:environment encodedEndowment:v17 originatingIdentifier:assertionID attributePath:a4];
 
     v20 = rbs_general_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -146,7 +146,7 @@ LABEL_20:
     v19 = rbs_general_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [RBSSavedEndowmentGrant(RBProcessState) applyToProcessState:a1 attributePath:v19 context:?];
+      [RBSSavedEndowmentGrant(RBProcessState) applyToProcessState:self attributePath:v19 context:?];
     }
   }
 

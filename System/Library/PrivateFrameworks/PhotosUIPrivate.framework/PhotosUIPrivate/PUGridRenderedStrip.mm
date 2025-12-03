@@ -1,25 +1,25 @@
 @interface PUGridRenderedStrip
 - (CGSize)interItemSpacing;
 - (CGSize)itemSize;
-- (PUGridRenderedStrip)initWithFrame:(CGRect)a3;
+- (PUGridRenderedStrip)initWithFrame:(CGRect)frame;
 - (PUGridRenderedStripDataSource)dataSource;
 - (PUSectionedGridLayout)layout;
 - (_NSRange)visualItemRange;
 - (int64_t)numberOfColumns;
 - (void)_render;
-- (void)_setNeedsRendering:(BOOL)a3;
+- (void)_setNeedsRendering:(BOOL)rendering;
 - (void)_updateExtendedContents;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setContentExtenderType:(unint64_t)a3;
-- (void)setDataSource:(id)a3;
-- (void)setExtendsToTop:(BOOL)a3;
-- (void)setInterItemSpacing:(CGSize)a3;
-- (void)setItemContentScale:(double)a3;
-- (void)setItemSize:(CGSize)a3;
-- (void)setLayout:(id)a3;
-- (void)setLeftContentInset:(double)a3;
-- (void)setVisualSectionIndex:(int64_t)a3 andVisualItemRange:(_NSRange)a4;
+- (void)setContentExtenderType:(unint64_t)type;
+- (void)setDataSource:(id)source;
+- (void)setExtendsToTop:(BOOL)top;
+- (void)setInterItemSpacing:(CGSize)spacing;
+- (void)setItemContentScale:(double)scale;
+- (void)setItemSize:(CGSize)size;
+- (void)setLayout:(id)layout;
+- (void)setLeftContentInset:(double)inset;
+- (void)setVisualSectionIndex:(int64_t)index andVisualItemRange:(_NSRange)range;
 @end
 
 @implementation PUGridRenderedStrip
@@ -66,44 +66,44 @@
   return result;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v6.receiver = self;
   v6.super_class = PUGridRenderedStrip;
-  [(PUGridRenderedStrip *)&v6 applyLayoutAttributes:v4];
+  [(PUGridRenderedStrip *)&v6 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 extendsTopContent])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [attributesCopy extendsTopContent])
   {
     [(PUGridRenderedStrip *)self setExtendsToTop:1];
-    v5 = [(PUGridRenderedStrip *)self topContentView];
-    [v5 setAlpha:0.0];
+    topContentView = [(PUGridRenderedStrip *)self topContentView];
+    [topContentView setAlpha:0.0];
   }
 }
 
 - (void)_updateExtendedContents
 {
-  v3 = [(PUGridRenderedStrip *)self layer];
-  v8 = [v3 contents];
+  layer = [(PUGridRenderedStrip *)self layer];
+  contents = [layer contents];
 
-  v5 = v8;
-  if (v8)
+  v5 = contents;
+  if (contents)
   {
     if (self->_extendsToTop)
     {
-      v6 = [(UIView *)self->_topContentView layer];
-      [v6 setContents:v8];
+      layer2 = [(UIView *)self->_topContentView layer];
+      [layer2 setContents:contents];
 
-      v5 = v8;
+      v5 = contents;
     }
 
     sideExtendedContentView = self->__sideExtendedContentView;
     if (sideExtendedContentView)
     {
-      v7 = [(UIView *)sideExtendedContentView layer];
-      [v7 setContents:v8];
+      layer3 = [(UIView *)sideExtendedContentView layer];
+      [layer3 setContents:contents];
 
-      v5 = v8;
+      v5 = contents;
     }
   }
 
@@ -119,10 +119,10 @@
   v8 = v7;
   [(PUGridRenderedStrip *)self itemContentScale];
   v10 = v8 * v9;
-  v11 = [(PUGridRenderedStrip *)self backgroundColorValue];
-  v12 = [(PUGridRenderedStrip *)self layout];
-  v13 = [(PUGridRenderedStrip *)self dataSource];
-  v14 = [(PUGridRenderedStrip *)self _shouldReverseLayoutDirection];
+  backgroundColorValue = [(PUGridRenderedStrip *)self backgroundColorValue];
+  layout = [(PUGridRenderedStrip *)self layout];
+  dataSource = [(PUGridRenderedStrip *)self dataSource];
+  _shouldReverseLayoutDirection = [(PUGridRenderedStrip *)self _shouldReverseLayoutDirection];
   v15 = llround(v4 * v10);
   v16 = llround(v6 * v10);
   [(PUGridRenderedStrip *)self itemSize];
@@ -151,10 +151,10 @@
       if (length)
       {
         v30 = v29;
-        v61 = v13;
-        v31 = [(PUGridRenderedStrip *)self numberOfColumns];
+        v61 = dataSource;
+        numberOfColumns = [(PUGridRenderedStrip *)self numberOfColumns];
         height = v27;
-        if (v31 < 1)
+        if (numberOfColumns < 1)
         {
           v33 = 0.0;
         }
@@ -165,9 +165,9 @@
           v33 = 0.0;
           do
           {
-            if (v12)
+            if (layout)
             {
-              [v12 layoutItemSizeForColumn:v32];
+              [layout layoutItemSizeForColumn:v32];
             }
 
             else
@@ -176,7 +176,7 @@
             }
 
             v35 = v33 + v34;
-            if (v32 >= v31 - 1)
+            if (v32 >= numberOfColumns - 1)
             {
               v33 = v35;
             }
@@ -189,7 +189,7 @@
             ++v32;
           }
 
-          while (v31 != v32);
+          while (numberOfColumns != v32);
         }
 
         v36 = v15;
@@ -204,7 +204,7 @@
           v41 = v36;
           do
           {
-            *(v40 - 1) = v11;
+            *(v40 - 1) = backgroundColorValue;
             v40 += 2;
             --v41;
           }
@@ -228,9 +228,9 @@
           while (v42);
         }
 
-        if (length >= v31)
+        if (length >= numberOfColumns)
         {
-          v44 = v31;
+          v44 = numberOfColumns;
         }
 
         else
@@ -250,7 +250,7 @@
         v81 = v18;
         v82 = v20;
         v83 = v10;
-        v76 = v12;
+        v76 = layout;
         v84 = (v10 * v33);
         v85 = v57;
         v79 = v93;
@@ -260,10 +260,10 @@
         v88 = v28;
         v89 = v39;
         v90 = v37;
-        v92 = v14 ^ 1;
+        v92 = _shouldReverseLayoutDirection ^ 1;
         v45 = v61;
         v77 = v45;
-        v78 = self;
+        selfCopy = self;
         v91 = height;
         v46 = _Block_copy(aBlock);
         v71 = 0;
@@ -280,13 +280,13 @@
         [v45 renderedStrip:self enumerateAssetsForVisualSection:visualSectionIndex inVisualItemRange:location usingBlock:{v44, v68}];
         if (v72[3] != v44)
         {
-          v56 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v56 handleFailureInMethod:a2 object:self file:@"PUGridRenderedStrip.m" lineNumber:388 description:{@"Bad iteration over real items. Rendered %ld items but expected %ld", v72[3], v44}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PUGridRenderedStrip.m" lineNumber:388 description:{@"Bad iteration over real items. Rendered %ld items but expected %ld", v72[3], v44}];
 
           v44 = v72[3];
         }
 
-        for (; v44 < v31; v72[3] = v44)
+        for (; v44 < numberOfColumns; v72[3] = v44)
         {
           (*(v47 + 2))(v47, v44, 0);
           v44 = v72[3] + 1;
@@ -303,7 +303,7 @@
             v51 = height;
             do
             {
-              memset(&v28[v49], v11, v50);
+              memset(&v28[v49], backgroundColorValue, v50);
               v49 = v95[3] + v37;
               v95[3] = v49;
               --v51;
@@ -316,13 +316,13 @@
         munmap(v39, v37);
         mach_vm_protect(*MEMORY[0x1E69E9A60], v28, size, 1, 1);
         v52 = CGDataProviderCreateWithData(0, v28, size, _UnmapBuffer);
-        v13 = v61;
+        dataSource = v61;
         DeviceRGB = CGColorSpaceCreateDeviceRGB();
         v54 = CGImageCreate(width, height, 5uLL, 0x10uLL, v37, DeviceRGB, 0x1006u, v52, 0, 1, kCGRenderingIntentDefault);
         CGDataProviderRelease(v52);
         CGColorSpaceRelease(DeviceRGB);
-        v55 = [(PUGridRenderedStrip *)self layer];
-        [v55 setContents:v54];
+        layer = [(PUGridRenderedStrip *)self layer];
+        [layer setContents:v54];
 
         [(PUGridRenderedStrip *)self _updateExtendedContents];
         CGImageRelease(v54);
@@ -491,9 +491,9 @@ uint64_t __30__PUGridRenderedStrip__render__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  obj = a3;
+  obj = layout;
   WeakRetained = objc_loadWeakRetained(&self->_layout);
 
   v5 = obj;
@@ -505,13 +505,13 @@ uint64_t __30__PUGridRenderedStrip__render__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setVisualSectionIndex:(int64_t)a3 andVisualItemRange:(_NSRange)a4
+- (void)setVisualSectionIndex:(int64_t)index andVisualItemRange:(_NSRange)range
 {
-  if (self->_visualSectionIndex != a3 || (a4.location == self->_visualItemRange.location ? (v5 = a4.length == self->_visualItemRange.length) : (v5 = 0), !v5))
+  if (self->_visualSectionIndex != index || (range.location == self->_visualItemRange.location ? (v5 = range.length == self->_visualItemRange.length) : (v5 = 0), !v5))
   {
-    self->_visualSectionIndex = a3;
+    self->_visualSectionIndex = index;
     p_visualItemRange = &self->_visualItemRange;
-    self->_visualItemRange = a4;
+    self->_visualItemRange = range;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     if (WeakRetained && self->_visualSectionIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -530,9 +530,9 @@ uint64_t __30__PUGridRenderedStrip__render__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -562,61 +562,61 @@ uint64_t __30__PUGridRenderedStrip__render__block_invoke_2(uint64_t a1)
 LABEL_8:
 }
 
-- (void)setLeftContentInset:(double)a3
+- (void)setLeftContentInset:(double)inset
 {
-  if (self->_leftContentInset != a3)
+  if (self->_leftContentInset != inset)
   {
-    self->_leftContentInset = a3;
+    self->_leftContentInset = inset;
     [(PUGridRenderedStrip *)self _setNeedsRendering:1];
   }
 }
 
-- (void)setInterItemSpacing:(CGSize)a3
+- (void)setInterItemSpacing:(CGSize)spacing
 {
-  if (a3.width != self->_interItemSpacing.width || a3.height != self->_interItemSpacing.height)
+  if (spacing.width != self->_interItemSpacing.width || spacing.height != self->_interItemSpacing.height)
   {
-    self->_interItemSpacing = a3;
+    self->_interItemSpacing = spacing;
     [(PUGridRenderedStrip *)self _setNeedsRendering:1];
   }
 }
 
-- (void)setItemContentScale:(double)a3
+- (void)setItemContentScale:(double)scale
 {
-  if (self->_itemContentScale != a3)
+  if (self->_itemContentScale != scale)
   {
-    self->_itemContentScale = a3;
+    self->_itemContentScale = scale;
     [(PUGridRenderedStrip *)self _setNeedsRendering:1];
   }
 }
 
-- (void)setItemSize:(CGSize)a3
+- (void)setItemSize:(CGSize)size
 {
-  if (a3.width != self->_itemSize.width || a3.height != self->_itemSize.height)
+  if (size.width != self->_itemSize.width || size.height != self->_itemSize.height)
   {
-    self->_itemSize = a3;
+    self->_itemSize = size;
     [(PUGridRenderedStrip *)self _setNeedsRendering:1];
   }
 }
 
-- (void)_setNeedsRendering:(BOOL)a3
+- (void)_setNeedsRendering:(BOOL)rendering
 {
-  if (self->__needsRendering != a3)
+  if (self->__needsRendering != rendering)
   {
-    self->__needsRendering = a3;
-    if (a3)
+    self->__needsRendering = rendering;
+    if (rendering)
     {
       [(PUGridRenderedStrip *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setContentExtenderType:(unint64_t)a3
+- (void)setContentExtenderType:(unint64_t)type
 {
-  if (self->_contentExtenderType != a3)
+  if (self->_contentExtenderType != type)
   {
-    self->_contentExtenderType = a3;
+    self->_contentExtenderType = type;
     sideExtendedContentView = self->__sideExtendedContentView;
-    if (a3)
+    if (type)
     {
       if (!sideExtendedContentView)
       {
@@ -625,8 +625,8 @@ LABEL_8:
         self->__sideExtendedContentView = v5;
 
         [(PUGridRenderedStrip *)self addSubview:self->__sideExtendedContentView];
-        v7 = [(UIView *)self->__sideExtendedContentView layer];
-        [v7 setContentsScaling:@"repeat"];
+        layer = [(UIView *)self->__sideExtendedContentView layer];
+        [layer setContentsScaling:@"repeat"];
 
         v8 = self->__sideExtendedContentView;
         PLPhysicalScreenScale();
@@ -649,13 +649,13 @@ LABEL_8:
   }
 }
 
-- (void)setExtendsToTop:(BOOL)a3
+- (void)setExtendsToTop:(BOOL)top
 {
-  if (self->_extendsToTop != a3)
+  if (self->_extendsToTop != top)
   {
-    self->_extendsToTop = a3;
+    self->_extendsToTop = top;
     topContentView = self->_topContentView;
-    if (!a3 || topContentView)
+    if (!top || topContentView)
     {
       [(UIView *)topContentView removeFromSuperview];
       v8 = self->_topContentView;
@@ -669,8 +669,8 @@ LABEL_8:
       self->_topContentView = v5;
 
       [(UIView *)self->_topContentView setClipsToBounds:1];
-      v7 = [(UIView *)self->_topContentView layer];
-      [v7 setContentsGravity:*MEMORY[0x1E6979DF0]];
+      layer = [(UIView *)self->_topContentView layer];
+      [layer setContentsGravity:*MEMORY[0x1E6979DF0]];
 
       [(PUGridRenderedStrip *)self addSubview:self->_topContentView];
 
@@ -721,9 +721,9 @@ LABEL_6:
     v18.size.width = v9;
     v18.size.height = v10;
     v14 = 3.0 / CGRectGetHeight(v18);
-    v15 = [(UIView *)self->_topContentView layer];
-    [v15 setContentsRect:{0.0, 0.0, 1.0, v14}];
-    [v15 setAnchorPoint:{0.5, 0.0}];
+    layer = [(UIView *)self->_topContentView layer];
+    [layer setContentsRect:{0.0, 0.0, 1.0, v14}];
+    [layer setAnchorPoint:{0.5, 0.0}];
     [(UIView *)self->_topContentView setFrame:v7, v8, v9, 3.0];
   }
 
@@ -734,16 +734,16 @@ LABEL_6:
   }
 }
 
-- (PUGridRenderedStrip)initWithFrame:(CGRect)a3
+- (PUGridRenderedStrip)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PUGridRenderedStrip;
-  v3 = [(PUGridRenderedStrip *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUGridRenderedStrip *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PUGridRenderedStrip *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(PUGridRenderedStrip *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v4;

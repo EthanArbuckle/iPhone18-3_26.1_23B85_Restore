@@ -6,15 +6,15 @@
 
 - (BOOL)_accessibilityInvertColorsSupportsDarkWindowInvert
 {
-  v3 = [(UIWindowInvertColorsAccessibility *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIWindowInvertColorsAccessibility *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == &dword_0 + 2)
+  if (userInterfaceStyle == &dword_0 + 2)
   {
-    v5 = [(UIWindowInvertColorsAccessibility *)self rootViewController];
-    v6 = [v5 _hostedWindowScene];
+    rootViewController = [(UIWindowInvertColorsAccessibility *)self rootViewController];
+    _hostedWindowScene = [rootViewController _hostedWindowScene];
 
-    if (v6)
+    if (_hostedWindowScene)
     {
       return 0;
     }

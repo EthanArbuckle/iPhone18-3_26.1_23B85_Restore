@@ -1,53 +1,53 @@
 @interface TSDKnobTracker
 - (CGAffineTransform)transformInRootForStandardKnobs;
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3;
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas;
 - (CGPoint)currentPosition;
 - (CGPoint)knobOffset;
 - (CGRect)currentBoundsForStandardKnobs;
-- (TSDKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (TSDKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (unint64_t)enabledKnobMask;
-- (void)changeDynamicLayoutsForReps:(id)a3;
+- (void)changeDynamicLayoutsForReps:(id)reps;
 - (void)dealloc;
 - (void)endMovingKnob;
 - (void)i_resetCurrentPositionToKnobPositionIfAppropriate;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
-- (void)setRep:(id)a3;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
+- (void)setRep:(id)rep;
 @end
 
 @implementation TSDKnobTracker
 
-- (TSDKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (TSDKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
   v12.receiver = self;
   v12.super_class = TSDKnobTracker;
   v6 = [(TSDKnobTracker *)&v12 init];
   if (v6)
   {
-    if (a3)
+    if (rep)
     {
-      if (a4)
+      if (knob)
       {
 LABEL_4:
-        [(TSDKnobTracker *)v6 setKnob:a4];
-        [(TSDKnobTracker *)v6 setRep:a3];
+        [(TSDKnobTracker *)v6 setKnob:knob];
+        [(TSDKnobTracker *)v6 setRep:rep];
         return v6;
       }
     }
 
     else
     {
-      v8 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobTracker initWithRep:knob:]"];
-      [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobTracker.m"), 27, @"invalid nil value for '%s'", "rep"}];
-      if (a4)
+      [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobTracker.m"), 27, @"invalid nil value for '%s'", "rep"}];
+      if (knob)
       {
         goto LABEL_4;
       }
     }
 
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobTracker initWithRep:knob:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobTracker.m"), 28, @"invalid nil value for '%s'", "knob"}];
+    [currentHandler2 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobTracker.m"), 28, @"invalid nil value for '%s'", "knob"}];
     goto LABEL_4;
   }
 
@@ -66,27 +66,27 @@ LABEL_4:
   [(TSDKnobTracker *)&v3 dealloc];
 }
 
-- (void)setRep:(id)a3
+- (void)setRep:(id)rep
 {
   mRep = self->mRep;
-  if (mRep != a3)
+  if (mRep != rep)
   {
     if ([(TSDRep *)mRep currentKnobTracker]== self)
     {
       [(TSDRep *)self->mRep setCurrentKnobTracker:0];
     }
 
-    v6 = a3;
-    self->mRep = v6;
+    repCopy = rep;
+    self->mRep = repCopy;
 
-    [(TSDRep *)v6 setCurrentKnobTracker:self];
+    [(TSDRep *)repCopy setCurrentKnobTracker:self];
   }
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v6 = [(TSDKnobTracker *)self rep];
   if (v6)
   {
@@ -96,10 +96,10 @@ LABEL_4:
   }
 }
 
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   v5 = [(TSDKnobTracker *)self rep];
 
   [(TSDRep *)v5 convertNaturalPointToUnscaledCanvas:x, y];
@@ -171,7 +171,7 @@ LABEL_4:
   }
 }
 
-- (void)changeDynamicLayoutsForReps:(id)a3
+- (void)changeDynamicLayoutsForReps:(id)reps
 {
   [(TSDKnobTracker *)self i_resetCurrentPositionToKnobPositionIfAppropriate];
   mDidBegin = self->mDidBegin;

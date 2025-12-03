@@ -1,30 +1,30 @@
 @interface ZWLensZoomView
-- (BOOL)_effectRequiresQuartzFilter:(id)a3;
-- (CGPoint)updateZoomPanOffset:(CGPoint)a3 zoomFactor:(double)a4 roundedLensCorners:(BOOL)a5 animated:(BOOL)a6 animationDuration:(double)a7 completion:(id)a8;
+- (BOOL)_effectRequiresQuartzFilter:(id)filter;
+- (CGPoint)updateZoomPanOffset:(CGPoint)offset zoomFactor:(double)factor roundedLensCorners:(BOOL)corners animated:(BOOL)animated animationDuration:(double)duration completion:(id)completion;
 - (CGPoint)zoomPanOffset;
-- (CGRect)_effectiveRectForBounds:(CGRect)a3 position:(CGPoint)a4 scaleFactor:(double)a5;
+- (CGRect)_effectiveRectForBounds:(CGRect)bounds position:(CGPoint)position scaleFactor:(double)factor;
 - (CGRect)effectiveZoomViewFrame;
 - (CGRect)sampleRect;
-- (CGSize)_prescaledSizeForFinalSize:(CGSize)a3 zoomFactor:(double)a4;
-- (CGSize)sampledContentSizeWithZoomFactor:(double)a3;
-- (ZWLensZoomView)initWithFrame:(CGRect)a3;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (CGSize)_prescaledSizeForFinalSize:(CGSize)size zoomFactor:(double)factor;
+- (CGSize)sampledContentSizeWithZoomFactor:(double)factor;
+- (ZWLensZoomView)initWithFrame:(CGRect)frame;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)makePortalVisible:(BOOL)a3 withGrayScaleFilter:(BOOL)a4;
-- (void)showLensResizingHandlesShowing:(BOOL)a3;
+- (void)makePortalVisible:(BOOL)visible withGrayScaleFilter:(BOOL)filter;
+- (void)showLensResizingHandlesShowing:(BOOL)showing;
 - (void)updateCornerRadii;
-- (void)updateLensEffect:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)updateLensEffect:(id)effect animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation ZWLensZoomView
 
-- (ZWLensZoomView)initWithFrame:(CGRect)a3
+- (ZWLensZoomView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = ZWLensZoomView;
-  v3 = [(ZWLensZoomView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ZWLensZoomView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -48,8 +48,8 @@
     [v12 setAllowsHitTesting:0];
     [v12 setInstanceCount:2];
     [(ZWLensZoomView *)v4 setZoomReplicatorLayer:v12];
-    v13 = [v10 layer];
-    [v13 addSublayer:v12];
+    layer = [v10 layer];
+    [layer addSublayer:v12];
 
     v14 = objc_alloc_init(CABackdropLayer);
     [v14 setEnabled:1];
@@ -60,8 +60,8 @@
     if (ZWUseVibrantBlendModes())
     {
       v15 = +[CAShapeLayer layer];
-      v16 = [(ZWLensZoomView *)v4 zoomBackdropLayer];
-      [v16 setMask:v15];
+      zoomBackdropLayer = [(ZWLensZoomView *)v4 zoomBackdropLayer];
+      [zoomBackdropLayer setMask:v15];
 
       [(ZWLensZoomView *)v4 setMaskLayer:v15];
     }
@@ -76,11 +76,11 @@
     [v19 setAllowsHitTesting:0];
     [v19 setInstanceCount:2];
     [(ZWLensZoomView *)v4 setEffectReplicatorLayer:v19];
-    v20 = [v17 layer];
-    [v20 addSublayer:v19];
+    layer2 = [v17 layer];
+    [layer2 addSublayer:v19];
 
-    v21 = [v17 layer];
-    [v21 setAllowsHitTesting:0];
+    layer3 = [v17 layer];
+    [layer3 setAllowsHitTesting:0];
 
     v22 = objc_alloc_init(CABackdropLayer);
     [v22 setEnabled:1];
@@ -92,8 +92,8 @@
 
     [(ZWLensZoomView *)v4 setEffectBackdropLayer:v22];
     [v19 addSublayer:v22];
-    v25 = [(ZWLensZoomView *)v4 effectView];
-    [(ZWLensZoomView *)v4 sendSubviewToBack:v25];
+    effectView = [(ZWLensZoomView *)v4 effectView];
+    [(ZWLensZoomView *)v4 sendSubviewToBack:effectView];
 
     v26 = objc_alloc_init(CAPortalLayer);
     [(ZWLensZoomView *)v4 setIslandPortalLayer:v26];
@@ -117,34 +117,34 @@
   [(ZWLensZoomView *)self updateZoomPanOffset:[(ZWLensZoomView *)self roundedLensCorners] zoomFactor:0 roundedLensCorners:0 animated:v4 animationDuration:v6 completion:v7, -1.0];
 }
 
-- (CGSize)sampledContentSizeWithZoomFactor:(double)a3
+- (CGSize)sampledContentSizeWithZoomFactor:(double)factor
 {
   [(ZWLensZoomView *)self bounds];
 
-  [(ZWLensZoomView *)self _prescaledSizeForFinalSize:v5 zoomFactor:v6, a3];
+  [(ZWLensZoomView *)self _prescaledSizeForFinalSize:v5 zoomFactor:v6, factor];
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-- (void)showLensResizingHandlesShowing:(BOOL)a3
+- (void)showLensResizingHandlesShowing:(BOOL)showing
 {
-  [(ZWLensZoomView *)self setLensResizingHandlesShowing:a3];
+  [(ZWLensZoomView *)self setLensResizingHandlesShowing:showing];
 
   [(ZWLensZoomView *)self setNeedsLayout];
 }
 
 - (CGRect)effectiveZoomViewFrame
 {
-  v3 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-  [v3 bounds];
+  zoomReplicatorLayer = [(ZWLensZoomView *)self zoomReplicatorLayer];
+  [zoomReplicatorLayer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-  [v12 position];
+  zoomReplicatorLayer2 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+  [zoomReplicatorLayer2 position];
   v14 = v13;
   v16 = v15;
 
@@ -156,7 +156,7 @@
   return result;
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   ZOTMainScreenSize();
   v5 = v4;
@@ -166,8 +166,8 @@
     v5 = v6;
   }
 
-  v7 = [(ZWLensZoomView *)self zoomBackdropLayer];
-  [v7 setMarginWidth:v5];
+  zoomBackdropLayer = [(ZWLensZoomView *)self zoomBackdropLayer];
+  [zoomBackdropLayer setMarginWidth:v5];
 
   ZOTMainScreenSize();
   v9 = v8;
@@ -177,17 +177,17 @@
     v9 = v10;
   }
 
-  v11 = [(ZWLensZoomView *)self effectBackdropLayer];
-  [v11 setMarginWidth:v9];
+  effectBackdropLayer = [(ZWLensZoomView *)self effectBackdropLayer];
+  [effectBackdropLayer setMarginWidth:v9];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [(ZWLensZoomView *)self zoomBackdropLayer:a3];
+  v5 = [(ZWLensZoomView *)self zoomBackdropLayer:stop];
   [v5 setMarginWidth:0.0];
 
-  v6 = [(ZWLensZoomView *)self effectBackdropLayer];
-  [v6 setMarginWidth:0.0];
+  effectBackdropLayer = [(ZWLensZoomView *)self effectBackdropLayer];
+  [effectBackdropLayer setMarginWidth:0.0];
 
   if ([(ZWLensZoomView *)self roundedLensCorners])
   {
@@ -196,7 +196,7 @@
     [(ZWLensZoomView *)self zoomFactor];
     CGAffineTransformMakeScale(&m, v8, 1.0 / v9);
     CATransform3DMakeAffineTransform(&v18, &m);
-    v10 = [(ZWLensZoomView *)self maskLayer];
+    maskLayer = [(ZWLensZoomView *)self maskLayer];
     v14 = *&v18.m31;
     v15 = *&v18.m33;
     v16 = *&v18.m41;
@@ -205,34 +205,34 @@
     *&m.c = *&v18.m13;
     *&m.tx = *&v18.m21;
     v13 = *&v18.m23;
-    [v10 setTransform:&m];
+    [maskLayer setTransform:&m];
   }
 
   else
   {
-    v11 = [(ZWLensZoomView *)self layer];
-    [v11 setCornerRadius:0.0];
+    layer = [(ZWLensZoomView *)self layer];
+    [layer setCornerRadius:0.0];
   }
 }
 
-- (CGPoint)updateZoomPanOffset:(CGPoint)a3 zoomFactor:(double)a4 roundedLensCorners:(BOOL)a5 animated:(BOOL)a6 animationDuration:(double)a7 completion:(id)a8
+- (CGPoint)updateZoomPanOffset:(CGPoint)offset zoomFactor:(double)factor roundedLensCorners:(BOOL)corners animated:(BOOL)animated animationDuration:(double)duration completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  y = a3.y;
-  x = a3.x;
-  v15 = a8;
+  animatedCopy = animated;
+  cornersCopy = corners;
+  y = offset.y;
+  x = offset.x;
+  completionCopy = completion;
   [(ZWLensZoomView *)self zoomFactor];
   v17 = v16;
-  [(ZWLensZoomView *)self setZoomFactor:a4];
+  [(ZWLensZoomView *)self setZoomFactor:factor];
   [(ZWLensZoomView *)self setZoomPanOffset:x, y];
-  [(ZWLensZoomView *)self setRoundedLensCorners:v10];
+  [(ZWLensZoomView *)self setRoundedLensCorners:cornersCopy];
   [(ZWLensZoomView *)self bounds];
   if (CGRectIsEmpty(v248))
   {
-    if (v15)
+    if (completionCopy)
     {
-      v15[2](v15);
+      completionCopy[2](completionCopy);
     }
 
     v18 = CGPointZero.x;
@@ -240,34 +240,34 @@
     goto LABEL_67;
   }
 
-  v20 = vabdd_f64(a4, AXZoomMinimumZoomLevel) <= 0.0001;
+  v20 = vabdd_f64(factor, AXZoomMinimumZoomLevel) <= 0.0001;
   v244[0] = _NSConcreteStackBlock;
   v244[1] = 3221225472;
   v244[2] = __106__ZWLensZoomView_updateZoomPanOffset_zoomFactor_roundedLensCorners_animated_animationDuration_completion___block_invoke;
   v244[3] = &unk_78F80;
-  v21 = AXZoomMinimumZoomLevel >= a4 || v20;
+  v21 = AXZoomMinimumZoomLevel >= factor || v20;
   v244[4] = self;
   v246 = v21;
-  v245 = v15;
+  v245 = completionCopy;
   v22 = objc_retainBlock(v244);
   v23 = v22;
-  if (!v9)
+  if (!animatedCopy)
   {
-    v24 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-    [v24 removeAllAnimations];
+    zoomReplicatorLayer = [(ZWLensZoomView *)self zoomReplicatorLayer];
+    [zoomReplicatorLayer removeAllAnimations];
 
     v23 = 0;
   }
 
   v219 = v17;
-  v220 = a7;
+  durationCopy = duration;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   [CATransaction setCompletionBlock:v23];
   if ((v21 & 1) == 0)
   {
-    v25 = [(ZWLensZoomView *)self zoomBackdropLayer];
-    [v25 setEnabled:1];
+    zoomBackdropLayer = [(ZWLensZoomView *)self zoomBackdropLayer];
+    [zoomBackdropLayer setEnabled:1];
   }
 
   [(ZWLensZoomView *)self zoomPanOffset];
@@ -392,21 +392,21 @@
   v241 = v243;
   CATransform3DScale(&v242, &v241, v65, v66, 1.0);
   v243 = v242;
-  v67 = [(ZWLensZoomView *)self window];
-  [v67 convertRect:self fromView:{v234, v231, v232, v233}];
+  window = [(ZWLensZoomView *)self window];
+  [window convertRect:self fromView:{v234, v231, v232, v233}];
   v69 = v68;
   v71 = v70;
   v73 = v72;
   v75 = v74;
 
-  v76 = [(ZWLensZoomView *)self traitCollection];
-  [v76 displayCornerRadius];
+  traitCollection = [(ZWLensZoomView *)self traitCollection];
+  [traitCollection displayCornerRadius];
   v78 = v77;
 
-  if (v10 && (v79 = [(ZWLensZoomView *)self lensResizingHandlesShowing], memset(&v241, 0, 64), !v79))
+  if (cornersCopy && (v79 = [(ZWLensZoomView *)self lensResizingHandlesShowing], memset(&v241, 0, 64), !v79))
   {
-    v83 = [(ZWLensZoomView *)self window];
-    [v83 bounds];
+    window2 = [(ZWLensZoomView *)self window];
+    [window2 bounds];
     ZWCornerRadiiForFrameInContainer(&v241, v69, v71, v73, v75, v84, v85, v86, v87, v78);
 
     ZWCornerRadiusForBackgroundWithSize(v232, v233);
@@ -425,35 +425,35 @@
   }
 
   v89 = v63;
-  v90 = v220;
-  if (!v9 || !v82)
+  v90 = durationCopy;
+  if (!animatedCopy || !v82)
   {
     v237 = *&v241.m11;
     v238 = *&v241.m13;
     v239 = *&v241.m21;
     v240 = *&v241.m23;
-    v91 = [(ZWLensZoomView *)self layer];
+    layer = [(ZWLensZoomView *)self layer];
     *&v242.m11 = v237;
     *&v242.m13 = v238;
     *&v242.m21 = v239;
     *&v242.m23 = v240;
-    [v91 setCornerRadii:&v242];
+    [layer setCornerRadii:&v242];
   }
 
   v92 = v218 + v89;
-  if (v9)
+  if (animatedCopy)
   {
-    if (v220 <= 0.0)
+    if (durationCopy <= 0.0)
     {
       v90 = ZWDefaultZoomAnimationDuration();
     }
 
     v93 = [CABasicAnimation animationWithKeyPath:@"instanceTransform"];
-    v94 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-    v95 = v94;
-    if (v94)
+    zoomReplicatorLayer2 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+    v95 = zoomReplicatorLayer2;
+    if (zoomReplicatorLayer2)
     {
-      [v94 instanceTransform];
+      [zoomReplicatorLayer2 instanceTransform];
     }
 
     else
@@ -471,8 +471,8 @@
     [v93 setDuration:v90];
     [v93 setDelegate:self];
     [v93 setCumulative:1];
-    v98 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-    [v98 addAnimation:v93 forKey:@"RepInstanceTransform"];
+    zoomReplicatorLayer3 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+    [zoomReplicatorLayer3 addAnimation:v93 forKey:@"RepInstanceTransform"];
 
     [(ZWLensZoomView *)self zoomFactor];
     if (v99 >= v219)
@@ -483,8 +483,8 @@
         goto LABEL_51;
       }
 
-      v107 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v107 position];
+      zoomReplicatorLayer4 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer4 position];
       v109 = v108;
       v111 = v110;
 
@@ -505,40 +505,40 @@
       [v100 setToValue:v114];
 
       [v100 setDuration:v90];
-      v115 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v115 addAnimation:v100 forKey:@"RepPosition"];
+      zoomReplicatorLayer5 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer5 addAnimation:v100 forKey:@"RepPosition"];
 
-      v105 = [CABasicAnimation animationWithKeyPath:@"position"];
-      v116 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v116 position];
+      zoomReplicatorLayer9 = [CABasicAnimation animationWithKeyPath:@"position"];
+      zoomReplicatorLayer6 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer6 position];
       v117 = [NSValue valueWithCGPoint:?];
-      [v105 setFromValue:v117];
+      [zoomReplicatorLayer9 setFromValue:v117];
 
       v22 = v221;
       v118 = [NSValue valueWithCGPoint:v92, v61];
-      [v105 setToValue:v118];
+      [zoomReplicatorLayer9 setToValue:v118];
 
-      [v105 setDuration:v90];
-      v119 = [(ZWLensZoomView *)self effectReplicatorLayer];
-      [v119 addAnimation:v105 forKey:@"FilterPosition"];
+      [zoomReplicatorLayer9 setDuration:v90];
+      effectReplicatorLayer = [(ZWLensZoomView *)self effectReplicatorLayer];
+      [effectReplicatorLayer addAnimation:zoomReplicatorLayer9 forKey:@"FilterPosition"];
     }
 
     else
     {
       v100 = [CABasicAnimation animationWithKeyPath:@"position"];
-      v101 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v101 position];
+      zoomReplicatorLayer7 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer7 position];
       v102 = [NSValue valueWithCGPoint:?];
       [v100 setFromValue:v102];
 
-      v103 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v103 position];
+      zoomReplicatorLayer8 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer8 position];
       v104 = [NSValue valueWithCGPoint:?];
       [v100 setToValue:v104];
 
       [v100 setDuration:v90];
-      v105 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v105 addAnimation:v100 forKey:@"RepPosition"];
+      zoomReplicatorLayer9 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer9 addAnimation:v100 forKey:@"RepPosition"];
     }
 
 LABEL_51:
@@ -553,14 +553,14 @@ LABEL_51:
     v249.size.width = v217;
     if (!CGRectIsEmpty(v249))
     {
-      v122 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v122 setPosition:{v92, v61}];
+      zoomReplicatorLayer10 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer10 setPosition:{v92, v61}];
 
-      v123 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v123 setBounds:{0.0, 0.0, v217, v216}];
+      zoomReplicatorLayer11 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer11 setBounds:{0.0, 0.0, v217, v216}];
 
-      v124 = [(ZWLensZoomView *)self zoomBackdropLayer];
-      [v124 setBounds:{0.0, 0.0, v217, v216}];
+      zoomBackdropLayer2 = [(ZWLensZoomView *)self zoomBackdropLayer];
+      [zoomBackdropLayer2 setBounds:{0.0, 0.0, v217, v216}];
 
       v250.origin.x = 0.0;
       v250.origin.y = 0.0;
@@ -572,103 +572,103 @@ LABEL_51:
       v251.size.width = v217;
       v251.size.height = v216;
       MidY = CGRectGetMidY(v251);
-      v127 = [(ZWLensZoomView *)self zoomBackdropLayer];
-      [v127 setPosition:{MidX, MidY}];
+      zoomBackdropLayer3 = [(ZWLensZoomView *)self zoomBackdropLayer];
+      [zoomBackdropLayer3 setPosition:{MidX, MidY}];
 
       v236 = v243;
-      v128 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      zoomReplicatorLayer12 = [(ZWLensZoomView *)self zoomReplicatorLayer];
       v242 = v236;
-      [v128 setInstanceTransform:&v242];
+      [zoomReplicatorLayer12 setInstanceTransform:&v242];
 
-      v129 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v129 bounds];
+      zoomReplicatorLayer13 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer13 bounds];
       v131 = v130;
       v133 = v132;
       v135 = v134;
       v137 = v136;
-      v138 = [(ZWLensZoomView *)self effectReplicatorLayer];
-      [v138 setBounds:{v131, v133, v135, v137}];
+      effectReplicatorLayer2 = [(ZWLensZoomView *)self effectReplicatorLayer];
+      [effectReplicatorLayer2 setBounds:{v131, v133, v135, v137}];
 
-      v139 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-      [v139 position];
+      zoomReplicatorLayer14 = [(ZWLensZoomView *)self zoomReplicatorLayer];
+      [zoomReplicatorLayer14 position];
       v141 = v140;
       v143 = v142;
-      v144 = [(ZWLensZoomView *)self effectReplicatorLayer];
-      [v144 setPosition:{v141, v143}];
+      effectReplicatorLayer3 = [(ZWLensZoomView *)self effectReplicatorLayer];
+      [effectReplicatorLayer3 setPosition:{v141, v143}];
 
-      v145 = [(ZWLensZoomView *)self zoomBackdropLayer];
-      [v145 bounds];
+      zoomBackdropLayer4 = [(ZWLensZoomView *)self zoomBackdropLayer];
+      [zoomBackdropLayer4 bounds];
       v147 = v146;
       v149 = v148;
       v151 = v150;
       v153 = v152;
-      v154 = [(ZWLensZoomView *)self effectBackdropLayer];
-      [v154 setBounds:{v147, v149, v151, v153}];
+      effectBackdropLayer = [(ZWLensZoomView *)self effectBackdropLayer];
+      [effectBackdropLayer setBounds:{v147, v149, v151, v153}];
 
-      v155 = [(ZWLensZoomView *)self zoomBackdropLayer];
-      [v155 position];
+      zoomBackdropLayer5 = [(ZWLensZoomView *)self zoomBackdropLayer];
+      [zoomBackdropLayer5 position];
       v157 = v156;
       v159 = v158;
-      v160 = [(ZWLensZoomView *)self effectBackdropLayer];
-      [v160 setPosition:{v157, v159}];
+      effectBackdropLayer2 = [(ZWLensZoomView *)self effectBackdropLayer];
+      [effectBackdropLayer2 setPosition:{v157, v159}];
     }
   }
 
-  if (v10)
+  if (cornersCopy)
   {
-    v161 = [(ZWLensZoomView *)self maskLayer];
-    v162 = [(ZWLensZoomView *)self zoomBackdropLayer];
-    [v162 setMask:v161];
+    maskLayer = [(ZWLensZoomView *)self maskLayer];
+    zoomBackdropLayer6 = [(ZWLensZoomView *)self zoomBackdropLayer];
+    [zoomBackdropLayer6 setMask:maskLayer];
 
-    v163 = [(ZWLensZoomView *)self lensResizingHandlesShowing];
+    lensResizingHandlesShowing = [(ZWLensZoomView *)self lensResizingHandlesShowing];
     *&v242.m11 = *&v241.m11;
     *&v242.m13 = *&v241.m13;
     *&v242.m21 = *&v241.m21;
     *&v242.m23 = *&v241.m23;
-    v164 = ZWInnerLensBorderForBounds(v163, &v242.m11, v234, v231, v232, v233);
-    v165 = [v164 CGPath];
-    v166 = [(ZWLensZoomView *)self maskLayer];
-    [v166 setPath:v165];
+    v164 = ZWInnerLensBorderForBounds(lensResizingHandlesShowing, &v242.m11, v234, v231, v232, v233);
+    cGPath = [v164 CGPath];
+    maskLayer2 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer2 setPath:cGPath];
 
     v167 = +[UIColor whiteColor];
-    v168 = [v167 CGColor];
-    v169 = [(ZWLensZoomView *)self maskLayer];
-    [v169 setFillColor:v168];
+    cGColor = [v167 CGColor];
+    maskLayer3 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer3 setFillColor:cGColor];
 
     v170 = +[UIColor whiteColor];
-    v171 = [v170 CGColor];
-    v172 = [(ZWLensZoomView *)self maskLayer];
-    [v172 setStrokeColor:v171];
+    cGColor2 = [v170 CGColor];
+    maskLayer4 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer4 setStrokeColor:cGColor2];
 
     v173 = ZWLensInnerBorderWidth();
-    v174 = [(ZWLensZoomView *)self maskLayer];
-    [v174 setLineWidth:v173];
+    maskLayer5 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer5 setLineWidth:v173];
 
     v175 = +[UIColor clearColor];
-    v176 = [v175 CGColor];
-    v177 = [(ZWLensZoomView *)self maskLayer];
-    [v177 setBackgroundColor:v176];
+    cGColor3 = [v175 CGColor];
+    maskLayer6 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer6 setBackgroundColor:cGColor3];
 
-    v178 = [(ZWLensZoomView *)self zoomBackdropLayer];
-    [v178 position];
+    zoomBackdropLayer7 = [(ZWLensZoomView *)self zoomBackdropLayer];
+    [zoomBackdropLayer7 position];
     v180 = v179;
     v182 = v181;
-    v183 = [(ZWLensZoomView *)self maskLayer];
-    [v183 setPosition:{v180, v182}];
+    maskLayer7 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer7 setPosition:{v180, v182}];
 
-    v184 = [(ZWLensZoomView *)self layer];
-    [v184 bounds];
+    layer2 = [(ZWLensZoomView *)self layer];
+    [layer2 bounds];
     v186 = v185;
     v188 = v187;
     v190 = v189;
     v192 = v191;
-    v193 = [(ZWLensZoomView *)self maskLayer];
-    [v193 setBounds:{v186, v188, v190, v192}];
+    maskLayer8 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer8 setBounds:{v186, v188, v190, v192}];
 
-    if (v9)
+    if (animatedCopy)
     {
-      v194 = [(ZWLensZoomView *)self maskLayer];
-      v195 = v194;
+      maskLayer9 = [(ZWLensZoomView *)self maskLayer];
+      v195 = maskLayer9;
       *&v242.m31 = v230;
       *&v242.m33 = v229;
       *&v242.m41 = v228;
@@ -686,37 +686,37 @@ LABEL_51:
       [(ZWLensZoomView *)self zoomFactor];
       CGAffineTransformMakeScale(&v242, v210, 1.0 / v211);
       CATransform3DMakeAffineTransform(&v235, &v242);
-      v194 = [(ZWLensZoomView *)self maskLayer];
-      v195 = v194;
+      maskLayer9 = [(ZWLensZoomView *)self maskLayer];
+      v195 = maskLayer9;
       v242 = v235;
     }
 
-    [v194 setTransform:&v242];
+    [maskLayer9 setTransform:&v242];
   }
 
   else
   {
-    v196 = [(ZWLensZoomView *)self zoomBackdropLayer];
-    [v196 setMask:0];
+    zoomBackdropLayer8 = [(ZWLensZoomView *)self zoomBackdropLayer];
+    [zoomBackdropLayer8 setMask:0];
 
-    v197 = [(ZWLensZoomView *)self layer];
-    [v197 bounds];
+    layer3 = [(ZWLensZoomView *)self layer];
+    [layer3 bounds];
     v199 = v198;
     v201 = v200;
     v203 = v202;
     v205 = v204;
-    v206 = [(ZWLensZoomView *)self maskLayer];
-    [v206 setFrame:{v199, v201, v203, v205}];
+    maskLayer10 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer10 setFrame:{v199, v201, v203, v205}];
 
     v195 = +[UIColor whiteColor];
-    v207 = [v195 CGColor];
-    v208 = [(ZWLensZoomView *)self maskLayer];
-    [v208 setBackgroundColor:v207];
+    cGColor4 = [v195 CGColor];
+    maskLayer11 = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer11 setBackgroundColor:cGColor4];
   }
 
   [(ZWLensZoomView *)self setZoomPanOffset:v89, v222];
   +[CATransaction commit];
-  if (!v9)
+  if (!animatedCopy)
   {
     (v22[2])(v22);
   }
@@ -762,16 +762,16 @@ uint64_t __106__ZWLensZoomView_updateZoomPanOffset_zoomFactor_roundedLensCorners
 {
   if ([(ZWLensZoomView *)self roundedLensCorners])
   {
-    v3 = [(ZWLensZoomView *)self window];
+    window = [(ZWLensZoomView *)self window];
     [(ZWLensZoomView *)self bounds];
-    [v3 convertRect:self fromView:?];
+    [window convertRect:self fromView:?];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(ZWLensZoomView *)self traitCollection];
-    [v12 displayCornerRadius];
+    traitCollection = [(ZWLensZoomView *)self traitCollection];
+    [traitCollection displayCornerRadius];
     v14 = v13;
 
     v45 = 0u;
@@ -790,8 +790,8 @@ uint64_t __106__ZWLensZoomView_updateZoomPanOffset_zoomFactor_roundedLensCorners
 
     else
     {
-      v17 = [(ZWLensZoomView *)self window];
-      [v17 bounds];
+      window2 = [(ZWLensZoomView *)self window];
+      [window2 bounds];
       ZWCornerRadiiForFrameInContainer(&v43, v5, v7, v9, v11, v18, v19, v20, v21, v14);
     }
 
@@ -799,43 +799,43 @@ uint64_t __106__ZWLensZoomView_updateZoomPanOffset_zoomFactor_roundedLensCorners
     v40 = v44;
     v41 = v45;
     v42 = v46;
-    v22 = [(ZWLensZoomView *)self layer];
+    layer = [(ZWLensZoomView *)self layer];
     v35 = v39;
     v36 = v40;
     v37 = v41;
     v38 = v42;
-    [v22 setCornerRadii:&v35];
+    [layer setCornerRadii:&v35];
 
     [(ZWLensZoomView *)self bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [(ZWLensZoomView *)self lensResizingHandlesShowing];
+    lensResizingHandlesShowing = [(ZWLensZoomView *)self lensResizingHandlesShowing];
     v35 = v43;
     v36 = v44;
     v37 = v45;
     v38 = v46;
-    v32 = ZWInnerLensBorderForBounds(v31, &v35, v24, v26, v28, v30);
-    v33 = [v32 CGPath];
-    v34 = [(ZWLensZoomView *)self maskLayer];
-    [v34 setPath:v33];
+    v32 = ZWInnerLensBorderForBounds(lensResizingHandlesShowing, &v35, v24, v26, v28, v30);
+    cGPath = [v32 CGPath];
+    maskLayer = [(ZWLensZoomView *)self maskLayer];
+    [maskLayer setPath:cGPath];
   }
 }
 
 - (CGRect)sampleRect
 {
-  v2 = [(ZWLensZoomView *)self zoomReplicatorLayer];
-  [v2 bounds];
+  zoomReplicatorLayer = [(ZWLensZoomView *)self zoomReplicatorLayer];
+  [zoomReplicatorLayer bounds];
   v4 = v3;
   v6 = v5;
-  [v2 position];
+  [zoomReplicatorLayer position];
   v8 = v7;
-  [v2 bounds];
+  [zoomReplicatorLayer bounds];
   v10 = v8 - v9 * 0.5;
-  [v2 position];
+  [zoomReplicatorLayer position];
   v12 = v11;
-  [v2 bounds];
+  [zoomReplicatorLayer bounds];
   v14 = v12 - v13 * 0.5;
 
   v15 = v10;
@@ -849,17 +849,17 @@ uint64_t __106__ZWLensZoomView_updateZoomPanOffset_zoomFactor_roundedLensCorners
   return result;
 }
 
-- (BOOL)_effectRequiresQuartzFilter:(id)a3
+- (BOOL)_effectRequiresQuartzFilter:(id)filter
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AXZoomLensEffectInvertColors] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", AXZoomLensEffectBlackAndWhite) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", AXZoomLensEffectBlackAndWhiteInverted) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", AXZoomLensEffectHueAdjust))
+  filterCopy = filter;
+  if ([filterCopy isEqualToString:AXZoomLensEffectInvertColors] & 1) != 0 || (objc_msgSend(filterCopy, "isEqualToString:", AXZoomLensEffectBlackAndWhite) & 1) != 0 || (objc_msgSend(filterCopy, "isEqualToString:", AXZoomLensEffectBlackAndWhiteInverted) & 1) != 0 || (objc_msgSend(filterCopy, "isEqualToString:", AXZoomLensEffectHueAdjust))
   {
     v4 = 1;
   }
 
   else
   {
-    if (([v3 isEqualToString:AXZoomLensEffectLowLight] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", AXZoomLensEffectNone) & 1) == 0)
+    if (([filterCopy isEqualToString:AXZoomLensEffectLowLight] & 1) == 0 && (objc_msgSend(filterCopy, "isEqualToString:", AXZoomLensEffectNone) & 1) == 0)
     {
       _AXAssert();
     }
@@ -870,17 +870,17 @@ uint64_t __106__ZWLensZoomView_updateZoomPanOffset_zoomFactor_roundedLensCorners
   return v4;
 }
 
-- (void)updateLensEffect:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)updateLensEffect:(id)effect animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  effectCopy = effect;
+  completionCopy = completion;
   v10 = &PLLogRegisteredEvent_ptr;
   +[CATransaction begin];
-  [CATransaction setDisableActions:v6];
-  if (v6)
+  [CATransaction setDisableActions:animatedCopy];
+  if (animatedCopy)
   {
-    v11 = v9;
+    v11 = completionCopy;
   }
 
   else
@@ -889,45 +889,45 @@ uint64_t __106__ZWLensZoomView_updateZoomPanOffset_zoomFactor_roundedLensCorners
   }
 
   [CATransaction setCompletionBlock:v11];
-  v12 = [(ZWLensZoomView *)self _effectRequiresQuartzFilter:v8];
-  v13 = [(ZWLensZoomView *)self effectReplicatorLayer];
-  v14 = v13;
+  v12 = [(ZWLensZoomView *)self _effectRequiresQuartzFilter:effectCopy];
+  effectReplicatorLayer = [(ZWLensZoomView *)self effectReplicatorLayer];
+  effectView = effectReplicatorLayer;
   if (v12)
   {
-    v15 = [v13 superlayer];
+    superlayer = [effectReplicatorLayer superlayer];
 
-    if (v15)
+    if (superlayer)
     {
       goto LABEL_9;
     }
 
-    v14 = [(ZWLensZoomView *)self effectView];
-    v16 = [v14 layer];
-    v17 = [(ZWLensZoomView *)self effectReplicatorLayer];
-    [v16 addSublayer:v17];
+    effectView = [(ZWLensZoomView *)self effectView];
+    layer = [effectView layer];
+    effectReplicatorLayer2 = [(ZWLensZoomView *)self effectReplicatorLayer];
+    [layer addSublayer:effectReplicatorLayer2];
   }
 
   else
   {
-    [v13 removeFromSuperlayer];
+    [effectReplicatorLayer removeFromSuperlayer];
   }
 
 LABEL_9:
-  v18 = [(ZWLensZoomView *)self effectBackdropLayer];
+  effectBackdropLayer = [(ZWLensZoomView *)self effectBackdropLayer];
   v19 = +[UIColor clearColor];
-  v20 = [(ZWLensZoomView *)self effectView];
-  [v20 setAccessibilityIgnoresInvertColors:0];
+  effectView2 = [(ZWLensZoomView *)self effectView];
+  [effectView2 setAccessibilityIgnoresInvertColors:0];
 
-  if (![v8 isEqualToString:AXZoomLensEffectLowLight])
+  if (![effectCopy isEqualToString:AXZoomLensEffectLowLight])
   {
-    if ([v8 isEqualToString:AXZoomLensEffectInvertColors])
+    if ([effectCopy isEqualToString:AXZoomLensEffectInvertColors])
     {
       v30 = [CAFilter filterWithType:kCAFilterColorInvert];
       v43 = v30;
       v31 = &v43;
     }
 
-    else if ([v8 isEqualToString:AXZoomLensEffectBlackAndWhite])
+    else if ([effectCopy isEqualToString:AXZoomLensEffectBlackAndWhite])
     {
       v30 = [CAFilter filterWithType:kCAFilterColorSaturate];
       [v30 setValue:&off_7B458 forKey:@"inputAmount"];
@@ -937,7 +937,7 @@ LABEL_9:
 
     else
     {
-      if ([v8 isEqualToString:AXZoomLensEffectBlackAndWhiteInverted])
+      if ([effectCopy isEqualToString:AXZoomLensEffectBlackAndWhiteInverted])
       {
         v30 = [CAFilter filterWithType:kCAFilterColorSaturate];
         [v30 setValue:&off_7B458 forKey:@"inputAmount"];
@@ -945,21 +945,21 @@ LABEL_9:
         v32 = [CAFilter filterWithType:kCAFilterColorInvert];
         v41[1] = v32;
         v38 = [NSArray arrayWithObjects:v41 count:2];
-        [v18 setFilters:v38];
+        [effectBackdropLayer setFilters:v38];
 
         goto LABEL_22;
       }
 
-      if (![v8 isEqualToString:AXZoomLensEffectHueAdjust])
+      if (![effectCopy isEqualToString:AXZoomLensEffectHueAdjust])
       {
-        if ([v8 isEqualToString:AXZoomLensEffectNone])
+        if ([effectCopy isEqualToString:AXZoomLensEffectNone])
         {
-          [v18 setFilters:0];
+          [effectBackdropLayer setFilters:0];
         }
 
         else
         {
-          v39 = v8;
+          v39 = effectCopy;
           _AXAssert();
         }
 
@@ -973,13 +973,13 @@ LABEL_9:
     }
 
     v32 = [NSArray arrayWithObjects:v31 count:1];
-    [v18 setFilters:v32];
+    [effectBackdropLayer setFilters:v32];
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  [v18 setFilters:0];
+  [effectBackdropLayer setFilters:0];
   v21 = +[UIColor blackColor];
   v22 = [v21 colorWithAlphaComponent:0.6];
 
@@ -1008,42 +1008,42 @@ LABEL_22:
   }
 
   PLLogRegisteredEvent();
-  v29 = [(ZWLensZoomView *)self effectView];
-  [v29 setAccessibilityIgnoresInvertColors:1];
+  effectView3 = [(ZWLensZoomView *)self effectView];
+  [effectView3 setAccessibilityIgnoresInvertColors:1];
 
   v19 = v22;
 LABEL_23:
   v33 = [(ZWLensZoomView *)self effectView:v39];
   [v33 setBackgroundColor:v19];
 
-  v34 = [v8 isEqualToString:AXZoomLensEffectNone];
-  [v18 setHidden:v34];
-  [v18 setEnabled:v34 ^ 1];
-  if ([v8 isEqualToString:AXZoomLensEffectInvertColors])
+  v34 = [effectCopy isEqualToString:AXZoomLensEffectNone];
+  [effectBackdropLayer setHidden:v34];
+  [effectBackdropLayer setEnabled:v34 ^ 1];
+  if ([effectCopy isEqualToString:AXZoomLensEffectInvertColors])
   {
-    v35 = self;
+    selfCopy3 = self;
     v36 = 1;
 LABEL_28:
     v37 = 0;
     goto LABEL_29;
   }
 
-  if (![v8 isEqualToString:AXZoomLensEffectBlackAndWhiteInverted])
+  if (![effectCopy isEqualToString:AXZoomLensEffectBlackAndWhiteInverted])
   {
-    v35 = self;
+    selfCopy3 = self;
     v36 = 0;
     goto LABEL_28;
   }
 
-  v35 = self;
+  selfCopy3 = self;
   v36 = 1;
   v37 = 1;
 LABEL_29:
-  [(ZWLensZoomView *)v35 makePortalVisible:v36 withGrayScaleFilter:v37];
+  [(ZWLensZoomView *)selfCopy3 makePortalVisible:v36 withGrayScaleFilter:v37];
   [v10[331] commit];
-  if (v9 && !v6)
+  if (completionCopy && !animatedCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1058,10 +1058,10 @@ id __35__ZWLensZoomView_requestPortalInfo__block_invoke(uint64_t a1, void *a2)
   return [v5 setSourceContextId:v4];
 }
 
-- (void)makePortalVisible:(BOOL)a3 withGrayScaleFilter:(BOOL)a4
+- (void)makePortalVisible:(BOOL)visible withGrayScaleFilter:(BOOL)filter
 {
-  v4 = a3;
-  if (a4)
+  visibleCopy = visible;
+  if (filter)
   {
     v6 = [CAFilter filterWithType:kCAFilterColorSaturate];
     [v6 setValue:&off_7B458 forKey:@"inputAmount"];
@@ -1075,43 +1075,43 @@ id __35__ZWLensZoomView_requestPortalInfo__block_invoke(uint64_t a1, void *a2)
     [(CAPortalLayer *)self->_islandPortalLayer setFilters:&__NSArray0__struct];
   }
 
-  [(CAPortalLayer *)self->_islandPortalLayer setMatchesPosition:v4];
-  [(CAPortalLayer *)self->_islandPortalLayer setMatchesTransform:v4];
-  [(CAPortalLayer *)self->_islandPortalLayer setHidden:v4 ^ 1];
-  [(CAPortalLayer *)self->_islandPortalLayer setAllowsHitTesting:v4];
-  if (!v4)
+  [(CAPortalLayer *)self->_islandPortalLayer setMatchesPosition:visibleCopy];
+  [(CAPortalLayer *)self->_islandPortalLayer setMatchesTransform:visibleCopy];
+  [(CAPortalLayer *)self->_islandPortalLayer setHidden:visibleCopy ^ 1];
+  [(CAPortalLayer *)self->_islandPortalLayer setAllowsHitTesting:visibleCopy];
+  if (!visibleCopy)
   {
-    v8 = [(ZWLensZoomView *)self islandPortalLayer];
-    [v8 removeFromSuperlayer];
+    islandPortalLayer = [(ZWLensZoomView *)self islandPortalLayer];
+    [islandPortalLayer removeFromSuperlayer];
   }
 
   else
   {
-    v8 = [(ZWLensZoomView *)self effectView];
-    v9 = [v8 layer];
-    v10 = [(ZWLensZoomView *)self islandPortalLayer];
-    v11 = [(ZWLensZoomView *)self effectView];
-    v12 = [v11 layer];
-    v13 = [v12 sublayers];
-    [v9 insertSublayer:v10 atIndex:{objc_msgSend(v13, "count")}];
+    islandPortalLayer = [(ZWLensZoomView *)self effectView];
+    layer = [islandPortalLayer layer];
+    islandPortalLayer2 = [(ZWLensZoomView *)self islandPortalLayer];
+    effectView = [(ZWLensZoomView *)self effectView];
+    layer2 = [effectView layer];
+    sublayers = [layer2 sublayers];
+    [layer insertSublayer:islandPortalLayer2 atIndex:{objc_msgSend(sublayers, "count")}];
   }
 }
 
-- (CGSize)_prescaledSizeForFinalSize:(CGSize)a3 zoomFactor:(double)a4
+- (CGSize)_prescaledSizeForFinalSize:(CGSize)size zoomFactor:(double)factor
 {
-  v4 = a3.width / a4;
-  v5 = a3.height / a4;
+  v4 = size.width / factor;
+  v5 = size.height / factor;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGRect)_effectiveRectForBounds:(CGRect)a3 position:(CGPoint)a4 scaleFactor:(double)a5
+- (CGRect)_effectiveRectForBounds:(CGRect)bounds position:(CGPoint)position scaleFactor:(double)factor
 {
-  v5 = a3.size.width * a5;
-  v6 = a3.size.height * a5;
-  v7 = a4.x - v5 * 0.5;
-  v8 = a4.y - v6 * 0.5;
+  v5 = bounds.size.width * factor;
+  v6 = bounds.size.height * factor;
+  v7 = position.x - v5 * 0.5;
+  v8 = position.y - v6 * 0.5;
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v8;

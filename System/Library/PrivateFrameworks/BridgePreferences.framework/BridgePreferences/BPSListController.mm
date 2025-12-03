@@ -4,14 +4,14 @@
 - (void)prepareSpecifiersMetadata;
 - (void)reloadSpecifiers;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BPSListController
 
 - (int64_t)tableViewStyle
 {
-  v2 = [MEMORY[0x277D75DA0] keyWindow];
+  keyWindow = [MEMORY[0x277D75DA0] keyWindow];
   v3 = PSShouldInsetListView();
 
   if (v3)
@@ -92,9 +92,9 @@
     return 0;
   }
 
-  v3 = [(BPSListController *)self view];
-  v4 = [v3 window];
-  v5 = v4 != 0;
+  view = [(BPSListController *)self view];
+  window = [view window];
+  v5 = window != 0;
 
   return v5;
 }
@@ -118,11 +118,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = BPSListController;
-  [(BPSListController *)&v6 viewWillAppear:a3];
+  [(BPSListController *)&v6 viewWillAppear:appear];
   if ([(BPSListController *)self deferringReloadSpecifiers])
   {
     v4 = dispatch_time(0, 20000000);

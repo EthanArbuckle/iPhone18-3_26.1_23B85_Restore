@@ -1,12 +1,12 @@
 @interface SURotationImageModifier
-- (BOOL)isEqual:(id)a3;
-- (CGRect)imageFrameForImage:(id)a3 currentFrame:(CGRect)a4 finalSize:(CGSize)a5;
-- (void)drawBeforeImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)imageFrameForImage:(id)image currentFrame:(CGRect)frame finalSize:(CGSize)size;
+- (void)drawBeforeImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size;
 @end
 
 @implementation SURotationImageModifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -14,25 +14,25 @@
     return 0;
   }
 
-  v5 = [(SURotationImageModifier *)self orientation];
-  if (v5 != [a3 orientation])
+  orientation = [(SURotationImageModifier *)self orientation];
+  if (orientation != [equal orientation])
   {
     return 0;
   }
 
   [(SURotationImageModifier *)self degrees];
   v7 = v6;
-  [a3 degrees];
+  [equal degrees];
   return v7 == v8;
 }
 
-- (void)drawBeforeImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (void)drawBeforeImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v10 = *MEMORY[0x1E695F060];
   v9 = *(MEMORY[0x1E695F060] + 8);
-  v11 = [(SURotationImageModifier *)self orientation:a4.origin.x];
+  v11 = [(SURotationImageModifier *)self orientation:frame.origin.x];
   if (v11 > 2)
   {
     if (v11 == 4)
@@ -83,24 +83,24 @@ LABEL_11:
   }
 
 LABEL_14:
-  CGContextTranslateCTM(a3, v10, v9);
+  CGContextTranslateCTM(context, v10, v9);
 
-  CGContextRotateCTM(a3, v12);
+  CGContextRotateCTM(context, v12);
 }
 
-- (CGRect)imageFrameForImage:(id)a3 currentFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (CGRect)imageFrameForImage:(id)image currentFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [a3 size];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [image size];
   v11 = v10;
   v13 = v12;
-  v14 = [(SURotationImageModifier *)self orientation];
-  if ((v14 - 1) >= 2)
+  orientation = [(SURotationImageModifier *)self orientation];
+  if ((orientation - 1) >= 2)
   {
-    if ((v14 - 3) <= 1 && v13 > v11)
+    if ((orientation - 3) <= 1 && v13 > v11)
     {
       goto LABEL_4;
     }

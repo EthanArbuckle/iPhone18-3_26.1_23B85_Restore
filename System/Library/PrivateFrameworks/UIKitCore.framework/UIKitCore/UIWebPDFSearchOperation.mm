@@ -1,7 +1,7 @@
 @interface UIWebPDFSearchOperation
 - (UIWebPDFSearchOperation)init;
-- (__CTFont)_fontWithPDFFont:(CGPDFFont *)a3 size:(double)a4;
-- (id)sanitizedAttributedStringForAttributedString:(id)a3;
+- (__CTFont)_fontWithPDFFont:(CGPDFFont *)font size:(double)size;
+- (id)sanitizedAttributedStringForAttributedString:(id)string;
 - (void)_notifyDelegateOfStatus;
 - (void)_search;
 - (void)cancel;
@@ -91,7 +91,7 @@ uint64_t __50__UIWebPDFSearchOperation__notifyDelegateOfStatus__block_invoke(uin
   return result;
 }
 
-- (__CTFont)_fontWithPDFFont:(CGPDFFont *)a3 size:(double)a4
+- (__CTFont)_fontWithPDFFont:(CGPDFFont *)font size:(double)size
 {
   Font = CGPDFFontGetFont();
   for (i = CGFontCopyPostScriptName(Font); ; i = [(__CFString *)v7 substringFromIndex:7])
@@ -102,7 +102,7 @@ uint64_t __50__UIWebPDFSearchOperation__notifyDelegateOfStatus__block_invoke(uin
       break;
     }
 
-    v8 = CTFontDescriptorCreateWithNameAndSize(i, a4);
+    v8 = CTFontDescriptorCreateWithNameAndSize(i, size);
     if (!v8)
     {
       break;
@@ -113,7 +113,7 @@ uint64_t __50__UIWebPDFSearchOperation__notifyDelegateOfStatus__block_invoke(uin
     if (MatchingFontDescriptorsWithOptions)
     {
       CFRelease(MatchingFontDescriptorsWithOptions);
-      result = CTFontCreateWithFontDescriptor(v9, a4, 0);
+      result = CTFontCreateWithFontDescriptor(v9, size, 0);
       if (result)
       {
         return result;
@@ -182,7 +182,7 @@ uint64_t __50__UIWebPDFSearchOperation__notifyDelegateOfStatus__block_invoke(uin
     v12 = @"ZapfDingbatsITC";
   }
 
-  result = CTFontCreateWithName(v12, a4, 0);
+  result = CTFontCreateWithName(v12, size, 0);
   if (result)
   {
     return result;
@@ -215,24 +215,24 @@ LABEL_19:
   if (v12)
   {
 LABEL_26:
-    result = CTFontCreateWithName(v12, a4, 0);
+    result = CTFontCreateWithName(v12, size, 0);
     if (result)
     {
       return result;
     }
   }
 
-  return CTFontCreateWithName(@"TimesNewRomanPSMT", a4, 0);
+  return CTFontCreateWithName(@"TimesNewRomanPSMT", size, 0);
 }
 
-- (id)sanitizedAttributedStringForAttributedString:(id)a3
+- (id)sanitizedAttributedStringForAttributedString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  result = [a3 string];
+  result = [string string];
   if (result)
   {
     v6 = result;
@@ -252,7 +252,7 @@ LABEL_26:
         {
           v26 = 0;
           v27 = 0;
-          v13 = [a3 attributesAtIndex:v10 effectiveRange:&v26];
+          v13 = [string attributesAtIndex:v10 effectiveRange:&v26];
           if (v13)
           {
             v14 = v13;
@@ -308,8 +308,8 @@ LABEL_26:
 
 - (void)_search
 {
-  v3 = [(UIWebPDFSearchOperation *)self searchString];
-  if ([(NSString *)v3 length]&& (v4 = [(UIWebPDFSearchOperation *)self documentToSearch]) != 0 && (v5 = v4, v6 = 256, pageIndex = self->_pageIndex, pageIndex < [(UIPDFDocument *)v4 numberOfPages]) && (v8 = [(UIPDFDocument *)v5 pageAtIndex:self->_pageIndex]) != 0)
+  searchString = [(UIWebPDFSearchOperation *)self searchString];
+  if ([(NSString *)searchString length]&& (v4 = [(UIWebPDFSearchOperation *)self documentToSearch]) != 0 && (v5 = v4, v6 = 256, pageIndex = self->_pageIndex, pageIndex < [(UIPDFDocument *)v4 numberOfPages]) && (v8 = [(UIPDFDocument *)v5 pageAtIndex:self->_pageIndex]) != 0)
   {
     v9 = v8;
     v42 = *(MEMORY[0x1E695EFD0] + 16);
@@ -318,10 +318,10 @@ LABEL_26:
     *&v51.c = v42;
     v41 = *(MEMORY[0x1E695EFD0] + 32);
     *&v51.tx = v41;
-    v10 = [v8 rotation];
-    if (v10)
+    rotation = [v8 rotation];
+    if (rotation)
     {
-      CGAffineTransformMakeRotation(&t2, v10 * -3.14159265 / 180.0);
+      CGAffineTransformMakeRotation(&t2, rotation * -3.14159265 / 180.0);
       *&t1.a = v44;
       *&t1.c = v42;
       *&t1.tx = v41;
@@ -349,7 +349,7 @@ LABEL_26:
           break;
         }
 
-        v16 = [v9 findString:v3 fromSelection:v11 options:1];
+        v16 = [v9 findString:searchString fromSelection:v11 options:1];
         if (!v16)
         {
           ++*(&self->super.super.isa + v6);
@@ -386,13 +386,13 @@ LABEL_26:
             v53 = CGRectApplyAffineTransform(v52, &t2);
             v43 = v21;
             [(UIWebPDFSearchResult *)v21 setBoundingBox:v53.origin.x, v53.origin.y, v53.size.width, v53.size.height];
-            v45 = [MEMORY[0x1E695DF70] array];
-            v30 = [MEMORY[0x1E695DF70] array];
-            v31 = [MEMORY[0x1E695DF70] array];
-            v32 = [v19 numberOfRectangles];
-            if (v32)
+            array = [MEMORY[0x1E695DF70] array];
+            array2 = [MEMORY[0x1E695DF70] array];
+            array3 = [MEMORY[0x1E695DF70] array];
+            numberOfRectangles = [v19 numberOfRectangles];
+            if (numberOfRectangles)
             {
-              v33 = v32;
+              v33 = numberOfRectangles;
               for (i = 0; i != v33; ++i)
               {
                 memset(&t2, 0, sizeof(t2));
@@ -413,17 +413,17 @@ LABEL_26:
                     v38 = atan2(t1.b, t1.a);
                     *&v38 = v38;
                     *&v38 = -*&v38;
-                    [v31 addObject:{objc_msgSend(v37, "numberWithFloat:", v38)}];
-                    [v45 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCGRect:", *&v48.origin, *&v48.size)}];
-                    [v30 addObject:v36];
+                    [array3 addObject:{objc_msgSend(v37, "numberWithFloat:", v38)}];
+                    [array addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCGRect:", *&v48.origin, *&v48.size)}];
+                    [array2 addObject:v36];
                   }
                 }
               }
             }
 
-            [(UIWebPDFSearchResult *)v43 setRotationAngles:v31];
-            [(UIWebPDFSearchResult *)v43 setRects:v45];
-            [(UIWebPDFSearchResult *)v43 setStrings:v30];
+            [(UIWebPDFSearchResult *)v43 setRotationAngles:array3];
+            [(UIWebPDFSearchResult *)v43 setRects:array];
+            [(UIWebPDFSearchResult *)v43 setStrings:array2];
             [(NSMutableArray *)self->_results addObject:v43];
 
             ++*(&self->super.super.isa + v14);

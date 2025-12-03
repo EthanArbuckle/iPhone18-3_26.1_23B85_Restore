@@ -1,19 +1,19 @@
 @interface HDHealthRecordDocumentProcessor
-- (HDHealthRecordDocumentProcessor)initWithConfiguration:(id)a3;
-- (id)_resourceObjectsBatchedPerFHIRRelease:(id)a3;
-- (id)compareExistingPatientResourceData:(id)a3 incomingPatientResourceData:(id)a4 error:(id *)a5;
-- (id)extractAttachmentContentFromFHIRResource:(id)a3 error:(id *)a4;
-- (id)processExtractionRequest:(id)a3 error:(id *)a4;
-- (id)processOptInRequest:(id)a3 redactor:(id)a4 error:(id *)a5;
-- (id)processReferenceExtractionRequest:(id)a3 error:(id *)a4;
+- (HDHealthRecordDocumentProcessor)initWithConfiguration:(id)configuration;
+- (id)_resourceObjectsBatchedPerFHIRRelease:(id)release;
+- (id)compareExistingPatientResourceData:(id)data incomingPatientResourceData:(id)resourceData error:(id *)error;
+- (id)extractAttachmentContentFromFHIRResource:(id)resource error:(id *)error;
+- (id)processExtractionRequest:(id)request error:(id *)error;
+- (id)processOptInRequest:(id)request redactor:(id)redactor error:(id *)error;
+- (id)processReferenceExtractionRequest:(id)request error:(id *)error;
 @end
 
 @implementation HDHealthRecordDocumentProcessor
 
-- (HDHealthRecordDocumentProcessor)initWithConfiguration:(id)a3
+- (HDHealthRecordDocumentProcessor)initWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  if (!v6)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [(HDHealthRecordDocumentProcessor *)a2 initWithConfiguration:?];
   }
@@ -24,22 +24,22 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_configuration, a3);
+    objc_storeStrong(&v7->_configuration, configuration);
   }
 
   return v8;
 }
 
-- (id)processExtractionRequest:(id)a3 error:(id *)a4
+- (id)processExtractionRequest:(id)request error:(id *)error
 {
   v74[3] = *MEMORY[0x277D85DE8];
-  v40 = a3;
+  requestCopy = request;
   v74[0] = objc_opt_class();
   v74[1] = objc_opt_class();
   v74[2] = objc_opt_class();
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:3];
-  v5 = [v40 resources];
-  v6 = [(HDHealthRecordDocumentProcessor *)self _resourceObjectsBatchedPerFHIRRelease:v5];
+  resources = [requestCopy resources];
+  v6 = [(HDHealthRecordDocumentProcessor *)self _resourceObjectsBatchedPerFHIRRelease:resources];
 
   v47 = objc_alloc_init(HKHealthRecordsExtractor);
   v69[0] = 0;
@@ -100,7 +100,7 @@
               v55 = v7;
               v56 = v10;
               v57 = v16;
-              v58 = self;
+              selfCopy = self;
               v59 = v11;
               [(HKHealthRecordsExtractor *)v47 extractResource:v16 completion:v54];
             }
@@ -117,7 +117,7 @@
           v38 = [(HDHealthRecordDocumentTypeConfiguration *)self->_configuration extractionRulesetForRelease:v37];
           if (!v38)
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 format:{@"HDHealthRecordDocumentProcessor: No extraction ruleset is available for release %@", v37}];
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"HDHealthRecordDocumentProcessor: No extraction ruleset is available for release %@", v37}];
 LABEL_36:
 
             v27 = 0;
@@ -149,8 +149,8 @@ LABEL_36:
                 v21 = [[v19 alloc] initWithProcessingContext:v46];
                 if (([v21 conformsToProtocol:&unk_28641D570] & 1) == 0)
                 {
-                  v24 = [MEMORY[0x277CCA890] currentHandler];
-                  [v24 handleFailureInMethod:a2 object:self file:@"HDHealthRecordDocumentProcessor.m" lineNumber:105 description:{@"HDHealthRecordDocumentProcessor: Trying to run invalid task instance, must conform to HDHealthRecordPipelineTask"}];
+                  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                  [currentHandler handleFailureInMethod:a2 object:self file:@"HDHealthRecordDocumentProcessor.m" lineNumber:105 description:{@"HDHealthRecordDocumentProcessor: Trying to run invalid task instance, must conform to HDHealthRecordPipelineTask"}];
                 }
 
                 v49 = 0;
@@ -164,10 +164,10 @@ LABEL_36:
                   v29 = v28;
                   if (v28)
                   {
-                    if (a4)
+                    if (error)
                     {
                       v30 = v28;
-                      *a4 = v29;
+                      *error = v29;
                     }
 
                     else
@@ -196,14 +196,14 @@ LABEL_36:
           if (!v25)
           {
             v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"HDHealthRecordDocumentProcessor: Failed to create extraction result for release %@", v37];
-            [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 description:v29 underlyingError:obj];
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:v29 underlyingError:obj];
 LABEL_35:
 
             goto LABEL_36;
           }
 
-          v26 = [v25 items];
-          [v7 addObjectsFromArray:v26];
+          items = [v25 items];
+          [v7 addObjectsFromArray:items];
         }
 
         v8 = v41;
@@ -257,55 +257,55 @@ void __66__HDHealthRecordDocumentProcessor_processExtractionRequest_error___bloc
   dispatch_group_leave(*(a1 + 64));
 }
 
-- (id)compareExistingPatientResourceData:(id)a3 incomingPatientResourceData:(id)a4 error:(id *)a5
+- (id)compareExistingPatientResourceData:(id)data incomingPatientResourceData:(id)resourceData error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  resourceDataCopy = resourceData;
+  dataCopy = data;
   v9 = objc_alloc_init(HKHealthRecordsExtractor);
-  v10 = [(HKHealthRecordsExtractor *)v9 comparePatientResourceDataWithExisting:v8 incoming:v7 error:a5];
+  v10 = [(HKHealthRecordsExtractor *)v9 comparePatientResourceDataWithExisting:dataCopy incoming:resourceDataCopy error:error];
 
   return v10;
 }
 
-- (id)extractAttachmentContentFromFHIRResource:(id)a3 error:(id *)a4
+- (id)extractAttachmentContentFromFHIRResource:(id)resource error:(id *)error
 {
-  v5 = a3;
+  resourceCopy = resource;
   v6 = objc_alloc_init(HKFHIRAttachmentContentExtractor);
-  v7 = [(HKFHIRAttachmentContentExtractor *)v6 extractAttachmentContentFromFHIRResource:v5 error:a4];
+  v7 = [(HKFHIRAttachmentContentExtractor *)v6 extractAttachmentContentFromFHIRResource:resourceCopy error:error];
 
   return v7;
 }
 
-- (id)processReferenceExtractionRequest:(id)a3 error:(id *)a4
+- (id)processReferenceExtractionRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   configuration = self->_configuration;
-  v8 = [v6 FHIRRelease];
-  v9 = [(HDHealthRecordDocumentTypeConfiguration *)configuration extractionRulesetForRelease:v8];
+  fHIRRelease = [requestCopy FHIRRelease];
+  v9 = [(HDHealthRecordDocumentTypeConfiguration *)configuration extractionRulesetForRelease:fHIRRelease];
 
   if (v9)
   {
-    v10 = [[HDHealthRecordFindReferencesTask alloc] initWithRuleset:v9];
-    v11 = [(HDHealthRecordFindReferencesTask *)v10 processResourcesForReferenceExtractionRequest:v6 error:a4];
+    fHIRRelease2 = [[HDHealthRecordFindReferencesTask alloc] initWithRuleset:v9];
+    v11 = [(HDHealthRecordFindReferencesTask *)fHIRRelease2 processResourcesForReferenceExtractionRequest:requestCopy error:error];
   }
 
   else
   {
     v12 = MEMORY[0x277CCA9B8];
-    v10 = [v6 FHIRRelease];
-    [v12 hk_assignError:a4 code:3 format:{@"FHIR release %@ is not supported for reference extraction", v10}];
+    fHIRRelease2 = [requestCopy FHIRRelease];
+    [v12 hk_assignError:error code:3 format:{@"FHIR release %@ is not supported for reference extraction", fHIRRelease2}];
     v11 = 0;
   }
 
   return v11;
 }
 
-- (id)processOptInRequest:(id)a3 redactor:(id)a4 error:(id *)a5
+- (id)processOptInRequest:(id)request redactor:(id)redactor error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 resources];
-  v11 = [v10 count];
+  requestCopy = request;
+  redactorCopy = redactor;
+  resources = [requestCopy resources];
+  v11 = [resources count];
 
   if (v11)
   {
@@ -319,20 +319,20 @@ void __66__HDHealthRecordDocumentProcessor_processExtractionRequest_error___bloc
     v29 = __Block_byref_object_copy__0;
     v30 = __Block_byref_object_dispose__0;
     v31 = 0;
-    v12 = [v8 resources];
+    resources2 = [requestCopy resources];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __70__HDHealthRecordDocumentProcessor_processOptInRequest_redactor_error___block_invoke;
     v21 = &unk_2796E2B20;
-    v22 = self;
-    v23 = v9;
+    selfCopy = self;
+    v23 = redactorCopy;
     v24 = &v32;
     v25 = &v26;
-    v13 = [v12 hk_map:&v18];
+    v13 = [resources2 hk_map:&v18];
 
     if (*(v33 + 24) == 1)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Error during redaction" underlyingError:{v27[5], v18, v19, v20, v21, v22}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Error during redaction" underlyingError:{v27[5], v18, v19, v20, v21, selfCopy}];
       v14 = 0;
     }
 
@@ -349,7 +349,7 @@ void __66__HDHealthRecordDocumentProcessor_processExtractionRequest_error___bloc
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"no resources to process"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"no resources to process"];
     v14 = 0;
   }
 
@@ -438,16 +438,16 @@ LABEL_16:
   return v13;
 }
 
-- (id)_resourceObjectsBatchedPerFHIRRelease:(id)a3
+- (id)_resourceObjectsBatchedPerFHIRRelease:(id)release
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  releaseCopy = release;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = releaseCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -463,14 +463,14 @@ LABEL_16:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 FHIRVersion];
-        v12 = [v11 FHIRRelease];
+        fHIRVersion = [v10 FHIRVersion];
+        fHIRRelease = [fHIRVersion FHIRRelease];
 
-        v13 = [v4 objectForKeyedSubscript:v12];
+        v13 = [v4 objectForKeyedSubscript:fHIRRelease];
         if (!v13)
         {
           v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          [v4 setObject:v13 forKeyedSubscript:v12];
+          [v4 setObject:v13 forKeyedSubscript:fHIRRelease];
         }
 
         [v13 addObject:v10];

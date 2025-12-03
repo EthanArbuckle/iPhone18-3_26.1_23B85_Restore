@@ -1,9 +1,9 @@
 @interface SBDashBoardVibrantWallpaperChevronView
 - (CSWallpaperColorProvider)wallpaperColorProvider;
 - (SBDashBoardVibrantWallpaperChevronView)init;
-- (SBDashBoardVibrantWallpaperChevronView)initWithColor:(id)a3;
+- (SBDashBoardVibrantWallpaperChevronView)initWithColor:(id)color;
 - (void)_updateVibrancy;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation SBDashBoardVibrantWallpaperChevronView
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (SBDashBoardVibrantWallpaperChevronView)initWithColor:(id)a3
+- (SBDashBoardVibrantWallpaperChevronView)initWithColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = SBDashBoardVibrantWallpaperChevronView;
-  v3 = [(SBUIChevronView *)&v7 initWithColor:a3];
+  v3 = [(SBUIChevronView *)&v7 initWithColor:color];
   if (v3)
   {
     v4 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:0];
@@ -42,12 +42,12 @@
   return v3;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBDashBoardVibrantWallpaperChevronView *)self _updateVibrancy];
   }
 }

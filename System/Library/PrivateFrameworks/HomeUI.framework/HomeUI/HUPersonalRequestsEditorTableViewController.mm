@@ -1,25 +1,25 @@
 @interface HUPersonalRequestsEditorTableViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUPersonalRequestsEditorTableViewController)initWithAccessoryGroupItem:(id)a3;
-- (HUPersonalRequestsEditorTableViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4;
-- (HUPersonalRequestsEditorTableViewController)initWithUserItem:(id)a3 sourceMediaProfileContainer:(id)a4 onlyShowDeviceSwitches:(BOOL)a5;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUPersonalRequestsEditorTableViewController)initWithAccessoryGroupItem:(id)item;
+- (HUPersonalRequestsEditorTableViewController)initWithAccessorySettingItem:(id)item module:(id)module;
+- (HUPersonalRequestsEditorTableViewController)initWithUserItem:(id)item sourceMediaProfileContainer:(id)container onlyShowDeviceSwitches:(BOOL)switches;
 - (id)itemModuleControllers;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
 @end
 
 @implementation HUPersonalRequestsEditorTableViewController
 
-- (HUPersonalRequestsEditorTableViewController)initWithUserItem:(id)a3 sourceMediaProfileContainer:(id)a4 onlyShowDeviceSwitches:(BOOL)a5
+- (HUPersonalRequestsEditorTableViewController)initWithUserItem:(id)item sourceMediaProfileContainer:(id)container onlyShowDeviceSwitches:(BOOL)switches
 {
-  v5 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[HUPersonalRequestsEditorItemManager alloc] initWithDelegate:self userItem:v10 onlyShowDeviceSwitches:v5];
+  switchesCopy = switches;
+  containerCopy = container;
+  itemCopy = item;
+  v11 = [[HUPersonalRequestsEditorItemManager alloc] initWithDelegate:self userItem:itemCopy onlyShowDeviceSwitches:switchesCopy];
 
-  v12 = [(HUPersonalRequestsEditorItemManager *)v11 prDevicesModule];
-  [v12 setSourceMediaProfileContainer:v9];
+  prDevicesModule = [(HUPersonalRequestsEditorItemManager *)v11 prDevicesModule];
+  [prDevicesModule setSourceMediaProfileContainer:containerCopy];
 
   v24.receiver = self;
   v24.super_class = HUPersonalRequestsEditorTableViewController;
@@ -29,12 +29,12 @@
   {
     objc_storeStrong(&v13->_prEditorItemManager, v11);
     v15 = [HUPersonalRequestsDevicesModuleController alloc];
-    v16 = [(HUPersonalRequestsEditorItemManager *)v11 prDevicesModule];
-    v17 = [(HUPersonalRequestsDevicesModuleController *)v15 initWithModule:v16 host:v14];
+    prDevicesModule2 = [(HUPersonalRequestsEditorItemManager *)v11 prDevicesModule];
+    v17 = [(HUPersonalRequestsDevicesModuleController *)v15 initWithModule:prDevicesModule2 host:v14];
     prDevicesModuleController = v14->_prDevicesModuleController;
     v14->_prDevicesModuleController = v17;
 
-    v14->_onlyShowDeviceSwitches = v5;
+    v14->_onlyShowDeviceSwitches = switchesCopy;
     v19 = _HULocalizedStringWithDefaultValue(@"HUUsersPersonalContent", @"HUUsersPersonalContent", 1);
     [(HUPersonalRequestsEditorTableViewController *)v14 setTitle:v19];
 
@@ -82,24 +82,24 @@ void __115__HUPersonalRequestsEditorTableViewController_initWithUserItem_sourceM
   }
 }
 
-- (HUPersonalRequestsEditorTableViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4
+- (HUPersonalRequestsEditorTableViewController)initWithAccessorySettingItem:(id)item module:(id)module
 {
-  v7 = a4;
+  moduleCopy = module;
   v8 = MEMORY[0x277D14C98];
-  v9 = a3;
+  itemCopy = item;
   v10 = [v8 alloc];
-  v11 = [v7 home];
-  v12 = [v7 home];
-  v13 = [v12 currentUser];
-  v14 = [v10 initWithHome:v11 user:v13 nameStyle:1];
+  home = [moduleCopy home];
+  home2 = [moduleCopy home];
+  currentUser = [home2 currentUser];
+  v14 = [v10 initWithHome:home user:currentUser nameStyle:1];
 
-  v15 = [v7 sourceItem];
-  v16 = [v15 accessories];
-  v17 = [v16 anyObject];
+  sourceItem = [moduleCopy sourceItem];
+  accessories = [sourceItem accessories];
+  anyObject = [accessories anyObject];
 
-  v18 = [v17 mediaProfile];
+  mediaProfile = [anyObject mediaProfile];
   v19 = &unk_2825BCB38;
-  v20 = v18;
+  v20 = mediaProfile;
   v21 = v20;
   if (v20)
   {
@@ -119,18 +119,18 @@ void __115__HUPersonalRequestsEditorTableViewController_initWithUserItem_sourceM
       goto LABEL_8;
     }
 
-    v36 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v25 = NSStringFromProtocol(v19);
-    [v36 handleFailureInFunction:v24 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v25}];
+    [currentHandler handleFailureInFunction:v24 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v25}];
   }
 
   v23 = 0;
 LABEL_8:
 
-  v26 = [[HUPersonalRequestsEditorItemManager alloc] initWithDelegate:self userItem:v14 accessorySettingItem:v9 module:v7 onlyShowDeviceSwitches:0];
-  v27 = [(HUPersonalRequestsEditorItemManager *)v26 prDevicesModule];
-  [v27 setSourceMediaProfileContainer:v23];
+  v26 = [[HUPersonalRequestsEditorItemManager alloc] initWithDelegate:self userItem:v14 accessorySettingItem:itemCopy module:moduleCopy onlyShowDeviceSwitches:0];
+  prDevicesModule = [(HUPersonalRequestsEditorItemManager *)v26 prDevicesModule];
+  [prDevicesModule setSourceMediaProfileContainer:v23];
 
   v40.receiver = self;
   v40.super_class = HUPersonalRequestsEditorTableViewController;
@@ -140,8 +140,8 @@ LABEL_8:
   {
     objc_storeStrong(&v28->_prEditorItemManager, v26);
     v30 = [HUPersonalRequestsDevicesModuleController alloc];
-    v31 = [(HUPersonalRequestsEditorItemManager *)v26 prDevicesModule];
-    v32 = [(HUPersonalRequestsDevicesModuleController *)v30 initWithModule:v31 host:v29];
+    prDevicesModule2 = [(HUPersonalRequestsEditorItemManager *)v26 prDevicesModule];
+    v32 = [(HUPersonalRequestsDevicesModuleController *)v30 initWithModule:prDevicesModule2 host:v29];
     prDevicesModuleController = v29->_prDevicesModuleController;
     v29->_prDevicesModuleController = v32;
 
@@ -196,18 +196,18 @@ void __83__HUPersonalRequestsEditorTableViewController_initWithAccessorySettingI
 - (id)itemModuleControllers
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUPersonalRequestsEditorTableViewController *)self prDevicesModuleController];
-  v4 = [v2 setWithObject:v3];
+  prDevicesModuleController = [(HUPersonalRequestsEditorTableViewController *)self prDevicesModuleController];
+  v4 = [v2 setWithObject:prDevicesModuleController];
 
   return v4;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUPersonalRequestsEditorTableViewController *)self prEditorItemManager];
-  v7 = [v6 activityNotificationsItem];
-  v8 = [v5 isEqual:v7];
+  itemCopy = item;
+  prEditorItemManager = [(HUPersonalRequestsEditorTableViewController *)self prEditorItemManager];
+  activityNotificationsItem = [prEditorItemManager activityNotificationsItem];
+  v8 = [itemCopy isEqual:activityNotificationsItem];
 
   if (v8)
   {
@@ -222,21 +222,21 @@ void __83__HUPersonalRequestsEditorTableViewController_initWithAccessorySettingI
   return v9;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   v16.receiver = self;
   v16.super_class = HUPersonalRequestsEditorTableViewController;
-  v9 = a4;
-  [(HUItemTableViewController *)&v16 setupCell:v8 forItem:v9 indexPath:a5];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v16 setupCell:cellCopy forItem:itemCopy indexPath:path];
   v10 = [(HUPersonalRequestsEditorTableViewController *)self prEditorItemManager:v16.receiver];
-  v11 = [v10 activityNotificationsItem];
-  v12 = [v9 isEqual:v11];
+  activityNotificationsItem = [v10 activityNotificationsItem];
+  v12 = [itemCopy isEqual:activityNotificationsItem];
 
   if (v12)
   {
     objc_opt_class();
-    v13 = v8;
+    v13 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -253,62 +253,62 @@ void __83__HUPersonalRequestsEditorTableViewController_initWithAccessorySettingI
   }
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v7;
+    v15 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v12, 0x16u);
   }
 
-  v9 = [MEMORY[0x277D148E8] sharedInstance];
-  v10 = [v9 openURL:v7];
+  mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+  v10 = [mEMORY[0x277D148E8] openURL:lCopy];
 
   return 0;
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cellCopy = cell;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[HUPersonalRequestsEditorTableViewController switchCell:didTurnOn:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = cellCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = onCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "(%s) User tapped switch cell: %@ to turn %{BOOL}d", &v9, 0x1Cu);
   }
 
-  v8 = [(HUPersonalRequestsEditorTableViewController *)self prEditorItemManager];
-  [v8 setActivityNotificationsEnabled:v4];
+  prEditorItemManager = [(HUPersonalRequestsEditorTableViewController *)self prEditorItemManager];
+  [prEditorItemManager setActivityNotificationsEnabled:onCopy];
 }
 
-- (HUPersonalRequestsEditorTableViewController)initWithAccessoryGroupItem:(id)a3
+- (HUPersonalRequestsEditorTableViewController)initWithAccessoryGroupItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 homeKitSettingsVendor];
-  v6 = [v5 hf_home];
+  itemCopy = item;
+  homeKitSettingsVendor = [itemCopy homeKitSettingsVendor];
+  hf_home = [homeKitSettingsVendor hf_home];
 
   v7 = objc_alloc(MEMORY[0x277D14C98]);
-  v8 = [v6 currentUser];
-  v9 = [v7 initWithHome:v6 user:v8 nameStyle:1];
+  currentUser = [hf_home currentUser];
+  v9 = [v7 initWithHome:hf_home user:currentUser nameStyle:1];
 
-  v10 = [v4 homeKitSettingsVendor];
+  homeKitSettingsVendor2 = [itemCopy homeKitSettingsVendor];
 
-  v11 = [v10 homeKitObject];
+  homeKitObject = [homeKitSettingsVendor2 homeKitObject];
   v12 = &unk_2825BCB38;
-  v13 = v11;
+  v13 = homeKitObject;
   v14 = v13;
   if (!v13)
   {
@@ -328,10 +328,10 @@ void __83__HUPersonalRequestsEditorTableViewController_initWithAccessorySettingI
   v16 = v14;
   if (!v15)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v19 = NSStringFromProtocol(v12);
-    [v17 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v19}];
+    [currentHandler handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v19}];
 
 LABEL_7:
     v16 = 0;

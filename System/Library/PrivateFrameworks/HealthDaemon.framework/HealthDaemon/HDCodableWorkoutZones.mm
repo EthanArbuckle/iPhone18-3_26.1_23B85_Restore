@@ -1,34 +1,34 @@
 @interface HDCodableWorkoutZones
-- (BOOL)applyToObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)applyToObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableWorkoutZones
 
-- (BOOL)applyToObject:(id)a3
+- (BOOL)applyToObject:(id)object
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HDCodableWorkoutZones sample](self, "sample"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 applyToObject:v4], v5, v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HDCodableWorkoutZones sample](self, "sample"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 applyToObject:objectCopy], v5, v6))
   {
     v7 = MEMORY[0x277CCAAC8];
     v8 = objc_opt_class();
-    v9 = [(HDCodableWorkoutZones *)self zones];
+    zones = [(HDCodableWorkoutZones *)self zones];
     v16 = 0;
-    v10 = [v7 unarchivedArrayOfObjectsOfClass:v8 fromData:v9 error:&v16];
+    v10 = [v7 unarchivedArrayOfObjectsOfClass:v8 fromData:zones error:&v16];
     v11 = v16;
 
     v12 = v10 != 0;
     if (v10)
     {
-      [v4 _setZones:v10];
+      [objectCopy _setZones:v10];
     }
 
     else
@@ -59,86 +59,86 @@
   v8.receiver = self;
   v8.super_class = HDCodableWorkoutZones;
   v4 = [(HDCodableWorkoutZones *)&v8 description];
-  v5 = [(HDCodableWorkoutZones *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableWorkoutZones *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(HDCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(HDCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   zones = self->_zones;
   if (zones)
   {
-    [v3 setObject:zones forKey:@"zones"];
+    [dictionary setObject:zones forKey:@"zones"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zones)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v5;
+    [toCopy setSample:?];
+    toCopy = v5;
   }
 
   if (self->_zones)
   {
     [v5 setZones:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSample *)self->_sample copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_zones copyWithZone:a3];
+  v8 = [(NSData *)self->_zones copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((sample = self->_sample, !(sample | v4[1])) || -[HDCodableSample isEqual:](sample, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((sample = self->_sample, !(sample | equalCopy[1])) || -[HDCodableSample isEqual:](sample, "isEqual:")))
   {
     zones = self->_zones;
-    if (zones | v4[2])
+    if (zones | equalCopy[2])
     {
       v7 = [(NSData *)zones isEqual:?];
     }
@@ -157,12 +157,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = v4[1];
-  v7 = v4;
+  v6 = fromCopy[1];
+  v7 = fromCopy;
   if (sample)
   {
     if (!v6)
@@ -183,15 +183,15 @@
     sample = [(HDCodableWorkoutZones *)self setSample:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[2])
+  if (fromCopy[2])
   {
     sample = [(HDCodableWorkoutZones *)self setZones:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](sample, v4);
+  MEMORY[0x2821F96F8](sample, fromCopy);
 }
 
 @end

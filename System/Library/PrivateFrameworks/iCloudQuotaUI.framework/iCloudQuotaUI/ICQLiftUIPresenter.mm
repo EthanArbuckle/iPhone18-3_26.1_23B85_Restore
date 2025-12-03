@@ -1,41 +1,41 @@
 @interface ICQLiftUIPresenter
-- (BOOL)embedInViewController:(id)a3;
-- (BOOL)presentInViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)pushInNavigationController:(id)a3 animated:(BOOL)a4;
-- (ICQLiftUIPresenter)initWithURL:(id)a3 content:(id)a4 account:(id)a5 data:(id)a6;
+- (BOOL)embedInViewController:(id)controller;
+- (BOOL)presentInViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)pushInNavigationController:(id)controller animated:(BOOL)animated;
+- (ICQLiftUIPresenter)initWithURL:(id)l content:(id)content account:(id)account data:(id)data;
 - (ICQLiftUIPresenterDelegate)delegate;
-- (void)didCancelWithUserInfo:(id)a3;
-- (void)didFinishWithUserInfo:(id)a3;
-- (void)didLoadWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)performICQActionWithName:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (void)reloadWithHeaders:(id)a3;
-- (void)updateStoreDataForKey:(id)a3 value:(id)a4;
+- (void)didCancelWithUserInfo:(id)info;
+- (void)didFinishWithUserInfo:(id)info;
+- (void)didLoadWithSuccess:(BOOL)success error:(id)error;
+- (void)performICQActionWithName:(id)name parameters:(id)parameters completion:(id)completion;
+- (void)reloadWithHeaders:(id)headers;
+- (void)updateStoreDataForKey:(id)key value:(id)value;
 @end
 
 @implementation ICQLiftUIPresenter
 
-- (ICQLiftUIPresenter)initWithURL:(id)a3 content:(id)a4 account:(id)a5 data:(id)a6
+- (ICQLiftUIPresenter)initWithURL:(id)l content:(id)content account:(id)account data:(id)data
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  contentCopy = content;
+  accountCopy = account;
+  dataCopy = data;
   v21.receiver = self;
   v21.super_class = ICQLiftUIPresenter;
   v15 = [(ICQLiftUIPresenter *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_liftUIPageURL, a3);
-    objc_storeStrong(&v16->_content, a4);
-    objc_storeStrong(&v16->_data, a6);
-    if (!v13)
+    objc_storeStrong(&v15->_liftUIPageURL, l);
+    objc_storeStrong(&v16->_content, content);
+    objc_storeStrong(&v16->_data, data);
+    if (!accountCopy)
     {
-      v17 = [MEMORY[0x277CB8F48] defaultStore];
-      v13 = [v17 aa_primaryAppleAccount];
+      defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+      accountCopy = [defaultStore aa_primaryAppleAccount];
     }
 
-    objc_storeStrong(&v16->_account, v13);
+    objc_storeStrong(&v16->_account, accountCopy);
     v18 = objc_alloc_init(ICQLiftUIController);
     controller = v16->_controller;
     v16->_controller = v18;
@@ -44,69 +44,69 @@
   return v16;
 }
 
-- (BOOL)presentInViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)presentInViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICQLiftUIPresenter *)self liftUIPageURL];
-  if (v7)
+  controllerCopy = controller;
+  liftUIPageURL = [(ICQLiftUIPresenter *)self liftUIPageURL];
+  if (liftUIPageURL)
   {
 
 LABEL_4:
-    v9 = [(ICQLiftUIPresenter *)self content];
+    content = [(ICQLiftUIPresenter *)self content];
 
     v10 = _ICQGetLogSystem();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (content)
     {
       if (v11)
       {
         v23 = 138412290;
-        v24 = v6;
+        v24 = controllerCopy;
         _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "Presenting LiftUI page with preloaded data in viewcontroller %@", &v23, 0xCu);
       }
 
       v12 = MEMORY[0x277D75D28];
-      v13 = [(ICQLiftUIPresenter *)self controller];
-      v14 = [(ICQLiftUIPresenter *)self content];
-      v15 = [(ICQLiftUIPresenter *)self account];
-      v16 = [(ICQLiftUIPresenter *)self data];
-      v17 = [v12 makeLiftUIViewControllerForController:v13 withContent:v14 account:v15 presenter:self data:v16];
+      controller = [(ICQLiftUIPresenter *)self controller];
+      content2 = [(ICQLiftUIPresenter *)self content];
+      account = [(ICQLiftUIPresenter *)self account];
+      data = [(ICQLiftUIPresenter *)self data];
+      v17 = [v12 makeLiftUIViewControllerForController:controller withContent:content2 account:account presenter:self data:data];
     }
 
     else
     {
       if (v11)
       {
-        v18 = [(ICQLiftUIPresenter *)self liftUIPageURL];
+        liftUIPageURL2 = [(ICQLiftUIPresenter *)self liftUIPageURL];
         v23 = 138412546;
-        v24 = v18;
+        v24 = liftUIPageURL2;
         v25 = 2112;
-        v26 = v6;
+        v26 = controllerCopy;
         _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "Presenting LiftUI page at URL %@ in viewcontroller %@", &v23, 0x16u);
       }
 
       v19 = MEMORY[0x277D75D28];
-      v13 = [(ICQLiftUIPresenter *)self controller];
-      v14 = [(ICQLiftUIPresenter *)self liftUIPageURL];
-      v15 = [(ICQLiftUIPresenter *)self account];
-      v16 = [(ICQLiftUIPresenter *)self data];
-      v17 = [v19 makeLiftUIViewControllerForController:v13 withURL:v14 account:v15 presenter:self data:v16];
+      controller = [(ICQLiftUIPresenter *)self controller];
+      content2 = [(ICQLiftUIPresenter *)self liftUIPageURL];
+      account = [(ICQLiftUIPresenter *)self account];
+      data = [(ICQLiftUIPresenter *)self data];
+      v17 = [v19 makeLiftUIViewControllerForController:controller withURL:content2 account:account presenter:self data:data];
     }
 
     v20 = v17;
 
     [MEMORY[0x277D75D28] ICQUIUpsellPrefferredPresentationSize];
     [v20 setPreferredContentSize:?];
-    [v6 presentPreferredSizeWithViewController:v20 animated:v4 completion:0];
+    [controllerCopy presentPreferredSizeWithViewController:v20 animated:animatedCopy completion:0];
     v21 = 1;
     goto LABEL_12;
   }
 
-  v8 = [(ICQLiftUIPresenter *)self content];
+  content3 = [(ICQLiftUIPresenter *)self content];
 
-  if (v8)
+  if (content3)
   {
     goto LABEL_4;
   }
@@ -123,66 +123,66 @@ LABEL_12:
   return v21;
 }
 
-- (BOOL)embedInViewController:(id)a3
+- (BOOL)embedInViewController:(id)controller
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQLiftUIPresenter *)self liftUIPageURL];
-  if (v5)
+  controllerCopy = controller;
+  liftUIPageURL = [(ICQLiftUIPresenter *)self liftUIPageURL];
+  if (liftUIPageURL)
   {
 
 LABEL_4:
-    v7 = [(ICQLiftUIPresenter *)self content];
+    content = [(ICQLiftUIPresenter *)self content];
 
     v8 = _ICQGetLogSystem();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (content)
     {
       if (v9)
       {
         v21 = 138412290;
-        v22 = v4;
+        v22 = controllerCopy;
         _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Embedding LiftUI page with preloaded data in viewcontroller %@", &v21, 0xCu);
       }
 
       v10 = MEMORY[0x277D75D28];
-      v11 = [(ICQLiftUIPresenter *)self controller];
-      v12 = [(ICQLiftUIPresenter *)self content];
-      v13 = [(ICQLiftUIPresenter *)self account];
-      v14 = [(ICQLiftUIPresenter *)self data];
-      v15 = [v10 makeLiftUIViewControllerForController:v11 withContent:v12 account:v13 presenter:self data:v14];
+      controller = [(ICQLiftUIPresenter *)self controller];
+      content2 = [(ICQLiftUIPresenter *)self content];
+      account = [(ICQLiftUIPresenter *)self account];
+      data = [(ICQLiftUIPresenter *)self data];
+      v15 = [v10 makeLiftUIViewControllerForController:controller withContent:content2 account:account presenter:self data:data];
     }
 
     else
     {
       if (v9)
       {
-        v16 = [(ICQLiftUIPresenter *)self liftUIPageURL];
+        liftUIPageURL2 = [(ICQLiftUIPresenter *)self liftUIPageURL];
         v21 = 138412546;
-        v22 = v16;
+        v22 = liftUIPageURL2;
         v23 = 2112;
-        v24 = v4;
+        v24 = controllerCopy;
         _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Embedding LiftUI page at URL %@ in viewcontroller %@", &v21, 0x16u);
       }
 
       v17 = MEMORY[0x277D75D28];
-      v11 = [(ICQLiftUIPresenter *)self controller];
-      v12 = [(ICQLiftUIPresenter *)self liftUIPageURL];
-      v13 = [(ICQLiftUIPresenter *)self account];
-      v14 = [(ICQLiftUIPresenter *)self data];
-      v15 = [v17 makeLiftUIViewControllerForController:v11 withURL:v12 account:v13 presenter:self data:v14];
+      controller = [(ICQLiftUIPresenter *)self controller];
+      content2 = [(ICQLiftUIPresenter *)self liftUIPageURL];
+      account = [(ICQLiftUIPresenter *)self account];
+      data = [(ICQLiftUIPresenter *)self data];
+      v15 = [v17 makeLiftUIViewControllerForController:controller withURL:content2 account:account presenter:self data:data];
     }
 
     v18 = v15;
 
-    [v4 addChildAndPinToEdgesWithChildViewController:v18];
+    [controllerCopy addChildAndPinToEdgesWithChildViewController:v18];
     v19 = 1;
     goto LABEL_12;
   }
 
-  v6 = [(ICQLiftUIPresenter *)self content];
+  content3 = [(ICQLiftUIPresenter *)self content];
 
-  if (v6)
+  if (content3)
   {
     goto LABEL_4;
   }
@@ -199,67 +199,67 @@ LABEL_12:
   return v19;
 }
 
-- (BOOL)pushInNavigationController:(id)a3 animated:(BOOL)a4
+- (BOOL)pushInNavigationController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICQLiftUIPresenter *)self liftUIPageURL];
-  if (v7)
+  controllerCopy = controller;
+  liftUIPageURL = [(ICQLiftUIPresenter *)self liftUIPageURL];
+  if (liftUIPageURL)
   {
 
 LABEL_4:
-    v9 = [(ICQLiftUIPresenter *)self content];
+    content = [(ICQLiftUIPresenter *)self content];
 
     v10 = _ICQGetLogSystem();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (content)
     {
       if (v11)
       {
         v23 = 138412290;
-        v24 = v6;
+        v24 = controllerCopy;
         _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "Presenting LiftUI page with preloaded data in navigationController %@", &v23, 0xCu);
       }
 
       v12 = MEMORY[0x277D75D28];
-      v13 = [(ICQLiftUIPresenter *)self controller];
-      v14 = [(ICQLiftUIPresenter *)self content];
-      v15 = [(ICQLiftUIPresenter *)self account];
-      v16 = [(ICQLiftUIPresenter *)self data];
-      v17 = [v12 makeLiftUIViewControllerForController:v13 withContent:v14 account:v15 presenter:self data:v16];
+      controller = [(ICQLiftUIPresenter *)self controller];
+      content2 = [(ICQLiftUIPresenter *)self content];
+      account = [(ICQLiftUIPresenter *)self account];
+      data = [(ICQLiftUIPresenter *)self data];
+      v17 = [v12 makeLiftUIViewControllerForController:controller withContent:content2 account:account presenter:self data:data];
     }
 
     else
     {
       if (v11)
       {
-        v18 = [(ICQLiftUIPresenter *)self liftUIPageURL];
+        liftUIPageURL2 = [(ICQLiftUIPresenter *)self liftUIPageURL];
         v23 = 138412546;
-        v24 = v18;
+        v24 = liftUIPageURL2;
         v25 = 2112;
-        v26 = v6;
+        v26 = controllerCopy;
         _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "Presenting LiftUI page at URL %@ in navigationController %@", &v23, 0x16u);
       }
 
       v19 = MEMORY[0x277D75D28];
-      v13 = [(ICQLiftUIPresenter *)self controller];
-      v14 = [(ICQLiftUIPresenter *)self liftUIPageURL];
-      v15 = [(ICQLiftUIPresenter *)self account];
-      v16 = [(ICQLiftUIPresenter *)self data];
-      v17 = [v19 makeLiftUIViewControllerForController:v13 withURL:v14 account:v15 presenter:self data:v16];
+      controller = [(ICQLiftUIPresenter *)self controller];
+      content2 = [(ICQLiftUIPresenter *)self liftUIPageURL];
+      account = [(ICQLiftUIPresenter *)self account];
+      data = [(ICQLiftUIPresenter *)self data];
+      v17 = [v19 makeLiftUIViewControllerForController:controller withURL:content2 account:account presenter:self data:data];
     }
 
     v20 = v17;
 
-    [v6 pushViewController:v20 animated:v4];
+    [controllerCopy pushViewController:v20 animated:animatedCopy];
     v21 = 1;
     goto LABEL_12;
   }
 
-  v8 = [(ICQLiftUIPresenter *)self content];
+  content3 = [(ICQLiftUIPresenter *)self content];
 
-  if (v8)
+  if (content3)
   {
     goto LABEL_4;
   }
@@ -276,15 +276,15 @@ LABEL_12:
   return v21;
 }
 
-- (void)updateStoreDataForKey:(id)a3 value:(id)a4
+- (void)updateStoreDataForKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICQLiftUIPresenter *)self controller];
-  [v8 updateStoreDataForKey:v7 value:v6];
+  valueCopy = value;
+  keyCopy = key;
+  controller = [(ICQLiftUIPresenter *)self controller];
+  [controller updateStoreDataForKey:keyCopy value:valueCopy];
 }
 
-- (void)reloadWithHeaders:(id)a3
+- (void)reloadWithHeaders:(id)headers
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -293,15 +293,15 @@ LABEL_12:
   }
 }
 
-- (void)didLoadWithSuccess:(BOOL)a3 error:(id)a4
+- (void)didLoadWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (successCopy)
     {
       v8 = @"YES";
     }
@@ -311,15 +311,15 @@ LABEL_12:
       v8 = @"NO";
     }
 
-    v9 = [v6 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     *buf = 138412546;
     v16 = v8;
     v17 = 2112;
-    v18 = v9;
+    v18 = localizedDescription;
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "LiftUI load completed success: %@ error: %@", buf, 0x16u);
   }
 
-  v10 = [(ICQLiftUIPresenter *)self delegate];
+  delegate = [(ICQLiftUIPresenter *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
@@ -329,8 +329,8 @@ LABEL_12:
     block[2] = __47__ICQLiftUIPresenter_didLoadWithSuccess_error___block_invoke;
     block[3] = &unk_27A65A7D0;
     block[4] = self;
-    v14 = v4;
-    v13 = v6;
+    v14 = successCopy;
+    v13 = errorCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -341,15 +341,15 @@ void __47__ICQLiftUIPresenter_didLoadWithSuccess_error___block_invoke(uint64_t a
   [v2 liftUIPresenter:*(a1 + 32) didLoadWithSuccess:*(a1 + 48) error:*(a1 + 40)];
 }
 
-- (void)didFinishWithUserInfo:(id)a3
+- (void)didFinishWithUserInfo:(id)info
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = infoCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "LiftUI flow completed with parameters %@", buf, 0xCu);
   }
 
@@ -358,8 +358,8 @@ void __47__ICQLiftUIPresenter_didLoadWithSuccess_error___block_invoke(uint64_t a
   v7[2] = __44__ICQLiftUIPresenter_didFinishWithUserInfo___block_invoke;
   v7[3] = &unk_27A65A708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -382,15 +382,15 @@ void __44__ICQLiftUIPresenter_didFinishWithUserInfo___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didCancelWithUserInfo:(id)a3
+- (void)didCancelWithUserInfo:(id)info
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = infoCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "LiftUI flow has been dismissed with parameters %@", buf, 0xCu);
   }
 
@@ -399,8 +399,8 @@ void __44__ICQLiftUIPresenter_didFinishWithUserInfo___block_invoke(uint64_t a1)
   v7[2] = __44__ICQLiftUIPresenter_didCancelWithUserInfo___block_invoke;
   v7[3] = &unk_27A65A708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -423,12 +423,12 @@ void __44__ICQLiftUIPresenter_didCancelWithUserInfo___block_invoke(uint64_t a1)
   }
 }
 
-- (void)performICQActionWithName:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)performICQActionWithName:(id)name parameters:(id)parameters completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v9 = _ICQActionForServerActionString();
-  v10 = [(ICQLiftUIPresenter *)self delegate];
+  delegate = [(ICQLiftUIPresenter *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
@@ -439,17 +439,17 @@ void __44__ICQLiftUIPresenter_didCancelWithUserInfo___block_invoke(uint64_t a1)
     v12[3] = &unk_27A65B6A8;
     v12[4] = self;
     v15 = v9;
-    v13 = v7;
-    v14 = v8;
+    v13 = parametersCopy;
+    v14 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v12);
   }
 
   else
   {
-    [MEMORY[0x277D7F370] performAction:v9 parameters:v7 options:0];
-    if (v8)
+    [MEMORY[0x277D7F370] performAction:v9 parameters:parametersCopy options:0];
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 }

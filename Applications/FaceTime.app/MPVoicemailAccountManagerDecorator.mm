@@ -1,32 +1,32 @@
 @interface MPVoicemailAccountManagerDecorator
-- (BOOL)isAccountSubscribed:(id)a3;
+- (BOOL)isAccountSubscribed:(id)subscribed;
 - (BOOL)isAnyAccountSubscribed;
-- (BOOL)isCallVoicemailSupportedForAccountUUID:(id)a3;
-- (BOOL)isGreetingChangeSupportedForAccountUUID:(id)a3;
+- (BOOL)isCallVoicemailSupportedForAccountUUID:(id)d;
+- (BOOL)isGreetingChangeSupportedForAccountUUID:(id)d;
 - (BOOL)isMessageWaiting;
 - (BOOL)isOnline;
-- (BOOL)isPasscodeChangeSupportedForAccountUUID:(id)a3;
+- (BOOL)isPasscodeChangeSupportedForAccountUUID:(id)d;
 - (BOOL)isTranscriptionEnabled;
 - (MPVoicemailAccountManagerDecorator)init;
-- (MPVoicemailAccountManagerDecorator)initWithVMD:(id)a3;
+- (MPVoicemailAccountManagerDecorator)initWithVMD:(id)d;
 - (NSArray)accounts;
 - (NSProgress)transcriptionProgress;
-- (double)maximumGreetingDurationForAccountUUID:(id)a3;
-- (id)listenForChangesWithHandler:(id)a3;
+- (double)maximumGreetingDurationForAccountUUID:(id)d;
+- (id)listenForChangesWithHandler:(id)handler;
 - (int64_t)estimatedAccountCount;
-- (int64_t)maximumPasscodeLengthForAccountUUID:(id)a3;
-- (int64_t)minimumPasscodeLengthForAccountUUID:(id)a3;
+- (int64_t)maximumPasscodeLengthForAccountUUID:(id)d;
+- (int64_t)minimumPasscodeLengthForAccountUUID:(id)d;
 - (unint64_t)storageUsage;
-- (void)greetingForAccountUUID:(id)a3 completion:(id)a4;
-- (void)setGreeting:(id)a3 forAccountUUID:(id)a4 completion:(id)a5;
-- (void)setPasscode:(id)a3 forAccountUUID:(id)a4 completion:(id)a5;
+- (void)greetingForAccountUUID:(id)d completion:(id)completion;
+- (void)setGreeting:(id)greeting forAccountUUID:(id)d completion:(id)completion;
+- (void)setPasscode:(id)passcode forAccountUUID:(id)d completion:(id)completion;
 @end
 
 @implementation MPVoicemailAccountManagerDecorator
 
 - (BOOL)isAnyAccountSubscribed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10008982C("VMD(%s) isSubscribed: %{BOOL}d");
 
   return v3 & 1;
@@ -34,7 +34,7 @@
 
 - (BOOL)isOnline
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100089644();
 
   return v3 & 1;
@@ -42,7 +42,7 @@
 
 - (BOOL)isMessageWaiting
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10008982C("VMD(%s) isMessageWaiting: %{BOOL}d");
 
   return v3 & 1;
@@ -50,7 +50,7 @@
 
 - (unint64_t)storageUsage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100089A0C();
 
   return v3;
@@ -58,7 +58,7 @@
 
 - (int64_t)estimatedAccountCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100089BE8();
 
   return v3;
@@ -66,7 +66,7 @@
 
 - (NSArray)accounts
 {
-  v2 = self;
+  selfCopy = self;
   sub_100089E28();
 
   type metadata accessor for VoicemailAccount();
@@ -80,7 +80,7 @@
   v3 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 72);
-  v6 = self;
+  selfCopy = self;
   v7 = v5(ObjectType, v3);
 
   return v7 & 1;
@@ -91,21 +91,21 @@
   v3 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 80);
-  v6 = self;
+  selfCopy = self;
   v7 = v5(ObjectType, v3);
 
   return v7;
 }
 
-- (MPVoicemailAccountManagerDecorator)initWithVMD:(id)a3
+- (MPVoicemailAccountManagerDecorator)initWithVMD:(id)d
 {
-  v3 = a3;
-  v4 = sub_10008BF20(v3);
+  dCopy = d;
+  v4 = sub_10008BF20(dCopy);
 
   return v4;
 }
 
-- (BOOL)isCallVoicemailSupportedForAccountUUID:(id)a3
+- (BOOL)isCallVoicemailSupportedForAccountUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -115,14 +115,14 @@
   v8 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v10 = *(v8 + 88);
-  v11 = self;
+  selfCopy = self;
   v12 = v10(v7, ObjectType, v8);
   (*(v5 + 8))(v7, v4);
 
   return v12 & 1;
 }
 
-- (BOOL)isAccountSubscribed:(id)a3
+- (BOOL)isAccountSubscribed:(id)subscribed
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -132,14 +132,14 @@
   v8 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v10 = *(v8 + 96);
-  v11 = self;
+  selfCopy = self;
   v12 = v10(v7, ObjectType, v8);
   (*(v5 + 8))(v7, v4);
 
   return v12 & 1;
 }
 
-- (BOOL)isGreetingChangeSupportedForAccountUUID:(id)a3
+- (BOOL)isGreetingChangeSupportedForAccountUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -149,14 +149,14 @@
   v8 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v10 = *(v8 + 104);
-  v11 = self;
+  selfCopy = self;
   v12 = v10(v7, ObjectType, v8);
   (*(v5 + 8))(v7, v4);
 
   return v12 & 1;
 }
 
-- (BOOL)isPasscodeChangeSupportedForAccountUUID:(id)a3
+- (BOOL)isPasscodeChangeSupportedForAccountUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -166,14 +166,14 @@
   v8 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v10 = *(v8 + 112);
-  v11 = self;
+  selfCopy = self;
   v12 = v10(v7, ObjectType, v8);
   (*(v5 + 8))(v7, v4);
 
   return v12 & 1;
 }
 
-- (int64_t)maximumPasscodeLengthForAccountUUID:(id)a3
+- (int64_t)maximumPasscodeLengthForAccountUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -183,14 +183,14 @@
   v8 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v10 = *(v8 + 120);
-  v11 = self;
+  selfCopy = self;
   v12 = v10(v7, ObjectType, v8);
   (*(v5 + 8))(v7, v4);
 
   return v12;
 }
 
-- (int64_t)minimumPasscodeLengthForAccountUUID:(id)a3
+- (int64_t)minimumPasscodeLengthForAccountUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -200,20 +200,20 @@
   v8 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v10 = *(v8 + 128);
-  v11 = self;
+  selfCopy = self;
   v12 = v10(v7, ObjectType, v8);
   (*(v5 + 8))(v7, v4);
 
   return v12;
 }
 
-- (void)setPasscode:(id)a3 forAccountUUID:(id)a4 completion:(id)a5
+- (void)setPasscode:(id)passcode forAccountUUID:(id)d completion:(id)completion
 {
   v20 = type metadata accessor for UUID();
   v7 = *(v20 - 8);
   __chkstk_darwin(v20);
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a5);
+  v10 = _Block_copy(completion);
   v19 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
@@ -222,13 +222,13 @@
   v14 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v16 = *(v14 + 136);
-  v18 = self;
+  selfCopy = self;
   v16(v19, v12, v9, sub_100064A34, v13, ObjectType, v14);
 
   (*(v7 + 8))(v9, v20);
 }
 
-- (double)maximumGreetingDurationForAccountUUID:(id)a3
+- (double)maximumGreetingDurationForAccountUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -238,61 +238,61 @@
   v8 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v10 = *(v8 + 144);
-  v11 = self;
+  selfCopy = self;
   v12 = v10(v7, ObjectType, v8);
   (*(v5 + 8))(v7, v4);
 
   return v12;
 }
 
-- (void)greetingForAccountUUID:(id)a3 completion:(id)a4
+- (void)greetingForAccountUUID:(id)d completion:(id)completion
 {
   v16 = type metadata accessor for UUID();
   v6 = *(v16 - 8);
   __chkstk_darwin(v16);
   v8 = &v15 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(completion);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v13 = *(v11 + 152);
-  v14 = self;
+  selfCopy = self;
   v13(v8, sub_1000646B8, v10, ObjectType, v11);
 
   (*(v6 + 8))(v8, v16);
 }
 
-- (void)setGreeting:(id)a3 forAccountUUID:(id)a4 completion:(id)a5
+- (void)setGreeting:(id)greeting forAccountUUID:(id)d completion:(id)completion
 {
   v18 = type metadata accessor for UUID();
   v8 = *(v18 - 8);
   __chkstk_darwin(v18);
-  v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a5);
+  v10 = &selfCopy - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v11 = _Block_copy(completion);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = *&self->vmd[OBJC_IVAR___MPVoicemailAccountManagerDecorator_vmd];
   ObjectType = swift_getObjectType();
   v15 = *(v13 + 160);
-  v16 = a3;
-  v17 = self;
-  v15(v16, v10, sub_100064188, v12, ObjectType, v13);
+  greetingCopy = greeting;
+  selfCopy = self;
+  v15(greetingCopy, v10, sub_100064188, v12, ObjectType, v13);
 
   (*(v8 + 8))(v10, v18);
 }
 
-- (id)listenForChangesWithHandler:(id)a3
+- (id)listenForChangesWithHandler:(id)handler
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_10008B2FC(sub_100064010, v6);
 
-  _Block_release(a3);
+  _Block_release(handler);
 
   return v8;
 }

@@ -3,10 +3,10 @@
 - (DBSMainDisplayPreferencesController)init;
 - (id)specifiers;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)presentModalMagnifyController;
 - (void)updateReferenceDependentUIElements;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DBSMainDisplayPreferencesController
@@ -18,9 +18,9 @@
   v2 = [(DBSMainDisplayPreferencesController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CD9E40] mainDisplay];
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
     v4 = NSStringFromSelector(sel_isReferenceLimited);
-    [v3 addObserver:v2 forKeyPath:v4 options:1 context:0];
+    [mainDisplay addObserver:v2 forKeyPath:v4 options:1 context:0];
   }
 
   return v2;
@@ -28,20 +28,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CD9E40] mainDisplay];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
   v4 = NSStringFromSelector(sel_isReferenceLimited);
-  [v3 removeObserver:self forKeyPath:v4];
+  [mainDisplay removeObserver:self forKeyPath:v4];
 
   v5.receiver = self;
   v5.super_class = DBSMainDisplayPreferencesController;
   [(DBSMainDisplayPreferencesController *)&v5 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = DBSMainDisplayPreferencesController;
-  [(DBSMainDisplayPreferencesController *)&v5 viewWillAppear:a3];
+  [(DBSMainDisplayPreferencesController *)&v5 viewWillAppear:appear];
   v4 = +[DBSBrightnessManager defaultManager];
   [v4 setDelegate:self];
 
@@ -54,24 +54,24 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = +[DBSBrightnessManager defaultManager];
-    v7 = [v6 mainDisplayBrightnessSpecifiers];
+    mainDisplayBrightnessSpecifiers = [v6 mainDisplayBrightnessSpecifiers];
 
-    [v5 addObjectsFromArray:v7];
+    [array addObjectsFromArray:mainDisplayBrightnessSpecifiers];
     v8 = objc_opt_new();
     [v8 setDelegate:self];
-    v9 = [v8 specifiers];
+    specifiers = [v8 specifiers];
 
-    if (v9)
+    if (specifiers)
     {
-      v10 = [v8 specifiers];
-      [v5 addObjectsFromArray:v10];
+      specifiers2 = [v8 specifiers];
+      [array addObjectsFromArray:specifiers2];
     }
 
     [(DBSMainDisplayPreferencesController *)self set_zoomAndProSpecifierVendor:v8];
     v11 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -97,29 +97,29 @@
 
 - (BOOL)proModeSupported
 {
-  v2 = [MEMORY[0x277CD9E40] mainDisplay];
-  v3 = [v2 availablePresets];
-  v4 = v3 != 0;
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  availablePresets = [mainDisplay availablePresets];
+  v4 = availablePresets != 0;
 
   return v4;
 }
 
 - (void)updateReferenceDependentUIElements
 {
-  v3 = [(DBSMainDisplayPreferencesController *)self specifiers];
-  v15 = [v3 specifierForID:@"BRIGHTNESS"];
+  specifiers = [(DBSMainDisplayPreferencesController *)self specifiers];
+  v15 = [specifiers specifierForID:@"BRIGHTNESS"];
 
-  v4 = [(DBSMainDisplayPreferencesController *)self specifiers];
-  v5 = [v4 specifierForID:@"WHITE_BALANCE"];
+  specifiers2 = [(DBSMainDisplayPreferencesController *)self specifiers];
+  v5 = [specifiers2 specifierForID:@"WHITE_BALANCE"];
 
-  v6 = [(DBSMainDisplayPreferencesController *)self specifiers];
-  v7 = [v6 specifierForID:@"ADVANCED"];
+  specifiers3 = [(DBSMainDisplayPreferencesController *)self specifiers];
+  v7 = [specifiers3 specifierForID:@"ADVANCED"];
 
-  v8 = [MEMORY[0x277CD9E40] mainDisplay];
-  v9 = [v8 isReference];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  isReference = [mainDisplay isReference];
 
   v10 = *MEMORY[0x277D3FF38];
-  if (v9)
+  if (isReference)
   {
     v11 = MEMORY[0x277CBEC28];
   }
@@ -132,8 +132,8 @@
   [v15 setObject:v11 forKeyedSubscript:*MEMORY[0x277D3FF38]];
   [v5 setObject:v11 forKeyedSubscript:v10];
   v12 = MEMORY[0x277CCABB0];
-  v13 = [MEMORY[0x277CD9E40] mainDisplay];
-  v14 = [v12 numberWithBool:{objc_msgSend(v13, "isReferenceLimited")}];
+  mainDisplay2 = [MEMORY[0x277CD9E40] mainDisplay];
+  v14 = [v12 numberWithBool:{objc_msgSend(mainDisplay2, "isReferenceLimited")}];
   [v15 setObject:v14 forKeyedSubscript:@"brightnessLimited"];
 
   [(DBSMainDisplayPreferencesController *)self reloadSpecifier:v15];
@@ -144,18 +144,18 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CD9E40] mainDisplay];
-  if ([v13 isEqual:v11])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  if ([mainDisplay isEqual:objectCopy])
   {
-    v14 = [(DBSMainDisplayPreferencesController *)self specifiers];
-    v15 = [v14 specifierForID:@"BRIGHTNESS"];
+    specifiers = [(DBSMainDisplayPreferencesController *)self specifiers];
+    v15 = [specifiers specifierForID:@"BRIGHTNESS"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v13, "isReferenceLimited")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(mainDisplay, "isReferenceLimited")}];
     [v15 setObject:v16 forKeyedSubscript:@"brightnessLimited"];
 
     [(DBSMainDisplayPreferencesController *)self reloadSpecifier:v15];
@@ -165,7 +165,7 @@
   {
     v17.receiver = self;
     v17.super_class = DBSMainDisplayPreferencesController;
-    [(DBSMainDisplayPreferencesController *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(DBSMainDisplayPreferencesController *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

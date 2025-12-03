@@ -1,33 +1,33 @@
 @interface SUSHistoryTracker
 + (id)historyOperationName;
-+ (id)nameForHistoryType:(int64_t)a3;
++ (id)nameForHistoryType:(int64_t)type;
 + (id)sharedTracker;
-+ (id)trackerWithPath:(id)a3;
++ (id)trackerWithPath:(id)path;
 - (BOOL)submitHistoryAnalyticsEvent;
 - (id)description;
-- (id)descriptorFromRollbackDescriptor:(id)a3;
+- (id)descriptorFromRollbackDescriptor:(id)descriptor;
 - (id)fetchInstallHistory;
-- (id)formatDownloadEvent:(id)a3;
-- (id)formatErrorEvent:(id)a3;
-- (id)formatInstallEvent:(id)a3;
-- (id)formatScanEvent:(id)a3;
-- (id)formatSpaceEvent:(id)a3;
+- (id)formatDownloadEvent:(id)event;
+- (id)formatErrorEvent:(id)event;
+- (id)formatInstallEvent:(id)event;
+- (id)formatScanEvent:(id)event;
+- (id)formatSpaceEvent:(id)event;
 - (id)historyTypeName;
-- (id)initUsingProtectionQueue:(id)a3 withBasePath:(id)a4;
-- (void)appendToString:(id)a3 key:(id)a4 value:(id)a5;
+- (id)initUsingProtectionQueue:(id)queue withBasePath:(id)path;
+- (void)appendToString:(id)string key:(id)key value:(id)value;
 - (void)dealloc;
-- (void)handleAnalyticsSubmissionTimer:(id)a3;
+- (void)handleAnalyticsSubmissionTimer:(id)timer;
 - (void)invalidateAnalyticsSubmissionTimer;
-- (void)recordDownloadCompleted:(id)a3 withError:(id)a4;
-- (void)recordDownloadStarted:(id)a3 fromClient:(id)a4;
-- (void)recordHistoryEvent:(id)a3;
-- (void)recordInstallCompleted:(id)a3 withError:(id)a4;
-- (void)recordInstallStarted:(id)a3 withDownload:(id)a4;
-- (void)recordRollbackCompleted:(id)a3 withError:(id)a4;
-- (void)recordRollbackStarted:(id)a3;
-- (void)recordScanForUpdates:(id)a3 fromClient:(id)a4;
+- (void)recordDownloadCompleted:(id)completed withError:(id)error;
+- (void)recordDownloadStarted:(id)started fromClient:(id)client;
+- (void)recordHistoryEvent:(id)event;
+- (void)recordInstallCompleted:(id)completed withError:(id)error;
+- (void)recordInstallStarted:(id)started withDownload:(id)download;
+- (void)recordRollbackCompleted:(id)completed withError:(id)error;
+- (void)recordRollbackStarted:(id)started;
+- (void)recordScanForUpdates:(id)updates fromClient:(id)client;
 - (void)setupAnalyticsSubmissionTimer;
-- (void)updateInstallHistory:(id)a3 build:(id)a4 date:(id)a5 operationType:(int64_t)a6;
+- (void)updateInstallHistory:(id)history build:(id)build date:(id)date operationType:(int64_t)type;
 @end
 
 @implementation SUSHistoryTracker
@@ -54,16 +54,16 @@ void __34__SUSHistoryTracker_sharedTracker__block_invoke()
   sharedTracker_sharedInstance = v1;
 }
 
-+ (id)trackerWithPath:(id)a3
++ (id)trackerWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__SUSHistoryTracker_trackerWithPath___block_invoke;
   block[3] = &unk_279CAA708;
-  v10 = v3;
+  v10 = pathCopy;
   v4 = trackerWithPath__onceToken;
-  v5 = v3;
+  v5 = pathCopy;
   if (v4 != -1)
   {
     dispatch_once(&trackerWithPath__onceToken, block);
@@ -85,26 +85,26 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
   trackerWithPath__sharedInstance = v3;
 }
 
-- (id)initUsingProtectionQueue:(id)a3 withBasePath:(id)a4
+- (id)initUsingProtectionQueue:(id)queue withBasePath:(id)path
 {
   v115 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  pathCopy = path;
   v113.receiver = self;
   v113.super_class = SUSHistoryTracker;
   v9 = [(SUSHistoryTracker *)&v113 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_protectionQueue, a3);
+    objc_storeStrong(&v9->_protectionQueue, queue);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.softwareupdateservices.AnalyticsSubmissionQueue", v11);
     analyticsSubmissionQueue = v10->_analyticsSubmissionQueue;
     v10->_analyticsSubmissionQueue = v12;
 
-    if (v8)
+    if (pathCopy)
     {
-      v14 = v8;
+      v14 = pathCopy;
       basePath = v10->_basePath;
       v10->_basePath = v14;
     }
@@ -115,8 +115,8 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
       basePath = v16;
       if (v16)
       {
-        v17 = [(NSString *)v16 path];
-        v18 = [v17 stringByAppendingPathComponent:@"history"];
+        path = [(NSString *)v16 path];
+        v18 = [path stringByAppendingPathComponent:@"history"];
 
         if (v18)
         {
@@ -143,28 +143,28 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
       v10->_basePath = v18;
     }
 
-    v37 = [(SUSHistoryTracker *)v10 basePath];
-    v38 = [v37 stringByAppendingPathComponent:@"CoreAnalytics"];
+    basePath = [(SUSHistoryTracker *)v10 basePath];
+    v38 = [basePath stringByAppendingPathComponent:@"CoreAnalytics"];
     coreAnalyticsPath = v10->_coreAnalyticsPath;
     v10->_coreAnalyticsPath = v38;
 
-    v40 = [(SUSHistoryTracker *)v10 basePath];
-    v41 = [v40 stringByAppendingPathComponent:@"SUS_History_Tracking.log"];
+    basePath2 = [(SUSHistoryTracker *)v10 basePath];
+    v41 = [basePath2 stringByAppendingPathComponent:@"SUS_History_Tracking.log"];
     historyLogPath = v10->_historyLogPath;
     v10->_historyLogPath = v41;
 
-    v43 = [(SUSHistoryTracker *)v10 basePath];
-    v44 = [v43 stringByAppendingPathComponent:@"installHistory.db"];
+    basePath3 = [(SUSHistoryTracker *)v10 basePath];
+    v44 = [basePath3 stringByAppendingPathComponent:@"installHistory.db"];
     historyInstallDBPath = v10->_historyInstallDBPath;
     v10->_historyInstallDBPath = v44;
 
-    v46 = [(SUSHistoryTracker *)v10 historyInstallDBPath];
-    v47 = [SUSHistoryInstalls sharedInstanceWithPath:v46];
+    historyInstallDBPath = [(SUSHistoryTracker *)v10 historyInstallDBPath];
+    v47 = [SUSHistoryInstalls sharedInstanceWithPath:historyInstallDBPath];
     installHistoryManager = v10->_installHistoryManager;
     v10->_installHistoryManager = v47;
 
-    v49 = [(SUSHistoryTracker *)v10 coreAnalyticsPath];
-    v50 = [SUAnalyticsManager sharedManagerWithPath:v49];
+    coreAnalyticsPath = [(SUSHistoryTracker *)v10 coreAnalyticsPath];
+    v50 = [SUAnalyticsManager sharedManagerWithPath:coreAnalyticsPath];
     analyticsManager = v10->_analyticsManager;
     v10->_analyticsManager = v50;
 
@@ -172,17 +172,17 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
     eventQueue = v10->_eventQueue;
     v10->_eventQueue = v52;
 
-    v61 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     if (v10->_analyticsManager)
     {
-      v62 = [(SUSHistoryTracker *)v10 analyticsManager];
-      v63 = [v62 savePath];
+      analyticsManager = [(SUSHistoryTracker *)v10 analyticsManager];
+      savePath = [analyticsManager savePath];
 
       v112 = 0;
-      v64 = [v61 contentsOfDirectoryAtPath:v63 error:&v112];
+      v64 = [defaultManager contentsOfDirectoryAtPath:savePath error:&v112];
       v65 = v112;
       v73 = v65;
-      if (v65 || !v63)
+      if (v65 || !savePath)
       {
         if (v65)
         {
@@ -197,8 +197,8 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
 
       else
       {
-        v105 = v61;
-        v106 = v8;
+        v105 = defaultManager;
+        v106 = pathCopy;
         v74 = [v64 sortedArrayUsingSelector:sel_compare_];
 
         v110 = 0u;
@@ -220,14 +220,14 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
                 objc_enumerationMutation(v64);
               }
 
-              v79 = [v63 stringByAppendingPathComponent:*(*(&v108 + 1) + 8 * i)];
-              v80 = [(SUSHistoryTracker *)v10 analyticsManager];
-              v81 = [v80 copyEventFromPath:v79];
+              v79 = [savePath stringByAppendingPathComponent:*(*(&v108 + 1) + 8 * i)];
+              analyticsManager2 = [(SUSHistoryTracker *)v10 analyticsManager];
+              v81 = [analyticsManager2 copyEventFromPath:v79];
 
               if (v81)
               {
-                v89 = [(SUSHistoryTracker *)v10 eventQueue];
-                [v89 addObject:v81];
+                eventQueue = [(SUSHistoryTracker *)v10 eventQueue];
+                [eventQueue addObject:v81];
               }
 
               else
@@ -242,9 +242,9 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
           while (v76);
         }
 
-        v8 = v106;
+        pathCopy = v106;
         v73 = 0;
-        v61 = v105;
+        defaultManager = v105;
       }
     }
 
@@ -253,8 +253,8 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
       SULogInfo(@"Analytics manager unavailable, continuing without analytics support", v54, v55, v56, v57, v58, v59, v60, v104);
     }
 
-    v90 = [(SUSHistoryTracker *)v10 basePath];
-    v91 = [v61 fileExistsAtPath:v90];
+    basePath4 = [(SUSHistoryTracker *)v10 basePath];
+    v91 = [defaultManager fileExistsAtPath:basePath4];
 
     if (v91)
     {
@@ -263,9 +263,9 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
 
     else
     {
-      v93 = [(SUSHistoryTracker *)v10 basePath];
+      basePath5 = [(SUSHistoryTracker *)v10 basePath];
       v107 = 0;
-      v94 = [v61 createDirectoryAtPath:v93 withIntermediateDirectories:1 attributes:0 error:&v107];
+      v94 = [defaultManager createDirectoryAtPath:basePath5 withIntermediateDirectories:1 attributes:0 error:&v107];
       v92 = v107;
 
       if ((v94 & 1) == 0)
@@ -289,21 +289,21 @@ void __37__SUSHistoryTracker_trackerWithPath___block_invoke(uint64_t a1)
   [(SUSHistoryTracker *)&v3 dealloc];
 }
 
-- (void)recordHistoryEvent:(id)a3
+- (void)recordHistoryEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SUSHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_not_V2(v5);
+  eventCopy = event;
+  protectionQueue = [(SUSHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_not_V2(protectionQueue);
 
-  v6 = [(SUSHistoryTracker *)self protectionQueue];
+  protectionQueue2 = [(SUSHistoryTracker *)self protectionQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__SUSHistoryTracker_recordHistoryEvent___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = eventCopy;
+  v7 = eventCopy;
+  dispatch_sync(protectionQueue2, v8);
 }
 
 void __40__SUSHistoryTracker_recordHistoryEvent___block_invoke(uint64_t a1)
@@ -557,15 +557,15 @@ LABEL_45:
   self->_analyticsSubmissionTimer = v3;
 
   v5 = self->_analyticsSubmissionTimer;
-  v6 = [(SUSHistoryTracker *)self analyticsSubmissionQueue];
-  [(PCPersistentTimer *)v5 scheduleInQueue:v6];
+  analyticsSubmissionQueue = [(SUSHistoryTracker *)self analyticsSubmissionQueue];
+  [(PCPersistentTimer *)v5 scheduleInQueue:analyticsSubmissionQueue];
 
   SULogInfo(@"%s: Analytics submission persistent timer scheduled to fire every 24 hours", v7, v8, v9, v10, v11, v12, v13, "[SUSHistoryTracker setupAnalyticsSubmissionTimer]");
 }
 
-- (void)handleAnalyticsSubmissionTimer:(id)a3
+- (void)handleAnalyticsSubmissionTimer:(id)timer
 {
-  SULogInfo(@"%s: 24-hour persistent timer fired, submitting analytics", a2, a3, v3, v4, v5, v6, v7, "[SUSHistoryTracker handleAnalyticsSubmissionTimer:]");
+  SULogInfo(@"%s: 24-hour persistent timer fired, submitting analytics", a2, timer, v3, v4, v5, v6, v7, "[SUSHistoryTracker handleAnalyticsSubmissionTimer:]");
 
   [(SUSHistoryTracker *)self submitHistoryAnalyticsEvent];
 }
@@ -585,18 +585,18 @@ LABEL_45:
 
 - (BOOL)submitHistoryAnalyticsEvent
 {
-  v3 = [(SUSHistoryTracker *)self analyticsManager];
+  analyticsManager = [(SUSHistoryTracker *)self analyticsManager];
 
-  if (v3)
+  if (analyticsManager)
   {
-    v11 = [(SUSHistoryTracker *)self analyticsManager];
-    v12 = [v11 submitAllEvents];
+    analyticsManager2 = [(SUSHistoryTracker *)self analyticsManager];
+    submitAllEvents = [analyticsManager2 submitAllEvents];
 
-    if (v12)
+    if (submitAllEvents)
     {
       SULogInfo(@"%s: Successfully submitted all queued events", v4, v5, v6, v7, v8, v9, v10, "[SUSHistoryTracker submitHistoryAnalyticsEvent]");
-      v13 = [(SUSHistoryTracker *)self eventQueue];
-      [v13 removeAllObjects];
+      eventQueue = [(SUSHistoryTracker *)self eventQueue];
+      [eventQueue removeAllObjects];
 
       return 1;
     }
@@ -614,13 +614,13 @@ LABEL_45:
   return 0;
 }
 
-- (void)updateInstallHistory:(id)a3 build:(id)a4 date:(id)a5 operationType:(int64_t)a6
+- (void)updateInstallHistory:(id)history build:(id)build date:(id)date operationType:(int64_t)type
 {
-  v10 = a5;
-  v11 = a4;
-  v20 = a3;
-  v12 = [(SUSHistoryTracker *)self installHistoryManager];
-  [v12 addLogWithName:v20 build:v11 date:v10 operationType:a6];
+  dateCopy = date;
+  buildCopy = build;
+  historyCopy = history;
+  installHistoryManager = [(SUSHistoryTracker *)self installHistoryManager];
+  [installHistoryManager addLogWithName:historyCopy build:buildCopy date:dateCopy operationType:type];
 
   SULogDebug(@"%s: Entry Name: %@ | Version: %@ | Date: %@", v13, v14, v15, v16, v17, v18, v19, "[SUSHistoryTracker updateInstallHistory:build:date:operationType:]");
 }
@@ -628,98 +628,98 @@ LABEL_45:
 - (id)fetchInstallHistory
 {
   SULogDebug(@"%s: Fetching Install History", a2, v2, v3, v4, v5, v6, v7, "[SUSHistoryTracker fetchInstallHistory]");
-  v9 = [(SUSHistoryTracker *)self installHistoryManager];
-  v10 = [v9 queryAllLogs];
+  installHistoryManager = [(SUSHistoryTracker *)self installHistoryManager];
+  queryAllLogs = [installHistoryManager queryAllLogs];
 
-  return v10;
+  return queryAllLogs;
 }
 
-- (void)appendToString:(id)a3 key:(id)a4 value:(id)a5
+- (void)appendToString:(id)string key:(id)key value:(id)value
 {
-  if (a5)
+  if (value)
   {
-    v7 = a5;
-    v8 = a4;
-    v11 = a3;
-    v9 = [v11 length];
+    valueCopy = value;
+    keyCopy = key;
+    stringCopy = string;
+    v9 = [stringCopy length];
     v10 = @"| ";
     if (!v9)
     {
       v10 = &stru_287B45B60;
     }
 
-    [v11 appendFormat:@"%@%@:%@ ", v10, v8, v7];
+    [stringCopy appendFormat:@"%@%@:%@ ", v10, keyCopy, valueCopy];
   }
 }
 
-- (id)formatScanEvent:(id)a3
+- (id)formatScanEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SUSHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  protectionQueue = [(SUSHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v7 = [v4 extraInfo];
-  v8 = [v7 objectForKeyedSubscript:@"downloadNow"];
+  extraInfo = [eventCopy extraInfo];
+  v8 = [extraInfo objectForKeyedSubscript:@"downloadNow"];
 
   if (v8)
   {
-    v9 = [v4 extraInfo];
-    v10 = [v9 objectForKeyedSubscript:@"downloadNow"];
-    v11 = [v10 BOOLValue];
+    extraInfo2 = [eventCopy extraInfo];
+    v10 = [extraInfo2 objectForKeyedSubscript:@"downloadNow"];
+    bOOLValue = [v10 BOOLValue];
 
-    [v6 appendFormat:@"downloadNow=%d ", v11];
+    [v6 appendFormat:@"downloadNow=%d ", bOOLValue];
   }
 
-  v12 = [v4 operation];
-  v13 = [v4 extraInfo];
-  v14 = v13;
-  if (v12 == 100)
+  operation = [eventCopy operation];
+  extraInfo3 = [eventCopy extraInfo];
+  v14 = extraInfo3;
+  if (operation == 100)
   {
-    v15 = [v13 objectForKeyedSubscript:@"softwareUpdateType"];
+    v15 = [extraInfo3 objectForKeyedSubscript:@"softwareUpdateType"];
 
     if (!v15)
     {
       goto LABEL_17;
     }
 
-    v16 = [v4 extraInfo];
-    v17 = [v16 objectForKeyedSubscript:@"softwareUpdateType"];
+    extraInfo4 = [eventCopy extraInfo];
+    v17 = [extraInfo4 objectForKeyedSubscript:@"softwareUpdateType"];
 
     [v6 appendFormat:@"updateType=%@ ", v17];
   }
 
   else
   {
-    v17 = [v13 objectForKeyedSubscript:@"descriptor"];
+    v17 = [extraInfo3 objectForKeyedSubscript:@"descriptor"];
 
     if (v17)
     {
-      v18 = [v17 humanReadableUpdateName];
-      [v6 appendFormat:@"updateTitle=%@ ", v18];
+      humanReadableUpdateName = [v17 humanReadableUpdateName];
+      [v6 appendFormat:@"updateTitle=%@ ", humanReadableUpdateName];
 
       v19 = objc_alloc_init(MEMORY[0x277CCAB68]);
-      v20 = [v17 productBuildVersion];
+      productBuildVersion = [v17 productBuildVersion];
 
-      if (v20)
+      if (productBuildVersion)
       {
-        v21 = [v17 productBuildVersion];
-        [v19 appendFormat:@"preferredBuild=%@ ", v21];
+        productBuildVersion2 = [v17 productBuildVersion];
+        [v19 appendFormat:@"preferredBuild=%@ ", productBuildVersion2];
       }
 
-      v22 = [v17 productVersion];
-      [(SUSHistoryTracker *)self appendToString:v19 key:@"preferredVersion" value:v22];
+      productVersion = [v17 productVersion];
+      [(SUSHistoryTracker *)self appendToString:v19 key:@"preferredVersion" value:productVersion];
 
       if ([v19 length])
       {
         [v6 appendString:v19];
       }
 
-      v23 = [v4 extraInfo];
-      v24 = [v23 objectForKeyedSubscript:@"alternateBuild"];
+      extraInfo5 = [eventCopy extraInfo];
+      v24 = [extraInfo5 objectForKeyedSubscript:@"alternateBuild"];
 
-      v25 = [v4 extraInfo];
-      v26 = [v25 objectForKeyedSubscript:@"alternateVersion"];
+      extraInfo6 = [eventCopy extraInfo];
+      v26 = [extraInfo6 objectForKeyedSubscript:@"alternateVersion"];
 
       v27 = objc_alloc_init(MEMORY[0x277CCAB68]);
       v28 = v27;
@@ -741,44 +741,44 @@ LABEL_17:
   return v6;
 }
 
-- (id)formatDownloadEvent:(id)a3
+- (id)formatDownloadEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SUSHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  protectionQueue = [(SUSHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v7 = [v4 extraInfo];
-  v8 = [v7 objectForKeyedSubscript:@"descriptor"];
+  extraInfo = [eventCopy extraInfo];
+  v8 = [extraInfo objectForKeyedSubscript:@"descriptor"];
 
-  v9 = [v4 extraInfo];
+  extraInfo2 = [eventCopy extraInfo];
 
-  v10 = [v9 objectForKeyedSubscript:@"isBackground"];
-  v11 = [v10 BOOLValue];
+  v10 = [extraInfo2 objectForKeyedSubscript:@"isBackground"];
+  bOOLValue = [v10 BOOLValue];
 
   if (v8)
   {
-    v12 = [v8 humanReadableUpdateName];
-    [v6 appendFormat:@"updateTitle=%@ ", v12];
+    humanReadableUpdateName = [v8 humanReadableUpdateName];
+    [v6 appendFormat:@"updateTitle=%@ ", humanReadableUpdateName];
 
     v13 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    v14 = [v8 productBuildVersion];
+    productBuildVersion = [v8 productBuildVersion];
 
-    if (v14)
+    if (productBuildVersion)
     {
-      v15 = [v8 productBuildVersion];
-      [v13 appendFormat:@"targetBuild=%@ ", v15];
+      productBuildVersion2 = [v8 productBuildVersion];
+      [v13 appendFormat:@"targetBuild=%@ ", productBuildVersion2];
     }
 
-    v16 = [v8 productVersion];
-    [(SUSHistoryTracker *)self appendToString:v13 key:@"targetVersion" value:v16];
+    productVersion = [v8 productVersion];
+    [(SUSHistoryTracker *)self appendToString:v13 key:@"targetVersion" value:productVersion];
 
     if ([v13 length])
     {
       [v6 appendString:v13];
     }
 
-    [v6 appendFormat:@"background=%d ", v11];
+    [v6 appendFormat:@"background=%d ", bOOLValue];
     [v6 appendFormat:@"splat=%d ", objc_msgSend(v8, "isSplatOnly")];
     [v6 appendFormat:@"splombo=%d ", objc_msgSend(v8, "isSplombo")];
   }
@@ -786,7 +786,7 @@ LABEL_17:
   else
   {
     [v6 appendFormat:@"updateTitle=%@ ", @"UNKNOWN"];
-    [v6 appendFormat:@"background=%d ", v11];
+    [v6 appendFormat:@"background=%d ", bOOLValue];
     [v6 appendFormat:@"splat=%d ", 0];
     [v6 appendFormat:@"splombo=%d ", 0];
   }
@@ -794,83 +794,83 @@ LABEL_17:
   return v6;
 }
 
-- (id)formatInstallEvent:(id)a3
+- (id)formatInstallEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SUSHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  protectionQueue = [(SUSHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v7 = [v4 extraInfo];
-  v8 = [v7 objectForKeyedSubscript:@"descriptor"];
+  extraInfo = [eventCopy extraInfo];
+  v8 = [extraInfo objectForKeyedSubscript:@"descriptor"];
 
   if (v8)
   {
-    v9 = [v8 humanReadableUpdateName];
-    [v6 appendFormat:@"updateTitle=%@ ", v9];
+    humanReadableUpdateName = [v8 humanReadableUpdateName];
+    [v6 appendFormat:@"updateTitle=%@ ", humanReadableUpdateName];
 
-    v10 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    v11 = [v8 productBuildVersion];
+    timestamp2 = objc_alloc_init(MEMORY[0x277CCAB68]);
+    productBuildVersion = [v8 productBuildVersion];
 
-    if (v11)
+    if (productBuildVersion)
     {
-      v12 = [v8 productBuildVersion];
-      [v10 appendFormat:@"targetBuild=%@ ", v12];
+      productBuildVersion2 = [v8 productBuildVersion];
+      [timestamp2 appendFormat:@"targetBuild=%@ ", productBuildVersion2];
     }
 
-    v13 = [v8 productVersion];
+    productVersion = [v8 productVersion];
 
-    if (v13)
+    if (productVersion)
     {
-      v14 = [v8 productVersion];
-      [(SUSHistoryTracker *)self appendToString:v10 key:@"targetVersion" value:v14];
+      productVersion2 = [v8 productVersion];
+      [(SUSHistoryTracker *)self appendToString:timestamp2 key:@"targetVersion" value:productVersion2];
     }
 
-    if ([v10 length])
+    if ([timestamp2 length])
     {
-      [v6 appendString:v10];
+      [v6 appendString:timestamp2];
     }
 
-    if ([v4 operation] == 304)
+    if ([eventCopy operation] == 304)
     {
       [v6 appendFormat:@"splat=%d ", objc_msgSend(v8, "isSplatOnly")];
       [v6 appendFormat:@"splombo=%d ", objc_msgSend(v8, "isSplombo")];
     }
 
-    if ([v4 operation] == 304 || objc_msgSend(v4, "operation") == 303)
+    if ([eventCopy operation] == 304 || objc_msgSend(eventCopy, "operation") == 303)
     {
-      v15 = [v8 humanReadableUpdateName];
-      v16 = v15;
+      humanReadableUpdateName2 = [v8 humanReadableUpdateName];
+      v16 = humanReadableUpdateName2;
       v17 = @"UNKNOWN_UPDATE";
-      if (v15)
+      if (humanReadableUpdateName2)
       {
-        v17 = v15;
+        v17 = humanReadableUpdateName2;
       }
 
       v18 = v17;
 
-      v19 = [v8 productBuildVersion];
-      v20 = v19;
+      productBuildVersion3 = [v8 productBuildVersion];
+      v20 = productBuildVersion3;
       v21 = @"UNKNOWN_BUILD";
-      if (v19)
+      if (productBuildVersion3)
       {
-        v21 = v19;
+        v21 = productBuildVersion3;
       }
 
       v22 = v21;
 
-      v23 = [v8 productVersionExtra];
+      productVersionExtra = [v8 productVersionExtra];
       [v8 productVersion];
 
-      if (v23)
+      if (productVersionExtra)
       {
-        v24 = [(__CFString *)v22 stringByAppendingFormat:@" %@", v23];
+        v24 = [(__CFString *)v22 stringByAppendingFormat:@" %@", productVersionExtra];
 
         v22 = v24;
       }
 
-      v25 = [v4 timestamp];
-      -[SUSHistoryTracker updateInstallHistory:build:date:operationType:](self, "updateInstallHistory:build:date:operationType:", v18, v22, v25, [v4 operation]);
+      timestamp = [eventCopy timestamp];
+      -[SUSHistoryTracker updateInstallHistory:build:date:operationType:](self, "updateInstallHistory:build:date:operationType:", v18, v22, timestamp, [eventCopy operation]);
     }
 
     goto LABEL_22;
@@ -879,48 +879,48 @@ LABEL_17:
   [v6 appendFormat:@"updateTitle=%@ ", @"UNKNOWN"];
   [v6 appendFormat:@"splat=%d ", 0];
   [v6 appendFormat:@"splombo=%d ", 0];
-  if ([v4 operation] == 304 || objc_msgSend(v4, "operation") == 303)
+  if ([eventCopy operation] == 304 || objc_msgSend(eventCopy, "operation") == 303)
   {
-    v10 = [v4 timestamp];
-    -[SUSHistoryTracker updateInstallHistory:build:date:operationType:](self, "updateInstallHistory:build:date:operationType:", @"Unknown Update", @"Unknown Version", v10, [v4 operation]);
+    timestamp2 = [eventCopy timestamp];
+    -[SUSHistoryTracker updateInstallHistory:build:date:operationType:](self, "updateInstallHistory:build:date:operationType:", @"Unknown Update", @"Unknown Version", timestamp2, [eventCopy operation]);
 LABEL_22:
   }
 
   return v6;
 }
 
-- (id)formatSpaceEvent:(id)a3
+- (id)formatSpaceEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SUSHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  protectionQueue = [(SUSHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v7 = [v4 extraInfo];
-  v8 = [v7 objectForKeyedSubscript:@"cacheDeleteEnabled"];
-  v9 = [v8 BOOLValue];
+  extraInfo = [eventCopy extraInfo];
+  v8 = [extraInfo objectForKeyedSubscript:@"cacheDeleteEnabled"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v4 extraInfo];
-  v11 = [v10 objectForKeyedSubscript:@"appOffloadEnabled"];
-  v12 = [v11 BOOLValue];
+  extraInfo2 = [eventCopy extraInfo];
+  v11 = [extraInfo2 objectForKeyedSubscript:@"appOffloadEnabled"];
+  bOOLValue2 = [v11 BOOLValue];
 
-  v13 = [v4 extraInfo];
+  extraInfo3 = [eventCopy extraInfo];
 
-  v14 = [v13 objectForKeyedSubscript:@"descriptor"];
+  v14 = [extraInfo3 objectForKeyedSubscript:@"descriptor"];
 
   if (v14)
   {
     v15 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    v16 = [v14 productBuildVersion];
+    productBuildVersion = [v14 productBuildVersion];
 
-    if (v16)
+    if (productBuildVersion)
     {
-      v17 = [v14 productBuildVersion];
-      [v15 appendFormat:@"targetBuild=%@ ", v17];
+      productBuildVersion2 = [v14 productBuildVersion];
+      [v15 appendFormat:@"targetBuild=%@ ", productBuildVersion2];
     }
 
-    v18 = [v14 productVersion];
-    [(SUSHistoryTracker *)self appendToString:v15 key:@"targetVersion" value:v18];
+    productVersion = [v14 productVersion];
+    [(SUSHistoryTracker *)self appendToString:v15 key:@"targetVersion" value:productVersion];
 
     if ([v15 length])
     {
@@ -928,22 +928,22 @@ LABEL_22:
     }
   }
 
-  [v6 appendFormat:@"cacheDeleteEnabled=%d ", v9];
-  [v6 appendFormat:@"appOffloadEnabled=%d ", v12];
+  [v6 appendFormat:@"cacheDeleteEnabled=%d ", bOOLValue];
+  [v6 appendFormat:@"appOffloadEnabled=%d ", bOOLValue2];
 
   return v6;
 }
 
-- (id)formatErrorEvent:(id)a3
+- (id)formatErrorEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SUSHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  protectionQueue = [(SUSHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v7 = [v4 extraInfo];
+  extraInfo = [eventCopy extraInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"error"];
+  v8 = [extraInfo objectForKeyedSubscript:@"error"];
 
   [v6 appendFormat:@"error=%@ ", v8];
 
@@ -1013,30 +1013,30 @@ LABEL_22:
   return v2;
 }
 
-+ (id)nameForHistoryType:(int64_t)a3
++ (id)nameForHistoryType:(int64_t)type
 {
-  if (a3 < 5)
+  if (type < 5)
   {
-    return off_279CAAFF0[a3];
+    return off_279CAAFF0[type];
   }
 
-  SULogError(@"Unknown history type: %ld", a2, a3, v3, v4, v5, v6, v7, a3);
+  SULogError(@"Unknown history type: %ld", a2, type, v3, v4, v5, v6, v7, type);
   return @"HISTORY_TYPE_UNKNOWN";
 }
 
 - (id)historyTypeName
 {
-  v2 = [(SUSHistoryTracker *)self historyType];
+  historyType = [(SUSHistoryTracker *)self historyType];
 
-  return [SUSHistoryTracker nameForHistoryType:v2];
+  return [SUSHistoryTracker nameForHistoryType:historyType];
 }
 
 - (id)description
 {
   v3 = [SUSHistoryTracker nameForHistoryType:[(SUSHistoryTracker *)self historyType]];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(SUSHistoryTracker *)self protectionQueue];
-  if (v5)
+  protectionQueue = [(SUSHistoryTracker *)self protectionQueue];
+  if (protectionQueue)
   {
     v6 = @"Y";
   }
@@ -1046,99 +1046,99 @@ LABEL_22:
     v6 = @"N";
   }
 
-  v7 = [(SUSHistoryTracker *)self coreAnalyticsPath];
-  v8 = [(SUSHistoryTracker *)self historyLogPath];
-  v9 = [(SUSHistoryTracker *)self historyInstallDBPath];
-  v10 = [v4 stringWithFormat:@"protectionQueue:%@|historyType:%@|coreAnalyticsPath:%@|historyLogDirectoryPath:%@|historyLogFileName:%@", v6, v3, v7, v8, v9];
+  coreAnalyticsPath = [(SUSHistoryTracker *)self coreAnalyticsPath];
+  historyLogPath = [(SUSHistoryTracker *)self historyLogPath];
+  historyInstallDBPath = [(SUSHistoryTracker *)self historyInstallDBPath];
+  v10 = [v4 stringWithFormat:@"protectionQueue:%@|historyType:%@|coreAnalyticsPath:%@|historyLogDirectoryPath:%@|historyLogFileName:%@", v6, v3, coreAnalyticsPath, historyLogPath, historyInstallDBPath];
 
   return v10;
 }
 
-- (void)recordScanForUpdates:(id)a3 fromClient:(id)a4
+- (void)recordScanForUpdates:(id)updates fromClient:(id)client
 {
-  v11 = a3;
-  v6 = a4;
+  updatesCopy = updates;
+  clientCopy = client;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = v7;
-  if (v6)
+  if (clientCopy)
   {
-    [v7 setObject:v6 forKeyedSubscript:@"identifier"];
+    [v7 setObject:clientCopy forKeyedSubscript:@"identifier"];
   }
 
   else
   {
-    v9 = [v11 identifier];
-    [v8 setObject:v9 forKeyedSubscript:@"identifier"];
+    identifier = [updatesCopy identifier];
+    [v8 setObject:identifier forKeyedSubscript:@"identifier"];
   }
 
   v10 = [[SUSHistoryEvent alloc] initWithOperation:100 historyType:0 extraInfo:v8];
   [(SUSHistoryTracker *)self recordHistoryEvent:v10];
 }
 
-- (void)recordDownloadStarted:(id)a3 fromClient:(id)a4
+- (void)recordDownloadStarted:(id)started fromClient:(id)client
 {
-  v14 = a3;
-  v6 = a4;
+  startedCopy = started;
+  clientCopy = client;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = v7;
-  if (v6)
+  if (clientCopy)
   {
-    [v7 setObject:v6 forKeyedSubscript:@"identifier"];
+    [v7 setObject:clientCopy forKeyedSubscript:@"identifier"];
   }
 
   else
   {
-    v9 = [v14 clientName];
-    [v8 setObject:v9 forKeyedSubscript:@"identifier"];
+    clientName = [startedCopy clientName];
+    [v8 setObject:clientName forKeyedSubscript:@"identifier"];
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v14, "isAutoDownload") ^ 1}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(startedCopy, "isAutoDownload") ^ 1}];
   [v8 setObject:v10 forKeyedSubscript:@"userInitiated"];
 
-  v11 = [v14 descriptor];
+  descriptor = [startedCopy descriptor];
 
-  if (v11)
+  if (descriptor)
   {
-    v12 = [v14 descriptor];
-    [v8 setObject:v12 forKeyedSubscript:@"descriptor"];
+    descriptor2 = [startedCopy descriptor];
+    [v8 setObject:descriptor2 forKeyedSubscript:@"descriptor"];
   }
 
   v13 = [[SUSHistoryEvent alloc] initWithOperation:200 historyType:1 extraInfo:v8];
   [(SUSHistoryTracker *)self recordHistoryEvent:v13];
 }
 
-- (void)recordDownloadCompleted:(id)a3 withError:(id)a4
+- (void)recordDownloadCompleted:(id)completed withError:(id)error
 {
-  v22 = a3;
-  v6 = a4;
+  completedCopy = completed;
+  errorCopy = error;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = v7;
-  if (v22)
+  if (completedCopy)
   {
-    v9 = [v22 downloadOptions];
-    v10 = [v9 clientName];
+    downloadOptions = [completedCopy downloadOptions];
+    clientName = [downloadOptions clientName];
 
-    if (v10)
+    if (clientName)
     {
-      v11 = [v22 downloadOptions];
-      v12 = [v11 clientName];
-      [v8 setObject:v12 forKeyedSubscript:@"identifier"];
+      downloadOptions2 = [completedCopy downloadOptions];
+      clientName2 = [downloadOptions2 clientName];
+      [v8 setObject:clientName2 forKeyedSubscript:@"identifier"];
     }
 
     v13 = MEMORY[0x277CCABB0];
-    v14 = [v22 downloadOptions];
-    v15 = [v13 numberWithBool:{objc_msgSend(v14, "isAutoDownload")}];
+    downloadOptions3 = [completedCopy downloadOptions];
+    v15 = [v13 numberWithBool:{objc_msgSend(downloadOptions3, "isAutoDownload")}];
     [v8 setObject:v15 forKeyedSubscript:@"userInitiated"];
 
-    v16 = [v22 descriptor];
+    descriptor = [completedCopy descriptor];
 
-    if (v16)
+    if (descriptor)
     {
-      v17 = [v22 descriptor];
-      [v8 setObject:v17 forKeyedSubscript:@"descriptor"];
+      descriptor2 = [completedCopy descriptor];
+      [v8 setObject:descriptor2 forKeyedSubscript:@"descriptor"];
     }
 
-    if (v6)
+    if (errorCopy)
     {
       goto LABEL_7;
     }
@@ -1148,10 +1148,10 @@ LABEL_22:
   {
     [v7 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"userInitiated"];
     [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"isBackground"];
-    if (v6)
+    if (errorCopy)
     {
 LABEL_7:
-      [v8 setObject:v6 forKeyedSubscript:@"error"];
+      [v8 setObject:errorCopy forKeyedSubscript:@"error"];
       v18 = [SUSHistoryEvent alloc];
       v19 = 507;
       v20 = 4;
@@ -1167,39 +1167,39 @@ LABEL_10:
   [(SUSHistoryTracker *)self recordHistoryEvent:v21];
 }
 
-- (void)recordInstallStarted:(id)a3 withDownload:(id)a4
+- (void)recordInstallStarted:(id)started withDownload:(id)download
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  downloadCopy = download;
+  startedCopy = started;
   v14 = objc_alloc_init(v6);
-  v9 = [v8 clientName];
-  [v14 setObject:v9 forKeyedSubscript:@"identifier"];
+  clientName = [startedCopy clientName];
+  [v14 setObject:clientName forKeyedSubscript:@"identifier"];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v8 automaticInstallation];
+  automaticInstallation = [startedCopy automaticInstallation];
 
-  v12 = [v10 numberWithBool:v11];
+  v12 = [v10 numberWithBool:automaticInstallation];
   [v14 setObject:v12 forKeyedSubscript:@"userInitiated"];
 
-  [v14 setObject:v7 forKeyedSubscript:@"descriptor"];
+  [v14 setObject:downloadCopy forKeyedSubscript:@"descriptor"];
   v13 = [[SUSHistoryEvent alloc] initWithOperation:200 historyType:1 extraInfo:v14];
   [(SUSHistoryTracker *)self recordHistoryEvent:v13];
 }
 
-- (void)recordInstallCompleted:(id)a3 withError:(id)a4
+- (void)recordInstallCompleted:(id)completed withError:(id)error
 {
-  v14 = a4;
+  errorCopy = error;
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
+  completedCopy = completed;
   v8 = objc_alloc_init(v6);
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "autoUpdateEnabled") ^ 1}];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(completedCopy, "autoUpdateEnabled") ^ 1}];
   [v8 setObject:v9 forKeyedSubscript:@"userInitiated"];
 
-  [v8 setObject:v7 forKeyedSubscript:@"descriptor"];
-  if (v14)
+  [v8 setObject:completedCopy forKeyedSubscript:@"descriptor"];
+  if (errorCopy)
   {
-    [v8 setObject:v14 forKeyedSubscript:@"error"];
+    [v8 setObject:errorCopy forKeyedSubscript:@"error"];
     v10 = [SUSHistoryEvent alloc];
     v11 = 508;
     v12 = 4;
@@ -1216,30 +1216,30 @@ LABEL_10:
   [(SUSHistoryTracker *)self recordHistoryEvent:v13];
 }
 
-- (void)recordRollbackStarted:(id)a3
+- (void)recordRollbackStarted:(id)started
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  startedCopy = started;
   v8 = objc_alloc_init(v4);
-  v6 = [(SUSHistoryTracker *)self descriptorFromRollbackDescriptor:v5];
+  v6 = [(SUSHistoryTracker *)self descriptorFromRollbackDescriptor:startedCopy];
 
   [v8 setObject:v6 forKeyedSubscript:@"descriptor"];
   v7 = [[SUSHistoryEvent alloc] initWithOperation:302 historyType:2 extraInfo:v8];
   [(SUSHistoryTracker *)self recordHistoryEvent:v7];
 }
 
-- (void)recordRollbackCompleted:(id)a3 withError:(id)a4
+- (void)recordRollbackCompleted:(id)completed withError:(id)error
 {
-  v14 = a4;
+  errorCopy = error;
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
+  completedCopy = completed;
   v8 = objc_alloc_init(v6);
-  v9 = [(SUSHistoryTracker *)self descriptorFromRollbackDescriptor:v7];
+  v9 = [(SUSHistoryTracker *)self descriptorFromRollbackDescriptor:completedCopy];
 
   [v8 setObject:v9 forKeyedSubscript:@"descriptor"];
-  if (v14)
+  if (errorCopy)
   {
-    [v8 setObject:v14 forKeyedSubscript:@"error"];
+    [v8 setObject:errorCopy forKeyedSubscript:@"error"];
     v10 = [SUSHistoryEvent alloc];
     v11 = 509;
     v12 = 4;
@@ -1256,19 +1256,19 @@ LABEL_10:
   [(SUSHistoryTracker *)self recordHistoryEvent:v13];
 }
 
-- (id)descriptorFromRollbackDescriptor:(id)a3
+- (id)descriptorFromRollbackDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    v3 = a3;
+    descriptorCopy = descriptor;
     v4 = objc_alloc_init(SUDescriptor);
     [(SUDescriptor *)v4 setHumanReadableUpdateName:@"Rollback Update"];
-    v5 = [v3 productVersion];
-    [(SUDescriptor *)v4 setProductVersion:v5];
+    productVersion = [descriptorCopy productVersion];
+    [(SUDescriptor *)v4 setProductVersion:productVersion];
 
-    v6 = [v3 productBuildVersion];
+    productBuildVersion = [descriptorCopy productBuildVersion];
 
-    [(SUDescriptor *)v4 setProductBuildVersion:v6];
+    [(SUDescriptor *)v4 setProductBuildVersion:productBuildVersion];
   }
 
   else

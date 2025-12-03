@@ -1,52 +1,52 @@
 @interface NCCarPlayBannerPresentableViewController
-- (BOOL)bannerContentViewShouldShowOKButton:(id)a3;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
-- (NCCarPlayBannerPresentableViewController)initWithNotificationRequest:(id)a3;
+- (BOOL)bannerContentViewShouldShowOKButton:(id)button;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
+- (NCCarPlayBannerPresentableViewController)initWithNotificationRequest:(id)request;
 - (NCCarPlayBannerPresentableViewControllerDelegate)delegate;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
 - (UIEdgeInsets)bannerContentOutsets;
 - (id)_platterView;
-- (id)_staticContentProviderFromRequest:(id)a3;
+- (id)_staticContentProviderFromRequest:(id)request;
 - (id)presentableDescription;
-- (void)_handleBackGesture:(id)a3;
-- (void)_handleSwipeGesture:(id)a3;
-- (void)_handleTapOnContent:(id)a3;
-- (void)_notifyObserversWithBlock:(id)a3;
+- (void)_handleBackGesture:(id)gesture;
+- (void)_handleSwipeGesture:(id)gesture;
+- (void)_handleTapOnContent:(id)content;
+- (void)_notifyObserversWithBlock:(id)block;
 - (void)_updateStaticContentProvider;
-- (void)_wheelChangedWithEvent:(id)a3;
-- (void)addPresentableObserver:(id)a3;
+- (void)_wheelChangedWithEvent:(id)event;
+- (void)addPresentableObserver:(id)observer;
 - (void)loadView;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)removePresentableObserver:(id)a3;
-- (void)updateRequestToInstance:(id)a3;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)removePresentableObserver:(id)observer;
+- (void)updateRequestToInstance:(id)instance;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation NCCarPlayBannerPresentableViewController
 
 - (NSString)requestIdentifier
 {
-  v2 = [(NCCarPlayBannerPresentableViewController *)self notificationRequest];
-  v3 = [v2 notificationIdentifier];
+  notificationRequest = [(NCCarPlayBannerPresentableViewController *)self notificationRequest];
+  notificationIdentifier = [notificationRequest notificationIdentifier];
 
-  return v3;
+  return notificationIdentifier;
 }
 
 - (id)presentableDescription
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"logDigest";
-  v2 = [(NCCarPlayBannerPresentableViewController *)self requestIdentifier];
-  v3 = [v2 un_logDigest];
-  v8[0] = v3;
+  requestIdentifier = [(NCCarPlayBannerPresentableViewController *)self requestIdentifier];
+  un_logDigest = [requestIdentifier un_logDigest];
+  v8[0] = un_logDigest;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   v5 = BNPresentableDescription();
 
@@ -60,17 +60,17 @@
   return [v2 requesterIdentifier];
 }
 
-- (NCCarPlayBannerPresentableViewController)initWithNotificationRequest:(id)a3
+- (NCCarPlayBannerPresentableViewController)initWithNotificationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = NCCarPlayBannerPresentableViewController;
   v6 = [(NCCarPlayBannerPresentableViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationRequest, a3);
-    v8 = [(NCCarPlayBannerPresentableViewController *)v7 _staticContentProviderFromRequest:v5];
+    objc_storeStrong(&v6->_notificationRequest, request);
+    v8 = [(NCCarPlayBannerPresentableViewController *)v7 _staticContentProviderFromRequest:requestCopy];
     staticContentProvider = v7->_staticContentProvider;
     v7->_staticContentProvider = v8;
   }
@@ -78,11 +78,11 @@
   return v7;
 }
 
-- (void)updateRequestToInstance:(id)a3
+- (void)updateRequestToInstance:(id)instance
 {
-  objc_storeStrong(&self->_notificationRequest, a3);
-  v5 = a3;
-  v6 = [(NCCarPlayBannerPresentableViewController *)self _staticContentProviderFromRequest:v5];
+  objc_storeStrong(&self->_notificationRequest, instance);
+  instanceCopy = instance;
+  v6 = [(NCCarPlayBannerPresentableViewController *)self _staticContentProviderFromRequest:instanceCopy];
   staticContentProvider = self->_staticContentProvider;
   self->_staticContentProvider = v6;
 
@@ -107,16 +107,16 @@
   self->_bannerContentView = v3;
 
   [(NCCarPlayBannerContentView *)self->_bannerContentView setDelegate:self];
-  v5 = [(NCCarPlayBannerPresentableViewController *)self _platterView];
+  _platterView = [(NCCarPlayBannerPresentableViewController *)self _platterView];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 setMaterialGroupNameBase:v7];
+  [_platterView setMaterialGroupNameBase:v7];
 
   v8 = self->_bannerContentView;
-  [v5 bounds];
+  [_platterView bounds];
   [(NCCarPlayBannerContentView *)v8 setFrame:?];
-  v9 = [v5 customContentView];
-  [v9 addSubview:self->_bannerContentView];
+  customContentView = [_platterView customContentView];
+  [customContentView addSubview:self->_bannerContentView];
 
   [(NCCarPlayBannerContentView *)self->_bannerContentView setAutoresizingMask:18];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -158,30 +158,30 @@ id __55__NCCarPlayBannerPresentableViewController_viewDidLoad__block_invoke(uint
   return v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = NCCarPlayBannerPresentableViewController;
-  [(NCCarPlayBannerPresentableViewController *)&v6 viewDidAppear:a3];
-  v4 = [(NCCarPlayBannerPresentableViewController *)self view];
-  v5 = [v4 window];
-  [v5 addGestureRecognizer:self->_contentSelectPressGesture];
+  [(NCCarPlayBannerPresentableViewController *)&v6 viewDidAppear:appear];
+  view = [(NCCarPlayBannerPresentableViewController *)self view];
+  window = [view window];
+  [window addGestureRecognizer:self->_contentSelectPressGesture];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = NCCarPlayBannerPresentableViewController;
-  [(NCCarPlayBannerPresentableViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(UITapGestureRecognizer *)self->_contentSelectPressGesture view];
-  [v4 removeGestureRecognizer:self->_contentSelectPressGesture];
+  [(NCCarPlayBannerPresentableViewController *)&v5 viewWillDisappear:disappear];
+  view = [(UITapGestureRecognizer *)self->_contentSelectPressGesture view];
+  [view removeGestureRecognizer:self->_contentSelectPressGesture];
 }
 
 - (UIEdgeInsets)bannerContentOutsets
 {
   [(NCCarPlayBannerPresentableViewController *)self loadViewIfNeeded];
-  v3 = [(NCCarPlayBannerPresentableViewController *)self _platterView];
-  [v3 shadowOutsets];
+  _platterView = [(NCCarPlayBannerPresentableViewController *)self _platterView];
+  [_platterView shadowOutsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -198,26 +198,26 @@ id __55__NCCarPlayBannerPresentableViewController_viewDidLoad__block_invoke(uint
   return result;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
   if (self->_fillsContainer)
   {
-    width = a4.width;
+    width = containerSize.width;
   }
 
   else
   {
-    width = a3.width;
+    width = size.width;
   }
 
   if (self->_fillsContainer)
   {
-    height = a4.height;
+    height = containerSize.height;
   }
 
   else
   {
-    height = a3.height;
+    height = size.height;
   }
 
   [(NCCarPlayBannerPresentableViewController *)self setPreferredContentSize:width, height];
@@ -228,15 +228,15 @@ id __55__NCCarPlayBannerPresentableViewController_viewDidLoad__block_invoke(uint
   return result;
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__NCCarPlayBannerPresentableViewController_presentableWillAppearAsBanner___block_invoke;
   v6[3] = &unk_278372A60;
-  v7 = v4;
-  v5 = v4;
+  v7 = bannerCopy;
+  v5 = bannerCopy;
   [(NCCarPlayBannerPresentableViewController *)self _notifyObserversWithBlock:v6];
 }
 
@@ -249,15 +249,15 @@ void __74__NCCarPlayBannerPresentableViewController_presentableWillAppearAsBanne
   }
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__NCCarPlayBannerPresentableViewController_presentableDidAppearAsBanner___block_invoke;
   v6[3] = &unk_278372A60;
-  v7 = v4;
-  v5 = v4;
+  v7 = bannerCopy;
+  v5 = bannerCopy;
   [(NCCarPlayBannerPresentableViewController *)self _notifyObserversWithBlock:v6];
 }
 
@@ -270,18 +270,18 @@ void __73__NCCarPlayBannerPresentableViewController_presentableDidAppearAsBanner
   }
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__NCCarPlayBannerPresentableViewController_presentableWillDisappearAsBanner_withReason___block_invoke;
   v10[3] = &unk_278372A88;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = bannerCopy;
+  v12 = reasonCopy;
+  v8 = reasonCopy;
+  v9 = bannerCopy;
   [(NCCarPlayBannerPresentableViewController *)self _notifyObserversWithBlock:v10];
 }
 
@@ -294,18 +294,18 @@ void __88__NCCarPlayBannerPresentableViewController_presentableWillDisappearAsBa
   }
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__NCCarPlayBannerPresentableViewController_presentableDidDisappearAsBanner_withReason___block_invoke;
   v10[3] = &unk_278372A88;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = bannerCopy;
+  v12 = reasonCopy;
+  v8 = reasonCopy;
+  v9 = bannerCopy;
   [(NCCarPlayBannerPresentableViewController *)self _notifyObserversWithBlock:v10];
 }
 
@@ -318,15 +318,15 @@ void __87__NCCarPlayBannerPresentableViewController_presentableDidDisappearAsBan
   }
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __92__NCCarPlayBannerPresentableViewController_userInteractionWillBeginForBannerForPresentable___block_invoke;
   v6[3] = &unk_278372A60;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentableCopy;
+  v5 = presentableCopy;
   [(NCCarPlayBannerPresentableViewController *)self _notifyObserversWithBlock:v6];
 }
 
@@ -339,15 +339,15 @@ void __92__NCCarPlayBannerPresentableViewController_userInteractionWillBeginForB
   }
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBannerForPresentable___block_invoke;
   v6[3] = &unk_278372A60;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentableCopy;
+  v5 = presentableCopy;
   [(NCCarPlayBannerPresentableViewController *)self _notifyObserversWithBlock:v6];
 }
 
@@ -360,11 +360,11 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   }
 }
 
-- (void)addPresentableObserver:(id)a3
+- (void)addPresentableObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v9 = v5;
@@ -377,15 +377,15 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v9];
+    observerCopy = [(NSHashTable *)observers addObject:v9];
   }
 
-  MEMORY[0x2821F96F8](v4);
+  MEMORY[0x2821F96F8](observerCopy);
 }
 
-- (void)removePresentableObserver:(id)a3
+- (void)removePresentableObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -395,11 +395,11 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   }
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
@@ -424,7 +424,7 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
 
             v10 = *(*(&v13 + 1) + 8 * i);
             v11 = objc_initWeak(&location, self);
-            v4[2](v4, self, v10);
+            blockCopy[2](blockCopy, self, v10);
 
             objc_destroyWeak(&location);
           }
@@ -438,7 +438,7 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   }
 }
 
-- (BOOL)bannerContentViewShouldShowOKButton:(id)a3
+- (BOOL)bannerContentViewShouldShowOKButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -454,11 +454,11 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   return v5;
 }
 
-- (id)_staticContentProviderFromRequest:(id)a3
+- (id)_staticContentProviderFromRequest:(id)request
 {
   v4 = [NCNotificationRequestCarPlayContentProvider alloc];
-  v5 = [(NCCarPlayBannerPresentableViewController *)self notificationRequest];
-  v6 = [(NCNotificationRequestCoalescingContentProvider *)v4 initWithNotificationRequest:v5];
+  notificationRequest = [(NCCarPlayBannerPresentableViewController *)self notificationRequest];
+  v6 = [(NCNotificationRequestCoalescingContentProvider *)v4 initWithNotificationRequest:notificationRequest];
 
   return v6;
 }
@@ -468,34 +468,34 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   bannerContentView = self->_bannerContentView;
   if (bannerContentView)
   {
-    v4 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider badgedIconDescription];
-    [(NCCarPlayBannerContentView *)bannerContentView setBadgedIconDescription:v4];
+    badgedIconDescription = [(NCNotificationStaticContentProviding *)self->_staticContentProvider badgedIconDescription];
+    [(NCCarPlayBannerContentView *)bannerContentView setBadgedIconDescription:badgedIconDescription];
 
     v5 = self->_bannerContentView;
-    v6 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider date];
-    [(NCCarPlayBannerContentView *)v5 setDate:v6];
+    date = [(NCNotificationStaticContentProviding *)self->_staticContentProvider date];
+    [(NCCarPlayBannerContentView *)v5 setDate:date];
 
     [(NCCarPlayBannerContentView *)self->_bannerContentView setDateAllDay:[(NCNotificationStaticContentProviding *)self->_staticContentProvider isDateAllDay]];
     v7 = self->_bannerContentView;
-    v8 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider timeZone];
-    [(NCCarPlayBannerContentView *)v7 setTimeZone:v8];
+    timeZone = [(NCNotificationStaticContentProviding *)self->_staticContentProvider timeZone];
+    [(NCCarPlayBannerContentView *)v7 setTimeZone:timeZone];
 
     [(NCCarPlayBannerContentView *)self->_bannerContentView setDateFormatStyle:1];
     v9 = self->_bannerContentView;
-    v10 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primaryText];
-    [(NCCarPlayBannerContentView *)v9 setPrimaryText:v10];
+    primaryText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primaryText];
+    [(NCCarPlayBannerContentView *)v9 setPrimaryText:primaryText];
 
     v11 = self->_bannerContentView;
-    v12 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primarySubtitleText];
-    [(NCCarPlayBannerContentView *)v11 setPrimarySubtitleText:v12];
+    primarySubtitleText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primarySubtitleText];
+    [(NCCarPlayBannerContentView *)v11 setPrimarySubtitleText:primarySubtitleText];
 
     v13 = self->_bannerContentView;
-    v14 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primaryText];
-    [(NCCarPlayBannerContentView *)v13 setPrimaryText:v14];
+    primaryText2 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primaryText];
+    [(NCCarPlayBannerContentView *)v13 setPrimaryText:primaryText2];
 
     v15 = self->_bannerContentView;
-    v16 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primarySubtitleText];
-    if ([v16 length])
+    primarySubtitleText2 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primarySubtitleText];
+    if ([primarySubtitleText2 length])
     {
       v17 = 1;
     }
@@ -515,9 +515,9 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
 
 - (id)_platterView
 {
-  v2 = [(NCCarPlayBannerPresentableViewController *)self view];
+  view = [(NCCarPlayBannerPresentableViewController *)self view];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = view;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -536,7 +536,7 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   return v3;
 }
 
-- (void)_handleTapOnContent:(id)a3
+- (void)_handleTapOnContent:(id)content
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -545,7 +545,7 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   }
 }
 
-- (void)_handleBackGesture:(id)a3
+- (void)_handleBackGesture:(id)gesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -554,9 +554,9 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   }
 }
 
-- (void)_handleSwipeGesture:(id)a3
+- (void)_handleSwipeGesture:(id)gesture
 {
-  if ([a3 direction] == 4)
+  if ([gesture direction] == 4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -566,10 +566,10 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
   }
 }
 
-- (void)_wheelChangedWithEvent:(id)a3
+- (void)_wheelChangedWithEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] != 7 || objc_msgSend(v4, "subtype") != 202 && objc_msgSend(v4, "subtype") != 200 && objc_msgSend(v4, "subtype") != 201)
+  eventCopy = event;
+  if ([eventCopy type] != 7 || objc_msgSend(eventCopy, "subtype") != 202 && objc_msgSend(eventCopy, "subtype") != 200 && objc_msgSend(eventCopy, "subtype") != 201)
   {
     goto LABEL_8;
   }
@@ -581,7 +581,7 @@ void __89__NCCarPlayBannerPresentableViewController_userInteractionDidEndForBann
 LABEL_8:
     v6.receiver = self;
     v6.super_class = NCCarPlayBannerPresentableViewController;
-    [(NCCarPlayBannerPresentableViewController *)&v6 _wheelChangedWithEvent:v4];
+    [(NCCarPlayBannerPresentableViewController *)&v6 _wheelChangedWithEvent:eventCopy];
     goto LABEL_9;
   }
 

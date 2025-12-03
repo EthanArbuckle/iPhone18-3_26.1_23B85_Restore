@@ -1,19 +1,19 @@
 @interface SKANFetchPostbackRejectedParams
 - (_TtC9appstored31SKANFetchPostbackRejectedParams)init;
-- (_TtC9appstored31SKANFetchPostbackRejectedParams)initWithError:(id)a3 params:(id)a4;
+- (_TtC9appstored31SKANFetchPostbackRejectedParams)initWithError:(id)error params:(id)params;
 @end
 
 @implementation SKANFetchPostbackRejectedParams
 
-- (_TtC9appstored31SKANFetchPostbackRejectedParams)initWithError:(id)a3 params:(id)a4
+- (_TtC9appstored31SKANFetchPostbackRejectedParams)initWithError:(id)error params:(id)params
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC9appstored31SKANFetchPostbackRejectedParams_error) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC9appstored31SKANFetchPostbackRejectedParams_params) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC9appstored31SKANFetchPostbackRejectedParams_error) = error;
+  *(&self->super.isa + OBJC_IVAR____TtC9appstored31SKANFetchPostbackRejectedParams_params) = params;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = a4;
+  errorCopy = error;
+  paramsCopy = params;
   return [(SKANFetchPostbackRejectedParams *)&v11 init];
 }
 

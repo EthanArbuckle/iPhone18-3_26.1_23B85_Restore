@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRLineWrappingParameters.description.getter();
 
   v3 = sub_1B429FB88();

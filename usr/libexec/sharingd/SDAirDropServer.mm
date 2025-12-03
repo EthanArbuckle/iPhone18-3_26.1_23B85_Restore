@@ -6,42 +6,42 @@
 - (void)_createOSTransactionIfNeeded;
 - (void)activate;
 - (void)addObservers;
-- (void)airDropStatusChanged:(id)a3;
-- (void)airDropUnpublished:(id)a3;
-- (void)appleIDAccountInfoChanged:(id)a3;
-- (void)appleIDChanged:(id)a3;
-- (void)awdl:(id)a3 failedToStartScanningWithError:(id)a4;
-- (void)awdl:(id)a3 foundDevice:(id)a4 rssi:(id)a5;
-- (void)awdlDidUpdateState:(id)a3;
-- (void)awdlTimeoutFired:(id)a3;
-- (void)consoleUserChanged:(id)a3;
+- (void)airDropStatusChanged:(id)changed;
+- (void)airDropUnpublished:(id)unpublished;
+- (void)appleIDAccountInfoChanged:(id)changed;
+- (void)appleIDChanged:(id)changed;
+- (void)awdl:(id)awdl failedToStartScanningWithError:(id)error;
+- (void)awdl:(id)awdl foundDevice:(id)device rssi:(id)rssi;
+- (void)awdlDidUpdateState:(id)state;
+- (void)awdlTimeoutFired:(id)fired;
+- (void)consoleUserChanged:(id)changed;
 - (void)dealloc;
-- (void)didCloseConnection:(_CFHTTPServerConnection *)a3;
-- (void)didOpenConnection:(_CFHTTPServerConnection *)a3;
-- (void)didReceiveError:(__CFError *)a3;
-- (void)discoverableModeChanged:(id)a3;
-- (void)finderAirDropEnabled:(id)a3;
-- (void)foundDevice:(id)a3;
-- (void)handleFoundHashes:(id)a3 rssi:(id)a4;
+- (void)didCloseConnection:(_CFHTTPServerConnection *)connection;
+- (void)didOpenConnection:(_CFHTTPServerConnection *)connection;
+- (void)didReceiveError:(__CFError *)error;
+- (void)discoverableModeChanged:(id)changed;
+- (void)finderAirDropEnabled:(id)enabled;
+- (void)foundDevice:(id)device;
+- (void)handleFoundHashes:(id)hashes rssi:(id)rssi;
 - (void)handleTerminalCallBack;
 - (void)invalidate;
 - (void)invalidateTimers;
-- (void)keyBagFirstUnlock:(id)a3;
-- (void)logDiscoveryWithHash:(id)a3 rssi:(id)a4;
-- (void)notifyClient:(int64_t)a3 withResults:(id)a4;
-- (void)publishedInfoChanged:(id)a3;
+- (void)keyBagFirstUnlock:(id)unlock;
+- (void)logDiscoveryWithHash:(id)hash rssi:(id)rssi;
+- (void)notifyClient:(int64_t)client withResults:(id)results;
+- (void)publishedInfoChanged:(id)changed;
 - (void)removeObservers;
-- (void)screenStateChange:(id)a3;
+- (void)screenStateChange:(id)change;
 - (void)start;
-- (void)startHTTPServer:(unsigned __int16)a3;
+- (void)startHTTPServer:(unsigned __int16)server;
 - (void)startProximityScanner;
 - (void)startServer;
 - (void)startTimers;
 - (void)stop;
 - (void)stopProximityScanner;
 - (void)stopScanningAndStartServer;
-- (void)systemHasPoweredOn:(id)a3;
-- (void)systemWillSleep:(id)a3;
+- (void)systemHasPoweredOn:(id)on;
+- (void)systemWillSleep:(id)sleep;
 - (void)updateServerState;
 @end
 
@@ -97,9 +97,9 @@
     v3->_monitor = v16;
 
     v3->_screenOn = [(SDStatusMonitor *)v3->_monitor screenOn];
-    v18 = [(SDStatusMonitor *)v3->_monitor discoverableMode];
+    discoverableMode = [(SDStatusMonitor *)v3->_monitor discoverableMode];
     discoverableMode = v3->_discoverableMode;
-    v3->_discoverableMode = v18;
+    v3->_discoverableMode = discoverableMode;
 
     v3->_connections = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     scanningIdentifier = v3->_scanningIdentifier;
@@ -200,13 +200,13 @@
   }
 }
 
-- (void)didOpenConnection:(_CFHTTPServerConnection *)a3
+- (void)didOpenConnection:(_CFHTTPServerConnection *)connection
 {
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = a3;
+    connectionCopy = connection;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "New AirDrop connection %p", &v11, 0xCu);
   }
 
@@ -215,45 +215,45 @@
   v8 = [NSNumber numberWithBool:self->_contactsOnly];
   CFDictionarySetValue(Mutable, v7, v8);
 
-  CFDictionarySetValue(Mutable, kSFOperationHTTPServerConnectionKey, a3);
-  CFDictionarySetValue(self->_connections, a3, a3);
-  v9 = [(SDStatusMonitor *)self->_monitor finderServer];
-  v10 = v9;
-  if (!v9)
+  CFDictionarySetValue(Mutable, kSFOperationHTTPServerConnectionKey, connection);
+  CFDictionarySetValue(self->_connections, connection, connection);
+  selfCopy = [(SDStatusMonitor *)self->_monitor finderServer];
+  v10 = selfCopy;
+  if (!selfCopy)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  [v9 notifyClient:1 withResults:Mutable];
+  [selfCopy notifyClient:1 withResults:Mutable];
   [(SDAirDropServer *)self invalidateTimers];
   CFRelease(Mutable);
 }
 
-- (void)didCloseConnection:(_CFHTTPServerConnection *)a3
+- (void)didCloseConnection:(_CFHTTPServerConnection *)connection
 {
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a3;
+    connectionCopy = connection;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Closed AirDrop connection %p", &v10, 0xCu);
   }
 
-  v6 = sub_100090098(a3);
+  v6 = sub_100090098(connection);
   v7 = v6;
   if (v6)
   {
     [v6 didCloseConnection];
   }
 
-  CFDictionaryRemoveValue(self->_connections, a3);
+  CFDictionaryRemoveValue(self->_connections, connection);
   if (!-[SDStatusMonitor showMeInWormhole](self->_monitor, "showMeInWormhole") || (+[SDServerBrowser sharedBrowser](SDServerBrowser, "sharedBrowser"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isAirDropEnabled], v8, (v9 & 1) == 0))
   {
     [(SDAirDropServer *)self startTimers];
   }
 }
 
-- (void)didReceiveError:(__CFError *)a3
+- (void)didReceiveError:(__CFError *)error
 {
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -262,10 +262,10 @@
   }
 
   [(SDAirDropServer *)self handleTerminalCallBack];
-  Domain = CFErrorGetDomain(a3);
+  Domain = CFErrorGetDomain(error);
   v7 = CFEqual(Domain, _kCFHTTPServerErrorDomain);
-  Code = CFErrorGetCode(a3);
-  if ((v7 && Code == 1002 || CFErrorGetCode(a3) == 48) && [(NSNumber *)self->_portNumber isEqual:&off_10090BB08])
+  Code = CFErrorGetCode(error);
+  if ((v7 && Code == 1002 || CFErrorGetCode(error) == 48) && [(NSNumber *)self->_portNumber isEqual:&off_10090BB08])
   {
     v9 = airdrop_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -280,19 +280,19 @@
   else
   {
     v12 = kSFOperationErrorKey;
-    v13 = a3;
-    v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
+    errorCopy = error;
+    v10 = [NSDictionary dictionaryWithObjects:&errorCopy forKeys:&v12 count:1];
     [(SDAirDropServer *)self notifyClient:10 withResults:v10];
   }
 }
 
-- (void)publishedInfoChanged:(id)a3
+- (void)publishedInfoChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (self->_startTime != 0.0)
   {
-    v12 = v4;
-    if ([v4 count])
+    v12 = changedCopy;
+    if ([changedCopy count])
     {
       [(NSMutableDictionary *)self->_properties removeAllObjects];
       [(NSMutableDictionary *)self->_properties addEntriesFromDictionary:v12];
@@ -321,11 +321,11 @@
     [(NSMutableDictionary *)self->_properties setObject:v11 forKeyedSubscript:kSFOperationWirelessAccessPointKey];
 
     [(SDAirDropServer *)self notifyClient:12 withResults:self->_properties];
-    v4 = v12;
+    changedCopy = v12;
   }
 }
 
-- (void)awdlTimeoutFired:(id)a3
+- (void)awdlTimeoutFired:(id)fired
 {
   v4 = airdrop_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -338,7 +338,7 @@
   [(SDAirDropServer *)self updateServerState];
 }
 
-- (void)airDropStatusChanged:(id)a3
+- (void)airDropStatusChanged:(id)changed
 {
   if (![(SDAirDropServer *)self thisIsTheFinder]&& [(SDStatusMonitor *)self->_monitor showMeInWormhole])
   {
@@ -353,7 +353,7 @@
   }
 }
 
-- (void)appleIDAccountInfoChanged:(id)a3
+- (void)appleIDAccountInfoChanged:(id)changed
 {
   if (![(SDAirDropServer *)self thisIsTheFinder])
   {
@@ -368,7 +368,7 @@
   }
 }
 
-- (void)appleIDChanged:(id)a3
+- (void)appleIDChanged:(id)changed
 {
   if (![(SDAirDropServer *)self thisIsTheFinder])
   {
@@ -383,7 +383,7 @@
   }
 }
 
-- (void)systemWillSleep:(id)a3
+- (void)systemWillSleep:(id)sleep
 {
   if (![(SDAirDropServer *)self thisIsTheFinder]&& self->_startTime != 0.0)
   {
@@ -399,7 +399,7 @@
   }
 }
 
-- (void)systemHasPoweredOn:(id)a3
+- (void)systemHasPoweredOn:(id)on
 {
   if (![(SDAirDropServer *)self thisIsTheFinder]&& self->_startTime == 0.0)
   {
@@ -407,9 +407,9 @@
     if (WeakRetained)
     {
       v5 = WeakRetained;
-      v6 = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
+      currentConsoleUser = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
 
-      if (v6)
+      if (currentConsoleUser)
       {
         v7 = airdrop_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -425,13 +425,13 @@
   }
 }
 
-- (void)consoleUserChanged:(id)a3
+- (void)consoleUserChanged:(id)changed
 {
   if (![(SDAirDropServer *)self thisIsTheFinder])
   {
-    v4 = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
+    currentConsoleUser = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
     startTime = self->_startTime;
-    if (v4)
+    if (currentConsoleUser)
     {
       if (startTime == 0.0)
       {
@@ -467,16 +467,16 @@
   }
 }
 
-- (void)finderAirDropEnabled:(id)a3
+- (void)finderAirDropEnabled:(id)enabled
 {
   if (![(SDAirDropServer *)self thisIsTheFinder])
   {
     v4 = airdrop_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(SDStatusMonitor *)self->_monitor finderAirDropEnabled];
+      finderAirDropEnabled = [(SDStatusMonitor *)self->_monitor finderAirDropEnabled];
       v6 = @"exited";
-      if (v5)
+      if (finderAirDropEnabled)
       {
         v6 = @"entered";
       }
@@ -490,13 +490,13 @@
   }
 }
 
-- (void)discoverableModeChanged:(id)a3
+- (void)discoverableModeChanged:(id)changed
 {
   if (![(SDAirDropServer *)self thisIsTheFinder])
   {
-    v4 = [(SDStatusMonitor *)self->_monitor discoverableMode];
+    discoverableMode = [(SDStatusMonitor *)self->_monitor discoverableMode];
     discoverableMode = self->_discoverableMode;
-    self->_discoverableMode = v4;
+    self->_discoverableMode = discoverableMode;
 
     v6 = airdrop_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -512,7 +512,7 @@
   }
 }
 
-- (void)keyBagFirstUnlock:(id)a3
+- (void)keyBagFirstUnlock:(id)unlock
 {
   v4 = airdrop_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -524,7 +524,7 @@
   [(SDAirDropServer *)self updateServerState];
 }
 
-- (void)screenStateChange:(id)a3
+- (void)screenStateChange:(id)change
 {
   if (![(SDAirDropServer *)self thisIsTheFinder])
   {
@@ -564,10 +564,10 @@
   [(SDAirDropServer *)self startServer];
 }
 
-- (void)handleFoundHashes:(id)a3 rssi:(id)a4
+- (void)handleFoundHashes:(id)hashes rssi:(id)rssi
 {
-  v6 = a3;
-  [(SDAirDropServer *)self logDiscoveryWithHash:v6 rssi:a4];
+  hashesCopy = hashes;
+  [(SDAirDropServer *)self logDiscoveryWithHash:hashesCopy rssi:rssi];
   if ([(SDAirDropServer *)self discoverableByEveryone])
   {
     v7 = airdrop_log();
@@ -593,7 +593,7 @@ LABEL_4:
     goto LABEL_13;
   }
 
-  v11 = [(SDStatusMonitor *)self->_monitor contactsContainsShortHashes:v6];
+  v11 = [(SDStatusMonitor *)self->_monitor contactsContainsShortHashes:hashesCopy];
   v7 = airdrop_log();
   v12 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   if (v11)
@@ -604,7 +604,7 @@ LABEL_4:
     }
 
     v13 = 138412290;
-    v14 = v6;
+    v14 = hashesCopy;
     v8 = "Hashes %@ exist in contacts, start server";
     v9 = v7;
     v10 = 12;
@@ -614,25 +614,25 @@ LABEL_4:
   if (v12)
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = hashesCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Hashes %@ not recognized", &v13, 0xCu);
   }
 
 LABEL_13:
 }
 
-- (void)logDiscoveryWithHash:(id)a3 rssi:(id)a4
+- (void)logDiscoveryWithHash:(id)hash rssi:(id)rssi
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableSet *)self->_discoveredHashes containsObject:v6];
+  hashCopy = hash;
+  rssiCopy = rssi;
+  v8 = [(NSMutableSet *)self->_discoveredHashes containsObject:hashCopy];
   v9 = airdrop_log();
   v10 = v9;
   if (v8)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000FE75C(v6, v7, v10);
+      sub_1000FE75C(hashCopy, rssiCopy, v10);
     }
   }
 
@@ -641,35 +641,35 @@ LABEL_13:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = hashCopy;
       v13 = 2112;
-      v14 = v7;
+      v14 = rssiCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "BTLE discovered hashes %@ rssi %@", &v11, 0x16u);
     }
 
-    [(NSMutableSet *)self->_discoveredHashes addObject:v6];
+    [(NSMutableSet *)self->_discoveredHashes addObject:hashCopy];
   }
 }
 
-- (void)awdl:(id)a3 foundDevice:(id)a4 rssi:(id)a5
+- (void)awdl:(id)awdl foundDevice:(id)device rssi:(id)rssi
 {
-  v7 = a5;
-  v8 = [a4 subdataWithRange:{1, 8}];
-  [(SDAirDropServer *)self handleFoundHashes:v8 rssi:v7];
+  rssiCopy = rssi;
+  v8 = [device subdataWithRange:{1, 8}];
+  [(SDAirDropServer *)self handleFoundHashes:v8 rssi:rssiCopy];
 }
 
-- (void)awdlDidUpdateState:(id)a3
+- (void)awdlDidUpdateState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 state];
-  if (v4 > 3)
+  stateCopy = state;
+  state = [stateCopy state];
+  if (state > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = *(&off_1008D04E0 + v4);
+    v5 = *(&off_1008D04E0 + state);
   }
 
   v6 = airdrop_log();
@@ -680,15 +680,15 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "BTLE scanner %@", &v7, 0xCu);
   }
 
-  if ([v3 state] == 3)
+  if ([stateCopy state] == 3)
   {
-    [v3 startConnectionlessAWDLServiceScanning];
+    [stateCopy startConnectionlessAWDLServiceScanning];
   }
 }
 
-- (void)awdl:(id)a3 failedToStartScanningWithError:(id)a4
+- (void)awdl:(id)awdl failedToStartScanningWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -707,23 +707,23 @@ LABEL_13:
 
   if (WeakRetained)
   {
-    v4 = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
-    v5 = [(SDStatusMonitor *)self->_monitor deviceWasUnlockedOnce];
-    v6 = [(SDAirDropServer *)self discoverableByContactsOnly];
-    if (v6)
+    currentConsoleUser = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
+    deviceWasUnlockedOnce = [(SDStatusMonitor *)self->_monitor deviceWasUnlockedOnce];
+    discoverableByContactsOnly = [(SDAirDropServer *)self discoverableByContactsOnly];
+    if (discoverableByContactsOnly)
     {
-      v7 = 1;
+      discoverableByEveryone = 1;
     }
 
     else
     {
-      v7 = [(SDAirDropServer *)self discoverableByEveryone];
+      discoverableByEveryone = [(SDAirDropServer *)self discoverableByEveryone];
     }
 
-    if (v4 & v7) == 1 && (self->_screenOn & v5)
+    if (currentConsoleUser & discoverableByEveryone) == 1 && (self->_screenOn & deviceWasUnlockedOnce)
     {
       [(SDAirDropServer *)self _createOSTransactionIfNeeded];
-      self->_contactsOnly = v6;
+      self->_contactsOnly = discoverableByContactsOnly;
       if ([(SDStatusMonitor *)self->_monitor enableDemoMode])
       {
 LABEL_12:
@@ -787,13 +787,13 @@ LABEL_12:
       {
         screenOn = self->_screenOn;
         v16 = 67109888;
-        *v17 = v4;
+        *v17 = currentConsoleUser;
         *&v17[4] = 1024;
-        *&v17[6] = v7;
+        *&v17[6] = discoverableByEveryone;
         v18 = 1024;
         v19 = screenOn;
         v20 = 1024;
-        v21 = v5;
+        v21 = deviceWasUnlockedOnce;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Scanning mode off: console=%d, discoverable=%d, screenOn=%d, unlockedOnce=%d", &v16, 0x1Au);
       }
 
@@ -811,19 +811,19 @@ LABEL_12:
   }
 }
 
-- (void)airDropUnpublished:(id)a3
+- (void)airDropUnpublished:(id)unpublished
 {
-  v4 = [a3 object];
-  if (v4 != self && !self->_server)
+  object = [unpublished object];
+  if (object != self && !self->_server)
   {
-    v9 = v4;
+    v9 = object;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = WeakRetained;
     if (WeakRetained && self->_screenOn)
     {
-      v7 = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
+      currentConsoleUser = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
 
-      if (v7)
+      if (currentConsoleUser)
       {
         queue = self->_queue;
         block[0] = _NSConcreteStackBlock;
@@ -837,7 +837,7 @@ LABEL_12:
       return;
     }
 
-    v4 = v9;
+    object = v9;
   }
 }
 
@@ -863,11 +863,11 @@ LABEL_12:
   [v3 removeObserver:self];
 }
 
-- (void)notifyClient:(int64_t)a3 withResults:(id)a4
+- (void)notifyClient:(int64_t)client withResults:(id)results
 {
-  v6 = a4;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained airDropServer:self event:a3 withResults:v6];
+  [WeakRetained airDropServer:self event:client withResults:resultsCopy];
 }
 
 - (id)sslSettings
@@ -885,12 +885,12 @@ LABEL_12:
     [v3 setObject:v4 forKeyedSubscript:_kCFHTTPServerStreamSSLSettings];
     if (self->_identity)
     {
-      v5 = [(SDStatusMonitor *)self->_monitor copyMyAppleIDIntermediateCertificate];
-      if (v5)
+      copyMyAppleIDIntermediateCertificate = [(SDStatusMonitor *)self->_monitor copyMyAppleIDIntermediateCertificate];
+      if (copyMyAppleIDIntermediateCertificate)
       {
-        v6 = v5;
+        v6 = copyMyAppleIDIntermediateCertificate;
         v12[0] = self->_identity;
-        v12[1] = v5;
+        v12[1] = copyMyAppleIDIntermediateCertificate;
         v7 = [NSArray arrayWithObjects:v12 count:2];
         [v3 setObject:v7 forKeyedSubscript:_kCFHTTPServerServerTrustChain];
 
@@ -925,7 +925,7 @@ LABEL_12:
   return v3;
 }
 
-- (void)startHTTPServer:(unsigned __int16)a3
+- (void)startHTTPServer:(unsigned __int16)server
 {
   if (!self->_server && self->_startTime != 0.0)
   {
@@ -941,9 +941,9 @@ LABEL_12:
       _CFHTTPServerSetProperty();
       if (!sub_1001F2594() && ![(SDStatusMonitor *)self->_monitor enableDemoMode]|| SFDeviceIsVirtualMachine())
       {
-        v7 = [(SDStatusMonitor *)self->_monitor registerAllInterfaces];
+        registerAllInterfaces = [(SDStatusMonitor *)self->_monitor registerAllInterfaces];
         v8 = &_kCFHTTPServerAllInterfacesIdentifier;
-        if (!v7)
+        if (!registerAllInterfaces)
         {
           v8 = &off_1008CE598;
         }
@@ -1097,21 +1097,21 @@ LABEL_7:
   }
 }
 
-- (void)foundDevice:(id)a3
+- (void)foundDevice:(id)device
 {
-  v4 = a3;
-  LOBYTE(v8) = [v4 airdropHash1] >> 8;
-  BYTE1(v8) = [v4 airdropHash1];
-  BYTE2(v8) = [v4 airdropHash2] >> 8;
-  BYTE3(v8) = [v4 airdropHash2];
-  BYTE4(v8) = [v4 airdropHash3] >> 8;
-  BYTE5(v8) = [v4 airdropHash3];
-  BYTE6(v8) = [v4 airdropHash4] >> 8;
-  HIBYTE(v8) = [v4 airdropHash4];
+  deviceCopy = device;
+  LOBYTE(v8) = [deviceCopy airdropHash1] >> 8;
+  BYTE1(v8) = [deviceCopy airdropHash1];
+  BYTE2(v8) = [deviceCopy airdropHash2] >> 8;
+  BYTE3(v8) = [deviceCopy airdropHash2];
+  BYTE4(v8) = [deviceCopy airdropHash3] >> 8;
+  BYTE5(v8) = [deviceCopy airdropHash3];
+  BYTE6(v8) = [deviceCopy airdropHash4] >> 8;
+  HIBYTE(v8) = [deviceCopy airdropHash4];
   v5 = [NSData dataWithBytes:&v8 length:8];
-  v6 = [v4 bleRSSI];
+  bleRSSI = [deviceCopy bleRSSI];
 
-  v7 = [NSNumber numberWithInt:v6];
+  v7 = [NSNumber numberWithInt:bleRSSI];
   [(SDAirDropServer *)self handleFoundHashes:v5 rssi:v7];
 }
 
@@ -1243,22 +1243,22 @@ LABEL_7:
   {
     v8[9] = v2;
     v8[10] = v3;
-    v5 = self;
+    selfCopy = self;
     v6 = objc_opt_new();
     coalescer = self->_coalescer;
     self->_coalescer = v6;
 
-    [(CUCoalescer *)self->_coalescer setDispatchQueue:v5->_queue];
+    [(CUCoalescer *)self->_coalescer setDispatchQueue:selfCopy->_queue];
     [(CUCoalescer *)self->_coalescer setMaxDelay:0.4];
     [(CUCoalescer *)self->_coalescer setMinDelay:0.3];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000FE110;
     v8[3] = &unk_1008CDEA0;
-    v8[4] = v5;
+    v8[4] = selfCopy;
     [(CUCoalescer *)self->_coalescer setActionHandler:v8];
-    [(SDAirDropServer *)v5 addObservers];
-    [(SDAirDropServer *)v5 start];
+    [(SDAirDropServer *)selfCopy addObservers];
+    [(SDAirDropServer *)selfCopy start];
   }
 }
 
@@ -1342,8 +1342,8 @@ LABEL_7:
   proximity = self->_proximity;
   if (proximity)
   {
-    v15 = [(WPAWDL *)proximity state];
-    v16 = v15 > 5 ? "?" : off_1008D0500[v15];
+    state = [(WPAWDL *)proximity state];
+    v16 = state > 5 ? "?" : off_1008D0500[state];
     v30 = v16;
     NSAppendPrintF();
     v17 = v13;
@@ -1354,8 +1354,8 @@ LABEL_7:
 
     if ([(NSMutableSet *)self->_discoveredHashes count])
     {
-      v18 = [(NSMutableSet *)self->_discoveredHashes allObjects];
-      v32 = [v18 componentsJoinedByString:{@", "}];
+      allObjects = [(NSMutableSet *)self->_discoveredHashes allObjects];
+      v32 = [allObjects componentsJoinedByString:{@", "}];
       NSAppendPrintF();
       v19 = v13;
 

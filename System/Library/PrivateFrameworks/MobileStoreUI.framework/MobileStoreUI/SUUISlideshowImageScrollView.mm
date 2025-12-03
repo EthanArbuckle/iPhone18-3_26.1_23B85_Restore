@@ -1,23 +1,23 @@
 @interface SUUISlideshowImageScrollView
 - (CGRect)visibleRect;
-- (SUUISlideshowImageScrollView)initWithFrame:(CGRect)a3;
+- (SUUISlideshowImageScrollView)initWithFrame:(CGRect)frame;
 - (void)_prepareToResize;
 - (void)_recoverFromResize;
 - (void)_resetMinMaxZoomScales;
 - (void)layoutSubviews;
 - (void)resetZoomScale;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)zoomIntoPoint:(CGPoint)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)zoomIntoPoint:(CGPoint)point;
 @end
 
 @implementation SUUISlideshowImageScrollView
 
-- (SUUISlideshowImageScrollView)initWithFrame:(CGRect)a3
+- (SUUISlideshowImageScrollView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUISlideshowImageScrollView;
-  v3 = [(SUUISlideshowImageScrollView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUISlideshowImageScrollView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -42,10 +42,10 @@
   [(SUUISlideshowImageScrollView *)self setZoomScale:?];
 }
 
-- (void)zoomIntoPoint:(CGPoint)a3
+- (void)zoomIntoPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(SUUISlideshowImageScrollView *)self zoomScale];
   v7 = v6;
   [(SUUISlideshowImageScrollView *)self minimumZoomScale];
@@ -128,12 +128,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SUUISlideshowImageScrollView *)self frame];
   if (width == v9 && height == v8)
   {
@@ -152,22 +152,22 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v8 = a3;
-  objc_storeStrong(&self->_image, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_image, image);
   imageView = self->_imageView;
   if (imageView)
   {
     [(UIImageView *)imageView removeFromSuperview];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v8];
+  v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageCopy];
   v7 = self->_imageView;
   self->_imageView = v6;
 
   [(SUUISlideshowImageScrollView *)self addSubview:self->_imageView];
-  [v8 size];
+  [imageCopy size];
   [(SUUISlideshowImageScrollView *)self setContentSize:?];
   [(SUUISlideshowImageScrollView *)self _resetMinMaxZoomScales];
   [(SUUISlideshowImageScrollView *)self minimumZoomScale];

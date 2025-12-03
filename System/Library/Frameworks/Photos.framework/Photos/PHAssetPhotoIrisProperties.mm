@@ -2,7 +2,7 @@
 + (id)propertiesToFetch;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)photoIrisStillDisplayTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)photoIrisVideoDuration;
-- (PHAssetPhotoIrisProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetPhotoIrisProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetPhotoIrisProperties
@@ -21,21 +21,21 @@
   return self;
 }
 
-- (PHAssetPhotoIrisProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetPhotoIrisProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v27.receiver = self;
   v27.super_class = PHAssetPhotoIrisProperties;
   v10 = [(PHAssetPhotoIrisProperties *)&v27 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    v12 = [v9 videoCpDurationValue];
-    v13 = !v5;
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    videoCpDurationValue = [assetCopy videoCpDurationValue];
+    v13 = !prefetchedCopy;
+    if (prefetchedCopy)
     {
       v14 = @"additionalAttributes.videoCpDurationTimescale";
     }
@@ -45,7 +45,7 @@
       v14 = @"videoCpDurationTimescale";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v15 = @"additionalAttributes.videoCpDisplayValue";
     }
@@ -65,24 +65,24 @@
       v16 = @"additionalAttributes.videoCpDisplayTimescale";
     }
 
-    v17 = [v8 objectForKeyedSubscript:v14];
-    v18 = [v17 integerValue];
+    v17 = [dictionaryCopy objectForKeyedSubscript:v14];
+    integerValue = [v17 integerValue];
 
-    v19 = [v8 objectForKeyedSubscript:v15];
-    v20 = [v19 integerValue];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v15];
+    integerValue2 = [v19 integerValue];
 
-    v21 = [v8 objectForKeyedSubscript:v16];
-    v22 = [v21 integerValue];
+    v21 = [dictionaryCopy objectForKeyedSubscript:v16];
+    integerValue3 = [v21 integerValue];
 
-    CMTimeMake(&v26, v20, v22);
+    CMTimeMake(&v26, integerValue2, integerValue3);
     v23 = *&v26.value;
     *&v11->_photoIrisStillDisplayTime.flags = v26.epoch;
     *(&v11->_photoIrisVisibilityState + 2) = v23;
-    CMTimeMake(&v26, v12, v18);
+    CMTimeMake(&v26, videoCpDurationValue, integerValue);
     v24 = *&v26.value;
     *&v11->_photoIrisVideoDuration.flags = v26.epoch;
     *(&v11->_photoIrisStillDisplayTime.epoch + 4) = v24;
-    v11->_photoIrisVisibilityState = [v9 videoCpVisibilityState];
+    v11->_photoIrisVisibilityState = [assetCopy videoCpVisibilityState];
   }
 
   return v11;

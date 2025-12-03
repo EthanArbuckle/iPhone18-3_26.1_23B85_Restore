@@ -1,26 +1,26 @@
 @interface PUEditingErrorPresentationController
-+ (BOOL)errorIsDownloadError:(id)a3;
-+ (id)_hardwareModelSpecificMessageForKeyPrefix:(id)a3;
-+ (id)_mediaSpecificMessageForKeyPrefix:(id)a3 forAssets:(id)a4;
-+ (int64_t)editingErrorTypeFromError:(id)a3;
++ (BOOL)errorIsDownloadError:(id)error;
++ (id)_hardwareModelSpecificMessageForKeyPrefix:(id)prefix;
++ (id)_mediaSpecificMessageForKeyPrefix:(id)prefix forAssets:(id)assets;
++ (int64_t)editingErrorTypeFromError:(id)error;
 - (BOOL)shouldShowFileRadarAction;
-- (PUEditingErrorPresentationController)initWithError:(id)a3 forAsset:(id)a4;
-- (PUEditingErrorPresentationController)initWithErrors:(id)a3 forAssets:(id)a4;
-- (id)additionalRadarDescriptionLinesForAsset:(id)a3;
-- (void)configureAlertPropertiesFromError:(id)a3 withAssets:(id)a4 willShowFileRadarButton:(BOOL)a5 alertCompletion:(id)a6;
-- (void)configureRadarPropertiesFromError:(id)a3 withAssets:(id)a4;
+- (PUEditingErrorPresentationController)initWithError:(id)error forAsset:(id)asset;
+- (PUEditingErrorPresentationController)initWithErrors:(id)errors forAssets:(id)assets;
+- (id)additionalRadarDescriptionLinesForAsset:(id)asset;
+- (void)configureAlertPropertiesFromError:(id)error withAssets:(id)assets willShowFileRadarButton:(BOOL)button alertCompletion:(id)completion;
+- (void)configureRadarPropertiesFromError:(id)error withAssets:(id)assets;
 @end
 
 @implementation PUEditingErrorPresentationController
 
-- (void)configureAlertPropertiesFromError:(id)a3 withAssets:(id)a4 willShowFileRadarButton:(BOOL)a5 alertCompletion:(id)a6
+- (void)configureAlertPropertiesFromError:(id)error withAssets:(id)assets willShowFileRadarButton:(BOOL)button alertCompletion:(id)completion
 {
-  v7 = a5;
+  buttonCopy = button;
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v41 = a6;
-  v12 = [objc_opt_class() editingErrorTypeFromError:v10];
+  errorCopy = error;
+  assetsCopy = assets;
+  completionCopy = completion;
+  v12 = [objc_opt_class() editingErrorTypeFromError:errorCopy];
   v13 = v12;
   if (v12 > 3)
   {
@@ -38,19 +38,19 @@
     *buf = 138543618;
     v43 = v14;
     v44 = 2114;
-    v45 = v10;
+    v45 = errorCopy;
     _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_ERROR, "Edit: Will show Unable to edit dialogue. Error Type: %{public}@. Actual Error: %{public}@", buf, 0x16u);
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
-  v17 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v18 = PULocalizedString(@"OK");
-  v40 = v11;
+  v40 = assetsCopy;
   if (v13 - 1 > 2)
   {
-    v25 = [(__CFString *)v10 domain];
+    domain = [(__CFString *)errorCopy domain];
     v26 = +[PUOneUpSpatialToastController downloadErrorDomain];
-    v27 = [v25 isEqualToString:v26];
+    v27 = [domain isEqualToString:v26];
 
     if (v27)
     {
@@ -58,7 +58,7 @@
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v43 = v10;
+        v43 = errorCopy;
         _os_log_impl(&dword_1B36F3000, v28, OS_LOG_TYPE_ERROR, "Error loading base image: %@", buf, 0xCu);
       }
 
@@ -69,9 +69,9 @@
     else
     {
       v30 = objc_opt_class();
-      v31 = [(PUErrorPresentationController *)self assets];
-      v32 = [v31 firstObject];
-      LODWORD(v30) = [v30 assetIsStandardVideo:v32];
+      assets = [(PUErrorPresentationController *)self assets];
+      firstObject = [assets firstObject];
+      LODWORD(v30) = [v30 assetIsStandardVideo:firstObject];
 
       v33 = PLPhotoEditGetLog();
       v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -80,7 +80,7 @@
         if (v34)
         {
           *buf = 138412290;
-          v43 = v10;
+          v43 = errorCopy;
           _os_log_impl(&dword_1B36F3000, v33, OS_LOG_TYPE_ERROR, "Error loading base video: %@", buf, 0xCu);
         }
 
@@ -93,7 +93,7 @@
         if (v34)
         {
           *buf = 138412290;
-          v43 = v10;
+          v43 = errorCopy;
           _os_log_impl(&dword_1B36F3000, v33, OS_LOG_TYPE_ERROR, "Error loading base image: %@", buf, 0xCu);
         }
 
@@ -105,7 +105,7 @@
     v20 = PULocalizedString(v29);
     if (MEMORY[0x1B8C6C170]())
     {
-      v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\n[INTERNAL ONLY] %@", v20, v10, v40];
+      v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\n[INTERNAL ONLY] %@", v20, errorCopy, v40];
 
       goto LABEL_28;
     }
@@ -116,16 +116,16 @@
     if (v13 == 3)
     {
       v19 = PULocalizedString(@"PHOTOEDIT_EDIT_LOAD_CELLULAR_RESTRICTED_TITLE");
-      v20 = [objc_opt_class() _mediaSpecificMessageForKeyPrefix:@"PHOTOEDIT_EDIT_LOAD_CELLULAR_RESTRICTED_MESSAGE_" forAssets:v11];
+      v20 = [objc_opt_class() _mediaSpecificMessageForKeyPrefix:@"PHOTOEDIT_EDIT_LOAD_CELLULAR_RESTRICTED_MESSAGE_" forAssets:assetsCopy];
       v35 = objc_opt_class();
       v36 = PULocalizedString(@"PHOTOEDIT_EDIT_LOAD_CELLULAR_RESTRICTED_MANAGE_BUTTON_TITLE");
-      v37 = [v35 alertActionForNavigatingToDestination:9 withTitle:v36 completion:v41];
+      v37 = [v35 alertActionForNavigatingToDestination:9 withTitle:v36 completion:completionCopy];
 
-      [v17 addObject:v37];
+      [array2 addObject:v37];
       v38 = PULocalizedString(@"CANCEL");
 
       v18 = v38;
-      if (!v7)
+      if (!buttonCopy)
       {
         goto LABEL_29;
       }
@@ -136,16 +136,16 @@
     if (v13 == 2)
     {
       v19 = PULocalizedString(@"PHOTOEDIT_EDIT_LOAD_AIRPLANE_MODE_TITLE");
-      v20 = [objc_opt_class() _mediaSpecificMessageForKeyPrefix:@"PHOTOEDIT_EDIT_LOAD_AIRPLANE_MODE_MESSAGE_" forAssets:v11];
+      v20 = [objc_opt_class() _mediaSpecificMessageForKeyPrefix:@"PHOTOEDIT_EDIT_LOAD_AIRPLANE_MODE_MESSAGE_" forAssets:assetsCopy];
       v21 = objc_opt_class();
       v22 = PULocalizedString(@"PHOTOEDIT_EDIT_LOAD_AIRPLANE_MODE_MANAGE_BUTTON_TITLE");
-      v23 = [v21 alertActionForNavigatingToDestination:10 withTitle:v22 completion:v41];
+      v23 = [v21 alertActionForNavigatingToDestination:10 withTitle:v22 completion:completionCopy];
 
-      [v17 addObject:v23];
+      [array2 addObject:v23];
       v24 = PULocalizedString(@"CANCEL");
 
       v18 = v24;
-      if (!v7)
+      if (!buttonCopy)
       {
         goto LABEL_29;
       }
@@ -153,15 +153,15 @@
       goto LABEL_22;
     }
 
-    v19 = [objc_opt_class() _mediaSpecificMessageForKeyPrefix:@"PHOTOEDIT_EDIT_LOAD_NETWORK_ERROR_TITLE_" forAssets:v11];
+    v19 = [objc_opt_class() _mediaSpecificMessageForKeyPrefix:@"PHOTOEDIT_EDIT_LOAD_NETWORK_ERROR_TITLE_" forAssets:assetsCopy];
     v20 = [objc_opt_class() _hardwareModelSpecificMessageForKeyPrefix:@"PHOTOEDIT_EDIT_LOAD_NETWORK_ERROR_MESSAGE_"];
-    if (v7)
+    if (buttonCopy)
     {
 LABEL_22:
       v39 = [v20 stringByAppendingString:{@"\n\n[Internal Only] If you feel like this network error is unexpected, please file a radar (and explain why)."}];
 
-      [v16 addObject:@"Can you reach the internet in other apps?"];
-      [v16 addObject:@"Do you have any cellular restrictions on Photos?"];
+      [array addObject:@"Can you reach the internet in other apps?"];
+      [array addObject:@"Do you have any cellular restrictions on Photos?"];
 LABEL_28:
       v20 = v39;
     }
@@ -170,23 +170,23 @@ LABEL_28:
 LABEL_29:
   [(PUErrorPresentationController *)self setAlertTitle:v19];
   [(PUErrorPresentationController *)self setAlertMessage:v20];
-  [(PUErrorPresentationController *)self setAdditionalQuestionsInRadarDescription:v16];
-  [(PUErrorPresentationController *)self setAdditionalAlertActions:v17];
+  [(PUErrorPresentationController *)self setAdditionalQuestionsInRadarDescription:array];
+  [(PUErrorPresentationController *)self setAdditionalAlertActions:array2];
   [(PUErrorPresentationController *)self setDismissButtonTitle:v18];
 }
 
-- (void)configureRadarPropertiesFromError:(id)a3 withAssets:(id)a4
+- (void)configureRadarPropertiesFromError:(id)error withAssets:(id)assets
 {
-  [(PUErrorPresentationController *)self setRadarTitle:@"[Unable to Edit TTR]: <Add brief error description>", a4];
+  [(PUErrorPresentationController *)self setRadarTitle:@"[Unable to Edit TTR]: <Add brief error description>", assets];
 
   [(PUErrorPresentationController *)self setRadarComponentID:@"476277" name:@"Photos UI Edit" version:@"iOS"];
 }
 
-- (id)additionalRadarDescriptionLinesForAsset:(id)a3
+- (id)additionalRadarDescriptionLinesForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v3;
+  assetCopy = asset;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = assetCopy;
   v6 = MEMORY[0x1E696AEC0];
   if ([v5 isAdjusted])
   {
@@ -199,7 +199,7 @@ LABEL_29:
   }
 
   v8 = [v6 stringWithFormat:@"Is Adjusted: %@", v7];
-  [v4 addObject:v8];
+  [array addObject:v8];
 
   v9 = MEMORY[0x1E696AEC0];
   if ([v5 isContentAdjustmentAllowed])
@@ -213,7 +213,7 @@ LABEL_29:
   }
 
   v11 = [v9 stringWithFormat:@"Content Adjustment Allowed: %@", v10];
-  [v4 addObject:v11];
+  [array addObject:v11];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -231,12 +231,12 @@ LABEL_29:
     }
 
     v15 = [v12 stringWithFormat:@"Needs Deferred Processing: %@", v14];
-    [v4 addObject:v15];
+    [array addObject:v15];
 
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [v13 isPhotoStreamPhoto];
+    isPhotoStreamPhoto = [v13 isPhotoStreamPhoto];
 
-    if (v17)
+    if (isPhotoStreamPhoto)
     {
       v18 = @"YES";
     }
@@ -247,7 +247,7 @@ LABEL_29:
     }
 
     v19 = [v16 stringWithFormat:@"Is Shared Album Asset: %@", v18];
-    [v4 addObject:v19];
+    [array addObject:v19];
   }
 
   if ([v5 isLivePhoto])
@@ -264,68 +264,68 @@ LABEL_29:
     }
 
     v22 = [v20 stringWithFormat:@"Significant color adjustments between image and video (e.g. HDR): %@", v21];
-    [v4 addObject:v22];
+    [array addObject:v22];
   }
 
-  v23 = [v5 pathForOriginalImageFile];
+  pathForOriginalImageFile = [v5 pathForOriginalImageFile];
 
-  if (v23)
+  if (pathForOriginalImageFile)
   {
     v24 = MEMORY[0x1E696AEC0];
-    v25 = [v5 pathForOriginalImageFile];
-    v26 = [v25 lastPathComponent];
-    [v24 stringWithFormat:@"%@ (Original Image file)", v26];
+    pathForOriginalImageFile2 = [v5 pathForOriginalImageFile];
+    lastPathComponent = [pathForOriginalImageFile2 lastPathComponent];
+    [v24 stringWithFormat:@"%@ (Original Image file)", lastPathComponent];
     v31 = LABEL_26:;
 
     goto LABEL_27;
   }
 
-  v27 = [v5 pathForOriginalVideoFile];
+  pathForOriginalVideoFile = [v5 pathForOriginalVideoFile];
 
-  if (v27)
+  if (pathForOriginalVideoFile)
   {
     v28 = MEMORY[0x1E696AEC0];
-    v25 = [v5 pathForOriginalVideoFile];
-    v26 = [v25 lastPathComponent];
-    [v28 stringWithFormat:@"%@ (Original Video file)", v26];
+    pathForOriginalImageFile2 = [v5 pathForOriginalVideoFile];
+    lastPathComponent = [pathForOriginalImageFile2 lastPathComponent];
+    [v28 stringWithFormat:@"%@ (Original Video file)", lastPathComponent];
     goto LABEL_26;
   }
 
-  v29 = [v5 pathForTrimmedVideoFile];
+  pathForTrimmedVideoFile = [v5 pathForTrimmedVideoFile];
 
-  if (v29)
+  if (pathForTrimmedVideoFile)
   {
     v30 = MEMORY[0x1E696AEC0];
-    v25 = [v5 pathForTrimmedVideoFile];
-    v26 = [v25 lastPathComponent];
-    [v30 stringWithFormat:@"%@ (Original Trimmed Video file)", v26];
+    pathForOriginalImageFile2 = [v5 pathForTrimmedVideoFile];
+    lastPathComponent = [pathForOriginalImageFile2 lastPathComponent];
+    [v30 stringWithFormat:@"%@ (Original Trimmed Video file)", lastPathComponent];
     goto LABEL_26;
   }
 
   v31 = &stru_1F2AC6818;
 LABEL_27:
   v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Path: %@", v31];
-  [v4 addObject:v32];
+  [array addObject:v32];
 
-  return v4;
+  return array;
 }
 
 - (BOOL)shouldShowFileRadarAction
 {
   v2 = +[PUPhotoEditProtoSettings sharedInstance];
-  v3 = [v2 showFileRadarButtonForEditEntryOnInternalInstalls];
+  showFileRadarButtonForEditEntryOnInternalInstalls = [v2 showFileRadarButtonForEditEntryOnInternalInstalls];
 
-  return v3;
+  return showFileRadarButtonForEditEntryOnInternalInstalls;
 }
 
-- (PUEditingErrorPresentationController)initWithError:(id)a3 forAsset:(id)a4
+- (PUEditingErrorPresentationController)initWithError:(id)error forAsset:(id)asset
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E6978630] descriptionForMediaType:{objc_msgSend(v7, "mediaType")}];
-  v9 = [MEMORY[0x1E6978630] descriptionForMediaSubtypes:{objc_msgSend(v7, "mediaSubtypes")}];
-  v10 = [PUEditingErrorPresentationController editingErrorTypeFromError:v6];
+  errorCopy = error;
+  assetCopy = asset;
+  v8 = [MEMORY[0x1E6978630] descriptionForMediaType:{objc_msgSend(assetCopy, "mediaType")}];
+  v9 = [MEMORY[0x1E6978630] descriptionForMediaSubtypes:{objc_msgSend(assetCopy, "mediaSubtypes")}];
+  v10 = [PUEditingErrorPresentationController editingErrorTypeFromError:errorCopy];
   if (v10 > 3)
   {
     v11 = @"Unknown";
@@ -339,9 +339,9 @@ LABEL_27:
   v12 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v13 = [v7 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138544386;
-    v22 = v13;
+    v22 = uuid;
     v23 = 2114;
     v24 = v8;
     v25 = 2114;
@@ -349,13 +349,13 @@ LABEL_27:
     v27 = 2114;
     v28 = v11;
     v29 = 2112;
-    v30 = v6;
+    v30 = errorCopy;
     _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_ERROR, "Error loading asset %{public}@ of type: %{public}@ and subtype: %{public}@ for editing. Determined Error Type: %{public}@. Raw Error: %@", buf, 0x34u);
   }
 
-  v20 = v6;
+  v20 = errorCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-  v19 = v7;
+  v19 = assetCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
   v18.receiver = self;
   v18.super_class = PUEditingErrorPresentationController;
@@ -364,13 +364,13 @@ LABEL_27:
   return v16;
 }
 
-- (PUEditingErrorPresentationController)initWithErrors:(id)a3 forAssets:(id)a4
+- (PUEditingErrorPresentationController)initWithErrors:(id)errors forAssets:(id)assets
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 firstObject];
-  v9 = [PUEditingErrorPresentationController editingErrorTypeFromError:v8];
+  assetsCopy = assets;
+  errorsCopy = errors;
+  firstObject = [errorsCopy firstObject];
+  v9 = [PUEditingErrorPresentationController editingErrorTypeFromError:firstObject];
   if (v9 > 3)
   {
     v10 = @"Unknown";
@@ -385,30 +385,30 @@ LABEL_27:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218498;
-    v16 = [v6 count];
+    v16 = [assetsCopy count];
     v17 = 2114;
     v18 = v10;
     v19 = 2112;
-    v20 = v8;
+    v20 = firstObject;
     _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_ERROR, "Error loading assets. # assets: %lu. First Error Type: %{public}@. First Raw Error: %@", buf, 0x20u);
   }
 
   v14.receiver = self;
   v14.super_class = PUEditingErrorPresentationController;
-  v12 = [(PUErrorPresentationController *)&v14 initWithErrors:v7 forAssets:v6];
+  v12 = [(PUErrorPresentationController *)&v14 initWithErrors:errorsCopy forAssets:assetsCopy];
 
   return v12;
 }
 
-+ (BOOL)errorIsDownloadError:(id)a3
++ (BOOL)errorIsDownloadError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v3 code];
-  v6 = [objc_opt_class() isNetworkRelatedError:v3];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  code = [errorCopy code];
+  v6 = [objc_opt_class() isNetworkRelatedError:errorCopy];
 
-  v7 = [v4 isEqualToString:*MEMORY[0x1E6978F50]];
-  if (v5 == 3303)
+  v7 = [domain isEqualToString:*MEMORY[0x1E6978F50]];
+  if (code == 3303)
   {
     v8 = v7;
   }
@@ -423,7 +423,7 @@ LABEL_27:
   return v9 & 1;
 }
 
-+ (id)_hardwareModelSpecificMessageForKeyPrefix:(id)a3
++ (id)_hardwareModelSpecificMessageForKeyPrefix:(id)prefix
 {
   v3 = PXLocalizationKeyByAddingDeviceModelSuffix();
   v4 = PULocalizedString(v3);
@@ -431,7 +431,7 @@ LABEL_27:
   return v4;
 }
 
-+ (id)_mediaSpecificMessageForKeyPrefix:(id)a3 forAssets:(id)a4
++ (id)_mediaSpecificMessageForKeyPrefix:(id)prefix forAssets:(id)assets
 {
   v4 = PXLocalizationKeyByAddingMediaSpecificSuffixForAssets();
   v5 = PULocalizedString(v4);
@@ -439,29 +439,29 @@ LABEL_27:
   return v5;
 }
 
-+ (int64_t)editingErrorTypeFromError:(id)a3
++ (int64_t)editingErrorTypeFromError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  errorCopy = error;
   v4 = +[PUPhotoEditProtoSettings sharedInstance];
-  v5 = [v4 simulateEditEntryError];
+  simulateEditEntryError = [v4 simulateEditEntryError];
 
-  if (v5)
+  if (simulateEditEntryError)
   {
     v6 = +[PUPhotoEditProtoSettings sharedInstance];
-    v7 = [v6 simulatedEditingEntryErrorType];
+    simulatedEditingEntryErrorType = [v6 simulatedEditingEntryErrorType];
 
     v8 = PLUIGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (v7 > 3)
+      if (simulatedEditingEntryErrorType > 3)
       {
         v9 = @"Unknown";
       }
 
       else
       {
-        v9 = off_1E7B77648[v7];
+        v9 = off_1E7B77648[simulatedEditingEntryErrorType];
       }
 
       v15 = 138543362;
@@ -472,20 +472,20 @@ LABEL_27:
     goto LABEL_16;
   }
 
-  if (![objc_opt_class() errorIsDownloadError:v3])
+  if (![objc_opt_class() errorIsDownloadError:errorCopy])
   {
-    v13 = [v3 userInfo];
-    v8 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [objc_opt_class() editingErrorTypeFromError:v8];
+      simulatedEditingEntryErrorType = [objc_opt_class() editingErrorTypeFromError:v8];
     }
 
     else
     {
-      v7 = 0;
+      simulatedEditingEntryErrorType = 0;
     }
 
 LABEL_16:
@@ -503,17 +503,17 @@ LABEL_16:
 
   if (v10)
   {
-    v7 = 2;
+    simulatedEditingEntryErrorType = 2;
   }
 
   else
   {
-    v7 = v12;
+    simulatedEditingEntryErrorType = v12;
   }
 
 LABEL_17:
 
-  return v7;
+  return simulatedEditingEntryErrorType;
 }
 
 @end

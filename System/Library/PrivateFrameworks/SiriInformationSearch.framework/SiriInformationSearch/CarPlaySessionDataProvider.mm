@@ -1,22 +1,22 @@
 @interface CarPlaySessionDataProvider
 - (_TtC21SiriInformationSearch26CarPlaySessionDataProvider)init;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation CarPlaySessionDataProvider
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  CarPlaySessionDataProvider.sessionDidConnect(_:)(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  CarPlaySessionDataProvider.sessionDidConnect(_:)(connectCopy);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   specialized CarPlaySessionDataProvider.sessionDidDisconnect(_:)();
 }
 

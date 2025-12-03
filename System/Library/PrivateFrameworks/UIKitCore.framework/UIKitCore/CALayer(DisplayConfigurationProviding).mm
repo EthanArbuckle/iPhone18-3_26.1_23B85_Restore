@@ -6,14 +6,14 @@
 
 - (id)_uis_provideRenderingAttributes
 {
-  v1 = _UIViewLayerGetNearestAncestorView(a1);
-  v2 = [v1 traitCollection];
-  v3 = [v2 objectForTrait:objc_opt_class()];
+  v1 = _UIViewLayerGetNearestAncestorView(self);
+  traitCollection = [v1 traitCollection];
+  v3 = [traitCollection objectForTrait:objc_opt_class()];
   if (!v3)
   {
-    v4 = [v1 _window];
-    v5 = [v4 windowScene];
-    v6 = [(UIScene *)v5 _renderingEnvironmentSceneComponentRegisteringIfNecessary:?];
+    _window = [v1 _window];
+    windowScene = [_window windowScene];
+    v6 = [(UIScene *)windowScene _renderingEnvironmentSceneComponentRegisteringIfNecessary:?];
 
     if (v6)
     {

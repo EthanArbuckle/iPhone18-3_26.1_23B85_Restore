@@ -1,14 +1,14 @@
 @interface WFOpenInActionUIKitUserInterface
-- (id)excludedActivityTypesForDocumentInteractionController:(id)a3;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)documentInteractionControllerDidDismissOpenInMenu:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)showWithFile:(id)a3 contentManaged:(BOOL)a4 completionHandler:(id)a5;
+- (id)excludedActivityTypesForDocumentInteractionController:(id)controller;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)documentInteractionControllerDidDismissOpenInMenu:(id)menu;
+- (void)finishWithError:(id)error;
+- (void)showWithFile:(id)file contentManaged:(BOOL)managed completionHandler:(id)handler;
 @end
 
 @implementation WFOpenInActionUIKitUserInterface
 
-- (id)excludedActivityTypesForDocumentInteractionController:(id)a3
+- (id)excludedActivityTypesForDocumentInteractionController:(id)controller
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = *MEMORY[0x277D54710];
@@ -18,25 +18,25 @@
   return v3;
 }
 
-- (void)documentInteractionControllerDidDismissOpenInMenu:(id)a3
+- (void)documentInteractionControllerDidDismissOpenInMenu:(id)menu
 {
   [(WFOpenInActionUIKitUserInterface *)self setDocumentController:0];
 
   [(WFOpenInActionUIKitUserInterface *)self finishWithError:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__WFOpenInActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFOpenInActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -51,29 +51,29 @@ uint64_t __76__WFOpenInActionUIKitUserInterface_cancelPresentationWithCompletion
   return v4();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(WFOpenInActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFOpenInActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFOpenInActionUIKitUserInterface *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(WFOpenInActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 
   [(WFOpenInActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithFile:(id)a3 contentManaged:(BOOL)a4 completionHandler:(id)a5
+- (void)showWithFile:(id)file contentManaged:(BOOL)managed completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  fileCopy = file;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (!fileCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFOpenInActionUIKitUserInterface.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"file"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFOpenInActionUIKitUserInterface.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"file"}];
 
     if (v11)
     {
@@ -81,13 +81,13 @@ uint64_t __76__WFOpenInActionUIKitUserInterface_cancelPresentationWithCompletion
     }
 
 LABEL_5:
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFOpenInActionUIKitUserInterface.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFOpenInActionUIKitUserInterface.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -98,10 +98,10 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __82__WFOpenInActionUIKitUserInterface_showWithFile_contentManaged_completionHandler___block_invoke;
   block[3] = &unk_278C37408;
-  v16 = v9;
-  v17 = self;
-  v18 = a4;
-  v12 = v9;
+  v16 = fileCopy;
+  selfCopy = self;
+  managedCopy = managed;
+  v12 = fileCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

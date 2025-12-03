@@ -4,19 +4,19 @@
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_logControl:(id)a3 completion:(id)a4;
-- (void)_show:(id)a3 completion:(id)a4;
+- (void)_logControl:(id)control completion:(id)completion;
+- (void)_show:(id)_show completion:(id)completion;
 - (void)bluetoothUserInteraction;
 - (void)dealloc;
-- (void)diagnosticBLEModeWithCompletion:(id)a3;
-- (void)diagnosticControl:(id)a3 completion:(id)a4;
-- (void)diagnosticMock:(id)a3 device:(id)a4 completion:(id)a5;
-- (void)diagnosticMockStart:(id)a3;
-- (void)diagnosticMockStop:(id)a3;
+- (void)diagnosticBLEModeWithCompletion:(id)completion;
+- (void)diagnosticControl:(id)control completion:(id)completion;
+- (void)diagnosticMock:(id)mock device:(id)device completion:(id)completion;
+- (void)diagnosticMockStart:(id)start;
+- (void)diagnosticMockStop:(id)stop;
 - (void)invalidate;
-- (void)logControl:(id)a3 completion:(id)a4;
-- (void)show:(id)a3 completion:(id)a4;
-- (void)unlockTestClientWithDevice:(id)a3;
+- (void)logControl:(id)control completion:(id)completion;
+- (void)show:(id)show completion:(id)completion;
+- (void)unlockTestClientWithDevice:(id)device;
 - (void)unlockTestServer;
 @end
 
@@ -128,9 +128,9 @@ void __41__SFDiagnostics_bluetoothUserInteraction__block_invoke(uint64_t a1)
   [v2 bluetoothUserInteraction];
 }
 
-- (void)diagnosticBLEModeWithCompletion:(id)a3
+- (void)diagnosticBLEModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFDiagnostics/diagnosticBLEModeWithCompletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -141,8 +141,8 @@ void __41__SFDiagnostics_bluetoothUserInteraction__block_invoke(uint64_t a1)
   v8[2] = __49__SFDiagnostics_diagnosticBLEModeWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -161,10 +161,10 @@ void __49__SFDiagnostics_diagnosticBLEModeWithCompletion___block_invoke(uint64_t
   [v3 diagnosticBLEModeWithCompletion:*(a1 + 40)];
 }
 
-- (void)diagnosticControl:(id)a3 completion:(id)a4
+- (void)diagnosticControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFDiagnostics/diagnosticControl", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -174,11 +174,11 @@ void __49__SFDiagnostics_diagnosticBLEModeWithCompletion___block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __46__SFDiagnostics_diagnosticControl_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v13 = v6;
-  v14 = v7;
+  v13 = controlCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = controlCopy;
+  v11 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -197,11 +197,11 @@ void __46__SFDiagnostics_diagnosticControl_completion___block_invoke(uint64_t a1
   [v3 diagnosticControl:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)diagnosticMock:(id)a3 device:(id)a4 completion:(id)a5
+- (void)diagnosticMock:(id)mock device:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mockCopy = mock;
+  deviceCopy = device;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1A9662000, "Sharing/SFDiagnostics/diagnosticMock", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -212,12 +212,12 @@ void __46__SFDiagnostics_diagnosticControl_completion___block_invoke(uint64_t a1
   v16[2] = __50__SFDiagnostics_diagnosticMock_device_completion___block_invoke;
   v16[3] = &unk_1E788C3C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = mockCopy;
+  v18 = deviceCopy;
+  v19 = completionCopy;
+  v13 = deviceCopy;
+  v14 = mockCopy;
+  v15 = completionCopy;
   dispatch_async(dispatchQueue, v16);
 
   os_activity_scope_leave(&state);
@@ -236,9 +236,9 @@ void __50__SFDiagnostics_diagnosticMock_device_completion___block_invoke(uint64_
   [v3 diagnosticMock:*(a1 + 40) device:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)diagnosticMockStart:(id)a3
+- (void)diagnosticMockStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFDiagnostics/diagnosticMockStart", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -249,8 +249,8 @@ void __50__SFDiagnostics_diagnosticMock_device_completion___block_invoke(uint64_
   v8[2] = __37__SFDiagnostics_diagnosticMockStart___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = startCopy;
+  v7 = startCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -269,9 +269,9 @@ void __37__SFDiagnostics_diagnosticMockStart___block_invoke(uint64_t a1)
   [v3 diagnosticMockStart:*(a1 + 40)];
 }
 
-- (void)diagnosticMockStop:(id)a3
+- (void)diagnosticMockStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFDiagnostics/diagnosticMockStop", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -282,8 +282,8 @@ void __37__SFDiagnostics_diagnosticMockStart___block_invoke(uint64_t a1)
   v8[2] = __36__SFDiagnostics_diagnosticMockStop___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = stopCopy;
+  v7 = stopCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -302,27 +302,27 @@ void __36__SFDiagnostics_diagnosticMockStop___block_invoke(uint64_t a1)
   [v3 diagnosticMockStop:*(a1 + 40)];
 }
 
-- (void)logControl:(id)a3 completion:(id)a4
+- (void)logControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__SFDiagnostics_logControl_completion___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controlCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = controlCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_logControl:(id)a3 completion:(id)a4
+- (void)_logControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFDiagnostics/diagnosticLogControl", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -334,7 +334,7 @@ void __36__SFDiagnostics_diagnosticMockStop___block_invoke(uint64_t a1)
   v15[1] = 3221225472;
   v15[2] = __40__SFDiagnostics__logControl_completion___block_invoke;
   v15[3] = &unk_1E788B6D8;
-  v10 = v7;
+  v10 = completionCopy;
   v16 = v10;
   v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
@@ -343,7 +343,7 @@ void __36__SFDiagnostics_diagnosticMockStop___block_invoke(uint64_t a1)
   v13[3] = &unk_1E7890210;
   v12 = v10;
   v14 = v12;
-  [v11 diagnosticLogControl:v6 completion:v13];
+  [v11 diagnosticLogControl:controlCopy completion:v13];
 
   os_activity_scope_leave(&state);
 }
@@ -381,27 +381,27 @@ void __40__SFDiagnostics__logControl_completion___block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (void)show:(id)a3 completion:(id)a4
+- (void)show:(id)show completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  showCopy = show;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__SFDiagnostics_show_completion___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = showCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = showCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_show:(id)a3 completion:(id)a4
+- (void)_show:(id)_show completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  _showCopy = _show;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFDiagnostics/diagnosticShow", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -413,7 +413,7 @@ void __40__SFDiagnostics__logControl_completion___block_invoke_2(uint64_t a1, vo
   v15[1] = 3221225472;
   v15[2] = __34__SFDiagnostics__show_completion___block_invoke;
   v15[3] = &unk_1E788B6D8;
-  v10 = v7;
+  v10 = completionCopy;
   v16 = v10;
   v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
@@ -422,7 +422,7 @@ void __40__SFDiagnostics__logControl_completion___block_invoke_2(uint64_t a1, vo
   v13[3] = &unk_1E7890210;
   v12 = v10;
   v14 = v12;
-  [v11 diagnosticShow:v6 completion:v13];
+  [v11 diagnosticShow:_showCopy completion:v13];
 
   os_activity_scope_leave(&state);
 }
@@ -460,9 +460,9 @@ void __34__SFDiagnostics__show_completion___block_invoke_2(uint64_t a1, void *a2
   }
 }
 
-- (void)unlockTestClientWithDevice:(id)a3
+- (void)unlockTestClientWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFDiagnostics/diagnosticUnlockTestClientWithDevice", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -473,8 +473,8 @@ void __34__SFDiagnostics__show_completion___block_invoke_2(uint64_t a1, void *a2
   v8[2] = __44__SFDiagnostics_unlockTestClientWithDevice___block_invoke;
   v8[3] = &unk_1E788A658;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = deviceCopy;
+  v7 = deviceCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -563,8 +563,8 @@ void __33__SFDiagnostics_unlockTestServer__block_invoke(uint64_t a1)
     v6.opaque[0] = 0;
     v6.opaque[1] = 0;
     os_activity_scope_enter(v4, &v6);
-    v5 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v5 bluetoothUserInteraction];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy bluetoothUserInteraction];
 
     os_activity_scope_leave(&v6);
   }

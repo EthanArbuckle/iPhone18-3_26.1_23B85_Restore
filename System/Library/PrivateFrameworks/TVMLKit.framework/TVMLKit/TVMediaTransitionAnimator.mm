@@ -1,58 +1,58 @@
 @interface TVMediaTransitionAnimator
-- (void)animateTransition:(id)a3;
-- (void)migratesMediaControllerFromHost:(id)a3 toHost:(id)a4;
+- (void)animateTransition:(id)transition;
+- (void)migratesMediaControllerFromHost:(id)host toHost:(id)toHost;
 @end
 
 @implementation TVMediaTransitionAnimator
 
-- (void)migratesMediaControllerFromHost:(id)a3 toHost:(id)a4
+- (void)migratesMediaControllerFromHost:(id)host toHost:(id)toHost
 {
-  v6 = a4;
-  [(TVMediaTransitionAnimator *)self setFromHost:a3];
-  [(TVMediaTransitionAnimator *)self setToHost:v6];
+  toHostCopy = toHost;
+  [(TVMediaTransitionAnimator *)self setFromHost:host];
+  [(TVMediaTransitionAnimator *)self setToHost:toHostCopy];
 
   self->_migrates = 1;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v7 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v8 = [v6 view];
-  [v5 bounds];
-  [v8 setFrame:?];
-  [v8 setAlpha:0.0];
-  v9 = [v8 layer];
-  [v9 setShouldRasterize:1];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  v7 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  view = [v6 view];
+  [containerView bounds];
+  [view setFrame:?];
+  [view setAlpha:0.0];
+  layer = [view layer];
+  [layer setShouldRasterize:1];
 
-  v10 = [v8 layer];
-  [v10 setRasterizationScale:1.0];
+  layer2 = [view layer];
+  [layer2 setRasterizationScale:1.0];
 
-  v11 = [v7 view];
-  [v5 insertSubview:v8 belowSubview:v11];
-  v12 = [v11 layer];
-  [v12 setShouldRasterize:1];
+  view2 = [v7 view];
+  [containerView insertSubview:view belowSubview:view2];
+  layer3 = [view2 layer];
+  [layer3 setShouldRasterize:1];
 
-  v13 = [v11 layer];
-  [v13 setRasterizationScale:1.0];
+  layer4 = [view2 layer];
+  [layer4 setRasterizationScale:1.0];
 
   if (self->_migrates)
   {
-    v14 = [(TVMediaTransitionAnimator *)self fromHost];
-    v15 = [v14 relinquishOwnership];
+    fromHost = [(TVMediaTransitionAnimator *)self fromHost];
+    relinquishOwnership = [fromHost relinquishOwnership];
 
-    v16 = [v15 view];
-    [v5 insertSubview:v16 atIndex:0];
+    view3 = [relinquishOwnership view];
+    [containerView insertSubview:view3 atIndex:0];
 
-    v17 = [(TVMediaTransitionAnimator *)self toHost];
-    [v17 adoptMediaController:v15];
+    toHost = [(TVMediaTransitionAnimator *)self toHost];
+    [toHost adoptMediaController:relinquishOwnership];
   }
 
   else
   {
-    v15 = 0;
+    relinquishOwnership = 0;
   }
 
   v18 = MEMORY[0x277D75D18];
@@ -60,18 +60,18 @@
   v28[1] = 3221225472;
   v28[2] = __47__TVMediaTransitionAnimator_animateTransition___block_invoke;
   v28[3] = &unk_279D6E2F8;
-  v29 = v8;
-  v30 = v11;
+  v29 = view;
+  v30 = view2;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __47__TVMediaTransitionAnimator_animateTransition___block_invoke_2;
   v23[3] = &unk_279D6E320;
   v24 = v30;
   v25 = v29;
-  v26 = v15;
-  v27 = v4;
-  v19 = v4;
-  v20 = v15;
+  v26 = relinquishOwnership;
+  v27 = transitionCopy;
+  v19 = transitionCopy;
+  v20 = relinquishOwnership;
   v21 = v29;
   v22 = v30;
   [v18 animateWithDuration:v28 animations:v23 completion:0.5];

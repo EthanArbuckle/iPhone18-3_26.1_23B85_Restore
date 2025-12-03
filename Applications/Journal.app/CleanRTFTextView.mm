@@ -1,13 +1,13 @@
 @interface CleanRTFTextView
-- (BOOL)_shouldHandleTextFormattingChangeValue:(id)a3;
-- (_TtC7JournalP33_52B12D7015364A2A97B4965365E27BCB16CleanRTFTextView)initWithCoder:(id)a3;
-- (_TtC7JournalP33_52B12D7015364A2A97B4965365E27BCB16CleanRTFTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (BOOL)_shouldHandleTextFormattingChangeValue:(id)value;
+- (_TtC7JournalP33_52B12D7015364A2A97B4965365E27BCB16CleanRTFTextView)initWithCoder:(id)coder;
+- (_TtC7JournalP33_52B12D7015364A2A97B4965365E27BCB16CleanRTFTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (id)_configurationForTextFormattingOptions;
 @end
 
 @implementation CleanRTFTextView
 
-- (BOOL)_shouldHandleTextFormattingChangeValue:(id)a3
+- (BOOL)_shouldHandleTextFormattingChangeValue:(id)value
 {
   v3 = type metadata accessor for UITextFormattingViewController.ChangeValue();
   v4 = *(v3 - 8);
@@ -25,23 +25,23 @@
   return v2;
 }
 
-- (_TtC7JournalP33_52B12D7015364A2A97B4965365E27BCB16CleanRTFTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7JournalP33_52B12D7015364A2A97B4965365E27BCB16CleanRTFTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CleanRTFTextView();
-  return [(CleanRTFTextView *)&v10 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(CleanRTFTextView *)&v10 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtC7JournalP33_52B12D7015364A2A97B4965365E27BCB16CleanRTFTextView)initWithCoder:(id)a3
+- (_TtC7JournalP33_52B12D7015364A2A97B4965365E27BCB16CleanRTFTextView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CleanRTFTextView();
-  v4 = a3;
-  v5 = [(CleanRTFTextView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CleanRTFTextView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

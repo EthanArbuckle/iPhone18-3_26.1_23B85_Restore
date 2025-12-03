@@ -1,37 +1,37 @@
 @interface EKEventAvailabilityDetailItem
 - (BOOL)_canChangeAvailability;
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
 - (id)_choices;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)reset;
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5;
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store;
 @end
 
 @implementation EKEventAvailabilityDetailItem
 
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store
 {
   v6.receiver = self;
   v6.super_class = EKEventAvailabilityDetailItem;
-  [(EKEventDetailItem *)&v6 setEvent:a3 reminder:a4 store:a5];
+  [(EKEventDetailItem *)&v6 setEvent:event reminder:reminder store:store];
   self->_availability = [(EKEvent *)self->super._event availability];
 }
 
 - (id)_choices
 {
-  v2 = [(EKEvent *)self->super._event calendar];
-  v3 = [v2 supportedEventAvailabilities];
+  calendar = [(EKEvent *)self->super._event calendar];
+  supportedEventAvailabilities = [calendar supportedEventAvailabilities];
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = v4;
-  if (v3)
+  if (supportedEventAvailabilities)
   {
     [v4 addObject:&unk_1F4F325F0];
-    if ((v3 & 2) == 0)
+    if ((supportedEventAvailabilities & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((supportedEventAvailabilities & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -40,16 +40,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((supportedEventAvailabilities & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:&unk_1F4F32608];
-  if ((v3 & 4) == 0)
+  if ((supportedEventAvailabilities & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((supportedEventAvailabilities & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -59,7 +59,7 @@ LABEL_4:
 
 LABEL_11:
   [v5 addObject:&unk_1F4F32620];
-  if ((v3 & 8) != 0)
+  if ((supportedEventAvailabilities & 8) != 0)
   {
 LABEL_5:
     [v5 addObject:&unk_1F4F32638];
@@ -76,19 +76,19 @@ LABEL_6:
   self->_cell = 0;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   v5.receiver = self;
   v5.super_class = EKEventAvailabilityDetailItem;
-  [(EKEventDetailItem *)&v5 defaultCellHeightForSubitemAtIndex:a3 forWidth:a4];
+  [(EKEventDetailItem *)&v5 defaultCellHeightForSubitemAtIndex:index forWidth:width];
   return result;
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = !a5 && [v7 allowsAvailabilityModifications] && objc_msgSend(v8, "supportedEventAvailabilities") != 0;
+  eventCopy = event;
+  calendarCopy = calendar;
+  v9 = !preview && [eventCopy allowsAvailabilityModifications] && objc_msgSend(calendarCopy, "supportedEventAvailabilities") != 0;
 
   return v9;
 }
@@ -106,7 +106,7 @@ LABEL_6:
   }
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v43 = *MEMORY[0x1E69E9840];
   cell = self->_cell;
@@ -120,15 +120,15 @@ LABEL_6:
   v6 = self->_cell;
   self->_cell = v5;
 
-  v34 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v33 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v7 = [(EKEventAvailabilityDetailItem *)self _choices];
-  v8 = [v7 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  _choices = [(EKEventAvailabilityDetailItem *)self _choices];
+  v8 = [_choices countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v8)
   {
     v9 = *v38;
@@ -138,7 +138,7 @@ LABEL_6:
       {
         if (*v38 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_choices);
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
@@ -153,7 +153,7 @@ LABEL_6:
         v35[4] = v11;
         v14 = [v12 actionWithTitle:v13 image:0 identifier:0 handler:v35];
 
-        availability = v34->_availability;
+        availability = selfCopy->_availability;
         if (availability == [v11 intValue])
         {
           [v14 setState:1];
@@ -164,37 +164,37 @@ LABEL_6:
         objc_destroyWeak(&v36);
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v8 = [_choices countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v8);
   }
 
-  v16 = v34;
+  v16 = selfCopy;
   if (EKUIUnscaledCatalyst())
   {
     v17 = [MEMORY[0x1E69DC738] buttonWithType:124];
     if (CalSolariumEnabled())
     {
-      v18 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-      [v17 setConfiguration:v18];
+      plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      [v17 setConfiguration:plainButtonConfiguration];
     }
 
     v19 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:v33];
     [v17 setMenu:v19];
 
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v20 = [(UITableViewCell *)v34->_cell contentView];
-    [v20 addSubview:v17];
+    contentView = [(UITableViewCell *)selfCopy->_cell contentView];
+    [contentView addSubview:v17];
 
     v21 = MEMORY[0x1E696ACD8];
-    v22 = [(UITableViewCell *)v34->_cell textLabel];
-    v23 = [v21 constraintWithItem:v17 attribute:11 relatedBy:0 toItem:v22 attribute:11 multiplier:1.0 constant:0.0];
+    textLabel = [(UITableViewCell *)selfCopy->_cell textLabel];
+    v23 = [v21 constraintWithItem:v17 attribute:11 relatedBy:0 toItem:textLabel attribute:11 multiplier:1.0 constant:0.0];
     [v23 setActive:1];
 
     v24 = MEMORY[0x1E696ACD8];
-    v25 = [(UITableViewCell *)v34->_cell contentView];
-    v26 = [v24 constraintWithItem:v17 attribute:6 relatedBy:0 toItem:v25 attribute:6 multiplier:1.0 constant:-20.0];
+    contentView2 = [(UITableViewCell *)selfCopy->_cell contentView];
+    v26 = [v24 constraintWithItem:v17 attribute:6 relatedBy:0 toItem:contentView2 attribute:6 multiplier:1.0 constant:-20.0];
     [v26 setActive:1];
 
     goto LABEL_17;
@@ -203,29 +203,29 @@ LABEL_6:
   if ([v33 count])
   {
     v17 = [MEMORY[0x1E69DCC60] menuWithChildren:v33];
-    [(UITableViewCell *)v34->_cell setPopupMenu:v17];
+    [(UITableViewCell *)selfCopy->_cell setPopupMenu:v17];
 LABEL_17:
 
-    v16 = v34;
+    v16 = selfCopy;
   }
 
-  v27 = [MEMORY[0x1E69DC888] labelColor];
-  v28 = [(UITableViewCell *)v16->_cell textLabel];
-  [v28 setTextColor:v27];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textLabel2 = [(UITableViewCell *)v16->_cell textLabel];
+  [textLabel2 setTextColor:labelColor];
 
   v29 = EventKitUIBundle();
   v30 = [v29 localizedStringForKey:@"Show As" value:&stru_1F4EF6790 table:0];
-  v31 = [(UITableViewCell *)v34->_cell textLabel];
-  [v31 setText:v30];
+  textLabel3 = [(UITableViewCell *)selfCopy->_cell textLabel];
+  [textLabel3 setText:v30];
 
-  [(UITableViewCell *)v34->_cell setAccessoryType:0];
-  if ([(EKEventDetailItem *)v34 shouldIndent])
+  [(UITableViewCell *)selfCopy->_cell setAccessoryType:0];
+  if ([(EKEventDetailItem *)selfCopy shouldIndent])
   {
-    [(UITableViewCell *)v34->_cell setIndentationLevel:2];
+    [(UITableViewCell *)selfCopy->_cell setIndentationLevel:2];
   }
 
   objc_destroyWeak(&location);
-  cell = v34->_cell;
+  cell = selfCopy->_cell;
 LABEL_21:
 
   return cell;

@@ -1,48 +1,48 @@
 @interface WFMediaItemState
 + (id)processingValueClasses;
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFMediaItemState)initWithMediaType:(id)a3 persistentID:(id)a4;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFMediaItemState)initWithMediaType:(id)type persistentID:(id)d;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFMediaItemState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v10)
+  if (variable)
   {
-    v11 = [(WFVariableSubstitutableParameterState *)self variable];
-    if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    if (variable2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [v11 prompt];
-      v8[2](v8, v12, 0);
+      prompt = [variable2 prompt];
+      handlerCopy[2](handlerCopy, prompt, 0);
     }
 
     else
     {
 
-      v11 = [(WFVariableSubstitutableParameterState *)self variable];
-      [v11 getContentWithContext:v13 completionHandler:v9];
+      variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+      [variable2 getContentWithContext:contextCopy completionHandler:valueHandlerCopy];
     }
   }
 
   else
   {
-    v11 = [(WFVariableSubstitutableParameterState *)self value];
-    v9[2](v9, v11, 0);
+    variable2 = [(WFVariableSubstitutableParameterState *)self value];
+    valueHandlerCopy[2](valueHandlerCopy, variable2, 0);
   }
 }
 
-- (WFMediaItemState)initWithMediaType:(id)a3 persistentID:(id)a4
+- (WFMediaItemState)initWithMediaType:(id)type persistentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  dCopy = d;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2050000000;
@@ -79,8 +79,8 @@
 
   v11 = v10;
   _Block_object_dispose(&v35, 8);
-  v12 = [v10 persistentIDPropertyForGroupingType:WFGroupingPropertyForMediaType_53776(v6)];
-  v13 = [v8 predicateWithValue:v7 forProperty:v12];
+  v12 = [v10 persistentIDPropertyForGroupingType:WFGroupingPropertyForMediaType_53776(typeCopy)];
+  v13 = [v8 predicateWithValue:dCopy forProperty:v12];
 
   v35 = 0;
   v36 = &v35;
@@ -104,77 +104,77 @@
   v17 = [MEMORY[0x1E695DFD8] setWithObject:v13];
   v18 = [v16 initWithFilterPredicates:v17];
 
-  [v18 setGroupingType:WFGroupingPropertyForMediaType_53776(v6)];
-  v19 = [v18 collections];
-  v20 = [v19 count];
+  [v18 setGroupingType:WFGroupingPropertyForMediaType_53776(typeCopy)];
+  collections = [v18 collections];
+  v20 = [collections count];
 
   if (!v20)
   {
     goto LABEL_23;
   }
 
-  if (![v6 isEqualToString:@"Playlist"])
+  if (![typeCopy isEqualToString:@"Playlist"])
   {
-    if (([v6 isEqualToString:@"Album"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"Compilation"))
+    if (([typeCopy isEqualToString:@"Album"] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"Compilation"))
     {
-      v21 = [v18 collections];
-      v22 = [v21 firstObject];
-      v24 = [v22 representativeItem];
-      v25 = [v24 albumTitle];
+      collections2 = [v18 collections];
+      firstObject = [collections2 firstObject];
+      representativeItem = [firstObject representativeItem];
+      albumTitle = [representativeItem albumTitle];
 LABEL_13:
-      v23 = v25;
+      name = albumTitle;
 
       goto LABEL_14;
     }
 
-    if ([v6 isEqualToString:@"Song"])
+    if ([typeCopy isEqualToString:@"Song"])
     {
-      v21 = [v18 collections];
-      v22 = [v21 firstObject];
-      v24 = [v22 representativeItem];
-      v25 = [v24 title];
+      collections2 = [v18 collections];
+      firstObject = [collections2 firstObject];
+      representativeItem = [firstObject representativeItem];
+      albumTitle = [representativeItem title];
       goto LABEL_13;
     }
 
-    if ([v6 isEqualToString:@"Artist"])
+    if ([typeCopy isEqualToString:@"Artist"])
     {
-      v21 = [v18 collections];
-      v22 = [v21 firstObject];
-      v24 = [v22 representativeItem];
-      v25 = [v24 artist];
+      collections2 = [v18 collections];
+      firstObject = [collections2 firstObject];
+      representativeItem = [firstObject representativeItem];
+      albumTitle = [representativeItem artist];
       goto LABEL_13;
     }
 
-    if ([v6 isEqualToString:@"Genre"])
+    if ([typeCopy isEqualToString:@"Genre"])
     {
-      v21 = [v18 collections];
-      v22 = [v21 firstObject];
-      v24 = [v22 representativeItem];
-      v25 = [v24 genre];
+      collections2 = [v18 collections];
+      firstObject = [collections2 firstObject];
+      representativeItem = [firstObject representativeItem];
+      albumTitle = [representativeItem genre];
       goto LABEL_13;
     }
 
-    if ([v6 isEqualToString:@"Composer"])
+    if ([typeCopy isEqualToString:@"Composer"])
     {
-      v21 = [v18 collections];
-      v22 = [v21 firstObject];
-      v24 = [v22 representativeItem];
-      v25 = [v24 composer];
+      collections2 = [v18 collections];
+      firstObject = [collections2 firstObject];
+      representativeItem = [firstObject representativeItem];
+      albumTitle = [representativeItem composer];
       goto LABEL_13;
     }
 
 LABEL_23:
-    v23 = 0;
+    name = 0;
     goto LABEL_24;
   }
 
-  v21 = [v18 collections];
-  v22 = [v21 firstObject];
-  v23 = [v22 name];
+  collections2 = [v18 collections];
+  firstObject = [collections2 firstObject];
+  name = [firstObject name];
 LABEL_14:
 
 LABEL_24:
-  v26 = [[WFMediaItemDescriptor alloc] initWithMediaItemName:v23 persistentIdentifier:v7 mediaType:v6];
+  v26 = [[WFMediaItemDescriptor alloc] initWithMediaItemName:name persistentIdentifier:dCopy mediaType:typeCopy];
   v29.receiver = self;
   v29.super_class = WFMediaItemState;
   v27 = [(WFVariableSubstitutableParameterState *)&v29 initWithValue:v26];
@@ -182,26 +182,26 @@ LABEL_24:
   return v27;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v5)
+    if (valueCopy)
     {
 LABEL_3:
-      v6 = [(MTLJSONAdapter *)WFPropertyListJSONAdapter JSONDictionaryFromModel:v5 error:0];
+      v6 = [(MTLJSONAdapter *)WFPropertyListJSONAdapter JSONDictionaryFromModel:valueCopy error:0];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"WFMediaItemState.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFMediaItemDescriptor class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFMediaItemDescriptor class]]"}];
 
-    if (v5)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
@@ -213,12 +213,12 @@ LABEL_6:
   return v6;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = representationCopy;
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = getWFGeneralLogObject();

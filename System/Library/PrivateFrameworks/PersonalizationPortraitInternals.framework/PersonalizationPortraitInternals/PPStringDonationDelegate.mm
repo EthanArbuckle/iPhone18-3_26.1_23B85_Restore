@@ -1,17 +1,17 @@
 @interface PPStringDonationDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPStringDonationDelegate)init;
 @end
 
 @implementation PPStringDonationDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v4 = MEMORY[0x277CCAE90];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [v4 interfaceWithProtocol:&unk_284793A28];
   v7 = objc_opt_new();
-  v8 = [PPXPCServerHelper shouldAcceptConnection:v5 serviceName:@"com.apple.suggestd.PersonalizationPortrait.StringDonation" allowedServerInterface:v6 allowedClientInterface:0 requestHandler:v7 validateConnection:&__block_literal_global_21515 setupClientProxy:0 interruptionHandler:&__block_literal_global_71_21519 invalidationHandler:&__block_literal_global_73_21520];
+  v8 = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.suggestd.PersonalizationPortrait.StringDonation" allowedServerInterface:v6 allowedClientInterface:0 requestHandler:v7 validateConnection:&__block_literal_global_21515 setupClientProxy:0 interruptionHandler:&__block_literal_global_71_21519 invalidationHandler:&__block_literal_global_73_21520];
 
   return v8;
 }

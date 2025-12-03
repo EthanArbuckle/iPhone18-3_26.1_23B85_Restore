@@ -1,30 +1,30 @@
 @interface MicaPlayerCoordinator
 - (_TtC14iCloudSettings21MicaPlayerCoordinator)init;
-- (void)micaPlayerDidChangePlaybackTime:(id)a3;
-- (void)micaPlayerDidStartPlaying:(id)a3;
-- (void)micaPlayerDidStopPlaying:(id)a3;
+- (void)micaPlayerDidChangePlaybackTime:(id)time;
+- (void)micaPlayerDidStartPlaying:(id)playing;
+- (void)micaPlayerDidStopPlaying:(id)playing;
 @end
 
 @implementation MicaPlayerCoordinator
 
-- (void)micaPlayerDidChangePlaybackTime:(id)a3
+- (void)micaPlayerDidChangePlaybackTime:(id)time
 {
-  v4 = a3;
-  v5 = self;
-  sub_275862130(v4);
+  timeCopy = time;
+  selfCopy = self;
+  sub_275862130(timeCopy);
 }
 
-- (void)micaPlayerDidStartPlaying:(id)a3
+- (void)micaPlayerDidStartPlaying:(id)playing
 {
-  v4 = a3;
-  v5 = self;
+  playingCopy = playing;
+  selfCopy = self;
   sub_2758629C4(&unk_28847F540, sub_275862C9C, &block_descriptor_19);
 }
 
-- (void)micaPlayerDidStopPlaying:(id)a3
+- (void)micaPlayerDidStopPlaying:(id)playing
 {
-  v4 = a3;
-  v5 = self;
+  playingCopy = playing;
+  selfCopy = self;
   sub_2758629C4(&unk_28847F4F0, sub_275862C68, &block_descriptor_13);
 }
 

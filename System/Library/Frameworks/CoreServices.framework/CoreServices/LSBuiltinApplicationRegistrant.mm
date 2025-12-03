@@ -1,29 +1,29 @@
 @interface LSBuiltinApplicationRegistrant
-- (LSBuiltinApplicationRegistrant)initWithStrategy:(id)a3 operationUUID:(id)a4 itemInfoDict:(id)a5 personas:(id)a6;
-- (void)runWithCompletion:(id)a3;
+- (LSBuiltinApplicationRegistrant)initWithStrategy:(id)strategy operationUUID:(id)d itemInfoDict:(id)dict personas:(id)personas;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation LSBuiltinApplicationRegistrant
 
-- (LSBuiltinApplicationRegistrant)initWithStrategy:(id)a3 operationUUID:(id)a4 itemInfoDict:(id)a5 personas:(id)a6
+- (LSBuiltinApplicationRegistrant)initWithStrategy:(id)strategy operationUUID:(id)d itemInfoDict:(id)dict personas:(id)personas
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  strategyCopy = strategy;
+  dCopy = d;
+  dictCopy = dict;
+  personasCopy = personas;
   v22.receiver = self;
   v22.super_class = LSBuiltinApplicationRegistrant;
   v15 = [(LSBuiltinApplicationRegistrant *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_strategy, a3);
-    objc_storeStrong(&v16->_uuid, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_strategy, strategy);
+    objc_storeStrong(&v16->_uuid, d);
+    v17 = [dictCopy copy];
     miDict = v16->_miDict;
     v16->_miDict = v17;
 
-    v19 = [v14 copy];
+    v19 = [personasCopy copy];
     personas = v16->_personas;
     v16->_personas = v19;
   }
@@ -31,10 +31,10 @@
   return v16;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_miDict;
   v6 = [(NSDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
   v7 = [(NSDictionary *)v5 objectForKeyedSubscript:@"Path"];
@@ -76,7 +76,7 @@
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
     v16 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[LSBuiltinApplicationRegistrant runWithCompletion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Info/LSRegistrants.mm", 527);
 
-    v4[2](v4, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 
   else
@@ -90,7 +90,7 @@
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v14 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v20, "[LSBuiltinApplicationRegistrant runWithCompletion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Info/LSRegistrants.mm", 538);
 
-      v4[2](v4, 0, v14);
+      completionCopy[2](completionCopy, 0, v14);
     }
 
     else
@@ -119,15 +119,15 @@
         v27 = v6;
         v28 = v24;
         v29 = v5;
-        v30 = self;
+        selfCopy = self;
         v31 = v14;
-        v32 = v4;
+        v32 = completionCopy;
         [(LSRegistrantStrategy *)strategy runSyncBlockInWriteContext:v26];
       }
 
       else
       {
-        v4[2](v4, 0, v36[5]);
+        completionCopy[2](completionCopy, 0, v36[5]);
       }
 
       _Block_object_dispose(&v35, 8);

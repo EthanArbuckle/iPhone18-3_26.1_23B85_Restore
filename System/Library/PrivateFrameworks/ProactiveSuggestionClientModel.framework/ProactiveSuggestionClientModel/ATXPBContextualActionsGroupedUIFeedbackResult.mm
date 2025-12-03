@@ -1,21 +1,21 @@
 @interface ATXPBContextualActionsGroupedUIFeedbackResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumShortcutsAtEnd:(BOOL)a3;
-- (void)setHasNumShortcutsAtStart:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumShortcutsAtEnd:(BOOL)end;
+- (void)setHasNumShortcutsAtStart:(BOOL)start;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBContextualActionsGroupedUIFeedbackResult
 
-- (void)setHasNumShortcutsAtStart:(BOOL)a3
+- (void)setHasNumShortcutsAtStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumShortcutsAtEnd:(BOOL)a3
+- (void)setHasNumShortcutsAtEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 2;
   }
@@ -49,27 +49,27 @@
   v8.receiver = self;
   v8.super_class = ATXPBContextualActionsGroupedUIFeedbackResult;
   v4 = [(ATXPBContextualActionsGroupedUIFeedbackResult *)&v8 description];
-  v5 = [(ATXPBContextualActionsGroupedUIFeedbackResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBContextualActionsGroupedUIFeedbackResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   groupedUIFeedbackResults = self->_groupedUIFeedbackResults;
   if (groupedUIFeedbackResults)
   {
-    v5 = [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)groupedUIFeedbackResults dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"groupedUIFeedbackResults"];
+    dictionaryRepresentation = [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)groupedUIFeedbackResults dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"groupedUIFeedbackResults"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numShortcutsAtStart];
-    [v3 setObject:v9 forKey:@"numShortcutsAtStart"];
+    [dictionary setObject:v9 forKey:@"numShortcutsAtStart"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -90,28 +90,28 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numShortcutsAtEnd];
-  [v3 setObject:v10 forKey:@"numShortcutsAtEnd"];
+  [dictionary setObject:v10 forKey:@"numShortcutsAtEnd"];
 
   if (*&self->_has)
   {
 LABEL_6:
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numManuallyAddedSteps];
-    [v3 setObject:v7 forKey:@"numManuallyAddedSteps"];
+    [dictionary setObject:v7 forKey:@"numManuallyAddedSteps"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_groupedUIFeedbackResults)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -119,7 +119,7 @@ LABEL_7:
   {
     numShortcutsAtStart = self->_numShortcutsAtStart;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -140,33 +140,33 @@ LABEL_5:
 
   numShortcutsAtEnd = self->_numShortcutsAtEnd;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_6:
     numManuallyAddedSteps = self->_numManuallyAddedSteps;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_groupedUIFeedbackResults)
   {
-    v6 = v4;
-    [v4 setGroupedUIFeedbackResults:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setGroupedUIFeedbackResults:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_numShortcutsAtStart;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 3) = self->_numShortcutsAtStart;
+    *(toCopy + 40) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -185,22 +185,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = self->_numShortcutsAtEnd;
-  *(v4 + 40) |= 2u;
+  *(toCopy + 2) = self->_numShortcutsAtEnd;
+  *(toCopy + 40) |= 2u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 1) = self->_numManuallyAddedSteps;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_numManuallyAddedSteps;
+    *(toCopy + 40) |= 1u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_groupedUIFeedbackResults copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_groupedUIFeedbackResults copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -242,16 +242,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   groupedUIFeedbackResults = self->_groupedUIFeedbackResults;
-  if (groupedUIFeedbackResults | *(v4 + 4))
+  if (groupedUIFeedbackResults | *(equalCopy + 4))
   {
     if (![(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)groupedUIFeedbackResults isEqual:?])
     {
@@ -261,13 +261,13 @@ LABEL_4:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_numShortcutsAtStart != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_numShortcutsAtStart != *(equalCopy + 3))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
 LABEL_18:
     v6 = 0;
@@ -276,21 +276,21 @@ LABEL_18:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_numShortcutsAtEnd != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_numShortcutsAtEnd != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 40) & 1) == 0;
+  v6 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_numManuallyAddedSteps != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_numManuallyAddedSteps != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
@@ -344,11 +344,11 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   groupedUIFeedbackResults = self->_groupedUIFeedbackResults;
-  v6 = v4[4];
+  v6 = fromCopy[4];
   if (groupedUIFeedbackResults)
   {
     if (!v6)
@@ -356,7 +356,7 @@ LABEL_4:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     groupedUIFeedbackResults = [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)groupedUIFeedbackResults mergeFrom:?];
   }
 
@@ -367,18 +367,18 @@ LABEL_4:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     groupedUIFeedbackResults = [(ATXPBContextualActionsGroupedUIFeedbackResult *)self setGroupedUIFeedbackResults:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if ((v7 & 4) != 0)
   {
-    self->_numShortcutsAtStart = v4[3];
+    self->_numShortcutsAtStart = fromCopy[3];
     *&self->_has |= 4u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
     if ((v7 & 2) == 0)
     {
 LABEL_9:
@@ -391,23 +391,23 @@ LABEL_9:
     }
   }
 
-  else if ((v4[5] & 2) == 0)
+  else if ((fromCopy[5] & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_numShortcutsAtEnd = v4[2];
+  self->_numShortcutsAtEnd = fromCopy[2];
   *&self->_has |= 2u;
-  if (v4[5])
+  if (fromCopy[5])
   {
 LABEL_10:
-    self->_numManuallyAddedSteps = v4[1];
+    self->_numManuallyAddedSteps = fromCopy[1];
     *&self->_has |= 1u;
   }
 
 LABEL_11:
 
-  MEMORY[0x1EEE66BB8](groupedUIFeedbackResults, v4);
+  MEMORY[0x1EEE66BB8](groupedUIFeedbackResults, fromCopy);
 }
 
 @end

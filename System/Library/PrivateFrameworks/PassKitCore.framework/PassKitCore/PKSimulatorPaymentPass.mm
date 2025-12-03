@@ -1,21 +1,21 @@
 @interface PKSimulatorPaymentPass
-- (PKSimulatorPaymentPass)initWithDictionary:(id)a3 bundle:(id)a4;
+- (PKSimulatorPaymentPass)initWithDictionary:(id)dictionary bundle:(id)bundle;
 - (id)devicePrimaryPaymentApplication;
 - (id)primaryAccountIdentifier;
 @end
 
 @implementation PKSimulatorPaymentPass
 
-- (PKSimulatorPaymentPass)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKSimulatorPaymentPass)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKSimulatorPaymentPass;
-  v7 = [(PKSecureElementPass *)&v13 initWithDictionary:v6 bundle:a4];
+  v7 = [(PKSecureElementPass *)&v13 initWithDictionary:dictionaryCopy bundle:bundle];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dictionaryCopy copy];
     dictionary = v7->_dictionary;
     v7->_dictionary = v8;
 
@@ -30,19 +30,19 @@
 
 - (id)devicePrimaryPaymentApplication
 {
-  v2 = [(PKSecureElementPass *)self paymentApplications];
-  v3 = [v2 anyObject];
+  paymentApplications = [(PKSecureElementPass *)self paymentApplications];
+  anyObject = [paymentApplications anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (id)primaryAccountIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PKSecureElementPass *)self paymentApplications];
-  v4 = [v3 anyObject];
-  v5 = [v4 displayName];
-  v6 = [v2 stringWithFormat:@"SimulatedIdentifier: %@", v5];
+  paymentApplications = [(PKSecureElementPass *)self paymentApplications];
+  anyObject = [paymentApplications anyObject];
+  displayName = [anyObject displayName];
+  v6 = [v2 stringWithFormat:@"SimulatedIdentifier: %@", displayName];
 
   return v6;
 }

@@ -1,13 +1,13 @@
 @interface HMAccessCodeRemoveRequestValue
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessCodeRemoveRequestValue)initWithAccessoryAccessCodeValue:(id)a3;
-- (HMAccessCodeRemoveRequestValue)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessCodeRemoveRequestValue)initWithAccessoryAccessCodeValue:(id)value;
+- (HMAccessCodeRemoveRequestValue)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (NSUUID)accessoryUUID;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessCodeRemoveRequestValue
@@ -16,8 +16,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
-  v5 = [v3 initWithName:@"accessoryAccessCodeValue" value:v4];
+  accessoryAccessCodeValue = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
+  v5 = [v3 initWithName:@"accessoryAccessCodeValue" value:accessoryAccessCodeValue];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
@@ -33,21 +33,21 @@
   return [v2 shortDescription];
 }
 
-- (HMAccessCodeRemoveRequestValue)initWithCoder:(id)a3
+- (HMAccessCodeRemoveRequestValue)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeRemoveRequestValueCodingKeyAccessoryAccessCodeValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeRemoveRequestValueCodingKeyAccessoryAccessCodeValue"];
   if (v5)
   {
-    v6 = [(HMAccessCodeRemoveRequestValue *)self initWithAccessoryAccessCodeValue:v5];
-    v7 = v6;
+    selfCopy = [(HMAccessCodeRemoveRequestValue *)self initWithAccessoryAccessCodeValue:v5];
+    v7 = selfCopy;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -67,28 +67,28 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
-  [v4 encodeObject:v5 forKey:@"HMAccessCodeRemoveRequestValueCodingKeyAccessoryAccessCodeValue"];
+  coderCopy = coder;
+  accessoryAccessCodeValue = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
+  [coderCopy encodeObject:accessoryAccessCodeValue forKey:@"HMAccessCodeRemoveRequestValueCodingKeyAccessoryAccessCodeValue"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
-  v3 = [v2 hash];
+  accessoryAccessCodeValue = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
+  v3 = [accessoryAccessCodeValue hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -99,9 +99,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
-    v8 = [v6 accessoryAccessCodeValue];
-    v9 = [v7 isEqual:v8];
+    accessoryAccessCodeValue = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
+    accessoryAccessCodeValue2 = [v6 accessoryAccessCodeValue];
+    v9 = [accessoryAccessCodeValue isEqual:accessoryAccessCodeValue2];
   }
 
   else
@@ -114,21 +114,21 @@
 
 - (NSUUID)accessoryUUID
 {
-  v2 = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
-  v3 = [v2 accessoryUUID];
+  accessoryAccessCodeValue = [(HMAccessCodeRemoveRequestValue *)self accessoryAccessCodeValue];
+  accessoryUUID = [accessoryAccessCodeValue accessoryUUID];
 
-  return v3;
+  return accessoryUUID;
 }
 
-- (HMAccessCodeRemoveRequestValue)initWithAccessoryAccessCodeValue:(id)a3
+- (HMAccessCodeRemoveRequestValue)initWithAccessoryAccessCodeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = HMAccessCodeRemoveRequestValue;
   v5 = [(HMAccessCodeRemoveRequestValue *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valueCopy copy];
     accessoryAccessCodeValue = v5->_accessoryAccessCodeValue;
     v5->_accessoryAccessCodeValue = v6;
   }

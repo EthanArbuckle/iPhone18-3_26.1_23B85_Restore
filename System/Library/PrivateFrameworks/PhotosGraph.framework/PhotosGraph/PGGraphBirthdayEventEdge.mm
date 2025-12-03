@@ -1,10 +1,10 @@
 @interface PGGraphBirthdayEventEdge
 + (id)filter;
-+ (id)propertyDictionaryWithConfidence:(double)a3;
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphBirthdayEventEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
++ (id)propertyDictionaryWithConfidence:(double)confidence;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphBirthdayEventEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 - (id)edgeDescription;
-- (id)initFromMomentNode:(id)a3 toPersonNode:(id)a4 confidence:(double)a5;
+- (id)initFromMomentNode:(id)node toPersonNode:(id)personNode confidence:(double)confidence;
 - (id)propertyDictionary;
 @end
 
@@ -15,8 +15,8 @@
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = PGGraphBirthdayEventEdge;
-  v4 = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
-  v5 = [v3 stringWithFormat:@"%@ (%.2f)", v4, *&self->_confidence];
+  edgeDescription = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
+  v5 = [v3 stringWithFormat:@"%@ (%.2f)", edgeDescription, *&self->_confidence];
 
   return v5;
 }
@@ -29,11 +29,11 @@
   return [v3 propertyDictionaryWithConfidence:confidence];
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"confidence"];
     v7 = v6;
@@ -56,36 +56,36 @@
   return v9;
 }
 
-- (PGGraphBirthdayEventEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphBirthdayEventEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [a7 objectForKeyedSubscript:@"confidence"];
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  v12 = [properties objectForKeyedSubscript:@"confidence"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [(PGGraphBirthdayEventEdge *)self initFromMomentNode:v11 toPersonNode:v10 confidence:v14];
+  v15 = [(PGGraphBirthdayEventEdge *)self initFromMomentNode:nodeCopy toPersonNode:targetNodeCopy confidence:v14];
   return v15;
 }
 
-- (id)initFromMomentNode:(id)a3 toPersonNode:(id)a4 confidence:(double)a5
+- (id)initFromMomentNode:(id)node toPersonNode:(id)personNode confidence:(double)confidence
 {
   v7.receiver = self;
   v7.super_class = PGGraphBirthdayEventEdge;
-  result = [(PGGraphEdge *)&v7 initWithSourceNode:a3 targetNode:a4];
+  result = [(PGGraphEdge *)&v7 initWithSourceNode:node targetNode:personNode];
   if (result)
   {
-    *(result + 5) = a5;
+    *(result + 5) = confidence;
   }
 
   return result;
 }
 
-+ (id)propertyDictionaryWithConfidence:(double)a3
++ (id)propertyDictionaryWithConfidence:(double)confidence
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"confidence";
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:confidence];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 

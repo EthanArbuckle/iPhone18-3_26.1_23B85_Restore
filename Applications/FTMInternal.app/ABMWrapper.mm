@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (ABMWrapper)init;
 - (ABMWrapperDelegate)delegate;
-- (BOOL)addAWDConfigForAppId:(id)a3 andProtofFilePath:(id)a4;
-- (BOOL)querySpecificMetric:(id)a3 triggerRef:(int)a4 triggerType:(int)a5 triggerID:(int)a6 profileID:(int)a7 metricID:(int)a8;
-- (BOOL)removeAWDConfigForAppid:(id)a3;
+- (BOOL)addAWDConfigForAppId:(id)id andProtofFilePath:(id)path;
+- (BOOL)querySpecificMetric:(id)metric triggerRef:(int)ref triggerType:(int)type triggerID:(int)d profileID:(int)iD metricID:(int)metricID;
+- (BOOL)removeAWDConfigForAppid:(id)appid;
 - (dispatch_queue_s)queue;
 - (id).cxx_construct;
 - (void)listen;
@@ -74,17 +74,17 @@
   return self->_queue;
 }
 
-- (BOOL)addAWDConfigForAppId:(id)a3 andProtofFilePath:(id)a4
+- (BOOL)addAWDConfigForAppId:(id)id andProtofFilePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  pathCopy = path;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf) = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[FTMInternal-4] addAWDConfigForAppId begins", &buf, 2u);
   }
 
-  if (([v6 isEqualToString:@"fieldtest"] & 1) == 0)
+  if (([idCopy isEqualToString:@"fieldtest"] & 1) == 0)
   {
     v10 = 0;
     goto LABEL_44;
@@ -121,7 +121,7 @@ LABEL_12:
   xpc_retain(v9);
 LABEL_13:
   xpc_release(v9);
-  v12 = [NSData dataWithContentsOfFile:v7];
+  v12 = [NSData dataWithContentsOfFile:pathCopy];
   v13 = v12;
   v14 = xpc_data_create([v12 bytes], objc_msgSend(v12, "length"));
   if (!v14)
@@ -272,10 +272,10 @@ LABEL_44:
   return v10;
 }
 
-- (BOOL)removeAWDConfigForAppid:(id)a3
+- (BOOL)removeAWDConfigForAppid:(id)appid
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"fieldtest"] & 1) == 0)
+  appidCopy = appid;
+  if (([appidCopy isEqualToString:@"fieldtest"] & 1) == 0)
   {
     v7 = 0;
     goto LABEL_32;
@@ -409,10 +409,10 @@ LABEL_32:
   return v7;
 }
 
-- (BOOL)querySpecificMetric:(id)a3 triggerRef:(int)a4 triggerType:(int)a5 triggerID:(int)a6 profileID:(int)a7 metricID:(int)a8
+- (BOOL)querySpecificMetric:(id)metric triggerRef:(int)ref triggerType:(int)type triggerID:(int)d profileID:(int)iD metricID:(int)metricID
 {
-  v14 = a3;
-  if (([v14 isEqualToString:@"fieldtest"] & 1) == 0)
+  metricCopy = metric;
+  if (([metricCopy isEqualToString:@"fieldtest"] & 1) == 0)
   {
     v17 = 0;
     goto LABEL_44;
@@ -476,7 +476,7 @@ LABEL_11:
   object = 0;
   xpc_release(v43);
   v43 = 0;
-  v41 = xpc_int64_create(a4);
+  v41 = xpc_int64_create(ref);
   if (!v41)
   {
     v41 = xpc_null_create();
@@ -489,7 +489,7 @@ LABEL_11:
   v42 = 0;
   xpc_release(v41);
   v41 = 0;
-  v39 = xpc_int64_create(a5);
+  v39 = xpc_int64_create(type);
   if (!v39)
   {
     v39 = xpc_null_create();
@@ -502,7 +502,7 @@ LABEL_11:
   v40 = 0;
   xpc_release(v39);
   v39 = 0;
-  v37 = xpc_int64_create(a6);
+  v37 = xpc_int64_create(d);
   if (!v37)
   {
     v37 = xpc_null_create();
@@ -515,7 +515,7 @@ LABEL_11:
   v38 = 0;
   xpc_release(v37);
   v37 = 0;
-  v35 = xpc_int64_create(a7);
+  v35 = xpc_int64_create(iD);
   if (!v35)
   {
     v35 = xpc_null_create();
@@ -528,7 +528,7 @@ LABEL_11:
   v36 = 0;
   xpc_release(v35);
   v35 = 0;
-  v33 = xpc_int64_create(a8);
+  v33 = xpc_int64_create(metricID);
   if (!v33)
   {
     v33 = xpc_null_create();

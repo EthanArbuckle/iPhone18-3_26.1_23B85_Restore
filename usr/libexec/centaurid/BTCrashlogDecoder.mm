@@ -1,48 +1,48 @@
 @interface BTCrashlogDecoder
-- (id)decodeData:(id)a3 forSection:(id)a4 fromCore:(id)a5;
-- (id)decodeData:(id)a3 withSchema:(id)a4;
-- (id)extractValueFromData:(id)a3 type:(id)a4 enumDict:(id)a5;
-- (id)schemaForCore:(id)a3;
-- (id)supportedSectionsForCore:(id)a3;
+- (id)decodeData:(id)data forSection:(id)section fromCore:(id)core;
+- (id)decodeData:(id)data withSchema:(id)schema;
+- (id)extractValueFromData:(id)data type:(id)type enumDict:(id)dict;
+- (id)schemaForCore:(id)core;
+- (id)supportedSectionsForCore:(id)core;
 @end
 
 @implementation BTCrashlogDecoder
 
-- (id)extractValueFromData:(id)a3 type:(id)a4 enumDict:(id)a5
+- (id)extractValueFromData:(id)data type:(id)type enumDict:(id)dict
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 bytes];
-  if (([v8 hasPrefix:@"uint8_t"] & 1) == 0 && !objc_msgSend(v8, "hasPrefix:", @"UINT8"))
+  dataCopy = data;
+  typeCopy = type;
+  dictCopy = dict;
+  bytes = [dataCopy bytes];
+  if (([typeCopy hasPrefix:@"uint8_t"] & 1) == 0 && !objc_msgSend(typeCopy, "hasPrefix:", @"UINT8"))
   {
-    if (([v8 hasPrefix:@"uint16_t"] & 1) != 0 || objc_msgSend(v8, "hasPrefix:", @"UINT16"))
+    if (([typeCopy hasPrefix:@"uint16_t"] & 1) != 0 || objc_msgSend(typeCopy, "hasPrefix:", @"UINT16"))
     {
-      if ([v7 length] <= 1)
+      if ([dataCopy length] <= 1)
       {
         goto LABEL_8;
       }
 
 LABEL_37:
-      v11 = [NSNumber numberWithUnsignedShort:*v10];
+      v11 = [NSNumber numberWithUnsignedShort:*bytes];
       goto LABEL_9;
     }
 
-    if (([v8 hasPrefix:@"uint32_t"] & 1) != 0 || objc_msgSend(v8, "hasPrefix:", @"UINT32"))
+    if (([typeCopy hasPrefix:@"uint32_t"] & 1) != 0 || objc_msgSend(typeCopy, "hasPrefix:", @"UINT32"))
     {
-      if ([v7 length] <= 3)
+      if ([dataCopy length] <= 3)
       {
         goto LABEL_8;
       }
 
 LABEL_29:
-      v11 = [NSNumber numberWithUnsignedInt:*v10];
+      v11 = [NSNumber numberWithUnsignedInt:*bytes];
       goto LABEL_9;
     }
 
-    if (([v8 hasPrefix:@"uint64_t"] & 1) != 0 || objc_msgSend(v8, "hasPrefix:", @"uint64"))
+    if (([typeCopy hasPrefix:@"uint64_t"] & 1) != 0 || objc_msgSend(typeCopy, "hasPrefix:", @"uint64"))
     {
-      if ([v7 length] <= 7)
+      if ([dataCopy length] <= 7)
       {
         goto LABEL_8;
       }
@@ -50,7 +50,7 @@ LABEL_29:
       goto LABEL_33;
     }
 
-    v23 = [v7 length];
+    v23 = [dataCopy length];
     if (v23 > 3)
     {
       if (v23 == 4)
@@ -61,7 +61,7 @@ LABEL_29:
       if (v23 == 8)
       {
 LABEL_33:
-        v11 = [NSNumber numberWithUnsignedLongLong:*v10];
+        v11 = [NSNumber numberWithUnsignedLongLong:*bytes];
         goto LABEL_9;
       }
     }
@@ -79,11 +79,11 @@ LABEL_33:
       }
     }
 
-    v11 = [v7 copy];
+    v11 = [dataCopy copy];
     goto LABEL_9;
   }
 
-  if (![v7 length])
+  if (![dataCopy length])
   {
 LABEL_8:
     v11 = +[NSNull null];
@@ -91,10 +91,10 @@ LABEL_8:
   }
 
 LABEL_4:
-  v11 = [NSNumber numberWithUnsignedChar:*v10];
+  v11 = [NSNumber numberWithUnsignedChar:*bytes];
 LABEL_9:
   v12 = v11;
-  if ([v9 count])
+  if ([dictCopy count])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -103,12 +103,12 @@ LABEL_9:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v13 = v9;
+      v13 = dictCopy;
       v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v14)
       {
         v15 = v14;
-        v24 = v9;
+        v24 = dictCopy;
         v16 = *v26;
         while (2)
         {
@@ -142,7 +142,7 @@ LABEL_9:
         }
 
 LABEL_21:
-        v9 = v24;
+        dictCopy = v24;
       }
     }
   }
@@ -150,17 +150,17 @@ LABEL_21:
   return v12;
 }
 
-- (id)decodeData:(id)a3 withSchema:(id)a4
+- (id)decodeData:(id)data withSchema:(id)schema
 {
-  v48 = a3;
-  v5 = a4;
+  dataCopy = data;
+  schemaCopy = schema;
   v39 = objc_alloc_init(NSMutableDictionary);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v36 = v5;
-  obj = [v5 objectForKeyedSubscript:@"members"];
+  v36 = schemaCopy;
+  obj = [schemaCopy objectForKeyedSubscript:@"members"];
   v6 = [obj countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v6)
   {
@@ -196,27 +196,27 @@ LABEL_21:
           if ([v14 integerValue] >= 1 && objc_msgSend(v46, "containsString:", @"["))
           {
             v18 = objc_alloc_init(NSMutableArray);
-            v19 = [v42 unsignedIntegerValue];
+            unsignedIntegerValue = [v42 unsignedIntegerValue];
             v38 = v15;
-            v20 = [v15 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v15 unsignedIntegerValue];
             v21 = 0;
-            if (v19 <= 1)
+            if (unsignedIntegerValue <= 1)
             {
               v22 = 1;
             }
 
             else
             {
-              v22 = v19;
+              v22 = unsignedIntegerValue;
             }
 
-            v23 = v20 / v19;
+            v23 = unsignedIntegerValue2 / unsignedIntegerValue;
             do
             {
               v24 = [v11 unsignedIntegerValue] + v21 * v23;
               if ([v13 count])
               {
-                v25 = [v48 subdataWithRange:{v24, v23}];
+                v25 = [dataCopy subdataWithRange:{v24, v23}];
                 v26 = [v13 objectAtIndexedSubscript:0];
                 v27 = [(BTCrashlogDecoder *)self decodeData:v25 withSchema:v26];
                 v28 = [v27 objectForKeyedSubscript:@"[0]"];
@@ -226,7 +226,7 @@ LABEL_21:
               else
               {
                 v25 = [v46 substringToIndex:{objc_msgSend(v46, "rangeOfString:", @"["}];
-                v29 = [v48 subdataWithRange:{v24, v23}];
+                v29 = [dataCopy subdataWithRange:{v24, v23}];
                 v26 = [(BTCrashlogDecoder *)self extractValueFromData:v29 type:v25 enumDict:v45];
 
                 if (v26)
@@ -247,14 +247,14 @@ LABEL_21:
 
           else if (v13 && [v13 count])
           {
-            v18 = [v48 subdataWithRange:{objc_msgSend(v11, "unsignedIntegerValue"), objc_msgSend(v12, "unsignedIntegerValue")}];
+            v18 = [dataCopy subdataWithRange:{objc_msgSend(v11, "unsignedIntegerValue"), objc_msgSend(v12, "unsignedIntegerValue")}];
             v30 = [(BTCrashlogDecoder *)self decodeData:v18 withSchema:v9];
             [v39 addEntriesFromDictionary:v30];
           }
 
           else
           {
-            v31 = [v48 subdataWithRange:{objc_msgSend(v11, "unsignedIntegerValue"), objc_msgSend(v12, "unsignedIntegerValue")}];
+            v31 = [dataCopy subdataWithRange:{objc_msgSend(v11, "unsignedIntegerValue"), objc_msgSend(v12, "unsignedIntegerValue")}];
             v18 = [(BTCrashlogDecoder *)self extractValueFromData:v31 type:v46 enumDict:v45];
 
             if (v18)
@@ -285,15 +285,15 @@ LABEL_21:
   return v34;
 }
 
-- (id)schemaForCore:(id)a3
+- (id)schemaForCore:(id)core
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BTMAIN"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"BTS"))
+  coreCopy = core;
+  if ([coreCopy isEqualToString:@"BTMAIN"] & 1) != 0 || (objc_msgSend(coreCopy, "isEqualToString:", @"BTS"))
   {
     v4 = &off_100082AB0;
   }
 
-  else if ([v3 isEqualToString:@"BTLPS"])
+  else if ([coreCopy isEqualToString:@"BTLPS"])
   {
     v4 = &off_100082F88;
   }
@@ -306,14 +306,14 @@ LABEL_21:
   return v4;
 }
 
-- (id)supportedSectionsForCore:(id)a3
+- (id)supportedSectionsForCore:(id)core
 {
-  v3 = [(BTCrashlogDecoder *)self schemaForCore:a3];
-  v4 = [v3 allKeys];
-  v5 = v4;
-  if (v4)
+  v3 = [(BTCrashlogDecoder *)self schemaForCore:core];
+  allKeys = [v3 allKeys];
+  v5 = allKeys;
+  if (allKeys)
   {
-    v6 = v4;
+    v6 = allKeys;
   }
 
   else
@@ -326,16 +326,16 @@ LABEL_21:
   return v6;
 }
 
-- (id)decodeData:(id)a3 forSection:(id)a4 fromCore:(id)a5
+- (id)decodeData:(id)data forSection:(id)section fromCore:(id)core
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(BTCrashlogDecoder *)self schemaForCore:v11];
+  dataCopy = data;
+  sectionCopy = section;
+  coreCopy = core;
+  v12 = [(BTCrashlogDecoder *)self schemaForCore:coreCopy];
   v13 = v12;
   if (!v12)
   {
-    sub_100031674(self, a2, v11);
+    sub_100031674(self, a2, coreCopy);
 LABEL_10:
     v16 = 0;
     v15 = 0;
@@ -344,7 +344,7 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  v14 = [v12 objectForKeyedSubscript:v10];
+  v14 = [v12 objectForKeyedSubscript:sectionCopy];
   if (!v14)
   {
     v21 = sub_100025204();
@@ -357,9 +357,9 @@ LABEL_14:
       v29 = 2114;
       v30 = v24;
       v31 = 2112;
-      v32 = v10;
+      v32 = sectionCopy;
       v33 = 2112;
-      v34 = v11;
+      v34 = coreCopy;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: unsupported section %@ for core %@", &v27, 0x2Au);
     }
 
@@ -368,7 +368,7 @@ LABEL_14:
 
   v15 = v14;
   v16 = [v14 objectForKeyedSubscript:@"size"];
-  v17 = [v9 length];
+  v17 = [dataCopy length];
   if (v17 < [v16 unsignedIntegerValue])
   {
     v22 = sub_100025204();
@@ -381,20 +381,20 @@ LABEL_14:
       v29 = 2114;
       v30 = v26;
       v31 = 2048;
-      v32 = [v9 length];
+      v32 = [dataCopy length];
       v33 = 2112;
-      v34 = v11;
+      v34 = coreCopy;
       v35 = 2112;
-      v36 = v10;
+      v36 = sectionCopy;
       v37 = 2048;
-      v38 = [v16 unsignedIntegerValue];
+      unsignedIntegerValue = [v16 unsignedIntegerValue];
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: unexpected size %lu for %@:%@, expected %lu", &v27, 0x3Eu);
     }
 
     goto LABEL_14;
   }
 
-  v18 = [(BTCrashlogDecoder *)self decodeData:v9 withSchema:v15];
+  v18 = [(BTCrashlogDecoder *)self decodeData:dataCopy withSchema:v15];
 LABEL_5:
   v19 = v18;
 

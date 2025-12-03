@@ -1,20 +1,20 @@
 @interface HUTemperatureUnitControlView
 - (HUControlViewDelegate)delegate;
-- (HUTemperatureUnitControlView)initWithFrame:(CGRect)a3;
+- (HUTemperatureUnitControlView)initWithFrame:(CGRect)frame;
 - (id)_unitStringForCurrentUnit;
 - (id)value;
-- (void)setDisabled:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setValue:(id)value;
 - (void)updateConstraints;
 @end
 
 @implementation HUTemperatureUnitControlView
 
-- (HUTemperatureUnitControlView)initWithFrame:(CGRect)a3
+- (HUTemperatureUnitControlView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = HUTemperatureUnitControlView;
-  v3 = [(HUTemperatureUnitControlView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUTemperatureUnitControlView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -38,8 +38,8 @@
     v11 = [MEMORY[0x277D74300] preferredFontForTextStyle:v6];
     [(UILabel *)v3->_detailLabel setFont:v11];
 
-    v12 = [MEMORY[0x277D75348] systemMidGrayColor];
-    [(UILabel *)v3->_detailLabel setTextColor:v12];
+    systemMidGrayColor = [MEMORY[0x277D75348] systemMidGrayColor];
+    [(UILabel *)v3->_detailLabel setTextColor:systemMidGrayColor];
 
     [(HUTemperatureUnitControlView *)v3 addSubview:v3->_detailLabel];
   }
@@ -49,59 +49,59 @@
 
 - (void)updateConstraints
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUTemperatureUnitControlView *)self titleLabel];
-  v5 = [v4 leadingAnchor];
-  v6 = [(HUTemperatureUnitControlView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
-  [v3 addObject:v7];
+  array = [MEMORY[0x277CBEB18] array];
+  titleLabel = [(HUTemperatureUnitControlView *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  leadingAnchor2 = [(HUTemperatureUnitControlView *)self leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v7];
 
-  v8 = [(HUTemperatureUnitControlView *)self titleLabel];
-  v9 = [v8 topAnchor];
-  v10 = [(HUTemperatureUnitControlView *)self topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
-  [v3 addObject:v11];
+  titleLabel2 = [(HUTemperatureUnitControlView *)self titleLabel];
+  topAnchor = [titleLabel2 topAnchor];
+  topAnchor2 = [(HUTemperatureUnitControlView *)self topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v11];
 
-  v12 = [(HUTemperatureUnitControlView *)self titleLabel];
-  v13 = [v12 bottomAnchor];
-  v14 = [(HUTemperatureUnitControlView *)self bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
-  [v3 addObject:v15];
+  titleLabel3 = [(HUTemperatureUnitControlView *)self titleLabel];
+  bottomAnchor = [titleLabel3 bottomAnchor];
+  bottomAnchor2 = [(HUTemperatureUnitControlView *)self bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v15];
 
-  v16 = [(HUTemperatureUnitControlView *)self detailLabel];
-  v17 = [v16 trailingAnchor];
-  v18 = [(HUTemperatureUnitControlView *)self trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
-  [v3 addObject:v19];
+  detailLabel = [(HUTemperatureUnitControlView *)self detailLabel];
+  trailingAnchor = [detailLabel trailingAnchor];
+  trailingAnchor2 = [(HUTemperatureUnitControlView *)self trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v19];
 
-  v20 = [(HUTemperatureUnitControlView *)self detailLabel];
-  v21 = [v20 topAnchor];
-  v22 = [(HUTemperatureUnitControlView *)self topAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
-  [v3 addObject:v23];
+  detailLabel2 = [(HUTemperatureUnitControlView *)self detailLabel];
+  topAnchor3 = [detailLabel2 topAnchor];
+  topAnchor4 = [(HUTemperatureUnitControlView *)self topAnchor];
+  v23 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+  [array addObject:v23];
 
-  v24 = [(HUTemperatureUnitControlView *)self detailLabel];
-  v25 = [v24 bottomAnchor];
-  v26 = [(HUTemperatureUnitControlView *)self bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
-  [v3 addObject:v27];
+  detailLabel3 = [(HUTemperatureUnitControlView *)self detailLabel];
+  bottomAnchor3 = [detailLabel3 bottomAnchor];
+  bottomAnchor4 = [(HUTemperatureUnitControlView *)self bottomAnchor];
+  v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+  [array addObject:v27];
 
-  v28 = [(HUTemperatureUnitControlView *)self labelConstraints];
-  LOBYTE(v25) = [v3 isEqualToArray:v28];
+  labelConstraints = [(HUTemperatureUnitControlView *)self labelConstraints];
+  LOBYTE(bottomAnchor3) = [array isEqualToArray:labelConstraints];
 
-  if ((v25 & 1) == 0)
+  if ((bottomAnchor3 & 1) == 0)
   {
-    v29 = [(HUTemperatureUnitControlView *)self labelConstraints];
+    labelConstraints2 = [(HUTemperatureUnitControlView *)self labelConstraints];
 
-    if (v29)
+    if (labelConstraints2)
     {
       v30 = MEMORY[0x277CCAAD0];
-      v31 = [(HUTemperatureUnitControlView *)self labelConstraints];
-      [v30 deactivateConstraints:v31];
+      labelConstraints3 = [(HUTemperatureUnitControlView *)self labelConstraints];
+      [v30 deactivateConstraints:labelConstraints3];
     }
 
-    [(HUTemperatureUnitControlView *)self setLabelConstraints:v3];
-    [MEMORY[0x277CCAAD0] activateConstraints:v3];
+    [(HUTemperatureUnitControlView *)self setLabelConstraints:array];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   v32.receiver = self;
@@ -112,16 +112,16 @@
 - (id)value
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HUTemperatureUnitControlView *)self currentUnit];
+  currentUnit = [(HUTemperatureUnitControlView *)self currentUnit];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:currentUnit];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    -[HUTemperatureUnitControlView setCurrentUnit:](self, "setCurrentUnit:", [a3 integerValue]);
+    -[HUTemperatureUnitControlView setCurrentUnit:](self, "setCurrentUnit:", [value integerValue]);
     [(HUTemperatureUnitControlView *)self _unitStringForCurrentUnit];
   }
 
@@ -130,14 +130,14 @@
     HFLocalizedString();
   }
   v5 = ;
-  v4 = [(HUTemperatureUnitControlView *)self detailLabel];
-  [v4 setText:v5];
+  detailLabel = [(HUTemperatureUnitControlView *)self detailLabel];
+  [detailLabel setText:v5];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  self->_viewDisabled = a3;
-  if (a3)
+  self->_viewDisabled = disabled;
+  if (disabled)
   {
     [MEMORY[0x277D75348] systemLightGrayColor];
   }
@@ -147,20 +147,20 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v5 = ;
-  v4 = [(HUTemperatureUnitControlView *)self titleLabel];
-  [v4 setTextColor:v5];
+  titleLabel = [(HUTemperatureUnitControlView *)self titleLabel];
+  [titleLabel setTextColor:v5];
 }
 
 - (id)_unitStringForCurrentUnit
 {
-  v2 = [(HUTemperatureUnitControlView *)self currentUnit];
-  if (v2 == 1)
+  currentUnit = [(HUTemperatureUnitControlView *)self currentUnit];
+  if (currentUnit == 1)
   {
     v3 = @"HUTemperatureFahrenheitUnitTitle";
     goto LABEL_5;
   }
 
-  if (!v2)
+  if (!currentUnit)
   {
     v3 = @"HUTemperatureCelsiusUnitTitle";
 LABEL_5:

@@ -1,21 +1,21 @@
 @interface _MUExtensionGroup
-- (_MUExtensionGroup)initWithAppIdentifier:(id)a3;
+- (_MUExtensionGroup)initWithAppIdentifier:(id)identifier;
 - (_MXExtension)bestExtensionToUse;
-- (void)addExtensionIfMatchedAppIdentifier:(id)a3;
+- (void)addExtensionIfMatchedAppIdentifier:(id)identifier;
 @end
 
 @implementation _MUExtensionGroup
 
-- (_MUExtensionGroup)initWithAppIdentifier:(id)a3
+- (_MUExtensionGroup)initWithAppIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = _MUExtensionGroup;
   v6 = [(_MUExtensionGroup *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appIdentifier, a3);
+    objc_storeStrong(&v6->_appIdentifier, identifier);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     extensions = v7->_extensions;
     v7->_extensions = v8;
@@ -28,16 +28,16 @@
   return v7;
 }
 
-- (void)addExtensionIfMatchedAppIdentifier:(id)a3
+- (void)addExtensionIfMatchedAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 _containingAppIdentifer];
-  v6 = [v5 isEqual:self->_appIdentifier];
+  identifierCopy = identifier;
+  _containingAppIdentifer = [identifierCopy _containingAppIdentifer];
+  v6 = [_containingAppIdentifer isEqual:self->_appIdentifier];
 
   if (v6)
   {
     extensionsLock = self->_extensionsLock;
-    v8 = v4;
+    v8 = identifierCopy;
     geo_isolate_sync();
   }
 }

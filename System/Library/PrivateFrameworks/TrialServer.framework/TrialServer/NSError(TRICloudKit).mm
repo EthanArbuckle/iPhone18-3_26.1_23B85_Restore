@@ -11,12 +11,12 @@
   v15[0] = *MEMORY[0x277CCA450];
   v5 = MEMORY[0x277CCA8D8];
   v6 = a3;
-  v7 = [v5 mainBundle];
-  v8 = [v7 localizedStringForKey:@"CloudKit error" value:&stru_287FA0430 table:0];
+  mainBundle = [v5 mainBundle];
+  v8 = [mainBundle localizedStringForKey:@"CloudKit error" value:&stru_287FA0430 table:0];
   v16[0] = v8;
   v15[1] = *MEMORY[0x277CCA470];
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 localizedStringForKey:v6 value:&stru_287FA0430 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = [mainBundle2 localizedStringForKey:v6 value:&stru_287FA0430 table:0];
 
   v16[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];

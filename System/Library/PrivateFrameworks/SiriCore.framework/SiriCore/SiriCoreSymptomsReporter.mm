@@ -1,8 +1,8 @@
 @interface SiriCoreSymptomsReporter
 + (id)sharedInstance;
-- (id)_processNameForPid:(int)a3;
-- (id)_subtypeContextStringFromContext:(id)a3;
-- (void)_getTypeForError:(id)a3 completion:(id)a4;
+- (id)_processNameForPid:(int)pid;
+- (id)_subtypeContextStringFromContext:(id)context;
+- (void)_getTypeForError:(id)error completion:(id)completion;
 @end
 
 @implementation SiriCoreSymptomsReporter
@@ -51,20 +51,20 @@ LABEL_6:
   [v14 unlock];
 }
 
-- (id)_subtypeContextStringFromContext:(id)a3
+- (id)_subtypeContextStringFromContext:(id)context
 {
-  v3 = a3;
-  if ([v3 count])
+  contextCopy = context;
+  if ([contextCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    v5 = [v3 allKeys];
-    v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_35];
+    allKeys = [contextCopy allKeys];
+    v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_35];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__SiriCoreSymptomsReporter__subtypeContextStringFromContext___block_invoke_2;
     v11[3] = &unk_279BD6030;
-    v12 = v3;
+    v12 = contextCopy;
     v7 = v4;
     v13 = v7;
     [v6 enumerateObjectsUsingBlock:v11];
@@ -163,16 +163,16 @@ void __136__SiriCoreSymptomsReporter_reportIssueForError_type_subtype_context_pr
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processNameForPid:(int)a3
+- (id)_processNameForPid:(int)pid
 {
   v12 = *MEMORY[0x277D85DE8];
   buffer = 0u;
   memset(v11, 0, sizeof(v11));
-  v4 = proc_pidinfo(a3, 13, 1uLL, &buffer, 64);
+  v4 = proc_pidinfo(pid, 13, 1uLL, &buffer, 64);
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   if (v4 < 1)
   {
-    v6 = [v5 initWithFormat:@"pid(%ld)", a3, v9];
+    v6 = [v5 initWithFormat:@"pid(%ld)", pid, v9];
   }
 
   else
@@ -185,37 +185,37 @@ void __136__SiriCoreSymptomsReporter_reportIssueForError_type_subtype_context_pr
   return v6;
 }
 
-- (void)_getTypeForError:(id)a3 completion:(id)a4
+- (void)_getTypeForError:(id)error completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 domain];
-  v8 = [v5 code];
+  errorCopy = error;
+  completionCopy = completion;
+  domain = [errorCopy domain];
+  code = [errorCopy code];
   v9 = 0;
-  if ([v7 isEqualToString:*MEMORY[0x277CEF588]])
+  if ([domain isEqualToString:*MEMORY[0x277CEF588]])
   {
-    if (v8 > 199)
+    if (code > 199)
     {
-      if ((v8 - 200) <= 0x16)
+      if ((code - 200) <= 0x16)
       {
-        if (((1 << (v8 + 56)) & 0x700327) != 0)
+        if (((1 << (code + 56)) & 0x700327) != 0)
         {
           goto LABEL_13;
         }
 
-        if (v8 == 203)
+        if (code == 203)
         {
-          v10 = [v5 userInfo];
-          v11 = [v10 objectForKey:*MEMORY[0x277CCA7E8]];
+          userInfo = [errorCopy userInfo];
+          v11 = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
-          v12 = [v11 domain];
-          v13 = [v12 isEqualToString:*MEMORY[0x277CEF100]];
+          domain2 = [v11 domain];
+          v13 = [domain2 isEqualToString:*MEMORY[0x277CEF100]];
 
           v9 = 0;
           if (v13)
           {
-            v14 = [v11 code];
-            if (v14 == 1 || v14 == 201 || v14 == 102)
+            code2 = [v11 code];
+            if (code2 == 1 || code2 == 201 || code2 == 102)
             {
               v9 = 1;
             }
@@ -225,7 +225,7 @@ void __136__SiriCoreSymptomsReporter_reportIssueForError_type_subtype_context_pr
         }
       }
 
-      if (v8 != 1107 && v8 != 1101)
+      if (code != 1107 && code != 1101)
       {
         goto LABEL_14;
       }
@@ -235,7 +235,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v8 <= 0x16 && ((1 << v8) & 0x4000B6) != 0)
+    if (code <= 0x16 && ((1 << code) & 0x4000B6) != 0)
     {
       goto LABEL_13;
     }
@@ -244,7 +244,7 @@ LABEL_13:
 LABEL_14:
   v15 = objc_alloc_init(MEMORY[0x277CCAB68]);
   AFErrorEnumerate();
-  if (v6)
+  if (completionCopy)
   {
     if ([v15 length])
     {
@@ -256,7 +256,7 @@ LABEL_14:
       v16 = 0;
     }
 
-    (v6)[2](v6, v9, v16);
+    (completionCopy)[2](completionCopy, v9, v16);
   }
 }
 

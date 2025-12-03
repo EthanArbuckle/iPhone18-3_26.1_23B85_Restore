@@ -1,23 +1,23 @@
 @interface PUDebugImageTableViewController
-- (id)jobNumberFromPath:(id)a3;
-- (id)pidFromPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)jobNumberFromPath:(id)path;
+- (id)pidFromPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PUDebugImageTableViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = -[NSArray objectAtIndex:](self->_tableData, "objectAtIndex:", [a4 row]);
+  v5 = -[NSArray objectAtIndex:](self->_tableData, "objectAtIndex:", [path row]);
   v6 = MEMORY[0x1E695DFF8];
   v7 = [v5 objectForKeyedSubscript:@"path"];
   v8 = [v6 fileURLWithPath:v7];
 
-  v9 = [v8 pathExtension];
-  v10 = [v9 lowercaseString];
-  v11 = [v10 isEqual:@"pdf"];
+  pathExtension = [v8 pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v11 = [lowercaseString isEqual:@"pdf"];
 
   if (v11)
   {
@@ -52,14 +52,14 @@
     CGImageRelease(Image);
     CGContextRelease(v19);
     CGColorSpaceRelease(DeviceRGB);
-    v22 = [(PUDebugImageTableViewController *)self view];
-    [v22 bounds];
+    view = [(PUDebugImageTableViewController *)self view];
+    [view bounds];
     v24 = v23;
     [v21 size];
     v26 = v24 / v25;
 
-    v27 = [(PUDebugImageTableViewController *)self view];
-    [v27 bounds];
+    view2 = [(PUDebugImageTableViewController *)self view];
+    [view2 bounds];
     v29 = v28;
     [v21 size];
     v31 = v29 / v30;
@@ -89,16 +89,16 @@
 
   else
   {
-    v39 = [v8 pathExtension];
-    v40 = [v39 lowercaseString];
-    v41 = [v40 isEqual:@"txt"];
+    pathExtension2 = [v8 pathExtension];
+    lowercaseString2 = [pathExtension2 lowercaseString];
+    v41 = [lowercaseString2 isEqual:@"txt"];
 
     if (v41)
     {
       v42 = MEMORY[0x1E696AEC0];
-      v43 = [v8 path];
+      path = [v8 path];
       v49 = 0;
-      v44 = [v42 stringWithContentsOfFile:v43 encoding:4 error:&v49];
+      v44 = [v42 stringWithContentsOfFile:path encoding:4 error:&v49];
       v45 = v49;
 
       if (v45)
@@ -123,17 +123,17 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SimpleTableItem"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SimpleTableItem"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"SimpleTableItem"];
   }
 
-  v38 = v6;
-  v8 = -[NSArray objectAtIndex:](self->_tableData, "objectAtIndex:", [v6 row]);
+  v38 = pathCopy;
+  v8 = -[NSArray objectAtIndex:](self->_tableData, "objectAtIndex:", [pathCopy row]);
   v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v9 setDateFormat:@"MMM dd, HH:mm:ss"];
   v10 = [v8 objectForKeyedSubscript:@"date"];
@@ -182,12 +182,12 @@
   v25 = [v8 objectForKeyedSubscript:@"filename"];
   v26 = [v24 fileURLWithPath:v25];
 
-  v27 = [v26 pathExtension];
-  v28 = [v27 lowercaseString];
-  v29 = [v28 isEqual:@"pdf"];
+  pathExtension = [v26 pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v29 = [lowercaseString isEqual:@"pdf"];
 
-  v30 = [v7 textLabel];
-  [v30 setText:v13];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v13];
 
   if (v29)
   {
@@ -199,12 +199,12 @@
     [MEMORY[0x1E69DC888] blackColor];
   }
   v31 = ;
-  v32 = [v7 textLabel];
-  [v32 setTextColor:v31];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setTextColor:v31];
 
   v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@ (%@)", v23, v19, v37, v36];
-  v34 = [v7 detailTextLabel];
-  [v34 setText:v33];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:v33];
 
   return v7;
 }
@@ -241,19 +241,19 @@
         }
 
         v8 = *(*(&v58 + 1) + 8 * i);
-        v9 = [v8 pathExtension];
-        v10 = [v9 lowercaseString];
-        v11 = [v10 isEqual:@"txt"];
+        pathExtension = [v8 pathExtension];
+        lowercaseString = [pathExtension lowercaseString];
+        v11 = [lowercaseString isEqual:@"txt"];
 
         v4 |= v11;
-        v12 = [v8 pathExtension];
-        v13 = [v12 lowercaseString];
-        LOBYTE(v10) = [v13 isEqual:@"pdf"];
+        pathExtension2 = [v8 pathExtension];
+        lowercaseString2 = [pathExtension2 lowercaseString];
+        LOBYTE(lowercaseString) = [lowercaseString2 isEqual:@"pdf"];
 
-        v5 |= v10;
-        v14 = [MEMORY[0x1E696AC08] defaultManager];
-        v15 = [v8 path];
-        v16 = [v14 attributesOfItemAtPath:v15 error:0];
+        v5 |= lowercaseString;
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path = [v8 path];
+        v16 = [defaultManager attributesOfItemAtPath:path error:0];
 
         v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v18 = [v16 objectForKey:v52];
@@ -262,19 +262,19 @@
         v19 = [v16 objectForKey:v51];
         [v17 setObject:v19 forKeyedSubscript:@"size"];
 
-        v20 = [v8 path];
-        [v17 setObject:v20 forKeyedSubscript:@"path"];
+        path2 = [v8 path];
+        [v17 setObject:path2 forKeyedSubscript:@"path"];
 
-        v21 = [v8 path];
-        v22 = [(PUDebugImageTableViewController *)self pidFromPath:v21];
+        path3 = [v8 path];
+        v22 = [(PUDebugImageTableViewController *)self pidFromPath:path3];
         [v17 setObject:v22 forKeyedSubscript:@"pid"];
 
-        v23 = [v8 path];
-        v24 = [(PUDebugImageTableViewController *)self jobNumberFromPath:v23];
+        path4 = [v8 path];
+        v24 = [(PUDebugImageTableViewController *)self jobNumberFromPath:path4];
         [v17 setObject:v24 forKeyedSubscript:@"jobNumber"];
 
-        v25 = [v8 lastPathComponent];
-        [v17 setObject:v25 forKeyedSubscript:@"filename"];
+        lastPathComponent = [v8 lastPathComponent];
+        [v17 setObject:lastPathComponent forKeyedSubscript:@"filename"];
 
         v3 = v7;
         [v7 addObject:v17];
@@ -432,12 +432,12 @@ uint64_t __46__PUDebugImageTableViewController_viewDidLoad__block_invoke(uint64_
   }
 }
 
-- (id)pidFromPath:(id)a3
+- (id)pidFromPath:(id)path
 {
-  v3 = [MEMORY[0x1E695DFF8] URLWithString:a3];
-  v4 = [v3 lastPathComponent];
+  v3 = [MEMORY[0x1E695DFF8] URLWithString:path];
+  lastPathComponent = [v3 lastPathComponent];
 
-  v5 = [v4 rangeOfString:@"_"];
+  v5 = [lastPathComponent rangeOfString:@"_"];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -445,27 +445,27 @@ uint64_t __46__PUDebugImageTableViewController_viewDidLoad__block_invoke(uint64_
 
   else
   {
-    v7 = [v4 substringToIndex:v5];
+    v7 = [lastPathComponent substringToIndex:v5];
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v7, "intValue")}];
   }
 
   return v6;
 }
 
-- (id)jobNumberFromPath:(id)a3
+- (id)jobNumberFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v12 = 0;
   v4 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"-j[0-9]+(_|.)" options:0 error:&v12];
   v5 = v12;
   v6 = v5;
   if (v4)
   {
-    v7 = [v4 rangeOfFirstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v7 = [v4 rangeOfFirstMatchInString:pathCopy options:0 range:{0, objc_msgSend(pathCopy, "length")}];
     v9 = 0;
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [v3 substringWithRange:{v7 + 2, v8 - 3}];
+      v10 = [pathCopy substringWithRange:{v7 + 2, v8 - 3}];
       v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "intValue")}];
     }
   }

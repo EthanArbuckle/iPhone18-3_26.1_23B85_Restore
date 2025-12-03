@@ -1,50 +1,50 @@
 @interface TIRevisionRateAnalyzer
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5;
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence;
 - (TIRevisionRateAnalyzer)init;
 - (id)_createEventSpec;
-- (id)getInputModeForSession:(id)a3;
+- (id)getInputModeForSession:(id)session;
 - (id)getSessionFields;
-- (void)_dispatchEventPayloads:(id)a3 analyticsService:(id)a4 typingSession:(id)a5;
+- (void)_dispatchEventPayloads:(id)payloads analyticsService:(id)service typingSession:(id)session;
 - (void)_registerAnalyticsEventSpecWithAnalyticsService;
-- (void)summarizeWithEventDictionary:(id)a3 withSession:(id)a4;
+- (void)summarizeWithEventDictionary:(id)dictionary withSession:(id)session;
 @end
 
 @implementation TIRevisionRateAnalyzer
 
-- (id)getInputModeForSession:(id)a3
+- (id)getInputModeForSession:(id)session
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a3 userActionHistory];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  userActionHistory = [session userActionHistory];
+  v4 = [userActionHistory countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v14;
-    v7 = &stru_283FDFAF8;
+    inputMode = &stru_283FDFAF8;
     while (2)
     {
       for (i = 0; i != v5; ++i)
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(userActionHistory);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if (![v9 actionType])
         {
-          v10 = [v9 keyboardState];
-          v7 = [v10 inputMode];
+          keyboardState = [v9 keyboardState];
+          inputMode = [keyboardState inputMode];
 
           goto LABEL_12;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [userActionHistory countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -56,49 +56,49 @@
 
   else
   {
-    v7 = &stru_283FDFAF8;
+    inputMode = &stru_283FDFAF8;
   }
 
 LABEL_12:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return inputMode;
 }
 
-- (void)summarizeWithEventDictionary:(id)a3 withSession:(id)a4
+- (void)summarizeWithEventDictionary:(id)dictionary withSession:(id)session
 {
   v63[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIRevisionRateAnalyzer *)self hasEmojiInput];
-  v9 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
-  [v9 setHasEmojiInput:v8];
+  dictionaryCopy = dictionary;
+  sessionCopy = session;
+  hasEmojiInput = [(TIRevisionRateAnalyzer *)self hasEmojiInput];
+  revisionRateAnalysisSummary = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
+  [revisionRateAnalysisSummary setHasEmojiInput:hasEmojiInput];
 
-  v10 = [(TIRevisionRateAnalyzer *)self sessionAlignmentConfidence];
-  v11 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
-  [v11 setSessionAlignmentConfidence:v10];
+  sessionAlignmentConfidence = [(TIRevisionRateAnalyzer *)self sessionAlignmentConfidence];
+  revisionRateAnalysisSummary2 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
+  [revisionRateAnalysisSummary2 setSessionAlignmentConfidence:sessionAlignmentConfidence];
 
-  v12 = [(TIRevisionRateAnalyzer *)self hasCursorMovement];
-  v13 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
-  [v13 setHasCursorMovement:v12];
+  hasCursorMovement = [(TIRevisionRateAnalyzer *)self hasCursorMovement];
+  revisionRateAnalysisSummary3 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
+  [revisionRateAnalysisSummary3 setHasCursorMovement:hasCursorMovement];
 
-  v54 = v7;
-  v14 = [(TIRevisionRateAnalyzer *)self getInputModeForSession:v7];
-  v15 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
-  [v15 setInputMode:v14];
+  v54 = sessionCopy;
+  v14 = [(TIRevisionRateAnalyzer *)self getInputModeForSession:sessionCopy];
+  revisionRateAnalysisSummary4 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
+  [revisionRateAnalysisSummary4 setInputMode:v14];
 
-  v16 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
-  [v16 setTappedCount:0];
+  revisionRateAnalysisSummary5 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
+  [revisionRateAnalysisSummary5 setTappedCount:0];
 
-  v17 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
-  [v17 setAutocorrectedCount:0];
+  revisionRateAnalysisSummary6 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
+  [revisionRateAnalysisSummary6 setAutocorrectedCount:0];
 
-  v18 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
-  [v18 setRevisedCount:0];
+  revisionRateAnalysisSummary7 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
+  [revisionRateAnalysisSummary7 setRevisedCount:0];
 
-  v19 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
-  [v19 setRevisedAutocorrectionCount:0];
+  revisionRateAnalysisSummary8 = [(TIRevisionRateAnalyzer *)self revisionRateAnalysisSummary];
+  [revisionRateAnalysisSummary8 setRevisedAutocorrectionCount:0];
 
   v20 = MEMORY[0x277CBEB98];
   v63[0] = @"Tapped";
@@ -111,8 +111,8 @@ LABEL_12:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v23 = v6;
-  v24 = self;
+  v23 = dictionaryCopy;
+  selfCopy = self;
   obj = v23;
   v25 = [v23 countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v25)
@@ -120,7 +120,7 @@ LABEL_12:
     v26 = v25;
     v27 = *v59;
     v28 = @"enteredModality";
-    v57 = v24;
+    v57 = selfCopy;
     do
     {
       v29 = 0;
@@ -139,10 +139,10 @@ LABEL_12:
           v32 = v28;
           v33 = v27;
           v34 = v22;
-          v35 = [(TIRevisionRateAnalyzer *)v24 revisionRateAnalysisSummary];
-          v36 = [v35 tappedCount];
-          v37 = [(TIRevisionRateAnalyzer *)v24 revisionRateAnalysisSummary];
-          [v37 setTappedCount:v36 + 1];
+          revisionRateAnalysisSummary9 = [(TIRevisionRateAnalyzer *)selfCopy revisionRateAnalysisSummary];
+          tappedCount = [revisionRateAnalysisSummary9 tappedCount];
+          revisionRateAnalysisSummary10 = [(TIRevisionRateAnalyzer *)selfCopy revisionRateAnalysisSummary];
+          [revisionRateAnalysisSummary10 setTappedCount:tappedCount + 1];
 
           v38 = [v30 objectForKey:@"revisedModality"];
           v39 = [v38 length];
@@ -152,12 +152,12 @@ LABEL_12:
 
           if (v41)
           {
-            v42 = [(TIRevisionRateAnalyzer *)v24 revisionRateAnalysisSummary];
-            v43 = [v42 autocorrectedCount];
-            v44 = [(TIRevisionRateAnalyzer *)v24 revisionRateAnalysisSummary];
-            [v44 setAutocorrectedCount:v43 + 1];
+            revisionRateAnalysisSummary11 = [(TIRevisionRateAnalyzer *)selfCopy revisionRateAnalysisSummary];
+            autocorrectedCount = [revisionRateAnalysisSummary11 autocorrectedCount];
+            revisionRateAnalysisSummary12 = [(TIRevisionRateAnalyzer *)selfCopy revisionRateAnalysisSummary];
+            [revisionRateAnalysisSummary12 setAutocorrectedCount:autocorrectedCount + 1];
 
-            v24 = v57;
+            selfCopy = v57;
           }
 
           v22 = v34;
@@ -166,21 +166,21 @@ LABEL_12:
           v26 = v55;
           if (v39)
           {
-            v45 = [(TIRevisionRateAnalyzer *)v24 revisionRateAnalysisSummary];
-            v46 = [v45 revisedCount];
-            v47 = [(TIRevisionRateAnalyzer *)v57 revisionRateAnalysisSummary];
-            v48 = v46 + 1;
-            v24 = v57;
-            [v47 setRevisedCount:v48];
+            revisionRateAnalysisSummary13 = [(TIRevisionRateAnalyzer *)selfCopy revisionRateAnalysisSummary];
+            revisedCount = [revisionRateAnalysisSummary13 revisedCount];
+            revisionRateAnalysisSummary14 = [(TIRevisionRateAnalyzer *)v57 revisionRateAnalysisSummary];
+            v48 = revisedCount + 1;
+            selfCopy = v57;
+            [revisionRateAnalysisSummary14 setRevisedCount:v48];
 
             if (v41)
             {
-              v49 = [(TIRevisionRateAnalyzer *)v57 revisionRateAnalysisSummary];
-              v50 = [v49 revisedAutocorrectionCount];
-              v51 = [(TIRevisionRateAnalyzer *)v57 revisionRateAnalysisSummary];
-              v52 = v50 + 1;
-              v24 = v57;
-              [v51 setRevisedAutocorrectionCount:v52];
+              revisionRateAnalysisSummary15 = [(TIRevisionRateAnalyzer *)v57 revisionRateAnalysisSummary];
+              revisedAutocorrectionCount = [revisionRateAnalysisSummary15 revisedAutocorrectionCount];
+              revisionRateAnalysisSummary16 = [(TIRevisionRateAnalyzer *)v57 revisionRateAnalysisSummary];
+              v52 = revisedAutocorrectionCount + 1;
+              selfCopy = v57;
+              [revisionRateAnalysisSummary16 setRevisedAutocorrectionCount:v52];
             }
           }
         }
@@ -207,8 +207,8 @@ LABEL_12:
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[TIRevisionRateAnalyzer hasCursorMovement](self, "hasCursorMovement")}];
   [v3 setObject:v5 forKeyedSubscript:@"hasCursorMovement"];
 
-  v6 = [(TIRevisionRateAnalyzer *)self sessionAlignmentConfidence];
-  [v3 setObject:v6 forKeyedSubscript:kFeatureStringSessionAlignmentConfidence];
+  sessionAlignmentConfidence = [(TIRevisionRateAnalyzer *)self sessionAlignmentConfidence];
+  [v3 setObject:sessionAlignmentConfidence forKeyedSubscript:kFeatureStringSessionAlignmentConfidence];
 
   return v3;
 }
@@ -353,34 +353,34 @@ void __42__TIRevisionRateAnalyzer__createEventSpec__block_invoke()
 
 - (void)_registerAnalyticsEventSpecWithAnalyticsService
 {
-  v3 = [(TIRevisionRateAnalyzer *)self _createEventSpec];
-  v2 = [MEMORY[0x277D6F318] sharedInstance];
-  [v2 registerEventSpec:v3];
+  _createEventSpec = [(TIRevisionRateAnalyzer *)self _createEventSpec];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] registerEventSpec:_createEventSpec];
 }
 
-- (void)_dispatchEventPayloads:(id)a3 analyticsService:(id)a4 typingSession:(id)a5
+- (void)_dispatchEventPayloads:(id)payloads analyticsService:(id)service typingSession:(id)session
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v21 = v8;
-  if (v8)
+  payloadsCopy = payloads;
+  serviceCopy = service;
+  sessionCopy = session;
+  v21 = serviceCopy;
+  if (serviceCopy)
   {
-    v10 = v8;
+    mEMORY[0x277D6F318] = serviceCopy;
   }
 
   else
   {
-    v10 = [MEMORY[0x277D6F318] sharedInstance];
+    mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
   }
 
-  v11 = v10;
+  v11 = mEMORY[0x277D6F318];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v7;
+  v12 = payloadsCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -396,9 +396,9 @@ void __42__TIRevisionRateAnalyzer__createEventSpec__block_invoke()
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
-        v18 = [v9 sessionParams];
-        v19 = [v18 testingParameters];
-        [v11 dispatchEventWithName:@"revisionRate" payload:v17 testingParameters:v19 allowSparsePayload:1];
+        sessionParams = [sessionCopy sessionParams];
+        testingParameters = [sessionParams testingParameters];
+        [v11 dispatchEventWithName:@"revisionRate" payload:v17 testingParameters:testingParameters allowSparsePayload:1];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -427,32 +427,32 @@ void __42__TIRevisionRateAnalyzer__createEventSpec__block_invoke()
   return v3;
 }
 
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a5)
+  sessionCopy = session;
+  if (confidence)
   {
     v9 = MEMORY[0x277D6F320];
-    [TIStandardTypingSessionConfidenceEvaluator calculateAlignedTypingSessionConfidence:a4];
+    [TIStandardTypingSessionConfidenceEvaluator calculateAlignedTypingSessionConfidence:alignedSession];
     v10 = [v9 bucketRatioWithValue:10 bucketCount:?];
     [(TIRevisionRateAnalyzer *)self setSessionAlignmentConfidence:v10];
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v12 = [(TIRevisionRateAnalyzer *)self getSessionFields];
-    v13 = _analyzeEditEvents(v8, v12);
+    getSessionFields = [(TIRevisionRateAnalyzer *)self getSessionFields];
+    v13 = _analyzeEditEvents(sessionCopy, getSessionFields);
     [v11 addObjectsFromArray:v13];
 
-    v14 = _analyzeNonEditEvents(v8, v12);
+    v14 = _analyzeNonEditEvents(sessionCopy, getSessionFields);
     [v11 addObjectsFromArray:v14];
 
-    v15 = _analyzeDeletedOriginalWordEvents(v8, v12);
+    v15 = _analyzeDeletedOriginalWordEvents(sessionCopy, getSessionFields);
     [v11 addObjectsFromArray:v15];
 
     if ([v11 count])
     {
-      [(TIRevisionRateAnalyzer *)self summarizeWithEventDictionary:v11 withSession:v8];
-      [(TIRevisionRateAnalyzer *)self _dispatchEventPayloads:v11 analyticsService:0 typingSession:v8];
+      [(TIRevisionRateAnalyzer *)self summarizeWithEventDictionary:v11 withSession:sessionCopy];
+      [(TIRevisionRateAnalyzer *)self _dispatchEventPayloads:v11 analyticsService:0 typingSession:sessionCopy];
     }
 
     else if (IXACanLogMessageAtLevel())
@@ -473,15 +473,15 @@ void __42__TIRevisionRateAnalyzer__createEventSpec__block_invoke()
   v11 = IXADefaultLogFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Typing session confidence is set to 'none' and will not be analyzed by the autocorrection revision rate analyzer.", "-[TIRevisionRateAnalyzer analyzeSession:alignedSession:withConfidence:]"];
+    getSessionFields = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Typing session confidence is set to 'none' and will not be analyzed by the autocorrection revision rate analyzer.", "-[TIRevisionRateAnalyzer analyzeSession:alignedSession:withConfidence:]"];
     *buf = 138412290;
-    v21 = v12;
+    v21 = getSessionFields;
     _os_log_debug_impl(&dword_22CA55000, v11, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
 LABEL_10:
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return a5 != 0;
+  return confidence != 0;
 }
 
 @end

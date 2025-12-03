@@ -1,33 +1,33 @@
 @interface AWDWAQuickDpsStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSuppressedReason:(id)a3;
+- (int)StringAsSuppressedReason:(id)reason;
 - (int)suppressedReason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAwdlActivityThreshold:(BOOL)a3;
-- (void)setHasCcaThreshold:(BOOL)a3;
-- (void)setHasIsDpsValidationDisabled:(BOOL)a3;
-- (void)setHasProbabilityThreshold:(BOOL)a3;
-- (void)setHasQuickDpsResetRecommendation:(BOOL)a3;
-- (void)setHasRssiThreshold:(BOOL)a3;
-- (void)setHasScreenOffThreshold:(BOOL)a3;
-- (void)setHasScreenOnThreshold:(BOOL)a3;
-- (void)setHasScreenStateOn:(BOOL)a3;
-- (void)setHasStallPrediction:(BOOL)a3;
-- (void)setHasStallProbability:(BOOL)a3;
-- (void)setHasSuppressedReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAwdlActivityThreshold:(BOOL)threshold;
+- (void)setHasCcaThreshold:(BOOL)threshold;
+- (void)setHasIsDpsValidationDisabled:(BOOL)disabled;
+- (void)setHasProbabilityThreshold:(BOOL)threshold;
+- (void)setHasQuickDpsResetRecommendation:(BOOL)recommendation;
+- (void)setHasRssiThreshold:(BOOL)threshold;
+- (void)setHasScreenOffThreshold:(BOOL)threshold;
+- (void)setHasScreenOnThreshold:(BOOL)threshold;
+- (void)setHasScreenStateOn:(BOOL)on;
+- (void)setHasStallPrediction:(BOOL)prediction;
+- (void)setHasStallProbability:(BOOL)probability;
+- (void)setHasSuppressedReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWAQuickDpsStats
 
-- (void)setHasScreenStateOn:(BOOL)a3
+- (void)setHasScreenStateOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 2048;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasQuickDpsResetRecommendation:(BOOL)a3
+- (void)setHasQuickDpsResetRecommendation:(BOOL)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
     v3 = 1024;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasStallPrediction:(BOOL)a3
+- (void)setHasStallPrediction:(BOOL)prediction
 {
-  if (a3)
+  if (prediction)
   {
     v3 = 4096;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasStallProbability:(BOOL)a3
+- (void)setHasStallProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 128;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasProbabilityThreshold:(BOOL)a3
+- (void)setHasProbabilityThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 8;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasCcaThreshold:(BOOL)a3
+- (void)setHasCcaThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 4;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRssiThreshold:(BOOL)a3
+- (void)setHasRssiThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 16;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasScreenOnThreshold:(BOOL)a3
+- (void)setHasScreenOnThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 64;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasScreenOffThreshold:(BOOL)a3
+- (void)setHasScreenOffThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 32;
   }
@@ -173,9 +173,9 @@
   }
 }
 
-- (void)setHasSuppressedReason:(BOOL)a3
+- (void)setHasSuppressedReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 256;
   }
@@ -188,59 +188,59 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsSuppressedReason:(id)a3
+- (int)StringAsSuppressedReason:(id)reason
 {
-  if ([a3 isEqualToString:@"kNotSuppressed"])
+  if ([reason isEqualToString:@"kNotSuppressed"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kMLPrediction"])
+  if ([reason isEqualToString:@"kMLPrediction"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kPredictionProbability"])
+  if ([reason isEqualToString:@"kPredictionProbability"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kQuickDpsDisabled"])
+  if ([reason isEqualToString:@"kQuickDpsDisabled"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kValidationFailure"])
+  if ([reason isEqualToString:@"kValidationFailure"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"kBudgetThresholdReached"])
+  if ([reason isEqualToString:@"kBudgetThresholdReached"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"kCcaThresholdReached"])
+  if ([reason isEqualToString:@"kCcaThresholdReached"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"kTriggerDisconnectSuspected"])
+  if ([reason isEqualToString:@"kTriggerDisconnectSuspected"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"kHighAwdlActivitySuspected"])
+  if ([reason isEqualToString:@"kHighAwdlActivitySuspected"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"kValidationFailureTxSuccessInAtleastOneAC"])
+  if ([reason isEqualToString:@"kValidationFailureTxSuccessInAtleastOneAC"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"kValidationFailureOtherErr"])
+  if ([reason isEqualToString:@"kValidationFailureOtherErr"])
   {
     return 10;
   }
@@ -248,9 +248,9 @@
   return 0;
 }
 
-- (void)setHasIsDpsValidationDisabled:(BOOL)a3
+- (void)setHasIsDpsValidationDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 512;
   }
@@ -263,9 +263,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasAwdlActivityThreshold:(BOOL)a3
+- (void)setHasAwdlActivityThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 2;
   }
@@ -287,11 +287,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x800) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_screenStateOn), @"screenStateOn"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_screenStateOn), @"screenStateOn"}];
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -310,7 +310,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_quickDpsResetRecommendation), @"quickDpsResetRecommendation"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_quickDpsResetRecommendation), @"quickDpsResetRecommendation"}];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -324,7 +324,7 @@ LABEL_4:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_stallPrediction), @"stallPrediction"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_stallPrediction), @"stallPrediction"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -338,7 +338,7 @@ LABEL_5:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_stallProbability), @"stallProbability"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_stallProbability), @"stallProbability"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -352,7 +352,7 @@ LABEL_6:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_probabilityThreshold), @"probabilityThreshold"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_probabilityThreshold), @"probabilityThreshold"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -366,7 +366,7 @@ LABEL_7:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ccaThreshold), @"ccaThreshold"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ccaThreshold), @"ccaThreshold"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -380,7 +380,7 @@ LABEL_8:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rssiThreshold), @"rssiThreshold"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rssiThreshold), @"rssiThreshold"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -394,7 +394,7 @@ LABEL_9:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_screenOnThreshold), @"screenOnThreshold"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_screenOnThreshold), @"screenOnThreshold"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -408,7 +408,7 @@ LABEL_10:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_screenOffThreshold), @"screenOffThreshold"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_screenOffThreshold), @"screenOffThreshold"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -433,7 +433,7 @@ LABEL_25:
     v7 = off_29EE33158[suppressedReason];
   }
 
-  [v3 setObject:v7 forKey:@"suppressedReason"];
+  [dictionary setObject:v7 forKey:@"suppressedReason"];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -444,17 +444,17 @@ LABEL_12:
     }
 
 LABEL_30:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_awdlActivityThreshold), @"awdlActivityThreshold"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_awdlActivityThreshold), @"awdlActivityThreshold"}];
     if ((*&self->_has & 1) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_14;
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isDpsValidationDisabled), @"isDpsValidationDisabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isDpsValidationDisabled), @"isDpsValidationDisabled"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -465,13 +465,13 @@ LABEL_13:
   if (has)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_quickDpsTimeSincePreviousTriggerMinutes), @"quickDpsTimeSincePreviousTriggerMinutes"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_quickDpsTimeSincePreviousTriggerMinutes), @"quickDpsTimeSincePreviousTriggerMinutes"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x800) != 0)
@@ -659,13 +659,13 @@ LABEL_27:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x800) != 0)
   {
-    *(a3 + 50) = self->_screenStateOn;
-    *(a3 + 26) |= 0x800u;
+    *(to + 50) = self->_screenStateOn;
+    *(to + 26) |= 0x800u;
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -684,8 +684,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 49) = self->_quickDpsResetRecommendation;
-  *(a3 + 26) |= 0x400u;
+  *(to + 49) = self->_quickDpsResetRecommendation;
+  *(to + 26) |= 0x400u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -699,8 +699,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(a3 + 51) = self->_stallPrediction;
-  *(a3 + 26) |= 0x1000u;
+  *(to + 51) = self->_stallPrediction;
+  *(to + 26) |= 0x1000u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -714,8 +714,8 @@ LABEL_5:
   }
 
 LABEL_18:
-  *(a3 + 10) = self->_stallProbability;
-  *(a3 + 26) |= 0x80u;
+  *(to + 10) = self->_stallProbability;
+  *(to + 26) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -729,8 +729,8 @@ LABEL_6:
   }
 
 LABEL_19:
-  *(a3 + 6) = self->_probabilityThreshold;
-  *(a3 + 26) |= 8u;
+  *(to + 6) = self->_probabilityThreshold;
+  *(to + 26) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -744,8 +744,8 @@ LABEL_7:
   }
 
 LABEL_20:
-  *(a3 + 5) = self->_ccaThreshold;
-  *(a3 + 26) |= 4u;
+  *(to + 5) = self->_ccaThreshold;
+  *(to + 26) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -759,8 +759,8 @@ LABEL_8:
   }
 
 LABEL_21:
-  *(a3 + 7) = self->_rssiThreshold;
-  *(a3 + 26) |= 0x10u;
+  *(to + 7) = self->_rssiThreshold;
+  *(to + 26) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -774,8 +774,8 @@ LABEL_9:
   }
 
 LABEL_22:
-  *(a3 + 9) = self->_screenOnThreshold;
-  *(a3 + 26) |= 0x40u;
+  *(to + 9) = self->_screenOnThreshold;
+  *(to + 26) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -789,8 +789,8 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(a3 + 8) = self->_screenOffThreshold;
-  *(a3 + 26) |= 0x20u;
+  *(to + 8) = self->_screenOffThreshold;
+  *(to + 26) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -804,8 +804,8 @@ LABEL_11:
   }
 
 LABEL_24:
-  *(a3 + 11) = self->_suppressedReason;
-  *(a3 + 26) |= 0x100u;
+  *(to + 11) = self->_suppressedReason;
+  *(to + 26) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -819,8 +819,8 @@ LABEL_12:
   }
 
 LABEL_25:
-  *(a3 + 48) = self->_isDpsValidationDisabled;
-  *(a3 + 26) |= 0x200u;
+  *(to + 48) = self->_isDpsValidationDisabled;
+  *(to + 26) |= 0x200u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -831,23 +831,23 @@ LABEL_13:
     }
 
 LABEL_27:
-    *(a3 + 1) = self->_quickDpsTimeSincePreviousTriggerMinutes;
-    *(a3 + 26) |= 1u;
+    *(to + 1) = self->_quickDpsTimeSincePreviousTriggerMinutes;
+    *(to + 26) |= 1u;
     return;
   }
 
 LABEL_26:
-  *(a3 + 4) = self->_awdlActivityThreshold;
-  *(a3 + 26) |= 2u;
+  *(to + 4) = self->_awdlActivityThreshold;
+  *(to + 26) |= 2u;
   if (*&self->_has)
   {
     goto LABEL_27;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x800) != 0)
   {
@@ -1034,100 +1034,100 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 26);
+  v7 = *(equal + 26);
   if ((has & 0x800) != 0)
   {
-    if ((*(a3 + 26) & 0x800) == 0)
+    if ((*(equal + 26) & 0x800) == 0)
     {
       goto LABEL_77;
     }
 
-    v8 = *(a3 + 50);
+    v8 = *(equal + 50);
     if (self->_screenStateOn)
     {
-      if ((*(a3 + 50) & 1) == 0)
+      if ((*(equal + 50) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(a3 + 50))
+    else if (*(equal + 50))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(a3 + 26) & 0x800) != 0)
+  else if ((*(equal + 26) & 0x800) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(a3 + 26) & 0x400) == 0)
+    if ((*(equal + 26) & 0x400) == 0)
     {
       goto LABEL_77;
     }
 
-    v9 = *(a3 + 49);
+    v9 = *(equal + 49);
     if (self->_quickDpsResetRecommendation)
     {
-      if ((*(a3 + 49) & 1) == 0)
+      if ((*(equal + 49) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(a3 + 49))
+    else if (*(equal + 49))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(a3 + 26) & 0x400) != 0)
+  else if ((*(equal + 26) & 0x400) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(a3 + 26) & 0x1000) == 0)
+    if ((*(equal + 26) & 0x1000) == 0)
     {
       goto LABEL_77;
     }
 
-    v10 = *(a3 + 51);
+    v10 = *(equal + 51);
     if (self->_stallPrediction)
     {
-      if ((*(a3 + 51) & 1) == 0)
+      if ((*(equal + 51) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(a3 + 51))
+    else if (*(equal + 51))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(a3 + 26) & 0x1000) != 0)
+  else if ((*(equal + 26) & 0x1000) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_stallProbability != *(a3 + 10))
+    if ((v7 & 0x80) == 0 || self->_stallProbability != *(equal + 10))
     {
       goto LABEL_77;
     }
@@ -1140,7 +1140,7 @@ LABEL_14:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_probabilityThreshold != *(a3 + 6))
+    if ((v7 & 8) == 0 || self->_probabilityThreshold != *(equal + 6))
     {
       goto LABEL_77;
     }
@@ -1153,7 +1153,7 @@ LABEL_14:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_ccaThreshold != *(a3 + 5))
+    if ((v7 & 4) == 0 || self->_ccaThreshold != *(equal + 5))
     {
       goto LABEL_77;
     }
@@ -1166,7 +1166,7 @@ LABEL_14:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_rssiThreshold != *(a3 + 7))
+    if ((v7 & 0x10) == 0 || self->_rssiThreshold != *(equal + 7))
     {
       goto LABEL_77;
     }
@@ -1179,7 +1179,7 @@ LABEL_14:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_screenOnThreshold != *(a3 + 9))
+    if ((v7 & 0x40) == 0 || self->_screenOnThreshold != *(equal + 9))
     {
       goto LABEL_77;
     }
@@ -1192,7 +1192,7 @@ LABEL_14:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_screenOffThreshold != *(a3 + 8))
+    if ((v7 & 0x20) == 0 || self->_screenOffThreshold != *(equal + 8))
     {
       goto LABEL_77;
     }
@@ -1205,20 +1205,20 @@ LABEL_14:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 26) & 0x100) == 0 || self->_suppressedReason != *(a3 + 11))
+    if ((*(equal + 26) & 0x100) == 0 || self->_suppressedReason != *(equal + 11))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(a3 + 26) & 0x100) != 0)
+  else if ((*(equal + 26) & 0x100) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x200) == 0)
   {
-    if ((*(a3 + 26) & 0x200) == 0)
+    if ((*(equal + 26) & 0x200) == 0)
     {
       goto LABEL_63;
     }
@@ -1228,15 +1228,15 @@ LABEL_77:
     return v5;
   }
 
-  if ((*(a3 + 26) & 0x200) == 0)
+  if ((*(equal + 26) & 0x200) == 0)
   {
     goto LABEL_77;
   }
 
-  v11 = *(a3 + 48);
+  v11 = *(equal + 48);
   if (self->_isDpsValidationDisabled)
   {
-    if ((*(a3 + 48) & 1) == 0)
+    if ((*(equal + 48) & 1) == 0)
     {
       goto LABEL_77;
     }
@@ -1244,7 +1244,7 @@ LABEL_77:
     goto LABEL_63;
   }
 
-  if (*(a3 + 48))
+  if (*(equal + 48))
   {
     goto LABEL_77;
   }
@@ -1252,7 +1252,7 @@ LABEL_77:
 LABEL_63:
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_awdlActivityThreshold != *(a3 + 4))
+    if ((v7 & 2) == 0 || self->_awdlActivityThreshold != *(equal + 4))
     {
       goto LABEL_77;
     }
@@ -1266,7 +1266,7 @@ LABEL_63:
   LOBYTE(v5) = (v7 & 1) == 0;
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_quickDpsTimeSincePreviousTriggerMinutes != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_quickDpsTimeSincePreviousTriggerMinutes != *(equal + 1))
     {
       goto LABEL_77;
     }
@@ -1458,14 +1458,14 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x800) != 0)
   {
-    self->_screenStateOn = *(a3 + 50);
+    self->_screenStateOn = *(from + 50);
     *&self->_has |= 0x800u;
-    v3 = *(a3 + 26);
+    v3 = *(from + 26);
     if ((v3 & 0x400) == 0)
     {
 LABEL_3:
@@ -1478,14 +1478,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 26) & 0x400) == 0)
+  else if ((*(from + 26) & 0x400) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_quickDpsResetRecommendation = *(a3 + 49);
+  self->_quickDpsResetRecommendation = *(from + 49);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_4:
@@ -1498,9 +1498,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_stallPrediction = *(a3 + 51);
+  self->_stallPrediction = *(from + 51);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x80) == 0)
   {
 LABEL_5:
@@ -1513,9 +1513,9 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_stallProbability = *(a3 + 10);
+  self->_stallProbability = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 8) == 0)
   {
 LABEL_6:
@@ -1528,9 +1528,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_probabilityThreshold = *(a3 + 6);
+  self->_probabilityThreshold = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 4) == 0)
   {
 LABEL_7:
@@ -1543,9 +1543,9 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_ccaThreshold = *(a3 + 5);
+  self->_ccaThreshold = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x10) == 0)
   {
 LABEL_8:
@@ -1558,9 +1558,9 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_rssiThreshold = *(a3 + 7);
+  self->_rssiThreshold = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x40) == 0)
   {
 LABEL_9:
@@ -1573,9 +1573,9 @@ LABEL_9:
   }
 
 LABEL_22:
-  self->_screenOnThreshold = *(a3 + 9);
+  self->_screenOnThreshold = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x20) == 0)
   {
 LABEL_10:
@@ -1588,9 +1588,9 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_screenOffThreshold = *(a3 + 8);
+  self->_screenOffThreshold = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x100) == 0)
   {
 LABEL_11:
@@ -1603,9 +1603,9 @@ LABEL_11:
   }
 
 LABEL_24:
-  self->_suppressedReason = *(a3 + 11);
+  self->_suppressedReason = *(from + 11);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x200) == 0)
   {
 LABEL_12:
@@ -1618,9 +1618,9 @@ LABEL_12:
   }
 
 LABEL_25:
-  self->_isDpsValidationDisabled = *(a3 + 48);
+  self->_isDpsValidationDisabled = *(from + 48);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 2) == 0)
   {
 LABEL_13:
@@ -1630,15 +1630,15 @@ LABEL_13:
     }
 
 LABEL_27:
-    self->_quickDpsTimeSincePreviousTriggerMinutes = *(a3 + 1);
+    self->_quickDpsTimeSincePreviousTriggerMinutes = *(from + 1);
     *&self->_has |= 1u;
     return;
   }
 
 LABEL_26:
-  self->_awdlActivityThreshold = *(a3 + 4);
+  self->_awdlActivityThreshold = *(from + 4);
   *&self->_has |= 2u;
-  if (*(a3 + 26))
+  if (*(from + 26))
   {
     goto LABEL_27;
   }

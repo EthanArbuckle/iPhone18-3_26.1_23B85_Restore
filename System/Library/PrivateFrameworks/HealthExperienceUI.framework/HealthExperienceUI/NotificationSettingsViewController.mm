@@ -1,7 +1,7 @@
 @interface NotificationSettingsViewController
-- (_TtC18HealthExperienceUI34NotificationSettingsViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI34NotificationSettingsViewController)initWithCollectionViewLayout:(id)a3;
-- (void)dismissProfile:(id)a3;
+- (_TtC18HealthExperienceUI34NotificationSettingsViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI34NotificationSettingsViewController)initWithCollectionViewLayout:(id)layout;
+- (void)dismissProfile:(id)profile;
 - (void)viewDidLoad;
 @end
 
@@ -9,11 +9,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA061884();
 }
 
-- (_TtC18HealthExperienceUI34NotificationSettingsViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI34NotificationSettingsViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18HealthExperienceUI34NotificationSettingsViewController_viewControllerTitle;
   if (qword_1EDC5E100 != -1)
@@ -29,25 +29,25 @@
   return result;
 }
 
-- (void)dismissProfile:(id)a3
+- (void)dismissProfile:(id)profile
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
-  v5 = [(NotificationSettingsViewController *)v4 navigationController];
-  if (v5)
+  navigationController = [(NotificationSettingsViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    [(NotificationSettingsViewController *)v5 dismissViewControllerAnimated:1 completion:0];
+    v6 = navigationController;
+    [(NotificationSettingsViewController *)navigationController dismissViewControllerAnimated:1 completion:0];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
   __swift_destroy_boxed_opaque_existential_1(&v7);
 }
 
-- (_TtC18HealthExperienceUI34NotificationSettingsViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI34NotificationSettingsViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

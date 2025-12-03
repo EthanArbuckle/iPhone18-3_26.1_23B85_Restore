@@ -1,9 +1,9 @@
 @interface DUPersonalIDResult
-- (DUPersonalIDResult)initWithCoder:(id)a3;
-- (DUPersonalIDResult)initWithResultType:(int64_t)a3 attributes:(id)a4 isPartialExtraction:(BOOL)a5;
-- (id)dateFromString:(id)a3 forAttributeKey:(id)a4;
+- (DUPersonalIDResult)initWithCoder:(id)coder;
+- (DUPersonalIDResult)initWithResultType:(int64_t)type attributes:(id)attributes isPartialExtraction:(BOOL)extraction;
+- (id)dateFromString:(id)string forAttributeKey:(id)key;
 - (id)spotlightOntologyAttributes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DUPersonalIDResult
@@ -12,10 +12,10 @@
 {
   v52 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(DUPersonalIDResult *)self type];
-  if (v4 <= 0xD)
+  type = [(DUPersonalIDResult *)self type];
+  if (type <= 0xD)
   {
-    if (((1 << v4) & 0x39FE) != 0)
+    if (((1 << type) & 0x39FE) != 0)
     {
       v5 = MEMORY[0x277CC2280];
 LABEL_4:
@@ -23,13 +23,13 @@ LABEL_4:
       goto LABEL_5;
     }
 
-    if (v4 == 9)
+    if (type == 9)
     {
       v5 = MEMORY[0x277CC2288];
       goto LABEL_4;
     }
 
-    if (v4 == 10)
+    if (type == 10)
     {
       v5 = MEMORY[0x277CC2290];
       goto LABEL_4;
@@ -39,17 +39,17 @@ LABEL_4:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v51 = [(DUPersonalIDResult *)self type];
+    type2 = [(DUPersonalIDResult *)self type];
     _os_log_error_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[DUInformationExtractor] Cannot convert unexpected CardType '%ld' to Spotlight Attributes ", buf, 0xCu);
   }
 
 LABEL_5:
-  v6 = [(DUPersonalIDResult *)self type];
+  type3 = [(DUPersonalIDResult *)self type];
   v7 = [(NSDictionary *)self->_extractedAttributes objectForKeyedSubscript:@"CardType"];
   [v3 setCardSubType:v7];
 
   extractedAttributes = self->_extractedAttributes;
-  if (v6 == 3)
+  if (type3 == 3)
   {
     v9 = [(NSDictionary *)extractedAttributes objectForKeyedSubscript:@"BusinessName"];
     [v3 setCardProvider:v9];
@@ -184,25 +184,25 @@ LABEL_5:
   return v3;
 }
 
-- (id)dateFromString:(id)a3 forAttributeKey:(id)a4
+- (id)dateFromString:(id)string forAttributeKey:(id)key
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (a3)
+  keyCopy = key;
+  if (string)
   {
     v6 = MEMORY[0x277CCA968];
-    v7 = a3;
+    stringCopy = string;
     v8 = objc_alloc_init(v6);
     [v8 setDateFormat:@"yyyy-MM-dd"];
     v9 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"GMT"];
     [v8 setTimeZone:v9];
 
-    v10 = [v8 dateFromString:v7];
+    v10 = [v8 dateFromString:stringCopy];
 
     if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = keyCopy;
       _os_log_error_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[DUInformationExtractor] failed to convert '%@' value to NSDate", &v13, 0xCu);
     }
   }
@@ -217,33 +217,33 @@ LABEL_5:
   return v10;
 }
 
-- (DUPersonalIDResult)initWithCoder:(id)a3
+- (DUPersonalIDResult)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"resultType"];
-  v6 = [v4 decodeBoolForKey:@"isPartialExtraction"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extractedAttributes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"resultType"];
+  v6 = [coderCopy decodeBoolForKey:@"isPartialExtraction"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extractedAttributes"];
 
   v17 = 0;
   v8 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v7 error:&v17];
   v9 = v17;
-  v10 = v9;
+  error = v9;
   if (v9 || !v8)
   {
     if (!v9)
     {
-      v10 = [v8 error];
+      error = [v8 error];
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v20 = v10;
+      v20 = error;
       _os_log_error_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[DUInformationExtractor] failed to decode DUPersonalIDResult: %@", buf, 0xCu);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -253,25 +253,25 @@ LABEL_5:
     v18[1] = objc_opt_class();
     v18[2] = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
-    v10 = [v11 initWithArray:v12];
+    error = [v11 initWithArray:v12];
 
-    v13 = [v8 decodeObjectOfClasses:v10 forKey:*MEMORY[0x277CCA308]];
+    v13 = [v8 decodeObjectOfClasses:error forKey:*MEMORY[0x277CCA308]];
     [v8 finishDecoding];
     self = [(DUPersonalIDResult *)self initWithResultType:v5 attributes:v13 isPartialExtraction:v6];
 
-    v14 = self;
+    selfCopy = self;
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeInteger:self->_type forKey:@"resultType"];
-  [v4 encodeBool:self->_isPartialExtraction forKey:@"isPartialExtraction"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_type forKey:@"resultType"];
+  [coderCopy encodeBool:self->_isPartialExtraction forKey:@"isPartialExtraction"];
   extractedAttributes = self->_extractedAttributes;
   v9 = 0;
   v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:extractedAttributes requiringSecureCoding:1 error:&v9];
@@ -283,23 +283,23 @@ LABEL_5:
     _os_log_error_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[DUInformationExtractor] failed to decode DUPersonalIDResult: %@", buf, 0xCu);
   }
 
-  [v4 encodeObject:v6 forKey:@"extractedAttributes"];
+  [coderCopy encodeObject:v6 forKey:@"extractedAttributes"];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (DUPersonalIDResult)initWithResultType:(int64_t)a3 attributes:(id)a4 isPartialExtraction:(BOOL)a5
+- (DUPersonalIDResult)initWithResultType:(int64_t)type attributes:(id)attributes isPartialExtraction:(BOOL)extraction
 {
-  v8 = a4;
+  attributesCopy = attributes;
   v14.receiver = self;
   v14.super_class = DUPersonalIDResult;
   v9 = [(DUPersonalIDResult *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    v9->_isPartialExtraction = a5;
-    v11 = [v8 copy];
+    v9->_type = type;
+    v9->_isPartialExtraction = extraction;
+    v11 = [attributesCopy copy];
     extractedAttributes = v10->_extractedAttributes;
     v10->_extractedAttributes = v11;
   }

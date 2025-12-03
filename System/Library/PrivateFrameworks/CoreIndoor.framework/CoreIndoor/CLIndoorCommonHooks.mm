@@ -1,11 +1,11 @@
 @interface CLIndoorCommonHooks
-+ (id)filterLocationGroups:(id)a3 isRegionalSupported:(BOOL)a4;
-+ (id)nearestVenues:()time_point<std:(std:()std:(1000000000>>>)a3 :(id)a4 ratio<1 :(id)a5 chrono:(double)a6 :(const NearestVenueSettings *)a7 duration<long)long :(BOOL)a8 chrono::steady_clock availableVenues:latestPosition:availabilityZScoreConfidenceInterval:settings:isAllowedMultipleVenues:;
++ (id)filterLocationGroups:(id)groups isRegionalSupported:(BOOL)supported;
++ (id)nearestVenues:()time_point<std:(std:()std:(1000000000>>>)std :(id)a4 ratio<1 :(id)a5 chrono:(double)chrono :(const NearestVenueSettings *)a7 duration<long)long :(BOOL)a8 chrono::steady_clock availableVenues:latestPosition:availabilityZScoreConfidenceInterval:settings:isAllowedMultipleVenues:;
 @end
 
 @implementation CLIndoorCommonHooks
 
-+ (id)nearestVenues:()time_point<std:(std:()std:(1000000000>>>)a3 :(id)a4 ratio<1 :(id)a5 chrono:(double)a6 :(const NearestVenueSettings *)a7 duration<long)long :(BOOL)a8 chrono::steady_clock availableVenues:latestPosition:availabilityZScoreConfidenceInterval:settings:isAllowedMultipleVenues:
++ (id)nearestVenues:()time_point<std:(std:()std:(1000000000>>>)std :(id)a4 ratio<1 :(id)a5 chrono:(double)chrono :(const NearestVenueSettings *)a7 duration<long)long :(BOOL)a8 chrono::steady_clock availableVenues:latestPosition:availabilityZScoreConfidenceInterval:settings:isAllowedMultipleVenues:
 {
   v137 = *MEMORY[0x277D85DE8];
   v120 = a4;
@@ -16,7 +16,7 @@
     goto LABEL_45;
   }
 
-  if (!a7->var2 && (objc_msgSend_isStaleFix_(v119, v13, v14, v15, v16, a3.var0.__rep_) & 1) != 0)
+  if (!a7->var2 && (objc_msgSend_isStaleFix_(v119, v13, v14, v15, v16, std.var0.__rep_) & 1) != 0)
   {
     v17 = 0;
     goto LABEL_45;
@@ -41,7 +41,7 @@
     v29 = objc_msgSend_initWithLatitude_longitude_andAltitude_(v27, v28, *(v134 + 4), *(v134 + 12), 0.0);
     v34 = objc_msgSend_fromLatLon_(ECEFCoordinate, v30, v31, v32, v33, v29);
 
-    v35 = *(&v134[1] + 4) * a6;
+    v35 = *(&v134[1] + 4) * chrono;
     if (a8)
     {
       v36 = objc_alloc(MEMORY[0x277CBEB58]);
@@ -198,15 +198,15 @@ LABEL_45:
   return v17;
 }
 
-+ (id)filterLocationGroups:(id)a3 isRegionalSupported:(BOOL)a4
++ (id)filterLocationGroups:(id)groups isRegionalSupported:(BOOL)supported
 {
-  v4 = a4;
+  supportedCopy = supported;
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v10 = v5;
-  if (v4)
+  groupsCopy = groups;
+  v10 = groupsCopy;
+  if (supportedCopy)
   {
-    v11 = objc_msgSend_copy(v5, v6, v7, v8, v9);
+    v11 = objc_msgSend_copy(groupsCopy, v6, v7, v8, v9);
   }
 
   else

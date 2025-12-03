@@ -1,8 +1,8 @@
 @interface BCAugmentedExperienceRegistry
 + (id)sharedRegistry;
 - (BCAugmentedExperienceRegistry)init;
-- (id)presenterForExperienceType:(int64_t)a3;
-- (void)registerPresenterClass:(Class)a3 forExperienceType:(int64_t)a4;
+- (id)presenterForExperienceType:(int64_t)type;
+- (void)registerPresenterClass:(Class)class forExperienceType:(int64_t)type;
 @end
 
 @implementation BCAugmentedExperienceRegistry
@@ -34,18 +34,18 @@
   return v2;
 }
 
-- (void)registerPresenterClass:(Class)a3 forExperienceType:(int64_t)a4
+- (void)registerPresenterClass:(Class)class forExperienceType:(int64_t)type
 {
-  v7 = [(BCAugmentedExperienceRegistry *)self presenters];
-  v6 = [NSNumber numberWithInteger:a4];
-  [v7 setObject:a3 forKey:v6];
+  presenters = [(BCAugmentedExperienceRegistry *)self presenters];
+  v6 = [NSNumber numberWithInteger:type];
+  [presenters setObject:class forKey:v6];
 }
 
-- (id)presenterForExperienceType:(int64_t)a3
+- (id)presenterForExperienceType:(int64_t)type
 {
-  v4 = [(BCAugmentedExperienceRegistry *)self presenters];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  presenters = [(BCAugmentedExperienceRegistry *)self presenters];
+  v5 = [NSNumber numberWithInteger:type];
+  v6 = [presenters objectForKey:v5];
 
   if (v6)
   {

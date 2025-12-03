@@ -8,8 +8,8 @@
 
 - (id)logMessage
 {
-  v2 = [a1 dictionaryRepresentation];
-  v3 = [a1 logMessageDictionaryFromProtobufDictionary:v2];
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  v3 = [self logMessageDictionaryFromProtobufDictionary:dictionaryRepresentation];
   v4 = [v3 description];
 
   return v4;
@@ -23,8 +23,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [v2 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [v2 allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -35,7 +35,7 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
@@ -46,7 +46,7 @@
         v11 = [v2 objectForKeyedSubscript:v8];
         if (isKindOfClass)
         {
-          v12 = [a1 hexStringFromData:v11];
+          v12 = [self hexStringFromData:v11];
         }
 
         else
@@ -60,14 +60,14 @@
           }
 
           v11 = [v2 objectForKeyedSubscript:v8];
-          v12 = [a1 logMessageDictionaryFromProtobufDictionary:v11];
+          v12 = [self logMessageDictionaryFromProtobufDictionary:v11];
         }
 
         v14 = v12;
         [v2 setObject:v12 forKeyedSubscript:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);
@@ -85,7 +85,7 @@
   if (v4)
   {
     v5 = v4;
-    v6 = [v3 bytes];
+    bytes = [v3 bytes];
     v7 = malloc_type_malloc((2 * v5) | 1, 0x100004077774924uLL);
     if (v7)
     {
@@ -94,7 +94,7 @@
       v10 = v7 + 1;
       do
       {
-        v11 = *v6++;
+        v11 = *bytes++;
         *(v10 - 1) = a0123456789abcd[v11 >> 4];
         *v10 = a0123456789abcd[v11 & 0xF];
         v10 += 2;

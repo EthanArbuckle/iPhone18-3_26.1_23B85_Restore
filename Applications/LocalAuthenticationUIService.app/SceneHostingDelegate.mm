@@ -1,10 +1,10 @@
 @interface SceneHostingDelegate
 - (UIWindow)window;
 - (_TtC28LocalAuthenticationUIService20SceneHostingDelegate)init;
-- (void)handleAction:(id)a3 completion:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)handleAction:(id)action completion:(id)completion;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SceneHostingDelegate
@@ -16,29 +16,29 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v5 = OBJC_IVAR____TtC28LocalAuthenticationUIService20SceneHostingDelegate_window;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  SceneHostingDelegate.scene(_:willConnectTo:options:)(v8, v9, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  SceneHostingDelegate.scene(_:willConnectTo:options:)(sceneCopy, sessionCopy, optionsCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  SceneHostingDelegate.sceneDidDisconnect(_:)(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  SceneHostingDelegate.sceneDidDisconnect(_:)(disconnectCopy);
 }
 
 - (_TtC28LocalAuthenticationUIService20SceneHostingDelegate)init
@@ -54,13 +54,13 @@
   return [(SceneHostingDelegate *)&v4 init];
 }
 
-- (void)handleAction:(id)a3 completion:(id)a4
+- (void)handleAction:(id)action completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  specialized SceneHostingDelegate.handle(_:completion:)(v7, v8, v6);
+  actionCopy = action;
+  selfCopy = self;
+  specialized SceneHostingDelegate.handle(_:completion:)(actionCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

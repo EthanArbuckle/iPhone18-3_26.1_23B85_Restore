@@ -1,10 +1,10 @@
 @interface PanoramaRegistrationShaders
-- (PanoramaRegistrationShaders)initWithContext:(id)a3;
+- (PanoramaRegistrationShaders)initWithContext:(id)context;
 @end
 
 @implementation PanoramaRegistrationShaders
 
-- (PanoramaRegistrationShaders)initWithContext:(id)a3
+- (PanoramaRegistrationShaders)initWithContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = PanoramaRegistrationShaders;

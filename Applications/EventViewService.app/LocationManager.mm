@@ -1,6 +1,6 @@
 @interface LocationManager
 - (_TtC16EventViewService15LocationManager)init;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation LocationManager
@@ -18,20 +18,20 @@
   return [(LocationManager *)&v8 init];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v6 = sub_1000024C4(&qword_100227360);
   __chkstk_darwin(v6 - 8);
   v8 = &v16 - v7;
   sub_1000311DC();
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  [v10 stopUpdatingLocation];
+  managerCopy = manager;
+  selfCopy = self;
+  [managerCopy stopUpdatingLocation];
   v12 = type metadata accessor for TaskPriority();
   (*(*(v12 - 8) + 56))(v8, 1, 1, v12);
   type metadata accessor for MainActor();
-  v13 = v11;
+  v13 = selfCopy;
   v14 = static MainActor.shared.getter();
   v15 = swift_allocObject();
   v15[2] = v14;

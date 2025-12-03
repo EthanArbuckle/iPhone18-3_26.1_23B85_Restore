@@ -1,21 +1,21 @@
 @interface UICheckeredPatternView
-- (UICheckeredPatternView)initWithFrame:(CGRect)a3;
+- (UICheckeredPatternView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
-- (void)setCheckerColor:(id)a3;
+- (void)setCheckerColor:(id)color;
 - (void)updatePatternColor;
 @end
 
 @implementation UICheckeredPatternView
 
-- (UICheckeredPatternView)initWithFrame:(CGRect)a3
+- (UICheckeredPatternView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = UICheckeredPatternView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [objc_opt_self() mainScreen];
-    [v4 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v3->_scale = v5;
 
     [(UIView *)v3 setUserInteractionEnabled:0];
@@ -28,9 +28,9 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIView *)self window];
-  v4 = [v3 screen];
-  [v4 scale];
+  window = [(UIView *)self window];
+  screen = [window screen];
+  [screen scale];
   v6 = v5;
 
   if (v6 != self->_scale)
@@ -48,9 +48,9 @@
   callbacks.drawPattern = DrawCheckeredPattern;
   v4 = malloc_type_malloc(0x10uLL, 0x1020040EDED9539uLL);
   callbacks.releaseInfo = ReleasePatternInfo;
-  v5 = [(UIColor *)self->_checkerColor CGColor];
-  CGColorRetain(v5);
-  *v4 = v5;
+  cGColor = [(UIColor *)self->_checkerColor CGColor];
+  CGColorRetain(cGColor);
+  *v4 = cGColor;
   scale = self->_scale;
   v4[1] = scale;
   CGAffineTransformMakeScale(&matrix, 1.0 / scale, 1.0 / scale);
@@ -68,24 +68,24 @@
   CGColorRelease(v9);
   CFRelease(Pattern);
   CFRelease(v7);
-  v12 = [(UIView *)self layer];
-  [v12 setBackgroundColor:{-[UIColor CGColor](self->_patternColor, "CGColor")}];
+  layer = [(UIView *)self layer];
+  [layer setBackgroundColor:{-[UIColor CGColor](self->_patternColor, "CGColor")}];
 }
 
-- (void)setCheckerColor:(id)a3
+- (void)setCheckerColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   checkerColor = self->_checkerColor;
-  if (checkerColor != v5)
+  if (checkerColor != colorCopy)
   {
-    v8 = v5;
-    v7 = [(UIColor *)checkerColor isEqual:v5];
-    v5 = v8;
+    v8 = colorCopy;
+    v7 = [(UIColor *)checkerColor isEqual:colorCopy];
+    colorCopy = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_checkerColor, a3);
+      objc_storeStrong(&self->_checkerColor, color);
       [(UICheckeredPatternView *)self updatePatternColor];
-      v5 = v8;
+      colorCopy = v8;
     }
   }
 }

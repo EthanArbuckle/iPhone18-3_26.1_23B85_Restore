@@ -1,9 +1,9 @@
 @interface PNPStackedPillView
 - (CGSize)intrinsicContentSize;
-- (PNPStackedPillView)initWithFrame:(CGRect)a3 topString:(id)a4 bottomString:(id)a5;
+- (PNPStackedPillView)initWithFrame:(CGRect)frame topString:(id)string bottomString:(id)bottomString;
 - (void)_configureConstraints;
 - (void)layoutSubviews;
-- (void)setDeviceState:(id)a3;
+- (void)setDeviceState:(id)state;
 @end
 
 @implementation PNPStackedPillView
@@ -36,116 +36,116 @@
   return result;
 }
 
-- (void)setDeviceState:(id)a3
+- (void)setDeviceState:(id)state
 {
-  objc_storeStrong(&self->_deviceState, a3);
+  objc_storeStrong(&self->_deviceState, state);
 
   [(PNPStackedPillView *)self setNeedsLayout];
 }
 
-- (PNPStackedPillView)initWithFrame:(CGRect)a3 topString:(id)a4 bottomString:(id)a5
+- (PNPStackedPillView)initWithFrame:(CGRect)frame topString:(id)string bottomString:(id)bottomString
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  stringCopy = string;
+  bottomStringCopy = bottomString;
   v28.receiver = self;
   v28.super_class = PNPStackedPillView;
-  v13 = [(PNPStackedPillView *)&v28 initWithFrame:x, y, width, height];
+  height = [(PNPStackedPillView *)&v28 initWithFrame:x, y, width, height];
   v14 = objc_alloc_init(MEMORY[0x277D756B8]);
-  topLabel = v13->_topLabel;
-  v13->_topLabel = v14;
+  topLabel = height->_topLabel;
+  height->_topLabel = v14;
 
   v16 = objc_alloc_init(MEMORY[0x277D756B8]);
-  bottomLabel = v13->_bottomLabel;
-  v13->_bottomLabel = v16;
+  bottomLabel = height->_bottomLabel;
+  height->_bottomLabel = v16;
 
   v18 = objc_alloc_init(MEMORY[0x277D75D18]);
-  contentAreaView = v13->_contentAreaView;
-  v13->_contentAreaView = v18;
+  contentAreaView = height->_contentAreaView;
+  height->_contentAreaView = v18;
 
   v20 = [MEMORY[0x277D74300] systemFontOfSize:13.0 weight:*MEMORY[0x277D743F8]];
-  [(UILabel *)v13->_topLabel setFont:v20];
+  [(UILabel *)height->_topLabel setFont:v20];
   v21 = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:*MEMORY[0x277D74410]];
-  [(UILabel *)v13->_bottomLabel setFont:v21];
-  [(UILabel *)v13->_topLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIView *)v13->_contentAreaView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UILabel *)v13->_bottomLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v22 = [MEMORY[0x277D75348] defaultBottomLabelColor];
-  bottomLabelColor = v13->_bottomLabelColor;
-  v13->_bottomLabelColor = v22;
+  [(UILabel *)height->_bottomLabel setFont:v21];
+  [(UILabel *)height->_topLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIView *)height->_contentAreaView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UILabel *)height->_bottomLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  defaultBottomLabelColor = [MEMORY[0x277D75348] defaultBottomLabelColor];
+  bottomLabelColor = height->_bottomLabelColor;
+  height->_bottomLabelColor = defaultBottomLabelColor;
 
-  [(PNPStackedPillView *)v13 addSubview:v13->_contentAreaView];
-  [(PNPStackedPillView *)v13 addSubview:v13->_topLabel];
-  [(PNPStackedPillView *)v13 addSubview:v13->_bottomLabel];
-  topLabelString = v13->_topLabelString;
-  v13->_topLabelString = v11;
-  v25 = v11;
+  [(PNPStackedPillView *)height addSubview:height->_contentAreaView];
+  [(PNPStackedPillView *)height addSubview:height->_topLabel];
+  [(PNPStackedPillView *)height addSubview:height->_bottomLabel];
+  topLabelString = height->_topLabelString;
+  height->_topLabelString = stringCopy;
+  v25 = stringCopy;
 
-  bottomLabelString = v13->_bottomLabelString;
-  v13->_bottomLabelString = v12;
+  bottomLabelString = height->_bottomLabelString;
+  height->_bottomLabelString = bottomStringCopy;
 
-  [(PNPStackedPillView *)v13 _configureConstraints];
+  [(PNPStackedPillView *)height _configureConstraints];
   if (_UISolariumEnabled())
   {
-    [(UIView *)v13 ppuiSetGlassBackground];
-    [(UIView *)v13 ppuiSetCapsuleCornerMaskingConfiguration];
+    [(UIView *)height ppuiSetGlassBackground];
+    [(UIView *)height ppuiSetCapsuleCornerMaskingConfiguration];
   }
 
-  return v13;
+  return height;
 }
 
 - (void)_configureConstraints
 {
-  v30 = [MEMORY[0x277CBEB18] array];
-  v3 = [(UIView *)self->_contentAreaView leadingAnchor];
-  v4 = [(PNPStackedPillView *)self leadingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:30.0];
-  [v30 addObject:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  leadingAnchor = [(UIView *)self->_contentAreaView leadingAnchor];
+  leadingAnchor2 = [(PNPStackedPillView *)self leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
+  [array addObject:v5];
 
-  v6 = [(UIView *)self->_contentAreaView trailingAnchor];
-  v7 = [(PNPStackedPillView *)self trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:-30.0];
-  [v30 addObject:v8];
+  trailingAnchor = [(UIView *)self->_contentAreaView trailingAnchor];
+  trailingAnchor2 = [(PNPStackedPillView *)self trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-30.0];
+  [array addObject:v8];
 
-  v9 = [(UIView *)self->_contentAreaView centerYAnchor];
-  v10 = [(PNPStackedPillView *)self centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
-  [v30 addObject:v11];
+  centerYAnchor = [(UIView *)self->_contentAreaView centerYAnchor];
+  centerYAnchor2 = [(PNPStackedPillView *)self centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v11];
 
-  v12 = [(UILabel *)self->_topLabel leadingAnchor];
-  v13 = [(UIView *)self->_contentAreaView leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
-  [v30 addObject:v14];
+  leadingAnchor3 = [(UILabel *)self->_topLabel leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_contentAreaView leadingAnchor];
+  v14 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+  [array addObject:v14];
 
-  v15 = [(UILabel *)self->_topLabel trailingAnchor];
-  v16 = [(UIView *)self->_contentAreaView trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
-  [v30 addObject:v17];
+  trailingAnchor3 = [(UILabel *)self->_topLabel trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_contentAreaView trailingAnchor];
+  v17 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+  [array addObject:v17];
 
-  v18 = [(UILabel *)self->_topLabel topAnchor];
-  v19 = [(UIView *)self->_contentAreaView topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
-  [v30 addObject:v20];
+  topAnchor = [(UILabel *)self->_topLabel topAnchor];
+  topAnchor2 = [(UIView *)self->_contentAreaView topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v20];
 
-  v21 = [(UILabel *)self->_bottomLabel lastBaselineAnchor];
-  v22 = [(UILabel *)self->_topLabel lastBaselineAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:16.0];
-  [v30 addObject:v23];
+  lastBaselineAnchor = [(UILabel *)self->_bottomLabel lastBaselineAnchor];
+  lastBaselineAnchor2 = [(UILabel *)self->_topLabel lastBaselineAnchor];
+  v23 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:16.0];
+  [array addObject:v23];
 
-  v24 = [(UILabel *)self->_bottomLabel bottomAnchor];
-  v25 = [(UIView *)self->_contentAreaView bottomAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
-  [v30 addObject:v26];
+  bottomAnchor = [(UILabel *)self->_bottomLabel bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_contentAreaView bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v26];
 
-  v27 = [(UILabel *)self->_bottomLabel centerXAnchor];
-  v28 = [(UILabel *)self->_topLabel centerXAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
-  [v30 addObject:v29];
+  centerXAnchor = [(UILabel *)self->_bottomLabel centerXAnchor];
+  centerXAnchor2 = [(UILabel *)self->_topLabel centerXAnchor];
+  v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v29];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v30];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 @end

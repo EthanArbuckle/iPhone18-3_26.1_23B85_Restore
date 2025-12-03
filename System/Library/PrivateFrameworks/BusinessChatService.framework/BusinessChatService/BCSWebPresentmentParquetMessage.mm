@@ -1,34 +1,34 @@
 @interface BCSWebPresentmentParquetMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addName:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addName:(id)name;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSWebPresentmentParquetMessage
 
-- (void)addName:(id)a3
+- (void)addName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   names = self->_names;
-  v8 = v4;
+  v8 = nameCopy;
   if (!names)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_names;
     self->_names = v6;
 
-    v4 = v8;
+    nameCopy = v8;
     names = self->_names;
   }
 
-  [(NSMutableArray *)names addObject:v4];
+  [(NSMutableArray *)names addObject:nameCopy];
 }
 
 - (id)description
@@ -37,8 +37,8 @@
   v8.receiver = self;
   v8.super_class = BCSWebPresentmentParquetMessage;
   v4 = [(BCSWebPresentmentParquetMessage *)&v8 description];
-  v5 = [(BCSWebPresentmentParquetMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSWebPresentmentParquetMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -46,12 +46,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   companyId = self->_companyId;
   if (companyId)
   {
-    [v3 setObject:companyId forKey:@"company_id"];
+    [dictionary setObject:companyId forKey:@"company_id"];
   }
 
   businessId = self->_businessId;
@@ -88,8 +88,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -124,16 +124,16 @@
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -142,18 +142,18 @@
       while (1)
       {
         LOBYTE(v28[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v28 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v28 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v28[0] & 0x7F) << v6;
@@ -171,11 +171,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -225,7 +225,7 @@ LABEL_45:
       [(BCSWebPresentmentParquetMessage *)self addName:v24];
       v28[0] = 0;
       v28[1] = 0;
-      if (!PBReaderPlaceMark() || !BCSWebPresentmentLocalizedStringReadFrom(v24, a3))
+      if (!PBReaderPlaceMark() || !BCSWebPresentmentLocalizedStringReadFrom(v24, from))
       {
 
         return 0;
@@ -234,10 +234,10 @@ LABEL_45:
       PBReaderRecallMark();
 
 LABEL_46:
-      v26 = [a3 position];
-      if (v26 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -257,18 +257,18 @@ LABEL_46:
       while (1)
       {
         LOBYTE(v28[0]) = 0;
-        v20 = [a3 position] + 1;
-        if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+        v20 = [from position] + 1;
+        if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
         {
-          v22 = [a3 data];
-          [v22 getBytes:v28 range:{objc_msgSend(a3, "position"), 1}];
+          data2 = [from data];
+          [data2 getBytes:v28 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v19 |= (v28[0] & 0x7F) << v17;
@@ -286,7 +286,7 @@ LABEL_46:
         }
       }
 
-      if ([a3 hasError])
+      if ([from hasError])
       {
         v23 = 0;
       }
@@ -310,13 +310,13 @@ LABEL_38:
     goto LABEL_46;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_companyId)
   {
     PBDataWriterWriteStringField();
@@ -383,49 +383,49 @@ LABEL_38:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_companyId)
   {
-    [v9 setCompanyId:?];
+    [toCopy setCompanyId:?];
   }
 
   if (self->_businessId)
   {
-    [v9 setBusinessId:?];
+    [toCopy setBusinessId:?];
   }
 
   if (self->_bcBrandId)
   {
-    [v9 setBcBrandId:?];
+    [toCopy setBcBrandId:?];
   }
 
   if ([(BCSWebPresentmentParquetMessage *)self namesCount])
   {
-    [v9 clearNames];
-    v4 = [(BCSWebPresentmentParquetMessage *)self namesCount];
-    if (v4)
+    [toCopy clearNames];
+    namesCount = [(BCSWebPresentmentParquetMessage *)self namesCount];
+    if (namesCount)
     {
-      v5 = v4;
+      v5 = namesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BCSWebPresentmentParquetMessage *)self nameAtIndex:i];
-        [v9 addName:v7];
+        [toCopy addName:v7];
       }
     }
   }
 
   if (self->_logo)
   {
-    [v9 setLogo:?];
+    [toCopy setLogo:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_logoFormat)
   {
-    [v9 setLogoFormat:?];
-    v8 = v9;
+    [toCopy setLogoFormat:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -435,19 +435,19 @@ LABEL_38:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_companyId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_companyId copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_businessId copyWithZone:a3];
+  v8 = [(NSString *)self->_businessId copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_bcBrandId copyWithZone:a3];
+  v10 = [(NSString *)self->_bcBrandId copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -470,7 +470,7 @@ LABEL_38:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{a3, v24}];
+        v17 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{zone, v24}];
         [v5 addName:v17];
       }
 
@@ -480,11 +480,11 @@ LABEL_38:
     while (v14);
   }
 
-  v18 = [(NSData *)self->_logo copyWithZone:a3];
+  v18 = [(NSData *)self->_logo copyWithZone:zone];
   v19 = *(v5 + 40);
   *(v5 + 40) = v18;
 
-  v20 = [(NSString *)self->_logoFormat copyWithZone:a3];
+  v20 = [(NSString *)self->_logoFormat copyWithZone:zone];
   v21 = *(v5 + 48);
   *(v5 + 48) = v20;
 
@@ -498,16 +498,16 @@ LABEL_38:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   companyId = self->_companyId;
-  if (companyId | *(v4 + 4))
+  if (companyId | *(equalCopy + 4))
   {
     if (![(NSString *)companyId isEqual:?])
     {
@@ -516,7 +516,7 @@ LABEL_38:
   }
 
   businessId = self->_businessId;
-  if (businessId | *(v4 + 3))
+  if (businessId | *(equalCopy + 3))
   {
     if (![(NSString *)businessId isEqual:?])
     {
@@ -525,7 +525,7 @@ LABEL_38:
   }
 
   bcBrandId = self->_bcBrandId;
-  if (bcBrandId | *(v4 + 2))
+  if (bcBrandId | *(equalCopy + 2))
   {
     if (![(NSString *)bcBrandId isEqual:?])
     {
@@ -534,7 +534,7 @@ LABEL_38:
   }
 
   names = self->_names;
-  if (names | *(v4 + 7))
+  if (names | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)names isEqual:?])
     {
@@ -543,7 +543,7 @@ LABEL_38:
   }
 
   logo = self->_logo;
-  if (logo | *(v4 + 5))
+  if (logo | *(equalCopy + 5))
   {
     if (![(NSData *)logo isEqual:?])
     {
@@ -552,7 +552,7 @@ LABEL_38:
   }
 
   logoFormat = self->_logoFormat;
-  if (logoFormat | *(v4 + 6))
+  if (logoFormat | *(equalCopy + 6))
   {
     if (![(NSString *)logoFormat isEqual:?])
     {
@@ -560,10 +560,10 @@ LABEL_38:
     }
   }
 
-  v11 = (*(v4 + 64) & 1) == 0;
+  v11 = (*(equalCopy + 64) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) != 0 && self->_itemTtl == *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) != 0 && self->_itemTtl == *(equalCopy + 1))
     {
       v11 = 1;
       goto LABEL_19;
@@ -599,21 +599,21 @@ LABEL_19:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(BCSWebPresentmentParquetMessage *)self setCompanyId:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BCSWebPresentmentParquetMessage *)self setBusinessId:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BCSWebPresentmentParquetMessage *)self setBcBrandId:?];
   }
@@ -622,7 +622,7 @@ LABEL_19:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 7);
+  v5 = *(fromCopy + 7);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -646,19 +646,19 @@ LABEL_19:
     while (v7);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BCSWebPresentmentParquetMessage *)self setLogo:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BCSWebPresentmentParquetMessage *)self setLogoFormat:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_itemTtl = *(v4 + 1);
+    self->_itemTtl = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

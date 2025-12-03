@@ -8,19 +8,19 @@
 - (NSUUID)identifier;
 - (NSUUID)windowUUID;
 - (SFTabSnapshotMetadata)init;
-- (SFTabSnapshotMetadata)initWithIdentifier:(id)a3;
+- (SFTabSnapshotMetadata)initWithIdentifier:(id)identifier;
 - (UIEdgeInsets)horizontalObscuredInsets;
 - (UIEdgeInsets)horizontalObscuredPercentage;
 - (double)topBackdropHeight;
-- (id)copyWithZone:(void *)a3;
-- (void)setDateCreated:(id)a3;
-- (void)setFileName:(id)a3;
-- (void)setHorizontalObscuredInsets:(UIEdgeInsets)a3;
-- (void)setIncludedBannerHeight:(id)a3;
-- (void)setIncludesTransparentBorderPadding:(BOOL)a3;
-- (void)setTopBackdropHeight:(double)a3;
-- (void)setWindowSize:(CGSize)a3;
-- (void)setWindowUUID:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)setDateCreated:(id)created;
+- (void)setFileName:(id)name;
+- (void)setHorizontalObscuredInsets:(UIEdgeInsets)insets;
+- (void)setIncludedBannerHeight:(id)height;
+- (void)setIncludesTransparentBorderPadding:(BOOL)padding;
+- (void)setTopBackdropHeight:(double)height;
+- (void)setWindowSize:(CGSize)size;
+- (void)setWindowUUID:(id)d;
 @end
 
 @implementation SFTabSnapshotMetadata
@@ -53,7 +53,7 @@
   return v13;
 }
 
-- (void)setDateCreated:(id)a3
+- (void)setDateCreated:(id)created
 {
   v5 = _s8MetadataVMa();
   MEMORY[0x1EEE9AC00](v5);
@@ -61,7 +61,7 @@
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA9DB1B0);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v10 = &v16[-v9];
-  if (a3)
+  if (created)
   {
     sub_18BC1EB58();
     v11 = sub_18BC1EB88();
@@ -77,7 +77,7 @@
   v13 = OBJC_IVAR___SFTabSnapshotMetadata__wrapped;
   swift_beginAccess();
   sub_18B7B193C(self + v13, v17);
-  v14 = self;
+  selfCopy = self;
   swift_dynamicCast();
   sub_18B7EC8D0(v10, v7, &unk_1EA9DB1B0);
   v18 = v5;
@@ -92,7 +92,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SFTabSnapshotMetadata.description.getter();
 
   v3 = sub_18BC20B98();
@@ -125,12 +125,12 @@
   return v8;
 }
 
-- (void)setFileName:(id)a3
+- (void)setFileName:(id)name
 {
   v5 = _s8MetadataVMa();
   MEMORY[0x1EEE9AC00](v5);
   v7 = &v15[-((v6 + 15) & 0xFFFFFFFFFFFFFFF0)];
-  if (a3)
+  if (name)
   {
     v8 = sub_18BC20BD8();
     v10 = v9;
@@ -145,7 +145,7 @@
   v11 = OBJC_IVAR___SFTabSnapshotMetadata__wrapped;
   swift_beginAccess();
   sub_18B7B193C(self + v11, &v16);
-  v12 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v13 = &v7[*(v5 + 20)];
   *v13 = v8;
@@ -207,19 +207,19 @@
   return result;
 }
 
-- (void)setHorizontalObscuredInsets:(UIEdgeInsets)a3
+- (void)setHorizontalObscuredInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = _s8MetadataVMa();
   MEMORY[0x1EEE9AC00](v8);
   v10 = &v15[-((v9 + 15) & 0xFFFFFFFFFFFFFFF0)];
   v11 = OBJC_IVAR___SFTabSnapshotMetadata__wrapped;
   swift_beginAccess();
   sub_18B7B193C(self + v11, &v16);
-  v12 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v13 = &v10[*(v8 + 24)];
   *v13 = top;
@@ -237,8 +237,8 @@
 
 - (UIEdgeInsets)horizontalObscuredPercentage
 {
-  v2 = self;
-  [(SFTabSnapshotMetadata *)v2 windowSize];
+  selfCopy = self;
+  [(SFTabSnapshotMetadata *)selfCopy windowSize];
   if (v3 == 0.0)
   {
     v5 = *MEMORY[0x1E69DDCE0];
@@ -249,13 +249,13 @@
 
   else
   {
-    [(SFTabSnapshotMetadata *)v2 horizontalObscuredInsets];
+    [(SFTabSnapshotMetadata *)selfCopy horizontalObscuredInsets];
     v9 = v8;
-    [(SFTabSnapshotMetadata *)v2 windowSize];
+    [(SFTabSnapshotMetadata *)selfCopy windowSize];
     v4 = v9 / v10;
-    [(SFTabSnapshotMetadata *)v2 horizontalObscuredInsets];
+    [(SFTabSnapshotMetadata *)selfCopy horizontalObscuredInsets];
     v12 = v11;
-    [(SFTabSnapshotMetadata *)v2 windowSize];
+    [(SFTabSnapshotMetadata *)selfCopy windowSize];
     v14 = v13;
 
     v5 = 0.0;
@@ -276,17 +276,17 @@
 
 - (NSNumber)includedBannerHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BC12C78();
 
   return v3;
 }
 
-- (void)setIncludedBannerHeight:(id)a3
+- (void)setIncludedBannerHeight:(id)height
 {
-  v5 = a3;
-  v6 = self;
-  sub_18BC12DE0(a3);
+  heightCopy = height;
+  selfCopy = self;
+  sub_18BC12DE0(height);
 }
 
 - (BOOL)includesTransparentBorderPadding
@@ -303,7 +303,7 @@
   return self;
 }
 
-- (void)setIncludesTransparentBorderPadding:(BOOL)a3
+- (void)setIncludesTransparentBorderPadding:(BOOL)padding
 {
   v5 = _s8MetadataVMa();
   MEMORY[0x1EEE9AC00](v5);
@@ -311,9 +311,9 @@
   v8 = OBJC_IVAR___SFTabSnapshotMetadata__wrapped;
   swift_beginAccess();
   sub_18B7B193C(self + v8, &v12);
-  v9 = self;
+  selfCopy = self;
   swift_dynamicCast();
-  v7[*(v5 + 36)] = a3;
+  v7[*(v5 + 36)] = padding;
   v13 = v5;
   boxed_opaque_existential_0Tm = __swift_allocate_boxed_opaque_existential_0Tm(&v12);
   sub_18BC13E90(v7, boxed_opaque_existential_0Tm);
@@ -337,7 +337,7 @@
   return v7;
 }
 
-- (void)setTopBackdropHeight:(double)a3
+- (void)setTopBackdropHeight:(double)height
 {
   v5 = _s8MetadataVMa();
   MEMORY[0x1EEE9AC00](v5);
@@ -345,9 +345,9 @@
   v8 = OBJC_IVAR___SFTabSnapshotMetadata__wrapped;
   swift_beginAccess();
   sub_18B7B193C(self + v8, &v12);
-  v9 = self;
+  selfCopy = self;
   swift_dynamicCast();
-  *&v7[*(v5 + 40)] = a3;
+  *&v7[*(v5 + 40)] = height;
   v13 = v5;
   boxed_opaque_existential_0Tm = __swift_allocate_boxed_opaque_existential_0Tm(&v12);
   sub_18BC13E90(v7, boxed_opaque_existential_0Tm);
@@ -377,17 +377,17 @@
   return result;
 }
 
-- (void)setWindowSize:(CGSize)a3
+- (void)setWindowSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = _s8MetadataVMa();
   MEMORY[0x1EEE9AC00](v6);
   v8 = &v13[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   v9 = OBJC_IVAR___SFTabSnapshotMetadata__wrapped;
   swift_beginAccess();
   sub_18B7B193C(self + v9, &v14);
-  v10 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v11 = &v8[*(v6 + 44)];
   *v11 = width;
@@ -429,7 +429,7 @@
   return v13;
 }
 
-- (void)setWindowUUID:(id)a3
+- (void)setWindowUUID:(id)d
 {
   v5 = _s8MetadataVMa();
   MEMORY[0x1EEE9AC00](v5);
@@ -437,7 +437,7 @@
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA9D3AE0);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v10 = &v16[-v9];
-  if (a3)
+  if (d)
   {
     sub_18BC1EBE8();
     v11 = sub_18BC1EC08();
@@ -453,7 +453,7 @@
   v13 = OBJC_IVAR___SFTabSnapshotMetadata__wrapped;
   swift_beginAccess();
   sub_18B7B193C(self + v13, v17);
-  v14 = self;
+  selfCopy = self;
   swift_dynamicCast();
   sub_18B7EC8D0(v10, &v7[*(v5 + 48)], &unk_1EA9D3AE0);
   v18 = v5;
@@ -466,7 +466,7 @@
   swift_endAccess();
 }
 
-- (SFTabSnapshotMetadata)initWithIdentifier:(id)a3
+- (SFTabSnapshotMetadata)initWithIdentifier:(id)identifier
 {
   v4 = sub_18BC1EC08();
   v5 = *(v4 - 8);
@@ -503,7 +503,7 @@
   return v17;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = _s8MetadataVMa();
   MEMORY[0x1EEE9AC00](v4);
@@ -511,7 +511,7 @@
   v7 = OBJC_IVAR___SFTabSnapshotMetadata__wrapped;
   swift_beginAccess();
   sub_18B7B193C(self + v7, v16);
-  v8 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v9 = objc_allocWithZone(SFTabSnapshotMetadata);
   v10 = &v9[OBJC_IVAR___SFTabSnapshotMetadata__wrapped];

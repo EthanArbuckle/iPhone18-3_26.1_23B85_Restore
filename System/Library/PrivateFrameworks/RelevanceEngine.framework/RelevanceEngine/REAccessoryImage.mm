@@ -1,20 +1,20 @@
 @interface REAccessoryImage
-- (BOOL)isEqual:(id)a3;
-- (REAccessoryImage)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REAccessoryImage)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation REAccessoryImage
 
-- (REAccessoryImage)initWithCoder:(id)a3
+- (REAccessoryImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = REAccessoryImage;
   v5 = [(REAccessoryImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"_image"];
+    v6 = [coderCopy decodeObjectForKey:@"_image"];
     image = v5->_image;
     v5->_image = v6;
   }
@@ -22,24 +22,24 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[REAccessoryImage allocWithZone:](REAccessoryImage init];
-  v6 = [(REImage *)self->_image copyWithZone:a3];
+  v6 = [(REImage *)self->_image copyWithZone:zone];
   image = v5->_image;
   v5->_image = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     image = self->_image;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     v7 = image;
     v8 = v7;
     if (v7 == v6)
@@ -57,7 +57,7 @@
   {
     v11.receiver = self;
     v11.super_class = REAccessoryImage;
-    v9 = [(REAccessoryImage *)&v11 isEqual:v4];
+    v9 = [(REAccessoryImage *)&v11 isEqual:equalCopy];
   }
 
   return v9;

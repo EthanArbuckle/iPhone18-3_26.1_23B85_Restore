@@ -1,11 +1,11 @@
 @interface TSTStarRatingRenderer
-+ (CGPath)p_newStarPath:(double)a3;
-+ (void)renderRating:(double)a3 intoContext:(CGContext *)a4 rect:(CGRect)a5 showDots:(BOOL)a6 color:(CGColor *)a7 useMinimalSpace:(BOOL)a8;
++ (CGPath)p_newStarPath:(double)path;
++ (void)renderRating:(double)rating intoContext:(CGContext *)context rect:(CGRect)rect showDots:(BOOL)dots color:(CGColor *)color useMinimalSpace:(BOOL)space;
 @end
 
 @implementation TSTStarRatingRenderer
 
-+ (CGPath)p_newStarPath:(double)a3
++ (CGPath)p_newStarPath:(double)path
 {
   Mutable = CGPathCreateMutable();
   CGPathMoveToPointSafe();
@@ -22,15 +22,15 @@
   return Mutable;
 }
 
-+ (void)renderRating:(double)a3 intoContext:(CGContext *)a4 rect:(CGRect)a5 showDots:(BOOL)a6 color:(CGColor *)a7 useMinimalSpace:(BOOL)a8
++ (void)renderRating:(double)rating intoContext:(CGContext *)context rect:(CGRect)rect showDots:(BOOL)dots color:(CGColor *)color useMinimalSpace:(BOOL)space
 {
-  v8 = a8;
-  v10 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  CGContextSaveGState(a4);
+  spaceCopy = space;
+  dotsCopy = dots;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
   CGContextClipToRectSafe();
   if (width / 5.0 >= height)
   {
@@ -42,7 +42,7 @@
     v21 = width / 5.0;
   }
 
-  v22 = objc_msgSend_p_newStarPath_(a1, v17, v18, v19, v20, v21 / 2.5, *&a3);
+  v22 = objc_msgSend_p_newStarPath_(self, v17, v18, v19, v20, v21 / 2.5, *&rating);
   BoundingBox = CGPathGetBoundingBox(v22);
   v38 = BoundingBox.size.width;
   v39 = BoundingBox.origin.x;
@@ -54,8 +54,8 @@
     v23 = 1.0;
   }
 
-  CGContextSetLineWidth(a4, v23);
-  if (v8)
+  CGContextSetLineWidth(context, v23);
+  if (spaceCopy)
   {
     v24 = v21;
   }
@@ -67,7 +67,7 @@
 
   v25 = width / 5.0 * 0.5;
   v26 = 0.5;
-  if (v8)
+  if (spaceCopy)
   {
     v25 = v21 / 2.5;
   }
@@ -78,9 +78,9 @@
   v42.size.width = width;
   v42.size.height = height;
   MidY = CGRectGetMidY(v42);
-  CGContextTranslateCTM(a4, v27, MidY + v21 * 0.0500000007);
+  CGContextTranslateCTM(context, v27, MidY + v21 * 0.0500000007);
   v29 = 0;
-  if (!v10)
+  if (!dotsCopy)
   {
     v26 = 0.75;
   }
@@ -89,17 +89,17 @@
   v35 = v26;
   do
   {
-    CGContextBeginPath(a4);
+    CGContextBeginPath(context);
     v31 = v34 - v29;
     if (v31 >= v26)
     {
       CGContextAddPathSafe();
-      CGContextSetFillColorWithColor(a4, a7);
-      CGContextFillPath(a4);
+      CGContextSetFillColorWithColor(context, color);
+      CGContextFillPath(context);
       goto LABEL_24;
     }
 
-    if (v31 > v30 && !v10)
+    if (v31 > v30 && !dotsCopy)
     {
       v32 = v38 * v31;
       v43.origin.x = v39;
@@ -117,59 +117,59 @@
       v45.size.width = v32;
       v45.size.height = v36;
       CGRectGetMaxX(v45);
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       CGContextClipToRectSafe();
       CGContextAddPathSafe();
-      CGContextSetFillColorWithColor(a4, a7);
-      CGContextFillPath(a4);
-      CGContextRestoreGState(a4);
-      CGContextSaveGState(a4);
+      CGContextSetFillColorWithColor(context, color);
+      CGContextFillPath(context);
+      CGContextRestoreGState(context);
+      CGContextSaveGState(context);
       v26 = v35;
       v30 = 0.25;
       CGContextClipToRectSafe();
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       CGContextAddPathSafe();
-      CGContextClip(a4);
-      CGContextSaveGState(a4);
+      CGContextClip(context);
+      CGContextSaveGState(context);
       CGContextAddPathSafe();
-      CGContextSetStrokeColorWithColor(a4, a7);
-      CGContextStrokePath(a4);
-      CGContextRestoreGState(a4);
+      CGContextSetStrokeColorWithColor(context, color);
+      CGContextStrokePath(context);
+      CGContextRestoreGState(context);
 LABEL_22:
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
       goto LABEL_23;
     }
 
-    CGContextSaveGState(a4);
-    if (!v10)
+    CGContextSaveGState(context);
+    if (!dotsCopy)
     {
       CGContextAddPathSafe();
-      CGContextClip(a4);
-      CGContextSaveGState(a4);
+      CGContextClip(context);
+      CGContextSaveGState(context);
       CGContextAddPathSafe();
-      CGContextSetStrokeColorWithColor(a4, a7);
-      CGContextStrokePath(a4);
+      CGContextSetStrokeColorWithColor(context, color);
+      CGContextStrokePath(context);
       goto LABEL_22;
     }
 
-    CGContextSetFillColorWithColor(a4, a7);
+    CGContextSetFillColorWithColor(context, color);
     v46.origin.x = v21 * 0.25 * -0.5;
     v46.size.width = v21 * 0.25;
     v46.origin.y = v46.origin.x;
     v46.size.height = v21 * 0.25;
-    CGContextFillEllipseInRect(a4, v46);
-    CGContextDrawPath(a4, kCGPathFillStroke);
+    CGContextFillEllipseInRect(context, v46);
+    CGContextDrawPath(context, kCGPathFillStroke);
 LABEL_23:
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
 LABEL_24:
-    CGContextTranslateCTM(a4, v24, 0.0);
+    CGContextTranslateCTM(context, v24, 0.0);
     ++v29;
   }
 
   while (v29 != 5);
   CGPathRelease(v22);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 @end

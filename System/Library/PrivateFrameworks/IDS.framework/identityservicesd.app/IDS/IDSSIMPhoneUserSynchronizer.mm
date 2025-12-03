@@ -1,46 +1,46 @@
 @interface IDSSIMPhoneUserSynchronizer
-- (BOOL)_isInDualPhoneIdentityModeForSims:(id)a3;
-- (IDSSIMPhoneUserSynchronizer)initWithUserStore:(id)a3 queue:(id)a4 lockdownManager:(id)a5 systemMonitor:(id)a6 CTAdapter:(id)a7 userConfiguration:(id)a8 registrationController:(id)a9 pairingManager:(id)a10 phoneUserRegistry:(id)a11;
-- (id)updatedUserDescriptionSetForRealm:(int64_t)a3 currentUserDescriptions:(id)a4;
+- (BOOL)_isInDualPhoneIdentityModeForSims:(id)sims;
+- (IDSSIMPhoneUserSynchronizer)initWithUserStore:(id)store queue:(id)queue lockdownManager:(id)manager systemMonitor:(id)monitor CTAdapter:(id)adapter userConfiguration:(id)configuration registrationController:(id)controller pairingManager:(id)self0 phoneUserRegistry:(id)self1;
+- (id)updatedUserDescriptionSetForRealm:(int64_t)realm currentUserDescriptions:(id)descriptions;
 - (void)_checkRegistrationStatus;
 - (void)_setupForCurrentSubscriptionState;
 - (void)dealloc;
-- (void)didUpdatePairedDevice:(id)a3;
-- (void)forceRemoveUser:(id)a3 silently:(BOOL)a4;
-- (void)userStore:(id)a3 didRemoveUser:(id)a4 withAuthenticationCertificate:(id)a5;
+- (void)didUpdatePairedDevice:(id)device;
+- (void)forceRemoveUser:(id)user silently:(BOOL)silently;
+- (void)userStore:(id)store didRemoveUser:(id)user withAuthenticationCertificate:(id)certificate;
 - (void)verifyState;
 @end
 
 @implementation IDSSIMPhoneUserSynchronizer
 
-- (IDSSIMPhoneUserSynchronizer)initWithUserStore:(id)a3 queue:(id)a4 lockdownManager:(id)a5 systemMonitor:(id)a6 CTAdapter:(id)a7 userConfiguration:(id)a8 registrationController:(id)a9 pairingManager:(id)a10 phoneUserRegistry:(id)a11
+- (IDSSIMPhoneUserSynchronizer)initWithUserStore:(id)store queue:(id)queue lockdownManager:(id)manager systemMonitor:(id)monitor CTAdapter:(id)adapter userConfiguration:(id)configuration registrationController:(id)controller pairingManager:(id)self0 phoneUserRegistry:(id)self1
 {
-  v30 = a3;
-  v29 = a5;
-  v28 = a6;
-  v27 = a7;
-  v26 = a8;
-  v25 = a9;
-  v24 = a10;
-  v17 = a11;
+  storeCopy = store;
+  managerCopy = manager;
+  monitorCopy = monitor;
+  adapterCopy = adapter;
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  pairingManagerCopy = pairingManager;
+  registryCopy = registry;
   v31.receiver = self;
   v31.super_class = IDSSIMPhoneUserSynchronizer;
   v18 = [(IDSSIMPhoneUserSynchronizer *)&v31 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_userStore, a3);
-    objc_storeStrong(&v19->_lockdownManager, a5);
-    objc_storeStrong(&v19->_systemMonitor, a6);
-    objc_storeStrong(&v19->_userConfiguration, a8);
-    objc_storeStrong(&v19->_CTAdapter, a7);
-    objc_storeStrong(&v19->_registrationController, a9);
-    objc_storeStrong(&v19->_pairingManager, a10);
+    objc_storeStrong(&v18->_userStore, store);
+    objc_storeStrong(&v19->_lockdownManager, manager);
+    objc_storeStrong(&v19->_systemMonitor, monitor);
+    objc_storeStrong(&v19->_userConfiguration, configuration);
+    objc_storeStrong(&v19->_CTAdapter, adapter);
+    objc_storeStrong(&v19->_registrationController, controller);
+    objc_storeStrong(&v19->_pairingManager, pairingManager);
     v20 = objc_alloc_init(NSMutableDictionary);
     cachedIsSameSIM = v19->_cachedIsSameSIM;
     v19->_cachedIsSameSIM = v20;
 
-    objc_storeStrong(&v19->_phoneUserRegistry, a11);
+    objc_storeStrong(&v19->_phoneUserRegistry, registry);
     [(IDSCTAdapter *)v19->_CTAdapter addListener:v19];
     [(IDSPairingManager *)v19->_pairingManager addDelegate:v19];
     [(IDSUserStore *)v19->_userStore addActionListener:v19];
@@ -74,18 +74,18 @@
   [(IDSSIMPhoneUserSynchronizer *)self _setupForCurrentSubscriptionState];
 }
 
-- (BOOL)_isInDualPhoneIdentityModeForSims:(id)a3
+- (BOOL)_isInDualPhoneIdentityModeForSims:(id)sims
 {
-  v4 = [a3 __imArrayByApplyingBlock:&stru_100BDF2C8];
+  v4 = [sims __imArrayByApplyingBlock:&stru_100BDF2C8];
   v5 = [v4 count];
 
   v6 = +[IMUserDefaults sharedDefaults];
   v7 = [v6 appValueForKey:@"isInDualSIMIdentifier"];
 
   v8 = +[IDSCurrentDevice sharedInstance];
-  v9 = [v8 deviceIdentifier];
+  deviceIdentifier = [v8 deviceIdentifier];
 
-  if ([(FTUserConfiguration *)self->_userConfiguration isDeviceInDualPhoneIdentityMode]&& ([(__CFString *)v7 isEqualToString:v9]& 1) == 0)
+  if ([(FTUserConfiguration *)self->_userConfiguration isDeviceInDualPhoneIdentityMode]&& ([(__CFString *)v7 isEqualToString:deviceIdentifier]& 1) == 0)
   {
     [(FTUserConfiguration *)self->_userConfiguration setIsDeviceInDualPhoneIdentityMode:0];
     v10 = +[IMRGLog sms];
@@ -94,7 +94,7 @@
       v22 = 138412546;
       v23 = v7;
       v24 = 2112;
-      v25 = v9;
+      v25 = deviceIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Device identifier differs disabling dual mode {persistedDeviceIdentifier: %@, currentDeviceIdentifier: %@}", &v22, 0x16u);
     }
   }
@@ -103,12 +103,12 @@
   {
     [(FTUserConfiguration *)self->_userConfiguration setIsDeviceInDualPhoneIdentityMode:1];
     v11 = +[IMUserDefaults sharedDefaults];
-    [v11 setAppValue:v9 forKey:@"isInDualSIMIdentifier"];
+    [v11 setAppValue:deviceIdentifier forKey:@"isInDualSIMIdentifier"];
   }
 
-  v12 = [(IDSCTAdapter *)self->_CTAdapter dualSIMCapabilityEnabled];
-  v13 = [(FTUserConfiguration *)self->_userConfiguration isDeviceInDualPhoneIdentityMode];
-  v14 = v13;
+  dualSIMCapabilityEnabled = [(IDSCTAdapter *)self->_CTAdapter dualSIMCapabilityEnabled];
+  isDeviceInDualPhoneIdentityMode = [(FTUserConfiguration *)self->_userConfiguration isDeviceInDualPhoneIdentityMode];
+  v14 = isDeviceInDualPhoneIdentityMode;
   if (v5 > 1)
   {
     v15 = 1;
@@ -116,10 +116,10 @@
 
   else
   {
-    v15 = v12;
+    v15 = dualSIMCapabilityEnabled;
   }
 
-  v16 = v15 & v13;
+  v16 = v15 & isDeviceInDualPhoneIdentityMode;
   v17 = +[IMRGLog registration];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -161,29 +161,29 @@
   return v16;
 }
 
-- (void)forceRemoveUser:(id)a3 silently:(BOOL)a4
+- (void)forceRemoveUser:(id)user silently:(BOOL)silently
 {
-  v4 = a3;
+  userCopy = user;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
-    sub_100927D6C(v4, v5);
+    sub_100927D6C(userCopy, v5);
   }
 }
 
-- (id)updatedUserDescriptionSetForRealm:(int64_t)a3 currentUserDescriptions:(id)a4
+- (id)updatedUserDescriptionSetForRealm:(int64_t)realm currentUserDescriptions:(id)descriptions
 {
-  v168 = a4;
-  v6 = [(IDSSIMPhoneUserSynchronizer *)self registrationController];
-  v7 = [v6 systemSupportsPhoneNumberRegistration];
+  descriptionsCopy = descriptions;
+  registrationController = [(IDSSIMPhoneUserSynchronizer *)self registrationController];
+  systemSupportsPhoneNumberRegistration = [registrationController systemSupportsPhoneNumberRegistration];
 
-  if ((v7 & 1) == 0)
+  if ((systemSupportsPhoneNumberRegistration & 1) == 0)
   {
     v8 = +[IMRGLog registration];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v225 = v168;
+      v225 = descriptionsCopy;
       v9 = "Finished synchronizing Sims to users - this device does not support identification {currentUserDescriptions: %@, updatedUsers: {(\n)}}";
       v10 = v8;
       v11 = 12;
@@ -196,7 +196,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a3)
+  if (realm)
   {
     v8 = +[IMRGLog registration];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -213,22 +213,22 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v166 = [(FTUserConfiguration *)self->_userConfiguration selectedPhoneNumberRegistrationSubscriptionLabels];
-  v14 = [(IDSUserDescription *)v168 mutableCopy];
+  selectedPhoneNumberRegistrationSubscriptionLabels = [(FTUserConfiguration *)self->_userConfiguration selectedPhoneNumberRegistrationSubscriptionLabels];
+  v14 = [(IDSUserDescription *)descriptionsCopy mutableCopy];
   CTAdapter = self->_CTAdapter;
   v223 = 0;
   v16 = [(IDSCTAdapter *)CTAdapter currentSIMsWithError:&v223];
   v157 = v223;
-  v17 = [(IDSSIMPhoneUserSynchronizer *)self cachedIsSameSIM];
-  [v17 removeAllObjects];
+  cachedIsSameSIM = [(IDSSIMPhoneUserSynchronizer *)self cachedIsSameSIM];
+  [cachedIsSameSIM removeAllObjects];
 
   v18 = [(IDSSIMPhoneUserSynchronizer *)self _isInDualPhoneIdentityModeForSims:v16];
-  v158 = [(FTUserConfiguration *)self->_userConfiguration isDeviceInManualPhoneSelectionMode];
+  isDeviceInManualPhoneSelectionMode = [(FTUserConfiguration *)self->_userConfiguration isDeviceInManualPhoneSelectionMode];
   v19 = 0;
   if (v18)
   {
-    v20 = [(IDSSIMPhoneUserSynchronizer *)self userStore];
-    v21 = [v20 usersWithRealm:2];
+    userStore = [(IDSSIMPhoneUserSynchronizer *)self userStore];
+    v21 = [userStore usersWithRealm:2];
     v19 = [v21 __imArrayByApplyingBlock:&stru_100BDF308];
   }
 
@@ -236,13 +236,13 @@ LABEL_7:
   v162 = v19;
   v165 = v22;
   v180 = v14;
-  v159 = self;
+  selfCopy = self;
   if (v19)
   {
     v23 = v22;
-    v24 = [v19 __imSetFromArray];
-    v25 = [v23 __imSetFromArray];
-    v26 = [v24 intersectsSet:v25];
+    __imSetFromArray = [v19 __imSetFromArray];
+    __imSetFromArray2 = [v23 __imSetFromArray];
+    v26 = [__imSetFromArray intersectsSet:__imSetFromArray2];
   }
 
   else
@@ -251,7 +251,7 @@ LABEL_7:
   }
 
   v155 = v18;
-  v27 = ((v166 != 0) | v26) & (v18 | v158);
+  v27 = ((selectedPhoneNumberRegistrationSubscriptionLabels != 0) | v26) & (v18 | isDeviceInManualPhoneSelectionMode);
   v28 = objc_alloc_init(NSMutableArray);
   v219 = 0u;
   v220 = 0u;
@@ -263,7 +263,7 @@ LABEL_7:
   if (v189)
   {
     v186 = *v220;
-    v177 = ((v166 != 0) | v26) & (v18 | v158);
+    v177 = ((selectedPhoneNumberRegistrationSubscriptionLabels != 0) | v26) & (v18 | isDeviceInManualPhoneSelectionMode);
     do
     {
       for (i = 0; i != v189; i = i + 1)
@@ -274,12 +274,12 @@ LABEL_7:
         }
 
         v30 = *(*(&v219 + 1) + 8 * i);
-        v31 = [v30 SIMIdentifier];
-        v32 = [v30 slot];
-        if (v31)
+        sIMIdentifier = [v30 SIMIdentifier];
+        slot = [v30 slot];
+        if (sIMIdentifier)
         {
-          v33 = v32;
-          if ((v27 & 1) == 0 || ([v166 containsObject:v31] & 1) != 0 || objc_msgSend(v162, "containsObject:", v31))
+          v33 = slot;
+          if ((v27 & 1) == 0 || ([selectedPhoneNumberRegistrationSubscriptionLabels containsObject:sIMIdentifier] & 1) != 0 || objc_msgSend(v162, "containsObject:", sIMIdentifier))
           {
             v182 = v33;
             v192 = i;
@@ -287,7 +287,7 @@ LABEL_7:
             v218 = 0u;
             v215 = 0u;
             v216 = 0u;
-            v34 = v168;
+            v34 = descriptionsCopy;
             v35 = [(IDSPhoneUser *)v34 countByEnumeratingWithState:&v215 objects:v243 count:16];
             if (v35)
             {
@@ -303,9 +303,9 @@ LABEL_28:
                 }
 
                 v39 = *(*(&v215 + 1) + 8 * v38);
-                v40 = [v39 user];
-                v41 = [v40 uniqueIdentifier];
-                v42 = [v41 isEqualToString:v31];
+                user = [v39 user];
+                uniqueIdentifier = [user uniqueIdentifier];
+                v42 = [uniqueIdentifier isEqualToString:sIMIdentifier];
 
                 if (v42)
                 {
@@ -325,32 +325,32 @@ LABEL_28:
               }
 
               v28 = v185;
-              [v185 addObject:v31];
-              if ([v40 realm])
+              [v185 addObject:sIMIdentifier];
+              if ([user realm])
               {
                 v27 = v177;
                 i = v192;
                 goto LABEL_65;
               }
 
-              v50 = v40;
-              v171 = v159->_CTAdapter;
-              v169 = [(IDSUserDescription *)v50 phoneNumber];
-              v51 = [(IDSUserDescription *)v50 phoneBookNumber];
-              v52 = [(IDSUserDescription *)v50 uniqueIdentifier];
+              v50 = user;
+              v171 = selfCopy->_CTAdapter;
+              phoneNumber = [(IDSUserDescription *)v50 phoneNumber];
+              phoneBookNumber = [(IDSUserDescription *)v50 phoneBookNumber];
+              uniqueIdentifier2 = [(IDSUserDescription *)v50 uniqueIdentifier];
               v214 = 0;
-              v53 = [(IDSCTAdapter *)v171 isPNRNumber:v169 andPhoneBookNumber:v51 differentEnoughFromSIMIdentifier:v52 toReregisterWithNewNumber:&v214];
+              v53 = [(IDSCTAdapter *)v171 isPNRNumber:phoneNumber andPhoneBookNumber:phoneBookNumber differentEnoughFromSIMIdentifier:uniqueIdentifier2 toReregisterWithNewNumber:&v214];
               v163 = v214;
 
               v160 = v53;
               v54 = [NSNumber numberWithInt:v53 ^ 1];
-              v55 = [(IDSSIMPhoneUserSynchronizer *)v159 cachedIsSameSIM];
-              v56 = [(IDSUserDescription *)v50 uniqueIdentifier];
-              [v55 setObject:v54 forKeyedSubscript:v56];
+              cachedIsSameSIM2 = [(IDSSIMPhoneUserSynchronizer *)selfCopy cachedIsSameSIM];
+              uniqueIdentifier3 = [(IDSUserDescription *)v50 uniqueIdentifier];
+              [cachedIsSameSIM2 setObject:v54 forKeyedSubscript:uniqueIdentifier3];
 
-              v57 = [v30 mobileCountryCode];
+              mobileCountryCode = [v30 mobileCountryCode];
               v174 = v50;
-              if ([v57 length])
+              if ([mobileCountryCode length])
               {
                 [v30 mobileCountryCode];
               }
@@ -361,9 +361,9 @@ LABEL_28:
               }
               v172 = ;
 
-              v58 = [v30 mobileNetworkCode];
+              mobileNetworkCode = [v30 mobileNetworkCode];
               v59 = v163;
-              if ([v58 length])
+              if ([mobileNetworkCode length])
               {
                 [v30 mobileNetworkCode];
               }
@@ -377,10 +377,10 @@ LABEL_28:
               if (v160)
               {
                 v60 = [IDSPhoneUser alloc];
-                v61 = [v30 isDefaultVoiceSIM];
-                v62 = [v30 mobileCountryCode];
-                v63 = [v30 mobileNetworkCode];
-                v64 = [(IDSPhoneUser *)v60 initWithLabelID:v31 phoneBookNumber:v163 isDefaultUser:v61 countryCode:v62 networkCode:v63];
+                isDefaultVoiceSIM = [v30 isDefaultVoiceSIM];
+                mobileCountryCode2 = [v30 mobileCountryCode];
+                mobileNetworkCode2 = [v30 mobileNetworkCode];
+                v64 = [(IDSPhoneUser *)v60 initWithLabelID:sIMIdentifier phoneBookNumber:v163 isDefaultUser:isDefaultVoiceSIM countryCode:mobileCountryCode2 networkCode:mobileNetworkCode2];
 
                 v65 = [IDSUserProperties alloc];
                 v66 = [(IDSUserProperties *)v65 propsByUpdatingHasActiveSIM:v182 != 2];
@@ -389,7 +389,7 @@ LABEL_28:
                 if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412802;
-                  v225 = v31;
+                  v225 = sIMIdentifier;
                   v226 = 2112;
                   v227 = v174;
                   v228 = 2112;
@@ -401,27 +401,27 @@ LABEL_28:
                 [(IDSUserDescription *)v180 removeObject:v39];
                 [(IDSUserDescription *)v180 addObject:v68];
                 v69 = +[IDSRegistrationReasonTracker sharedInstance];
-                v70 = [(IDSPhoneUser *)v64 uniqueIdentifier];
-                [v69 setPNRReason:4 forUserUniqueIdentifier:v70];
+                uniqueIdentifier4 = [(IDSPhoneUser *)v64 uniqueIdentifier];
+                [v69 setPNRReason:4 forUserUniqueIdentifier:uniqueIdentifier4];
 
                 i = v192;
                 v49 = v174;
 LABEL_63:
 
-                v40 = v49;
+                user = v49;
                 v27 = v177;
                 goto LABEL_64;
               }
 
               v49 = v174;
-              v71 = [(IDSUserDescription *)v174 isDefaultUser];
-              if (v71 == [v30 isDefaultVoiceSIM])
+              isDefaultUser = [(IDSUserDescription *)v174 isDefaultUser];
+              if (isDefaultUser == [v30 isDefaultVoiceSIM])
               {
-                v72 = [(IDSUserDescription *)v174 countryCode];
-                if ([v72 isEqualToString:v172])
+                countryCode = [(IDSUserDescription *)v174 countryCode];
+                if ([countryCode isEqualToString:v172])
                 {
-                  v73 = [(IDSUserDescription *)v174 networkCode];
-                  v74 = [v73 isEqualToString:v170];
+                  networkCode = [(IDSUserDescription *)v174 networkCode];
+                  v74 = [networkCode isEqualToString:v170];
 
                   if (v74)
                   {
@@ -476,25 +476,25 @@ LABEL_63:
                   v80 = @"NO";
                 }
 
-                v161 = [(IDSUserDescription *)v174 countryCode];
-                v81 = [(IDSPhoneUser *)v64 countryCode];
+                countryCode2 = [(IDSUserDescription *)v174 countryCode];
+                countryCode3 = [(IDSPhoneUser *)v64 countryCode];
                 [(IDSUserDescription *)v174 networkCode];
                 v82 = v183 = v66;
-                v83 = [(IDSPhoneUser *)v64 networkCode];
+                networkCode2 = [(IDSPhoneUser *)v64 networkCode];
                 *buf = 138413570;
                 v225 = v156;
                 v226 = 2112;
                 v227 = v80;
                 v28 = v185;
                 v228 = 2112;
-                v229 = v161;
+                v229 = countryCode2;
                 v230 = 2112;
-                v231 = v81;
-                v84 = v81;
+                v231 = countryCode3;
+                v84 = countryCode3;
                 v232 = 2112;
                 v233 = v82;
                 v234 = 2112;
-                v235 = v83;
+                v235 = networkCode2;
                 _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "Recognized SIM property change {currentUser.defaultUser: %@, newUser.defaultUser: %@, currentUser.mcc: %@, newUser.mcc: %@, currentUser.mnc: %@, newUser.mnc: %@}", buf, 0x3Eu);
 
                 v66 = v183;
@@ -514,16 +514,16 @@ LABEL_63:
 LABEL_34:
 
             v43 = [IDSPhoneUser alloc];
-            v44 = [v30 phoneNumber];
-            v45 = [v30 isDefaultVoiceSIM];
-            v46 = [v30 mobileCountryCode];
-            v47 = [v30 mobileNetworkCode];
-            v34 = [(IDSPhoneUser *)v43 initWithLabelID:v31 phoneBookNumber:v44 isDefaultUser:v45 countryCode:v46 networkCode:v47];
+            phoneNumber2 = [v30 phoneNumber];
+            isDefaultVoiceSIM2 = [v30 isDefaultVoiceSIM];
+            mobileCountryCode3 = [v30 mobileCountryCode];
+            mobileNetworkCode3 = [v30 mobileNetworkCode];
+            v34 = [(IDSPhoneUser *)v43 initWithLabelID:sIMIdentifier phoneBookNumber:phoneNumber2 isDefaultUser:isDefaultVoiceSIM2 countryCode:mobileCountryCode3 networkCode:mobileNetworkCode3];
 
             v48 = [IDSUserProperties alloc];
-            v40 = [(IDSUserProperties *)v48 propsByUpdatingHasActiveSIM:v182 != 2];
+            user = [(IDSUserProperties *)v48 propsByUpdatingHasActiveSIM:v182 != 2];
 
-            v49 = [[IDSUserDescription alloc] initWithUser:v34 properties:v40];
+            v49 = [[IDSUserDescription alloc] initWithUser:v34 properties:user];
             [(IDSUserDescription *)v180 addObject:v49];
             v28 = v185;
             v27 = v177;
@@ -552,7 +552,7 @@ LABEL_70:
   v213 = 0u;
   v210 = 0u;
   v211 = 0u;
-  v193 = v168;
+  v193 = descriptionsCopy;
   v86 = [(IDSUserDescription *)v193 countByEnumeratingWithState:&v210 objects:v242 count:16];
   v87 = v180;
   if (v86)
@@ -569,9 +569,9 @@ LABEL_70:
         }
 
         v91 = *(*(&v210 + 1) + 8 * j);
-        v92 = [v91 user];
-        v93 = [v92 uniqueIdentifier];
-        v94 = [v28 containsObject:v93];
+        user2 = [v91 user];
+        uniqueIdentifier5 = [user2 uniqueIdentifier];
+        v94 = [v28 containsObject:uniqueIdentifier5];
 
         if ((v94 & 1) == 0)
         {
@@ -591,14 +591,14 @@ LABEL_70:
   if (v27)
   {
     v97 = 0;
-    v98 = v166;
+    v98 = selectedPhoneNumberRegistrationSubscriptionLabels;
   }
 
   else
   {
-    v98 = v166;
-    v99 = [v166 __imSetFromArray];
-    v97 = [v95 isSubsetOfSet:v99] ^ 1;
+    v98 = selectedPhoneNumberRegistrationSubscriptionLabels;
+    __imSetFromArray3 = [selectedPhoneNumberRegistrationSubscriptionLabels __imSetFromArray];
+    v97 = [v95 isSubsetOfSet:__imSetFromArray3] ^ 1;
   }
 
   v100 = v165;
@@ -609,27 +609,27 @@ LABEL_70:
 
   else
   {
-    v102 = [v162 __imSetFromArray];
-    v101 = [v102 isEqualToSet:v164];
+    __imSetFromArray4 = [v162 __imSetFromArray];
+    v101 = [__imSetFromArray4 isEqualToSet:v164];
   }
 
   if ((v97 | v101))
   {
-    if ([v166 count] < 2)
+    if ([selectedPhoneNumberRegistrationSubscriptionLabels count] < 2)
     {
       v104 = +[NSMutableSet set];
     }
 
     else
     {
-      v103 = [v166 __imSetFromArray];
-      v104 = [v103 mutableCopy];
+      __imSetFromArray5 = [selectedPhoneNumberRegistrationSubscriptionLabels __imSetFromArray];
+      v104 = [__imSetFromArray5 mutableCopy];
     }
 
     [v104 unionSet:v164];
-    userConfiguration = v159->_userConfiguration;
-    v106 = [v104 allObjects];
-    [(FTUserConfiguration *)userConfiguration silentlySetSelectedPhoneNumberRegistrationSubscriptionLabels:v106];
+    userConfiguration = selfCopy->_userConfiguration;
+    allObjects = [v104 allObjects];
+    [(FTUserConfiguration *)userConfiguration silentlySetSelectedPhoneNumberRegistrationSubscriptionLabels:allObjects];
   }
 
   objc_autoreleasePoolPop(v96);
@@ -640,7 +640,7 @@ LABEL_70:
 
   else
   {
-    v107 = [(IDSCTAdapter *)v159->_CTAdapter PNRRegistrationPriorityListWithError:0];
+    v107 = [(IDSCTAdapter *)selfCopy->_CTAdapter PNRRegistrationPriorityListWithError:0];
     v184 = +[NSMutableSet set];
     v206 = 0u;
     v207 = 0u;
@@ -683,10 +683,10 @@ LABEL_93:
               }
 
               v116 = *(*(&v202 + 1) + 8 * k);
-              v117 = [v116 user];
-              v118 = [v117 uniqueIdentifier];
-              v119 = [v110 SIMIdentifier];
-              v120 = [v118 isEqualToString:v119];
+              user3 = [v116 user];
+              uniqueIdentifier6 = [user3 uniqueIdentifier];
+              sIMIdentifier2 = [v110 SIMIdentifier];
+              v120 = [uniqueIdentifier6 isEqualToString:sIMIdentifier2];
 
               if (v120)
               {
@@ -770,13 +770,13 @@ LABEL_106:
           }
 
           v127 = *(*(&v198 + 1) + 8 * v126);
-          v128 = [v127 SIMIdentifier];
-          v129 = [v122 containsObject:v128];
+          sIMIdentifier3 = [v127 SIMIdentifier];
+          v129 = [v122 containsObject:sIMIdentifier3];
 
           if ((v129 & 1) == 0)
           {
             v191 = v126;
-            v188 = [v127 slot];
+            slot2 = [v127 slot];
             v194 = 0u;
             v195 = 0u;
             v196 = 0u;
@@ -797,10 +797,10 @@ LABEL_122:
                 }
 
                 v135 = *(*(&v194 + 1) + 8 * v134);
-                v136 = [v135 user];
-                v137 = [v136 uniqueIdentifier];
-                v138 = [v127 SIMIdentifier];
-                v139 = [v137 isEqualToString:v138];
+                user4 = [v135 user];
+                uniqueIdentifier7 = [user4 uniqueIdentifier];
+                sIMIdentifier4 = [v127 SIMIdentifier];
+                v139 = [uniqueIdentifier7 isEqualToString:sIMIdentifier4];
 
                 if (v139)
                 {
@@ -819,9 +819,9 @@ LABEL_122:
                 }
               }
 
-              v140 = [v135 user];
+              user5 = [v135 user];
 
-              if (v140)
+              if (user5)
               {
                 goto LABEL_131;
               }
@@ -833,20 +833,20 @@ LABEL_128:
             }
 
             v141 = [IDSPhoneUser alloc];
-            v142 = [v127 SIMIdentifier];
-            v143 = [v127 phoneNumber];
-            v144 = [v127 isDefaultVoiceSIM];
-            v145 = [v127 mobileCountryCode];
-            v146 = [v127 mobileNetworkCode];
-            v140 = [(IDSPhoneUser *)v141 initWithLabelID:v142 phoneBookNumber:v143 isDefaultUser:v144 countryCode:v145 networkCode:v146];
+            sIMIdentifier5 = [v127 SIMIdentifier];
+            phoneNumber3 = [v127 phoneNumber];
+            isDefaultVoiceSIM3 = [v127 isDefaultVoiceSIM];
+            mobileCountryCode4 = [v127 mobileCountryCode];
+            mobileNetworkCode4 = [v127 mobileNetworkCode];
+            user5 = [(IDSPhoneUser *)v141 initWithLabelID:sIMIdentifier5 phoneBookNumber:phoneNumber3 isDefaultUser:isDefaultVoiceSIM3 countryCode:mobileCountryCode4 networkCode:mobileNetworkCode4];
 
 LABEL_131:
             v147 = [IDSUserProperties alloc];
             v148 = [(IDSUserProperties *)v147 propsByUpdatingDisableRegistration:1];
 
-            v149 = [v148 propsByUpdatingHasActiveSIM:v188 != 2];
+            v149 = [v148 propsByUpdatingHasActiveSIM:slot2 != 2];
 
-            v150 = [[IDSUserDescription alloc] initWithUser:v140 properties:v149];
+            v150 = [[IDSUserDescription alloc] initWithUser:user5 properties:v149];
             [(__CFString *)v184 addObject:v150];
             v151 = +[IMRGLog registration];
             v28 = v185;
@@ -890,7 +890,7 @@ LABEL_131:
     }
 
     *buf = 138413826;
-    if (v158)
+    if (isDeviceInManualPhoneSelectionMode)
     {
       v154 = @"YES";
     }
@@ -908,7 +908,7 @@ LABEL_131:
     v230 = 2112;
     v231 = v154;
     v232 = 2112;
-    v233 = v166;
+    v233 = selectedPhoneNumberRegistrationSubscriptionLabels;
     v234 = 2112;
     v235 = v162;
     v236 = 2112;
@@ -922,13 +922,13 @@ LABEL_9:
   return v12;
 }
 
-- (void)userStore:(id)a3 didRemoveUser:(id)a4 withAuthenticationCertificate:(id)a5
+- (void)userStore:(id)store didRemoveUser:(id)user withAuthenticationCertificate:(id)certificate
 {
-  v7 = a4;
-  if (![v7 realm])
+  userCopy = user;
+  if (![userCopy realm])
   {
-    v6 = [(IDSSIMPhoneUserSynchronizer *)self phoneUserRegistry];
-    [v6 clearConsentDenialsForPhoneUser:v7];
+    phoneUserRegistry = [(IDSSIMPhoneUserSynchronizer *)self phoneUserRegistry];
+    [phoneUserRegistry clearConsentDenialsForPhoneUser:userCopy];
   }
 }
 
@@ -941,10 +941,10 @@ LABEL_9:
 
 - (void)_checkRegistrationStatus
 {
-  v3 = [(IDSSIMPhoneUserSynchronizer *)self lockdownManager];
-  v4 = [v3 isActivated];
+  lockdownManager = [(IDSSIMPhoneUserSynchronizer *)self lockdownManager];
+  isActivated = [lockdownManager isActivated];
 
-  if (v4)
+  if (isActivated)
   {
     if (+[IDSRegistrationController isBuddyBlockingRegistration])
     {
@@ -961,9 +961,9 @@ LABEL_7:
     else
     {
       v7 = +[IDSRegistrationKeyManager sharedInstance];
-      v8 = [v7 requiresKeychainMigration];
+      requiresKeychainMigration = [v7 requiresKeychainMigration];
 
-      if (v8)
+      if (requiresKeychainMigration)
       {
         v5 = +[IMRGLog sms];
         if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1010,17 +1010,17 @@ LABEL_7:
               }
 
               v16 = *(*(&v35 + 1) + 8 * i);
-              v17 = [v16 phoneNumber];
-              v18 = [v16 phoneBookNumber];
-              v19 = v18;
-              if (v17)
+              phoneNumber = [v16 phoneNumber];
+              phoneBookNumber = [v16 phoneBookNumber];
+              v19 = phoneBookNumber;
+              if (phoneNumber)
               {
                 v20 = 1;
               }
 
               else
               {
-                v20 = v18 == 0;
+                v20 = phoneBookNumber == 0;
               }
 
               if (!v20)
@@ -1033,24 +1033,24 @@ LABEL_7:
                   v23 = [v16 phoneUserWithUpdatedPhoneNumber:v19];
                   [(IDSUserStore *)userStore updateUser:v23];
 
-                  v17 = v19;
+                  phoneNumber = v19;
                 }
 
                 else
                 {
-                  v17 = 0;
+                  phoneNumber = 0;
                 }
               }
 
-              v24 = [(IDSSIMPhoneUserSynchronizer *)self cachedIsSameSIM];
-              v25 = [v16 uniqueIdentifier];
-              v26 = [v24 objectForKeyedSubscript:v25];
+              cachedIsSameSIM = [(IDSSIMPhoneUserSynchronizer *)self cachedIsSameSIM];
+              uniqueIdentifier = [v16 uniqueIdentifier];
+              v26 = [cachedIsSameSIM objectForKeyedSubscript:uniqueIdentifier];
 
               if (!v26 || ([v26 BOOLValue] & 1) == 0)
               {
                 CTAdapter = self->_CTAdapter;
-                v28 = [v16 uniqueIdentifier];
-                LODWORD(CTAdapter) = [(IDSCTAdapter *)CTAdapter isPNRNumber:v17 andPhoneBookNumber:v19 differentEnoughFromSIMIdentifier:v28 toReregisterWithNewNumber:0];
+                uniqueIdentifier2 = [v16 uniqueIdentifier];
+                LODWORD(CTAdapter) = [(IDSCTAdapter *)CTAdapter isPNRNumber:phoneNumber andPhoneBookNumber:v19 differentEnoughFromSIMIdentifier:uniqueIdentifier2 toReregisterWithNewNumber:0];
 
                 if (CTAdapter)
                 {
@@ -1062,8 +1062,8 @@ LABEL_7:
                   }
 
                   v30 = +[IDSRegistrationReasonTracker sharedInstance];
-                  v31 = [v16 uniqueIdentifier];
-                  [v30 setPNRReason:3 forUserUniqueIdentifier:v31];
+                  uniqueIdentifier3 = [v16 uniqueIdentifier];
+                  [v30 setPNRReason:3 forUserUniqueIdentifier:uniqueIdentifier3];
 
                   v32 = +[IDSPACStateTracker sharedInstance];
                   [v32 notePhoneAuthCertLost:8];
@@ -1106,18 +1106,18 @@ LABEL_7:
 LABEL_38:
 }
 
-- (void)didUpdatePairedDevice:(id)a3
+- (void)didUpdatePairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(IDSSIMPhoneUserSynchronizer *)self pairingManager];
-  v6 = [v5 isCurrentDeviceTinkerConfiguredWatch];
+  deviceCopy = device;
+  pairingManager = [(IDSSIMPhoneUserSynchronizer *)self pairingManager];
+  isCurrentDeviceTinkerConfiguredWatch = [pairingManager isCurrentDeviceTinkerConfiguredWatch];
 
-  v7 = [v4 objectForKey:IDSDevicePropertyPairingType];
+  v7 = [deviceCopy objectForKey:IDSDevicePropertyPairingType];
 
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
   v9 = +[IMRGLog registration];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v6 && v8 == 1)
+  if (isCurrentDeviceTinkerConfiguredWatch && integerValue == 1)
   {
     if (v10)
     {
@@ -1133,9 +1133,9 @@ LABEL_38:
     if (v10)
     {
       v11[0] = 67109376;
-      v11[1] = v6;
+      v11[1] = isCurrentDeviceTinkerConfiguredWatch;
       v12 = 2048;
-      v13 = v8;
+      v13 = integerValue;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "IDSSimPhoneUserSynchronizer does not support non-tinker devices. isTinkerConfiguredWatch: %d pairingType: %ld", v11, 0x12u);
     }
   }

@@ -1,5 +1,5 @@
 @interface IDSLocalDeliveryMessageReceivedMetric
-- (IDSLocalDeliveryMessageReceivedMetric)initWithService:(id)a3 isFromDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 priority:(unint64_t)a7;
+- (IDSLocalDeliveryMessageReceivedMetric)initWithService:(id)service isFromDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type priority:(unint64_t)priority;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSLocalDeliveryMessageReceivedMetric *)self service];
-  if (v4)
+  service = [(IDSLocalDeliveryMessageReceivedMetric *)self service];
+  if (service)
   {
-    CFDictionarySetValue(v3, @"service", v4);
+    CFDictionarySetValue(v3, @"service", service);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSLocalDeliveryMessageReceivedMetric isFromDefaultPairedDevice](self, "isFromDefaultPairedDevice")}];
@@ -41,20 +41,20 @@
   return v3;
 }
 
-- (IDSLocalDeliveryMessageReceivedMetric)initWithService:(id)a3 isFromDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 priority:(unint64_t)a7
+- (IDSLocalDeliveryMessageReceivedMetric)initWithService:(id)service isFromDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type priority:(unint64_t)priority
 {
-  v13 = a3;
+  serviceCopy = service;
   v17.receiver = self;
   v17.super_class = IDSLocalDeliveryMessageReceivedMetric;
   v14 = [(IDSLocalDeliveryMessageReceivedMetric *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_service, a3);
-    v15->_isFromDefaultPairedDevice = a4;
-    v15->_messageSize = a5;
-    v15->_linkType = a6;
-    v15->_priority = a7;
+    objc_storeStrong(&v14->_service, service);
+    v15->_isFromDefaultPairedDevice = device;
+    v15->_messageSize = size;
+    v15->_linkType = type;
+    v15->_priority = priority;
   }
 
   return v15;

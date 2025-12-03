@@ -1,28 +1,28 @@
 @interface HDOntologyDiagnosticOperation
-+ (void)_appendEntry:(id)a3 tableFormatter:(id)a4;
-- (id)_countOfElementsPerSlotInDatabase:(id)a3;
-- (id)_entriesForSlots:(id)a3 database:(id)a4;
-- (id)_expandResultsToIndividualSlots:(id)a3;
-- (id)_valueForDaemonDefaultKey:(id)a3 healthStore:(id)a4;
-- (void)_appendDateStringForDefaultKey:(id)a3 tableFormatter:(id)a4 healthStore:(id)a5;
-- (void)_logAndAndAppendFormat:(id)a3;
-- (void)_reportBasicChecksForDatabase:(id)a3;
-- (void)_reportDomain:(id)a3 keyValues:(id)a4;
-- (void)_reportElementCountsBySlot:(id)a3 entriesBySlot:(id)a4;
-- (void)_reportElementCountsBySlotForDatabase:(id)a3;
++ (void)_appendEntry:(id)entry tableFormatter:(id)formatter;
+- (id)_countOfElementsPerSlotInDatabase:(id)database;
+- (id)_entriesForSlots:(id)slots database:(id)database;
+- (id)_expandResultsToIndividualSlots:(id)slots;
+- (id)_valueForDaemonDefaultKey:(id)key healthStore:(id)store;
+- (void)_appendDateStringForDefaultKey:(id)key tableFormatter:(id)formatter healthStore:(id)store;
+- (void)_logAndAndAppendFormat:(id)format;
+- (void)_reportBasicChecksForDatabase:(id)database;
+- (void)_reportDomain:(id)domain keyValues:(id)values;
+- (void)_reportElementCountsBySlot:(id)slot entriesBySlot:(id)bySlot;
+- (void)_reportElementCountsBySlotForDatabase:(id)database;
 - (void)_reportForOntologyDatabase;
-- (void)_reportForOntologyDatabase:(id)a3;
-- (void)_reportForOntologyFeaturesWithOntologyStore:(id)a3;
+- (void)_reportForOntologyDatabase:(id)database;
+- (void)_reportForOntologyFeaturesWithOntologyStore:(id)store;
 - (void)_reportForOntologyKeyValueDomains;
-- (void)_reportForOntologyKeyValueDomainsWithDatabase:(id)a3;
-- (void)_reportForOntologyUserDefaultsWithHealthStore:(id)a3;
-- (void)_reportForShardRequirementStatuses:(id)a3;
+- (void)_reportForOntologyKeyValueDomainsWithDatabase:(id)database;
+- (void)_reportForOntologyUserDefaultsWithHealthStore:(id)store;
+- (void)_reportForShardRequirementStatuses:(id)statuses;
 - (void)_reportLocaleAndRegion;
-- (void)_reportNetworkReachabilityForEnvironment:(id)a3;
-- (void)_reportOntologyHostURLWithOntologyStore:(id)a3;
-- (void)_reportOntologyMetadataForDatabase:(id)a3;
-- (void)_reportReachabilityFlags:(unsigned int)a3;
-- (void)_reportShardRegistryForDatabase:(id)a3;
+- (void)_reportNetworkReachabilityForEnvironment:(id)environment;
+- (void)_reportOntologyHostURLWithOntologyStore:(id)store;
+- (void)_reportOntologyMetadataForDatabase:(id)database;
+- (void)_reportReachabilityFlags:(unsigned int)flags;
+- (void)_reportShardRegistryForDatabase:(id)database;
 - (void)run;
 @end
 
@@ -57,19 +57,19 @@
 - (void)_reportLocaleAndRegion
 {
   v6 = +[NSLocale currentLocale];
-  v3 = [v6 localeIdentifier];
-  [(HDOntologyDiagnosticOperation *)self appendFormat:@"Current Locale: %@", v3];
+  localeIdentifier = [v6 localeIdentifier];
+  [(HDOntologyDiagnosticOperation *)self appendFormat:@"Current Locale: %@", localeIdentifier];
 
-  v4 = [v6 languageCode];
-  [(HDOntologyDiagnosticOperation *)self appendFormat:@"Current Language: %@", v4];
+  languageCode = [v6 languageCode];
+  [(HDOntologyDiagnosticOperation *)self appendFormat:@"Current Language: %@", languageCode];
 
-  v5 = [v6 countryCode];
-  [(HDOntologyDiagnosticOperation *)self appendFormat:@"Current Country/Region: %@", v5];
+  countryCode = [v6 countryCode];
+  [(HDOntologyDiagnosticOperation *)self appendFormat:@"Current Country/Region: %@", countryCode];
 }
 
-- (void)_reportOntologyHostURLWithOntologyStore:(id)a3
+- (void)_reportOntologyHostURLWithOntologyStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -83,7 +83,7 @@
   v9 = &v10;
   v5 = dispatch_semaphore_create(0);
   v8 = v5;
-  [v4 ontologyServerURLWithCompletion:v7];
+  [storeCopy ontologyServerURLWithCompletion:v7];
   v6 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v5, v6))
   {
@@ -98,11 +98,11 @@
 
 - (void)_reportForOntologyDatabase
 {
-  v8 = [(HDOntologyDiagnosticOperation *)self healthDirectoryURL];
-  v3 = [v8 URLByAppendingPathComponent:@"ontology" isDirectory:1];
+  healthDirectoryURL = [(HDOntologyDiagnosticOperation *)self healthDirectoryURL];
+  v3 = [healthDirectoryURL URLByAppendingPathComponent:@"ontology" isDirectory:1];
   v4 = [v3 URLByAppendingPathComponent:@"HealthOntology.db" isDirectory:0];
-  v5 = [v4 path];
-  [(HDOntologyDiagnosticOperation *)self appendFormat:@"Ontology Database %@", v5];
+  path = [v4 path];
+  [(HDOntologyDiagnosticOperation *)self appendFormat:@"Ontology Database %@", path];
 
   [(HDOntologyDiagnosticOperation *)self reportStatsForDatabaseAtURL:v4];
   [(HDOntologyDiagnosticOperation *)self appendNewline];
@@ -115,40 +115,40 @@
 
   else
   {
-    v7 = [v4 path];
-    [(HDOntologyDiagnosticOperation *)self appendFormat:@"Unable to open %@ \n", v7];
+    path2 = [v4 path];
+    [(HDOntologyDiagnosticOperation *)self appendFormat:@"Unable to open %@ \n", path2];
   }
 
   [v6 close];
 }
 
-- (void)_reportForOntologyDatabase:(id)a3
+- (void)_reportForOntologyDatabase:(id)database
 {
-  v4 = a3;
-  [(HDOntologyDiagnosticOperation *)self _reportBasicChecksForDatabase:v4];
-  [(HDOntologyDiagnosticOperation *)self _reportShardRegistryForDatabase:v4];
-  [(HDOntologyDiagnosticOperation *)self _reportElementCountsBySlotForDatabase:v4];
-  [(HDOntologyDiagnosticOperation *)self _reportOntologyMetadataForDatabase:v4];
+  databaseCopy = database;
+  [(HDOntologyDiagnosticOperation *)self _reportBasicChecksForDatabase:databaseCopy];
+  [(HDOntologyDiagnosticOperation *)self _reportShardRegistryForDatabase:databaseCopy];
+  [(HDOntologyDiagnosticOperation *)self _reportElementCountsBySlotForDatabase:databaseCopy];
+  [(HDOntologyDiagnosticOperation *)self _reportOntologyMetadataForDatabase:databaseCopy];
 }
 
-- (void)_reportBasicChecksForDatabase:(id)a3
+- (void)_reportBasicChecksForDatabase:(id)database
 {
-  v4 = a3;
-  [(HDOntologyDiagnosticOperation *)self checkSchemaVersionForDatabase:v4 currentSchema:8 futureSchema:10002];
+  databaseCopy = database;
+  [(HDOntologyDiagnosticOperation *)self checkSchemaVersionForDatabase:databaseCopy currentSchema:8 futureSchema:10002];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v5 = [NSArray arrayWithObjects:&v6 count:3];
-  [(HDOntologyDiagnosticOperation *)self reportCountsForDatabase:v4 entityClasses:v5, v6, v7];
+  [(HDOntologyDiagnosticOperation *)self reportCountsForDatabase:databaseCopy entityClasses:v5, v6, v7];
 
   [(HDOntologyDiagnosticOperation *)self appendNewline];
   [(HDOntologyDiagnosticOperation *)self appendStrongSeparator];
   [(HDOntologyDiagnosticOperation *)self appendNewline];
 }
 
-- (void)_reportShardRegistryForDatabase:(id)a3
+- (void)_reportShardRegistryForDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = [[HKTableFormatter alloc] initWithColumnTitles:&off_8FE8];
   v22 = 0;
   v20[0] = _NSConcreteStackBlock;
@@ -157,7 +157,7 @@
   v20[3] = &unk_8288;
   v6 = objc_alloc_init(NSMutableArray);
   v21 = v6;
-  v7 = [HDOntologyShardRegistryEntity enumerateEntriesWithPredicate:0 orderingTerms:0 database:v4 error:&v22 enumerationHandler:v20];
+  v7 = [HDOntologyShardRegistryEntity enumerateEntriesWithPredicate:0 orderingTerms:0 database:databaseCopy error:&v22 enumerationHandler:v20];
   v8 = v22;
   v9 = v8;
   if (v7)
@@ -196,8 +196,8 @@
 
     [(HDOntologyDiagnosticOperation *)self appendFormat:@"Ontology Shard Registry"];
     [(HDOntologyDiagnosticOperation *)self appendSeparator];
-    v15 = [v5 formattedTable];
-    [(HDOntologyDiagnosticOperation *)self appendString:v15];
+    formattedTable = [v5 formattedTable];
+    [(HDOntologyDiagnosticOperation *)self appendString:formattedTable];
 
     [(HDOntologyDiagnosticOperation *)self appendNewline];
     [(HDOntologyDiagnosticOperation *)self appendStrongSeparator];
@@ -210,45 +210,45 @@
   }
 }
 
-+ (void)_appendEntry:(id)a3 tableFormatter:(id)a4
++ (void)_appendEntry:(id)entry tableFormatter:(id)formatter
 {
-  v5 = a3;
-  v46 = a4;
-  v61 = [v5 identifier];
-  v62[0] = v61;
-  v60 = [v5 schemaType];
-  v62[1] = v60;
-  v59 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 schemaVersion]);
-  v58 = [v59 stringValue];
-  v62[2] = v58;
-  [v5 settings];
+  entryCopy = entry;
+  formatterCopy = formatter;
+  identifier = [entryCopy identifier];
+  v62[0] = identifier;
+  schemaType = [entryCopy schemaType];
+  v62[1] = schemaType;
+  v59 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [entryCopy schemaVersion]);
+  stringValue = [v59 stringValue];
+  v62[2] = stringValue;
+  [entryCopy settings];
   v57 = HKStringFromOntologyShardSettings();
   v62[3] = v57;
-  v56 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 slot]);
-  v55 = [v56 stringValue];
-  v62[4] = v55;
-  [v5 desiredState];
+  v56 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [entryCopy slot]);
+  stringValue2 = [v56 stringValue];
+  v62[4] = stringValue2;
+  [entryCopy desiredState];
   v54 = HKStringFromOntologyShardState();
   v62[5] = v54;
-  v53 = [v5 desiredStateDate];
+  desiredStateDate = [entryCopy desiredStateDate];
   v52 = HKDiagnosticStringFromDate();
   v62[6] = v52;
-  [v5 currentVersion];
+  [entryCopy currentVersion];
   v51 = HKStringFromOntologyShardVersion();
   v62[7] = v51;
-  v50 = [v5 currentVersionDate];
+  currentVersionDate = [entryCopy currentVersionDate];
   v49 = HKDiagnosticStringFromDate();
   v62[8] = v49;
-  v48 = [v5 currentRegion];
-  v62[9] = v48;
-  v47 = [v5 currentRegionDate];
+  currentRegion = [entryCopy currentRegion];
+  v62[9] = currentRegion;
+  currentRegionDate = [entryCopy currentRegionDate];
   v45 = HKDiagnosticStringFromDate();
   v62[10] = v45;
-  v6 = [v5 currentLocale];
-  v44 = v6;
-  if (v6)
+  currentLocale = [entryCopy currentLocale];
+  v44 = currentLocale;
+  if (currentLocale)
   {
-    v7 = v6;
+    v7 = currentLocale;
   }
 
   else
@@ -257,25 +257,25 @@
   }
 
   v62[11] = v7;
-  v43 = [v5 currentLocaleDate];
+  currentLocaleDate = [entryCopy currentLocaleDate];
   v42 = HKDiagnosticStringFromDate();
   v62[12] = v42;
-  [v5 availableVersion];
+  [entryCopy availableVersion];
   v41 = HKStringFromOntologyShardVersion();
   v62[13] = v41;
-  v40 = [v5 availableVersionDate];
+  availableVersionDate = [entryCopy availableVersionDate];
   v39 = HKDiagnosticStringFromDate();
   v62[14] = v39;
-  v38 = [v5 availableRegion];
-  v62[15] = v38;
-  v37 = [v5 availableRegionDate];
+  availableRegion = [entryCopy availableRegion];
+  v62[15] = availableRegion;
+  availableRegionDate = [entryCopy availableRegionDate];
   v36 = HKDiagnosticStringFromDate();
   v62[16] = v36;
-  v8 = [v5 availableLocale];
-  v35 = v8;
-  if (v8)
+  availableLocale = [entryCopy availableLocale];
+  v35 = availableLocale;
+  if (availableLocale)
   {
-    v9 = v8;
+    v9 = availableLocale;
   }
 
   else
@@ -284,15 +284,15 @@
   }
 
   v62[17] = v9;
-  v34 = [v5 availableLocaleDate];
+  availableLocaleDate = [entryCopy availableLocaleDate];
   v33 = HKDiagnosticStringFromDate();
   v62[18] = v33;
-  v32 = [v5 availableURL];
-  v10 = [v32 absoluteString];
-  v31 = v10;
-  if (v10)
+  availableURL = [entryCopy availableURL];
+  absoluteString = [availableURL absoluteString];
+  v31 = absoluteString;
+  if (absoluteString)
   {
-    v11 = v10;
+    v11 = absoluteString;
   }
 
   else
@@ -301,14 +301,14 @@
   }
 
   v62[19] = v11;
-  v30 = [v5 availableURLDate];
+  availableURLDate = [entryCopy availableURLDate];
   v29 = HKDiagnosticStringFromDate();
   v62[20] = v29;
-  v12 = [v5 availableChecksum];
-  v13 = v12;
-  if (v12)
+  availableChecksum = [entryCopy availableChecksum];
+  v13 = availableChecksum;
+  if (availableChecksum)
   {
-    v14 = v12;
+    v14 = availableChecksum;
   }
 
   else
@@ -317,56 +317,56 @@
   }
 
   v62[21] = v14;
-  v28 = [v5 availableChecksumDate];
+  availableChecksumDate = [entryCopy availableChecksumDate];
   v27 = HKDiagnosticStringFromDate();
   v62[22] = v27;
-  v15 = [v5 availableSize];
+  availableSize = [entryCopy availableSize];
   v16 = HKOntologyShardRegistryEntrySizeUnknown;
-  v26 = v15;
-  if (v15 == HKOntologyShardRegistryEntrySizeUnknown)
+  v26 = availableSize;
+  if (availableSize == HKOntologyShardRegistryEntrySizeUnknown)
   {
-    v17 = @"unkown";
+    stringValue3 = @"unkown";
   }
 
   else
   {
-    v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 availableSize]);
-    v17 = [v24 stringValue];
+    v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [entryCopy availableSize]);
+    stringValue3 = [v24 stringValue];
   }
 
-  v25 = v17;
-  v62[23] = v17;
-  v18 = [v5 availableSizeDate];
+  v25 = stringValue3;
+  v62[23] = stringValue3;
+  availableSizeDate = [entryCopy availableSizeDate];
   v19 = HKDiagnosticStringFromDate();
   v62[24] = v19;
-  [v5 availableState];
+  [entryCopy availableState];
   v20 = HKStringFromOntologyShardState();
   v62[25] = v20;
-  v21 = [v5 availableStateDate];
+  availableStateDate = [entryCopy availableStateDate];
   v22 = HKDiagnosticStringFromDate();
   v62[26] = v22;
   v23 = [NSArray arrayWithObjects:v62 count:27];
-  [v46 appendRow:v23];
+  [formatterCopy appendRow:v23];
 
   if (v26 != v16)
   {
   }
 }
 
-- (void)_reportElementCountsBySlotForDatabase:(id)a3
+- (void)_reportElementCountsBySlotForDatabase:(id)database
 {
-  v4 = a3;
-  v8 = [(HDOntologyDiagnosticOperation *)self _countOfElementsPerSlotInDatabase:v4];
+  databaseCopy = database;
+  v8 = [(HDOntologyDiagnosticOperation *)self _countOfElementsPerSlotInDatabase:databaseCopy];
   v5 = [(HDOntologyDiagnosticOperation *)self _expandResultsToIndividualSlots:v8];
-  v6 = [v5 allKeys];
-  v7 = [(HDOntologyDiagnosticOperation *)self _entriesForSlots:v6 database:v4];
+  allKeys = [v5 allKeys];
+  v7 = [(HDOntologyDiagnosticOperation *)self _entriesForSlots:allKeys database:databaseCopy];
 
   [(HDOntologyDiagnosticOperation *)self _reportElementCountsBySlot:v5 entriesBySlot:v7];
 }
 
-- (id)_countOfElementsPerSlotInDatabase:(id)a3
+- (id)_countOfElementsPerSlotInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v14 = 0;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -374,7 +374,7 @@
   v12[3] = &unk_82F0;
   v5 = objc_alloc_init(NSMutableDictionary);
   v13 = v5;
-  v6 = [v4 executeSQL:@"SELECT 'nodes' error:slots bindingHandler:COUNT(*) FROM nodes GROUP BY slots UNION ALL SELECT 'attributes' enumerationHandler:{slots, COUNT(*) FROM attributes GROUP BY slots UNION ALL SELECT 'relationships', slots, COUNT(*) FROM relationships GROUP BY slots", &v14, 0, v12}];
+  v6 = [databaseCopy executeSQL:@"SELECT 'nodes' error:slots bindingHandler:COUNT(*) FROM nodes GROUP BY slots UNION ALL SELECT 'attributes' enumerationHandler:{slots, COUNT(*) FROM attributes GROUP BY slots UNION ALL SELECT 'relationships', slots, COUNT(*) FROM relationships GROUP BY slots", &v14, 0, v12}];
 
   v7 = v14;
   v8 = v7;
@@ -389,15 +389,15 @@
   return v5;
 }
 
-- (id)_expandResultsToIndividualSlots:(id)a3
+- (id)_expandResultsToIndividualSlots:(id)slots
 {
-  v3 = a3;
+  slotsCopy = slots;
   v4 = objc_alloc_init(NSMutableDictionary);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = v3;
+  v5 = slotsCopy;
   v25 = [v5 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v25)
   {
@@ -452,9 +452,9 @@
 
                     v18 = *(*(&v32 + 1) + 8 * i);
                     v19 = [v13 objectForKeyedSubscript:v18];
-                    v20 = [v19 integerValue];
+                    integerValue = [v19 integerValue];
                     v21 = [v11 objectForKeyedSubscript:v18];
-                    v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", &v20[[v21 integerValue]]);
+                    v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", &integerValue[[v21 integerValue]]);
                     [v13 setObject:v22 forKeyedSubscript:v18];
                   }
 
@@ -494,13 +494,13 @@
   return v4;
 }
 
-- (id)_entriesForSlots:(id)a3 database:(id)a4
+- (id)_entriesForSlots:(id)slots database:(id)database
 {
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  slotsCopy = slots;
   v8 = objc_alloc_init(NSMutableDictionary);
   v9 = [HDSQLiteContainsPredicate alloc];
-  v10 = [v9 initWithProperty:HDOntologyShardRegistryEntityPropertySlot values:v7 contains:1];
+  v10 = [v9 initWithProperty:HDOntologyShardRegistryEntityPropertySlot values:slotsCopy contains:1];
 
   v19 = 0;
   v17[0] = _NSConcreteStackBlock;
@@ -509,11 +509,11 @@
   v17[3] = &unk_8288;
   v11 = v8;
   v18 = v11;
-  LOBYTE(v7) = [HDOntologyShardRegistryEntity enumerateEntriesWithPredicate:v10 orderingTerms:0 database:v6 error:&v19 enumerationHandler:v17];
+  LOBYTE(slotsCopy) = [HDOntologyShardRegistryEntity enumerateEntriesWithPredicate:v10 orderingTerms:0 database:databaseCopy error:&v19 enumerationHandler:v17];
 
   v12 = v19;
   v13 = v12;
-  if ((v7 & 1) == 0)
+  if ((slotsCopy & 1) == 0)
   {
     [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Failed to enumerate shard registry entries: %@", v12];
   }
@@ -524,16 +524,16 @@
   return v11;
 }
 
-- (void)_reportElementCountsBySlot:(id)a3 entriesBySlot:(id)a4
+- (void)_reportElementCountsBySlot:(id)slot entriesBySlot:(id)bySlot
 {
-  v6 = a3;
-  v24 = a4;
-  v25 = v6;
+  slotCopy = slot;
+  bySlotCopy = bySlot;
+  v25 = slotCopy;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = [v6 hk_sortedKeys];
+  obj = [slotCopy hk_sortedKeys];
   v26 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v26)
   {
@@ -548,14 +548,14 @@
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
-        v9 = [v24 objectForKeyedSubscript:v8];
+        v9 = [bySlotCopy objectForKeyedSubscript:v8];
         v28 = v9;
         if (v9)
         {
           v10 = v9;
-          v11 = [v9 identifier];
-          v12 = [v10 schemaType];
-          v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" %@ %@ %ld", v11, v12, [v10 schemaVersion]);
+          identifier = [v9 identifier];
+          schemaType = [v10 schemaType];
+          v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" %@ %@ %ld", identifier, schemaType, [v10 schemaVersion]);
         }
 
         else
@@ -571,8 +571,8 @@
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v15 = [v14 hk_sortedKeys];
-        v16 = [v15 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        hk_sortedKeys = [v14 hk_sortedKeys];
+        v16 = [hk_sortedKeys countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v16)
         {
           v17 = v16;
@@ -583,7 +583,7 @@
             {
               if (*v30 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(hk_sortedKeys);
               }
 
               v20 = *(*(&v29 + 1) + 8 * j);
@@ -591,7 +591,7 @@
               -[HDOntologyDiagnosticOperation appendFormat:](self, "appendFormat:", @"        %lld %@", [v21 longLongValue], v20);
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v17 = [hk_sortedKeys countByEnumeratingWithState:&v29 objects:v37 count:16];
           }
 
           while (v17);
@@ -607,9 +607,9 @@
   }
 }
 
-- (void)_reportOntologyMetadataForDatabase:(id)a3
+- (void)_reportOntologyMetadataForDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v12 = 0;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -617,7 +617,7 @@
   v10[3] = &unk_8318;
   v5 = [[HKTableFormatter alloc] initWithColumnTitles:&off_9018];
   v11 = v5;
-  v6 = [HDSimpleGraphDatabaseMetadataEntity enumerateMetadataValuesWithPredicate:0 database:v4 error:&v12 enumerationHandler:v10];
+  v6 = [HDSimpleGraphDatabaseMetadataEntity enumerateMetadataValuesWithPredicate:0 database:databaseCopy error:&v12 enumerationHandler:v10];
 
   v7 = v12;
   v8 = v7;
@@ -630,15 +630,15 @@
   [(HDOntologyDiagnosticOperation *)self appendNewline];
   [(HDOntologyDiagnosticOperation *)self appendFormat:@"Ontology Metadata"];
   [(HDOntologyDiagnosticOperation *)self appendSeparator];
-  v9 = [v5 formattedTable];
-  [(HDOntologyDiagnosticOperation *)self appendString:v9];
+  formattedTable = [v5 formattedTable];
+  [(HDOntologyDiagnosticOperation *)self appendString:formattedTable];
 
   [(HDOntologyDiagnosticOperation *)self appendNewline];
 }
 
-- (void)_reportForOntologyFeaturesWithOntologyStore:(id)a3
+- (void)_reportForOntologyFeaturesWithOntologyStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   [(HDOntologyDiagnosticOperation *)self appendStrongSeparator];
   [(HDOntologyDiagnosticOperation *)self appendNewline];
   v13 = 0;
@@ -654,7 +654,7 @@
   v12 = &v13;
   v5 = dispatch_semaphore_create(0);
   v11 = v5;
-  [v4 shardRequirementStatusesWithCompletion:&v7];
+  [storeCopy shardRequirementStatusesWithCompletion:&v7];
   v6 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v5, v6))
   {
@@ -674,15 +674,15 @@
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)_reportForShardRequirementStatuses:(id)a3
+- (void)_reportForShardRequirementStatuses:(id)statuses
 {
-  v4 = a3;
+  statusesCopy = statuses;
   v5 = [[HKTableFormatter alloc] initWithColumnTitles:&off_9030];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = statusesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
@@ -718,8 +718,8 @@
 
   [(HDOntologyDiagnosticOperation *)self appendFormat:@"Ontology Feature Evaluator Statuses"];
   [(HDOntologyDiagnosticOperation *)self appendSeparator];
-  v14 = [v5 formattedTable];
-  [(HDOntologyDiagnosticOperation *)self appendString:v14];
+  formattedTable = [v5 formattedTable];
+  [(HDOntologyDiagnosticOperation *)self appendString:formattedTable];
 
   [(HDOntologyDiagnosticOperation *)self appendNewline];
 }
@@ -728,8 +728,8 @@
 {
   [(HDOntologyDiagnosticOperation *)self appendStrongSeparator];
   [(HDOntologyDiagnosticOperation *)self appendNewline];
-  v3 = [(HDOntologyDiagnosticOperation *)self healthDirectoryURL];
-  v6 = [v3 URLByAppendingPathComponent:@"healthdb.sqlite" isDirectory:0];
+  healthDirectoryURL = [(HDOntologyDiagnosticOperation *)self healthDirectoryURL];
+  v6 = [healthDirectoryURL URLByAppendingPathComponent:@"healthdb.sqlite" isDirectory:0];
 
   v4 = [(HDOntologyDiagnosticOperation *)self openReadOnlyDatabaseAtURL:v6];
   if (v4)
@@ -739,17 +739,17 @@
 
   else
   {
-    v5 = [v6 path];
-    [(HDOntologyDiagnosticOperation *)self appendFormat:@"Unable to open %@ \n", v5];
+    path = [v6 path];
+    [(HDOntologyDiagnosticOperation *)self appendFormat:@"Unable to open %@ \n", path];
   }
 
   [v4 close];
 }
 
-- (void)_reportForOntologyKeyValueDomainsWithDatabase:(id)a3
+- (void)_reportForOntologyKeyValueDomainsWithDatabase:(id)database
 {
   v7 = 0;
-  v4 = [HDUnprotectedKeyValueEntity allValuesForDomain:@"HDOntologyUpdateCoordinator" category:0 database:a3 error:&v7];
+  v4 = [HDUnprotectedKeyValueEntity allValuesForDomain:@"HDOntologyUpdateCoordinator" category:0 database:database error:&v7];
   v5 = v7;
   v6 = v5;
   if (v4)
@@ -763,16 +763,16 @@
   }
 }
 
-- (void)_reportDomain:(id)a3 keyValues:(id)a4
+- (void)_reportDomain:(id)domain keyValues:(id)values
 {
-  v19 = a3;
-  v5 = a4;
+  domainCopy = domain;
+  valuesCopy = values;
   v6 = [[HKTableFormatter alloc] initWithColumnTitles:&off_9048];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = [v5 hk_sortedKeys];
+  obj = [valuesCopy hk_sortedKeys];
   v7 = [obj countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -788,7 +788,7 @@
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
+        v12 = [valuesCopy objectForKeyedSubscript:v11];
         if (([v11 containsString:@"updateStartDate"] & 1) != 0 || objc_msgSend(v11, "containsString:", @"updateEndDate"))
         {
           [v12 doubleValue];
@@ -823,52 +823,52 @@
     while (v8);
   }
 
-  [(HDOntologyDiagnosticOperation *)self appendFormat:@"%@ Key Value Domain", v19];
+  [(HDOntologyDiagnosticOperation *)self appendFormat:@"%@ Key Value Domain", domainCopy];
   [(HDOntologyDiagnosticOperation *)self appendSeparator];
-  v17 = [v6 formattedTable];
-  [(HDOntologyDiagnosticOperation *)self appendString:v17];
+  formattedTable = [v6 formattedTable];
+  [(HDOntologyDiagnosticOperation *)self appendString:formattedTable];
 
   [(HDOntologyDiagnosticOperation *)self appendNewline];
 }
 
-- (void)_reportForOntologyUserDefaultsWithHealthStore:(id)a3
+- (void)_reportForOntologyUserDefaultsWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   [(HDOntologyDiagnosticOperation *)self appendStrongSeparator];
   [(HDOntologyDiagnosticOperation *)self appendNewline];
   v5 = [[HKTableFormatter alloc] initWithColumnTitles:&off_9060];
-  v6 = [(HDOntologyDiagnosticOperation *)self _valueForDaemonDefaultKey:@"PeriodicActivity-com.apple.healthd.ontology.update-ErrorCount" healthStore:v4];
+  v6 = [(HDOntologyDiagnosticOperation *)self _valueForDaemonDefaultKey:@"PeriodicActivity-com.apple.healthd.ontology.update-ErrorCount" healthStore:storeCopy];
   v12[0] = @"PeriodicActivity-com.apple.healthd.ontology.update-ErrorCount";
-  v7 = [v6 stringValue];
-  v8 = v7;
+  stringValue = [v6 stringValue];
+  v8 = stringValue;
   v9 = @"(null)";
-  if (v7)
+  if (stringValue)
   {
-    v9 = v7;
+    v9 = stringValue;
   }
 
   v12[1] = v9;
   v10 = [NSArray arrayWithObjects:v12 count:2];
   [v5 appendRow:v10];
 
-  [(HDOntologyDiagnosticOperation *)self _appendDateStringForDefaultKey:@"PeriodicActivity-com.apple.healthd.ontology.update-LastSuccessfulRun" tableFormatter:v5 healthStore:v4];
-  [(HDOntologyDiagnosticOperation *)self _appendDateStringForDefaultKey:@"PeriodicActivity-com.apple.healthd.ontology.update-EarliestNextRun" tableFormatter:v5 healthStore:v4];
+  [(HDOntologyDiagnosticOperation *)self _appendDateStringForDefaultKey:@"PeriodicActivity-com.apple.healthd.ontology.update-LastSuccessfulRun" tableFormatter:v5 healthStore:storeCopy];
+  [(HDOntologyDiagnosticOperation *)self _appendDateStringForDefaultKey:@"PeriodicActivity-com.apple.healthd.ontology.update-EarliestNextRun" tableFormatter:v5 healthStore:storeCopy];
 
   [(HDOntologyDiagnosticOperation *)self appendFormat:@"healthd User Defaults"];
   [(HDOntologyDiagnosticOperation *)self appendSeparator];
-  v11 = [v5 formattedTable];
-  [(HDOntologyDiagnosticOperation *)self appendString:v11];
+  formattedTable = [v5 formattedTable];
+  [(HDOntologyDiagnosticOperation *)self appendString:formattedTable];
 
   [(HDOntologyDiagnosticOperation *)self appendNewline];
   [(HDOntologyDiagnosticOperation *)self appendStrongSeparator];
   [(HDOntologyDiagnosticOperation *)self appendNewline];
 }
 
-- (void)_appendDateStringForDefaultKey:(id)a3 tableFormatter:(id)a4 healthStore:(id)a5
+- (void)_appendDateStringForDefaultKey:(id)key tableFormatter:(id)formatter healthStore:(id)store
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HDOntologyDiagnosticOperation *)self _valueForDaemonDefaultKey:v9 healthStore:a5];
+  formatterCopy = formatter;
+  keyCopy = key;
+  v10 = [(HDOntologyDiagnosticOperation *)self _valueForDaemonDefaultKey:keyCopy healthStore:store];
   if (v10)
   {
     v11 = HKDiagnosticStringFromDate();
@@ -879,17 +879,17 @@
     v11 = @"(null)";
   }
 
-  v13[0] = v9;
+  v13[0] = keyCopy;
   v13[1] = v11;
   v12 = [NSArray arrayWithObjects:v13 count:2];
 
-  [v8 appendRow:v12];
+  [formatterCopy appendRow:v12];
 }
 
-- (id)_valueForDaemonDefaultKey:(id)a3 healthStore:(id)a4
+- (id)_valueForDaemonDefaultKey:(id)key healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  storeCopy = store;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -910,17 +910,17 @@
   v16 = &v17;
   v8 = dispatch_semaphore_create(0);
   v14 = v8;
-  [v7 _fetchDaemonPreferenceForKey:v6 completion:v13];
+  [storeCopy _fetchDaemonPreferenceForKey:keyCopy completion:v13];
   v9 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v8, v9))
   {
-    [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Timed out attempting to get daemon default for key %@", v6];
+    [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Timed out attempting to get daemon default for key %@", keyCopy];
   }
 
   v10 = v18[5];
   if (v10)
   {
-    [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Error getting daemon default for key %@: %@", v6, v10];
+    [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Error getting daemon default for key %@: %@", keyCopy, v10];
   }
 
   v11 = v24[5];
@@ -931,11 +931,11 @@
   return v11;
 }
 
-- (void)_reportNetworkReachabilityForEnvironment:(id)a3
+- (void)_reportNetworkReachabilityForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   flags = 0;
-  v5 = SCNetworkReachabilityCreateWithName(0, [v4 UTF8String]);
+  v5 = SCNetworkReachabilityCreateWithName(0, [environmentCopy UTF8String]);
   if (v5)
   {
     v6 = v5;
@@ -946,7 +946,7 @@
 
     else
     {
-      [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Unable to get reachability flags for %@", v4];
+      [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Unable to get reachability flags for %@", environmentCopy];
     }
 
     CFRelease(v6);
@@ -954,11 +954,11 @@
 
   else
   {
-    [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Unable to get reachability flags for %@", v4];
+    [(HDOntologyDiagnosticOperation *)self _logAndAndAppendFormat:@"Unable to get reachability flags for %@", environmentCopy];
   }
 }
 
-- (void)_reportReachabilityFlags:(unsigned int)a3
+- (void)_reportReachabilityFlags:(unsigned int)flags
 {
   v4 = [[HKTableFormatter alloc] initWithColumnTitles:&off_9078];
   v32[0] = @"TransientConnection";
@@ -1016,16 +1016,16 @@
   [v4 appendRow:v22];
 
   [(HDOntologyDiagnosticOperation *)self appendSeparator];
-  v23 = [v4 formattedTable];
-  [(HDOntologyDiagnosticOperation *)self appendString:v23];
+  formattedTable = [v4 formattedTable];
+  [(HDOntologyDiagnosticOperation *)self appendString:formattedTable];
 
   [(HDOntologyDiagnosticOperation *)self appendNewline];
 }
 
-- (void)_logAndAndAppendFormat:(id)a3
+- (void)_logAndAndAppendFormat:(id)format
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithFormat:v4 arguments:&v6];
+  formatCopy = format;
+  v5 = [[NSString alloc] initWithFormat:formatCopy arguments:&v6];
 
   [(HDOntologyDiagnosticOperation *)self log:@"%@", v5];
   [(HDOntologyDiagnosticOperation *)self appendFormat:@"%@", v5];

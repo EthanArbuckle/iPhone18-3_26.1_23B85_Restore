@@ -5,7 +5,7 @@
 - (BOOL)canAddToShortcuts;
 - (BOOL)canShowOpenFindMyAction;
 - (BOOL)canShowRequestLocation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHomeWorkSchoolAddress;
 - (BOOL)isHomeWorkSchoolShortcut;
 - (BOOL)isMeCard;
@@ -18,12 +18,12 @@
 - (MapsSuggestionsShortcutLike)shortcut;
 - (NSString)defaultCollectionItemTitle;
 - (NSString)title;
-- (PlaceCardItem)initWithLocationOfInterest:(id)a3;
-- (PlaceCardItem)initWithMapItem:(id)a3;
-- (PlaceCardItem)initWithMapItem:(id)a3 address:(id)a4;
-- (PlaceCardItem)initWithMapItem:(id)a3 chargeStationWaypointInfo:(id)a4;
-- (PlaceCardItem)initWithPersonalizedItem:(id)a3;
-- (PlaceCardItem)initWithSearchResult:(id)a3;
+- (PlaceCardItem)initWithLocationOfInterest:(id)interest;
+- (PlaceCardItem)initWithMapItem:(id)item;
+- (PlaceCardItem)initWithMapItem:(id)item address:(id)address;
+- (PlaceCardItem)initWithMapItem:(id)item chargeStationWaypointInfo:(id)info;
+- (PlaceCardItem)initWithPersonalizedItem:(id)item;
+- (PlaceCardItem)initWithSearchResult:(id)result;
 - (RAPPlace)rapPlace;
 - (_MKPlaceItem)placeItem;
 - (id)_venueIdentifier;
@@ -36,52 +36,52 @@
 
 - (id)_venueIdentifier
 {
-  v3 = [(PlaceCardItem *)self mapItem];
-  v4 = [v3 _venueInfo];
-  v5 = [v4 venueIdentifier];
+  mapItem = [(PlaceCardItem *)self mapItem];
+  _venueInfo = [mapItem _venueInfo];
+  venueIdentifier = [_venueInfo venueIdentifier];
 
-  if (v5)
+  if (venueIdentifier)
   {
-    v6 = [(PlaceCardItem *)self mapItem];
-    v7 = [v6 _venueInfo];
-    v8 = [v7 venueIdentifier];
+    mapItem2 = [(PlaceCardItem *)self mapItem];
+    _venueInfo2 = [mapItem2 _venueInfo];
+    venueIdentifier2 = [_venueInfo2 venueIdentifier];
   }
 
   else
   {
-    v6 = [(PlaceCardItem *)self searchResult];
-    v7 = [v6 mapItem];
-    v9 = [v7 _venueInfo];
-    v8 = [v9 venueIdentifier];
+    mapItem2 = [(PlaceCardItem *)self searchResult];
+    _venueInfo2 = [mapItem2 mapItem];
+    v7_venueInfo = [_venueInfo2 _venueInfo];
+    venueIdentifier2 = [v7_venueInfo venueIdentifier];
   }
 
-  return v8;
+  return venueIdentifier2;
 }
 
 - (unint64_t)venueCardID
 {
-  v2 = [(PlaceCardItem *)self mapItem];
-  v3 = [v2 _muid];
+  mapItem = [(PlaceCardItem *)self mapItem];
+  _muid = [mapItem _muid];
 
-  return v3;
+  return _muid;
 }
 
 - (unint64_t)venueID
 {
-  v3 = [(PlaceCardItem *)self _venueIdentifier];
-  if ([v3 _hasVenueID])
+  _venueIdentifier = [(PlaceCardItem *)self _venueIdentifier];
+  if ([_venueIdentifier _hasVenueID])
   {
-    v4 = [v3 venueID];
+    venueID = [_venueIdentifier venueID];
   }
 
   else
   {
-    v5 = [(PlaceCardItem *)self personalizedItem];
-    v6 = [v5 sourceLabelMarker];
-    v4 = [v6 venueID];
+    personalizedItem = [(PlaceCardItem *)self personalizedItem];
+    sourceLabelMarker = [personalizedItem sourceLabelMarker];
+    venueID = [sourceLabelMarker venueID];
   }
 
-  return v4;
+  return venueID;
 }
 
 - (CGRect)calloutAnchorRect
@@ -104,41 +104,41 @@
     return 0;
   }
 
-  v3 = [(PlaceCardItem *)self mapItem];
-  if ([v3 _hasMUID] && objc_msgSend(v3, "_muid"))
+  mapItem = [(PlaceCardItem *)self mapItem];
+  if ([mapItem _hasMUID] && objc_msgSend(mapItem, "_muid"))
   {
-    v4 = 0;
+    isFrequentLocation = 0;
   }
 
   else
   {
-    v5 = [(PlaceCardItem *)self locationOfInterest];
-    v4 = [v5 isFrequentLocation];
+    locationOfInterest = [(PlaceCardItem *)self locationOfInterest];
+    isFrequentLocation = [locationOfInterest isFrequentLocation];
   }
 
-  return v4;
+  return isFrequentLocation;
 }
 
 - (int64_t)addressType
 {
-  v3 = [(PlaceCardItem *)self locationOfInterest];
+  locationOfInterest = [(PlaceCardItem *)self locationOfInterest];
 
-  if (v3)
+  if (locationOfInterest)
   {
-    v4 = [(PlaceCardItem *)self locationOfInterest];
-    v5 = [v4 type];
+    locationOfInterest2 = [(PlaceCardItem *)self locationOfInterest];
+    type = [locationOfInterest2 type];
 
-    return v5;
+    return type;
   }
 
   else
   {
-    v7 = [(PlaceCardItem *)self address];
-    v8 = [v7 addressType];
+    address = [(PlaceCardItem *)self address];
+    addressType = [address addressType];
 
-    if (v8 <= 3)
+    if (addressType <= 3)
     {
-      return v8 - 1;
+      return addressType - 1;
     }
 
     else
@@ -152,18 +152,18 @@
 {
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
-    v3 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v4 = [(PlaceCardItem *)self mapItem];
-    [v3 shortcutForMapItem:v4];
+    meCard = +[_TtC4Maps20MapsFavoritesManager sharedManager];
+    mapItem = [(PlaceCardItem *)self mapItem];
+    [meCard shortcutForMapItem:mapItem];
   }
 
   else
   {
     v5 = +[ShortcutManager sharedManager];
-    v3 = [v5 meCard];
+    meCard = [v5 meCard];
 
-    v4 = [(PlaceCardItem *)self mapItem];
-    [v3 _maps_shortcutIncludingHiddenForMapItem:v4];
+    mapItem = [(PlaceCardItem *)self mapItem];
+    [meCard _maps_shortcutIncludingHiddenForMapItem:mapItem];
   }
   v6 = ;
 
@@ -172,28 +172,28 @@
 
 - (BOOL)isHomeWorkSchoolShortcut
 {
-  v2 = [(PlaceCardItem *)self shortcut];
-  v3 = v2;
-  v4 = v2 && ([v2 isHidden] & 1) == 0 && (objc_msgSend(v3, "type") == 2 || objc_msgSend(v3, "type") == 3 || objc_msgSend(v3, "type") == 5);
+  shortcut = [(PlaceCardItem *)self shortcut];
+  v3 = shortcut;
+  v4 = shortcut && ([shortcut isHidden] & 1) == 0 && (objc_msgSend(v3, "type") == 2 || objc_msgSend(v3, "type") == 3 || objc_msgSend(v3, "type") == 5);
 
   return v4;
 }
 
 - (BOOL)isHomeWorkSchoolAddress
 {
-  v3 = [(MapsLocationOfInterest *)self->_locationOfInterest identifier];
-  if (v3 && (![(MapsLocationOfInterest *)self->_locationOfInterest type]|| [(MapsLocationOfInterest *)self->_locationOfInterest type]== 1 || [(MapsLocationOfInterest *)self->_locationOfInterest type]== 2) || (address = self->_address) != 0 && [(AddressBookAddress *)address isHomeWorkSchoolAddress])
+  identifier = [(MapsLocationOfInterest *)self->_locationOfInterest identifier];
+  if (identifier && (![(MapsLocationOfInterest *)self->_locationOfInterest type]|| [(MapsLocationOfInterest *)self->_locationOfInterest type]== 1 || [(MapsLocationOfInterest *)self->_locationOfInterest type]== 2) || (address = self->_address) != 0 && [(AddressBookAddress *)address isHomeWorkSchoolAddress])
   {
-    v5 = 1;
+    _maps_isHomeWorkOrSchool = 1;
   }
 
   else
   {
-    v6 = [(PlaceCardItem *)self mapItem];
-    v5 = [v6 _maps_isHomeWorkOrSchool];
+    mapItem = [(PlaceCardItem *)self mapItem];
+    _maps_isHomeWorkOrSchool = [mapItem _maps_isHomeWorkOrSchool];
   }
 
-  return v5;
+  return _maps_isHomeWorkOrSchool;
 }
 
 - (BOOL)canShowRequestLocation
@@ -201,11 +201,11 @@
   IsEnabled_MapsWally = MapsFeature_IsEnabled_MapsWally();
   if (IsEnabled_MapsWally)
   {
-    v4 = [(PlaceCardItem *)self searchResult];
-    v5 = [v4 autocompletePerson];
-    v6 = [v5 canShowRequestLocation];
+    searchResult = [(PlaceCardItem *)self searchResult];
+    autocompletePerson = [searchResult autocompletePerson];
+    canShowRequestLocation = [autocompletePerson canShowRequestLocation];
 
-    LOBYTE(IsEnabled_MapsWally) = v6;
+    LOBYTE(IsEnabled_MapsWally) = canShowRequestLocation;
   }
 
   return IsEnabled_MapsWally;
@@ -216,11 +216,11 @@
   IsEnabled_MapsWally = MapsFeature_IsEnabled_MapsWally();
   if (IsEnabled_MapsWally)
   {
-    v4 = [(PlaceCardItem *)self searchResult];
-    v5 = [v4 autocompletePerson];
-    v6 = [v5 canShowOpenFindMy];
+    searchResult = [(PlaceCardItem *)self searchResult];
+    autocompletePerson = [searchResult autocompletePerson];
+    canShowOpenFindMy = [autocompletePerson canShowOpenFindMy];
 
-    LOBYTE(IsEnabled_MapsWally) = v6;
+    LOBYTE(IsEnabled_MapsWally) = canShowOpenFindMy;
   }
 
   return IsEnabled_MapsWally;
@@ -232,9 +232,9 @@
   if (v2)
   {
     v3 = +[MapsOfflineUIHelper sharedHelper];
-    v4 = [v3 isUsingOfflineMaps];
+    isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
-    LOBYTE(v2) = v4 ^ 1;
+    LOBYTE(v2) = isUsingOfflineMaps ^ 1;
   }
 
   return v2;
@@ -246,9 +246,9 @@
   if (v2)
   {
     v3 = +[MapsOfflineUIHelper sharedHelper];
-    v4 = [v3 isUsingOfflineMaps];
+    isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
-    LOBYTE(v2) = v4 ^ 1;
+    LOBYTE(v2) = isUsingOfflineMaps ^ 1;
   }
 
   return v2;
@@ -257,39 +257,39 @@
 - (BOOL)canAddToShortcuts
 {
   v2 = +[MapsOfflineUIHelper sharedHelper];
-  v3 = [v2 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v2 isUsingOfflineMaps];
 
-  return v3 ^ 1;
+  return isUsingOfflineMaps ^ 1;
 }
 
 - (NSString)defaultCollectionItemTitle
 {
-  v3 = [(PlaceCardItem *)self address];
-  if (v3)
+  address = [(PlaceCardItem *)self address];
+  if (address)
   {
     if ([(PlaceCardItem *)self isHomeWorkSchoolAddress])
     {
-      [v3 localizedLabel];
+      [address localizedLabel];
     }
 
     else
     {
-      [v3 compositeName];
+      [address compositeName];
     }
     v5 = ;
   }
 
   else
   {
-    v4 = [(PlaceCardItem *)self mapItem];
+    mapItem = [(PlaceCardItem *)self mapItem];
     if ([(PlaceCardItem *)self isDroppedPin])
     {
-      [v4 _addressFormattedAsName];
+      [mapItem _addressFormattedAsName];
     }
 
     else
     {
-      [v4 _maps_defaultCollectionItemTitle];
+      [mapItem _maps_defaultCollectionItemTitle];
     }
     v5 = ;
   }
@@ -300,30 +300,30 @@
 - (BOOL)canAddToCollections
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
-  if ((v4 & 1) != 0 || [(PlaceCardItem *)self isMeCard])
+  if ((isUsingOfflineMaps & 1) != 0 || [(PlaceCardItem *)self isMeCard])
   {
     return 0;
   }
 
-  v6 = [(PlaceCardItem *)self searchResult];
-  if (v6)
+  searchResult = [(PlaceCardItem *)self searchResult];
+  if (searchResult)
   {
-    v7 = v6;
-    v8 = [(PlaceCardItem *)self searchResult];
-    v9 = [v8 type];
+    v7 = searchResult;
+    searchResult2 = [(PlaceCardItem *)self searchResult];
+    type = [searchResult2 type];
 
-    if (v9 == 3)
+    if (type == 3)
     {
       return 1;
     }
   }
 
-  v10 = [(PlaceCardItem *)self mapItem];
-  v11 = [v10 _maps_canAddToCollections];
+  mapItem = [(PlaceCardItem *)self mapItem];
+  _maps_canAddToCollections = [mapItem _maps_canAddToCollections];
 
-  return v11;
+  return _maps_canAddToCollections;
 }
 
 - (BOOL)isMeCard
@@ -344,9 +344,9 @@
     return 1;
   }
 
-  v4 = [(PlaceCardItem *)self locationOfInterest];
-  v5 = [v4 identifier];
-  v3 = v5 != 0;
+  locationOfInterest = [(PlaceCardItem *)self locationOfInterest];
+  identifier = [locationOfInterest identifier];
+  v3 = identifier != 0;
 
   return v3;
 }
@@ -355,27 +355,27 @@
 {
   if ([(PlaceCardItem *)self shouldInsertInHistoryForRAPTrackingOnly])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(mapItem) = 1;
   }
 
   else if ([(PlaceCardItem *)self isCurrentLocation]|| ([(PlaceCardItem *)self contact], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(mapItem) = 0;
   }
 
   else
   {
-    v3 = [(PlaceCardItem *)self mapItem];
+    mapItem = [(PlaceCardItem *)self mapItem];
 
-    if (v3)
+    if (mapItem)
     {
-      v6 = [(PlaceCardItem *)self searchResult];
-      v7 = v6;
-      LOBYTE(v3) = !v6 || [v6 type] != 3;
+      searchResult = [(PlaceCardItem *)self searchResult];
+      v7 = searchResult;
+      LOBYTE(mapItem) = !searchResult || [searchResult type] != 3;
     }
   }
 
-  return v3;
+  return mapItem;
 }
 
 - (CNContact)contact
@@ -383,41 +383,41 @@
   address = self->_address;
   if (address)
   {
-    v4 = [(AddressBookAddress *)address contact];
+    contact = [(AddressBookAddress *)address contact];
   }
 
   else if (self->_isCurrentLocation)
   {
     v5 = +[AddressBookManager sharedManager];
-    v4 = [v5 meCard];
+    contact = [v5 meCard];
   }
 
   else
   {
-    v4 = 0;
+    contact = 0;
   }
 
-  return v4;
+  return contact;
 }
 
 - (NSString)title
 {
-  v2 = [(PlaceCardItem *)self placeItem];
-  v3 = [v2 name];
+  placeItem = [(PlaceCardItem *)self placeItem];
+  name = [placeItem name];
 
-  return v3;
+  return name;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v7 = 1;
     goto LABEL_11;
@@ -446,15 +446,15 @@ LABEL_11:
   locationOfInterest = self->_locationOfInterest;
   if (locationOfInterest || (locationOfInterest = self->_searchResult) != 0)
   {
-    v3 = [locationOfInterest mapItem];
+    mapItem = [locationOfInterest mapItem];
   }
 
   else
   {
-    v3 = self->_mapItem;
+    mapItem = self->_mapItem;
   }
 
-  return v3;
+  return mapItem;
 }
 
 - (RAPPlace)rapPlace
@@ -475,14 +475,14 @@ LABEL_11:
 
 - (_MKPlaceItem)placeItem
 {
-  v3 = [(PlaceCardItem *)self address];
+  address = [(PlaceCardItem *)self address];
 
-  if (v3)
+  if (address)
   {
-    v4 = [(PlaceCardItem *)self address];
-    v5 = [v4 isMeCard];
+    address2 = [(PlaceCardItem *)self address];
+    isMeCard = [address2 isMeCard];
 
-    if (v5)
+    if (isMeCard)
     {
       v6 = 40;
     }
@@ -492,46 +492,46 @@ LABEL_11:
       v6 = 32;
     }
 
-    v7 = [(PlaceCardItem *)self mapItem];
-    v8 = [(PlaceCardItem *)self address];
-    v9 = [v8 contact];
-    v10 = [ContactPlaceItem placeItemWithMapItem:v7 contact:v9 options:v6];
+    mapItem = [(PlaceCardItem *)self mapItem];
+    address3 = [(PlaceCardItem *)self address];
+    contact = [address3 contact];
+    v10 = [ContactPlaceItem placeItemWithMapItem:mapItem contact:contact options:v6];
 
-    v11 = [(PlaceCardItem *)self address];
-    v12 = [v11 addressValue];
-    [v10 setSelectedAddress:v12];
+    address4 = [(PlaceCardItem *)self address];
+    addressValue = [address4 addressValue];
+    [v10 setSelectedAddress:addressValue];
 
     [v10 setLocationOfInterest:self->_locationOfInterest];
-    v13 = [(PlaceCardItem *)self address];
-    [v10 setIsMeCard:{objc_msgSend(v13, "isMeCard")}];
+    address5 = [(PlaceCardItem *)self address];
+    [v10 setIsMeCard:{objc_msgSend(address5, "isMeCard")}];
 
-    v14 = [(PlaceCardItem *)self searchResult];
-    [v10 setSearchResult:v14];
+    searchResult = [(PlaceCardItem *)self searchResult];
+    [v10 setSearchResult:searchResult];
   }
 
   else if (self->_isDroppedPin)
   {
-    v15 = [(PlaceCardItem *)self searchResult];
-    if ([v15 failedToReverseGeocode])
+    searchResult2 = [(PlaceCardItem *)self searchResult];
+    if ([searchResult2 failedToReverseGeocode])
     {
-      v16 = 0;
+      hasIncompleteMetadata = 0;
     }
 
     else
     {
-      v22 = [(PlaceCardItem *)self searchResult];
-      v16 = [v22 hasIncompleteMetadata];
+      searchResult3 = [(PlaceCardItem *)self searchResult];
+      hasIncompleteMetadata = [searchResult3 hasIncompleteMetadata];
     }
 
-    v23 = [(PlaceCardItem *)self mapItem];
-    v14 = [v23 _addressFormattedAsName];
+    mapItem2 = [(PlaceCardItem *)self mapItem];
+    searchResult = [mapItem2 _addressFormattedAsName];
 
     v24 = +[NSBundle mainBundle];
     v25 = [v24 localizedStringForKey:@"Marked Location" value:@"localized string not found" table:0];
 
-    if ([v14 length])
+    if ([searchResult length])
     {
-      v26 = v14;
+      v26 = searchResult;
     }
 
     else
@@ -540,7 +540,7 @@ LABEL_11:
     }
 
     v27 = v26;
-    if ([v27 isEqual:v14])
+    if ([v27 isEqual:searchResult])
     {
       v28 = v25;
     }
@@ -551,8 +551,8 @@ LABEL_11:
     }
 
     v29 = v28;
-    v30 = [(PlaceCardItem *)self mapItem];
-    v10 = [_MKMapItemPlaceItem placeItemWithMapItem:v30 options:2 isIntermediateMapItem:v16 preferredName:v27 preferredSecondaryName:v29];
+    mapItem3 = [(PlaceCardItem *)self mapItem];
+    v10 = [_MKMapItemPlaceItem placeItemWithMapItem:mapItem3 options:2 isIntermediateMapItem:hasIncompleteMetadata preferredName:v27 preferredSecondaryName:v29];
   }
 
   else
@@ -567,38 +567,38 @@ LABEL_11:
       v17 = 0;
     }
 
-    v18 = [(PlaceCardItem *)self isHomeWorkSchoolShortcut];
+    isHomeWorkSchoolShortcut = [(PlaceCardItem *)self isHomeWorkSchoolShortcut];
     v19 = 64;
-    if (!v18)
+    if (!isHomeWorkSchoolShortcut)
     {
       v19 = 0;
     }
 
     v20 = v19 | v17;
-    v21 = [(PlaceCardItem *)self isCurrentLocation];
-    v14 = [(PlaceCardItem *)self mapItem];
-    v10 = [_MKMapItemPlaceItem placeItemWithMapItem:v14 options:v20 | v21 isIntermediateMapItem:[(PlaceCardItem *)self isIntermediateMapItem]];
+    isCurrentLocation = [(PlaceCardItem *)self isCurrentLocation];
+    searchResult = [(PlaceCardItem *)self mapItem];
+    v10 = [_MKMapItemPlaceItem placeItemWithMapItem:searchResult options:v20 | isCurrentLocation isIntermediateMapItem:[(PlaceCardItem *)self isIntermediateMapItem]];
   }
 
   return v10;
 }
 
-- (PlaceCardItem)initWithPersonalizedItem:(id)a3
+- (PlaceCardItem)initWithPersonalizedItem:(id)item
 {
-  v5 = a3;
-  v6 = [v5 mapItem];
-  v7 = [(PlaceCardItem *)self initWithMapItem:v6];
+  itemCopy = item;
+  mapItem = [itemCopy mapItem];
+  v7 = [(PlaceCardItem *)self initWithMapItem:mapItem];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_personalizedItem, a3);
-    v8 = [v5 address];
+    objc_storeStrong(&v7->_personalizedItem, item);
+    address = [itemCopy address];
     address = v7->_address;
-    v7->_address = v8;
+    v7->_address = address;
 
-    v10 = [v5 searchResult];
+    searchResult = [itemCopy searchResult];
     searchResult = v7->_searchResult;
-    v7->_searchResult = v10;
+    v7->_searchResult = searchResult;
 
     v12 = v7->_searchResult;
     if (v12)
@@ -614,45 +614,45 @@ LABEL_11:
     v7->_isDroppedPin = v13;
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v5 locationOfInterest];
+      locationOfInterest = [itemCopy locationOfInterest];
       locationOfInterest = v7->_locationOfInterest;
-      v7->_locationOfInterest = v14;
+      v7->_locationOfInterest = locationOfInterest;
     }
   }
 
   return v7;
 }
 
-- (PlaceCardItem)initWithLocationOfInterest:(id)a3
+- (PlaceCardItem)initWithLocationOfInterest:(id)interest
 {
-  v5 = a3;
-  v6 = [v5 mapItem];
-  v7 = [(PlaceCardItem *)self initWithMapItem:v6];
+  interestCopy = interest;
+  mapItem = [interestCopy mapItem];
+  v7 = [(PlaceCardItem *)self initWithMapItem:mapItem];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_locationOfInterest, a3);
-    v8 = [v5 mapItem];
-    v9 = [v8 _geoMapItem];
+    objc_storeStrong(&v7->_locationOfInterest, interest);
+    mapItem2 = [interestCopy mapItem];
+    _geoMapItem = [mapItem2 _geoMapItem];
 
-    v10 = [v9 _clientAttributes];
-    v11 = [v10 addressBookAttributes];
-    v12 = [v11 addressIdentifier];
+    _clientAttributes = [_geoMapItem _clientAttributes];
+    addressBookAttributes = [_clientAttributes addressBookAttributes];
+    addressIdentifier = [addressBookAttributes addressIdentifier];
 
-    if ([v12 length])
+    if ([addressIdentifier length])
     {
       v13 = +[AddressBookManager sharedManager];
-      v14 = [v13 addressForIdentifier:v12];
+      v14 = [v13 addressForIdentifier:addressIdentifier];
       address = v7->_address;
       v7->_address = v14;
 
       if (!v7->_address)
       {
-        v16 = [v9 addressObject];
-        if (v16)
+        addressObject = [_geoMapItem addressObject];
+        if (addressObject)
         {
           v17 = +[AddressBookManager sharedManager];
-          v18 = [v17 addressForAddressObject:v16];
+          v18 = [v17 addressForAddressObject:addressObject];
           v19 = v7->_address;
           v7->_address = v18;
         }
@@ -663,49 +663,49 @@ LABEL_11:
   return v7;
 }
 
-- (PlaceCardItem)initWithMapItem:(id)a3 chargeStationWaypointInfo:(id)a4
+- (PlaceCardItem)initWithMapItem:(id)item chargeStationWaypointInfo:(id)info
 {
-  v7 = a4;
-  v8 = [(PlaceCardItem *)self initWithMapItem:a3];
+  infoCopy = info;
+  v8 = [(PlaceCardItem *)self initWithMapItem:item];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_chargeStationWaypointInfo, a4);
+    objc_storeStrong(&v8->_chargeStationWaypointInfo, info);
   }
 
   return v9;
 }
 
-- (PlaceCardItem)initWithMapItem:(id)a3 address:(id)a4
+- (PlaceCardItem)initWithMapItem:(id)item address:(id)address
 {
-  v7 = a4;
-  v8 = [(PlaceCardItem *)self initWithMapItem:a3];
+  addressCopy = address;
+  v8 = [(PlaceCardItem *)self initWithMapItem:item];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_address, a4);
-    v10 = [v7 locationOfInterest];
+    objc_storeStrong(&v8->_address, address);
+    locationOfInterest = [addressCopy locationOfInterest];
     locationOfInterest = v9->_locationOfInterest;
-    v9->_locationOfInterest = v10;
+    v9->_locationOfInterest = locationOfInterest;
   }
 
   return v9;
 }
 
-- (PlaceCardItem)initWithSearchResult:(id)a3
+- (PlaceCardItem)initWithSearchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v16.receiver = self;
   v16.super_class = PlaceCardItem;
   v6 = [(PlaceCardItem *)&v16 init];
   if (v6)
   {
-    v7 = [v5 address];
+    address = [resultCopy address];
     address = v6->_address;
-    v6->_address = v7;
+    v6->_address = address;
 
-    objc_storeStrong(&v6->_searchResult, a3);
-    v6->_isDroppedPin = [v5 type] == 3;
+    objc_storeStrong(&v6->_searchResult, result);
+    v6->_isDroppedPin = [resultCopy type] == 3;
     if ([(SearchResult *)v6->_searchResult isDynamicCurrentLocation])
     {
       v6->_isCurrentLocation = 1;
@@ -716,38 +716,38 @@ LABEL_11:
       v6->_isIntermediateMapItem = 1;
     }
 
-    v9 = [v5 locationOfInterest];
-    v10 = v9;
-    if (v9)
+    locationOfInterest = [resultCopy locationOfInterest];
+    v10 = locationOfInterest;
+    if (locationOfInterest)
     {
-      v11 = v9;
+      v11 = locationOfInterest;
       locationOfInterest = v6->_locationOfInterest;
       v6->_locationOfInterest = v11;
     }
 
     else
     {
-      locationOfInterest = [v5 address];
-      v13 = [locationOfInterest locationOfInterest];
+      locationOfInterest = [resultCopy address];
+      locationOfInterest2 = [locationOfInterest locationOfInterest];
       v14 = v6->_locationOfInterest;
-      v6->_locationOfInterest = v13;
+      v6->_locationOfInterest = locationOfInterest2;
     }
   }
 
   return v6;
 }
 
-- (PlaceCardItem)initWithMapItem:(id)a3
+- (PlaceCardItem)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PlaceCardItem;
   v6 = [(PlaceCardItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
-    if ([v5 isCurrentLocation])
+    objc_storeStrong(&v6->_mapItem, item);
+    if ([itemCopy isCurrentLocation])
     {
       v7->_isCurrentLocation = 1;
     }

@@ -1,75 +1,75 @@
 @interface CHSWidget
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matches:(id)a3;
-- (BOOL)matchesPersonality:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matches:(id)matches;
+- (BOOL)matchesPersonality:(id)personality;
 - (CHSWidget)init;
-- (CHSWidget)initWithBSXPCCoder:(id)a3;
-- (CHSWidget)initWithCoder:(id)a3;
-- (CHSWidget)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5 family:(int64_t)a6 intent:(id)a7 activityIdentifier:(id)a8;
-- (CHSWidget)initWithExtensionIdentity:(id)a3 kind:(id)a4 family:(int64_t)a5 intent:(id)a6 activityIdentifier:(id)a7 personaIdentifier:(id)a8;
-- (CHSWidget)initWithExtensionIdentity:(id)a3 kind:(id)a4 family:(int64_t)a5 intentReference:(id)a6 activityIdentifier:(id)a7 personaIdentifier:(id)a8;
-- (CHSWidget)initWithPersonality:(id)a3 family:(int64_t)a4 intent:(id)a5;
-- (CHSWidget)initWithWidgetIdentity:(id)a3 family:(int64_t)a4 intent:(id)a5 activityIdentifier:(id)a6;
-- (id)_loggingIdentifierWithMetrics:(id)a3;
-- (id)_loggingIdentifierWithMetrics:(id)a3 prefix:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (CHSWidget)initWithBSXPCCoder:(id)coder;
+- (CHSWidget)initWithCoder:(id)coder;
+- (CHSWidget)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind family:(int64_t)family intent:(id)intent activityIdentifier:(id)activityIdentifier;
+- (CHSWidget)initWithExtensionIdentity:(id)identity kind:(id)kind family:(int64_t)family intent:(id)intent activityIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier;
+- (CHSWidget)initWithExtensionIdentity:(id)identity kind:(id)kind family:(int64_t)family intentReference:(id)reference activityIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier;
+- (CHSWidget)initWithPersonality:(id)personality family:(int64_t)family intent:(id)intent;
+- (CHSWidget)initWithWidgetIdentity:(id)identity family:(int64_t)family intent:(id)intent activityIdentifier:(id)identifier;
+- (id)_loggingIdentifierWithMetrics:(id)metrics;
+- (id)_loggingIdentifierWithMetrics:(id)metrics prefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (id)widgetByRemovingPersona;
-- (id)widgetByReplacingIntent:(id)a3;
+- (id)widgetByReplacingIntent:(id)intent;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSWidget
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(CHSWidget *)self extensionIdentity];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  extensionIdentity = [(CHSWidget *)self extensionIdentity];
+  v5 = [builder appendObject:extensionIdentity];
 
-  v6 = [(CHSWidget *)self activityIdentifier];
-  v7 = [v3 appendString:v6];
+  activityIdentifier = [(CHSWidget *)self activityIdentifier];
+  v7 = [builder appendString:activityIdentifier];
 
-  v8 = [(CHSWidget *)self personaIdentifier];
-  v9 = [v3 appendString:v8];
+  personaIdentifier = [(CHSWidget *)self personaIdentifier];
+  v9 = [builder appendString:personaIdentifier];
 
-  v10 = [(CHSWidget *)self kind];
-  v11 = [v3 appendString:v10];
+  kind = [(CHSWidget *)self kind];
+  v11 = [builder appendString:kind];
 
-  v12 = [v3 appendInteger:{-[CHSWidget family](self, "family")}];
-  v13 = [v3 appendInt64:{-[CHSIntentReference stableHash](self->_intentReference, "stableHash")}];
-  v14 = [v3 hash];
+  v12 = [builder appendInteger:{-[CHSWidget family](self, "family")}];
+  v13 = [builder appendInt64:{-[CHSIntentReference stableHash](self->_intentReference, "stableHash")}];
+  v14 = [builder hash];
 
   return v14;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CHSWidget *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSWidget *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(CHSWidget *)self extensionIdentity];
-  v5 = [v3 appendObject:v4 withName:@"extensionIdentity"];
+  extensionIdentity = [(CHSWidget *)self extensionIdentity];
+  v5 = [v3 appendObject:extensionIdentity withName:@"extensionIdentity"];
 
-  v6 = [(CHSWidget *)self kind];
-  [v3 appendString:v6 withName:@"kind"];
+  kind = [(CHSWidget *)self kind];
+  [v3 appendString:kind withName:@"kind"];
 
   v7 = CHSWidgetFamilyDescription([(CHSWidget *)self family]);
   [v3 appendString:v7 withName:@"family"];
 
   v8 = [v3 appendInt64:-[CHSIntentReference stableHash](self->_intentReference withName:{"stableHash"), @"intentHash"}];
-  v9 = [(CHSWidget *)self activityIdentifier];
-  [v3 appendString:v9 withName:@"activityIdentifier"];
+  activityIdentifier = [(CHSWidget *)self activityIdentifier];
+  [v3 appendString:activityIdentifier withName:@"activityIdentifier"];
 
   return v3;
 }
@@ -77,34 +77,34 @@
 - (id)widgetByRemovingPersona
 {
   v3 = [CHSWidget alloc];
-  v4 = [(CHSWidget *)self extensionIdentity];
-  v5 = [(CHSWidget *)self kind];
-  v6 = [(CHSWidget *)self family];
-  v7 = [(CHSWidget *)self intentReference];
-  v8 = [(CHSWidget *)self activityIdentifier];
-  v9 = [(CHSWidget *)v3 initWithExtensionIdentity:v4 kind:v5 family:v6 intentReference:v7 activityIdentifier:v8 personaIdentifier:0];
+  extensionIdentity = [(CHSWidget *)self extensionIdentity];
+  kind = [(CHSWidget *)self kind];
+  family = [(CHSWidget *)self family];
+  intentReference = [(CHSWidget *)self intentReference];
+  activityIdentifier = [(CHSWidget *)self activityIdentifier];
+  v9 = [(CHSWidget *)v3 initWithExtensionIdentity:extensionIdentity kind:kind family:family intentReference:intentReference activityIdentifier:activityIdentifier personaIdentifier:0];
 
   return v9;
 }
 
 - (CHSWidget)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CHSWidget.m" lineNumber:27 description:@"Use initWithExtensionBundleIdentifier:kind:family:intent:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSWidget.m" lineNumber:27 description:@"Use initWithExtensionBundleIdentifier:kind:family:intent:"];
 
   return 0;
 }
 
-- (CHSWidget)initWithExtensionIdentity:(id)a3 kind:(id)a4 family:(int64_t)a5 intent:(id)a6 activityIdentifier:(id)a7 personaIdentifier:(id)a8
+- (CHSWidget)initWithExtensionIdentity:(id)identity kind:(id)kind family:(int64_t)family intent:(id)intent activityIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v16)
+  identityCopy = identity;
+  kindCopy = kind;
+  intentCopy = intent;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
+  if (intentCopy)
   {
-    v19 = [[CHSIntentReference alloc] initWithIntent:v16];
+    v19 = [[CHSIntentReference alloc] initWithIntent:intentCopy];
   }
 
   else
@@ -112,44 +112,44 @@
     v19 = 0;
   }
 
-  v20 = [(CHSWidget *)self initWithExtensionIdentity:v14 kind:v15 family:a5 intentReference:v19 activityIdentifier:v17 personaIdentifier:v18];
+  v20 = [(CHSWidget *)self initWithExtensionIdentity:identityCopy kind:kindCopy family:family intentReference:v19 activityIdentifier:identifierCopy personaIdentifier:personaIdentifierCopy];
 
   return v20;
 }
 
-- (CHSWidget)initWithExtensionIdentity:(id)a3 kind:(id)a4 family:(int64_t)a5 intentReference:(id)a6 activityIdentifier:(id)a7 personaIdentifier:(id)a8
+- (CHSWidget)initWithExtensionIdentity:(id)identity kind:(id)kind family:(int64_t)family intentReference:(id)reference activityIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  identityCopy = identity;
+  kindCopy = kind;
+  referenceCopy = reference;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
   v34.receiver = self;
   v34.super_class = CHSWidget;
   v19 = [(CHSWidget *)&v34 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [identityCopy copy];
     extensionIdentity = v19->_extensionIdentity;
     v19->_extensionIdentity = v20;
 
-    v22 = [v15 copy];
+    v22 = [kindCopy copy];
     kind = v19->_kind;
     v19->_kind = v22;
 
-    v19->_family = a5;
-    objc_storeStrong(&v19->_intentReference, a6);
-    v24 = [v17 copy];
+    v19->_family = family;
+    objc_storeStrong(&v19->_intentReference, reference);
+    v24 = [identifierCopy copy];
     activityIdentifier = v19->_activityIdentifier;
     v19->_activityIdentifier = v24;
 
-    v26 = [v18 copy];
+    v26 = [personaIdentifierCopy copy];
     personaIdentifier = v19->_personaIdentifier;
     v19->_personaIdentifier = v26;
 
-    v28 = [(CHSExtensionIdentity *)v19->_extensionIdentity extensionBundleIdentifier];
-    if ([v28 length])
+    extensionBundleIdentifier = [(CHSExtensionIdentity *)v19->_extensionIdentity extensionBundleIdentifier];
+    if ([extensionBundleIdentifier length])
     {
       v29 = [(NSString *)v19->_kind length]== 0;
 
@@ -166,8 +166,8 @@
     v30 = CHSLogChronoServices();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
     {
-      v31 = [(CHSExtensionIdentity *)v19->_extensionIdentity extensionBundleIdentifier];
-      [CHSWidget initWithExtensionIdentity:v31 kind:&v19->_kind family:buf intentReference:v30 activityIdentifier:? personaIdentifier:?];
+      extensionBundleIdentifier2 = [(CHSExtensionIdentity *)v19->_extensionIdentity extensionBundleIdentifier];
+      [CHSWidget initWithExtensionIdentity:extensionBundleIdentifier2 kind:&v19->_kind family:buf intentReference:v30 activityIdentifier:? personaIdentifier:?];
     }
   }
 
@@ -177,41 +177,41 @@ LABEL_9:
   return v19;
 }
 
-- (CHSWidget)initWithWidgetIdentity:(id)a3 family:(int64_t)a4 intent:(id)a5 activityIdentifier:(id)a6
+- (CHSWidget)initWithWidgetIdentity:(id)identity family:(int64_t)family intent:(id)intent activityIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 extensionIdentity];
-  v14 = [v10 kind];
-  v15 = [(CHSWidget *)self initWithExtensionIdentity:v13 kind:v14 family:a4 intent:v11 activityIdentifier:v12];
+  identityCopy = identity;
+  intentCopy = intent;
+  identifierCopy = identifier;
+  extensionIdentity = [identityCopy extensionIdentity];
+  kind = [identityCopy kind];
+  v15 = [(CHSWidget *)self initWithExtensionIdentity:extensionIdentity kind:kind family:family intent:intentCopy activityIdentifier:identifierCopy];
 
   return v15;
 }
 
-- (id)widgetByReplacingIntent:(id)a3
+- (id)widgetByReplacingIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   v5 = [CHSWidget alloc];
-  v6 = [(CHSWidget *)self extensionIdentity];
-  v7 = [(CHSWidget *)self kind];
-  v8 = [(CHSWidget *)self family];
-  v9 = [(CHSWidget *)self activityIdentifier];
-  v10 = [(CHSWidget *)self personaIdentifier];
-  v11 = [(CHSWidget *)v5 initWithExtensionIdentity:v6 kind:v7 family:v8 intent:v4 activityIdentifier:v9 personaIdentifier:v10];
+  extensionIdentity = [(CHSWidget *)self extensionIdentity];
+  kind = [(CHSWidget *)self kind];
+  family = [(CHSWidget *)self family];
+  activityIdentifier = [(CHSWidget *)self activityIdentifier];
+  personaIdentifier = [(CHSWidget *)self personaIdentifier];
+  v11 = [(CHSWidget *)v5 initWithExtensionIdentity:extensionIdentity kind:kind family:family intent:intentCopy activityIdentifier:activityIdentifier personaIdentifier:personaIdentifier];
 
   return v11;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = a3;
-  v5 = [(CHSWidget *)self extensionIdentity];
-  v6 = [v4 extensionIdentity];
+  matchesCopy = matches;
+  extensionIdentity = [(CHSWidget *)self extensionIdentity];
+  extensionIdentity2 = [matchesCopy extensionIdentity];
   if (BSEqualObjects())
   {
-    v7 = [(CHSWidget *)self kind];
-    v8 = [v4 kind];
+    kind = [(CHSWidget *)self kind];
+    kind2 = [matchesCopy kind];
     v9 = BSEqualStrings();
   }
 
@@ -223,16 +223,16 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)matchesPersonality:(id)a3
+- (BOOL)matchesPersonality:(id)personality
 {
-  v4 = a3;
-  v5 = [(CHSWidget *)self extensionIdentity];
-  v6 = [v5 extensionBundleIdentifier];
-  v7 = [v4 extensionBundleIdentifier];
+  personalityCopy = personality;
+  extensionIdentity = [(CHSWidget *)self extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  extensionBundleIdentifier2 = [personalityCopy extensionBundleIdentifier];
   if (BSEqualStrings())
   {
-    v8 = [(CHSWidget *)self kind];
-    v9 = [v4 kind];
+    kind = [(CHSWidget *)self kind];
+    kind2 = [personalityCopy kind];
     v10 = BSEqualStrings();
   }
 
@@ -244,11 +244,11 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -272,56 +272,56 @@ LABEL_9:
   if (v8)
   {
     v9 = [MEMORY[0x1E698E6A0] builderWithObject:v6 ofExpectedClass:objc_opt_class()];
-    v10 = [(CHSWidget *)self extensionIdentity];
+    extensionIdentity = [(CHSWidget *)self extensionIdentity];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __21__CHSWidget_isEqual___block_invoke;
     v39[3] = &unk_1E7453078;
     v11 = v8;
     v40 = v11;
-    v12 = [v9 appendObject:v10 counterpart:v39];
+    v12 = [v9 appendObject:extensionIdentity counterpart:v39];
 
-    v13 = [(CHSWidget *)self kind];
+    kind = [(CHSWidget *)self kind];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __21__CHSWidget_isEqual___block_invoke_2;
     v37[3] = &unk_1E7452FD8;
     v14 = v11;
     v38 = v14;
-    v15 = [v9 appendString:v13 counterpart:v37];
+    v15 = [v9 appendString:kind counterpart:v37];
 
-    v16 = [(CHSWidget *)self family];
+    family = [(CHSWidget *)self family];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __21__CHSWidget_isEqual___block_invoke_3;
     v35[3] = &unk_1E7453368;
     v17 = v14;
     v36 = v17;
-    v18 = [v9 appendInteger:v16 counterpart:v35];
-    v19 = [(CHSIntentReference *)self->_intentReference stableHash];
+    v18 = [v9 appendInteger:family counterpart:v35];
+    stableHash = [(CHSIntentReference *)self->_intentReference stableHash];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __21__CHSWidget_isEqual___block_invoke_4;
     v33[3] = &unk_1E7453368;
     v20 = v17;
     v34 = v20;
-    v21 = [v9 appendInt64:v19 counterpart:v33];
-    v22 = [(CHSWidget *)self activityIdentifier];
+    v21 = [v9 appendInt64:stableHash counterpart:v33];
+    activityIdentifier = [(CHSWidget *)self activityIdentifier];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __21__CHSWidget_isEqual___block_invoke_5;
     v31[3] = &unk_1E7452FD8;
     v23 = v20;
     v32 = v23;
-    v24 = [v9 appendString:v22 counterpart:v31];
+    v24 = [v9 appendString:activityIdentifier counterpart:v31];
 
-    v25 = [(CHSWidget *)self personaIdentifier];
+    personaIdentifier = [(CHSWidget *)self personaIdentifier];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __21__CHSWidget_isEqual___block_invoke_6;
     v29[3] = &unk_1E7452FD8;
     v30 = v23;
-    v26 = [v9 appendString:v25 counterpart:v29];
+    v26 = [v9 appendString:personaIdentifier counterpart:v29];
 
     v27 = [v9 isEqual];
   }
@@ -334,17 +334,17 @@ LABEL_9:
   return v27;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSWidget *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSWidget *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -352,8 +352,8 @@ LABEL_9:
   v9[3] = &unk_1E7453000;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -379,29 +379,29 @@ void __51__CHSWidget_descriptionBuilderWithMultilinePrefix___block_invoke(uint64
   [v7 appendString:? withName:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_extensionIdentity forKey:@"extensionIdentity"];
-  [v4 encodeObject:self->_kind forKey:@"kind"];
-  [v4 encodeInteger:self->_family forKey:@"family"];
-  [v4 encodeObject:self->_intentReference forKey:@"intent2"];
-  [v4 encodeObject:self->_activityIdentifier forKey:@"activityIdentifier"];
-  [v4 encodeObject:self->_personaIdentifier forKey:@"personaIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_extensionIdentity forKey:@"extensionIdentity"];
+  [coderCopy encodeObject:self->_kind forKey:@"kind"];
+  [coderCopy encodeInteger:self->_family forKey:@"family"];
+  [coderCopy encodeObject:self->_intentReference forKey:@"intent2"];
+  [coderCopy encodeObject:self->_activityIdentifier forKey:@"activityIdentifier"];
+  [coderCopy encodeObject:self->_personaIdentifier forKey:@"personaIdentifier"];
 }
 
-- (CHSWidget)initWithCoder:(id)a3
+- (CHSWidget)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"extensionIdentity"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"extensionIdentity"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentity"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentity"];
   }
 
   else
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
     v8 = v7;
     v5 = 0;
     if (v6 && v7)
@@ -412,30 +412,30 @@ void __51__CHSWidget_descriptionBuilderWithMultilinePrefix___block_invoke(uint64
     }
   }
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
-  v12 = [v4 decodeIntegerForKey:@"family"];
-  v13 = 0;
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+  v12 = [coderCopy decodeIntegerForKey:@"family"];
+  selfCopy = 0;
   if (v5 && v11)
   {
     v14 = v12;
     if (CHSWidgetFamilyIsValid(v12))
     {
-      if ([v4 containsValueForKey:@"intent2"])
+      if ([coderCopy containsValueForKey:@"intent2"])
       {
-        v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent2"];
+        v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent2"];
 LABEL_22:
-        v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
-        v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaIdentifier"];
+        v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
+        v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaIdentifier"];
         self = [(CHSWidget *)self initWithExtensionIdentity:v5 kind:v11 family:v14 intentReference:v15 activityIdentifier:v22 personaIdentifier:v23];
 
-        v13 = self;
+        selfCopy = self;
         goto LABEL_23;
       }
 
       v16 = MEMORY[0x1E695DFD8];
       v17 = objc_opt_class();
       v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-      v19 = [v4 decodeObjectOfClasses:v18 forKey:@"intent"];
+      v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"intent"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -469,86 +469,86 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
 LABEL_23:
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_extensionIdentity forKey:@"extensionIdentity"];
-  [v5 encodeObject:self->_kind forKey:@"kind"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_extensionIdentity forKey:@"extensionIdentity"];
+  [coderCopy encodeObject:self->_kind forKey:@"kind"];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_family];
-  [v5 encodeObject:v4 forKey:@"family"];
+  [coderCopy encodeObject:v4 forKey:@"family"];
 
-  [v5 encodeObject:self->_intentReference forKey:@"intent2"];
-  [v5 encodeObject:self->_activityIdentifier forKey:@"activityIdentifier"];
-  [v5 encodeObject:self->_personaIdentifier forKey:@"personaIdentifier"];
+  [coderCopy encodeObject:self->_intentReference forKey:@"intent2"];
+  [coderCopy encodeObject:self->_activityIdentifier forKey:@"activityIdentifier"];
+  [coderCopy encodeObject:self->_personaIdentifier forKey:@"personaIdentifier"];
 }
 
-- (CHSWidget)initWithBSXPCCoder:(id)a3
+- (CHSWidget)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentity"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"family"];
-  v8 = [v7 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentity"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"family"];
+  integerValue = [v7 integerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent2"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaIdentifier"];
-  v12 = 0;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent2"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaIdentifier"];
+  selfCopy = 0;
   if (v5 && v6)
   {
-    if (CHSWidgetFamilyIsValid(v8))
+    if (CHSWidgetFamilyIsValid(integerValue))
     {
-      self = [(CHSWidget *)self initWithExtensionIdentity:v5 kind:v6 family:v8 intentReference:v9 activityIdentifier:v10 personaIdentifier:v11];
-      v12 = self;
+      self = [(CHSWidget *)self initWithExtensionIdentity:v5 kind:v6 family:integerValue intentReference:v9 activityIdentifier:v10 personaIdentifier:v11];
+      selfCopy = self;
     }
 
     else
     {
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)_loggingIdentifierWithMetrics:(id)a3
+- (id)_loggingIdentifierWithMetrics:(id)metrics
 {
-  v3 = [(CHSWidget *)self _loggingIdentifierWithMetrics:a3 prefix:0];
+  v3 = [(CHSWidget *)self _loggingIdentifierWithMetrics:metrics prefix:0];
 
   return v3;
 }
 
-- (id)_loggingIdentifierWithMetrics:(id)a3 prefix:(id)a4
+- (id)_loggingIdentifierWithMetrics:(id)metrics prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  prefixCopy = prefix;
   intentReference = self->_intentReference;
   if (intentReference)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[CHSIntentReference stableHash](intentReference, "stableHash")}];
-    v10 = [v9 stringValue];
+    stringValue = [v9 stringValue];
   }
 
   else
   {
-    v10 = &stru_1F0A56DE8;
+    stringValue = &stru_1F0A56DE8;
   }
 
-  if (v6)
+  if (metricsCopy)
   {
-    [v6 size];
+    [metricsCopy size];
     v12 = v11;
     v14 = v13;
     v15 = MEMORY[0x1E696AEC0];
-    [v6 cornerRadius];
+    [metricsCopy cornerRadius];
     v17 = [v15 stringWithFormat:@":%.2f/%.2f/%.2f", v12, v14, v16];
   }
 
@@ -558,9 +558,9 @@ LABEL_23:
   }
 
   v18 = MEMORY[0x1E696AEC0];
-  if (v7)
+  if (prefixCopy)
   {
-    v19 = v7;
+    v19 = prefixCopy;
   }
 
   else
@@ -572,36 +572,36 @@ LABEL_23:
   kind = self->_kind;
   v22 = CHSWidgetFamilyDescription(self->_family);
   activityIdentifier = self->_activityIdentifier;
-  v24 = [v18 stringWithFormat:@"%@[%@:%@:%@:%@%@:%@~%@]", v19, v20, kind, v22, v10, v17, activityIdentifier, self->_personaIdentifier];
+  v24 = [v18 stringWithFormat:@"%@[%@:%@:%@:%@%@:%@~%@]", v19, v20, kind, v22, stringValue, v17, activityIdentifier, self->_personaIdentifier];
 
   return v24;
 }
 
-- (CHSWidget)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5 family:(int64_t)a6 intent:(id)a7 activityIdentifier:(id)a8
+- (CHSWidget)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind family:(int64_t)family intent:(id)intent activityIdentifier:(id)activityIdentifier
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  intentCopy = intent;
+  activityIdentifierCopy = activityIdentifier;
   v19 = [CHSExtensionIdentity alloc];
-  v20 = getDeviceIDFromBundleID(v14);
-  v21 = [(CHSExtensionIdentity *)v19 initWithExtensionBundleIdentifier:v14 containerBundleIdentifier:v15 deviceIdentifier:v20];
-  v22 = [(CHSWidget *)self initWithExtensionIdentity:v21 kind:v16 family:a6 intent:v17 activityIdentifier:v18];
+  v20 = getDeviceIDFromBundleID(identifierCopy);
+  v21 = [(CHSExtensionIdentity *)v19 initWithExtensionBundleIdentifier:identifierCopy containerBundleIdentifier:bundleIdentifierCopy deviceIdentifier:v20];
+  v22 = [(CHSWidget *)self initWithExtensionIdentity:v21 kind:kindCopy family:family intent:intentCopy activityIdentifier:activityIdentifierCopy];
 
   return v22;
 }
 
-- (CHSWidget)initWithPersonality:(id)a3 family:(int64_t)a4 intent:(id)a5
+- (CHSWidget)initWithPersonality:(id)personality family:(int64_t)family intent:(id)intent
 {
-  v8 = a3;
-  v9 = a5;
+  personalityCopy = personality;
+  intentCopy = intent;
   v10 = [CHSExtensionIdentity alloc];
-  v11 = [v8 extensionBundleIdentifier];
-  v12 = [(CHSExtensionIdentity *)v10 initWithExtensionBundleIdentifier:v11 containerBundleIdentifier:0 deviceIdentifier:0];
+  extensionBundleIdentifier = [personalityCopy extensionBundleIdentifier];
+  v12 = [(CHSExtensionIdentity *)v10 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:0 deviceIdentifier:0];
 
-  v13 = [v8 kind];
-  v14 = [(CHSWidget *)self initWithExtensionIdentity:v12 kind:v13 family:a4 intent:v9 activityIdentifier:0];
+  kind = [personalityCopy kind];
+  v14 = [(CHSWidget *)self initWithExtensionIdentity:v12 kind:kind family:family intent:intentCopy activityIdentifier:0];
 
   return v14;
 }

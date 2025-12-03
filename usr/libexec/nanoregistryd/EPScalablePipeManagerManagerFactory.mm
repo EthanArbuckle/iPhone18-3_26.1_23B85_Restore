@@ -1,7 +1,7 @@
 @interface EPScalablePipeManagerManagerFactory
 + (id)sharedPipeManagerManagerFactory;
 - (EPScalablePipeManagerManagerFactory)init;
-- (id)pipeManagerManagerWithName:(id)a3 type:(int64_t)a4 priority:(int64_t)a5;
+- (id)pipeManagerManagerWithName:(id)name type:(int64_t)type priority:(int64_t)priority;
 @end
 
 @implementation EPScalablePipeManagerManagerFactory
@@ -33,10 +33,10 @@
   return v2;
 }
 
-- (id)pipeManagerManagerWithName:(id)a3 type:(int64_t)a4 priority:(int64_t)a5
+- (id)pipeManagerManagerWithName:(id)name type:(int64_t)type priority:(int64_t)priority
 {
-  v8 = a3;
-  v9 = [(NSMapTable *)self->_pipeManagers objectForKey:v8];
+  nameCopy = name;
+  v9 = [(NSMapTable *)self->_pipeManagers objectForKey:nameCopy];
   if (v9)
   {
     v10 = v9;
@@ -57,13 +57,13 @@
     v18 = 134218242;
     v19 = v10;
     v20 = 2112;
-    v21 = v8;
+    v21 = nameCopy;
     v14 = "EPScalablePipeManagerManagerFactory: Reusing existing EPScalablePipeManagerManager %p to manage pipe %@";
     goto LABEL_8;
   }
 
-  v10 = [[EPScalablePipeManagerManager alloc] initWithName:v8 type:a4 priority:a5];
-  [(NSMapTable *)self->_pipeManagers setObject:v10 forKey:v8];
+  v10 = [[EPScalablePipeManagerManager alloc] initWithName:nameCopy type:type priority:priority];
+  [(NSMapTable *)self->_pipeManagers setObject:v10 forKey:nameCopy];
   v15 = sub_1000A98C0();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
@@ -78,7 +78,7 @@
     v18 = 134218242;
     v19 = v10;
     v20 = 2112;
-    v21 = v8;
+    v21 = nameCopy;
     v14 = "EPScalablePipeManagerManagerFactory: Created new EPScalablePipeManagerManager %p to manage pipe %@";
 LABEL_8:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v14, &v18, 0x16u);

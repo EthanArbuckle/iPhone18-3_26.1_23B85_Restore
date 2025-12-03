@@ -1,6 +1,6 @@
 @interface MTRScenesManagementClusterAttributeValuePairStruct
 - (MTRScenesManagementClusterAttributeValuePairStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -45,35 +45,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRScenesManagementClusterAttributeValuePairStruct);
-  v5 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self attributeID];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setAttributeID:v5];
+  attributeID = [(MTRScenesManagementClusterAttributeValuePairStruct *)self attributeID];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setAttributeID:attributeID];
 
-  v6 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueUnsigned8];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueUnsigned8:v6];
+  valueUnsigned8 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueUnsigned8];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueUnsigned8:valueUnsigned8];
 
-  v7 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueSigned8];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueSigned8:v7];
+  valueSigned8 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueSigned8];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueSigned8:valueSigned8];
 
-  v8 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueUnsigned16];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueUnsigned16:v8];
+  valueUnsigned16 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueUnsigned16];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueUnsigned16:valueUnsigned16];
 
-  v9 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueSigned16];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueSigned16:v9];
+  valueSigned16 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueSigned16];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueSigned16:valueSigned16];
 
-  v10 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueUnsigned32];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueUnsigned32:v10];
+  valueUnsigned32 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueUnsigned32];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueUnsigned32:valueUnsigned32];
 
-  v11 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueSigned32];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueSigned32:v11];
+  valueSigned32 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueSigned32];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueSigned32:valueSigned32];
 
-  v12 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueUnsigned64];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueUnsigned64:v12];
+  valueUnsigned64 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueUnsigned64];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueUnsigned64:valueUnsigned64];
 
-  v13 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueSigned64];
-  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueSigned64:v13];
+  valueSigned64 = [(MTRScenesManagementClusterAttributeValuePairStruct *)self valueSigned64];
+  [(MTRScenesManagementClusterAttributeValuePairStruct *)v4 setValueSigned64:valueSigned64];
 
   return v4;
 }

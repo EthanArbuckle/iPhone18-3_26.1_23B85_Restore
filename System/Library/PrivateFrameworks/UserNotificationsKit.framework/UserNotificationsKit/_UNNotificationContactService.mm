@@ -1,11 +1,11 @@
 @interface _UNNotificationContactService
 + (id)sharedInstance;
-- (BOOL)canAddToCuratedContacts:(id)a3 bundleIdentifier:(id)a4;
-- (id)curatedContactForContact:(id)a3 bundleIdentifier:(id)a4 keysToFetch:(id)a5;
-- (id)curatedContactMatchDetailsForContact:(id)a3 bundleIdentifier:(id)a4;
-- (id)newCuratedContactForContact:(id)a3 imageData:(id)a4 bundleIdentifier:(id)a5;
-- (void)confirmCuratedContactSuggestion:(BOOL)a3 forContact:(id)a4 bundleIdentifier:(id)a5;
-- (void)didAddToCuratedContactsForContact:(id)a3 bundleIdentifier:(id)a4 cnContactIdentifier:(id)a5;
+- (BOOL)canAddToCuratedContacts:(id)contacts bundleIdentifier:(id)identifier;
+- (id)curatedContactForContact:(id)contact bundleIdentifier:(id)identifier keysToFetch:(id)fetch;
+- (id)curatedContactMatchDetailsForContact:(id)contact bundleIdentifier:(id)identifier;
+- (id)newCuratedContactForContact:(id)contact imageData:(id)data bundleIdentifier:(id)identifier;
+- (void)confirmCuratedContactSuggestion:(BOOL)suggestion forContact:(id)contact bundleIdentifier:(id)identifier;
+- (void)didAddToCuratedContactsForContact:(id)contact bundleIdentifier:(id)identifier cnContactIdentifier:(id)contactIdentifier;
 @end
 
 @implementation _UNNotificationContactService
@@ -29,7 +29,7 @@
   return v10;
 }
 
-- (id)curatedContactMatchDetailsForContact:(id)a3 bundleIdentifier:(id)a4
+- (id)curatedContactMatchDetailsForContact:(id)contact bundleIdentifier:(id)identifier
 {
   NCRegisterUserNotificationsUILogging();
   v4 = NCUILogCommunicationNotifications;
@@ -41,7 +41,7 @@
   return 0;
 }
 
-- (id)curatedContactForContact:(id)a3 bundleIdentifier:(id)a4 keysToFetch:(id)a5
+- (id)curatedContactForContact:(id)contact bundleIdentifier:(id)identifier keysToFetch:(id)fetch
 {
   NCRegisterUserNotificationsUILogging();
   v5 = NCUILogCommunicationNotifications;
@@ -53,7 +53,7 @@
   return 0;
 }
 
-- (void)confirmCuratedContactSuggestion:(BOOL)a3 forContact:(id)a4 bundleIdentifier:(id)a5
+- (void)confirmCuratedContactSuggestion:(BOOL)suggestion forContact:(id)contact bundleIdentifier:(id)identifier
 {
   NCRegisterUserNotificationsUILogging();
   v5 = NCUILogCommunicationNotifications;
@@ -63,7 +63,7 @@
   }
 }
 
-- (BOOL)canAddToCuratedContacts:(id)a3 bundleIdentifier:(id)a4
+- (BOOL)canAddToCuratedContacts:(id)contacts bundleIdentifier:(id)identifier
 {
   NCRegisterUserNotificationsUILogging();
   v4 = NCUILogCommunicationNotifications;
@@ -75,7 +75,7 @@
   return 0;
 }
 
-- (id)newCuratedContactForContact:(id)a3 imageData:(id)a4 bundleIdentifier:(id)a5
+- (id)newCuratedContactForContact:(id)contact imageData:(id)data bundleIdentifier:(id)identifier
 {
   NCRegisterUserNotificationsUILogging();
   v5 = NCUILogCommunicationNotifications;
@@ -87,7 +87,7 @@
   return objc_alloc_init(MEMORY[0x277CBDA58]);
 }
 
-- (void)didAddToCuratedContactsForContact:(id)a3 bundleIdentifier:(id)a4 cnContactIdentifier:(id)a5
+- (void)didAddToCuratedContactsForContact:(id)contact bundleIdentifier:(id)identifier cnContactIdentifier:(id)contactIdentifier
 {
   NCRegisterUserNotificationsUILogging();
   v5 = NCUILogCommunicationNotifications;

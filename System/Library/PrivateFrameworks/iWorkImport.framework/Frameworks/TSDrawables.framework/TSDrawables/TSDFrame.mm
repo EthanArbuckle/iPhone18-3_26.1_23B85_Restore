@@ -1,46 +1,46 @@
 @interface TSDFrame
-- (BOOL)containsPoint:(CGPoint)a3 whenStrokingRect:(CGRect)a4;
+- (BOOL)containsPoint:(CGPoint)point whenStrokingRect:(CGRect)rect;
 - (BOOL)hasMask;
-- (BOOL)i_willRenderForRect:(CGRect)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldRenderForSizeIncludingCoverage:(CGSize)a3;
-- (CGRect)coverageRect:(CGRect)a3;
-- (CGRect)coverageRectWithoutAdornment:(CGRect)a3;
-- (CGRect)i_adornmentRectForRect:(CGRect)a3;
-- (CGRect)p_coverageRectWithAdornment:(CGRect)a3;
-- (CGRect)p_coverageRectWithoutAdornment:(CGRect)a3;
-- (CGRect)p_uncoveredRectWithoutAdornment:(CGRect)a3;
+- (BOOL)i_willRenderForRect:(CGRect)rect;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldRenderForSizeIncludingCoverage:(CGSize)coverage;
+- (CGRect)coverageRect:(CGRect)rect;
+- (CGRect)coverageRectWithoutAdornment:(CGRect)adornment;
+- (CGRect)i_adornmentRectForRect:(CGRect)rect;
+- (CGRect)p_coverageRectWithAdornment:(CGRect)adornment;
+- (CGRect)p_coverageRectWithoutAdornment:(CGRect)adornment;
+- (CGRect)p_uncoveredRectWithoutAdornment:(CGRect)adornment;
 - (CGSize)p_minimumRenderedSize;
 - (NSString)archivableFrameName;
 - (NSString)frameName;
-- (TSDFrame)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDFrame)initWithFrameName:(id)a3;
-- (TSDFrame)initWithFrameSpec:(id)a3 assetScale:(double)a4;
-- (TSDFrame)initWithFrameSpec:(id)a3 assetScale:(double)a4 archivableFrameName:(id)a5;
+- (TSDFrame)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDFrame)initWithFrameName:(id)name;
+- (TSDFrame)initWithFrameSpec:(id)spec assetScale:(double)scale;
+- (TSDFrame)initWithFrameSpec:(id)spec assetScale:(double)scale archivableFrameName:(id)name;
 - (_TSDStrokeOutsets)outsets;
 - (double)equivalentStrokeWidth;
 - (double)minimumAssetScale;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)strokeByTransformingByTransform:(CGAffineTransform *)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)strokeByTransformingByTransform:(CGAffineTransform *)transform;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDFrame
 
-- (TSDFrame)initWithFrameSpec:(id)a3 assetScale:(double)a4 archivableFrameName:(id)a5
+- (TSDFrame)initWithFrameSpec:(id)spec assetScale:(double)scale archivableFrameName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
-  v11 = v8;
-  if (v7)
+  specCopy = spec;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (specCopy)
   {
-    if (v8)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -75,13 +75,13 @@ LABEL_3:
 
   if (v16)
   {
-    if (!v7)
+    if (!specCopy)
     {
       v28 = 0;
       goto LABEL_10;
     }
 
-    v19 = objc_msgSend_copy(v7, v17, v18);
+    v19 = objc_msgSend_copy(specCopy, v17, v18);
     spec = v16->_spec;
     v16->_spec = v19;
 
@@ -101,26 +101,26 @@ LABEL_10:
   return v28;
 }
 
-- (TSDFrame)initWithFrameSpec:(id)a3 assetScale:(double)a4
+- (TSDFrame)initWithFrameSpec:(id)spec assetScale:(double)scale
 {
-  v6 = a3;
-  v9 = objc_msgSend_frameName(v6, v7, v8);
-  v11 = objc_msgSend_initWithFrameSpec_assetScale_archivableFrameName_(self, v10, v6, v9, a4);
+  specCopy = spec;
+  v9 = objc_msgSend_frameName(specCopy, v7, v8);
+  v11 = objc_msgSend_initWithFrameSpec_assetScale_archivableFrameName_(self, v10, specCopy, v9, scale);
 
   return v11;
 }
 
-- (TSDFrame)initWithFrameName:(id)a3
+- (TSDFrame)initWithFrameName:(id)name
 {
-  v4 = objc_msgSend_frameSpecWithName_(TSDFrameSpec, a2, a3);
+  v4 = objc_msgSend_frameSpecWithName_(TSDFrameSpec, a2, name);
   v6 = objc_msgSend_initWithFrameSpec_(self, v5, v4);
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDMutableFrame, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDMutableFrame, a2, zone);
   v7 = objc_msgSend_frameSpec(self, v5, v6);
   objc_msgSend_assetScale(self, v8, v9);
   v11 = v10;
@@ -130,12 +130,12 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v25.receiver = self;
   v25.super_class = TSDFrame;
-  if ([(TSDStroke *)&v25 isEqual:v4])
+  if ([(TSDStroke *)&v25 isEqual:equalCopy])
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
@@ -225,12 +225,12 @@ LABEL_10:
   return hasMask;
 }
 
-- (CGRect)p_uncoveredRectWithoutAdornment:(CGRect)a3
+- (CGRect)p_uncoveredRectWithoutAdornment:(CGRect)adornment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = adornment.size.height;
+  width = adornment.size.width;
+  y = adornment.origin.y;
+  x = adornment.origin.x;
   if (objc_msgSend_i_hasImages(self->_spec, a2, v3))
   {
     v11 = width < 2.0;
@@ -277,9 +277,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)p_coverageRectWithoutAdornment:(CGRect)a3
+- (CGRect)p_coverageRectWithoutAdornment:(CGRect)adornment
 {
-  objc_msgSend_p_uncoveredRectWithoutAdornment_(self, a2, v3, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  objc_msgSend_p_uncoveredRectWithoutAdornment_(self, a2, v3, adornment.origin.x, adornment.origin.y, adornment.size.width, adornment.size.height);
   leftWidth = self->_leftWidth;
   v7 = v6 - leftWidth;
   topHeight = self->_topHeight;
@@ -293,9 +293,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)p_coverageRectWithAdornment:(CGRect)a3
+- (CGRect)p_coverageRectWithAdornment:(CGRect)adornment
 {
-  objc_msgSend_p_coverageRectWithoutAdornment_(self, a2, v3, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  objc_msgSend_p_coverageRectWithoutAdornment_(self, a2, v3, adornment.origin.x, adornment.origin.y, adornment.size.width, adornment.size.height);
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -321,12 +321,12 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)coverageRect:(CGRect)a3
+- (CGRect)coverageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_msgSend_p_coverageRectWithAdornment_(self, a2, v3);
   v10 = v9;
   v12 = v11;
@@ -352,12 +352,12 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)coverageRectWithoutAdornment:(CGRect)a3
+- (CGRect)coverageRectWithoutAdornment:(CGRect)adornment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = adornment.size.height;
+  width = adornment.size.width;
+  y = adornment.origin.y;
+  x = adornment.origin.x;
   objc_msgSend_coverageRect_(self, a2, v3);
   v25.origin.x = v9;
   v25.origin.y = v10;
@@ -387,23 +387,23 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)shouldRenderForSizeIncludingCoverage:(CGSize)a3
+- (BOOL)shouldRenderForSizeIncludingCoverage:(CGSize)coverage
 {
-  height = a3.height;
-  width = a3.width;
+  height = coverage.height;
+  width = coverage.width;
   objc_msgSend_p_minimumRenderedSize(self, a2, v3);
   return height >= v7 && width >= v6;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 whenStrokingRect:(CGRect)a4
+- (BOOL)containsPoint:(CGPoint)point whenStrokingRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = objc_msgSend_i_willRenderForRect_(self, a2, v4, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  v12 = objc_msgSend_i_willRenderForRect_(self, a2, v4, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   if (v12)
   {
     objc_msgSend_p_coverageRectWithoutAdornment_(self, v13, v14, x, y, width, height);
@@ -489,12 +489,12 @@ LABEL_10:
   return fmax(fmax(v5, v9), fmax(v13, fmax(self->_bottomHeight - v16 * self->_assetScale, v16 * self->_assetScale)));
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  if (a4)
+  if (stroke)
   {
     v9 = MEMORY[0x277D81150];
-    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDFrame paintPath:wantsInteriorStroke:inContext:useFastDrawing:]", a4, a5, a6);
+    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDFrame paintPath:wantsInteriorStroke:inContext:useFastDrawing:]", stroke, context, drawing);
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFrame.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 358, 0, "Can't draw interior frame stroke");
 
@@ -504,7 +504,7 @@ LABEL_10:
   v16 = [TSDFrameRep alloc];
   v35 = objc_msgSend_initWithTSDFrame_(v16, v17, self);
   objc_msgSend_tsk_screenScale(MEMORY[0x277D759A0], v18, v19);
-  if (v21 != TSDCGContextAssociatedScreenScale(a5))
+  if (v21 != TSDCGContextAssociatedScreenScale(context))
   {
     v22 = MEMORY[0x277D81150];
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSDFrame paintPath:wantsInteriorStroke:inContext:useFastDrawing:]");
@@ -514,22 +514,22 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28);
   }
 
-  PathBoundingBox = CGPathGetPathBoundingBox(a3);
+  PathBoundingBox = CGPathGetPathBoundingBox(path);
   x = PathBoundingBox.origin.x;
   y = PathBoundingBox.origin.y;
   width = PathBoundingBox.size.width;
   height = PathBoundingBox.size.height;
-  v33 = TSDCGContextAssociatedScreenScale(a5);
-  objc_msgSend_frameRect_inContext_withTotalScale_(v35, v34, a5, x, y, width, height, v33);
+  v33 = TSDCGContextAssociatedScreenScale(context);
+  objc_msgSend_frameRect_inContext_withTotalScale_(v35, v34, context, x, y, width, height, v33);
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  if (objc_msgSend_i_hasAdornment(self->_spec, a2, a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  if (objc_msgSend_i_hasAdornment(self->_spec, a2, context))
   {
     v10 = self->_adornmentSize.height * 0.5;
     objc_msgSend_i_adornmentPosition(self->_spec, v8, v9);
@@ -558,7 +558,7 @@ LABEL_10:
   v29 = [TSDFrameRep alloc];
   v62 = objc_msgSend_initWithTSDFrame_(v29, v30, self);
   objc_msgSend_tsk_screenScale(MEMORY[0x277D759A0], v31, v32);
-  if (v34 != TSDCGContextAssociatedScreenScale(a4))
+  if (v34 != TSDCGContextAssociatedScreenScale(context))
   {
     v35 = MEMORY[0x277D81150];
     v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, "[TSDFrame drawSwatchInRect:inContext:]");
@@ -578,16 +578,16 @@ LABEL_10:
   *&v44 = v55 * v54;
   v49 = width + v48 + ceilf(*&v44) - (leftWidth + rightWidth);
   v50 = x - v48 + leftWidth;
-  v51 = TSDCGContextAssociatedScreenScale(a4);
-  objc_msgSend_frameRect_inContext_withTotalScale_(v62, v52, a4, v50, v46, v49, v45, v51);
+  v51 = TSDCGContextAssociatedScreenScale(context);
+  objc_msgSend_frameRect_inContext_withTotalScale_(v62, v52, context, v50, v46, v49, v45, v51);
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v34.receiver = self;
   v34.super_class = TSDFrame;
-  v7 = [(TSDStroke *)&v34 mixingTypeWithObject:v6 context:a4];
+  v7 = [(TSDStroke *)&v34 mixingTypeWithObject:objectCopy context:context];
   objc_opt_class();
   v10 = TSUDynamicCast();
   if (v10)
@@ -634,9 +634,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -671,13 +671,13 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)i_adornmentRectForRect:(CGRect)a3
+- (CGRect)i_adornmentRectForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3) - (self->_leftWidth + self->_rightWidth);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect) - (self->_leftWidth + self->_rightWidth);
   objc_msgSend_i_adornmentPosition(self->_spec, v9, v10);
   v12 = v8 * v11;
   v23.origin.x = x;
@@ -703,12 +703,12 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)i_willRenderForRect:(CGRect)a3
+- (BOOL)i_willRenderForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_msgSend_p_minimumRenderedSize(self, a2, v3);
   v10 = v9;
   v12 = v11;
@@ -716,9 +716,9 @@ LABEL_10:
   return v16 >= v12 && v15 >= v10;
 }
 
-- (id)strokeByTransformingByTransform:(CGAffineTransform *)a3
+- (id)strokeByTransformingByTransform:(CGAffineTransform *)transform
 {
-  objc_msgSend_assetScale(self, a2, a3);
+  objc_msgSend_assetScale(self, a2, transform);
   objc_msgSend_minimumAssetScale(self, v4, v5);
   TSUClamp();
   v7 = v6;
@@ -729,12 +729,12 @@ LABEL_10:
   return v13;
 }
 
-- (TSDFrame)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDFrame)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 6))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 6))
   {
-    v7 = *(a3 + 6);
+    v7 = *(archive + 6);
   }
 
   else
@@ -751,24 +751,24 @@ LABEL_10:
   return v13;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v19.receiver = self;
   v19.super_class = TSDFrame;
-  [(TSDStroke *)&v19 saveToArchive:a3 archiver:v6];
-  *(a3 + 4) |= 8u;
-  v9 = *(a3 + 6);
+  [(TSDStroke *)&v19 saveToArchive:archive archiver:archiverCopy];
+  *(archive + 4) |= 8u;
+  v9 = *(archive + 6);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = google::protobuf::Arena::CreateMaybeMessage<TSD::FrameArchive>(v10);
-    *(a3 + 6) = v9;
+    *(archive + 6) = v9;
   }
 
   v11 = objc_msgSend_archivableFrameName(self, v7, v8);

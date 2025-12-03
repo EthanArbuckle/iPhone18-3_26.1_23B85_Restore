@@ -1,32 +1,32 @@
 @interface HDNotificationInstructionEntity
-+ (BOOL)attemptProtectedReadTransactionWithUnprotectedFallbackWithHealthDatabase:(id)a3 error:(id *)a4 block:(id)a5;
-+ (BOOL)enumerateNotificationInstructionsWithClientIdentifier:(id)a3 action:(int64_t)a4 notExpiredBeforeDate:(id)a5 transaction:(id)a6 error:(id *)a7 enumerationHandler:(id)a8;
-+ (BOOL)enumerateNotificationInstructionsWithSetCriteriaNotExpiredBeforeDate:(id)a3 transaction:(id)a4 limit:(unint64_t)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)insertOrIgnoreNotificationInstruction:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (BOOL)invalidateNotificationInstructionWithMessageIdentifier:(id)a3 modificationDate:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)obliterateNotificationInstructionsWithTransaction:(id)a3 error:(id *)a4;
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
++ (BOOL)attemptProtectedReadTransactionWithUnprotectedFallbackWithHealthDatabase:(id)database error:(id *)error block:(id)block;
++ (BOOL)enumerateNotificationInstructionsWithClientIdentifier:(id)identifier action:(int64_t)action notExpiredBeforeDate:(id)date transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)enumerateNotificationInstructionsWithSetCriteriaNotExpiredBeforeDate:(id)date transaction:(id)transaction limit:(unint64_t)limit error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)insertOrIgnoreNotificationInstruction:(id)instruction transaction:(id)transaction error:(id *)error;
++ (BOOL)invalidateNotificationInstructionWithMessageIdentifier:(id)identifier modificationDate:(id)date transaction:(id)transaction error:(id *)error;
++ (BOOL)obliterateNotificationInstructionsWithTransaction:(id)transaction error:(id *)error;
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error;
 @end
 
 @implementation HDNotificationInstructionEntity
 
-+ (BOOL)attemptProtectedReadTransactionWithUnprotectedFallbackWithHealthDatabase:(id)a3 error:(id *)a4 block:(id)a5
++ (BOOL)attemptProtectedReadTransactionWithUnprotectedFallbackWithHealthDatabase:(id)database error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  databaseCopy = database;
+  blockCopy = block;
   v10 = [(HDHealthEntity *)HDDataEntity transactionContextForWriting:0 baseContext:0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __120__HDNotificationInstructionEntity_attemptProtectedReadTransactionWithUnprotectedFallbackWithHealthDatabase_error_block___block_invoke;
   v14[3] = &unk_27861EF40;
-  v16 = v9;
-  v17 = a1;
-  v15 = v8;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a4) = [v12 performTransactionWithContext:v10 error:a4 block:v11 inaccessibilityHandler:v14];
+  v16 = blockCopy;
+  selfCopy = self;
+  v15 = databaseCopy;
+  v11 = blockCopy;
+  v12 = databaseCopy;
+  LOBYTE(error) = [v12 performTransactionWithContext:v10 error:error block:v11 inaccessibilityHandler:v14];
 
-  return a4;
+  return error;
 }
 
 uint64_t __120__HDNotificationInstructionEntity_attemptProtectedReadTransactionWithUnprotectedFallbackWithHealthDatabase_error_block___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -38,54 +38,54 @@ uint64_t __120__HDNotificationInstructionEntity_attemptProtectedReadTransactionW
   return v7;
 }
 
-+ (BOOL)enumerateNotificationInstructionsWithClientIdentifier:(id)a3 action:(int64_t)a4 notExpiredBeforeDate:(id)a5 transaction:(id)a6 error:(id *)a7 enumerationHandler:(id)a8
++ (BOOL)enumerateNotificationInstructionsWithClientIdentifier:(id)identifier action:(int64_t)action notExpiredBeforeDate:(id)date transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
   v30[4] = *MEMORY[0x277D85DE8];
   v27 = MEMORY[0x277D10B20];
   v12 = MEMORY[0x277D10B18];
   v13 = MEMORY[0x277CCABB0];
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a3;
-  v18 = [v13 numberWithInteger:a4];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  dateCopy = date;
+  identifierCopy = identifier;
+  v18 = [v13 numberWithInteger:action];
   v19 = [v12 predicateWithProperty:@"action" equalToValue:v18];
   v30[0] = v19;
-  v20 = [MEMORY[0x277D10B18] predicateWithProperty:@"client_identifier" equalToValue:v17];
+  v20 = [MEMORY[0x277D10B18] predicateWithProperty:@"client_identifier" equalToValue:identifierCopy];
 
   v30[1] = v20;
   v21 = HDNotificationInstructionPredicateForIsValid(1);
   v30[2] = v21;
-  v22 = [MEMORY[0x277D10B18] predicateWithProperty:@"expiration_date" greaterThanOrEqualToValue:v16];
+  v22 = [MEMORY[0x277D10B18] predicateWithProperty:@"expiration_date" greaterThanOrEqualToValue:dateCopy];
 
   v30[3] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
   v24 = [v27 predicateMatchingAllPredicates:v23];
 
-  LOBYTE(v23) = [a1 enumerateAllNotificationInstructionsWithTransaction:v15 predicate:v24 limit:0 ascending:1 error:a7 enumerationHandler:v14];
+  LOBYTE(v23) = [self enumerateAllNotificationInstructionsWithTransaction:transactionCopy predicate:v24 limit:0 ascending:1 error:error enumerationHandler:handlerCopy];
   v25 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-+ (BOOL)enumerateNotificationInstructionsWithSetCriteriaNotExpiredBeforeDate:(id)a3 transaction:(id)a4 limit:(unint64_t)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateNotificationInstructionsWithSetCriteriaNotExpiredBeforeDate:(id)date transaction:(id)transaction limit:(unint64_t)limit error:(id *)error enumerationHandler:(id)handler
 {
   v24[3] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277D10B20];
   v13 = MEMORY[0x277D10B60];
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  dateCopy = date;
   v17 = [v13 isNotNullPredicateWithProperty:@"criteria"];
   v18 = HDNotificationInstructionPredicateForIsValid(1);
-  v19 = [MEMORY[0x277D10B18] predicateWithProperty:@"expiration_date" greaterThanOrEqualToValue:{v16, v17, v18}];
+  v19 = [MEMORY[0x277D10B18] predicateWithProperty:@"expiration_date" greaterThanOrEqualToValue:{dateCopy, v17, v18}];
 
   v24[2] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
   v21 = [v12 predicateMatchingAllPredicates:v20];
 
-  LOBYTE(a6) = [a1 enumerateAllNotificationInstructionsWithTransaction:v15 predicate:v21 limit:a5 ascending:1 error:a6 enumerationHandler:v14];
+  LOBYTE(error) = [self enumerateAllNotificationInstructionsWithTransaction:transactionCopy predicate:v21 limit:limit ascending:1 error:error enumerationHandler:handlerCopy];
   v22 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 uint64_t __138__HDNotificationInstructionEntity_enumerateAllNotificationInstructionsWithTransaction_predicate_limit_ascending_error_enumerationHandler___block_invoke(uint64_t a1)
@@ -113,24 +113,24 @@ uint64_t __138__HDNotificationInstructionEntity_enumerateAllNotificationInstruct
   return v12;
 }
 
-+ (BOOL)insertOrIgnoreNotificationInstruction:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)insertOrIgnoreNotificationInstruction:(id)instruction transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  v13 = v8;
+  instructionCopy = instruction;
+  v9 = [transaction databaseForEntityClass:self];
+  v13 = instructionCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__HDNotificationInstructionEntity_insertOrIgnoreNotificationInstruction_transaction_error___block_invoke;
   v14[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v14[4] = a1;
+  v14[4] = self;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__HDNotificationInstructionEntity_insertOrIgnoreNotificationInstruction_transaction_error___block_invoke_2;
   v12[3] = &unk_278614860;
-  v10 = v8;
-  LOBYTE(a5) = [v9 executeCachedStatementForKey:&insertOrIgnoreNotificationInstruction_transaction_error__lookupKey error:a5 SQLGenerator:v14 bindingHandler:v12 enumerationHandler:0];
+  v10 = instructionCopy;
+  LOBYTE(error) = [v9 executeCachedStatementForKey:&insertOrIgnoreNotificationInstruction_transaction_error__lookupKey error:error SQLGenerator:v14 bindingHandler:v12 enumerationHandler:0];
 
-  return a5;
+  return error;
 }
 
 id __91__HDNotificationInstructionEntity_insertOrIgnoreNotificationInstruction_transaction_error___block_invoke(uint64_t a1)
@@ -188,27 +188,27 @@ void __91__HDNotificationInstructionEntity_insertOrIgnoreNotificationInstruction
   HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)invalidateNotificationInstructionWithMessageIdentifier:(id)a3 modificationDate:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)invalidateNotificationInstructionWithMessageIdentifier:(id)identifier modificationDate:(id)date transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 databaseForEntityClass:a1];
+  identifierCopy = identifier;
+  dateCopy = date;
+  v12 = [transaction databaseForEntityClass:self];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __125__HDNotificationInstructionEntity_invalidateNotificationInstructionWithMessageIdentifier_modificationDate_transaction_error___block_invoke;
   v19[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v19[4] = a1;
+  v19[4] = self;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __125__HDNotificationInstructionEntity_invalidateNotificationInstructionWithMessageIdentifier_modificationDate_transaction_error___block_invoke_2;
   v16[3] = &unk_278613038;
-  v17 = v11;
-  v18 = v10;
-  v13 = v10;
-  v14 = v11;
-  LOBYTE(a6) = [v12 executeCachedStatementForKey:&invalidateNotificationInstructionWithMessageIdentifier_modificationDate_transaction_error__lookupKey error:a6 SQLGenerator:v19 bindingHandler:v16 enumerationHandler:0];
+  v17 = dateCopy;
+  v18 = identifierCopy;
+  v13 = identifierCopy;
+  v14 = dateCopy;
+  LOBYTE(error) = [v12 executeCachedStatementForKey:&invalidateNotificationInstructionWithMessageIdentifier_modificationDate_transaction_error__lookupKey error:error SQLGenerator:v19 bindingHandler:v16 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 id __125__HDNotificationInstructionEntity_invalidateNotificationInstructionWithMessageIdentifier_modificationDate_transaction_error___block_invoke(uint64_t a1)
@@ -230,49 +230,49 @@ uint64_t __125__HDNotificationInstructionEntity_invalidateNotificationInstructio
   return HDSQLiteBindStringToStatement();
 }
 
-+ (BOOL)obliterateNotificationInstructionsWithTransaction:(id)a3 error:(id *)a4
++ (BOOL)obliterateNotificationInstructionsWithTransaction:(id)transaction error:(id *)error
 {
-  v7 = [a3 databaseForEntityClass:a1];
+  v7 = [transaction databaseForEntityClass:self];
   if (!v7)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"HDNotificationInstructionEntity.m" lineNumber:247 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDNotificationInstructionEntity.m" lineNumber:247 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
   }
 
   v8 = objc_alloc_init(MEMORY[0x277D10B80]);
-  [v8 setEntityClass:a1];
+  [v8 setEntityClass:self];
   [v8 setLimitCount:*MEMORY[0x277D10C08]];
   v9 = [objc_alloc(MEMORY[0x277D10B78]) initWithDatabase:v7 descriptor:v8];
-  v10 = [v9 deleteAllEntitiesWithError:a4];
+  v10 = [v9 deleteAllEntitiesWithError:error];
 
   return v10;
 }
 
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v13 = [v12 dateByAddingUnit:0x2000 value:-1 toDate:v11 options:0];
+  profileCopy = profile;
+  dateCopy = date;
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v13 = [hk_gregorianCalendar dateByAddingUnit:0x2000 value:-1 toDate:dateCopy options:0];
 
   v14 = [MEMORY[0x277D10B18] predicateWithProperty:@"expiration_date" lessThanValue:v13];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v15 = [v10 database];
+  database = [profileCopy database];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __72__HDNotificationInstructionEntity_pruneWithProfile_nowDate_limit_error___block_invoke;
   v22 = &unk_27861F0A0;
-  v25 = a1;
+  selfCopy = self;
   v16 = v14;
-  v26 = a5;
+  limitCopy = limit;
   v23 = v16;
   v24 = &v27;
-  LODWORD(a6) = [a1 performWriteTransactionWithHealthDatabase:v15 error:a6 block:&v19];
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:&v19];
 
-  if (a6)
+  if (error)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithInt:{*(v28 + 6), v19, v20, v21, v22}];
   }

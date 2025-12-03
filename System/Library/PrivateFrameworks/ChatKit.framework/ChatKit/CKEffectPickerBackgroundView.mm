@@ -1,49 +1,49 @@
 @interface CKEffectPickerBackgroundView
-- (CKEffectPickerBackgroundView)initWithFrame:(CGRect)a3;
-- (void)setBackgroundColorForTranscriptType:(BOOL)a3 hasPortalBackground:(BOOL)a4;
+- (CKEffectPickerBackgroundView)initWithFrame:(CGRect)frame;
+- (void)setBackgroundColorForTranscriptType:(BOOL)type hasPortalBackground:(BOOL)background;
 @end
 
 @implementation CKEffectPickerBackgroundView
 
-- (CKEffectPickerBackgroundView)initWithFrame:(CGRect)a3
+- (CKEffectPickerBackgroundView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKEffectPickerBackgroundView;
-  v3 = [(CKEffectPickerBackgroundView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKEffectPickerBackgroundView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:0];
     [(CKEffectPickerBackgroundView *)v3 setEffectView:v4];
 
-    v5 = [(CKEffectPickerBackgroundView *)v3 effectView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    effectView = [(CKEffectPickerBackgroundView *)v3 effectView];
+    [effectView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(CKEffectPickerBackgroundView *)v3 effectView];
-    [(CKEffectPickerBackgroundView *)v3 insertSubview:v6 atIndex:0];
+    effectView2 = [(CKEffectPickerBackgroundView *)v3 effectView];
+    [(CKEffectPickerBackgroundView *)v3 insertSubview:effectView2 atIndex:0];
 
-    v7 = [(CKEffectPickerBackgroundView *)v3 effectView];
-    [v7 __ck_makeEdgesEqualToHorizontalSafeArea:v3];
+    effectView3 = [(CKEffectPickerBackgroundView *)v3 effectView];
+    [effectView3 __ck_makeEdgesEqualToHorizontalSafeArea:v3];
   }
 
   return v3;
 }
 
-- (void)setBackgroundColorForTranscriptType:(BOOL)a3 hasPortalBackground:(BOOL)a4
+- (void)setBackgroundColorForTranscriptType:(BOOL)type hasPortalBackground:(BOOL)background
 {
-  if (a4)
+  if (background)
   {
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    v5 = [v8 colorWithAlphaComponent:0.9];
-    [(CKEffectPickerBackgroundView *)self setBackgroundColor:v5];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    traitCollection = [blackColor colorWithAlphaComponent:0.9];
+    [(CKEffectPickerBackgroundView *)self setBackgroundColor:traitCollection];
   }
 
   else
   {
-    v8 = +[CKUIBehavior sharedBehaviors];
-    v5 = [(CKEffectPickerBackgroundView *)self traitCollection];
-    v6 = [v8 chromeEffectForInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
-    v7 = [(CKEffectPickerBackgroundView *)self effectView];
-    [v7 setEffect:v6];
+    blackColor = +[CKUIBehavior sharedBehaviors];
+    traitCollection = [(CKEffectPickerBackgroundView *)self traitCollection];
+    v6 = [blackColor chromeEffectForInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
+    effectView = [(CKEffectPickerBackgroundView *)self effectView];
+    [effectView setEffect:v6];
   }
 }
 

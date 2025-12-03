@@ -1,13 +1,13 @@
 @interface CPLTransportScopeMapping
-- (BOOL)_addTransportScopeForScope:(id)a3 scopes:(id)a4 allowsTentativeTransportScope:(BOOL)a5 useStagingScopeIfNecessary:(BOOL)a6 error:(id *)a7;
-- (BOOL)_checkTransportScopeForScopeIdentifier:(id)a3 hasConcreteScope:(BOOL *)a4 error:(id *)a5;
-- (BOOL)hasConcreteScopeForScopeWithIdentifier:(id)a3;
-- (CPLTransportScopeMapping)initWithTranslator:(id)a3;
-- (id)concreteScopeForScopeWithIdentifier:(id)a3;
+- (BOOL)_addTransportScopeForScope:(id)scope scopes:(id)scopes allowsTentativeTransportScope:(BOOL)transportScope useStagingScopeIfNecessary:(BOOL)necessary error:(id *)error;
+- (BOOL)_checkTransportScopeForScopeIdentifier:(id)identifier hasConcreteScope:(BOOL *)scope error:(id *)error;
+- (BOOL)hasConcreteScopeForScopeWithIdentifier:(id)identifier;
+- (CPLTransportScopeMapping)initWithTranslator:(id)translator;
+- (id)concreteScopeForScopeWithIdentifier:(id)identifier;
 - (id)description;
-- (void)addConcreteScope:(id)a3 forScope:(id)a4;
-- (void)addTransportScope:(id)a3 forScope:(id)a4;
-- (void)updateWithTransportScopeMapping:(id)a3;
+- (void)addConcreteScope:(id)scope forScope:(id)forScope;
+- (void)addTransportScope:(id)scope forScope:(id)forScope;
+- (void)updateWithTransportScopeMapping:(id)mapping;
 @end
 
 @implementation CPLTransportScopeMapping
@@ -19,15 +19,15 @@
   return v2;
 }
 
-- (void)updateWithTransportScopeMapping:(id)a3
+- (void)updateWithTransportScopeMapping:(id)mapping
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 != self)
+  mappingCopy = mapping;
+  v6 = mappingCopy;
+  if (mappingCopy != self)
   {
-    v14 = v5;
-    if (self->_translator != v5->_translator)
+    v14 = mappingCopy;
+    if (self->_translator != mappingCopy->_translator)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -44,42 +44,42 @@
         }
       }
 
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLTransportScopeMapping.m"];
       v13 = self->_translator;
-      [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:169 description:{@"Trying to merge two incompatible mappings (%@ / %@)", v13, v14->_translator}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:169 description:{@"Trying to merge two incompatible mappings (%@ / %@)", v13, v14->_translator}];
 
       abort();
     }
 
-    [(NSMutableDictionary *)self->_concreteScopeMapping addEntriesFromDictionary:v5->_concreteScopeMapping];
-    v5 = [(NSMutableDictionary *)self->_scopeMapping addEntriesFromDictionary:v14->_scopeMapping];
+    [(NSMutableDictionary *)self->_concreteScopeMapping addEntriesFromDictionary:mappingCopy->_concreteScopeMapping];
+    mappingCopy = [(NSMutableDictionary *)self->_scopeMapping addEntriesFromDictionary:v14->_scopeMapping];
     v6 = v14;
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](mappingCopy, v6);
 }
 
-- (BOOL)_addTransportScopeForScope:(id)a3 scopes:(id)a4 allowsTentativeTransportScope:(BOOL)a5 useStagingScopeIfNecessary:(BOOL)a6 error:(id *)a7
+- (BOOL)_addTransportScopeForScope:(id)scope scopes:(id)scopes allowsTentativeTransportScope:(BOOL)transportScope useStagingScopeIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v8 = a6;
-  v9 = a5;
+  necessaryCopy = necessary;
+  transportScopeCopy = transportScope;
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = [v12 scopeIdentifier];
-  if (v8 && +[CPLScopeChange supportsStagingScopeForScopeWithType:](CPLScopeChange, "supportsStagingScopeForScopeWithType:", [v12 scopeType]))
+  scopeCopy = scope;
+  scopesCopy = scopes;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  if (necessaryCopy && +[CPLScopeChange supportsStagingScopeForScopeWithType:](CPLScopeChange, "supportsStagingScopeForScopeWithType:", [scopeCopy scopeType]))
   {
-    v15 = [v13 stagingScopeForScope:v12];
+    v15 = [scopesCopy stagingScopeForScope:scopeCopy];
     v16 = v15;
     v17 = v15 != 0;
     if (v15)
     {
       v18 = v15;
 
-      v12 = v18;
+      scopeCopy = v18;
     }
   }
 
@@ -88,17 +88,17 @@
     v17 = 0;
   }
 
-  v19 = [v13 transportScopeForScope:v12];
+  v19 = [scopesCopy transportScopeForScope:scopeCopy];
   if (!v19)
   {
-    if (!v9)
+    if (!transportScopeCopy)
     {
       goto LABEL_21;
     }
 
     p_translator = &self->_translator;
 LABEL_14:
-    v22 = [(CPLTransportScopeTranslator *)*p_translator tentativeConcreteScopeForScope:v12];
+    v22 = [(CPLTransportScopeTranslator *)*p_translator tentativeConcreteScopeForScope:scopeCopy];
     if (!v22)
     {
       goto LABEL_21;
@@ -110,7 +110,7 @@ LABEL_14:
   p_translator = &self->_translator;
   v21 = [(CPLTransportScopeTranslator *)self->_translator concreteScopeFromTransportScope:v19];
   v22 = v21;
-  if (!v21 && v9)
+  if (!v21 && transportScopeCopy)
   {
     goto LABEL_14;
   }
@@ -118,15 +118,15 @@ LABEL_14:
   if (!v21)
   {
 LABEL_21:
-    v25 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableDictionary *)self->_concreteScopeMapping setObject:v25 forKeyedSubscript:v14];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableDictionary *)self->_concreteScopeMapping setObject:null forKeyedSubscript:scopeIdentifier];
 
-    [(NSMutableDictionary *)self->_scopeMapping setObject:v12 forKeyedSubscript:v14];
-    if (a7)
+    [(NSMutableDictionary *)self->_scopeMapping setObject:scopeCopy forKeyedSubscript:scopeIdentifier];
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopeIdentifier:v14];
+      [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier];
       v22 = 0;
-      *a7 = v24 = 0;
+      *error = v24 = 0;
     }
 
     else
@@ -139,8 +139,8 @@ LABEL_21:
   }
 
 LABEL_15:
-  [(NSMutableDictionary *)self->_concreteScopeMapping setObject:v22 forKeyedSubscript:v14];
-  [(NSMutableDictionary *)self->_scopeMapping setObject:v12 forKeyedSubscript:v14];
+  [(NSMutableDictionary *)self->_concreteScopeMapping setObject:v22 forKeyedSubscript:scopeIdentifier];
+  [(NSMutableDictionary *)self->_scopeMapping setObject:scopeCopy forKeyedSubscript:scopeIdentifier];
   self->_hasStagingScopes &= v17;
   if ((_CPLSilentLogging & 1) == 0)
   {
@@ -155,9 +155,9 @@ LABEL_15:
       v28 = 138412802;
       v29 = v22;
       v30 = 2112;
-      v31 = v12;
+      v31 = scopeCopy;
       v32 = 2112;
-      v33 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v23, OS_LOG_TYPE_DEBUG, "Adding %@ for %@ to %@", &v28, 0x20u);
     }
   }
@@ -169,42 +169,42 @@ LABEL_24:
   return v24;
 }
 
-- (BOOL)_checkTransportScopeForScopeIdentifier:(id)a3 hasConcreteScope:(BOOL *)a4 error:(id *)a5
+- (BOOL)_checkTransportScopeForScopeIdentifier:(id)identifier hasConcreteScope:(BOOL *)scope error:(id *)error
 {
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)self->_concreteScopeMapping objectForKeyedSubscript:v8];
-  v10 = [MEMORY[0x1E695DFB0] null];
+  identifierCopy = identifier;
+  v9 = [(NSMutableDictionary *)self->_concreteScopeMapping objectForKeyedSubscript:identifierCopy];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v9 == v10)
+  if (v9 == null)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [CPLErrors cplErrorWithCode:32 description:@"Scope %@ has an invalid transport scope", v8];
+      *error = [CPLErrors cplErrorWithCode:32 description:@"Scope %@ has an invalid transport scope", identifierCopy];
     }
   }
 
   else
   {
-    *a4 = v9 != 0;
+    *scope = v9 != 0;
   }
 
-  return v9 != v10;
+  return v9 != null;
 }
 
-- (BOOL)hasConcreteScopeForScopeWithIdentifier:(id)a3
+- (BOOL)hasConcreteScopeForScopeWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_concreteScopeMapping objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_concreteScopeMapping objectForKeyedSubscript:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)concreteScopeForScopeWithIdentifier:(id)a3
+- (id)concreteScopeForScopeWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_concreteScopeMapping objectForKeyedSubscript:a3];
-  v4 = [MEMORY[0x1E695DFB0] null];
+  v3 = [(NSMutableDictionary *)self->_concreteScopeMapping objectForKeyedSubscript:identifier];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v3 == v4)
+  if (v3 == null)
   {
     v5 = 0;
   }
@@ -217,42 +217,42 @@ LABEL_24:
   return v5;
 }
 
-- (void)addConcreteScope:(id)a3 forScope:(id)a4
+- (void)addConcreteScope:(id)scope forScope:(id)forScope
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 scopeIdentifier];
-  [(NSMutableDictionary *)self->_concreteScopeMapping setObject:v7 forKeyedSubscript:v8];
+  forScopeCopy = forScope;
+  scopeCopy = scope;
+  scopeIdentifier = [forScopeCopy scopeIdentifier];
+  [(NSMutableDictionary *)self->_concreteScopeMapping setObject:scopeCopy forKeyedSubscript:scopeIdentifier];
 
-  [(NSMutableDictionary *)self->_scopeMapping setObject:v6 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_scopeMapping setObject:forScopeCopy forKeyedSubscript:scopeIdentifier];
 }
 
-- (void)addTransportScope:(id)a3 forScope:(id)a4
+- (void)addTransportScope:(id)scope forScope:(id)forScope
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v6 scopeIdentifier];
-  v8 = [(CPLTransportScopeTranslator *)self->_translator concreteScopeFromTransportScope:v7];
+  forScopeCopy = forScope;
+  scopeCopy = scope;
+  scopeIdentifier = [forScopeCopy scopeIdentifier];
+  null = [(CPLTransportScopeTranslator *)self->_translator concreteScopeFromTransportScope:scopeCopy];
 
-  if (!v8)
+  if (!null)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [(NSMutableDictionary *)self->_concreteScopeMapping setObject:v8 forKeyedSubscript:v9];
-  [(NSMutableDictionary *)self->_scopeMapping setObject:v6 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_concreteScopeMapping setObject:null forKeyedSubscript:scopeIdentifier];
+  [(NSMutableDictionary *)self->_scopeMapping setObject:forScopeCopy forKeyedSubscript:scopeIdentifier];
 }
 
-- (CPLTransportScopeMapping)initWithTranslator:(id)a3
+- (CPLTransportScopeMapping)initWithTranslator:(id)translator
 {
-  v5 = a3;
+  translatorCopy = translator;
   v13.receiver = self;
   v13.super_class = CPLTransportScopeMapping;
   v6 = [(CPLTransportScopeMapping *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_translator, a3);
+    objc_storeStrong(&v6->_translator, translator);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     scopeMapping = v7->_scopeMapping;
     v7->_scopeMapping = v8;

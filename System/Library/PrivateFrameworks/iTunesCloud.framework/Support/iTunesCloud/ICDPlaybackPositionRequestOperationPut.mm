@@ -1,43 +1,43 @@
 @interface ICDPlaybackPositionRequestOperationPut
-- (ICDPlaybackPositionRequestOperationPut)initWithRequestContext:(id)a3 completionBlock:(id)a4;
-- (id)_baseRequestWithURL:(id)a3;
-- (id)_resolveConflictBetweenClientPayloadPair:(id)a3 andServerPayloadPair:(id)a4;
-- (void)_finishWithError:(id)a3;
-- (void)_finishWithResponse:(id)a3 error:(id)a4;
+- (ICDPlaybackPositionRequestOperationPut)initWithRequestContext:(id)context completionBlock:(id)block;
+- (id)_baseRequestWithURL:(id)l;
+- (id)_resolveConflictBetweenClientPayloadPair:(id)pair andServerPayloadPair:(id)payloadPair;
+- (void)_finishWithError:(id)error;
+- (void)_finishWithResponse:(id)response error:(id)error;
 - (void)execute;
 @end
 
 @implementation ICDPlaybackPositionRequestOperationPut
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
-  v6 = v4;
+  v6 = errorCopy;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, self->_success, v4, self->_resultItemEntity);
-    v4 = v6;
+    completionHandler[2](completionHandler, self->_success, errorCopy, self->_resultItemEntity);
+    errorCopy = v6;
   }
 
-  [(ICDPlaybackPositionRequestOperationPut *)self finishWithError:v4];
+  [(ICDPlaybackPositionRequestOperationPut *)self finishWithError:errorCopy];
 }
 
-- (id)_resolveConflictBetweenClientPayloadPair:(id)a3 andServerPayloadPair:(id)a4
+- (id)_resolveConflictBetweenClientPayloadPair:(id)pair andServerPayloadPair:(id)payloadPair
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 bookmarkTimestamp];
-  v8 = [v5 bookmarkTimestamp];
+  pairCopy = pair;
+  payloadPairCopy = payloadPair;
+  bookmarkTimestamp = [payloadPairCopy bookmarkTimestamp];
+  bookmarkTimestamp2 = [pairCopy bookmarkTimestamp];
 
-  if (v7 >= v8)
+  if (bookmarkTimestamp >= bookmarkTimestamp2)
   {
-    v9 = v6;
+    v9 = payloadPairCopy;
   }
 
   else
   {
-    v9 = v5;
+    v9 = pairCopy;
   }
 
   v10 = v9;
@@ -45,24 +45,24 @@
   return v9;
 }
 
-- (void)_finishWithResponse:(id)a3 error:(id)a4
+- (void)_finishWithResponse:(id)response error:(id)error
 {
-  v26 = a4;
+  errorCopy = error;
   self->_isReschedulable = 0;
-  v6 = [a3 parsedBodyDictionary];
-  v7 = [v6 ic_dictionaryValueForKey:@"value"];
+  parsedBodyDictionary = [response parsedBodyDictionary];
+  v7 = [parsedBodyDictionary ic_dictionaryValueForKey:@"value"];
   if (v7)
   {
-    v8 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
-    v9 = [v8 playbackPositionKey];
+    entity = [(ICDPlaybackPositionRequestContext *)self->_context entity];
+    playbackPositionKey = [entity playbackPositionKey];
 
-    v10 = [v6 ic_stringValueForKey:@"version"];
-    v11 = [v6 ic_stringValueForKey:@"domain-version"];
+    v10 = [parsedBodyDictionary ic_stringValueForKey:@"version"];
+    v11 = [parsedBodyDictionary ic_stringValueForKey:@"domain-version"];
     v12 = [ICPlaybackPositionEntity alloc];
-    v13 = [(ICDPlaybackPositionRequestContext *)self->_context playbackPositionDomain];
-    v14 = [v12 initWithDomain:v13];
+    playbackPositionDomain = [(ICDPlaybackPositionRequestContext *)self->_context playbackPositionDomain];
+    v14 = [v12 initWithDomain:playbackPositionDomain];
 
-    [v14 setPlaybackPositionKey:v9];
+    [v14 setPlaybackPositionKey:playbackPositionKey];
     v15 = [v7 ic_numberValueForKey:@"bktm"];
     [v14 setBookmarkTime:v15];
 
@@ -75,19 +75,19 @@
     v18 = [v7 ic_numberValueForKey:@"tstm"];
     [v14 setBookmarkTimestamp:v18];
 
-    v19 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
-    v20 = [(ICDPlaybackPositionRequestOperationPut *)self _resolveConflictBetweenClientPayloadPair:v19 andServerPayloadPair:v14];
+    entity2 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
+    v20 = [(ICDPlaybackPositionRequestOperationPut *)self _resolveConflictBetweenClientPayloadPair:entity2 andServerPayloadPair:v14];
 
     v21 = v10;
   }
 
   else
   {
-    v11 = [v6 ic_stringValueForKey:@"domain-version"];
-    v22 = [v6 objectForKeyedSubscript:@"status"];
+    v11 = [parsedBodyDictionary ic_stringValueForKey:@"domain-version"];
+    v22 = [parsedBodyDictionary objectForKeyedSubscript:@"status"];
     if (v22)
     {
-      v23 = [v6 ic_integerValueForKey:@"status"] == 0;
+      v23 = [parsedBodyDictionary ic_integerValueForKey:@"status"] == 0;
     }
 
     else
@@ -104,38 +104,38 @@
     self->_resultItemVersionAnchor = 0;
 
     objc_storeStrong(&self->_resultDomainVersion, v11);
-    [(ICDPlaybackPositionRequestOperationPut *)self _finishWithError:v26];
+    [(ICDPlaybackPositionRequestOperationPut *)self _finishWithError:errorCopy];
   }
 }
 
-- (id)_baseRequestWithURL:(id)a3
+- (id)_baseRequestWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[NSMutableURLRequest alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[NSMutableURLRequest alloc] initWithURL:lCopy];
 
   [v5 setHTTPMethod:@"POST"];
   [v5 setValue:ICHTTPHeaderContentTypeXApplePlist forHTTPHeaderField:ICHTTPHeaderKeyContentType];
   v18[0] = @"domain";
-  v6 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
-  v7 = [v6 playbackPositionDomain];
-  v19[0] = v7;
+  entity = [(ICDPlaybackPositionRequestContext *)self->_context entity];
+  playbackPositionDomain = [entity playbackPositionDomain];
+  v19[0] = playbackPositionDomain;
   v18[1] = @"key";
-  v8 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
-  v9 = [v8 playbackPositionKey];
-  v19[1] = v9;
+  entity2 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
+  playbackPositionKey = [entity2 playbackPositionKey];
+  v19[1] = playbackPositionKey;
   v18[2] = @"value";
-  v10 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
-  v11 = [(ICDPlaybackPositionRequestOperationBase *)self keyValueStorePayloadWithEntity:v10];
+  entity3 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
+  v11 = [(ICDPlaybackPositionRequestOperationBase *)self keyValueStorePayloadWithEntity:entity3];
   v19[2] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
   v13 = [v12 mutableCopy];
 
   v14 = +[ICDeviceInfo currentDeviceInfo];
-  v15 = [v14 deviceGUID];
+  deviceGUID = [v14 deviceGUID];
 
-  if (v15)
+  if (deviceGUID)
   {
-    [v13 setObject:v15 forKey:@"guid"];
+    [v13 setObject:deviceGUID forKey:@"guid"];
   }
 
   v16 = [NSPropertyListSerialization dataWithPropertyList:v13 format:[(ICDPlaybackPositionRequestOperationBase *)self bodyContentFormat] options:0 error:0];
@@ -149,14 +149,14 @@
 
 - (void)execute
 {
-  v3 = [(ICDPlaybackPositionRequestContext *)self->_context storeRequestContext];
-  if (!v3)
+  storeRequestContext = [(ICDPlaybackPositionRequestContext *)self->_context storeRequestContext];
+  if (!storeRequestContext)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = self;
+      selfCopy2 = self;
       v8 = "%{public}@ context.requestContext=nil";
 LABEL_8:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, v8, buf, 0xCu);
@@ -170,16 +170,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [(ICDPlaybackPositionRequestContext *)self->_context entity];
-  v5 = [v4 playbackPositionKey];
+  entity = [(ICDPlaybackPositionRequestContext *)self->_context entity];
+  playbackPositionKey = [entity playbackPositionKey];
 
-  if (!v5)
+  if (!playbackPositionKey)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = self;
+      selfCopy2 = self;
       v8 = "%{public}@ entity.playbackPositionKey=nil";
       goto LABEL_8;
     }
@@ -193,25 +193,25 @@ LABEL_9:
   v10[2] = sub_100132F28;
   v10[3] = &unk_1001DFB88;
   v10[4] = self;
-  v11 = v3;
+  v11 = storeRequestContext;
   [v6 getBagForRequestContext:v11 withCompletionHandler:v10];
 
 LABEL_10:
 }
 
-- (ICDPlaybackPositionRequestOperationPut)initWithRequestContext:(id)a3 completionBlock:(id)a4
+- (ICDPlaybackPositionRequestOperationPut)initWithRequestContext:(id)context completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = ICDPlaybackPositionRequestOperationPut;
   v9 = [(ICDPlaybackPositionRequestOperationPut *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
+    objc_storeStrong(&v9->_context, context);
     objc_storeStrong(&v10->_urlBagKey, ICURLBagKeyKVSRequestURLPut);
-    v11 = objc_retainBlock(v8);
+    v11 = objc_retainBlock(blockCopy);
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
 

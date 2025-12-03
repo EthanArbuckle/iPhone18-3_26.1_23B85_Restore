@@ -1,34 +1,34 @@
 @interface HAPSuspendedAccessory
-- (HAPSuspendedAccessory)initWithName:(id)a3 identifier:(id)a4 type:(unint64_t)a5 queue:(id)a6;
+- (HAPSuspendedAccessory)initWithName:(id)name identifier:(id)identifier type:(unint64_t)type queue:(id)queue;
 - (id)description;
-- (void)wakeWithCompletion:(id)a3;
+- (void)wakeWithCompletion:(id)completion;
 @end
 
 @implementation HAPSuspendedAccessory
 
-- (HAPSuspendedAccessory)initWithName:(id)a3 identifier:(id)a4 type:(unint64_t)a5 queue:(id)a6
+- (HAPSuspendedAccessory)initWithName:(id)name identifier:(id)identifier type:(unint64_t)type queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = HAPSuspendedAccessory;
   v14 = [(HAPSuspendedAccessory *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_identifier, a4);
-    v15->_type = a5;
-    objc_storeStrong(&v15->_queue, a6);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_identifier, identifier);
+    v15->_type = type;
+    objc_storeStrong(&v15->_queue, queue);
   }
 
   return v15;
 }
 
-- (void)wakeWithCompletion:(id)a3
+- (void)wakeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];
@@ -39,10 +39,10 @@
 
 - (id)description
 {
-  v3 = [(HAPSuspendedAccessory *)self identifier];
-  v4 = [(HAPSuspendedAccessory *)self name];
+  identifier = [(HAPSuspendedAccessory *)self identifier];
+  name = [(HAPSuspendedAccessory *)self name];
   v5 = [NSNumber numberWithUnsignedInteger:[(HAPSuspendedAccessory *)self type]];
-  v6 = [NSString stringWithFormat:@"<AccyID: %@, name: %@, suspended type: '%@'>", v3, v4, v5];
+  v6 = [NSString stringWithFormat:@"<AccyID: %@, name: %@, suspended type: '%@'>", identifier, name, v5];
 
   return v6;
 }

@@ -1,82 +1,82 @@
 @interface WFDialogButton
 + (id)cancelButton;
-+ (id)defaultButtonWithTitle:(id)a3;
++ (id)defaultButtonWithTitle:(id)title;
 + (id)doneButton;
 + (id)okButton;
 + (id)selectButton;
 + (id)startButton;
-- (WFDialogButton)initWithCoder:(id)a3;
-- (WFDialogButton)initWithIdentifier:(id)a3 title:(id)a4 style:(int64_t)a5;
-- (WFDialogButton)initWithTitle:(id)a3 style:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (WFDialogButton)initWithCoder:(id)coder;
+- (WFDialogButton)initWithIdentifier:(id)identifier title:(id)title style:(int64_t)style;
+- (WFDialogButton)initWithTitle:(id)title style:(int64_t)style;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFDialogButton
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(WFDialogButton *)self identifier];
-  [v6 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFDialogButton *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(WFDialogButton *)self title];
-  [v6 encodeObject:v5 forKey:@"title"];
+  title = [(WFDialogButton *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  [v6 encodeInteger:-[WFDialogButton style](self forKey:{"style"), @"style"}];
+  [coderCopy encodeInteger:-[WFDialogButton style](self forKey:{"style"), @"style"}];
 }
 
-- (WFDialogButton)initWithCoder:(id)a3
+- (WFDialogButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFDialogButton;
   v5 = [(WFDialogButton *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
     v10 = v5;
   }
 
   return v5;
 }
 
-- (WFDialogButton)initWithTitle:(id)a3 style:(int64_t)a4
+- (WFDialogButton)initWithTitle:(id)title style:(int64_t)style
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a3;
-  v8 = [v6 UUID];
-  v9 = [v8 UUIDString];
-  v10 = [(WFDialogButton *)self initWithIdentifier:v9 title:v7 style:a4];
+  titleCopy = title;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [(WFDialogButton *)self initWithIdentifier:uUIDString title:titleCopy style:style];
 
   return v10;
 }
 
-- (WFDialogButton)initWithIdentifier:(id)a3 title:(id)a4 style:(int64_t)a5
+- (WFDialogButton)initWithIdentifier:(id)identifier title:(id)title style:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  titleCopy = title;
   v17.receiver = self;
   v17.super_class = WFDialogButton;
   v10 = [(WFDialogButton *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v13;
 
-    v10->_style = a5;
+    v10->_style = style;
     v15 = v10;
   }
 
@@ -128,10 +128,10 @@
   return v4;
 }
 
-+ (id)defaultButtonWithTitle:(id)a3
++ (id)defaultButtonWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[WFDialogButton alloc] initWithTitle:v3 style:0];
+  titleCopy = title;
+  v4 = [[WFDialogButton alloc] initWithTitle:titleCopy style:0];
 
   return v4;
 }

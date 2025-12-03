@@ -1,68 +1,68 @@
 @interface VIImageRegionDomainInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)focalPoint;
-- (VIImageRegionDomainInfo)initWithDomainKey:(id)a3 labelName:(id)a4 glyphName:(id)a5 displayLabel:(id)a6 displayMessage:(id)a7 hasFocalPoint:(BOOL)a8 focalPoint:(CGPoint)a9 isCornerGlyph:(BOOL)a10 ocrResultsRequired:(BOOL)a11 barcodeResultsRequired:(BOOL)a12 isLowConfidence:(BOOL)a13 shouldShowDynamicGlyph:(BOOL)a14;
+- (VIImageRegionDomainInfo)initWithDomainKey:(id)key labelName:(id)name glyphName:(id)glyphName displayLabel:(id)label displayMessage:(id)message hasFocalPoint:(BOOL)point focalPoint:(CGPoint)focalPoint isCornerGlyph:(BOOL)self0 ocrResultsRequired:(BOOL)self1 barcodeResultsRequired:(BOOL)self2 isLowConfidence:(BOOL)self3 shouldShowDynamicGlyph:(BOOL)self4;
 - (unint64_t)hash;
 @end
 
 @implementation VIImageRegionDomainInfo
 
-- (VIImageRegionDomainInfo)initWithDomainKey:(id)a3 labelName:(id)a4 glyphName:(id)a5 displayLabel:(id)a6 displayMessage:(id)a7 hasFocalPoint:(BOOL)a8 focalPoint:(CGPoint)a9 isCornerGlyph:(BOOL)a10 ocrResultsRequired:(BOOL)a11 barcodeResultsRequired:(BOOL)a12 isLowConfidence:(BOOL)a13 shouldShowDynamicGlyph:(BOOL)a14
+- (VIImageRegionDomainInfo)initWithDomainKey:(id)key labelName:(id)name glyphName:(id)glyphName displayLabel:(id)label displayMessage:(id)message hasFocalPoint:(BOOL)point focalPoint:(CGPoint)focalPoint isCornerGlyph:(BOOL)self0 ocrResultsRequired:(BOOL)self1 barcodeResultsRequired:(BOOL)self2 isLowConfidence:(BOOL)self3 shouldShowDynamicGlyph:(BOOL)self4
 {
-  y = a9.y;
-  x = a9.x;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = a7;
+  y = focalPoint.y;
+  x = focalPoint.x;
+  keyCopy = key;
+  nameCopy = name;
+  glyphNameCopy = glyphName;
+  labelCopy = label;
+  messageCopy = message;
   v39.receiver = self;
   v39.super_class = VIImageRegionDomainInfo;
   v27 = [(VIImageRegionDomainInfo *)&v39 init];
   if (v27)
   {
-    v28 = [v22 copy];
+    v28 = [keyCopy copy];
     domainKey = v27->_domainKey;
     v27->_domainKey = v28;
 
-    v30 = [v23 copy];
+    v30 = [nameCopy copy];
     labelName = v27->_labelName;
     v27->_labelName = v30;
 
-    v32 = [v24 copy];
+    v32 = [glyphNameCopy copy];
     glyphName = v27->_glyphName;
     v27->_glyphName = v32;
 
-    v34 = [v25 copy];
+    v34 = [labelCopy copy];
     displayLabel = v27->_displayLabel;
     v27->_displayLabel = v34;
 
-    v36 = [v26 copy];
+    v36 = [messageCopy copy];
     displayMessage = v27->_displayMessage;
     v27->_displayMessage = v36;
 
-    v27->_hasFocalPoint = a8;
+    v27->_hasFocalPoint = point;
     v27->_focalPoint.x = x;
     v27->_focalPoint.y = y;
-    v27->_isCornerGlyph = a10;
-    v27->_ocrResultsRequired = a11;
-    v27->_barcodeResultsRequired = a12;
-    v27->_isLowConfidence = a13;
-    v27->_shouldShowDynamicGlyph = a14;
+    v27->_isCornerGlyph = glyph;
+    v27->_ocrResultsRequired = required;
+    v27->_barcodeResultsRequired = resultsRequired;
+    v27->_isLowConfidence = confidence;
+    v27->_shouldShowDynamicGlyph = dynamicGlyph;
   }
 
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -72,8 +72,8 @@
 
     v6 = v5;
     domainKey = self->_domainKey;
-    v8 = [(VIImageRegionDomainInfo *)v6 domainKey];
-    if (!VIObjectIsEqual(domainKey, v8))
+    domainKey = [(VIImageRegionDomainInfo *)v6 domainKey];
+    if (!VIObjectIsEqual(domainKey, domainKey))
     {
       v19 = 0;
 LABEL_28:
@@ -82,8 +82,8 @@ LABEL_28:
     }
 
     labelName = self->_labelName;
-    v10 = [(VIImageRegionDomainInfo *)v6 labelName];
-    if (!VIObjectIsEqual(labelName, v10))
+    labelName = [(VIImageRegionDomainInfo *)v6 labelName];
+    if (!VIObjectIsEqual(labelName, labelName))
     {
       v19 = 0;
 LABEL_27:
@@ -92,8 +92,8 @@ LABEL_27:
     }
 
     glyphName = self->_glyphName;
-    v12 = [(VIImageRegionDomainInfo *)v6 glyphName];
-    if (!VIObjectIsEqual(glyphName, v12))
+    glyphName = [(VIImageRegionDomainInfo *)v6 glyphName];
+    if (!VIObjectIsEqual(glyphName, glyphName))
     {
       v19 = 0;
 LABEL_26:
@@ -102,8 +102,8 @@ LABEL_26:
     }
 
     displayLabel = self->_displayLabel;
-    v14 = [(VIImageRegionDomainInfo *)v6 displayLabel];
-    if (!VIObjectIsEqual(displayLabel, v14))
+    displayLabel = [(VIImageRegionDomainInfo *)v6 displayLabel];
+    if (!VIObjectIsEqual(displayLabel, displayLabel))
     {
       v19 = 0;
 LABEL_25:
@@ -112,8 +112,8 @@ LABEL_25:
     }
 
     displayMessage = self->_displayMessage;
-    v16 = [(VIImageRegionDomainInfo *)v6 displayMessage];
-    if (!VIObjectIsEqual(displayMessage, v16))
+    displayMessage = [(VIImageRegionDomainInfo *)v6 displayMessage];
+    if (!VIObjectIsEqual(displayMessage, displayMessage))
     {
       goto LABEL_23;
     }

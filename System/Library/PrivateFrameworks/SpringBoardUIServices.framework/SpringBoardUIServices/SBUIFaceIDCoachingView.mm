@@ -3,26 +3,26 @@
 - (UIMorphingLabel)_label;
 - (double)stringWidth;
 - (void)_resizeLabelToFirstSizeCategoryThatFits;
-- (void)_updateLabelTextForCurrentCoachingConditionAnimated:(BOOL)a3;
+- (void)_updateLabelTextForCurrentCoachingConditionAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setCoachingCondition:(unint64_t)a3 animated:(BOOL)a4 delay:(double)a5;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setCoachingCondition:(unint64_t)condition animated:(BOOL)animated delay:(double)delay;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation SBUIFaceIDCoachingView
 
 - (double)stringWidth
 {
-  v3 = [(SBUIFaceIDCoachingView *)self _label];
+  _label = [(SBUIFaceIDCoachingView *)self _label];
 
-  if (!v3)
+  if (!_label)
   {
     return 0.0;
   }
 
-  v4 = [(SBUIFaceIDCoachingView *)self _label];
+  _label2 = [(SBUIFaceIDCoachingView *)self _label];
   v5 = SBUICoachingTextForSBUIFaceIDCoachingCondition(self->_coachingCondition);
-  [v4 requiredWidthForText:v5];
+  [_label2 requiredWidthForText:v5];
   v7 = v6;
 
   return v7;
@@ -62,13 +62,13 @@
   v2 = [(SBUIFaceIDCoachingView *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__contentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__contentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
 
-    v4 = [MEMORY[0x1E69DC668] sharedApplication];
-    v5 = [v4 preferredContentSizeCategory];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
     currentSizeCategory = v2->_currentSizeCategory;
-    v2->_currentSizeCategory = v5;
+    v2->_currentSizeCategory = preferredContentSizeCategory;
   }
 
   return v2;
@@ -81,8 +81,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBUIFaceIDCoachingView *)self _label];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  _label = [(SBUIFaceIDCoachingView *)self _label];
+  [_label setFrame:{v4, v6, v8, v10}];
 
   v18.origin.x = v4;
   v18.origin.y = v6;
@@ -93,30 +93,30 @@
   y = v19.origin.y;
   width = v19.size.width;
   height = v19.size.height;
-  v16 = [(SBUIFaceIDCoachingView *)self _label];
-  [v16 setVisibleRect:{x, y, width, height}];
+  _label2 = [(SBUIFaceIDCoachingView *)self _label];
+  [_label2 setVisibleRect:{x, y, width, height}];
 }
 
-- (void)setCoachingCondition:(unint64_t)a3 animated:(BOOL)a4 delay:(double)a5
+- (void)setCoachingCondition:(unint64_t)condition animated:(BOOL)animated delay:(double)delay
 {
-  if (self->_coachingCondition != a3)
+  if (self->_coachingCondition != condition)
   {
-    v6 = a4;
-    self->_coachingCondition = a3;
-    v8 = SBUICoachingTextForSBUIFaceIDCoachingCondition(a3);
+    animatedCopy = animated;
+    self->_coachingCondition = condition;
+    v8 = SBUICoachingTextForSBUIFaceIDCoachingCondition(condition);
     labelText = self->_labelText;
     self->_labelText = v8;
 
     [(SBUIFaceIDCoachingView *)self _resizeLabelToFirstSizeCategoryThatFits];
-    if (v6)
+    if (animatedCopy)
     {
-      v10 = dispatch_time(0, (a5 * 1000000000.0));
+      v10 = dispatch_time(0, (delay * 1000000000.0));
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __62__SBUIFaceIDCoachingView_setCoachingCondition_animated_delay___block_invoke;
       v11[3] = &unk_1E789DA60;
       v11[4] = self;
-      v12 = v6;
+      v12 = animatedCopy;
       dispatch_after(v10, MEMORY[0x1E69E96A0], v11);
     }
 
@@ -139,18 +139,18 @@ uint64_t __62__SBUIFaceIDCoachingView_setCoachingCondition_animated_delay___bloc
   return [MEMORY[0x1E69DD250] animateWithDuration:v2 animations:10.0];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:v5]& 1) == 0)
+  settingsCopy = settings;
+  if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:settingsCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v6 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    if (v6)
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    if (primaryColor)
     {
       label = self->_label;
-      v8 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-      [(UIMorphingLabel *)label setTextColor:v8];
+      primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+      [(UIMorphingLabel *)label setTextColor:primaryColor2];
     }
 
     else
@@ -164,23 +164,23 @@ uint64_t __62__SBUIFaceIDCoachingView_setCoachingCondition_animated_delay___bloc
   }
 }
 
-- (void)_updateLabelTextForCurrentCoachingConditionAnimated:(BOOL)a3
+- (void)_updateLabelTextForCurrentCoachingConditionAnimated:(BOOL)animated
 {
-  v4 = [(SBUIFaceIDCoachingView *)self _label];
-  [v4 setText:self->_labelText];
+  _label = [(SBUIFaceIDCoachingView *)self _label];
+  [_label setText:self->_labelText];
 }
 
 - (void)_resizeLabelToFirstSizeCategoryThatFits
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  v5 = [(SBUIFaceIDCoachingView *)self _label];
-  v6 = SBUIUIFontForCoachingTextForContentSizeCategory(v4);
-  [v5 setFont:v6];
+  _label = [(SBUIFaceIDCoachingView *)self _label];
+  v6 = SBUIUIFontForCoachingTextForContentSizeCategory(preferredContentSizeCategory);
+  [_label setFont:v6];
 
-  v7 = [(SBUIFaceIDCoachingView *)self _label];
-  LOBYTE(v6) = [v7 canFitText:self->_labelText];
+  _label2 = [(SBUIFaceIDCoachingView *)self _label];
+  LOBYTE(v6) = [_label2 canFitText:self->_labelText];
 
   if ((v6 & 1) == 0)
   {
@@ -188,8 +188,8 @@ uint64_t __62__SBUIFaceIDCoachingView_setCoachingCondition_animated_delay___bloc
     v9 = *MEMORY[0x1E69DDC50];
     while (1)
     {
-      v10 = UIContentSizeCategoryOneSmallerThanSizeCategory(v4);
-      IsEqualToCategory = UIContentSizeCategoryIsEqualToCategory(v10, v4);
+      v10 = UIContentSizeCategoryOneSmallerThanSizeCategory(preferredContentSizeCategory);
+      IsEqualToCategory = UIContentSizeCategoryIsEqualToCategory(v10, preferredContentSizeCategory);
       v12 = UIContentSizeCategoryIsInRange(v10, v8, v9);
       if (IsEqualToCategory || !v12)
       {
@@ -198,14 +198,14 @@ uint64_t __62__SBUIFaceIDCoachingView_setCoachingCondition_animated_delay___bloc
 
       v13 = v10;
 
-      v14 = [(SBUIFaceIDCoachingView *)self _label];
+      _label3 = [(SBUIFaceIDCoachingView *)self _label];
       v15 = SBUIUIFontForCoachingTextForContentSizeCategory(v13);
 
-      [v14 setFont:v15];
-      v16 = [(SBUIFaceIDCoachingView *)self _label];
-      LODWORD(v15) = [v16 canFitText:self->_labelText];
+      [_label3 setFont:v15];
+      _label4 = [(SBUIFaceIDCoachingView *)self _label];
+      LODWORD(v15) = [_label4 canFitText:self->_labelText];
 
-      v4 = v13;
+      preferredContentSizeCategory = v13;
       if (v15)
       {
         goto LABEL_9;
@@ -213,7 +213,7 @@ uint64_t __62__SBUIFaceIDCoachingView_setCoachingCondition_animated_delay___bloc
     }
   }
 
-  v13 = v4;
+  v13 = preferredContentSizeCategory;
 LABEL_9:
   currentSizeCategory = self->_currentSizeCategory;
   self->_currentSizeCategory = v13;

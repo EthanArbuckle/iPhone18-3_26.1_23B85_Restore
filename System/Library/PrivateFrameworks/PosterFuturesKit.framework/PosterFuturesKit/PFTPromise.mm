@@ -1,7 +1,7 @@
 @interface PFTPromise
-- (BOOL)cancelWithReason:(id)a3;
+- (BOOL)cancelWithReason:(id)reason;
 - (PFTPromise)init;
-- (PFTPromise)initWithSchedulerProvider:(id)a3;
+- (PFTPromise)initWithSchedulerProvider:(id)provider;
 @end
 
 @implementation PFTPromise
@@ -14,15 +14,15 @@
   return v4;
 }
 
-- (PFTPromise)initWithSchedulerProvider:(id)a3
+- (PFTPromise)initWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = PFTPromise;
   v5 = [(PFTPromise *)&v10 init];
   if (v5)
   {
-    v6 = [[PFTFuture alloc] initWithSchedulerProvider:v4];
+    v6 = [[PFTFuture alloc] initWithSchedulerProvider:providerCopy];
     future = v5->_future;
     v5->_future = v6;
 
@@ -32,15 +32,15 @@
   return v5;
 }
 
-- (BOOL)cancelWithReason:(id)a3
+- (BOOL)cancelWithReason:(id)reason
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  if (reasonCopy)
   {
     v11 = *MEMORY[0x277CCA470];
-    v12[0] = v4;
+    v12[0] = reasonCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 

@@ -1,23 +1,23 @@
 @interface FBSMutableSceneParameters
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyClientSettings:(id)a3;
-- (void)applyParameters:(id)a3;
-- (void)applySettings:(id)a3;
-- (void)setSettings:(id)a3;
-- (void)updateClientSettingsWithBlock:(id)a3;
-- (void)updateSettingsWithBlock:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyClientSettings:(id)settings;
+- (void)applyParameters:(id)parameters;
+- (void)applySettings:(id)settings;
+- (void)setSettings:(id)settings;
+- (void)updateClientSettingsWithBlock:(id)block;
+- (void)updateSettingsWithBlock:(id)block;
 @end
 
 @implementation FBSMutableSceneParameters
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
   v8.receiver = self;
   v8.super_class = FBSMutableSceneParameters;
-  [(FBSSceneParameters *)&v8 setSettings:a3];
-  v4 = [(FBSSceneParameters *)self settings];
-  v5 = [v4 displayConfiguration];
-  if (v5)
+  [(FBSSceneParameters *)&v8 setSettings:settings];
+  settings = [(FBSSceneParameters *)self settings];
+  displayConfiguration = [settings displayConfiguration];
+  if (displayConfiguration)
   {
   }
 
@@ -37,30 +37,30 @@
   }
 }
 
-- (void)updateSettingsWithBlock:(id)a3
+- (void)updateSettingsWithBlock:(id)block
 {
   v3.receiver = self;
   v3.super_class = FBSMutableSceneParameters;
-  [(FBSSceneParameters *)&v3 updateSettingsWithBlock:a3];
+  [(FBSSceneParameters *)&v3 updateSettingsWithBlock:block];
 }
 
-- (void)updateClientSettingsWithBlock:(id)a3
+- (void)updateClientSettingsWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
-    v5 = [(FBSSceneParameters *)self clientSettings];
-    v6 = [v5 mutableCopy];
+    blockCopy = block;
+    clientSettings = [(FBSSceneParameters *)self clientSettings];
+    v6 = [clientSettings mutableCopy];
 
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
     [(FBSSceneParameters *)self setClientSettings:v6];
   }
 }
 
-- (void)applySettings:(id)a3
+- (void)applySettings:(id)settings
 {
-  v5 = a3;
-  if (v5)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
     NSClassFromString(&cfstr_Fbsscenesettin_0.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -72,15 +72,15 @@
     v6[1] = 3221225472;
     v6[2] = __43__FBSMutableSceneParameters_applySettings___block_invoke;
     v6[3] = &unk_1E76BDFD0;
-    v7 = v5;
+    v7 = settingsCopy;
     [(FBSMutableSceneParameters *)self updateSettingsWithBlock:v6];
   }
 }
 
-- (void)applyClientSettings:(id)a3
+- (void)applyClientSettings:(id)settings
 {
-  v5 = a3;
-  if (v5)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
     NSClassFromString(&cfstr_Fbssceneclient.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -92,30 +92,30 @@
     v6[1] = 3221225472;
     v6[2] = __49__FBSMutableSceneParameters_applyClientSettings___block_invoke;
     v6[3] = &unk_1E76BD2A0;
-    v7 = v5;
+    v7 = settingsCopy;
     [(FBSMutableSceneParameters *)self updateClientSettingsWithBlock:v6];
   }
 }
 
-- (void)applyParameters:(id)a3
+- (void)applyParameters:(id)parameters
 {
-  v8 = a3;
+  parametersCopy = parameters;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
     [(FBSMutableSceneParameters *)a2 applyParameters:?];
   }
 
-  v6 = [v8 settings];
-  [(FBSMutableSceneParameters *)self applySettings:v6];
+  settings = [parametersCopy settings];
+  [(FBSMutableSceneParameters *)self applySettings:settings];
 
-  v7 = [v8 clientSettings];
-  [(FBSMutableSceneParameters *)self applyClientSettings:v7];
+  clientSettings = [parametersCopy clientSettings];
+  [(FBSMutableSceneParameters *)self applyClientSettings:clientSettings];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [FBSSceneParameters allocWithZone:a3];
+  v4 = [FBSSceneParameters allocWithZone:zone];
 
   return [(FBSSceneParameters *)v4 initWithParameters:self];
 }

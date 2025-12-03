@@ -1,14 +1,14 @@
 @interface TSUMultiInputStream
-- (BOOL)getBuffer:(char *)a3 length:(unint64_t *)a4;
+- (BOOL)getBuffer:(char *)buffer length:(unint64_t *)length;
 - (BOOL)hasBytesAvailable;
 - (TSUMultiInputStream)init;
 - (id)delegate;
 - (id)streamError;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
 - (void)close;
 - (void)open;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation TSUMultiInputStream
@@ -20,9 +20,9 @@
   v2 = [(TSUMultiInputStream *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     inputStreams = v2->_inputStreams;
-    v2->_inputStreams = v3;
+    v2->_inputStreams = array;
   }
 
   return v2;
@@ -35,19 +35,19 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v3 = a3;
+    selfCopy = delegate;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  objc_storeWeak(&self->_delegate, v3);
+  objc_storeWeak(&self->_delegate, selfCopy);
 }
 
 - (void)open
@@ -136,7 +136,7 @@
   {
     v5 = v4;
     v6 = *v12;
-    v7 = 5;
+    streamStatus = 5;
     while (2)
     {
       for (i = 0; i != v5; ++i)
@@ -149,7 +149,7 @@
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([v9 streamStatus] != 5)
         {
-          v7 = [v9 streamStatus];
+          streamStatus = [v9 streamStatus];
           goto LABEL_14;
         }
       }
@@ -166,12 +166,12 @@
 
   else
   {
-    v7 = 5;
+    streamStatus = 5;
   }
 
 LABEL_14:
 
-  return v7;
+  return streamStatus;
 }
 
 - (id)streamError
@@ -196,10 +196,10 @@ LABEL_14:
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) streamError];
-        if (v7)
+        streamError = [*(*(&v10 + 1) + 8 * i) streamError];
+        if (streamError)
         {
-          v8 = v7;
+          v8 = streamError;
           goto LABEL_11;
         }
       }
@@ -220,7 +220,7 @@ LABEL_11:
   return v8;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -243,7 +243,7 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) read:a3 maxLength:{a4, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) read:read maxLength:{length, v14}];
         if (v11 > 0)
         {
           v12 = v11;
@@ -270,7 +270,7 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)getBuffer:(char *)a3 length:(unint64_t *)a4
+- (BOOL)getBuffer:(char *)buffer length:(unint64_t *)length
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -292,7 +292,7 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) getBuffer:a3 length:{a4, v13}])
+        if ([*(*(&v13 + 1) + 8 * i) getBuffer:buffer length:{length, v13}])
         {
           v11 = 1;
           goto LABEL_11;

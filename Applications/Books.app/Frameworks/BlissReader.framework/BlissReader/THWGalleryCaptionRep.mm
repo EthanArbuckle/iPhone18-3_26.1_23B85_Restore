@@ -1,10 +1,10 @@
 @interface THWGalleryCaptionRep
-- (void)didUpdateLayer:(id)a3;
+- (void)didUpdateLayer:(id)layer;
 @end
 
 @implementation THWGalleryCaptionRep
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v5 = [objc_msgSend(-[THWGalleryCaptionRep layout](self "layout")];
   v6 = v5;
@@ -24,7 +24,7 @@
     v9 = +[CATransition animation];
     [v9 setType:kCATransitionFade];
     [v9 setDuration:0.15];
-    [a3 addAnimation:v9 forKey:@"fadeAnimation"];
+    [layer addAnimation:v9 forKey:@"fadeAnimation"];
   }
 
   self->_currentCaptionStorage = v6;

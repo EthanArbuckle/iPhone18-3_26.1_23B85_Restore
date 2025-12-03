@@ -1,20 +1,20 @@
 @interface SBGenerateLaunchSnapshotsAlertItem
-- (SBGenerateLaunchSnapshotsAlertItem)initWithHandler:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
-- (void)regenerateApplications:(id)a3;
+- (SBGenerateLaunchSnapshotsAlertItem)initWithHandler:(id)handler;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
+- (void)regenerateApplications:(id)applications;
 @end
 
 @implementation SBGenerateLaunchSnapshotsAlertItem
 
-- (SBGenerateLaunchSnapshotsAlertItem)initWithHandler:(id)a3
+- (SBGenerateLaunchSnapshotsAlertItem)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = SBGenerateLaunchSnapshotsAlertItem;
   v5 = [(SBAlertItem *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x223D6F7F0](v4);
+    v6 = MEMORY[0x223D6F7F0](handlerCopy);
     handler = v5->_handler;
     v5->_handler = v6;
   }
@@ -22,21 +22,21 @@
   return v5;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
+  v5 = [(SBAlertItem *)self alertController:configure];
   [v5 setPreferredStyle:0];
   [v5 setTitle:@"Select Application Type"];
   v6 = +[SBApplicationController sharedInstance];
-  v7 = [v6 _splashBoardController];
-  v8 = [v7 applicationProvider];
+  _splashBoardController = [v6 _splashBoardController];
+  applicationProvider = [_splashBoardController applicationProvider];
   v9 = MEMORY[0x277D750F8];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __74__SBGenerateLaunchSnapshotsAlertItem_configure_requirePasscodeForActions___block_invoke;
   v25[3] = &unk_2783A8A18;
   v25[4] = self;
-  v10 = v8;
+  v10 = applicationProvider;
   v26 = v10;
   v11 = [v9 actionWithTitle:@"System" style:0 handler:v25];
   [v5 addAction:v11];
@@ -48,7 +48,7 @@
   v22[3] = &unk_2783A8A18;
   v13 = v10;
   v23 = v13;
-  v24 = self;
+  selfCopy = self;
   v14 = [v12 actionWithTitle:@"User" style:0 handler:v22];
   [v5 addAction:v14];
 
@@ -102,23 +102,23 @@ uint64_t __74__SBGenerateLaunchSnapshotsAlertItem_configure_requirePasscodeForAc
   return v2();
 }
 
-- (void)regenerateApplications:(id)a3
+- (void)regenerateApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   [(SBAlertItem *)self deactivate];
   v5 = objc_alloc_init(SBLaunchSnapshotWaitingAlertItem);
   [MEMORY[0x277D67938] activateAlertItem:v5];
   v6 = +[SBApplicationController sharedInstance];
-  v7 = [v6 _splashBoardController];
-  [v7 removeCachedLaunchImagesForApplications:v4 forgettingApps:1];
+  _splashBoardController = [v6 _splashBoardController];
+  [_splashBoardController removeCachedLaunchImagesForApplications:applicationsCopy forgettingApps:1];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__SBGenerateLaunchSnapshotsAlertItem_regenerateApplications___block_invoke;
   v9[3] = &unk_2783A92D8;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v8 = v5;
-  [v7 captureOrUpdateLaunchImagesForApplications:v4 firstImageIsReady:0 completion:v9];
+  [_splashBoardController captureOrUpdateLaunchImagesForApplications:applicationsCopy firstImageIsReady:0 completion:v9];
 }
 
 void __61__SBGenerateLaunchSnapshotsAlertItem_regenerateApplications___block_invoke(uint64_t a1)

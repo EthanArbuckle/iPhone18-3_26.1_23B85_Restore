@@ -1,19 +1,19 @@
 @interface FCReceiptRefresher
-- (id)refreshForPurchase:(id)a3;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)requestDidFinish:(id)a3;
+- (id)refreshForPurchase:(id)purchase;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)requestDidFinish:(id)finish;
 @end
 
 @implementation FCReceiptRefresher
 
-- (id)refreshForPurchase:(id)a3
+- (id)refreshForPurchase:(id)purchase
 {
-  v4 = a3;
+  purchaseCopy = purchase;
   v5 = objc_alloc_init(MEMORY[0x1E69B68F0]);
   [(FCReceiptRefresher *)self setPendingPromise:v5];
 
-  v6 = [v4 bundleID];
-  [(FCReceiptRefresher *)self setRestoreBundleID:v6];
+  bundleID = [purchaseCopy bundleID];
+  [(FCReceiptRefresher *)self setRestoreBundleID:bundleID];
 
   v31 = 0;
   v32 = &v31;
@@ -57,42 +57,42 @@
   _Block_object_dispose(&v31, 8);
   v13 = objc_alloc_init(v11);
   [v13 setBundleIdentifier:@"com.apple.news"];
-  v14 = [v4 bundleID];
-  [v13 setProductsRequestBundleIdentifier:v14];
+  bundleID2 = [purchaseCopy bundleID];
+  [v13 setProductsRequestBundleIdentifier:bundleID2];
 
-  v15 = [v4 appAdamID];
-  [v13 setStoreItemIdentifier:v15];
+  appAdamID = [purchaseCopy appAdamID];
+  [v13 setStoreItemIdentifier:appAdamID];
 
   [v13 setBundleVersion:@"1.0"];
-  v16 = [v4 storeExternalVersion];
-  [v13 setStoreExternalVersion:v16];
+  storeExternalVersion = [purchaseCopy storeExternalVersion];
+  [v13 setStoreExternalVersion:storeExternalVersion];
 
   [v13 setVendorIdentifier:v10];
-  v17 = [(FCReceiptRefresher *)self restoreBundleID];
-  v18 = FCPurchaseReceiptDirectoryURL(v17);
+  restoreBundleID = [(FCReceiptRefresher *)self restoreBundleID];
+  v18 = FCPurchaseReceiptDirectoryURL(restoreBundleID);
 
-  v19 = [v18 path];
-  [v13 setReceiptDirectoryPath:v19];
+  path = [v18 path];
+  [v13 setReceiptDirectoryPath:path];
 
-  v20 = [(FCReceiptRefresher *)self request];
-  [v20 setPaymentQueueClient:v13];
+  request = [(FCReceiptRefresher *)self request];
+  [request setPaymentQueueClient:v13];
 
-  v21 = [(FCReceiptRefresher *)self request];
-  [v21 setDelegate:self];
+  request2 = [(FCReceiptRefresher *)self request];
+  [request2 setDelegate:self];
 
-  v22 = [(FCReceiptRefresher *)self request];
-  [v22 start];
+  request3 = [(FCReceiptRefresher *)self request];
+  [request3 start];
 
-  v23 = [(FCReceiptRefresher *)self pendingPromise];
-  v24 = [v23 promise];
+  pendingPromise = [(FCReceiptRefresher *)self pendingPromise];
+  promise = [pendingPromise promise];
 
-  return v24;
+  return promise;
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
-  v4 = [(FCReceiptRefresher *)self restoreBundleID];
-  v5 = FCPurchaseReceiptDirectoryURL(v4);
+  restoreBundleID = [(FCReceiptRefresher *)self restoreBundleID];
+  v5 = FCPurchaseReceiptDirectoryURL(restoreBundleID);
 
   v11 = [v5 URLByAppendingPathComponent:@"/StoreKit/receipt"];
 
@@ -100,26 +100,26 @@
   v7 = [v6 base64EncodedStringWithOptions:0];
   if (v7)
   {
-    v8 = [(FCReceiptRefresher *)self pendingPromise];
-    v9 = [v8 resolve];
-    (v9)[2](v9, v7);
+    pendingPromise = [(FCReceiptRefresher *)self pendingPromise];
+    resolve = [pendingPromise resolve];
+    (resolve)[2](resolve, v7);
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.news.refresh.receipt" code:1001 userInfo:0];
-    v9 = [(FCReceiptRefresher *)self pendingPromise];
-    v10 = [v9 reject];
-    (v10)[2](v10, v8);
+    pendingPromise = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.news.refresh.receipt" code:1001 userInfo:0];
+    resolve = [(FCReceiptRefresher *)self pendingPromise];
+    reject = [resolve reject];
+    (reject)[2](reject, pendingPromise);
   }
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  v5 = a4;
-  v7 = [(FCReceiptRefresher *)self pendingPromise];
-  v6 = [v7 reject];
-  (v6)[2](v6, v5);
+  errorCopy = error;
+  pendingPromise = [(FCReceiptRefresher *)self pendingPromise];
+  reject = [pendingPromise reject];
+  (reject)[2](reject, errorCopy);
 }
 
 @end

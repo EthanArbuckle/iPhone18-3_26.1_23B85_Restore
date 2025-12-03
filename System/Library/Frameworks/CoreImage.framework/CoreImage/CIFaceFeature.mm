@@ -3,26 +3,26 @@
 - (CGPoint)mouthPosition;
 - (CGPoint)rightEyePosition;
 - (CGRect)bounds;
-- (CIFaceFeature)initWithBounds:(CGRect)a3 hasLeftEyePosition:(BOOL)a4 leftEyePosition:(CGPoint)a5 hasRightEyePosition:(BOOL)a6 rightEyePosition:(CGPoint)a7 hasMouthPosition:(BOOL)a8 mouthPosition:(CGPoint)a9 hasFaceAngle:(BOOL)a10 faceAngle:(float)a11 hasTrackingID:(BOOL)a12 trackingID:(int)a13 hasTrackingFrameCount:(BOOL)a14 trackingFrameCount:(int)a15 hasSmile:(BOOL)a16 leftEyeClosed:(BOOL)a17 rightEyeClosed:(BOOL)a18 landmarks:(id)a19;
+- (CIFaceFeature)initWithBounds:(CGRect)bounds hasLeftEyePosition:(BOOL)position leftEyePosition:(CGPoint)eyePosition hasRightEyePosition:(BOOL)rightEyePosition rightEyePosition:(CGPoint)a7 hasMouthPosition:(BOOL)mouthPosition mouthPosition:(CGPoint)a9 hasFaceAngle:(BOOL)self0 faceAngle:(float)self1 hasTrackingID:(BOOL)self2 trackingID:(int)self3 hasTrackingFrameCount:(BOOL)self4 trackingFrameCount:(int)self5 hasSmile:(BOOL)self6 leftEyeClosed:(BOOL)self7 rightEyeClosed:(BOOL)self8 landmarks:(id)self9;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation CIFaceFeature
 
-- (CIFaceFeature)initWithBounds:(CGRect)a3 hasLeftEyePosition:(BOOL)a4 leftEyePosition:(CGPoint)a5 hasRightEyePosition:(BOOL)a6 rightEyePosition:(CGPoint)a7 hasMouthPosition:(BOOL)a8 mouthPosition:(CGPoint)a9 hasFaceAngle:(BOOL)a10 faceAngle:(float)a11 hasTrackingID:(BOOL)a12 trackingID:(int)a13 hasTrackingFrameCount:(BOOL)a14 trackingFrameCount:(int)a15 hasSmile:(BOOL)a16 leftEyeClosed:(BOOL)a17 rightEyeClosed:(BOOL)a18 landmarks:(id)a19
+- (CIFaceFeature)initWithBounds:(CGRect)bounds hasLeftEyePosition:(BOOL)position leftEyePosition:(CGPoint)eyePosition hasRightEyePosition:(BOOL)rightEyePosition rightEyePosition:(CGPoint)a7 hasMouthPosition:(BOOL)mouthPosition mouthPosition:(CGPoint)a9 hasFaceAngle:(BOOL)self0 faceAngle:(float)self1 hasTrackingID:(BOOL)self2 trackingID:(int)self3 hasTrackingFrameCount:(BOOL)self4 trackingFrameCount:(int)self5 hasSmile:(BOOL)self6 leftEyeClosed:(BOOL)self7 rightEyeClosed:(BOOL)self8 landmarks:(id)self9
 {
-  v19 = a10;
+  angleCopy = angle;
   y_low = LOBYTE(a9.y);
   x_low = LOBYTE(a9.x);
   y = a7.y;
   x = a7.x;
-  v26 = a5.y;
-  v27 = a5.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v31 = a3.origin.y;
-  v32 = a3.origin.x;
+  v26 = eyePosition.y;
+  v27 = eyePosition.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v31 = bounds.origin.y;
+  v32 = bounds.origin.x;
   v36.receiver = self;
   v36.super_class = CIFaceFeature;
   v33 = [(CIFeature *)&v36 init];
@@ -33,23 +33,23 @@
     v33->bounds.origin.y = v31;
     v33->bounds.size.width = width;
     v33->bounds.size.height = height;
-    v33->hasLeftEyePosition = a4;
+    v33->hasLeftEyePosition = position;
     v33->leftEyePosition.x = v27;
     v33->leftEyePosition.y = v26;
-    v33->hasRightEyePosition = a6;
+    v33->hasRightEyePosition = rightEyePosition;
     v33->rightEyePosition.x = x;
     v33->rightEyePosition.y = y;
-    v33->hasMouthPosition = a8;
-    v33->mouthPosition.x = *&a11;
-    v33->mouthPosition.y = *&a13;
+    v33->hasMouthPosition = mouthPosition;
+    v33->mouthPosition.x = *&faceAngle;
+    v33->mouthPosition.y = *&iD;
     v33->hasFaceAngle = x_low;
-    LODWORD(v33->faceAngle) = a15;
+    LODWORD(v33->faceAngle) = frameCount;
     v33->hasTrackingID = y_low;
-    v33->trackingID = v19;
-    v33->hasTrackingFrameCount = a16;
-    v33->trackingFrameCount = a19;
-    *&v33->hasSmile = WORD2(a19);
-    v33->rightEyeClosed = BYTE6(a19);
+    v33->trackingID = angleCopy;
+    v33->hasTrackingFrameCount = smile;
+    v33->trackingFrameCount = landmarks;
+    *&v33->hasSmile = WORD2(landmarks);
+    v33->rightEyeClosed = BYTE6(landmarks);
     v33->landmarks = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v37 copyItems:1];
   }
 

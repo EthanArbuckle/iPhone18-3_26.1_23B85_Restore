@@ -1,27 +1,27 @@
 @interface IKDOMNodeList
-+ (IKDOMNodeList)nodeListWithAppContext:(id)a3 contextNode:(id)a4 xpath:(id)a5;
-- (IKDOMNodeList)initWithAppContext:(id)a3 contextNode:(id)a4 evaluationBlock:(id)a5;
-- (id)item:(int64_t)a3;
++ (IKDOMNodeList)nodeListWithAppContext:(id)context contextNode:(id)node xpath:(id)xpath;
+- (IKDOMNodeList)initWithAppContext:(id)context contextNode:(id)node evaluationBlock:(id)block;
+- (id)item:(int64_t)item;
 - (int64_t)length;
 - (void)_updateNodes;
-- (void)domDidUpdateForContextNode:(id)a3;
+- (void)domDidUpdateForContextNode:(id)node;
 @end
 
 @implementation IKDOMNodeList
 
-+ (IKDOMNodeList)nodeListWithAppContext:(id)a3 contextNode:(id)a4 xpath:(id)a5
++ (IKDOMNodeList)nodeListWithAppContext:(id)context contextNode:(id)node xpath:(id)xpath
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
+  xpathCopy = xpath;
+  nodeCopy = node;
+  contextCopy = context;
+  v11 = [self alloc];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__IKDOMNodeList_nodeListWithAppContext_contextNode_xpath___block_invoke;
   v15[3] = &unk_27979A428;
-  v16 = v8;
-  v12 = v8;
-  v13 = [v11 initWithAppContext:v10 contextNode:v9 evaluationBlock:v15];
+  v16 = xpathCopy;
+  v12 = xpathCopy;
+  v13 = [v11 initWithAppContext:contextCopy contextNode:nodeCopy evaluationBlock:v15];
 
   return v13;
 }
@@ -52,25 +52,25 @@ id __58__IKDOMNodeList_nodeListWithAppContext_contextNode_xpath___block_invoke(u
   return v6;
 }
 
-- (IKDOMNodeList)initWithAppContext:(id)a3 contextNode:(id)a4 evaluationBlock:(id)a5
+- (IKDOMNodeList)initWithAppContext:(id)context contextNode:(id)node evaluationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  nodeCopy = node;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = IKDOMNodeList;
-  v11 = [(IKJSObject *)&v18 initWithAppContext:v8];
+  v11 = [(IKJSObject *)&v18 initWithAppContext:contextCopy];
   if (v11)
   {
-    v12 = [v8 jsContext];
-    v13 = [v12 virtualMachine];
+    jsContext = [contextCopy jsContext];
+    virtualMachine = [jsContext virtualMachine];
 
-    v14 = [v9 managedSelf];
-    [v13 addManagedReference:v14 withOwner:v11];
+    managedSelf = [nodeCopy managedSelf];
+    [virtualMachine addManagedReference:managedSelf withOwner:v11];
 
-    [v9 addDOMObserver:v11];
-    objc_storeStrong(&v11->_contextNode, a4);
-    v15 = [v10 copy];
+    [nodeCopy addDOMObserver:v11];
+    objc_storeStrong(&v11->_contextNode, node);
+    v15 = [blockCopy copy];
     evaluationBlock = v11->_evaluationBlock;
     v11->_evaluationBlock = v15;
   }
@@ -81,42 +81,42 @@ id __58__IKDOMNodeList_nodeListWithAppContext_contextNode_xpath___block_invoke(u
 - (int64_t)length
 {
   [(IKDOMNodeList *)self _updateNodes];
-  v3 = [(IKDOMNodeList *)self nodes];
-  v4 = [v3 count];
+  nodes = [(IKDOMNodeList *)self nodes];
+  v4 = [nodes count];
 
   return v4;
 }
 
-- (id)item:(int64_t)a3
+- (id)item:(int64_t)item
 {
   [(IKDOMNodeList *)self _updateNodes];
-  if (a3 < 0 || [(IKDOMNodeList *)self length]<= a3)
+  if (item < 0 || [(IKDOMNodeList *)self length]<= item)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(IKDOMNodeList *)self nodes];
-    v6 = [v5 objectAtIndex:a3];
+    nodes = [(IKDOMNodeList *)self nodes];
+    v6 = [nodes objectAtIndex:item];
   }
 
   return v6;
 }
 
-- (void)domDidUpdateForContextNode:(id)a3
+- (void)domDidUpdateForContextNode:(id)node
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(IKJSObject *)self appContext];
-  v5 = [v4 jsContext];
-  v6 = [v5 virtualMachine];
+  appContext = [(IKJSObject *)self appContext];
+  jsContext = [appContext jsContext];
+  virtualMachine = [jsContext virtualMachine];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(IKDOMNodeList *)self nodes];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  nodes = [(IKDOMNodeList *)self nodes];
+  v8 = [nodes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -128,17 +128,17 @@ id __58__IKDOMNodeList_nodeListWithAppContext_contextNode_xpath___block_invoke(u
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(nodes);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) managedSelf];
-        [v6 removeManagedReference:v12 withOwner:self];
+        managedSelf = [*(*(&v14 + 1) + 8 * v11) managedSelf];
+        [virtualMachine removeManagedReference:managedSelf withOwner:self];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [nodes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -151,18 +151,18 @@ id __58__IKDOMNodeList_nodeListWithAppContext_contextNode_xpath___block_invoke(u
 - (void)_updateNodes
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(IKDOMNodeList *)self nodes];
+  nodes = [(IKDOMNodeList *)self nodes];
 
-  if (!v3)
+  if (!nodes)
   {
-    v4 = [(IKDOMNodeList *)self evaluationBlock];
+    evaluationBlock = [(IKDOMNodeList *)self evaluationBlock];
 
     v5 = MEMORY[0x277CBEBF8];
-    if (v4)
+    if (evaluationBlock)
     {
-      v6 = [(IKDOMNodeList *)self evaluationBlock];
-      v7 = [(IKDOMNodeList *)self contextNode];
-      v8 = (v6)[2](v6, v7);
+      evaluationBlock2 = [(IKDOMNodeList *)self evaluationBlock];
+      contextNode = [(IKDOMNodeList *)self contextNode];
+      v8 = (evaluationBlock2)[2](evaluationBlock2, contextNode);
       v9 = v8;
       if (v8)
       {
@@ -177,9 +177,9 @@ id __58__IKDOMNodeList_nodeListWithAppContext_contextNode_xpath___block_invoke(u
       v5 = v10;
     }
 
-    v11 = [(IKJSObject *)self appContext];
-    v12 = [v11 jsContext];
-    v13 = [v12 virtualMachine];
+    appContext = [(IKJSObject *)self appContext];
+    jsContext = [appContext jsContext];
+    virtualMachine = [jsContext virtualMachine];
 
     v23 = 0u;
     v24 = 0u;
@@ -200,8 +200,8 @@ id __58__IKDOMNodeList_nodeListWithAppContext_contextNode_xpath___block_invoke(u
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v21 + 1) + 8 * i) managedSelf];
-          [v13 addManagedReference:v19 withOwner:self];
+          managedSelf = [*(*(&v21 + 1) + 8 * i) managedSelf];
+          [virtualMachine addManagedReference:managedSelf withOwner:self];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];

@@ -1,7 +1,7 @@
 @interface TSUOnce
 - (TSUOnce)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)performBlockOnce:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)performBlockOnce:(id)once;
 @end
 
 @implementation TSUOnce
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSUOnce);
   os_unfair_lock_lock(&self->_lock);
@@ -30,14 +30,14 @@
   return v4;
 }
 
-- (void)performBlockOnce:(id)a3
+- (void)performBlockOnce:(id)once
 {
-  v4 = a3;
+  onceCopy = once;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_didPerformOnce)
   {
     self->_didPerformOnce = 1;
-    v4[2]();
+    onceCopy[2]();
   }
 
   os_unfair_lock_unlock(&self->_lock);

@@ -3,22 +3,22 @@
 + (id)sharedInstance;
 - (NSMutableDictionary)distributionIDToDistributionRules;
 - (NSMutableDictionary)rootNodeIDToNodeIDToDistributionRule;
-- (id)distributionRuleForRootNodeID:(id)a3 andNodeID:(id)a4;
-- (id)distributionRulesForDistributionID:(id)a3;
+- (id)distributionRuleForRootNodeID:(id)d andNodeID:(id)iD;
+- (id)distributionRulesForDistributionID:(id)d;
 - (id)regex;
-- (id)ruleWithString:(id)a3 withEntryDate:(id)a4;
-- (void)indexRule:(id)a3;
+- (id)ruleWithString:(id)string withEntryDate:(id)date;
+- (void)indexRule:(id)rule;
 @end
 
 @implementation PLAccountingDistributionRuleManager
 
 + (id)sharedInstance
 {
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  storageLocked = [storage storageLocked];
 
-  if (v5)
+  if (storageLocked)
   {
     v6 = 0;
   }
@@ -29,7 +29,7 @@
     block[1] = 3221225472;
     block[2] = __53__PLAccountingDistributionRuleManager_sharedInstance__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedInstance_onceToken_0 != -1)
     {
       dispatch_once(&sharedInstance_onceToken_0, block);
@@ -46,9 +46,9 @@
   distributionIDToDistributionRules = self->_distributionIDToDistributionRules;
   if (!distributionIDToDistributionRules)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_distributionIDToDistributionRules;
-    self->_distributionIDToDistributionRules = v4;
+    self->_distributionIDToDistributionRules = dictionary;
 
     distributionIDToDistributionRules = self->_distributionIDToDistributionRules;
   }
@@ -61,9 +61,9 @@
   rootNodeIDToNodeIDToDistributionRule = self->_rootNodeIDToNodeIDToDistributionRule;
   if (!rootNodeIDToNodeIDToDistributionRule)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_rootNodeIDToNodeIDToDistributionRule;
-    self->_rootNodeIDToNodeIDToDistributionRule = v4;
+    self->_rootNodeIDToNodeIDToDistributionRule = dictionary;
 
     rootNodeIDToNodeIDToDistributionRule = self->_rootNodeIDToNodeIDToDistributionRule;
   }
@@ -79,10 +79,10 @@ uint64_t __53__PLAccountingDistributionRuleManager_sharedInstance__block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)distributionRuleForRootNodeID:(id)a3 andNodeID:(id)a4
+- (id)distributionRuleForRootNodeID:(id)d andNodeID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -98,12 +98,12 @@ uint64_t __53__PLAccountingDistributionRuleManager_sharedInstance__block_invoke(
 
     if (distributionRuleForRootNodeID_andNodeID__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"rootNodeID=%@, nodeID=%@", v6, v7];
+      iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"rootNodeID=%@, nodeID=%@", dCopy, iDCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionRuleManager distributionRuleForRootNodeID:andNodeID:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:36];
+      [v10 logMessage:iDCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:36];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -113,8 +113,8 @@ uint64_t __53__PLAccountingDistributionRuleManager_sharedInstance__block_invoke(
     }
   }
 
-  v15 = [(PLAccountingDistributionRuleManager *)self rootNodeIDToNodeIDToDistributionRule];
-  v16 = [v15 objectForKeyedSubscript:v6];
+  rootNodeIDToNodeIDToDistributionRule = [(PLAccountingDistributionRuleManager *)self rootNodeIDToNodeIDToDistributionRule];
+  v16 = [rootNodeIDToNodeIDToDistributionRule objectForKeyedSubscript:dCopy];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -134,9 +134,9 @@ uint64_t __53__PLAccountingDistributionRuleManager_sharedInstance__block_invoke(
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"nodeIDToDistributionRule=%@", v16];
       v19 = MEMORY[0x277D3F178];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-      v21 = [v20 lastPathComponent];
+      lastPathComponent2 = [v20 lastPathComponent];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionRuleManager distributionRuleForRootNodeID:andNodeID:]"];
-      [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:40];
+      [v19 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:40];
 
       v23 = PLLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -148,7 +148,7 @@ uint64_t __53__PLAccountingDistributionRuleManager_sharedInstance__block_invoke(
 
   if (v16)
   {
-    v24 = [v16 objectForKeyedSubscript:v7];
+    v24 = [v16 objectForKeyedSubscript:iDCopy];
   }
 
   else
@@ -173,11 +173,11 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
   return result;
 }
 
-- (id)distributionRulesForDistributionID:(id)a3
+- (id)distributionRulesForDistributionID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLAccountingDistributionRuleManager *)self distributionIDToDistributionRules];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  distributionIDToDistributionRules = [(PLAccountingDistributionRuleManager *)self distributionIDToDistributionRules];
+  v6 = [distributionIDToDistributionRules objectForKeyedSubscript:dCopy];
 
   return v6;
 }
@@ -200,25 +200,25 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
 + (id)rulesPath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277D3F208] kPLDeviceClassName];
-  v4 = [v2 stringWithFormat:@"Distribution_Rules_%@.txt", v3];
+  kPLDeviceClassName = [MEMORY[0x277D3F208] kPLDeviceClassName];
+  v4 = [v2 stringWithFormat:@"Distribution_Rules_%@.txt", kPLDeviceClassName];
 
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = [(__CFString *)v4 stringByDeletingPathExtension];
-  v7 = [(__CFString *)v4 pathExtension];
-  v8 = [v5 pathForResource:v6 ofType:v7];
+  stringByDeletingPathExtension = [(__CFString *)v4 stringByDeletingPathExtension];
+  pathExtension = [(__CFString *)v4 pathExtension];
+  v8 = [v5 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
 
   if (!v8)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277D3F208] kPLDeviceClassName];
-    v11 = [v9 stringWithFormat:@"ERROR: Could not find distribution rules file for %@", v10];
+    kPLDeviceClassName2 = [MEMORY[0x277D3F208] kPLDeviceClassName];
+    v11 = [v9 stringWithFormat:@"ERROR: Could not find distribution rules file for %@", kPLDeviceClassName2];
 
     v12 = MEMORY[0x277D3F178];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-    v14 = [v13 lastPathComponent];
+    lastPathComponent = [v13 lastPathComponent];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLAccountingDistributionRuleManager rulesPath]"];
-    [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:87];
+    [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:87];
 
     v16 = PLLogCommon();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -228,18 +228,18 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
 
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = @"Distribution_Rules_N41.txt";
-    v18 = [@"Distribution_Rules_N41.txt" stringByDeletingPathExtension];
-    v19 = [@"Distribution_Rules_N41.txt" pathExtension];
-    v8 = [v17 pathForResource:v18 ofType:v19];
+    stringByDeletingPathExtension2 = [@"Distribution_Rules_N41.txt" stringByDeletingPathExtension];
+    pathExtension2 = [@"Distribution_Rules_N41.txt" pathExtension];
+    v8 = [v17 pathForResource:stringByDeletingPathExtension2 ofType:pathExtension2];
   }
 
   return v8;
 }
 
-- (id)ruleWithString:(id)a3 withEntryDate:(id)a4
+- (id)ruleWithString:(id)string withEntryDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  dateCopy = date;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -255,12 +255,12 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
 
     if (ruleWithString_withEntryDate__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"str=%@, entryDate=%@", v6, v7];
+      dateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"str=%@, entryDate=%@", stringCopy, dateCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionRuleManager ruleWithString:withEntryDate:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:98];
+      [v10 logMessage:dateCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:98];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -270,13 +270,13 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
     }
   }
 
-  v15 = [(PLAccountingDistributionRuleManager *)self regex];
-  v16 = [v15 firstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  regex = [(PLAccountingDistributionRuleManager *)self regex];
+  v16 = [regex firstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
 
   if (v16)
   {
     v17 = [v16 rangeAtIndex:1];
-    v19 = [v6 substringWithRange:{v17, v18}];
+    v19 = [stringCopy substringWithRange:{v17, v18}];
     v20 = +[PLAccountingNodeManager sharedInstance];
     v21 = [v20 nodeIDForNodeName:v19 isPermanent:1];
 
@@ -295,14 +295,14 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
 
       if (ruleWithString_withEntryDate__classDebugEnabled_44 == 1)
       {
-        v56 = v7;
+        v56 = dateCopy;
         v60 = v19;
         v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"nodeName=%@, nodeID=%@", v19, v21];
         v24 = MEMORY[0x277D3F178];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-        v26 = [v25 lastPathComponent];
+        lastPathComponent2 = [v25 lastPathComponent];
         v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionRuleManager ruleWithString:withEntryDate:]"];
-        [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:109];
+        [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:109];
 
         v28 = PLLogCommon();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -310,7 +310,7 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
           [PLAccountingDependency activate];
         }
 
-        v7 = v56;
+        dateCopy = v56;
         v19 = v60;
       }
     }
@@ -318,7 +318,7 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
     if (v21)
     {
       v29 = [v16 rangeAtIndex:2];
-      v31 = [v6 substringWithRange:{v29, v30}];
+      v31 = [stringCopy substringWithRange:{v29, v30}];
       v32 = +[PLAccountingNodeManager sharedInstance];
       v59 = [v32 nodeIDForNodeName:v31 isPermanent:1];
 
@@ -339,13 +339,13 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
         {
           v61 = v19;
           v54 = v31;
-          v57 = v7;
+          v57 = dateCopy;
           v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"rootNodeName=%@, rootNodeID=%@", v31, v59];
           v35 = MEMORY[0x277D3F178];
           v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-          v37 = [v36 lastPathComponent];
+          lastPathComponent3 = [v36 lastPathComponent];
           v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionRuleManager ruleWithString:withEntryDate:]"];
-          [v35 logMessage:v34 fromFile:v37 fromFunction:v38 fromLineNumber:115];
+          [v35 logMessage:v34 fromFile:lastPathComponent3 fromFunction:v38 fromLineNumber:115];
 
           v39 = PLLogCommon();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -354,7 +354,7 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
           }
 
           v31 = v54;
-          v7 = v57;
+          dateCopy = v57;
           v19 = v61;
         }
       }
@@ -363,9 +363,9 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
       if (v59)
       {
         v62 = v19;
-        v41 = v7;
+        v41 = dateCopy;
         v42 = [v16 rangeAtIndex:3];
-        v44 = [v6 substringWithRange:{v42, v43}];
+        v44 = [stringCopy substringWithRange:{v42, v43}];
         v45 = [PLAccountingEngine distributionIDForDistributionName:v44];
         if ([MEMORY[0x277D3F180] debugEnabled])
         {
@@ -386,9 +386,9 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
             v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionName=%@, distributionID=%@", v44, v45];
             v58 = MEMORY[0x277D3F178];
             v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-            v49 = [v48 lastPathComponent];
+            lastPathComponent4 = [v48 lastPathComponent];
             v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionRuleManager ruleWithString:withEntryDate:]"];
-            [v58 logMessage:v47 fromFile:v49 fromFunction:v50 fromLineNumber:120];
+            [v58 logMessage:v47 fromFile:lastPathComponent4 fromFunction:v50 fromLineNumber:120];
 
             v51 = PLLogCommon();
             if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -411,7 +411,7 @@ uint64_t __79__PLAccountingDistributionRuleManager_distributionRuleForRootNodeID
           v52 = 0;
         }
 
-        v7 = v41;
+        dateCopy = v41;
         v19 = v62;
       }
 
@@ -463,27 +463,27 @@ uint64_t __68__PLAccountingDistributionRuleManager_ruleWithString_withEntryDate_
   return result;
 }
 
-- (void)indexRule:(id)a3
+- (void)indexRule:(id)rule
 {
-  v4 = a3;
+  ruleCopy = rule;
   v37.receiver = self;
   v37.super_class = PLAccountingDistributionRuleManager;
-  [(PLAccountingRuleManager *)&v37 indexRule:v4];
-  v5 = v4;
-  v6 = [(PLAccountingDistributionRuleManager *)self rootNodeIDToNodeIDToDistributionRule];
-  v7 = [v5 rootNodeID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  [(PLAccountingRuleManager *)&v37 indexRule:ruleCopy];
+  v5 = ruleCopy;
+  rootNodeIDToNodeIDToDistributionRule = [(PLAccountingDistributionRuleManager *)self rootNodeIDToNodeIDToDistributionRule];
+  rootNodeID = [v5 rootNodeID];
+  dictionary = [rootNodeIDToNodeIDToDistributionRule objectForKeyedSubscript:rootNodeID];
 
-  if (!v8)
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    v9 = [(PLAccountingDistributionRuleManager *)self rootNodeIDToNodeIDToDistributionRule];
-    v10 = [v5 rootNodeID];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    rootNodeIDToNodeIDToDistributionRule2 = [(PLAccountingDistributionRuleManager *)self rootNodeIDToNodeIDToDistributionRule];
+    rootNodeID2 = [v5 rootNodeID];
+    [rootNodeIDToNodeIDToDistributionRule2 setObject:dictionary forKeyedSubscript:rootNodeID2];
   }
 
-  v11 = [v5 nodeID];
-  [v8 setObject:v5 forKeyedSubscript:v11];
+  nodeID = [v5 nodeID];
+  [dictionary setObject:v5 forKeyedSubscript:nodeID];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -501,14 +501,14 @@ uint64_t __68__PLAccountingDistributionRuleManager_ruleWithString_withEntryDate_
     if (indexRule__classDebugEnabled == 1)
     {
       v13 = MEMORY[0x277CCACA8];
-      v14 = [(PLAccountingDistributionRuleManager *)self rootNodeIDToNodeIDToDistributionRule];
-      v15 = [v13 stringWithFormat:@"rootNodeIDToNodeIDToDistributionRule=%@", v14];
+      rootNodeIDToNodeIDToDistributionRule3 = [(PLAccountingDistributionRuleManager *)self rootNodeIDToNodeIDToDistributionRule];
+      v15 = [v13 stringWithFormat:@"rootNodeIDToNodeIDToDistributionRule=%@", rootNodeIDToNodeIDToDistributionRule3];
 
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionRuleManager indexRule:]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:143];
+      [v16 logMessage:v15 fromFile:lastPathComponent fromFunction:v19 fromLineNumber:143];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -518,19 +518,19 @@ uint64_t __68__PLAccountingDistributionRuleManager_ruleWithString_withEntryDate_
     }
   }
 
-  v21 = [(PLAccountingDistributionRuleManager *)self distributionIDToDistributionRules];
-  v22 = [v5 distributionID];
-  v23 = [v21 objectForKeyedSubscript:v22];
+  distributionIDToDistributionRules = [(PLAccountingDistributionRuleManager *)self distributionIDToDistributionRules];
+  distributionID = [v5 distributionID];
+  array = [distributionIDToDistributionRules objectForKeyedSubscript:distributionID];
 
-  if (!v23)
+  if (!array)
   {
-    v23 = [MEMORY[0x277CBEB18] array];
-    v24 = [(PLAccountingDistributionRuleManager *)self distributionIDToDistributionRules];
-    v25 = [v5 distributionID];
-    [v24 setObject:v23 forKeyedSubscript:v25];
+    array = [MEMORY[0x277CBEB18] array];
+    distributionIDToDistributionRules2 = [(PLAccountingDistributionRuleManager *)self distributionIDToDistributionRules];
+    distributionID2 = [v5 distributionID];
+    [distributionIDToDistributionRules2 setObject:array forKeyedSubscript:distributionID2];
   }
 
-  [v23 addObject:v5];
+  [array addObject:v5];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v26 = objc_opt_class();
@@ -547,14 +547,14 @@ uint64_t __68__PLAccountingDistributionRuleManager_ruleWithString_withEntryDate_
     if (indexRule__classDebugEnabled_67 == 1)
     {
       v27 = MEMORY[0x277CCACA8];
-      v28 = [(PLAccountingDistributionRuleManager *)self distributionIDToDistributionRules];
-      v29 = [v27 stringWithFormat:@"distributionIDToDistributionRules=%@", v28];
+      distributionIDToDistributionRules3 = [(PLAccountingDistributionRuleManager *)self distributionIDToDistributionRules];
+      v29 = [v27 stringWithFormat:@"distributionIDToDistributionRules=%@", distributionIDToDistributionRules3];
 
       v30 = MEMORY[0x277D3F178];
       v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingDistributionRuleManager.m"];
-      v32 = [v31 lastPathComponent];
+      lastPathComponent2 = [v31 lastPathComponent];
       v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionRuleManager indexRule:]"];
-      [v30 logMessage:v29 fromFile:v32 fromFunction:v33 fromLineNumber:152];
+      [v30 logMessage:v29 fromFile:lastPathComponent2 fromFunction:v33 fromLineNumber:152];
 
       v34 = PLLogCommon();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))

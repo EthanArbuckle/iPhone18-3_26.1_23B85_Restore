@@ -1,7 +1,7 @@
 @interface LyonSwiftDecoder
 + (id)getInstance;
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8;
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
 - (int64_t)stateNumber;
 - (void)cleanup;
 @end
@@ -41,14 +41,14 @@
   return 4;
 }
 
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = self;
+  eventCopy = event;
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
+  selfCopy = self;
   v19 = sub_22EFB61DC();
   v21 = v20;
 
@@ -63,7 +63,7 @@
   return v25;
 }
 
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   sub_22EF7D54C();
   v7 = sub_22EFB641C();
@@ -73,7 +73,7 @@
 
 - (void)cleanup
 {
-  v2 = self;
+  selfCopy = self;
   sub_22EF7ADDC();
 }
 

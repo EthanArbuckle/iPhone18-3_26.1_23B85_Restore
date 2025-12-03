@@ -1,26 +1,26 @@
 @interface STDynamicActivityAttribution
-+ (id)attributionForClientAuditToken:(id *)a3 clientExecutablePath:(id)a4 bundleID:(id)a5 localizationKey:(id)a6;
-+ (id)attributionForClientAuditToken:(id *)a3 maskingClientAuditToken:(id *)a4 clientExecutablePath:(id)a5 maskingClientExecutablePath:(id)a6 localizationKey:(id)a7;
-+ (id)attributionForClientAuditToken:(id *)a3 maskingClientAuditToken:(id *)a4 clientExecutablePath:(id)a5 maskingClientExecutablePath:(id)a6 stringWithFormat:(id)a7;
-+ (id)attributionForClientAuditToken:(id *)a3 maskingClientAuditToken:(id *)a4 clientExecutablePath:(id)a5 maskingClientExecutablePath:(id)a6 website:(id)a7;
++ (id)attributionForClientAuditToken:(id *)token clientExecutablePath:(id)path bundleID:(id)d localizationKey:(id)key;
++ (id)attributionForClientAuditToken:(id *)token maskingClientAuditToken:(id *)auditToken clientExecutablePath:(id)path maskingClientExecutablePath:(id)executablePath localizationKey:(id)key;
++ (id)attributionForClientAuditToken:(id *)token maskingClientAuditToken:(id *)auditToken clientExecutablePath:(id)path maskingClientExecutablePath:(id)executablePath stringWithFormat:(id)format;
++ (id)attributionForClientAuditToken:(id *)token maskingClientAuditToken:(id *)auditToken clientExecutablePath:(id)path maskingClientExecutablePath:(id)executablePath website:(id)website;
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientAuditToken;
 - ($115C4C562B26FF47E01F9F4EA65B5887)maskingClientAuditToken;
-- (BOOL)isEqual:(id)a3;
-- (STDynamicActivityAttribution)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STDynamicActivityAttribution)initWithCoder:(id)coder;
 - (id)description;
-- (void)_initWithClientAuditToken:(void *)a3 clientExecutablePath:;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithClientAuditToken:(void *)token clientExecutablePath:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STDynamicActivityAttribution
 
-+ (id)attributionForClientAuditToken:(id *)a3 clientExecutablePath:(id)a4 bundleID:(id)a5 localizationKey:(id)a6
++ (id)attributionForClientAuditToken:(id *)token clientExecutablePath:(id)path bundleID:(id)d localizationKey:(id)key
 {
   v38 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  pathCopy = path;
+  dCopy = d;
+  keyCopy = key;
+  if (keyCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -36,7 +36,7 @@
         *&buf[12] = 2114;
         *&buf[14] = v26;
         *&buf[22] = 2048;
-        *&buf[24] = a1;
+        *&buf[24] = self;
         v32 = 2114;
         v33 = @"STDynamicActivityAttribution.m";
         v34 = 1024;
@@ -52,13 +52,13 @@
       JUMPOUT(0x1DA9FC440);
     }
 
-    if (!v12)
+    if (!dCopy)
     {
       goto LABEL_8;
     }
   }
 
-  else if (!v12)
+  else if (!dCopy)
   {
     v16 = 0;
     goto LABEL_11;
@@ -78,7 +78,7 @@
       *&buf[12] = 2114;
       *&buf[14] = v30;
       *&buf[22] = 2048;
-      *&buf[24] = a1;
+      *&buf[24] = self;
       v32 = 2114;
       v33 = @"STDynamicActivityAttribution.m";
       v34 = 1024;
@@ -96,17 +96,17 @@
 
 LABEL_8:
   v14 = [STDynamicActivityAttribution alloc];
-  v15 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v15 = *&token->var0[4];
+  *buf = *token->var0;
   *&buf[16] = v15;
-  v16 = [(STDynamicActivityAttribution *)v14 _initWithClientAuditToken:buf clientExecutablePath:v11];
+  v16 = [(STDynamicActivityAttribution *)v14 _initWithClientAuditToken:buf clientExecutablePath:pathCopy];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [dCopy copy];
     v18 = v16[1];
     v16[1] = v17;
 
-    v19 = [v13 copy];
+    v19 = [keyCopy copy];
     v20 = v16[2];
     v16[2] = v19;
   }
@@ -118,32 +118,32 @@ LABEL_11:
   return v16;
 }
 
-- (void)_initWithClientAuditToken:(void *)a3 clientExecutablePath:
+- (void)_initWithClientAuditToken:(void *)token clientExecutablePath:
 {
-  v6 = a3;
-  if (a1)
+  tokenCopy = token;
+  if (self)
   {
-    v7 = [a1 init];
-    a1 = v7;
+    v7 = [self init];
+    self = v7;
     if (v7)
     {
       v8 = *a2;
       *(v7 + 72) = a2[1];
       *(v7 + 56) = v8;
-      objc_storeStrong((v7 + 40), a3);
+      objc_storeStrong((v7 + 40), token);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)attributionForClientAuditToken:(id *)a3 maskingClientAuditToken:(id *)a4 clientExecutablePath:(id)a5 maskingClientExecutablePath:(id)a6 localizationKey:(id)a7
++ (id)attributionForClientAuditToken:(id *)token maskingClientAuditToken:(id *)auditToken clientExecutablePath:(id)path maskingClientExecutablePath:(id)executablePath localizationKey:(id)key
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  pathCopy = path;
+  executablePathCopy = executablePath;
+  keyCopy = key;
+  if (keyCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -159,7 +159,7 @@ LABEL_11:
         *&buf[12] = 2114;
         *&buf[14] = v30;
         *&buf[22] = 2048;
-        *&buf[24] = a1;
+        *&buf[24] = self;
         v32 = 2114;
         v33 = @"STDynamicActivityAttribution.m";
         v34 = 1024;
@@ -176,21 +176,21 @@ LABEL_11:
     }
 
     v16 = [STDynamicActivityAttribution alloc];
-    v17 = *&a3->var0[4];
-    *buf = *a3->var0;
+    v17 = *&token->var0[4];
+    *buf = *token->var0;
     *&buf[16] = v17;
-    v18 = [(STDynamicActivityAttribution *)v16 _initWithClientAuditToken:buf clientExecutablePath:v13];
+    v18 = [(STDynamicActivityAttribution *)v16 _initWithClientAuditToken:buf clientExecutablePath:pathCopy];
     v19 = v18;
     if (v18)
     {
-      v20 = *a4->var0;
-      *(v18 + 104) = *&a4->var0[4];
+      v20 = *auditToken->var0;
+      *(v18 + 104) = *&auditToken->var0[4];
       *(v18 + 88) = v20;
-      v21 = [v14 copy];
+      v21 = [executablePathCopy copy];
       v22 = v19[6];
       v19[6] = v21;
 
-      v23 = [v15 copy];
+      v23 = [keyCopy copy];
       v24 = v19[2];
       v19[2] = v23;
     }
@@ -206,13 +206,13 @@ LABEL_11:
   return v19;
 }
 
-+ (id)attributionForClientAuditToken:(id *)a3 maskingClientAuditToken:(id *)a4 clientExecutablePath:(id)a5 maskingClientExecutablePath:(id)a6 stringWithFormat:(id)a7
++ (id)attributionForClientAuditToken:(id *)token maskingClientAuditToken:(id *)auditToken clientExecutablePath:(id)path maskingClientExecutablePath:(id)executablePath stringWithFormat:(id)format
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  pathCopy = path;
+  executablePathCopy = executablePath;
+  formatCopy = format;
+  if (formatCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -228,7 +228,7 @@ LABEL_11:
         *&buf[12] = 2114;
         *&buf[14] = v30;
         *&buf[22] = 2048;
-        *&buf[24] = a1;
+        *&buf[24] = self;
         v32 = 2114;
         v33 = @"STDynamicActivityAttribution.m";
         v34 = 1024;
@@ -245,21 +245,21 @@ LABEL_11:
     }
 
     v16 = [STDynamicActivityAttribution alloc];
-    v17 = *&a3->var0[4];
-    *buf = *a3->var0;
+    v17 = *&token->var0[4];
+    *buf = *token->var0;
     *&buf[16] = v17;
-    v18 = [(STDynamicActivityAttribution *)v16 _initWithClientAuditToken:buf clientExecutablePath:v13];
+    v18 = [(STDynamicActivityAttribution *)v16 _initWithClientAuditToken:buf clientExecutablePath:pathCopy];
     v19 = v18;
     if (v18)
     {
-      v20 = *a4->var0;
-      *(v18 + 104) = *&a4->var0[4];
+      v20 = *auditToken->var0;
+      *(v18 + 104) = *&auditToken->var0[4];
       *(v18 + 88) = v20;
-      v21 = [v14 copy];
+      v21 = [executablePathCopy copy];
       v22 = v19[6];
       v19[6] = v21;
 
-      v23 = [v15 copy];
+      v23 = [formatCopy copy];
       v24 = v19[3];
       v19[3] = v23;
     }
@@ -275,13 +275,13 @@ LABEL_11:
   return v19;
 }
 
-+ (id)attributionForClientAuditToken:(id *)a3 maskingClientAuditToken:(id *)a4 clientExecutablePath:(id)a5 maskingClientExecutablePath:(id)a6 website:(id)a7
++ (id)attributionForClientAuditToken:(id *)token maskingClientAuditToken:(id *)auditToken clientExecutablePath:(id)path maskingClientExecutablePath:(id)executablePath website:(id)website
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  pathCopy = path;
+  executablePathCopy = executablePath;
+  websiteCopy = website;
+  if (websiteCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -297,7 +297,7 @@ LABEL_11:
         *&buf[12] = 2114;
         *&buf[14] = v30;
         *&buf[22] = 2048;
-        *&buf[24] = a1;
+        *&buf[24] = self;
         v32 = 2114;
         v33 = @"STDynamicActivityAttribution.m";
         v34 = 1024;
@@ -314,21 +314,21 @@ LABEL_11:
     }
 
     v16 = [STDynamicActivityAttribution alloc];
-    v17 = *&a3->var0[4];
-    *buf = *a3->var0;
+    v17 = *&token->var0[4];
+    *buf = *token->var0;
     *&buf[16] = v17;
-    v18 = [(STDynamicActivityAttribution *)v16 _initWithClientAuditToken:buf clientExecutablePath:v13];
+    v18 = [(STDynamicActivityAttribution *)v16 _initWithClientAuditToken:buf clientExecutablePath:pathCopy];
     v19 = v18;
     if (v18)
     {
-      v20 = *a4->var0;
-      *(v18 + 104) = *&a4->var0[4];
+      v20 = *auditToken->var0;
+      *(v18 + 104) = *&auditToken->var0[4];
       *(v18 + 88) = v20;
-      v21 = [v14 copy];
+      v21 = [executablePathCopy copy];
       v22 = v19[6];
       v19[6] = v21;
 
-      v23 = [v15 copy];
+      v23 = [websiteCopy copy];
       v24 = v19[4];
       v19[4] = v23;
     }
@@ -344,9 +344,9 @@ LABEL_11:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -356,8 +356,8 @@ LABEL_11:
   v21 = *self->_clientAuditToken.val;
   v25 = *&self->_clientAuditToken.val[4];
   v5 = BSVersionedPIDForAuditToken();
-  v22 = *(v4 + 56);
-  v26 = *(v4 + 72);
+  v22 = *(equalCopy + 56);
+  v26 = *(equalCopy + 72);
   if (v5 != BSVersionedPIDForAuditToken())
   {
     goto LABEL_10;
@@ -366,33 +366,33 @@ LABEL_11:
   v23 = *self->_maskingClientAuditToken.val;
   v27 = *&self->_maskingClientAuditToken.val[4];
   v6 = BSVersionedPIDForAuditToken();
-  v24 = *(v4 + 88);
-  v28 = *(v4 + 104);
+  v24 = *(equalCopy + 88);
+  v28 = *(equalCopy + 104);
   if (v6 != BSVersionedPIDForAuditToken())
   {
     goto LABEL_10;
   }
 
   clientExecutablePath = self->_clientExecutablePath;
-  v8 = *(v4 + 5);
+  v8 = *(equalCopy + 5);
   if (!BSEqualStrings())
   {
     goto LABEL_10;
   }
 
   maskingClientExecutablePath = self->_maskingClientExecutablePath;
-  v10 = *(v4 + 6);
+  v10 = *(equalCopy + 6);
   if (!BSEqualStrings())
   {
     goto LABEL_10;
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  v12 = *(v4 + 1);
-  if (BSEqualStrings() && (localizationKey = self->_localizationKey, v14 = *(v4 + 2), BSEqualStrings()) && (formattedString = self->_formattedString, v16 = *(v4 + 3), BSEqualStrings()))
+  v12 = *(equalCopy + 1);
+  if (BSEqualStrings() && (localizationKey = self->_localizationKey, v14 = *(equalCopy + 2), BSEqualStrings()) && (formattedString = self->_formattedString, v16 = *(equalCopy + 3), BSEqualStrings()))
   {
     website = self->_website;
-    v18 = *(v4 + 4);
+    v18 = *(equalCopy + 4);
     v19 = BSEqualStrings();
   }
 
@@ -407,24 +407,24 @@ LABEL_10:
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(NSString *)self->_clientExecutablePath lastPathComponent];
-    v5 = [v3 stringWithFormat:@"%@:%d", v4, BSPIDForAuditToken()];
+    lastPathComponent = [(NSString *)self->_clientExecutablePath lastPathComponent];
+    v5 = [v3 stringWithFormat:@"%@:%d", lastPathComponent, BSPIDForAuditToken()];
 
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [*(v2 + 48) lastPathComponent];
-    v8 = [v6 stringWithFormat:@"%@:%d", v7, BSPIDForAuditToken()];
+    lastPathComponent2 = [*(selfCopy + 48) lastPathComponent];
+    v8 = [v6 stringWithFormat:@"%@:%d", lastPathComponent2, BSPIDForAuditToken()];
 
-    v9 = [MEMORY[0x1E698E680] builderWithObject:v2];
+    v9 = [MEMORY[0x1E698E680] builderWithObject:selfCopy];
     v10 = [v9 appendObject:v5 withName:@"client"];
     v11 = [v9 appendObject:v8 withName:@"maskingClient"];
-    v12 = [v9 appendObject:*(v2 + 8) withName:@"bundleID" skipIfNil:1];
-    v13 = [v9 appendObject:*(v2 + 16) withName:@"locKey" skipIfNil:1];
-    v14 = [v9 appendObject:*(v2 + 24) withName:@"formattedString" skipIfNil:1];
-    if (*(v2 + 32))
+    v12 = [v9 appendObject:*(selfCopy + 8) withName:@"bundleID" skipIfNil:1];
+    v13 = [v9 appendObject:*(selfCopy + 16) withName:@"locKey" skipIfNil:1];
+    v14 = [v9 appendObject:*(selfCopy + 24) withName:@"formattedString" skipIfNil:1];
+    if (*(selfCopy + 32))
     {
       v15 = @"YES";
     }
@@ -436,41 +436,41 @@ LABEL_10:
 
     v16 = [v9 appendObject:v15 withName:@"websiteNonNil" skipIfNil:1];
 
-    v2 = [v9 build];
+    selfCopy = [v9 build];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E698E620];
   v5 = *&self->_clientAuditToken.val[4];
   v10 = *self->_clientAuditToken.val;
   v11 = v5;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 tokenFromAuditToken:&v10];
-  [v6 encodeObject:v7 forKey:{@"_clientAuditToken", v10, v11}];
+  [coderCopy encodeObject:v7 forKey:{@"_clientAuditToken", v10, v11}];
 
-  [v6 encodeObject:self->_clientExecutablePath forKey:@"_clientExecutablePath"];
+  [coderCopy encodeObject:self->_clientExecutablePath forKey:@"_clientExecutablePath"];
   v8 = *&self->_maskingClientAuditToken.val[4];
   v10 = *self->_maskingClientAuditToken.val;
   v11 = v8;
   v9 = [MEMORY[0x1E698E620] tokenFromAuditToken:&v10];
-  [v6 encodeObject:v9 forKey:@"_maskingClientAuditToken"];
+  [coderCopy encodeObject:v9 forKey:@"_maskingClientAuditToken"];
 
-  [v6 encodeObject:self->_maskingClientExecutablePath forKey:@"_maskingClientExecutablePath"];
-  [v6 encodeObject:self->_bundleIdentifier forKey:@"_bundleIdentifier"];
-  [v6 encodeObject:self->_localizationKey forKey:@"_localizationKey"];
-  [v6 encodeObject:self->_formattedString forKey:@"_formattedString"];
-  [v6 encodeObject:self->_website forKey:@"_website"];
+  [coderCopy encodeObject:self->_maskingClientExecutablePath forKey:@"_maskingClientExecutablePath"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"_bundleIdentifier"];
+  [coderCopy encodeObject:self->_localizationKey forKey:@"_localizationKey"];
+  [coderCopy encodeObject:self->_formattedString forKey:@"_formattedString"];
+  [coderCopy encodeObject:self->_website forKey:@"_website"];
 }
 
-- (STDynamicActivityAttribution)initWithCoder:(id)a3
+- (STDynamicActivityAttribution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientAuditToken"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientExecutablePath"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientAuditToken"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientExecutablePath"];
   v7 = v6;
   if (v5)
   {
@@ -484,13 +484,13 @@ LABEL_10:
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maskingClientAuditToken"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maskingClientExecutablePath"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maskingClientAuditToken"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maskingClientExecutablePath"];
     v12 = v11;
     if (v10 && v11)
     {
@@ -522,27 +522,27 @@ LABEL_10:
       self = [(STDynamicActivityAttribution *)self _initWithClientAuditToken:v29 clientExecutablePath:v7];
     }
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
     bundleIdentifier = self->_bundleIdentifier;
     self->_bundleIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localizationKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localizationKey"];
     localizationKey = self->_localizationKey;
     self->_localizationKey = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_formattedString"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_formattedString"];
     formattedString = self->_formattedString;
     self->_formattedString = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_website"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_website"];
     website = self->_website;
     self->_website = v24;
 
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientAuditToken

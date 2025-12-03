@@ -11,22 +11,22 @@
 - (PKDrawingPaletteInputAssistantView)paletteInputAssistantView;
 - (PKDrawingPaletteViewStateSubject)paletteViewState;
 - (PKPaletteColorPickerView)colorPickerView;
-- (PKPaletteContentView)initWithPaletteViewStateObservable:(id)a3;
+- (PKPaletteContentView)initWithPaletteViewStateObservable:(id)observable;
 - (PKPaletteContentViewDelegate)delegate;
 - (PKPaletteToolPickerView)toolPickerView;
 - (UIView)lassoToolEditingView;
 - (double)_interItemToolsSpacing;
 - (double)_stackViewSpacing;
 - (double)_undoRedoButtonsInterItemSpacing;
-- (double)toolPickerView:(id)a3 widthForToolAtIndex:(int64_t)a4 isCompactSize:(BOOL)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)paletteButton:(id)a3 backgroundColorForState:(unint64_t)a4;
-- (id)paletteButton:(id)a3 tintColorForState:(unint64_t)a4;
+- (double)toolPickerView:(id)view widthForToolAtIndex:(int64_t)index isCompactSize:(BOOL)size;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)paletteButton:(id)button backgroundColorForState:(unint64_t)state;
+- (id)paletteButton:(id)button tintColorForState:(unint64_t)state;
 - (int64_t)_stackViewDistribution;
-- (void)_closeButtonTapped:(id)a3;
-- (void)_configureMenuForKeyboardButton:(id)a3;
+- (void)_closeButtonTapped:(id)tapped;
+- (void)_configureMenuForKeyboardButton:(id)button;
 - (void)_didTapLassoToolInCompact;
-- (void)_dismissPalettePopoverUsingConfirmationBlock:(id)a3 completion:(id)a4;
+- (void)_dismissPalettePopoverUsingConfirmationBlock:(id)block completion:(id)completion;
 - (void)_handleKeyboardButtonPressed;
 - (void)_handleReturnKeyButtonPressed;
 - (void)_installAdditionalOptionsView;
@@ -35,29 +35,29 @@
 - (void)_updateAdditionalOptionsViewVisibility;
 - (void)_updateCloseButtonVisibility;
 - (void)_updateColorPickerContainerViewLocationInHierarchy;
-- (void)_updateUIResetUnselectedToolsVisible:(BOOL)a3;
-- (void)colorPickerContainerView:(id)a3 willDismissInputAssistantView:(id)a4;
-- (void)colorPickerContainerView:(id)a3 willPresentInputAssistantView:(id)a4;
+- (void)_updateUIResetUnselectedToolsVisible:(BOOL)visible;
+- (void)colorPickerContainerView:(id)view willDismissInputAssistantView:(id)assistantView;
+- (void)colorPickerContainerView:(id)view willPresentInputAssistantView:(id)assistantView;
 - (void)dismissEyeDropper;
-- (void)dismissPalettePopoverWithCompletion:(id)a3;
+- (void)dismissPalettePopoverWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)paletteViewStateDidChangeIsVisible:(id)a3;
+- (void)paletteViewStateDidChangeIsVisible:(id)visible;
 - (void)safeAreaInsetsDidChange;
-- (void)setCloseButtonVisible:(BOOL)a3;
-- (void)setColorMaximumLinearExposure:(double)a3;
-- (void)setContextEditingMode:(int64_t)a3;
-- (void)setCornerLocation:(unint64_t)a3;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setLassoToolEditingViewIdentifier:(id)a3;
+- (void)setCloseButtonVisible:(BOOL)visible;
+- (void)setColorMaximumLinearExposure:(double)exposure;
+- (void)setContextEditingMode:(int64_t)mode;
+- (void)setCornerLocation:(unint64_t)location;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setLassoToolEditingViewIdentifier:(id)identifier;
 - (void)toggleColorSelectionPopover;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKPaletteContentView
 
-- (PKPaletteContentView)initWithPaletteViewStateObservable:(id)a3
+- (PKPaletteContentView)initWithPaletteViewStateObservable:(id)observable
 {
-  v4 = a3;
+  observableCopy = observable;
   v39.receiver = self;
   v39.super_class = PKPaletteContentView;
   v5 = [(PKPaletteContentView *)&v39 init];
@@ -65,16 +65,16 @@
   if (v5)
   {
     v5->_colorMaximumLinearExposure = 1.0;
-    objc_storeWeak(&v5->_paletteViewState, v4);
+    objc_storeWeak(&v5->_paletteViewState, observableCopy);
     [(PKPaletteContentView *)v6 _installStackView];
     [(PKPaletteContentView *)v6 _installUndoRedoButtonsView];
-    v7 = [(PKPaletteContentView *)v6 undoRedoView];
-    v8 = [v7 undoButton];
-    [v8 setDelegate:v6];
+    undoRedoView = [(PKPaletteContentView *)v6 undoRedoView];
+    undoButton = [undoRedoView undoButton];
+    [undoButton setDelegate:v6];
 
-    v9 = [(PKPaletteContentView *)v6 undoRedoView];
-    v10 = [v9 redoButton];
-    [v10 setDelegate:v6];
+    undoRedoView2 = [(PKPaletteContentView *)v6 undoRedoView];
+    redoButton = [undoRedoView2 redoButton];
+    [redoButton setDelegate:v6];
 
     v11 = objc_alloc_init(PKPaletteToolPickerAndColorPickerView);
     toolAndColorPickerContainerView = v6->_toolAndColorPickerContainerView;
@@ -82,22 +82,22 @@
 
     [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
     WeakRetained = objc_loadWeakRetained(&v6->_paletteViewState);
-    v14 = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView colorPickerContainerView];
-    [v14 setPaletteViewState:WeakRetained];
+    colorPickerContainerView = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView colorPickerContainerView];
+    [colorPickerContainerView setPaletteViewState:WeakRetained];
 
-    v15 = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView colorPickerContainerView];
-    [v15 setDelegate:v6];
+    colorPickerContainerView2 = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView colorPickerContainerView];
+    [colorPickerContainerView2 setDelegate:v6];
 
     [(UIStackView *)v6->_stackView addArrangedSubview:v6->_toolAndColorPickerContainerView];
-    v16 = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView widthAnchor];
-    v17 = [(UIStackView *)v6->_stackView widthAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    widthAnchor = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView widthAnchor];
+    widthAnchor2 = [(UIStackView *)v6->_stackView widthAnchor];
+    v18 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     toolAndColorPickerContainerViewWidthConstraint = v6->_toolAndColorPickerContainerViewWidthConstraint;
     v6->_toolAndColorPickerContainerViewWidthConstraint = v18;
 
-    v20 = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView heightAnchor];
-    v21 = [(UIStackView *)v6->_stackView heightAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    heightAnchor = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView heightAnchor];
+    heightAnchor2 = [(UIStackView *)v6->_stackView heightAnchor];
+    v22 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     toolAndColorPickerContainerViewHeightConstraint = v6->_toolAndColorPickerContainerViewHeightConstraint;
     v6->_toolAndColorPickerContainerViewHeightConstraint = v22;
 
@@ -105,15 +105,15 @@
     [(NSLayoutConstraint *)v6->_toolAndColorPickerContainerViewWidthConstraint setPriority:v24];
     LODWORD(v25) = 1148829696;
     [(NSLayoutConstraint *)v6->_toolAndColorPickerContainerViewHeightConstraint setPriority:v25];
-    v26 = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView toolPickerView];
-    v27 = [v26 widthAnchor];
-    v28 = [v27 constraintEqualToConstant:0.0];
+    toolPickerView = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView toolPickerView];
+    widthAnchor3 = [toolPickerView widthAnchor];
+    v28 = [widthAnchor3 constraintEqualToConstant:0.0];
     toolPickerViewWidthConstraint = v6->_toolPickerViewWidthConstraint;
     v6->_toolPickerViewWidthConstraint = v28;
 
-    v30 = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView toolPickerView];
-    v31 = [v30 heightAnchor];
-    v32 = [v31 constraintEqualToConstant:0.0];
+    toolPickerView2 = [(PKPaletteToolPickerAndColorPickerView *)v6->_toolAndColorPickerContainerView toolPickerView];
+    heightAnchor3 = [toolPickerView2 heightAnchor];
+    v32 = [heightAnchor3 constraintEqualToConstant:0.0];
     toolPickerViewHeightConstraint = v6->_toolPickerViewHeightConstraint;
     v6->_toolPickerViewHeightConstraint = v32;
 
@@ -148,8 +148,8 @@
 
   else
   {
-    v4 = [(PKPaletteContentView *)self colorPickerView];
-    [v4 toggleColorSelectionPopover];
+    colorPickerView = [(PKPaletteContentView *)self colorPickerView];
+    [colorPickerView toggleColorSelectionPopover];
   }
 }
 
@@ -164,27 +164,27 @@
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_stackView setAlignment:3];
   [(PKPaletteContentView *)self addSubview:self->_stackView];
-  v5 = [(UIStackView *)self->_stackView topAnchor];
-  v6 = [(PKPaletteContentView *)self topAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [(PKPaletteContentView *)self topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   stackViewTopConstraint = self->_stackViewTopConstraint;
   self->_stackViewTopConstraint = v7;
 
-  v9 = [(PKPaletteContentView *)self bottomAnchor];
-  v10 = [(UIStackView *)self->_stackView bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(PKPaletteContentView *)self bottomAnchor];
+  bottomAnchor2 = [(UIStackView *)self->_stackView bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   stackViewBottomConstraint = self->_stackViewBottomConstraint;
   self->_stackViewBottomConstraint = v11;
 
-  v13 = [(UIStackView *)self->_stackView leftAnchor];
-  v14 = [(PKPaletteContentView *)self leftAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  leftAnchor = [(UIStackView *)self->_stackView leftAnchor];
+  leftAnchor2 = [(PKPaletteContentView *)self leftAnchor];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   stackViewLeftConstraint = self->_stackViewLeftConstraint;
   self->_stackViewLeftConstraint = v15;
 
-  v17 = [(PKPaletteContentView *)self rightAnchor];
-  v18 = [(UIStackView *)self->_stackView rightAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  rightAnchor = [(PKPaletteContentView *)self rightAnchor];
+  rightAnchor2 = [(UIStackView *)self->_stackView rightAnchor];
+  v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   stackViewRightConstraint = self->_stackViewRightConstraint;
   self->_stackViewRightConstraint = v19;
 
@@ -196,9 +196,9 @@
   [(NSLayoutConstraint *)self->_stackViewTopConstraint setPriority:v23];
   LODWORD(v24) = 1148829696;
   [(NSLayoutConstraint *)self->_stackViewBottomConstraint setPriority:v24];
-  v25 = [(UIStackView *)self->_stackView centerXAnchor];
-  v26 = [(PKPaletteContentView *)self centerXAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerXAnchor = [(UIStackView *)self->_stackView centerXAnchor];
+  centerXAnchor2 = [(PKPaletteContentView *)self centerXAnchor];
+  v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   stackViewCenterXConstraint = self->_stackViewCenterXConstraint;
   self->_stackViewCenterXConstraint = v27;
 
@@ -228,47 +228,47 @@
 
 - (PKPaletteToolPickerView)toolPickerView
 {
-  v2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v3 = [v2 toolPickerView];
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  toolPickerView = [toolAndColorPickerContainerView toolPickerView];
 
-  return v3;
+  return toolPickerView;
 }
 
 - (PKPaletteColorPickerView)colorPickerView
 {
-  v2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v3 = [v2 colorPickerView];
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  colorPickerView = [toolAndColorPickerContainerView colorPickerView];
 
-  return v3;
+  return colorPickerView;
 }
 
 - (PKDrawingPaletteInputAssistantView)paletteInputAssistantView
 {
-  v2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v3 = [v2 paletteInputAssistantView];
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  paletteInputAssistantView = [toolAndColorPickerContainerView paletteInputAssistantView];
 
-  return v3;
+  return paletteInputAssistantView;
 }
 
-- (void)setCloseButtonVisible:(BOOL)a3
+- (void)setCloseButtonVisible:(BOOL)visible
 {
-  if (self->_closeButtonVisible != a3)
+  if (self->_closeButtonVisible != visible)
   {
-    self->_closeButtonVisible = a3;
+    self->_closeButtonVisible = visible;
     [(PKPaletteContentView *)self _updateCloseButtonVisibility];
   }
 }
 
-- (void)setColorMaximumLinearExposure:(double)a3
+- (void)setColorMaximumLinearExposure:(double)exposure
 {
-  if (self->_colorMaximumLinearExposure != a3)
+  if (self->_colorMaximumLinearExposure != exposure)
   {
-    self->_colorMaximumLinearExposure = a3;
-    v5 = [(PKPaletteContentView *)self colorPickerView];
-    [v5 setColorMaximumLinearExposure:a3];
+    self->_colorMaximumLinearExposure = exposure;
+    colorPickerView = [(PKPaletteContentView *)self colorPickerView];
+    [colorPickerView setColorMaximumLinearExposure:exposure];
 
-    v6 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-    [v6 setAllowHDR:a3 > 1.0];
+    toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+    [toolAndColorPickerContainerView setAllowHDR:exposure > 1.0];
   }
 }
 
@@ -295,23 +295,23 @@
 
     [(PKPaletteButton *)self->_closeButton addTarget:self action:sel__closeButtonTapped_ forControlEvents:64];
     [(PKPaletteButton *)self->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(PKPaletteContentView *)self stackView];
-    [v6 insertArrangedSubview:self->_closeButton atIndex:0];
+    stackView = [(PKPaletteContentView *)self stackView];
+    [stackView insertArrangedSubview:self->_closeButton atIndex:0];
 
-    v7 = [(PKPaletteContentView *)self stackView];
-    [v7 setCustomSpacing:self->_closeButton afterView:0.0];
+    stackView2 = [(PKPaletteContentView *)self stackView];
+    [stackView2 setCustomSpacing:self->_closeButton afterView:0.0];
 
     v8 = MEMORY[0x1E696ACD8];
-    v9 = [(PKPaletteButton *)self->_closeButton widthAnchor];
-    v10 = [v9 constraintEqualToConstant:28.0];
+    widthAnchor = [(PKPaletteButton *)self->_closeButton widthAnchor];
+    v10 = [widthAnchor constraintEqualToConstant:28.0];
     v20[0] = v10;
-    v11 = [(PKPaletteButton *)self->_closeButton heightAnchor];
-    v12 = [v11 constraintEqualToConstant:28.0];
+    heightAnchor = [(PKPaletteButton *)self->_closeButton heightAnchor];
+    v12 = [heightAnchor constraintEqualToConstant:28.0];
     v20[1] = v12;
-    v13 = [(PKPaletteButton *)self->_closeButton leadingAnchor];
-    v14 = [(PKPaletteContentView *)self stackView];
-    v15 = [v14 leadingAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15 constant:16.0];
+    leadingAnchor = [(PKPaletteButton *)self->_closeButton leadingAnchor];
+    stackView3 = [(PKPaletteContentView *)self stackView];
+    leadingAnchor2 = [stackView3 leadingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v20[2] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
     [v8 activateConstraints:v17];
@@ -332,12 +332,12 @@
     }
 
     [(PKPaletteButton *)self->_closeButton removeFromSuperview];
-    v9 = self->_closeButton;
+    widthAnchor = self->_closeButton;
     self->_closeButton = 0;
   }
 }
 
-- (void)_closeButtonTapped:(id)a3
+- (void)_closeButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -357,38 +357,38 @@
 
   [(PKPaletteAdditionalOptionsView *)self->_additionalOptionsView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_stackView addArrangedSubview:self->_additionalOptionsView];
-  v5 = [(PKPaletteAdditionalOptionsView *)self->_additionalOptionsView widthAnchor];
-  v6 = [v5 constraintEqualToConstant:28.0];
+  widthAnchor = [(PKPaletteAdditionalOptionsView *)self->_additionalOptionsView widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:28.0];
   [(PKPaletteContentView *)self setAdditionalOptionsViewCompactWidthConstraint:v6];
 
-  v10 = [(PKPaletteAdditionalOptionsView *)self->_additionalOptionsView heightAnchor];
-  v7 = [(PKPaletteContentView *)self stackView];
-  v8 = [v7 heightAnchor];
-  v9 = [v10 constraintEqualToAnchor:v8];
+  heightAnchor = [(PKPaletteAdditionalOptionsView *)self->_additionalOptionsView heightAnchor];
+  stackView = [(PKPaletteContentView *)self stackView];
+  heightAnchor2 = [stackView heightAnchor];
+  v9 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [(PKPaletteContentView *)self setAdditionalOptionsViewCompactHeightConstraint:v9];
 }
 
 - (UIView)lassoToolEditingView
 {
-  v2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v3 = [v2 lassoToolEditingView];
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  lassoToolEditingView = [toolAndColorPickerContainerView lassoToolEditingView];
 
-  return v3;
+  return lassoToolEditingView;
 }
 
 - (NSString)lassoToolEditingViewIdentifier
 {
-  v2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v3 = [v2 lassoToolEditingViewIdentifier];
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  lassoToolEditingViewIdentifier = [toolAndColorPickerContainerView lassoToolEditingViewIdentifier];
 
-  return v3;
+  return lassoToolEditingViewIdentifier;
 }
 
-- (void)setLassoToolEditingViewIdentifier:(id)a3
+- (void)setLassoToolEditingViewIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v5 setLassoToolEditingViewIdentifier:v4];
+  identifierCopy = identifier;
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView setLassoToolEditingViewIdentifier:identifierCopy];
 }
 
 - (void)layoutSubviews
@@ -423,74 +423,74 @@
   [(PKPaletteContentView *)self _updateUI];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (!-[PKPaletteContentView contextEditingMode](self, "contextEditingMode") || (-[PKPaletteContentView contextualEditingView](self, "contextualEditingView"), v8 = objc_claimAutoreleasedReturnValue(), -[PKPaletteContentView convertPoint:toView:](self, "convertPoint:toView:", v8, x, y), v10 = v9, v12 = v11, v8, -[PKPaletteContentView contextualEditingView](self, "contextualEditingView"), v13 = objc_claimAutoreleasedReturnValue(), [v13 hitTest:v7 withEvent:{v10, v12}], v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if (!-[PKPaletteContentView contextEditingMode](self, "contextEditingMode") || (-[PKPaletteContentView contextualEditingView](self, "contextualEditingView"), v8 = objc_claimAutoreleasedReturnValue(), -[PKPaletteContentView convertPoint:toView:](self, "convertPoint:toView:", v8, x, y), v10 = v9, v12 = v11, v8, -[PKPaletteContentView contextualEditingView](self, "contextualEditingView"), v13 = objc_claimAutoreleasedReturnValue(), [v13 hitTest:eventCopy withEvent:{v10, v12}], v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
   {
-    v15 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-    [(PKPaletteContentView *)self convertPoint:v15 toView:x, y];
+    toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+    [(PKPaletteContentView *)self convertPoint:toolAndColorPickerContainerView toView:x, y];
     v17 = v16;
     v19 = v18;
 
-    v20 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-    v14 = [v20 hitTest:v7 withEvent:{v17, v19}];
+    toolAndColorPickerContainerView2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+    v14 = [toolAndColorPickerContainerView2 hitTest:eventCopy withEvent:{v17, v19}];
 
     if (!v14)
     {
       v22.receiver = self;
       v22.super_class = PKPaletteContentView;
-      v14 = [(PKPaletteContentView *)&v22 hitTest:v7 withEvent:x, y];
+      v14 = [(PKPaletteContentView *)&v22 hitTest:eventCopy withEvent:x, y];
     }
   }
 
   return v14;
 }
 
-- (void)setContextEditingMode:(int64_t)a3
+- (void)setContextEditingMode:(int64_t)mode
 {
-  if (self->_contextEditingMode != a3)
+  if (self->_contextEditingMode != mode)
   {
-    self->_contextEditingMode = a3;
+    self->_contextEditingMode = mode;
     [(PKPaletteContentView *)self _updateUI];
   }
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKPaletteContentView *)self _updateUI];
   }
 }
 
-- (void)setCornerLocation:(unint64_t)a3
+- (void)setCornerLocation:(unint64_t)location
 {
-  if (self->_cornerLocation != a3)
+  if (self->_cornerLocation != location)
   {
-    self->_cornerLocation = a3;
+    self->_cornerLocation = location;
     [(PKPaletteContentView *)self _updateUI];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKPaletteContentView;
-  [(PKPaletteContentView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteContentView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteContentView *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteContentView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKPaletteContentView *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(PKPaletteContentView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }
@@ -504,77 +504,77 @@
 LABEL_6:
 }
 
-- (void)_updateUIResetUnselectedToolsVisible:(BOOL)a3
+- (void)_updateUIResetUnselectedToolsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v336[9] = *MEMORY[0x1E69E9840];
-  v5 = [(PKPaletteContentView *)self window];
-  v6 = [v5 windowScene];
-  v7 = PKIsQuickNoteWindowScene(v6);
+  window = [(PKPaletteContentView *)self window];
+  windowScene = [window windowScene];
+  v7 = PKIsQuickNoteWindowScene(windowScene);
 
   v325 = v7;
   [(PKPaletteContentView *)self setClipsToBounds:[(UIView *)self _pk_useCompactLayout]& (v7 ^ 1)];
   [(PKPaletteContentView *)self _updateColorPickerContainerViewLocationInHierarchy];
   [(PKPaletteContentView *)self _stackViewSpacing];
   v9 = v8;
-  v10 = [(PKPaletteContentView *)self stackView];
-  [v10 setSpacing:v9];
+  stackView = [(PKPaletteContentView *)self stackView];
+  [stackView setSpacing:v9];
 
   v11 = 3.40282347e38;
-  v331 = v3;
+  v331 = visibleCopy;
   if ([(PKPaletteContentView *)self _wantsUndoRedoButtonsVisible]&& ![(UIView *)self _pk_useCompactLayout])
   {
-    v12 = [(PKPaletteContentView *)self paletteViewState];
-    [v12 paletteScaleFactor];
+    paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+    [paletteViewState paletteScaleFactor];
     v11 = v13 * 12.0;
   }
 
-  v14 = [(PKPaletteContentView *)self stackView];
-  v15 = [(PKPaletteContentView *)self undoRedoView];
-  [v14 setCustomSpacing:v15 afterView:v11];
+  stackView2 = [(PKPaletteContentView *)self stackView];
+  undoRedoView = [(PKPaletteContentView *)self undoRedoView];
+  [stackView2 setCustomSpacing:undoRedoView afterView:v11];
 
-  v16 = [(PKPaletteContentView *)self _stackViewDistribution];
-  v17 = [(PKPaletteContentView *)self stackView];
-  [v17 setDistribution:v16];
+  _stackViewDistribution = [(PKPaletteContentView *)self _stackViewDistribution];
+  stackView3 = [(PKPaletteContentView *)self stackView];
+  [stackView3 setDistribution:_stackViewDistribution];
 
-  v18 = [(PKPaletteContentView *)self paletteViewState];
-  [v18 paletteScaleFactor];
+  paletteViewState2 = [(PKPaletteContentView *)self paletteViewState];
+  [paletteViewState2 paletteScaleFactor];
   v20 = v19;
-  v21 = [(PKPaletteContentView *)self undoRedoView];
-  [v21 setScalingFactor:v20];
+  undoRedoView2 = [(PKPaletteContentView *)self undoRedoView];
+  [undoRedoView2 setScalingFactor:v20];
 
-  v22 = [(PKPaletteContentView *)self paletteViewState];
-  [v22 paletteScaleFactor];
+  paletteViewState3 = [(PKPaletteContentView *)self paletteViewState];
+  [paletteViewState3 paletteScaleFactor];
   v24 = v23;
-  v25 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v25 setScalingFactor:v24];
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView setScalingFactor:v24];
 
-  v26 = [(PKPaletteContentView *)self paletteViewState];
-  [v26 paletteScaleFactor];
+  paletteViewState4 = [(PKPaletteContentView *)self paletteViewState];
+  [paletteViewState4 paletteScaleFactor];
   v28 = v27;
-  v29 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v29 setScalingFactor:v28];
+  additionalOptionsView = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView setScalingFactor:v28];
 
-  v30 = [(PKPaletteContentView *)self edgeLocation];
-  v31 = [(PKPaletteContentView *)self undoRedoView];
-  [v31 setEdgeLocation:v30];
+  edgeLocation = [(PKPaletteContentView *)self edgeLocation];
+  undoRedoView3 = [(PKPaletteContentView *)self undoRedoView];
+  [undoRedoView3 setEdgeLocation:edgeLocation];
 
-  v32 = [(PKPaletteContentView *)self edgeLocation];
-  v33 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v33 setEdgeLocation:v32];
+  edgeLocation2 = [(PKPaletteContentView *)self edgeLocation];
+  toolAndColorPickerContainerView2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView2 setEdgeLocation:edgeLocation2];
 
-  v34 = [(PKPaletteContentView *)self cornerLocation];
-  v35 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v35 setCornerLocation:v34];
+  cornerLocation = [(PKPaletteContentView *)self cornerLocation];
+  toolAndColorPickerContainerView3 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView3 setCornerLocation:cornerLocation];
 
-  v36 = [(PKPaletteContentView *)self edgeLocation];
-  v37 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v37 setEdgeLocation:v36];
+  edgeLocation3 = [(PKPaletteContentView *)self edgeLocation];
+  additionalOptionsView2 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView2 setEdgeLocation:edgeLocation3];
 
   [(PKPaletteContentView *)self _undoRedoButtonsInterItemSpacing];
   v39 = v38;
-  v40 = [(PKPaletteContentView *)self undoRedoView];
-  [v40 setInterItemSpacing:v39];
+  undoRedoView4 = [(PKPaletteContentView *)self undoRedoView];
+  [undoRedoView4 setInterItemSpacing:v39];
 
   v332[0] = MEMORY[0x1E69E9820];
   v332[1] = 3221225472;
@@ -584,61 +584,61 @@ LABEL_6:
   [MEMORY[0x1E69DD250] performWithoutAnimation:v332];
   [(PKPaletteContentView *)self _interItemToolsSpacing];
   v42 = v41;
-  v43 = [(PKPaletteContentView *)self toolPickerView];
-  [v43 setInterItemToolsSpacing:v42];
+  toolPickerView = [(PKPaletteContentView *)self toolPickerView];
+  [toolPickerView setInterItemToolsSpacing:v42];
 
-  v44 = [(PKPaletteContentView *)self additionalOptionsView];
-  v45 = [v44 palettePopoverPresenting];
-  v46 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v47 = [v46 colorPickerContainerView];
-  [v47 setPalettePopoverPresenting:v45];
+  additionalOptionsView3 = [(PKPaletteContentView *)self additionalOptionsView];
+  palettePopoverPresenting = [additionalOptionsView3 palettePopoverPresenting];
+  toolAndColorPickerContainerView4 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  colorPickerContainerView = [toolAndColorPickerContainerView4 colorPickerContainerView];
+  [colorPickerContainerView setPalettePopoverPresenting:palettePopoverPresenting];
 
   v327 = MEMORY[0x1E696ACD8];
-  v329 = [(PKPaletteContentView *)self stackViewLeftConstraint];
-  v336[0] = v329;
-  v48 = [(PKPaletteContentView *)self stackViewRightConstraint];
-  v336[1] = v48;
-  v49 = [(PKPaletteContentView *)self stackViewCenterXConstraint];
-  v336[2] = v49;
-  v50 = [(PKPaletteContentView *)self toolAndColorPickerContainerViewWidthConstraint];
-  v336[3] = v50;
-  v51 = [(PKPaletteContentView *)self toolAndColorPickerContainerViewHeightConstraint];
-  v336[4] = v51;
-  v52 = [(PKPaletteContentView *)self toolPickerViewWidthConstraint];
-  v336[5] = v52;
-  v53 = [(PKPaletteContentView *)self toolPickerViewHeightConstraint];
-  v336[6] = v53;
-  v54 = [(PKPaletteContentView *)self additionalOptionsViewCompactWidthConstraint];
-  v336[7] = v54;
-  v55 = [(PKPaletteContentView *)self additionalOptionsViewCompactHeightConstraint];
-  v336[8] = v55;
+  stackViewLeftConstraint = [(PKPaletteContentView *)self stackViewLeftConstraint];
+  v336[0] = stackViewLeftConstraint;
+  stackViewRightConstraint = [(PKPaletteContentView *)self stackViewRightConstraint];
+  v336[1] = stackViewRightConstraint;
+  stackViewCenterXConstraint = [(PKPaletteContentView *)self stackViewCenterXConstraint];
+  v336[2] = stackViewCenterXConstraint;
+  toolAndColorPickerContainerViewWidthConstraint = [(PKPaletteContentView *)self toolAndColorPickerContainerViewWidthConstraint];
+  v336[3] = toolAndColorPickerContainerViewWidthConstraint;
+  toolAndColorPickerContainerViewHeightConstraint = [(PKPaletteContentView *)self toolAndColorPickerContainerViewHeightConstraint];
+  v336[4] = toolAndColorPickerContainerViewHeightConstraint;
+  toolPickerViewWidthConstraint = [(PKPaletteContentView *)self toolPickerViewWidthConstraint];
+  v336[5] = toolPickerViewWidthConstraint;
+  toolPickerViewHeightConstraint = [(PKPaletteContentView *)self toolPickerViewHeightConstraint];
+  v336[6] = toolPickerViewHeightConstraint;
+  additionalOptionsViewCompactWidthConstraint = [(PKPaletteContentView *)self additionalOptionsViewCompactWidthConstraint];
+  v336[7] = additionalOptionsViewCompactWidthConstraint;
+  additionalOptionsViewCompactHeightConstraint = [(PKPaletteContentView *)self additionalOptionsViewCompactHeightConstraint];
+  v336[8] = additionalOptionsViewCompactHeightConstraint;
   v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v336 count:9];
   [v327 deactivateConstraints:v56];
 
-  v57 = [(PKPaletteContentView *)self stackViewCompactLeftConstraint];
-  [v57 setActive:0];
+  stackViewCompactLeftConstraint = [(PKPaletteContentView *)self stackViewCompactLeftConstraint];
+  [stackViewCompactLeftConstraint setActive:0];
 
-  v58 = [(PKPaletteContentView *)self stackViewCompactRightConstraint];
-  [v58 setActive:0];
+  stackViewCompactRightConstraint = [(PKPaletteContentView *)self stackViewCompactRightConstraint];
+  [stackViewCompactRightConstraint setActive:0];
 
   if ([(UIView *)self _pk_useCompactLayout])
   {
-    v59 = [(PKPaletteContentView *)self stackView];
-    [v59 setAxis:0];
+    stackView4 = [(PKPaletteContentView *)self stackView];
+    [stackView4 setAxis:0];
 
-    v60 = [(PKPaletteContentView *)self stackViewTopConstraint];
-    [v60 setConstant:12.0];
+    stackViewTopConstraint = [(PKPaletteContentView *)self stackViewTopConstraint];
+    [stackViewTopConstraint setConstant:12.0];
 
-    v61 = [(PKPaletteContentView *)self stackViewBottomConstraint];
+    stackViewBottomConstraint = [(PKPaletteContentView *)self stackViewBottomConstraint];
     v62 = 0.0;
-    [v61 setConstant:0.0];
+    [stackViewBottomConstraint setConstant:0.0];
 
-    v63 = [(PKPaletteContentView *)self _useEqualSpacingStackViewDistribution];
-    v64 = [(PKPaletteContentView *)self stackView];
-    v65 = [v64 leftAnchor];
-    v66 = [(PKPaletteContentView *)self safeAreaLayoutGuide];
-    v67 = [v66 leftAnchor];
-    if (v63)
+    _useEqualSpacingStackViewDistribution = [(PKPaletteContentView *)self _useEqualSpacingStackViewDistribution];
+    stackView5 = [(PKPaletteContentView *)self stackView];
+    leftAnchor = [stackView5 leftAnchor];
+    safeAreaLayoutGuide = [(PKPaletteContentView *)self safeAreaLayoutGuide];
+    leftAnchor2 = [safeAreaLayoutGuide leftAnchor];
+    if (_useEqualSpacingStackViewDistribution)
     {
       v68 = 16.0;
       if (v325)
@@ -651,98 +651,98 @@ LABEL_6:
         v62 = -16.0;
       }
 
-      v69 = [v65 constraintEqualToAnchor:v67 constant:v68];
+      v69 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v68];
       [(PKPaletteContentView *)self setStackViewCompactLeftConstraint:v69];
 
-      v70 = [(PKPaletteContentView *)self stackView];
-      v71 = [v70 rightAnchor];
-      v72 = [(PKPaletteContentView *)self safeAreaLayoutGuide];
-      v73 = [v72 rightAnchor];
-      v74 = [v71 constraintEqualToAnchor:v73 constant:v62];
+      stackView6 = [(PKPaletteContentView *)self stackView];
+      rightAnchor = [stackView6 rightAnchor];
+      safeAreaLayoutGuide2 = [(PKPaletteContentView *)self safeAreaLayoutGuide];
+      rightAnchor2 = [safeAreaLayoutGuide2 rightAnchor];
+      v74 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v62];
     }
 
     else
     {
-      v106 = [v65 constraintGreaterThanOrEqualToAnchor:v67 constant:16.0];
+      v106 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2 constant:16.0];
       [(PKPaletteContentView *)self setStackViewCompactLeftConstraint:v106];
 
-      v70 = [(PKPaletteContentView *)self stackView];
-      v71 = [v70 rightAnchor];
-      v72 = [(PKPaletteContentView *)self safeAreaLayoutGuide];
-      v73 = [v72 rightAnchor];
-      v74 = [v71 constraintLessThanOrEqualToAnchor:v73 constant:16.0];
+      stackView6 = [(PKPaletteContentView *)self stackView];
+      rightAnchor = [stackView6 rightAnchor];
+      safeAreaLayoutGuide2 = [(PKPaletteContentView *)self safeAreaLayoutGuide];
+      rightAnchor2 = [safeAreaLayoutGuide2 rightAnchor];
+      v74 = [rightAnchor constraintLessThanOrEqualToAnchor:rightAnchor2 constant:16.0];
     }
 
     v107 = v74;
     [(PKPaletteContentView *)self setStackViewCompactRightConstraint:v74];
 
     v108 = MEMORY[0x1E696ACD8];
-    v109 = [(PKPaletteContentView *)self stackViewTopConstraint];
-    v335[0] = v109;
-    v110 = [(PKPaletteContentView *)self stackViewBottomConstraint];
-    v335[1] = v110;
-    v111 = [(PKPaletteContentView *)self stackViewCenterXConstraint];
-    v335[2] = v111;
-    v79 = [(PKPaletteContentView *)self stackViewCompactLeftConstraint];
-    v335[3] = v79;
-    v112 = [(PKPaletteContentView *)self stackViewCompactRightConstraint];
-    v335[4] = v112;
+    stackViewTopConstraint2 = [(PKPaletteContentView *)self stackViewTopConstraint];
+    v335[0] = stackViewTopConstraint2;
+    stackViewBottomConstraint2 = [(PKPaletteContentView *)self stackViewBottomConstraint];
+    v335[1] = stackViewBottomConstraint2;
+    stackViewCenterXConstraint2 = [(PKPaletteContentView *)self stackViewCenterXConstraint];
+    v335[2] = stackViewCenterXConstraint2;
+    stackViewCompactLeftConstraint2 = [(PKPaletteContentView *)self stackViewCompactLeftConstraint];
+    v335[3] = stackViewCompactLeftConstraint2;
+    stackViewCompactRightConstraint2 = [(PKPaletteContentView *)self stackViewCompactRightConstraint];
+    v335[4] = stackViewCompactRightConstraint2;
     v113 = [MEMORY[0x1E695DEC8] arrayWithObjects:v335 count:5];
     [v108 activateConstraints:v113];
 
-    v114 = [(PKPaletteContentView *)self _wantsAdditionalOptionsViewVisible];
-    v115 = [(PKPaletteContentView *)self additionalOptionsViewCompactWidthConstraint];
-    [v115 setActive:v114];
+    _wantsAdditionalOptionsViewVisible = [(PKPaletteContentView *)self _wantsAdditionalOptionsViewVisible];
+    additionalOptionsViewCompactWidthConstraint2 = [(PKPaletteContentView *)self additionalOptionsViewCompactWidthConstraint];
+    [additionalOptionsViewCompactWidthConstraint2 setActive:_wantsAdditionalOptionsViewVisible];
 
-    v116 = [(PKPaletteContentView *)self _wantsAdditionalOptionsViewVisible];
-    v81 = [(PKPaletteContentView *)self additionalOptionsViewCompactHeightConstraint];
-    [v81 setActive:v116];
+    _wantsAdditionalOptionsViewVisible2 = [(PKPaletteContentView *)self _wantsAdditionalOptionsViewVisible];
+    additionalOptionsViewCompactHeightConstraint2 = [(PKPaletteContentView *)self additionalOptionsViewCompactHeightConstraint];
+    [additionalOptionsViewCompactHeightConstraint2 setActive:_wantsAdditionalOptionsViewVisible2];
   }
 
   else
   {
     v75 = MEMORY[0x1E695DF70];
-    v76 = [(PKPaletteContentView *)self stackViewLeftConstraint];
-    v334[0] = v76;
-    v77 = [(PKPaletteContentView *)self stackViewRightConstraint];
-    v334[1] = v77;
-    v78 = [(PKPaletteContentView *)self toolPickerViewWidthConstraint];
-    v334[2] = v78;
-    v79 = [(PKPaletteContentView *)self toolPickerViewHeightConstraint];
-    v334[3] = v79;
+    stackViewLeftConstraint2 = [(PKPaletteContentView *)self stackViewLeftConstraint];
+    v334[0] = stackViewLeftConstraint2;
+    stackViewRightConstraint2 = [(PKPaletteContentView *)self stackViewRightConstraint];
+    v334[1] = stackViewRightConstraint2;
+    toolPickerViewWidthConstraint2 = [(PKPaletteContentView *)self toolPickerViewWidthConstraint];
+    v334[2] = toolPickerViewWidthConstraint2;
+    stackViewCompactLeftConstraint2 = [(PKPaletteContentView *)self toolPickerViewHeightConstraint];
+    v334[3] = stackViewCompactLeftConstraint2;
     v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v334 count:4];
-    v81 = [v75 arrayWithArray:v80];
+    additionalOptionsViewCompactHeightConstraint2 = [v75 arrayWithArray:v80];
 
-    v82 = [(PKPaletteContentView *)self edgeLocation];
-    if (v82 == 8 || v82 == 2)
+    edgeLocation4 = [(PKPaletteContentView *)self edgeLocation];
+    if (edgeLocation4 == 8 || edgeLocation4 == 2)
     {
-      v83 = [(PKPaletteContentView *)self paletteViewState];
-      [v83 paletteScaleFactor];
+      paletteViewState5 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState5 paletteScaleFactor];
       UIFloorToViewScale();
       v85 = v84;
-      v86 = [(PKPaletteContentView *)self toolPickerViewWidthConstraint];
-      [v86 setConstant:v85];
+      toolPickerViewWidthConstraint3 = [(PKPaletteContentView *)self toolPickerViewWidthConstraint];
+      [toolPickerViewWidthConstraint3 setConstant:v85];
 
-      v87 = [(PKPaletteContentView *)self paletteViewState];
-      [v87 _toolsContainerWidth];
-      v88 = [(PKPaletteContentView *)self paletteViewState];
-      [v88 paletteScaleFactor];
+      paletteViewState6 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState6 _toolsContainerWidth];
+      paletteViewState7 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState7 paletteScaleFactor];
       UIFloorToViewScale();
       v90 = v89;
-      v91 = [(PKPaletteContentView *)self toolPickerViewHeightConstraint];
-      [v91 setConstant:v90];
+      toolPickerViewHeightConstraint2 = [(PKPaletteContentView *)self toolPickerViewHeightConstraint];
+      [toolPickerViewHeightConstraint2 setConstant:v90];
 
-      v92 = [(PKPaletteContentView *)self stackView];
-      [v92 setAxis:1];
+      stackView7 = [(PKPaletteContentView *)self stackView];
+      [stackView7 setAxis:1];
 
-      v93 = [(PKPaletteContentView *)self paletteViewState];
-      [v93 paletteScaleFactor];
+      paletteViewState8 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState8 paletteScaleFactor];
       v95 = v94 * 48.0;
-      v96 = [(PKPaletteContentView *)self stackViewTopConstraint];
-      [v96 setConstant:v95];
+      stackViewTopConstraint3 = [(PKPaletteContentView *)self stackViewTopConstraint];
+      [stackViewTopConstraint3 setConstant:v95];
 
-      v97 = [(PKPaletteContentView *)self paletteViewState];
-      if ([v97 showsPlusButton])
+      paletteViewState9 = [(PKPaletteContentView *)self paletteViewState];
+      if ([paletteViewState9 showsPlusButton])
       {
         v98 = 48.0;
       }
@@ -752,47 +752,47 @@ LABEL_6:
         v98 = 26.0;
       }
 
-      v99 = [(PKPaletteContentView *)self paletteViewState];
-      [v99 paletteScaleFactor];
+      paletteViewState10 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState10 paletteScaleFactor];
       v101 = v98 * v100;
-      v102 = [(PKPaletteContentView *)self stackViewBottomConstraint];
-      [v102 setConstant:v101];
+      stackViewBottomConstraint3 = [(PKPaletteContentView *)self stackViewBottomConstraint];
+      [stackViewBottomConstraint3 setConstant:v101];
 
-      v103 = [(PKPaletteContentView *)self stackViewLeftConstraint];
-      [v103 setConstant:0.0];
+      stackViewLeftConstraint3 = [(PKPaletteContentView *)self stackViewLeftConstraint];
+      [stackViewLeftConstraint3 setConstant:0.0];
 
-      v104 = [(PKPaletteContentView *)self stackViewRightConstraint];
-      [v104 setConstant:0.0];
+      stackViewRightConstraint3 = [(PKPaletteContentView *)self stackViewRightConstraint];
+      [stackViewRightConstraint3 setConstant:0.0];
 
-      v105 = [(PKPaletteContentView *)self toolAndColorPickerContainerViewWidthConstraint];
+      toolAndColorPickerContainerViewWidthConstraint2 = [(PKPaletteContentView *)self toolAndColorPickerContainerViewWidthConstraint];
     }
 
     else
     {
-      v117 = [(PKPaletteContentView *)self paletteViewState];
-      [v117 _toolsContainerWidth];
-      v118 = [(PKPaletteContentView *)self paletteViewState];
-      [v118 paletteScaleFactor];
+      paletteViewState11 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState11 _toolsContainerWidth];
+      paletteViewState12 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState12 paletteScaleFactor];
       UIFloorToViewScale();
       v120 = v119;
-      v121 = [(PKPaletteContentView *)self toolPickerViewWidthConstraint];
-      [v121 setConstant:v120];
+      toolPickerViewWidthConstraint4 = [(PKPaletteContentView *)self toolPickerViewWidthConstraint];
+      [toolPickerViewWidthConstraint4 setConstant:v120];
 
-      v122 = [(PKPaletteContentView *)self paletteViewState];
-      [v122 paletteScaleFactor];
+      paletteViewState13 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState13 paletteScaleFactor];
       UIFloorToViewScale();
       v124 = v123;
-      v125 = [(PKPaletteContentView *)self toolPickerViewHeightConstraint];
-      [v125 setConstant:v124];
+      toolPickerViewHeightConstraint3 = [(PKPaletteContentView *)self toolPickerViewHeightConstraint];
+      [toolPickerViewHeightConstraint3 setConstant:v124];
 
-      v126 = [(PKPaletteContentView *)self stackView];
-      [v126 setAxis:0];
+      stackView8 = [(PKPaletteContentView *)self stackView];
+      [stackView8 setAxis:0];
 
-      v127 = [(PKPaletteContentView *)self stackViewTopConstraint];
-      [v127 setConstant:0.0];
+      stackViewTopConstraint4 = [(PKPaletteContentView *)self stackViewTopConstraint];
+      [stackViewTopConstraint4 setConstant:0.0];
 
-      v128 = [(PKPaletteContentView *)self stackViewBottomConstraint];
-      [v128 setConstant:0.0];
+      stackViewBottomConstraint4 = [(PKPaletteContentView *)self stackViewBottomConstraint];
+      [stackViewBottomConstraint4 setConstant:0.0];
 
       if ([(UIView *)self _pk_useCompactLayout])
       {
@@ -804,11 +804,11 @@ LABEL_6:
         v129 = 26.0;
       }
 
-      v130 = [(PKPaletteContentView *)self paletteViewState];
-      [v130 paletteScaleFactor];
+      paletteViewState14 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState14 paletteScaleFactor];
       v132 = v129 * v131;
-      v133 = [(PKPaletteContentView *)self stackViewLeftConstraint];
-      [v133 setConstant:v132];
+      stackViewLeftConstraint4 = [(PKPaletteContentView *)self stackViewLeftConstraint];
+      [stackViewLeftConstraint4 setConstant:v132];
 
       if ([(UIView *)self _pk_useCompactLayout])
       {
@@ -820,88 +820,88 @@ LABEL_6:
         v134 = 26.0;
       }
 
-      v135 = [(PKPaletteContentView *)self paletteViewState];
-      [v135 paletteScaleFactor];
+      paletteViewState15 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState15 paletteScaleFactor];
       v137 = v134 * v136;
-      v138 = [(PKPaletteContentView *)self stackViewRightConstraint];
-      [v138 setConstant:v137];
+      stackViewRightConstraint4 = [(PKPaletteContentView *)self stackViewRightConstraint];
+      [stackViewRightConstraint4 setConstant:v137];
 
-      v105 = [(PKPaletteContentView *)self toolAndColorPickerContainerViewHeightConstraint];
+      toolAndColorPickerContainerViewWidthConstraint2 = [(PKPaletteContentView *)self toolAndColorPickerContainerViewHeightConstraint];
     }
 
-    v139 = v105;
-    [v81 addObject:v105];
+    v139 = toolAndColorPickerContainerViewWidthConstraint2;
+    [additionalOptionsViewCompactHeightConstraint2 addObject:toolAndColorPickerContainerViewWidthConstraint2];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v81];
+    [MEMORY[0x1E696ACD8] activateConstraints:additionalOptionsViewCompactHeightConstraint2];
   }
 
-  v140 = [(PKPaletteContentView *)self contextEditingMode];
-  v141 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v141 setContextEditingMode:v140];
+  contextEditingMode = [(PKPaletteContentView *)self contextEditingMode];
+  toolAndColorPickerContainerView5 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView5 setContextEditingMode:contextEditingMode];
 
-  v142 = [(PKPaletteContentView *)self _contextEditingModeWantsContextualEditingViewVisible];
-  v143 = [(PKPaletteContentView *)self toolPickerView];
-  [v143 setHidden:v142];
+  _contextEditingModeWantsContextualEditingViewVisible = [(PKPaletteContentView *)self _contextEditingModeWantsContextualEditingViewVisible];
+  toolPickerView2 = [(PKPaletteContentView *)self toolPickerView];
+  [toolPickerView2 setHidden:_contextEditingModeWantsContextualEditingViewVisible];
 
-  v144 = [(PKPaletteContentView *)self paletteViewState];
-  if ([v144 prefersLargeContextualEditingUI])
+  paletteViewState16 = [(PKPaletteContentView *)self paletteViewState];
+  if ([paletteViewState16 prefersLargeContextualEditingUI])
   {
-    v145 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v146 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-    v145 = [v146 toolPickerContainerView];
+    toolAndColorPickerContainerView6 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+    selfCopy = [toolAndColorPickerContainerView6 toolPickerContainerView];
   }
 
-  v147 = [(PKPaletteContentView *)self contextualEditingView];
-  v148 = [v147 superview];
+  contextualEditingView = [(PKPaletteContentView *)self contextualEditingView];
+  superview = [contextualEditingView superview];
 
-  if (v148 != v145)
+  if (superview != selfCopy)
   {
-    v149 = [(PKPaletteContentView *)self contextualEditingView];
-    [v149 removeFromSuperview];
+    contextualEditingView2 = [(PKPaletteContentView *)self contextualEditingView];
+    [contextualEditingView2 removeFromSuperview];
 
-    v150 = [(PKPaletteContentView *)self contextualEditingView];
-    [(PKPaletteContentView *)v145 addSubview:v150];
+    contextualEditingView3 = [(PKPaletteContentView *)self contextualEditingView];
+    [(PKPaletteContentView *)selfCopy addSubview:contextualEditingView3];
 
     v322 = MEMORY[0x1E696ACD8];
-    v330 = [(PKPaletteContentView *)self contextualEditingView];
-    v328 = [v330 topAnchor];
-    v326 = [(PKPaletteContentView *)v145 topAnchor];
-    v324 = [v328 constraintEqualToAnchor:v326];
+    contextualEditingView4 = [(PKPaletteContentView *)self contextualEditingView];
+    topAnchor = [contextualEditingView4 topAnchor];
+    topAnchor2 = [(PKPaletteContentView *)selfCopy topAnchor];
+    v324 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v333[0] = v324;
-    v323 = [(PKPaletteContentView *)self contextualEditingView];
-    v151 = [v323 bottomAnchor];
-    v152 = [(PKPaletteContentView *)v145 bottomAnchor];
-    v153 = [v151 constraintEqualToAnchor:v152];
+    contextualEditingView5 = [(PKPaletteContentView *)self contextualEditingView];
+    bottomAnchor = [contextualEditingView5 bottomAnchor];
+    bottomAnchor2 = [(PKPaletteContentView *)selfCopy bottomAnchor];
+    v153 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v333[1] = v153;
-    v154 = [(PKPaletteContentView *)self contextualEditingView];
-    v155 = [v154 trailingAnchor];
-    v156 = [(PKPaletteContentView *)v145 trailingAnchor];
-    v79 = [v155 constraintEqualToAnchor:v156];
-    v333[2] = v79;
+    contextualEditingView6 = [(PKPaletteContentView *)self contextualEditingView];
+    trailingAnchor = [contextualEditingView6 trailingAnchor];
+    trailingAnchor2 = [(PKPaletteContentView *)selfCopy trailingAnchor];
+    stackViewCompactLeftConstraint2 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    v333[2] = stackViewCompactLeftConstraint2;
     v157 = [MEMORY[0x1E695DEC8] arrayWithObjects:v333 count:3];
     [v322 activateConstraints:v157];
 
-    v158 = [(UIView *)self _pk_useCompactLayout];
-    if (v158 && (-[PKPaletteContentView paletteViewState](self, "paletteViewState"), v153 = objc_claimAutoreleasedReturnValue(), [v153 wantsUndoRedoButtonsVisibleInCompactSize]))
+    _pk_useCompactLayout = [(UIView *)self _pk_useCompactLayout];
+    if (_pk_useCompactLayout && (-[PKPaletteContentView paletteViewState](self, "paletteViewState"), v153 = objc_claimAutoreleasedReturnValue(), [v153 wantsUndoRedoButtonsVisibleInCompactSize]))
     {
-      v159 = [(PKPaletteContentView *)self undoRedoView];
-      v160 = [v159 trailingAnchor];
+      undoRedoView5 = [(PKPaletteContentView *)self undoRedoView];
+      trailingAnchor3 = [undoRedoView5 trailingAnchor];
     }
 
     else
     {
-      v160 = [(PKPaletteContentView *)v145 leadingAnchor];
+      trailingAnchor3 = [(PKPaletteContentView *)selfCopy leadingAnchor];
 
-      if (!v158)
+      if (!_pk_useCompactLayout)
       {
 LABEL_35:
-        v161 = [(PKPaletteContentView *)self contextualEditingView];
-        v162 = [v161 leadingAnchor];
-        v163 = [v162 constraintEqualToAnchor:v160];
+        contextualEditingView7 = [(PKPaletteContentView *)self contextualEditingView];
+        leadingAnchor = [contextualEditingView7 leadingAnchor];
+        v163 = [leadingAnchor constraintEqualToAnchor:trailingAnchor3];
         [v163 setActive:1];
 
         goto LABEL_36;
@@ -912,64 +912,64 @@ LABEL_35:
   }
 
 LABEL_36:
-  v164 = [(PKPaletteContentView *)self _contextEditingModeWantsContextualEditingViewVisible];
-  v165 = [(PKPaletteContentView *)self contextualEditingView];
-  [v165 setHidden:!v164];
+  _contextEditingModeWantsContextualEditingViewVisible2 = [(PKPaletteContentView *)self _contextEditingModeWantsContextualEditingViewVisible];
+  contextualEditingView8 = [(PKPaletteContentView *)self contextualEditingView];
+  [contextualEditingView8 setHidden:!_contextEditingModeWantsContextualEditingViewVisible2];
 
   if (![(PKPaletteContentView *)self _contextEditingModeWantsContextualEditingViewVisible])
   {
-    v166 = [(PKPaletteContentView *)self contextualEditingView];
-    v167 = [v166 subviews];
-    [v167 makeObjectsPerformSelector:sel_removeFromSuperview];
+    contextualEditingView9 = [(PKPaletteContentView *)self contextualEditingView];
+    subviews = [contextualEditingView9 subviews];
+    [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
   }
 
-  v168 = [(PKPaletteContentView *)self paletteViewState];
-  v169 = [v168 showsPlusButton];
-  v170 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v170 setShowsPlusButton:v169];
+  paletteViewState17 = [(PKPaletteContentView *)self paletteViewState];
+  showsPlusButton = [paletteViewState17 showsPlusButton];
+  additionalOptionsView4 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView4 setShowsPlusButton:showsPlusButton];
 
-  v171 = [(PKPaletteContentView *)self paletteViewState];
-  v172 = [v171 showsTextButton];
-  v173 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v173 setShowsTextButton:v172];
+  paletteViewState18 = [(PKPaletteContentView *)self paletteViewState];
+  showsTextButton = [paletteViewState18 showsTextButton];
+  additionalOptionsView5 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView5 setShowsTextButton:showsTextButton];
 
-  v174 = [(PKPaletteContentView *)self paletteViewState];
-  v175 = [v174 showsShapeButton];
-  v176 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v176 setShowsShapeButton:v175];
+  paletteViewState19 = [(PKPaletteContentView *)self paletteViewState];
+  showsShapeButton = [paletteViewState19 showsShapeButton];
+  additionalOptionsView6 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView6 setShowsShapeButton:showsShapeButton];
 
-  v177 = [(PKPaletteContentView *)self isEllipsisButtonVisible];
-  v178 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v178 setWantsEllipsisButtonVisible:v177];
+  isEllipsisButtonVisible = [(PKPaletteContentView *)self isEllipsisButtonVisible];
+  additionalOptionsView7 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView7 setWantsEllipsisButtonVisible:isEllipsisButtonVisible];
 
-  v179 = [(PKPaletteContentView *)self paletteViewState];
-  v180 = [v179 shouldHideHoverPreviewToggle];
-  v181 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v181 setShouldHideHoverPreviewToggle:v180];
+  paletteViewState20 = [(PKPaletteContentView *)self paletteViewState];
+  shouldHideHoverPreviewToggle = [paletteViewState20 shouldHideHoverPreviewToggle];
+  additionalOptionsView8 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView8 setShouldHideHoverPreviewToggle:shouldHideHoverPreviewToggle];
 
-  v182 = [(PKPaletteContentView *)self traitCollection];
-  v183 = [(PKPaletteContentView *)self window];
-  v184 = [v183 windowScene];
-  v185 = PKUseCompactSize(v182, v184);
+  traitCollection = [(PKPaletteContentView *)self traitCollection];
+  window2 = [(PKPaletteContentView *)self window];
+  windowScene2 = [window2 windowScene];
+  v185 = PKUseCompactSize(traitCollection, windowScene2);
   if (v185)
   {
-    v79 = [(PKPaletteContentView *)self paletteViewState];
-    v186 = [v79 showsPlusButton];
+    stackViewCompactLeftConstraint2 = [(PKPaletteContentView *)self paletteViewState];
+    showsPlusButton2 = [stackViewCompactLeftConstraint2 showsPlusButton];
   }
 
   else
   {
-    v186 = 0;
+    showsPlusButton2 = 0;
   }
 
-  v187 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v187 setShowsPlusButton:v186];
+  toolAndColorPickerContainerView7 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView7 setShowsPlusButton:showsPlusButton2];
 
   if (v185)
   {
   }
 
-  v188 = [(PKPaletteContentView *)self contextEditingMode];
+  contextEditingMode2 = [(PKPaletteContentView *)self contextEditingMode];
   if (v331 || (-[PKPaletteContentView paletteViewState](self, "paletteViewState"), v185 = objc_claimAutoreleasedReturnValue(), ([v185 showsLassoToolEditingView] & 1) == 0))
   {
     v189 = !v331;
@@ -980,15 +980,15 @@ LABEL_36:
 
     else
     {
-      v191 = [(PKPaletteContentView *)self _isHandwritingToolSelected];
-      if (v188)
+      _isHandwritingToolSelected = [(PKPaletteContentView *)self _isHandwritingToolSelected];
+      if (contextEditingMode2)
       {
         v190 = 0;
       }
 
       else
       {
-        v190 = v191;
+        v190 = _isHandwritingToolSelected;
       }
     }
   }
@@ -999,37 +999,37 @@ LABEL_36:
     v190 = 1;
   }
 
-  v192 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v193 = [v192 colorPickerContainerView];
-  [v193 setHidden:v190];
+  toolAndColorPickerContainerView8 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  colorPickerContainerView2 = [toolAndColorPickerContainerView8 colorPickerContainerView];
+  [colorPickerContainerView2 setHidden:v190];
 
   if (v189)
   {
   }
 
-  if (!v188 || (-[PKPaletteContentView paletteViewState](self, "paletteViewState"), v185 = objc_claimAutoreleasedReturnValue(), [v185 colorSwatchesVisible]))
+  if (!contextEditingMode2 || (-[PKPaletteContentView paletteViewState](self, "paletteViewState"), v185 = objc_claimAutoreleasedReturnValue(), [v185 colorSwatchesVisible]))
   {
-    v194 = v188 != 0;
+    v194 = contextEditingMode2 != 0;
     if ([(UIView *)self _pk_useCompactLayout])
     {
-      v195 = [(PKPaletteContentView *)self _isHandwritingToolSelected];
+      _isHandwritingToolSelected2 = [(PKPaletteContentView *)self _isHandwritingToolSelected];
     }
 
     else
     {
-      v195 = 0;
+      _isHandwritingToolSelected2 = 0;
     }
   }
 
   else
   {
     v194 = 1;
-    v195 = 1;
+    _isHandwritingToolSelected2 = 1;
   }
 
-  v196 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v197 = [v196 colorPickerView];
-  [v197 setHidden:v195];
+  toolAndColorPickerContainerView9 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  colorPickerView = [toolAndColorPickerContainerView9 colorPickerView];
+  [colorPickerView setHidden:_isHandwritingToolSelected2];
 
   if (v194)
   {
@@ -1037,22 +1037,22 @@ LABEL_36:
 
   if (v331)
   {
-    v198 = 0;
+    showsLassoToolEditingView = 0;
   }
 
   else
   {
-    v199 = [(PKPaletteContentView *)self paletteViewState];
-    v198 = [v199 showsLassoToolEditingView];
+    paletteViewState21 = [(PKPaletteContentView *)self paletteViewState];
+    showsLassoToolEditingView = [paletteViewState21 showsLassoToolEditingView];
   }
 
-  v200 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v200 setLassoToolEditingViewVisible:v198];
+  toolAndColorPickerContainerView10 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView10 setLassoToolEditingViewVisible:showsLassoToolEditingView];
 
-  v201 = [(PKPaletteContentView *)self paletteViewState];
-  if ([v201 wantsScrollableTools])
+  paletteViewState22 = [(PKPaletteContentView *)self paletteViewState];
+  if ([paletteViewState22 wantsScrollableTools])
   {
-    v202 = [(UIView *)self _pk_useCompactLayout]& v198 ^ 1;
+    v202 = [(UIView *)self _pk_useCompactLayout]& showsLassoToolEditingView ^ 1;
   }
 
   else
@@ -1060,75 +1060,75 @@ LABEL_36:
     v202 = 0;
   }
 
-  v203 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v204 = [v203 toolPickerView];
-  [v204 setScrollingEnabled:v202];
+  toolAndColorPickerContainerView11 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  toolPickerView3 = [toolAndColorPickerContainerView11 toolPickerView];
+  [toolPickerView3 setScrollingEnabled:v202];
 
   if (v331)
   {
-    v205 = [(PKPaletteContentView *)self toolPickerView];
-    [v205 setUnselectedToolsVisible:1];
+    toolPickerView4 = [(PKPaletteContentView *)self toolPickerView];
+    [toolPickerView4 setUnselectedToolsVisible:1];
 
-    v206 = [(PKPaletteContentView *)self additionalOptionsView];
-    [v206 setHidden:0];
+    additionalOptionsView9 = [(PKPaletteContentView *)self additionalOptionsView];
+    [additionalOptionsView9 setHidden:0];
 
-    v207 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-    v208 = [v207 toolPickerView];
-    [v208 scrollSelectedToolViewToVisibleAnimated:0];
+    toolAndColorPickerContainerView12 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+    toolPickerView5 = [toolAndColorPickerContainerView12 toolPickerView];
+    [toolPickerView5 scrollSelectedToolViewToVisibleAnimated:0];
   }
 
   else
   {
     if ([(UIView *)self _pk_useCompactLayout])
     {
-      v209 = [(PKPaletteContentView *)self paletteViewState];
-      v210 = [v209 selectedTool];
-      v211 = [v210 _configuration];
-      v212 = v211;
-      if (v211 && *(v211 + 20) == 1)
+      paletteViewState23 = [(PKPaletteContentView *)self paletteViewState];
+      selectedTool = [paletteViewState23 selectedTool];
+      _configuration = [selectedTool _configuration];
+      v212 = _configuration;
+      if (_configuration && *(_configuration + 20) == 1)
       {
-        v213 = [(PKPaletteContentView *)self paletteViewState];
-        v214 = [v213 showsLassoToolEditingView];
+        paletteViewState24 = [(PKPaletteContentView *)self paletteViewState];
+        showsLassoToolEditingView2 = [paletteViewState24 showsLassoToolEditingView];
       }
 
       else
       {
-        v214 = 0;
+        showsLassoToolEditingView2 = 0;
       }
     }
 
     else
     {
-      v214 = 0;
+      showsLassoToolEditingView2 = 0;
     }
 
-    v215 = [(PKPaletteContentView *)self toolPickerView];
-    [v215 setUnselectedToolsVisible:v214 ^ 1];
+    toolPickerView6 = [(PKPaletteContentView *)self toolPickerView];
+    [toolPickerView6 setUnselectedToolsVisible:showsLassoToolEditingView2 ^ 1];
 
-    v216 = [(PKPaletteContentView *)self lassoToolTapGestureRecognizerInCompact];
-    [v216 setEnabled:v214];
+    lassoToolTapGestureRecognizerInCompact = [(PKPaletteContentView *)self lassoToolTapGestureRecognizerInCompact];
+    [lassoToolTapGestureRecognizerInCompact setEnabled:showsLassoToolEditingView2];
 
-    v217 = [(PKPaletteContentView *)self toolPickerView];
-    v218 = [v217 selectedToolView];
-    v219 = [v218 gestureRecognizers];
-    v220 = [(PKPaletteContentView *)self lassoToolTapGestureRecognizerInCompact];
-    v221 = [v219 containsObject:v220];
+    toolPickerView7 = [(PKPaletteContentView *)self toolPickerView];
+    selectedToolView = [toolPickerView7 selectedToolView];
+    gestureRecognizers = [selectedToolView gestureRecognizers];
+    lassoToolTapGestureRecognizerInCompact2 = [(PKPaletteContentView *)self lassoToolTapGestureRecognizerInCompact];
+    v221 = [gestureRecognizers containsObject:lassoToolTapGestureRecognizerInCompact2];
 
     if ((v221 & 1) == 0)
     {
-      v222 = [(PKPaletteContentView *)self toolPickerView];
-      v223 = [v222 selectedToolView];
-      v224 = [(PKPaletteContentView *)self lassoToolTapGestureRecognizerInCompact];
-      [v223 addGestureRecognizer:v224];
+      toolPickerView8 = [(PKPaletteContentView *)self toolPickerView];
+      selectedToolView2 = [toolPickerView8 selectedToolView];
+      lassoToolTapGestureRecognizerInCompact3 = [(PKPaletteContentView *)self lassoToolTapGestureRecognizerInCompact];
+      [selectedToolView2 addGestureRecognizer:lassoToolTapGestureRecognizerInCompact3];
     }
 
-    v207 = [(PKPaletteContentView *)self additionalOptionsView];
-    [v207 setHidden:v214];
+    toolAndColorPickerContainerView12 = [(PKPaletteContentView *)self additionalOptionsView];
+    [toolAndColorPickerContainerView12 setHidden:showsLassoToolEditingView2];
   }
 
   if ([(PKPaletteContentView *)self _isHandwritingToolSelected])
   {
-    v225 = (v188 == 0) & ~[(UIView *)self _pk_useCompactLayout];
+    v225 = (contextEditingMode2 == 0) & ~[(UIView *)self _pk_useCompactLayout];
   }
 
   else
@@ -1136,20 +1136,20 @@ LABEL_36:
     v225 = 0;
   }
 
-  v226 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v226 setInputAssistantViewVisible:v225];
+  toolAndColorPickerContainerView13 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView13 setInputAssistantViewVisible:v225];
 
   if ([(PKPaletteContentView *)self _isHandwritingToolSelected])
   {
-    v227 = [(UIView *)self _pk_useCompactLayout];
-    if (v188)
+    _pk_useCompactLayout2 = [(UIView *)self _pk_useCompactLayout];
+    if (contextEditingMode2)
     {
       v228 = 0;
     }
 
     else
     {
-      v228 = v227;
+      v228 = _pk_useCompactLayout2;
     }
   }
 
@@ -1158,19 +1158,19 @@ LABEL_36:
     v228 = 0;
   }
 
-  v229 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v230 = [v229 colorPickerContainerView];
-  [v230 setShouldShowInputAssistantView:v228];
+  toolAndColorPickerContainerView14 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  colorPickerContainerView3 = [toolAndColorPickerContainerView14 colorPickerContainerView];
+  [colorPickerContainerView3 setShouldShowInputAssistantView:v228];
 
-  v231 = [MEMORY[0x1E696AAE8] mainBundle];
-  v232 = [v231 bundleIdentifier];
-  v233 = [v232 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v233 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
   if (v233)
   {
-    v188 = [(PKPaletteContentView *)self paletteViewState];
-    v232 = [v188 inputAssistantItems];
-    if ([v232 count] <= 1)
+    contextEditingMode2 = [(PKPaletteContentView *)self paletteViewState];
+    bundleIdentifier = [contextEditingMode2 inputAssistantItems];
+    if ([bundleIdentifier count] <= 1)
     {
       v234 = PKIsDeviceLocked() && [(PKPaletteContentView *)self _isHandwritingToolSelected];
     }
@@ -1183,54 +1183,54 @@ LABEL_36:
 
   else
   {
-    v235 = [(PKPaletteContentView *)self _isHandwritingToolSelected];
-    if (v188)
+    _isHandwritingToolSelected3 = [(PKPaletteContentView *)self _isHandwritingToolSelected];
+    if (contextEditingMode2)
     {
       v234 = 0;
     }
 
     else
     {
-      v234 = v235;
+      v234 = _isHandwritingToolSelected3;
     }
   }
 
-  v236 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v236 setWantsInputAssistantViewVisible:v234];
+  additionalOptionsView10 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView10 setWantsInputAssistantViewVisible:v234];
 
   if (v233)
   {
   }
 
-  v237 = [(PKPaletteContentView *)self paletteViewState];
-  v238 = [v237 enableKeyboardButtons];
-  v239 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v239 setEnableKeyboardButtons:v238];
+  paletteViewState25 = [(PKPaletteContentView *)self paletteViewState];
+  enableKeyboardButtons = [paletteViewState25 enableKeyboardButtons];
+  additionalOptionsView11 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView11 setEnableKeyboardButtons:enableKeyboardButtons];
 
-  v240 = [(PKPaletteContentView *)self paletteViewState];
-  v241 = [v240 floatingKeyboardType];
-  v242 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v242 setFloatingKeyboardType:v241];
+  paletteViewState26 = [(PKPaletteContentView *)self paletteViewState];
+  floatingKeyboardType = [paletteViewState26 floatingKeyboardType];
+  additionalOptionsView12 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView12 setFloatingKeyboardType:floatingKeyboardType];
 
-  v243 = [(PKPaletteContentView *)self paletteViewState];
-  v244 = [v243 hasHandwritingTool];
-  v245 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v245 setShouldShowTapToRadarOption:v244];
+  paletteViewState27 = [(PKPaletteContentView *)self paletteViewState];
+  hasHandwritingTool = [paletteViewState27 hasHandwritingTool];
+  additionalOptionsView13 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView13 setShouldShowTapToRadarOption:hasHandwritingTool];
 
-  v246 = [(PKPaletteContentView *)self paletteViewState];
-  v247 = [v246 canShowResetHandwritingEducationPane];
-  v248 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v248 setShouldShowResetHandwritingEducationPane:v247];
+  paletteViewState28 = [(PKPaletteContentView *)self paletteViewState];
+  canShowResetHandwritingEducationPane = [paletteViewState28 canShowResetHandwritingEducationPane];
+  additionalOptionsView14 = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView14 setShouldShowResetHandwritingEducationPane:canShowResetHandwritingEducationPane];
 
-  v249 = [MEMORY[0x1E696AAE8] mainBundle];
-  v250 = [v249 bundleIdentifier];
-  LODWORD(v248) = [v250 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+  LODWORD(additionalOptionsView14) = [bundleIdentifier2 isEqualToString:@"com.apple.mobilenotes"];
 
-  if (v248)
+  if (additionalOptionsView14)
   {
-    v251 = [(PKPaletteContentView *)self paletteViewState];
-    v252 = [v251 inputAssistantItems];
-    v253 = [v252 count] == 1;
+    paletteViewState29 = [(PKPaletteContentView *)self paletteViewState];
+    inputAssistantItems = [paletteViewState29 inputAssistantItems];
+    v253 = [inputAssistantItems count] == 1;
   }
 
   else
@@ -1238,42 +1238,42 @@ LABEL_36:
     v253 = 0;
   }
 
-  v254 = [(PKPaletteContentView *)self paletteInputAssistantView];
-  [v254 setShouldShowKeyboardButton:v253];
+  paletteInputAssistantView = [(PKPaletteContentView *)self paletteInputAssistantView];
+  [paletteInputAssistantView setShouldShowKeyboardButton:v253];
 
-  v255 = [(PKPaletteContentView *)self paletteInputAssistantView];
-  [v255 setShouldShowReturnKeyButton:v253];
+  paletteInputAssistantView2 = [(PKPaletteContentView *)self paletteInputAssistantView];
+  [paletteInputAssistantView2 setShouldShowReturnKeyButton:v253];
 
-  v256 = [(PKPaletteContentView *)self paletteViewState];
-  v257 = [v256 inputAssistantItems];
-  v258 = [(PKPaletteContentView *)self paletteInputAssistantView];
-  [v258 setButtons:v257];
+  paletteViewState30 = [(PKPaletteContentView *)self paletteViewState];
+  inputAssistantItems2 = [paletteViewState30 inputAssistantItems];
+  paletteInputAssistantView3 = [(PKPaletteContentView *)self paletteInputAssistantView];
+  [paletteInputAssistantView3 setButtons:inputAssistantItems2];
 
-  v259 = [(PKPaletteContentView *)self paletteViewState];
-  v260 = [v259 enableKeyboardButtons];
-  v261 = [(PKPaletteContentView *)self paletteInputAssistantView];
-  [v261 setEnableKeyboardButtons:v260];
+  paletteViewState31 = [(PKPaletteContentView *)self paletteViewState];
+  enableKeyboardButtons2 = [paletteViewState31 enableKeyboardButtons];
+  paletteInputAssistantView4 = [(PKPaletteContentView *)self paletteInputAssistantView];
+  [paletteInputAssistantView4 setEnableKeyboardButtons:enableKeyboardButtons2];
 
   if (v253)
   {
-    v262 = [(PKPaletteContentView *)self paletteInputAssistantView];
-    v263 = [v262 keyboardButton];
-    [(PKPaletteContentView *)self _configureMenuForKeyboardButton:v263];
+    paletteInputAssistantView5 = [(PKPaletteContentView *)self paletteInputAssistantView];
+    keyboardButton = [paletteInputAssistantView5 keyboardButton];
+    [(PKPaletteContentView *)self _configureMenuForKeyboardButton:keyboardButton];
 
-    v264 = [(PKPaletteContentView *)self paletteInputAssistantView];
-    v265 = [v264 returnKeyButton];
-    [(PKPaletteContentView *)self _configureReturnKeyButton:v265];
+    paletteInputAssistantView6 = [(PKPaletteContentView *)self paletteInputAssistantView];
+    returnKeyButton = [paletteInputAssistantView6 returnKeyButton];
+    [(PKPaletteContentView *)self _configureReturnKeyButton:returnKeyButton];
   }
 
-  v266 = [(PKPaletteContentView *)self paletteViewState];
-  if ([v266 wantsMulticolorSwatchShadowInCompactSize])
+  paletteViewState32 = [(PKPaletteContentView *)self paletteViewState];
+  if ([paletteViewState32 wantsMulticolorSwatchShadowInCompactSize])
   {
-    v267 = [(UIView *)self _pk_useCompactLayout];
+    _pk_useCompactLayout3 = [(UIView *)self _pk_useCompactLayout];
   }
 
   else
   {
-    v267 = 0;
+    _pk_useCompactLayout3 = 0;
   }
 
   if (_UISolariumEnabled())
@@ -1283,17 +1283,17 @@ LABEL_36:
 
   else
   {
-    v268 = [(PKPaletteContentView *)self _wantsUndoRedoButtonsShadow]|| v267;
+    v268 = [(PKPaletteContentView *)self _wantsUndoRedoButtonsShadow]|| _pk_useCompactLayout3;
   }
 
-  v269 = [(PKPaletteContentView *)self traitCollection];
-  v270 = [v269 userInterfaceStyle];
+  traitCollection2 = [(PKPaletteContentView *)self traitCollection];
+  userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
   if (v268)
   {
-    v271 = dbl_1C801C730[v270 == 2];
-    v272 = [MEMORY[0x1E69DC888] blackColor];
-    v273 = [v272 colorWithAlphaComponent:v271];
+    v271 = dbl_1C801C730[userInterfaceStyle == 2];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v273 = [blackColor colorWithAlphaComponent:v271];
 
     v274 = v271;
     v275 = 10.0;
@@ -1306,92 +1306,92 @@ LABEL_36:
     v274 = 0.0;
   }
 
-  v276 = [v273 CGColor];
-  v277 = [(PKPaletteContentView *)self undoRedoView];
-  v278 = [v277 undoButton];
-  v279 = [v278 layer];
-  [v279 setShadowColor:v276];
+  cGColor = [v273 CGColor];
+  undoRedoView6 = [(PKPaletteContentView *)self undoRedoView];
+  undoButton = [undoRedoView6 undoButton];
+  layer = [undoButton layer];
+  [layer setShadowColor:cGColor];
 
-  v280 = [(PKPaletteContentView *)self undoRedoView];
-  v281 = [v280 undoButton];
-  v282 = [v281 layer];
-  [v282 setShadowRadius:v275];
+  undoRedoView7 = [(PKPaletteContentView *)self undoRedoView];
+  undoButton2 = [undoRedoView7 undoButton];
+  layer2 = [undoButton2 layer];
+  [layer2 setShadowRadius:v275];
 
-  v283 = [(PKPaletteContentView *)self undoRedoView];
-  v284 = [v283 undoButton];
-  v285 = [v284 layer];
+  undoRedoView8 = [(PKPaletteContentView *)self undoRedoView];
+  undoButton3 = [undoRedoView8 undoButton];
+  layer3 = [undoButton3 layer];
   *&v286 = v274;
-  [v285 setShadowOpacity:v286];
+  [layer3 setShadowOpacity:v286];
 
   v287 = *MEMORY[0x1E695F060];
   v288 = *(MEMORY[0x1E695F060] + 8);
-  v289 = [(PKPaletteContentView *)self undoRedoView];
-  v290 = [v289 undoButton];
-  v291 = [v290 layer];
-  [v291 setShadowOffset:{v287, v288}];
+  undoRedoView9 = [(PKPaletteContentView *)self undoRedoView];
+  undoButton4 = [undoRedoView9 undoButton];
+  layer4 = [undoButton4 layer];
+  [layer4 setShadowOffset:{v287, v288}];
 
-  v292 = [v273 CGColor];
-  v293 = [(PKPaletteContentView *)self undoRedoView];
-  v294 = [v293 redoButton];
-  v295 = [v294 layer];
-  [v295 setShadowColor:v292];
+  cGColor2 = [v273 CGColor];
+  undoRedoView10 = [(PKPaletteContentView *)self undoRedoView];
+  redoButton = [undoRedoView10 redoButton];
+  layer5 = [redoButton layer];
+  [layer5 setShadowColor:cGColor2];
 
-  v296 = [(PKPaletteContentView *)self undoRedoView];
-  v297 = [v296 redoButton];
-  v298 = [v297 layer];
-  [v298 setShadowRadius:v275];
+  undoRedoView11 = [(PKPaletteContentView *)self undoRedoView];
+  redoButton2 = [undoRedoView11 redoButton];
+  layer6 = [redoButton2 layer];
+  [layer6 setShadowRadius:v275];
 
-  v299 = [(PKPaletteContentView *)self undoRedoView];
-  v300 = [v299 redoButton];
-  v301 = [v300 layer];
+  undoRedoView12 = [(PKPaletteContentView *)self undoRedoView];
+  redoButton3 = [undoRedoView12 redoButton];
+  layer7 = [redoButton3 layer];
   *&v302 = v274;
-  [v301 setShadowOpacity:v302];
+  [layer7 setShadowOpacity:v302];
 
-  v303 = [(PKPaletteContentView *)self undoRedoView];
-  v304 = [v303 redoButton];
-  v305 = [v304 layer];
-  [v305 setShadowOffset:{v287, v288}];
+  undoRedoView13 = [(PKPaletteContentView *)self undoRedoView];
+  redoButton4 = [undoRedoView13 redoButton];
+  layer8 = [redoButton4 layer];
+  [layer8 setShadowOffset:{v287, v288}];
 
-  v306 = [v273 CGColor];
-  v307 = [(PKPaletteContentView *)self colorPickerView];
-  v308 = [v307 multicolorSwatch];
-  v309 = [v308 layer];
-  [v309 setShadowColor:v306];
+  cGColor3 = [v273 CGColor];
+  colorPickerView2 = [(PKPaletteContentView *)self colorPickerView];
+  multicolorSwatch = [colorPickerView2 multicolorSwatch];
+  layer9 = [multicolorSwatch layer];
+  [layer9 setShadowColor:cGColor3];
 
-  v310 = [(PKPaletteContentView *)self colorPickerView];
-  v311 = [v310 multicolorSwatch];
-  v312 = [v311 layer];
-  [v312 setShadowRadius:v275];
+  colorPickerView3 = [(PKPaletteContentView *)self colorPickerView];
+  multicolorSwatch2 = [colorPickerView3 multicolorSwatch];
+  layer10 = [multicolorSwatch2 layer];
+  [layer10 setShadowRadius:v275];
 
-  v313 = [(PKPaletteContentView *)self colorPickerView];
-  v314 = [v313 multicolorSwatch];
-  v315 = [v314 layer];
+  colorPickerView4 = [(PKPaletteContentView *)self colorPickerView];
+  multicolorSwatch3 = [colorPickerView4 multicolorSwatch];
+  layer11 = [multicolorSwatch3 layer];
   *&v316 = v274;
-  [v315 setShadowOpacity:v316];
+  [layer11 setShadowOpacity:v316];
 
-  if (v267)
+  if (_pk_useCompactLayout3)
   {
-    v317 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
 
   else
   {
-    v317 = 0;
+    systemBackgroundColor = 0;
   }
 
-  v318 = [(PKPaletteContentView *)self colorPickerView];
-  v319 = [v318 multicolorSwatch];
-  [v319 setBackgroundColor:v317];
+  colorPickerView5 = [(PKPaletteContentView *)self colorPickerView];
+  multicolorSwatch4 = [colorPickerView5 multicolorSwatch];
+  [multicolorSwatch4 setBackgroundColor:systemBackgroundColor];
 
-  if (v267)
+  if (_pk_useCompactLayout3)
   {
   }
 
-  v320 = [(PKPaletteContentView *)self undoRedoView];
-  [v320 updateUI];
+  undoRedoView14 = [(PKPaletteContentView *)self undoRedoView];
+  [undoRedoView14 updateUI];
 
-  v321 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v321 _updateUI];
+  toolAndColorPickerContainerView15 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView15 _updateUI];
 
   [(PKPaletteContentView *)self _updateCloseButtonVisibility];
 }
@@ -1411,15 +1411,15 @@ uint64_t __61__PKPaletteContentView__updateUIResetUnselectedToolsVisible___block
 {
   if ([(UIView *)self _pk_useCompactLayout])
   {
-    v3 = [(PKPaletteContentView *)self toolPickerView];
-    v4 = [v3 unselectedToolsVisible];
+    toolPickerView = [(PKPaletteContentView *)self toolPickerView];
+    unselectedToolsVisible = [toolPickerView unselectedToolsVisible];
 
-    if (v4)
+    if (unselectedToolsVisible)
     {
-      v5 = [(PKPaletteContentView *)self paletteViewState];
-      v6 = [v5 showsLassoToolEditingView];
+      paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+      showsLassoToolEditingView = [paletteViewState showsLassoToolEditingView];
 
-      if (v6)
+      if (showsLassoToolEditingView)
       {
 
         [(PKPaletteContentView *)self _updateUI];
@@ -1441,123 +1441,123 @@ uint64_t __61__PKPaletteContentView__updateUIResetUnselectedToolsVisible___block
     return 0;
   }
 
-  v3 = [(PKPaletteContentView *)self paletteViewState];
-  if ([v3 wantsUndoRedoButtonsVisibleInCompactSize])
+  paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+  if ([paletteViewState wantsUndoRedoButtonsVisibleInCompactSize])
   {
-    v4 = [(PKPaletteContentView *)self paletteViewState];
-    v5 = [v4 wantsUndoRedoButtonsShadowInCompactSize];
+    paletteViewState2 = [(PKPaletteContentView *)self paletteViewState];
+    wantsUndoRedoButtonsShadowInCompactSize = [paletteViewState2 wantsUndoRedoButtonsShadowInCompactSize];
   }
 
   else
   {
-    v5 = 0;
+    wantsUndoRedoButtonsShadowInCompactSize = 0;
   }
 
-  return v5;
+  return wantsUndoRedoButtonsShadowInCompactSize;
 }
 
 - (void)_updateAdditionalOptionsViewVisibility
 {
-  v3 = [(PKPaletteContentView *)self _wantsAdditionalOptionsViewVisible];
-  v4 = [(PKPaletteContentView *)self stackView];
-  v5 = [v4 arrangedSubviews];
-  v6 = [(PKPaletteContentView *)self additionalOptionsView];
-  v7 = [v5 containsObject:v6];
+  _wantsAdditionalOptionsViewVisible = [(PKPaletteContentView *)self _wantsAdditionalOptionsViewVisible];
+  stackView = [(PKPaletteContentView *)self stackView];
+  arrangedSubviews = [stackView arrangedSubviews];
+  additionalOptionsView = [(PKPaletteContentView *)self additionalOptionsView];
+  v7 = [arrangedSubviews containsObject:additionalOptionsView];
 
-  if (!v3 || (v7 & 1) != 0)
+  if (!_wantsAdditionalOptionsViewVisible || (v7 & 1) != 0)
   {
-    if (v3 || (v7 & 1) == 0)
+    if (_wantsAdditionalOptionsViewVisible || (v7 & 1) == 0)
     {
       return;
     }
 
-    v9 = [(PKPaletteContentView *)self additionalOptionsView];
-    [v9 removeFromSuperview];
+    additionalOptionsView2 = [(PKPaletteContentView *)self additionalOptionsView];
+    [additionalOptionsView2 removeFromSuperview];
   }
 
   else
   {
-    v9 = [(PKPaletteContentView *)self stackView];
-    v8 = [(PKPaletteContentView *)self additionalOptionsView];
-    [v9 addArrangedSubview:v8];
+    additionalOptionsView2 = [(PKPaletteContentView *)self stackView];
+    additionalOptionsView3 = [(PKPaletteContentView *)self additionalOptionsView];
+    [additionalOptionsView2 addArrangedSubview:additionalOptionsView3];
   }
 }
 
 - (BOOL)_wantsAdditionalOptionsViewVisible
 {
-  v3 = [(PKPaletteContentView *)self paletteViewState];
-  if ([v3 hasHandwritingTool] && self->_usingSmallestSupportedWidth)
+  paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+  if ([paletteViewState hasHandwritingTool] && self->_usingSmallestSupportedWidth)
   {
-    v4 = 1;
+    showsShapeButton = 1;
   }
 
   else
   {
-    v5 = [(PKPaletteContentView *)self paletteViewState];
-    if (([v5 showsPlusButton] & 1) != 0 || -[PKPaletteContentView isEllipsisButtonVisible](self, "isEllipsisButtonVisible"))
+    paletteViewState2 = [(PKPaletteContentView *)self paletteViewState];
+    if (([paletteViewState2 showsPlusButton] & 1) != 0 || -[PKPaletteContentView isEllipsisButtonVisible](self, "isEllipsisButtonVisible"))
     {
-      v4 = 1;
+      showsShapeButton = 1;
     }
 
     else
     {
-      v6 = [(PKPaletteContentView *)self paletteViewState];
-      if ([v6 showsTextButton])
+      paletteViewState3 = [(PKPaletteContentView *)self paletteViewState];
+      if ([paletteViewState3 showsTextButton])
       {
-        v4 = 1;
+        showsShapeButton = 1;
       }
 
       else
       {
-        v7 = [(PKPaletteContentView *)self paletteViewState];
-        v4 = [v7 showsShapeButton];
+        paletteViewState4 = [(PKPaletteContentView *)self paletteViewState];
+        showsShapeButton = [paletteViewState4 showsShapeButton];
       }
     }
   }
 
-  return v4;
+  return showsShapeButton;
 }
 
 - (void)_updateColorPickerContainerViewLocationInHierarchy
 {
   if ([(UIView *)self _pk_useCompactLayout])
   {
-    v3 = [(PKPaletteContentView *)self paletteViewState];
-    v4 = [v3 useEqualSpacingLayoutInCompactSize];
+    paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+    useEqualSpacingLayoutInCompactSize = [paletteViewState useEqualSpacingLayoutInCompactSize];
   }
 
   else
   {
-    v4 = 0;
+    useEqualSpacingLayoutInCompactSize = 0;
   }
 
-  v5 = [(PKPaletteContentView *)self stackView];
-  v6 = [v5 arrangedSubviews];
-  v7 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  v8 = [v7 colorPickerContainerView];
-  v9 = [v6 containsObject:v8];
+  stackView = [(PKPaletteContentView *)self stackView];
+  arrangedSubviews = [stackView arrangedSubviews];
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  colorPickerContainerView = [toolAndColorPickerContainerView colorPickerContainerView];
+  v9 = [arrangedSubviews containsObject:colorPickerContainerView];
 
-  v10 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-  [v10 setWantsColorPickerContainerViewInHierarchy:v4 ^ 1u];
+  toolAndColorPickerContainerView2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView2 setWantsColorPickerContainerViewInHierarchy:useEqualSpacingLayoutInCompactSize ^ 1u];
 
-  if ((v4 ^ 1) & 1) != 0 || (v9)
+  if ((useEqualSpacingLayoutInCompactSize ^ 1) & 1) != 0 || (v9)
   {
-    if (v4 & 1 | ((v9 & 1) == 0))
+    if (useEqualSpacingLayoutInCompactSize & 1 | ((v9 & 1) == 0))
     {
       return;
     }
 
-    v13 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-    v11 = [v13 colorPickerContainerView];
-    [v11 removeFromSuperview];
+    toolAndColorPickerContainerView3 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+    colorPickerContainerView2 = [toolAndColorPickerContainerView3 colorPickerContainerView];
+    [colorPickerContainerView2 removeFromSuperview];
   }
 
   else
   {
-    v13 = [(PKPaletteContentView *)self stackView];
-    v11 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-    v12 = [v11 colorPickerContainerView];
-    [v13 addArrangedSubview:v12];
+    toolAndColorPickerContainerView3 = [(PKPaletteContentView *)self stackView];
+    colorPickerContainerView2 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+    v11ColorPickerContainerView = [colorPickerContainerView2 colorPickerContainerView];
+    [toolAndColorPickerContainerView3 addArrangedSubview:v11ColorPickerContainerView];
   }
 }
 
@@ -1565,9 +1565,9 @@ uint64_t __61__PKPaletteContentView__updateUIResetUnselectedToolsVisible___block
 {
   if (![(UIView *)self _pk_useCompactLayout])
   {
-    v4 = [(PKPaletteContentView *)self toolPickerView];
-    v6 = [v4 toolViews];
-    if ([v6 count] >= 8)
+    toolPickerView = [(PKPaletteContentView *)self toolPickerView];
+    toolViews = [toolPickerView toolViews];
+    if ([toolViews count] >= 8)
     {
       v7 = 10.0;
     }
@@ -1577,8 +1577,8 @@ uint64_t __61__PKPaletteContentView__updateUIResetUnselectedToolsVisible___block
       v7 = 12.0;
     }
 
-    v8 = [(PKPaletteContentView *)self paletteViewState];
-    [v8 paletteScaleFactor];
+    paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+    [paletteViewState paletteScaleFactor];
     v3 = v7 * v9;
 
     goto LABEL_8;
@@ -1587,8 +1587,8 @@ uint64_t __61__PKPaletteContentView__updateUIResetUnselectedToolsVisible___block
   v3 = 0.0;
   if (!self->_usingSmallestSupportedWidth)
   {
-    v4 = [(PKPaletteContentView *)self paletteViewState];
-    [v4 interItemToolsSpacingInCompactSize];
+    toolPickerView = [(PKPaletteContentView *)self paletteViewState];
+    [toolPickerView interItemToolsSpacingInCompactSize];
     v3 = v5;
 LABEL_8:
   }
@@ -1598,19 +1598,19 @@ LABEL_8:
 
 - (double)_undoRedoButtonsInterItemSpacing
 {
-  v3 = [(PKPaletteContentView *)self paletteViewState];
-  [v3 interItemUndoRedoButtonsSpacing];
+  paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+  [paletteViewState interItemUndoRedoButtonsSpacing];
   v5 = v4;
 
   if ([(UIView *)self _pk_useCompactLayout])
   {
-    v6 = [(PKPaletteContentView *)self paletteViewState];
-    v7 = [v6 wantsUndoRedoButtonsShadowInCompactSize];
+    paletteViewState2 = [(PKPaletteContentView *)self paletteViewState];
+    wantsUndoRedoButtonsShadowInCompactSize = [paletteViewState2 wantsUndoRedoButtonsShadowInCompactSize];
 
-    if (v7)
+    if (wantsUndoRedoButtonsShadowInCompactSize)
     {
-      v8 = [(PKPaletteContentView *)self paletteViewState];
-      [v8 interItemUndoRedoButtonsSpacingInCompactSize];
+      paletteViewState3 = [(PKPaletteContentView *)self paletteViewState];
+      [paletteViewState3 interItemUndoRedoButtonsSpacingInCompactSize];
       v5 = v9;
     }
   }
@@ -1620,13 +1620,13 @@ LABEL_8:
 
 - (BOOL)_contextEditingModeWantsContextualEditingViewVisible
 {
-  v3 = [(PKPaletteContentView *)self contextEditingMode];
-  if (v3)
+  contextEditingMode = [(PKPaletteContentView *)self contextEditingMode];
+  if (contextEditingMode)
   {
-    LOBYTE(v3) = [(PKPaletteContentView *)self contextEditingMode]!= 3;
+    LOBYTE(contextEditingMode) = [(PKPaletteContentView *)self contextEditingMode]!= 3;
   }
 
-  return v3;
+  return contextEditingMode;
 }
 
 - (BOOL)_wantsUndoRedoButtonsVisible
@@ -1636,10 +1636,10 @@ LABEL_8:
     return 1;
   }
 
-  v3 = [(PKPaletteContentView *)self paletteViewState];
-  v4 = [v3 wantsUndoRedoButtonsVisibleInCompactSize];
+  paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+  wantsUndoRedoButtonsVisibleInCompactSize = [paletteViewState wantsUndoRedoButtonsVisibleInCompactSize];
 
-  return v4;
+  return wantsUndoRedoButtonsVisibleInCompactSize;
 }
 
 - (BOOL)isEllipsisButtonVisible
@@ -1654,20 +1654,20 @@ LABEL_8:
     return 1;
   }
 
-  v4 = [(PKPaletteContentView *)self paletteViewState];
-  v5 = [v4 wantsEllipsisButtonVisibleInCompactSize];
+  paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+  wantsEllipsisButtonVisibleInCompactSize = [paletteViewState wantsEllipsisButtonVisibleInCompactSize];
 
-  return v5;
+  return wantsEllipsisButtonVisibleInCompactSize;
 }
 
 - (BOOL)_isHandwritingToolSelected
 {
-  v2 = [(PKPaletteContentView *)self paletteViewState];
-  v3 = [v2 selectedTool];
-  v4 = [v3 ink];
-  v5 = [v4 _isHandwritingInk];
+  paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+  selectedTool = [paletteViewState selectedTool];
+  v4 = [selectedTool ink];
+  _isHandwritingInk = [v4 _isHandwritingInk];
 
-  return v5;
+  return _isHandwritingInk;
 }
 
 - (double)_stackViewSpacing
@@ -1680,10 +1680,10 @@ LABEL_8:
       v3 = 0.0;
       if (![(PKPaletteContentView *)self _wantsUndoRedoButtonsVisible])
       {
-        v4 = [(PKPaletteContentView *)self paletteViewState];
-        v5 = [v4 hasHandwritingTool];
+        paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+        hasHandwritingTool = [paletteViewState hasHandwritingTool];
 
-        if (v5)
+        if (hasHandwritingTool)
         {
           return 5.0;
         }
@@ -1699,8 +1699,8 @@ LABEL_8:
   else
   {
     [(PKPaletteContentView *)self edgeLocation];
-    v6 = [(PKPaletteContentView *)self paletteViewState];
-    [v6 paletteScaleFactor];
+    paletteViewState2 = [(PKPaletteContentView *)self paletteViewState];
+    [paletteViewState2 paletteScaleFactor];
     v3 = v7 * 26.0;
   }
 
@@ -1722,22 +1722,22 @@ LABEL_8:
 
 - (BOOL)_useEqualSpacingStackViewDistribution
 {
-  v3 = [(UIView *)self _pk_useCompactLayout];
-  if (v3)
+  _pk_useCompactLayout = [(UIView *)self _pk_useCompactLayout];
+  if (_pk_useCompactLayout)
   {
-    v4 = [(PKPaletteContentView *)self paletteViewState];
-    v5 = [v4 useEqualSpacingLayoutInCompactSize];
+    paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+    useEqualSpacingLayoutInCompactSize = [paletteViewState useEqualSpacingLayoutInCompactSize];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_pk_useCompactLayout) = useEqualSpacingLayoutInCompactSize;
   }
 
-  return v3;
+  return _pk_useCompactLayout;
 }
 
-- (double)toolPickerView:(id)a3 widthForToolAtIndex:(int64_t)a4 isCompactSize:(BOOL)a5
+- (double)toolPickerView:(id)view widthForToolAtIndex:(int64_t)index isCompactSize:(BOOL)size
 {
-  v6 = a3;
-  if (self->_usingSmallestSupportedWidth && (-[PKPaletteContentView _wantsUndoRedoButtonsVisible](self, "_wantsUndoRedoButtonsVisible") || ([v6 toolViews], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 7)))
+  viewCopy = view;
+  if (self->_usingSmallestSupportedWidth && (-[PKPaletteContentView _wantsUndoRedoButtonsVisible](self, "_wantsUndoRedoButtonsVisible") || ([viewCopy toolViews], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 7)))
   {
     v9 = 31.0;
   }
@@ -1750,102 +1750,102 @@ LABEL_8:
   return v9;
 }
 
-- (void)_configureMenuForKeyboardButton:(id)a3
+- (void)_configureMenuForKeyboardButton:(id)button
 {
-  v6 = a3;
-  v4 = [(PKPaletteContentView *)self delegate];
-  v5 = [v4 keyboardSelectionMenuForContentView:self];
-  [v6 setKeyboardSelectionMenu:v5];
+  buttonCopy = button;
+  delegate = [(PKPaletteContentView *)self delegate];
+  v5 = [delegate keyboardSelectionMenuForContentView:self];
+  [buttonCopy setKeyboardSelectionMenu:v5];
 
-  [v6 addTarget:self action:sel__handleKeyboardButtonPressed forControlEvents:64];
+  [buttonCopy addTarget:self action:sel__handleKeyboardButtonPressed forControlEvents:64];
 }
 
 - (void)dismissEyeDropper
 {
-  v2 = [(PKPaletteContentView *)self colorPickerView];
-  [v2 dismissEyeDropper];
+  colorPickerView = [(PKPaletteContentView *)self colorPickerView];
+  [colorPickerView dismissEyeDropper];
 }
 
-- (void)colorPickerContainerView:(id)a3 willPresentInputAssistantView:(id)a4
+- (void)colorPickerContainerView:(id)view willPresentInputAssistantView:(id)assistantView
 {
-  v5 = a4;
-  v6 = [(PKPaletteContentView *)self paletteViewState];
-  v7 = [v6 inputAssistantItems];
-  [v5 setButtons:v7];
+  assistantViewCopy = assistantView;
+  paletteViewState = [(PKPaletteContentView *)self paletteViewState];
+  inputAssistantItems = [paletteViewState inputAssistantItems];
+  [assistantViewCopy setButtons:inputAssistantItems];
 
-  [v5 setUseCompactLayout:1];
-  [v5 setShouldShowKeyboardButton:1];
-  [v5 setShouldShowReturnKeyButton:1];
-  v8 = [(PKPaletteContentView *)self paletteViewState];
-  [v5 setEnableKeyboardButtons:{objc_msgSend(v8, "enableKeyboardButtons")}];
+  [assistantViewCopy setUseCompactLayout:1];
+  [assistantViewCopy setShouldShowKeyboardButton:1];
+  [assistantViewCopy setShouldShowReturnKeyButton:1];
+  paletteViewState2 = [(PKPaletteContentView *)self paletteViewState];
+  [assistantViewCopy setEnableKeyboardButtons:{objc_msgSend(paletteViewState2, "enableKeyboardButtons")}];
 
-  v9 = [v5 keyboardButton];
-  [(PKPaletteContentView *)self _configureMenuForKeyboardButton:v9];
+  keyboardButton = [assistantViewCopy keyboardButton];
+  [(PKPaletteContentView *)self _configureMenuForKeyboardButton:keyboardButton];
 
-  v10 = [v5 returnKeyButton];
+  returnKeyButton = [assistantViewCopy returnKeyButton];
 
-  [(PKPaletteContentView *)self _configureReturnKeyButton:v10];
+  [(PKPaletteContentView *)self _configureReturnKeyButton:returnKeyButton];
 }
 
-- (void)colorPickerContainerView:(id)a3 willDismissInputAssistantView:(id)a4
+- (void)colorPickerContainerView:(id)view willDismissInputAssistantView:(id)assistantView
 {
-  v5 = [(PKPaletteContentView *)self delegate:a3];
+  v5 = [(PKPaletteContentView *)self delegate:view];
   [v5 contentViewDidDismissInputAssistantView:self];
 }
 
 - (void)_handleKeyboardButtonPressed
 {
-  v3 = [(PKPaletteContentView *)self delegate];
-  [v3 contentViewDidSelectInputAssistantKeyboardItem:self];
+  delegate = [(PKPaletteContentView *)self delegate];
+  [delegate contentViewDidSelectInputAssistantKeyboardItem:self];
 }
 
 - (void)_handleReturnKeyButtonPressed
 {
-  v3 = [(PKPaletteContentView *)self delegate];
-  [v3 contentViewDidSelectInputAssistantReturnKeyItem:self];
+  delegate = [(PKPaletteContentView *)self delegate];
+  [delegate contentViewDidSelectInputAssistantReturnKeyItem:self];
 }
 
-- (void)dismissPalettePopoverWithCompletion:(id)a3
+- (void)dismissPalettePopoverWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
-  v6 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+  toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__PKPaletteContentView_dismissPalettePopoverWithCompletion___block_invoke;
   v12[3] = &unk_1E82D7148;
   v7 = v5;
   v13 = v7;
-  [v6 dismissPalettePopoverWithCompletion:v12];
+  [toolAndColorPickerContainerView dismissPalettePopoverWithCompletion:v12];
 
   dispatch_group_enter(v7);
-  v8 = [(PKPaletteContentView *)self additionalOptionsView];
+  additionalOptionsView = [(PKPaletteContentView *)self additionalOptionsView];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__PKPaletteContentView_dismissPalettePopoverWithCompletion___block_invoke_2;
   v10[3] = &unk_1E82D7148;
   v9 = v7;
   v11 = v9;
-  [v8 dismissPalettePopoverWithCompletion:v10];
+  [additionalOptionsView dismissPalettePopoverWithCompletion:v10];
 
-  if (v4)
+  if (completionCopy)
   {
-    dispatch_group_notify(v9, MEMORY[0x1E69E96A0], v4);
+    dispatch_group_notify(v9, MEMORY[0x1E69E96A0], completionCopy);
   }
 }
 
 - (CGRect)plusButtonFrame
 {
-  v3 = [(PKPaletteContentView *)self additionalOptionsView];
-  [v3 plusButtonFrame];
+  additionalOptionsView = [(PKPaletteContentView *)self additionalOptionsView];
+  [additionalOptionsView plusButtonFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PKPaletteContentView *)self additionalOptionsView];
-  [(PKPaletteContentView *)self convertRect:v12 fromView:v5, v7, v9, v11];
+  additionalOptionsView2 = [(PKPaletteContentView *)self additionalOptionsView];
+  [(PKPaletteContentView *)self convertRect:additionalOptionsView2 fromView:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -1862,18 +1862,18 @@ LABEL_8:
   return result;
 }
 
-- (void)_dismissPalettePopoverUsingConfirmationBlock:(id)a3 completion:(id)a4
+- (void)_dismissPalettePopoverUsingConfirmationBlock:(id)block completion:(id)completion
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  block = a4;
+  blockCopy = block;
+  block = completion;
   v7 = dispatch_group_create();
-  v8 = [(PKPaletteContentView *)self toolPickerView];
-  v27[0] = v8;
-  v9 = [(PKPaletteContentView *)self colorPickerView];
-  v27[1] = v9;
-  v10 = [(PKPaletteContentView *)self additionalOptionsView];
-  v27[2] = v10;
+  toolPickerView = [(PKPaletteContentView *)self toolPickerView];
+  v27[0] = toolPickerView;
+  colorPickerView = [(PKPaletteContentView *)self colorPickerView];
+  v27[1] = colorPickerView;
+  additionalOptionsView = [(PKPaletteContentView *)self additionalOptionsView];
+  v27[2] = additionalOptionsView;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:3];
 
   v24 = 0u;
@@ -1896,7 +1896,7 @@ LABEL_8:
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
-        if (v6[2](v6, v17))
+        if (blockCopy[2](blockCopy, v17))
         {
           dispatch_group_enter(v7);
           v20[0] = MEMORY[0x1E69E9820];
@@ -1916,13 +1916,13 @@ LABEL_8:
 
   if (dispatch_group_wait(v7, 0))
   {
-    v18 = block;
+    blockCopy3 = block;
     dispatch_group_notify(v7, MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    v18 = block;
+    blockCopy3 = block;
     if (block)
     {
       block[2](block);
@@ -1930,18 +1930,18 @@ LABEL_8:
   }
 }
 
-- (id)paletteButton:(id)a3 tintColorForState:(unint64_t)a4
+- (id)paletteButton:(id)button tintColorForState:(unint64_t)state
 {
-  v4 = a3;
-  if ([v4 isHighlighted])
+  buttonCopy = button;
+  if ([buttonCopy isHighlighted])
   {
-    v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v6 = [v5 colorWithAlphaComponent:0.5];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v6 = [secondaryLabelColor colorWithAlphaComponent:0.5];
   }
 
   else
   {
-    if ([v4 isEnabled])
+    if ([buttonCopy isEnabled])
     {
       [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
@@ -1956,14 +1956,14 @@ LABEL_8:
   return v6;
 }
 
-- (id)paletteButton:(id)a3 backgroundColorForState:(unint64_t)a4
+- (id)paletteButton:(id)button backgroundColorForState:(unint64_t)state
 {
-  v4 = [a3 isHighlighted];
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v6 = v5;
-  if (v4)
+  isHighlighted = [button isHighlighted];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v6 = systemBackgroundColor;
+  if (isHighlighted)
   {
-    v7 = [v5 colorWithAlphaComponent:0.5];
+    v7 = [systemBackgroundColor colorWithAlphaComponent:0.5];
 
     v6 = v7;
   }
@@ -1971,17 +1971,17 @@ LABEL_8:
   return v6;
 }
 
-- (void)paletteViewStateDidChangeIsVisible:(id)a3
+- (void)paletteViewStateDidChangeIsVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   [(PKPaletteContentView *)self _updateUI];
-  v5 = [v4 isVisible];
+  isVisible = [visibleCopy isVisible];
 
-  if (v5)
+  if (isVisible)
   {
-    v7 = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
-    v6 = [v7 toolPickerView];
-    [v6 scrollSelectedToolViewToVisibleAnimated:0];
+    toolAndColorPickerContainerView = [(PKPaletteContentView *)self toolAndColorPickerContainerView];
+    toolPickerView = [toolAndColorPickerContainerView toolPickerView];
+    [toolPickerView scrollSelectedToolViewToVisibleAnimated:0];
   }
 }
 

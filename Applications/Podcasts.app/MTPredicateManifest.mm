@@ -1,30 +1,30 @@
 @interface MTPredicateManifest
-- (MTPredicateManifest)initWithInitialEpisodeUuid:(id)a3 fetchRequest:(id)a4;
-- (MTPredicateManifest)initWithInitialEpisodeUuid:(id)a3 predicateToTrack:(id)a4 sortDescriptors:(id)a5;
+- (MTPredicateManifest)initWithInitialEpisodeUuid:(id)uuid fetchRequest:(id)request;
+- (MTPredicateManifest)initWithInitialEpisodeUuid:(id)uuid predicateToTrack:(id)track sortDescriptors:(id)descriptors;
 - (NSArray)sortDescriptors;
-- (id)_augmentPredicate:(id)a3;
+- (id)_augmentPredicate:(id)predicate;
 - (id)_currentEpisodeUuid;
-- (void)_frcDidChangeResults:(id)a3 uuidToManagedObjectIDMap:(id)a4;
+- (void)_frcDidChangeResults:(id)results uuidToManagedObjectIDMap:(id)map;
 - (void)_freezeContentIfNeeded;
-- (void)_load:(id)a3;
-- (void)_observeAllPropertyChangesForEntityName:(id)a3 predicate:(id)a4;
-- (void)_refetch:(id)a3;
+- (void)_load:(id)_load;
+- (void)_observeAllPropertyChangesForEntityName:(id)name predicate:(id)predicate;
+- (void)_refetch:(id)_refetch;
 - (void)_restrictionsDidChange;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
 - (void)dealloc;
-- (void)generator:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)setSortDescriptors:(id)a3;
+- (void)generator:(id)generator didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)setSortDescriptors:(id)descriptors;
 @end
 
 @implementation MTPredicateManifest
 
-- (MTPredicateManifest)initWithInitialEpisodeUuid:(id)a3 predicateToTrack:(id)a4 sortDescriptors:(id)a5
+- (MTPredicateManifest)initWithInitialEpisodeUuid:(id)uuid predicateToTrack:(id)track sortDescriptors:(id)descriptors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  uuidCopy = uuid;
+  trackCopy = track;
+  descriptorsCopy = descriptors;
+  if (!descriptorsCopy)
   {
     v11 = [NSSortDescriptor sortDescriptorWithKey:kEpisodePubDate ascending:1];
     v19[0] = v11;
@@ -34,30 +34,30 @@
     v19[2] = v13;
     v14 = [NSSortDescriptor sortDescriptorWithKey:kEpisodeTitle ascending:1 selector:"localizedStandardCompare:"];
     v19[3] = v14;
-    v10 = [NSArray arrayWithObjects:v19 count:4];
+    descriptorsCopy = [NSArray arrayWithObjects:v19 count:4];
   }
 
   v15 = [NSFetchRequest alloc];
   v16 = [v15 initWithEntityName:kMTEpisodeEntityName];
-  [v16 setPredicate:v9];
-  [v16 setSortDescriptors:v10];
-  v17 = [(MTPredicateManifest *)self initWithInitialEpisodeUuid:v8 fetchRequest:v16];
+  [v16 setPredicate:trackCopy];
+  [v16 setSortDescriptors:descriptorsCopy];
+  v17 = [(MTPredicateManifest *)self initWithInitialEpisodeUuid:uuidCopy fetchRequest:v16];
 
   return v17;
 }
 
-- (MTPredicateManifest)initWithInitialEpisodeUuid:(id)a3 fetchRequest:(id)a4
+- (MTPredicateManifest)initWithInitialEpisodeUuid:(id)uuid fetchRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   v14.receiver = self;
   v14.super_class = MTPredicateManifest;
-  v7 = [(MTBaseEpisodeListManifest *)&v14 initWithInitialEpisodeUuid:a3];
+  v7 = [(MTBaseEpisodeListManifest *)&v14 initWithInitialEpisodeUuid:uuid];
   v8 = v7;
   if (v7)
   {
-    [(MTPredicateManifest *)v7 setFetchRequest:v6];
-    v9 = [v6 predicate];
-    [(MTPredicateManifest *)v8 setPredicate:v9];
+    [(MTPredicateManifest *)v7 setFetchRequest:requestCopy];
+    predicate = [requestCopy predicate];
+    [(MTPredicateManifest *)v8 setPredicate:predicate];
 
     [(MTPredicateManifest *)v8 setNeedsFrozenCheck:1];
     v10 = [[MTResultsChangeGenerator alloc] initWithDelegate:v8];
@@ -84,19 +84,19 @@
   [(MTPredicateManifest *)&v4 dealloc];
 }
 
-- (void)setSortDescriptors:(id)a3
+- (void)setSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(MTPredicateManifest *)self fetchRequest];
-  [v5 setSortDescriptors:v4];
+  descriptorsCopy = descriptors;
+  fetchRequest = [(MTPredicateManifest *)self fetchRequest];
+  [fetchRequest setSortDescriptors:descriptorsCopy];
 }
 
 - (NSArray)sortDescriptors
 {
-  v2 = [(MTPredicateManifest *)self fetchRequest];
-  v3 = [v2 sortDescriptors];
+  fetchRequest = [(MTPredicateManifest *)self fetchRequest];
+  sortDescriptors = [fetchRequest sortDescriptors];
 
-  return v3;
+  return sortDescriptors;
 }
 
 - (void)_restrictionsDidChange
@@ -109,23 +109,23 @@
   [IMAVPlayer performOnMainQueue:v2];
 }
 
-- (void)_load:(id)a3
+- (void)_load:(id)_load
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100140A1C;
   v5[3] = &unk_1004D8520;
-  v6 = self;
-  v7 = a3;
-  v4.receiver = v6;
+  selfCopy = self;
+  _loadCopy = _load;
+  v4.receiver = selfCopy;
   v4.super_class = MTPredicateManifest;
-  v3 = v7;
+  v3 = _loadCopy;
   [(MTPredicateManifest *)&v4 _load:v5];
 }
 
-- (void)_refetch:(id)a3
+- (void)_refetch:(id)_refetch
 {
-  v4 = a3;
+  _refetchCopy = _refetch;
   if (([(MTPredicateManifest *)self isLoaded]& 1) != 0)
   {
     kdebug_trace();
@@ -133,34 +133,34 @@
     v9 = 3221225472;
     v10 = sub_100140C18;
     v11 = &unk_1004D8520;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = _refetchCopy;
     v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, &v8);
     v6 = [(MTPredicateManifest *)self frc:v8];
-    v7 = [v6 managedObjectContext];
-    [v7 performBlock:v5];
+    managedObjectContext = [v6 managedObjectContext];
+    [managedObjectContext performBlock:v5];
   }
 
-  else if (v4)
+  else if (_refetchCopy)
   {
-    v4[2](v4);
+    _refetchCopy[2](_refetchCopy);
   }
 }
 
-- (id)_augmentPredicate:(id)a3
+- (id)_augmentPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = [MTEpisode predicateForDownloaded:0 excludeHidden:1];
   v6 = [MTEpisode predicateForFeedDeleted:1];
   v7 = [v5 AND:v6];
 
   v8 = [NSCompoundPredicate notPredicateWithSubpredicate:v7];
-  v9 = [v4 AND:v8];
+  v9 = [predicateCopy AND:v8];
 
-  v10 = [(MTPredicateManifest *)self _currentEpisodeUuid];
-  if ([v10 length])
+  _currentEpisodeUuid = [(MTPredicateManifest *)self _currentEpisodeUuid];
+  if ([_currentEpisodeUuid length])
   {
-    v11 = [MTEpisode predicateForEpisodeUuid:v10];
+    v11 = [MTEpisode predicateForEpisodeUuid:_currentEpisodeUuid];
     v12 = [v9 OR:v11];
 
     v9 = v12;
@@ -172,8 +172,8 @@
   v15 = [MTEpisode predicateForExternalType:0];
   v16 = [v14 AND:v15];
 
-  v17 = [(MTBaseEpisodeListManifest *)self _predicateForFilteringExplicitEpisodes];
-  v18 = [v16 AND:v17];
+  _predicateForFilteringExplicitEpisodes = [(MTBaseEpisodeListManifest *)self _predicateForFilteringExplicitEpisodes];
+  v18 = [v16 AND:_predicateForFilteringExplicitEpisodes];
 
   v19 = +[MTEpisode predicateForEntitledEpisodes];
   v20 = [v18 AND:v19];
@@ -183,48 +183,48 @@
 
 - (id)_currentEpisodeUuid
 {
-  v3 = [(MTPredicateManifest *)self currentItem];
-  v4 = [v3 episodeUuid];
+  currentItem = [(MTPredicateManifest *)self currentItem];
+  episodeUuid = [currentItem episodeUuid];
 
-  if (![v4 length])
+  if (![episodeUuid length])
   {
-    v5 = [(MTBaseEpisodeListManifest *)self initialEpisodeUuid];
+    initialEpisodeUuid = [(MTBaseEpisodeListManifest *)self initialEpisodeUuid];
 
-    v4 = v5;
+    episodeUuid = initialEpisodeUuid;
   }
 
-  return v4;
+  return episodeUuid;
 }
 
-- (void)_frcDidChangeResults:(id)a3 uuidToManagedObjectIDMap:(id)a4
+- (void)_frcDidChangeResults:(id)results uuidToManagedObjectIDMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
+  resultsCopy = results;
+  mapCopy = map;
   if ([(MTPredicateManifest *)self isLoaded]&& ![(MTPredicateManifest *)self resultsAreFrozen])
   {
     kdebug_trace();
     if (self->_preserveOriginalEpisodeOrdering)
     {
-      v10 = [(MTPredicateManifest *)self explicitSortOrder];
+      explicitSortOrder = [(MTPredicateManifest *)self explicitSortOrder];
 
-      if (!v10)
+      if (!explicitSortOrder)
       {
-        objc_storeStrong(&self->_explicitSortOrder, a3);
+        objc_storeStrong(&self->_explicitSortOrder, results);
       }
     }
 
-    v11 = [(MTPredicateManifest *)self explicitSortOrder];
+    explicitSortOrder2 = [(MTPredicateManifest *)self explicitSortOrder];
 
-    if (v11)
+    if (explicitSortOrder2)
     {
-      v12 = [NSSet setWithArray:v7];
+      v12 = [NSSet setWithArray:resultsCopy];
       v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v13 = [(MTPredicateManifest *)self explicitSortOrder];
-      v14 = [v13 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      explicitSortOrder3 = [(MTPredicateManifest *)self explicitSortOrder];
+      v14 = [explicitSortOrder3 countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v14)
       {
         v15 = v14;
@@ -235,7 +235,7 @@
           {
             if (*v37 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(explicitSortOrder3);
             }
 
             v18 = *(*(&v36 + 1) + 8 * i);
@@ -245,37 +245,37 @@
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v36 objects:v40 count:16];
+          v15 = [explicitSortOrder3 countByEnumeratingWithState:&v36 objects:v40 count:16];
         }
 
         while (v15);
       }
 
-      v19 = [(MTPredicateManifest *)self _currentEpisodeUuid];
-      if ([v19 length] && (objc_msgSend(v9, "containsObject:", v19) & 1) == 0 && objc_msgSend(v7, "containsObject:", v19))
+      _currentEpisodeUuid = [(MTPredicateManifest *)self _currentEpisodeUuid];
+      if ([_currentEpisodeUuid length] && (objc_msgSend(v9, "containsObject:", _currentEpisodeUuid) & 1) == 0 && objc_msgSend(resultsCopy, "containsObject:", _currentEpisodeUuid))
       {
-        v20 = [(MTPredicateManifest *)self currentIndex];
-        if (v20 <= [v9 count])
+        currentIndex = [(MTPredicateManifest *)self currentIndex];
+        if (currentIndex <= [v9 count])
         {
-          v21 = [(MTPredicateManifest *)self currentIndex];
+          currentIndex2 = [(MTPredicateManifest *)self currentIndex];
         }
 
         else
         {
-          v21 = 0;
+          currentIndex2 = 0;
         }
 
-        [v9 insertObject:v19 atIndex:v21];
+        [v9 insertObject:_currentEpisodeUuid atIndex:currentIndex2];
       }
     }
 
     else
     {
-      v9 = v7;
+      v9 = resultsCopy;
     }
 
-    v22 = [(MTBaseEpisodeListManifest *)self episodeUuids];
-    v23 = [v22 isEqual:v9];
+    episodeUuids = [(MTBaseEpisodeListManifest *)self episodeUuids];
+    v23 = [episodeUuids isEqual:v9];
 
     if (v23)
     {
@@ -283,9 +283,9 @@
       goto LABEL_4;
     }
 
-    v24 = [(MTBaseEpisodeListManifest *)self episodeUuids];
+    episodeUuids2 = [(MTBaseEpisodeListManifest *)self episodeUuids];
     [(MTBaseEpisodeListManifest *)self setEpisodeUuids:v9];
-    [(MTBaseEpisodeListManifest *)self setUuidToManagedObjectIDMap:v8];
+    [(MTBaseEpisodeListManifest *)self setUuidToManagedObjectIDMap:mapCopy];
     if (![(MTBaseEpisodeListManifest *)self count]|| [(MTPredicateManifest *)self currentIndex]== 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_47:
@@ -298,17 +298,17 @@ LABEL_47:
 
     kdebug_trace();
     v25 = [NSIndexPath indexPathForRow:[(MTPredicateManifest *)self currentIndex] inSection:0];
-    v26 = [(MTPredicateManifest *)self indexPathShifter];
-    [v26 setInitialIndexPath:v25];
+    indexPathShifter = [(MTPredicateManifest *)self indexPathShifter];
+    [indexPathShifter setInitialIndexPath:v25];
 
-    v27 = [(MTPredicateManifest *)self changeGenerator];
-    [v27 generateChangesForExistingObjects:v24 newObjects:v9 inSection:0];
+    changeGenerator = [(MTPredicateManifest *)self changeGenerator];
+    [changeGenerator generateChangesForExistingObjects:episodeUuids2 newObjects:v9 inSection:0];
 
-    v28 = [(MTPredicateManifest *)self indexPathShifter];
-    v29 = [v28 shiftedIndexPath];
-    v30 = [v29 row];
+    indexPathShifter2 = [(MTPredicateManifest *)self indexPathShifter];
+    shiftedIndexPath = [indexPathShifter2 shiftedIndexPath];
+    v30 = [shiftedIndexPath row];
 
-    if (v30 != 0x7FFFFFFFFFFFFFFFLL || -[MTPredicateManifest currentIndex](self, "currentIndex") == 1 && ((v30 = -[MTPredicateManifest currentIndex](self, "currentIndex") - 1, v31 = -[MTPredicateManifest currentIndex](self, "currentIndex"), v31 >= [v24 count]) ? (v32 = 0) : (objc_msgSend(v24, "objectAtIndexedSubscript:", -[MTPredicateManifest currentIndex](self, "currentIndex")), v32 = objc_claimAutoreleasedReturnValue()), v30 >= objc_msgSend(v9, "count") ? (v33 = 0) : (objc_msgSend(v9, "objectAtIndexedSubscript:", v30), v33 = objc_claimAutoreleasedReturnValue()), v34 = objc_msgSend(v32, "isEqualToString:", v33), v33, v32, v34))
+    if (v30 != 0x7FFFFFFFFFFFFFFFLL || -[MTPredicateManifest currentIndex](self, "currentIndex") == 1 && ((v30 = -[MTPredicateManifest currentIndex](self, "currentIndex") - 1, v31 = -[MTPredicateManifest currentIndex](self, "currentIndex"), v31 >= [episodeUuids2 count]) ? (v32 = 0) : (objc_msgSend(episodeUuids2, "objectAtIndexedSubscript:", -[MTPredicateManifest currentIndex](self, "currentIndex")), v32 = objc_claimAutoreleasedReturnValue()), v30 >= objc_msgSend(v9, "count") ? (v33 = 0) : (objc_msgSend(v9, "objectAtIndexedSubscript:", v30), v33 = objc_claimAutoreleasedReturnValue()), v34 = objc_msgSend(v32, "isEqualToString:", v33), v33, v32, v34))
     {
       if ((v30 & 0x8000000000000000) != 0)
       {
@@ -323,8 +323,8 @@ LABEL_47:
 
     if (v30 < [(MTBaseEpisodeListManifest *)self count])
     {
-      v35 = [(MTPredicateManifest *)self currentItem];
-      [v35 setManifestIndex:v30];
+      currentItem = [(MTPredicateManifest *)self currentItem];
+      [currentItem setManifestIndex:v30];
 
 LABEL_46:
       [(MTPredicateManifest *)self setCurrentIndex:v30];
@@ -337,7 +337,7 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v9 = v7;
+  v9 = resultsCopy;
 LABEL_4:
 }
 
@@ -350,105 +350,105 @@ LABEL_4:
 
   kdebug_trace();
   [(MTPredicateManifest *)self setNeedsFrozenCheck:0];
-  v3 = [(MTBaseEpisodeListManifest *)self episodeUuids];
-  v4 = [v3 count];
+  episodeUuids = [(MTBaseEpisodeListManifest *)self episodeUuids];
+  v4 = [episodeUuids count];
 
   if (v4 >= 0xC9)
   {
-    v16 = [(MTPredicateManifest *)self _currentEpisodeUuid];
+    _currentEpisodeUuid = [(MTPredicateManifest *)self _currentEpisodeUuid];
     if ([(MTPredicateManifest *)self currentIndex]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = [(MTBaseEpisodeListManifest *)self episodeUuids];
-      v6 = [(MTPredicateManifest *)self _currentEpisodeUuid];
-      v7 = [v5 indexOfObject:v6];
+      episodeUuids2 = [(MTBaseEpisodeListManifest *)self episodeUuids];
+      _currentEpisodeUuid2 = [(MTPredicateManifest *)self _currentEpisodeUuid];
+      currentIndex = [episodeUuids2 indexOfObject:_currentEpisodeUuid2];
     }
 
     else
     {
-      v7 = [(MTPredicateManifest *)self currentIndex];
+      currentIndex = [(MTPredicateManifest *)self currentIndex];
     }
 
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+    if (currentIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
 
       return;
     }
 
     v8 = 50;
-    if (v7 > 50)
+    if (currentIndex > 50)
     {
-      v8 = v7;
+      v8 = currentIndex;
     }
 
     v9 = v8 - 50;
-    v10 = [(MTBaseEpisodeListManifest *)self episodeUuids];
-    v11 = [v10 count];
+    episodeUuids3 = [(MTBaseEpisodeListManifest *)self episodeUuids];
+    v11 = [episodeUuids3 count];
 
-    v12 = (v7 + 100);
-    if (v11 < v7 + 100)
+    v12 = (currentIndex + 100);
+    if (v11 < currentIndex + 100)
     {
       v12 = v11;
     }
 
     v13 = &v12[-v9];
-    v14 = [(MTBaseEpisodeListManifest *)self episodeUuids];
-    v15 = [v14 subarrayWithRange:{v9, v13}];
+    episodeUuids4 = [(MTBaseEpisodeListManifest *)self episodeUuids];
+    v15 = [episodeUuids4 subarrayWithRange:{v9, v13}];
 
     [(MTBaseEpisodeListManifest *)self setEpisodeUuids:v15];
-    -[MTPredicateManifest setCurrentIndex:](self, "setCurrentIndex:", [v15 indexOfObject:v16]);
+    -[MTPredicateManifest setCurrentIndex:](self, "setCurrentIndex:", [v15 indexOfObject:_currentEpisodeUuid]);
     self->_resultsAreFrozen = 1;
   }
 
   kdebug_trace();
 }
 
-- (void)_observeAllPropertyChangesForEntityName:(id)a3 predicate:(id)a4
+- (void)_observeAllPropertyChangesForEntityName:(id)name predicate:(id)predicate
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001418EC;
   v7[3] = &unk_1004D94C8;
   v7[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  nameCopy = name;
+  predicateCopy = predicate;
+  v5 = predicateCopy;
+  v6 = nameCopy;
   [IMAVPlayer performOnAvSessionQueue:v7];
 }
 
-- (void)generator:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)generator:(id)generator didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v10 = a7;
-  v11 = a5;
-  v12 = [(MTPredicateManifest *)self indexPathShifter];
-  v14 = [v12 shiftedIndexPath];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  indexPathShifter = [(MTPredicateManifest *)self indexPathShifter];
+  shiftedIndexPath = [indexPathShifter shiftedIndexPath];
 
-  v13 = [(MTPredicateManifest *)self indexPathShifter];
-  [v13 processChangeAtIndexPath:v11 forChangeType:a6 newIndexPath:v10];
+  indexPathShifter2 = [(MTPredicateManifest *)self indexPathShifter];
+  [indexPathShifter2 processChangeAtIndexPath:pathCopy forChangeType:type newIndexPath:indexPathCopy];
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v15 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 - 1 <= 2)
+  controllerCopy = controller;
+  objectCopy = object;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (type - 1 <= 2)
   {
     [(MTPredicateManifest *)self setHasFRCChanges:1];
   }
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   if ([(MTPredicateManifest *)self hasFRCChanges])
   {
-    v5 = [v4 fetchedObjects];
-    v6 = [v5 valueForKey:kEpisodeUuid];
+    fetchedObjects = [contentCopy fetchedObjects];
+    v6 = [fetchedObjects valueForKey:kEpisodeUuid];
 
-    v7 = [v4 fetchedObjects];
-    v8 = [v7 valueForKey:kObjectID];
+    fetchedObjects2 = [contentCopy fetchedObjects];
+    v8 = [fetchedObjects2 valueForKey:kObjectID];
     v9 = [NSDictionary dictionaryWithObjects:v8 forKeys:v6];
 
     [(MTPredicateManifest *)self setHasFRCChanges:0];

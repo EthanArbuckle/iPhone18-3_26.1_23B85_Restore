@@ -1,31 +1,31 @@
 @interface PRNLPLanguageModelState
-- (BOOL)getConditionalProbabilityForString:(id)a3 probability:(double *)a4;
-- (PRNLPLanguageModelState)initWithLanguageModel:(id)a3 state:(id)a4;
-- (id)conditionalProbabilityDictionaryForStrings:(id)a3;
+- (BOOL)getConditionalProbabilityForString:(id)string probability:(double *)probability;
+- (PRNLPLanguageModelState)initWithLanguageModel:(id)model state:(id)state;
+- (id)conditionalProbabilityDictionaryForStrings:(id)strings;
 - (void)dealloc;
-- (void)enumeratePredictions:(unint64_t)a3 maxTokensPerPrediction:(unint64_t)a4 withBlock:(id)a5;
+- (void)enumeratePredictions:(unint64_t)predictions maxTokensPerPrediction:(unint64_t)prediction withBlock:(id)block;
 @end
 
 @implementation PRNLPLanguageModelState
 
-- (PRNLPLanguageModelState)initWithLanguageModel:(id)a3 state:(id)a4
+- (PRNLPLanguageModelState)initWithLanguageModel:(id)model state:(id)state
 {
   v8.receiver = self;
   v8.super_class = PRNLPLanguageModelState;
   v6 = [(PRNLPLanguageModelState *)&v8 init];
   if (v6)
   {
-    v6->_languageModel = a3;
-    v6->_state = a4;
+    v6->_languageModel = model;
+    v6->_state = state;
     v6->_cachedPredictionsDictionary = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
   return v6;
 }
 
-- (BOOL)getConditionalProbabilityForString:(id)a3 probability:(double *)a4
+- (BOOL)getConditionalProbabilityForString:(id)string probability:(double *)probability
 {
-  v5 = [(NLLanguageModelState *)self->_state conditionalProbabilityForString:a3];
+  v5 = [(NLLanguageModelState *)self->_state conditionalProbabilityForString:string];
   if (v5)
   {
     v6 = v5;
@@ -33,9 +33,9 @@
     if (v5)
     {
       [v6 log10Probability];
-      if (a4)
+      if (probability)
       {
-        *a4 = v7;
+        *probability = v7;
       }
 
       LOBYTE(v5) = 1;
@@ -45,45 +45,45 @@
   return v5;
 }
 
-- (id)conditionalProbabilityDictionaryForStrings:(id)a3
+- (id)conditionalProbabilityDictionaryForStrings:(id)strings
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(NLLanguageModelState *)self->_state conditionalProbabilitiesForStrings:a3];
-  v7 = [a3 count];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [(NLLanguageModelState *)self->_state conditionalProbabilitiesForStrings:strings];
+  v7 = [strings count];
   if (v7)
   {
     v8 = v7;
     for (i = 0; i != v8; ++i)
     {
-      v10 = [a3 objectAtIndex:i];
+      v10 = [strings objectAtIndex:i];
       v11 = [v6 objectAtIndex:i];
       if ([v11 isValid])
       {
         [v11 log10Probability];
-        [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:"), v10}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:"), v10}];
       }
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (void)enumeratePredictions:(unint64_t)a3 maxTokensPerPrediction:(unint64_t)a4 withBlock:(id)a5
+- (void)enumeratePredictions:(unint64_t)predictions maxTokensPerPrediction:(unint64_t)prediction withBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u/%u", a3, a4];
-  v10 = [(NSMutableDictionary *)self->_cachedPredictionsDictionary objectForKey:v9];
+  prediction = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u/%u", predictions, prediction];
+  v10 = [(NSMutableDictionary *)self->_cachedPredictionsDictionary objectForKey:prediction];
   if (!v10)
   {
-    v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+    v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:predictions];
     state = self->_state;
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __81__PRNLPLanguageModelState_enumeratePredictions_maxTokensPerPrediction_withBlock___block_invoke;
     v27[3] = &unk_1E84053F0;
     v27[4] = v10;
-    [(NLLanguageModelState *)state enumeratePredictions:a3 maximumTokensPerPrediction:a4 withBlock:v27];
-    [(NSMutableDictionary *)self->_cachedPredictionsDictionary setObject:v10 forKey:v9];
+    [(NLLanguageModelState *)state enumeratePredictions:predictions maximumTokensPerPrediction:prediction withBlock:v27];
+    [(NSMutableDictionary *)self->_cachedPredictionsDictionary setObject:v10 forKey:prediction];
   }
 
   v25 = 0u;
@@ -110,11 +110,11 @@ LABEL_5:
       v17 = 0;
       v18 = *(*(&v23 + 1) + 8 * v15);
       v22 = 0;
-      if (v16 < a3)
+      if (v16 < predictions)
       {
-        v19 = [v18 prediction];
+        prediction2 = [v18 prediction];
         [objc_msgSend(v18 "probabilityInfo")];
-        (*(a5 + 2))(a5, v19, &v22);
+        (*(block + 2))(block, prediction2, &v22);
         v17 = v22;
       }
 
@@ -123,7 +123,7 @@ LABEL_5:
         break;
       }
 
-      if (++v16 >= a3)
+      if (++v16 >= predictions)
       {
         break;
       }

@@ -1,18 +1,18 @@
 @interface ATXBoostObject
-- (ATXBoostObject)initWithDictionary:(id)a3;
+- (ATXBoostObject)initWithDictionary:(id)dictionary;
 @end
 
 @implementation ATXBoostObject
 
-- (ATXBoostObject)initWithDictionary:(id)a3
+- (ATXBoostObject)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = ATXBoostObject;
   v5 = [(ATXBoostObject *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Work"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Work"];
     v7 = v6;
     if (v6)
     {
@@ -25,7 +25,7 @@
       v5->_workScale = v11;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"Home"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"Home"];
 
     if (v12)
     {
@@ -38,7 +38,7 @@
       v5->_homeScale = v16;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"Gym"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"Gym"];
 
     if (v17)
     {
@@ -51,7 +51,7 @@
       v5->_gymScale = v21;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"School"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"School"];
 
     if (v22)
     {

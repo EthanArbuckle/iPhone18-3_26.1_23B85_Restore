@@ -5,39 +5,39 @@
 - (BOOL)isAirplaneModeEnabled;
 - (ICQInAppMessaging)init;
 - (id)_accountIdentifier;
-- (id)_actionsForBannerSpecification:(id)a3 offer:(id)a4;
-- (id)_dismissActionForBannerSpecification:(id)a3 offer:(id)a4;
+- (id)_actionsForBannerSpecification:(id)specification offer:(id)offer;
+- (id)_dismissActionForBannerSpecification:(id)specification offer:(id)offer;
 - (id)_recalculateCurrentMessage;
-- (id)airplaneModeOnMessageFromDefaultOffer:(id)a3;
-- (id)cellularConstraintMessageFromDefaultOffer:(id)a3;
-- (id)cellularDataOffMessageFromDefaultOffer:(id)a3;
-- (id)quotaMessageForOffer:(id)a3;
-- (id)serverUnreachableMessageFromDefaultOffer:(id)a3;
-- (id)termsNotAcceptedMessageFromDefaultOffer:(id)a3;
-- (id)uploadFailureMessageForPendingItemCount:(id)a3 defaultOffer:(id)a4;
-- (unint64_t)_contentTypeForDriveWithOffer:(id)a3;
-- (unint64_t)_contentTypeForQuotaOffer:(id)a3;
+- (id)airplaneModeOnMessageFromDefaultOffer:(id)offer;
+- (id)cellularConstraintMessageFromDefaultOffer:(id)offer;
+- (id)cellularDataOffMessageFromDefaultOffer:(id)offer;
+- (id)quotaMessageForOffer:(id)offer;
+- (id)serverUnreachableMessageFromDefaultOffer:(id)offer;
+- (id)termsNotAcceptedMessageFromDefaultOffer:(id)offer;
+- (id)uploadFailureMessageForPendingItemCount:(id)count defaultOffer:(id)offer;
+- (unint64_t)_contentTypeForDriveWithOffer:(id)offer;
+- (unint64_t)_contentTypeForQuotaOffer:(id)offer;
 - (void)_fetchBRCellularConstraintState;
 - (void)_fetchDefaultOffer;
 - (void)_fetchInitialOfferStates;
 - (void)_fetchPremiumOffer;
 - (void)_fetchRegularOffer;
-- (void)_handleBRCellularConstraintChanged:(id)a3;
+- (void)_handleBRCellularConstraintChanged:(id)changed;
 - (void)_isCellularDataOff;
-- (void)_observeUpdatesForBundleID:(id)a3;
-- (void)_postMessage:(id)a3;
+- (void)_observeUpdatesForBundleID:(id)d;
+- (void)_postMessage:(id)message;
 - (void)_recalculateAndPostCurrentMessage;
 - (void)_registerForNotifications;
 - (void)_startMonitoringNetworkStatus;
 - (void)airplaneModeChanged;
-- (void)dataSettingsChanged:(id)a3;
-- (void)fetchMessageForReason:(id)a3 pendingItemsCount:(id)a4 withCompletion:(id)a5;
-- (void)fetchMessageForReason:(id)a3 withCompletion:(id)a4;
-- (void)fetchMessageWithCompletion:(id)a3;
+- (void)dataSettingsChanged:(id)changed;
+- (void)fetchMessageForReason:(id)reason pendingItemsCount:(id)count withCompletion:(id)completion;
+- (void)fetchMessageForReason:(id)reason withCompletion:(id)completion;
+- (void)fetchMessageWithCompletion:(id)completion;
 - (void)observeUpdates;
-- (void)observeUpdatesForBundleID:(id)a3;
-- (void)observeUpdatesForBundleID:(id)a3 placement:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeUpdatesForBundleID:(id)d;
+- (void)observeUpdatesForBundleID:(id)d placement:(id)placement;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)stopObservingUpdates;
 @end
 
@@ -100,10 +100,10 @@ uint64_t __25__ICQInAppMessaging_init__block_invoke(uint64_t a1)
     messageQueue = v2->_messageQueue;
     v2->_messageQueue = v4;
 
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleID = v2->_bundleID;
-    v2->_bundleID = v7;
+    v2->_bundleID = bundleIdentifier;
 
     objc_storeStrong(&v2->_placement, @"InApp");
     v9 = objc_alloc_init(MEMORY[0x277D7F3C8]);
@@ -135,31 +135,31 @@ uint64_t __25__ICQInAppMessaging_init__block_invoke(uint64_t a1)
 
 - (void)observeUpdates
 {
-  v3 = [(ICQInAppMessaging *)self bundleID];
-  [(ICQInAppMessaging *)self _observeUpdatesForBundleID:v3];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  [(ICQInAppMessaging *)self _observeUpdatesForBundleID:bundleID];
 }
 
 - (void)_registerForNotifications
 {
-  v3 = [(ICQInAppMessaging *)self defaults];
-  [v3 addObserver:self forKeyPath:@"debug-in-app-message" options:5 context:0];
+  defaults = [(ICQInAppMessaging *)self defaults];
+  [defaults addObserver:self forKeyPath:@"debug-in-app-message" options:5 context:0];
 
   [(ICQInAppMessaging *)self _fetchInitialOfferStates];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__fetchRegularOffer name:*MEMORY[0x277D7F2A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__fetchRegularOffer name:*MEMORY[0x277D7F2A0] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__fetchPremiumOffer name:*MEMORY[0x277D7F2A8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__fetchPremiumOffer name:*MEMORY[0x277D7F2A8] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__fetchDefaultOffer name:*MEMORY[0x277D7F298] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__fetchDefaultOffer name:*MEMORY[0x277D7F298] object:0];
 
   v7 = *MEMORY[0x277D76758];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel__recalculateAndPostCurrentMessage name:v7 object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__recalculateAndPostCurrentMessage name:v7 object:0];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel__handleBRCellularConstraintChanged_ name:*MEMORY[0x277CFABB8] object:0];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__handleBRCellularConstraintChanged_ name:*MEMORY[0x277CFABB8] object:0];
 
   [(ICQInAppMessaging *)self _fetchBRCellularConstraintState];
   [(ICQInAppMessaging *)self _startMonitoringNetworkStatus];
@@ -268,7 +268,7 @@ LABEL_13:
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v3 = [(ICQInAppMessaging *)self unfairLock];
+  unfairLock = [(ICQInAppMessaging *)self unfairLock];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __47__ICQInAppMessaging__recalculateCurrentMessage__block_invoke;
@@ -279,11 +279,11 @@ LABEL_13:
   v21[7] = &v30;
   v21[8] = &v26;
   v21[9] = &v22;
-  [v3 synchronized:v21];
+  [unfairLock synchronized:v21];
 
-  v4 = [(ICQInAppMessaging *)self mockMessage];
+  mockMessage = [(ICQInAppMessaging *)self mockMessage];
 
-  if (v4)
+  if (mockMessage)
   {
     v5 = _ICQGetLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -292,7 +292,7 @@ LABEL_13:
       _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "In-app messages sending mock message", v20, 2u);
     }
 
-    v6 = [(ICQInAppMessaging *)self mockMessage];
+    mockMessage2 = [(ICQInAppMessaging *)self mockMessage];
     goto LABEL_5;
   }
 
@@ -300,14 +300,14 @@ LABEL_13:
   {
     if ([(ICQInAppMessaging *)self isAirplaneModeEnabled])
     {
-      v6 = [(ICQInAppMessaging *)self airplaneModeOnMessageFromDefaultOffer:v31[5]];
+      mockMessage2 = [(ICQInAppMessaging *)self airplaneModeOnMessageFromDefaultOffer:v31[5]];
     }
 
     else
     {
-      v14 = [(ICQInAppMessaging *)self _isCellularDataOff];
+      _isCellularDataOff = [(ICQInAppMessaging *)self _isCellularDataOff];
       v15 = v31[5];
-      if (v14)
+      if (_isCellularDataOff)
       {
         [(ICQInAppMessaging *)self cellularDataOffMessageFromDefaultOffer:v15];
       }
@@ -316,7 +316,7 @@ LABEL_13:
       {
         [(ICQInAppMessaging *)self serverUnreachableMessageFromDefaultOffer:v15];
       }
-      v6 = ;
+      mockMessage2 = ;
     }
 
     goto LABEL_5;
@@ -324,24 +324,24 @@ LABEL_13:
 
   if ([(ICQInAppMessaging *)self _termsNotAccepted])
   {
-    v6 = [(ICQInAppMessaging *)self termsNotAcceptedMessageFromDefaultOffer:v31[5]];
+    mockMessage2 = [(ICQInAppMessaging *)self termsNotAcceptedMessageFromDefaultOffer:v31[5]];
 LABEL_5:
-    v7 = v6;
+    v7 = mockMessage2;
     goto LABEL_6;
   }
 
   v9 = *(v40[0] + 40);
-  v10 = [(ICQInAppMessaging *)self placement];
-  v11 = [v9 messageSpecificationForPlacement:v10];
+  placement = [(ICQInAppMessaging *)self placement];
+  v11 = [v9 messageSpecificationForPlacement:placement];
   if (v11)
   {
-    v12 = [*(v40[0] + 40) level];
+    level = [*(v40[0] + 40) level];
 
-    if (v12)
+    if (level)
     {
       v13 = v40;
 LABEL_24:
-      v6 = [(ICQInAppMessaging *)self quotaMessageForOffer:*(*v13 + 40)];
+      mockMessage2 = [(ICQInAppMessaging *)self quotaMessageForOffer:*(*v13 + 40)];
       goto LABEL_5;
     }
   }
@@ -351,13 +351,13 @@ LABEL_24:
   }
 
   v16 = *(v37[0] + 40);
-  v17 = [(ICQInAppMessaging *)self placement];
-  v18 = [v16 messageSpecificationForPlacement:v17];
+  placement2 = [(ICQInAppMessaging *)self placement];
+  v18 = [v16 messageSpecificationForPlacement:placement2];
   if (v18)
   {
-    v19 = [*(v37[0] + 40) level];
+    level2 = [*(v37[0] + 40) level];
 
-    if (v19)
+    if (level2)
     {
       v13 = v37;
       goto LABEL_24;
@@ -370,7 +370,7 @@ LABEL_24:
 
   if (*(v23 + 24) == 1)
   {
-    v6 = [(ICQInAppMessaging *)self cellularConstraintMessageFromDefaultOffer:v31[5]];
+    mockMessage2 = [(ICQInAppMessaging *)self cellularConstraintMessageFromDefaultOffer:v31[5]];
     goto LABEL_5;
   }
 
@@ -411,11 +411,11 @@ uint64_t __47__ICQInAppMessaging__recalculateCurrentMessage__block_invoke(uint64
 
 - (BOOL)_termsNotAccepted
 {
-  v2 = [(ICQInAppMessaging *)self accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_needsToVerifyTerms];
+  accountStore = [(ICQInAppMessaging *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+  aa_needsToVerifyTerms = [aa_primaryAppleAccount aa_needsToVerifyTerms];
 
-  return v4;
+  return aa_needsToVerifyTerms;
 }
 
 - (void)_fetchInitialOfferStates
@@ -429,14 +429,14 @@ uint64_t __47__ICQInAppMessaging__recalculateCurrentMessage__block_invoke(uint64
 - (void)_fetchRegularOffer
 {
   objc_initWeak(&location, self);
-  v3 = [(ICQInAppMessaging *)self sharedOfferManager];
-  v4 = [(ICQInAppMessaging *)self bundleID];
+  sharedOfferManager = [(ICQInAppMessaging *)self sharedOfferManager];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__ICQInAppMessaging__fetchRegularOffer__block_invoke;
   v5[3] = &unk_27A65C868;
   objc_copyWeak(&v6, &location);
-  [v3 getOfferForBundleIdentifier:v4 completion:v5];
+  [sharedOfferManager getOfferForBundleIdentifier:bundleID completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -483,14 +483,14 @@ void __39__ICQInAppMessaging__fetchRegularOffer__block_invoke_95(uint64_t a1)
 - (void)_fetchPremiumOffer
 {
   objc_initWeak(&location, self);
-  v3 = [(ICQInAppMessaging *)self sharedOfferManager];
-  v4 = [(ICQInAppMessaging *)self bundleID];
+  sharedOfferManager = [(ICQInAppMessaging *)self sharedOfferManager];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__ICQInAppMessaging__fetchPremiumOffer__block_invoke;
   v5[3] = &unk_27A65C890;
   objc_copyWeak(&v6, &location);
-  [v3 getPremiumOfferForBundleIdentifier:v4 completion:v5];
+  [sharedOfferManager getPremiumOfferForBundleIdentifier:bundleID completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -537,13 +537,13 @@ void __39__ICQInAppMessaging__fetchPremiumOffer__block_invoke_97(uint64_t a1)
 - (void)_fetchDefaultOffer
 {
   objc_initWeak(&location, self);
-  v3 = [(ICQInAppMessaging *)self sharedOfferManager];
+  sharedOfferManager = [(ICQInAppMessaging *)self sharedOfferManager];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__ICQInAppMessaging__fetchDefaultOffer__block_invoke;
   v4[3] = &unk_27A65C868;
   objc_copyWeak(&v5, &location);
-  [v3 getDefaultOfferWithCompletion:v4];
+  [sharedOfferManager getDefaultOfferWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -622,14 +622,14 @@ void __39__ICQInAppMessaging__fetchDefaultOffer__block_invoke_99(uint64_t a1)
 
     else
     {
-      v7 = [(ICQInAppMessaging *)self unfairLock];
+      unfairLock = [(ICQInAppMessaging *)self unfairLock];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __52__ICQInAppMessaging__fetchBRCellularConstraintState__block_invoke;
       v8[3] = &unk_27A65B1C8;
       v8[4] = self;
       v8[5] = state64;
-      [v7 synchronized:v8];
+      [unfairLock synchronized:v8];
     }
 
     notify_cancel(out_token);
@@ -660,19 +660,19 @@ void __52__ICQInAppMessaging__fetchBRCellularConstraintState__block_invoke(uint6
   v3 = nw_path_monitor_create();
   [(ICQInAppMessaging *)self setConnectivityMonitor:v3];
 
-  v4 = [(ICQInAppMessaging *)self connectivityMonitor];
-  nw_path_monitor_set_queue(v4, self->_connectivityQueue);
+  connectivityMonitor = [(ICQInAppMessaging *)self connectivityMonitor];
+  nw_path_monitor_set_queue(connectivityMonitor, self->_connectivityQueue);
 
-  v5 = [(ICQInAppMessaging *)self connectivityMonitor];
+  connectivityMonitor2 = [(ICQInAppMessaging *)self connectivityMonitor];
   update_handler[0] = MEMORY[0x277D85DD0];
   update_handler[1] = 3221225472;
   update_handler[2] = __50__ICQInAppMessaging__startMonitoringNetworkStatus__block_invoke;
   update_handler[3] = &unk_27A65C818;
   update_handler[4] = self;
-  nw_path_monitor_set_update_handler(v5, update_handler);
+  nw_path_monitor_set_update_handler(connectivityMonitor2, update_handler);
 
-  v6 = [(ICQInAppMessaging *)self connectivityMonitor];
-  nw_path_monitor_start(v6);
+  connectivityMonitor3 = [(ICQInAppMessaging *)self connectivityMonitor];
+  nw_path_monitor_start(connectivityMonitor3);
 }
 
 uint64_t __50__ICQInAppMessaging__startMonitoringNetworkStatus__block_invoke(uint64_t a1, nw_path_t path)
@@ -713,52 +713,52 @@ void __50__ICQInAppMessaging__startMonitoringNetworkStatus__block_invoke_2(uint6
   }
 }
 
-- (void)observeUpdatesForBundleID:(id)a3
+- (void)observeUpdatesForBundleID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Client requested in-app message updates in bundle %{public}@", &v6, 0xCu);
   }
 
-  [(ICQInAppMessaging *)self observeUpdatesForBundleID:v4 placement:@"InApp"];
+  [(ICQInAppMessaging *)self observeUpdatesForBundleID:dCopy placement:@"InApp"];
 }
 
-- (void)observeUpdatesForBundleID:(id)a3 placement:(id)a4
+- (void)observeUpdatesForBundleID:(id)d placement:(id)placement
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  placementCopy = placement;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = v6;
+    v19 = dCopy;
     v20 = 2114;
-    v21 = v7;
+    v21 = placementCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Client requested in-app message updates in bundle %{public}@ with placement %{public}@", buf, 0x16u);
   }
 
-  v9 = [(ICQInAppMessaging *)self bundleID];
-  v10 = [v6 isEqualToString:v9];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  v10 = [dCopy isEqualToString:bundleID];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(ICQInAppMessaging *)self unfairLock];
+    unfairLock = [(ICQInAppMessaging *)self unfairLock];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __57__ICQInAppMessaging_observeUpdatesForBundleID_placement___block_invoke;
     v15 = &unk_27A65A708;
-    v16 = self;
-    v17 = v6;
-    [v11 synchronized:&v12];
+    selfCopy = self;
+    v17 = dCopy;
+    [unfairLock synchronized:&v12];
   }
 
-  [(ICQInAppMessaging *)self setPlacement:v7, v12, v13, v14, v15, v16];
+  [(ICQInAppMessaging *)self setPlacement:placementCopy, v12, v13, v14, v15, selfCopy];
   [(ICQInAppMessaging *)self setHasNewObserver:1];
   if (![(ICQInAppMessaging *)self isRegisteredForNotifications])
   {
@@ -773,14 +773,14 @@ void __50__ICQInAppMessaging__startMonitoringNetworkStatus__block_invoke_2(uint6
 {
   if ([(ICQInAppMessaging *)self isRegisteredForNotifications])
   {
-    v3 = [(ICQInAppMessaging *)self defaults];
-    [v3 removeObserver:self forKeyPath:@"debug-in-app-message"];
+    defaults = [(ICQInAppMessaging *)self defaults];
+    [defaults removeObserver:self forKeyPath:@"debug-in-app-message"];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
-    v5 = [(ICQInAppMessaging *)self connectivityMonitor];
-    nw_path_monitor_cancel(v5);
+    connectivityMonitor = [(ICQInAppMessaging *)self connectivityMonitor];
+    nw_path_monitor_cancel(connectivityMonitor);
 
     [(ICQInAppMessaging *)self setICloudReachable:1];
 
@@ -788,17 +788,17 @@ void __50__ICQInAppMessaging__startMonitoringNetworkStatus__block_invoke_2(uint6
   }
 }
 
-- (void)fetchMessageWithCompletion:(id)a3
+- (void)fetchMessageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   messageQueue = self->_messageQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ICQInAppMessaging_fetchMessageWithCompletion___block_invoke;
   v7[3] = &unk_27A65AF58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(messageQueue, v7);
 }
 
@@ -843,19 +843,19 @@ void __48__ICQInAppMessaging_fetchMessageWithCompletion___block_invoke(uint64_t 
   }
 }
 
-- (void)fetchMessageForReason:(id)a3 withCompletion:(id)a4
+- (void)fetchMessageForReason:(id)reason withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = [a4 copy];
-  [(ICQInAppMessaging *)self fetchMessageForReason:v6 pendingItemsCount:0 withCompletion:v7];
+  reasonCopy = reason;
+  v7 = [completion copy];
+  [(ICQInAppMessaging *)self fetchMessageForReason:reasonCopy pendingItemsCount:0 withCompletion:v7];
 }
 
-- (void)fetchMessageForReason:(id)a3 pendingItemsCount:(id)a4 withCompletion:(id)a5
+- (void)fetchMessageForReason:(id)reason pendingItemsCount:(id)count withCompletion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  countCopy = count;
+  completionCopy = completion;
   v42 = 0;
   v43[0] = &v42;
   v43[1] = 0x3032000000;
@@ -878,7 +878,7 @@ void __48__ICQInAppMessaging_fetchMessageWithCompletion___block_invoke(uint64_t 
   v31[1] = v31;
   v31[2] = 0x2020000000;
   v32 = 0;
-  v11 = [(ICQInAppMessaging *)self unfairLock];
+  unfairLock = [(ICQInAppMessaging *)self unfairLock];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __76__ICQInAppMessaging_fetchMessageForReason_pendingItemsCount_withCompletion___block_invoke;
@@ -888,41 +888,41 @@ void __48__ICQInAppMessaging_fetchMessageWithCompletion___block_invoke(uint64_t 
   v30[6] = &v39;
   v30[7] = &v33;
   v30[8] = v31;
-  [v11 synchronized:v30];
+  [unfairLock synchronized:v30];
 
-  if ([v8 isEqualToString:@"AirplaneModeOn"])
+  if ([reasonCopy isEqualToString:@"AirplaneModeOn"])
   {
     v12 = [(ICQInAppMessaging *)self airplaneModeOnMessageFromDefaultOffer:v34[5]];
     goto LABEL_19;
   }
 
-  if ([v8 isEqualToString:@"WiFiConnectivityIssues"])
+  if ([reasonCopy isEqualToString:@"WiFiConnectivityIssues"])
   {
     v12 = [(ICQInAppMessaging *)self serverUnreachableMessageFromDefaultOffer:v34[5]];
     goto LABEL_19;
   }
 
-  if ([v8 isEqualToString:@"CellularDataOff"])
+  if ([reasonCopy isEqualToString:@"CellularDataOff"])
   {
     v12 = [(ICQInAppMessaging *)self cellularDataOffMessageFromDefaultOffer:v34[5]];
     goto LABEL_19;
   }
 
-  if ([v8 isEqualToString:@"TermsNotAccepted"])
+  if ([reasonCopy isEqualToString:@"TermsNotAccepted"])
   {
     v12 = [(ICQInAppMessaging *)self termsNotAcceptedMessageFromDefaultOffer:v34[5]];
     goto LABEL_19;
   }
 
-  if ([v8 isEqualToString:@"UploadFailure"])
+  if ([reasonCopy isEqualToString:@"UploadFailure"])
   {
-    v12 = [(ICQInAppMessaging *)self uploadFailureMessageForPendingItemCount:v9 defaultOffer:v34[5]];
+    v12 = [(ICQInAppMessaging *)self uploadFailureMessageForPendingItemCount:countCopy defaultOffer:v34[5]];
     goto LABEL_19;
   }
 
   v13 = *(v43[0] + 40);
-  v14 = [(ICQInAppMessaging *)self placement];
-  v15 = [v13 messageSpecificationForPlacement:v14];
+  placement = [(ICQInAppMessaging *)self placement];
+  v15 = [v13 messageSpecificationForPlacement:placement];
   if (v15)
   {
     v16 = [*(v43[0] + 40) level] == 0;
@@ -939,11 +939,11 @@ LABEL_19:
         v23 = _ICQGetLogSystem();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(ICQInAppMessaging *)self bundleID];
+          bundleID = [(ICQInAppMessaging *)self bundleID];
           *buf = 138412546;
           v46 = v22;
           v47 = 2112;
-          v48 = v24;
+          v48 = bundleID;
           _os_log_impl(&dword_275623000, v23, OS_LOG_TYPE_DEFAULT, "Returning in-app message: %@, to client: %@", buf, 0x16u);
         }
 
@@ -951,7 +951,7 @@ LABEL_19:
         v27[1] = 3221225472;
         v27[2] = __76__ICQInAppMessaging_fetchMessageForReason_pendingItemsCount_withCompletion___block_invoke_91;
         v27[3] = &unk_27A65B398;
-        v29 = v10;
+        v29 = completionCopy;
         v25 = v22;
         v28 = v25;
         [v25 fetchIconIfNeededWithCompletion:v27];
@@ -968,8 +968,8 @@ LABEL_19:
   }
 
   v18 = *(v40[0] + 40);
-  v19 = [(ICQInAppMessaging *)self placement];
-  v20 = [v18 messageSpecificationForPlacement:v19];
+  placement2 = [(ICQInAppMessaging *)self placement];
+  v20 = [v18 messageSpecificationForPlacement:placement2];
   if (!v20)
   {
 
@@ -988,11 +988,11 @@ LABEL_24:
   v26 = _ICQGetLogSystem();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
-    [ICQInAppMessaging fetchMessageForReason:v8 pendingItemsCount:v26 withCompletion:?];
+    [ICQInAppMessaging fetchMessageForReason:reasonCopy pendingItemsCount:v26 withCompletion:?];
   }
 
   v25 = ICQCreateError();
-  (*(v10 + 2))(v10, 0, v25);
+  (*(completionCopy + 2))(completionCopy, 0, v25);
 LABEL_27:
 
   _Block_object_dispose(v31, 8);
@@ -1055,9 +1055,9 @@ void __42__ICQInAppMessaging_isAirplaneModeEnabled__block_invoke(uint64_t a1)
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ICQInAppMessaging *)self isAirplaneModeEnabled];
+    isAirplaneModeEnabled = [(ICQInAppMessaging *)self isAirplaneModeEnabled];
     v5 = @"NO";
-    if (v4)
+    if (isAirplaneModeEnabled)
     {
       v5 = @"YES";
     }
@@ -1070,7 +1070,7 @@ void __42__ICQInAppMessaging_isAirplaneModeEnabled__block_invoke(uint64_t a1)
   [(ICQInAppMessaging *)self _recalculateAndPostCurrentMessage];
 }
 
-- (void)dataSettingsChanged:(id)a3
+- (void)dataSettingsChanged:(id)changed
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -1084,13 +1084,13 @@ void __42__ICQInAppMessaging_isAirplaneModeEnabled__block_invoke(uint64_t a1)
   [(ICQInAppMessaging *)self _recalculateAndPostCurrentMessage];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [(ICQInAppMessaging *)self defaults:a3];
+  v7 = [(ICQInAppMessaging *)self defaults:path];
   v11 = [v7 objectForKey:@"debug-in-app-message"];
 
-  v8 = [MEMORY[0x277CBEB68] null];
-  v9 = [v11 isEqual:v8];
+  null = [MEMORY[0x277CBEB68] null];
+  v9 = [v11 isEqual:null];
 
   if (v9)
   {
@@ -1106,17 +1106,17 @@ void __42__ICQInAppMessaging_isAirplaneModeEnabled__block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)_contentTypeForQuotaOffer:(id)a3
+- (unint64_t)_contentTypeForQuotaOffer:(id)offer
 {
-  v4 = a3;
-  v5 = [(ICQInAppMessaging *)self bundleID];
-  if ([v5 isEqualToString:@"com.apple.iCloudDriveApp"])
+  offerCopy = offer;
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  if ([bundleID isEqualToString:@"com.apple.iCloudDriveApp"])
   {
     goto LABEL_6;
   }
 
-  v6 = [(ICQInAppMessaging *)self bundleID];
-  if ([v6 isEqualToString:@"com.apple.finder"])
+  bundleID2 = [(ICQInAppMessaging *)self bundleID];
+  if ([bundleID2 isEqualToString:@"com.apple.finder"])
   {
 LABEL_5:
 
@@ -1124,33 +1124,33 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [(ICQInAppMessaging *)self bundleID];
-  if ([v7 isEqualToString:@"com.apple.DocumentsApp"])
+  bundleID3 = [(ICQInAppMessaging *)self bundleID];
+  if ([bundleID3 isEqualToString:@"com.apple.DocumentsApp"])
   {
 
     goto LABEL_5;
   }
 
-  v11 = [(ICQInAppMessaging *)self bundleID];
-  v12 = [v11 isEqualToString:@"com.apple.appkit.xpc.openAndSavePanelService"];
+  bundleID4 = [(ICQInAppMessaging *)self bundleID];
+  v12 = [bundleID4 isEqualToString:@"com.apple.appkit.xpc.openAndSavePanelService"];
 
   if ((v12 & 1) == 0)
   {
-    v8 = [(ICQInAppMessaging *)self _contentTypeForMessageWithOffer:v4];
+    v8 = [(ICQInAppMessaging *)self _contentTypeForMessageWithOffer:offerCopy];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v8 = [(ICQInAppMessaging *)self _contentTypeForDriveWithOffer:v4];
+  v8 = [(ICQInAppMessaging *)self _contentTypeForDriveWithOffer:offerCopy];
 LABEL_8:
   v9 = v8;
 
   return v9;
 }
 
-- (unint64_t)_contentTypeForDriveWithOffer:(id)a3
+- (unint64_t)_contentTypeForDriveWithOffer:(id)offer
 {
-  if ([a3 level] == 3)
+  if ([offer level] == 3)
   {
     return 3;
   }
@@ -1161,18 +1161,18 @@ LABEL_8:
   }
 }
 
-- (id)_actionsForBannerSpecification:(id)a3 offer:(id)a4
+- (id)_actionsForBannerSpecification:(id)specification offer:(id)offer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  specificationCopy = specification;
+  offerCopy = offer;
   v7 = [MEMORY[0x277CBEBF8] mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v5 links];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  links = [specificationCopy links];
+  v9 = [links countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1183,14 +1183,14 @@ LABEL_8:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(links);
         }
 
-        v13 = [[ICQLinkInAppAction alloc] initWithLink:*(*(&v15 + 1) + 8 * i) inOffer:v6];
+        v13 = [[ICQLinkInAppAction alloc] initWithLink:*(*(&v15 + 1) + 8 * i) inOffer:offerCopy];
         [v7 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [links countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -1199,32 +1199,32 @@ LABEL_8:
   return v7;
 }
 
-- (id)_dismissActionForBannerSpecification:(id)a3 offer:(id)a4
+- (id)_dismissActionForBannerSpecification:(id)specification offer:(id)offer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 dismissLink];
+  specificationCopy = specification;
+  offerCopy = offer;
+  dismissLink = [specificationCopy dismissLink];
 
-  if (v7)
+  if (dismissLink)
   {
     v8 = [ICQLinkInAppAction alloc];
-    v9 = [v5 dismissLink];
-    v7 = [(ICQLinkInAppAction *)v8 initWithLink:v9 inOffer:v6];
+    dismissLink2 = [specificationCopy dismissLink];
+    dismissLink = [(ICQLinkInAppAction *)v8 initWithLink:dismissLink2 inOffer:offerCopy];
   }
 
-  return v7;
+  return dismissLink;
 }
 
-- (id)quotaMessageForOffer:(id)a3
+- (id)quotaMessageForOffer:(id)offer
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  offerCopy = offer;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 isPremiumOffer];
+    isPremiumOffer = [offerCopy isPremiumOffer];
     v7 = @"regular";
-    if (v6)
+    if (isPremiumOffer)
     {
       v7 = @"premium";
     }
@@ -1234,40 +1234,40 @@ LABEL_8:
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "In-app messages sending %{public}@ offer message", buf, 0xCu);
   }
 
-  v8 = [v4 deviceInfo];
-  v9 = [(ICQInAppMessaging *)self placement];
-  v10 = [v4 messageSpecificationForPlacement:v9];
+  deviceInfo = [offerCopy deviceInfo];
+  placement = [(ICQInAppMessaging *)self placement];
+  v10 = [offerCopy messageSpecificationForPlacement:placement];
 
-  v11 = [v8 key];
+  v11 = [deviceInfo key];
   v36 = [v10 titleWithKey:v11];
 
-  v12 = [v8 key];
+  v12 = [deviceInfo key];
   v35 = [v10 messageWithKey:v12];
 
-  v37 = v8;
-  v13 = [v8 key];
+  v37 = deviceInfo;
+  v13 = [deviceInfo key];
   v34 = [v10 conciseTitleWithKey:v13];
 
-  v14 = [v10 symbolSpecification];
-  v15 = [v14 sfSymbolId];
+  symbolSpecification = [v10 symbolSpecification];
+  sfSymbolId = [symbolSpecification sfSymbolId];
 
-  if (v15)
+  if (sfSymbolId)
   {
-    v30 = [v14 sfSymbolId];
+    sfSymbolId2 = [symbolSpecification sfSymbolId];
   }
 
   else
   {
-    v30 = @"exclamationmark.triangle";
+    sfSymbolId2 = @"exclamationmark.triangle";
   }
 
-  v16 = [v14 sfSymbolColor];
+  sfSymbolColor = [symbolSpecification sfSymbolColor];
 
-  v33 = v14;
-  if (v16)
+  v33 = symbolSpecification;
+  if (sfSymbolColor)
   {
-    v17 = [v14 sfSymbolColor];
-    v32 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:v17];
+    sfSymbolColor2 = [symbolSpecification sfSymbolColor];
+    v32 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:sfSymbolColor2];
   }
 
   else
@@ -1275,26 +1275,26 @@ LABEL_8:
     v32 = 0;
   }
 
-  v29 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v10 offer:v4];
-  v28 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v10 offer:v4];
-  v18 = [v10 reason];
-  v19 = [(ICQInAppMessaging *)self _contentTypeForQuotaOffer:v4];
+  v29 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v10 offer:offerCopy];
+  v28 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v10 offer:offerCopy];
+  reason = [v10 reason];
+  v19 = [(ICQInAppMessaging *)self _contentTypeForQuotaOffer:offerCopy];
   v20 = [ICQInAppMessage alloc];
-  v21 = [v4 offerId];
+  offerId = [offerCopy offerId];
   [(ICQInAppMessaging *)self _accountIdentifier];
-  v22 = v31 = v4;
-  v23 = [(ICQInAppMessaging *)self bundleID];
-  v24 = [v10 iconSpecification];
+  v22 = v31 = offerCopy;
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  iconSpecification = [v10 iconSpecification];
   LOBYTE(v26) = 1;
-  v27 = [(ICQInAppMessage *)v20 initWithContentType:v19 identifier:v21 reason:v18 title:v36 subTitle:v35 conciseTitle:v34 sfSymbolName:v30 sfSymbolColor:v32 accountId:v22 bundleID:v23 actions:v29 dismissAction:v28 iconSpecification:v24 serverGenerated:v26];
+  v27 = [(ICQInAppMessage *)v20 initWithContentType:v19 identifier:offerId reason:reason title:v36 subTitle:v35 conciseTitle:v34 sfSymbolName:sfSymbolId2 sfSymbolColor:v32 accountId:v22 bundleID:bundleID actions:v29 dismissAction:v28 iconSpecification:iconSpecification serverGenerated:v26];
 
   return v27;
 }
 
-- (id)airplaneModeOnMessageFromDefaultOffer:(id)a3
+- (id)airplaneModeOnMessageFromDefaultOffer:(id)offer
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v49 = a3;
+  offerCopy = offer;
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1302,46 +1302,46 @@ LABEL_8:
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "In-app messages sending airplane mode message", buf, 2u);
   }
 
-  v5 = [v49 deviceInfo];
-  v6 = [(ICQInAppMessaging *)self bundleID];
-  v7 = [(ICQInAppMessaging *)self placement];
-  v8 = [v49 messageSpecificationForReason:@"AirplaneModeOn" bundleId:v6 placement:v7];
+  deviceInfo = [offerCopy deviceInfo];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  placement = [(ICQInAppMessaging *)self placement];
+  v8 = [offerCopy messageSpecificationForReason:@"AirplaneModeOn" bundleId:bundleID placement:placement];
 
-  v45 = v5;
+  v45 = deviceInfo;
   if (v8)
   {
-    v9 = [v5 key];
+    v9 = [deviceInfo key];
     v48 = [v8 titleWithKey:v9];
 
-    v10 = [v5 key];
+    v10 = [deviceInfo key];
     v11 = [v8 messageWithKey:v10];
 
-    v12 = [v5 key];
+    v12 = [deviceInfo key];
     v13 = [v8 conciseTitleWithKey:v12];
 
-    v14 = [v8 symbolSpecification];
-    v15 = [v14 sfSymbolId];
+    symbolSpecification = [v8 symbolSpecification];
+    sfSymbolId = [symbolSpecification sfSymbolId];
 
-    if (v15)
+    if (sfSymbolId)
     {
-      v16 = [v14 sfSymbolId];
+      sfSymbolId2 = [symbolSpecification sfSymbolId];
     }
 
     else
     {
-      v16 = @"exclamationmark.triangle";
+      sfSymbolId2 = @"exclamationmark.triangle";
     }
 
-    v34 = [v14 sfSymbolColor];
+    sfSymbolColor = [symbolSpecification sfSymbolColor];
 
     v43 = v13;
     v44 = v11;
-    v41 = v16;
-    v42 = v14;
-    if (v34)
+    v41 = sfSymbolId2;
+    v42 = symbolSpecification;
+    if (sfSymbolColor)
     {
-      v35 = [v14 sfSymbolColor];
-      v47 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:v35];
+      sfSymbolColor2 = [symbolSpecification sfSymbolColor];
+      v47 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:sfSymbolColor2];
     }
 
     else
@@ -1349,18 +1349,18 @@ LABEL_8:
       v47 = 0;
     }
 
-    v28 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:v49];
-    v29 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:v49];
+    _accountIdentifier2 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:offerCopy];
+    bundleID3 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:offerCopy];
     v36 = [ICQInAppMessage alloc];
-    v30 = [(ICQInAppMessaging *)self _accountIdentifier];
-    v31 = [(ICQInAppMessaging *)self bundleID];
-    v37 = [v8 iconSpecification];
+    _accountIdentifier = [(ICQInAppMessaging *)self _accountIdentifier];
+    bundleID2 = [(ICQInAppMessaging *)self bundleID];
+    iconSpecification = [v8 iconSpecification];
     LOBYTE(v40) = 1;
     v26 = v41;
     v38 = v36;
     v25 = v44;
     v23 = v43;
-    v33 = [(ICQInAppMessage *)v38 initWithContentType:0 identifier:@"AirplaneMode" reason:@"AirplaneModeOn" title:v48 subTitle:v44 conciseTitle:v43 sfSymbolName:v41 sfSymbolColor:v47 accountId:v30 bundleID:v31 actions:v28 dismissAction:v29 iconSpecification:v37 serverGenerated:v40];
+    v33 = [(ICQInAppMessage *)v38 initWithContentType:0 identifier:@"AirplaneMode" reason:@"AirplaneModeOn" title:v48 subTitle:v44 conciseTitle:v43 sfSymbolName:v41 sfSymbolColor:v47 accountId:_accountIdentifier bundleID:bundleID2 actions:_accountIdentifier2 dismissAction:bundleID3 iconSpecification:iconSpecification serverGenerated:v40];
 
     v24 = v42;
   }
@@ -1389,63 +1389,63 @@ LABEL_8:
     v25 = v22;
     v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v27 = [v26 localizedStringForKey:@"AIRPLANE_MODE_ON_SUBTITLE" value:&stru_28844FC60 table:@"Localizable"];
-    v28 = [(ICQInAppMessaging *)self _accountIdentifier];
-    v29 = [(ICQInAppMessaging *)self bundleID];
+    _accountIdentifier2 = [(ICQInAppMessaging *)self _accountIdentifier];
+    bundleID3 = [(ICQInAppMessaging *)self bundleID];
     v51 = v25;
-    v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
-    v31 = [0 iconSpecification];
+    _accountIdentifier = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
+    bundleID2 = [0 iconSpecification];
     v32 = v46;
     v47 = v27;
-    v33 = [(ICQInAppMessage *)v32 initWithContentType:0 identifier:@"AirplaneMode" reason:@"AirplaneModeOn" title:v24 subTitle:v27 sfSymbolName:0 accountId:v28 bundleID:v29 actions:v30 iconSpecification:v31];
+    v33 = [(ICQInAppMessage *)v32 initWithContentType:0 identifier:@"AirplaneMode" reason:@"AirplaneModeOn" title:v24 subTitle:v27 sfSymbolName:0 accountId:_accountIdentifier2 bundleID:bundleID3 actions:_accountIdentifier iconSpecification:bundleID2];
     v8 = 0;
   }
 
   return v33;
 }
 
-- (id)serverUnreachableMessageFromDefaultOffer:(id)a3
+- (id)serverUnreachableMessageFromDefaultOffer:(id)offer
 {
-  v4 = a3;
-  v5 = [v4 deviceInfo];
-  v6 = [(ICQInAppMessaging *)self bundleID];
-  v7 = [(ICQInAppMessaging *)self placement];
-  v44 = v4;
-  v8 = [v4 messageSpecificationForReason:@"WiFiConnectivityIssues" bundleId:v6 placement:v7];
+  offerCopy = offer;
+  deviceInfo = [offerCopy deviceInfo];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  placement = [(ICQInAppMessaging *)self placement];
+  v44 = offerCopy;
+  v8 = [offerCopy messageSpecificationForReason:@"WiFiConnectivityIssues" bundleId:bundleID placement:placement];
 
   if (v8)
   {
-    v9 = [v5 key];
+    v9 = [deviceInfo key];
     v10 = [v8 titleWithKey:v9];
 
-    v11 = [v5 key];
+    v11 = [deviceInfo key];
     v42 = [v8 messageWithKey:v11];
 
-    v12 = [v5 key];
+    v12 = [deviceInfo key];
     v13 = [v8 conciseTitleWithKey:v12];
 
-    v14 = [v8 symbolSpecification];
-    v15 = [v14 sfSymbolId];
+    symbolSpecification = [v8 symbolSpecification];
+    sfSymbolId = [symbolSpecification sfSymbolId];
 
-    if (v15)
+    if (sfSymbolId)
     {
-      v39 = [v14 sfSymbolId];
+      sfSymbolId2 = [symbolSpecification sfSymbolId];
     }
 
     else
     {
-      v39 = @"exclamationmark.triangle";
+      sfSymbolId2 = @"exclamationmark.triangle";
     }
 
-    v43 = v5;
-    v27 = [v14 sfSymbolColor];
+    v43 = deviceInfo;
+    sfSymbolColor = [symbolSpecification sfSymbolColor];
 
     v45 = v10;
-    v40 = v14;
+    v40 = symbolSpecification;
     v41 = v13;
-    if (v27)
+    if (sfSymbolColor)
     {
-      v28 = [v14 sfSymbolColor];
-      v38 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:v28];
+      sfSymbolColor2 = [symbolSpecification sfSymbolColor];
+      v38 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:sfSymbolColor2];
     }
 
     else
@@ -1456,21 +1456,21 @@ LABEL_8:
     v29 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:v44];
     v37 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:v44];
     v30 = [ICQInAppMessage alloc];
-    v31 = [(ICQInAppMessaging *)self _accountIdentifier];
+    _accountIdentifier = [(ICQInAppMessaging *)self _accountIdentifier];
     [(ICQInAppMessaging *)self bundleID];
     v33 = v32 = v8;
-    v34 = [v32 iconSpecification];
+    iconSpecification = [v32 iconSpecification];
     LOBYTE(v36) = 1;
-    v24 = v38;
-    v23 = v39;
+    bundleID2 = v38;
+    v23 = sfSymbolId2;
     v19 = v42;
     v18 = v41;
-    v26 = [(ICQInAppMessage *)v30 initWithContentType:4 identifier:@"ServerUnreeachable" reason:@"WiFiConnectivityIssues" title:v45 subTitle:v42 conciseTitle:v41 sfSymbolName:v39 sfSymbolColor:v38 accountId:v31 bundleID:v33 actions:v29 dismissAction:v37 iconSpecification:v34 serverGenerated:v36];
+    v26 = [(ICQInAppMessage *)v30 initWithContentType:4 identifier:@"ServerUnreeachable" reason:@"WiFiConnectivityIssues" title:v45 subTitle:v42 conciseTitle:v41 sfSymbolName:sfSymbolId2 sfSymbolColor:v38 accountId:_accountIdentifier bundleID:v33 actions:v29 dismissAction:v37 iconSpecification:iconSpecification serverGenerated:v36];
 
     v8 = v32;
-    v25 = v29;
+    iconSpecification2 = v29;
 
-    v5 = v43;
+    deviceInfo = v43;
     v20 = v40;
   }
 
@@ -1482,69 +1482,69 @@ LABEL_8:
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = v17;
     v20 = [v18 localizedStringForKey:@"SERVER_UNREACHABLE_SUBTITLE" value:&stru_28844FC60 table:@"Localizable"];
-    v21 = [(ICQInAppMessaging *)self _accountIdentifier];
-    v22 = self;
-    v23 = v21;
-    v24 = [(ICQInAppMessaging *)v22 bundleID];
-    v25 = [0 iconSpecification];
-    v26 = [(ICQInAppMessage *)v16 initWithContentType:4 identifier:@"ServerUnreeachable" reason:@"WiFiConnectivityIssues" title:v19 subTitle:v20 sfSymbolName:0 accountId:v23 bundleID:v24 actions:MEMORY[0x277CBEBF8] iconSpecification:v25];
+    _accountIdentifier2 = [(ICQInAppMessaging *)self _accountIdentifier];
+    selfCopy = self;
+    v23 = _accountIdentifier2;
+    bundleID2 = [(ICQInAppMessaging *)selfCopy bundleID];
+    iconSpecification2 = [0 iconSpecification];
+    v26 = [(ICQInAppMessage *)v16 initWithContentType:4 identifier:@"ServerUnreeachable" reason:@"WiFiConnectivityIssues" title:v19 subTitle:v20 sfSymbolName:0 accountId:v23 bundleID:bundleID2 actions:MEMORY[0x277CBEBF8] iconSpecification:iconSpecification2];
   }
 
   return v26;
 }
 
-- (id)cellularDataOffMessageFromDefaultOffer:(id)a3
+- (id)cellularDataOffMessageFromDefaultOffer:(id)offer
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 deviceInfo];
-  v6 = [(ICQInAppMessaging *)self bundleID];
-  v7 = [(ICQInAppMessaging *)self placement];
-  v8 = [v4 messageSpecificationForReason:@"CellularDataOff" bundleId:v6 placement:v7];
+  offerCopy = offer;
+  deviceInfo = [offerCopy deviceInfo];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  placement = [(ICQInAppMessaging *)self placement];
+  v8 = [offerCopy messageSpecificationForReason:@"CellularDataOff" bundleId:bundleID placement:placement];
 
-  v47 = v5;
-  v45 = v4;
+  v47 = deviceInfo;
+  v45 = offerCopy;
   if (v8)
   {
-    v9 = [v5 key];
+    v9 = [deviceInfo key];
     v43 = [v8 titleWithKey:v9];
 
-    v10 = [v5 key];
+    v10 = [deviceInfo key];
     v41 = [v8 messageWithKey:v10];
 
-    v11 = [v5 key];
+    v11 = [deviceInfo key];
     v40 = [v8 conciseTitleWithKey:v11];
 
-    v12 = [v8 symbolSpecification];
-    v13 = [v12 sfSymbolId];
+    symbolSpecification = [v8 symbolSpecification];
+    sfSymbolId = [symbolSpecification sfSymbolId];
 
-    if (v13)
+    if (sfSymbolId)
     {
-      v39 = [v12 sfSymbolId];
+      sfSymbolId2 = [symbolSpecification sfSymbolId];
     }
 
     else
     {
-      v39 = @"exclamationmark.triangle";
+      sfSymbolId2 = @"exclamationmark.triangle";
     }
 
-    v28 = [v12 sfSymbolColor];
+    sfSymbolColor = [symbolSpecification sfSymbolColor];
 
-    v38 = v12;
-    if (v28)
+    v38 = symbolSpecification;
+    if (sfSymbolColor)
     {
-      v29 = [v12 sfSymbolColor];
-      v28 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:v29];
+      sfSymbolColor2 = [symbolSpecification sfSymbolColor];
+      sfSymbolColor = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:sfSymbolColor2];
     }
 
-    v30 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:v4];
-    v31 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:v4];
+    v30 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:offerCopy];
+    v31 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:offerCopy];
     v32 = [ICQInAppMessage alloc];
-    v33 = [(ICQInAppMessaging *)self _accountIdentifier];
-    v34 = [(ICQInAppMessaging *)self bundleID];
-    v35 = [v8 iconSpecification];
+    _accountIdentifier = [(ICQInAppMessaging *)self _accountIdentifier];
+    bundleID2 = [(ICQInAppMessaging *)self bundleID];
+    iconSpecification = [v8 iconSpecification];
     LOBYTE(v37) = 1;
-    v46 = [(ICQInAppMessage *)v32 initWithContentType:0 identifier:@"CellularDataOff" reason:@"CellularDataOff" title:v43 subTitle:v41 conciseTitle:v40 sfSymbolName:v39 sfSymbolColor:v28 accountId:v33 bundleID:v34 actions:v30 dismissAction:v31 iconSpecification:v35 serverGenerated:v37];
+    v46 = [(ICQInAppMessage *)v32 initWithContentType:0 identifier:@"CellularDataOff" reason:@"CellularDataOff" title:v43 subTitle:v41 conciseTitle:v40 sfSymbolName:sfSymbolId2 sfSymbolColor:sfSymbolColor accountId:_accountIdentifier bundleID:bundleID2 actions:v30 dismissAction:v31 iconSpecification:iconSpecification serverGenerated:v37];
   }
 
   else
@@ -1563,60 +1563,60 @@ LABEL_8:
     v20 = [v19 localizedStringForKey:@"CELLULAR_OFF_TITLE" value:&stru_28844FC60 table:@"Localizable"];
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"CELLULAR_OFF_SUBTITLE" value:&stru_28844FC60 table:@"Localizable"];
-    v23 = [(ICQInAppMessaging *)self _accountIdentifier];
-    v24 = [(ICQInAppMessaging *)self bundleID];
+    _accountIdentifier2 = [(ICQInAppMessaging *)self _accountIdentifier];
+    bundleID3 = [(ICQInAppMessaging *)self bundleID];
     v48 = v18;
     v25 = v18;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
-    v27 = [0 iconSpecification];
-    v46 = [(ICQInAppMessage *)v42 initWithContentType:0 identifier:@"CellularDataOff" reason:@"CellularDataOff" title:v20 subTitle:v22 sfSymbolName:0 accountId:v23 bundleID:v24 actions:v26 iconSpecification:v27];
+    iconSpecification2 = [0 iconSpecification];
+    v46 = [(ICQInAppMessage *)v42 initWithContentType:0 identifier:@"CellularDataOff" reason:@"CellularDataOff" title:v20 subTitle:v22 sfSymbolName:0 accountId:_accountIdentifier2 bundleID:bundleID3 actions:v26 iconSpecification:iconSpecification2];
   }
 
   return v46;
 }
 
-- (id)termsNotAcceptedMessageFromDefaultOffer:(id)a3
+- (id)termsNotAcceptedMessageFromDefaultOffer:(id)offer
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 deviceInfo];
-  v6 = [(ICQInAppMessaging *)self bundleID];
-  v7 = [(ICQInAppMessaging *)self placement];
-  v8 = [v4 messageSpecificationForReason:@"TermsNotAccepted" bundleId:v6 placement:v7];
+  offerCopy = offer;
+  deviceInfo = [offerCopy deviceInfo];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  placement = [(ICQInAppMessaging *)self placement];
+  v8 = [offerCopy messageSpecificationForReason:@"TermsNotAccepted" bundleId:bundleID placement:placement];
 
-  v49 = v5;
-  v50 = v4;
+  v49 = deviceInfo;
+  v50 = offerCopy;
   if (v8)
   {
-    v9 = [v5 key];
+    v9 = [deviceInfo key];
     v46 = [v8 titleWithKey:v9];
 
-    v10 = [v5 key];
+    v10 = [deviceInfo key];
     v44 = [v8 messageWithKey:v10];
 
-    v11 = [v5 key];
+    v11 = [deviceInfo key];
     v43 = [v8 conciseTitleWithKey:v11];
 
-    v12 = [v8 symbolSpecification];
-    v13 = [v12 sfSymbolId];
+    symbolSpecification = [v8 symbolSpecification];
+    sfSymbolId = [symbolSpecification sfSymbolId];
 
-    if (v13)
+    if (sfSymbolId)
     {
-      v42 = [v12 sfSymbolId];
+      sfSymbolId2 = [symbolSpecification sfSymbolId];
     }
 
     else
     {
-      v42 = @"exclamationmark.triangle";
+      sfSymbolId2 = @"exclamationmark.triangle";
     }
 
-    v30 = [v12 sfSymbolColor];
+    sfSymbolColor = [symbolSpecification sfSymbolColor];
 
-    v41 = v12;
-    if (v30)
+    v41 = symbolSpecification;
+    if (sfSymbolColor)
     {
-      v31 = [v12 sfSymbolColor];
-      v32 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:v31];
+      sfSymbolColor2 = [symbolSpecification sfSymbolColor];
+      v32 = [_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions platformColorFromString:sfSymbolColor2];
     }
 
     else
@@ -1624,14 +1624,14 @@ LABEL_8:
       v32 = 0;
     }
 
-    v33 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:v4];
-    v34 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:v4];
+    v33 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:offerCopy];
+    v34 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:offerCopy];
     v35 = [ICQInAppMessage alloc];
-    v36 = [(ICQInAppMessaging *)self _accountIdentifier];
-    v37 = [(ICQInAppMessaging *)self bundleID];
-    v38 = [v8 iconSpecification];
+    _accountIdentifier = [(ICQInAppMessaging *)self _accountIdentifier];
+    bundleID2 = [(ICQInAppMessaging *)self bundleID];
+    iconSpecification = [v8 iconSpecification];
     LOBYTE(v40) = 1;
-    v48 = [(ICQInAppMessage *)v35 initWithContentType:1 identifier:@"TermsNotAccepted" reason:@"TermsNotAccepted" title:v46 subTitle:v44 conciseTitle:v43 sfSymbolName:v42 sfSymbolColor:v32 accountId:v36 bundleID:v37 actions:v33 dismissAction:v34 iconSpecification:v38 serverGenerated:v40];
+    v48 = [(ICQInAppMessage *)v35 initWithContentType:1 identifier:@"TermsNotAccepted" reason:@"TermsNotAccepted" title:v46 subTitle:v44 conciseTitle:v43 sfSymbolName:sfSymbolId2 sfSymbolColor:v32 accountId:_accountIdentifier bundleID:bundleID2 actions:v33 dismissAction:v34 iconSpecification:iconSpecification serverGenerated:v40];
 
     v29 = v50;
   }
@@ -1659,13 +1659,13 @@ LABEL_8:
     v21 = [v20 localizedStringForKey:@"TERMS_NOT_ACCEPTED_TITLE" value:&stru_28844FC60 table:@"Localizable"];
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"TERMS_NOT_ACCEPTED_SUBTITLE" value:&stru_28844FC60 table:@"Localizable"];
-    v24 = [(ICQInAppMessaging *)self _accountIdentifier];
-    v25 = [(ICQInAppMessaging *)self bundleID];
+    _accountIdentifier2 = [(ICQInAppMessaging *)self _accountIdentifier];
+    bundleID3 = [(ICQInAppMessaging *)self bundleID];
     v52 = v19;
     v26 = v19;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
-    v28 = [0 iconSpecification];
-    v48 = [(ICQInAppMessage *)v45 initWithContentType:1 identifier:@"TermsNotAccepted" reason:@"TermsNotAccepted" title:v21 subTitle:v23 sfSymbolName:0 accountId:v24 bundleID:v25 actions:v27 iconSpecification:v28];
+    iconSpecification2 = [0 iconSpecification];
+    v48 = [(ICQInAppMessage *)v45 initWithContentType:1 identifier:@"TermsNotAccepted" reason:@"TermsNotAccepted" title:v21 subTitle:v23 sfSymbolName:0 accountId:_accountIdentifier2 bundleID:bundleID3 actions:v27 iconSpecification:iconSpecification2];
 
     v29 = v50;
   }
@@ -1673,18 +1673,18 @@ LABEL_8:
   return v48;
 }
 
-- (id)uploadFailureMessageForPendingItemCount:(id)a3 defaultOffer:(id)a4
+- (id)uploadFailureMessageForPendingItemCount:(id)count defaultOffer:(id)offer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D7F3D0] templateKeyForItemCount:v6];
-  v9 = [(ICQInAppMessaging *)self bundleID];
-  v10 = [(ICQInAppMessaging *)self placement];
-  v11 = [v7 messageSpecificationForReason:@"UploadFailure" bundleId:v9 placement:v10];
+  countCopy = count;
+  offerCopy = offer;
+  v8 = [MEMORY[0x277D7F3D0] templateKeyForItemCount:countCopy];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  placement = [(ICQInAppMessaging *)self placement];
+  v11 = [offerCopy messageSpecificationForReason:@"UploadFailure" bundleId:bundleID placement:placement];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277D7F3D0] wordsToReplaceForItemCount:v6];
+    v12 = [MEMORY[0x277D7F3D0] wordsToReplaceForItemCount:countCopy];
     v13 = MEMORY[0x277D7F3E0];
     v14 = [v11 titleWithKey:v8];
     v32 = v12;
@@ -1694,20 +1694,20 @@ LABEL_8:
     v16 = [v11 messageWithKey:v8];
     v29 = [v15 replaceWordsIn:v16 with:v12];
 
-    v28 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v11 offer:v7];
-    v27 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v11 offer:v7];
-    v30 = v7;
-    v17 = v6;
+    v28 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v11 offer:offerCopy];
+    v27 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v11 offer:offerCopy];
+    v30 = offerCopy;
+    v17 = countCopy;
     v18 = [ICQInAppMessage alloc];
-    v19 = [(ICQInAppMessaging *)self _accountIdentifier];
-    v20 = [(ICQInAppMessaging *)self bundleID];
+    _accountIdentifier = [(ICQInAppMessaging *)self _accountIdentifier];
+    bundleID2 = [(ICQInAppMessaging *)self bundleID];
     [v11 iconSpecification];
     v22 = v21 = v8;
     LOBYTE(v26) = 1;
     v23 = v18;
-    v6 = v17;
-    v7 = v30;
-    v24 = [(ICQInAppMessage *)v23 initWithContentType:1 identifier:@"UploadFailure" reason:@"UploadFailure" title:v31 subTitle:v29 sfSymbolName:0 accountId:v19 bundleID:v20 actions:v28 dismissAction:v27 iconSpecification:v22 serverGenerated:v26];
+    countCopy = v17;
+    offerCopy = v30;
+    v24 = [(ICQInAppMessage *)v23 initWithContentType:1 identifier:@"UploadFailure" reason:@"UploadFailure" title:v31 subTitle:v29 sfSymbolName:0 accountId:_accountIdentifier bundleID:bundleID2 actions:v28 dismissAction:v27 iconSpecification:v22 serverGenerated:v26];
 
     v8 = v21;
   }
@@ -1720,33 +1720,33 @@ LABEL_8:
   return v24;
 }
 
-- (id)cellularConstraintMessageFromDefaultOffer:(id)a3
+- (id)cellularConstraintMessageFromDefaultOffer:(id)offer
 {
-  v4 = a3;
-  v5 = [v4 deviceInfo];
-  v6 = [(ICQInAppMessaging *)self bundleID];
-  v7 = [(ICQInAppMessaging *)self placement];
-  v8 = [v4 messageSpecificationForReason:@"CellularConstraintReached" bundleId:v6 placement:v7];
+  offerCopy = offer;
+  deviceInfo = [offerCopy deviceInfo];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  placement = [(ICQInAppMessaging *)self placement];
+  v8 = [offerCopy messageSpecificationForReason:@"CellularConstraintReached" bundleId:bundleID placement:placement];
 
   if (v8)
   {
-    v9 = [v5 key];
+    v9 = [deviceInfo key];
     v22 = [v8 titleWithKey:v9];
 
-    v10 = [v5 key];
+    v10 = [deviceInfo key];
     v11 = [v8 messageWithKey:v10];
 
-    v12 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:v4];
-    v13 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:v4];
+    v12 = [(ICQInAppMessaging *)self _actionsForBannerSpecification:v8 offer:offerCopy];
+    v13 = [(ICQInAppMessaging *)self _dismissActionForBannerSpecification:v8 offer:offerCopy];
     v14 = [ICQInAppMessage alloc];
     [(ICQInAppMessaging *)self _accountIdentifier];
-    v15 = v23 = v5;
-    v16 = [(ICQInAppMessaging *)self bundleID];
-    v17 = [v8 iconSpecification];
+    v15 = v23 = deviceInfo;
+    bundleID2 = [(ICQInAppMessaging *)self bundleID];
+    iconSpecification = [v8 iconSpecification];
     LOBYTE(v21) = 1;
-    v18 = [(ICQInAppMessage *)v14 initWithContentType:0 identifier:@"CellularConstraintReached" reason:@"CellularConstraintReached" title:v22 subTitle:v11 sfSymbolName:0 accountId:v15 bundleID:v16 actions:v12 dismissAction:v13 iconSpecification:v17 serverGenerated:v21];
+    v18 = [(ICQInAppMessage *)v14 initWithContentType:0 identifier:@"CellularConstraintReached" reason:@"CellularConstraintReached" title:v22 subTitle:v11 sfSymbolName:0 accountId:v15 bundleID:bundleID2 actions:v12 dismissAction:v13 iconSpecification:iconSpecification serverGenerated:v21];
 
-    v5 = v23;
+    deviceInfo = v23;
   }
 
   else
@@ -1764,16 +1764,16 @@ LABEL_8:
   return v18;
 }
 
-- (void)_postMessage:(id)a3
+- (void)_postMessage:(id)message
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   [(ICQInAppMessaging *)self setHasNewObserver:0];
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = messageCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "In-app messages posting notification for message: %{public}@", buf, 0xCu);
   }
 
@@ -1781,11 +1781,11 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __34__ICQInAppMessaging__postMessage___block_invoke;
   block[3] = &unk_27A65A820;
-  v9 = v4;
-  v6 = v4;
+  v9 = messageCopy;
+  v6 = messageCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v7 = [(ICQInAppMessaging *)self bundleID];
-  [ICQAnalytics logInAppBannerImpressionWithAppIdentifier:v7];
+  bundleID = [(ICQInAppMessaging *)self bundleID];
+  [ICQAnalytics logInAppBannerImpressionWithAppIdentifier:bundleID];
 }
 
 void __34__ICQInAppMessaging__postMessage___block_invoke(uint64_t a1)
@@ -1821,11 +1821,11 @@ void __34__ICQInAppMessaging__postMessage___block_invoke_2(uint64_t a1)
 
 - (id)_accountIdentifier
 {
-  v2 = [(ICQInAppMessaging *)self accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 identifier];
+  accountStore = [(ICQInAppMessaging *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+  identifier = [aa_primaryAppleAccount identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (BOOL)_isCellularDataOff
@@ -1845,18 +1845,18 @@ void __34__ICQInAppMessaging__postMessage___block_invoke_2(uint64_t a1)
   return v5 == 0;
 }
 
-- (void)_handleBRCellularConstraintChanged:(id)a3
+- (void)_handleBRCellularConstraintChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(ICQInAppMessaging *)self unfairLock];
+  changedCopy = changed;
+  unfairLock = [(ICQInAppMessaging *)self unfairLock];
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __56__ICQInAppMessaging__handleBRCellularConstraintChanged___block_invoke;
   v10 = &unk_27A65A708;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
-  [v5 synchronized:&v7];
+  selfCopy = self;
+  v12 = changedCopy;
+  v6 = changedCopy;
+  [unfairLock synchronized:&v7];
 
   [(ICQInAppMessaging *)self _recalculateAndPostCurrentMessage:v7];
 }
@@ -1880,19 +1880,19 @@ void __56__ICQInAppMessaging__handleBRCellularConstraintChanged___block_invoke(u
   }
 }
 
-- (void)_observeUpdatesForBundleID:(id)a3
+- (void)_observeUpdatesForBundleID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Client requested in-app message updates in bundle %{public}@", &v6, 0xCu);
   }
 
-  [(ICQInAppMessaging *)self observeUpdatesForBundleID:v4 placement:@"InApp"];
+  [(ICQInAppMessaging *)self observeUpdatesForBundleID:dCopy placement:@"InApp"];
 }
 
 - (void)fetchMessageForReason:(uint64_t)a1 pendingItemsCount:(NSObject *)a2 withCompletion:.cold.1(uint64_t a1, NSObject *a2)
@@ -1907,7 +1907,7 @@ void __56__ICQInAppMessaging__handleBRCellularConstraintChanged___block_invoke(u
 {
   v6 = *MEMORY[0x277D85DE8];
   v3[0] = 67109376;
-  v3[1] = a1;
+  v3[1] = self;
   v4 = 1024;
   v5 = a2;
   _os_log_error_impl(&dword_275623000, log, OS_LOG_TYPE_ERROR, "Error retrieving state for cellular data switch. Domain: %d, error: %d", v3, 0xEu);

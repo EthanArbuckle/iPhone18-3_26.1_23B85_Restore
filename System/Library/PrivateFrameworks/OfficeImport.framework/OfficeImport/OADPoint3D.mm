@@ -1,30 +1,30 @@
 @interface OADPoint3D
-- (BOOL)isEqual:(id)a3;
-- (OADPoint3D)initWithX:(float)a3 y:(float)a4 z:(float)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADPoint3D)initWithX:(float)x y:(float)y z:(float)z;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation OADPoint3D
 
-- (OADPoint3D)initWithX:(float)a3 y:(float)a4 z:(float)a5
+- (OADPoint3D)initWithX:(float)x y:(float)y z:(float)z
 {
   v9.receiver = self;
   v9.super_class = OADPoint3D;
   result = [(OADPoint3D *)&v9 init];
   if (result)
   {
-    result->mX = a3;
-    result->mY = a4;
-    result->mZ = a5;
+    result->mX = x;
+    result->mY = y;
+    result->mZ = z;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   *&v5 = self->mX;
   *&v6 = self->mY;
   *&v7 = self->mZ;
@@ -32,9 +32,9 @@
   return [v4 initWithX:v5 y:v6 z:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -44,7 +44,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (!v5)
   {

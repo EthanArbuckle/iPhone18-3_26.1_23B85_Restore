@@ -2,7 +2,7 @@
 + (BOOL)isOpticalFlowForTextEnabled;
 - (VKDataScannerViewControllerBridge)init;
 - (VKDataScannerViewControllerBridgeDelegate)delegate;
-- (void)beginSessionForText:(BOOL)a3 barcodes:(BOOL)a4;
+- (void)beginSessionForText:(BOOL)text barcodes:(BOOL)barcodes;
 - (void)dealloc;
 - (void)endSession;
 @end
@@ -67,7 +67,7 @@ void __41__VKDataScannerViewControllerBridge_init__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)beginSessionForText:(BOOL)a3 barcodes:(BOOL)a4
+- (void)beginSessionForText:(BOOL)text barcodes:(BOOL)barcodes
 {
   if (!self->_sessionStartDate)
   {
@@ -75,8 +75,8 @@ void __41__VKDataScannerViewControllerBridge_init__block_invoke(uint64_t a1)
     sessionStartDate = self->_sessionStartDate;
     self->_sessionStartDate = v7;
 
-    self->_isScanningForText = a3;
-    self->_isScanningForBarcodes = a4;
+    self->_isScanningForText = text;
+    self->_isScanningForBarcodes = barcodes;
   }
 }
 

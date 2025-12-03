@@ -1,6 +1,6 @@
 @interface DTTapFactory
 + (id)defaultFactory;
-- (id)createNewTapWithConfig:(id)a3 connection:(id)a4 options:(id)a5;
+- (id)createNewTapWithConfig:(id)config connection:(id)connection options:(id)options;
 @end
 
 @implementation DTTapFactory
@@ -17,30 +17,30 @@
   return v3;
 }
 
-- (id)createNewTapWithConfig:(id)a3 connection:(id)a4 options:(id)a5
+- (id)createNewTapWithConfig:(id)config connection:(id)connection options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  configCopy = config;
+  connectionCopy = connection;
+  optionsCopy = options;
+  if (!configCopy)
   {
     v15 = 0;
     goto LABEL_49;
   }
 
-  v10 = [v7 copy];
-  v11 = [v9 objectForKeyedSubscript:@"DTTap_Option_MessageArchiveFileURL"];
-  v12 = [v10 serviceName];
+  v10 = [configCopy copy];
+  v11 = [optionsCopy objectForKeyedSubscript:@"DTTap_Option_MessageArchiveFileURL"];
+  serviceName = [v10 serviceName];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = v10;
     v29 = objc_opt_new();
-    if (v8)
+    if (connectionCopy)
     {
-      if (v12)
+      if (serviceName)
       {
-        v14 = [v8 remoteCapabilityVersion:v12];
+        v14 = [connectionCopy remoteCapabilityVersion:serviceName];
         if (v14 <= 0)
         {
           goto LABEL_12;
@@ -49,8 +49,8 @@
 
       else
       {
-        v12 = @"com.apple.instruments.server.services.coreprofilesessiontap";
-        v14 = [v8 remoteCapabilityVersion:@"com.apple.instruments.server.services.coreprofilesessiontap"];
+        serviceName = @"com.apple.instruments.server.services.coreprofilesessiontap";
+        v14 = [connectionCopy remoteCapabilityVersion:@"com.apple.instruments.server.services.coreprofilesessiontap"];
         if (v14 < 1)
         {
           goto LABEL_34;
@@ -78,29 +78,29 @@ LABEL_37:
   {
     v16 = v10;
     v17 = [DTProcessorTraceTapMemoHandlerDelegate alloc];
-    v18 = [v16 fetchChunkSize];
-    v29 = -[DTProcessorTraceTapMemoHandlerDelegate initWithFileReadLength:](v17, "initWithFileReadLength:", [v18 unsignedIntValue]);
+    fetchChunkSize = [v16 fetchChunkSize];
+    v29 = -[DTProcessorTraceTapMemoHandlerDelegate initWithFileReadLength:](v17, "initWithFileReadLength:", [fetchChunkSize unsignedIntValue]);
 
-    if (v8)
+    if (connectionCopy)
     {
-      if (v12)
+      if (serviceName)
       {
-        v14 = [v8 remoteCapabilityVersion:v12];
+        v14 = [connectionCopy remoteCapabilityVersion:serviceName];
         if (v14 <= 0)
         {
 LABEL_12:
 
 LABEL_34:
           v19 = 0;
-          v12 = 0;
+          serviceName = 0;
           goto LABEL_38;
         }
       }
 
       else
       {
-        v12 = @"com.apple.instruments.server.services.processortrace";
-        v14 = [v8 remoteCapabilityVersion:@"com.apple.instruments.server.services.processortrace"];
+        serviceName = @"com.apple.instruments.server.services.processortrace";
+        v14 = [connectionCopy remoteCapabilityVersion:@"com.apple.instruments.server.services.processortrace"];
         if (v14 < 1)
         {
           goto LABEL_34;
@@ -140,13 +140,13 @@ LABEL_39:
     }
 
     v26 = [[DTTapMemoHandler alloc] initWithConfig:v10 delegate:v29];
-    if (v8)
+    if (connectionCopy)
     {
-      if (v12)
+      if (serviceName)
       {
-        [v10 setServiceName:v12];
+        [v10 setServiceName:serviceName];
         [v10 setServiceVersion:v14];
-        v27 = [[DTTapRemote alloc] initWithConfig:v10 memoHandler:v26 messageHandler:v19 connection:v8];
+        v27 = [[DTTapRemote alloc] initWithConfig:v10 memoHandler:v26 messageHandler:v19 connection:connectionCopy];
       }
 
       else
@@ -170,10 +170,10 @@ LABEL_39:
   {
     v13 = v10;
     v29 = objc_opt_new();
-    if (v8)
+    if (connectionCopy)
     {
 
-      v14 = [v8 remoteCapabilityVersion:@"com.apple.instruments.server.services.activitytracetap"];
+      v14 = [connectionCopy remoteCapabilityVersion:@"com.apple.instruments.server.services.activitytracetap"];
       if (v14 >= 1)
       {
         if (v11)
@@ -187,7 +187,7 @@ LABEL_39:
         }
 
         v25 = 0;
-        v12 = @"com.apple.instruments.server.services.activitytracetap";
+        serviceName = @"com.apple.instruments.server.services.activitytracetap";
         goto LABEL_39;
       }
 
@@ -206,10 +206,10 @@ LABEL_19:
   {
     v13 = v10;
     v29 = objc_opt_new();
-    if (v8)
+    if (connectionCopy)
     {
 
-      v14 = [v8 remoteCapabilityVersion:@"com.apple.instruments.server.services.sysmontap"];
+      v14 = [connectionCopy remoteCapabilityVersion:@"com.apple.instruments.server.services.sysmontap"];
       if (v14 >= 1)
       {
         if (v11)
@@ -223,7 +223,7 @@ LABEL_19:
         }
 
         v25 = 0;
-        v12 = @"com.apple.instruments.server.services.sysmontap";
+        serviceName = @"com.apple.instruments.server.services.sysmontap";
         goto LABEL_39;
       }
 

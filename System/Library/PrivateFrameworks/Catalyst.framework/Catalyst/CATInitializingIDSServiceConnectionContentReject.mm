@@ -1,23 +1,23 @@
 @interface CATInitializingIDSServiceConnectionContentReject
-+ (id)instanceWithDictionary:(id)a3;
-- (CATInitializingIDSServiceConnectionContentReject)initWithConnectionIdentifier:(id)a3 error:(id)a4;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CATInitializingIDSServiceConnectionContentReject)initWithConnectionIdentifier:(id)identifier error:(id)error;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CATInitializingIDSServiceConnectionContentReject
 
-- (CATInitializingIDSServiceConnectionContentReject)initWithConnectionIdentifier:(id)a3 error:(id)a4
+- (CATInitializingIDSServiceConnectionContentReject)initWithConnectionIdentifier:(id)identifier error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = CATInitializingIDSServiceConnectionContentReject;
   v9 = [(CATInitializingIDSServiceConnectionContentReject *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connectionIdentifier, a3);
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v9->_connectionIdentifier, identifier);
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v10;
@@ -26,23 +26,23 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(CATInitializingIDSServiceConnectionContentReject *)self connectionIdentifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:@"ConnectionIdenfitier"];
+  connectionIdentifier = [(CATInitializingIDSServiceConnectionContentReject *)self connectionIdentifier];
+  uUIDString = [connectionIdentifier UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"ConnectionIdenfitier"];
 
-  v6 = [(CATInitializingIDSServiceConnectionContentReject *)self error];
-  v7 = [v6 cat_dictionaryValue];
-  [v3 setObject:v7 forKeyedSubscript:@"Error"];
+  error = [(CATInitializingIDSServiceConnectionContentReject *)self error];
+  cat_dictionaryValue = [error cat_dictionaryValue];
+  [v3 setObject:cat_dictionaryValue forKeyedSubscript:@"Error"];
 
   v8 = [v3 copy];
 
   return v8;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Error"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Error"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -56,13 +56,13 @@
 
   v7 = v6;
 
-  v8 = [v7 cat_errorValue];
+  cat_errorValue = [v7 cat_errorValue];
 
-  v9 = [v4 cat_uuidForKey:@"ConnectionIdenfitier"];
+  v9 = [dictionaryCopy cat_uuidForKey:@"ConnectionIdenfitier"];
 
   if (v9)
   {
-    v10 = [[a1 alloc] initWithConnectionIdentifier:v9 error:v8];
+    v10 = [[self alloc] initWithConnectionIdentifier:v9 error:cat_errorValue];
   }
 
   else

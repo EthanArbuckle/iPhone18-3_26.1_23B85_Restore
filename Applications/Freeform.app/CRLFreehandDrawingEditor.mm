@@ -1,6 +1,6 @@
 @interface CRLFreehandDrawingEditor
 - (BOOL)canCopySubselection;
-- (BOOL)crlaxShouldOfferSnapToShapeFromShapeItem:(id)a3;
+- (BOOL)crlaxShouldOfferSnapToShapeFromShapeItem:(id)item;
 - (BOOL)p_areAllSelectedInfosFreehandDrawings;
 - (BOOL)p_canCopyAsText;
 - (BOOL)p_canRefineHandwritingUsingSynchronousChecks;
@@ -11,63 +11,63 @@
 - (BOOL)p_currentlyInFreehandDrawingMode;
 - (BOOL)p_hasTransformableDrawingsSelected;
 - (BOOL)p_mightHaveHandwritingInAnySelectedShapes;
-- (BOOL)p_shouldPreventPasteForItemSource:(id)a3;
-- (BOOL)p_shouldShowResizeMenuItemForSelectedItems:(id)a3;
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5;
+- (BOOL)p_shouldPreventPasteForItemSource:(id)source;
+- (BOOL)p_shouldShowResizeMenuItemForSelectedItems:(id)items;
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors;
 - (CGRect)targetRectForEditMenu;
-- (CGSize)p_sizeForExportingInfo:(id)a3;
+- (CGSize)p_sizeForExportingInfo:(id)info;
 - (NSSet)boardItemsForDragAndDropTracing;
 - (NSSet)freehandDrawingInfos;
 - (UIMenuElement)refineHandwritingMenuElement;
 - (id)createFreehandDrawingsToCopyForSubselection;
-- (id)drawingRepresetativeItemsFromBoardItems:(id)a3;
+- (id)drawingRepresetativeItemsFromBoardItems:(id)items;
 - (id)imageURLsOfDrawings;
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5;
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path;
 - (id)p_firstDrawingInfo;
 - (id)p_infosToMerge;
 - (id)p_infosToSeparate;
 - (id)p_intelligenceProvider;
-- (id)p_pngDataForInfo:(id)a3;
+- (id)p_pngDataForInfo:(id)info;
 - (id)p_shapeItemsSelectedInFreehandDrawings;
-- (id)p_suffixForExportedFileWithIdentifier:(unint64_t)a3 index:(unint64_t)a4 count:(unint64_t)a5;
+- (id)p_suffixForExportedFileWithIdentifier:(unint64_t)identifier index:(unint64_t)index count:(unint64_t)count;
 - (id)snapToShapeActionName;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (int64_t)editorResponseForCanPasteContentsOfItemSource:(id)a3;
-- (void)addContextualMenuElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)copy:(id)a3;
-- (void)copyAsText:(id)a3;
-- (void)copySubselectionToPasteboard:(id)a3;
-- (void)cut:(id)a3;
-- (void)didBecomeCurrentEditorForEditorController:(id)a3;
-- (void)insertContentsOfFreehandDrawingsFromItemSource:(id)a3 atUnscaledPoint:(CGPoint)a4 completionHandler:(id)a5;
-- (void)mergeDrawings:(id)a3;
-- (void)p_beginFreehandDrawingMode:(id)a3;
-- (void)p_canRefineHandwritingWithCompletionHandler:(id)a3;
-- (void)p_fixUpCurrentSelectionPathIfNeeded:(id)a3;
-- (void)p_insertFreehandDrawingsFromProviders:(id)a3 atUnscaledPoint:(CGPoint)a4 isCrossDocument:(BOOL)a5 completionHandler:(id)a6;
-- (void)p_separateInfos:(id)a3 preserveInitialSelection:(BOOL)a4 actionString:(id)a5;
-- (void)pasteWithPasteboard:(id)a3 atIndex:(unint64_t)a4 forceMatchStyle:(BOOL)a5 bakeFormulas:(BOOL)a6 completionHandler:(id)a7;
-- (void)refineHandwriting:(id)a3;
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5;
-- (void)separate:(id)a3;
-- (void)snapToShapeWithCompletionHandler:(id)a3;
-- (void)straighten:(id)a3;
-- (void)transform:(id)a3;
-- (void)translateHandwrittenText:(id)a3;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (int64_t)editorResponseForCanPasteContentsOfItemSource:(id)source;
+- (void)addContextualMenuElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)copy:(id)copy;
+- (void)copyAsText:(id)text;
+- (void)copySubselectionToPasteboard:(id)pasteboard;
+- (void)cut:(id)cut;
+- (void)didBecomeCurrentEditorForEditorController:(id)controller;
+- (void)insertContentsOfFreehandDrawingsFromItemSource:(id)source atUnscaledPoint:(CGPoint)point completionHandler:(id)handler;
+- (void)mergeDrawings:(id)drawings;
+- (void)p_beginFreehandDrawingMode:(id)mode;
+- (void)p_canRefineHandwritingWithCompletionHandler:(id)handler;
+- (void)p_fixUpCurrentSelectionPathIfNeeded:(id)needed;
+- (void)p_insertFreehandDrawingsFromProviders:(id)providers atUnscaledPoint:(CGPoint)point isCrossDocument:(BOOL)document completionHandler:(id)handler;
+- (void)p_separateInfos:(id)infos preserveInitialSelection:(BOOL)selection actionString:(id)string;
+- (void)pasteWithPasteboard:(id)pasteboard atIndex:(unint64_t)index forceMatchStyle:(BOOL)style bakeFormulas:(BOOL)formulas completionHandler:(id)handler;
+- (void)refineHandwriting:(id)handwriting;
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags;
+- (void)separate:(id)separate;
+- (void)snapToShapeWithCompletionHandler:(id)handler;
+- (void)straighten:(id)straighten;
+- (void)transform:(id)transform;
+- (void)translateHandwrittenText:(id)text;
 @end
 
 @implementation CRLFreehandDrawingEditor
 
 - (BOOL)p_currentlyEditingInGroup
 {
-  v3 = [(CRLBoardItemEditor *)self editorController];
-  v4 = [v3 selectionForEditor:self];
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  v4 = [editorController selectionForEditor:self];
 
   objc_opt_class();
-  LOBYTE(v3) = objc_opt_isKindOfClass();
+  LOBYTE(editorController) = objc_opt_isKindOfClass();
 
-  return v3 & 1;
+  return editorController & 1;
 }
 
 - (NSSet)freehandDrawingInfos
@@ -79,16 +79,16 @@
 
 - (id)p_infosToSeparate
 {
-  v3 = [(CRLFreehandDrawingEditor *)self p_shapeItemsSelectedInFreehandDrawings];
-  v4 = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
-  if ([v4 count] == 1 && (v5 = objc_msgSend(v3, "count"), objc_msgSend(v4, "anyObject"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "childInfos"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v5 == v8))
+  p_shapeItemsSelectedInFreehandDrawings = [(CRLFreehandDrawingEditor *)self p_shapeItemsSelectedInFreehandDrawings];
+  freehandDrawingInfos = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
+  if ([freehandDrawingInfos count] == 1 && (v5 = objc_msgSend(p_shapeItemsSelectedInFreehandDrawings, "count"), objc_msgSend(freehandDrawingInfos, "anyObject"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "childInfos"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v5 == v8))
   {
     v9 = +[NSSet set];
   }
 
   else
   {
-    v9 = v3;
+    v9 = p_shapeItemsSelectedInFreehandDrawings;
   }
 
   v10 = v9;
@@ -103,8 +103,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  freehandDrawingInfos = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
+  v5 = [freehandDrawingInfos countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -115,14 +115,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(freehandDrawingInfos);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) childInfos];
-        [v3 addObjectsFromArray:v9];
+        childInfos = [*(*(&v11 + 1) + 8 * i) childInfos];
+        [v3 addObjectsFromArray:childInfos];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [freehandDrawingInfos countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -133,16 +133,16 @@
 
 - (id)p_shapeItemsSelectedInFreehandDrawings
 {
-  v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v4 = +[NSMutableSet set];
-  v5 = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
+  freehandDrawingInfos = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = v3;
-  v6 = [v3 infosForCurrentSelectionPath];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v18 = interactiveCanvasController;
+  infosForCurrentSelectionPath = [interactiveCanvasController infosForCurrentSelectionPath];
+  v7 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -153,7 +153,7 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(infosForCurrentSelectionPath);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
@@ -162,8 +162,8 @@
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 containingGroup];
-          v16 = [v5 containsObject:v15];
+          containingGroup = [v13 containingGroup];
+          v16 = [freehandDrawingInfos containsObject:containingGroup];
 
           if (v16)
           {
@@ -172,7 +172,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -183,12 +183,12 @@
 
 - (BOOL)p_areAllSelectedInfosFreehandDrawings
 {
-  v2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 infosForCurrentSelectionPath];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  infosForCurrentSelectionPath = [interactiveCanvasController infosForCurrentSelectionPath];
+  v4 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -199,7 +199,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infosForCurrentSelectionPath);
         }
 
         objc_opt_class();
@@ -214,7 +214,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -230,39 +230,39 @@ LABEL_12:
   return v8;
 }
 
-- (id)p_pngDataForInfo:(id)a3
+- (id)p_pngDataForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [CRLCanvasImager alloc];
-  v6 = [(CRLBoardItemEditor *)self editingCoordinator];
-  v7 = [v6 mainBoard];
-  v8 = [(CRLCanvasImager *)v5 initWithBoard:v7];
+  editingCoordinator = [(CRLBoardItemEditor *)self editingCoordinator];
+  mainBoard = [editingCoordinator mainBoard];
+  v8 = [(CRLCanvasImager *)v5 initWithBoard:mainBoard];
 
-  v16 = v4;
+  v16 = infoCopy;
   v9 = [NSArray arrayWithObjects:&v16 count:1];
   [(CRLCanvasImager *)v8 setInfos:v9];
 
-  [(CRLFreehandDrawingEditor *)self p_sizeForExportingInfo:v4];
+  [(CRLFreehandDrawingEditor *)self p_sizeForExportingInfo:infoCopy];
   v11 = v10;
   v13 = v12;
 
   [(CRLCanvasImager *)v8 setScaledImageSize:v11, v13];
-  v14 = [(CRLCanvasImager *)v8 pngData];
+  pngData = [(CRLCanvasImager *)v8 pngData];
 
-  return v14;
+  return pngData;
 }
 
-- (CGSize)p_sizeForExportingInfo:(id)a3
+- (CGSize)p_sizeForExportingInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v28 = 0;
   v29 = &v28;
   v30 = 0x4010000000;
   v31 = &unk_1016A8115;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 layoutForInfoNearestVisibleRect:v4];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  v6 = [interactiveCanvasController layoutForInfoNearestVisibleRect:infoCopy];
 
   if (v6)
   {
@@ -285,7 +285,7 @@ LABEL_12:
     v27[2] = sub_1003958AC;
     v27[3] = &unk_1018453B0;
     v27[4] = &v28;
-    [v4 withTemporaryLayoutPerform:v27];
+    [infoCopy withTemporaryLayoutPerform:v27];
     v12 = v29[6];
     v14 = v29[7];
   }
@@ -315,34 +315,34 @@ LABEL_12:
   return result;
 }
 
-- (void)transform:(id)a3
+- (void)transform:(id)transform
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v3 = [v4 freehandDrawingToolkit];
-  [v3 beginDrawingTransformModeIfNeeded];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  [freehandDrawingToolkit beginDrawingTransformModeIfNeeded];
 }
 
-- (void)separate:(id)a3
+- (void)separate:(id)separate
 {
-  v6 = [(CRLFreehandDrawingEditor *)self p_infosToSeparate];
+  p_infosToSeparate = [(CRLFreehandDrawingEditor *)self p_infosToSeparate];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Separate" value:0 table:@"UndoStrings"];
-  [(CRLFreehandDrawingEditor *)self p_separateInfos:v6 preserveInitialSelection:0 actionString:v5];
+  [(CRLFreehandDrawingEditor *)self p_separateInfos:p_infosToSeparate preserveInitialSelection:0 actionString:v5];
 }
 
-- (void)mergeDrawings:(id)a3
+- (void)mergeDrawings:(id)drawings
 {
-  v6 = [(CRLFreehandDrawingEditor *)self p_infosToMerge];
+  p_infosToMerge = [(CRLFreehandDrawingEditor *)self p_infosToMerge];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Merge" value:0 table:@"UndoStrings"];
-  [(CRLFreehandDrawingEditor *)self p_separateInfos:v6 preserveInitialSelection:1 actionString:v5];
+  [(CRLFreehandDrawingEditor *)self p_separateInfos:p_infosToMerge preserveInitialSelection:1 actionString:v5];
 }
 
 - (id)p_intelligenceProvider
 {
-  v2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v3 = [v2 drawingIntelligenceProvider];
-  if (!v3)
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  drawingIntelligenceProvider = [interactiveCanvasController drawingIntelligenceProvider];
+  if (!drawingIntelligenceProvider)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -371,32 +371,32 @@ LABEL_12:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:192 isFatal:0 description:"invalid nil value for '%{public}s'", "intelligenceProvider"];
   }
 
-  return v3;
+  return drawingIntelligenceProvider;
 }
 
-- (void)snapToShapeWithCompletionHandler:(id)a3
+- (void)snapToShapeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
-  [v5 snapToShapeSelectedStrokesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  p_intelligenceProvider = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
+  [p_intelligenceProvider snapToShapeSelectedStrokesWithCompletionHandler:handlerCopy];
 }
 
 - (BOOL)p_canSnapToShape
 {
-  v2 = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
-  v3 = [v2 canSnapToShapeSelectedStrokes];
+  p_intelligenceProvider = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
+  canSnapToShapeSelectedStrokes = [p_intelligenceProvider canSnapToShapeSelectedStrokes];
 
-  return v3;
+  return canSnapToShapeSelectedStrokes;
 }
 
 - (id)snapToShapeActionName
 {
-  v2 = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
-  v3 = [v2 snapToShapeSelectedStrokesCount];
+  p_intelligenceProvider = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
+  snapToShapeSelectedStrokesCount = [p_intelligenceProvider snapToShapeSelectedStrokesCount];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3 == 2)
+  if (snapToShapeSelectedStrokesCount == 2)
   {
     v6 = @"Snap to Shapes";
   }
@@ -411,23 +411,23 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)crlaxShouldOfferSnapToShapeFromShapeItem:(id)a3
+- (BOOL)crlaxShouldOfferSnapToShapeFromShapeItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CRLFreehandDrawingEditor *)self p_shapeItemsSelectedInFreehandDrawings];
-  v6 = [v5 containsObject:v4];
+  itemCopy = item;
+  p_shapeItemsSelectedInFreehandDrawings = [(CRLFreehandDrawingEditor *)self p_shapeItemsSelectedInFreehandDrawings];
+  v6 = [p_shapeItemsSelectedInFreehandDrawings containsObject:itemCopy];
 
   if (v6 && [(CRLFreehandDrawingEditor *)self canPerformEditorAction:"snapToShape:" withSender:0])
   {
-    v7 = [v4 canSnapToShape];
+    canSnapToShape = [itemCopy canSnapToShape];
   }
 
   else
   {
-    v7 = 0;
+    canSnapToShape = 0;
   }
 
-  return v7;
+  return canSnapToShape;
 }
 
 - (BOOL)p_mightHaveHandwritingInAnySelectedShapes
@@ -473,10 +473,10 @@ LABEL_12:
   return v3;
 }
 
-- (void)straighten:(id)a3
+- (void)straighten:(id)straighten
 {
-  v3 = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
-  [v3 straightenHandwritingInSelectedStrokesWithCompletionHandler:&stru_10185AFE0];
+  p_intelligenceProvider = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
+  [p_intelligenceProvider straightenHandwritingInSelectedStrokesWithCompletionHandler:&stru_10185AFE0];
 }
 
 - (BOOL)p_canStraighten
@@ -491,10 +491,10 @@ LABEL_12:
   return v3;
 }
 
-- (void)copyAsText:(id)a3
+- (void)copyAsText:(id)text
 {
-  v3 = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
-  [v3 copyAsTextSelectedStrokesWithCompletionHandler:&stru_10185B000];
+  p_intelligenceProvider = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
+  [p_intelligenceProvider copyAsTextSelectedStrokesWithCompletionHandler:&stru_10185B000];
 }
 
 - (BOOL)p_canCopyAsText
@@ -509,22 +509,22 @@ LABEL_12:
   return v3;
 }
 
-- (void)translateHandwrittenText:(id)a3
+- (void)translateHandwrittenText:(id)text
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self editorController];
-  v6 = [v5 selectionPath];
-  v7 = [v6 copy];
+  textCopy = text;
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v7 = [selectionPath copy];
 
   objc_initWeak(&location, self);
-  v8 = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
+  p_intelligenceProvider = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1003961B4;
   v9[3] = &unk_10185B028;
   objc_copyWeak(&v10, &location);
   v9[4] = v7;
-  [v8 recognizedTextInSelectedStrokesWithCompletionHandler:v9];
+  [p_intelligenceProvider recognizedTextInSelectedStrokesWithCompletionHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -569,10 +569,10 @@ LABEL_12:
   return v3;
 }
 
-- (void)refineHandwriting:(id)a3
+- (void)refineHandwriting:(id)handwriting
 {
-  v3 = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
-  [v3 refineHandwritingInSelectedStrokesWithCompletionHandler:&stru_10185B070];
+  p_intelligenceProvider = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
+  [p_intelligenceProvider refineHandwritingInSelectedStrokesWithCompletionHandler:&stru_10185B070];
 }
 
 - (BOOL)p_canRefineHandwritingUsingSynchronousChecks
@@ -585,44 +585,44 @@ LABEL_12:
   return [(CRLFreehandDrawingEditor *)self p_mightHaveHandwritingInAnySelectedShapes];
 }
 
-- (void)p_canRefineHandwritingWithCompletionHandler:(id)a3
+- (void)p_canRefineHandwritingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(CRLFreehandDrawingEditor *)self p_canRefineHandwritingUsingSynchronousChecks])
   {
-    v5 = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
+    p_intelligenceProvider = [(CRLFreehandDrawingEditor *)self p_intelligenceProvider];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1003968D0;
     v6[3] = &unk_10183D168;
-    v7 = v4;
-    [v5 canRefineHandwritingInSelectedStrokesWithCompletionHandler:v6];
+    v7 = handlerCopy;
+    [p_intelligenceProvider canRefineHandwritingInSelectedStrokesWithCompletionHandler:v6];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
 - (id)p_firstDrawingInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v4 anyObject];
-  v6 = sub_100014370(v3, v5);
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  anyObject = [boardItems anyObject];
+  v6 = sub_100014370(v3, anyObject);
 
   return v6;
 }
 
 - (BOOL)p_hasTransformableDrawingsSelected
 {
-  v2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 infosForCurrentSelectionPath];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  infosForCurrentSelectionPath = [interactiveCanvasController infosForCurrentSelectionPath];
+  v4 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -632,7 +632,7 @@ LABEL_12:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infosForCurrentSelectionPath);
         }
 
         objc_opt_class();
@@ -643,7 +643,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -658,90 +658,90 @@ LABEL_11:
   return v4;
 }
 
-- (void)didBecomeCurrentEditorForEditorController:(id)a3
+- (void)didBecomeCurrentEditorForEditorController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 selectionPath];
-  [(CRLFreehandDrawingEditor *)self p_fixUpCurrentSelectionPathIfNeeded:v5];
+  controllerCopy = controller;
+  selectionPath = [controllerCopy selectionPath];
+  [(CRLFreehandDrawingEditor *)self p_fixUpCurrentSelectionPathIfNeeded:selectionPath];
 
   v6.receiver = self;
   v6.super_class = CRLFreehandDrawingEditor;
-  [(CRLBoardItemEditor *)&v6 didBecomeCurrentEditorForEditorController:v4];
+  [(CRLBoardItemEditor *)&v6 didBecomeCurrentEditorForEditorController:controllerCopy];
 }
 
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CRLBoardItemEditor *)self editorController];
-  v11 = [v10 selectionPath];
-  [(CRLFreehandDrawingEditor *)self p_fixUpCurrentSelectionPathIfNeeded:v11];
+  toSelectionCopy = toSelection;
+  selectionCopy = selection;
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  selectionPath = [editorController selectionPath];
+  [(CRLFreehandDrawingEditor *)self p_fixUpCurrentSelectionPathIfNeeded:selectionPath];
 
   v12.receiver = self;
   v12.super_class = CRLFreehandDrawingEditor;
-  [(CRLGroupEditor *)&v12 selectionDidChangeFromSelection:v9 toSelection:v8 withFlags:a5];
+  [(CRLGroupEditor *)&v12 selectionDidChangeFromSelection:selectionCopy toSelection:toSelectionCopy withFlags:flags];
 }
 
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(CRLFreehandDrawingEditor *)self p_fixUpCurrentSelectionPathIfNeeded:v8];
+  pathCopy = path;
+  stackCopy = stack;
+  selectionCopy = selection;
+  [(CRLFreehandDrawingEditor *)self p_fixUpCurrentSelectionPathIfNeeded:pathCopy];
   v13.receiver = self;
   v13.super_class = CRLFreehandDrawingEditor;
-  v11 = [(CRLGroupEditor *)&v13 nextEditorForSelection:v10 withNewEditorStack:v9 selectionPath:v8];
+  v11 = [(CRLGroupEditor *)&v13 nextEditorForSelection:selectionCopy withNewEditorStack:stackCopy selectionPath:pathCopy];
 
   return v11;
 }
 
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors
 {
   v15.receiver = self;
   v15.super_class = CRLFreehandDrawingEditor;
-  v8 = a3;
-  LOBYTE(a5) = [(CRLBoardItemEditor *)&v15 shouldRemainOnEditorStackForSelection:v8 inSelectionPath:a4 withNewEditors:a5];
+  selectionCopy = selection;
+  LOBYTE(editors) = [(CRLBoardItemEditor *)&v15 shouldRemainOnEditorStackForSelection:selectionCopy inSelectionPath:path withNewEditors:editors];
   v9 = [(CRLBoardItemEditor *)self interactiveCanvasController:v15.receiver];
-  v10 = [v9 freehandDrawingToolkit];
-  v11 = [v10 isInDrawingMode];
+  freehandDrawingToolkit = [v9 freehandDrawingToolkit];
+  isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
   v12 = objc_opt_class();
-  v13 = sub_100014370(v12, v8);
+  v13 = sub_100014370(v12, selectionCopy);
 
-  LODWORD(v10) = [v13 hasSelectedItemsInNonGroupContainer] & v11 ^ 1;
-  return a5 & v10;
+  LODWORD(freehandDrawingToolkit) = [v13 hasSelectedItemsInNonGroupContainer] & isInDrawingMode ^ 1;
+  return editors & freehandDrawingToolkit;
 }
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(CRLFreehandDrawingEditor *)self p_currentlyEditingInGroup];
-  v8 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v9 = [(CRLFreehandDrawingEditor *)self p_currentlyInFreehandDrawingMode];
-  if ("transform:" == a3)
+  senderCopy = sender;
+  p_currentlyEditingInGroup = [(CRLFreehandDrawingEditor *)self p_currentlyEditingInGroup];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  p_currentlyInFreehandDrawingMode = [(CRLFreehandDrawingEditor *)self p_currentlyInFreehandDrawingMode];
+  if ("transform:" == action)
   {
-    v16 = [(CRLFreehandDrawingEditor *)self p_hasTransformableDrawingsSelected];
-    v17 = [v8 freehandDrawingToolkit];
-    v18 = [v17 wantsToSuppressKnobsOnTransformReps];
+    p_hasTransformableDrawingsSelected = [(CRLFreehandDrawingEditor *)self p_hasTransformableDrawingsSelected];
+    freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+    wantsToSuppressKnobsOnTransformReps = [freehandDrawingToolkit wantsToSuppressKnobsOnTransformReps];
 
-    v19 = (v16 & v18) == 0;
+    v19 = (p_hasTransformableDrawingsSelected & wantsToSuppressKnobsOnTransformReps) == 0;
     goto LABEL_47;
   }
 
-  if ("separate:" == a3 || "mergeDrawings:" == a3)
+  if ("separate:" == action || "mergeDrawings:" == action)
   {
-    v11 = [(CRLFreehandDrawingEditor *)self p_infosToSeparate];
-    v12 = [(CRLFreehandDrawingEditor *)self p_infosToMerge];
-    v13 = [v11 count];
-    v14 = [v12 count];
-    if ("separate:" == a3)
+    p_infosToSeparate = [(CRLFreehandDrawingEditor *)self p_infosToSeparate];
+    p_infosToMerge = [(CRLFreehandDrawingEditor *)self p_infosToMerge];
+    v13 = [p_infosToSeparate count];
+    v14 = [p_infosToMerge count];
+    if ("separate:" == action)
     {
       if (v13 == v14)
       {
         v15 = -1;
       }
 
-      else if ((([v11 count] != 0) & v7) != 0)
+      else if ((([p_infosToSeparate count] != 0) & p_currentlyEditingInGroup) != 0)
       {
         v15 = 1;
       }
@@ -752,10 +752,10 @@ LABEL_11:
       }
     }
 
-    else if (v7)
+    else if (p_currentlyEditingInGroup)
     {
       v15 = -1;
-      if (v13 == v14 && [v12 count])
+      if (v13 == v14 && [p_infosToMerge count])
       {
         v15 = 1;
       }
@@ -763,8 +763,8 @@ LABEL_11:
 
     else
     {
-      v24 = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
-      if ([v24 count] > 1)
+      freehandDrawingInfos = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
+      if ([freehandDrawingInfos count] > 1)
       {
         v15 = 1;
       }
@@ -778,10 +778,10 @@ LABEL_11:
 
   else
   {
-    v20 = v9;
-    if ("p_beginFreehandDrawingMode:" != a3)
+    v20 = p_currentlyInFreehandDrawingMode;
+    if ("p_beginFreehandDrawingMode:" != action)
     {
-      if ("connectWithConnectionLine:" == a3)
+      if ("connectWithConnectionLine:" == action)
       {
         if ([(CRLFreehandDrawingEditor *)self p_currentlyEditingInGroup])
         {
@@ -791,57 +791,57 @@ LABEL_11:
 
       else
       {
-        if ("snapToShape:" == a3)
+        if ("snapToShape:" == action)
         {
-          v22 = [(CRLFreehandDrawingEditor *)self p_canSnapToShape];
+          p_canSnapToShape = [(CRLFreehandDrawingEditor *)self p_canSnapToShape];
           goto LABEL_46;
         }
 
-        if ("straighten:" == a3)
+        if ("straighten:" == action)
         {
-          v22 = [(CRLFreehandDrawingEditor *)self p_canStraighten];
+          p_canSnapToShape = [(CRLFreehandDrawingEditor *)self p_canStraighten];
           goto LABEL_46;
         }
 
-        if ("copyAsText:" == a3)
+        if ("copyAsText:" == action)
         {
-          v22 = [(CRLFreehandDrawingEditor *)self p_canCopyAsText];
+          p_canSnapToShape = [(CRLFreehandDrawingEditor *)self p_canCopyAsText];
           goto LABEL_46;
         }
 
-        if ("translateHandwrittenText:" == a3)
+        if ("translateHandwrittenText:" == action)
         {
-          v22 = [(CRLFreehandDrawingEditor *)self p_canTranslateHandwrittenText];
+          p_canSnapToShape = [(CRLFreehandDrawingEditor *)self p_canTranslateHandwrittenText];
           goto LABEL_46;
         }
 
-        if ("refineHandwriting:" == a3)
+        if ("refineHandwriting:" == action)
         {
-          v22 = [(CRLFreehandDrawingEditor *)self p_canRefineHandwritingUsingSynchronousChecks];
+          p_canSnapToShape = [(CRLFreehandDrawingEditor *)self p_canRefineHandwritingUsingSynchronousChecks];
           goto LABEL_46;
         }
 
-        v21 = v7 | v9;
-        if ("group:" == a3 && ((v7 | v9) & 1) != 0)
+        v21 = p_currentlyEditingInGroup | p_currentlyInFreehandDrawingMode;
+        if ("group:" == action && ((p_currentlyEditingInGroup | p_currentlyInFreehandDrawingMode) & 1) != 0)
         {
 LABEL_36:
           v15 = -1;
           goto LABEL_50;
         }
 
-        if ((("copy:" == a3) & v21) == 1)
+        if ((("copy:" == action) & v21) == 1)
         {
-          v22 = [(CRLFreehandDrawingEditor *)self canCopySubselection];
+          p_canSnapToShape = [(CRLFreehandDrawingEditor *)self canCopySubselection];
 LABEL_46:
-          v19 = v22 == 0;
+          v19 = p_canSnapToShape == 0;
           goto LABEL_47;
         }
 
-        if ((("cut:" == a3) & v21) == 1)
+        if ((("cut:" == action) & v21) == 1)
         {
-          v26 = [v8 canvasEditor];
-          v27 = [v26 canvasEditorHelper];
-          v28 = [v27 shouldAllowPotentiallyKeyboardBasedActionForSender:v6];
+          canvasEditor = [interactiveCanvasController canvasEditor];
+          canvasEditorHelper = [canvasEditor canvasEditorHelper];
+          v28 = [canvasEditorHelper shouldAllowPotentiallyKeyboardBasedActionForSender:senderCopy];
 
           if (v28)
           {
@@ -863,13 +863,13 @@ LABEL_47:
           goto LABEL_36;
         }
 
-        if ((("delete:" == a3) & v9) == 1)
+        if ((("delete:" == action) & p_currentlyInFreehandDrawingMode) == 1)
         {
-          v29 = [(CRLBoardItemEditor *)self editorController];
-          v30 = [v29 currentEditors];
-          v31 = [v30 lastObject];
+          editorController = [(CRLBoardItemEditor *)self editorController];
+          currentEditors = [editorController currentEditors];
+          lastObject = [currentEditors lastObject];
 
-          if (v31 == self)
+          if (lastObject == self)
           {
             goto LABEL_36;
           }
@@ -878,12 +878,12 @@ LABEL_47:
 
       v32.receiver = self;
       v32.super_class = CRLFreehandDrawingEditor;
-      v15 = [(CRLGroupEditor *)&v32 canPerformEditorAction:a3 withSender:v6];
+      v15 = [(CRLGroupEditor *)&v32 canPerformEditorAction:action withSender:senderCopy];
       goto LABEL_50;
     }
 
-    v23 = [v8 freehandDrawingToolkit];
-    if (([v23 canBeginFreehandDrawingMode] & (v20 ^ 1)) != 0)
+    freehandDrawingToolkit2 = [interactiveCanvasController freehandDrawingToolkit];
+    if (([freehandDrawingToolkit2 canBeginFreehandDrawingMode] & (v20 ^ 1)) != 0)
     {
       v15 = 1;
     }
@@ -901,19 +901,19 @@ LABEL_50:
 
 - (BOOL)p_currentlyInFreehandDrawingMode
 {
-  v2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v3 = [v2 freehandDrawingToolkit];
-  v4 = [v3 isInDrawingMode];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
-  return v4;
+  return isInDrawingMode;
 }
 
-- (BOOL)p_shouldPreventPasteForItemSource:(id)a3
+- (BOOL)p_shouldPreventPasteForItemSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if ([(CRLFreehandDrawingEditor *)self p_currentlyInFreehandDrawingMode])
   {
-    v5 = [v4 hasOnlyNativeFreehandDrawingBoardItems] ^ 1;
+    v5 = [sourceCopy hasOnlyNativeFreehandDrawingBoardItems] ^ 1;
   }
 
   else
@@ -924,10 +924,10 @@ LABEL_50:
   return v5;
 }
 
-- (int64_t)editorResponseForCanPasteContentsOfItemSource:(id)a3
+- (int64_t)editorResponseForCanPasteContentsOfItemSource:(id)source
 {
-  v4 = a3;
-  if ([(CRLFreehandDrawingEditor *)self p_shouldPreventPasteForItemSource:v4])
+  sourceCopy = source;
+  if ([(CRLFreehandDrawingEditor *)self p_shouldPreventPasteForItemSource:sourceCopy])
   {
     v5 = -1;
   }
@@ -936,23 +936,23 @@ LABEL_50:
   {
     v7.receiver = self;
     v7.super_class = CRLFreehandDrawingEditor;
-    v5 = [(CRLGroupEditor *)&v7 editorResponseForCanPasteContentsOfItemSource:v4];
+    v5 = [(CRLGroupEditor *)&v7 editorResponseForCanPasteContentsOfItemSource:sourceCopy];
   }
 
   return v5;
 }
 
-- (void)pasteWithPasteboard:(id)a3 atIndex:(unint64_t)a4 forceMatchStyle:(BOOL)a5 bakeFormulas:(BOOL)a6 completionHandler:(id)a7
+- (void)pasteWithPasteboard:(id)pasteboard atIndex:(unint64_t)index forceMatchStyle:(BOOL)style bakeFormulas:(BOOL)formulas completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a7;
-  v14 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v15 = [v14 canvasEditor];
-  v16 = [v15 pasteboardController];
+  formulasCopy = formulas;
+  styleCopy = style;
+  pasteboardCopy = pasteboard;
+  handlerCopy = handler;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  pasteboardController = [canvasEditor pasteboardController];
 
-  v17 = [v16 ingestibleItemSourceForPasteboard:v12];
+  v17 = [pasteboardController ingestibleItemSourceForPasteboard:pasteboardCopy];
   v24 = sub_1003035DC(v17, 1, v18, v19, v20, v21, v22, v23, &OBJC_PROTOCOL___CRLIngestibleItemSource);
 
   if ([(CRLFreehandDrawingEditor *)self p_shouldPreventPasteForItemSource:v24])
@@ -988,7 +988,7 @@ LABEL_50:
   {
     v28.receiver = self;
     v28.super_class = CRLFreehandDrawingEditor;
-    [(CRLGroupEditor *)&v28 pasteWithPasteboard:v12 atIndex:a4 forceMatchStyle:v9 bakeFormulas:v8 completionHandler:v13];
+    [(CRLGroupEditor *)&v28 pasteWithPasteboard:pasteboardCopy atIndex:index forceMatchStyle:styleCopy bakeFormulas:formulasCopy completionHandler:handlerCopy];
   }
 }
 
@@ -996,10 +996,10 @@ LABEL_50:
 {
   if ([(CRLFreehandDrawingEditor *)self p_currentlyEditingInGroup])
   {
-    v3 = [(CRLBoardItemEditor *)self editorController];
-    v4 = [v3 selectionPath];
-    v5 = [v4 orderedSelections];
-    v6 = [v5 lastObject];
+    editorController = [(CRLBoardItemEditor *)self editorController];
+    selectionPath = [editorController selectionPath];
+    orderedSelections = [selectionPath orderedSelections];
+    lastObject = [orderedSelections lastObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1014,13 +1014,13 @@ LABEL_50:
   return v8 & 1;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v6 = +[CRLPasteboard generalPasteboard];
   [(CRLFreehandDrawingEditor *)self copySubselectionToPasteboard:v6];
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v4 canvasEditor];
-  [v5 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  [canvasEditor hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
 }
 
 - (id)createFreehandDrawingsToCopyForSubselection
@@ -1059,31 +1059,31 @@ LABEL_50:
   return v6;
 }
 
-- (void)copySubselectionToPasteboard:(id)a3
+- (void)copySubselectionToPasteboard:(id)pasteboard
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 canvasEditor];
-  v8 = [v6 pasteboardController];
+  pasteboardCopy = pasteboard;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  pasteboardController = [canvasEditor pasteboardController];
 
-  v7 = [(CRLFreehandDrawingEditor *)self createFreehandDrawingsToCopyForSubselection];
-  [v8 copyUninsertedFreehandDrawingItems:v7 toPasteboard:v4];
+  createFreehandDrawingsToCopyForSubselection = [(CRLFreehandDrawingEditor *)self createFreehandDrawingsToCopyForSubselection];
+  [pasteboardController copyUninsertedFreehandDrawingItems:createFreehandDrawingsToCopyForSubselection toPasteboard:pasteboardCopy];
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 commandController];
+  cutCopy = cut;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
 
-  [v6 openGroup];
+  [commandController openGroup];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"Cut" value:0 table:@"UndoStrings"];
-  [v6 setCurrentGroupActionString:v8];
+  [commandController setCurrentGroupActionString:v8];
 
-  [(CRLFreehandDrawingEditor *)self copy:v4];
-  v9 = [(CRLBoardItemEditor *)self editorController];
-  v10 = [v9 editorForEditAction:"delete:" withSender:v4];
+  [(CRLFreehandDrawingEditor *)self copy:cutCopy];
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  v10 = [editorController editorForEditAction:"delete:" withSender:cutCopy];
 
   if (!v10)
   {
@@ -1114,17 +1114,17 @@ LABEL_50:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:621 isFatal:0 description:"invalid nil value for '%{public}s'", "deleteEditor"];
   }
 
-  [v10 performSelector:"delete:" withObject:v4];
-  [v6 closeGroup];
+  [v10 performSelector:"delete:" withObject:cutCopy];
+  [commandController closeGroup];
 }
 
-- (void)insertContentsOfFreehandDrawingsFromItemSource:(id)a3 atUnscaledPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)insertContentsOfFreehandDrawingsFromItemSource:(id)source atUnscaledPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  if (([v9 hasOnlyNativeFreehandDrawingBoardItems] & 1) == 0)
+  y = point.y;
+  x = point.x;
+  sourceCopy = source;
+  handlerCopy = handler;
+  if (([sourceCopy hasOnlyNativeFreehandDrawingBoardItems] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1153,15 +1153,15 @@ LABEL_50:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:628 isFatal:0 description:"Should only call this if we have freehand drawings to insert!"];
   }
 
-  if ([v9 hasOnlyNativeFreehandDrawingBoardItems])
+  if ([sourceCopy hasOnlyNativeFreehandDrawingBoardItems])
   {
-    v14 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v15 = [v14 editingCoordinator];
-    [v15 suspendCollaborationWithReason:@"CRLFreehandEditorInsertingAsyncDrawables"];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    editingCoordinator = [interactiveCanvasController editingCoordinator];
+    [editingCoordinator suspendCollaborationWithReason:@"CRLFreehandEditorInsertingAsyncDrawables"];
 
-    v16 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v17 = [v16 editingCoordinator];
-    v18 = [v17 boardItemFactory];
+    interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    editingCoordinator2 = [interactiveCanvasController2 editingCoordinator];
+    boardItemFactory = [editingCoordinator2 boardItemFactory];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100397DD0;
@@ -1169,22 +1169,22 @@ LABEL_50:
     v20[4] = self;
     v22 = x;
     v23 = y;
-    v21 = v10;
-    v19 = [v9 loadProvidersForNativeBoardItemsWithBoardItemFactory:v18 loadHandler:v20];
+    v21 = handlerCopy;
+    v19 = [sourceCopy loadProvidersForNativeBoardItemsWithBoardItemFactory:boardItemFactory loadHandler:v20];
   }
 }
 
-- (void)p_insertFreehandDrawingsFromProviders:(id)a3 atUnscaledPoint:(CGPoint)a4 isCrossDocument:(BOOL)a5 completionHandler:(id)a6
+- (void)p_insertFreehandDrawingsFromProviders:(id)providers atUnscaledPoint:(CGPoint)point isCrossDocument:(BOOL)document completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v62 = a6;
-  v70 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
-  v64 = self;
-  v11 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v12 = [v11 editingCoordinator];
-  v72 = [v12 boardItemFactory];
+  y = point.y;
+  x = point.x;
+  providersCopy = providers;
+  handlerCopy = handler;
+  v70 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(providersCopy, "count")}];
+  selfCopy = self;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
+  boardItemFactory = [editingCoordinator boardItemFactory];
 
   v89 = 0;
   v90 = &v89;
@@ -1197,7 +1197,7 @@ LABEL_50:
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  obj = v10;
+  obj = providersCopy;
   v14 = [obj countByEnumeratingWithState:&v85 objects:v98 count:16];
   if (v14)
   {
@@ -1214,7 +1214,7 @@ LABEL_50:
 
         v17 = *(*(&v85 + 1) + 8 * v16);
         v18 = objc_opt_class();
-        v19 = [v17 newBoardItemWithFactory:v72 bakedSize:0];
+        v19 = [v17 newBoardItemWithFactory:boardItemFactory bakedSize:0];
         v20 = sub_100014370(v18, v19);
 
         if (v20)
@@ -1283,19 +1283,19 @@ LABEL_50:
     while (v14);
   }
 
-  v65 = [(CRLFreehandDrawingEditor *)v64 p_firstDrawingInfo];
-  v27 = [(CRLBoardItemEditor *)v64 interactiveCanvasController];
-  v63 = [v27 layoutForInfo:v65];
+  p_firstDrawingInfo = [(CRLFreehandDrawingEditor *)selfCopy p_firstDrawingInfo];
+  interactiveCanvasController2 = [(CRLBoardItemEditor *)selfCopy interactiveCanvasController];
+  v63 = [interactiveCanvasController2 layoutForInfo:p_firstDrawingInfo];
 
   v28 = sub_100120414(v90[4], v90[5], v90[6], v90[7]);
   v29 = sub_10011F31C(x, y, v28);
   memset(&buf, 0, sizeof(buf));
   CGAffineTransformMakeTranslation(&buf, v29, v30);
-  v31 = [v63 parent];
-  v32 = v31;
-  if (v31)
+  parent = [v63 parent];
+  v32 = parent;
+  if (parent)
   {
-    [v31 transformInRoot];
+    [parent transformInRoot];
   }
 
   else
@@ -1332,8 +1332,8 @@ LABEL_50:
         v74 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v35 = [v34 childInfos];
-        v36 = [v35 countByEnumeratingWithState:&v73 objects:v95 count:16];
+        childInfos = [v34 childInfos];
+        v36 = [childInfos countByEnumeratingWithState:&v73 objects:v95 count:16];
         if (v36)
         {
           v37 = *v74;
@@ -1343,7 +1343,7 @@ LABEL_50:
             {
               if (*v74 != v37)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(childInfos);
               }
 
               v39 = *(*(&v73 + 1) + 8 * j);
@@ -1354,9 +1354,9 @@ LABEL_50:
                 v42 = [v34 ungroupedGeometryForChildItem:v41];
                 [v41 setGeometry:v42];
 
-                v43 = [v41 geometry];
+                geometry = [v41 geometry];
                 v83 = buf;
-                v44 = [v43 geometryByAppendingTransform:&v83];
+                v44 = [geometry geometryByAppendingTransform:&v83];
                 [v41 setGeometry:v44];
 
                 [v41 setParentInfo:0];
@@ -1364,7 +1364,7 @@ LABEL_50:
               }
             }
 
-            v36 = [v35 countByEnumeratingWithState:&v73 objects:v95 count:16];
+            v36 = [childInfos countByEnumeratingWithState:&v73 objects:v95 count:16];
           }
 
           while (v36);
@@ -1377,48 +1377,48 @@ LABEL_50:
     while (v68);
   }
 
-  v45 = [(CRLBoardItemEditor *)v64 interactiveCanvasController];
-  v46 = [v45 canvasEditor];
-  v47 = [v46 canvasEditorHelper];
-  [v47 prepareGeometryForInsertingNativelySourcedShapes:v33 intoFreehandDrawing:v65];
+  interactiveCanvasController3 = [(CRLBoardItemEditor *)selfCopy interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController3 canvasEditor];
+  canvasEditorHelper = [canvasEditor canvasEditorHelper];
+  [canvasEditorHelper prepareGeometryForInsertingNativelySourcedShapes:v33 intoFreehandDrawing:p_firstDrawingInfo];
 
   v48 = [_TtC8Freeform26CRLCommandInsertBoardItems alloc];
-  v49 = [v65 childInfos];
-  v50 = -[CRLCommandInsertBoardItems initWithParentContainer:boardItems:index:](v48, "initWithParentContainer:boardItems:index:", v65, v33, [v49 count]);
+  childInfos2 = [p_firstDrawingInfo childInfos];
+  v50 = -[CRLCommandInsertBoardItems initWithParentContainer:boardItems:index:](v48, "initWithParentContainer:boardItems:index:", p_firstDrawingInfo, v33, [childInfos2 count]);
 
-  v51 = [(CRLBoardItemEditor *)v64 interactiveCanvasController];
-  v52 = [v51 selectionModelTranslator];
-  v53 = [v52 selectionPathForNothingSelectedInsideGroup:v65];
+  interactiveCanvasController4 = [(CRLBoardItemEditor *)selfCopy interactiveCanvasController];
+  selectionModelTranslator = [interactiveCanvasController4 selectionModelTranslator];
+  v53 = [selectionModelTranslator selectionPathForNothingSelectedInsideGroup:p_firstDrawingInfo];
 
-  v54 = [(CRLBoardItemEditor *)v64 interactiveCanvasController];
-  v55 = [v54 canvasEditor];
-  v56 = [v55 canvasEditorHelper];
+  interactiveCanvasController5 = [(CRLBoardItemEditor *)selfCopy interactiveCanvasController];
+  canvasEditor2 = [interactiveCanvasController5 canvasEditor];
+  canvasEditorHelper2 = [canvasEditor2 canvasEditorHelper];
   v57 = [NSSet setWithArray:v33];
-  v58 = [v56 selectionPathByReplacingInfosInSelectionPath:v53 withInfos:v57];
+  v58 = [canvasEditorHelper2 selectionPathByReplacingInfosInSelectionPath:v53 withInfos:v57];
 
   v59 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:v58 reverseSelectionPath:v53];
-  v60 = [(CRLBoardItemEditor *)v64 interactiveCanvasController];
-  v61 = [v60 commandController];
-  [v61 enqueueCommand:v50 withSelectionBehavior:v59];
+  interactiveCanvasController6 = [(CRLBoardItemEditor *)selfCopy interactiveCanvasController];
+  commandController = [interactiveCanvasController6 commandController];
+  [commandController enqueueCommand:v50 withSelectionBehavior:v59];
 
-  if (v62)
+  if (handlerCopy)
   {
-    v62[2](v62, v33);
+    handlerCopy[2](handlerCopy, v33);
   }
 
   _Block_object_dispose(&v89, 8);
 }
 
-- (id)p_suffixForExportedFileWithIdentifier:(unint64_t)a3 index:(unint64_t)a4 count:(unint64_t)a5
+- (id)p_suffixForExportedFileWithIdentifier:(unint64_t)identifier index:(unint64_t)index count:(unint64_t)count
 {
-  if (a5 < 2)
+  if (count < 2)
   {
-    [NSString stringWithFormat:@"%zd", a3, v7];
+    [NSString stringWithFormat:@"%zd", identifier, v7];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%zd-%zd", a3, a4];
+    [NSString stringWithFormat:@"%zd-%zd", identifier, index];
   }
   v5 = ;
 
@@ -1464,10 +1464,10 @@ LABEL_50:
   else
   {
     v30 = v3;
-    v10 = [(CRLTemporaryDirectory *)v3 path];
-    v36 = [(CRLFreehandDrawingEditor *)self p_randomExportIdentifier];
-    v11 = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
-    v35 = [v11 count];
+    path = [(CRLTemporaryDirectory *)v3 path];
+    p_randomExportIdentifier = [(CRLFreehandDrawingEditor *)self p_randomExportIdentifier];
+    freehandDrawingInfos = [(CRLFreehandDrawingEditor *)self freehandDrawingInfos];
+    v35 = [freehandDrawingInfos count];
 
     v41 = 0u;
     v42 = 0u;
@@ -1480,7 +1480,7 @@ LABEL_50:
       v12 = 0;
       v5 = 0;
       v34 = *v40;
-      v31 = self;
+      selfCopy = self;
       do
       {
         v13 = 0;
@@ -1493,9 +1493,9 @@ LABEL_50:
           }
 
           v15 = [(CRLFreehandDrawingEditor *)self p_pngDataForInfo:*(*(&v39 + 1) + 8 * v13)];
-          v16 = [(CRLFreehandDrawingEditor *)self p_suffixForExportedFileWithIdentifier:v36 index:v12 count:v35];
+          v16 = [(CRLFreehandDrawingEditor *)self p_suffixForExportedFileWithIdentifier:p_randomExportIdentifier index:v12 count:v35];
           v17 = [NSString stringWithFormat:@"drawing%@.png", v16];
-          v18 = [v10 stringByAppendingPathComponent:v17];
+          v18 = [path stringByAppendingPathComponent:v17];
           v19 = [NSURL fileURLWithPath:v18];
 
           v38 = v14;
@@ -1536,7 +1536,7 @@ LABEL_50:
               sub_101360CEC();
             }
 
-            v22 = v10;
+            v22 = path;
             v23 = off_1019EDA68;
             if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
             {
@@ -1553,8 +1553,8 @@ LABEL_50:
             v25 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingEditor.m"];
             [CRLAssertionHandler handleFailureInFunction:v24 file:v25 lineNumber:743 isFatal:0 description:"Failed to write drawing image data to temporary directory while sharing: %@", v5];
 
-            v10 = v22;
-            self = v31;
+            path = v22;
+            self = selfCopy;
           }
 
           ++v12;
@@ -1574,7 +1574,7 @@ LABEL_50:
       v5 = 0;
     }
 
-    v8 = v10;
+    v8 = path;
     v3 = v30;
     [(CRLTemporaryDirectory *)v30 leakTemporaryDirectory];
   }
@@ -1584,24 +1584,24 @@ LABEL_50:
   return v28;
 }
 
-- (void)addContextualMenuElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addContextualMenuElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  arrayCopy = array;
   v110.receiver = self;
   v110.super_class = CRLFreehandDrawingEditor;
-  [(CRLBoardItemEditor *)&v110 addContextualMenuElementsToArray:v7 atPoint:x, y];
-  v95 = v7;
-  v90 = [(CRLFreehandDrawingEditor *)self p_currentlyInFreehandDrawingMode];
-  v91 = self;
-  if (v90)
+  [(CRLBoardItemEditor *)&v110 addContextualMenuElementsToArray:arrayCopy atPoint:x, y];
+  v95 = arrayCopy;
+  p_currentlyInFreehandDrawingMode = [(CRLFreehandDrawingEditor *)self p_currentlyInFreehandDrawingMode];
+  selfCopy = self;
+  if (p_currentlyInFreehandDrawingMode)
   {
     v108 = 0u;
     v109 = 0u;
     v106 = 0u;
     v107 = 0u;
-    v8 = [v7 copy];
+    v8 = [arrayCopy copy];
     v9 = [v8 countByEnumeratingWithState:&v106 objects:v117 count:16];
     if (v9)
     {
@@ -1627,8 +1627,8 @@ LABEL_50:
           v18 = v17;
           if (v17)
           {
-            v19 = [v17 identifier];
-            if ([v19 isEqualToString:v12])
+            identifier = [v17 identifier];
+            if ([identifier isEqualToString:v12])
             {
               goto LABEL_9;
             }
@@ -1636,41 +1636,41 @@ LABEL_50:
             v20 = v12;
             v21 = v13;
             v22 = v8;
-            v23 = [v18 identifier];
-            v24 = [v23 isEqualToString:@"CRLDistributeMenuIdentifier"];
+            identifier2 = [v18 identifier];
+            v24 = [identifier2 isEqualToString:@"CRLDistributeMenuIdentifier"];
 
             if (v24)
             {
               v8 = v22;
               v13 = v21;
               v12 = v20;
-              v7 = v95;
+              arrayCopy = v95;
               v10 = v96;
               goto LABEL_12;
             }
 
-            v25 = [v18 identifier];
-            v26 = [v25 isEqualToString:@"CRLDeleteMenuIdentifier"];
+            identifier3 = [v18 identifier];
+            v26 = [identifier3 isEqualToString:@"CRLDeleteMenuIdentifier"];
 
             v8 = v22;
             if (v26)
             {
-              v19 = v93;
+              identifier = v93;
               v93 = v15;
               v13 = v21;
               v12 = v20;
-              v7 = v95;
+              arrayCopy = v95;
               v10 = v96;
 LABEL_9:
 
 LABEL_12:
-              [v7 removeObjectIdenticalTo:v15];
+              [arrayCopy removeObjectIdenticalTo:v15];
               goto LABEL_13;
             }
 
             v13 = v21;
             v12 = v20;
-            v7 = v95;
+            arrayCopy = v95;
             v10 = v96;
           }
 
@@ -1685,24 +1685,24 @@ LABEL_13:
         if (!v27)
         {
 
-          v28 = [v7 count];
+          v28 = [arrayCopy count];
           goto LABEL_31;
         }
       }
     }
 
-    v28 = [v7 count];
+    v28 = [arrayCopy count];
     v93 = 0;
   }
 
   else
   {
-    v28 = [v7 count];
+    v28 = [arrayCopy count];
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v29 = v7;
+    v29 = arrayCopy;
     v30 = [v29 countByEnumeratingWithState:&v102 objects:v116 count:16];
     if (v30)
     {
@@ -1734,9 +1734,9 @@ LABEL_13:
     }
 
     v93 = 0;
-    v7 = v95;
+    arrayCopy = v95;
 LABEL_31:
-    self = v91;
+    self = selfCopy;
   }
 
   if ([(CRLFreehandDrawingEditor *)self p_currentlyEditingInGroup])
@@ -1773,10 +1773,10 @@ LABEL_31:
     v86 = [UIMenu menuWithTitle:&stru_1018BCA28 image:0 identifier:0 options:1 children:v51];
 
     [v95 insertObject:v86 atIndex:v28 + 1];
-    v52 = [(CRLFreehandDrawingEditor *)self snapToShapeActionName];
+    snapToShapeActionName = [(CRLFreehandDrawingEditor *)self snapToShapeActionName];
     v53 = +[CRLFreehandDrawingEditor snapToShapeActionSymbolName];
     v54 = [UIImage systemImageNamed:v53];
-    v97 = [UICommand commandWithTitle:v52 image:v54 action:"snapToShape:" propertyList:0];
+    v97 = [UICommand commandWithTitle:snapToShapeActionName image:v54 action:"snapToShape:" propertyList:0];
 
     v55 = +[NSBundle mainBundle];
     v56 = [v55 localizedStringForKey:@"Copy as Text" value:0 table:0];
@@ -1795,8 +1795,8 @@ LABEL_31:
 
     v113[0] = v97;
     v113[1] = v85;
-    v65 = [(CRLFreehandDrawingEditor *)v91 refineHandwritingMenuElement];
-    v113[2] = v65;
+    refineHandwritingMenuElement = [(CRLFreehandDrawingEditor *)selfCopy refineHandwritingMenuElement];
+    v113[2] = refineHandwritingMenuElement;
     v113[3] = v84;
     v113[4] = v64;
     v66 = [NSArray arrayWithObjects:v113 count:5];
@@ -1815,12 +1815,12 @@ LABEL_31:
     [v95 insertObject:v73 atIndex:v28 + 3];
     v28 += 4;
 
-    v7 = v95;
+    arrayCopy = v95;
   }
 
   if (v93)
   {
-    v74 = v90;
+    v74 = p_currentlyInFreehandDrawingMode;
   }
 
   else
@@ -1830,14 +1830,14 @@ LABEL_31:
 
   if (v74 == 1)
   {
-    [v7 insertObject:v93 atIndex:v28];
+    [arrayCopy insertObject:v93 atIndex:v28];
   }
 
   v100 = 0u;
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v75 = [v7 copy];
+  v75 = [arrayCopy copy];
   v76 = [v75 countByEnumeratingWithState:&v98 objects:v111 count:16];
   if (v76)
   {
@@ -1883,19 +1883,19 @@ LABEL_50:
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v8 = [v7 layerHost];
-  v9 = [v8 asiOSCVC];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
   if ([(CRLFreehandDrawingEditor *)self p_currentlyInFreehandDrawingMode])
   {
-    v10 = [v7 editorController];
-    v11 = [v10 mostSpecificCurrentEditorOfClass:0];
+    editorController = [interactiveCanvasController editorController];
+    v11 = [editorController mostSpecificCurrentEditorOfClass:0];
 
     if (v11 == self)
     {
-      [v9 lastTapPoint];
-      [v7 convertUnscaledToBoundsPoint:?];
+      [asiOSCVC lastTapPoint];
+      [interactiveCanvasController convertUnscaledToBoundsPoint:?];
       sub_10011F334(v12, v13, 0.0);
       SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v14, v15);
       x = v16;
@@ -1916,14 +1916,14 @@ LABEL_50:
   return result;
 }
 
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = CRLFreehandDrawingEditor;
-  [(CRLBoardItemEditor *)&v12 addMiniFormatterElementsToArray:v7 atPoint:x, y];
+  [(CRLBoardItemEditor *)&v12 addMiniFormatterElementsToArray:arrayCopy atPoint:x, y];
   if (![(CRLFreehandDrawingEditor *)self p_currentlyInFreehandDrawingMode])
   {
     v8 = +[NSBundle mainBundle];
@@ -1931,55 +1931,55 @@ LABEL_50:
     v10 = [CRLImage crl_quickInspectorImageNamed:@"scribble"];
     v11 = [CRLQuickInspectorElement elementWithName:v9 image:v10 type:2 options:0x1000000 action:"p_beginFreehandDrawingMode:" parent:0 children:0];
 
-    [v7 insertObject:v11 atIndex:{objc_msgSend(v7, "count")}];
+    [arrayCopy insertObject:v11 atIndex:{objc_msgSend(arrayCopy, "count")}];
   }
 }
 
-- (void)p_beginFreehandDrawingMode:(id)a3
+- (void)p_beginFreehandDrawingMode:(id)mode
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v3 = [v4 freehandDrawingToolkit];
-  [v3 beginDrawingModeIfNeededForTouchType:1];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  [freehandDrawingToolkit beginDrawingModeIfNeededForTouchType:1];
 }
 
-- (void)p_separateInfos:(id)a3 preserveInitialSelection:(BOOL)a4 actionString:(id)a5
+- (void)p_separateInfos:(id)infos preserveInitialSelection:(BOOL)selection actionString:(id)string
 {
-  v124 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v10 = [v9 canvasEditor];
-  v11 = [v9 commandController];
-  v12 = [(CRLBoardItemEditor *)self editingCoordinator];
-  v13 = [v12 mainBoard];
+  selectionCopy = selection;
+  infosCopy = infos;
+  stringCopy = string;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  commandController = [interactiveCanvasController commandController];
+  editingCoordinator = [(CRLBoardItemEditor *)self editingCoordinator];
+  mainBoard = [editingCoordinator mainBoard];
 
-  v126 = self;
-  v14 = [(CRLBoardItemEditor *)self editingCoordinator];
-  v15 = [v14 boardItemFactory];
+  selfCopy = self;
+  editingCoordinator2 = [(CRLBoardItemEditor *)self editingCoordinator];
+  boardItemFactory = [editingCoordinator2 boardItemFactory];
 
-  if ([v7 count])
+  if ([infosCopy count])
   {
-    v121 = v13;
-    v125 = v10;
-    [v11 openGroup];
-    [v11 enableProgressiveEnqueuingInCurrentGroup];
-    v122 = v11;
-    v120 = v8;
-    [v11 setCurrentGroupActionString:v8];
-    v16 = [v9 topLevelZOrderedSiblingsOfInfos:v7];
-    v123 = v7;
-    v17 = [v16 crl_arrayWithObjectsInSet:v7];
+    v121 = mainBoard;
+    v125 = canvasEditor;
+    [commandController openGroup];
+    [commandController enableProgressiveEnqueuingInCurrentGroup];
+    v122 = commandController;
+    v120 = stringCopy;
+    [commandController setCurrentGroupActionString:stringCopy];
+    v16 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:infosCopy];
+    v123 = infosCopy;
+    v17 = [v16 crl_arrayWithObjectsInSet:infosCopy];
 
     v141[0] = _NSConcreteStackBlock;
     v141[1] = 3221225472;
     v141[2] = sub_10039AD20;
     v141[3] = &unk_10185B2C8;
-    v119 = v15;
-    v141[4] = v15;
+    v119 = boardItemFactory;
+    v141[4] = boardItemFactory;
     v18 = [v17 crl_arrayByTransformingWithBlock:v141];
     v19 = +[NSMutableArray array];
     v129 = v19;
-    v130 = v9;
+    v130 = interactiveCanvasController;
     if ([v17 count])
     {
       v20 = 0;
@@ -1990,26 +1990,26 @@ LABEL_50:
         v22 = [v17 objectAtIndexedSubscript:v20];
         v23 = [v18 objectAtIndexedSubscript:v20];
         v24 = objc_opt_class();
-        v25 = [v22 containingGroup];
-        v26 = sub_100013F00(v24, v25);
+        containingGroup = [v22 containingGroup];
+        v26 = sub_100013F00(v24, containingGroup);
 
-        v27 = [v9 layoutForInfo:v26];
+        v27 = [interactiveCanvasController layoutForInfo:v26];
         if (([v19 containsObject:v26] & 1) == 0)
         {
           [v19 addObject:v26];
         }
 
-        v28 = [v22 geometry];
-        v29 = [v27 geometry];
-        v30 = [v27 computeInfoGeometryFromPureLayoutGeometry:v29];
-        v31 = [v28 geometryWithParentGeometry:v30];
+        geometry = [v22 geometry];
+        geometry2 = [v27 geometry];
+        v30 = [v27 computeInfoGeometryFromPureLayoutGeometry:geometry2];
+        v31 = [geometry geometryWithParentGeometry:v30];
 
         [v23 setGeometry:v31];
         v19 = v129;
 
         ++v20;
         v17 = v21;
-        v9 = v130;
+        interactiveCanvasController = v130;
         v18 = v127;
       }
 
@@ -2019,17 +2019,17 @@ LABEL_50:
     v118 = v17;
     if ([v19 count] == 1)
     {
-      v32 = [v19 firstObject];
+      firstObject = [v19 firstObject];
       v33 = objc_opt_class();
-      v34 = [v9 layoutForInfo:v32];
+      v34 = [interactiveCanvasController layoutForInfo:firstObject];
       v35 = sub_100014370(v33, v34);
 
       v36 = [CRLCanvasInfoGeometry alloc];
-      v37 = [v35 pureGeometry];
-      v38 = v37;
-      if (v37)
+      pureGeometry = [v35 pureGeometry];
+      v38 = pureGeometry;
+      if (pureGeometry)
       {
-        [v37 fullTransform];
+        [pureGeometry fullTransform];
       }
 
       else
@@ -2045,10 +2045,10 @@ LABEL_50:
       v39 = [_TtC8Freeform12CRLGroupItem groupGeometryFromChildrenInfos:v18];
     }
 
-    v40 = [v9 editingCoordinator];
-    v41 = [v40 boardItemFactory];
+    editingCoordinator3 = [interactiveCanvasController editingCoordinator];
+    boardItemFactory2 = [editingCoordinator3 boardItemFactory];
     v117 = v39;
-    v42 = [v41 makeFreehandDrawingItemWithGeometry:v39];
+    v42 = [boardItemFactory2 makeFreehandDrawingItemWithGeometry:v39];
 
     v138 = 0u;
     v139 = 0u;
@@ -2108,9 +2108,9 @@ LABEL_23:
           }
 
           v52 = *(*(&v132 + 1) + 8 * j);
-          v53 = [v52 geometry];
-          v54 = [v42 geometry];
-          v55 = [v53 geometryRelativeToGeometry:v54];
+          geometry3 = [v52 geometry];
+          geometry4 = [v42 geometry];
+          v55 = [geometry3 geometryRelativeToGeometry:geometry4];
 
           [v52 setGeometry:v55];
         }
@@ -2157,23 +2157,23 @@ LABEL_23:
     v61 = [NSSet setWithObject:v42];
     v62 = v61;
     v116 = v56;
-    if (v124)
+    if (selectionCopy)
     {
-      v63 = [(CRLBoardItemEditor *)v126 editorController];
-      v64 = [v63 selectionPath];
+      editorController = [(CRLBoardItemEditor *)selfCopy editorController];
+      selectionPath = [editorController selectionPath];
 
-      v65 = [v130 canvasEditor];
-      v66 = [(CRLFreehandDrawingEditor *)v126 freehandDrawingInfos];
-      v67 = [v65 selectionPathWithInfos:v66];
-      v68 = [(CRLBoardItemEditor *)v126 editorController];
-      [v68 setSelectionPath:v67];
+      canvasEditor2 = [v130 canvasEditor];
+      freehandDrawingInfos = [(CRLFreehandDrawingEditor *)selfCopy freehandDrawingInfos];
+      v67 = [canvasEditor2 selectionPathWithInfos:freehandDrawingInfos];
+      editorController2 = [(CRLBoardItemEditor *)selfCopy editorController];
+      [editorController2 setSelectionPath:v67];
 
       v69 = [CRLCanvasCommandSelectionBehavior alloc];
-      v70 = [v130 canvasEditor];
+      canvasEditor3 = [v130 canvasEditor];
       v71 = v62;
-      v72 = [(CRLCanvasCommandSelectionBehavior *)v69 initWithCanvasEditor:v70 type:3 constructedInfos:v62];
+      v72 = [(CRLCanvasCommandSelectionBehavior *)v69 initWithCanvasEditor:canvasEditor3 type:3 constructedInfos:v62];
 
-      v73 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:v64];
+      v73 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:selectionPath];
       [(CRLCommandSelectionBehavior *)v72 setPersistableReverseSelectionPath:v73];
     }
 
@@ -2184,23 +2184,23 @@ LABEL_23:
     }
 
     v74 = [v125 selectionPathWithInfos:0];
-    v75 = [v130 editorController];
+    editorController3 = [v130 editorController];
     v128 = v74;
-    [v75 setSelectionPath:v74];
+    [editorController3 setSelectionPath:v74];
 
-    v76 = [(CRLFreehandDrawingEditor *)v126 freehandDrawingInfos];
-    v77 = [v76 anyObject];
+    freehandDrawingInfos2 = [(CRLFreehandDrawingEditor *)selfCopy freehandDrawingInfos];
+    anyObject = [freehandDrawingInfos2 anyObject];
 
-    v78 = [v77 parentInfo];
+    parentInfo = [anyObject parentInfo];
     v79 = objc_opt_class();
-    v85 = sub_100303920(v78, v79, 1, v80, v81, v82, v83, v84, &OBJC_PROTOCOL___CRLContainerInfo);
+    v85 = sub_100303920(parentInfo, v79, 1, v80, v81, v82, v83, v84, &OBJC_PROTOCOL___CRLContainerInfo);
 
-    v86 = [v125 canvasEditorHelper];
+    canvasEditorHelper = [v125 canvasEditorHelper];
     v142 = v42;
     v87 = [NSArray arrayWithObjects:&v142 count:1];
     v114 = v85;
-    v115 = v77;
-    v88 = [v86 commandToInsertBoardItems:v87 intoContainer:v85 belowBoardItem:v77 withOffset:0];
+    v115 = anyObject;
+    v88 = [canvasEditorHelper commandToInsertBoardItems:v87 intoContainer:v85 belowBoardItem:anyObject withOffset:0];
 
     v113 = v88;
     if (v88)
@@ -2247,32 +2247,32 @@ LABEL_23:
 
     [v90 openGroup];
     v95 = [v125 selectionPathWithInfos:v91];
-    v96 = [v57 editorController];
-    [v96 setSelectionPath:v95];
+    editorController4 = [v57 editorController];
+    [editorController4 setSelectionPath:v95];
 
-    v97 = [v125 canvasEditorHelper];
-    [v97 delete:v126];
+    canvasEditorHelper2 = [v125 canvasEditorHelper];
+    [canvasEditorHelper2 delete:selfCopy];
 
     [v90 closeGroup];
-    v98 = [v57 editorController];
-    [v98 setSelectionPath:v128];
+    editorController5 = [v57 editorController];
+    [editorController5 setSelectionPath:v128];
 
-    if (!v124)
+    if (!selectionCopy)
     {
       v99 = [CRLCanvasCommandSelectionBehavior alloc];
-      v100 = [v57 canvasEditor];
-      v101 = [(CRLCanvasCommandSelectionBehavior *)v99 initWithCanvasEditor:v100 type:3 constructedInfos:v71];
+      canvasEditor4 = [v57 canvasEditor];
+      v101 = [(CRLCanvasCommandSelectionBehavior *)v99 initWithCanvasEditor:canvasEditor4 type:3 constructedInfos:v71];
 
       v72 = v101;
     }
 
-    v10 = v125;
+    canvasEditor = v125;
     v102 = [v125 selectionPathWithInfos:v71];
-    v103 = [v57 editorController];
-    [v103 setSelectionPath:v102];
+    editorController6 = [v57 editorController];
+    [editorController6 setSelectionPath:v102];
 
-    v104 = [v125 arrangeInspectorDelegate];
-    [v104 moveToFrontForArrangeInspector];
+    arrangeInspectorDelegate = [v125 arrangeInspectorDelegate];
+    [arrangeInspectorDelegate moveToFrontForArrangeInspector];
 
     if (!v72)
     {
@@ -2302,43 +2302,43 @@ LABEL_23:
       v107 = [v89[101] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingEditor.m"];
       [CRLAssertionHandler handleFailureInFunction:v106 file:v107 lineNumber:1094 isFatal:0 description:"invalid nil value for '%{public}s'", "selectionBehavior"];
 
-      v10 = v125;
+      canvasEditor = v125;
     }
 
-    v11 = v122;
+    commandController = v122;
     [v122 closeGroupWithSelectionBehavior:v72];
-    v108 = [(CRLBoardItemEditor *)v126 interactiveCanvasController];
-    v109 = [v108 freehandDrawingToolkit];
-    [v109 endDrawingModeIfNeeded];
+    interactiveCanvasController2 = [(CRLBoardItemEditor *)selfCopy interactiveCanvasController];
+    freehandDrawingToolkit = [interactiveCanvasController2 freehandDrawingToolkit];
+    [freehandDrawingToolkit endDrawingModeIfNeeded];
 
-    v110 = [v10 selectionPathWithInfos:v71];
-    v111 = [(CRLBoardItemEditor *)v126 interactiveCanvasController];
-    v112 = [v111 editorController];
-    [v112 setSelectionPath:v110];
+    v110 = [canvasEditor selectionPathWithInfos:v71];
+    interactiveCanvasController3 = [(CRLBoardItemEditor *)selfCopy interactiveCanvasController];
+    editorController7 = [interactiveCanvasController3 editorController];
+    [editorController7 setSelectionPath:v110];
 
-    v7 = v123;
-    v8 = v120;
-    v13 = v121;
-    v9 = v130;
-    v15 = v119;
+    infosCopy = v123;
+    stringCopy = v120;
+    mainBoard = v121;
+    interactiveCanvasController = v130;
+    boardItemFactory = v119;
   }
 }
 
-- (void)p_fixUpCurrentSelectionPathIfNeeded:(id)a3
+- (void)p_fixUpCurrentSelectionPathIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  if (([v5 isInDynamicOperation] & 1) == 0 && !-[CRLFreehandDrawingEditor p_currentlyInFreehandDrawingMode](self, "p_currentlyInFreehandDrawingMode"))
+  neededCopy = needed;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  if (([interactiveCanvasController isInDynamicOperation] & 1) == 0 && !-[CRLFreehandDrawingEditor p_currentlyInFreehandDrawingMode](self, "p_currentlyInFreehandDrawingMode"))
   {
-    v6 = [v4 mostSpecificSelectionOfClass:objc_opt_class()];
+    v6 = [neededCopy mostSpecificSelectionOfClass:objc_opt_class()];
     if ([v6 containsKindOfClass:objc_opt_class()])
     {
-      [v5 editorController];
+      [interactiveCanvasController editorController];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_10039AFFC;
       v9 = v8[3] = &unk_10183AE00;
-      v10 = v5;
+      v10 = interactiveCanvasController;
       v11 = v6;
       v7 = v9;
       [v7 performBlockAfterSettingSelection:v8];
@@ -2346,9 +2346,9 @@ LABEL_23:
   }
 }
 
-- (BOOL)p_shouldShowResizeMenuItemForSelectedItems:(id)a3
+- (BOOL)p_shouldShowResizeMenuItemForSelectedItems:(id)items
 {
-  v3 = [a3 crl_arrayByTransformingWithBlock:&stru_10185B3C8];
+  v3 = [items crl_arrayByTransformingWithBlock:&stru_10185B3C8];
   v4 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
@@ -2374,8 +2374,8 @@ LABEL_23:
         {
           v11 = objc_opt_class();
           v12 = sub_100014370(v11, v10);
-          v13 = [v12 allNestedChildrenItemsExcludingGroups];
-          [v4 addObjectsFromArray:v13];
+          allNestedChildrenItemsExcludingGroups = [v12 allNestedChildrenItemsExcludingGroups];
+          [v4 addObjectsFromArray:allNestedChildrenItemsExcludingGroups];
         }
 
         else
@@ -2405,15 +2405,15 @@ LABEL_23:
   return v16;
 }
 
-- (id)drawingRepresetativeItemsFromBoardItems:(id)a3
+- (id)drawingRepresetativeItemsFromBoardItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[NSMutableSet set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -2455,11 +2455,11 @@ LABEL_23:
 
 - (NSSet)boardItemsForDragAndDropTracing
 {
-  v2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v3 = [v2 editorController];
-  v4 = [v2 selectionModelTranslator];
-  v5 = [v3 selectionPath];
-  v6 = [v4 infosForSelectionPath:v5];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+  selectionPath = [editorController selectionPath];
+  v6 = [selectionModelTranslator infosForSelectionPath:selectionPath];
 
   v7 = [v6 copy];
 

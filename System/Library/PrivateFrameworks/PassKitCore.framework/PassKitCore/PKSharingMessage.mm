@@ -1,27 +1,27 @@
 @interface PKSharingMessage
-+ (id)_payloadForContent:(uint64_t)a3 format:;
-+ (id)embeddedMessageDictionaryForShareURL:(id)a3 targetDevice:(int64_t)a4;
-+ (id)specializedMessageFromPayload:(id)a3 displayInformation:(id)a4 outError:(id *)a5;
-- (PKSharingMessage)initWithCoder:(id)a3;
-- (PKSharingMessage)initWithContent:(id)a3 format:(unint64_t)a4 type:(unint64_t)a5 displayInformation:(id)a6;
-- (id)_initWithPayload:(id)a3 format:(unint64_t)a4 type:(unint64_t)a5 displayInformation:(id)a6;
++ (id)_payloadForContent:(uint64_t)content format:;
++ (id)embeddedMessageDictionaryForShareURL:(id)l targetDevice:(int64_t)device;
++ (id)specializedMessageFromPayload:(id)payload displayInformation:(id)information outError:(id *)error;
+- (PKSharingMessage)initWithCoder:(id)coder;
+- (PKSharingMessage)initWithContent:(id)content format:(unint64_t)format type:(unint64_t)type displayInformation:(id)information;
+- (id)_initWithPayload:(id)payload format:(unint64_t)format type:(unint64_t)type displayInformation:(id)information;
 - (id)description;
-- (id)embeddedAddressForDeviceType:(int64_t)a3;
+- (id)embeddedAddressForDeviceType:(int64_t)type;
 - (id)typeDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateMessageContentTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateMessageContentTo:(id)to;
 @end
 
 @implementation PKSharingMessage
 
-- (PKSharingMessage)initWithContent:(id)a3 format:(unint64_t)a4 type:(unint64_t)a5 displayInformation:(id)a6
+- (PKSharingMessage)initWithContent:(id)content format:(unint64_t)format type:(unint64_t)type displayInformation:(id)information
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [PKSharingMessage _payloadForContent:v10 format:a4];
-  v13 = [(PKSharingMessage *)self _initWithPayload:v12 format:a4 type:a5 displayInformation:v11];
+  contentCopy = content;
+  informationCopy = information;
+  v12 = [PKSharingMessage _payloadForContent:contentCopy format:format];
+  v13 = [(PKSharingMessage *)self _initWithPayload:v12 format:format type:type displayInformation:informationCopy];
 
-  if (v13 && ![(PKSharingMessage *)v13 configureWithContent:v10])
+  if (v13 && ![(PKSharingMessage *)v13 configureWithContent:contentCopy])
   {
 
     v13 = 0;
@@ -30,7 +30,7 @@
   return v13;
 }
 
-+ (id)_payloadForContent:(uint64_t)a3 format:
++ (id)_payloadForContent:(uint64_t)content format:
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -44,7 +44,7 @@
   }
 
   v17[0] = @"format";
-  v6 = PKSharingMessageFormatToString(a3);
+  v6 = PKSharingMessageFormatToString(content);
   v17[1] = @"content";
   v18[0] = v6;
   v18[1] = v4;
@@ -75,11 +75,11 @@
   return v11;
 }
 
-- (id)_initWithPayload:(id)a3 format:(unint64_t)a4 type:(unint64_t)a5 displayInformation:(id)a6
+- (id)_initWithPayload:(id)payload format:(unint64_t)format type:(unint64_t)type displayInformation:(id)information
 {
-  v11 = a3;
-  v12 = a6;
-  if (v11)
+  payloadCopy = payload;
+  informationCopy = information;
+  if (payloadCopy)
   {
     v20.receiver = self;
     v20.super_class = PKSharingMessage;
@@ -87,45 +87,45 @@
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_payload, a3);
-      v14->_type = a5;
-      v14->_format = a4;
-      objc_storeStrong(&v14->_displayInformation, a6);
+      objc_storeStrong(&v13->_payload, payload);
+      v14->_type = type;
+      v14->_format = format;
+      objc_storeStrong(&v14->_displayInformation, information);
       v15 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-      v16 = [v15 UUIDString];
+      uUIDString = [v15 UUIDString];
       identifier = v14->_identifier;
-      v14->_identifier = v16;
+      v14->_identifier = uUIDString;
     }
 
     self = v14;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-+ (id)specializedMessageFromPayload:(id)a3 displayInformation:(id)a4 outError:(id *)a5
++ (id)specializedMessageFromPayload:(id)payload displayInformation:(id)information outError:(id *)error
 {
-  v5 = a5;
+  errorCopy = error;
   v43 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (error)
   {
     v7 = MEMORY[0x1E696ACB0];
     v36 = 0;
-    v34 = a4;
-    v8 = a3;
-    v9 = [v7 JSONObjectWithData:v8 options:0 error:&v36];
+    informationCopy = information;
+    payloadCopy = payload;
+    v9 = [v7 JSONObjectWithData:payloadCopy options:0 error:&v36];
     v10 = v36;
     v11 = v10;
     if (v10)
     {
       v12 = v10;
-      *v5 = v11;
+      *errorCopy = v11;
     }
 
     v13 = [v9 PKDictionaryForKey:@"content"];
@@ -161,7 +161,7 @@
       v39 = *MEMORY[0x1E696A578];
       v40 = @"Message format not supported";
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-      *v5 = [v23 errorWithDomain:@"PKAddSecureElementPassErrorDomain" code:0 userInfo:v24];
+      *errorCopy = [v23 errorWithDomain:@"PKAddSecureElementPassErrorDomain" code:0 userInfo:v24];
 
       v13 = v33;
       v17 = v32;
@@ -174,10 +174,10 @@
       _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, "PKSharingMessage: creating message from: \n %@", buf, 0xCu);
     }
 
-    v25 = [v19 _initWithPayload:v8 format:v15 type:v18 displayInformation:v34];
+    v25 = [v19 _initWithPayload:payloadCopy format:v15 type:v18 displayInformation:informationCopy];
     if ([v25 configureWithContent:v13])
     {
-      v5 = v25;
+      errorCopy = v25;
     }
 
     else
@@ -190,14 +190,14 @@
       v29 = v28 = v17;
       v30 = v27;
       v11 = v26;
-      *v5 = [v30 errorWithDomain:@"PKAddSecureElementPassErrorDomain" code:0 userInfo:v29];
+      *errorCopy = [v30 errorWithDomain:@"PKAddSecureElementPassErrorDomain" code:0 userInfo:v29];
 
       v17 = v28;
-      v5 = 0;
+      errorCopy = 0;
     }
   }
 
-  return v5;
+  return errorCopy;
 }
 
 id __78__PKSharingMessage_specializedMessageFromPayload_displayInformation_outError___block_invoke(uint64_t a1)
@@ -319,14 +319,14 @@ LABEL_37:
   return v3;
 }
 
-- (void)updateMessageContentTo:(id)a3
+- (void)updateMessageContentTo:(id)to
 {
-  v5 = a3;
-  v4 = [PKSharingMessage _payloadForContent:v5 format:self->_format];
+  toCopy = to;
+  v4 = [PKSharingMessage _payloadForContent:toCopy format:self->_format];
   if (v4)
   {
     objc_storeStrong(&self->_payload, v4);
-    [(PKSharingMessage *)self configureWithContent:v5];
+    [(PKSharingMessage *)self configureWithContent:toCopy];
   }
 }
 
@@ -339,11 +339,11 @@ LABEL_37:
   return v5;
 }
 
-- (PKSharingMessage)initWithCoder:(id)a3
+- (PKSharingMessage)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
   v27 = 0;
   v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v5 options:0 error:&v27];
   v7 = v27;
@@ -369,34 +369,34 @@ LABEL_37:
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "PKSharingMessage: unable to decode json during NSCoding. %@", buf, 0xCu);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v26 = v6;
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"format"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"format"];
     v14 = PKSharingMessageFormatFromString(v13);
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v16 = PKSharingMessageTypeFromString(v15);
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayInformation"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayInformation"];
     v18 = [(PKSharingMessage *)self _initWithPayload:v5 format:v14 type:v16 displayInformation:v17];
 
     if (v18)
     {
       objc_storeStrong(v18 + 4, v5);
-      v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayInformation"];
+      v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayInformation"];
       v20 = v18[5];
       v18[5] = v19;
 
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       v22 = v18[1];
       v18[1] = v21;
 
-      v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+      v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
       v18[2] = PKSharingMessageTypeFromString(v23);
 
-      v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"format"];
+      v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"format"];
       v18[3] = PKSharingMessageFormatFromString(v24);
 
       if (([v18 configureWithContent:v9] & 1) == 0)
@@ -408,24 +408,24 @@ LABEL_37:
 
     v6 = v26;
     self = v18;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   payload = self->_payload;
-  v5 = a3;
-  [v5 encodeObject:payload forKey:@"payload"];
-  [v5 encodeObject:self->_displayInformation forKey:@"displayInformation"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:payload forKey:@"payload"];
+  [coderCopy encodeObject:self->_displayInformation forKey:@"displayInformation"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
   v6 = PKSharingMessageTypeToString(self->_type);
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 
   v7 = PKSharingMessageFormatToString(self->_format);
-  [v5 encodeObject:v7 forKey:@"format"];
+  [coderCopy encodeObject:v7 forKey:@"format"];
 }
 
 - (id)description
@@ -443,28 +443,28 @@ LABEL_37:
   return v5;
 }
 
-+ (id)embeddedMessageDictionaryForShareURL:(id)a3 targetDevice:(int64_t)a4
++ (id)embeddedMessageDictionaryForShareURL:(id)l targetDevice:(int64_t)device
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"address";
-  v5 = [a3 absoluteString];
-  v10[0] = v5;
+  absoluteString = [l absoluteString];
+  v10[0] = absoluteString;
   v9[1] = @"targetDeviceType";
-  v6 = PKPassCredentialShareTargetDeviceToString(a4);
+  v6 = PKPassCredentialShareTargetDeviceToString(device);
   v10[1] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   return v7;
 }
 
-- (id)embeddedAddressForDeviceType:(int64_t)a3
+- (id)embeddedAddressForDeviceType:(int64_t)type
 {
-  v4 = [(PKSharingMessage *)self embeddedMessageURLs];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 absoluteString];
+  embeddedMessageURLs = [(PKSharingMessage *)self embeddedMessageURLs];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [embeddedMessageURLs objectForKeyedSubscript:v5];
+  absoluteString = [v6 absoluteString];
 
-  return v7;
+  return absoluteString;
 }
 
 @end

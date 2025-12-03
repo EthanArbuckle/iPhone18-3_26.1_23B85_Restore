@@ -1,9 +1,9 @@
 @interface AMFIPathValidator_ios
-- (AMFIPathValidator_ios)initWithURL:(id)a3 withFileOffsetAsNumber:(id)a4 withFlags:(int)a5;
+- (AMFIPathValidator_ios)initWithURL:(id)l withFileOffsetAsNumber:(id)number withFlags:(int)flags;
 - (BOOL)areEntitlementsValidated;
-- (BOOL)computedCdHash:(unsigned __int8)a3[20];
+- (BOOL)computedCdHash:(unsigned __int8)hash[20];
 - (BOOL)isValid;
-- (BOOL)validateWithError:(id *)a3;
+- (BOOL)validateWithError:(id *)error;
 - (NSData)profileAuxSig;
 - (NSData)profileData;
 - (NSString)profileID;
@@ -12,20 +12,20 @@
 
 @implementation AMFIPathValidator_ios
 
-- (AMFIPathValidator_ios)initWithURL:(id)a3 withFileOffsetAsNumber:(id)a4 withFlags:(int)a5
+- (AMFIPathValidator_ios)initWithURL:(id)l withFileOffsetAsNumber:(id)number withFlags:(int)flags
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  numberCopy = number;
   v16.receiver = self;
   v16.super_class = AMFIPathValidator_ios;
   v11 = [(AMFIPathValidator_ios *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_url, a3);
-    objc_storeStrong(&v12->_offset, a4);
+    objc_storeStrong(&v11->_url, l);
+    objc_storeStrong(&v12->_offset, number);
     v12->_bootargs = 0;
-    v12->_flags = a5;
+    v12->_flags = flags;
     v12->_isValid = 0;
     v12->_validated = 0;
     v12->_signerType = 0;
@@ -42,7 +42,7 @@
   return v12;
 }
 
-- (BOOL)computedCdHash:(unsigned __int8)a3[20]
+- (BOOL)computedCdHash:(unsigned __int8)hash[20]
 {
   if (!self->_validated)
   {
@@ -52,13 +52,13 @@
   cdhash = self->_cdhash;
   if (cdhash)
   {
-    [(NSData *)cdhash getBytes:a3 length:20];
+    [(NSData *)cdhash getBytes:hash length:20];
   }
 
   return cdhash != 0;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
   self->_validated = 1;
@@ -96,14 +96,14 @@
   if (v9)
   {
     v15 = v13;
-    v16 = a3;
+    errorCopy = error;
     v17 = MISCopyErrorStringForErrorCode();
     v18 = +[AMFIFMKLog generic];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v31 = [*v33 path];
+      path = [*v33 path];
       cf[0] = 138412802;
-      *&cf[1] = v31;
+      *&cf[1] = path;
       v35 = 1024;
       *v36 = v9;
       *&v36[4] = 2112;
@@ -116,7 +116,7 @@
     self->_error = &v19->super;
 
     v14 = 0x278CBB000;
-    a3 = v16;
+    error = errorCopy;
     v13 = v15;
   }
 
@@ -125,9 +125,9 @@
     v9 = +[AMFIFMKLog generic];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v32 = [*v33 path];
+      path2 = [*v33 path];
       cf[0] = 138413058;
-      *&cf[1] = v32;
+      *&cf[1] = path2;
       v35 = 2112;
       *v36 = v5;
       *&v36[8] = 2112;
@@ -146,10 +146,10 @@
   if (self->_flags)
   {
     self->_isValid = 0;
-    v22 = [*(v14 + 1216) generic];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    generic = [*(v14 + 1216) generic];
+    if (os_log_type_enabled(generic, OS_LOG_TYPE_ERROR))
     {
-      [(AMFIPathValidator_ios *)v33 validateWithError:v22];
+      [(AMFIPathValidator_ios *)v33 validateWithError:generic];
     }
 
     v23 = [[AMFIError alloc] initWithAMFIErrorCode:-430 withURL:self->_url];
@@ -160,13 +160,13 @@
   isValid = self->_isValid;
   if (!isValid && v9 != -402620388 && (self->_bootargs & 6) != 0)
   {
-    v26 = [*(v14 + 1216) generic];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+    generic2 = [*(v14 + 1216) generic];
+    if (os_log_type_enabled(generic2, OS_LOG_TYPE_INFO))
     {
-      v27 = [*v33 path];
+      path3 = [*v33 path];
       cf[0] = 138412290;
-      *&cf[1] = v27;
-      _os_log_impl(&dword_240EEA000, v26, OS_LOG_TYPE_INFO, "boot-args allow process with invalid signature: %@", cf, 0xCu);
+      *&cf[1] = path3;
+      _os_log_impl(&dword_240EEA000, generic2, OS_LOG_TYPE_INFO, "boot-args allow process with invalid signature: %@", cf, 0xCu);
     }
 
     self->_isValid = 1;
@@ -176,9 +176,9 @@
     isValid = self->_isValid;
   }
 
-  if (a3 && !isValid)
+  if (error && !isValid)
   {
-    *a3 = self->_error;
+    *error = self->_error;
     isValid = self->_isValid;
   }
 

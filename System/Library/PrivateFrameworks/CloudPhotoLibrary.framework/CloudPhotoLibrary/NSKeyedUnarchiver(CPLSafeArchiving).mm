@@ -20,8 +20,8 @@
       v9 = __CPLArchiverOSLogDomain();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 allObjects];
-        v11 = [v10 componentsJoinedByString:{@", "}];
+        allObjects = [v6 allObjects];
+        v11 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 138543618;
         v19 = v11;
         v20 = 2112;
@@ -38,8 +38,8 @@
       v12 = __CPLArchiverOSLogDomain();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v6 allObjects];
-        v14 = [v13 componentsJoinedByString:{@", "}];
+        allObjects2 = [v6 allObjects];
+        v14 = [allObjects2 componentsJoinedByString:{@", "}];
         *buf = 138543362;
         v19 = v14;
         _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_ERROR, "Trying to deserialize (%{public}@) with a nil data", buf, 0xCu);

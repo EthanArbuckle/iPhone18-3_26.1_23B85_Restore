@@ -1,34 +1,34 @@
 @interface PABSPearlAttentionGroupController
 - (BOOL)isPeriocularEnabled;
 - (BOOL)useAlternateFooterTextForAttention;
-- (PABSPearlAttentionGroupController)initWithListController:(id)a3 groupSpecifier:(id)a4;
+- (PABSPearlAttentionGroupController)initWithListController:(id)controller groupSpecifier:(id)specifier;
 - (PSListController)listController;
 - (PSSpecifier)groupSpecifier;
 - (id)_pearlDevice;
-- (id)attentionAware:(id)a3;
-- (id)pearlUnlock:(id)a3;
+- (id)attentionAware:(id)aware;
+- (id)pearlUnlock:(id)unlock;
 - (id)specifiers;
 - (void)_pearlDevice;
 - (void)didCancelEnteringPIN;
-- (void)setAttentionAware:(id)a3 specifier:(id)a4;
-- (void)setPearlUnlock:(id)a3 specifier:(id)a4;
-- (void)setProtectedCredentialsWithPasscode:(id)a3;
+- (void)setAttentionAware:(id)aware specifier:(id)specifier;
+- (void)setPearlUnlock:(id)unlock specifier:(id)specifier;
+- (void)setProtectedCredentialsWithPasscode:(id)passcode;
 @end
 
 @implementation PABSPearlAttentionGroupController
 
-- (PABSPearlAttentionGroupController)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PABSPearlAttentionGroupController)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = PABSPearlAttentionGroupController;
   v8 = [(PABSPearlAttentionGroupController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listController, v6);
-    objc_storeWeak(&v9->_groupSpecifier, v7);
+    objc_storeWeak(&v8->_listController, controllerCopy);
+    objc_storeWeak(&v9->_groupSpecifier, specifierCopy);
   }
 
   return v9;
@@ -71,11 +71,11 @@
   [v12 setProperty:v17 forKey:*MEMORY[0x277D3FF38]];
 
   [v3 addObject:v12];
-  v19 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v20 = PABS_LocalizedStringForPasscodeLock(@"PEARL_ATTENTION_FEATURES_FOOTER");
-  [v19 setProperty:v20 forKey:v9];
+  [emptyGroupSpecifier setProperty:v20 forKey:v9];
 
-  [v3 addObject:v19];
+  [v3 addObject:emptyGroupSpecifier];
   v21 = MEMORY[0x277D3FAD8];
   v22 = PABS_LocalizedStringForPasscodeLock(@"PEARL_ATTENTION_TITLE");
   v23 = [v21 preferenceSpecifierNamed:v22 target:self set:sel_setAttentionAware_specifier_ get:sel_attentionAware_ detail:0 cell:6 edit:0];
@@ -274,8 +274,8 @@ void __47__PABSPearlAttentionGroupController_specifiers__block_invoke_36(uint64_
             }
           }
 
-          v15 = [v12 descriptor];
-          if ([v15 type] == 2)
+          descriptor = [v12 descriptor];
+          if ([descriptor type] == 2)
           {
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
@@ -331,29 +331,29 @@ LABEL_24:
   return v5;
 }
 
-- (void)setProtectedCredentialsWithPasscode:(id)a3
+- (void)setProtectedCredentialsWithPasscode:(id)passcode
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BKUserProtectedConfiguration *)self->_updatedConfiguration attentionDetectionEnabled];
-    v7 = v6;
+    attentionDetectionEnabled = [(BKUserProtectedConfiguration *)self->_updatedConfiguration attentionDetectionEnabled];
+    v7 = attentionDetectionEnabled;
     v8 = @"Has";
-    if (!v4)
+    if (!passcodeCopy)
     {
       v8 = @"No";
     }
 
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = attentionDetectionEnabled;
     *&buf[12] = 2112;
     *&buf[14] = v8;
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "Updating Require Attention Needed to %@ [%@ passcode]", buf, 0x16u);
   }
 
-  v9 = v4;
+  v9 = passcodeCopy;
   if (v9)
   {
     *buf = 0;
@@ -395,10 +395,10 @@ LABEL_24:
     v11 = 0;
   }
 
-  v12 = [(PABSPearlAttentionGroupController *)self _pearlDevice];
+  _pearlDevice = [(PABSPearlAttentionGroupController *)self _pearlDevice];
   updatedConfiguration = self->_updatedConfiguration;
   v22[0] = 0;
-  [v12 setProtectedConfiguration:updatedConfiguration forUser:getuid() credentialSet:v11 error:v22];
+  [_pearlDevice setProtectedConfiguration:updatedConfiguration forUser:getuid() credentialSet:v11 error:v22];
   v14 = v22[0];
 
   v15 = PABSLogForCategory(0);
@@ -447,48 +447,48 @@ LABEL_24:
   [v4 reloadSpecifier:v5];
 }
 
-- (void)setAttentionAware:(id)a3 specifier:(id)a4
+- (void)setAttentionAware:(id)aware specifier:(id)specifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPearlAttentionGroupController *)self attentionAware:v7];
+  awareCopy = aware;
+  specifierCopy = specifier;
+  v8 = [(PABSPearlAttentionGroupController *)self attentionAware:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     v15 = 138412802;
-    v16 = v10;
+    v16 = identifier;
     v17 = 2112;
-    v18 = v6;
+    v18 = awareCopy;
     v19 = 2112;
     v20 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", &v15, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [awareCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
     v12 = PABSLogForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       v15 = 138412290;
-      v16 = v13;
+      v16 = identifier2;
       _os_log_impl(&dword_25E0E9000, v12, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v15, 0xCu);
     }
   }
 
   else
   {
-    [v6 BOOLValue];
+    [awareCopy BOOLValue];
     _AXSSetAttentionAwarenessFeaturesEnabled();
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)attentionAware:(id)a3
+- (id)attentionAware:(id)aware
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = _AXSAttentionAwarenessFeaturesEnabled();
@@ -496,34 +496,34 @@ LABEL_24:
   return [v3 numberWithUnsignedChar:v4];
 }
 
-- (void)setPearlUnlock:(id)a3 specifier:(id)a4
+- (void)setPearlUnlock:(id)unlock specifier:(id)specifier
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPearlAttentionGroupController *)self pearlUnlock:v7];
+  unlockCopy = unlock;
+  specifierCopy = specifier;
+  v8 = [(PABSPearlAttentionGroupController *)self pearlUnlock:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     *buf = 138412802;
-    v40 = v10;
+    v40 = identifier;
     v41 = 2112;
-    v42 = v6;
+    v42 = unlockCopy;
     v43 = 2112;
     v44 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", buf, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 != [v8 BOOLValue])
+  bOOLValue = [unlockCopy BOOLValue];
+  if (bOOLValue != [v8 BOOLValue])
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__PABSPearlAttentionGroupController_setPearlUnlock_specifier___block_invoke;
     aBlock[3] = &unk_279A030D0;
     aBlock[4] = self;
-    v12 = v6;
+    v12 = unlockCopy;
     v38 = v12;
     v13 = _Block_copy(aBlock);
     if ([v12 BOOLValue])
@@ -539,9 +539,9 @@ LABEL_16:
       v16 = +[PABSBiometrics sharedInstance];
       if ([v16 isPeriocularEnrollmentSupported])
       {
-        v17 = [(PABSPearlAttentionGroupController *)self isPeriocularEnabled];
+        isPeriocularEnabled = [(PABSPearlAttentionGroupController *)self isPeriocularEnabled];
 
-        if (v17)
+        if (isPeriocularEnabled)
         {
           v18 = @"PEARL_PERIOCULAR_UNLOCK_ALERT_BODY";
 LABEL_15:
@@ -571,10 +571,10 @@ LABEL_15:
 
           [v21 addAction:v26];
           WeakRetained = objc_loadWeakRetained(&self->_listController);
-          v28 = [WeakRetained view];
-          v29 = [v28 window];
-          v30 = [v29 rootViewController];
-          [v30 presentViewController:v21 animated:1 completion:0];
+          view = [WeakRetained view];
+          window = [view window];
+          rootViewController = [window rootViewController];
+          [rootViewController presentViewController:v21 animated:1 completion:0];
 
           goto LABEL_16;
         }
@@ -592,9 +592,9 @@ LABEL_15:
   v14 = PABSLogForCategory(0);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v7 identifier];
+    identifier2 = [specifierCopy identifier];
     *buf = 138412290;
-    v40 = v15;
+    v40 = identifier2;
     _os_log_impl(&dword_25E0E9000, v14, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", buf, 0xCu);
   }
 
@@ -632,12 +632,12 @@ void __62__PABSPearlAttentionGroupController_setPearlUnlock_specifier___block_in
   [WeakRetained reloadSpecifier:v5];
 }
 
-- (id)pearlUnlock:(id)a3
+- (id)pearlUnlock:(id)unlock
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(PABSPearlAttentionGroupController *)self _pearlDevice];
+  _pearlDevice = [(PABSPearlAttentionGroupController *)self _pearlDevice];
   v12 = 0;
-  v4 = [v3 protectedConfigurationForUser:getuid() error:&v12];
+  v4 = [_pearlDevice protectedConfigurationForUser:getuid() error:&v12];
   v5 = v12;
 
   if (v5)
@@ -652,19 +652,19 @@ void __62__PABSPearlAttentionGroupController_setPearlUnlock_specifier___block_in
   v7 = PABSLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 attentionDetectionEnabled];
+    attentionDetectionEnabled = [v4 attentionDetectionEnabled];
     *buf = 138412546;
     v14 = v4;
     v15 = 2112;
-    v16 = v8;
+    v16 = attentionDetectionEnabled;
     _os_log_impl(&dword_25E0E9000, v7, OS_LOG_TYPE_DEFAULT, "Could attention detect: %@ %@", buf, 0x16u);
   }
 
-  v9 = [v4 attentionDetectionEnabled];
+  attentionDetectionEnabled2 = [v4 attentionDetectionEnabled];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return attentionDetectionEnabled2;
 }
 
 - (BOOL)useAlternateFooterTextForAttention
@@ -673,9 +673,9 @@ void __62__PABSPearlAttentionGroupController_setPearlUnlock_specifier___block_in
   if (v2)
   {
     v3 = +[PABSBiometrics sharedInstance];
-    v4 = [v3 isPeriocularEnrollmentSupported];
+    isPeriocularEnrollmentSupported = [v3 isPeriocularEnrollmentSupported];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = isPeriocularEnrollmentSupported;
   }
 
   return v2;
@@ -701,16 +701,16 @@ void __62__PABSPearlAttentionGroupController_setPearlUnlock_specifier___block_in
 
   if (v6)
   {
-    v8 = [v4 periocularFaceIDMatchEnabled];
-    v7 = [v8 BOOLValue];
+    periocularFaceIDMatchEnabled = [v4 periocularFaceIDMatchEnabled];
+    bOOLValue = [periocularFaceIDMatchEnabled BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (PSListController)listController

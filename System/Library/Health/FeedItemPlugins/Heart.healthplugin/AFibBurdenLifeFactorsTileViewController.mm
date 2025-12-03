@@ -1,14 +1,14 @@
 @interface AFibBurdenLifeFactorsTileViewController
 - (NSString)title;
-- (_TtC5Heart39AFibBurdenLifeFactorsTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Heart39AFibBurdenLifeFactorsTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
 @implementation AFibBurdenLifeFactorsTileViewController
 
-- (_TtC5Heart39AFibBurdenLifeFactorsTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Heart39AFibBurdenLifeFactorsTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_29D939D68();
     v7 = v6;
@@ -20,20 +20,20 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29D8D6338(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29D8D6338(v5, v7, bundle);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D8D6508();
 }
 
 - (NSString)title
 {
   v2 = qword_2A17B0D48;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();

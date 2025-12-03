@@ -1,7 +1,7 @@
 @interface AXDeviceRemoteScreenUIServiceObjc
 + (id)sharedInstance;
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3;
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier;
 @end
 
 @implementation AXDeviceRemoteScreenUIServiceObjc
@@ -18,31 +18,31 @@
   return v3;
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(AXDeviceRemoteScreenUIServiceObjc *)self service];
-  v13 = [v12 processMessage:v11 withIdentifier:a4 fromClientWithIdentifier:v10 error:a6];
+  withIdentifierCopy = withIdentifier;
+  messageCopy = message;
+  service = [(AXDeviceRemoteScreenUIServiceObjc *)self service];
+  v13 = [service processMessage:messageCopy withIdentifier:identifier fromClientWithIdentifier:withIdentifierCopy error:error];
 
   return v13;
 }
 
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = AXLogTwiceRemoteScreen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[AXDeviceRemoteScreenUIServiceObjc connectionWillBeInterruptedForClientWithIdentifier:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[TWICE]: %s, %@", &v7, 0x16u);
   }
 
-  v6 = [(AXDeviceRemoteScreenUIServiceObjc *)self service];
-  [v6 clientConnectionWasInterrupted];
+  service = [(AXDeviceRemoteScreenUIServiceObjc *)self service];
+  [service clientConnectionWasInterrupted];
 }
 
 @end

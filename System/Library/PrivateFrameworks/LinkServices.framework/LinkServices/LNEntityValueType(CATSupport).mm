@@ -7,17 +7,17 @@
 - (__CFString)cat_value:()CATSupport
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [a3 value];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  value = [a3 value];
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v3;
-    v5 = [v3 properties];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v18 = value;
+    properties = [value properties];
+    v6 = [properties countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
@@ -28,19 +28,19 @@
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(properties);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
-          v11 = [v10 value];
-          v12 = [v11 valueType];
-          v13 = [v10 value];
-          v14 = [v12 cat_value:v13];
-          v15 = [v10 identifier];
-          [(__CFString *)v4 setObject:v14 forKeyedSubscript:v15];
+          value2 = [v10 value];
+          valueType = [value2 valueType];
+          value3 = [v10 value];
+          v14 = [valueType cat_value:value3];
+          identifier = [v10 identifier];
+          [(__CFString *)dictionary setObject:v14 forKeyedSubscript:identifier];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [properties countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v7);
@@ -50,12 +50,12 @@
   else
   {
 
-    v4 = &stru_1F0BBC770;
+    dictionary = &stru_1F0BBC770;
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return dictionary;
 }
 
 @end

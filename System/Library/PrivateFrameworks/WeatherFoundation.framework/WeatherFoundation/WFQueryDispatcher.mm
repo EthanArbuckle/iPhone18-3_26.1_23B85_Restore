@@ -1,13 +1,13 @@
 @interface WFQueryDispatcher
 - (WFQueryDispatcher)init;
-- (void)cancelTaskWithIdentifier:(id)a3;
-- (void)dispatchQuery:(id)a3;
-- (void)fetchFavoriteLocationsWithTaskIdentifier:(id)a3 results:(id)a4;
-- (void)invalidateCacheWithIdentifier:(id)a3;
-- (void)locationForCoordinate:(CLLocationCoordinate2D)a3 taskIdentifier:(id)a4 results:(id)a5;
-- (void)locationForSearchCompletion:(id)a3 taskIdentifier:(id)a4 results:(id)a5;
-- (void)locationForString:(id)a3 taskIdentifier:(id)a4 results:(id)a5;
-- (void)removePendingQueryWithIdentifier:(id)a3;
+- (void)cancelTaskWithIdentifier:(id)identifier;
+- (void)dispatchQuery:(id)query;
+- (void)fetchFavoriteLocationsWithTaskIdentifier:(id)identifier results:(id)results;
+- (void)invalidateCacheWithIdentifier:(id)identifier;
+- (void)locationForCoordinate:(CLLocationCoordinate2D)coordinate taskIdentifier:(id)identifier results:(id)results;
+- (void)locationForSearchCompletion:(id)completion taskIdentifier:(id)identifier results:(id)results;
+- (void)locationForString:(id)string taskIdentifier:(id)identifier results:(id)results;
+- (void)removePendingQueryWithIdentifier:(id)identifier;
 @end
 
 @implementation WFQueryDispatcher
@@ -31,21 +31,21 @@
   return v2;
 }
 
-- (void)dispatchQuery:(id)a3
+- (void)dispatchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  queryCopy = query;
+  identifier = [queryCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [(WFQueryDispatcher *)self queue];
+    queue = [(WFQueryDispatcher *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __35__WFQueryDispatcher_dispatchQuery___block_invoke;
     v8[3] = &unk_279E6EA40;
-    v9 = v4;
-    v10 = self;
-    dispatch_async(v6, v8);
+    v9 = queryCopy;
+    selfCopy = self;
+    dispatch_async(queue, v8);
 
     v7 = v9;
   }
@@ -76,19 +76,19 @@ uint64_t __35__WFQueryDispatcher_dispatchQuery___block_invoke(uint64_t a1)
   return [*(a1 + 32) start];
 }
 
-- (void)removePendingQueryWithIdentifier:(id)a3
+- (void)removePendingQueryWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(WFQueryDispatcher *)self queue];
+    queue = [(WFQueryDispatcher *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__WFQueryDispatcher_removePendingQueryWithIdentifier___block_invoke;
     v7[3] = &unk_279E6EA40;
-    v8 = v4;
-    v9 = self;
-    dispatch_async(v5, v7);
+    v8 = identifierCopy;
+    selfCopy = self;
+    dispatch_async(queue, v7);
 
     v6 = v8;
   }
@@ -115,24 +115,24 @@ void __54__WFQueryDispatcher_removePendingQueryWithIdentifier___block_invoke(uin
   [v3 removeObjectForKey:*(a1 + 32)];
 }
 
-- (void)locationForCoordinate:(CLLocationCoordinate2D)a3 taskIdentifier:(id)a4 results:(id)a5
+- (void)locationForCoordinate:(CLLocationCoordinate2D)coordinate taskIdentifier:(id)identifier results:(id)results
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a4;
-  v10 = a5;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  identifierCopy = identifier;
+  resultsCopy = results;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__WFQueryDispatcher_locationForCoordinate_taskIdentifier_results___block_invoke;
   v14[3] = &unk_279E6F5A0;
-  v15 = v9;
-  v16 = v10;
+  v15 = identifierCopy;
+  v16 = resultsCopy;
   v14[4] = self;
-  v11 = v9;
-  v12 = v10;
-  v13 = [WFLocationQueryGeocode queryWithCoordinate:v14 resultHandler:latitude, longitude];
-  [v13 setIdentifier:v11];
-  [(WFQueryDispatcher *)self dispatchQuery:v13];
+  v11 = identifierCopy;
+  v12 = resultsCopy;
+  longitude = [WFLocationQueryGeocode queryWithCoordinate:v14 resultHandler:latitude, longitude];
+  [longitude setIdentifier:v11];
+  [(WFQueryDispatcher *)self dispatchQuery:longitude];
 }
 
 uint64_t __66__WFQueryDispatcher_locationForCoordinate_taskIdentifier_results___block_invoke(void *a1)
@@ -149,20 +149,20 @@ uint64_t __66__WFQueryDispatcher_locationForCoordinate_taskIdentifier_results___
   return [v3 removePendingQueryWithIdentifier:v4];
 }
 
-- (void)locationForString:(id)a3 taskIdentifier:(id)a4 results:(id)a5
+- (void)locationForString:(id)string taskIdentifier:(id)identifier results:(id)results
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  resultsCopy = results;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__WFQueryDispatcher_locationForString_taskIdentifier_results___block_invoke;
   v13[3] = &unk_279E6F5A0;
-  v14 = v8;
-  v15 = v9;
+  v14 = identifierCopy;
+  v15 = resultsCopy;
   v13[4] = self;
-  v10 = v8;
-  v11 = v9;
-  v12 = [WFLocationQueryGeocode queryWithSearchString:a3 resultHandler:v13];
+  v10 = identifierCopy;
+  v11 = resultsCopy;
+  v12 = [WFLocationQueryGeocode queryWithSearchString:string resultHandler:v13];
   [v12 setIdentifier:v10];
   [(WFQueryDispatcher *)self dispatchQuery:v12];
 }
@@ -181,20 +181,20 @@ uint64_t __62__WFQueryDispatcher_locationForString_taskIdentifier_results___bloc
   return [v3 removePendingQueryWithIdentifier:v4];
 }
 
-- (void)locationForSearchCompletion:(id)a3 taskIdentifier:(id)a4 results:(id)a5
+- (void)locationForSearchCompletion:(id)completion taskIdentifier:(id)identifier results:(id)results
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  resultsCopy = results;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__WFQueryDispatcher_locationForSearchCompletion_taskIdentifier_results___block_invoke;
   v13[3] = &unk_279E6F5A0;
-  v14 = v8;
-  v15 = v9;
+  v14 = identifierCopy;
+  v15 = resultsCopy;
   v13[4] = self;
-  v10 = v8;
-  v11 = v9;
-  v12 = [WFLocationQueryGeocode queryWithSearchCompletion:a3 resultHandler:v13];
+  v10 = identifierCopy;
+  v11 = resultsCopy;
+  v12 = [WFLocationQueryGeocode queryWithSearchCompletion:completion resultHandler:v13];
   [v12 setIdentifier:v10];
   [(WFQueryDispatcher *)self dispatchQuery:v12];
 }
@@ -213,18 +213,18 @@ uint64_t __72__WFQueryDispatcher_locationForSearchCompletion_taskIdentifier_resu
   return [v3 removePendingQueryWithIdentifier:v4];
 }
 
-- (void)cancelTaskWithIdentifier:(id)a3
+- (void)cancelTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFQueryDispatcher *)self queue];
+  identifierCopy = identifier;
+  queue = [(WFQueryDispatcher *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__WFQueryDispatcher_cancelTaskWithIdentifier___block_invoke;
   v7[3] = &unk_279E6EA40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __46__WFQueryDispatcher_cancelTaskWithIdentifier___block_invoke(uint64_t a1)
@@ -235,26 +235,26 @@ void __46__WFQueryDispatcher_cancelTaskWithIdentifier___block_invoke(uint64_t a1
   [v3 cancel];
 }
 
-- (void)invalidateCacheWithIdentifier:(id)a3
+- (void)invalidateCacheWithIdentifier:(id)identifier
 {
-  v3 = [(WFQueryDispatcher *)self queue];
-  dispatch_sync(v3, &__block_literal_global_20);
+  queue = [(WFQueryDispatcher *)self queue];
+  dispatch_sync(queue, &__block_literal_global_20);
 }
 
-- (void)fetchFavoriteLocationsWithTaskIdentifier:(id)a3 results:(id)a4
+- (void)fetchFavoriteLocationsWithTaskIdentifier:(id)identifier results:(id)results
 {
-  v10 = a4;
-  v5 = a3;
+  resultsCopy = results;
+  identifierCopy = identifier;
   v6 = [WFFavoriteLocationResponse alloc];
-  v7 = [v5 UUID];
+  uUID = [identifierCopy UUID];
 
-  v8 = [(WFFavoriteLocationResponse *)v6 initWithIdentifier:v7 favorites:0];
+  v8 = [(WFFavoriteLocationResponse *)v6 initWithIdentifier:uUID favorites:0];
   v9 = [MEMORY[0x277CCA9B8] wf_errorWithCode:15];
   [(WFResponse *)v8 setError:v9];
 
-  if (v10)
+  if (resultsCopy)
   {
-    v10[2](v10, v8);
+    resultsCopy[2](resultsCopy, v8);
   }
 }
 

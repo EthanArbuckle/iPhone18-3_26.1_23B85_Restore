@@ -1,7 +1,7 @@
 @interface OBDevice
 + (id)currentDevice;
 - (BOOL)isMiniPad;
-- (unint64_t)templateTypeForBoundsWidth:(double)a3;
+- (unint64_t)templateTypeForBoundsWidth:(double)width;
 @end
 
 @implementation OBDevice
@@ -106,19 +106,19 @@ LABEL_20:
   return [v14 setHasHomeButton:v13];
 }
 
-- (unint64_t)templateTypeForBoundsWidth:(double)a3
+- (unint64_t)templateTypeForBoundsWidth:(double)width
 {
-  if (a3 <= 320.0)
+  if (width <= 320.0)
   {
     return 7;
   }
 
-  if (a3 >= 744.0)
+  if (width >= 744.0)
   {
     return 6;
   }
 
-  if (a3 >= 414.0)
+  if (width >= 414.0)
   {
     return 9;
   }

@@ -1,5 +1,5 @@
 @interface MUFooterActionsSectionController
-- (MUFooterActionsSectionController)initWithActionManager:(id)a3;
+- (MUFooterActionsSectionController)initWithActionManager:(id)manager;
 - (MUInfoCardAnalyticsDelegate)analyticsDelegate;
 - (NSArray)sectionViews;
 - (id)infoCardChildPossibleActions;
@@ -28,7 +28,7 @@
 - (id)infoCardChildPossibleActions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -48,13 +48,13 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) resolvedActionItem];
-        v10 = [v9 type];
+        resolvedActionItem = [*(*(&v15 + 1) + 8 * i) resolvedActionItem];
+        type = [resolvedActionItem type];
 
-        v11 = v10 - 1;
-        if (v10 - 1) <= 0x11 && ((0x201F9u >> v11))
+        v11 = type - 1;
+        if (type - 1) <= 0x11 && ((0x201F9u >> v11))
         {
-          [v3 addObject:qword_1E821A580[v11]];
+          [array addObject:qword_1E821A580[v11]];
         }
       }
 
@@ -64,7 +64,7 @@
     while (v6);
   }
 
-  v12 = [v3 copy];
+  v12 = [array copy];
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
@@ -74,9 +74,9 @@
 {
   v23 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_actionManager);
-  v4 = [WeakRetained createFooterActions];
+  createFooterActions = [WeakRetained createFooterActions];
   footerActions = self->_footerActions;
-  self->_footerActions = v4;
+  self->_footerActions = createFooterActions;
 
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_footerActions, "count")}];
   v18 = 0u;
@@ -179,9 +179,9 @@ void __46__MUFooterActionsSectionController_reloadData__block_invoke(uint64_t a1
   [(MUFooterActionsSectionController *)self reloadData];
 }
 
-- (MUFooterActionsSectionController)initWithActionManager:(id)a3
+- (MUFooterActionsSectionController)initWithActionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = MUFooterActionsSectionController;
   v5 = [(MUFooterActionsSectionController *)&v10 init];
@@ -194,7 +194,7 @@ void __46__MUFooterActionsSectionController_reloadData__block_invoke(uint64_t a1
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceFooterActionsSectionControllerInit", "", v9, 2u);
     }
 
-    objc_storeWeak(&v5->_actionManager, v4);
+    objc_storeWeak(&v5->_actionManager, managerCopy);
     [(MUFooterActionsSectionController *)v5 _setupFooterView];
     v7 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v7))

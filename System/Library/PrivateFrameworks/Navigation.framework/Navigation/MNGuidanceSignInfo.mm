@@ -1,9 +1,9 @@
 @interface MNGuidanceSignInfo
-- (MNGuidanceSignInfo)initWithCoder:(id)a3;
-- (MNGuidanceSignInfo)initWithPrimarySign:(id)a3 secondarySign:(id)a4 stepIndex:(unint64_t)a5 primaryDistance:(double)a6 secondaryDistance:(double)a7 timeUntilPrimarySign:(double)a8 timeUntilSecondarySign:(double)a9;
+- (MNGuidanceSignInfo)initWithCoder:(id)coder;
+- (MNGuidanceSignInfo)initWithPrimarySign:(id)sign secondarySign:(id)secondarySign stepIndex:(unint64_t)index primaryDistance:(double)distance secondaryDistance:(double)secondaryDistance timeUntilPrimarySign:(double)primarySign timeUntilSecondarySign:(double)untilSecondarySign;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNGuidanceSignInfo
@@ -34,43 +34,43 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   primarySign = self->_primarySign;
-  v5 = a3;
-  [v5 encodeObject:primarySign forKey:@"_primarySign"];
-  [v5 encodeObject:self->_secondarySign forKey:@"_secondarySign"];
-  [v5 encodeInteger:self->_stepIndex forKey:@"_stepIndex"];
-  [v5 encodeDouble:@"_primaryDistance_SIRI_USE_ONLY" forKey:self->_primaryDistance_SIRI_USE_ONLY];
-  [v5 encodeDouble:@"_secondaryDistance_SIRI_USE_ONLY" forKey:self->_secondaryDistance_SIRI_USE_ONLY];
-  [v5 encodeDouble:@"_timeUntilPrimarySign_SIRI_USE_ONLY" forKey:self->_timeUntilPrimarySign_SIRI_USE_ONLY];
-  [v5 encodeDouble:@"_timeUntilSecondarySign_SIRI_USE_ONLY" forKey:self->_timeUntilSecondarySign_SIRI_USE_ONLY];
+  coderCopy = coder;
+  [coderCopy encodeObject:primarySign forKey:@"_primarySign"];
+  [coderCopy encodeObject:self->_secondarySign forKey:@"_secondarySign"];
+  [coderCopy encodeInteger:self->_stepIndex forKey:@"_stepIndex"];
+  [coderCopy encodeDouble:@"_primaryDistance_SIRI_USE_ONLY" forKey:self->_primaryDistance_SIRI_USE_ONLY];
+  [coderCopy encodeDouble:@"_secondaryDistance_SIRI_USE_ONLY" forKey:self->_secondaryDistance_SIRI_USE_ONLY];
+  [coderCopy encodeDouble:@"_timeUntilPrimarySign_SIRI_USE_ONLY" forKey:self->_timeUntilPrimarySign_SIRI_USE_ONLY];
+  [coderCopy encodeDouble:@"_timeUntilSecondarySign_SIRI_USE_ONLY" forKey:self->_timeUntilSecondarySign_SIRI_USE_ONLY];
 }
 
-- (MNGuidanceSignInfo)initWithCoder:(id)a3
+- (MNGuidanceSignInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MNGuidanceSignInfo;
   v5 = [(MNGuidanceSignInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_primarySign"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_primarySign"];
     primarySign = v5->_primarySign;
     v5->_primarySign = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_secondarySign"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_secondarySign"];
     secondarySign = v5->_secondarySign;
     v5->_secondarySign = v8;
 
-    v5->_stepIndex = [v4 decodeIntegerForKey:@"_stepIndex"];
-    [v4 decodeDoubleForKey:@"_primaryDistance_SIRI_USE_ONLY"];
+    v5->_stepIndex = [coderCopy decodeIntegerForKey:@"_stepIndex"];
+    [coderCopy decodeDoubleForKey:@"_primaryDistance_SIRI_USE_ONLY"];
     v5->_primaryDistance_SIRI_USE_ONLY = v10;
-    [v4 decodeDoubleForKey:@"_secondaryDistance_SIRI_USE_ONLY"];
+    [coderCopy decodeDoubleForKey:@"_secondaryDistance_SIRI_USE_ONLY"];
     v5->_secondaryDistance_SIRI_USE_ONLY = v11;
-    [v4 decodeDoubleForKey:@"_timeUntilPrimarySign_SIRI_USE_ONLY"];
+    [coderCopy decodeDoubleForKey:@"_timeUntilPrimarySign_SIRI_USE_ONLY"];
     v5->_timeUntilPrimarySign_SIRI_USE_ONLY = v12;
-    [v4 decodeDoubleForKey:@"_timeUntilSecondarySign_SIRI_USE_ONLY"];
+    [coderCopy decodeDoubleForKey:@"_timeUntilSecondarySign_SIRI_USE_ONLY"];
     v5->_timeUntilSecondarySign_SIRI_USE_ONLY = v13;
   }
 
@@ -103,23 +103,23 @@
   return v5;
 }
 
-- (MNGuidanceSignInfo)initWithPrimarySign:(id)a3 secondarySign:(id)a4 stepIndex:(unint64_t)a5 primaryDistance:(double)a6 secondaryDistance:(double)a7 timeUntilPrimarySign:(double)a8 timeUntilSecondarySign:(double)a9
+- (MNGuidanceSignInfo)initWithPrimarySign:(id)sign secondarySign:(id)secondarySign stepIndex:(unint64_t)index primaryDistance:(double)distance secondaryDistance:(double)secondaryDistance timeUntilPrimarySign:(double)primarySign timeUntilSecondarySign:(double)untilSecondarySign
 {
-  v17 = a3;
-  v18 = a4;
+  signCopy = sign;
+  secondarySignCopy = secondarySign;
   v22.receiver = self;
   v22.super_class = MNGuidanceSignInfo;
   v19 = [(MNGuidanceSignInfo *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_primarySign, a3);
-    objc_storeStrong(&v20->_secondarySign, a4);
-    v20->_stepIndex = a5;
-    v20->_primaryDistance_SIRI_USE_ONLY = a6;
-    v20->_secondaryDistance_SIRI_USE_ONLY = a7;
-    v20->_timeUntilPrimarySign_SIRI_USE_ONLY = a8;
-    v20->_timeUntilSecondarySign_SIRI_USE_ONLY = a9;
+    objc_storeStrong(&v19->_primarySign, sign);
+    objc_storeStrong(&v20->_secondarySign, secondarySign);
+    v20->_stepIndex = index;
+    v20->_primaryDistance_SIRI_USE_ONLY = distance;
+    v20->_secondaryDistance_SIRI_USE_ONLY = secondaryDistance;
+    v20->_timeUntilPrimarySign_SIRI_USE_ONLY = primarySign;
+    v20->_timeUntilSecondarySign_SIRI_USE_ONLY = untilSecondarySign;
   }
 
   return v20;

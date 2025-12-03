@@ -1,29 +1,29 @@
 @interface APDBAdInstance
-- (BOOL)deleteAdInstancesWithAccountTokenDifferentThan:(id)a3 andDataOlderThan:(id)a4;
+- (BOOL)deleteAdInstancesWithAccountTokenDifferentThan:(id)than andDataOlderThan:(id)olderThan;
 - (BOOL)deleteAdInstancesWithNoEvents;
 - (id)allAdInstanceCount;
-- (id)insertOrIgnoreAdInstanceForImpressionId:(id)a3 accountToken:(id)a4;
+- (id)insertOrIgnoreAdInstanceForImpressionId:(id)id accountToken:(id)token;
 @end
 
 @implementation APDBAdInstance
 
-- (id)insertOrIgnoreAdInstanceForImpressionId:(id)a3 accountToken:(id)a4
+- (id)insertOrIgnoreAdInstanceForImpressionId:(id)id accountToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APDBAdInstance *)self manager];
+  idCopy = id;
+  tokenCopy = token;
+  manager = [(APDBAdInstance *)self manager];
 
-  if (v8)
+  if (manager)
   {
-    if (v6 && v7)
+    if (idCopy && tokenCopy)
     {
-      v9 = [[APDatabaseColumn alloc] initWithName:@"impressionId" forColumnType:3 withValue:v6];
-      v10 = [[APDatabaseColumn alloc] initWithName:@"accountToken" forColumnType:3 withValue:v7];
-      v11 = [(APDBAdInstance *)self manager];
+      v9 = [[APDatabaseColumn alloc] initWithName:@"impressionId" forColumnType:3 withValue:idCopy];
+      v10 = [[APDatabaseColumn alloc] initWithName:@"accountToken" forColumnType:3 withValue:tokenCopy];
+      manager2 = [(APDBAdInstance *)self manager];
       v18[0] = v9;
       v18[1] = v10;
       v12 = [NSArray arrayWithObjects:v18 count:2];
-      v13 = [v11 executeInsertQuery:@"INSERT OR IGNORE INTO APDBAdInstance (impressionId withParameters:{accountToken) VALUES (?, ?)", v12}];
+      v13 = [manager2 executeInsertQuery:@"INSERT OR IGNORE INTO APDBAdInstance (impressionId withParameters:{accountToken) VALUES (?, ?)", v12}];
 
       if (v13 == -1)
       {
@@ -32,7 +32,7 @@
 
       else
       {
-        v14 = [[APDBAdInstanceRow alloc] initImpressionId:v6 accountToken:v7 table:self];
+        v14 = [[APDBAdInstanceRow alloc] initImpressionId:idCopy accountToken:tokenCopy table:self];
       }
 
       goto LABEL_14;
@@ -71,11 +71,11 @@ LABEL_14:
 
 - (BOOL)deleteAdInstancesWithNoEvents
 {
-  v2 = [(APDBAdInstance *)self manager];
-  v3 = v2;
-  if (v2)
+  manager = [(APDBAdInstance *)self manager];
+  v3 = manager;
+  if (manager)
   {
-    v4 = [v2 executeQuery:@"DELETE FROM APDBAdInstance WHERE impressionId IN (SELECT APDBAdInstance.impressionId FROM APDBAdInstance LEFT JOIN APDBEvent ON APDBAdInstance.impressionId = APDBEvent.impressionId WHERE APDBEvent.impressionId IS NULL)" withParameters:&__NSArray0__struct];
+    v4 = [manager executeQuery:@"DELETE FROM APDBAdInstance WHERE impressionId IN (SELECT APDBAdInstance.impressionId FROM APDBAdInstance LEFT JOIN APDBEvent ON APDBAdInstance.impressionId = APDBEvent.impressionId WHERE APDBEvent.impressionId IS NULL)" withParameters:&__NSArray0__struct];
   }
 
   else
@@ -95,19 +95,19 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)deleteAdInstancesWithAccountTokenDifferentThan:(id)a3 andDataOlderThan:(id)a4
+- (BOOL)deleteAdInstancesWithAccountTokenDifferentThan:(id)than andDataOlderThan:(id)olderThan
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APDBAdInstance *)self manager];
-  if (v8)
+  thanCopy = than;
+  olderThanCopy = olderThan;
+  manager = [(APDBAdInstance *)self manager];
+  if (manager)
   {
-    v9 = [[APDatabaseColumn alloc] initWithName:@"accountToken" forColumnType:3 withValue:v6];
-    v10 = [[APDatabaseColumn alloc] initWithName:@"timestamp" forColumnType:4 withValue:v7];
+    v9 = [[APDatabaseColumn alloc] initWithName:@"accountToken" forColumnType:3 withValue:thanCopy];
+    v10 = [[APDatabaseColumn alloc] initWithName:@"timestamp" forColumnType:4 withValue:olderThanCopy];
     v15[0] = v10;
     v15[1] = v9;
     v11 = [NSArray arrayWithObjects:v15 count:2];
-    v12 = [v8 executeQuery:@"DELETE FROM APDBAdInstance WHERE impressionId NOT IN (SELECT impressionId FROM APDBEvent WHERE timestamp > ? GROUP BY impressionId) AND accountToken != ?" withParameters:v11];
+    v12 = [manager executeQuery:@"DELETE FROM APDBAdInstance WHERE impressionId NOT IN (SELECT impressionId FROM APDBEvent WHERE timestamp > ? GROUP BY impressionId) AND accountToken != ?" withParameters:v11];
   }
 
   else
@@ -129,11 +129,11 @@ LABEL_14:
 
 - (id)allAdInstanceCount
 {
-  v2 = [(APDBAdInstance *)self manager];
-  v3 = v2;
-  if (v2)
+  manager = [(APDBAdInstance *)self manager];
+  v3 = manager;
+  if (manager)
   {
-    v4 = [v2 executeSelectNumberQuery:@"SELECT COUNT (1) FROM APDBAdInstance" withParameters:&__NSArray0__struct];
+    v4 = [manager executeSelectNumberQuery:@"SELECT COUNT (1) FROM APDBAdInstance" withParameters:&__NSArray0__struct];
     v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 integerValue]);
   }
 

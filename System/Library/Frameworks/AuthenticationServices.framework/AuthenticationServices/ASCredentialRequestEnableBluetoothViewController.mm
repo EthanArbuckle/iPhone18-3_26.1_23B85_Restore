@@ -1,6 +1,6 @@
 @interface ASCredentialRequestEnableBluetoothViewController
-- (ASCredentialRequestEnableBluetoothViewController)initWithMode:(int64_t)a3 activity:(id)a4;
-- (ASCredentialRequestEnableBluetoothViewController)initWithPresentationContext:(id)a3 activity:(id)a4;
+- (ASCredentialRequestEnableBluetoothViewController)initWithMode:(int64_t)mode activity:(id)activity;
+- (ASCredentialRequestEnableBluetoothViewController)initWithPresentationContext:(id)context activity:(id)activity;
 - (id)_message;
 - (void)_enableBluetooth;
 - (void)_setUpButtonPane;
@@ -10,38 +10,38 @@
 
 @implementation ASCredentialRequestEnableBluetoothViewController
 
-- (ASCredentialRequestEnableBluetoothViewController)initWithPresentationContext:(id)a3 activity:(id)a4
+- (ASCredentialRequestEnableBluetoothViewController)initWithPresentationContext:(id)context activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cableAuthenticatorURL];
+  contextCopy = context;
+  activityCopy = activity;
+  cableAuthenticatorURL = [contextCopy cableAuthenticatorURL];
 
-  if (v8)
+  if (cableAuthenticatorURL)
   {
     v9 = 2;
   }
 
   else
   {
-    v9 = [v6 isRegistrationRequest] ^ 1;
+    v9 = [contextCopy isRegistrationRequest] ^ 1;
   }
 
-  v10 = [(ASCredentialRequestEnableBluetoothViewController *)self initWithMode:v9 activity:v7];
+  v10 = [(ASCredentialRequestEnableBluetoothViewController *)self initWithMode:v9 activity:activityCopy];
 
   return v10;
 }
 
-- (ASCredentialRequestEnableBluetoothViewController)initWithMode:(int64_t)a3 activity:(id)a4
+- (ASCredentialRequestEnableBluetoothViewController)initWithMode:(int64_t)mode activity:(id)activity
 {
-  v7 = a4;
+  activityCopy = activity;
   v12.receiver = self;
   v12.super_class = ASCredentialRequestEnableBluetoothViewController;
   v8 = [(ASCredentialRequestPaneViewController *)&v12 initRequiringTableView:0];
   v9 = v8;
   if (v8)
   {
-    v8->_mode = a3;
-    objc_storeStrong(&v8->_authorizationActivity, a4);
+    v8->_mode = mode;
+    objc_storeStrong(&v8->_authorizationActivity, activity);
     v10 = v9;
   }
 
@@ -55,8 +55,8 @@
   [(ASCredentialRequestPaneViewController *)&v4 viewDidLoad];
   [(ASCredentialRequestEnableBluetoothViewController *)self _setUpHeaderPane];
   [(ASCredentialRequestEnableBluetoothViewController *)self _setUpButtonPane];
-  v3 = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
-  [v3 addEmptyViewWithSpacing:0.0];
+  headerPaneContext = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
+  [headerPaneContext addEmptyViewWithSpacing:0.0];
 
   [(ASCredentialRequestPaneViewController *)self sizeToFitPaneContent];
 }
@@ -64,10 +64,10 @@
 - (void)_setUpHeaderPane
 {
   v6 = _WBSLocalizedString();
-  v3 = [(ASCredentialRequestEnableBluetoothViewController *)self _message];
-  v4 = [[ASCredentialRequestPaneHeaderConfiguration alloc] initWithTitle:v6 subtitle:v3];
-  v5 = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
-  [v5 addHeaderWithConfiguration:v4];
+  _message = [(ASCredentialRequestEnableBluetoothViewController *)self _message];
+  v4 = [[ASCredentialRequestPaneHeaderConfiguration alloc] initWithTitle:v6 subtitle:_message];
+  headerPaneContext = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
+  [headerPaneContext addHeaderWithConfiguration:v4];
 }
 
 - (void)_setUpButtonPane
@@ -76,11 +76,11 @@
   v3 = _WBSLocalizedString();
   [(ASCredentialRequestConfirmButtonSubPane *)v6 setButtonText:v3];
 
-  v4 = [(ASCredentialRequestConfirmButtonSubPane *)v6 authorizationButton];
-  [v4 addTarget:self action:sel__enableBluetooth];
+  authorizationButton = [(ASCredentialRequestConfirmButtonSubPane *)v6 authorizationButton];
+  [authorizationButton addTarget:self action:sel__enableBluetooth];
 
-  v5 = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
-  [v5 addSubPane:v6 withCustomSpacingAfter:80.0];
+  headerPaneContext = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
+  [headerPaneContext addSubPane:v6 withCustomSpacingAfter:80.0];
 }
 
 - (id)_message
@@ -88,8 +88,8 @@
   mode = self->_mode;
   if (mode < 2)
   {
-    v4 = [MEMORY[0x1E69C8860] currentDevice];
-    [v4 deviceClass];
+    currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+    [currentDevice deviceClass];
   }
 
   else
@@ -99,8 +99,8 @@
       goto LABEL_6;
     }
 
-    v3 = [MEMORY[0x1E69C8860] currentDevice];
-    [v3 deviceClass];
+    currentDevice2 = [MEMORY[0x1E69C8860] currentDevice];
+    [currentDevice2 deviceClass];
   }
 
   self = _WBSLocalizedString();

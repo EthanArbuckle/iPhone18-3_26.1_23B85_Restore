@@ -1,17 +1,17 @@
 @interface RTPersistenceRemoteStoreServer
-- (RTPersistenceRemoteStoreServer)initWithStoreURL:(id)a3 modelURL:(id)a4 options:(id)a5;
+- (RTPersistenceRemoteStoreServer)initWithStoreURL:(id)l modelURL:(id)rL options:(id)options;
 - (void)startListening;
 @end
 
 @implementation RTPersistenceRemoteStoreServer
 
-- (RTPersistenceRemoteStoreServer)initWithStoreURL:(id)a3 modelURL:(id)a4 options:(id)a5
+- (RTPersistenceRemoteStoreServer)initWithStoreURL:(id)l modelURL:(id)rL options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
+  v12 = optionsCopy;
+  if (!lCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -26,7 +26,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v10)
+  if (!rLCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -39,7 +39,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v13 = [v11 objectForKey:*MEMORY[0x277CBE340]];
+  v13 = [optionsCopy objectForKey:*MEMORY[0x277CBE340]];
 
   if (!v13)
   {
@@ -68,7 +68,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -78,31 +78,31 @@ LABEL_17:
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_storeURL, a3);
-    objc_storeStrong(p_isa + 3, a4);
-    objc_storeStrong(p_isa + 4, a5);
+    objc_storeStrong(&v15->_storeURL, l);
+    objc_storeStrong(p_isa + 3, rL);
+    objc_storeStrong(p_isa + 4, options);
   }
 
   self = p_isa;
-  v17 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)startListening
 {
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc(MEMORY[0x277CBE510]);
-  v5 = [(RTPersistenceRemoteStoreServer *)self storeURL];
-  v6 = [(RTPersistenceRemoteStoreServer *)self modelURL];
-  v7 = [(RTPersistenceRemoteStoreServer *)self serverOptions];
-  v8 = [v4 initForStoreWithURL:v5 usingModelAtURL:v6 options:v7 policy:0];
+  storeURL = [(RTPersistenceRemoteStoreServer *)self storeURL];
+  modelURL = [(RTPersistenceRemoteStoreServer *)self modelURL];
+  serverOptions = [(RTPersistenceRemoteStoreServer *)self serverOptions];
+  v8 = [v4 initForStoreWithURL:storeURL usingModelAtURL:modelURL options:serverOptions policy:0];
   [(RTPersistenceRemoteStoreServer *)self setXpcStoreServer:v8];
 
   objc_autoreleasePoolPop(v3);
-  v9 = [(RTPersistenceRemoteStoreServer *)self xpcStoreServer];
-  [v9 startListening];
+  xpcStoreServer = [(RTPersistenceRemoteStoreServer *)self xpcStoreServer];
+  [xpcStoreServer startListening];
 }
 
 @end

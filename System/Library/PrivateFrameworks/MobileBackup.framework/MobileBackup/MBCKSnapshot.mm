@@ -1,47 +1,47 @@
 @interface MBCKSnapshot
-+ (id)_createDomainRecordQuotaFromBaseRecordIDs:(id)a3 domainQuotas:(id)a4;
-+ (id)_createDomainReferencesFromBaseRecordIDs:(id)a3 pageCounts:(id)a4 checksums:(id)a5;
-+ (id)snapshotForDevice:(id)a3 reason:(int64_t)a4 type:(int64_t)a5 snapshotFormat:(int64_t)a6;
-+ (id)snapshotForDevice:(id)a3 reason:(int64_t)a4 type:(int64_t)a5 snapshotFormat:(int64_t)a6 accountType:(int64_t)a7;
-+ (id)snapshotForDevice:(id)a3 reason:(int64_t)a4 type:(int64_t)a5 snapshotFormat:(int64_t)a6 snapshotID:(id)a7;
-+ (id)snapshotIDFromSnapshotRecordID:(id)a3;
-+ (id)sortedSnapshots:(id)a3;
-+ (int64_t)_accountTypeFromAccountClass:(int64_t)a3;
-+ (void)_createBaseRecordIDs:(id *)a3 pageCounts:(id *)a4 checksums:(id *)a5 fromReferences:(id)a6;
-- (BOOL)addDomainRecordIDsFromPendingSnapshotDB:(id)a3 attemptSummary:(id)a4 error:(id *)a5;
-- (BOOL)addFileChange:(id)a3 batchSave:(id)a4 engine:(id)a5 skipped:(BOOL *)a6 error:(id *)a7;
-- (BOOL)addManifest:(id)a3;
-- (BOOL)fetchManifestsWithOperationTracker:(id)a3 error:(id *)a4;
++ (id)_createDomainRecordQuotaFromBaseRecordIDs:(id)ds domainQuotas:(id)quotas;
++ (id)_createDomainReferencesFromBaseRecordIDs:(id)ds pageCounts:(id)counts checksums:(id)checksums;
++ (id)snapshotForDevice:(id)device reason:(int64_t)reason type:(int64_t)type snapshotFormat:(int64_t)format;
++ (id)snapshotForDevice:(id)device reason:(int64_t)reason type:(int64_t)type snapshotFormat:(int64_t)format accountType:(int64_t)accountType;
++ (id)snapshotForDevice:(id)device reason:(int64_t)reason type:(int64_t)type snapshotFormat:(int64_t)format snapshotID:(id)d;
++ (id)snapshotIDFromSnapshotRecordID:(id)d;
++ (id)sortedSnapshots:(id)snapshots;
++ (int64_t)_accountTypeFromAccountClass:(int64_t)class;
++ (void)_createBaseRecordIDs:(id *)ds pageCounts:(id *)counts checksums:(id *)checksums fromReferences:(id)references;
+- (BOOL)addDomainRecordIDsFromPendingSnapshotDB:(id)b attemptSummary:(id)summary error:(id *)error;
+- (BOOL)addFileChange:(id)change batchSave:(id)save engine:(id)engine skipped:(BOOL *)skipped error:(id *)error;
+- (BOOL)addManifest:(id)manifest;
+- (BOOL)fetchManifestsWithOperationTracker:(id)tracker error:(id *)error;
 - (MBCKDevice)device;
-- (MBCKSnapshot)initWithCoder:(id)a3;
-- (MBCKSnapshot)initWithDevice:(id)a3 reason:(int64_t)a4 type:(int64_t)a5 snapshotFormat:(int64_t)a6 backupPolicy:(int64_t)a7;
-- (MBCKSnapshot)initWithDictionary:(id)a3 cache:(id)a4;
+- (MBCKSnapshot)initWithCoder:(id)coder;
+- (MBCKSnapshot)initWithDevice:(id)device reason:(int64_t)reason type:(int64_t)type snapshotFormat:(int64_t)format backupPolicy:(int64_t)policy;
+- (MBCKSnapshot)initWithDictionary:(id)dictionary cache:(id)cache;
 - (NSDate)created;
 - (NSString)deviceName;
 - (NSString)snapshotID;
-- (id)_decodeBackupPropertiesWithValue:(id)a3;
-- (id)_getManifestForDomain:(id)a3;
+- (id)_decodeBackupPropertiesWithValue:(id)value;
+- (id)_getManifestForDomain:(id)domain;
 - (id)_getRecordIDString;
-- (id)_manifestDomainNameForDomainName:(id)a3;
+- (id)_manifestDomainNameForDomainName:(id)name;
 - (id)description;
-- (id)manifestForDomainName:(id)a3;
+- (id)manifestForDomainName:(id)name;
 - (id)recordRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchManifestsWithOperationTracker:(id)a3 referenceFetchProgress:(id)a4 manifestProgress:(id)a5 snapshotCompletion:(id)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchManifestsWithOperationTracker:(id)tracker referenceFetchProgress:(id)progress manifestProgress:(id)manifestProgress snapshotCompletion:(id)completion;
 - (void)forgetManifests;
-- (void)prepareForSaveWithOperationTracker:(id)a3 completion:(id)a4;
-- (void)refreshWithRecord:(id)a3;
-- (void)saveToCacheWithCompletion:(id)a3;
-- (void)setDevice:(id)a3;
-- (void)setDeviceName:(id)a3;
-- (void)setSnapshotID:(id)a3;
+- (void)prepareForSaveWithOperationTracker:(id)tracker completion:(id)completion;
+- (void)refreshWithRecord:(id)record;
+- (void)saveToCacheWithCompletion:(id)completion;
+- (void)setDevice:(id)device;
+- (void)setDeviceName:(id)name;
+- (void)setSnapshotID:(id)d;
 @end
 
 @implementation MBCKSnapshot
 
-+ (id)sortedSnapshots:(id)a3
++ (id)sortedSnapshots:(id)snapshots
 {
-  v3 = [a3 sortedArrayUsingComparator:&stru_1003BC268];
+  v3 = [snapshots sortedArrayUsingComparator:&stru_1003BC268];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -93,19 +93,19 @@
   return v3;
 }
 
-+ (id)snapshotForDevice:(id)a3 reason:(int64_t)a4 type:(int64_t)a5 snapshotFormat:(int64_t)a6
++ (id)snapshotForDevice:(id)device reason:(int64_t)reason type:(int64_t)type snapshotFormat:(int64_t)format
 {
-  v9 = a3;
-  v10 = [v9 pendingSnapshot];
-  v11 = v10;
-  if (v10)
+  deviceCopy = device;
+  pendingSnapshot = [deviceCopy pendingSnapshot];
+  v11 = pendingSnapshot;
+  if (pendingSnapshot)
   {
-    v12 = v10;
+    v12 = pendingSnapshot;
   }
 
   else
   {
-    v12 = [[MBCKSnapshot alloc] initWithDevice:v9 reason:a4 type:a5 snapshotFormat:a6 backupPolicy:0];
+    v12 = [[MBCKSnapshot alloc] initWithDevice:deviceCopy reason:reason type:type snapshotFormat:format backupPolicy:0];
   }
 
   v13 = v12;
@@ -113,43 +113,43 @@
   return v13;
 }
 
-+ (id)snapshotForDevice:(id)a3 reason:(int64_t)a4 type:(int64_t)a5 snapshotFormat:(int64_t)a6 accountType:(int64_t)a7
++ (id)snapshotForDevice:(id)device reason:(int64_t)reason type:(int64_t)type snapshotFormat:(int64_t)format accountType:(int64_t)accountType
 {
-  v12 = a3;
-  if (!a7)
+  deviceCopy = device;
+  if (!accountType)
   {
     __assert_rtn("+[MBCKSnapshot snapshotForDevice:reason:type:snapshotFormat:accountType:]", "MBCKSnapshot.m", 69, "accountType != MBAccountTypeUnspecified");
   }
 
-  v13 = v12;
-  v14 = [a1 snapshotForDevice:v12 reason:a4 type:a5 snapshotFormat:a6];
-  [v14 setAccountType:a7];
+  v13 = deviceCopy;
+  v14 = [self snapshotForDevice:deviceCopy reason:reason type:type snapshotFormat:format];
+  [v14 setAccountType:accountType];
 
   return v14;
 }
 
-+ (id)snapshotForDevice:(id)a3 reason:(int64_t)a4 type:(int64_t)a5 snapshotFormat:(int64_t)a6 snapshotID:(id)a7
++ (id)snapshotForDevice:(id)device reason:(int64_t)reason type:(int64_t)type snapshotFormat:(int64_t)format snapshotID:(id)d
 {
-  v11 = a7;
-  v12 = a3;
-  v13 = [[MBCKSnapshot alloc] initWithDevice:v12 reason:a4 type:a5 snapshotFormat:a6 backupPolicy:0];
+  dCopy = d;
+  deviceCopy = device;
+  v13 = [[MBCKSnapshot alloc] initWithDevice:deviceCopy reason:reason type:type snapshotFormat:format backupPolicy:0];
 
-  [(MBCKSnapshot *)v13 setSnapshotID:v11];
+  [(MBCKSnapshot *)v13 setSnapshotID:dCopy];
 
   return v13;
 }
 
-+ (id)snapshotIDFromSnapshotRecordID:(id)a3
++ (id)snapshotIDFromSnapshotRecordID:(id)d
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"S:"])
+  dCopy = d;
+  if ([dCopy hasPrefix:@"S:"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"S:", "length")}];
+    v4 = [dCopy substringFromIndex:{objc_msgSend(@"S:", "length")}];
   }
 
   else
   {
-    v4 = v3;
+    v4 = dCopy;
   }
 
   v5 = v4;
@@ -157,27 +157,27 @@
   return v5;
 }
 
-- (MBCKSnapshot)initWithDevice:(id)a3 reason:(int64_t)a4 type:(int64_t)a5 snapshotFormat:(int64_t)a6 backupPolicy:(int64_t)a7
+- (MBCKSnapshot)initWithDevice:(id)device reason:(int64_t)reason type:(int64_t)type snapshotFormat:(int64_t)format backupPolicy:(int64_t)policy
 {
-  v12 = a3;
-  if (!v12)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     __assert_rtn("[MBCKSnapshot initWithDevice:reason:type:snapshotFormat:backupPolicy:]", "MBCKSnapshot.m", 93, "device");
   }
 
-  v13 = v12;
-  v14 = [v12 cache];
+  v13 = deviceCopy;
+  cache = [deviceCopy cache];
   v29.receiver = self;
   v29.super_class = MBCKSnapshot;
-  v15 = [(MBCKModel *)&v29 initWithRecord:0 cache:v14];
+  v15 = [(MBCKModel *)&v29 initWithRecord:0 cache:cache];
 
   if (v15)
   {
-    v16 = [v13 pendingSnapshotRecordID];
-    [(MBCKSnapshot *)v15 setSnapshotID:v16];
+    pendingSnapshotRecordID = [v13 pendingSnapshotRecordID];
+    [(MBCKSnapshot *)v15 setSnapshotID:pendingSnapshotRecordID];
 
-    v17 = [v13 pendingSnapshotRecordID];
-    if (v17)
+    pendingSnapshotRecordID2 = [v13 pendingSnapshotRecordID];
+    if (pendingSnapshotRecordID2)
     {
       v18 = [v13 pendingSnapshotQuotaReserved] != 0;
     }
@@ -194,9 +194,9 @@
     v15->_deviceName = 0;
 
     v15->_hasCachedDeviceName = 0;
-    v15->_backupReason = a4;
-    v15->_type = a5;
-    v15->_backupPolicy = a7;
+    v15->_backupReason = reason;
+    v15->_type = type;
+    v15->_backupPolicy = policy;
     v20 = MBProductVersion();
     productVersion = v15->_productVersion;
     v15->_productVersion = v20;
@@ -212,83 +212,83 @@
     v15->_isInherited = 0;
     v15->_estimatedRestoreSize = -1;
     v15->_accountType = 1;
-    v15->_snapshotFormat = a6;
-    v26 = [(MBCKSnapshot *)v15 snapshotID];
+    v15->_snapshotFormat = format;
+    snapshotID = [(MBCKSnapshot *)v15 snapshotID];
     commitID = v15->_commitID;
-    v15->_commitID = v26;
+    v15->_commitID = snapshotID;
   }
 
   return v15;
 }
 
-- (MBCKSnapshot)initWithDictionary:(id)a3 cache:(id)a4
+- (MBCKSnapshot)initWithDictionary:(id)dictionary cache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  cacheCopy = cache;
   v34.receiver = self;
   v34.super_class = MBCKSnapshot;
-  v8 = [(MBCKModel *)&v34 initWithRecord:0 cache:v7];
+  v8 = [(MBCKModel *)&v34 initWithRecord:0 cache:cacheCopy];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"snapshotID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"snapshotID"];
     [(MBCKSnapshot *)v8 setSnapshotID:v9];
 
-    v10 = [v6 objectForKeyedSubscript:@"deviceName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceName"];
     [(MBCKSnapshot *)v8 setDeviceName:v10];
 
-    v11 = [v6 objectForKeyedSubscript:@"committed"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"committed"];
     v8->_committed = [v11 BOOLValue];
 
-    v12 = [v6 objectForKeyedSubscript:@"created"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"created"];
     created = v8->_created;
     v8->_created = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"backupReason"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"backupReason"];
     v8->_backupReason = [v14 intValue];
 
-    v15 = [v6 objectForKeyedSubscript:@"backupType"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"backupType"];
     v8->_type = [v15 intValue];
 
-    v16 = [v6 objectForKeyedSubscript:@"backupPolicy"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"backupPolicy"];
     v8->_backupPolicy = [v16 integerValue];
 
-    v17 = [v6 objectForKeyedSubscript:@"buildVersion"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"buildVersion"];
     buildVersion = v8->_buildVersion;
     v8->_buildVersion = v17;
 
-    v19 = [v6 objectForKeyedSubscript:@"productVersion"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"productVersion"];
     productVersion = v8->_productVersion;
     v8->_productVersion = v19;
 
-    v21 = [v6 objectForKeyedSubscript:@"quotaUsed"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"quotaUsed"];
     v8->_quotaUsed = [v21 longLongValue];
 
-    v22 = [v6 objectForKeyedSubscript:@"modificationDate"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"modificationDate"];
     modificationDate = v8->_modificationDate;
     v8->_modificationDate = v22;
 
-    v24 = [v6 objectForKeyedSubscript:@"backupProperties"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"backupProperties"];
     backupProperties = v8->_backupProperties;
     v8->_backupProperties = v24;
 
-    v26 = [v6 objectForKeyedSubscript:@"requiredProductVersion"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"requiredProductVersion"];
     requiredProductVersion = v8->_requiredProductVersion;
     v8->_requiredProductVersion = v26;
 
-    v28 = [v6 objectForKeyedSubscript:@"cameraRollBackupState"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"cameraRollBackupState"];
     v8->_cameraRollBackupState = [v28 integerValue];
 
-    v29 = [v6 objectForKeyedSubscript:@"backupAllowedOnCellular"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"backupAllowedOnCellular"];
     v8->_isBackupAllowedOnCellular = [v29 BOOLValue];
 
     v8->_estimatedRestoreSize = -1;
-    v30 = [v6 objectForKeyedSubscript:@"accountType"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"accountType"];
     v31 = v30;
     if (v30)
     {
-      v32 = [v30 integerValue];
-      v8->_accountType = v32;
-      if (!v32)
+      integerValue = [v30 integerValue];
+      v8->_accountType = integerValue;
+      if (!integerValue)
       {
         __assert_rtn("[MBCKSnapshot initWithDictionary:cache:]", "MBCKSnapshot.m", 135, "_accountType != MBAccountTypeUnspecified");
       }
@@ -305,12 +305,12 @@
 
 - (NSString)deviceName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_deviceName;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_deviceName;
   if (!v3)
   {
-    if (v2->_hasCachedDeviceName)
+    if (selfCopy->_hasCachedDeviceName)
     {
       v3 = 0;
     }
@@ -318,42 +318,42 @@
     else
     {
       v4 = MBDeviceName();
-      deviceName = v2->_deviceName;
-      v2->_deviceName = v4;
+      deviceName = selfCopy->_deviceName;
+      selfCopy->_deviceName = v4;
 
       v3 = v4;
-      v2->_hasCachedDeviceName = 1;
+      selfCopy->_hasCachedDeviceName = 1;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   obj = self;
   objc_sync_enter(obj);
   deviceName = obj->_deviceName;
-  obj->_deviceName = v4;
+  obj->_deviceName = nameCopy;
 
   obj->_hasCachedDeviceName = 1;
   objc_sync_exit(obj);
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  obj = a3;
+  obj = device;
   WeakRetained = objc_loadWeakRetained(&self->_device);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_device, obj);
-    v5 = [obj deviceUUID];
+    deviceUUID = [obj deviceUUID];
     deviceUUID = self->_deviceUUID;
-    self->_deviceUUID = v5;
+    self->_deviceUUID = deviceUUID;
   }
 }
 
@@ -364,9 +364,9 @@
   return WeakRetained;
 }
 
-- (id)manifestForDomainName:(id)a3
+- (id)manifestForDomainName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(MBCKSnapshot *)self snapshotFormat];
   if ((MBSnapshotFormatContainsManifests() & 1) == 0)
   {
@@ -374,22 +374,22 @@
   }
 
   manifestsByDomainName = self->_manifestsByDomainName;
-  v6 = [(MBCKSnapshot *)self _manifestDomainNameForDomainName:v4];
+  v6 = [(MBCKSnapshot *)self _manifestDomainNameForDomainName:nameCopy];
   v7 = [(NSMutableDictionary *)manifestsByDomainName objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (id)_manifestDomainNameForDomainName:(id)a3
+- (id)_manifestDomainNameForDomainName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(MBCKSnapshot *)self snapshotFormat];
   if ((MBSnapshotFormatContainsManifests() & 1) == 0)
   {
     __assert_rtn("[MBCKSnapshot _manifestDomainNameForDomainName:]", "MBCKSnapshot.m", 175, "MBSnapshotFormatContainsManifests(self.snapshotFormat)");
   }
 
-  v5 = v4;
+  v5 = nameCopy;
   v6 = v5;
   if ([MBDomain isLegacyPerAppPlaceholderName:v5])
   {
@@ -400,21 +400,21 @@
   return v6;
 }
 
-- (id)_getManifestForDomain:(id)a3
+- (id)_getManifestForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   [(MBCKSnapshot *)self snapshotFormat];
   if ((MBSnapshotFormatContainsManifests() & 1) == 0)
   {
     __assert_rtn("[MBCKSnapshot _getManifestForDomain:]", "MBCKSnapshot.m", 186, "MBSnapshotFormatContainsManifests(self.snapshotFormat)");
   }
 
-  v5 = [(MBCKSnapshot *)self _manifestDomainNameForDomainName:v4];
+  v5 = [(MBCKSnapshot *)self _manifestDomainNameForDomainName:domainCopy];
   v6 = [(NSMutableDictionary *)self->_manifestsByDomainName objectForKeyedSubscript:v5];
   if (!v6)
   {
-    v7 = [(MBCKModel *)self cache];
-    v6 = [MBCKManifest manifestWithSnapshot:self domainName:v5 count:1 cache:v7];
+    cache = [(MBCKModel *)self cache];
+    v6 = [MBCKManifest manifestWithSnapshot:self domainName:v5 count:1 cache:cache];
   }
 
   [(NSMutableDictionary *)self->_manifestsByDomainName setObject:v6 forKeyedSubscript:v5];
@@ -422,48 +422,48 @@
   return v6;
 }
 
-- (BOOL)addFileChange:(id)a3 batchSave:(id)a4 engine:(id)a5 skipped:(BOOL *)a6 error:(id *)a7
+- (BOOL)addFileChange:(id)change batchSave:(id)save engine:(id)engine skipped:(BOOL *)skipped error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  changeCopy = change;
+  saveCopy = save;
+  engineCopy = engine;
+  if (!changeCopy)
   {
     __assert_rtn("[MBCKSnapshot addFileChange:batchSave:engine:skipped:error:]", "MBCKSnapshot.m", 201, "fileChange");
   }
 
-  if (!v13)
+  if (!saveCopy)
   {
     __assert_rtn("[MBCKSnapshot addFileChange:batchSave:engine:skipped:error:]", "MBCKSnapshot.m", 202, "batchSave");
   }
 
-  v15 = v14;
+  v15 = engineCopy;
   [(MBCKSnapshot *)self snapshotFormat];
   if ((MBSnapshotFormatContainsManifests() & 1) == 0)
   {
     __assert_rtn("[MBCKSnapshot addFileChange:batchSave:engine:skipped:error:]", "MBCKSnapshot.m", 203, "MBSnapshotFormatContainsManifests(self.snapshotFormat)");
   }
 
-  v16 = [v12 domain];
-  v17 = [v16 name];
-  v18 = [(MBCKSnapshot *)self _getManifestForDomain:v17];
+  domain = [changeCopy domain];
+  name = [domain name];
+  v18 = [(MBCKSnapshot *)self _getManifestForDomain:name];
 
   if (!v18)
   {
     __assert_rtn("[MBCKSnapshot addFileChange:batchSave:engine:skipped:error:]", "MBCKSnapshot.m", 205, "manifestForDomain");
   }
 
-  if ([v12 changeType])
+  if ([changeCopy changeType])
   {
-    v19 = [v12 changeType];
+    changeType = [changeCopy changeType];
     v20 = MBGetDefaultLog();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
-    if (v19 == 3)
+    if (changeType == 3)
     {
       if (v21)
       {
         *buf = 138412290;
-        v27 = v12;
+        v27 = changeCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Deleting file %@", buf, 0xCu);
         _MBLog();
       }
@@ -471,68 +471,68 @@
 
     else if (v21)
     {
-      v23 = [v12 changeTypeString];
+      changeTypeString = [changeCopy changeTypeString];
       *buf = 138412546;
-      v27 = v12;
+      v27 = changeCopy;
       v28 = 2112;
-      v29 = v23;
+      v29 = changeTypeString;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Adding file %@ (%@)", buf, 0x16u);
 
-      v25 = [v12 changeTypeString];
+      changeTypeString2 = [changeCopy changeTypeString];
       _MBLog();
     }
 
-    v22 = [v18 queueUploadOfFileChange:v12 batchSave:v13 engine:v15 skipped:a6 error:a7];
+    v22 = [v18 queueUploadOfFileChange:changeCopy batchSave:saveCopy engine:v15 skipped:skipped error:error];
   }
 
   else
   {
     v22 = 1;
-    if (a6)
+    if (skipped)
     {
-      *a6 = 1;
+      *skipped = 1;
     }
   }
 
   return v22;
 }
 
-- (BOOL)addManifest:(id)a3
+- (BOOL)addManifest:(id)manifest
 {
-  v4 = a3;
+  manifestCopy = manifest;
   [(MBCKSnapshot *)self snapshotFormat];
   if ((MBSnapshotFormatContainsManifests() & 1) == 0)
   {
     __assert_rtn("[MBCKSnapshot addManifest:]", "MBCKSnapshot.m", 224, "MBSnapshotFormatContainsManifests(self.snapshotFormat)");
   }
 
-  v5 = [v4 domainName];
+  domainName = [manifestCopy domainName];
 
-  if (v5)
+  if (domainName)
   {
     manifestsByDomainName = self->_manifestsByDomainName;
-    v7 = [v4 domainName];
-    [(NSMutableDictionary *)manifestsByDomainName setObject:v4 forKeyedSubscript:v7];
+    domainName2 = [manifestCopy domainName];
+    [(NSMutableDictionary *)manifestsByDomainName setObject:manifestCopy forKeyedSubscript:domainName2];
 
     [(MBCKModel *)self setIsPersistedToServer:0];
   }
 
-  return v5 != 0;
+  return domainName != 0;
 }
 
-- (void)fetchManifestsWithOperationTracker:(id)a3 referenceFetchProgress:(id)a4 manifestProgress:(id)a5 snapshotCompletion:(id)a6
+- (void)fetchManifestsWithOperationTracker:(id)tracker referenceFetchProgress:(id)progress manifestProgress:(id)manifestProgress snapshotCompletion:(id)completion
 {
-  v10 = a3;
-  v43 = a4;
-  v42 = a5;
-  v11 = a6;
-  if (!v10)
+  trackerCopy = tracker;
+  progressCopy = progress;
+  manifestProgressCopy = manifestProgress;
+  completionCopy = completion;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKSnapshot fetchManifestsWithOperationTracker:referenceFetchProgress:manifestProgress:snapshotCompletion:]", "MBCKSnapshot.m", 234, "tracker");
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKSnapshot fetchManifestsWithOperationTracker:referenceFetchProgress:manifestProgress:snapshotCompletion:]", "MBCKSnapshot.m", 235, "snapshotCompletion");
   }
@@ -540,29 +540,29 @@
   [(MBCKSnapshot *)self snapshotFormat];
   if (MBSnapshotFormatContainsManifests())
   {
-    if (v43)
+    if (progressCopy)
     {
       goto LABEL_5;
     }
 
     if (![(MBCKSnapshot *)self hasFetchedManifests])
     {
-      v21 = [(MBCKSnapshot *)self manifestIDs];
-      v22 = [v21 count];
+      manifestIDs = [(MBCKSnapshot *)self manifestIDs];
+      v22 = [manifestIDs count];
 
       if (v22)
       {
 LABEL_5:
         +[(MBCKModel *)MBCKManifest];
         v14 = v13;
-        v15 = [v10 ckOperationPolicy];
-        if (!v15)
+        ckOperationPolicy = [trackerCopy ckOperationPolicy];
+        if (!ckOperationPolicy)
         {
           __assert_rtn("[MBCKSnapshot fetchManifestsWithOperationTracker:referenceFetchProgress:manifestProgress:snapshotCompletion:]", "MBCKSnapshot.m", 256, "policy");
         }
 
-        v16 = v15;
-        if ([v15 fetchAssets] && (objc_msgSend(v16, "timeoutIntervalForFetch"), v14 == v17))
+        v16 = ckOperationPolicy;
+        if ([ckOperationPolicy fetchAssets] && (objc_msgSend(v16, "timeoutIntervalForFetch"), v14 == v17))
         {
           v36 = v16;
         }
@@ -574,13 +574,13 @@ LABEL_5:
           [v18 setFetchAssets:1];
           [v18 setTimeoutIntervalForFetch:v14];
           v57 = 0;
-          v19 = [MBCKOperationTracker operationTrackerWithParentTracker:v10 policy:v18 error:&v57];
-          v20 = v57;
+          v19 = [MBCKOperationTracker operationTrackerWithParentTracker:trackerCopy policy:v18 error:&v57];
+          startBatchFetch = v57;
 
           if (!v19)
           {
-            (v12)[2](v12, v20);
-            v10 = 0;
+            (v12)[2](v12, startBatchFetch);
+            trackerCopy = 0;
 LABEL_27:
 
             goto LABEL_28;
@@ -588,7 +588,7 @@ LABEL_27:
 
           v36 = v18;
 
-          v10 = v19;
+          trackerCopy = v19;
         }
 
         v37 = v12;
@@ -600,8 +600,8 @@ LABEL_27:
         }
 
         v41 = objc_opt_new();
-        v38 = v10;
-        v20 = [v10 startBatchFetch];
+        v38 = trackerCopy;
+        startBatchFetch = [trackerCopy startBatchFetch];
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
@@ -622,11 +622,11 @@ LABEL_27:
               }
 
               v28 = *(*(&v53 + 1) + 8 * i);
-              v29 = [(MBCKSnapshot *)self manifestIDsToCounts];
-              v30 = [v29 objectForKeyedSubscript:v28];
-              v31 = [v30 unsignedIntegerValue];
-              v32 = [(MBCKModel *)self cache];
-              v33 = [MBCKManifest manifestWithSnapshot:self manifestID:v28 count:v31 cache:v32];
+              manifestIDsToCounts = [(MBCKSnapshot *)self manifestIDsToCounts];
+              v30 = [manifestIDsToCounts objectForKeyedSubscript:v28];
+              unsignedIntegerValue = [v30 unsignedIntegerValue];
+              cache = [(MBCKModel *)self cache];
+              v33 = [MBCKManifest manifestWithSnapshot:self manifestID:v28 count:unsignedIntegerValue cache:cache];
 
               if (!v33)
               {
@@ -640,10 +640,10 @@ LABEL_27:
               v48[4] = v28;
               v49 = v41;
               v50 = v33;
-              v51 = self;
-              v52 = v42;
+              selfCopy = self;
+              v52 = manifestProgressCopy;
               v34 = v33;
-              [v34 updateFromServerWithBatchFetch:v20 referenceFetchProgress:v43 manifestCompletion:v48];
+              [v34 updateFromServerWithBatchFetch:startBatchFetch referenceFetchProgress:progressCopy manifestCompletion:v48];
             }
 
             v26 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
@@ -657,12 +657,12 @@ LABEL_27:
         v44[2] = sub_10004EF08;
         v44[3] = &unk_1003BC2B8;
         v45 = v41;
-        v46 = self;
+        selfCopy2 = self;
         v12 = v37;
         v47 = v37;
         v35 = v41;
-        v10 = v38;
-        [v38 finishBatchFetch:v20 completion:v44];
+        trackerCopy = v38;
+        [v38 finishBatchFetch:startBatchFetch completion:v44];
 
         v18 = v36;
         goto LABEL_27;
@@ -676,9 +676,9 @@ LABEL_27:
 LABEL_28:
 }
 
-- (BOOL)fetchManifestsWithOperationTracker:(id)a3 error:(id *)a4
+- (BOOL)fetchManifestsWithOperationTracker:(id)tracker error:(id *)error
 {
-  v6 = a3;
+  trackerCopy = tracker;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -692,11 +692,11 @@ LABEL_28:
   v12 = &v13;
   v7 = dispatch_semaphore_create(0);
   v11 = v7;
-  [(MBCKSnapshot *)self fetchManifestsWithOperationTracker:v6 referenceFetchProgress:0 manifestProgress:0 snapshotCompletion:v10];
+  [(MBCKSnapshot *)self fetchManifestsWithOperationTracker:trackerCopy referenceFetchProgress:0 manifestProgress:0 snapshotCompletion:v10];
   MBSemaphoreWaitForever();
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v8 = v14[5] == 0;
@@ -713,19 +713,19 @@ LABEL_28:
   _objc_release_x1();
 }
 
-- (void)saveToCacheWithCompletion:(id)a3
+- (void)saveToCacheWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MBCKModel *)self cache];
-  v5 = [v4 addPendingSnapshot:self];
+  completionCopy = completion;
+  cache = [(MBCKModel *)self cache];
+  v5 = [cache addPendingSnapshot:self];
 
   if (!v5)
   {
-    v6 = [(MBCKModel *)self cache];
-    v5 = [v6 commitSnapshot:self];
+    cache2 = [(MBCKModel *)self cache];
+    v5 = [cache2 commitSnapshot:self];
   }
 
-  v7[2](v7, v5);
+  completionCopy[2](completionCopy, v5);
 }
 
 - (NSString)snapshotID
@@ -743,17 +743,17 @@ LABEL_28:
   return snapshotID;
 }
 
-- (void)setSnapshotID:(id)a3
+- (void)setSnapshotID:(id)d
 {
-  v6 = a3;
-  if ([v6 hasPrefix:@"S:"])
+  dCopy = d;
+  if ([dCopy hasPrefix:@"S:"])
   {
-    v4 = [v6 substringFromIndex:{objc_msgSend(@"S:", "length")}];
+    v4 = [dCopy substringFromIndex:{objc_msgSend(@"S:", "length")}];
   }
 
   else
   {
-    v4 = v6;
+    v4 = dCopy;
   }
 
   snapshotID = self->_snapshotID;
@@ -765,7 +765,7 @@ LABEL_28:
   created = self->_created;
   if (created)
   {
-    v3 = created;
+    modificationDate3 = created;
   }
 
   else
@@ -773,67 +773,67 @@ LABEL_28:
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(MBCKSnapshot *)self snapshotID];
-      v7 = [(MBCKSnapshot *)self modificationDate];
+      snapshotID = [(MBCKSnapshot *)self snapshotID];
+      modificationDate = [(MBCKSnapshot *)self modificationDate];
       *buf = 138412546;
-      v12 = v6;
+      v12 = snapshotID;
       v13 = 2112;
-      v14 = v7;
+      v14 = modificationDate;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Snapshot %@ is missing created date, using modification date: %@", buf, 0x16u);
 
-      v8 = [(MBCKSnapshot *)self snapshotID];
-      v10 = [(MBCKSnapshot *)self modificationDate];
+      snapshotID2 = [(MBCKSnapshot *)self snapshotID];
+      modificationDate2 = [(MBCKSnapshot *)self modificationDate];
       _MBLog();
     }
 
-    v3 = [(MBCKSnapshot *)self modificationDate];
+    modificationDate3 = [(MBCKSnapshot *)self modificationDate];
   }
 
-  return v3;
+  return modificationDate3;
 }
 
-- (void)prepareForSaveWithOperationTracker:(id)a3 completion:(id)a4
+- (void)prepareForSaveWithOperationTracker:(id)tracker completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v60 = v6;
-  if (!v6)
+  trackerCopy = tracker;
+  completionCopy = completion;
+  v60 = trackerCopy;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKSnapshot prepareForSaveWithOperationTracker:completion:]", "MBCKSnapshot.m", 403, "tracker");
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   [(MBCKSnapshot *)self snapshotFormat];
   if (MBSnapshotFormatContainsManifests())
   {
     v57 = v8;
-    v65 = self;
-    v59 = [(MBCKSnapshot *)self snapshotID];
-    v9 = [(MBCKSnapshot *)self manifestsByDomainName];
-    v10 = [v9 allValues];
+    selfCopy = self;
+    snapshotID = [(MBCKSnapshot *)self snapshotID];
+    manifestsByDomainName = [(MBCKSnapshot *)self manifestsByDomainName];
+    allValues = [manifestsByDomainName allValues];
 
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      *&buf[4] = [v10 count];
+      *&buf[4] = [allValues count];
       *&buf[12] = 2114;
-      *&buf[14] = v59;
+      *&buf[14] = snapshotID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Deleting %lu old manifests from snapshot %{public}@", buf, 0x16u);
-      v53 = [v10 count];
-      v54 = v59;
+      v53 = [allValues count];
+      v54 = snapshotID;
       _MBLog();
     }
 
     v12 = dispatch_group_create();
-    v13 = [v60 startBatchDelete];
-    [v13 setRetryWhenNetworkDisconnected:0];
+    startBatchDelete = [v60 startBatchDelete];
+    [startBatchDelete setRetryWhenNetworkDisconnected:0];
     dispatch_group_enter(v12);
     v98 = 0u;
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    obj = v10;
+    obj = allValues;
     v14 = [obj countByEnumeratingWithState:&v96 objects:v106 count:16];
     if (v14)
     {
@@ -855,7 +855,7 @@ LABEL_28:
           v94[2] = sub_100050110;
           v94[3] = &unk_1003BC0B0;
           v95 = v12;
-          [v17 deletePendingManifestPagesWithBatchDelete:v13 completion:v94];
+          [v17 deletePendingManifestPagesWithBatchDelete:startBatchDelete completion:v94];
 
           objc_autoreleasePoolPop(v18);
         }
@@ -872,10 +872,10 @@ LABEL_28:
     v92[3] = &unk_1003BC010;
     v19 = v12;
     v93 = v19;
-    [v60 finishBatchDelete:v13 completion:v92];
-    v64 = [v60 startBatchDelete];
+    [v60 finishBatchDelete:startBatchDelete completion:v92];
+    startBatchDelete2 = [v60 startBatchDelete];
 
-    [v64 setRetryWhenNetworkDisconnected:0];
+    [startBatchDelete2 setRetryWhenNetworkDisconnected:0];
     dispatch_group_enter(v19);
     v90 = 0u;
     v91 = 0u;
@@ -897,18 +897,18 @@ LABEL_28:
 
           v23 = *(*(&v88 + 1) + 8 * j);
           v24 = objc_autoreleasePoolPush();
-          v25 = [v23 manifestID];
-          v26 = [v23 domainName];
+          manifestID = [v23 manifestID];
+          domainName = [v23 domainName];
           v27 = MBGetDefaultLog();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            *&buf[4] = v25;
+            *&buf[4] = manifestID;
             *&buf[12] = 2112;
-            *&buf[14] = v26;
+            *&buf[14] = domainName;
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Reclaiming quota for replaced files from manifest %{public}@ (%@)", buf, 0x16u);
-            v53 = v25;
-            v54 = v26;
+            v53 = manifestID;
+            v54 = domainName;
             _MBLog();
           }
 
@@ -917,11 +917,11 @@ LABEL_28:
           v85[1] = 3221225472;
           v85[2] = sub_1000501F4;
           v85[3] = &unk_1003BC2E0;
-          v85[4] = v65;
-          v86 = v25;
+          v85[4] = selfCopy;
+          v86 = manifestID;
           v87 = v19;
-          v28 = v25;
-          [v23 deletePendingCloudFilesWithBatchDelete:v64 completion:v85];
+          v28 = manifestID;
+          [v23 deletePendingCloudFilesWithBatchDelete:startBatchDelete2 completion:v85];
 
           objc_autoreleasePoolPop(v24);
         }
@@ -938,7 +938,7 @@ LABEL_28:
     v83[3] = &unk_1003BC010;
     v56 = v19;
     v84 = v56;
-    [v60 finishBatchDelete:v64 completion:v83];
+    [v60 finishBatchDelete:startBatchDelete2 completion:v83];
     MBGroupWaitForever();
     v29 = MBGetDefaultLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -947,14 +947,14 @@ LABEL_28:
       *buf = 134218242;
       *&buf[4] = v30;
       *&buf[12] = 2114;
-      *&buf[14] = v59;
+      *&buf[14] = snapshotID;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Preparing %lu manifests for snapshot %{public}@", buf, 0x16u);
       v53 = [obja count];
-      v54 = v59;
+      v54 = snapshotID;
       _MBLog();
     }
 
-    v31 = [v60 startBatchSave];
+    startBatchSave = [v60 startBatchSave];
     v32 = dispatch_group_create();
     v33 = objc_opt_new();
     v81 = 0u;
@@ -978,24 +978,24 @@ LABEL_28:
           }
 
           v37 = *(*(&v79 + 1) + 8 * v36);
-          v38 = [(MBCKModel *)v65 cache:v53];
+          v38 = [(MBCKModel *)selfCopy cache:v53];
           v78 = 0;
           v39 = [v38 countFilesForManifest:v37 error:&v78];
-          v40 = v78;
+          manifestID2 = v78;
 
-          if (v40)
+          if (manifestID2)
           {
-            v41 = v33;
-            objc_sync_enter(v41);
-            [v41 addObject:v40];
-            objc_sync_exit(v41);
+            domainName2 = v33;
+            objc_sync_enter(domainName2);
+            [domainName2 addObject:manifestID2];
+            objc_sync_exit(domainName2);
 LABEL_40:
 
             goto LABEL_41;
           }
 
-          v40 = [v37 manifestID];
-          v41 = [v37 domainName];
+          manifestID2 = [v37 manifestID];
+          domainName2 = [v37 domainName];
           if (v39)
           {
             dispatch_group_enter(v32);
@@ -1006,7 +1006,7 @@ LABEL_40:
             v42 = v33;
             v76 = v42;
             v77 = v32;
-            [v37 saveWithBatchSave:v31 completion:v75];
+            [v37 saveWithBatchSave:startBatchSave completion:v75];
             v43 = v42;
             objc_sync_enter(v43);
             v44 = [v43 count] == 0;
@@ -1024,23 +1024,23 @@ LABEL_40:
             if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              *&buf[4] = v40;
+              *&buf[4] = manifestID2;
               *&buf[12] = 2112;
-              *&buf[14] = v41;
+              *&buf[14] = domainName2;
               *&buf[22] = 2114;
-              v101 = v59;
+              v101 = snapshotID;
               _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Removing manifest %{public}@ (%@) with 0 files from snapshot %{public}@", buf, 0x20u);
-              v54 = v41;
-              v55 = v59;
+              v54 = domainName2;
+              v55 = snapshotID;
               v35 = v58;
-              v53 = v40;
+              v53 = manifestID2;
               _MBLog();
             }
 
-            v46 = [(MBCKModel *)v65 cache];
-            v47 = [v46 removeManifestAndFiles:v37];
+            cache = [(MBCKModel *)selfCopy cache];
+            v47 = [cache removeManifestAndFiles:v37];
 
-            [(NSMutableDictionary *)v65->_manifestsByDomainName removeObjectForKey:v41];
+            [(NSMutableDictionary *)selfCopy->_manifestsByDomainName removeObjectForKey:domainName2];
           }
 
           v36 = v36 + 1;
@@ -1073,7 +1073,7 @@ LABEL_41:
     v74 = buf;
     v48 = v32;
     v73 = v48;
-    [v60 finishBatchSave:v31 completion:v72];
+    [v60 finishBatchSave:startBatchSave completion:v72];
     v49 = dispatch_get_global_queue(17, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1081,10 +1081,10 @@ LABEL_41:
     block[3] = &unk_1003BC330;
     v71 = buf;
     v67 = v33;
-    v68 = v59;
-    v69 = v65;
+    v68 = snapshotID;
+    v69 = selfCopy;
     v70 = v57;
-    v50 = v59;
+    v50 = snapshotID;
     v51 = v33;
     v52 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
     dispatch_group_notify(v48, v49, v52);
@@ -1103,13 +1103,13 @@ LABEL_41:
 {
   v88.receiver = self;
   v88.super_class = MBCKSnapshot;
-  v4 = [(MBCKModel *)&v88 recordRepresentation];
+  recordRepresentation = [(MBCKModel *)&v88 recordRepresentation];
   v5 = MBError_ptr;
   v6 = [NSNumber numberWithInteger:[(MBCKSnapshot *)self backupReason]];
-  [v4 setObject:v6 forKeyedSubscript:@"backupReason"];
+  [recordRepresentation setObject:v6 forKeyedSubscript:@"backupReason"];
 
   v7 = [NSNumber numberWithInteger:[(MBCKSnapshot *)self type]];
-  [v4 setObject:v7 forKeyedSubscript:@"backupType"];
+  [recordRepresentation setObject:v7 forKeyedSubscript:@"backupType"];
 
   snapshotFormat = self->_snapshotFormat;
   if (!MBSnapshotFormatContainsManifests())
@@ -1119,21 +1119,21 @@ LABEL_41:
   }
 
   v68 = a2;
-  v69 = v4;
+  v69 = recordRepresentation;
   v9 = [NSMutableArray alloc];
-  v10 = [(MBCKSnapshot *)self manifestsByDomainName];
-  v11 = [v10 allKeys];
-  v75 = [v9 initWithCapacity:{objc_msgSend(v11, "count")}];
+  manifestsByDomainName = [(MBCKSnapshot *)self manifestsByDomainName];
+  allKeys = [manifestsByDomainName allKeys];
+  v75 = [v9 initWithCapacity:{objc_msgSend(allKeys, "count")}];
 
   v12 = [NSMutableArray alloc];
-  v13 = [(MBCKSnapshot *)self manifestsByDomainName];
-  v14 = [v13 allKeys];
-  v74 = [v12 initWithCapacity:{objc_msgSend(v14, "count")}];
+  manifestsByDomainName2 = [(MBCKSnapshot *)self manifestsByDomainName];
+  allKeys2 = [manifestsByDomainName2 allKeys];
+  v74 = [v12 initWithCapacity:{objc_msgSend(allKeys2, "count")}];
 
   v15 = [NSMutableArray alloc];
-  v16 = [(MBCKSnapshot *)self manifestsByDomainName];
-  v17 = [v16 allKeys];
-  v73 = [v15 initWithCapacity:{objc_msgSend(v17, "count")}];
+  manifestsByDomainName3 = [(MBCKSnapshot *)self manifestsByDomainName];
+  allKeys3 = [manifestsByDomainName3 allKeys];
+  v73 = [v15 initWithCapacity:{objc_msgSend(allKeys3, "count")}];
 
   v86 = 0u;
   v87 = 0u;
@@ -1160,29 +1160,29 @@ LABEL_41:
         v22 = [(MBCKSnapshot *)self manifestsByDomainName:v65];
         v23 = [v22 objectForKeyedSubscript:v21];
 
-        v24 = [v23 baseRecordIDString];
-        [v75 addObject:v24];
+        baseRecordIDString = [v23 baseRecordIDString];
+        [v75 addObject:baseRecordIDString];
 
         v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 manifestCount]);
         [v74 addObject:v25];
 
-        v26 = [(MBCKModel *)self cache];
-        v27 = [v23 manifestID];
+        cache = [(MBCKModel *)self cache];
+        manifestID = [v23 manifestID];
         v83 = v18;
-        v28 = [v26 checksumForManifest:v27 shouldLog:0 error:&v83];
+        v28 = [cache checksumForManifest:manifestID shouldLog:0 error:&v83];
         v18 = v83;
 
         v29 = [NSNumber numberWithLongLong:v28];
         [v73 addObject:v29];
 
-        v30 = [(MBCKModel *)self cache];
+        cache2 = [(MBCKModel *)self cache];
         v82 = 0;
-        v31 = [v30 countFilesForManifest:v23 error:&v82];
+        v31 = [cache2 countFilesForManifest:v23 error:&v82];
         v32 = v82;
 
-        v33 = [(MBCKModel *)self cache];
+        cache3 = [(MBCKModel *)self cache];
         v81 = 0;
-        v34 = [v33 countDomainHmacForManifest:v23 error:&v81];
+        v34 = [cache3 countDomainHmacForManifest:v23 error:&v81];
         v35 = v81;
 
         if (!v32 && !v35 && v31 != v34)
@@ -1219,15 +1219,15 @@ LABEL_41:
     v18 = 0;
   }
 
-  v38 = [(MBCKModel *)self cache];
+  cache4 = [(MBCKModel *)self cache];
   v80 = v18;
-  v39 = [v38 countManifestsForSnapshot:self error:&v80];
+  v39 = [cache4 countManifestsForSnapshot:self error:&v80];
   v37 = v80;
 
   if (!v37 && [v75 count] != v39)
   {
     v40 = MBGetDefaultLog();
-    v4 = v69;
+    recordRepresentation = v69;
     v5 = MBError_ptr;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
@@ -1245,7 +1245,7 @@ LABEL_41:
     goto LABEL_25;
   }
 
-  v4 = v69;
+  recordRepresentation = v69;
   v5 = MBError_ptr;
   if (v70)
   {
@@ -1265,24 +1265,24 @@ LABEL_25:
     [v44 handleFailureInMethod:v68 object:self file:@"MBCKSnapshot.m" lineNumber:571 description:@"Local cache <-> CK representation mismatch on upload"];
   }
 
-  [v4 setObject:v75 forKeyedSubscript:{@"manifestIDs", v65, v66}];
-  [v4 setObject:v74 forKeyedSubscript:@"manifestCounts"];
-  [v4 setObject:v73 forKeyedSubscript:@"manifestChecksums"];
+  [recordRepresentation setObject:v75 forKeyedSubscript:{@"manifestIDs", v65, v66}];
+  [recordRepresentation setObject:v74 forKeyedSubscript:@"manifestCounts"];
+  [recordRepresentation setObject:v73 forKeyedSubscript:@"manifestChecksums"];
 
 LABEL_29:
   v45 = self->_snapshotFormat;
   if (MBSnapshotFormatContainsFileLists())
   {
-    v46 = [(MBCKSnapshot *)self commitID];
-    if (!v46)
+    commitID = [(MBCKSnapshot *)self commitID];
+    if (!commitID)
     {
       __assert_rtn("[MBCKSnapshot recordRepresentation]", "MBCKSnapshot.m", 581, "commitID");
     }
 
-    v47 = v46;
-    [v4 setObject:v46 forKeyedSubscript:@"originalSnapshotID"];
+    v47 = commitID;
+    [recordRepresentation setObject:commitID forKeyedSubscript:@"originalSnapshotID"];
     v48 = [v5[91] numberWithLongLong:self->_snapshotFormat];
-    [v4 setObject:v48 forKeyedSubscript:@"snapshotFormat"];
+    [recordRepresentation setObject:v48 forKeyedSubscript:@"snapshotFormat"];
 
     if ([(NSArray *)self->_modifiedDomainRecordReferences count])
     {
@@ -1293,48 +1293,48 @@ LABEL_29:
       v49 = v79;
       v50 = v78;
       v51 = v77;
-      [v4 setObject:v49 forKeyedSubscript:@"domainBaseRecordIDs"];
-      [v4 setObject:v50 forKeyedSubscript:@"domainRecordCounts"];
-      [v4 setObject:v51 forKeyedSubscript:@"domainRecordCumulativeChecksums"];
+      [recordRepresentation setObject:v49 forKeyedSubscript:@"domainBaseRecordIDs"];
+      [recordRepresentation setObject:v50 forKeyedSubscript:@"domainRecordCounts"];
+      [recordRepresentation setObject:v51 forKeyedSubscript:@"domainRecordCumulativeChecksums"];
     }
 
     if ([(NSArray *)self->_domainHmacsToRemove count])
     {
-      [v4 setObject:self->_domainHmacsToRemove forKeyedSubscript:@"domainHMACsToRemove"];
+      [recordRepresentation setObject:self->_domainHmacsToRemove forKeyedSubscript:@"domainHMACsToRemove"];
     }
   }
 
   if ([(MBCKSnapshot *)self backupPolicy])
   {
     v52 = [v5[91] numberWithInteger:{-[MBCKSnapshot backupPolicy](self, "backupPolicy")}];
-    [v4 setObject:v52 forKeyedSubscript:@"backupPolicy"];
+    [recordRepresentation setObject:v52 forKeyedSubscript:@"backupPolicy"];
   }
 
-  v53 = [(MBCKSnapshot *)self deviceName];
-  [v4 setObject:v53 forKeyedSubscript:@"deviceName"];
+  deviceName = [(MBCKSnapshot *)self deviceName];
+  [recordRepresentation setObject:deviceName forKeyedSubscript:@"deviceName"];
 
-  v54 = [(MBCKSnapshot *)self buildVersion];
-  [v4 setObject:v54 forKeyedSubscript:@"buildVersion"];
+  buildVersion = [(MBCKSnapshot *)self buildVersion];
+  [recordRepresentation setObject:buildVersion forKeyedSubscript:@"buildVersion"];
 
-  v55 = [(MBCKSnapshot *)self productVersion];
-  [v4 setObject:v55 forKeyedSubscript:@"productVersion"];
+  productVersion = [(MBCKSnapshot *)self productVersion];
+  [recordRepresentation setObject:productVersion forKeyedSubscript:@"productVersion"];
 
   v56 = [v5[91] numberWithBool:{-[MBCKSnapshot isBackupAllowedOnCellular](self, "isBackupAllowedOnCellular")}];
-  [v4 setObject:v56 forKeyedSubscript:@"backupAllowedOnCellular"];
+  [recordRepresentation setObject:v56 forKeyedSubscript:@"backupAllowedOnCellular"];
 
   if ([(MBCKSnapshot *)self cameraRollBackupState])
   {
     v57 = [v5[91] numberWithInteger:{-[MBCKSnapshot cameraRollBackupState](self, "cameraRollBackupState")}];
-    [v4 setObject:v57 forKeyedSubscript:@"cameraRollBackupState"];
+    [recordRepresentation setObject:v57 forKeyedSubscript:@"cameraRollBackupState"];
   }
 
-  v58 = [(MBCKSnapshot *)self backupProperties];
+  backupProperties = [(MBCKSnapshot *)self backupProperties];
 
-  if (v58)
+  if (backupProperties)
   {
-    v59 = [(MBCKSnapshot *)self backupProperties];
-    v60 = [v4 encryptedValueStore];
-    [v60 setObject:v59 forKeyedSubscript:@"backupProperties"];
+    backupProperties2 = [(MBCKSnapshot *)self backupProperties];
+    encryptedValueStore = [recordRepresentation encryptedValueStore];
+    [encryptedValueStore setObject:backupProperties2 forKeyedSubscript:@"backupProperties"];
   }
 
   v61 = objc_opt_new();
@@ -1350,7 +1350,7 @@ LABEL_29:
 
   if ([v61 count])
   {
-    [v4 setPluginFields:v61];
+    [recordRepresentation setPluginFields:v61];
   }
 
   v62 = MBGetDefaultLog();
@@ -1360,25 +1360,25 @@ LABEL_29:
     *buf = 138543618;
     *v90 = v63;
     *&v90[8] = 2112;
-    *&v90[10] = v4;
+    *&v90[10] = recordRepresentation;
     _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEBUG, "%{public}@ record representation: %@", buf, 0x16u);
     objc_opt_class();
     _MBLog();
   }
 
-  return v4;
+  return recordRepresentation;
 }
 
-- (id)_decodeBackupPropertiesWithValue:(id)a3
+- (id)_decodeBackupPropertiesWithValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v9 = 0;
-      v4 = [(MBProperties *)[MBCKProperties alloc] initWithData:v3 error:&v9];
+      v4 = [(MBProperties *)[MBCKProperties alloc] initWithData:valueCopy error:&v9];
       v5 = v9;
       if (v4)
       {
@@ -1404,7 +1404,7 @@ LABEL_29:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v11 = v3;
+        v11 = valueCopy;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Invalid type for backup properties: %@", buf, 0xCu);
         _MBLog();
       }
@@ -1421,27 +1421,27 @@ LABEL_29:
   return v4;
 }
 
-+ (int64_t)_accountTypeFromAccountClass:(int64_t)a3
++ (int64_t)_accountTypeFromAccountClass:(int64_t)class
 {
-  if ((a3 - 1) >= 2)
+  if ((class - 1) >= 2)
   {
     __assert_rtn("+[MBCKSnapshot _accountTypeFromAccountClass:]", "MBCKSnapshot.m", 660, "0 && Unexpected value");
   }
 
-  return a3;
+  return class;
 }
 
-+ (void)_createBaseRecordIDs:(id *)a3 pageCounts:(id *)a4 checksums:(id *)a5 fromReferences:(id)a6
++ (void)_createBaseRecordIDs:(id *)ds pageCounts:(id *)counts checksums:(id *)checksums fromReferences:(id)references
 {
-  v6 = a6;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
-  v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  referencesCopy = references;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(referencesCopy, "count")}];
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(referencesCopy, "count")}];
+  v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(referencesCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = v6;
+  v10 = referencesCopy;
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
@@ -1457,8 +1457,8 @@ LABEL_29:
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        v16 = [v15 baseRecordID];
-        [v7 addObject:v16];
+        baseRecordID = [v15 baseRecordID];
+        [v7 addObject:baseRecordID];
 
         v17 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v15 pageCount]);
         [v8 addObject:v17];
@@ -1474,25 +1474,25 @@ LABEL_29:
   }
 
   v19 = v7;
-  *a3 = v7;
+  *ds = v7;
   v20 = v8;
-  *a4 = v8;
+  *counts = v8;
   v21 = v9;
-  *a5 = v9;
+  *checksums = v9;
 }
 
-+ (id)_createDomainReferencesFromBaseRecordIDs:(id)a3 pageCounts:(id)a4 checksums:(id)a5
++ (id)_createDomainReferencesFromBaseRecordIDs:(id)ds pageCounts:(id)counts checksums:(id)checksums
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 count];
-  if (v10 != [v8 count])
+  dsCopy = ds;
+  countsCopy = counts;
+  checksumsCopy = checksums;
+  v10 = [dsCopy count];
+  if (v10 != [countsCopy count])
   {
     __assert_rtn("+[MBCKSnapshot _createDomainReferencesFromBaseRecordIDs:pageCounts:checksums:]", "MBCKSnapshot.m", 682, "baseRecordIDCount == pageCounts.count");
   }
 
-  if (v10 != [v9 count])
+  if (v10 != [checksumsCopy count])
   {
     __assert_rtn("+[MBCKSnapshot _createDomainReferencesFromBaseRecordIDs:pageCounts:checksums:]", "MBCKSnapshot.m", 683, "baseRecordIDCount == checksums.count");
   }
@@ -1502,14 +1502,14 @@ LABEL_29:
   {
     for (i = 0; i != v10; ++i)
     {
-      v13 = [v7 objectAtIndexedSubscript:i];
-      v14 = [v8 objectAtIndexedSubscript:i];
-      v15 = [v14 unsignedLongLongValue];
+      v13 = [dsCopy objectAtIndexedSubscript:i];
+      v14 = [countsCopy objectAtIndexedSubscript:i];
+      unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-      v16 = [v9 objectAtIndexedSubscript:i];
-      v17 = [v16 unsignedLongLongValue];
+      v16 = [checksumsCopy objectAtIndexedSubscript:i];
+      unsignedLongLongValue2 = [v16 unsignedLongLongValue];
 
-      v18 = [[MBCKSnapshotToDomainRecordReference alloc] initWithBaseRecordID:v13 pageCount:v15 checksum:v17];
+      v18 = [[MBCKSnapshotToDomainRecordReference alloc] initWithBaseRecordID:v13 pageCount:unsignedLongLongValue checksum:unsignedLongLongValue2];
       [v11 addObject:v18];
     }
   }
@@ -1517,12 +1517,12 @@ LABEL_29:
   return v11;
 }
 
-+ (id)_createDomainRecordQuotaFromBaseRecordIDs:(id)a3 domainQuotas:(id)a4
++ (id)_createDomainRecordQuotaFromBaseRecordIDs:(id)ds domainQuotas:(id)quotas
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 != [v6 count])
+  dsCopy = ds;
+  quotasCopy = quotas;
+  v7 = [dsCopy count];
+  if (v7 != [quotasCopy count])
   {
     __assert_rtn("+[MBCKSnapshot _createDomainRecordQuotaFromBaseRecordIDs:domainQuotas:]", "MBCKSnapshot.m", 698, "baseRecordIDCount == domainQuotas.count");
   }
@@ -1532,11 +1532,11 @@ LABEL_29:
   {
     for (i = 0; i != v7; ++i)
     {
-      v10 = [v5 objectAtIndexedSubscript:i];
-      v11 = [v6 objectAtIndexedSubscript:i];
-      v12 = [v11 unsignedLongLongValue];
+      v10 = [dsCopy objectAtIndexedSubscript:i];
+      v11 = [quotasCopy objectAtIndexedSubscript:i];
+      unsignedLongLongValue = [v11 unsignedLongLongValue];
 
-      v13 = [MBDomainRecordQuota domainRecordQuotaWithBaseRecordID:v10 quota:v12];
+      v13 = [MBDomainRecordQuota domainRecordQuotaWithBaseRecordID:v10 quota:unsignedLongLongValue];
       [v8 addObject:v13];
     }
   }
@@ -1544,78 +1544,78 @@ LABEL_29:
   return v8;
 }
 
-- (void)refreshWithRecord:(id)a3
+- (void)refreshWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [v5 recordName];
-  [(MBCKSnapshot *)self setSnapshotID:v6];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  [(MBCKSnapshot *)self setSnapshotID:recordName];
 
-  v7 = [v4 objectForKeyedSubscript:@"originalSnapshotID"];
+  v7 = [recordCopy objectForKeyedSubscript:@"originalSnapshotID"];
   commitID = self->_commitID;
   self->_commitID = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"manifestIDs"];
+  v9 = [recordCopy objectForKeyedSubscript:@"manifestIDs"];
   manifestIDs = self->_manifestIDs;
   self->_manifestIDs = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"manifestChecksums"];
+  v11 = [recordCopy objectForKeyedSubscript:@"manifestChecksums"];
   manifestChecksums = self->_manifestChecksums;
   self->_manifestChecksums = v11;
 
-  v13 = [v4 objectForKeyedSubscript:@"backupReason"];
+  v13 = [recordCopy objectForKeyedSubscript:@"backupReason"];
   self->_backupReason = [v13 intValue];
 
-  v14 = [v4 objectForKeyedSubscript:@"backupType"];
+  v14 = [recordCopy objectForKeyedSubscript:@"backupType"];
   self->_type = [v14 intValue];
 
-  v15 = [v4 objectForKeyedSubscript:@"backupPolicy"];
+  v15 = [recordCopy objectForKeyedSubscript:@"backupPolicy"];
   self->_backupPolicy = [v15 integerValue];
 
-  v16 = [v4 objectForKeyedSubscript:@"snapshotFormat"];
+  v16 = [recordCopy objectForKeyedSubscript:@"snapshotFormat"];
   self->_snapshotFormat = [v16 integerValue];
 
-  v17 = [v4 objectForKeyedSubscript:@"deviceName"];
+  v17 = [recordCopy objectForKeyedSubscript:@"deviceName"];
   [(MBCKSnapshot *)self setDeviceName:v17];
 
-  v18 = [v4 objectForKeyedSubscript:@"buildVersion"];
+  v18 = [recordCopy objectForKeyedSubscript:@"buildVersion"];
   buildVersion = self->_buildVersion;
   self->_buildVersion = v18;
 
-  v20 = [v4 objectForKeyedSubscript:@"productVersion"];
+  v20 = [recordCopy objectForKeyedSubscript:@"productVersion"];
   productVersion = self->_productVersion;
   self->_productVersion = v20;
 
-  v22 = [v4 objectForKeyedSubscript:@"quotaUsed"];
+  v22 = [recordCopy objectForKeyedSubscript:@"quotaUsed"];
   self->_quotaUsed = [v22 longLongValue];
 
-  v23 = [v4 modificationDate];
+  modificationDate = [recordCopy modificationDate];
   modificationDate = self->_modificationDate;
-  self->_modificationDate = v23;
+  self->_modificationDate = modificationDate;
 
-  v25 = [v4 encryptedValues];
-  v26 = [v25 objectForKeyedSubscript:@"backupProperties"];
+  encryptedValues = [recordCopy encryptedValues];
+  v26 = [encryptedValues objectForKeyedSubscript:@"backupProperties"];
 
   v27 = [(MBCKSnapshot *)self _decodeBackupPropertiesWithValue:v26];
-  v28 = [v27 requiredProductVersion];
+  requiredProductVersion = [v27 requiredProductVersion];
   requiredProductVersion = self->_requiredProductVersion;
-  self->_requiredProductVersion = v28;
+  self->_requiredProductVersion = requiredProductVersion;
 
-  v30 = [v4 objectForKeyedSubscript:@"domainBaseRecordIDs"];
-  v76 = [v4 objectForKeyedSubscript:@"domainRecordCounts"];
-  v75 = [v4 objectForKeyedSubscript:@"domainRecordCumulativeChecksums"];
+  v30 = [recordCopy objectForKeyedSubscript:@"domainBaseRecordIDs"];
+  v76 = [recordCopy objectForKeyedSubscript:@"domainRecordCounts"];
+  v75 = [recordCopy objectForKeyedSubscript:@"domainRecordCumulativeChecksums"];
   v31 = MBGetDefaultLog();
   v74 = v27;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
   {
-    v32 = [(MBCKSnapshot *)self snapshotID];
+    snapshotID = [(MBCKSnapshot *)self snapshotID];
     *buf = 138412546;
-    v84 = v32;
+    v84 = snapshotID;
     v85 = 2112;
     v86 = v30;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "Snapshot %@ refreshWithRecord->domainBaseRecordIDs: %@", buf, 0x16u);
 
-    v67 = [(MBCKSnapshot *)self snapshotID];
+    snapshotID2 = [(MBCKSnapshot *)self snapshotID];
     v68 = v30;
     _MBLog();
 
@@ -1626,7 +1626,7 @@ LABEL_29:
   modifiedDomainRecordReferences = self->_modifiedDomainRecordReferences;
   self->_modifiedDomainRecordReferences = v33;
 
-  v35 = [v4 objectForKeyedSubscript:@"domainQuota"];
+  v35 = [recordCopy objectForKeyedSubscript:@"domainQuota"];
   v73 = v35;
   if (v35)
   {
@@ -1644,17 +1644,17 @@ LABEL_29:
   domainRecordQuotas = self->_domainRecordQuotas;
   self->_domainRecordQuotas = v35;
 
-  v37 = [v4 objectForKeyedSubscript:@"domainHMACsToRemove"];
+  v37 = [recordCopy objectForKeyedSubscript:@"domainHMACsToRemove"];
   domainHmacsToRemove = self->_domainHmacsToRemove;
   self->_domainHmacsToRemove = v37;
 
-  v39 = [v27 accountType];
-  v40 = v39;
-  if (v39)
+  accountType = [v27 accountType];
+  v40 = accountType;
+  if (accountType)
   {
-    v41 = [v39 integerValue];
-    self->_accountType = v41;
-    if (v41)
+    integerValue = [accountType integerValue];
+    self->_accountType = integerValue;
+    if (integerValue)
     {
       goto LABEL_9;
     }
@@ -1663,10 +1663,10 @@ LABEL_33:
     __assert_rtn("[MBCKSnapshot refreshWithRecord:]", "MBCKSnapshot.m", 750, "_accountType != MBAccountTypeUnspecified");
   }
 
-  v65 = [v27 accountClass];
-  if (v65)
+  accountClass = [v27 accountClass];
+  if (accountClass)
   {
-    v66 = [objc_opt_class() _accountTypeFromAccountClass:{objc_msgSend(v65, "integerValue")}];
+    v66 = [objc_opt_class() _accountTypeFromAccountClass:{objc_msgSend(accountClass, "integerValue")}];
   }
 
   else
@@ -1686,14 +1686,14 @@ LABEL_9:
   v70 = v30;
   v71 = v26;
   objc_storeStrong(&self->_backupProperties, v26);
-  v42 = [v4 objectForKeyedSubscript:@"cameraRollBackupState"];
+  v42 = [recordCopy objectForKeyedSubscript:@"cameraRollBackupState"];
   self->_cameraRollBackupState = [v42 integerValue];
 
-  v43 = [v4 objectForKeyedSubscript:@"backupAllowedOnCellular"];
+  v43 = [recordCopy objectForKeyedSubscript:@"backupAllowedOnCellular"];
   self->_isBackupAllowedOnCellular = [v43 BOOLValue];
 
-  v72 = v4;
-  v44 = [v4 objectForKeyedSubscript:@"manifestCounts"];
+  v72 = recordCopy;
+  v44 = [recordCopy objectForKeyedSubscript:@"manifestCounts"];
   v45 = objc_opt_new();
   manifestIDsToCounts = self->_manifestIDsToCounts;
   self->_manifestIDsToCounts = v45;
@@ -1720,7 +1720,7 @@ LABEL_11:
       }
 
       v54 = *(*(&v78 + 1) + 8 * v52);
-      if ([(NSArray *)v44 count:v67]<= v53)
+      if ([(NSArray *)v44 count:snapshotID2]<= v53)
       {
         break;
       }
@@ -1754,7 +1754,7 @@ LABEL_11:
       *buf = 138412290;
       v84 = snapshotID;
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "Snapshot refreshWithRecord: %@ parallel array count mismatch", buf, 0xCu);
-      v67 = self->_snapshotID;
+      snapshotID2 = self->_snapshotID;
       _MBLog();
     }
 
@@ -1765,7 +1765,7 @@ LABEL_11:
       *buf = 138412290;
       v84 = v61;
       _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_ERROR, "manifestIDs: %@", buf, 0xCu);
-      v67 = self->_manifestIDs;
+      snapshotID2 = self->_manifestIDs;
       _MBLog();
     }
 
@@ -1775,7 +1775,7 @@ LABEL_11:
       *buf = 138412290;
       v84 = v44;
       _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "manifestCounts: %@", buf, 0xCu);
-      v67 = v44;
+      snapshotID2 = v44;
       _MBLog();
     }
 
@@ -1786,7 +1786,7 @@ LABEL_11:
       *buf = 138412290;
       v84 = v64;
       _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_ERROR, "manifestChecksums: %@", buf, 0xCu);
-      v67 = self->_manifestChecksums;
+      snapshotID2 = self->_manifestChecksums;
       _MBLog();
     }
   }
@@ -1794,22 +1794,22 @@ LABEL_11:
   self->_hasFetchedManifests = 0;
   v77.receiver = self;
   v77.super_class = MBCKSnapshot;
-  [(MBCKModel *)&v77 refreshWithRecord:v72, v67];
+  [(MBCKModel *)&v77 refreshWithRecord:v72, snapshotID2];
 }
 
 - (id)_getRecordIDString
 {
-  v4 = [(MBCKSnapshot *)self snapshotID];
+  snapshotID = [(MBCKSnapshot *)self snapshotID];
 
-  if (!v4)
+  if (!snapshotID)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"MBCKSnapshot.m" lineNumber:780 description:@"Snapshot is missing an identifier"];
   }
 
   v5 = [NSString alloc];
-  v6 = [(MBCKSnapshot *)self snapshotID];
-  v7 = [v5 initWithFormat:@"S:%@", v6];
+  snapshotID2 = [(MBCKSnapshot *)self snapshotID];
+  v7 = [v5 initWithFormat:@"S:%@", snapshotID2];
 
   return v7;
 }
@@ -1820,35 +1820,35 @@ LABEL_11:
   v18.receiver = self;
   v18.super_class = MBCKSnapshot;
   v16 = [(MBCKSnapshot *)&v18 description];
-  v15 = [(MBCKSnapshot *)self snapshotID];
-  v14 = [(MBCKSnapshot *)self commitID];
-  v13 = [(MBCKSnapshot *)self created];
-  v12 = [(MBCKSnapshot *)self backupReason];
-  v11 = [(MBCKSnapshot *)self type];
-  v10 = [(MBCKSnapshot *)self backupPolicy];
-  v9 = [(MBCKSnapshot *)self snapshotFormat];
-  v3 = [(MBCKSnapshot *)self deviceName];
-  v4 = [(MBCKSnapshot *)self buildVersion];
-  v5 = [(MBCKSnapshot *)self productVersion];
-  v6 = [(MBCKSnapshot *)self requiredProductVersion];
-  v7 = [v17 initWithFormat:@"%@ <%@, commitID=%@, created=%@, backupReason=%d, type=%d, backupPolicy=%ld, format=%lld deviceName=%@, buildVersion=%@, productVersion=%@, requiredProductVersion=%@, cameraRollBackupState=%ld, isBackupAllowedOnCellular=%ld, quotaUsed=%lld, estimatedRestoreSize=%llu, accountType=%ld, modifiedDomainRefs=%lu>", v16, v15, v14, v13, v12, v11, v10, v9, v3, v4, v5, v6, -[MBCKSnapshot cameraRollBackupState](self, "cameraRollBackupState"), -[MBCKSnapshot isBackupAllowedOnCellular](self, "isBackupAllowedOnCellular"), -[MBCKSnapshot quotaUsed](self, "quotaUsed"), -[MBCKSnapshot estimatedRestoreSize](self, "estimatedRestoreSize"), -[MBCKSnapshot accountType](self, "accountType"), -[NSArray count](self->_modifiedDomainRecordReferences, "count")];
+  snapshotID = [(MBCKSnapshot *)self snapshotID];
+  commitID = [(MBCKSnapshot *)self commitID];
+  created = [(MBCKSnapshot *)self created];
+  backupReason = [(MBCKSnapshot *)self backupReason];
+  type = [(MBCKSnapshot *)self type];
+  backupPolicy = [(MBCKSnapshot *)self backupPolicy];
+  snapshotFormat = [(MBCKSnapshot *)self snapshotFormat];
+  deviceName = [(MBCKSnapshot *)self deviceName];
+  buildVersion = [(MBCKSnapshot *)self buildVersion];
+  productVersion = [(MBCKSnapshot *)self productVersion];
+  requiredProductVersion = [(MBCKSnapshot *)self requiredProductVersion];
+  v7 = [v17 initWithFormat:@"%@ <%@, commitID=%@, created=%@, backupReason=%d, type=%d, backupPolicy=%ld, format=%lld deviceName=%@, buildVersion=%@, productVersion=%@, requiredProductVersion=%@, cameraRollBackupState=%ld, isBackupAllowedOnCellular=%ld, quotaUsed=%lld, estimatedRestoreSize=%llu, accountType=%ld, modifiedDomainRefs=%lu>", v16, snapshotID, commitID, created, backupReason, type, backupPolicy, snapshotFormat, deviceName, buildVersion, productVersion, requiredProductVersion, -[MBCKSnapshot cameraRollBackupState](self, "cameraRollBackupState"), -[MBCKSnapshot isBackupAllowedOnCellular](self, "isBackupAllowedOnCellular"), -[MBCKSnapshot quotaUsed](self, "quotaUsed"), -[MBCKSnapshot estimatedRestoreSize](self, "estimatedRestoreSize"), -[MBCKSnapshot accountType](self, "accountType"), -[NSArray count](self->_modifiedDomainRecordReferences, "count")];
 
   return v7;
 }
 
-- (BOOL)addDomainRecordIDsFromPendingSnapshotDB:(id)a3 attemptSummary:(id)a4 error:(id *)a5
+- (BOOL)addDomainRecordIDsFromPendingSnapshotDB:(id)b attemptSummary:(id)summary error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 performSanityChecksBeforeCommitWithError:a5])
+  bCopy = b;
+  summaryCopy = summary;
+  if ([bCopy performSanityChecksBeforeCommitWithError:error])
   {
     v10 = objc_opt_new();
     WeakRetained = objc_loadWeakRetained(&self->_device);
-    v12 = [WeakRetained domainHMACsToRepair];
+    domainHMACsToRepair = [WeakRetained domainHMACsToRepair];
 
-    if ([v12 count])
+    if ([domainHMACsToRepair count])
     {
-      v13 = [v12 mutableCopy];
+      v13 = [domainHMACsToRepair mutableCopy];
     }
 
     else
@@ -1862,13 +1862,13 @@ LABEL_11:
     v54[3] = &unk_1003BC358;
     v15 = v10;
     v55 = v15;
-    v16 = v9;
+    v16 = summaryCopy;
     v56 = v16;
-    v17 = v12;
+    v17 = domainHMACsToRepair;
     v57 = v17;
     v18 = v13;
     v58 = v18;
-    if (![v8 enumerateUploadedDomains:a5 block:v54])
+    if (![bCopy enumerateUploadedDomains:error block:v54])
     {
       v14 = 0;
 LABEL_22:
@@ -1914,7 +1914,7 @@ LABEL_22:
       v52 = v27;
       v45 = v18;
       v53 = v45;
-      v28 = [v8 enumerateDomainsDeletedSincePreviousSnapshot:a5 block:v49];
+      v28 = [bCopy enumerateDomainsDeletedSincePreviousSnapshot:error block:v49];
       if ([v27 count])
       {
         v44 = v28;
@@ -1922,15 +1922,15 @@ LABEL_22:
         v29 = MBGetDefaultLog();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
-          v43 = [v27 allObjects];
-          v30 = [v43 sortedArrayUsingSelector:?];
+          allObjects = [v27 allObjects];
+          v30 = [allObjects sortedArrayUsingSelector:?];
           v31 = [v30 componentsJoinedByString:{@", "}];
           *buf = 138412290;
           v60 = v31;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "=domain repair= Repaired domain HMACs: %@", buf, 0xCu);
 
-          v32 = [v27 allObjects];
-          v33 = [v32 sortedArrayUsingSelector:"compare:"];
+          allObjects2 = [v27 allObjects];
+          v33 = [allObjects2 sortedArrayUsingSelector:"compare:"];
           v42 = [v33 componentsJoinedByString:{@", "}];
           _MBLog();
         }
@@ -1967,9 +1967,9 @@ LABEL_21:
     }
 
     objc_storeStrong(&self->_modifiedDomainRecordReferences, obj);
-    v38 = [v19 allObjects];
+    allObjects3 = [v19 allObjects];
     domainHmacsToRemove = self->_domainHmacsToRemove;
-    self->_domainHmacsToRemove = v38;
+    self->_domainHmacsToRemove = allObjects3;
 
     v14 = 1;
     goto LABEL_21;
@@ -1981,77 +1981,77 @@ LABEL_23:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v17.receiver = self;
   v17.super_class = MBCKSnapshot;
-  [(MBCKModel *)&v17 encodeWithCoder:v4];
-  v6 = [(MBCKSnapshot *)self snapshotID];
-  [v4 encodeObject:v6 forKey:@"SnapshotID"];
+  [(MBCKModel *)&v17 encodeWithCoder:coderCopy];
+  snapshotID = [(MBCKSnapshot *)self snapshotID];
+  [coderCopy encodeObject:snapshotID forKey:@"SnapshotID"];
 
-  v7 = [(MBCKSnapshot *)self deviceUUID];
-  [v4 encodeObject:v7 forKey:@"DeviceUUID"];
+  deviceUUID = [(MBCKSnapshot *)self deviceUUID];
+  [coderCopy encodeObject:deviceUUID forKey:@"DeviceUUID"];
 
-  [v4 encodeBool:-[MBCKSnapshot committed](self forKey:{"committed"), @"SnapshotCommitted"}];
-  v8 = [(MBCKSnapshot *)self created];
-  [v4 encodeObject:v8 forKey:@"SnapshotCreated"];
+  [coderCopy encodeBool:-[MBCKSnapshot committed](self forKey:{"committed"), @"SnapshotCommitted"}];
+  created = [(MBCKSnapshot *)self created];
+  [coderCopy encodeObject:created forKey:@"SnapshotCreated"];
 
-  v9 = [(MBCKSnapshot *)self manifestIDs];
-  [v4 encodeObject:v9 forKey:@"ManifestIDs"];
+  manifestIDs = [(MBCKSnapshot *)self manifestIDs];
+  [coderCopy encodeObject:manifestIDs forKey:@"ManifestIDs"];
 
-  v10 = [(MBCKSnapshot *)self manifestChecksums];
-  [v4 encodeObject:v10 forKey:@"ManifestChecksums"];
+  manifestChecksums = [(MBCKSnapshot *)self manifestChecksums];
+  [coderCopy encodeObject:manifestChecksums forKey:@"ManifestChecksums"];
 
-  v11 = [(MBCKSnapshot *)self deviceName];
-  [v4 encodeObject:v11 forKey:@"DeviceName"];
+  deviceName = [(MBCKSnapshot *)self deviceName];
+  [coderCopy encodeObject:deviceName forKey:@"DeviceName"];
 
-  v12 = [(MBCKSnapshot *)self buildVersion];
-  [v4 encodeObject:v12 forKey:@"BuildVersion"];
+  buildVersion = [(MBCKSnapshot *)self buildVersion];
+  [coderCopy encodeObject:buildVersion forKey:@"BuildVersion"];
 
-  v13 = [(MBCKSnapshot *)self productVersion];
-  [v4 encodeObject:v13 forKey:@"ProductVersion"];
+  productVersion = [(MBCKSnapshot *)self productVersion];
+  [coderCopy encodeObject:productVersion forKey:@"ProductVersion"];
 
-  [v4 encodeInteger:-[MBCKSnapshot backupReason](self forKey:{"backupReason"), @"BackupReason"}];
-  [v4 encodeInteger:-[MBCKSnapshot type](self forKey:{"type"), @"BackupType"}];
-  [v4 encodeInteger:-[MBCKSnapshot backupPolicy](self forKey:{"backupPolicy"), @"BackupPolicy"}];
-  [v4 encodeInt64:-[MBCKSnapshot quotaUsed](self forKey:{"quotaUsed"), @"SnapshotQuotaUsed"}];
-  v14 = [(MBCKSnapshot *)self modificationDate];
-  [v4 encodeObject:v14 forKey:@"SnapshotModificationDate"];
+  [coderCopy encodeInteger:-[MBCKSnapshot backupReason](self forKey:{"backupReason"), @"BackupReason"}];
+  [coderCopy encodeInteger:-[MBCKSnapshot type](self forKey:{"type"), @"BackupType"}];
+  [coderCopy encodeInteger:-[MBCKSnapshot backupPolicy](self forKey:{"backupPolicy"), @"BackupPolicy"}];
+  [coderCopy encodeInt64:-[MBCKSnapshot quotaUsed](self forKey:{"quotaUsed"), @"SnapshotQuotaUsed"}];
+  modificationDate = [(MBCKSnapshot *)self modificationDate];
+  [coderCopy encodeObject:modificationDate forKey:@"SnapshotModificationDate"];
 
-  v15 = [(MBCKSnapshot *)self backupProperties];
-  [v4 encodeObject:v15 forKey:@"BackupProperties"];
+  backupProperties = [(MBCKSnapshot *)self backupProperties];
+  [coderCopy encodeObject:backupProperties forKey:@"BackupProperties"];
 
-  v16 = [(MBCKSnapshot *)self requiredProductVersion];
-  [v4 encodeObject:v16 forKey:@"RequiredProductVersion"];
+  requiredProductVersion = [(MBCKSnapshot *)self requiredProductVersion];
+  [coderCopy encodeObject:requiredProductVersion forKey:@"RequiredProductVersion"];
 
-  [v4 encodeInteger:-[MBCKSnapshot cameraRollBackupState](self forKey:{"cameraRollBackupState"), @"CameraRollBackupState"}];
-  [v4 encodeBool:-[MBCKSnapshot isBackupAllowedOnCellular](self forKey:{"isBackupAllowedOnCellular"), @"IsBackupAllowedOnCellular"}];
-  [v4 encodeInteger:-[MBCKSnapshot accountType](self forKey:{"accountType"), @"AccountType"}];
-  [v4 encodeInteger:-[MBCKSnapshot snapshotFormat](self forKey:{"snapshotFormat"), @"SnapshotFormat"}];
+  [coderCopy encodeInteger:-[MBCKSnapshot cameraRollBackupState](self forKey:{"cameraRollBackupState"), @"CameraRollBackupState"}];
+  [coderCopy encodeBool:-[MBCKSnapshot isBackupAllowedOnCellular](self forKey:{"isBackupAllowedOnCellular"), @"IsBackupAllowedOnCellular"}];
+  [coderCopy encodeInteger:-[MBCKSnapshot accountType](self forKey:{"accountType"), @"AccountType"}];
+  [coderCopy encodeInteger:-[MBCKSnapshot snapshotFormat](self forKey:{"snapshotFormat"), @"SnapshotFormat"}];
   objc_autoreleasePoolPop(v5);
 }
 
-- (MBCKSnapshot)initWithCoder:(id)a3
+- (MBCKSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v34.receiver = self;
   v34.super_class = MBCKSnapshot;
-  v6 = [(MBCKModel *)&v34 initWithCoder:v4];
+  v6 = [(MBCKModel *)&v34 initWithCoder:coderCopy];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SnapshotID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SnapshotID"];
     snapshotID = v6->_snapshotID;
     v6->_snapshotID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceUUID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceUUID"];
     deviceUUID = v6->_deviceUUID;
     v6->_deviceUUID = v9;
 
-    v6->_committed = [v4 decodeBoolForKey:@"SnapshotCommitted"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SnapshotCreated"];
+    v6->_committed = [coderCopy decodeBoolForKey:@"SnapshotCommitted"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SnapshotCreated"];
     created = v6->_created;
     v6->_created = v11;
 
@@ -2059,7 +2059,7 @@ LABEL_23:
     v36[1] = objc_opt_class();
     v13 = [NSArray arrayWithObjects:v36 count:2];
     v14 = [NSSet setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"ManifestIDs"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"ManifestIDs"];
     manifestIDs = v6->_manifestIDs;
     v6->_manifestIDs = v15;
 
@@ -2068,41 +2068,41 @@ LABEL_23:
     v35[2] = objc_opt_class();
     v17 = [NSArray arrayWithObjects:v35 count:3];
     v18 = [NSSet setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"ManifestChecksums"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"ManifestChecksums"];
     manifestChecksums = v6->_manifestChecksums;
     v6->_manifestChecksums = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceName"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceName"];
     [(MBCKSnapshot *)v6 setDeviceName:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BuildVersion"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BuildVersion"];
     buildVersion = v6->_buildVersion;
     v6->_buildVersion = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductVersion"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductVersion"];
     productVersion = v6->_productVersion;
     v6->_productVersion = v24;
 
-    v6->_backupReason = [v4 decodeIntegerForKey:@"BackupReason"];
-    v6->_type = [v4 decodeIntegerForKey:@"BackupType"];
-    v6->_backupPolicy = [v4 decodeIntegerForKey:@"BackupPolicy"];
-    v6->_quotaUsed = [v4 decodeInt64ForKey:@"SnapshotQuotaUsed"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SnapshotModificationDate"];
+    v6->_backupReason = [coderCopy decodeIntegerForKey:@"BackupReason"];
+    v6->_type = [coderCopy decodeIntegerForKey:@"BackupType"];
+    v6->_backupPolicy = [coderCopy decodeIntegerForKey:@"BackupPolicy"];
+    v6->_quotaUsed = [coderCopy decodeInt64ForKey:@"SnapshotQuotaUsed"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SnapshotModificationDate"];
     modificationDate = v6->_modificationDate;
     v6->_modificationDate = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BackupProperties"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BackupProperties"];
     backupProperties = v6->_backupProperties;
     v6->_backupProperties = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RequiredProductVersion"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RequiredProductVersion"];
     requiredProductVersion = v6->_requiredProductVersion;
     v6->_requiredProductVersion = v30;
 
-    v6->_cameraRollBackupState = [v4 decodeIntegerForKey:@"CameraRollBackupState"];
-    v6->_isBackupAllowedOnCellular = [v4 decodeBoolForKey:@"IsBackupAllowedOnCellular"];
-    v6->_accountType = [v4 decodeIntegerForKey:@"AccountType"];
-    v6->_snapshotFormat = [v4 decodeIntegerForKey:@"SnapshotFormat"];
+    v6->_cameraRollBackupState = [coderCopy decodeIntegerForKey:@"CameraRollBackupState"];
+    v6->_isBackupAllowedOnCellular = [coderCopy decodeBoolForKey:@"IsBackupAllowedOnCellular"];
+    v6->_accountType = [coderCopy decodeIntegerForKey:@"AccountType"];
+    v6->_snapshotFormat = [coderCopy decodeIntegerForKey:@"SnapshotFormat"];
   }
 
   v32 = v6;

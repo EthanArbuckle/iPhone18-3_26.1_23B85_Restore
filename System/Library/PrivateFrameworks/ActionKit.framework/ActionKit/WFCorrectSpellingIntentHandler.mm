@@ -1,28 +1,28 @@
 @interface WFCorrectSpellingIntentHandler
-- (void)handleCorrectSpelling:(id)a3 completion:(id)a4;
-- (void)resolveTextForCorrectSpelling:(id)a3 withCompletion:(id)a4;
+- (void)handleCorrectSpelling:(id)spelling completion:(id)completion;
+- (void)resolveTextForCorrectSpelling:(id)spelling withCompletion:(id)completion;
 @end
 
 @implementation WFCorrectSpellingIntentHandler
 
-- (void)handleCorrectSpelling:(id)a3 completion:(id)a4
+- (void)handleCorrectSpelling:(id)spelling completion:(id)completion
 {
   v5 = getUITextCheckerClass;
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  spellingCopy = spelling;
   v8 = objc_alloc_init(v5());
-  v9 = [getUITextCheckerClass() availableLanguages];
-  v10 = [v9 firstObject];
-  v11 = v10;
+  availableLanguages = [getUITextCheckerClass() availableLanguages];
+  firstObject = [availableLanguages firstObject];
+  v11 = firstObject;
   v12 = @"en";
-  if (v10)
+  if (firstObject)
   {
-    v12 = v10;
+    v12 = firstObject;
   }
 
   v13 = v12;
 
-  v14 = [v7 text];
+  text = [spellingCopy text];
 
   v15 = [[WFCorrectSpellingIntentResponse alloc] initWithCode:4 userActivity:0];
   v19 = MEMORY[0x277D85DD0];
@@ -33,10 +33,10 @@
   v24 = v13;
   v16 = v13;
   v17 = v8;
-  v18 = [v14 if_map:&v19];
+  v18 = [text if_map:&v19];
   [(WFCorrectSpellingIntentResponse *)v15 setText:v18, v19, v20, v21, v22];
 
-  v6[2](v6, v15);
+  completionCopy[2](completionCopy, v15);
 }
 
 id __67__WFCorrectSpellingIntentHandler_handleCorrectSpelling_completion___block_invoke(uint64_t a1, void *a2)
@@ -74,12 +74,12 @@ id __67__WFCorrectSpellingIntentHandler_handleCorrectSpelling_completion___block
   return v11;
 }
 
-- (void)resolveTextForCorrectSpelling:(id)a3 withCompletion:(id)a4
+- (void)resolveTextForCorrectSpelling:(id)spelling withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 text];
-  v7 = [v8 if_map:&__block_literal_global_128];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  text = [spelling text];
+  v7 = [text if_map:&__block_literal_global_128];
+  (*(completion + 2))(completionCopy, v7);
 }
 
 @end

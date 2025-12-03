@@ -1,37 +1,37 @@
 @interface WPMagicSwitch
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)dutyCycleToScanningRates:(SEL)a3;
-- (WPMagicSwitch)initWithDelegate:(id)a3 queue:(id)a4;
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)dutyCycleToScanningRates:(SEL)rates;
+- (WPMagicSwitch)initWithDelegate:(id)delegate queue:(id)queue;
 - (WPMagicSwitchDelegate)delegate;
-- (void)advertisingFailedToStart:(id)a3 ofType:(unsigned __int8)a4;
-- (void)advertisingStoppedOfType:(unsigned __int8)a3 withError:(id)a4;
-- (void)deviceDiscovered:(id)a3;
+- (void)advertisingFailedToStart:(id)start ofType:(unsigned __int8)type;
+- (void)advertisingStoppedOfType:(unsigned __int8)type withError:(id)error;
+- (void)deviceDiscovered:(id)discovered;
 - (void)invalidate;
-- (void)scanningFailedToStart:(id)a3 ofType:(unsigned __int8)a4;
-- (void)startAdvertisingWithData:(id)a3;
-- (void)startScanningWithData:(id)a3;
-- (void)stateDidChange:(int64_t)a3;
+- (void)scanningFailedToStart:(id)start ofType:(unsigned __int8)type;
+- (void)startAdvertisingWithData:(id)data;
+- (void)startScanningWithData:(id)data;
+- (void)stateDidChange:(int64_t)change;
 - (void)stopAdvertising;
 - (void)stopScanning;
 @end
 
 @implementation WPMagicSwitch
 
-- (WPMagicSwitch)initWithDelegate:(id)a3 queue:(id)a4
+- (WPMagicSwitch)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = WPMagicSwitch;
-  v7 = [(WPClient *)&v10 initWithQueue:a4 machName:0];
+  v7 = [(WPClient *)&v10 initWithQueue:queue machName:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)dutyCycleToScanningRates:(SEL)a3
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)dutyCycleToScanningRates:(SEL)rates
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
@@ -50,9 +50,9 @@ LABEL_5:
     return self;
   }
 
-  v7 = self;
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a3 object:v7 file:@"WPMagicSwitch.m" lineNumber:51 description:@"Unknown duty cycle type"];
+  selfCopy = self;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:rates object:selfCopy file:@"WPMagicSwitch.m" lineNumber:51 description:@"Unknown duty cycle type"];
 
   return self;
 }
@@ -65,14 +65,14 @@ LABEL_5:
   [(WPClient *)&v3 invalidate];
 }
 
-- (void)startScanningWithData:(id)a3
+- (void)startScanningWithData:(id)data
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"WPMagicSwitchScanBlobData"];
-  v6 = [v4 objectForKeyedSubscript:@"WPMagicSwitchScanMaskData"];
-  v7 = [v4 objectForKeyedSubscript:@"WPMagicSwitchScanDutyCycle"];
-  v8 = [v4 objectForKeyedSubscript:@"WPMagicSwitchScanPeers"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"WPMagicSwitchScanBlobData"];
+  v6 = [dataCopy objectForKeyedSubscript:@"WPMagicSwitchScanMaskData"];
+  v7 = [dataCopy objectForKeyedSubscript:@"WPMagicSwitchScanDutyCycle"];
+  v8 = [dataCopy objectForKeyedSubscript:@"WPMagicSwitchScanPeers"];
 
   if ([v5 length] <= 0x16 && objc_msgSend(v6, "length") <= 0x16 && (objc_msgSend(v7, "integerValue") & 0x8000000000000000) == 0 && objc_msgSend(v7, "integerValue") < 3)
   {
@@ -116,15 +116,15 @@ LABEL_5:
     }
 
     v21 = [v18 dictionaryWithObjects:v19 forKeys:v20 count:1];
-    v14 = [v16 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v21];
+    delegate4 = [v16 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v21];
 
-    v22 = [(WPMagicSwitch *)self delegate];
+    delegate = [(WPMagicSwitch *)self delegate];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v24 = [(WPMagicSwitch *)self delegate];
-      [v24 magicSwitch:self failedToStartScanningWithError:v14];
+      delegate2 = [(WPMagicSwitch *)self delegate];
+      [delegate2 magicSwitch:self failedToStartScanningWithError:delegate4];
     }
 
     goto LABEL_7;
@@ -137,13 +137,13 @@ LABEL_5:
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
   v12 = [v9 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v11];
 
-  v13 = [(WPMagicSwitch *)self delegate];
+  delegate3 = [(WPMagicSwitch *)self delegate];
   LOBYTE(v10) = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v14 = [(WPMagicSwitch *)self delegate];
-    [v14 magicSwitch:self failedToStartScanningWithError:v12];
+    delegate4 = [(WPMagicSwitch *)self delegate];
+    [delegate4 magicSwitch:self failedToStartScanningWithError:v12];
 LABEL_7:
   }
 
@@ -161,30 +161,30 @@ LABEL_8:
   [(WPClient *)&v4 stopScanning:v3];
 }
 
-- (void)startAdvertisingWithData:(id)a3
+- (void)startAdvertisingWithData:(id)data
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  dataCopy = data;
+  if ([dataCopy count])
   {
-    v5 = [v4 objectForKeyedSubscript:@"WPMagicSwitchAdvertisingData"];
-    v6 = [v4 objectForKeyedSubscript:@"WPMagicSwitchAdvertiseTypeInterval"];
-    if (!v5 || [v5 length] > 0x16 || objc_msgSend(v6, "integerValue") < 0 || objc_msgSend(v6, "integerValue") >= 3)
+    v5 = [dataCopy objectForKeyedSubscript:@"WPMagicSwitchAdvertisingData"];
+    delegate4 = [dataCopy objectForKeyedSubscript:@"WPMagicSwitchAdvertiseTypeInterval"];
+    if (!v5 || [v5 length] > 0x16 || objc_msgSend(delegate4, "integerValue") < 0 || objc_msgSend(delegate4, "integerValue") >= 3)
     {
       v7 = MEMORY[0x277CCA9B8];
       v23 = *MEMORY[0x277CCA450];
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid data provided, adv data: %@, adv Interval: %@", v5, v6];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid data provided, adv data: %@, adv Interval: %@", v5, delegate4];
       v24 = v8;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
       v10 = [v7 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v9];
 
-      v11 = [(WPMagicSwitch *)self delegate];
+      delegate = [(WPMagicSwitch *)self delegate];
       LOBYTE(v8) = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v12 = [(WPMagicSwitch *)self delegate];
-        [v12 magicSwitch:self failedToStartAdvertisingWithError:v10];
+        delegate2 = [(WPMagicSwitch *)self delegate];
+        [delegate2 magicSwitch:self failedToStartAdvertisingWithError:v10];
       }
 
       goto LABEL_8;
@@ -192,18 +192,18 @@ LABEL_8:
 
     v10 = [WPAdvertisingRequest requestForClientType:11];
     [v10 setAdvertisingData:v5];
-    v18 = [v4 objectForKeyedSubscript:@"WPMagicSwitchAdvertiseTypeInterval"];
-    v19 = [v18 integerValue];
+    v18 = [dataCopy objectForKeyedSubscript:@"WPMagicSwitchAdvertiseTypeInterval"];
+    integerValue = [v18 integerValue];
 
     [v10 setConnectable:1];
     [v10 setStopOnAdvertisingAddressChange:1];
-    if (v19 == 2)
+    if (integerValue == 2)
     {
       v20 = v10;
       v21 = 1636;
     }
 
-    else if (v19 == 1)
+    else if (integerValue == 1)
     {
       v20 = v10;
       v21 = 48;
@@ -211,7 +211,7 @@ LABEL_8:
 
     else
     {
-      if (v19)
+      if (integerValue)
       {
         [MEMORY[0x277CBEAD8] raise:@"Invalid Advertising Rate" format:@"An invalid advertising rate was provided to WPMagicSwitch"];
         goto LABEL_21;
@@ -234,18 +234,18 @@ LABEL_11:
 
   v13 = MEMORY[0x277CCA9B8];
   v25 = *MEMORY[0x277CCA450];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid data provided, Dictionary: %@", v4];
-  v26[0] = v14;
+  dataCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid data provided, Dictionary: %@", dataCopy];
+  v26[0] = dataCopy;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v5 = [v13 errorWithDomain:@"WPErrorDomain" code:5 userInfo:v15];
 
-  v16 = [(WPMagicSwitch *)self delegate];
-  LOBYTE(v14) = objc_opt_respondsToSelector();
+  delegate3 = [(WPMagicSwitch *)self delegate];
+  LOBYTE(dataCopy) = objc_opt_respondsToSelector();
 
-  if (v14)
+  if (dataCopy)
   {
-    v6 = [(WPMagicSwitch *)self delegate];
-    [v6 magicSwitch:self failedToStartAdvertisingWithError:v5];
+    delegate4 = [(WPMagicSwitch *)self delegate];
+    [delegate4 magicSwitch:self failedToStartAdvertisingWithError:v5];
     goto LABEL_11;
   }
 
@@ -262,25 +262,25 @@ LABEL_12:
   [(WPClient *)&v4 stopAdvertising:v3];
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
   v7.receiver = self;
   v7.super_class = WPMagicSwitch;
-  [(WPClient *)&v7 stateDidChange:a3];
-  v4 = [(WPMagicSwitch *)self delegate];
+  [(WPClient *)&v7 stateDidChange:change];
+  delegate = [(WPMagicSwitch *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WPMagicSwitch *)self delegate];
-    [v6 magicSwitchDidUpdateState:self];
+    delegate2 = [(WPMagicSwitch *)self delegate];
+    [delegate2 magicSwitchDidUpdateState:self];
   }
 }
 
-- (void)advertisingStoppedOfType:(unsigned __int8)a3 withError:(id)a4
+- (void)advertisingStoppedOfType:(unsigned __int8)type withError:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPMagicSwitch advertisingStoppedOfType:withError:];
@@ -290,15 +290,15 @@ LABEL_12:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v5;
+    v17 = errorCopy;
     _os_log_impl(&dword_274327000, v6, OS_LOG_TYPE_DEFAULT, "MagicSwitch advertising stopped with error: %@", &v16, 0xCu);
   }
 
-  if (v5)
+  if (errorCopy)
   {
-    if ([v5 code] == 28)
+    if ([errorCopy code] == 28)
     {
-      v7 = [(WPMagicSwitch *)self delegate];
+      delegate = [(WPMagicSwitch *)self delegate];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
@@ -312,14 +312,14 @@ LABEL_12:
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
         {
           v10 = v9;
-          v11 = [v5 localizedDescription];
+          localizedDescription = [errorCopy localizedDescription];
           v16 = 138412290;
-          v17 = v11;
+          v17 = localizedDescription;
           _os_log_impl(&dword_274327000, v10, OS_LOG_TYPE_DEFAULT, "[Privacy] MagicSwitch advertising stopped with error: %@", &v16, 0xCu);
         }
 
-        v12 = [(WPMagicSwitch *)self delegate];
-        [v12 magicSwitchStoppedAdvertising:self withError:v5];
+        delegate2 = [(WPMagicSwitch *)self delegate];
+        [delegate2 magicSwitchStoppedAdvertising:self withError:errorCopy];
         goto LABEL_15;
       }
     }
@@ -327,13 +327,13 @@ LABEL_12:
 
   else
   {
-    v13 = [(WPMagicSwitch *)self delegate];
+    delegate3 = [(WPMagicSwitch *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v12 = [(WPMagicSwitch *)self delegate];
-      [v12 magicSwitchStoppedAdvertising:self];
+      delegate2 = [(WPMagicSwitch *)self delegate];
+      [delegate2 magicSwitchStoppedAdvertising:self];
 LABEL_15:
     }
   }
@@ -341,52 +341,52 @@ LABEL_15:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)advertisingFailedToStart:(id)a3 ofType:(unsigned __int8)a4
+- (void)advertisingFailedToStart:(id)start ofType:(unsigned __int8)type
 {
-  v8 = a3;
-  v5 = [(WPMagicSwitch *)self delegate];
+  startCopy = start;
+  delegate = [(WPMagicSwitch *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPMagicSwitch *)self delegate];
-    [v7 magicSwitch:self failedToStartAdvertisingWithError:v8];
+    delegate2 = [(WPMagicSwitch *)self delegate];
+    [delegate2 magicSwitch:self failedToStartAdvertisingWithError:startCopy];
   }
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WPMagicSwitch *)self delegate];
+  discoveredCopy = discovered;
+  delegate = [(WPMagicSwitch *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"kDevicePeripheralUUID"];
-    v8 = [v4 objectForKeyedSubscript:@"kDeviceAdvertisingData"];
+    v7 = [discoveredCopy objectForKeyedSubscript:@"kDevicePeripheralUUID"];
+    v8 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAdvertisingData"];
     v9 = [v8 subdataWithRange:{4, objc_msgSend(v8, "length") - 4}];
 
-    v10 = [(WPMagicSwitch *)self delegate];
+    delegate2 = [(WPMagicSwitch *)self delegate];
     v13 = @"WPMagicSwitchAdvertisingData";
     v14[0] = v9;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    [v10 magicSwitch:self foundDevice:v7 withData:v11];
+    [delegate2 magicSwitch:self foundDevice:v7 withData:v11];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scanningFailedToStart:(id)a3 ofType:(unsigned __int8)a4
+- (void)scanningFailedToStart:(id)start ofType:(unsigned __int8)type
 {
-  v8 = a3;
-  v5 = [(WPMagicSwitch *)self delegate];
+  startCopy = start;
+  delegate = [(WPMagicSwitch *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPMagicSwitch *)self delegate];
-    [v7 magicSwitch:self failedToStartScanningWithError:v8];
+    delegate2 = [(WPMagicSwitch *)self delegate];
+    [delegate2 magicSwitch:self failedToStartScanningWithError:startCopy];
   }
 }
 

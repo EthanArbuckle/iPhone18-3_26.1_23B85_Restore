@@ -1,74 +1,74 @@
 @interface MXDiagnosticPayload
-- (MXDiagnosticPayload)initWithCoder:(id)a3;
-- (MXDiagnosticPayload)initWithTimeStampBegin:(id)a3 withTimeStampEnd:(id)a4 withDiagnostics:(id)a5;
+- (MXDiagnosticPayload)initWithCoder:(id)coder;
+- (MXDiagnosticPayload)initWithTimeStampBegin:(id)begin withTimeStampEnd:(id)end withDiagnostics:(id)diagnostics;
 - (NSData)JSONRepresentation;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXDiagnosticPayload
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timeStampBegin = self->_timeStampBegin;
-  v5 = a3;
-  [v5 encodeObject:timeStampBegin forKey:@"timeStampBegin"];
-  [v5 encodeObject:self->_timeStampEnd forKey:@"timeStampEnd"];
-  [v5 encodeObject:self->_cpuExceptionDiagnostics forKey:@"cpuExceptionDiagnostics"];
-  [v5 encodeObject:self->_diskWriteExceptionDiagnostics forKey:@"diskWriteExceptionDiagnostics"];
-  [v5 encodeObject:self->_hangDiagnostics forKey:@"hangDiagnostics"];
-  [v5 encodeObject:self->_appLaunchDiagnostics forKey:@"appLaunchDiagnostics"];
-  [v5 encodeObject:self->_crashDiagnostics forKey:@"crashDiagnostics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timeStampBegin forKey:@"timeStampBegin"];
+  [coderCopy encodeObject:self->_timeStampEnd forKey:@"timeStampEnd"];
+  [coderCopy encodeObject:self->_cpuExceptionDiagnostics forKey:@"cpuExceptionDiagnostics"];
+  [coderCopy encodeObject:self->_diskWriteExceptionDiagnostics forKey:@"diskWriteExceptionDiagnostics"];
+  [coderCopy encodeObject:self->_hangDiagnostics forKey:@"hangDiagnostics"];
+  [coderCopy encodeObject:self->_appLaunchDiagnostics forKey:@"appLaunchDiagnostics"];
+  [coderCopy encodeObject:self->_crashDiagnostics forKey:@"crashDiagnostics"];
 }
 
-- (MXDiagnosticPayload)initWithCoder:(id)a3
+- (MXDiagnosticPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = MXDiagnosticPayload;
   v5 = [(MXDiagnosticPayload *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeStampBegin"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeStampBegin"];
     timeStampBegin = v5->_timeStampBegin;
     v5->_timeStampBegin = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeStampEnd"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeStampEnd"];
     timeStampEnd = v5->_timeStampEnd;
     v5->_timeStampEnd = v8;
 
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"cpuExceptionDiagnostics"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"cpuExceptionDiagnostics"];
     cpuExceptionDiagnostics = v5->_cpuExceptionDiagnostics;
     v5->_cpuExceptionDiagnostics = v13;
 
     v15 = MEMORY[0x277CBEB98];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"diskWriteExceptionDiagnostics"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"diskWriteExceptionDiagnostics"];
     diskWriteExceptionDiagnostics = v5->_diskWriteExceptionDiagnostics;
     v5->_diskWriteExceptionDiagnostics = v18;
 
     v20 = MEMORY[0x277CBEB98];
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"hangDiagnostics"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"hangDiagnostics"];
     hangDiagnostics = v5->_hangDiagnostics;
     v5->_hangDiagnostics = v23;
 
     v25 = MEMORY[0x277CBEB98];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"appLaunchDiagnostics"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"appLaunchDiagnostics"];
     appLaunchDiagnostics = v5->_appLaunchDiagnostics;
     v5->_appLaunchDiagnostics = v28;
 
     v30 = MEMORY[0x277CBEB98];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"crashDiagnostics"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"crashDiagnostics"];
     crashDiagnostics = v5->_crashDiagnostics;
     v5->_crashDiagnostics = v33;
   }
@@ -76,11 +76,11 @@
   return v5;
 }
 
-- (MXDiagnosticPayload)initWithTimeStampBegin:(id)a3 withTimeStampEnd:(id)a4 withDiagnostics:(id)a5
+- (MXDiagnosticPayload)initWithTimeStampBegin:(id)begin withTimeStampEnd:(id)end withDiagnostics:(id)diagnostics
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  beginCopy = begin;
+  endCopy = end;
+  diagnosticsCopy = diagnostics;
   v25.receiver = self;
   v25.super_class = MXDiagnosticPayload;
   v12 = [(MXDiagnosticPayload *)&v25 init];
@@ -90,30 +90,30 @@
   }
 
   v13 = 0;
-  if (v9 && v10)
+  if (beginCopy && endCopy)
   {
-    v14 = [v11 valueForKey:@"cpuExceptionDiagnostics"];
+    v14 = [diagnosticsCopy valueForKey:@"cpuExceptionDiagnostics"];
     cpuExceptionDiagnostics = v12->_cpuExceptionDiagnostics;
     v12->_cpuExceptionDiagnostics = v14;
 
-    v16 = [v11 valueForKey:@"diskWriteExceptionDiagnostics"];
+    v16 = [diagnosticsCopy valueForKey:@"diskWriteExceptionDiagnostics"];
     diskWriteExceptionDiagnostics = v12->_diskWriteExceptionDiagnostics;
     v12->_diskWriteExceptionDiagnostics = v16;
 
-    v18 = [v11 valueForKey:@"hangDiagnostics"];
+    v18 = [diagnosticsCopy valueForKey:@"hangDiagnostics"];
     hangDiagnostics = v12->_hangDiagnostics;
     v12->_hangDiagnostics = v18;
 
-    v20 = [v11 valueForKey:@"appLaunchDiagnostics"];
+    v20 = [diagnosticsCopy valueForKey:@"appLaunchDiagnostics"];
     appLaunchDiagnostics = v12->_appLaunchDiagnostics;
     v12->_appLaunchDiagnostics = v20;
 
-    v22 = [v11 valueForKey:@"crashDiagnostics"];
+    v22 = [diagnosticsCopy valueForKey:@"crashDiagnostics"];
     crashDiagnostics = v12->_crashDiagnostics;
     v12->_crashDiagnostics = v22;
 
-    objc_storeStrong(&v12->_timeStampEnd, a4);
-    objc_storeStrong(&v12->_timeStampBegin, a3);
+    objc_storeStrong(&v12->_timeStampEnd, end);
+    objc_storeStrong(&v12->_timeStampBegin, begin);
 LABEL_5:
     v13 = v12;
   }
@@ -123,11 +123,11 @@ LABEL_5:
 
 - (NSData)JSONRepresentation
 {
-  v2 = [(MXDiagnosticPayload *)self toDictionary];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  toDictionary = [(MXDiagnosticPayload *)self toDictionary];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:toDictionary])
   {
     v5 = 0;
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:1 error:&v5];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:toDictionary options:1 error:&v5];
   }
 
   else
@@ -180,8 +180,8 @@ LABEL_5:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v61 + 1) + 8 * i) toDictionary];
-          [v8 addObject:v14];
+          toDictionary = [*(*(&v61 + 1) + 8 * i) toDictionary];
+          [v8 addObject:toDictionary];
         }
 
         v11 = [(NSArray *)v9 countByEnumeratingWithState:&v61 objects:v69 count:16];
@@ -215,8 +215,8 @@ LABEL_5:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v57 + 1) + 8 * j) toDictionary];
-          [v15 addObject:v21];
+          toDictionary2 = [*(*(&v57 + 1) + 8 * j) toDictionary];
+          [v15 addObject:toDictionary2];
         }
 
         v18 = [(NSArray *)v16 countByEnumeratingWithState:&v57 objects:v68 count:16];
@@ -250,8 +250,8 @@ LABEL_5:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v53 + 1) + 8 * k) toDictionary];
-          [v22 addObject:v28];
+          toDictionary3 = [*(*(&v53 + 1) + 8 * k) toDictionary];
+          [v22 addObject:toDictionary3];
         }
 
         v25 = [(NSArray *)v23 countByEnumeratingWithState:&v53 objects:v67 count:16];
@@ -285,8 +285,8 @@ LABEL_5:
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v49 + 1) + 8 * m) toDictionary];
-          [v29 addObject:v35];
+          toDictionary4 = [*(*(&v49 + 1) + 8 * m) toDictionary];
+          [v29 addObject:toDictionary4];
         }
 
         v32 = [(NSArray *)v30 countByEnumeratingWithState:&v49 objects:v66 count:16];
@@ -320,8 +320,8 @@ LABEL_5:
             objc_enumerationMutation(v37);
           }
 
-          v42 = [*(*(&v45 + 1) + 8 * n) toDictionary];
-          [v36 addObject:v42];
+          toDictionary5 = [*(*(&v45 + 1) + 8 * n) toDictionary];
+          [v36 addObject:toDictionary5];
         }
 
         v39 = [(NSArray *)v37 countByEnumeratingWithState:&v45 objects:v65 count:16];

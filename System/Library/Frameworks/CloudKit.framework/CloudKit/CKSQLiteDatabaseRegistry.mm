@@ -1,20 +1,20 @@
 @interface CKSQLiteDatabaseRegistry
-- (id)databaseIDForDatabase:(id)a3 error:(id *)a4;
-- (id)databaseWithID:(id)a3;
-- (id)entryForDatabase:(id)a3 refresh:(BOOL)a4 error:(id *)a5;
-- (id)registerDatabase:(id)a3;
+- (id)databaseIDForDatabase:(id)database error:(id *)error;
+- (id)databaseWithID:(id)d;
+- (id)entryForDatabase:(id)database refresh:(BOOL)refresh error:(id *)error;
+- (id)registerDatabase:(id)database;
 @end
 
 @implementation CKSQLiteDatabaseRegistry
 
-- (id)registerDatabase:(id)a3
+- (id)registerDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_alloc_init(CKSQLiteDatabaseRegistryEntry);
-  v8 = objc_msgSend_databaseDirectory(v4, v6, v7);
+  v8 = objc_msgSend_databaseDirectory(databaseCopy, v6, v7);
   objc_msgSend_setDatabaseDirectory_(v5, v9, v8);
 
-  v12 = objc_msgSend_uuid(v4, v10, v11);
+  v12 = objc_msgSend_uuid(databaseCopy, v10, v11);
 
   objc_msgSend_setDatabaseUUID_(v5, v13, v12);
   v15 = objc_msgSend_insertObject_(self, v14, v5);
@@ -22,9 +22,9 @@
   return v15;
 }
 
-- (id)databaseWithID:(id)a3
+- (id)databaseWithID:(id)d
 {
-  v4 = objc_msgSend_entryWithPrimaryKey_error_(self, a2, a3, 0);
+  v4 = objc_msgSend_entryWithPrimaryKey_error_(self, a2, d, 0);
   v7 = v4;
   if (!v4)
   {
@@ -80,18 +80,18 @@ LABEL_12:
   return v13;
 }
 
-- (id)entryForDatabase:(id)a3 refresh:(BOOL)a4 error:(id *)a5
+- (id)entryForDatabase:(id)database refresh:(BOOL)refresh error:(id *)error
 {
-  v6 = a4;
+  refreshCopy = refresh;
   v34[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  databaseCopy = database;
   objc_msgSend_db(self, v9, v10);
 
-  v13 = objc_msgSend_databaseManagerData(v8, v11, v12);
+  v13 = objc_msgSend_databaseManagerData(databaseCopy, v11, v12);
   if (v13)
   {
     v16 = v13;
-    if (v6)
+    if (refreshCopy)
     {
       v17 = objc_msgSend_fetchAllProperties_(self, v14, v13);
     }
@@ -99,7 +99,7 @@ LABEL_12:
 
   else
   {
-    v18 = objc_msgSend_uuid(v8, v14, v15);
+    v18 = objc_msgSend_uuid(databaseCopy, v14, v15);
     v33 = @"UUID";
     v34[0] = v18;
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v19, v34, &v33, 1);
@@ -107,7 +107,7 @@ LABEL_12:
     if (!v16)
     {
       v16 = objc_alloc_init(CKSQLiteDatabaseRegistryEntry);
-      v25 = objc_msgSend_databaseDirectory(v8, v23, v24);
+      v25 = objc_msgSend_databaseDirectory(databaseCopy, v23, v24);
       objc_msgSend_setDatabaseDirectory_(v16, v26, v25);
 
       objc_msgSend_setDatabaseUUID_(v16, v27, v18);
@@ -115,11 +115,11 @@ LABEL_12:
       if (v29)
       {
 
-        if (a5)
+        if (error)
         {
           v30 = v29;
           v16 = 0;
-          *a5 = v29;
+          *error = v29;
         }
 
         else
@@ -129,7 +129,7 @@ LABEL_12:
       }
     }
 
-    objc_msgSend_setDatabaseManagerData_(v8, v22, v16);
+    objc_msgSend_setDatabaseManagerData_(databaseCopy, v22, v16);
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -137,12 +137,12 @@ LABEL_12:
   return v16;
 }
 
-- (id)databaseIDForDatabase:(id)a3 error:(id *)a4
+- (id)databaseIDForDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   objc_msgSend_db(self, v7, v8);
 
-  v10 = objc_msgSend_entryForDatabase_refresh_error_(self, v9, v6, 0, a4);
+  v10 = objc_msgSend_entryForDatabase_refresh_error_(self, v9, databaseCopy, 0, error);
 
   v13 = objc_msgSend_databaseID(v10, v11, v12);
 

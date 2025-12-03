@@ -1,7 +1,7 @@
 @interface AntBlockPowerLimitCameraPolicy
 - (AntBlockPowerLimitCameraPolicy)init;
 - (id)constructXpcMessage;
-- (void)extractPolicy:(id)a3;
+- (void)extractPolicy:(id)policy;
 @end
 
 @implementation AntBlockPowerLimitCameraPolicy
@@ -15,20 +15,20 @@
   return result;
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = AntBlockPowerLimitCameraPolicy;
-  v4 = a3;
-  [(AntBlockPowerLimitBasePolicy *)&v9 extractPolicy:v4];
-  v5 = [v4 objectForKey:{@"SKU", v9.receiver, v9.super_class}];
+  policyCopy = policy;
+  [(AntBlockPowerLimitBasePolicy *)&v9 extractPolicy:policyCopy];
+  v5 = [policyCopy objectForKey:{@"SKU", v9.receiver, v9.super_class}];
 
   if (v5)
   {
-    v6 = [v5 UTF8String];
-    if (v6)
+    uTF8String = [v5 UTF8String];
+    if (uTF8String)
     {
-      v7 = *v6;
+      v7 = *uTF8String;
       if (v7 > 0x42)
       {
         if (v7 == 67)
@@ -46,7 +46,7 @@
         goto LABEL_10;
       }
 
-      if (*v6)
+      if (*uTF8String)
       {
         if (v7 == 65)
         {
@@ -76,11 +76,11 @@ LABEL_15:
 {
   v6.receiver = self;
   v6.super_class = AntBlockPowerLimitCameraPolicy;
-  v3 = [(AntBlockPowerLimitBasePolicy *)&v6 constructXpcMessage];
-  v4 = v3;
-  if (v3)
+  constructXpcMessage = [(AntBlockPowerLimitBasePolicy *)&v6 constructXpcMessage];
+  v4 = constructXpcMessage;
+  if (constructXpcMessage)
   {
-    xpc_dictionary_set_uint64(v3, "kWCMCellularSetAntBlocking_SKU", self->_mSKU);
+    xpc_dictionary_set_uint64(constructXpcMessage, "kWCMCellularSetAntBlocking_SKU", self->_mSKU);
   }
 
   return v4;

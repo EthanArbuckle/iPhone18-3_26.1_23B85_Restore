@@ -1,29 +1,29 @@
 @interface PGWallpaperSuggestionAssetGater
-+ (double)sydneyMD4FaceQualityFromAsset:(id)a3;
++ (double)sydneyMD4FaceQualityFromAsset:(id)asset;
 + (id)assetFetchPropertySetsForGating;
-+ (unint64_t)_posterClassificationFromAssetGaterType:(unint64_t)a3;
++ (unint64_t)_posterClassificationFromAssetGaterType:(unint64_t)type;
 - ($029C8AA35660F62BB82CBF098D3EDE08)currentGatingStatistics;
 - ($2753767B6D5E71768FC0A26EE39D5FB2)settlingEffectGatingStatistics;
-- (BOOL)_hasPetFaceWithWallpaperProperties:(id)a3;
-- (BOOL)_passesSegmentationWithWallpaperProperties:(id)a3;
-- (BOOL)_passesSettlingEffectWithWallpaperProperties:(id)a3;
-- (BOOL)assetIsUsingHeadroom:(id)a3;
-- (BOOL)cacheExistsForAsset:(id)a3;
-- (BOOL)hasValidAnalysisVersionForAsset:(id)a3;
-- (BOOL)persistWallpaperProperties:(id)a3 ofAsset:(id)a4 error:(id *)a5;
-- (PGWallpaperSuggestionAssetGater)initWithType:(unint64_t)a3 loggingConnection:(id)a4;
-- (id)_gateAsset:(id)a3 wallpaperProperties:(id *)a4 progressBlock:(id)a5;
-- (id)_requestAnalysisTypes:(unint64_t)a3 asset:(id)a4 options:(id)a5 progressBlock:(id)a6 error:(id *)a7;
-- (id)_requestWallpaperPropertiesForAsset:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (id)existingSegmentationScoresWithAsset:(id)a3;
-- (id)existingWallpaperPropertiesWithAsset:(id)a3;
-- (id)gateAsset:(id)a3 hasPetFace:(BOOL *)a4;
-- (id)gatingResultWithWallpaperProperties:(id)a3;
-- (id)requestAndPersistWallpaperPropertiesForAsset:(id)a3 progressBlock:(id)a4;
-- (id)wallpaperPropertiesFromAnalysisResults:(id)a3 andAsset:(id)a4;
-- (void)clearCacheOfAsset:(id)a3;
-- (void)logCurrentGatingStatisticsWithPrefix:(id)a3;
-- (void)logCurrentSettlingEffectGatingStatisticsWithPrefix:(id)a3;
+- (BOOL)_hasPetFaceWithWallpaperProperties:(id)properties;
+- (BOOL)_passesSegmentationWithWallpaperProperties:(id)properties;
+- (BOOL)_passesSettlingEffectWithWallpaperProperties:(id)properties;
+- (BOOL)assetIsUsingHeadroom:(id)headroom;
+- (BOOL)cacheExistsForAsset:(id)asset;
+- (BOOL)hasValidAnalysisVersionForAsset:(id)asset;
+- (BOOL)persistWallpaperProperties:(id)properties ofAsset:(id)asset error:(id *)error;
+- (PGWallpaperSuggestionAssetGater)initWithType:(unint64_t)type loggingConnection:(id)connection;
+- (id)_gateAsset:(id)asset wallpaperProperties:(id *)properties progressBlock:(id)block;
+- (id)_requestAnalysisTypes:(unint64_t)types asset:(id)asset options:(id)options progressBlock:(id)block error:(id *)error;
+- (id)_requestWallpaperPropertiesForAsset:(id)asset progressBlock:(id)block error:(id *)error;
+- (id)existingSegmentationScoresWithAsset:(id)asset;
+- (id)existingWallpaperPropertiesWithAsset:(id)asset;
+- (id)gateAsset:(id)asset hasPetFace:(BOOL *)face;
+- (id)gatingResultWithWallpaperProperties:(id)properties;
+- (id)requestAndPersistWallpaperPropertiesForAsset:(id)asset progressBlock:(id)block;
+- (id)wallpaperPropertiesFromAnalysisResults:(id)results andAsset:(id)asset;
+- (void)clearCacheOfAsset:(id)asset;
+- (void)logCurrentGatingStatisticsWithPrefix:(id)prefix;
+- (void)logCurrentSettlingEffectGatingStatisticsWithPrefix:(id)prefix;
 @end
 
 @implementation PGWallpaperSuggestionAssetGater
@@ -47,19 +47,19 @@
   return self;
 }
 
-- (void)clearCacheOfAsset:(id)a3
+- (void)clearCacheOfAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 photoLibrary];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__PGWallpaperSuggestionAssetGater_clearCacheOfAsset___block_invoke;
   v12[3] = &unk_27888A660;
-  v6 = v4;
+  v6 = assetCopy;
   v13 = v6;
   v11 = 0;
-  v7 = [v5 performChangesAndWait:v12 error:&v11];
+  v7 = [photoLibrary performChangesAndWait:v12 error:&v11];
   v8 = v11;
 
   if ((v7 & 1) == 0)
@@ -84,36 +84,36 @@ void __53__PGWallpaperSuggestionAssetGater_clearCacheOfAsset___block_invoke(uint
   [v1 deleteAssetResourceWithType:109];
 }
 
-- (BOOL)cacheExistsForAsset:(id)a3
+- (BOOL)cacheExistsForAsset:(id)asset
 {
   v3 = MEMORY[0x277CD9A08];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithPhotoAsset:v4];
+  assetCopy = asset;
+  v5 = [[v3 alloc] initWithPhotoAsset:assetCopy];
 
-  v6 = [v5 segmentationResourceURL];
-  LOBYTE(v4) = v6 != 0;
+  segmentationResourceURL = [v5 segmentationResourceURL];
+  LOBYTE(assetCopy) = segmentationResourceURL != 0;
 
-  return v4;
+  return assetCopy;
 }
 
-- (BOOL)_hasPetFaceWithWallpaperProperties:(id)a3
+- (BOOL)_hasPetFaceWithWallpaperProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"petsModelVersion"];
-  v5 = [v4 unsignedIntegerValue];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"petsModelVersion"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"petsFaceConfidence"];
+  v6 = [propertiesCopy objectForKeyedSubscript:@"petsFaceConfidence"];
 
   [v6 doubleValue];
   v8 = v7;
 
-  return v8 >= 0.5 && v5 == 0;
+  return v8 >= 0.5 && unsignedIntegerValue == 0;
 }
 
-- (BOOL)_passesSettlingEffectWithWallpaperProperties:(id)a3
+- (BOOL)_passesSettlingEffectWithWallpaperProperties:(id)properties
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"segmentationScores"];
+  v4 = [properties objectForKeyedSubscript:@"segmentationScores"];
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
@@ -315,9 +315,9 @@ LABEL_48:
   return v6;
 }
 
-- (BOOL)_passesSegmentationWithWallpaperProperties:(id)a3
+- (BOOL)_passesSegmentationWithWallpaperProperties:(id)properties
 {
-  v3 = [a3 objectForKeyedSubscript:@"segmentationScores"];
+  v3 = [properties objectForKeyedSubscript:@"segmentationScores"];
   if ([MEMORY[0x277D3A950] curatedSegmentationGatingDecisionForSegmentationScores:v3])
   {
     v4 = [MEMORY[0x277D3A950] layoutGatingDecisionForSegmentationScores:v3];
@@ -331,38 +331,38 @@ LABEL_48:
   return v4;
 }
 
-- (id)gatingResultWithWallpaperProperties:(id)a3
+- (id)gatingResultWithWallpaperProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_alloc_init(PGWallpaperAssetGaterResult);
   if (self->_type != 5)
   {
-    [(PGWallpaperAssetGaterResult *)v5 setPassesSegmentation:[(PGWallpaperSuggestionAssetGater *)self _passesSegmentationWithWallpaperProperties:v4]];
+    [(PGWallpaperAssetGaterResult *)v5 setPassesSegmentation:[(PGWallpaperSuggestionAssetGater *)self _passesSegmentationWithWallpaperProperties:propertiesCopy]];
   }
 
-  [(PGWallpaperAssetGaterResult *)v5 setPassesSettlingEffect:[(PGWallpaperSuggestionAssetGater *)self _passesSettlingEffectWithWallpaperProperties:v4]];
+  [(PGWallpaperAssetGaterResult *)v5 setPassesSettlingEffect:[(PGWallpaperSuggestionAssetGater *)self _passesSettlingEffectWithWallpaperProperties:propertiesCopy]];
 
   return v5;
 }
 
-- (id)wallpaperPropertiesFromAnalysisResults:(id)a3 andAsset:(id)a4
+- (id)wallpaperPropertiesFromAnalysisResults:(id)results andAsset:(id)asset
 {
-  v6 = a3;
+  resultsCopy = results;
   v7 = MEMORY[0x277CBEB38];
-  v8 = a4;
+  assetCopy = asset;
   v9 = objc_alloc_init(v7);
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v8 sceneAnalysisProperties];
-  v12 = [v10 numberWithShort:{objc_msgSend(v11, "sceneAnalysisVersion")}];
+  sceneAnalysisProperties = [assetCopy sceneAnalysisProperties];
+  v12 = [v10 numberWithShort:{objc_msgSend(sceneAnalysisProperties, "sceneAnalysisVersion")}];
   [v9 setObject:v12 forKeyedSubscript:@"sceneAnalysisVersion"];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v8 faceAnalysisVersion];
+  faceAnalysisVersion = [assetCopy faceAnalysisVersion];
 
-  v15 = [v13 numberWithShort:v14];
+  v15 = [v13 numberWithShort:faceAnalysisVersion];
   [v9 setObject:v15 forKeyedSubscript:@"faceAnalysisVersion"];
 
-  v16 = [v6 objectForKeyedSubscript:*MEMORY[0x277D26778]];
+  v16 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D26778]];
   [v9 setObject:v16 forKeyedSubscript:@"segmentationScores"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x277D3A950], "currentVersion")}];
@@ -371,22 +371,22 @@ LABEL_48:
   if (self->_type == 2)
   {
     v18 = *MEMORY[0x277D26788];
-    v19 = [v6 objectForKeyedSubscript:*MEMORY[0x277D26788]];
+    v19 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D26788]];
     v20 = *MEMORY[0x277D267A8];
     v21 = [v19 objectForKeyedSubscript:*MEMORY[0x277D267A8]];
     [v9 setObject:v21 forKeyedSubscript:@"petsBounds"];
 
-    v22 = [v6 objectForKeyedSubscript:v18];
+    v22 = [resultsCopy objectForKeyedSubscript:v18];
     v23 = *MEMORY[0x277D267B0];
     v24 = [v22 objectForKeyedSubscript:*MEMORY[0x277D267B0]];
     [v9 setObject:v24 forKeyedSubscript:@"petsConfidence"];
 
     v25 = *MEMORY[0x277D26780];
-    v26 = [v6 objectForKeyedSubscript:*MEMORY[0x277D26780]];
+    v26 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D26780]];
     v27 = [v26 objectForKeyedSubscript:v20];
     [v9 setObject:v27 forKeyedSubscript:@"petsFaceBounds"];
 
-    v28 = [v6 objectForKeyedSubscript:v25];
+    v28 = [resultsCopy objectForKeyedSubscript:v25];
     v29 = [v28 objectForKeyedSubscript:v23];
     [v9 setObject:v29 forKeyedSubscript:@"petsFaceConfidence"];
 
@@ -394,18 +394,18 @@ LABEL_48:
     [v9 setObject:v30 forKeyedSubscript:@"petsModelVersion"];
   }
 
-  v31 = [(PFWallpaperCompoundDeviceConfiguration *)self->_deviceWallpaperLayoutConfiguration dictionaryRepresentation];
-  [v9 setObject:v31 forKeyedSubscript:@"wallpaperLayoutConfiguration"];
+  dictionaryRepresentation = [(PFWallpaperCompoundDeviceConfiguration *)self->_deviceWallpaperLayoutConfiguration dictionaryRepresentation];
+  [v9 setObject:dictionaryRepresentation forKeyedSubscript:@"wallpaperLayoutConfiguration"];
 
   [v9 setObject:&unk_284483798 forKeyedSubscript:@"wallpaperSpecificationVersion"];
 
   return v9;
 }
 
-- (BOOL)persistWallpaperProperties:(id)a3 ofAsset:(id)a4 error:(id *)a5
+- (BOOL)persistWallpaperProperties:(id)properties ofAsset:(id)asset error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  propertiesCopy = properties;
+  assetCopy = asset;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -416,18 +416,18 @@ LABEL_48:
   v23 = __Block_byref_object_copy__32084;
   v24 = __Block_byref_object_dispose__32085;
   v25 = 0;
-  v9 = [v8 photoLibrary];
+  photoLibrary = [assetCopy photoLibrary];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __76__PGWallpaperSuggestionAssetGater_persistWallpaperProperties_ofAsset_error___block_invoke;
   v15[3] = &unk_278882FE0;
-  v10 = v7;
+  v10 = propertiesCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = assetCopy;
   v17 = v11;
   v18 = &v26;
   v19 = &v20;
-  v12 = [v9 performChangesAndWait:v15 error:a5];
+  v12 = [photoLibrary performChangesAndWait:v15 error:error];
 
   if (!v12)
   {
@@ -436,10 +436,10 @@ LABEL_48:
 
   if ((v27[3] & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v13 = 0;
-      *a5 = v21[5];
+      *error = v21[5];
       goto LABEL_7;
     }
 
@@ -493,12 +493,12 @@ void __76__PGWallpaperSuggestionAssetGater_persistWallpaperProperties_ofAsset_er
   }
 }
 
-- (id)_requestAnalysisTypes:(unint64_t)a3 asset:(id)a4 options:(id)a5 progressBlock:(id)a6 error:(id *)a7
+- (id)_requestAnalysisTypes:(unint64_t)types asset:(id)asset options:(id)options progressBlock:(id)block error:(id *)error
 {
   v82[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v46 = a5;
-  v12 = a6;
+  assetCopy = asset;
+  optionsCopy = options;
+  blockCopy = block;
   v70 = 0;
   v71 = &v70;
   v72 = 0x3032000000;
@@ -512,7 +512,7 @@ void __76__PGWallpaperSuggestionAssetGater_persistWallpaperProperties_ofAsset_er
   v68 = __Block_byref_object_dispose__32085;
   v69 = 0;
   [MEMORY[0x277CBEAA8] date];
-  v42 = v44 = v12;
+  v42 = v44 = blockCopy;
   v43 = [v42 dateByAddingTimeInterval:120.0];
   v13 = dispatch_semaphore_create(0);
   v14 = dispatch_get_global_queue(33, 0);
@@ -521,9 +521,9 @@ void __76__PGWallpaperSuggestionAssetGater_persistWallpaperProperties_ofAsset_er
   v16 = self->_loggingConnection;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v11 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138412546;
-    *&buf[4] = v17;
+    *&buf[4] = uuid;
     *&buf[12] = 2048;
     *&buf[14] = 0x405E000000000000;
     _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[PGWallpaperSuggestionAssetGater] Start requesting analysis for asset: %@. Timeout: %.3f seconds", buf, 0x16u);
@@ -546,7 +546,7 @@ void __76__PGWallpaperSuggestionAssetGater_persistWallpaperProperties_ofAsset_er
   mach_timebase_info(&info);
   v41 = mach_absolute_time();
   mediaAnalysisService = self->_mediaAnalysisService;
-  v82[0] = v11;
+  v82[0] = assetCopy;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:1];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
@@ -555,13 +555,13 @@ void __76__PGWallpaperSuggestionAssetGater_persistWallpaperProperties_ofAsset_er
   v25 = v15;
   v57 = v25;
   v60 = &v70;
-  v26 = v11;
+  v26 = assetCopy;
   v58 = v26;
   v61 = &v64;
-  v62 = a3;
+  typesCopy = types;
   v27 = v13;
   v59 = v27;
-  v28 = [(VCPMediaAnalysisService *)mediaAnalysisService requestAnalysisTypes:a3 forAssets:v24 withOptions:v46 progressHandler:&__block_literal_global_328 andCompletionHandler:v56];
+  v28 = [(VCPMediaAnalysisService *)mediaAnalysisService requestAnalysisTypes:types forAssets:v24 withOptions:optionsCopy progressHandler:&__block_literal_global_328 andCompletionHandler:v56];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -579,7 +579,7 @@ void __76__PGWallpaperSuggestionAssetGater_persistWallpaperProperties_ofAsset_er
   v30 = v43;
   v48 = v30;
   v49 = v25;
-  v50 = self;
+  selfCopy = self;
   v55 = v28;
   v31 = v26;
   v51 = v31;
@@ -607,9 +607,9 @@ void __76__PGWallpaperSuggestionAssetGater_persistWallpaperProperties_ofAsset_er
     _os_log_impl(&dword_22F0FC000, v36, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", v76, 0x16u);
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v65[5];
+    *error = v65[5];
   }
 
   v37 = v71[5];
@@ -712,14 +712,14 @@ void __91__PGWallpaperSuggestionAssetGater__requestAnalysisTypes_asset_options_p
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_requestWallpaperPropertiesForAsset:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (id)_requestWallpaperPropertiesForAsset:(id)asset progressBlock:(id)block error:(id *)error
 {
   v29[7] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  blockCopy = block;
   v10 = [objc_opt_class() _posterClassificationFromAssetGaterType:self->_type];
   v11 = [MEMORY[0x277D3C810] mediaAnalysisTypeForPosterClassification:v10];
-  v12 = [(PFWallpaperCompoundDeviceConfiguration *)self->_deviceWallpaperLayoutConfiguration dictionaryRepresentation];
+  dictionaryRepresentation = [(PFWallpaperCompoundDeviceConfiguration *)self->_deviceWallpaperLayoutConfiguration dictionaryRepresentation];
   if ([(PGWallpaperSuggestionAssetGater *)self isUserInitiated])
   {
     v13 = 1;
@@ -738,7 +738,7 @@ void __91__PGWallpaperSuggestionAssetGater__requestAnalysisTypes_asset_options_p
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
   v17 = *MEMORY[0x277D3AAD8];
   v29[1] = v16;
-  v29[2] = v12;
+  v29[2] = dictionaryRepresentation;
   v18 = *MEMORY[0x277D3AAF0];
   v28[2] = v17;
   v28[3] = v18;
@@ -755,12 +755,12 @@ void __91__PGWallpaperSuggestionAssetGater__requestAnalysisTypes_asset_options_p
   v29[6] = &unk_284483780;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:7];
 
-  v24 = [(PGWallpaperSuggestionAssetGater *)self _requestAnalysisTypes:v11 | 0x800000000 asset:v8 options:v23 progressBlock:v9 error:a5];
+  v24 = [(PGWallpaperSuggestionAssetGater *)self _requestAnalysisTypes:v11 | 0x800000000 asset:assetCopy options:v23 progressBlock:blockCopy error:error];
 
   ++self->_currentGatingStatistics.numberOfMediaAnalysisRequest;
   if (v24)
   {
-    v25 = [(PGWallpaperSuggestionAssetGater *)self wallpaperPropertiesFromAnalysisResults:v24 andAsset:v8];
+    v25 = [(PGWallpaperSuggestionAssetGater *)self wallpaperPropertiesFromAnalysisResults:v24 andAsset:assetCopy];
   }
 
   else
@@ -773,12 +773,12 @@ void __91__PGWallpaperSuggestionAssetGater__requestAnalysisTypes_asset_options_p
   return v25;
 }
 
-- (id)requestAndPersistWallpaperPropertiesForAsset:(id)a3 progressBlock:(id)a4
+- (id)requestAndPersistWallpaperPropertiesForAsset:(id)asset progressBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![(PGWallpaperSuggestionAssetGater *)self hasValidAnalysisVersionForAsset:v6])
+  assetCopy = asset;
+  blockCopy = block;
+  if (![(PGWallpaperSuggestionAssetGater *)self hasValidAnalysisVersionForAsset:assetCopy])
   {
     v8 = 0;
     ++self->_currentGatingStatistics.numberOfInvalidAnalysisVersion;
@@ -786,7 +786,7 @@ void __91__PGWallpaperSuggestionAssetGater__requestAnalysisTypes_asset_options_p
   }
 
   v22 = 0;
-  v8 = [(PGWallpaperSuggestionAssetGater *)self _requestWallpaperPropertiesForAsset:v6 progressBlock:v7 error:&v22];
+  v8 = [(PGWallpaperSuggestionAssetGater *)self _requestWallpaperPropertiesForAsset:assetCopy progressBlock:blockCopy error:&v22];
   v9 = v22;
   v10 = v9;
   if (v8)
@@ -794,7 +794,7 @@ void __91__PGWallpaperSuggestionAssetGater__requestAnalysisTypes_asset_options_p
     if (!self->_coversTracks)
     {
       v21 = v9;
-      v11 = [(PGWallpaperSuggestionAssetGater *)self persistWallpaperProperties:v8 ofAsset:v6 error:&v21];
+      v11 = [(PGWallpaperSuggestionAssetGater *)self persistWallpaperProperties:v8 ofAsset:assetCopy error:&v21];
       v12 = v21;
 
       if (!v11)
@@ -803,9 +803,9 @@ void __91__PGWallpaperSuggestionAssetGater__requestAnalysisTypes_asset_options_p
         if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           v14 = loggingConnection;
-          v15 = [v6 localIdentifier];
+          localIdentifier = [assetCopy localIdentifier];
           *buf = 138412546;
-          v24 = v15;
+          v24 = localIdentifier;
           v25 = 2112;
           v26 = v12;
           _os_log_error_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_ERROR, "[PGWallpaperSuggestionAssetGater] Failed persisting wallpaper properties on asset %@: %@", buf, 0x16u);
@@ -823,9 +823,9 @@ void __91__PGWallpaperSuggestionAssetGater__requestAnalysisTypes_asset_options_p
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v19 = v16;
-      v20 = [v6 localIdentifier];
+      localIdentifier2 = [assetCopy localIdentifier];
       *buf = 138412546;
-      v24 = v20;
+      v24 = localIdentifier2;
       v25 = 2112;
       v26 = v10;
       _os_log_error_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_ERROR, "[PGWallpaperSuggestionAssetGater] Failed getting wallpaper properties on asset %@: %@", buf, 0x16u);
@@ -841,37 +841,37 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)hasValidAnalysisVersionForAsset:(id)a3
+- (BOOL)hasValidAnalysisVersionForAsset:(id)asset
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 adjustmentTimestamp];
-  v6 = v5;
-  if (v5)
+  assetCopy = asset;
+  adjustmentTimestamp = [assetCopy adjustmentTimestamp];
+  v6 = adjustmentTimestamp;
+  if (adjustmentTimestamp)
   {
-    v7 = v5;
+    creationDate = adjustmentTimestamp;
   }
 
   else
   {
-    v7 = [v4 creationDate];
+    creationDate = [assetCopy creationDate];
   }
 
-  v8 = v7;
+  v8 = creationDate;
 
   v9 = *MEMORY[0x277D26848];
   LODWORD(v10) = *MEMORY[0x277D26840];
-  v11 = [v4 sceneAnalysisProperties];
-  v12 = [v11 sceneAnalysisVersion];
+  sceneAnalysisProperties = [assetCopy sceneAnalysisProperties];
+  sceneAnalysisVersion = [sceneAnalysisProperties sceneAnalysisVersion];
 
-  v13 = [v4 faceAnalysisVersion];
-  if (v9 <= v12)
+  faceAnalysisVersion = [assetCopy faceAnalysisVersion];
+  if (v9 <= sceneAnalysisVersion)
   {
-    v14 = [v4 sceneAnalysisProperties];
-    v15 = [v14 sceneAnalysisTimestamp];
-    if ([v15 isEqualToDate:v8] && v13 >= v10)
+    sceneAnalysisProperties2 = [assetCopy sceneAnalysisProperties];
+    sceneAnalysisTimestamp = [sceneAnalysisProperties2 sceneAnalysisTimestamp];
+    if ([sceneAnalysisTimestamp isEqualToDate:v8] && faceAnalysisVersion >= v10)
     {
-      [v4 faceAdjustmentVersion];
+      [assetCopy faceAdjustmentVersion];
       v33 = v10;
       v34 = v10 = v8;
       loga = [v34 isEqualToDate:v10];
@@ -891,20 +891,20 @@ LABEL_12:
     }
   }
 
-  if (self->_type == 5 && v12 >= 1 && v13 >= 1 && (v9 > v12 || v13 < v10))
+  if (self->_type == 5 && sceneAnalysisVersion >= 1 && faceAnalysisVersion >= 1 && (v9 > sceneAnalysisVersion || faceAnalysisVersion < v10))
   {
     loggingConnection = self->_loggingConnection;
     v17 = 1;
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       v18 = loggingConnection;
-      v19 = [v4 uuid];
+      uuid = [assetCopy uuid];
       *buf = 138412802;
-      v38 = v19;
+      v38 = uuid;
       v39 = 1024;
-      v40 = v12;
+      v40 = sceneAnalysisVersion;
       v41 = 1024;
-      LODWORD(v42) = v13;
+      LODWORD(v42) = faceAnalysisVersion;
       _os_log_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_INFO, "[PGWallpaperSuggestionAssetGater] Asset %@ analysis in not up-to-date, performing SettlingEffect, detecting an upgrade scenario with analysis versions (%d, %d), allowing.", buf, 0x18u);
     }
   }
@@ -915,27 +915,27 @@ LABEL_12:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       log = v20;
-      v21 = [v4 uuid];
-      v22 = [v4 sceneAnalysisProperties];
+      uuid2 = [assetCopy uuid];
+      sceneAnalysisProperties3 = [assetCopy sceneAnalysisProperties];
       v23 = v8;
-      v24 = [v22 sceneAnalysisVersion];
-      v25 = [v4 sceneAnalysisProperties];
-      v26 = [v25 sceneAnalysisTimestamp];
-      v27 = [v4 faceAnalysisVersion];
-      v28 = [v4 faceAdjustmentVersion];
+      sceneAnalysisVersion2 = [sceneAnalysisProperties3 sceneAnalysisVersion];
+      sceneAnalysisProperties4 = [assetCopy sceneAnalysisProperties];
+      sceneAnalysisTimestamp2 = [sceneAnalysisProperties4 sceneAnalysisTimestamp];
+      faceAnalysisVersion2 = [assetCopy faceAnalysisVersion];
+      faceAdjustmentVersion = [assetCopy faceAdjustmentVersion];
       v29 = v10;
-      v30 = v28;
+      v30 = faceAdjustmentVersion;
       *buf = 138414082;
-      v38 = v21;
+      v38 = uuid2;
       v39 = 1024;
-      v40 = v24;
+      v40 = sceneAnalysisVersion2;
       v8 = v23;
       v41 = 2112;
-      v42 = v26;
+      v42 = sceneAnalysisTimestamp2;
       v43 = 1024;
-      v44 = v27;
+      v44 = faceAnalysisVersion2;
       v45 = 2112;
-      v46 = v28;
+      v46 = faceAdjustmentVersion;
       v47 = 1024;
       v48 = v9;
       v49 = 1024;
@@ -954,21 +954,21 @@ LABEL_18:
   return v17;
 }
 
-- (id)existingWallpaperPropertiesWithAsset:(id)a3
+- (id)existingWallpaperPropertiesWithAsset:(id)asset
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 photoAnalysisWallpaperProperties];
-  if ([v5 wallpaperPropertiesVersion] != 10)
+  assetCopy = asset;
+  photoAnalysisWallpaperProperties = [assetCopy photoAnalysisWallpaperProperties];
+  if ([photoAnalysisWallpaperProperties wallpaperPropertiesVersion] != 10)
   {
     goto LABEL_13;
   }
 
-  v6 = [v5 wallpaperPropertiesTimestamp];
-  v7 = [v4 adjustmentTimestamp];
-  if (v7)
+  wallpaperPropertiesTimestamp = [photoAnalysisWallpaperProperties wallpaperPropertiesTimestamp];
+  adjustmentTimestamp = [assetCopy adjustmentTimestamp];
+  if (adjustmentTimestamp)
   {
-    v8 = [v6 isEqualToDate:v7];
+    v8 = [wallpaperPropertiesTimestamp isEqualToDate:adjustmentTimestamp];
 
     if (v8)
     {
@@ -980,8 +980,8 @@ LABEL_13:
     goto LABEL_32;
   }
 
-  v24 = [v4 creationDate];
-  v25 = [v6 isEqualToDate:v24];
+  creationDate = [assetCopy creationDate];
+  v25 = [wallpaperPropertiesTimestamp isEqualToDate:creationDate];
 
   if (!v25)
   {
@@ -990,9 +990,9 @@ LABEL_13:
 
 LABEL_4:
   v9 = MEMORY[0x277CCAC58];
-  v10 = [v5 wallpaperPropertiesData];
+  wallpaperPropertiesData = [photoAnalysisWallpaperProperties wallpaperPropertiesData];
   v41 = 0;
-  v11 = [v9 propertyListWithData:v10 options:0 format:0 error:&v41];
+  v11 = [v9 propertyListWithData:wallpaperPropertiesData options:0 format:0 error:&v41];
   v12 = v41;
 
   if (!v11)
@@ -1001,9 +1001,9 @@ LABEL_4:
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v27 = loggingConnection;
-      v28 = [v4 localIdentifier];
+      localIdentifier = [assetCopy localIdentifier];
       *buf = 138412546;
-      v43 = v28;
+      v43 = localIdentifier;
       v44 = 2112;
       v45 = v12;
       _os_log_error_impl(&dword_22F0FC000, v27, OS_LOG_TYPE_ERROR, "[PGWallpaperSuggestionAssetGater] Failed deserializing wallpaper properties on asset %@: %@", buf, 0x16u);
@@ -1013,21 +1013,21 @@ LABEL_4:
   }
 
   v13 = [v11 objectForKeyedSubscript:@"sceneAnalysisVersion"];
-  v14 = [v13 integerValue];
-  v15 = [v4 sceneAnalysisProperties];
-  v16 = v14 == [v15 sceneAnalysisVersion];
+  integerValue = [v13 integerValue];
+  sceneAnalysisProperties = [assetCopy sceneAnalysisProperties];
+  v16 = integerValue == [sceneAnalysisProperties sceneAnalysisVersion];
 
   if (v16)
   {
     v17 = [v11 objectForKeyedSubscript:@"faceAnalysisVersion"];
-    v18 = [v17 integerValue];
-    v16 = v18 == [v4 faceAnalysisVersion];
+    integerValue2 = [v17 integerValue];
+    v16 = integerValue2 == [assetCopy faceAnalysisVersion];
 
     if (v16)
     {
       v19 = [v11 objectForKeyedSubscript:@"segmentationModelVersion"];
-      v20 = [v19 unsignedIntegerValue];
-      v16 = v20 == [MEMORY[0x277D3A950] currentVersion];
+      unsignedIntegerValue = [v19 unsignedIntegerValue];
+      v16 = unsignedIntegerValue == [MEMORY[0x277D3A950] currentVersion];
     }
   }
 
@@ -1123,9 +1123,9 @@ LABEL_32:
   return v11;
 }
 
-- (BOOL)assetIsUsingHeadroom:(id)a3
+- (BOOL)assetIsUsingHeadroom:(id)headroom
 {
-  v3 = [(PGWallpaperSuggestionAssetGater *)self existingSegmentationScoresWithAsset:a3];
+  v3 = [(PGWallpaperSuggestionAssetGater *)self existingSegmentationScoresWithAsset:headroom];
   if (v3)
   {
     v4 = [MEMORY[0x277D3A950] settlingEffectLayoutContainsHeadroomForSegmentationScores:v3];
@@ -1139,9 +1139,9 @@ LABEL_32:
   return v4;
 }
 
-- (id)existingSegmentationScoresWithAsset:(id)a3
+- (id)existingSegmentationScoresWithAsset:(id)asset
 {
-  v3 = [(PGWallpaperSuggestionAssetGater *)self existingWallpaperPropertiesWithAsset:a3];
+  v3 = [(PGWallpaperSuggestionAssetGater *)self existingWallpaperPropertiesWithAsset:asset];
   v4 = v3;
   if (v3)
   {
@@ -1156,15 +1156,15 @@ LABEL_32:
   return v5;
 }
 
-- (void)logCurrentSettlingEffectGatingStatisticsWithPrefix:(id)a3
+- (void)logCurrentSettlingEffectGatingStatisticsWithPrefix:(id)prefix
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prefixCopy = prefix;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v4;
+    v34 = prefixCopy;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ Settling Effect Gating Statistics:", buf, 0xCu);
     loggingConnection = self->_loggingConnection;
   }
@@ -1174,7 +1174,7 @@ LABEL_32:
     v6 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v32;
     _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_INFO, "%@ %d failed feature enablement", buf, 0x12u);
@@ -1187,7 +1187,7 @@ LABEL_32:
     v7 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v31;
     _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "%@ %d failed hardware support", buf, 0x12u);
@@ -1200,7 +1200,7 @@ LABEL_32:
     v8 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v30;
     _os_log_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_INFO, "%@ %d failed to download resources", buf, 0x12u);
@@ -1213,7 +1213,7 @@ LABEL_32:
     v9 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v29;
     _os_log_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_INFO, "%@ %d failed adjustments supported", buf, 0x12u);
@@ -1226,7 +1226,7 @@ LABEL_32:
     v10 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v28;
     _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_INFO, "%@ %d failed with generic error", buf, 0x12u);
@@ -1239,7 +1239,7 @@ LABEL_32:
     v11 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v27;
     _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_INFO, "%@ %d failed metadata check", buf, 0x12u);
@@ -1252,7 +1252,7 @@ LABEL_32:
     v12 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v26;
     _os_log_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_INFO, "%@ %d failed stabilization", buf, 0x12u);
@@ -1265,7 +1265,7 @@ LABEL_32:
     v13 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v25;
     _os_log_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_INFO, "%@ %d failed video quality", buf, 0x12u);
@@ -1278,7 +1278,7 @@ LABEL_32:
     v14 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v24;
     _os_log_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_INFO, "%@ %d failed metadata integrity", buf, 0x12u);
@@ -1291,7 +1291,7 @@ LABEL_32:
     v15 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v23;
     _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_INFO, "%@ %d failed FRC", buf, 0x12u);
@@ -1304,7 +1304,7 @@ LABEL_32:
     v16 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v22;
     _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "%@ %d failed video decision", buf, 0x12u);
@@ -1317,7 +1317,7 @@ LABEL_32:
     v17 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v21;
     _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "%@ %d failed layout decision", buf, 0x12u);
@@ -1330,7 +1330,7 @@ LABEL_32:
     v18 = loggingConnection;
     [(PGWallpaperSuggestionAssetGater *)self settlingEffectGatingStatistics];
     *buf = 138412546;
-    v34 = v4;
+    v34 = prefixCopy;
     v35 = 1024;
     v36 = v20;
     _os_log_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_INFO, "%@ %d failed still transition", buf, 0x12u);
@@ -1339,15 +1339,15 @@ LABEL_32:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCurrentGatingStatisticsWithPrefix:(id)a3
+- (void)logCurrentGatingStatisticsWithPrefix:(id)prefix
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prefixCopy = prefix;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = prefixCopy;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ AssetGater Statistics:", &v17, 0xCu);
     loggingConnection = self->_loggingConnection;
   }
@@ -1356,7 +1356,7 @@ LABEL_32:
   {
     numberOfAssetsGated = self->_currentGatingStatistics.numberOfAssetsGated;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfAssetsGated;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfAssetsGated: %d", &v17, 0x12u);
@@ -1367,7 +1367,7 @@ LABEL_32:
   {
     numberOfMediaAnalysisRequest = self->_currentGatingStatistics.numberOfMediaAnalysisRequest;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfMediaAnalysisRequest;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfMediaAnalysisRequest: %d", &v17, 0x12u);
@@ -1378,7 +1378,7 @@ LABEL_32:
   {
     numberOfValidWallpaperPropertiesRequested = self->_currentGatingStatistics.numberOfValidWallpaperPropertiesRequested;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfValidWallpaperPropertiesRequested;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfValidWallpaperPropertiesRequested: %d", &v17, 0x12u);
@@ -1389,7 +1389,7 @@ LABEL_32:
   {
     numberOfInvalidAnalysisVersion = self->_currentGatingStatistics.numberOfInvalidAnalysisVersion;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfInvalidAnalysisVersion;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfInvalidAnalysisVersion: %d", &v17, 0x12u);
@@ -1400,7 +1400,7 @@ LABEL_32:
   {
     numberOfFailuresFromNilResult = self->_currentGatingStatistics.numberOfFailuresFromNilResult;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfFailuresFromNilResult;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfFailuresFromNilResult: %d", &v17, 0x12u);
@@ -1411,7 +1411,7 @@ LABEL_32:
   {
     numberOfSuccessFromCache = self->_currentGatingStatistics.numberOfSuccessFromCache;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfSuccessFromCache;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfSuccessFromCache: %d", &v17, 0x12u);
@@ -1422,7 +1422,7 @@ LABEL_32:
   {
     numberOfFailuresFromCache = self->_currentGatingStatistics.numberOfFailuresFromCache;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfFailuresFromCache;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfFailuresFromCache: %d", &v17, 0x12u);
@@ -1433,7 +1433,7 @@ LABEL_32:
   {
     numberOfSuccessFromMediaAnalysisRequests = self->_currentGatingStatistics.numberOfSuccessFromMediaAnalysisRequests;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfSuccessFromMediaAnalysisRequests;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfSuccessFromMediaAnalysisRequests: %d", &v17, 0x12u);
@@ -1444,7 +1444,7 @@ LABEL_32:
   {
     numberOfFailuresFromMediaAnalysisRequests = self->_currentGatingStatistics.numberOfFailuresFromMediaAnalysisRequests;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfFailuresFromMediaAnalysisRequests;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfFailuresFromMediaAnalysisRequests: %d", &v17, 0x12u);
@@ -1455,7 +1455,7 @@ LABEL_32:
   {
     numberOfTimeoutsFromMediaAnalysisRequests = self->_currentGatingStatistics.numberOfTimeoutsFromMediaAnalysisRequests;
     v17 = 138412546;
-    v18 = v4;
+    v18 = prefixCopy;
     v19 = 1024;
     v20 = numberOfTimeoutsFromMediaAnalysisRequests;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "%@ numberOfTimeoutsFromMediaAnalysisRequests: %d", &v17, 0x12u);
@@ -1464,30 +1464,30 @@ LABEL_32:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)gateAsset:(id)a3 hasPetFace:(BOOL *)a4
+- (id)gateAsset:(id)asset hasPetFace:(BOOL *)face
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assetCopy = asset;
   v23 = 0;
-  v7 = [(PGWallpaperSuggestionAssetGater *)self _gateAsset:v6 wallpaperProperties:&v23 progressBlock:&__block_literal_global_32141];
+  v7 = [(PGWallpaperSuggestionAssetGater *)self _gateAsset:assetCopy wallpaperProperties:&v23 progressBlock:&__block_literal_global_32141];
   v8 = v23;
   v9 = v8;
-  if (a4)
+  if (face)
   {
     if (v8)
     {
 LABEL_3:
-      *a4 = [(PGWallpaperSuggestionAssetGater *)self _hasPetFaceWithWallpaperProperties:v9];
+      *face = [(PGWallpaperSuggestionAssetGater *)self _hasPetFaceWithWallpaperProperties:v9];
       goto LABEL_13;
     }
 
-    v10 = [v6 photoAnalysisWallpaperProperties];
-    v11 = [v10 wallpaperPropertiesData];
+    photoAnalysisWallpaperProperties = [assetCopy photoAnalysisWallpaperProperties];
+    wallpaperPropertiesData = [photoAnalysisWallpaperProperties wallpaperPropertiesData];
 
-    if (v11)
+    if (wallpaperPropertiesData)
     {
       v22 = 0;
-      v9 = [MEMORY[0x277CCAC58] propertyListWithData:v11 options:0 format:0 error:&v22];
+      v9 = [MEMORY[0x277CCAC58] propertyListWithData:wallpaperPropertiesData options:0 format:0 error:&v22];
       v12 = v22;
       v13 = v12;
       if (v9)
@@ -1500,23 +1500,23 @@ LABEL_3:
       if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v20 = loggingConnection;
-        v21 = [v6 localIdentifier];
+        localIdentifier = [assetCopy localIdentifier];
         *buf = 138412546;
-        v25 = v21;
+        v25 = localIdentifier;
         v26 = 2112;
         v27 = v13;
         _os_log_error_impl(&dword_22F0FC000, v20, OS_LOG_TYPE_ERROR, "[PGWallpaperSuggestionAssetGater] Failed deserializing wallpaper properties on asset %@: %@", buf, 0x16u);
       }
     }
 
-    *a4 = 0;
+    *face = 0;
     v15 = self->_loggingConnection;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = v15;
-      v17 = [v6 uuid];
+      uuid = [assetCopy uuid];
       *buf = 138412290;
-      v25 = v17;
+      v25 = uuid;
       _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[PGWallpaperSuggestionAssetGater] No wallpaper properties available for asset %@, pet face check is going to fail.", buf, 0xCu);
     }
 
@@ -1530,20 +1530,20 @@ LABEL_13:
   return v7;
 }
 
-- (id)_gateAsset:(id)a3 wallpaperProperties:(id *)a4 progressBlock:(id)a5
+- (id)_gateAsset:(id)asset wallpaperProperties:(id *)properties progressBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  assetCopy = asset;
+  blockCopy = block;
   v10 = objc_alloc_init(PGWallpaperAssetGaterResult);
   ++self->_currentGatingStatistics.numberOfAssetsGated;
   self->_isLastGatingCallingMediaAnalysis = 0;
-  v11 = [(PGWallpaperSuggestionAssetGater *)self existingWallpaperPropertiesWithAsset:v8];
+  v11 = [(PGWallpaperSuggestionAssetGater *)self existingWallpaperPropertiesWithAsset:assetCopy];
   if (v11)
   {
     v12 = v11;
     v13 = [(PGWallpaperSuggestionAssetGater *)self gatingResultWithWallpaperProperties:v11];
 
-    if (![v13 passesAnyGating] || -[PGWallpaperSuggestionAssetGater cacheExistsForAsset:](self, "cacheExistsForAsset:", v8))
+    if (![v13 passesAnyGating] || -[PGWallpaperSuggestionAssetGater cacheExistsForAsset:](self, "cacheExistsForAsset:", assetCopy))
     {
       ++self->_currentGatingStatistics.numberOfValidWallpaperPropertiesRequested;
       if ([v13 passesAnyGating])
@@ -1568,8 +1568,8 @@ LABEL_13:
   numberOfInvalidAnalysisVersion = self->_currentGatingStatistics.numberOfInvalidAnalysisVersion;
   numberOfFailuresFromNilResult = self->_currentGatingStatistics.numberOfFailuresFromNilResult;
   numberOfTimeoutsFromMediaAnalysisRequests = self->_currentGatingStatistics.numberOfTimeoutsFromMediaAnalysisRequests;
-  v26 = v9;
-  v17 = [(PGWallpaperSuggestionAssetGater *)self requestAndPersistWallpaperPropertiesForAsset:v8 progressBlock:v9];
+  v26 = blockCopy;
+  v17 = [(PGWallpaperSuggestionAssetGater *)self requestAndPersistWallpaperPropertiesForAsset:assetCopy progressBlock:blockCopy];
   v12 = v17;
   v18 = self->_currentGatingStatistics.numberOfInvalidAnalysisVersion;
   v19 = self->_currentGatingStatistics.numberOfTimeoutsFromMediaAnalysisRequests;
@@ -1592,12 +1592,12 @@ LABEL_13:
 
   if (![v13 passesAnyGating] || self->_coversTracks)
   {
-    [(PGWallpaperSuggestionAssetGater *)self clearCacheOfAsset:v8];
+    [(PGWallpaperSuggestionAssetGater *)self clearCacheOfAsset:assetCopy];
   }
 
-  v22 = [v13 passesAnyGating];
+  passesAnyGating = [v13 passesAnyGating];
   v23 = 76;
-  if (v22)
+  if (passesAnyGating)
   {
     v23 = 72;
   }
@@ -1613,37 +1613,37 @@ LABEL_13:
     [v13 setDidTimeout:1];
   }
 
-  v9 = v26;
+  blockCopy = v26;
 LABEL_26:
-  if (a4)
+  if (properties)
   {
     v24 = v12;
-    *a4 = v12;
+    *properties = v12;
   }
 
   return v13;
 }
 
-- (PGWallpaperSuggestionAssetGater)initWithType:(unint64_t)a3 loggingConnection:(id)a4
+- (PGWallpaperSuggestionAssetGater)initWithType:(unint64_t)type loggingConnection:(id)connection
 {
-  v7 = a4;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = PGWallpaperSuggestionAssetGater;
   v8 = [(PGWallpaperSuggestionAssetGater *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
+    v8->_type = type;
     v8->_enableSettlingEffect = 1;
-    v10 = [MEMORY[0x277D267E8] analysisService];
+    analysisService = [MEMORY[0x277D267E8] analysisService];
     mediaAnalysisService = v9->_mediaAnalysisService;
-    v9->_mediaAnalysisService = v10;
+    v9->_mediaAnalysisService = analysisService;
 
-    v12 = [MEMORY[0x277D3B530] deviceConfiguration];
+    deviceConfiguration = [MEMORY[0x277D3B530] deviceConfiguration];
     deviceWallpaperLayoutConfiguration = v9->_deviceWallpaperLayoutConfiguration;
-    v9->_deviceWallpaperLayoutConfiguration = v12;
+    v9->_deviceWallpaperLayoutConfiguration = deviceConfiguration;
 
-    objc_storeStrong(&v9->_loggingConnection, a4);
+    objc_storeStrong(&v9->_loggingConnection, connection);
     *&v9->_settlingEffectGatingStatistics.numberOfEliminationsThruFRC = 0u;
     *&v9->_settlingEffectGatingStatistics.numberOfEliminationsThruStabilization = 0u;
     *&v9->_settlingEffectGatingStatistics.numberOfEliminationsThruResourceAvailability = 0u;
@@ -1655,22 +1655,22 @@ LABEL_26:
   return v9;
 }
 
-+ (double)sydneyMD4FaceQualityFromAsset:(id)a3
++ (double)sydneyMD4FaceQualityFromAsset:(id)asset
 {
-  v3 = [a3 photoAnalysisWallpaperProperties];
-  v4 = [v3 wallpaperPropertiesData];
+  photoAnalysisWallpaperProperties = [asset photoAnalysisWallpaperProperties];
+  wallpaperPropertiesData = [photoAnalysisWallpaperProperties wallpaperPropertiesData];
 
-  if (v4)
+  if (wallpaperPropertiesData)
   {
-    v5 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:0 format:0 error:0];
+    v5 = [MEMORY[0x277CCAC58] propertyListWithData:wallpaperPropertiesData options:0 format:0 error:0];
     v6 = v5;
     v7 = 0.0;
     if (v5)
     {
       v8 = [v5 objectForKeyedSubscript:@"faceQualityModelVersion"];
-      v9 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-      if (v9 == 3737841667)
+      if (unsignedIntegerValue == 3737841667)
       {
         v10 = [v6 objectForKeyedSubscript:@"faceQualityScore"];
         [v10 doubleValue];
@@ -1687,16 +1687,16 @@ LABEL_26:
   return v7;
 }
 
-+ (unint64_t)_posterClassificationFromAssetGaterType:(unint64_t)a3
++ (unint64_t)_posterClassificationFromAssetGaterType:(unint64_t)type
 {
-  if (a3 - 1 >= 4)
+  if (type - 1 >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 

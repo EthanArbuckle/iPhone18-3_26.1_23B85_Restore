@@ -1,39 +1,39 @@
 @interface BRFieldXattrBlob
-+ (BOOL)loadXattrsFromURL:(id)a3 structuralBlob:(id *)a4 contentBlob:(id *)a5 localBlob:(id *)a6 withMaximumSize:(unint64_t)a7 error:(id *)a8;
-+ (void)loadXattrsFromDictionary:(id)a3 structuralBlob:(id *)a4 contentBlob:(id *)a5;
-- (BOOL)applyToFileDescriptor:(int)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)loadXattrsFromURL:(id)l structuralBlob:(id *)blob contentBlob:(id *)contentBlob localBlob:(id *)localBlob withMaximumSize:(unint64_t)size error:(id *)error;
++ (void)loadXattrsFromDictionary:(id)dictionary structuralBlob:(id *)blob contentBlob:(id *)contentBlob;
+- (BOOL)applyToFileDescriptor:(int)descriptor error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)shortDescription;
-- (void)addXattrs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addXattrs:(id)xattrs;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BRFieldXattrBlob
 
-+ (void)loadXattrsFromDictionary:(id)a3 structuralBlob:(id *)a4 contentBlob:(id *)a5
++ (void)loadXattrsFromDictionary:(id)dictionary structuralBlob:(id *)blob contentBlob:(id *)contentBlob
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v28 = objc_opt_new();
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = v7;
+    v8 = dictionaryCopy;
     v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v9)
     {
       v10 = v9;
-      v23 = a5;
-      v24 = a4;
-      v25 = v7;
+      contentBlobCopy = contentBlob;
+      blobCopy = blob;
+      v25 = dictionaryCopy;
       v26 = 0;
       v27 = 0;
       v11 = *v30;
@@ -47,7 +47,7 @@
           }
 
           v13 = *(*(&v29 + 1) + 8 * i);
-          if (([v13 isEqualToString:{@"com.apple.fpfs.fileid", v23}] & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.clouddocs.private.share-bookmark#B") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.clouddocs.private.trash-parent-bookmark#B") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.finder.copy.preserveinbackups.com.apple.clouddocs.private.share-bookmark#N") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.finder.copy.preserveinbackups.com.apple.clouddocs.private.trash-parent-bookmark#N") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.fileprovider.trash-put-back#PN") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.clouddocs.local.fpfs.ct.version.identifier#CB") & 1) == 0)
+          if (([v13 isEqualToString:{@"com.apple.fpfs.fileid", contentBlobCopy}] & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.clouddocs.private.share-bookmark#B") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.clouddocs.private.trash-parent-bookmark#B") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.finder.copy.preserveinbackups.com.apple.clouddocs.private.share-bookmark#N") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.finder.copy.preserveinbackups.com.apple.clouddocs.private.trash-parent-bookmark#N") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.fileprovider.trash-put-back#PN") & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.clouddocs.local.fpfs.ct.version.identifier#CB") & 1) == 0)
           {
             [v28 setName:v13];
             v14 = [v8 objectForKeyedSubscript:v13];
@@ -75,8 +75,8 @@
               }
             }
 
-            v17 = [v15 data];
-            [v16 writeData:v17 forTag:1];
+            data = [v15 data];
+            [v16 writeData:data forTag:1];
           }
         }
 
@@ -87,12 +87,12 @@
 
       if (v26)
       {
-        v18 = [v26 data];
-        v19 = *v23;
-        *v23 = v18;
+        data2 = [v26 data];
+        v19 = *contentBlobCopy;
+        *contentBlobCopy = data2;
       }
 
-      v7 = v25;
+      dictionaryCopy = v25;
       if (!v27)
       {
         v27 = 0;
@@ -100,9 +100,9 @@
         goto LABEL_29;
       }
 
-      v20 = [v27 data];
-      v8 = *v24;
-      *v24 = v20;
+      data3 = [v27 data];
+      v8 = *blobCopy;
+      *blobCopy = data3;
       v21 = v26;
     }
 
@@ -118,23 +118,23 @@ LABEL_29:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)loadXattrsFromURL:(id)a3 structuralBlob:(id *)a4 contentBlob:(id *)a5 localBlob:(id *)a6 withMaximumSize:(unint64_t)a7 error:(id *)a8
++ (BOOL)loadXattrsFromURL:(id)l structuralBlob:(id *)blob contentBlob:(id *)contentBlob localBlob:(id *)localBlob withMaximumSize:(unint64_t)size error:(id *)error
 {
-  v14 = a3;
-  v15 = openat(-1, [v14 fileSystemRepresentation], 33028, 0);
+  lCopy = l;
+  v15 = openat(-1, [lCopy fileSystemRepresentation], 33028, 0);
   if ((v15 & 0x80000000) != 0)
   {
     v18 = brc_bread_crumbs();
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, 0x90u))
     {
-      [BRFieldXattrBlob(BRCStageAdditions) loadXattrsFromURL:v14 structuralBlob:v18 contentBlob:v19 localBlob:? withMaximumSize:? error:?];
+      [BRFieldXattrBlob(BRCStageAdditions) loadXattrsFromURL:lCopy structuralBlob:v18 contentBlob:v19 localBlob:? withMaximumSize:? error:?];
     }
 
-    if (a8)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] br_errorFromErrno];
-      *a8 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -146,14 +146,14 @@ LABEL_29:
   else
   {
     v16 = v15;
-    v17 = [a1 loadXattrsFromFD:v15 structuralBlob:a4 contentBlob:a5 localBlob:a6 withMaximumSize:a7 error:a8];
+    v17 = [self loadXattrsFromFD:v15 structuralBlob:blob contentBlob:contentBlob localBlob:localBlob withMaximumSize:size error:error];
     close(v16);
   }
 
   return v17;
 }
 
-- (BOOL)applyToFileDescriptor:(int)a3 error:(id *)a4
+- (BOOL)applyToFileDescriptor:(int)descriptor error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   v27 = 0u;
@@ -165,7 +165,7 @@ LABEL_29:
   if (v7)
   {
     v8 = v7;
-    v26 = a4;
+    errorCopy = error;
     v9 = *v28;
     while (2)
     {
@@ -177,17 +177,17 @@ LABEL_29:
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 value];
-        v13 = [v11 name];
-        v14 = [v13 fileSystemRepresentation];
+        value = [v11 value];
+        name = [v11 name];
+        fileSystemRepresentation = [name fileSystemRepresentation];
 
         v15 = brc_bread_crumbs();
         v16 = brc_default_log();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          v17 = [v12 length];
+          v17 = [value length];
           *buf = 136315650;
-          v32 = v14;
+          v32 = fileSystemRepresentation;
           v33 = 2048;
           v34 = v17;
           v35 = 2112;
@@ -195,10 +195,10 @@ LABEL_29:
           _os_log_debug_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] added xattr %s (%lld bytes)%@", buf, 0x20u);
         }
 
-        if (fsetxattr(a3, v14, [v12 bytes], objc_msgSend(v12, "length"), 0, 0) < 0)
+        if (fsetxattr(descriptor, fileSystemRepresentation, [value bytes], objc_msgSend(value, "length"), 0, 0) < 0)
         {
-          v19 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
-          if (v19)
+          br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+          if (br_errorFromErrno)
           {
             v20 = brc_bread_crumbs();
             v21 = brc_default_log();
@@ -208,24 +208,24 @@ LABEL_29:
               *buf = 136315906;
               v32 = "[BRFieldXattrBlob(BRCStageAdditions) applyToFileDescriptor:error:]";
               v33 = 2080;
-              if (!v26)
+              if (!errorCopy)
               {
                 v25 = "(ignored by caller)";
               }
 
               v34 = v25;
               v35 = 2112;
-              v36 = v19;
+              v36 = br_errorFromErrno;
               v37 = 2112;
               v38 = v20;
               _os_log_error_impl(&dword_223E7A000, v21, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
             }
           }
 
-          if (v26)
+          if (errorCopy)
           {
-            v22 = v19;
-            *v26 = v19;
+            v22 = br_errorFromErrno;
+            *errorCopy = br_errorFromErrno;
           }
 
           v18 = 0;
@@ -281,22 +281,22 @@ LABEL_18:
           goto LABEL_13;
         }
 
-        v11 = [v10 name];
-        v12 = [v11 length];
+        name = [v10 name];
+        v12 = [name length];
         v13 = [v3 length] + v12;
 
         if (v13 >= 0x21)
         {
           v15 = 32 - [v3 length];
-          v16 = [v10 name];
-          v17 = [v16 substringToIndex:v15];
+          name2 = [v10 name];
+          v17 = [name2 substringToIndex:v15];
           [v3 appendFormat:@"%s%@...", v8, v17, v20];
 
           goto LABEL_13;
         }
 
-        v14 = [v10 name];
-        [v3 appendFormat:@"%s%@", v8, v14, v20];
+        name3 = [v10 name];
+        [v3 appendFormat:@"%s%@", v8, name3, v20];
 
         v8 = ", ";
       }
@@ -320,22 +320,22 @@ LABEL_13:
   return v3;
 }
 
-- (void)addXattrs:(id)a3
+- (void)addXattrs:(id)xattrs
 {
-  v4 = a3;
+  xattrsCopy = xattrs;
   xattrs = self->_xattrs;
-  v8 = v4;
+  v8 = xattrsCopy;
   if (!xattrs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_xattrs;
     self->_xattrs = v6;
 
-    v4 = v8;
+    xattrsCopy = v8;
     xattrs = self->_xattrs;
   }
 
-  [(NSMutableArray *)xattrs addObject:v4];
+  [(NSMutableArray *)xattrs addObject:xattrsCopy];
 }
 
 - (id)description
@@ -344,8 +344,8 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = BRFieldXattrBlob;
   v4 = [(BRFieldXattrBlob *)&v8 description];
-  v5 = [(BRFieldXattrBlob *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BRFieldXattrBlob *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -353,7 +353,7 @@ LABEL_13:
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_xattrs count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_xattrs, "count")}];
@@ -376,8 +376,8 @@ LABEL_13:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -386,18 +386,18 @@ LABEL_13:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"xattrs"];
+    [dictionary setObject:v4 forKey:@"xattrs"];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -433,29 +433,29 @@ LABEL_13:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(BRFieldXattrBlob *)self xattrsCount])
   {
-    [v8 clearXattrs];
-    v4 = [(BRFieldXattrBlob *)self xattrsCount];
-    if (v4)
+    [toCopy clearXattrs];
+    xattrsCount = [(BRFieldXattrBlob *)self xattrsCount];
+    if (xattrsCount)
     {
-      v5 = v4;
+      v5 = xattrsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BRFieldXattrBlob *)self xattrsAtIndex:i];
-        [v8 addXattrs:v7];
+        [toCopy addXattrs:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -476,7 +476,7 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addXattrs:v11];
 
         ++v10;
@@ -493,13 +493,13 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     xattrs = self->_xattrs;
-    if (xattrs | v4[1])
+    if (xattrs | equalCopy[1])
     {
       v6 = [(NSMutableArray *)xattrs isEqual:?];
     }
@@ -518,14 +518,14 @@ LABEL_13:
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

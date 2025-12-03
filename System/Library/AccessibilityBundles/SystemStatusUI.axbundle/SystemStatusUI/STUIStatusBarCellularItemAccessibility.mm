@@ -1,24 +1,24 @@
 @interface STUIStatusBarCellularItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (STUIStatusBarCellularItemAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAnnotateDataNetworkViewWithEntry:(void *)a1;
+- (void)_axAnnotateDataNetworkViewWithEntry:(void *)entry;
 @end
 
 @implementation STUIStatusBarCellularItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarStringView" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"STUIStatusBarCellularItem" hasClassMethod:@"typeDisplayIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"signalView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"callForwardingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"networkTypeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"_updateSignalView:withUpdate:entry:forceShowingDisabledSignalBars:" withFullSignature:{"@", "@", "@", "B", 0}];
-  [v3 validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"entryForDisplayItemWithIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"STStatusBarDataCellularEntry" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STStatusBarDataCellularEntry" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarStringView" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"STUIStatusBarCellularItem" hasClassMethod:@"typeDisplayIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"signalView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"callForwardingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"networkTypeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"_updateSignalView:withUpdate:entry:forceShowingDisabledSignalBars:" withFullSignature:{"@", "@", "@", "B", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarCellularItem" hasInstanceMethod:@"entryForDisplayItemWithIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"STStatusBarDataCellularEntry" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STStatusBarDataCellularEntry" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -74,12 +74,12 @@ uint64_t __84__STUIStatusBarCellularItemAccessibility__accessibilityLoadAccessib
   return v3;
 }
 
-- (void)_axAnnotateDataNetworkViewWithEntry:(void *)a1
+- (void)_axAnnotateDataNetworkViewWithEntry:(void *)entry
 {
-  if (a1)
+  if (entry)
   {
     v4 = AXAnnotateDataNetworkViewWithType([a2 safeIntegerForKey:@"type"]);
-    v3 = [a1 safeValueForKey:@"networkTypeView"];
+    v3 = [entry safeValueForKey:@"networkTypeView"];
     [v3 setAccessibilityLabel:v4];
   }
 }

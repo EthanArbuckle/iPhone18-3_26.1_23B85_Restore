@@ -1,20 +1,20 @@
 @interface AXSDDetectorQueueManager
 - (AXSDDetectorQueueManager)init;
 - (AXSDDetectorQueueManagerDelegate)delegate;
-- (BOOL)containsListenType:(id)a3;
+- (BOOL)containsListenType:(id)type;
 - (BOOL)prepareToListen;
 - (id)currentDetectionTypes;
 - (id)detectorManager;
-- (void)_dequeueListenType:(id)a3;
-- (void)_queueListenType:(id)a3;
-- (void)addDetector:(id)a3;
-- (void)addListenType:(id)a3;
-- (void)detectorStore:(id)a3 detectorsNeedUpdate:(id)a4 toDetectors:(id)a5;
-- (void)detectorsReadyForDetectorStore:(id)a3;
+- (void)_dequeueListenType:(id)type;
+- (void)_queueListenType:(id)type;
+- (void)addDetector:(id)detector;
+- (void)addListenType:(id)type;
+- (void)detectorStore:(id)store detectorsNeedUpdate:(id)update toDetectors:(id)detectors;
+- (void)detectorsReadyForDetectorStore:(id)store;
 - (void)prepareToListen;
 - (void)removeAllListenTypes;
-- (void)removeDetector:(id)a3;
-- (void)removeListenType:(id)a3;
+- (void)removeDetector:(id)detector;
+- (void)removeListenType:(id)type;
 - (void)stopListening;
 @end
 
@@ -45,15 +45,15 @@
 
 - (id)detectorManager
 {
-  v2 = [(AXSDDetectorQueueManager *)self delegate];
-  v3 = [v2 detectorManager];
+  delegate = [(AXSDDetectorQueueManager *)self delegate];
+  detectorManager = [delegate detectorManager];
 
-  return v3;
+  return detectorManager;
 }
 
-- (void)addListenType:(id)a3
+- (void)addListenType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[AXSDDetectorStore sharedInstance];
   self->_ready = [v5 areDetectorsReady];
 
@@ -64,7 +64,7 @@
     v7[2] = __42__AXSDDetectorQueueManager_addListenType___block_invoke;
     v7[3] = &unk_278BDD2C0;
     v7[4] = self;
-    v8 = v4;
+    v8 = typeCopy;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 
@@ -76,7 +76,7 @@
       [AXSDDetectorQueueManager addListenType:];
     }
 
-    [(AXSDDetectorQueueManager *)self _queueListenType:v4];
+    [(AXSDDetectorQueueManager *)self _queueListenType:typeCopy];
   }
 }
 
@@ -105,16 +105,16 @@ void __42__AXSDDetectorQueueManager_addListenType___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addDetector:(id)a3
+- (void)addDetector:(id)detector
 {
-  v4 = a3;
+  detectorCopy = detector;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__AXSDDetectorQueueManager_addDetector___block_invoke;
   v6[3] = &unk_278BDD2C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = detectorCopy;
+  v5 = detectorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -143,9 +143,9 @@ void __40__AXSDDetectorQueueManager_addDetector___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeListenType:(id)a3
+- (void)removeListenType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[AXSDDetectorStore sharedInstance];
   self->_ready = [v5 areDetectorsReady];
 
@@ -156,7 +156,7 @@ void __40__AXSDDetectorQueueManager_addDetector___block_invoke(uint64_t a1)
     v7[2] = __45__AXSDDetectorQueueManager_removeListenType___block_invoke;
     v7[3] = &unk_278BDD2C0;
     v7[4] = self;
-    v8 = v4;
+    v8 = typeCopy;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 
@@ -168,7 +168,7 @@ void __40__AXSDDetectorQueueManager_addDetector___block_invoke(uint64_t a1)
       [AXSDDetectorQueueManager removeListenType:v6];
     }
 
-    [(AXSDDetectorQueueManager *)self _dequeueListenType:v4];
+    [(AXSDDetectorQueueManager *)self _dequeueListenType:typeCopy];
   }
 }
 
@@ -197,27 +197,27 @@ void __45__AXSDDetectorQueueManager_removeListenType___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)containsListenType:(id)a3
+- (BOOL)containsListenType:(id)type
 {
-  v4 = a3;
-  v5 = [(AXSDDetectorQueueManager *)self delegate];
-  v6 = [v5 detectorManager];
-  v7 = [v6 currentDetectors];
-  v8 = [v7 containsObject:v4];
+  typeCopy = type;
+  delegate = [(AXSDDetectorQueueManager *)self delegate];
+  detectorManager = [delegate detectorManager];
+  currentDetectors = [detectorManager currentDetectors];
+  v8 = [currentDetectors containsObject:typeCopy];
 
   return v8;
 }
 
-- (void)removeDetector:(id)a3
+- (void)removeDetector:(id)detector
 {
-  v4 = a3;
+  detectorCopy = detector;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__AXSDDetectorQueueManager_removeDetector___block_invoke;
   v6[3] = &unk_278BDD2C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = detectorCopy;
+  v5 = detectorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -299,39 +299,39 @@ void __48__AXSDDetectorQueueManager_removeAllListenTypes__block_invoke(uint64_t 
 - (id)currentDetectionTypes
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(AXSDDetectorQueueManager *)self delegate];
-  v4 = [v3 detectorManager];
-  v5 = [v4 currentDetectors];
-  v6 = [v2 setWithArray:v5];
+  delegate = [(AXSDDetectorQueueManager *)self delegate];
+  detectorManager = [delegate detectorManager];
+  currentDetectors = [detectorManager currentDetectors];
+  v6 = [v2 setWithArray:currentDetectors];
 
   return v6;
 }
 
-- (void)_queueListenType:(id)a3
+- (void)_queueListenType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AXSDDetectorQueueManager _queueListenType:];
   }
 
-  [(NSMutableSet *)self->_detectorQueue addObject:v4];
+  [(NSMutableSet *)self->_detectorQueue addObject:typeCopy];
 }
 
-- (void)_dequeueListenType:(id)a3
+- (void)_dequeueListenType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AXSDDetectorQueueManager _dequeueListenType:];
   }
 
-  [(NSMutableSet *)self->_detectorQueue removeObject:v4];
+  [(NSMutableSet *)self->_detectorQueue removeObject:typeCopy];
 }
 
-- (void)detectorsReadyForDetectorStore:(id)a3
+- (void)detectorsReadyForDetectorStore:(id)store
 {
   v15 = *MEMORY[0x277D85DE8];
   self->_ready = 1;
@@ -509,15 +509,15 @@ LABEL_25:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)detectorStore:(id)a3 detectorsNeedUpdate:(id)a4 toDetectors:(id)a5
+- (void)detectorStore:(id)store detectorsNeedUpdate:(id)update toDetectors:(id)detectors
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  detectorsCopy = detectors;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v32 objects:v41 count:16];
+  v7 = [detectorsCopy countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v7)
   {
     v9 = v7;
@@ -530,14 +530,14 @@ LABEL_25:
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(detectorsCopy);
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [v12 isInstalled];
+        isInstalled = [v12 isInstalled];
         v14 = AXLogUltron();
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-        if (v13)
+        if (isInstalled)
         {
           if (v15)
           {
@@ -550,8 +550,8 @@ LABEL_25:
             _os_log_impl(&dword_23D62D000, v14, OS_LOG_TYPE_INFO, "[%@]: Swapping updated dtector: %@", buf, 0x16u);
           }
 
-          v18 = [v12 identifier];
-          [(AXSDDetectorQueueManager *)self removeListenType:v18];
+          identifier = [v12 identifier];
+          [(AXSDDetectorQueueManager *)self removeListenType:identifier];
 
           [(AXSDDetectorQueueManager *)self addDetector:v12];
         }
@@ -571,7 +571,7 @@ LABEL_25:
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v32 objects:v41 count:16];
+      v9 = [detectorsCopy countByEnumeratingWithState:&v32 objects:v41 count:16];
     }
 
     while (v9);
@@ -581,7 +581,7 @@ LABEL_25:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v21 = v6;
+  v21 = detectorsCopy;
   v22 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v22)
   {

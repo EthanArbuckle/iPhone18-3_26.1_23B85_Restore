@@ -1,40 +1,40 @@
 @interface UIView
 + (void)rc_beginDisablingAnimations;
 + (void)rc_endDisablingAnimations;
-+ (void)rc_performAnimateableChangesWithAnimationDuration:(double)a3 setupBlock:(id)a4 animatablesBlock:(id)a5 completion:(id)a6;
++ (void)rc_performAnimateableChangesWithAnimationDuration:(double)duration setupBlock:(id)block animatablesBlock:(id)animatablesBlock completion:(id)completion;
 - (BOOL)rc_canAnimate;
-- (BOOL)rc_isProperDescendantOfView:(id)a3;
-- (id)_rc_constraintsByNameDictionary:(BOOL)a3;
-- (id)_rc_constraintsNamed:(id)a3;
-- (void)rc_addConstraint:(id)a3;
-- (void)rc_addConstraints:(id)a3;
-- (void)rc_removeConstraint:(id)a3;
-- (void)rc_removeConstraints:(id)a3;
-- (void)rc_removeConstraintsNamed:(id)a3;
+- (BOOL)rc_isProperDescendantOfView:(id)view;
+- (id)_rc_constraintsByNameDictionary:(BOOL)dictionary;
+- (id)_rc_constraintsNamed:(id)named;
+- (void)rc_addConstraint:(id)constraint;
+- (void)rc_addConstraints:(id)constraints;
+- (void)rc_removeConstraint:(id)constraint;
+- (void)rc_removeConstraints:(id)constraints;
+- (void)rc_removeConstraintsNamed:(id)named;
 - (void)rc_removeNamedConstraints;
-- (void)rc_setNamedConstraints:(id)a3 forName:(id)a4;
-- (void)rc_showAllViewBoundsRecursively:(BOOL)a3;
+- (void)rc_setNamedConstraints:(id)constraints forName:(id)name;
+- (void)rc_showAllViewBoundsRecursively:(BOOL)recursively;
 - (void)rc_updateConstraintsAndLayoutSubtree;
 @end
 
 @implementation UIView
 
-- (void)rc_showAllViewBoundsRecursively:(BOOL)a3
+- (void)rc_showAllViewBoundsRecursively:(BOOL)recursively
 {
-  v3 = a3;
+  recursivelyCopy = recursively;
   v5 = arc4random_uniform(0xFFu) / 255.0;
   v6 = arc4random_uniform(0xFFu) / 255.0;
   v7 = [UIColor colorWithRed:v5 green:v6 blue:arc4random_uniform(0xFFu) / 255.0 alpha:0.400000006];
   [(UIView *)self setBackgroundColor:v7];
 
-  if (v3)
+  if (recursivelyCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [(UIView *)self subviews];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [(UIView *)self subviews];
+    v9 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v13 + 1) + 8 * v12) rc_showAllViewBoundsRecursively:1];
@@ -54,7 +54,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -69,8 +69,8 @@
     return 0;
   }
 
-  v3 = [(UIView *)self window];
-  v4 = v3 != 0;
+  window = [(UIView *)self window];
+  v4 = window != 0;
 
   return v4;
 }
@@ -91,31 +91,31 @@
   }
 }
 
-+ (void)rc_performAnimateableChangesWithAnimationDuration:(double)a3 setupBlock:(id)a4 animatablesBlock:(id)a5 completion:(id)a6
++ (void)rc_performAnimateableChangesWithAnimationDuration:(double)duration setupBlock:(id)block animatablesBlock:(id)animatablesBlock completion:(id)completion
 {
-  v11 = a4;
-  v9 = a5;
-  v10 = a6;
-  if (v11)
+  blockCopy = block;
+  animatablesBlockCopy = animatablesBlock;
+  completionCopy = completion;
+  if (blockCopy)
   {
-    [UIView performWithoutAnimation:v11];
+    [UIView performWithoutAnimation:blockCopy];
   }
 
   if (+[UIView areAnimationsEnabled])
   {
-    [UIView animateWithDuration:v9 animations:v10 completion:a3];
+    [UIView animateWithDuration:animatablesBlockCopy animations:completionCopy completion:duration];
   }
 
   else
   {
-    if (v9)
+    if (animatablesBlockCopy)
     {
-      v9[2](v9);
+      animatablesBlockCopy[2](animatablesBlockCopy);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
@@ -128,9 +128,9 @@
   [(UIView *)self layoutBelowIfNeeded];
 }
 
-- (BOOL)rc_isProperDescendantOfView:(id)a3
+- (BOOL)rc_isProperDescendantOfView:(id)view
 {
-  if (a3 == self)
+  if (view == self)
   {
     return 0;
   }
@@ -141,41 +141,41 @@
   }
 }
 
-- (void)rc_removeConstraint:(id)a3
+- (void)rc_removeConstraint:(id)constraint
 {
-  if (a3)
+  if (constraint)
   {
     [(UIView *)self removeConstraint:?];
   }
 }
 
-- (void)rc_removeConstraints:(id)a3
+- (void)rc_removeConstraints:(id)constraints
 {
-  if (a3)
+  if (constraints)
   {
     [(UIView *)self removeConstraints:?];
   }
 }
 
-- (void)rc_addConstraint:(id)a3
+- (void)rc_addConstraint:(id)constraint
 {
-  if (a3)
+  if (constraint)
   {
     [(UIView *)self addConstraint:?];
   }
 }
 
-- (void)rc_addConstraints:(id)a3
+- (void)rc_addConstraints:(id)constraints
 {
-  if (a3)
+  if (constraints)
   {
     [(UIView *)self addConstraints:?];
   }
 }
 
-- (id)_rc_constraintsByNameDictionary:(BOOL)a3
+- (id)_rc_constraintsByNameDictionary:(BOOL)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_getAssociatedObject(self, "_rc_constraintsByNameStorageKey");
   if (v5)
   {
@@ -184,7 +184,7 @@
 
   else
   {
-    v6 = !v3;
+    v6 = !dictionaryCopy;
   }
 
   if (!v6)
@@ -196,76 +196,76 @@
   return v5;
 }
 
-- (id)_rc_constraintsNamed:(id)a3
+- (id)_rc_constraintsNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = [(UIView *)self _rc_constraintsByNameDictionary:0];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:namedCopy];
 
   return v6;
 }
 
-- (void)rc_setNamedConstraints:(id)a3 forName:(id)a4
+- (void)rc_setNamedConstraints:(id)constraints forName:(id)name
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  constraintsCopy = constraints;
+  nameCopy = name;
+  if (constraintsCopy)
   {
-    v7 = [(UIView *)self _rc_constraintsNamed:v6];
+    v7 = [(UIView *)self _rc_constraintsNamed:nameCopy];
 
     if (v7)
     {
-      [(UIView *)self rc_removeConstraintsNamed:v6];
+      [(UIView *)self rc_removeConstraintsNamed:nameCopy];
     }
 
     v8 = [(UIView *)self _rc_constraintsByNameDictionary:1];
-    v9 = [v11 constraints];
+    constraints = [constraintsCopy constraints];
 
-    if (v9)
+    if (constraints)
     {
-      v10 = [v11 constraints];
-      [(UIView *)self addConstraints:v10];
+      constraints2 = [constraintsCopy constraints];
+      [(UIView *)self addConstraints:constraints2];
     }
 
-    [v8 setObject:v11 forKey:v6];
+    [v8 setObject:constraintsCopy forKey:nameCopy];
   }
 
   else
   {
-    [(UIView *)self rc_removeConstraintsNamed:v6];
+    [(UIView *)self rc_removeConstraintsNamed:nameCopy];
   }
 }
 
-- (void)rc_removeConstraintsNamed:(id)a3
+- (void)rc_removeConstraintsNamed:(id)named
 {
-  v9 = a3;
+  namedCopy = named;
   v4 = [(UIView *)self _rc_constraintsNamed:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 constraints];
+    constraints = [v4 constraints];
 
-    if (v6)
+    if (constraints)
     {
-      v7 = [v5 constraints];
-      [(UIView *)self removeConstraints:v7];
+      constraints2 = [v5 constraints];
+      [(UIView *)self removeConstraints:constraints2];
     }
 
     v8 = [(UIView *)self _rc_constraintsByNameDictionary:0];
-    [v8 removeObjectForKey:v9];
+    [v8 removeObjectForKey:namedCopy];
   }
 }
 
 - (void)rc_removeNamedConstraints
 {
   v3 = [(UIView *)self _rc_constraintsByNameDictionary:0];
-  v4 = [v3 allKeys];
+  allKeys = [v3 allKeys];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

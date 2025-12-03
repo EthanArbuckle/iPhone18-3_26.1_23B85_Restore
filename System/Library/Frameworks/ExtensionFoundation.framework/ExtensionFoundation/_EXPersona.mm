@@ -1,36 +1,36 @@
 @interface _EXPersona
-+ (_EXPersona)personaWithPersonaUniqueString:(id)a3;
++ (_EXPersona)personaWithPersonaUniqueString:(id)string;
 + (id)currentPersona;
-- (_EXPersona)initWithCoder:(id)a3;
-- (_EXPersona)initWithPersonaUniqueString:(id)a3;
+- (_EXPersona)initWithCoder:(id)coder;
+- (_EXPersona)initWithPersonaUniqueString:(id)string;
 @end
 
 @implementation _EXPersona
 
-- (_EXPersona)initWithPersonaUniqueString:(id)a3
+- (_EXPersona)initWithPersonaUniqueString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = _EXPersona;
   v6 = [(_EXPersona *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personaUniqueString, a3);
+    objc_storeStrong(&v6->_personaUniqueString, string);
   }
 
   return v7;
 }
 
-- (_EXPersona)initWithCoder:(id)a3
+- (_EXPersona)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _EXPersona;
   v5 = [(_EXPersona *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
     personaUniqueString = v5->_personaUniqueString;
     v5->_personaUniqueString = v6;
   }
@@ -40,22 +40,22 @@
 
 + (id)currentPersona
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 currentPersona];
-  v4 = [v3 userPersonaUniqueString];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  v5 = [_EXPersona personaWithPersonaUniqueString:v4];
+  v5 = [_EXPersona personaWithPersonaUniqueString:userPersonaUniqueString];
 
   return v5;
 }
 
-+ (_EXPersona)personaWithPersonaUniqueString:(id)a3
++ (_EXPersona)personaWithPersonaUniqueString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v4 = v3;
-    v5 = [[_EXPersona alloc] initWithPersonaUniqueString:v3];
+    v4 = stringCopy;
+    v5 = [[_EXPersona alloc] initWithPersonaUniqueString:stringCopy];
 
     return v5;
   }

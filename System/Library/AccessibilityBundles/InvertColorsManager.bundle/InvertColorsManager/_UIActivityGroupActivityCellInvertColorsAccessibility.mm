@@ -1,7 +1,7 @@
 @interface _UIActivityGroupActivityCellInvertColorsAccessibility
-- (_UIActivityGroupActivityCellInvertColorsAccessibility)initWithFrame:(CGRect)a3;
+- (_UIActivityGroupActivityCellInvertColorsAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadInvertColors;
-- (void)setHighlightedImageView:(id)a3;
+- (void)setHighlightedImageView:(id)view;
 @end
 
 @implementation _UIActivityGroupActivityCellInvertColorsAccessibility
@@ -15,20 +15,20 @@
   [v4 setAccessibilityIgnoresInvertColors:1];
 }
 
-- (void)setHighlightedImageView:(id)a3
+- (void)setHighlightedImageView:(id)view
 {
-  v4 = a3;
-  [v4 setAccessibilityIgnoresInvertColors:1];
+  viewCopy = view;
+  [viewCopy setAccessibilityIgnoresInvertColors:1];
   v5.receiver = self;
   v5.super_class = _UIActivityGroupActivityCellInvertColorsAccessibility;
-  [(_UIActivityGroupActivityCellInvertColorsAccessibility *)&v5 setHighlightedImageView:v4];
+  [(_UIActivityGroupActivityCellInvertColorsAccessibility *)&v5 setHighlightedImageView:viewCopy];
 }
 
-- (_UIActivityGroupActivityCellInvertColorsAccessibility)initWithFrame:(CGRect)a3
+- (_UIActivityGroupActivityCellInvertColorsAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIActivityGroupActivityCellInvertColorsAccessibility;
-  v3 = [(_UIActivityGroupActivityCellInvertColorsAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIActivityGroupActivityCellInvertColorsAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UIActivityGroupActivityCellInvertColorsAccessibility *)v3 _accessibilityLoadInvertColors];
 
   return v3;

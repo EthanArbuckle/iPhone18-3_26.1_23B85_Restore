@@ -1,14 +1,14 @@
 @interface RBSTerminateRequest
-- (BOOL)execute:(id *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)execute:(id *)execute error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSTerminateRequest)initWithProcessIdentifier:(id)a3 context:(id)a4;
-- (RBSTerminateRequest)initWithProcessIdentity:(id)a3 context:(id)a4;
-- (RBSTerminateRequest)initWithRBSXPCCoder:(id)a3;
-- (id)initForAllManagedWithReason:(id)a3;
-- (id)initForAllManagedWithReason:(id)a3 service:(id)a4;
-- (id)initWithPredicate:(void *)a3 context:(void *)a4 allowLaunch:(void *)a5 service:;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSTerminateRequest)initWithProcessIdentifier:(id)identifier context:(id)context;
+- (RBSTerminateRequest)initWithProcessIdentity:(id)identity context:(id)context;
+- (RBSTerminateRequest)initWithRBSXPCCoder:(id)coder;
+- (id)initForAllManagedWithReason:(id)reason;
+- (id)initForAllManagedWithReason:(id)reason service:(id)service;
+- (id)initWithPredicate:(void *)predicate context:(void *)context allowLaunch:(void *)launch service:;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSTerminateRequest
@@ -35,37 +35,37 @@
   return v8;
 }
 
-- (RBSTerminateRequest)initWithProcessIdentity:(id)a3 context:(id)a4
+- (RBSTerminateRequest)initWithProcessIdentity:(id)identity context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 isEmbeddedApplication])
+  contextCopy = context;
+  identityCopy = identity;
+  if ([identityCopy isEmbeddedApplication])
   {
-    v8 = [v7 embeddedApplicationIdentifier];
+    embeddedApplicationIdentifier = [identityCopy embeddedApplicationIdentifier];
 
-    v9 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v8];
-    v10 = [(RBSTerminateRequest *)self initWithPredicate:v9 context:v6];
+    v9 = [RBSProcessPredicate predicateMatchingBundleIdentifier:embeddedApplicationIdentifier];
+    v10 = [(RBSTerminateRequest *)self initWithPredicate:v9 context:contextCopy];
 
     v11 = v10;
   }
 
   else
   {
-    v8 = [RBSProcessPredicate predicateMatchingIdentity:v7];
+    embeddedApplicationIdentifier = [RBSProcessPredicate predicateMatchingIdentity:identityCopy];
 
-    v12 = [(RBSTerminateRequest *)self initWithPredicate:v8 context:v6];
+    v12 = [(RBSTerminateRequest *)self initWithPredicate:embeddedApplicationIdentifier context:contextCopy];
     v11 = v12;
   }
 
   return v11;
 }
 
-- (RBSTerminateRequest)initWithProcessIdentifier:(id)a3 context:(id)a4
+- (RBSTerminateRequest)initWithProcessIdentifier:(id)identifier context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (!identifierCopy)
   {
     [RBSTerminateRequest initWithProcessIdentifier:a2 context:self];
     if (v9)
@@ -78,57 +78,57 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!contextCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [RBSProcessPredicate predicateMatchingIdentifier:v7];
+  v10 = [RBSProcessPredicate predicateMatchingIdentifier:identifierCopy];
   v11 = [(RBSTerminateRequest *)self initWithPredicate:v10 context:v9];
 
   return v11;
 }
 
-- (id)initForAllManagedWithReason:(id)a3 service:(id)a4
+- (id)initForAllManagedWithReason:(id)reason service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  reasonCopy = reason;
+  serviceCopy = service;
+  if (!reasonCopy)
   {
     [RBSTerminateRequest initForAllManagedWithReason:a2 service:self];
   }
 
-  v9 = [[RBSTerminateContext alloc] initWithExplanation:v7];
+  v9 = [[RBSTerminateContext alloc] initWithExplanation:reasonCopy];
   [(RBSTerminateContext *)v9 setReportType:0];
   [(RBSTerminateContext *)v9 setPreventIfBeingDebugged:0];
   v13.receiver = self;
   v13.super_class = RBSTerminateRequest;
-  v10 = [(RBSRequest *)&v13 _init];
-  v11 = v10;
-  if (v10)
+  _init = [(RBSRequest *)&v13 _init];
+  v11 = _init;
+  if (_init)
   {
-    *(v10 + 16) = 1;
-    objc_storeStrong(v10 + 5, v9);
-    objc_storeStrong(v11 + 1, a4);
+    *(_init + 16) = 1;
+    objc_storeStrong(_init + 5, v9);
+    objc_storeStrong(v11 + 1, service);
   }
 
   return v11;
 }
 
-- (id)initForAllManagedWithReason:(id)a3
+- (id)initForAllManagedWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = +[RBSConnection sharedInstance];
-  v6 = [(RBSTerminateRequest *)self initForAllManagedWithReason:v4 service:v5];
+  v6 = [(RBSTerminateRequest *)self initForAllManagedWithReason:reasonCopy service:v5];
 
   return v6;
 }
 
-- (BOOL)execute:(id *)a3 error:(id *)a4
+- (BOOL)execute:(id *)execute error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (execute)
   {
     predicate = self->_predicate;
     if (predicate)
@@ -151,27 +151,27 @@ LABEL_3:
     service = self->_service;
   }
 
-  result = [(RBSServiceLocalProtocol *)service executeTerminateRequest:self assertion:a3 error:a4];
+  result = [(RBSServiceLocalProtocol *)service executeTerminateRequest:self assertion:execute error:error];
   v15 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_23;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || self->_targetsAllManagedProcesses != v4->_targetsAllManagedProcesses)
+  if (v5 != objc_opt_class() || self->_targetsAllManagedProcesses != equalCopy->_targetsAllManagedProcesses)
   {
     goto LABEL_22;
   }
 
   context = self->_context;
-  v7 = v4->_context;
+  v7 = equalCopy->_context;
   if (context != v7)
   {
     v8 = !context || v7 == 0;
@@ -182,7 +182,7 @@ LABEL_3:
   }
 
   predicate = self->_predicate;
-  v10 = v4->_predicate;
+  v10 = equalCopy->_predicate;
   if (predicate != v10)
   {
     v11 = !predicate || v10 == 0;
@@ -193,7 +193,7 @@ LABEL_3:
   }
 
   allow = self->_allow;
-  v13 = v4->_allow;
+  v13 = equalCopy->_allow;
   if (allow == v13)
   {
 LABEL_23:
@@ -224,23 +224,23 @@ LABEL_24:
   return v16;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v7 = v4;
+  coderCopy = coder;
+  v7 = coderCopy;
   if (self->_targetsAllManagedProcesses)
   {
-    [v4 encodeBool:1 forKey:@"_targetsAllManagedProcesses"];
+    [coderCopy encodeBool:1 forKey:@"_targetsAllManagedProcesses"];
 LABEL_7:
-    v4 = v7;
+    coderCopy = v7;
     goto LABEL_8;
   }
 
   predicate = self->_predicate;
   if (predicate)
   {
-    [v4 encodeObject:predicate forKey:@"_predicate"];
-    v4 = v7;
+    [coderCopy encodeObject:predicate forKey:@"_predicate"];
+    coderCopy = v7;
   }
 
   allow = self->_allow;
@@ -251,45 +251,45 @@ LABEL_7:
   }
 
 LABEL_8:
-  [v4 encodeObject:self->_context forKey:@"_context"];
+  [coderCopy encodeObject:self->_context forKey:@"_context"];
 }
 
-- (RBSTerminateRequest)initWithRBSXPCCoder:(id)a3
+- (RBSTerminateRequest)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RBSTerminateRequest;
-  v5 = [(RBSRequest *)&v13 _init];
-  if (v5)
+  _init = [(RBSRequest *)&v13 _init];
+  if (_init)
   {
-    v5->_targetsAllManagedProcesses = [v4 decodeBoolForKey:@"_targetsAllManagedProcesses"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_predicate"];
-    predicate = v5->_predicate;
-    v5->_predicate = v6;
+    _init->_targetsAllManagedProcesses = [coderCopy decodeBoolForKey:@"_targetsAllManagedProcesses"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_predicate"];
+    predicate = _init->_predicate;
+    _init->_predicate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_allow"];
-    allow = v5->_allow;
-    v5->_allow = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_allow"];
+    allow = _init->_allow;
+    _init->_allow = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
-    context = v5->_context;
-    v5->_context = v10;
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
+    context = _init->_context;
+    _init->_context = v10;
   }
 
-  return v5;
+  return _init;
 }
 
-- (id)initWithPredicate:(void *)a3 context:(void *)a4 allowLaunch:(void *)a5 service:
+- (id)initWithPredicate:(void *)predicate context:(void *)context allowLaunch:(void *)launch service:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  predicateCopy = predicate;
+  contextCopy = context;
+  launchCopy = launch;
+  if (self)
   {
-    v14 = [v11 explanation];
+    explanation = [predicateCopy explanation];
 
-    if (!v14)
+    if (!explanation)
     {
       v15 = rbs_assertion_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -298,26 +298,26 @@ LABEL_8:
         _os_log_fault_impl(&dword_18E8AD000, v15, OS_LOG_TYPE_FAULT, "Explanation must be set in the RBSTerminateContext before using it to initialize a RBSTerminateRequest", buf, 2u);
       }
 
-      [v11 setExplanation:@"<no explanation given>"];
+      [predicateCopy setExplanation:@"<no explanation given>"];
     }
 
-    v20.receiver = a1;
+    v20.receiver = self;
     v20.super_class = RBSTerminateRequest;
     v16 = objc_msgSendSuper2(&v20, sel__init);
-    a1 = v16;
+    self = v16;
     if (v16)
     {
       objc_storeStrong(v16 + 3, a2);
-      objc_storeStrong(a1 + 4, a4);
-      v17 = [v11 copy];
-      v18 = a1[5];
-      a1[5] = v17;
+      objc_storeStrong(self + 4, context);
+      v17 = [predicateCopy copy];
+      v18 = self[5];
+      self[5] = v17;
 
-      objc_storeStrong(a1 + 1, a5);
+      objc_storeStrong(self + 1, launch);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)initWithProcessIdentifier:(uint64_t)a1 context:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

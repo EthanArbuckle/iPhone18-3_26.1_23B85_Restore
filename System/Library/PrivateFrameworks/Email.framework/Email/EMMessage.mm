@@ -1,20 +1,20 @@
 @interface EMMessage
 + (NSArray)externalDataTypeIdentifiers;
 + (OS_os_log)log;
-+ (id)_predicateForMessagesWithObjectIDConstantValue:(id)a3 operatorType:(unint64_t)a4;
-+ (id)combinedFlagsForMessageListItemFlags:(id)a3 forDisplay:(BOOL)a4;
-+ (id)combinedFlagsForMessageListItems:(id)a3;
-+ (id)predicateForExcludingMessageWithObjectID:(id)a3;
-+ (id)predicateForExcludingMessagesWithObjectIDs:(id)a3;
-+ (id)predicateForMessageWithItemID:(id)a3 mailboxPredicate:(id)a4 mailboxTypeResolver:(id)a5;
-+ (id)predicateForMessageWithObjectID:(id)a3;
-+ (id)predicateForMessagesWithObjectIDs:(id)a3;
-- (BOOL)isInManagedAccountWithSourceMailboxScope:(id)a3;
++ (id)_predicateForMessagesWithObjectIDConstantValue:(id)value operatorType:(unint64_t)type;
++ (id)combinedFlagsForMessageListItemFlags:(id)flags forDisplay:(BOOL)display;
++ (id)combinedFlagsForMessageListItems:(id)items;
++ (id)predicateForExcludingMessageWithObjectID:(id)d;
++ (id)predicateForExcludingMessagesWithObjectIDs:(id)ds;
++ (id)predicateForMessageWithItemID:(id)d mailboxPredicate:(id)predicate mailboxTypeResolver:(id)resolver;
++ (id)predicateForMessageWithObjectID:(id)d;
++ (id)predicateForMessagesWithObjectIDs:(id)ds;
+- (BOOL)isInManagedAccountWithSourceMailboxScope:(id)scope;
 - (BOOL)shouldShowReplyAll;
 - (EMCollectionItemID)itemID;
-- (EMMessage)initWithCoder:(id)a3;
-- (EMMessage)initWithObjectID:(id)a3;
-- (EMMessage)initWithObjectID:(id)a3 builder:(id)a4;
+- (EMMessage)initWithCoder:(id)coder;
+- (EMMessage)initWithObjectID:(id)d;
+- (EMMessage)initWithObjectID:(id)d builder:(id)builder;
 - (EMMessageRepository)repository;
 - (NSArray)availableRepresentations;
 - (NSString)contentID;
@@ -24,18 +24,18 @@
 - (NSString)mailProviderDisplayNameForBIMI;
 - (NSString)uniformTypeIdentifier;
 - (UTType)type;
-- (id)cachedMetadataOfClass:(Class)a3 forKey:(id)a4;
+- (id)cachedMetadataOfClass:(Class)class forKey:(id)key;
 - (id)loaderBlock;
-- (id)requestRepresentationWithOptions:(id)a3 completionHandler:(id)a4;
-- (id)requestRepresentationWithOptions:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (id)senderDisplayNameUsingContactStore:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAvailableRepresentations:(id)a3;
-- (void)setCachedMetadata:(id)a3 forKey:(id)a4;
-- (void)setContentID:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setRepository:(id)a3;
-- (void)setUniformTypeIdentifier:(id)a3;
+- (id)requestRepresentationWithOptions:(id)options completionHandler:(id)handler;
+- (id)requestRepresentationWithOptions:(id)options delegate:(id)delegate completionHandler:(id)handler;
+- (id)senderDisplayNameUsingContactStore:(id)store;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAvailableRepresentations:(id)representations;
+- (void)setCachedMetadata:(id)metadata forKey:(id)key;
+- (void)setContentID:(id)d;
+- (void)setDisplayName:(id)name;
+- (void)setRepository:(id)repository;
+- (void)setUniformTypeIdentifier:(id)identifier;
 @end
 
 @implementation EMMessage
@@ -44,36 +44,36 @@
 {
   v7.receiver = self;
   v7.super_class = EMMessage;
-  v4 = [(EMBaseMessageListItem *)&v7 repository];
-  if (v4)
+  repository = [(EMBaseMessageListItem *)&v7 repository];
+  if (repository)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:38 description:@"Wrong repository type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:38 description:@"Wrong repository type"];
     }
   }
 
-  return v4;
+  return repository;
 }
 
-- (void)setRepository:(id)a3
+- (void)setRepository:(id)repository
 {
-  v5 = a3;
-  if (v5)
+  repositoryCopy = repository;
+  if (repositoryCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:38 description:@"Wrong repository type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:38 description:@"Wrong repository type"];
     }
   }
 
   v7.receiver = self;
   v7.super_class = EMMessage;
-  [(EMBaseMessageListItem *)&v7 setRepository:v5];
+  [(EMBaseMessageListItem *)&v7 setRepository:repositoryCopy];
 }
 
 + (OS_os_log)log
@@ -82,7 +82,7 @@
   block[1] = 3221225472;
   block[2] = __16__EMMessage_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_21 != -1)
   {
     dispatch_once(&log_onceToken_21, block);
@@ -101,42 +101,42 @@ void __16__EMMessage_log__block_invoke(uint64_t a1)
   log_log_21 = v1;
 }
 
-- (EMMessage)initWithObjectID:(id)a3
+- (EMMessage)initWithObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   [(EMMessage *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EMMessage initWithObjectID:]", "EMMessage.m", 64, "0");
 }
 
-- (EMMessage)initWithObjectID:(id)a3 builder:(id)a4
+- (EMMessage)initWithObjectID:(id)d builder:(id)builder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __38__EMMessage_initWithObjectID_builder___block_invoke;
   v20[3] = &unk_1E826D028;
-  v21 = self;
-  v9 = v8;
+  selfCopy = self;
+  v9 = builderCopy;
   v22 = v9;
-  v19.receiver = v21;
+  v19.receiver = selfCopy;
   v19.super_class = EMMessage;
-  v10 = [(EMBaseMessageListItem *)&v19 initWithObjectID:v7 baseBuilder:v20];
+  v10 = [(EMBaseMessageListItem *)&v19 initWithObjectID:dCopy baseBuilder:v20];
   if (![(EMBaseMessageListItem *)v10 conversationID])
   {
     v11 = +[EMMessage log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      v12 = [(EMBaseMessageListItem *)v10 conversationID];
+      conversationID = [(EMBaseMessageListItem *)v10 conversationID];
       v13 = [(EMMessage *)v10 description];
-      [(EMMessage *)v13 initWithObjectID:buf builder:v12, v11];
+      [(EMMessage *)v13 initWithObjectID:buf builder:conversationID, v11];
     }
   }
 
@@ -147,9 +147,9 @@ void __16__EMMessage_log__block_invoke(uint64_t a1)
   return v15;
 }
 
-+ (id)combinedFlagsForMessageListItems:(id)a3
++ (id)combinedFlagsForMessageListItems:(id)items
 {
-  v3 = [EMMessage combinedFlagsForMessageListItems:a3 forDisplay:1];
+  v3 = [EMMessage combinedFlagsForMessageListItems:items forDisplay:1];
 
   return v3;
 }
@@ -161,17 +161,17 @@ id __57__EMMessage_combinedFlagsForMessageListItems_forDisplay___block_invoke(ui
   return v2;
 }
 
-+ (id)combinedFlagsForMessageListItemFlags:(id)a3 forDisplay:(BOOL)a4
++ (id)combinedFlagsForMessageListItemFlags:(id)flags forDisplay:(BOOL)display
 {
-  v5 = a3;
+  flagsCopy = flags;
   v6 = objc_alloc(MEMORY[0x1E699B308]);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__EMMessage_combinedFlagsForMessageListItemFlags_forDisplay___block_invoke;
   v10[3] = &unk_1E826DA38;
-  v7 = v5;
+  v7 = flagsCopy;
   v11 = v7;
-  v12 = a4;
+  displayCopy = display;
   v8 = [v6 initWithBuilder:v10];
 
   return v8;
@@ -662,13 +662,13 @@ LABEL_124:
 - (NSString)mailProviderDisplayNameForBIMI
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(EMBaseMessageListItem *)self mailboxes];
+  mailboxes = [(EMBaseMessageListItem *)self mailboxes];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = mailboxes;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -682,12 +682,12 @@ LABEL_124:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * i) account];
-        v9 = [v8 hostname];
+        account = [*(*(&v14 + 1) + 8 * i) account];
+        hostname = [account hostname];
 
-        if (v9)
+        if (hostname)
         {
-          [v3 addObject:v9];
+          [v3 addObject:hostname];
         }
       }
 
@@ -705,14 +705,14 @@ LABEL_124:
   return v11;
 }
 
-- (void)setCachedMetadata:(id)a3 forKey:(id)a4
+- (void)setCachedMetadata:(id)metadata forKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EMMessage *)self repository];
-  v9 = v6;
-  v10 = v7;
+  metadataCopy = metadata;
+  keyCopy = key;
+  repository = [(EMMessage *)self repository];
+  v9 = metadataCopy;
+  v10 = keyCopy;
   if (v9)
   {
     v18 = 0;
@@ -723,8 +723,8 @@ LABEL_124:
       v13 = +[EMMessage log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v12 ef_publicDescription];
-        [(EMMessage *)v10 setCachedMetadata:v14 forKey:v19];
+        ef_publicDescription = [v12 ef_publicDescription];
+        [(EMMessage *)v10 setCachedMetadata:ef_publicDescription forKey:v19];
       }
     }
 
@@ -736,22 +736,22 @@ LABEL_124:
     v15 = 0;
   }
 
-  v16 = [(EMObject *)self objectID];
-  [v8 setCachedMetadataJSON:v15 forKey:v10 messageID:v16];
+  objectID = [(EMObject *)self objectID];
+  [repository setCachedMetadataJSON:v15 forKey:v10 messageID:objectID];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cachedMetadataOfClass:(Class)a3 forKey:(id)a4
+- (id)cachedMetadataOfClass:(Class)class forKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(EMMessage *)self repository];
-  v7 = [(EMObject *)self objectID];
-  v8 = [v6 cachedMetadataJSONForKey:v5 messageID:v7];
+  keyCopy = key;
+  repository = [(EMMessage *)self repository];
+  objectID = [(EMObject *)self objectID];
+  v8 = [repository cachedMetadataJSONForKey:keyCopy messageID:objectID];
 
   v9 = v8;
-  v10 = v5;
+  v10 = keyCopy;
   if (!v9)
   {
     v12 = 0;
@@ -778,8 +778,8 @@ LABEL_124:
     v14 = +[EMMessage log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v13 ef_publicDescription];
-      [(EMMessage *)v10 cachedMetadataOfClass:v15 forKey:v21];
+      ef_publicDescription = [v13 ef_publicDescription];
+      [(EMMessage *)v10 cachedMetadataOfClass:ef_publicDescription forKey:v21];
     }
 
 LABEL_10:
@@ -810,19 +810,19 @@ LABEL_19:
   return v16;
 }
 
-- (EMMessage)initWithCoder:(id)a3
+- (EMMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EMMessage;
-  v5 = [(EMBaseMessageListItem *)&v9 initWithCoder:v4];
+  v5 = [(EMBaseMessageListItem *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __27__EMMessage_initWithCoder___block_invoke;
     v7[3] = &unk_1E826DA60;
-    v8 = v4;
+    v8 = coderCopy;
     [(EMMessage *)v5 _commonInitWithBuilder:v7];
   }
 
@@ -839,17 +839,17 @@ void __27__EMMessage_initWithCoder___block_invoke(uint64_t a1, void *a2)
   [v5 setSearchableMessageID:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = EMMessage;
-  [(EMBaseMessageListItem *)&v7 encodeWithCoder:v4];
-  v5 = [(EMMessage *)self documentID];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_documentID"];
+  [(EMBaseMessageListItem *)&v7 encodeWithCoder:coderCopy];
+  documentID = [(EMMessage *)self documentID];
+  [coderCopy encodeObject:documentID forKey:@"EFPropertyKey_documentID"];
 
-  v6 = [(EMMessage *)self searchableMessageID];
-  [v4 encodeObject:v6 forKey:@"EFPropertyKey_searchableMessageID"];
+  searchableMessageID = [(EMMessage *)self searchableMessageID];
+  [coderCopy encodeObject:searchableMessageID forKey:@"EFPropertyKey_searchableMessageID"];
 }
 
 - (NSString)debugDescription
@@ -858,8 +858,8 @@ void __27__EMMessage_initWithCoder___block_invoke(uint64_t a1, void *a2)
   v8.receiver = self;
   v8.super_class = EMMessage;
   v4 = [(EMBaseMessageListItem *)&v8 debugDescription];
-  v5 = [(EMMessage *)self searchableMessageID];
-  v6 = [v3 stringWithFormat:@"%@\n\tsearchableMessageID:%@", v4, v5];
+  searchableMessageID = [(EMMessage *)self searchableMessageID];
+  v6 = [v3 stringWithFormat:@"%@\n\tsearchableMessageID:%@", v4, searchableMessageID];
 
   return v6;
 }
@@ -869,19 +869,19 @@ void __27__EMMessage_initWithCoder___block_invoke(uint64_t a1, void *a2)
   v3 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = EMMessage;
-  v4 = [(EMBaseMessageListItem *)&v8 ef_publicDescription];
-  v5 = [(EMMessage *)self searchableMessageID];
-  v6 = [v3 stringWithFormat:@"%@\n\tsearchableMessageID:%@", v4, v5];
+  ef_publicDescription = [(EMBaseMessageListItem *)&v8 ef_publicDescription];
+  searchableMessageID = [(EMMessage *)self searchableMessageID];
+  v6 = [v3 stringWithFormat:@"%@\n\tsearchableMessageID:%@", ef_publicDescription, searchableMessageID];
 
   return v6;
 }
 
 - (EMCollectionItemID)itemID
 {
-  v2 = [(EMObject *)self objectID];
-  v3 = [v2 collectionItemID];
+  objectID = [(EMObject *)self objectID];
+  collectionItemID = [objectID collectionItemID];
 
-  return v3;
+  return collectionItemID;
 }
 
 - (NSArray)availableRepresentations
@@ -896,10 +896,10 @@ void __27__EMMessage_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (void)setAvailableRepresentations:(id)a3
+- (void)setAvailableRepresentations:(id)representations
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:289 description:@"EMMessage has a static set of availableRepresentations"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:289 description:@"EMMessage has a static set of availableRepresentations"];
 }
 
 - (NSString)uniformTypeIdentifier
@@ -909,31 +909,31 @@ void __27__EMMessage_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return [v2 uniformTypeIdentifier];
 }
 
-- (void)setUniformTypeIdentifier:(id)a3
+- (void)setUniformTypeIdentifier:(id)identifier
 {
-  v9 = a3;
-  if (v9)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [objc_opt_class() uniformTypeIdentifier];
-    v6 = [v9 isEqualToString:v5];
+    uniformTypeIdentifier = [objc_opt_class() uniformTypeIdentifier];
+    v6 = [identifierCopy isEqualToString:uniformTypeIdentifier];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      v8 = [objc_opt_class() uniformTypeIdentifier];
-      [v7 handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:297 description:{@"%@ can not be changed.", v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      uniformTypeIdentifier2 = [objc_opt_class() uniformTypeIdentifier];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:297 description:{@"%@ can not be changed.", uniformTypeIdentifier2}];
     }
   }
 }
 
 - (UTType)type
 {
-  v3 = [(EMMessage *)self uniformTypeIdentifier];
-  if (v3)
+  uniformTypeIdentifier = [(EMMessage *)self uniformTypeIdentifier];
+  if (uniformTypeIdentifier)
   {
     v4 = MEMORY[0x1E6982C40];
-    v5 = [(EMMessage *)self uniformTypeIdentifier];
-    v6 = [v4 typeWithIdentifier:v5];
+    uniformTypeIdentifier2 = [(EMMessage *)self uniformTypeIdentifier];
+    v6 = [v4 typeWithIdentifier:uniformTypeIdentifier2];
   }
 
   else
@@ -946,46 +946,46 @@ void __27__EMMessage_initWithCoder___block_invoke(uint64_t a1, void *a2)
 
 - (NSString)contentID
 {
-  v2 = [(EMObject *)self objectID];
-  v3 = [v2 stringHash];
-  v4 = [v3 stringValue];
+  objectID = [(EMObject *)self objectID];
+  stringHash = [objectID stringHash];
+  stringValue = [stringHash stringValue];
 
-  return v4;
+  return stringValue;
 }
 
-- (void)setContentID:(id)a3
+- (void)setContentID:(id)d
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:309 description:@"EMMessage has an unmodifiable content identifier"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:309 description:@"EMMessage has an unmodifiable content identifier"];
 }
 
 - (NSString)displayName
 {
-  v2 = [(EMBaseMessageListItem *)self subject];
-  v3 = [v2 subjectString];
+  subject = [(EMBaseMessageListItem *)self subject];
+  subjectString = [subject subjectString];
 
-  return v3;
+  return subjectString;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:317 description:@"EMMessage has an unmodifiable display name"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessage.m" lineNumber:317 description:@"EMMessage has an unmodifiable display name"];
 }
 
-- (id)requestRepresentationWithOptions:(id)a3 completionHandler:(id)a4
+- (id)requestRepresentationWithOptions:(id)options completionHandler:(id)handler
 {
-  v4 = [(EMMessage *)self requestRepresentationWithOptions:a3 delegate:0 completionHandler:a4];
+  v4 = [(EMMessage *)self requestRepresentationWithOptions:options delegate:0 completionHandler:handler];
 
   return v4;
 }
 
-- (id)requestRepresentationWithOptions:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (id)requestRepresentationWithOptions:(id)options delegate:(id)delegate completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_1C6655000, "message content representation request", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
@@ -993,32 +993,32 @@ void __27__EMMessage_initWithCoder___block_invoke(uint64_t a1, void *a2)
   v12 = EMLogCategoryMessageLoading();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v8 requestedRepresentation];
-    v14 = [(EMMessage *)self ef_publicDescription];
-    v15 = [(EMObject *)self objectID];
+    requestedRepresentation = [optionsCopy requestedRepresentation];
+    ef_publicDescription = [(EMMessage *)self ef_publicDescription];
+    objectID = [(EMObject *)self objectID];
     *buf = 138543874;
-    v30 = v13;
+    v30 = requestedRepresentation;
     v31 = 2114;
-    v32 = v14;
+    v32 = ef_publicDescription;
     v33 = 2114;
-    v34 = v15;
+    v34 = objectID;
     _os_log_impl(&dword_1C6655000, v12, OS_LOG_TYPE_DEFAULT, "requesting %{public}@ content for message %{public}@ (%{public}@)", buf, 0x20u);
   }
 
-  v16 = [(EMMessage *)self availableRepresentations];
-  v17 = [v8 requestedRepresentation];
-  v18 = [v16 containsObject:v17];
+  availableRepresentations = [(EMMessage *)self availableRepresentations];
+  requestedRepresentation2 = [optionsCopy requestedRepresentation];
+  v18 = [availableRepresentations containsObject:requestedRepresentation2];
 
   if (v18)
   {
-    v19 = [(EMMessage *)self loaderBlock];
+    loaderBlock = [(EMMessage *)self loaderBlock];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __73__EMMessage_requestRepresentationWithOptions_delegate_completionHandler___block_invoke;
     v26[3] = &unk_1E826BFE8;
     v26[4] = self;
-    v27 = v10;
-    v20 = (v19)[2](v19, v8, v9, v26);
+    v27 = handlerCopy;
+    v20 = (loaderBlock)[2](loaderBlock, optionsCopy, delegateCopy, v26);
   }
 
   else
@@ -1026,14 +1026,14 @@ void __27__EMMessage_initWithCoder___block_invoke(uint64_t a1, void *a2)
     v21 = +[EMMessage log];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(EMMessage *)self availableRepresentations];
-      v23 = [v22 componentsJoinedByString:{@", "}];
-      [(EMMessage *)v23 requestRepresentationWithOptions:buf delegate:v21 completionHandler:v22];
+      availableRepresentations2 = [(EMMessage *)self availableRepresentations];
+      v23 = [availableRepresentations2 componentsJoinedByString:{@", "}];
+      [(EMMessage *)v23 requestRepresentationWithOptions:buf delegate:v21 completionHandler:availableRepresentations2];
     }
 
-    v19 = [MEMORY[0x1E696ABC0] errorWithDomain:@"EMErrorDomain" code:2048 userInfo:0];
+    loaderBlock = [MEMORY[0x1E696ABC0] errorWithDomain:@"EMErrorDomain" code:2048 userInfo:0];
     v20 = 0;
-    (*(v10 + 2))(v10, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, loaderBlock);
   }
 
   os_activity_scope_leave(&state);
@@ -1120,17 +1120,17 @@ void __59__EMMessage_ExternalDataTypes__externalDataTypeIdentifiers__block_invok
   externalDataTypeIdentifiers_identifiers = v0;
 }
 
-- (BOOL)isInManagedAccountWithSourceMailboxScope:(id)a3
+- (BOOL)isInManagedAccountWithSourceMailboxScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(EMBaseMessageListItem *)self mailboxes];
-  v6 = [v5 ef_filter:&__block_literal_global_467];
+  scopeCopy = scope;
+  mailboxes = [(EMBaseMessageListItem *)self mailboxes];
+  v6 = [mailboxes ef_filter:&__block_literal_global_467];
 
   if ([v6 count])
   {
     v7 = +[EMMailboxScope allMailboxesScope];
 
-    if (v7 == v4)
+    if (v7 == scopeCopy)
     {
       v14 = 1;
     }
@@ -1138,15 +1138,15 @@ void __59__EMMessage_ExternalDataTypes__externalDataTypeIdentifiers__block_invok
     else
     {
       v20 = 0;
-      v8 = [(EMMessage *)self repository];
-      v9 = [v8 mailboxRepository];
-      v10 = [v4 allMailboxObjectIDsWithMailboxTypeResolver:v9 forExclusion:&v20];
+      repository = [(EMMessage *)self repository];
+      mailboxRepository = [repository mailboxRepository];
+      v10 = [scopeCopy allMailboxObjectIDsWithMailboxTypeResolver:mailboxRepository forExclusion:&v20];
 
       if (v20 == 1)
       {
         v11 = objc_alloc(MEMORY[0x1E695DFA8]);
-        v12 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
-        v13 = [v11 initWithArray:v12];
+        mailboxObjectIDs = [(EMBaseMessageListItem *)self mailboxObjectIDs];
+        v13 = [v11 initWithArray:mailboxObjectIDs];
 
         [v13 minusSet:v10];
       }
@@ -1154,8 +1154,8 @@ void __59__EMMessage_ExternalDataTypes__externalDataTypeIdentifiers__block_invok
       else
       {
         v15 = objc_alloc(MEMORY[0x1E695DFA8]);
-        v16 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
-        v13 = [v15 initWithArray:v16];
+        mailboxObjectIDs2 = [(EMBaseMessageListItem *)self mailboxObjectIDs];
+        v13 = [v15 initWithArray:mailboxObjectIDs2];
 
         [v13 intersectSet:v10];
       }
@@ -1202,16 +1202,16 @@ uint64_t __69__EMMessage_ManagedSource__isInManagedAccountWithSourceMailboxScope
   return v4;
 }
 
-- (id)senderDisplayNameUsingContactStore:(id)a3
+- (id)senderDisplayNameUsingContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(EMBaseMessageListItem *)self senderList];
-    if ([v5 count] == 1)
+    senderList = [(EMBaseMessageListItem *)self senderList];
+    if ([senderList count] == 1)
     {
-      v6 = [v5 firstObject];
-      v7 = [v4 displayNameForEmailAddress:v6 abbreviated:1];
+      firstObject = [senderList firstObject];
+      v7 = [storeCopy displayNameForEmailAddress:firstObject abbreviated:1];
     }
 
     else
@@ -1235,54 +1235,54 @@ uint64_t __69__EMMessage_ManagedSource__isInManagedAccountWithSourceMailboxScope
     return 1;
   }
 
-  v3 = [(EMBaseMessageListItem *)self toList];
-  v4 = [v3 count];
-  v5 = [(EMBaseMessageListItem *)self ccList];
-  v6 = ([v5 count] + v4) > 1;
+  toList = [(EMBaseMessageListItem *)self toList];
+  v4 = [toList count];
+  ccList = [(EMBaseMessageListItem *)self ccList];
+  v6 = ([ccList count] + v4) > 1;
 
   return v6;
 }
 
-+ (id)predicateForMessageWithItemID:(id)a3 mailboxPredicate:(id)a4 mailboxTypeResolver:(id)a5
++ (id)predicateForMessageWithItemID:(id)d mailboxPredicate:(id)predicate mailboxTypeResolver:(id)resolver
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  predicateCopy = predicate;
+  resolverCopy = resolver;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"EMMessageQueryAdditions.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"[itemID isKindOfClass:[EMMessageCollectionItemID class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessageQueryAdditions.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"[itemID isKindOfClass:[EMMessageCollectionItemID class]]"}];
   }
 
-  v12 = [[EMMessageObjectID alloc] initWithCollectionItemID:v9 predicate:v10 mailboxTypeResolver:v11];
-  v13 = [a1 predicateForMessageWithObjectID:v12];
+  v12 = [[EMMessageObjectID alloc] initWithCollectionItemID:dCopy predicate:predicateCopy mailboxTypeResolver:resolverCopy];
+  v13 = [self predicateForMessageWithObjectID:v12];
 
   return v13;
 }
 
-+ (id)predicateForMessageWithObjectID:(id)a3
++ (id)predicateForMessageWithObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"EMMessageQueryAdditions.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"[objectID isKindOfClass:[EMMessageObjectID class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessageQueryAdditions.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"[objectID isKindOfClass:[EMMessageObjectID class]]"}];
   }
 
-  v6 = [v5 serializedRepresentation];
-  v7 = [a1 _predicateForMessagesWithObjectIDConstantValue:v6 operatorType:4];
+  serializedRepresentation = [dCopy serializedRepresentation];
+  v7 = [self _predicateForMessagesWithObjectIDConstantValue:serializedRepresentation operatorType:4];
 
   return v7;
 }
 
-+ (id)predicateForMessagesWithObjectIDs:(id)a3
++ (id)predicateForMessagesWithObjectIDs:(id)ds
 {
-  v4 = [a3 ef_filter:&__block_literal_global_34];
+  v4 = [ds ef_filter:&__block_literal_global_34];
   v5 = [v4 ef_map:&__block_literal_global_24];
 
-  v6 = [a1 _predicateForMessagesWithObjectIDConstantValue:v5 operatorType:10];
+  v6 = [self _predicateForMessagesWithObjectIDConstantValue:v5 operatorType:10];
 
   return v6;
 }
@@ -1303,38 +1303,38 @@ id __65__EMMessage_EMQueryAdditions__predicateForMessagesWithObjectIDs___block_i
   return v2;
 }
 
-+ (id)predicateForExcludingMessageWithObjectID:(id)a3
++ (id)predicateForExcludingMessageWithObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"EMMessageQueryAdditions.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[objectID isKindOfClass:[EMMessageObjectID class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMMessageQueryAdditions.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[objectID isKindOfClass:[EMMessageObjectID class]]"}];
   }
 
-  v6 = [v5 serializedRepresentation];
-  v7 = [a1 _predicateForMessagesWithObjectIDConstantValue:v6 operatorType:5];
+  serializedRepresentation = [dCopy serializedRepresentation];
+  v7 = [self _predicateForMessagesWithObjectIDConstantValue:serializedRepresentation operatorType:5];
 
   return v7;
 }
 
-+ (id)predicateForExcludingMessagesWithObjectIDs:(id)a3
++ (id)predicateForExcludingMessagesWithObjectIDs:(id)ds
 {
   v3 = MEMORY[0x1E696AB28];
-  v4 = [a1 predicateForMessagesWithObjectIDs:a3];
+  v4 = [self predicateForMessagesWithObjectIDs:ds];
   v5 = [v3 notPredicateWithSubpredicate:v4];
 
   return v5;
 }
 
-+ (id)_predicateForMessagesWithObjectIDConstantValue:(id)a3 operatorType:(unint64_t)a4
++ (id)_predicateForMessagesWithObjectIDConstantValue:(id)value operatorType:(unint64_t)type
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = MEMORY[0x1E696AB18];
   v7 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"objectID.serializedRepresentation"];
-  v8 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v5];
-  v9 = [v6 predicateWithLeftExpression:v7 rightExpression:v8 modifier:0 type:a4 options:0];
+  v8 = [MEMORY[0x1E696ABC8] expressionForConstantValue:valueCopy];
+  v9 = [v6 predicateWithLeftExpression:v7 rightExpression:v8 modifier:0 type:type options:0];
 
   return v9;
 }

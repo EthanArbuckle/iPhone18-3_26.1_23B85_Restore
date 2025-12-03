@@ -1,24 +1,24 @@
 @interface _INPBStartWorkoutIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBStartWorkoutIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBStartWorkoutIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsSequenceLabel:(id)a3;
-- (int)StringAsWorkoutGoalUnitType:(id)a3;
-- (int)StringAsWorkoutLocationType:(id)a3;
+- (int)StringAsSequenceLabel:(id)label;
+- (int)StringAsWorkoutGoalUnitType:(id)type;
+- (int)StringAsWorkoutLocationType:(id)type;
 - (unint64_t)hash;
-- (void)addAssociatedItems:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAssociatedItems:(id)a3;
-- (void)setHasIsOpenEnded:(BOOL)a3;
-- (void)setHasIsVoiceOnly:(BOOL)a3;
-- (void)setHasSequenceLabel:(BOOL)a3;
-- (void)setHasWorkoutGoalUnitType:(BOOL)a3;
-- (void)setHasWorkoutLocationType:(BOOL)a3;
-- (void)setSequenceLabel:(int)a3;
-- (void)setWorkoutGoalUnitType:(int)a3;
-- (void)setWorkoutLocationType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssociatedItems:(id)items;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAssociatedItems:(id)items;
+- (void)setHasIsOpenEnded:(BOOL)ended;
+- (void)setHasIsVoiceOnly:(BOOL)only;
+- (void)setHasSequenceLabel:(BOOL)label;
+- (void)setHasWorkoutGoalUnitType:(BOOL)type;
+- (void)setHasWorkoutLocationType:(BOOL)type;
+- (void)setSequenceLabel:(int)label;
+- (void)setWorkoutGoalUnitType:(int)type;
+- (void)setWorkoutLocationType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBStartWorkoutIntent
@@ -26,10 +26,10 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_associatedItems count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -49,8 +49,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -59,52 +59,52 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"associatedItems"];
+    [dictionary setObject:array forKeyedSubscript:@"associatedItems"];
   }
 
-  v11 = [(_INPBStartWorkoutIntent *)self customization];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"customization"];
+  customization = [(_INPBStartWorkoutIntent *)self customization];
+  dictionaryRepresentation2 = [customization dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"customization"];
 
-  v13 = [(_INPBStartWorkoutIntent *)self goalValue];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"goalValue"];
+  goalValue = [(_INPBStartWorkoutIntent *)self goalValue];
+  dictionaryRepresentation3 = [goalValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"goalValue"];
 
-  v15 = [(_INPBStartWorkoutIntent *)self intentMetadata];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBStartWorkoutIntent *)self intentMetadata];
+  dictionaryRepresentation4 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBStartWorkoutIntent *)self hasIsBuiltInWorkoutType])
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBStartWorkoutIntent isBuiltInWorkoutType](self, "isBuiltInWorkoutType")}];
-    [v3 setObject:v17 forKeyedSubscript:@"isBuiltInWorkoutType"];
+    [dictionary setObject:v17 forKeyedSubscript:@"isBuiltInWorkoutType"];
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasIsOpenEnded])
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBStartWorkoutIntent isOpenEnded](self, "isOpenEnded")}];
-    [v3 setObject:v18 forKeyedSubscript:@"isOpenEnded"];
+    [dictionary setObject:v18 forKeyedSubscript:@"isOpenEnded"];
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasIsVoiceOnly])
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBStartWorkoutIntent isVoiceOnly](self, "isVoiceOnly")}];
-    [v3 setObject:v19 forKeyedSubscript:@"isVoiceOnly"];
+    [dictionary setObject:v19 forKeyedSubscript:@"isVoiceOnly"];
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasSequenceLabel])
   {
-    v20 = [(_INPBStartWorkoutIntent *)self sequenceLabel];
-    if (v20)
+    sequenceLabel = [(_INPBStartWorkoutIntent *)self sequenceLabel];
+    if (sequenceLabel)
     {
-      if (v20 == 1)
+      if (sequenceLabel == 1)
       {
         v21 = @"next";
       }
 
       else
       {
-        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v20];
+        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", sequenceLabel];
       }
     }
 
@@ -113,38 +113,38 @@
       v21 = @"last";
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"sequenceLabel"];
+    [dictionary setObject:v21 forKeyedSubscript:@"sequenceLabel"];
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasWorkoutGoalUnitType])
   {
-    v22 = [(_INPBStartWorkoutIntent *)self workoutGoalUnitType];
-    if (v22 >= 0xA)
+    workoutGoalUnitType = [(_INPBStartWorkoutIntent *)self workoutGoalUnitType];
+    if (workoutGoalUnitType >= 0xA)
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v22];
+      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", workoutGoalUnitType];
     }
 
     else
     {
-      v23 = off_1E7283B80[v22];
+      v23 = off_1E7283B80[workoutGoalUnitType];
     }
 
-    [v3 setObject:v23 forKeyedSubscript:@"workoutGoalUnitType"];
+    [dictionary setObject:v23 forKeyedSubscript:@"workoutGoalUnitType"];
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasWorkoutLocationType])
   {
-    v24 = [(_INPBStartWorkoutIntent *)self workoutLocationType];
-    if (v24)
+    workoutLocationType = [(_INPBStartWorkoutIntent *)self workoutLocationType];
+    if (workoutLocationType)
     {
-      if (v24 == 1)
+      if (workoutLocationType == 1)
       {
         v25 = @"INDOOR";
       }
 
       else
       {
-        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v24];
+        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", workoutLocationType];
       }
     }
 
@@ -153,16 +153,16 @@
       v25 = @"OUTDOOR";
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"workoutLocationType"];
+    [dictionary setObject:v25 forKeyedSubscript:@"workoutLocationType"];
   }
 
-  v26 = [(_INPBStartWorkoutIntent *)self workoutName];
-  v27 = [v26 dictionaryRepresentation];
-  [v3 setObject:v27 forKeyedSubscript:@"workoutName"];
+  workoutName = [(_INPBStartWorkoutIntent *)self workoutName];
+  dictionaryRepresentation5 = [workoutName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"workoutName"];
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -234,28 +234,28 @@
   return v3 ^ v13 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(_INPBDataString *)self->_workoutName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_51;
   }
 
-  v5 = [(_INPBStartWorkoutIntent *)self associatedItems];
-  v6 = [v4 associatedItems];
-  if ((v5 != 0) == (v6 == 0))
+  associatedItems = [(_INPBStartWorkoutIntent *)self associatedItems];
+  associatedItems2 = [equalCopy associatedItems];
+  if ((associatedItems != 0) == (associatedItems2 == 0))
   {
     goto LABEL_50;
   }
 
-  v7 = [(_INPBStartWorkoutIntent *)self associatedItems];
-  if (v7)
+  associatedItems3 = [(_INPBStartWorkoutIntent *)self associatedItems];
+  if (associatedItems3)
   {
-    v8 = v7;
-    v9 = [(_INPBStartWorkoutIntent *)self associatedItems];
-    v10 = [v4 associatedItems];
-    v11 = [v9 isEqual:v10];
+    v8 = associatedItems3;
+    associatedItems4 = [(_INPBStartWorkoutIntent *)self associatedItems];
+    associatedItems5 = [equalCopy associatedItems];
+    v11 = [associatedItems4 isEqual:associatedItems5];
 
     if (!v11)
     {
@@ -267,20 +267,20 @@
   {
   }
 
-  v5 = [(_INPBStartWorkoutIntent *)self customization];
-  v6 = [v4 customization];
-  if ((v5 != 0) == (v6 == 0))
+  associatedItems = [(_INPBStartWorkoutIntent *)self customization];
+  associatedItems2 = [equalCopy customization];
+  if ((associatedItems != 0) == (associatedItems2 == 0))
   {
     goto LABEL_50;
   }
 
-  v12 = [(_INPBStartWorkoutIntent *)self customization];
-  if (v12)
+  customization = [(_INPBStartWorkoutIntent *)self customization];
+  if (customization)
   {
-    v13 = v12;
-    v14 = [(_INPBStartWorkoutIntent *)self customization];
-    v15 = [v4 customization];
-    v16 = [v14 isEqual:v15];
+    v13 = customization;
+    customization2 = [(_INPBStartWorkoutIntent *)self customization];
+    customization3 = [equalCopy customization];
+    v16 = [customization2 isEqual:customization3];
 
     if (!v16)
     {
@@ -292,20 +292,20 @@
   {
   }
 
-  v5 = [(_INPBStartWorkoutIntent *)self goalValue];
-  v6 = [v4 goalValue];
-  if ((v5 != 0) == (v6 == 0))
+  associatedItems = [(_INPBStartWorkoutIntent *)self goalValue];
+  associatedItems2 = [equalCopy goalValue];
+  if ((associatedItems != 0) == (associatedItems2 == 0))
   {
     goto LABEL_50;
   }
 
-  v17 = [(_INPBStartWorkoutIntent *)self goalValue];
-  if (v17)
+  goalValue = [(_INPBStartWorkoutIntent *)self goalValue];
+  if (goalValue)
   {
-    v18 = v17;
-    v19 = [(_INPBStartWorkoutIntent *)self goalValue];
-    v20 = [v4 goalValue];
-    v21 = [v19 isEqual:v20];
+    v18 = goalValue;
+    goalValue2 = [(_INPBStartWorkoutIntent *)self goalValue];
+    goalValue3 = [equalCopy goalValue];
+    v21 = [goalValue2 isEqual:goalValue3];
 
     if (!v21)
     {
@@ -317,20 +317,20 @@
   {
   }
 
-  v5 = [(_INPBStartWorkoutIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  associatedItems = [(_INPBStartWorkoutIntent *)self intentMetadata];
+  associatedItems2 = [equalCopy intentMetadata];
+  if ((associatedItems != 0) == (associatedItems2 == 0))
   {
     goto LABEL_50;
   }
 
-  v22 = [(_INPBStartWorkoutIntent *)self intentMetadata];
-  if (v22)
+  intentMetadata = [(_INPBStartWorkoutIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v23 = v22;
-    v24 = [(_INPBStartWorkoutIntent *)self intentMetadata];
-    v25 = [v4 intentMetadata];
-    v26 = [v24 isEqual:v25];
+    v23 = intentMetadata;
+    intentMetadata2 = [(_INPBStartWorkoutIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v26 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v26)
     {
@@ -342,120 +342,120 @@
   {
   }
 
-  v27 = [(_INPBStartWorkoutIntent *)self hasIsBuiltInWorkoutType];
-  if (v27 != [v4 hasIsBuiltInWorkoutType])
+  hasIsBuiltInWorkoutType = [(_INPBStartWorkoutIntent *)self hasIsBuiltInWorkoutType];
+  if (hasIsBuiltInWorkoutType != [equalCopy hasIsBuiltInWorkoutType])
   {
     goto LABEL_51;
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasIsBuiltInWorkoutType])
   {
-    if ([v4 hasIsBuiltInWorkoutType])
+    if ([equalCopy hasIsBuiltInWorkoutType])
     {
       isBuiltInWorkoutType = self->_isBuiltInWorkoutType;
-      if (isBuiltInWorkoutType != [v4 isBuiltInWorkoutType])
+      if (isBuiltInWorkoutType != [equalCopy isBuiltInWorkoutType])
       {
         goto LABEL_51;
       }
     }
   }
 
-  v29 = [(_INPBStartWorkoutIntent *)self hasIsOpenEnded];
-  if (v29 != [v4 hasIsOpenEnded])
+  hasIsOpenEnded = [(_INPBStartWorkoutIntent *)self hasIsOpenEnded];
+  if (hasIsOpenEnded != [equalCopy hasIsOpenEnded])
   {
     goto LABEL_51;
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasIsOpenEnded])
   {
-    if ([v4 hasIsOpenEnded])
+    if ([equalCopy hasIsOpenEnded])
     {
       isOpenEnded = self->_isOpenEnded;
-      if (isOpenEnded != [v4 isOpenEnded])
+      if (isOpenEnded != [equalCopy isOpenEnded])
       {
         goto LABEL_51;
       }
     }
   }
 
-  v31 = [(_INPBStartWorkoutIntent *)self hasIsVoiceOnly];
-  if (v31 != [v4 hasIsVoiceOnly])
+  hasIsVoiceOnly = [(_INPBStartWorkoutIntent *)self hasIsVoiceOnly];
+  if (hasIsVoiceOnly != [equalCopy hasIsVoiceOnly])
   {
     goto LABEL_51;
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasIsVoiceOnly])
   {
-    if ([v4 hasIsVoiceOnly])
+    if ([equalCopy hasIsVoiceOnly])
     {
       isVoiceOnly = self->_isVoiceOnly;
-      if (isVoiceOnly != [v4 isVoiceOnly])
+      if (isVoiceOnly != [equalCopy isVoiceOnly])
       {
         goto LABEL_51;
       }
     }
   }
 
-  v33 = [(_INPBStartWorkoutIntent *)self hasSequenceLabel];
-  if (v33 != [v4 hasSequenceLabel])
+  hasSequenceLabel = [(_INPBStartWorkoutIntent *)self hasSequenceLabel];
+  if (hasSequenceLabel != [equalCopy hasSequenceLabel])
   {
     goto LABEL_51;
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasSequenceLabel])
   {
-    if ([v4 hasSequenceLabel])
+    if ([equalCopy hasSequenceLabel])
     {
       sequenceLabel = self->_sequenceLabel;
-      if (sequenceLabel != [v4 sequenceLabel])
+      if (sequenceLabel != [equalCopy sequenceLabel])
       {
         goto LABEL_51;
       }
     }
   }
 
-  v35 = [(_INPBStartWorkoutIntent *)self hasWorkoutGoalUnitType];
-  if (v35 != [v4 hasWorkoutGoalUnitType])
+  hasWorkoutGoalUnitType = [(_INPBStartWorkoutIntent *)self hasWorkoutGoalUnitType];
+  if (hasWorkoutGoalUnitType != [equalCopy hasWorkoutGoalUnitType])
   {
     goto LABEL_51;
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasWorkoutGoalUnitType])
   {
-    if ([v4 hasWorkoutGoalUnitType])
+    if ([equalCopy hasWorkoutGoalUnitType])
     {
       workoutGoalUnitType = self->_workoutGoalUnitType;
-      if (workoutGoalUnitType != [v4 workoutGoalUnitType])
+      if (workoutGoalUnitType != [equalCopy workoutGoalUnitType])
       {
         goto LABEL_51;
       }
     }
   }
 
-  v37 = [(_INPBStartWorkoutIntent *)self hasWorkoutLocationType];
-  if (v37 != [v4 hasWorkoutLocationType])
+  hasWorkoutLocationType = [(_INPBStartWorkoutIntent *)self hasWorkoutLocationType];
+  if (hasWorkoutLocationType != [equalCopy hasWorkoutLocationType])
   {
     goto LABEL_51;
   }
 
   if ([(_INPBStartWorkoutIntent *)self hasWorkoutLocationType])
   {
-    if ([v4 hasWorkoutLocationType])
+    if ([equalCopy hasWorkoutLocationType])
     {
       workoutLocationType = self->_workoutLocationType;
-      if (workoutLocationType != [v4 workoutLocationType])
+      if (workoutLocationType != [equalCopy workoutLocationType])
       {
         goto LABEL_51;
       }
     }
   }
 
-  v5 = [(_INPBStartWorkoutIntent *)self workoutName];
-  v6 = [v4 workoutName];
-  if ((v5 != 0) != (v6 == 0))
+  associatedItems = [(_INPBStartWorkoutIntent *)self workoutName];
+  associatedItems2 = [equalCopy workoutName];
+  if ((associatedItems != 0) != (associatedItems2 == 0))
   {
-    v39 = [(_INPBStartWorkoutIntent *)self workoutName];
-    if (!v39)
+    workoutName = [(_INPBStartWorkoutIntent *)self workoutName];
+    if (!workoutName)
     {
 
 LABEL_54:
@@ -463,10 +463,10 @@ LABEL_54:
       goto LABEL_52;
     }
 
-    v40 = v39;
-    v41 = [(_INPBStartWorkoutIntent *)self workoutName];
-    v42 = [v4 workoutName];
-    v43 = [v41 isEqual:v42];
+    v40 = workoutName;
+    workoutName2 = [(_INPBStartWorkoutIntent *)self workoutName];
+    workoutName3 = [equalCopy workoutName];
+    v43 = [workoutName2 isEqual:workoutName3];
 
     if (v43)
     {
@@ -486,19 +486,19 @@ LABEL_52:
   return v44;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBStartWorkoutIntent allocWithZone:](_INPBStartWorkoutIntent init];
-  v6 = [(NSArray *)self->_associatedItems copyWithZone:a3];
+  v6 = [(NSArray *)self->_associatedItems copyWithZone:zone];
   [(_INPBStartWorkoutIntent *)v5 setAssociatedItems:v6];
 
-  v7 = [(_INPBWorkoutCustomization *)self->_customization copyWithZone:a3];
+  v7 = [(_INPBWorkoutCustomization *)self->_customization copyWithZone:zone];
   [(_INPBStartWorkoutIntent *)v5 setCustomization:v7];
 
-  v8 = [(_INPBDouble *)self->_goalValue copyWithZone:a3];
+  v8 = [(_INPBDouble *)self->_goalValue copyWithZone:zone];
   [(_INPBStartWorkoutIntent *)v5 setGoalValue:v8];
 
-  v9 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v9 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBStartWorkoutIntent *)v5 setIntentMetadata:v9];
 
   if ([(_INPBStartWorkoutIntent *)self hasIsBuiltInWorkoutType])
@@ -531,40 +531,40 @@ LABEL_52:
     [(_INPBStartWorkoutIntent *)v5 setWorkoutLocationType:[(_INPBStartWorkoutIntent *)self workoutLocationType]];
   }
 
-  v10 = [(_INPBDataString *)self->_workoutName copyWithZone:a3];
+  v10 = [(_INPBDataString *)self->_workoutName copyWithZone:zone];
   [(_INPBStartWorkoutIntent *)v5 setWorkoutName:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBStartWorkoutIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBStartWorkoutIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBStartWorkoutIntent)initWithCoder:(id)a3
+- (_INPBStartWorkoutIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBStartWorkoutIntent *)self initWithData:v6];
+    self = [(_INPBStartWorkoutIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -597,27 +597,27 @@ LABEL_52:
     while (v7);
   }
 
-  v11 = [(_INPBStartWorkoutIntent *)self customization];
+  customization = [(_INPBStartWorkoutIntent *)self customization];
 
-  if (v11)
+  if (customization)
   {
-    v12 = [(_INPBStartWorkoutIntent *)self customization];
+    customization2 = [(_INPBStartWorkoutIntent *)self customization];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBStartWorkoutIntent *)self goalValue];
+  goalValue = [(_INPBStartWorkoutIntent *)self goalValue];
 
-  if (v13)
+  if (goalValue)
   {
-    v14 = [(_INPBStartWorkoutIntent *)self goalValue];
+    goalValue2 = [(_INPBStartWorkoutIntent *)self goalValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBStartWorkoutIntent *)self intentMetadata];
+  intentMetadata = [(_INPBStartWorkoutIntent *)self intentMetadata];
 
-  if (v15)
+  if (intentMetadata)
   {
-    v16 = [(_INPBStartWorkoutIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBStartWorkoutIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -657,36 +657,36 @@ LABEL_52:
     PBDataWriterWriteInt32Field();
   }
 
-  v23 = [(_INPBStartWorkoutIntent *)self workoutName];
+  workoutName = [(_INPBStartWorkoutIntent *)self workoutName];
 
-  if (v23)
+  if (workoutName)
   {
-    v24 = [(_INPBStartWorkoutIntent *)self workoutName];
+    workoutName2 = [(_INPBStartWorkoutIntent *)self workoutName];
     PBDataWriterWriteSubmessage();
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsWorkoutLocationType:(id)a3
+- (int)StringAsWorkoutLocationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OUTDOOR"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"OUTDOOR"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"INDOOR"];
+    v4 = [typeCopy isEqualToString:@"INDOOR"];
   }
 
   return v4;
 }
 
-- (void)setHasWorkoutLocationType:(BOOL)a3
+- (void)setHasWorkoutLocationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -699,10 +699,10 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setWorkoutLocationType:(int)a3
+- (void)setWorkoutLocationType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xDF;
   }
@@ -710,59 +710,59 @@ LABEL_52:
   else
   {
     *&self->_has = has | 0x20;
-    self->_workoutLocationType = a3;
+    self->_workoutLocationType = type;
   }
 }
 
-- (int)StringAsWorkoutGoalUnitType:(id)a3
+- (int)StringAsWorkoutGoalUnitType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Inch"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Inch"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Meter"])
+  else if ([typeCopy isEqualToString:@"Meter"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Foot"])
+  else if ([typeCopy isEqualToString:@"Foot"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Mile"])
+  else if ([typeCopy isEqualToString:@"Mile"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Yard"])
+  else if ([typeCopy isEqualToString:@"Yard"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Second"])
+  else if ([typeCopy isEqualToString:@"Second"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Minute"])
+  else if ([typeCopy isEqualToString:@"Minute"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Hour"])
+  else if ([typeCopy isEqualToString:@"Hour"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Joule"])
+  else if ([typeCopy isEqualToString:@"Joule"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KiloCalorie"])
+  else if ([typeCopy isEqualToString:@"KiloCalorie"])
   {
     v4 = 9;
   }
@@ -775,9 +775,9 @@ LABEL_52:
   return v4;
 }
 
-- (void)setHasWorkoutGoalUnitType:(BOOL)a3
+- (void)setHasWorkoutGoalUnitType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -790,10 +790,10 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setWorkoutGoalUnitType:(int)a3
+- (void)setWorkoutGoalUnitType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xEF;
   }
@@ -801,29 +801,29 @@ LABEL_52:
   else
   {
     *&self->_has = has | 0x10;
-    self->_workoutGoalUnitType = a3;
+    self->_workoutGoalUnitType = type;
   }
 }
 
-- (int)StringAsSequenceLabel:(id)a3
+- (int)StringAsSequenceLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"last"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"last"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"next"];
+    v4 = [labelCopy isEqualToString:@"next"];
   }
 
   return v4;
 }
 
-- (void)setHasSequenceLabel:(BOOL)a3
+- (void)setHasSequenceLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 8;
   }
@@ -836,10 +836,10 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setSequenceLabel:(int)a3
+- (void)setSequenceLabel:(int)label
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (label == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -847,13 +847,13 @@ LABEL_52:
   else
   {
     *&self->_has = has | 8;
-    self->_sequenceLabel = a3;
+    self->_sequenceLabel = label;
   }
 }
 
-- (void)setHasIsVoiceOnly:(BOOL)a3
+- (void)setHasIsVoiceOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     v3 = 4;
   }
@@ -866,9 +866,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsOpenEnded:(BOOL)a3
+- (void)setHasIsOpenEnded:(BOOL)ended
 {
-  if (a3)
+  if (ended)
   {
     v3 = 2;
   }
@@ -881,27 +881,27 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addAssociatedItems:(id)a3
+- (void)addAssociatedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   associatedItems = self->_associatedItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!associatedItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_associatedItems;
-    self->_associatedItems = v6;
+    self->_associatedItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     associatedItems = self->_associatedItems;
   }
 
-  [(NSArray *)associatedItems addObject:v4];
+  [(NSArray *)associatedItems addObject:itemsCopy];
 }
 
-- (void)setAssociatedItems:(id)a3
+- (void)setAssociatedItems:(id)items
 {
-  v4 = [a3 mutableCopy];
+  v4 = [items mutableCopy];
   associatedItems = self->_associatedItems;
   self->_associatedItems = v4;
 

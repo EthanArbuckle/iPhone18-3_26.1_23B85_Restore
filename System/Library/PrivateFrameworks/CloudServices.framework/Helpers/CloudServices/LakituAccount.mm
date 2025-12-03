@@ -1,6 +1,6 @@
 @interface LakituAccount
-+ (id)personaAwareAccountWithDSID:(id)a3;
-- (LakituAccount)initWithACAccount:(id)a3;
++ (id)personaAwareAccountWithDSID:(id)d;
+- (LakituAccount)initWithACAccount:(id)account;
 - (NSString)altDSID;
 - (NSString)authToken;
 - (NSString)dsid;
@@ -10,9 +10,9 @@
 
 @implementation LakituAccount
 
-+ (id)personaAwareAccountWithDSID:(id)a3
++ (id)personaAwareAccountWithDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!&kAAProtocoliCloudAccountKey)
   {
     v7 = CloudServicesLog();
@@ -28,20 +28,20 @@
 
   if (sub_100042C00())
   {
-    v5 = +[ACAccountStore defaultStore];
-    v6 = [v5 aa_primaryAppleAccount];
-    v7 = v6;
-    if (v4 && (-[NSObject aa_personID](v6, "aa_personID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v4 isEqualToString:v8], v8, !v9))
+    userPersonaUniqueString = +[ACAccountStore defaultStore];
+    aa_primaryAppleAccount = [userPersonaUniqueString aa_primaryAppleAccount];
+    v7 = aa_primaryAppleAccount;
+    if (dCopy && (-[NSObject aa_personID](aa_primaryAppleAccount, "aa_personID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [dCopy isEqualToString:v8], v8, !v9))
     {
       v23 = CloudServicesLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138477827;
-        v36 = v4;
+        v36 = dCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "using non-primary DSID: %{private}@", buf, 0xCu);
       }
 
-      v10 = [v5 aa_appleAccountWithPersonID:v4];
+      v10 = [userPersonaUniqueString aa_appleAccountWithPersonID:dCopy];
     }
 
     else
@@ -67,18 +67,18 @@ LABEL_31:
   }
 
   v12 = +[UMUserManager sharedManager];
-  v13 = [v12 currentPersona];
+  currentPersona = [v12 currentPersona];
 
-  if (([v13 isDataSeparatedPersona] & 1) == 0)
+  if (([currentPersona isDataSeparatedPersona] & 1) == 0)
   {
 
-    v5 = 0;
+    userPersonaUniqueString = 0;
     goto LABEL_21;
   }
 
-  v5 = [v13 userPersonaUniqueString];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  if (!v5)
+  if (!userPersonaUniqueString)
   {
 LABEL_21:
     v7 = CloudServicesLog();
@@ -98,8 +98,8 @@ LABEL_23:
   v31 = 0u;
   v32 = 0u;
   v29 = v33 = 0u;
-  v14 = [v29 aa_appleAccounts];
-  v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  aa_appleAccounts = [v29 aa_appleAccounts];
+  v15 = [aa_appleAccounts countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (!v15)
   {
 LABEL_19:
@@ -115,12 +115,12 @@ LABEL_13:
   {
     if (*v31 != v17)
     {
-      objc_enumerationMutation(v14);
+      objc_enumerationMutation(aa_appleAccounts);
     }
 
     v19 = *(*(&v30 + 1) + 8 * v18);
-    v20 = [v19 personaIdentifier];
-    v21 = [v5 isEqualToString:v20];
+    personaIdentifier = [v19 personaIdentifier];
+    v21 = [userPersonaUniqueString isEqualToString:personaIdentifier];
 
     if (v21)
     {
@@ -129,7 +129,7 @@ LABEL_13:
 
     if (v16 == ++v18)
     {
-      v16 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v16 = [aa_appleAccounts countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v16)
       {
         goto LABEL_13;
@@ -146,10 +146,10 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v26 = [v7 aa_personID];
-    v27 = [v4 isEqualToString:v26];
+    aa_personID = [v7 aa_personID];
+    v27 = [dCopy isEqualToString:aa_personID];
 
     if ((v27 & 1) == 0)
     {
@@ -157,7 +157,7 @@ LABEL_13:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138477827;
-        v36 = v4;
+        v36 = dCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "specified DSID %{private}@ does not match current persona", buf, 0xCu);
       }
 
@@ -169,7 +169,7 @@ LABEL_32:
 
   if (v7)
   {
-    v11 = [[a1 alloc] initWithACAccount:v7];
+    v11 = [[self alloc] initWithACAccount:v7];
 LABEL_34:
 
     goto LABEL_36;
@@ -181,9 +181,9 @@ LABEL_36:
   return v11;
 }
 
-- (LakituAccount)initWithACAccount:(id)a3
+- (LakituAccount)initWithACAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (&kAAProtocoliCloudAccountKey)
   {
     v10.receiver = self;
@@ -192,11 +192,11 @@ LABEL_36:
     v6 = v5;
     if (v5)
     {
-      [(LakituAccount *)v5 setAccount:v4];
+      [(LakituAccount *)v5 setAccount:accountCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -208,10 +208,10 @@ LABEL_36:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "AppleAccount.framework is not available", buf, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (NSString)dsid
@@ -224,15 +224,15 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "getting dsid", &v9, 2u);
   }
 
-  v5 = [(LakituAccount *)self account];
-  if ([v5 aa_isPrimaryEmailVerified])
+  account = [(LakituAccount *)self account];
+  if ([account aa_isPrimaryEmailVerified])
   {
-    v6 = [v5 aa_personID];
+    aa_personID = [account aa_personID];
     v7 = CloudServicesLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v6;
+      v10 = aa_personID;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "got dsid: %@", &v9, 0xCu);
     }
   }
@@ -245,23 +245,23 @@ LABEL_36:
       sub_10004E7B8();
     }
 
-    v6 = 0;
+    aa_personID = 0;
   }
 
   objc_autoreleasePoolPop(v3);
 
-  return v6;
+  return aa_personID;
 }
 
 - (NSString)altDSID
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(LakituAccount *)self account];
-  v5 = [v4 aa_altDSID];
+  account = [(LakituAccount *)self account];
+  aa_altDSID = [account aa_altDSID];
 
   objc_autoreleasePoolPop(v3);
 
-  return v5;
+  return aa_altDSID;
 }
 
 - (NSString)authToken
@@ -274,16 +274,16 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "getting auth token", buf, 2u);
   }
 
-  v5 = [(LakituAccount *)self account];
-  if ([v5 aa_isPrimaryEmailVerified])
+  account = [(LakituAccount *)self account];
+  if ([account aa_isPrimaryEmailVerified])
   {
     v6 = +[ACAccountStore defaultStore];
     v12 = 0;
-    v7 = [v6 credentialForAccount:v5 error:&v12];
+    v7 = [v6 credentialForAccount:account error:&v12];
     v8 = v12;
     if (v7)
     {
-      v9 = [v7 token];
+      token = [v7 token];
       v10 = CloudServicesLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -302,7 +302,7 @@ LABEL_36:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Error accessing auth token: %@", buf, 0xCu);
       }
 
-      v9 = 0;
+      token = 0;
     }
   }
 
@@ -314,12 +314,12 @@ LABEL_36:
       sub_10004E7B8();
     }
 
-    v9 = 0;
+    token = 0;
   }
 
   objc_autoreleasePoolPop(v3);
 
-  return v9;
+  return token;
 }
 
 - (NSString)escrowURL
@@ -332,10 +332,10 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "getting escrowURL", buf, 2u);
   }
 
-  v5 = [(LakituAccount *)self account];
-  if ([v5 aa_isPrimaryEmailVerified])
+  account = [(LakituAccount *)self account];
+  if ([account aa_isPrimaryEmailVerified])
   {
-    v6 = [v5 propertiesForDataclass:kAccountDataclassKeychainSync];
+    v6 = [account propertiesForDataclass:kAccountDataclassKeychainSync];
     v7 = [v6 objectForKey:@"escrowProxyUrl"];
 
     v8 = CloudServicesLog();
@@ -372,11 +372,11 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "getting iCloud env", buf, 2u);
   }
 
-  v5 = [(LakituAccount *)self account];
-  if ([v5 aa_isPrimaryEmailVerified])
+  account = [(LakituAccount *)self account];
+  if ([account aa_isPrimaryEmailVerified])
   {
-    v6 = [v5 dataclassProperties];
-    v7 = [v6 objectForKeyedSubscript:kAAProtocoliCloudAccountKey];
+    dataclassProperties = [account dataclassProperties];
+    v7 = [dataclassProperties objectForKeyedSubscript:kAAProtocoliCloudAccountKey];
     v8 = [v7 objectForKeyedSubscript:@"iCloudEnv"];
 
     v9 = CloudServicesLog();

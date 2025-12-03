@@ -1,37 +1,37 @@
 @interface DNDSAppSpecificSettingsTypeSystemAction
-+ (id)appSpecificSettingsForManagedObject:(id)a3;
-+ (void)completeManagedObject:(id)a3 forAppSpecificSettings:(id)a4;
++ (id)appSpecificSettingsForManagedObject:(id)object;
++ (void)completeManagedObject:(id)object forAppSpecificSettings:(id)settings;
 @end
 
 @implementation DNDSAppSpecificSettingsTypeSystemAction
 
-+ (id)appSpecificSettingsForManagedObject:(id)a3
++ (id)appSpecificSettingsForManagedObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 enabled];
+  objectCopy = object;
+  enabled = [objectCopy enabled];
   v5 = MEMORY[0x277CCAAC8];
   v6 = objc_opt_class();
-  v7 = [v3 encodedAction];
+  encodedAction = [objectCopy encodedAction];
   v24 = 0;
-  v8 = [v5 unarchivedObjectOfClass:v6 fromData:v7 error:&v24];
+  v8 = [v5 unarchivedObjectOfClass:v6 fromData:encodedAction error:&v24];
   v9 = v24;
 
   if (!v9)
   {
-    v14 = [v3 encodedReverseAction];
+    encodedReverseAction = [objectCopy encodedReverseAction];
 
-    if (v14)
+    if (encodedReverseAction)
     {
       v16 = MEMORY[0x277CCAAC8];
       v17 = objc_opt_class();
-      v18 = [v3 encodedAction];
+      encodedAction2 = [objectCopy encodedAction];
       v22 = 0;
-      v19 = [v16 unarchivedObjectOfClass:v17 fromData:v18 error:&v22];
-      v14 = v22;
+      v19 = [v16 unarchivedObjectOfClass:v17 fromData:encodedAction2 error:&v22];
+      encodedReverseAction = v22;
 
-      if (v14 && (v20 = DNDSLogSettings, os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_ERROR)))
+      if (encodedReverseAction && (v20 = DNDSLogSettings, os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_ERROR)))
       {
-        [(DNDSAppSpecificSettingsTypeSystemAction *)v14 appSpecificSettingsForManagedObject:v20];
+        [(DNDSAppSpecificSettingsTypeSystemAction *)encodedReverseAction appSpecificSettingsForManagedObject:v20];
         if (v19)
         {
           goto LABEL_9;
@@ -41,30 +41,30 @@
       else if (v19)
       {
 LABEL_9:
-        v13 = [objc_alloc(MEMORY[0x277D05AC0]) initWithAction:v8 reverseAction:v19 enabled:v4];
+        v13 = [objc_alloc(MEMORY[0x277D05AC0]) initWithAction:v8 reverseAction:v19 enabled:enabled];
 
         goto LABEL_12;
       }
     }
 
-    v13 = [objc_alloc(MEMORY[0x277D05AC0]) initWithAction:v8 enabled:v4];
+    v13 = [objc_alloc(MEMORY[0x277D05AC0]) initWithAction:v8 enabled:enabled];
     goto LABEL_12;
   }
 
   [MEMORY[0x277CCAAC8] setClass:objc_opt_class() forClassName:@"DNDSSystemAction"];
   v10 = MEMORY[0x277CCAAC8];
   v11 = objc_opt_class();
-  v12 = [v3 encodedAction];
+  encodedAction3 = [objectCopy encodedAction];
   v23 = 0;
-  v13 = [v10 unarchivedObjectOfClass:v11 fromData:v12 error:&v23];
-  v14 = v23;
+  v13 = [v10 unarchivedObjectOfClass:v11 fromData:encodedAction3 error:&v23];
+  encodedReverseAction = v23;
 
-  if (v14)
+  if (encodedReverseAction)
   {
     v15 = DNDSLogSettings;
     if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_FAULT))
     {
-      [(DNDSAppSpecificSettingsTypeSystemAction *)v14 appSpecificSettingsForManagedObject:v15];
+      [(DNDSAppSpecificSettingsTypeSystemAction *)encodedReverseAction appSpecificSettingsForManagedObject:v15];
     }
   }
 
@@ -73,11 +73,11 @@ LABEL_12:
   return v13;
 }
 
-+ (void)completeManagedObject:(id)a3 forAppSpecificSettings:(id)a4
++ (void)completeManagedObject:(id)object forAppSpecificSettings:(id)settings
 {
-  v5 = a3;
+  objectCopy = object;
   v9 = 0;
-  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a4 requiringSecureCoding:1 error:&v9];
+  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:settings requiringSecureCoding:1 error:&v9];
   v7 = v9;
   if (v7)
   {
@@ -88,7 +88,7 @@ LABEL_12:
     }
   }
 
-  [v5 setEncodedAction:v6];
+  [objectCopy setEncodedAction:v6];
 }
 
 + (void)appSpecificSettingsForManagedObject:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

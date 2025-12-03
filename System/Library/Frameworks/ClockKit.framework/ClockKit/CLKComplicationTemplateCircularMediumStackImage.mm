@@ -1,23 +1,23 @@
 @interface CLKComplicationTemplateCircularMediumStackImage
-+ (void)_imageSDKSize:(CGSize *)a3 deviceSize:(CGSize *)a4 forSDKVersion:(int64_t)a5;
++ (void)_imageSDKSize:(CGSize *)size deviceSize:(CGSize *)deviceSize forSDKVersion:(int64_t)version;
 @end
 
 @implementation CLKComplicationTemplateCircularMediumStackImage
 
-+ (void)_imageSDKSize:(CGSize *)a3 deviceSize:(CGSize *)a4 forSDKVersion:(int64_t)a5
++ (void)_imageSDKSize:(CGSize *)size deviceSize:(CGSize *)deviceSize forSDKVersion:(int64_t)version
 {
   v8 = +[CLKRenderingContext sharedRenderingContext];
-  v10 = [v8 device];
+  device = [v8 device];
 
-  __90__CLKComplicationTemplateCircularMediumStackImage__imageSDKSize_deviceSize_forSDKVersion___block_invoke(v9, v10);
-  if (a4)
+  __90__CLKComplicationTemplateCircularMediumStackImage__imageSDKSize_deviceSize_forSDKVersion___block_invoke(v9, device);
+  if (deviceSize)
   {
-    *a4 = xmmword_27DE91990;
+    *deviceSize = xmmword_27DE91990;
   }
 
-  if (a3)
+  if (size)
   {
-    *a3 = *&_imageSDKSize_deviceSize_forSDKVersion___imageSize_918[2 * a5];
+    *size = *&_imageSDKSize_deviceSize_forSDKVersion___imageSize_918[2 * version];
   }
 }
 

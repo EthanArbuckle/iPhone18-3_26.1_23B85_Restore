@@ -1,18 +1,18 @@
 @interface VLFSessionAppLaunchDelayMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (VLFSessionAppLaunchDelayMonitor)initWithObserver:(id)a3;
+- (VLFSessionAppLaunchDelayMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
 - (void)_startTimer;
-- (void)applicationDidBecomeActiveNotification:(id)a3;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
+- (void)applicationDidBecomeActiveNotification:(id)notification;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
 @end
 
 @implementation VLFSessionAppLaunchDelayMonitor
 
-- (void)applicationDidBecomeActiveNotification:(id)a3
+- (void)applicationDidBecomeActiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -63,9 +63,9 @@
   [(VLFSessionAppLaunchDelayMonitor *)self _startTimer];
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -153,14 +153,14 @@
   }
 
   v9 = v8;
-  v10 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v11 = @"Hide";
-  if (v10 == 1)
+  if (state == 1)
   {
     v11 = @"EnablePuck";
   }
 
-  if (v10 == 2)
+  if (state == 2)
   {
     v12 = @"EnablePuckAndBanner";
   }
@@ -217,8 +217,8 @@
     }
   }
 
-  v6 = [(VLFSessionAppLaunchDelayMonitor *)self timeoutTimer];
-  v7 = v6 == 0;
+  timeoutTimer = [(VLFSessionAppLaunchDelayMonitor *)self timeoutTimer];
+  v7 = timeoutTimer == 0;
 
   if (v7)
   {
@@ -256,11 +256,11 @@
   }
 }
 
-- (VLFSessionAppLaunchDelayMonitor)initWithObserver:(id)a3
+- (VLFSessionAppLaunchDelayMonitor)initWithObserver:(id)observer
 {
   v8.receiver = self;
   v8.super_class = VLFSessionAppLaunchDelayMonitor;
-  v3 = [(VLFSessionMonitor *)&v8 initWithObserver:a3];
+  v3 = [(VLFSessionMonitor *)&v8 initWithObserver:observer];
   v4 = v3;
   if (v3)
   {

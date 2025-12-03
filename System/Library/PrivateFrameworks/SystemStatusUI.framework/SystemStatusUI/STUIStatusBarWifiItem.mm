@@ -1,17 +1,17 @@
 @interface STUIStatusBarWifiItem
-+ (id)groupWithPriority:(int64_t)a3;
++ (id)groupWithPriority:(int64_t)priority;
 - (STUIStatusBarImageView)networkIconView;
 - (STUIStatusBarStringView)rawStringView;
 - (STUIStatusBarWifiSignalView)signalView;
-- (double)_barThicknessForUpdate:(id)a3;
-- (double)_interspaceForUpdate:(id)a3;
-- (double)_totalWidthForUpdate:(id)a3;
-- (id)_backgroundColorForUpdate:(id)a3 entry:(id)a4;
-- (id)_fillColorForUpdate:(id)a3 entry:(id)a4;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (double)_barThicknessForUpdate:(id)update;
+- (double)_interspaceForUpdate:(id)update;
+- (double)_totalWidthForUpdate:(id)update;
+- (id)_backgroundColorForUpdate:(id)update entry:(id)entry;
+- (id)_fillColorForUpdate:(id)update entry:(id)entry;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (id)dependentEntryKeys;
 - (id)entry;
-- (id)viewForIdentifier:(id)a3;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_networkIconView;
 - (void)_create_rawStringView;
 - (void)_create_signalView;
@@ -22,18 +22,18 @@
 - (id)dependentEntryKeys
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(STUIStatusBarWifiItem *)self wifiDataEntryKey];
-  v4 = [v2 setWithObject:v3];
+  wifiDataEntryKey = [(STUIStatusBarWifiItem *)self wifiDataEntryKey];
+  v4 = [v2 setWithObject:wifiDataEntryKey];
 
   return v4;
 }
 
 - (id)entry
 {
-  v3 = [(STUIStatusBarItem *)self statusBar];
-  v4 = [v3 currentAggregatedData];
-  v5 = [(STUIStatusBarWifiItem *)self wifiDataEntryKey];
-  v6 = [v4 valueForKey:v5];
+  statusBar = [(STUIStatusBarItem *)self statusBar];
+  currentAggregatedData = [statusBar currentAggregatedData];
+  wifiDataEntryKey = [(STUIStatusBarWifiItem *)self wifiDataEntryKey];
+  v6 = [currentAggregatedData valueForKey:wifiDataEntryKey];
 
   return v6;
 }
@@ -62,26 +62,26 @@
   [(STUIStatusBarSignalView *)v6 setNumberOfBars:3];
 }
 
-+ (id)groupWithPriority:(int64_t)a3
++ (id)groupWithPriority:(int64_t)priority
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = [a1 signalStrengthDisplayIdentifier];
-  v6 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v5 priority:2];
+  signalStrengthDisplayIdentifier = [self signalStrengthDisplayIdentifier];
+  v6 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:signalStrengthDisplayIdentifier priority:2];
 
-  v7 = [a1 iconDisplayIdentifier];
-  v8 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:3];
+  iconDisplayIdentifier = [self iconDisplayIdentifier];
+  v8 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:iconDisplayIdentifier priority:3];
   v17[0] = v6;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   v10 = [v8 excludingPlacements:v9];
 
-  v11 = [a1 rawDisplayIdentifier];
-  v12 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v11 priority:1];
+  rawDisplayIdentifier = [self rawDisplayIdentifier];
+  v12 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:rawDisplayIdentifier priority:1];
 
   v16[0] = v6;
   v16[1] = v10;
   v16[2] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
-  v14 = [(STUIStatusBarDisplayItemPlacementGroup *)STUIStatusBarDisplayItemPlacementWifiGroup groupWithPriority:a3 placements:v13];
+  v14 = [(STUIStatusBarDisplayItemPlacementGroup *)STUIStatusBarDisplayItemPlacementWifiGroup groupWithPriority:priority placements:v13];
 
   [v14 setSignalStrengthPlacement:v6];
   [v14 setIconPlacement:v10];
@@ -90,11 +90,11 @@
   return v14;
 }
 
-- (double)_barThicknessForUpdate:(id)a3
+- (double)_barThicknessForUpdate:(id)update
 {
-  v3 = [a3 styleAttributes];
-  v4 = [v3 traitCollection];
-  [v4 displayScale];
+  styleAttributes = [update styleAttributes];
+  traitCollection = [styleAttributes traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   result = 2.5;
@@ -106,11 +106,11 @@
   return result;
 }
 
-- (double)_interspaceForUpdate:(id)a3
+- (double)_interspaceForUpdate:(id)update
 {
-  v3 = [a3 styleAttributes];
-  v4 = [v3 traitCollection];
-  [v4 displayScale];
+  styleAttributes = [update styleAttributes];
+  traitCollection = [styleAttributes traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   result = 1.66666667;
@@ -122,136 +122,136 @@
   return result;
 }
 
-- (double)_totalWidthForUpdate:(id)a3
+- (double)_totalWidthForUpdate:(id)update
 {
-  v3 = [a3 styleAttributes];
-  v4 = [v3 traitCollection];
-  [v4 displayScale];
+  styleAttributes = [update styleAttributes];
+  traitCollection = [styleAttributes traitCollection];
+  [traitCollection displayScale];
   v6 = v5 > 2.5;
 
   return dbl_26C582340[v6];
 }
 
-- (id)_fillColorForUpdate:(id)a3 entry:(id)a4
+- (id)_fillColorForUpdate:(id)update entry:(id)entry
 {
-  v5 = a3;
-  if ([a4 lowDataModeActive])
+  updateCopy = update;
+  if ([entry lowDataModeActive])
   {
-    v6 = [MEMORY[0x277D75348] systemYellowColor];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
   }
 
   else
   {
-    v7 = [v5 styleAttributes];
-    v8 = [v7 imageTintColor];
-    v6 = [v8 colorWithAlphaComponent:1.0];
+    styleAttributes = [updateCopy styleAttributes];
+    imageTintColor = [styleAttributes imageTintColor];
+    systemYellowColor = [imageTintColor colorWithAlphaComponent:1.0];
   }
 
-  return v6;
+  return systemYellowColor;
 }
 
-- (id)_backgroundColorForUpdate:(id)a3 entry:(id)a4
+- (id)_backgroundColorForUpdate:(id)update entry:(id)entry
 {
-  v5 = a3;
-  if ([a4 lowDataModeActive])
+  updateCopy = update;
+  if ([entry lowDataModeActive])
   {
-    v6 = [MEMORY[0x277D75348] systemYellowColor];
-    [v6 colorWithAlphaComponent:0.3];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    [systemYellowColor colorWithAlphaComponent:0.3];
   }
 
   else
   {
-    v6 = [v5 styleAttributes];
-    [v6 imageDimmedTintColor];
+    systemYellowColor = [updateCopy styleAttributes];
+    [systemYellowColor imageDimmedTintColor];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v37.receiver = self;
   v37.super_class = STUIStatusBarWifiItem;
-  v8 = [(STUIStatusBarItem *)&v37 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [(STUIStatusBarWifiItem *)self entry];
-  v10 = [v7 identifier];
-  v11 = [objc_opt_class() signalStrengthDisplayIdentifier];
-  v12 = v11;
-  if (v10 == v11)
+  v8 = [(STUIStatusBarItem *)&v37 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  entry = [(STUIStatusBarWifiItem *)self entry];
+  identifier = [itemCopy identifier];
+  signalStrengthDisplayIdentifier = [objc_opt_class() signalStrengthDisplayIdentifier];
+  v12 = signalStrengthDisplayIdentifier;
+  if (identifier == signalStrengthDisplayIdentifier)
   {
 
 LABEL_9:
-    v20 = [v7 isEnabled] && objc_msgSend(v9, "isEnabled") && objc_msgSend(v9, "type") != 1;
-    [v7 setEnabled:v20];
-    v21 = [(STUIStatusBarWifiItem *)self signalView];
-    if (![v7 isEnabled])
+    v20 = [itemCopy isEnabled] && objc_msgSend(entry, "isEnabled") && objc_msgSend(entry, "type") != 1;
+    [itemCopy setEnabled:v20];
+    signalView = [(STUIStatusBarWifiItem *)self signalView];
+    if (![itemCopy isEnabled])
     {
       goto LABEL_50;
     }
 
-    if (([v6 styleAttributesChanged] & 1) != 0 || objc_msgSend(v6, "dataChanged"))
+    if (([updateCopy styleAttributesChanged] & 1) != 0 || objc_msgSend(updateCopy, "dataChanged"))
     {
-      v22 = [(STUIStatusBarWifiItem *)self _backgroundColorForUpdate:v6 entry:v9];
-      [v21 setInactiveColor:v22];
+      v22 = [(STUIStatusBarWifiItem *)self _backgroundColorForUpdate:updateCopy entry:entry];
+      [signalView setInactiveColor:v22];
 
-      v23 = [(STUIStatusBarWifiItem *)self _fillColorForUpdate:v6 entry:v9];
-      [v21 setActiveColor:v23];
+      v23 = [(STUIStatusBarWifiItem *)self _fillColorForUpdate:updateCopy entry:entry];
+      [signalView setActiveColor:v23];
     }
 
-    if ([v6 styleAttributesChanged])
+    if ([updateCopy styleAttributesChanged])
     {
-      v24 = [v6 styleAttributes];
-      v25 = [v24 mode];
+      styleAttributes = [updateCopy styleAttributes];
+      mode = [styleAttributes mode];
       v26 = -0.666666667;
-      if (v25 != 1)
+      if (mode != 1)
       {
         v26 = 0.0;
       }
 
-      [v7 setBaselineOffset:v26];
+      [itemCopy setBaselineOffset:v26];
     }
 
-    if (![v6 dataChanged])
+    if (![updateCopy dataChanged])
     {
       goto LABEL_50;
     }
 
-    v27 = [v9 status];
+    status = [entry status];
     v28 = 0;
     v29 = 0;
-    if (v27 > 3)
+    if (status > 3)
     {
-      if (v27 == 5)
+      if (status == 5)
       {
         v29 = 1;
         v28 = 2;
 LABEL_41:
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
-          v35 = [v9 displayValue];
+          displayValue = [entry displayValue];
           if (v29)
           {
-            [v21 setNumberOfActiveBars:v35];
+            [signalView setNumberOfActiveBars:displayValue];
           }
 
-          [v21 setSignalMode:v28];
+          [signalView setSignalMode:v28];
         }
 
         goto LABEL_50;
       }
 
-      if (v27 != 4)
+      if (status != 4)
       {
         goto LABEL_41;
       }
     }
 
-    else if (v27 >= 2)
+    else if (status >= 2)
     {
-      if (v27 == 3)
+      if (status == 3)
       {
         v29 = 0;
         v28 = 1;
@@ -260,46 +260,46 @@ LABEL_41:
       goto LABEL_41;
     }
 
-    [v7 setEnabled:0];
+    [itemCopy setEnabled:0];
     v29 = 0;
     v28 = 0;
     goto LABEL_41;
   }
 
-  v13 = [v7 identifier];
-  v14 = [objc_opt_class() externalSignalStrengthDisplayIdentifier];
+  identifier2 = [itemCopy identifier];
+  externalSignalStrengthDisplayIdentifier = [objc_opt_class() externalSignalStrengthDisplayIdentifier];
 
-  if (v13 == v14)
+  if (identifier2 == externalSignalStrengthDisplayIdentifier)
   {
     goto LABEL_9;
   }
 
-  v15 = [v7 identifier];
-  v16 = [objc_opt_class() iconDisplayIdentifier];
+  identifier3 = [itemCopy identifier];
+  iconDisplayIdentifier = [objc_opt_class() iconDisplayIdentifier];
 
-  if (v15 == v16)
+  if (identifier3 == iconDisplayIdentifier)
   {
-    if ([v7 isEnabled])
+    if ([itemCopy isEnabled])
     {
-      v30 = [v9 isEnabled];
+      isEnabled = [entry isEnabled];
     }
 
     else
     {
-      v30 = 0;
+      isEnabled = 0;
     }
 
-    [v7 setEnabled:v30];
-    if (![v7 isEnabled])
+    [itemCopy setEnabled:isEnabled];
+    if (![itemCopy isEnabled])
     {
       goto LABEL_51;
     }
 
-    v31 = [v9 status];
-    switch(v31)
+    status2 = [entry status];
+    switch(status2)
     {
       case 5:
-        if ([v9 type] == 1)
+        if ([entry type] == 1)
         {
           v32 = MEMORY[0x277D755B8];
           v33 = @"personalhotspot";
@@ -315,28 +315,28 @@ LABEL_41:
         v32 = MEMORY[0x277D755B8];
         v33 = @"wifi.slash";
 LABEL_48:
-        v21 = [v32 systemImageNamed:v33];
-        v34 = [(STUIStatusBarWifiItem *)self networkIconView];
-        [v34 setImage:v21];
+        signalView = [v32 systemImageNamed:v33];
+        networkIconView = [(STUIStatusBarWifiItem *)self networkIconView];
+        [networkIconView setImage:signalView];
         goto LABEL_49;
     }
 
-    [v7 setEnabled:0];
+    [itemCopy setEnabled:0];
     goto LABEL_51;
   }
 
-  v17 = [v7 identifier];
-  v18 = [objc_opt_class() rawDisplayIdentifier];
+  identifier4 = [itemCopy identifier];
+  rawDisplayIdentifier = [objc_opt_class() rawDisplayIdentifier];
 
-  if (v17 == v18)
+  if (identifier4 == rawDisplayIdentifier)
   {
-    v19 = [v7 isEnabled] && objc_msgSend(v9, "isEnabled") ? objc_msgSend(v9, "displayRawValue") : 0;
-    [v7 setEnabled:v19];
-    if ([v7 isEnabled])
+    v19 = [itemCopy isEnabled] && objc_msgSend(entry, "isEnabled") ? objc_msgSend(entry, "displayRawValue") : 0;
+    [itemCopy setEnabled:v19];
+    if ([itemCopy isEnabled])
     {
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v9, "rawValue")];
-      v34 = [(STUIStatusBarWifiItem *)self rawStringView];
-      [v34 setText:v21];
+      signalView = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(entry, "rawValue")];
+      networkIconView = [(STUIStatusBarWifiItem *)self rawStringView];
+      [networkIconView setText:signalView];
 LABEL_49:
 
 LABEL_50:
@@ -392,52 +392,52 @@ LABEL_51:
   MEMORY[0x2821F96F8](v4, rawStringView);
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() signalStrengthDisplayIdentifier];
-  v6 = v5;
-  if (v5 == v4)
+  identifierCopy = identifier;
+  signalStrengthDisplayIdentifier = [objc_opt_class() signalStrengthDisplayIdentifier];
+  v6 = signalStrengthDisplayIdentifier;
+  if (signalStrengthDisplayIdentifier == identifierCopy)
   {
 
     goto LABEL_7;
   }
 
-  v7 = [objc_opt_class() externalSignalStrengthDisplayIdentifier];
+  externalSignalStrengthDisplayIdentifier = [objc_opt_class() externalSignalStrengthDisplayIdentifier];
 
-  if (v7 == v4)
+  if (externalSignalStrengthDisplayIdentifier == identifierCopy)
   {
 LABEL_7:
-    v10 = [(STUIStatusBarWifiItem *)self signalView];
+    signalView = [(STUIStatusBarWifiItem *)self signalView];
     goto LABEL_8;
   }
 
-  v8 = [objc_opt_class() iconDisplayIdentifier];
+  iconDisplayIdentifier = [objc_opt_class() iconDisplayIdentifier];
 
-  if (v8 == v4)
+  if (iconDisplayIdentifier == identifierCopy)
   {
-    v10 = [(STUIStatusBarWifiItem *)self networkIconView];
+    signalView = [(STUIStatusBarWifiItem *)self networkIconView];
   }
 
   else
   {
-    v9 = [objc_opt_class() rawDisplayIdentifier];
+    rawDisplayIdentifier = [objc_opt_class() rawDisplayIdentifier];
 
-    if (v9 == v4)
+    if (rawDisplayIdentifier == identifierCopy)
     {
-      v10 = [(STUIStatusBarWifiItem *)self rawStringView];
+      signalView = [(STUIStatusBarWifiItem *)self rawStringView];
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = STUIStatusBarWifiItem;
-      v10 = [(STUIStatusBarItem *)&v13 viewForIdentifier:v4];
+      signalView = [(STUIStatusBarItem *)&v13 viewForIdentifier:identifierCopy];
     }
   }
 
 LABEL_8:
-  v11 = v10;
+  v11 = signalView;
 
   return v11;
 }

@@ -1,16 +1,16 @@
 @interface FCArticleClassification
-- (BOOL)isEqual:(id)a3;
-- (FCArticleClassification)initWithArticleID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCArticleClassification)initWithArticleID:(id)d;
 - (unint64_t)hash;
 @end
 
 @implementation FCArticleClassification
 
-- (FCArticleClassification)initWithArticleID:(id)a3
+- (FCArticleClassification)initWithArticleID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "articleID != nil"];
     *buf = 136315906;
@@ -30,9 +30,9 @@
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (dCopy)
     {
-      v7 = [v4 copy];
+      v7 = [dCopy copy];
       articleID = v6->_articleID;
       v6->_articleID = v7;
     }
@@ -48,15 +48,15 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -74,9 +74,9 @@
 
   if (v6)
   {
-    v7 = [(FCArticleClassification *)self articleID];
-    v8 = [v6 articleID];
-    v9 = [v7 isEqual:v8];
+    articleID = [(FCArticleClassification *)self articleID];
+    articleID2 = [v6 articleID];
+    v9 = [articleID isEqual:articleID2];
   }
 
   else
@@ -89,8 +89,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FCArticleClassification *)self articleID];
-  v3 = [v2 hash];
+  articleID = [(FCArticleClassification *)self articleID];
+  v3 = [articleID hash];
 
   return v3;
 }

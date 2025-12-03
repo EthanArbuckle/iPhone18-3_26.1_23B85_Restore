@@ -1,21 +1,21 @@
 @interface PBPasteButtonDrawer
-- (id)drawingWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5;
+- (id)drawingWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote;
 @end
 
 @implementation PBPasteButtonDrawer
 
-- (id)drawingWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5
+- (id)drawingWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote
 {
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10001D98C;
   v21[3] = &unk_100031DC8;
-  v22 = a3;
+  styleCopy = style;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10001D9F4;
   v19[3] = &unk_100031DF0;
-  v20 = v22;
+  v20 = styleCopy;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10001DA5C;
@@ -42,7 +42,7 @@
   v9[3] = &unk_100031EB8;
   v10 = v12;
   v6 = v12;
-  v7 = [a4 _acceptCalloutBarPasteButtonTagVisit:v21 systemInputAssistantPasteButtonTagVisit:v19 undoInteractionHUDIconPasteButtonTagVisit:v17 undoInteractionHUDTextPasteButtonTagVisit:v15 contextMenuPasteButtonTagVisit:v13 contextMenuDynamicPasteButtonTagVisit:v11 editMenuPasteButtonTagVisit:v9];
+  v7 = [tag _acceptCalloutBarPasteButtonTagVisit:v21 systemInputAssistantPasteButtonTagVisit:v19 undoInteractionHUDIconPasteButtonTagVisit:v17 undoInteractionHUDTextPasteButtonTagVisit:v15 contextMenuPasteButtonTagVisit:v13 contextMenuDynamicPasteButtonTagVisit:v11 editMenuPasteButtonTagVisit:v9];
 
   return v7;
 }

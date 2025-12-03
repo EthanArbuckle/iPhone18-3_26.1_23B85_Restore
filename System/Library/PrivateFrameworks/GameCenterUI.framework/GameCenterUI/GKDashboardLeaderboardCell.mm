@@ -1,9 +1,9 @@
 @interface GKDashboardLeaderboardCell
 - (void)awakeFromNib;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLeaderboard:(id)a3;
-- (void)setLeaderboardSet:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLeaderboard:(id)leaderboard;
+- (void)setLeaderboardSet:(id)set;
+- (void)setSelected:(BOOL)selected;
 - (void)updateImage;
 - (void)updateRank;
 @end
@@ -17,22 +17,22 @@
   [(GKDashboardLeaderboardCell *)&v4 awakeFromNib];
   [(GKDashboardLeaderboardCell *)self setClipsToBounds:0];
   [(UIImageView *)self->_iconView setContentMode:2];
-  v3 = [(UILabel *)self->_titleLabel textColor];
-  [(GKDashboardLeaderboardCell *)self setTitleLabelColor:v3];
+  textColor = [(UILabel *)self->_titleLabel textColor];
+  [(GKDashboardLeaderboardCell *)self setTitleLabelColor:textColor];
 }
 
-- (void)setLeaderboardSet:(id)a3
+- (void)setLeaderboardSet:(id)set
 {
-  v5 = a3;
-  if (self->_leaderboardSet != v5)
+  setCopy = set;
+  if (self->_leaderboardSet != setCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_leaderboardSet, a3);
-    v6 = [(GKLeaderboardSet *)v13 title];
-    [(UILabel *)self->_titleLabel setText:v6];
+    v13 = setCopy;
+    objc_storeStrong(&self->_leaderboardSet, set);
+    title = [(GKLeaderboardSet *)v13 title];
+    [(UILabel *)self->_titleLabel setText:title];
 
-    v7 = [(GKLeaderboardSet *)v13 leaderboardIdentifiers];
-    [v7 count];
+    leaderboardIdentifiers = [(GKLeaderboardSet *)v13 leaderboardIdentifiers];
+    [leaderboardIdentifiers count];
     v8 = MEMORY[0x277CCACA8];
     v9 = GKGameCenterUIFrameworkBundle();
     v10 = GKGetLocalizedStringFromTableInBundle();
@@ -42,23 +42,23 @@
 
     [(UILabel *)self->_countLabel setText:v12];
     [(GKDashboardLeaderboardCell *)self updateImage];
-    v5 = v13;
+    setCopy = v13;
   }
 }
 
-- (void)setLeaderboard:(id)a3
+- (void)setLeaderboard:(id)leaderboard
 {
-  v5 = a3;
-  if (self->_leaderboard != v5)
+  leaderboardCopy = leaderboard;
+  if (self->_leaderboard != leaderboardCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_leaderboard, a3);
-    v6 = [(GKLeaderboard *)v7 title];
-    [(UILabel *)self->_titleLabel setText:v6];
+    v7 = leaderboardCopy;
+    objc_storeStrong(&self->_leaderboard, leaderboard);
+    title = [(GKLeaderboard *)v7 title];
+    [(UILabel *)self->_titleLabel setText:title];
 
     [(GKDashboardLeaderboardCell *)self updateRank];
     [(GKDashboardLeaderboardCell *)self updateImage];
-    v5 = v7;
+    leaderboardCopy = v7;
   }
 }
 
@@ -103,22 +103,22 @@
 {
   [(UIImageView *)self->_iconView setImage:0];
   leaderboardSet = self->_leaderboardSet;
-  v4 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v5 = v4;
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  v5 = mEMORY[0x277D0C8C8];
   if (leaderboardSet)
   {
-    [v4 iconLeaderboardSetListSource];
+    [mEMORY[0x277D0C8C8] iconLeaderboardSetListSource];
   }
 
   else
   {
-    [v4 iconLeaderboardListSource];
+    [mEMORY[0x277D0C8C8] iconLeaderboardListSource];
   }
   v6 = ;
 
-  v7 = [(UIImageView *)self->_iconView image];
+  image = [(UIImageView *)self->_iconView image];
 
-  if (!v7)
+  if (!image)
   {
     leaderboard = self->_leaderboardSet;
     if (!leaderboard)
@@ -126,14 +126,14 @@
       leaderboard = self->_leaderboard;
     }
 
-    v9 = [leaderboard identifier];
-    v10 = [v6 cachedImageForIdentifier:v9];
+    identifier = [leaderboard identifier];
+    v10 = [v6 cachedImageForIdentifier:identifier];
     [(UIImageView *)self->_iconView setImage:v10];
   }
 
-  v11 = [(UIImageView *)self->_iconView image];
+  image2 = [(UIImageView *)self->_iconView image];
 
-  if (v11)
+  if (image2)
   {
     [(GKDashboardLeaderboardCell *)self updateOverlay];
     [(GKDashboardLeaderboardCell *)self setNeedsDisplay];
@@ -147,7 +147,7 @@
       v12 = self->_leaderboard;
     }
 
-    v13 = [v12 imageURL];
+    imageURL = [v12 imageURL];
     v14 = self->_leaderboardSet;
     if (!v14)
     {
@@ -160,7 +160,7 @@
     v15[3] = &unk_279669EA0;
     v15[4] = self;
     v16 = v6;
-    [v16 loadImageForURLString:v13 reference:v14 queue:MEMORY[0x277D85CD0] handler:v15];
+    [v16 loadImageForURLString:imageURL reference:v14 queue:MEMORY[0x277D85CD0] handler:v15];
   }
 }
 
@@ -199,53 +199,53 @@ void __41__GKDashboardLeaderboardCell_updateImage__block_invoke(uint64_t a1, voi
 LABEL_7:
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = GKDashboardLeaderboardCell;
   [(GKDashboardLeaderboardCell *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
-    v5 = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
+    _gkSelectedCellBackgroundColor = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
   }
 
   else
   {
-    v5 = 0;
+    _gkSelectedCellBackgroundColor = 0;
   }
 
-  v6 = [(GKDashboardLeaderboardCell *)self contentView];
-  [v6 setBackgroundColor:v5];
+  contentView = [(GKDashboardLeaderboardCell *)self contentView];
+  [contentView setBackgroundColor:_gkSelectedCellBackgroundColor];
 
-  if (v3)
+  if (highlightedCopy)
   {
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = GKDashboardLeaderboardCell;
   [(GKDashboardLeaderboardCell *)&v8 setSelected:?];
-  v5 = [(GKDashboardLeaderboardCell *)self layer];
-  [v5 setBackgroundColor:0];
+  layer = [(GKDashboardLeaderboardCell *)self layer];
+  [layer setBackgroundColor:0];
 
-  if (v3)
+  if (selectedCopy)
   {
-    v6 = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
+    _gkSelectedCellBackgroundColor = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
   }
 
   else
   {
-    v6 = 0;
+    _gkSelectedCellBackgroundColor = 0;
   }
 
-  v7 = [(GKDashboardLeaderboardCell *)self contentView];
-  [v7 setBackgroundColor:v6];
+  contentView = [(GKDashboardLeaderboardCell *)self contentView];
+  [contentView setBackgroundColor:_gkSelectedCellBackgroundColor];
 
-  if (v3)
+  if (selectedCopy)
   {
   }
 }

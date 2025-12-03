@@ -32,7 +32,7 @@
     v4 = a4;
   }
 
-  return [a1 initWithFormat:@"%@:%@", v5, v4];
+  return [self initWithFormat:@"%@:%@", v5, v4];
 }
 
 + (id)CDVStringWithNameSpace:()CoreDAVExtensions andName:
@@ -54,7 +54,7 @@
 
   v2 = CDVStringByAddingPercentEscapesForHREF_allowedCharacterSet;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 - (uint64_t)CDVStringByAddingPercentEscapesForHREFIncludingPercent
@@ -66,37 +66,37 @@
 
   v2 = CDVStringByAddingPercentEscapesForHREFIncludingPercent_allowedCharacterSet;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 - (id)CDVStringByAppendingSlashIfNeeded
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 stringByAppendingString:@"/"];
+    selfCopy = [self stringByAppendingString:@"/"];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)CDVStringByRemovingTerminatingSlashIfNeeded
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 + (__CFString)CDVStringWithNumberOfSpaces:()CoreDAVExtensions
@@ -148,7 +148,7 @@
 
   v2 = CDVStringByAddingPercentEscapesForUserOrPassword_allowedCharacterSet;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 - (__CFString)CDVStringByXMLQuoting
@@ -156,17 +156,17 @@
   v2 = *MEMORY[0x277CBECE8];
   Mutable = CFStringCreateMutable(*MEMORY[0x277CBECE8], 0);
   v4 = CFCharacterSetCreateMutable(v2);
-  Length = CFStringGetLength(a1);
+  Length = CFStringGetLength(self);
   CFCharacterSetAddCharactersInString(v4, @"&<>'");
-  theString = a1;
+  theString = self;
   v25 = 0;
   v26 = Length;
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   CStringPtr = 0;
   v23 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   memset(v21, 0, sizeof(v21));
@@ -238,7 +238,7 @@ LABEL_26:
 
     v31.length = v8 - v9;
     v31.location = v9;
-    v13 = CFStringCreateWithSubstring(v2, a1, v31);
+    v13 = CFStringCreateWithSubstring(v2, self, v31);
     CFStringAppend(Mutable, v13);
     CFRelease(v13);
     if (v12 <= 38)
@@ -287,7 +287,7 @@ LABEL_25:
 LABEL_39:
   v32.length = Length - v9;
   v32.location = v9;
-  v18 = CFStringCreateWithSubstring(v2, a1, v32);
+  v18 = CFStringCreateWithSubstring(v2, self, v32);
   if (v18)
   {
     v19 = v18;
@@ -302,7 +302,7 @@ LABEL_39:
 
 - (__CFString)CDVStringByXMLUnquoting
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = *MEMORY[0x277CBECE8];
   v75 = 0u;
   v76 = 0u;
@@ -312,7 +312,7 @@ LABEL_39:
   v72 = 0u;
   *buffer = 0u;
   v70 = 0u;
-  Length = CFStringGetLength(a1);
+  Length = CFStringGetLength(self);
   Mutable = CFDictionaryCreateMutable(v2, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   CFDictionaryAddValue(Mutable, @"amp", @"&");
   CFDictionaryAddValue(Mutable, @"quot", @"");
@@ -320,15 +320,15 @@ LABEL_39:
   CFDictionaryAddValue(Mutable, @"gt", @">");
   theDict = Mutable;
   CFDictionaryAddValue(Mutable, @"apos", @"'");
-  v77 = v1;
+  v77 = selfCopy;
   v80 = 0;
   v81 = Length - 1;
-  CharactersPtr = CFStringGetCharactersPtr(v1);
+  CharactersPtr = CFStringGetCharactersPtr(selfCopy);
   CStringPtr = 0;
   v78 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(selfCopy, 0x600u);
   }
 
   v79 = CStringPtr;
@@ -342,7 +342,7 @@ LABEL_39:
     v10 = 0;
     v66 = v7;
     v64 = v2;
-    v65 = v1;
+    v65 = selfCopy;
     while (1)
     {
       if (v10 < 0 || (v11 = v81, v81 <= v10))
@@ -395,7 +395,7 @@ LABEL_39:
           {
             v91.location = v9;
             v91.length = v10 - v9;
-            v17 = CFStringCreateWithSubstring(v2, v1, v91);
+            v17 = CFStringCreateWithSubstring(v2, selfCopy, v91);
             CFStringAppend(v8, v17);
             CFRelease(v17);
           }
@@ -597,7 +597,7 @@ LABEL_90:
                     if (v45)
                     {
                       v2 = v64;
-                      v1 = v65;
+                      selfCopy = v65;
                       v16 = v10 + 1;
                       v8 = v66;
                       goto LABEL_45;
@@ -622,7 +622,7 @@ LABEL_90:
                 {
                   v13 = v40;
                   v2 = v64;
-                  v1 = v65;
+                  selfCopy = v65;
                   v16 = v10 + 1;
                   v8 = v66;
                   goto LABEL_127;
@@ -771,7 +771,7 @@ LABEL_127:
           {
             v92.length = v13 - v10 - 2;
             v92.location = v16;
-            v54 = CFStringCreateWithSubstring(v2, v1, v92);
+            v54 = CFStringCreateWithSubstring(v2, selfCopy, v92);
             Value = CFDictionaryGetValue(theDict, v54);
             if (Value)
             {
@@ -784,7 +784,7 @@ LABEL_127:
               CFRelease(v54);
               v93.location = v10;
               v93.length = v13 - v10;
-              v54 = CFStringCreateWithSubstring(v2, v1, v93);
+              v54 = CFStringCreateWithSubstring(v2, selfCopy, v93);
               v57 = v8;
               v56 = v54;
             }
@@ -837,7 +837,7 @@ LABEL_149:
   {
     v94.length = v13 - v9;
     v94.location = v9;
-    v62 = CFStringCreateWithSubstring(v2, v1, v94);
+    v62 = CFStringCreateWithSubstring(v2, selfCopy, v94);
     CFStringAppend(v8, v62);
     CFRelease(v62);
   }
@@ -850,15 +850,15 @@ LABEL_149:
 + (id)CDVPreconditionHeaderValueWithCTag:()CoreDAVExtensions pathTag:
 {
   v5 = a4;
-  v6 = [a3 CDVStringByAddingPercentEscapesForHREF];
+  cDVStringByAddingPercentEscapesForHREF = [a3 CDVStringByAddingPercentEscapesForHREF];
   if (v5)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"<%@> (<%@ctag/%@>)", v5, @"http://calendarserver.org/ns/", v6];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"<%@> (<%@ctag/%@>)", v5, @"http://calendarserver.org/ns/", cDVStringByAddingPercentEscapesForHREF];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"(<%@ctag/%@>)", @"http://calendarserver.org/ns/", v6, v9];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"(<%@ctag/%@>)", @"http://calendarserver.org/ns/", cDVStringByAddingPercentEscapesForHREF, v9];
   }
   v7 = ;
 

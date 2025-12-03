@@ -1,41 +1,41 @@
 @interface PPM2AttributedFeedback
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAlgorithm:(id)a3;
-- (int)StringAsCategory:(id)a3;
-- (int)StringAsDomain:(id)a3;
-- (int)StringAsSource:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsAlgorithm:(id)algorithm;
+- (int)StringAsCategory:(id)category;
+- (int)StringAsDomain:(id)domain;
+- (int)StringAsSource:(id)source;
+- (int)StringAsType:(id)type;
 - (int)algorithm;
 - (int)category;
 - (int)domain;
 - (int)source;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCategory:(BOOL)a3;
-- (void)setHasDomain:(BOOL)a3;
-- (void)setHasIsRemote:(BOOL)a3;
-- (void)setHasSource:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCategory:(BOOL)category;
+- (void)setHasDomain:(BOOL)domain;
+- (void)setHasIsRemote:(BOOL)remote;
+- (void)setHasSource:(BOOL)source;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2AttributedFeedback
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 68);
+  fromCopy = from;
+  v5 = *(fromCopy + 68);
   if ((v5 & 8) != 0)
   {
-    self->_source = *(v4 + 14);
+    self->_source = *(fromCopy + 14);
     *&self->_has |= 8u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -48,63 +48,63 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 68) & 1) == 0)
+  else if ((*(fromCopy + 68) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_algorithm = *(v4 + 4);
+  self->_algorithm = *(fromCopy + 4);
   *&self->_has |= 1u;
-  if ((*(v4 + 68) & 4) != 0)
+  if ((*(fromCopy + 68) & 4) != 0)
   {
 LABEL_4:
-    self->_domain = *(v4 + 8);
+    self->_domain = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  v7 = v4;
-  if (*(v4 + 1))
+  v7 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(PPM2AttributedFeedback *)self setActiveTreatments:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PPM2AttributedFeedback *)self setClientId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PPM2AttributedFeedback *)self setMappingId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 68);
+  v6 = *(fromCopy + 68);
   if ((v6 & 0x10) != 0)
   {
-    self->_type = *(v4 + 15);
+    self->_type = *(fromCopy + 15);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 68);
+    v6 = *(fromCopy + 68);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_category = *(v4 + 5);
+    self->_category = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PPM2AttributedFeedback *)self setDynamicCategory:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 68) & 0x20) != 0)
+  if ((*(fromCopy + 68) & 0x20) != 0)
   {
-    self->_isRemote = *(v4 + 64);
+    self->_isRemote = *(fromCopy + 64);
     *&self->_has |= 0x20u;
   }
 }
@@ -186,62 +186,62 @@ LABEL_13:
   return v3 ^ v13 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 68) & 8) == 0 || self->_source != *(v4 + 14))
+    if ((*(equalCopy + 68) & 8) == 0 || self->_source != *(equalCopy + 14))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 68) & 8) != 0)
+  else if ((*(equalCopy + 68) & 8) != 0)
   {
     goto LABEL_38;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_algorithm != *(v4 + 4))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_algorithm != *(equalCopy + 4))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_domain != *(v4 + 8))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_domain != *(equalCopy + 8))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_38;
   }
 
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 1) && ![(NSString *)activeTreatments isEqual:?])
+  if (activeTreatments | *(equalCopy + 1) && ![(NSString *)activeTreatments isEqual:?])
   {
     goto LABEL_38;
   }
 
   clientId = self->_clientId;
-  if (clientId | *(v4 + 3))
+  if (clientId | *(equalCopy + 3))
   {
     if (![(NSString *)clientId isEqual:?])
     {
@@ -250,7 +250,7 @@ LABEL_13:
   }
 
   mappingId = self->_mappingId;
-  if (mappingId | *(v4 + 6))
+  if (mappingId | *(equalCopy + 6))
   {
     if (![(NSString *)mappingId isEqual:?])
     {
@@ -259,35 +259,35 @@ LABEL_13:
   }
 
   has = self->_has;
-  v10 = *(v4 + 68);
+  v10 = *(equalCopy + 68);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 68) & 0x10) == 0 || self->_type != *(v4 + 15))
+    if ((*(equalCopy + 68) & 0x10) == 0 || self->_type != *(equalCopy + 15))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 68) & 0x10) != 0)
+  else if ((*(equalCopy + 68) & 0x10) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_category != *(v4 + 5))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_category != *(equalCopy + 5))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_38;
   }
 
   dynamicCategory = self->_dynamicCategory;
-  if (dynamicCategory | *(v4 + 5))
+  if (dynamicCategory | *(equalCopy + 5))
   {
     if (![(NSString *)dynamicCategory isEqual:?])
     {
@@ -295,7 +295,7 @@ LABEL_13:
     }
 
     has = self->_has;
-    v10 = *(v4 + 68);
+    v10 = *(equalCopy + 68);
   }
 
   v12 = (v10 & 0x20) == 0;
@@ -305,13 +305,13 @@ LABEL_13:
     {
       if (self->_isRemote)
       {
-        if ((*(v4 + 64) & 1) == 0)
+        if ((*(equalCopy + 64) & 1) == 0)
         {
           goto LABEL_38;
         }
       }
 
-      else if (*(v4 + 64))
+      else if (*(equalCopy + 64))
       {
         goto LABEL_38;
       }
@@ -329,9 +329,9 @@ LABEL_39:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -366,15 +366,15 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v8 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v9 = *(v6 + 8);
   *(v6 + 8) = v8;
 
-  v10 = [(NSString *)self->_clientId copyWithZone:a3];
+  v10 = [(NSString *)self->_clientId copyWithZone:zone];
   v11 = *(v6 + 24);
   *(v6 + 24) = v10;
 
-  v12 = [(NSString *)self->_mappingId copyWithZone:a3];
+  v12 = [(NSString *)self->_mappingId copyWithZone:zone];
   v13 = *(v6 + 48);
   *(v6 + 48) = v12;
 
@@ -392,7 +392,7 @@ LABEL_5:
     *(v6 + 68) |= 2u;
   }
 
-  v15 = [(NSString *)self->_dynamicCategory copyWithZone:a3];
+  v15 = [(NSString *)self->_dynamicCategory copyWithZone:zone];
   v16 = *(v6 + 40);
   *(v6 + 40) = v15;
 
@@ -405,14 +405,14 @@ LABEL_5:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[14] = self->_source;
-    *(v4 + 68) |= 8u;
+    toCopy[14] = self->_source;
+    *(toCopy + 68) |= 8u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -431,65 +431,65 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_algorithm;
-  *(v4 + 68) |= 1u;
+  toCopy[4] = self->_algorithm;
+  *(toCopy + 68) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[8] = self->_domain;
-    *(v4 + 68) |= 4u;
+    toCopy[8] = self->_domain;
+    *(toCopy + 68) |= 4u;
   }
 
 LABEL_5:
-  v7 = v4;
+  v7 = toCopy;
   if (self->_activeTreatments)
   {
-    [v4 setActiveTreatments:?];
-    v4 = v7;
+    [toCopy setActiveTreatments:?];
+    toCopy = v7;
   }
 
   if (self->_clientId)
   {
     [v7 setClientId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_mappingId)
   {
     [v7 setMappingId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    v4[15] = self->_type;
-    *(v4 + 68) |= 0x10u;
+    toCopy[15] = self->_type;
+    *(toCopy + 68) |= 0x10u;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
-    v4[5] = self->_category;
-    *(v4 + 68) |= 2u;
+    toCopy[5] = self->_category;
+    *(toCopy + 68) |= 2u;
   }
 
   if (self->_dynamicCategory)
   {
     [v7 setDynamicCategory:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(v4 + 64) = self->_isRemote;
-    *(v4 + 68) |= 0x20u;
+    *(toCopy + 64) = self->_isRemote;
+    *(toCopy + 68) |= 0x20u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -566,7 +566,7 @@ LABEL_5:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -581,7 +581,7 @@ LABEL_5:
       v6 = off_2789728C8[source];
     }
 
-    [v3 setObject:v6 forKey:@"source"];
+    [dictionary setObject:v6 forKey:@"source"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -612,7 +612,7 @@ LABEL_3:
     v8 = off_278972990[algorithm];
   }
 
-  [v3 setObject:v8 forKey:@"algorithm"];
+  [dictionary setObject:v8 forKey:@"algorithm"];
 
   if ((*&self->_has & 4) != 0)
   {
@@ -628,26 +628,26 @@ LABEL_13:
       v10 = off_278972A40[domain];
     }
 
-    [v3 setObject:v10 forKey:@"domain"];
+    [dictionary setObject:v10 forKey:@"domain"];
   }
 
 LABEL_17:
   activeTreatments = self->_activeTreatments;
   if (activeTreatments)
   {
-    [v3 setObject:activeTreatments forKey:@"activeTreatments"];
+    [dictionary setObject:activeTreatments forKey:@"activeTreatments"];
   }
 
   clientId = self->_clientId;
   if (clientId)
   {
-    [v3 setObject:clientId forKey:@"clientId"];
+    [dictionary setObject:clientId forKey:@"clientId"];
   }
 
   mappingId = self->_mappingId;
   if (mappingId)
   {
-    [v3 setObject:mappingId forKey:@"mappingId"];
+    [dictionary setObject:mappingId forKey:@"mappingId"];
   }
 
   v14 = self->_has;
@@ -664,7 +664,7 @@ LABEL_17:
       v16 = off_278972A80[type];
     }
 
-    [v3 setObject:v16 forKey:@"type"];
+    [dictionary setObject:v16 forKey:@"type"];
 
     v14 = self->_has;
   }
@@ -682,22 +682,22 @@ LABEL_17:
       v18 = off_278972AB0[category];
     }
 
-    [v3 setObject:v18 forKey:@"category"];
+    [dictionary setObject:v18 forKey:@"category"];
   }
 
   dynamicCategory = self->_dynamicCategory;
   if (dynamicCategory)
   {
-    [v3 setObject:dynamicCategory forKey:@"dynamicCategory"];
+    [dictionary setObject:dynamicCategory forKey:@"dynamicCategory"];
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_isRemote];
-    [v3 setObject:v20 forKey:@"isRemote"];
+    [dictionary setObject:v20 forKey:@"isRemote"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -706,15 +706,15 @@ LABEL_17:
   v8.receiver = self;
   v8.super_class = PPM2AttributedFeedback;
   v4 = [(PPM2AttributedFeedback *)&v8 description];
-  v5 = [(PPM2AttributedFeedback *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2AttributedFeedback *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasIsRemote:(BOOL)a3
+- (void)setHasIsRemote:(BOOL)remote
 {
-  if (a3)
+  if (remote)
   {
     v3 = 32;
   }
@@ -727,115 +727,115 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsCategory:(id)a3
+- (int)StringAsCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownCategory"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"UnknownCategory"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Person"])
+  else if ([categoryCopy isEqualToString:@"Person"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Organization"])
+  else if ([categoryCopy isEqualToString:@"Organization"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Location"])
+  else if ([categoryCopy isEqualToString:@"Location"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Restaurant"])
+  else if ([categoryCopy isEqualToString:@"Restaurant"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ActivityLocation"])
+  else if ([categoryCopy isEqualToString:@"ActivityLocation"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Media"])
+  else if ([categoryCopy isEqualToString:@"Media"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Artist"])
+  else if ([categoryCopy isEqualToString:@"Artist"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"StreetAddress"])
+  else if ([categoryCopy isEqualToString:@"StreetAddress"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"City"])
+  else if ([categoryCopy isEqualToString:@"City"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"State"])
+  else if ([categoryCopy isEqualToString:@"State"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Country"])
+  else if ([categoryCopy isEqualToString:@"Country"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"FullAddress"])
+  else if ([categoryCopy isEqualToString:@"FullAddress"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TouristAttraction"])
+  else if ([categoryCopy isEqualToString:@"TouristAttraction"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"EventTitle"])
+  else if ([categoryCopy isEqualToString:@"EventTitle"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"SportsTeam"])
+  else if ([categoryCopy isEqualToString:@"SportsTeam"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"ProfessionalAthlete"])
+  else if ([categoryCopy isEqualToString:@"ProfessionalAthlete"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"Musician"])
+  else if ([categoryCopy isEqualToString:@"Musician"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"Movie"])
+  else if ([categoryCopy isEqualToString:@"Movie"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Dynamic"])
+  else if ([categoryCopy isEqualToString:@"Dynamic"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Politician"])
+  else if ([categoryCopy isEqualToString:@"Politician"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"TelevisionShow"])
+  else if ([categoryCopy isEqualToString:@"TelevisionShow"])
   {
     v4 = 21;
   }
@@ -848,9 +848,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasCategory:(BOOL)a3
+- (void)setHasCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 2;
   }
@@ -876,35 +876,35 @@ LABEL_17:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Invalid"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Invalid"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EngagedExplicit"])
+  else if ([typeCopy isEqualToString:@"EngagedExplicit"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EngagedImplicit"])
+  else if ([typeCopy isEqualToString:@"EngagedImplicit"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RejectedExplicit"])
+  else if ([typeCopy isEqualToString:@"RejectedExplicit"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RejectedImplicit"])
+  else if ([typeCopy isEqualToString:@"RejectedImplicit"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Offered"])
+  else if ([typeCopy isEqualToString:@"Offered"])
   {
     v4 = 5;
   }
@@ -917,9 +917,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -945,45 +945,45 @@ LABEL_17:
   }
 }
 
-- (int)StringAsDomain:(id)a3
+- (int)StringAsDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Topics"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"Topics"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NamedEntities"])
+  else if ([domainCopy isEqualToString:@"NamedEntities"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Locations"])
+  else if ([domainCopy isEqualToString:@"Locations"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Events"])
+  else if ([domainCopy isEqualToString:@"Events"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ContactsDomain"])
+  else if ([domainCopy isEqualToString:@"ContactsDomain"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Connections"])
+  else if ([domainCopy isEqualToString:@"Connections"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"QuickTypeBroker"])
+  else if ([domainCopy isEqualToString:@"QuickTypeBroker"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"UniversalSearchSpotlightTopics"])
+  else if ([domainCopy isEqualToString:@"UniversalSearchSpotlightTopics"])
   {
     v4 = 7;
   }
@@ -996,9 +996,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasDomain:(BOOL)a3
+- (void)setHasDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 4;
   }
@@ -1024,115 +1024,115 @@ LABEL_17:
   }
 }
 
-- (int)StringAsAlgorithm:(id)a3
+- (int)StringAsAlgorithm:(id)algorithm
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LookupHint"])
+  else if ([algorithmCopy isEqualToString:@"LookupHint"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CoreNLP"])
+  else if ([algorithmCopy isEqualToString:@"CoreNLP"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutineImport"])
+  else if ([algorithmCopy isEqualToString:@"CoreRoutineImport"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"DataDetectors"])
+  else if ([algorithmCopy isEqualToString:@"DataDetectors"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NSUALocation"])
+  else if ([algorithmCopy isEqualToString:@"NSUALocation"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TrustedLocation"])
+  else if ([algorithmCopy isEqualToString:@"TrustedLocation"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MapsInteraction"])
+  else if ([algorithmCopy isEqualToString:@"MapsInteraction"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CustomTagger"])
+  else if ([algorithmCopy isEqualToString:@"CustomTagger"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"EventKitImport"])
+  else if ([algorithmCopy isEqualToString:@"EventKitImport"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"PhotosKnowledgeGraph"])
+  else if ([algorithmCopy isEqualToString:@"PhotosKnowledgeGraph"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ContextKit"])
+  else if ([algorithmCopy isEqualToString:@"ContextKit"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SiriDonation"])
+  else if ([algorithmCopy isEqualToString:@"SiriDonation"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"NE2T"])
+  else if ([algorithmCopy isEqualToString:@"NE2T"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"HighLevelTopicExtraction"])
+  else if ([algorithmCopy isEqualToString:@"HighLevelTopicExtraction"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ParsecDonation"])
+  else if ([algorithmCopy isEqualToString:@"ParsecDonation"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"PodcastsInteraction"])
+  else if ([algorithmCopy isEqualToString:@"PodcastsInteraction"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"HealthKitImport"])
+  else if ([algorithmCopy isEqualToString:@"HealthKitImport"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"NowPlayingDonation"])
+  else if ([algorithmCopy isEqualToString:@"NowPlayingDonation"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"ContactsImport"])
+  else if ([algorithmCopy isEqualToString:@"ContactsImport"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"AugmentedGazetteer"])
+  else if ([algorithmCopy isEqualToString:@"AugmentedGazetteer"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"KnowledgeGraph"])
+  else if ([algorithmCopy isEqualToString:@"KnowledgeGraph"])
   {
     v4 = 21;
   }
@@ -1158,130 +1158,130 @@ LABEL_17:
   }
 }
 
-- (int)StringAsSource:(id)a3
+- (int)StringAsSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Safari"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"Safari"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"News"])
+  else if ([sourceCopy isEqualToString:@"News"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Mail"])
+  else if ([sourceCopy isEqualToString:@"Mail"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Messages"])
+  else if ([sourceCopy isEqualToString:@"Messages"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutine"])
+  else if ([sourceCopy isEqualToString:@"CoreRoutine"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Siri"])
+  else if ([sourceCopy isEqualToString:@"Siri"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Photos"])
+  else if ([sourceCopy isEqualToString:@"Photos"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Health"])
+  else if ([sourceCopy isEqualToString:@"Health"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Podcasts"])
+  else if ([sourceCopy isEqualToString:@"Podcasts"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Calendar"])
+  else if ([sourceCopy isEqualToString:@"Calendar"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Parsec"])
+  else if ([sourceCopy isEqualToString:@"Parsec"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NowPlaying"])
+  else if ([sourceCopy isEqualToString:@"NowPlaying"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Notes"])
+  else if ([sourceCopy isEqualToString:@"Notes"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Maps"])
+  else if ([sourceCopy isEqualToString:@"Maps"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ContactsSource"])
+  else if ([sourceCopy isEqualToString:@"ContactsSource"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Reminders"])
+  else if ([sourceCopy isEqualToString:@"Reminders"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"UnknownFirstParty"])
+  else if ([sourceCopy isEqualToString:@"UnknownFirstParty"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"UnknownThirdParty"])
+  else if ([sourceCopy isEqualToString:@"UnknownThirdParty"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"UnknownSource"])
+  else if ([sourceCopy isEqualToString:@"UnknownSource"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Music"])
+  else if ([sourceCopy isEqualToString:@"Music"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Wallet"])
+  else if ([sourceCopy isEqualToString:@"Wallet"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"Facetime"])
+  else if ([sourceCopy isEqualToString:@"Facetime"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"Camera"])
+  else if ([sourceCopy isEqualToString:@"Camera"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"TVRemoteNotifications"])
+  else if ([sourceCopy isEqualToString:@"TVRemoteNotifications"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"TVApp"])
+  else if ([sourceCopy isEqualToString:@"TVApp"])
   {
     v4 = 24;
   }
@@ -1294,9 +1294,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasSource:(BOOL)a3
+- (void)setHasSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 8;
   }

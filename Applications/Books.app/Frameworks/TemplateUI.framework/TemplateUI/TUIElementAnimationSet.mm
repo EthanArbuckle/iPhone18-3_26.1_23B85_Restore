@@ -1,25 +1,25 @@
 @interface TUIElementAnimationSet
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementAnimationSet
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  var0 = a4.var0;
-  v11 = [v9 stringForAttribute:137 node:a4.var0];
+  builderCopy = builder;
+  attributesCopy = attributes;
+  var0 = node.var0;
+  v11 = [attributesCopy stringForAttribute:137 node:node.var0];
   v12 = [TUIAttributeRegistry lookupAttributeWithName:v11];
   if (v12 == 8)
   {
-    [v9 floatForAttribute:217 node:var0];
+    [attributesCopy floatForAttribute:217 node:var0];
     v14 = [NSNumber numberWithDouble:?];
 LABEL_10:
     v13 = v14;
     if (v14)
     {
-      [v8 addAnimationValue:v14 forAttributeName:v11];
+      [builderCopy addAnimationValue:v14 forAttributeName:v11];
     }
 
     goto LABEL_12;
@@ -27,9 +27,9 @@ LABEL_10:
 
   if (v12 == 210)
   {
-    if (v9)
+    if (attributesCopy)
     {
-      [v9 transformForAttribute:217 node:var0];
+      [attributesCopy transformForAttribute:217 node:var0];
     }
 
     else

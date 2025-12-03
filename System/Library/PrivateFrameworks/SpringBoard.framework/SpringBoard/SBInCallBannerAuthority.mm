@@ -1,39 +1,39 @@
 @interface SBInCallBannerAuthority
 - (BNConsideringDelegate)delegate;
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4;
-- (int64_t)shouldPresentPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5;
-- (void)mayChangeDecisionForResponsiblePresentable:(id)a3;
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable;
+- (int64_t)shouldPresentPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable;
+- (void)mayChangeDecisionForResponsiblePresentable:(id)presentable;
 @end
 
 @implementation SBInCallBannerAuthority
 
-- (void)mayChangeDecisionForResponsiblePresentable:(id)a3
+- (void)mayChangeDecisionForResponsiblePresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained bannerAuthority:self mayChangeDecisionForResponsiblePresentable:v4];
+  [WeakRetained bannerAuthority:self mayChangeDecisionForResponsiblePresentable:presentableCopy];
 }
 
-- (int64_t)shouldPresentPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5
+- (int64_t)shouldPresentPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable
 {
-  v6 = a4;
+  presentablesCopy = presentables;
   v7 = +[SBInCallBannerPresentableViewController requesterIdentifier];
-  v8 = [v6 lastObject];
+  lastObject = [presentablesCopy lastObject];
 
-  if (a5)
+  if (responsiblePresentable)
   {
-    v9 = v8;
-    *a5 = v8;
+    v9 = lastObject;
+    *responsiblePresentable = lastObject;
   }
 
-  v10 = [v8 requesterIdentifier];
-  v11 = [v10 isEqualToString:v7];
+  requesterIdentifier = [lastObject requesterIdentifier];
+  v11 = [requesterIdentifier isEqualToString:v7];
 
   if (v11)
   {
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v8 isCallConnected] - 1;
+      v12 = [lastObject isCallConnected] - 1;
     }
 
     else
@@ -50,22 +50,22 @@
   return v12;
 }
 
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable
 {
-  v5 = a3;
-  v6 = a4;
+  presentableCopy = presentable;
+  withPresentableCopy = withPresentable;
   v7 = +[SBInCallBannerPresentableViewController requesterIdentifier];
-  v8 = [v6 requesterIdentifier];
+  requesterIdentifier = [withPresentableCopy requesterIdentifier];
 
-  if ([v8 isEqualToString:v7])
+  if ([requesterIdentifier isEqualToString:v7])
   {
     v9 = -1;
   }
 
   else
   {
-    v10 = [v5 requesterIdentifier];
-    v9 = [v10 isEqualToString:v7] << 63 >> 63;
+    requesterIdentifier2 = [presentableCopy requesterIdentifier];
+    v9 = [requesterIdentifier2 isEqualToString:v7] << 63 >> 63;
   }
 
   return v9;

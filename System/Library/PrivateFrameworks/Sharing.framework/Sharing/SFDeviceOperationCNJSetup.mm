@@ -1,15 +1,15 @@
 @interface SFDeviceOperationCNJSetup
-- (void)_complete:(id)a3;
-- (void)_handleCaptiveNetworkPresentEvent:(id)a3;
-- (void)_handleCompletedEventWithError:(id)a3;
-- (void)_showCaptiveSheet:(id)a3;
+- (void)_complete:(id)_complete;
+- (void)_handleCaptiveNetworkPresentEvent:(id)event;
+- (void)_handleCompletedEventWithError:(id)error;
+- (void)_showCaptiveSheet:(id)sheet;
 - (void)_startClient;
 - (void)activate;
-- (void)handleCompleteNotificationWithRedirectURLtype:(int64_t)a3 result:(int64_t)a4;
+- (void)handleCompleteNotificationWithRedirectURLtype:(int64_t)ltype result:(int64_t)result;
 - (void)handleDismissal;
-- (void)handleWebNavigationWithCompletionHandler:(id)a3;
+- (void)handleWebNavigationWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)scrapeCredentialsUsingPOSTMessage:(id)a3 loginURL:(id)a4;
+- (void)scrapeCredentialsUsingPOSTMessage:(id)message loginURL:(id)l;
 - (void)showWebSheet;
 @end
 
@@ -87,10 +87,10 @@ LABEL_7:
 - (void)_startClient
 {
   v3 = objc_alloc_init(getSKDeviceClass());
-  v4 = [(SFSession *)self->_sfSession peerDevice];
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
-  [v3 setIdentifier:v6];
+  peerDevice = [(SFSession *)self->_sfSession peerDevice];
+  identifier = [peerDevice identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setIdentifier:uUIDString];
 
   v7 = objc_alloc_init(getSKSetupCaptiveNetworkJoinClientClass());
   cnjClient = self->_cnjClient;
@@ -108,13 +108,13 @@ LABEL_7:
   v12 = 3221225472;
   v13 = __41__SFDeviceOperationCNJSetup__startClient__block_invoke_2;
   v14 = &unk_1E788FD98;
-  v15 = self;
+  selfCopy = self;
   objc_copyWeak(&v16, &location);
   [(SKSetupCaptiveNetworkJoinClient *)self->_cnjClient setEventHandler:&v11];
-  v9 = [(SFSession *)self->_sfSession pairingDeriveKeyForIdentifier:@"A2A772B2-84C1-447A-B978-5793FF08E513" keyLength:32, v11, v12, v13, v14, v15];
-  if (v9)
+  selfCopy = [(SFSession *)self->_sfSession pairingDeriveKeyForIdentifier:@"A2A772B2-84C1-447A-B978-5793FF08E513" keyLength:32, v11, v12, v13, v14, selfCopy];
+  if (selfCopy)
   {
-    [(SKSetupCaptiveNetworkJoinClient *)self->_cnjClient setPskData:v9];
+    [(SKSetupCaptiveNetworkJoinClient *)self->_cnjClient setPskData:selfCopy];
     [(SFSession *)self->_sfSession registerForExternalIO:self->_cnjClient];
     [(SKSetupCaptiveNetworkJoinClient *)self->_cnjClient activate];
   }
@@ -172,7 +172,7 @@ LABEL_9:
 
 - (void)showWebSheet
 {
-  v1 = _Block_copy(*(a1 + 104));
+  v1 = _Block_copy(*(self + 104));
   LogPrintF();
 }
 
@@ -203,28 +203,28 @@ void __39__SFDeviceOperationCNJSetup_invalidate__block_invoke(uint64_t a1)
   *(v2 + 8) = 0;
 }
 
-- (void)_handleCaptiveNetworkPresentEvent:(id)a3
+- (void)_handleCaptiveNetworkPresentEvent:(id)event
 {
-  v5 = a3;
-  v6 = v5;
+  eventCopy = event;
+  v6 = eventCopy;
   if (self->_promptForConfirmationHandler)
   {
-    objc_storeStrong(&self->_cnjEvent, a3);
+    objc_storeStrong(&self->_cnjEvent, event);
     (*(self->_promptForConfirmationHandler + 2))();
   }
 
   else
   {
-    [(SFDeviceOperationCNJSetup *)self _showCaptiveSheet:v5];
+    [(SFDeviceOperationCNJSetup *)self _showCaptiveSheet:eventCopy];
   }
 }
 
-- (void)_complete:(id)a3
+- (void)_complete:(id)_complete
 {
-  v4 = a3;
+  _completeCopy = _complete;
   if (!self->_invalidateCalled && self->_completionHandler)
   {
-    v10 = v4;
+    v10 = _completeCopy;
     mach_absolute_time();
     startTicks = self->_startTicks;
     UpTicksToSecondsF();
@@ -269,32 +269,32 @@ LABEL_13:
     self->_completionHandler = 0;
 
     [(SFDeviceOperationCNJSetup *)self invalidate];
-    v4 = v10;
+    _completeCopy = v10;
   }
 }
 
-- (void)_showCaptiveSheet:(id)a3
+- (void)_showCaptiveSheet:(id)sheet
 {
-  v15 = a3;
+  sheetCopy = sheet;
   if (gLogCategory_SFDeviceOperationCNJ <= 50 && (gLogCategory_SFDeviceOperationCNJ != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationCNJSetup _showCaptiveSheet:];
   }
 
-  v4 = [(UIViewController *)self->_presentingViewController view];
-  v5 = [v4 window];
+  view = [(UIViewController *)self->_presentingViewController view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
     v6 = objc_alloc_init(getWSWebSheetViewControllerClass());
     webSheetViewController = self->_webSheetViewController;
     self->_webSheetViewController = v6;
 
     v8 = self->_webSheetViewController;
-    v9 = [v15 captiveURL];
-    v10 = [v15 captiveSSID];
-    v11 = [v15 captiveInterfaceIdentifier];
-    [(WSWebSheetViewController *)v8 startWithURL:v9 ssid:v10 interface:v11 proxyConfiguration:0 showCancelMenu:0 delegate:self];
+    captiveURL = [sheetCopy captiveURL];
+    captiveSSID = [sheetCopy captiveSSID];
+    captiveInterfaceIdentifier = [sheetCopy captiveInterfaceIdentifier];
+    [(WSWebSheetViewController *)v8 startWithURL:captiveURL ssid:captiveSSID interface:captiveInterfaceIdentifier proxyConfiguration:0 showCancelMenu:0 delegate:self];
 
     [(WSWebSheetViewController *)self->_webSheetViewController setModalPresentationStyle:5];
     presentingViewController = self->_presentingViewController;
@@ -319,12 +319,12 @@ LABEL_13:
   }
 }
 
-- (void)_handleCompletedEventWithError:(id)a3
+- (void)_handleCompletedEventWithError:(id)error
 {
-  v5 = a3;
-  if ([v5 code] == 301056 || objc_msgSend(v5, "code") == -71133)
+  errorCopy = error;
+  if ([errorCopy code] == 301056 || objc_msgSend(errorCopy, "code") == -71133)
   {
-    objc_storeStrong(&self->_captivePathError, a3);
+    objc_storeStrong(&self->_captivePathError, error);
   }
 
   if (self->_isShowingWebSheet)
@@ -344,16 +344,16 @@ LABEL_13:
       [SFDeviceOperationCNJSetup _handleCompletedEventWithError:];
     }
 
-    [(SFDeviceOperationCNJSetup *)self _complete:v5];
+    [(SFDeviceOperationCNJSetup *)self _complete:errorCopy];
   }
 }
 
-- (void)handleWebNavigationWithCompletionHandler:(id)a3
+- (void)handleWebNavigationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_isShowingWebSheet)
   {
-    v5 = v4;
+    v5 = handlerCopy;
     if (gLogCategory_SFDeviceOperationCNJ <= 30 && (gLogCategory_SFDeviceOperationCNJ != -1 || _LogCategory_Initialize()))
     {
       [SFDeviceOperationCNJSetup handleWebNavigationWithCompletionHandler:];
@@ -361,7 +361,7 @@ LABEL_13:
 
     [(SKSetupCaptiveNetworkJoinClient *)self->_cnjClient postEventType:201];
     v5[2](v5, 4);
-    v4 = v5;
+    handlerCopy = v5;
   }
 }
 
@@ -375,8 +375,8 @@ LABEL_13:
       [SFDeviceOperationCNJSetup handleDismissal];
     }
 
-    v3 = [(UIViewController *)self->_presentingViewController presentedViewController];
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    presentedViewController = [(UIViewController *)self->_presentingViewController presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:1 completion:0];
 
     if (self->_webSheetResult)
     {
@@ -401,20 +401,20 @@ LABEL_13:
   }
 }
 
-- (void)handleCompleteNotificationWithRedirectURLtype:(int64_t)a3 result:(int64_t)a4
+- (void)handleCompleteNotificationWithRedirectURLtype:(int64_t)ltype result:(int64_t)result
 {
   if (gLogCategory_SFDeviceOperationCNJ <= 30 && (gLogCategory_SFDeviceOperationCNJ != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationCNJSetup handleCompleteNotificationWithRedirectURLtype:result:];
   }
 
-  self->_webSheetResult = a4;
+  self->_webSheetResult = result;
 }
 
-- (void)scrapeCredentialsUsingPOSTMessage:(id)a3 loginURL:(id)a4
+- (void)scrapeCredentialsUsingPOSTMessage:(id)message loginURL:(id)l
 {
-  v6 = a3;
-  v5 = a4;
+  messageCopy = message;
+  lCopy = l;
   if (gLogCategory_SFDeviceOperationCNJ <= 30 && (gLogCategory_SFDeviceOperationCNJ != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationCNJSetup scrapeCredentialsUsingPOSTMessage:loginURL:];

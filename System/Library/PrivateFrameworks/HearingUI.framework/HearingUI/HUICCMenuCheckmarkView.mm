@@ -1,11 +1,11 @@
 @interface HUICCMenuCheckmarkView
 - (HACCContentModuleDelegate)delegate;
-- (HUICCMenuCheckmarkView)initWithFrame:(CGRect)a3 andModule:(unint64_t)a4;
-- (double)_titleViewHeightForCCModule:(unint64_t)a3;
-- (id)_menuItemsforPSEVersion:(unint64_t)a3 andAddress:(id)a4;
-- (id)personalAudioToggleBlockForType:(unint64_t)a3 withYodelEnabled:(BOOL)a4 andAddress:(id)a5;
-- (void)_handleTapGesture:(id)a3;
-- (void)_menuItemsWithCompletion:(id)a3;
+- (HUICCMenuCheckmarkView)initWithFrame:(CGRect)frame andModule:(unint64_t)module;
+- (double)_titleViewHeightForCCModule:(unint64_t)module;
+- (id)_menuItemsforPSEVersion:(unint64_t)version andAddress:(id)address;
+- (id)personalAudioToggleBlockForType:(unint64_t)type withYodelEnabled:(BOOL)enabled andAddress:(id)address;
+- (void)_handleTapGesture:(id)gesture;
+- (void)_menuItemsWithCompletion:(id)completion;
 - (void)_updateMenuViewIfNecessary;
 - (void)updateConversationBoostCache;
 - (void)updateValue;
@@ -13,16 +13,16 @@
 
 @implementation HUICCMenuCheckmarkView
 
-- (HUICCMenuCheckmarkView)initWithFrame:(CGRect)a3 andModule:(unint64_t)a4
+- (HUICCMenuCheckmarkView)initWithFrame:(CGRect)frame andModule:(unint64_t)module
 {
   v74[4] = *MEMORY[0x277D85DE8];
   v71.receiver = self;
   v71.super_class = HUICCMenuCheckmarkView;
-  v4 = [(HUICCMenuCheckmarkView *)&v71 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(HUICCMenuCheckmarkView *)&v71 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
-    [(HUICCMenuCheckmarkView *)v4 setModule:a4];
+    [(HUICCMenuCheckmarkView *)v4 setModule:module];
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     menuItemViews = v5->_menuItemViews;
     v5->_menuItemViews = v6;
@@ -43,49 +43,49 @@
     [(HACCStackView *)v5->_menuViewStack setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUICCMenuCheckmarkView *)v5 addSubview:v5->_menuViewStack];
     v52 = MEMORY[0x277CCAAD0];
-    v62 = [(HACCStackView *)v5->_menuViewStack leadingAnchor];
-    v60 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView leadingAnchor];
-    v58 = [v62 constraintEqualToAnchor:v60];
+    leadingAnchor = [(HACCStackView *)v5->_menuViewStack leadingAnchor];
+    leadingAnchor2 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView leadingAnchor];
+    v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v74[0] = v58;
-    v56 = [(HACCStackView *)v5->_menuViewStack trailingAnchor];
-    v54 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView trailingAnchor];
-    v12 = [v56 constraintEqualToAnchor:v54];
+    trailingAnchor = [(HACCStackView *)v5->_menuViewStack trailingAnchor];
+    trailingAnchor2 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v74[1] = v12;
-    v13 = [(HACCStackView *)v5->_menuViewStack topAnchor];
-    v14 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [(HACCStackView *)v5->_menuViewStack topAnchor];
+    topAnchor2 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v74[2] = v15;
-    v16 = [(HACCStackView *)v5->_menuViewStack bottomAnchor];
-    v17 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [(HACCStackView *)v5->_menuViewStack bottomAnchor];
+    bottomAnchor2 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v74[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:4];
     [v52 activateConstraints:v19];
 
-    if (a4 == 35)
+    if (module == 35)
     {
       titleView = v5->_titleView;
       v5->_titleView = 0;
 
       v21 = MEMORY[0x277CCAAD0];
-      v65 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView leadingAnchor];
-      v63 = [(HUICCMenuCheckmarkView *)v5 leadingAnchor];
-      v61 = [v65 constraintEqualToAnchor:v63];
+      leadingAnchor3 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView leadingAnchor];
+      leadingAnchor4 = [(HUICCMenuCheckmarkView *)v5 leadingAnchor];
+      v61 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v73[0] = v61;
-      v59 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView trailingAnchor];
-      v57 = [(HUICCMenuCheckmarkView *)v5 trailingAnchor];
-      v55 = [v59 constraintEqualToAnchor:v57];
+      trailingAnchor3 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView trailingAnchor];
+      trailingAnchor4 = [(HUICCMenuCheckmarkView *)v5 trailingAnchor];
+      v55 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v73[1] = v55;
-      v53 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView topAnchor];
-      v51 = [(HUICCMenuCheckmarkView *)v5 topAnchor];
-      v50 = [v53 constraintEqualToAnchor:v51];
+      topAnchor3 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView topAnchor];
+      topAnchor4 = [(HUICCMenuCheckmarkView *)v5 topAnchor];
+      v50 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v73[2] = v50;
-      v49 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView bottomAnchor];
-      v48 = [(HUICCMenuCheckmarkView *)v5 bottomAnchor];
-      v47 = [v49 constraintEqualToAnchor:v48];
-      v73[3] = v47;
-      v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:4];
-      [v21 activateConstraints:v22];
+      bottomAnchor3 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView bottomAnchor];
+      bottomAnchor4 = [(HUICCMenuCheckmarkView *)v5 bottomAnchor];
+      leadingAnchor5 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+      v73[3] = leadingAnchor5;
+      leadingAnchor6 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:4];
+      [v21 activateConstraints:leadingAnchor6];
     }
 
     else
@@ -97,39 +97,39 @@
       v5->_titleView = v25;
 
       [(HACCCapsuleTitleView *)v5->_titleView setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(HACCCapsuleTitleView *)v5->_titleView setAccessibilityElementsHidden:a4 == 37];
+      [(HACCCapsuleTitleView *)v5->_titleView setAccessibilityElementsHidden:module == 37];
       [(HUICCMenuCheckmarkView *)v5 addSubview:v5->_titleView];
       v42 = MEMORY[0x277CCAAD0];
-      v65 = [(HACCCapsuleTitleView *)v5->_titleView topAnchor];
-      v63 = [(HUICCMenuCheckmarkView *)v5 topAnchor];
-      v61 = [v65 constraintEqualToAnchor:v63];
+      leadingAnchor3 = [(HACCCapsuleTitleView *)v5->_titleView topAnchor];
+      leadingAnchor4 = [(HUICCMenuCheckmarkView *)v5 topAnchor];
+      v61 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v72[0] = v61;
-      v59 = [(HACCCapsuleTitleView *)v5->_titleView leadingAnchor];
-      v57 = [(HUICCMenuCheckmarkView *)v5 leadingAnchor];
-      v55 = [v59 constraintEqualToAnchor:v57];
+      trailingAnchor3 = [(HACCCapsuleTitleView *)v5->_titleView leadingAnchor];
+      trailingAnchor4 = [(HUICCMenuCheckmarkView *)v5 leadingAnchor];
+      v55 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v72[1] = v55;
-      v53 = [(HACCCapsuleTitleView *)v5->_titleView trailingAnchor];
-      v51 = [(HUICCMenuCheckmarkView *)v5 trailingAnchor];
-      v50 = [v53 constraintEqualToAnchor:v51];
+      topAnchor3 = [(HACCCapsuleTitleView *)v5->_titleView trailingAnchor];
+      topAnchor4 = [(HUICCMenuCheckmarkView *)v5 trailingAnchor];
+      v50 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v72[2] = v50;
-      v49 = [(HACCCapsuleTitleView *)v5->_titleView heightAnchor];
-      v48 = [v49 constraintGreaterThanOrEqualToConstant:v24];
-      v72[3] = v48;
-      v47 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView leadingAnchor];
-      v22 = [(HUICCMenuCheckmarkView *)v5 leadingAnchor];
-      v46 = [v47 constraintEqualToAnchor:v22];
+      bottomAnchor3 = [(HACCCapsuleTitleView *)v5->_titleView heightAnchor];
+      bottomAnchor4 = [bottomAnchor3 constraintGreaterThanOrEqualToConstant:v24];
+      v72[3] = bottomAnchor4;
+      leadingAnchor5 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView leadingAnchor];
+      leadingAnchor6 = [(HUICCMenuCheckmarkView *)v5 leadingAnchor];
+      v46 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       v72[4] = v46;
-      v45 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView trailingAnchor];
-      v44 = [(HUICCMenuCheckmarkView *)v5 trailingAnchor];
-      v43 = [v45 constraintEqualToAnchor:v44];
+      trailingAnchor5 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView trailingAnchor];
+      trailingAnchor6 = [(HUICCMenuCheckmarkView *)v5 trailingAnchor];
+      v43 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       v72[5] = v43;
-      v27 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView topAnchor];
-      v28 = [(HACCCapsuleTitleView *)v5->_titleView bottomAnchor];
-      v29 = [v27 constraintEqualToAnchor:v28];
+      topAnchor5 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView topAnchor];
+      bottomAnchor5 = [(HACCCapsuleTitleView *)v5->_titleView bottomAnchor];
+      v29 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5];
       v72[6] = v29;
-      v30 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView bottomAnchor];
-      v31 = [(HUICCMenuCheckmarkView *)v5 bottomAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
+      bottomAnchor6 = [(HACCCapsuleDarkBackground *)v5->_backgroundMenuView bottomAnchor];
+      bottomAnchor7 = [(HUICCMenuCheckmarkView *)v5 bottomAnchor];
+      v32 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
       v72[7] = v32;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:8];
       [v42 activateConstraints:v33];
@@ -147,13 +147,13 @@
   if ([(HUICCMenuCheckmarkView *)v5 module]== 28)
   {
     objc_initWeak(&location, v5);
-    v36 = [MEMORY[0x277D12E18] sharedInstance];
+    mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __50__HUICCMenuCheckmarkView_initWithFrame_andModule___block_invoke;
     v68[3] = &unk_2796F6D18;
     objc_copyWeak(&v69, &location);
-    [v36 registerUpdateBlock:v68 forRetrieveSelector:sel_comfortSoundsEnabled withListener:v5];
+    [mEMORY[0x277D12E18] registerUpdateBlock:v68 forRetrieveSelector:sel_comfortSoundsEnabled withListener:v5];
 
     objc_destroyWeak(&v69);
     objc_destroyWeak(&location);
@@ -164,20 +164,20 @@
     contentValueCache = v5->_contentValueCache;
     v5->_contentValueCache = MEMORY[0x277CBEC28];
 
-    v38 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v38 addObserver:v5 selector:sel_updateConversationBoostCache name:*MEMORY[0x277D12DA8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_updateConversationBoostCache name:*MEMORY[0x277D12DA8] object:0];
 
-    v39 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v39 addObserver:v5 selector:sel_updateConversationBoostCache name:*MEMORY[0x277D3A1F0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel_updateConversationBoostCache name:*MEMORY[0x277D3A1F0] object:0];
 
     objc_initWeak(&location, v5);
-    v40 = [MEMORY[0x277D3A1D0] sharedInstance];
+    mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __50__HUICCMenuCheckmarkView_initWithFrame_andModule___block_invoke_2;
     v66[3] = &unk_2796F6D18;
     objc_copyWeak(&v67, &location);
-    [v40 registerUpdateBlock:v66 forRetrieveSelector:sel_transparencyBeamforming withListener:v5];
+    [mEMORY[0x277D3A1D0] registerUpdateBlock:v66 forRetrieveSelector:sel_transparencyBeamforming withListener:v5];
 
     [(HUICCMenuCheckmarkView *)v5 updateConversationBoostCache];
     objc_destroyWeak(&v67);
@@ -201,16 +201,16 @@ void __50__HUICCMenuCheckmarkView_initWithFrame_andModule___block_invoke_2(uint6
 
 - (void)updateValue
 {
-  v7 = [(HUICCMenuCheckmarkView *)self delegate];
+  delegate = [(HUICCMenuCheckmarkView *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v7;
-    v4 = [(HUICCMenuCheckmarkView *)self tapGestureRecognizer];
-    v5 = [v3 scrollView];
+    v3 = delegate;
+    tapGestureRecognizer = [(HUICCMenuCheckmarkView *)self tapGestureRecognizer];
+    scrollView = [v3 scrollView];
 
-    v6 = [v5 panGestureRecognizer];
-    [v4 requireGestureRecognizerToFail:v6];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    [tapGestureRecognizer requireGestureRecognizerToFail:panGestureRecognizer];
   }
 
   [(HUICCMenuCheckmarkView *)self _updateMenuViewIfNecessary];
@@ -334,18 +334,18 @@ void __52__HUICCMenuCheckmarkView__updateMenuViewIfNecessary__block_invoke(uint6
   }
 }
 
-- (void)_menuItemsWithCompletion:(id)a3
+- (void)_menuItemsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D12E00] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke;
   v7[3] = &unk_2796F7080;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [mEMORY[0x277D12E00] getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v7];
 }
 
 void __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -369,20 +369,20 @@ uint64_t __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke_2(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_menuItemsforPSEVersion:(unint64_t)a3 andAddress:(id)a4
+- (id)_menuItemsforPSEVersion:(unint64_t)version andAddress:(id)address
 {
   v66[2] = *MEMORY[0x277D85DE8];
-  v50 = a4;
-  v6 = [(HUICCMenuCheckmarkView *)self module];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v49 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
+  addressCopy = address;
+  module = [(HUICCMenuCheckmarkView *)self module];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_initWeak(&location, self);
-  if (v6 == 37)
+  if (module == 37)
   {
     v14 = paLocString();
-    [v7 addObject:v14];
+    [array addObject:v14];
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __61__HUICCMenuCheckmarkView__menuItemsforPSEVersion_andAddress___block_invoke_55;
@@ -390,20 +390,20 @@ uint64_t __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke_2(
     objc_copyWeak(&v58, &location);
     v15 = MEMORY[0x25309B240](v57);
     v16 = MEMORY[0x25309B240]();
-    [v8 addObject:v16];
+    [array3 addObject:v16];
 
-    v17 = [(HUICCMenuCheckmarkView *)self contentValue];
-    v18 = [v17 BOOLValue];
+    contentValue = [(HUICCMenuCheckmarkView *)self contentValue];
+    bOOLValue = [contentValue BOOLValue];
 
-    if (v18)
+    if (bOOLValue)
     {
       v63 = v14;
-      v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
+      array4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
     }
 
     else
     {
-      v19 = 0;
+      array4 = 0;
     }
 
     objc_destroyWeak(&v58);
@@ -411,11 +411,11 @@ uint64_t __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke_2(
     goto LABEL_28;
   }
 
-  if (v6 == 35)
+  if (module == 35)
   {
     v9 = paLocString();
-    v10 = [MEMORY[0x277D3A1C8] sharedInstance];
-    v11 = [v10 yodelEnabledForAddress:v50];
+    mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+    v11 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:addressCopy];
 
     if (v11)
     {
@@ -430,15 +430,15 @@ uint64_t __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke_2(
     v21 = paLocString();
     v66[1] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:2];
-    [v7 addObjectsFromArray:v22];
+    [array addObjectsFromArray:v22];
 
-    v23 = [(HUICCMenuCheckmarkView *)self personalAudioToggleBlockForType:2 withYodelEnabled:v11 andAddress:v50];
-    [v8 addObject:v23];
+    v23 = [(HUICCMenuCheckmarkView *)self personalAudioToggleBlockForType:2 withYodelEnabled:v11 andAddress:addressCopy];
+    [array3 addObject:v23];
 
-    v24 = [(HUICCMenuCheckmarkView *)self personalAudioToggleBlockForType:4 withYodelEnabled:v11 andAddress:v50];
-    [v8 addObject:v24];
+    v24 = [(HUICCMenuCheckmarkView *)self personalAudioToggleBlockForType:4 withYodelEnabled:v11 andAddress:addressCopy];
+    [array3 addObject:v24];
 
-    if (a3)
+    if (version)
     {
       v25 = 1;
     }
@@ -451,27 +451,27 @@ uint64_t __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke_2(
     if (v25 == 1)
     {
       v26 = paLocString();
-      [v7 addObject:v26];
+      [array addObject:v26];
 
       v59[0] = MEMORY[0x277D85DD0];
       v59[1] = 3221225472;
       v59[2] = __61__HUICCMenuCheckmarkView__menuItemsforPSEVersion_andAddress___block_invoke;
       v59[3] = &unk_2796F70A8;
-      v60 = v50;
+      v60 = addressCopy;
       objc_copyWeak(&v61, &location);
       v27 = MEMORY[0x25309B240](v59);
       v28 = MEMORY[0x25309B240]();
-      [v8 addObject:v28];
+      [array3 addObject:v28];
 
       objc_destroyWeak(&v61);
     }
 
-    v19 = [MEMORY[0x277CBEB18] array];
-    v29 = [MEMORY[0x277D3A1D0] sharedInstance];
-    v30 = v29;
+    array4 = [MEMORY[0x277CBEB18] array];
+    mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+    v30 = mEMORY[0x277D3A1D0];
     if (v11)
     {
-      v31 = v50;
+      v31 = addressCopy;
     }
 
     else
@@ -479,26 +479,26 @@ uint64_t __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke_2(
       v31 = *MEMORY[0x277D3A1E0];
     }
 
-    [v29 accommodationTypesForRouteUID:v31];
+    [mEMORY[0x277D3A1D0] accommodationTypesForRouteUID:v31];
 
     if (compoundAttributeContainsAttribute())
     {
       v32 = paLocString();
-      [v19 addObject:v32];
+      [array4 addObject:v32];
     }
 
     if (compoundAttributeContainsAttribute())
     {
       v33 = paLocString();
-      [v19 addObject:v33];
+      [array4 addObject:v33];
     }
 
     v34 = HCLogAudioAccommodations();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       v35 = MEMORY[0x277CCABB0];
-      v36 = [MEMORY[0x277D3A1C8] sharedInstance];
-      v37 = [v35 numberWithBool:{objc_msgSend(v36, "hearingAidEnabledForAddress:", v50)}];
+      mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+      v37 = [v35 numberWithBool:{objc_msgSend(mEMORY[0x277D3A1C8]2, "hearingAidEnabledForAddress:", addressCopy)}];
       *buf = 138412290;
       v65 = v37;
       _os_log_impl(&dword_252166000, v34, OS_LOG_TYPE_DEFAULT, "Yodel enabled %@", buf, 0xCu);
@@ -508,8 +508,8 @@ uint64_t __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke_2(
     {
       if ((v11 & 1) == 0)
       {
-        v46 = [MEMORY[0x277D3A1D0] sharedInstance];
-        v47 = [v46 transparencyCustomizedForAddress:v50];
+        mEMORY[0x277D3A1D0]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+        v47 = [mEMORY[0x277D3A1D0]2 transparencyCustomizedForAddress:addressCopy];
 
         if ((v47 & 1) == 0)
         {
@@ -519,14 +519,14 @@ uint64_t __51__HUICCMenuCheckmarkView__menuItemsWithCompletion___block_invoke_2(
         goto LABEL_36;
       }
 
-      v38 = [MEMORY[0x277D3A1C8] sharedInstance];
-      v39 = [v38 hearingAidEnabledForAddress:v50];
+      mEMORY[0x277D3A1C8]3 = [MEMORY[0x277D3A1C8] sharedInstance];
+      v39 = [mEMORY[0x277D3A1C8]3 hearingAidEnabledForAddress:addressCopy];
 
       if (v39)
       {
 LABEL_36:
         v14 = paLocString();
-        [v19 addObject:v14];
+        [array4 addObject:v14];
 LABEL_28:
       }
     }
@@ -534,32 +534,32 @@ LABEL_28:
 
   else
   {
-    v19 = 0;
+    array4 = 0;
     v9 = 0;
   }
 
 LABEL_29:
-  if ([v7 count])
+  if ([array count])
   {
-    v40 = [v7 count];
-    if (v40 == [v8 count])
+    v40 = [array count];
+    if (v40 == [array3 count])
     {
       v41 = objc_loadWeakRetained(&location);
-      v42 = [v41 titleView];
-      v43 = [v42 titleLabel];
-      [v43 setText:v9];
+      titleView = [v41 titleView];
+      titleLabel = [titleView titleLabel];
+      [titleLabel setText:v9];
 
-      v44 = [v49 count];
+      v44 = [array2 count];
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __61__HUICCMenuCheckmarkView__menuItemsforPSEVersion_andAddress___block_invoke_2;
       v51[3] = &unk_2796F70F8;
-      v52 = v8;
+      v52 = array3;
       v56 = v44;
-      v53 = v49;
-      v54 = v19;
+      v53 = array2;
+      v54 = array4;
       v55 = v48;
-      [v7 enumerateObjectsUsingBlock:v51];
+      [array enumerateObjectsUsingBlock:v51];
     }
   }
 
@@ -655,18 +655,18 @@ uint64_t __61__HUICCMenuCheckmarkView__menuItemsforPSEVersion_andAddress___block
   return 0;
 }
 
-- (id)personalAudioToggleBlockForType:(unint64_t)a3 withYodelEnabled:(BOOL)a4 andAddress:(id)a5
+- (id)personalAudioToggleBlockForType:(unint64_t)type withYodelEnabled:(BOOL)enabled andAddress:(id)address
 {
-  v8 = a5;
+  addressCopy = address;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __86__HUICCMenuCheckmarkView_personalAudioToggleBlockForType_withYodelEnabled_andAddress___block_invoke;
   v12[3] = &unk_2796F7120;
-  v15 = a4;
-  v13 = v8;
-  v14[1] = a3;
-  v9 = v8;
+  enabledCopy = enabled;
+  v13 = addressCopy;
+  v14[1] = type;
+  v9 = addressCopy;
   objc_copyWeak(v14, &location);
   v10 = MEMORY[0x25309B240](v12);
   objc_destroyWeak(v14);
@@ -722,11 +722,11 @@ void __86__HUICCMenuCheckmarkView_personalAudioToggleBlockForType_withYodelEnabl
   [v12 updateViewForModule:35];
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
-  [v4 locationInView:self];
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  [gestureCopy locationInView:self];
   v7 = v6;
   v9 = v8;
 
@@ -736,7 +736,7 @@ void __86__HUICCMenuCheckmarkView_personalAudioToggleBlockForType_withYodelEnabl
   {
     v11 = v10;
     v12 = v11;
-    if (v5 == 3)
+    if (state == 3)
     {
       [v11 setHighlighted:1];
       v13 = v12;
@@ -752,10 +752,10 @@ void __44__HUICCMenuCheckmarkView__handleTapGesture___block_invoke(uint64_t a1)
   [v2 performAction];
 }
 
-- (double)_titleViewHeightForCCModule:(unint64_t)a3
+- (double)_titleViewHeightForCCModule:(unint64_t)module
 {
   result = 52.0;
-  if (a3 == 37)
+  if (module == 37)
   {
     return 26.0;
   }
@@ -767,13 +767,13 @@ void __44__HUICCMenuCheckmarkView__handleTapGesture___block_invoke(uint64_t a1)
 {
   if ([(HUICCMenuCheckmarkView *)self module]== 37)
   {
-    v3 = [MEMORY[0x277D12E00] sharedInstance];
+    mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __54__HUICCMenuCheckmarkView_updateConversationBoostCache__block_invoke;
     v5[3] = &unk_2796F6DB8;
     v5[4] = self;
-    [v3 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v5];
+    [mEMORY[0x277D12E00] getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v5];
   }
 
   v4[0] = MEMORY[0x277D85DD0];

@@ -1,5 +1,5 @@
 @interface BluetoothUserXPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC14bluetoothuserd22BluetoothUserXPCServer)init;
 @end
 
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10005DC3C(v6, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_10005DC3C(listenerCopy, connectionCopy);
 
   return v9 & 1;
 }

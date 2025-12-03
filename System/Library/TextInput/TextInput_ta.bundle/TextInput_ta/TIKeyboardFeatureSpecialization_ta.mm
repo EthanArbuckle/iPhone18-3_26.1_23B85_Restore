@@ -1,13 +1,13 @@
 @interface TIKeyboardFeatureSpecialization_ta
-- (void)specializeInputManager:(void *)a3 forLayoutState:(id)a4;
+- (void)specializeInputManager:(void *)manager forLayoutState:(id)state;
 @end
 
 @implementation TIKeyboardFeatureSpecialization_ta
 
-- (void)specializeInputManager:(void *)a3 forLayoutState:(id)a4
+- (void)specializeInputManager:(void *)manager forLayoutState:(id)state
 {
-  v5 = [a4 softwareLayout];
-  -[TIKeyboardFeatureSpecialization_ta setQwertyLayout:](self, "setQwertyLayout:", [v5 isEqualToString:@"QWERTY-Tamil"]);
+  softwareLayout = [state softwareLayout];
+  -[TIKeyboardFeatureSpecialization_ta setQwertyLayout:](self, "setQwertyLayout:", [softwareLayout isEqualToString:@"QWERTY-Tamil"]);
 
   [(TIKeyboardFeatureSpecialization *)self inputMode];
   [objc_claimAutoreleasedReturnValue() locale];

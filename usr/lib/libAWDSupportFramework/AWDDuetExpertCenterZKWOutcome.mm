@@ -1,26 +1,26 @@
 @interface AWDDuetExpertCenterZKWOutcome
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEngaged:(BOOL)a3;
-- (void)setHasExpert:(BOOL)a3;
-- (void)setHasItemSelected:(BOOL)a3;
-- (void)setHasItemsShown:(BOOL)a3;
-- (void)setHasSameCategorySelected:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTypedQuery:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEngaged:(BOOL)engaged;
+- (void)setHasExpert:(BOOL)expert;
+- (void)setHasItemSelected:(BOOL)selected;
+- (void)setHasItemsShown:(BOOL)shown;
+- (void)setHasSameCategorySelected:(BOOL)selected;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTypedQuery:(BOOL)query;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDDuetExpertCenterZKWOutcome
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasExpert:(BOOL)a3
+- (void)setHasExpert:(BOOL)expert
 {
-  if (a3)
+  if (expert)
   {
     v3 = 2;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasEngaged:(BOOL)a3
+- (void)setHasEngaged:(BOOL)engaged
 {
-  if (a3)
+  if (engaged)
   {
     v3 = 16;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasItemsShown:(BOOL)a3
+- (void)setHasItemsShown:(BOOL)shown
 {
-  if (a3)
+  if (shown)
   {
     v3 = 8;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTypedQuery:(BOOL)a3
+- (void)setHasTypedQuery:(BOOL)query
 {
-  if (a3)
+  if (query)
   {
     v3 = 0x80;
   }
@@ -93,9 +93,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasItemSelected:(BOOL)a3
+- (void)setHasItemSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 32;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSameCategorySelected:(BOOL)a3
+- (void)setHasSameCategorySelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 64;
   }
@@ -132,11 +132,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -155,7 +155,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_expert), @"expert"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_expert), @"expert"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -169,7 +169,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_engaged), @"engaged"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_engaged), @"engaged"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -183,7 +183,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_itemsShown), @"itemsShown"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_itemsShown), @"itemsShown"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_typedQuery), @"typedQuery"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_typedQuery), @"typedQuery"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -208,17 +208,17 @@ LABEL_7:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_egress), @"egress"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_egress), @"egress"}];
     if ((*&self->_has & 0x40) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_9;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_itemSelected), @"itemSelected"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_itemSelected), @"itemSelected"}];
   has = self->_has;
   if (has)
   {
@@ -229,13 +229,13 @@ LABEL_8:
   if ((has & 0x40) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_sameCategorySelected), @"sameCategorySelected"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_sameCategorySelected), @"sameCategorySelected"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -348,13 +348,13 @@ LABEL_17:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 40) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 40) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -373,8 +373,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_expert;
-  *(a3 + 40) |= 2u;
+  *(to + 2) = self->_expert;
+  *(to + 40) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -388,8 +388,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(a3 + 36) = self->_engaged;
-  *(a3 + 40) |= 0x10u;
+  *(to + 36) = self->_engaged;
+  *(to + 40) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -403,8 +403,8 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(a3 + 8) = self->_itemsShown;
-  *(a3 + 40) |= 8u;
+  *(to + 8) = self->_itemsShown;
+  *(to + 40) |= 8u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -418,8 +418,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(a3 + 39) = self->_typedQuery;
-  *(a3 + 40) |= 0x80u;
+  *(to + 39) = self->_typedQuery;
+  *(to + 40) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -433,8 +433,8 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(a3 + 37) = self->_itemSelected;
-  *(a3 + 40) |= 0x20u;
+  *(to + 37) = self->_itemSelected;
+  *(to + 40) |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -445,23 +445,23 @@ LABEL_8:
     }
 
 LABEL_17:
-    *(a3 + 38) = self->_sameCategorySelected;
-    *(a3 + 40) |= 0x40u;
+    *(to + 38) = self->_sameCategorySelected;
+    *(to + 40) |= 0x40u;
     return;
   }
 
 LABEL_16:
-  *(a3 + 1) = self->_egress;
-  *(a3 + 40) |= 1u;
+  *(to + 1) = self->_egress;
+  *(to + 40) |= 1u;
   if ((*&self->_has & 0x40) != 0)
   {
     goto LABEL_17;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -573,158 +573,158 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 40) & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_50;
       }
     }
 
-    else if ((*(a3 + 40) & 4) != 0)
+    else if ((*(equal + 40) & 4) != 0)
     {
       goto LABEL_50;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_expert != *(a3 + 2))
+      if ((*(equal + 40) & 2) == 0 || self->_expert != *(equal + 2))
       {
         goto LABEL_50;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
       goto LABEL_50;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 40) & 0x10) == 0)
+      if ((*(equal + 40) & 0x10) == 0)
       {
         goto LABEL_50;
       }
 
-      v6 = *(a3 + 36);
+      v6 = *(equal + 36);
       if (self->_engaged)
       {
-        if ((*(a3 + 36) & 1) == 0)
+        if ((*(equal + 36) & 1) == 0)
         {
           goto LABEL_50;
         }
       }
 
-      else if (*(a3 + 36))
+      else if (*(equal + 36))
       {
         goto LABEL_50;
       }
     }
 
-    else if ((*(a3 + 40) & 0x10) != 0)
+    else if ((*(equal + 40) & 0x10) != 0)
     {
       goto LABEL_50;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 40) & 8) == 0 || self->_itemsShown != *(a3 + 8))
+      if ((*(equal + 40) & 8) == 0 || self->_itemsShown != *(equal + 8))
       {
         goto LABEL_50;
       }
     }
 
-    else if ((*(a3 + 40) & 8) != 0)
+    else if ((*(equal + 40) & 8) != 0)
     {
       goto LABEL_50;
     }
 
     if ((*&self->_has & 0x80) != 0)
     {
-      if ((*(a3 + 40) & 0x80) == 0)
+      if ((*(equal + 40) & 0x80) == 0)
       {
         goto LABEL_50;
       }
 
-      v7 = *(a3 + 39);
+      v7 = *(equal + 39);
       if (self->_typedQuery)
       {
-        if ((*(a3 + 39) & 1) == 0)
+        if ((*(equal + 39) & 1) == 0)
         {
           goto LABEL_50;
         }
       }
 
-      else if (*(a3 + 39))
+      else if (*(equal + 39))
       {
         goto LABEL_50;
       }
     }
 
-    else if ((*(a3 + 40) & 0x80) != 0)
+    else if ((*(equal + 40) & 0x80) != 0)
     {
       goto LABEL_50;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 40) & 0x20) == 0)
+      if ((*(equal + 40) & 0x20) == 0)
       {
         goto LABEL_50;
       }
 
-      v8 = *(a3 + 37);
+      v8 = *(equal + 37);
       if (self->_itemSelected)
       {
-        if ((*(a3 + 37) & 1) == 0)
+        if ((*(equal + 37) & 1) == 0)
         {
           goto LABEL_50;
         }
       }
 
-      else if (*(a3 + 37))
+      else if (*(equal + 37))
       {
         goto LABEL_50;
       }
     }
 
-    else if ((*(a3 + 40) & 0x20) != 0)
+    else if ((*(equal + 40) & 0x20) != 0)
     {
       goto LABEL_50;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_egress != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_egress != *(equal + 1))
       {
         goto LABEL_50;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_50;
     }
 
-    LOBYTE(v5) = (*(a3 + 40) & 0x40) == 0;
+    LOBYTE(v5) = (*(equal + 40) & 0x40) == 0;
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 40) & 0x40) != 0)
+      if ((*(equal + 40) & 0x40) != 0)
       {
         if (self->_sameCategorySelected)
         {
-          if (*(a3 + 38))
+          if (*(equal + 38))
           {
             goto LABEL_53;
           }
         }
 
-        else if (!*(a3 + 38))
+        else if (!*(equal + 38))
         {
 LABEL_53:
           LOBYTE(v5) = 1;
@@ -850,14 +850,14 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v3 = *(a3 + 40);
+    v3 = *(from + 40);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -870,14 +870,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 40) & 2) == 0)
+  else if ((*(from + 40) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_expert = *(a3 + 2);
+  self->_expert = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x10) == 0)
   {
 LABEL_4:
@@ -890,9 +890,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_engaged = *(a3 + 36);
+  self->_engaged = *(from + 36);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 8) == 0)
   {
 LABEL_5:
@@ -905,9 +905,9 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_itemsShown = *(a3 + 8);
+  self->_itemsShown = *(from + 8);
   *&self->_has |= 8u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x80) == 0)
   {
 LABEL_6:
@@ -920,9 +920,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_typedQuery = *(a3 + 39);
+  self->_typedQuery = *(from + 39);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x20) == 0)
   {
 LABEL_7:
@@ -935,9 +935,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_itemSelected = *(a3 + 37);
+  self->_itemSelected = *(from + 37);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 1) == 0)
   {
 LABEL_8:
@@ -947,15 +947,15 @@ LABEL_8:
     }
 
 LABEL_17:
-    self->_sameCategorySelected = *(a3 + 38);
+    self->_sameCategorySelected = *(from + 38);
     *&self->_has |= 0x40u;
     return;
   }
 
 LABEL_16:
-  self->_egress = *(a3 + 1);
+  self->_egress = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 40) & 0x40) != 0)
+  if ((*(from + 40) & 0x40) != 0)
   {
     goto LABEL_17;
   }

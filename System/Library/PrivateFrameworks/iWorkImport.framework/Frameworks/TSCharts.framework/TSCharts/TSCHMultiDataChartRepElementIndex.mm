@@ -1,37 +1,37 @@
 @interface TSCHMultiDataChartRepElementIndex
-+ (id)repElementIndexWithSeriesIndex:(unint64_t)a3 valueIndex:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSCHMultiDataChartRepElementIndex)initWithSeriesIndex:(unint64_t)a3 valueIndex:(unint64_t)a4;
++ (id)repElementIndexWithSeriesIndex:(unint64_t)index valueIndex:(unint64_t)valueIndex;
+- (BOOL)isEqual:(id)equal;
+- (TSCHMultiDataChartRepElementIndex)initWithSeriesIndex:(unint64_t)index valueIndex:(unint64_t)valueIndex;
 - (id)description;
 @end
 
 @implementation TSCHMultiDataChartRepElementIndex
 
-+ (id)repElementIndexWithSeriesIndex:(unint64_t)a3 valueIndex:(unint64_t)a4
++ (id)repElementIndexWithSeriesIndex:(unint64_t)index valueIndex:(unint64_t)valueIndex
 {
-  v6 = [a1 alloc];
-  v11 = objc_msgSend_initWithSeriesIndex_valueIndex_(v6, v7, v8, v9, v10, a3, a4);
+  v6 = [self alloc];
+  v11 = objc_msgSend_initWithSeriesIndex_valueIndex_(v6, v7, v8, v9, v10, index, valueIndex);
 
   return v11;
 }
 
-- (TSCHMultiDataChartRepElementIndex)initWithSeriesIndex:(unint64_t)a3 valueIndex:(unint64_t)a4
+- (TSCHMultiDataChartRepElementIndex)initWithSeriesIndex:(unint64_t)index valueIndex:(unint64_t)valueIndex
 {
   v7.receiver = self;
   v7.super_class = TSCHMultiDataChartRepElementIndex;
   result = [(TSCHMultiDataChartRepElementIndex *)&v7 init];
   if (result)
   {
-    result->_seriesIndex = a3;
-    result->_valueIndex = a4;
+    result->_seriesIndex = index;
+    result->_valueIndex = valueIndex;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUSpecificCast();
 

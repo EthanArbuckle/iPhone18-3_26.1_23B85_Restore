@@ -1,49 +1,49 @@
 @interface UGCARPPhotoCarouselController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UGCARPPhotoCarouselController)initWithDelegate:(id)a3 presentingViewController:(id)a4 maximumNumberOfPhotos:(unint64_t)a5 previouslySubmittedPhotosExist:(BOOL)a6 mapItemCoordinate:(CLLocationCoordinate2D)a7 showPhotoCarousel:(BOOL)a8;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UGCARPPhotoCarouselController)initWithDelegate:(id)delegate presentingViewController:(id)controller maximumNumberOfPhotos:(unint64_t)photos previouslySubmittedPhotosExist:(BOOL)exist mapItemCoordinate:(CLLocationCoordinate2D)coordinate showPhotoCarousel:(BOOL)carousel;
 - (id)_buildSnapshotFromCurrentState;
-- (id)_viewModelForIdentifier:(id)a3;
-- (id)_viewModelForPhotoWithMetadata:(id)a3;
+- (id)_viewModelForIdentifier:(id)identifier;
+- (id)_viewModelForPhotoWithMetadata:(id)metadata;
 - (id)anchoringView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
 - (id)collectionViewButtonTitle;
-- (id)collectionViewHeaderTitleForNumberOfSelectedPhotos:(unint64_t)a3;
+- (id)collectionViewHeaderTitleForNumberOfSelectedPhotos:(unint64_t)photos;
 - (id)configurePhotoCreditStringForCollectionViewHeader;
 - (unint64_t)_numberOfSelectedPhotos;
-- (void)_enableSelection:(BOOL)a3;
-- (void)_handleAddFromSuggestionImage:(id)a3 atIndexPath:(id)a4;
+- (void)_enableSelection:(BOOL)selection;
+- (void)_handleAddFromSuggestionImage:(id)image atIndexPath:(id)path;
 - (void)_invokeChangeHandler;
-- (void)_refreshCollectionViewWithAnimatingDifferences:(BOOL)a3;
+- (void)_refreshCollectionViewWithAnimatingDifferences:(BOOL)differences;
 - (void)_updateSelection;
-- (void)addPhotoWithMetadata:(id)a3 forIdentifier:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)addPhotoWithMetadata:(id)metadata forIdentifier:(id)identifier;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)fetchPhotoCreditPreferences;
-- (void)fetchSuggestedImageAssetsWithCallbackQueue:(id)a3 completion:(id)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setupCollectionView:(id)a3;
+- (void)fetchSuggestedImageAssetsWithCallbackQueue:(id)queue completion:(id)completion;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setupCollectionView:(id)view;
 - (void)setupSuggestedPhotosIfNeeded;
 @end
 
 @implementation UGCARPPhotoCarouselController
 
-- (void)addPhotoWithMetadata:(id)a3 forIdentifier:(id)a4
+- (void)addPhotoWithMetadata:(id)metadata forIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
   if (!self->_photoCreditFetchStatus)
   {
     self->_photoCreditFetchStatus = 1;
     [(UGCARPPhotoCarouselController *)self fetchPhotoCreditPreferences];
   }
 
-  v7 = [(UGCARPPhotoCarouselController *)self _viewModelForPhotoWithMetadata:v8];
+  v7 = [(UGCARPPhotoCarouselController *)self _viewModelForPhotoWithMetadata:metadataCopy];
   if (!v7)
   {
     v7 = [[UGCARPPhotoCarouselViewModel alloc] initWithImageManager:self->_imageManager];
-    [(UGCARPPhotoCarouselViewModel *)v7 setPhotoWithMetadata:v8];
-    [(UGCARPPhotoCarouselViewModel *)v7 setIdentifier:v6];
+    [(UGCARPPhotoCarouselViewModel *)v7 setPhotoWithMetadata:metadataCopy];
+    [(UGCARPPhotoCarouselViewModel *)v7 setIdentifier:identifierCopy];
     [(UGCARPPhotoCarouselViewModel *)v7 setChecked:1];
     [(NSMutableArray *)self->_viewModels insertObject:v7 atIndex:0];
   }
@@ -52,9 +52,9 @@
   [(UGCARPPhotoCarouselController *)self _refreshCollectionViewWithAnimatingDifferences:1];
 }
 
-- (id)_viewModelForPhotoWithMetadata:(id)a3
+- (id)_viewModelForPhotoWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -74,8 +74,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 photoWithMetadata];
-        v11 = [v10 isEqual:v4];
+        photoWithMetadata = [v9 photoWithMetadata];
+        v11 = [photoWithMetadata isEqual:metadataCopy];
 
         if (v11)
         {
@@ -99,9 +99,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)_viewModelForIdentifier:(id)a3
+- (id)_viewModelForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -121,8 +121,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 _maps_diffableDataSourceIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        _maps_diffableDataSourceIdentifier = [v9 _maps_diffableDataSourceIdentifier];
+        v11 = [_maps_diffableDataSourceIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -146,11 +146,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)_refreshCollectionViewWithAnimatingDifferences:(BOOL)a3
+- (void)_refreshCollectionViewWithAnimatingDifferences:(BOOL)differences
 {
-  v3 = a3;
-  v5 = [(UGCARPPhotoCarouselController *)self _buildSnapshotFromCurrentState];
-  [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v5 animatingDifferences:v3];
+  differencesCopy = differences;
+  _buildSnapshotFromCurrentState = [(UGCARPPhotoCarouselController *)self _buildSnapshotFromCurrentState];
+  [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:_buildSnapshotFromCurrentState animatingDifferences:differencesCopy];
   [(UGCARPPhotoCarouselController *)self _invokeChangeHandler];
 }
 
@@ -181,8 +181,8 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) _maps_diffableDataSourceIdentifier];
-        [v5 addObject:v11];
+        _maps_diffableDataSourceIdentifier = [*(*(&v14 + 1) + 8 * i) _maps_diffableDataSourceIdentifier];
+        [v5 addObject:_maps_diffableDataSourceIdentifier];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -197,11 +197,11 @@ LABEL_11:
   return v3;
 }
 
-- (void)_enableSelection:(BOOL)a3
+- (void)_enableSelection:(BOOL)selection
 {
-  if (self->_allowSelection != a3)
+  if (self->_allowSelection != selection)
   {
-    self->_allowSelection = a3;
+    self->_allowSelection = selection;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -225,15 +225,15 @@ LABEL_11:
           v9 = *(*(&v11 + 1) + 8 * v8);
           if (self->_allowSelection)
           {
-            v10 = 1;
+            checked = 1;
           }
 
           else
           {
-            v10 = [*(*(&v11 + 1) + 8 * v8) checked];
+            checked = [*(*(&v11 + 1) + 8 * v8) checked];
           }
 
-          [v9 setEnabled:{v10, v11}];
+          [v9 setEnabled:{checked, v11}];
           v8 = v8 + 1;
         }
 
@@ -270,20 +270,20 @@ LABEL_11:
 
 - (void)_invokeChangeHandler
 {
-  v3 = [(UGCPhotoCarouselController *)self changeHandler];
+  changeHandler = [(UGCPhotoCarouselController *)self changeHandler];
 
-  if (v3)
+  if (changeHandler)
   {
-    v4 = [(UGCPhotoCarouselController *)self changeHandler];
-    v4[2]();
+    changeHandler2 = [(UGCPhotoCarouselController *)self changeHandler];
+    changeHandler2[2]();
   }
 }
 
-- (void)_handleAddFromSuggestionImage:(id)a3 atIndexPath:(id)a4
+- (void)_handleAddFromSuggestionImage:(id)image atIndexPath:(id)path
 {
-  v5 = a3;
+  imageCopy = image;
   v8 = objc_alloc_init(NSMutableArray);
-  [v8 addObject:v5];
+  [v8 addObject:imageCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_addPhotosDelegate);
   v7 = [v8 copy];
@@ -333,22 +333,22 @@ LABEL_11:
   return v3;
 }
 
-- (id)collectionViewHeaderTitleForNumberOfSelectedPhotos:(unint64_t)a3
+- (id)collectionViewHeaderTitleForNumberOfSelectedPhotos:(unint64_t)photos
 {
-  if (a3)
+  if (photos)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"[UGC Contribution Card] # of Photos Selected photo carousel header" value:@"localized string not found" table:0];
-    v6 = [NSString localizedStringWithFormat:v5, a3];
+    photos = [NSString localizedStringWithFormat:v5, photos];
   }
 
   else
   {
     v4 = +[NSBundle mainBundle];
-    v6 = [v4 localizedStringForKey:@"[UGC Contribution Card] Add Your Photos collection view header" value:@"localized string not found" table:0];
+    photos = [v4 localizedStringForKey:@"[UGC Contribution Card] Add Your Photos collection view header" value:@"localized string not found" table:0];
   }
 
-  return v6;
+  return photos;
 }
 
 - (id)configurePhotoCreditStringForCollectionViewHeader
@@ -387,10 +387,10 @@ LABEL_11:
   return v11;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  [(UGCARPPhotoCarouselController *)self lastContentOffset:a3];
-  if (v6 <= a5->x)
+  [(UGCARPPhotoCarouselController *)self lastContentOffset:dragging];
+  if (v6 <= offset->x)
   {
     v7 = 325;
   }
@@ -403,20 +403,20 @@ LABEL_11:
   [GEOAPPortal captureUserAction:v7 target:666 value:0];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  [a3 contentOffset];
+  [dragging contentOffset];
 
   [(UGCARPPhotoCarouselController *)self setLastContentOffset:?];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cellForItemAtIndexPath:v7];
-  v9 = [v8 identifier];
-  v10 = [(UGCARPPhotoCarouselController *)self _viewModelForIdentifier:v9];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy cellForItemAtIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  v10 = [(UGCARPPhotoCarouselController *)self _viewModelForIdentifier:identifier];
 
   if ([v10 enabled])
   {
@@ -426,17 +426,17 @@ LABEL_11:
       [v10 setIsLoading:0];
       [v8 setViewModel:v10];
       objc_initWeak(&location, self);
-      v11 = [(UGCPhotoCarouselController *)self delegate];
-      v12 = [v10 photoWithMetadata];
-      v13 = [v12 photoMetadata];
-      v14 = [v13 clientImageUuid];
+      delegate = [(UGCPhotoCarouselController *)self delegate];
+      photoWithMetadata = [v10 photoWithMetadata];
+      photoMetadata = [photoWithMetadata photoMetadata];
+      clientImageUuid = [photoMetadata clientImageUuid];
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_100B76F80;
       v32[3] = &unk_10165FC50;
       objc_copyWeak(&v34, &location);
       v33 = v10;
-      [v11 photoCarouselController:self requestsRemovingImageForIdentifier:v14 completion:v32];
+      [delegate photoCarouselController:self requestsRemovingImageForIdentifier:clientImageUuid completion:v32];
 
       objc_destroyWeak(&v34);
       objc_destroyWeak(&location);
@@ -449,16 +449,16 @@ LABEL_11:
         goto LABEL_9;
       }
 
-      v15 = [v10 _maps_diffableDataSourceIdentifier];
-      [v8 setIdentifier:v15];
+      _maps_diffableDataSourceIdentifier = [v10 _maps_diffableDataSourceIdentifier];
+      [v8 setIdentifier:_maps_diffableDataSourceIdentifier];
 
       [v10 setChecked:1];
       [v10 setIsLoading:1];
       [v8 setViewModel:v10];
       ++self->_numberOfLoadingPhotos;
       [(UGCARPPhotoCarouselController *)self _updateSelection];
-      v16 = [v8 traitCollection];
-      [v16 displayScale];
+      traitCollection = [v8 traitCollection];
+      [traitCollection displayScale];
       v18 = v17;
 
       suggestedPhotosImageDownloadingQueue = self->_suggestedPhotosImageDownloadingQueue;
@@ -466,11 +466,11 @@ LABEL_11:
       v24 = 3221225472;
       v25 = sub_100B77014;
       v26 = &unk_10163B4E8;
-      v27 = self;
+      selfCopy = self;
       v28 = v10;
       v31 = v18;
       v29 = v8;
-      v30 = v7;
+      v30 = pathCopy;
       dispatch_async(suggestedPhotosImageDownloadingQueue, &v23);
     }
 
@@ -479,17 +479,17 @@ LABEL_11:
 
     if (v21)
     {
-      v22 = [(UGCPhotoCarouselController *)self delegate];
-      [v22 photoCarouselControllerDidToggleImage:self];
+      delegate2 = [(UGCPhotoCarouselController *)self delegate];
+      [delegate2 photoCarouselControllerDidToggleImage:self];
     }
   }
 
 LABEL_9:
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v5 = -[NSMutableArray objectAtIndexedSubscript:](self->_viewModels, "objectAtIndexedSubscript:", [a5 row]);
+  v5 = -[NSMutableArray objectAtIndexedSubscript:](self->_viewModels, "objectAtIndexedSubscript:", [path row]);
   [v5 imageSizeForCell];
   v7 = v6;
   v9 = v8;
@@ -501,24 +501,24 @@ LABEL_9:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  pathCopy = path;
+  viewCopy = view;
   v11 = +[(UGCPhotoThumbnailCollectionViewCell *)UGCPhotoThumbnailCheckmarkCollectionViewCell];
-  v12 = [v10 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  v13 = [(UGCARPPhotoCarouselController *)self _viewModelForIdentifier:v8];
+  v13 = [(UGCARPPhotoCarouselController *)self _viewModelForIdentifier:identifierCopy];
 
   [v12 _setContinuousCornerRadius:4.0];
   [v12 setClipsToBounds:1];
-  v14 = [v13 _maps_diffableDataSourceIdentifier];
-  [v12 setIdentifier:v14];
+  _maps_diffableDataSourceIdentifier = [v13 _maps_diffableDataSourceIdentifier];
+  [v12 setIdentifier:_maps_diffableDataSourceIdentifier];
 
   [v12 setViewModel:v13];
-  v15 = [v12 traitCollection];
-  [v15 displayScale];
+  traitCollection = [v12 traitCollection];
+  [traitCollection displayScale];
   v17 = v16;
 
   suggestedPhotosImageDownloadingQueue = self->_suggestedPhotosImageDownloadingQueue;
@@ -538,9 +538,9 @@ LABEL_9:
   return v19;
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
-  obj = a3;
+  obj = view;
   v4 = objc_alloc_init(UICollectionViewFlowLayout);
   [v4 setScrollDirection:1];
   [v4 setMinimumInteritemSpacing:8.0];
@@ -568,8 +568,8 @@ LABEL_9:
   v12 = sub_1007CE178(self);
   [(UICollectionViewDiffableDataSource *)diffableDataSource setSupplementaryViewProvider:v12];
 
-  v13 = [(UGCARPPhotoCarouselController *)self _buildSnapshotFromCurrentState];
-  [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v13 animatingDifferences:0];
+  _buildSnapshotFromCurrentState = [(UGCARPPhotoCarouselController *)self _buildSnapshotFromCurrentState];
+  [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:_buildSnapshotFromCurrentState animatingDifferences:0];
   if (!MapsFeature_IsEnabled_ARPCommunityID() || !GEOConfigGetBOOL())
   {
     if (self->_previouslySubmittedPhotosExist)
@@ -589,10 +589,10 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)fetchSuggestedImageAssetsWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)fetchSuggestedImageAssetsWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = objc_alloc_init(PHCachingImageManager);
   imageManager = self->_imageManager;
   self->_imageManager = v8;
@@ -619,10 +619,10 @@ LABEL_10:
   block[3] = &unk_101660380;
   block[4] = self;
   v22 = v12;
-  v23 = v6;
-  v24 = v7;
-  v18 = v7;
-  v19 = v6;
+  v23 = queueCopy;
+  v24 = completionCopy;
+  v18 = completionCopy;
+  v19 = queueCopy;
   v20 = v12;
   dispatch_async(serialQueue, block);
 }
@@ -665,26 +665,26 @@ LABEL_10:
   [(UGCPhotoCarouselController *)&v4 dealloc];
 }
 
-- (UGCARPPhotoCarouselController)initWithDelegate:(id)a3 presentingViewController:(id)a4 maximumNumberOfPhotos:(unint64_t)a5 previouslySubmittedPhotosExist:(BOOL)a6 mapItemCoordinate:(CLLocationCoordinate2D)a7 showPhotoCarousel:(BOOL)a8
+- (UGCARPPhotoCarouselController)initWithDelegate:(id)delegate presentingViewController:(id)controller maximumNumberOfPhotos:(unint64_t)photos previouslySubmittedPhotosExist:(BOOL)exist mapItemCoordinate:(CLLocationCoordinate2D)coordinate showPhotoCarousel:(BOOL)carousel
 {
-  longitude = a7.longitude;
-  latitude = a7.latitude;
-  v15 = a3;
-  v16 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = UGCARPPhotoCarouselController;
   v17 = [(UGCARPPhotoCarouselController *)&v28 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_addPhotosDelegate, v15);
+    objc_storeWeak(&v17->_addPhotosDelegate, delegateCopy);
     v18->_centerCoordinate.latitude = latitude;
     v18->_centerCoordinate.longitude = longitude;
-    objc_storeWeak(&v18->_presentingViewController, v16);
-    v18->_previouslySubmittedPhotosExist = a6;
-    v18->_showPhotoCarousel = a8;
+    objc_storeWeak(&v18->_presentingViewController, controllerCopy);
+    v18->_previouslySubmittedPhotosExist = exist;
+    v18->_showPhotoCarousel = carousel;
     v18->_numberOfLoadingPhotos = 0;
-    v18->_maximumNumberOfPhotos = a5;
+    v18->_maximumNumberOfPhotos = photos;
     v19 = objc_alloc_init(NSMutableArray);
     viewModels = v18->_viewModels;
     v18->_viewModels = v19;

@@ -1,8 +1,8 @@
 @interface _DASPostRestoreBUILogger
 + (id)sharedInstance;
 - (_DASPostRestoreBUILogger)init;
-- (void)reportState:(unint64_t)a3 forActivity:(id)a4;
-- (void)reportState:(unint64_t)a3 forTaskName:(id)a4 featureCode:(id)a5 involvedProcesses:(id)a6;
+- (void)reportState:(unint64_t)state forActivity:(id)activity;
+- (void)reportState:(unint64_t)state forTaskName:(id)name featureCode:(id)code involvedProcesses:(id)processes;
 @end
 
 @implementation _DASPostRestoreBUILogger
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000ACF70;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B6F8 != -1)
   {
     dispatch_once(&qword_10020B6F8, block);
@@ -43,28 +43,28 @@
   return v2;
 }
 
-- (void)reportState:(unint64_t)a3 forActivity:(id)a4
+- (void)reportState:(unint64_t)state forActivity:(id)activity
 {
-  v6 = a4;
-  v7 = [v6 fastPass];
-  if (v7)
+  activityCopy = activity;
+  fastPass = [activityCopy fastPass];
+  if (fastPass)
   {
-    v8 = v7;
-    v9 = [v6 identifier];
+    v8 = fastPass;
+    identifier = [activityCopy identifier];
 
-    if (v9)
+    if (identifier)
     {
-      if (a3 != 10 || ![(_DASRuntimeLimiter *)self->_runtimeLimiter featureHasNoRemainingRuntimeForActivity:v6])
+      if (state != 10 || ![(_DASRuntimeLimiter *)self->_runtimeLimiter featureHasNoRemainingRuntimeForActivity:activityCopy])
       {
-        v10 = [v6 serviceName];
+        serviceName = [activityCopy serviceName];
 
-        if (v10)
+        if (serviceName)
         {
-          v11 = [v6 serviceName];
-          v12 = v11;
-          if (v11)
+          serviceName2 = [activityCopy serviceName];
+          v12 = serviceName2;
+          if (serviceName2)
           {
-            v13 = v11;
+            v13 = serviceName2;
           }
 
           else
@@ -74,9 +74,9 @@
 
           v14 = [NSArray arrayWithObject:v13];
 
-          v15 = [v6 identifier];
-          v16 = [v6 featureCodes];
-          [(_DASPostRestoreBUILogger *)self reportState:a3 forTaskName:v15 featureCode:v16 involvedProcesses:v14];
+          identifier2 = [activityCopy identifier];
+          featureCodes = [activityCopy featureCodes];
+          [(_DASPostRestoreBUILogger *)self reportState:state forTaskName:identifier2 featureCode:featureCodes involvedProcesses:v14];
         }
 
         else
@@ -84,7 +84,7 @@
           log = self->_log;
           if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
           {
-            sub_1001279D4(log, v6);
+            sub_1001279D4(log, activityCopy);
           }
         }
       }
@@ -92,28 +92,28 @@
   }
 }
 
-- (void)reportState:(unint64_t)a3 forTaskName:(id)a4 featureCode:(id)a5 involvedProcesses:(id)a6
+- (void)reportState:(unint64_t)state forTaskName:(id)name featureCode:(id)code involvedProcesses:(id)processes
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (a3 > 29)
+  nameCopy = name;
+  codeCopy = code;
+  processesCopy = processes;
+  if (state > 29)
   {
-    if (a3 != 50 && a3 != 30)
+    if (state != 50 && state != 30)
     {
       goto LABEL_15;
     }
 
-    v13 = 30;
+    stateCopy2 = 30;
   }
 
   else
   {
-    v13 = a3;
-    if (a3 != 10)
+    stateCopy2 = state;
+    if (state != 10)
     {
-      v13 = a3;
-      if (a3 != 20)
+      stateCopy2 = state;
+      if (state != 20)
       {
         goto LABEL_15;
       }
@@ -121,12 +121,12 @@
   }
 
   v14 = +[NSMutableDictionary dictionary];
-  [v14 setObject:v10 forKeyedSubscript:@"fastPassName"];
-  [v14 setObject:v11 forKeyedSubscript:@"featureCodes"];
-  v15 = [NSNumber numberWithUnsignedInteger:v13];
+  [v14 setObject:nameCopy forKeyedSubscript:@"fastPassName"];
+  [v14 setObject:codeCopy forKeyedSubscript:@"featureCodes"];
+  v15 = [NSNumber numberWithUnsignedInteger:stateCopy2];
   [v14 setObject:v15 forKeyedSubscript:@"state"];
 
-  [v14 setObject:v12 forKeyedSubscript:@"processName"];
+  [v14 setObject:processesCopy forKeyedSubscript:@"processName"];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -138,7 +138,7 @@
   v17 = +[_DASPPSDataManager sharedInstance];
   [v17 sendDataToPPS:v14 subsystem:@"XPCMetrics" category:@"OngoingRestore"];
 
-  if (a3 == 30)
+  if (state == 30)
   {
     [v14 setObject:&off_1001CA360 forKeyedSubscript:@"state"];
     v18 = self->_log;

@@ -1,20 +1,20 @@
 @interface MUTrailSelectionInfo
-- (MUTrailSelectionInfo)initWithTrailID:(unint64_t)a3 trailName:(id)a4;
+- (MUTrailSelectionInfo)initWithTrailID:(unint64_t)d trailName:(id)name;
 @end
 
 @implementation MUTrailSelectionInfo
 
-- (MUTrailSelectionInfo)initWithTrailID:(unint64_t)a3 trailName:(id)a4
+- (MUTrailSelectionInfo)initWithTrailID:(unint64_t)d trailName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = MUTrailSelectionInfo;
   v7 = [(MUTrailSelectionInfo *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(MUTrailSelectionInfo *)v7 setTrailID:a3];
-    [(MUTrailSelectionInfo *)v8 setTrailName:v6];
+    [(MUTrailSelectionInfo *)v7 setTrailID:d];
+    [(MUTrailSelectionInfo *)v8 setTrailName:nameCopy];
   }
 
   return v8;

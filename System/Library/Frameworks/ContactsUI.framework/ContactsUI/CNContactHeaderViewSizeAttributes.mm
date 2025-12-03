@@ -12,51 +12,51 @@
 - (CNContactHeaderViewSizeAttributes)init;
 - (double)maxHeight;
 - (double)minHeight;
-- (double)navbarTitleOffsetWithPercentMax:(double)a3;
-- (double)photoBottomMarginWithPercentMax:(double)a3;
-- (double)photoHeightWithPercentMax:(double)a3;
-- (double)photoTopMarginWithPercentMax:(double)a3;
+- (double)navbarTitleOffsetWithPercentMax:(double)max;
+- (double)photoBottomMarginWithPercentMax:(double)max;
+- (double)photoHeightWithPercentMax:(double)max;
+- (double)photoTopMarginWithPercentMax:(double)max;
 @end
 
 @implementation CNContactHeaderViewSizeAttributes
 
-- (double)navbarTitleOffsetWithPercentMax:(double)a3
+- (double)navbarTitleOffsetWithPercentMax:(double)max
 {
   [(CNContactHeaderViewSizeAttributes *)self minNavbarTitleOffset];
   v6 = v5;
   [(CNContactHeaderViewSizeAttributes *)self maxNavbarTitleOffset];
 
-  [(CNContactHeaderViewSizeAttributes *)self valueBetweenMin:v6 max:v7 percentMax:a3];
+  [(CNContactHeaderViewSizeAttributes *)self valueBetweenMin:v6 max:v7 percentMax:max];
   return result;
 }
 
-- (double)photoBottomMarginWithPercentMax:(double)a3
+- (double)photoBottomMarginWithPercentMax:(double)max
 {
   [(CNContactHeaderViewSizeAttributes *)self photoMinBottomMargin];
   v6 = v5;
   [(CNContactHeaderViewSizeAttributes *)self photoMaxBottomMargin];
 
-  [(CNContactHeaderViewSizeAttributes *)self valueBetweenMin:v6 max:v7 percentMax:a3];
+  [(CNContactHeaderViewSizeAttributes *)self valueBetweenMin:v6 max:v7 percentMax:max];
   return result;
 }
 
-- (double)photoTopMarginWithPercentMax:(double)a3
+- (double)photoTopMarginWithPercentMax:(double)max
 {
   [(CNContactHeaderViewSizeAttributes *)self photoMinTopMargin];
   v6 = v5;
   [(CNContactHeaderViewSizeAttributes *)self photoMaxTopMargin];
 
-  [(CNContactHeaderViewSizeAttributes *)self valueBetweenMin:v6 max:v7 percentMax:a3];
+  [(CNContactHeaderViewSizeAttributes *)self valueBetweenMin:v6 max:v7 percentMax:max];
   return result;
 }
 
-- (double)photoHeightWithPercentMax:(double)a3
+- (double)photoHeightWithPercentMax:(double)max
 {
   [(CNContactHeaderViewSizeAttributes *)self photoMinHeight];
   v6 = v5;
   [(CNContactHeaderViewSizeAttributes *)self photoMaxHeight];
 
-  [(CNContactHeaderViewSizeAttributes *)self valueBetweenMin:v6 max:v7 percentMax:a3];
+  [(CNContactHeaderViewSizeAttributes *)self valueBetweenMin:v6 max:v7 percentMax:max];
   return result;
 }
 
@@ -111,93 +111,93 @@
 
 + (id)staticEditingAttributesWithNavBar
 {
-  v2 = [a1 staticEditingAttributes];
-  [v2 minNavbarTitleOffset];
-  [v2 setMinNavbarTitleOffset:v3 + 26.0];
-  [v2 maxNavbarTitleOffset];
-  [v2 setMaxNavbarTitleOffset:v4 + 26.0];
+  staticEditingAttributes = [self staticEditingAttributes];
+  [staticEditingAttributes minNavbarTitleOffset];
+  [staticEditingAttributes setMinNavbarTitleOffset:v3 + 26.0];
+  [staticEditingAttributes maxNavbarTitleOffset];
+  [staticEditingAttributes setMaxNavbarTitleOffset:v4 + 26.0];
 
-  return v2;
+  return staticEditingAttributes;
 }
 
 + (id)staticCollapsedDisplayAttributesWithNavBar
 {
-  v2 = [a1 staticCollapsedDisplayAttributes];
-  [v2 minNavbarTitleOffset];
-  [v2 setMinNavbarTitleOffset:v3 + 26.0];
-  [v2 maxNavbarTitleOffset];
-  [v2 setMaxNavbarTitleOffset:v4 + 26.0];
+  staticCollapsedDisplayAttributes = [self staticCollapsedDisplayAttributes];
+  [staticCollapsedDisplayAttributes minNavbarTitleOffset];
+  [staticCollapsedDisplayAttributes setMinNavbarTitleOffset:v3 + 26.0];
+  [staticCollapsedDisplayAttributes maxNavbarTitleOffset];
+  [staticCollapsedDisplayAttributes setMaxNavbarTitleOffset:v4 + 26.0];
 
-  return v2;
+  return staticCollapsedDisplayAttributes;
 }
 
 + (id)staticDisplayAttributesWithNavBar
 {
-  v2 = [a1 staticDisplayAttributes];
-  [v2 minNavbarTitleOffset];
-  [v2 setMinNavbarTitleOffset:v3 + 26.0];
-  [v2 maxNavbarTitleOffset];
-  [v2 setMaxNavbarTitleOffset:v4 + 26.0];
+  staticDisplayAttributes = [self staticDisplayAttributes];
+  [staticDisplayAttributes minNavbarTitleOffset];
+  [staticDisplayAttributes setMinNavbarTitleOffset:v3 + 26.0];
+  [staticDisplayAttributes maxNavbarTitleOffset];
+  [staticDisplayAttributes setMaxNavbarTitleOffset:v4 + 26.0];
 
-  return v2;
+  return staticDisplayAttributes;
 }
 
 + (id)displayAttributesWithNavBar
 {
-  v2 = [a1 defaultAttributes];
-  [v2 minNavbarTitleOffset];
-  [v2 setMinNavbarTitleOffset:v3 + 20.0];
-  [v2 maxNavbarTitleOffset];
-  [v2 setMaxNavbarTitleOffset:v4 + 20.0];
+  defaultAttributes = [self defaultAttributes];
+  [defaultAttributes minNavbarTitleOffset];
+  [defaultAttributes setMinNavbarTitleOffset:v3 + 20.0];
+  [defaultAttributes maxNavbarTitleOffset];
+  [defaultAttributes setMaxNavbarTitleOffset:v4 + 20.0];
 
-  return v2;
+  return defaultAttributes;
 }
 
 + (id)editingAttributesWithNavBar
 {
-  v2 = [a1 editingAttributes];
-  [v2 minNavbarTitleOffset];
-  [v2 setMinNavbarTitleOffset:v3 + 20.0];
-  [v2 maxNavbarTitleOffset];
-  [v2 setMaxNavbarTitleOffset:v4 + 20.0];
+  editingAttributes = [self editingAttributes];
+  [editingAttributes minNavbarTitleOffset];
+  [editingAttributes setMinNavbarTitleOffset:v3 + 20.0];
+  [editingAttributes maxNavbarTitleOffset];
+  [editingAttributes setMaxNavbarTitleOffset:v4 + 20.0];
 
-  return v2;
+  return editingAttributes;
 }
 
 + (id)staticEditingAttributes
 {
-  v2 = [a1 editingAttributes];
-  [v2 setPhotoMinHeight:40.0];
-  [v2 setPhotoMaxHeight:175.0];
-  [v2 setPhotoMaxHeightLowQuality:86.0];
-  [v2 setPhotoMaxTopMargin:0.0];
-  [v2 setPhotoMinTopMargin:0.0];
-  [v2 setPhotoMaxBottomMargin:24.0];
-  [v2 setPhotoMinBottomMargin:24.0];
-  [v2 setPosterMaxHeight:250.0];
+  editingAttributes = [self editingAttributes];
+  [editingAttributes setPhotoMinHeight:40.0];
+  [editingAttributes setPhotoMaxHeight:175.0];
+  [editingAttributes setPhotoMaxHeightLowQuality:86.0];
+  [editingAttributes setPhotoMaxTopMargin:0.0];
+  [editingAttributes setPhotoMinTopMargin:0.0];
+  [editingAttributes setPhotoMaxBottomMargin:24.0];
+  [editingAttributes setPhotoMinBottomMargin:24.0];
+  [editingAttributes setPosterMaxHeight:250.0];
 
-  return v2;
+  return editingAttributes;
 }
 
 + (id)staticCollapsedDisplayAttributes
 {
-  v2 = [a1 defaultAttributes];
-  [v2 setPhotoMinTopMargin:2.0];
-  [v2 setPhotoMinBottomMargin:6.0];
-  [v2 setHeaderBottomMargin:16.0];
+  defaultAttributes = [self defaultAttributes];
+  [defaultAttributes setPhotoMinTopMargin:2.0];
+  [defaultAttributes setPhotoMinBottomMargin:6.0];
+  [defaultAttributes setHeaderBottomMargin:16.0];
 
-  return v2;
+  return defaultAttributes;
 }
 
 + (id)staticDisplayAttributes
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = [a1 defaultAttributes];
-  v6 = v5;
+  defaultAttributes = [self defaultAttributes];
+  v6 = defaultAttributes;
   v7 = 70.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v8 = 29.0;
   }
@@ -208,7 +208,7 @@
     v8 = 26.0;
   }
 
-  [v5 setPhotoMinTopMargin:v7];
+  [defaultAttributes setPhotoMinTopMargin:v7];
   [v6 setPhotoMinBottomMargin:v8];
   [v6 setPhotoMinBottomMarginLowQuality:11.0];
   [v6 setPhotoMinTopMarginPadCompact:0.0];
@@ -226,13 +226,13 @@
 
 + (id)editingAttributes
 {
-  v2 = [a1 defaultAttributes];
-  [v2 setPhotoMaxHeight:168.0];
-  [v2 setPhotoMaxTopMargin:40.0];
-  [v2 setPhotoMinBottomMargin:12.0];
-  [v2 setPhotoMaxBottomMargin:24.0];
+  defaultAttributes = [self defaultAttributes];
+  [defaultAttributes setPhotoMaxHeight:168.0];
+  [defaultAttributes setPhotoMaxTopMargin:40.0];
+  [defaultAttributes setPhotoMinBottomMargin:12.0];
+  [defaultAttributes setPhotoMaxBottomMargin:24.0];
 
-  return v2;
+  return defaultAttributes;
 }
 
 + (id)defaultAttributes

@@ -1,46 +1,46 @@
 @interface NTKPoodleFaceView
 + (id)_supportedComplicationSlots;
-+ (unint64_t)colorCodeFromEditOption:(id)a3;
++ (unint64_t)colorCodeFromEditOption:(id)option;
 - (CGRect)_lowerComplicationFrame;
-- (NTKPoodleFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_backgroundAlphaForEditMode:(int64_t)a3;
-- (double)_dialAlphaForEditMode:(int64_t)a3;
-- (double)_timeViewAlphaForEditMode:(int64_t)a3;
-- (id)_keylineViewForComplicationSlot:(id)a3;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
+- (NTKPoodleFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_backgroundAlphaForEditMode:(int64_t)mode;
+- (double)_dialAlphaForEditMode:(int64_t)mode;
+- (double)_timeViewAlphaForEditMode:(int64_t)mode;
+- (id)_keylineViewForComplicationSlot:(id)slot;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
 - (id)createFaceColorPalette;
-- (int64_t)_complicationPickerStyleForSlot:(id)a3;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (int64_t)_complicationPickerStyleForSlot:(id)slot;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_removeViews;
 - (void)_setupViews;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateBottomComplicationColorsWithPalette:(id)a3;
-- (void)_updateCornerComplicationColorsWithPrimaryColor:(id)a3 secondaryColor:(id)a4;
+- (void)_updateBottomComplicationColorsWithPalette:(id)palette;
+- (void)_updateCornerComplicationColorsWithPrimaryColor:(id)color secondaryColor:(id)secondaryColor;
 - (void)layoutSubviews;
-- (void)updateColorsWithPalette:(id)a3;
+- (void)updateColorsWithPalette:(id)palette;
 @end
 
 @implementation NTKPoodleFaceView
 
-- (NTKPoodleFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKPoodleFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NTKPoodleFaceView;
-  v9 = [(NTKPoodleFaceView *)&v16 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKPoodleFaceView *)&v16 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     v10 = [NTKWhistlerAnalogFaceViewComplicationFactory alloc];
-    v11 = [(NTKPoodleFaceView *)v9 device];
-    sub_2D6F4(v11, v15);
-    v12 = [v10 initWithFaceView:v9 dialDiameter:v8 device:v15[0]];
+    device = [(NTKPoodleFaceView *)v9 device];
+    sub_2D6F4(device, v15);
+    v12 = [v10 initWithFaceView:v9 dialDiameter:deviceCopy device:v15[0]];
 
     [v12 setUsesNarrowTopSlots:1];
     [(NTKPoodleFaceView *)v9 setComplicationFactory:v12];
@@ -79,17 +79,17 @@
   v48.super_class = NTKPoodleFaceView;
   [(NTKPoodleFaceView *)&v48 _loadSnapshotContentViews];
   v3 = [NTKPoodleBackgroundView alloc];
-  v4 = [(NTKPoodleFaceView *)self device];
-  v5 = [(NTKPoodleBackgroundView *)v3 initWithDevice:v4];
+  device = [(NTKPoodleFaceView *)self device];
+  v5 = [(NTKPoodleBackgroundView *)v3 initWithDevice:device];
   backgroundView = self->_backgroundView;
   self->_backgroundView = v5;
 
   v7 = self->_backgroundView;
-  v8 = [(NTKPoodleFaceView *)self palette];
-  [(NTKPoodleBackgroundView *)v7 setPalette:v8];
+  palette = [(NTKPoodleFaceView *)self palette];
+  [(NTKPoodleBackgroundView *)v7 setPalette:palette];
 
-  v9 = [(NTKPoodleFaceView *)self contentView];
-  [v9 addSubview:self->_backgroundView];
+  contentView = [(NTKPoodleFaceView *)self contentView];
+  [contentView addSubview:self->_backgroundView];
 
   v10 = [NTKPoodleFaceBundle imageWithName:@"PoodleNumerals"];
   v11 = [v10 imageWithRenderingMode:2];
@@ -98,13 +98,13 @@
 
   if (!self->_dialImageView)
   {
-    v13 = [(NTKPoodleFaceView *)self device];
-    sub_2D6F4(v13, &v45);
+    device2 = [(NTKPoodleFaceView *)self device];
+    sub_2D6F4(device2, &v45);
     v14 = v46;
     v15 = v47;
 
-    v16 = [(NTKPoodleFaceView *)self device];
-    sub_2D6F4(v16, v43);
+    device3 = [(NTKPoodleFaceView *)self device];
+    sub_2D6F4(device3, v43);
     v17 = v44;
 
     v18 = [[UIImageView alloc] initWithImage:self->_dialImage];
@@ -121,22 +121,22 @@
     v25 = v24 * 0.5;
     [(UIImageView *)self->_dialImageView bounds];
     [(UIImageView *)self->_dialImageView setFrame:v23, v17 + v25 - v26 * 0.5, v14, v15];
-    v27 = [(NTKPoodleFaceView *)self contentView];
-    [v27 addSubview:self->_dialImageView];
+    contentView2 = [(NTKPoodleFaceView *)self contentView];
+    [contentView2 addSubview:self->_dialImageView];
   }
 
   if (!self->_logoView)
   {
-    v28 = [(NTKPoodleFaceView *)self device];
-    sub_2D6F4(v28, &v40);
+    device4 = [(NTKPoodleFaceView *)self device];
+    sub_2D6F4(device4, &v40);
     v29 = v41;
     v30 = v42;
 
     v31 = [NTKPoodleFaceBundle imageWithName:@"PoodleLogo"];
     v32 = [v31 imageWithRenderingMode:2];
 
-    v33 = [(NTKPoodleFaceView *)self device];
-    sub_2D6F4(v33, v38);
+    device5 = [(NTKPoodleFaceView *)self device];
+    sub_2D6F4(device5, v38);
     v34 = v39;
 
     v35 = [[UIImageView alloc] initWithImage:v32];
@@ -145,8 +145,8 @@
 
     [(UIImageView *)self->_logoView setContentMode:1];
     [(UIImageView *)self->_logoView setBounds:0.0, v34, v29, v30];
-    v37 = [(NTKPoodleFaceView *)self contentView];
-    [v37 addSubview:self->_logoView];
+    contentView3 = [(NTKPoodleFaceView *)self contentView];
+    [contentView3 addSubview:self->_logoView];
   }
 }
 
@@ -187,8 +187,8 @@
   v8 = v7 * 0.5;
   [(UIImageView *)self->_dialImageView bounds];
   v10 = v8 - v9 * 0.5;
-  v11 = [(NTKPoodleFaceView *)self device];
-  sub_2D6F4(v11, v29);
+  device = [(NTKPoodleFaceView *)self device];
+  sub_2D6F4(device, v29);
   v12 = v10 + v30;
   [(UIImageView *)self->_dialImageView bounds];
   v14 = v13;
@@ -203,8 +203,8 @@
   v20 = v19 * 0.5;
   [(UIImageView *)self->_logoView bounds];
   v22 = v20 - v21 * 0.5;
-  v23 = [(NTKPoodleFaceView *)self device];
-  sub_2D6F4(v23, v27);
+  device2 = [(NTKPoodleFaceView *)self device];
+  sub_2D6F4(device2, v27);
   v24 = v22 + v28;
   [(UIImageView *)self->_logoView bounds];
   v26 = v25;
@@ -212,101 +212,101 @@
   [(UIImageView *)self->_logoView setFrame:v18, v24, v26];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v15.receiver = self;
   v15.super_class = NTKPoodleFaceView;
   [NTKPoodleFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKPoodleFaceView *)self _dialAlphaForEditMode:a4];
-  [(NTKPoodleFaceView *)self _dialAlphaForEditMode:a5];
+  [(NTKPoodleFaceView *)self _dialAlphaForEditMode:mode];
+  [(NTKPoodleFaceView *)self _dialAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  [(NTKPoodleFaceView *)self _backgroundAlphaForEditMode:a4];
-  [(NTKPoodleFaceView *)self _backgroundAlphaForEditMode:a5];
+  [(NTKPoodleFaceView *)self _backgroundAlphaForEditMode:mode];
+  [(NTKPoodleFaceView *)self _backgroundAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v11 = v10;
-  [(NTKPoodleFaceView *)self _timeViewAlphaForEditMode:a4];
-  [(NTKPoodleFaceView *)self _timeViewAlphaForEditMode:a5];
+  [(NTKPoodleFaceView *)self _timeViewAlphaForEditMode:mode];
+  [(NTKPoodleFaceView *)self _timeViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v13 = v12;
   [(UIImageView *)self->_dialImageView setAlpha:v9];
   [(NTKPoodleBackgroundView *)self->_backgroundView setAlpha:v11];
   [(UIImageView *)self->_logoView setAlpha:v11];
-  v14 = [(NTKPoodleFaceView *)self timeView];
-  [v14 setAlpha:v13];
+  timeView = [(NTKPoodleFaceView *)self timeView];
+  [timeView setAlpha:v13];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v7 = [(NTKPoodleFaceView *)self palette:a3];
+    v7 = [(NTKPoodleFaceView *)self palette:option];
     [(NTKPoodleFaceView *)self updateColorsWithPalette:v7];
   }
 }
 
-- (void)updateColorsWithPalette:(id)a3
+- (void)updateColorsWithPalette:(id)palette
 {
-  v23 = a3;
-  v4 = [v23 background];
-  [(NTKPoodleFaceView *)self setBackgroundColor:v4];
+  paletteCopy = palette;
+  background = [paletteCopy background];
+  [(NTKPoodleFaceView *)self setBackgroundColor:background];
 
-  v5 = [v23 background];
-  [(NTKPoodleFaceView *)self setComplicationBackgroundColor:v5];
+  background2 = [paletteCopy background];
+  [(NTKPoodleFaceView *)self setComplicationBackgroundColor:background2];
 
-  v6 = [(NTKPoodleFaceView *)self timeView];
-  v7 = [v6 hourHandView];
-  v8 = [v23 handColor];
-  [v7 setColor:v8];
+  timeView = [(NTKPoodleFaceView *)self timeView];
+  hourHandView = [timeView hourHandView];
+  handColor = [paletteCopy handColor];
+  [hourHandView setColor:handColor];
 
-  v9 = [(NTKPoodleFaceView *)self timeView];
-  v10 = [v9 minuteHandView];
-  v11 = [v23 handColor];
-  [v10 setColor:v11];
+  timeView2 = [(NTKPoodleFaceView *)self timeView];
+  minuteHandView = [timeView2 minuteHandView];
+  handColor2 = [paletteCopy handColor];
+  [minuteHandView setColor:handColor2];
 
-  v12 = [(NTKPoodleFaceView *)self timeView];
-  v13 = [v12 secondHandView];
-  v14 = [v23 secondHandColor];
-  [v13 setColor:v14];
+  timeView3 = [(NTKPoodleFaceView *)self timeView];
+  secondHandView = [timeView3 secondHandView];
+  secondHandColor = [paletteCopy secondHandColor];
+  [secondHandView setColor:secondHandColor];
 
-  v15 = [(NTKPoodleFaceView *)self timeView];
-  v16 = [v23 handInlayColor];
-  [v15 setInlayColor:v16];
+  timeView4 = [(NTKPoodleFaceView *)self timeView];
+  handInlayColor = [paletteCopy handInlayColor];
+  [timeView4 setInlayColor:handInlayColor];
 
-  [(NTKPoodleBackgroundView *)self->_backgroundView setPalette:v23];
+  [(NTKPoodleBackgroundView *)self->_backgroundView setPalette:paletteCopy];
   dialImageView = self->_dialImageView;
-  v18 = [v23 dialColor];
-  [(UIImageView *)dialImageView setTintColor:v18];
+  dialColor = [paletteCopy dialColor];
+  [(UIImageView *)dialImageView setTintColor:dialColor];
 
   logoView = self->_logoView;
-  v20 = [v23 logoColor];
-  [(UIImageView *)logoView setTintColor:v20];
+  logoColor = [paletteCopy logoColor];
+  [(UIImageView *)logoView setTintColor:logoColor];
 
-  v21 = [v23 primaryComplicationColor];
-  v22 = [v23 secondaryComplicationColor];
-  [(NTKPoodleFaceView *)self _updateCornerComplicationColorsWithPrimaryColor:v21 secondaryColor:v22];
+  primaryComplicationColor = [paletteCopy primaryComplicationColor];
+  secondaryComplicationColor = [paletteCopy secondaryComplicationColor];
+  [(NTKPoodleFaceView *)self _updateCornerComplicationColorsWithPrimaryColor:primaryComplicationColor secondaryColor:secondaryComplicationColor];
 
-  [(NTKPoodleFaceView *)self _updateBottomComplicationColorsWithPalette:v23];
+  [(NTKPoodleFaceView *)self _updateBottomComplicationColorsWithPalette:paletteCopy];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v10.receiver = self;
   v10.super_class = NTKPoodleFaceView;
-  [(NTKPoodleFaceView *)&v10 _applyTransitionFraction:a4 fromOption:a5 toOption:a6 forCustomEditMode:a7 slot:a3];
-  if (a6 == 10)
+  [(NTKPoodleFaceView *)&v10 _applyTransitionFraction:option fromOption:toOption toOption:mode forCustomEditMode:slot slot:fraction];
+  if (mode == 10)
   {
-    v9 = [(NTKPoodleFaceView *)self interpolatedColorPalette];
-    [(NTKPoodleFaceView *)self updateColorsWithPalette:v9];
+    interpolatedColorPalette = [(NTKPoodleFaceView *)self interpolatedColorPalette];
+    [(NTKPoodleFaceView *)self updateColorsWithPalette:interpolatedColorPalette];
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v10.receiver = self;
   v10.super_class = NTKPoodleFaceView;
-  [(NTKPoodleFaceView *)&v10 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKPoodleFaceView *)&v10 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v9, 0, sizeof(v9));
@@ -317,12 +317,12 @@
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v9.receiver = self;
   v9.super_class = NTKPoodleFaceView;
-  [(NTKPoodleFaceView *)&v9 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKPoodleFaceView *)&v9 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKScaleForRubberBandingFraction();
     CGAffineTransformMakeScale(&v8, v7, v7);
@@ -332,10 +332,10 @@
   }
 }
 
-- (double)_dialAlphaForEditMode:(int64_t)a3
+- (double)_dialAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -343,10 +343,10 @@
   return result;
 }
 
-- (double)_backgroundAlphaForEditMode:(int64_t)a3
+- (double)_backgroundAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -354,10 +354,10 @@
   return result;
 }
 
-- (double)_timeViewAlphaForEditMode:(int64_t)a3
+- (double)_timeViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -365,20 +365,20 @@
   return result;
 }
 
-- (id)_keylineViewForComplicationSlot:(id)a3
+- (id)_keylineViewForComplicationSlot:(id)slot
 {
   v4 = NTKComplicationSlotBottom;
-  v5 = a3;
-  if ([v5 isEqualToString:v4])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:v4])
   {
-    v6 = [(NTKPoodleFaceView *)self _defaultKeylineViewForComplicationSlot:v5];
+    v6 = [(NTKPoodleFaceView *)self _defaultKeylineViewForComplicationSlot:slotCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NTKPoodleFaceView;
-    v6 = [(NTKPoodleFaceView *)&v9 _keylineViewForComplicationSlot:v5];
+    v6 = [(NTKPoodleFaceView *)&v9 _keylineViewForComplicationSlot:slotCopy];
   }
 
   v7 = v6;
@@ -386,10 +386,10 @@
   return v7;
 }
 
-- (int64_t)_complicationPickerStyleForSlot:(id)a3
+- (int64_t)_complicationPickerStyleForSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqual:NTKComplicationSlotBottom])
+  slotCopy = slot;
+  if ([slotCopy isEqual:NTKComplicationSlotBottom])
   {
     v5 = &dword_0 + 1;
   }
@@ -398,7 +398,7 @@
   {
     v7.receiver = self;
     v7.super_class = NTKPoodleFaceView;
-    v5 = [(NTKPoodleFaceView *)&v7 _complicationPickerStyleForSlot:v4];
+    v5 = [(NTKPoodleFaceView *)&v7 _complicationPickerStyleForSlot:slotCopy];
   }
 
   return v5;
@@ -406,12 +406,12 @@
 
 - (CGRect)_lowerComplicationFrame
 {
-  v3 = [(NTKPoodleFaceView *)self device];
+  device = [(NTKPoodleFaceView *)self device];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  sub_2D6F4(v3, &v14);
+  sub_2D6F4(device, &v14);
   [(NTKPoodleFaceView *)self bounds];
   v5 = v4 * 0.5;
   [(NTKPoodleFaceView *)self bounds];
@@ -435,9 +435,9 @@
   v9.receiver = self;
   v9.super_class = NTKPoodleFaceView;
   [(NTKPoodleFaceView *)&v9 _loadLayoutRules];
-  v3 = [(NTKPoodleFaceView *)self device];
+  device = [(NTKPoodleFaceView *)self device];
   [(NTKPoodleFaceView *)self _lowerComplicationFrame];
-  v4 = [NTKComplicationLayoutRule layoutRuleForDevice:v3 withReferenceFrame:3 horizontalLayout:3 verticalLayout:?];
+  v4 = [NTKComplicationLayoutRule layoutRuleForDevice:device withReferenceFrame:3 horizontalLayout:3 verticalLayout:?];
   v7 = [(NTKPoodleFaceView *)self complicationLayoutforSlot:NTKComplicationSlotBottom];
   v8 = v4;
   v5 = v4;
@@ -445,27 +445,27 @@
   NTKEnumerateComplicationStates();
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a5;
+  slotCopy = slot;
   v9 = NTKComplicationSlotBottom;
-  v10 = a3;
-  if ([v8 isEqualToString:v9])
+  complicationCopy = complication;
+  if ([slotCopy isEqualToString:v9])
   {
-    v11 = [v10 complicationType];
+    complicationType = [complicationCopy complicationType];
 
-    v12 = [NTKPoodleComplicationView viewForComplicationType:v11];
-    v13 = [(NTKPoodleFaceView *)self palette];
-    [v12 applyPalette:v13];
+    v12 = [NTKPoodleComplicationView viewForComplicationType:complicationType];
+    palette = [(NTKPoodleFaceView *)self palette];
+    [v12 applyPalette:palette];
 
-    [(NTKPoodleFaceView *)self _configureComplicationView:v12 forSlot:v8];
+    [(NTKPoodleFaceView *)self _configureComplicationView:v12 forSlot:slotCopy];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = NTKPoodleFaceView;
-    v12 = [(NTKPoodleFaceView *)&v15 _newLegacyViewForComplication:v10 family:a4 slot:v8];
+    v12 = [(NTKPoodleFaceView *)&v15 _newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
   }
 
   return v12;
@@ -483,37 +483,37 @@
   return v2;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = NTKPoodleFaceView;
-  [(NTKPoodleFaceView *)&v12 _configureComplicationView:v6 forSlot:a4];
-  v7 = [(NTKPoodleFaceView *)self palette];
-  v8 = [v7 primaryComplicationColor];
-  [(NTKPoodleFaceView *)self setComplicationColor:v8];
+  [(NTKPoodleFaceView *)&v12 _configureComplicationView:viewCopy forSlot:slot];
+  palette = [(NTKPoodleFaceView *)self palette];
+  primaryComplicationColor = [palette primaryComplicationColor];
+  [(NTKPoodleFaceView *)self setComplicationColor:primaryComplicationColor];
 
-  v9 = [(NTKPoodleFaceView *)self complicationColor];
-  [(NTKPoodleFaceView *)self setInterpolatedComplicationColor:v9];
+  complicationColor = [(NTKPoodleFaceView *)self complicationColor];
+  [(NTKPoodleFaceView *)self setInterpolatedComplicationColor:complicationColor];
 
-  v10 = [(NTKPoodleFaceView *)self palette];
-  v11 = [v10 secondaryComplicationColor];
-  [(NTKPoodleFaceView *)self setAlternateComplicationColor:v11];
+  palette2 = [(NTKPoodleFaceView *)self palette];
+  secondaryComplicationColor = [palette2 secondaryComplicationColor];
+  [(NTKPoodleFaceView *)self setAlternateComplicationColor:secondaryComplicationColor];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 }
 
-- (void)_updateCornerComplicationColorsWithPrimaryColor:(id)a3 secondaryColor:(id)a4
+- (void)_updateCornerComplicationColorsWithPrimaryColor:(id)color secondaryColor:(id)secondaryColor
 {
-  v6 = a4;
-  [(NTKPoodleFaceView *)self setComplicationColor:a3];
-  v7 = [(NTKPoodleFaceView *)self complicationColor];
-  [(NTKPoodleFaceView *)self setInterpolatedComplicationColor:v7];
+  secondaryColorCopy = secondaryColor;
+  [(NTKPoodleFaceView *)self setComplicationColor:color];
+  complicationColor = [(NTKPoodleFaceView *)self complicationColor];
+  [(NTKPoodleFaceView *)self setInterpolatedComplicationColor:complicationColor];
 
-  [(NTKPoodleFaceView *)self setAlternateComplicationColor:v6];
+  [(NTKPoodleFaceView *)self setAlternateComplicationColor:secondaryColorCopy];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_2D444;
@@ -522,27 +522,27 @@
   [(NTKPoodleFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v8];
 }
 
-- (void)_updateBottomComplicationColorsWithPalette:(id)a3
+- (void)_updateBottomComplicationColorsWithPalette:(id)palette
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_2D560;
   v5[3] = &unk_450F8;
-  v6 = a3;
-  v4 = v6;
+  paletteCopy = palette;
+  v4 = paletteCopy;
   [(NTKPoodleFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
-+ (unint64_t)colorCodeFromEditOption:(id)a3
++ (unint64_t)colorCodeFromEditOption:(id)option
 {
-  v3 = [a3 pigmentEditOption];
+  pigmentEditOption = [option pigmentEditOption];
   v4 = +[CLKRenderingContext sharedRenderingContext];
-  v5 = [v4 device];
+  device = [v4 device];
 
-  v6 = [NTKPoodleColorEditOption legacyOptionWithPigmentEditOption:v3 forDevice:v5];
-  v7 = [v6 color];
+  v6 = [NTKPoodleColorEditOption legacyOptionWithPigmentEditOption:pigmentEditOption forDevice:device];
+  color = [v6 color];
 
-  return v7;
+  return color;
 }
 
 @end

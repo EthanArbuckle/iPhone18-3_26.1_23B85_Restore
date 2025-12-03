@@ -1,11 +1,11 @@
 @interface DetailsViewController
-- (_TtC20CommunicationDetails21DetailsViewController)initWithCoder:(id)a3;
-- (_TtC20CommunicationDetails21DetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)contactViewController:(id)a3 didDeleteContact:(id)a4;
+- (_TtC20CommunicationDetails21DetailsViewController)initWithCoder:(id)coder;
+- (_TtC20CommunicationDetails21DetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)contactViewController:(id)controller didDeleteContact:(id)contact;
 - (void)dismissDetails;
-- (void)visualIdentityPicker:(id)a3 didUpdatePhotoForVisualIdentity:(id)a4 withContactImage:(id)a5;
-- (void)visualIdentityPickerDidCancel:(id)a3;
+- (void)visualIdentityPicker:(id)picker didUpdatePhotoForVisualIdentity:(id)identity withContactImage:(id)image;
+- (void)visualIdentityPickerDidCancel:(id)cancel;
 @end
 
 @implementation DetailsViewController
@@ -23,7 +23,7 @@
   [(DetailsViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -33,13 +33,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  specialized DetailsViewController.contactViewController(_:didCompleteWith:)(v7, a4);
+  controllerCopy = controller;
+  contactCopy = contact;
+  selfCopy = self;
+  specialized DetailsViewController.contactViewController(_:didCompleteWith:)(controllerCopy, contact);
 }
 
-- (void)contactViewController:(id)a3 didDeleteContact:(id)a4
+- (void)contactViewController:(id)controller didDeleteContact:(id)contact
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -49,10 +49,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [controller dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)visualIdentityPickerDidCancel:(id)a3
+- (void)visualIdentityPickerDidCancel:(id)cancel
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -62,10 +62,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [cancel dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)visualIdentityPicker:(id)a3 didUpdatePhotoForVisualIdentity:(id)a4 withContactImage:(id)a5
+- (void)visualIdentityPicker:(id)picker didUpdatePhotoForVisualIdentity:(id)identity withContactImage:(id)image
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -76,21 +76,21 @@
   }
 
   v8 = *(**(&self->super.super.super.isa + OBJC_IVAR____TtC20CommunicationDetails21DetailsViewController_configuration) + 248);
-  v9 = a3;
-  v10 = a4;
-  v13 = self;
+  pickerCopy = picker;
+  identityCopy = identity;
+  selfCopy = self;
   v11 = v8();
   if (v11)
   {
     v12 = v11;
-    v11(v10);
+    v11(identityCopy);
     outlined consume of (@escaping @callee_guaranteed (@guaranteed CNVisualIdentity) -> ())?(v12);
   }
 
-  [v9 dismissViewControllerAnimated:1 completion:0];
+  [pickerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (_TtC20CommunicationDetails21DetailsViewController)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails21DetailsViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -100,11 +100,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   specialized DetailsViewController.init(coder:)();
 }
 
-- (_TtC20CommunicationDetails21DetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20CommunicationDetails21DetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

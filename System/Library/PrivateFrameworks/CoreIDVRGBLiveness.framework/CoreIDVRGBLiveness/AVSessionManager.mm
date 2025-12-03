@@ -1,34 +1,34 @@
 @interface AVSessionManager
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 willCapturePhotoForResolvedSettings:(id)a4;
-- (void)dataOutputSynchronizer:(id)a3 didOutputSynchronizedDataCollection:(id)a4;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
+- (void)captureOutput:(id)output willCapturePhotoForResolvedSettings:(id)settings;
+- (void)dataOutputSynchronizer:(id)synchronizer didOutputSynchronizedDataCollection:(id)collection;
 @end
 
 @implementation AVSessionManager
 
-- (void)captureOutput:(id)a3 willCapturePhotoForResolvedSettings:(id)a4
+- (void)captureOutput:(id)output willCapturePhotoForResolvedSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  outputCopy = output;
+  settingsCopy = settings;
+  selfCopy = self;
   sub_2456ED59C();
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_2456ED950(v9, a5);
+  outputCopy = output;
+  photoCopy = photo;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2456ED950(photoCopy, error);
 }
 
-- (void)dataOutputSynchronizer:(id)a3 didOutputSynchronizedDataCollection:(id)a4
+- (void)dataOutputSynchronizer:(id)synchronizer didOutputSynchronizedDataCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2456EDE04(v7);
+  synchronizerCopy = synchronizer;
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_2456EDE04(collectionCopy);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterTariffInformationStruct
 - (MTRCommodityTariffClusterTariffInformationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterTariffInformationStruct);
-  v5 = [(MTRCommodityTariffClusterTariffInformationStruct *)self tariffLabel];
-  [(MTRCommodityTariffClusterTariffInformationStruct *)v4 setTariffLabel:v5];
+  tariffLabel = [(MTRCommodityTariffClusterTariffInformationStruct *)self tariffLabel];
+  [(MTRCommodityTariffClusterTariffInformationStruct *)v4 setTariffLabel:tariffLabel];
 
-  v6 = [(MTRCommodityTariffClusterTariffInformationStruct *)self providerName];
-  [(MTRCommodityTariffClusterTariffInformationStruct *)v4 setProviderName:v6];
+  providerName = [(MTRCommodityTariffClusterTariffInformationStruct *)self providerName];
+  [(MTRCommodityTariffClusterTariffInformationStruct *)v4 setProviderName:providerName];
 
-  v7 = [(MTRCommodityTariffClusterTariffInformationStruct *)self currency];
-  [(MTRCommodityTariffClusterTariffInformationStruct *)v4 setCurrency:v7];
+  currency = [(MTRCommodityTariffClusterTariffInformationStruct *)self currency];
+  [(MTRCommodityTariffClusterTariffInformationStruct *)v4 setCurrency:currency];
 
-  v8 = [(MTRCommodityTariffClusterTariffInformationStruct *)self blockMode];
-  [(MTRCommodityTariffClusterTariffInformationStruct *)v4 setBlockMode:v8];
+  blockMode = [(MTRCommodityTariffClusterTariffInformationStruct *)self blockMode];
+  [(MTRCommodityTariffClusterTariffInformationStruct *)v4 setBlockMode:blockMode];
 
   return v4;
 }

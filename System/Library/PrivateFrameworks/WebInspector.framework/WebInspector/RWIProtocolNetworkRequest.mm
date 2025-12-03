@@ -4,57 +4,57 @@
 - (NSString)postData;
 - (NSString)url;
 - (RWIProtocolNetworkHeaders)headers;
-- (RWIProtocolNetworkRequest)initWithUrl:(id)a3 method:(id)a4 headers:(id)a5;
+- (RWIProtocolNetworkRequest)initWithUrl:(id)url method:(id)method headers:(id)headers;
 - (int64_t)referrerPolicy;
-- (void)setHeaders:(id)a3;
-- (void)setIntegrity:(id)a3;
-- (void)setMethod:(id)a3;
-- (void)setPostData:(id)a3;
-- (void)setReferrerPolicy:(int64_t)a3;
-- (void)setUrl:(id)a3;
+- (void)setHeaders:(id)headers;
+- (void)setIntegrity:(id)integrity;
+- (void)setMethod:(id)method;
+- (void)setPostData:(id)data;
+- (void)setReferrerPolicy:(int64_t)policy;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolNetworkRequest
 
-- (RWIProtocolNetworkRequest)initWithUrl:(id)a3 method:(id)a4 headers:(id)a5
+- (RWIProtocolNetworkRequest)initWithUrl:(id)url method:(id)method headers:(id)headers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  urlCopy = url;
+  methodCopy = method;
+  headersCopy = headers;
   v14.receiver = self;
   v14.super_class = RWIProtocolNetworkRequest;
   v11 = [(RWIProtocolJSONObject *)&v14 init];
   if (v11)
   {
-    if (!v8)
+    if (!urlCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"url"}];
     }
 
-    if (!v9)
+    if (!methodCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"method"}];
     }
 
-    if (!v10)
+    if (!headersCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"headers"}];
     }
 
-    [(RWIProtocolNetworkRequest *)v11 setUrl:v8];
-    [(RWIProtocolNetworkRequest *)v11 setMethod:v9];
-    [(RWIProtocolNetworkRequest *)v11 setHeaders:v10];
+    [(RWIProtocolNetworkRequest *)v11 setUrl:urlCopy];
+    [(RWIProtocolNetworkRequest *)v11 setMethod:methodCopy];
+    [(RWIProtocolNetworkRequest *)v11 setHeaders:headersCopy];
     v12 = v11;
   }
 
   return v11;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkRequest;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -66,11 +66,11 @@
   return v2;
 }
 
-- (void)setMethod:(id)a3
+- (void)setMethod:(id)method
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkRequest;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"method"];
+  [(RWIProtocolJSONObject *)&v3 setString:method forKey:@"method"];
 }
 
 - (NSString)method
@@ -82,11 +82,11 @@
   return v2;
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkRequest;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"headers"];
+  [(RWIProtocolJSONObject *)&v3 setObject:headers forKey:@"headers"];
 }
 
 - (RWIProtocolNetworkHeaders)headers
@@ -144,11 +144,11 @@
   return v7;
 }
 
-- (void)setPostData:(id)a3
+- (void)setPostData:(id)data
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkRequest;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"postData"];
+  [(RWIProtocolJSONObject *)&v3 setString:data forKey:@"postData"];
 }
 
 - (NSString)postData
@@ -160,7 +160,7 @@
   return v2;
 }
 
-- (void)setReferrerPolicy:(int64_t)a3
+- (void)setReferrerPolicy:(int64_t)policy
 {
   Inspector::toProtocolString();
   if (v6)
@@ -228,11 +228,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setIntegrity:(id)a3
+- (void)setIntegrity:(id)integrity
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkRequest;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"integrity"];
+  [(RWIProtocolJSONObject *)&v3 setString:integrity forKey:@"integrity"];
 }
 
 - (NSString)integrity

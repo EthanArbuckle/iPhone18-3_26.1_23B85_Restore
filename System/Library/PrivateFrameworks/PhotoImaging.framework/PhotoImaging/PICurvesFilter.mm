@@ -8,33 +8,33 @@
 - (id)outputImage
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PICurvesFilter *)self inputImage];
-  v4 = [(PICurvesFilter *)self inputTableImage];
-  v5 = v4;
+  inputImage = [(PICurvesFilter *)self inputImage];
+  inputTableImage = [(PICurvesFilter *)self inputTableImage];
+  v5 = inputTableImage;
   v6 = 0;
-  if (v3 && v4)
+  if (inputImage && inputTableImage)
   {
     v7 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:2.0];
     v8 = [MEMORY[0x1E695F688] vectorWithX:0.998046875 Y:0.0009765625];
-    v9 = [v3 imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [inputImage imageByUnpremultiplyingAlpha];
 
     v10 = +[PICurvesFilter curvesKernel];
-    [v9 extent];
+    [imageByUnpremultiplyingAlpha extent];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v23[0] = v9;
+    v23[0] = imageByUnpremultiplyingAlpha;
     v23[1] = v5;
     v23[2] = v7;
     v23[3] = v8;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
     v20 = [v10 applyWithExtent:v19 arguments:{v12, v14, v16, v18}];
 
-    v21 = [v20 imageByPremultiplyingAlpha];
+    imageByPremultiplyingAlpha = [v20 imageByPremultiplyingAlpha];
 
-    v3 = v21;
-    v6 = v3;
+    inputImage = imageByPremultiplyingAlpha;
+    v6 = inputImage;
   }
 
   return v6;

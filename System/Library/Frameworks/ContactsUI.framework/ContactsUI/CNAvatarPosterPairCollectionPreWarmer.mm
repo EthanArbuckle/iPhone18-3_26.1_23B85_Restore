@@ -1,17 +1,17 @@
 @interface CNAvatarPosterPairCollectionPreWarmer
 - (_TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer)init;
-- (_TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer)initWithContact:(id)a3 contactForSharedProfile:(id)a4;
+- (_TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer)initWithContact:(id)contact contactForSharedProfile:(id)profile;
 - (void)dealloc;
-- (void)preWarmFirstPosterSnapshotIn:(id)a3;
+- (void)preWarmFirstPosterSnapshotIn:(id)in;
 @end
 
 @implementation CNAvatarPosterPairCollectionPreWarmer
 
-- (_TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer)initWithContact:(id)a3 contactForSharedProfile:(id)a4
+- (_TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer)initWithContact:(id)contact contactForSharedProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_199AA1DA8(v5, v6);
+  contactCopy = contact;
+  profileCopy = profile;
+  v7 = sub_199AA1DA8(contactCopy, profileCopy);
 
   return v7;
 }
@@ -20,14 +20,14 @@
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer_carouselViewModelSubscriber))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_199DF83AC();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -35,11 +35,11 @@
   [(CNAvatarPosterPairCollectionPreWarmer *)&v5 dealloc];
 }
 
-- (void)preWarmFirstPosterSnapshotIn:(id)a3
+- (void)preWarmFirstPosterSnapshotIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
-  sub_199AA1108(v4);
+  inCopy = in;
+  selfCopy = self;
+  sub_199AA1108(inCopy);
 }
 
 - (_TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer)init

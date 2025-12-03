@@ -2,12 +2,12 @@
 + (id)pscSUIURL;
 + (id)sharedInterface;
 - (FMDAbsintheV3SigningInterface)init;
-- (id)accountForServerInteractionController:(id)a3;
-- (id)inFieldCollectionReceipt:(id *)a3;
-- (id)signatureForData:(id)a3 requestUUID:(id)a4 mode:(unint64_t)a5 error:(id *)a6;
-- (void)didReceiveAuthFailureForRequest:(id)a3;
-- (void)didReceiveServerAlertForRequest:(id)a3;
-- (void)signatureForData:(id)a3 requestUUID:(id)a4 mode:(unint64_t)a5 cause:(id)a6 completion:(id)a7;
+- (id)accountForServerInteractionController:(id)controller;
+- (id)inFieldCollectionReceipt:(id *)receipt;
+- (id)signatureForData:(id)data requestUUID:(id)d mode:(unint64_t)mode error:(id *)error;
+- (void)didReceiveAuthFailureForRequest:(id)request;
+- (void)didReceiveServerAlertForRequest:(id)request;
+- (void)signatureForData:(id)data requestUUID:(id)d mode:(unint64_t)mode cause:(id)cause completion:(id)completion;
 @end
 
 @implementation FMDAbsintheV3SigningInterface
@@ -34,8 +34,8 @@
     v3 = objc_alloc_init(NSOperationQueue);
     [(FMDAbsintheV3SigningInterface *)v2 setOperationQueue:v3];
 
-    v4 = [(FMDAbsintheV3SigningInterface *)v2 operationQueue];
-    [v4 setMaxConcurrentOperationCount:1];
+    operationQueue = [(FMDAbsintheV3SigningInterface *)v2 operationQueue];
+    [operationQueue setMaxConcurrentOperationCount:1];
 
     v5 = objc_alloc_init(FMDDirectServerChannel);
     v13[0] = v5;
@@ -49,17 +49,17 @@
     v9 = objc_alloc_init(FMStateCapture);
     [(FMDAbsintheV3SigningInterface *)v2 setStateCapture:v9];
 
-    v10 = [(FMDAbsintheV3SigningInterface *)v2 stateCapture];
-    [v10 setStateCaptureBlock:&stru_1002CD698];
+    stateCapture = [(FMDAbsintheV3SigningInterface *)v2 stateCapture];
+    [stateCapture setStateCaptureBlock:&stru_1002CD698];
   }
 
   return v2;
 }
 
-- (id)signatureForData:(id)a3 requestUUID:(id)a4 mode:(unint64_t)a5 error:(id *)a6
+- (id)signatureForData:(id)data requestUUID:(id)d mode:(unint64_t)mode error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  dataCopy = data;
+  dCopy = d;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -80,11 +80,11 @@
   v18 = &v19;
   v12 = [[FMSynchronizer alloc] initWithDescription:@"absintheSynchronizer" andTimeout:-1.0];
   v16 = v12;
-  [(FMDAbsintheV3SigningInterface *)self signatureForData:v10 requestUUID:v11 mode:a5 cause:0 completion:v15];
+  [(FMDAbsintheV3SigningInterface *)self signatureForData:dataCopy requestUUID:dCopy mode:mode cause:0 completion:v15];
   [v12 wait];
-  if (a6)
+  if (error)
   {
-    *a6 = v20[5];
+    *error = v20[5];
   }
 
   v13 = v26[5];
@@ -95,29 +95,29 @@
   return v13;
 }
 
-- (void)signatureForData:(id)a3 requestUUID:(id)a4 mode:(unint64_t)a5 cause:(id)a6 completion:(id)a7
+- (void)signatureForData:(id)data requestUUID:(id)d mode:(unint64_t)mode cause:(id)cause completion:(id)completion
 {
-  v12 = a3;
+  dataCopy = data;
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_1001349B4;
   v22 = &unk_1002CD6E8;
-  v23 = a4;
-  v24 = a6;
-  v25 = self;
-  v26 = v12;
-  v27 = a7;
-  v28 = a5;
-  v13 = v27;
-  v14 = v12;
-  v15 = v24;
-  v16 = v23;
+  dCopy = d;
+  causeCopy = cause;
+  selfCopy = self;
+  v26 = dataCopy;
+  completionCopy = completion;
+  modeCopy = mode;
+  v13 = completionCopy;
+  v14 = dataCopy;
+  v15 = causeCopy;
+  v16 = dCopy;
   v17 = [NSBlockOperation blockOperationWithBlock:&v19];
   v18 = [(FMDAbsintheV3SigningInterface *)self operationQueue:v19];
   [v18 addOperation:v17];
 }
 
-- (id)inFieldCollectionReceipt:(id *)a3
+- (id)inFieldCollectionReceipt:(id *)receipt
 {
   v4 = MAECopyPCRTToken();
   v5 = 0;
@@ -130,11 +130,11 @@
       sub_100226124(v5, v6);
     }
 
-    if (a3)
+    if (receipt)
     {
       v7 = v5;
       v4 = 0;
-      *a3 = v5;
+      *receipt = v5;
     }
 
     else
@@ -146,7 +146,7 @@
   return v4;
 }
 
-- (void)didReceiveAuthFailureForRequest:(id)a3
+- (void)didReceiveAuthFailureForRequest:(id)request
 {
   v3 = sub_100002880();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -156,27 +156,27 @@
   }
 }
 
-- (void)didReceiveServerAlertForRequest:(id)a3
+- (void)didReceiveServerAlertForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 alertFromServerResponse];
+  requestCopy = request;
+  alertFromServerResponse = [requestCopy alertFromServerResponse];
 
-  if (v4)
+  if (alertFromServerResponse)
   {
     v5 = sub_100002880();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_10022619C(v3, v5);
+      sub_10022619C(requestCopy, v5);
     }
   }
 }
 
-- (id)accountForServerInteractionController:(id)a3
+- (id)accountForServerInteractionController:(id)controller
 {
   v3 = +[FMDServiceProvider activeServiceProvider];
-  v4 = [v3 account];
+  account = [v3 account];
 
-  return v4;
+  return account;
 }
 
 + (id)pscSUIURL

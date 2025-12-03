@@ -1,12 +1,12 @@
 @interface MFSendMailIntentDonation
-- (void)donateSendActionFromMessageFuture:(id)a3;
+- (void)donateSendActionFromMessageFuture:(id)future;
 @end
 
 @implementation MFSendMailIntentDonation
 
-- (void)donateSendActionFromMessageFuture:(id)a3
+- (void)donateSendActionFromMessageFuture:(id)future
 {
-  v3 = [a3 map:&__block_literal_global_35];
+  v3 = [future map:&__block_literal_global_35];
   [v3 addSuccessBlock:&__block_literal_global_3];
 }
 

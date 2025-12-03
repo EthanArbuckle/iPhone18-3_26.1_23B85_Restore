@@ -1,48 +1,48 @@
 @interface AKInkPageOverlayController
-- (AKInkPageOverlayController)initWithPageController:(id)a3;
+- (AKInkPageOverlayController)initWithPageController:(id)controller;
 - (AKPageController)pageController;
-- (BOOL)inputViewCanBeginDrawing:(id)a3 withTouch:(id)a4;
-- (BOOL)shapeDetectionController:(id)a3 shouldSelectCandidateAnnotation:(id)a4;
-- (CGRect)_convertRect:(CGRect)a3 fromDrawingInCanvasView:(id)a4 toPageControllerModelSpace:(id)a5;
-- (CGRect)shapeDetectionControllerPositioningRectForCandidatePicker:(id)a3;
-- (CGSize)scaleFromDrawingInCanvasView:(id)a3 toPageControllerModelSpace:(id)a4;
+- (BOOL)inputViewCanBeginDrawing:(id)drawing withTouch:(id)touch;
+- (BOOL)shapeDetectionController:(id)controller shouldSelectCandidateAnnotation:(id)annotation;
+- (CGRect)_convertRect:(CGRect)rect fromDrawingInCanvasView:(id)view toPageControllerModelSpace:(id)space;
+- (CGRect)shapeDetectionControllerPositioningRectForCandidatePicker:(id)picker;
+- (CGSize)scaleFromDrawingInCanvasView:(id)view toPageControllerModelSpace:(id)space;
 - (PKRulerHostingDelegate)rulerHostingDelegate;
-- (id)_convertCHDrawing:(id)a3 fromDrawingInCanvasView:(id)a4 toInkOverlayView:(id)a5;
-- (void)_controllerWillSave:(id)a3;
-- (void)_enclosingScrollViewDidScroll:(id)a3;
+- (id)_convertCHDrawing:(id)drawing fromDrawingInCanvasView:(id)view toInkOverlayView:(id)overlayView;
+- (void)_controllerWillSave:(id)save;
+- (void)_enclosingScrollViewDidScroll:(id)scroll;
 - (void)_fullSetup;
-- (void)_inkCanvasAnnotationUpdated:(id)a3;
-- (void)_inkDidChangeNotification:(id)a3;
+- (void)_inkCanvasAnnotationUpdated:(id)updated;
+- (void)_inkDidChangeNotification:(id)notification;
 - (void)_partialTeardown;
 - (void)_performDelayedShapeDetection;
 - (void)_setupGestureDependencies;
 - (void)_tearDownGestureDependencies;
-- (void)_toolStatusUpdated:(id)a3;
-- (void)_updateAllowedTouchTypesAllEnabled:(BOOL)a3 pencilEnabled:(BOOL)a4;
+- (void)_toolStatusUpdated:(id)updated;
+- (void)_updateAllowedTouchTypesAllEnabled:(BOOL)enabled pencilEnabled:(BOOL)pencilEnabled;
 - (void)_updateGestureDependencyPriority;
-- (void)annotationEditingDidEndWithCompletion:(id)a3;
+- (void)annotationEditingDidEndWithCompletion:(id)completion;
 - (void)didToggleRuler;
-- (void)inputView:(id)a3 didCollectDrawingForAnalysis:(id)a4;
-- (void)inputViewDidBeginStroke:(id)a3;
-- (void)setInkOverlayView:(id)a3;
-- (void)setRulerHostingDelegate:(id)a3;
+- (void)inputView:(id)view didCollectDrawingForAnalysis:(id)analysis;
+- (void)inputViewDidBeginStroke:(id)stroke;
+- (void)setInkOverlayView:(id)view;
+- (void)setRulerHostingDelegate:(id)delegate;
 - (void)setup;
-- (void)shapeDetectionControllerWillPickCandidate:(id)a3 isInk:(BOOL)a4;
+- (void)shapeDetectionControllerWillPickCandidate:(id)candidate isInk:(BOOL)ink;
 - (void)teardown;
 @end
 
 @implementation AKInkPageOverlayController
 
-- (AKInkPageOverlayController)initWithPageController:(id)a3
+- (AKInkPageOverlayController)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AKInkPageOverlayController;
   v5 = [(AKInkPageOverlayController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AKInkPageOverlayController *)v5 setPageController:v4];
+    [(AKInkPageOverlayController *)v5 setPageController:controllerCopy];
   }
 
   return v6;
@@ -51,128 +51,128 @@
 - (void)setup
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__fullSetup object:0];
-  v15 = [(AKInkPageOverlayController *)self pageController];
-  v3 = [v15 controller];
-  v4 = [v15 pageModelController];
-  v5 = [v4 inkCanvasAnnotation];
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
+  pageModelController = [pageController pageModelController];
+  inkCanvasAnnotation = [pageModelController inkCanvasAnnotation];
 
-  if (v5 && ([v5 drawing], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "strokes"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
+  if (inkCanvasAnnotation && ([inkCanvasAnnotation drawing], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "strokes"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
   {
     [(AKInkPageOverlayController *)self _fullSetup];
   }
 
   else
   {
-    v9 = [v3 toolController];
-    if (([v9 allInkEnabled] & 1) != 0 || objc_msgSend(v9, "pencilInkEnabled"))
+    toolController = [controller toolController];
+    if (([toolController allInkEnabled] & 1) != 0 || objc_msgSend(toolController, "pencilInkEnabled"))
     {
       [(AKInkPageOverlayController *)self performSelector:sel__fullSetup withObject:0 afterDelay:0.25];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v11 = off_27E39A388[0];
-      v12 = [v15 pageModelController];
-      [v10 addObserver:self selector:sel__inkCanvasAnnotationUpdated_ name:v11 object:v12];
+      pageModelController2 = [pageController pageModelController];
+      [defaultCenter addObserver:self selector:sel__inkCanvasAnnotationUpdated_ name:v11 object:pageModelController2];
     }
   }
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel__toolStatusUpdated_ name:@"AKToolController.inkToolStatusUpdated" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__toolStatusUpdated_ name:@"AKToolController.inkToolStatusUpdated" object:0];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 addObserver:self selector:sel__controllerWillSave_ name:AKControllerWillSaveNotification object:v3];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__controllerWillSave_ name:AKControllerWillSaveNotification object:controller];
 }
 
 - (void)_fullSetup
 {
-  v3 = [(AKInkPageOverlayController *)self inkOverlayView];
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
 
-  if (!v3)
+  if (!inkOverlayView)
   {
-    v51 = [(AKInkPageOverlayController *)self pageController];
-    v4 = [v51 controller];
-    v5 = v4;
-    if (v4 && ([v4 isTornDown] & 1) == 0)
+    pageController = [(AKInkPageOverlayController *)self pageController];
+    controller = [pageController controller];
+    v5 = controller;
+    if (controller && ([controller isTornDown] & 1) == 0)
     {
       [MEMORY[0x277CD9FF0] begin];
       [MEMORY[0x277CD9FF0] setDisableActions:1];
       v6 = [[AKShapeDetectionController alloc] initWithController:v5];
       [(AKInkPageOverlayController *)self setShapeDetectionController:v6];
 
-      v7 = [(AKInkPageOverlayController *)self shapeDetectionController];
-      [v7 setDelegate:self];
+      shapeDetectionController = [(AKInkPageOverlayController *)self shapeDetectionController];
+      [shapeDetectionController setDelegate:self];
 
-      v8 = [v5 shapeDetectionEnabled];
-      v9 = [(AKInkPageOverlayController *)self shapeDetectionController];
-      [v9 setShapeDetectionEnabled:v8];
+      shapeDetectionEnabled = [v5 shapeDetectionEnabled];
+      shapeDetectionController2 = [(AKInkPageOverlayController *)self shapeDetectionController];
+      [shapeDetectionController2 setShapeDetectionEnabled:shapeDetectionEnabled];
 
-      v10 = [v51 pageModelController];
-      v11 = [(AKInkPageOverlayController *)self shapeDetectionController];
-      [v11 setModelControllerToObserveForAnnotationsAndSelections:v10];
+      pageModelController = [pageController pageModelController];
+      shapeDetectionController3 = [(AKInkPageOverlayController *)self shapeDetectionController];
+      [shapeDetectionController3 setModelControllerToObserveForAnnotationsAndSelections:pageModelController];
 
-      v12 = [v51 overlayView];
-      [v12 bounds];
+      overlayView = [pageController overlayView];
+      [overlayView bounds];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [v51 inkOverlayDrawingUndoTarget];
-      v22 = [AKInkOverlayView newAKInkOverlayViewForCurrentPlatformWithPageController:v51 drawingUndoTarget:v21];
+      inkOverlayDrawingUndoTarget = [pageController inkOverlayDrawingUndoTarget];
+      v22 = [AKInkOverlayView newAKInkOverlayViewForCurrentPlatformWithPageController:pageController drawingUndoTarget:inkOverlayDrawingUndoTarget];
 
       [(AKInkPageOverlayController *)self setInkOverlayView:v22];
       [v22 setDelegate:self];
       [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v22 setFrame:{v14, v16, v18, v20}];
-      [v12 addSubview:v22];
-      v23 = [v22 centerXAnchor];
-      v24 = [v12 centerXAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      [overlayView addSubview:v22];
+      centerXAnchor = [v22 centerXAnchor];
+      centerXAnchor2 = [overlayView centerXAnchor];
+      v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v25 setActive:1];
 
-      v26 = [v22 centerYAnchor];
-      v27 = [v12 centerYAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27];
+      centerYAnchor = [v22 centerYAnchor];
+      centerYAnchor2 = [overlayView centerYAnchor];
+      v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v28 setActive:1];
 
-      v29 = [v22 widthAnchor];
-      v30 = [v12 widthAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30];
+      widthAnchor = [v22 widthAnchor];
+      widthAnchor2 = [overlayView widthAnchor];
+      v31 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v31 setActive:1];
 
-      v32 = [v22 heightAnchor];
-      v50 = v12;
-      v33 = [v12 heightAnchor];
-      v34 = [v32 constraintEqualToAnchor:v33];
+      heightAnchor = [v22 heightAnchor];
+      v50 = overlayView;
+      heightAnchor2 = [overlayView heightAnchor];
+      v34 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       [v34 setActive:1];
 
       v35 = ((2 * AKAdornmentZPositionOffset) | 1uLL);
-      v36 = [v22 layer];
-      [v36 setZPosition:v35];
+      layer = [v22 layer];
+      [layer setZPosition:v35];
 
       [(AKInkPageOverlayController *)self _setupGestureDependencies];
-      v37 = [v5 undoController];
-      v38 = [v37 undoManager];
+      undoController = [v5 undoController];
+      undoManager = [undoController undoManager];
 
-      v39 = [v38 isUndoRegistrationEnabled];
-      if (v39)
+      isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
+      if (isUndoRegistrationEnabled)
       {
-        [v38 disableUndoRegistration];
+        [undoManager disableUndoRegistration];
       }
 
-      v40 = [v51 pageModelController];
-      v41 = [v40 inkCanvasAnnotation];
+      pageModelController2 = [pageController pageModelController];
+      inkCanvasAnnotation = [pageModelController2 inkCanvasAnnotation];
 
-      if (v41)
+      if (inkCanvasAnnotation)
       {
-        v42 = [v41 drawing];
+        drawing = [inkCanvasAnnotation drawing];
 
-        if (v42)
+        if (drawing)
         {
-          v43 = [v41 drawing];
-          v44 = [v22 canvasView];
-          [v44 setDrawing:v43];
+          drawing2 = [inkCanvasAnnotation drawing];
+          canvasView = [v22 canvasView];
+          [canvasView setDrawing:drawing2];
         }
 
         else
@@ -181,20 +181,20 @@
         }
       }
 
-      if (v39)
+      if (isUndoRegistrationEnabled)
       {
-        [v38 enableUndoRegistration];
+        [undoManager enableUndoRegistration];
       }
 
-      v45 = [v5 toolController];
-      -[AKInkPageOverlayController _updateAllowedTouchTypesAllEnabled:pencilEnabled:](self, "_updateAllowedTouchTypesAllEnabled:pencilEnabled:", [v45 allInkEnabled], objc_msgSend(v45, "pencilInkEnabled"));
-      v46 = [MEMORY[0x277CCAB98] defaultCenter];
+      toolController = [v5 toolController];
+      -[AKInkPageOverlayController _updateAllowedTouchTypesAllEnabled:pencilEnabled:](self, "_updateAllowedTouchTypesAllEnabled:pencilEnabled:", [toolController allInkEnabled], objc_msgSend(toolController, "pencilInkEnabled"));
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       [v5 attributeController];
-      v48 = v47 = v38;
-      [v46 addObserver:self selector:sel__inkDidChangeNotification_ name:@"AKAttributeController.inkDidChange" object:v48];
+      v48 = v47 = undoManager;
+      [defaultCenter addObserver:self selector:sel__inkDidChangeNotification_ name:@"AKAttributeController.inkDidChange" object:v48];
 
-      v49 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v49 addObserver:self selector:sel__enclosingScrollViewDidScroll_ name:@"AKOverlayView.AKContentScrollViewVisibleRectChangeNotification" object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__enclosingScrollViewDidScroll_ name:@"AKOverlayView.AKContentScrollViewVisibleRectChangeNotification" object:0];
 
       [MEMORY[0x277CD9FF0] commit];
     }
@@ -204,8 +204,8 @@
 - (void)teardown
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__fullSetup object:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(AKInkPageOverlayController *)self _partialTeardown];
 }
@@ -213,90 +213,90 @@
 - (void)_partialTeardown
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__fullSetup object:0];
-  v3 = [(AKInkPageOverlayController *)self inkOverlayView];
-  if (v3)
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  if (inkOverlayView)
   {
-    v7 = v3;
-    v4 = [v3 canvasView];
-    [v4 setRulerActive:0];
+    v7 = inkOverlayView;
+    canvasView = [inkOverlayView canvasView];
+    [canvasView setRulerActive:0];
 
     [(AKInkPageOverlayController *)self _tearDownGestureDependencies];
-    v5 = [(AKInkPageOverlayController *)self shapeDetectionController];
-    [v5 setModelControllerToObserveForAnnotationsAndSelections:0];
+    shapeDetectionController = [(AKInkPageOverlayController *)self shapeDetectionController];
+    [shapeDetectionController setModelControllerToObserveForAnnotationsAndSelections:0];
 
-    v6 = [(AKInkPageOverlayController *)self shapeDetectionController];
-    [v6 dismissCandidatePicker];
+    shapeDetectionController2 = [(AKInkPageOverlayController *)self shapeDetectionController];
+    [shapeDetectionController2 dismissCandidatePicker];
 
     [v7 teardown];
     [v7 removeFromSuperview];
     [(AKInkPageOverlayController *)self setInkOverlayView:0];
-    v3 = v7;
+    inkOverlayView = v7;
   }
 }
 
-- (void)annotationEditingDidEndWithCompletion:(id)a3
+- (void)annotationEditingDidEndWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v5 = [v4 canvasView];
+  completionCopy = completion;
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  canvasView = [inkOverlayView canvasView];
 
-  if (v5)
+  if (canvasView)
   {
-    [v5 setRulerActive:0];
-    [v5 commitSelectionIfNecessaryWithCompletion:v6];
+    [canvasView setRulerActive:0];
+    [canvasView commitSelectionIfNecessaryWithCompletion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)setInkOverlayView:(id)a3
+- (void)setInkOverlayView:(id)view
 {
-  v6 = a3;
-  objc_storeStrong(&self->_inkOverlayView, a3);
+  viewCopy = view;
+  objc_storeStrong(&self->_inkOverlayView, view);
   WeakRetained = objc_loadWeakRetained(&self->_rulerHostingDelegate);
-  if (v6 && WeakRetained)
+  if (viewCopy && WeakRetained)
   {
     [(AKInkOverlayView *)self->_inkOverlayView setRulerHostingDelegate:WeakRetained];
   }
 }
 
-- (void)setRulerHostingDelegate:(id)a3
+- (void)setRulerHostingDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_rulerHostingDelegate, v4);
-  v6 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v5 = [v6 canvasView];
-  [v5 setRulerHostingDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_rulerHostingDelegate, delegateCopy);
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  canvasView = [inkOverlayView canvasView];
+  [canvasView setRulerHostingDelegate:delegateCopy];
 }
 
-- (BOOL)inputViewCanBeginDrawing:(id)a3 withTouch:(id)a4
+- (BOOL)inputViewCanBeginDrawing:(id)drawing withTouch:(id)touch
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(AKInkPageOverlayController *)self pageController];
-  v7 = [v6 controller];
+  touchCopy = touch;
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
 
-  if ([v5 type] == 2)
+  if ([touchCopy type] == 2)
   {
-    if (([v7 pencilAlwaysDraws] & 1) == 0 && (objc_msgSend(v7, "annotationEditingEnabled") & 1) == 0)
+    if (([controller pencilAlwaysDraws] & 1) == 0 && (objc_msgSend(controller, "annotationEditingEnabled") & 1) == 0)
     {
       goto LABEL_4;
     }
   }
 
-  else if (![v7 annotationEditingEnabled])
+  else if (![controller annotationEditingEnabled])
   {
 LABEL_4:
     v8 = 0;
     goto LABEL_28;
   }
 
-  v9 = [v7 modelController];
-  v10 = [v9 allSelectedAnnotations];
-  v11 = [v10 count];
+  modelController = [controller modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
+  v11 = [allSelectedAnnotations count];
 
   if (!v11)
   {
@@ -308,10 +308,10 @@ LABEL_4:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [v7 modelController];
-  v13 = [v12 allSelectedAnnotations];
+  modelController2 = [controller modelController];
+  allSelectedAnnotations2 = [modelController2 allSelectedAnnotations];
 
-  v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v14 = [allSelectedAnnotations2 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v14)
   {
     v15 = v14;
@@ -322,17 +322,17 @@ LABEL_4:
       {
         if (*v26 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allSelectedAnnotations2);
         }
 
-        if ([*(*(&v25 + 1) + 8 * i) conformsToAKTextAnnotationProtocol] && objc_msgSend(v5, "type") == 2)
+        if ([*(*(&v25 + 1) + 8 * i) conformsToAKTextAnnotationProtocol] && objc_msgSend(touchCopy, "type") == 2)
         {
           v8 = 0;
           goto LABEL_27;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v15 = [allSelectedAnnotations2 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v15)
       {
         continue;
@@ -342,35 +342,35 @@ LABEL_4:
     }
   }
 
-  v13 = [v7 textEditorController];
-  if ([v13 isEditing])
+  allSelectedAnnotations2 = [controller textEditorController];
+  if ([allSelectedAnnotations2 isEditing])
   {
-    v18 = [v13 textView];
-    [v5 locationInView:v18];
-    if (([v18 pointInside:0 withEvent:?] & 1) == 0)
+    textView = [allSelectedAnnotations2 textView];
+    [touchCopy locationInView:textView];
+    if (([textView pointInside:0 withEvent:?] & 1) == 0)
     {
-      [v13 endEditing];
+      [allSelectedAnnotations2 endEditing];
 LABEL_24:
-      v23 = [v7 modelController];
-      [v23 deselectAllAnnotations];
+      modelController3 = [controller modelController];
+      [modelController3 deselectAllAnnotations];
     }
   }
 
   else
   {
-    if ([v5 type] == 2)
+    if ([touchCopy type] == 2)
     {
-      v18 = [v7 modelController];
-      [v18 deselectAllAnnotations];
+      textView = [controller modelController];
+      [textView deselectAllAnnotations];
       v8 = 1;
       goto LABEL_26;
     }
 
-    [v5 locationInView:0];
+    [touchCopy locationInView:0];
     v20 = v19;
     v22 = v21;
-    v18 = [v7 mainEventHandler];
-    if (([v18 hitTestAnnotationsIncludingPOI:1 ignoreIfDeselected:1 atPointInWindow:0 outAnnotation:{v20, v22}] & 1) == 0)
+    textView = [controller mainEventHandler];
+    if (([textView hitTestAnnotationsIncludingPOI:1 ignoreIfDeselected:1 atPointInWindow:0 outAnnotation:{v20, v22}] & 1) == 0)
     {
       goto LABEL_24;
     }
@@ -385,45 +385,45 @@ LABEL_28:
   return v8;
 }
 
-- (void)inputViewDidBeginStroke:(id)a3
+- (void)inputViewDidBeginStroke:(id)stroke
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__performDelayedShapeDetection object:0];
   [(AKInkPageOverlayController *)self setDelayedShapeDetectionBlock:0];
-  v9 = [(AKInkPageOverlayController *)self pageController];
-  v4 = [v9 controller];
-  v5 = [v4 toolbarViewController];
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
+  toolbarViewController = [controller toolbarViewController];
 
-  if (v5 && [v5 isPresentingPopovers])
+  if (toolbarViewController && [toolbarViewController isPresentingPopovers])
   {
-    [v5 dismissPresentedPopovers];
+    [toolbarViewController dismissPresentedPopovers];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"AKShapeDetectionController.shouldDismissCandidatePicker" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AKShapeDetectionController.shouldDismissCandidatePicker" object:self];
 
-  v7 = [v9 controller];
-  v8 = [v7 modelController];
-  [v8 deselectAllAnnotations];
+  controller2 = [pageController controller];
+  modelController = [controller2 modelController];
+  [modelController deselectAllAnnotations];
 }
 
-- (void)inputView:(id)a3 didCollectDrawingForAnalysis:(id)a4
+- (void)inputView:(id)view didCollectDrawingForAnalysis:(id)analysis
 {
-  v6 = a3;
-  v30 = a4;
-  v7 = [(AKInkPageOverlayController *)self pageController];
-  v8 = [v7 controller];
-  v9 = [v6 canvasView];
-  v10 = [v9 drawing];
-  v11 = [v8 modelController];
-  [v11 deselectAllAnnotations];
+  viewCopy = view;
+  analysisCopy = analysis;
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
+  canvasView = [viewCopy canvasView];
+  drawing = [canvasView drawing];
+  modelController = [controller modelController];
+  [modelController deselectAllAnnotations];
 
-  v12 = [v7 pageModelController];
-  v13 = [v12 inkCanvasAnnotation];
+  pageModelController = [pageController pageModelController];
+  inkCanvasAnnotation = [pageModelController inkCanvasAnnotation];
 
-  v14 = [v10 _rootStrokes];
-  v15 = [v14 count];
+  _rootStrokes = [drawing _rootStrokes];
+  v15 = [_rootStrokes count];
 
-  if (v13)
+  if (inkCanvasAnnotation)
   {
     v16 = 1;
   }
@@ -434,24 +434,24 @@ LABEL_28:
   }
 
   v17 = !v16;
-  if (v13 && !v15)
+  if (inkCanvasAnnotation && !v15)
   {
-    v18 = [v7 pageModelController];
-    v19 = [v18 mutableArrayValueForKey:@"annotations"];
+    pageModelController2 = [pageController pageModelController];
+    v19 = [pageModelController2 mutableArrayValueForKey:@"annotations"];
 
-    [v19 removeObject:v13];
-    v13 = 0;
+    [v19 removeObject:inkCanvasAnnotation];
+    inkCanvasAnnotation = 0;
     goto LABEL_16;
   }
 
   if (v17)
   {
-    v13 = objc_alloc_init(AKInkAnnotation2);
-    [v6 canvasSizeInPKDrawingSpace];
-    [(AKInkAnnotation *)v13 setDrawingSize:?];
-    [v7 modelBaseScaleFactor];
-    [(AKAnnotation *)v13 setOriginalModelBaseScaleFactor:?];
-    [(AKAnnotation *)v13 setOriginalExifOrientation:1];
+    inkCanvasAnnotation = objc_alloc_init(AKInkAnnotation2);
+    [viewCopy canvasSizeInPKDrawingSpace];
+    [(AKInkAnnotation *)inkCanvasAnnotation setDrawingSize:?];
+    [pageController modelBaseScaleFactor];
+    [(AKAnnotation *)inkCanvasAnnotation setOriginalModelBaseScaleFactor:?];
+    [(AKAnnotation *)inkCanvasAnnotation setOriginalExifOrientation:1];
   }
 
   else if (!v15)
@@ -459,34 +459,34 @@ LABEL_28:
     goto LABEL_14;
   }
 
-  [v10 bounds];
-  [(AKInkPageOverlayController *)self _convertRect:v9 fromDrawingInCanvasView:v7 toPageControllerModelSpace:?];
-  [(AKInkAnnotation *)v13 setRectangle:?];
+  [drawing bounds];
+  [(AKInkPageOverlayController *)self _convertRect:canvasView fromDrawingInCanvasView:pageController toPageControllerModelSpace:?];
+  [(AKInkAnnotation *)inkCanvasAnnotation setRectangle:?];
 LABEL_14:
-  if (v13)
+  if (inkCanvasAnnotation)
   {
-    v20 = [v10 copy];
-    [(AKInkAnnotation *)v13 setDrawing:v20];
+    v20 = [drawing copy];
+    [(AKInkAnnotation *)inkCanvasAnnotation setDrawing:v20];
 
-    [(AKAnnotation *)v13 setShouldUseAppearanceOverride:0];
+    [(AKAnnotation *)inkCanvasAnnotation setShouldUseAppearanceOverride:0];
   }
 
 LABEL_16:
   if (v17)
   {
-    v21 = [v7 pageModelController];
-    [v21 setInkCanvasAnnotationOneTime:v13];
+    pageModelController3 = [pageController pageModelController];
+    [pageModelController3 setInkCanvasAnnotationOneTime:inkCanvasAnnotation];
   }
 
   Current = CFAbsoluteTimeGetCurrent();
   [(AKInkPageOverlayController *)self lastStrokeEndTime];
   v24 = v23;
   [(AKInkPageOverlayController *)self setLastStrokeEndTime:Current];
-  v25 = [(AKInkPageOverlayController *)self shapeDetectionController];
-  if ([v25 shapeDetectionEnabled])
+  shapeDetectionController = [(AKInkPageOverlayController *)self shapeDetectionController];
+  if ([shapeDetectionController shapeDetectionEnabled])
   {
-    v26 = [v30 strokes];
-    v27 = [v26 count];
+    strokes = [analysisCopy strokes];
+    v27 = [strokes count];
 
     if (v27 == 1)
     {
@@ -494,9 +494,9 @@ LABEL_16:
       if (Current - v24 > 0.5)
       {
         objc_initWeak(&location, self);
-        objc_initWeak(&from, v7);
-        objc_initWeak(&v38, v9);
-        objc_initWeak(&v37, v6);
+        objc_initWeak(&from, pageController);
+        objc_initWeak(&v38, canvasView);
+        objc_initWeak(&v37, viewCopy);
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = sub_23F43D030;
@@ -505,7 +505,7 @@ LABEL_16:
         objc_copyWeak(&v34, &from);
         objc_copyWeak(&v35, &v38);
         objc_copyWeak(&v36, &v37);
-        v32 = v30;
+        v32 = analysisCopy;
         [(AKInkPageOverlayController *)self setDelayedShapeDetectionBlock:v31];
         [(AKInkPageOverlayController *)self performSelector:sel__performDelayedShapeDetection withObject:0 afterDelay:0.2];
 
@@ -525,40 +525,40 @@ LABEL_16:
   {
   }
 
-  v29 = [v8 delegate];
+  delegate = [controller delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v29 penStrokeCompletedForAnnotationController:v8];
+    [delegate penStrokeCompletedForAnnotationController:controller];
   }
 }
 
 - (void)_performDelayedShapeDetection
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__performDelayedShapeDetection object:0];
-  v4 = [(AKInkPageOverlayController *)self delayedShapeDetectionBlock];
+  delayedShapeDetectionBlock = [(AKInkPageOverlayController *)self delayedShapeDetectionBlock];
   [(AKInkPageOverlayController *)self setDelayedShapeDetectionBlock:0];
-  v3 = v4;
-  if (v4)
+  v3 = delayedShapeDetectionBlock;
+  if (delayedShapeDetectionBlock)
   {
-    (*(v4 + 16))(v4);
-    v3 = v4;
+    (*(delayedShapeDetectionBlock + 16))(delayedShapeDetectionBlock);
+    v3 = delayedShapeDetectionBlock;
   }
 }
 
-- (void)shapeDetectionControllerWillPickCandidate:(id)a3 isInk:(BOOL)a4
+- (void)shapeDetectionControllerWillPickCandidate:(id)candidate isInk:(BOOL)ink
 {
-  if (!a4)
+  if (!ink)
   {
     [(AKInkPageOverlayController *)self setIgnoreAnnotationAndSelectionKVO:1];
-    v6 = [(AKInkPageOverlayController *)self pageController];
-    v7 = [v6 controller];
-    [v7 undo:self];
+    pageController = [(AKInkPageOverlayController *)self pageController];
+    controller = [pageController controller];
+    [controller undo:self];
 
     [(AKInkPageOverlayController *)self setIgnoreAnnotationAndSelectionKVO:0];
   }
 }
 
-- (CGRect)shapeDetectionControllerPositioningRectForCandidatePicker:(id)a3
+- (CGRect)shapeDetectionControllerPositioningRectForCandidatePicker:(id)picker
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -571,101 +571,101 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)shapeDetectionController:(id)a3 shouldSelectCandidateAnnotation:(id)a4
+- (BOOL)shapeDetectionController:(id)controller shouldSelectCandidateAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [(AKInkPageOverlayController *)self pageController];
-  v7 = [v6 controller];
-  v8 = [v7 selectNewlyCreatedAnnotations];
+  annotationCopy = annotation;
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
+  selectNewlyCreatedAnnotations = [controller selectNewlyCreatedAnnotations];
 
   objc_opt_class();
-  LOBYTE(v6) = objc_opt_isKindOfClass();
+  LOBYTE(pageController) = objc_opt_isKindOfClass();
 
-  return v8 & (v6 ^ 1);
+  return selectNewlyCreatedAnnotations & (pageController ^ 1);
 }
 
-- (void)_inkDidChangeNotification:(id)a3
+- (void)_inkDidChangeNotification:(id)notification
 {
-  v12 = a3;
-  v4 = [(AKInkPageOverlayController *)self pageController];
-  v5 = v4;
-  if (v4)
+  notificationCopy = notification;
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  v5 = pageController;
+  if (pageController)
   {
-    v6 = [v4 controller];
-    v7 = [v12 object];
-    v8 = [v6 attributeController];
+    controller = [pageController controller];
+    object = [notificationCopy object];
+    attributeController = [controller attributeController];
 
-    if (v7 == v8)
+    if (object == attributeController)
     {
-      v9 = [v6 attributeController];
-      v10 = [v9 ink];
+      attributeController2 = [controller attributeController];
+      v10 = [attributeController2 ink];
 
-      v11 = [(AKInkPageOverlayController *)self inkOverlayView];
-      [v11 setInk:v10];
+      inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+      [inkOverlayView setInk:v10];
     }
   }
 }
 
 - (void)didToggleRuler
 {
-  v7 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v3 = [v7 canvasView];
-  v4 = [v3 isRulerActive];
-  v5 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v6 = [v5 canvasView];
-  [v6 setRulerActive:v4 ^ 1u];
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  canvasView = [inkOverlayView canvasView];
+  isRulerActive = [canvasView isRulerActive];
+  inkOverlayView2 = [(AKInkPageOverlayController *)self inkOverlayView];
+  canvasView2 = [inkOverlayView2 canvasView];
+  [canvasView2 setRulerActive:isRulerActive ^ 1u];
 }
 
-- (void)_enclosingScrollViewDidScroll:(id)a3
+- (void)_enclosingScrollViewDidScroll:(id)scroll
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"AKShapeDetectionController.shouldDismissCandidatePicker" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AKShapeDetectionController.shouldDismissCandidatePicker" object:self];
 
-  v6 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v5 = [v6 canvasView];
-  [v5 setNeedsLayout];
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  canvasView = [inkOverlayView canvasView];
+  [canvasView setNeedsLayout];
 }
 
-- (void)_inkCanvasAnnotationUpdated:(id)a3
+- (void)_inkCanvasAnnotationUpdated:(id)updated
 {
-  v4 = [(AKInkPageOverlayController *)self inkOverlayView];
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
 
-  if (!v4)
+  if (!inkOverlayView)
   {
-    v5 = [(AKInkPageOverlayController *)self pageController];
-    v6 = [v5 pageModelController];
-    v11 = [v6 inkCanvasAnnotation];
+    pageController = [(AKInkPageOverlayController *)self pageController];
+    pageModelController = [pageController pageModelController];
+    inkCanvasAnnotation = [pageModelController inkCanvasAnnotation];
 
-    v7 = v11;
-    if (v11)
+    v7 = inkCanvasAnnotation;
+    if (inkCanvasAnnotation)
     {
-      v8 = [v11 drawing];
-      v9 = [v8 strokes];
-      v10 = [v9 count];
+      drawing = [inkCanvasAnnotation drawing];
+      strokes = [drawing strokes];
+      v10 = [strokes count];
 
-      v7 = v11;
+      v7 = inkCanvasAnnotation;
       if (v10)
       {
         [(AKInkPageOverlayController *)self _fullSetup];
-        v7 = v11;
+        v7 = inkCanvasAnnotation;
       }
     }
   }
 }
 
-- (void)_toolStatusUpdated:(id)a3
+- (void)_toolStatusUpdated:(id)updated
 {
-  v15 = [(AKInkPageOverlayController *)self pageController];
-  v4 = [v15 controller];
-  v5 = [v4 toolController];
-  v6 = v5;
-  if (v5)
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
+  toolController = [controller toolController];
+  v6 = toolController;
+  if (toolController)
   {
-    if (([v5 allInkEnabled] & 1) != 0 || objc_msgSend(v6, "pencilInkEnabled"))
+    if (([toolController allInkEnabled] & 1) != 0 || objc_msgSend(v6, "pencilInkEnabled"))
     {
-      v7 = [(AKInkPageOverlayController *)self inkOverlayView];
+      inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
 
-      if (!v7)
+      if (!inkOverlayView)
       {
         [(AKInkPageOverlayController *)self _fullSetup];
       }
@@ -673,16 +673,16 @@ LABEL_16:
 
     else
     {
-      v8 = [v15 pageModelController];
-      v9 = [v8 inkCanvasAnnotation];
+      pageModelController = [pageController pageModelController];
+      inkCanvasAnnotation = [pageModelController inkCanvasAnnotation];
 
-      v10 = [(AKInkPageOverlayController *)self inkOverlayView];
-      if (v10)
+      inkOverlayView2 = [(AKInkPageOverlayController *)self inkOverlayView];
+      if (inkOverlayView2)
       {
-        v11 = v10;
-        v12 = [v9 drawing];
-        v13 = [v12 strokes];
-        v14 = [v13 count];
+        v11 = inkOverlayView2;
+        drawing = [inkCanvasAnnotation drawing];
+        strokes = [drawing strokes];
+        v14 = [strokes count];
 
         if (!v14)
         {
@@ -696,28 +696,28 @@ LABEL_16:
   }
 }
 
-- (void)_controllerWillSave:(id)a3
+- (void)_controllerWillSave:(id)save
 {
-  v4 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v3 = [v4 canvasView];
-  [v3 commitSelectionIfNecessaryWithCompletion:0];
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  canvasView = [inkOverlayView canvasView];
+  [canvasView commitSelectionIfNecessaryWithCompletion:0];
 }
 
-- (void)_updateAllowedTouchTypesAllEnabled:(BOOL)a3 pencilEnabled:(BOOL)a4
+- (void)_updateAllowedTouchTypesAllEnabled:(BOOL)enabled pencilEnabled:(BOOL)pencilEnabled
 {
-  v4 = a4;
-  v5 = a3;
-  v17 = [(AKInkPageOverlayController *)self pageController];
-  v7 = [v17 overlayView];
-  v8 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v9 = [v8 drawingGestureRecognizer];
+  pencilEnabledCopy = pencilEnabled;
+  enabledCopy = enabled;
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  overlayView = [pageController overlayView];
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  drawingGestureRecognizer = [inkOverlayView drawingGestureRecognizer];
 
-  v10 = [v7 superview];
-  v11 = [v10 akEnclosingScrollView];
-  v12 = [v11 akEnclosingScrollView];
-  v13 = [v11 panGestureRecognizer];
-  v14 = [v12 panGestureRecognizer];
-  if (v5 || v4)
+  superview = [overlayView superview];
+  akEnclosingScrollView = [superview akEnclosingScrollView];
+  v11AkEnclosingScrollView = [akEnclosingScrollView akEnclosingScrollView];
+  panGestureRecognizer = [akEnclosingScrollView panGestureRecognizer];
+  panGestureRecognizer2 = [v11AkEnclosingScrollView panGestureRecognizer];
+  if (enabledCopy || pencilEnabledCopy)
   {
     v15 = &unk_2851BAAE8;
   }
@@ -727,46 +727,46 @@ LABEL_16:
     v15 = &unk_2851BAB00;
   }
 
-  [v13 setAllowedTouchTypes:v15];
-  [v14 setAllowedTouchTypes:v15];
-  v16 = [v9 allowedTouchTypes];
+  [panGestureRecognizer setAllowedTouchTypes:v15];
+  [panGestureRecognizer2 setAllowedTouchTypes:v15];
+  allowedTouchTypes = [drawingGestureRecognizer allowedTouchTypes];
   AKLog(@"%s %@ types: %@ on recognizer: %p scrollview recognizer: %p");
 }
 
 - (void)_setupGestureDependencies
 {
-  v13 = [(AKInkPageOverlayController *)self pageController];
-  v3 = [v13 controller];
-  v4 = [v3 delegate];
-  v5 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v6 = [v5 drawingGestureRecognizer];
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
+  delegate = [controller delegate];
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  drawingGestureRecognizer = [inkOverlayView drawingGestureRecognizer];
 
-  v7 = [v6 view];
+  view = [drawingGestureRecognizer view];
 
-  if (v7)
+  if (view)
   {
-    v8 = [v6 view];
-    [v8 removeGestureRecognizer:v6];
+    view2 = [drawingGestureRecognizer view];
+    [view2 removeGestureRecognizer:drawingGestureRecognizer];
   }
 
-  v9 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v10 = [v9 pinchGestureRecognizer];
+  inkOverlayView2 = [(AKInkPageOverlayController *)self inkOverlayView];
+  pinchGestureRecognizer = [inkOverlayView2 pinchGestureRecognizer];
 
-  v11 = [v10 view];
+  view3 = [pinchGestureRecognizer view];
 
-  if (v11)
+  if (view3)
   {
-    v12 = [v10 view];
-    [v12 removeGestureRecognizer:v10];
+    view4 = [pinchGestureRecognizer view];
+    [view4 removeGestureRecognizer:pinchGestureRecognizer];
   }
 
-  if (v4)
+  if (delegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      if (v3 && v13 && v6)
+      if (controller && pageController && drawingGestureRecognizer)
       {
-        [v4 installDrawingGestureRecognizer:v6 forPageAtIndex:objc_msgSend(v13 forAnnotationController:{"pageIndex"), v3}];
+        [delegate installDrawingGestureRecognizer:drawingGestureRecognizer forPageAtIndex:objc_msgSend(pageController forAnnotationController:{"pageIndex"), controller}];
       }
     }
 
@@ -782,45 +782,45 @@ LABEL_16:
 - (void)_updateGestureDependencyPriority
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v3 = [(AKInkPageOverlayController *)self pageController];
-  v4 = [v3 controller];
-  v5 = [v4 mainEventHandler];
-  v6 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v7 = [v6 canvasView];
-  v8 = [v7 _selectionInteraction];
-  [v8 setDelegate:v5];
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
+  mainEventHandler = [controller mainEventHandler];
+  inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+  canvasView = [inkOverlayView canvasView];
+  _selectionInteraction = [canvasView _selectionInteraction];
+  [_selectionInteraction setDelegate:mainEventHandler];
 
-  v9 = [v4 delegate];
-  v10 = [(AKInkPageOverlayController *)self inkOverlayView];
-  v11 = [v10 drawingGestureRecognizer];
+  delegate = [controller delegate];
+  inkOverlayView2 = [(AKInkPageOverlayController *)self inkOverlayView];
+  drawingGestureRecognizer = [inkOverlayView2 drawingGestureRecognizer];
 
-  if (v4 && v3 && v11)
+  if (controller && pageController && drawingGestureRecognizer)
   {
-    v12 = [v4 modelController];
-    v13 = [v12 allSelectedAnnotations];
-    v14 = [v13 count] == 0;
+    modelController = [controller modelController];
+    allSelectedAnnotations = [modelController allSelectedAnnotations];
+    v14 = [allSelectedAnnotations count] == 0;
 
-    v15 = [v4 toolController];
-    if (([v15 allInkEnabled] & 1) == 0 && !objc_msgSend(v15, "pencilInkEnabled"))
+    toolController = [controller toolController];
+    if (([toolController allInkEnabled] & 1) == 0 && !objc_msgSend(toolController, "pencilInkEnabled"))
     {
       v14 = 0;
     }
 
-    if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v9 updateDrawingGestureRecognizer:v11 forPageAtIndex:objc_msgSend(v3 withPriority:"pageIndex") forAnnotationController:{v14, v4}];
+      [delegate updateDrawingGestureRecognizer:drawingGestureRecognizer forPageAtIndex:objc_msgSend(pageController withPriority:"pageIndex") forAnnotationController:{v14, controller}];
       if (v14)
       {
-        v16 = [(AKInkPageOverlayController *)self inkOverlayView];
-        v17 = [v16 canvasView];
-        v18 = [v17 _tiledView];
-        v19 = [v18 allowsFingerDrawing];
+        inkOverlayView3 = [(AKInkPageOverlayController *)self inkOverlayView];
+        canvasView2 = [inkOverlayView3 canvasView];
+        _tiledView = [canvasView2 _tiledView];
+        allowsFingerDrawing = [_tiledView allowsFingerDrawing];
 
-        if ((v19 & 1) == 0)
+        if ((allowsFingerDrawing & 1) == 0)
         {
           v32 = v14;
-          v20 = [v4 tapGestureRecognizer];
-          v40[0] = v20;
+          tapGestureRecognizer = [controller tapGestureRecognizer];
+          v40[0] = tapGestureRecognizer;
           v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
 
           v35 = 0u;
@@ -843,8 +843,8 @@ LABEL_16:
                 }
 
                 v27 = *(*(&v33 + 1) + 8 * i);
-                [v11 removeFailureRequirement:v27];
-                [v27 requireGestureRecognizerToFail:v11];
+                [drawingGestureRecognizer removeFailureRequirement:v27];
+                [v27 requireGestureRecognizerToFail:drawingGestureRecognizer];
               }
 
               v24 = [v22 countByEnumeratingWithState:&v33 objects:v39 count:16];
@@ -863,33 +863,33 @@ LABEL_16:
       NSLog(&cfstr_ThisClientIsMi_0.isa);
     }
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v29 = AKControllerDrawingGestureRecognizerNeedsDependencyUpdate;
     v37[0] = @"drawingGestureRecognizer";
     v37[1] = @"highPriority";
-    v38[0] = v11;
+    v38[0] = drawingGestureRecognizer;
     v30 = [MEMORY[0x277CCABB0] numberWithBool:v14];
     v38[1] = v30;
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
-    [v28 postNotificationName:v29 object:v4 userInfo:v31];
+    [defaultCenter postNotificationName:v29 object:controller userInfo:v31];
   }
 }
 
 - (void)_tearDownGestureDependencies
 {
-  v7 = [(AKInkPageOverlayController *)self pageController];
-  v3 = [v7 controller];
-  v4 = [v3 delegate];
-  if (v4)
+  pageController = [(AKInkPageOverlayController *)self pageController];
+  controller = [pageController controller];
+  delegate = [controller delegate];
+  if (delegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(AKInkPageOverlayController *)self inkOverlayView];
-      v6 = [v5 drawingGestureRecognizer];
+      inkOverlayView = [(AKInkPageOverlayController *)self inkOverlayView];
+      drawingGestureRecognizer = [inkOverlayView drawingGestureRecognizer];
 
-      if (v3 && v7 && v6)
+      if (controller && pageController && drawingGestureRecognizer)
       {
-        [v4 uninstallDrawingGestureRecognizer:v6 forPageAtIndex:objc_msgSend(v7 forAnnotationController:{"pageIndex"), v3}];
+        [delegate uninstallDrawingGestureRecognizer:drawingGestureRecognizer forPageAtIndex:objc_msgSend(pageController forAnnotationController:{"pageIndex"), controller}];
       }
     }
 
@@ -900,9 +900,9 @@ LABEL_16:
   }
 }
 
-- (CGSize)scaleFromDrawingInCanvasView:(id)a3 toPageControllerModelSpace:(id)a4
+- (CGSize)scaleFromDrawingInCanvasView:(id)view toPageControllerModelSpace:(id)space
 {
-  [(AKInkPageOverlayController *)self _convertRect:a3 fromDrawingInCanvasView:a4 toPageControllerModelSpace:0.0, 0.0, 1.0, 1.0];
+  [(AKInkPageOverlayController *)self _convertRect:view fromDrawingInCanvasView:space toPageControllerModelSpace:0.0, 0.0, 1.0, 1.0];
   v5 = v4;
   v7 = v6;
   result.height = v7;
@@ -910,18 +910,18 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)_convertRect:(CGRect)a3 fromDrawingInCanvasView:(id)a4 toPageControllerModelSpace:(id)a5
+- (CGRect)_convertRect:(CGRect)rect fromDrawingInCanvasView:(id)view toPageControllerModelSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  spaceCopy = space;
   memset(&v37[1], 0, sizeof(CGAffineTransform));
-  if (v10)
+  if (viewCopy)
   {
-    [v10 drawingTransform];
+    [viewCopy drawingTransform];
   }
 
   v37[0] = v37[1];
@@ -934,14 +934,14 @@ LABEL_16:
   v13 = v39.origin.y;
   v14 = v39.size.width;
   v15 = v39.size.height;
-  v16 = [v11 overlayView];
-  [v10 convertRect:v16 toView:{v12, v13, v14, v15}];
+  overlayView = [spaceCopy overlayView];
+  [viewCopy convertRect:overlayView toView:{v12, v13, v14, v15}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  [v11 convertRectFromOverlayToModel:{v18, v20, v22, v24}];
+  [spaceCopy convertRectFromOverlayToModel:{v18, v20, v22, v24}];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -958,21 +958,21 @@ LABEL_16:
   return result;
 }
 
-- (id)_convertCHDrawing:(id)a3 fromDrawingInCanvasView:(id)a4 toInkOverlayView:(id)a5
+- (id)_convertCHDrawing:(id)drawing fromDrawingInCanvasView:(id)view toInkOverlayView:(id)overlayView
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  drawingCopy = drawing;
+  viewCopy = view;
+  overlayViewCopy = overlayView;
   v10 = objc_alloc_init(MEMORY[0x277CFEE38]);
   v11 = *MEMORY[0x277CBF2C0];
   v12 = *(MEMORY[0x277CBF2C0] + 16);
   v13 = *(MEMORY[0x277CBF2C0] + 32);
-  if (v8)
+  if (viewCopy)
   {
     v26 = *(MEMORY[0x277CBF2C0] + 16);
     v27 = *MEMORY[0x277CBF2C0];
     v25 = *(MEMORY[0x277CBF2C0] + 32);
-    [v8 drawingTransform];
+    [viewCopy drawingTransform];
     v13 = v25;
     v12 = v26;
     v11 = v27;
@@ -993,30 +993,30 @@ LABEL_16:
   d = v30.d;
   tx = v30.tx;
   ty = v30.ty;
-  if ([v7 strokeCount])
+  if ([drawingCopy strokeCount])
   {
     v20 = 0;
     do
     {
-      if ([v7 pointCountForStrokeIndex:v20])
+      if ([drawingCopy pointCountForStrokeIndex:v20])
       {
         v21 = 0;
         do
         {
-          [v7 pointForStrokeIndex:v20 pointIndex:v21];
-          [v8 convertPoint:v9 toView:{tx + c * v22 + a * v23, ty + d * v22 + b * v23}];
+          [drawingCopy pointForStrokeIndex:v20 pointIndex:v21];
+          [viewCopy convertPoint:overlayViewCopy toView:{tx + c * v22 + a * v23, ty + d * v22 + b * v23}];
           [v10 addPoint:?];
           ++v21;
         }
 
-        while (v21 < [v7 pointCountForStrokeIndex:v20]);
+        while (v21 < [drawingCopy pointCountForStrokeIndex:v20]);
       }
 
       [v10 endStroke];
       ++v20;
     }
 
-    while (v20 < [v7 strokeCount]);
+    while (v20 < [drawingCopy strokeCount]);
   }
 
   return v10;

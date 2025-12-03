@@ -1,14 +1,14 @@
 @interface VideoPlaybackStream
 - (LocalizerInputEvent)readNextEvent;
-- (VideoPlaybackStream)initWithDatarun:(const void *)a3;
-- (duration<long)getTimeStampFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (VideoPlaybackStream)initWithDatarun:(const void *)datarun;
+- (duration<long)getTimeStampFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (opaqueCMSampleBuffer)readNextSampleBuffer;
 - (void)dealloc;
 @end
 
 @implementation VideoPlaybackStream
 
-- (VideoPlaybackStream)initWithDatarun:(const void *)a3
+- (VideoPlaybackStream)initWithDatarun:(const void *)datarun
 {
   v31.receiver = self;
   v31.super_class = VideoPlaybackStream;
@@ -19,18 +19,18 @@
     goto LABEL_23;
   }
 
-  v4->_datarunStart.__rep_ = sub_10004F640(a3);
+  v4->_datarunStart.__rep_ = sub_10004F640(datarun);
   v4->_source = 0;
   v34 = 8;
   strcpy(v33, "back.mp4");
-  if (*(a3 + 23) < 0)
+  if (*(datarun + 23) < 0)
   {
-    sub_100003228(&__p, *a3, *(a3 + 1));
+    sub_100003228(&__p, *datarun, *(datarun + 1));
   }
 
   else
   {
-    __p = *a3;
+    __p = *datarun;
   }
 
   sub_1000032E4(&__p, v33);
@@ -93,20 +93,20 @@ LABEL_11:
     v23 = v4->_reader;
     v29 = @"Failed to open reader for ";
     v24 = v7;
-    v28 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     if (v20)
     {
       p_reader = [v20 description];
       v25 = p_reader;
-      v27 = [p_reader UTF8String];
+      uTF8String2 = [p_reader UTF8String];
       if (!v23)
       {
 LABEL_24:
         sub_100014A08(v33, "");
         sub_1002C5C50(&v29, &__p);
-        sub_1002C60F8(&v28, &v36);
+        sub_1002C60F8(&uTF8String, &v36);
         sub_100211508(": ", &v37);
-        sub_1002C60F8(&v27, &v38);
+        sub_1002C60F8(&uTF8String2, &v38);
         sub_1000E661C(v33, &__p, 4);
         if (SHIBYTE(v38.__r_.__value_.__r.__words[2]) < 0)
         {
@@ -169,7 +169,7 @@ LABEL_33:
 
     else
     {
-      v27 = "<nil error>";
+      uTF8String2 = "<nil error>";
       if (!v23)
       {
         goto LABEL_24;
@@ -205,11 +205,11 @@ LABEL_23:
 - (LocalizerInputEvent)readNextEvent
 {
   v4 = v2;
-  v5 = [(VideoPlaybackStream *)self readNextSampleBuffer];
-  if (v5)
+  readNextSampleBuffer = [(VideoPlaybackStream *)self readNextSampleBuffer];
+  if (readNextSampleBuffer)
   {
-    v7 = v5;
-    [(VideoPlaybackStream *)self getTimeStampFromSampleBuffer:v5];
+    v7 = readNextSampleBuffer;
+    [(VideoPlaybackStream *)self getTimeStampFromSampleBuffer:readNextSampleBuffer];
     sub_10032C9C0(v7);
     source = self->_source;
     operator new();
@@ -224,7 +224,7 @@ LABEL_23:
   }
 
   result.var0.var1 = v6;
-  result.var0.var0 = v5;
+  result.var0.var0 = readNextSampleBuffer;
   return result;
 }
 
@@ -241,9 +241,9 @@ LABEL_23:
   return [(AVAssetReaderTrackOutput *)readerTrackOutput copyNextSampleBuffer];
 }
 
-- (duration<long)getTimeStampFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (duration<long)getTimeStampFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  sub_10032C978(a3);
+  sub_10032C978(buffer);
   sub_10032C984(v6);
   return (self->_datarunStart.__rep_ + (v4 * 1000000000.0));
 }

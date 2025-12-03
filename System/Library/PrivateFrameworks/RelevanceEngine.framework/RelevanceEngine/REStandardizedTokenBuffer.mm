@@ -1,21 +1,21 @@
 @interface REStandardizedTokenBuffer
-- (REStandardizedTokenBuffer)initWithTokenBuffer:(id)a3;
+- (REStandardizedTokenBuffer)initWithTokenBuffer:(id)buffer;
 - (void)_cleanTokens;
 - (void)next;
 @end
 
 @implementation REStandardizedTokenBuffer
 
-- (REStandardizedTokenBuffer)initWithTokenBuffer:(id)a3
+- (REStandardizedTokenBuffer)initWithTokenBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v9.receiver = self;
   v9.super_class = REStandardizedTokenBuffer;
   v6 = [(REStandardizedTokenBuffer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_buffer, a3);
+    objc_storeStrong(&v6->_buffer, buffer);
     [(REStandardizedTokenBuffer *)v7 _cleanTokens];
   }
 
@@ -28,9 +28,9 @@
   {
     while (1)
     {
-      v5 = [(RETokenBuffer *)self->_buffer currentToken];
-      v3 = [v5 type];
-      if (v3 > 8 || ((1 << v3) & 0x182) == 0)
+      currentToken = [(RETokenBuffer *)self->_buffer currentToken];
+      type = [currentToken type];
+      if (type > 8 || ((1 << type) & 0x182) == 0)
       {
         break;
       }

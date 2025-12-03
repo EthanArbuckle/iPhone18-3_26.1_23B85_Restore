@@ -1,6 +1,6 @@
 @interface PerfPowerServicesReaderHelper
 - (id)createXPCConnection;
-- (id)postDataRequest:(id)a3 outError:(id *)a4;
+- (id)postDataRequest:(id)request outError:(id *)error;
 @end
 
 @implementation PerfPowerServicesReaderHelper
@@ -20,11 +20,11 @@
   v9 = objc_opt_class();
   v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
   v11 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-  v12 = [(NSXPCConnection *)self->_connectionToServer remoteObjectInterface];
-  [v12 setClasses:v10 forSelector:sel_dataForRequest_withReply_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface = [(NSXPCConnection *)self->_connectionToServer remoteObjectInterface];
+  [remoteObjectInterface setClasses:v10 forSelector:sel_dataForRequest_withReply_ argumentIndex:0 ofReply:1];
 
-  v13 = [(NSXPCConnection *)self->_connectionToServer remoteObjectInterface];
-  [v13 setClasses:v11 forSelector:sel_dataForRequest_withReply_ argumentIndex:1 ofReply:1];
+  remoteObjectInterface2 = [(NSXPCConnection *)self->_connectionToServer remoteObjectInterface];
+  [remoteObjectInterface2 setClasses:v11 forSelector:sel_dataForRequest_withReply_ argumentIndex:1 ofReply:1];
 
   [(NSXPCConnection *)self->_connectionToServer setInterruptionHandler:&__block_literal_global_10];
   [(NSXPCConnection *)self->_connectionToServer setInvalidationHandler:&__block_literal_global_16];
@@ -50,12 +50,12 @@ void __52__PerfPowerServicesReaderHelper_createXPCConnection__block_invoke_14()
   }
 }
 
-- (id)postDataRequest:(id)a3 outError:(id *)a4
+- (id)postDataRequest:(id)request outError:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v7 = [(PerfPowerServicesReaderHelper *)self createXPCConnection];
+    createXPCConnection = [(PerfPowerServicesReaderHelper *)self createXPCConnection];
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
@@ -74,8 +74,8 @@ void __52__PerfPowerServicesReaderHelper_createXPCConnection__block_invoke_14()
     v10[3] = &unk_279A11938;
     v10[4] = &v11;
     v10[5] = &v17;
-    [v7 dataForRequest:v6 withReply:v10];
-    *a4 = v12[5];
+    [createXPCConnection dataForRequest:requestCopy withReply:v10];
+    *error = v12[5];
     [(PerfPowerServicesReaderHelper *)self closeXPCConnection];
     v8 = v18[5];
     _Block_object_dispose(&v11, 8);
@@ -85,10 +85,10 @@ void __52__PerfPowerServicesReaderHelper_createXPCConnection__block_invoke_14()
 
   else
   {
-    v7 = logHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    createXPCConnection = logHandle();
+    if (os_log_type_enabled(createXPCConnection, OS_LOG_TYPE_DEBUG))
     {
-      [PerfPowerServicesReaderHelper postDataRequest:v7 outError:?];
+      [PerfPowerServicesReaderHelper postDataRequest:createXPCConnection outError:?];
     }
 
     v8 = 0;

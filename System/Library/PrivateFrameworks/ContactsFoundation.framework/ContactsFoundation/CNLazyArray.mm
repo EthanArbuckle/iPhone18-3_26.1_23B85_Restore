@@ -1,10 +1,10 @@
 @interface CNLazyArray
 - (BOOL)consumeNextObject;
-- (CNLazyArray)initWithArray:(id)a3;
-- (CNLazyArray)initWithEnumerator:(id)a3;
-- (CNLazyArray)initWithFastEnumeration:(id)a3;
-- (CNLazyArray)initWithInitialState:(id)a3 condition:(id)a4 nextState:(id)a5 resultSelector:(id)a6;
-- (CNLazyArray)initWithSource:(id)a3;
+- (CNLazyArray)initWithArray:(id)array;
+- (CNLazyArray)initWithEnumerator:(id)enumerator;
+- (CNLazyArray)initWithFastEnumeration:(id)enumeration;
+- (CNLazyArray)initWithInitialState:(id)state condition:(id)condition nextState:(id)nextState resultSelector:(id)selector;
+- (CNLazyArray)initWithSource:(id)source;
 - (NSArray)allObjects;
 - (id)all;
 - (id)any;
@@ -23,64 +23,64 @@
 - (id)skipLast;
 - (id)take;
 - (id)takeLast;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)consumeAllObjects;
-- (void)consumeToIndex:(unint64_t)a3;
+- (void)consumeToIndex:(unint64_t)index;
 @end
 
 @implementation CNLazyArray
 
-- (CNLazyArray)initWithArray:(id)a3
+- (CNLazyArray)initWithArray:(id)array
 {
-  v4 = [a3 objectEnumerator];
-  v5 = [(CNLazyArray *)self initWithEnumerator:v4];
+  objectEnumerator = [array objectEnumerator];
+  v5 = [(CNLazyArray *)self initWithEnumerator:objectEnumerator];
 
   return v5;
 }
 
-- (CNLazyArray)initWithEnumerator:(id)a3
+- (CNLazyArray)initWithEnumerator:(id)enumerator
 {
-  v4 = a3;
-  v5 = [[_CNLazyArrayEnumeratorSource alloc] initWithEnumerator:v4];
+  enumeratorCopy = enumerator;
+  v5 = [[_CNLazyArrayEnumeratorSource alloc] initWithEnumerator:enumeratorCopy];
 
   v6 = [(CNLazyArray *)self initWithSource:v5];
   return v6;
 }
 
-- (CNLazyArray)initWithFastEnumeration:(id)a3
+- (CNLazyArray)initWithFastEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = [[_CNLazyArrayFastEnumerationSource alloc] initWithFastEnumeration:v4];
+  enumerationCopy = enumeration;
+  v5 = [[_CNLazyArrayFastEnumerationSource alloc] initWithFastEnumeration:enumerationCopy];
 
   v6 = [(CNLazyArray *)self initWithSource:v5];
   return v6;
 }
 
-- (CNLazyArray)initWithInitialState:(id)a3 condition:(id)a4 nextState:(id)a5 resultSelector:(id)a6
+- (CNLazyArray)initWithInitialState:(id)state condition:(id)condition nextState:(id)nextState resultSelector:(id)selector
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[_CNLazyArrayGeneratorSource alloc] initWithInitialState:v13 condition:v12 nextState:v11 resultSelector:v10];
+  selectorCopy = selector;
+  nextStateCopy = nextState;
+  conditionCopy = condition;
+  stateCopy = state;
+  v14 = [[_CNLazyArrayGeneratorSource alloc] initWithInitialState:stateCopy condition:conditionCopy nextState:nextStateCopy resultSelector:selectorCopy];
 
   v15 = [(CNLazyArray *)self initWithSource:v14];
   return v15;
 }
 
-- (CNLazyArray)initWithSource:(id)a3
+- (CNLazyArray)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = CNLazyArray;
   v6 = [(CNLazyArray *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operationChain, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_operationChain, source);
+    array = [MEMORY[0x1E695DF70] array];
     output = v7->_output;
-    v7->_output = v8;
+    v7->_output = array;
 
     v10 = v7;
   }
@@ -158,19 +158,19 @@ id __21__CNLazyArray_reduce__block_invoke(uint64_t a1, void *a2, void *a3)
 - (id)firstObject
 {
   [(CNLazyArray *)self consumeToIndex:0];
-  v3 = [(CNLazyArray *)self output];
-  v4 = [v3 firstObject];
+  output = [(CNLazyArray *)self output];
+  firstObject = [output firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)lastObject
 {
   [(CNLazyArray *)self consumeAllObjects];
-  v3 = [(CNLazyArray *)self output];
-  v4 = [v3 lastObject];
+  output = [(CNLazyArray *)self output];
+  lastObject = [output lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 - (id)filter
@@ -516,8 +516,8 @@ LABEL_11:
 - (id)distinct
 {
   v3 = [_CNLazyArrayOperatorDistinct alloc];
-  v4 = [(CNLazyArray *)self operationChain];
-  v5 = [(_CNLazyArrayOperatorDistinct *)v3 initWithInput:v4];
+  operationChain = [(CNLazyArray *)self operationChain];
+  v5 = [(_CNLazyArrayOperatorDistinct *)v3 initWithInput:operationChain];
   [(CNLazyArray *)self setOperationChain:v5];
 
   return self;
@@ -674,7 +674,7 @@ id __23__CNLazyArray_doOnNext__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (void)consumeToIndex:(unint64_t)a3
+- (void)consumeToIndex:(unint64_t)index
 {
     ;
   }
@@ -688,37 +688,37 @@ id __23__CNLazyArray_doOnNext__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)consumeNextObject
 {
-  v3 = [(CNLazyArray *)self operationChain];
-  v4 = [v3 nextObject];
+  operationChain = [(CNLazyArray *)self operationChain];
+  nextObject = [operationChain nextObject];
 
-  if (v4)
+  if (nextObject)
   {
-    [(NSMutableArray *)self->_output addObject:v4];
+    [(NSMutableArray *)self->_output addObject:nextObject];
   }
 
-  return v4 != 0;
+  return nextObject != 0;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
+  var0 = state->var0;
   if (!var0)
   {
-    a3->var2 = self;
-    a3->var3[0] = [(NSMutableArray *)self->_output count:0];
-    var0 = a3->var0;
+    state->var2 = self;
+    state->var3[0] = [(NSMutableArray *)self->_output count:0];
+    var0 = state->var0;
   }
 
-  [(CNLazyArray *)self consumeToIndex:var0, a4, a5];
-  if ([(NSMutableArray *)self->_output count]<= a3->var0)
+  [(CNLazyArray *)self consumeToIndex:var0, objects, count];
+  if ([(NSMutableArray *)self->_output count]<= state->var0)
   {
     return 0;
   }
 
   v9 = [(NSMutableArray *)self->_output objectAtIndexedSubscript:?];
-  *a4 = v9;
-  ++a3->var0;
-  a3->var1 = a4;
+  *objects = v9;
+  ++state->var0;
+  state->var1 = objects;
 
   return 1;
 }

@@ -1,35 +1,35 @@
 @interface HUHomeFeatureOnboardingUtilities
-+ (BOOL)_checkIdentifyVoicePrerequisitesSimpleForHome:(id)a3;
-+ (BOOL)_userHasSaidYesToShowTVViewingProfilesIn:(id)a3;
-+ (BOOL)hasUserSaidYesToVoiceIdentificationInResults:(id)a3;
-+ (BOOL)home:(id)a3 hasSomeHomePodsOnSupportedVoiceRecognitionLanguages:(id)a4;
-+ (BOOL)home:(id)a3 voiceRecognitionIsSupportedForCurrentUserOnMediaAccessory:(id)a4 languageOption:(id)a5;
-+ (BOOL)isDeviceUsingASupportedVoiceRecognitionSiriLanguage:(id)a3 shouldFallbackToBestSupportedLanguage:(BOOL)a4;
-+ (BOOL)isVoiceProfileAvailableOnThisDeviceForLanguage:(id)a3;
-+ (id)_checkIdentifyVoicePrerequisitesForHome:(id)a3;
++ (BOOL)_checkIdentifyVoicePrerequisitesSimpleForHome:(id)home;
++ (BOOL)_userHasSaidYesToShowTVViewingProfilesIn:(id)in;
++ (BOOL)hasUserSaidYesToVoiceIdentificationInResults:(id)results;
++ (BOOL)home:(id)home hasSomeHomePodsOnSupportedVoiceRecognitionLanguages:(id)languages;
++ (BOOL)home:(id)home voiceRecognitionIsSupportedForCurrentUserOnMediaAccessory:(id)accessory languageOption:(id)option;
++ (BOOL)isDeviceUsingASupportedVoiceRecognitionSiriLanguage:(id)language shouldFallbackToBestSupportedLanguage:(BOOL)supportedLanguage;
++ (BOOL)isVoiceProfileAvailableOnThisDeviceForLanguage:(id)language;
++ (id)_checkIdentifyVoicePrerequisitesForHome:(id)home;
 + (id)_fetchSupportedMultiUserLanguagesSynchronously;
-+ (id)analyzeHomeAssistantDevicesForSupportedVoiceRecognitionLanguages:(id)a3 home:(id)a4;
-+ (id)atLeastOneHomePodHasLanguageSettingsForHomeFuture:(id)a3;
-+ (id)checkSiriForiCloudEnabledPromptingUser:(id)a3;
-+ (id)checkVoiceProfileAvailabiltyForLanguage:(id)a3;
-+ (id)createPersonalIdentityDeviceLanguageMismatchList:(id)a3;
++ (id)analyzeHomeAssistantDevicesForSupportedVoiceRecognitionLanguages:(id)languages home:(id)home;
++ (id)atLeastOneHomePodHasLanguageSettingsForHomeFuture:(id)future;
++ (id)checkSiriForiCloudEnabledPromptingUser:(id)user;
++ (id)checkVoiceProfileAvailabiltyForLanguage:(id)language;
++ (id)createPersonalIdentityDeviceLanguageMismatchList:(id)list;
 + (id)fetchSupportedVoiceRecognitionLanguages;
-+ (id)groupedFeaturesForOnboardingFlowKeyPaths:(id)a3;
-+ (id)home:(id)a3 createMultiUserLanguageToHomePodsMapping:(id)a4;
-+ (id)home:(id)a3 onboardAllFeaturesFromPresentingViewController:(id)a4 usageOptions:(id)a5;
-+ (id)home:(id)a3 onboardFeaturesForKeyPaths:(id)a4 presentingViewController:(id)a5 usageOptions:(id)a6;
-+ (id)home:(id)a3 onboardHomeHub2FromPresentingViewController:(id)a4 devices:(id)a5 usageOptions:(id)a6;
-+ (id)home:(id)a3 onboardIdentifyVoiceFromPresentingViewController:(id)a4 usageOptions:(id)a5;
-+ (id)home:(id)a3 onboardPersonalRequestsFromPresentingViewController:(id)a4;
-+ (id)home:(id)a3 processHomeFeatureOnboarderResults:(id)a4;
-+ (id)processLanguageAndMediaProfileInfo:(id)a3;
-+ (unint64_t)home:(id)a3 checkForMultiUserDeviceUpgradeRequirements:(id)a4;
-+ (unint64_t)home:(id)a3 checkForOwnerUpgradeRequirementsFromResults:(id)a4;
-+ (void)_initializeSiriLanguageOptionsManagerIfNecessaryForHomePods:(id)a3;
-+ (void)fetchSupportedVoiceRecognitionLanguagesWithCompletion:(id)a3;
++ (id)groupedFeaturesForOnboardingFlowKeyPaths:(id)paths;
++ (id)home:(id)home createMultiUserLanguageToHomePodsMapping:(id)mapping;
++ (id)home:(id)home onboardAllFeaturesFromPresentingViewController:(id)controller usageOptions:(id)options;
++ (id)home:(id)home onboardFeaturesForKeyPaths:(id)paths presentingViewController:(id)controller usageOptions:(id)options;
++ (id)home:(id)home onboardHomeHub2FromPresentingViewController:(id)controller devices:(id)devices usageOptions:(id)options;
++ (id)home:(id)home onboardIdentifyVoiceFromPresentingViewController:(id)controller usageOptions:(id)options;
++ (id)home:(id)home onboardPersonalRequestsFromPresentingViewController:(id)controller;
++ (id)home:(id)home processHomeFeatureOnboarderResults:(id)results;
++ (id)processLanguageAndMediaProfileInfo:(id)info;
++ (unint64_t)home:(id)home checkForMultiUserDeviceUpgradeRequirements:(id)requirements;
++ (unint64_t)home:(id)home checkForOwnerUpgradeRequirementsFromResults:(id)results;
++ (void)_initializeSiriLanguageOptionsManagerIfNecessaryForHomePods:(id)pods;
++ (void)fetchSupportedVoiceRecognitionLanguagesWithCompletion:(id)completion;
 + (void)initialize;
-+ (void)presentAlertConfirmingTurningOfVoiceRecognitionFrom:(id)a3;
-+ (void)presentAlertConfirmingTurningOffPersonalRequestsFrom:(id)a3;
++ (void)presentAlertConfirmingTurningOfVoiceRecognitionFrom:(id)from;
++ (void)presentAlertConfirmingTurningOffPersonalRequestsFrom:(id)from;
 @end
 
 @implementation HUHomeFeatureOnboardingUtilities
@@ -108,11 +108,11 @@ void __82__HUHomeFeatureOnboardingUtilities__fetchSupportedMultiUserLanguagesSyn
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (id)home:(id)a3 onboardPersonalRequestsFromPresentingViewController:(id)a4
++ (id)home:(id)home onboardPersonalRequestsFromPresentingViewController:(id)controller
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  controllerCopy = controller;
   v8 = _staticOnboardingFuture;
   if (!_staticOnboardingFuture)
   {
@@ -140,11 +140,11 @@ void __82__HUHomeFeatureOnboardingUtilities__fetchSupportedMultiUserLanguagesSyn
   v18[1] = 3221225472;
   v18[2] = __93__HUHomeFeatureOnboardingUtilities_home_onboardPersonalRequestsFromPresentingViewController___block_invoke;
   v18[3] = &unk_277DBA120;
-  v19 = v6;
-  v20 = v7;
+  v19 = homeCopy;
+  v20 = controllerCopy;
   v21 = a2;
-  v14 = v7;
-  v15 = v6;
+  v14 = controllerCopy;
+  v15 = homeCopy;
   v16 = [v13 flatMap:v18];
 
   return v16;
@@ -225,12 +225,12 @@ id __93__HUHomeFeatureOnboardingUtilities_home_onboardPersonalRequestsFromPresen
   return v12;
 }
 
-+ (id)home:(id)a3 onboardIdentifyVoiceFromPresentingViewController:(id)a4 usageOptions:(id)a5
++ (id)home:(id)home onboardIdentifyVoiceFromPresentingViewController:(id)controller usageOptions:(id)options
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  controllerCopy = controller;
+  optionsCopy = options;
   v11 = _staticOnboardingFuture;
   if (!_staticOnboardingFuture)
   {
@@ -258,13 +258,13 @@ id __93__HUHomeFeatureOnboardingUtilities_home_onboardPersonalRequestsFromPresen
   v24[1] = 3221225472;
   v24[2] = __103__HUHomeFeatureOnboardingUtilities_home_onboardIdentifyVoiceFromPresentingViewController_usageOptions___block_invoke;
   v24[3] = &unk_277DBA968;
-  v25 = v8;
-  v26 = v10;
-  v27 = v9;
+  v25 = homeCopy;
+  v26 = optionsCopy;
+  v27 = controllerCopy;
   v28 = a2;
-  v17 = v9;
-  v18 = v10;
-  v19 = v8;
+  v17 = controllerCopy;
+  v18 = optionsCopy;
+  v19 = homeCopy;
   v20 = [v16 flatMap:v24];
   v21 = _staticOnboardingFuture;
   v22 = _staticOnboardingFuture;
@@ -356,12 +356,12 @@ id __103__HUHomeFeatureOnboardingUtilities_home_onboardIdentifyVoiceFromPresenti
   return v12;
 }
 
-+ (id)home:(id)a3 onboardAllFeaturesFromPresentingViewController:(id)a4 usageOptions:(id)a5
++ (id)home:(id)home onboardAllFeaturesFromPresentingViewController:(id)controller usageOptions:(id)options
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  homeCopy = home;
+  controllerCopy = controller;
+  optionsCopy = options;
   v12 = _staticOnboardingFuture;
   if (!_staticOnboardingFuture)
   {
@@ -389,14 +389,14 @@ id __103__HUHomeFeatureOnboardingUtilities_home_onboardIdentifyVoiceFromPresenti
   v25[1] = 3221225472;
   v25[2] = __101__HUHomeFeatureOnboardingUtilities_home_onboardAllFeaturesFromPresentingViewController_usageOptions___block_invoke;
   v25[3] = &unk_277DBA990;
-  v29 = a1;
+  selfCopy = self;
   v30 = a2;
-  v26 = v9;
-  v27 = v11;
-  v28 = v10;
-  v18 = v10;
-  v19 = v11;
-  v20 = v9;
+  v26 = homeCopy;
+  v27 = optionsCopy;
+  v28 = controllerCopy;
+  v18 = controllerCopy;
+  v19 = optionsCopy;
+  v20 = homeCopy;
   v21 = [v17 flatMap:v25];
   v22 = _staticOnboardingFuture;
   v23 = _staticOnboardingFuture;
@@ -566,13 +566,13 @@ id __101__HUHomeFeatureOnboardingUtilities_home_onboardAllFeaturesFromPresenting
   return v12;
 }
 
-+ (id)home:(id)a3 onboardFeaturesForKeyPaths:(id)a4 presentingViewController:(id)a5 usageOptions:(id)a6
++ (id)home:(id)home onboardFeaturesForKeyPaths:(id)paths presentingViewController:(id)controller usageOptions:(id)options
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  homeCopy = home;
+  pathsCopy = paths;
+  controllerCopy = controller;
+  optionsCopy = options;
   v14 = _staticOnboardingFuture;
   if (!_staticOnboardingFuture)
   {
@@ -600,15 +600,15 @@ id __101__HUHomeFeatureOnboardingUtilities_home_onboardAllFeaturesFromPresenting
   v28[1] = 3221225472;
   v28[2] = __106__HUHomeFeatureOnboardingUtilities_home_onboardFeaturesForKeyPaths_presentingViewController_usageOptions___block_invoke;
   v28[3] = &unk_277DBA9E0;
-  v32 = v12;
+  v32 = controllerCopy;
   v33 = a2;
-  v29 = v11;
-  v30 = v10;
-  v31 = v13;
-  v20 = v12;
-  v21 = v13;
-  v22 = v10;
-  v23 = v11;
+  v29 = pathsCopy;
+  v30 = homeCopy;
+  v31 = optionsCopy;
+  v20 = controllerCopy;
+  v21 = optionsCopy;
+  v22 = homeCopy;
+  v23 = pathsCopy;
   v24 = [v19 flatMap:v28];
   v25 = _staticOnboardingFuture;
   v26 = _staticOnboardingFuture;
@@ -718,27 +718,27 @@ id __106__HUHomeFeatureOnboardingUtilities_home_onboardFeaturesForKeyPaths_prese
   return v12;
 }
 
-+ (id)home:(id)a3 onboardHomeHub2FromPresentingViewController:(id)a4 devices:(id)a5 usageOptions:(id)a6
++ (id)home:(id)home onboardHomeHub2FromPresentingViewController:(id)controller devices:(id)devices usageOptions:(id)options
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  homeCopy = home;
+  controllerCopy = controller;
+  devicesCopy = devices;
+  optionsCopy = options;
   v14 = HFLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 uniqueIdentifier];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
     *buf = 138413314;
-    v37 = v10;
+    v37 = homeCopy;
     v38 = 2114;
-    v39 = v15;
+    v39 = uniqueIdentifier;
     v40 = 2112;
-    v41 = v11;
+    v41 = controllerCopy;
     v42 = 2112;
-    v43 = v12;
+    v43 = devicesCopy;
     v44 = 2112;
-    v45 = v13;
+    v45 = optionsCopy;
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "<HUHomeFeatureOnboardingUtilities:home:onboardHomeHub2FromPresentingViewController:devices:usageOptions:> home = %@ (%{public}@) | presentingVC: %@ | devices: %@ | usageOptions: %@", buf, 0x34u);
   }
 
@@ -769,15 +769,15 @@ id __106__HUHomeFeatureOnboardingUtilities_home_onboardFeaturesForKeyPaths_prese
   v30[1] = 3221225472;
   v30[2] = __106__HUHomeFeatureOnboardingUtilities_home_onboardHomeHub2FromPresentingViewController_devices_usageOptions___block_invoke;
   v30[3] = &unk_277DBA9E0;
-  v34 = v11;
+  v34 = controllerCopy;
   v35 = a2;
-  v31 = v10;
-  v32 = v12;
-  v33 = v13;
-  v22 = v11;
-  v23 = v13;
-  v24 = v12;
-  v25 = v10;
+  v31 = homeCopy;
+  v32 = devicesCopy;
+  v33 = optionsCopy;
+  v22 = controllerCopy;
+  v23 = optionsCopy;
+  v24 = devicesCopy;
+  v25 = homeCopy;
   v26 = [v21 flatMap:v30];
   v27 = _staticOnboardingFuture;
   v28 = _staticOnboardingFuture;
@@ -876,13 +876,13 @@ id __106__HUHomeFeatureOnboardingUtilities_home_onboardHomeHub2FromPresentingVie
   return v12;
 }
 
-+ (id)atLeastOneHomePodHasLanguageSettingsForHomeFuture:(id)a3
++ (id)atLeastOneHomePodHasLanguageSettingsForHomeFuture:(id)future
 {
   v93 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  futureCopy = future;
   v49 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v43 = v3;
-  v44 = [v3 hf_homePods];
+  v43 = futureCopy;
+  hf_homePods = [futureCopy hf_homePods];
   v4 = objc_alloc_init(MEMORY[0x277CCABD8]);
   [v4 setQualityOfService:33];
   v46 = v4;
@@ -895,18 +895,18 @@ id __106__HUHomeFeatureOnboardingUtilities_home_onboardHomeHub2FromPresentingVie
   v78 = &v77;
   v79 = 0x2020000000;
   v80 = 0;
-  v5 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v6 = [v5 homeManager];
-  v50 = [v6 hasOptedToHH2];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  if (![v44 count])
+  if (![hf_homePods count])
   {
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v41 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v83 = a1;
+      selfCopy5 = self;
       v84 = 2112;
       v85 = v41;
       _os_log_debug_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEBUG, "%@:%@ No HomePods found in the home.", buf, 0x16u);
@@ -919,7 +919,7 @@ id __106__HUHomeFeatureOnboardingUtilities_home_onboardHomeHub2FromPresentingVie
 
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    [HUHomeFeatureOnboardingUtilities _initializeSiriLanguageOptionsManagerIfNecessaryForHomePods:v44];
+    [HUHomeFeatureOnboardingUtilities _initializeSiriLanguageOptionsManagerIfNecessaryForHomePods:hf_homePods];
   }
 
   else
@@ -928,7 +928,7 @@ id __106__HUHomeFeatureOnboardingUtilities_home_onboardHomeHub2FromPresentingVie
     block[1] = 3221225472;
     block[2] = __86__HUHomeFeatureOnboardingUtilities_atLeastOneHomePodHasLanguageSettingsForHomeFuture___block_invoke;
     block[3] = &unk_277DB8488;
-    v76 = v44;
+    v76 = hf_homePods;
     dispatch_sync(MEMORY[0x277D85CD0], block);
   }
 
@@ -936,13 +936,13 @@ id __106__HUHomeFeatureOnboardingUtilities_home_onboardHomeHub2FromPresentingVie
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v44;
+  obj = hf_homePods;
   v9 = [obj countByEnumeratingWithState:&v71 objects:v92 count:16];
   if (!v9)
   {
 LABEL_32:
 
-    if ((v50 & 1) == 0)
+    if ((hasOptedToHH2 & 1) == 0)
     {
       goto LABEL_36;
     }
@@ -972,9 +972,9 @@ LABEL_10:
     }
 
     v12 = *(*(&v71 + 1) + 8 * v11);
-    v13 = [v12 mediaProfile];
-    v14 = v13;
-    if (!v50)
+    mediaProfile = [v12 mediaProfile];
+    v14 = mediaProfile;
+    if (!hasOptedToHH2)
     {
       break;
     }
@@ -984,11 +984,11 @@ LABEL_10:
     v63[1] = 3221225472;
     v63[2] = __86__HUHomeFeatureOnboardingUtilities_atLeastOneHomePodHasLanguageSettingsForHomeFuture___block_invoke_2;
     v63[3] = &unk_277DBAA30;
-    v16 = v13;
+    v16 = mediaProfile;
     v64 = v16;
     v67 = v81;
     v68 = &v77;
-    v69 = a1;
+    selfCopy2 = self;
     v70 = a2;
     v17 = v49;
     v65 = v17;
@@ -1002,22 +1002,22 @@ LABEL_10:
     v59 = &v77;
     v60 = v81;
     v57 = obj;
-    v61 = a1;
+    selfCopy3 = self;
     v62 = a2;
     v58 = v17;
     [v19 setCompletionBlock:v56];
-    v20 = [v16 hf_backingAccessory];
-    v21 = [v20 name];
-    [v19 setName:v21];
+    hf_backingAccessory = [v16 hf_backingAccessory];
+    name = [hf_backingAccessory name];
+    [v19 setName:name];
 
-    v22 = [v18 operations];
+    operations = [v18 operations];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __86__HUHomeFeatureOnboardingUtilities_atLeastOneHomePodHasLanguageSettingsForHomeFuture___block_invoke_103;
     v54[3] = &unk_277DBAA80;
     v23 = v19;
     v55 = v23;
-    v24 = [v22 na_firstObjectPassingTest:v54];
+    v24 = [operations na_firstObjectPassingTest:v54];
 
     if (!v24)
     {
@@ -1037,8 +1037,8 @@ LABEL_30:
     }
   }
 
-  v25 = [v13 hf_settingsAdapterManager];
-  v26 = [v25 adapterForIdentifier:v45];
+  hf_settingsAdapterManager = [mediaProfile hf_settingsAdapterManager];
+  v26 = [hf_settingsAdapterManager adapterForIdentifier:v45];
   objc_opt_class();
   v27 = v26;
   if (objc_opt_isKindOfClass())
@@ -1053,23 +1053,23 @@ LABEL_30:
 
   v29 = v28;
 
-  v30 = [v29 selectedLanguageOption];
-  v31 = [v29 availableLanguageOptions];
-  v32 = v31;
-  if (v30 && [v31 count])
+  selectedLanguageOption = [v29 selectedLanguageOption];
+  availableLanguageOptions = [v29 availableLanguageOptions];
+  v32 = availableLanguageOptions;
+  if (selectedLanguageOption && [availableLanguageOptions count])
   {
     v33 = HFLogForCategory();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       v34 = NSStringFromSelector(a2);
       *buf = v42;
-      v83 = a1;
+      selfCopy5 = self;
       v84 = 2112;
       v85 = v34;
       v86 = 2112;
       v87 = v12;
       v88 = 2112;
-      v89 = v30;
+      v89 = selectedLanguageOption;
       v90 = 2112;
       v91 = v32;
       _os_log_impl(&dword_20CEB6000, v33, OS_LOG_TYPE_DEFAULT, "%@:%@ Found HomePod [%@] has selected language option [%@] and available language options [%@] from the Adapter.", buf, 0x34u);
@@ -1089,7 +1089,7 @@ LABEL_30:
     {
       v38 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v83 = a1;
+      selfCopy5 = self;
       v84 = 2112;
       v85 = v38;
       v86 = 2112;
@@ -1119,8 +1119,8 @@ LABEL_36:
   }
 
 LABEL_38:
-  v39 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v8 = [v49 reschedule:v39];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v8 = [v49 reschedule:mainThreadScheduler];
 
 LABEL_39:
   _Block_object_dispose(&v77, 8);
@@ -1244,15 +1244,15 @@ BOOL __86__HUHomeFeatureOnboardingUtilities_atLeastOneHomePodHasLanguageSettings
   return v5;
 }
 
-+ (void)_initializeSiriLanguageOptionsManagerIfNecessaryForHomePods:(id)a3
++ (void)_initializeSiriLanguageOptionsManagerIfNecessaryForHomePods:(id)pods
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  podsCopy = pods;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  v4 = [podsCopy countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v4)
   {
     v6 = v4;
@@ -1265,51 +1265,51 @@ BOOL __86__HUHomeFeatureOnboardingUtilities_atLeastOneHomePodHasLanguageSettings
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(podsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 mediaProfile];
+        mediaProfile = [v9 mediaProfile];
 
-        if (v10)
+        if (mediaProfile)
         {
-          v11 = [v9 mediaProfile];
-          v12 = [v11 hf_siriLanguageOptionsManager];
+          mediaProfile2 = [v9 mediaProfile];
+          hf_siriLanguageOptionsManager = [mediaProfile2 hf_siriLanguageOptionsManager];
         }
 
         else
         {
-          v12 = HFLogForCategory();
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+          hf_siriLanguageOptionsManager = HFLogForCategory();
+          if (os_log_type_enabled(hf_siriLanguageOptionsManager, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v13;
             v19 = v9;
-            _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "mediaProfile is NULL for %@:", buf, 0xCu);
+            _os_log_impl(&dword_20CEB6000, hf_siriLanguageOptionsManager, OS_LOG_TYPE_DEFAULT, "mediaProfile is NULL for %@:", buf, 0xCu);
           }
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v6 = [podsCopy countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (BOOL)home:(id)a3 hasSomeHomePodsOnSupportedVoiceRecognitionLanguages:(id)a4
++ (BOOL)home:(id)home hasSomeHomePodsOnSupportedVoiceRecognitionLanguages:(id)languages
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 hf_hasHomePods])
+  homeCopy = home;
+  languagesCopy = languages;
+  if ([homeCopy hf_hasHomePods])
   {
-    v9 = [HUHomeFeatureOnboardingUtilities home:v7 createMultiUserLanguageToHomePodsMapping:v8];
+    v9 = [HUHomeFeatureOnboardingUtilities home:homeCopy createMultiUserLanguageToHomePodsMapping:languagesCopy];
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromSelector(a2);
       v15 = 138413058;
-      v16 = a1;
+      selfCopy = self;
       v17 = 2112;
       v18 = v11;
       v19 = 2048;
@@ -1329,7 +1329,7 @@ BOOL __86__HUHomeFeatureOnboardingUtilities_atLeastOneHomePodHasLanguageSettings
     {
       v13 = NSStringFromSelector(a2);
       v15 = 138412290;
-      v16 = v13;
+      selfCopy = v13;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@: There are no HomePods so we will return NO in this case", &v15, 0xCu);
     }
 
@@ -1355,24 +1355,24 @@ BOOL __86__HUHomeFeatureOnboardingUtilities_atLeastOneHomePodHasLanguageSettings
   return v4;
 }
 
-+ (void)fetchSupportedVoiceRecognitionLanguagesWithCompletion:(id)a3
++ (void)fetchSupportedVoiceRecognitionLanguagesWithCompletion:(id)completion
 {
   v3 = MEMORY[0x277CEF3A8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(v3);
-  [v5 fetchSupportedMultiUserLanguageCodes:v4];
+  [v5 fetchSupportedMultiUserLanguageCodes:completionCopy];
 }
 
-+ (void)presentAlertConfirmingTurningOfVoiceRecognitionFrom:(id)a3
++ (void)presentAlertConfirmingTurningOfVoiceRecognitionFrom:(id)from
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v27 = v4;
+    v27 = fromCopy;
     v28 = 2112;
     v29 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@: Now presenting alert to turn OFF Voice Recognition", buf, 0x16u);
@@ -1389,7 +1389,7 @@ BOOL __86__HUHomeFeatureOnboardingUtilities_atLeastOneHomePodHasLanguageSettings
   v24[1] = 3221225472;
   v24[2] = __88__HUHomeFeatureOnboardingUtilities_presentAlertConfirmingTurningOfVoiceRecognitionFrom___block_invoke;
   v24[3] = &unk_277DB7600;
-  v13 = v4;
+  v13 = fromCopy;
   v25 = v13;
   v14 = [v11 actionWithTitle:v12 style:1 handler:v24];
   [v10 addAction:v14];
@@ -1463,16 +1463,16 @@ void __88__HUHomeFeatureOnboardingUtilities_presentAlertConfirmingTurningOfVoice
   }
 }
 
-+ (void)presentAlertConfirmingTurningOffPersonalRequestsFrom:(id)a3
++ (void)presentAlertConfirmingTurningOffPersonalRequestsFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v23 = v4;
+    v23 = fromCopy;
     v24 = 2112;
     v25 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@: Now presenting alert to turn OFF Personal Requests", buf, 0x16u);
@@ -1487,8 +1487,8 @@ void __88__HUHomeFeatureOnboardingUtilities_presentAlertConfirmingTurningOfVoice
   v20[1] = 3221225472;
   v20[2] = __89__HUHomeFeatureOnboardingUtilities_presentAlertConfirmingTurningOffPersonalRequestsFrom___block_invoke;
   v20[3] = &unk_277DB7600;
-  v21 = v4;
-  v12 = v4;
+  v21 = fromCopy;
+  v12 = fromCopy;
   v13 = [v10 actionWithTitle:v11 style:1 handler:v20];
   [v9 addAction:v13];
 
@@ -1553,17 +1553,17 @@ void __89__HUHomeFeatureOnboardingUtilities_presentAlertConfirmingTurningOffPers
   }
 }
 
-+ (BOOL)home:(id)a3 voiceRecognitionIsSupportedForCurrentUserOnMediaAccessory:(id)a4 languageOption:(id)a5
++ (BOOL)home:(id)home voiceRecognitionIsSupportedForCurrentUserOnMediaAccessory:(id)accessory languageOption:(id)option
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isMultiUserEnabled] && objc_msgSend(v10, "hf_supportsMultiUser"))
+  homeCopy = home;
+  accessoryCopy = accessory;
+  optionCopy = option;
+  if ([homeCopy isMultiUserEnabled] && objc_msgSend(accessoryCopy, "hf_supportsMultiUser"))
   {
     v12 = objc_alloc(MEMORY[0x277D14C98]);
-    v13 = [v9 currentUser];
-    v14 = [v12 initWithHome:v9 user:v13 nameStyle:0];
+    currentUser = [homeCopy currentUser];
+    v14 = [v12 initWithHome:homeCopy user:currentUser nameStyle:0];
 
     if (![v14 isIdentifyVoiceEnabled])
     {
@@ -1579,7 +1579,7 @@ LABEL_16:
     {
       v17 = NSStringFromSelector(a2);
       v26 = 138413058;
-      v27 = a1;
+      selfCopy = self;
       v28 = 2112;
       v29 = v17;
       v30 = 2048;
@@ -1591,15 +1591,15 @@ LABEL_16:
 
     if (v15)
     {
-      if (v11)
+      if (optionCopy)
       {
-        v18 = [v11 recognitionLanguage];
-        v19 = [v15 containsObject:v18];
-        v20 = [MEMORY[0x277CEF368] sharedPreferences];
-        v21 = [v20 languageCode];
+        recognitionLanguage = [optionCopy recognitionLanguage];
+        v19 = [v15 containsObject:recognitionLanguage];
+        mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+        languageCode = [mEMORY[0x277CEF368] languageCode];
 
-        LOBYTE(v20) = [v18 isEqualToString:v21];
-        v22 = v19 & v20;
+        LOBYTE(mEMORY[0x277CEF368]) = [recognitionLanguage isEqualToString:languageCode];
+        v22 = v19 & mEMORY[0x277CEF368];
 LABEL_15:
 
         goto LABEL_16;
@@ -1613,7 +1613,7 @@ LABEL_15:
       {
         v25 = NSStringFromSelector(a2);
         v26 = 138412290;
-        v27 = v25;
+        selfCopy = v25;
         _os_log_error_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_ERROR, "%@ Error fetching voice recognition languages", &v26, 0xCu);
       }
     }
@@ -1628,10 +1628,10 @@ LABEL_17:
   return v22;
 }
 
-+ (id)checkSiriForiCloudEnabledPromptingUser:(id)a3
++ (id)checkSiriForiCloudEnabledPromptingUser:(id)user
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  userCopy = user;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1650,7 +1650,7 @@ LABEL_17:
     {
       v7 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v32 = a1;
+      selfCopy = self;
       v33 = 2112;
       v34 = v7;
       _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Siri for iCloud is not enabled, prompting user to enable before enabling Voice Recognition", buf, 0x16u);
@@ -1668,7 +1668,7 @@ LABEL_17:
     v24[2] = __75__HUHomeFeatureOnboardingUtilities_checkSiriForiCloudEnabledPromptingUser___block_invoke;
     v24[3] = &unk_277DBAAD0;
     v24[4] = &v25;
-    v24[5] = a1;
+    v24[5] = self;
     v24[6] = a2;
     v14 = [v12 actionWithTitle:v13 style:0 handler:v24];
 
@@ -1689,7 +1689,7 @@ LABEL_17:
     v21[3] = &unk_277DB8488;
     v18 = v11;
     v22 = v18;
-    [v5 presentViewController:v18 animated:1 completion:v21];
+    [userCopy presentViewController:v18 animated:1 completion:v21];
   }
 
   v19 = v26[5];
@@ -1778,21 +1778,21 @@ void __75__HUHomeFeatureOnboardingUtilities_checkSiriForiCloudEnabledPromptingUs
   }
 }
 
-+ (id)home:(id)a3 processHomeFeatureOnboarderResults:(id)a4
++ (id)home:(id)home processHomeFeatureOnboarderResults:(id)results
 {
   v68 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v5 = a4;
+  homeCopy = home;
+  resultsCopy = results;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412802;
-    *&buf[4] = a1;
+    *&buf[4] = self;
     *&buf[12] = 2112;
     *&buf[14] = v7;
     *&buf[22] = 2112;
-    v67 = v5;
+    v67 = resultsCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@: Postprocessing Feature Onboarding results %@", buf, 0x20u);
   }
 
@@ -1800,77 +1800,77 @@ void __75__HUHomeFeatureOnboardingUtilities_checkSiriForiCloudEnabledPromptingUs
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LOBYTE(v67) = 0;
-  v8 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_FinishedOnboarding"];
+  v8 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_FinishedOnboarding"];
   v9 = v8;
   v10 = *&buf[8];
   if (*(*&buf[8] + 24))
   {
-    v11 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v11 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
     v10 = *&buf[8];
   }
 
-  *(v10 + 24) = v11;
-  v12 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_Announce_FinishedOnboarding"];
+  *(v10 + 24) = bOOLValue;
+  v12 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_Announce_FinishedOnboarding"];
 
-  v38 = [v12 BOOLValue];
-  v13 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_HomeTheater_FinishedOnboarding"];
+  bOOLValue2 = [v12 BOOLValue];
+  v13 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_HomeTheater_FinishedOnboarding"];
 
-  v37 = [v13 BOOLValue];
-  v14 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_TVViewingProfiles_FinishedOnboarding"];
+  bOOLValue3 = [v13 BOOLValue];
+  v14 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_TVViewingProfiles_FinishedOnboarding"];
 
-  v36 = [v14 BOOLValue];
-  v15 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_TVViewingProfiles_DismissReminderBanner"];
+  bOOLValue4 = [v14 BOOLValue];
+  v15 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_TVViewingProfiles_DismissReminderBanner"];
 
-  v16 = [v15 BOOLValue];
-  v17 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_NaturalLighting_FinishedOnboarding"];
+  bOOLValue5 = [v15 BOOLValue];
+  v17 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_NaturalLighting_FinishedOnboarding"];
 
-  v18 = [v17 BOOLValue];
+  bOOLValue6 = [v17 BOOLValue];
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
   v65 = 0;
-  v19 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
+  v19 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
 
   v20 = v63;
   if (v63[3])
   {
-    v21 = 1;
+    bOOLValue7 = 1;
   }
 
   else
   {
-    v21 = [v19 BOOLValue];
+    bOOLValue7 = [v19 BOOLValue];
     v20 = v63;
   }
 
-  *(v20 + 24) = v21;
-  v22 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_CameraRecording_FinishedOnboarding"];
+  *(v20 + 24) = bOOLValue7;
+  v22 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_CameraRecording_FinishedOnboarding"];
 
-  v23 = [v22 BOOLValue];
-  v24 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_CameraRecording_DismissReminderBanner"];
+  bOOLValue8 = [v22 BOOLValue];
+  v24 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_CameraRecording_DismissReminderBanner"];
 
-  v25 = [v24 BOOLValue];
-  v26 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_AccessoryFirmwareUpdate_FinishedOnboarding"];
+  bOOLValue9 = [v24 BOOLValue];
+  v26 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_AccessoryFirmwareUpdate_FinishedOnboarding"];
 
-  v27 = [v26 BOOLValue];
-  v28 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_UtilityDiscovery_FinishedOnboarding"];
+  bOOLValue10 = [v26 BOOLValue];
+  v28 = [resultsCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_UtilityDiscovery_FinishedOnboarding"];
 
-  v29 = [v28 BOOLValue];
-  if ([HUHomeFeatureOnboardingUtilities hasUserSaidYesToVoiceIdentificationInResults:v5])
+  bOOLValue11 = [v28 BOOLValue];
+  if ([HUHomeFeatureOnboardingUtilities hasUserSaidYesToVoiceIdentificationInResults:resultsCopy])
   {
-    v30 = [HUHomeFeatureOnboardingUtilities _checkIdentifyVoicePrerequisitesForHome:v39];
+    v30 = [HUHomeFeatureOnboardingUtilities _checkIdentifyVoicePrerequisitesForHome:homeCopy];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __76__HUHomeFeatureOnboardingUtilities_home_processHomeFeatureOnboarderResults___block_invoke;
     v58[3] = &unk_277DBAB48;
-    v60 = a1;
+    selfCopy = self;
     v61 = a2;
-    v59 = v39;
+    v59 = homeCopy;
     v31 = [v30 flatMap:v58];
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
@@ -1890,21 +1890,21 @@ void __75__HUHomeFeatureOnboardingUtilities_checkSiriForiCloudEnabledPromptingUs
   v42[1] = 3221225472;
   v42[2] = __76__HUHomeFeatureOnboardingUtilities_home_processHomeFeatureOnboarderResults___block_invoke_2_176;
   v42[3] = &unk_277DBAB98;
-  v33 = v39;
-  v46 = a1;
+  v33 = homeCopy;
+  selfCopy2 = self;
   v47 = a2;
   v43 = v33;
   v44 = buf;
   v45 = &v62;
-  v48 = v36;
-  v49 = v16;
-  v50 = v23;
-  v51 = v25;
-  v52 = v38;
-  v53 = v37;
-  v54 = v18;
-  v55 = v27;
-  v56 = v29;
+  v48 = bOOLValue4;
+  v49 = bOOLValue5;
+  v50 = bOOLValue8;
+  v51 = bOOLValue9;
+  v52 = bOOLValue2;
+  v53 = bOOLValue3;
+  v54 = bOOLValue6;
+  v55 = bOOLValue10;
+  v56 = bOOLValue11;
   v34 = [v30 flatMap:v42];
 
   _Block_object_dispose(&v62, 8);
@@ -2339,14 +2339,14 @@ id __76__HUHomeFeatureOnboardingUtilities_home_processHomeFeatureOnboarderResult
   return v34;
 }
 
-+ (BOOL)_checkIdentifyVoicePrerequisitesSimpleForHome:(id)a3
++ (BOOL)_checkIdentifyVoicePrerequisitesSimpleForHome:(id)home
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 hf_hasHomePods];
-  v7 = [v5 hf_hasRMVCapableAppleTV];
-  v8 = v7;
-  if ((v6 & 1) != 0 || v7)
+  homeCopy = home;
+  hf_hasHomePods = [homeCopy hf_hasHomePods];
+  hf_hasRMVCapableAppleTV = [homeCopy hf_hasRMVCapableAppleTV];
+  v8 = hf_hasRMVCapableAppleTV;
+  if ((hf_hasHomePods & 1) != 0 || hf_hasRMVCapableAppleTV)
   {
     v10 = +[HUHomeFeatureOnboardingUtilities fetchSupportedVoiceRecognitionLanguages];
     v11 = HFLogForCategory();
@@ -2354,7 +2354,7 @@ id __76__HUHomeFeatureOnboardingUtilities_home_processHomeFeatureOnboarderResult
     {
       v12 = NSStringFromSelector(a2);
       v32 = 138413058;
-      v33 = a1;
+      selfCopy6 = self;
       v34 = 2112;
       v35 = v12;
       v36 = 2048;
@@ -2371,7 +2371,7 @@ id __76__HUHomeFeatureOnboardingUtilities_home_processHomeFeatureOnboarderResult
       {
         v31 = NSStringFromSelector(a2);
         v32 = 138412290;
-        v33 = v31;
+        selfCopy6 = v31;
         _os_log_error_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_ERROR, "%@ Error fetching voice recognition languages", &v32, 0xCu);
       }
 
@@ -2379,7 +2379,7 @@ id __76__HUHomeFeatureOnboardingUtilities_home_processHomeFeatureOnboarderResult
       goto LABEL_30;
     }
 
-    if (v8 & 1 | ((v6 & 1) == 0))
+    if (v8 & 1 | ((hf_hasHomePods & 1) == 0))
     {
       if ([HUHomeFeatureOnboardingUtilities isDeviceUsingASupportedVoiceRecognitionSiriLanguage:v10 shouldFallbackToBestSupportedLanguage:0])
       {
@@ -2394,14 +2394,14 @@ LABEL_31:
 
     else
     {
-      v13 = [HUHomeFeatureOnboardingUtilities home:v5 createMultiUserLanguageToHomePodsMapping:v10];
+      v13 = [HUHomeFeatureOnboardingUtilities home:homeCopy createMultiUserLanguageToHomePodsMapping:v10];
       v14 = HFLogForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = NSStringFromSelector(a2);
         v16 = [v13 count];
         v32 = 138413058;
-        v33 = a1;
+        selfCopy6 = self;
         v34 = 2112;
         v35 = v15;
         v36 = 2048;
@@ -2411,8 +2411,8 @@ LABEL_31:
         _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@ languageToHomePodsMapping (%lu) %@", &v32, 0x2Au);
       }
 
-      v17 = [v5 hf_homePods];
-      v18 = [v17 na_any:&__block_literal_global_179];
+      hf_homePods = [homeCopy hf_homePods];
+      v18 = [hf_homePods na_any:&__block_literal_global_179];
 
       if (v18 && ![v13 count])
       {
@@ -2424,7 +2424,7 @@ LABEL_31:
 
         v26 = NSStringFromSelector(a2);
         v32 = 138412802;
-        v33 = a1;
+        selfCopy6 = self;
         v34 = 2112;
         v35 = v26;
         v36 = 2112;
@@ -2438,14 +2438,14 @@ LABEL_31:
       if ([HUHomeFeatureOnboardingUtilities isDeviceUsingASupportedVoiceRecognitionSiriLanguage:v10 shouldFallbackToBestSupportedLanguage:0])
       {
         v19 = [HUHomeFeatureOnboardingUtilities createPersonalIdentityDeviceLanguageMismatchList:v13];
-        v20 = [v5 hf_numberOfHomePods];
+        hf_numberOfHomePods = [homeCopy hf_numberOfHomePods];
         v21 = HFLogForCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v22 = NSStringFromSelector(a2);
           v23 = [v19 count];
           v32 = 138413314;
-          v33 = a1;
+          selfCopy6 = self;
           v34 = 2112;
           v35 = v22;
           v36 = 2048;
@@ -2453,11 +2453,11 @@ LABEL_31:
           v38 = 2112;
           v39 = v19;
           v40 = 2048;
-          v41 = v20;
+          v41 = hf_numberOfHomePods;
           _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "%@:%@ This is the list of %lu mismatching HomePods %@ out of %lu HomePods", &v32, 0x34u);
         }
 
-        if ([v19 count]!= v20)
+        if ([v19 count]!= hf_numberOfHomePods)
         {
           v9 = 1;
           goto LABEL_29;
@@ -2468,11 +2468,11 @@ LABEL_31:
         {
           v25 = NSStringFromSelector(a2);
           v32 = 138412802;
-          v33 = a1;
+          selfCopy6 = self;
           v34 = 2112;
           v35 = v25;
           v36 = 2048;
-          v37 = v20;
+          v37 = hf_numberOfHomePods;
           _os_log_impl(&dword_20CEB6000, v24, OS_LOG_TYPE_DEFAULT, "%@:%@: None of the %lu HomePod(s) in the home match the phone's language", &v32, 0x20u);
         }
 
@@ -2485,7 +2485,7 @@ LABEL_31:
     {
       v26 = NSStringFromSelector(a2);
       v32 = 138412546;
-      v33 = a1;
+      selfCopy6 = self;
       v34 = 2112;
       v35 = v26;
       v27 = "%@:%@: This iOS device is NOT on a supported voice recognition language";
@@ -2509,9 +2509,9 @@ LABEL_32:
   return v9;
 }
 
-+ (id)_checkIdentifyVoicePrerequisitesForHome:(id)a3
++ (id)_checkIdentifyVoicePrerequisitesForHome:(id)home
 {
-  if ([HUHomeFeatureOnboardingUtilities _checkIdentifyVoicePrerequisitesSimpleForHome:a3])
+  if ([HUHomeFeatureOnboardingUtilities _checkIdentifyVoicePrerequisitesSimpleForHome:home])
   {
     [HUHomeFeatureOnboardingUtilities checkVoiceProfileAvailabiltyForLanguage:0];
   }
@@ -2525,15 +2525,15 @@ LABEL_32:
   return v3;
 }
 
-+ (BOOL)_userHasSaidYesToShowTVViewingProfilesIn:(id)a3
++ (BOOL)_userHasSaidYesToShowTVViewingProfilesIn:(id)in
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  inCopy = in;
+  v4 = [inCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2544,13 +2544,13 @@ LABEL_32:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 isEqualToString:{@"HUTVViewingProfilesOnboardingKey_UserInput", v13}])
         {
-          v9 = [v3 objectForKey:v8];
+          v9 = [inCopy objectForKey:v8];
           if (![v9 unsignedIntegerValue] || objc_msgSend(v9, "unsignedIntegerValue") == 1)
           {
 
@@ -2559,16 +2559,16 @@ LABEL_14:
             goto LABEL_15;
           }
 
-          v10 = [v9 unsignedIntegerValue];
+          unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-          if (v10 == 2)
+          if (unsignedIntegerValue == 2)
           {
             goto LABEL_14;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [inCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -2584,41 +2584,41 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)isDeviceUsingASupportedVoiceRecognitionSiriLanguage:(id)a3 shouldFallbackToBestSupportedLanguage:(BOOL)a4
++ (BOOL)isDeviceUsingASupportedVoiceRecognitionSiriLanguage:(id)language shouldFallbackToBestSupportedLanguage:(BOOL)supportedLanguage
 {
-  v4 = a4;
+  supportedLanguageCopy = supportedLanguage;
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 count])
+  languageCopy = language;
+  if ([languageCopy count])
   {
-    v8 = [MEMORY[0x277CEF368] sharedPreferences];
-    v9 = [v8 languageCode];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368] languageCode];
 
-    if (v9)
+    if (languageCode)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = !v4;
+      v10 = !supportedLanguageCopy;
     }
 
     if (!v10)
     {
-      v11 = [MEMORY[0x277CEF368] sharedPreferences];
-      v9 = [v11 bestSupportedLanguageCodeForLanguageCode:0];
+      mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+      languageCode = [mEMORY[0x277CEF368]2 bestSupportedLanguageCodeForLanguageCode:0];
 
       v12 = HFLogForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v22 = a1;
+        selfCopy2 = self;
         v23 = 2112;
         v24 = v13;
         v25 = 2112;
-        v26 = v9;
+        v26 = languageCode;
         _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@:%@: This iOS device has no Siri language, fallback to best supported language: %@. ", buf, 0x20u);
       }
     }
@@ -2627,15 +2627,15 @@ LABEL_15:
     v19[1] = 3221225472;
     v19[2] = __126__HUHomeFeatureOnboardingUtilities_isDeviceUsingASupportedVoiceRecognitionSiriLanguage_shouldFallbackToBestSupportedLanguage___block_invoke;
     v19[3] = &unk_277DBA780;
-    v14 = v9;
+    v14 = languageCode;
     v20 = v14;
-    v15 = [v7 na_any:v19];
+    v15 = [languageCopy na_any:v19];
     v16 = HFLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = NSStringFromSelector(a2);
       *buf = 138413570;
-      v22 = a1;
+      selfCopy2 = self;
       v23 = 2112;
       v24 = v17;
       v25 = 2112;
@@ -2645,7 +2645,7 @@ LABEL_15:
       v29 = 1024;
       v30 = v15;
       v31 = 2112;
-      v32 = v7;
+      v32 = languageCopy;
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@:%@: This iOS device is on %@. %@ is a supported voice recognition language?: %{BOOL}d, (%@)", buf, 0x3Au);
     }
   }
@@ -2679,15 +2679,15 @@ uint64_t __126__HUHomeFeatureOnboardingUtilities_isDeviceUsingASupportedVoiceRec
   return v7;
 }
 
-+ (BOOL)hasUserSaidYesToVoiceIdentificationInResults:(id)a3
++ (BOOL)hasUserSaidYesToVoiceIdentificationInResults:(id)results
 {
   v34 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  resultsCopy = results;
+  v6 = [resultsCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2701,13 +2701,13 @@ uint64_t __126__HUHomeFeatureOnboardingUtilities_isDeviceUsingASupportedVoiceRec
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
         if ([v11 isEqualToString:@"HUVoiceProfileOnboardingKey_UserInput"])
         {
-          v12 = [v5 objectForKey:v11];
+          v12 = [resultsCopy objectForKey:v11];
           if ([v12 unsignedIntegerValue])
           {
             v17 = HFLogForCategory();
@@ -2715,7 +2715,7 @@ uint64_t __126__HUHomeFeatureOnboardingUtilities_isDeviceUsingASupportedVoiceRec
             {
               v18 = NSStringFromSelector(aSelector);
               *buf = 138412546;
-              v28 = a1;
+              selfCopy5 = self;
               v29 = 2112;
               v30 = v18;
               v19 = "%@:%@: NO: 'no' from Voice Profile Setup";
@@ -2730,7 +2730,7 @@ uint64_t __126__HUHomeFeatureOnboardingUtilities_isDeviceUsingASupportedVoiceRec
 
         if ([v11 isEqualToString:@"HULanguageOnboardingKey_SetupLanguage_AssistantDevice_UserInput"])
         {
-          v12 = [v5 objectForKey:v11];
+          v12 = [resultsCopy objectForKey:v11];
           if ([v12 unsignedIntegerValue])
           {
             v17 = HFLogForCategory();
@@ -2738,7 +2738,7 @@ uint64_t __126__HUHomeFeatureOnboardingUtilities_isDeviceUsingASupportedVoiceRec
             {
               v18 = NSStringFromSelector(aSelector);
               *buf = 138412546;
-              v28 = a1;
+              selfCopy5 = self;
               v29 = 2112;
               v30 = v18;
               v19 = "%@:%@: NO: 'no' from Assistant Device Setup";
@@ -2748,7 +2748,7 @@ uint64_t __126__HUHomeFeatureOnboardingUtilities_isDeviceUsingASupportedVoiceRec
 LABEL_33:
 
             v15 = 0;
-            v13 = v5;
+            v13 = resultsCopy;
             goto LABEL_34;
           }
 
@@ -2757,7 +2757,7 @@ LABEL_33:
 
         if ([v11 isEqualToString:@"HULanguageOnboardingKey_SetupLanguage_PersonalDevice_UserInput"])
         {
-          v12 = [v5 objectForKey:v11];
+          v12 = [resultsCopy objectForKey:v11];
           if ([v12 unsignedIntegerValue] != 3 && objc_msgSend(v12, "unsignedIntegerValue") != 4)
           {
             v17 = HFLogForCategory();
@@ -2765,7 +2765,7 @@ LABEL_33:
             {
               v18 = NSStringFromSelector(aSelector);
               *buf = 138412546;
-              v28 = a1;
+              selfCopy5 = self;
               v29 = 2112;
               v30 = v18;
               v19 = "%@:%@: NO: 'no' from Personal Device Setup";
@@ -2780,7 +2780,7 @@ LABEL_32:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v7 = [resultsCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
       if (v7)
       {
         continue;
@@ -2797,11 +2797,11 @@ LABEL_32:
       {
         v14 = NSStringFromSelector(aSelector);
         *buf = 138412802;
-        v28 = a1;
+        selfCopy5 = self;
         v29 = 2112;
         v30 = v14;
         v31 = 2112;
-        v32 = v5;
+        v32 = resultsCopy;
         _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@:%@: YES: 'yes' returned for at least one of the voice identification flows (& 0 'no's) in user input results [%@]", buf, 0x20u);
       }
 
@@ -2819,11 +2819,11 @@ LABEL_32:
   {
     v16 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v28 = a1;
+    selfCopy5 = self;
     v29 = 2112;
     v30 = v16;
     v31 = 2112;
-    v32 = v5;
+    v32 = resultsCopy;
     _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@:%@: NO: 'yes' returned for none of the voice identification flows in user input results [%@]", buf, 0x20u);
   }
 
@@ -2833,12 +2833,12 @@ LABEL_34:
   return v15;
 }
 
-+ (unint64_t)home:(id)a3 checkForOwnerUpgradeRequirementsFromResults:(id)a4
++ (unint64_t)home:(id)home checkForOwnerUpgradeRequirementsFromResults:(id)results
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (([v7 isMultiUserEnabled] & 1) != 0 || (objc_msgSend(v7, "hf_currentUserIsOwner") & 1) != 0 || (v9 = objc_msgSend(v7, "hf_hasHomePods"), v10 = objc_msgSend(v7, "hf_hasAppleTVs"), v11 = v10, (v9 & 1) == 0) && !v10)
+  homeCopy = home;
+  resultsCopy = results;
+  if (([homeCopy isMultiUserEnabled] & 1) != 0 || (objc_msgSend(homeCopy, "hf_currentUserIsOwner") & 1) != 0 || (v9 = objc_msgSend(homeCopy, "hf_hasHomePods"), v10 = objc_msgSend(homeCopy, "hf_hasAppleTVs"), v11 = v10, (v9 & 1) == 0) && !v10)
   {
     v12 = 0;
     goto LABEL_6;
@@ -2846,9 +2846,9 @@ LABEL_34:
 
   if (v9)
   {
-    if ([HUHomeFeatureOnboardingUtilities _checkIdentifyVoicePrerequisitesSimpleForHome:v7])
+    if ([HUHomeFeatureOnboardingUtilities _checkIdentifyVoicePrerequisitesSimpleForHome:homeCopy])
     {
-      v9 = [HUHomeFeatureOnboardingUtilities hasUserSaidYesToVoiceIdentificationInResults:v8];
+      v9 = [HUHomeFeatureOnboardingUtilities hasUserSaidYesToVoiceIdentificationInResults:resultsCopy];
       v14 = HFLogForCategory();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
       if (v9)
@@ -2860,7 +2860,7 @@ LABEL_34:
 
         v16 = NSStringFromSelector(a2);
         *v20 = 138412546;
-        *&v20[4] = a1;
+        *&v20[4] = self;
         *&v20[12] = 2112;
         *&v20[14] = v16;
         v17 = "%@:%@ Found at least 1 HomePod which will work for Multi User if the owner upgrades";
@@ -2875,7 +2875,7 @@ LABEL_34:
 
         v16 = NSStringFromSelector(a2);
         *v20 = 138412546;
-        *&v20[4] = a1;
+        *&v20[4] = self;
         *&v20[12] = 2112;
         *&v20[14] = v16;
         v17 = "%@:%@ Found at least 1 HomePod which could work for Multi User if the owner upgrades, but user did not turn on Identify Voice, so ignoring";
@@ -2890,7 +2890,7 @@ LABEL_22:
       }
 
 LABEL_14:
-      v18 = [HUHomeFeatureOnboardingUtilities _userHasSaidYesToShowTVViewingProfilesIn:v8, *v20, *&v20[16], v21];
+      v18 = [HUHomeFeatureOnboardingUtilities _userHasSaidYesToShowTVViewingProfilesIn:resultsCopy, *v20, *&v20[16], v21];
       if (v9 & v18)
       {
         v12 = 3;
@@ -2932,32 +2932,32 @@ LABEL_6:
   return v12;
 }
 
-+ (unint64_t)home:(id)a3 checkForMultiUserDeviceUpgradeRequirements:(id)a4
++ (unint64_t)home:(id)home checkForMultiUserDeviceUpgradeRequirements:(id)requirements
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  requirementsCopy = requirements;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
-  v33 = [v7 hf_hasHomePods];
+  hf_hasHomePods = [homeCopy hf_hasHomePods];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
-  v29 = [v7 hf_hasAppleTVs];
+  hf_hasAppleTVs = [homeCopy hf_hasAppleTVs];
   if ((v31[3] & 1) == 0 && !*(v27 + 24))
   {
     goto LABEL_16;
   }
 
-  v9 = [v7 accessories];
+  accessories = [homeCopy accessories];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeRequirements___block_invoke;
   v25[3] = &unk_277DBABC0;
   v25[4] = &v30;
   v25[5] = &v26;
-  [v9 na_each:v25];
+  [accessories na_each:v25];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2966,7 +2966,7 @@ LABEL_6:
     v12 = *(v31 + 24) ^ 1;
     v13 = *(v27 + 24) ^ 1;
     *buf = 138413058;
-    v35 = a1;
+    selfCopy5 = self;
     v36 = 2112;
     v37 = v11;
     v38 = 1024;
@@ -2987,13 +2987,13 @@ LABEL_21:
       {
         v22 = NSStringFromSelector(a2);
         *buf = 138412546;
-        v35 = a1;
+        selfCopy5 = self;
         v36 = 2112;
         v37 = v22;
         _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "%@:%@ Found at least 1 AppleTV which needs upgrade for Multi User", buf, 0x16u);
       }
 
-      v23 = [HUHomeFeatureOnboardingUtilities _userHasSaidYesToShowTVViewingProfilesIn:v8];
+      v23 = [HUHomeFeatureOnboardingUtilities _userHasSaidYesToShowTVViewingProfilesIn:requirementsCopy];
       if (v16 & v23)
       {
         v19 = 3;
@@ -3014,14 +3014,14 @@ LABEL_16:
     goto LABEL_30;
   }
 
-  if (![HUHomeFeatureOnboardingUtilities _checkIdentifyVoicePrerequisitesSimpleForHome:v7])
+  if (![HUHomeFeatureOnboardingUtilities _checkIdentifyVoicePrerequisitesSimpleForHome:homeCopy])
   {
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v18 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v35 = a1;
+      selfCopy5 = self;
       v36 = 2112;
       v37 = v18;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@ Found at least 1 HomePod which could need upgrade for Multi User, but prequisistes aren't satisfied, so ignoring", buf, 0x16u);
@@ -3030,14 +3030,14 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  if (![HUHomeFeatureOnboardingUtilities hasUserSaidYesToVoiceIdentificationInResults:v8])
+  if (![HUHomeFeatureOnboardingUtilities hasUserSaidYesToVoiceIdentificationInResults:requirementsCopy])
   {
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v20 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v35 = a1;
+      selfCopy5 = self;
       v36 = 2112;
       v37 = v20;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@ Found at least 1 HomePod which could need upgrade for Multi User, but user did not turn on Identify Voice, so ignoring", buf, 0x16u);
@@ -3053,7 +3053,7 @@ LABEL_19:
   {
     v15 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v35 = a1;
+    selfCopy5 = self;
     v36 = 2112;
     v37 = v15;
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@ Found at least 1 HomePod which needs upgrade for Multi User", buf, 0x16u);
@@ -3100,16 +3100,16 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
   }
 }
 
-+ (id)groupedFeaturesForOnboardingFlowKeyPaths:(id)a3
++ (id)groupedFeaturesForOnboardingFlowKeyPaths:(id)paths
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathsCopy = paths;
   v4 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v3;
+  v5 = pathsCopy;
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
   {
@@ -3189,17 +3189,17 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
   return v22;
 }
 
-+ (id)analyzeHomeAssistantDevicesForSupportedVoiceRecognitionLanguages:(id)a3 home:(id)a4
++ (id)analyzeHomeAssistantDevicesForSupportedVoiceRecognitionLanguages:(id)languages home:(id)home
 {
   v55 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v5 = a4;
+  languagesCopy = languages;
+  homeCopy = home;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v38 = [v5 hf_allHomePodProfileContainers];
+  hf_allHomePodProfileContainers = [homeCopy hf_allHomePodProfileContainers];
   [v7 na_safeAddObjectsFromArray:?];
-  v8 = [v5 hf_allSiriEndPointProfileContainers];
-  [v7 na_safeAddObjectsFromArray:v8];
+  hf_allSiriEndPointProfileContainers = [homeCopy hf_allSiriEndPointProfileContainers];
+  [v7 na_safeAddObjectsFromArray:hf_allSiriEndPointProfileContainers];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -3209,8 +3209,8 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
   if (v10)
   {
     v11 = v10;
-    v35 = v8;
-    v36 = v5;
+    v35 = hf_allSiriEndPointProfileContainers;
+    v36 = homeCopy;
     v37 = v6;
     v39 = 0;
     v40 = 0;
@@ -3270,8 +3270,8 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
 
         if (v20)
         {
-          v28 = [v20 recognitionLanguage];
-          if ([v42 containsObject:v28])
+          recognitionLanguage = [v20 recognitionLanguage];
+          if ([languagesCopy containsObject:recognitionLanguage])
           {
             v29 = v39;
             if (!v39)
@@ -3296,18 +3296,18 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
 
         else
         {
-          v28 = HFLogForCategory();
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+          recognitionLanguage = HFLogForCategory();
+          if (os_log_type_enabled(recognitionLanguage, OS_LOG_TYPE_ERROR))
           {
             v30 = NSStringFromSelector(a2);
-            v31 = [v38 count];
+            v31 = [hf_allHomePodProfileContainers count];
             *buf = 138412802;
             v49 = v30;
             v50 = 2112;
             v51 = v19;
             v52 = 2048;
             v53 = v31;
-            _os_log_error_impl(&dword_20CEB6000, v28, OS_LOG_TYPE_ERROR, "%@ Recognition Language unavailable for device with MediaProfile [%@] (1 of %lu HomePods)", buf, 0x20u);
+            _os_log_error_impl(&dword_20CEB6000, recognitionLanguage, OS_LOG_TYPE_ERROR, "%@ Recognition Language unavailable for device with MediaProfile [%@] (1 of %lu HomePods)", buf, 0x20u);
           }
         }
       }
@@ -3323,8 +3323,8 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
       [v37 setObject:v40 forKey:@"languageMismatch"];
     }
 
-    v8 = v35;
-    v5 = v36;
+    hf_allSiriEndPointProfileContainers = v35;
+    homeCopy = v36;
     v32 = v39;
     if (v39)
     {
@@ -3344,15 +3344,15 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
   return v6;
 }
 
-+ (id)home:(id)a3 createMultiUserLanguageToHomePodsMapping:(id)a4
++ (id)home:(id)home createMultiUserLanguageToHomePodsMapping:(id)mapping
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v32 = a4;
+  homeCopy = home;
+  mappingCopy = mapping;
   v6 = objc_opt_new();
-  v27 = [v5 hf_allHomePodProfileContainers];
+  hf_allHomePodProfileContainers = [homeCopy hf_allHomePodProfileContainers];
   [v6 na_safeAddObjectsFromArray:?];
-  v26 = [v5 hf_allSiriEndPointProfileContainers];
+  hf_allSiriEndPointProfileContainers = [homeCopy hf_allSiriEndPointProfileContainers];
   [v6 na_safeAddObjectsFromArray:?];
   v7 = objc_opt_new();
   v33 = 0u;
@@ -3394,50 +3394,50 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
         v17 = v16;
         if (v16)
         {
-          v18 = [v16 recognitionLanguage];
+          recognitionLanguage = [v16 recognitionLanguage];
           v19 = HFLogForCategory();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             v20 = NSStringFromSelector(a2);
             *buf = 138413058;
-            v38 = a1;
+            selfCopy = self;
             v39 = 2112;
             v40 = v20;
             v41 = 2112;
             v42 = v15;
             v43 = 2112;
-            v44 = v18;
+            v44 = recognitionLanguage;
             _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "%@:%@ Found HomePod %@ with language %@", buf, 0x2Au);
 
             v7 = v29;
           }
 
-          if ([v32 containsObject:v18])
+          if ([mappingCopy containsObject:recognitionLanguage])
           {
-            v21 = [v7 objectForKey:v18];
-            if (!v21)
+            array = [v7 objectForKey:recognitionLanguage];
+            if (!array)
             {
-              v21 = [MEMORY[0x277CBEB18] array];
+              array = [MEMORY[0x277CBEB18] array];
             }
 
-            [v21 addObject:v15];
-            [v7 setObject:v21 forKey:v18];
+            [array addObject:v15];
+            [v7 setObject:array forKey:recognitionLanguage];
           }
 
           else
           {
-            v21 = HFLogForCategory();
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+            array = HFLogForCategory();
+            if (os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT))
             {
               v22 = NSStringFromSelector(a2);
-              v23 = [v17 recognitionLanguage];
+              recognitionLanguage2 = [v17 recognitionLanguage];
               *buf = 138412802;
-              v38 = v22;
+              selfCopy = v22;
               v39 = 2112;
               v40 = v15;
               v41 = 2112;
-              v42 = v23;
-              _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "%@ MultiUser Language Check: HomePod [%@] in unsupported language: %@", buf, 0x20u);
+              v42 = recognitionLanguage2;
+              _os_log_impl(&dword_20CEB6000, array, OS_LOG_TYPE_DEFAULT, "%@ MultiUser Language Check: HomePod [%@] in unsupported language: %@", buf, 0x20u);
 
               v7 = v29;
             }
@@ -3456,19 +3456,19 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
   return v24;
 }
 
-+ (id)createPersonalIdentityDeviceLanguageMismatchList:(id)a3
++ (id)createPersonalIdentityDeviceLanguageMismatchList:(id)list
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CEF368] sharedPreferences];
-  v6 = [v5 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v3;
+  v7 = listCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -3484,7 +3484,7 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (([v12 isEqualToString:{v6, v15}] & 1) == 0)
+        if (([v12 isEqualToString:{languageCode, v15}] & 1) == 0)
         {
           [v4 addObject:v12];
         }
@@ -3501,16 +3501,16 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
   return v13;
 }
 
-+ (id)processLanguageAndMediaProfileInfo:(id)a3
++ (id)processLanguageAndMediaProfileInfo:(id)info
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = infoCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
@@ -3527,8 +3527,8 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
 
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = [v5 objectForKeyedSubscript:{v10, v17}];
-        v12 = [MEMORY[0x277CEF2D8] sharedInstance];
-        v13 = [v12 localizedNameForSiriLanguage:v10 inDisplayLanguage:0];
+        mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+        v13 = [mEMORY[0x277CEF2D8] localizedNameForSiriLanguage:v10 inDisplayLanguage:0];
 
         v21[0] = @"languageCodeKey";
         v21[1] = @"localizedLanguageNameKey";
@@ -3551,19 +3551,19 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
   return v15;
 }
 
-+ (id)checkVoiceProfileAvailabiltyForLanguage:(id)a3
++ (id)checkVoiceProfileAvailabiltyForLanguage:(id)language
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  languageCopy = language;
+  v6 = languageCopy;
+  if (languageCopy)
   {
-    v7 = v5;
+    languageCode = languageCopy;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CEF368] sharedPreferences];
-    v7 = [v8 languageCode];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368] languageCode];
   }
 
   v9 = MEMORY[0x277D2C900];
@@ -3571,13 +3571,13 @@ void __84__HUHomeFeatureOnboardingUtilities_home_checkForMultiUserDeviceUpgradeR
   v15[1] = 3221225472;
   v15[2] = __76__HUHomeFeatureOnboardingUtilities_checkVoiceProfileAvailabiltyForLanguage___block_invoke;
   v15[3] = &unk_277DBAC10;
-  v17 = a1;
+  selfCopy = self;
   v18 = a2;
-  v16 = v7;
-  v10 = v7;
+  v16 = languageCode;
+  v10 = languageCode;
   v11 = [v9 futureWithBlock:v15];
-  v12 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v13 = [v11 reschedule:v12];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v13 = [v11 reschedule:mainThreadScheduler];
 
   return v13;
 }
@@ -3642,35 +3642,35 @@ void __76__HUHomeFeatureOnboardingUtilities_checkVoiceProfileAvailabiltyForLangu
   [v10 finishWithResult:v11 error:v5];
 }
 
-+ (BOOL)isVoiceProfileAvailableOnThisDeviceForLanguage:(id)a3
++ (BOOL)isVoiceProfileAvailableOnThisDeviceForLanguage:(id)language
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  languageCopy = language;
+  v6 = languageCopy;
+  if (languageCopy)
   {
-    v7 = v5;
+    languageCode = languageCopy;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CEF368] sharedPreferences];
-    v7 = [v8 languageCode];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368] languageCode];
   }
 
-  v9 = [MEMORY[0x277D653F8] sharedInstance];
-  v10 = [v9 isSATEnrolledForSiriProfileId:0 forLanguageCode:v7];
+  mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+  v10 = [mEMORY[0x277D653F8] isSATEnrolledForSiriProfileId:0 forLanguageCode:languageCode];
 
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = NSStringFromSelector(a2);
     v14 = 138413058;
-    v15 = a1;
+    selfCopy = self;
     v16 = 2112;
     v17 = v12;
     v18 = 2112;
-    v19 = v7;
+    v19 = languageCode;
     v20 = 1024;
     v21 = v10;
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@:%@ Hey Siri Voice Profile exists on this device for language: %@ ? Answer: %{BOOL}d", &v14, 0x26u);

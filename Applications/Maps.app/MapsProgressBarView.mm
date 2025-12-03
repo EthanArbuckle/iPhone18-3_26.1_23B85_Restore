@@ -1,10 +1,10 @@
 @interface MapsProgressBarView
-- (MapsProgressBarView)initWithFrame:(CGRect)a3;
+- (MapsProgressBarView)initWithFrame:(CGRect)frame;
 - (void)_customInit;
 - (void)_updateFillConstraint;
 - (void)_updateFillTintColor;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 - (void)tintColorDidChange;
 - (void)updateTheme;
 @end
@@ -21,33 +21,33 @@
 
 - (void)_updateFillTintColor
 {
-  v3 = [(MapsProgressBarView *)self window];
+  window = [(MapsProgressBarView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     return;
   }
 
-  v4 = [(MapsProgressBarView *)self theme];
+  theme = [(MapsProgressBarView *)self theme];
   fillStyle = self->_fillStyle;
   switch(fillStyle)
   {
     case 2uLL:
-      v8 = v4;
-      v6 = [(MapsProgressBarView *)self tintColor];
+      v8 = theme;
+      tintColor = [(MapsProgressBarView *)self tintColor];
       goto LABEL_9;
     case 1uLL:
-      v8 = v4;
-      v6 = [v4 progressBarLightFillTintColor];
+      v8 = theme;
+      tintColor = [theme progressBarLightFillTintColor];
       goto LABEL_9;
     case 0uLL:
-      v8 = v4;
-      v6 = [v4 progressBarDarkFillTintColor];
+      v8 = theme;
+      tintColor = [theme progressBarDarkFillTintColor];
 LABEL_9:
-      v7 = v6;
-      [(UIView *)self->_fillView setBackgroundColor:v6];
+      v7 = tintColor;
+      [(UIView *)self->_fillView setBackgroundColor:tintColor];
 
-      v4 = v8;
+      theme = v8;
       break;
   }
 }
@@ -77,37 +77,37 @@ LABEL_9:
   [(MapsProgressBarView *)&v7 layoutSubviews];
   [(MapsProgressBarView *)self bounds];
   v3 = CGRectGetHeight(v8) * 0.5;
-  v4 = [(MapsProgressBarView *)self layer];
-  [v4 setCornerRadius:v3];
+  layer = [(MapsProgressBarView *)self layer];
+  [layer setCornerRadius:v3];
 
   [(UIView *)self->_fillView bounds];
   v5 = CGRectGetHeight(v9) * 0.5;
-  v6 = [(UIView *)self->_fillView layer];
-  [v6 setCornerRadius:v5];
+  layer2 = [(UIView *)self->_fillView layer];
+  [layer2 setCornerRadius:v5];
 
   [(MapsProgressBarView *)self _updateFillConstraint];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    v3 = fmin(fmax(a3, 0.0), 1.0);
-    if (a3 < 0.0 || a3 > 1.0)
+    v3 = fmin(fmax(progress, 0.0), 1.0);
+    if (progress < 0.0 || progress > 1.0)
     {
-      a3 = v3;
+      progress = v3;
     }
 
-    self->_progress = a3;
+    self->_progress = progress;
     [(MapsProgressBarView *)self _updateFillConstraint];
   }
 }
 
 - (void)updateTheme
 {
-  v4 = [(MapsProgressBarView *)self theme];
-  v3 = [v4 progressBarTrackTintColor];
-  [(MapsProgressBarView *)self setBackgroundColor:v3];
+  theme = [(MapsProgressBarView *)self theme];
+  progressBarTrackTintColor = [theme progressBarTrackTintColor];
+  [(MapsProgressBarView *)self setBackgroundColor:progressBarTrackTintColor];
 
   [(MapsProgressBarView *)self _updateFillTintColor];
 }
@@ -122,23 +122,23 @@ LABEL_9:
 
   [(UIView *)self->_fillView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MapsProgressBarView *)self addSubview:self->_fillView];
-  v5 = [(UIView *)self->_fillView trailingAnchor];
-  v6 = [(MapsProgressBarView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  trailingAnchor = [(UIView *)self->_fillView trailingAnchor];
+  leadingAnchor = [(MapsProgressBarView *)self leadingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:leadingAnchor];
   progressFillConstraint = self->_progressFillConstraint;
   self->_progressFillConstraint = v7;
 
-  v19 = [(UIView *)self->_fillView topAnchor];
-  v9 = [(MapsProgressBarView *)self topAnchor];
-  v10 = [v19 constraintEqualToAnchor:v9];
+  topAnchor = [(UIView *)self->_fillView topAnchor];
+  topAnchor2 = [(MapsProgressBarView *)self topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[0] = v10;
-  v11 = [(UIView *)self->_fillView bottomAnchor];
-  v12 = [(MapsProgressBarView *)self bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [(UIView *)self->_fillView bottomAnchor];
+  bottomAnchor2 = [(MapsProgressBarView *)self bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[1] = v13;
-  v14 = [(UIView *)self->_fillView leadingAnchor];
-  v15 = [(MapsProgressBarView *)self leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  leadingAnchor2 = [(UIView *)self->_fillView leadingAnchor];
+  leadingAnchor3 = [(MapsProgressBarView *)self leadingAnchor];
+  v16 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   v17 = self->_progressFillConstraint;
   v20[2] = v16;
   v20[3] = v17;
@@ -146,11 +146,11 @@ LABEL_9:
   [NSLayoutConstraint activateConstraints:v18];
 }
 
-- (MapsProgressBarView)initWithFrame:(CGRect)a3
+- (MapsProgressBarView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = MapsProgressBarView;
-  v3 = [(MapsProgressBarView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsProgressBarView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

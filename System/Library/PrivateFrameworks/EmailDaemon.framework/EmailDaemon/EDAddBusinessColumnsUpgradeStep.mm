@@ -1,5 +1,5 @@
 @interface EDAddBusinessColumnsUpgradeStep
-+ (BOOL)runWithConnection:(id)a3 protectedIndexInitialized:(BOOL)a4 protectedDatabaseName:(id)a5;
++ (BOOL)runWithConnection:(id)connection protectedIndexInitialized:(BOOL)initialized protectedDatabaseName:(id)name;
 + (id)_businessesTableSchema;
 + (id)log;
 @end
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __38__EDAddBusinessColumnsUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -31,22 +31,22 @@ void __38__EDAddBusinessColumnsUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_2 = v1;
 }
 
-+ (BOOL)runWithConnection:(id)a3 protectedIndexInitialized:(BOOL)a4 protectedDatabaseName:(id)a5
++ (BOOL)runWithConnection:(id)connection protectedIndexInitialized:(BOOL)initialized protectedDatabaseName:(id)name
 {
-  v6 = a4;
+  initializedCopy = initialized;
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v6)
+  connectionCopy = connection;
+  nameCopy = name;
+  if (!initializedCopy)
   {
     goto LABEL_11;
   }
 
-  if (!sqlite3_exec([v8 sqlDB], "DROP TABLE businesses", 0, 0, 0))
+  if (!sqlite3_exec([connectionCopy sqlDB], "DROP TABLE businesses", 0, 0, 0))
   {
-    v11 = [a1 _businessesTableSchema];
-    v12 = [v11 definitionWithDatabaseName:v9];
-    if (sqlite3_exec([v8 sqlDB], objc_msgSend(v12, "UTF8String"), 0, 0, 0))
+    _businessesTableSchema = [self _businessesTableSchema];
+    v12 = [_businessesTableSchema definitionWithDatabaseName:nameCopy];
+    if (sqlite3_exec([connectionCopy sqlDB], objc_msgSend(v12, "UTF8String"), 0, 0, 0))
     {
       v13 = +[EDAddBusinessColumnsUpgradeStep log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@ void __38__EDAddBusinessColumnsUpgradeStep_log__block_invoke(uint64_t a1)
     }
 
 LABEL_11:
-    if ([v8 columnExists:@"last_bcs_sync" inTable:@"business_addresses" type:0])
+    if ([connectionCopy columnExists:@"last_bcs_sync" inTable:@"business_addresses" type:0])
     {
       v14 = +[EDAddBusinessColumnsUpgradeStep log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -72,7 +72,7 @@ LABEL_11:
     else
     {
       v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ALTER TABLE %@ ADD %@ INTEGER", @"business_addresses", @"last_bcs_sync"];
-      if (sqlite3_exec([v8 sqlDB], objc_msgSend(v15, "UTF8String"), 0, 0, 0))
+      if (sqlite3_exec([connectionCopy sqlDB], objc_msgSend(v15, "UTF8String"), 0, 0, 0))
       {
         v16 = +[EDAddBusinessColumnsUpgradeStep log];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -127,34 +127,34 @@ LABEL_22:
   [v33 addUniquenessConstraintForColumns:v5 conflictResolution:1];
 
   v6 = objc_alloc(MEMORY[0x1E699B898]);
-  v7 = [v37 columnExpression];
-  v8 = [v7 isNotNull];
-  v40[0] = v8;
-  v9 = [v36 columnExpression];
-  v10 = [v9 isNotNull];
-  v40[1] = v10;
-  v11 = [v35 columnExpression];
-  v12 = [v11 isNull];
-  v40[2] = v12;
-  v13 = [v34 columnExpression];
-  v14 = [v13 isNull];
-  v40[3] = v14;
+  columnExpression = [v37 columnExpression];
+  isNotNull = [columnExpression isNotNull];
+  v40[0] = isNotNull;
+  columnExpression2 = [v36 columnExpression];
+  isNotNull2 = [columnExpression2 isNotNull];
+  v40[1] = isNotNull2;
+  columnExpression3 = [v35 columnExpression];
+  isNull = [columnExpression3 isNull];
+  v40[2] = isNull;
+  columnExpression4 = [v34 columnExpression];
+  isNull2 = [columnExpression4 isNull];
+  v40[3] = isNull2;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
   v32 = [v6 initWithExpressions:v15];
 
   v16 = objc_alloc(MEMORY[0x1E699B898]);
-  v17 = [v37 columnExpression];
-  v18 = [v17 isNull];
-  v39[0] = v18;
-  v19 = [v36 columnExpression];
-  v20 = [v19 isNull];
-  v39[1] = v20;
-  v21 = [v35 columnExpression];
-  v22 = [v21 isNotNull];
-  v39[2] = v22;
-  v23 = [v34 columnExpression];
-  v24 = [v23 isNotNull];
-  v39[3] = v24;
+  columnExpression5 = [v37 columnExpression];
+  isNull3 = [columnExpression5 isNull];
+  v39[0] = isNull3;
+  columnExpression6 = [v36 columnExpression];
+  isNull4 = [columnExpression6 isNull];
+  v39[1] = isNull4;
+  columnExpression7 = [v35 columnExpression];
+  isNotNull3 = [columnExpression7 isNotNull];
+  v39[2] = isNotNull3;
+  columnExpression8 = [v34 columnExpression];
+  isNotNull4 = [columnExpression8 isNotNull];
+  v39[3] = isNotNull4;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:4];
   v26 = [v16 initWithExpressions:v25];
 

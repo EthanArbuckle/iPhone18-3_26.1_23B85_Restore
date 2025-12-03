@@ -1,46 +1,46 @@
 @interface SRCall
 - (BOOL)conferenceCall;
-- (SRCall)initWithCall:(id)a3;
+- (SRCall)initWithCall:(id)call;
 @end
 
 @implementation SRCall
 
-- (SRCall)initWithCall:(id)a3
+- (SRCall)initWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v19.receiver = self;
   v19.super_class = SRCall;
   v5 = [(SRCall *)&v19 init];
   if (v5)
   {
-    v6 = [v4 callUUID];
+    callUUID = [callCopy callUUID];
     callUUID = v5->_callUUID;
-    v5->_callUUID = v6;
+    v5->_callUUID = callUUID;
 
-    v5->_connecting = [v4 isConnecting];
-    v5->_connected = [v4 isConnected];
-    v5->_endpointOnCurrentDevice = [v4 isEndpointOnCurrentDevice];
-    v5->_incoming = [v4 isIncoming];
-    v5->_outgoing = [v4 isOutgoing];
-    v8 = [v4 provider];
-    v9 = [v8 bundleIdentifier];
+    v5->_connecting = [callCopy isConnecting];
+    v5->_connected = [callCopy isConnected];
+    v5->_endpointOnCurrentDevice = [callCopy isEndpointOnCurrentDevice];
+    v5->_incoming = [callCopy isIncoming];
+    v5->_outgoing = [callCopy isOutgoing];
+    provider = [callCopy provider];
+    bundleIdentifier = [provider bundleIdentifier];
     providerBundleIdentifier = v5->_providerBundleIdentifier;
-    v5->_providerBundleIdentifier = v9;
+    v5->_providerBundleIdentifier = bundleIdentifier;
 
-    v11 = [v4 provider];
-    v12 = [v11 identifier];
+    provider2 = [callCopy provider];
+    identifier = [provider2 identifier];
     providerIdentifier = v5->_providerIdentifier;
-    v5->_providerIdentifier = v12;
+    v5->_providerIdentifier = identifier;
 
-    v14 = [v4 provider];
-    v15 = [v14 localizedName];
+    provider3 = [callCopy provider];
+    localizedName = [provider3 localizedName];
     providerLocalizedName = v5->_providerLocalizedName;
-    v5->_providerLocalizedName = v15;
+    v5->_providerLocalizedName = localizedName;
 
-    v17 = [v4 provider];
-    v5->_providerSystemProvider = [v17 isSystemProvider];
+    provider4 = [callCopy provider];
+    v5->_providerSystemProvider = [provider4 isSystemProvider];
 
-    v5->_status = [v4 status];
+    v5->_status = [callCopy status];
   }
 
   return v5;
@@ -48,9 +48,9 @@
 
 - (BOOL)conferenceCall
 {
-  v3 = [(SRCall *)self providerBundleIdentifier];
+  providerBundleIdentifier = [(SRCall *)self providerBundleIdentifier];
 
-  if (!v3)
+  if (!providerBundleIdentifier)
   {
     return 0;
   }
@@ -75,9 +75,9 @@ LABEL_4:
       }
 
       v9 = *(*(&v14 + 1) + 8 * v8);
-      v10 = [(SRCall *)self providerBundleIdentifier];
+      providerBundleIdentifier2 = [(SRCall *)self providerBundleIdentifier];
       v11 = 1;
-      v12 = [v10 rangeOfString:v9 options:1];
+      v12 = [providerBundleIdentifier2 rangeOfString:v9 options:1];
 
       if (v12 != 0x7FFFFFFFFFFFFFFFLL)
       {

@@ -1,16 +1,16 @@
 @interface BKSHIDEventDiscreteDispatchingRoot
-- (id)decodePayload:(id)a3;
+- (id)decodePayload:(id)payload;
 @end
 
 @implementation BKSHIDEventDiscreteDispatchingRoot
 
-- (id)decodePayload:(id)a3
+- (id)decodePayload:(id)payload
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 error];
+  payloadCopy = payload;
+  error = [payloadCopy error];
 
-  if (v4)
+  if (error)
   {
     v5 = BKLogEventDelivery();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -20,9 +20,9 @@ LABEL_3:
       goto LABEL_4;
     }
 
-    v17 = [v3 error];
+    error2 = [payloadCopy error];
     *buf = 138543362;
-    v34 = v17;
+    v34 = error2;
     v18 = "WTAF sticky error %{public}@";
 LABEL_31:
     _os_log_error_impl(&dword_186345000, v5, OS_LOG_TYPE_ERROR, v18, buf, 0xCu);
@@ -34,7 +34,7 @@ LABEL_31:
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"payload"];
+  v13 = [payloadCopy decodeObjectOfClasses:v12 forKey:@"payload"];
 
   if (!v13)
   {
@@ -44,9 +44,9 @@ LABEL_31:
       goto LABEL_3;
     }
 
-    v17 = [v3 error];
+    error2 = [payloadCopy error];
     *buf = 138543362;
-    v34 = v17;
+    v34 = error2;
     v18 = "payload is missing %{public}@";
     goto LABEL_31;
   }
@@ -83,7 +83,7 @@ LABEL_31:
 
     *buf = 138543362;
     v34 = objc_opt_class();
-    v17 = v34;
+    error2 = v34;
     v18 = "payload is wrong class (got %{public}@)";
     goto LABEL_31;
   }

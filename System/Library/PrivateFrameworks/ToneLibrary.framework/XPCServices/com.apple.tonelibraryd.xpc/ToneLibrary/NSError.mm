@@ -1,18 +1,18 @@
 @interface NSError
-+ (id)tl_errorWithDomain:(id)a3 description:(id)a4;
++ (id)tl_errorWithDomain:(id)domain description:(id)description;
 - (id)tl_nonRedundantDescription;
 @end
 
 @implementation NSError
 
-+ (id)tl_errorWithDomain:(id)a3 description:(id)a4
++ (id)tl_errorWithDomain:(id)domain description:(id)description
 {
-  v6 = a3;
-  if (a4)
+  domainCopy = domain;
+  if (description)
   {
     v12 = &v16;
-    v7 = a4;
-    v8 = [[NSString alloc] initWithFormat:v7 arguments:&v16];
+    descriptionCopy = description;
+    v8 = [[NSString alloc] initWithFormat:descriptionCopy arguments:&v16];
 
     if (v8)
     {
@@ -32,7 +32,7 @@
     v9 = 0;
   }
 
-  v10 = [a1 errorWithDomain:v6 code:0 userInfo:{v9, v12}];
+  v10 = [self errorWithDomain:domainCopy code:0 userInfo:{v9, v12}];
 
   return v10;
 }
@@ -40,8 +40,8 @@
 - (id)tl_nonRedundantDescription
 {
   v3 = [(NSError *)self description];
-  v4 = [(NSError *)self userInfo];
-  v5 = [v4 objectForKey:NSLocalizedDescriptionKey];
+  userInfo = [(NSError *)self userInfo];
+  v5 = [userInfo objectForKey:NSLocalizedDescriptionKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

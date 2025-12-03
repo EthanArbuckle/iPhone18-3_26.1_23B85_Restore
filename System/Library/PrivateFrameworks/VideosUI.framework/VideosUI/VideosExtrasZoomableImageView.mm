@@ -3,27 +3,27 @@
 - (CGPoint)_minimumContentOffset;
 - (CGPoint)pointToCenterAfterResize;
 - (CGSize)imageSize;
-- (VideosExtrasZoomableImageView)initWithFrame:(CGRect)a3;
+- (VideosExtrasZoomableImageView)initWithFrame:(CGRect)frame;
 - (void)_prepareToResize;
 - (void)_recoverFromResizing;
 - (void)_updateMinimumAndMaximumZoomScalesForCurrentBounds;
 - (void)dealloc;
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4;
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished;
 - (void)layoutSubviews;
-- (void)performZoomingImageTransitionWithContext:(id)a3;
-- (void)prepareZoomingImageTransitionWithContext:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)zoomToPoint:(CGPoint)a3 animated:(BOOL)a4;
+- (void)performZoomingImageTransitionWithContext:(id)context;
+- (void)prepareZoomingImageTransitionWithContext:(id)context;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)zoomToPoint:(CGPoint)point animated:(BOOL)animated;
 @end
 
 @implementation VideosExtrasZoomableImageView
 
-- (VideosExtrasZoomableImageView)initWithFrame:(CGRect)a3
+- (VideosExtrasZoomableImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VideosExtrasZoomableImageView;
-  v3 = [(VideosExtrasZoomableImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VideosExtrasZoomableImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,12 +45,12 @@
   [(VideosExtrasZoomableImageView *)&v3 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(VideosExtrasZoomableImageView *)self frame];
   if (width == v9 && height == v8)
   {
@@ -74,11 +74,11 @@
   v12.receiver = self;
   v12.super_class = VideosExtrasZoomableImageView;
   [(VideosExtrasZoomableImageView *)&v12 layoutSubviews];
-  v3 = [(VideosExtrasZoomableImageView *)self zoomView];
+  zoomView = [(VideosExtrasZoomableImageView *)self zoomView];
   [(VideosExtrasZoomableImageView *)self bounds];
   v5 = v4;
   v7 = v6;
-  [v3 frame];
+  [zoomView frame];
   v10 = (v5 - v9) * 0.5;
   if (v9 >= v5)
   {
@@ -91,51 +91,51 @@
     v11 = 0.0;
   }
 
-  [v3 setFrame:{v10, v11}];
+  [zoomView setFrame:{v10, v11}];
 }
 
-- (void)prepareZoomingImageTransitionWithContext:(id)a3
+- (void)prepareZoomingImageTransitionWithContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   [(VideosExtrasZoomableImageView *)self setNeedsLayout];
   [(VideosExtrasZoomableImageView *)self layoutIfNeeded];
-  v4 = [(VideosExtrasZoomableImageView *)self zoomView];
-  if ([v6 appearState] == 1)
+  zoomView = [(VideosExtrasZoomableImageView *)self zoomView];
+  if ([contextCopy appearState] == 1)
   {
-    v5 = [v6 zoomingImageView];
-    [v5 replicateStateFromImageView:v4];
+    zoomingImageView = [contextCopy zoomingImageView];
+    [zoomingImageView replicateStateFromImageView:zoomView];
   }
 
-  [v4 setHidden:1];
+  [zoomView setHidden:1];
 }
 
-- (void)performZoomingImageTransitionWithContext:(id)a3
+- (void)performZoomingImageTransitionWithContext:(id)context
 {
-  v6 = a3;
-  if (![v6 appearState])
+  contextCopy = context;
+  if (![contextCopy appearState])
   {
-    v4 = [v6 zoomingImageView];
-    v5 = [(VideosExtrasZoomableImageView *)self zoomView];
-    [v4 replicateStateFromImageView:v5];
+    zoomingImageView = [contextCopy zoomingImageView];
+    zoomView = [(VideosExtrasZoomableImageView *)self zoomView];
+    [zoomingImageView replicateStateFromImageView:zoomView];
   }
 }
 
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished
 {
-  v4 = [(VideosExtrasZoomableImageView *)self zoomView:a3];
+  v4 = [(VideosExtrasZoomableImageView *)self zoomView:context];
   [v4 setHidden:0];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v12 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(VideosExtrasZoomableImageView *)self setZoomScale:1.0];
-    v6 = [(VideosExtrasZoomableImageView *)self zoomView];
-    [v6 removeFromSuperview];
+    zoomView = [(VideosExtrasZoomableImageView *)self zoomView];
+    [zoomView removeFromSuperview];
 
     if (v12)
     {
@@ -157,16 +157,16 @@
       [(VideosExtrasZoomableImageView *)self setZoomView:0];
     }
 
-    v5 = v12;
+    imageCopy = v12;
   }
 }
 
-- (void)zoomToPoint:(CGPoint)a3 animated:(BOOL)a4
+- (void)zoomToPoint:(CGPoint)point animated:(BOOL)animated
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(VideosExtrasZoomableImageView *)self zoomView];
-  [(VideosExtrasZoomableImageView *)self convertRect:v7 toView:x, y, 1.0, 1.0];
+  y = point.y;
+  x = point.x;
+  zoomView = [(VideosExtrasZoomableImageView *)self zoomView];
+  [(VideosExtrasZoomableImageView *)self convertRect:zoomView toView:x, y, 1.0, 1.0];
   [(VideosExtrasZoomableImageView *)self zoomToRect:1 animated:?];
 }
 
@@ -205,8 +205,8 @@
   v19.size.width = width;
   v19.size.height = height;
   MidY = CGRectGetMidY(v19);
-  v9 = [(VideosExtrasZoomableImageView *)self zoomView];
-  [(VideosExtrasZoomableImageView *)self convertPoint:v9 toView:MidX, MidY];
+  zoomView = [(VideosExtrasZoomableImageView *)self zoomView];
+  [(VideosExtrasZoomableImageView *)self convertPoint:zoomView toView:MidX, MidY];
   v11 = v10;
   v13 = v12;
 
@@ -244,8 +244,8 @@
   [(VideosExtrasZoomableImageView *)self pointToCenterAfterResize];
   v8 = v7;
   v10 = v9;
-  v11 = [(VideosExtrasZoomableImageView *)self zoomView];
-  [(VideosExtrasZoomableImageView *)self convertPoint:v11 fromView:v8, v10];
+  zoomView = [(VideosExtrasZoomableImageView *)self zoomView];
+  [(VideosExtrasZoomableImageView *)self convertPoint:zoomView fromView:v8, v10];
   v13 = v12;
   v15 = v14;
 

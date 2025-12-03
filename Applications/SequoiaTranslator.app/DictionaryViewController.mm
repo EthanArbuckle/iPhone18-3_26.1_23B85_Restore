@@ -1,16 +1,16 @@
 @interface DictionaryViewController
-- (_TtC17SequoiaTranslator24DictionaryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)closeActionWithSender:(id)a3;
+- (_TtC17SequoiaTranslator24DictionaryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)closeActionWithSender:(id)sender;
 - (void)loadView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation DictionaryViewController
 
-- (_TtC17SequoiaTranslator24DictionaryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator24DictionaryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -22,14 +22,14 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000DEB38(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000DEB38(v5, v7, bundle);
 }
 
 - (void)loadView
 {
   v3 = objc_allocWithZone(UIView);
-  v8 = self;
+  selfCopy = self;
   v4 = [v3 initWithFrame:{0.0, 0.0, 0.0, 0.0}];
   v5 = sub_1000DE778();
   [v4 addSubview:v5];
@@ -38,22 +38,22 @@
   [v4 addSubview:v6];
 
   v7 = v4;
-  [(DictionaryViewController *)v8 setView:v7];
+  [(DictionaryViewController *)selfCopy setView:v7];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000DF16C();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v10.receiver = self;
   v10.super_class = type metadata accessor for DictionaryViewController();
   v4 = v10.receiver;
-  [(DictionaryViewController *)&v10 viewDidDisappear:v3];
+  [(DictionaryViewController *)&v10 viewDidDisappear:disappearCopy];
   v5 = String._bridgeToObjectiveC()();
   v6 = swift_allocObject();
   *(v6 + 16) = v4;
@@ -71,10 +71,10 @@
   _Block_release(v7);
 }
 
-- (void)closeActionWithSender:(id)a3
+- (void)closeActionWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1000DFB64();

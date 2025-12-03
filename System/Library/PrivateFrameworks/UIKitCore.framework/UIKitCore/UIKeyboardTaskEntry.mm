@@ -1,21 +1,21 @@
 @interface UIKeyboardTaskEntry
-- (UIKeyboardTaskEntry)initWithTask:(id)a3 breadcrumb:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)execute:(id)a3;
+- (UIKeyboardTaskEntry)initWithTask:(id)task breadcrumb:(id)breadcrumb;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)execute:(id)execute;
 @end
 
 @implementation UIKeyboardTaskEntry
 
-- (UIKeyboardTaskEntry)initWithTask:(id)a3 breadcrumb:(id)a4
+- (UIKeyboardTaskEntry)initWithTask:(id)task breadcrumb:(id)breadcrumb
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  breadcrumbCopy = breadcrumb;
   v18.receiver = self;
   v18.super_class = UIKeyboardTaskEntry;
   v8 = [(UIKeyboardTaskEntry *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [taskCopy copy];
     task = v8->__task;
     v8->__task = v9;
 
@@ -26,13 +26,13 @@
 
       if (v15)
       {
-        v16 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         originatingStack = v8->_originatingStack;
-        v8->_originatingStack = v16;
+        v8->_originatingStack = callStackSymbols;
       }
     }
 
-    v11 = [v7 copy];
+    v11 = [breadcrumbCopy copy];
     breadcrumb = v8->_breadcrumb;
     v8->_breadcrumb = v11;
   }
@@ -40,7 +40,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIKeyboardTaskEntry);
   v5 = [self->__task copy];
@@ -50,9 +50,9 @@
   return v4;
 }
 
-- (void)execute:(id)a3
+- (void)execute:(id)execute
 {
-  v4 = a3;
+  executeCopy = execute;
   kdebug_trace();
   v5 = kace_get_log();
   v6 = os_signpost_id_make_with_pointer(v5, self);

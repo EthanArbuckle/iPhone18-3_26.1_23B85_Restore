@@ -1,31 +1,31 @@
 @interface ShadowView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtC13MediaControls10ShadowView)initWithCoder:(id)a3;
-- (_TtC13MediaControls10ShadowView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtC13MediaControls10ShadowView)initWithCoder:(id)coder;
+- (_TtC13MediaControls10ShadowView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ShadowView
 
-- (_TtC13MediaControls10ShadowView)initWithCoder:(id)a3
+- (_TtC13MediaControls10ShadowView)initWithCoder:(id)coder
 {
   result = sub_1A22E7028();
   __break(1u);
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     sub_1A22E65C8();
     v5 = v4;
-    v6 = self;
+    selfCopy = self;
     v7 = sub_1A22E6598();
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0;
     v5 = 0;
   }
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC13MediaControls10ShadowView)initWithFrame:(CGRect)a3
+- (_TtC13MediaControls10ShadowView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

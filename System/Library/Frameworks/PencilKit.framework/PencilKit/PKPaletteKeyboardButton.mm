@@ -1,20 +1,20 @@
 @interface PKPaletteKeyboardButton
-- (PKPaletteKeyboardButton)initWithImage:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (PKPaletteKeyboardButton)initWithImage:(id)image;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)_updateButtonImage;
 - (void)_updateKeyboardToggleState;
 - (void)dealloc;
-- (void)setKeyboardSelectionMenu:(id)a3;
+- (void)setKeyboardSelectionMenu:(id)menu;
 @end
 
 @implementation PKPaletteKeyboardButton
 
-- (PKPaletteKeyboardButton)initWithImage:(id)a3
+- (PKPaletteKeyboardButton)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v19.receiver = self;
   v19.super_class = PKPaletteKeyboardButton;
-  v5 = [(PKPaletteButton *)&v19 initWithImage:v4];
+  v5 = [(PKPaletteButton *)&v19 initWithImage:imageCopy];
   v6 = v5;
   if (v5)
   {
@@ -32,9 +32,9 @@
 
     v6->_enableKeyboardToggle = 1;
     [(PKPaletteKeyboardButton *)v6 _updateKeyboardToggleState:v13];
-    v10 = [(PKPaletteButton *)v6 _uiButtonInstance];
-    v11 = [v10 imageView];
-    [v11 _setAnimatesContents:1];
+    _uiButtonInstance = [(PKPaletteButton *)v6 _uiButtonInstance];
+    imageView = [_uiButtonInstance imageView];
+    [imageView _setAnimatesContents:1];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -85,29 +85,29 @@ void __41__PKPaletteKeyboardButton_initWithImage___block_invoke(uint64_t a1, voi
   }
 
   v6 = v4;
-  v5 = [(PKPaletteButton *)self _uiButtonInstance];
-  [v5 setImage:v6 forState:0];
-  [v5 setNeedsLayout];
+  _uiButtonInstance = [(PKPaletteButton *)self _uiButtonInstance];
+  [_uiButtonInstance setImage:v6 forState:0];
+  [_uiButtonInstance setNeedsLayout];
 }
 
-- (void)setKeyboardSelectionMenu:(id)a3
+- (void)setKeyboardSelectionMenu:(id)menu
 {
-  objc_storeStrong(&self->_keyboardSelectionMenu, a3);
+  objc_storeStrong(&self->_keyboardSelectionMenu, menu);
 
   [(PKPaletteKeyboardButton *)self _updateKeyboardToggleState];
 }
 
 - (void)_updateKeyboardToggleState
 {
-  v3 = [(PKPaletteKeyboardButton *)self keyboardSelectionMenu];
-  v7 = v3 && (v4 = v3, +[PKTextInputLanguageSelectionController sharedInstance](PKTextInputLanguageSelectionController, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), [v5 languageSelectionMenu], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6) || -[PKPaletteKeyboardButton enableKeyboardToggle](self, "enableKeyboardToggle");
+  keyboardSelectionMenu = [(PKPaletteKeyboardButton *)self keyboardSelectionMenu];
+  v7 = keyboardSelectionMenu && (v4 = keyboardSelectionMenu, +[PKTextInputLanguageSelectionController sharedInstance](PKTextInputLanguageSelectionController, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), [v5 languageSelectionMenu], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6) || -[PKPaletteKeyboardButton enableKeyboardToggle](self, "enableKeyboardToggle");
 
   [(PKPaletteButton *)self setEnabled:v7];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69DC8D8];
   v9[0] = MEMORY[0x1E69E9820];

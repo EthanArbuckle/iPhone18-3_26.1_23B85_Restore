@@ -1,19 +1,19 @@
 @interface MCMResultOperationDelete
-- (BOOL)encodeResultOntoReply:(id)a3;
+- (BOOL)encodeResultOntoReply:(id)reply;
 - (OS_xpc_object)xpcToMerge;
-- (void)mergeWithXPCResult:(id)a3;
-- (void)setXpcToMerge:(id)a3;
+- (void)mergeWithXPCResult:(id)result;
+- (void)setXpcToMerge:(id)merge;
 @end
 
 @implementation MCMResultOperationDelete
 
-- (void)setXpcToMerge:(id)a3
+- (void)setXpcToMerge:(id)merge
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_xpcToMerge = &self->_xpcToMerge;
 
-  objc_storeStrong(p_xpcToMerge, a3);
+  objc_storeStrong(p_xpcToMerge, merge);
 }
 
 - (OS_xpc_object)xpcToMerge
@@ -24,38 +24,38 @@
   return result;
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v15.receiver = self;
   v15.super_class = MCMResultOperationDelete;
-  v5 = [(MCMResultWithContainersArrayBase *)&v15 encodeResultOntoReply:v4];
+  v5 = [(MCMResultWithContainersArrayBase *)&v15 encodeResultOntoReply:replyCopy];
   if (v5)
   {
-    v6 = [(MCMResultBase *)self error];
-    if (!v6)
+    error = [(MCMResultBase *)self error];
+    if (!error)
     {
-      v9 = [(MCMResultOperationDelete *)self xpcToMerge];
+      xpcToMerge = [(MCMResultOperationDelete *)self xpcToMerge];
 
-      if (!v9)
+      if (!xpcToMerge)
       {
         goto LABEL_4;
       }
 
-      v10 = [(MCMResultOperationDelete *)self xpcToMerge];
-      v6 = xpc_dictionary_get_array(v10, "ReplyContainersArray");
+      xpcToMerge2 = [(MCMResultOperationDelete *)self xpcToMerge];
+      error = xpc_dictionary_get_array(xpcToMerge2, "ReplyContainersArray");
 
-      if (v6 && MEMORY[0x1E12D4840](v6) == MEMORY[0x1E69E9E50])
+      if (error && MEMORY[0x1E12D4840](error) == MEMORY[0x1E69E9E50])
       {
-        v11 = xpc_dictionary_get_array(v4, "ReplyContainersArray");
+        v11 = xpc_dictionary_get_array(replyCopy, "ReplyContainersArray");
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __50__MCMResultOperationDelete_encodeResultOntoReply___block_invoke;
         v13[3] = &unk_1E86B0908;
         v14 = v11;
         v12 = v11;
-        xpc_array_apply(v6, v13);
+        xpc_array_apply(error, v13);
       }
     }
   }
@@ -74,12 +74,12 @@ uint64_t __50__MCMResultOperationDelete_encodeResultOntoReply___block_invoke(uin
   return 1;
 }
 
-- (void)mergeWithXPCResult:(id)a3
+- (void)mergeWithXPCResult:(id)result
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  [(MCMResultOperationDelete *)self setXpcToMerge:a3];
+  [(MCMResultOperationDelete *)self setXpcToMerge:result];
 }
 
 @end

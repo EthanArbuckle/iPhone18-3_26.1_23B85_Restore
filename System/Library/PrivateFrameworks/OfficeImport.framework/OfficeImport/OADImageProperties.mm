@@ -3,7 +3,7 @@
 - (BOOL)hasImageFill;
 - (id)description;
 - (id)imageFill;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 @end
 
 @implementation OADImageProperties
@@ -22,7 +22,7 @@
 
 - (BOOL)hasImageFill
 {
-  v4 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -56,44 +56,44 @@ void __39__OADImageProperties_defaultProperties__block_invoke()
   +[OADImageProperties defaultProperties]::defaultProperties = v0;
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v13.receiver = self;
   v13.super_class = OADImageProperties;
-  [(OADGraphicProperties *)&v13 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
+  [(OADGraphicProperties *)&v13 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self->mImageFill || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+    if (self->mImageFill || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
     {
-      v6 = [(OADImageProperties *)self imageFill];
+      imageFill = [(OADImageProperties *)self imageFill];
       v7 = objc_alloc_init(objc_opt_class());
 
-      v8 = [(OADImageProperties *)self imageFill];
-      [v7 setParent:v8];
+      imageFill2 = [(OADImageProperties *)self imageFill];
+      [v7 setParent:imageFill2];
 
       objc_storeStrong(&self->mImageFill, v7);
-      v9 = [v4 possiblyInexistentOverrideForSelector:sel_hasImageFill];
+      imageFill3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasImageFill];
 
-      if (v9)
+      if (imageFill3)
       {
-        v9 = [v4 imageFill];
+        imageFill3 = [valuesCopy imageFill];
       }
 
       mImageFill = self->mImageFill;
-      if (mImageFill != v9)
+      if (mImageFill != imageFill3)
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         if ((isKindOfClass & 1) == 0)
         {
-          v12 = [objc_opt_class() defaultProperties];
+          defaultProperties = [objc_opt_class() defaultProperties];
 
-          v9 = v12;
+          imageFill3 = defaultProperties;
         }
 
-        [(OADProperties *)self->mImageFill changeParentPreservingEffectiveValues:v9];
+        [(OADProperties *)self->mImageFill changeParentPreservingEffectiveValues:imageFill3];
         if ((isKindOfClass & 1) == 0 || [(OADImageFill *)self->mImageFill isAnythingOverridden])
         {
           goto LABEL_13;

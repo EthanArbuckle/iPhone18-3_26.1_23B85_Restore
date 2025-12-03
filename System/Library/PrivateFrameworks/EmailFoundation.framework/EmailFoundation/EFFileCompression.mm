@@ -1,8 +1,8 @@
 @interface EFFileCompression
-+ (BOOL)_compressFile:(const char *)a3 error:(id *)a4;
-+ (BOOL)_doCompressFile:(const char *)a3 errorCode:(int64_t *)a4;
-+ (BOOL)compressDirectory:(id)a3 shouldCancel:(id)a4 error:(id *)a5;
-+ (BOOL)compressFile:(id)a3 error:(id *)a4;
++ (BOOL)_compressFile:(const char *)file error:(id *)error;
++ (BOOL)_doCompressFile:(const char *)file errorCode:(int64_t *)code;
++ (BOOL)compressDirectory:(id)directory shouldCancel:(id)cancel error:(id *)error;
++ (BOOL)compressFile:(id)file error:(id *)error;
 + (CompressionQueueContext_s)_compressionQueueContext;
 + (OS_os_log)log;
 + (id)_compressionLock;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __24__EFFileCompression_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -35,12 +35,12 @@ void __24__EFFileCompression_log__block_invoke(uint64_t a1)
   log_log_2 = v1;
 }
 
-+ (BOOL)compressFile:(id)a3 error:(id *)a4
++ (BOOL)compressFile:(id)file error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 fileSystemRepresentation];
-  v8 = v7;
+  fileCopy = file;
+  fileSystemRepresentation = [fileCopy fileSystemRepresentation];
+  v8 = fileSystemRepresentation;
   v9.tv_sec = 0xAAAAAAAAAAAAAAAALL;
   v9.tv_nsec = 0xAAAAAAAAAAAAAAAALL;
   *&v20.st_blksize = v9;
@@ -52,12 +52,12 @@ void __24__EFFileCompression_log__block_invoke(uint64_t a1)
   *&v20.st_uid = v9;
   v20.st_atimespec = v9;
   *&v20.st_dev = v9;
-  if (!v7)
+  if (!fileSystemRepresentation)
   {
     goto LABEL_9;
   }
 
-  if (stat(v7, &v20))
+  if (stat(fileSystemRepresentation, &v20))
   {
     v10 = *__error();
     if (!v10)
@@ -68,7 +68,7 @@ void __24__EFFileCompression_log__block_invoke(uint64_t a1)
 LABEL_10:
     v13 = MEMORY[0x1E696ABC0];
     v21 = *MEMORY[0x1E696A998];
-    v22[0] = v6;
+    v22[0] = fileCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v12 = [v13 errorWithDomain:*MEMORY[0x1E696A798] code:v10 userInfo:v14];
 
@@ -81,7 +81,7 @@ LABEL_10:
     }
 
     v11 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -99,9 +99,9 @@ LABEL_9:
   if ((v20.st_flags & 0x20) == 0)
   {
     v19 = 0;
-    v11 = [a1 _compressFile:v8 error:&v19];
+    v11 = [self _compressFile:v8 error:&v19];
     v12 = v19;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -112,11 +112,11 @@ LABEL_9:
 LABEL_14:
   v12 = 0;
   v11 = 1;
-  if (a4)
+  if (error)
   {
 LABEL_15:
     v16 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_16:
@@ -125,14 +125,14 @@ LABEL_16:
   return v11;
 }
 
-+ (BOOL)compressDirectory:(id)a3 shouldCancel:(id)a4 error:(id *)a5
++ (BOOL)compressDirectory:(id)directory shouldCancel:(id)cancel error:(id *)error
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 fileSystemRepresentation])
+  directoryCopy = directory;
+  cancelCopy = cancel;
+  if ([directoryCopy fileSystemRepresentation])
   {
-    v34 = strdup([v6 fileSystemRepresentation]);
+    v34 = strdup([directoryCopy fileSystemRepresentation]);
     v49[0] = v34;
     v49[1] = 0;
     v8 = fts_open(v49, 80, 0);
@@ -153,15 +153,15 @@ LABEL_20:
           v26 = MEMORY[0x1E696ABC0];
           v27 = *__error();
           v45 = v36;
-          v46 = v6;
+          v46 = directoryCopy;
           v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
           v22 = [v26 errorWithDomain:v35 code:v27 userInfo:v28];
 
           v29 = +[EFFileCompression log];
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
-            v30 = [v22 ef_publicDescription];
-            [(EFFileCompression *)v30 compressDirectory:buf shouldCancel:v6 error:v29];
+            ef_publicDescription = [v22 ef_publicDescription];
+            [(EFFileCompression *)ef_publicDescription compressDirectory:buf shouldCancel:directoryCopy error:v29];
           }
         }
 
@@ -180,7 +180,7 @@ LABEL_20:
       {
         fts_accpath = v12->fts_accpath;
         v40 = v10;
-        v16 = [a1 _compressFile:fts_accpath error:&v40];
+        v16 = [self _compressFile:fts_accpath error:&v40];
         v17 = v40;
 
         if ((v16 & 1) == 0)
@@ -195,7 +195,7 @@ LABEL_18:
         v10 = v17;
       }
 
-      if (!v7)
+      if (!cancelCopy)
       {
         goto LABEL_16;
       }
@@ -215,19 +215,19 @@ LABEL_19:
       }
     }
 
-    if (v7[2](v7))
+    if (cancelCopy[2](cancelCopy))
     {
       v18 = +[EFFileCompression log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v44 = v6;
+        v44 = directoryCopy;
         _os_log_impl(&dword_1C6152000, v18, OS_LOG_TYPE_DEFAULT, "Canceling compression of directory %@", buf, 0xCu);
       }
 
       v19 = MEMORY[0x1E696ABC0];
       v47 = v36;
-      v48 = v6;
+      v48 = directoryCopy;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
       v17 = [v19 errorWithDomain:v35 code:4 userInfo:v20];
 
@@ -244,7 +244,7 @@ LABEL_16:
 
   v23 = MEMORY[0x1E696ABC0];
   v41 = *MEMORY[0x1E696A998];
-  v42 = v6;
+  v42 = directoryCopy;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
   v22 = [v23 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v24];
 
@@ -258,33 +258,33 @@ LABEL_16:
 
   v38 = 1;
 LABEL_29:
-  if (a5)
+  if (error)
   {
     v31 = v22;
-    *a5 = v22;
+    *error = v22;
   }
 
   v32 = *MEMORY[0x1E69E9840];
   return v38 & 1;
 }
 
-+ (BOOL)_compressFile:(const char *)a3 error:(id *)a4
++ (BOOL)_compressFile:(const char *)file error:(id *)error
 {
   v49[4] = *MEMORY[0x1E69E9840];
   v43 = 0;
-  v7 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:a3 isDirectory:0 relativeToURL:0];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:file isDirectory:0 relativeToURL:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v42 = 0;
-  v9 = [v8 URLForDirectory:99 inDomain:1 appropriateForURL:v7 create:1 error:&v42];
+  v9 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:v7 create:1 error:&v42];
   v10 = v42;
 
   if (v9)
   {
-    v11 = [v7 lastPathComponent];
-    v12 = [v9 URLByAppendingPathComponent:v11];
+    lastPathComponent = [v7 lastPathComponent];
+    v12 = [v9 URLByAppendingPathComponent:lastPathComponent];
 
     v13 = v12;
-    if (copyfile(a3, [v12 fileSystemRepresentation], 0, 0x10E000Fu))
+    if (copyfile(file, [v12 fileSystemRepresentation], 0, 0x10E000Fu))
     {
       v14 = MEMORY[0x1E696ABC0];
       v15 = *__error();
@@ -301,15 +301,15 @@ LABEL_29:
         +[EFFileCompression _compressFile:error:];
       }
 
-      v19 = [MEMORY[0x1E696AC08] defaultManager];
-      [v19 removeItemAtURL:v9 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 removeItemAtURL:v9 error:0];
 
-      if (a4)
+      if (error)
       {
 LABEL_21:
         v38 = v17;
         v22 = 0;
-        *a4 = v17;
+        *error = v17;
 LABEL_23:
 
         v10 = v17;
@@ -320,15 +320,15 @@ LABEL_23:
     else
     {
       v23 = v12;
-      if ([a1 _doCompressFile:objc_msgSend(v12 errorCode:{"fileSystemRepresentation"), &v43}])
+      if ([self _doCompressFile:objc_msgSend(v12 errorCode:{"fileSystemRepresentation"), &v43}])
       {
         v24 = v12;
-        v25 = [v12 fileSystemRepresentation];
-        rename(v25, a3, v26);
+        fileSystemRepresentation = [v12 fileSystemRepresentation];
+        rename(fileSystemRepresentation, file, v26);
         if (!v27)
         {
-          v41 = [MEMORY[0x1E696AC08] defaultManager];
-          [v41 removeItemAtURL:v9 error:0];
+          defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager3 removeItemAtURL:v9 error:0];
 
           v22 = 1;
           v17 = v10;
@@ -350,10 +350,10 @@ LABEL_23:
           +[EFFileCompression _compressFile:error:];
         }
 
-        v32 = [MEMORY[0x1E696AC08] defaultManager];
-        [v32 removeItemAtURL:v9 error:0];
+        defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager4 removeItemAtURL:v9 error:0];
 
-        if (a4)
+        if (error)
         {
           goto LABEL_21;
         }
@@ -376,10 +376,10 @@ LABEL_23:
           +[EFFileCompression _compressFile:error:];
         }
 
-        v37 = [MEMORY[0x1E696AC08] defaultManager];
-        [v37 removeItemAtURL:v9 error:0];
+        defaultManager5 = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager5 removeItemAtURL:v9 error:0];
 
-        if (a4)
+        if (error)
         {
           goto LABEL_21;
         }
@@ -398,11 +398,11 @@ LABEL_23:
     +[EFFileCompression _compressFile:error:];
   }
 
-  if (a4)
+  if (error)
   {
     v21 = v10;
     v22 = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   else
@@ -416,11 +416,11 @@ LABEL_24:
   return v22;
 }
 
-+ (BOOL)_doCompressFile:(const char *)a3 errorCode:(int64_t *)a4
++ (BOOL)_doCompressFile:(const char *)file errorCode:(int64_t *)code
 {
-  v6 = [a1 _compressionLock];
-  [v6 lock];
-  [a1 _compressionQueueContext];
+  _compressionLock = [self _compressionLock];
+  [_compressionLock lock];
+  [self _compressionQueueContext];
   if (CompressFile())
   {
     v7 = 1;
@@ -429,10 +429,10 @@ LABEL_24:
   else
   {
     v7 = 0;
-    *a4 = *__error();
+    *code = *__error();
   }
 
-  [v6 unlock];
+  [_compressionLock unlock];
 
   return v7;
 }

@@ -1,34 +1,34 @@
 @interface CRLStyledLayout
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3;
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale;
 - (CGRect)alignmentFrameInRoot;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform;
 - (double)opacity;
-- (double)scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:(CGAffineTransform *)a3 withStartingPathSource:(id)a4;
+- (double)scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:(CGAffineTransform *)transform withStartingPathSource:(id)source;
 - (void)dynamicOpacityChangeDidEnd;
-- (void)dynamicOpacityUpdateToValue:(double)a3;
-- (void)setSuppressesShadowsAndReflections:(BOOL)a3;
+- (void)dynamicOpacityUpdateToValue:(double)value;
+- (void)setSuppressesShadowsAndReflections:(BOOL)reflections;
 @end
 
 @implementation CRLStyledLayout
 
-- (void)setSuppressesShadowsAndReflections:(BOOL)a3
+- (void)setSuppressesShadowsAndReflections:(BOOL)reflections
 {
-  if (BYTE2(self->mDynamicOpacity) != a3)
+  if (BYTE2(self->mDynamicOpacity) != reflections)
   {
-    BYTE2(self->mDynamicOpacity) = a3;
-    v6 = [(CRLCanvasLayout *)self layoutController];
-    v5 = [v6 canvas];
-    [v5 canvasInvalidatedForLayout:self];
+    BYTE2(self->mDynamicOpacity) = reflections;
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
+    [canvas canvasInvalidatedForLayout:self];
   }
 }
 
-- (double)scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:(CGAffineTransform *)a3 withStartingPathSource:(id)a4
+- (double)scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:(CGAffineTransform *)transform withStartingPathSource:(id)source
 {
-  v6 = a4;
+  sourceCopy = source;
   v7 = objc_opt_class();
-  v8 = [(CRLCanvasAbstractLayout *)self parent];
-  v9 = sub_100014370(v7, v8);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v9 = sub_100014370(v7, parent);
 
   if (v9)
   {
@@ -52,8 +52,8 @@
     }
   }
 
-  v15 = [(CRLCanvasLayout *)self stroke];
-  v16 = [v6 copy];
+  stroke = [(CRLCanvasLayout *)self stroke];
+  v16 = [sourceCopy copy];
   [v16 naturalSize];
   v90 = v18;
   v91 = v17;
@@ -65,21 +65,21 @@
   v92 = v13;
   while (1)
   {
-    v24 = [v16 bezierPath];
-    v25 = *&a3->c;
-    *v102 = *&a3->a;
+    bezierPath = [v16 bezierPath];
+    v25 = *&transform->c;
+    *v102 = *&transform->a;
     *&v102[16] = v25;
-    *&v102[32] = *&a3->tx;
+    *&v102[32] = *&transform->tx;
     if (!CGAffineTransformIsIdentity(v102))
     {
-      v26 = *&a3->c;
-      *v102 = *&a3->a;
+      v26 = *&transform->c;
+      *v102 = *&transform->a;
       *&v102[16] = v26;
-      *&v102[32] = *&a3->tx;
-      [v24 transformUsingAffineTransform:v102];
+      *&v102[32] = *&transform->tx;
+      [bezierPath transformUsingAffineTransform:v102];
     }
 
-    [v24 boundsIncludingCRLStroke:v15];
+    [bezierPath boundsIncludingCRLStroke:stroke];
     v28 = v27;
     v30 = v29;
     v32 = v31;
@@ -92,7 +92,7 @@
 
     if (v23 == 4)
     {
-      [v24 bounds];
+      [bezierPath bounds];
       x = v107.origin.x;
       y = v107.origin.y;
       width = v107.size.width;
@@ -151,9 +151,9 @@
         break;
       }
 
-      v70 = [v24 isLineSegment];
+      isLineSegment = [bezierPath isLineSegment];
       [v16 naturalSize];
-      if (!v70)
+      if (!isLineSegment)
       {
         if (v71 != 0.0)
         {
@@ -331,11 +331,11 @@ LABEL_80:
   return v14;
 }
 
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale
 {
   [(CRLCanvasAbstractLayout *)self alignmentFrame];
 
-  v8 = sub_1001221E8(v4, v5, v6, v7, a3);
+  v8 = sub_1001221E8(v4, v5, v6, v7, scale);
   result.size.height = v11;
   result.size.width = v10;
   result.origin.y = v9;
@@ -345,20 +345,20 @@ LABEL_80:
 
 - (CGRect)alignmentFrameInRoot
 {
-  v3 = [(CRLCanvasAbstractLayout *)self parent];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
 
   [(CRLCanvasAbstractLayout *)self alignmentFrame];
   x = v4;
   y = v6;
   width = v8;
   height = v10;
-  if (v3)
+  if (parent)
   {
-    v12 = [(CRLCanvasAbstractLayout *)self parent];
-    v13 = v12;
-    if (v12)
+    parent2 = [(CRLCanvasAbstractLayout *)self parent];
+    v13 = parent2;
+    if (parent2)
     {
-      [v12 transformInRoot];
+      [parent2 transformInRoot];
     }
 
     else
@@ -388,29 +388,29 @@ LABEL_80:
   return result;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
   [(CRLCanvasAbstractLayout *)self alignmentFrame];
-  v4 = *&a3->c;
-  *&v5.a = *&a3->a;
+  v4 = *&transform->c;
+  *&v5.a = *&transform->a;
   *&v5.c = v4;
-  *&v5.tx = *&a3->tx;
+  *&v5.tx = *&transform->tx;
   return CGRectApplyAffineTransform(v6, &v5);
 }
 
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v31.receiver = self;
   v31.super_class = CRLStyledLayout;
-  v9 = *&a4->c;
-  v30[0] = *&a4->a;
+  v9 = *&transform->c;
+  v30[0] = *&transform->a;
   v30[1] = v9;
-  v30[2] = *&a4->tx;
-  [(CRLCanvasLayout *)&v31 frameForCullingWithBaseFrame:v30 additionalTransform:a3.origin.x, y];
+  v30[2] = *&transform->tx;
+  [(CRLCanvasLayout *)&v31 frameForCullingWithBaseFrame:v30 additionalTransform:frame.origin.x, y];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -421,27 +421,27 @@ LABEL_80:
   v32.size.height = height;
   if (!CGRectIsEmpty(v32))
   {
-    v18 = [(CRLCanvasLayout *)self layoutController];
-    v19 = [v18 canvas];
-    if ([v19 suppressesShadowsAndReflections])
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
+    if ([canvas suppressesShadowsAndReflections])
     {
     }
 
     else
     {
-      v20 = [(CRLStyledLayout *)self suppressesShadowsAndReflections];
+      suppressesShadowsAndReflections = [(CRLStyledLayout *)self suppressesShadowsAndReflections];
 
-      if (v20)
+      if (suppressesShadowsAndReflections)
       {
         goto LABEL_6;
       }
 
-      v25 = [(CRLStyledLayout *)self styledInfo];
-      v18 = [v25 shadow];
+      styledInfo = [(CRLStyledLayout *)self styledInfo];
+      layoutController = [styledInfo shadow];
 
-      if (v18 && [v18 isEnabled])
+      if (layoutController && [layoutController isEnabled])
       {
-        [v18 shadowBoundsForRect:{x, y, width, height}];
+        [layoutController shadowBoundsForRect:{x, y, width, height}];
         v36.origin.x = v26;
         v36.origin.y = v27;
         v36.size.width = v28;
@@ -471,25 +471,25 @@ LABEL_6:
   return result;
 }
 
-- (void)dynamicOpacityUpdateToValue:(double)a3
+- (void)dynamicOpacityUpdateToValue:(double)value
 {
-  *(&self->mIsUpdatingOpacity + 2) = a3;
-  v4 = [(CRLCanvasLayout *)self layoutController];
-  v5 = [v4 canvas];
-  v7 = [v5 canvasController];
+  *(&self->mIsUpdatingOpacity + 2) = value;
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
-  v6 = [v7 repForLayout:self];
+  v6 = [canvasController repForLayout:self];
   [v6 processChangedProperty:18];
 }
 
 - (void)dynamicOpacityChangeDidEnd
 {
   BYTE2(self->super._dynamicInfoGeometry) = 0;
-  v3 = [(CRLCanvasLayout *)self layoutController];
-  v4 = [v3 canvas];
-  v6 = [v4 canvasController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
-  v5 = [v6 repForLayout:self];
+  v5 = [canvasController repForLayout:self];
   [v5 processChangedProperty:18];
 }
 

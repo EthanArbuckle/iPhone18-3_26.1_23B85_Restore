@@ -1,20 +1,20 @@
 @interface PHImportAsset
-+ (BOOL)isOriginalAdjustmentData:(id)a3;
-+ (BOOL)isValidAsSidecar:(id)a3;
-+ (id)assetFileForURL:(id)a3 source:(id)a4 withUuid:(id)a5;
-+ (id)loadDatesForAssetSequence:(id)a3 atEnd:(id)a4;
-+ (id)loadDatesForAssets:(id)a3 atEnd:(id)a4;
-+ (void)determineIfTIFFIsRAW:(id)a3 url:(id)a4;
-+ (void)logImageDateFileDateDifferencesForAsset:(id)a3;
-- (BOOL)_loadMetadataIfNecessaryForURL:(id)a3 options:(unsigned __int16)a4;
-- (BOOL)configureWithContentType:(id)a3 supportedMediaType:(unsigned __int8)a4;
++ (BOOL)isOriginalAdjustmentData:(id)data;
++ (BOOL)isValidAsSidecar:(id)sidecar;
++ (id)assetFileForURL:(id)l source:(id)source withUuid:(id)uuid;
++ (id)loadDatesForAssetSequence:(id)sequence atEnd:(id)end;
++ (id)loadDatesForAssets:(id)assets atEnd:(id)end;
++ (void)determineIfTIFFIsRAW:(id)w url:(id)url;
++ (void)logImageDateFileDateDifferencesForAsset:(id)asset;
+- (BOOL)_loadMetadataIfNecessaryForURL:(id)l options:(unsigned __int16)options;
+- (BOOL)configureWithContentType:(id)type supportedMediaType:(unsigned __int8)mediaType;
 - (BOOL)hasAdjustments;
 - (BOOL)hasAudioAttachment;
 - (BOOL)isAdjustmentSecondaryData;
 - (BOOL)isBase;
 - (BOOL)isBurst;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToImportAsset:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToImportAsset:(id)asset;
 - (BOOL)isGrouped;
 - (BOOL)isHDR;
 - (BOOL)isJpegPlusRAW;
@@ -26,13 +26,13 @@
 - (BOOL)isSpatialOverCapture;
 - (BOOL)isTimelapse;
 - (BOOL)isValidForReference;
-- (BOOL)isVideoComplementOf:(id)a3;
+- (BOOL)isVideoComplementOf:(id)of;
 - (BOOL)isViewable;
-- (CGImage)avThumbnailOfSize:(unint64_t)a3 canceler:(id)a4 error:(id *)a5;
-- (CGImage)imageThumbnailOfSize:(unint64_t)a3 canceler:(id)a4 error:(id *)a5;
-- (CGImage)removeBlackBarsFromExifThumbnail:(CGImage *)a3 fullSize:(CGSize)a4;
+- (CGImage)avThumbnailOfSize:(unint64_t)size canceler:(id)canceler error:(id *)error;
+- (CGImage)imageThumbnailOfSize:(unint64_t)size canceler:(id)canceler error:(id *)error;
+- (CGImage)removeBlackBarsFromExifThumbnail:(CGImage *)thumbnail fullSize:(CGSize)size;
 - (CGSize)cgImageSize;
-- (CGSize)cropEXIFThumbSize:(CGSize)result originalSize:(CGSize)a4;
+- (CGSize)cropEXIFThumbSize:(CGSize)result originalSize:(CGSize)size;
 - (CGSize)exifPixelSize;
 - (CGSize)imageSize;
 - (CGSize)orientedPixelSize;
@@ -72,16 +72,16 @@
 - (NSString)title;
 - (NSTimeZone)timeZone;
 - (PFMetadata)metadata;
-- (PHImportAsset)initWithSource:(id)a3;
-- (PHImportAsset)initWithSource:(id)a3 url:(id)a4 type:(id)a5 supportedMediaType:(unsigned __int8)a6 uuid:(id)a7;
+- (PHImportAsset)initWithSource:(id)source;
+- (PHImportAsset)initWithSource:(id)source url:(id)url type:(id)type supportedMediaType:(unsigned __int8)mediaType uuid:(id)uuid;
 - (PHImportSource)source;
 - (id)adjustmentSecondarySidecar;
 - (id)adjustmentSidecar;
 - (id)basenameForOriginalAdjustmentData;
-- (id)checkForSidecarWithExtension:(id)a3;
-- (id)copyFromURL:(id)a3 toURL:(id)a4;
-- (id)descriptionWithPrefix:(id)a3;
-- (id)duplicateAssetsForLibrary:(id)a3;
+- (id)checkForSidecarWithExtension:(id)extension;
+- (id)copyFromURL:(id)l toURL:(id)rL;
+- (id)descriptionWithPrefix:(id)prefix;
+- (id)duplicateAssetsForLibrary:(id)library;
 - (id)groupingUUID;
 - (id)importRecordForPrimaryAsset;
 - (id)livePhotoPairingIdentifier;
@@ -93,38 +93,38 @@
 - (id)sizeKey;
 - (id)slmSidecar;
 - (id)spatialOverCaptureIdentifier;
-- (id)stripMarkerFromName:(id)a3 markerLocation:(unint64_t)a4;
-- (id)thumbnailForSize:(unint64_t)a3 priority:(unsigned __int8)a4 atEnd:(id)a5;
-- (id)validateMetadataForImportRecord:(id)a3;
+- (id)stripMarkerFromName:(id)name markerLocation:(unint64_t)location;
+- (id)thumbnailForSize:(unint64_t)size priority:(unsigned __int8)priority atEnd:(id)end;
+- (id)validateMetadataForImportRecord:(id)record;
 - (id)xmpSidecar;
 - (int)burstPickType;
 - (unint64_t)approximateBytesRequiredToImport;
 - (unint64_t)relatedBytes;
 - (unint64_t)sidecarAssetBytes;
 - (unsigned)orientation;
-- (void)_accessMetadata:(id)a3;
-- (void)_addRelatedRecordsToRecord:(id)a3 primaryRecord:(id)a4;
+- (void)_accessMetadata:(id)metadata;
+- (void)_addRelatedRecordsToRecord:(id)record primaryRecord:(id)primaryRecord;
 - (void)_loadSidecarFiles;
-- (void)_setMetadata:(id)a3;
-- (void)addBurstAsset:(id)a3;
-- (void)addSidecarAsset:(id)a3;
-- (void)configureSidecarTypeForExtension:(id)a3;
-- (void)copyToURL:(id)a3 completionHandler:(id)a4;
-- (void)loadMetadataAsync:(id)a3;
+- (void)_setMetadata:(id)metadata;
+- (void)addBurstAsset:(id)asset;
+- (void)addSidecarAsset:(id)asset;
+- (void)configureSidecarTypeForExtension:(id)extension;
+- (void)copyToURL:(id)l completionHandler:(id)handler;
+- (void)loadMetadataAsync:(id)async;
 - (void)loadMetadataSync;
 - (void)loadSidecarFiles;
-- (void)removeSidecarAsset:(id)a3;
-- (void)setAudioAsset:(id)a3;
-- (void)setBase:(id)a3;
-- (void)setLargeMovieRender:(id)a3;
-- (void)setLargeRender:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setRawAsset:(id)a3;
-- (void)setSpatialOverCapture:(id)a3;
-- (void)setVideoComplement:(id)a3;
-- (void)takeAsVideoComplement:(id)a3;
-- (void)thumbnailUsingRequest:(id)a3 atEnd:(id)a4;
-- (void)updateIsRAW:(BOOL)a3 contentType:(id)a4;
+- (void)removeSidecarAsset:(id)asset;
+- (void)setAudioAsset:(id)asset;
+- (void)setBase:(id)base;
+- (void)setLargeMovieRender:(id)render;
+- (void)setLargeRender:(id)render;
+- (void)setMetadata:(id)metadata;
+- (void)setRawAsset:(id)asset;
+- (void)setSpatialOverCapture:(id)capture;
+- (void)setVideoComplement:(id)complement;
+- (void)takeAsVideoComplement:(id)complement;
+- (void)thumbnailUsingRequest:(id)request atEnd:(id)end;
+- (void)updateIsRAW:(BOOL)w contentType:(id)type;
 @end
 
 @implementation PHImportAsset
@@ -154,22 +154,22 @@
   return result;
 }
 
-- (BOOL)isEqualToImportAsset:(id)a3
+- (BOOL)isEqualToImportAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [(PHImportAsset *)self hash];
-  if (v5 == [v4 hash])
+  if (v5 == [assetCopy hash])
   {
-    v6 = [(PHImportAsset *)self relatedAssets];
-    v7 = [v4 relatedAssets];
-    v8 = [v6 count];
-    if (v8 == [v7 count] && objc_msgSend(v6, "count"))
+    relatedAssets = [(PHImportAsset *)self relatedAssets];
+    relatedAssets2 = [assetCopy relatedAssets];
+    v8 = [relatedAssets count];
+    if (v8 == [relatedAssets2 count] && objc_msgSend(relatedAssets, "count"))
     {
       v9 = 0;
       do
       {
-        v10 = [v6 objectAtIndexedSubscript:v9];
-        v11 = [v7 objectAtIndexedSubscript:v9];
+        v10 = [relatedAssets objectAtIndexedSubscript:v9];
+        v11 = [relatedAssets2 objectAtIndexedSubscript:v9];
         v12 = [v10 isEqual:v11];
 
         if ((v12 & 1) == 0)
@@ -180,7 +180,7 @@
         ++v9;
       }
 
-      while (v9 < [v6 count]);
+      while (v9 < [relatedAssets count]);
     }
 
     else
@@ -197,18 +197,18 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PHImportAsset *)self isEqualToImportAsset:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PHImportAsset *)self isEqualToImportAsset:v5];
   }
 
   return v6;
@@ -227,15 +227,15 @@ void __21__PHImportAsset_hash__block_invoke(uint64_t a1)
   }
 }
 
-- (id)duplicateAssetsForLibrary:(id)a3
+- (id)duplicateAssetsForLibrary:(id)library
 {
   duplicates = self->_duplicates;
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(NSMutableDictionary *)duplicates objectForKeyedSubscript:v5];
+  libraryCopy = library;
+  uuid = [libraryCopy uuid];
+  v6 = [(NSMutableDictionary *)duplicates objectForKeyedSubscript:uuid];
   v7 = [v6 valueForKey:@"objectID"];
 
-  v8 = [v4 fetchPHObjectsForOIDs:v7];
+  v8 = [libraryCopy fetchPHObjectsForOIDs:v7];
 
   return v8;
 }
@@ -243,26 +243,26 @@ void __21__PHImportAsset_hash__block_invoke(uint64_t a1)
 - (id)sizeKey
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(PHImportAsset *)self fileSize];
+  fileSize = [(PHImportAsset *)self fileSize];
 
-  return [v2 numberWithUnsignedLongLong:v3];
+  return [v2 numberWithUnsignedLongLong:fileSize];
 }
 
 - (NSDate)dateKey
 {
-  v3 = [(PHImportAsset *)self creationDate];
-  v4 = v3;
-  if (v3)
+  creationDate = [(PHImportAsset *)self creationDate];
+  v4 = creationDate;
+  if (creationDate)
   {
-    v5 = v3;
+    fileCreationDate = creationDate;
   }
 
   else
   {
-    v5 = [(PHImportAsset *)self fileCreationDate];
+    fileCreationDate = [(PHImportAsset *)self fileCreationDate];
   }
 
-  v6 = v5;
+  v6 = fileCreationDate;
 
   return v6;
 }
@@ -469,21 +469,21 @@ uint64_t __35__PHImportAsset_originatingAssetID__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)copyToURL:(id)a3 completionHandler:(id)a4
+- (void)copyToURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHImportAsset *)self filePresenter];
+  lCopy = l;
+  handlerCopy = handler;
+  filePresenter = [(PHImportAsset *)self filePresenter];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__6581;
   v24 = __Block_byref_object_dispose__6582;
   v25 = 0;
-  if (v8)
+  if (filePresenter)
   {
-    [MEMORY[0x1E696ABF8] addFilePresenter:v8];
-    v9 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:v8];
+    [MEMORY[0x1E696ABF8] addFilePresenter:filePresenter];
+    v9 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:filePresenter];
     v10 = [(PHImportAsset *)self url];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -492,31 +492,31 @@ uint64_t __35__PHImportAsset_originatingAssetID__block_invoke(uint64_t a1)
     v18[5] = &v20;
     v19 = 0;
     v18[4] = self;
-    [v9 coordinateReadingItemAtURL:v10 options:1 writingItemAtURL:v6 options:0 error:&v19 byAccessor:v18];
+    [v9 coordinateReadingItemAtURL:v10 options:1 writingItemAtURL:lCopy options:0 error:&v19 byAccessor:v18];
     v11 = v19;
 
     if (v11)
     {
       v12 = [PHImportException alloc];
       v13 = [(PHImportAsset *)self url];
-      v14 = [v13 path];
-      v15 = [(PHImportException *)v12 initWithType:0 path:v14 underlyingError:v11 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1776];
+      path = [v13 path];
+      v15 = [(PHImportException *)v12 initWithType:0 path:path underlyingError:v11 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1776];
       v16 = v21[5];
       v21[5] = v15;
     }
 
-    [MEMORY[0x1E696ABF8] removeFilePresenter:v8];
+    [MEMORY[0x1E696ABF8] removeFilePresenter:filePresenter];
   }
 
   else
   {
     v11 = [(PHImportAsset *)self url];
-    v17 = [(PHImportAsset *)self copyFromURL:v11 toURL:v6];
+    v17 = [(PHImportAsset *)self copyFromURL:v11 toURL:lCopy];
     v9 = v21[5];
     v21[5] = v17;
   }
 
-  v7[2](v7, v6, v21[5]);
+  handlerCopy[2](handlerCopy, lCopy, v21[5]);
   _Block_object_dispose(&v20, 8);
 }
 
@@ -527,14 +527,14 @@ uint64_t __45__PHImportAsset_copyToURL_completionHandler___block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)copyFromURL:(id)a3 toURL:(id)a4
+- (id)copyFromURL:(id)l toURL:(id)rL
 {
   v6 = MEMORY[0x1E696AC08];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultManager];
+  rLCopy = rL;
+  lCopy = l;
+  defaultManager = [v6 defaultManager];
   v17 = 0;
-  v10 = [v9 copyItemAtURL:v8 toURL:v7 error:&v17];
+  v10 = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:&v17];
 
   v11 = v17;
   v12 = 0;
@@ -542,115 +542,115 @@ uint64_t __45__PHImportAsset_copyToURL_completionHandler___block_invoke(uint64_t
   {
     v13 = [PHImportException alloc];
     v14 = [(PHImportAsset *)self url];
-    v15 = [v14 path];
-    v12 = [(PHImportException *)v13 initWithType:0 path:v15 underlyingError:v11 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1760];
+    path = [v14 path];
+    v12 = [(PHImportException *)v13 initWithType:0 path:path underlyingError:v11 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1760];
   }
 
   return v12;
 }
 
-- (void)_addRelatedRecordsToRecord:(id)a3 primaryRecord:(id)a4
+- (void)_addRelatedRecordsToRecord:(id)record primaryRecord:(id)primaryRecord
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHImportAsset *)self largeRender];
+  recordCopy = record;
+  primaryRecordCopy = primaryRecord;
+  largeRender = [(PHImportAsset *)self largeRender];
 
-  if (v8)
+  if (largeRender)
   {
     v9 = [PHImportRecord alloc];
-    v10 = [(PHImportAsset *)self largeRender];
-    v11 = [(PHImportRecord *)v9 initWithImportAsset:v10];
+    largeRender2 = [(PHImportAsset *)self largeRender];
+    v11 = [(PHImportRecord *)v9 initWithImportAsset:largeRender2];
 
-    [v6 addRelatedRecord:v11];
-    v12 = [(PHImportAsset *)self largeRender];
-    [v12 _addRelatedRecordsToRecord:v11 primaryRecord:v7];
+    [recordCopy addRelatedRecord:v11];
+    largeRender3 = [(PHImportAsset *)self largeRender];
+    [largeRender3 _addRelatedRecordsToRecord:v11 primaryRecord:primaryRecordCopy];
   }
 
-  v13 = [(PHImportAsset *)self largeMovieRender];
+  largeMovieRender = [(PHImportAsset *)self largeMovieRender];
 
-  if (v13)
+  if (largeMovieRender)
   {
     v14 = [PHImportRecord alloc];
-    v15 = [(PHImportAsset *)self largeMovieRender];
-    v16 = [(PHImportRecord *)v14 initWithImportAsset:v15];
+    largeMovieRender2 = [(PHImportAsset *)self largeMovieRender];
+    v16 = [(PHImportRecord *)v14 initWithImportAsset:largeMovieRender2];
 
-    [v6 addRelatedRecord:v16];
-    v17 = [(PHImportAsset *)self largeMovieRender];
-    [v17 _addRelatedRecordsToRecord:v16 primaryRecord:v7];
+    [recordCopy addRelatedRecord:v16];
+    largeMovieRender3 = [(PHImportAsset *)self largeMovieRender];
+    [largeMovieRender3 _addRelatedRecordsToRecord:v16 primaryRecord:primaryRecordCopy];
   }
 
-  v18 = [(PHImportAsset *)self rawAsset];
+  rawAsset = [(PHImportAsset *)self rawAsset];
 
-  if (v18)
+  if (rawAsset)
   {
     v19 = [PHImportRecord alloc];
-    v20 = [(PHImportAsset *)self rawAsset];
-    v21 = [(PHImportRecord *)v19 initWithImportAsset:v20];
+    rawAsset2 = [(PHImportAsset *)self rawAsset];
+    v21 = [(PHImportRecord *)v19 initWithImportAsset:rawAsset2];
 
-    [v6 addRelatedRecord:v21];
-    v22 = [(PHImportAsset *)self rawAsset];
-    [v22 _addRelatedRecordsToRecord:v21 primaryRecord:v7];
+    [recordCopy addRelatedRecord:v21];
+    rawAsset3 = [(PHImportAsset *)self rawAsset];
+    [rawAsset3 _addRelatedRecordsToRecord:v21 primaryRecord:primaryRecordCopy];
   }
 
-  v23 = [(PHImportAsset *)self videoComplement];
+  videoComplement = [(PHImportAsset *)self videoComplement];
 
-  if (v23)
+  if (videoComplement)
   {
     v24 = [PHImportRecord alloc];
-    v25 = [(PHImportAsset *)self videoComplement];
-    v26 = [(PHImportRecord *)v24 initWithImportAsset:v25];
+    videoComplement2 = [(PHImportAsset *)self videoComplement];
+    v26 = [(PHImportRecord *)v24 initWithImportAsset:videoComplement2];
 
-    [v6 addRelatedRecord:v26];
-    v27 = [(PHImportAsset *)self videoComplement];
-    [v27 _addRelatedRecordsToRecord:v26 primaryRecord:v7];
+    [recordCopy addRelatedRecord:v26];
+    videoComplement3 = [(PHImportAsset *)self videoComplement];
+    [videoComplement3 _addRelatedRecordsToRecord:v26 primaryRecord:primaryRecordCopy];
   }
 
-  v28 = [(PHImportAsset *)self audioAsset];
+  audioAsset = [(PHImportAsset *)self audioAsset];
 
-  if (v28)
+  if (audioAsset)
   {
     v29 = [PHImportRecord alloc];
-    v30 = [(PHImportAsset *)self audioAsset];
-    v31 = [(PHImportRecord *)v29 initWithImportAsset:v30];
+    audioAsset2 = [(PHImportAsset *)self audioAsset];
+    v31 = [(PHImportRecord *)v29 initWithImportAsset:audioAsset2];
 
-    [v6 addRelatedRecord:v31];
-    v32 = [(PHImportAsset *)self audioAsset];
-    [v32 _addRelatedRecordsToRecord:v31 primaryRecord:v7];
+    [recordCopy addRelatedRecord:v31];
+    audioAsset3 = [(PHImportAsset *)self audioAsset];
+    [audioAsset3 _addRelatedRecordsToRecord:v31 primaryRecord:primaryRecordCopy];
   }
 
-  v33 = [(PHImportAsset *)self spatialOverCapture];
+  spatialOverCapture = [(PHImportAsset *)self spatialOverCapture];
 
-  if (v33)
+  if (spatialOverCapture)
   {
     v34 = [PHImportRecord alloc];
-    v35 = [(PHImportAsset *)self spatialOverCapture];
-    v36 = [(PHImportRecord *)v34 initWithImportAsset:v35];
+    spatialOverCapture2 = [(PHImportAsset *)self spatialOverCapture];
+    v36 = [(PHImportRecord *)v34 initWithImportAsset:spatialOverCapture2];
 
-    [v6 addRelatedRecord:v36];
-    v37 = [(PHImportAsset *)self spatialOverCapture];
-    [v37 _addRelatedRecordsToRecord:v36 primaryRecord:v7];
+    [recordCopy addRelatedRecord:v36];
+    spatialOverCapture3 = [(PHImportAsset *)self spatialOverCapture];
+    [spatialOverCapture3 _addRelatedRecordsToRecord:v36 primaryRecord:primaryRecordCopy];
   }
 
-  v38 = [(PHImportAsset *)self base];
+  base = [(PHImportAsset *)self base];
 
-  if (v38)
+  if (base)
   {
     v39 = [PHImportRecord alloc];
-    v40 = [(PHImportAsset *)self base];
-    v41 = [(PHImportRecord *)v39 initWithImportAsset:v40];
+    base2 = [(PHImportAsset *)self base];
+    v41 = [(PHImportRecord *)v39 initWithImportAsset:base2];
 
-    [v6 addRelatedRecord:v41];
-    v42 = [(PHImportAsset *)self base];
-    [v42 _addRelatedRecordsToRecord:v41 primaryRecord:v7];
+    [recordCopy addRelatedRecord:v41];
+    base3 = [(PHImportAsset *)self base];
+    [base3 _addRelatedRecordsToRecord:v41 primaryRecord:primaryRecordCopy];
   }
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v43 = [(PHImportAsset *)self sidecarAssets];
-  v44 = [v43 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  sidecarAssets = [(PHImportAsset *)self sidecarAssets];
+  v44 = [sidecarAssets countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v44)
   {
     v45 = v44;
@@ -662,17 +662,17 @@ uint64_t __45__PHImportAsset_copyToURL_completionHandler___block_invoke(uint64_t
       {
         if (*v50 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(sidecarAssets);
         }
 
         v48 = [[PHImportRecord alloc] initWithImportAsset:*(*(&v49 + 1) + 8 * v47)];
-        [v6 addRelatedRecord:v48];
+        [recordCopy addRelatedRecord:v48];
 
         ++v47;
       }
 
       while (v45 != v47);
-      v45 = [v43 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      v45 = [sidecarAssets countByEnumeratingWithState:&v49 objects:v53 count:16];
     }
 
     while (v45);
@@ -684,36 +684,36 @@ uint64_t __45__PHImportAsset_copyToURL_completionHandler___block_invoke(uint64_t
   v3 = [[PHImportRecord alloc] initWithImportAsset:self];
   [(PHImportAsset *)self loadSidecarFiles];
   [(PHImportAsset *)self _addRelatedRecordsToRecord:v3 primaryRecord:v3];
-  v4 = [(PHImportRecord *)v3 importAsset];
-  v5 = [v4 resourceTypes];
-  v6 = [PHAssetCreationRequest supportsImportAssetResourceTypes:v5];
+  importAsset = [(PHImportRecord *)v3 importAsset];
+  resourceTypes = [importAsset resourceTypes];
+  v6 = [PHAssetCreationRequest supportsImportAssetResourceTypes:resourceTypes];
 
   if (v6)
   {
-    if (![v4 isDuplicate] || !objc_msgSend(v4, "isBurst"))
+    if (![importAsset isDuplicate] || !objc_msgSend(importAsset, "isBurst"))
     {
       goto LABEL_7;
     }
 
-    v7 = [v4 fileName];
-    v8 = [(PHImportExceptionRecorder *)v3 addExceptionWithType:4 path:v7 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1705];
+    fileName = [importAsset fileName];
+    v8 = [(PHImportExceptionRecorder *)v3 addExceptionWithType:4 path:fileName underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1705];
   }
 
   else
   {
     v9 = MEMORY[0x1E696ABC0];
-    v10 = [v4 resourceTypes];
-    v11 = PHDescriptionsForResourceTypes(v10);
+    resourceTypes2 = [importAsset resourceTypes];
+    v11 = PHDescriptionsForResourceTypes(resourceTypes2);
     v12 = [v11 componentsJoinedByString:{@", "}];
-    v7 = [v9 ph_genericErrorWithLocalizedDescription:{@"Unsupported resource set: %@", v12}];
+    fileName = [v9 ph_genericErrorWithLocalizedDescription:{@"Unsupported resource set: %@", v12}];
 
-    v13 = [v4 fileName];
-    v14 = [(PHImportExceptionRecorder *)v3 addExceptionWithType:0 path:v13 underlyingError:v7 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1702];
+    fileName2 = [importAsset fileName];
+    v14 = [(PHImportExceptionRecorder *)v3 addExceptionWithType:0 path:fileName2 underlyingError:fileName file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1702];
   }
 
 LABEL_7:
-  v15 = [(PHImportAsset *)self metadata];
-  [v15 orientedPixelSize];
+  metadata = [(PHImportAsset *)self metadata];
+  [metadata orientedPixelSize];
   v17 = v16;
   v19 = v18;
 
@@ -737,8 +737,8 @@ LABEL_7:
     v21 = v20;
   }
 
-  v22 = [(PHImportRecord *)v3 timers];
-  [v22 setAspectRatio:v21];
+  timers = [(PHImportRecord *)v3 timers];
+  [timers setAspectRatio:v21];
 
   return v3;
 }
@@ -750,108 +750,108 @@ LABEL_7:
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
   [v3 addObject:v4];
 
-  v5 = [(PHImportAsset *)self rawAsset];
+  rawAsset = [(PHImportAsset *)self rawAsset];
 
-  if (v5)
+  if (rawAsset)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(PHImportAsset *)self rawAsset];
-    v8 = [v6 numberWithInteger:{objc_msgSend(v7, "resourceType")}];
+    rawAsset2 = [(PHImportAsset *)self rawAsset];
+    v8 = [v6 numberWithInteger:{objc_msgSend(rawAsset2, "resourceType")}];
     [v3 addObject:v8];
   }
 
-  v9 = [(PHImportAsset *)self videoComplement];
+  videoComplement = [(PHImportAsset *)self videoComplement];
 
-  if (v9)
+  if (videoComplement)
   {
     v10 = MEMORY[0x1E696AD98];
-    v11 = [(PHImportAsset *)self videoComplement];
-    v12 = [v10 numberWithInteger:{objc_msgSend(v11, "resourceType")}];
+    videoComplement2 = [(PHImportAsset *)self videoComplement];
+    v12 = [v10 numberWithInteger:{objc_msgSend(videoComplement2, "resourceType")}];
     [v3 addObject:v12];
   }
 
-  v13 = [(PHImportAsset *)self largeRender];
+  largeRender = [(PHImportAsset *)self largeRender];
 
-  if (v13)
+  if (largeRender)
   {
     v14 = MEMORY[0x1E696AD98];
-    v15 = [(PHImportAsset *)self largeRender];
-    v16 = [v14 numberWithInteger:{objc_msgSend(v15, "resourceType")}];
+    largeRender2 = [(PHImportAsset *)self largeRender];
+    v16 = [v14 numberWithInteger:{objc_msgSend(largeRender2, "resourceType")}];
     [v3 addObject:v16];
 
-    v17 = [(PHImportAsset *)self largeRender];
-    v18 = [v17 videoComplement];
+    largeRender3 = [(PHImportAsset *)self largeRender];
+    videoComplement3 = [largeRender3 videoComplement];
 
-    if (v18)
+    if (videoComplement3)
     {
       v19 = MEMORY[0x1E696AD98];
-      v20 = [(PHImportAsset *)self largeRender];
-      v21 = [v20 videoComplement];
-      v22 = [v19 numberWithInteger:{objc_msgSend(v21, "resourceType")}];
+      largeRender4 = [(PHImportAsset *)self largeRender];
+      videoComplement4 = [largeRender4 videoComplement];
+      v22 = [v19 numberWithInteger:{objc_msgSend(videoComplement4, "resourceType")}];
       [v3 addObject:v22];
     }
   }
 
-  v23 = [(PHImportAsset *)self audioAsset];
+  audioAsset = [(PHImportAsset *)self audioAsset];
 
-  if (v23)
+  if (audioAsset)
   {
     v24 = MEMORY[0x1E696AD98];
-    v25 = [(PHImportAsset *)self audioAsset];
-    v26 = [v24 numberWithInteger:{objc_msgSend(v25, "resourceType")}];
+    audioAsset2 = [(PHImportAsset *)self audioAsset];
+    v26 = [v24 numberWithInteger:{objc_msgSend(audioAsset2, "resourceType")}];
     [v3 addObject:v26];
   }
 
-  v27 = [(PHImportAsset *)self largeMovieRender];
+  largeMovieRender = [(PHImportAsset *)self largeMovieRender];
 
-  if (v27)
+  if (largeMovieRender)
   {
     v28 = MEMORY[0x1E696AD98];
-    v29 = [(PHImportAsset *)self largeMovieRender];
-    v30 = [v28 numberWithInteger:{objc_msgSend(v29, "resourceType")}];
+    largeMovieRender2 = [(PHImportAsset *)self largeMovieRender];
+    v30 = [v28 numberWithInteger:{objc_msgSend(largeMovieRender2, "resourceType")}];
     [v3 addObject:v30];
   }
 
-  v31 = [(PHImportAsset *)self spatialOverCapture];
+  spatialOverCapture = [(PHImportAsset *)self spatialOverCapture];
 
-  if (v31)
+  if (spatialOverCapture)
   {
     v32 = MEMORY[0x1E696AD98];
-    v33 = [(PHImportAsset *)self spatialOverCapture];
-    v34 = [v32 numberWithInteger:{objc_msgSend(v33, "resourceType")}];
+    spatialOverCapture2 = [(PHImportAsset *)self spatialOverCapture];
+    v34 = [v32 numberWithInteger:{objc_msgSend(spatialOverCapture2, "resourceType")}];
     [v3 addObject:v34];
 
-    v35 = [(PHImportAsset *)self spatialOverCapture];
-    v36 = [v35 videoComplement];
+    spatialOverCapture3 = [(PHImportAsset *)self spatialOverCapture];
+    videoComplement5 = [spatialOverCapture3 videoComplement];
 
-    if (v36)
+    if (videoComplement5)
     {
       v37 = MEMORY[0x1E696AD98];
-      v38 = [(PHImportAsset *)self spatialOverCapture];
-      v39 = [v38 videoComplement];
-      v40 = [v37 numberWithInteger:{objc_msgSend(v39, "resourceType")}];
+      spatialOverCapture4 = [(PHImportAsset *)self spatialOverCapture];
+      videoComplement6 = [spatialOverCapture4 videoComplement];
+      v40 = [v37 numberWithInteger:{objc_msgSend(videoComplement6, "resourceType")}];
       [v3 addObject:v40];
     }
   }
 
-  v41 = [(PHImportAsset *)self base];
+  base = [(PHImportAsset *)self base];
 
-  if (v41)
+  if (base)
   {
     v42 = MEMORY[0x1E696AD98];
-    v43 = [(PHImportAsset *)self base];
-    v44 = [v42 numberWithInteger:{objc_msgSend(v43, "resourceType")}];
+    base2 = [(PHImportAsset *)self base];
+    v44 = [v42 numberWithInteger:{objc_msgSend(base2, "resourceType")}];
     [v3 addObject:v44];
 
-    v45 = [(PHImportAsset *)self base];
-    v46 = [v45 videoComplement];
+    base3 = [(PHImportAsset *)self base];
+    videoComplement7 = [base3 videoComplement];
 
-    if (v46)
+    if (videoComplement7)
     {
       v47 = MEMORY[0x1E696AD98];
-      v48 = [(PHImportAsset *)self base];
-      v49 = [v48 videoComplement];
-      v50 = [v47 numberWithInteger:{objc_msgSend(v49, "resourceType")}];
+      base4 = [(PHImportAsset *)self base];
+      videoComplement8 = [base4 videoComplement];
+      v50 = [v47 numberWithInteger:{objc_msgSend(videoComplement8, "resourceType")}];
       [v3 addObject:v50];
     }
   }
@@ -860,8 +860,8 @@ LABEL_7:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v51 = [(PHImportAsset *)self sidecarAssets];
-  v52 = [v51 countByEnumeratingWithState:&v58 objects:v62 count:16];
+  sidecarAssets = [(PHImportAsset *)self sidecarAssets];
+  v52 = [sidecarAssets countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v52)
   {
     v53 = v52;
@@ -872,14 +872,14 @@ LABEL_7:
       {
         if (*v59 != v54)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(sidecarAssets);
         }
 
         v56 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(*(*(&v58 + 1) + 8 * i), "resourceType")}];
         [v3 addObject:v56];
       }
 
-      v53 = [v51 countByEnumeratingWithState:&v58 objects:v62 count:16];
+      v53 = [sidecarAssets countByEnumeratingWithState:&v58 objects:v62 count:16];
     }
 
     while (v53);
@@ -888,10 +888,10 @@ LABEL_7:
   return v3;
 }
 
-- (id)validateMetadataForImportRecord:(id)a3
+- (id)validateMetadataForImportRecord:(id)record
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   if ([(PHImportAsset *)self isSidecar])
   {
     v5 = 0;
@@ -899,21 +899,21 @@ LABEL_7:
   }
 
   v6 = [(PHImportAsset *)self url];
-  if (v6 || ([v4 downloadedPath], (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (v11 = MEMORY[0x1E695DFF8], objc_msgSend(v4, "downloadedPath"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "fileURLWithPath:", v12), v6 = objc_claimAutoreleasedReturnValue(), v12, v10, v6))
+  if (v6 || ([recordCopy downloadedPath], (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (v11 = MEMORY[0x1E695DFF8], objc_msgSend(recordCopy, "downloadedPath"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "fileURLWithPath:", v12), v6 = objc_claimAutoreleasedReturnValue(), v12, v10, v6))
   {
     if (![(PHImportAsset *)self _loadMetadataIfNecessaryForURL:v6 options:22])
     {
       v7 = PLImportGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(PHImportAsset *)self redactedFileNameDescription];
+        redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = redactedFileNameDescription;
         _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "Failed to get ImageIO metadata for file %@", &buf, 0xCu);
       }
 
-      v9 = [v6 path];
-      v5 = [v4 addExceptionWithType:2 path:v9 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1623];
+      path = [v6 path];
+      v5 = [recordCopy addExceptionWithType:2 path:path underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1623];
 
       goto LABEL_18;
     }
@@ -938,8 +938,8 @@ LABEL_7:
 
       else
       {
-        v15 = [v6 path];
-        v5 = [v4 addExceptionWithType:2 path:v15 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1618];
+        path2 = [v6 path];
+        v5 = [recordCopy addExceptionWithType:2 path:path2 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportAsset.m" line:1618];
       }
 
       _Block_object_dispose(&buf, 8);
@@ -980,11 +980,11 @@ uint64_t __49__PHImportAsset_validateMetadataForImportRecord___block_invoke(uint
   return result;
 }
 
-- (BOOL)_loadMetadataIfNecessaryForURL:(id)a3 options:(unsigned __int16)a4
+- (BOOL)_loadMetadataIfNecessaryForURL:(id)l options:(unsigned __int16)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  optionsCopy = options;
+  lCopy = l;
+  if (lCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -1000,7 +1000,7 @@ uint64_t __49__PHImportAsset_validateMetadataForImportRecord___block_invoke(uint
     v14[5] = &v15;
     [(PHImportAsset *)self _accessMetadata:v14];
     v7 = v16[5];
-    if (v7 && ([v7 isSameForURL:v6 andOptions:v4] & 1) != 0)
+    if (v7 && ([v7 isSameForURL:lCopy andOptions:optionsCopy] & 1) != 0)
     {
       v8 = 1;
     }
@@ -1008,8 +1008,8 @@ uint64_t __49__PHImportAsset_validateMetadataForImportRecord___block_invoke(uint
     else
     {
       v9 = objc_alloc(MEMORY[0x1E69C0718]);
-      v10 = [v16[5] timeZoneLookup];
-      v11 = [v9 initWithMediaURL:v6 options:v4 timeZoneLookup:v10 shouldCache:0];
+      timeZoneLookup = [v16[5] timeZoneLookup];
+      v11 = [v9 initWithMediaURL:lCopy options:optionsCopy timeZoneLookup:timeZoneLookup shouldCache:0];
 
       v8 = v11 != 0;
       if (v11)
@@ -1039,11 +1039,11 @@ uint64_t __49__PHImportAsset_validateMetadataForImportRecord___block_invoke(uint
   return v12;
 }
 
-- (CGImage)avThumbnailOfSize:(unint64_t)a3 canceler:(id)a4 error:(id *)a5
+- (CGImage)avThumbnailOfSize:(unint64_t)size canceler:(id)canceler error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (([v7 isCanceled] & 1) != 0 || -[PHImportAsset isAudio](self, "isAudio"))
+  cancelerCopy = canceler;
+  if (([cancelerCopy isCanceled] & 1) != 0 || -[PHImportAsset isAudio](self, "isAudio"))
   {
     goto LABEL_25;
   }
@@ -1053,12 +1053,12 @@ uint64_t __49__PHImportAsset_validateMetadataForImportRecord___block_invoke(uint
   v10 = [v8 URLAssetWithURL:v9 options:0];
 
   v11 = MEMORY[0x1E6987FE0];
-  v12 = [v10 commonMetadata];
-  v13 = [v11 metadataItemsFromArray:v12 withKey:*MEMORY[0x1E6987680] keySpace:*MEMORY[0x1E6987838]];
+  commonMetadata = [v10 commonMetadata];
+  v13 = [v11 metadataItemsFromArray:commonMetadata withKey:*MEMORY[0x1E6987680] keySpace:*MEMORY[0x1E6987838]];
 
   if ([v13 count])
   {
-    if (([v7 isCanceled] & 1) == 0)
+    if (([cancelerCopy isCanceled] & 1) == 0)
     {
       v14 = [v13 objectAtIndexedSubscript:0];
       v15 = CGDataProviderCreateWithCFData([v14 dataValue]);
@@ -1076,7 +1076,7 @@ LABEL_25:
   }
 
   v17 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:v10];
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, cancelerCopy);
   [v17 setAppliesPreferredTrackTransform:1];
   v18 = [MEMORY[0x1E69C0708] mainVideoTrackForAsset:v10];
   [v18 naturalSize];
@@ -1097,24 +1097,24 @@ LABEL_25:
 
   v23 = vmlaq_n_f64(vmulq_n_f64(v22, *&v35), v21, *&v36);
   v24 = v23.f64[0] <= v23.f64[1];
-  v25 = v23.f64[0] * a3 / v23.f64[1];
-  v26 = v23.f64[1] * a3 / v23.f64[0];
+  v25 = v23.f64[0] * size / v23.f64[1];
+  sizeCopy2 = v23.f64[1] * size / v23.f64[0];
   if (v24)
   {
-    v27 = v25;
+    sizeCopy = v25;
   }
 
   else
   {
-    v27 = a3;
+    sizeCopy = size;
   }
 
   if (v24)
   {
-    v26 = a3;
+    sizeCopy2 = size;
   }
 
-  [v17 setMaximumSize:{v27, v26, v35, v36}];
+  [v17 setMaximumSize:{sizeCopy, sizeCopy2, v35, v36}];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke;
@@ -1122,9 +1122,9 @@ LABEL_25:
   v28 = v17;
   v39 = v28;
   objc_copyWeak(&v40, &location);
-  [v7 setCancelBlock:v38];
-  v29 = [v7 isCanceled];
-  if (v29)
+  [cancelerCopy setCancelBlock:v38];
+  isCanceled = [cancelerCopy isCanceled];
+  if (isCanceled)
   {
     v16 = 0;
   }
@@ -1141,9 +1141,9 @@ LABEL_25:
       v31 = PLImportGetLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v32 = [(PHImportAsset *)self redactedFileNameDescription];
+        redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
         *buf = 138412546;
-        *&buf[4] = v32;
+        *&buf[4] = redactedFileNameDescription;
         *&buf[12] = 2112;
         *&buf[14] = v30;
         _os_log_impl(&dword_19C86F000, v31, OS_LOG_TYPE_ERROR, "Unable to make an image for %@ (%@)", buf, 0x16u);
@@ -1154,7 +1154,7 @@ LABEL_25:
   objc_destroyWeak(&v40);
 
   objc_destroyWeak(&location);
-  if (v29)
+  if (isCanceled)
   {
     goto LABEL_22;
   }
@@ -1179,10 +1179,10 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
   [WeakRetained setCancelBlock:0];
 }
 
-- (CGImage)imageThumbnailOfSize:(unint64_t)a3 canceler:(id)a4 error:(id *)a5
+- (CGImage)imageThumbnailOfSize:(unint64_t)size canceler:(id)canceler error:(id *)error
 {
   v38[6] = *MEMORY[0x1E69E9840];
-  if ([a4 isCanceled])
+  if ([canceler isCanceled])
   {
     return 0;
   }
@@ -1195,9 +1195,9 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
     v26 = PLImportGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v27 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
       v33 = 138412290;
-      v34 = v27;
+      v34 = redactedFileNameDescription;
       _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_ERROR, "Unable to get an image source for %@", &v33, 0xCu);
     }
 
@@ -1215,7 +1215,7 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
   v37[2] = *MEMORY[0x1E696DFF0];
   v37[3] = v12;
   v13 = MEMORY[0x1E695E110];
-  if (a3 <= 0xA0)
+  if (size <= 0xA0)
   {
     v14 = MEMORY[0x1E695E110];
   }
@@ -1232,7 +1232,7 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
   v16 = *MEMORY[0x1E696E100];
   v37[4] = v15;
   v37[5] = v16;
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   v38[5] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:6];
   ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v8, 0, v18);
@@ -1254,10 +1254,10 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
       Width = CGImageGetWidth(ImageAtIndex);
       Height = CGImageGetHeight(ImageAtIndex);
       CGImageRelease(ImageAtIndex);
-      v25 = [(PHImportAsset *)self removeBlackBarsFromExifThumbnail:v20 fullSize:Width, Height];
-      if (v25)
+      height = [(PHImportAsset *)self removeBlackBarsFromExifThumbnail:v20 fullSize:Width, Height];
+      if (height)
       {
-        v20 = v25;
+        v20 = height;
       }
     }
 
@@ -1266,9 +1266,9 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
       v30 = PLImportGetLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = [(PHImportAsset *)self redactedFileNameDescription];
+        redactedFileNameDescription2 = [(PHImportAsset *)self redactedFileNameDescription];
         v33 = 138412290;
-        v34 = v31;
+        v34 = redactedFileNameDescription2;
         _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_ERROR, "Unable to make a full size image for %@", &v33, 0xCu);
       }
     }
@@ -1279,9 +1279,9 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
     v28 = PLImportGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription3 = [(PHImportAsset *)self redactedFileNameDescription];
       v33 = 138412290;
-      v34 = v29;
+      v34 = redactedFileNameDescription3;
       _os_log_impl(&dword_19C86F000, v28, OS_LOG_TYPE_ERROR, "Unable to make an exif size image for %@", &v33, 0xCu);
     }
 
@@ -1292,24 +1292,24 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
   return v20;
 }
 
-- (CGImage)removeBlackBarsFromExifThumbnail:(CGImage *)a3 fullSize:(CGSize)a4
+- (CGImage)removeBlackBarsFromExifThumbnail:(CGImage *)thumbnail fullSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  v8 = CGImageGetWidth(a3);
-  v9 = CGImageGetHeight(v6);
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  v8 = CGImageGetWidth(thumbnail);
+  v9 = CGImageGetHeight(thumbnailCopy);
   [(PHImportAsset *)self cropEXIFThumbSize:v8 originalSize:v9, width, height];
   if (v10 == v8 && v11 == v9)
   {
-    return v6;
+    return thumbnailCopy;
   }
 
   v16.size.width = floor(v10);
   v16.size.height = floor(v11);
   v16.origin.x = round((v8 - v10) * 0.5);
   v16.origin.y = round((v9 - v11) * 0.5);
-  v13 = CGImageCreateWithImageInRect(v6, v16);
+  v13 = CGImageCreateWithImageInRect(thumbnailCopy, v16);
   if (!v13)
   {
     return 0;
@@ -1318,10 +1318,10 @@ void __50__PHImportAsset_avThumbnailOfSize_canceler_error___block_invoke(uint64_
   return CFAutorelease(v13);
 }
 
-- (CGSize)cropEXIFThumbSize:(CGSize)result originalSize:(CGSize)a4
+- (CGSize)cropEXIFThumbSize:(CGSize)result originalSize:(CGSize)size
 {
   v4 = result.width / result.height;
-  v5 = a4.width / a4.height;
+  v5 = size.width / size.height;
   v6 = vabdd_f64(v5, result.width / result.height);
   if (result.width / result.height > 1.0 && v5 > 1.0)
   {
@@ -1401,21 +1401,21 @@ LABEL_40:
   return result;
 }
 
-- (void)thumbnailUsingRequest:(id)a3 atEnd:(id)a4
+- (void)thumbnailUsingRequest:(id)request atEnd:(id)end
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHImportAsset *)self source];
+  requestCopy = request;
+  endCopy = end;
+  source = [(PHImportAsset *)self source];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__PHImportAsset_thumbnailUsingRequest_atEnd___block_invoke;
   v11[3] = &unk_1E75AA870;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  [v8 dispatchAssetDataRequestAsyncUsingBlock:v11];
+  selfCopy = self;
+  v14 = endCopy;
+  v12 = requestCopy;
+  v9 = endCopy;
+  v10 = requestCopy;
+  [source dispatchAssetDataRequestAsyncUsingBlock:v11];
 }
 
 void __45__PHImportAsset_thumbnailUsingRequest_atEnd___block_invoke(uint64_t a1)
@@ -1476,62 +1476,62 @@ void __45__PHImportAsset_thumbnailUsingRequest_atEnd___block_invoke(uint64_t a1)
   }
 }
 
-- (id)thumbnailForSize:(unint64_t)a3 priority:(unsigned __int8)a4 atEnd:(id)a5
+- (id)thumbnailForSize:(unint64_t)size priority:(unsigned __int8)priority atEnd:(id)end
 {
-  v5 = a4;
-  v8 = a5;
+  priorityCopy = priority;
+  endCopy = end;
   if ([(PHImportAsset *)self isSidecar])
   {
-    (*(v8 + 2))(v8, 0, 0, 0);
+    (*(endCopy + 2))(endCopy, 0, 0, 0);
     v9 = 0;
   }
 
   else
   {
-    v9 = [[PHImportAssetThumbnailDataRequest alloc] initWithAsset:self longestSide:a3 priority:v5];
-    [(PHImportAsset *)self thumbnailUsingRequest:v9 atEnd:v8];
+    v9 = [[PHImportAssetThumbnailDataRequest alloc] initWithAsset:self longestSide:size priority:priorityCopy];
+    [(PHImportAsset *)self thumbnailUsingRequest:v9 atEnd:endCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v9 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_assert_owner(&self->_metadataLock);
-  objc_storeStrong(&self->_metadata, a3);
+  objc_storeStrong(&self->_metadata, metadata);
   if (![(PHImportAsset *)self fileSize])
   {
-    -[PHImportAsset setFileSize:](self, "setFileSize:", [v9 fileSize]);
+    -[PHImportAsset setFileSize:](self, "setFileSize:", [metadataCopy fileSize]);
   }
 
-  v5 = [v9 fileCreationDate];
-  v6 = [(PHImportAsset *)self fileCreationDate];
+  fileCreationDate = [metadataCopy fileCreationDate];
+  fileCreationDate2 = [(PHImportAsset *)self fileCreationDate];
 
-  if (!v6 && v5)
+  if (!fileCreationDate2 && fileCreationDate)
   {
-    [(PHImportAsset *)self setFileCreationDate:v5];
+    [(PHImportAsset *)self setFileCreationDate:fileCreationDate];
   }
 
-  v7 = [v9 fileModificationDate];
-  v8 = [(PHImportAsset *)self fileModificationDate];
+  fileModificationDate = [metadataCopy fileModificationDate];
+  fileModificationDate2 = [(PHImportAsset *)self fileModificationDate];
 
-  if (!v8 && v7)
+  if (!fileModificationDate2 && fileModificationDate)
   {
-    [(PHImportAsset *)self setFileModificationDate:v7];
+    [(PHImportAsset *)self setFileModificationDate:fileModificationDate];
   }
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__PHImportAsset_setMetadata___block_invoke;
   v6[3] = &unk_1E75AAEB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = metadataCopy;
+  v5 = metadataCopy;
   [(PHImportAsset *)self _accessMetadata:v6];
 }
 
@@ -1556,18 +1556,18 @@ void __45__PHImportAsset_thumbnailUsingRequest_atEnd___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)loadMetadataAsync:(id)a3
+- (void)loadMetadataAsync:(id)async
 {
-  v4 = a3;
-  v5 = [(PHImportAsset *)self source];
+  asyncCopy = async;
+  source = [(PHImportAsset *)self source];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__PHImportAsset_loadMetadataAsync___block_invoke;
   v7[3] = &unk_1E75AA820;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 dispatchAssetDataRequestAsyncUsingBlock:v7];
+  v8 = asyncCopy;
+  v6 = asyncCopy;
+  [source dispatchAssetDataRequestAsyncUsingBlock:v7];
 }
 
 uint64_t __35__PHImportAsset_loadMetadataAsync___block_invoke(uint64_t a1)
@@ -1590,74 +1590,74 @@ uint64_t __35__PHImportAsset_loadMetadataAsync___block_invoke(uint64_t a1)
   [(PHImportAsset *)self _loadMetadataIfNecessaryForURL:v3 options:29];
 }
 
-- (void)addBurstAsset:(id)a3
+- (void)addBurstAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   relatedBurstAssets = self->_relatedBurstAssets;
-  v11 = v5;
+  v11 = assetCopy;
   if (!relatedBurstAssets)
   {
     v7 = objc_opt_new();
     v8 = self->_relatedBurstAssets;
     self->_relatedBurstAssets = v7;
 
-    v5 = v11;
+    assetCopy = v11;
     relatedBurstAssets = self->_relatedBurstAssets;
   }
 
-  [(NSMutableArray *)relatedBurstAssets addObject:v5];
+  [(NSMutableArray *)relatedBurstAssets addObject:assetCopy];
   burstPick = self->_burstPick;
   p_burstPick = &self->_burstPick;
   if (!burstPick && ([v11 burstPickType] & 4) != 0)
   {
-    objc_storeStrong(p_burstPick, a3);
+    objc_storeStrong(p_burstPick, asset);
   }
 }
 
-- (void)setAudioAsset:(id)a3
+- (void)setAudioAsset:(id)asset
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
     v5 = PLImportGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(PHImportAsset *)v4 redactedFileNameDescription];
-      v16 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](v4, "resourceType")}];
+      redactedFileNameDescription = [(PHImportAsset *)assetCopy redactedFileNameDescription];
+      v16 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](assetCopy, "resourceType")}];
       v18 = v16;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
       v14 = PHDescriptionsForResourceTypes(v15);
       v7 = [v14 componentsJoinedByString:{@", "}];
-      v8 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription2 = [(PHImportAsset *)self redactedFileNameDescription];
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
       v17 = v9;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
       v11 = PHDescriptionsForResourceTypes(v10);
       v12 = [v11 componentsJoinedByString:{@", "}];
       *buf = 138413058;
-      v20 = v6;
+      v20 = redactedFileNameDescription;
       v21 = 2112;
       v22 = v7;
       v23 = 2112;
-      v24 = v8;
+      v24 = redactedFileNameDescription2;
       v25 = 2112;
       v26 = v12;
       _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as an base image of %@ (%@)", buf, 0x2Au);
     }
 
-    [(PHImportAsset *)v4 setResourceType:3];
+    [(PHImportAsset *)assetCopy setResourceType:3];
   }
 
   audioAsset = self->_audioAsset;
-  self->_audioAsset = v4;
+  self->_audioAsset = assetCopy;
 }
 
-- (void)setBase:(id)a3
+- (void)setBase:(id)base
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  baseCopy = base;
+  if (!baseCopy)
   {
     goto LABEL_17;
   }
@@ -1666,56 +1666,56 @@ uint64_t __35__PHImportAsset_loadMetadataAsync___block_invoke(uint64_t a1)
   {
     if (![(PHImportAsset *)self isMovie])
     {
-      v15 = PLImportGetLog();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      videoComplement = PLImportGetLog();
+      if (os_log_type_enabled(videoComplement, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [(PHImportAsset *)self redactedFileNameDescription];
+        redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
         v31 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
         v42 = v31;
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
         v33 = PHDescriptionsForResourceTypes(v32);
         v34 = [v33 componentsJoinedByString:{@", "}];
         *buf = 138412546;
-        v49 = v30;
+        v49 = redactedFileNameDescription;
         v50 = 2112;
         v51 = v34;
-        _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEBUG, "Trying to set a SOC file on an unexpected primary asset (%@ - %@)", buf, 0x16u);
+        _os_log_impl(&dword_19C86F000, videoComplement, OS_LOG_TYPE_DEBUG, "Trying to set a SOC file on an unexpected primary asset (%@ - %@)", buf, 0x16u);
       }
 
       goto LABEL_16;
     }
 
-    v16 = [v4 isMovie];
+    isMovie = [baseCopy isMovie];
     p_super = PLImportGetLog();
     v17 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG);
-    if (v16)
+    if (isMovie)
     {
       if (v17)
       {
-        v18 = [v4 redactedFileNameDescription];
-        v41 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+        redactedFileNameDescription2 = [baseCopy redactedFileNameDescription];
+        v41 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(baseCopy, "resourceType")}];
         v44 = v41;
         v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
         v37 = PHDescriptionsForResourceTypes(v39);
         v19 = [v37 componentsJoinedByString:{@", "}];
-        v20 = [(PHImportAsset *)self redactedFileNameDescription];
+        redactedFileNameDescription3 = [(PHImportAsset *)self redactedFileNameDescription];
         v21 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
         v43 = v21;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
         v23 = PHDescriptionsForResourceTypes(v22);
         v24 = [v23 componentsJoinedByString:{@", "}];
         *buf = 138413058;
-        v49 = v18;
+        v49 = redactedFileNameDescription2;
         v50 = 2112;
         v51 = v19;
         v52 = 2112;
-        v53 = v20;
+        v53 = redactedFileNameDescription3;
         v54 = 2112;
         v55 = v24;
         _os_log_impl(&dword_19C86F000, p_super, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as an base movie of %@ (%@)", buf, 0x2Au);
       }
 
-      [v4 setResourceType:12];
+      [baseCopy setResourceType:12];
       goto LABEL_17;
     }
 
@@ -1724,7 +1724,7 @@ uint64_t __35__PHImportAsset_loadMetadataAsync___block_invoke(uint64_t a1)
       goto LABEL_18;
     }
 
-    v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+    v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(baseCopy, "resourceType")}];
     v45 = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
     v27 = PHDescriptionsForResourceTypes(v26);
@@ -1738,43 +1738,43 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v5 = [v4 isImage];
+  isImage = [baseCopy isImage];
   p_super = PLImportGetLog();
   v7 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (isImage)
   {
     if (v7)
     {
-      v8 = [v4 redactedFileNameDescription];
-      v40 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+      redactedFileNameDescription4 = [baseCopy redactedFileNameDescription];
+      v40 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(baseCopy, "resourceType")}];
       v47 = v40;
       v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
       v36 = PHDescriptionsForResourceTypes(v38);
       v9 = [v36 componentsJoinedByString:{@", "}];
-      v10 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription5 = [(PHImportAsset *)self redactedFileNameDescription];
       v11 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
       v46 = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
       v13 = PHDescriptionsForResourceTypes(v12);
       v14 = [v13 componentsJoinedByString:{@", "}];
       *buf = 138413058;
-      v49 = v8;
+      v49 = redactedFileNameDescription4;
       v50 = 2112;
       v51 = v9;
       v52 = 2112;
-      v53 = v10;
+      v53 = redactedFileNameDescription5;
       v54 = 2112;
       v55 = v14;
       _os_log_impl(&dword_19C86F000, p_super, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as an base image of %@ (%@)", buf, 0x2Au);
     }
 
-    [v4 setResourceType:8];
-    v15 = [v4 videoComplement];
-    [v15 setResourceType:11];
+    [baseCopy setResourceType:8];
+    videoComplement = [baseCopy videoComplement];
+    [videoComplement setResourceType:11];
 LABEL_16:
 
 LABEL_17:
-    v35 = v4;
+    v35 = baseCopy;
     p_super = &self->_base->super;
     self->_base = v35;
     goto LABEL_18;
@@ -1782,7 +1782,7 @@ LABEL_17:
 
   if (v7)
   {
-    v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+    v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(baseCopy, "resourceType")}];
     v56[0] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
     v27 = PHDescriptionsForResourceTypes(v26);
@@ -1796,11 +1796,11 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)setSpatialOverCapture:(id)a3
+- (void)setSpatialOverCapture:(id)capture
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  captureCopy = capture;
+  if (!captureCopy)
   {
     goto LABEL_17;
   }
@@ -1809,56 +1809,56 @@ LABEL_18:
   {
     if (![(PHImportAsset *)self isMovie])
     {
-      v15 = PLImportGetLog();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      videoComplement = PLImportGetLog();
+      if (os_log_type_enabled(videoComplement, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [(PHImportAsset *)self redactedFileNameDescription];
+        redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
         v31 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
         v42 = v31;
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
         v33 = PHDescriptionsForResourceTypes(v32);
         v34 = [v33 componentsJoinedByString:{@", "}];
         *buf = 138412546;
-        v49 = v30;
+        v49 = redactedFileNameDescription;
         v50 = 2112;
         v51 = v34;
-        _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEBUG, "Trying to set a SOC file on an unexpected primary asset (%@ - %@)", buf, 0x16u);
+        _os_log_impl(&dword_19C86F000, videoComplement, OS_LOG_TYPE_DEBUG, "Trying to set a SOC file on an unexpected primary asset (%@ - %@)", buf, 0x16u);
       }
 
       goto LABEL_16;
     }
 
-    v16 = [v4 isMovie];
+    isMovie = [captureCopy isMovie];
     p_super = PLImportGetLog();
     v17 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG);
-    if (v16)
+    if (isMovie)
     {
       if (v17)
       {
-        v18 = [v4 redactedFileNameDescription];
-        v41 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+        redactedFileNameDescription2 = [captureCopy redactedFileNameDescription];
+        v41 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(captureCopy, "resourceType")}];
         v44 = v41;
         v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
         v37 = PHDescriptionsForResourceTypes(v39);
         v19 = [v37 componentsJoinedByString:{@", "}];
-        v20 = [(PHImportAsset *)self redactedFileNameDescription];
+        redactedFileNameDescription3 = [(PHImportAsset *)self redactedFileNameDescription];
         v21 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
         v43 = v21;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
         v23 = PHDescriptionsForResourceTypes(v22);
         v24 = [v23 componentsJoinedByString:{@", "}];
         *buf = 138413058;
-        v49 = v18;
+        v49 = redactedFileNameDescription2;
         v50 = 2112;
         v51 = v19;
         v52 = 2112;
-        v53 = v20;
+        v53 = redactedFileNameDescription3;
         v54 = 2112;
         v55 = v24;
         _os_log_impl(&dword_19C86F000, p_super, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as an SOC movie of %@ (%@)", buf, 0x2Au);
       }
 
-      [v4 setResourceType:14];
+      [captureCopy setResourceType:14];
       goto LABEL_17;
     }
 
@@ -1867,7 +1867,7 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+    v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(captureCopy, "resourceType")}];
     v45 = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
     v27 = PHDescriptionsForResourceTypes(v26);
@@ -1881,43 +1881,43 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v5 = [v4 isImage];
+  isImage = [captureCopy isImage];
   p_super = PLImportGetLog();
   v7 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (isImage)
   {
     if (v7)
     {
-      v8 = [v4 redactedFileNameDescription];
-      v40 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+      redactedFileNameDescription4 = [captureCopy redactedFileNameDescription];
+      v40 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(captureCopy, "resourceType")}];
       v47 = v40;
       v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
       v36 = PHDescriptionsForResourceTypes(v38);
       v9 = [v36 componentsJoinedByString:{@", "}];
-      v10 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription5 = [(PHImportAsset *)self redactedFileNameDescription];
       v11 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
       v46 = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
       v13 = PHDescriptionsForResourceTypes(v12);
       v14 = [v13 componentsJoinedByString:{@", "}];
       *buf = 138413058;
-      v49 = v8;
+      v49 = redactedFileNameDescription4;
       v50 = 2112;
       v51 = v9;
       v52 = 2112;
-      v53 = v10;
+      v53 = redactedFileNameDescription5;
       v54 = 2112;
       v55 = v14;
       _os_log_impl(&dword_19C86F000, p_super, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as an SOC image of %@ (%@)", buf, 0x2Au);
     }
 
-    [v4 setResourceType:13];
-    v15 = [v4 videoComplement];
-    [v15 setResourceType:15];
+    [captureCopy setResourceType:13];
+    videoComplement = [captureCopy videoComplement];
+    [videoComplement setResourceType:15];
 LABEL_16:
 
 LABEL_17:
-    v35 = v4;
+    v35 = captureCopy;
     p_super = &self->_spatialOverCapture->super;
     self->_spatialOverCapture = v35;
     goto LABEL_18;
@@ -1925,7 +1925,7 @@ LABEL_17:
 
   if (v7)
   {
-    v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+    v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(captureCopy, "resourceType")}];
     v56[0] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
     v27 = PHDescriptionsForResourceTypes(v26);
@@ -1939,12 +1939,12 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)setLargeMovieRender:(id)a3
+- (void)setLargeMovieRender:(id)render
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  renderCopy = render;
+  v5 = renderCopy;
+  if (!renderCopy)
   {
 LABEL_6:
     v16 = v5;
@@ -1953,31 +1953,31 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [v4 isMovie];
+  isMovie = [renderCopy isMovie];
   p_super = PLImportGetLog();
   v8 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (isMovie)
   {
     if (v8)
     {
-      v9 = [v5 redactedFileNameDescription];
+      redactedFileNameDescription = [v5 redactedFileNameDescription];
       v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "resourceType")}];
       v25 = v23;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
       v21 = PHDescriptionsForResourceTypes(v22);
       v10 = [v21 componentsJoinedByString:{@", "}];
-      v11 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription2 = [(PHImportAsset *)self redactedFileNameDescription];
       v12 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
       v24 = v12;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
       v14 = PHDescriptionsForResourceTypes(v13);
       v15 = [v14 componentsJoinedByString:{@", "}];
       *buf = 138413058;
-      v27 = v9;
+      v27 = redactedFileNameDescription;
       v28 = 2112;
       v29 = v10;
       v30 = 2112;
-      v31 = v11;
+      v31 = redactedFileNameDescription2;
       v32 = 2112;
       v33 = v15;
       _os_log_impl(&dword_19C86F000, p_super, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as a large movie render of %@ (%@)", buf, 0x2Au);
@@ -2002,12 +2002,12 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setLargeRender:(id)a3
+- (void)setLargeRender:(id)render
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  renderCopy = render;
+  v5 = renderCopy;
+  if (!renderCopy)
   {
 LABEL_6:
     v17 = v5;
@@ -2016,39 +2016,39 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [v4 isImage];
+  isImage = [renderCopy isImage];
   p_super = PLImportGetLog();
   v8 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (isImage)
   {
     if (v8)
     {
-      v9 = [v5 redactedFileNameDescription];
+      redactedFileNameDescription = [v5 redactedFileNameDescription];
       v24 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "resourceType")}];
       v26 = v24;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
       v22 = PHDescriptionsForResourceTypes(v23);
       v10 = [v22 componentsJoinedByString:{@", "}];
-      v11 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription2 = [(PHImportAsset *)self redactedFileNameDescription];
       v12 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
       v25 = v12;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
       v14 = PHDescriptionsForResourceTypes(v13);
       v15 = [v14 componentsJoinedByString:{@", "}];
       *buf = 138413058;
-      v28 = v9;
+      v28 = redactedFileNameDescription;
       v29 = 2112;
       v30 = v10;
       v31 = 2112;
-      v32 = v11;
+      v32 = redactedFileNameDescription2;
       v33 = 2112;
       v34 = v15;
       _os_log_impl(&dword_19C86F000, p_super, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as a large render of %@ (%@)", buf, 0x2Au);
     }
 
     [v5 setResourceType:5];
-    v16 = [v5 videoComplement];
-    [v16 setResourceType:10];
+    videoComplement = [v5 videoComplement];
+    [videoComplement setResourceType:10];
 
     goto LABEL_6;
   }
@@ -2068,14 +2068,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setVideoComplement:(id)a3
+- (void)setVideoComplement:(id)complement
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  complementCopy = complement;
+  v5 = complementCopy;
+  if (complementCopy)
   {
-    [(PHImportAsset *)v4 isMovie];
+    [(PHImportAsset *)complementCopy isMovie];
     if ([(PHImportAsset *)self resourceType]== 1)
     {
       v6 = v5;
@@ -2110,17 +2110,17 @@ LABEL_10:
     v10 = PLImportGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(PHImportAsset *)v5 redactedFileNameDescription];
-      v12 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription = [(PHImportAsset *)v5 redactedFileNameDescription];
+      redactedFileNameDescription2 = [(PHImportAsset *)self redactedFileNameDescription];
       v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
       v17 = v13;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
       v15 = PHDescriptionsForResourceTypes(v14);
       v16 = [v15 componentsJoinedByString:{@", "}];
       *buf = 138412802;
-      v19 = v11;
+      v19 = redactedFileNameDescription;
       v20 = 2112;
-      v21 = v12;
+      v21 = redactedFileNameDescription2;
       v22 = 2112;
       v23 = v16;
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_ERROR, "Trying to set a video complement file (%@) on an unexpected primary asset (%@ - %@)", buf, 0x20u);
@@ -2132,25 +2132,25 @@ LABEL_11:
   self->_videoComplement = v5;
 }
 
-- (void)setRawAsset:(id)a3
+- (void)setRawAsset:(id)asset
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (!assetCopy)
   {
     goto LABEL_5;
   }
 
-  if (([v5 isRAW] & 1) == 0)
+  if (([assetCopy isRAW] & 1) == 0)
   {
     v7 = PLImportGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v6 fileName];
-      v9 = [v8 pathExtension];
+      fileName = [v6 fileName];
+      pathExtension = [fileName pathExtension];
       v11 = 138412290;
-      v12 = v9;
+      v12 = pathExtension;
       v10 = "Expected rawAsset to be a RAW (%@)";
 LABEL_10:
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEBUG, v10, &v11, 0xCu);
@@ -2166,10 +2166,10 @@ LABEL_11:
     v7 = PLImportGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [(PHImportAsset *)self fileName];
-      v9 = [v8 pathExtension];
+      fileName = [(PHImportAsset *)self fileName];
+      pathExtension = [fileName pathExtension];
       v11 = 138412290;
-      v12 = v9;
+      v12 = pathExtension;
       v10 = "Expected primary asset to be a JPEG (%@)";
       goto LABEL_10;
     }
@@ -2179,22 +2179,22 @@ LABEL_11:
 
   [v6 setResourceType:4];
 LABEL_5:
-  objc_storeStrong(&self->_rawAsset, a3);
+  objc_storeStrong(&self->_rawAsset, asset);
 LABEL_12:
 }
 
 - (BOOL)hasAdjustments
 {
-  v3 = [(PHImportAsset *)self adjustmentSidecar];
-  if (v3)
+  adjustmentSidecar = [(PHImportAsset *)self adjustmentSidecar];
+  if (adjustmentSidecar)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PHImportAsset *)self originalAdjustmentSidecar];
-    v4 = v5 != 0;
+    originalAdjustmentSidecar = [(PHImportAsset *)self originalAdjustmentSidecar];
+    v4 = originalAdjustmentSidecar != 0;
   }
 
   return v4;
@@ -2202,52 +2202,52 @@ LABEL_12:
 
 - (id)xmpSidecar
 {
-  v2 = [(PHImportAsset *)self sidecarAssetsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F102C4A0];
+  sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
+  v3 = [sidecarAssetsByType objectForKeyedSubscript:&unk_1F102C4A0];
 
   return v3;
 }
 
 - (id)originalAdjustmentSidecar
 {
-  v2 = [(PHImportAsset *)self sidecarAssetsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F102C488];
+  sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
+  v3 = [sidecarAssetsByType objectForKeyedSubscript:&unk_1F102C488];
 
   return v3;
 }
 
 - (id)adjustmentSecondarySidecar
 {
-  v2 = [(PHImportAsset *)self sidecarAssetsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F102C470];
+  sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
+  v3 = [sidecarAssetsByType objectForKeyedSubscript:&unk_1F102C470];
 
   return v3;
 }
 
 - (id)adjustmentSidecar
 {
-  v2 = [(PHImportAsset *)self sidecarAssetsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F102C458];
+  sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
+  v3 = [sidecarAssetsByType objectForKeyedSubscript:&unk_1F102C458];
 
   return v3;
 }
 
 - (id)slmSidecar
 {
-  v2 = [(PHImportAsset *)self sidecarAssetsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F102C440];
+  sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
+  v3 = [sidecarAssetsByType objectForKeyedSubscript:&unk_1F102C440];
 
   return v3;
 }
 
-- (void)removeSidecarAsset:(id)a3
+- (void)removeSidecarAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
     sidecarAssetsByType = self->_sidecarAssetsByType;
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(assetCopy, "resourceType")}];
     [(NSMutableDictionary *)sidecarAssetsByType removeObjectForKey:v7];
 
     [v5 setFilePresenter:0];
@@ -2264,63 +2264,63 @@ LABEL_12:
   }
 }
 
-- (void)addSidecarAsset:(id)a3
+- (void)addSidecarAsset:(id)asset
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v5 = [(PHImportAsset *)self source];
-    v6 = [v5 isPairedSidecar:v4];
+    source = [(PHImportAsset *)self source];
+    v6 = [source isPairedSidecar:assetCopy];
 
     if ((v6 & 1) == 0)
     {
       v7 = PLImportGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v8 = [v4 redactedFileNameDescription];
-        v26 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+        redactedFileNameDescription = [assetCopy redactedFileNameDescription];
+        v26 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(assetCopy, "resourceType")}];
         v28 = v26;
         v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
         v24 = PHDescriptionsForResourceTypes(v25);
         v9 = [v24 componentsJoinedByString:{@", "}];
-        v10 = [(PHImportAsset *)self redactedFileNameDescription];
+        redactedFileNameDescription2 = [(PHImportAsset *)self redactedFileNameDescription];
         v11 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
         v27 = v11;
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
         v13 = PHDescriptionsForResourceTypes(v12);
         v14 = [v13 componentsJoinedByString:{@", "}];
         *buf = 138413058;
-        v30 = v8;
+        v30 = redactedFileNameDescription;
         v31 = 2112;
         v32 = v9;
         v33 = 2112;
-        v34 = v10;
+        v34 = redactedFileNameDescription2;
         v35 = 2112;
         v36 = v14;
         _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as a sidecar of %@ (%@) ", buf, 0x2Au);
       }
 
-      v15 = [(PHImportAsset *)self sidecarAssetsByType];
+      sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
 
-      if (!v15)
+      if (!sidecarAssetsByType)
       {
         v16 = objc_opt_new();
         [(PHImportAsset *)self setSidecarAssetsByType:v16];
       }
 
       sidecarAssetsByType = self->_sidecarAssetsByType;
-      v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
-      [(NSMutableDictionary *)sidecarAssetsByType setObject:v4 forKeyedSubscript:v18];
+      v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(assetCopy, "resourceType")}];
+      [(NSMutableDictionary *)sidecarAssetsByType setObject:assetCopy forKeyedSubscript:v18];
 
       v19 = [PHImportAssetFilePresenter alloc];
       v20 = [(PHImportAsset *)self url];
-      v21 = [v4 url];
+      v21 = [assetCopy url];
       v22 = [(PHImportAssetFilePresenter *)v19 initWithPrimaryURL:v20 presentedURL:v21];
-      [v4 setFilePresenter:v22];
+      [assetCopy setFilePresenter:v22];
 
-      v23 = [(PHImportAsset *)self source];
-      [v23 addPairedSidecar:v4];
+      source2 = [(PHImportAsset *)self source];
+      [source2 addPairedSidecar:assetCopy];
     }
   }
 }
@@ -2332,10 +2332,10 @@ LABEL_12:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PHImportAsset *)self sidecarAssetsByType];
-  v3 = [v2 allValues];
+  sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
+  allValues = [sidecarAssetsByType allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2347,13 +2347,13 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) fileSize];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -2369,10 +2369,10 @@ LABEL_12:
 
 - (NSArray)sidecarAssets
 {
-  v2 = [(PHImportAsset *)self sidecarAssetsByType];
-  v3 = [v2 allValues];
+  sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
+  allValues = [sidecarAssetsByType allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (void)_loadSidecarFiles
@@ -2413,31 +2413,31 @@ _BYTE *__33__PHImportAsset_loadSidecarFiles__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)checkForSidecarWithExtension:(id)a3
+- (id)checkForSidecarWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = [(PHImportAsset *)self url];
-  v6 = [v5 URLByDeletingPathExtension];
-  v7 = [v4 uppercaseString];
-  v8 = [v6 URLByAppendingPathExtension:v7];
+  uRLByDeletingPathExtension = [v5 URLByDeletingPathExtension];
+  uppercaseString = [extensionCopy uppercaseString];
+  v8 = [uRLByDeletingPathExtension URLByAppendingPathExtension:uppercaseString];
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v8 path];
-  LODWORD(v7) = [v9 fileExistsAtPath:v10];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v8 path];
+  LODWORD(uppercaseString) = [defaultManager fileExistsAtPath:path];
 
-  if (v7)
+  if (uppercaseString)
   {
-    v11 = [(PHImportAsset *)self source];
-    v12 = [PHImportAsset assetFileForURL:v8 source:v11];
+    source = [(PHImportAsset *)self source];
+    v12 = [PHImportAsset assetFileForURL:v8 source:source];
 
     if (!v12)
     {
-      v13 = [v8 URLByDeletingPathExtension];
-      v14 = [v4 lowercaseString];
-      v15 = [v13 URLByAppendingPathExtension:v14];
+      uRLByDeletingPathExtension2 = [v8 URLByDeletingPathExtension];
+      lowercaseString = [extensionCopy lowercaseString];
+      v15 = [uRLByDeletingPathExtension2 URLByAppendingPathExtension:lowercaseString];
 
-      v16 = [(PHImportAsset *)self source];
-      v12 = [PHImportAsset assetFileForURL:v15 source:v16];
+      source2 = [(PHImportAsset *)self source];
+      v12 = [PHImportAsset assetFileForURL:v15 source:source2];
 
       v8 = v15;
     }
@@ -2458,8 +2458,8 @@ _BYTE *__33__PHImportAsset_loadSidecarFiles__block_invoke(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(PHImportAsset *)self relatedAssets];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  relatedAssets = [(PHImportAsset *)self relatedAssets];
+  v3 = [relatedAssets countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2471,15 +2471,15 @@ _BYTE *__33__PHImportAsset_loadSidecarFiles__block_invoke(uint64_t a1)
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(relatedAssets);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 fileSize];
-        v5 += v9 + [v8 relatedBytes];
+        fileSize = [v8 fileSize];
+        v5 += fileSize + [v8 relatedBytes];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [relatedAssets countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -2496,71 +2496,71 @@ _BYTE *__33__PHImportAsset_loadSidecarFiles__block_invoke(uint64_t a1)
 - (id)relatedAssets
 {
   v3 = objc_opt_new();
-  v4 = [(PHImportAsset *)self largeRender];
+  largeRender = [(PHImportAsset *)self largeRender];
 
-  if (v4)
+  if (largeRender)
   {
-    v5 = [(PHImportAsset *)self largeRender];
-    [v3 addObject:v5];
+    largeRender2 = [(PHImportAsset *)self largeRender];
+    [v3 addObject:largeRender2];
   }
 
-  v6 = [(PHImportAsset *)self largeMovieRender];
+  largeMovieRender = [(PHImportAsset *)self largeMovieRender];
 
-  if (v6)
+  if (largeMovieRender)
   {
-    v7 = [(PHImportAsset *)self largeMovieRender];
-    [v3 addObject:v7];
+    largeMovieRender2 = [(PHImportAsset *)self largeMovieRender];
+    [v3 addObject:largeMovieRender2];
   }
 
-  v8 = [(PHImportAsset *)self rawAsset];
+  rawAsset = [(PHImportAsset *)self rawAsset];
 
-  if (v8)
+  if (rawAsset)
   {
-    v9 = [(PHImportAsset *)self rawAsset];
+    rawAsset2 = [(PHImportAsset *)self rawAsset];
   }
 
   else
   {
-    v10 = [(PHImportAsset *)self videoComplement];
+    videoComplement = [(PHImportAsset *)self videoComplement];
 
-    if (!v10)
+    if (!videoComplement)
     {
       goto LABEL_10;
     }
 
-    v9 = [(PHImportAsset *)self videoComplement];
+    rawAsset2 = [(PHImportAsset *)self videoComplement];
   }
 
-  v11 = v9;
-  [v3 addObject:v9];
+  v11 = rawAsset2;
+  [v3 addObject:rawAsset2];
 
 LABEL_10:
-  v12 = [(PHImportAsset *)self audioAsset];
+  audioAsset = [(PHImportAsset *)self audioAsset];
 
-  if (v12)
+  if (audioAsset)
   {
-    v13 = [(PHImportAsset *)self audioAsset];
-    [v3 addObject:v13];
+    audioAsset2 = [(PHImportAsset *)self audioAsset];
+    [v3 addObject:audioAsset2];
   }
 
-  v14 = [(PHImportAsset *)self spatialOverCapture];
+  spatialOverCapture = [(PHImportAsset *)self spatialOverCapture];
 
-  if (v14)
+  if (spatialOverCapture)
   {
-    v15 = [(PHImportAsset *)self spatialOverCapture];
-    [v3 addObject:v15];
+    spatialOverCapture2 = [(PHImportAsset *)self spatialOverCapture];
+    [v3 addObject:spatialOverCapture2];
   }
 
-  v16 = [(PHImportAsset *)self base];
+  base = [(PHImportAsset *)self base];
 
-  if (v16)
+  if (base)
   {
-    v17 = [(PHImportAsset *)self base];
-    [v3 addObject:v17];
+    base2 = [(PHImportAsset *)self base];
+    [v3 addObject:base2];
   }
 
-  v18 = [(PHImportAsset *)self sidecarAssets];
-  [v3 addObjectsFromArray:v18];
+  sidecarAssets = [(PHImportAsset *)self sidecarAssets];
+  [v3 addObjectsFromArray:sidecarAssets];
 
   return v3;
 }
@@ -2568,9 +2568,9 @@ LABEL_10:
 - (unint64_t)approximateBytesRequiredToImport
 {
   v3 = [(PHImportAsset *)self assetSizeIncludingRelatedAssets]+ 225280;
-  v4 = [(PHImportAsset *)self largeRender];
+  largeRender = [(PHImportAsset *)self largeRender];
 
-  if (!v4)
+  if (!largeRender)
   {
     return (fmin([(PHImportAsset *)self fileSize], 1468006.4) + v3);
   }
@@ -3026,9 +3026,9 @@ uint64_t __26__PHImportAsset_lensModel__block_invoke(uint64_t a1)
 
 - (NSString)formattedCameraModel
 {
-  v3 = [(PHImportAsset *)self cameraModel];
-  v4 = [(PHImportAsset *)self cameraMake];
-  v5 = [MEMORY[0x1E69C0708] formattedCameraModelFromCameraModel:v3 cameraMake:v4];
+  cameraModel = [(PHImportAsset *)self cameraModel];
+  cameraMake = [(PHImportAsset *)self cameraMake];
+  v5 = [MEMORY[0x1E69C0708] formattedCameraModelFromCameraModel:cameraModel cameraMake:cameraMake];
 
   return v5;
 }
@@ -3175,8 +3175,8 @@ uint64_t __43__PHImportAsset_livePhotoPairingIdentifier__block_invoke(uint64_t a
 
 - (int)burstPickType
 {
-  v2 = [(PHImportAsset *)self burstUUID];
-  v3 = 2 * (v2 != 0);
+  burstUUID = [(PHImportAsset *)self burstUUID];
+  v3 = 2 * (burstUUID != 0);
 
   return v3;
 }
@@ -3247,19 +3247,19 @@ uint64_t __26__PHImportAsset_burstUUID__block_invoke(uint64_t a1)
 
 - (CGSize)transformedPixelSize
 {
-  v3 = [(PHImportAsset *)self largeRender];
-  v4 = v3;
-  if (v3)
+  largeRender = [(PHImportAsset *)self largeRender];
+  v4 = largeRender;
+  if (largeRender)
   {
-    v5 = v3;
+    selfCopy = largeRender;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   [(PHImportAsset *)v6 orientedPixelSize];
   v8 = v7;
@@ -3369,11 +3369,11 @@ uint64_t __28__PHImportAsset_orientation__block_invoke(uint64_t a1)
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695F060];
-  v4 = [(PHImportAsset *)self largeRender];
-  if (v4)
+  largeRender = [(PHImportAsset *)self largeRender];
+  if (largeRender)
   {
-    v5 = [(PHImportAsset *)self largeRender];
-    v6 = [v5 url];
+    largeRender2 = [(PHImportAsset *)self largeRender];
+    v6 = [largeRender2 url];
   }
 
   else
@@ -3433,11 +3433,11 @@ uint64_t __28__PHImportAsset_orientation__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_accessMetadata:(id)a3
+- (void)_accessMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_lock(&self->_metadataLock);
-  v4[2](v4);
+  metadataCopy[2](metadataCopy);
 
   os_unfair_lock_unlock(&self->_metadataLock);
 }
@@ -3454,27 +3454,27 @@ uint64_t __28__PHImportAsset_orientation__block_invoke(uint64_t a1)
   v6 = [v4 initWithURL:v5 options:0];
 
   v7 = [MEMORY[0x1E69C0708] mainVideoTrackForAsset:v6];
-  v8 = [v7 isDecodable];
+  isDecodable = [v7 isDecodable];
 
-  return v8;
+  return isDecodable;
 }
 
-- (void)takeAsVideoComplement:(id)a3
+- (void)takeAsVideoComplement:(id)complement
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!-[PHImportAsset isImage](self, "isImage") || ([v4 isMovie] & 1) == 0)
+  complementCopy = complement;
+  if (!-[PHImportAsset isImage](self, "isImage") || ([complementCopy isMovie] & 1) == 0)
   {
-    v13 = PLImportGetLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    sidecarAssetsByType = PLImportGetLog();
+    if (os_log_type_enabled(sidecarAssetsByType, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [v4 redactedFileNameDescription];
-      v25 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription = [complementCopy redactedFileNameDescription];
+      redactedFileNameDescription2 = [(PHImportAsset *)self redactedFileNameDescription];
       *buf = 138412546;
-      v32 = v24;
+      v32 = redactedFileNameDescription;
       v33 = 2112;
-      v34 = v25;
-      _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEBUG, "Assigning %@ as video complement of %@ is not allowed", buf, 0x16u);
+      v34 = redactedFileNameDescription2;
+      _os_log_impl(&dword_19C86F000, sidecarAssetsByType, OS_LOG_TYPE_DEBUG, "Assigning %@ as video complement of %@ is not allowed", buf, 0x16u);
     }
 
     goto LABEL_12;
@@ -3483,98 +3483,98 @@ uint64_t __28__PHImportAsset_orientation__block_invoke(uint64_t a1)
   v5 = PLImportGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 redactedFileNameDescription];
-    v28 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "resourceType")}];
+    redactedFileNameDescription3 = [complementCopy redactedFileNameDescription];
+    v28 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(complementCopy, "resourceType")}];
     v30 = v28;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
     v26 = PHDescriptionsForResourceTypes(v27);
     v7 = [v26 componentsJoinedByString:{@", "}];
-    v8 = [(PHImportAsset *)self redactedFileNameDescription];
+    redactedFileNameDescription4 = [(PHImportAsset *)self redactedFileNameDescription];
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
     v29 = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
     v11 = PHDescriptionsForResourceTypes(v10);
     v12 = [v11 componentsJoinedByString:{@", "}];
     *buf = 138413058;
-    v32 = v6;
+    v32 = redactedFileNameDescription3;
     v33 = 2112;
     v34 = v7;
     v35 = 2112;
-    v36 = v8;
+    v36 = redactedFileNameDescription4;
     v37 = 2112;
     v38 = v12;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "PAIRING: setting %@ (%@) as a video complement of %@ (%@)", buf, 0x2Au);
   }
 
-  [(PHImportAsset *)self setVideoComplement:v4];
-  v13 = [(PHImportAsset *)self sidecarAssetsByType];
-  if ([v13 count])
+  [(PHImportAsset *)self setVideoComplement:complementCopy];
+  sidecarAssetsByType = [(PHImportAsset *)self sidecarAssetsByType];
+  if ([sidecarAssetsByType count])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v14 = [v4 sidecarAssetsByType];
-  v15 = [v14 count];
+  sidecarAssetsByType2 = [complementCopy sidecarAssetsByType];
+  v15 = [sidecarAssetsByType2 count];
 
   if (v15)
   {
     v16 = PLImportGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v4 sidecarAssetsByType];
-      v18 = [v17 allValues];
-      v19 = [v18 valueForKeyPath:@"fileName.pathExtension"];
+      sidecarAssetsByType3 = [complementCopy sidecarAssetsByType];
+      allValues = [sidecarAssetsByType3 allValues];
+      v19 = [allValues valueForKeyPath:@"fileName.pathExtension"];
       v20 = [v19 componentsJoinedByString:{@", "}];
-      v21 = [v4 redactedFileNameDescription];
-      v22 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription5 = [complementCopy redactedFileNameDescription];
+      redactedFileNameDescription6 = [(PHImportAsset *)self redactedFileNameDescription];
       *buf = 138412802;
       v32 = v20;
       v33 = 2112;
-      v34 = v21;
+      v34 = redactedFileNameDescription5;
       v35 = 2112;
-      v36 = v22;
+      v36 = redactedFileNameDescription6;
       _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_DEBUG, "PAIRING: moving sidecars (%@) from %@ to %@", buf, 0x20u);
     }
 
-    v23 = [v4 sidecarAssetsByType];
-    [(PHImportAsset *)self setSidecarAssetsByType:v23];
+    sidecarAssetsByType4 = [complementCopy sidecarAssetsByType];
+    [(PHImportAsset *)self setSidecarAssetsByType:sidecarAssetsByType4];
 
-    [v4 setSidecarAssetsByType:0];
+    [complementCopy setSidecarAssetsByType:0];
   }
 
 LABEL_13:
 }
 
-- (BOOL)isVideoComplementOf:(id)a3
+- (BOOL)isVideoComplementOf:(id)of
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isJPEG] & 1) == 0 && !objc_msgSend(v4, "isHEIF"))
+  ofCopy = of;
+  if (([ofCopy isJPEG] & 1) == 0 && !objc_msgSend(ofCopy, "isHEIF"))
   {
 LABEL_16:
     v14 = 0;
     goto LABEL_17;
   }
 
-  v5 = [v4 livePhotoPairingIdentifier];
-  if (v5 && (v6 = v5, [(PHImportAsset *)self livePhotoPairingIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  livePhotoPairingIdentifier = [ofCopy livePhotoPairingIdentifier];
+  if (livePhotoPairingIdentifier && (v6 = livePhotoPairingIdentifier, [(PHImportAsset *)self livePhotoPairingIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [v4 livePhotoPairingIdentifier];
+    livePhotoPairingIdentifier2 = [ofCopy livePhotoPairingIdentifier];
   }
 
   else
   {
-    if ([(PHImportAsset *)self performAdditionalLivePhotoChecksOnImageAsset:v4])
+    if ([(PHImportAsset *)self performAdditionalLivePhotoChecksOnImageAsset:ofCopy])
     {
       v9 = 1;
       goto LABEL_12;
     }
 
-    [v4 loadMetadataSync];
-    v8 = [v4 livePhotoPairingIdentifier];
-    if (!v8)
+    [ofCopy loadMetadataSync];
+    livePhotoPairingIdentifier2 = [ofCopy livePhotoPairingIdentifier];
+    if (!livePhotoPairingIdentifier2)
     {
       v9 = 0;
       goto LABEL_11;
@@ -3583,20 +3583,20 @@ LABEL_16:
     [(PHImportAsset *)self loadMetadataSync];
   }
 
-  v10 = [(PHImportAsset *)self livePhotoPairingIdentifier];
-  v9 = [v8 isEqualToString:v10];
+  livePhotoPairingIdentifier3 = [(PHImportAsset *)self livePhotoPairingIdentifier];
+  v9 = [livePhotoPairingIdentifier2 isEqualToString:livePhotoPairingIdentifier3];
 
 LABEL_11:
 LABEL_12:
   v11 = PLImportGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v4 livePhotoPairingIdentifier];
-    v13 = [(PHImportAsset *)self livePhotoPairingIdentifier];
+    livePhotoPairingIdentifier4 = [ofCopy livePhotoPairingIdentifier];
+    livePhotoPairingIdentifier5 = [(PHImportAsset *)self livePhotoPairingIdentifier];
     v16 = 138412546;
-    v17 = v12;
+    v17 = livePhotoPairingIdentifier4;
     v18 = 2112;
-    v19 = v13;
+    v19 = livePhotoPairingIdentifier5;
     _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_DEBUG, "PAIRING: imageAsset.livePhotoPairingIdentifier == %@, videoAsset.livePhotoPairingIdentifier == %@", &v16, 0x16u);
   }
 
@@ -3605,7 +3605,7 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  [v4 takeAsVideoComplement:self];
+  [ofCopy takeAsVideoComplement:self];
   v14 = 1;
 LABEL_17:
 
@@ -3617,9 +3617,9 @@ LABEL_17:
   importIdentifier = self->_importIdentifier;
   if (!importIdentifier)
   {
-    v4 = [(PHImportAsset *)self makeImportIdentifier];
+    makeImportIdentifier = [(PHImportAsset *)self makeImportIdentifier];
     v5 = self->_importIdentifier;
-    self->_importIdentifier = v4;
+    self->_importIdentifier = makeImportIdentifier;
 
     importIdentifier = self->_importIdentifier;
   }
@@ -3629,41 +3629,41 @@ LABEL_17:
 
 - (id)makeImportIdentifier
 {
-  v3 = [(PHImportAsset *)self fileName];
-  v4 = [v3 stringByDeletingPathExtension];
+  fileName = [(PHImportAsset *)self fileName];
+  stringByDeletingPathExtension = [fileName stringByDeletingPathExtension];
 
   if ([(PHImportAsset *)self isRepresentation]|| [(PHImportAsset *)self isOriginalAdjustmentData]|| [(PHImportAsset *)self isAdjustmentSecondaryData])
   {
-    v5 = [(PHImportAsset *)self stripMarkerFromName:v4 markerLocation:4];
+    v5 = [(PHImportAsset *)self stripMarkerFromName:stringByDeletingPathExtension markerLocation:4];
 
-    v4 = v5;
+    stringByDeletingPathExtension = v5;
   }
 
-  v6 = [(PHImportAsset *)self parentFolderPath];
-  v7 = [v6 stringByAppendingPathComponent:v4];
+  parentFolderPath = [(PHImportAsset *)self parentFolderPath];
+  v7 = [parentFolderPath stringByAppendingPathComponent:stringByDeletingPathExtension];
 
   return v7;
 }
 
-- (id)stripMarkerFromName:(id)a3 markerLocation:(unint64_t)a4
+- (id)stripMarkerFromName:(id)name markerLocation:(unint64_t)location
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  nameCopy = name;
+  v6 = nameCopy;
+  if (nameCopy)
   {
-    if ([v5 length] >= a4)
+    if ([nameCopy length] >= location)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [v6 substringToIndex:a4];
-      if ([v6 length] <= a4)
+      v11 = [v6 substringToIndex:location];
+      if ([v6 length] <= location)
       {
         v9 = [v10 stringWithFormat:@"%@%@", v11, &stru_1F0FC60C8];
       }
 
       else
       {
-        v12 = [v6 substringFromIndex:a4 + 1];
+        v12 = [v6 substringFromIndex:location + 1];
         v9 = [v10 stringWithFormat:@"%@%@", v11, v12];
       }
 
@@ -3674,7 +3674,7 @@ LABEL_17:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      v15 = a4;
+      locationCopy = location;
       v16 = 2112;
       v17 = v6;
       v18 = 2048;
@@ -3705,8 +3705,8 @@ LABEL_14:
   if (!basenameForOriginalAdjustment)
   {
     v4 = MEMORY[0x1E696AD60];
-    v5 = [(PHImportAsset *)self fileName];
-    v6 = [v4 stringWithString:v5];
+    fileName = [(PHImportAsset *)self fileName];
+    v6 = [v4 stringWithString:fileName];
 
     [v6 insertString:@"O" atIndex:4];
     v7 = [v6 copy];
@@ -3721,8 +3721,8 @@ LABEL_14:
 
 - (BOOL)isOriginalAdjustmentData
 {
-  v2 = [(PHImportAsset *)self fileName];
-  v3 = [PHImportAsset isOriginalAdjustmentData:v2];
+  fileName = [(PHImportAsset *)self fileName];
+  v3 = [PHImportAsset isOriginalAdjustmentData:fileName];
 
   return v3;
 }
@@ -3735,9 +3735,9 @@ LABEL_14:
   }
 
   v3 = isBase_isBaseRegex;
-  v4 = [(PHImportAsset *)self fileName];
-  v5 = [(PHImportAsset *)self fileName];
-  LOBYTE(v3) = [v3 numberOfMatchesInString:v4 options:0 range:{0, objc_msgSend(v5, "length")}] != 0;
+  fileName = [(PHImportAsset *)self fileName];
+  fileName2 = [(PHImportAsset *)self fileName];
+  LOBYTE(v3) = [v3 numberOfMatchesInString:fileName options:0 range:{0, objc_msgSend(fileName2, "length")}] != 0;
 
   return v3;
 }
@@ -3770,8 +3770,8 @@ void __23__PHImportAsset_isBase__block_invoke()
     dispatch_once(&isSpatialOverCapture_onceToken, &__block_literal_global_239);
   }
 
-  v3 = [(PHImportAsset *)self fileName];
-  v4 = [isSpatialOverCapture_isSocRegex numberOfMatchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}] != 0;
+  fileName = [(PHImportAsset *)self fileName];
+  v4 = [isSpatialOverCapture_isSocRegex numberOfMatchesInString:fileName options:0 range:{0, objc_msgSend(fileName, "length")}] != 0;
 
   return v4;
 }
@@ -3804,8 +3804,8 @@ void __37__PHImportAsset_isSpatialOverCapture__block_invoke()
     dispatch_once(&isAdjustmentSecondaryData_onceToken, &__block_literal_global_234);
   }
 
-  v3 = [(PHImportAsset *)self fileName];
-  v4 = [isAdjustmentSecondaryData_regex numberOfMatchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}] != 0;
+  fileName = [(PHImportAsset *)self fileName];
+  v4 = [isAdjustmentSecondaryData_regex numberOfMatchesInString:fileName options:0 range:{0, objc_msgSend(fileName, "length")}] != 0;
 
   return v4;
 }
@@ -3838,8 +3838,8 @@ void __42__PHImportAsset_isAdjustmentSecondaryData__block_invoke()
     dispatch_once(&isRender_onceToken, &__block_literal_global_6664);
   }
 
-  v3 = [(PHImportAsset *)self fileName];
-  v4 = [isRender_isRenderedRegex numberOfMatchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}] != 0;
+  fileName = [(PHImportAsset *)self fileName];
+  v4 = [isRender_isRenderedRegex numberOfMatchesInString:fileName options:0 range:{0, objc_msgSend(fileName, "length")}] != 0;
 
   return v4;
 }
@@ -3867,32 +3867,32 @@ void __25__PHImportAsset_isRender__block_invoke()
 
 - (BOOL)isGrouped
 {
-  v2 = [(PHImportAsset *)self groupingUUID];
-  v3 = v2 != 0;
+  groupingUUID = [(PHImportAsset *)self groupingUUID];
+  v3 = groupingUUID != 0;
 
   return v3;
 }
 
 - (BOOL)hasAudioAttachment
 {
-  v2 = [(PHImportAsset *)self audioAsset];
-  v3 = v2 != 0;
+  audioAsset = [(PHImportAsset *)self audioAsset];
+  v3 = audioAsset != 0;
 
   return v3;
 }
 
 - (BOOL)isLivePhoto
 {
-  v2 = [(PHImportAsset *)self videoComplement];
-  v3 = v2 != 0;
+  videoComplement = [(PHImportAsset *)self videoComplement];
+  v3 = videoComplement != 0;
 
   return v3;
 }
 
 - (BOOL)isBurst
 {
-  v2 = [(PHImportAsset *)self burstUUID];
-  v3 = v2 != 0;
+  burstUUID = [(PHImportAsset *)self burstUUID];
+  v3 = burstUUID != 0;
 
   return v3;
 }
@@ -3953,8 +3953,8 @@ uint64_t __22__PHImportAsset_isHDR__block_invoke(uint64_t a1)
 
 - (BOOL)isJpegPlusRAW
 {
-  v2 = [(PHImportAsset *)self rawAsset];
-  v3 = v2 != 0;
+  rawAsset = [(PHImportAsset *)self rawAsset];
+  v3 = rawAsset != 0;
 
   return v3;
 }
@@ -4020,16 +4020,16 @@ uint64_t __24__PHImportAsset_isSloMo__block_invoke(uint64_t a1)
 - (BOOL)isValidForReference
 {
   v2 = [(PHImportAsset *)self url];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  if ([v3 hasPrefix:@"/var"] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"/private/var") & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"/tmp"))
+  if ([path hasPrefix:@"/var"] & 1) != 0 || (objc_msgSend(path, "hasPrefix:", @"/private/var") & 1) != 0 || (objc_msgSend(path, "hasPrefix:", @"/tmp"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"/private/tmp"] ^ 1;
+    v4 = [path hasPrefix:@"/private/tmp"] ^ 1;
   }
 
   return v4;
@@ -4037,55 +4037,55 @@ uint64_t __24__PHImportAsset_isSloMo__block_invoke(uint64_t a1)
 
 - (NSString)parentFolderPath
 {
-  v2 = [(NSURL *)self->_url path];
-  v3 = [v2 stringByDeletingLastPathComponent];
+  path = [(NSURL *)self->_url path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-  return v3;
+  return stringByDeletingLastPathComponent;
 }
 
-- (id)descriptionWithPrefix:(id)a3
+- (id)descriptionWithPrefix:(id)prefix
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\n%@%@ <%p>", v4, objc_opt_class(), self];
+  prefixCopy = prefix;
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\n%@%@ <%p>", prefixCopy, objc_opt_class(), self];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(PHImportAsset *)self uuid];
-  v8 = [v6 stringWithFormat:@"\n\t%@uuid        : %@", v4, v7];
+  uuid = [(PHImportAsset *)self uuid];
+  v8 = [v6 stringWithFormat:@"\n\t%@uuid        : %@", prefixCopy, uuid];
   v9 = [v5 stringByAppendingString:v8];
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(PHImportAsset *)self source];
-  v12 = [v11 name];
-  v13 = [v10 stringWithFormat:@"\n\t%@device      : %@", v4, v12];
+  source = [(PHImportAsset *)self source];
+  name = [source name];
+  v13 = [v10 stringWithFormat:@"\n\t%@device      : %@", prefixCopy, name];
   v14 = [v9 stringByAppendingString:v13];
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [(PHImportAsset *)self parentFolderPath];
-  v17 = [v15 stringWithFormat:@"\n\t%@folder      : %@", v4, v16];
+  parentFolderPath = [(PHImportAsset *)self parentFolderPath];
+  v17 = [v15 stringWithFormat:@"\n\t%@folder      : %@", prefixCopy, parentFolderPath];
   v18 = [v14 stringByAppendingString:v17];
 
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [(PHImportAsset *)self fileName];
-  v21 = [(PHImportAsset *)self createdFileName];
-  v22 = [v19 stringWithFormat:@"\n\t%@name        : %@ (%@)", v4, v20, v21];
+  fileName = [(PHImportAsset *)self fileName];
+  createdFileName = [(PHImportAsset *)self createdFileName];
+  v22 = [v19 stringWithFormat:@"\n\t%@name        : %@ (%@)", prefixCopy, fileName, createdFileName];
   v23 = [v18 stringByAppendingString:v22];
 
-  v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\n\t%@fileSize    : %llu", v4, -[PHImportAsset fileSize](self, "fileSize")];
+  v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\n\t%@fileSize    : %llu", prefixCopy, -[PHImportAsset fileSize](self, "fileSize")];
   v25 = [v23 stringByAppendingString:v24];
 
   v26 = MEMORY[0x1E696AEC0];
-  v27 = [(PHImportAsset *)self creationDate];
-  v28 = [(PHImportAsset *)self fileCreationDate];
-  v29 = v4;
-  v30 = [v26 stringWithFormat:@"\n\t%@date        : %@ (%@)", v4, v27, v28];
+  creationDate = [(PHImportAsset *)self creationDate];
+  fileCreationDate = [(PHImportAsset *)self fileCreationDate];
+  v29 = prefixCopy;
+  v30 = [v26 stringWithFormat:@"\n\t%@date        : %@ (%@)", prefixCopy, creationDate, fileCreationDate];
   v31 = [v25 stringByAppendingString:v30];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v32 = [(PHImportAsset *)self relatedAssets];
-  v33 = [v32 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  relatedAssets = [(PHImportAsset *)self relatedAssets];
+  v33 = [relatedAssets countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v33)
   {
     v34 = v33;
@@ -4098,7 +4098,7 @@ uint64_t __24__PHImportAsset_isSloMo__block_invoke(uint64_t a1)
       {
         if (*v43 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(relatedAssets);
         }
 
         v38 = *(*(&v42 + 1) + 8 * v36);
@@ -4111,7 +4111,7 @@ uint64_t __24__PHImportAsset_isSloMo__block_invoke(uint64_t a1)
       }
 
       while (v34 != v36);
-      v34 = [v32 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v34 = [relatedAssets countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v34);
@@ -4123,40 +4123,40 @@ uint64_t __24__PHImportAsset_isSloMo__block_invoke(uint64_t a1)
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PHImportAsset *)self fileName];
-  v5 = [(PHImportAsset *)self createdFileName];
-  v6 = [(PHImportAsset *)self parentFolderPath];
+  fileName = [(PHImportAsset *)self fileName];
+  createdFileName = [(PHImportAsset *)self createdFileName];
+  parentFolderPath = [(PHImportAsset *)self parentFolderPath];
   v7 = [(PHImportAsset *)self descriptionWithPrefix:&stru_1F0FC60C8];
-  v8 = [v3 stringWithFormat:@"%@ (%@) [%@]%@", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@ (%@) [%@]%@", fileName, createdFileName, parentFolderPath, v7];
 
   return v8;
 }
 
-- (PHImportAsset)initWithSource:(id)a3 url:(id)a4 type:(id)a5 supportedMediaType:(unsigned __int8)a6 uuid:(id)a7
+- (PHImportAsset)initWithSource:(id)source url:(id)url type:(id)type supportedMediaType:(unsigned __int8)mediaType uuid:(id)uuid
 {
-  v8 = a6;
+  mediaTypeCopy = mediaType;
   v45[3] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(PHImportAsset *)self initWithSource:a3];
+  urlCopy = url;
+  typeCopy = type;
+  uuidCopy = uuid;
+  v16 = [(PHImportAsset *)self initWithSource:source];
   v17 = v16;
   if (v16)
   {
-    v39 = v8;
-    objc_storeStrong(&v16->_url, a4);
-    if (v15)
+    v39 = mediaTypeCopy;
+    objc_storeStrong(&v16->_url, url);
+    if (uuidCopy)
     {
-      v18 = [v15 copy];
+      v18 = [uuidCopy copy];
       uuid = v17->_uuid;
       v17->_uuid = v18;
     }
 
-    v20 = [v13 lastPathComponent];
+    lastPathComponent = [urlCopy lastPathComponent];
     fileName = v17->_fileName;
-    v17->_fileName = v20;
+    v17->_fileName = lastPathComponent;
 
-    objc_storeStrong(&v17->_createdFileName, v20);
+    objc_storeStrong(&v17->_createdFileName, lastPathComponent);
     v22 = *MEMORY[0x1E695DB50];
     v23 = *MEMORY[0x1E695DAA8];
     v45[0] = *MEMORY[0x1E695DB50];
@@ -4165,7 +4165,7 @@ uint64_t __24__PHImportAsset_isSloMo__block_invoke(uint64_t a1)
     v45[2] = *MEMORY[0x1E695DA80];
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:3];
     v40 = 0;
-    v26 = [v13 resourceValuesForKeys:v25 error:&v40];
+    v26 = [urlCopy resourceValuesForKeys:v25 error:&v40];
     v27 = v40;
 
     if (v26)
@@ -4187,7 +4187,7 @@ uint64_t __24__PHImportAsset_isSloMo__block_invoke(uint64_t a1)
       p_super = PLImportGetLog();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v13];
+        v33 = [MEMORY[0x1E69BF220] descriptionWithFileURL:urlCopy];
         *buf = 138412546;
         v42 = v33;
         v43 = 2112;
@@ -4196,23 +4196,23 @@ uint64_t __24__PHImportAsset_isSloMo__block_invoke(uint64_t a1)
       }
     }
 
-    v34 = [v13 pathExtension];
-    if ([v34 isEqualToString:&stru_1F0FC60C8])
+    pathExtension = [urlCopy pathExtension];
+    if ([pathExtension isEqualToString:&stru_1F0FC60C8])
     {
       v35 = 0;
     }
 
     else
     {
-      v35 = v34;
+      v35 = pathExtension;
     }
 
     objc_storeStrong(&v17->_fileExtension, v35);
     v17->_canReference = [(PHImportAsset *)v17 isValidForReference];
     v17->_copyMethod = 0;
-    if (v14)
+    if (typeCopy)
     {
-      if ([(PHImportAsset *)v17 configureWithContentType:v14 supportedMediaType:v39])
+      if ([(PHImportAsset *)v17 configureWithContentType:typeCopy supportedMediaType:v39])
       {
 LABEL_14:
 
@@ -4222,7 +4222,7 @@ LABEL_14:
 
     else
     {
-      v37 = [MEMORY[0x1E69C08F0] typeForURL:v13 error:0];
+      v37 = [MEMORY[0x1E69C08F0] typeForURL:urlCopy error:0];
       v38 = [(PHImportAsset *)v17 configureWithContentType:v37 supportedMediaType:v39];
 
       if (v38)
@@ -4240,15 +4240,15 @@ LABEL_15:
   return v17;
 }
 
-- (void)configureSidecarTypeForExtension:(id)a3
+- (void)configureSidecarTypeForExtension:(id)extension
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEqualToString:@"AAE"])
+  extensionCopy = extension;
+  if ([extensionCopy isEqualToString:@"AAE"])
   {
-    v5 = [(PHImportAsset *)self isOriginalAdjustmentData];
+    isOriginalAdjustmentData = [(PHImportAsset *)self isOriginalAdjustmentData];
     v6 = 7;
-    if (v5)
+    if (isOriginalAdjustmentData)
     {
       v6 = 16;
     }
@@ -4258,7 +4258,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"SLM"])
+  if ([extensionCopy isEqualToString:@"SLM"])
   {
     v7 = xmmword_19CB29580;
 LABEL_11:
@@ -4266,7 +4266,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"XMP"])
+  if ([extensionCopy isEqualToString:@"XMP"])
   {
     v7 = xmmword_19CB29570;
     goto LABEL_11;
@@ -4281,27 +4281,27 @@ LABEL_11:
   v8 = PLImportGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = [(PHImportAsset *)self redactedFileNameDescription];
+    redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
     v10 = 138412290;
-    v11 = v9;
+    v11 = redactedFileNameDescription;
     _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_ERROR, "Unknown sidecar type: %@", &v10, 0xCu);
   }
 
 LABEL_12:
 }
 
-- (PHImportAsset)initWithSource:(id)a3
+- (PHImportAsset)initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = PHImportAsset;
   v5 = [(PHImportAsset *)&v14 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uuid = v5->_uuid;
-    v5->_uuid = v7;
+    v5->_uuid = uUIDString;
 
     v9 = objc_opt_new();
     duplicates = v5->_duplicates;
@@ -4313,45 +4313,45 @@ LABEL_12:
 
     v5->_sidecarsLoaded = 0;
     *&v5->_metadataLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_source, v4);
+    objc_storeWeak(&v5->_source, sourceCopy);
   }
 
   return v5;
 }
 
-- (BOOL)configureWithContentType:(id)a3 supportedMediaType:(unsigned __int8)a4
+- (BOOL)configureWithContentType:(id)type supportedMediaType:(unsigned __int8)mediaType
 {
-  v4 = a4;
+  mediaTypeCopy = mediaType;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  typeCopy = type;
+  if (typeCopy)
   {
-    [(PHImportAsset *)self setContentType:v6];
-    if (v4 > 15)
+    [(PHImportAsset *)self setContentType:typeCopy];
+    if (mediaTypeCopy > 15)
     {
-      if (v4 != 16 && v4 != 32)
+      if (mediaTypeCopy != 16 && mediaTypeCopy != 32)
       {
-        if (v4 == 64)
+        if (mediaTypeCopy == 64)
         {
-          v8 = [(NSString *)self->_fileName pathExtension];
-          v9 = [v8 uppercaseString];
-          [(PHImportAsset *)self configureSidecarTypeForExtension:v9];
+          pathExtension = [(NSString *)self->_fileName pathExtension];
+          uppercaseString = [pathExtension uppercaseString];
+          [(PHImportAsset *)self configureSidecarTypeForExtension:uppercaseString];
           goto LABEL_18;
         }
 
 LABEL_16:
-        v8 = PLImportGetLog();
-        if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        pathExtension = PLImportGetLog();
+        if (!os_log_type_enabled(pathExtension, OS_LOG_TYPE_ERROR))
         {
 LABEL_19:
 
           goto LABEL_39;
         }
 
-        v9 = [(PHImportAsset *)self redactedFileNameDescription];
+        uppercaseString = [(PHImportAsset *)self redactedFileNameDescription];
         v18 = 138412290;
-        v19 = v9;
-        _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_ERROR, "Expected the asset '%@' to be of type image, movie, audio or sidecar", &v18, 0xCu);
+        v19 = uppercaseString;
+        _os_log_impl(&dword_19C86F000, pathExtension, OS_LOG_TYPE_ERROR, "Expected the asset '%@' to be of type image, movie, audio or sidecar", &v18, 0xCu);
 LABEL_18:
 
         goto LABEL_19;
@@ -4383,9 +4383,9 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    if (v4 != 2)
+    if (mediaTypeCopy != 2)
     {
-      if (v4 == 4 || v4 == 8)
+      if (mediaTypeCopy == 4 || mediaTypeCopy == 8)
       {
         *&self->_resourceType = xmmword_19CB29590;
 LABEL_39:
@@ -4396,15 +4396,15 @@ LABEL_39:
       goto LABEL_16;
     }
 
-    if ([v6 conformsToType:*MEMORY[0x1E6982E58]])
+    if ([typeCopy conformsToType:*MEMORY[0x1E6982E58]])
     {
       v11 = 1;
     }
 
     else
     {
-      v12 = [MEMORY[0x1E69C08F0] jpeg2000Type];
-      v13 = [v6 conformsToType:v12];
+      jpeg2000Type = [MEMORY[0x1E69C08F0] jpeg2000Type];
+      v13 = [typeCopy conformsToType:jpeg2000Type];
 
       if (v13)
       {
@@ -4413,9 +4413,9 @@ LABEL_39:
 
       else
       {
-        if (![v6 conformsToType:*MEMORY[0x1E6983138]])
+        if (![typeCopy conformsToType:*MEMORY[0x1E6983138]])
         {
-          if ([v6 conformsToType:*MEMORY[0x1E6983008]])
+          if ([typeCopy conformsToType:*MEMORY[0x1E6983008]])
           {
             self->_resourceSubType = 16;
             v14 = [(PHImportAsset *)self url];
@@ -4424,32 +4424,32 @@ LABEL_39:
 
           else
           {
-            if ([v6 conformsToType:*MEMORY[0x1E6982F88]])
+            if ([typeCopy conformsToType:*MEMORY[0x1E6982F88]])
             {
               v11 = 8;
               goto LABEL_28;
             }
 
-            if ([v6 conformsToType:*MEMORY[0x1E6982DE8]])
+            if ([typeCopy conformsToType:*MEMORY[0x1E6982DE8]])
             {
               v11 = 4096;
               goto LABEL_28;
             }
 
-            if ([v6 conformsToType:*MEMORY[0x1E6982F28]])
+            if ([typeCopy conformsToType:*MEMORY[0x1E6982F28]])
             {
               v11 = 0x2000;
               goto LABEL_28;
             }
 
-            if ([v6 conformsToType:*MEMORY[0x1E6982F10]])
+            if ([typeCopy conformsToType:*MEMORY[0x1E6982F10]])
             {
               v11 = 0x4000;
               goto LABEL_28;
             }
 
-            v16 = [MEMORY[0x1E69C08F0] adobePhotoshopType];
-            v17 = [v6 conformsToType:v16];
+            adobePhotoshopType = [MEMORY[0x1E69C08F0] adobePhotoshopType];
+            v17 = [typeCopy conformsToType:adobePhotoshopType];
 
             if (v17)
             {
@@ -4497,16 +4497,16 @@ LABEL_40:
   return v7;
 }
 
-- (void)updateIsRAW:(BOOL)a3 contentType:(id)a4
+- (void)updateIsRAW:(BOOL)w contentType:(id)type
 {
-  v5 = a3;
-  v7 = a4;
-  if (v5)
+  wCopy = w;
+  typeCopy = type;
+  if (wCopy)
   {
     self->_resourceSubType |= 8uLL;
-    v8 = v7;
-    objc_storeStrong(&self->_contentType, a4);
-    v7 = v8;
+    v8 = typeCopy;
+    objc_storeStrong(&self->_contentType, type);
+    typeCopy = v8;
   }
 }
 
@@ -4524,16 +4524,16 @@ LABEL_40:
   return v5;
 }
 
-+ (BOOL)isOriginalAdjustmentData:(id)a3
++ (BOOL)isOriginalAdjustmentData:(id)data
 {
   v3 = isOriginalAdjustmentData__onceToken;
-  v4 = a3;
+  dataCopy = data;
   if (v3 != -1)
   {
     dispatch_once(&isOriginalAdjustmentData__onceToken, &__block_literal_global_253);
   }
 
-  v5 = [isOriginalAdjustmentData__isAdjustmentBaseDataRegEx numberOfMatchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v5 = [isOriginalAdjustmentData__isAdjustmentBaseDataRegEx numberOfMatchesInString:dataCopy options:0 range:{0, objc_msgSend(dataCopy, "length")}];
 
   return v5 != 0;
 }
@@ -4559,20 +4559,20 @@ void __42__PHImportAsset_isOriginalAdjustmentData___block_invoke()
   }
 }
 
-+ (void)determineIfTIFFIsRAW:(id)a3 url:(id)a4
++ (void)determineIfTIFFIsRAW:(id)w url:(id)url
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 isTIFF];
-  if (v6)
+  wCopy = w;
+  urlCopy = url;
+  isTIFF = [wCopy isTIFF];
+  if (urlCopy)
   {
-    if (v7)
+    if (isTIFF)
     {
       v12 = *MEMORY[0x1E696E0E8];
       v13[0] = MEMORY[0x1E695E118];
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-      v9 = CGImageSourceCreateWithURL(v6, v8);
+      v9 = CGImageSourceCreateWithURL(urlCopy, v8);
 
       if (v9)
       {
@@ -4580,7 +4580,7 @@ void __42__PHImportAsset_isOriginalAdjustmentData___block_invoke()
         if (v10)
         {
           v11 = [MEMORY[0x1E6982C40] typeWithIdentifier:v10];
-          [v5 updateIsRAW:objc_msgSend(v11 contentType:{"conformsToType:", *MEMORY[0x1E6982F88]), v11}];
+          [wCopy updateIsRAW:objc_msgSend(v11 contentType:{"conformsToType:", *MEMORY[0x1E6982F88]), v11}];
         }
 
         CFRelease(v9);
@@ -4589,11 +4589,11 @@ void __42__PHImportAsset_isOriginalAdjustmentData___block_invoke()
   }
 }
 
-+ (id)loadDatesForAssets:(id)a3 atEnd:(id)a4
++ (id)loadDatesForAssets:(id)assets atEnd:(id)end
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && (objc_msgSend(v5, "objectAtIndexedSubscript:", 0), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isDeviceAsset"), v7, !v8))
+  assetsCopy = assets;
+  endCopy = end;
+  if ([assetsCopy count] && (objc_msgSend(assetsCopy, "objectAtIndexedSubscript:", 0), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isDeviceAsset"), v7, !v8))
   {
     v10 = objc_opt_new();
     v11 = dispatch_get_global_queue(25, 0);
@@ -4601,10 +4601,10 @@ void __42__PHImportAsset_isOriginalAdjustmentData___block_invoke()
     block[1] = 3221225472;
     block[2] = __42__PHImportAsset_loadDatesForAssets_atEnd___block_invoke;
     block[3] = &unk_1E75AA870;
-    v16 = v5;
+    v16 = assetsCopy;
     v12 = v10;
     v17 = v12;
-    v18 = v6;
+    v18 = endCopy;
     dispatch_async(v11, block);
 
     v13 = v18;
@@ -4613,9 +4613,9 @@ void __42__PHImportAsset_isOriginalAdjustmentData___block_invoke()
 
   else
   {
-    if (v6)
+    if (endCopy)
     {
-      v6[2](v6);
+      endCopy[2](endCopy);
     }
 
     v9 = 0;
@@ -4653,17 +4653,17 @@ void __42__PHImportAsset_loadDatesForAssets_atEnd___block_invoke_2(uint64_t a1, 
   [v2 loadMetadataSync];
 }
 
-+ (id)loadDatesForAssetSequence:(id)a3 atEnd:(id)a4
++ (id)loadDatesForAssetSequence:(id)sequence atEnd:(id)end
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  sequenceCopy = sequence;
+  endCopy = end;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = sequenceCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -4678,7 +4678,7 @@ void __42__PHImportAsset_loadDatesForAssets_atEnd___block_invoke_2(uint64_t a1, 
           objc_enumerationMutation(v9);
         }
 
-        [v8 addObject:{*(*(&v16 + 1) + 8 * i), v16}];
+        [array addObject:{*(*(&v16 + 1) + 8 * i), v16}];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -4687,27 +4687,27 @@ void __42__PHImportAsset_loadDatesForAssets_atEnd___block_invoke_2(uint64_t a1, 
     while (v11);
   }
 
-  v14 = [a1 loadDatesForAssets:v8 atEnd:v7];
+  v14 = [self loadDatesForAssets:array atEnd:endCopy];
 
   return v14;
 }
 
-+ (void)logImageDateFileDateDifferencesForAsset:(id)a3
++ (void)logImageDateFileDateDifferencesForAsset:(id)asset
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 creationDate];
-  v5 = [v3 fileCreationDate];
-  v6 = v5;
+  assetCopy = asset;
+  creationDate = [assetCopy creationDate];
+  fileCreationDate = [assetCopy fileCreationDate];
+  v6 = fileCreationDate;
   v7 = @"!!!!!!!!!!";
-  if (v4 && v5)
+  if (creationDate && fileCreationDate)
   {
-    if ([v4 compare:v5])
+    if ([creationDate compare:fileCreationDate])
     {
-      v8 = [MEMORY[0x1E695DFE8] localTimeZone];
-      v9 = [v8 secondsFromGMTForDate:v4];
+      localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+      v9 = [localTimeZone secondsFromGMTForDate:creationDate];
 
-      v10 = [v4 dateByAddingTimeInterval:-v9];
+      v10 = [creationDate dateByAddingTimeInterval:-v9];
       if ([v10 compare:v6])
       {
         v7 = @"----------";
@@ -4728,33 +4728,33 @@ void __42__PHImportAsset_loadDatesForAssets_atEnd___block_invoke_2(uint64_t a1, 
   v11 = PLImportGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v3 redactedFileNameDescription];
+    redactedFileNameDescription = [assetCopy redactedFileNameDescription];
     v13 = 138413058;
     v14 = v7;
     v15 = 2112;
-    v16 = v4;
+    v16 = creationDate;
     v17 = 2112;
     v18 = v6;
     v19 = 2112;
-    v20 = v12;
+    v20 = redactedFileNameDescription;
     _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_DEBUG, "%@ CreateDate: %@, AlternateDate: %@, Name: %@", &v13, 0x2Au);
   }
 }
 
-+ (id)assetFileForURL:(id)a3 source:(id)a4 withUuid:(id)a5
++ (id)assetFileForURL:(id)l source:(id)source withUuid:(id)uuid
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v44 = a5;
+  lCopy = l;
+  sourceCopy = source;
+  uuidCopy = uuid;
   v10 = 0;
-  if (v8 && v9)
+  if (lCopy && sourceCopy)
   {
-    v11 = [PHValidator mediaTypeForURL:v8];
+    v11 = [PHValidator mediaTypeForURL:lCopy];
     if (!v11)
     {
-      v12 = [v8 lastPathComponent];
-      v13 = [a1 isValidAsSidecar:v12];
+      lastPathComponent = [lCopy lastPathComponent];
+      v13 = [self isValidAsSidecar:lastPathComponent];
 
       if (v13)
       {
@@ -4767,10 +4767,10 @@ void __42__PHImportAsset_loadDatesForAssets_atEnd___block_invoke_2(uint64_t a1, 
       }
     }
 
-    v14 = [MEMORY[0x1E69C08F0] typeForURL:v8 error:0];
+    v14 = [MEMORY[0x1E69C08F0] typeForURL:lCopy error:0];
     if (v11 >= 2)
     {
-      v10 = [[a1 alloc] initWithSource:v9 url:v8 type:v14 supportedMediaType:v11 uuid:v44];
+      v10 = [[self alloc] initWithSource:sourceCopy url:lCopy type:v14 supportedMediaType:v11 uuid:uuidCopy];
 LABEL_38:
 
       goto LABEL_39;
@@ -4779,9 +4779,9 @@ LABEL_38:
     if (PFIsLivePhotoBundleType())
     {
       v15 = objc_opt_new();
-      v16 = [v8 path];
+      path = [lCopy path];
       v49 = 0;
-      v17 = [v15 contentsOfDirectoryAtPath:v16 error:&v49];
+      v17 = [v15 contentsOfDirectoryAtPath:path error:&v49];
       v18 = v49;
 
       if (v18)
@@ -4789,7 +4789,7 @@ LABEL_38:
         v19 = PLImportGetLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v20 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v8];
+          v20 = [MEMORY[0x1E69BF220] descriptionWithFileURL:lCopy];
           *buf = 138412546;
           v52 = v20;
           v53 = 2112;
@@ -4805,7 +4805,7 @@ LABEL_37:
       v41 = v17;
       v42 = v15;
       v43 = v14;
-      v26 = v8;
+      v26 = lCopy;
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
@@ -4843,7 +4843,7 @@ LABEL_24:
         {
           v38 = [PHImportAsset alloc];
           v35 = [v26 URLByAppendingPathComponent:v33];
-          v39 = [(PHImportAsset *)v38 initWithSource:v9 url:v35 type:0 supportedMediaType:16 uuid:v44];
+          v39 = [(PHImportAsset *)v38 initWithSource:sourceCopy url:v35 type:0 supportedMediaType:16 uuid:uuidCopy];
           v37 = v19;
           v19 = v39;
           goto LABEL_31;
@@ -4858,7 +4858,7 @@ LABEL_32:
 LABEL_36:
 
             [(PHImportAsset *)v10 setVideoComplement:v19];
-            v8 = v26;
+            lCopy = v26;
             v15 = v42;
             v14 = v43;
             v18 = 0;
@@ -4872,7 +4872,7 @@ LABEL_36:
 
       v34 = [PHImportAsset alloc];
       v35 = [v26 URLByAppendingPathComponent:v33];
-      v36 = [(PHImportAsset *)v34 initWithSource:v9 url:v35 type:0 supportedMediaType:2 uuid:v44];
+      v36 = [(PHImportAsset *)v34 initWithSource:sourceCopy url:v35 type:0 supportedMediaType:2 uuid:uuidCopy];
       v37 = v10;
       v10 = v36;
 LABEL_31:
@@ -4881,12 +4881,12 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v21 = [MEMORY[0x1E69C0668] contentType];
-    v22 = [v14 conformsToType:v21];
+    contentType = [MEMORY[0x1E69C0668] contentType];
+    v22 = [v14 conformsToType:contentType];
 
     if (v22)
     {
-      v10 = [[PHImportAssetBundleAsset alloc] initWithAssetBundleAtURL:v8 withImportSource:v9];
+      v10 = [[PHImportAssetBundleAsset alloc] initWithAssetBundleAtURL:lCopy withImportSource:sourceCopy];
       if (v10)
       {
         goto LABEL_38;
@@ -4895,7 +4895,7 @@ LABEL_31:
       v23 = PLImportGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v8];
+        v24 = [MEMORY[0x1E69BF220] descriptionWithFileURL:lCopy];
         *buf = 138412290;
         v52 = v24;
 LABEL_20:
@@ -4908,7 +4908,7 @@ LABEL_20:
       v23 = PLImportGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v8];
+        v24 = [MEMORY[0x1E69BF220] descriptionWithFileURL:lCopy];
         *buf = 138412290;
         v52 = v24;
         v25 = "Unable to create a import asset for resource '%@'";
@@ -4925,12 +4925,12 @@ LABEL_39:
   return v10;
 }
 
-+ (BOOL)isValidAsSidecar:(id)a3
++ (BOOL)isValidAsSidecar:(id)sidecar
 {
-  v3 = [a3 pathExtension];
-  v4 = [v3 uppercaseString];
+  pathExtension = [sidecar pathExtension];
+  uppercaseString = [pathExtension uppercaseString];
 
-  v5 = ([v4 isEqualToString:@"AAE"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"SLM") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"XMP") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"DAT");
+  v5 = ([uppercaseString isEqualToString:@"AAE"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"SLM") & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"XMP") & 1) != 0 || objc_msgSend(uppercaseString, "isEqualToString:", @"DAT");
   return v5;
 }
 

@@ -1,59 +1,59 @@
 @interface HUVisualEffectContainerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (HUVisualEffectContainerView)initWithInnerContentView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (HUVisualEffectContainerView)initWithInnerContentView:(id)view;
 - (void)layoutSubviews;
-- (void)setInnerContentView:(id)a3;
+- (void)setInnerContentView:(id)view;
 @end
 
 @implementation HUVisualEffectContainerView
 
-- (HUVisualEffectContainerView)initWithInnerContentView:(id)a3
+- (HUVisualEffectContainerView)initWithInnerContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = HUVisualEffectContainerView;
   v5 = [(HUVisualEffectContainerView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HUVisualEffectContainerView *)v5 setInnerContentView:v4];
+    [(HUVisualEffectContainerView *)v5 setInnerContentView:viewCopy];
   }
 
   return v6;
 }
 
-- (void)setInnerContentView:(id)a3
+- (void)setInnerContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   innerContentView = self->_innerContentView;
-  if (innerContentView != v5)
+  if (innerContentView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)innerContentView removeFromSuperview];
-    objc_storeStrong(&self->_innerContentView, a3);
-    v7 = [(HUVisualEffectContainerView *)self contentView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_innerContentView, view);
+    contentView = [(HUVisualEffectContainerView *)self contentView];
+    [contentView addSubview:v8];
 
     [(HUVisualEffectContainerView *)self invalidateIntrinsicContentSize];
     [(HUVisualEffectContainerView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(HUVisualEffectContainerView *)self innerContentView];
+  height = size.height;
+  width = size.width;
+  innerContentView = [(HUVisualEffectContainerView *)self innerContentView];
 
-  if (v10)
+  if (innerContentView)
   {
-    v13 = [(HUVisualEffectContainerView *)self innerContentView];
-    *&v14 = a4;
-    *&v15 = a5;
-    [v13 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
+    innerContentView2 = [(HUVisualEffectContainerView *)self innerContentView];
+    *&v14 = priority;
+    *&v15 = fittingPriority;
+    [innerContentView2 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
     v17 = v16;
     v19 = v18;
 
@@ -65,8 +65,8 @@
   {
     v22.receiver = self;
     v22.super_class = HUVisualEffectContainerView;
-    *&v11 = a4;
-    *&v12 = a5;
+    *&v11 = priority;
+    *&v12 = fittingPriority;
     [(HUVisualEffectContainerView *)&v22 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v11, v12];
   }
 
@@ -77,8 +77,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(HUVisualEffectContainerView *)self innerContentView];
-  [v2 intrinsicContentSize];
+  innerContentView = [(HUVisualEffectContainerView *)self innerContentView];
+  [innerContentView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -89,12 +89,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(HUVisualEffectContainerView *)self innerContentView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  innerContentView = [(HUVisualEffectContainerView *)self innerContentView];
+  [innerContentView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -110,9 +110,9 @@
   v4.receiver = self;
   v4.super_class = HUVisualEffectContainerView;
   [(HUVisualEffectContainerView *)&v4 layoutSubviews];
-  v3 = [(HUVisualEffectContainerView *)self innerContentView];
+  innerContentView = [(HUVisualEffectContainerView *)self innerContentView];
   [(HUVisualEffectContainerView *)self bounds];
-  [v3 hu_setFramePreservingTransform:?];
+  [innerContentView hu_setFramePreservingTransform:?];
 }
 
 @end

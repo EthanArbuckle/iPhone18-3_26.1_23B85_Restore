@@ -1,21 +1,21 @@
 @interface NSUserActivity
-+ (BOOL)_currentUserActivityUUIDWithOptions:(id)a3 completionHandler:(id)a4;
++ (BOOL)_currentUserActivityUUIDWithOptions:(id)options completionHandler:(id)handler;
 + (BOOL)_supportsUserActivityAppLinks;
 + (id)_currentUserActivityUUID;
-+ (id)_fetchUserActivityWithUUID:(id)a3 intervalToWaitForDocumentSynchronizationToComplete:(double)a4 completionHandler:(id)a5;
-+ (id)_userFacingErrorForLaunchServicesError:(id)a3 userInfo:(id)a4;
-+ (void)_fetchUserActivityWithUUID:(id)a3 completionHandler:(id)a4;
-+ (void)_registerUserActivityType:(id)a3 dynamicActivityType:(id)a4;
-+ (void)_unregisterUserActivityType:(id)a3 dynamicActivityType:(id)a4;
++ (id)_fetchUserActivityWithUUID:(id)d intervalToWaitForDocumentSynchronizationToComplete:(double)complete completionHandler:(id)handler;
++ (id)_userFacingErrorForLaunchServicesError:(id)error userInfo:(id)info;
++ (void)_fetchUserActivityWithUUID:(id)d completionHandler:(id)handler;
++ (void)_registerUserActivityType:(id)type dynamicActivityType:(id)activityType;
++ (void)_unregisterUserActivityType:(id)type dynamicActivityType:(id)activityType;
 + (void)deleteAllSavedUserActivitiesWithCompletionHandler:(void *)handler;
 + (void)deleteSavedUserActivitiesWithPersistentIdentifiers:(NSArray *)persistentIdentifiers completionHandler:(void *)handler;
-- (BOOL)_createUserActivityDataWithOptions:(id)a3 completionHandler:(id)a4;
-- (BOOL)_createUserActivityStringsWithOptions:(id)a3 completionHandler:(id)a4;
+- (BOOL)_createUserActivityDataWithOptions:(id)options completionHandler:(id)handler;
+- (BOOL)_createUserActivityStringsWithOptions:(id)options completionHandler:(id)handler;
 - (BOOL)isEligibleForHandoff;
 - (BOOL)isEligibleForPrediction;
 - (BOOL)isEligibleForPublicIndexing;
 - (BOOL)isEligibleForSearch;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsSave;
 - (BOOL)supportsContinuationStreams;
 - (CSSearchableItemAttributeSet)contentAttributeSet;
@@ -32,36 +32,36 @@
 - (NSURL)webpageURL;
 - (NSUUID)_uniqueIdentifier;
 - (NSUserActivity)initWithActivityType:(NSString *)activityType;
-- (NSUserActivity)initWithInternalUserActivity:(id)a3;
-- (NSUserActivity)initWithTypeIdentifier:(id)a3;
+- (NSUserActivity)initWithInternalUserActivity:(id)activity;
+- (NSUserActivity)initWithTypeIdentifier:(id)identifier;
 - (NSUserActivityPersistentIdentifier)persistentIdentifier;
-- (id)_determineMatchingApplicationBundleIdentifierWithOptions:(id)a3;
-- (id)_initWithTypeIdentifier:(id)a3 suggestedActionType:(int64_t)a4 options:(id)a5;
-- (id)_initWithUserActivityData:(id)a3;
-- (id)_initWithUserActivityData:(id)a3 options:(id)a4;
-- (id)_initWithUserActivityStrings:(id)a3 secondaryString:(id)a4 optionalData:(id)a5;
-- (id)_initWithUserActivityStrings:(id)a3 secondaryString:(id)a4 optionalData:(id)a5 options:(id)a6;
-- (id)_initWithUserActivityType:(id)a3 dynamicActivityType:(id)a4 options:(id)a5;
+- (id)_determineMatchingApplicationBundleIdentifierWithOptions:(id)options;
+- (id)_initWithTypeIdentifier:(id)identifier suggestedActionType:(int64_t)type options:(id)options;
+- (id)_initWithUserActivityData:(id)data;
+- (id)_initWithUserActivityData:(id)data options:(id)options;
+- (id)_initWithUserActivityStrings:(id)strings secondaryString:(id)string optionalData:(id)data;
+- (id)_initWithUserActivityStrings:(id)strings secondaryString:(id)string optionalData:(id)data options:(id)options;
+- (id)_initWithUserActivityType:(id)type dynamicActivityType:(id)activityType options:(id)options;
 - (id)contentUserAction;
 - (id)typeIdentifier;
 - (id)webPageURL;
 - (int64_t)_suggestedActionType;
 - (unint64_t)hash;
-- (void)_addKeywordsFromArray:(id)a3;
-- (void)_prepareUserActivityForLaunchingWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)_addKeywordsFromArray:(id)array;
+- (void)_prepareUserActivityForLaunchingWithOptions:(id)options completionHandler:(id)handler;
 - (void)_resignCurrent;
-- (void)_setFrameworkDelegate:(id)a3;
-- (void)_setOptions:(id)a3;
+- (void)_setFrameworkDelegate:(id)delegate;
+- (void)_setOptions:(id)options;
 - (void)addUserInfoEntriesFromDictionary:(NSDictionary *)otherDictionary;
 - (void)becomeCurrent;
 - (void)dealloc;
-- (void)didReceiveInputStream:(id)a3 outputStream:(id)a4;
+- (void)didReceiveInputStream:(id)stream outputStream:(id)outputStream;
 - (void)didSynchronizeActivity;
 - (void)getContinuationStreamsWithCompletionHandler:(void *)completionHandler;
 - (void)invalidate;
 - (void)resignCurrent;
 - (void)setContentAttributeSet:(CSSearchableItemAttributeSet *)contentAttributeSet;
-- (void)setContentUserAction:(id)a3;
+- (void)setContentUserAction:(id)action;
 - (void)setDelegate:(id)delegate;
 - (void)setEligibleForHandoff:(BOOL)eligibleForHandoff;
 - (void)setEligibleForPrediction:(BOOL)eligibleForPrediction;
@@ -77,7 +77,7 @@
 - (void)setTargetContentIdentifier:(NSString *)targetContentIdentifier;
 - (void)setTitle:(NSString *)title;
 - (void)setUserInfo:(NSDictionary *)userInfo;
-- (void)setWebPageURL:(id)a3;
+- (void)setWebPageURL:(id)l;
 - (void)setWebpageURL:(NSURL *)webpageURL;
 - (void)willSynchronizeActivity;
 @end
@@ -86,37 +86,37 @@
 
 - (NSDictionary)userInfo
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 userInfo];
+  return [(UAUserActivity *)_internalUserActivity userInfo];
 }
 
 - (BOOL)isEligibleForPrediction
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 isEligibleForPrediction];
+  return [(UAUserActivity *)_internalUserActivity isEligibleForPrediction];
 }
 
 - (NSUUID)_uniqueIdentifier
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 uniqueIdentifier];
+  return [(UAUserActivity *)_internalUserActivity uniqueIdentifier];
 }
 
 - (NSString)activityType
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 typeIdentifier];
+  return [(UAUserActivity *)_internalUserActivity typeIdentifier];
 }
 
 - (NSString)title
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 title];
+  return [(UAUserActivity *)_internalUserActivity title];
 }
 
 - (BOOL)isEligibleForSearch
@@ -131,9 +131,9 @@
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 isEligibleForSearch];
+  return [(UAUserActivity *)_internalUserActivity isEligibleForSearch];
 }
 
 - (BOOL)isEligibleForHandoff
@@ -148,9 +148,9 @@
     return 1;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 isEligibleForHandoff];
+  return [(UAUserActivity *)_internalUserActivity isEligibleForHandoff];
 }
 
 - (BOOL)isEligibleForPublicIndexing
@@ -165,23 +165,23 @@
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 isEligibleForPublicIndexing];
+  return [(UAUserActivity *)_internalUserActivity isEligibleForPublicIndexing];
 }
 
 - (void)becomeCurrent
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v2 becomeCurrent];
+  [(UAUserActivity *)_internalUserActivity becomeCurrent];
 }
 
 - (NSURL)webpageURL
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 webpageURL];
+  return [(UAUserActivity *)_internalUserActivity webpageURL];
 }
 
 - (NSUserActivityPersistentIdentifier)persistentIdentifier
@@ -192,32 +192,32 @@
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 persistentIdentifier];
+  return [(UAUserActivity *)_internalUserActivity persistentIdentifier];
 }
 
 - (void)willSynchronizeActivity
 {
-  v3 = [(NSUserActivity *)self _frameworkDelegate];
-  v4 = [(NSUserActivity *)self delegate];
+  _frameworkDelegate = [(NSUserActivity *)self _frameworkDelegate];
+  delegate = [(NSUserActivity *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(NSUserActivityDelegate *)v3 userActivityWillSave:self];
+    [(NSUserActivityDelegate *)_frameworkDelegate userActivityWillSave:self];
   }
 
   if (objc_opt_respondsToSelector())
   {
 
-    [v4 userActivityWillSave:self];
+    [delegate userActivityWillSave:self];
   }
 }
 
 - (void)resignCurrent
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v2 resignCurrent];
+  [(UAUserActivity *)_internalUserActivity resignCurrent];
 }
 
 + (id)_currentUserActivityUUID
@@ -257,9 +257,9 @@
 
 - (int64_t)_suggestedActionType
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 suggestedActionType];
+  return [(UAUserActivity *)_internalUserActivity suggestedActionType];
 }
 
 - (NSSet)keywords
@@ -274,19 +274,19 @@
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 keywords];
+  return [(UAUserActivity *)_internalUserActivity keywords];
 }
 
 - (void)invalidate
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v2 invalidate];
+  [(UAUserActivity *)_internalUserActivity invalidate];
 }
 
-- (NSUserActivity)initWithInternalUserActivity:(id)a3
+- (NSUserActivity)initWithInternalUserActivity:(id)activity
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -294,7 +294,7 @@
   v4 = [(NSUserActivity *)&v6 init];
   if (v4)
   {
-    v4->_internal = a3;
+    v4->_internal = activity;
     [(UAUserActivity *)[(NSUserActivity *)v4 _internalUserActivity] setDelegate:v4];
     [(UAUserActivity *)[(NSUserActivity *)v4 _internalUserActivity] setParentUserActivity:v4];
   }
@@ -329,59 +329,59 @@
 
 - (void)setTitle:(NSString *)title
 {
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 setTitle:title];
+  [(UAUserActivity *)_internalUserActivity setTitle:title];
 }
 
 - (void)setUserInfo:(NSDictionary *)userInfo
 {
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 setUserInfo:userInfo];
+  [(UAUserActivity *)_internalUserActivity setUserInfo:userInfo];
 }
 
 - (void)addUserInfoEntriesFromDictionary:(NSDictionary *)otherDictionary
 {
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 addUserInfoEntriesFromDictionary:otherDictionary];
+  [(UAUserActivity *)_internalUserActivity addUserInfoEntriesFromDictionary:otherDictionary];
 }
 
 - (BOOL)needsSave
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 needsSave];
+  return [(UAUserActivity *)_internalUserActivity needsSave];
 }
 
 - (void)setNeedsSave:(BOOL)needsSave
 {
   v3 = needsSave;
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 setNeedsSave:v3];
+  [(UAUserActivity *)_internalUserActivity setNeedsSave:v3];
 }
 
 - (void)setWebpageURL:(NSURL *)webpageURL
 {
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 setWebpageURL:webpageURL];
+  [(UAUserActivity *)_internalUserActivity setWebpageURL:webpageURL];
 }
 
 - (NSURL)referrerURL
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 referrerURL];
+  return [(UAUserActivity *)_internalUserActivity referrerURL];
 }
 
 - (void)setReferrerURL:(NSURL *)referrerURL
 {
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 setReferrerURL:referrerURL];
+  [(UAUserActivity *)_internalUserActivity setReferrerURL:referrerURL];
 }
 
 - (id)contentUserAction
@@ -396,12 +396,12 @@
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 contentUserAction];
+  return [(UAUserActivity *)_internalUserActivity contentUserAction];
 }
 
-- (void)setContentUserAction:(id)a3
+- (void)setContentUserAction:(id)action
 {
   if (qword_1ED43FE38 != -1)
   {
@@ -410,41 +410,41 @@
 
   if (_MergedGlobals_140 == 1)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setContentUserAction:a3];
+    [(UAUserActivity *)_internalUserActivity setContentUserAction:action];
   }
 }
 
 - (void)setDelegate:(id)delegate
 {
-  v4 = self;
+  selfCopy = self;
   objc_storeWeak(&self->_delegate, delegate);
-  if (([(UAUserActivity *)[(NSUserActivity *)v4 _internalUserActivity] isInvalidated]& 1) == 0)
+  if (([(UAUserActivity *)[(NSUserActivity *)selfCopy _internalUserActivity] isInvalidated]& 1) == 0)
   {
-    v5 = [(NSUserActivity *)v4 _internalUserActivity];
-    if (!delegate && ![(NSUserActivity *)v4 _frameworkDelegate])
+    _internalUserActivity = [(NSUserActivity *)selfCopy _internalUserActivity];
+    if (!delegate && ![(NSUserActivity *)selfCopy _frameworkDelegate])
     {
-      v4 = 0;
+      selfCopy = 0;
     }
 
-    [(UAUserActivity *)v5 setDelegate:v4];
+    [(UAUserActivity *)_internalUserActivity setDelegate:selfCopy];
   }
 }
 
 - (BOOL)supportsContinuationStreams
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 supportsContinuationStreams];
+  return [(UAUserActivity *)_internalUserActivity supportsContinuationStreams];
 }
 
 - (void)setSupportsContinuationStreams:(BOOL)supportsContinuationStreams
 {
   v3 = supportsContinuationStreams;
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 setSupportsContinuationStreams:v3];
+  [(UAUserActivity *)_internalUserActivity setSupportsContinuationStreams:v3];
 }
 
 - (void)getContinuationStreamsWithCompletionHandler:(void *)completionHandler
@@ -452,13 +452,13 @@
   v5[5] = *MEMORY[0x1E69E9840];
   if (completionHandler)
   {
-    v4 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___block_invoke;
     v5[3] = &unk_1E69F6EB8;
     v5[4] = completionHandler;
-    [(UAUserActivity *)v4 getContinuationStreamsWithCompletionHandler:v5];
+    [(UAUserActivity *)_internalUserActivity getContinuationStreamsWithCompletionHandler:v5];
   }
 }
 
@@ -482,9 +482,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 requiredUserInfoKeys];
+  return [(UAUserActivity *)_internalUserActivity requiredUserInfoKeys];
 }
 
 - (void)setRequiredUserInfoKeys:(NSSet *)requiredUserInfoKeys
@@ -496,9 +496,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
 
   if (_MergedGlobals_140 == 1)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setRequiredUserInfoKeys:requiredUserInfoKeys];
+    [(UAUserActivity *)_internalUserActivity setRequiredUserInfoKeys:requiredUserInfoKeys];
   }
 }
 
@@ -514,9 +514,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 expirationDate];
+  return [(UAUserActivity *)_internalUserActivity expirationDate];
 }
 
 - (void)setExpirationDate:(NSDate *)expirationDate
@@ -528,9 +528,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
 
   if (_MergedGlobals_140 == 1)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setExpirationDate:expirationDate];
+    [(UAUserActivity *)_internalUserActivity setExpirationDate:expirationDate];
   }
 }
 
@@ -543,9 +543,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
 
   if (_MergedGlobals_140 == 1)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setKeywords:keywords];
+    [(UAUserActivity *)_internalUserActivity setKeywords:keywords];
   }
 }
 
@@ -559,9 +559,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
 
   if (_MergedGlobals_140 == 1)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setEligibleForHandoff:v3];
+    [(UAUserActivity *)_internalUserActivity setEligibleForHandoff:v3];
   }
 }
 
@@ -575,9 +575,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
 
   if (_MergedGlobals_140 == 1)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setEligibleForSearch:v3];
+    [(UAUserActivity *)_internalUserActivity setEligibleForSearch:v3];
   }
 }
 
@@ -591,18 +591,18 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
 
   if (_MergedGlobals_140 == 1)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setEligibleForPublicIndexing:v3];
+    [(UAUserActivity *)_internalUserActivity setEligibleForPublicIndexing:v3];
   }
 }
 
 - (void)setEligibleForPrediction:(BOOL)eligibleForPrediction
 {
   v3 = eligibleForPrediction;
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 setEligibleForPrediction:v3];
+  [(UAUserActivity *)_internalUserActivity setEligibleForPrediction:v3];
 }
 
 - (void)setPersistentIdentifier:(NSUserActivityPersistentIdentifier)persistentIdentifier
@@ -610,9 +610,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
   [(NSUserActivity *)self _internalUserActivity];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setPersistentIdentifier:persistentIdentifier];
+    [(UAUserActivity *)_internalUserActivity setPersistentIdentifier:persistentIdentifier];
   }
 }
 
@@ -650,7 +650,7 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -658,22 +658,22 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v7 = [(NSUserActivity *)self _uniqueIdentifier];
-  v8 = [a3 _uniqueIdentifier];
+  _uniqueIdentifier = [(NSUserActivity *)self _uniqueIdentifier];
+  _uniqueIdentifier2 = [equal _uniqueIdentifier];
 
-  return [(NSUUID *)v7 isEqual:v8];
+  return [(NSUUID *)_uniqueIdentifier isEqual:_uniqueIdentifier2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NSUserActivity *)self _uniqueIdentifier];
+  _uniqueIdentifier = [(NSUserActivity *)self _uniqueIdentifier];
 
-  return [(NSUUID *)v2 hash];
+  return [(NSUUID *)_uniqueIdentifier hash];
 }
 
 - (NSString)targetContentIdentifier
@@ -689,9 +689,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 targetContentIdentifier];
+  return [(UAUserActivity *)_internalUserActivity targetContentIdentifier];
 }
 
 - (void)setTargetContentIdentifier:(NSString *)targetContentIdentifier
@@ -701,9 +701,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     [(NSUserActivity *)self _internalUserActivity];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(NSUserActivity *)self _internalUserActivity];
+      _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-      [(UAUserActivity *)v5 setTargetContentIdentifier:targetContentIdentifier];
+      [(UAUserActivity *)_internalUserActivity setTargetContentIdentifier:targetContentIdentifier];
     }
   }
 }
@@ -718,14 +718,14 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
   return [(NSUserActivity *)self activityType];
 }
 
-- (NSUserActivity)initWithTypeIdentifier:(id)a3
+- (NSUserActivity)initWithTypeIdentifier:(id)identifier
 {
   if (initWithTypeIdentifier__sOnce != -1)
   {
     dispatch_once(&initWithTypeIdentifier__sOnce, &__block_literal_global_21);
   }
 
-  return [(NSUserActivity *)self initWithActivityType:a3];
+  return [(NSUserActivity *)self initWithActivityType:identifier];
 }
 
 - (id)webPageURL
@@ -735,56 +735,56 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     dispatch_once(&webPageURL_sOnce, &__block_literal_global_26);
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 webpageURL];
+  return [(UAUserActivity *)_internalUserActivity webpageURL];
 }
 
-- (void)setWebPageURL:(id)a3
+- (void)setWebPageURL:(id)l
 {
   if (setWebPageURL__sOnce != -1)
   {
     dispatch_once(&setWebPageURL__sOnce, &__block_literal_global_31);
   }
 
-  v5 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v5 setWebpageURL:a3];
+  [(UAUserActivity *)_internalUserActivity setWebpageURL:l];
 }
 
 - (void)didSynchronizeActivity
 {
-  v3 = [(NSUserActivity *)self _frameworkDelegate];
-  v4 = [(NSUserActivity *)self delegate];
+  _frameworkDelegate = [(NSUserActivity *)self _frameworkDelegate];
+  delegate = [(NSUserActivity *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(NSUserActivityDelegate *)v3 userActivityWasContinued:self];
+    [(NSUserActivityDelegate *)_frameworkDelegate userActivityWasContinued:self];
   }
 
   if (objc_opt_respondsToSelector())
   {
 
-    [v4 userActivityWasContinued:self];
+    [delegate userActivityWasContinued:self];
   }
 }
 
-- (void)didReceiveInputStream:(id)a3 outputStream:(id)a4
+- (void)didReceiveInputStream:(id)stream outputStream:(id)outputStream
 {
-  v7 = [(NSUserActivity *)self _frameworkDelegate];
-  v8 = [(NSUserActivity *)self delegate];
+  _frameworkDelegate = [(NSUserActivity *)self _frameworkDelegate];
+  delegate = [(NSUserActivity *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(NSUserActivityDelegate *)v7 userActivity:self didReceiveInputStream:a3 outputStream:a4];
+    [(NSUserActivityDelegate *)_frameworkDelegate userActivity:self didReceiveInputStream:stream outputStream:outputStream];
   }
 
   if (objc_opt_respondsToSelector())
   {
 
-    [v8 userActivity:self didReceiveInputStream:a3 outputStream:a4];
+    [delegate userActivity:self didReceiveInputStream:stream outputStream:outputStream];
   }
 }
 
-- (void)_addKeywordsFromArray:(id)a3
+- (void)_addKeywordsFromArray:(id)array
 {
   if (qword_1ED43FE38 != -1)
   {
@@ -793,9 +793,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
 
   if (_MergedGlobals_140 == 1)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 addKeywordsFromArray:a3];
+    [(UAUserActivity *)_internalUserActivity addKeywordsFromArray:array];
   }
 }
 
@@ -809,9 +809,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
   return _MergedGlobals_140;
 }
 
-- (id)_initWithUserActivityData:(id)a3
+- (id)_initWithUserActivityData:(id)data
 {
-  v4 = [objc_alloc(getUAUserActivityClass()) initWithUserActivityData:a3 options:0];
+  v4 = [objc_alloc(getUAUserActivityClass()) initWithUserActivityData:data options:0];
   if (!v4 || (v5 = v4, self = [(NSUserActivity *)self initWithInternalUserActivity:v4], v5, !self))
   {
     [(NSUserActivity *)self dealloc];
@@ -821,9 +821,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
   return self;
 }
 
-- (id)_initWithUserActivityData:(id)a3 options:(id)a4
+- (id)_initWithUserActivityData:(id)data options:(id)options
 {
-  v5 = [objc_alloc(getUAUserActivityClass()) initWithUserActivityData:a3 options:a4];
+  v5 = [objc_alloc(getUAUserActivityClass()) initWithUserActivityData:data options:options];
   if (!v5 || (v6 = v5, self = [(NSUserActivity *)self initWithInternalUserActivity:v5], v6, !self))
   {
     [(NSUserActivity *)self dealloc];
@@ -833,9 +833,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
   return self;
 }
 
-- (id)_initWithUserActivityStrings:(id)a3 secondaryString:(id)a4 optionalData:(id)a5
+- (id)_initWithUserActivityStrings:(id)strings secondaryString:(id)string optionalData:(id)data
 {
-  v6 = [objc_alloc(getUAUserActivityClass()) initWithUserActivityStrings:a3 optionalString:a4 tertiaryData:a5 options:0];
+  v6 = [objc_alloc(getUAUserActivityClass()) initWithUserActivityStrings:strings optionalString:string tertiaryData:data options:0];
   if (!v6 || (v7 = v6, self = [(NSUserActivity *)self initWithInternalUserActivity:v6], v7, !self))
   {
     [(NSUserActivity *)self dealloc];
@@ -845,9 +845,9 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
   return self;
 }
 
-- (id)_initWithUserActivityStrings:(id)a3 secondaryString:(id)a4 optionalData:(id)a5 options:(id)a6
+- (id)_initWithUserActivityStrings:(id)strings secondaryString:(id)string optionalData:(id)data options:(id)options
 {
-  v7 = [objc_alloc(getUAUserActivityClass()) initWithUserActivityStrings:a3 optionalString:a4 tertiaryData:a5 options:a6];
+  v7 = [objc_alloc(getUAUserActivityClass()) initWithUserActivityStrings:strings optionalString:string tertiaryData:data options:options];
   if (!v7 || (v8 = v7, self = [(NSUserActivity *)self initWithInternalUserActivity:v7], v8, !self))
   {
     [(NSUserActivity *)self dealloc];
@@ -857,7 +857,7 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
   return self;
 }
 
-- (BOOL)_createUserActivityDataWithOptions:(id)a3 completionHandler:(id)a4
+- (BOOL)_createUserActivityDataWithOptions:(id)options completionHandler:(id)handler
 {
   [(NSUserActivity *)self _internalUserActivity];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -865,12 +865,12 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     return 0;
   }
 
-  v7 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v7 createUserActivityDataWithSaving:1 options:a3 completionHandler:a4];
+  return [(UAUserActivity *)_internalUserActivity createUserActivityDataWithSaving:1 options:options completionHandler:handler];
 }
 
-- (BOOL)_createUserActivityStringsWithOptions:(id)a3 completionHandler:(id)a4
+- (BOOL)_createUserActivityStringsWithOptions:(id)options completionHandler:(id)handler
 {
   [(NSUserActivity *)self _internalUserActivity];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -878,19 +878,19 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     return 0;
   }
 
-  v7 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v7 createUserActivityStringsWithSaving:1 options:a3 completionHandler:a4];
+  return [(UAUserActivity *)_internalUserActivity createUserActivityStringsWithSaving:1 options:options completionHandler:handler];
 }
 
-- (void)_prepareUserActivityForLaunchingWithOptions:(id)a3 completionHandler:(id)a4
+- (void)_prepareUserActivityForLaunchingWithOptions:(id)options completionHandler:(id)handler
 {
   [(NSUserActivity *)self _internalUserActivity];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v7 prepareUserActivityForLaunchingWithOptions:a3 completionHandler:a4];
+    [(UAUserActivity *)_internalUserActivity prepareUserActivityForLaunchingWithOptions:options completionHandler:handler];
   }
 }
 
@@ -902,12 +902,12 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 teamID];
+  return [(UAUserActivity *)_internalUserActivity teamID];
 }
 
-+ (BOOL)_currentUserActivityUUIDWithOptions:(id)a3 completionHandler:(id)a4
++ (BOOL)_currentUserActivityUUIDWithOptions:(id)options completionHandler:(id)handler
 {
   getUAUserActivityClass();
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -917,10 +917,10 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
 
   UAUserActivityClass = getUAUserActivityClass();
 
-  return [UAUserActivityClass currentUserActivityUUIDWithOptions:a3 completionHandler:a4];
+  return [UAUserActivityClass currentUserActivityUUIDWithOptions:options completionHandler:handler];
 }
 
-- (id)_determineMatchingApplicationBundleIdentifierWithOptions:(id)a3
+- (id)_determineMatchingApplicationBundleIdentifierWithOptions:(id)options
 {
   [(NSUserActivity *)self _internalUserActivity];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -928,12 +928,12 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     return 0;
   }
 
-  v5 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v5 determineMatchingApplicationBundleIdentfierWithOptions:a3];
+  return [(UAUserActivity *)_internalUserActivity determineMatchingApplicationBundleIdentfierWithOptions:options];
 }
 
-+ (id)_fetchUserActivityWithUUID:(id)a3 intervalToWaitForDocumentSynchronizationToComplete:(double)a4 completionHandler:(id)a5
++ (id)_fetchUserActivityWithUUID:(id)d intervalToWaitForDocumentSynchronizationToComplete:(double)complete completionHandler:(id)handler
 {
   v11[6] = *MEMORY[0x1E69E9840];
   getUAUserActivityClass();
@@ -944,14 +944,14 @@ uint64_t __62__NSUserActivity_getContinuationStreamsWithCompletionHandler___bloc
     v11[1] = 3221225472;
     v11[2] = __137__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_intervalToWaitForDocumentSynchronizationToComplete_completionHandler___block_invoke;
     v11[3] = &unk_1E69F6EE0;
-    v11[4] = a3;
-    v11[5] = a5;
-    return [UAUserActivityClass fetchUserActivityWithUUID:a3 intervalToWaitForDocumentSynchronizationToComplete:v11 completionHandler:a4];
+    v11[4] = d;
+    v11[5] = handler;
+    return [UAUserActivityClass fetchUserActivityWithUUID:d intervalToWaitForDocumentSynchronizationToComplete:v11 completionHandler:complete];
   }
 
   else
   {
-    [a1 _fetchUserActivityWithUUID:a3 completionHandler:a5];
+    [self _fetchUserActivityWithUUID:d completionHandler:handler];
     return 0;
   }
 }
@@ -993,13 +993,13 @@ void __137__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_int
   }
 }
 
-+ (void)_fetchUserActivityWithUUID:(id)a3 completionHandler:(id)a4
++ (void)_fetchUserActivityWithUUID:(id)d completionHandler:(id)handler
 {
   v7[6] = *MEMORY[0x1E69E9840];
   getUAUserActivityClass();
   if (objc_opt_respondsToSelector())
   {
-    [getUAUserActivityClass() showUserActivityUIProgressForUUID:a3];
+    [getUAUserActivityClass() showUserActivityUIProgressForUUID:d];
   }
 
   UAUserActivityClass = getUAUserActivityClass();
@@ -1007,9 +1007,9 @@ void __137__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_int
   v7[1] = 3221225472;
   v7[2] = __86__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_completionHandler___block_invoke;
   v7[3] = &unk_1E69F6EE0;
-  v7[4] = a3;
-  v7[5] = a4;
-  [UAUserActivityClass fetchUserActivityWithUUID:a3 completionHandler:v7];
+  v7[4] = d;
+  v7[5] = handler;
+  [UAUserActivityClass fetchUserActivityWithUUID:d completionHandler:v7];
 }
 
 void __86__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -1049,36 +1049,36 @@ void __86__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_comp
   }
 }
 
-+ (void)_registerUserActivityType:(id)a3 dynamicActivityType:(id)a4
++ (void)_registerUserActivityType:(id)type dynamicActivityType:(id)activityType
 {
   getUAUserActivityClass();
   if (objc_opt_respondsToSelector())
   {
     UAUserActivityClass = getUAUserActivityClass();
 
-    [UAUserActivityClass addDynamicUserActivity:a4 matching:a3];
+    [UAUserActivityClass addDynamicUserActivity:activityType matching:type];
   }
 }
 
-+ (void)_unregisterUserActivityType:(id)a3 dynamicActivityType:(id)a4
++ (void)_unregisterUserActivityType:(id)type dynamicActivityType:(id)activityType
 {
   getUAUserActivityClass();
   if (objc_opt_respondsToSelector())
   {
     UAUserActivityClass = getUAUserActivityClass();
 
-    [UAUserActivityClass removeDynamicUserActivity:a4 matching:a3];
+    [UAUserActivityClass removeDynamicUserActivity:activityType matching:type];
   }
 }
 
-- (id)_initWithTypeIdentifier:(id)a3 suggestedActionType:(int64_t)a4 options:(id)a5
+- (id)_initWithTypeIdentifier:(id)identifier suggestedActionType:(int64_t)type options:(id)options
 {
-  v6 = [objc_alloc(getUAUserActivityClass()) initWithTypeIdentifier:a3 suggestedActionType:a4 options:a5];
+  v6 = [objc_alloc(getUAUserActivityClass()) initWithTypeIdentifier:identifier suggestedActionType:type options:options];
 
   return [(NSUserActivity *)self initWithInternalUserActivity:v6];
 }
 
-- (id)_initWithUserActivityType:(id)a3 dynamicActivityType:(id)a4 options:(id)a5
+- (id)_initWithUserActivityType:(id)type dynamicActivityType:(id)activityType options:(id)options
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -1086,7 +1086,7 @@ void __86__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_comp
   v8 = [(NSUserActivity *)&v10 init];
   if (v8 && [getUAUserActivityClass() instancesRespondToSelector:sel_initWithTypeIdentifier_dynamicIdentifier_options_])
   {
-    v8->_internal = [objc_alloc(getUAUserActivityClass()) initWithTypeIdentifier:a3 dynamicIdentifier:a4 options:a5];
+    v8->_internal = [objc_alloc(getUAUserActivityClass()) initWithTypeIdentifier:type dynamicIdentifier:activityType options:options];
   }
 
   return v8;
@@ -1094,60 +1094,60 @@ void __86__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_comp
 
 - (NSDictionary)_options
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v2 options];
+  return [(UAUserActivity *)_internalUserActivity options];
 }
 
-- (void)_setOptions:(id)a3
+- (void)_setOptions:(id)options
 {
-  v4 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v4 setOptions:a3];
+  [(UAUserActivity *)_internalUserActivity setOptions:options];
 }
 
-- (void)_setFrameworkDelegate:(id)a3
+- (void)_setFrameworkDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_frameworkDelegate, a3);
+  objc_storeWeak(&self->_frameworkDelegate, delegate);
   if (([(UAUserActivity *)[(NSUserActivity *)self _internalUserActivity] isInvalidated]& 1) == 0)
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
-    if (a3 | [(NSUserActivity *)self delegate])
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
+    if (delegate | [(NSUserActivity *)self delegate])
     {
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
 
-    [(UAUserActivity *)v5 setDelegate:v6];
+    [(UAUserActivity *)_internalUserActivity setDelegate:selfCopy];
   }
 }
 
 - (void)_resignCurrent
 {
-  v2 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  [(UAUserActivity *)v2 resignCurrent];
+  [(UAUserActivity *)_internalUserActivity resignCurrent];
 }
 
-+ (id)_userFacingErrorForLaunchServicesError:(id)a3 userInfo:(id)a4
++ (id)_userFacingErrorForLaunchServicesError:(id)error userInfo:(id)info
 {
-  if (!a3)
+  if (!error)
   {
-    return a3;
+    return error;
   }
 
-  v6 = [a3 domain];
-  v7 = [a3 code];
-  if (![v6 isEqual:getUAContinuityErrorDomain()])
+  domain = [error domain];
+  code = [error code];
+  if (![domain isEqual:getUAContinuityErrorDomain()])
   {
-    if ([v6 isEqual:@"NSPOSIXErrorDomain"])
+    if ([domain isEqual:@"NSPOSIXErrorDomain"])
     {
-      v10 = v7 - 45;
-      if ((v7 - 45) <= 0x21)
+      v10 = code - 45;
+      if ((code - 45) <= 0x21)
       {
         if (((1 << v10) & 0x8060) != 0)
         {
@@ -1162,11 +1162,11 @@ void __86__NSUserActivity_NSUserActivityPrivate___fetchUserActivityWithUUID_comp
             goto LABEL_22;
           }
 
-          return a3;
+          return error;
         }
       }
 
-      if (v7 == 2)
+      if (code == 2)
       {
 LABEL_19:
         v9 = 4609;
@@ -1175,13 +1175,13 @@ LABEL_19:
           goto LABEL_22;
         }
 
-        return a3;
+        return error;
       }
     }
 
-    else if ([v6 isEqual:@"NSCocoaErrorDomain"])
+    else if ([domain isEqual:@"NSCocoaErrorDomain"])
     {
-      return a3;
+      return error;
     }
 
     v9 = 4608;
@@ -1190,16 +1190,16 @@ LABEL_19:
       goto LABEL_22;
     }
 
-    return a3;
+    return error;
   }
 
   v8 = 4608;
-  if (v7 == -110)
+  if (code == -110)
   {
     v8 = 4611;
   }
 
-  if (v7 == -109)
+  if (code == -109)
   {
     v9 = 4610;
   }
@@ -1211,28 +1211,28 @@ LABEL_19:
 
   if (!@"NSCocoaErrorDomain")
   {
-    return a3;
+    return error;
   }
 
 LABEL_22:
-  v12 = [a4 mutableCopy];
+  v12 = [info mutableCopy];
   if (v12)
   {
-    v13 = v12;
+    dictionary = v12;
 LABEL_25:
-    [v13 setObject:a3 forKey:@"NSUnderlyingError"];
+    [dictionary setObject:error forKey:@"NSUnderlyingError"];
     goto LABEL_26;
   }
 
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  if (v13)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (dictionary)
   {
     goto LABEL_25;
   }
 
 LABEL_26:
 
-  return [NSError errorWithDomain:@"NSCocoaErrorDomain" code:v9 userInfo:v13];
+  return [NSError errorWithDomain:@"NSCocoaErrorDomain" code:v9 userInfo:dictionary];
 }
 
 - (CSSearchableItemAttributeSet)contentAttributeSet
@@ -1243,9 +1243,9 @@ LABEL_26:
     return 0;
   }
 
-  v3 = [(NSUserActivity *)self _internalUserActivity];
+  _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-  return [(UAUserActivity *)v3 contentAttributeSet];
+  return [(UAUserActivity *)_internalUserActivity contentAttributeSet];
 }
 
 - (void)setContentAttributeSet:(CSSearchableItemAttributeSet *)contentAttributeSet
@@ -1253,9 +1253,9 @@ LABEL_26:
   [(NSUserActivity *)self _internalUserActivity];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(NSUserActivity *)self _internalUserActivity];
+    _internalUserActivity = [(NSUserActivity *)self _internalUserActivity];
 
-    [(UAUserActivity *)v5 setContentAttributeSet:contentAttributeSet];
+    [(UAUserActivity *)_internalUserActivity setContentAttributeSet:contentAttributeSet];
   }
 }
 

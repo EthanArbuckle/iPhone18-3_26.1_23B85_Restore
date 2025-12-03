@@ -1,12 +1,12 @@
 @interface CRSystemHealthStatus
-- (BOOL)getCurrentSystemHealthStatusForComponents:(unint64_t)a3 WithReply:(id)a4;
+- (BOOL)getCurrentSystemHealthStatusForComponents:(unint64_t)components WithReply:(id)reply;
 @end
 
 @implementation CRSystemHealthStatus
 
-- (BOOL)getCurrentSystemHealthStatusForComponents:(unint64_t)a3 WithReply:(id)a4
+- (BOOL)getCurrentSystemHealthStatusForComponents:(unint64_t)components WithReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -52,17 +52,17 @@
   v12[5] = &v14;
   v12[6] = &v18;
   v12[7] = &v30;
-  [v10 getCurrentSystemHealthStatusForComponentsInternal:a3 WithReply:v12];
+  [v10 getCurrentSystemHealthStatusForComponentsInternal:components WithReply:v12];
 
-  v5[2](v5, *(v15 + 24), v19[5], v25[5]);
-  LOBYTE(a3) = *(v15 + 24);
+  replyCopy[2](replyCopy, *(v15 + 24), v19[5], v25[5]);
+  LOBYTE(components) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v18, 8);
 
   _Block_object_dispose(&v24, 8);
   _Block_object_dispose(&v30, 8);
 
-  return a3;
+  return components;
 }
 
 void __76__CRSystemHealthStatus_getCurrentSystemHealthStatusForComponents_WithReply___block_invoke(uint64_t a1, void *a2)

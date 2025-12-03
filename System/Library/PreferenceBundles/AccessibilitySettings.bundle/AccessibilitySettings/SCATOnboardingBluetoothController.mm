@@ -1,15 +1,15 @@
 @interface SCATOnboardingBluetoothController
-- (SCATOnboardingBluetoothController)initWithCompletion:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (SCATOnboardingBluetoothController)initWithCompletion:(id)completion;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation SCATOnboardingBluetoothController
 
-- (SCATOnboardingBluetoothController)initWithCompletion:(id)a3
+- (SCATOnboardingBluetoothController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AXParameterizedLocalizedString();
   v8.receiver = self;
   v8.super_class = SCATOnboardingBluetoothController;
@@ -17,7 +17,7 @@
 
   if (v6)
   {
-    [(SCATOnboardingBluetoothController *)v6 setCompletionHandler:v4];
+    [(SCATOnboardingBluetoothController *)v6 setCompletionHandler:completionCopy];
   }
 
   return v6;
@@ -33,49 +33,49 @@
   [v3 setTitle:v4 forState:0];
 
   [v3 addTarget:self action:"_didTapNextButton" forControlEvents:0x2000];
-  v5 = [(SCATOnboardingBluetoothController *)self buttonTray];
-  [v5 addButton:v3];
+  buttonTray = [(SCATOnboardingBluetoothController *)self buttonTray];
+  [buttonTray addButton:v3];
 
   v6 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(SCATOnboardingBluetoothController *)self setTableView:v6];
 
-  v7 = [(SCATOnboardingBluetoothController *)self tableView];
-  [v7 setDataSource:self];
+  tableView = [(SCATOnboardingBluetoothController *)self tableView];
+  [tableView setDataSource:self];
 
-  v8 = [(SCATOnboardingBluetoothController *)self tableView];
-  [v8 setDelegate:self];
+  tableView2 = [(SCATOnboardingBluetoothController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v9 = [(SCATOnboardingBluetoothController *)self tableView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView3 = [(SCATOnboardingBluetoothController *)self tableView];
+  [tableView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v10 = +[UIColor systemBackgroundColor];
-  v11 = [(SCATOnboardingBluetoothController *)self tableView];
-  [v11 setBackgroundColor:v10];
+  tableView4 = [(SCATOnboardingBluetoothController *)self tableView];
+  [tableView4 setBackgroundColor:v10];
 
-  v12 = [(SCATOnboardingBluetoothController *)self tableView];
-  [v12 setScrollEnabled:0];
+  tableView5 = [(SCATOnboardingBluetoothController *)self tableView];
+  [tableView5 setScrollEnabled:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v8 = objc_opt_new();
-  v6 = [(SCATOnboardingBluetoothController *)self navigationController];
-  [v6 pushViewController:v8 animated:1];
+  navigationController = [(SCATOnboardingBluetoothController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 
-  v7 = [(SCATOnboardingBluetoothController *)self tableView];
-  [v7 deselectRowAtIndexPath:v5 animated:1];
+  tableView = [(SCATOnboardingBluetoothController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v4 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"SCATOnboardingBluetoothCell"];
   v5 = +[UIColor secondarySystemBackgroundColor];
   [v4 setBackgroundColor:v5];
 
   v6 = AXParameterizedLocalizedString();
-  v7 = [v4 textLabel];
-  [v7 setText:v6];
+  textLabel = [v4 textLabel];
+  [textLabel setText:v6];
 
   [v4 setAccessoryType:1];
 

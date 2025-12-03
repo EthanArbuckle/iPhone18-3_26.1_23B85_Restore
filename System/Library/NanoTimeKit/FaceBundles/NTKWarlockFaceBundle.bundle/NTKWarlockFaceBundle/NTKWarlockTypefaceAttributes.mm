@@ -8,7 +8,7 @@
 
 - (NSDictionary)fontAttributes
 {
-  v2 = self;
+  selfCopy = self;
   sub_9FF0();
 
   type metadata accessor for AttributeName(0);
@@ -20,7 +20,7 @@
 
 - (NSString)cacheKey
 {
-  v2 = self;
+  selfCopy = self;
   sub_A4C0();
 
   v3 = sub_37500();

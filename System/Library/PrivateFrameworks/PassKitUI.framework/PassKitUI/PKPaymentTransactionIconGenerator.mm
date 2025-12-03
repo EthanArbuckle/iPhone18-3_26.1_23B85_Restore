@@ -1,32 +1,32 @@
 @interface PKPaymentTransactionIconGenerator
-- (PKPaymentTransactionIconGenerator)initWithCache:(BOOL)a3 scale:(double)a4;
-- (id)_cacheImageFromDownloaderCacheForURL:(id)a3;
-- (id)_iconCacheKeyForApp:(int64_t)a3 bundleIdentifier:(id)a4 size:(CGSize)a5;
-- (id)_iconCacheKeyForTransaction:(id)a3 merchant:(id)a4 size:(CGSize)a5 ignoreLogoURL:(BOOL)a6 imageOut:(id *)a7;
-- (id)_iconCacheKeyForTransaction:(id)a3 size:(CGSize)a4 ignoreLogoURL:(BOOL)a5 imageOut:(id *)a6;
-- (id)_iconForCacheKey:(id)a3;
-- (id)_iconForTransaction:(id)a3 merchant:(id)a4 size:(CGSize)a5 ignoreLogoURL:(BOOL)a6 requestType:(unint64_t)a7 iconHandler:(id)a8;
+- (PKPaymentTransactionIconGenerator)initWithCache:(BOOL)cache scale:(double)scale;
+- (id)_cacheImageFromDownloaderCacheForURL:(id)l;
+- (id)_iconCacheKeyForApp:(int64_t)app bundleIdentifier:(id)identifier size:(CGSize)size;
+- (id)_iconCacheKeyForTransaction:(id)transaction merchant:(id)merchant size:(CGSize)size ignoreLogoURL:(BOOL)l imageOut:(id *)out;
+- (id)_iconCacheKeyForTransaction:(id)transaction size:(CGSize)size ignoreLogoURL:(BOOL)l imageOut:(id *)out;
+- (id)_iconForCacheKey:(id)key;
+- (id)_iconForTransaction:(id)transaction merchant:(id)merchant size:(CGSize)size ignoreLogoURL:(BOOL)l requestType:(unint64_t)type iconHandler:(id)handler;
 - (id)fileDownloader;
-- (void)_downloadLogoForURL:(id)a3 withCompletionHandler:(id)a4;
-- (void)_iconForApplication:(int64_t)a3 applicationIdentifier:(id)a4 requestToProcess:(id)a5 iconHandler:(id)a6;
-- (void)_iconForBusinessConnectMerchant:(id)a3 requestToProcess:(id)a4 iconHandler:(id)a5;
-- (void)_iconForDataReleaseRequest:(id)a3 iconHandler:(id)a4;
+- (void)_downloadLogoForURL:(id)l withCompletionHandler:(id)handler;
+- (void)_iconForApplication:(int64_t)application applicationIdentifier:(id)identifier requestToProcess:(id)process iconHandler:(id)handler;
+- (void)_iconForBusinessConnectMerchant:(id)merchant requestToProcess:(id)process iconHandler:(id)handler;
+- (void)_iconForDataReleaseRequest:(id)request iconHandler:(id)handler;
 - (void)queue_processNextIconRequest;
 @end
 
 @implementation PKPaymentTransactionIconGenerator
 
-- (PKPaymentTransactionIconGenerator)initWithCache:(BOOL)a3 scale:(double)a4
+- (PKPaymentTransactionIconGenerator)initWithCache:(BOOL)cache scale:(double)scale
 {
-  v5 = a3;
+  cacheCopy = cache;
   v21.receiver = self;
   v21.super_class = PKPaymentTransactionIconGenerator;
   v6 = [(PKPaymentTransactionIconGenerator *)&v21 init];
   if (v6)
   {
     v6->_hasNetworkAccess = PKProcessHasNetworkPrivilegies();
-    v6->_useCache = v5;
-    if (v5)
+    v6->_useCache = cacheCopy;
+    if (cacheCopy)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
       iconCache = v6->_iconCache;
@@ -37,7 +37,7 @@
       v6->_iconCacheKeys = v9;
     }
 
-    v6->_scale = a4;
+    v6->_scale = scale;
     v6->_lockRequests._os_unfair_lock_opaque = 0;
     v11 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     highPriorityIconRequests = v6->_highPriorityIconRequests;
@@ -60,42 +60,42 @@
   return v6;
 }
 
-- (id)_iconForTransaction:(id)a3 merchant:(id)a4 size:(CGSize)a5 ignoreLogoURL:(BOOL)a6 requestType:(unint64_t)a7 iconHandler:(id)a8
+- (id)_iconForTransaction:(id)transaction merchant:(id)merchant size:(CGSize)size ignoreLogoURL:(BOOL)l requestType:(unint64_t)type iconHandler:(id)handler
 {
-  v10 = a6;
-  height = a5.height;
-  width = a5.width;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
   v50[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
-  if (!v17 || !(v15 | v16))
+  transactionCopy = transaction;
+  merchantCopy = merchant;
+  handlerCopy = handler;
+  if (!handlerCopy || !(transactionCopy | merchantCopy))
   {
     v22 = 0;
     goto LABEL_33;
   }
 
-  if (v15)
+  if (transactionCopy)
   {
-    v18 = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForTransaction:v15 size:v10 ignoreLogoURL:0 imageOut:width, height];
-    v19 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:v18];
-    v20 = [v15 merchant];
-    IsFinalForMerchant = CacheKeyIsFinalForMerchant(v18, v20, v10);
+    height = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForTransaction:transactionCopy size:lCopy ignoreLogoURL:0 imageOut:width, height];
+    v19 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:height];
+    merchant = [transactionCopy merchant];
+    IsFinalForMerchant = CacheKeyIsFinalForMerchant(height, merchant, lCopy);
 
     if (!v19)
     {
 LABEL_12:
       v23 = objc_alloc_init(PKPaymentTransactionIconRequest);
       [(PKPaymentTransactionIconRequest *)v23 setSize:width, height];
-      [(PKPaymentTransactionIconRequest *)v23 setTransaction:v15];
-      [(PKPaymentTransactionIconRequest *)v23 setMerchant:v16];
-      [(PKPaymentTransactionIconRequest *)v23 setCacheKey:v18];
-      [(PKPaymentTransactionIconRequest *)v23 setIgnoreLogoURL:v10];
+      [(PKPaymentTransactionIconRequest *)v23 setTransaction:transactionCopy];
+      [(PKPaymentTransactionIconRequest *)v23 setMerchant:merchantCopy];
+      [(PKPaymentTransactionIconRequest *)v23 setCacheKey:height];
+      [(PKPaymentTransactionIconRequest *)v23 setIgnoreLogoURL:lCopy];
       os_unfair_lock_lock(&self->_lockRequests);
-      v48 = v18;
-      if (a7)
+      v48 = height;
+      if (type)
       {
-        if (a7 != 1)
+        if (type != 1)
         {
           v26 = 0;
           v24 = 0;
@@ -106,14 +106,14 @@ LABEL_18:
             v27 = [(NSMutableArray *)self->_inflightRequests objectAtIndex:[(NSMutableArray *)self->_inflightRequests indexOfObject:v23]];
             [v27 completionHandlers];
             v28 = v45 = v26;
-            v29 = [v17 copy];
+            v29 = [handlerCopy copy];
             v30 = _Block_copy(v29);
             v31 = [v28 arrayByAddingObject:v30];
             [v27 setCompletionHandlers:v31];
 
             v26 = v45;
 LABEL_28:
-            v18 = v48;
+            height = v48;
             if (self->_processingRequest)
             {
               os_unfair_lock_unlock(&self->_lockRequests);
@@ -142,10 +142,10 @@ LABEL_28:
           {
             if ((v24 & 1) == 0)
             {
-              v33 = [0 completionHandlers];
-              v34 = [v17 copy];
+              completionHandlers = [0 completionHandlers];
+              v34 = [handlerCopy copy];
               v35 = _Block_copy(v34);
-              v36 = [v33 arrayByAddingObject:v35];
+              v36 = [completionHandlers arrayByAddingObject:v35];
               [0 setCompletionHandlers:v36];
 
               goto LABEL_28;
@@ -165,10 +165,10 @@ LABEL_28:
           [(NSMutableOrderedSet *)*p_highPriorityIconRequests removeObject:v23];
           if (v37)
           {
-            v46 = [v37 completionHandlers];
-            v38 = [v17 copy];
+            completionHandlers2 = [v37 completionHandlers];
+            v38 = [handlerCopy copy];
             v39 = _Block_copy(v38);
-            [v46 arrayByAddingObject:v39];
+            [completionHandlers2 arrayByAddingObject:v39];
             v41 = v40 = v26;
             [(PKPaymentTransactionIconRequest *)v23 setCompletionHandlers:v41];
 
@@ -180,7 +180,7 @@ LABEL_27:
           }
 
 LABEL_26:
-          v37 = [v17 copy];
+          v37 = [handlerCopy copy];
           v50[0] = v37;
           v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
           [(PKPaymentTransactionIconRequest *)v23 setCompletionHandlers:v42];
@@ -205,16 +205,16 @@ LABEL_26:
 
   else
   {
-    if (!v16)
+    if (!merchantCopy)
     {
       v19 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:0];
-      v18 = 0;
+      height = 0;
       goto LABEL_12;
     }
 
-    v18 = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForMerchant:v16 size:v10 ignoreLogoURL:0 imageOut:width, height];
-    v19 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:v18];
-    IsFinalForMerchant = CacheKeyIsFinalForMerchant(v18, v16, v10);
+    height = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForMerchant:merchantCopy size:lCopy ignoreLogoURL:0 imageOut:width, height];
+    v19 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:height];
+    IsFinalForMerchant = CacheKeyIsFinalForMerchant(height, merchantCopy, lCopy);
     if (!v19)
     {
       goto LABEL_12;
@@ -236,54 +236,54 @@ LABEL_33:
 
 - (void)queue_processNextIconRequest
 {
-  v2 = self;
+  selfCopy = self;
   v69 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lockRequests);
-  v3 = [(NSMutableOrderedSet *)v2->_highPriorityIconRequests lastObject];
-  if (v3)
+  lastObject = [(NSMutableOrderedSet *)selfCopy->_highPriorityIconRequests lastObject];
+  if (lastObject)
   {
-    v4 = v3;
-    [(NSMutableOrderedSet *)v2->_highPriorityIconRequests removeObject:v3];
-    os_unfair_lock_unlock(&v2->_lockRequests);
+    lastObject2 = lastObject;
+    [(NSMutableOrderedSet *)selfCopy->_highPriorityIconRequests removeObject:lastObject];
+    os_unfair_lock_unlock(&selfCopy->_lockRequests);
     goto LABEL_4;
   }
 
-  v4 = [(NSMutableOrderedSet *)v2->_lowPriorityIconRequests lastObject];
-  [(NSMutableOrderedSet *)v2->_lowPriorityIconRequests removeObject:v4];
-  os_unfair_lock_unlock(&v2->_lockRequests);
-  if (v4)
+  lastObject2 = [(NSMutableOrderedSet *)selfCopy->_lowPriorityIconRequests lastObject];
+  [(NSMutableOrderedSet *)selfCopy->_lowPriorityIconRequests removeObject:lastObject2];
+  os_unfair_lock_unlock(&selfCopy->_lockRequests);
+  if (lastObject2)
   {
     while (1)
     {
 LABEL_4:
       v5 = objc_autoreleasePoolPush();
-      v6 = [v4 transaction];
-      v7 = [v4 merchant];
-      v8 = v7;
-      if (v7)
+      transaction = [lastObject2 transaction];
+      merchant = [lastObject2 merchant];
+      v8 = merchant;
+      if (merchant)
       {
-        v9 = v7;
+        merchant2 = merchant;
       }
 
       else
       {
-        v9 = [v6 merchant];
+        merchant2 = [transaction merchant];
       }
 
-      v10 = v9;
+      v10 = merchant2;
 
-      v11 = [v4 logoURL];
-      v12 = [v4 ignoreLogoURL];
-      v13 = v12;
-      if (v11 && (v12 & 1) == 0)
+      logoURL = [lastObject2 logoURL];
+      ignoreLogoURL = [lastObject2 ignoreLogoURL];
+      v13 = ignoreLogoURL;
+      if (logoURL && (ignoreLogoURL & 1) == 0)
       {
         v45 = v10;
-        if (v6)
+        if (transaction)
         {
-          [v4 size];
+          [lastObject2 size];
           v66 = 0;
           v14 = &v66;
-          v15 = [(PKPaymentTransactionIconGenerator *)v2 _iconCacheKeyForTransaction:v6 size:0 ignoreLogoURL:&v66 imageOut:?];
+          v15 = [(PKPaymentTransactionIconGenerator *)selfCopy _iconCacheKeyForTransaction:transaction size:0 ignoreLogoURL:&v66 imageOut:?];
 LABEL_25:
           v10 = v15;
           v26 = *v14;
@@ -294,8 +294,8 @@ LABEL_25:
             v64 = 0u;
             v61 = 0u;
             v62 = 0u;
-            v29 = [v4 completionHandlers];
-            v30 = [v29 countByEnumeratingWithState:&v61 objects:v68 count:16];
+            completionHandlers = [lastObject2 completionHandlers];
+            v30 = [completionHandlers countByEnumeratingWithState:&v61 objects:v68 count:16];
             if (v30)
             {
               v31 = v30;
@@ -306,13 +306,13 @@ LABEL_25:
                 {
                   if (*v62 != v32)
                   {
-                    objc_enumerationMutation(v29);
+                    objc_enumerationMutation(completionHandlers);
                   }
 
                   (*(*(*(&v61 + 1) + 8 * i) + 16))();
                 }
 
-                v31 = [v29 countByEnumeratingWithState:&v61 objects:v68 count:16];
+                v31 = [completionHandlers countByEnumeratingWithState:&v61 objects:v68 count:16];
               }
 
               while (v31);
@@ -326,42 +326,42 @@ LABEL_25:
         {
           if (v10)
           {
-            [v4 size];
+            [lastObject2 size];
             v65 = 0;
             v14 = &v65;
-            v15 = [(PKPaymentTransactionIconGenerator *)v2 _iconCacheKeyForMerchant:v10 size:0 ignoreLogoURL:&v65 imageOut:?];
+            v15 = [(PKPaymentTransactionIconGenerator *)selfCopy _iconCacheKeyForMerchant:v10 size:0 ignoreLogoURL:&v65 imageOut:?];
             goto LABEL_25;
           }
 
           v26 = 0;
         }
 
-        os_unfair_lock_lock(&v2->_lockRequests);
-        [(NSMutableArray *)v2->_inflightRequests addObject:v4];
-        os_unfair_lock_unlock(&v2->_lockRequests);
+        os_unfair_lock_lock(&selfCopy->_lockRequests);
+        [(NSMutableArray *)selfCopy->_inflightRequests addObject:lastObject2];
+        os_unfair_lock_unlock(&selfCopy->_lockRequests);
         v56[0] = MEMORY[0x1E69E9820];
         v56[1] = 3221225472;
         v56[2] = __65__PKPaymentTransactionIconGenerator_queue_processNextIconRequest__block_invoke;
         v56[3] = &unk_1E8022120;
-        v41 = v11;
+        v41 = logoURL;
         v57 = v41;
-        v58 = v2;
+        v58 = selfCopy;
         v59 = v10;
-        v60 = v4;
+        v60 = lastObject2;
         v42 = v10;
-        [(PKPaymentTransactionIconGenerator *)v2 _downloadLogoForURL:v41 withCompletionHandler:v56];
+        [(PKPaymentTransactionIconGenerator *)selfCopy _downloadLogoForURL:v41 withCompletionHandler:v56];
 
         v10 = v45;
         goto LABEL_47;
       }
 
-      if (!v6)
+      if (!transaction)
       {
         break;
       }
 
-      v16 = [v6 transactionType] == 15;
-      if ([v6 transactionSource] == 3)
+      v16 = [transaction transactionType] == 15;
+      if ([transaction transactionSource] == 3)
       {
         goto LABEL_15;
       }
@@ -369,23 +369,23 @@ LABEL_25:
       v17 = 0;
 LABEL_16:
       v46 = v5;
-      if ([v6 transactionSource] == 2)
+      if ([transaction transactionSource] == 2)
       {
-        [v6 releasedData];
-        v44 = v6;
-        v19 = v11;
+        [transaction releasedData];
+        v44 = transaction;
+        v19 = logoURL;
         v21 = v20 = v10;
         [v21 application];
-        v22 = v2;
+        v22 = selfCopy;
         v24 = v23 = v16;
         v25 = [v24 client] == 2;
 
         v16 = v23;
-        v2 = v22;
+        selfCopy = v22;
 
         v10 = v20;
-        v11 = v19;
-        v6 = v44;
+        logoURL = v19;
+        transaction = v44;
       }
 
       else
@@ -395,21 +395,21 @@ LABEL_16:
 
       if (!v16 || !v17 && !v25)
       {
-        if (v6)
+        if (transaction)
         {
-          [v4 size];
+          [lastObject2 size];
           v53 = 0;
           v27 = &v53;
-          v28 = [(PKPaymentTransactionIconGenerator *)v2 _iconCacheKeyForTransaction:v6 size:v13 ignoreLogoURL:&v53 imageOut:?];
+          v28 = [(PKPaymentTransactionIconGenerator *)selfCopy _iconCacheKeyForTransaction:transaction size:v13 ignoreLogoURL:&v53 imageOut:?];
           goto LABEL_36;
         }
 
         if (v10)
         {
-          [v4 size];
+          [lastObject2 size];
           v52 = 0;
           v27 = &v52;
-          v34 = [(PKPaymentTransactionIconGenerator *)v2 _iconCacheKeyForMerchant:v10 size:v13 ignoreLogoURL:&v52 imageOut:?];
+          v34 = [(PKPaymentTransactionIconGenerator *)selfCopy _iconCacheKeyForMerchant:v10 size:v13 ignoreLogoURL:&v52 imageOut:?];
 LABEL_36:
           v35 = v10;
           v26 = *v27;
@@ -425,8 +425,8 @@ LABEL_36:
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v36 = [v4 completionHandlers];
-        v37 = [v36 countByEnumeratingWithState:&v48 objects:v67 count:16];
+        completionHandlers2 = [lastObject2 completionHandlers];
+        v37 = [completionHandlers2 countByEnumeratingWithState:&v48 objects:v67 count:16];
         if (v37)
         {
           v38 = v37;
@@ -437,13 +437,13 @@ LABEL_36:
             {
               if (*v49 != v39)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(completionHandlers2);
               }
 
               (*(*(*(&v48 + 1) + 8 * j) + 16))();
             }
 
-            v38 = [v36 countByEnumeratingWithState:&v48 objects:v67 count:16];
+            v38 = [completionHandlers2 countByEnumeratingWithState:&v48 objects:v67 count:16];
           }
 
           while (v38);
@@ -458,31 +458,31 @@ LABEL_36:
       v54[1] = 3221225472;
       v54[2] = __65__PKPaymentTransactionIconGenerator_queue_processNextIconRequest__block_invoke_76;
       v54[3] = &unk_1E8022148;
-      v55 = v4;
-      [(PKPaymentTransactionIconGenerator *)v2 _iconForDataReleaseRequest:v55 iconHandler:v54];
+      v55 = lastObject2;
+      [(PKPaymentTransactionIconGenerator *)selfCopy _iconForDataReleaseRequest:v55 iconHandler:v54];
       v26 = v55;
       v5 = v46;
 LABEL_47:
 
-      os_unfair_lock_lock(&v2->_lockRequests);
-      v43 = [(NSMutableOrderedSet *)v2->_highPriorityIconRequests lastObject];
+      os_unfair_lock_lock(&selfCopy->_lockRequests);
+      lastObject3 = [(NSMutableOrderedSet *)selfCopy->_highPriorityIconRequests lastObject];
 
-      if (v43)
+      if (lastObject3)
       {
-        [(NSMutableOrderedSet *)v2->_highPriorityIconRequests removeObject:v43];
-        v4 = v43;
+        [(NSMutableOrderedSet *)selfCopy->_highPriorityIconRequests removeObject:lastObject3];
+        lastObject2 = lastObject3;
       }
 
       else
       {
-        v4 = [(NSMutableOrderedSet *)v2->_lowPriorityIconRequests lastObject];
-        [(NSMutableOrderedSet *)v2->_lowPriorityIconRequests removeObject:v4];
+        lastObject2 = [(NSMutableOrderedSet *)selfCopy->_lowPriorityIconRequests lastObject];
+        [(NSMutableOrderedSet *)selfCopy->_lowPriorityIconRequests removeObject:lastObject2];
       }
 
-      os_unfair_lock_unlock(&v2->_lockRequests);
+      os_unfair_lock_unlock(&selfCopy->_lockRequests);
 
       objc_autoreleasePoolPop(v5);
-      if (!v4)
+      if (!lastObject2)
       {
         goto LABEL_53;
       }
@@ -490,16 +490,16 @@ LABEL_47:
 
     v16 = 1;
 LABEL_15:
-    v18 = [v10 businessConnectBrandIdentifier];
-    v17 = v18 != 0;
+    businessConnectBrandIdentifier = [v10 businessConnectBrandIdentifier];
+    v17 = businessConnectBrandIdentifier != 0;
 
     goto LABEL_16;
   }
 
 LABEL_53:
-  os_unfair_lock_lock(&v2->_lockRequests);
-  v2->_processingRequest = 0;
-  os_unfair_lock_unlock(&v2->_lockRequests);
+  os_unfair_lock_lock(&selfCopy->_lockRequests);
+  selfCopy->_processingRequest = 0;
+  os_unfair_lock_unlock(&selfCopy->_lockRequests);
 }
 
 void __65__PKPaymentTransactionIconGenerator_queue_processNextIconRequest__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -621,20 +621,20 @@ void __65__PKPaymentTransactionIconGenerator_queue_processNextIconRequest__block
   }
 }
 
-- (id)_iconForCacheKey:(id)a3
+- (id)_iconForCacheKey:(id)key
 {
-  v4 = a3;
-  if (v4 && self->_useCache)
+  keyCopy = key;
+  if (keyCopy && self->_useCache)
   {
     os_unfair_lock_lock(&self->_lockRequests);
-    v5 = [(NSMutableDictionary *)self->_iconCache objectForKey:v4];
-    [(NSMutableArray *)self->_iconCacheKeys removeObject:v4];
-    [(NSMutableArray *)self->_iconCacheKeys addObject:v4];
+    v5 = [(NSMutableDictionary *)self->_iconCache objectForKey:keyCopy];
+    [(NSMutableArray *)self->_iconCacheKeys removeObject:keyCopy];
+    [(NSMutableArray *)self->_iconCacheKeys addObject:keyCopy];
     if ([(NSMutableArray *)self->_iconCacheKeys count]>= 0x12D)
     {
-      v6 = [(NSMutableArray *)self->_iconCacheKeys firstObject];
-      [(NSMutableArray *)self->_iconCacheKeys removeObject:v6];
-      [(NSMutableDictionary *)self->_iconCache removeObjectForKey:v6];
+      firstObject = [(NSMutableArray *)self->_iconCacheKeys firstObject];
+      [(NSMutableArray *)self->_iconCacheKeys removeObject:firstObject];
+      [(NSMutableDictionary *)self->_iconCache removeObjectForKey:firstObject];
     }
 
     os_unfair_lock_unlock(&self->_lockRequests);
@@ -648,54 +648,54 @@ void __65__PKPaymentTransactionIconGenerator_queue_processNextIconRequest__block
   return v5;
 }
 
-- (id)_iconCacheKeyForTransaction:(id)a3 size:(CGSize)a4 ignoreLogoURL:(BOOL)a5 imageOut:(id *)a6
+- (id)_iconCacheKeyForTransaction:(id)transaction size:(CGSize)size ignoreLogoURL:(BOOL)l imageOut:(id *)out
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = [v11 merchant];
-  v13 = [MEMORY[0x1E69B8EB8] iconTypeForTransaction:v11 ignoreLogoURL:v7];
+  transactionCopy = transaction;
+  merchant = [transactionCopy merchant];
+  v13 = [MEMORY[0x1E69B8EB8] iconTypeForTransaction:transactionCopy ignoreLogoURL:lCopy];
   v14 = 0;
   if (v13 <= 1)
   {
     if (v13)
     {
       v15 = 0;
-      v16 = 0;
+      absoluteString = 0;
       if (v13 != 1)
       {
         goto LABEL_57;
       }
 
-      v17 = [v11 transitType];
-      if (v7)
+      transitType = [transactionCopy transitType];
+      if (lCopy)
       {
-        v18 = 0;
+        logoImageURL = 0;
       }
 
       else
       {
-        v18 = [v12 logoImageURL];
+        logoImageURL = [merchant logoImageURL];
       }
 
-      v15 = [(PKPaymentTransactionIconGenerator *)self _cacheImageFromDownloaderCacheForURL:v18];
+      v15 = [(PKPaymentTransactionIconGenerator *)self _cacheImageFromDownloaderCacheForURL:logoImageURL];
       v27 = PKCurrencyCodeForTransitTransactionIcon();
       if (v15)
       {
-        v16 = [v18 absoluteString];
+        absoluteString = [logoImageURL absoluteString];
         v28 = 1;
 LABEL_48:
 
         v14 = 0;
 LABEL_49:
         v36 = v15 != 0;
-        if ((v28 & 1) == 0 && v15 && v16 && self->_useCache)
+        if ((v28 & 1) == 0 && v15 && absoluteString && self->_useCache)
         {
           os_unfair_lock_lock(&self->_lockRequests);
-          [(NSMutableDictionary *)self->_iconCache setObject:v15 forKey:v16];
-          [(NSMutableArray *)self->_iconCacheKeys addObject:v16];
+          [(NSMutableDictionary *)self->_iconCache setObject:v15 forKey:absoluteString];
+          [(NSMutableArray *)self->_iconCacheKeys addObject:absoluteString];
           os_unfair_lock_unlock(&self->_lockRequests);
         }
 
@@ -703,20 +703,20 @@ LABEL_49:
       }
 
       v29 = MEMORY[0x1E696AEC0];
-      v30 = [v12 uniqueIdentifier];
-      v16 = [v29 stringWithFormat:@"%lu-%@-%.2f-%.2f", v17, v30, *&width, *&height];
+      uniqueIdentifier = [merchant uniqueIdentifier];
+      absoluteString = [v29 stringWithFormat:@"%lu-%@-%.2f-%.2f", transitType, uniqueIdentifier, *&width, *&height];
 
-      if (v17 == 513 && v27)
+      if (transitType == 513 && v27)
       {
-        v31 = [v16 stringByAppendingFormat:@"-%@", v27];
+        v31 = [absoluteString stringByAppendingFormat:@"-%@", v27];
 
-        v16 = v31;
+        absoluteString = v31;
       }
 
-      v32 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:v16];
+      v32 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:absoluteString];
       v15 = v32;
       v28 = 1;
-      if (!a6 || v32)
+      if (!out || v32)
       {
         goto LABEL_48;
       }
@@ -739,21 +739,21 @@ LABEL_47:
           *buf = 138412546;
           v42 = v33;
           v43 = 2048;
-          v44 = v17;
+          v44 = transitType;
           _os_log_impl(&dword_1BD026000, v34, OS_LOG_TYPE_DEFAULT, "Missing icon for attributes: %@, transitSubtype: %ld, falling back to default transit icon", buf, 0x16u);
         }
 
         v35 = PKIconForTransitTransaction();
       }
 
-      else if (v17 == 517)
+      else if (transitType == 517)
       {
         v35 = PKIconForTransitCardRead();
       }
 
       else
       {
-        if (v17 == 513)
+        if (transitType == 513)
         {
           PKIconForTopUpWithCurrency();
         }
@@ -769,7 +769,7 @@ LABEL_47:
       goto LABEL_47;
     }
 
-    v16 = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForTransaction:v11 merchant:v12 size:v7 ignoreLogoURL:a6 imageOut:width, height];
+    absoluteString = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForTransaction:transactionCopy merchant:merchant size:lCopy ignoreLogoURL:out imageOut:width, height];
 LABEL_34:
     v14 = 0;
     v15 = 0;
@@ -779,49 +779,49 @@ LABEL_34:
   if (v13 != 2)
   {
     v15 = 0;
-    v16 = 0;
+    absoluteString = 0;
     if (v13 != 3)
     {
       goto LABEL_57;
     }
 
-    v19 = [v11 releasedData];
-    v20 = [v19 application];
-    v21 = [v20 client];
+    releasedData = [transactionCopy releasedData];
+    application = [releasedData application];
+    client = [application client];
 
-    if (v21 != 2)
+    if (client != 2)
     {
       v14 = 0;
       v15 = 0;
-      v16 = 0;
+      absoluteString = 0;
       goto LABEL_57;
     }
 
-    v22 = [v11 releasedData];
-    v23 = [v22 application];
-    v24 = [v23 bundleIdentifier];
+    releasedData2 = [transactionCopy releasedData];
+    application2 = [releasedData2 application];
+    bundleIdentifier = [application2 bundleIdentifier];
 
-    v25 = [v12 adamIdentifier];
-    if (v25 > 0 || v24)
+    adamIdentifier = [merchant adamIdentifier];
+    if (adamIdentifier > 0 || bundleIdentifier)
     {
-      v16 = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForApp:v25 bundleIdentifier:v24 size:width, height];
+      absoluteString = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForApp:adamIdentifier bundleIdentifier:bundleIdentifier size:width, height];
     }
 
     else
     {
-      v16 = 0;
+      absoluteString = 0;
     }
 
     goto LABEL_34;
   }
 
-  v14 = [MEMORY[0x1E69B8EB8] staticIconNameForTransaction:v11];
+  v14 = [MEMORY[0x1E69B8EB8] staticIconNameForTransaction:transactionCopy];
   if (v14)
   {
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%.2f-%.2f", v14, *&width, *&height];
-    if (a6)
+    absoluteString = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%.2f-%.2f", v14, *&width, *&height];
+    if (out)
     {
-      v26 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:v16];
+      v26 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:absoluteString];
       if (!v26)
       {
         v37 = PKIconForPDFName();
@@ -847,53 +847,53 @@ LABEL_34:
   else
   {
     v15 = 0;
-    v16 = 0;
+    absoluteString = 0;
   }
 
   v36 = v15 != 0;
 LABEL_54:
-  if (a6 && v36)
+  if (out && v36)
   {
     v38 = v15;
-    *a6 = v15;
+    *out = v15;
   }
 
 LABEL_57:
-  v39 = v16;
+  v39 = absoluteString;
 
-  return v16;
+  return absoluteString;
 }
 
-- (id)_iconCacheKeyForTransaction:(id)a3 merchant:(id)a4 size:(CGSize)a5 ignoreLogoURL:(BOOL)a6 imageOut:(id *)a7
+- (id)_iconCacheKeyForTransaction:(id)transaction merchant:(id)merchant size:(CGSize)size ignoreLogoURL:(BOOL)l imageOut:(id *)out
 {
-  height = a5.height;
-  width = a5.width;
-  v13 = a3;
-  v14 = a4;
-  v15 = v14;
-  if (a6)
+  height = size.height;
+  width = size.width;
+  transactionCopy = transaction;
+  merchantCopy = merchant;
+  v15 = merchantCopy;
+  if (l)
   {
-    v16 = 0;
+    logoImageURL = 0;
   }
 
   else
   {
-    v16 = [v14 logoImageURL];
+    logoImageURL = [merchantCopy logoImageURL];
   }
 
-  v17 = [(PKPaymentTransactionIconGenerator *)self _cacheImageFromDownloaderCacheForURL:v16];
+  v17 = [(PKPaymentTransactionIconGenerator *)self _cacheImageFromDownloaderCacheForURL:logoImageURL];
   if (v17)
   {
     v18 = v17;
-    v19 = [v16 absoluteString];
-    v20 = a7 != 0;
+    absoluteString = [logoImageURL absoluteString];
+    v20 = out != 0;
   }
 
   else
   {
-    if (v13)
+    if (transactionCopy)
     {
-      [v13 effectiveTransactionCategory];
+      [transactionCopy effectiveTransactionCategory];
     }
 
     else
@@ -902,14 +902,14 @@ LABEL_57:
     }
 
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [v15 uniqueIdentifier];
+    uniqueIdentifier = [v15 uniqueIdentifier];
     v25 = PKMerchantCategoryToString();
-    v19 = [v23 stringWithFormat:@"%@-%@-%.2f-%.2f", v24, v25, *&width, *&height];
+    absoluteString = [v23 stringWithFormat:@"%@-%@-%.2f-%.2f", uniqueIdentifier, v25, *&width, *&height];
 
-    v26 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:v19];
+    v26 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:absoluteString];
     v18 = v26;
-    v20 = a7 != 0;
-    if (a7 && !v26)
+    v20 = out != 0;
+    if (out && !v26)
     {
       if (PKPaymentTransactionRecategorizationEnabled())
       {
@@ -924,13 +924,13 @@ LABEL_57:
       v20 = 1;
       if (v18)
       {
-        if (v19)
+        if (absoluteString)
         {
           if (self->_useCache)
           {
             os_unfair_lock_lock(&self->_lockRequests);
-            [(NSMutableDictionary *)self->_iconCache setObject:v18 forKey:v19];
-            [(NSMutableArray *)self->_iconCacheKeys addObject:v19];
+            [(NSMutableDictionary *)self->_iconCache setObject:v18 forKey:absoluteString];
+            [(NSMutableArray *)self->_iconCacheKeys addObject:absoluteString];
             os_unfair_lock_unlock(&self->_lockRequests);
           }
 
@@ -943,23 +943,23 @@ LABEL_57:
   if (v20 && v18)
   {
     v21 = v18;
-    *a7 = v18;
+    *out = v18;
   }
 
-  return v19;
+  return absoluteString;
 }
 
-- (id)_cacheImageFromDownloaderCacheForURL:(id)a3
+- (id)_cacheImageFromDownloaderCacheForURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  if (v5)
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  if (absoluteString)
   {
-    v6 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:v5];
+    v6 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:absoluteString];
     if (!v6)
     {
-      v7 = [(PKPaymentTransactionIconGenerator *)self fileDownloader];
-      v8 = [v7 cachedDataForURL:v4];
+      fileDownloader = [(PKPaymentTransactionIconGenerator *)self fileDownloader];
+      v8 = [fileDownloader cachedDataForURL:lCopy];
 
       if (v8)
       {
@@ -967,8 +967,8 @@ LABEL_57:
         if (v6 && self->_useCache)
         {
           os_unfair_lock_lock(&self->_lockRequests);
-          [(NSMutableDictionary *)self->_iconCache setObject:v6 forKey:v5];
-          [(NSMutableArray *)self->_iconCacheKeys addObject:v5];
+          [(NSMutableDictionary *)self->_iconCache setObject:v6 forKey:absoluteString];
+          [(NSMutableArray *)self->_iconCacheKeys addObject:absoluteString];
           os_unfair_lock_unlock(&self->_lockRequests);
         }
       }
@@ -988,19 +988,19 @@ LABEL_57:
   return v6;
 }
 
-- (void)_downloadLogoForURL:(id)a3 withCompletionHandler:(id)a4
+- (void)_downloadLogoForURL:(id)l withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   if (self->_hasNetworkAccess)
   {
-    v8 = [(PKPaymentTransactionIconGenerator *)self fileDownloader];
+    fileDownloader = [(PKPaymentTransactionIconGenerator *)self fileDownloader];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __79__PKPaymentTransactionIconGenerator__downloadLogoForURL_withCompletionHandler___block_invoke;
     v12[3] = &unk_1E8013E70;
-    v13 = v7;
-    [v8 downloadFromUrl:v6 completionHandler:v12];
+    v13 = handlerCopy;
+    [fileDownloader downloadFromUrl:lCopy completionHandler:v12];
   }
 
   else
@@ -1008,14 +1008,14 @@ LABEL_57:
     paymentService = self->_paymentService;
     if (!paymentService)
     {
-      v10 = [MEMORY[0x1E69B8DB8] paymentService];
+      paymentService = [MEMORY[0x1E69B8DB8] paymentService];
       v11 = self->_paymentService;
-      self->_paymentService = v10;
+      self->_paymentService = paymentService;
 
       paymentService = self->_paymentService;
     }
 
-    [(PKPaymentService *)paymentService logoImageDataForURL:v6 completion:v7];
+    [(PKPaymentService *)paymentService logoImageDataForURL:lCopy completion:handlerCopy];
   }
 }
 
@@ -1029,11 +1029,11 @@ LABEL_57:
 
   else
   {
-    v4 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    [v4 setTimeoutIntervalForResource:15.0];
-    [v4 setRequestCachePolicy:0];
-    [v4 setHTTPMaximumConnectionsPerHost:10];
-    v5 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v4];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    [defaultSessionConfiguration setTimeoutIntervalForResource:15.0];
+    [defaultSessionConfiguration setRequestCachePolicy:0];
+    [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:10];
+    v5 = [MEMORY[0x1E696AF78] sessionWithConfiguration:defaultSessionConfiguration];
     v6 = [objc_alloc(MEMORY[0x1E69B8A08]) initWithSession:v5];
     v7 = self->_fileDownloader;
     self->_fileDownloader = v6;
@@ -1044,22 +1044,22 @@ LABEL_57:
   return v8;
 }
 
-- (id)_iconCacheKeyForApp:(int64_t)a3 bundleIdentifier:(id)a4 size:(CGSize)a5
+- (id)_iconCacheKeyForApp:(int64_t)app bundleIdentifier:(id)identifier size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a4;
-  v9 = v8;
-  if (a3 >= 1)
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (app >= 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"app-%lu-%.2f-%.2f", a3, *&width, *&height];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"app-%lu-%.2f-%.2f", app, *&width, *&height];
     v10 = LABEL_5:;
     goto LABEL_6;
   }
 
-  if (v8)
+  if (identifierCopy)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"app-%@-%.2f-%.2f", v8, *&width, *&height];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"app-%@-%.2f-%.2f", identifierCopy, *&width, *&height];
     goto LABEL_5;
   }
 
@@ -1069,62 +1069,62 @@ LABEL_6:
   return v10;
 }
 
-- (void)_iconForDataReleaseRequest:(id)a3 iconHandler:(id)a4
+- (void)_iconForDataReleaseRequest:(id)request iconHandler:(id)handler
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [v17 transaction];
-  v8 = [v17 merchant];
-  v9 = v8;
-  if (v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  transaction = [requestCopy transaction];
+  merchant = [requestCopy merchant];
+  v9 = merchant;
+  if (merchant)
   {
-    v10 = v8;
+    merchant2 = merchant;
   }
 
   else
   {
-    v10 = [v7 merchant];
+    merchant2 = [transaction merchant];
   }
 
-  v11 = v10;
+  v11 = merchant2;
 
-  v12 = [v7 releasedData];
-  v13 = [v12 application];
+  releasedData = [transaction releasedData];
+  application = [releasedData application];
 
-  v14 = [v11 businessConnectBrandIdentifier];
+  businessConnectBrandIdentifier = [v11 businessConnectBrandIdentifier];
 
-  if (v14)
+  if (businessConnectBrandIdentifier)
   {
-    [(PKPaymentTransactionIconGenerator *)self _iconForBusinessConnectMerchant:v11 requestToProcess:v17 iconHandler:v6];
+    [(PKPaymentTransactionIconGenerator *)self _iconForBusinessConnectMerchant:v11 requestToProcess:requestCopy iconHandler:handlerCopy];
   }
 
-  else if ([v13 client] == 2)
+  else if ([application client] == 2)
   {
-    v15 = [v11 adamIdentifier];
-    v16 = [v13 bundleIdentifier];
-    [(PKPaymentTransactionIconGenerator *)self _iconForApplication:v15 applicationIdentifier:v16 requestToProcess:v17 iconHandler:v6];
+    adamIdentifier = [v11 adamIdentifier];
+    bundleIdentifier = [application bundleIdentifier];
+    [(PKPaymentTransactionIconGenerator *)self _iconForApplication:adamIdentifier applicationIdentifier:bundleIdentifier requestToProcess:requestCopy iconHandler:handlerCopy];
   }
 }
 
-- (void)_iconForBusinessConnectMerchant:(id)a3 requestToProcess:(id)a4 iconHandler:(id)a5
+- (void)_iconForBusinessConnectMerchant:(id)merchant requestToProcess:(id)process iconHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 businessConnectBrandIdentifier];
-  [v8 size];
-  v12 = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForMerchant:v10 size:1 ignoreLogoURL:0 imageOut:?];
+  processCopy = process;
+  handlerCopy = handler;
+  merchantCopy = merchant;
+  businessConnectBrandIdentifier = [merchantCopy businessConnectBrandIdentifier];
+  [processCopy size];
+  v12 = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForMerchant:merchantCopy size:1 ignoreLogoURL:0 imageOut:?];
 
   v13 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:v12];
   if (v13)
   {
-    v9[2](v9, v13, 1);
+    handlerCopy[2](handlerCopy, v13, 1);
   }
 
   else
   {
     os_unfair_lock_lock(&self->_lockRequests);
-    [(NSMutableArray *)self->_inflightRequests addObject:v8];
+    [(NSMutableArray *)self->_inflightRequests addObject:processCopy];
     os_unfair_lock_unlock(&self->_lockRequests);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -1132,8 +1132,8 @@ LABEL_6:
     aBlock[3] = &unk_1E8022170;
     aBlock[4] = self;
     v20 = v12;
-    v21 = v8;
-    v22 = v9;
+    v21 = processCopy;
+    v22 = handlerCopy;
     v14 = _Block_copy(aBlock);
     v15 = objc_alloc_init(getBCSBusinessQueryServiceClass());
     v17[0] = MEMORY[0x1E69E9820];
@@ -1142,7 +1142,7 @@ LABEL_6:
     v17[3] = &unk_1E8022198;
     v18 = v14;
     v16 = v14;
-    [v15 fetchBrandWithIdentifier:v11 serviceType:5 completion:v17];
+    [v15 fetchBrandWithIdentifier:businessConnectBrandIdentifier serviceType:5 completion:v17];
   }
 }
 
@@ -1192,27 +1192,27 @@ void __98__PKPaymentTransactionIconGenerator__iconForBusinessConnectMerchant_req
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_iconForApplication:(int64_t)a3 applicationIdentifier:(id)a4 requestToProcess:(id)a5 iconHandler:(id)a6
+- (void)_iconForApplication:(int64_t)application applicationIdentifier:(id)identifier requestToProcess:(id)process iconHandler:(id)handler
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [v11 size];
-  if (a3 > 0 || v10)
+  identifierCopy = identifier;
+  processCopy = process;
+  handlerCopy = handler;
+  [processCopy size];
+  if (application > 0 || identifierCopy)
   {
-    v13 = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForApp:a3 bundleIdentifier:v10 size:?];
+    v13 = [(PKPaymentTransactionIconGenerator *)self _iconCacheKeyForApp:application bundleIdentifier:identifierCopy size:?];
     v14 = [(PKPaymentTransactionIconGenerator *)self _iconForCacheKey:v13];
     if (v14)
     {
-      v12[2](v12, v14, 1);
+      handlerCopy[2](handlerCopy, v14, 1);
 LABEL_6:
 
       goto LABEL_7;
     }
 
     os_unfair_lock_lock(&self->_lockRequests);
-    [(NSMutableArray *)self->_inflightRequests addObject:v11];
+    [(NSMutableArray *)self->_inflightRequests addObject:processCopy];
     os_unfair_lock_unlock(&self->_lockRequests);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -1221,12 +1221,12 @@ LABEL_6:
     aBlock[4] = self;
     v15 = v13;
     v33 = v15;
-    v16 = v11;
+    v16 = processCopy;
     v34 = v16;
-    v27 = v12;
+    v27 = handlerCopy;
     v35 = v27;
     v28 = _Block_copy(aBlock);
-    if ([v10 length])
+    if ([identifierCopy length])
     {
       [v16 size];
       v17 = PKIconForBundleIdentifier();
@@ -1240,12 +1240,12 @@ LABEL_13:
       }
     }
 
-    if (a3 < 1)
+    if (application < 1)
     {
-      if (!a3)
+      if (!application)
       {
         v20 = 0;
-        if (v10)
+        if (identifierCopy)
         {
           goto LABEL_16;
         }
@@ -1264,14 +1264,14 @@ LABEL_13:
       }
     }
 
-    v19 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v19 = [MEMORY[0x1E696AD98] numberWithInteger:application];
     v37[0] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
 
-    if (v10)
+    if (identifierCopy)
     {
 LABEL_16:
-      v36 = v10;
+      v36 = identifierCopy;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
 LABEL_19:
       v26 = v20;
@@ -1299,9 +1299,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  [v11 size];
+  [processCopy size];
   v13 = PKMapsIconForMerchant();
-  v12[2](v12, v13, 1);
+  handlerCopy[2](handlerCopy, v13, 1);
 LABEL_7:
 
 LABEL_8:

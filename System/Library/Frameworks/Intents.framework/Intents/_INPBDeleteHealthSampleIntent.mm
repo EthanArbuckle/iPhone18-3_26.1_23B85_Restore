@@ -1,12 +1,12 @@
 @interface _INPBDeleteHealthSampleIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBDeleteHealthSampleIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDeleteHealthSampleIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addSampleUuids:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSampleUuids:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSampleUuids:(id)uuids;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSampleUuids:(id)uuids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDeleteHealthSampleIntent
@@ -14,14 +14,14 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
   if ([(NSArray *)self->_sampleUuids count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -51,36 +51,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"sampleUuids"];
+    [dictionary setObject:array forKeyedSubscript:@"sampleUuids"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
-  if (v7)
+  intentMetadata3 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v8 = v7;
-    v9 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
-    v10 = [v4 intentMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMetadata3;
+    intentMetadata4 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v11 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBDeleteHealthSampleIntent *)self sampleUuids];
-  v6 = [v4 sampleUuids];
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBDeleteHealthSampleIntent *)self sampleUuids];
+  intentMetadata2 = [equalCopy sampleUuids];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v12 = [(_INPBDeleteHealthSampleIntent *)self sampleUuids];
-    if (!v12)
+    sampleUuids = [(_INPBDeleteHealthSampleIntent *)self sampleUuids];
+    if (!sampleUuids)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBDeleteHealthSampleIntent *)self sampleUuids];
-    v15 = [v4 sampleUuids];
-    v16 = [v14 isEqual:v15];
+    v13 = sampleUuids;
+    sampleUuids2 = [(_INPBDeleteHealthSampleIntent *)self sampleUuids];
+    sampleUuids3 = [equalCopy sampleUuids];
+    v16 = [sampleUuids2 isEqual:sampleUuids3];
 
     if (v16)
     {
@@ -128,51 +128,51 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDeleteHealthSampleIntent allocWithZone:](_INPBDeleteHealthSampleIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBDeleteHealthSampleIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(NSArray *)self->_sampleUuids copyWithZone:a3];
+  v7 = [(NSArray *)self->_sampleUuids copyWithZone:zone];
   [(_INPBDeleteHealthSampleIntent *)v5 setSampleUuids:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDeleteHealthSampleIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBDeleteHealthSampleIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDeleteHealthSampleIntent)initWithCoder:(id)a3
+- (_INPBDeleteHealthSampleIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDeleteHealthSampleIntent *)self initWithData:v6];
+    self = [(_INPBDeleteHealthSampleIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBDeleteHealthSampleIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -211,27 +211,27 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSampleUuids:(id)a3
+- (void)addSampleUuids:(id)uuids
 {
-  v4 = a3;
+  uuidsCopy = uuids;
   sampleUuids = self->_sampleUuids;
-  v8 = v4;
+  v8 = uuidsCopy;
   if (!sampleUuids)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sampleUuids;
-    self->_sampleUuids = v6;
+    self->_sampleUuids = array;
 
-    v4 = v8;
+    uuidsCopy = v8;
     sampleUuids = self->_sampleUuids;
   }
 
-  [(NSArray *)sampleUuids addObject:v4];
+  [(NSArray *)sampleUuids addObject:uuidsCopy];
 }
 
-- (void)setSampleUuids:(id)a3
+- (void)setSampleUuids:(id)uuids
 {
-  v4 = [a3 mutableCopy];
+  v4 = [uuids mutableCopy];
   sampleUuids = self->_sampleUuids;
   self->_sampleUuids = v4;
 

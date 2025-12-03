@@ -1,18 +1,18 @@
 @interface EPActiveDeviceAssertionFactoryObserverWrapper
 - (EPActiveDeviceAssertionFactoryObserver)observer;
-- (void)assertionFactoryDidBecomeIdle:(id)a3;
+- (void)assertionFactoryDidBecomeIdle:(id)idle;
 @end
 
 @implementation EPActiveDeviceAssertionFactoryObserverWrapper
 
-- (void)assertionFactoryDidBecomeIdle:(id)a3
+- (void)assertionFactoryDidBecomeIdle:(id)idle
 {
-  v6 = a3;
+  idleCopy = idle;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained assertionFactoryDidBecomeIdle:v6];
+    [WeakRetained assertionFactoryDidBecomeIdle:idleCopy];
   }
 }
 

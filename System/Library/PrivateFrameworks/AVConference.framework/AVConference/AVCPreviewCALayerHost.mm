@@ -1,5 +1,5 @@
 @interface AVCPreviewCALayerHost
-- (AVCPreviewCALayerHost)initWithPreview:(id)a3;
+- (AVCPreviewCALayerHost)initWithPreview:(id)preview;
 - (void)dealloc;
 - (void)layoutSublayers;
 @end
@@ -15,7 +15,7 @@
   [(CALayerHost *)&v3 dealloc];
 }
 
-- (AVCPreviewCALayerHost)initWithPreview:(id)a3
+- (AVCPreviewCALayerHost)initWithPreview:(id)preview
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -23,7 +23,7 @@
   v4 = [(CALayerHost *)&v6 init];
   if (v4)
   {
-    v4->_preview = [MEMORY[0x1E6986630] weakObjectHolderWithObject:a3];
+    v4->_preview = [MEMORY[0x1E6986630] weakObjectHolderWithObject:preview];
   }
 
   return v4;
@@ -65,7 +65,7 @@
       v2 = *v10;
       if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT))
       {
-        v4 = [(AVCPreviewCALayerHost *)self superlayer];
+        superlayer = [(AVCPreviewCALayerHost *)self superlayer];
         [-[AVCPreviewCALayerHost superlayer](self "superlayer")];
         NSStringFromRect(v46);
         *buf = 136316162;
@@ -73,9 +73,9 @@
         OUTLINED_FUNCTION_1_29();
         v34 = 124;
         v35 = 2048;
-        v36 = v4;
+        v36 = superlayer;
         v37 = 2112;
-        v38 = v12;
+        selfCopy2 = v12;
         v13 = "AVConferencePreview [%s] %s:%d superlayer=%p bounds=%@";
         v14 = v2;
         v15 = 48;
@@ -103,17 +103,17 @@ LABEL_13:
       v16 = OUTLINED_FUNCTION_17_13();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(AVCPreviewCALayerHost *)self superlayer];
+        superlayer2 = [(AVCPreviewCALayerHost *)self superlayer];
         [-[AVCPreviewCALayerHost superlayer](self "superlayer")];
         NSStringFromRect(v47);
         *buf = 136316674;
-        v33 = v4;
+        v33 = superlayer;
         OUTLINED_FUNCTION_1_29();
         OUTLINED_FUNCTION_10_20();
         v37 = 2048;
-        v38 = self;
+        selfCopy2 = self;
         v39 = 2048;
-        v40 = v17;
+        v40 = superlayer2;
         v41 = v18;
         v42 = v19;
         v13 = "AVConferencePreview [%s] %s:%d %@(%p) superlayer=%p bounds=%@";
@@ -169,10 +169,10 @@ LABEL_37:
     goto LABEL_17;
   }
 
-  v21 = [(VCWeakObjectHolder *)preview strong];
-  if (v21)
+  strong = [(VCWeakObjectHolder *)preview strong];
+  if (strong)
   {
-    v22 = v21;
+    v22 = strong;
     [-[AVCPreviewCALayerHost superlayer](self "superlayer")];
     [v22 setBounds:self forLayerHost:?];
     goto LABEL_17;
@@ -211,11 +211,11 @@ LABEL_37:
     {
 LABEL_36:
       *buf = 136316162;
-      v33 = v4;
+      v33 = superlayer;
       OUTLINED_FUNCTION_1_29();
       OUTLINED_FUNCTION_10_20();
       v37 = 2048;
-      v38 = self;
+      selfCopy2 = self;
       OUTLINED_FUNCTION_7_3();
       goto LABEL_37;
     }

@@ -57,8 +57,8 @@
 - (double)endOfArticleMinPaidHeadlineRatio;
 - (double)interstitialAdLoadDelay;
 - (double)minimumTrendingUnseenRatio;
-- (id)analyticsEnvelopeContentTypeConfigsForEnvironment:(unint64_t)a3;
-- (id)copyWithZone:(void *)a3;
+- (id)analyticsEnvelopeContentTypeConfigsForEnvironment:(unint64_t)environment;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)appConfigRefreshRate;
 - (int64_t)articleRecirculationPopularFeedQueryTimeRange;
 - (int64_t)autoScrollToTopFeedTimeout;
@@ -96,7 +96,7 @@
 
 - (NSDictionary)endpointConfigsByEnvironment
 {
-  v2 = self;
+  selfCopy = self;
   NewsCoreConfiguration.endpointConfigsByEnvironment.getter();
 
   v3 = sub_1DACB9114();
@@ -124,9 +124,9 @@
 
 - (NSNumber)currentTreatment
 {
-  v2 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
+  initWithInteger_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
 
-  return v2;
+  return initWithInteger_;
 }
 
 - (FCPuzzlesConfiguration)puzzlesConfig
@@ -152,16 +152,16 @@
 
 - (FCTopStoriesConfiguration)topStoriesConfig
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NewsCoreConfiguration.topStoriesConfig.getter();
 
   return v3;
 }
 
-- (id)analyticsEnvelopeContentTypeConfigsForEnvironment:(unint64_t)a3
+- (id)analyticsEnvelopeContentTypeConfigsForEnvironment:(unint64_t)environment
 {
-  v4 = self;
-  NewsCoreConfiguration.analyticsEnvelopeContentTypeConfigs(for:)(a3);
+  selfCopy = self;
+  NewsCoreConfiguration.analyticsEnvelopeContentTypeConfigs(for:)(environment);
 
   sub_1DAA420F4(0, qword_1EE123DC0, 0x1E696AD98);
   sub_1DAA420F4(0, &qword_1EE126620, 0x1E69B6CE0);
@@ -228,7 +228,7 @@
 
 - (FCEmbedProxyConfiguration)embedProxyConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NewsCoreConfiguration.embedProxyConfiguration.getter();
 
   return v3;
@@ -437,9 +437,9 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   NewsCoreConfiguration.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -652,7 +652,7 @@ LABEL_7:
     v10 = *&v3[*(v4 + 544)];
     sub_1DAA7C3AC(0, &qword_1EE123FE8, MEMORY[0x1E69D6A58], MEMORY[0x1E69E5E28]);
     sub_1DAB68654();
-    v5 = self;
+    selfCopy = self;
     v6 = sub_1DACB91D4();
     if (v6)
     {
@@ -664,7 +664,7 @@ LABEL_7:
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   sub_1DAB68448(MEMORY[0x1E69E7CC0]);

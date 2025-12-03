@@ -1,14 +1,14 @@
 @interface APDataAdaptor
 + (id)dispatchQueue;
-- (BOOL)_checkClassType:(id)a3 name:(id)a4 expectedClass:(Class)a5 error:(id *)a6;
-- (BOOL)_requireClassType:(id)a3 name:(id)a4 expectedClass:(Class)a5 error:(id *)a6;
-- (BOOL)_validateParameters:(id *)a3;
-- (BOOL)addData:(id)a3;
-- (void)_run:(id)a3;
+- (BOOL)_checkClassType:(id)type name:(id)name expectedClass:(Class)class error:(id *)error;
+- (BOOL)_requireClassType:(id)type name:(id)name expectedClass:(Class)class error:(id *)error;
+- (BOOL)_validateParameters:(id *)parameters;
+- (BOOL)addData:(id)data;
+- (void)_run:(id)_run;
 - (void)clearAllData;
-- (void)clearDataWithPredicate:(id)a3;
-- (void)runWithParameters:(id)a3 handler:(id)a4;
-- (void)runWithParametersSync:(id)a3 handler:(id)a4;
+- (void)clearDataWithPredicate:(id)predicate;
+- (void)runWithParameters:(id)parameters handler:(id)handler;
+- (void)runWithParametersSync:(id)sync handler:(id)handler;
 @end
 
 @implementation APDataAdaptor
@@ -25,17 +25,17 @@
   return v3;
 }
 
-- (void)runWithParametersSync:(id)a3 handler:(id)a4
+- (void)runWithParametersSync:(id)sync handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  handlerCopy = handler;
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v27 = objc_opt_class();
     v28 = 2114;
-    v29 = v6;
+    v29 = syncCopy;
     v9 = v27;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Running data source %{public}@ synchronously with parameters %{public}@", buf, 0x16u);
   }
@@ -46,15 +46,15 @@
   v21 = &unk_100479198;
   v10 = dispatch_semaphore_create(0);
   v22 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   v23 = v11;
-  [(APDataAdaptor *)self runWithParameters:v6 handler:&v18];
+  [(APDataAdaptor *)self runWithParameters:syncCopy handler:&v18];
   v12 = dispatch_time(0, 5000000000);
   if (dispatch_semaphore_wait(v10, v12))
   {
-    v13 = [(APDataAdaptor *)self identifier];
-    v14 = [(APDataAdaptor *)self parameters];
-    v15 = [NSString stringWithFormat:@"Adaptor '%@' timed out (parameters %@)", v13, v14, v18, v19, v20, v21, v22];
+    identifier = [(APDataAdaptor *)self identifier];
+    parameters = [(APDataAdaptor *)self parameters];
+    v15 = [NSString stringWithFormat:@"Adaptor '%@' timed out (parameters %@)", identifier, parameters, v18, v19, v20, v21, v22];
 
     v24 = NSLocalizedDescriptionKey;
     v25 = v15;
@@ -65,37 +65,37 @@
   }
 }
 
-- (void)runWithParameters:(id)a3 handler:(id)a4
+- (void)runWithParameters:(id)parameters handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v14 = objc_opt_class();
     v15 = 2114;
-    v16 = v6;
+    v16 = parametersCopy;
     v9 = v14;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Running data source %{public}@ with parameters %{public}@", buf, 0x16u);
   }
 
-  [(APDataAdaptor *)self setParameters:v6];
+  [(APDataAdaptor *)self setParameters:parametersCopy];
   v12 = 0;
   v10 = [(APDataAdaptor *)self _validateParameters:&v12];
   v11 = v12;
   if (v10)
   {
-    [(APDataAdaptor *)self _run:v7];
+    [(APDataAdaptor *)self _run:handlerCopy];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v11);
   }
 }
 
-- (BOOL)addData:(id)a3
+- (BOOL)addData:(id)data
 {
   v3 = APLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -123,7 +123,7 @@
   }
 }
 
-- (void)clearDataWithPredicate:(id)a3
+- (void)clearDataWithPredicate:(id)predicate
 {
   v3 = APLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -136,98 +136,98 @@
   }
 }
 
-- (BOOL)_checkClassType:(id)a3 name:(id)a4 expectedClass:(Class)a5 error:(id *)a6
+- (BOOL)_checkClassType:(id)type name:(id)name expectedClass:(Class)class error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (v10 && (objc_opt_isKindOfClass() & 1) == 0)
+  typeCopy = type;
+  nameCopy = name;
+  if (typeCopy && (objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
-      v12 = [(APDataAdaptor *)self identifier];
-      v13 = NSStringFromClass(a5);
-      v14 = [NSString stringWithFormat:@"%@: parameter '%@' must be of type %@.", v12, v11, v13];
+      identifier = [(APDataAdaptor *)self identifier];
+      v13 = NSStringFromClass(class);
+      v14 = [NSString stringWithFormat:@"%@: parameter '%@' must be of type %@.", identifier, nameCopy, v13];
 
       v17 = NSLocalizedDescriptionKey;
       v18 = v14;
       v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-      *a6 = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5201 userInfo:v15];
+      *error = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5201 userInfo:v15];
 
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a6) = 1;
+    LOBYTE(error) = 1;
   }
 
-  return a6;
+  return error;
 }
 
-- (BOOL)_requireClassType:(id)a3 name:(id)a4 expectedClass:(Class)a5 error:(id *)a6
+- (BOOL)_requireClassType:(id)type name:(id)name expectedClass:(Class)class error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  typeCopy = type;
+  nameCopy = name;
+  if (typeCopy)
   {
-    LOBYTE(a6) = [(APDataAdaptor *)self _checkClassType:v10 name:v11 expectedClass:a5 error:a6];
+    LOBYTE(error) = [(APDataAdaptor *)self _checkClassType:typeCopy name:nameCopy expectedClass:class error:error];
   }
 
-  else if (a6)
+  else if (error)
   {
-    v12 = [(APDataAdaptor *)self identifier];
-    v13 = [NSString stringWithFormat:@"%@: missing required parameter '%@'.", v12, v11];
+    identifier = [(APDataAdaptor *)self identifier];
+    nameCopy = [NSString stringWithFormat:@"%@: missing required parameter '%@'.", identifier, nameCopy];
 
     v16 = NSLocalizedDescriptionKey;
-    v17 = v13;
+    v17 = nameCopy;
     v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    *a6 = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5202 userInfo:v14];
+    *error = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5202 userInfo:v14];
 
-    LOBYTE(a6) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a6;
+  return error;
 }
 
-- (void)_run:(id)a3
+- (void)_run:(id)_run
 {
-  v4 = a3;
-  v5 = [(APDataAdaptor *)self identifier];
-  v6 = [NSString stringWithFormat:@"Adaptor '%@' does not override _run method.", v5];
+  _runCopy = _run;
+  identifier = [(APDataAdaptor *)self identifier];
+  v6 = [NSString stringWithFormat:@"Adaptor '%@' does not override _run method.", identifier];
 
   v9 = NSLocalizedDescriptionKey;
   v10 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v8 = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5206 userInfo:v7];
 
-  (*(v4 + 2))(v4, 0, 0, v8);
+  (*(_runCopy + 2))(_runCopy, 0, 0, v8);
 }
 
-- (BOOL)_validateParameters:(id *)a3
+- (BOOL)_validateParameters:(id *)parameters
 {
   if ([(APDataAdaptor *)self allowEmptyParameters])
   {
     return 1;
   }
 
-  v5 = [(APDataAdaptor *)self parameters];
-  v6 = [v5 count];
+  parameters = [(APDataAdaptor *)self parameters];
+  v6 = [parameters count];
 
   if (v6)
   {
     return 1;
   }
 
-  v8 = [(APDataAdaptor *)self identifier];
-  v9 = [NSString stringWithFormat:@"Adaptor '%@' requires at least one parameter", v8];
+  identifier = [(APDataAdaptor *)self identifier];
+  v9 = [NSString stringWithFormat:@"Adaptor '%@' requires at least one parameter", identifier];
 
-  if (a3)
+  if (parameters)
   {
     v11 = NSLocalizedDescriptionKey;
     v12 = v9;
     v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a3 = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5202 userInfo:v10];
+    *parameters = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5202 userInfo:v10];
   }
 
   return 0;

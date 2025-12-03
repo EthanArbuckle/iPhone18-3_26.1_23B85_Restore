@@ -1,42 +1,42 @@
 @interface PXAudioAssetImageProvider
 - (PXAudioAssetImageProvider)init;
-- (id)createImageLoaderForRequest:(id)a3;
-- (id)imageCacheKeyForRequest:(id)a3;
-- (id)imageLoaderCoalescingKeyForRequest:(id)a3;
-- (id)resultForCompletedImageLoader:(id)a3 request:(id)a4 error:(id *)a5;
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (void)_handleImageLoaderCompletionForIdentifier:(id)a3;
-- (void)cancelImageRequest:(int64_t)a3;
-- (void)startCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6;
+- (id)createImageLoaderForRequest:(id)request;
+- (id)imageCacheKeyForRequest:(id)request;
+- (id)imageLoaderCoalescingKeyForRequest:(id)request;
+- (id)resultForCompletedImageLoader:(id)loader request:(id)request error:(id *)error;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (void)_handleImageLoaderCompletionForIdentifier:(id)identifier;
+- (void)cancelImageRequest:(int64_t)request;
+- (void)startCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options;
 - (void)stopCachingImagesForAllAssets;
-- (void)stopCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6;
+- (void)stopCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options;
 @end
 
 @implementation PXAudioAssetImageProvider
 
-- (void)_handleImageLoaderCompletionForIdentifier:(id)a3
+- (void)_handleImageLoaderCompletionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  imageLoaderByIdentifier = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
+  v6 = [imageLoaderByIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
-    v7 = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
-    [v7 setObject:0 forKeyedSubscript:v4];
+    imageLoaderByIdentifier2 = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
+    [imageLoaderByIdentifier2 setObject:0 forKeyedSubscript:identifierCopy];
 
-    v8 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    requestsByImageLoaderIdentifier = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
+    v9 = [requestsByImageLoaderIdentifier objectForKeyedSubscript:identifierCopy];
 
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __71__PXAudioAssetImageProvider__handleImageLoaderCompletionForIdentifier___block_invoke;
     v15 = &unk_1E7731E00;
-    v16 = self;
+    selfCopy = self;
     v17 = v6;
     [v9 enumerateObjectsUsingBlock:&v12];
     v10 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier:v12];
-    v11 = [v10 objectForKeyedSubscript:v4];
+    v11 = [v10 objectForKeyedSubscript:identifierCopy];
     [v11 removeAllObjects];
   }
 }
@@ -109,80 +109,80 @@ LABEL_11:
   [v17 setObject:0 forKeyedSubscript:v18];
 }
 
-- (id)resultForCompletedImageLoader:(id)a3 request:(id)a4 error:(id *)a5
+- (id)resultForCompletedImageLoader:(id)loader request:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
+  loaderCopy = loader;
+  requestCopy = request;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  [v10 handleFailureInMethod:a2 object:self file:@"PXAudioAssetImageProvider.m" lineNumber:179 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioAssetImageProvider resultForCompletedImageLoader:request:error:]", v12}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioAssetImageProvider.m" lineNumber:179 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioAssetImageProvider resultForCompletedImageLoader:request:error:]", v12}];
 
   abort();
 }
 
-- (id)createImageLoaderForRequest:(id)a3
+- (id)createImageLoaderForRequest:(id)request
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  requestCopy = request;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXAudioAssetImageProvider.m" lineNumber:175 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioAssetImageProvider createImageLoaderForRequest:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioAssetImageProvider.m" lineNumber:175 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioAssetImageProvider createImageLoaderForRequest:]", v8}];
 
   abort();
 }
 
-- (id)imageLoaderCoalescingKeyForRequest:(id)a3
+- (id)imageLoaderCoalescingKeyForRequest:(id)request
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  requestCopy = request;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXAudioAssetImageProvider.m" lineNumber:171 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioAssetImageProvider imageLoaderCoalescingKeyForRequest:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioAssetImageProvider.m" lineNumber:171 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioAssetImageProvider imageLoaderCoalescingKeyForRequest:]", v8}];
 
   abort();
 }
 
-- (id)imageCacheKeyForRequest:(id)a3
+- (id)imageCacheKeyForRequest:(id)request
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  requestCopy = request;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXAudioAssetImageProvider.m" lineNumber:167 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioAssetImageProvider imageCacheKeyForRequest:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioAssetImageProvider.m" lineNumber:167 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioAssetImageProvider imageCacheKeyForRequest:]", v8}];
 
   abort();
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
-  v5 = [(PXAudioAssetImageProvider *)self requestByClientID];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v18 = [v5 objectForKeyedSubscript:v6];
+  requestByClientID = [(PXAudioAssetImageProvider *)self requestByClientID];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:request];
+  v18 = [requestByClientID objectForKeyedSubscript:v6];
 
   v7 = v18;
   if (v18)
   {
-    v8 = [(PXAudioAssetImageProvider *)self requestByClientID];
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v8 setObject:0 forKeyedSubscript:v9];
+    requestByClientID2 = [(PXAudioAssetImageProvider *)self requestByClientID];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:request];
+    [requestByClientID2 setObject:0 forKeyedSubscript:v9];
 
     v10 = [(PXAudioAssetImageProvider *)self imageLoaderCoalescingKeyForRequest:v18];
-    v11 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
-    v12 = [v11 objectForKeyedSubscript:v10];
+    requestsByImageLoaderIdentifier = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
+    v12 = [requestsByImageLoaderIdentifier objectForKeyedSubscript:v10];
     [v12 removeObject:v18];
 
-    v13 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
-    v14 = [v13 objectForKeyedSubscript:v10];
+    requestsByImageLoaderIdentifier2 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
+    v14 = [requestsByImageLoaderIdentifier2 objectForKeyedSubscript:v10];
     v15 = [v14 count];
 
     if (!v15)
     {
-      v16 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
-      [v16 setObject:0 forKeyedSubscript:v10];
+      requestsByImageLoaderIdentifier3 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
+      [requestsByImageLoaderIdentifier3 setObject:0 forKeyedSubscript:v10];
 
-      v17 = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
-      [v17 setObject:0 forKeyedSubscript:v10];
+      imageLoaderByIdentifier = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
+      [imageLoaderByIdentifier setObject:0 forKeyedSubscript:v10];
     }
 
     v7 = v18;
@@ -191,19 +191,19 @@ LABEL_11:
 
 - (void)stopCachingImagesForAllAssets
 {
-  v3 = [(PXAudioAssetImageProvider *)self requestCountByCacheSpec];
-  [v3 removeAllObjects];
+  requestCountByCacheSpec = [(PXAudioAssetImageProvider *)self requestCountByCacheSpec];
+  [requestCountByCacheSpec removeAllObjects];
 
-  v4 = [(PXAudioAssetImageProvider *)self requestIDByCacheSpec];
+  requestIDByCacheSpec = [(PXAudioAssetImageProvider *)self requestIDByCacheSpec];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PXAudioAssetImageProvider_stopCachingImagesForAllAssets__block_invoke;
   v6[3] = &unk_1E7748368;
   v6[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [requestIDByCacheSpec enumerateKeysAndObjectsUsingBlock:v6];
 
-  v5 = [(PXAudioAssetImageProvider *)self requestIDByCacheSpec];
-  [v5 removeAllObjects];
+  requestIDByCacheSpec2 = [(PXAudioAssetImageProvider *)self requestIDByCacheSpec];
+  [requestIDByCacheSpec2 removeAllObjects];
 }
 
 uint64_t __58__PXAudioAssetImageProvider_stopCachingImagesForAllAssets__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -214,22 +214,22 @@ uint64_t __58__PXAudioAssetImageProvider_stopCachingImagesForAllAssets__block_in
   return [v3 cancelImageRequest:v4];
 }
 
-- (void)stopCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6
+- (void)stopCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__PXAudioAssetImageProvider_stopCachingImagesForAssets_targetSize_contentMode_options___block_invoke;
   v13[3] = &unk_1E7748340;
   v16 = width;
   v17 = height;
-  v18 = a5;
-  v14 = v11;
-  v15 = self;
-  v12 = v11;
-  [a3 enumerateObjectsUsingBlock:v13];
+  modeCopy = mode;
+  v14 = optionsCopy;
+  selfCopy = self;
+  v12 = optionsCopy;
+  [assets enumerateObjectsUsingBlock:v13];
 }
 
 void __87__PXAudioAssetImageProvider_stopCachingImagesForAssets_targetSize_contentMode_options___block_invoke(uint64_t a1, void *a2)
@@ -257,22 +257,22 @@ void __87__PXAudioAssetImageProvider_stopCachingImagesForAssets_targetSize_conte
   }
 }
 
-- (void)startCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6
+- (void)startCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__PXAudioAssetImageProvider_startCachingImagesForAssets_targetSize_contentMode_options___block_invoke;
   v13[3] = &unk_1E7748340;
   v16 = width;
   v17 = height;
-  v18 = a5;
-  v14 = v11;
-  v15 = self;
-  v12 = v11;
-  [a3 enumerateObjectsUsingBlock:v13];
+  modeCopy = mode;
+  v14 = optionsCopy;
+  selfCopy = self;
+  v12 = optionsCopy;
+  [assets enumerateObjectsUsingBlock:v13];
 }
 
 void __88__PXAudioAssetImageProvider_startCachingImagesForAssets_targetSize_contentMode_options___block_invoke(uint64_t a1, void *a2)
@@ -318,13 +318,13 @@ void __88__PXAudioAssetImageProvider_startCachingImagesForAssets_targetSize_cont
   }
 }
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   v16 = [(PXAudioAssetImageProvider *)self log];
   v17 = os_signpost_id_make_with_pointer(v16, self);
   v18 = v16;
@@ -336,18 +336,18 @@ void __88__PXAudioAssetImageProvider_startCachingImagesForAssets_targetSize_cont
   }
 
   [(PXAudioAssetImageProvider *)self setRequestCounter:[(PXAudioAssetImageProvider *)self requestCounter]+ 1];
-  v20 = [(PXAudioAssetImageProvider *)self requestCounter];
-  v39 = v15;
-  v40 = v14;
-  v21 = [[_PXAudioAssetImageProviderRequest alloc] initWithAsset:v13 targetSize:a5 contentMode:v14 options:v15 resultHandler:v20 requestID:v17 signpostID:width, height];
-  v22 = [(PXAudioAssetImageProvider *)self imageCacheKeyForRequest:v21];
-  v23 = [(PXAudioAssetImageProvider *)self imageCache];
-  v24 = [v23 objectForKey:v22];
+  requestCounter = [(PXAudioAssetImageProvider *)self requestCounter];
+  v39 = handlerCopy;
+  v40 = optionsCopy;
+  height = [[_PXAudioAssetImageProviderRequest alloc] initWithAsset:assetCopy targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:requestCounter requestID:v17 signpostID:width, height];
+  v22 = [(PXAudioAssetImageProvider *)self imageCacheKeyForRequest:height];
+  imageCache = [(PXAudioAssetImageProvider *)self imageCache];
+  v24 = [imageCache objectForKey:v22];
 
   if (v24)
   {
-    v25 = [(_PXAudioAssetImageProviderRequest *)v21 resultHandler];
-    (v25)[2](v25, v24, 0);
+    resultHandler = [(_PXAudioAssetImageProviderRequest *)height resultHandler];
+    (resultHandler)[2](resultHandler, v24, 0);
 
     v26 = v19;
     v27 = v26;
@@ -360,31 +360,31 @@ void __88__PXAudioAssetImageProvider_startCachingImagesForAssets_targetSize_cont
 
   else
   {
-    v38 = v13;
-    v28 = [(PXAudioAssetImageProvider *)self requestByClientID];
-    v29 = [MEMORY[0x1E696AD98] numberWithInteger:v20];
-    [v28 setObject:v21 forKeyedSubscript:v29];
+    v38 = assetCopy;
+    requestByClientID = [(PXAudioAssetImageProvider *)self requestByClientID];
+    v29 = [MEMORY[0x1E696AD98] numberWithInteger:requestCounter];
+    [requestByClientID setObject:height forKeyedSubscript:v29];
 
-    v27 = [(PXAudioAssetImageProvider *)self imageLoaderCoalescingKeyForRequest:v21];
-    v30 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
-    v31 = [v30 objectForKeyedSubscript:v27];
+    v27 = [(PXAudioAssetImageProvider *)self imageLoaderCoalescingKeyForRequest:height];
+    requestsByImageLoaderIdentifier = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
+    v31 = [requestsByImageLoaderIdentifier objectForKeyedSubscript:v27];
 
     if (!v31)
     {
       v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v32 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
-      [v32 setObject:v31 forKeyedSubscript:v27];
+      requestsByImageLoaderIdentifier2 = [(PXAudioAssetImageProvider *)self requestsByImageLoaderIdentifier];
+      [requestsByImageLoaderIdentifier2 setObject:v31 forKeyedSubscript:v27];
     }
 
-    [v31 addObject:v21];
-    v33 = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
-    v34 = [v33 objectForKeyedSubscript:v27];
+    [v31 addObject:height];
+    imageLoaderByIdentifier = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
+    v34 = [imageLoaderByIdentifier objectForKeyedSubscript:v27];
 
     if (!v34)
     {
-      v35 = [(PXAudioAssetImageProvider *)self createImageLoaderForRequest:v21];
-      v36 = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
-      [v36 setObject:v35 forKeyedSubscript:v27];
+      v35 = [(PXAudioAssetImageProvider *)self createImageLoaderForRequest:height];
+      imageLoaderByIdentifier2 = [(PXAudioAssetImageProvider *)self imageLoaderByIdentifier];
+      [imageLoaderByIdentifier2 setObject:v35 forKeyedSubscript:v27];
 
       objc_initWeak(buf, self);
       v41[0] = MEMORY[0x1E69E9820];
@@ -399,10 +399,10 @@ void __88__PXAudioAssetImageProvider_startCachingImagesForAssets_targetSize_cont
       objc_destroyWeak(buf);
     }
 
-    v13 = v38;
+    assetCopy = v38;
   }
 
-  return v20;
+  return requestCounter;
 }
 
 void __95__PXAudioAssetImageProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke(uint64_t a1)
@@ -443,9 +443,9 @@ void __95__PXAudioAssetImageProvider_requestImageForAsset_targetSize_contentMode
 
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
 
-    v14 = os_log_create(*MEMORY[0x1E69BDDA0], v13);
+    v14 = os_log_create(*MEMORY[0x1E69BDDA0], uTF8String);
     log = v2->_log;
     v2->_log = v14;
   }

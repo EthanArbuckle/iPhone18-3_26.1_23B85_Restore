@@ -1,14 +1,14 @@
 @interface WiFiStatMO
-+ (id)generateInstance:(id)a3;
++ (id)generateInstance:(id)instance;
 @end
 
 @implementation WiFiStatMO
 
-+ (id)generateInstance:(id)a3
++ (id)generateInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   v4 = +[WiFiStatMO entityName];
-  v5 = [AnalyticsStoreProxy createEntity:v4 moc:v3];
+  v5 = [AnalyticsStoreProxy createEntity:v4 moc:instanceCopy];
 
   return v5;
 }

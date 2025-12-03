@@ -1,36 +1,36 @@
 @interface MapRoutePageRenderer
-- (CGAffineTransform)_overviewAffineTransformForRect:(SEL)a3 zoomLevel:(CGRect)a4;
+- (CGAffineTransform)_overviewAffineTransformForRect:(SEL)rect zoomLevel:(CGRect)level;
 - (CGRect)overviewRect;
-- (MapRoutePageRenderer)initWithRoute:(id)a3 mapView:(id)a4;
-- (double)_zoomLevelForCoordinateRegion:(id *)a3;
+- (MapRoutePageRenderer)initWithRoute:(id)route mapView:(id)view;
+- (double)_zoomLevelForCoordinateRegion:(id *)region;
 - (id)computeCurrentPrintInfo;
 - (int64_t)numberOfPages;
-- (void)_drawAddressWithPin:(unsigned int)a3 address:(id)a4 inRect:(CGRect)a5;
-- (void)_drawBottomMarginContentInRect:(CGRect)a3;
-- (void)_drawRouteLineInRect:(CGRect)a3 zoomLevel:(double)a4 transform:(CGAffineTransform *)a5;
-- (void)_layoutRouteStepCalloutAtIndex:(unint64_t)a3 depth:(int64_t)a4;
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)drawTopContentInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
-- (void)prepareForDrawingPages:(_NSRange)a3;
+- (void)_drawAddressWithPin:(unsigned int)pin address:(id)address inRect:(CGRect)rect;
+- (void)_drawBottomMarginContentInRect:(CGRect)rect;
+- (void)_drawRouteLineInRect:(CGRect)rect zoomLevel:(double)level transform:(CGAffineTransform *)transform;
+- (void)_layoutRouteStepCalloutAtIndex:(unint64_t)index depth:(int64_t)depth;
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)drawTopContentInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
+- (void)prepareForDrawingPages:(_NSRange)pages;
 @end
 
 @implementation MapRoutePageRenderer
 
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(NSMutableArray *)self->_snapshotObjects addObject:self];
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v10 = [(MapCachedPageRenderer *)self currentPrintInfo];
-  v11 = [v10 routeStepCells];
+  currentPrintInfo = [(MapCachedPageRenderer *)self currentPrintInfo];
+  routeStepCells = [currentPrintInfo routeStepCells];
 
-  v12 = [v11 countByEnumeratingWithState:&v79 objects:v85 count:16];
+  v12 = [routeStepCells countByEnumeratingWithState:&v79 objects:v85 count:16];
   if (v12)
   {
     v13 = v12;
@@ -41,17 +41,17 @@
       {
         if (*v80 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(routeStepCells);
         }
 
         v16 = *(*(&v79 + 1) + 8 * i);
-        if ([v16 page] == a3)
+        if ([v16 page] == index)
         {
           [(NSMutableArray *)self->_snapshotObjects addObject:v16];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v79 objects:v85 count:16];
+      v13 = [routeStepCells countByEnumeratingWithState:&v79 objects:v85 count:16];
     }
 
     while (v13);
@@ -63,11 +63,11 @@
   while ([(NSMutableArray *)self->_snapshotObjects count])
   {
     v18 = [(NSMutableArray *)self->_snapshotObjects objectAtIndexedSubscript:0];
-    v19 = [v18 snapshotBlock];
-    v20 = v19;
-    if (v19)
+    snapshotBlock = [v18 snapshotBlock];
+    v20 = snapshotBlock;
+    if (snapshotBlock)
     {
-      (*(v19 + 16))(v19);
+      (*(snapshotBlock + 16))(snapshotBlock);
       v21 = +[NSDate date];
       if (([v18 hasSnapshot] & 1) == 0)
       {
@@ -94,9 +94,9 @@
   }
 
   v28 = +[UIPrintInteractionController sharedPrintController];
-  v29 = [v28 printPageRenderer];
+  printPageRenderer = [v28 printPageRenderer];
 
-  if (v29)
+  if (printPageRenderer)
   {
     v30 = +[UIPrintInteractionController sharedPrintController];
     [v30 _enableManualPrintPage:0];
@@ -116,14 +116,14 @@
     v74 = v77;
     v75 = v78;
     [(MapRoutePageRenderer *)self _drawRouteLineInRect:&v73 zoomLevel:x transform:y, width, height, zoomLevel];
-    v40 = [(MapCachedPageRenderer *)self currentPrintInfo];
-    v41 = [v40 routeStepCalloutCells];
+    currentPrintInfo2 = [(MapCachedPageRenderer *)self currentPrintInfo];
+    routeStepCalloutCells = [currentPrintInfo2 routeStepCalloutCells];
 
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v42 = v41;
+    v42 = routeStepCalloutCells;
     v43 = [v42 countByEnumeratingWithState:&v69 objects:v84 count:16];
     if (v43)
     {
@@ -153,11 +153,11 @@
 
     v48 = [[MapScaleCell alloc] initWithDistanceInMeters:MKMetersBetweenMapPoints(self->mlMapPoint, self->mrMapPoint)];
     [(MapScaleCell *)v48 drawInRect:v32, v34, v36, v38];
-    [(MapRoutePageRenderer *)self drawTopContentInRect:a3 forPageAtIndex:x, y, width, height];
+    [(MapRoutePageRenderer *)self drawTopContentInRect:index forPageAtIndex:x, y, width, height];
     [(MapRoutePageRenderer *)self _drawBottomMarginContentInRect:x, y, width, height];
     v49 = [v42 count];
     v50 = v49;
-    if (!a3 && v49)
+    if (!index && v49)
     {
       v51 = 0;
       do
@@ -172,10 +172,10 @@
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v52 = [(MapCachedPageRenderer *)self currentPrintInfo];
-    v53 = [v52 routeStepCells];
+    currentPrintInfo3 = [(MapCachedPageRenderer *)self currentPrintInfo];
+    routeStepCells2 = [currentPrintInfo3 routeStepCells];
 
-    v54 = [v53 countByEnumeratingWithState:&v65 objects:v83 count:16];
+    v54 = [routeStepCells2 countByEnumeratingWithState:&v65 objects:v83 count:16];
     if (v54)
     {
       v55 = v54;
@@ -186,17 +186,17 @@
         {
           if (*v66 != v56)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(routeStepCells2);
           }
 
           v58 = *(*(&v65 + 1) + 8 * k);
-          if ([v58 page] == a3)
+          if ([v58 page] == index)
           {
             [v58 drawInRect:{x, y, width, height}];
           }
         }
 
-        v55 = [v53 countByEnumeratingWithState:&v65 objects:v83 count:16];
+        v55 = [routeStepCells2 countByEnumeratingWithState:&v65 objects:v83 count:16];
       }
 
       while (v55);
@@ -225,20 +225,20 @@
       v63 = [v42 objectAtIndexedSubscript:0];
       [v63 drawInRect:{x, y, width, height}];
 
-      v64 = [v42 lastObject];
-      [v64 drawInRect:{x, y, width, height}];
+      lastObject = [v42 lastObject];
+      [lastObject drawInRect:{x, y, width, height}];
     }
   }
 }
 
-- (void)_layoutRouteStepCalloutAtIndex:(unint64_t)a3 depth:(int64_t)a4
+- (void)_layoutRouteStepCalloutAtIndex:(unint64_t)index depth:(int64_t)depth
 {
-  v7 = [(MapCachedPageRenderer *)self currentPrintInfo];
-  v13 = [v7 routeStepCalloutCells];
+  currentPrintInfo = [(MapCachedPageRenderer *)self currentPrintInfo];
+  routeStepCalloutCells = [currentPrintInfo routeStepCalloutCells];
 
-  v8 = [v13 count];
-  v9 = [v13 objectAtIndexedSubscript:a3];
-  v10 = a3 + 1;
+  v8 = [routeStepCalloutCells count];
+  v9 = [routeStepCalloutCells objectAtIndexedSubscript:index];
+  v10 = index + 1;
   if (v10 < v8)
   {
     v11 = -1;
@@ -246,12 +246,12 @@
     {
       if (v11)
       {
-        v12 = [v13 objectAtIndexedSubscript:v10];
+        v12 = [routeStepCalloutCells objectAtIndexedSubscript:v10];
         if (([v12 shouldRotateWithCallout:v9] & 1) != 0 || (objc_msgSend(v12, "shouldRotateWithCallout:", self->_redPinCallout) & 1) != 0 || objc_msgSend(v12, "shouldRotateWithCallout:", self->_greenPinCallout))
         {
           if ([v12 rotate])
           {
-            if (a4 > 3 || ([(MapRoutePageRenderer *)self _layoutRouteStepCalloutAtIndex:v10 depth:a4 + 1], a4 >= 2))
+            if (depth > 3 || ([(MapRoutePageRenderer *)self _layoutRouteStepCalloutAtIndex:v10 depth:depth + 1], depth >= 2))
             {
 
               break;
@@ -268,9 +268,9 @@
   }
 }
 
-- (void)_drawBottomMarginContentInRect:(CGRect)a3
+- (void)_drawBottomMarginContentInRect:(CGRect)rect
 {
-  [(MapRoutePageRenderer *)self overviewRect:a3.origin.x];
+  [(MapRoutePageRenderer *)self overviewRect:rect.origin.x];
   x = v18.origin.x;
   y = v18.origin.y;
   width = v18.size.width;
@@ -288,28 +288,28 @@
   v10 = CGRectGetWidth(v20) * 0.5 + -20.0;
   [(MapRoutePageRenderer *)self printableRect];
   v11 = CGRectGetMaxY(v21) - v8;
-  v12 = [(GEOComposedRoute *)self->_route origin];
-  v13 = [v12 navDisplayAddress];
-  [(MapRoutePageRenderer *)self _drawAddressWithPin:4 address:v13 inRect:MinX, v8, v10, v11];
+  origin = [(GEOComposedRoute *)self->_route origin];
+  navDisplayAddress = [origin navDisplayAddress];
+  [(MapRoutePageRenderer *)self _drawAddressWithPin:4 address:navDisplayAddress inRect:MinX, v8, v10, v11];
 
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
   v14 = CGRectGetMidX(v22) + -4.65000021;
-  v16 = [(GEOComposedRoute *)self->_route destination];
-  v15 = [v16 navDisplayAddress];
-  [(MapRoutePageRenderer *)self _drawAddressWithPin:5 address:v15 inRect:v14, v8, v10, v11];
+  destination = [(GEOComposedRoute *)self->_route destination];
+  navDisplayAddress2 = [destination navDisplayAddress];
+  [(MapRoutePageRenderer *)self _drawAddressWithPin:5 address:navDisplayAddress2 inRect:v14, v8, v10, v11];
 }
 
-- (void)_drawAddressWithPin:(unsigned int)a3 address:(id)a4 inRect:(CGRect)a5
+- (void)_drawAddressWithPin:(unsigned int)pin address:(id)address inRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = *&a3;
-  v10 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = *&pin;
+  addressCopy = address;
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
@@ -324,19 +324,19 @@
   [v12 set];
 
   v13 = [UIFont systemFontOfSize:9.0];
-  [v10 _maps_drawInRect:v13 withFont:{x + 25.3000004, y, width + -25.3000004, height}];
+  [addressCopy _maps_drawInRect:v13 withFont:{x + 25.3000004, y, width + -25.3000004, height}];
 }
 
-- (void)drawTopContentInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawTopContentInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(GEOComposedRoute *)self->_route transportType];
-  if (v10 <= 3)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  transportType = [(GEOComposedRoute *)self->_route transportType];
+  if (transportType <= 3)
   {
-    self->super.super._topContentIconType = dword_101212C00[v10];
+    self->super.super._topContentIconType = dword_101212C00[transportType];
   }
 
   if ([(GEOComposedRoute *)self->_route transportType]== 1)
@@ -346,23 +346,23 @@
 
   else
   {
-    v11 = [(GEOComposedRoute *)self->_route expandedDistance];
-    [(MapPageRenderer *)self setTitle:v11];
+    expandedDistance = [(GEOComposedRoute *)self->_route expandedDistance];
+    [(MapPageRenderer *)self setTitle:expandedDistance];
 
     [(MapPageRenderer *)self setSubTitle:0];
-    v12 = [(GEOComposedRoute *)self->_route expandedTravelTime];
-    v13 = [NSString stringWithFormat:@"%@", v12];
+    expandedTravelTime = [(GEOComposedRoute *)self->_route expandedTravelTime];
+    v13 = [NSString stringWithFormat:@"%@", expandedTravelTime];
     [(MapPageRenderer *)self setSubTitle:v13];
   }
 
   v14.receiver = self;
   v14.super_class = MapRoutePageRenderer;
-  [(MapPageRenderer *)&v14 drawTopContentInRect:a4 forPageAtIndex:x, y, width, height];
+  [(MapPageRenderer *)&v14 drawTopContentInRect:index forPageAtIndex:x, y, width, height];
 }
 
-- (void)_drawRouteLineInRect:(CGRect)a3 zoomLevel:(double)a4 transform:(CGAffineTransform *)a5
+- (void)_drawRouteLineInRect:(CGRect)rect zoomLevel:(double)level transform:(CGAffineTransform *)transform
 {
-  [(MapRoutePageRenderer *)self overviewRect:a3.origin.x];
+  [(MapRoutePageRenderer *)self overviewRect:rect.origin.x];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -416,13 +416,13 @@ LABEL_2:
     CGContextSetLineCap(CurrentContext, kCGLineCapRound);
     CGContextSetLineJoin(CurrentContext, kCGLineJoinRound);
     Mutable = CGPathCreateMutable();
-    CGPathMoveToPoint(Mutable, a5, *v25, *(v25 + 1));
+    CGPathMoveToPoint(Mutable, transform, *v25, *(v25 + 1));
     if (v24 >= 2)
     {
       v19 = 0;
       for (i = 1; i < v24; ++i)
       {
-        CGPathAddLineToPoint(Mutable, a5, *(v25 + v19 + 16), *(v25 + v19 + 24));
+        CGPathAddLineToPoint(Mutable, transform, *(v25 + v19 + 16), *(v25 + v19 + 24));
         v19 += 16;
       }
     }
@@ -440,12 +440,12 @@ LABEL_2:
   }
 }
 
-- (CGAffineTransform)_overviewAffineTransformForRect:(SEL)a3 zoomLevel:(CGRect)a4
+- (CGAffineTransform)_overviewAffineTransformForRect:(SEL)rect zoomLevel:(CGRect)level
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = level.size.height;
+  width = level.size.width;
+  y = level.origin.y;
+  x = level.origin.x;
   MKZoomScaleForZoomLevelF();
   v12 = v11;
   v21 = *&CGAffineTransformIdentity.c;
@@ -542,9 +542,9 @@ LABEL_2:
   return result;
 }
 
-- (void)prepareForDrawingPages:(_NSRange)a3
+- (void)prepareForDrawingPages:(_NSRange)pages
 {
-  [(GEOComposedRoute *)self->_route _maps_boundingMapRect:a3.location];
+  [(GEOComposedRoute *)self->_route _maps_boundingMapRect:pages.location];
   v8 = MKCoordinateRegionForMapRect(v7);
   latitude = v8.center.latitude;
   longitude = v8.center.longitude;
@@ -556,28 +556,28 @@ LABEL_2:
 
 - (int64_t)numberOfPages
 {
-  v2 = [(MapCachedPageRenderer *)self currentPrintInfo];
-  v3 = [v2 numberOfPages];
+  currentPrintInfo = [(MapCachedPageRenderer *)self currentPrintInfo];
+  numberOfPages = [currentPrintInfo numberOfPages];
 
-  return v3;
+  return numberOfPages;
 }
 
 - (id)computeCurrentPrintInfo
 {
-  v3 = [(GEOComposedRoute *)self->_route steps];
-  v4 = [v3 count];
+  steps = [(GEOComposedRoute *)self->_route steps];
+  v4 = [steps count];
 
   if ([(GEOComposedRoute *)self->_route transportType]== 1)
   {
-    v5 = [(GEOComposedRoute *)self->_route steppingSigns];
-    v4 = [v5 count];
+    steppingSigns = [(GEOComposedRoute *)self->_route steppingSigns];
+    v4 = [steppingSigns count];
   }
 
-  v6 = [(MapRoutePageRenderer *)self routeStepsPerPage];
-  if (v6)
+  routeStepsPerPage = [(MapRoutePageRenderer *)self routeStepsPerPage];
+  if (routeStepsPerPage)
   {
-    v7 = v6;
-    v52 = v4 / v6;
+    v7 = routeStepsPerPage;
+    v52 = v4 / routeStepsPerPage;
     v55 = objc_alloc_init(NSMutableArray);
     v54 = objc_alloc_init(NSMutableArray);
     [(MapRoutePageRenderer *)self printableRect];
@@ -637,8 +637,8 @@ LABEL_2:
       v63 = 0uLL;
       v60 = 0uLL;
       v61 = 0uLL;
-      v27 = [(GEOComposedRoute *)self->_route steppingSigns];
-      v28 = [v27 countByEnumeratingWithState:&v60 objects:v65 count:16];
+      steppingSigns2 = [(GEOComposedRoute *)self->_route steppingSigns];
+      v28 = [steppingSigns2 countByEnumeratingWithState:&v60 objects:v65 count:16];
       if (v28)
       {
         v29 = v28;
@@ -649,7 +649,7 @@ LABEL_2:
           {
             if (*v61 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(steppingSigns2);
             }
 
             v32 = [TransitRouteStepCell cellWithRoute:self->_route sign:*(*(&v60 + 1) + 8 * i)];
@@ -657,7 +657,7 @@ LABEL_2:
             [v55 addObject:v32];
           }
 
-          v29 = [v27 countByEnumeratingWithState:&v60 objects:v65 count:16];
+          v29 = [steppingSigns2 countByEnumeratingWithState:&v60 objects:v65 count:16];
         }
 
         while (v29);
@@ -670,8 +670,8 @@ LABEL_2:
       v59 = 0uLL;
       v56 = 0uLL;
       v57 = 0uLL;
-      v27 = [(GEOComposedRoute *)self->_route steps];
-      v33 = [v27 countByEnumeratingWithState:&v56 objects:v64 count:16];
+      steppingSigns2 = [(GEOComposedRoute *)self->_route steps];
+      v33 = [steppingSigns2 countByEnumeratingWithState:&v56 objects:v64 count:16];
       if (v33)
       {
         v34 = v33;
@@ -684,21 +684,21 @@ LABEL_2:
           {
             if (*v57 != v35)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(steppingSigns2);
             }
 
-            v37 = [*(*(&v56 + 1) + 8 * j) stepIndex];
+            stepIndex = [*(*(&v56 + 1) + 8 * j) stepIndex];
             route = self->_route;
-            v39 = [(MapPageRenderer *)self mapView];
-            v40 = +[RouteStepCell cellWithRoute:stepIndex:mapType:](RouteStepCell, "cellWithRoute:stepIndex:mapType:", route, v37, [v39 mapType]);
+            mapView = [(MapPageRenderer *)self mapView];
+            v40 = +[RouteStepCell cellWithRoute:stepIndex:mapType:](RouteStepCell, "cellWithRoute:stepIndex:mapType:", route, stepIndex, [mapView mapType]);
 
             [v40 setFrame:{MinX, 0.0, v25, 81.5}];
             [v55 addObject:v40];
-            v41 = [RouteStepCalloutCell cellWithRoute:self->_route stepIndex:v37 type:0];
+            v41 = [RouteStepCalloutCell cellWithRoute:self->_route stepIndex:stepIndex type:0];
             [v54 addObject:v41];
           }
 
-          v34 = [v27 countByEnumeratingWithState:&v56 objects:v64 count:16];
+          v34 = [steppingSigns2 countByEnumeratingWithState:&v56 objects:v64 count:16];
         }
 
         while (v34);
@@ -756,18 +756,18 @@ LABEL_2:
   return v23;
 }
 
-- (MapRoutePageRenderer)initWithRoute:(id)a3 mapView:(id)a4
+- (MapRoutePageRenderer)initWithRoute:(id)route mapView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  routeCopy = route;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = MapRoutePageRenderer;
   v9 = [(MapCachedPageRenderer *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_route, a3);
-    [(MapPageRenderer *)v10 setMapView:v8];
+    objc_storeStrong(&v9->_route, route);
+    [(MapPageRenderer *)v10 setMapView:viewCopy];
     v11 = [[UIColor alloc] initWithRed:0.278431373 green:0.560784314 blue:1.0 alpha:1.0];
     routeCenterPrintColor = v10->_routeCenterPrintColor;
     v10->_routeCenterPrintColor = v11;
@@ -780,7 +780,7 @@ LABEL_2:
   return v10;
 }
 
-- (double)_zoomLevelForCoordinateRegion:(id *)a3
+- (double)_zoomLevelForCoordinateRegion:(id *)region
 {
   v28 = v3;
   v29 = v4;

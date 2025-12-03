@@ -1,18 +1,18 @@
 @interface AutolayoutImageView
-- (AutolayoutImageView)initWithCoder:(id)a3;
-- (AutolayoutImageView)initWithFrame:(CGRect)a3;
-- (AutolayoutImageView)initWithImage:(id)a3;
-- (void)setAspectRatioConstraintPriority:(float)a3;
-- (void)setImage:(id)a3;
+- (AutolayoutImageView)initWithCoder:(id)coder;
+- (AutolayoutImageView)initWithFrame:(CGRect)frame;
+- (AutolayoutImageView)initWithImage:(id)image;
+- (void)setAspectRatioConstraintPriority:(float)priority;
+- (void)setImage:(id)image;
 @end
 
 @implementation AutolayoutImageView
 
-- (AutolayoutImageView)initWithImage:(id)a3
+- (AutolayoutImageView)initWithImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = AutolayoutImageView;
-  result = [(AutolayoutImageView *)&v4 initWithImage:a3];
+  result = [(AutolayoutImageView *)&v4 initWithImage:image];
   if (result)
   {
     result->_aspectRatioConstraintPriority = 1000.0;
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (AutolayoutImageView)initWithFrame:(CGRect)a3
+- (AutolayoutImageView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = AutolayoutImageView;
-  result = [(AutolayoutImageView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(AutolayoutImageView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_aspectRatioConstraintPriority = 1000.0;
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (AutolayoutImageView)initWithCoder:(id)a3
+- (AutolayoutImageView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = AutolayoutImageView;
-  result = [(AutolayoutImageView *)&v4 initWithCoder:a3];
+  result = [(AutolayoutImageView *)&v4 initWithCoder:coder];
   if (result)
   {
     result->_aspectRatioConstraintPriority = 1000.0;
@@ -47,9 +47,9 @@
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (self->_aspectConstraint)
   {
     [(AutolayoutImageView *)self removeConstraint:?];
@@ -59,18 +59,18 @@
 
   v16.receiver = self;
   v16.super_class = AutolayoutImageView;
-  [(AutolayoutImageView *)&v16 setImage:v4];
-  if (v4)
+  [(AutolayoutImageView *)&v16 setImage:imageCopy];
+  if (imageCopy)
   {
-    v6 = [(AutolayoutImageView *)self heightAnchor];
-    v7 = [(AutolayoutImageView *)self widthAnchor];
-    [v4 size];
+    heightAnchor = [(AutolayoutImageView *)self heightAnchor];
+    widthAnchor = [(AutolayoutImageView *)self widthAnchor];
+    [imageCopy size];
     v9 = v8;
-    [v4 size];
+    [imageCopy size];
     v11 = v9 / v10;
     [(AutolayoutImageView *)self aspectRatioConstraintPriority];
     LODWORD(v13) = v12;
-    v14 = [v6 constraintEqualToAnchor:v7 multiplier:v11 priority:v13];
+    v14 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:v11 priority:v13];
     v15 = self->_aspectConstraint;
     self->_aspectConstraint = v14;
 
@@ -78,13 +78,13 @@
   }
 }
 
-- (void)setAspectRatioConstraintPriority:(float)a3
+- (void)setAspectRatioConstraintPriority:(float)priority
 {
-  if (self->_aspectRatioConstraintPriority != a3)
+  if (self->_aspectRatioConstraintPriority != priority)
   {
-    self->_aspectRatioConstraintPriority = a3;
-    v5 = [(AutolayoutImageView *)self image];
-    [(AutolayoutImageView *)self setImage:v5];
+    self->_aspectRatioConstraintPriority = priority;
+    image = [(AutolayoutImageView *)self image];
+    [(AutolayoutImageView *)self setImage:image];
   }
 }
 

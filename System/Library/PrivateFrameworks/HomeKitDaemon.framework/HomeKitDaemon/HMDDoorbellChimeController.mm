@@ -1,68 +1,68 @@
 @interface HMDDoorbellChimeController
 + (id)logCategory;
-- (HMDDoorbellChimeController)initWithContext:(id)a3;
-- (HMDDoorbellChimeController)initWithWorkQueue:(id)a3 accessory:(id)a4;
+- (HMDDoorbellChimeController)initWithContext:(id)context;
+- (HMDDoorbellChimeController)initWithWorkQueue:(id)queue accessory:(id)accessory;
 - (id)clientIdentifier;
 - (id)logIdentifier;
 - (unint64_t)_numHomePodsWithDoorbellChimeEnabled;
-- (void)_handleCharacteristicsValueUpdatedNotification:(id)a3;
-- (void)_notifyAllAccessoriesForDoorbellPressAndPlayChimeSound:(BOOL)a3 significantEvents:(id)a4;
+- (void)_handleCharacteristicsValueUpdatedNotification:(id)notification;
+- (void)_notifyAllAccessoriesForDoorbellPressAndPlayChimeSound:(BOOL)sound significantEvents:(id)events;
 - (void)configure;
 - (void)dealloc;
-- (void)handleCharacteristicsValueUpdatedNotification:(id)a3;
+- (void)handleCharacteristicsValueUpdatedNotification:(id)notification;
 - (void)handleUpdatedPersonIdentificationInformation;
-- (void)listener:(id)a3 didUpdateAvailableCharacteristics:(id)a4;
-- (void)notifyAccessoriesViaCoordinationFreePathWithDelay:(double)a3 home:(id)a4 shouldPlayChime:(BOOL)a5 personIdentificationText:(id)a6 accessoriesToNotify:(id)a7 logEvent:(id)a8 accessoryUUID:(id)a9;
+- (void)listener:(id)listener didUpdateAvailableCharacteristics:(id)characteristics;
+- (void)notifyAccessoriesViaCoordinationFreePathWithDelay:(double)delay home:(id)home shouldPlayChime:(BOOL)chime personIdentificationText:(id)text accessoriesToNotify:(id)notify logEvent:(id)event accessoryUUID:(id)d;
 @end
 
 @implementation HMDDoorbellChimeController
 
-- (void)listener:(id)a3 didUpdateAvailableCharacteristics:(id)a4
+- (void)listener:(id)listener didUpdateAvailableCharacteristics:(id)characteristics
 {
-  v5 = a4;
-  [(HMDDoorbellChimeController *)self setAvailableCharacteristics:v5];
-  v9 = [(HMDDoorbellChimeController *)self context];
-  v6 = [v9 accessory];
-  v7 = [v5 allObjects];
+  characteristicsCopy = characteristics;
+  [(HMDDoorbellChimeController *)self setAvailableCharacteristics:characteristicsCopy];
+  context = [(HMDDoorbellChimeController *)self context];
+  accessory = [context accessory];
+  allObjects = [characteristicsCopy allObjects];
 
-  v8 = [(HMDDoorbellChimeController *)self clientIdentifier];
-  [v6 setNotificationsEnabled:1 forCharacteristics:v7 clientIdentifier:v8];
+  clientIdentifier = [(HMDDoorbellChimeController *)self clientIdentifier];
+  [accessory setNotificationsEnabled:1 forCharacteristics:allObjects clientIdentifier:clientIdentifier];
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDDoorbellChimeController *)self context];
-  v3 = [v2 accessory];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
+  context = [(HMDDoorbellChimeController *)self context];
+  accessory = [context accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
-- (void)handleCharacteristicsValueUpdatedNotification:(id)a3
+- (void)handleCharacteristicsValueUpdatedNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDoorbellChimeController *)self context];
-  v6 = [v5 isCurrentDevicePrimaryResident];
+  notificationCopy = notification;
+  context = [(HMDDoorbellChimeController *)self context];
+  isCurrentDevicePrimaryResident = [context isCurrentDevicePrimaryResident];
 
-  if (v6)
+  if (isCurrentDevicePrimaryResident)
   {
-    v7 = [(HMDDoorbellChimeController *)self context];
-    v8 = [v7 workQueue];
+    context2 = [(HMDDoorbellChimeController *)self context];
+    workQueue = [context2 workQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __76__HMDDoorbellChimeController_handleCharacteristicsValueUpdatedNotification___block_invoke;
     v14[3] = &unk_27868A750;
     v14[4] = self;
-    v15 = v4;
-    dispatch_async(v8, v14);
+    v15 = notificationCopy;
+    dispatch_async(workQueue, v14);
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -80,11 +80,11 @@
 
 - (unint64_t)_numHomePodsWithDoorbellChimeEnabled
 {
-  v2 = [(HMDDoorbellChimeController *)self context];
-  v3 = [v2 accessory];
-  v4 = [v3 home];
-  v5 = [v4 accessories];
-  v6 = [v5 na_map:&__block_literal_global_39_147918];
+  context = [(HMDDoorbellChimeController *)self context];
+  accessory = [context accessory];
+  home = [accessory home];
+  accessories = [home accessories];
+  v6 = [accessories na_map:&__block_literal_global_39_147918];
 
   v7 = [v6 na_filter:&__block_literal_global_42_147919];
   v8 = [v7 count];
@@ -127,16 +127,16 @@ void *__66__HMDDoorbellChimeController__numHomePodsWithDoorbellChimeEnabled__blo
   return v3;
 }
 
-- (void)notifyAccessoriesViaCoordinationFreePathWithDelay:(double)a3 home:(id)a4 shouldPlayChime:(BOOL)a5 personIdentificationText:(id)a6 accessoriesToNotify:(id)a7 logEvent:(id)a8 accessoryUUID:(id)a9
+- (void)notifyAccessoriesViaCoordinationFreePathWithDelay:(double)delay home:(id)home shouldPlayChime:(BOOL)chime personIdentificationText:(id)text accessoriesToNotify:(id)notify logEvent:(id)event accessoryUUID:(id)d
 {
   v40 = *MEMORY[0x277D85DE8];
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  homeCopy = home;
+  textCopy = text;
+  notifyCopy = notify;
+  eventCopy = event;
+  dCopy = d;
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
@@ -144,7 +144,7 @@ void *__66__HMDDoorbellChimeController__numHomePodsWithDoorbellChimeEnabled__blo
     *buf = 138543618;
     v37 = v24;
     v38 = 2112;
-    v39 = v18;
+    v39 = notifyCopy;
     _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_INFO, "%{public}@Taking HomeKit path to notify: %@", buf, 0x16u);
   }
 
@@ -153,28 +153,28 @@ void *__66__HMDDoorbellChimeController__numHomePodsWithDoorbellChimeEnabled__blo
   v31[1] = 3221225472;
   v31[2] = __169__HMDDoorbellChimeController_notifyAccessoriesViaCoordinationFreePathWithDelay_home_shouldPlayChime_personIdentificationText_accessoriesToNotify_logEvent_accessoryUUID___block_invoke;
   v31[3] = &unk_27867B5C8;
-  v31[4] = v22;
-  v35 = a5;
-  v25 = v17;
+  v31[4] = selfCopy;
+  chimeCopy = chime;
+  v25 = textCopy;
   v32 = v25;
-  v34 = a3;
-  v26 = v20;
+  delayCopy = delay;
+  v26 = dCopy;
   v33 = v26;
-  [v18 na_each:v31];
+  [notifyCopy na_each:v31];
   if (v25)
   {
-    [(HMDDoorbellChimeController *)v22 setLastUnidentifiedChimeDate:0];
+    [(HMDDoorbellChimeController *)selfCopy setLastUnidentifiedChimeDate:0];
   }
 
   else
   {
-    v27 = [MEMORY[0x277CBEAA8] date];
-    [(HMDDoorbellChimeController *)v22 setLastUnidentifiedChimeDate:v27];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HMDDoorbellChimeController *)selfCopy setLastUnidentifiedChimeDate:date];
   }
 
-  v28 = [(HMDDoorbellChimeController *)v22 context];
-  v29 = [v28 logEventSubmitter];
-  [v29 submitLogEvent:v19];
+  context = [(HMDDoorbellChimeController *)selfCopy context];
+  logEventSubmitter = [context logEventSubmitter];
+  [logEventSubmitter submitLogEvent:eventCopy];
 
   v30 = *MEMORY[0x277D85DE8];
 }
@@ -222,36 +222,36 @@ void __169__HMDDoorbellChimeController_notifyAccessoriesViaCoordinationFreePathW
 LABEL_9:
 }
 
-- (void)_notifyAllAccessoriesForDoorbellPressAndPlayChimeSound:(BOOL)a3 significantEvents:(id)a4
+- (void)_notifyAllAccessoriesForDoorbellPressAndPlayChimeSound:(BOOL)sound significantEvents:(id)events
 {
-  v4 = a3;
+  soundCopy = sound;
   v98 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HMDDoorbellChimeController *)self context];
-  v8 = [v7 workQueue];
-  dispatch_assert_queue_V2(v8);
+  eventsCopy = events;
+  context = [(HMDDoorbellChimeController *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v4)
+  if (soundCopy)
   {
     goto LABEL_6;
   }
 
-  v9 = [(HMDDoorbellChimeController *)self lastUnidentifiedChimeDate];
+  lastUnidentifiedChimeDate = [(HMDDoorbellChimeController *)self lastUnidentifiedChimeDate];
 
-  if (v9)
+  if (lastUnidentifiedChimeDate)
   {
-    v10 = [(HMDDoorbellChimeController *)self lastUnidentifiedChimeDate];
-    [v10 timeIntervalSinceNow];
+    lastUnidentifiedChimeDate2 = [(HMDDoorbellChimeController *)self lastUnidentifiedChimeDate];
+    [lastUnidentifiedChimeDate2 timeIntervalSinceNow];
     v12 = -v11;
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [(HMDDoorbellChimeController *)v14 context];
-      [v17 doorbellChimeMaximumAnnounceDelay];
+      context2 = [(HMDDoorbellChimeController *)selfCopy context];
+      [context2 doorbellChimeMaximumAnnounceDelay];
       *buf = 138543874;
       v95 = v16;
       v96 = 2048;
@@ -262,15 +262,15 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v13);
-    v19 = [(HMDDoorbellChimeController *)v14 context];
-    [v19 doorbellChimeMaximumAnnounceDelay];
+    context3 = [(HMDDoorbellChimeController *)selfCopy context];
+    [context3 doorbellChimeMaximumAnnounceDelay];
     v21 = v20;
 
     if (v21 >= v12)
     {
 LABEL_6:
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
@@ -278,50 +278,50 @@ LABEL_6:
         *buf = 138543874;
         v95 = v25;
         v96 = 1024;
-        *v97 = v4;
+        *v97 = soundCopy;
         *&v97[4] = 2112;
-        *&v97[6] = v6;
+        *&v97[6] = eventsCopy;
         _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Notifying accessories for doorbell press with shouldPlayChime: %{BOOL}d, significantEvents: %@", buf, 0x1Cu);
       }
 
       objc_autoreleasePoolPop(v22);
-      v26 = [(HMDDoorbellChimeController *)v23 context];
-      v27 = [v26 accessory];
+      context4 = [(HMDDoorbellChimeController *)selfCopy2 context];
+      accessory = [context4 accessory];
 
-      v28 = [v27 cameraProfiles];
-      v29 = [v28 anyObject];
+      cameraProfiles = [accessory cameraProfiles];
+      anyObject = [cameraProfiles anyObject];
 
       v84 = objc_alloc_init(HMDDoorbellChimeNotificationLogEvent);
-      [(HMDDoorbellChimeNotificationLogEvent *)v84 setNumHomePodsWithDoorbellChimeEnabled:[(HMDDoorbellChimeController *)v23 _numHomePodsWithDoorbellChimeEnabled]];
-      if (v4)
+      [(HMDDoorbellChimeNotificationLogEvent *)v84 setNumHomePodsWithDoorbellChimeEnabled:[(HMDDoorbellChimeController *)selfCopy2 _numHomePodsWithDoorbellChimeEnabled]];
+      if (soundCopy)
       {
         [MEMORY[0x277CBEAA8] date];
       }
 
       else
       {
-        [(HMDDoorbellChimeController *)v23 lastUnidentifiedChimeDate];
+        [(HMDDoorbellChimeController *)selfCopy2 lastUnidentifiedChimeDate];
       }
       v30 = ;
-      [(HMDDoorbellChimeController *)v23 setLastUnidentifiedChimeDate:v30];
+      [(HMDDoorbellChimeController *)selfCopy2 setLastUnidentifiedChimeDate:v30];
 
-      if (v6)
+      if (eventsCopy)
       {
-        v31 = [(HMDDoorbellChimeController *)v23 context];
-        v32 = [v31 doorbellBulletinUtilities];
-        v33 = [v32 localizedAudioAccessoryAnnounceMessageForSignificantEvents:v6];
+        context5 = [(HMDDoorbellChimeController *)selfCopy2 context];
+        doorbellBulletinUtilities = [context5 doorbellBulletinUtilities];
+        v33 = [doorbellBulletinUtilities localizedAudioAccessoryAnnounceMessageForSignificantEvents:eventsCopy];
       }
 
-      else if (v29)
+      else if (anyObject)
       {
-        v39 = [(HMDDoorbellChimeController *)v23 context];
-        v40 = [v39 doorbellBulletinUtilities];
-        v41 = [(HMDDoorbellChimeController *)v23 lastUnidentifiedChimeDate];
-        v6 = [v40 significantEventsRelevantToDoorbellPressAtDate:v41 forCameraProfile:v29];
+        context6 = [(HMDDoorbellChimeController *)selfCopy2 context];
+        doorbellBulletinUtilities2 = [context6 doorbellBulletinUtilities];
+        lastUnidentifiedChimeDate3 = [(HMDDoorbellChimeController *)selfCopy2 lastUnidentifiedChimeDate];
+        eventsCopy = [doorbellBulletinUtilities2 significantEventsRelevantToDoorbellPressAtDate:lastUnidentifiedChimeDate3 forCameraProfile:anyObject];
 
-        v42 = [(HMDDoorbellChimeController *)v23 context];
-        v43 = [v42 doorbellBulletinUtilities];
-        v44 = [v43 localizedAudioAccessoryAnnounceMessageForSignificantEvents:v6];
+        context7 = [(HMDDoorbellChimeController *)selfCopy2 context];
+        doorbellBulletinUtilities3 = [context7 doorbellBulletinUtilities];
+        v44 = [doorbellBulletinUtilities3 localizedAudioAccessoryAnnounceMessageForSignificantEvents:eventsCopy];
 
         if (v44)
         {
@@ -329,10 +329,10 @@ LABEL_6:
           goto LABEL_22;
         }
 
-        v70 = v29;
-        v71 = v27;
+        v70 = anyObject;
+        v71 = accessory;
         v72 = objc_autoreleasePoolPush();
-        v73 = v23;
+        v73 = selfCopy2;
         v74 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v74, OS_LOG_TYPE_INFO))
         {
@@ -343,32 +343,32 @@ LABEL_6:
         }
 
         objc_autoreleasePoolPop(v72);
-        v76 = [(HMDDoorbellChimeController *)v73 context];
-        v77 = [v76 doorbellBulletinUtilities];
-        v78 = [(HMDDoorbellChimeController *)v73 lastUnidentifiedChimeDate];
+        context8 = [(HMDDoorbellChimeController *)v73 context];
+        doorbellBulletinUtilities4 = [context8 doorbellBulletinUtilities];
+        lastUnidentifiedChimeDate4 = [(HMDDoorbellChimeController *)v73 lastUnidentifiedChimeDate];
         v93[0] = MEMORY[0x277D85DD0];
         v93[1] = 3221225472;
         v93[2] = __103__HMDDoorbellChimeController__notifyAllAccessoriesForDoorbellPressAndPlayChimeSound_significantEvents___block_invoke;
         v93[3] = &unk_278682ED8;
         v93[4] = v73;
         v79 = v70;
-        [v77 fetchSignificantEventsRelevantToDoorbellPressAtDate:v78 forCameraProfile:v70 completion:v93];
+        [doorbellBulletinUtilities4 fetchSignificantEventsRelevantToDoorbellPressAtDate:lastUnidentifiedChimeDate4 forCameraProfile:v70 completion:v93];
 
         v33 = 0;
-        v27 = v71;
-        v29 = v79;
+        accessory = v71;
+        anyObject = v79;
       }
 
       else
       {
         v33 = 0;
-        v6 = 0;
+        eventsCopy = 0;
       }
 
-      if (!v4 && !v33)
+      if (!soundCopy && !v33)
       {
         v34 = objc_autoreleasePoolPush();
-        v35 = v23;
+        v35 = selfCopy2;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
         {
@@ -387,34 +387,34 @@ LABEL_34:
 
       v83 = v33;
 LABEL_22:
-      v45 = [v27 home];
-      v46 = [v45 appleMediaAccessories];
+      home = [accessory home];
+      appleMediaAccessories = [home appleMediaAccessories];
       v92[0] = MEMORY[0x277D85DD0];
       v92[1] = 3221225472;
       v92[2] = __103__HMDDoorbellChimeController__notifyAllAccessoriesForDoorbellPressAndPlayChimeSound_significantEvents___block_invoke_31;
       v92[3] = &unk_278688F28;
-      v92[4] = v23;
-      v47 = [v46 na_filter:v92];
+      v92[4] = selfCopy2;
+      v47 = [appleMediaAccessories na_filter:v92];
 
       if ([v47 count])
       {
-        [(HMDDoorbellChimeController *)v23 context];
-        v80 = v82 = v6;
-        v48 = [v80 fetchDoorbellDelay];
+        [(HMDDoorbellChimeController *)selfCopy2 context];
+        v80 = v82 = eventsCopy;
+        fetchDoorbellDelay = [v80 fetchDoorbellDelay];
         v49 = MEMORY[0x277D2C938];
-        [(HMDDoorbellChimeController *)v23 context];
-        v81 = v29;
-        v51 = v50 = v27;
-        v52 = [v51 workQueue];
-        v53 = [v49 schedulerWithDispatchQueue:v52];
-        v54 = [v48 reschedule:v53];
+        [(HMDDoorbellChimeController *)selfCopy2 context];
+        v81 = anyObject;
+        v51 = v50 = accessory;
+        workQueue2 = [v51 workQueue];
+        v53 = [v49 schedulerWithDispatchQueue:workQueue2];
+        v54 = [fetchDoorbellDelay reschedule:v53];
         v85[0] = MEMORY[0x277D85DD0];
         v85[1] = 3221225472;
         v85[2] = __103__HMDDoorbellChimeController__notifyAllAccessoriesForDoorbellPressAndPlayChimeSound_significantEvents___block_invoke_34;
         v85[3] = &unk_27867B5A0;
-        v85[4] = v23;
-        v86 = v45;
-        v91 = v4;
+        v85[4] = selfCopy2;
+        v86 = home;
+        v91 = soundCopy;
         v55 = v83;
         v87 = v83;
         v88 = v47;
@@ -423,16 +423,16 @@ LABEL_22:
         v90 = v50;
         v56 = [v54 addCompletionBlock:v85];
 
-        v27 = v50;
-        v29 = v81;
+        accessory = v50;
+        anyObject = v81;
 
-        v6 = v82;
+        eventsCopy = v82;
       }
 
       else
       {
         v65 = objc_autoreleasePoolPush();
-        v66 = v23;
+        v66 = selfCopy2;
         v67 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
         {
@@ -440,7 +440,7 @@ LABEL_22:
           *buf = 138543618;
           v95 = v68;
           v96 = 2112;
-          *v97 = v27;
+          *v97 = accessory;
           _os_log_impl(&dword_229538000, v67, OS_LOG_TYPE_INFO, "%{public}@Nothing to notify for chime from %@", buf, 0x16u);
         }
 
@@ -453,7 +453,7 @@ LABEL_22:
     }
 
     v61 = objc_autoreleasePoolPush();
-    v62 = v14;
+    v62 = selfCopy;
     v63 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
     {
@@ -470,7 +470,7 @@ LABEL_22:
   else
   {
     v57 = objc_autoreleasePoolPush();
-    v58 = self;
+    selfCopy3 = self;
     v59 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
     {
@@ -547,17 +547,17 @@ uint64_t __103__HMDDoorbellChimeController__notifyAllAccessoriesForDoorbellPress
   return result;
 }
 
-- (void)_handleCharacteristicsValueUpdatedNotification:(id)a3
+- (void)_handleCharacteristicsValueUpdatedNotification:(id)notification
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDoorbellChimeController *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  notificationCopy = notification;
+  context = [(HMDDoorbellChimeController *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v23 = v4;
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"HMDNotificationCharacteristicValueUpdatedChangedCharacteristicsKey"];
+  v23 = notificationCopy;
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"HMDNotificationCharacteristicValueUpdatedChangedCharacteristicsKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -594,7 +594,7 @@ uint64_t __103__HMDDoorbellChimeController__notifyAllAccessoriesForDoorbellPress
 
         v16 = *(*(&v24 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
-        v18 = self;
+        selfCopy = self;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
@@ -607,7 +607,7 @@ uint64_t __103__HMDDoorbellChimeController__notifyAllAccessoriesForDoorbellPress
         }
 
         objc_autoreleasePoolPop(v17);
-        [(HMDDoorbellChimeController *)v18 _notifyAllAccessoriesForDoorbellPressAndPlayChimeSound:1];
+        [(HMDDoorbellChimeController *)selfCopy _notifyAllAccessoriesForDoorbellPressAndPlayChimeSound:1];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -641,11 +641,11 @@ uint64_t __77__HMDDoorbellChimeController__handleCharacteristicsValueUpdatedNoti
 - (id)clientIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDDoorbellChimeController *)self context];
-  v4 = [v3 accessory];
-  v5 = [v4 uuid];
-  v6 = [v5 UUIDString];
-  v7 = [v2 stringWithFormat:@"%@%@", @"HMDDoorbellChimeControllerIdentifier", v6];
+  context = [(HMDDoorbellChimeController *)self context];
+  accessory = [context accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
+  v7 = [v2 stringWithFormat:@"%@%@", @"HMDDoorbellChimeControllerIdentifier", uUIDString];
 
   return v7;
 }
@@ -653,25 +653,25 @@ uint64_t __77__HMDDoorbellChimeController__handleCharacteristicsValueUpdatedNoti
 - (void)handleUpdatedPersonIdentificationInformation
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDoorbellChimeController *)self context];
-  v4 = [v3 isCurrentDevicePrimaryResident];
+  context = [(HMDDoorbellChimeController *)self context];
+  isCurrentDevicePrimaryResident = [context isCurrentDevicePrimaryResident];
 
-  if (v4)
+  if (isCurrentDevicePrimaryResident)
   {
-    v5 = [(HMDDoorbellChimeController *)self context];
-    v6 = [v5 workQueue];
+    context2 = [(HMDDoorbellChimeController *)self context];
+    workQueue = [context2 workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__HMDDoorbellChimeController_handleUpdatedPersonIdentificationInformation__block_invoke;
     block[3] = &unk_27868A728;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(workQueue, block);
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -689,48 +689,48 @@ uint64_t __77__HMDDoorbellChimeController__handleCharacteristicsValueUpdatedNoti
 
 - (void)configure
 {
-  v3 = [(HMDDoorbellChimeController *)self context];
-  v4 = [v3 listener];
-  [v4 setDelegate:self];
+  context = [(HMDDoorbellChimeController *)self context];
+  listener = [context listener];
+  [listener setDelegate:self];
 
-  v5 = [(HMDDoorbellChimeController *)self context];
-  v6 = [v5 listener];
-  [v6 start];
+  context2 = [(HMDDoorbellChimeController *)self context];
+  listener2 = [context2 listener];
+  [listener2 start];
 
-  v10 = [(HMDDoorbellChimeController *)self context];
-  v7 = [v10 notificationCenter];
-  v8 = [(HMDDoorbellChimeController *)self context];
-  v9 = [v8 accessory];
-  [v7 addObserver:self selector:sel_handleCharacteristicsValueUpdatedNotification_ name:@"HMDNotificationCharacteristicValueUpdated" object:v9];
+  context3 = [(HMDDoorbellChimeController *)self context];
+  notificationCenter = [context3 notificationCenter];
+  context4 = [(HMDDoorbellChimeController *)self context];
+  accessory = [context4 accessory];
+  [notificationCenter addObserver:self selector:sel_handleCharacteristicsValueUpdatedNotification_ name:@"HMDNotificationCharacteristicValueUpdated" object:accessory];
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDDoorbellChimeController *)self context];
-  v4 = [v3 accessory];
-  v5 = [(HMDDoorbellChimeController *)self availableCharacteristics];
-  v6 = [v5 allObjects];
-  v7 = [(HMDDoorbellChimeController *)self clientIdentifier];
-  [v4 setNotificationsEnabled:0 forCharacteristics:v6 clientIdentifier:v7];
+  context = [(HMDDoorbellChimeController *)self context];
+  accessory = [context accessory];
+  availableCharacteristics = [(HMDDoorbellChimeController *)self availableCharacteristics];
+  allObjects = [availableCharacteristics allObjects];
+  clientIdentifier = [(HMDDoorbellChimeController *)self clientIdentifier];
+  [accessory setNotificationsEnabled:0 forCharacteristics:allObjects clientIdentifier:clientIdentifier];
 
   v8.receiver = self;
   v8.super_class = HMDDoorbellChimeController;
   [(HMDDoorbellChimeController *)&v8 dealloc];
 }
 
-- (HMDDoorbellChimeController)initWithContext:(id)a3
+- (HMDDoorbellChimeController)initWithContext:(id)context
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v6 = v5;
+    v6 = contextCopy;
     v16.receiver = self;
     v16.super_class = HMDDoorbellChimeController;
     v7 = [(HMDDoorbellChimeController *)&v16 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_context, a3);
+      objc_storeStrong(&v7->_context, context);
       v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
       availableCharacteristics = v8->_availableCharacteristics;
       v8->_availableCharacteristics = v9;
@@ -746,16 +746,16 @@ uint64_t __77__HMDDoorbellChimeController__handleCharacteristicsValueUpdatedNoti
   }
 }
 
-- (HMDDoorbellChimeController)initWithWorkQueue:(id)a3 accessory:(id)a4
+- (HMDDoorbellChimeController)initWithWorkQueue:(id)queue accessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  if (queueCopy)
   {
-    v8 = v7;
-    if (v7)
+    v8 = accessoryCopy;
+    if (accessoryCopy)
     {
-      v9 = [[HMDDoorbellChimeControllerContext alloc] initWithWorkQueue:v6 accessory:v7];
+      v9 = [[HMDDoorbellChimeControllerContext alloc] initWithWorkQueue:queueCopy accessory:accessoryCopy];
       v10 = [(HMDDoorbellChimeController *)self initWithContext:v9];
 
       return v10;

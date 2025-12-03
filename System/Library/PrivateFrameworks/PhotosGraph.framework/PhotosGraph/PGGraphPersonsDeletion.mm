@@ -1,5 +1,5 @@
 @interface PGGraphPersonsDeletion
-- (PGGraphPersonsDeletion)initWithPersonLocalIdentifiers:(id)a3;
+- (PGGraphPersonsDeletion)initWithPersonLocalIdentifiers:(id)identifiers;
 - (id)description;
 @end
 
@@ -16,16 +16,16 @@
   return v5;
 }
 
-- (PGGraphPersonsDeletion)initWithPersonLocalIdentifiers:(id)a3
+- (PGGraphPersonsDeletion)initWithPersonLocalIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = PGGraphPersonsDeletion;
   v6 = [(PGGraphPersonsDeletion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personLocalIdentifiers, a3);
+    objc_storeStrong(&v6->_personLocalIdentifiers, identifiers);
   }
 
   return v7;

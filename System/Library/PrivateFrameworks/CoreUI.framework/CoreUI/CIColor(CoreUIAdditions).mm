@@ -8,7 +8,7 @@
 + (CIColor)colorWithSRGBRed:()CoreUIAdditions green:blue:alpha:
 {
   SRGB = _CUIColorSpaceGetSRGB();
-  components[0] = a1;
+  components[0] = self;
   components[1] = a2;
   components[2] = a3;
   components[3] = a4;
@@ -21,7 +21,7 @@
 + (CIColor)colorWithSRGBRed:()CoreUIAdditions green:blue:
 {
   SRGB = _CUIColorSpaceGetSRGB();
-  components[0] = a1;
+  components[0] = self;
   components[1] = a2;
   components[2] = a3;
   components[3] = 1.0;

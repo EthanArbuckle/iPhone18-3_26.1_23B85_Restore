@@ -1,30 +1,30 @@
 @interface IOSConcreteClass
 - (BOOL)isAnonymousClass;
-- (BOOL)isAssignableFrom:(id)a3;
+- (BOOL)isAssignableFrom:(id)from;
 - (BOOL)isEnum;
-- (IOSConcreteClass)initWithClass:(Class)a3;
-- (id)findMethodWithTranslatedName:(id)a3 checkSupertypes:(BOOL)a4;
-- (id)getConstructor:(id)a3;
-- (id)getDeclaredConstructor:(id)a3;
+- (IOSConcreteClass)initWithClass:(Class)class;
+- (id)findMethodWithTranslatedName:(id)name checkSupertypes:(BOOL)supertypes;
+- (id)getConstructor:(id)constructor;
+- (id)getDeclaredConstructor:(id)constructor;
 - (id)getInterfacesInternal;
 - (id)getName;
 - (id)getSimpleName;
 - (id)getSuperclass;
 - (id)newInstance;
-- (void)collectMethods:(id)a3 publicOnly:(BOOL)a4;
+- (void)collectMethods:(id)methods publicOnly:(BOOL)only;
 - (void)dealloc;
 @end
 
 @implementation IOSConcreteClass
 
-- (IOSConcreteClass)initWithClass:(Class)a3
+- (IOSConcreteClass)initWithClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = IOSConcreteClass;
   result = [(IOSConcreteClass *)&v5 init];
   if (result)
   {
-    result->class_ = a3;
+    result->class_ = class;
   }
 
   return result;
@@ -58,11 +58,11 @@
 
 - (id)getName
 {
-  v3 = [(IOSClass *)self getMetadata];
-  if (v3)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
 
-    return [v3 qualifiedName];
+    return [getMetadata qualifiedName];
   }
 
   else
@@ -75,11 +75,11 @@
 
 - (id)getSimpleName
 {
-  v3 = [(IOSClass *)self getMetadata];
-  if (v3)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
 
-    return [v3 typeName];
+    return [getMetadata typeName];
   }
 
   else
@@ -90,29 +90,29 @@
   }
 }
 
-- (BOOL)isAssignableFrom:(id)a3
+- (BOOL)isAssignableFrom:(id)from
 {
   v5 = self->class_;
   if (v5 == objc_opt_class())
   {
-    return [a3 isPrimitive] ^ 1;
+    return [from isPrimitive] ^ 1;
   }
 
-  v6 = [a3 objcClass];
+  objcClass = [from objcClass];
   v7 = self->class_;
 
-  return [v6 isSubclassOfClass:v7];
+  return [objcClass isSubclassOfClass:v7];
 }
 
 - (BOOL)isEnum
 {
-  v3 = [(IOSClass *)self getMetadata];
-  if (v3)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
-    if (([v3 modifiers] & 0x4000) != 0)
+    if (([getMetadata modifiers] & 0x4000) != 0)
     {
-      v6 = [(IOSConcreteClass *)self getSuperclass];
-      LOBYTE(v4) = v6 == JavaLangEnum_class_();
+      getSuperclass = [(IOSConcreteClass *)self getSuperclass];
+      LOBYTE(v4) = getSuperclass == JavaLangEnum_class_();
     }
 
     else
@@ -137,31 +137,31 @@
 
 - (BOOL)isAnonymousClass
 {
-  v2 = [(IOSClass *)self getMetadata];
-  if (v2)
+  getMetadata = [(IOSClass *)self getMetadata];
+  if (getMetadata)
   {
-    LOBYTE(v2) = [v2 modifiers] < 0;
+    LOBYTE(getMetadata) = [getMetadata modifiers] < 0;
   }
 
-  return v2;
+  return getMetadata;
 }
 
-- (void)collectMethods:(id)a3 publicOnly:(BOOL)a4
+- (void)collectMethods:(id)methods publicOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001BC028;
   v7[3] = &unk_10041B0C8;
   v7[4] = [(IOSClass *)self getMetadata];
   v7[5] = self;
-  sub_1001BBF70(self, a3, v4, v7);
+  sub_1001BBF70(self, methods, onlyCopy, v7);
 }
 
-- (id)findMethodWithTranslatedName:(id)a3 checkSupertypes:(BOOL)a4
+- (id)findMethodWithTranslatedName:(id)name checkSupertypes:(BOOL)supertypes
 {
-  v6 = [a3 UTF8String];
-  InstanceMethod = JreFindInstanceMethod(self->class_, v6);
+  uTF8String = [name UTF8String];
+  InstanceMethod = JreFindInstanceMethod(self->class_, uTF8String);
   v8 = InstanceMethod;
   if (InstanceMethod)
   {
@@ -170,7 +170,7 @@
 
   else
   {
-    ClassMethod = JreFindClassMethod(self->class_, v6);
+    ClassMethod = JreFindClassMethod(self->class_, uTF8String);
     if (!ClassMethod)
     {
       return 0;
@@ -187,16 +187,16 @@
   }
 
   v13 = v12;
-  v14 = [(IOSClass *)self getMetadata];
+  getMetadata = [(IOSClass *)self getMetadata];
   Name = method_getName(v9);
-  v16 = [v14 findMethodMetadata:a3];
+  v16 = [getMetadata findMethodMetadata:name];
 
   return [JavaLangReflectMethod methodWithMethodSignature:v13 selector:Name class:self isStatic:v8 == 0 metadata:v16];
 }
 
-- (id)getConstructor:(id)a3
+- (id)getConstructor:(id)constructor
 {
-  TranslatedMethodName = IOSClass_GetTranslatedMethodName(0, @"init", a3);
+  TranslatedMethodName = IOSClass_GetTranslatedMethodName(0, @"init", constructor);
   v5 = sub_1001BC3F8(&self->super.super.isa, TranslatedMethodName);
   if (([v5 getModifiers] & 1) == 0)
   {
@@ -206,9 +206,9 @@
   return v5;
 }
 
-- (id)getDeclaredConstructor:(id)a3
+- (id)getDeclaredConstructor:(id)constructor
 {
-  TranslatedMethodName = IOSClass_GetTranslatedMethodName(0, @"init", a3);
+  TranslatedMethodName = IOSClass_GetTranslatedMethodName(0, @"init", constructor);
 
   return sub_1001BC3F8(&self->super.super.isa, TranslatedMethodName);
 }

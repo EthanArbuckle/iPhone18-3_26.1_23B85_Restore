@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (VTBatteryMonitor)init;
 - (unsigned)_checkBatteryState;
-- (void)_didReceiveBatteryStatusChanged:(unsigned __int8)a3;
-- (void)_didReceiveBatteryStatusChangedInQueue:(unsigned __int8)a3;
-- (void)_notifyObserver:(id)a3 withBatteryState:(unsigned __int8)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveBatteryStatusChanged:(unsigned __int8)changed;
+- (void)_didReceiveBatteryStatusChangedInQueue:(unsigned __int8)queue;
+- (void)_notifyObserver:(id)observer withBatteryState:(unsigned __int8)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -40,36 +40,36 @@
   }
 }
 
-- (void)_notifyObserver:(id)a3 withBatteryState:(unsigned __int8)a4
+- (void)_notifyObserver:(id)observer withBatteryState:(unsigned __int8)state
 {
-  v4 = a4;
-  v6 = a3;
-  [(VTEventMonitor *)self notifyObserver:v6];
+  stateCopy = state;
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 VTBatteryMonitor:self didReceiveBatteryStatusChanged:v4];
+    [observerCopy VTBatteryMonitor:self didReceiveBatteryStatusChanged:stateCopy];
   }
 }
 
-- (void)_didReceiveBatteryStatusChanged:(unsigned __int8)a3
+- (void)_didReceiveBatteryStatusChanged:(unsigned __int8)changed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52__VTBatteryMonitor__didReceiveBatteryStatusChanged___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(VTEventMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveBatteryStatusChangedInQueue:(unsigned __int8)a3
+- (void)_didReceiveBatteryStatusChangedInQueue:(unsigned __int8)queue
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __59__VTBatteryMonitor__didReceiveBatteryStatusChangedInQueue___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -89,9 +89,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = MEMORY[0x277D85DD0];
@@ -99,7 +99,7 @@
     handler[2] = __46__VTBatteryMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_2784ECD80;
     handler[4] = self;
-    notify_register_dispatch("com.apple.system.powersources.source", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.system.powersources.source", &self->_notifyToken, queueCopy, handler);
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {

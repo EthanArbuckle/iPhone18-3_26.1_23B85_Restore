@@ -1,11 +1,11 @@
 @interface SKAnalyticsHub
-+ (void)addSink:(id)a3;
-+ (void)sendEventWithName:(id)a3 eventPayloadBuilder:(id)a4;
++ (void)addSink:(id)sink;
++ (void)sendEventWithName:(id)name eventPayloadBuilder:(id)builder;
 @end
 
 @implementation SKAnalyticsHub
 
-+ (void)addSink:(id)a3
++ (void)addSink:(id)sink
 {
   v3 = qword_2814C1B30;
   swift_unknownObjectRetain();
@@ -28,9 +28,9 @@
   swift_unknownObjectRelease();
 }
 
-+ (void)sendEventWithName:(id)a3 eventPayloadBuilder:(id)a4
++ (void)sendEventWithName:(id)name eventPayloadBuilder:(id)builder
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(builder);
   v5 = sub_26BBE5198();
   v7 = v6;
   v8 = swift_allocObject();

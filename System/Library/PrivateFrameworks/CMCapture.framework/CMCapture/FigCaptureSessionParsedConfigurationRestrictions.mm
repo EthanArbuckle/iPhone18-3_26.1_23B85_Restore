@@ -1,17 +1,17 @@
 @interface FigCaptureSessionParsedConfigurationRestrictions
-- (FigCaptureSessionParsedConfigurationRestrictions)initWithAllowedAVMediaTypes:(id)a3 clientIsNonStandard:(BOOL)a4;
-- (FigCaptureSessionParsedConfigurationRestrictions)initWithClientAuditToken:(id *)a3;
-- (uint64_t)_parseRestrictionsWithAllowedAVMediaTypes:(int)a3 clientIsNonStandard:;
+- (FigCaptureSessionParsedConfigurationRestrictions)initWithAllowedAVMediaTypes:(id)types clientIsNonStandard:(BOOL)standard;
+- (FigCaptureSessionParsedConfigurationRestrictions)initWithClientAuditToken:(id *)token;
+- (uint64_t)_parseRestrictionsWithAllowedAVMediaTypes:(int)types clientIsNonStandard:;
 - (void)dealloc;
 @end
 
 @implementation FigCaptureSessionParsedConfigurationRestrictions
 
-- (FigCaptureSessionParsedConfigurationRestrictions)initWithClientAuditToken:(id *)a3
+- (FigCaptureSessionParsedConfigurationRestrictions)initWithClientAuditToken:(id *)token
 {
   v4 = *MEMORY[0x1E695E480];
-  v5 = *&a3->var0[4];
-  *v11.val = *a3->var0;
+  v5 = *&token->var0[4];
+  *v11.val = *token->var0;
   *&v11.val[4] = v5;
   v6 = SecTaskCreateWithAuditToken(v4, &v11);
   if (v6)
@@ -32,16 +32,16 @@
   return self;
 }
 
-- (FigCaptureSessionParsedConfigurationRestrictions)initWithAllowedAVMediaTypes:(id)a3 clientIsNonStandard:(BOOL)a4
+- (FigCaptureSessionParsedConfigurationRestrictions)initWithAllowedAVMediaTypes:(id)types clientIsNonStandard:(BOOL)standard
 {
-  v4 = a4;
+  standardCopy = standard;
   v9.receiver = self;
   v9.super_class = FigCaptureSessionParsedConfigurationRestrictions;
   v6 = [(FigCaptureSessionParsedConfigurationRestrictions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(FigCaptureSessionParsedConfigurationRestrictions *)v6 _parseRestrictionsWithAllowedAVMediaTypes:a3 clientIsNonStandard:v4];
+    [(FigCaptureSessionParsedConfigurationRestrictions *)v6 _parseRestrictionsWithAllowedAVMediaTypes:types clientIsNonStandard:standardCopy];
   }
 
   return v7;
@@ -54,7 +54,7 @@
   [(FigCaptureSessionParsedConfigurationRestrictions *)&v3 dealloc];
 }
 
-- (uint64_t)_parseRestrictionsWithAllowedAVMediaTypes:(int)a3 clientIsNonStandard:
+- (uint64_t)_parseRestrictionsWithAllowedAVMediaTypes:(int)types clientIsNonStandard:
 {
   if (result)
   {
@@ -62,19 +62,19 @@
     v4 = result;
     if (a2)
     {
-      v5 = a3;
+      typesCopy = types;
     }
 
     else
     {
-      v5 = 0;
+      typesCopy = 0;
     }
 
-    if (v5 == 1)
+    if (typesCopy == 1)
     {
       v40 = result;
-      v42 = [MEMORY[0x1E695DF70] array];
-      v79 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       objc_opt_class();
       obj = v3;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -82,10 +82,10 @@
 LABEL_29:
         v4 = v40;
         *(v40 + 8) = 0;
-        v38 = v42;
-        [v42 removeAllObjects];
-        v39 = v79;
-        [v79 removeAllObjects];
+        v38 = array;
+        [array removeAllObjects];
+        v39 = array2;
+        [array2 removeAllObjects];
 LABEL_32:
         *(v4 + 16) = [v38 copy];
         result = [v39 copy];
@@ -163,7 +163,7 @@ LABEL_32:
                   goto LABEL_29;
                 }
 
-                [v42 addObject:v15];
+                [array addObject:v15];
               }
             }
 
@@ -175,8 +175,8 @@ LABEL_32:
                 goto LABEL_29;
               }
 
-              v16 = [v42 addObject:&unk_1F22436C0];
-              v24 = OUTLINED_FUNCTION_35_6(v16, v17, v18, v19, v20, v21, v22, v23, v40, v41, v42, v43, obj, v45, v14, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94);
+              v16 = [array addObject:&unk_1F22436C0];
+              v24 = OUTLINED_FUNCTION_35_6(v16, v17, v18, v19, v20, v21, v22, v23, v40, v41, array, v43, obj, v45, v14, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, array2, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94);
               if (v24)
               {
                 v25 = v24;
@@ -273,10 +273,10 @@ LABEL_20:
                     goto LABEL_29;
                   }
 
-                  v30 = [v79 addObject:v29];
+                  v30 = [array2 addObject:v29];
                   if (v25 == ++v26)
                   {
-                    v25 = OUTLINED_FUNCTION_35_6(v30, v31, v32, v33, v34, v35, v36, v37, v40, v41, v42, v43, obj, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94);
+                    v25 = OUTLINED_FUNCTION_35_6(v30, v31, v32, v33, v34, v35, v36, v37, v40, v41, array, v43, obj, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, array2, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94);
                     if (v25)
                     {
                       goto LABEL_20;
@@ -304,14 +304,14 @@ LABEL_20:
 
         v4 = v40;
         *(v40 + 8) = 0;
-        v38 = v42;
-        v39 = v79;
+        v38 = array;
+        v39 = array2;
         goto LABEL_32;
       }
 
       v4 = v40;
-      v38 = v42;
-      v39 = v79;
+      v38 = array;
+      v39 = array2;
     }
 
     else
@@ -320,7 +320,7 @@ LABEL_20:
       v38 = 0;
     }
 
-    *(v4 + 8) = v5 ^ 1;
+    *(v4 + 8) = typesCopy ^ 1;
     goto LABEL_32;
   }
 

@@ -1,5 +1,5 @@
 @interface MPAVRoutingTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsVolumeSliderVisible;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
@@ -8,17 +8,17 @@
 
 @implementation MPAVRoutingTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MPAVRoutingTableViewCell" hasInstanceVariable:@"_subtitleTextLabel" withType:"UILabel"];
-  [v3 validateClass:@"MPAVRoutingTableViewCell" hasInstanceMethod:@"_shouldShowSeparateBatteryPercentagesForBatteryLevel:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"MPAVRoute" hasInstanceMethod:@"batteryLevel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPAVRoutingTableViewCell" hasInstanceVariable:@"_routeNameLabel" withType:"UILabel"];
-  [v3 validateClass:@"MPAVRoutingTableViewCell" hasInstanceMethod:@"updateForEndpoint:routeItem:inferLocalizedModelName:" withFullSignature:{"v", "@", "@", "B", 0}];
-  [v3 validateClass:@"MPAVRoutingTableViewCell" hasInstanceMethod:@"useSmartAudioCheckmarkStyle" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MPAVRoutingTableViewCell" hasInstanceVariable:@"_volumeSlider" withType:"MPVolumeSlider"];
-  [v3 validateClass:@"MPAVRoutingViewItem" hasInstanceMethod:@"mainRoute" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MPAVRoutingTableViewCell" hasInstanceVariable:@"_subtitleTextLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MPAVRoutingTableViewCell" hasInstanceMethod:@"_shouldShowSeparateBatteryPercentagesForBatteryLevel:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"MPAVRoute" hasInstanceMethod:@"batteryLevel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPAVRoutingTableViewCell" hasInstanceVariable:@"_routeNameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MPAVRoutingTableViewCell" hasInstanceMethod:@"updateForEndpoint:routeItem:inferLocalizedModelName:" withFullSignature:{"v", "@", "@", "B", 0}];
+  [validationsCopy validateClass:@"MPAVRoutingTableViewCell" hasInstanceMethod:@"useSmartAudioCheckmarkStyle" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MPAVRoutingTableViewCell" hasInstanceVariable:@"_volumeSlider" withType:"MPVolumeSlider"];
+  [validationsCopy validateClass:@"MPAVRoutingViewItem" hasInstanceMethod:@"mainRoute" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_axIsVolumeSliderVisible
@@ -66,7 +66,7 @@
 - (id)accessibilityLabel
 {
   objc_opt_class();
-  v3 = [(MPAVRoutingTableViewCellAccessibility *)self accessibilityMediaRoute];
+  accessibilityMediaRoute = [(MPAVRoutingTableViewCellAccessibility *)self accessibilityMediaRoute];
   v4 = __UIAccessibilityCastAsClass();
 
   if (v4)
@@ -94,7 +94,7 @@
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
   objc_opt_class();
-  v3 = [(MPAVRoutingTableViewCellAccessibility *)self accessibilityMediaRoute];
+  accessibilityMediaRoute = [(MPAVRoutingTableViewCellAccessibility *)self accessibilityMediaRoute];
   v4 = __UIAccessibilityCastAsClass();
 
   objc_opt_class();
@@ -114,9 +114,9 @@
   if (![v18[5] length])
   {
     v7 = [(MPAVRoutingTableViewCellAccessibility *)self safeValueForKey:@"_subtitleTextLabel"];
-    v8 = [v7 accessibilityLabel];
+    accessibilityLabel = [v7 accessibilityLabel];
     v9 = v18[5];
-    v18[5] = v8;
+    v18[5] = accessibilityLabel;
   }
 
   v10 = v18[5];

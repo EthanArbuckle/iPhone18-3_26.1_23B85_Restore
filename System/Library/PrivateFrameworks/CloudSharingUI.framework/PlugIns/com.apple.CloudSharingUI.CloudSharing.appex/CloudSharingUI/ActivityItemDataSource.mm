@@ -1,6 +1,6 @@
 @interface ActivityItemDataSource
 - (_TtC37com_apple_CloudSharingUI_CloudSharing22ActivityItemDataSource)init;
-- (id)activityViewControllerOperation:(id)a3;
+- (id)activityViewControllerOperation:(id)operation;
 @end
 
 @implementation ActivityItemDataSource
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (id)activityViewControllerOperation:(id)a3
+- (id)activityViewControllerOperation:(id)operation
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1000C0004(a3);
+  operationCopy = operation;
+  selfCopy = self;
+  v7 = sub_1000C0004(operation);
 
   return v7;
 }

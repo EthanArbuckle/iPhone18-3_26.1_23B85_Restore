@@ -1,7 +1,7 @@
 @interface FCPurchaseProvider
 - (FCPurchaseProvider)init;
 - (NSSet)purchasedTagIDs;
-- (id)initWithPurchaseController:(void *)a3 privateChannelMembershipController:;
+- (id)initWithPurchaseController:(void *)controller privateChannelMembershipController:;
 @end
 
 @implementation FCPurchaseProvider
@@ -32,12 +32,12 @@
   objc_exception_throw(v6);
 }
 
-- (id)initWithPurchaseController:(void *)a3 privateChannelMembershipController:
+- (id)initWithPurchaseController:(void *)controller privateChannelMembershipController:
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (!a1)
+  controllerCopy = controller;
+  if (!self)
   {
     goto LABEL_9;
   }
@@ -55,7 +55,7 @@
     v21 = v11;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v7)
+    if (!controllerCopy)
     {
 LABEL_5:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -74,25 +74,25 @@ LABEL_5:
     }
   }
 
-  else if (!v7)
+  else if (!controllerCopy)
   {
     goto LABEL_5;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = FCPurchaseProvider;
   v8 = objc_msgSendSuper2(&v13, sel_init);
-  a1 = v8;
+  self = v8;
   if (v8)
   {
     objc_storeStrong(v8 + 1, a2);
-    objc_storeStrong(a1 + 2, a3);
+    objc_storeStrong(self + 2, controller);
   }
 
 LABEL_9:
 
   v9 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (NSSet)purchasedTagIDs
@@ -110,8 +110,8 @@ LABEL_9:
   }
 
   v5 = purchaseController;
-  v6 = [(FCPurchaseController *)v5 purchasedTagIDs];
-  v14[0] = v6;
+  purchasedTagIDs = [(FCPurchaseController *)v5 purchasedTagIDs];
+  v14[0] = purchasedTagIDs;
   if (self)
   {
     privateChannelMembershipController = self->_privateChannelMembershipController;
@@ -123,8 +123,8 @@ LABEL_9:
   }
 
   v8 = privateChannelMembershipController;
-  v9 = [(FCPrivateChannelMembershipController *)v8 membershipChannelIDs];
-  v14[1] = v9;
+  membershipChannelIDs = [(FCPrivateChannelMembershipController *)v8 membershipChannelIDs];
+  v14[1] = membershipChannelIDs;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v11 = [v3 fc_unionOfSetsInArray:v10];
 

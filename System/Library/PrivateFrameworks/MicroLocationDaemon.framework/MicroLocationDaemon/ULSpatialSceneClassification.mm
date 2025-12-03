@@ -1,27 +1,27 @@
 @interface ULSpatialSceneClassification
 + (id)spatialSceneClassification;
 - (id)_init;
-- (id)spatialSceneClassificationFutureWithPhoto:(id)a3;
+- (id)spatialSceneClassificationFutureWithPhoto:(id)photo;
 @end
 
 @implementation ULSpatialSceneClassification
 
-- (id)spatialSceneClassificationFutureWithPhoto:(id)a3
+- (id)spatialSceneClassificationFutureWithPhoto:(id)photo
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D28870] promise];
+  photoCopy = photo;
+  promise = [MEMORY[0x277D28870] promise];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __74__ULSpatialSceneClassification_spatialSceneClassificationFutureWithPhoto___block_invoke;
   v13 = &unk_2798D54D0;
-  v6 = v4;
+  v6 = photoCopy;
   v14 = v6;
-  v7 = v5;
+  v7 = promise;
   v15 = v7;
   [(ULSpatialSceneClassification *)self runWithPhoto:v6 handler:&v10];
-  v8 = [v7 future];
+  future = [v7 future];
 
-  return v8;
+  return future;
 }
 
 void __74__ULSpatialSceneClassification_spatialSceneClassificationFutureWithPhoto___block_invoke(uint64_t a1, void *a2)
@@ -49,9 +49,9 @@ void __74__ULSpatialSceneClassification_spatialSceneClassificationFutureWithPhot
 
 + (id)spatialSceneClassification
 {
-  v2 = [[ULSpatialSceneClassification alloc] _init];
+  _init = [[ULSpatialSceneClassification alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 - (id)_init

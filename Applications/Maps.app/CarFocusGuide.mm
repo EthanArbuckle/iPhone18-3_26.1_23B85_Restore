@@ -1,19 +1,19 @@
 @interface CarFocusGuide
-- (CarFocusGuide)initWithOriginView:(id)a3 toDestinationFocusEnvironments:(id)a4 forDirection:(unint64_t)a5;
+- (CarFocusGuide)initWithOriginView:(id)view toDestinationFocusEnvironments:(id)environments forDirection:(unint64_t)direction;
 - (id)description;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation CarFocusGuide
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = CarFocusGuide;
   [(CarFocusGuide *)&v6 setEnabled:?];
-  v5 = [(CarFocusGuide *)self debugView];
-  [v5 setUserInteractionEnabled:v3];
+  debugView = [(CarFocusGuide *)self debugView];
+  [debugView setUserInteractionEnabled:enabledCopy];
 }
 
 - (id)description
@@ -23,8 +23,8 @@
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [(CarFocusGuide *)self activationConstraints];
-  v5 = [v4 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  activationConstraints = [(CarFocusGuide *)self activationConstraints];
+  v5 = [activationConstraints countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v5)
   {
     v6 = *v30;
@@ -34,7 +34,7 @@
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activationConstraints);
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
@@ -46,7 +46,7 @@
         [v3 appendFormat:@"%p", v8];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v5 = [activationConstraints countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v5);
@@ -54,7 +54,7 @@
 
   v9 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_originView);
-  v11 = [(CarFocusGuide *)self preferredFocusEnvironments];
+  preferredFocusEnvironments = [(CarFocusGuide *)self preferredFocusEnvironments];
   direction = self->_direction;
   if (direction)
   {
@@ -130,16 +130,16 @@
   v24 = v23;
   [(CarFocusGuide *)self layoutFrame];
   v26 = [NSString stringWithFormat:@"(%.1fh %.1fw)(%.1fx %.1fy)", v20, v22, v24, v25];
-  v27 = [NSString stringWithFormat:@"<%@: %p guidedView=%p: preferredFocusEnvironments=%p; focusHeading=%@ enabled=%@ layoutFrame=%@ constraints=[%@]>", v9, self, WeakRetained, v11, v17, v18, v26, v3];;
+  v27 = [NSString stringWithFormat:@"<%@: %p guidedView=%p: preferredFocusEnvironments=%p; focusHeading=%@ enabled=%@ layoutFrame=%@ constraints=[%@]>", v9, self, WeakRetained, preferredFocusEnvironments, v17, v18, v26, v3];;
 
   return v27;
 }
 
-- (CarFocusGuide)initWithOriginView:(id)a3 toDestinationFocusEnvironments:(id)a4 forDirection:(unint64_t)a5
+- (CarFocusGuide)initWithOriginView:(id)view toDestinationFocusEnvironments:(id)environments forDirection:(unint64_t)direction
 {
-  v8 = a3;
-  v9 = a4;
-  if ([CarFocusGuide _validateDirection:a5])
+  viewCopy = view;
+  environmentsCopy = environments;
+  if ([CarFocusGuide _validateDirection:direction])
   {
     v54.receiver = self;
     v54.super_class = CarFocusGuide;
@@ -149,52 +149,52 @@
     {
 LABEL_35:
       self = self;
-      v33 = self;
+      selfCopy = self;
       goto LABEL_36;
     }
 
-    v10->_direction = a5;
-    v52 = v9;
-    [(CarFocusGuide *)v10 setPreferredFocusEnvironments:v9];
+    v10->_direction = direction;
+    v52 = environmentsCopy;
+    [(CarFocusGuide *)v10 setPreferredFocusEnvironments:environmentsCopy];
     v11 = +[NSMutableArray array];
-    v12 = [(CarFocusGuide *)self widthAnchor];
-    v13 = [v8 widthAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    widthAnchor = [(CarFocusGuide *)self widthAnchor];
+    widthAnchor2 = [viewCopy widthAnchor];
+    v14 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v59[0] = v14;
-    v15 = [(CarFocusGuide *)self heightAnchor];
-    v53 = v8;
-    v16 = [v8 heightAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    heightAnchor = [(CarFocusGuide *)self heightAnchor];
+    v53 = viewCopy;
+    heightAnchor2 = [viewCopy heightAnchor];
+    v17 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v59[1] = v17;
     v18 = [NSArray arrayWithObjects:v59 count:2];
     [v11 addObjectsFromArray:v18];
 
-    if (a5 > 3)
+    if (direction > 3)
     {
-      if (a5 == 4)
+      if (direction == 4)
       {
-        v19 = [(CarFocusGuide *)self topAnchor];
-        v20 = [v53 topAnchor];
-        v21 = [v19 constraintEqualToAnchor:v20];
+        topAnchor = [(CarFocusGuide *)self topAnchor];
+        topAnchor2 = [v53 topAnchor];
+        v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v56[0] = v21;
-        v22 = [(CarFocusGuide *)self rightAnchor];
-        v23 = [v53 leftAnchor];
-        v24 = [v22 constraintEqualToAnchor:v23];
+        rightAnchor = [(CarFocusGuide *)self rightAnchor];
+        leftAnchor = [v53 leftAnchor];
+        v24 = [rightAnchor constraintEqualToAnchor:leftAnchor];
         v56[1] = v24;
         v25 = v56;
         goto LABEL_32;
       }
 
-      v8 = v53;
-      if (a5 == 8)
+      viewCopy = v53;
+      if (direction == 8)
       {
-        v19 = [(CarFocusGuide *)self topAnchor];
-        v20 = [v53 topAnchor];
-        v21 = [v19 constraintEqualToAnchor:v20];
+        topAnchor = [(CarFocusGuide *)self topAnchor];
+        topAnchor2 = [v53 topAnchor];
+        v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v55[0] = v21;
-        v22 = [(CarFocusGuide *)self leftAnchor];
-        v23 = [v53 rightAnchor];
-        v24 = [v22 constraintEqualToAnchor:v23];
+        rightAnchor = [(CarFocusGuide *)self leftAnchor];
+        leftAnchor = [v53 rightAnchor];
+        v24 = [rightAnchor constraintEqualToAnchor:leftAnchor];
         v55[1] = v24;
         v25 = v55;
         goto LABEL_32;
@@ -203,30 +203,30 @@ LABEL_35:
 
     else
     {
-      if (a5 == 1)
+      if (direction == 1)
       {
-        v19 = [(CarFocusGuide *)self bottomAnchor];
-        v20 = [v53 topAnchor];
-        v21 = [v19 constraintEqualToAnchor:v20];
+        topAnchor = [(CarFocusGuide *)self bottomAnchor];
+        topAnchor2 = [v53 topAnchor];
+        v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v57[0] = v21;
-        v22 = [(CarFocusGuide *)self leftAnchor];
-        v23 = [v53 leftAnchor];
-        v24 = [v22 constraintEqualToAnchor:v23];
+        rightAnchor = [(CarFocusGuide *)self leftAnchor];
+        leftAnchor = [v53 leftAnchor];
+        v24 = [rightAnchor constraintEqualToAnchor:leftAnchor];
         v57[1] = v24;
         v25 = v57;
         goto LABEL_32;
       }
 
-      v8 = v53;
-      if (a5 == 2)
+      viewCopy = v53;
+      if (direction == 2)
       {
-        v19 = [(CarFocusGuide *)self topAnchor];
-        v20 = [v53 bottomAnchor];
-        v21 = [v19 constraintEqualToAnchor:v20];
+        topAnchor = [(CarFocusGuide *)self topAnchor];
+        topAnchor2 = [v53 bottomAnchor];
+        v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v58[0] = v21;
-        v22 = [(CarFocusGuide *)self leftAnchor];
-        v23 = [v53 leftAnchor];
-        v24 = [v22 constraintEqualToAnchor:v23];
+        rightAnchor = [(CarFocusGuide *)self leftAnchor];
+        leftAnchor = [v53 leftAnchor];
+        v24 = [rightAnchor constraintEqualToAnchor:leftAnchor];
         v58[1] = v24;
         v25 = v58;
 LABEL_32:
@@ -238,54 +238,54 @@ LABEL_32:
 
         if (v43)
         {
-          v44 = [[CarFocusGuideDebugView alloc] initWithDirection:a5];
+          v44 = [[CarFocusGuideDebugView alloc] initWithDirection:direction];
           debugView = self->_debugView;
           self->_debugView = v44;
 
           [(CarFocusGuideDebugView *)self->_debugView setTranslatesAutoresizingMaskIntoConstraints:0];
           LODWORD(v46) = 1148846080;
           v47 = [(CarFocusGuideDebugView *)self->_debugView _maps_constraintsEqualToEdgesOfLayoutGuide:self priority:v46];
-          v48 = [v47 allConstraints];
-          [v11 addObjectsFromArray:v48];
+          allConstraints = [v47 allConstraints];
+          [v11 addObjectsFromArray:allConstraints];
         }
 
         v49 = [v11 copy];
         activationConstraints = self->_activationConstraints;
         self->_activationConstraints = v49;
 
-        v9 = v52;
-        v8 = v53;
+        environmentsCopy = v52;
+        viewCopy = v53;
         goto LABEL_35;
       }
     }
 
     v34 = sub_10008AA10();
-    v9 = v52;
+    environmentsCopy = v52;
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_29;
     }
 
-    v35 = self;
+    selfCopy2 = self;
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
     if (objc_opt_respondsToSelector())
     {
-      v38 = [(CarFocusGuide *)v35 performSelector:"accessibilityIdentifier"];
+      v38 = [(CarFocusGuide *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v39 = v38;
       if (v38 && ![v38 isEqualToString:v37])
       {
-        v40 = [NSString stringWithFormat:@"%@<%p, %@>", v37, v35, v39];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v37, selfCopy2, v39];
 
         goto LABEL_28;
       }
     }
 
-    v40 = [NSString stringWithFormat:@"%@<%p>", v37, v35];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v37, selfCopy2];
 LABEL_28:
 
     *buf = 138543362;
-    v61 = v40;
+    v61 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "[%{public}@] CarMapsFocusGuide tried to add focus guide for unsupported direction.", buf, 0xCu);
 
 LABEL_29:
@@ -295,10 +295,10 @@ LABEL_29:
   v26 = sub_10008AA10();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
-    v27 = self;
-    if (!v27)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v32 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_19;
     }
 
@@ -306,30 +306,30 @@ LABEL_29:
     v29 = NSStringFromClass(v28);
     if (objc_opt_respondsToSelector())
     {
-      v30 = [(CarFocusGuide *)v27 performSelector:"accessibilityIdentifier"];
+      v30 = [(CarFocusGuide *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v31 = v30;
       if (v30 && ![v30 isEqualToString:v29])
       {
-        v32 = [NSString stringWithFormat:@"%@<%p, %@>", v29, v27, v31];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v29, selfCopy3, v31];
 
         goto LABEL_14;
       }
     }
 
-    v32 = [NSString stringWithFormat:@"%@<%p>", v29, v27];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v29, selfCopy3];
 LABEL_14:
 
 LABEL_19:
     *buf = 138543362;
-    v61 = v32;
+    v61 = selfCopy3;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "[%{public}@] Tried to create focusGuide with unsupported heading.", buf, 0xCu);
   }
 
 LABEL_21:
-  v33 = 0;
+  selfCopy = 0;
 LABEL_36:
 
-  return v33;
+  return selfCopy;
 }
 
 @end

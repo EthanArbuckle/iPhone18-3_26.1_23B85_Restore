@@ -1,9 +1,9 @@
 @interface KernelStatisticsHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
 - (KernelStatisticsHandler)init;
-- (int)read:(id)a3 returnedValues:(id)a4;
-- (void)statisticsManager:(id)a3 didReceiveDirectSystemInformation:(id)a4;
+- (int)read:(id)read returnedValues:(id)values;
+- (void)statisticsManager:(id)manager didReceiveDirectSystemInformation:(id)information;
 @end
 
 @implementation KernelStatisticsHandler
@@ -60,21 +60,21 @@
   return v9;
 }
 
-- (void)statisticsManager:(id)a3 didReceiveDirectSystemInformation:(id)a4
+- (void)statisticsManager:(id)manager didReceiveDirectSystemInformation:(id)information
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 count])
+  informationCopy = information;
+  if ([informationCopy count])
   {
-    v6 = [v5 objectForKeyedSubscript:&unk_2847EFB90];
+    v6 = [informationCopy objectForKeyedSubscript:&unk_2847EFB90];
 
     if (v6)
     {
       v12 = @"kKernelLIMRecord";
-      v13[0] = v5;
+      v13[0] = informationCopy;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 postNotificationName:@"kNotificationKernelNewLIMRecord" object:self userInfo:v7];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"kNotificationKernelNewLIMRecord" object:self userInfo:v7];
     }
   }
 
@@ -97,7 +97,7 @@
   block[1] = 3221225472;
   block[2] = __41__KernelStatisticsHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_33 != -1)
   {
     dispatch_once(&sharedInstance_pred_33, block);
@@ -120,21 +120,21 @@ void __41__KernelStatisticsHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[KernelStatisticsHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

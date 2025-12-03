@@ -1,40 +1,40 @@
 @interface VMMessageViewController
-+ (id)getFTVoiceMailOnVoicemailsChanged:(id)a3;
++ (id)getFTVoiceMailOnVoicemailsChanged:(id)changed;
 - (CNContactFormatter)contactFormatter;
 - (MPVoicemailAccountManagerProtocol)accountManager;
 - (MPVoicemailManagerProtocol)voicemailManager;
 - (NSDateFormatter)dateFormatter;
-- (VMMessageViewController)initWithContactStore:(id)a3;
-- (VMMessageViewController)initWithManager:(id)a3;
+- (VMMessageViewController)initWithContactStore:(id)store;
+- (VMMessageViewController)initWithManager:(id)manager;
 - (VMPlayerControlsViewController)playerControlsViewController;
-- (id)localizedSubtitleForMessage:(id)a3;
+- (id)localizedSubtitleForMessage:(id)message;
 - (id)onVoicemailsChanged;
 - (void)dealloc;
-- (void)fetchMetadataForMessages:(id)a3;
-- (void)handleContactStoreDidChangeNotification:(id)a3;
-- (void)handleContentSizeCategoryDidChangeNotification:(id)a3;
-- (void)handleCurrentLocaleDidChangeNotification:(id)a3;
-- (void)handleSystemTimeZoneDidChangeNotification:(id)a3;
-- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)a3;
+- (void)fetchMetadataForMessages:(id)messages;
+- (void)handleContactStoreDidChangeNotification:(id)notification;
+- (void)handleContentSizeCategoryDidChangeNotification:(id)notification;
+- (void)handleCurrentLocaleDidChangeNotification:(id)notification;
+- (void)handleSystemTimeZoneDidChangeNotification:(id)notification;
+- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)notification;
 - (void)handleVoicemailManagerVoicemailsDidChange;
 - (void)loadView;
 - (void)reloadData;
-- (void)setVoicemailMessage:(id)a3;
+- (void)setVoicemailMessage:(id)message;
 - (void)viewDidLoad;
 @end
 
 @implementation VMMessageViewController
 
-- (VMMessageViewController)initWithManager:(id)a3
+- (VMMessageViewController)initWithManager:(id)manager
 {
   [(VMMessageViewController *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (VMMessageViewController)initWithContactStore:(id)a3
+- (VMMessageViewController)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v6 = [MPVoicemailAccountManagerDecorator alloc];
   v7 = objc_alloc_init(VMVoicemailManager);
   v8 = [(MPVoicemailAccountManagerDecorator *)v6 initWithVMD:v7];
@@ -44,7 +44,7 @@
 
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a3);
+    objc_storeStrong(&v9->_contactStore, store);
     v10 = objc_alloc_init(TUCallDirectoryMetadataCacheDataProvider);
     v20[0] = v10;
     v11 = objc_alloc_init(TUMapsMetadataCacheDataProvider);
@@ -85,40 +85,40 @@
   v24.receiver = self;
   v24.super_class = VMMessageViewController;
   [(VMMessageViewController *)&v24 loadView];
-  v3 = [(VMMessageViewController *)self view];
+  view = [(VMMessageViewController *)self view];
   v4 = +[UIColor dynamicBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = objc_alloc_init(VMMessageView);
-  v6 = [(VMMessageViewController *)self playerControlsViewController];
-  v7 = [v6 playerControlsView];
-  [(VMMessageView *)v5 setPlayerControlsView:v7];
+  playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+  playerControlsView = [playerControlsViewController playerControlsView];
+  [(VMMessageView *)v5 setPlayerControlsView:playerControlsView];
 
   [(VMMessageViewController *)self setMessageView:v5];
-  [v3 addSubview:v5];
+  [view addSubview:v5];
   [(VMMessageView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(VMMessageView *)v5 topAnchor];
-  v9 = [(VMMessageViewController *)self view];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  topAnchor = [(VMMessageView *)v5 topAnchor];
+  view2 = [(VMMessageViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v11 setActive:1];
 
-  v12 = [(VMMessageView *)v5 leadingAnchor];
-  v13 = [(VMMessageViewController *)self view];
-  v14 = [v13 leadingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  leadingAnchor = [(VMMessageView *)v5 leadingAnchor];
+  view3 = [(VMMessageViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v15 setActive:1];
 
-  v16 = [(VMMessageView *)v5 heightAnchor];
-  v17 = [(VMMessageViewController *)self view];
-  v18 = [v17 heightAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  heightAnchor = [(VMMessageView *)v5 heightAnchor];
+  view4 = [(VMMessageViewController *)self view];
+  heightAnchor2 = [view4 heightAnchor];
+  v19 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v19 setActive:1];
 
-  v20 = [(VMMessageView *)v5 widthAnchor];
-  v21 = [(VMMessageViewController *)self view];
-  v22 = [v21 widthAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  widthAnchor = [(VMMessageView *)v5 widthAnchor];
+  view5 = [(VMMessageViewController *)self view];
+  widthAnchor2 = [view5 widthAnchor];
+  v23 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v23 setActive:1];
 }
 
@@ -127,9 +127,9 @@
   v4.receiver = self;
   v4.super_class = VMMessageViewController;
   [(VMMessageViewController *)&v4 viewDidLoad];
-  v3 = [(VMMessageViewController *)self voicemailMessage];
+  voicemailMessage = [(VMMessageViewController *)self voicemailMessage];
 
-  if (v3)
+  if (voicemailMessage)
   {
     [(VMMessageViewController *)self reloadData];
   }
@@ -167,9 +167,9 @@
   if (!voicemailManager)
   {
     v4 = +[NotificationApplicationServices shared];
-    v5 = [v4 voicemailManager];
+    voicemailManager = [v4 voicemailManager];
     v6 = self->_voicemailManager;
-    self->_voicemailManager = v5;
+    self->_voicemailManager = voicemailManager;
 
     voicemailManager = self->_voicemailManager;
   }
@@ -183,9 +183,9 @@
   if (!accountManager)
   {
     v4 = +[NotificationApplicationServices shared];
-    v5 = [v4 accountManager];
+    accountManager = [v4 accountManager];
     v6 = self->_accountManager;
-    self->_accountManager = v5;
+    self->_accountManager = accountManager;
 
     accountManager = self->_accountManager;
   }
@@ -193,44 +193,44 @@
   return accountManager;
 }
 
-- (void)setVoicemailMessage:(id)a3
+- (void)setVoicemailMessage:(id)message
 {
-  v5 = a3;
-  if (self->_voicemailMessage != v5)
+  messageCopy = message;
+  if (self->_voicemailMessage != messageCopy)
   {
     v6 = PHDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = messageCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting voicemail message (%@).", buf, 0xCu);
     }
 
     [(VMMessageViewController *)self setShouldHandleVoicemailChanges:0];
-    objc_storeStrong(&self->_voicemailMessage, a3);
-    if (v5)
+    objc_storeStrong(&self->_voicemailMessage, message);
+    if (messageCopy)
     {
       [(VMMessageViewController *)self setShouldHandleVoicemailChanges:1];
-      v7 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
-      v8 = [(VMMessageViewController *)self contactStore];
-      v15[0] = v7;
+      playerControlsViewController2 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
+      contactStore = [(VMMessageViewController *)self contactStore];
+      v15[0] = playerControlsViewController2;
       v15[1] = CNContactPhoneNumbersKey;
       v9 = [NSArray arrayWithObjects:v15 count:2];
-      v10 = [(MPMessage *)v5 contactUsingContactStore:v8 withKeysToFetch:v9];
+      v10 = [(MPMessage *)messageCopy contactUsingContactStore:contactStore withKeysToFetch:v9];
 
-      v11 = [(MPMessage *)v5 dataURL];
-      v12 = [(VMMessageViewController *)self playerControlsViewController];
-      [v12 setURL:v11];
+      dataURL = [(MPMessage *)messageCopy dataURL];
+      playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+      [playerControlsViewController setURL:dataURL];
 
-      v14 = v5;
+      v14 = messageCopy;
       v13 = [NSArray arrayWithObjects:&v14 count:1];
       [(VMMessageViewController *)self fetchMetadataForMessages:v13];
     }
 
     else
     {
-      v7 = [(VMMessageViewController *)self playerControlsViewController];
-      [v7 setURL:0];
+      playerControlsViewController2 = [(VMMessageViewController *)self playerControlsViewController];
+      [playerControlsViewController2 setURL:0];
       v10 = 0;
     }
 
@@ -278,8 +278,8 @@
   if (!playerControlsViewController)
   {
     v4 = [VMPlayerControlsViewController alloc];
-    v5 = [(VMViewController *)self manager];
-    v6 = [(VMViewController *)v4 initWithManager:v5];
+    manager = [(VMViewController *)self manager];
+    v6 = [(VMViewController *)v4 initWithManager:manager];
     v7 = self->_playerControlsViewController;
     self->_playerControlsViewController = v6;
 
@@ -289,30 +289,30 @@
   return playerControlsViewController;
 }
 
-- (void)fetchMetadataForMessages:(id)a3
+- (void)fetchMetadataForMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(VMMessageViewController *)self metadataCache];
+  messagesCopy = messages;
+  metadataCache = [(VMMessageViewController *)self metadataCache];
 
-  if (v5)
+  if (metadataCache)
   {
-    v6 = [TUMetadataDestinationID metadataDestinationIDsForVMVoicemails:v4];
+    v6 = [TUMetadataDestinationID metadataDestinationIDsForVMVoicemails:messagesCopy];
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218240;
-      v10 = [v4 count];
+      v10 = [messagesCopy count];
       v11 = 2048;
       v12 = [v6 count];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Fetching metadata for %lu voicemail messages using %lu handles", &v9, 0x16u);
     }
 
-    v8 = [(VMMessageViewController *)self metadataCache];
-    [v8 updateCacheWithDestinationIDs:v6];
+    metadataCache2 = [(VMMessageViewController *)self metadataCache];
+    [metadataCache2 updateCacheWithDestinationIDs:v6];
   }
 }
 
-- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)a3
+- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -322,22 +322,22 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)localizedSubtitleForMessage:(id)a3
+- (id)localizedSubtitleForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 senderDestinationID];
-  if ([v5 length])
+  messageCopy = message;
+  senderDestinationID = [messageCopy senderDestinationID];
+  if ([senderDestinationID length])
   {
-    v6 = [v4 senderISOCountryCode];
-    v7 = [(VMMessageViewController *)self contact];
-    v8 = [TUHandle normalizedHandleWithDestinationID:v5];
+    senderISOCountryCode = [messageCopy senderISOCountryCode];
+    contact = [(VMMessageViewController *)self contact];
+    v8 = [TUHandle normalizedHandleWithDestinationID:senderDestinationID];
     v9 = v8;
-    if (v7 && [v8 type] == 2)
+    if (contact && [v8 type] == 2)
     {
-      v10 = [CNPhoneNumber phoneNumberWithDigits:v5 countryCode:v6];
+      v10 = [CNPhoneNumber phoneNumberWithDigits:senderDestinationID countryCode:senderISOCountryCode];
       if (v10)
       {
-        v11 = [v7 labeledValueForPhoneNumber:v10];
+        v11 = [contact labeledValueForPhoneNumber:v10];
       }
 
       else
@@ -345,8 +345,8 @@
         v11 = 0;
       }
 
-      v13 = [v11 label];
-      v12 = [CNLabeledValue localizedDisplayStringForLabel:v13 propertyName:CNContactPhoneNumbersKey];
+      label = [v11 label];
+      v12 = [CNLabeledValue localizedDisplayStringForLabel:label propertyName:CNContactPhoneNumbersKey];
     }
 
     else
@@ -359,8 +359,8 @@
       v14 = [[TUMetadataDestinationID alloc] initWithHandle:v9];
       if (v14)
       {
-        v15 = [(VMMessageViewController *)self metadataCache];
-        v16 = [v15 metadataForDestinationID:v14];
+        metadataCache = [(VMMessageViewController *)self metadataCache];
+        v16 = [metadataCache metadataForDestinationID:v14];
 
         v17 = [v16 metadataForProvider:objc_opt_class()];
 
@@ -382,8 +382,8 @@
       }
     }
 
-    v20 = [v4 provider];
-    v21 = [v20 isEqual:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
+    provider = [messageCopy provider];
+    v21 = [provider isEqual:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
 
     if (v21)
     {
@@ -410,54 +410,54 @@
   return v12;
 }
 
-- (void)handleContactStoreDidChangeNotification:(id)a3
+- (void)handleContactStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  v6 = [(VMMessageViewController *)self voicemailMessage];
-  if (v6)
+  voicemailMessage = [(VMMessageViewController *)self voicemailMessage];
+  if (voicemailMessage)
   {
     v7 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
-    v8 = [(VMMessageViewController *)self contactStore];
+    contactStore = [(VMMessageViewController *)self contactStore];
     v11[0] = v7;
     v11[1] = CNContactPhoneNumbersKey;
     v9 = [NSArray arrayWithObjects:v11 count:2];
-    v10 = [v6 contactUsingContactStore:v8 withKeysToFetch:v9];
+    v10 = [voicemailMessage contactUsingContactStore:contactStore withKeysToFetch:v9];
     [(VMMessageViewController *)self setContact:v10];
   }
 
   [(VMMessageViewController *)self reloadData];
 }
 
-- (void)handleContentSizeCategoryDidChangeNotification:(id)a3
+- (void)handleContentSizeCategoryDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@", &v6, 0xCu);
   }
 
   [(VMMessageViewController *)self reloadData];
 }
 
-- (void)handleCurrentLocaleDidChangeNotification:(id)a3
+- (void)handleCurrentLocaleDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@", &v7, 0xCu);
   }
 
@@ -467,14 +467,14 @@
   [(VMMessageViewController *)self reloadData];
 }
 
-- (void)handleSystemTimeZoneDidChangeNotification:(id)a3
+- (void)handleSystemTimeZoneDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@", &v8, 0xCu);
   }
 
@@ -496,20 +496,20 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "handleVoicemailManagerVoicemailsDidChange", buf, 2u);
   }
 
-  v4 = [(VMMessageViewController *)self voicemailMessage];
+  voicemailMessage = [(VMMessageViewController *)self voicemailMessage];
 
-  if (v4)
+  if (voicemailMessage)
   {
     objc_initWeak(buf, self);
-    v5 = [(VMMessageViewController *)self voicemailManager];
-    v6 = [(VMMessageViewController *)self voicemailMessage];
-    v7 = [v6 identifier];
+    voicemailManager = [(VMMessageViewController *)self voicemailManager];
+    voicemailMessage2 = [(VMMessageViewController *)self voicemailMessage];
+    identifier = [voicemailMessage2 identifier];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100008078;
     v8[3] = &unk_1000898A8;
     objc_copyWeak(&v9, buf);
-    [v5 voicemailWithIdentifier:v7 completion:v8];
+    [voicemailManager voicemailWithIdentifier:identifier completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(buf);
@@ -518,48 +518,48 @@
 
 - (void)reloadData
 {
-  v3 = [(VMMessageViewController *)self contactStore];
-  v4 = [(VMMessageViewController *)self messageView];
-  v5 = [(VMMessageViewController *)self voicemailMessage];
+  contactStore = [(VMMessageViewController *)self contactStore];
+  messageView = [(VMMessageViewController *)self messageView];
+  voicemailMessage = [(VMMessageViewController *)self voicemailMessage];
   [(VMMessageViewController *)self setMarkedVoicemailAsRead:0];
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v16 = 138412546;
-    v17 = v4;
+    v17 = messageView;
     v18 = 2112;
-    v19 = v5;
+    v19 = voicemailMessage;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Reloading view (%@) with data store (%@).", &v16, 0x16u);
   }
 
-  v7 = [(VMMessageViewController *)self dateFormatter];
-  v8 = [v5 date];
-  v9 = [v7 stringFromDate:v8];
+  dateFormatter = [(VMMessageViewController *)self dateFormatter];
+  date = [voicemailMessage date];
+  v9 = [dateFormatter stringFromDate:date];
 
-  v10 = [v5 displayNameUsingContactStore:v3];
-  v11 = [(VMMessageViewController *)self localizedSubtitleForMessage:v5];
-  [v4 setLocalizedHeadline:v10];
-  [v4 setLocalizedSubheadline:v11];
-  [v4 setLocalizedDate:v9];
-  v12 = [v5 transcript];
-  if (v12)
+  v10 = [voicemailMessage displayNameUsingContactStore:contactStore];
+  v11 = [(VMMessageViewController *)self localizedSubtitleForMessage:voicemailMessage];
+  [messageView setLocalizedHeadline:v10];
+  [messageView setLocalizedSubheadline:v11];
+  [messageView setLocalizedDate:v9];
+  transcript = [voicemailMessage transcript];
+  if (transcript)
   {
-    v13 = [v4 transcriptView];
-    [v13 setHideAccessoryViews:1];
+    transcriptView = [messageView transcriptView];
+    [transcriptView setHideAccessoryViews:1];
 
-    v14 = [[VMMessageTranscriptViewModel alloc] initWithMPMessage:v5];
-    v15 = [v4 transcriptView];
-    [v15 setViewModel:v14];
+    v14 = [[VMMessageTranscriptViewModel alloc] initWithMPMessage:voicemailMessage];
+    transcriptView2 = [messageView transcriptView];
+    [transcriptView2 setViewModel:v14];
   }
 
-  [v4 setShouldDisplayTranscript:v12 != 0];
-  [v4 setNeedsLayout];
-  [v4 layoutIfNeeded];
+  [messageView setShouldDisplayTranscript:transcript != 0];
+  [messageView setNeedsLayout];
+  [messageView layoutIfNeeded];
 }
 
-+ (id)getFTVoiceMailOnVoicemailsChanged:(id)a3
++ (id)getFTVoiceMailOnVoicemailsChanged:(id)changed
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(changed);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   v5 = sub_10005F83C(sub_1000374E8, v4);

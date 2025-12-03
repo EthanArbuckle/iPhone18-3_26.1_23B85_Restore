@@ -23,7 +23,7 @@
 - (FCTagRecordSource)tagRecordSource;
 - (FCWidgetSectionConfigRecordSource)widgetSectionConfigRecordSource;
 - (NSArray)recordSources;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold;
 @end
 
 @implementation FCContentContextInternal
@@ -170,42 +170,42 @@
 - (NSArray)recordSources
 {
   v24[18] = *MEMORY[0x1E69E9840];
-  v23 = [(FCContentContextInternal *)self articleRecordSource];
-  v24[0] = v23;
-  v22 = [(FCContentContextInternal *)self articleListRecordSource];
-  v24[1] = v22;
-  v21 = [(FCContentContextInternal *)self audioConfigRecordSource];
-  v24[2] = v21;
-  v20 = [(FCContentContextInternal *)self forYouConfigRecordSource];
-  v24[3] = v20;
-  v19 = [(FCContentContextInternal *)self issueRecordSource];
-  v24[4] = v19;
-  v18 = [(FCContentContextInternal *)self issueListRecordSource];
-  v24[5] = v18;
-  v17 = [(FCContentContextInternal *)self notificationItemRecordSource];
-  v24[6] = v17;
-  v16 = [(FCContentContextInternal *)self notificationItemListRecordSource];
-  v24[7] = v16;
-  v3 = [(FCContentContextInternal *)self purchaseLookupRecordSource];
-  v24[8] = v3;
-  v4 = [(FCContentContextInternal *)self puzzleRecordSource];
-  v24[9] = v4;
-  v5 = [(FCContentContextInternal *)self puzzleTypeRecordSource];
-  v24[10] = v5;
-  v6 = [(FCContentContextInternal *)self resourceRecordSource];
-  v24[11] = v6;
-  v7 = [(FCContentContextInternal *)self sportsEventRecordSource];
-  v24[12] = v7;
-  v8 = [(FCContentContextInternal *)self recipeRecordSource];
-  v24[13] = v8;
-  v9 = [(FCContentContextInternal *)self recipeListRecordSource];
-  v24[14] = v9;
-  v10 = [(FCContentContextInternal *)self tagRecordSource];
-  v24[15] = v10;
-  v11 = [(FCContentContextInternal *)self tagListRecordSource];
-  v24[16] = v11;
-  v12 = [(FCContentContextInternal *)self widgetSectionConfigRecordSource];
-  v24[17] = v12;
+  articleRecordSource = [(FCContentContextInternal *)self articleRecordSource];
+  v24[0] = articleRecordSource;
+  articleListRecordSource = [(FCContentContextInternal *)self articleListRecordSource];
+  v24[1] = articleListRecordSource;
+  audioConfigRecordSource = [(FCContentContextInternal *)self audioConfigRecordSource];
+  v24[2] = audioConfigRecordSource;
+  forYouConfigRecordSource = [(FCContentContextInternal *)self forYouConfigRecordSource];
+  v24[3] = forYouConfigRecordSource;
+  issueRecordSource = [(FCContentContextInternal *)self issueRecordSource];
+  v24[4] = issueRecordSource;
+  issueListRecordSource = [(FCContentContextInternal *)self issueListRecordSource];
+  v24[5] = issueListRecordSource;
+  notificationItemRecordSource = [(FCContentContextInternal *)self notificationItemRecordSource];
+  v24[6] = notificationItemRecordSource;
+  notificationItemListRecordSource = [(FCContentContextInternal *)self notificationItemListRecordSource];
+  v24[7] = notificationItemListRecordSource;
+  purchaseLookupRecordSource = [(FCContentContextInternal *)self purchaseLookupRecordSource];
+  v24[8] = purchaseLookupRecordSource;
+  puzzleRecordSource = [(FCContentContextInternal *)self puzzleRecordSource];
+  v24[9] = puzzleRecordSource;
+  puzzleTypeRecordSource = [(FCContentContextInternal *)self puzzleTypeRecordSource];
+  v24[10] = puzzleTypeRecordSource;
+  resourceRecordSource = [(FCContentContextInternal *)self resourceRecordSource];
+  v24[11] = resourceRecordSource;
+  sportsEventRecordSource = [(FCContentContextInternal *)self sportsEventRecordSource];
+  v24[12] = sportsEventRecordSource;
+  recipeRecordSource = [(FCContentContextInternal *)self recipeRecordSource];
+  v24[13] = recipeRecordSource;
+  recipeListRecordSource = [(FCContentContextInternal *)self recipeListRecordSource];
+  v24[14] = recipeListRecordSource;
+  tagRecordSource = [(FCContentContextInternal *)self tagRecordSource];
+  v24[15] = tagRecordSource;
+  tagListRecordSource = [(FCContentContextInternal *)self tagListRecordSource];
+  v24[16] = tagListRecordSource;
+  widgetSectionConfigRecordSource = [(FCContentContextInternal *)self widgetSectionConfigRecordSource];
+  v24[17] = widgetSectionConfigRecordSource;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:18];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -807,7 +807,7 @@
   return avAssetKeyCache;
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold
 {
   v16 = *MEMORY[0x1E69E9840];
   v14[0] = MEMORY[0x1E69E9820];
@@ -835,7 +835,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) enableFlushingWithFlushingThreshold:a3];
+        [*(*(&v10 + 1) + 8 * v8++) enableFlushingWithFlushingThreshold:threshold];
       }
 
       while (v6 != v8);

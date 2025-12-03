@@ -1,26 +1,26 @@
 @interface STSchemaSTGeneralSearchResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTGeneralSearchResult)initWithDictionary:(id)a3;
-- (STSchemaSTGeneralSearchResult)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (STSchemaSTGeneralSearchResult)initWithDictionary:(id)dictionary;
+- (STSchemaSTGeneralSearchResult)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTGeneralSearchResult
 
-- (STSchemaSTGeneralSearchResult)initWithDictionary:(id)a3
+- (STSchemaSTGeneralSearchResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = STSchemaSTGeneralSearchResult;
   v5 = [(STSchemaSTGeneralSearchResult *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"generalSearchResultId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"generalSearchResultId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(STSchemaSTGeneralSearchResult *)v5 setGeneralSearchResultId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(STSchemaSTGeneralSearchResult *)v5 setBundleId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"resultType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"resultType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (STSchemaSTGeneralSearchResult)initWithJSON:(id)a3
+- (STSchemaSTGeneralSearchResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTGeneralSearchResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTGeneralSearchResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTGeneralSearchResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,27 +85,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleId)
   {
-    v4 = [(STSchemaSTGeneralSearchResult *)self bundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleId"];
+    bundleId = [(STSchemaSTGeneralSearchResult *)self bundleId];
+    v5 = [bundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleId"];
   }
 
   if (self->_generalSearchResultId)
   {
-    v6 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    generalSearchResultId = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
+    dictionaryRepresentation = [generalSearchResultId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"generalSearchResultId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"generalSearchResultId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"generalSearchResultId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"generalSearchResultId"];
     }
   }
 
@@ -122,12 +122,12 @@
       v10 = off_1E78E78A0[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"resultType"];
+    [dictionary setObject:v10 forKeyedSubscript:@"resultType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
-  v6 = [v4 generalSearchResultId];
-  if ((v5 != 0) == (v6 == 0))
+  generalSearchResultId = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
+  generalSearchResultId2 = [equalCopy generalSearchResultId];
+  if ((generalSearchResultId != 0) == (generalSearchResultId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
-  if (v7)
+  generalSearchResultId3 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
+  if (generalSearchResultId3)
   {
-    v8 = v7;
-    v9 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
-    v10 = [v4 generalSearchResultId];
-    v11 = [v9 isEqual:v10];
+    v8 = generalSearchResultId3;
+    generalSearchResultId4 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
+    generalSearchResultId5 = [equalCopy generalSearchResultId];
+    v11 = [generalSearchResultId4 isEqual:generalSearchResultId5];
 
     if (!v11)
     {
@@ -180,22 +180,22 @@
   {
   }
 
-  v5 = [(STSchemaSTGeneralSearchResult *)self bundleId];
-  v6 = [v4 bundleId];
-  if ((v5 != 0) == (v6 == 0))
+  generalSearchResultId = [(STSchemaSTGeneralSearchResult *)self bundleId];
+  generalSearchResultId2 = [equalCopy bundleId];
+  if ((generalSearchResultId != 0) == (generalSearchResultId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(STSchemaSTGeneralSearchResult *)self bundleId];
-  if (v12)
+  bundleId = [(STSchemaSTGeneralSearchResult *)self bundleId];
+  if (bundleId)
   {
-    v13 = v12;
-    v14 = [(STSchemaSTGeneralSearchResult *)self bundleId];
-    v15 = [v4 bundleId];
-    v16 = [v14 isEqual:v15];
+    v13 = bundleId;
+    bundleId2 = [(STSchemaSTGeneralSearchResult *)self bundleId];
+    bundleId3 = [equalCopy bundleId];
+    v16 = [bundleId2 isEqual:bundleId3];
 
     if (!v16)
     {
@@ -207,9 +207,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (resultType = self->_resultType, resultType == [v4 resultType]))
+    if ((*&self->_has & 1) == 0 || (resultType = self->_resultType, resultType == [equalCopy resultType]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -223,48 +223,48 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
+  toCopy = to;
+  generalSearchResultId = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
 
-  if (v4)
+  if (generalSearchResultId)
   {
-    v5 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
+    generalSearchResultId2 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(STSchemaSTGeneralSearchResult *)self bundleId];
+  bundleId = [(STSchemaSTGeneralSearchResult *)self bundleId];
 
-  if (v6)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = STSchemaSTGeneralSearchResult;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(STSchemaSTGeneralSearchResult *)self deleteBundleId];
   }
 
-  v6 = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  generalSearchResultId = [(STSchemaSTGeneralSearchResult *)self generalSearchResultId];
+  v7 = [generalSearchResultId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(STSchemaSTGeneralSearchResult *)self deleteGeneralSearchResultId];
   }

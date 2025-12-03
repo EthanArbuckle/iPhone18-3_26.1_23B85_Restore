@@ -10,7 +10,7 @@
   v5 = a3;
   v6 = objc_opt_self();
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [MEMORY[0x277CBDAB8] hd_contactStoreWithHealthAppIdentity];
+  hd_contactStoreWithHealthAppIdentity = [MEMORY[0x277CBDAB8] hd_contactStoreWithHealthAppIdentity];
   objc_opt_self();
   v9 = *MEMORY[0x277CBD000];
   v80[0] = *MEMORY[0x277CBCFF8];
@@ -23,7 +23,7 @@
   v80[5] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:6];
   v79 = 0;
-  v13 = [v8 _ios_meContactWithKeysToFetch:v12 error:&v79];
+  v13 = [hd_contactStoreWithHealthAppIdentity _ios_meContactWithKeysToFetch:v12 error:&v79];
   v14 = v79;
 
   if (v13 || !v14)
@@ -37,21 +37,21 @@
       v23 = v22 = v14;
       [(HKPIIRedactor *)v21 _addName:v23 toArray:v19];
 
-      v24 = [v20 givenName];
-      [(HKPIIRedactor *)v21 _addName:v24 toArray:v19];
+      givenName = [v20 givenName];
+      [(HKPIIRedactor *)v21 _addName:givenName toArray:v19];
 
-      v25 = [v20 phoneticFamilyName];
-      [(HKPIIRedactor *)v21 _addName:v25 toArray:v19];
+      phoneticFamilyName = [v20 phoneticFamilyName];
+      [(HKPIIRedactor *)v21 _addName:phoneticFamilyName toArray:v19];
 
-      v26 = [v20 phoneticGivenName];
-      [(HKPIIRedactor *)v21 _addName:v26 toArray:v19];
+      phoneticGivenName = [v20 phoneticGivenName];
+      [(HKPIIRedactor *)v21 _addName:phoneticGivenName toArray:v19];
 
-      v27 = [v20 previousFamilyName];
-      [(HKPIIRedactor *)v21 _addName:v27 toArray:v19];
+      previousFamilyName = [v20 previousFamilyName];
+      [(HKPIIRedactor *)v21 _addName:previousFamilyName toArray:v19];
 
-      v28 = [v20 nickname];
+      nickname = [v20 nickname];
 
-      [(HKPIIRedactor *)v21 _addName:v28 toArray:v19];
+      [(HKPIIRedactor *)v21 _addName:nickname toArray:v19];
       v14 = v22;
     }
 
@@ -103,9 +103,9 @@ LABEL_49:
     }
 
     v68 = v30;
-    v37 = [v5 medicalIDDataManager];
+    medicalIDDataManager = [v5 medicalIDDataManager];
     v77 = 0;
-    v38 = [v37 fetchMedicalIDIfSetUpWithError:&v77];
+    v38 = [medicalIDDataManager fetchMedicalIDIfSetUpWithError:&v77];
     v34 = v77;
 
     v67 = v38;
@@ -115,18 +115,18 @@ LABEL_49:
       v66 = v13;
       if (v38)
       {
-        v42 = [v38 name];
+        name = [v38 name];
         [MEMORY[0x277CCA900] whitespaceCharacterSet];
         v44 = v43 = v14;
-        v45 = [v42 componentsSeparatedByCharactersInSet:v44];
+        v45 = [name componentsSeparatedByCharactersInSet:v44];
 
         v14 = v43;
         [(HKPIIRedactor *)v6 _addNames:v45 toArray:v7];
       }
 
-      v46 = [MEMORY[0x277CCCF90] accountOwnerType];
+      accountOwnerType = [MEMORY[0x277CCCF90] accountOwnerType];
       v76 = 0;
-      v47 = [HDSampleEntity samplesWithType:v46 profile:v5 encodingOptions:MEMORY[0x277CBEC10] predicate:0 limit:0 anchor:0 error:&v76];
+      v47 = [HDSampleEntity samplesWithType:accountOwnerType profile:v5 encodingOptions:MEMORY[0x277CBEC10] predicate:0 limit:0 anchor:0 error:&v76];
       v48 = v76;
 
       if (v47)
@@ -134,7 +134,7 @@ LABEL_49:
         v62 = v48;
         v63 = v14;
         v70 = v5;
-        v64 = a1;
+        selfCopy = self;
         v74 = 0u;
         v75 = 0u;
         v72 = 0u;
@@ -154,9 +154,9 @@ LABEL_49:
                 objc_enumerationMutation(v40);
               }
 
-              v53 = [*(*(&v72 + 1) + 8 * i) name];
-              v54 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-              v55 = [v53 componentsSeparatedByCharactersInSet:v54];
+              name2 = [*(*(&v72 + 1) + 8 * i) name];
+              whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+              v55 = [name2 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
               [(HKPIIRedactor *)v6 _addNames:v55 toArray:v7];
             }
@@ -169,7 +169,7 @@ LABEL_49:
 
         v18 = v7;
         v14 = v63;
-        a1 = v64;
+        self = selfCopy;
         v5 = v70;
         v13 = v66;
         v34 = v65;
@@ -267,7 +267,7 @@ LABEL_50:
 
   if (v18)
   {
-    v59 = [a1 redactorWithNames:v18 error:a4];
+    v59 = [self redactorWithNames:v18 error:a4];
   }
 
   else

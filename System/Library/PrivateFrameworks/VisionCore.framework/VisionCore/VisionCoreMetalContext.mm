@@ -1,50 +1,50 @@
 @interface VisionCoreMetalContext
-+ (id)metalContextAndReturnError:(id *)a3;
-+ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)a3;
-- (BOOL)writeMetalTextureToData:(void *)a3 texture:(id)a4 mipmapLevel:(int)a5;
-- (BOOL)writeMetalTextureToFile:(const char *)a3 texture:(id)a4 mipmapLevel:(int)a5;
-- (VisionCoreMetalContext)initWithLibrary:(id)a3 device:(id)a4 commandQueue:(id)a5;
-- (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)a3 pixelFormat:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 plane:(unint64_t)a7;
-- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 plane:(unint64_t)a5;
-- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 textureSize:(CGSize)a5 plane:(unint64_t)a6;
-- (id)newBufferWithPixelFormat:(unint64_t)a3 width:(int)a4 data:(const void *)a5;
-- (id)newTextureWithPixelFormat:(unint64_t)a3 width:(int)a4 height:(int)a5;
-- (id)readBufferFromFile:(const char *)a3 width:(int)a4 pixelFormat:(unint64_t)a5;
-- (id)readTextureFromFile:(const char *)a3 width:(int)a4 height:(int)a5 pixelFormat:(unint64_t)a6;
-- (int)writeMetalBufferToFile:(const char *)a3 buffer:(id)a4;
-- (void)copyMTLBufferToMTLTexture:(id)a3 bytesPerRow:(unint64_t)a4 texture:(id)a5;
++ (id)metalContextAndReturnError:(id *)error;
++ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)format;
+- (BOOL)writeMetalTextureToData:(void *)data texture:(id)texture mipmapLevel:(int)level;
+- (BOOL)writeMetalTextureToFile:(const char *)file texture:(id)texture mipmapLevel:(int)level;
+- (VisionCoreMetalContext)initWithLibrary:(id)library device:(id)device commandQueue:(id)queue;
+- (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)texture pixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height plane:(unint64_t)plane;
+- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format plane:(unint64_t)plane;
+- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format textureSize:(CGSize)size plane:(unint64_t)plane;
+- (id)newBufferWithPixelFormat:(unint64_t)format width:(int)width data:(const void *)data;
+- (id)newTextureWithPixelFormat:(unint64_t)format width:(int)width height:(int)height;
+- (id)readBufferFromFile:(const char *)file width:(int)width pixelFormat:(unint64_t)format;
+- (id)readTextureFromFile:(const char *)file width:(int)width height:(int)height pixelFormat:(unint64_t)format;
+- (int)writeMetalBufferToFile:(const char *)file buffer:(id)buffer;
+- (void)copyMTLBufferToMTLTexture:(id)texture bytesPerRow:(unint64_t)row texture:(id)a5;
 @end
 
 @implementation VisionCoreMetalContext
 
-- (void)copyMTLBufferToMTLTexture:(id)a3 bytesPerRow:(unint64_t)a4 texture:(id)a5
+- (void)copyMTLBufferToMTLTexture:(id)texture bytesPerRow:(unint64_t)row texture:(id)a5
 {
   commandQueue = self->_commandQueue;
   v8 = a5;
-  v9 = a3;
-  v10 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  v11 = [v10 blitCommandEncoder];
-  v12 = [v8 height] * a4;
+  textureCopy = texture;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  blitCommandEncoder = [commandBuffer blitCommandEncoder];
+  v12 = [v8 height] * row;
   v14[0] = [v8 width];
   v14[1] = [v8 height];
   v14[2] = [v8 depth];
   memset(v13, 0, sizeof(v13));
-  [v11 copyFromBuffer:v9 sourceOffset:0 sourceBytesPerRow:a4 sourceBytesPerImage:v12 sourceSize:v14 toTexture:v8 destinationSlice:0 destinationLevel:0 destinationOrigin:v13];
+  [blitCommandEncoder copyFromBuffer:textureCopy sourceOffset:0 sourceBytesPerRow:row sourceBytesPerImage:v12 sourceSize:v14 toTexture:v8 destinationSlice:0 destinationLevel:0 destinationOrigin:v13];
 
-  [v11 endEncoding];
-  [v10 addCompletedHandler:&__block_literal_global_2600];
-  [v10 commit];
-  [v10 waitUntilCompleted];
+  [blitCommandEncoder endEncoding];
+  [commandBuffer addCompletedHandler:&__block_literal_global_2600];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
-- (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)a3 pixelFormat:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 plane:(unint64_t)a7
+- (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)texture pixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height plane:(unint64_t)plane
 {
-  v10 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:a4 width:a5 height:a6 mipmapped:0];
+  v10 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:format width:width height:height mipmapped:0];
   v11 = v10;
   if (v10)
   {
     [v10 setUsage:23];
-    v12 = [(MTLDevice *)self->_device newTextureWithDescriptor:v11 iosurface:a3 plane:a7];
+    v12 = [(MTLDevice *)self->_device newTextureWithDescriptor:v11 iosurface:texture plane:plane];
     if (v12)
     {
       v13 = v12;
@@ -64,16 +64,16 @@
   return v13;
 }
 
-- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 textureSize:(CGSize)a5 plane:(unint64_t)a6
+- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format textureSize:(CGSize)size plane:(unint64_t)plane
 {
-  height = a5.height;
-  width = a5.width;
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  height = size.height;
+  width = size.width;
+  IOSurface = CVPixelBufferGetIOSurface(texture);
   if (IOSurface)
   {
     v12 = IOSurface;
-    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, a6);
-    HeightOfPlane = IOSurfaceGetHeightOfPlane(v12, a6);
+    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, plane);
+    HeightOfPlane = IOSurfaceGetHeightOfPlane(v12, plane);
     if (width > WidthOfPlane || height > HeightOfPlane)
     {
       IOSurface = 0;
@@ -81,34 +81,34 @@
 
     else
     {
-      IOSurface = [(VisionCoreMetalContext *)self bindIOSurfaceToMTL2DTexture:v12 pixelFormat:a4 width:width height:height plane:a6];
+      IOSurface = [(VisionCoreMetalContext *)self bindIOSurfaceToMTL2DTexture:v12 pixelFormat:format width:width height:height plane:plane];
     }
   }
 
   return IOSurface;
 }
 
-- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 plane:(unint64_t)a5
+- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format plane:(unint64_t)plane
 {
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(texture);
   if (IOSurface)
   {
     v9 = IOSurface;
-    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, a5);
-    IOSurface = [(VisionCoreMetalContext *)self bindIOSurfaceToMTL2DTexture:v9 pixelFormat:a4 width:WidthOfPlane height:IOSurfaceGetHeightOfPlane(v9 plane:a5), a5];
+    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, plane);
+    IOSurface = [(VisionCoreMetalContext *)self bindIOSurfaceToMTL2DTexture:v9 pixelFormat:format width:WidthOfPlane height:IOSurfaceGetHeightOfPlane(v9 plane:plane), plane];
   }
 
   return IOSurface;
 }
 
-- (id)readBufferFromFile:(const char *)a3 width:(int)a4 pixelFormat:(unint64_t)a5
+- (id)readBufferFromFile:(const char *)file width:(int)width pixelFormat:(unint64_t)format
 {
-  v7 = [VisionCoreMetalContext bytesPerPixelForTextureFormat:a5]* a4;
+  v7 = [VisionCoreMetalContext bytesPerPixelForTextureFormat:format]* width;
   v8 = malloc_type_malloc(v7, 0x100004077774924uLL);
   if (v8)
   {
     v15 = v8;
-    v16 = fopen(a3, "rb");
+    v16 = fopen(file, "rb");
     if (v16)
     {
       v23 = v16;
@@ -119,7 +119,7 @@
       goto LABEL_7;
     }
 
-    VisionCoreValidatedLog(4, @"Unable to fopen(%s) for reading\n", v17, v18, v19, v20, v21, v22, a3);
+    VisionCoreValidatedLog(4, @"Unable to fopen(%s) for reading\n", v17, v18, v19, v20, v21, v22, file);
     free(v15);
   }
 
@@ -134,27 +134,27 @@ LABEL_7:
   return v24;
 }
 
-- (id)readTextureFromFile:(const char *)a3 width:(int)a4 height:(int)a5 pixelFormat:(unint64_t)a6
+- (id)readTextureFromFile:(const char *)file width:(int)width height:(int)height pixelFormat:(unint64_t)format
 {
-  v7 = *&a5;
-  v8 = *&a4;
-  v11 = a4;
-  v12 = [VisionCoreMetalContext bytesPerPixelForTextureFormat:a6]* a4;
+  v7 = *&height;
+  v8 = *&width;
+  widthCopy = width;
+  v12 = [VisionCoreMetalContext bytesPerPixelForTextureFormat:format]* width;
   v13 = v12 * v7;
   v14 = malloc_type_malloc(v13, 0x100004077774924uLL);
   if (v14)
   {
     v21 = v14;
     v34 = v12;
-    v22 = self;
-    v23 = fopen(a3, "rb");
+    selfCopy = self;
+    v23 = fopen(file, "rb");
     if (v23)
     {
       v30 = v23;
-      v31 = [(VisionCoreMetalContext *)v22 newTextureWithPixelFormat:a6 width:v8 height:v7];
+      v31 = [(VisionCoreMetalContext *)selfCopy newTextureWithPixelFormat:format width:v8 height:v7];
       fread(v21, v13, 1uLL, v30);
       memset(v35, 0, 24);
-      v35[3] = v11;
+      v35[3] = widthCopy;
       if (v7 == 1)
       {
         v36 = vdupq_n_s64(1uLL);
@@ -172,7 +172,7 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    VisionCoreValidatedLog(4, @"Unable to fopen(%s) for reading\n", v24, v25, v26, v27, v28, v29, a3);
+    VisionCoreValidatedLog(4, @"Unable to fopen(%s) for reading\n", v24, v25, v26, v27, v28, v29, file);
     free(v21);
   }
 
@@ -187,14 +187,14 @@ LABEL_10:
   return v31;
 }
 
-- (id)newBufferWithPixelFormat:(unint64_t)a3 width:(int)a4 data:(const void *)a5
+- (id)newBufferWithPixelFormat:(unint64_t)format width:(int)width data:(const void *)data
 {
-  v7 = [VisionCoreMetalContext bytesPerPixelForTextureFormat:a3]* a4;
+  v7 = [VisionCoreMetalContext bytesPerPixelForTextureFormat:format]* width;
   device = self->_device;
-  if (a5)
+  if (data)
   {
 
-    return [(MTLDevice *)device newBufferWithBytes:a5 length:v7 options:0];
+    return [(MTLDevice *)device newBufferWithBytes:data length:v7 options:0];
   }
 
   else
@@ -204,16 +204,16 @@ LABEL_10:
   }
 }
 
-- (id)newTextureWithPixelFormat:(unint64_t)a3 width:(int)a4 height:(int)a5
+- (id)newTextureWithPixelFormat:(unint64_t)format width:(int)width height:(int)height
 {
-  if (a5 == 1)
+  if (height == 1)
   {
-    v6 = [MEMORY[0x1E69741C0] textureBufferDescriptorWithPixelFormat:a3 width:? resourceOptions:? usage:?];
+    v6 = [MEMORY[0x1E69741C0] textureBufferDescriptorWithPixelFormat:format width:? resourceOptions:? usage:?];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:a3 width:? height:? mipmapped:?];
+    v6 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:format width:? height:? mipmapped:?];
     [v6 setUsage:19];
   }
 
@@ -222,16 +222,16 @@ LABEL_10:
   return v7;
 }
 
-- (int)writeMetalBufferToFile:(const char *)a3 buffer:(id)a4
+- (int)writeMetalBufferToFile:(const char *)file buffer:(id)buffer
 {
-  v5 = a4;
-  v6 = fopen(a3, "wb");
+  bufferCopy = buffer;
+  v6 = fopen(file, "wb");
   if (v6)
   {
     v13 = v6;
-    v14 = [v5 contents];
-    v15 = [v5 length];
-    if (fwrite(v14, 1uLL, v15, v13) == v15)
+    contents = [bufferCopy contents];
+    v15 = [bufferCopy length];
+    if (fwrite(contents, 1uLL, v15, v13) == v15)
     {
       v22 = 0;
     }
@@ -247,45 +247,45 @@ LABEL_10:
 
   else
   {
-    VisionCoreValidatedLog(4, @"Unable to fopen(%s) for writing\n", v7, v8, v9, v10, v11, v12, a3);
+    VisionCoreValidatedLog(4, @"Unable to fopen(%s) for writing\n", v7, v8, v9, v10, v11, v12, file);
     v22 = -1;
   }
 
   return v22;
 }
 
-- (BOOL)writeMetalTextureToFile:(const char *)a3 texture:(id)a4 mipmapLevel:(int)a5
+- (BOOL)writeMetalTextureToFile:(const char *)file texture:(id)texture mipmapLevel:(int)level
 {
-  v7 = a4;
-  v8 = v7;
+  textureCopy = texture;
+  v8 = textureCopy;
   v9 = 0;
-  if (!a3 || !v7 || a5 < 0)
+  if (!file || !textureCopy || level < 0)
   {
     goto LABEL_10;
   }
 
-  if ([v7 mipmapLevelCount] <= a5)
+  if ([textureCopy mipmapLevelCount] <= level)
   {
     v9 = 0;
     goto LABEL_10;
   }
 
-  v10 = a5;
+  levelCopy = level;
   [v8 pixelFormat];
   MTLPixelFormatGetInfoForDevice();
   v11 = v32;
-  v12 = [v8 width] >> v10;
-  v13 = [v8 height] >> v10;
+  v12 = [v8 width] >> levelCopy;
+  v13 = [v8 height] >> levelCopy;
   v9 = malloc_type_malloc(v12 * v32 * v13, 0x100004077774924uLL);
   memset(v31, 0, sizeof(v31));
   v32 = v12;
   v33 = v13;
   v34 = 1;
-  [v8 getBytes:v9 bytesPerRow:v12 * v11 fromRegion:v31 mipmapLevel:v10];
-  v14 = fopen(a3, "wb");
+  [v8 getBytes:v9 bytesPerRow:v12 * v11 fromRegion:v31 mipmapLevel:levelCopy];
+  v14 = fopen(file, "wb");
   if (!v14)
   {
-    VisionCoreValidatedLog(4, @"Unable to fopen(%s) for writing\n", v15, v16, v17, v18, v19, v20, a3);
+    VisionCoreValidatedLog(4, @"Unable to fopen(%s) for writing\n", v15, v16, v17, v18, v19, v20, file);
 LABEL_10:
     free(v9);
     v28 = 0;
@@ -306,14 +306,14 @@ LABEL_11:
   return v28;
 }
 
-- (BOOL)writeMetalTextureToData:(void *)a3 texture:(id)a4 mipmapLevel:(int)a5
+- (BOOL)writeMetalTextureToData:(void *)data texture:(id)texture mipmapLevel:(int)level
 {
-  v7 = a4;
-  v8 = v7;
+  textureCopy = texture;
+  v8 = textureCopy;
   v9 = 0;
-  if (v7 && (a5 & 0x80000000) == 0)
+  if (textureCopy && (level & 0x80000000) == 0)
   {
-    if ([v7 mipmapLevelCount] <= a5)
+    if ([textureCopy mipmapLevelCount] <= level)
     {
       v9 = 0;
     }
@@ -322,62 +322,62 @@ LABEL_11:
     {
       [v8 pixelFormat];
       MTLPixelFormatGetInfoForDevice();
-      v10 = [v8 width] >> a5;
-      v11 = [v8 height];
+      v10 = [v8 width] >> level;
+      height = [v8 height];
       memset(v14, 0, sizeof(v14));
       v12 = v10 * v15;
       v15 = v10;
       v9 = 1;
-      v16 = v11 >> a5;
+      v16 = height >> level;
       v17 = 1;
-      [v8 getBytes:a3 bytesPerRow:v12 fromRegion:v14 mipmapLevel:a5];
+      [v8 getBytes:data bytesPerRow:v12 fromRegion:v14 mipmapLevel:level];
     }
   }
 
   return v9;
 }
 
-- (VisionCoreMetalContext)initWithLibrary:(id)a3 device:(id)a4 commandQueue:(id)a5
+- (VisionCoreMetalContext)initWithLibrary:(id)library device:(id)device commandQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  deviceCopy = device;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = VisionCoreMetalContext;
   v12 = [(VisionCoreMetalContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_library, a3);
-    objc_storeStrong(&v13->_device, a4);
-    objc_storeStrong(&v13->_commandQueue, a5);
+    objc_storeStrong(&v12->_library, library);
+    objc_storeStrong(&v13->_device, device);
+    objc_storeStrong(&v13->_commandQueue, queue);
   }
 
   return v13;
 }
 
-+ (id)metalContextAndReturnError:(id *)a3
++ (id)metalContextAndReturnError:(id *)error
 {
   v5 = MTLCreateSystemDefaultDevice();
   if (v5)
   {
     v6 = VisionCoreFrameworkBundle();
     v7 = [v6 URLForResource:@"default" withExtension:@"metallib"];
-    v8 = [v5 newLibraryWithURL:v7 error:a3];
+    v8 = [v5 newLibraryWithURL:v7 error:error];
     if (v8)
     {
-      v9 = [v5 newCommandQueue];
-      v10 = v9;
-      if (v9)
+      newCommandQueue = [v5 newCommandQueue];
+      v10 = newCommandQueue;
+      if (newCommandQueue)
       {
-        [v9 setBackgroundGPUPriority:2];
-        v11 = [[a1 alloc] initWithLibrary:v8 device:v5 commandQueue:v10];
+        [newCommandQueue setBackgroundGPUPriority:2];
+        v11 = [[self alloc] initWithLibrary:v8 device:v5 commandQueue:v10];
       }
 
-      else if (a3)
+      else if (error)
       {
         [MEMORY[0x1E696ABC0] VisionCoreErrorForInternalErrorWithLocalizedDescription:@"Unable to create command queue "];
-        *a3 = v11 = 0;
+        *error = v11 = 0;
       }
 
       else
@@ -392,10 +392,10 @@ LABEL_11:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] VisionCoreErrorForInternalErrorWithLocalizedDescription:@"MTLDevice is nil"];
-    *a3 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -406,10 +406,10 @@ LABEL_11:
   return v11;
 }
 
-+ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)a3
++ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)format
 {
-  v3 = a3 - 62;
-  if (a3 - 62 <= 0x3F)
+  v3 = format - 62;
+  if (format - 62 <= 0x3F)
   {
     if (((1 << v3) & 0xF00C1F0FLL) != 0)
     {
@@ -427,19 +427,19 @@ LABEL_11:
     }
   }
 
-  if (a3 <= 0x3C)
+  if (format <= 0x3C)
   {
-    if (((1 << a3) & 0x80743D00000) != 0)
+    if (((1 << format) & 0x80743D00000) != 0)
     {
       return 2;
     }
 
-    if (((1 << a3) & 0x7402) != 0)
+    if (((1 << format) & 0x7402) != 0)
     {
       return 1;
     }
 
-    if (((1 << a3) & 0x10E0000000000000) != 0)
+    if (((1 << format) & 0x10E0000000000000) != 0)
     {
       return 4;
     }

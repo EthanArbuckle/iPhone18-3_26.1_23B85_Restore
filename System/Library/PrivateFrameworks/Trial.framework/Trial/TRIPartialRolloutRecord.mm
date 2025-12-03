@@ -1,57 +1,57 @@
 @interface TRIPartialRolloutRecord
-+ (id)partialRecordWithFullRecord:(id)a3;
-+ (id)recordWithDeployment:(id)a3 rampId:(id)a4 activeFactorPackSetId:(id)a5 activeTargetingRuleIndex:(id)a6 targetedFactorPackSetId:(id)a7 targetedTargetingRuleIndex:(id)a8 status:(int64_t)a9 namespaces:(id)a10;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecord:(id)a3;
-- (TRIPartialRolloutRecord)initWithCoder:(id)a3;
-- (TRIPartialRolloutRecord)initWithDeployment:(id)a3 rampId:(id)a4 activeFactorPackSetId:(id)a5 activeTargetingRuleIndex:(id)a6 targetedFactorPackSetId:(id)a7 targetedTargetingRuleIndex:(id)a8 status:(int64_t)a9 namespaces:(id)a10;
-- (id)copyWithReplacementActiveFactorPackSetId:(id)a3;
-- (id)copyWithReplacementActiveTargetingRuleIndex:(id)a3;
-- (id)copyWithReplacementDeployment:(id)a3;
-- (id)copyWithReplacementNamespaces:(id)a3;
-- (id)copyWithReplacementRampId:(id)a3;
-- (id)copyWithReplacementTargetedFactorPackSetId:(id)a3;
-- (id)copyWithReplacementTargetedTargetingRuleIndex:(id)a3;
++ (id)partialRecordWithFullRecord:(id)record;
++ (id)recordWithDeployment:(id)deployment rampId:(id)id activeFactorPackSetId:(id)setId activeTargetingRuleIndex:(id)index targetedFactorPackSetId:(id)packSetId targetedTargetingRuleIndex:(id)ruleIndex status:(int64_t)status namespaces:(id)self0;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecord:(id)record;
+- (TRIPartialRolloutRecord)initWithCoder:(id)coder;
+- (TRIPartialRolloutRecord)initWithDeployment:(id)deployment rampId:(id)id activeFactorPackSetId:(id)setId activeTargetingRuleIndex:(id)index targetedFactorPackSetId:(id)packSetId targetedTargetingRuleIndex:(id)ruleIndex status:(int64_t)status namespaces:(id)self0;
+- (id)copyWithReplacementActiveFactorPackSetId:(id)id;
+- (id)copyWithReplacementActiveTargetingRuleIndex:(id)index;
+- (id)copyWithReplacementDeployment:(id)deployment;
+- (id)copyWithReplacementNamespaces:(id)namespaces;
+- (id)copyWithReplacementRampId:(id)id;
+- (id)copyWithReplacementTargetedFactorPackSetId:(id)id;
+- (id)copyWithReplacementTargetedTargetingRuleIndex:(id)index;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIPartialRolloutRecord
 
-+ (id)partialRecordWithFullRecord:(id)a3
++ (id)partialRecordWithFullRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = [TRIPartialRolloutRecord alloc];
-  v5 = [v3 deployment];
-  v6 = [v3 rampId];
-  v7 = [v3 activeFactorPackSetId];
-  v8 = [v3 activeTargetingRuleIndex];
-  v9 = [v3 targetedFactorPackSetId];
-  v10 = [v3 targetedTargetingRuleIndex];
-  v11 = [v3 status];
-  v12 = [v3 namespaces];
+  deployment = [recordCopy deployment];
+  rampId = [recordCopy rampId];
+  activeFactorPackSetId = [recordCopy activeFactorPackSetId];
+  activeTargetingRuleIndex = [recordCopy activeTargetingRuleIndex];
+  targetedFactorPackSetId = [recordCopy targetedFactorPackSetId];
+  targetedTargetingRuleIndex = [recordCopy targetedTargetingRuleIndex];
+  status = [recordCopy status];
+  namespaces = [recordCopy namespaces];
 
-  v13 = [(TRIPartialRolloutRecord *)v4 initWithDeployment:v5 rampId:v6 activeFactorPackSetId:v7 activeTargetingRuleIndex:v8 targetedFactorPackSetId:v9 targetedTargetingRuleIndex:v10 status:v11 namespaces:v12];
+  v13 = [(TRIPartialRolloutRecord *)v4 initWithDeployment:deployment rampId:rampId activeFactorPackSetId:activeFactorPackSetId activeTargetingRuleIndex:activeTargetingRuleIndex targetedFactorPackSetId:targetedFactorPackSetId targetedTargetingRuleIndex:targetedTargetingRuleIndex status:status namespaces:namespaces];
 
   return v13;
 }
 
-- (TRIPartialRolloutRecord)initWithDeployment:(id)a3 rampId:(id)a4 activeFactorPackSetId:(id)a5 activeTargetingRuleIndex:(id)a6 targetedFactorPackSetId:(id)a7 targetedTargetingRuleIndex:(id)a8 status:(int64_t)a9 namespaces:(id)a10
+- (TRIPartialRolloutRecord)initWithDeployment:(id)deployment rampId:(id)id activeFactorPackSetId:(id)setId activeTargetingRuleIndex:(id)index targetedFactorPackSetId:(id)packSetId targetedTargetingRuleIndex:(id)ruleIndex status:(int64_t)status namespaces:(id)self0
 {
-  v16 = a3;
-  v29 = a4;
-  v17 = a4;
-  v30 = a5;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v31 = a8;
-  v21 = a10;
-  v32 = v21;
-  if (v16)
+  deploymentCopy = deployment;
+  idCopy = id;
+  idCopy2 = id;
+  setIdCopy = setId;
+  setIdCopy2 = setId;
+  indexCopy = index;
+  packSetIdCopy = packSetId;
+  ruleIndexCopy = ruleIndex;
+  namespacesCopy = namespaces;
+  v32 = namespacesCopy;
+  if (deploymentCopy)
   {
-    if (v21)
+    if (namespacesCopy)
     {
       goto LABEL_3;
     }
@@ -59,8 +59,8 @@
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1828 description:{@"Invalid parameter not satisfying: %@", @"deployment != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1828 description:{@"Invalid parameter not satisfying: %@", @"deployment != nil"}];
 
     if (v32)
     {
@@ -68,8 +68,8 @@
     }
   }
 
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1829 description:{@"Invalid parameter not satisfying: %@", @"namespaces != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1829 description:{@"Invalid parameter not satisfying: %@", @"namespaces != nil"}];
 
 LABEL_3:
   v33.receiver = self;
@@ -78,107 +78,107 @@ LABEL_3:
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_deployment, a3);
-    objc_storeStrong(&v23->_rampId, v29);
-    objc_storeStrong(&v23->_activeFactorPackSetId, v30);
-    objc_storeStrong(&v23->_activeTargetingRuleIndex, a6);
-    objc_storeStrong(&v23->_targetedFactorPackSetId, a7);
-    objc_storeStrong(&v23->_targetedTargetingRuleIndex, a8);
-    v23->_status = a9;
-    objc_storeStrong(&v23->_namespaces, a10);
+    objc_storeStrong(&v22->_deployment, deployment);
+    objc_storeStrong(&v23->_rampId, idCopy);
+    objc_storeStrong(&v23->_activeFactorPackSetId, setIdCopy);
+    objc_storeStrong(&v23->_activeTargetingRuleIndex, index);
+    objc_storeStrong(&v23->_targetedFactorPackSetId, packSetId);
+    objc_storeStrong(&v23->_targetedTargetingRuleIndex, ruleIndex);
+    v23->_status = status;
+    objc_storeStrong(&v23->_namespaces, namespaces);
   }
 
   return v23;
 }
 
-+ (id)recordWithDeployment:(id)a3 rampId:(id)a4 activeFactorPackSetId:(id)a5 activeTargetingRuleIndex:(id)a6 targetedFactorPackSetId:(id)a7 targetedTargetingRuleIndex:(id)a8 status:(int64_t)a9 namespaces:(id)a10
++ (id)recordWithDeployment:(id)deployment rampId:(id)id activeFactorPackSetId:(id)setId activeTargetingRuleIndex:(id)index targetedFactorPackSetId:(id)packSetId targetedTargetingRuleIndex:(id)ruleIndex status:(int64_t)status namespaces:(id)self0
 {
-  v17 = a10;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [[a1 alloc] initWithDeployment:v23 rampId:v22 activeFactorPackSetId:v21 activeTargetingRuleIndex:v20 targetedFactorPackSetId:v19 targetedTargetingRuleIndex:v18 status:a9 namespaces:v17];
+  namespacesCopy = namespaces;
+  ruleIndexCopy = ruleIndex;
+  packSetIdCopy = packSetId;
+  indexCopy = index;
+  setIdCopy = setId;
+  idCopy = id;
+  deploymentCopy = deployment;
+  v24 = [[self alloc] initWithDeployment:deploymentCopy rampId:idCopy activeFactorPackSetId:setIdCopy activeTargetingRuleIndex:indexCopy targetedFactorPackSetId:packSetIdCopy targetedTargetingRuleIndex:ruleIndexCopy status:status namespaces:namespacesCopy];
 
   return v24;
 }
 
-- (id)copyWithReplacementDeployment:(id)a3
+- (id)copyWithReplacementDeployment:(id)deployment
 {
-  v4 = a3;
+  deploymentCopy = deployment;
   v5 = objc_alloc(objc_opt_class());
   status = self->_status;
-  v7 = [v5 initWithDeployment:v4 rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:status namespaces:self->_namespaces];
+  v7 = [v5 initWithDeployment:deploymentCopy rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:status namespaces:self->_namespaces];
 
   return v7;
 }
 
-- (id)copyWithReplacementRampId:(id)a3
+- (id)copyWithReplacementRampId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:v4 activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:idCopy activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces];
 
   return v5;
 }
 
-- (id)copyWithReplacementActiveFactorPackSetId:(id)a3
+- (id)copyWithReplacementActiveFactorPackSetId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc(objc_opt_class());
   status = self->_status;
-  v7 = [v5 initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:v4 activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:status namespaces:self->_namespaces];
+  v7 = [v5 initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:idCopy activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:status namespaces:self->_namespaces];
 
   return v7;
 }
 
-- (id)copyWithReplacementActiveTargetingRuleIndex:(id)a3
+- (id)copyWithReplacementActiveTargetingRuleIndex:(id)index
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:v4 targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces];
+  indexCopy = index;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:indexCopy targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:self->_namespaces];
 
   return v5;
 }
 
-- (id)copyWithReplacementTargetedFactorPackSetId:(id)a3
+- (id)copyWithReplacementTargetedFactorPackSetId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc(objc_opt_class());
   status = self->_status;
-  v7 = [v5 initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:v4 targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:status namespaces:self->_namespaces];
+  v7 = [v5 initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:idCopy targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:status namespaces:self->_namespaces];
 
   return v7;
 }
 
-- (id)copyWithReplacementTargetedTargetingRuleIndex:(id)a3
+- (id)copyWithReplacementTargetedTargetingRuleIndex:(id)index
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:v4 status:self->_status namespaces:self->_namespaces];
+  indexCopy = index;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:indexCopy status:self->_status namespaces:self->_namespaces];
 
   return v5;
 }
 
-- (id)copyWithReplacementNamespaces:(id)a3
+- (id)copyWithReplacementNamespaces:(id)namespaces
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:v4];
+  namespacesCopy = namespaces;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeployment:self->_deployment rampId:self->_rampId activeFactorPackSetId:self->_activeFactorPackSetId activeTargetingRuleIndex:self->_activeTargetingRuleIndex targetedFactorPackSetId:self->_targetedFactorPackSetId targetedTargetingRuleIndex:self->_targetedTargetingRuleIndex status:self->_status namespaces:namespacesCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToRecord:(id)a3
+- (BOOL)isEqualToRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_24;
   }
 
   v6 = self->_deployment == 0;
-  v7 = [v4 deployment];
-  v8 = v7 != 0;
+  deployment = [recordCopy deployment];
+  v8 = deployment != 0;
 
   if (v6 == v8)
   {
@@ -188,8 +188,8 @@ LABEL_3:
   deployment = self->_deployment;
   if (deployment)
   {
-    v10 = [v5 deployment];
-    v11 = [(TRIRolloutDeployment *)deployment isEqual:v10];
+    deployment2 = [v5 deployment];
+    v11 = [(TRIRolloutDeployment *)deployment isEqual:deployment2];
 
     if (!v11)
     {
@@ -198,8 +198,8 @@ LABEL_3:
   }
 
   v12 = self->_rampId == 0;
-  v13 = [v5 rampId];
-  v14 = v13 != 0;
+  rampId = [v5 rampId];
+  v14 = rampId != 0;
 
   if (v12 == v14)
   {
@@ -209,8 +209,8 @@ LABEL_3:
   rampId = self->_rampId;
   if (rampId)
   {
-    v16 = [v5 rampId];
-    v17 = [(TRIRampId *)rampId isEqual:v16];
+    rampId2 = [v5 rampId];
+    v17 = [(TRIRampId *)rampId isEqual:rampId2];
 
     if (!v17)
     {
@@ -219,8 +219,8 @@ LABEL_3:
   }
 
   v18 = self->_activeFactorPackSetId == 0;
-  v19 = [v5 activeFactorPackSetId];
-  v20 = v19 != 0;
+  activeFactorPackSetId = [v5 activeFactorPackSetId];
+  v20 = activeFactorPackSetId != 0;
 
   if (v18 == v20)
   {
@@ -230,8 +230,8 @@ LABEL_3:
   activeFactorPackSetId = self->_activeFactorPackSetId;
   if (activeFactorPackSetId)
   {
-    v22 = [v5 activeFactorPackSetId];
-    v23 = [(TRIFactorPackSetId *)activeFactorPackSetId isEqual:v22];
+    activeFactorPackSetId2 = [v5 activeFactorPackSetId];
+    v23 = [(TRIFactorPackSetId *)activeFactorPackSetId isEqual:activeFactorPackSetId2];
 
     if (!v23)
     {
@@ -240,8 +240,8 @@ LABEL_3:
   }
 
   v24 = self->_activeTargetingRuleIndex == 0;
-  v25 = [v5 activeTargetingRuleIndex];
-  v26 = v25 != 0;
+  activeTargetingRuleIndex = [v5 activeTargetingRuleIndex];
+  v26 = activeTargetingRuleIndex != 0;
 
   if (v24 == v26)
   {
@@ -251,8 +251,8 @@ LABEL_3:
   activeTargetingRuleIndex = self->_activeTargetingRuleIndex;
   if (activeTargetingRuleIndex)
   {
-    v28 = [v5 activeTargetingRuleIndex];
-    v29 = [(NSNumber *)activeTargetingRuleIndex isEqual:v28];
+    activeTargetingRuleIndex2 = [v5 activeTargetingRuleIndex];
+    v29 = [(NSNumber *)activeTargetingRuleIndex isEqual:activeTargetingRuleIndex2];
 
     if (!v29)
     {
@@ -261,8 +261,8 @@ LABEL_3:
   }
 
   v30 = self->_targetedFactorPackSetId == 0;
-  v31 = [v5 targetedFactorPackSetId];
-  v32 = v31 != 0;
+  targetedFactorPackSetId = [v5 targetedFactorPackSetId];
+  v32 = targetedFactorPackSetId != 0;
 
   if (v30 == v32)
   {
@@ -272,8 +272,8 @@ LABEL_3:
   targetedFactorPackSetId = self->_targetedFactorPackSetId;
   if (targetedFactorPackSetId)
   {
-    v34 = [v5 targetedFactorPackSetId];
-    v35 = [(TRIFactorPackSetId *)targetedFactorPackSetId isEqual:v34];
+    targetedFactorPackSetId2 = [v5 targetedFactorPackSetId];
+    v35 = [(TRIFactorPackSetId *)targetedFactorPackSetId isEqual:targetedFactorPackSetId2];
 
     if (!v35)
     {
@@ -282,8 +282,8 @@ LABEL_3:
   }
 
   v36 = self->_targetedTargetingRuleIndex == 0;
-  v37 = [v5 targetedTargetingRuleIndex];
-  v38 = v37 != 0;
+  targetedTargetingRuleIndex = [v5 targetedTargetingRuleIndex];
+  v38 = targetedTargetingRuleIndex != 0;
 
   if (v36 == v38)
   {
@@ -293,8 +293,8 @@ LABEL_3:
   targetedTargetingRuleIndex = self->_targetedTargetingRuleIndex;
   if (targetedTargetingRuleIndex)
   {
-    v40 = [v5 targetedTargetingRuleIndex];
-    v41 = [(NSNumber *)targetedTargetingRuleIndex isEqual:v40];
+    targetedTargetingRuleIndex2 = [v5 targetedTargetingRuleIndex];
+    v41 = [(NSNumber *)targetedTargetingRuleIndex isEqual:targetedTargetingRuleIndex2];
 
     if (!v41)
     {
@@ -314,8 +314,8 @@ LABEL_24:
     namespaces = self->_namespaces;
     if (namespaces)
     {
-      v47 = [v5 namespaces];
-      v48 = [(NSArray *)namespaces isEqual:v47];
+      namespaces = [v5 namespaces];
+      v48 = [(NSArray *)namespaces isEqual:namespaces];
     }
 
     else
@@ -327,18 +327,18 @@ LABEL_24:
   return v48 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIPartialRolloutRecord *)self isEqualToRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIPartialRolloutRecord *)self isEqualToRecord:v5];
   }
 
   return v6;
@@ -357,14 +357,14 @@ LABEL_24:
   return [(NSArray *)namespaces hash]- v10 + 32 * v10;
 }
 
-- (TRIPartialRolloutRecord)initWithCoder:(id)a3
+- (TRIPartialRolloutRecord)initWithCoder:(id)coder
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deployment"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deployment"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rampId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rampId"];
     if (v6)
     {
       objc_opt_class();
@@ -379,9 +379,9 @@ LABEL_24:
         v72 = v11;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
         v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:3 userInfo:v12];
-        [v4 failWithError:v13];
+        [coderCopy failWithError:v13];
 LABEL_20:
-        v15 = 0;
+        selfCopy = 0;
 LABEL_21:
 
 LABEL_22:
@@ -394,19 +394,19 @@ LABEL_24:
 
     else
     {
-      v16 = [v4 error];
+      error = [coderCopy error];
 
-      if (v16)
+      if (error)
       {
         v6 = 0;
-        v15 = 0;
+        selfCopy = 0;
 LABEL_26:
 
         goto LABEL_27;
       }
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeFactorPackSetId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeFactorPackSetId"];
     if (v8)
     {
       objc_opt_class();
@@ -421,14 +421,14 @@ LABEL_26:
         v70 = v12;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
         v19 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:3 userInfo:v13];
-        [v4 failWithError:v19];
+        [coderCopy failWithError:v19];
 LABEL_19:
 
         goto LABEL_20;
       }
 
 LABEL_16:
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeTargetingRuleIndex"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeTargetingRuleIndex"];
       if (v10)
       {
         objc_opt_class();
@@ -443,7 +443,7 @@ LABEL_16:
           v68 = v13;
           v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
           v23 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:3 userInfo:v19];
-          [v4 failWithError:v23];
+          [coderCopy failWithError:v23];
 
           v11 = v55;
           goto LABEL_19;
@@ -452,17 +452,17 @@ LABEL_16:
 
       else
       {
-        v26 = [v4 error];
+        error2 = [coderCopy error];
 
-        if (v26)
+        if (error2)
         {
           v10 = 0;
-          v15 = 0;
+          selfCopy = 0;
           goto LABEL_24;
         }
       }
 
-      v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetedFactorPackSetId"];
+      v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetedFactorPackSetId"];
       if (v56)
       {
         objc_opt_class();
@@ -477,7 +477,7 @@ LABEL_16:
           v66 = v52;
           v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
           v30 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:3 userInfo:v29];
-          [v4 failWithError:v30];
+          [coderCopy failWithError:v30];
 
           v11 = v56;
           goto LABEL_20;
@@ -486,17 +486,17 @@ LABEL_16:
 
       else
       {
-        v31 = [v4 error];
+        error3 = [coderCopy error];
 
-        if (v31)
+        if (error3)
         {
           v11 = 0;
-          v15 = 0;
+          selfCopy = 0;
           goto LABEL_23;
         }
       }
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetedTargetingRuleIndex"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetedTargetingRuleIndex"];
       if (v12)
       {
         objc_opt_class();
@@ -511,11 +511,11 @@ LABEL_16:
           v64 = v51;
           v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
           v35 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:3 userInfo:v34];
-          [v4 failWithError:v35];
+          [coderCopy failWithError:v35];
 
 LABEL_50:
 LABEL_51:
-          v15 = 0;
+          selfCopy = 0;
           v11 = v56;
           goto LABEL_21;
         }
@@ -523,16 +523,16 @@ LABEL_51:
 
       else
       {
-        v36 = [v4 error];
+        error4 = [coderCopy error];
 
-        if (v36)
+        if (error4)
         {
           v12 = 0;
           goto LABEL_45;
         }
       }
 
-      v37 = [v4 decodeInt64ForKey:@"status"];
+      v37 = [coderCopy decodeInt64ForKey:@"status"];
       if (v37)
       {
 LABEL_41:
@@ -540,19 +540,19 @@ LABEL_41:
         v38 = objc_alloc(MEMORY[0x277CBEB98]);
         v39 = objc_opt_class();
         v40 = [v38 initWithObjects:{v39, objc_opt_class(), 0}];
-        v13 = [v4 decodeObjectOfClasses:v40 forKey:@"namespaces"];
+        v13 = [coderCopy decodeObjectOfClasses:v40 forKey:@"namespaces"];
 
         if (!v13)
         {
-          v42 = [v4 error];
+          error5 = [coderCopy error];
 
-          if (!v42)
+          if (!error5)
           {
             v59 = *MEMORY[0x277CCA450];
             v60 = @"Retrieved nil serialized value for nonnull TRIPartialRolloutRecord.namespaces";
             v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
             v44 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:2 userInfo:v43];
-            [v4 failWithError:v44];
+            [coderCopy failWithError:v44];
           }
 
           v13 = 0;
@@ -564,7 +564,7 @@ LABEL_41:
         {
           v11 = v56;
           self = [(TRIPartialRolloutRecord *)self initWithDeployment:v5 rampId:v6 activeFactorPackSetId:v8 activeTargetingRuleIndex:v10 targetedFactorPackSetId:v56 targetedTargetingRuleIndex:v12 status:v54 namespaces:v13];
-          v15 = self;
+          selfCopy = self;
           goto LABEL_21;
         }
 
@@ -577,22 +577,22 @@ LABEL_41:
         v58 = v50;
         v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
         v48 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:3 userInfo:v47];
-        [v4 failWithError:v48];
+        [coderCopy failWithError:v48];
 
         goto LABEL_50;
       }
 
-      v41 = [v4 error];
+      error6 = [coderCopy error];
 
-      if (!v41)
+      if (!error6)
       {
-        if (([v4 containsValueForKey:@"status"] & 1) == 0)
+        if (([coderCopy containsValueForKey:@"status"] & 1) == 0)
         {
           v61 = *MEMORY[0x277CCA450];
           v62 = @"Missing serialized value for TRIPartialRolloutRecord.status";
           v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
           v49 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:1 userInfo:v13];
-          [v4 failWithError:v49];
+          [coderCopy failWithError:v49];
 
           goto LABEL_51;
         }
@@ -601,92 +601,92 @@ LABEL_41:
       }
 
 LABEL_45:
-      v15 = 0;
+      selfCopy = 0;
       v11 = v56;
       goto LABEL_22;
     }
 
-    v20 = [v4 error];
+    error7 = [coderCopy error];
 
-    if (!v20)
+    if (!error7)
     {
       goto LABEL_16;
     }
 
     v8 = 0;
 LABEL_15:
-    v15 = 0;
+    selfCopy = 0;
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v14 = [v4 error];
+  error8 = [coderCopy error];
 
-  if (!v14)
+  if (!error8)
   {
     v73 = *MEMORY[0x277CCA450];
     v74[0] = @"Retrieved nil serialized value for nonnull TRIPartialRolloutRecord.deployment";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:&v73 count:1];
     v8 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIPartialRolloutRecordOCNTErrorDomain" code:2 userInfo:v6];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
     goto LABEL_15;
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_27:
 
   v24 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   deployment = self->_deployment;
-  v12 = v4;
+  v12 = coderCopy;
   if (deployment)
   {
-    [v4 encodeObject:deployment forKey:@"deployment"];
-    v4 = v12;
+    [coderCopy encodeObject:deployment forKey:@"deployment"];
+    coderCopy = v12;
   }
 
   rampId = self->_rampId;
   if (rampId)
   {
     [v12 encodeObject:rampId forKey:@"rampId"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   activeFactorPackSetId = self->_activeFactorPackSetId;
   if (activeFactorPackSetId)
   {
     [v12 encodeObject:activeFactorPackSetId forKey:@"activeFactorPackSetId"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   activeTargetingRuleIndex = self->_activeTargetingRuleIndex;
   if (activeTargetingRuleIndex)
   {
     [v12 encodeObject:activeTargetingRuleIndex forKey:@"activeTargetingRuleIndex"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   targetedFactorPackSetId = self->_targetedFactorPackSetId;
   if (targetedFactorPackSetId)
   {
     [v12 encodeObject:targetedFactorPackSetId forKey:@"targetedFactorPackSetId"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   targetedTargetingRuleIndex = self->_targetedTargetingRuleIndex;
   if (targetedTargetingRuleIndex)
   {
     [v12 encodeObject:targetedTargetingRuleIndex forKey:@"targetedTargetingRuleIndex"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
-  [v4 encodeInt64:self->_status forKey:@"status"];
+  [coderCopy encodeInt64:self->_status forKey:@"status"];
   namespaces = self->_namespaces;
   if (namespaces)
   {

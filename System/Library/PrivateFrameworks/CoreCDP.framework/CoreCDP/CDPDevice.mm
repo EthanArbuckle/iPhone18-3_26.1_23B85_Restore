@@ -1,14 +1,14 @@
 @interface CDPDevice
-- (CDPDevice)initWithCoder:(id)a3;
+- (CDPDevice)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)localSecretType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CDPDevice
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CDPDevice);
   v5 = [(NSString *)self->_localizedName copy];
@@ -106,54 +106,54 @@
   return v16;
 }
 
-- (CDPDevice)initWithCoder:(id)a3
+- (CDPDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CDPDevice *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localizedName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localizedName"];
     localizedName = v5->_localizedName;
     v5->_localizedName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_model"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_model"];
     model = v5->_model;
     v5->_model = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_modelVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_modelVersion"];
     modelVersion = v5->_modelVersion;
     v5->_modelVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_modelClass"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_modelClass"];
     modelClass = v5->_modelClass;
     v5->_modelClass = v12;
 
-    v5->_platform = [v4 decodeIntegerForKey:@"_platform"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recordID"];
+    v5->_platform = [coderCopy decodeIntegerForKey:@"_platform"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recordID"];
     recordID = v5->_recordID;
     v5->_recordID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_machineID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_machineID"];
     machineID = v5->_machineID;
     v5->_machineID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recordDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recordDate"];
     recordDate = v5->_recordDate;
     v5->_recordDate = v18;
 
-    v5->_hasRandomSecret = [v4 decodeBoolForKey:@"_hasRandomSecret"];
-    v5->_hasNumericSecret = [v4 decodeBoolForKey:@"_hasNumericSecret"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_numericSecretLength"];
+    v5->_hasRandomSecret = [coderCopy decodeBoolForKey:@"_hasRandomSecret"];
+    v5->_hasNumericSecret = [coderCopy decodeBoolForKey:@"_hasNumericSecret"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_numericSecretLength"];
     numericSecretLength = v5->_numericSecretLength;
     v5->_numericSecretLength = v20;
 
-    v5->_isUsingMultipleiCSC = [v4 decodeBoolForKey:@"_isUsingMultipleiCSC"];
-    v5->_remainingAttempts = [v4 decodeIntegerForKey:@"_remainingAttempts"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_serialNumber"];
+    v5->_isUsingMultipleiCSC = [coderCopy decodeBoolForKey:@"_isUsingMultipleiCSC"];
+    v5->_remainingAttempts = [coderCopy decodeIntegerForKey:@"_remainingAttempts"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v22;
 
-    v5->_isCurrentDevice = [v4 decodeBoolForKey:@"_isCurrentDevice"];
+    v5->_isCurrentDevice = [coderCopy decodeBoolForKey:@"_isCurrentDevice"];
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
     v26 = objc_opt_class();
@@ -161,15 +161,15 @@
     v28 = objc_opt_class();
     v29 = objc_opt_class();
     v30 = [v24 setWithObjects:{v25, v26, v27, v28, v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"recordInfo"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"recordInfo"];
     recordInfo = v5->_recordInfo;
     v5->_recordInfo = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_deviceColor"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_deviceColor"];
     deviceColor = v5->_deviceColor;
     v5->_deviceColor = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_enclosureColor"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_enclosureColor"];
     enclosureColor = v5->_enclosureColor;
     v5->_enclosureColor = v35;
   }
@@ -177,28 +177,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localizedName = self->_localizedName;
-  v5 = a3;
-  [v5 encodeObject:localizedName forKey:@"_localizedName"];
-  [v5 encodeObject:self->_model forKey:@"_model"];
-  [v5 encodeObject:self->_modelVersion forKey:@"_modelVersion"];
-  [v5 encodeObject:self->_modelClass forKey:@"_modelClass"];
-  [v5 encodeInteger:self->_platform forKey:@"_platform"];
-  [v5 encodeObject:self->_recordID forKey:@"_recordID"];
-  [v5 encodeObject:self->_machineID forKey:@"_machineID"];
-  [v5 encodeObject:self->_recordDate forKey:@"_recordDate"];
-  [v5 encodeBool:self->_hasRandomSecret forKey:@"_hasRandomSecret"];
-  [v5 encodeBool:self->_hasNumericSecret forKey:@"_hasNumericSecret"];
-  [v5 encodeObject:self->_numericSecretLength forKey:@"_numericSecretLength"];
-  [v5 encodeBool:self->_isUsingMultipleiCSC forKey:@"_isUsingMultipleiCSC"];
-  [v5 encodeInteger:self->_remainingAttempts forKey:@"_remainingAttempts"];
-  [v5 encodeObject:self->_serialNumber forKey:@"_serialNumber"];
-  [v5 encodeBool:self->_isCurrentDevice forKey:@"_isCurrentDevice"];
-  [v5 encodeObject:self->_recordInfo forKey:@"recordInfo"];
-  [v5 encodeObject:self->_deviceColor forKey:@"_deviceColor"];
-  [v5 encodeObject:self->_enclosureColor forKey:@"_enclosureColor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localizedName forKey:@"_localizedName"];
+  [coderCopy encodeObject:self->_model forKey:@"_model"];
+  [coderCopy encodeObject:self->_modelVersion forKey:@"_modelVersion"];
+  [coderCopy encodeObject:self->_modelClass forKey:@"_modelClass"];
+  [coderCopy encodeInteger:self->_platform forKey:@"_platform"];
+  [coderCopy encodeObject:self->_recordID forKey:@"_recordID"];
+  [coderCopy encodeObject:self->_machineID forKey:@"_machineID"];
+  [coderCopy encodeObject:self->_recordDate forKey:@"_recordDate"];
+  [coderCopy encodeBool:self->_hasRandomSecret forKey:@"_hasRandomSecret"];
+  [coderCopy encodeBool:self->_hasNumericSecret forKey:@"_hasNumericSecret"];
+  [coderCopy encodeObject:self->_numericSecretLength forKey:@"_numericSecretLength"];
+  [coderCopy encodeBool:self->_isUsingMultipleiCSC forKey:@"_isUsingMultipleiCSC"];
+  [coderCopy encodeInteger:self->_remainingAttempts forKey:@"_remainingAttempts"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"_serialNumber"];
+  [coderCopy encodeBool:self->_isCurrentDevice forKey:@"_isCurrentDevice"];
+  [coderCopy encodeObject:self->_recordInfo forKey:@"recordInfo"];
+  [coderCopy encodeObject:self->_deviceColor forKey:@"_deviceColor"];
+  [coderCopy encodeObject:self->_enclosureColor forKey:@"_enclosureColor"];
 }
 
 - (unint64_t)localSecretType

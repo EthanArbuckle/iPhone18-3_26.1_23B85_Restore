@@ -1,10 +1,10 @@
 @interface _UITextFieldBackgroundProvider
 - (BOOL)_isTV;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UITextField)textField;
 - (id)description;
 - (unint64_t)hash;
-- (void)addToTextField:(id)a3;
+- (void)addToTextField:(id)field;
 @end
 
 @implementation _UITextFieldBackgroundProvider
@@ -16,21 +16,21 @@
   return WeakRetained;
 }
 
-- (void)addToTextField:(id)a3
+- (void)addToTextField:(id)field
 {
-  obj = a3;
+  obj = field;
   if (!obj)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UITextFieldBackgroundProvider.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"textField"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextFieldBackgroundProvider.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"textField"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_textField);
 
   if (WeakRetained)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UITextFieldBackgroundProvider.m" lineNumber:57 description:@"Adding a background decorator that is already attached to a textfield."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UITextFieldBackgroundProvider.m" lineNumber:57 description:@"Adding a background decorator that is already attached to a textfield."];
   }
 
   objc_storeWeak(&self->_textField, obj);
@@ -39,11 +39,11 @@
 - (BOOL)_isTV
 {
   WeakRetained = objc_loadWeakRetained(&self->_textField);
-  v3 = [WeakRetained traitCollection];
+  traitCollection = [WeakRetained traitCollection];
 
-  if (v3)
+  if (traitCollection)
   {
-    v4 = [v3 userInterfaceIdiom] == 2;
+    v4 = [traitCollection userInterfaceIdiom] == 2;
   }
 
   else
@@ -54,16 +54,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (!v4)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.isa;
+  if (!equalCopy)
   {
     goto LABEL_4;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v7 = 1;
     goto LABEL_16;
@@ -116,9 +116,9 @@ LABEL_16:
   WeakRetained = objc_loadWeakRetained(&self->_textField);
   v5 = [(UIDescriptionBuilder *)v3 appendName:@"textfield" object:WeakRetained usingLightweightDescription:1];
 
-  v6 = [(UIDescriptionBuilder *)v3 string];
+  string = [(UIDescriptionBuilder *)v3 string];
 
-  return v6;
+  return string;
 }
 
 @end

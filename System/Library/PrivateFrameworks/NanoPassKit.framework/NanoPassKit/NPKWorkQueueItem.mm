@@ -1,22 +1,22 @@
 @interface NPKWorkQueueItem
-+ (id)itemWithTransaction:(id)a3 work:(id)a4;
-- (NPKWorkQueueItem)initWithTransaction:(id)a3 work:(id)a4;
++ (id)itemWithTransaction:(id)transaction work:(id)work;
+- (NPKWorkQueueItem)initWithTransaction:(id)transaction work:(id)work;
 @end
 
 @implementation NPKWorkQueueItem
 
-- (NPKWorkQueueItem)initWithTransaction:(id)a3 work:(id)a4
+- (NPKWorkQueueItem)initWithTransaction:(id)transaction work:(id)work
 {
-  v7 = a3;
-  v8 = a4;
+  transactionCopy = transaction;
+  workCopy = work;
   v14.receiver = self;
   v14.super_class = NPKWorkQueueItem;
   v9 = [(NPKWorkQueueItem *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transaction, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_transaction, transaction);
+    v11 = _Block_copy(workCopy);
     workBlock = v10->_workBlock;
     v10->_workBlock = v11;
   }
@@ -24,11 +24,11 @@
   return v10;
 }
 
-+ (id)itemWithTransaction:(id)a3 work:(id)a4
++ (id)itemWithTransaction:(id)transaction work:(id)work
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NPKWorkQueueItem alloc] initWithTransaction:v6 work:v5];
+  workCopy = work;
+  transactionCopy = transaction;
+  v7 = [[NPKWorkQueueItem alloc] initWithTransaction:transactionCopy work:workCopy];
 
   return v7;
 }

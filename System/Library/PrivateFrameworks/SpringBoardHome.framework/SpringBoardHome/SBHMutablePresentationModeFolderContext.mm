@@ -1,10 +1,10 @@
 @interface SBHMutablePresentationModeFolderContext
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBHMutablePresentationModeFolderContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBHPresentationModeFolderContext alloc];
 

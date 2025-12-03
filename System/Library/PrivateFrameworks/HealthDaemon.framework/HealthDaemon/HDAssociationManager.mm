@@ -1,33 +1,33 @@
 @interface HDAssociationManager
-- (BOOL)associateObjectUUIDs:(id)a3 objectUUID:(id)a4 error:(id *)a5;
-- (BOOL)associateObjects:(id)a3 withObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObject:(id)a7 error:(id *)a8;
-- (BOOL)disassociateObjects:(id)a3 withObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObject:(id)a7 error:(id *)a8;
-- (BOOL)insertCodableTypedObjectAssociations:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6;
-- (HDAssociationManager)initWithProfile:(id)a3;
-- (id)_lock_observersAllTypesCreateIfNil:(const os_unfair_lock *)a1;
-- (id)_lock_observersForDataType:(int)a3 createIfNil:;
-- (id)_lock_observersForKey:(int)a3 createIfNil:;
-- (id)_observersForDataType:(const os_unfair_lock *)a1;
-- (id)_uuidsForObjects:(void *)a3 object:(void *)a4 subObject:(void *)a5 error:;
-- (void)_notifyAssociationObjectsUpdatedWithAssociatedObjects:(void *)a3 withObject:(void *)a4 destinationSubObject:(uint64_t)a5 type:(uint64_t)a6 behavior:(void *)a7 anchor:;
-- (void)addObserver:(id)a3 forDataType:(id)a4;
-- (void)addObserverForAllTypes:(id)a3;
-- (void)removeObserver:(id)a3 forDataType:(id)a4;
-- (void)removeObserverForAllTypes:(id)a3;
+- (BOOL)associateObjectUUIDs:(id)ds objectUUID:(id)d error:(id *)error;
+- (BOOL)associateObjects:(id)objects withObject:(id)object type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObject:(id)subObject error:(id *)error;
+- (BOOL)disassociateObjects:(id)objects withObject:(id)object type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObject:(id)subObject error:(id *)error;
+- (BOOL)insertCodableTypedObjectAssociations:(id)associations syncStore:(id)store profile:(id)profile error:(id *)error;
+- (HDAssociationManager)initWithProfile:(id)profile;
+- (id)_lock_observersAllTypesCreateIfNil:(const os_unfair_lock *)nil;
+- (id)_lock_observersForDataType:(int)type createIfNil:;
+- (id)_lock_observersForKey:(int)key createIfNil:;
+- (id)_observersForDataType:(const os_unfair_lock *)type;
+- (id)_uuidsForObjects:(void *)objects object:(void *)object subObject:(void *)subObject error:;
+- (void)_notifyAssociationObjectsUpdatedWithAssociatedObjects:(void *)objects withObject:(void *)object destinationSubObject:(uint64_t)subObject type:(uint64_t)type behavior:(void *)behavior anchor:;
+- (void)addObserver:(id)observer forDataType:(id)type;
+- (void)addObserverForAllTypes:(id)types;
+- (void)removeObserver:(id)observer forDataType:(id)type;
+- (void)removeObserverForAllTypes:(id)types;
 @end
 
 @implementation HDAssociationManager
 
-- (HDAssociationManager)initWithProfile:(id)a3
+- (HDAssociationManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDAssociationManager;
   v5 = [(HDAssociationManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -42,28 +42,28 @@
   return v6;
 }
 
-- (void)addObserver:(id)a3 forDataType:(id)a4
+- (void)addObserver:(id)observer forDataType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(HDAssociationManager *)self _lock_observersForDataType:v6 createIfNil:1];
+  v8 = [(HDAssociationManager *)self _lock_observersForDataType:typeCopy createIfNil:1];
 
-  [v8 addObject:v7];
+  [v8 addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_lock_observersForDataType:(int)a3 createIfNil:
+- (id)_lock_observersForDataType:(int)type createIfNil:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    os_unfair_lock_assert_owner(a1 + 4);
+    os_unfair_lock_assert_owner(self + 4);
     v6 = MEMORY[0x277CCABB0];
-    v7 = [v5 code];
+    code = [v5 code];
 
-    v8 = [v6 numberWithInteger:v7];
-    v9 = [(HDAssociationManager *)a1 _lock_observersForKey:v8 createIfNil:a3];
+    v8 = [v6 numberWithInteger:code];
+    v9 = [(HDAssociationManager *)self _lock_observersForKey:v8 createIfNil:type];
   }
 
   else
@@ -74,34 +74,34 @@
   return v9;
 }
 
-- (void)removeObserver:(id)a3 forDataType:(id)a4
+- (void)removeObserver:(id)observer forDataType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(HDAssociationManager *)self _lock_observersForDataType:v6 createIfNil:0];
+  v8 = [(HDAssociationManager *)self _lock_observersForDataType:typeCopy createIfNil:0];
 
-  [v8 removeObject:v7];
+  [v8 removeObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserverForAllTypes:(id)a3
+- (void)addObserverForAllTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(HDAssociationManager *)self _lock_observersAllTypesCreateIfNil:?];
-  [v5 addObject:v4];
+  [v5 addObject:typesCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_lock_observersAllTypesCreateIfNil:(const os_unfair_lock *)a1
+- (id)_lock_observersAllTypesCreateIfNil:(const os_unfair_lock *)nil
 {
-  if (a1)
+  if (nil)
   {
-    os_unfair_lock_assert_owner(a1 + 4);
+    os_unfair_lock_assert_owner(nil + 4);
     v4 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
-    v5 = [(HDAssociationManager *)a1 _lock_observersForKey:v4 createIfNil:a2];
+    v5 = [(HDAssociationManager *)nil _lock_observersForKey:v4 createIfNil:a2];
   }
 
   else
@@ -112,59 +112,59 @@
   return v5;
 }
 
-- (void)removeObserverForAllTypes:(id)a3
+- (void)removeObserverForAllTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(HDAssociationManager *)self _lock_observersAllTypesCreateIfNil:?];
-  [v5 removeObject:v4];
+  [v5 removeObject:typesCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)associateObjectUUIDs:(id)a3 objectUUID:(id)a4 error:(id *)a5
+- (BOOL)associateObjectUUIDs:(id)ds objectUUID:(id)d error:(id *)error
 {
   v12 = 0;
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a5) = [HDAssociationEntity associateSampleUUIDs:v9 withSampleUUID:v8 type:0 behavior:0 destinationSubObjectReference:0 lastInsertedEntityID:&v12 profile:WeakRetained error:a5];
+  LOBYTE(error) = [HDAssociationEntity associateSampleUUIDs:dsCopy withSampleUUID:dCopy type:0 behavior:0 destinationSubObjectReference:0 lastInsertedEntityID:&v12 profile:WeakRetained error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)associateObjects:(id)a3 withObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObject:(id)a7 error:(id *)a8
+- (BOOL)associateObjects:(id)objects withObject:(id)object type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObject:(id)subObject error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  objectsCopy = objects;
+  objectCopy = object;
+  subObjectCopy = subObject;
   _HKInitializeLogging();
   v15 = *MEMORY[0x277CCC2A0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v13 UUID];
-    v18 = [v14 UUID];
+    uUID = [objectCopy UUID];
+    uUID2 = [subObjectCopy UUID];
     *buf = 138543618;
-    v33 = v17;
+    v33 = uUID;
     v34 = 2114;
-    v35 = v18;
+    v35 = uUID2;
     _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "Associating sample with object UUID:%{public}@ and sub Object UUID:%{public}@ ", buf, 0x16u);
   }
 
-  v19 = [(HDAssociationManager *)self _uuidsForObjects:v12 object:v13 subObject:v14 error:a8];
+  v19 = [(HDAssociationManager *)self _uuidsForObjects:objectsCopy object:objectCopy subObject:subObjectCopy error:error];
   if (!v19)
   {
     v24 = 0;
     goto LABEL_11;
   }
 
-  v20 = [v13 UUID];
-  v21 = HDReferenceForAssociatableObject(v14);
+  uUID3 = [objectCopy UUID];
+  v21 = HDReferenceForAssociatableObject(subObjectCopy);
   v31 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v23 = [HDAssociationEntity associateSampleUUIDs:v19 withSampleUUID:v20 type:a5 behavior:a6 destinationSubObjectReference:v21 lastInsertedEntityID:&v31 profile:WeakRetained error:a8];
+  v23 = [HDAssociationEntity associateSampleUUIDs:v19 withSampleUUID:uUID3 type:type behavior:behavior destinationSubObjectReference:v21 lastInsertedEntityID:&v31 profile:WeakRetained error:error];
   v24 = v31;
 
   if (!v23)
@@ -187,7 +187,7 @@ LABEL_11:
     v24 = &unk_283CB3CF0;
   }
 
-  [(HDAssociationManager *)self _notifyAssociationObjectsUpdatedWithAssociatedObjects:v12 withObject:v13 destinationSubObject:v14 type:a5 behavior:a6 anchor:v24];
+  [(HDAssociationManager *)self _notifyAssociationObjectsUpdatedWithAssociatedObjects:objectsCopy withObject:objectCopy destinationSubObject:subObjectCopy type:type behavior:behavior anchor:v24];
   v26 = 1;
 LABEL_12:
 
@@ -195,13 +195,13 @@ LABEL_12:
   return v26;
 }
 
-- (id)_uuidsForObjects:(void *)a3 object:(void *)a4 subObject:(void *)a5 error:
+- (id)_uuidsForObjects:(void *)objects object:(void *)object subObject:(void *)subObject error:
 {
   v32 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  objectsCopy = objects;
+  objectCopy = object;
+  if (self)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v27 = 0u;
@@ -225,16 +225,16 @@ LABEL_12:
           }
 
           v17 = *(*(&v27 + 1) + 8 * i);
-          if (![v9 acceptsAssociationWithObject:{v17, v25}] || v10 && (objc_msgSend(v10, "acceptsAssociationWithObject:", v17) & 1) == 0)
+          if (![objectsCopy acceptsAssociationWithObject:{v17, v25}] || objectCopy && (objc_msgSend(objectCopy, "acceptsAssociationWithObject:", v17) & 1) == 0)
           {
             v20 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:v25 format:@"Sample does not support relating"];
             v21 = v20;
             if (v20)
             {
-              if (a5)
+              if (subObject)
               {
                 v22 = v20;
-                *a5 = v21;
+                *subObject = v21;
               }
 
               else
@@ -247,8 +247,8 @@ LABEL_12:
             goto LABEL_18;
           }
 
-          v18 = [v17 UUID];
-          [v11 addObject:v18];
+          uUID = [v17 UUID];
+          [v11 addObject:uUID];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -275,21 +275,21 @@ LABEL_18:
   return v19;
 }
 
-- (void)_notifyAssociationObjectsUpdatedWithAssociatedObjects:(void *)a3 withObject:(void *)a4 destinationSubObject:(uint64_t)a5 type:(uint64_t)a6 behavior:(void *)a7 anchor:
+- (void)_notifyAssociationObjectsUpdatedWithAssociatedObjects:(void *)objects withObject:(void *)object destinationSubObject:(uint64_t)subObject type:(uint64_t)type behavior:(void *)behavior anchor:
 {
   v38 = *MEMORY[0x277D85DE8];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  if (!a1)
+  objectsCopy = objects;
+  objectCopy = object;
+  behaviorCopy = behavior;
+  if (!self)
   {
     goto LABEL_19;
   }
 
-  if ([v14 conformsToProtocol:&unk_283D42B48])
+  if ([objectsCopy conformsToProtocol:&unk_283D42B48])
   {
-    if (v15)
+    if (objectCopy)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
@@ -298,7 +298,7 @@ LABEL_18:
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v37 = v15;
+          v37 = objectCopy;
           v20 = "Attempted to retrieve destinationSubObject: %{public}@ from Object that does not support subObjects";
           goto LABEL_15;
         }
@@ -306,8 +306,8 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v17 = [v15 UUID];
-      v18 = [v14 subObjectFromUUID:v17];
+      uUID = [objectCopy UUID];
+      v18 = [objectsCopy subObjectFromUUID:uUID];
 
       if (!v18)
       {
@@ -316,7 +316,7 @@ LABEL_18:
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v37 = v15;
+          v37 = objectCopy;
           v20 = "Failed to retrieve destinationSubObject: %{public}@";
 LABEL_15:
           _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, v20, buf, 0xCu);
@@ -334,24 +334,24 @@ LABEL_15:
 
     if (objc_opt_respondsToSelector())
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
-      v22 = [WeakRetained appSubscriptionManager];
-      [v14 sampleType];
+      WeakRetained = objc_loadWeakRetained((self + 24));
+      appSubscriptionManager = [WeakRetained appSubscriptionManager];
+      [objectsCopy sampleType];
       v23 = v28 = v18;
-      [v22 setAnchor:v16 forDataCode:objc_msgSend(v23 type:{"code"), 1}];
+      [appSubscriptionManager setAnchor:behaviorCopy forDataCode:objc_msgSend(v23 type:{"code"), 1}];
 
-      v24 = *(a1 + 32);
+      v24 = *(self + 32);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __131__HDAssociationManager__notifyAssociationObjectsUpdatedWithAssociatedObjects_withObject_destinationSubObject_type_behavior_anchor___block_invoke;
       block[3] = &unk_278626D68;
-      block[4] = a1;
-      v30 = v14;
+      block[4] = self;
+      v30 = objectsCopy;
       v31 = v28;
-      v34 = a5;
-      v35 = a6;
+      subObjectCopy = subObject;
+      typeCopy = type;
       v32 = v13;
-      v33 = v16;
+      v33 = behaviorCopy;
       v25 = v28;
       dispatch_async(v24, block);
     }
@@ -363,7 +363,7 @@ LABEL_15:
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v37 = v14;
+        v37 = objectsCopy;
         _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "Unable to determine sample type for object: %{public}@", buf, 0xCu);
       }
     }
@@ -376,7 +376,7 @@ LABEL_15:
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v37 = v14;
+    v37 = objectsCopy;
     v20 = "Parent Object %{public}@ is not an HKAssociatableObject";
     goto LABEL_15;
   }
@@ -386,35 +386,35 @@ LABEL_19:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)disassociateObjects:(id)a3 withObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 destinationSubObject:(id)a7 error:(id *)a8
+- (BOOL)disassociateObjects:(id)objects withObject:(id)object type:(unint64_t)type behavior:(unint64_t)behavior destinationSubObject:(id)subObject error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  objectsCopy = objects;
+  objectCopy = object;
+  subObjectCopy = subObject;
   _HKInitializeLogging();
   v15 = *MEMORY[0x277CCC2A0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v13 UUID];
+    uUID = [objectCopy UUID];
     *buf = 138543362;
-    v32 = v17;
+    v32 = uUID;
     _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "Disassociating sample with UUID %{public}@", buf, 0xCu);
   }
 
-  v18 = [(HDAssociationManager *)self _uuidsForObjects:v12 object:v13 subObject:v14 error:a8];
+  v18 = [(HDAssociationManager *)self _uuidsForObjects:objectsCopy object:objectCopy subObject:subObjectCopy error:error];
   if (!v18)
   {
     v23 = 0;
     goto LABEL_11;
   }
 
-  v19 = [v13 UUID];
-  v20 = HDReferenceForAssociatableObject(v14);
+  uUID2 = [objectCopy UUID];
+  v20 = HDReferenceForAssociatableObject(subObjectCopy);
   v30 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v22 = [HDAssociationEntity disassociateSampleUUIDs:v18 withSampleUUID:v19 type:a5 behavior:a6 destinationSubObjectReference:v20 lastInsertedEntityID:&v30 profile:WeakRetained error:a8];
+  v22 = [HDAssociationEntity disassociateSampleUUIDs:v18 withSampleUUID:uUID2 type:type behavior:behavior destinationSubObjectReference:v20 lastInsertedEntityID:&v30 profile:WeakRetained error:error];
   v23 = v30;
 
   if (!v22)
@@ -437,7 +437,7 @@ LABEL_11:
     v23 = &unk_283CB3CF0;
   }
 
-  [(HDAssociationManager *)self _notifyAssociationObjectsUpdatedWithAssociatedObjects:v12 withObject:v13 destinationSubObject:v14 type:a5 behavior:a6 anchor:v23];
+  [(HDAssociationManager *)self _notifyAssociationObjectsUpdatedWithAssociatedObjects:objectsCopy withObject:objectCopy destinationSubObject:subObjectCopy type:type behavior:behavior anchor:v23];
   v25 = 1;
 LABEL_12:
 
@@ -445,12 +445,12 @@ LABEL_12:
   return v25;
 }
 
-- (BOOL)insertCodableTypedObjectAssociations:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)insertCodableTypedObjectAssociations:(id)associations syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v90 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v65 = a4;
-  v66 = a5;
+  associationsCopy = associations;
+  storeCopy = store;
+  profileCopy = profile;
   v74 = 0;
   v75 = &v74;
   v76 = 0x3032000000;
@@ -461,7 +461,7 @@ LABEL_12:
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v8;
+  obj = associationsCopy;
   v9 = [obj countByEnumeratingWithState:&v70 objects:v84 count:16];
   if (v9)
   {
@@ -481,8 +481,8 @@ LABEL_3:
       }
 
       v13 = *(*(&v70 + 1) + 8 * v12);
-      v68 = v66;
-      v69 = v65;
+      v68 = profileCopy;
+      v69 = storeCopy;
       if ((HKWithAutoreleasePool() & 1) == 0)
       {
 
@@ -504,20 +504,20 @@ LABEL_3:
         v75[5] = &unk_283CB3CF0;
       }
 
-      v16 = [v13 type];
-      v17 = [v13 behavior];
-      if (v16 != 1)
+      type = [v13 type];
+      behavior = [v13 behavior];
+      if (type != 1)
       {
         goto LABEL_42;
       }
 
-      v18 = v17;
-      v19 = [v13 objectUUIDs];
-      v20 = [v13 decodedAssociationUUID];
-      v21 = [v13 decodedSubObjectUUID];
+      v18 = behavior;
+      objectUUIDs = [v13 objectUUIDs];
+      decodedAssociationUUID = [v13 decodedAssociationUUID];
+      decodedSubObjectUUID = [v13 decodedSubObjectUUID];
       v22 = v75[5];
-      v67 = v20;
-      v23 = v21;
+      v67 = decodedAssociationUUID;
+      v23 = decodedSubObjectUUID;
       v62 = v22;
       if (self)
       {
@@ -541,7 +541,7 @@ LABEL_42:
     }
 
     v24 = MEMORY[0x277CBEB58];
-    v25 = v19;
+    v25 = objectUUIDs;
     v26 = objc_alloc_init(v24);
     v82 = 0;
     v80[0] = MEMORY[0x277D85DD0];
@@ -654,9 +654,9 @@ LABEL_42:
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
         {
           v52 = v51;
-          v53 = [v23 UUIDString];
+          uUIDString = [v23 UUIDString];
           LODWORD(buf) = v57;
-          *(&buf + 4) = v53;
+          *(&buf + 4) = uUIDString;
           _os_log_error_impl(&dword_228986000, v52, OS_LOG_TYPE_ERROR, "Attempted to retrieve destinationSubObject: %{public}@ from Object that does not support subObjects", &buf, 0xCu);
         }
 
@@ -671,9 +671,9 @@ LABEL_42:
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
         {
           v47 = v46;
-          v48 = [v23 UUIDString];
+          uUIDString2 = [v23 UUIDString];
           LODWORD(buf) = v57;
-          *(&buf + 4) = v48;
+          *(&buf + 4) = uUIDString2;
           _os_log_error_impl(&dword_228986000, v47, OS_LOG_TYPE_ERROR, "Failed to retrieve destinationSubObject: %{public}@", &buf, 0xCu);
         }
 
@@ -964,40 +964,40 @@ void __131__HDAssociationManager__notifyAssociationObjectsUpdatedWithAssociatedO
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_observersForDataType:(const os_unfair_lock *)a1
+- (id)_observersForDataType:(const os_unfair_lock *)type
 {
   v3 = a2;
-  os_unfair_lock_lock(&a1[4]);
-  v4 = [(HDAssociationManager *)a1 _lock_observersForDataType:v3 createIfNil:0];
+  os_unfair_lock_lock(&type[4]);
+  v4 = [(HDAssociationManager *)type _lock_observersForDataType:v3 createIfNil:0];
 
   v5 = [v4 copy];
-  os_unfair_lock_unlock(&a1[4]);
+  os_unfair_lock_unlock(&type[4]);
 
   return v5;
 }
 
-- (id)_lock_observersForKey:(int)a3 createIfNil:
+- (id)_lock_observersForKey:(int)key createIfNil:
 {
   v5 = a2;
-  os_unfair_lock_assert_owner((a1 + 16));
-  v6 = [*(a1 + 8) objectForKey:v5];
-  if (v6)
+  os_unfair_lock_assert_owner((self + 16));
+  weakObjectsHashTable = [*(self + 8) objectForKey:v5];
+  if (weakObjectsHashTable)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = a3 == 0;
+    v7 = key == 0;
   }
 
   if (!v7)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [*(a1 + 8) setObject:v6 forKey:v5];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [*(self + 8) setObject:weakObjectsHashTable forKey:v5];
   }
 
-  return v6;
+  return weakObjectsHashTable;
 }
 
 @end

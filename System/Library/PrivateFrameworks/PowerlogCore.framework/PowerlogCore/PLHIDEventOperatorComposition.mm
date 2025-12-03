@@ -1,15 +1,15 @@
 @interface PLHIDEventOperatorComposition
-- (PLHIDEventOperatorComposition)initWithOperator:(id)a3 forUsagePage:(unint64_t)a4 andUsage:(unint64_t)a5 withBlock:(id)a6;
-- (void)handleEvent:(__IOHIDEvent *)a3;
+- (PLHIDEventOperatorComposition)initWithOperator:(id)operator forUsagePage:(unint64_t)page andUsage:(unint64_t)usage withBlock:(id)block;
+- (void)handleEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation PLHIDEventOperatorComposition
 
-- (PLHIDEventOperatorComposition)initWithOperator:(id)a3 forUsagePage:(unint64_t)a4 andUsage:(unint64_t)a5 withBlock:(id)a6
+- (PLHIDEventOperatorComposition)initWithOperator:(id)operator forUsagePage:(unint64_t)page andUsage:(unint64_t)usage withBlock:(id)block
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  operatorCopy = operator;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = PLHIDEventOperatorComposition;
   v12 = [(PLHIDEventOperatorComposition *)&v26 init];
@@ -22,19 +22,19 @@
       v13->_eventSystemClient = IOHIDEventSystemClientCreate();
     }
 
-    v15 = MEMORY[0x1DA71B0D0](v11);
+    v15 = MEMORY[0x1DA71B0D0](blockCopy);
     operatorBlock = v13->_operatorBlock;
     v13->_operatorBlock = v15;
 
     eventSystemClient = v13->_eventSystemClient;
-    v18 = [v10 workQueue];
+    workQueue = [operatorCopy workQueue];
     IOHIDEventSystemClientScheduleWithDispatchQueue();
 
     v27[0] = @"DeviceUsagePage";
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:page];
     v27[1] = @"DeviceUsage";
     v28[0] = v19;
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:usage];
     v28[1] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
 
@@ -48,12 +48,12 @@
   return v13;
 }
 
-- (void)handleEvent:(__IOHIDEvent *)a3
+- (void)handleEvent:(__IOHIDEvent *)event
 {
   operatorBlock = self->_operatorBlock;
   if (operatorBlock)
   {
-    operatorBlock[2](operatorBlock, a3);
+    operatorBlock[2](operatorBlock, event);
   }
 }
 

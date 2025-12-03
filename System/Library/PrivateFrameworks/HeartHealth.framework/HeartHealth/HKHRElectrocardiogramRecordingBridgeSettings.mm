@@ -1,33 +1,33 @@
 @interface HKHRElectrocardiogramRecordingBridgeSettings
-- (BOOL)_isSettingsVisibleWithFeatureStatus:(id)a3;
-- (BOOL)_userInteractionEnabledWithFeatureStatus:(id)a3;
-- (id)_footerWithFeatureStatus:(id)a3 isAppInstalled:(BOOL)a4;
+- (BOOL)_isSettingsVisibleWithFeatureStatus:(id)status;
+- (BOOL)_userInteractionEnabledWithFeatureStatus:(id)status;
+- (id)_footerWithFeatureStatus:(id)status isAppInstalled:(BOOL)installed;
 @end
 
 @implementation HKHRElectrocardiogramRecordingBridgeSettings
 
-- (BOOL)_userInteractionEnabledWithFeatureStatus:(id)a3
+- (BOOL)_userInteractionEnabledWithFeatureStatus:(id)status
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277CCBE68]];
+  v4 = [status objectForKeyedSubscript:*MEMORY[0x277CCBE68]];
   v5 = v4;
   if (self->_settingVisible)
   {
-    v6 = [v4 areAllRequirementsSatisfied];
+    areAllRequirementsSatisfied = [v4 areAllRequirementsSatisfied];
   }
 
   else
   {
-    v6 = 0;
+    areAllRequirementsSatisfied = 0;
   }
 
-  return v6;
+  return areAllRequirementsSatisfied;
 }
 
-- (id)_footerWithFeatureStatus:(id)a3 isAppInstalled:(BOOL)a4
+- (id)_footerWithFeatureStatus:(id)status isAppInstalled:(BOOL)installed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+  installedCopy = installed;
+  statusCopy = status;
+  v7 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
   v8 = v7;
   if (!self->_settingVisible)
   {
@@ -35,8 +35,8 @@
     goto LABEL_15;
   }
 
-  v9 = [v7 unsatisfiedRequirementIdentifiers];
-  v10 = [v9 containsObject:*MEMORY[0x277CCBF30]];
+  unsatisfiedRequirementIdentifiers = [v7 unsatisfiedRequirementIdentifiers];
+  v10 = [unsatisfiedRequirementIdentifiers containsObject:*MEMORY[0x277CCBF30]];
 
   if (v10)
   {
@@ -47,14 +47,14 @@
 
   else
   {
-    v15 = [v8 unsatisfiedRequirementIdentifiers];
-    v16 = [v15 containsObject:*MEMORY[0x277CCBFD0]];
+    unsatisfiedRequirementIdentifiers2 = [v8 unsatisfiedRequirementIdentifiers];
+    v16 = [unsatisfiedRequirementIdentifiers2 containsObject:*MEMORY[0x277CCBFD0]];
 
     if (!v16)
     {
-      if ([(HKHRElectrocardiogramRecordingBridgeSettings *)self _featureOnboardedWithFeatureStatus:v6])
+      if ([(HKHRElectrocardiogramRecordingBridgeSettings *)self _featureOnboardedWithFeatureStatus:statusCopy])
       {
-        if (v4)
+        if (installedCopy)
         {
           v18 = @"ELECTROCARDIOGRAM_FOOTER_ONBOARDING_COMPLETED";
         }
@@ -90,12 +90,12 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)_isSettingsVisibleWithFeatureStatus:(id)a3
+- (BOOL)_isSettingsVisibleWithFeatureStatus:(id)status
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CCBE70]];
-  v4 = [v3 areAllRequirementsSatisfied];
+  v3 = [status objectForKeyedSubscript:*MEMORY[0x277CCBE70]];
+  areAllRequirementsSatisfied = [v3 areAllRequirementsSatisfied];
 
-  return v4;
+  return areAllRequirementsSatisfied;
 }
 
 @end

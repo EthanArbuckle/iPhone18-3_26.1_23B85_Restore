@@ -1,34 +1,34 @@
 @interface SBScrollToTopSceneProxyView
 - (SBScrollToTopSceneProxyViewDelegate)delegate;
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4;
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler;
 - (void)didMoveToWindow;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SBScrollToTopSceneProxyView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(SBScrollToTopSceneProxyView *)self delegate];
+  windowCopy = window;
+  delegate = [(SBScrollToTopSceneProxyView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(SBScrollToTopSceneProxyView *)self window];
-    [v5 scrollToTopSceneProxyViewWillExitViewHierarchy:self rootedAtWindow:v6];
+    window = [(SBScrollToTopSceneProxyView *)self window];
+    [delegate scrollToTopSceneProxyViewWillExitViewHierarchy:self rootedAtWindow:window];
   }
 
   v7.receiver = self;
   v7.super_class = SBScrollToTopSceneProxyView;
-  [(SBScrollToTopSceneProxyView *)&v7 willMoveToWindow:v4];
+  [(SBScrollToTopSceneProxyView *)&v7 willMoveToWindow:windowCopy];
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(SBScrollToTopSceneProxyView *)self delegate];
+  delegate = [(SBScrollToTopSceneProxyView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SBScrollToTopSceneProxyView *)self window];
-    [v3 scrollToTopSceneProxyViewDidEnterViewHierarchy:self rootedAtWindow:v4];
+    window = [(SBScrollToTopSceneProxyView *)self window];
+    [delegate scrollToTopSceneProxyViewDidEnterViewHierarchy:self rootedAtWindow:window];
   }
 
   v5.receiver = self;
@@ -36,19 +36,19 @@
   [(SBScrollToTopSceneProxyView *)&v5 didMoveToWindow];
 }
 
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler
 {
-  x = a3.x;
-  v10 = a4;
+  x = location.x;
+  handlerCopy = handler;
   v6 = [objc_alloc(MEMORY[0x277D75AB0]) initWithType:0 xPosition:x];
-  v7 = [(SBScrollToTopSceneProxyView *)self sceneHandle];
-  v8 = [v7 sceneIfExists];
+  sceneHandle = [(SBScrollToTopSceneProxyView *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
   v9 = [MEMORY[0x277CBEB98] setWithObject:v6];
-  [v8 sendActions:v9];
+  [sceneIfExists sendActions:v9];
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 

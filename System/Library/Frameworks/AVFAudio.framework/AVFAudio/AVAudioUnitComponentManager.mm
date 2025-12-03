@@ -7,19 +7,19 @@
 - (NSArray)componentsPassingTest:(void *)testHandler;
 - (NSArray)standardLocalizedTagNames;
 - (NSArray)tagNames;
-- (void)localeChanged:(id)a3;
-- (void)registrationsChanged:(id)a3;
+- (void)localeChanged:(id)changed;
+- (void)registrationsChanged:(id)changed;
 @end
 
 @implementation AVAudioUnitComponentManager
 
 + (void)privateAllocInitSingleton
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___AVAudioUnitComponentManager;
-  v2 = [objc_msgSendSuper2(&v4 allocWithZone_];
+  allocWithZone_ = [objc_msgSendSuper2(&v4 allocWithZone_];
   v3 = gAVAudioUnitComponentManager;
-  gAVAudioUnitComponentManager = v2;
+  gAVAudioUnitComponentManager = allocWithZone_;
 }
 
 + (AVAudioUnitComponentManager)sharedAudioUnitComponentManager
@@ -186,7 +186,7 @@ LABEL_3:
   return v2;
 }
 
-- (void)registrationsChanged:(id)a3
+- (void)registrationsChanged:(id)changed
 {
   v36 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -261,8 +261,8 @@ LABEL_3:
       [v22 addObject:v14];
 LABEL_20:
       v15 = MEMORY[0x1E695DFD8];
-      v16 = [(AVAudioUnitComponent *)v14 allTagNames];
-      v17 = [v15 setWithArray:v16];
+      allTagNames = [(AVAudioUnitComponent *)v14 allTagNames];
+      v17 = [v15 setWithArray:allTagNames];
 
       [v5 unionSet:v17];
     }
@@ -277,18 +277,18 @@ LABEL_20:
     [*(impl + 1) addObjectsFromArray:v4];
     [*(impl + 2) removeAllObjects];
     v18 = *(impl + 2);
-    v19 = [v5 allObjects];
-    [v18 addObjectsFromArray:v19];
+    allObjects = [v5 allObjects];
+    [v18 addObjectsFromArray:allObjects];
 
     std::mutex::unlock((impl + 32));
   }
 
-  v24 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v24 postNotificationName:@"AVAudioUnitComponentManagerRegistrationsChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AVAudioUnitComponentManagerRegistrationsChangedNotification" object:self];
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)localeChanged:(id)a3
+- (void)localeChanged:(id)changed
 {
   v16 = *MEMORY[0x1E69E9840];
   impl = self->_impl;

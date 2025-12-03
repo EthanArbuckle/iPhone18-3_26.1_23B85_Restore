@@ -1,18 +1,18 @@
 @interface ANAnalytics
 + (id)shared;
-- (ANAnalytics)initWithSystem:(id)a3 assistant:(id)a4 dailyReporter:(id)a5;
-- (void)announcementEntryAgeLimit:(id)a3 timeExceeded:(double)a4 context:(id)a5;
-- (void)announcementFinishedPlaying:(id)a3 withTime:(double)a4 ofGroupCount:(int64_t)a5 context:(id)a6;
-- (void)announcementPlayed:(id)a3 withTime:(double)a4 deadlineViolation:(double)a5 playbackSource:(unint64_t)a6 ofGroupCount:(int64_t)a7 context:(id)a8;
-- (void)announcementReceived:(id)a3 withTime:(double)a4 receiveTimeType:(unint64_t)a5 context:(id)a6;
-- (void)announcementSent:(id)a3 inHome:(id)a4 withError:(int64_t)a5 withTime:(double)a6 sendType:(unint64_t)a7 ofGroupCount:(int64_t)a8 context:(id)a9;
-- (void)announcementsExpired:(id)a3 ofGroupCount:(int64_t)a4 context:(id)a5;
-- (void)announcementsStorageAgeLimit:(id)a3 context:(id)a4;
-- (void)dailyReport:(id)a3 withPayload:(id)a4;
+- (ANAnalytics)initWithSystem:(id)system assistant:(id)assistant dailyReporter:(id)reporter;
+- (void)announcementEntryAgeLimit:(id)limit timeExceeded:(double)exceeded context:(id)context;
+- (void)announcementFinishedPlaying:(id)playing withTime:(double)time ofGroupCount:(int64_t)count context:(id)context;
+- (void)announcementPlayed:(id)played withTime:(double)time deadlineViolation:(double)violation playbackSource:(unint64_t)source ofGroupCount:(int64_t)count context:(id)context;
+- (void)announcementReceived:(id)received withTime:(double)time receiveTimeType:(unint64_t)type context:(id)context;
+- (void)announcementSent:(id)sent inHome:(id)home withError:(int64_t)error withTime:(double)time sendType:(unint64_t)type ofGroupCount:(int64_t)count context:(id)context;
+- (void)announcementsExpired:(id)expired ofGroupCount:(int64_t)count context:(id)context;
+- (void)announcementsStorageAgeLimit:(id)limit context:(id)context;
+- (void)dailyReport:(id)report withPayload:(id)payload;
 - (void)dailyReportComplete;
-- (void)error:(int64_t)a3 context:(id)a4;
-- (void)playbackAction:(unint64_t)a3 fromSource:(unint64_t)a4 context:(id)a5;
-- (void)recordReachableHomes:(id)a3;
+- (void)error:(int64_t)error context:(id)context;
+- (void)playbackAction:(unint64_t)action fromSource:(unint64_t)source context:(id)context;
+- (void)recordReachableHomes:(id)homes;
 @end
 
 @implementation ANAnalytics
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __21__ANAnalytics_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken_0 != -1)
   {
     dispatch_once(&shared_onceToken_0, block);
@@ -61,22 +61,22 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
   }
 }
 
-- (ANAnalytics)initWithSystem:(id)a3 assistant:(id)a4 dailyReporter:(id)a5
+- (ANAnalytics)initWithSystem:(id)system assistant:(id)assistant dailyReporter:(id)reporter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  systemCopy = system;
+  assistantCopy = assistant;
+  reporterCopy = reporter;
   v15.receiver = self;
   v15.super_class = ANAnalytics;
   v12 = [(ANAnalytics *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_system, a3);
-    objc_storeStrong(&v13->_assistant, a4);
-    if (v11)
+    objc_storeStrong(&v12->_system, system);
+    objc_storeStrong(&v13->_assistant, assistant);
+    if (reporterCopy)
     {
-      objc_storeStrong(&v13->_dailyReporter, a5);
+      objc_storeStrong(&v13->_dailyReporter, reporter);
       [(ANAnalyticsDailyProtocol *)v13->_dailyReporter setDelegate:v13];
       [(ANAnalyticsDailyProtocol *)v13->_dailyReporter start];
     }
@@ -85,23 +85,23 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (void)announcementSent:(id)a3 inHome:(id)a4 withError:(int64_t)a5 withTime:(double)a6 sendType:(unint64_t)a7 ofGroupCount:(int64_t)a8 context:(id)a9
+- (void)announcementSent:(id)sent inHome:(id)home withError:(int64_t)error withTime:(double)time sendType:(unint64_t)type ofGroupCount:(int64_t)count context:(id)context
 {
-  v16 = a3;
-  v17 = a4;
-  if (v16)
+  sentCopy = sent;
+  homeCopy = home;
+  if (sentCopy)
   {
-    v18 = a9;
-    v19 = [(ANAnalytics *)self assistant];
-    v20 = [v19 audioDataForAnnouncement:v16];
+    contextCopy = context;
+    assistant = [(ANAnalytics *)self assistant];
+    v20 = [assistant audioDataForAnnouncement:sentCopy];
     v22 = v21;
 
     v43 = 0u;
-    v23 = [(ANAnalytics *)self assistant];
-    v24 = v23;
-    if (v23)
+    assistant2 = [(ANAnalytics *)self assistant];
+    v24 = assistant2;
+    if (assistant2)
     {
-      [v23 senderDataForAnnouncement:v16];
+      [assistant2 senderDataForAnnouncement:sentCopy];
     }
 
     else
@@ -109,8 +109,8 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
       v43 = 0u;
     }
 
-    v25 = [(ANAnalytics *)self assistant];
-    v26 = [v25 boundGroupCount:a8];
+    assistant3 = [(ANAnalytics *)self assistant];
+    v26 = [assistant3 boundGroupCount:count];
 
     v27 = objc_opt_new();
     v28 = [MEMORY[0x277CCABB0] numberWithInteger:0];
@@ -119,10 +119,10 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v29 = [MEMORY[0x277CCABB0] numberWithDouble:v22];
     [v27 setObject:v29 forKeyedSubscript:@"duration"];
 
-    v30 = [MEMORY[0x277CCABB0] numberWithBool:a5 != 0];
+    v30 = [MEMORY[0x277CCABB0] numberWithBool:error != 0];
     [v27 setObject:v30 forKeyedSubscript:@"error"];
 
-    v31 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v31 = [MEMORY[0x277CCABB0] numberWithInteger:error];
     [v27 setObject:v31 forKeyedSubscript:@"errorCode"];
 
     v32 = [MEMORY[0x277CCABB0] numberWithInteger:v26];
@@ -131,7 +131,7 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v33 = [MEMORY[0x277CCABB0] numberWithInteger:v43];
     [v27 setObject:v33 forKeyedSubscript:@"location"];
 
-    v34 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
+    v34 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     [v27 setObject:v34 forKeyedSubscript:@"sendType"];
 
     v35 = [MEMORY[0x277CCABB0] numberWithInteger:v20];
@@ -140,43 +140,43 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v36 = [MEMORY[0x277CCABB0] numberWithInteger:*(&v43 + 1)];
     [v27 setObject:v36 forKeyedSubscript:@"source"];
 
-    v37 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+    v37 = [MEMORY[0x277CCABB0] numberWithDouble:time];
     [v27 setObject:v37 forKeyedSubscript:@"time"];
 
-    v38 = [v18 analyticsPayload];
+    analyticsPayload = [contextCopy analyticsPayload];
 
-    [v27 addEntriesFromDictionary:v38];
-    v39 = [(ANAnalytics *)self system];
+    [v27 addEntriesFromDictionary:analyticsPayload];
+    system = [(ANAnalytics *)self system];
     v40 = [v27 copy];
-    [v39 send:@"announcementSent" withPayload:v40];
+    [system send:@"announcementSent" withPayload:v40];
 
-    v41 = [(ANAnalytics *)self dailyReporter];
+    dailyReporter = [(ANAnalytics *)self dailyReporter];
 
-    if (!a7 && v41)
+    if (!type && dailyReporter)
     {
-      v42 = [(ANAnalytics *)self dailyReporter];
-      [v42 announcementSent:v16 inHome:v17];
+      dailyReporter2 = [(ANAnalytics *)self dailyReporter];
+      [dailyReporter2 announcementSent:sentCopy inHome:homeCopy];
     }
   }
 }
 
-- (void)announcementReceived:(id)a3 withTime:(double)a4 receiveTimeType:(unint64_t)a5 context:(id)a6
+- (void)announcementReceived:(id)received withTime:(double)time receiveTimeType:(unint64_t)type context:(id)context
 {
-  v10 = a3;
-  if (v10)
+  receivedCopy = received;
+  if (receivedCopy)
   {
-    v11 = a6;
-    v12 = [(ANAnalytics *)self assistant];
-    v13 = [v12 audioDataForAnnouncement:v10];
+    contextCopy = context;
+    assistant = [(ANAnalytics *)self assistant];
+    v13 = [assistant audioDataForAnnouncement:receivedCopy];
     v15 = v14;
 
     v51 = 0u;
     v52 = 0u;
-    v16 = [(ANAnalytics *)self assistant];
-    v17 = v16;
-    if (v16)
+    assistant2 = [(ANAnalytics *)self assistant];
+    v17 = assistant2;
+    if (assistant2)
     {
-      [v16 senderDataForAnnouncement:v10];
+      [assistant2 senderDataForAnnouncement:receivedCopy];
     }
 
     else
@@ -195,7 +195,7 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v21 = [MEMORY[0x277CCABB0] numberWithInteger:v52];
     [v18 setObject:v21 forKeyedSubscript:@"location"];
 
-    v22 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v22 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     [v18 setObject:v22 forKeyedSubscript:@"receiveType"];
 
     v23 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
@@ -204,7 +204,7 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v24 = [MEMORY[0x277CCABB0] numberWithInteger:*(&v52 + 1)];
     [v18 setObject:v24 forKeyedSubscript:@"source"];
 
-    v25 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v25 = [MEMORY[0x277CCABB0] numberWithDouble:time];
     [v18 setObject:v25 forKeyedSubscript:@"time"];
 
     v26 = [MEMORY[0x277CCABB0] numberWithInteger:SDWORD2(v51)];
@@ -213,22 +213,22 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v27 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(MEMORY[0x277CEAB88], "deviceClass")}];
     [v18 setObject:v27 forKeyedSubscript:@"toDevice"];
 
-    v28 = [v11 analyticsPayload];
-    [v18 addEntriesFromDictionary:v28];
+    analyticsPayload = [contextCopy analyticsPayload];
+    [v18 addEntriesFromDictionary:analyticsPayload];
 
-    v29 = [(ANAnalytics *)self system];
-    v50 = v11;
+    system = [(ANAnalytics *)self system];
+    v50 = contextCopy;
     v30 = [v18 copy];
-    [v29 send:@"announcementTimeToReceive" withPayload:v30];
+    [system send:@"announcementTimeToReceive" withPayload:v30];
 
-    v31 = [(ANAnalytics *)self assistant];
-    v32 = [v31 bucketFromSize:v13];
+    assistant3 = [(ANAnalytics *)self assistant];
+    v32 = [assistant3 bucketFromSize:v13];
 
-    v33 = [(ANAnalytics *)self assistant];
-    v34 = [v33 bucketFromDuration:v15];
+    assistant4 = [(ANAnalytics *)self assistant];
+    v34 = [assistant4 bucketFromDuration:v15];
 
-    v35 = [(ANAnalytics *)self assistant];
-    v36 = [v35 bucketFromReceiveTime:a4];
+    assistant5 = [(ANAnalytics *)self assistant];
+    v36 = [assistant5 bucketFromReceiveTime:time];
 
     v37 = objc_opt_new();
     v38 = [MEMORY[0x277CCABB0] numberWithInteger:v32];
@@ -246,10 +246,10 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v42 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
     [v37 setObject:v42 forKeyedSubscript:@"duration"];
 
-    v43 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v43 = [MEMORY[0x277CCABB0] numberWithDouble:time];
     [v37 setObject:v43 forKeyedSubscript:@"time"];
 
-    v44 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v44 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     [v37 setObject:v44 forKeyedSubscript:@"receiveType"];
 
     v45 = [MEMORY[0x277CCABB0] numberWithInteger:SDWORD2(v51)];
@@ -258,31 +258,31 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v46 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(MEMORY[0x277CEAB88], "deviceClass")}];
     [v37 setObject:v46 forKeyedSubscript:@"toDevice"];
 
-    v47 = [v50 analyticsPayload];
+    analyticsPayload2 = [v50 analyticsPayload];
 
-    [v37 addEntriesFromDictionary:v47];
-    v48 = [(ANAnalytics *)self system];
+    [v37 addEntriesFromDictionary:analyticsPayload2];
+    system2 = [(ANAnalytics *)self system];
     v49 = [v37 copy];
-    [v48 send:@"announcementReceiveMeasure" withPayload:v49];
+    [system2 send:@"announcementReceiveMeasure" withPayload:v49];
   }
 }
 
-- (void)announcementPlayed:(id)a3 withTime:(double)a4 deadlineViolation:(double)a5 playbackSource:(unint64_t)a6 ofGroupCount:(int64_t)a7 context:(id)a8
+- (void)announcementPlayed:(id)played withTime:(double)time deadlineViolation:(double)violation playbackSource:(unint64_t)source ofGroupCount:(int64_t)count context:(id)context
 {
-  v14 = a3;
-  if (v14)
+  playedCopy = played;
+  if (playedCopy)
   {
-    v15 = a8;
-    v16 = [(ANAnalytics *)self assistant];
-    v17 = [v16 audioDataForAnnouncement:v14];
+    contextCopy = context;
+    assistant = [(ANAnalytics *)self assistant];
+    v17 = [assistant audioDataForAnnouncement:playedCopy];
     v19 = v18;
 
     v37 = 0u;
-    v20 = [(ANAnalytics *)self assistant];
-    v21 = v20;
-    if (v20)
+    assistant2 = [(ANAnalytics *)self assistant];
+    v21 = assistant2;
+    if (assistant2)
     {
-      [v20 senderDataForAnnouncement:v14];
+      [assistant2 senderDataForAnnouncement:playedCopy];
     }
 
     else
@@ -290,14 +290,14 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
       v37 = 0u;
     }
 
-    v22 = [(ANAnalytics *)self assistant];
-    v23 = [v22 boundGroupCount:a7];
+    assistant3 = [(ANAnalytics *)self assistant];
+    v23 = [assistant3 boundGroupCount:count];
 
     v24 = objc_opt_new();
     v25 = [MEMORY[0x277CCABB0] numberWithInteger:0];
     [v24 setObject:v25 forKeyedSubscript:@"action"];
 
-    v26 = [MEMORY[0x277CCABB0] numberWithBool:a5 > 0.0];
+    v26 = [MEMORY[0x277CCABB0] numberWithBool:violation > 0.0];
     [v24 setObject:v26 forKeyedSubscript:@"deadlineViolation"];
 
     v27 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
@@ -315,37 +315,37 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v31 = [MEMORY[0x277CCABB0] numberWithInteger:*(&v37 + 1)];
     [v24 setObject:v31 forKeyedSubscript:@"source"];
 
-    v32 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+    v32 = [MEMORY[0x277CCABB0] numberWithInteger:source];
     [v24 setObject:v32 forKeyedSubscript:@"playbackSource"];
 
-    v33 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v33 = [MEMORY[0x277CCABB0] numberWithDouble:time];
     [v24 setObject:v33 forKeyedSubscript:@"time"];
 
-    v34 = [v15 analyticsPayload];
+    analyticsPayload = [contextCopy analyticsPayload];
 
-    [v24 addEntriesFromDictionary:v34];
-    v35 = [(ANAnalytics *)self system];
+    [v24 addEntriesFromDictionary:analyticsPayload];
+    system = [(ANAnalytics *)self system];
     v36 = [v24 copy];
-    [v35 send:@"announcementTimeToPlay" withPayload:v36];
+    [system send:@"announcementTimeToPlay" withPayload:v36];
   }
 }
 
-- (void)announcementFinishedPlaying:(id)a3 withTime:(double)a4 ofGroupCount:(int64_t)a5 context:(id)a6
+- (void)announcementFinishedPlaying:(id)playing withTime:(double)time ofGroupCount:(int64_t)count context:(id)context
 {
-  v10 = a3;
-  if (v10)
+  playingCopy = playing;
+  if (playingCopy)
   {
-    v11 = a6;
-    v12 = [(ANAnalytics *)self assistant];
-    v13 = [v12 audioDataForAnnouncement:v10];
+    contextCopy = context;
+    assistant = [(ANAnalytics *)self assistant];
+    v13 = [assistant audioDataForAnnouncement:playingCopy];
     v15 = v14;
 
     v31 = 0u;
-    v16 = [(ANAnalytics *)self assistant];
-    v17 = v16;
-    if (v16)
+    assistant2 = [(ANAnalytics *)self assistant];
+    v17 = assistant2;
+    if (assistant2)
     {
-      [v16 senderDataForAnnouncement:v10];
+      [assistant2 senderDataForAnnouncement:playingCopy];
     }
 
     else
@@ -353,8 +353,8 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
       v31 = 0u;
     }
 
-    v18 = [(ANAnalytics *)self assistant];
-    v19 = [v18 boundGroupCount:a5];
+    assistant3 = [(ANAnalytics *)self assistant];
+    v19 = [assistant3 boundGroupCount:count];
 
     v20 = objc_opt_new();
     v21 = [MEMORY[0x277CCABB0] numberWithInteger:0];
@@ -375,34 +375,34 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v26 = [MEMORY[0x277CCABB0] numberWithInteger:*(&v31 + 1)];
     [v20 setObject:v26 forKeyedSubscript:@"source"];
 
-    v27 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v27 = [MEMORY[0x277CCABB0] numberWithDouble:time];
     [v20 setObject:v27 forKeyedSubscript:@"time"];
 
-    v28 = [v11 analyticsPayload];
+    analyticsPayload = [contextCopy analyticsPayload];
 
-    [v20 addEntriesFromDictionary:v28];
-    v29 = [(ANAnalytics *)self system];
+    [v20 addEntriesFromDictionary:analyticsPayload];
+    system = [(ANAnalytics *)self system];
     v30 = [v20 copy];
-    [v29 send:@"announcementFinishedPlaying" withPayload:v30];
+    [system send:@"announcementFinishedPlaying" withPayload:v30];
   }
 }
 
-- (void)announcementsExpired:(id)a3 ofGroupCount:(int64_t)a4 context:(id)a5
+- (void)announcementsExpired:(id)expired ofGroupCount:(int64_t)count context:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v8 && [v8 count])
+  expiredCopy = expired;
+  contextCopy = context;
+  if (expiredCopy && [expiredCopy count])
   {
-    v10 = [(ANAnalytics *)self assistant];
-    v11 = [v10 boundGroupCount:a4];
+    assistant = [(ANAnalytics *)self assistant];
+    v11 = [assistant boundGroupCount:count];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v28 = v8;
-    obj = v8;
+    v28 = expiredCopy;
+    obj = expiredCopy;
     v12 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
@@ -419,11 +419,11 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
 
           v16 = *(*(&v31 + 1) + 8 * i);
           v30 = 0u;
-          v17 = [(ANAnalytics *)self assistant];
-          v18 = v17;
-          if (v17)
+          assistant2 = [(ANAnalytics *)self assistant];
+          v18 = assistant2;
+          if (assistant2)
           {
-            [v17 senderDataForAnnouncement:v16];
+            [assistant2 senderDataForAnnouncement:v16];
           }
 
           else
@@ -444,12 +444,12 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
           v23 = [MEMORY[0x277CCABB0] numberWithInteger:*(&v30 + 1)];
           [v19 setObject:v23 forKeyedSubscript:@"source"];
 
-          v24 = [v9 analyticsPayload];
-          [v19 addEntriesFromDictionary:v24];
+          analyticsPayload = [contextCopy analyticsPayload];
+          [v19 addEntriesFromDictionary:analyticsPayload];
 
-          v25 = [(ANAnalytics *)self system];
+          system = [(ANAnalytics *)self system];
           v26 = [v19 copy];
-          [v25 send:@"announcementExpiration" withPayload:v26];
+          [system send:@"announcementExpiration" withPayload:v26];
         }
 
         v13 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -458,24 +458,24 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
       while (v13);
     }
 
-    v8 = v28;
+    expiredCopy = v28;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)announcementEntryAgeLimit:(id)a3 timeExceeded:(double)a4 context:(id)a5
+- (void)announcementEntryAgeLimit:(id)limit timeExceeded:(double)exceeded context:(id)context
 {
-  v8 = a3;
-  if (v8)
+  limitCopy = limit;
+  if (limitCopy)
   {
     v20 = 0u;
-    v9 = a5;
-    v10 = [(ANAnalytics *)self assistant];
-    v11 = v10;
-    if (v10)
+    contextCopy = context;
+    assistant = [(ANAnalytics *)self assistant];
+    v11 = assistant;
+    if (assistant)
     {
-      [v10 senderDataForAnnouncement:v8];
+      [assistant senderDataForAnnouncement:limitCopy];
     }
 
     else
@@ -493,55 +493,55 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
     v15 = [MEMORY[0x277CCABB0] numberWithInteger:*(&v20 + 1)];
     [v12 setObject:v15 forKeyedSubscript:@"source"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithDouble:exceeded];
     [v12 setObject:v16 forKeyedSubscript:@"timeExceeded"];
 
-    v17 = [v9 analyticsPayload];
+    analyticsPayload = [contextCopy analyticsPayload];
 
-    [v12 addEntriesFromDictionary:v17];
-    v18 = [(ANAnalytics *)self system];
+    [v12 addEntriesFromDictionary:analyticsPayload];
+    system = [(ANAnalytics *)self system];
     v19 = [v12 copy];
-    [v18 send:@"announcementEntryAgeLimit" withPayload:v19];
+    [system send:@"announcementEntryAgeLimit" withPayload:v19];
   }
 }
 
-- (void)announcementsStorageAgeLimit:(id)a3 context:(id)a4
+- (void)announcementsStorageAgeLimit:(id)limit context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 announcements];
-  if (v8)
+  limitCopy = limit;
+  contextCopy = context;
+  announcements = [limitCopy announcements];
+  if (announcements)
   {
-    v9 = v8;
-    v10 = [v6 announcements];
-    v11 = [v10 count];
+    v9 = announcements;
+    announcements2 = [limitCopy announcements];
+    v11 = [announcements2 count];
 
     if (v11)
     {
-      v12 = [(ANAnalytics *)self assistant];
-      v13 = [v6 announcements];
-      v34 = [v12 boundGroupCount:{objc_msgSend(v13, "count")}];
+      assistant = [(ANAnalytics *)self assistant];
+      announcements3 = [limitCopy announcements];
+      v34 = [assistant boundGroupCount:{objc_msgSend(announcements3, "count")}];
 
-      v14 = [v6 announcements];
-      v15 = [v14 count];
+      announcements4 = [limitCopy announcements];
+      v15 = [announcements4 count];
 
       if (v15)
       {
         v16 = 0;
         do
         {
-          v17 = [v6 announcements];
-          v18 = [v17 objectAtIndexedSubscript:v16];
+          announcements5 = [limitCopy announcements];
+          v18 = [announcements5 objectAtIndexedSubscript:v16];
 
-          v19 = [v6 metadata];
-          v20 = [v19 objectAtIndexedSubscript:v16];
+          metadata = [limitCopy metadata];
+          v20 = [metadata objectAtIndexedSubscript:v16];
 
           v35 = 0u;
-          v21 = [(ANAnalytics *)self assistant];
-          v22 = v21;
-          if (v21)
+          assistant2 = [(ANAnalytics *)self assistant];
+          v22 = assistant2;
+          if (assistant2)
           {
-            [v21 senderDataForAnnouncement:v18];
+            [assistant2 senderDataForAnnouncement:v18];
           }
 
           else
@@ -565,17 +565,17 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
           v28 = [MEMORY[0x277CCABB0] numberWithInteger:v34];
           [v23 setObject:v28 forKeyedSubscript:@"groupCount"];
 
-          v29 = [v7 analyticsPayload];
-          [v23 addEntriesFromDictionary:v29];
+          analyticsPayload = [contextCopy analyticsPayload];
+          [v23 addEntriesFromDictionary:analyticsPayload];
 
           [v23 addEntriesFromDictionary:v20];
-          v30 = [(ANAnalytics *)self system];
+          system = [(ANAnalytics *)self system];
           v31 = [v23 copy];
-          [v30 send:@"announcementAgeLimit" withPayload:v31];
+          [system send:@"announcementAgeLimit" withPayload:v31];
 
           ++v16;
-          v32 = [v6 announcements];
-          v33 = [v32 count];
+          announcements6 = [limitCopy announcements];
+          v33 = [announcements6 count];
         }
 
         while (v16 < v33);
@@ -584,60 +584,60 @@ void __21__ANAnalytics_shared__block_invoke(uint64_t a1)
   }
 }
 
-- (void)error:(int64_t)a3 context:(id)a4
+- (void)error:(int64_t)error context:(id)context
 {
-  v6 = a4;
-  if ((a3 - 5035) >= 0xFFFFFFFFFFFFF03DLL)
+  contextCopy = context;
+  if ((error - 5035) >= 0xFFFFFFFFFFFFF03DLL)
   {
-    v11 = v6;
+    v11 = contextCopy;
     v7 = objc_opt_new();
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:error];
     [v7 setObject:v8 forKeyedSubscript:@"errorCode"];
 
     if (v11)
     {
-      v9 = [v11 analyticsPayload];
-      [v7 addEntriesFromDictionary:v9];
+      analyticsPayload = [v11 analyticsPayload];
+      [v7 addEntriesFromDictionary:analyticsPayload];
     }
 
-    v10 = [(ANAnalytics *)self system];
-    [v10 send:@"announcementError" withPayload:v7];
+    system = [(ANAnalytics *)self system];
+    [system send:@"announcementError" withPayload:v7];
 
-    v6 = v11;
+    contextCopy = v11;
   }
 }
 
-- (void)playbackAction:(unint64_t)a3 fromSource:(unint64_t)a4 context:(id)a5
+- (void)playbackAction:(unint64_t)action fromSource:(unint64_t)source context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v14 = objc_opt_new();
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:action];
   [v14 setObject:v9 forKeyedSubscript:@"action"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   [v14 setObject:v10 forKeyedSubscript:@"source"];
 
-  v11 = [v8 analyticsPayload];
+  analyticsPayload = [contextCopy analyticsPayload];
 
-  [v14 addEntriesFromDictionary:v11];
-  v12 = [(ANAnalytics *)self system];
+  [v14 addEntriesFromDictionary:analyticsPayload];
+  system = [(ANAnalytics *)self system];
   v13 = [v14 copy];
-  [v12 send:@"playbackAction" withPayload:v13];
+  [system send:@"playbackAction" withPayload:v13];
 }
 
-- (void)recordReachableHomes:(id)a3
+- (void)recordReachableHomes:(id)homes
 {
-  v4 = a3;
-  v5 = [(ANAnalytics *)self dailyReporter];
-  [v5 recordReachableHomes:v4];
+  homesCopy = homes;
+  dailyReporter = [(ANAnalytics *)self dailyReporter];
+  [dailyReporter recordReachableHomes:homesCopy];
 }
 
-- (void)dailyReport:(id)a3 withPayload:(id)a4
+- (void)dailyReport:(id)report withPayload:(id)payload
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ANAnalytics *)self system];
-  [v8 send:v7 withPayload:v6];
+  payloadCopy = payload;
+  reportCopy = report;
+  system = [(ANAnalytics *)self system];
+  [system send:reportCopy withPayload:payloadCopy];
 }
 
 - (void)dailyReportComplete

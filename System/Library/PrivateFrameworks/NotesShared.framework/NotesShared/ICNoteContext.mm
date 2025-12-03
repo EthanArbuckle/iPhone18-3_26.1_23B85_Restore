@@ -1,38 +1,38 @@
 @interface ICNoteContext
-+ (BOOL)hasContextOptions:(unint64_t)a3;
++ (BOOL)hasContextOptions:(unint64_t)options;
 + (BOOL)legacyNotesDisabled;
-+ (BOOL)updateSharedStateFile:(id)a3 toState:(BOOL)a4 error:(id *)a5;
++ (BOOL)updateSharedStateFile:(id)file toState:(BOOL)state error:(id *)error;
 + (ICNoteContext)sharedContext;
-+ (id)filenameFromFileWrapper:(id)a3;
-+ (id)initializeSearchIndexerDataSourceWithPersistentContainer:(id)a3;
++ (id)filenameFromFileWrapper:(id)wrapper;
++ (id)initializeSearchIndexerDataSourceWithPersistentContainer:(id)container;
 + (id)performBackgroundTaskSerialQueue;
-+ (id)snapshotManagedObjectContextForContainer:(id)a3;
-+ (id)workerManagedObjectContextForContainer:(id)a3;
++ (id)snapshotManagedObjectContextForContainer:(id)container;
++ (id)workerManagedObjectContextForContainer:(id)container;
 + (void)clearSharedContext;
 + (void)enableLocalAccount;
-+ (void)markOldTrashedNotesForDeletionInContext:(id)a3;
++ (void)markOldTrashedNotesForDeletionInContext:(id)context;
 + (void)resetAppContainer;
 + (void)resetAppState;
-+ (void)setLegacyNotesDisabled:(BOOL)a3;
++ (void)setLegacyNotesDisabled:(BOOL)disabled;
 + (void)sharedContext;
-+ (void)startSharedContextWithOptions:(unint64_t)a3;
-+ (void)useContainerNamed:(id)a3;
-- (BOOL)noteIsVisible:(id)a3;
++ (void)startSharedContextWithOptions:(unint64_t)options;
++ (void)useContainerNamed:(id)named;
+- (BOOL)noteIsVisible:(id)visible;
 - (BOOL)recoverFromSaveError;
 - (BOOL)save;
-- (BOOL)save:(id *)a3;
-- (ICNoteContext)initWithOptions:(unint64_t)a3;
+- (BOOL)save:(id *)save;
+- (ICNoteContext)initWithOptions:(unint64_t)options;
 - (ICPersistentContainer)persistentContainer;
 - (NSArray)visibleNotes;
 - (OS_dispatch_queue)backgroundTaskQueue;
 - (id)allICloudACAccounts;
-- (id)defaultPersistentStoreFromPersistentStores:(id)a3;
-- (id)fetchedResultsControllerForFetchRequest:(id)a3 sectionNameKeyPath:(id)a4;
+- (id)defaultPersistentStoreFromPersistentStores:(id)stores;
+- (id)fetchedResultsControllerForFetchRequest:(id)request sectionNameKeyPath:(id)path;
 - (id)newFetchedResultsControllerForAllAccounts;
 - (id)objectID;
 - (id)persistentContainerQueue;
 - (id)persistentStoreCoordinator;
-- (id)persistentStoreForAccountID:(id)a3;
+- (id)persistentStoreForAccountID:(id)d;
 - (id)predicateForSearchableAttachments;
 - (id)predicateForSearchableNotes;
 - (id)predicateForVisibleNotes;
@@ -40,33 +40,33 @@
 - (id)snapshotManagedObjectContext;
 - (id)workerManagedObjectContext;
 - (unint64_t)visibleNotesCount;
-- (void)accountsDidChange:(id)a3;
+- (void)accountsDidChange:(id)change;
 - (void)addOrDeleteLocalAccountIfNecessary;
 - (void)applicationWillTerminate;
 - (void)cleanupAdditionalPersistentStores;
 - (void)clearPersistentContainer;
-- (void)cloudContextFetchRecordChangeOperationDidFinish:(id)a3;
-- (void)createAdditionalPersistentStoresWithAccountIdentifiers:(id)a3 completionBlock:(id)a4;
-- (void)createAdditionalPersistentStoresWithAccountIdentifiers:(id)a3 persistentContainer:(id)a4;
+- (void)cloudContextFetchRecordChangeOperationDidFinish:(id)finish;
+- (void)createAdditionalPersistentStoresWithAccountIdentifiers:(id)identifiers completionBlock:(id)block;
+- (void)createAdditionalPersistentStoresWithAccountIdentifiers:(id)identifiers persistentContainer:(id)container;
 - (void)dealloc;
 - (void)deleteEverything;
 - (void)destroyPersistentStore;
-- (void)ensureModernAccountExistsInContext:(id)a3;
+- (void)ensureModernAccountExistsInContext:(id)context;
 - (void)loadAdditionalPersistentStores;
-- (void)managedObjectContextDidSave:(id)a3;
-- (void)managedObjectContextUpdaterDidChangeObjectWithID:(id)a3;
-- (void)managedObjectContextUpdaterDidMerge:(id)a3;
-- (void)performBackgroundTask:(id)a3;
-- (void)performSnapshotBackgroundTask:(id)a3;
-- (void)purgeDeletedObjectsInManagedObjectContext:(id)a3;
+- (void)managedObjectContextDidSave:(id)save;
+- (void)managedObjectContextUpdaterDidChangeObjectWithID:(id)d;
+- (void)managedObjectContextUpdaterDidMerge:(id)merge;
+- (void)performBackgroundTask:(id)task;
+- (void)performSnapshotBackgroundTask:(id)task;
+- (void)purgeDeletedObjectsInManagedObjectContext:(id)context;
 - (void)purgeEverything;
 - (void)recoverFromSaveError;
 - (void)refreshAll;
-- (void)refreshPersistentStoresByAccountIdFromPersistentStores:(id)a3;
+- (void)refreshPersistentStoresByAccountIdFromPersistentStores:(id)stores;
 - (void)save;
 - (void)setupCrossProcessChangeCoordinator;
 - (void)setupTrashDeletionTimer;
-- (void)startIndexingWithCoreSpotlightDelegateForDescription:(id)a3 coordinator:(id)a4;
+- (void)startIndexingWithCoreSpotlightDelegateForDescription:(id)description coordinator:(id)coordinator;
 - (void)startSearchIndexerChangeObservingIfNecessary;
 - (void)updateAccounts;
 @end
@@ -82,16 +82,16 @@
 
 - (ICPersistentContainer)persistentContainer
 {
-  v3 = [(ICNoteContext *)self persistentContainerQueue];
+  persistentContainerQueue = [(ICNoteContext *)self persistentContainerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__ICNoteContext_persistentContainer__block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_sync(v3, block);
-  v4 = [(ICNoteContext *)self crossProcessChangeCoordinator];
+  dispatch_sync(persistentContainerQueue, block);
+  crossProcessChangeCoordinator = [(ICNoteContext *)self crossProcessChangeCoordinator];
 
-  if (!v4)
+  if (!crossProcessChangeCoordinator)
   {
     dispatchMainAfterDelay();
   }
@@ -304,10 +304,10 @@ void __36__ICNoteContext_persistentContainer__block_invoke_cold_2()
 
 - (id)persistentStoreCoordinator
 {
-  v2 = [(ICNoteContext *)self persistentContainer];
-  v3 = [v2 persistentStoreCoordinator];
+  persistentContainer = [(ICNoteContext *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 void __41__ICNoteContext_persistentContainerQueue__block_invoke()
@@ -321,15 +321,15 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
 - (void)loadAdditionalPersistentStores
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(ICNoteContext *)self accountUtilities];
-  v4 = [v3 allICloudACAccounts];
+  accountUtilities = [(ICNoteContext *)self accountUtilities];
+  allICloudACAccounts = [accountUtilities allICloudACAccounts];
 
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allICloudACAccounts, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = allICloudACAccounts;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -347,8 +347,8 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
         v11 = *(*(&v17 + 1) + 8 * i);
         if ([v11 ic_shouldCreateSeparatePersistentStore] && objc_msgSend(v11, "ic_isNotesEnabled"))
         {
-          v12 = [v11 identifier];
-          [v5 addObject:v12];
+          identifier = [v11 identifier];
+          [v5 addObject:identifier];
         }
       }
 
@@ -376,9 +376,9 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
 + (ICNoteContext)sharedContext
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277D361D0] isRunningUnitTests];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRunningUnitTests = [MEMORY[0x277D361D0] isRunningUnitTests];
   v4 = sharedContext;
   if (sharedContext)
   {
@@ -387,7 +387,7 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
 
   else
   {
-    v5 = v3;
+    v5 = isRunningUnitTests;
   }
 
   if ((v5 & 1) == 0)
@@ -395,15 +395,15 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
     v6 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [MEMORY[0x277CCACC8] callStackSymbols];
-      +[(ICNoteContext *)v7];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      +[(ICNoteContext *)callStackSymbols];
     }
 
     v4 = sharedContext;
   }
 
   v8 = v4;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -419,8 +419,8 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
 {
   v2 = CPSharedResourcesDirectory();
   v3 = [v2 stringByAppendingString:@"/Library/Notes/.DisableLegacyNotes"];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   return v5;
 }
@@ -429,11 +429,11 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
 {
   if ([(ICNoteContext *)self hasContextOptions:0x10000])
   {
-    v2 = [MEMORY[0x277D36248] sharedIndexer];
-    [v2 setDisabled:0];
-    if (([v2 isObservingChanges] & 1) == 0)
+    mEMORY[0x277D36248] = [MEMORY[0x277D36248] sharedIndexer];
+    [mEMORY[0x277D36248] setDisabled:0];
+    if (([mEMORY[0x277D36248] isObservingChanges] & 1) == 0)
     {
-      [v2 startObservingChanges];
+      [mEMORY[0x277D36248] startObservingChanges];
     }
   }
 }
@@ -441,16 +441,16 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
 - (id)workerManagedObjectContext
 {
   v3 = objc_opt_class();
-  v4 = [(ICNoteContext *)self persistentContainer];
-  v5 = [v3 workerManagedObjectContextForContainer:v4];
+  persistentContainer = [(ICNoteContext *)self persistentContainer];
+  v5 = [v3 workerManagedObjectContextForContainer:persistentContainer];
 
   return v5;
 }
 
-+ (void)startSharedContextWithOptions:(unint64_t)a3
++ (void)startSharedContextWithOptions:(unint64_t)options
 {
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   ++sharedContextReferenceCount;
   v5 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -464,7 +464,7 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
     +[ICRealtimeCollaborationSelectionState registerWithICCRCoder];
     +[ICTTAudioDocument registerWithICCRCoder];
     +[ICTable registerWithICCRCoder];
-    if ((a3 & 0x200000) == 0)
+    if ((options & 0x200000) == 0)
     {
       v6 = os_log_create("com.apple.notes", "CoreData");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -480,49 +480,49 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
           +[ICNoteContext startSharedContextWithOptions:];
         }
 
-        a3 |= 0x200000uLL;
+        options |= 0x200000uLL;
       }
     }
 
-    v8 = [MEMORY[0x277D36200] currentConfiguration];
-    v9 = [v8 container];
+    currentConfiguration = [MEMORY[0x277D36200] currentConfiguration];
+    container = [currentConfiguration container];
 
-    if (v9)
+    if (container)
     {
-      v10 = [MEMORY[0x277D36200] currentConfiguration];
-      v11 = [v10 container];
-      [ICNoteContext useContainerNamed:v11];
+      currentConfiguration2 = [MEMORY[0x277D36200] currentConfiguration];
+      container2 = [currentConfiguration2 container];
+      [ICNoteContext useContainerNamed:container2];
     }
 
-    v12 = [MEMORY[0x277D36200] currentConfiguration];
-    v13 = [v12 resetsState];
+    currentConfiguration3 = [MEMORY[0x277D36200] currentConfiguration];
+    resetsState = [currentConfiguration3 resetsState];
 
-    if (v13)
+    if (resetsState)
     {
       +[ICNoteContext resetAppState];
     }
 
-    v14 = [MEMORY[0x277D36200] currentConfiguration];
-    v15 = [v14 resetsContainer];
+    currentConfiguration4 = [MEMORY[0x277D36200] currentConfiguration];
+    resetsContainer = [currentConfiguration4 resetsContainer];
 
-    if (v15)
+    if (resetsContainer)
     {
       +[ICNoteContext resetAppContainer];
     }
 
-    if ((a3 & 0x400000) == 0)
+    if ((options & 0x400000) == 0)
     {
-      v16 = [MEMORY[0x277D36178] sharedInstance];
+      mEMORY[0x277D36178] = [MEMORY[0x277D36178] sharedInstance];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __47__ICNoteContext_startSharedContextWithOptions___block_invoke;
       v21[3] = &__block_descriptor_40_e5_v8__0l;
-      v21[4] = a3;
-      [v16 performBlockInPersonaContext:v21 forAccountIdentifier:0];
+      v21[4] = options;
+      [mEMORY[0x277D36178] performBlockInPersonaContext:v21 forAccountIdentifier:0];
     }
 
-    v17 = [sharedContext managedObjectContext];
-    [v17 performBlockAndWait:&__block_literal_global_34];
+    managedObjectContext = [sharedContext managedObjectContext];
+    [managedObjectContext performBlockAndWait:&__block_literal_global_34];
 
     if (([sharedContext hasContextOptions:64] & 1) == 0)
     {
@@ -538,16 +538,16 @@ void __41__ICNoteContext_persistentContainerQueue__block_invoke()
       }
     }
 
-    v19 = [MEMORY[0x277D36200] currentConfiguration];
-    v20 = [v19 environment];
+    currentConfiguration5 = [MEMORY[0x277D36200] currentConfiguration];
+    environment = [currentConfiguration5 environment];
 
-    if (v20 == 2)
+    if (environment == 2)
     {
       +[ICNoteContext enableLocalAccount];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __47__ICNoteContext_startSharedContextWithOptions___block_invoke(uint64_t a1)
@@ -610,24 +610,24 @@ void __35__ICNoteContext_clearSharedContext__block_invoke(uint64_t a1)
   objc_sync_exit(v1);
 }
 
-+ (void)useContainerNamed:(id)a3
++ (void)useContainerNamed:(id)named
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  namedCopy = named;
   [MEMORY[0x277D36230] resetApplicationDocumentsURL];
-  v4 = [MEMORY[0x277D36230] applicationDocumentsURL];
-  v5 = [v4 URLByAppendingPathComponent:@"Containers"];
+  applicationDocumentsURL = [MEMORY[0x277D36230] applicationDocumentsURL];
+  v5 = [applicationDocumentsURL URLByAppendingPathComponent:@"Containers"];
 
   v6 = MEMORY[0x277D36230];
-  v7 = [v3 ic_sanitizedFilenameString];
-  v8 = [v5 URLByAppendingPathComponent:v7];
+  ic_sanitizedFilenameString = [namedCopy ic_sanitizedFilenameString];
+  v8 = [v5 URLByAppendingPathComponent:ic_sanitizedFilenameString];
   [v6 setApplicationDocumentsURL:v8];
 
   v9 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v3;
+    v11 = namedCopy;
     _os_log_impl(&dword_214D51000, v9, OS_LOG_TYPE_INFO, "Switched to container named '%@'", &v10, 0xCu);
   }
 }
@@ -671,17 +671,17 @@ LABEL_6:
     +[ICNoteContext resetAppState];
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 setBool:1 forKey:@"bypassWhatsNewScreen"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:@"bypassWhatsNewScreen"];
 
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setBool:1 forKey:@"hasShownWelcomeScreen"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 setBool:1 forKey:@"hasShownWelcomeScreen"];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 setBool:1 forKey:@"didShowMoveToRecentyDeletedFolderAlert"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults3 setBool:1 forKey:@"didShowMoveToRecentyDeletedFolderAlert"];
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v6 setBool:1 forKey:@"disableConfirmFolderDeleteAlert"];
+  standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults4 setBool:1 forKey:@"disableConfirmFolderDeleteAlert"];
 
   v7 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -690,8 +690,8 @@ LABEL_6:
     _os_log_impl(&dword_214D51000, v7, OS_LOG_TYPE_INFO, "Disabled What's New screen, welcome Screen, recently deleted alert, and delete folder alert", buf, 2u);
   }
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v8 setBool:0 forKey:@"alexandria"];
+  standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults5 setBool:0 forKey:@"alexandria"];
 
   v9 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -704,26 +704,26 @@ LABEL_6:
 + (void)resetAppContainer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [MEMORY[0x277D36230] applicationDocumentsURL];
-  v4 = [v2 enumeratorAtURL:v3 includingPropertiesForKeys:0 options:0 errorHandler:&__block_literal_global_103];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  applicationDocumentsURL = [MEMORY[0x277D36230] applicationDocumentsURL];
+  v4 = [defaultManager enumeratorAtURL:applicationDocumentsURL includingPropertiesForKeys:0 options:0 errorHandler:&__block_literal_global_103];
 
-  v5 = [v4 nextObject];
-  if (!v5)
+  nextObject = [v4 nextObject];
+  if (!nextObject)
   {
     goto LABEL_9;
   }
 
-  v7 = v5;
+  v7 = nextObject;
   v8 = 0;
   *&v6 = 138412546;
   v14 = v6;
   do
   {
     v9 = v8;
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v15 = v8;
-    [v10 removeItemAtURL:v7 error:&v15];
+    [defaultManager2 removeItemAtURL:v7 error:&v15];
     v8 = v15;
 
     if (v8)
@@ -739,12 +739,12 @@ LABEL_6:
       }
     }
 
-    v12 = [v4 nextObject];
+    nextObject2 = [v4 nextObject];
 
-    v7 = v12;
+    v7 = nextObject2;
   }
 
-  while (v12);
+  while (nextObject2);
   if (!v8)
   {
 LABEL_9:
@@ -772,7 +772,7 @@ uint64_t __34__ICNoteContext_resetAppContainer__block_invoke(uint64_t a1, void *
   return 1;
 }
 
-- (ICNoteContext)initWithOptions:(unint64_t)a3
+- (ICNoteContext)initWithOptions:(unint64_t)options
 {
   v38 = *MEMORY[0x277D85DE8];
   v35.receiver = self;
@@ -784,27 +784,27 @@ uint64_t __34__ICNoteContext_resetAppContainer__block_invoke(uint64_t a1, void *
     return v5;
   }
 
-  [(ICNoteContext *)v4 setContextOptions:a3];
+  [(ICNoteContext *)v4 setContextOptions:options];
   if ([(ICNoteContext *)v5 hasAnyContextOptions:3])
   {
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v6 registerDefaults:&unk_282748158];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults registerDefaults:&unk_282748158];
   }
 
   if ([(ICNoteContext *)v5 hasContextOptions:0x40000])
   {
-    v7 = [MEMORY[0x277D36230] applicationDataContainerURL];
-    if (!v7)
+    applicationDataContainerURL = [MEMORY[0x277D36230] applicationDataContainerURL];
+    if (!applicationDataContainerURL)
     {
-      v7 = [MEMORY[0x277D36230] applicationDocumentsURL];
+      applicationDataContainerURL = [MEMORY[0x277D36230] applicationDocumentsURL];
     }
 
-    v8 = [v7 URLByAppendingPathComponent:@"tmp" isDirectory:1];
+    v8 = [applicationDataContainerURL URLByAppendingPathComponent:@"tmp" isDirectory:1];
     if (v8)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v34 = 0;
-      v10 = [v9 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v34];
+      v10 = [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v34];
       v11 = v34;
 
       if ((v10 & 1) == 0)
@@ -816,7 +816,7 @@ uint64_t __34__ICNoteContext_resetAppContainer__block_invoke(uint64_t a1, void *
         }
       }
 
-      if (!v7)
+      if (!applicationDataContainerURL)
       {
 LABEL_13:
         if (!v8)
@@ -827,8 +827,8 @@ LABEL_30:
         }
 
 LABEL_23:
-        v18 = [v8 path];
-        v19 = setenv("TMPDIR", [v18 fileSystemRepresentation], 1);
+        path = [v8 path];
+        v19 = setenv("TMPDIR", [path fileSystemRepresentation], 1);
 
         v20 = os_log_create("com.apple.notes", "Application");
         v21 = v20;
@@ -855,14 +855,14 @@ LABEL_23:
     else
     {
       v11 = 0;
-      if (!v7)
+      if (!applicationDataContainerURL)
       {
         goto LABEL_13;
       }
     }
 
-    v13 = [v7 path];
-    v14 = setenv("HOME", [v13 fileSystemRepresentation], 1);
+    path2 = [applicationDataContainerURL path];
+    v14 = setenv("HOME", [path2 fileSystemRepresentation], 1);
 
     v15 = os_log_create("com.apple.notes", "Application");
     v16 = v15;
@@ -878,7 +878,7 @@ LABEL_23:
     else if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v37 = v7;
+      v37 = applicationDataContainerURL;
       _os_log_impl(&dword_214D51000, v16, OS_LOG_TYPE_DEFAULT, "setenv HOME %@", buf, 0xCu);
     }
 
@@ -897,30 +897,30 @@ LABEL_31:
   dispatchMainAfterDelay();
   if (![(ICNoteContext *)v24 hasContextOptions:0x2000])
   {
-    v25 = [MEMORY[0x277D36178] sharedInstance];
-    [(ICNoteContext *)v24 setAccountUtilities:v25];
+    mEMORY[0x277D36178] = [MEMORY[0x277D36178] sharedInstance];
+    [(ICNoteContext *)v24 setAccountUtilities:mEMORY[0x277D36178]];
   }
 
   [(ICNoteContext *)v24 setupCrossProcessChangeCoordinator];
   [(ICNoteContext *)v24 setPersistentStoresByAccountId:0];
   [(ICNoteContext *)v24 loadAdditionalPersistentStores];
-  v26 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v26 addObserver:v24 selector:sel_accountsDidChange_ name:@"ICAccountsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v24 selector:sel_accountsDidChange_ name:@"ICAccountsDidChangeNotification" object:0];
 
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 addObserver:v24 selector:sel_managedObjectContextUpdaterDidMerge_ name:*MEMORY[0x277D36128] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v24 selector:sel_managedObjectContextUpdaterDidMerge_ name:*MEMORY[0x277D36128] object:0];
 
   if ([(ICNoteContext *)v24 hasContextOptions:1])
   {
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v29 = *MEMORY[0x277CBE1B0];
-    v30 = [(ICNoteContext *)v24 persistentStoreCoordinator];
-    [v28 addObserver:v24 selector:sel_managedObjectContextDidSave_ name:v29 object:v30];
+    persistentStoreCoordinator = [(ICNoteContext *)v24 persistentStoreCoordinator];
+    [defaultCenter3 addObserver:v24 selector:sel_managedObjectContextDidSave_ name:v29 object:persistentStoreCoordinator];
 
     v33 = v24;
     dispatchMainAfterDelay();
-    v31 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v31 addObserver:v33 selector:sel_cloudContextFetchRecordChangeOperationDidFinish_ name:@"ICCloudContextFetchRecordChangeOperationDidFinishNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v33 selector:sel_cloudContextFetchRecordChangeOperationDidFinish_ name:@"ICCloudContextFetchRecordChangeOperationDidFinishNotification" object:0];
   }
 
   return v5;
@@ -928,11 +928,11 @@ LABEL_31:
 
 - (void)dealloc
 {
-  v3 = [(ICNoteContext *)self trashDeletionTimer];
-  [v3 invalidate];
+  trashDeletionTimer = [(ICNoteContext *)self trashDeletionTimer];
+  [trashDeletionTimer invalidate];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
   v5.receiver = self;
@@ -943,17 +943,17 @@ LABEL_31:
 - (void)applicationWillTerminate
 {
   +[ICCloudSyncingObject resetAllDeletedByThisDeviceProperties];
-  v3 = [(ICNoteContext *)self managedObjectContext];
-  [(ICNoteContext *)self purgeDeletedObjectsInManagedObjectContext:v3];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  [(ICNoteContext *)self purgeDeletedObjectsInManagedObjectContext:managedObjectContext];
 
-  v4 = [(ICNoteContext *)self managedObjectContext];
-  [v4 ic_save];
+  managedObjectContext2 = [(ICNoteContext *)self managedObjectContext];
+  [managedObjectContext2 ic_save];
 }
 
-- (void)purgeDeletedObjectsInManagedObjectContext:(id)a3
+- (void)purgeDeletedObjectsInManagedObjectContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if ([(ICNoteContext *)self hasContextOptions:64])
   {
     v5 = os_log_create("com.apple.notes", "CoreData");
@@ -966,8 +966,8 @@ LABEL_31:
   else
   {
     v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"markedForDeletion == YES"];
-    v14 = v4;
-    [ICCloudSyncingObject ic_objectsMatchingPredicate:v5 context:v4];
+    v14 = contextCopy;
+    [ICCloudSyncingObject ic_objectsMatchingPredicate:v5 context:contextCopy];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -1006,7 +1006,7 @@ LABEL_31:
       while (v8);
     }
 
-    v4 = v14;
+    contextCopy = v14;
   }
 }
 
@@ -1017,12 +1017,12 @@ LABEL_31:
     [ICNoteContext setupTrashDeletionTimer];
   }
 
-  v3 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  [v3 doubleForKey:@"TrashCleanupInterval"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  [mEMORY[0x277D36180] doubleForKey:@"TrashCleanupInterval"];
   v5 = v4;
 
-  v6 = [(ICNoteContext *)self trashDeletionTimer];
-  [v6 invalidate];
+  trashDeletionTimer = [(ICNoteContext *)self trashDeletionTimer];
+  [trashDeletionTimer invalidate];
 
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277CBEBB8];
@@ -1088,17 +1088,17 @@ void __40__ICNoteContext_setupTrashDeletionTimer__block_invoke_2(uint64_t a1, vo
   }
 }
 
-+ (void)markOldTrashedNotesForDeletionInContext:(id)a3
++ (void)markOldTrashedNotesForDeletionInContext:(id)context
 {
   v37[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   if (markOldTrashedNotesForDeletionInContext__onceToken != -1)
   {
     +[ICNoteContext markOldTrashedNotesForDeletionInContext:];
   }
 
-  v4 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  [v4 doubleForKey:@"TrashedNoteLifetime"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  [mEMORY[0x277D36180] doubleForKey:@"TrashedNoteLifetime"];
   v6 = v5;
 
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-v6];
@@ -1120,7 +1120,7 @@ void __40__ICNoteContext_setupTrashDeletionTimer__block_invoke_2(uint64_t a1, vo
   v25 = v12;
   [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v12];
   v24 = v13 = 0x278192000uLL;
-  v27 = v3;
+  v27 = contextCopy;
   [ICNote notesMatchingPredicate:"notesMatchingPredicate:context:" context:?];
   v28 = 0u;
   v29 = 0u;
@@ -1145,12 +1145,12 @@ void __40__ICNoteContext_setupTrashDeletionTimer__block_invoke_2(uint64_t a1, vo
         v20 = os_log_create("com.apple.notes", "Delete");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v19 identifier];
-          v22 = [v19 folderModificationDate];
+          identifier = [v19 identifier];
+          folderModificationDate = [v19 folderModificationDate];
           *buf = 138412546;
-          v33 = v21;
+          v33 = identifier;
           v34 = 2112;
-          v35 = v22;
+          v35 = folderModificationDate;
           _os_log_debug_impl(&dword_214D51000, v20, OS_LOG_TYPE_DEBUG, "Marking expired trashed note (%@) as deleted. Trashed %@", buf, 0x16u);
 
           v13 = 0x278192000;
@@ -1176,7 +1176,7 @@ void __57__ICNoteContext_markOldTrashedNotesForDeletionInContext___block_invoke(
   [v0 registerDefaults:v1];
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   if ([(ICNoteContext *)self hasContextOptions:64])
   {
@@ -1201,7 +1201,7 @@ void __57__ICNoteContext_markOldTrashedNotesForDeletionInContext___block_invoke(
     v12 = __Block_byref_object_copy__29;
     v13 = __Block_byref_object_dispose__29;
     v14 = 0;
-    v6 = [(ICNoteContext *)self managedObjectContext];
+    managedObjectContext = [(ICNoteContext *)self managedObjectContext];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __22__ICNoteContext_save___block_invoke;
@@ -1209,11 +1209,11 @@ void __57__ICNoteContext_markOldTrashedNotesForDeletionInContext___block_invoke(
     v8[4] = self;
     v8[5] = &v15;
     v8[6] = &v9;
-    [v6 performBlockAndWait:v8];
+    [managedObjectContext performBlockAndWait:v8];
 
-    if (a3)
+    if (save)
     {
-      *a3 = v10[5];
+      *save = v10[5];
     }
 
     [(ICNoteContext *)self setSaving:0];
@@ -1314,15 +1314,15 @@ void __22__ICNoteContext_save___block_invoke(uint64_t a1)
   }
 
   [(ICNoteContext *)self cleanupAdditionalPersistentStores];
-  v4 = [(ICNoteContext *)self managedObjectContext];
-  [v4 refreshAllObjects];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  [managedObjectContext refreshAllObjects];
 
-  v5 = [(ICNoteContext *)self managedObjectContext];
-  [v5 rollback];
+  managedObjectContext2 = [(ICNoteContext *)self managedObjectContext];
+  [managedObjectContext2 rollback];
 
-  v6 = [(ICNoteContext *)self managedObjectContext];
+  managedObjectContext3 = [(ICNoteContext *)self managedObjectContext];
   v10 = 0;
-  v7 = [v6 save:&v10];
+  v7 = [managedObjectContext3 save:&v10];
   v8 = v10;
 
   if ((v7 & 1) == 0)
@@ -1335,8 +1335,8 @@ void __22__ICNoteContext_save___block_invoke(uint64_t a1)
 
 - (id)predicateForSearchableAttachments
 {
-  v2 = [(ICNoteContext *)self managedObjectContext];
-  v3 = [ICAttachment predicateForSearchableAttachmentsInContext:v2];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  v3 = [ICAttachment predicateForSearchableAttachmentsInContext:managedObjectContext];
 
   return v3;
 }
@@ -1394,15 +1394,15 @@ void __27__ICNoteContext_refreshAll__block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)updateSharedStateFile:(id)a3 toState:(BOOL)a4 error:(id *)a5
++ (BOOL)updateSharedStateFile:(id)file toState:(BOOL)state error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  stateCopy = state;
+  fileCopy = file;
+  if (stateCopy)
   {
-    v8 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     v14 = 0;
-    [v8 writeToFile:v7 options:0 error:&v14];
+    [data writeToFile:fileCopy options:0 error:&v14];
     v9 = v14;
 
     if (!v9 || [v9 code] != 516)
@@ -1416,9 +1416,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v13 = 0;
-  [v10 removeItemAtPath:v7 error:&v13];
+  [defaultManager removeItemAtPath:fileCopy error:&v13];
   v9 = v13;
 
   if (v9 && [v9 code] == 4)
@@ -1427,24 +1427,24 @@ LABEL_7:
   }
 
 LABEL_8:
-  if (a5)
+  if (error)
   {
     v11 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return v9 == 0;
 }
 
-+ (void)setLegacyNotesDisabled:(BOOL)a3
++ (void)setLegacyNotesDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  if (+[ICNoteContext legacyNotesDisabled]!= a3)
+  disabledCopy = disabled;
+  if (+[ICNoteContext legacyNotesDisabled]!= disabled)
   {
     v5 = CPSharedResourcesDirectory();
     v6 = [v5 stringByAppendingString:@"/Library/Notes/.DisableLegacyNotes"];
     v10 = 0;
-    v7 = [a1 updateSharedStateFile:v6 toState:v3 error:&v10];
+    v7 = [self updateSharedStateFile:v6 toState:disabledCopy error:&v10];
     v8 = v10;
     if ((v7 & 1) == 0)
     {
@@ -1457,22 +1457,22 @@ LABEL_8:
   }
 }
 
-- (void)managedObjectContextDidSave:(id)a3
+- (void)managedObjectContextDidSave:(id)save
 {
-  v4 = [a3 object];
+  object = [save object];
   if (self->_persistentContainer)
   {
-    v5 = [(ICNoteContext *)self managedObjectContext];
+    managedObjectContext = [(ICNoteContext *)self managedObjectContext];
 
-    if (v4 != v5)
+    if (object != managedObjectContext)
     {
-      v6 = [(ICNoteContext *)self managedObjectContext];
+      managedObjectContext2 = [(ICNoteContext *)self managedObjectContext];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __45__ICNoteContext_managedObjectContextDidSave___block_invoke;
       v7[3] = &unk_278194B00;
-      v8 = v4;
-      [v6 performBlock:v7];
+      v8 = object;
+      [managedObjectContext2 performBlock:v7];
     }
   }
 }
@@ -1483,11 +1483,11 @@ void __45__ICNoteContext_managedObjectContextDidSave___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"ICNoteContextDidMergeChangesFromContextDidSaveNotification" object:*(a1 + 32)];
 }
 
-- (void)accountsDidChange:(id)a3
+- (void)accountsDidChange:(id)change
 {
   [ICNoteContext setLegacyNotesDisabled:0];
-  v4 = [(ICNoteContext *)self accountUtilities];
-  [v4 invalidateCache];
+  accountUtilities = [(ICNoteContext *)self accountUtilities];
+  [accountUtilities invalidateCache];
 
   if (+[ICAccount clearAccountForAppleCloudKitTable])
   {
@@ -1507,13 +1507,13 @@ void __45__ICNoteContext_managedObjectContextDidSave___block_invoke(uint64_t a1)
   else if ([(ICNoteContext *)self hasContextOptions:721457])
   {
     [(ICNoteContext *)self addOrDeleteLocalAccountIfNecessary];
-    v6 = [(ICNoteContext *)self managedObjectContext];
-    v7 = [v6 hasChanges];
+    managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+    hasChanges = [managedObjectContext hasChanges];
 
-    if (v7)
+    if (hasChanges)
     {
-      v8 = [(ICNoteContext *)self managedObjectContext];
-      [v8 ic_save];
+      managedObjectContext2 = [(ICNoteContext *)self managedObjectContext];
+      [managedObjectContext2 ic_save];
     }
   }
 }
@@ -1538,8 +1538,8 @@ void __45__ICNoteContext_managedObjectContextDidSave___block_invoke(uint64_t a1)
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v4 = [(ICNoteContext *)self managedObjectContext];
-    v5 = [ICAccount accountsWithAccountType:1 context:v4];
+    managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+    v5 = [ICAccount accountsWithAccountType:1 context:managedObjectContext];
     v6 = [v5 copy];
 
     v7 = [v6 countByEnumeratingWithState:&v48 objects:v63 count:16];
@@ -1558,16 +1558,16 @@ void __45__ICNoteContext_managedObjectContextDidSave___block_invoke(uint64_t a1)
           }
 
           v11 = *(*(&v48 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [(ICNoteContext *)self accountUtilities];
-          v14 = [v13 accountStore];
-          v15 = [v14 accountWithIdentifier:v12];
+          identifier = [v11 identifier];
+          accountUtilities = [(ICNoteContext *)self accountUtilities];
+          accountStore = [accountUtilities accountStore];
+          v15 = [accountStore accountWithIdentifier:identifier];
 
-          v16 = [v15 ic_isNotesEnabled];
-          v17 = v16;
+          ic_isNotesEnabled = [v15 ic_isNotesEnabled];
+          v17 = ic_isNotesEnabled;
           if (v15)
           {
-            v18 = v16;
+            v18 = ic_isNotesEnabled;
           }
 
           else
@@ -1581,7 +1581,7 @@ void __45__ICNoteContext_managedObjectContextDidSave___block_invoke(uint64_t a1)
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
               *v57 = v38;
-              v58 = v12;
+              v58 = identifier;
               v59 = 1024;
               v60 = v17;
               v61 = 1024;
@@ -1601,15 +1601,15 @@ void __45__ICNoteContext_managedObjectContextDidSave___block_invoke(uint64_t a1)
     }
 
     v20 = objc_opt_new();
-    v21 = [(ICNoteContext *)self accountUtilities];
-    v22 = [v21 allICloudACAccounts];
+    accountUtilities2 = [(ICNoteContext *)self accountUtilities];
+    allICloudACAccounts = [accountUtilities2 allICloudACAccounts];
 
-    v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v22, "count")}];
+    v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allICloudACAccounts, "count")}];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v24 = v22;
+    v24 = allICloudACAccounts;
     v25 = [v24 countByEnumeratingWithState:&v44 objects:v56 count:16];
     if (v25)
     {
@@ -1626,8 +1626,8 @@ void __45__ICNoteContext_managedObjectContextDidSave___block_invoke(uint64_t a1)
           v28 = *(*(&v44 + 1) + 8 * j);
           if ([v28 ic_shouldCreateSeparatePersistentStore])
           {
-            v29 = [v28 identifier];
-            [v23 addObject:v29];
+            identifier2 = [v28 identifier];
+            [v23 addObject:identifier2];
           }
         }
 
@@ -1667,15 +1667,15 @@ void __45__ICNoteContext_managedObjectContextDidSave___block_invoke(uint64_t a1)
       v34 = +[ICCloudContext sharedContext];
       [v34 cancelEverythingWithCompletionHandler:&__block_literal_global_188];
 
-      v35 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v35 postNotificationName:*MEMORY[0x277D36140] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x277D36140] object:0];
 
       [v33 enumerateObjectsUsingBlock:&__block_literal_global_192_0];
-      v36 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v36 postNotificationName:*MEMORY[0x277D36138] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 postNotificationName:*MEMORY[0x277D36138] object:0];
 
-      v37 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v37 postNotificationName:@"ICAccountsDidChangeNotification" object:0];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 postNotificationName:@"ICAccountsDidChangeNotification" object:0];
     }
 
     [(ICNoteContext *)self addOrDeleteLocalAccountIfNecessary];
@@ -1753,24 +1753,24 @@ void __31__ICNoteContext_updateAccounts__block_invoke_2_189(uint64_t a1, void *a
 
 - (id)primaryICloudACAccount
 {
-  v2 = [(ICNoteContext *)self accountUtilities];
-  v3 = [v2 primaryICloudACAccount];
+  accountUtilities = [(ICNoteContext *)self accountUtilities];
+  primaryICloudACAccount = [accountUtilities primaryICloudACAccount];
 
-  return v3;
+  return primaryICloudACAccount;
 }
 
 - (id)allICloudACAccounts
 {
-  v2 = [(ICNoteContext *)self accountUtilities];
-  v3 = [v2 allICloudACAccounts];
+  accountUtilities = [(ICNoteContext *)self accountUtilities];
+  allICloudACAccounts = [accountUtilities allICloudACAccounts];
 
-  return v3;
+  return allICloudACAccounts;
 }
 
-- (void)ensureModernAccountExistsInContext:(id)a3
+- (void)ensureModernAccountExistsInContext:(id)context
 {
-  v4 = a3;
-  if (![ICAccount hasModernAccountInContext:v4])
+  contextCopy = context;
+  if (![ICAccount hasModernAccountInContext:contextCopy])
   {
     v5 = os_log_create("com.apple.notes", "Accounts");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1780,7 +1780,7 @@ void __31__ICNoteContext_updateAccounts__block_invoke_2_189(uint64_t a1, void *a
 
     [(ICNoteContext *)self setShouldEnsureLocalAccount:1];
     [(ICNoteContext *)self addOrDeleteLocalAccountIfNecessary];
-    if ([ICAccount hasModernAccountInContext:v4])
+    if ([ICAccount hasModernAccountInContext:contextCopy])
     {
       v6 = os_log_create("com.apple.notes", "Accounts");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1797,48 +1797,48 @@ void __31__ICNoteContext_updateAccounts__block_invoke_2_189(uint64_t a1, void *a
   }
 }
 
-- (BOOL)noteIsVisible:(id)a3
+- (BOOL)noteIsVisible:(id)visible
 {
-  if (!a3)
+  if (!visible)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(ICNoteContext *)self predicateForVisibleNotes];
-  v6 = [v5 evaluateWithObject:v4];
+  visibleCopy = visible;
+  predicateForVisibleNotes = [(ICNoteContext *)self predicateForVisibleNotes];
+  v6 = [predicateForVisibleNotes evaluateWithObject:visibleCopy];
 
   return v6;
 }
 
 - (NSArray)visibleNotes
 {
-  v2 = [(ICNoteContext *)self managedObjectContext];
-  v3 = [ICNote visibleNotesInContext:v2];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  v3 = [ICNote visibleNotesInContext:managedObjectContext];
 
   return v3;
 }
 
 - (unint64_t)visibleNotesCount
 {
-  v2 = [(ICNoteContext *)self managedObjectContext];
-  v3 = [ICNote countOfVisibleNotesInContext:v2];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  v3 = [ICNote countOfVisibleNotesInContext:managedObjectContext];
 
   return v3;
 }
 
 - (id)predicateForVisibleNotes
 {
-  v2 = [(ICNoteContext *)self managedObjectContext];
-  v3 = [ICNote predicateForVisibleNotesInContext:v2];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  v3 = [ICNote predicateForVisibleNotesInContext:managedObjectContext];
 
   return v3;
 }
 
 - (id)predicateForSearchableNotes
 {
-  v2 = [(ICNoteContext *)self managedObjectContext];
-  v3 = [ICNote predicateForSearchableNotesInContext:v2];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  v3 = [ICNote predicateForSearchableNotesInContext:managedObjectContext];
 
   return v3;
 }
@@ -1857,14 +1857,14 @@ void __31__ICNoteContext_updateAccounts__block_invoke_2_189(uint64_t a1, void *a
   return v6;
 }
 
-- (id)fetchedResultsControllerForFetchRequest:(id)a3 sectionNameKeyPath:(id)a4
+- (id)fetchedResultsControllerForFetchRequest:(id)request sectionNameKeyPath:(id)path
 {
   v6 = MEMORY[0x277CBE430];
-  v7 = a4;
-  v8 = a3;
+  pathCopy = path;
+  requestCopy = request;
   v9 = [v6 alloc];
-  v10 = [(ICNoteContext *)self managedObjectContext];
-  v11 = [v9 initWithFetchRequest:v8 managedObjectContext:v10 sectionNameKeyPath:v7 cacheName:0];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  v11 = [v9 initWithFetchRequest:requestCopy managedObjectContext:managedObjectContext sectionNameKeyPath:pathCopy cacheName:0];
 
   v15 = 0;
   LOBYTE(v6) = [v11 performFetch:&v15];
@@ -1878,16 +1878,16 @@ void __31__ICNoteContext_updateAccounts__block_invoke_2_189(uint64_t a1, void *a
   return v11;
 }
 
-+ (id)initializeSearchIndexerDataSourceWithPersistentContainer:(id)a3
++ (id)initializeSearchIndexerDataSourceWithPersistentContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__ICNoteContext_initializeSearchIndexerDataSourceWithPersistentContainer___block_invoke;
   block[3] = &unk_278194B00;
-  v10 = v3;
+  v10 = containerCopy;
   v4 = initializeSearchIndexerDataSourceWithPersistentContainer__onceToken;
-  v5 = v3;
+  v5 = containerCopy;
   if (v4 != -1)
   {
     dispatch_once(&initializeSearchIndexerDataSourceWithPersistentContainer__onceToken, block);
@@ -1911,13 +1911,13 @@ void __74__ICNoteContext_initializeSearchIndexerDataSourceWithPersistentContaine
 
 - (void)clearPersistentContainer
 {
-  v3 = [(ICNoteContext *)self persistentContainerQueue];
+  persistentContainerQueue = [(ICNoteContext *)self persistentContainerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__ICNoteContext_clearPersistentContainer__block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(persistentContainerQueue, block);
 }
 
 uint64_t __41__ICNoteContext_clearPersistentContainer__block_invoke(uint64_t a1)
@@ -1995,50 +1995,50 @@ void __36__ICNoteContext_persistentContainer__block_invoke_2_263(uint64_t a1)
   }
 }
 
-- (void)startIndexingWithCoreSpotlightDelegateForDescription:(id)a3 coordinator:(id)a4
+- (void)startIndexingWithCoreSpotlightDelegateForDescription:(id)description coordinator:(id)coordinator
 {
-  v8 = a3;
-  v5 = a4;
+  descriptionCopy = description;
+  coordinatorCopy = coordinator;
   if (ICUseCoreDataCoreSpotlightIntegration())
   {
-    v6 = [objc_alloc(MEMORY[0x277D361C0]) initForStoreWithDescription:v8 coordinator:v5 indexingPriority:2];
+    v6 = [objc_alloc(MEMORY[0x277D361C0]) initForStoreWithDescription:descriptionCopy coordinator:coordinatorCopy indexingPriority:2];
     if (v6)
     {
-      v7 = [MEMORY[0x277D361A8] sharedReindexer];
-      [v7 registerCoreDataCoreSpotlightDelegate:v6];
+      mEMORY[0x277D361A8] = [MEMORY[0x277D361A8] sharedReindexer];
+      [mEMORY[0x277D361A8] registerCoreDataCoreSpotlightDelegate:v6];
 
       [v6 startSpotlightIndexing];
     }
   }
 }
 
-- (void)createAdditionalPersistentStoresWithAccountIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)createAdditionalPersistentStoresWithAccountIdentifiers:(id)identifiers completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNoteContext *)self persistentContainer];
-  v9 = [(ICNoteContext *)self persistentContainerQueue];
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  persistentContainer = [(ICNoteContext *)self persistentContainer];
+  persistentContainerQueue = [(ICNoteContext *)self persistentContainerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_completionBlock___block_invoke;
   block[3] = &unk_278194DC0;
   block[4] = self;
-  v17 = v6;
-  v10 = v8;
+  v17 = identifiersCopy;
+  v10 = persistentContainer;
   v18 = v10;
-  v11 = v6;
-  dispatch_sync(v9, block);
+  v11 = identifiersCopy;
+  dispatch_sync(persistentContainerQueue, block);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_completionBlock___block_invoke_2;
   v13[3] = &unk_278194AD8;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   v12 = v10;
-  dispatch_sync(v9, v13);
-  if (v7)
+  dispatch_sync(persistentContainerQueue, v13);
+  if (blockCopy)
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -2050,23 +2050,23 @@ void __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_
   [*(a1 + 40) refreshPersistentStoresByAccountIdFromPersistentStores:v3];
 }
 
-- (void)refreshPersistentStoresByAccountIdFromPersistentStores:(id)a3
+- (void)refreshPersistentStoresByAccountIdFromPersistentStores:(id)stores
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storesCopy = stores;
   v37 = objc_opt_new();
-  v5 = [(ICNoteContext *)self defaultPersistentStoreFromPersistentStores:v4];
-  v36 = v4;
-  v33 = [(ICNoteContext *)self inMemoryPersistentStoreFromPersistentStores:v4];
-  v35 = self;
-  v6 = [(ICNoteContext *)self accountUtilities];
-  v7 = [v6 allICloudACAccounts];
+  v5 = [(ICNoteContext *)self defaultPersistentStoreFromPersistentStores:storesCopy];
+  v36 = storesCopy;
+  v33 = [(ICNoteContext *)self inMemoryPersistentStoreFromPersistentStores:storesCopy];
+  selfCopy = self;
+  accountUtilities = [(ICNoteContext *)self accountUtilities];
+  allICloudACAccounts = [accountUtilities allICloudACAccounts];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = v7;
+  v8 = allICloudACAccounts;
   v9 = [v8 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v9)
   {
@@ -2082,7 +2082,7 @@ void __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_
         }
 
         v13 = *(*(&v40 + 1) + 8 * i);
-        v14 = [v13 identifier];
+        identifier = [v13 identifier];
         if ([v13 ic_isNotesEnabled])
         {
           if ([v13 ic_isPrimaryAppleAccount])
@@ -2096,13 +2096,13 @@ void __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_
               {
                 v24 = [v5 URL];
                 *buf = 138412546;
-                v45 = v14;
+                v45 = identifier;
                 v46 = 2112;
                 v47 = v24;
                 _os_log_debug_impl(&dword_214D51000, v17, OS_LOG_TYPE_DEBUG, "Found loaded persistent store for primary account %@: %@", buf, 0x16u);
               }
 
-              [v37 setObject:v5 forKeyedSubscript:v14];
+              [v37 setObject:v5 forKeyedSubscript:identifier];
             }
 
             else
@@ -2110,7 +2110,7 @@ void __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v45 = v14;
+                v45 = identifier;
                 _os_log_debug_impl(&dword_214D51000, v16, OS_LOG_TYPE_DEBUG, "Didn't find a loaded persistent store for primary account %@", buf, 0xCu);
               }
             }
@@ -2118,7 +2118,7 @@ void __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_
 
           else if ([v13 ic_shouldCreateSeparatePersistentStore])
           {
-            v18 = [(ICNoteContext *)v35 storeFilenameForAccountIdentifier:v14];
+            v18 = [(ICNoteContext *)selfCopy storeFilenameForAccountIdentifier:identifier];
             v38[0] = MEMORY[0x277D85DD0];
             v38[1] = 3221225472;
             v38[2] = __72__ICNoteContext_refreshPersistentStoresByAccountIdFromPersistentStores___block_invoke;
@@ -2135,13 +2135,13 @@ void __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_
               {
                 v34 = [v20 URL];
                 *buf = 138412546;
-                v45 = v14;
+                v45 = identifier;
                 v46 = 2112;
                 v47 = v34;
                 _os_log_debug_impl(&dword_214D51000, v23, OS_LOG_TYPE_DEBUG, "Found loaded persistent store for account %@: %@", buf, 0x16u);
               }
 
-              [v37 setObject:v20 forKeyedSubscript:v14];
+              [v37 setObject:v20 forKeyedSubscript:identifier];
             }
 
             else
@@ -2149,7 +2149,7 @@ void __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v45 = v14;
+                v45 = identifier;
                 _os_log_debug_impl(&dword_214D51000, v22, OS_LOG_TYPE_DEBUG, "Didn't find a loaded persistent store for account %@", buf, 0xCu);
               }
             }
@@ -2213,7 +2213,7 @@ void __88__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_
   }
 
   v32 = [v37 copy];
-  [(ICNoteContext *)v35 setPersistentStoresByAccountId:v32];
+  [(ICNoteContext *)selfCopy setPersistentStoresByAccountId:v32];
 }
 
 uint64_t __72__ICNoteContext_refreshPersistentStoresByAccountIdFromPersistentStores___block_invoke(uint64_t a1, void *a2)
@@ -2225,18 +2225,18 @@ uint64_t __72__ICNoteContext_refreshPersistentStoresByAccountIdFromPersistentSto
   return v5;
 }
 
-- (id)defaultPersistentStoreFromPersistentStores:(id)a3
+- (id)defaultPersistentStoreFromPersistentStores:(id)stores
 {
   v3 = MEMORY[0x277D36230];
-  v4 = a3;
-  v5 = [v3 persistentStoreURL];
+  storesCopy = stores;
+  persistentStoreURL = [v3 persistentStoreURL];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__ICNoteContext_defaultPersistentStoreFromPersistentStores___block_invoke;
   v9[3] = &unk_278197458;
-  v10 = v5;
-  v6 = v5;
-  v7 = [v4 ic_objectPassingTest:v9];
+  v10 = persistentStoreURL;
+  v6 = persistentStoreURL;
+  v7 = [storesCopy ic_objectPassingTest:v9];
 
   return v7;
 }
@@ -2257,21 +2257,21 @@ BOOL __61__ICNoteContext_inMemoryPersistentStoreFromPersistentStores___block_inv
   return v3;
 }
 
-- (void)createAdditionalPersistentStoresWithAccountIdentifiers:(id)a3 persistentContainer:(id)a4
+- (void)createAdditionalPersistentStoresWithAccountIdentifiers:(id)identifiers persistentContainer:(id)container
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  identifiersCopy = identifiers;
+  containerCopy = container;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __92__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_persistentContainer___block_invoke;
   v14[3] = &unk_2781974C8;
-  v9 = v6;
+  v9 = identifiersCopy;
   v15 = v9;
-  v16 = v8;
-  v10 = v7;
+  v16 = selfCopy;
+  v10 = containerCopy;
   v17 = v10;
   v11 = [v10 performBlockWithDatabaseOpenLock:v14];
   if (v11)
@@ -2279,12 +2279,12 @@ BOOL __61__ICNoteContext_inMemoryPersistentStoreFromPersistentStores___block_inv
     v12 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v11 userInfo];
-      [(ICNoteContext *)v11 createAdditionalPersistentStoresWithAccountIdentifiers:v13 persistentContainer:buf, v12];
+      userInfo = [v11 userInfo];
+      [(ICNoteContext *)v11 createAdditionalPersistentStoresWithAccountIdentifiers:userInfo persistentContainer:buf, v12];
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 id __92__ICNoteContext_createAdditionalPersistentStoresWithAccountIdentifiers_persistentContainer___block_invoke(id *a1)
@@ -2567,28 +2567,28 @@ void __49__ICNoteContext_performBackgroundTaskSerialQueue__block_invoke()
   performBackgroundTaskSerialQueue_queue = v0;
 }
 
-+ (id)workerManagedObjectContextForContainer:(id)a3
++ (id)workerManagedObjectContextForContainer:(id)container
 {
-  v3 = [a3 newBackgroundContext];
-  [v3 setAutomaticallyMergesChangesFromParent:1];
-  [v3 setShouldDeleteInaccessibleFaults:1];
+  newBackgroundContext = [container newBackgroundContext];
+  [newBackgroundContext setAutomaticallyMergesChangesFromParent:1];
+  [newBackgroundContext setShouldDeleteInaccessibleFaults:1];
 
-  return v3;
+  return newBackgroundContext;
 }
 
-- (void)performBackgroundTask:(id)a3
+- (void)performBackgroundTask:(id)task
 {
-  v4 = a3;
-  if (v4)
+  taskCopy = task;
+  if (taskCopy)
   {
-    v5 = [objc_opt_class() performBackgroundTaskSerialQueue];
+    performBackgroundTaskSerialQueue = [objc_opt_class() performBackgroundTaskSerialQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __39__ICNoteContext_performBackgroundTask___block_invoke;
     v6[3] = &unk_2781957B0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = taskCopy;
+    dispatch_async(performBackgroundTaskSerialQueue, v6);
   }
 }
 
@@ -2606,11 +2606,11 @@ void __39__ICNoteContext_performBackgroundTask___block_invoke(uint64_t a1)
   [v4 performBlockAndWait:v5];
 }
 
-+ (id)snapshotManagedObjectContextForContainer:(id)a3
++ (id)snapshotManagedObjectContextForContainer:(id)container
 {
-  v3 = a3;
-  v4 = [v3 newBackgroundContext];
-  [v4 setAutomaticallyMergesChangesFromParent:0];
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
+  [newBackgroundContext setAutomaticallyMergesChangesFromParent:0];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -2621,7 +2621,7 @@ void __39__ICNoteContext_performBackgroundTask___block_invoke(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __58__ICNoteContext_snapshotManagedObjectContextForContainer___block_invoke;
   v10[3] = &unk_278194D68;
-  v5 = v4;
+  v5 = newBackgroundContext;
   v11 = v5;
   v12 = &v13;
   [v5 performBlockAndWait:v10];
@@ -2655,25 +2655,25 @@ void __58__ICNoteContext_snapshotManagedObjectContextForContainer___block_invoke
 - (id)snapshotManagedObjectContext
 {
   v3 = objc_opt_class();
-  v4 = [(ICNoteContext *)self persistentContainer];
-  v5 = [v3 snapshotManagedObjectContextForContainer:v4];
+  persistentContainer = [(ICNoteContext *)self persistentContainer];
+  v5 = [v3 snapshotManagedObjectContextForContainer:persistentContainer];
 
   return v5;
 }
 
-- (void)performSnapshotBackgroundTask:(id)a3
+- (void)performSnapshotBackgroundTask:(id)task
 {
-  v4 = a3;
-  if (v4)
+  taskCopy = task;
+  if (taskCopy)
   {
-    v5 = [objc_opt_class() performBackgroundTaskSerialQueue];
+    performBackgroundTaskSerialQueue = [objc_opt_class() performBackgroundTaskSerialQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __47__ICNoteContext_performSnapshotBackgroundTask___block_invoke;
     v6[3] = &unk_2781957B0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = taskCopy;
+    dispatch_async(performBackgroundTaskSerialQueue, v6);
   }
 }
 
@@ -2691,14 +2691,14 @@ void __47__ICNoteContext_performSnapshotBackgroundTask___block_invoke(uint64_t a
   [v4 performBlockAndWait:v5];
 }
 
-- (id)persistentStoreForAccountID:(id)a3
+- (id)persistentStoreForAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICNoteContext *)self persistentStoresByAccountId];
+  dCopy = d;
+  persistentStoresByAccountId = [(ICNoteContext *)self persistentStoresByAccountId];
 
-  if (v5)
+  if (persistentStoresByAccountId)
   {
-    if (!v4)
+    if (!dCopy)
     {
       goto LABEL_8;
     }
@@ -2706,11 +2706,11 @@ void __47__ICNoteContext_performSnapshotBackgroundTask___block_invoke(uint64_t a
 
   else
   {
-    v6 = [(ICNoteContext *)self persistentStoreCoordinator];
-    v7 = [v6 persistentStores];
-    [(ICNoteContext *)self refreshPersistentStoresByAccountIdFromPersistentStores:v7];
+    persistentStoreCoordinator = [(ICNoteContext *)self persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    [(ICNoteContext *)self refreshPersistentStoresByAccountIdFromPersistentStores:persistentStores];
 
-    if (!v4)
+    if (!dCopy)
     {
 LABEL_8:
       v11 = os_log_create("com.apple.notes", "CoreData");
@@ -2719,24 +2719,24 @@ LABEL_8:
         [ICNoteContext persistentStoreForAccountID:];
       }
 
-      v10 = [(ICNoteContext *)self persistentStoreCoordinator];
-      v12 = [v10 persistentStores];
-      v9 = [(ICNoteContext *)self defaultPersistentStoreFromPersistentStores:v12];
+      persistentStoreCoordinator2 = [(ICNoteContext *)self persistentStoreCoordinator];
+      persistentStores2 = [persistentStoreCoordinator2 persistentStores];
+      v9 = [(ICNoteContext *)self defaultPersistentStoreFromPersistentStores:persistentStores2];
 
       goto LABEL_11;
     }
   }
 
-  v8 = [(ICNoteContext *)self persistentStoresByAccountId];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  persistentStoresByAccountId2 = [(ICNoteContext *)self persistentStoresByAccountId];
+  v9 = [persistentStoresByAccountId2 objectForKeyedSubscript:dCopy];
 
   if (!v9)
   {
     goto LABEL_8;
   }
 
-  v10 = os_log_create("com.apple.notes", "CoreData");
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  persistentStoreCoordinator2 = os_log_create("com.apple.notes", "CoreData");
+  if (os_log_type_enabled(persistentStoreCoordinator2, OS_LOG_TYPE_DEBUG))
   {
     [ICNoteContext persistentStoreForAccountID:];
   }
@@ -2759,9 +2759,9 @@ LABEL_11:
   v3 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ICNoteContext *)self className];
+    className = [(ICNoteContext *)self className];
     *buf = 138412290;
-    v51 = v4;
+    v51 = className;
     _os_log_impl(&dword_214D51000, v3, OS_LOG_TYPE_DEFAULT, "Purging everything from %@", buf, 0xCu);
   }
 
@@ -2769,9 +2769,9 @@ LABEL_11:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v37 = self;
-  v5 = [(ICNoteContext *)self managedObjectContext];
-  v6 = [ICAccount allAccountsInContext:v5];
+  selfCopy = self;
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  v6 = [ICAccount allAccountsInContext:managedObjectContext];
 
   v7 = [v6 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v7)
@@ -2844,9 +2844,9 @@ LABEL_11:
         }
 
         v30 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:*(*(&v39 + 1) + 8 * j)];
-        v31 = [(ICNoteContext *)v37 managedObjectContext];
+        managedObjectContext2 = [(ICNoteContext *)selfCopy managedObjectContext];
         v38 = 0;
-        v32 = [v31 executeRequest:v30 error:&v38];
+        v32 = [managedObjectContext2 executeRequest:v30 error:&v38];
         v33 = v38;
 
         if (v33)
@@ -2870,8 +2870,8 @@ LABEL_11:
   v35 = +[ICCloudContext sharedContext];
   [v35 deleteAllServerChangeTokens];
 
-  v36 = [(ICNoteContext *)v37 managedObjectContext];
-  [v36 ic_save];
+  managedObjectContext3 = [(ICNoteContext *)selfCopy managedObjectContext];
+  [managedObjectContext3 ic_save];
 }
 
 - (void)deleteEverything
@@ -2880,14 +2880,14 @@ LABEL_11:
   v3 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(ICNoteContext *)self className];
+    className = [(ICNoteContext *)self className];
     *buf = 138412290;
-    v21 = v4;
+    v21 = className;
     _os_log_impl(&dword_214D51000, v3, OS_LOG_TYPE_INFO, "Deleting everything from %@", buf, 0xCu);
   }
 
-  v5 = [(ICNoteContext *)self managedObjectContext];
-  v6 = [ICCloudSyncingObject ic_objectsMatchingPredicate:0 context:v5];
+  managedObjectContext = [(ICNoteContext *)self managedObjectContext];
+  v6 = [ICCloudSyncingObject ic_objectsMatchingPredicate:0 context:managedObjectContext];
   v7 = [v6 copy];
 
   v17 = 0u;
@@ -2936,38 +2936,38 @@ LABEL_11:
   }
 
   +[ICCloudSyncingObject resetAllDeletedByThisDeviceProperties];
-  v14 = [(ICNoteContext *)self managedObjectContext];
-  [(ICNoteContext *)self purgeDeletedObjectsInManagedObjectContext:v14];
+  managedObjectContext2 = [(ICNoteContext *)self managedObjectContext];
+  [(ICNoteContext *)self purgeDeletedObjectsInManagedObjectContext:managedObjectContext2];
 
   [(ICNoteContext *)self saveImmediately];
 }
 
-+ (id)filenameFromFileWrapper:(id)a3
++ (id)filenameFromFileWrapper:(id)wrapper
 {
-  v3 = a3;
-  v4 = [v3 preferredFilename];
+  wrapperCopy = wrapper;
+  preferredFilename = [wrapperCopy preferredFilename];
 
-  if (v4)
+  if (preferredFilename)
   {
-    v5 = [v3 preferredFilename];
+    preferredFilename2 = [wrapperCopy preferredFilename];
   }
 
   else
   {
-    v6 = [v3 filename];
+    filename = [wrapperCopy filename];
 
-    if (!v6)
+    if (!filename)
     {
       goto LABEL_6;
     }
 
-    v5 = [v3 filename];
+    preferredFilename2 = [wrapperCopy filename];
   }
 
-  v6 = v5;
+  filename = preferredFilename2;
 LABEL_6:
 
-  return v6;
+  return filename;
 }
 
 - (id)objectID
@@ -2980,45 +2980,45 @@ LABEL_6:
 
 - (OS_dispatch_queue)backgroundTaskQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  backgroundTaskQueue = v2->_backgroundTaskQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backgroundTaskQueue = selfCopy->_backgroundTaskQueue;
   if (!backgroundTaskQueue)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5 = dispatch_queue_create("com.apple.notes.BackgroundTask", v4);
-    v6 = v2->_backgroundTaskQueue;
-    v2->_backgroundTaskQueue = v5;
+    v6 = selfCopy->_backgroundTaskQueue;
+    selfCopy->_backgroundTaskQueue = v5;
 
-    backgroundTaskQueue = v2->_backgroundTaskQueue;
+    backgroundTaskQueue = selfCopy->_backgroundTaskQueue;
   }
 
   v7 = backgroundTaskQueue;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-+ (BOOL)hasContextOptions:(unint64_t)a3
++ (BOOL)hasContextOptions:(unint64_t)options
 {
   result = sharedContext;
   if (sharedContext)
   {
-    return [sharedContext hasContextOptions:a3];
+    return [sharedContext hasContextOptions:options];
   }
 
   return result;
 }
 
-- (void)cloudContextFetchRecordChangeOperationDidFinish:(id)a3
+- (void)cloudContextFetchRecordChangeOperationDidFinish:(id)finish
 {
-  v4 = [(ICNoteContext *)self backgroundTaskQueue];
+  backgroundTaskQueue = [(ICNoteContext *)self backgroundTaskQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ICNoteContext_cloudContextFetchRecordChangeOperationDidFinish___block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(backgroundTaskQueue, block);
 }
 
 void __65__ICNoteContext_cloudContextFetchRecordChangeOperationDidFinish___block_invoke(uint64_t a1)
@@ -3053,13 +3053,13 @@ void __65__ICNoteContext_cloudContextFetchRecordChangeOperationDidFinish___block
   }
 }
 
-- (void)managedObjectContextUpdaterDidMerge:(id)a3
+- (void)managedObjectContextUpdaterDidMerge:(id)merge
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mergeCopy = merge;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D36120]];
+  userInfo = [mergeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D36120]];
   v7 = ICCheckedDynamicCast();
 
   v24 = 0u;
@@ -3123,24 +3123,24 @@ void __65__ICNoteContext_cloudContextFetchRecordChangeOperationDidFinish___block
   }
 }
 
-- (void)managedObjectContextUpdaterDidChangeObjectWithID:(id)a3
+- (void)managedObjectContextUpdaterDidChangeObjectWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICNoteContext *)self persistentStoreCoordinator];
-  v6 = [v5 persistentStores];
-  v7 = [v4 persistentStore];
-  v8 = [v6 containsObject:v7];
+  dCopy = d;
+  persistentStoreCoordinator = [(ICNoteContext *)self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  persistentStore = [dCopy persistentStore];
+  v8 = [persistentStores containsObject:persistentStore];
 
   if (v8)
   {
-    v9 = [(ICNoteContext *)self managedObjectContext];
+    managedObjectContext = [(ICNoteContext *)self managedObjectContext];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __66__ICNoteContext_managedObjectContextUpdaterDidChangeObjectWithID___block_invoke;
     v10[3] = &unk_278194AD8;
     v10[4] = self;
-    v11 = v4;
-    [v9 performBlock:v10];
+    v11 = dCopy;
+    [managedObjectContext performBlock:v10];
   }
 }
 
@@ -3183,7 +3183,7 @@ void __66__ICNoteContext_managedObjectContextUpdaterDidChangeObjectWithID___bloc
 + (void)sharedContext
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_214D51000, log, OS_LOG_TYPE_ERROR, "No shared context: %@", buf, 0xCu);
 }
 

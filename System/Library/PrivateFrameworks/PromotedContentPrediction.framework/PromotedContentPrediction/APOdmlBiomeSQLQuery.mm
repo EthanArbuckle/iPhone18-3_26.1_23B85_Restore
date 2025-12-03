@@ -1,7 +1,7 @@
 @interface APOdmlBiomeSQLQuery
 - (APOdmlBiomeSQLQuery)init;
-- (id)getRowsFromResults:(id)a3;
-- (id)query:(id)a3 startDate:(id)a4 endDate:(id)a5;
+- (id)getRowsFromResults:(id)results;
+- (id)query:(id)query startDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation APOdmlBiomeSQLQuery
@@ -20,20 +20,20 @@
   return v2;
 }
 
-- (id)query:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)query:(id)query startDate:(id)date endDate:(id)endDate
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  dateCopy = date;
+  endDateCopy = endDate;
+  queryCopy = query;
   v13 = objc_msgSend_database(self, v11, v12);
-  v15 = objc_msgSend_formatEventName_(self, v14, v10);
+  v15 = objc_msgSend_formatEventName_(self, v14, queryCopy);
 
-  if (v8 && v9)
+  if (dateCopy && endDateCopy)
   {
-    objc_msgSend_timeIntervalSince1970(v8, v16, v17);
+    objc_msgSend_timeIntervalSince1970(dateCopy, v16, v17);
     v19 = v18;
-    objc_msgSend_timeIntervalSince1970(v9, v20, v21);
+    objc_msgSend_timeIntervalSince1970(endDateCopy, v20, v21);
     v24 = objc_msgSend_executeQuery_(v13, v22, @"SELECT * FROM %@ WHERE eventTimestamp > %f AND eventTimestamp < %f", v15, v19, v23);
 
     v27 = objc_msgSend_error(v24, v25, v26);
@@ -83,19 +83,19 @@ LABEL_11:
   return v36;
 }
 
-- (id)getRowsFromResults:(id)a3
+- (id)getRowsFromResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v6 = objc_msgSend_array(MEMORY[0x277CBEB18], v4, v5);
-  if (objc_msgSend_next(v3, v7, v8))
+  if (objc_msgSend_next(resultsCopy, v7, v8))
   {
     do
     {
-      v11 = objc_msgSend_row(v3, v9, v10);
+      v11 = objc_msgSend_row(resultsCopy, v9, v10);
       objc_msgSend_addObject_(v6, v12, v11);
     }
 
-    while ((objc_msgSend_next(v3, v13, v14) & 1) != 0);
+    while ((objc_msgSend_next(resultsCopy, v13, v14) & 1) != 0);
   }
 
   v15 = objc_msgSend_copy(v6, v9, v10);

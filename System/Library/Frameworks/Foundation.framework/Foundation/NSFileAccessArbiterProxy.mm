@@ -1,42 +1,42 @@
 @interface NSFileAccessArbiterProxy
 + (id)_fileReactorDebuggingInformation;
-+ (id)_idForReactor:(id)a3;
-+ (id)_willBeginOperationForReactor:(id)a3 withDescription:(id)a4;
-+ (void)_accessPresenterOperationRecordsUsingBlock:(id)a3;
-- (BOOL)itemHasPresentersAtURL:(id)a3;
-- (NSFileAccessArbiterProxy)initWithServer:(id)a3 queue:(id)a4;
++ (id)_idForReactor:(id)reactor;
++ (id)_willBeginOperationForReactor:(id)reactor withDescription:(id)description;
++ (void)_accessPresenterOperationRecordsUsingBlock:(id)block;
+- (BOOL)itemHasPresentersAtURL:(id)l;
+- (NSFileAccessArbiterProxy)initWithServer:(id)server queue:(id)queue;
 - (id)filePresenters;
 - (id)fileProviders;
-- (id)grantAccessClaim:(id)a3 synchronouslyIfPossible:(BOOL)a4;
-- (id)idForFileReactor:(id)a3;
-- (id)replacementObjectForXPCConnection:(id)a3 encoder:(id)a4 object:(id)a5;
-- (void)addFilePresenter:(id)a3;
-- (void)addFileProvider:(id)a3 completionHandler:(id)a4;
-- (void)cancelAccessClaimForID:(id)a3;
+- (id)grantAccessClaim:(id)claim synchronouslyIfPossible:(BOOL)possible;
+- (id)idForFileReactor:(id)reactor;
+- (id)replacementObjectForXPCConnection:(id)connection encoder:(id)encoder object:(id)object;
+- (void)addFilePresenter:(id)presenter;
+- (void)addFileProvider:(id)provider completionHandler:(id)handler;
+- (void)cancelAccessClaimForID:(id)d;
 - (void)dealloc;
-- (void)getDebugInfoWithCompletionHandler:(id)a3;
-- (void)grantSubarbitrationClaim:(id)a3 withServer:(id)a4;
+- (void)getDebugInfoWithCompletionHandler:(id)handler;
+- (void)grantSubarbitrationClaim:(id)claim withServer:(id)server;
 - (void)performBarrier;
-- (void)performBarrierAsync:(id)a3;
-- (void)removeFilePresenter:(id)a3;
-- (void)removeFileProvider:(id)a3;
-- (void)revokeAccessClaimForID:(id)a3;
-- (void)revokeSubarbitrationClaimForID:(id)a3;
-- (void)tiePresenterForID:(id)a3 toItemAtURL:(id)a4;
-- (void)writerWithPurposeID:(id)a3 didChangeItemAtURL:(id)a4;
-- (void)writerWithPurposeID:(id)a3 didChangeSharingOfItemAtURL:(id)a4;
-- (void)writerWithPurposeID:(id)a3 didChangeUbiquityAttributes:(id)a4 ofItemAtURL:(id)a5;
-- (void)writerWithPurposeID:(id)a3 didChangeUbiquityOfItemAtURL:(id)a4;
-- (void)writerWithPurposeID:(id)a3 didDisconnectItemAtURL:(id)a4;
-- (void)writerWithPurposeID:(id)a3 didMakeItemDisappearAtURL:(id)a4;
-- (void)writerWithPurposeID:(id)a3 didMoveItemAtURL:(id)a4 toURL:(id)a5;
-- (void)writerWithPurposeID:(id)a3 didReconnectItemAtURL:(id)a4;
-- (void)writerWithPurposeID:(id)a3 didVersionChangeOfKind:(id)a4 toItemAtURL:(id)a5 withClientID:(id)a6 name:(id)a7;
+- (void)performBarrierAsync:(id)async;
+- (void)removeFilePresenter:(id)presenter;
+- (void)removeFileProvider:(id)provider;
+- (void)revokeAccessClaimForID:(id)d;
+- (void)revokeSubarbitrationClaimForID:(id)d;
+- (void)tiePresenterForID:(id)d toItemAtURL:(id)l;
+- (void)writerWithPurposeID:(id)d didChangeItemAtURL:(id)l;
+- (void)writerWithPurposeID:(id)d didChangeSharingOfItemAtURL:(id)l;
+- (void)writerWithPurposeID:(id)d didChangeUbiquityAttributes:(id)attributes ofItemAtURL:(id)l;
+- (void)writerWithPurposeID:(id)d didChangeUbiquityOfItemAtURL:(id)l;
+- (void)writerWithPurposeID:(id)d didDisconnectItemAtURL:(id)l;
+- (void)writerWithPurposeID:(id)d didMakeItemDisappearAtURL:(id)l;
+- (void)writerWithPurposeID:(id)d didMoveItemAtURL:(id)l toURL:(id)rL;
+- (void)writerWithPurposeID:(id)d didReconnectItemAtURL:(id)l;
+- (void)writerWithPurposeID:(id)d didVersionChangeOfKind:(id)kind toItemAtURL:(id)l withClientID:(id)iD name:(id)name;
 @end
 
 @implementation NSFileAccessArbiterProxy
 
-- (NSFileAccessArbiterProxy)initWithServer:(id)a3 queue:(id)a4
+- (NSFileAccessArbiterProxy)initWithServer:(id)server queue:(id)queue
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -44,17 +44,17 @@
   v6 = [(NSFileAccessArbiterProxy *)&v10 init];
   if (v6)
   {
-    v7 = a3;
-    v6->_server = v7;
+    serverCopy = server;
+    v6->_server = serverCopy;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__NSFileAccessArbiterProxy_initWithServer_queue___block_invoke;
     v9[3] = &unk_1E69F2C00;
     v9[4] = v6;
-    [(NSXPCConnection *)v7 setInterruptionHandler:v9];
+    [(NSXPCConnection *)serverCopy setInterruptionHandler:v9];
     [(NSXPCConnection *)v6->_server setDelegate:v6];
-    v6->_queue = a4;
-    dispatch_retain(a4);
+    v6->_queue = queue;
+    dispatch_retain(queue);
   }
 
   return v6;
@@ -167,22 +167,22 @@ void __49__NSFileAccessArbiterProxy_initWithServer_queue___block_invoke(uint64_t
   [(NSFileAccessArbiterProxy *)&v3 dealloc];
 }
 
-+ (id)_idForReactor:(id)a3
++ (id)_idForReactor:(id)reactor
 {
   if (objc_opt_respondsToSelector())
   {
 
-    return [a3 _fileReactorID];
+    return [reactor _fileReactorID];
   }
 
   else
   {
-    AssociatedObject = objc_getAssociatedObject(a3, "NSFileReactorID");
+    AssociatedObject = objc_getAssociatedObject(reactor, "NSFileReactorID");
     if (!AssociatedObject)
     {
       v6 = CFUUIDCreate(0);
       AssociatedObject = CFUUIDCreateString(0, v6);
-      objc_setAssociatedObject(a3, "NSFileReactorID", AssociatedObject, 0x301);
+      objc_setAssociatedObject(reactor, "NSFileReactorID", AssociatedObject, 0x301);
 
       CFRelease(v6);
     }
@@ -193,39 +193,39 @@ void __49__NSFileAccessArbiterProxy_initWithServer_queue___block_invoke(uint64_t
   }
 }
 
-- (id)replacementObjectForXPCConnection:(id)a3 encoder:(id)a4 object:(id)a5
+- (id)replacementObjectForXPCConnection:(id)connection encoder:(id)encoder object:(id)object
 {
   objc_opt_class();
-  v6 = a5;
+  objectCopy = object;
   if (objc_opt_isKindOfClass())
   {
-    v6 = _secureCodingScreenedError(a5);
+    objectCopy = _secureCodingScreenedError(object);
   }
 
   v7 = objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) == 0 || ([a5 isMemberOfClass:v7])
+  if (objc_opt_isKindOfClass() & 1) == 0 || ([object isMemberOfClass:v7])
   {
-    return v6;
+    return objectCopy;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:{objc_msgSend(a5, "absoluteString")}];
+  v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:{objc_msgSend(object, "absoluteString")}];
 
   return v9;
 }
 
-- (id)grantAccessClaim:(id)a3 synchronouslyIfPossible:(BOOL)a4
+- (id)grantAccessClaim:(id)claim synchronouslyIfPossible:(BOOL)possible
 {
-  v4 = a4;
+  possibleCopy = possible;
   block[6] = *MEMORY[0x1E69E9840];
-  [a3 prepareClaimForGrantingWithArbiterQueue:self->_queue];
-  if (v4)
+  [claim prepareClaimForGrantingWithArbiterQueue:self->_queue];
+  if (possibleCopy)
   {
-    v7 = [a3 claimerWaiter];
+    claimerWaiter = [claim claimerWaiter];
   }
 
   else
   {
-    v7 = 0;
+    claimerWaiter = 0;
   }
 
   queue = self->_queue;
@@ -233,10 +233,10 @@ void __49__NSFileAccessArbiterProxy_initWithServer_queue___block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __69__NSFileAccessArbiterProxy_grantAccessClaim_synchronouslyIfPossible___block_invoke;
   block[3] = &unk_1E69F2080;
-  block[4] = a3;
+  block[4] = claim;
   block[5] = self;
   dispatch_async(queue, block);
-  return v7;
+  return claimerWaiter;
 }
 
 uint64_t __69__NSFileAccessArbiterProxy_grantAccessClaim_synchronouslyIfPossible___block_invoke(uint64_t a1)
@@ -260,7 +260,7 @@ uint64_t __69__NSFileAccessArbiterProxy_grantAccessClaim_synchronouslyIfPossible
   return 1;
 }
 
-- (void)revokeAccessClaimForID:(id)a3
+- (void)revokeAccessClaimForID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -269,7 +269,7 @@ uint64_t __69__NSFileAccessArbiterProxy_grantAccessClaim_synchronouslyIfPossible
   block[2] = __51__NSFileAccessArbiterProxy_revokeAccessClaimForID___block_invoke;
   block[3] = &unk_1E69F2080;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_async(queue, block);
 }
 
@@ -281,7 +281,7 @@ uint64_t __51__NSFileAccessArbiterProxy_revokeAccessClaimForID___block_invoke(ui
   return [v2 revokeAccessClaimForID:v3];
 }
 
-- (void)grantSubarbitrationClaim:(id)a3 withServer:(id)a4
+- (void)grantSubarbitrationClaim:(id)claim withServer:(id)server
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -289,9 +289,9 @@ uint64_t __51__NSFileAccessArbiterProxy_revokeAccessClaimForID___block_invoke(ui
   v5[1] = 3221225472;
   v5[2] = __64__NSFileAccessArbiterProxy_grantSubarbitrationClaim_withServer___block_invoke;
   v5[3] = &unk_1E69F68D8;
-  v5[4] = a3;
+  v5[4] = claim;
   v5[5] = self;
-  v5[6] = a4;
+  v5[6] = server;
   dispatch_async(queue, v5);
 }
 
@@ -316,7 +316,7 @@ uint64_t __64__NSFileAccessArbiterProxy_grantSubarbitrationClaim_withServer___bl
   return 0;
 }
 
-- (void)revokeSubarbitrationClaimForID:(id)a3
+- (void)revokeSubarbitrationClaimForID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -325,7 +325,7 @@ uint64_t __64__NSFileAccessArbiterProxy_grantSubarbitrationClaim_withServer___bl
   block[2] = __59__NSFileAccessArbiterProxy_revokeSubarbitrationClaimForID___block_invoke;
   block[3] = &unk_1E69F2080;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_async(queue, block);
 }
 
@@ -337,7 +337,7 @@ uint64_t __59__NSFileAccessArbiterProxy_revokeSubarbitrationClaimForID___block_i
   return [v2 revokeSubarbitrationClaimForID:v3];
 }
 
-- (void)cancelAccessClaimForID:(id)a3
+- (void)cancelAccessClaimForID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -346,7 +346,7 @@ uint64_t __59__NSFileAccessArbiterProxy_revokeSubarbitrationClaimForID___block_i
   block[2] = __51__NSFileAccessArbiterProxy_cancelAccessClaimForID___block_invoke;
   block[3] = &unk_1E69F2080;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_async(queue, block);
 }
 
@@ -358,21 +358,21 @@ uint64_t __51__NSFileAccessArbiterProxy_cancelAccessClaimForID___block_invoke(ui
   return [v2 cancelAccessClaimForID:v3];
 }
 
-- (void)writerWithPurposeID:(id)a3 didMoveItemAtURL:(id)a4 toURL:(id)a5
+- (void)writerWithPurposeID:(id)d didMoveItemAtURL:(id)l toURL:(id)rL
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v12[0] = 0;
   v10 = 0;
-  _NSGetFSIDAndFileID([a5 logicalURL], v12, &v10);
+  _NSGetFSIDAndFileID([rL logicalURL], v12, &v10);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__NSFileAccessArbiterProxy_writerWithPurposeID_didMoveItemAtURL_toURL___block_invoke;
   block[3] = &unk_1E69F9670;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
+  block[5] = d;
+  block[6] = l;
+  block[7] = rL;
   block[8] = v10;
   block[9] = v12[0];
   dispatch_async(queue, block);
@@ -390,7 +390,7 @@ uint64_t __71__NSFileAccessArbiterProxy_writerWithPurposeID_didMoveItemAtURL_toU
   return [v2 writerWithPurposeID:v3 didMoveItemAtURL:v4 toURL:v5 withFSID:v7 andFileID:v6];
 }
 
-- (void)writerWithPurposeID:(id)a3 didDisconnectItemAtURL:(id)a4
+- (void)writerWithPurposeID:(id)d didDisconnectItemAtURL:(id)l
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -399,8 +399,8 @@ uint64_t __71__NSFileAccessArbiterProxy_writerWithPurposeID_didMoveItemAtURL_toU
   v5[2] = __71__NSFileAccessArbiterProxy_writerWithPurposeID_didDisconnectItemAtURL___block_invoke;
   v5[3] = &unk_1E69F68D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = l;
   dispatch_async(queue, v5);
 }
 
@@ -413,7 +413,7 @@ uint64_t __71__NSFileAccessArbiterProxy_writerWithPurposeID_didDisconnectItemAtU
   return [v2 writerWithPurposeID:v3 didDisconnectItemAtURL:v4];
 }
 
-- (void)writerWithPurposeID:(id)a3 didReconnectItemAtURL:(id)a4
+- (void)writerWithPurposeID:(id)d didReconnectItemAtURL:(id)l
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -422,8 +422,8 @@ uint64_t __71__NSFileAccessArbiterProxy_writerWithPurposeID_didDisconnectItemAtU
   v5[2] = __70__NSFileAccessArbiterProxy_writerWithPurposeID_didReconnectItemAtURL___block_invoke;
   v5[3] = &unk_1E69F68D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = l;
   dispatch_async(queue, v5);
 }
 
@@ -436,7 +436,7 @@ uint64_t __70__NSFileAccessArbiterProxy_writerWithPurposeID_didReconnectItemAtUR
   return [v2 writerWithPurposeID:v3 didReconnectItemAtURL:v4];
 }
 
-- (void)writerWithPurposeID:(id)a3 didChangeUbiquityOfItemAtURL:(id)a4
+- (void)writerWithPurposeID:(id)d didChangeUbiquityOfItemAtURL:(id)l
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -445,8 +445,8 @@ uint64_t __70__NSFileAccessArbiterProxy_writerWithPurposeID_didReconnectItemAtUR
   v5[2] = __77__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeUbiquityOfItemAtURL___block_invoke;
   v5[3] = &unk_1E69F68D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = l;
   dispatch_async(queue, v5);
 }
 
@@ -459,7 +459,7 @@ uint64_t __77__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeUbiquityOfI
   return [v2 writerWithPurposeID:v3 didChangeUbiquityOfItemAtURL:v4];
 }
 
-- (void)writerWithPurposeID:(id)a3 didChangeSharingOfItemAtURL:(id)a4
+- (void)writerWithPurposeID:(id)d didChangeSharingOfItemAtURL:(id)l
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -468,8 +468,8 @@ uint64_t __77__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeUbiquityOfI
   v5[2] = __76__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeSharingOfItemAtURL___block_invoke;
   v5[3] = &unk_1E69F68D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = l;
   dispatch_async(queue, v5);
 }
 
@@ -482,7 +482,7 @@ uint64_t __76__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeSharingOfIt
   return [v2 writerWithPurposeID:v3 didChangeSharingOfItemAtURL:v4];
 }
 
-- (void)writerWithPurposeID:(id)a3 didChangeUbiquityAttributes:(id)a4 ofItemAtURL:(id)a5
+- (void)writerWithPurposeID:(id)d didChangeUbiquityAttributes:(id)attributes ofItemAtURL:(id)l
 {
   block[8] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -491,9 +491,9 @@ uint64_t __76__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeSharingOfIt
   block[2] = __88__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeUbiquityAttributes_ofItemAtURL___block_invoke;
   block[3] = &unk_1E69F9148;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
+  block[5] = d;
+  block[6] = attributes;
+  block[7] = l;
   dispatch_async(queue, block);
 }
 
@@ -507,7 +507,7 @@ uint64_t __88__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeUbiquityAtt
   return [v2 writerWithPurposeID:v3 didChangeUbiquityAttributes:v4 ofItemAtURL:v5];
 }
 
-- (void)writerWithPurposeID:(id)a3 didMakeItemDisappearAtURL:(id)a4
+- (void)writerWithPurposeID:(id)d didMakeItemDisappearAtURL:(id)l
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -516,8 +516,8 @@ uint64_t __88__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeUbiquityAtt
   v5[2] = __74__NSFileAccessArbiterProxy_writerWithPurposeID_didMakeItemDisappearAtURL___block_invoke;
   v5[3] = &unk_1E69F68D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = l;
   dispatch_async(queue, v5);
 }
 
@@ -530,7 +530,7 @@ uint64_t __74__NSFileAccessArbiterProxy_writerWithPurposeID_didMakeItemDisappear
   return [v2 writerWithPurposeID:v3 didMakeItemDisappearAtURL:v4];
 }
 
-- (void)writerWithPurposeID:(id)a3 didChangeItemAtURL:(id)a4
+- (void)writerWithPurposeID:(id)d didChangeItemAtURL:(id)l
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -539,8 +539,8 @@ uint64_t __74__NSFileAccessArbiterProxy_writerWithPurposeID_didMakeItemDisappear
   v5[2] = __67__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeItemAtURL___block_invoke;
   v5[3] = &unk_1E69F68D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = l;
   dispatch_async(queue, v5);
 }
 
@@ -553,7 +553,7 @@ uint64_t __67__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeItemAtURL__
   return [v2 writerWithPurposeID:v3 didChangeItemAtURL:v4];
 }
 
-- (void)writerWithPurposeID:(id)a3 didVersionChangeOfKind:(id)a4 toItemAtURL:(id)a5 withClientID:(id)a6 name:(id)a7
+- (void)writerWithPurposeID:(id)d didVersionChangeOfKind:(id)kind toItemAtURL:(id)l withClientID:(id)iD name:(id)name
 {
   block[10] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -562,11 +562,11 @@ uint64_t __67__NSFileAccessArbiterProxy_writerWithPurposeID_didChangeItemAtURL__
   block[2] = __101__NSFileAccessArbiterProxy_writerWithPurposeID_didVersionChangeOfKind_toItemAtURL_withClientID_name___block_invoke;
   block[3] = &unk_1E69F9170;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
-  block[9] = a7;
+  block[5] = d;
+  block[6] = kind;
+  block[7] = l;
+  block[8] = iD;
+  block[9] = name;
   dispatch_async(queue, block);
 }
 
@@ -582,7 +582,7 @@ uint64_t __101__NSFileAccessArbiterProxy_writerWithPurposeID_didVersionChangeOfK
   return [v2 writerWithPurposeID:v3 didVersionChangeOfKind:v4 toItemAtURL:v5 withClientID:v6 name:v7];
 }
 
-- (void)tiePresenterForID:(id)a3 toItemAtURL:(id)a4
+- (void)tiePresenterForID:(id)d toItemAtURL:(id)l
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -591,8 +591,8 @@ uint64_t __101__NSFileAccessArbiterProxy_writerWithPurposeID_didVersionChangeOfK
   v5[2] = __58__NSFileAccessArbiterProxy_tiePresenterForID_toItemAtURL___block_invoke;
   v5[3] = &unk_1E69F68D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = l;
   dispatch_async(queue, v5);
 }
 
@@ -605,7 +605,7 @@ uint64_t __58__NSFileAccessArbiterProxy_tiePresenterForID_toItemAtURL___block_in
   return [v2 tiePresenterForID:v3 toItemAtURL:v4];
 }
 
-- (void)addFilePresenter:(id)a3
+- (void)addFilePresenter:(id)presenter
 {
   block[6] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -614,7 +614,7 @@ uint64_t __58__NSFileAccessArbiterProxy_tiePresenterForID_toItemAtURL___block_in
   block[2] = __45__NSFileAccessArbiterProxy_addFilePresenter___block_invoke;
   block[3] = &unk_1E69F2080;
   block[4] = self;
-  block[5] = a3;
+  block[5] = presenter;
   dispatch_async(queue, block);
 }
 
@@ -686,7 +686,7 @@ LABEL_21:
   return [objc_msgSend(*(*(a1 + 32) + 8) "remoteObjectProxy")];
 }
 
-- (void)removeFilePresenter:(id)a3
+- (void)removeFilePresenter:(id)presenter
 {
   block[6] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -694,7 +694,7 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __48__NSFileAccessArbiterProxy_removeFilePresenter___block_invoke;
   block[3] = &unk_1E69F2080;
-  block[4] = a3;
+  block[4] = presenter;
   block[5] = self;
   dispatch_sync(queue, block);
 }
@@ -741,15 +741,15 @@ uint64_t __48__NSFileAccessArbiterProxy_removeFilePresenter___block_invoke(uint6
   v3 = v9[5];
   if (v3)
   {
-    v4 = v3;
+    array = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v5 = v4;
+  v5 = array;
   _Block_object_dispose(&v8, 8);
   return v5;
 }
@@ -761,7 +761,7 @@ id __42__NSFileAccessArbiterProxy_filePresenters__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addFileProvider:(id)a3 completionHandler:(id)a4
+- (void)addFileProvider:(id)provider completionHandler:(id)handler
 {
   v5[7] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -770,8 +770,8 @@ id __42__NSFileAccessArbiterProxy_filePresenters__block_invoke(uint64_t a1)
   v5[2] = __62__NSFileAccessArbiterProxy_addFileProvider_completionHandler___block_invoke;
   v5[3] = &unk_1E69F9198;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = provider;
+  v5[6] = handler;
   dispatch_async(queue, v5);
 }
 
@@ -839,7 +839,7 @@ uint64_t __62__NSFileAccessArbiterProxy_addFileProvider_completionHandler___bloc
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeFileProvider:(id)a3
+- (void)removeFileProvider:(id)provider
 {
   block[6] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -847,7 +847,7 @@ uint64_t __62__NSFileAccessArbiterProxy_addFileProvider_completionHandler___bloc
   block[1] = 3221225472;
   block[2] = __47__NSFileAccessArbiterProxy_removeFileProvider___block_invoke;
   block[3] = &unk_1E69F2080;
-  block[4] = a3;
+  block[4] = provider;
   block[5] = self;
   dispatch_async(queue, block);
 }
@@ -890,15 +890,15 @@ uint64_t __47__NSFileAccessArbiterProxy_removeFileProvider___block_invoke(uint64
   v3 = v9[5];
   if (v3)
   {
-    v4 = v3;
+    array = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v5 = v4;
+  v5 = array;
   _Block_object_dispose(&v8, 8);
   return v5;
 }
@@ -910,7 +910,7 @@ id __41__NSFileAccessArbiterProxy_fileProviders__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)idForFileReactor:(id)a3
+- (id)idForFileReactor:(id)reactor
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -924,7 +924,7 @@ id __41__NSFileAccessArbiterProxy_fileProviders__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__NSFileAccessArbiterProxy_idForFileReactor___block_invoke;
   block[3] = &unk_1E69F6900;
-  block[4] = a3;
+  block[4] = reactor;
   block[5] = &v7;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -939,7 +939,7 @@ id __45__NSFileAccessArbiterProxy_idForFileReactor___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)getDebugInfoWithCompletionHandler:(id)a3
+- (void)getDebugInfoWithCompletionHandler:(id)handler
 {
   block[6] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -948,7 +948,7 @@ id __45__NSFileAccessArbiterProxy_idForFileReactor___block_invoke(uint64_t a1)
   block[2] = __62__NSFileAccessArbiterProxy_getDebugInfoWithCompletionHandler___block_invoke;
   block[3] = &unk_1E69F5678;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   dispatch_async(queue, block);
 }
 
@@ -1002,7 +1002,7 @@ void __62__NSFileAccessArbiterProxy_getDebugInfoWithCompletionHandler___block_in
   }
 }
 
-- (BOOL)itemHasPresentersAtURL:(id)a3
+- (BOOL)itemHasPresentersAtURL:(id)l
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -1017,14 +1017,14 @@ void __62__NSFileAccessArbiterProxy_getDebugInfoWithCompletionHandler___block_in
   block[3] = &unk_1E69F91E8;
   block[4] = self;
   block[5] = v5;
-  block[6] = a3;
+  block[6] = l;
   block[7] = &v9;
   dispatch_async(queue, block);
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v5);
-  LOBYTE(a3) = *(v10 + 24);
+  LOBYTE(l) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return a3;
+  return l;
 }
 
 uint64_t __51__NSFileAccessArbiterProxy_itemHasPresentersAtURL___block_invoke(void *a1)
@@ -1064,7 +1064,7 @@ intptr_t __51__NSFileAccessArbiterProxy_itemHasPresentersAtURL___block_invoke_2(
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)_accessPresenterOperationRecordsUsingBlock:(id)a3
++ (void)_accessPresenterOperationRecordsUsingBlock:(id)block
 {
   os_unfair_lock_lock(&stru_1ED43DAD4);
   if (!qword_1ED43DAE8)
@@ -1072,15 +1072,15 @@ intptr_t __51__NSFileAccessArbiterProxy_itemHasPresentersAtURL___block_invoke_2(
     qword_1ED43DAE8 = objc_opt_new();
   }
 
-  (*(a3 + 2))(a3);
+  (*(block + 2))(block);
 
   os_unfair_lock_unlock(&stru_1ED43DAD4);
 }
 
-+ (id)_willBeginOperationForReactor:(id)a3 withDescription:(id)a4
++ (id)_willBeginOperationForReactor:(id)reactor withDescription:(id)description
 {
   v6[5] = *MEMORY[0x1E69E9840];
-  v4 = [NSFilePresenterOperationRecord operationRecordWithDescription:a4 reactor:a3];
+  v4 = [NSFilePresenterOperationRecord operationRecordWithDescription:description reactor:reactor];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __74__NSFileAccessArbiterProxy__willBeginOperationForReactor_withDescription___block_invoke;
@@ -1099,23 +1099,23 @@ intptr_t __51__NSFileAccessArbiterProxy_itemHasPresentersAtURL___block_invoke_2(
   v16[2] = __60__NSFileAccessArbiterProxy__fileReactorDebuggingInformation__block_invoke;
   v16[3] = &unk_1E69F9210;
   v16[4] = v3;
-  [a1 _accessPresenterOperationRecordsUsingBlock:v16];
+  [self _accessPresenterOperationRecordsUsingBlock:v16];
   v4 = objc_lookUpClass("NSDocument");
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(objc_class *)v4 _debuggingInformationForFileCoordination];
+    _debuggingInformationForFileCoordination = [(objc_class *)v4 _debuggingInformationForFileCoordination];
   }
 
   else
   {
-    v5 = 0;
+    _debuggingInformationForFileCoordination = 0;
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  v6 = [_debuggingInformationForFileCoordination countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1129,11 +1129,11 @@ intptr_t __51__NSFileAccessArbiterProxy_itemHasPresentersAtURL___block_invoke_2(
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_debuggingInformationForFileCoordination);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v10);
-        v13 = [a1 _idForReactor:{objc_msgSend(v12, "objectForKey:", @"document"}];
+        v13 = [self _idForReactor:{objc_msgSend(v12, "objectForKey:", @"document"}];
         v14 = [v12 objectForKey:@"stateString"];
         v8 = (v11 + 1);
         [(NSString *)v3 appendFormat:@"[%i]: Presenter ID: %@ -- %@\n", v11, v13, v14];
@@ -1142,7 +1142,7 @@ intptr_t __51__NSFileAccessArbiterProxy_itemHasPresentersAtURL___block_invoke_2(
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v7 = [_debuggingInformationForFileCoordination countByEnumeratingWithState:&v18 objects:v17 count:16];
     }
 
     while (v7);
@@ -1206,7 +1206,7 @@ uint64_t __60__NSFileAccessArbiterProxy__fileReactorDebuggingInformation__block_
   dispatch_release(v3);
 }
 
-- (void)performBarrierAsync:(id)a3
+- (void)performBarrierAsync:(id)async
 {
   block[6] = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -1215,7 +1215,7 @@ uint64_t __60__NSFileAccessArbiterProxy__fileReactorDebuggingInformation__block_
   block[2] = __48__NSFileAccessArbiterProxy_performBarrierAsync___block_invoke;
   block[3] = &unk_1E69F5678;
   block[4] = self;
-  block[5] = a3;
+  block[5] = async;
   dispatch_async(queue, block);
 }
 

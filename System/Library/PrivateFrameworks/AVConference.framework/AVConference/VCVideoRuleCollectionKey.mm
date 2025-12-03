@@ -1,13 +1,13 @@
 @interface VCVideoRuleCollectionKey
-- (BOOL)isEqual:(id)a3;
-- (VCVideoRuleCollectionKey)initWithPayload:(int)a3 transportType:(unsigned __int8)a4 encodingType:(unsigned __int8)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VCVideoRuleCollectionKey)initWithPayload:(int)payload transportType:(unsigned __int8)type encodingType:(unsigned __int8)encodingType;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation VCVideoRuleCollectionKey
 
-- (VCVideoRuleCollectionKey)initWithPayload:(int)a3 transportType:(unsigned __int8)a4 encodingType:(unsigned __int8)a5
+- (VCVideoRuleCollectionKey)initWithPayload:(int)payload transportType:(unsigned __int8)type encodingType:(unsigned __int8)encodingType
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -15,17 +15,17 @@
   result = [(VCVideoRuleCollectionKey *)&v9 init];
   if (result)
   {
-    result->_payload = a3;
-    result->_transportType = a4;
-    result->_encodingType = a5;
+    result->_payload = payload;
+    result->_transportType = type;
+    result->_encodingType = encodingType;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   payload = self->_payload;
   transportType = self->_transportType;
   encodingType = self->_encodingType;
@@ -33,14 +33,14 @@
   return [v4 initWithPayload:payload transportType:transportType encodingType:encodingType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -52,19 +52,19 @@
   }
 
   payload = self->_payload;
-  if (payload != [a3 payload])
+  if (payload != [equal payload])
   {
     return 0;
   }
 
   transportType = self->_transportType;
-  if (transportType != [a3 transportType])
+  if (transportType != [equal transportType])
   {
     return 0;
   }
 
   encodingType = self->_encodingType;
-  return encodingType == [a3 encodingType];
+  return encodingType == [equal encodingType];
 }
 
 - (id)description

@@ -2,21 +2,21 @@
 + (AAUserNotificationCenter)sharedInstance;
 - (AAUserNotificationCenter)init;
 - (id)_activateAudioSession;
-- (id)deviceIconForProductID:(unsigned int)a3;
+- (id)deviceIconForProductID:(unsigned int)d;
 - (void)_deactivateAudioSession;
 - (void)_userNotificationCenterEnsureStarted;
 - (void)_userNotificationCenterEnsureStopped;
 - (void)_userNotificationCenterSetCategories;
 - (void)activate;
-- (void)deliverNotificationWithContent:(id)a3 completion:(id)a4;
-- (void)deliverNotificationWithContent:(id)a3 dismissTimeout:(unsigned int)a4 completion:(id)a5;
-- (void)deregisterNotificationCategoryWithIdentifiers:(id)a3;
-- (void)dismissUserNotificationWithIdentifier:(id)a3;
+- (void)deliverNotificationWithContent:(id)content completion:(id)completion;
+- (void)deliverNotificationWithContent:(id)content dismissTimeout:(unsigned int)timeout completion:(id)completion;
+- (void)deregisterNotificationCategoryWithIdentifiers:(id)identifiers;
+- (void)dismissUserNotificationWithIdentifier:(id)identifier;
 - (void)invalidate;
-- (void)registerNotificationCategories:(id)a3 responseDelegate:(id)a4;
-- (void)requestSiriAnnounceWithNotificationContent:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)visibleNotificationWithCategoryIdentifier:(id)a3 completion:(id)a4;
+- (void)registerNotificationCategories:(id)categories responseDelegate:(id)delegate;
+- (void)requestSiriAnnounceWithNotificationContent:(id)content;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)visibleNotificationWithCategoryIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation AAUserNotificationCenter
@@ -65,59 +65,59 @@
 
 - (void)activate
 {
-  v3 = [(AAUserNotificationCenter *)self dispatchQueue];
+  dispatchQueue = [(AAUserNotificationCenter *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D5114;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)invalidate
 {
-  v3 = [(AAUserNotificationCenter *)self dispatchQueue];
+  dispatchQueue = [(AAUserNotificationCenter *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D51A8;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)deliverNotificationWithContent:(id)a3 dismissTimeout:(unsigned int)a4 completion:(id)a5
+- (void)deliverNotificationWithContent:(id)content dismissTimeout:(unsigned int)timeout completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000D5284;
   v10[3] = &unk_1002BB400;
-  v11 = a3;
-  v12 = a5;
+  contentCopy = content;
+  completionCopy = completion;
   v10[4] = self;
-  v13 = a4;
-  v8 = v11;
-  v9 = v12;
+  timeoutCopy = timeout;
+  v8 = contentCopy;
+  v9 = completionCopy;
   [(AAUserNotificationCenter *)self deliverNotificationWithContent:v8 completion:v10];
 }
 
-- (void)deliverNotificationWithContent:(id)a3 completion:(id)a4
+- (void)deliverNotificationWithContent:(id)content completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAUserNotificationCenter *)self dispatchQueue];
+  contentCopy = content;
+  completionCopy = completion;
+  dispatchQueue = [(AAUserNotificationCenter *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D5670;
   block[3] = &unk_1002B6BB0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = contentCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = contentCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (id)deviceIconForProductID:(unsigned int)a3
+- (id)deviceIconForProductID:(unsigned int)d
 {
   v4 = [(AAUserNotificationCenter *)self _iconTypeForProductID:?];
   if (v4)
@@ -135,8 +135,8 @@
   {
 LABEL_6:
     v5 = v4;
-    v6 = [v4 identifier];
-    v7 = [UNNotificationIcon iconWithUTI:v6];
+    identifier = [v4 identifier];
+    v7 = [UNNotificationIcon iconWithUTI:identifier];
   }
 
   else
@@ -152,35 +152,35 @@ LABEL_6:
   return v7;
 }
 
-- (void)dismissUserNotificationWithIdentifier:(id)a3
+- (void)dismissUserNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AAUserNotificationCenter *)self dispatchQueue];
+  identifierCopy = identifier;
+  dispatchQueue = [(AAUserNotificationCenter *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001FA8BC;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)visibleNotificationWithCategoryIdentifier:(id)a3 completion:(id)a4
+- (void)visibleNotificationWithCategoryIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAUserNotificationCenter *)self dispatchQueue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  dispatchQueue = [(AAUserNotificationCenter *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D5B9C;
   block[3] = &unk_1002BA588;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = identifierCopy;
+  v10 = completionCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 - (id)_activateAudioSession
@@ -266,9 +266,9 @@ LABEL_6:
   }
 }
 
-- (void)requestSiriAnnounceWithNotificationContent:(id)a3
+- (void)requestSiriAnnounceWithNotificationContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -283,45 +283,45 @@ LABEL_6:
   v22[5] = &v23;
   v5 = objc_retainBlock(v22);
   v6 = +[AFPreferences sharedPreferences];
-  v7 = [v6 assistantIsEnabled];
+  assistantIsEnabled = [v6 assistantIsEnabled];
 
-  if ((v7 & 1) == 0)
+  if ((assistantIsEnabled & 1) == 0)
   {
     v11 = NSErrorF();
-    v10 = v24[5];
+    languageCode = v24[5];
     v24[5] = v11;
     goto LABEL_15;
   }
 
   v8 = +[AFPreferences sharedPreferences];
-  v9 = [v8 outputVoice];
-  v10 = [v9 languageCode];
+  outputVoice = [v8 outputVoice];
+  languageCode = [outputVoice languageCode];
 
   if (dword_1002F7460 <= 30 && (dword_1002F7460 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  if (!v10)
+  if (!languageCode)
   {
     v14 = NSErrorF();
-    v15 = v24[5];
+    uUIDString = v24[5];
     v24[5] = v14;
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v12 = [(AAUserNotificationCenter *)self _activateAudioSession];
+  _activateAudioSession = [(AAUserNotificationCenter *)self _activateAudioSession];
   v13 = v24[5];
-  v24[5] = v12;
+  v24[5] = _activateAudioSession;
 
   if (!v24[5])
   {
     v16 = +[NSUUID UUID];
-    v15 = [v16 UUIDString];
+    uUIDString = [v16 UUIDString];
 
-    v17 = [UNNotificationRequest requestWithIdentifier:v15 content:v4 trigger:0];
+    v17 = [UNNotificationRequest requestWithIdentifier:uUIDString content:contentCopy trigger:0];
     v18 = +[NSDate date];
     v19 = [UNNotification notificationWithRequest:v17 date:v18 sourceIdentifier:@"com.apple.AudioAccessoryUserNotifications" intentIdentifiers:&__NSArray0__struct];
 
@@ -347,42 +347,42 @@ LABEL_15:
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)registerNotificationCategories:(id)a3 responseDelegate:(id)a4
+- (void)registerNotificationCategories:(id)categories responseDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAUserNotificationCenter *)self dispatchQueue];
+  categoriesCopy = categories;
+  delegateCopy = delegate;
+  dispatchQueue = [(AAUserNotificationCenter *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D67F8;
   block[3] = &unk_1002B6CF0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = categoriesCopy;
+  v13 = delegateCopy;
+  selfCopy = self;
+  v9 = delegateCopy;
+  v10 = categoriesCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)deregisterNotificationCategoryWithIdentifiers:(id)a3
+- (void)deregisterNotificationCategoryWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(AAUserNotificationCenter *)self dispatchQueue];
+  identifiersCopy = identifiers;
+  dispatchQueue = [(AAUserNotificationCenter *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D6A9C;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 - (void)_userNotificationCenterEnsureStarted
 {
-  v3 = [(AAUserNotificationCenter *)self unCenter];
+  unCenter = [(AAUserNotificationCenter *)self unCenter];
 
-  if (!v3)
+  if (!unCenter)
   {
     v4 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.AudioAccessoryUserNotifications"];
     [(AAUserNotificationCenter *)self setUnCenter:v4];
@@ -394,22 +394,22 @@ LABEL_15:
 
 - (void)_userNotificationCenterEnsureStopped
 {
-  v3 = [(AAUserNotificationCenter *)self unCenter];
-  [v3 setDelegate:0];
+  unCenter = [(AAUserNotificationCenter *)self unCenter];
+  [unCenter setDelegate:0];
 
   [(AAUserNotificationCenter *)self setUnCenter:0];
 }
 
 - (void)_userNotificationCenterSetCategories
 {
-  v3 = [(AAUserNotificationCenter *)self categoryMap];
-  v4 = [v3 count];
+  categoryMap = [(AAUserNotificationCenter *)self categoryMap];
+  v4 = [categoryMap count];
 
   if (v4)
   {
-    v5 = [(AAUserNotificationCenter *)self categoryMap];
-    v6 = [v5 allValues];
-    v8 = [NSSet setWithArray:v6];
+    categoryMap2 = [(AAUserNotificationCenter *)self categoryMap];
+    allValues = [categoryMap2 allValues];
+    v8 = [NSSet setWithArray:allValues];
 
     if (dword_1002F7460 <= 30 && (dword_1002F7460 != -1 || _LogCategory_Initialize()))
     {
@@ -426,33 +426,33 @@ LABEL_15:
     }
   }
 
-  v7 = [(AAUserNotificationCenter *)self unCenter];
-  [v7 setNotificationCategories:v8];
+  unCenter = [(AAUserNotificationCenter *)self unCenter];
+  [unCenter setNotificationCategories:v8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   if (dword_1002F7460 <= 30 && (dword_1002F7460 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FAC90();
   }
 
-  v11 = [(AAUserNotificationCenter *)self dispatchQueue];
+  dispatchQueue = [(AAUserNotificationCenter *)self dispatchQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000D6F80;
   v15[3] = &unk_1002BB478;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = centerCopy;
+  selfCopy = self;
+  v18 = responseCopy;
+  v19 = handlerCopy;
+  v12 = responseCopy;
+  v13 = handlerCopy;
+  v14 = centerCopy;
+  dispatch_async(dispatchQueue, v15);
 }
 
 @end

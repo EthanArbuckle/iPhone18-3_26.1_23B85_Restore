@@ -8,12 +8,12 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [v5 count];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys count];
 
   if (v6)
   {
-    v7 = [a1 nowPlayingInfo];
+    nowPlayingInfo = [self nowPlayingInfo];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -34,14 +34,14 @@
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v7 objectForKey:{v13, v17}];
+          v14 = [nowPlayingInfo objectForKey:{v13, v17}];
           v15 = [v8 objectForKey:v13];
           v16 = [v15 isEqual:v14];
 
           if (!v16)
           {
 
-            [a1 setNowPlayingInfo:v8];
+            [self setNowPlayingInfo:v8];
             goto LABEL_12;
           }
         }

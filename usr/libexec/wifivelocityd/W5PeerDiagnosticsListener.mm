@@ -1,19 +1,19 @@
 @interface W5PeerDiagnosticsListener
-- (BOOL)handleClientRequest:(id)a3;
-- (W5PeerDiagnosticsListener)initWithDiagnosticsManager:(id)a3;
-- (id)_runDiagnostics:(id)a3 uuid:(id)a4 configuration:(id)a5;
+- (BOOL)handleClientRequest:(id)request;
+- (W5PeerDiagnosticsListener)initWithDiagnosticsManager:(id)manager;
+- (id)_runDiagnostics:(id)diagnostics uuid:(id)uuid configuration:(id)configuration;
 @end
 
 @implementation W5PeerDiagnosticsListener
 
-- (W5PeerDiagnosticsListener)initWithDiagnosticsManager:(id)a3
+- (W5PeerDiagnosticsListener)initWithDiagnosticsManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = W5PeerDiagnosticsListener;
   v6 = [(W5PeerDiagnosticsListener *)&v10 init];
   v7 = v6;
-  if (!v6 || (objc_storeStrong(&v6->_diagnosticsManager, a3), !v7->_diagnosticsManager))
+  if (!v6 || (objc_storeStrong(&v6->_diagnosticsManager, manager), !v7->_diagnosticsManager))
   {
 
     v8 = sub_100098A04();
@@ -34,14 +34,14 @@
   return v7;
 }
 
-- (BOOL)handleClientRequest:(id)a3
+- (BOOL)handleClientRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = v5;
-  if (v5)
+  requestCopy = request;
+  payload = [requestCopy payload];
+  v6 = payload;
+  if (payload)
   {
-    v7 = [v5 version];
+    version = [payload version];
     v8 = sub_100098A04();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -52,11 +52,11 @@
       v25 = 1024;
       v26 = 45;
       v27 = 2114;
-      v28 = v4;
+      v28 = requestCopy;
       v29 = 2114;
       v30 = v6;
       v31 = 2114;
-      v32 = v7;
+      v32 = version;
       LODWORD(v20) = 58;
       v19 = &v21;
       _os_log_send_and_compose_impl();
@@ -67,10 +67,10 @@
     [(W5PeerDiagnosticsResponsePayload *)v9 setVersion:v10];
 
     [(W5PeerDiagnosticsResponsePayload *)v9 setStatus:1];
-    v11 = [v6 tests];
-    v12 = [v6 configuration];
-    v13 = [v6 uuid];
-    v14 = [(W5PeerDiagnosticsListener *)self _runDiagnostics:v11 uuid:v13 configuration:v12];
+    tests = [v6 tests];
+    configuration = [v6 configuration];
+    uuid = [v6 uuid];
+    v14 = [(W5PeerDiagnosticsListener *)self _runDiagnostics:tests uuid:uuid configuration:configuration];
     v15 = [v14 objectForKey:@"testResults"];
     if (v15)
     {
@@ -83,18 +83,18 @@
       [(W5PeerDiagnosticsResponsePayload *)v9 setError:v16];
     }
 
-    v17 = [v4 handler];
-    (v17)[2](v17, v9, 0);
+    handler = [requestCopy handler];
+    (handler)[2](handler, v9, 0);
   }
 
   return 1;
 }
 
-- (id)_runDiagnostics:(id)a3 uuid:(id)a4 configuration:(id)a5
+- (id)_runDiagnostics:(id)diagnostics uuid:(id)uuid configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  diagnosticsCopy = diagnostics;
+  uuidCopy = uuid;
+  configurationCopy = configuration;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -118,10 +118,10 @@
   v11 = objc_alloc_init(NSLock);
   v12 = dispatch_semaphore_create(0);
   v13 = objc_alloc_init(W5DiagnosticsTestRequestInternal);
-  [(W5DiagnosticsTestRequestInternal *)v13 setUuid:v9];
-  [(W5DiagnosticsTestRequestInternal *)v13 setTestRequests:v8];
-  [(W5DiagnosticsTestRequestInternal *)v13 setConfiguration:v10];
-  v14 = [v10 objectForKeyedSubscript:@"IncludeEvents"];
+  [(W5DiagnosticsTestRequestInternal *)v13 setUuid:uuidCopy];
+  [(W5DiagnosticsTestRequestInternal *)v13 setTestRequests:diagnosticsCopy];
+  [(W5DiagnosticsTestRequestInternal *)v13 setConfiguration:configurationCopy];
+  v14 = [configurationCopy objectForKeyedSubscript:@"IncludeEvents"];
   -[W5DiagnosticsTestRequestInternal setIncludeEvents:](v13, "setIncludeEvents:", [v14 BOOLValue]);
 
   v28 = _NSConcreteStackBlock;

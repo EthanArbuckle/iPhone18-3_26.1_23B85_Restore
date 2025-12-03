@@ -1,17 +1,17 @@
 @interface SGMFoundInAppsICS
 - (SGMFoundInAppsICS)init;
-- (void)trackEventWithScalar:(unint64_t)a3 timezone:(SGMFoundInAppsICSTZValue_)a4 datetime:(SGMFoundInAppsDatetimeType_)a5;
+- (void)trackEventWithScalar:(unint64_t)scalar timezone:(SGMFoundInAppsICSTZValue_)timezone datetime:(SGMFoundInAppsDatetimeType_)datetime;
 @end
 
 @implementation SGMFoundInAppsICS
 
-- (void)trackEventWithScalar:(unint64_t)a3 timezone:(SGMFoundInAppsICSTZValue_)a4 datetime:(SGMFoundInAppsDatetimeType_)a5
+- (void)trackEventWithScalar:(unint64_t)scalar timezone:(SGMFoundInAppsICSTZValue_)timezone datetime:(SGMFoundInAppsDatetimeType_)datetime
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  if (a4.var0 < 3)
+  if (timezone.var0 < 3)
   {
-    v9 = off_1E7EFC390[a4.var0];
-    if (a5.var0)
+    v9 = off_1E7EFC390[timezone.var0];
+    if (datetime.var0)
     {
       goto LABEL_3;
     }
@@ -21,27 +21,27 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMFoundInAppsICSTZValue_toString(SGMFoundInAppsICSTZValue)"];
-  [v11 handleFailureInFunction:v12 file:@"SGMetricsDefines.h" lineNumber:690 description:{@"unrecognized tag %lu on SGMFoundInAppsICSTZValue", a4.var0}];
+  [currentHandler handleFailureInFunction:v12 file:@"SGMetricsDefines.h" lineNumber:690 description:{@"unrecognized tag %lu on SGMFoundInAppsICSTZValue", timezone.var0}];
 
   v9 = @"ERR_UNMATCHED_TAG";
-  if (!a5.var0)
+  if (!datetime.var0)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (a5.var0 == 1)
+  if (datetime.var0 == 1)
   {
     v10 = @"end";
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMFoundInAppsDatetimeType_toString(SGMFoundInAppsDatetimeType)"];
-    [v13 handleFailureInFunction:v14 file:@"SGMetricsDefines.h" lineNumber:703 description:{@"unrecognized tag %lu on SGMFoundInAppsDatetimeType", a5.var0}];
+    [currentHandler2 handleFailureInFunction:v14 file:@"SGMetricsDefines.h" lineNumber:703 description:{@"unrecognized tag %lu on SGMFoundInAppsDatetimeType", datetime.var0}];
 
     v10 = @"ERR_UNMATCHED_TAG";
   }
@@ -51,7 +51,7 @@ LABEL_8:
   v18[0] = v9;
   v18[1] = v10;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v16 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v16 value:scalar];
 
   v17 = *MEMORY[0x1E69E9840];
 }

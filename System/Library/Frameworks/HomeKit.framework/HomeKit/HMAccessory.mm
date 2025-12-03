@@ -1,23 +1,23 @@
 @interface HMAccessory
-+ (HMAccessory)accessoryWithAccessoryReference:(id)a3 home:(id)a4;
-+ (HMAccessory)accessoryWithSerializedDictionaryRepresentation:(id)a3 home:(id)a4;
-+ (id)_cameraProfilesForAccessoryProfiles:(id)a3;
-+ (id)_doorbellProfilesForAccessoryProfiles:(id)a3;
-+ (id)_lightProfilesForAccessoryProfiles:(id)a3;
-+ (id)_mediaProfilesForAccessoryProfiles:(id)a3;
-+ (id)_networkConfigurationProfilesForCoder:(id)a3 accessoryIdentifier:(id)a4;
-+ (id)_siriEndpointProfilesForAccessoryProfiles:(id)a3;
++ (HMAccessory)accessoryWithAccessoryReference:(id)reference home:(id)home;
++ (HMAccessory)accessoryWithSerializedDictionaryRepresentation:(id)representation home:(id)home;
++ (id)_cameraProfilesForAccessoryProfiles:(id)profiles;
++ (id)_doorbellProfilesForAccessoryProfiles:(id)profiles;
++ (id)_lightProfilesForAccessoryProfiles:(id)profiles;
++ (id)_mediaProfilesForAccessoryProfiles:(id)profiles;
++ (id)_networkConfigurationProfilesForCoder:(id)coder accessoryIdentifier:(id)identifier;
++ (id)_siriEndpointProfilesForAccessoryProfiles:(id)profiles;
 + (id)logCategory;
 + (id)shortDescription;
-+ (id)televisionProfilesForAccessoryServices:(id)a3 isSPIEntitled:(BOOL)a4;
-+ (unint64_t)networkRouterStatusFromRouterStatus:(int64_t)a3 wanStatusListData:(id)a4;
-+ (unint64_t)networkRouterStatusFromWiFiSatelliteStatus:(int64_t)a3;
-- (BOOL)_mergeBulletinBoardNotificationByEndpoint:(id)a3;
-- (BOOL)_mergeControlTargetUUIDs:(id)a3;
-- (BOOL)_mergeRemoteLoginHandler:(id)a3;
-- (BOOL)_mergeServices:(id)a3;
-- (BOOL)_updateFromAccessory:(id)a3;
-- (BOOL)_updateHasSymptomsHandler:(BOOL)a3;
++ (id)televisionProfilesForAccessoryServices:(id)services isSPIEntitled:(BOOL)entitled;
++ (unint64_t)networkRouterStatusFromRouterStatus:(int64_t)status wanStatusListData:(id)data;
++ (unint64_t)networkRouterStatusFromWiFiSatelliteStatus:(int64_t)status;
+- (BOOL)_mergeBulletinBoardNotificationByEndpoint:(id)endpoint;
+- (BOOL)_mergeControlTargetUUIDs:(id)ds;
+- (BOOL)_mergeRemoteLoginHandler:(id)handler;
+- (BOOL)_mergeServices:(id)services;
+- (BOOL)_updateFromAccessory:(id)accessory;
+- (BOOL)_updateHasSymptomsHandler:(BOOL)handler;
 - (BOOL)bridgedAccessory;
 - (BOOL)hasOnboardedForAdaptiveTemperatureAutomations;
 - (BOOL)hasOnboardedForCleanEnergyAutomation;
@@ -34,7 +34,7 @@
 - (BOOL)isSuspendCapable;
 - (BOOL)isVendorAccessory;
 - (BOOL)knownToSystemCommissioner;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
 - (BOOL)requiresThreadRouter;
 - (BOOL)supportsAccessCodes;
 - (BOOL)supportsAdaptiveTemperatureAutomations;
@@ -73,8 +73,8 @@
 - (BOOL)supportsWalletKey;
 - (BOOL)targetControllerHardwareSupport;
 - (HMAccessory)init;
-- (HMAccessory)initWithCoder:(id)a3;
-- (HMAccessory)initWithUUID:(id)a3;
+- (HMAccessory)initWithCoder:(id)coder;
+- (HMAccessory)initWithUUID:(id)d;
 - (HMAccessoryCategory)category;
 - (HMAccessorySettings)settings;
 - (HMAccessoryWiFiController)accessoryWiFiController;
@@ -133,19 +133,19 @@
 - (NSUUID)preferredMediaUserUUID;
 - (NSUUID)uniqueIdentifier;
 - (id)_accessoryInformationService;
-- (id)_findCharacteristic:(id)a3 forService:(id)a4;
-- (id)_findService:(id)a3;
-- (id)_findServiceWithUniqueIdentifier:(id)a3;
-- (id)_handleMultipleCharacteristicsUpdated:(id)a3 message:(id)a4 informDelegate:(BOOL)a5;
+- (id)_findCharacteristic:(id)characteristic forService:(id)service;
+- (id)_findService:(id)service;
+- (id)_findServiceWithUniqueIdentifier:(id)identifier;
+- (id)_handleMultipleCharacteristicsUpdated:(id)updated message:(id)message informDelegate:(BOOL)delegate;
 - (id)_privateDelegate;
-- (id)_valueForCharacteristic:(id)a3 ofService:(id)a4;
+- (id)_valueForCharacteristic:(id)characteristic ofService:(id)service;
 - (id)assistantIdentifier;
-- (id)bulletinBoardNotificationForEndpoint:(id)a3;
+- (id)bulletinBoardNotificationForEndpoint:(id)endpoint;
 - (id)controlTargets;
 - (id)delegate;
 - (id)lightProfiles;
 - (id)logIdentifier;
-- (id)mediaDestinationController:(id)a3 destinationWithIdentifier:(id)a4;
+- (id)mediaDestinationController:(id)controller destinationWithIdentifier:(id)identifier;
 - (id)mediaProfile;
 - (id)preferredMediaUser;
 - (id)siriEndpointProfile;
@@ -159,40 +159,40 @@
 - (unint64_t)preferredUserSelectionType;
 - (unint64_t)supportedStereoPairVersions;
 - (unint64_t)suspendedState;
-- (void)__configureWithContext:(id)a3 home:(id)a4;
-- (void)_auditPairingsWithCompletionHandler:(id)a3;
-- (void)_configureProfilesWithContext:(id)a3;
+- (void)__configureWithContext:(id)context home:(id)home;
+- (void)_auditPairingsWithCompletionHandler:(id)handler;
+- (void)_configureProfilesWithContext:(id)context;
 - (void)_createSymptomsHandler;
-- (void)_deleteSiriHistoryWithCompletion:(id)a3;
-- (void)_handleAccessoryCategoryChanged:(id)a3;
-- (void)_handleAccessoryControllableChanged:(id)a3;
-- (void)_handleAccessoryFlagsChanged:(id)a3;
-- (void)_handleAccessoryNotificationsUpdated:(id)a3;
-- (void)_handleCharacteristicValueUpdated:(id)a3;
-- (void)_handleConnectivityChanged:(id)a3;
-- (void)_handleMatterDeviceTypeIDChanged:(id)a3;
-- (void)_handleMultiUserSupportUpdatedMessage:(id)a3;
-- (void)_handlePairingIdentityUpdate:(id)a3;
-- (void)_handlePairingStateChanged:(id)a3;
-- (void)_handleRenamed:(id)a3;
-- (void)_handleRequiresThreadRouterUpdateMessage:(id)a3;
-- (void)_handleRootSettingsUpdated:(id)a3;
-- (void)_handleServiceConfigurationState:(id)a3;
-- (void)_handleServiceDefaultNameUpdate:(id)a3;
-- (void)_handleServiceMediaSourceIdentifierUpdated:(id)a3;
-- (void)_handleServiceRenamed:(id)a3;
-- (void)_handleServiceSubtype:(id)a3;
-- (void)_handleSupportedDiagnosticsUpdatedMessage:(id)a3;
-- (void)_handleSupportsAdaptiveTemperatureAutomationMessage:(id)a3;
-- (void)_handleSupportsCleanEnergyAutomationMessage:(id)a3;
-- (void)_handleSupportsCompanionInitiatedObliterateUpdatedMessage:(id)a3;
-- (void)_handleSupportsCompanionInitiatedRestartUpdatedMessage:(id)a3;
-- (void)_handleTargetControlSupportUpdatedMessage:(id)a3;
-- (void)_identifyWithCompletionHandler:(id)a3;
-- (void)_invokeDidUpdateSupportsUWBUnlockDelegate:(BOOL)a3;
-- (void)_invokeDidUpdateSupportsWalletKeyDelegate:(BOOL)a3;
-- (void)_listPairingsWithCompletionHandler:(id)a3;
-- (void)_mergeProfiles:(id)a3;
+- (void)_deleteSiriHistoryWithCompletion:(id)completion;
+- (void)_handleAccessoryCategoryChanged:(id)changed;
+- (void)_handleAccessoryControllableChanged:(id)changed;
+- (void)_handleAccessoryFlagsChanged:(id)changed;
+- (void)_handleAccessoryNotificationsUpdated:(id)updated;
+- (void)_handleCharacteristicValueUpdated:(id)updated;
+- (void)_handleConnectivityChanged:(id)changed;
+- (void)_handleMatterDeviceTypeIDChanged:(id)changed;
+- (void)_handleMultiUserSupportUpdatedMessage:(id)message;
+- (void)_handlePairingIdentityUpdate:(id)update;
+- (void)_handlePairingStateChanged:(id)changed;
+- (void)_handleRenamed:(id)renamed;
+- (void)_handleRequiresThreadRouterUpdateMessage:(id)message;
+- (void)_handleRootSettingsUpdated:(id)updated;
+- (void)_handleServiceConfigurationState:(id)state;
+- (void)_handleServiceDefaultNameUpdate:(id)update;
+- (void)_handleServiceMediaSourceIdentifierUpdated:(id)updated;
+- (void)_handleServiceRenamed:(id)renamed;
+- (void)_handleServiceSubtype:(id)subtype;
+- (void)_handleSupportedDiagnosticsUpdatedMessage:(id)message;
+- (void)_handleSupportsAdaptiveTemperatureAutomationMessage:(id)message;
+- (void)_handleSupportsCleanEnergyAutomationMessage:(id)message;
+- (void)_handleSupportsCompanionInitiatedObliterateUpdatedMessage:(id)message;
+- (void)_handleSupportsCompanionInitiatedRestartUpdatedMessage:(id)message;
+- (void)_handleTargetControlSupportUpdatedMessage:(id)message;
+- (void)_identifyWithCompletionHandler:(id)handler;
+- (void)_invokeDidUpdateSupportsUWBUnlockDelegate:(BOOL)delegate;
+- (void)_invokeDidUpdateSupportsWalletKeyDelegate:(BOOL)delegate;
+- (void)_listPairingsWithCompletionHandler:(id)handler;
+- (void)_mergeProfiles:(id)profiles;
 - (void)_notifyClientsOfDiagnosticsTransferSupportUpdate;
 - (void)_notifyClientsOfHomeLevelLocationServiceSettingSupportUpdate;
 - (void)_notifyClientsOfMultiUserSupportUpdate;
@@ -200,48 +200,48 @@
 - (void)_notifyClientsOfSupportsCompanionInitiatedRestartUpdate;
 - (void)_notifyClientsOfSupportsMusicAlarmUpdate;
 - (void)_notifyClientsOfTargetControlSupportUpdate;
-- (void)_notifyDelegateOfAddedControlTarget:(id)a3;
-- (void)_notifyDelegateOfRemovedControlTarget:(id)a3;
-- (void)_notifyDelegateOfUpdatedSettings:(id)a3;
+- (void)_notifyDelegateOfAddedControlTarget:(id)target;
+- (void)_notifyDelegateOfRemovedControlTarget:(id)target;
+- (void)_notifyDelegateOfUpdatedSettings:(id)settings;
 - (void)_notifyDelegatesOfAdditionalSetupRequiredChange;
 - (void)_notifyDelegatesOfUpdatedCalibrationStatus;
 - (void)_notifyDelegatesOfUpdatedControllable;
-- (void)_readValueForCharacteristic:(id)a3 completionHandler:(id)a4;
+- (void)_readValueForCharacteristic:(id)characteristic completionHandler:(id)handler;
 - (void)_unconfigure;
-- (void)_updateApplicationData:(id)a3 forService:(id)a4 completionHandler:(id)a5;
-- (void)_updateAssociatedServiceType:(id)a3 forService:(id)a4 completionHandler:(id)a5;
-- (void)_updateAuthorizationData:(id)a3 forService:(id)a4 characteristic:(id)a5 completionHandler:(id)a6;
-- (void)_updateName:(id)a3 completionHandler:(id)a4;
-- (void)_updateName:(id)a3 forService:(id)a4 completionHandler:(id)a5;
-- (void)_updateRoom:(id)a3 completionHandler:(id)a4;
-- (void)_writeValue:(id)a3 forCharacteristic:(id)a4 service:(id)a5 completionHandler:(id)a6;
-- (void)accessoryInfoDataProvider:(id)a3 didReceiveUpdatesForAccessoryWithIdentifier:(id)a4 primaryUserInfo:(id)a5;
-- (void)activateCHIPPairingModeAndCreateSetupPayloadStringWithCompletion:(id)a3;
-- (void)activateCHIPPairingModeWithCompletion:(id)a3;
-- (void)adapter:(id)a3 didUpdateSettingKeyPaths:(id)a4;
-- (void)adapter:(id)a3 didUpdateSettings:(id)a4;
-- (void)addControlTarget:(id)a3 completionHandler:(id)a4;
-- (void)callCompletionHandler:(id)a3 error:(id)a4;
-- (void)clearMatterCredentialWithType:(int64_t)a3 index:(int64_t)a4 completion:(id)a5;
-- (void)clearMatterUserWithIndex:(int64_t)a3 completion:(id)a4;
-- (void)configureInfoDataProviderIfNeededWithOptions:(unint64_t)a3;
+- (void)_updateApplicationData:(id)data forService:(id)service completionHandler:(id)handler;
+- (void)_updateAssociatedServiceType:(id)type forService:(id)service completionHandler:(id)handler;
+- (void)_updateAuthorizationData:(id)data forService:(id)service characteristic:(id)characteristic completionHandler:(id)handler;
+- (void)_updateName:(id)name completionHandler:(id)handler;
+- (void)_updateName:(id)name forService:(id)service completionHandler:(id)handler;
+- (void)_updateRoom:(id)room completionHandler:(id)handler;
+- (void)_writeValue:(id)value forCharacteristic:(id)characteristic service:(id)service completionHandler:(id)handler;
+- (void)accessoryInfoDataProvider:(id)provider didReceiveUpdatesForAccessoryWithIdentifier:(id)identifier primaryUserInfo:(id)info;
+- (void)activateCHIPPairingModeAndCreateSetupPayloadStringWithCompletion:(id)completion;
+- (void)activateCHIPPairingModeWithCompletion:(id)completion;
+- (void)adapter:(id)adapter didUpdateSettingKeyPaths:(id)paths;
+- (void)adapter:(id)adapter didUpdateSettings:(id)settings;
+- (void)addControlTarget:(id)target completionHandler:(id)handler;
+- (void)callCompletionHandler:(id)handler error:(id)error;
+- (void)clearMatterCredentialWithType:(int64_t)type index:(int64_t)index completion:(id)completion;
+- (void)clearMatterUserWithIndex:(int64_t)index completion:(id)completion;
+- (void)configureInfoDataProviderIfNeededWithOptions:(unint64_t)options;
 - (void)configureSettingsAdapterIfNeeded;
-- (void)configureSettingsAdapterWithCompletionHandler:(id)a3;
-- (void)createSettingsAdapterWithDataSource:(id)a3 controller:(id)a4 context:(id)a5;
-- (void)deleteSiriHistoryWithCompletion:(id)a3;
-- (void)dumpMatterUsersWithCompletion:(id)a3;
-- (void)fetchAdaptiveTemperatureSettingsWithCompletion:(id)a3;
-- (void)fetchCHIPPairingsWithCompletion:(id)a3;
-- (void)fetchManagedConfigurationProfilesWithCompletionHandler:(id)a3;
-- (void)fetchThermostatSleepScheduleWithCompletion:(id)a3;
-- (void)getAccessoryDiagnosticCountersWithCompletion:(id)a3;
-- (void)getAccessoryDiagnosticEventsWithCompletion:(id)a3;
-- (void)handleRuntimeStateUpdate:(id)a3;
+- (void)configureSettingsAdapterWithCompletionHandler:(id)handler;
+- (void)createSettingsAdapterWithDataSource:(id)source controller:(id)controller context:(id)context;
+- (void)deleteSiriHistoryWithCompletion:(id)completion;
+- (void)dumpMatterUsersWithCompletion:(id)completion;
+- (void)fetchAdaptiveTemperatureSettingsWithCompletion:(id)completion;
+- (void)fetchCHIPPairingsWithCompletion:(id)completion;
+- (void)fetchManagedConfigurationProfilesWithCompletionHandler:(id)handler;
+- (void)fetchThermostatSleepScheduleWithCompletion:(id)completion;
+- (void)getAccessoryDiagnosticCountersWithCompletion:(id)completion;
+- (void)getAccessoryDiagnosticEventsWithCompletion:(id)completion;
+- (void)handleRuntimeStateUpdate:(id)update;
 - (void)identifyWithCompletionHandler:(void *)completion;
-- (void)initiateDiagnosticsTransferWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)installManagedConfigurationProfileWithData:(id)a3 completionHandler:(id)a4;
+- (void)initiateDiagnosticsTransferWithOptions:(id)options completionHandler:(id)handler;
+- (void)installManagedConfigurationProfileWithData:(id)data completionHandler:(id)handler;
 - (void)notifyClientsOfUpdatedSupportsAudioReturnChannel;
-- (void)notifyDelegateOfAppDataUpdateForService:(id)a3;
+- (void)notifyDelegateOfAppDataUpdateForService:(id)service;
 - (void)notifyDelegateOfAudioDestinationControllerUpdate;
 - (void)notifyDelegateOfAudioDestinationUpdate;
 - (void)notifyDelegateOfUpdatedServices;
@@ -252,138 +252,138 @@
 - (void)notifyDelegateUpdatedSupportsPreferredMediaUser;
 - (void)notifyDelegateUpdatedSupportsRMVonAppleTV;
 - (void)postConfigure;
-- (void)queryAdvertisementInformationWithCompletionHandler:(id)a3;
-- (void)queryLinkQualityWithCompletion:(id)a3;
-- (void)removeCHIPPairings:(id)a3 completion:(id)a4;
-- (void)removeControlTarget:(id)a3 completionHandler:(id)a4;
-- (void)removeCorrespondingSystemCommissionerPairingWithCompletion:(id)a3;
-- (void)removeManagedConfigurationProfileWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)resetControlTargetsWithCompletionHandler:(id)a3;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setAdaptiveTemperatureDriver:(unint64_t)a3 rooms:(id)a4 completion:(id)a5;
-- (void)setApplicationData:(id)a3;
-- (void)setBridgedAccessory:(BOOL)a3;
-- (void)setBulletinBoardNotificationByEndpoint:(id)a3;
-- (void)setBundleID:(id)a3;
-- (void)setCHIPPairingModeActive:(BOOL)a3 withCompletion:(id)a4;
-- (void)setCategory:(id)a3;
-- (void)setCertificationStatus:(int64_t)a3;
-- (void)setCommissioningID:(id)a3;
-- (void)setConfiguredName:(id)a3;
-- (void)setControlTargetUUIDs:(id)a3;
-- (void)setControllable:(BOOL)a3;
-- (void)setCurrentAccessory:(BOOL)a3;
+- (void)queryAdvertisementInformationWithCompletionHandler:(id)handler;
+- (void)queryLinkQualityWithCompletion:(id)completion;
+- (void)removeCHIPPairings:(id)pairings completion:(id)completion;
+- (void)removeControlTarget:(id)target completionHandler:(id)handler;
+- (void)removeCorrespondingSystemCommissionerPairingWithCompletion:(id)completion;
+- (void)removeManagedConfigurationProfileWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)resetControlTargetsWithCompletionHandler:(id)handler;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setAdaptiveTemperatureDriver:(unint64_t)driver rooms:(id)rooms completion:(id)completion;
+- (void)setApplicationData:(id)data;
+- (void)setBridgedAccessory:(BOOL)accessory;
+- (void)setBulletinBoardNotificationByEndpoint:(id)endpoint;
+- (void)setBundleID:(id)d;
+- (void)setCHIPPairingModeActive:(BOOL)active withCompletion:(id)completion;
+- (void)setCategory:(id)category;
+- (void)setCertificationStatus:(int64_t)status;
+- (void)setCommissioningID:(id)d;
+- (void)setConfiguredName:(id)name;
+- (void)setControlTargetUUIDs:(id)ds;
+- (void)setControllable:(BOOL)controllable;
+- (void)setCurrentAccessory:(BOOL)accessory;
 - (void)setDelegate:(id)delegate;
-- (void)setDemoAccessory:(BOOL)a3;
-- (void)setDevice:(id)a3;
-- (void)setDeviceIRKData:(id)a3;
-- (void)setDeviceIdentifier:(id)a3;
-- (void)setFirmwareUpdateAvailable:(BOOL)a3;
-- (void)setFirmwareVersion:(id)a3;
-- (void)setHAPInstanceID:(id)a3;
-- (void)setHH1EOLEnabled:(BOOL)a3;
-- (void)setHasOnboardedForAdaptiveTemperatureAutomations:(BOOL)a3;
-- (void)setHasOnboardedForAdaptiveTemperatureAutomationsWithCompletion:(id)a3;
-- (void)setHasOnboardedForCleanEnergyAutomation:(BOOL)a3;
-- (void)setHasOnboardedForCleanEnergyAutomationWithCompletion:(id)a3;
-- (void)setHasOnboardedForNaturalLighting:(BOOL)a3;
-- (void)setHasOnboardedForNaturalLightingWithCompletion:(id)a3;
-- (void)setHome:(id)a3;
-- (void)setHomePodVariant:(unint64_t)a3;
-- (void)setIsPrimaryResident:(BOOL)a3;
-- (void)setKnownToSystemCommissioner:(BOOL)a3;
-- (void)setManufacturer:(id)a3;
-- (void)setMatterDeviceTypeID:(id)a3;
-- (void)setMatterExtendedMACAddress:(id)a3;
-- (void)setMatterWEDSupport:(id)a3;
-- (void)setModel:(id)a3;
-- (void)setName:(id)a3;
-- (void)setNetworkProtectionGroupUUID:(id)a3;
-- (void)setNodeID:(id)a3;
-- (void)setPendingConfigurationIdentifier:(id)a3;
-- (void)setPreferredMediaUserUUID:(id)a3;
-- (void)setPreferredUserSelectionType:(unint64_t)a3;
-- (void)setProductColor:(int64_t)a3;
-- (void)setProductID:(id)a3;
-- (void)setReachable:(BOOL)a3;
-- (void)setReaderGroupSubIdentifierACWG:(id)a3;
-- (void)setReaderIDACWG:(id)a3;
-- (void)setRemoteLoginHandler:(id)a3;
-- (void)setRequiresThreadRouter:(BOOL)a3;
-- (void)setRoom:(id)a3;
-- (void)setRootPublicKey:(id)a3;
-- (void)setSerialNumber:(id)a3;
-- (void)setSettings:(id)a3;
-- (void)setSoftwareUpdateController:(id)a3;
-- (void)setSoftwareVersion:(id)a3;
-- (void)setStoreID:(id)a3;
-- (void)setSupportedLinkLayerTypes:(id)a3;
-- (void)setSupportedStereoPairVersions:(unint64_t)a3;
-- (void)setSupportsAccessCodes:(BOOL)a3;
-- (void)setSupportsAdaptiveTemperatureAutomations:(BOOL)a3;
-- (void)setSupportsAnnounce:(BOOL)a3;
-- (void)setSupportsAudioAnalysis:(BOOL)a3;
-- (void)setSupportsAudioReturnChannel:(BOOL)a3;
-- (void)setSupportsCHIP:(BOOL)a3;
-- (void)setSupportsCleanEnergyAutomation:(BOOL)a3;
-- (void)setSupportsCompanionInitiatedObliterate:(BOOL)a3;
-- (void)setSupportsCompanionInitiatedRestart:(BOOL)a3;
-- (void)setSupportsCoordinationDoorbellChime:(BOOL)a3;
-- (void)setSupportsCrossfadeAsAirPlaySource:(BOOL)a3;
-- (void)setSupportsDoorbellChime:(BOOL)a3;
-- (void)setSupportsDropIn:(BOOL)a3;
-- (void)setSupportsIdentify:(BOOL)a3;
-- (void)setSupportsJustSiri:(BOOL)a3;
-- (void)setSupportsManagedConfigurationProfile:(BOOL)a3;
-- (void)setSupportsMediaAccessControl:(BOOL)a3;
-- (void)setSupportsMediaActions:(BOOL)a3;
-- (void)setSupportsMessagedHomePodSettings:(BOOL)a3;
-- (void)setSupportsMultiUser:(BOOL)a3;
-- (void)setSupportsMusicAlarm:(BOOL)a3;
-- (void)setSupportsNativeMatter:(BOOL)a3;
-- (void)setSupportsNetworkDiagnostics:(BOOL)a3;
-- (void)setSupportsPreferredMediaUser:(BOOL)a3;
-- (void)setSupportsRMVonAppleTV:(BOOL)a3;
-- (void)setSupportsSoftwareUpdateV2:(BOOL)a3;
-- (void)setSupportsStereoOdeonTTSUBypassingPrimary:(BOOL)a3;
-- (void)setSupportsTargetControl:(BOOL)a3;
-- (void)setSupportsTargetController:(BOOL)a3;
-- (void)setSupportsThirdPartyMusic:(BOOL)a3;
-- (void)setSupportsUWBUnlock:(BOOL)a3;
-- (void)setSupportsUserMediaSettings:(BOOL)a3;
-- (void)setSupportsWalletKey:(BOOL)a3;
-- (void)setSuspendCapable:(BOOL)a3;
-- (void)setSuspendedState:(unint64_t)a3;
-- (void)setSymptomsHandler:(id)a3;
-- (void)setTargetControllerHardwareSupport:(BOOL)a3;
-- (void)setThermostatSleepSchedule:(id)a3 completion:(id)a4;
-- (void)setUniqueIdentifiersForBridgedAccessories:(id)a3;
-- (void)setVendorAccessory:(BOOL)a3;
-- (void)setVendorID:(id)a3;
-- (void)setWeekDaySchedulesPerUserCapacity:(id)a3;
-- (void)setWifiNetworkInfo:(id)a3;
-- (void)setYearDaySchedulesPerUserCapacity:(id)a3;
-- (void)unconfigureInfoDataProviderWithOptions:(unint64_t)a3;
-- (void)updateAccessoryInfo:(id)a3;
-- (void)updateAccessoryName:(id)a3 completionHandler:(id)a4;
-- (void)updateApplicationData:(id)a3 forService:(id)a4 completionHandler:(id)a5;
-- (void)updateAudioDestinationSupportedOptions:(unint64_t)a3 completion:(id)a4;
+- (void)setDemoAccessory:(BOOL)accessory;
+- (void)setDevice:(id)device;
+- (void)setDeviceIRKData:(id)data;
+- (void)setDeviceIdentifier:(id)identifier;
+- (void)setFirmwareUpdateAvailable:(BOOL)available;
+- (void)setFirmwareVersion:(id)version;
+- (void)setHAPInstanceID:(id)d;
+- (void)setHH1EOLEnabled:(BOOL)enabled;
+- (void)setHasOnboardedForAdaptiveTemperatureAutomations:(BOOL)automations;
+- (void)setHasOnboardedForAdaptiveTemperatureAutomationsWithCompletion:(id)completion;
+- (void)setHasOnboardedForCleanEnergyAutomation:(BOOL)automation;
+- (void)setHasOnboardedForCleanEnergyAutomationWithCompletion:(id)completion;
+- (void)setHasOnboardedForNaturalLighting:(BOOL)lighting;
+- (void)setHasOnboardedForNaturalLightingWithCompletion:(id)completion;
+- (void)setHome:(id)home;
+- (void)setHomePodVariant:(unint64_t)variant;
+- (void)setIsPrimaryResident:(BOOL)resident;
+- (void)setKnownToSystemCommissioner:(BOOL)commissioner;
+- (void)setManufacturer:(id)manufacturer;
+- (void)setMatterDeviceTypeID:(id)d;
+- (void)setMatterExtendedMACAddress:(id)address;
+- (void)setMatterWEDSupport:(id)support;
+- (void)setModel:(id)model;
+- (void)setName:(id)name;
+- (void)setNetworkProtectionGroupUUID:(id)d;
+- (void)setNodeID:(id)d;
+- (void)setPendingConfigurationIdentifier:(id)identifier;
+- (void)setPreferredMediaUserUUID:(id)d;
+- (void)setPreferredUserSelectionType:(unint64_t)type;
+- (void)setProductColor:(int64_t)color;
+- (void)setProductID:(id)d;
+- (void)setReachable:(BOOL)reachable;
+- (void)setReaderGroupSubIdentifierACWG:(id)g;
+- (void)setReaderIDACWG:(id)g;
+- (void)setRemoteLoginHandler:(id)handler;
+- (void)setRequiresThreadRouter:(BOOL)router;
+- (void)setRoom:(id)room;
+- (void)setRootPublicKey:(id)key;
+- (void)setSerialNumber:(id)number;
+- (void)setSettings:(id)settings;
+- (void)setSoftwareUpdateController:(id)controller;
+- (void)setSoftwareVersion:(id)version;
+- (void)setStoreID:(id)d;
+- (void)setSupportedLinkLayerTypes:(id)types;
+- (void)setSupportedStereoPairVersions:(unint64_t)versions;
+- (void)setSupportsAccessCodes:(BOOL)codes;
+- (void)setSupportsAdaptiveTemperatureAutomations:(BOOL)automations;
+- (void)setSupportsAnnounce:(BOOL)announce;
+- (void)setSupportsAudioAnalysis:(BOOL)analysis;
+- (void)setSupportsAudioReturnChannel:(BOOL)channel;
+- (void)setSupportsCHIP:(BOOL)p;
+- (void)setSupportsCleanEnergyAutomation:(BOOL)automation;
+- (void)setSupportsCompanionInitiatedObliterate:(BOOL)obliterate;
+- (void)setSupportsCompanionInitiatedRestart:(BOOL)restart;
+- (void)setSupportsCoordinationDoorbellChime:(BOOL)chime;
+- (void)setSupportsCrossfadeAsAirPlaySource:(BOOL)source;
+- (void)setSupportsDoorbellChime:(BOOL)chime;
+- (void)setSupportsDropIn:(BOOL)in;
+- (void)setSupportsIdentify:(BOOL)identify;
+- (void)setSupportsJustSiri:(BOOL)siri;
+- (void)setSupportsManagedConfigurationProfile:(BOOL)profile;
+- (void)setSupportsMediaAccessControl:(BOOL)control;
+- (void)setSupportsMediaActions:(BOOL)actions;
+- (void)setSupportsMessagedHomePodSettings:(BOOL)settings;
+- (void)setSupportsMultiUser:(BOOL)user;
+- (void)setSupportsMusicAlarm:(BOOL)alarm;
+- (void)setSupportsNativeMatter:(BOOL)matter;
+- (void)setSupportsNetworkDiagnostics:(BOOL)diagnostics;
+- (void)setSupportsPreferredMediaUser:(BOOL)user;
+- (void)setSupportsRMVonAppleTV:(BOOL)v;
+- (void)setSupportsSoftwareUpdateV2:(BOOL)v2;
+- (void)setSupportsStereoOdeonTTSUBypassingPrimary:(BOOL)primary;
+- (void)setSupportsTargetControl:(BOOL)control;
+- (void)setSupportsTargetController:(BOOL)controller;
+- (void)setSupportsThirdPartyMusic:(BOOL)music;
+- (void)setSupportsUWBUnlock:(BOOL)unlock;
+- (void)setSupportsUserMediaSettings:(BOOL)settings;
+- (void)setSupportsWalletKey:(BOOL)key;
+- (void)setSuspendCapable:(BOOL)capable;
+- (void)setSuspendedState:(unint64_t)state;
+- (void)setSymptomsHandler:(id)handler;
+- (void)setTargetControllerHardwareSupport:(BOOL)support;
+- (void)setThermostatSleepSchedule:(id)schedule completion:(id)completion;
+- (void)setUniqueIdentifiersForBridgedAccessories:(id)accessories;
+- (void)setVendorAccessory:(BOOL)accessory;
+- (void)setVendorID:(id)d;
+- (void)setWeekDaySchedulesPerUserCapacity:(id)capacity;
+- (void)setWifiNetworkInfo:(id)info;
+- (void)setYearDaySchedulesPerUserCapacity:(id)capacity;
+- (void)unconfigureInfoDataProviderWithOptions:(unint64_t)options;
+- (void)updateAccessoryInfo:(id)info;
+- (void)updateAccessoryName:(id)name completionHandler:(id)handler;
+- (void)updateApplicationData:(id)data forService:(id)service completionHandler:(id)handler;
+- (void)updateAudioDestinationSupportedOptions:(unint64_t)options completion:(id)completion;
 - (void)updateName:(NSString *)name completionHandler:(void *)completion;
-- (void)updatePendingConfigurationIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)updatePreferredMediaUser:(id)a3 completionHandler:(id)a4;
-- (void)updatePreferredMediaUserSelectionType:(unint64_t)a3 user:(id)a4 completionHandler:(id)a5;
-- (void)updateSettingWithKeyPath:(id)a3 value:(id)a4 completionHandler:(id)a5;
-- (void)validatePairingAuthMethodWithCompletion:(id)a3;
+- (void)updatePendingConfigurationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)updatePreferredMediaUser:(id)user completionHandler:(id)handler;
+- (void)updatePreferredMediaUserSelectionType:(unint64_t)type user:(id)user completionHandler:(id)handler;
+- (void)updateSettingWithKeyPath:(id)path value:(id)value completionHandler:(id)handler;
+- (void)validatePairingAuthMethodWithCompletion:(id)completion;
 @end
 
 @implementation HMAccessory
 
 - (NSArray)services
 {
-  v2 = [(HMAccessory *)self currentServices];
-  v3 = [v2 array];
+  currentServices = [(HMAccessory *)self currentServices];
+  array = [currentServices array];
 
-  return v3;
+  return array;
 }
 
 - (NSString)name
@@ -414,11 +414,11 @@
   return v6;
 }
 
-+ (id)televisionProfilesForAccessoryServices:(id)a3 isSPIEntitled:(BOOL)a4
++ (id)televisionProfilesForAccessoryServices:(id)services isSPIEntitled:(BOOL)entitled
 {
   sub_19BB4A270(0, &qword_1ED8FCBA0, off_1E7545B48);
   v5 = sub_19BE0E0DC();
-  _sSo11HMAccessoryC7HomeKitE18televisionProfiles3for13isSPIEntitledSaySo0A7ProfileCGSaySo9HMServiceCG_SbtFZ_0(v5, a4);
+  _sSo11HMAccessoryC7HomeKitE18televisionProfiles3for13isSPIEntitledSaySo0A7ProfileCGSaySo9HMServiceCG_SbtFZ_0(v5, entitled);
 
   sub_19BB4A270(0, &qword_1ED8FCBA8, off_1E7545138);
   v6 = sub_19BE0E0CC();
@@ -426,21 +426,21 @@
   return v6;
 }
 
-- (void)fetchThermostatSleepScheduleWithCompletion:(id)a3
+- (void)fetchThermostatSleepScheduleWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v6 = MEMORY[0x1E69A2A10];
     v7 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v8 = [(HMAccessory *)self messageTargetUUID];
-    v9 = [v7 initWithTarget:v8];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v9 = [v7 initWithTarget:messageTargetUUID];
     v10 = [v6 messageWithName:@"HMA.fetchSleepSchedule" destination:v9 payload:0];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -455,19 +455,19 @@
     v22[1] = 3221225472;
     v22[2] = __67__HMAccessory_Climate__fetchThermostatSleepScheduleWithCompletion___block_invoke;
     v22[3] = &unk_1E754E480;
-    v22[4] = v12;
-    v15 = v5;
+    v22[4] = selfCopy;
+    v15 = context;
     v23 = v15;
-    v24 = v4;
+    v24 = completionCopy;
     [v10 setResponseHandler:v22];
-    v16 = [v15 messageDispatcher];
-    [v16 sendMessage:v10];
+    messageDispatcher = [v15 messageDispatcher];
+    [messageDispatcher sendMessage:v10];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -642,17 +642,17 @@ void __67__HMAccessory_Climate__fetchThermostatSleepScheduleWithCompletion___blo
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)setThermostatSleepSchedule:(id)a3 completion:(id)a4
+- (void)setThermostatSleepSchedule:(id)schedule completion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self context];
-  if (!v7)
+  scheduleCopy = schedule;
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (!completionCopy)
   {
     v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory(Climate) setThermostatSleepSchedule:completion:]", @"completion"];
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -669,24 +669,24 @@ void __67__HMAccessory_Climate__fetchThermostatSleepScheduleWithCompletion___blo
     objc_exception_throw(v39);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v6 scheduleRules];
-    if ([v10 count] < 2)
+    scheduleRules = [scheduleCopy scheduleRules];
+    if ([scheduleRules count] < 2)
     {
       v21 = MEMORY[0x1E69A2A10];
       v22 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v23 = [(HMAccessory *)self messageTargetUUID];
-      v24 = [v22 initWithTarget:v23];
+      messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+      v24 = [v22 initWithTarget:messageTargetUUID];
       v43 = @"HMA.sleepScheduleKey";
-      v25 = encodeRootObject(v10);
+      v25 = encodeRootObject(scheduleRules);
       v44 = v25;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-      v15 = [v21 messageWithName:@"HMA.setSleepSchedule" destination:v24 payload:v26];
+      delegateCaller = [v21 messageWithName:@"HMA.setSleepSchedule" destination:v24 payload:v26];
 
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy2 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
@@ -694,7 +694,7 @@ void __67__HMAccessory_Climate__fetchThermostatSleepScheduleWithCompletion___blo
         *buf = 138543618;
         v46 = v30;
         v47 = 2112;
-        v48 = v10;
+        v48 = scheduleRules;
         _os_log_impl(&dword_19BB39000, v29, OS_LOG_TYPE_INFO, "%{public}@Setting thermostat sleep schedule rules %@", buf, 0x16u);
       }
 
@@ -703,19 +703,19 @@ void __67__HMAccessory_Climate__fetchThermostatSleepScheduleWithCompletion___blo
       v40[1] = 3221225472;
       v40[2] = __62__HMAccessory_Climate__setThermostatSleepSchedule_completion___block_invoke;
       v40[3] = &unk_1E754E480;
-      v40[4] = v28;
+      v40[4] = selfCopy2;
       v31 = v9;
       v41 = v31;
-      v42 = v7;
-      [v15 setResponseHandler:v40];
-      v32 = [v31 messageDispatcher];
-      [v32 sendMessage:v15];
+      v42 = completionCopy;
+      [delegateCaller setResponseHandler:v40];
+      messageDispatcher = [v31 messageDispatcher];
+      [messageDispatcher sendMessage:delegateCaller];
     }
 
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy3 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -723,21 +723,21 @@ void __67__HMAccessory_Climate__fetchThermostatSleepScheduleWithCompletion___blo
         *buf = 138543618;
         v46 = v14;
         v47 = 2112;
-        v48 = v10;
+        v48 = scheduleRules;
         _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_ERROR, "%{public}@ScheduleRules can only be of length 1, %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v11);
-      v15 = [v9 delegateCaller];
+      delegateCaller = [v9 delegateCaller];
       v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-      [v15 callCompletion:v7 error:v16];
+      [delegateCaller callCompletion:completionCopy error:v16];
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -750,8 +750,8 @@ void __67__HMAccessory_Climate__fetchThermostatSleepScheduleWithCompletion___blo
     }
 
     objc_autoreleasePoolPop(v17);
-    v10 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v10);
+    scheduleRules = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, scheduleRules);
   }
 
   v33 = *MEMORY[0x1E69E9840];
@@ -803,26 +803,26 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAdaptiveTemperatureSettingsWithCompletion:(id)a3
+- (void)fetchAdaptiveTemperatureSettingsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69A2A10];
   v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v7 = [(HMAccessory *)self messageTargetUUID];
-  v8 = [v6 initWithTarget:v7];
+  messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+  v8 = [v6 initWithTarget:messageTargetUUID];
   v9 = [v5 messageWithName:@"HMFetchAdaptiveTemperatureDriverSettingsMessage" destination:v8 payload:0];
 
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __71__HMAccessory_Climate__fetchAdaptiveTemperatureSettingsWithCompletion___block_invoke;
   v16 = &unk_1E754DE00;
-  v17 = self;
-  v18 = v4;
-  v10 = v4;
+  selfCopy = self;
+  v18 = completionCopy;
+  v10 = completionCopy;
   [v9 setResponseHandler:&v13];
   v11 = [(HMAccessory *)self context:v13];
-  v12 = [v11 messageDispatcher];
-  [v12 sendMessage:v9];
+  messageDispatcher = [v11 messageDispatcher];
+  [messageDispatcher sendMessage:v9];
 }
 
 void __71__HMAccessory_Climate__fetchAdaptiveTemperatureSettingsWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -938,48 +938,48 @@ LABEL_18:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAdaptiveTemperatureDriver:(unint64_t)a3 rooms:(id)a4 completion:(id)a5
+- (void)setAdaptiveTemperatureDriver:(unint64_t)driver rooms:(id)rooms completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMAccessory *)self context];
-  if ((a3 != 2 || v8 || [0 hmf_isEmpty]) && (a3 != 2 ? (v11 = v8 == 0) : (v11 = 1), v11 ? (v12 = 0) : (v12 = 1), a3 && !v12))
+  roomsCopy = rooms;
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if ((driver != 2 || roomsCopy || [0 hmf_isEmpty]) && (driver != 2 ? (v11 = roomsCopy == 0) : (v11 = 1), v11 ? (v12 = 0) : (v12 = 1), driver && !v12))
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [v13 setObject:v14 forKeyedSubscript:@"driver"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:driver];
+    [dictionary setObject:v14 forKeyedSubscript:@"driver"];
 
-    if (v8)
+    if (roomsCopy)
     {
-      v15 = [v8 na_map:&__block_literal_global_4406];
-      v16 = [v15 allObjects];
-      [v13 setObject:v16 forKeyedSubscript:@"rooms"];
+      v15 = [roomsCopy na_map:&__block_literal_global_4406];
+      allObjects = [v15 allObjects];
+      [dictionary setObject:allObjects forKeyedSubscript:@"rooms"];
     }
 
     v17 = MEMORY[0x1E69A2A10];
     v18 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v19 = [(HMAccessory *)self messageTargetUUID];
-    v20 = [v18 initWithTarget:v19];
-    v21 = [v13 copy];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v20 = [v18 initWithTarget:messageTargetUUID];
+    v21 = [dictionary copy];
     v22 = [v17 messageWithName:@"HMSetAdaptiveTemperatureDriverMessage" destination:v20 payload:v21];
 
     v27 = MEMORY[0x1E69E9820];
     v28 = 3221225472;
     v29 = __70__HMAccessory_Climate__setAdaptiveTemperatureDriver_rooms_completion___block_invoke_2;
     v30 = &unk_1E754DE00;
-    v31 = v10;
-    v32 = v9;
+    v31 = context;
+    v32 = completionCopy;
     [v22 setResponseHandler:&v27];
     v23 = [(HMAccessory *)self context:v27];
-    v24 = [v23 messageDispatcher];
-    [v24 sendMessage:v22];
+    messageDispatcher = [v23 messageDispatcher];
+    [messageDispatcher sendMessage:v22];
   }
 
   else
   {
-    v25 = [v10 delegateCaller];
+    delegateCaller = [context delegateCaller];
     v26 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    [v25 callCompletion:v9 error:v26];
+    [delegateCaller callCompletion:completionCopy error:v26];
   }
 }
 
@@ -999,16 +999,16 @@ id __70__HMAccessory_Climate__setAdaptiveTemperatureDriver_rooms_completion___bl
   return v3;
 }
 
-- (void)setHasOnboardedForCleanEnergyAutomationWithCompletion:(id)a3
+- (void)setHasOnboardedForCleanEnergyAutomationWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (!completionCopy)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory(Climate) setHasOnboardedForCleanEnergyAutomationWithCompletion:]", @"completion"];
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -1025,17 +1025,17 @@ id __70__HMAccessory_Climate__setAdaptiveTemperatureDriver_rooms_completion___bl
     objc_exception_throw(v28);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
     v7 = MEMORY[0x1E69A2A10];
     v8 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v9 = [(HMAccessory *)self messageTargetUUID];
-    v10 = [v8 initWithTarget:v9];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v10 = [v8 initWithTarget:messageTargetUUID];
     v11 = [v7 messageWithName:@"HMA.HasOnboardedForCleanEnergyAutomationMessage" destination:v10 payload:0];
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1050,19 +1050,19 @@ id __70__HMAccessory_Climate__setAdaptiveTemperatureDriver_rooms_completion___bl
     v29[1] = 3221225472;
     v29[2] = __78__HMAccessory_Climate__setHasOnboardedForCleanEnergyAutomationWithCompletion___block_invoke;
     v29[3] = &unk_1E754E480;
-    v29[4] = v13;
+    v29[4] = selfCopy2;
     v30 = v6;
-    v31 = v4;
+    v31 = completionCopy;
     [v11 setResponseHandler:v29];
-    v16 = [(HMAccessory *)v13 context];
-    v17 = [v16 messageDispatcher];
-    [v17 sendMessage:v11];
+    context2 = [(HMAccessory *)selfCopy2 context];
+    messageDispatcher = [context2 messageDispatcher];
+    [messageDispatcher sendMessage:v11];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy3 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1076,7 +1076,7 @@ id __70__HMAccessory_Climate__setAdaptiveTemperatureDriver_rooms_completion___bl
 
     objc_autoreleasePoolPop(v18);
     v11 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1126,16 +1126,16 @@ void __78__HMAccessory_Climate__setHasOnboardedForCleanEnergyAutomationWithCompl
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasOnboardedForAdaptiveTemperatureAutomationsWithCompletion:(id)a3
+- (void)setHasOnboardedForAdaptiveTemperatureAutomationsWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (!completionCopy)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory(Climate) setHasOnboardedForAdaptiveTemperatureAutomationsWithCompletion:]", @"completion"];
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -1152,17 +1152,17 @@ void __78__HMAccessory_Climate__setHasOnboardedForCleanEnergyAutomationWithCompl
     objc_exception_throw(v28);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
     v7 = MEMORY[0x1E69A2A10];
     v8 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v9 = [(HMAccessory *)self messageTargetUUID];
-    v10 = [v8 initWithTarget:v9];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v10 = [v8 initWithTarget:messageTargetUUID];
     v11 = [v7 messageWithName:@"HMA.HasOnboardedForAdaptiveTemperatureAutomationsMessage" destination:v10 payload:0];
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1177,19 +1177,19 @@ void __78__HMAccessory_Climate__setHasOnboardedForCleanEnergyAutomationWithCompl
     v29[1] = 3221225472;
     v29[2] = __87__HMAccessory_Climate__setHasOnboardedForAdaptiveTemperatureAutomationsWithCompletion___block_invoke;
     v29[3] = &unk_1E754E480;
-    v29[4] = v13;
+    v29[4] = selfCopy2;
     v30 = v6;
-    v31 = v4;
+    v31 = completionCopy;
     [v11 setResponseHandler:v29];
-    v16 = [(HMAccessory *)v13 context];
-    v17 = [v16 messageDispatcher];
-    [v17 sendMessage:v11];
+    context2 = [(HMAccessory *)selfCopy2 context];
+    messageDispatcher = [context2 messageDispatcher];
+    [messageDispatcher sendMessage:v11];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy3 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1203,7 +1203,7 @@ void __78__HMAccessory_Climate__setHasOnboardedForCleanEnergyAutomationWithCompl
 
     objc_autoreleasePoolPop(v18);
     v11 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1256,14 +1256,14 @@ void __87__HMAccessory_Climate__setHasOnboardedForAdaptiveTemperatureAutomations
 - (id)siriEndpointProfile
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(HMAccessory *)self accessoryProfiles];
-  v3 = [v2 array];
+  accessoryProfiles = [(HMAccessory *)self accessoryProfiles];
+  array = [accessoryProfiles array];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v3;
+  v4 = array;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -1312,15 +1312,15 @@ LABEL_12:
   return v9;
 }
 
-+ (id)_siriEndpointProfilesForAccessoryProfiles:(id)a3
++ (id)_siriEndpointProfilesForAccessoryProfiles:(id)profiles
 {
   v22 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  profilesCopy = profiles;
+  v4 = [profilesCopy countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1332,7 +1332,7 @@ LABEL_12:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(profilesCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -1360,7 +1360,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v5 = [profilesCopy countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v5)
       {
         continue;
@@ -1385,13 +1385,13 @@ LABEL_15:
 - (NSArray)televisionProfiles
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(HMAccessory *)self profiles];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  profiles = [(HMAccessory *)self profiles];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(profiles, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v2;
+  v4 = profiles;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -1438,16 +1438,16 @@ LABEL_15:
   return v12;
 }
 
-+ (id)_lightProfilesForAccessoryProfiles:(id)a3
++ (id)_lightProfilesForAccessoryProfiles:(id)profiles
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v3, "count")}];
+  profilesCopy = profiles;
+  v4 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(profilesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = profilesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -1499,14 +1499,14 @@ LABEL_15:
 - (HMDoorbellChimeProfile)doorbellChimeProfile
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(HMAccessory *)self accessoryProfiles];
-  v3 = [v2 array];
+  accessoryProfiles = [(HMAccessory *)self accessoryProfiles];
+  array = [accessoryProfiles array];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v3;
+  v4 = array;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -1555,16 +1555,16 @@ LABEL_12:
   return v9;
 }
 
-+ (id)_doorbellProfilesForAccessoryProfiles:(id)a3
++ (id)_doorbellProfilesForAccessoryProfiles:(id)profiles
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  profilesCopy = profiles;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(profilesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = profilesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -1613,15 +1613,15 @@ LABEL_12:
   return v15;
 }
 
-+ (unint64_t)networkRouterStatusFromWiFiSatelliteStatus:(int64_t)a3
++ (unint64_t)networkRouterStatusFromWiFiSatelliteStatus:(int64_t)status
 {
   v3 = 0x40000000;
-  if (a3 != 2)
+  if (status != 2)
   {
     v3 = 1;
   }
 
-  if (a3 == 1)
+  if (status == 1)
   {
     return 0;
   }
@@ -1632,11 +1632,11 @@ LABEL_12:
   }
 }
 
-+ (unint64_t)networkRouterStatusFromRouterStatus:(int64_t)a3 wanStatusListData:(id)a4
++ (unint64_t)networkRouterStatusFromRouterStatus:(int64_t)status wanStatusListData:(id)data
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 == 1)
+  dataCopy = data;
+  if (status == 1)
   {
     v7 = 0x20000000;
   }
@@ -1644,32 +1644,32 @@ LABEL_12:
   else
   {
     v39 = 0;
-    v8 = [HMNetworkRouterWANStatusList parsedFromData:v6 error:&v39];
+    v8 = [HMNetworkRouterWANStatusList parsedFromData:dataCopy error:&v39];
     v9 = v39;
     if (v8)
     {
-      v10 = [v8 statuses];
+      statuses = [v8 statuses];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __84__HMAccessory_NetworkRouter__networkRouterStatusFromRouterStatus_wanStatusListData___block_invoke;
       v38[3] = &__block_descriptor_40_e41_B32__0__HMNetworkRouterWANStatus_8Q16_B24l;
-      v38[4] = a1;
-      v11 = [v10 hmf_objectPassingTest:v38];
+      v38[4] = self;
+      v11 = [statuses hmf_objectPassingTest:v38];
 
       if (v11)
       {
-        v12 = [v11 status];
-        v13 = [v12 value];
+        status = [v11 status];
+        value = [status value];
 
-        if (v13)
+        if (value)
         {
           v7 = 0;
-          if ([v13 unsignedIntegerValue])
+          if ([value unsignedIntegerValue])
           {
             v14 = 1;
             do
             {
-              if (([v13 unsignedIntegerValue] & v14) != 0)
+              if (([value unsignedIntegerValue] & v14) != 0)
               {
                 v15 = v7 | 0x40;
                 v16 = v7 | 0x80;
@@ -1749,14 +1749,14 @@ LABEL_12:
               v14 *= 2;
             }
 
-            while (v14 - 1 < [v13 unsignedIntegerValue]);
+            while (v14 - 1 < [value unsignedIntegerValue]);
           }
         }
 
         else
         {
           v32 = objc_autoreleasePoolPush();
-          v33 = a1;
+          selfCopy = self;
           v34 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
@@ -1776,7 +1776,7 @@ LABEL_12:
       else
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = a1;
+        selfCopy2 = self;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
@@ -1794,7 +1794,7 @@ LABEL_12:
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy3 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -1802,7 +1802,7 @@ LABEL_12:
         *buf = 138543874;
         v41 = v27;
         v42 = 2112;
-        v43 = v6;
+        v43 = dataCopy;
         v44 = 2112;
         v45 = v9;
         _os_log_impl(&dword_19BB39000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse WAN status list from data %@: %@", buf, 0x20u);
@@ -1852,14 +1852,14 @@ BOOL __84__HMAccessory_NetworkRouter__networkRouterStatusFromRouterStatus_wanSta
   return v6;
 }
 
-- (void)accessoryInfoDataProvider:(id)a3 didReceiveUpdatesForAccessoryWithIdentifier:(id)a4 primaryUserInfo:(id)a5
+- (void)accessoryInfoDataProvider:(id)provider didReceiveUpdatesForAccessoryWithIdentifier:(id)identifier primaryUserInfo:(id)info
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  infoCopy = info;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1867,15 +1867,15 @@ BOOL __84__HMAccessory_NetworkRouter__networkRouterStatusFromRouterStatus_wanSta
     v36 = 138543618;
     v37 = v14;
     v38 = 2112;
-    v39 = v10;
+    v39 = infoCopy;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Did receive update primaryUserInfo: %@", &v36, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  if (![(HMAccessory *)v12 supportsMessagedHomePodSettings])
+  if (![(HMAccessory *)selfCopy supportsMessagedHomePodSettings])
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v12;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -1888,36 +1888,36 @@ BOOL __84__HMAccessory_NetworkRouter__networkRouterStatusFromRouterStatus_wanSta
     goto LABEL_12;
   }
 
-  if (![v10 selectionType])
+  if (![infoCopy selectionType])
   {
-    v30 = [v10 uuidString];
-    if (v30)
+    uuidString = [infoCopy uuidString];
+    if (uuidString)
     {
 
       goto LABEL_15;
     }
   }
 
-  if ([v10 selectionType] == 1)
+  if ([infoCopy selectionType] == 1)
   {
-    v15 = [v10 uuidString];
-    v16 = v15 == 0;
+    uuidString2 = [infoCopy uuidString];
+    v16 = uuidString2 == 0;
 
     if (v16)
     {
 LABEL_15:
       v26 = objc_autoreleasePoolPush();
-      v27 = v12;
+      v27 = selfCopy;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v31 = HMFGetLogIdentifier();
-        v32 = [v10 uuidString];
-        v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "selectionType")}];
+        uuidString3 = [infoCopy uuidString];
+        v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(infoCopy, "selectionType")}];
         v36 = 138543874;
         v37 = v31;
         v38 = 2112;
-        v39 = v32;
+        v39 = uuidString3;
         v40 = 2112;
         v41 = v33;
         _os_log_impl(&dword_19BB39000, v28, OS_LOG_TYPE_ERROR, "%{public}@Received unexpected preferred media user UUID: %@, selectionType: %@", &v36, 0x20u);
@@ -1931,35 +1931,35 @@ LABEL_12:
   }
 
   os_unfair_lock_lock_with_options();
-  v17 = [(NSUUID *)v12->_preferredMediaUserUUID UUIDString];
-  v18 = [v10 uuidString];
+  uUIDString = [(NSUUID *)selfCopy->_preferredMediaUserUUID UUIDString];
+  uuidString4 = [infoCopy uuidString];
   v19 = HMFEqualObjects();
 
   if ((v19 & 1) == 0)
   {
-    v20 = [v10 uuidString];
-    v21 = v20 == 0;
+    uuidString5 = [infoCopy uuidString];
+    v21 = uuidString5 == 0;
 
     if (v21)
     {
-      preferredMediaUserUUID = v12->_preferredMediaUserUUID;
-      v12->_preferredMediaUserUUID = 0;
+      preferredMediaUserUUID = selfCopy->_preferredMediaUserUUID;
+      selfCopy->_preferredMediaUserUUID = 0;
     }
 
     else
     {
       v22 = objc_alloc(MEMORY[0x1E696AFB0]);
-      preferredMediaUserUUID = [v10 uuidString];
+      preferredMediaUserUUID = [infoCopy uuidString];
       v24 = [v22 initWithUUIDString:preferredMediaUserUUID];
-      v25 = v12->_preferredMediaUserUUID;
-      v12->_preferredMediaUserUUID = v24;
+      v25 = selfCopy->_preferredMediaUserUUID;
+      selfCopy->_preferredMediaUserUUID = v24;
     }
   }
 
-  preferredUserSelectionType = v12->_preferredUserSelectionType;
-  if (preferredUserSelectionType == [v10 selectionType])
+  preferredUserSelectionType = selfCopy->_preferredUserSelectionType;
+  if (preferredUserSelectionType == [infoCopy selectionType])
   {
-    os_unfair_lock_unlock(&v12->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     if (v19)
     {
       goto LABEL_26;
@@ -1968,34 +1968,34 @@ LABEL_12:
 
   else
   {
-    v12->_preferredUserSelectionType = [v10 selectionType];
-    os_unfair_lock_unlock(&v12->_lock);
+    selfCopy->_preferredUserSelectionType = [infoCopy selectionType];
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
-  [(HMAccessory *)v12 notifyDelegateUpdatedPreferredMediaUser];
+  [(HMAccessory *)selfCopy notifyDelegateUpdatedPreferredMediaUser];
 LABEL_26:
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSettingWithKeyPath:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)updateSettingWithKeyPath:(id)path value:(id)value completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMAccessory *)self settingsAdapter];
+  pathCopy = path;
+  valueCopy = value;
+  handlerCopy = handler;
+  settingsAdapter = [(HMAccessory *)self settingsAdapter];
 
-  if (v11)
+  if (settingsAdapter)
   {
-    v12 = [(HMAccessory *)self settingsAdapter];
-    [v12 updateWithKeyPath:v8 value:v9 completionHandler:v10];
+    settingsAdapter2 = [(HMAccessory *)self settingsAdapter];
+    [settingsAdapter2 updateWithKeyPath:pathCopy value:valueCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -2006,21 +2006,21 @@ LABEL_26:
     }
 
     objc_autoreleasePoolPop(v13);
-    v12 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:8 reason:@"Adapter is nil" suggestion:@"Configure adapter before use it"];
-    v10[2](v10, v12);
+    settingsAdapter2 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:8 reason:@"Adapter is nil" suggestion:@"Configure adapter before use it"];
+    handlerCopy[2](handlerCopy, settingsAdapter2);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)adapter:(id)a3 didUpdateSettingKeyPaths:(id)a4
+- (void)adapter:(id)adapter didUpdateSettingKeyPaths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self context];
-  v9 = [v8 delegateCaller];
+  adapterCopy = adapter;
+  pathsCopy = paths;
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
 
-  if (v9)
+  if (delegateCaller)
   {
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x1E69E9820];
@@ -2028,8 +2028,8 @@ LABEL_26:
     v10[2] = __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke;
     v10[3] = &unk_1E754D848;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    [v9 invokeBlock:v10];
+    v11 = pathsCopy;
+    [delegateCaller invokeBlock:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -2110,17 +2110,17 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)adapter:(id)a3 didUpdateSettings:(id)a4
+- (void)adapter:(id)adapter didUpdateSettings:(id)settings
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self settings];
+  adapterCopy = adapter;
+  settingsCopy = settings;
+  settings = [(HMAccessory *)self settings];
 
-  if (v8)
+  if (settings)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2135,50 +2135,50 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
 
   else
   {
-    [(HMAccessory *)self setSettings:v7];
-    v13 = [(HMAccessory *)self settings];
-    [(HMAccessory *)self _notifyDelegateOfUpdatedSettings:v13];
+    [(HMAccessory *)self setSettings:settingsCopy];
+    settings2 = [(HMAccessory *)self settings];
+    [(HMAccessory *)self _notifyDelegateOfUpdatedSettings:settings2];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureSettingsAdapterWithCompletionHandler:(id)a3
+- (void)configureSettingsAdapterWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMAccessory *)self settingsAdapter];
-  [v5 configureWithCompletionHandler:v4];
+  handlerCopy = handler;
+  settingsAdapter = [(HMAccessory *)self settingsAdapter];
+  [settingsAdapter configureWithCompletionHandler:handlerCopy];
 }
 
-- (void)createSettingsAdapterWithDataSource:(id)a3 controller:(id)a4 context:(id)a5
+- (void)createSettingsAdapterWithDataSource:(id)source controller:(id)controller context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  controllerCopy = controller;
+  sourceCopy = source;
   v11 = [HMAccessorySettingsAdapter alloc];
-  v12 = [(HMAccessory *)self home];
-  v13 = [v12 uniqueIdentifier];
-  v14 = [(HMAccessory *)self context];
-  v15 = [v14 queue];
-  v16 = [(HMAccessory *)self uniqueIdentifier];
-  v18 = [(HMAccessorySettingsAdapter *)v11 initWithHomeIdentifier:v13 dataSource:v10 controller:v9 workQueue:v15 settingsContainer:self containerIdentifier:v16 containerType:1 settingsControl:self context:v8];
+  home = [(HMAccessory *)self home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  context = [(HMAccessory *)self context];
+  queue = [context queue];
+  uniqueIdentifier2 = [(HMAccessory *)self uniqueIdentifier];
+  v18 = [(HMAccessorySettingsAdapter *)v11 initWithHomeIdentifier:uniqueIdentifier dataSource:sourceCopy controller:controllerCopy workQueue:queue settingsContainer:self containerIdentifier:uniqueIdentifier2 containerType:1 settingsControl:self context:contextCopy];
 
   [(HMAccessory *)self setSettingsAdapter:v18];
-  v17 = [(HMAccessory *)self settingsAdapter];
-  [v17 setDelegate:self];
+  settingsAdapter = [(HMAccessory *)self settingsAdapter];
+  [settingsAdapter setDelegate:self];
 }
 
 - (NSArray)attributeDescriptions
 {
   v49[12] = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self room];
+  room = [(HMAccessory *)self room];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v48 = [(HMAccessory *)self name];
-  v47 = [v4 initWithName:@"Name" value:v48];
+  name = [(HMAccessory *)self name];
+  v47 = [v4 initWithName:@"Name" value:name];
   v49[0] = v47;
   v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v46 = [(HMAccessory *)self uniqueIdentifier];
-  v45 = [v5 initWithName:@"Identifier" value:v46];
+  uniqueIdentifier = [(HMAccessory *)self uniqueIdentifier];
+  v45 = [v5 initWithName:@"Identifier" value:uniqueIdentifier];
   v49[1] = v45;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMAccessory *)self isReachable];
@@ -2187,10 +2187,10 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
   v49[2] = v42;
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
   v8 = MEMORY[0x1E696AEC0];
-  v44 = v3;
-  v41 = [v3 uuid];
-  v40 = [v3 name];
-  v39 = [v8 stringWithFormat:@"%@/%@", v41, v40];
+  v44 = room;
+  uuid = [room uuid];
+  name2 = [room name];
+  v39 = [v8 stringWithFormat:@"%@/%@", uuid, name2];
   v38 = [v7 initWithName:@"room" value:v39];
   v49[3] = v38;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
@@ -2214,21 +2214,21 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
   v49[7] = v13;
   v14 = objc_alloc(MEMORY[0x1E69A29C8]);
   v15 = MEMORY[0x1E696AD98];
-  v16 = [(HMAccessory *)self rootPublicKey];
-  v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "hash")}];
+  rootPublicKey = [(HMAccessory *)self rootPublicKey];
+  v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(rootPublicKey, "hash")}];
   v18 = [v14 initWithName:@"Root Public Key (HASH)" value:v17];
   v49[8] = v18;
   v19 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v20 = [(HMAccessory *)self nodeID];
-  v21 = [v19 initWithName:@"NodeID" value:v20];
+  nodeID = [(HMAccessory *)self nodeID];
+  v21 = [v19 initWithName:@"NodeID" value:nodeID];
   v49[9] = v21;
   v22 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v23 = [(HMAccessory *)self matterNodeID];
-  v24 = [v22 initWithName:@"Matter NodeID" value:v23];
+  matterNodeID = [(HMAccessory *)self matterNodeID];
+  v24 = [v22 initWithName:@"Matter NodeID" value:matterNodeID];
   v49[10] = v24;
   v25 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v26 = [(HMAccessory *)self bulletinBoardNotificationByEndpoint];
-  v27 = [v25 initWithName:@"Matter Bulletins" value:v26];
+  bulletinBoardNotificationByEndpoint = [(HMAccessory *)self bulletinBoardNotificationByEndpoint];
+  v27 = [v25 initWithName:@"Matter Bulletins" value:bulletinBoardNotificationByEndpoint];
   v49[11] = v27;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:12];
 
@@ -2239,22 +2239,22 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
 
 - (NSString)shortDescription
 {
-  v2 = [(HMAccessory *)self uniqueIdentifier];
-  v3 = [v2 UUIDString];
+  uniqueIdentifier = [(HMAccessory *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_invokeDidUpdateSupportsUWBUnlockDelegate:(BOOL)a3
+- (void)_invokeDidUpdateSupportsUWBUnlockDelegate:(BOOL)delegate
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  context = [(HMAccessory *)self context];
+  if (context)
   {
-    v6 = [(HMAccessory *)self delegate];
-    if ([v6 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v7 = v6;
+      v7 = delegate;
     }
 
     else
@@ -2266,22 +2266,22 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v5 delegateCaller];
+      delegateCaller = [context delegateCaller];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __57__HMAccessory__invokeDidUpdateSupportsUWBUnlockDelegate___block_invoke;
       v15[3] = &unk_1E754DC70;
       v16 = v8;
-      v17 = self;
-      v18 = a3;
-      [v9 invokeBlock:v15];
+      selfCopy = self;
+      delegateCopy = delegate;
+      [delegateCaller invokeBlock:v15];
     }
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -2299,16 +2299,16 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_invokeDidUpdateSupportsWalletKeyDelegate:(BOOL)a3
+- (void)_invokeDidUpdateSupportsWalletKeyDelegate:(BOOL)delegate
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  context = [(HMAccessory *)self context];
+  if (context)
   {
-    v6 = [(HMAccessory *)self delegate];
-    if ([v6 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v7 = v6;
+      v7 = delegate;
     }
 
     else
@@ -2320,22 +2320,22 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v5 delegateCaller];
+      delegateCaller = [context delegateCaller];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __57__HMAccessory__invokeDidUpdateSupportsWalletKeyDelegate___block_invoke;
       v15[3] = &unk_1E754DC70;
       v16 = v8;
-      v17 = self;
-      v18 = a3;
-      [v9 invokeBlock:v15];
+      selfCopy = self;
+      delegateCopy = delegate;
+      [delegateCaller invokeBlock:v15];
     }
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -2353,37 +2353,37 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSupportedDiagnosticsUpdatedMessage:(id)a3
+- (void)_handleSupportedDiagnosticsUpdatedMessage:(id)message
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v20[0] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v6 = [v4 unarchivedObjectForKey:@"HMA.supportedDiagnosticsCodingKey" ofClasses:v5];
+  v6 = [messageCopy unarchivedObjectForKey:@"HMA.supportedDiagnosticsCodingKey" ofClasses:v5];
 
-  v7 = [(HMAccessory(Diagnostics) *)self supportedDiagnostics];
+  supportedDiagnostics = [(HMAccessory(Diagnostics) *)self supportedDiagnostics];
 
-  if (v6 != v7)
+  if (v6 != supportedDiagnostics)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMAccessory(Diagnostics) *)v9 supportedDiagnostics];
+      supportedDiagnostics2 = [(HMAccessory(Diagnostics) *)selfCopy supportedDiagnostics];
       v14 = 138543874;
       v15 = v11;
       v16 = 2112;
-      v17 = v12;
+      v17 = supportedDiagnostics2;
       v18 = 2112;
       v19 = v6;
       _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating supported diagnostics from %@ -> %@", &v14, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
-    [(HMAccessory(Diagnostics) *)v9 setSupportedDiagnostics:v6];
-    [(HMAccessory *)v9 _notifyClientsOfDiagnosticsTransferSupportUpdate];
+    [(HMAccessory(Diagnostics) *)selfCopy setSupportedDiagnostics:v6];
+    [(HMAccessory *)selfCopy _notifyClientsOfDiagnosticsTransferSupportUpdate];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -2392,11 +2392,11 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
 - (void)_notifyClientsOfDiagnosticsTransferSupportUpdate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -2404,20 +2404,20 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
       *buf = 138543618;
       v15 = v7;
       v16 = 2112;
-      v17 = v3;
+      v17 = _privateDelegate;
       _os_log_impl(&dword_19BB39000, v6, OS_LOG_TYPE_INFO, "%{public}@Notifying delegate of accessory diagnostics transfer support update: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMAccessory *)v5 context];
-    v9 = [v8 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __63__HMAccessory__notifyClientsOfDiagnosticsTransferSupportUpdate__block_invoke;
     v11[3] = &unk_1E754E5C0;
-    v12 = v3;
-    v13 = v5;
-    [v9 invokeBlock:v11];
+    v12 = _privateDelegate;
+    v13 = selfCopy;
+    [delegateCaller invokeBlock:v11];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -2432,24 +2432,24 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
   return v3;
 }
 
-- (id)mediaDestinationController:(id)a3 destinationWithIdentifier:(id)a4
+- (id)mediaDestinationController:(id)controller destinationWithIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self home];
-  v9 = [v8 mediaDestinationsWithHomeTheaterSupportedOptions];
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  home = [(HMAccessory *)self home];
+  mediaDestinationsWithHomeTheaterSupportedOptions = [home mediaDestinationsWithHomeTheaterSupportedOptions];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __68__HMAccessory_mediaDestinationController_destinationWithIdentifier___block_invoke;
   v18[3] = &unk_1E754B5C0;
-  v10 = v7;
+  v10 = identifierCopy;
   v19 = v10;
-  v11 = [v9 na_firstObjectPassingTest:v18];
+  v11 = [mediaDestinationsWithHomeTheaterSupportedOptions na_firstObjectPassingTest:v18];
   if (!v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -2457,9 +2457,9 @@ void __48__HMAccessory_adapter_didUpdateSettingKeyPaths___block_invoke(uint64_t 
       *buf = 138543874;
       v21 = v15;
       v22 = 2112;
-      v23 = v9;
+      v23 = mediaDestinationsWithHomeTheaterSupportedOptions;
       v24 = 2112;
-      v25 = v8;
+      v25 = home;
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@No destination found in destinations: %@ home: %@", buf, 0x20u);
     }
 
@@ -2480,17 +2480,17 @@ uint64_t __68__HMAccessory_mediaDestinationController_destinationWithIdentifier_
   return v5;
 }
 
-- (void)updateAudioDestinationSupportedOptions:(unint64_t)a3 completion:(id)a4
+- (void)updateAudioDestinationSupportedOptions:(unint64_t)options completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
     *buf = 138543618;
     v36 = v10;
     v37 = 2112;
@@ -2499,36 +2499,36 @@ uint64_t __68__HMAccessory_mediaDestinationController_destinationWithIdentifier_
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMAccessory *)v8 context];
-  v13 = [v12 messageDispatcher];
-  if (v13)
+  context = [(HMAccessory *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  if (messageDispatcher)
   {
     v33 = @"HMMediaDestinationSupportedOptionsPayloadKey";
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
     v34 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
 
     v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v17 = [(HMAccessory *)v8 audioDestination];
-    v18 = [v17 uniqueIdentifier];
-    v19 = [v16 initWithTarget:v18];
+    audioDestination = [(HMAccessory *)selfCopy audioDestination];
+    uniqueIdentifier = [audioDestination uniqueIdentifier];
+    v19 = [v16 initWithTarget:uniqueIdentifier];
 
     v20 = [objc_alloc(MEMORY[0x1E69A2A10]) initWithName:@"HMMediaDestinationUpdateSupportedOptionsRequestMessage" destination:v19 payload:v15];
     v27 = MEMORY[0x1E69E9820];
     v28 = 3221225472;
     v29 = __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block_invoke;
     v30 = &unk_1E754DE00;
-    v31 = v8;
-    v32 = v6;
+    v31 = selfCopy;
+    v32 = completionCopy;
     [v20 setResponseHandler:&v27];
     v21 = [v20 copy];
-    [v13 sendMessage:v21];
+    [messageDispatcher sendMessage:v21];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v8;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -2536,13 +2536,13 @@ uint64_t __68__HMAccessory_mediaDestinationController_destinationWithIdentifier_
       *buf = 138543618;
       v36 = v25;
       v37 = 2112;
-      v38 = v12;
+      v38 = context;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@Failed to update destination support options due to no message dispatcher given by context: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
     v15 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:15];
-    [(HMAccessory *)v23 callCompletionHandler:v6 error:v15];
+    [(HMAccessory *)v23 callCompletionHandler:completionCopy error:v15];
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -2590,10 +2590,10 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasOnboardedForCleanEnergyAutomation:(BOOL)a3
+- (void)setHasOnboardedForCleanEnergyAutomation:(BOOL)automation
 {
   os_unfair_lock_lock_with_options();
-  self->_hasOnboardedForCleanEnergyAutomation = a3;
+  self->_hasOnboardedForCleanEnergyAutomation = automation;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2606,10 +2606,10 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
   return hasOnboardedForCleanEnergyAutomation;
 }
 
-- (void)setHasOnboardedForAdaptiveTemperatureAutomations:(BOOL)a3
+- (void)setHasOnboardedForAdaptiveTemperatureAutomations:(BOOL)automations
 {
   os_unfair_lock_lock_with_options();
-  self->_hasOnboardedForAdaptiveTemperatureAutomations = a3;
+  self->_hasOnboardedForAdaptiveTemperatureAutomations = automations;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2622,10 +2622,10 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
   return hasOnboardedForAdaptiveTemperatureAutomations;
 }
 
-- (void)setSupportsCleanEnergyAutomation:(BOOL)a3
+- (void)setSupportsCleanEnergyAutomation:(BOOL)automation
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsCleanEnergyAutomation = a3;
+  self->_supportsCleanEnergyAutomation = automation;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2638,10 +2638,10 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
   return supportsCleanEnergyAutomation;
 }
 
-- (void)setSupportsAdaptiveTemperatureAutomations:(BOOL)a3
+- (void)setSupportsAdaptiveTemperatureAutomations:(BOOL)automations
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsAdaptiveTemperatureAutomations = a3;
+  self->_supportsAdaptiveTemperatureAutomations = automations;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2654,10 +2654,10 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
   return supportsAdaptiveTemperatureAutomations;
 }
 
-- (void)setHasOnboardedForNaturalLighting:(BOOL)a3
+- (void)setHasOnboardedForNaturalLighting:(BOOL)lighting
 {
   os_unfair_lock_lock_with_options();
-  self->_hasOnboardedForNaturalLighting = a3;
+  self->_hasOnboardedForNaturalLighting = lighting;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2672,20 +2672,20 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
 
 - (NSUUID)audioDestinationGroupIdentifier
 {
-  v2 = [(HMAccessory *)self audioDestination];
-  v3 = [v2 audioGroupIdentifier];
+  audioDestination = [(HMAccessory *)self audioDestination];
+  audioGroupIdentifier = [audioDestination audioGroupIdentifier];
 
-  return v3;
+  return audioGroupIdentifier;
 }
 
 - (NSArray)audioDestinationMediaProfiles
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(HMAccessory *)self mediaProfile];
-  v3 = v2;
-  if (v2)
+  mediaProfile = [(HMAccessory *)self mediaProfile];
+  v3 = mediaProfile;
+  if (mediaProfile)
   {
-    v7[0] = v2;
+    v7[0] = mediaProfile;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -2701,62 +2701,62 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
 
 - (NSString)audioDestinationParentIdentifier
 {
-  v2 = [(HMAccessory *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMAccessory *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (BOOL)supportsAudioGroup
 {
-  v2 = [(HMAccessory *)self audioDestination];
-  v3 = [v2 containsSupportedOptions:8];
+  audioDestination = [(HMAccessory *)self audioDestination];
+  v3 = [audioDestination containsSupportedOptions:8];
 
   return v3;
 }
 
 - (BOOL)supportsAudioDestination
 {
-  v2 = [(HMAccessory *)self audioDestination];
-  v3 = [v2 containsHomeTheaterSupportedOptions];
+  audioDestination = [(HMAccessory *)self audioDestination];
+  containsHomeTheaterSupportedOptions = [audioDestination containsHomeTheaterSupportedOptions];
 
-  return v3;
+  return containsHomeTheaterSupportedOptions;
 }
 
 - (int64_t)audioDestinationType
 {
-  v2 = [(HMAccessory *)self audioDestination];
+  audioDestination = [(HMAccessory *)self audioDestination];
 
-  return v2 != 0;
+  return audioDestination != 0;
 }
 
 - (NSString)audioDestinationIdentifier
 {
-  v2 = [(HMAccessory *)self audioDestination];
-  v3 = [v2 identifier];
+  audioDestination = [(HMAccessory *)self audioDestination];
+  identifier = [audioDestination identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)callCompletionHandler:(id)a3 error:(id)a4
+- (void)callCompletionHandler:(id)handler error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  handlerCopy = handler;
+  errorCopy = error;
+  if (handlerCopy)
   {
-    v8 = [(HMAccessory *)self context];
-    v9 = [v8 delegateCaller];
-    v10 = v9;
-    if (v9)
+    context = [(HMAccessory *)self context];
+    delegateCaller = [context delegateCaller];
+    v10 = delegateCaller;
+    if (delegateCaller)
     {
-      [v9 callCompletion:v6 error:v7];
+      [delegateCaller callCompletion:handlerCopy error:errorCopy];
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -2764,7 +2764,7 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
         v20 = 138543618;
         v21 = v18;
         v22 = 2112;
-        v23 = v8;
+        v23 = context;
         _os_log_impl(&dword_19BB39000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to call client completion handler due to no delegate caller given by context: %@", &v20, 0x16u);
       }
 
@@ -2775,7 +2775,7 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -2791,12 +2791,12 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNetworkProtectionGroupUUID:(id)a3
+- (void)setNetworkProtectionGroupUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   networkProtectionGroupUUID = self->_networkProtectionGroupUUID;
-  self->_networkProtectionGroupUUID = v4;
+  self->_networkProtectionGroupUUID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2813,11 +2813,11 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
 - (void)_notifyClientsOfSupportsMusicAlarmUpdate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -2825,28 +2825,28 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
       *buf = 138543618;
       v15 = v7;
       v16 = 2112;
-      v17 = v3;
+      v17 = _privateDelegate;
       _os_log_impl(&dword_19BB39000, v6, OS_LOG_TYPE_INFO, "%{public}@Notifying delegate of supports creating music alarms update: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMAccessory *)v5 context];
-    v9 = [v8 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __55__HMAccessory__notifyClientsOfSupportsMusicAlarmUpdate__block_invoke;
     v11[3] = &unk_1E754E5C0;
-    v12 = v3;
-    v13 = v5;
-    [v9 invokeBlock:v11];
+    v12 = _privateDelegate;
+    v13 = selfCopy;
+    [delegateCaller invokeBlock:v11];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSupportsCompanionInitiatedObliterateUpdatedMessage:(id)a3
+- (void)_handleSupportsCompanionInitiatedObliterateUpdatedMessage:(id)message
 {
-  v4 = [a3 BOOLForKey:@"HMAccessorySupportsCompanionInitiatedObliterateMessageKey"];
+  v4 = [message BOOLForKey:@"HMAccessorySupportsCompanionInitiatedObliterateMessageKey"];
   if (v4 != [(HMAccessory *)self supportsCompanionInitiatedObliterate])
   {
     [(HMAccessory *)self setSupportsCompanionInitiatedObliterate:v4];
@@ -2858,11 +2858,11 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
 - (void)_notifyClientsOfSupportsCompanionInitiatedObliterateUpdate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -2870,28 +2870,28 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
       *buf = 138543618;
       v15 = v7;
       v16 = 2112;
-      v17 = v3;
+      v17 = _privateDelegate;
       _os_log_impl(&dword_19BB39000, v6, OS_LOG_TYPE_INFO, "%{public}@Notifying delegate of supports companion initiated obliterate update: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMAccessory *)v5 context];
-    v9 = [v8 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __73__HMAccessory__notifyClientsOfSupportsCompanionInitiatedObliterateUpdate__block_invoke;
     v11[3] = &unk_1E754E5C0;
-    v12 = v3;
-    v13 = v5;
-    [v9 invokeBlock:v11];
+    v12 = _privateDelegate;
+    v13 = selfCopy;
+    [delegateCaller invokeBlock:v11];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSupportsCompanionInitiatedRestartUpdatedMessage:(id)a3
+- (void)_handleSupportsCompanionInitiatedRestartUpdatedMessage:(id)message
 {
-  v4 = [a3 BOOLForKey:@"HMAccessorySupportsCompanionInitiatedRestartMessageKey"];
+  v4 = [message BOOLForKey:@"HMAccessorySupportsCompanionInitiatedRestartMessageKey"];
   if (v4 != [(HMAccessory *)self supportsCompanionInitiatedRestart])
   {
     [(HMAccessory *)self setSupportsCompanionInitiatedRestart:v4];
@@ -2903,11 +2903,11 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
 - (void)_notifyClientsOfSupportsCompanionInitiatedRestartUpdate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -2915,28 +2915,28 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
       *buf = 138543618;
       v15 = v7;
       v16 = 2112;
-      v17 = v3;
+      v17 = _privateDelegate;
       _os_log_impl(&dword_19BB39000, v6, OS_LOG_TYPE_INFO, "%{public}@Notifying delegate of supports companion initiated restart update: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMAccessory *)v5 context];
-    v9 = [v8 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __70__HMAccessory__notifyClientsOfSupportsCompanionInitiatedRestartUpdate__block_invoke;
     v11[3] = &unk_1E754E5C0;
-    v12 = v3;
-    v13 = v5;
-    [v9 invokeBlock:v11];
+    v12 = _privateDelegate;
+    v13 = selfCopy;
+    [delegateCaller invokeBlock:v11];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleMultiUserSupportUpdatedMessage:(id)a3
+- (void)_handleMultiUserSupportUpdatedMessage:(id)message
 {
-  v4 = [a3 BOOLForKey:@"supportsMultiUser"];
+  v4 = [message BOOLForKey:@"supportsMultiUser"];
   if (v4 != [(HMAccessory *)self supportsMultiUser])
   {
     [(HMAccessory *)self setSupportsMultiUser:v4];
@@ -2947,14 +2947,14 @@ void __65__HMAccessory_updateAudioDestinationSupportedOptions_completion___block
 
 - (void)_notifyClientsOfHomeLevelLocationServiceSettingSupportUpdate
 {
-  v3 = [(HMAccessory *)self context];
-  v4 = [v3 delegateCaller];
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __75__HMAccessory__notifyClientsOfHomeLevelLocationServiceSettingSupportUpdate__block_invoke;
   v5[3] = &unk_1E754E2A8;
   v5[4] = self;
-  [v4 invokeBlock:v5];
+  [delegateCaller invokeBlock:v5];
 }
 
 void __75__HMAccessory__notifyClientsOfHomeLevelLocationServiceSettingSupportUpdate__block_invoke(uint64_t a1)
@@ -2986,11 +2986,11 @@ void __75__HMAccessory__notifyClientsOfHomeLevelLocationServiceSettingSupportUpd
 - (void)_notifyClientsOfMultiUserSupportUpdate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -3001,15 +3001,15 @@ void __75__HMAccessory__notifyClientsOfHomeLevelLocationServiceSettingSupportUpd
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMAccessory *)v5 context];
-    v9 = [v8 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __53__HMAccessory__notifyClientsOfMultiUserSupportUpdate__block_invoke;
     v11[3] = &unk_1E754E5C0;
-    v12 = v3;
-    v13 = v5;
-    [v9 invokeBlock:v11];
+    v12 = _privateDelegate;
+    v13 = selfCopy;
+    [delegateCaller invokeBlock:v11];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -3018,9 +3018,9 @@ void __75__HMAccessory__notifyClientsOfHomeLevelLocationServiceSettingSupportUpd
 - (void)notifyClientsOfUpdatedSupportsAudioReturnChannel
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -3028,30 +3028,30 @@ void __75__HMAccessory__notifyClientsOfHomeLevelLocationServiceSettingSupportUpd
     *buf = 138543618;
     v19 = v7;
     v20 = 2112;
-    v21 = v3;
+    v21 = _privateDelegate;
     _os_log_impl(&dword_19BB39000, v6, OS_LOG_TYPE_INFO, "%{public}@Notifying delegate of accessory did update supports audio return: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v4);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(HMAccessory *)v5 context];
-    v9 = [v8 delegateCaller];
-    if (v9)
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
+    if (delegateCaller)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __63__HMAccessory_notifyClientsOfUpdatedSupportsAudioReturnChannel__block_invoke;
       v15[3] = &unk_1E754E5C0;
-      v16 = v3;
-      v17 = v5;
-      [v9 invokeBlock:v15];
+      v16 = _privateDelegate;
+      v17 = selfCopy;
+      [delegateCaller invokeBlock:v15];
     }
 
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = v5;
+      v11 = selfCopy;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -3068,24 +3068,24 @@ void __75__HMAccessory__notifyClientsOfHomeLevelLocationServiceSettingSupportUpd
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleTargetControlSupportUpdatedMessage:(id)a3
+- (void)_handleTargetControlSupportUpdatedMessage:(id)message
 {
-  v8 = a3;
-  v4 = [v8 BOOLForKey:@"supportsTargetControl"];
+  messageCopy = message;
+  v4 = [messageCopy BOOLForKey:@"supportsTargetControl"];
   v5 = v4 ^ [(HMAccessory *)self supportsTargetControl];
   if (v5 == 1)
   {
     [(HMAccessory *)self setSupportsTargetControl:v4];
   }
 
-  v6 = [v8 BOOLForKey:@"supportsTargetController"];
+  v6 = [messageCopy BOOLForKey:@"supportsTargetController"];
   if (v6 != [(HMAccessory *)self supportsTargetController])
   {
     [(HMAccessory *)self setSupportsTargetController:v6];
     v5 = 1;
   }
 
-  v7 = [v8 BOOLForKey:@"targetControllerHardwareSupport"];
+  v7 = [messageCopy BOOLForKey:@"targetControllerHardwareSupport"];
   if (v7 == [(HMAccessory *)self targetControllerHardwareSupport])
   {
     if (!v5)
@@ -3103,16 +3103,16 @@ void __75__HMAccessory__notifyClientsOfHomeLevelLocationServiceSettingSupportUpd
 LABEL_9:
 }
 
-- (void)resetControlTargetsWithCompletionHandler:(id)a3
+- (void)resetControlTargetsWithCompletionHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory resetControlTargetsWithCompletionHandler:]", @"completion"];
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -3129,50 +3129,50 @@ LABEL_9:
     objc_exception_throw(v36);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
-    v7 = [(HMAccessory *)self home];
-    if (v7)
+    home = [(HMAccessory *)self home];
+    if (home)
     {
-      v8 = v7;
+      v8 = home;
       v41 = @"reset";
       v42 = MEMORY[0x1E695E0F0];
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v10 = objc_alloc(MEMORY[0x1E69A2A10]);
       v11 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v12 = [(HMAccessory *)self uuid];
-      v13 = [v11 initWithTarget:v12];
+      uuid = [(HMAccessory *)self uuid];
+      v13 = [v11 initWithTarget:uuid];
       v14 = [v10 initWithName:@"HMCT.configure" destination:v13 payload:v9];
 
-      v15 = [(HMAccessory *)self context];
-      v16 = [v15 pendingRequests];
+      context2 = [(HMAccessory *)self context];
+      pendingRequests = [context2 pendingRequests];
 
-      v17 = [v14 identifier];
-      v18 = _Block_copy(v4);
-      [v16 addCompletionBlock:v18 forIdentifier:v17];
+      identifier = [v14 identifier];
+      v18 = _Block_copy(handlerCopy);
+      [pendingRequests addCompletionBlock:v18 forIdentifier:identifier];
 
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __56__HMAccessory_resetControlTargetsWithCompletionHandler___block_invoke;
       v37[3] = &unk_1E754E0A8;
-      v38 = v16;
-      v39 = v17;
+      v38 = pendingRequests;
+      v39 = identifier;
       v19 = v6;
       v40 = v19;
-      v20 = v17;
-      v21 = v16;
+      v20 = identifier;
+      v21 = pendingRequests;
       [v14 setResponseHandler:v37];
-      v22 = [v19 messageDispatcher];
-      [v22 sendMessage:v14];
+      messageDispatcher = [v19 messageDispatcher];
+      [messageDispatcher sendMessage:v14];
     }
 
     else
     {
-      v27 = [(HMAccessory *)self context];
-      v28 = [v27 delegateCaller];
+      context3 = [(HMAccessory *)self context];
+      delegateCaller = [context3 delegateCaller];
       v29 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      [v28 callCompletion:v4 error:v29];
+      [delegateCaller callCompletion:handlerCopy error:v29];
 
       v8 = 0;
     }
@@ -3181,7 +3181,7 @@ LABEL_9:
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -3195,7 +3195,7 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v23);
     v8 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -3214,17 +3214,17 @@ void __56__HMAccessory_resetControlTargetsWithCompletionHandler___block_invoke(u
   }
 }
 
-- (void)removeControlTarget:(id)a3 completionHandler:(id)a4
+- (void)removeControlTarget:(id)target completionHandler:(id)handler
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self context];
-  if (!v7)
+  targetCopy = target;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory removeControlTarget:completionHandler:]", @"completion"];
     v45 = objc_autoreleasePoolPush();
-    v46 = self;
+    selfCopy = self;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
@@ -3241,89 +3241,89 @@ void __56__HMAccessory_resetControlTargetsWithCompletionHandler___block_invoke(u
     objc_exception_throw(v49);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [(HMAccessory *)self home];
-    if (!v10)
+    home = [(HMAccessory *)self home];
+    if (!home)
     {
-      v35 = [(HMAccessory *)self context];
-      v36 = [v35 delegateCaller];
+      context2 = [(HMAccessory *)self context];
+      delegateCaller = [context2 delegateCaller];
       v37 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      [v36 callCompletion:v7 error:v37];
+      [delegateCaller callCompletion:handlerCopy error:v37];
 
       v11 = 0;
       goto LABEL_14;
     }
 
-    v11 = v10;
-    v12 = [v6 uuid];
+    v11 = home;
+    uuid = [targetCopy uuid];
 
-    if (v12)
+    if (uuid)
     {
-      v13 = [v6 home];
-      v14 = [v11 isEqual:v13];
+      home2 = [targetCopy home];
+      v14 = [v11 isEqual:home2];
 
       if (v14)
       {
         v54 = @"remove";
-        v15 = [v6 uuid];
-        v16 = [v15 UUIDString];
-        v55 = v16;
+        uuid2 = [targetCopy uuid];
+        uUIDString = [uuid2 UUIDString];
+        v55 = uUIDString;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
 
         v18 = objc_alloc(MEMORY[0x1E69A2A10]);
         v19 = objc_alloc(MEMORY[0x1E69A2A00]);
-        v20 = [(HMAccessory *)self uuid];
-        v21 = [v19 initWithTarget:v20];
+        uuid3 = [(HMAccessory *)self uuid];
+        v21 = [v19 initWithTarget:uuid3];
         v22 = [v18 initWithName:@"HMCT.configure" destination:v21 payload:v17];
 
-        v23 = [(HMAccessory *)self context];
-        v24 = [v23 pendingRequests];
+        context3 = [(HMAccessory *)self context];
+        pendingRequests = [context3 pendingRequests];
 
-        v25 = [v22 identifier];
-        v26 = _Block_copy(v7);
-        [v24 addCompletionBlock:v26 forIdentifier:v25];
+        identifier = [v22 identifier];
+        v26 = _Block_copy(handlerCopy);
+        [pendingRequests addCompletionBlock:v26 forIdentifier:identifier];
 
         v50[0] = MEMORY[0x1E69E9820];
         v50[1] = 3221225472;
         v50[2] = __53__HMAccessory_removeControlTarget_completionHandler___block_invoke;
         v50[3] = &unk_1E754E0A8;
-        v51 = v24;
-        v52 = v25;
+        v51 = pendingRequests;
+        v52 = identifier;
         v27 = v9;
         v53 = v27;
-        v28 = v25;
-        v29 = v24;
+        v28 = identifier;
+        v29 = pendingRequests;
         [v22 setResponseHandler:v50];
-        v30 = [v27 messageDispatcher];
-        [v30 sendMessage:v22];
+        messageDispatcher = [v27 messageDispatcher];
+        [messageDispatcher sendMessage:v22];
 
         goto LABEL_14;
       }
 
-      v38 = [(HMAccessory *)self context];
-      v39 = [v38 delegateCaller];
+      context4 = [(HMAccessory *)self context];
+      delegateCaller2 = [context4 delegateCaller];
       v40 = MEMORY[0x1E696ABC0];
       v41 = 11;
     }
 
     else
     {
-      v38 = [(HMAccessory *)self context];
-      v39 = [v38 delegateCaller];
+      context4 = [(HMAccessory *)self context];
+      delegateCaller2 = [context4 delegateCaller];
       v40 = MEMORY[0x1E696ABC0];
       v41 = 20;
     }
 
     v42 = [v40 hmErrorWithCode:v41];
-    [v39 callCompletion:v7 error:v42];
+    [delegateCaller2 callCompletion:handlerCopy error:v42];
 
     goto LABEL_14;
   }
 
   v31 = objc_autoreleasePoolPush();
-  v32 = self;
+  selfCopy2 = self;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
@@ -3337,7 +3337,7 @@ void __56__HMAccessory_resetControlTargetsWithCompletionHandler___block_invoke(u
 
   objc_autoreleasePoolPop(v31);
   v11 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-  (*(v7 + 2))(v7, v11);
+  (*(handlerCopy + 2))(handlerCopy, v11);
 LABEL_14:
 
   v43 = *MEMORY[0x1E69E9840];
@@ -3356,17 +3356,17 @@ void __53__HMAccessory_removeControlTarget_completionHandler___block_invoke(uint
   }
 }
 
-- (void)addControlTarget:(id)a3 completionHandler:(id)a4
+- (void)addControlTarget:(id)target completionHandler:(id)handler
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self context];
-  if (!v7)
+  targetCopy = target;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory addControlTarget:completionHandler:]", @"completion"];
     v45 = objc_autoreleasePoolPush();
-    v46 = self;
+    selfCopy = self;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
@@ -3383,89 +3383,89 @@ void __53__HMAccessory_removeControlTarget_completionHandler___block_invoke(uint
     objc_exception_throw(v49);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [(HMAccessory *)self home];
-    if (!v10)
+    home = [(HMAccessory *)self home];
+    if (!home)
     {
-      v35 = [(HMAccessory *)self context];
-      v36 = [v35 delegateCaller];
+      context2 = [(HMAccessory *)self context];
+      delegateCaller = [context2 delegateCaller];
       v37 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      [v36 callCompletion:v7 error:v37];
+      [delegateCaller callCompletion:handlerCopy error:v37];
 
       v11 = 0;
       goto LABEL_14;
     }
 
-    v11 = v10;
-    v12 = [v6 uuid];
+    v11 = home;
+    uuid = [targetCopy uuid];
 
-    if (v12)
+    if (uuid)
     {
-      v13 = [v6 home];
-      v14 = [v11 isEqual:v13];
+      home2 = [targetCopy home];
+      v14 = [v11 isEqual:home2];
 
       if (v14)
       {
         v54 = @"add";
-        v15 = [v6 uuid];
-        v16 = [v15 UUIDString];
-        v55 = v16;
+        uuid2 = [targetCopy uuid];
+        uUIDString = [uuid2 UUIDString];
+        v55 = uUIDString;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
 
         v18 = objc_alloc(MEMORY[0x1E69A2A10]);
         v19 = objc_alloc(MEMORY[0x1E69A2A00]);
-        v20 = [(HMAccessory *)self uuid];
-        v21 = [v19 initWithTarget:v20];
+        uuid3 = [(HMAccessory *)self uuid];
+        v21 = [v19 initWithTarget:uuid3];
         v22 = [v18 initWithName:@"HMCT.configure" destination:v21 payload:v17];
 
-        v23 = [(HMAccessory *)self context];
-        v24 = [v23 pendingRequests];
+        context3 = [(HMAccessory *)self context];
+        pendingRequests = [context3 pendingRequests];
 
-        v25 = [v22 identifier];
-        v26 = _Block_copy(v7);
-        [v24 addCompletionBlock:v26 forIdentifier:v25];
+        identifier = [v22 identifier];
+        v26 = _Block_copy(handlerCopy);
+        [pendingRequests addCompletionBlock:v26 forIdentifier:identifier];
 
         v50[0] = MEMORY[0x1E69E9820];
         v50[1] = 3221225472;
         v50[2] = __50__HMAccessory_addControlTarget_completionHandler___block_invoke;
         v50[3] = &unk_1E754E0A8;
-        v51 = v24;
-        v52 = v25;
+        v51 = pendingRequests;
+        v52 = identifier;
         v27 = v9;
         v53 = v27;
-        v28 = v25;
-        v29 = v24;
+        v28 = identifier;
+        v29 = pendingRequests;
         [v22 setResponseHandler:v50];
-        v30 = [v27 messageDispatcher];
-        [v30 sendMessage:v22];
+        messageDispatcher = [v27 messageDispatcher];
+        [messageDispatcher sendMessage:v22];
 
         goto LABEL_14;
       }
 
-      v38 = [(HMAccessory *)self context];
-      v39 = [v38 delegateCaller];
+      context4 = [(HMAccessory *)self context];
+      delegateCaller2 = [context4 delegateCaller];
       v40 = MEMORY[0x1E696ABC0];
       v41 = 11;
     }
 
     else
     {
-      v38 = [(HMAccessory *)self context];
-      v39 = [v38 delegateCaller];
+      context4 = [(HMAccessory *)self context];
+      delegateCaller2 = [context4 delegateCaller];
       v40 = MEMORY[0x1E696ABC0];
       v41 = 20;
     }
 
     v42 = [v40 hmErrorWithCode:v41];
-    [v39 callCompletion:v7 error:v42];
+    [delegateCaller2 callCompletion:handlerCopy error:v42];
 
     goto LABEL_14;
   }
 
   v31 = objc_autoreleasePoolPush();
-  v32 = self;
+  selfCopy2 = self;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
@@ -3479,7 +3479,7 @@ void __53__HMAccessory_removeControlTarget_completionHandler___block_invoke(uint
 
   objc_autoreleasePoolPop(v31);
   v11 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-  (*(v7 + 2))(v7, v11);
+  (*(handlerCopy + 2))(handlerCopy, v11);
 LABEL_14:
 
   v43 = *MEMORY[0x1E69E9840];
@@ -3498,75 +3498,75 @@ void __50__HMAccessory_addControlTarget_completionHandler___block_invoke(uint64_
   }
 }
 
-- (void)_notifyDelegateOfRemovedControlTarget:(id)a3
+- (void)_notifyDelegateOfRemovedControlTarget:(id)target
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self _privateDelegate];
+  targetCopy = target;
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [v4 name];
+      name = [targetCopy name];
       *buf = 138543618;
       v19 = v9;
       v20 = 2112;
-      v21 = v10;
+      v21 = name;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Notifying client of removed control target - %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [(HMAccessory *)v7 context];
-    v12 = [v11 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __53__HMAccessory__notifyDelegateOfRemovedControlTarget___block_invoke;
     v14[3] = &unk_1E754E5E8;
-    v15 = v5;
-    v16 = v7;
-    v17 = v4;
-    [v12 invokeBlock:v14];
+    v15 = _privateDelegate;
+    v16 = selfCopy;
+    v17 = targetCopy;
+    [delegateCaller invokeBlock:v14];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDelegateOfAddedControlTarget:(id)a3
+- (void)_notifyDelegateOfAddedControlTarget:(id)target
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self _privateDelegate];
+  targetCopy = target;
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [v4 name];
+      name = [targetCopy name];
       *buf = 138543618;
       v19 = v9;
       v20 = 2112;
-      v21 = v10;
+      v21 = name;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Notifying client of added target - %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [(HMAccessory *)v7 context];
-    v12 = [v11 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __51__HMAccessory__notifyDelegateOfAddedControlTarget___block_invoke;
     v14[3] = &unk_1E754E5E8;
-    v15 = v5;
-    v16 = v7;
-    v17 = v4;
-    [v12 invokeBlock:v14];
+    v15 = _privateDelegate;
+    v16 = selfCopy;
+    v17 = targetCopy;
+    [delegateCaller invokeBlock:v14];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -3575,11 +3575,11 @@ void __50__HMAccessory_addControlTarget_completionHandler___block_invoke(uint64_
 - (void)_notifyClientsOfTargetControlSupportUpdate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -3590,58 +3590,58 @@ void __50__HMAccessory_addControlTarget_completionHandler___block_invoke(uint64_
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMAccessory *)v5 context];
-    v9 = [v8 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57__HMAccessory__notifyClientsOfTargetControlSupportUpdate__block_invoke;
     v11[3] = &unk_1E754E5C0;
-    v12 = v3;
-    v13 = v5;
-    [v9 invokeBlock:v11];
+    v12 = _privateDelegate;
+    v13 = selfCopy;
+    [delegateCaller invokeBlock:v11];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_updateHasSymptomsHandler:(BOOL)a3
+- (BOOL)_updateHasSymptomsHandler:(BOOL)handler
 {
-  v3 = a3;
-  v5 = [(HMAccessory *)self _privateDelegate];
-  if (![(HMAccessory *)self hasSymptomsHandler]&& v3)
+  handlerCopy = handler;
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
+  if (![(HMAccessory *)self hasSymptomsHandler]&& handlerCopy)
   {
     [(HMAccessory *)self setHasSymptomsHandler:1];
     [(HMAccessory *)self _createSymptomsHandler];
-    v6 = [(HMAccessory *)self context];
-    v7 = [v6 queue];
+    context = [(HMAccessory *)self context];
+    queue = [context queue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __41__HMAccessory__updateHasSymptomsHandler___block_invoke;
     v14[3] = &unk_1E754E5C0;
     v8 = v15;
-    v15[0] = v5;
+    v15[0] = _privateDelegate;
     v15[1] = self;
     v9 = v14;
 LABEL_7:
-    dispatch_async(v7, v9);
+    dispatch_async(queue, v9);
 
     v10 = 1;
     goto LABEL_8;
   }
 
   v10 = 0;
-  if ([(HMAccessory *)self hasSymptomsHandler]&& !v3)
+  if ([(HMAccessory *)self hasSymptomsHandler]&& !handlerCopy)
   {
     [(HMAccessory *)self setHasSymptomsHandler:0];
     [(HMAccessory *)self setSymptomsHandler:0];
-    v6 = [(HMAccessory *)self context];
-    v7 = [v6 queue];
+    context = [(HMAccessory *)self context];
+    queue = [context queue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __41__HMAccessory__updateHasSymptomsHandler___block_invoke_2;
     v12[3] = &unk_1E754E5C0;
     v8 = v13;
-    v13[0] = v5;
+    v13[0] = _privateDelegate;
     v13[1] = self;
     v9 = v12;
     goto LABEL_7;
@@ -3733,16 +3733,16 @@ void __41__HMAccessory__updateHasSymptomsHandler___block_invoke_1366(uint64_t a1
   v3 = [[HMSymptomsHandler alloc] initWithAccessory:self];
   [(HMAccessory *)self setSymptomsHandler:v3];
 
-  v4 = [(HMAccessory *)self symptomsHandler];
-  [v4 configure];
+  symptomsHandler = [(HMAccessory *)self symptomsHandler];
+  [symptomsHandler configure];
 }
 
-- (void)setSymptomsHandler:(id)a3
+- (void)setSymptomsHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   symptomsHandler = self->_symptomsHandler;
-  self->_symptomsHandler = v4;
+  self->_symptomsHandler = handlerCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -3758,10 +3758,10 @@ void __41__HMAccessory__updateHasSymptomsHandler___block_invoke_1366(uint64_t a1
 
 - (id)_privateDelegate
 {
-  v2 = [(HMAccessory *)self delegate];
-  if ([v2 conformsToProtocol:&unk_1F0F63E80])
+  delegate = [(HMAccessory *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F63E80])
   {
-    v3 = v2;
+    v3 = delegate;
   }
 
   else
@@ -3774,88 +3774,88 @@ void __41__HMAccessory__updateHasSymptomsHandler___block_invoke_1366(uint64_t a1
 
 - (void)_notifyDelegatesOfUpdatedControllable
 {
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(HMAccessory *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(HMAccessory *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __52__HMAccessory__notifyDelegatesOfUpdatedControllable__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = _privateDelegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
 - (void)_notifyDelegatesOfUpdatedCalibrationStatus
 {
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(HMAccessory *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(HMAccessory *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57__HMAccessory__notifyDelegatesOfUpdatedCalibrationStatus__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = _privateDelegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
 - (void)_notifyDelegatesOfAdditionalSetupRequiredChange
 {
-  v3 = [(HMAccessory *)self _privateDelegate];
+  _privateDelegate = [(HMAccessory *)self _privateDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(HMAccessory *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(HMAccessory *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62__HMAccessory__notifyDelegatesOfAdditionalSetupRequiredChange__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = _privateDelegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
-- (void)_handleAccessoryControllableChanged:(id)a3
+- (void)_handleAccessoryControllableChanged:(id)changed
 {
-  -[HMAccessory setControllable:](self, "setControllable:", [a3 BOOLForKey:@"controllable"]);
+  -[HMAccessory setControllable:](self, "setControllable:", [changed BOOLForKey:@"controllable"]);
 
   [(HMAccessory *)self _notifyDelegatesOfUpdatedControllable];
 }
 
-- (void)notifyDelegateOfAppDataUpdateForService:(id)a3
+- (void)notifyDelegateOfAppDataUpdateForService:(id)service
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  serviceCopy = service;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
-    v6 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 queue];
+      queue = [context queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __55__HMAccessory_notifyDelegateOfAppDataUpdateForService___block_invoke;
       block[3] = &unk_1E754E5E8;
       block[4] = self;
-      v14 = v6;
-      v15 = v4;
-      dispatch_async(v7, block);
+      v14 = _privateDelegate;
+      v15 = serviceCopy;
+      dispatch_async(queue, block);
     }
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -3889,46 +3889,46 @@ void __55__HMAccessory_notifyDelegateOfAppDataUpdateForService___block_invoke(id
   [v3 invokeBlock:v6];
 }
 
-- (void)_updateApplicationData:(id)a3 forService:(id)a4 completionHandler:(id)a5
+- (void)_updateApplicationData:(id)data forService:(id)service completionHandler:(id)handler
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMAccessory *)self context];
-  if (v11)
+  dataCopy = data;
+  serviceCopy = service;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
-    v42 = [(HMAccessory *)self home];
-    if (v42)
+    home = [(HMAccessory *)self home];
+    if (home)
     {
-      v41 = [MEMORY[0x1E695DF90] dictionary];
-      if (v8)
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      if (dataCopy)
       {
-        v12 = [v8 dictionary];
-        [v41 setObject:v12 forKeyedSubscript:@"kAppDataInformationKey"];
+        dictionary2 = [dataCopy dictionary];
+        [dictionary setObject:dictionary2 forKeyedSubscript:@"kAppDataInformationKey"];
       }
 
-      v13 = self;
-      v14 = v13;
-      if (v9)
+      selfCopy = self;
+      v14 = selfCopy;
+      if (serviceCopy)
       {
-        v15 = v9;
+        v15 = serviceCopy;
 
-        v16 = [(HMAccessory *)v15 instanceID];
-        [v41 setObject:v16 forKeyedSubscript:@"kServiceInstanceID"];
+        instanceID = [(HMAccessory *)v15 instanceID];
+        [dictionary setObject:instanceID forKeyedSubscript:@"kServiceInstanceID"];
 
-        v40 = [(HMAccessory *)v15 uuid];
+        uuid = [(HMAccessory *)v15 uuid];
       }
 
       else
       {
-        v40 = [(HMAccessory *)v13 messageTargetUUID];
+        uuid = [(HMAccessory *)selfCopy messageTargetUUID];
         v15 = v14;
       }
 
-      v24 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:v40];
+      v24 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:uuid];
       v25 = MEMORY[0x1E69A2A10];
-      v26 = [v41 copy];
+      v26 = [dictionary copy];
       v39 = v24;
       v27 = [v25 messageWithName:@"kSetAppDataRequestKey" destination:v24 payload:v26];
 
@@ -3940,29 +3940,29 @@ void __55__HMAccessory_notifyDelegateOfAppDataUpdateForService___block_invoke(id
       objc_copyWeak(&v51, buf);
       v28 = v15;
       v48 = v28;
-      v49 = v8;
-      v50 = v10;
+      v49 = dataCopy;
+      v50 = handlerCopy;
       v29 = _Block_copy(aBlock);
-      v30 = [(HMAccessory *)v14 context];
-      v31 = [v30 pendingRequests];
+      context2 = [(HMAccessory *)v14 context];
+      pendingRequests = [context2 pendingRequests];
 
-      v32 = [v27 identifier];
+      identifier = [v27 identifier];
       v33 = _Block_copy(v29);
-      [v31 addCompletionBlock:v33 forIdentifier:v32];
+      [pendingRequests addCompletionBlock:v33 forIdentifier:identifier];
 
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __67__HMAccessory__updateApplicationData_forService_completionHandler___block_invoke_2;
       v43[3] = &unk_1E754E480;
-      v34 = v31;
+      v34 = pendingRequests;
       v44 = v34;
-      v35 = v32;
+      v35 = identifier;
       v45 = v35;
       v36 = v29;
       v46 = v36;
       [v27 setResponseHandler:v43];
-      v37 = [v11 messageDispatcher];
-      [v37 sendMessage:v27 completionHandler:0];
+      messageDispatcher = [context messageDispatcher];
+      [messageDispatcher sendMessage:v27 completionHandler:0];
 
       objc_destroyWeak(&v51);
       objc_destroyWeak(buf);
@@ -3970,17 +3970,17 @@ void __55__HMAccessory_notifyDelegateOfAppDataUpdateForService___block_invoke(id
 
     else
     {
-      v21 = [(HMAccessory *)self context];
-      v22 = [v21 delegateCaller];
+      context3 = [(HMAccessory *)self context];
+      delegateCaller = [context3 delegateCaller];
       v23 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      [v22 callCompletion:v10 error:v23];
+      [delegateCaller callCompletion:handlerCopy error:v23];
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -4024,18 +4024,18 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
   }
 }
 
-- (void)updateApplicationData:(id)a3 forService:(id)a4 completionHandler:(id)a5
+- (void)updateApplicationData:(id)data forService:(id)service completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMAccessory *)self context];
-  if (!v10)
+  dataCopy = data;
+  serviceCopy = service;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory updateApplicationData:forService:completionHandler:]", @"completion"];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -4052,25 +4052,25 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
     objc_exception_throw(v25);
   }
 
-  v12 = v11;
-  if (v11)
+  v12 = context;
+  if (context)
   {
-    v13 = [v11 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__HMAccessory_updateApplicationData_forService_completionHandler___block_invoke;
     block[3] = &unk_1E754D208;
     block[4] = self;
-    v27 = v8;
-    v28 = v9;
-    v29 = v10;
-    dispatch_async(v13, block);
+    v27 = dataCopy;
+    v28 = serviceCopy;
+    v29 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -4084,22 +4084,22 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
 
     objc_autoreleasePoolPop(v14);
     v18 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v10 + 2))(v10, v18);
+    (*(handlerCopy + 2))(handlerCopy, v18);
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_configureProfilesWithContext:(id)a3
+- (void)_configureProfilesWithContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(HMAccessory *)self profiles];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  profiles = [(HMAccessory *)self profiles];
+  v6 = [profiles countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4111,17 +4111,17 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(profiles);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) accessoryProfile];
-        [v10 __configureWithContext:v4 accessory:self];
+        accessoryProfile = [*(*(&v12 + 1) + 8 * v9) accessoryProfile];
+        [accessoryProfile __configureWithContext:contextCopy accessory:self];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [profiles countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -4132,15 +4132,15 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
 
 - (NSArray)profiles
 {
-  v2 = [(HMAccessory *)self accessoryProfiles];
-  v3 = [v2 array];
+  accessoryProfiles = [(HMAccessory *)self accessoryProfiles];
+  array = [accessoryProfiles array];
 
-  return v3;
+  return array;
 }
 
-- (void)_handleMatterDeviceTypeIDChanged:(id)a3
+- (void)_handleMatterDeviceTypeIDChanged:(id)changed
 {
-  v4 = [a3 numberForKey:@"HMA.MatterDeviceTypeIDUpdate"];
+  v4 = [changed numberForKey:@"HMA.MatterDeviceTypeIDUpdate"];
   v5 = v4;
   if (v4)
   {
@@ -4152,11 +4152,11 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)_handleAccessoryCategoryChanged:(id)a3
+- (void)_handleAccessoryCategoryChanged:(id)changed
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 dataForKey:@"kAccessoryCategory"];
+  changedCopy = changed;
+  v5 = [changedCopy dataForKey:@"kAccessoryCategory"];
   if (v5)
   {
     v13 = 0;
@@ -4170,7 +4170,7 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
     else
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -4189,11 +4189,11 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleServiceMediaSourceIdentifierUpdated:(id)a3
+- (void)_handleServiceMediaSourceIdentifierUpdated:(id)updated
 {
-  v4 = a3;
-  v8 = [v4 numberForKey:@"mediaSourceIdentifier"];
-  v5 = [v4 numberForKey:@"kServiceInstanceID"];
+  updatedCopy = updated;
+  v8 = [updatedCopy numberForKey:@"mediaSourceIdentifier"];
+  v5 = [updatedCopy numberForKey:@"kServiceInstanceID"];
 
   if (v8 && v5)
   {
@@ -4206,208 +4206,208 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
   }
 }
 
-- (void)_handleServiceConfigurationState:(id)a3
+- (void)_handleServiceConfigurationState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 numberForKey:@"kServiceConfigurationState"];
-  v6 = [v4 numberForKey:@"kServiceInstanceID"];
-  v7 = [(HMAccessory *)self context];
-  v8 = [v7 pendingRequests];
+  stateCopy = state;
+  v5 = [stateCopy numberForKey:@"kServiceConfigurationState"];
+  v6 = [stateCopy numberForKey:@"kServiceInstanceID"];
+  context = [(HMAccessory *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v9 = [v4 identifier];
+  identifier = [stateCopy identifier];
 
-  v10 = [v8 removeCompletionBlockForIdentifier:v9];
+  v10 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
   if (v5 && v6)
   {
-    v11 = [(HMAccessory *)self services];
-    v12 = [v11 hmf_firstObjectWithInstanceID:v6];
+    services = [(HMAccessory *)self services];
+    v12 = [services hmf_firstObjectWithInstanceID:v6];
 
     if (v12)
     {
       [v12 _handleUpdateConfigurationState:{+[HMService _mapToServiceConfigurationStateFromIsConfiguredValue:](HMService, "_mapToServiceConfigurationStateFromIsConfiguredValue:", v5)}];
       if (v10)
       {
-        v13 = [(HMAccessory *)self context];
-        v14 = [v13 delegateCaller];
-        [v14 callCompletion:v10 error:0];
+        context2 = [(HMAccessory *)self context];
+        delegateCaller = [context2 delegateCaller];
+        [delegateCaller callCompletion:v10 error:0];
       }
 
       else
       {
-        v15 = [(HMAccessory *)self _privateDelegate];
+        _privateDelegate = [(HMAccessory *)self _privateDelegate];
         if (objc_opt_respondsToSelector())
         {
-          v16 = [(HMAccessory *)self context];
-          v17 = [v16 delegateCaller];
+          context3 = [(HMAccessory *)self context];
+          delegateCaller2 = [context3 delegateCaller];
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __48__HMAccessory__handleServiceConfigurationState___block_invoke;
           v18[3] = &unk_1E754E5E8;
-          v19 = v15;
-          v20 = self;
+          v19 = _privateDelegate;
+          selfCopy = self;
           v21 = v12;
-          [v17 invokeBlock:v18];
+          [delegateCaller2 invokeBlock:v18];
         }
       }
     }
   }
 }
 
-- (void)_handleServiceSubtype:(id)a3
+- (void)_handleServiceSubtype:(id)subtype
 {
-  v4 = a3;
-  v5 = [v4 stringForKey:@"kServiceSubtype"];
-  v6 = [v4 numberForKey:@"kServiceInstanceID"];
-  v7 = [(HMAccessory *)self context];
-  v8 = [v7 pendingRequests];
+  subtypeCopy = subtype;
+  v5 = [subtypeCopy stringForKey:@"kServiceSubtype"];
+  v6 = [subtypeCopy numberForKey:@"kServiceInstanceID"];
+  context = [(HMAccessory *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v9 = [v4 identifier];
+  identifier = [subtypeCopy identifier];
 
-  v10 = [v8 removeCompletionBlockForIdentifier:v9];
+  v10 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
   if (v5 && v6)
   {
-    v11 = [(HMAccessory *)self services];
-    v12 = [v11 hmf_firstObjectWithInstanceID:v6];
+    services = [(HMAccessory *)self services];
+    v12 = [services hmf_firstObjectWithInstanceID:v6];
 
     if (v12)
     {
       [v12 _handleUpdateServiceSubtype:v5];
       if (v10)
       {
-        v13 = [(HMAccessory *)self context];
-        v14 = [v13 delegateCaller];
-        [v14 callCompletion:v10 error:0];
+        context2 = [(HMAccessory *)self context];
+        delegateCaller = [context2 delegateCaller];
+        [delegateCaller callCompletion:v10 error:0];
       }
 
       else
       {
-        v15 = [(HMAccessory *)self _privateDelegate];
+        _privateDelegate = [(HMAccessory *)self _privateDelegate];
         if (objc_opt_respondsToSelector())
         {
-          v16 = [(HMAccessory *)self context];
-          v17 = [v16 delegateCaller];
+          context3 = [(HMAccessory *)self context];
+          delegateCaller2 = [context3 delegateCaller];
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __37__HMAccessory__handleServiceSubtype___block_invoke;
           v18[3] = &unk_1E754E5E8;
-          v19 = v15;
-          v20 = self;
+          v19 = _privateDelegate;
+          selfCopy = self;
           v21 = v12;
-          [v17 invokeBlock:v18];
+          [delegateCaller2 invokeBlock:v18];
         }
       }
     }
   }
 }
 
-- (void)_handleServiceDefaultNameUpdate:(id)a3
+- (void)_handleServiceDefaultNameUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 stringForKey:@"kServiceName"];
-  v6 = [v4 numberForKey:@"kServiceInstanceID"];
-  v7 = [(HMAccessory *)self context];
-  v8 = [v7 pendingRequests];
+  updateCopy = update;
+  v5 = [updateCopy stringForKey:@"kServiceName"];
+  v6 = [updateCopy numberForKey:@"kServiceInstanceID"];
+  context = [(HMAccessory *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v9 = [v4 identifier];
+  identifier = [updateCopy identifier];
 
-  v10 = [v8 removeCompletionBlockForIdentifier:v9];
+  v10 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
   if (v5 && v6)
   {
-    v11 = [(HMAccessory *)self services];
-    v12 = [v11 hmf_firstObjectWithInstanceID:v6];
+    services = [(HMAccessory *)self services];
+    v12 = [services hmf_firstObjectWithInstanceID:v6];
 
     if (v12)
     {
       [v12 _handleUpdateDefaultName:v5];
       if (v10)
       {
-        v13 = [(HMAccessory *)self context];
-        v14 = [v13 delegateCaller];
-        [v14 callCompletion:v10 error:0];
+        context2 = [(HMAccessory *)self context];
+        delegateCaller = [context2 delegateCaller];
+        [delegateCaller callCompletion:v10 error:0];
       }
 
       else
       {
-        v15 = [(HMAccessory *)self _privateDelegate];
+        _privateDelegate = [(HMAccessory *)self _privateDelegate];
         if (objc_opt_respondsToSelector())
         {
-          v16 = [(HMAccessory *)self context];
-          v17 = [v16 delegateCaller];
+          context3 = [(HMAccessory *)self context];
+          delegateCaller2 = [context3 delegateCaller];
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __47__HMAccessory__handleServiceDefaultNameUpdate___block_invoke;
           v18[3] = &unk_1E754E5E8;
-          v19 = v15;
-          v20 = self;
+          v19 = _privateDelegate;
+          selfCopy = self;
           v21 = v12;
-          [v17 invokeBlock:v18];
+          [delegateCaller2 invokeBlock:v18];
         }
       }
     }
   }
 }
 
-- (void)_handleServiceRenamed:(id)a3
+- (void)_handleServiceRenamed:(id)renamed
 {
-  v4 = a3;
-  v5 = [v4 stringForKey:@"kServiceName"];
-  v6 = [v4 numberForKey:@"kServiceInstanceID"];
-  v7 = [(HMAccessory *)self context];
-  v8 = [v7 pendingRequests];
+  renamedCopy = renamed;
+  v5 = [renamedCopy stringForKey:@"kServiceName"];
+  v6 = [renamedCopy numberForKey:@"kServiceInstanceID"];
+  context = [(HMAccessory *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v9 = [v4 identifier];
+  identifier = [renamedCopy identifier];
 
-  v10 = [v8 removeCompletionBlockForIdentifier:v9];
+  v10 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
   if (v5 && v6)
   {
-    v11 = [(HMAccessory *)self services];
-    v12 = [v11 hmf_firstObjectWithInstanceID:v6];
+    services = [(HMAccessory *)self services];
+    v12 = [services hmf_firstObjectWithInstanceID:v6];
 
     if (v12)
     {
       [v12 _handleUpdateName:v5];
       if (v10)
       {
-        v13 = [(HMAccessory *)self context];
-        v14 = [v13 delegateCaller];
-        [v14 callCompletion:v10 error:0];
+        context2 = [(HMAccessory *)self context];
+        delegateCaller = [context2 delegateCaller];
+        [delegateCaller callCompletion:v10 error:0];
       }
 
       else
       {
-        v15 = [(HMAccessory *)self delegate];
+        delegate = [(HMAccessory *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v16 = [(HMAccessory *)self context];
-          v17 = [v16 delegateCaller];
+          context3 = [(HMAccessory *)self context];
+          delegateCaller2 = [context3 delegateCaller];
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __37__HMAccessory__handleServiceRenamed___block_invoke;
           v18[3] = &unk_1E754E5E8;
-          v19 = v15;
-          v20 = self;
+          v19 = delegate;
+          selfCopy = self;
           v21 = v12;
-          [v17 invokeBlock:v18];
+          [delegateCaller2 invokeBlock:v18];
         }
       }
     }
   }
 }
 
-- (void)_deleteSiriHistoryWithCompletion:(id)a3
+- (void)_deleteSiriHistoryWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (!completionCopy)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _deleteSiriHistoryWithCompletion:]", @"completion"];
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -4424,14 +4424,14 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
     objc_exception_throw(v29);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
-    v7 = [v5 queue];
-    dispatch_assert_queue_V2(v7);
+    queue = [context queue];
+    dispatch_assert_queue_V2(queue);
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -4442,31 +4442,31 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(HMAccessory *)v9 siriEndpointProfile];
-    v13 = v12;
-    if (v12)
+    siriEndpointProfile = [(HMAccessory *)selfCopy2 siriEndpointProfile];
+    v13 = siriEndpointProfile;
+    if (siriEndpointProfile)
     {
-      [v12 deleteSiriHistoryWithCompletionHandler:v4];
+      [siriEndpointProfile deleteSiriHistoryWithCompletionHandler:completionCopy];
     }
 
     else
     {
-      v18 = [v6 messageDispatcher];
+      messageDispatcher = [v6 messageDispatcher];
       v19 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v20 = [(HMAccessory *)v9 uuid];
-      v21 = [v19 initWithTarget:v20];
+      uuid = [(HMAccessory *)selfCopy2 uuid];
+      v21 = [v19 initWithTarget:uuid];
 
       v22 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryDeleteSiriHistoryRequestMessage" destination:v21 payload:0];
-      objc_initWeak(buf, v9);
+      objc_initWeak(buf, selfCopy2);
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __48__HMAccessory__deleteSiriHistoryWithCompletion___block_invoke;
       v30[3] = &unk_1E754D058;
       objc_copyWeak(&v33, buf);
       v31 = v6;
-      v32 = v4;
+      v32 = completionCopy;
       [v22 setResponseHandler:v30];
-      [v18 sendMessage:v22 completionHandler:0];
+      [messageDispatcher sendMessage:v22 completionHandler:0];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(buf);
@@ -4478,7 +4478,7 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy3 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -4492,7 +4492,7 @@ void __67__HMAccessory__updateApplicationData_forService_completionHandler___blo
 
     objc_autoreleasePoolPop(v14);
     v13 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -4558,16 +4558,16 @@ void __48__HMAccessory__deleteSiriHistoryWithCompletion___block_invoke(id *a1, v
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteSiriHistoryWithCompletion:(id)a3
+- (void)deleteSiriHistoryWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (!completionCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory deleteSiriHistoryWithCompletion:]", @"completion"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -4584,23 +4584,23 @@ void __48__HMAccessory__deleteSiriHistoryWithCompletion___block_invoke(id *a1, v
     objc_exception_throw(v19);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
-    v7 = [v5 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__HMAccessory_deleteSiriHistoryWithCompletion___block_invoke;
     block[3] = &unk_1E754E458;
     block[4] = self;
-    v21 = v4;
-    dispatch_async(v7, block);
+    v21 = completionCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -4614,22 +4614,22 @@ void __48__HMAccessory__deleteSiriHistoryWithCompletion___block_invoke(id *a1, v
 
     objc_autoreleasePoolPop(v8);
     v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_auditPairingsWithCompletionHandler:(id)a3
+- (void)_auditPairingsWithCompletionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _auditPairingsWithCompletionHandler:]", @"completionHandler"];
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -4646,17 +4646,17 @@ void __48__HMAccessory__deleteSiriHistoryWithCompletion___block_invoke(id *a1, v
     objc_exception_throw(v28);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
-    v7 = [(HMAccessory *)self home];
-    if (v7)
+    home = [(HMAccessory *)self home];
+    if (home)
     {
-      v8 = v7;
+      v8 = home;
       v9 = objc_alloc(MEMORY[0x1E69A2A10]);
       v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v11 = [(HMAccessory *)self uuid];
-      v12 = [v10 initWithTarget:v11];
+      uuid = [(HMAccessory *)self uuid];
+      v12 = [v10 initWithTarget:uuid];
       v13 = [v9 initWithName:@"HMA.auditPairings" destination:v12 payload:0];
 
       v29[0] = MEMORY[0x1E69E9820];
@@ -4664,18 +4664,18 @@ void __48__HMAccessory__deleteSiriHistoryWithCompletion___block_invoke(id *a1, v
       v29[2] = __51__HMAccessory__auditPairingsWithCompletionHandler___block_invoke;
       v29[3] = &unk_1E754DE00;
       v29[4] = self;
-      v30 = v4;
+      v30 = handlerCopy;
       [v13 setResponseHandler:v29];
-      v14 = [v6 messageDispatcher];
-      [v14 sendMessage:v13];
+      messageDispatcher = [v6 messageDispatcher];
+      [messageDispatcher sendMessage:v13];
     }
 
     else
     {
-      v19 = [(HMAccessory *)self context];
-      v20 = [v19 delegateCaller];
+      context2 = [(HMAccessory *)self context];
+      delegateCaller = [context2 delegateCaller];
       v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      [v20 callCompletion:v4 error:v21];
+      [delegateCaller callCompletion:handlerCopy error:v21];
 
       v8 = 0;
     }
@@ -4684,7 +4684,7 @@ void __48__HMAccessory__deleteSiriHistoryWithCompletion___block_invoke(id *a1, v
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -4698,7 +4698,7 @@ void __48__HMAccessory__deleteSiriHistoryWithCompletion___block_invoke(id *a1, v
 
     objc_autoreleasePoolPop(v15);
     v8 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -4716,54 +4716,54 @@ void __51__HMAccessory__auditPairingsWithCompletionHandler___block_invoke(uint64
   }
 }
 
-- (void)_listPairingsWithCompletionHandler:(id)a3
+- (void)_listPairingsWithCompletionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v27 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"You must provide a completion handler" userInfo:0];
     objc_exception_throw(v27);
   }
 
-  v5 = v4;
-  v6 = [(HMAccessory *)self home];
-  v7 = [(HMAccessory *)self context];
-  v8 = v7;
-  if (v6)
+  v5 = handlerCopy;
+  home = [(HMAccessory *)self home];
+  context = [(HMAccessory *)self context];
+  v8 = context;
+  if (home)
   {
-    if (v7)
+    if (context)
     {
       v9 = objc_alloc(MEMORY[0x1E69A2A10]);
       v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v11 = [(HMAccessory *)self uuid];
-      v12 = [v10 initWithTarget:v11];
+      uuid = [(HMAccessory *)self uuid];
+      v12 = [v10 initWithTarget:uuid];
       v13 = [v9 initWithName:@"kListPairingsRequestKey" destination:v12 payload:0];
 
-      v14 = [v8 pendingRequests];
-      v15 = [v13 identifier];
+      pendingRequests = [v8 pendingRequests];
+      identifier = [v13 identifier];
       v16 = _Block_copy(v5);
-      [v14 addCompletionBlock:v16 forIdentifier:v15];
+      [pendingRequests addCompletionBlock:v16 forIdentifier:identifier];
 
       v28 = MEMORY[0x1E69E9820];
       v29 = 3221225472;
       v30 = __50__HMAccessory__listPairingsWithCompletionHandler___block_invoke;
       v31 = &unk_1E754D030;
-      v32 = v14;
-      v33 = v15;
-      v34 = self;
+      v32 = pendingRequests;
+      v33 = identifier;
+      selfCopy = self;
       v35 = v5;
-      v17 = v15;
-      v18 = v14;
+      v17 = identifier;
+      v18 = pendingRequests;
       [v13 setResponseHandler:&v28];
-      v19 = [v8 messageDispatcher];
-      [v19 sendMessage:v13];
+      messageDispatcher = [v8 messageDispatcher];
+      [messageDispatcher sendMessage:v13];
     }
 
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -4781,9 +4781,9 @@ void __51__HMAccessory__auditPairingsWithCompletionHandler___block_invoke(uint64
 
   else
   {
-    v20 = [v7 delegateCaller];
+    delegateCaller = [context delegateCaller];
     v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-    [v20 callCompletion:v5 obj:0 error:v21];
+    [delegateCaller callCompletion:v5 obj:0 error:v21];
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -4812,142 +4812,142 @@ void __50__HMAccessory__listPairingsWithCompletionHandler___block_invoke(uint64_
   }
 }
 
-- (BOOL)_updateFromAccessory:(id)a3
+- (BOOL)_updateFromAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMAccessory *)self transportTypes];
-  v6 = [v4 transportTypes];
-  v7 = v5 == v6;
-  v8 = v5 != v6;
+  transportTypes = [(HMAccessory *)self transportTypes];
+  transportTypes2 = [accessoryCopy transportTypes];
+  v7 = transportTypes == transportTypes2;
+  v8 = transportTypes != transportTypes2;
   if (!v7)
   {
-    -[HMAccessory setTransportTypes:](self, "setTransportTypes:", [v4 transportTypes]);
+    -[HMAccessory setTransportTypes:](self, "setTransportTypes:", [accessoryCopy transportTypes]);
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [(HMAccessory *)self knownToSystemCommissioner];
-  if (v9 != [v4 knownToSystemCommissioner])
+  knownToSystemCommissioner = [(HMAccessory *)self knownToSystemCommissioner];
+  if (knownToSystemCommissioner != [accessoryCopy knownToSystemCommissioner])
   {
-    -[HMAccessory setKnownToSystemCommissioner:](self, "setKnownToSystemCommissioner:", [v4 knownToSystemCommissioner]);
+    -[HMAccessory setKnownToSystemCommissioner:](self, "setKnownToSystemCommissioner:", [accessoryCopy knownToSystemCommissioner]);
     v8 = 1;
   }
 
-  v10 = [(HMAccessory *)self serialNumber];
-  v11 = [v4 serialNumber];
-  v12 = [v10 isEqualToString:v11];
+  serialNumber = [(HMAccessory *)self serialNumber];
+  serialNumber2 = [accessoryCopy serialNumber];
+  v12 = [serialNumber isEqualToString:serialNumber2];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [v4 serialNumber];
-    [(HMAccessory *)self setSerialNumber:v13];
+    serialNumber3 = [accessoryCopy serialNumber];
+    [(HMAccessory *)self setSerialNumber:serialNumber3];
 
     v8 = 1;
   }
 
-  v14 = [(HMAccessory *)self productID];
-  v15 = [v4 productID];
+  productID = [(HMAccessory *)self productID];
+  productID2 = [accessoryCopy productID];
   v16 = HMFEqualObjects();
 
   if ((v16 & 1) == 0)
   {
-    v17 = [v4 productID];
-    [(HMAccessory *)self setProductID:v17];
+    productID3 = [accessoryCopy productID];
+    [(HMAccessory *)self setProductID:productID3];
 
     v8 = 1;
   }
 
-  v18 = [(HMAccessory *)self vendorID];
-  v19 = [v4 vendorID];
+  vendorID = [(HMAccessory *)self vendorID];
+  vendorID2 = [accessoryCopy vendorID];
   v20 = HMFEqualObjects();
 
   if ((v20 & 1) == 0)
   {
-    v21 = [v4 vendorID];
-    [(HMAccessory *)self setVendorID:v21];
+    vendorID3 = [accessoryCopy vendorID];
+    [(HMAccessory *)self setVendorID:vendorID3];
 
     v8 = 1;
   }
 
-  v22 = [(HMAccessory *)self nodeID];
-  v23 = [v4 nodeID];
+  nodeID = [(HMAccessory *)self nodeID];
+  nodeID2 = [accessoryCopy nodeID];
   v24 = HMFEqualObjects();
 
   if ((v24 & 1) == 0)
   {
-    v25 = [v4 nodeID];
-    [(HMAccessory *)self setNodeID:v25];
+    nodeID3 = [accessoryCopy nodeID];
+    [(HMAccessory *)self setNodeID:nodeID3];
 
     v8 = 1;
   }
 
-  v26 = [(HMAccessory *)self requiresThreadRouter];
-  if (v26 != [v4 requiresThreadRouter])
+  requiresThreadRouter = [(HMAccessory *)self requiresThreadRouter];
+  if (requiresThreadRouter != [accessoryCopy requiresThreadRouter])
   {
-    -[HMAccessory setRequiresThreadRouter:](self, "setRequiresThreadRouter:", [v4 requiresThreadRouter]);
+    -[HMAccessory setRequiresThreadRouter:](self, "setRequiresThreadRouter:", [accessoryCopy requiresThreadRouter]);
     v8 = 1;
   }
 
-  v27 = [(HMAccessory *)self matterWEDSupport];
-  v28 = [v4 matterWEDSupport];
+  matterWEDSupport = [(HMAccessory *)self matterWEDSupport];
+  matterWEDSupport2 = [accessoryCopy matterWEDSupport];
   v29 = HMFEqualObjects();
 
   if ((v29 & 1) == 0)
   {
-    v30 = [v4 matterWEDSupport];
-    [(HMAccessory *)self setMatterWEDSupport:v30];
+    matterWEDSupport3 = [accessoryCopy matterWEDSupport];
+    [(HMAccessory *)self setMatterWEDSupport:matterWEDSupport3];
 
     v8 = 1;
   }
 
-  v31 = [(HMAccessory *)self matterExtendedMACAddress];
-  v32 = [v4 matterExtendedMACAddress];
+  matterExtendedMACAddress = [(HMAccessory *)self matterExtendedMACAddress];
+  matterExtendedMACAddress2 = [accessoryCopy matterExtendedMACAddress];
   v33 = HMFEqualObjects();
 
   if ((v33 & 1) == 0)
   {
-    v34 = [v4 matterExtendedMACAddress];
-    [(HMAccessory *)self setMatterExtendedMACAddress:v34];
+    matterExtendedMACAddress3 = [accessoryCopy matterExtendedMACAddress];
+    [(HMAccessory *)self setMatterExtendedMACAddress:matterExtendedMACAddress3];
 
     v8 = 1;
   }
 
-  v35 = [(HMAccessory *)self supportedLinkLayerTypes];
-  v36 = [v4 supportedLinkLayerTypes];
+  supportedLinkLayerTypes = [(HMAccessory *)self supportedLinkLayerTypes];
+  supportedLinkLayerTypes2 = [accessoryCopy supportedLinkLayerTypes];
   v37 = HMFEqualObjects();
 
   if ((v37 & 1) == 0)
   {
-    v38 = [v4 supportedLinkLayerTypes];
-    [(HMAccessory *)self setSupportedLinkLayerTypes:v38];
+    supportedLinkLayerTypes3 = [accessoryCopy supportedLinkLayerTypes];
+    [(HMAccessory *)self setSupportedLinkLayerTypes:supportedLinkLayerTypes3];
 
     v8 = 1;
   }
 
-  v39 = [(HMAccessory *)self rootPublicKey];
-  v40 = [v4 rootPublicKey];
-  v41 = [v39 isEqualToData:v40];
+  rootPublicKey = [(HMAccessory *)self rootPublicKey];
+  rootPublicKey2 = [accessoryCopy rootPublicKey];
+  v41 = [rootPublicKey isEqualToData:rootPublicKey2];
 
   if ((v41 & 1) == 0)
   {
-    v42 = [v4 rootPublicKey];
-    [(HMAccessory *)self setRootPublicKey:v42];
+    rootPublicKey3 = [accessoryCopy rootPublicKey];
+    [(HMAccessory *)self setRootPublicKey:rootPublicKey3];
 
     v8 = 1;
   }
 
-  v43 = [(HMAccessory *)self matterDeviceTypeID];
-  v44 = [v4 matterDeviceTypeID];
+  matterDeviceTypeID = [(HMAccessory *)self matterDeviceTypeID];
+  matterDeviceTypeID2 = [accessoryCopy matterDeviceTypeID];
   v45 = HMFEqualObjects();
 
   if ((v45 & 1) == 0)
   {
-    v46 = [v4 matterDeviceTypeID];
+    matterDeviceTypeID3 = [accessoryCopy matterDeviceTypeID];
 
-    if (v46)
+    if (matterDeviceTypeID3)
     {
-      v47 = [v4 matterDeviceTypeID];
-      [(HMAccessory *)self setMatterDeviceTypeID:v47];
+      matterDeviceTypeID4 = [accessoryCopy matterDeviceTypeID];
+      [(HMAccessory *)self setMatterDeviceTypeID:matterDeviceTypeID4];
 
       v8 = 1;
     }
@@ -4956,41 +4956,41 @@ void __50__HMAccessory__listPairingsWithCompletionHandler___block_invoke(uint64_
   return v8;
 }
 
-- (void)_identifyWithCompletionHandler:(id)a3
+- (void)_identifyWithCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v27 = @"kAccessoryUUID";
-    v6 = [(HMAccessory *)self uuid];
-    v7 = [v6 UUIDString];
-    v28 = v7;
+    uuid = [(HMAccessory *)self uuid];
+    uUIDString = [uuid UUIDString];
+    v28 = uUIDString;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
     v9 = objc_alloc(MEMORY[0x1E69A2A10]);
     v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v11 = [(HMAccessory *)self uuid];
-    v12 = [v10 initWithTarget:v11];
+    uuid2 = [(HMAccessory *)self uuid];
+    v12 = [v10 initWithTarget:uuid2];
     v13 = [v9 initWithName:@"kIdentifyAccessoryRequestKey" destination:v12 payload:v8];
 
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __46__HMAccessory__identifyWithCompletionHandler___block_invoke;
     v24 = &unk_1E754DE00;
-    v14 = v5;
+    v14 = context;
     v25 = v14;
-    v26 = v4;
+    v26 = handlerCopy;
     [v13 setResponseHandler:&v21];
-    v15 = [v14 messageDispatcher];
-    [v15 sendMessage:v13];
+    messageDispatcher = [v14 messageDispatcher];
+    [messageDispatcher sendMessage:v13];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -5020,12 +5020,12 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = completion;
-  v5 = [(HMAccessory *)self context];
+  context = [(HMAccessory *)self context];
   if (!v4)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory identifyWithCompletionHandler:]", @"completion"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -5042,23 +5042,23 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
     objc_exception_throw(v19);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
-    v7 = [v5 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__HMAccessory_identifyWithCompletionHandler___block_invoke;
     block[3] = &unk_1E754E458;
     block[4] = self;
     v21 = v4;
-    dispatch_async(v7, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -5086,21 +5086,21 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
   return supportsIdentify;
 }
 
-- (void)setSupportsIdentify:(BOOL)a3
+- (void)setSupportsIdentify:(BOOL)identify
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsIdentify = a3;
+  self->_supportsIdentify = identify;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateAccessoryInfo:(id)a3
+- (void)updateAccessoryInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(HMAccessory *)self delegate];
-  if ([v5 conformsToProtocol:&unk_1F0F63E80])
+  infoCopy = info;
+  delegate = [(HMAccessory *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F63E80])
   {
-    v6 = v5;
+    v6 = delegate;
   }
 
   else
@@ -5110,8 +5110,8 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
 
   v7 = v6;
 
-  v8 = [v4 hmf_stringForKey:@"kAccessoryVendorInfoBundleIDKey"];
-  v9 = [(HMAccessory *)self bundleID];
+  v8 = [infoCopy hmf_stringForKey:@"kAccessoryVendorInfoBundleIDKey"];
+  bundleID = [(HMAccessory *)self bundleID];
   v10 = HMFEqualObjects();
 
   if ((v10 & 1) == 0)
@@ -5119,21 +5119,21 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
     [(HMAccessory *)self setBundleID:v8];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(HMAccessory *)self context];
-      v12 = [v11 delegateCaller];
+      context = [(HMAccessory *)self context];
+      delegateCaller = [context delegateCaller];
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __35__HMAccessory_updateAccessoryInfo___block_invoke;
       v51[3] = &unk_1E754E5E8;
       v52 = v7;
-      v53 = self;
+      selfCopy = self;
       v54 = v8;
-      [v12 invokeBlock:v51];
+      [delegateCaller invokeBlock:v51];
     }
   }
 
-  v13 = [v4 hmf_stringForKey:@"kAccessoryVendorInfoStoreIDKey"];
-  v14 = [(HMAccessory *)self storeID];
+  v13 = [infoCopy hmf_stringForKey:@"kAccessoryVendorInfoStoreIDKey"];
+  storeID = [(HMAccessory *)self storeID];
   v15 = HMFEqualObjects();
 
   if ((v15 & 1) == 0)
@@ -5141,40 +5141,40 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
     [(HMAccessory *)self setStoreID:v13];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(HMAccessory *)self context];
-      v17 = [v16 delegateCaller];
+      context2 = [(HMAccessory *)self context];
+      delegateCaller2 = [context2 delegateCaller];
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __35__HMAccessory_updateAccessoryInfo___block_invoke_2;
       v47[3] = &unk_1E754E5E8;
       v48 = v7;
-      v49 = self;
+      selfCopy2 = self;
       v50 = v13;
-      [v17 invokeBlock:v47];
+      [delegateCaller2 invokeBlock:v47];
     }
   }
 
-  v18 = [v4 hmf_BOOLForKey:@"kAccessoryVendorInfoFirmwareUpdateAvailableKey"];
+  v18 = [infoCopy hmf_BOOLForKey:@"kAccessoryVendorInfoFirmwareUpdateAvailableKey"];
   if (v18 != [(HMAccessory *)self isFirmwareUpdateAvailable])
   {
     [(HMAccessory *)self setFirmwareUpdateAvailable:v18];
     if (objc_opt_respondsToSelector())
     {
-      v19 = [(HMAccessory *)self context];
-      v20 = [v19 delegateCaller];
+      context3 = [(HMAccessory *)self context];
+      delegateCaller3 = [context3 delegateCaller];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __35__HMAccessory_updateAccessoryInfo___block_invoke_3;
       v43[3] = &unk_1E754DC70;
       v44 = v7;
-      v45 = self;
+      selfCopy3 = self;
       v46 = v18;
-      [v20 invokeBlock:v43];
+      [delegateCaller3 invokeBlock:v43];
     }
   }
 
-  v21 = [v4 hmf_stringForKey:{@"kAccessoryInfoManufacturerKey", v13}];
-  v22 = [(HMAccessory *)self manufacturer];
+  v21 = [infoCopy hmf_stringForKey:{@"kAccessoryInfoManufacturerKey", v13}];
+  manufacturer = [(HMAccessory *)self manufacturer];
   v23 = HMFEqualObjects();
 
   if ((v23 & 1) == 0)
@@ -5183,8 +5183,8 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
   }
 
   v24 = v7;
-  v25 = [v4 hmf_stringForKey:@"kAccessoryInfoModelKey"];
-  v26 = [(HMAccessory *)self model];
+  v25 = [infoCopy hmf_stringForKey:@"kAccessoryInfoModelKey"];
+  model = [(HMAccessory *)self model];
   v27 = HMFEqualObjects();
 
   if ((v27 & 1) == 0)
@@ -5193,31 +5193,31 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
   }
 
   v28 = v8;
-  v29 = [v4 hmf_stringForKey:@"kAccessoryInfoFirmwareVersionKey"];
-  v30 = [(HMAccessory *)self firmwareVersion];
+  v29 = [infoCopy hmf_stringForKey:@"kAccessoryInfoFirmwareVersionKey"];
+  firmwareVersion = [(HMAccessory *)self firmwareVersion];
   v31 = HMFEqualObjects();
 
   if ((v31 & 1) == 0)
   {
     [(HMAccessory *)self setFirmwareVersion:v29];
-    v32 = [(HMAccessory *)self delegate];
+    delegate2 = [(HMAccessory *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v33 = [(HMAccessory *)self context];
-      v34 = [v33 delegateCaller];
+      context4 = [(HMAccessory *)self context];
+      delegateCaller4 = [context4 delegateCaller];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __35__HMAccessory_updateAccessoryInfo___block_invoke_4;
       v39[3] = &unk_1E754E5E8;
-      v40 = v32;
-      v41 = self;
+      v40 = delegate2;
+      selfCopy4 = self;
       v42 = v29;
-      [v34 invokeBlock:v39];
+      [delegateCaller4 invokeBlock:v39];
     }
   }
 
-  v35 = [v4 hmf_stringForKey:@"kAccessoryInfoSerialNumberKey"];
-  v36 = [(HMAccessory *)self serialNumber];
+  v35 = [infoCopy hmf_stringForKey:@"kAccessoryInfoSerialNumberKey"];
+  serialNumber = [(HMAccessory *)self serialNumber];
   v37 = HMFEqualObjects();
 
   if ((v37 & 1) == 0)
@@ -5226,18 +5226,18 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
   }
 }
 
-- (void)_handleAccessoryFlagsChanged:(id)a3
+- (void)_handleAccessoryFlagsChanged:(id)changed
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_numberForKey:@"HM.accessoryFlagsKey"];
+  changedCopy = changed;
+  messagePayload = [changedCopy messagePayload];
+  v6 = [messagePayload hmf_numberForKey:@"HM.accessoryFlagsKey"];
 
-  LOBYTE(v5) = [v6 integerValue];
-  v7 = [(HMAccessory *)self additionalSetupStatus];
-  if (v5)
+  LOBYTE(messagePayload) = [v6 integerValue];
+  additionalSetupStatus = [(HMAccessory *)self additionalSetupStatus];
+  if (messagePayload)
   {
-    if (v7 == 1)
+    if (additionalSetupStatus == 1)
     {
       goto LABEL_7;
     }
@@ -5247,7 +5247,7 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
 
   else
   {
-    if (v7 == 2)
+    if (additionalSetupStatus == 2)
     {
       goto LABEL_7;
     }
@@ -5258,14 +5258,14 @@ void __46__HMAccessory__identifyWithCompletionHandler___block_invoke(uint64_t a1
   [(HMAccessory *)self setAdditionalSetupStatus:v8];
   [(HMAccessory *)self _notifyDelegatesOfAdditionalSetupRequiredChange];
 LABEL_7:
-  v9 = [v6 integerValue];
-  v10 = [(HMAccessory *)self calibrationStatus];
-  if ((v9 & 2) != 0)
+  integerValue = [v6 integerValue];
+  calibrationStatus = [(HMAccessory *)self calibrationStatus];
+  if ((integerValue & 2) != 0)
   {
-    if (v10 != 1)
+    if (calibrationStatus != 1)
     {
       v11 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       v15 = 1;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -5281,10 +5281,10 @@ LABEL_7:
     }
   }
 
-  else if (v10 != 2)
+  else if (calibrationStatus != 2)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -5307,20 +5307,20 @@ LABEL_15:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleAccessoryNotificationsUpdated:(id)a3
+- (void)_handleAccessoryNotificationsUpdated:(id)updated
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v34 = self;
-  v5 = [(HMAccessory *)self context];
-  v6 = [v5 pendingRequests];
+  updatedCopy = updated;
+  selfCopy = self;
+  context = [(HMAccessory *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v7 = [v4 identifier];
-  v31 = v6;
-  v42 = [v6 removeCompletionBlockForIdentifier:v7];
+  identifier = [updatedCopy identifier];
+  v31 = pendingRequests;
+  v42 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
-  v32 = v4;
-  [v4 dictionaryForKey:@"kModifiedNotificationsForAccessoryKey"];
+  v32 = updatedCopy;
+  [updatedCopy dictionaryForKey:@"kModifiedNotificationsForAccessoryKey"];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -5342,9 +5342,9 @@ LABEL_15:
 
         v37 = v9;
         v10 = *(*(&v53 + 1) + 8 * v9);
-        v11 = [(HMAccessory *)v34 home];
+        home = [(HMAccessory *)selfCopy home];
         v12 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v10];
-        v43 = [v11 accessoryWithUUID:v12];
+        v43 = [home accessoryWithUUID:v12];
 
         v13 = [obj hmf_dictionaryForKey:v10];
         v49 = 0u;
@@ -5446,25 +5446,25 @@ LABEL_15:
 
   if (v42)
   {
-    v28 = [(HMAccessory *)v34 context];
-    v29 = [v28 delegateCaller];
-    [v29 callCompletion:v42 error:v8];
+    context2 = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context2 delegateCaller];
+    [delegateCaller callCompletion:v42 error:v8];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRuntimeStateUpdate:(id)a3
+- (void)handleRuntimeStateUpdate:(id)update
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(HMAccessory *)self _handleConnectivityChanged:v4];
+  updateCopy = update;
+  [(HMAccessory *)self _handleConnectivityChanged:updateCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(HMAccessory *)self profiles];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  profiles = [(HMAccessory *)self profiles];
+  v6 = [profiles countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5476,14 +5476,14 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(profiles);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) handleRuntimeStateUpdate:v4];
+        [*(*(&v11 + 1) + 8 * v9++) handleRuntimeStateUpdate:updateCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [profiles countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -5492,11 +5492,11 @@ LABEL_15:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleConnectivityChanged:(id)a3
+- (void)_handleConnectivityChanged:(id)changed
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hmf_numberForKey:@"kAccessoryIsReachableKey"];
+  changedCopy = changed;
+  v5 = [changedCopy hmf_numberForKey:@"kAccessoryIsReachableKey"];
   v6 = v5;
   if (!v5 || (v7 = [v5 BOOLValue], v8 = -[HMAccessory suspendCapable](self, "suspendCapable") | v7, (v8 & 1) == -[HMAccessory isReachable](self, "isReachable")))
   {
@@ -5506,12 +5506,12 @@ LABEL_15:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      [(HMAccessory *)v10 isReachable];
+      [(HMAccessory *)selfCopy isReachable];
       v13 = HMFBooleanToString();
       v14 = HMFBooleanToString();
       *buf = 138543874;
@@ -5524,11 +5524,11 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v9);
-    [(HMAccessory *)v10 setReachable:v8 & 1];
+    [(HMAccessory *)selfCopy setReachable:v8 & 1];
     v15 = 1;
   }
 
-  v16 = [v4 hmf_numberForKey:@"HM.suspendedState"];
+  v16 = [changedCopy hmf_numberForKey:@"HM.suspendedState"];
   v17 = v16;
   if (v16 && (v18 = [v16 unsignedIntegerValue], v18 != -[HMAccessory suspendedState](self, "suspendedState")))
   {
@@ -5540,44 +5540,44 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v19 = [(HMAccessory *)self delegate];
+  delegate = [(HMAccessory *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v20 = [(HMAccessory *)self context];
-    v21 = [v20 delegateCaller];
+    context = [(HMAccessory *)self context];
+    delegateCaller = [context delegateCaller];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __42__HMAccessory__handleConnectivityChanged___block_invoke;
     v36[3] = &unk_1E754E5C0;
-    v37 = v19;
-    v38 = self;
-    [v21 invokeBlock:v36];
+    v37 = delegate;
+    selfCopy2 = self;
+    [delegateCaller invokeBlock:v36];
   }
 
 LABEL_15:
-  v22 = [v4 hmf_numberForKey:@"controllable"];
+  v22 = [changedCopy hmf_numberForKey:@"controllable"];
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 BOOLValue];
-    if (v24 != [(HMAccessory *)self isControllable])
+    bOOLValue = [v22 BOOLValue];
+    if (bOOLValue != [(HMAccessory *)self isControllable])
     {
-      [(HMAccessory *)self setControllable:v24];
+      [(HMAccessory *)self setControllable:bOOLValue];
       [(HMAccessory *)self _notifyDelegatesOfUpdatedControllable];
     }
   }
 
-  v25 = [v4 hmf_numberForKey:@"HM.accessoryReachableTransports"];
+  v25 = [changedCopy hmf_numberForKey:@"HM.accessoryReachableTransports"];
   if (v25)
   {
-    v26 = [(HMAccessory *)self reachableTransports];
-    if (v26 != [v25 integerValue])
+    reachableTransports = [(HMAccessory *)self reachableTransports];
+    if (reachableTransports != [v25 integerValue])
     {
       -[HMAccessory setReachableTransports:](self, "setReachableTransports:", [v25 integerValue]);
-      v27 = [(HMAccessory *)self delegate];
-      if ([v27 conformsToProtocol:&unk_1F0F63E80])
+      delegate2 = [(HMAccessory *)self delegate];
+      if ([delegate2 conformsToProtocol:&unk_1F0F63E80])
       {
-        v28 = v27;
+        v28 = delegate2;
       }
 
       else
@@ -5589,15 +5589,15 @@ LABEL_15:
 
       if (objc_opt_respondsToSelector())
       {
-        v30 = [(HMAccessory *)self context];
-        v31 = [v30 delegateCaller];
+        context2 = [(HMAccessory *)self context];
+        delegateCaller2 = [context2 delegateCaller];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __42__HMAccessory__handleConnectivityChanged___block_invoke_2;
         v33[3] = &unk_1E754E5C0;
         v34 = v29;
-        v35 = self;
-        [v31 invokeBlock:v33];
+        selfCopy3 = self;
+        [delegateCaller2 invokeBlock:v33];
       }
     }
   }
@@ -5605,24 +5605,24 @@ LABEL_15:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handlePairingStateChanged:(id)a3
+- (void)_handlePairingStateChanged:(id)changed
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 numberForKey:@"kAccessoryIsPairedKey"];
+  changedCopy = changed;
+  v5 = [changedCopy numberForKey:@"kAccessoryIsPairedKey"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
-    if (v7 != [(HMAccessory *)self paired])
+    bOOLValue = [v5 BOOLValue];
+    if (bOOLValue != [(HMAccessory *)self paired])
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = HMFGetLogIdentifier();
-        [(HMAccessory *)v9 paired];
+        [(HMAccessory *)selfCopy paired];
         v12 = HMFBooleanToString();
         v13 = HMFBooleanToString();
         *buf = 138543874;
@@ -5635,19 +5635,19 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v8);
-      [(HMAccessory *)v9 setPaired:v7];
-      v14 = [(HMAccessory *)v9 delegate];
+      [(HMAccessory *)selfCopy setPaired:bOOLValue];
+      delegate = [(HMAccessory *)selfCopy delegate];
       if (objc_opt_respondsToSelector())
       {
-        v15 = [(HMAccessory *)v9 context];
-        v16 = [v15 delegateCaller];
+        context = [(HMAccessory *)selfCopy context];
+        delegateCaller = [context delegateCaller];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __42__HMAccessory__handlePairingStateChanged___block_invoke;
         v18[3] = &unk_1E754E5C0;
-        v19 = v14;
-        v20 = v9;
-        [v16 invokeBlock:v18];
+        v19 = delegate;
+        v20 = selfCopy;
+        [delegateCaller invokeBlock:v18];
       }
     }
   }
@@ -5655,20 +5655,20 @@ LABEL_15:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleRenamed:(id)a3
+- (void)_handleRenamed:(id)renamed
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 stringForKey:@"kAccessoryName"];
-  v6 = [(HMAccessory *)self context];
-  v7 = [v6 pendingRequests];
+  renamedCopy = renamed;
+  v5 = [renamedCopy stringForKey:@"kAccessoryName"];
+  context = [(HMAccessory *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v8 = [v4 identifier];
-  v9 = [v7 removeCompletionBlockForIdentifier:v8];
+  identifier = [renamedCopy identifier];
+  v9 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
   if (v5)
   {
-    v10 = [(HMAccessory *)self name];
+    name = [(HMAccessory *)self name];
     v11 = HMFEqualObjects();
 
     if (v11)
@@ -5682,7 +5682,7 @@ LABEL_15:
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -5695,17 +5695,17 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v12);
-      [(HMAccessory *)v13 setName:v5];
+      [(HMAccessory *)selfCopy setName:v5];
       if (!v9)
       {
-        v16 = [(HMAccessory *)v13 delegate];
+        delegate = [(HMAccessory *)selfCopy delegate];
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
           goto LABEL_10;
         }
 
         v19 = objc_autoreleasePoolPush();
-        v20 = v13;
+        v20 = selfCopy;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
@@ -5716,18 +5716,18 @@ LABEL_15:
         }
 
         objc_autoreleasePoolPop(v19);
-        v23 = [(HMAccessory *)v20 context];
-        v24 = [v23 delegateCaller];
+        context2 = [(HMAccessory *)v20 context];
+        delegateCaller = [context2 delegateCaller];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __30__HMAccessory__handleRenamed___block_invoke;
         v25[3] = &unk_1E754E5C0;
-        v16 = v16;
-        v26 = v16;
+        delegate = delegate;
+        v26 = delegate;
         v27 = v20;
-        [v24 invokeBlock:v25];
+        [delegateCaller invokeBlock:v25];
 
-        v17 = v26;
+        delegateCaller2 = v26;
 LABEL_9:
 
 LABEL_10:
@@ -5735,9 +5735,9 @@ LABEL_10:
       }
     }
 
-    v16 = [(HMAccessory *)self context];
-    v17 = [v16 delegateCaller];
-    [v17 callCompletion:v9 error:0];
+    delegate = [(HMAccessory *)self context];
+    delegateCaller2 = [delegate delegateCaller];
+    [delegateCaller2 callCompletion:v9 error:0];
     goto LABEL_9;
   }
 
@@ -5746,84 +5746,84 @@ LABEL_11:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleCharacteristicValueUpdated:(id)a3
+- (void)_handleCharacteristicValueUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 numberForKey:@"kServiceInstanceID"];
-  v6 = [v4 numberForKey:@"kCharacteristicInstanceID"];
-  v7 = [v4 messagePayload];
-  v8 = [v7 objectForKeyedSubscript:@"kCharacteristicValue"];
+  updatedCopy = updated;
+  v5 = [updatedCopy numberForKey:@"kServiceInstanceID"];
+  v6 = [updatedCopy numberForKey:@"kCharacteristicInstanceID"];
+  messagePayload = [updatedCopy messagePayload];
+  v8 = [messagePayload objectForKeyedSubscript:@"kCharacteristicValue"];
 
-  v9 = [v4 errorForKey:@"kCharacteristicErrorDataKey"];
-  v10 = [(HMAccessory *)self context];
-  v11 = [v10 pendingRequests];
+  v9 = [updatedCopy errorForKey:@"kCharacteristicErrorDataKey"];
+  context = [(HMAccessory *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v12 = [v4 identifier];
-  v13 = [v11 removeCompletionBlockForIdentifier:v12];
+  identifier = [updatedCopy identifier];
+  v13 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
   if (v5 && v6 && v8)
   {
-    v14 = [(HMAccessory *)self services];
-    v15 = [v14 hmf_firstObjectWithInstanceID:v5];
+    services = [(HMAccessory *)self services];
+    v15 = [services hmf_firstObjectWithInstanceID:v5];
 
     if (v15)
     {
       v30 = v9;
-      v16 = [v15 characteristics];
-      v17 = [v16 hmf_firstObjectWithInstanceID:v6];
+      characteristics = [v15 characteristics];
+      v17 = [characteristics hmf_firstObjectWithInstanceID:v6];
 
       v31 = v17;
       if (v17)
       {
-        v18 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
         v27 = v15;
-        if (v8 == v18)
+        if (v8 == null)
         {
 
           v8 = 0;
         }
 
-        v29 = [v17 value];
-        v19 = [v4 headers];
-        v20 = [v19 hmf_dateForKey:@"HMXPCMessageSentDateKey"];
+        value = [v17 value];
+        headers = [updatedCopy headers];
+        v20 = [headers hmf_dateForKey:@"HMXPCMessageSentDateKey"];
 
         v28 = v20;
         [v17 _updateValue:v8 valueUpdatedDate:v20];
         if (v13)
         {
-          v21 = [(HMAccessory *)self context];
-          v22 = [v21 delegateCaller];
+          context2 = [(HMAccessory *)self context];
+          delegateCaller = [context2 delegateCaller];
           v9 = v30;
-          [v22 callCompletion:v13 error:v30];
+          [delegateCaller callCompletion:v13 error:v30];
 
-          v23 = v29;
+          v23 = value;
           v15 = v27;
         }
 
         else
         {
           v9 = v30;
-          v23 = v29;
+          v23 = value;
           v15 = v27;
           if ((HMFEqualObjects() & 1) == 0)
           {
-            v26 = [(HMAccessory *)self delegate];
+            delegate = [(HMAccessory *)self delegate];
             if (objc_opt_respondsToSelector())
             {
-              v25 = [(HMAccessory *)self context];
-              v24 = [v25 delegateCaller];
+              context3 = [(HMAccessory *)self context];
+              delegateCaller2 = [context3 delegateCaller];
               v32[0] = MEMORY[0x1E69E9820];
               v32[1] = 3221225472;
               v32[2] = __49__HMAccessory__handleCharacteristicValueUpdated___block_invoke;
               v32[3] = &unk_1E754DE30;
-              v33 = v26;
-              v34 = self;
+              v33 = delegate;
+              selfCopy = self;
               v35 = v27;
               v36 = v31;
-              [v24 invokeBlock:v32];
+              [delegateCaller2 invokeBlock:v32];
 
-              v23 = v29;
+              v23 = value;
             }
           }
         }
@@ -5839,19 +5839,19 @@ LABEL_11:
 
 - (id)logIdentifier
 {
-  v2 = [(HMAccessory *)self uniqueIdentifier];
-  v3 = [v2 UUIDString];
+  uniqueIdentifier = [(HMAccessory *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)notifyDelegateOfUpdatedWiFiNetworkInfo
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self delegate];
-  if ([v3 conformsToProtocol:&unk_1F0F63E80])
+  delegate = [(HMAccessory *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F63E80])
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -5864,7 +5864,7 @@ LABEL_11:
   if (objc_opt_respondsToSelector())
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -5877,15 +5877,15 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [(HMAccessory *)v7 context];
-    v11 = [v10 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __53__HMAccessory_notifyDelegateOfUpdatedWiFiNetworkInfo__block_invoke;
     v13[3] = &unk_1E754E5C0;
     v14 = v5;
-    v15 = v7;
-    [v11 invokeBlock:v13];
+    v15 = selfCopy;
+    [delegateCaller invokeBlock:v13];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -5901,18 +5901,18 @@ void __53__HMAccessory_notifyDelegateOfUpdatedWiFiNetworkInfo__block_invoke(uint
 
 - (void)notifyDelegateOfUpdatedServices
 {
-  v3 = [(HMAccessory *)self delegate];
+  delegate = [(HMAccessory *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(HMAccessory *)self context];
-    v5 = [v4 queue];
+    context = [(HMAccessory *)self context];
+    queue = [context queue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke;
     v6[3] = &unk_1E754E5C0;
     v6[4] = self;
-    v7 = v3;
-    dispatch_async(v5, v6);
+    v7 = delegate;
+    dispatch_async(queue, v6);
   }
 }
 
@@ -5953,14 +5953,14 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
 - (void)notifyDelegateUpdatedSupportsMediaContentProfile
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self context];
-  v4 = [v3 delegateCaller];
-  if (v4)
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
+  if (delegateCaller)
   {
-    v5 = [(HMAccessory *)self delegate];
-    if ([v5 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v6 = v5;
+      v6 = delegate;
     }
 
     else
@@ -5971,12 +5971,12 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
     v7 = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      [(HMAccessory *)v9 supportsMediaContentProfile];
+      [(HMAccessory *)selfCopy supportsMediaContentProfile];
       v12 = HMFBooleanToString();
       *buf = 138543874;
       v22 = v11;
@@ -5995,15 +5995,15 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       v18[2] = __63__HMAccessory_notifyDelegateUpdatedSupportsMediaContentProfile__block_invoke;
       v18[3] = &unk_1E754E5C0;
       v19 = v7;
-      v20 = v9;
-      [v4 invokeBlock:v18];
+      v20 = selfCopy;
+      [delegateCaller invokeBlock:v18];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -6011,7 +6011,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       *buf = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v3;
+      v24 = context;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of updated supportsMediaContentProfile support due to missing delegateCaller: %@", buf, 0x16u);
     }
 
@@ -6024,14 +6024,14 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
 - (void)notifyDelegateUpdatedSupportsJustSiri
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self context];
-  v4 = [v3 delegateCaller];
-  if (v4)
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
+  if (delegateCaller)
   {
-    v5 = [(HMAccessory *)self delegate];
-    if ([v5 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v6 = v5;
+      v6 = delegate;
     }
 
     else
@@ -6042,12 +6042,12 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
     v7 = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      [(HMAccessory *)v9 supportsJustSiri];
+      [(HMAccessory *)selfCopy supportsJustSiri];
       v12 = HMFBooleanToString();
       *buf = 138543874;
       v22 = v11;
@@ -6066,15 +6066,15 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       v18[2] = __52__HMAccessory_notifyDelegateUpdatedSupportsJustSiri__block_invoke;
       v18[3] = &unk_1E754E5C0;
       v19 = v7;
-      v20 = v9;
-      [v4 invokeBlock:v18];
+      v20 = selfCopy;
+      [delegateCaller invokeBlock:v18];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -6082,7 +6082,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       *buf = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v3;
+      v24 = context;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of updated supportsJustSiri support due to missing delegateCaller: %@", buf, 0x16u);
     }
 
@@ -6095,14 +6095,14 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
 - (void)notifyDelegateUpdatedSupportsRMVonAppleTV
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self context];
-  v4 = [v3 delegateCaller];
-  if (v4)
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
+  if (delegateCaller)
   {
-    v5 = [(HMAccessory *)self delegate];
-    if ([v5 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v6 = v5;
+      v6 = delegate;
     }
 
     else
@@ -6113,12 +6113,12 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
     v7 = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      [(HMAccessory *)v9 supportsRMVonAppleTV];
+      [(HMAccessory *)selfCopy supportsRMVonAppleTV];
       v12 = HMFBooleanToString();
       *buf = 138543874;
       v22 = v11;
@@ -6137,15 +6137,15 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       v18[2] = __56__HMAccessory_notifyDelegateUpdatedSupportsRMVonAppleTV__block_invoke;
       v18[3] = &unk_1E754E5C0;
       v19 = v7;
-      v20 = v9;
-      [v4 invokeBlock:v18];
+      v20 = selfCopy;
+      [delegateCaller invokeBlock:v18];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -6153,7 +6153,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       *buf = 138543618;
       v22 = v16;
       v23 = 2112;
-      v24 = v3;
+      v24 = context;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of updated supportsRMVonAppleTV support due to missing delegateCaller: %@", buf, 0x16u);
     }
 
@@ -6166,14 +6166,14 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
 - (void)notifyDelegateUpdatedPreferredMediaUser
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self context];
-  v4 = [v3 delegateCaller];
-  if (v4)
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
+  if (delegateCaller)
   {
-    v5 = [(HMAccessory *)self delegate];
-    if ([v5 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v6 = v5;
+      v6 = delegate;
     }
 
     else
@@ -6184,7 +6184,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
     v7 = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -6204,15 +6204,15 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       v17[2] = __54__HMAccessory_notifyDelegateUpdatedPreferredMediaUser__block_invoke;
       v17[3] = &unk_1E754E5C0;
       v18 = v7;
-      v19 = v9;
-      [v4 invokeBlock:v17];
+      v19 = selfCopy;
+      [delegateCaller invokeBlock:v17];
     }
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -6220,7 +6220,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       *buf = 138543618;
       v21 = v15;
       v22 = 2112;
-      v23 = v3;
+      v23 = context;
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of updated preferred media user missing delegateCaller: %@", buf, 0x16u);
     }
 
@@ -6233,14 +6233,14 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
 - (void)notifyDelegateUpdatedSupportsPreferredMediaUser
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self context];
-  v4 = [v3 delegateCaller];
-  if (v4)
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
+  if (delegateCaller)
   {
-    v5 = [(HMAccessory *)self delegate];
-    if ([v5 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v6 = v5;
+      v6 = delegate;
     }
 
     else
@@ -6251,7 +6251,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
     v7 = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -6271,15 +6271,15 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       v17[2] = __62__HMAccessory_notifyDelegateUpdatedSupportsPreferredMediaUser__block_invoke;
       v17[3] = &unk_1E754E5C0;
       v18 = v7;
-      v19 = v9;
-      [v4 invokeBlock:v17];
+      v19 = selfCopy;
+      [delegateCaller invokeBlock:v17];
     }
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -6287,7 +6287,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       *buf = 138543618;
       v21 = v15;
       v22 = 2112;
-      v23 = v3;
+      v23 = context;
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of updated preferred media user support due to missing delegateCaller: %@", buf, 0x16u);
     }
 
@@ -6300,14 +6300,14 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
 - (void)notifyDelegateOfAudioDestinationControllerUpdate
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self context];
-  v4 = [v3 delegateCaller];
-  if (v4)
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
+  if (delegateCaller)
   {
-    v5 = [(HMAccessory *)self delegate];
-    if ([v5 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v6 = v5;
+      v6 = delegate;
     }
 
     else
@@ -6318,7 +6318,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
     v7 = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -6338,15 +6338,15 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       v17[2] = __63__HMAccessory_notifyDelegateOfAudioDestinationControllerUpdate__block_invoke;
       v17[3] = &unk_1E754E5C0;
       v18 = v7;
-      v19 = v9;
-      [v4 invokeBlock:v17];
+      v19 = selfCopy;
+      [delegateCaller invokeBlock:v17];
     }
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -6354,7 +6354,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       *buf = 138543618;
       v21 = v15;
       v22 = 2112;
-      v23 = v3;
+      v23 = context;
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of audio destination controller update due to missing delegate caller from context: %@", buf, 0x16u);
     }
 
@@ -6367,14 +6367,14 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
 - (void)notifyDelegateOfAudioDestinationUpdate
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self context];
-  v4 = [v3 delegateCaller];
-  if (v4)
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
+  if (delegateCaller)
   {
-    v5 = [(HMAccessory *)self delegate];
-    if ([v5 conformsToProtocol:&unk_1F0F63E80])
+    delegate = [(HMAccessory *)self delegate];
+    if ([delegate conformsToProtocol:&unk_1F0F63E80])
     {
-      v6 = v5;
+      v6 = delegate;
     }
 
     else
@@ -6385,7 +6385,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
     v7 = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -6405,15 +6405,15 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       v17[2] = __53__HMAccessory_notifyDelegateOfAudioDestinationUpdate__block_invoke;
       v17[3] = &unk_1E754E5C0;
       v18 = v7;
-      v19 = v9;
-      [v4 invokeBlock:v17];
+      v19 = selfCopy;
+      [delegateCaller invokeBlock:v17];
     }
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -6421,7 +6421,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       *buf = 138543618;
       v21 = v15;
       v22 = 2112;
-      v23 = v3;
+      v23 = context;
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of audio destination update due to missing delegate caller from context: %@", buf, 0x16u);
     }
 
@@ -6431,59 +6431,59 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mergeProfiles:(id)a3
+- (void)_mergeProfiles:(id)profiles
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  profilesCopy = profiles;
   v5 = [HMObjectMergeCollection alloc];
-  v6 = [(HMAccessory *)self accessoryProfiles];
-  v7 = [v6 array];
-  v8 = [(HMObjectMergeCollection *)v5 initWithCurrentObjects:v7 newObjects:v4];
+  accessoryProfiles = [(HMAccessory *)self accessoryProfiles];
+  array = [accessoryProfiles array];
+  v8 = [(HMObjectMergeCollection *)v5 initWithCurrentObjects:array newObjects:profilesCopy];
 
-  v9 = [(HMObjectMergeCollection *)v8 removedObjects];
+  removedObjects = [(HMObjectMergeCollection *)v8 removedObjects];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __30__HMAccessory__mergeProfiles___block_invoke;
   v24[3] = &unk_1E754B578;
   v24[4] = self;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
+  [removedObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
 
-  v10 = [(HMObjectMergeCollection *)v8 addedObjects];
+  addedObjects = [(HMObjectMergeCollection *)v8 addedObjects];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __30__HMAccessory__mergeProfiles___block_invoke_1333;
   v23[3] = &unk_1E754B578;
   v23[4] = self;
-  [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v23];
+  [addedObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v23];
 
   [(HMObjectMergeCollection *)v8 mergeCommonObjects];
-  v11 = [(HMObjectMergeCollection *)v8 finalObjects];
-  v12 = [(HMAccessory *)self accessoryProfiles];
-  [v12 setArray:v11];
+  finalObjects = [(HMObjectMergeCollection *)v8 finalObjects];
+  accessoryProfiles2 = [(HMAccessory *)self accessoryProfiles];
+  [accessoryProfiles2 setArray:finalObjects];
 
-  v13 = [(HMObjectMergeCollection *)v8 removedObjects];
+  removedObjects2 = [(HMObjectMergeCollection *)v8 removedObjects];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __30__HMAccessory__mergeProfiles___block_invoke_1334;
   v22[3] = &unk_1E754B578;
   v22[4] = self;
-  [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v22];
+  [removedObjects2 hmf_enumerateWithAutoreleasePoolUsingBlock:v22];
 
-  v14 = [(HMObjectMergeCollection *)v8 addedObjects];
+  addedObjects2 = [(HMObjectMergeCollection *)v8 addedObjects];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __30__HMAccessory__mergeProfiles___block_invoke_1336;
   v21[3] = &unk_1E754B578;
   v21[4] = self;
-  [v14 hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
+  [addedObjects2 hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
 
   if ([(HMObjectMergeCollection *)v8 isModified])
   {
-    v15 = [(HMAccessory *)self delegate];
+    delegate = [(HMAccessory *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -6494,7 +6494,7 @@ uint64_t __46__HMAccessory_notifyDelegateOfUpdatedServices__block_invoke_2(uint6
       }
 
       objc_autoreleasePoolPop(v16);
-      [(HMAccessory *)v17 notifyDelegateOfUpdatedServices];
+      [(HMAccessory *)selfCopy notifyDelegateOfUpdatedServices];
     }
   }
 
@@ -6664,28 +6664,28 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (BOOL)_mergeRemoteLoginHandler:(id)a3
+- (BOOL)_mergeRemoteLoginHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self remoteLoginHandler];
+  handlerCopy = handler;
+  remoteLoginHandler = [(HMAccessory *)self remoteLoginHandler];
 
-  if (!v4 || v5)
+  if (!handlerCopy || remoteLoginHandler)
   {
-    v12 = [(HMAccessory *)self remoteLoginHandler];
+    remoteLoginHandler2 = [(HMAccessory *)self remoteLoginHandler];
 
     v11 = 0;
-    if (v4 && v12)
+    if (handlerCopy && remoteLoginHandler2)
     {
-      v13 = [(HMAccessory *)self remoteLoginHandler];
-      v11 = [v13 mergeFromNewObject:v4];
+      remoteLoginHandler3 = [(HMAccessory *)self remoteLoginHandler];
+      v11 = [remoteLoginHandler3 mergeFromNewObject:handlerCopy];
     }
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -6693,17 +6693,17 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
       v16 = 138543618;
       v17 = v9;
       v18 = 2112;
-      v19 = v4;
+      v19 = handlerCopy;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Merging new remote login handler: %@", &v16, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMAccessory *)v7 setRemoteLoginHandler:v4];
-    v10 = [(HMAccessory *)v7 context];
-    [v4 _configureWithContext:v10 accessory:v7];
+    [(HMAccessory *)selfCopy setRemoteLoginHandler:handlerCopy];
+    context = [(HMAccessory *)selfCopy context];
+    [handlerCopy _configureWithContext:context accessory:selfCopy];
 
-    [v4 registerForMessages];
-    [v4 postConfigure];
+    [handlerCopy registerForMessages];
+    [handlerCopy postConfigure];
     v11 = 1;
   }
 
@@ -6711,14 +6711,14 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
   return v11;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
   v747 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -6728,29 +6728,29 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
 
   v6 = v5;
 
-  v659 = [(HMAccessory *)self home];
+  home = [(HMAccessory *)self home];
   if (!v6)
   {
     v48 = 0;
     goto LABEL_424;
   }
 
-  v656 = v4;
-  v7 = [v6 services];
-  v8 = [(HMAccessory *)self _mergeServices:v7];
+  v656 = objectCopy;
+  services = [v6 services];
+  v8 = [(HMAccessory *)self _mergeServices:services];
 
-  LODWORD(v7) = [(HMAccessory *)self isDemoAccessory];
-  if (v7 != [v6 isDemoAccessory])
+  LODWORD(services) = [(HMAccessory *)self isDemoAccessory];
+  if (services != [v6 isDemoAccessory])
   {
     -[HMAccessory setDemoAccessory:](self, "setDemoAccessory:", [v6 demoAccessory]);
     v8 = 1;
   }
 
-  v9 = [v6 controlTargetUUIDs];
-  v10 = [(HMAccessory *)self _mergeControlTargetUUIDs:v9];
+  controlTargetUUIDs = [v6 controlTargetUUIDs];
+  v10 = [(HMAccessory *)self _mergeControlTargetUUIDs:controlTargetUUIDs];
 
-  LODWORD(v9) = [(HMAccessory *)self supportsTargetControl];
-  if (v9 == [v6 supportsTargetControl] && (v11 = -[HMAccessory supportsTargetController](self, "supportsTargetController"), v11 == objc_msgSend(v6, "supportsTargetController")) && (v12 = -[HMAccessory targetControllerHardwareSupport](self, "targetControllerHardwareSupport"), v12 == objc_msgSend(v6, "targetControllerHardwareSupport")))
+  LODWORD(controlTargetUUIDs) = [(HMAccessory *)self supportsTargetControl];
+  if (controlTargetUUIDs == [v6 supportsTargetControl] && (v11 = -[HMAccessory supportsTargetController](self, "supportsTargetController"), v11 == objc_msgSend(v6, "supportsTargetController")) && (v12 = -[HMAccessory targetControllerHardwareSupport](self, "targetControllerHardwareSupport"), v12 == objc_msgSend(v6, "targetControllerHardwareSupport")))
   {
     v15 = v10 || v8;
   }
@@ -6760,37 +6760,37 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     -[HMAccessory setSupportsTargetControl:](self, "setSupportsTargetControl:", [v6 supportsTargetControl]);
     -[HMAccessory setSupportsTargetController:](self, "setSupportsTargetController:", [v6 supportsTargetController]);
     -[HMAccessory setTargetControllerHardwareSupport:](self, "setTargetControllerHardwareSupport:", [v6 targetControllerHardwareSupport]);
-    v13 = [(HMAccessory *)self context];
-    v14 = [v13 queue];
+    context = [(HMAccessory *)self context];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __34__HMAccessory_mergeFromNewObject___block_invoke;
     block[3] = &unk_1E754E2A8;
     block[4] = self;
-    dispatch_async(v14, block);
+    dispatch_async(queue, block);
 
     v15 = 1;
   }
 
-  v16 = [(HMAccessory *)self supportsMultiUser];
-  if (v16 != [v6 supportsMultiUser])
+  supportsMultiUser = [(HMAccessory *)self supportsMultiUser];
+  if (supportsMultiUser != [v6 supportsMultiUser])
   {
     -[HMAccessory setSupportsMultiUser:](self, "setSupportsMultiUser:", [v6 supportsMultiUser]);
-    v17 = [(HMAccessory *)self context];
-    v18 = [v17 queue];
+    context2 = [(HMAccessory *)self context];
+    queue2 = [context2 queue];
     v737[0] = MEMORY[0x1E69E9820];
     v737[1] = 3221225472;
     v737[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_2;
     v737[3] = &unk_1E754E2A8;
     v737[4] = self;
-    dispatch_async(v18, v737);
+    dispatch_async(queue2, v737);
   }
 
-  v19 = [(HMAccessory *)self supportsHomeLevelLocationServiceSetting];
-  if (v19 != [v6 supportsHomeLevelLocationServiceSetting])
+  supportsHomeLevelLocationServiceSetting = [(HMAccessory *)self supportsHomeLevelLocationServiceSetting];
+  if (supportsHomeLevelLocationServiceSetting != [v6 supportsHomeLevelLocationServiceSetting])
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -6805,22 +6805,22 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v20);
-    -[HMAccessory setSupportsHomeLevelLocationServiceSetting:](v21, "setSupportsHomeLevelLocationServiceSetting:", [v6 supportsHomeLevelLocationServiceSetting]);
-    v25 = [(HMAccessory *)v21 context];
-    v26 = [v25 queue];
+    -[HMAccessory setSupportsHomeLevelLocationServiceSetting:](selfCopy, "setSupportsHomeLevelLocationServiceSetting:", [v6 supportsHomeLevelLocationServiceSetting]);
+    context3 = [(HMAccessory *)selfCopy context];
+    queue3 = [context3 queue];
     v736[0] = MEMORY[0x1E69E9820];
     v736[1] = 3221225472;
     v736[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1128;
     v736[3] = &unk_1E754E2A8;
-    v736[4] = v21;
-    dispatch_async(v26, v736);
+    v736[4] = selfCopy;
+    dispatch_async(queue3, v736);
   }
 
-  v27 = [(HMAccessory *)self supportsAudioReturnChannel];
-  if (v27 != [v6 supportsAudioReturnChannel])
+  supportsAudioReturnChannel = [(HMAccessory *)self supportsAudioReturnChannel];
+  if (supportsAudioReturnChannel != [v6 supportsAudioReturnChannel])
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy2 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
@@ -6835,81 +6835,81 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v28);
-    -[HMAccessory setSupportsAudioReturnChannel:](v29, "setSupportsAudioReturnChannel:", [v6 supportsAudioReturnChannel]);
-    v33 = [(HMAccessory *)v29 context];
-    v34 = [v33 queue];
+    -[HMAccessory setSupportsAudioReturnChannel:](selfCopy2, "setSupportsAudioReturnChannel:", [v6 supportsAudioReturnChannel]);
+    context4 = [(HMAccessory *)selfCopy2 context];
+    queue4 = [context4 queue];
     v735[0] = MEMORY[0x1E69E9820];
     v735[1] = 3221225472;
     v735[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1129;
     v735[3] = &unk_1E754E2A8;
-    v735[4] = v29;
-    dispatch_async(v34, v735);
+    v735[4] = selfCopy2;
+    dispatch_async(queue4, v735);
   }
 
-  v35 = [(HMAccessory *)self supportsCompanionInitiatedRestart];
-  if (v35 != [v6 supportsCompanionInitiatedRestart])
+  supportsCompanionInitiatedRestart = [(HMAccessory *)self supportsCompanionInitiatedRestart];
+  if (supportsCompanionInitiatedRestart != [v6 supportsCompanionInitiatedRestart])
   {
     -[HMAccessory setSupportsCompanionInitiatedRestart:](self, "setSupportsCompanionInitiatedRestart:", [v6 supportsCompanionInitiatedRestart]);
-    v36 = [(HMAccessory *)self context];
-    v37 = [v36 queue];
+    context5 = [(HMAccessory *)self context];
+    queue5 = [context5 queue];
     v734[0] = MEMORY[0x1E69E9820];
     v734[1] = 3221225472;
     v734[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_2_1130;
     v734[3] = &unk_1E754E2A8;
     v734[4] = self;
-    dispatch_async(v37, v734);
+    dispatch_async(queue5, v734);
   }
 
-  v38 = [(HMAccessory *)self supportsCompanionInitiatedObliterate];
-  if (v38 != [v6 supportsCompanionInitiatedObliterate])
+  supportsCompanionInitiatedObliterate = [(HMAccessory *)self supportsCompanionInitiatedObliterate];
+  if (supportsCompanionInitiatedObliterate != [v6 supportsCompanionInitiatedObliterate])
   {
     -[HMAccessory setSupportsCompanionInitiatedObliterate:](self, "setSupportsCompanionInitiatedObliterate:", [v6 supportsCompanionInitiatedObliterate]);
-    v39 = [(HMAccessory *)self context];
-    v40 = [v39 queue];
+    context6 = [(HMAccessory *)self context];
+    queue6 = [context6 queue];
     v733[0] = MEMORY[0x1E69E9820];
     v733[1] = 3221225472;
     v733[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_3;
     v733[3] = &unk_1E754E2A8;
     v733[4] = self;
-    dispatch_async(v40, v733);
+    dispatch_async(queue6, v733);
   }
 
-  v41 = [(HMAccessory *)self supportsMusicAlarm];
-  if (v41 != [v6 supportsMusicAlarm])
+  supportsMusicAlarm = [(HMAccessory *)self supportsMusicAlarm];
+  if (supportsMusicAlarm != [v6 supportsMusicAlarm])
   {
     -[HMAccessory setSupportsMusicAlarm:](self, "setSupportsMusicAlarm:", [v6 supportsMusicAlarm]);
-    v42 = [(HMAccessory *)self context];
-    v43 = [v42 queue];
+    context7 = [(HMAccessory *)self context];
+    queue7 = [context7 queue];
     v732[0] = MEMORY[0x1E69E9820];
     v732[1] = 3221225472;
     v732[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_4;
     v732[3] = &unk_1E754E2A8;
     v732[4] = self;
-    dispatch_async(v43, v732);
+    dispatch_async(queue7, v732);
   }
 
-  v44 = [(HMAccessory *)self supportsAnnounce];
-  if (v44 != [v6 supportsAnnounce])
+  supportsAnnounce = [(HMAccessory *)self supportsAnnounce];
+  if (supportsAnnounce != [v6 supportsAnnounce])
   {
     -[HMAccessory setSupportsAnnounce:](self, "setSupportsAnnounce:", [v6 supportsAnnounce]);
-    v45 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v46 = [(HMAccessory *)self context];
-      v47 = [v46 queue];
+      context8 = [(HMAccessory *)self context];
+      queue8 = [context8 queue];
       v730[0] = MEMORY[0x1E69E9820];
       v730[1] = 3221225472;
       v730[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_5;
       v730[3] = &unk_1E754E5C0;
       v730[4] = self;
-      v731 = v45;
-      dispatch_async(v47, v730);
+      v731 = _privateDelegate;
+      dispatch_async(queue8, v730);
     }
 
     else
     {
       v49 = objc_autoreleasePoolPush();
-      v50 = self;
+      selfCopy3 = self;
       v51 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
       {
@@ -6917,7 +6917,7 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
         *buf = 138543618;
         v740 = v52;
         v741 = 2112;
-        v742 = v45;
+        v742 = _privateDelegate;
         _os_log_impl(&dword_19BB39000, v51, OS_LOG_TYPE_INFO, "%{public}@Delegate does not implement supports announce update: %@", buf, 0x16u);
       }
 
@@ -6925,28 +6925,28 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     }
   }
 
-  v53 = [(HMAccessory *)self supportsMediaActions];
-  if (v53 != [v6 supportsMediaActions])
+  supportsMediaActions = [(HMAccessory *)self supportsMediaActions];
+  if (supportsMediaActions != [v6 supportsMediaActions])
   {
     -[HMAccessory setSupportsMediaActions:](self, "setSupportsMediaActions:", [v6 supportsMediaActions]);
-    v54 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate2 = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v55 = [(HMAccessory *)self context];
-      v56 = [v55 queue];
+      context9 = [(HMAccessory *)self context];
+      queue9 = [context9 queue];
       v728[0] = MEMORY[0x1E69E9820];
       v728[1] = 3221225472;
       v728[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1133;
       v728[3] = &unk_1E754E5C0;
       v728[4] = self;
-      v729 = v54;
-      dispatch_async(v56, v728);
+      v729 = _privateDelegate2;
+      dispatch_async(queue9, v728);
     }
 
     else
     {
       v57 = objc_autoreleasePoolPush();
-      v58 = self;
+      selfCopy4 = self;
       v59 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
       {
@@ -6954,7 +6954,7 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
         *buf = 138543618;
         v740 = v60;
         v741 = 2112;
-        v742 = v54;
+        v742 = _privateDelegate2;
         _os_log_impl(&dword_19BB39000, v59, OS_LOG_TYPE_INFO, "%{public}@Delegate does not implement supports media actions update: %@", buf, 0x16u);
       }
 
@@ -6962,28 +6962,28 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     }
   }
 
-  v61 = [(HMAccessory *)self supportsDropIn];
-  if (v61 != [v6 supportsDropIn])
+  supportsDropIn = [(HMAccessory *)self supportsDropIn];
+  if (supportsDropIn != [v6 supportsDropIn])
   {
     -[HMAccessory setSupportsDropIn:](self, "setSupportsDropIn:", [v6 supportsDropIn]);
-    v62 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate3 = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v63 = [(HMAccessory *)self context];
-      v64 = [v63 queue];
+      context10 = [(HMAccessory *)self context];
+      queue10 = [context10 queue];
       v726[0] = MEMORY[0x1E69E9820];
       v726[1] = 3221225472;
       v726[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1136;
       v726[3] = &unk_1E754E5C0;
       v726[4] = self;
-      v727 = v62;
-      dispatch_async(v64, v726);
+      v727 = _privateDelegate3;
+      dispatch_async(queue10, v726);
     }
 
     else
     {
       v65 = objc_autoreleasePoolPush();
-      v66 = self;
+      selfCopy5 = self;
       v67 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
       {
@@ -6991,7 +6991,7 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
         *buf = 138543618;
         v740 = v68;
         v741 = 2112;
-        v742 = v62;
+        v742 = _privateDelegate3;
         _os_log_impl(&dword_19BB39000, v67, OS_LOG_TYPE_INFO, "%{public}@Delegate does not implement supports drop in update: %@", buf, 0x16u);
       }
 
@@ -6999,28 +6999,28 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     }
   }
 
-  v69 = [(HMAccessory *)self supportsAudioAnalysis];
-  if (v69 != [v6 supportsAudioAnalysis])
+  supportsAudioAnalysis = [(HMAccessory *)self supportsAudioAnalysis];
+  if (supportsAudioAnalysis != [v6 supportsAudioAnalysis])
   {
     -[HMAccessory setSupportsAudioAnalysis:](self, "setSupportsAudioAnalysis:", [v6 supportsAudioAnalysis]);
-    v70 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate4 = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v71 = [(HMAccessory *)self context];
-      v72 = [v71 queue];
+      context11 = [(HMAccessory *)self context];
+      queue11 = [context11 queue];
       v724[0] = MEMORY[0x1E69E9820];
       v724[1] = 3221225472;
       v724[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1139;
       v724[3] = &unk_1E754E5C0;
       v724[4] = self;
-      v725 = v70;
-      dispatch_async(v72, v724);
+      v725 = _privateDelegate4;
+      dispatch_async(queue11, v724);
     }
 
     else
     {
       v73 = objc_autoreleasePoolPush();
-      v74 = self;
+      selfCopy6 = self;
       v75 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
       {
@@ -7028,7 +7028,7 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
         *buf = 138543618;
         v740 = v76;
         v741 = 2112;
-        v742 = v70;
+        v742 = _privateDelegate4;
         _os_log_impl(&dword_19BB39000, v75, OS_LOG_TYPE_INFO, "%{public}@Delegate does not implement supports audio analysis update: %@", buf, 0x16u);
       }
 
@@ -7036,90 +7036,90 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     }
   }
 
-  v77 = [(HMAccessory *)self supportsThirdPartyMusic];
-  if (v77 != [v6 supportsThirdPartyMusic])
+  supportsThirdPartyMusic = [(HMAccessory *)self supportsThirdPartyMusic];
+  if (supportsThirdPartyMusic != [v6 supportsThirdPartyMusic])
   {
     -[HMAccessory setSupportsThirdPartyMusic:](self, "setSupportsThirdPartyMusic:", [v6 supportsThirdPartyMusic]);
-    v78 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate5 = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v79 = [(HMAccessory *)self context];
-      v80 = [v79 queue];
+      context12 = [(HMAccessory *)self context];
+      queue12 = [context12 queue];
       v722[0] = MEMORY[0x1E69E9820];
       v722[1] = 3221225472;
       v722[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1142;
       v722[3] = &unk_1E754E5C0;
       v722[4] = self;
-      v723 = v78;
-      dispatch_async(v80, v722);
+      v723 = _privateDelegate5;
+      dispatch_async(queue12, v722);
     }
   }
 
-  v81 = [(HMAccessory *)self supportsDoorbellChime];
-  if (v81 != [v6 supportsDoorbellChime])
+  supportsDoorbellChime = [(HMAccessory *)self supportsDoorbellChime];
+  if (supportsDoorbellChime != [v6 supportsDoorbellChime])
   {
     -[HMAccessory setSupportsDoorbellChime:](self, "setSupportsDoorbellChime:", [v6 supportsDoorbellChime]);
-    v82 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate6 = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v83 = [(HMAccessory *)self context];
-      v84 = [v83 queue];
+      context13 = [(HMAccessory *)self context];
+      queue13 = [context13 queue];
       v720[0] = MEMORY[0x1E69E9820];
       v720[1] = 3221225472;
       v720[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1145;
       v720[3] = &unk_1E754E5C0;
       v720[4] = self;
-      v721 = v82;
-      dispatch_async(v84, v720);
+      v721 = _privateDelegate6;
+      dispatch_async(queue13, v720);
     }
   }
 
-  v85 = [(HMAccessory *)self supportsUserMediaSettings];
-  if (v85 != [v6 supportsUserMediaSettings])
+  supportsUserMediaSettings = [(HMAccessory *)self supportsUserMediaSettings];
+  if (supportsUserMediaSettings != [v6 supportsUserMediaSettings])
   {
     -[HMAccessory setSupportsUserMediaSettings:](self, "setSupportsUserMediaSettings:", [v6 supportsUserMediaSettings]);
-    v86 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate7 = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v87 = [(HMAccessory *)self context];
-      v88 = [v87 queue];
+      context14 = [(HMAccessory *)self context];
+      queue14 = [context14 queue];
       v718[0] = MEMORY[0x1E69E9820];
       v718[1] = 3221225472;
       v718[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1148;
       v718[3] = &unk_1E754E5C0;
       v718[4] = self;
-      v719 = v86;
-      dispatch_async(v88, v718);
+      v719 = _privateDelegate7;
+      dispatch_async(queue14, v718);
     }
   }
 
-  v89 = [(HMAccessory *)self name];
-  v90 = [v6 name];
+  name = [(HMAccessory *)self name];
+  name2 = [v6 name];
   v91 = HMFEqualObjects();
 
   if ((v91 & 1) == 0)
   {
     v92 = objc_autoreleasePoolPush();
-    v93 = self;
+    selfCopy7 = self;
     v94 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
     {
       v95 = HMFGetLogIdentifier();
-      v96 = [v6 name];
+      name3 = [v6 name];
       *buf = 138543618;
       v740 = v95;
       v741 = 2112;
-      v742 = v96;
+      v742 = name3;
       _os_log_impl(&dword_19BB39000, v94, OS_LOG_TYPE_DEFAULT, "%{public}@Updated name: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v92);
-    v97 = [v6 name];
-    [(HMAccessory *)v93 setName:v97];
+    name4 = [v6 name];
+    [(HMAccessory *)selfCopy7 setName:name4];
 
-    v98 = [(HMAccessory *)v93 delegate];
+    delegate = [(HMAccessory *)selfCopy7 delegate];
     v99 = objc_autoreleasePoolPush();
-    v100 = v93;
+    v100 = selfCopy7;
     v101 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v101, OS_LOG_TYPE_INFO))
     {
@@ -7127,54 +7127,54 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
       *buf = 138543618;
       v740 = v102;
       v741 = 2112;
-      v742 = v98;
+      v742 = delegate;
       _os_log_impl(&dword_19BB39000, v101, OS_LOG_TYPE_INFO, "%{public}@Notifying client of accessory did update name with delegate: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v99);
     if (objc_opt_respondsToSelector())
     {
-      v103 = [(HMAccessory *)v100 context];
-      v104 = [v103 queue];
+      context15 = [(HMAccessory *)v100 context];
+      queue15 = [context15 queue];
       v716[0] = MEMORY[0x1E69E9820];
       v716[1] = 3221225472;
       v716[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1151;
       v716[3] = &unk_1E754E5C0;
       v716[4] = v100;
-      v717 = v98;
-      dispatch_async(v104, v716);
+      v717 = delegate;
+      dispatch_async(queue15, v716);
     }
 
     v15 = 1;
   }
 
-  v105 = [(HMAccessory *)self configuredName];
-  v106 = [v6 configuredName];
+  configuredName = [(HMAccessory *)self configuredName];
+  configuredName2 = [v6 configuredName];
   v107 = HMFEqualObjects();
 
   if ((v107 & 1) == 0)
   {
     v108 = objc_autoreleasePoolPush();
-    v109 = self;
+    selfCopy8 = self;
     v110 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v110, OS_LOG_TYPE_INFO))
     {
       v111 = HMFGetLogIdentifier();
-      v112 = [v6 configuredName];
+      configuredName3 = [v6 configuredName];
       *buf = 138543618;
       v740 = v111;
       v741 = 2112;
-      v742 = v112;
+      v742 = configuredName3;
       _os_log_impl(&dword_19BB39000, v110, OS_LOG_TYPE_INFO, "%{public}@Updated configured name: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v108);
-    v113 = [v6 configuredName];
-    [(HMAccessory *)v109 setConfiguredName:v113];
+    configuredName4 = [v6 configuredName];
+    [(HMAccessory *)selfCopy8 setConfiguredName:configuredName4];
 
-    v114 = [(HMAccessory *)v109 delegate];
+    delegate2 = [(HMAccessory *)selfCopy8 delegate];
     v115 = objc_autoreleasePoolPush();
-    v116 = v109;
+    v116 = selfCopy8;
     v117 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v117, OS_LOG_TYPE_INFO))
     {
@@ -7182,33 +7182,33 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
       *buf = 138543618;
       v740 = v118;
       v741 = 2112;
-      v742 = v114;
+      v742 = delegate2;
       _os_log_impl(&dword_19BB39000, v117, OS_LOG_TYPE_INFO, "%{public}@Notifying client of accessory did update configured name with delegate: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v115);
     if (objc_opt_respondsToSelector())
     {
-      v119 = [(HMAccessory *)v116 context];
-      v120 = [v119 queue];
+      context16 = [(HMAccessory *)v116 context];
+      queue16 = [context16 queue];
       v714[0] = MEMORY[0x1E69E9820];
       v714[1] = 3221225472;
       v714[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1153;
       v714[3] = &unk_1E754E5C0;
       v714[4] = v116;
-      v715 = v114;
-      dispatch_async(v120, v714);
+      v715 = delegate2;
+      dispatch_async(queue16, v714);
     }
   }
 
-  v121 = [(HMAccessory *)self applicationData];
-  v122 = [v6 applicationData];
+  applicationData = [(HMAccessory *)self applicationData];
+  applicationData2 = [v6 applicationData];
   v123 = HMFEqualObjects();
 
   if ((v123 & 1) == 0)
   {
     v124 = objc_autoreleasePoolPush();
-    v125 = self;
+    selfCopy9 = self;
     v126 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v126, OS_LOG_TYPE_INFO))
     {
@@ -7219,12 +7219,12 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v124);
-    v128 = [v6 applicationData];
-    [(HMAccessory *)v125 setApplicationData:v128];
+    applicationData3 = [v6 applicationData];
+    [(HMAccessory *)selfCopy9 setApplicationData:applicationData3];
 
-    v129 = [(HMAccessory *)v125 _privateDelegate];
+    _privateDelegate8 = [(HMAccessory *)selfCopy9 _privateDelegate];
     v130 = objc_autoreleasePoolPush();
-    v131 = v125;
+    v131 = selfCopy9;
     v132 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v132, OS_LOG_TYPE_INFO))
     {
@@ -7232,38 +7232,38 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
       *buf = 138543618;
       v740 = v133;
       v741 = 2112;
-      v742 = v129;
+      v742 = _privateDelegate8;
       _os_log_impl(&dword_19BB39000, v132, OS_LOG_TYPE_INFO, "%{public}@Notifying client of accessory did update application data with delegate: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v130);
     if (objc_opt_respondsToSelector())
     {
-      v134 = [(HMAccessory *)v131 context];
-      v135 = [v134 queue];
+      context17 = [(HMAccessory *)v131 context];
+      queue17 = [context17 queue];
       v712[0] = MEMORY[0x1E69E9820];
       v712[1] = 3221225472;
       v712[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1156;
       v712[3] = &unk_1E754E5C0;
       v712[4] = v131;
-      v713 = v129;
-      dispatch_async(v135, v712);
+      v713 = _privateDelegate8;
+      dispatch_async(queue17, v712);
     }
 
     v15 = 1;
   }
 
-  v136 = [v6 room];
-  v137 = [(HMAccessory *)self room];
-  v138 = [v137 uuid];
-  v657 = v136;
-  v139 = [v136 uuid];
-  v140 = [v138 isEqual:v139];
+  room = [v6 room];
+  room2 = [(HMAccessory *)self room];
+  uuid = [room2 uuid];
+  v657 = room;
+  uuid2 = [room uuid];
+  v140 = [uuid isEqual:uuid2];
 
   if ((v140 & 1) == 0)
   {
-    v141 = [v657 uuid];
-    v142 = [v659 roomWithUUID:v141];
+    uuid3 = [v657 uuid];
+    v142 = [home roomWithUUID:uuid3];
 
     if (v142)
     {
@@ -7273,25 +7273,25 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     else
     {
       v143 = objc_autoreleasePoolPush();
-      v144 = self;
+      selfCopy10 = self;
       v145 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v145, OS_LOG_TYPE_DEFAULT))
       {
         v146 = HMFGetLogIdentifier();
-        v147 = [v657 uuid];
+        uuid4 = [v657 uuid];
         *buf = 138543618;
         v740 = v146;
         v741 = 2112;
-        v742 = v147;
+        v742 = uuid4;
         _os_log_impl(&dword_19BB39000, v145, OS_LOG_TYPE_DEFAULT, "%{public}@Could not find HMRoom for updated room UUID via merge: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v143);
     }
 
-    v148 = [v659 delegate];
+    delegate3 = [home delegate];
     v149 = objc_autoreleasePoolPush();
-    v150 = self;
+    selfCopy11 = self;
     v151 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v151, OS_LOG_TYPE_INFO))
     {
@@ -7301,208 +7301,208 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
       v741 = 2112;
       v742 = v142;
       v743 = 2112;
-      v744 = v150;
+      v744 = selfCopy11;
       v745 = 2112;
-      v746 = v148;
+      v746 = delegate3;
       _os_log_impl(&dword_19BB39000, v151, OS_LOG_TYPE_INFO, "%{public}@Notifying client did update room: %@ for accessory: %@ delegate: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v149);
     if (objc_opt_respondsToSelector())
     {
-      v153 = [(HMAccessory *)v150 context];
-      v154 = [v153 queue];
+      context18 = [(HMAccessory *)selfCopy11 context];
+      queue18 = [context18 queue];
       v708[0] = MEMORY[0x1E69E9820];
       v708[1] = 3221225472;
       v708[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1160;
       v708[3] = &unk_1E754DE30;
-      v708[4] = v150;
-      v709 = v148;
-      v710 = v659;
+      v708[4] = selfCopy11;
+      v709 = delegate3;
+      v710 = home;
       v711 = v142;
-      dispatch_async(v154, v708);
+      dispatch_async(queue18, v708);
     }
 
     v15 = 1;
   }
 
-  v155 = [(HMAccessory *)self paired];
-  v156 = v155 ^ [v6 paired];
+  paired = [(HMAccessory *)self paired];
+  v156 = paired ^ [v6 paired];
   if (v156 == 1)
   {
     -[HMAccessory setPaired:](self, "setPaired:", [v6 paired]);
     v15 = 1;
   }
 
-  v157 = [(HMAccessory *)self suspendedState];
-  if (v157 != [v6 suspendedState])
+  suspendedState = [(HMAccessory *)self suspendedState];
+  if (suspendedState != [v6 suspendedState])
   {
     -[HMAccessory setSuspendedState:](self, "setSuspendedState:", [v6 suspendedState]);
     v156 = 1;
     v15 = 1;
   }
 
-  v158 = [(HMAccessory *)self supportsAccessCodes];
-  if (v158 != [v6 supportsAccessCodes])
+  supportsAccessCodes = [(HMAccessory *)self supportsAccessCodes];
+  if (supportsAccessCodes != [v6 supportsAccessCodes])
   {
     -[HMAccessory setSupportsAccessCodes:](self, "setSupportsAccessCodes:", [v6 supportsAccessCodes]);
     v15 = 1;
   }
 
-  v159 = [(HMAccessory *)self supportsWalletKey];
-  if (v159 != [v6 supportsWalletKey])
+  supportsWalletKey = [(HMAccessory *)self supportsWalletKey];
+  if (supportsWalletKey != [v6 supportsWalletKey])
   {
     -[HMAccessory setSupportsWalletKey:](self, "setSupportsWalletKey:", [v6 supportsWalletKey]);
-    v160 = [(HMAccessory *)self context];
-    v161 = [v160 queue];
+    context19 = [(HMAccessory *)self context];
+    queue19 = [context19 queue];
     v707[0] = MEMORY[0x1E69E9820];
     v707[1] = 3221225472;
     v707[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_3_1162;
     v707[3] = &unk_1E754E2A8;
     v707[4] = self;
-    dispatch_async(v161, v707);
+    dispatch_async(queue19, v707);
 
     v15 = 1;
   }
 
-  v162 = [(HMAccessory *)self supportsUWBUnlock];
-  if (v162 != [v6 supportsUWBUnlock])
+  supportsUWBUnlock = [(HMAccessory *)self supportsUWBUnlock];
+  if (supportsUWBUnlock != [v6 supportsUWBUnlock])
   {
     -[HMAccessory setSupportsUWBUnlock:](self, "setSupportsUWBUnlock:", [v6 supportsUWBUnlock]);
-    v163 = [(HMAccessory *)self context];
-    v164 = [v163 queue];
+    context20 = [(HMAccessory *)self context];
+    queue20 = [context20 queue];
     v706[0] = MEMORY[0x1E69E9820];
     v706[1] = 3221225472;
     v706[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_4_1163;
     v706[3] = &unk_1E754E2A8;
     v706[4] = self;
-    dispatch_async(v164, v706);
+    dispatch_async(queue20, v706);
 
     v15 = 1;
   }
 
-  v165 = [(HMAccessory *)self readerGroupSubIdentifierACWG];
-  v166 = [v6 readerGroupSubIdentifierACWG];
+  readerGroupSubIdentifierACWG = [(HMAccessory *)self readerGroupSubIdentifierACWG];
+  readerGroupSubIdentifierACWG2 = [v6 readerGroupSubIdentifierACWG];
   v167 = HMFEqualObjects();
 
   if ((v167 & 1) == 0)
   {
     v168 = objc_autoreleasePoolPush();
-    v169 = self;
+    selfCopy12 = self;
     v170 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v170, OS_LOG_TYPE_INFO))
     {
       v171 = HMFGetLogIdentifier();
-      v172 = [(HMAccessory *)v169 readerGroupSubIdentifierACWG];
-      v173 = [v6 readerGroupSubIdentifierACWG];
+      readerGroupSubIdentifierACWG3 = [(HMAccessory *)selfCopy12 readerGroupSubIdentifierACWG];
+      readerGroupSubIdentifierACWG4 = [v6 readerGroupSubIdentifierACWG];
       *buf = 138543874;
       v740 = v171;
       v741 = 2112;
-      v742 = v172;
+      v742 = readerGroupSubIdentifierACWG3;
       v743 = 2112;
-      v744 = v173;
+      v744 = readerGroupSubIdentifierACWG4;
       _os_log_impl(&dword_19BB39000, v170, OS_LOG_TYPE_INFO, "%{public}@Updating readerGroupSubIdentifierACWG from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v168);
-    v174 = [v6 readerGroupSubIdentifierACWG];
-    [(HMAccessory *)v169 setReaderGroupSubIdentifierACWG:v174];
+    readerGroupSubIdentifierACWG5 = [v6 readerGroupSubIdentifierACWG];
+    [(HMAccessory *)selfCopy12 setReaderGroupSubIdentifierACWG:readerGroupSubIdentifierACWG5];
 
     v15 = 1;
   }
 
-  v175 = [(HMAccessory *)self readerIDACWG];
-  v176 = [v6 readerIDACWG];
+  readerIDACWG = [(HMAccessory *)self readerIDACWG];
+  readerIDACWG2 = [v6 readerIDACWG];
   v177 = HMFEqualObjects();
 
   if ((v177 & 1) == 0)
   {
     v178 = objc_autoreleasePoolPush();
-    v179 = self;
+    selfCopy13 = self;
     v180 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v180, OS_LOG_TYPE_INFO))
     {
       v181 = HMFGetLogIdentifier();
-      v182 = [(HMAccessory *)v179 readerIDACWG];
-      v183 = [v6 readerIDACWG];
+      readerIDACWG3 = [(HMAccessory *)selfCopy13 readerIDACWG];
+      readerIDACWG4 = [v6 readerIDACWG];
       *buf = 138543874;
       v740 = v181;
       v741 = 2112;
-      v742 = v182;
+      v742 = readerIDACWG3;
       v743 = 2112;
-      v744 = v183;
+      v744 = readerIDACWG4;
       _os_log_impl(&dword_19BB39000, v180, OS_LOG_TYPE_INFO, "%{public}@Updating readerIDACWG from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v178);
-    v184 = [v6 readerIDACWG];
-    [(HMAccessory *)v179 setReaderIDACWG:v184];
+    readerIDACWG5 = [v6 readerIDACWG];
+    [(HMAccessory *)selfCopy13 setReaderIDACWG:readerIDACWG5];
 
     v15 = 1;
   }
 
-  v185 = [(HMAccessory *)self weekDaySchedulesPerUserCapacity];
-  v186 = [v6 weekDaySchedulesPerUserCapacity];
+  weekDaySchedulesPerUserCapacity = [(HMAccessory *)self weekDaySchedulesPerUserCapacity];
+  weekDaySchedulesPerUserCapacity2 = [v6 weekDaySchedulesPerUserCapacity];
   v187 = HMFEqualObjects();
 
   if ((v187 & 1) == 0)
   {
     v188 = objc_autoreleasePoolPush();
-    v189 = self;
+    selfCopy14 = self;
     v190 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v190, OS_LOG_TYPE_INFO))
     {
       v191 = HMFGetLogIdentifier();
-      v192 = [(HMAccessory *)v189 weekDaySchedulesPerUserCapacity];
-      v193 = [v6 weekDaySchedulesPerUserCapacity];
+      weekDaySchedulesPerUserCapacity3 = [(HMAccessory *)selfCopy14 weekDaySchedulesPerUserCapacity];
+      weekDaySchedulesPerUserCapacity4 = [v6 weekDaySchedulesPerUserCapacity];
       *buf = 138543874;
       v740 = v191;
       v741 = 2112;
-      v742 = v192;
+      v742 = weekDaySchedulesPerUserCapacity3;
       v743 = 2112;
-      v744 = v193;
+      v744 = weekDaySchedulesPerUserCapacity4;
       _os_log_impl(&dword_19BB39000, v190, OS_LOG_TYPE_INFO, "%{public}@Updating weekDaySchedulesPerUserCapacity from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v188);
-    v194 = [v6 weekDaySchedulesPerUserCapacity];
-    [(HMAccessory *)v189 setWeekDaySchedulesPerUserCapacity:v194];
+    weekDaySchedulesPerUserCapacity5 = [v6 weekDaySchedulesPerUserCapacity];
+    [(HMAccessory *)selfCopy14 setWeekDaySchedulesPerUserCapacity:weekDaySchedulesPerUserCapacity5];
 
     v15 = 1;
   }
 
-  v195 = [(HMAccessory *)self yearDaySchedulesPerUserCapacity];
-  v196 = [v6 yearDaySchedulesPerUserCapacity];
+  yearDaySchedulesPerUserCapacity = [(HMAccessory *)self yearDaySchedulesPerUserCapacity];
+  yearDaySchedulesPerUserCapacity2 = [v6 yearDaySchedulesPerUserCapacity];
   v197 = HMFEqualObjects();
 
   if ((v197 & 1) == 0)
   {
     v198 = objc_autoreleasePoolPush();
-    v199 = self;
+    selfCopy15 = self;
     v200 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v200, OS_LOG_TYPE_INFO))
     {
       v201 = HMFGetLogIdentifier();
-      v202 = [(HMAccessory *)v199 yearDaySchedulesPerUserCapacity];
-      v203 = [v6 yearDaySchedulesPerUserCapacity];
+      yearDaySchedulesPerUserCapacity3 = [(HMAccessory *)selfCopy15 yearDaySchedulesPerUserCapacity];
+      yearDaySchedulesPerUserCapacity4 = [v6 yearDaySchedulesPerUserCapacity];
       *buf = 138543874;
       v740 = v201;
       v741 = 2112;
-      v742 = v202;
+      v742 = yearDaySchedulesPerUserCapacity3;
       v743 = 2112;
-      v744 = v203;
+      v744 = yearDaySchedulesPerUserCapacity4;
       _os_log_impl(&dword_19BB39000, v200, OS_LOG_TYPE_INFO, "%{public}@Updating yearDaySchedulesPerUserCapacity from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v198);
-    v204 = [v6 yearDaySchedulesPerUserCapacity];
-    [(HMAccessory *)v199 setYearDaySchedulesPerUserCapacity:v204];
+    yearDaySchedulesPerUserCapacity5 = [v6 yearDaySchedulesPerUserCapacity];
+    [(HMAccessory *)selfCopy15 setYearDaySchedulesPerUserCapacity:yearDaySchedulesPerUserCapacity5];
 
     v15 = 1;
   }
 
-  v205 = [(HMAccessory *)self suspendCapable];
-  if (v205 != [v6 suspendCapable])
+  suspendCapable = [(HMAccessory *)self suspendCapable];
+  if (suspendCapable != [v6 suspendCapable])
   {
     if ([(HMAccessory *)self suspendCapable])
     {
@@ -7518,8 +7518,8 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     [v6 setReachable:1];
   }
 
-  v206 = [(HMAccessory *)self isReachable];
-  if (v206 == [v6 isReachable])
+  isReachable = [(HMAccessory *)self isReachable];
+  if (isReachable == [v6 isReachable])
   {
     if (!v156)
     {
@@ -7530,12 +7530,12 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
   else
   {
     v207 = objc_autoreleasePoolPush();
-    v208 = self;
+    selfCopy16 = self;
     v209 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v209, OS_LOG_TYPE_INFO))
     {
       v210 = HMFGetLogIdentifier();
-      [(HMAccessory *)v208 isReachable];
+      [(HMAccessory *)selfCopy16 isReachable];
       v211 = HMFBooleanToString();
       [v6 isReachable];
       v212 = HMFBooleanToString();
@@ -7549,34 +7549,34 @@ uint64_t __30__HMAccessory__mergeProfiles___block_invoke_3(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v207);
-    -[HMAccessory setReachable:](v208, "setReachable:", [v6 isReachable]);
+    -[HMAccessory setReachable:](selfCopy16, "setReachable:", [v6 isReachable]);
     v15 = 1;
   }
 
-  v213 = [(HMAccessory *)self delegate];
+  delegate4 = [(HMAccessory *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v214 = [(HMAccessory *)self context];
-    v215 = [v214 queue];
+    context21 = [(HMAccessory *)self context];
+    queue21 = [context21 queue];
     v704[0] = MEMORY[0x1E69E9820];
     v704[1] = 3221225472;
     v704[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1165;
     v704[3] = &unk_1E754E5C0;
     v704[4] = self;
-    v705 = v213;
-    dispatch_async(v215, v704);
+    v705 = delegate4;
+    dispatch_async(queue21, v704);
   }
 
 LABEL_143:
-  v216 = [(HMAccessory *)self reachableTransports];
+  reachableTransports = [(HMAccessory *)self reachableTransports];
   v217 = "llMessage";
-  if (v216 != [v6 reachableTransports])
+  if (reachableTransports != [v6 reachableTransports])
   {
     -[HMAccessory setReachableTransports:](self, "setReachableTransports:", [v6 reachableTransports]);
-    v218 = [(HMAccessory *)self delegate];
-    if ([v218 conformsToProtocol:&unk_1F0F63E80])
+    delegate5 = [(HMAccessory *)self delegate];
+    if ([delegate5 conformsToProtocol:&unk_1F0F63E80])
     {
-      v219 = v218;
+      v219 = delegate5;
     }
 
     else
@@ -7588,44 +7588,44 @@ LABEL_143:
 
     if (objc_opt_respondsToSelector())
     {
-      v221 = [(HMAccessory *)self context];
-      v222 = [v221 queue];
+      context22 = [(HMAccessory *)self context];
+      queue22 = [context22 queue];
       v702[0] = MEMORY[0x1E69E9820];
       v702[1] = 3221225472;
       v702[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_3_1168;
       v702[3] = &unk_1E754E5C0;
       v702[4] = self;
       v703 = v220;
-      dispatch_async(v222, v702);
+      dispatch_async(queue22, v702);
     }
 
     v15 = 1;
   }
 
-  v223 = [(HMAccessory *)self isControllable];
-  if (v223 != [v6 isControllable])
+  isControllable = [(HMAccessory *)self isControllable];
+  if (isControllable != [v6 isControllable])
   {
     -[HMAccessory setControllable:](self, "setControllable:", [v6 isControllable]);
-    v224 = [(HMAccessory *)self context];
-    v225 = [v224 queue];
+    context23 = [(HMAccessory *)self context];
+    queue23 = [context23 queue];
     v701[0] = MEMORY[0x1E69E9820];
     v701[1] = 3221225472;
     v701[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_5_1170;
     v701[3] = &unk_1E754E2A8;
     v701[4] = self;
-    dispatch_async(v225, v701);
+    dispatch_async(queue23, v701);
 
     v15 = 1;
   }
 
-  v226 = [(HMAccessory *)self accessoryReprovisionState];
-  if (v226 != [v6 accessoryReprovisionState])
+  accessoryReprovisionState = [(HMAccessory *)self accessoryReprovisionState];
+  if (accessoryReprovisionState != [v6 accessoryReprovisionState])
   {
     -[HMAccessory setAccessoryReprovisionState:](self, "setAccessoryReprovisionState:", [v6 accessoryReprovisionState]);
-    v227 = [v659 delegate];
-    if ([v227 conformsToProtocol:&unk_1F0F63B38])
+    delegate6 = [home delegate];
+    if ([delegate6 conformsToProtocol:&unk_1F0F63B38])
     {
-      v228 = v227;
+      v228 = delegate6;
     }
 
     else
@@ -7637,68 +7637,68 @@ LABEL_143:
 
     if (objc_opt_respondsToSelector())
     {
-      v230 = [(HMAccessory *)self context];
-      v231 = [v230 queue];
+      context24 = [(HMAccessory *)self context];
+      queue24 = [context24 queue];
       v698[0] = MEMORY[0x1E69E9820];
       v698[1] = 3221225472;
       v698[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_6_1292;
       v698[3] = &unk_1E754E5E8;
       v698[4] = self;
       v699 = v229;
-      v700 = v659;
-      dispatch_async(v231, v698);
+      v700 = home;
+      dispatch_async(queue24, v698);
     }
 
     v15 = 1;
   }
 
-  v232 = [(HMAccessory *)self firmwareVersion];
-  v233 = [v6 firmwareVersion];
+  firmwareVersion = [(HMAccessory *)self firmwareVersion];
+  firmwareVersion2 = [v6 firmwareVersion];
   v234 = HMFEqualObjects();
 
   if ((v234 & 1) == 0)
   {
-    v235 = [v6 firmwareVersion];
-    [(HMAccessory *)self setFirmwareVersion:v235];
+    firmwareVersion3 = [v6 firmwareVersion];
+    [(HMAccessory *)self setFirmwareVersion:firmwareVersion3];
 
-    v236 = [(HMAccessory *)self delegate];
+    delegate7 = [(HMAccessory *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v237 = [(HMAccessory *)self context];
-      v238 = [v237 queue];
+      context25 = [(HMAccessory *)self context];
+      queue25 = [context25 queue];
       v696[0] = MEMORY[0x1E69E9820];
       v696[1] = 3221225472;
       v696[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_8;
       v696[3] = &unk_1E754E5C0;
       v696[4] = self;
-      v697 = v236;
-      dispatch_async(v238, v696);
+      v697 = delegate7;
+      dispatch_async(queue25, v696);
     }
   }
 
-  v239 = [(HMAccessory *)self isVendorAccessory];
-  if (v239 != [v6 isVendorAccessory])
+  isVendorAccessory = [(HMAccessory *)self isVendorAccessory];
+  if (isVendorAccessory != [v6 isVendorAccessory])
   {
     -[HMAccessory setVendorAccessory:](self, "setVendorAccessory:", [v6 isVendorAccessory]);
     v15 = 1;
   }
 
-  v240 = [(HMAccessory *)self HAPInstanceID];
-  v241 = [v6 HAPInstanceID];
+  hAPInstanceID = [(HMAccessory *)self HAPInstanceID];
+  hAPInstanceID2 = [v6 HAPInstanceID];
   v242 = HMFEqualObjects();
 
   if ((v242 & 1) == 0)
   {
-    v243 = [v6 HAPInstanceID];
-    [(HMAccessory *)self setHAPInstanceID:v243];
+    hAPInstanceID3 = [v6 HAPInstanceID];
+    [(HMAccessory *)self setHAPInstanceID:hAPInstanceID3];
 
     v15 = 1;
   }
 
-  v244 = [(HMAccessory *)self delegate];
-  if ([v244 conformsToProtocol:&unk_1F0F63E80])
+  delegate8 = [(HMAccessory *)self delegate];
+  if ([delegate8 conformsToProtocol:&unk_1F0F63E80])
   {
-    v245 = v244;
+    v245 = delegate8;
   }
 
   else
@@ -7708,74 +7708,74 @@ LABEL_143:
 
   v246 = v245;
 
-  v247 = [(HMAccessory *)self bundleID];
-  v248 = [v6 bundleID];
+  bundleID = [(HMAccessory *)self bundleID];
+  bundleID2 = [v6 bundleID];
   v249 = HMFEqualObjects();
 
   if ((v249 & 1) == 0)
   {
-    v250 = [v6 bundleID];
-    [(HMAccessory *)self setBundleID:v250];
+    bundleID3 = [v6 bundleID];
+    [(HMAccessory *)self setBundleID:bundleID3];
 
     if (objc_opt_respondsToSelector())
     {
-      v251 = [(HMAccessory *)self context];
-      v252 = [v251 queue];
+      context26 = [(HMAccessory *)self context];
+      queue26 = [context26 queue];
       v694[0] = MEMORY[0x1E69E9820];
       v694[1] = 3221225472;
       v694[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_10;
       v694[3] = &unk_1E754E5C0;
       v694[4] = self;
       v695 = v246;
-      dispatch_async(v252, v694);
+      dispatch_async(queue26, v694);
     }
   }
 
-  v253 = [(HMAccessory *)self storeID];
-  v254 = [v6 storeID];
+  storeID = [(HMAccessory *)self storeID];
+  storeID2 = [v6 storeID];
   v255 = HMFEqualObjects();
 
   if ((v255 & 1) == 0)
   {
-    v256 = [v6 storeID];
-    [(HMAccessory *)self setStoreID:v256];
+    storeID3 = [v6 storeID];
+    [(HMAccessory *)self setStoreID:storeID3];
 
     if (objc_opt_respondsToSelector())
     {
-      v257 = [(HMAccessory *)self context];
-      v258 = [v257 queue];
+      context27 = [(HMAccessory *)self context];
+      queue27 = [context27 queue];
       v692[0] = MEMORY[0x1E69E9820];
       v692[1] = 3221225472;
       v692[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_12;
       v692[3] = &unk_1E754E5C0;
       v692[4] = self;
       v693 = v246;
-      dispatch_async(v258, v692);
+      dispatch_async(queue27, v692);
     }
   }
 
-  v259 = [(HMAccessory *)self isFirmwareUpdateAvailable];
-  if (v259 != [v6 isFirmwareUpdateAvailable])
+  isFirmwareUpdateAvailable = [(HMAccessory *)self isFirmwareUpdateAvailable];
+  if (isFirmwareUpdateAvailable != [v6 isFirmwareUpdateAvailable])
   {
     -[HMAccessory setFirmwareUpdateAvailable:](self, "setFirmwareUpdateAvailable:", [v6 isFirmwareUpdateAvailable]);
     if (objc_opt_respondsToSelector())
     {
-      v260 = [(HMAccessory *)self context];
-      v261 = [v260 queue];
+      context28 = [(HMAccessory *)self context];
+      queue28 = [context28 queue];
       v690[0] = MEMORY[0x1E69E9820];
       v690[1] = 3221225472;
       v690[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_14;
       v690[3] = &unk_1E754E5C0;
       v690[4] = self;
       v691 = v246;
-      dispatch_async(v261, v690);
+      dispatch_async(queue28, v690);
     }
   }
 
   if ([v6 hasOnboardedForNaturalLighting] && !-[HMAccessory hasOnboardedForNaturalLighting](self, "hasOnboardedForNaturalLighting"))
   {
     v262 = objc_autoreleasePoolPush();
-    v263 = self;
+    selfCopy17 = self;
     v264 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v264, OS_LOG_TYPE_INFO))
     {
@@ -7786,114 +7786,114 @@ LABEL_143:
     }
 
     objc_autoreleasePoolPop(v262);
-    [(HMAccessory *)v263 setHasOnboardedForNaturalLighting:1];
+    [(HMAccessory *)selfCopy17 setHasOnboardedForNaturalLighting:1];
     if (objc_opt_respondsToSelector())
     {
-      v266 = [(HMAccessory *)v263 context];
-      v267 = [v266 queue];
+      context29 = [(HMAccessory *)selfCopy17 context];
+      queue29 = [context29 queue];
       v688[0] = MEMORY[0x1E69E9820];
       v688[1] = 3221225472;
       v688[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1298;
       v688[3] = &unk_1E754E5C0;
-      v688[4] = v263;
+      v688[4] = selfCopy17;
       v689 = v246;
-      dispatch_async(v267, v688);
+      dispatch_async(queue29, v688);
     }
   }
 
-  v268 = [(HMAccessory(Diagnostics) *)self supportedDiagnostics];
-  v269 = [v6 supportedDiagnostics];
+  supportedDiagnostics = [(HMAccessory(Diagnostics) *)self supportedDiagnostics];
+  supportedDiagnostics2 = [v6 supportedDiagnostics];
 
-  if (v268 != v269)
+  if (supportedDiagnostics != supportedDiagnostics2)
   {
     v270 = objc_autoreleasePoolPush();
-    v271 = self;
+    selfCopy18 = self;
     v272 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v272, OS_LOG_TYPE_INFO))
     {
       v273 = HMFGetLogIdentifier();
-      v274 = [v6 supportedDiagnostics];
+      supportedDiagnostics3 = [v6 supportedDiagnostics];
       *buf = 138543618;
       v740 = v273;
       v741 = 2112;
-      v742 = v274;
+      v742 = supportedDiagnostics3;
       _os_log_impl(&dword_19BB39000, v272, OS_LOG_TYPE_INFO, "%{public}@Updating diagnostics support to %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v270);
-    v275 = [v6 supportedDiagnostics];
-    [(HMAccessory(Diagnostics) *)v271 setSupportedDiagnostics:v275];
+    supportedDiagnostics4 = [v6 supportedDiagnostics];
+    [(HMAccessory(Diagnostics) *)selfCopy18 setSupportedDiagnostics:supportedDiagnostics4];
 
-    v276 = [(HMAccessory *)v271 context];
-    v277 = [v276 queue];
+    context30 = [(HMAccessory *)selfCopy18 context];
+    queue30 = [context30 queue];
     v687[0] = MEMORY[0x1E69E9820];
     v687[1] = 3221225472;
     v687[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1300;
     v687[3] = &unk_1E754E2A8;
-    v687[4] = v271;
-    dispatch_async(v277, v687);
+    v687[4] = selfCopy18;
+    dispatch_async(queue30, v687);
   }
 
-  v278 = [(HMAccessory *)self isCurrentAccessory];
-  if (v278 != [v6 isCurrentAccessory])
+  isCurrentAccessory = [(HMAccessory *)self isCurrentAccessory];
+  if (isCurrentAccessory != [v6 isCurrentAccessory])
   {
     -[HMAccessory setCurrentAccessory:](self, "setCurrentAccessory:", [v6 isCurrentAccessory]);
   }
 
-  v279 = [(HMAccessory *)self manufacturer];
-  v280 = [v6 manufacturer];
+  manufacturer = [(HMAccessory *)self manufacturer];
+  manufacturer2 = [v6 manufacturer];
   v281 = HMFEqualObjects();
 
   if ((v281 & 1) == 0)
   {
-    v282 = [v6 manufacturer];
-    [(HMAccessory *)self setManufacturer:v282];
+    manufacturer3 = [v6 manufacturer];
+    [(HMAccessory *)self setManufacturer:manufacturer3];
   }
 
-  v283 = [(HMAccessory *)self model];
-  v284 = [v6 model];
+  model = [(HMAccessory *)self model];
+  model2 = [v6 model];
   v285 = HMFEqualObjects();
 
   if ((v285 & 1) == 0)
   {
-    v286 = [v6 model];
-    [(HMAccessory *)self setModel:v286];
+    model3 = [v6 model];
+    [(HMAccessory *)self setModel:model3];
   }
 
-  v287 = [(HMAccessory *)self serialNumber];
-  v288 = [v6 serialNumber];
+  serialNumber = [(HMAccessory *)self serialNumber];
+  serialNumber2 = [v6 serialNumber];
   v289 = HMFEqualObjects();
 
   if ((v289 & 1) == 0)
   {
-    v290 = [v6 serialNumber];
-    [(HMAccessory *)self setSerialNumber:v290];
+    serialNumber3 = [v6 serialNumber];
+    [(HMAccessory *)self setSerialNumber:serialNumber3];
   }
 
-  v291 = [(HMAccessory *)self accountIdentifier];
-  v292 = [v6 accountIdentifier];
+  accountIdentifier = [(HMAccessory *)self accountIdentifier];
+  accountIdentifier2 = [v6 accountIdentifier];
   v293 = HMFEqualObjects();
 
   if ((v293 & 1) == 0)
   {
-    v294 = [v6 accountIdentifier];
-    [(HMAccessory *)self setAccountIdentifier:v294];
+    accountIdentifier3 = [v6 accountIdentifier];
+    [(HMAccessory *)self setAccountIdentifier:accountIdentifier3];
   }
 
-  v295 = [(HMAccessory *)self supportsIdentify];
-  if (v295 != [v6 supportsIdentify])
+  supportsIdentify = [(HMAccessory *)self supportsIdentify];
+  if (supportsIdentify != [v6 supportsIdentify])
   {
     -[HMAccessory setSupportsIdentify:](self, "setSupportsIdentify:", [v6 supportsIdentify]);
   }
 
-  v296 = [(HMAccessory *)self accessoryFlags];
-  v297 = [v6 accessoryFlags];
+  accessoryFlags = [(HMAccessory *)self accessoryFlags];
+  accessoryFlags2 = [v6 accessoryFlags];
   v298 = HMFEqualObjects();
 
   if ((v298 & 1) == 0)
   {
-    v299 = [v6 accessoryFlags];
-    if ([v299 integerValue])
+    accessoryFlags3 = [v6 accessoryFlags];
+    if ([accessoryFlags3 integerValue])
     {
       v300 = 1;
     }
@@ -7906,21 +7906,21 @@ LABEL_143:
     if ([(HMAccessory *)self additionalSetupStatus]!= v300)
     {
       [(HMAccessory *)self setAdditionalSetupStatus:v300];
-      v301 = [(HMAccessory *)self context];
-      v302 = [v301 queue];
+      context31 = [(HMAccessory *)self context];
+      queue31 = [context31 queue];
       v686[0] = MEMORY[0x1E69E9820];
       v686[1] = 3221225472;
       v686[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_2_1301;
       v686[3] = &unk_1E754E2A8;
       v686[4] = self;
-      dispatch_async(v302, v686);
+      dispatch_async(queue31, v686);
 
       v15 = 1;
     }
 
-    v303 = [v6 accessoryFlags];
-    v304 = [v303 integerValue];
-    if ((v304 & 2) != 0)
+    accessoryFlags4 = [v6 accessoryFlags];
+    integerValue = [accessoryFlags4 integerValue];
+    if ((integerValue & 2) != 0)
     {
       v305 = 1;
     }
@@ -7933,19 +7933,19 @@ LABEL_143:
     if ([(HMAccessory *)self calibrationStatus]!= v305)
     {
       v306 = objc_autoreleasePoolPush();
-      v307 = self;
+      selfCopy19 = self;
       v308 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v308, OS_LOG_TYPE_INFO))
       {
         v309 = HMFGetLogIdentifier();
-        v310 = [(HMAccessory *)v307 calibrationStatus];
+        calibrationStatus = [(HMAccessory *)selfCopy19 calibrationStatus];
         v311 = "Unknown";
-        if (v310 == 1)
+        if (calibrationStatus == 1)
         {
           v311 = "InProgress";
         }
 
-        if (v310 == 2)
+        if (calibrationStatus == 2)
         {
           v311 = "Complete";
         }
@@ -7954,7 +7954,7 @@ LABEL_143:
         v740 = v309;
         v741 = 2080;
         v742 = v311;
-        if ((v304 & 2) != 0)
+        if ((integerValue & 2) != 0)
         {
           v312 = "InProgress";
         }
@@ -7970,95 +7970,95 @@ LABEL_143:
       }
 
       objc_autoreleasePoolPop(v306);
-      [(HMAccessory *)v307 setCalibrationStatus:v305];
-      v313 = [(HMAccessory *)v307 context];
-      v314 = [v313 queue];
+      [(HMAccessory *)selfCopy19 setCalibrationStatus:v305];
+      context32 = [(HMAccessory *)selfCopy19 context];
+      queue32 = [context32 queue];
       v685[0] = MEMORY[0x1E69E9820];
       v217 = "llMessage";
       v685[1] = 3221225472;
       v685[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1302;
       v685[3] = &unk_1E754E2A8;
-      v685[4] = v307;
-      dispatch_async(v314, v685);
+      v685[4] = selfCopy19;
+      dispatch_async(queue32, v685);
 
       v15 = 1;
     }
 
-    v315 = [v6 accessoryFlags];
-    [(HMAccessory *)self setAccessoryFlags:v315];
+    accessoryFlags5 = [v6 accessoryFlags];
+    [(HMAccessory *)self setAccessoryFlags:accessoryFlags5];
 
     -[HMAccessory setCalibrationStatus:](self, "setCalibrationStatus:", [v6 calibrationStatus]);
   }
 
-  v316 = [(HMAccessory *)self certificationStatus];
-  if (v316 != [v6 certificationStatus])
+  certificationStatus = [(HMAccessory *)self certificationStatus];
+  if (certificationStatus != [v6 certificationStatus])
   {
     -[HMAccessory setCertificationStatus:](self, "setCertificationStatus:", [v6 certificationStatus]);
   }
 
   -[HMAccessory setBridgedAccessory:](self, "setBridgedAccessory:", [v6 bridgedAccessory]);
-  v317 = [v6 uniqueIdentifiersForBridgedAccessories];
-  [(HMAccessory *)self setUniqueIdentifiersForBridgedAccessories:v317];
+  uniqueIdentifiersForBridgedAccessories = [v6 uniqueIdentifiersForBridgedAccessories];
+  [(HMAccessory *)self setUniqueIdentifiersForBridgedAccessories:uniqueIdentifiersForBridgedAccessories];
 
-  v318 = [(HMAccessory *)self category];
-  v319 = [v6 category];
+  category = [(HMAccessory *)self category];
+  category2 = [v6 category];
   v320 = HMFEqualObjects();
 
   if ((v320 & 1) == 0)
   {
     v321 = objc_autoreleasePoolPush();
-    v322 = self;
+    selfCopy20 = self;
     v323 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v323, OS_LOG_TYPE_INFO))
     {
       v324 = HMFGetLogIdentifier();
-      v325 = [(HMAccessory *)v322 category];
-      v326 = [v6 category];
+      category3 = [(HMAccessory *)selfCopy20 category];
+      category4 = [v6 category];
       *buf = 138543874;
       v740 = v324;
       v741 = 2112;
-      v742 = v325;
+      v742 = category3;
       v743 = 2112;
-      v744 = v326;
+      v744 = category4;
       _os_log_impl(&dword_19BB39000, v323, OS_LOG_TYPE_INFO, "%{public}@Updating category: %@ with new category: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v321);
-    v327 = [v6 category];
-    [(HMAccessory *)v322 setCategory:v327];
+    category5 = [v6 category];
+    [(HMAccessory *)selfCopy20 setCategory:category5];
 
     v15 = 1;
   }
 
-  v328 = [v6 accessoryProfiles];
-  v329 = [v328 array];
-  [(HMAccessory *)self _mergeProfiles:v329];
+  accessoryProfiles = [v6 accessoryProfiles];
+  array = [accessoryProfiles array];
+  [(HMAccessory *)self _mergeProfiles:array];
 
   if (!-[HMAccessory supportsMessagedHomePodSettings](self, "supportsMessagedHomePodSettings") && ([v6 supportsMessagedHomePodSettings] & 1) == 0)
   {
-    v330 = [v6 settings];
-    v331 = [(HMAccessory *)self settings];
-    v332 = (v330 != 0) ^ (v331 == 0);
+    settings = [v6 settings];
+    settings2 = [(HMAccessory *)self settings];
+    v332 = (settings != 0) ^ (settings2 == 0);
 
     v333 = objc_autoreleasePoolPush();
     if (v332)
     {
-      v334 = [(HMAccessory *)self settings];
-      v335 = [v334 mergeFromNewObject:v330];
+      settings3 = [(HMAccessory *)self settings];
+      v335 = [settings3 mergeFromNewObject:settings];
 
       if (v335)
       {
         v336 = objc_autoreleasePoolPush();
-        v337 = self;
+        selfCopy21 = self;
         v338 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v338, OS_LOG_TYPE_INFO))
         {
           v339 = HMFGetLogIdentifier();
-          v340 = [v330 longDescription];
+          longDescription = [settings longDescription];
           *buf = 138543618;
           v740 = v339;
           v741 = 2112;
-          v742 = v340;
+          v742 = longDescription;
           _os_log_impl(&dword_19BB39000, v338, OS_LOG_TYPE_INFO, "%{public}@Merged settings: %@", buf, 0x16u);
         }
 
@@ -8072,43 +8072,43 @@ LABEL_143:
 
     else
     {
-      v341 = self;
+      selfCopy22 = self;
       v342 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v342, OS_LOG_TYPE_DEFAULT))
       {
         v343 = HMFGetLogIdentifier();
-        v344 = [v330 longDescription];
+        longDescription2 = [settings longDescription];
         *buf = 138543618;
         v740 = v343;
         v741 = 2112;
-        v742 = v344;
+        v742 = longDescription2;
         _os_log_impl(&dword_19BB39000, v342, OS_LOG_TYPE_DEFAULT, "%{public}@Updating settings: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v333);
-      [(HMAccessory *)v341 setSettings:v330];
-      v345 = [(HMAccessory *)v341 context];
-      v346 = [v345 queue];
+      [(HMAccessory *)selfCopy22 setSettings:settings];
+      context33 = [(HMAccessory *)selfCopy22 context];
+      queue33 = [context33 queue];
       v683[0] = MEMORY[0x1E69E9820];
       v683[1] = 3221225472;
       v683[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1303;
       v683[3] = &unk_1E754E5C0;
-      v683[4] = v341;
-      v684 = v330;
-      dispatch_async(v346, v683);
+      v683[4] = selfCopy22;
+      v684 = settings;
+      dispatch_async(queue33, v683);
 
       v15 = 1;
     }
   }
 
-  v347 = [v6 device];
-  v348 = [(HMAccessory *)self device];
+  device = [v6 device];
+  device2 = [(HMAccessory *)self device];
   v349 = HMFEqualObjects();
 
   if (v349)
   {
-    v350 = [(HMAccessory *)self device];
-    v351 = [v350 mergeFromNewObject:v347];
+    device3 = [(HMAccessory *)self device];
+    v351 = [device3 mergeFromNewObject:device];
 
     if (!v351)
     {
@@ -8119,7 +8119,7 @@ LABEL_143:
   else
   {
     v352 = objc_autoreleasePoolPush();
-    v353 = self;
+    selfCopy23 = self;
     v354 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v354, OS_LOG_TYPE_INFO))
     {
@@ -8127,100 +8127,100 @@ LABEL_143:
       *buf = 138543618;
       v740 = v355;
       v741 = 2112;
-      v742 = v347;
+      v742 = device;
       _os_log_impl(&dword_19BB39000, v354, OS_LOG_TYPE_INFO, "%{public}@Updating device: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v352);
-    [(HMAccessory *)v353 setDevice:v347];
+    [(HMAccessory *)selfCopy23 setDevice:device];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v356 = [(HMAccessory *)self context];
-    v357 = [v356 queue];
+    context34 = [(HMAccessory *)self context];
+    queue34 = [context34 queue];
     v681[0] = MEMORY[0x1E69E9820];
     v681[1] = *(v217 + 185);
     v681[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1305;
     v681[3] = &unk_1E754E5C0;
     v681[4] = self;
     v682 = v246;
-    dispatch_async(v357, v681);
+    dispatch_async(queue34, v681);
   }
 
   v15 = 1;
 LABEL_250:
 
-  v358 = [(HMAccessory *)self deviceIRKData];
-  v359 = [v6 deviceIRKData];
+  deviceIRKData = [(HMAccessory *)self deviceIRKData];
+  deviceIRKData2 = [v6 deviceIRKData];
   v360 = HMFEqualObjects();
 
   if ((v360 & 1) == 0)
   {
     v361 = objc_autoreleasePoolPush();
-    v362 = self;
+    selfCopy24 = self;
     v363 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v363, OS_LOG_TYPE_INFO))
     {
       v364 = HMFGetLogIdentifier();
-      v365 = [v6 deviceIRKData];
+      deviceIRKData3 = [v6 deviceIRKData];
       *buf = 138543618;
       v740 = v364;
       v741 = 2112;
-      v742 = v365;
+      v742 = deviceIRKData3;
       _os_log_impl(&dword_19BB39000, v363, OS_LOG_TYPE_INFO, "%{public}@Updating deviceIRKData: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v361);
-    v366 = [v6 deviceIRKData];
-    [(HMAccessory *)v362 setDeviceIRKData:v366];
+    deviceIRKData4 = [v6 deviceIRKData];
+    [(HMAccessory *)selfCopy24 setDeviceIRKData:deviceIRKData4];
 
     v15 = 1;
   }
 
-  v367 = [v6 softwareVersion];
-  v368 = [(HMAccessory *)self softwareVersion];
+  softwareVersion = [v6 softwareVersion];
+  softwareVersion2 = [(HMAccessory *)self softwareVersion];
   v369 = HMFEqualObjects();
 
   if ((v369 & 1) == 0)
   {
-    [(HMAccessory *)self setSoftwareVersion:v367];
+    [(HMAccessory *)self setSoftwareVersion:softwareVersion];
     if (objc_opt_respondsToSelector())
     {
-      v370 = [(HMAccessory *)self context];
-      v371 = [v370 queue];
+      context35 = [(HMAccessory *)self context];
+      queue35 = [context35 queue];
       v678[0] = MEMORY[0x1E69E9820];
       v678[1] = *(v217 + 185);
       v678[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1308;
       v678[3] = &unk_1E754E5E8;
       v678[4] = self;
       v679 = v246;
-      v680 = v367;
-      dispatch_async(v371, v678);
+      v680 = softwareVersion;
+      dispatch_async(queue35, v678);
     }
 
     v15 = 1;
   }
 
-  v372 = [(HMAccessory *)self softwareUpdateController];
+  softwareUpdateController = [(HMAccessory *)self softwareUpdateController];
 
-  v373 = [v6 softwareUpdateController];
-  v374 = v373;
-  if (!v372)
+  softwareUpdateController2 = [v6 softwareUpdateController];
+  v374 = softwareUpdateController2;
+  if (!softwareUpdateController)
   {
-    [(HMAccessory *)self setSoftwareUpdateController:v373];
+    [(HMAccessory *)self setSoftwareUpdateController:softwareUpdateController2];
 
-    v375 = [(HMAccessory *)self softwareUpdateController];
-    v376 = [(HMAccessory *)self context];
-    [v375 configureWithContext:v376 accessory:self];
+    softwareUpdateController3 = [(HMAccessory *)self softwareUpdateController];
+    context36 = [(HMAccessory *)self context];
+    [softwareUpdateController3 configureWithContext:context36 accessory:self];
     goto LABEL_262;
   }
 
   if (v374)
   {
-    v375 = [(HMAccessory *)self softwareUpdateController];
-    v376 = [v6 softwareUpdateController];
-    [v375 mergeFromNewObject:v376];
+    softwareUpdateController3 = [(HMAccessory *)self softwareUpdateController];
+    context36 = [v6 softwareUpdateController];
+    [softwareUpdateController3 mergeFromNewObject:context36];
 LABEL_262:
 
     goto LABEL_264;
@@ -8229,12 +8229,12 @@ LABEL_262:
   [(HMAccessory *)self setSoftwareUpdateController:0];
 LABEL_264:
   v658 = v246;
-  v377 = [v6 remoteLoginHandler];
-  v378 = [(HMAccessory *)self _mergeRemoteLoginHandler:v377];
+  remoteLoginHandler = [v6 remoteLoginHandler];
+  v378 = [(HMAccessory *)self _mergeRemoteLoginHandler:remoteLoginHandler];
 
   v379 = -[HMAccessory _updateHasSymptomsHandler:](self, "_updateHasSymptomsHandler:", [v6 hasSymptomsHandler]);
-  v380 = [(HMAccessory *)self supportsMediaAccessControl];
-  if (v380 == [v6 supportsMediaAccessControl])
+  supportsMediaAccessControl = [(HMAccessory *)self supportsMediaAccessControl];
+  if (supportsMediaAccessControl == [v6 supportsMediaAccessControl])
   {
     v48 = (v379 || v378) | v15;
   }
@@ -8245,16 +8245,16 @@ LABEL_264:
     v48 = 1;
   }
 
-  v381 = [(HMAccessory *)self supportsMediaContentProfile];
-  if (v381 != [v6 supportsMediaContentProfile])
+  supportsMediaContentProfile = [(HMAccessory *)self supportsMediaContentProfile];
+  if (supportsMediaContentProfile != [v6 supportsMediaContentProfile])
   {
     v382 = objc_autoreleasePoolPush();
-    v383 = self;
+    selfCopy25 = self;
     v384 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v384, OS_LOG_TYPE_INFO))
     {
       v385 = HMFGetLogIdentifier();
-      [(HMAccessory *)v383 supportsMediaContentProfile];
+      [(HMAccessory *)selfCopy25 supportsMediaContentProfile];
       v386 = HMFBooleanToString();
       [v6 supportsMediaContentProfile];
       v387 = HMFBooleanToString();
@@ -8268,30 +8268,30 @@ LABEL_264:
     }
 
     objc_autoreleasePoolPop(v382);
-    -[HMAccessory setSupportsMediaContentProfile:](v383, "setSupportsMediaContentProfile:", [v6 supportsMediaContentProfile]);
-    v388 = [(HMAccessory *)v383 context];
-    v389 = [v388 queue];
+    -[HMAccessory setSupportsMediaContentProfile:](selfCopy25, "setSupportsMediaContentProfile:", [v6 supportsMediaContentProfile]);
+    context37 = [(HMAccessory *)selfCopy25 context];
+    queue36 = [context37 queue];
     v677[0] = MEMORY[0x1E69E9820];
     v217 = "llMessage";
     v677[1] = 3221225472;
     v677[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1310;
     v677[3] = &unk_1E754E2A8;
-    v677[4] = v383;
-    dispatch_async(v389, v677);
+    v677[4] = selfCopy25;
+    dispatch_async(queue36, v677);
 
     v48 = 1;
   }
 
-  v390 = [(HMAccessory *)self supportsCHIP];
-  if (v390 != [v6 supportsCHIP])
+  supportsCHIP = [(HMAccessory *)self supportsCHIP];
+  if (supportsCHIP != [v6 supportsCHIP])
   {
     v391 = objc_autoreleasePoolPush();
-    v392 = self;
+    selfCopy26 = self;
     v393 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v393, OS_LOG_TYPE_INFO))
     {
       v394 = HMFGetLogIdentifier();
-      [(HMAccessory *)v392 supportsCHIP];
+      [(HMAccessory *)selfCopy26 supportsCHIP];
       v395 = HMFBooleanToString();
       [v6 supportsCHIP];
       v396 = HMFBooleanToString();
@@ -8305,21 +8305,21 @@ LABEL_264:
     }
 
     objc_autoreleasePoolPop(v391);
-    -[HMAccessory setSupportsCHIP:](v392, "setSupportsCHIP:", [v6 supportsCHIP]);
+    -[HMAccessory setSupportsCHIP:](selfCopy26, "setSupportsCHIP:", [v6 supportsCHIP]);
     v48 = 1;
     v217 = "ClearAllMessage" + 6;
   }
 
-  v397 = [(HMAccessory *)self knownToSystemCommissioner];
-  if (v397 != [v6 knownToSystemCommissioner])
+  knownToSystemCommissioner = [(HMAccessory *)self knownToSystemCommissioner];
+  if (knownToSystemCommissioner != [v6 knownToSystemCommissioner])
   {
     v398 = objc_autoreleasePoolPush();
-    v399 = self;
+    selfCopy27 = self;
     v400 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v400, OS_LOG_TYPE_INFO))
     {
       v401 = HMFGetLogIdentifier();
-      [(HMAccessory *)v399 knownToSystemCommissioner];
+      [(HMAccessory *)selfCopy27 knownToSystemCommissioner];
       v402 = HMFBooleanToString();
       [v6 knownToSystemCommissioner];
       v403 = HMFBooleanToString();
@@ -8333,31 +8333,31 @@ LABEL_264:
     }
 
     objc_autoreleasePoolPop(v398);
-    -[HMAccessory setKnownToSystemCommissioner:](v399, "setKnownToSystemCommissioner:", [v6 knownToSystemCommissioner]);
+    -[HMAccessory setKnownToSystemCommissioner:](selfCopy27, "setKnownToSystemCommissioner:", [v6 knownToSystemCommissioner]);
     v48 = 1;
     v217 = "ClearAllMessage" + 6;
   }
 
-  v404 = [(HMAccessory *)self rootPublicKey];
-  v405 = [v6 rootPublicKey];
+  rootPublicKey = [(HMAccessory *)self rootPublicKey];
+  rootPublicKey2 = [v6 rootPublicKey];
   v406 = HMFEqualObjects();
 
   if ((v406 & 1) == 0)
   {
     v407 = objc_autoreleasePoolPush();
-    v408 = self;
+    selfCopy28 = self;
     v409 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v409, OS_LOG_TYPE_INFO))
     {
       v410 = HMFGetLogIdentifier();
       v655 = v407;
       v411 = MEMORY[0x1E696AD98];
-      v412 = [(HMAccessory *)v408 rootPublicKey];
-      v413 = [v411 numberWithUnsignedInteger:{objc_msgSend(v412, "hash")}];
-      v414 = v367;
+      rootPublicKey3 = [(HMAccessory *)selfCopy28 rootPublicKey];
+      v413 = [v411 numberWithUnsignedInteger:{objc_msgSend(rootPublicKey3, "hash")}];
+      v414 = softwareVersion;
       v415 = MEMORY[0x1E696AD98];
-      v416 = [v6 rootPublicKey];
-      v417 = [v415 numberWithUnsignedInteger:{objc_msgSend(v416, "hash")}];
+      rootPublicKey4 = [v6 rootPublicKey];
+      v417 = [v415 numberWithUnsignedInteger:{objc_msgSend(rootPublicKey4, "hash")}];
       *buf = 138543874;
       v740 = v410;
       v741 = 2112;
@@ -8366,7 +8366,7 @@ LABEL_264:
       v744 = v417;
       _os_log_impl(&dword_19BB39000, v409, OS_LOG_TYPE_INFO, "%{public}@Updating Root Public Key (Hash) from %@ to %@", buf, 0x20u);
 
-      v367 = v414;
+      softwareVersion = v414;
       v407 = v655;
     }
 
@@ -8375,26 +8375,26 @@ LABEL_264:
     v217 = "ClearAllMessage" + 6;
   }
 
-  v418 = [(HMAccessory *)self nodeID];
-  v419 = [v6 nodeID];
+  nodeID = [(HMAccessory *)self nodeID];
+  nodeID2 = [v6 nodeID];
   v420 = HMFEqualObjects();
 
   if ((v420 & 1) == 0)
   {
     v421 = objc_autoreleasePoolPush();
-    v422 = self;
+    selfCopy29 = self;
     v423 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v423, OS_LOG_TYPE_INFO))
     {
       v424 = HMFGetLogIdentifier();
-      v425 = [(HMAccessory *)v422 nodeID];
-      v426 = [v6 nodeID];
+      nodeID3 = [(HMAccessory *)selfCopy29 nodeID];
+      nodeID4 = [v6 nodeID];
       *buf = 138543874;
       v740 = v424;
       v741 = 2112;
-      v742 = v425;
+      v742 = nodeID3;
       v743 = 2112;
-      v744 = v426;
+      v744 = nodeID4;
       _os_log_impl(&dword_19BB39000, v423, OS_LOG_TYPE_INFO, "%{public}@Updating NodeID from %@ to %@", buf, 0x20u);
     }
 
@@ -8402,26 +8402,26 @@ LABEL_264:
     v48 = 1;
   }
 
-  v427 = [(HMAccessory *)self commissioningID];
-  v428 = [v6 commissioningID];
+  commissioningID = [(HMAccessory *)self commissioningID];
+  commissioningID2 = [v6 commissioningID];
   v429 = HMFEqualObjects();
 
   if ((v429 & 1) == 0)
   {
     v430 = objc_autoreleasePoolPush();
-    v431 = self;
+    selfCopy30 = self;
     v432 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v432, OS_LOG_TYPE_INFO))
     {
       v433 = HMFGetLogIdentifier();
-      v434 = [(HMAccessory *)v431 commissioningID];
-      v435 = [v6 commissioningID];
+      commissioningID3 = [(HMAccessory *)selfCopy30 commissioningID];
+      commissioningID4 = [v6 commissioningID];
       *buf = 138543874;
       v740 = v433;
       v741 = 2112;
-      v742 = v434;
+      v742 = commissioningID3;
       v743 = 2112;
-      v744 = v435;
+      v744 = commissioningID4;
       _os_log_impl(&dword_19BB39000, v432, OS_LOG_TYPE_INFO, "%{public}@Updating commissioningID from %@ to %@", buf, 0x20u);
     }
 
@@ -8429,26 +8429,26 @@ LABEL_264:
     v48 = 1;
   }
 
-  v436 = [(HMAccessory *)self vendorID];
-  v437 = [v6 vendorID];
+  vendorID = [(HMAccessory *)self vendorID];
+  vendorID2 = [v6 vendorID];
   v438 = HMFEqualObjects();
 
   if ((v438 & 1) == 0)
   {
     v439 = objc_autoreleasePoolPush();
-    v440 = self;
+    selfCopy31 = self;
     v441 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v441, OS_LOG_TYPE_INFO))
     {
       v442 = HMFGetLogIdentifier();
-      v443 = [(HMAccessory *)v440 vendorID];
-      v444 = [v6 vendorID];
+      vendorID3 = [(HMAccessory *)selfCopy31 vendorID];
+      vendorID4 = [v6 vendorID];
       *buf = 138543874;
       v740 = v442;
       v741 = 2112;
-      v742 = v443;
+      v742 = vendorID3;
       v743 = 2112;
-      v744 = v444;
+      v744 = vendorID4;
       _os_log_impl(&dword_19BB39000, v441, OS_LOG_TYPE_INFO, "%{public}@Updating vendorID from %@ to %@", buf, 0x20u);
     }
 
@@ -8456,26 +8456,26 @@ LABEL_264:
     v48 = 1;
   }
 
-  v445 = [(HMAccessory *)self productID];
-  v446 = [v6 productID];
+  productID = [(HMAccessory *)self productID];
+  productID2 = [v6 productID];
   v447 = HMFEqualObjects();
 
   if ((v447 & 1) == 0)
   {
     v448 = objc_autoreleasePoolPush();
-    v449 = self;
+    selfCopy32 = self;
     v450 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v450, OS_LOG_TYPE_INFO))
     {
       v451 = HMFGetLogIdentifier();
-      v452 = [(HMAccessory *)v449 productID];
-      v453 = [v6 productID];
+      productID3 = [(HMAccessory *)selfCopy32 productID];
+      productID4 = [v6 productID];
       *buf = 138543874;
       v740 = v451;
       v741 = 2112;
-      v742 = v452;
+      v742 = productID3;
       v743 = 2112;
-      v744 = v453;
+      v744 = productID4;
       _os_log_impl(&dword_19BB39000, v450, OS_LOG_TYPE_INFO, "%{public}@Updating productID from %@ to %@", buf, 0x20u);
     }
 
@@ -8483,22 +8483,22 @@ LABEL_264:
     v48 = 1;
   }
 
-  v454 = [v6 bulletinBoardNotificationByEndpoint];
-  v455 = [(HMAccessory *)self _mergeBulletinBoardNotificationByEndpoint:v454];
+  bulletinBoardNotificationByEndpoint = [v6 bulletinBoardNotificationByEndpoint];
+  v455 = [(HMAccessory *)self _mergeBulletinBoardNotificationByEndpoint:bulletinBoardNotificationByEndpoint];
 
   if (v455)
   {
     v456 = objc_autoreleasePoolPush();
-    v457 = self;
+    selfCopy33 = self;
     v458 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v458, OS_LOG_TYPE_INFO))
     {
       v459 = HMFGetLogIdentifier();
-      v460 = [v6 bulletinBoardNotificationByEndpoint];
+      bulletinBoardNotificationByEndpoint2 = [v6 bulletinBoardNotificationByEndpoint];
       *buf = 138543618;
       v740 = v459;
       v741 = 2112;
-      v742 = v460;
+      v742 = bulletinBoardNotificationByEndpoint2;
       _os_log_impl(&dword_19BB39000, v458, OS_LOG_TYPE_INFO, "%{public}@Updated matter bulletin board notification to %@", buf, 0x16u);
     }
 
@@ -8506,26 +8506,26 @@ LABEL_264:
     v48 = 1;
   }
 
-  v461 = [(HMAccessory *)self matterDeviceTypeID];
-  v462 = [v6 matterDeviceTypeID];
+  matterDeviceTypeID = [(HMAccessory *)self matterDeviceTypeID];
+  matterDeviceTypeID2 = [v6 matterDeviceTypeID];
   v463 = HMFEqualObjects();
 
   if ((v463 & 1) == 0)
   {
     v464 = objc_autoreleasePoolPush();
-    v465 = self;
+    selfCopy34 = self;
     v466 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v466, OS_LOG_TYPE_INFO))
     {
       v467 = HMFGetLogIdentifier();
-      v468 = [(HMAccessory *)v465 matterDeviceTypeID];
-      v469 = [v6 matterDeviceTypeID];
+      matterDeviceTypeID3 = [(HMAccessory *)selfCopy34 matterDeviceTypeID];
+      matterDeviceTypeID4 = [v6 matterDeviceTypeID];
       *buf = 138543874;
       v740 = v467;
       v741 = 2112;
-      v742 = v468;
+      v742 = matterDeviceTypeID3;
       v743 = 2112;
-      v744 = v469;
+      v744 = matterDeviceTypeID4;
       _os_log_impl(&dword_19BB39000, v466, OS_LOG_TYPE_INFO, "%{public}@Updating matterDeviceTypeID from %@ to %@", buf, 0x20u);
     }
 
@@ -8533,16 +8533,16 @@ LABEL_264:
     v48 = 1;
   }
 
-  v470 = [(HMAccessory *)self requiresThreadRouter];
-  if (v470 != [v6 requiresThreadRouter])
+  requiresThreadRouter = [(HMAccessory *)self requiresThreadRouter];
+  if (requiresThreadRouter != [v6 requiresThreadRouter])
   {
     v471 = objc_autoreleasePoolPush();
-    v472 = self;
+    selfCopy35 = self;
     v473 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v473, OS_LOG_TYPE_INFO))
     {
       v474 = HMFGetLogIdentifier();
-      [(HMAccessory *)v472 requiresThreadRouter];
+      [(HMAccessory *)selfCopy35 requiresThreadRouter];
       v475 = HMFBooleanToString();
       [v6 requiresThreadRouter];
       v476 = HMFBooleanToString();
@@ -8556,203 +8556,203 @@ LABEL_264:
     }
 
     objc_autoreleasePoolPop(v471);
-    -[HMAccessory setRequiresThreadRouter:](v472, "setRequiresThreadRouter:", [v6 requiresThreadRouter]);
+    -[HMAccessory setRequiresThreadRouter:](selfCopy35, "setRequiresThreadRouter:", [v6 requiresThreadRouter]);
     v48 = 1;
     v217 = "llMessage";
   }
 
-  v477 = [(HMAccessory *)self matterWEDSupport];
-  v478 = [v6 matterWEDSupport];
+  matterWEDSupport = [(HMAccessory *)self matterWEDSupport];
+  matterWEDSupport2 = [v6 matterWEDSupport];
   v479 = HMFEqualObjects();
 
   if ((v479 & 1) == 0)
   {
     v480 = objc_autoreleasePoolPush();
-    v481 = self;
+    selfCopy36 = self;
     v482 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v482, OS_LOG_TYPE_INFO))
     {
       v483 = HMFGetLogIdentifier();
-      v484 = [(HMAccessory *)v481 matterWEDSupport];
-      v485 = [v6 matterWEDSupport];
+      matterWEDSupport3 = [(HMAccessory *)selfCopy36 matterWEDSupport];
+      matterWEDSupport4 = [v6 matterWEDSupport];
       *buf = 138543874;
       v740 = v483;
       v741 = 2112;
-      v742 = v484;
+      v742 = matterWEDSupport3;
       v743 = 2112;
-      v744 = v485;
+      v744 = matterWEDSupport4;
       _os_log_impl(&dword_19BB39000, v482, OS_LOG_TYPE_INFO, "%{public}@Updating matterWEDSupport from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v480);
-    v486 = [v6 matterWEDSupport];
-    [(HMAccessory *)v481 setMatterWEDSupport:v486];
+    matterWEDSupport5 = [v6 matterWEDSupport];
+    [(HMAccessory *)selfCopy36 setMatterWEDSupport:matterWEDSupport5];
 
     v48 = 1;
   }
 
-  v487 = [(HMAccessory *)self matterExtendedMACAddress];
-  v488 = [v6 matterExtendedMACAddress];
+  matterExtendedMACAddress = [(HMAccessory *)self matterExtendedMACAddress];
+  matterExtendedMACAddress2 = [v6 matterExtendedMACAddress];
   v489 = HMFEqualObjects();
 
   if ((v489 & 1) == 0)
   {
     v490 = objc_autoreleasePoolPush();
-    v491 = self;
+    selfCopy37 = self;
     v492 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v492, OS_LOG_TYPE_INFO))
     {
       v493 = HMFGetLogIdentifier();
-      v494 = [(HMAccessory *)v491 matterExtendedMACAddress];
-      v495 = [v6 matterExtendedMACAddress];
+      matterExtendedMACAddress3 = [(HMAccessory *)selfCopy37 matterExtendedMACAddress];
+      matterExtendedMACAddress4 = [v6 matterExtendedMACAddress];
       *buf = 138543874;
       v740 = v493;
       v741 = 2112;
-      v742 = v494;
+      v742 = matterExtendedMACAddress3;
       v743 = 2112;
-      v744 = v495;
+      v744 = matterExtendedMACAddress4;
       _os_log_impl(&dword_19BB39000, v492, OS_LOG_TYPE_INFO, "%{public}@Updating matterExtendedMACAddress from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v490);
-    v496 = [v6 matterExtendedMACAddress];
-    [(HMAccessory *)v491 setMatterExtendedMACAddress:v496];
+    matterExtendedMACAddress5 = [v6 matterExtendedMACAddress];
+    [(HMAccessory *)selfCopy37 setMatterExtendedMACAddress:matterExtendedMACAddress5];
 
     v48 = 1;
   }
 
-  v497 = [(HMAccessory *)self supportedLinkLayerTypes];
-  v498 = [v6 supportedLinkLayerTypes];
+  supportedLinkLayerTypes = [(HMAccessory *)self supportedLinkLayerTypes];
+  supportedLinkLayerTypes2 = [v6 supportedLinkLayerTypes];
   v499 = HMFEqualObjects();
 
   if ((v499 & 1) == 0)
   {
     v500 = objc_autoreleasePoolPush();
-    v501 = self;
+    selfCopy38 = self;
     v502 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v502, OS_LOG_TYPE_INFO))
     {
       v503 = HMFGetLogIdentifier();
-      v504 = [(HMAccessory *)v501 supportedLinkLayerTypes];
-      v505 = [v6 supportedLinkLayerTypes];
+      supportedLinkLayerTypes3 = [(HMAccessory *)selfCopy38 supportedLinkLayerTypes];
+      supportedLinkLayerTypes4 = [v6 supportedLinkLayerTypes];
       *buf = 138543874;
       v740 = v503;
       v741 = 2112;
-      v742 = v504;
+      v742 = supportedLinkLayerTypes3;
       v743 = 2112;
-      v744 = v505;
+      v744 = supportedLinkLayerTypes4;
       _os_log_impl(&dword_19BB39000, v502, OS_LOG_TYPE_INFO, "%{public}@Updating supportedLinkLayerTypes from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v500);
-    v506 = [v6 supportedLinkLayerTypes];
-    [(HMAccessory *)v501 setSupportedLinkLayerTypes:v506];
+    supportedLinkLayerTypes5 = [v6 supportedLinkLayerTypes];
+    [(HMAccessory *)selfCopy38 setSupportedLinkLayerTypes:supportedLinkLayerTypes5];
 
     v48 = 1;
   }
 
-  v507 = [(HMAccessory *)self wifiNetworkInfo];
-  v508 = [v6 wifiNetworkInfo];
+  wifiNetworkInfo = [(HMAccessory *)self wifiNetworkInfo];
+  wifiNetworkInfo2 = [v6 wifiNetworkInfo];
   v509 = HMFEqualObjects();
 
   if ((v509 & 1) == 0)
   {
     v510 = objc_autoreleasePoolPush();
-    v511 = self;
+    selfCopy39 = self;
     v512 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v512, OS_LOG_TYPE_INFO))
     {
       v513 = HMFGetLogIdentifier();
-      v514 = [(HMAccessory *)v511 wifiNetworkInfo];
-      v515 = [v6 wifiNetworkInfo];
+      wifiNetworkInfo3 = [(HMAccessory *)selfCopy39 wifiNetworkInfo];
+      wifiNetworkInfo4 = [v6 wifiNetworkInfo];
       *buf = 138543874;
       v740 = v513;
       v741 = 2112;
-      v742 = v514;
+      v742 = wifiNetworkInfo3;
       v743 = 2112;
-      v744 = v515;
+      v744 = wifiNetworkInfo4;
       _os_log_impl(&dword_19BB39000, v512, OS_LOG_TYPE_INFO, "%{public}@Updating WiFi network: %@ new WiFi network: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v510);
-    v516 = [v6 wifiNetworkInfo];
-    [(HMAccessory *)v511 setWifiNetworkInfo:v516];
+    wifiNetworkInfo5 = [v6 wifiNetworkInfo];
+    [(HMAccessory *)selfCopy39 setWifiNetworkInfo:wifiNetworkInfo5];
 
-    v517 = [(HMAccessory *)v511 context];
-    v518 = [v517 queue];
+    context38 = [(HMAccessory *)selfCopy39 context];
+    queue37 = [context38 queue];
     v676[0] = MEMORY[0x1E69E9820];
     v676[1] = *(v217 + 185);
     v676[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1311;
     v676[3] = &unk_1E754E2A8;
-    v676[4] = v511;
-    dispatch_async(v518, v676);
+    v676[4] = selfCopy39;
+    dispatch_async(queue37, v676);
 
     v48 = 1;
   }
 
-  v519 = [(HMAccessory *)self networkProtectionGroupUUID];
-  v520 = [v6 networkProtectionGroupUUID];
+  networkProtectionGroupUUID = [(HMAccessory *)self networkProtectionGroupUUID];
+  networkProtectionGroupUUID2 = [v6 networkProtectionGroupUUID];
   v521 = HMFEqualObjects();
 
   if ((v521 & 1) == 0)
   {
-    v522 = [v6 networkProtectionGroupUUID];
-    [(HMAccessory *)self setNetworkProtectionGroupUUID:v522];
+    networkProtectionGroupUUID3 = [v6 networkProtectionGroupUUID];
+    [(HMAccessory *)self setNetworkProtectionGroupUUID:networkProtectionGroupUUID3];
 
     v48 = 1;
   }
 
-  v523 = [(HMAccessory *)self audioDestination];
-  v524 = [v6 audioDestination];
+  audioDestination = [(HMAccessory *)self audioDestination];
+  audioDestination2 = [v6 audioDestination];
   v525 = HMFEqualObjects();
 
   if ((v525 & 1) == 0)
   {
     v526 = objc_autoreleasePoolPush();
-    v527 = self;
+    selfCopy40 = self;
     v528 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v528, OS_LOG_TYPE_INFO))
     {
       v529 = HMFGetLogIdentifier();
-      v530 = [(HMAccessory *)v527 audioDestination];
-      v531 = [v6 audioDestination];
+      audioDestination3 = [(HMAccessory *)selfCopy40 audioDestination];
+      audioDestination4 = [v6 audioDestination];
       *buf = 138543874;
       v740 = v529;
       v741 = 2112;
-      v742 = v530;
+      v742 = audioDestination3;
       v743 = 2112;
-      v744 = v531;
+      v744 = audioDestination4;
       _os_log_impl(&dword_19BB39000, v528, OS_LOG_TYPE_INFO, "%{public}@Updating audio destination: %@ new audio destination: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v526);
-    v532 = [v6 audioDestination];
-    [(HMAccessory *)v527 setAudioDestination:v532];
+    audioDestination5 = [v6 audioDestination];
+    [(HMAccessory *)selfCopy40 setAudioDestination:audioDestination5];
 
-    v533 = [(HMAccessory *)v527 context];
-    v534 = [v533 queue];
+    context39 = [(HMAccessory *)selfCopy40 context];
+    queue38 = [context39 queue];
     v675[0] = MEMORY[0x1E69E9820];
     v675[1] = *(v217 + 185);
     v675[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1312;
     v675[3] = &unk_1E754E2A8;
-    v675[4] = v527;
-    dispatch_async(v534, v675);
+    v675[4] = selfCopy40;
+    dispatch_async(queue38, v675);
 
     v48 = 1;
   }
 
-  v535 = [(HMAccessory *)self audioDestinationController];
+  audioDestinationController = [(HMAccessory *)self audioDestinationController];
 
-  v536 = [v6 audioDestinationController];
-  v537 = v536;
-  if (v535)
+  audioDestinationController2 = [v6 audioDestinationController];
+  v537 = audioDestinationController2;
+  if (audioDestinationController)
   {
 
     if (v537)
     {
-      v538 = [(HMAccessory *)self audioDestinationController];
-      v539 = [v6 audioDestinationController];
-      v540 = [v538 mergeFromNewObject:v539];
+      audioDestinationController3 = [(HMAccessory *)self audioDestinationController];
+      audioDestinationController4 = [v6 audioDestinationController];
+      v540 = [audioDestinationController3 mergeFromNewObject:audioDestinationController4];
 
       if (!v540)
       {
@@ -8760,60 +8760,60 @@ LABEL_264:
       }
 
       v541 = objc_autoreleasePoolPush();
-      v542 = self;
+      selfCopy41 = self;
       v543 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v543, OS_LOG_TYPE_INFO))
       {
         v544 = HMFGetLogIdentifier();
-        v545 = [(HMAccessory *)v542 audioDestinationController];
+        audioDestinationController5 = [(HMAccessory *)selfCopy41 audioDestinationController];
         *buf = 138543618;
         v740 = v544;
         v741 = 2112;
-        v742 = v545;
+        v742 = audioDestinationController5;
         _os_log_impl(&dword_19BB39000, v543, OS_LOG_TYPE_INFO, "%{public}@Updated audio destination controller: %@ due to accessory merge", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v541);
-      v546 = [(HMAccessory *)v542 context];
-      v547 = [v546 queue];
-      v548 = v547;
+      context40 = [(HMAccessory *)selfCopy41 context];
+      queue39 = [context40 queue];
+      v548 = queue39;
       v673[0] = MEMORY[0x1E69E9820];
       v673[1] = *(v217 + 185);
       v673[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1314;
       v673[3] = &unk_1E754E2A8;
-      v673[4] = v542;
+      v673[4] = selfCopy41;
       v549 = v673;
     }
 
     else
     {
       v558 = objc_autoreleasePoolPush();
-      v559 = self;
+      selfCopy42 = self;
       v560 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v560, OS_LOG_TYPE_INFO))
       {
         v561 = HMFGetLogIdentifier();
-        v562 = [(HMAccessory *)v559 audioDestinationController];
+        audioDestinationController6 = [(HMAccessory *)selfCopy42 audioDestinationController];
         *buf = 138543618;
         v740 = v561;
         v741 = 2112;
-        v742 = v562;
+        v742 = audioDestinationController6;
         _os_log_impl(&dword_19BB39000, v560, OS_LOG_TYPE_INFO, "%{public}@Removing audio destination controller: %@ due to accessory merge", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v558);
-      v563 = [(HMAccessory *)v559 audioDestinationController];
-      [v563 unconfigure];
+      audioDestinationController7 = [(HMAccessory *)selfCopy42 audioDestinationController];
+      [audioDestinationController7 unconfigure];
 
-      [(HMAccessory *)v559 setAudioDestinationController:0];
-      v546 = [(HMAccessory *)v559 context];
-      v547 = [v546 queue];
-      v548 = v547;
+      [(HMAccessory *)selfCopy42 setAudioDestinationController:0];
+      context40 = [(HMAccessory *)selfCopy42 context];
+      queue39 = [context40 queue];
+      v548 = queue39;
       v674[0] = MEMORY[0x1E69E9820];
       v674[1] = *(v217 + 185);
       v674[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1313;
       v674[3] = &unk_1E754E2A8;
-      v674[4] = v559;
+      v674[4] = selfCopy42;
       v549 = v674;
     }
   }
@@ -8827,49 +8827,49 @@ LABEL_264:
     }
 
     v550 = objc_autoreleasePoolPush();
-    v551 = self;
+    selfCopy43 = self;
     v552 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v552, OS_LOG_TYPE_INFO))
     {
       v553 = HMFGetLogIdentifier();
-      v554 = [v6 audioDestinationController];
+      audioDestinationController8 = [v6 audioDestinationController];
       *buf = 138543618;
       v740 = v553;
       v741 = 2112;
-      v742 = v554;
+      v742 = audioDestinationController8;
       _os_log_impl(&dword_19BB39000, v552, OS_LOG_TYPE_INFO, "%{public}@Adding new audio destination controller: %@ due to accessory merge", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v550);
-    v555 = [v6 audioDestinationController];
-    [(HMAccessory *)v551 setAudioDestinationController:v555];
+    audioDestinationController9 = [v6 audioDestinationController];
+    [(HMAccessory *)selfCopy43 setAudioDestinationController:audioDestinationController9];
 
-    v556 = [(HMAccessory *)v551 audioDestinationController];
-    v557 = [(HMAccessory *)v551 context];
-    [v556 configureWithContext:v557 dataSource:v551];
+    audioDestinationController10 = [(HMAccessory *)selfCopy43 audioDestinationController];
+    context41 = [(HMAccessory *)selfCopy43 context];
+    [audioDestinationController10 configureWithContext:context41 dataSource:selfCopy43];
 
-    v546 = [(HMAccessory *)v551 context];
-    v547 = [v546 queue];
-    v548 = v547;
+    context40 = [(HMAccessory *)selfCopy43 context];
+    queue39 = [context40 queue];
+    v548 = queue39;
     v672[0] = MEMORY[0x1E69E9820];
     v672[1] = *(v217 + 185);
     v672[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1315;
     v672[3] = &unk_1E754E2A8;
-    v672[4] = v551;
+    v672[4] = selfCopy43;
     v549 = v672;
   }
 
-  dispatch_async(v547, v549);
+  dispatch_async(queue39, v549);
 
   v48 = 1;
 LABEL_347:
-  v564 = [v6 audioAnalysisEventBulletinBoardNotification];
+  audioAnalysisEventBulletinBoardNotification = [v6 audioAnalysisEventBulletinBoardNotification];
 
-  if (v564)
+  if (audioAnalysisEventBulletinBoardNotification)
   {
-    v565 = [(HMAccessory *)self audioAnalysisEventBulletinBoardNotification];
-    v566 = [v6 audioAnalysisEventBulletinBoardNotification];
-    v48 |= [v565 mergeFromNewObject:v566];
+    audioAnalysisEventBulletinBoardNotification2 = [(HMAccessory *)self audioAnalysisEventBulletinBoardNotification];
+    audioAnalysisEventBulletinBoardNotification3 = [v6 audioAnalysisEventBulletinBoardNotification];
+    v48 |= [audioAnalysisEventBulletinBoardNotification2 mergeFromNewObject:audioAnalysisEventBulletinBoardNotification3];
   }
 
   if (-[HMAccessory supportsMessagedHomePodSettings](self, "supportsMessagedHomePodSettings") || ([v6 supportsMessagedHomePodSettings] & 1) != 0)
@@ -8877,13 +8877,13 @@ LABEL_347:
     goto LABEL_362;
   }
 
-  v567 = [(HMAccessory *)self preferredUserSelectionType];
-  v568 = [v6 preferredUserSelectionType];
-  if (v567 != v568)
+  preferredUserSelectionType = [(HMAccessory *)self preferredUserSelectionType];
+  preferredUserSelectionType2 = [v6 preferredUserSelectionType];
+  if (preferredUserSelectionType != preferredUserSelectionType2)
   {
     -[HMAccessory setPreferredUserSelectionType:](self, "setPreferredUserSelectionType:", [v6 preferredUserSelectionType]);
     v569 = objc_autoreleasePoolPush();
-    v570 = self;
+    selfCopy44 = self;
     v571 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v571, OS_LOG_TYPE_INFO))
     {
@@ -8901,13 +8901,13 @@ LABEL_347:
     v217 = "llMessage";
   }
 
-  v574 = [(HMAccessory *)self preferredMediaUserUUID];
-  v575 = [v6 preferredMediaUserUUID];
+  preferredMediaUserUUID = [(HMAccessory *)self preferredMediaUserUUID];
+  preferredMediaUserUUID2 = [v6 preferredMediaUserUUID];
   v576 = HMFEqualObjects();
 
   if (v576)
   {
-    if (v567 == v568)
+    if (preferredUserSelectionType == preferredUserSelectionType2)
     {
       goto LABEL_362;
     }
@@ -8915,20 +8915,20 @@ LABEL_347:
 
   else
   {
-    v577 = [v6 preferredMediaUserUUID];
-    [(HMAccessory *)self setPreferredMediaUserUUID:v577];
+    preferredMediaUserUUID3 = [v6 preferredMediaUserUUID];
+    [(HMAccessory *)self setPreferredMediaUserUUID:preferredMediaUserUUID3];
 
     v578 = objc_autoreleasePoolPush();
-    v579 = self;
+    selfCopy45 = self;
     v580 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v580, OS_LOG_TYPE_INFO))
     {
       v581 = HMFGetLogIdentifier();
-      v582 = [v6 preferredMediaUserUUID];
+      preferredMediaUserUUID4 = [v6 preferredMediaUserUUID];
       *buf = 138543618;
       v740 = v581;
       v741 = 2112;
-      v742 = v582;
+      v742 = preferredMediaUserUUID4;
       _os_log_impl(&dword_19BB39000, v580, OS_LOG_TYPE_INFO, "%{public}@Updating Preferred Media User to %@", buf, 0x16u);
     }
 
@@ -8936,18 +8936,18 @@ LABEL_347:
     v48 = 1;
   }
 
-  v583 = [(HMAccessory *)self context];
-  v584 = [v583 queue];
+  context42 = [(HMAccessory *)self context];
+  queue40 = [context42 queue];
   v671[0] = MEMORY[0x1E69E9820];
   v671[1] = *(v217 + 185);
   v671[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1316;
   v671[3] = &unk_1E754E2A8;
   v671[4] = self;
-  dispatch_async(v584, v671);
+  dispatch_async(queue40, v671);
 
 LABEL_362:
-  v585 = [(HMAccessory *)self supportsPrimaryUserInfoSubscription];
-  if (v585 != [v6 supportsPrimaryUserInfoSubscription])
+  supportsPrimaryUserInfoSubscription = [(HMAccessory *)self supportsPrimaryUserInfoSubscription];
+  if (supportsPrimaryUserInfoSubscription != [v6 supportsPrimaryUserInfoSubscription])
   {
     -[HMAccessory setSupportsPrimaryUserInfoSubscription:](self, "setSupportsPrimaryUserInfoSubscription:", [v6 supportsPrimaryUserInfoSubscription]);
     if ([(HMAccessory *)self supportsPrimaryUserInfoSubscription])
@@ -8963,17 +8963,17 @@ LABEL_362:
     v48 = 1;
   }
 
-  v586 = [(HMAccessory *)self supportsPreferredMediaUser];
-  if (v586 != [v6 supportsPreferredMediaUser])
+  supportsPreferredMediaUser = [(HMAccessory *)self supportsPreferredMediaUser];
+  if (supportsPreferredMediaUser != [v6 supportsPreferredMediaUser])
   {
     -[HMAccessory setSupportsPreferredMediaUser:](self, "setSupportsPreferredMediaUser:", [v6 supportsPreferredMediaUser]);
     v587 = objc_autoreleasePoolPush();
-    v588 = self;
+    selfCopy46 = self;
     v589 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v589, OS_LOG_TYPE_INFO))
     {
       v590 = HMFGetLogIdentifier();
-      v591 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMAccessory supportsPreferredMediaUser](v588, "supportsPreferredMediaUser")}];
+      v591 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMAccessory supportsPreferredMediaUser](selfCopy46, "supportsPreferredMediaUser")}];
       *buf = 138543618;
       v740 = v590;
       v741 = 2112;
@@ -8982,71 +8982,71 @@ LABEL_362:
     }
 
     objc_autoreleasePoolPop(v587);
-    v592 = [(HMAccessory *)v588 context];
-    v593 = [v592 queue];
+    context43 = [(HMAccessory *)selfCopy46 context];
+    queue41 = [context43 queue];
     v670[0] = MEMORY[0x1E69E9820];
     v670[1] = *(v217 + 185);
     v670[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1317;
     v670[3] = &unk_1E754E2A8;
-    v670[4] = v588;
-    dispatch_async(v593, v670);
+    v670[4] = selfCopy46;
+    dispatch_async(queue41, v670);
 
     v48 = 1;
   }
 
-  v594 = [(HMAccessory *)self pendingConfigurationIdentifier];
-  v595 = [v6 pendingConfigurationIdentifier];
+  pendingConfigurationIdentifier = [(HMAccessory *)self pendingConfigurationIdentifier];
+  pendingConfigurationIdentifier2 = [v6 pendingConfigurationIdentifier];
   v596 = HMFEqualObjects();
 
   if ((v596 & 1) == 0)
   {
     v597 = objc_autoreleasePoolPush();
-    v598 = self;
+    selfCopy47 = self;
     v599 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v599, OS_LOG_TYPE_INFO))
     {
       v600 = HMFGetLogIdentifier();
-      v601 = [(HMAccessory *)v598 pendingConfigurationIdentifier];
-      v602 = [v6 pendingConfigurationIdentifier];
+      pendingConfigurationIdentifier3 = [(HMAccessory *)selfCopy47 pendingConfigurationIdentifier];
+      pendingConfigurationIdentifier4 = [v6 pendingConfigurationIdentifier];
       *buf = 138543874;
       v740 = v600;
       v741 = 2112;
-      v742 = v601;
+      v742 = pendingConfigurationIdentifier3;
       v743 = 2112;
-      v744 = v602;
+      v744 = pendingConfigurationIdentifier4;
       _os_log_impl(&dword_19BB39000, v599, OS_LOG_TYPE_INFO, "%{public}@Updating pendingConfigurationIdentifier from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v597);
-    v603 = [v6 pendingConfigurationIdentifier];
-    [(HMAccessory *)v598 setPendingConfigurationIdentifier:v603];
+    pendingConfigurationIdentifier5 = [v6 pendingConfigurationIdentifier];
+    [(HMAccessory *)selfCopy47 setPendingConfigurationIdentifier:pendingConfigurationIdentifier5];
 
     if (objc_opt_respondsToSelector())
     {
-      v604 = [(HMAccessory *)v598 context];
-      v605 = [v604 queue];
+      context44 = [(HMAccessory *)selfCopy47 context];
+      queue42 = [context44 queue];
       v668[0] = MEMORY[0x1E69E9820];
       v668[1] = *(v217 + 185);
       v668[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1319;
       v668[3] = &unk_1E754E5C0;
-      v668[4] = v598;
+      v668[4] = selfCopy47;
       v669 = v658;
-      dispatch_async(v605, v668);
+      dispatch_async(queue42, v668);
     }
 
     v48 = 1;
   }
 
-  v606 = [(HMAccessory *)self supportsManagedConfigurationProfile];
-  if (v606 != [v6 supportsManagedConfigurationProfile])
+  supportsManagedConfigurationProfile = [(HMAccessory *)self supportsManagedConfigurationProfile];
+  if (supportsManagedConfigurationProfile != [v6 supportsManagedConfigurationProfile])
   {
     v607 = objc_autoreleasePoolPush();
-    v608 = self;
+    selfCopy48 = self;
     v609 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v609, OS_LOG_TYPE_INFO))
     {
       v610 = HMFGetLogIdentifier();
-      [(HMAccessory *)v608 supportsManagedConfigurationProfile];
+      [(HMAccessory *)selfCopy48 supportsManagedConfigurationProfile];
       v611 = HMFBooleanToString();
       [v6 supportsManagedConfigurationProfile];
       v612 = HMFBooleanToString();
@@ -9060,28 +9060,28 @@ LABEL_362:
     }
 
     objc_autoreleasePoolPop(v607);
-    -[HMAccessory setSupportsManagedConfigurationProfile:](v608, "setSupportsManagedConfigurationProfile:", [v6 supportsManagedConfigurationProfile]);
+    -[HMAccessory setSupportsManagedConfigurationProfile:](selfCopy48, "setSupportsManagedConfigurationProfile:", [v6 supportsManagedConfigurationProfile]);
     v48 = 1;
     v217 = "ClearAllMessage" + 6;
   }
 
-  v613 = [(HMAccessory *)self productColor];
-  if (v613 != [v6 productColor])
+  productColor = [(HMAccessory *)self productColor];
+  if (productColor != [v6 productColor])
   {
     -[HMAccessory setProductColor:](self, "setProductColor:", [v6 productColor]);
     v48 = 1;
   }
 
-  v614 = [(HMAccessory *)self supportsMessagedHomePodSettings];
-  if (v614 != [v6 supportsMessagedHomePodSettings])
+  supportsMessagedHomePodSettings = [(HMAccessory *)self supportsMessagedHomePodSettings];
+  if (supportsMessagedHomePodSettings != [v6 supportsMessagedHomePodSettings])
   {
     v615 = objc_autoreleasePoolPush();
-    v616 = self;
+    selfCopy49 = self;
     v617 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v617, OS_LOG_TYPE_DEFAULT))
     {
       v618 = HMFGetLogIdentifier();
-      [(HMAccessory *)v616 supportsMessagedHomePodSettings];
+      [(HMAccessory *)selfCopy49 supportsMessagedHomePodSettings];
       v619 = HMFBooleanToString();
       [v6 supportsMessagedHomePodSettings];
       v620 = HMFBooleanToString();
@@ -9095,34 +9095,34 @@ LABEL_362:
     }
 
     objc_autoreleasePoolPop(v615);
-    -[HMAccessory setSupportsMessagedHomePodSettings:](v616, "setSupportsMessagedHomePodSettings:", [v6 supportsMessagedHomePodSettings]);
-    if ([(HMAccessory *)v616 supportsMessagedHomePodSettings])
+    -[HMAccessory setSupportsMessagedHomePodSettings:](selfCopy49, "setSupportsMessagedHomePodSettings:", [v6 supportsMessagedHomePodSettings]);
+    if ([(HMAccessory *)selfCopy49 supportsMessagedHomePodSettings])
     {
-      [(HMAccessory *)v616 configureSettingsAdapterIfNeeded];
-      [(HMAccessory *)v616 configureInfoDataProviderIfNeededWithOptions:4];
+      [(HMAccessory *)selfCopy49 configureSettingsAdapterIfNeeded];
+      [(HMAccessory *)selfCopy49 configureInfoDataProviderIfNeededWithOptions:4];
     }
 
     v48 = 1;
     v217 = "ClearAllMessage" + 6;
   }
 
-  v621 = [(HMAccessory *)self supportsSoftwareUpdateV2];
-  if (v621 != [v6 supportsSoftwareUpdateV2])
+  supportsSoftwareUpdateV2 = [(HMAccessory *)self supportsSoftwareUpdateV2];
+  if (supportsSoftwareUpdateV2 != [v6 supportsSoftwareUpdateV2])
   {
     -[HMAccessory setSupportsSoftwareUpdateV2:](self, "setSupportsSoftwareUpdateV2:", [v6 supportsSoftwareUpdateV2]);
     v48 = 1;
   }
 
-  v622 = [(HMAccessory *)self supportsRMVonAppleTV];
-  if (v622 != [v6 supportsRMVonAppleTV])
+  supportsRMVonAppleTV = [(HMAccessory *)self supportsRMVonAppleTV];
+  if (supportsRMVonAppleTV != [v6 supportsRMVonAppleTV])
   {
     v623 = objc_autoreleasePoolPush();
-    v624 = self;
+    selfCopy50 = self;
     v625 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v625, OS_LOG_TYPE_INFO))
     {
       v626 = HMFGetLogIdentifier();
-      [(HMAccessory *)v624 supportsRMVonAppleTV];
+      [(HMAccessory *)selfCopy50 supportsRMVonAppleTV];
       v627 = HMFBooleanToString();
       [v6 supportsRMVonAppleTV];
       v628 = HMFBooleanToString();
@@ -9136,30 +9136,30 @@ LABEL_362:
     }
 
     objc_autoreleasePoolPop(v623);
-    -[HMAccessory setSupportsRMVonAppleTV:](v624, "setSupportsRMVonAppleTV:", [v6 supportsRMVonAppleTV]);
-    v629 = [(HMAccessory *)v624 context];
-    v630 = [v629 queue];
+    -[HMAccessory setSupportsRMVonAppleTV:](selfCopy50, "setSupportsRMVonAppleTV:", [v6 supportsRMVonAppleTV]);
+    context45 = [(HMAccessory *)selfCopy50 context];
+    queue43 = [context45 queue];
     v667[0] = MEMORY[0x1E69E9820];
     v217 = "llMessage";
     v667[1] = 3221225472;
     v667[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1321;
     v667[3] = &unk_1E754E2A8;
-    v667[4] = v624;
-    dispatch_async(v630, v667);
+    v667[4] = selfCopy50;
+    dispatch_async(queue43, v667);
 
     v48 = 1;
   }
 
-  v631 = [(HMAccessory *)self supportsJustSiri];
-  if (v631 != [v6 supportsJustSiri])
+  supportsJustSiri = [(HMAccessory *)self supportsJustSiri];
+  if (supportsJustSiri != [v6 supportsJustSiri])
   {
     v632 = objc_autoreleasePoolPush();
-    v633 = self;
+    selfCopy51 = self;
     v634 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v634, OS_LOG_TYPE_INFO))
     {
       v635 = HMFGetLogIdentifier();
-      [(HMAccessory *)v633 supportsJustSiri];
+      [(HMAccessory *)selfCopy51 supportsJustSiri];
       v636 = HMFBooleanToString();
       [v6 supportsJustSiri];
       v637 = HMFBooleanToString();
@@ -9173,50 +9173,50 @@ LABEL_362:
     }
 
     objc_autoreleasePoolPop(v632);
-    -[HMAccessory setSupportsJustSiri:](v633, "setSupportsJustSiri:", [v6 supportsJustSiri]);
-    v638 = [(HMAccessory *)v633 context];
-    v639 = [v638 queue];
+    -[HMAccessory setSupportsJustSiri:](selfCopy51, "setSupportsJustSiri:", [v6 supportsJustSiri]);
+    context46 = [(HMAccessory *)selfCopy51 context];
+    queue44 = [context46 queue];
     v666[0] = MEMORY[0x1E69E9820];
     v217 = "llMessage";
     v666[1] = 3221225472;
     v666[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_1322;
     v666[3] = &unk_1E754E2A8;
-    v666[4] = v633;
-    dispatch_async(v639, v666);
+    v666[4] = selfCopy51;
+    dispatch_async(queue44, v666);
 
     v48 = 1;
   }
 
-  v640 = [(HMAccessory *)self supportsStereoOdeonTTSUBypassingPrimary];
-  if (v640 != [v6 supportsStereoOdeonTTSUBypassingPrimary])
+  supportsStereoOdeonTTSUBypassingPrimary = [(HMAccessory *)self supportsStereoOdeonTTSUBypassingPrimary];
+  if (supportsStereoOdeonTTSUBypassingPrimary != [v6 supportsStereoOdeonTTSUBypassingPrimary])
   {
     -[HMAccessory setSupportsStereoOdeonTTSUBypassingPrimary:](self, "setSupportsStereoOdeonTTSUBypassingPrimary:", [v6 supportsStereoOdeonTTSUBypassingPrimary]);
     v48 = 1;
   }
 
-  v641 = [(HMAccessory *)self supportsNetworkDiagnostics];
-  if (v641 != [v6 supportsNetworkDiagnostics])
+  supportsNetworkDiagnostics = [(HMAccessory *)self supportsNetworkDiagnostics];
+  if (supportsNetworkDiagnostics != [v6 supportsNetworkDiagnostics])
   {
     -[HMAccessory setSupportsNetworkDiagnostics:](self, "setSupportsNetworkDiagnostics:", [v6 supportsNetworkDiagnostics]);
     v48 = 1;
   }
 
-  v642 = [(HMAccessory *)self supportsCrossfadeAsAirPlaySource];
-  if (v642 != [v6 supportsCrossfadeAsAirPlaySource])
+  supportsCrossfadeAsAirPlaySource = [(HMAccessory *)self supportsCrossfadeAsAirPlaySource];
+  if (supportsCrossfadeAsAirPlaySource != [v6 supportsCrossfadeAsAirPlaySource])
   {
     -[HMAccessory setSupportsCrossfadeAsAirPlaySource:](self, "setSupportsCrossfadeAsAirPlaySource:", [v6 supportsCrossfadeAsAirPlaySource]);
     v48 = 1;
   }
 
-  v643 = [(HMAccessory *)self supportsAdaptiveTemperatureAutomations];
-  if (v643 != [v6 supportsAdaptiveTemperatureAutomations])
+  supportsAdaptiveTemperatureAutomations = [(HMAccessory *)self supportsAdaptiveTemperatureAutomations];
+  if (supportsAdaptiveTemperatureAutomations != [v6 supportsAdaptiveTemperatureAutomations])
   {
     -[HMAccessory setSupportsAdaptiveTemperatureAutomations:](self, "setSupportsAdaptiveTemperatureAutomations:", [v6 supportsAdaptiveTemperatureAutomations]);
     v48 = 1;
   }
 
-  v644 = [(HMAccessory *)self supportsCleanEnergyAutomation];
-  if (v644 != [v6 supportsCleanEnergyAutomation])
+  supportsCleanEnergyAutomation = [(HMAccessory *)self supportsCleanEnergyAutomation];
+  if (supportsCleanEnergyAutomation != [v6 supportsCleanEnergyAutomation])
   {
     -[HMAccessory setSupportsCleanEnergyAutomation:](self, "setSupportsCleanEnergyAutomation:", [v6 supportsCleanEnergyAutomation]);
     v48 = 1;
@@ -9229,15 +9229,15 @@ LABEL_362:
       [(HMAccessory *)self setHasOnboardedForAdaptiveTemperatureAutomations:1];
       if (objc_opt_respondsToSelector())
       {
-        v645 = [(HMAccessory *)self context];
-        v646 = [v645 queue];
+        context47 = [(HMAccessory *)self context];
+        queue45 = [context47 queue];
         v664[0] = MEMORY[0x1E69E9820];
         v664[1] = *(v217 + 185);
         v664[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_2_1324;
         v664[3] = &unk_1E754E5C0;
         v664[4] = self;
         v665 = v658;
-        dispatch_async(v646, v664);
+        dispatch_async(queue45, v664);
       }
     }
   }
@@ -9249,47 +9249,47 @@ LABEL_362:
       [(HMAccessory *)self setHasOnboardedForCleanEnergyAutomation:1];
       if (objc_opt_respondsToSelector())
       {
-        v647 = [(HMAccessory *)self context];
-        v648 = [v647 queue];
+        context48 = [(HMAccessory *)self context];
+        queue46 = [context48 queue];
         v662[0] = MEMORY[0x1E69E9820];
         v662[1] = *(v217 + 185);
         v662[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_4_1327;
         v662[3] = &unk_1E754E5C0;
         v662[4] = self;
         v663 = v658;
-        dispatch_async(v648, v662);
+        dispatch_async(queue46, v662);
       }
     }
   }
 
-  v649 = [(HMAccessory *)self hh1EOLEnabled];
-  if (v649 != [v6 hh1EOLEnabled])
+  hh1EOLEnabled = [(HMAccessory *)self hh1EOLEnabled];
+  if (hh1EOLEnabled != [v6 hh1EOLEnabled])
   {
     -[HMAccessory setHh1EOLEnabled:](self, "setHh1EOLEnabled:", [v6 hh1EOLEnabled]);
     if (objc_opt_respondsToSelector())
     {
-      v650 = [(HMAccessory *)self context];
-      v651 = [v650 queue];
+      context49 = [(HMAccessory *)self context];
+      queue47 = [context49 queue];
       v660[0] = MEMORY[0x1E69E9820];
       v660[1] = *(v217 + 185);
       v660[2] = __34__HMAccessory_mergeFromNewObject___block_invoke_6_1330;
       v660[3] = &unk_1E754E5C0;
       v660[4] = self;
       v661 = v658;
-      dispatch_async(v651, v660);
+      dispatch_async(queue47, v660);
     }
 
     v48 = 1;
   }
 
-  v652 = [(HMAccessory *)self isPrimaryResident];
-  if (v652 != [v6 isPrimaryResident])
+  isPrimaryResident = [(HMAccessory *)self isPrimaryResident];
+  if (isPrimaryResident != [v6 isPrimaryResident])
   {
     -[HMAccessory setIsPrimaryResident:](self, "setIsPrimaryResident:", [v6 isPrimaryResident]);
     v48 = 1;
   }
 
-  v4 = v656;
+  objectCopy = v656;
 LABEL_424:
 
   v653 = *MEMORY[0x1E69E9840];
@@ -9911,16 +9911,16 @@ uint64_t __34__HMAccessory_mergeFromNewObject___block_invoke_6(uint64_t a1)
   return result;
 }
 
-- (BOOL)_mergeControlTargetUUIDs:(id)a3
+- (BOOL)_mergeControlTargetUUIDs:(id)ds
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [(HMAccessory *)self controlTargetUUIDs];
-  if (v6)
+  controlTargetUUIDs = [(HMAccessory *)self controlTargetUUIDs];
+  if (controlTargetUUIDs)
   {
-    v7 = [(HMAccessory *)self controlTargetUUIDs];
-    v8 = [v5 setWithArray:v7];
+    controlTargetUUIDs2 = [(HMAccessory *)self controlTargetUUIDs];
+    v8 = [v5 setWithArray:controlTargetUUIDs2];
   }
 
   else
@@ -9928,9 +9928,9 @@ uint64_t __34__HMAccessory_mergeFromNewObject___block_invoke_6(uint64_t a1)
     v8 = [v5 setWithArray:MEMORY[0x1E695E0F0]];
   }
 
-  if (v4)
+  if (dsCopy)
   {
-    v9 = v4;
+    v9 = dsCopy;
   }
 
   else
@@ -9942,7 +9942,7 @@ uint64_t __34__HMAccessory_mergeFromNewObject___block_invoke_6(uint64_t a1)
   if ([(HMAccessory *)self supportsTargetController])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -9959,8 +9959,8 @@ uint64_t __34__HMAccessory_mergeFromNewObject___block_invoke_6(uint64_t a1)
     objc_autoreleasePoolPop(v11);
   }
 
-  v42 = v4;
-  [(HMAccessory *)self setControlTargetUUIDs:v4];
+  v42 = dsCopy;
+  [(HMAccessory *)self setControlTargetUUIDs:dsCopy];
   v39 = [v8 mutableCopy];
   [v39 minusSet:v10];
   v40 = v10;
@@ -9988,19 +9988,19 @@ uint64_t __34__HMAccessory_mergeFromNewObject___block_invoke_6(uint64_t a1)
         }
 
         v20 = *(*(&v52 + 1) + 8 * i);
-        v21 = [(HMAccessory *)self home];
-        v22 = [v21 accessoryWithUUID:v20];
+        home = [(HMAccessory *)self home];
+        v22 = [home accessoryWithUUID:v20];
         if (v22)
         {
-          v23 = [(HMAccessory *)self context];
-          v24 = [v23 queue];
+          context = [(HMAccessory *)self context];
+          queue = [context queue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __40__HMAccessory__mergeControlTargetUUIDs___block_invoke;
           block[3] = &unk_1E754E5C0;
           block[4] = self;
           v51 = v22;
-          dispatch_async(v24, block);
+          dispatch_async(queue, block);
         }
       }
 
@@ -10030,19 +10030,19 @@ uint64_t __34__HMAccessory_mergeFromNewObject___block_invoke_6(uint64_t a1)
         }
 
         v30 = *(*(&v46 + 1) + 8 * j);
-        v31 = [(HMAccessory *)self home];
-        v32 = [v31 accessoryWithUUID:v30];
+        home2 = [(HMAccessory *)self home];
+        v32 = [home2 accessoryWithUUID:v30];
         if (v32)
         {
-          v33 = [(HMAccessory *)self context];
-          v34 = [v33 queue];
+          context2 = [(HMAccessory *)self context];
+          queue2 = [context2 queue];
           v44[0] = MEMORY[0x1E69E9820];
           v44[1] = 3221225472;
           v44[2] = __40__HMAccessory__mergeControlTargetUUIDs___block_invoke_2;
           v44[3] = &unk_1E754E5C0;
           v44[4] = self;
           v45 = v32;
-          dispatch_async(v34, v44);
+          dispatch_async(queue2, v44);
         }
       }
 
@@ -10062,42 +10062,42 @@ uint64_t __34__HMAccessory_mergeFromNewObject___block_invoke_6(uint64_t a1)
   return v35;
 }
 
-- (BOOL)_mergeServices:(id)a3
+- (BOOL)_mergeServices:(id)services
 {
-  v4 = a3;
+  servicesCopy = services;
   v5 = [HMObjectMergeCollection alloc];
-  v6 = [(HMAccessory *)self currentServices];
-  v7 = [v6 array];
-  v8 = [(HMObjectMergeCollection *)v5 initWithCurrentObjects:v7 newObjects:v4];
+  currentServices = [(HMAccessory *)self currentServices];
+  array = [currentServices array];
+  v8 = [(HMObjectMergeCollection *)v5 initWithCurrentObjects:array newObjects:servicesCopy];
 
-  v9 = [(HMObjectMergeCollection *)v8 removedObjects];
+  removedObjects = [(HMObjectMergeCollection *)v8 removedObjects];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __30__HMAccessory__mergeServices___block_invoke;
   v16[3] = &unk_1E754B550;
   v16[4] = self;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v16];
+  [removedObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v16];
 
-  v10 = [(HMObjectMergeCollection *)v8 addedObjects];
+  addedObjects = [(HMObjectMergeCollection *)v8 addedObjects];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __30__HMAccessory__mergeServices___block_invoke_1126;
   v15[3] = &unk_1E754B550;
   v15[4] = self;
-  [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v15];
+  [addedObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v15];
 
   [(HMObjectMergeCollection *)v8 mergeCommonObjects];
-  v11 = [(HMObjectMergeCollection *)v8 isModified];
-  if (v11)
+  isModified = [(HMObjectMergeCollection *)v8 isModified];
+  if (isModified)
   {
-    v12 = [(HMObjectMergeCollection *)v8 finalObjects];
-    v13 = [(HMAccessory *)self currentServices];
-    [v13 setArray:v12];
+    finalObjects = [(HMObjectMergeCollection *)v8 finalObjects];
+    currentServices2 = [(HMAccessory *)self currentServices];
+    [currentServices2 setArray:finalObjects];
 
     [(HMAccessory *)self notifyDelegateOfUpdatedServices];
   }
 
-  return v11;
+  return isModified;
 }
 
 void __30__HMAccessory__mergeServices___block_invoke(uint64_t a1, void *a2)
@@ -10147,14 +10147,14 @@ void __30__HMAccessory__mergeServices___block_invoke_1126(uint64_t a1, void *a2)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_mergeBulletinBoardNotificationByEndpoint:(id)a3
+- (BOOL)_mergeBulletinBoardNotificationByEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v5 = [(HMAccessory *)self bulletinBoardNotificationByEndpoint];
+  bulletinBoardNotificationByEndpoint = [(HMAccessory *)self bulletinBoardNotificationByEndpoint];
   v6 = HMFEqualObjects();
 
   if (v6)
@@ -10164,33 +10164,33 @@ void __30__HMAccessory__mergeServices___block_invoke_1126(uint64_t a1, void *a2)
 
   else
   {
-    v8 = [(HMAccessory *)self bulletinBoardNotificationByEndpoint];
-    v9 = [v8 mutableCopy];
+    bulletinBoardNotificationByEndpoint2 = [(HMAccessory *)self bulletinBoardNotificationByEndpoint];
+    v9 = [bulletinBoardNotificationByEndpoint2 mutableCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      dictionary = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v12 = v11;
+    v12 = dictionary;
 
-    v13 = [(HMAccessory *)self bulletinBoardNotificationByEndpoint];
+    bulletinBoardNotificationByEndpoint3 = [(HMAccessory *)self bulletinBoardNotificationByEndpoint];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __57__HMAccessory__mergeBulletinBoardNotificationByEndpoint___block_invoke;
     v23[3] = &unk_1E754B500;
-    v14 = v4;
+    v14 = endpointCopy;
     v24 = v14;
-    v25 = self;
+    selfCopy = self;
     v15 = v12;
     v26 = v15;
     v27 = &v28;
-    [v13 na_each:v23];
+    [bulletinBoardNotificationByEndpoint3 na_each:v23];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -10198,7 +10198,7 @@ void __30__HMAccessory__mergeServices___block_invoke_1126(uint64_t a1, void *a2)
     v19[3] = &unk_1E754B528;
     v16 = v15;
     v20 = v16;
-    v21 = self;
+    selfCopy2 = self;
     v22 = &v28;
     [v14 na_each:v19];
     v17 = [v16 copy];
@@ -10297,63 +10297,63 @@ LABEL_9:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (HMAccessory)initWithCoder:(id)a3
+- (HMAccessory)initWithCoder:(id)coder
 {
   v193 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hm_decodeAndCacheUUIDFromStringForKey:@"accessoryUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy hm_decodeAndCacheUUIDFromStringForKey:@"accessoryUUID"];
   if (v5)
   {
     v6 = [(HMAccessory *)self initWithUUID:v5];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"home"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"home"];
       objc_storeWeak(&v6->_home, v7);
 
-      v8 = [v4 hm_decodeHMAccessoryCategoryAndCacheForKey:@"HM.accessoryCategory"];
+      v8 = [coderCopy hm_decodeHMAccessoryCategoryAndCacheForKey:@"HM.accessoryCategory"];
       category = v6->_category;
       v6->_category = v8;
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryRoom"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryRoom"];
       objc_storeWeak(&v6->_room, v10);
 
-      v6->_bridgedAccessory = [v4 decodeBoolForKey:@"isBridged"];
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryName"];
+      v6->_bridgedAccessory = [coderCopy decodeBoolForKey:@"isBridged"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryName"];
       name = v6->_name;
       v6->_name = v11;
 
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryConfiguredName"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryConfiguredName"];
       configuredName = v6->_configuredName;
       v6->_configuredName = v13;
 
-      v15 = [v4 hm_decodeAndCacheStringForKey:@"accessoryServerIdentifier"];
+      v15 = [coderCopy hm_decodeAndCacheStringForKey:@"accessoryServerIdentifier"];
       deviceIdentifier = v6->_deviceIdentifier;
       v6->_deviceIdentifier = v15;
 
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.pendingConfigurationIdentifier"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.pendingConfigurationIdentifier"];
       pendingConfigurationIdentifier = v6->_pendingConfigurationIdentifier;
       v6->_pendingConfigurationIdentifier = v17;
 
-      v6->_paired = [v4 decodeBoolForKey:@"paired"];
-      v6->_reachable = [v4 decodeBoolForKey:@"reachable"];
-      v6->_reachableTransports = [v4 decodeIntegerForKey:@"HM.reachability"];
-      v6->_transportTypes = [v4 decodeIntegerForKey:@"HM.accessoryTransportTypes"];
-      v6->_communicationProtocol = [v4 decodeIntegerForKey:@"HMA.communicationProrocol"];
-      v6->_supportsIdentify = [v4 decodeBoolForKey:@"HM.supportsIdentify"];
-      v6->_currentAccessory = [v4 decodeBoolForKey:@"HM.currentAccessory"];
-      v19 = [v4 hm_decodeAndCacheStringForKey:@"HM.manufacturer"];
+      v6->_paired = [coderCopy decodeBoolForKey:@"paired"];
+      v6->_reachable = [coderCopy decodeBoolForKey:@"reachable"];
+      v6->_reachableTransports = [coderCopy decodeIntegerForKey:@"HM.reachability"];
+      v6->_transportTypes = [coderCopy decodeIntegerForKey:@"HM.accessoryTransportTypes"];
+      v6->_communicationProtocol = [coderCopy decodeIntegerForKey:@"HMA.communicationProrocol"];
+      v6->_supportsIdentify = [coderCopy decodeBoolForKey:@"HM.supportsIdentify"];
+      v6->_currentAccessory = [coderCopy decodeBoolForKey:@"HM.currentAccessory"];
+      v19 = [coderCopy hm_decodeAndCacheStringForKey:@"HM.manufacturer"];
       manufacturer = v6->_manufacturer;
       v6->_manufacturer = v19;
 
-      v21 = [v4 hm_decodeAndCacheStringForKey:@"HM.model"];
+      v21 = [coderCopy hm_decodeAndCacheStringForKey:@"HM.model"];
       model = v6->_model;
       v6->_model = v21;
 
-      v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.matterNodeID"];
+      v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.matterNodeID"];
       matterNodeID = v6->_matterNodeID;
       v6->_matterNodeID = v23;
 
-      if (([v4 decodeBoolForKey:@"HMA.supportsCHIP"] & 1) != 0 || v6->_communicationProtocol == 2)
+      if (([coderCopy decodeBoolForKey:@"HMA.supportsCHIP"] & 1) != 0 || v6->_communicationProtocol == 2)
       {
         v6->_supportsCHIP = 1;
         v25 = @"HM.displayableFirmwareVersion";
@@ -10361,9 +10361,9 @@ LABEL_9:
 
       else
       {
-        v30 = [(NSNumber *)v6->_matterNodeID unsignedIntValue];
-        v6->_supportsCHIP = v30 != 0;
-        if (v30)
+        unsignedIntValue = [(NSNumber *)v6->_matterNodeID unsignedIntValue];
+        v6->_supportsCHIP = unsignedIntValue != 0;
+        if (unsignedIntValue)
         {
           v25 = @"HM.displayableFirmwareVersion";
         }
@@ -10374,31 +10374,31 @@ LABEL_9:
         }
       }
 
-      v31 = [v4 hm_decodeAndCacheStringForKey:v25];
+      v31 = [coderCopy hm_decodeAndCacheStringForKey:v25];
       firmwareVersion = v6->_firmwareVersion;
       v6->_firmwareVersion = v31;
 
-      v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.serialNumber"];
+      v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.serialNumber"];
       serialNumber = v6->_serialNumber;
       v6->_serialNumber = v33;
 
-      v35 = [v4 hm_decodeAndCacheStringForKey:@"HM.bundleID"];
+      v35 = [coderCopy hm_decodeAndCacheStringForKey:@"HM.bundleID"];
       bundleID = v6->_bundleID;
       v6->_bundleID = v35;
 
-      v37 = [v4 hm_decodeAndCacheStringForKey:@"HM.storeID"];
+      v37 = [coderCopy hm_decodeAndCacheStringForKey:@"HM.storeID"];
       storeID = v6->_storeID;
       v6->_storeID = v37;
 
-      v6->_vendorAccessory = [v4 decodeBoolForKey:@"HMAccessoryIsVendorAccessoryCodingKey"];
-      v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryHAPInstanceIDCodingKey"];
+      v6->_vendorAccessory = [coderCopy decodeBoolForKey:@"HMAccessoryIsVendorAccessoryCodingKey"];
+      v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryHAPInstanceIDCodingKey"];
       HAPInstanceID = v6->_HAPInstanceID;
       v6->_HAPInstanceID = v39;
 
-      v6->_firmwareUpdateAvailable = [v4 decodeBoolForKey:@"HM.firmwareUpdateAvailable"];
-      if ([v4 containsValueForKey:@"HM.accessoryReprovisionState"])
+      v6->_firmwareUpdateAvailable = [coderCopy decodeBoolForKey:@"HM.firmwareUpdateAvailable"];
+      if ([coderCopy containsValueForKey:@"HM.accessoryReprovisionState"])
       {
-        v6->_accessoryReprovisionState = [v4 decodeInt32ForKey:@"HM.accessoryReprovisionState"];
+        v6->_accessoryReprovisionState = [coderCopy decodeInt32ForKey:@"HM.accessoryReprovisionState"];
       }
 
       v41 = MEMORY[0x1E695DFD8];
@@ -10406,25 +10406,25 @@ LABEL_9:
       v188[1] = objc_opt_class();
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v188 count:2];
       v43 = [v41 setWithArray:v42];
-      v44 = [v4 decodeObjectOfClasses:v43 forKey:@"services"];
+      v44 = [coderCopy decodeObjectOfClasses:v43 forKey:@"services"];
 
       v177 = v44;
       [(HMMutableArray *)v6->_currentServices setArray:v44];
-      v45 = [v4 decodeBoolForKey:@"suspendCapable"];
+      v45 = [coderCopy decodeBoolForKey:@"suspendCapable"];
       v6->_suspendCapable = v45;
       if (v45)
       {
         v6->_reachable = 1;
       }
 
-      if ([v4 containsValueForKey:@"HM.suspendedState"])
+      if ([coderCopy containsValueForKey:@"HM.suspendedState"])
       {
-        v6->_suspendedState = [v4 decodeIntegerForKey:@"HM.suspendedState"];
+        v6->_suspendedState = [coderCopy decodeIntegerForKey:@"HM.suspendedState"];
       }
 
-      if ([v4 containsValueForKey:@"HM.certificationStatus"])
+      if ([coderCopy containsValueForKey:@"HM.certificationStatus"])
       {
-        v46 = [v4 decodeIntegerForKey:@"HM.certificationStatus"];
+        v46 = [coderCopy decodeIntegerForKey:@"HM.certificationStatus"];
       }
 
       else
@@ -10433,32 +10433,32 @@ LABEL_9:
       }
 
       v6->_certificationStatus = v46;
-      v47 = ([v4 decodeBoolForKey:@"HM.demoAccessory"] & 1) != 0 || v6->_communicationProtocol == 3;
+      v47 = ([coderCopy decodeBoolForKey:@"HM.demoAccessory"] & 1) != 0 || v6->_communicationProtocol == 3;
       v6->_demoAccessory = v47;
       v48 = MEMORY[0x1E695DFD8];
       v187[0] = objc_opt_class();
       v187[1] = objc_opt_class();
       v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v187 count:2];
       v50 = [v48 setWithArray:v49];
-      v51 = [v4 decodeObjectOfClasses:v50 forKey:@"controlTargets"];
+      v51 = [coderCopy decodeObjectOfClasses:v50 forKey:@"controlTargets"];
 
       v175 = v51;
       v52 = [v51 na_map:&__block_literal_global_37215];
       controlTargetUUIDs = v6->_controlTargetUUIDs;
       v6->_controlTargetUUIDs = v52;
 
-      v6->_associationOptions = [v4 decodeIntegerForKey:@"HM.associationOptions"];
+      v6->_associationOptions = [coderCopy decodeIntegerForKey:@"HM.associationOptions"];
       v54 = MEMORY[0x1E695DFD8];
       v186[0] = objc_opt_class();
       v186[1] = objc_opt_class();
       v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v186 count:2];
       v56 = [v54 setWithArray:v55];
-      v57 = [v4 decodeObjectOfClasses:v56 forKey:@"identifiersForBridgedAccessories"];
+      v57 = [coderCopy decodeObjectOfClasses:v56 forKey:@"identifiersForBridgedAccessories"];
 
       v176 = v57;
       if ([v57 count])
       {
-        v58 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v178 = 0u;
         v179 = 0u;
         v180 = 0u;
@@ -10479,7 +10479,7 @@ LABEL_9:
               }
 
               v64 = [MEMORY[0x1E696AFB0] hm_deriveUUIDFromBaseUUID:*(*(&v178 + 1) + 8 * i)];
-              [(NSArray *)v58 addObject:v64];
+              [(NSArray *)array addObject:v64];
             }
 
             v61 = [v59 countByEnumeratingWithState:&v178 objects:v185 count:16];
@@ -10489,14 +10489,14 @@ LABEL_9:
         }
 
         uniqueIdentifiersForBridgedAccessories = v6->_uniqueIdentifiersForBridgedAccessories;
-        v6->_uniqueIdentifiersForBridgedAccessories = v58;
+        v6->_uniqueIdentifiersForBridgedAccessories = array;
       }
 
-      v66 = [[HMApplicationData alloc] initWithDictionaryFromCoder:v4 key:@"HM.appData"];
+      v66 = [[HMApplicationData alloc] initWithDictionaryFromCoder:coderCopy key:@"HM.appData"];
       applicationData = v6->_applicationData;
       v6->_applicationData = v66;
 
-      v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryFlagsCodingKey"];
+      v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryFlagsCodingKey"];
       v174 = v68;
       if (v68)
       {
@@ -10534,45 +10534,45 @@ LABEL_9:
       v184[1] = objc_opt_class();
       v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:v184 count:2];
       v72 = [v70 setWithArray:v71];
-      v73 = [v4 decodeObjectOfClasses:v72 forKey:@"HM.accessoryProfiles"];
+      v73 = [coderCopy decodeObjectOfClasses:v72 forKey:@"HM.accessoryProfiles"];
 
-      v74 = [(HMAccessory *)v6 accessoryProfiles];
+      accessoryProfiles = [(HMAccessory *)v6 accessoryProfiles];
       v75 = [HMAccessory _cameraProfilesForAccessoryProfiles:v73];
-      [v74 addObjectsFromArray:v75];
+      [accessoryProfiles addObjectsFromArray:v75];
 
-      v76 = [(HMAccessory *)v6 accessoryProfiles];
+      accessoryProfiles2 = [(HMAccessory *)v6 accessoryProfiles];
       v77 = [HMAccessory _mediaProfilesForAccessoryProfiles:v73];
-      [v76 addObjectsFromArray:v77];
+      [accessoryProfiles2 addObjectsFromArray:v77];
 
-      v78 = [(HMAccessory *)v6 accessoryProfiles];
+      accessoryProfiles3 = [(HMAccessory *)v6 accessoryProfiles];
       v79 = [MEMORY[0x1E695DFD8] setWithArray:v73];
       v80 = [HMAccessory _lightProfilesForAccessoryProfiles:v79];
-      v81 = [v80 allObjects];
-      [v78 addObjectsFromArray:v81];
+      allObjects = [v80 allObjects];
+      [accessoryProfiles3 addObjectsFromArray:allObjects];
 
-      v82 = [(HMAccessory *)v6 accessoryProfiles];
+      accessoryProfiles4 = [(HMAccessory *)v6 accessoryProfiles];
       v83 = [HMAccessory _siriEndpointProfilesForAccessoryProfiles:v73];
-      [v82 addObjectsFromArray:v83];
+      [accessoryProfiles4 addObjectsFromArray:v83];
 
-      v84 = [(HMAccessory *)v6 accessoryProfiles];
+      accessoryProfiles5 = [(HMAccessory *)v6 accessoryProfiles];
       if (HMIsCurrentProcessSPIEntitled_spiEntitledOnceToken != -1)
       {
         dispatch_once(&HMIsCurrentProcessSPIEntitled_spiEntitledOnceToken, &__block_literal_global_164);
       }
 
       v85 = [HMAccessory televisionProfilesForAccessoryServices:v177 isSPIEntitled:HMIsCurrentProcessSPIEntitled_spiEntitled];
-      [v84 addObjectsFromArray:v85];
+      [accessoryProfiles5 addObjectsFromArray:v85];
 
-      v86 = [(HMAccessory *)v6 accessoryProfiles];
-      v87 = [(HMAccessory *)v6 uniqueIdentifier];
-      v88 = [HMAccessory _networkConfigurationProfilesForCoder:v4 accessoryIdentifier:v87];
-      [v86 addObjectsFromArray:v88];
+      accessoryProfiles6 = [(HMAccessory *)v6 accessoryProfiles];
+      uniqueIdentifier = [(HMAccessory *)v6 uniqueIdentifier];
+      v88 = [HMAccessory _networkConfigurationProfilesForCoder:coderCopy accessoryIdentifier:uniqueIdentifier];
+      [accessoryProfiles6 addObjectsFromArray:v88];
 
-      v89 = [(HMAccessory *)v6 accessoryProfiles];
+      accessoryProfiles7 = [(HMAccessory *)v6 accessoryProfiles];
       v90 = [HMAccessory _doorbellProfilesForAccessoryProfiles:v73];
-      [v89 addObjectsFromArray:v90];
+      [accessoryProfiles7 addObjectsFromArray:v90];
 
-      v91 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.settings"];
+      v91 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.settings"];
       if (v91)
       {
         v92 = [[HMAccessorySettingGroup alloc] initWithInternal:v91];
@@ -10581,33 +10581,33 @@ LABEL_9:
         v6->_settings = v93;
       }
 
-      v95 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.device"];
+      v95 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.device"];
       device = v6->_device;
       v6->_device = v95;
 
-      v97 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.deviceIRK"];
+      v97 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.deviceIRK"];
       deviceIRKData = v6->_deviceIRKData;
       v6->_deviceIRKData = v97;
 
-      v99 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.softwareVersion"];
+      v99 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.softwareVersion"];
       softwareVersion = v6->_softwareVersion;
       v6->_softwareVersion = v99;
 
-      if ([v4 containsValueForKey:@"HM.accountIdentifier"])
+      if ([coderCopy containsValueForKey:@"HM.accountIdentifier"])
       {
-        v101 = [v4 hm_decodeAndCacheUUIDForKey:@"HM.accountIdentifier"];
+        v101 = [coderCopy hm_decodeAndCacheUUIDForKey:@"HM.accountIdentifier"];
         accountIdentifier = v6->_accountIdentifier;
         v6->_accountIdentifier = v101;
       }
 
-      v6->_controllable = [v4 decodeBoolForKey:@"HMA.controllable"];
-      if ([v4 containsValueForKey:@"HM.softwareUpdate"])
+      v6->_controllable = [coderCopy decodeBoolForKey:@"HMA.controllable"];
+      if ([coderCopy containsValueForKey:@"HM.softwareUpdate"])
       {
         v103 = [[HMSoftwareUpdateController alloc] initWithAccessory:v6];
         softwareUpdateController = v6->_softwareUpdateController;
         v6->_softwareUpdateController = v103;
 
-        v105 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.softwareUpdate"];
+        v105 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.softwareUpdate"];
         if (v105)
         {
           [(HMSoftwareUpdateController *)v6->_softwareUpdateController setAvailableUpdate:v105];
@@ -10615,62 +10615,62 @@ LABEL_9:
       }
 
       v173 = v91;
-      v106 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.remoteLoginHandler"];
+      v106 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.remoteLoginHandler"];
       remoteLoginHandler = v6->_remoteLoginHandler;
       v6->_remoteLoginHandler = v106;
 
-      v6->_hasSymptomsHandler = [v4 decodeBoolForKey:@"HM.hasSymptomsHandler"];
-      v6->_supportsMediaAccessControl = [v4 decodeBoolForKey:@"HMA.supportsMediaAccessControl"];
-      v6->_knownToSystemCommissioner = [v4 decodeBoolForKey:@"HMA.knownToSystemCommissioner"];
-      v108 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.rootPublicKey"];
+      v6->_hasSymptomsHandler = [coderCopy decodeBoolForKey:@"HM.hasSymptomsHandler"];
+      v6->_supportsMediaAccessControl = [coderCopy decodeBoolForKey:@"HMA.supportsMediaAccessControl"];
+      v6->_knownToSystemCommissioner = [coderCopy decodeBoolForKey:@"HMA.knownToSystemCommissioner"];
+      v108 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.rootPublicKey"];
       rootPublicKey = v6->_rootPublicKey;
       v6->_rootPublicKey = v108;
 
-      v110 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.nodeID"];
+      v110 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.nodeID"];
       nodeID = v6->_nodeID;
       v6->_nodeID = v110;
 
-      v112 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.commissioningID"];
+      v112 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.commissioningID"];
       commissioningID = v6->_commissioningID;
       v6->_commissioningID = v112;
 
-      v114 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.vendorID"];
+      v114 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.vendorID"];
       vendorID = v6->_vendorID;
       v6->_vendorID = v114;
 
-      v116 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.productID"];
+      v116 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.productID"];
       productID = v6->_productID;
       v6->_productID = v116;
 
-      v6->_requiresThreadRouter = [v4 decodeBoolForKey:@"HMA.requiresThreadRouter"];
-      v118 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.matterWEDSupport"];
+      v6->_requiresThreadRouter = [coderCopy decodeBoolForKey:@"HMA.requiresThreadRouter"];
+      v118 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.matterWEDSupport"];
       matterWEDSupport = v6->_matterWEDSupport;
       v6->_matterWEDSupport = v118;
 
-      v120 = [v4 hm_decodeAndCacheStringForKey:@"HMA.matterExtendedMACAddress"];
+      v120 = [coderCopy hm_decodeAndCacheStringForKey:@"HMA.matterExtendedMACAddress"];
       matterExtendedMACAddress = v6->_matterExtendedMACAddress;
       v6->_matterExtendedMACAddress = v120;
 
-      v122 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.supportedLinkLayerTypes"];
+      v122 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.supportedLinkLayerTypes"];
       supportedLinkLayerTypes = v6->_supportedLinkLayerTypes;
       v6->_supportedLinkLayerTypes = v122;
 
-      v6->_supportsNativeMatter = [v4 decodeBoolForKey:@"HMA.supportsNativeMatter"];
-      v124 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.wifiNetworkInfo"];
+      v6->_supportsNativeMatter = [coderCopy decodeBoolForKey:@"HMA.supportsNativeMatter"];
+      v124 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.wifiNetworkInfo"];
       wifiNetworkInfo = v6->_wifiNetworkInfo;
       v6->_wifiNetworkInfo = v124;
 
-      v6->_supportsTargetControl = [v4 decodeBoolForKey:@"HMCT.supportsTargetControl"];
-      v6->_supportsTargetController = [v4 decodeBoolForKey:@"HMCT.supportsTargetController"];
-      v6->_targetControllerHardwareSupport = [v4 decodeBoolForKey:@"HMCT.targetControllerHardwareSupport"];
-      v6->_supportsMultiUser = [v4 decodeBoolForKey:@"HMA.supportsMultiUser"];
-      v6->_supportsHomeLevelLocationServiceSetting = [v4 decodeBoolForKey:@"HMA.HomeLevelLocationServiceSetting"];
-      v6->_supportsAudioReturnChannel = [v4 decodeBoolForKey:@"HMA.supportsAudioReturnChannel"];
-      v6->_supportsCompanionInitiatedRestart = [v4 decodeBoolForKey:@"HMA.supportsCompanionInitiatedRestart"];
-      v6->_supportsCompanionInitiatedObliterate = [v4 decodeBoolForKey:@"HMA.supportsCompanionInitiatedObliterate"];
-      v6->_supportsMusicAlarm = [v4 decodeBoolForKey:@"HMA.SupportsMusicAlarm"];
-      v6->_supportsMediaContentProfile = [v4 decodeBoolForKey:@"HM.ac.mediacontentprofile"];
-      v126 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.protectionGroupUID"];
+      v6->_supportsTargetControl = [coderCopy decodeBoolForKey:@"HMCT.supportsTargetControl"];
+      v6->_supportsTargetController = [coderCopy decodeBoolForKey:@"HMCT.supportsTargetController"];
+      v6->_targetControllerHardwareSupport = [coderCopy decodeBoolForKey:@"HMCT.targetControllerHardwareSupport"];
+      v6->_supportsMultiUser = [coderCopy decodeBoolForKey:@"HMA.supportsMultiUser"];
+      v6->_supportsHomeLevelLocationServiceSetting = [coderCopy decodeBoolForKey:@"HMA.HomeLevelLocationServiceSetting"];
+      v6->_supportsAudioReturnChannel = [coderCopy decodeBoolForKey:@"HMA.supportsAudioReturnChannel"];
+      v6->_supportsCompanionInitiatedRestart = [coderCopy decodeBoolForKey:@"HMA.supportsCompanionInitiatedRestart"];
+      v6->_supportsCompanionInitiatedObliterate = [coderCopy decodeBoolForKey:@"HMA.supportsCompanionInitiatedObliterate"];
+      v6->_supportsMusicAlarm = [coderCopy decodeBoolForKey:@"HMA.SupportsMusicAlarm"];
+      v6->_supportsMediaContentProfile = [coderCopy decodeBoolForKey:@"HM.ac.mediacontentprofile"];
+      v126 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.protectionGroupUID"];
       if (v126)
       {
         v127 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v126];
@@ -10678,108 +10678,108 @@ LABEL_9:
         v6->_networkProtectionGroupUUID = v127;
       }
 
-      v129 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryAudioDestinationControllerDataCodingKey"];
-      v130 = v129;
+      v174 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryAudioDestinationControllerDataCodingKey"];
+      v130 = v174;
       v171 = v126;
-      if (v129)
+      if (v174)
       {
-        v129 = [[HMMediaDestinationController alloc] initWithControllerData:v129, v126, v173, v174];
+        v174 = [[HMMediaDestinationController alloc] initWithControllerData:v174, v126, v173, v174];
       }
 
       audioDestinationController = v6->_audioDestinationController;
-      v6->_audioDestinationController = v129;
+      v6->_audioDestinationController = v174;
 
-      v132 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryAudioDestinationCodingKey"];
+      v132 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryAudioDestinationCodingKey"];
       audioDestination = v6->_audioDestination;
       v6->_audioDestination = v132;
 
-      v134 = [(HMAccessory *)v6 category];
-      v135 = [v134 categoryType];
-      v136 = [v135 isEqual:@"1D8FD40E-7CAE-4AD5-9973-977D18890DE2"];
+      category = [(HMAccessory *)v6 category];
+      categoryType = [category categoryType];
+      v136 = [categoryType isEqual:@"1D8FD40E-7CAE-4AD5-9973-977D18890DE2"];
 
       if (v136)
       {
-        v137 = [v4 decodeBoolForKey:@"HMA.audioAnalysisEventBulletinBoardNotificationEnabled"];
+        v137 = [coderCopy decodeBoolForKey:@"HMA.audioAnalysisEventBulletinBoardNotificationEnabled"];
         v138 = MEMORY[0x1E695DFD8];
         v183[0] = objc_opt_class();
         v183[1] = objc_opt_class();
         v139 = [MEMORY[0x1E695DEC8] arrayWithObjects:v183 count:2];
         v140 = [v138 setWithArray:v139];
-        v141 = [v4 decodeObjectOfClasses:v140 forKey:@"HMA.audioAnalysisEventBulletinBoardNotificationCondition"];
+        v141 = [coderCopy decodeObjectOfClasses:v140 forKey:@"HMA.audioAnalysisEventBulletinBoardNotificationCondition"];
 
-        v142 = [(HMAccessory *)v6 home];
-        v143 = [HMPredicateUtilities rewritePredicateForClient:v141 home:v142];
+        home = [(HMAccessory *)v6 home];
+        v143 = [HMPredicateUtilities rewritePredicateForClient:v141 home:home];
 
         v144 = [[HMAudioAnalysisEventBulletinBoardNotification alloc] initWithEnabled:v137 condition:v143 accessoryIdentifier:v5];
         audioAnalysisEventBulletinBoardNotification = v6->_audioAnalysisEventBulletinBoardNotification;
         v6->_audioAnalysisEventBulletinBoardNotification = v144;
       }
 
-      v6->_supportsAudioAnalysis = [v4 decodeBoolForKey:{@"HMA.SupportsAudioAnalysis", v171}];
-      v6->_supportsDropIn = [v4 decodeBoolForKey:@"HMA.SupportsDropIn"];
-      v6->_supportsAnnounce = [v4 decodeBoolForKey:@"HMA.SupportsAnnounce"];
-      v6->_supportsMediaActions = [v4 decodeBoolForKey:@"HMA.SupportsMediaActions"];
-      v6->_supportsAccessCodes = [v4 decodeBoolForKey:@"HMAccessorySupportsAccessCodeCodingKey"];
-      v6->_supportsWalletKey = [v4 decodeBoolForKey:@"HMAccessorySupportsWalletCodingKey"];
-      v6->_supportsUWBUnlock = [v4 decodeBoolForKey:@"HMAccessorySupportsUWBUnlockCodingKey"];
-      v146 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryReaderGroupSubIdentifierACWGCodingKey"];
+      v6->_supportsAudioAnalysis = [coderCopy decodeBoolForKey:{@"HMA.SupportsAudioAnalysis", v171}];
+      v6->_supportsDropIn = [coderCopy decodeBoolForKey:@"HMA.SupportsDropIn"];
+      v6->_supportsAnnounce = [coderCopy decodeBoolForKey:@"HMA.SupportsAnnounce"];
+      v6->_supportsMediaActions = [coderCopy decodeBoolForKey:@"HMA.SupportsMediaActions"];
+      v6->_supportsAccessCodes = [coderCopy decodeBoolForKey:@"HMAccessorySupportsAccessCodeCodingKey"];
+      v6->_supportsWalletKey = [coderCopy decodeBoolForKey:@"HMAccessorySupportsWalletCodingKey"];
+      v6->_supportsUWBUnlock = [coderCopy decodeBoolForKey:@"HMAccessorySupportsUWBUnlockCodingKey"];
+      v146 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryReaderGroupSubIdentifierACWGCodingKey"];
       readerGroupSubIdentifierACWG = v6->_readerGroupSubIdentifierACWG;
       v6->_readerGroupSubIdentifierACWG = v146;
 
-      v148 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryReaderIDACWGCodingKey"];
+      v148 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryReaderIDACWGCodingKey"];
       readerIDACWG = v6->_readerIDACWG;
       v6->_readerIDACWG = v148;
 
-      v6->_mfiCertifiedACWG = [v4 decodeBoolForKey:@"HMAccessoryMFiCertifiedACWGCodingKey"];
-      v150 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryWeekDayScheduleCapacityCodingKey"];
+      v6->_mfiCertifiedACWG = [coderCopy decodeBoolForKey:@"HMAccessoryMFiCertifiedACWGCodingKey"];
+      v150 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryWeekDayScheduleCapacityCodingKey"];
       weekDaySchedulesPerUserCapacity = v6->_weekDaySchedulesPerUserCapacity;
       v6->_weekDaySchedulesPerUserCapacity = v150;
 
-      v152 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryYearDayScheduleCapacityCodingKey"];
+      v152 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryYearDayScheduleCapacityCodingKey"];
       yearDaySchedulesPerUserCapacity = v6->_yearDaySchedulesPerUserCapacity;
       v6->_yearDaySchedulesPerUserCapacity = v152;
 
-      v6->_supportsDoorbellChime = [v4 decodeBoolForKey:@"HMA.SupportsDoorbellChime"];
-      v6->_supportsCoordinationDoorbellChime = [v4 decodeBoolForKey:@"HMA.SupportsCoordinationDoorbellChime"];
-      v6->_supportsUserMediaSettings = [v4 decodeBoolForKey:@"HMA.SupportsUserMediaSetting"];
-      v6->_supportsThirdPartyMusic = [v4 decodeBoolForKey:@"HMA.supportsThirdPartyMusic"];
-      v6->_supportsPreferredMediaUser = [v4 decodeBoolForKey:@"HM.ac.supportsPreferredMediaUser"];
-      v6->_supportsMessagedHomePodSettings = [v4 decodeBoolForKey:@"HMA.HMAccessorySupportsMessagedHomePodSettingsCodingKey"];
-      v6->_supportsPrimaryUserInfoSubscription = [v4 decodeBoolForKey:@"HMA.HMAccessorySupportsPrimaryUserInfoSubscriptionCodingKey"];
+      v6->_supportsDoorbellChime = [coderCopy decodeBoolForKey:@"HMA.SupportsDoorbellChime"];
+      v6->_supportsCoordinationDoorbellChime = [coderCopy decodeBoolForKey:@"HMA.SupportsCoordinationDoorbellChime"];
+      v6->_supportsUserMediaSettings = [coderCopy decodeBoolForKey:@"HMA.SupportsUserMediaSetting"];
+      v6->_supportsThirdPartyMusic = [coderCopy decodeBoolForKey:@"HMA.supportsThirdPartyMusic"];
+      v6->_supportsPreferredMediaUser = [coderCopy decodeBoolForKey:@"HM.ac.supportsPreferredMediaUser"];
+      v6->_supportsMessagedHomePodSettings = [coderCopy decodeBoolForKey:@"HMA.HMAccessorySupportsMessagedHomePodSettingsCodingKey"];
+      v6->_supportsPrimaryUserInfoSubscription = [coderCopy decodeBoolForKey:@"HMA.HMAccessorySupportsPrimaryUserInfoSubscriptionCodingKey"];
       if (!v6->_supportsMessagedHomePodSettings)
       {
-        v154 = [v4 hm_decodeAndCacheUUIDForKey:@"HM.ac.preferredMediaUser"];
+        v154 = [coderCopy hm_decodeAndCacheUUIDForKey:@"HM.ac.preferredMediaUser"];
         preferredMediaUserUUID = v6->_preferredMediaUserUUID;
         v6->_preferredMediaUserUUID = v154;
 
-        v156 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.ac.preferredUserSelection"];
+        v156 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.ac.preferredUserSelection"];
         v6->_preferredUserSelectionType = [v156 unsignedIntegerValue];
       }
 
-      v157 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.supportedDiagnosticsCodingKey"];
+      v157 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.supportedDiagnosticsCodingKey"];
       supportedDiagnostics = v6->_supportedDiagnostics;
       v6->_supportedDiagnostics = v157;
 
-      if ([v4 containsValueForKey:@"HM.supportedStereoPairVersionsCodingKey"])
+      if ([coderCopy containsValueForKey:@"HM.supportedStereoPairVersionsCodingKey"])
       {
-        v159 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.supportedStereoPairVersionsCodingKey"];
+        v159 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.supportedStereoPairVersionsCodingKey"];
         v6->_supportedStereoPairVersions = [v159 unsignedIntegerValue];
       }
 
-      if ([v4 containsValueForKey:@"HM.homePodVariantCodingKey"])
+      if ([coderCopy containsValueForKey:@"HM.homePodVariantCodingKey"])
       {
-        v160 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.homePodVariantCodingKey"];
+        v160 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.homePodVariantCodingKey"];
         v6->_homePodVariant = [v160 unsignedIntegerValue];
       }
 
-      v161 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.hasOnboardedForNaturalLightingKey"];
+      v161 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.hasOnboardedForNaturalLightingKey"];
       v6->_hasOnboardedForNaturalLighting = [v161 BOOLValue];
-      v6->_supportsManagedConfigurationProfile = [v4 decodeBoolForKey:@"HMA.ManagedConfigurationProfileCodingKey"];
-      v6->_productColor = [v4 decodeIntegerForKey:@"HM.productColor"];
-      v6->_supportsSoftwareUpdateV2 = [v4 decodeBoolForKey:@"HMA.SupportsSoftwareUpdateV2CodingKey"];
-      v6->_supportsRMVonAppleTV = [v4 decodeBoolForKey:@"HM.ac.supportsRMVonAppleTV"];
-      v6->_supportsJustSiri = [v4 decodeBoolForKey:@"HM.ac.supportsJustSiri"];
-      if ([v4 containsValueForKey:@"HM.BulletinBoardNotification"])
+      v6->_supportsManagedConfigurationProfile = [coderCopy decodeBoolForKey:@"HMA.ManagedConfigurationProfileCodingKey"];
+      v6->_productColor = [coderCopy decodeIntegerForKey:@"HM.productColor"];
+      v6->_supportsSoftwareUpdateV2 = [coderCopy decodeBoolForKey:@"HMA.SupportsSoftwareUpdateV2CodingKey"];
+      v6->_supportsRMVonAppleTV = [coderCopy decodeBoolForKey:@"HM.ac.supportsRMVonAppleTV"];
+      v6->_supportsJustSiri = [coderCopy decodeBoolForKey:@"HM.ac.supportsJustSiri"];
+      if ([coderCopy containsValueForKey:@"HM.BulletinBoardNotification"])
       {
         v162 = MEMORY[0x1E695DFD8];
         v182[0] = objc_opt_class();
@@ -10787,48 +10787,48 @@ LABEL_9:
         v182[2] = objc_opt_class();
         v163 = [MEMORY[0x1E695DEC8] arrayWithObjects:v182 count:3];
         v164 = [v162 setWithArray:v163];
-        v165 = [v4 decodeObjectOfClasses:v164 forKey:@"HM.BulletinBoardNotification"];
+        v165 = [coderCopy decodeObjectOfClasses:v164 forKey:@"HM.BulletinBoardNotification"];
         bulletinBoardNotificationByEndpoint = v6->_bulletinBoardNotificationByEndpoint;
         v6->_bulletinBoardNotificationByEndpoint = v165;
       }
 
-      v167 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.matterDeviceTypeID"];
+      v167 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.matterDeviceTypeID"];
       matterDeviceTypeID = v6->_matterDeviceTypeID;
       v6->_matterDeviceTypeID = v167;
 
-      v6->_supportsStereoOdeonTTSUBypassingPrimary = [v4 decodeBoolForKey:@"HM.ac.HMAccessorySupportsStereoOdeonBypassingPrimaryCodingKey"];
-      v6->_supportsNetworkDiagnostics = [v4 decodeBoolForKey:@"HM.ac.HMAccessorySupportsNetworkDiagnosticsCodingKey"];
-      v6->_supportsCrossfadeAsAirPlaySource = [v4 decodeBoolForKey:@"HM.ac.HMAccessorySupportsCrossfadeAsAirPlaySourceCodingKey"];
-      if ([v4 containsValueForKey:@"HMA.supportsAdaptiveTemperatureAutomations"])
+      v6->_supportsStereoOdeonTTSUBypassingPrimary = [coderCopy decodeBoolForKey:@"HM.ac.HMAccessorySupportsStereoOdeonBypassingPrimaryCodingKey"];
+      v6->_supportsNetworkDiagnostics = [coderCopy decodeBoolForKey:@"HM.ac.HMAccessorySupportsNetworkDiagnosticsCodingKey"];
+      v6->_supportsCrossfadeAsAirPlaySource = [coderCopy decodeBoolForKey:@"HM.ac.HMAccessorySupportsCrossfadeAsAirPlaySourceCodingKey"];
+      if ([coderCopy containsValueForKey:@"HMA.supportsAdaptiveTemperatureAutomations"])
       {
-        v6->_supportsAdaptiveTemperatureAutomations = [v4 decodeBoolForKey:@"HMA.supportsAdaptiveTemperatureAutomations"];
+        v6->_supportsAdaptiveTemperatureAutomations = [coderCopy decodeBoolForKey:@"HMA.supportsAdaptiveTemperatureAutomations"];
       }
 
-      if ([v4 containsValueForKey:@"HMA.supportsCleanEnergyAutomation"])
+      if ([coderCopy containsValueForKey:@"HMA.supportsCleanEnergyAutomation"])
       {
-        v6->_supportsCleanEnergyAutomation = [v4 decodeBoolForKey:@"HMA.supportsCleanEnergyAutomation"];
+        v6->_supportsCleanEnergyAutomation = [coderCopy decodeBoolForKey:@"HMA.supportsCleanEnergyAutomation"];
       }
 
-      if ([v4 containsValueForKey:@"HMA.hasOnboardedForAdaptiveTemperatureAutomations"])
+      if ([coderCopy containsValueForKey:@"HMA.hasOnboardedForAdaptiveTemperatureAutomations"])
       {
-        v6->_hasOnboardedForAdaptiveTemperatureAutomations = [v4 decodeBoolForKey:@"HMA.hasOnboardedForAdaptiveTemperatureAutomations"];
+        v6->_hasOnboardedForAdaptiveTemperatureAutomations = [coderCopy decodeBoolForKey:@"HMA.hasOnboardedForAdaptiveTemperatureAutomations"];
       }
 
-      if ([v4 containsValueForKey:@"HMA.hasOnboardedForCleanEnergyAutomation"])
+      if ([coderCopy containsValueForKey:@"HMA.hasOnboardedForCleanEnergyAutomation"])
       {
-        v6->_hasOnboardedForCleanEnergyAutomation = [v4 decodeBoolForKey:@"HMA.hasOnboardedForCleanEnergyAutomation"];
+        v6->_hasOnboardedForCleanEnergyAutomation = [coderCopy decodeBoolForKey:@"HMA.hasOnboardedForCleanEnergyAutomation"];
       }
 
-      if ([v4 containsValueForKey:@"HMAccessoryHH1EOLEnabledCodingKey"])
+      if ([coderCopy containsValueForKey:@"HMAccessoryHH1EOLEnabledCodingKey"])
       {
-        v6->_hh1EOLEnabled = [v4 decodeBoolForKey:@"HMAccessoryHH1EOLEnabledCodingKey"];
+        v6->_hh1EOLEnabled = [coderCopy decodeBoolForKey:@"HMAccessoryHH1EOLEnabledCodingKey"];
       }
 
-      v6->_isPrimaryResident = [v4 decodeBoolForKey:@"HMAccessoryIsPrimaryResidentCodingKey"];
+      v6->_isPrimaryResident = [coderCopy decodeBoolForKey:@"HMAccessoryIsPrimaryResidentCodingKey"];
     }
 
     self = v6;
-    v29 = self;
+    selfCopy = self;
   }
 
   else
@@ -10846,11 +10846,11 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v26);
-    v29 = 0;
+    selfCopy = 0;
   }
 
   v169 = *MEMORY[0x1E69E9840];
-  return v29;
+  return selfCopy;
 }
 
 id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
@@ -10862,29 +10862,29 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (id)_handleMultipleCharacteristicsUpdated:(id)a3 message:(id)a4 informDelegate:(BOOL)a5
+- (id)_handleMultipleCharacteristicsUpdated:(id)updated message:(id)message informDelegate:(BOOL)delegate
 {
-  v5 = a5;
+  delegateCopy = delegate;
   v77 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v49 = a4;
-  v9 = [(HMAccessory *)self delegate];
-  v43 = v9;
-  v48 = v5 && v9 && (objc_opt_respondsToSelector() & 1) != 0;
+  updatedCopy = updated;
+  messageCopy = message;
+  delegate = [(HMAccessory *)self delegate];
+  v43 = delegate;
+  v48 = delegateCopy && delegate && (objc_opt_respondsToSelector() & 1) != 0;
   v42 = +[HMHAPMetadata getSharedInstance];
-  v52 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v54 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v54 setNumberStyle:1];
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v8;
+  obj = updatedCopy;
   v39 = [obj countByEnumeratingWithState:&v67 objects:v76 count:16];
   if (v39)
   {
     v38 = *v68;
-    v50 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v39; ++i)
@@ -10926,8 +10926,8 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
                 {
                   v17 = [v57 hmf_dictionaryForKey:v14];
                   v18 = [v17 objectForKeyedSubscript:@"kCharacteristicValue"];
-                  v19 = [MEMORY[0x1E695DFB0] null];
-                  v20 = [v18 isEqual:v19];
+                  null = [MEMORY[0x1E695DFB0] null];
+                  v20 = [v18 isEqual:null];
 
                   if (v20)
                   {
@@ -10938,40 +10938,40 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
                   v21 = [v17 errorFromDataForKey:@"kCharacteristicErrorDataKey"];
                   v22 = [[HMCharacteristicRequest alloc] initWithCharacteristic:v16];
                   v23 = [[HMCharacteristicResponse alloc] initWithRequest:v22 value:v18 error:v21];
-                  [v52 addObject:v23];
+                  [array addObject:v23];
                   if (!v21)
                   {
-                    v51 = [v16 value];
-                    v24 = [v49 headers];
-                    v25 = [v24 hmf_dateForKey:@"HMXPCMessageSentDateKey"];
+                    value = [v16 value];
+                    headers = [messageCopy headers];
+                    v25 = [headers hmf_dateForKey:@"HMXPCMessageSentDateKey"];
 
                     [v16 _updateValue:v18 valueUpdatedDate:v25];
                     if (v48)
                     {
                       if (!HMFEqualObjects() || ([v16 characteristicType], v26 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v42, "shouldNotCacheCharacteristicOfType:", v26), v26, v46))
                       {
-                        v47 = [(HMAccessory *)v50 context];
-                        v45 = [v47 delegateCaller];
+                        context = [(HMAccessory *)selfCopy context];
+                        delegateCaller = [context delegateCaller];
                         v58[0] = MEMORY[0x1E69E9820];
                         v58[1] = 3221225472;
                         v58[2] = __76__HMAccessory__handleMultipleCharacteristicsUpdated_message_informDelegate___block_invoke;
                         v58[3] = &unk_1E754DE30;
                         v59 = v43;
-                        v60 = v50;
+                        v60 = selfCopy;
                         v61 = v44;
                         v62 = v16;
-                        [v45 invokeBlock:v58];
+                        [delegateCaller invokeBlock:v58];
                       }
                     }
 
-                    self = v50;
+                    self = selfCopy;
                   }
                 }
 
                 else
                 {
                   v27 = objc_autoreleasePoolPush();
-                  v28 = self;
+                  selfCopy2 = self;
                   v29 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
                   {
@@ -10999,7 +10999,7 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
         else
         {
           v31 = objc_autoreleasePoolPush();
-          v32 = self;
+          selfCopy3 = self;
           v33 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
@@ -11021,24 +11021,24 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
     while (v39);
   }
 
-  v35 = [v52 copy];
+  v35 = [array copy];
   v36 = *MEMORY[0x1E69E9840];
 
   return v35;
 }
 
-- (void)_updateName:(id)a3 forService:(id)a4 completionHandler:(id)a5
+- (void)_updateName:(id)name forService:(id)service completionHandler:(id)handler
 {
   v64 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMAccessory *)self context];
-  if (!v10)
+  nameCopy = name;
+  serviceCopy = service;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _updateName:forService:completionHandler:]", @"completion"];
     v40 = objc_autoreleasePoolPush();
-    v41 = self;
+    selfCopy = self;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
@@ -11055,37 +11055,37 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
     objc_exception_throw(v44);
   }
 
-  v12 = v11;
-  if (v11)
+  v12 = context;
+  if (context)
   {
-    v13 = [(HMAccessory *)self home];
-    if (v13)
+    home = [(HMAccessory *)self home];
+    if (home)
     {
-      v14 = [v9 name];
-      v15 = [v14 isEqual:v8];
+      name = [serviceCopy name];
+      v15 = [name isEqual:nameCopy];
 
       if (v15)
       {
-        v16 = [(HMAccessory *)self context];
-        v17 = [v16 delegateCaller];
-        [v17 callCompletion:v10 error:0];
+        context2 = [(HMAccessory *)self context];
+        delegateCaller = [context2 delegateCaller];
+        [delegateCaller callCompletion:handlerCopy error:0];
       }
 
       else
       {
-        v47 = [v9 targetAccessoryUUID];
-        v25 = [v8 copy];
-        v46 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:v47];
+        targetAccessoryUUID = [serviceCopy targetAccessoryUUID];
+        v25 = [nameCopy copy];
+        v46 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:targetAccessoryUUID];
         v26 = MEMORY[0x1E69A2A10];
         v58[0] = @"kServiceInstanceID";
-        v27 = [v9 instanceID];
+        instanceID = [serviceCopy instanceID];
         v58[1] = @"kServiceName";
-        v59[0] = v27;
+        v59[0] = instanceID;
         v59[1] = v25;
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:2];
         v48 = [v26 messageWithName:@"kRenameServiceRequestKey" destination:v46 payload:v28];
 
-        objc_initWeak(buf, v9);
+        objc_initWeak(buf, serviceCopy);
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __56__HMAccessory__updateName_forService_completionHandler___block_invoke;
@@ -11093,29 +11093,29 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
         objc_copyWeak(&v57, buf);
         v45 = v25;
         v54 = v45;
-        v55 = self;
-        v56 = v10;
+        selfCopy2 = self;
+        v56 = handlerCopy;
         v29 = _Block_copy(aBlock);
-        v30 = [(HMAccessory *)self context];
-        v31 = [v30 pendingRequests];
+        context3 = [(HMAccessory *)self context];
+        pendingRequests = [context3 pendingRequests];
 
-        v32 = [v48 identifier];
+        identifier = [v48 identifier];
         v33 = _Block_copy(v29);
-        [v31 addCompletionBlock:v33 forIdentifier:v32];
+        [pendingRequests addCompletionBlock:v33 forIdentifier:identifier];
 
         v49[0] = MEMORY[0x1E69E9820];
         v49[1] = 3221225472;
         v49[2] = __56__HMAccessory__updateName_forService_completionHandler___block_invoke_2;
         v49[3] = &unk_1E754E480;
-        v34 = v31;
+        v34 = pendingRequests;
         v50 = v34;
-        v35 = v32;
+        v35 = identifier;
         v51 = v35;
         v36 = v29;
         v52 = v36;
         [v48 setResponseHandler:v49];
-        v37 = [v12 messageDispatcher];
-        [v37 sendMessage:v48 completionHandler:0];
+        messageDispatcher = [v12 messageDispatcher];
+        [messageDispatcher sendMessage:v48 completionHandler:0];
 
         objc_destroyWeak(&v57);
         objc_destroyWeak(buf);
@@ -11124,19 +11124,19 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      v22 = [(HMAccessory *)self context];
-      v23 = [v22 delegateCaller];
+      context4 = [(HMAccessory *)self context];
+      delegateCaller2 = [context4 delegateCaller];
       v24 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      [v23 callCompletion:v10 error:v24];
+      [delegateCaller2 callCompletion:handlerCopy error:v24];
 
-      v13 = 0;
+      home = 0;
     }
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy3 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -11149,8 +11149,8 @@ id __29__HMAccessory_initWithCoder___block_invoke(uint64_t a1, void *a2)
     }
 
     objc_autoreleasePoolPop(v18);
-    v13 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v10 + 2))(v10, v13);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(handlerCopy + 2))(handlerCopy, home);
   }
 
   v38 = *MEMORY[0x1E69E9840];
@@ -11181,19 +11181,19 @@ void __56__HMAccessory__updateName_forService_completionHandler___block_invoke_2
   }
 }
 
-- (void)_updateAuthorizationData:(id)a3 forService:(id)a4 characteristic:(id)a5 completionHandler:(id)a6
+- (void)_updateAuthorizationData:(id)data forService:(id)service characteristic:(id)characteristic completionHandler:(id)handler
 {
   v62 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMAccessory *)self context];
-  if (!v13)
+  dataCopy = data;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _updateAuthorizationData:forService:characteristic:completionHandler:]", @"completion"];
     v44 = objc_autoreleasePoolPush();
-    v45 = self;
+    selfCopy = self;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
@@ -11210,45 +11210,45 @@ void __56__HMAccessory__updateName_forService_completionHandler___block_invoke_2
     objc_exception_throw(v48);
   }
 
-  v15 = v14;
-  if (v14)
+  v15 = context;
+  if (context)
   {
-    v16 = [(HMAccessory *)self home];
-    v17 = v16;
-    if (v16)
+    home = [(HMAccessory *)self home];
+    v17 = home;
+    if (home)
     {
       v49 = v15;
       v56[0] = @"kHomeUUID";
-      v18 = [v16 uuid];
-      v19 = [v18 UUIDString];
-      v20 = v11;
-      v21 = v19;
-      v57[0] = v19;
+      uuid = [home uuid];
+      uUIDString = [uuid UUIDString];
+      v20 = serviceCopy;
+      v21 = uUIDString;
+      v57[0] = uUIDString;
       v56[1] = @"kServiceInstanceID";
       v51 = v20;
-      v22 = [v20 instanceID];
-      v57[1] = v22;
+      instanceID = [v20 instanceID];
+      v57[1] = instanceID;
       v56[2] = @"kCharacteristicInstanceID";
-      v50 = v12;
-      v23 = [v12 instanceID];
-      v57[2] = v23;
+      v50 = characteristicCopy;
+      instanceID2 = [characteristicCopy instanceID];
+      v57[2] = instanceID2;
       v56[3] = @"kAuthorizationDataKey";
-      v24 = v10;
-      if (!v10)
+      data = dataCopy;
+      if (!dataCopy)
       {
-        v24 = [MEMORY[0x1E695DEF0] data];
+        data = [MEMORY[0x1E695DEF0] data];
       }
 
-      v57[3] = v24;
+      v57[3] = data;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:4];
-      if (!v10)
+      if (!dataCopy)
       {
       }
 
       v26 = objc_alloc(MEMORY[0x1E69A2A10]);
       v27 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v28 = [(HMAccessory *)self uuid];
-      v29 = [v27 initWithTarget:v28];
+      uuid2 = [(HMAccessory *)self uuid];
+      v29 = [v27 initWithTarget:uuid2];
       v30 = v25;
       v31 = [v26 initWithName:@"HMAccessoryUpdateCharacteristicAuthorizationDataMessage" destination:v29 payload:v25];
 
@@ -11261,29 +11261,29 @@ void __56__HMAccessory__updateName_forService_completionHandler___block_invoke_2
       v15 = v49;
       v33 = v49;
       v54 = v33;
-      v55 = v13;
+      v55 = handlerCopy;
       [v31 setResponseHandler:v52];
-      v34 = [v33 messageDispatcher];
-      [v34 sendMessage:v31];
+      messageDispatcher = [v33 messageDispatcher];
+      [messageDispatcher sendMessage:v31];
 
-      v11 = v51;
+      serviceCopy = v51;
     }
 
     else
     {
-      v39 = [(HMAccessory *)self context];
-      v40 = [v39 delegateCaller];
+      context2 = [(HMAccessory *)self context];
+      delegateCaller = [context2 delegateCaller];
       [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      v41 = v32 = v12;
-      [v40 callCompletion:v13 error:v41];
+      v41 = v32 = characteristicCopy;
+      [delegateCaller callCompletion:handlerCopy error:v41];
     }
   }
 
   else
   {
-    v32 = v12;
+    v32 = characteristicCopy;
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy2 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -11297,7 +11297,7 @@ void __56__HMAccessory__updateName_forService_completionHandler___block_invoke_2
 
     objc_autoreleasePoolPop(v35);
     v17 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v13 + 2))(v13, v17);
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 
   v42 = *MEMORY[0x1E69E9840];
@@ -11315,14 +11315,14 @@ void __84__HMAccessory__updateAuthorizationData_forService_characteristic_comple
   [v5 callCompletion:*(a1 + 48) error:v6];
 }
 
-- (void)_updateAssociatedServiceType:(id)a3 forService:(id)a4 completionHandler:(id)a5
+- (void)_updateAssociatedServiceType:(id)type forService:(id)service completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  serviceCopy = service;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -11330,19 +11330,19 @@ void __84__HMAccessory__updateAuthorizationData_forService_characteristic_comple
     *buf = 138543874;
     v45 = v14;
     v46 = 2112;
-    v47 = v8;
+    v47 = typeCopy;
     v48 = 2112;
-    v49 = v9;
+    v49 = serviceCopy;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Updating service type: %@, for service: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMAccessory *)v12 context];
-  if (!v10)
+  context = [(HMAccessory *)selfCopy context];
+  if (!handlerCopy)
   {
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _updateAssociatedServiceType:forService:completionHandler:]", @"completion"];
     v31 = objc_autoreleasePoolPush();
-    v32 = v12;
+    v32 = selfCopy;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -11359,50 +11359,50 @@ void __84__HMAccessory__updateAuthorizationData_forService_characteristic_comple
     objc_exception_throw(v35);
   }
 
-  v16 = v15;
-  if (v15)
+  v16 = context;
+  if (context)
   {
-    v17 = [(HMAccessory *)v12 home];
-    if (v17)
+    home = [(HMAccessory *)selfCopy home];
+    if (home)
     {
-      v36 = [(HMAccessory *)v12 uuid];
+      uuid = [(HMAccessory *)selfCopy uuid];
       v42[0] = @"kHomeUUID";
-      v18 = [v17 uuid];
-      v19 = [v18 UUIDString];
-      v43[0] = v19;
+      uuid2 = [home uuid];
+      uUIDString = [uuid2 UUIDString];
+      v43[0] = uUIDString;
       v42[1] = @"kServiceInstanceID";
-      [v9 instanceID];
-      v21 = v20 = v9;
+      [serviceCopy instanceID];
+      v21 = v20 = serviceCopy;
       v42[2] = @"kServiceType";
       v43[1] = v21;
-      v43[2] = v8;
+      v43[2] = typeCopy;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:3];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __73__HMAccessory__updateAssociatedServiceType_forService_completionHandler___block_invoke;
       v37[3] = &unk_1E754B6C8;
-      v37[4] = v12;
-      v38 = v8;
+      v37[4] = selfCopy;
+      v38 = typeCopy;
       v39 = v16;
-      v41 = v10;
+      v41 = handlerCopy;
       v40 = v20;
-      [(_HMContext *)v39 sendMessage:v36 target:v22 payload:v37 responseHandler:?];
+      [(_HMContext *)v39 sendMessage:uuid target:v22 payload:v37 responseHandler:?];
 
-      v9 = v20;
+      serviceCopy = v20;
     }
 
     else
     {
-      v27 = [v16 delegateCaller];
+      delegateCaller = [v16 delegateCaller];
       v28 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12 userInfo:0];
-      [v27 callCompletion:v10 error:v28];
+      [delegateCaller callCompletion:handlerCopy error:v28];
     }
   }
 
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = v12;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -11415,8 +11415,8 @@ void __84__HMAccessory__updateAuthorizationData_forService_characteristic_comple
     }
 
     objc_autoreleasePoolPop(v23);
-    v17 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v10 + 2))(v10, v17);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(handlerCopy + 2))(handlerCopy, home);
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -11504,11 +11504,11 @@ void __73__HMAccessory__updateAssociatedServiceType_forService_completionHandler
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_findCharacteristic:(id)a3 forService:(id)a4
+- (id)_findCharacteristic:(id)characteristic forService:(id)service
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(HMAccessory *)self _findService:a4];
+  characteristicCopy = characteristic;
+  v7 = [(HMAccessory *)self _findService:service];
   v8 = v7;
   if (v7)
   {
@@ -11516,8 +11516,8 @@ void __73__HMAccessory__updateAssociatedServiceType_forService_completionHandler
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v7 characteristics];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    characteristics = [v7 characteristics];
+    v10 = [characteristics countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = *v19;
@@ -11527,12 +11527,12 @@ void __73__HMAccessory__updateAssociatedServiceType_forService_completionHandler
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(characteristics);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 instanceID];
-          v15 = [v14 isEqual:v6];
+          instanceID = [v13 instanceID];
+          v15 = [instanceID isEqual:characteristicCopy];
 
           if (v15)
           {
@@ -11541,7 +11541,7 @@ void __73__HMAccessory__updateAssociatedServiceType_forService_completionHandler
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [characteristics countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v10)
         {
           continue;
@@ -11564,16 +11564,16 @@ LABEL_12:
   return v10;
 }
 
-- (id)_findServiceWithUniqueIdentifier:(id)a3
+- (id)_findServiceWithUniqueIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HMAccessory *)self services];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  services = [(HMAccessory *)self services];
+  v6 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -11583,12 +11583,12 @@ LABEL_12:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v10 isEqual:v4];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v11 = [uniqueIdentifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -11597,7 +11597,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -11614,16 +11614,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)_findService:(id)a3
+- (id)_findService:(id)service
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HMAccessory *)self services];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  services = [(HMAccessory *)self services];
+  v6 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -11633,12 +11633,12 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 instanceID];
-        v11 = [v10 isEqual:v4];
+        instanceID = [v9 instanceID];
+        v11 = [instanceID isEqual:serviceCopy];
 
         if (v11)
         {
@@ -11647,7 +11647,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -11673,12 +11673,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)setRemoteLoginHandler:(id)a3
+- (void)setRemoteLoginHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -11686,30 +11686,30 @@ LABEL_11:
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = handlerCopy;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Setting remote login handler: %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  remoteLoginHandler = v6->_remoteLoginHandler;
-  v6->_remoteLoginHandler = v4;
+  remoteLoginHandler = selfCopy->_remoteLoginHandler;
+  selfCopy->_remoteLoginHandler = handlerCopy;
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRoom:(id)a3 completionHandler:(id)a4
+- (void)_updateRoom:(id)room completionHandler:(id)handler
 {
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self context];
-  if (!v7)
+  roomCopy = room;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _updateRoom:completionHandler:]", @"completion"];
     v41 = objc_autoreleasePoolPush();
-    v42 = self;
+    selfCopy = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -11726,33 +11726,33 @@ LABEL_11:
     objc_exception_throw(v45);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 delegateCaller];
-    if (v6)
+    delegateCaller = [context delegateCaller];
+    if (roomCopy)
     {
-      v48 = [(HMAccessory *)self home];
-      v11 = [(HMAccessory *)self room];
-      v12 = v11;
-      if (v48)
+      home = [(HMAccessory *)self home];
+      room = [(HMAccessory *)self room];
+      v12 = room;
+      if (home)
       {
-        if ([v11 isEqual:v6])
+        if ([room isEqual:roomCopy])
         {
-          [v10 callCompletion:v7 error:0];
+          [delegateCaller callCompletion:handlerCopy error:0];
         }
 
         else
         {
           v23 = objc_alloc(MEMORY[0x1E69A2A00]);
-          v24 = [(HMAccessory *)self messageTargetUUID];
-          v46 = [v23 initWithTarget:v24];
+          messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+          v46 = [v23 initWithTarget:messageTargetUUID];
 
           v25 = MEMORY[0x1E69A2A10];
           v58 = @"kRoomUUID";
-          v26 = [v6 uuid];
-          v27 = [v26 UUIDString];
-          v59 = v27;
+          uuid = [roomCopy uuid];
+          uUIDString = [uuid UUIDString];
+          v59 = uUIDString;
           v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
           v47 = [v25 messageWithName:@"kUpdateRoomForAccessoryRequestKey" destination:v46 payload:v28];
 
@@ -11762,31 +11762,31 @@ LABEL_11:
           aBlock[2] = __45__HMAccessory__updateRoom_completionHandler___block_invoke;
           aBlock[3] = &unk_1E754D960;
           objc_copyWeak(&v57, buf);
-          v54 = v6;
-          v55 = v10;
-          v29 = v7;
+          v54 = roomCopy;
+          v55 = delegateCaller;
+          v29 = handlerCopy;
           v56 = v29;
           v30 = _Block_copy(aBlock);
-          v31 = [(HMAccessory *)self context];
-          v32 = [v31 pendingRequests];
+          context2 = [(HMAccessory *)self context];
+          pendingRequests = [context2 pendingRequests];
 
-          v33 = [v47 identifier];
+          identifier = [v47 identifier];
           v34 = _Block_copy(v29);
-          [v32 addCompletionBlock:v34 forIdentifier:v33];
+          [pendingRequests addCompletionBlock:v34 forIdentifier:identifier];
 
           v49[0] = MEMORY[0x1E69E9820];
           v49[1] = 3221225472;
           v49[2] = __45__HMAccessory__updateRoom_completionHandler___block_invoke_2;
           v49[3] = &unk_1E754E480;
-          v35 = v32;
+          v35 = pendingRequests;
           v50 = v35;
-          v36 = v33;
+          v36 = identifier;
           v51 = v36;
           v37 = v30;
           v52 = v37;
           [v47 setResponseHandler:v49];
-          v38 = [v9 messageDispatcher];
-          [v38 sendMessage:v47 completionHandler:0];
+          messageDispatcher = [v9 messageDispatcher];
+          [messageDispatcher sendMessage:v47 completionHandler:0];
 
           objc_destroyWeak(&v57);
           objc_destroyWeak(buf);
@@ -11795,10 +11795,10 @@ LABEL_11:
 
       else
       {
-        if (!v11)
+        if (!room)
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = self;
+          selfCopy2 = self;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
@@ -11816,21 +11816,21 @@ LABEL_11:
         }
 
         v22 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-        [v10 callCompletion:v7 error:v22];
+        [delegateCaller callCompletion:handlerCopy error:v22];
       }
     }
 
     else
     {
       v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:20 userInfo:0];
-      [v10 callCompletion:v7 error:v17];
+      [delegateCaller callCompletion:handlerCopy error:v17];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -11843,8 +11843,8 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v13);
-    v10 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v10);
+    delegateCaller = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(handlerCopy + 2))(handlerCopy, delegateCaller);
   }
 
   v39 = *MEMORY[0x1E69E9840];
@@ -11875,17 +11875,17 @@ void __45__HMAccessory__updateRoom_completionHandler___block_invoke_2(uint64_t a
   }
 }
 
-- (void)_readValueForCharacteristic:(id)a3 completionHandler:(id)a4
+- (void)_readValueForCharacteristic:(id)characteristic completionHandler:(id)handler
 {
   v77 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HMAccessory *)self context];
-  if (!v8)
+  characteristicCopy = characteristic;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _readValueForCharacteristic:completionHandler:]", @"completion"];
     v50 = objc_autoreleasePoolPush();
-    v51 = self;
+    selfCopy = self;
     v52 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
@@ -11902,134 +11902,134 @@ void __45__HMAccessory__updateRoom_completionHandler___block_invoke_2(uint64_t a
     objc_exception_throw(v54);
   }
 
-  v10 = v9;
-  if (v9)
+  v10 = context;
+  if (context)
   {
-    if (v7)
+    if (characteristicCopy)
     {
-      v11 = [v7 service];
-      if (v11)
+      service = [characteristicCopy service];
+      if (service)
       {
-        v12 = [(HMAccessory *)self home];
-        if (v12)
+        home = [(HMAccessory *)self home];
+        if (home)
         {
-          v13 = [v7 properties];
-          v14 = [v13 containsObject:@"HMCharacteristicPropertyReadable"];
+          properties = [characteristicCopy properties];
+          v14 = [properties containsObject:@"HMCharacteristicPropertyReadable"];
 
           if (v14)
           {
             v15 = objc_alloc(MEMORY[0x1E69A29C0]);
             v16 = MEMORY[0x1E696AEC0];
             v17 = MEMORY[0x19EAEB2A0](self, a2);
-            v18 = [v16 stringWithFormat:@"%@, %s:%ld", v17, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Accessory/HMAccessory.m", 3871];
-            v57 = [v15 initWithName:v18];
+            3871 = [v16 stringWithFormat:@"%@, %s:%ld", v17, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Accessory/HMAccessory.m", 3871];
+            v57 = [v15 initWithName:3871];
 
-            v60 = [v7 instanceID];
-            v59 = [v7 characteristicType];
-            [v11 targetAccessoryUUID];
+            instanceID = [characteristicCopy instanceID];
+            characteristicType = [characteristicCopy characteristicType];
+            [service targetAccessoryUUID];
 
             v71[0] = @"kAccessoryUUID";
-            v55 = [v11 targetAccessoryUUID];
-            v19 = [v55 UUIDString];
-            v72[0] = v19;
+            targetAccessoryUUID = [service targetAccessoryUUID];
+            uUIDString = [targetAccessoryUUID UUIDString];
+            v72[0] = uUIDString;
             v71[1] = @"kServiceInstanceID";
-            v20 = [v11 instanceID];
-            v72[1] = v20;
+            instanceID2 = [service instanceID];
+            v72[1] = instanceID2;
             v71[2] = @"kCharacteristicInstanceID";
-            v21 = [v7 instanceID];
-            v72[2] = v21;
+            instanceID3 = [characteristicCopy instanceID];
+            v72[2] = instanceID3;
             v71[3] = @"kHomeUUID";
-            [v12 uuid];
-            v22 = v62 = v12;
-            v23 = [v22 UUIDString];
-            v72[3] = v23;
+            [home uuid];
+            v22 = v62 = home;
+            uUIDString2 = [v22 UUIDString];
+            v72[3] = uUIDString2;
             [MEMORY[0x1E695DF20] dictionaryWithObjects:v72 forKeys:v71 count:4];
-            v58 = v61 = v11;
+            v58 = v61 = service;
 
             v24 = objc_alloc(MEMORY[0x1E69A2A10]);
             v25 = objc_alloc(MEMORY[0x1E69A2A00]);
-            v26 = [v62 messageTargetUUID];
-            v27 = [v25 initWithTarget:v26];
+            messageTargetUUID = [v62 messageTargetUUID];
+            v27 = [v25 initWithTarget:messageTargetUUID];
             v28 = [v24 initWithName:@"kCharacteristicReadRequestKey" destination:v27 payload:v58];
 
             [v28 setActivity:v57];
-            v29 = [(HMAccessory *)self context];
-            v30 = [v29 pendingRequests];
+            context2 = [(HMAccessory *)self context];
+            pendingRequests = [context2 pendingRequests];
 
-            v31 = [v28 identifier];
-            v32 = _Block_copy(v8);
-            [v30 addCompletionBlock:v32 forIdentifier:v31];
+            identifier = [v28 identifier];
+            v32 = _Block_copy(handlerCopy);
+            [pendingRequests addCompletionBlock:v32 forIdentifier:identifier];
 
             v63[0] = MEMORY[0x1E69E9820];
             v63[1] = 3221225472;
             v63[2] = __61__HMAccessory__readValueForCharacteristic_completionHandler___block_invoke;
             v63[3] = &unk_1E754B4C0;
             v64 = v57;
-            v65 = self;
-            v66 = v60;
-            v67 = v59;
-            v68 = v30;
-            v69 = v31;
+            selfCopy2 = self;
+            v66 = instanceID;
+            v67 = characteristicType;
+            v68 = pendingRequests;
+            v69 = identifier;
             v33 = v10;
             v70 = v33;
-            v56 = v31;
-            v34 = v30;
-            v35 = v59;
-            v36 = v60;
+            v56 = identifier;
+            v34 = pendingRequests;
+            v35 = characteristicType;
+            v36 = instanceID;
             v37 = v57;
             [v28 setResponseHandler:v63];
-            v38 = [v33 messageDispatcher];
-            [v38 sendMessage:v28];
+            messageDispatcher = [v33 messageDispatcher];
+            [messageDispatcher sendMessage:v28];
 
             [v37 end];
-            v12 = v62;
+            home = v62;
 
-            v11 = v61;
+            service = v61;
 LABEL_18:
 
             goto LABEL_19;
           }
 
-          v43 = [(HMAccessory *)self context];
-          v44 = [v43 delegateCaller];
+          context3 = [(HMAccessory *)self context];
+          delegateCaller = [context3 delegateCaller];
           v45 = MEMORY[0x1E696ABC0];
           v46 = 6;
         }
 
         else
         {
-          v43 = [(HMAccessory *)self context];
-          v44 = [v43 delegateCaller];
+          context3 = [(HMAccessory *)self context];
+          delegateCaller = [context3 delegateCaller];
           v45 = MEMORY[0x1E696ABC0];
           v46 = 12;
         }
 
         v47 = [v45 errorWithDomain:@"HMErrorDomain" code:v46 userInfo:0];
-        [v44 callCompletion:v8 error:v47];
+        [delegateCaller callCompletion:handlerCopy error:v47];
       }
 
       else
       {
-        v12 = [(HMAccessory *)self context];
-        v43 = [v12 delegateCaller];
-        v44 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:20 userInfo:0];
-        [v43 callCompletion:v8 error:v44];
+        home = [(HMAccessory *)self context];
+        context3 = [home delegateCaller];
+        delegateCaller = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:20 userInfo:0];
+        [context3 callCompletion:handlerCopy error:delegateCaller];
       }
     }
 
     else
     {
-      v11 = [(HMAccessory *)self context];
-      v12 = [v11 delegateCaller];
-      v43 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:20 userInfo:0];
-      [v12 callCompletion:v8 error:v43];
+      service = [(HMAccessory *)self context];
+      home = [service delegateCaller];
+      context3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:20 userInfo:0];
+      [home callCompletion:handlerCopy error:context3];
     }
 
     goto LABEL_18;
   }
 
   v39 = objc_autoreleasePoolPush();
-  v40 = self;
+  selfCopy3 = self;
   v41 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
   {
@@ -12042,8 +12042,8 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v39);
-  v11 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-  (*(v8 + 2))(v8, v11);
+  service = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+  (*(handlerCopy + 2))(handlerCopy, service);
 LABEL_19:
 
   v48 = *MEMORY[0x1E69E9840];
@@ -12067,19 +12067,19 @@ void __61__HMAccessory__readValueForCharacteristic_completionHandler___block_inv
   [*(a1 + 32) end];
 }
 
-- (void)_writeValue:(id)a3 forCharacteristic:(id)a4 service:(id)a5 completionHandler:(id)a6
+- (void)_writeValue:(id)value forCharacteristic:(id)characteristic service:(id)service completionHandler:(id)handler
 {
   v92[5] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(HMAccessory *)self context];
-  if (!v14)
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  serviceCopy = service;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _writeValue:forCharacteristic:service:completionHandler:]", @"completion"];
     v59 = objc_autoreleasePoolPush();
-    v60 = self;
+    selfCopy = self;
     v61 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
     {
@@ -12096,81 +12096,81 @@ void __61__HMAccessory__readValueForCharacteristic_completionHandler___block_inv
     objc_exception_throw(v63);
   }
 
-  v16 = v15;
-  if (v15)
+  v16 = context;
+  if (context)
   {
-    aBlock = v14;
-    v17 = [(HMAccessory *)self home];
-    v74 = v17;
+    aBlock = handlerCopy;
+    home = [(HMAccessory *)self home];
+    v74 = home;
     v75 = v16;
-    if (v17)
+    if (home)
     {
-      v18 = v17;
+      v18 = home;
       v19 = objc_alloc(MEMORY[0x1E69A29C0]);
       v20 = MEMORY[0x1E696AEC0];
       v21 = MEMORY[0x19EAEB2A0](self, a2);
-      v22 = [v20 stringWithFormat:@"%@, %s:%ld", v21, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Accessory/HMAccessory.m", 3801];
-      v64 = [v19 initWithName:v22];
+      3801 = [v20 stringWithFormat:@"%@, %s:%ld", v21, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Accessory/HMAccessory.m", 3801];
+      v64 = [v19 initWithName:3801];
 
-      v65 = [v12 instanceID];
-      v66 = [v12 characteristicType];
+      instanceID = [characteristicCopy instanceID];
+      characteristicType = [characteristicCopy characteristicType];
       [(HMAccessory *)self uuid];
 
-      v70 = [v18 messageTargetUUID];
-      v23 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:v70];
+      messageTargetUUID = [v18 messageTargetUUID];
+      v23 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:messageTargetUUID];
       v68 = MEMORY[0x1E69A2A10];
       v91[0] = @"kAccessoryUUID";
-      v24 = [v13 targetAccessoryUUID];
-      v25 = [v24 UUIDString];
-      v92[0] = v25;
-      v92[1] = v11;
-      v73 = v11;
+      targetAccessoryUUID = [serviceCopy targetAccessoryUUID];
+      uUIDString = [targetAccessoryUUID UUIDString];
+      v92[0] = uUIDString;
+      v92[1] = valueCopy;
+      v73 = valueCopy;
       v91[1] = @"kCharacteristicValue";
       v91[2] = @"kServiceInstanceID";
-      v71 = v13;
-      v26 = [v13 instanceID];
-      v92[2] = v26;
+      v71 = serviceCopy;
+      instanceID2 = [serviceCopy instanceID];
+      v92[2] = instanceID2;
       v91[3] = @"kCharacteristicInstanceID";
-      v72 = v12;
-      v27 = [v12 instanceID];
-      v92[3] = v27;
+      v72 = characteristicCopy;
+      instanceID3 = [characteristicCopy instanceID];
+      v92[3] = instanceID3;
       v91[4] = @"kHomeUUID";
-      v28 = [v18 uuid];
-      v29 = [v28 UUIDString];
-      v92[4] = v29;
+      uuid = [v18 uuid];
+      uUIDString2 = [uuid UUIDString];
+      v92[4] = uUIDString2;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:5];
       v31 = v68;
       v69 = v23;
       v32 = [v31 messageWithName:@"kCharacteristicWriteRequestKey" destination:v23 payload:v30];
 
       [v32 setActivity:v64];
-      v33 = [(HMAccessory *)self context];
-      v34 = [v33 pendingRequests];
+      context2 = [(HMAccessory *)self context];
+      pendingRequests = [context2 pendingRequests];
 
-      v35 = [v32 identifier];
+      identifier = [v32 identifier];
       v36 = _Block_copy(aBlock);
-      [v34 addCompletionBlock:v36 forIdentifier:v35];
+      [pendingRequests addCompletionBlock:v36 forIdentifier:identifier];
 
       v77[0] = MEMORY[0x1E69E9820];
       v77[1] = 3221225472;
       v77[2] = __71__HMAccessory__writeValue_forCharacteristic_service_completionHandler___block_invoke;
       v77[3] = &unk_1E754B4C0;
-      v37 = v64;
-      v78 = v37;
-      v79 = self;
-      v38 = v65;
-      v80 = v38;
-      v39 = v66;
+      context3 = v64;
+      v78 = context3;
+      selfCopy2 = self;
+      delegateCaller = instanceID;
+      v80 = delegateCaller;
+      v39 = characteristicType;
       v81 = v39;
-      v67 = v34;
+      v67 = pendingRequests;
       v82 = v67;
-      v40 = v35;
+      v40 = identifier;
       v83 = v40;
       v41 = v75;
       v84 = v41;
       [v32 setResponseHandler:v77];
       v42 = objc_autoreleasePoolPush();
-      v43 = self;
+      selfCopy3 = self;
       v44 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
@@ -12185,20 +12185,20 @@ void __61__HMAccessory__readValueForCharacteristic_completionHandler___block_inv
       }
 
       objc_autoreleasePoolPop(v42);
-      v46 = [v41 messageDispatcher];
-      [v46 sendMessage:v32];
+      messageDispatcher = [v41 messageDispatcher];
+      [messageDispatcher sendMessage:v32];
 
-      [v37 end];
-      v12 = v72;
-      v11 = v73;
-      v13 = v71;
-      v14 = aBlock;
+      [context3 end];
+      characteristicCopy = v72;
+      valueCopy = v73;
+      serviceCopy = v71;
+      handlerCopy = aBlock;
     }
 
     else
     {
       v53 = objc_autoreleasePoolPush();
-      v54 = self;
+      selfCopy4 = self;
       v55 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
@@ -12206,16 +12206,16 @@ void __61__HMAccessory__readValueForCharacteristic_completionHandler___block_inv
         *buf = 138543618;
         v86 = v56;
         v87 = 2112;
-        v88 = v12;
+        v88 = characteristicCopy;
         _os_log_impl(&dword_19BB39000, v55, OS_LOG_TYPE_ERROR, "%{public}@Cannot write value for characteristic %@: home is nil", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v53);
-      v37 = [(HMAccessory *)v54 context];
-      v38 = [v37 delegateCaller];
+      context3 = [(HMAccessory *)selfCopy4 context];
+      delegateCaller = [context3 delegateCaller];
       v39 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      v14 = aBlock;
-      [v38 callCompletion:aBlock error:v39];
+      handlerCopy = aBlock;
+      [delegateCaller callCompletion:aBlock error:v39];
     }
 
     v52 = v74;
@@ -12225,24 +12225,24 @@ void __61__HMAccessory__readValueForCharacteristic_completionHandler___block_inv
   else
   {
     v47 = objc_autoreleasePoolPush();
-    v48 = self;
+    selfCopy5 = self;
     v49 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v51 = v50 = v14;
+      v51 = v50 = handlerCopy;
       *buf = 138543618;
       v86 = v51;
       v87 = 2080;
       v88 = "[HMAccessory _writeValue:forCharacteristic:service:completionHandler:]";
       _os_log_impl(&dword_19BB39000, v49, OS_LOG_TYPE_ERROR, "%{public}@Nil context, invoking completion - %s", buf, 0x16u);
 
-      v14 = v50;
+      handlerCopy = v50;
     }
 
     objc_autoreleasePoolPop(v47);
     v52 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v14 + 2))(v14, v52);
+    (*(handlerCopy + 2))(handlerCopy, v52);
   }
 
   v57 = *MEMORY[0x1E69E9840];
@@ -12266,17 +12266,17 @@ void __71__HMAccessory__writeValue_forCharacteristic_service_completionHandler__
   [*(a1 + 32) end];
 }
 
-- (void)_updateName:(id)a3 completionHandler:(id)a4
+- (void)_updateName:(id)name completionHandler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self context];
-  if (!v7)
+  nameCopy = name;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory _updateName:completionHandler:]", @"completion"];
     v36 = objc_autoreleasePoolPush();
-    v37 = self;
+    selfCopy = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -12293,10 +12293,10 @@ void __71__HMAccessory__writeValue_forCharacteristic_service_completionHandler__
     objc_exception_throw(v40);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v6 length];
+    v10 = [nameCopy length];
     if (HMMaxLengthForNaming__hmf_once_t8[0] != -1)
     {
       dispatch_once(HMMaxLengthForNaming__hmf_once_t8, &__block_literal_global_70);
@@ -12305,7 +12305,7 @@ void __71__HMAccessory__writeValue_forCharacteristic_service_completionHandler__
     if (v10 > HMMaxLengthForNaming__hmf_once_v9)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -12316,26 +12316,26 @@ void __71__HMAccessory__writeValue_forCharacteristic_service_completionHandler__
       }
 
       objc_autoreleasePoolPop(v11);
-      v15 = [v9 delegateCaller];
+      delegateCaller = [v9 delegateCaller];
       v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:46];
-      [v15 callCompletion:v7 error:v16];
+      [delegateCaller callCompletion:handlerCopy error:v16];
 
       goto LABEL_22;
     }
 
-    v15 = [v6 copy];
-    v21 = [(HMAccessory *)self home];
-    if (v21)
+    delegateCaller = [nameCopy copy];
+    home = [(HMAccessory *)self home];
+    if (home)
     {
-      v22 = [(HMAccessory *)self name];
+      name = [(HMAccessory *)self name];
       v23 = HMFEqualObjects();
 
       if (!v23)
       {
-        if (v6)
+        if (nameCopy)
         {
           v47 = @"kAccessoryName";
-          v48 = v15;
+          v48 = delegateCaller;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
         }
 
@@ -12348,8 +12348,8 @@ void __71__HMAccessory__writeValue_forCharacteristic_service_completionHandler__
 
         v28 = v27;
         v29 = objc_alloc(MEMORY[0x1E69A2A00]);
-        v30 = [(HMAccessory *)self messageTargetUUID];
-        v31 = [v29 initWithTarget:v30];
+        messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+        v31 = [v29 initWithTarget:messageTargetUUID];
 
         v32 = [MEMORY[0x1E69A2A10] messageWithName:@"kRenameAccessoryRequestKey" destination:v31 payload:v28];
         objc_initWeak(buf, self);
@@ -12358,11 +12358,11 @@ void __71__HMAccessory__writeValue_forCharacteristic_service_completionHandler__
         v41[2] = __45__HMAccessory__updateName_completionHandler___block_invoke;
         v41[3] = &unk_1E754D058;
         objc_copyWeak(&v44, buf);
-        v42 = v15;
-        v43 = v7;
+        v42 = delegateCaller;
+        v43 = handlerCopy;
         [v32 setResponseHandler:v41];
-        v33 = [v9 messageDispatcher];
-        [v33 sendMessage:v32 completionHandler:0];
+        messageDispatcher = [v9 messageDispatcher];
+        [messageDispatcher sendMessage:v32 completionHandler:0];
 
         objc_destroyWeak(&v44);
         objc_destroyWeak(buf);
@@ -12370,17 +12370,17 @@ void __71__HMAccessory__writeValue_forCharacteristic_service_completionHandler__
         goto LABEL_21;
       }
 
-      v24 = [(HMAccessory *)self context];
-      v25 = [v24 delegateCaller];
-      [v25 callCompletion:v7 error:0];
+      context2 = [(HMAccessory *)self context];
+      delegateCaller2 = [context2 delegateCaller];
+      [delegateCaller2 callCompletion:handlerCopy error:0];
     }
 
     else
     {
-      v24 = [(HMAccessory *)self context];
-      v25 = [v24 delegateCaller];
+      context2 = [(HMAccessory *)self context];
+      delegateCaller2 = [context2 delegateCaller];
       v26 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      [v25 callCompletion:v7 error:v26];
+      [delegateCaller2 callCompletion:handlerCopy error:v26];
     }
 
 LABEL_21:
@@ -12388,7 +12388,7 @@ LABEL_21:
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -12401,8 +12401,8 @@ LABEL_21:
   }
 
   objc_autoreleasePoolPop(v17);
-  v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-  (*(v7 + 2))(v7, v15);
+  delegateCaller = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+  (*(handlerCopy + 2))(handlerCopy, delegateCaller);
 LABEL_22:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -12432,17 +12432,17 @@ void __45__HMAccessory__updateName_completionHandler___block_invoke(uint64_t a1,
   [v11 callCompletion:*(a1 + 40) error:v5];
 }
 
-- (void)updateAccessoryName:(id)a3 completionHandler:(id)a4
+- (void)updateAccessoryName:(id)name completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self context];
-  if (!v7)
+  nameCopy = name;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory updateAccessoryName:completionHandler:]", @"completion"];
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -12459,26 +12459,26 @@ void __45__HMAccessory__updateName_completionHandler___block_invoke(uint64_t a1,
     objc_exception_throw(v23);
   }
 
-  v9 = v8;
-  v10 = [(HMAccessory *)self context];
+  v9 = context;
+  context2 = [(HMAccessory *)self context];
 
-  if (v10)
+  if (context2)
   {
-    v11 = [v9 queue];
+    queue = [v9 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__HMAccessory_updateAccessoryName_completionHandler___block_invoke;
     block[3] = &unk_1E754E0F8;
     block[4] = self;
-    v25 = v6;
-    v26 = v7;
-    dispatch_async(v11, block);
+    v25 = nameCopy;
+    v26 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -12492,7 +12492,7 @@ void __45__HMAccessory__updateName_completionHandler___block_invoke(uint64_t a1,
 
     objc_autoreleasePoolPop(v12);
     v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v16);
+    (*(handlerCopy + 2))(handlerCopy, v16);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -12503,12 +12503,12 @@ void __45__HMAccessory__updateName_completionHandler___block_invoke(uint64_t a1,
   v31 = *MEMORY[0x1E69E9840];
   v6 = name;
   v7 = completion;
-  v8 = [(HMAccessory *)self context];
+  context = [(HMAccessory *)self context];
   if (!v7)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory updateName:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -12525,18 +12525,18 @@ void __45__HMAccessory__updateName_completionHandler___block_invoke(uint64_t a1,
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44__HMAccessory_updateName_completionHandler___block_invoke;
     block[3] = &unk_1E754E0F8;
     v24 = v6;
-    v25 = self;
+    selfCopy2 = self;
     v26 = v7;
-    dispatch_async(v10, block);
+    dispatch_async(queue, block);
 
     v11 = v24;
   }
@@ -12544,7 +12544,7 @@ void __45__HMAccessory__updateName_completionHandler___block_invoke(uint64_t a1,
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -12585,10 +12585,10 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
   }
 }
 
-- (void)setCertificationStatus:(int64_t)a3
+- (void)setCertificationStatus:(int64_t)status
 {
   os_unfair_lock_lock_with_options();
-  self->_certificationStatus = a3;
+  self->_certificationStatus = status;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -12601,12 +12601,12 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
   return certificationStatus;
 }
 
-- (void)setApplicationData:(id)a3
+- (void)setApplicationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock_with_options();
   applicationData = self->_applicationData;
-  self->_applicationData = v4;
+  self->_applicationData = dataCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -12628,10 +12628,10 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
   return associationOptions;
 }
 
-- (void)setSuspendedState:(unint64_t)a3
+- (void)setSuspendedState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_suspendedState = a3;
+  self->_suspendedState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -12644,10 +12644,10 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
   return suspendedState;
 }
 
-- (void)setSuspendCapable:(BOOL)a3
+- (void)setSuspendCapable:(BOOL)capable
 {
   os_unfair_lock_lock_with_options();
-  self->_suspendCapable = a3;
+  self->_suspendCapable = capable;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -12660,23 +12660,23 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
   return suspendCapable;
 }
 
-- (void)clearMatterCredentialWithType:(int64_t)a3 index:(int64_t)a4 completion:(id)a5
+- (void)clearMatterCredentialWithType:(int64_t)type index:(int64_t)index completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(HMAccessory *)self context];
-  if (v9)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v11 = [(HMAccessory *)self messageTargetUUID];
-    v12 = [v10 initWithTarget:v11];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v12 = [v10 initWithTarget:messageTargetUUID];
 
     v13 = MEMORY[0x1E69A2A10];
     v26[0] = @"type";
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v26[1] = @"index";
     v27[0] = v14;
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:index];
     v27[1] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
     v17 = [v13 messageWithName:@"homeutil_clearClearCredential" destination:v12 payload:v16];
@@ -12685,16 +12685,16 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
     v24[1] = 3221225472;
     v24[2] = __62__HMAccessory_clearMatterCredentialWithType_index_completion___block_invoke;
     v24[3] = &unk_1E754C0F0;
-    v25 = v8;
+    v25 = completionCopy;
     [v17 setResponseHandler:v24];
-    v18 = [v9 messageDispatcher];
-    [v18 sendMessage:v17];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v17];
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -12712,20 +12712,20 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearMatterUserWithIndex:(int64_t)a3 completion:(id)a4
+- (void)clearMatterUserWithIndex:(int64_t)index completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMAccessory *)self context];
-  if (v7)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v8 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v9 = [(HMAccessory *)self messageTargetUUID];
-    v10 = [v8 initWithTarget:v9];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v10 = [v8 initWithTarget:messageTargetUUID];
 
     v11 = MEMORY[0x1E69A2A10];
     v23 = @"index";
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:index];
     v24 = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v14 = [v11 messageWithName:@"homeutil_clearUser" destination:v10 payload:v13];
@@ -12734,16 +12734,16 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
     v21[1] = 3221225472;
     v21[2] = __51__HMAccessory_clearMatterUserWithIndex_completion___block_invoke;
     v21[3] = &unk_1E754C0F0;
-    v22 = v6;
+    v22 = completionCopy;
     [v14 setResponseHandler:v21];
-    v15 = [v7 messageDispatcher];
-    [v15 sendMessage:v14];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v14];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -12761,32 +12761,32 @@ void __44__HMAccessory_updateName_completionHandler___block_invoke(void *a1)
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dumpMatterUsersWithCompletion:(id)a3
+- (void)dumpMatterUsersWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v7 = [(HMAccessory *)self messageTargetUUID];
-    v8 = [v6 initWithTarget:v7];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v8 = [v6 initWithTarget:messageTargetUUID];
 
     v9 = [MEMORY[0x1E69A2A10] messageWithName:@"homeutil_getAllUsers" destination:v8 payload:0];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __45__HMAccessory_dumpMatterUsersWithCompletion___block_invoke;
     v16[3] = &unk_1E754C0F0;
-    v17 = v4;
+    v17 = completionCopy;
     [v9 setResponseHandler:v16];
-    v10 = [v5 messageDispatcher];
-    [v10 sendMessage:v9];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v9];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -12822,32 +12822,32 @@ void __45__HMAccessory_dumpMatterUsersWithCompletion___block_invoke(uint64_t a1,
   }
 }
 
-- (void)getAccessoryDiagnosticEventsWithCompletion:(id)a3
+- (void)getAccessoryDiagnosticEventsWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v7 = [(HMAccessory *)self messageTargetUUID];
-    v8 = [v6 initWithTarget:v7];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v8 = [v6 initWithTarget:messageTargetUUID];
 
     v9 = [MEMORY[0x1E69A2A10] messageWithName:@"HMA.accessoryDiagnosticEvents" destination:v8 payload:0];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __58__HMAccessory_getAccessoryDiagnosticEventsWithCompletion___block_invoke;
     v16[3] = &unk_1E754C0F0;
-    v17 = v4;
+    v17 = completionCopy;
     [v9 setResponseHandler:v16];
-    v10 = [v5 messageDispatcher];
-    [v10 sendMessage:v9];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v9];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -12865,32 +12865,32 @@ void __45__HMAccessory_dumpMatterUsersWithCompletion___block_invoke(uint64_t a1,
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getAccessoryDiagnosticCountersWithCompletion:(id)a3
+- (void)getAccessoryDiagnosticCountersWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v7 = [(HMAccessory *)self messageTargetUUID];
-    v8 = [v6 initWithTarget:v7];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v8 = [v6 initWithTarget:messageTargetUUID];
 
     v9 = [MEMORY[0x1E69A2A10] messageWithName:@"HMA.accessoryDiagnosticCounters" destination:v8 payload:0];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __60__HMAccessory_getAccessoryDiagnosticCountersWithCompletion___block_invoke;
     v16[3] = &unk_1E754C0F0;
-    v17 = v4;
+    v17 = completionCopy;
     [v9 setResponseHandler:v16];
-    v10 = [v5 messageDispatcher];
-    [v10 sendMessage:v9];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v9];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -12908,41 +12908,41 @@ void __45__HMAccessory_dumpMatterUsersWithCompletion___block_invoke(uint64_t a1,
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryLinkQualityWithCompletion:(id)a3
+- (void)queryLinkQualityWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     if (_os_feature_enabled_impl())
     {
       v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v7 = [(HMAccessory *)self messageTargetUUID];
-      v8 = [v6 initWithTarget:v7];
+      messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+      v8 = [v6 initWithTarget:messageTargetUUID];
 
       v9 = [MEMORY[0x1E69A2A10] messageWithName:@"HMA.linkQualityRequest" destination:v8 payload:0];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __46__HMAccessory_queryLinkQualityWithCompletion___block_invoke;
       v16[3] = &unk_1E754C0F0;
-      v17 = v4;
+      v17 = completionCopy;
       [v9 setResponseHandler:v16];
-      v10 = [v5 messageDispatcher];
-      [v10 sendMessage:v9];
+      messageDispatcher = [context messageDispatcher];
+      [messageDispatcher sendMessage:v9];
     }
 
     else
     {
       v8 = [MEMORY[0x1E696ABC0] hmErrorWithCode:48 description:@"Feature is disabled" reason:@"Feature flag is disabled" suggestion:0];
-      (*(v4 + 2))(v4, 0, v8);
+      (*(completionCopy + 2))(completionCopy, 0, v8);
     }
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -13010,32 +13010,32 @@ void __46__HMAccessory_queryLinkQualityWithCompletion___block_invoke(uint64_t a1
   }
 }
 
-- (void)validatePairingAuthMethodWithCompletion:(id)a3
+- (void)validatePairingAuthMethodWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v7 = [(HMAccessory *)self messageTargetUUID];
-    v8 = [v6 initWithTarget:v7];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v8 = [v6 initWithTarget:messageTargetUUID];
 
     v9 = [MEMORY[0x1E69A2A10] messageWithName:@"HMA.validateAuthMethod" destination:v8 payload:0];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __55__HMAccessory_validatePairingAuthMethodWithCompletion___block_invoke;
     v16[3] = &unk_1E754C0F0;
-    v17 = v4;
+    v17 = completionCopy;
     [v9 setResponseHandler:v16];
-    v10 = [v5 messageDispatcher];
-    [v10 sendMessage:v9];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v9];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -13081,39 +13081,39 @@ void __55__HMAccessory_validatePairingAuthMethodWithCompletion___block_invoke(ui
   }
 }
 
-- (void)queryAdvertisementInformationWithCompletionHandler:(id)a3
+- (void)queryAdvertisementInformationWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v22 = @"kAccessoryUUID";
-    v6 = [(HMAccessory *)self uuid];
-    v7 = [v6 UUIDString];
-    v23 = v7;
+    uuid = [(HMAccessory *)self uuid];
+    uUIDString = [uuid UUIDString];
+    v23 = uUIDString;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
     v9 = objc_alloc(MEMORY[0x1E69A2A10]);
     v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v11 = [(HMAccessory *)self uuid];
-    v12 = [v10 initWithTarget:v11];
+    uuid2 = [(HMAccessory *)self uuid];
+    v12 = [v10 initWithTarget:uuid2];
     v13 = [v9 initWithName:@"kAccessoryAdvertisingParamsRequestKey" destination:v12 payload:v8];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __66__HMAccessory_queryAdvertisementInformationWithCompletionHandler___block_invoke;
     v20[3] = &unk_1E754C0F0;
-    v21 = v4;
+    v21 = handlerCopy;
     [v13 setResponseHandler:v20];
-    v14 = [v5 messageDispatcher];
-    [v14 sendMessage:v13];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v13];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -13148,10 +13148,10 @@ void __66__HMAccessory_queryAdvertisementInformationWithCompletionHandler___bloc
   }
 }
 
-- (void)setControllable:(BOOL)a3
+- (void)setControllable:(BOOL)controllable
 {
   os_unfair_lock_lock_with_options();
-  self->_controllable = a3;
+  self->_controllable = controllable;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -13166,32 +13166,32 @@ void __66__HMAccessory_queryAdvertisementInformationWithCompletionHandler___bloc
 
 - (BOOL)isCalibrating
 {
-  v3 = [(HMAccessory *)self calibrationStatus];
-  if (v3)
+  calibrationStatus = [(HMAccessory *)self calibrationStatus];
+  if (calibrationStatus)
   {
-    LOBYTE(v3) = [(HMAccessory *)self calibrationStatus]== 1;
+    LOBYTE(calibrationStatus) = [(HMAccessory *)self calibrationStatus]== 1;
   }
 
-  return v3;
+  return calibrationStatus;
 }
 
 - (BOOL)isAdditionalSetupRequired
 {
-  v3 = [(HMAccessory *)self additionalSetupStatus];
-  if (v3)
+  additionalSetupStatus = [(HMAccessory *)self additionalSetupStatus];
+  if (additionalSetupStatus)
   {
-    LOBYTE(v3) = [(HMAccessory *)self additionalSetupStatus]== 1;
+    LOBYTE(additionalSetupStatus) = [(HMAccessory *)self additionalSetupStatus]== 1;
   }
 
-  return v3;
+  return additionalSetupStatus;
 }
 
-- (void)setHAPInstanceID:(id)a3
+- (void)setHAPInstanceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   HAPInstanceID = self->_HAPInstanceID;
-  self->_HAPInstanceID = v4;
+  self->_HAPInstanceID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -13205,10 +13205,10 @@ void __66__HMAccessory_queryAdvertisementInformationWithCompletionHandler___bloc
   return v3;
 }
 
-- (void)setVendorAccessory:(BOOL)a3
+- (void)setVendorAccessory:(BOOL)accessory
 {
   os_unfair_lock_lock_with_options();
-  self->_vendorAccessory = a3;
+  self->_vendorAccessory = accessory;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -13221,10 +13221,10 @@ void __66__HMAccessory_queryAdvertisementInformationWithCompletionHandler___bloc
   return vendorAccessory;
 }
 
-- (void)setFirmwareUpdateAvailable:(BOOL)a3
+- (void)setFirmwareUpdateAvailable:(BOOL)available
 {
   os_unfair_lock_lock_with_options();
-  self->_firmwareUpdateAvailable = a3;
+  self->_firmwareUpdateAvailable = available;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -13237,11 +13237,11 @@ void __66__HMAccessory_queryAdvertisementInformationWithCompletionHandler___bloc
   return firmwareUpdateAvailable;
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:dCopy];
   bundleID = self->_bundleID;
   self->_bundleID = v4;
 
@@ -13257,11 +13257,11 @@ void __66__HMAccessory_queryAdvertisementInformationWithCompletionHandler___bloc
   return v3;
 }
 
-- (void)setStoreID:(id)a3
+- (void)setStoreID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:dCopy];
   storeID = self->_storeID;
   self->_storeID = v4;
 
@@ -13277,48 +13277,48 @@ void __66__HMAccessory_queryAdvertisementInformationWithCompletionHandler___bloc
   return v3;
 }
 
-- (id)_valueForCharacteristic:(id)a3 ofService:(id)a4
+- (id)_valueForCharacteristic:(id)characteristic ofService:(id)service
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  characteristicCopy = characteristic;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a4 characteristics];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
-  if (v7)
+  characteristics = [service characteristics];
+  value2 = [characteristics countByEnumeratingWithState:&v17 objects:v21 count:16];
+  if (value2)
   {
     v8 = *v18;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != value2; i = i + 1)
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(characteristics);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 characteristicType];
-        v12 = [v11 isEqualToString:v5];
+        characteristicType = [v10 characteristicType];
+        v12 = [characteristicType isEqualToString:characteristicCopy];
 
         if (v12)
         {
-          v13 = [v10 value];
+          value = [v10 value];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v7 = [v10 value];
+            value2 = [v10 value];
             goto LABEL_12;
           }
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
-      if (v7)
+      value2 = [characteristics countByEnumeratingWithState:&v17 objects:v21 count:16];
+      if (value2)
       {
         continue;
       }
@@ -13331,7 +13331,7 @@ LABEL_12:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return value2;
 }
 
 - (id)_accessoryInformationService
@@ -13341,8 +13341,8 @@ LABEL_12:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(HMAccessory *)self services];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  services = [(HMAccessory *)self services];
+  v3 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -13353,12 +13353,12 @@ LABEL_12:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(services);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 serviceType];
-        v9 = [v8 isEqualToString:@"0000003E-0000-1000-8000-0026BB765291"];
+        serviceType = [v7 serviceType];
+        v9 = [serviceType isEqualToString:@"0000003E-0000-1000-8000-0026BB765291"];
 
         if (v9)
         {
@@ -13367,7 +13367,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -13394,12 +13394,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSoftwareUpdateController:(id)a3
+- (void)setSoftwareUpdateController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   os_unfair_lock_lock_with_options();
   softwareUpdateController = self->_softwareUpdateController;
-  self->_softwareUpdateController = v4;
+  self->_softwareUpdateController = controllerCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -13413,12 +13413,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSoftwareVersion:(id)a3
+- (void)setSoftwareVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   os_unfair_lock_lock_with_options();
   softwareVersion = self->_softwareVersion;
-  self->_softwareVersion = v4;
+  self->_softwareVersion = versionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -13432,12 +13432,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)setDeviceIRKData:(id)a3
+- (void)setDeviceIRKData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock_with_options();
   deviceIRKData = self->_deviceIRKData;
-  self->_deviceIRKData = v4;
+  self->_deviceIRKData = dataCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -13451,12 +13451,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
   device = self->_device;
-  self->_device = v4;
+  self->_device = deviceCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -13608,31 +13608,31 @@ uint64_t __63__HMAccessory_pairingIdentityWithPrivateKey_completionHandler___blo
   return result;
 }
 
-- (void)_handlePairingIdentityUpdate:(id)a3
+- (void)_handlePairingIdentityUpdate:(id)update
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  updateCopy = update;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
-    v6 = [(HMAccessory *)self _privateDelegate];
+    _privateDelegate = [(HMAccessory *)self _privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(HMAccessory *)self context];
-      v8 = [v7 delegateCaller];
+      context2 = [(HMAccessory *)self context];
+      delegateCaller = [context2 delegateCaller];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __44__HMAccessory__handlePairingIdentityUpdate___block_invoke;
       v23[3] = &unk_1E754E5C0;
       v23[4] = self;
-      v24 = v6;
-      [v8 invokeBlock:v23];
+      v24 = _privateDelegate;
+      [delegateCaller invokeBlock:v23];
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -13640,7 +13640,7 @@ uint64_t __63__HMAccessory_pairingIdentityWithPrivateKey_completionHandler___blo
         *buf = 138543618;
         v26 = v16;
         v27 = 2112;
-        v28 = v6;
+        v28 = _privateDelegate;
         _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_INFO, "%{public}@Did not call delegate for pairing identity, unregistered delegate: %@", buf, 0x16u);
       }
 
@@ -13648,7 +13648,7 @@ uint64_t __63__HMAccessory_pairingIdentityWithPrivateKey_completionHandler___blo
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -13659,14 +13659,14 @@ uint64_t __63__HMAccessory_pairingIdentityWithPrivateKey_completionHandler___blo
     }
 
     objc_autoreleasePoolPop(v17);
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 postNotificationName:@"HMAccessoryPairingIdentityUpdatedNotification" object:v18];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"HMAccessoryPairingIdentityUpdatedNotification" object:selfCopy2];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -13707,22 +13707,22 @@ uint64_t __44__HMAccessory__handlePairingIdentityUpdate___block_invoke(uint64_t 
   return result;
 }
 
-- (void)installManagedConfigurationProfileWithData:(id)a3 completionHandler:(id)a4
+- (void)installManagedConfigurationProfileWithData:(id)data completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  handlerCopy = handler;
+  if (dataCopy)
   {
-    v8 = [(HMAccessory *)self context];
-    if (v8)
+    context = [(HMAccessory *)self context];
+    if (context)
     {
       v9 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v10 = [(HMAccessory *)self messageTargetUUID];
-      v11 = [v9 initWithTarget:v10];
+      messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+      v11 = [v9 initWithTarget:messageTargetUUID];
 
       v30 = @"HMAccessory.mc.data";
-      v31 = v6;
+      v31 = dataCopy;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       v13 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryInstallManagedConfigurationProfileMessage" destination:v11 payload:v12];
       objc_initWeak(location, self);
@@ -13731,10 +13731,10 @@ uint64_t __44__HMAccessory__handlePairingIdentityUpdate___block_invoke(uint64_t 
       v26 = __76__HMAccessory_installManagedConfigurationProfileWithData_completionHandler___block_invoke;
       v27 = &unk_1E754CFF8;
       objc_copyWeak(&v29, location);
-      v28 = v7;
+      v28 = handlerCopy;
       [v13 setResponseHandler:&v24];
-      v14 = [v8 messageDispatcher];
-      [v14 sendMessage:v13 completionHandler:0];
+      messageDispatcher = [context messageDispatcher];
+      [messageDispatcher sendMessage:v13 completionHandler:0];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(location);
@@ -13743,7 +13743,7 @@ uint64_t __44__HMAccessory__handlePairingIdentityUpdate___block_invoke(uint64_t 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -13756,14 +13756,14 @@ uint64_t __44__HMAccessory__handlePairingIdentityUpdate___block_invoke(uint64_t 
       }
 
       objc_autoreleasePoolPop(v19);
-      v8 = 0;
+      context = 0;
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -13774,8 +13774,8 @@ uint64_t __44__HMAccessory__handlePairingIdentityUpdate___block_invoke(uint64_t 
     }
 
     objc_autoreleasePoolPop(v15);
-    v8 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:8];
-    (*(v7 + 2))(v7, 0, v8);
+    context = [MEMORY[0x1E696ABC0] hmfErrorWithCode:8];
+    (*(handlerCopy + 2))(handlerCopy, 0, context);
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -13837,19 +13837,19 @@ void __76__HMAccessory_installManagedConfigurationProfileWithData_completionHand
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeManagedConfigurationProfileWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeManagedConfigurationProfileWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v8 = [(HMAccessory *)self context];
-    if (!v7)
+    context = [(HMAccessory *)self context];
+    if (!handlerCopy)
     {
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory removeManagedConfigurationProfileWithIdentifier:completionHandler:]", @"completionHandler"];
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -13866,15 +13866,15 @@ void __76__HMAccessory_installManagedConfigurationProfileWithData_completionHand
       objc_exception_throw(v30);
     }
 
-    v9 = v8;
-    if (v8)
+    v9 = context;
+    if (context)
     {
       v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v11 = [(HMAccessory *)self messageTargetUUID];
-      v12 = [v10 initWithTarget:v11];
+      messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+      v12 = [v10 initWithTarget:messageTargetUUID];
 
       v34 = @"HMAccessory.mc.identifier";
-      v35 = v6;
+      v35 = identifierCopy;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v14 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryRemoveManagedConfigurationProfileMessage" destination:v12 payload:v13];
       objc_initWeak(location, self);
@@ -13883,10 +13883,10 @@ void __76__HMAccessory_installManagedConfigurationProfileWithData_completionHand
       v31[2] = __81__HMAccessory_removeManagedConfigurationProfileWithIdentifier_completionHandler___block_invoke;
       v31[3] = &unk_1E754CFF8;
       objc_copyWeak(&v33, location);
-      v32 = v7;
+      v32 = handlerCopy;
       [v14 setResponseHandler:v31];
-      v15 = [v9 messageDispatcher];
-      [v15 sendMessage:v14 completionHandler:0];
+      messageDispatcher = [v9 messageDispatcher];
+      [messageDispatcher sendMessage:v14 completionHandler:0];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(location);
@@ -13895,7 +13895,7 @@ void __76__HMAccessory_installManagedConfigurationProfileWithData_completionHand
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -13909,14 +13909,14 @@ void __76__HMAccessory_installManagedConfigurationProfileWithData_completionHand
 
       objc_autoreleasePoolPop(v20);
       v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v7 + 2))(v7, v12);
+      (*(handlerCopy + 2))(handlerCopy, v12);
     }
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -13928,7 +13928,7 @@ void __76__HMAccessory_installManagedConfigurationProfileWithData_completionHand
 
     objc_autoreleasePoolPop(v16);
     v9 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:8];
-    (*(v7 + 2))(v7, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -13984,16 +13984,16 @@ LABEL_7:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchManagedConfigurationProfilesWithCompletionHandler:(id)a3
+- (void)fetchManagedConfigurationProfilesWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory fetchManagedConfigurationProfilesWithCompletionHandler:]", @"completionHandler"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -14010,12 +14010,12 @@ LABEL_7:
     objc_exception_throw(v22);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
     v7 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v8 = [(HMAccessory *)self messageTargetUUID];
-    v9 = [v7 initWithTarget:v8];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v9 = [v7 initWithTarget:messageTargetUUID];
 
     v10 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryFetchManagedConfigurationProfilesMessage" destination:v9 payload:0];
     objc_initWeak(location, self);
@@ -14024,10 +14024,10 @@ LABEL_7:
     v23[2] = __70__HMAccessory_fetchManagedConfigurationProfilesWithCompletionHandler___block_invoke;
     v23[3] = &unk_1E754CFF8;
     objc_copyWeak(&v25, location);
-    v24 = v4;
+    v24 = handlerCopy;
     [v10 setResponseHandler:v23];
-    v11 = [v6 messageDispatcher];
-    [v11 sendMessage:v10 completionHandler:0];
+    messageDispatcher = [v6 messageDispatcher];
+    [messageDispatcher sendMessage:v10 completionHandler:0];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(location);
@@ -14036,7 +14036,7 @@ LABEL_7:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -14050,7 +14050,7 @@ LABEL_7:
 
     objc_autoreleasePoolPop(v12);
     v9 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -14190,17 +14190,17 @@ void __70__HMAccessory_fetchManagedConfigurationProfilesWithCompletionHandler___
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePreferredMediaUserSelectionType:(unint64_t)a3 user:(id)a4 completionHandler:(id)a5
+- (void)updatePreferredMediaUserSelectionType:(unint64_t)type user:(id)user completionHandler:(id)handler
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v39 = [(HMAccessory *)self context];
-  if (!v9)
+  userCopy = user;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory updatePreferredMediaUserSelectionType:user:completionHandler:]", @"completionHandler"];
     v34 = objc_autoreleasePoolPush();
-    v35 = self;
+    selfCopy = self;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -14218,21 +14218,21 @@ void __70__HMAccessory_fetchManagedConfigurationProfilesWithCompletionHandler___
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy2 = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
-  if (v39)
+  if (context)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v8 uuid];
-      v16 = [v15 UUIDString];
-      v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      uuid = [userCopy uuid];
+      uUIDString = [uuid UUIDString];
+      v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
       *buf = 138543874;
       v49 = v14;
       v50 = 2112;
-      v51 = v16;
+      v51 = uUIDString;
       v52 = 2112;
       v53 = v17;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Updating preferredMediaUser: %@, type: %@", buf, 0x20u);
@@ -14240,41 +14240,41 @@ void __70__HMAccessory_fetchManagedConfigurationProfilesWithCompletionHandler___
 
     objc_autoreleasePoolPop(v10);
     v46 = @"HM.ac.usersel";
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     v47 = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
     v20 = [v19 mutableCopy];
 
-    if (v8)
+    if (userCopy)
     {
       v44 = @"kUserUUIDKey";
-      v21 = [v8 uuid];
-      v22 = [v21 UUIDString];
-      v45 = v22;
+      uuid2 = [userCopy uuid];
+      uUIDString2 = [uuid2 UUIDString];
+      v45 = uUIDString2;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
       [v20 addEntriesFromDictionary:v23];
     }
 
     v24 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v25 = [(HMAccessory *)v11 messageTargetUUID];
-    v26 = [v24 initWithTarget:v25];
+    messageTargetUUID = [(HMAccessory *)selfCopy2 messageTargetUUID];
+    v26 = [v24 initWithTarget:messageTargetUUID];
 
     v27 = MEMORY[0x1E69A2A10];
     v28 = [v20 copy];
     v29 = [v27 messageWithName:@"HM.ac.updatePreferredMediaUser" destination:v26 payload:v28];
 
-    objc_initWeak(buf, v11);
+    objc_initWeak(buf, selfCopy2);
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __76__HMAccessory_updatePreferredMediaUserSelectionType_user_completionHandler___block_invoke;
     v40[3] = &unk_1E754B480;
     objc_copyWeak(v43, buf);
-    v41 = v8;
-    v43[1] = a3;
-    v42 = v9;
+    v41 = userCopy;
+    v43[1] = type;
+    v42 = handlerCopy;
     [v29 setResponseHandler:v40];
-    v30 = [v39 messageDispatcher];
-    [v30 sendMessage:v29];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v29];
 
     objc_destroyWeak(v43);
     objc_destroyWeak(buf);
@@ -14294,7 +14294,7 @@ void __70__HMAccessory_fetchManagedConfigurationProfilesWithCompletionHandler___
 
     objc_autoreleasePoolPop(v10);
     v20 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v9 + 2))(v9, v20);
+    (*(handlerCopy + 2))(handlerCopy, v20);
   }
 
   v32 = *MEMORY[0x1E69E9840];
@@ -14389,15 +14389,15 @@ LABEL_14:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePreferredMediaUser:(id)a3 completionHandler:(id)a4
+- (void)updatePreferredMediaUser:(id)user completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v6 = a4;
-  if (!v13)
+  userCopy = user;
+  handlerCopy = handler;
+  if (!userCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -14412,24 +14412,24 @@ LABEL_14:
     objc_exception_throw(v12);
   }
 
-  [(HMAccessory *)self updatePreferredMediaUserSelectionType:1 user:v13 completionHandler:v6];
+  [(HMAccessory *)self updatePreferredMediaUserSelectionType:1 user:userCopy completionHandler:handlerCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDelegateOfUpdatedSettings:(id)a3
+- (void)_notifyDelegateOfUpdatedSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  v6 = [v5 delegateCaller];
+  settingsCopy = settings;
+  context = [(HMAccessory *)self context];
+  delegateCaller = [context delegateCaller];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke;
   v8[3] = &unk_1E754E5C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 invokeBlock:v8];
+  v9 = settingsCopy;
+  v7 = settingsCopy;
+  [delegateCaller invokeBlock:v8];
 }
 
 void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t a1)
@@ -14539,18 +14539,18 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleRootSettingsUpdated:(id)a3
+- (void)_handleRootSettingsUpdated:(id)updated
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   if ([(HMAccessory *)self supportsMessagedHomePodSettings])
   {
-    [v4 respondWithPayload:0];
+    [updatedCopy respondWithPayload:0];
   }
 
   else
   {
-    v5 = [v4 dataForKey:@"settings"];
+    v5 = [updatedCopy dataForKey:@"settings"];
     if (v5)
     {
       v27 = 0;
@@ -14559,12 +14559,12 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
       if (v6)
       {
         v8 = [[HMAccessorySettingGroup alloc] initWithInternal:v6];
-        v9 = [(HMAccessory *)self settings];
+        settings = [(HMAccessory *)self settings];
         v10 = objc_autoreleasePoolPush();
-        v11 = self;
+        selfCopy = self;
         v12 = HMFGetOSLogHandle();
         v13 = v12;
-        if (v9)
+        if (settings)
         {
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
@@ -14577,8 +14577,8 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
           }
 
           objc_autoreleasePoolPop(v10);
-          v15 = [(HMAccessory *)v11 settings];
-          [v15 mergeFromNewObject:v9];
+          settings2 = [(HMAccessory *)selfCopy settings];
+          [settings2 mergeFromNewObject:settings];
         }
 
         else
@@ -14594,18 +14594,18 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
           }
 
           objc_autoreleasePoolPop(v10);
-          v9 = [[HMAccessorySettings alloc] initWithSettingsContainer:v11 settingsControl:v11 rootGroup:v8];
-          [(HMAccessory *)v11 setSettings:v9];
-          [(HMAccessory *)v11 _notifyDelegateOfUpdatedSettings:v9];
+          settings = [[HMAccessorySettings alloc] initWithSettingsContainer:selfCopy settingsControl:selfCopy rootGroup:v8];
+          [(HMAccessory *)selfCopy setSettings:settings];
+          [(HMAccessory *)selfCopy _notifyDelegateOfUpdatedSettings:settings];
         }
 
-        [v4 respondWithPayload:0];
+        [updatedCopy respondWithPayload:0];
       }
 
       else
       {
         v21 = objc_autoreleasePoolPush();
-        v22 = self;
+        selfCopy2 = self;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
@@ -14619,29 +14619,29 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
 
         objc_autoreleasePoolPop(v21);
         v8 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-        [v4 respondWithError:v8];
+        [updatedCopy respondWithError:v8];
       }
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy3 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v19 = HMFGetLogIdentifier();
-        v20 = [v4 messagePayload];
+        messagePayload = [updatedCopy messagePayload];
         *buf = 138543618;
         v29 = v19;
         v30 = 2112;
-        v31 = v20;
+        v31 = messagePayload;
         _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_ERROR, "%{public}@Missing serialized root settings from message payload: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
       v7 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-      [v4 respondWithError:v7];
+      [updatedCopy respondWithError:v7];
     }
   }
 
@@ -14657,21 +14657,21 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
   return v3;
 }
 
-- (void)setPreferredMediaUserUUID:(id)a3
+- (void)setPreferredMediaUserUUID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v6];
+  v4 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:dCopy];
   preferredMediaUserUUID = self->_preferredMediaUserUUID;
   self->_preferredMediaUserUUID = v4;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setProductColor:(int64_t)a3
+- (void)setProductColor:(int64_t)color
 {
   os_unfair_lock_lock_with_options();
-  self->_productColor = a3;
+  self->_productColor = color;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -14684,10 +14684,10 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
   return productColor;
 }
 
-- (void)setPreferredUserSelectionType:(unint64_t)a3
+- (void)setPreferredUserSelectionType:(unint64_t)type
 {
   os_unfair_lock_lock_with_options();
-  self->_preferredUserSelectionType = a3;
+  self->_preferredUserSelectionType = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -14702,43 +14702,43 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
 
 - (id)preferredMediaUser
 {
-  v3 = [(HMAccessory *)self home];
-  v4 = [v3 currentUser];
-  v5 = [(HMAccessory *)self preferredMediaUserUUID];
-  v6 = [v4 uuid];
-  v7 = [v5 hmf_isEqualToUUID:v6];
+  home = [(HMAccessory *)self home];
+  currentUser = [home currentUser];
+  preferredMediaUserUUID = [(HMAccessory *)self preferredMediaUserUUID];
+  uuid = [currentUser uuid];
+  v7 = [preferredMediaUserUUID hmf_isEqualToUUID:uuid];
 
   if (v7)
   {
-    v8 = v4;
+    v8 = currentUser;
   }
 
   else
   {
-    v9 = [v3 users];
-    v10 = [(HMAccessory *)self preferredMediaUserUUID];
-    v8 = [v9 hmf_firstObjectWithUUID:v10];
+    users = [home users];
+    preferredMediaUserUUID2 = [(HMAccessory *)self preferredMediaUserUUID];
+    v8 = [users hmf_firstObjectWithUUID:preferredMediaUserUUID2];
   }
 
   return v8;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  v8 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock_with_options();
   settings = self->_settings;
   if ((HMFEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_settings, a3);
-    [v8 setSettingsControl:self];
-    [v8 setSettingsContainerInternal:self];
-    v6 = [(HMAccessory *)self context];
+    objc_storeStrong(&self->_settings, settings);
+    [settingsCopy setSettingsControl:self];
+    [settingsCopy setSettingsContainerInternal:self];
+    context = [(HMAccessory *)self context];
 
-    if (v6)
+    if (context)
     {
-      v7 = [(HMAccessory *)self context];
-      [v8 _configureWithContext:v7];
+      context2 = [(HMAccessory *)self context];
+      [settingsCopy _configureWithContext:context2];
     }
   }
 
@@ -14754,10 +14754,10 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
   return v3;
 }
 
-- (void)setIsPrimaryResident:(BOOL)a3
+- (void)setIsPrimaryResident:(BOOL)resident
 {
   os_unfair_lock_lock_with_options();
-  self->_isPrimaryResident = a3;
+  self->_isPrimaryResident = resident;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -14770,11 +14770,11 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
   return isPrimaryResident;
 }
 
-- (void)setPendingConfigurationIdentifier:(id)a3
+- (void)setPendingConfigurationIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [identifierCopy copy];
   pendingConfigurationIdentifier = self->_pendingConfigurationIdentifier;
   self->_pendingConfigurationIdentifier = v4;
 
@@ -14792,8 +14792,8 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
 
 - (id)assistantIdentifier
 {
-  v2 = [(HMAccessory *)self uuid];
-  v3 = hm_assistantIdentifierWithSalts(@"AC", v2, 0);
+  uuid = [(HMAccessory *)self uuid];
+  v3 = hm_assistantIdentifierWithSalts(@"AC", uuid, 0);
 
   return v3;
 }
@@ -14806,10 +14806,10 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
   return homePodVariant;
 }
 
-- (void)setHomePodVariant:(unint64_t)a3
+- (void)setHomePodVariant:(unint64_t)variant
 {
   os_unfair_lock_lock_with_options();
-  self->_homePodVariant = a3;
+  self->_homePodVariant = variant;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -14822,20 +14822,20 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
   return supportedStereoPairVersions;
 }
 
-- (void)setSupportedStereoPairVersions:(unint64_t)a3
+- (void)setSupportedStereoPairVersions:(unint64_t)versions
 {
   os_unfair_lock_lock_with_options();
-  self->_supportedStereoPairVersions = a3;
+  self->_supportedStereoPairVersions = versions;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setWifiNetworkInfo:(id)a3
+- (void)setWifiNetworkInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock_with_options();
   wifiNetworkInfo = self->_wifiNetworkInfo;
-  self->_wifiNetworkInfo = v4;
+  self->_wifiNetworkInfo = infoCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -14843,14 +14843,14 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
 - (id)targetControllers
 {
   v40 = *MEMORY[0x1E69E9840];
-  v25 = [(HMAccessory *)self home];
-  v3 = [v25 accessories];
-  v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  home = [(HMAccessory *)self home];
+  accessories = [home accessories];
+  v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(accessories, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = v3;
+  v4 = accessories;
   v5 = [v4 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v5)
   {
@@ -14870,18 +14870,18 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
         }
 
         v9 = *(*(&v34 + 1) + 8 * v8);
-        v10 = [(HMAccessory *)self uuid];
-        v11 = [v9 uuid];
-        v12 = [v10 isEqual:v11];
+        uuid = [(HMAccessory *)self uuid];
+        uuid2 = [v9 uuid];
+        v12 = [uuid isEqual:uuid2];
 
         if ((v12 & 1) == 0 && ([v9 supportsTargetControl] & 1) == 0 && objc_msgSend(v9, "supportsTargetController"))
         {
-          v13 = [v9 controlTargets];
+          controlTargets = [v9 controlTargets];
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v14 = v13;
+          v14 = controlTargets;
           v15 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v15)
           {
@@ -14896,9 +14896,9 @@ void __48__HMAccessory__notifyDelegateOfUpdatedSettings___block_invoke(uint64_t 
                   objc_enumerationMutation(v14);
                 }
 
-                v19 = [*(*(&v30 + 1) + 8 * i) uuid];
-                v20 = [(HMAccessory *)self uuid];
-                v21 = [v19 isEqual:v20];
+                uuid3 = [*(*(&v30 + 1) + 8 * i) uuid];
+                uuid4 = [(HMAccessory *)self uuid];
+                v21 = [uuid3 isEqual:uuid4];
 
                 if (v21)
                 {
@@ -14943,15 +14943,15 @@ LABEL_19:
 - (id)controlTargets
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self home];
-  v21 = self;
-  v4 = [(HMAccessory *)self controlTargetUUIDs];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  home = [(HMAccessory *)self home];
+  selfCopy = self;
+  controlTargetUUIDs = [(HMAccessory *)self controlTargetUUIDs];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(controlTargetUUIDs, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = controlTargetUUIDs;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v6)
   {
@@ -14968,7 +14968,7 @@ LABEL_19:
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v3 accessoryWithUUID:v10];
+        v11 = [home accessoryWithUUID:v10];
         if (v11)
         {
           [v5 addObject:v11];
@@ -14977,16 +14977,16 @@ LABEL_19:
         else
         {
           v12 = objc_autoreleasePoolPush();
-          v13 = v21;
+          v13 = selfCopy;
           v14 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
             v15 = HMFGetLogIdentifier();
-            v16 = [v10 UUIDString];
+            uUIDString = [v10 UUIDString];
             *buf = 138543618;
             v28 = v15;
             v29 = 2112;
-            v30 = v16;
+            v30 = uUIDString;
             _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Unable to look up target accessory UUID for %@", buf, 0x16u);
 
             v5 = v20;
@@ -15008,11 +15008,11 @@ LABEL_19:
   return v17;
 }
 
-- (void)setControlTargetUUIDs:(id)a3
+- (void)setControlTargetUUIDs:(id)ds
 {
-  v6 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [dsCopy copy];
   controlTargetUUIDs = self->_controlTargetUUIDs;
   self->_controlTargetUUIDs = v4;
 
@@ -15028,10 +15028,10 @@ LABEL_19:
   return v3;
 }
 
-- (void)setHH1EOLEnabled:(BOOL)a3
+- (void)setHH1EOLEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock_with_options();
-  self->_hh1EOLEnabled = a3;
+  self->_hh1EOLEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15044,12 +15044,12 @@ LABEL_19:
   return hh1EOLEnabled;
 }
 
-- (void)setMatterDeviceTypeID:(id)a3
+- (void)setMatterDeviceTypeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   matterDeviceTypeID = self->_matterDeviceTypeID;
-  self->_matterDeviceTypeID = v4;
+  self->_matterDeviceTypeID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15063,22 +15063,22 @@ LABEL_19:
   return v3;
 }
 
-- (id)bulletinBoardNotificationForEndpoint:(id)a3
+- (id)bulletinBoardNotificationForEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSDictionary *)self->_bulletinBoardNotificationByEndpoint objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_bulletinBoardNotificationByEndpoint objectForKeyedSubscript:endpointCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)setBulletinBoardNotificationByEndpoint:(id)a3
+- (void)setBulletinBoardNotificationByEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   os_unfair_lock_lock_with_options();
   bulletinBoardNotificationByEndpoint = self->_bulletinBoardNotificationByEndpoint;
-  self->_bulletinBoardNotificationByEndpoint = v4;
+  self->_bulletinBoardNotificationByEndpoint = endpointCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15092,10 +15092,10 @@ LABEL_19:
   return v3;
 }
 
-- (void)setSupportsCrossfadeAsAirPlaySource:(BOOL)a3
+- (void)setSupportsCrossfadeAsAirPlaySource:(BOOL)source
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsCrossfadeAsAirPlaySource = a3;
+  self->_supportsCrossfadeAsAirPlaySource = source;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15108,10 +15108,10 @@ LABEL_19:
   return supportsCrossfadeAsAirPlaySource;
 }
 
-- (void)setSupportsNetworkDiagnostics:(BOOL)a3
+- (void)setSupportsNetworkDiagnostics:(BOOL)diagnostics
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsNetworkDiagnostics = a3;
+  self->_supportsNetworkDiagnostics = diagnostics;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15124,10 +15124,10 @@ LABEL_19:
   return supportsNetworkDiagnostics;
 }
 
-- (void)setSupportsStereoOdeonTTSUBypassingPrimary:(BOOL)a3
+- (void)setSupportsStereoOdeonTTSUBypassingPrimary:(BOOL)primary
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsStereoOdeonTTSUBypassingPrimary = a3;
+  self->_supportsStereoOdeonTTSUBypassingPrimary = primary;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15140,10 +15140,10 @@ LABEL_19:
   return supportsStereoOdeonTTSUBypassingPrimary;
 }
 
-- (void)setSupportsJustSiri:(BOOL)a3
+- (void)setSupportsJustSiri:(BOOL)siri
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsJustSiri = a3;
+  self->_supportsJustSiri = siri;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15156,10 +15156,10 @@ LABEL_19:
   return supportsJustSiri;
 }
 
-- (void)setSupportsRMVonAppleTV:(BOOL)a3
+- (void)setSupportsRMVonAppleTV:(BOOL)v
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsRMVonAppleTV = a3;
+  self->_supportsRMVonAppleTV = v;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15172,10 +15172,10 @@ LABEL_19:
   return supportsRMVonAppleTV;
 }
 
-- (void)setSupportsSoftwareUpdateV2:(BOOL)a3
+- (void)setSupportsSoftwareUpdateV2:(BOOL)v2
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsSoftwareUpdateV2 = a3;
+  self->_supportsSoftwareUpdateV2 = v2;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15188,10 +15188,10 @@ LABEL_19:
   return supportsSoftwareUpdateV2;
 }
 
-- (void)setSupportsMessagedHomePodSettings:(BOOL)a3
+- (void)setSupportsMessagedHomePodSettings:(BOOL)settings
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsMessagedHomePodSettings = a3;
+  self->_supportsMessagedHomePodSettings = settings;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15204,10 +15204,10 @@ LABEL_19:
   return supportsMessagedHomePodSettings;
 }
 
-- (void)setSupportsDropIn:(BOOL)a3
+- (void)setSupportsDropIn:(BOOL)in
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsDropIn = a3;
+  self->_supportsDropIn = in;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15220,10 +15220,10 @@ LABEL_19:
   return supportsDropIn;
 }
 
-- (void)setSupportsAudioAnalysis:(BOOL)a3
+- (void)setSupportsAudioAnalysis:(BOOL)analysis
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsAudioAnalysis = a3;
+  self->_supportsAudioAnalysis = analysis;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15236,10 +15236,10 @@ LABEL_19:
   return supportsAudioAnalysis;
 }
 
-- (void)setSupportsManagedConfigurationProfile:(BOOL)a3
+- (void)setSupportsManagedConfigurationProfile:(BOOL)profile
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsManagedConfigurationProfile = a3;
+  self->_supportsManagedConfigurationProfile = profile;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15252,10 +15252,10 @@ LABEL_19:
   return supportsManagedConfigurationProfile;
 }
 
-- (void)setSupportsPreferredMediaUser:(BOOL)a3
+- (void)setSupportsPreferredMediaUser:(BOOL)user
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsPreferredMediaUser = a3;
+  self->_supportsPreferredMediaUser = user;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15268,10 +15268,10 @@ LABEL_19:
   return supportsPreferredMediaUser;
 }
 
-- (void)setSupportsThirdPartyMusic:(BOOL)a3
+- (void)setSupportsThirdPartyMusic:(BOOL)music
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsThirdPartyMusic = a3;
+  self->_supportsThirdPartyMusic = music;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15284,10 +15284,10 @@ LABEL_19:
   return supportsThirdPartyMusic;
 }
 
-- (void)setSupportsCoordinationDoorbellChime:(BOOL)a3
+- (void)setSupportsCoordinationDoorbellChime:(BOOL)chime
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsCoordinationDoorbellChime = a3;
+  self->_supportsCoordinationDoorbellChime = chime;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15300,32 +15300,32 @@ LABEL_19:
   return supportsCoordinationDoorbellChime;
 }
 
-- (void)setYearDaySchedulesPerUserCapacity:(id)a3
+- (void)setYearDaySchedulesPerUserCapacity:(id)capacity
 {
-  v4 = a3;
+  capacityCopy = capacity;
   os_unfair_lock_lock_with_options();
   yearDaySchedulesPerUserCapacity = self->_yearDaySchedulesPerUserCapacity;
-  self->_yearDaySchedulesPerUserCapacity = v4;
+  self->_yearDaySchedulesPerUserCapacity = capacityCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setWeekDaySchedulesPerUserCapacity:(id)a3
+- (void)setWeekDaySchedulesPerUserCapacity:(id)capacity
 {
-  v4 = a3;
+  capacityCopy = capacity;
   os_unfair_lock_lock_with_options();
   weekDaySchedulesPerUserCapacity = self->_weekDaySchedulesPerUserCapacity;
-  self->_weekDaySchedulesPerUserCapacity = v4;
+  self->_weekDaySchedulesPerUserCapacity = capacityCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setReaderIDACWG:(id)a3
+- (void)setReaderIDACWG:(id)g
 {
-  v4 = a3;
+  gCopy = g;
   os_unfair_lock_lock_with_options();
   readerIDACWG = self->_readerIDACWG;
-  self->_readerIDACWG = v4;
+  self->_readerIDACWG = gCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15339,12 +15339,12 @@ LABEL_19:
   return v3;
 }
 
-- (void)setReaderGroupSubIdentifierACWG:(id)a3
+- (void)setReaderGroupSubIdentifierACWG:(id)g
 {
-  v4 = a3;
+  gCopy = g;
   os_unfair_lock_lock_with_options();
   readerGroupSubIdentifierACWG = self->_readerGroupSubIdentifierACWG;
-  self->_readerGroupSubIdentifierACWG = v4;
+  self->_readerGroupSubIdentifierACWG = gCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15358,10 +15358,10 @@ LABEL_19:
   return v3;
 }
 
-- (void)setSupportsUWBUnlock:(BOOL)a3
+- (void)setSupportsUWBUnlock:(BOOL)unlock
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsUWBUnlock = a3;
+  self->_supportsUWBUnlock = unlock;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15374,10 +15374,10 @@ LABEL_19:
   return supportsUWBUnlock;
 }
 
-- (void)setSupportsWalletKey:(BOOL)a3
+- (void)setSupportsWalletKey:(BOOL)key
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsWalletKey = a3;
+  self->_supportsWalletKey = key;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15390,10 +15390,10 @@ LABEL_19:
   return supportsWalletKey;
 }
 
-- (void)setSupportsAccessCodes:(BOOL)a3
+- (void)setSupportsAccessCodes:(BOOL)codes
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsAccessCodes = a3;
+  self->_supportsAccessCodes = codes;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15406,10 +15406,10 @@ LABEL_19:
   return supportsAccessCodes;
 }
 
-- (void)setSupportsUserMediaSettings:(BOOL)a3
+- (void)setSupportsUserMediaSettings:(BOOL)settings
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsUserMediaSettings = a3;
+  self->_supportsUserMediaSettings = settings;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15422,10 +15422,10 @@ LABEL_19:
   return supportsUserMediaSettings;
 }
 
-- (void)setSupportsDoorbellChime:(BOOL)a3
+- (void)setSupportsDoorbellChime:(BOOL)chime
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsDoorbellChime = a3;
+  self->_supportsDoorbellChime = chime;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15438,10 +15438,10 @@ LABEL_19:
   return supportsDoorbellChime;
 }
 
-- (void)setSupportsMediaActions:(BOOL)a3
+- (void)setSupportsMediaActions:(BOOL)actions
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsMediaActions = a3;
+  self->_supportsMediaActions = actions;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15454,10 +15454,10 @@ LABEL_19:
   return supportsMediaActions;
 }
 
-- (void)setSupportsAnnounce:(BOOL)a3
+- (void)setSupportsAnnounce:(BOOL)announce
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsAnnounce = a3;
+  self->_supportsAnnounce = announce;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15470,10 +15470,10 @@ LABEL_19:
   return supportsAnnounce;
 }
 
-- (void)setSupportsMusicAlarm:(BOOL)a3
+- (void)setSupportsMusicAlarm:(BOOL)alarm
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsMusicAlarm = a3;
+  self->_supportsMusicAlarm = alarm;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15486,10 +15486,10 @@ LABEL_19:
   return supportsMusicAlarm;
 }
 
-- (void)setSupportsCompanionInitiatedObliterate:(BOOL)a3
+- (void)setSupportsCompanionInitiatedObliterate:(BOOL)obliterate
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsCompanionInitiatedObliterate = a3;
+  self->_supportsCompanionInitiatedObliterate = obliterate;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15502,10 +15502,10 @@ LABEL_19:
   return supportsCompanionInitiatedObliterate;
 }
 
-- (void)setSupportsCompanionInitiatedRestart:(BOOL)a3
+- (void)setSupportsCompanionInitiatedRestart:(BOOL)restart
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsCompanionInitiatedRestart = a3;
+  self->_supportsCompanionInitiatedRestart = restart;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15518,10 +15518,10 @@ LABEL_19:
   return supportsCompanionInitiatedRestart;
 }
 
-- (void)setSupportsAudioReturnChannel:(BOOL)a3
+- (void)setSupportsAudioReturnChannel:(BOOL)channel
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsAudioReturnChannel = a3;
+  self->_supportsAudioReturnChannel = channel;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15534,10 +15534,10 @@ LABEL_19:
   return supportsAudioReturnChannel;
 }
 
-- (void)setSupportsMultiUser:(BOOL)a3
+- (void)setSupportsMultiUser:(BOOL)user
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsMultiUser = a3;
+  self->_supportsMultiUser = user;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15550,10 +15550,10 @@ LABEL_19:
   return supportsMultiUser;
 }
 
-- (void)setTargetControllerHardwareSupport:(BOOL)a3
+- (void)setTargetControllerHardwareSupport:(BOOL)support
 {
   os_unfair_lock_lock_with_options();
-  self->_targetControllerHardwareSupport = a3;
+  self->_targetControllerHardwareSupport = support;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15566,10 +15566,10 @@ LABEL_19:
   return targetControllerHardwareSupport;
 }
 
-- (void)setSupportsTargetController:(BOOL)a3
+- (void)setSupportsTargetController:(BOOL)controller
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsTargetController = a3;
+  self->_supportsTargetController = controller;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15582,10 +15582,10 @@ LABEL_19:
   return supportsTargetController;
 }
 
-- (void)setSupportsTargetControl:(BOOL)a3
+- (void)setSupportsTargetControl:(BOOL)control
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsTargetControl = a3;
+  self->_supportsTargetControl = control;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15607,20 +15607,20 @@ LABEL_19:
   return v3;
 }
 
-- (void)_handleSupportsCleanEnergyAutomationMessage:(id)a3
+- (void)_handleSupportsCleanEnergyAutomationMessage:(id)message
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 BOOLForKey:@"HMA.supportsCleanEnergyAutomation"];
+  messageCopy = message;
+  v5 = [messageCopy BOOLForKey:@"HMA.supportsCleanEnergyAutomation"];
   if (v5 != [(HMAccessory *)self supportsCleanEnergyAutomation])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      [(HMAccessory *)v7 supportsCleanEnergyAutomation];
+      [(HMAccessory *)selfCopy supportsCleanEnergyAutomation];
       v10 = HMFBooleanToString();
       v11 = HMFBooleanToString();
       v13 = 138543874;
@@ -15633,26 +15633,26 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMAccessory *)v7 setSupportsCleanEnergyAutomation:v5];
+    [(HMAccessory *)selfCopy setSupportsCleanEnergyAutomation:v5];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSupportsAdaptiveTemperatureAutomationMessage:(id)a3
+- (void)_handleSupportsAdaptiveTemperatureAutomationMessage:(id)message
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 BOOLForKey:@"HMA.supportsAdaptiveTemperatureAutomations"];
+  messageCopy = message;
+  v5 = [messageCopy BOOLForKey:@"HMA.supportsAdaptiveTemperatureAutomations"];
   if (v5 != [(HMAccessory *)self supportsAdaptiveTemperatureAutomations])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      [(HMAccessory *)v7 supportsAdaptiveTemperatureAutomations];
+      [(HMAccessory *)selfCopy supportsAdaptiveTemperatureAutomations];
       v10 = HMFBooleanToString();
       v11 = HMFBooleanToString();
       v13 = 138543874;
@@ -15665,18 +15665,18 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMAccessory *)v7 setSupportsAdaptiveTemperatureAutomations:v5];
+    [(HMAccessory *)selfCopy setSupportsAdaptiveTemperatureAutomations:v5];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSupportedLinkLayerTypes:(id)a3
+- (void)setSupportedLinkLayerTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   os_unfair_lock_lock_with_options();
   supportedLinkLayerTypes = self->_supportedLinkLayerTypes;
-  self->_supportedLinkLayerTypes = v4;
+  self->_supportedLinkLayerTypes = typesCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15690,12 +15690,12 @@ LABEL_19:
   return v3;
 }
 
-- (void)setMatterExtendedMACAddress:(id)a3
+- (void)setMatterExtendedMACAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   os_unfair_lock_lock_with_options();
   matterExtendedMACAddress = self->_matterExtendedMACAddress;
-  self->_matterExtendedMACAddress = v4;
+  self->_matterExtendedMACAddress = addressCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15709,12 +15709,12 @@ LABEL_19:
   return v3;
 }
 
-- (void)setMatterWEDSupport:(id)a3
+- (void)setMatterWEDSupport:(id)support
 {
-  v4 = a3;
+  supportCopy = support;
   os_unfair_lock_lock_with_options();
   matterWEDSupport = self->_matterWEDSupport;
-  self->_matterWEDSupport = v4;
+  self->_matterWEDSupport = supportCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15728,20 +15728,20 @@ LABEL_19:
   return v3;
 }
 
-- (void)_handleRequiresThreadRouterUpdateMessage:(id)a3
+- (void)_handleRequiresThreadRouterUpdateMessage:(id)message
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 BOOLForKey:@"HMA.requiresThreadRouterUpdate"];
+  messageCopy = message;
+  v5 = [messageCopy BOOLForKey:@"HMA.requiresThreadRouterUpdate"];
   if (v5 != [(HMAccessory *)self requiresThreadRouter])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      [(HMAccessory *)v7 requiresThreadRouter];
+      [(HMAccessory *)selfCopy requiresThreadRouter];
       v10 = HMFBooleanToString();
       v11 = HMFBooleanToString();
       v13 = 138543874;
@@ -15754,16 +15754,16 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMAccessory *)v7 setRequiresThreadRouter:v5];
+    [(HMAccessory *)selfCopy setRequiresThreadRouter:v5];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRequiresThreadRouter:(BOOL)a3
+- (void)setRequiresThreadRouter:(BOOL)router
 {
   os_unfair_lock_lock_with_options();
-  self->_requiresThreadRouter = a3;
+  self->_requiresThreadRouter = router;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15776,10 +15776,10 @@ LABEL_19:
   return requiresThreadRouter;
 }
 
-- (void)setDemoAccessory:(BOOL)a3
+- (void)setDemoAccessory:(BOOL)accessory
 {
   os_unfair_lock_lock_with_options();
-  self->_demoAccessory = a3;
+  self->_demoAccessory = accessory;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15801,12 +15801,12 @@ LABEL_19:
   return v3;
 }
 
-- (void)setProductID:(id)a3
+- (void)setProductID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   productID = self->_productID;
-  self->_productID = v4;
+  self->_productID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15820,12 +15820,12 @@ LABEL_19:
   return v3;
 }
 
-- (void)setVendorID:(id)a3
+- (void)setVendorID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   vendorID = self->_vendorID;
-  self->_vendorID = v4;
+  self->_vendorID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15839,12 +15839,12 @@ LABEL_19:
   return v3;
 }
 
-- (void)setCommissioningID:(id)a3
+- (void)setCommissioningID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   commissioningID = self->_commissioningID;
-  self->_commissioningID = v4;
+  self->_commissioningID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15858,11 +15858,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)setNodeID:(id)a3
+- (void)setNodeID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [dCopy copy];
   nodeID = self->_nodeID;
   self->_nodeID = v4;
 
@@ -15878,11 +15878,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)setRootPublicKey:(id)a3
+- (void)setRootPublicKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [keyCopy copy];
   rootPublicKey = self->_rootPublicKey;
   self->_rootPublicKey = v4;
 
@@ -15898,10 +15898,10 @@ LABEL_19:
   return v3;
 }
 
-- (void)setKnownToSystemCommissioner:(BOOL)a3
+- (void)setKnownToSystemCommissioner:(BOOL)commissioner
 {
   os_unfair_lock_lock_with_options();
-  self->_knownToSystemCommissioner = a3;
+  self->_knownToSystemCommissioner = commissioner;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15914,10 +15914,10 @@ LABEL_19:
   return knownToSystemCommissioner;
 }
 
-- (void)setSupportsNativeMatter:(BOOL)a3
+- (void)setSupportsNativeMatter:(BOOL)matter
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsNativeMatter = a3;
+  self->_supportsNativeMatter = matter;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15930,10 +15930,10 @@ LABEL_19:
   return supportsNativeMatter;
 }
 
-- (void)setSupportsCHIP:(BOOL)a3
+- (void)setSupportsCHIP:(BOOL)p
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsCHIP = a3;
+  self->_supportsCHIP = p;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15946,10 +15946,10 @@ LABEL_19:
   return supportsCHIP;
 }
 
-- (void)setSupportsMediaAccessControl:(BOOL)a3
+- (void)setSupportsMediaAccessControl:(BOOL)control
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsMediaAccessControl = a3;
+  self->_supportsMediaAccessControl = control;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -15962,11 +15962,11 @@ LABEL_19:
   return supportsMediaAccessControl;
 }
 
-- (void)setSerialNumber:(id)a3
+- (void)setSerialNumber:(id)number
 {
-  v6 = a3;
+  numberCopy = number;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [numberCopy copy];
   serialNumber = self->_serialNumber;
   self->_serialNumber = v4;
 
@@ -15982,11 +15982,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)setFirmwareVersion:(id)a3
+- (void)setFirmwareVersion:(id)version
 {
-  v6 = a3;
+  versionCopy = version;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:versionCopy];
   firmwareVersion = self->_firmwareVersion;
   self->_firmwareVersion = v4;
 
@@ -16002,11 +16002,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)setManufacturer:(id)a3
+- (void)setManufacturer:(id)manufacturer
 {
-  v6 = a3;
+  manufacturerCopy = manufacturer;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:manufacturerCopy];
   manufacturer = self->_manufacturer;
   self->_manufacturer = v4;
 
@@ -16022,11 +16022,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v6 = a3;
+  modelCopy = model;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:modelCopy];
   model = self->_model;
   self->_model = v4;
 
@@ -16042,11 +16042,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v6];
+  v4 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:identifierCopy];
   accountIdentifier = self->_accountIdentifier;
   self->_accountIdentifier = v4;
 
@@ -16062,11 +16062,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)setHome:(id)a3
+- (void)setHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_home, v4);
+  objc_storeWeak(&self->_home, homeCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -16080,11 +16080,11 @@ LABEL_19:
   return WeakRetained;
 }
 
-- (void)setRoom:(id)a3
+- (void)setRoom:(id)room
 {
-  v4 = a3;
+  roomCopy = room;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_room, v4);
+  objc_storeWeak(&self->_room, roomCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -16098,11 +16098,11 @@ LABEL_19:
   return WeakRetained;
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
-  v6 = a3;
+  categoryCopy = category;
   os_unfair_lock_lock_with_options();
-  v4 = [HMFObjectCacheHMAccessoryCategory cachedInstanceForHMAccessoryCategory:v6];
+  v4 = [HMFObjectCacheHMAccessoryCategory cachedInstanceForHMAccessoryCategory:categoryCopy];
   category = self->_category;
   self->_category = v4;
 
@@ -16116,8 +16116,8 @@ LABEL_19:
   v3 = self->_category;
   supportsTargetController = self->_supportsTargetController;
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(HMAccessoryCategory *)v3 categoryType];
-  v6 = [v5 isEqual:@"0FBA259B-05AC-46F2-875F-204ABB6D9FE7"];
+  categoryType = [(HMAccessoryCategory *)v3 categoryType];
+  v6 = [categoryType isEqual:@"0FBA259B-05AC-46F2-875F-204ABB6D9FE7"];
 
   if (v6)
   {
@@ -16136,10 +16136,10 @@ LABEL_19:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = [(HMAccessory *)self accessoryProfiles];
-      v11 = [v10 array];
+      accessoryProfiles = [(HMAccessory *)self accessoryProfiles];
+      array = [accessoryProfiles array];
 
-      v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [array countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v12)
       {
         v13 = v12;
@@ -16150,7 +16150,7 @@ LABEL_19:
           {
             if (*v22 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(array);
             }
 
             v16 = *(*(&v21 + 1) + 8 * i);
@@ -16166,7 +16166,7 @@ LABEL_19:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v13 = [array countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v13)
           {
             continue;
@@ -16188,15 +16188,15 @@ LABEL_15:
 - (NSArray)bridgedAccessories
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self home];
-  v22 = [(HMAccessory *)self uniqueIdentifiersForBridgedAccessories];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v22, "count")}];
+  home = [(HMAccessory *)self home];
+  uniqueIdentifiersForBridgedAccessories = [(HMAccessory *)self uniqueIdentifiersForBridgedAccessories];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(uniqueIdentifiersForBridgedAccessories, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = v3;
-  obj = [v3 accessories];
+  v19 = home;
+  obj = [home accessories];
   v5 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
@@ -16216,7 +16216,7 @@ LABEL_15:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v9 = v22;
+        v9 = uniqueIdentifiersForBridgedAccessories;
         v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v10)
         {
@@ -16232,8 +16232,8 @@ LABEL_15:
               }
 
               v14 = *(*(&v23 + 1) + 8 * j);
-              v15 = [v8 uniqueIdentifier];
-              LODWORD(v14) = [v14 isEqual:v15];
+              uniqueIdentifier = [v8 uniqueIdentifier];
+              LODWORD(v14) = [v14 isEqual:uniqueIdentifier];
 
               if (v14)
               {
@@ -16260,11 +16260,11 @@ LABEL_15:
   return v16;
 }
 
-- (void)setUniqueIdentifiersForBridgedAccessories:(id)a3
+- (void)setUniqueIdentifiersForBridgedAccessories:(id)accessories
 {
-  v6 = a3;
+  accessoriesCopy = accessories;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [accessoriesCopy copy];
   uniqueIdentifiersForBridgedAccessories = self->_uniqueIdentifiersForBridgedAccessories;
   self->_uniqueIdentifiersForBridgedAccessories = v4;
 
@@ -16280,10 +16280,10 @@ LABEL_15:
   return v3;
 }
 
-- (void)setBridgedAccessory:(BOOL)a3
+- (void)setBridgedAccessory:(BOOL)accessory
 {
   os_unfair_lock_lock_with_options();
-  self->_bridgedAccessory = a3;
+  self->_bridgedAccessory = accessory;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -16296,10 +16296,10 @@ LABEL_15:
   return bridgedAccessory;
 }
 
-- (void)setReachable:(BOOL)a3
+- (void)setReachable:(BOOL)reachable
 {
   os_unfair_lock_lock_with_options();
-  self->_reachable = a3;
+  self->_reachable = reachable;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -16312,10 +16312,10 @@ LABEL_15:
   return reachable;
 }
 
-- (void)setCurrentAccessory:(BOOL)a3
+- (void)setCurrentAccessory:(BOOL)accessory
 {
   os_unfair_lock_lock_with_options();
-  self->_currentAccessory = a3;
+  self->_currentAccessory = accessory;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -16346,11 +16346,11 @@ LABEL_15:
   return WeakRetained;
 }
 
-- (void)setDeviceIdentifier:(id)a3
+- (void)setDeviceIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v6];
+  v4 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:identifierCopy];
   deviceIdentifier = self->_deviceIdentifier;
   self->_deviceIdentifier = v4;
 
@@ -16366,11 +16366,11 @@ LABEL_15:
   return v3;
 }
 
-- (void)setConfiguredName:(id)a3
+- (void)setConfiguredName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [nameCopy copy];
   configuredName = self->_configuredName;
   self->_configuredName = v4;
 
@@ -16386,11 +16386,11 @@ LABEL_15:
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [nameCopy copy];
   name = self->_name;
   self->_name = v4;
 
@@ -16402,7 +16402,7 @@ LABEL_15:
   v40 = *MEMORY[0x1E69E9840];
   context = self->_context;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
   if (context)
@@ -16420,8 +16420,8 @@ LABEL_15:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v9 = [(HMAccessory *)v5 services];
-    v10 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    services = [(HMAccessory *)selfCopy services];
+    v10 = [services countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v10)
     {
       v11 = v10;
@@ -16433,28 +16433,28 @@ LABEL_15:
         {
           if (*v33 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(services);
           }
 
           [*(*(&v32 + 1) + 8 * v13++) _unconfigure];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v11 = [services countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v11);
     }
 
-    v14 = [(HMAccessory *)v5 currentServices];
-    [v14 removeAllObjects];
+    currentServices = [(HMAccessory *)selfCopy currentServices];
+    [currentServices removeAllObjects];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v15 = [(HMAccessory *)v5 profiles];
-    v16 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    profiles = [(HMAccessory *)selfCopy profiles];
+    v16 = [profiles countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v16)
     {
       v17 = v16;
@@ -16466,36 +16466,36 @@ LABEL_15:
         {
           if (*v29 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(profiles);
           }
 
-          v20 = [*(*(&v28 + 1) + 8 * v19) accessoryProfile];
-          [v20 _unconfigure];
+          accessoryProfile = [*(*(&v28 + 1) + 8 * v19) accessoryProfile];
+          [accessoryProfile _unconfigure];
 
           ++v19;
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v17 = [profiles countByEnumeratingWithState:&v28 objects:v36 count:16];
       }
 
       while (v17);
     }
 
-    v21 = [(HMAccessory *)v5 accessoryProfiles];
-    [v21 removeAllObjects];
+    accessoryProfiles = [(HMAccessory *)selfCopy accessoryProfiles];
+    [accessoryProfiles removeAllObjects];
 
-    v22 = [(HMAccessory *)v5 settingsAdapter];
-    [v22 unconfigure];
+    settingsAdapter = [(HMAccessory *)selfCopy settingsAdapter];
+    [settingsAdapter unconfigure];
 
-    [(HMAccessory *)v5 unconfigureInfoDataProviderWithOptions:4];
-    v23 = [(HMAccessory *)v5 context];
-    v24 = [v23 messageDispatcher];
-    [v24 deregisterReceiver:v5];
+    [(HMAccessory *)selfCopy unconfigureInfoDataProviderWithOptions:4];
+    context = [(HMAccessory *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher deregisterReceiver:selfCopy];
 
-    [(HMAccessory *)v5 setContext:0];
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 removeObserver:v5];
+    [(HMAccessory *)selfCopy setContext:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:selfCopy];
   }
 
   else
@@ -16514,15 +16514,15 @@ LABEL_15:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unconfigureInfoDataProviderWithOptions:(unint64_t)a3
+- (void)unconfigureInfoDataProviderWithOptions:(unint64_t)options
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(HMAccessory *)self accessoryInfoDataProvider];
+  accessoryInfoDataProvider = [(HMAccessory *)self accessoryInfoDataProvider];
 
-  if (v5)
+  if (accessoryInfoDataProvider)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -16530,22 +16530,22 @@ LABEL_15:
       *buf = 138543618;
       v17 = v9;
       v18 = 2048;
-      v19 = a3;
+      optionsCopy = options;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Unconfiguring info data provider with options: %lu", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [(HMAccessory *)v7 accessoryInfoDataProvider];
-    v11 = [(HMAccessory *)v7 home];
-    v12 = [v11 uniqueIdentifier];
-    v13 = [(HMAccessory *)v7 uniqueIdentifier];
+    accessoryInfoDataProvider2 = [(HMAccessory *)selfCopy accessoryInfoDataProvider];
+    home = [(HMAccessory *)selfCopy home];
+    uniqueIdentifier = [home uniqueIdentifier];
+    uniqueIdentifier2 = [(HMAccessory *)selfCopy uniqueIdentifier];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __54__HMAccessory_unconfigureInfoDataProviderWithOptions___block_invoke;
     v15[3] = &unk_1E754B428;
-    v15[4] = v7;
-    v15[5] = a3;
-    [v10 unsubscribeToAccessoryInfoWithHomeIdentifier:v12 accessoryIdentifier:v13 accessoryInfoOptions:a3 completionHandler:v15];
+    v15[4] = selfCopy;
+    v15[5] = options;
+    [accessoryInfoDataProvider2 unsubscribeToAccessoryInfoWithHomeIdentifier:uniqueIdentifier accessoryIdentifier:uniqueIdentifier2 accessoryInfoOptions:options completionHandler:v15];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -16579,18 +16579,18 @@ void __54__HMAccessory_unconfigureInfoDataProviderWithOptions___block_invoke(uin
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureInfoDataProviderIfNeededWithOptions:(unint64_t)a3
+- (void)configureInfoDataProviderIfNeededWithOptions:(unint64_t)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(HMAccessory *)self home];
-  v6 = [v5 homeManager];
-  v7 = [(HMAccessory *)self accessoryInfoDataProvider];
+  home = [(HMAccessory *)self home];
+  homeManager = [home homeManager];
+  accessoryInfoDataProvider = [(HMAccessory *)self accessoryInfoDataProvider];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (v7)
+  if (accessoryInfoDataProvider)
   {
     if (v11)
     {
@@ -16598,7 +16598,7 @@ void __54__HMAccessory_unconfigureInfoDataProviderWithOptions___block_invoke(uin
       *buf = 138543618;
       v21 = v12;
       v22 = 2048;
-      v23 = a3;
+      optionsCopy2 = options;
       _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Asked to create info data provider again with option: %lu", buf, 0x16u);
     }
 
@@ -16613,24 +16613,24 @@ void __54__HMAccessory_unconfigureInfoDataProviderWithOptions___block_invoke(uin
       *buf = 138543618;
       v21 = v13;
       v22 = 2048;
-      v23 = a3;
+      optionsCopy2 = options;
       _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Creating info data provider with option: %lu", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v14 = [v6 createAccessoryInfoDataProvider];
-    [(HMAccessory *)v9 setAccessoryInfoDataProvider:v14];
+    createAccessoryInfoDataProvider = [homeManager createAccessoryInfoDataProvider];
+    [(HMAccessory *)selfCopy setAccessoryInfoDataProvider:createAccessoryInfoDataProvider];
   }
 
-  v15 = [(HMAccessory *)v9 accessoryInfoDataProvider];
-  v16 = [v5 uniqueIdentifier];
-  v17 = [(HMAccessory *)v9 uniqueIdentifier];
+  accessoryInfoDataProvider2 = [(HMAccessory *)selfCopy accessoryInfoDataProvider];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [(HMAccessory *)selfCopy uniqueIdentifier];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __60__HMAccessory_configureInfoDataProviderIfNeededWithOptions___block_invoke;
   v19[3] = &unk_1E754E148;
-  v19[4] = v9;
-  [v15 configureWithHomeIdentifier:v16 accessoryIdentifier:v17 accessoryInfoOptions:a3 dataProviderDelegate:v9 completionHandler:v19];
+  v19[4] = selfCopy;
+  [accessoryInfoDataProvider2 configureWithHomeIdentifier:uniqueIdentifier accessoryIdentifier:uniqueIdentifier2 accessoryInfoOptions:options dataProviderDelegate:selfCopy completionHandler:v19];
 
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -16663,19 +16663,19 @@ void __60__HMAccessory_configureInfoDataProviderIfNeededWithOptions___block_invo
 - (void)configureSettingsAdapterIfNeeded
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessory *)self home];
-  v4 = [v3 homeManager];
-  v5 = [v4 configuration];
-  v6 = [v5 options];
+  home = [(HMAccessory *)self home];
+  homeManager = [home homeManager];
+  configuration = [homeManager configuration];
+  options = [configuration options];
 
-  if ((v6 & 0x20) != 0)
+  if ((options & 0x20) != 0)
   {
-    v7 = [(HMAccessory *)self settingsAdapter];
+    settingsAdapter = [(HMAccessory *)self settingsAdapter];
 
-    if (v7)
+    if (settingsAdapter)
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy2 = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -16694,21 +16694,21 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v15 = [(HMAccessory *)self context];
-    if (!v15)
+    context = [(HMAccessory *)self context];
+    if (!context)
     {
       goto LABEL_14;
     }
 
-    v16 = v15;
-    v17 = [(HMAccessory *)self context];
-    v18 = [v17 queue];
+    v16 = context;
+    context2 = [(HMAccessory *)self context];
+    queue = [context2 queue];
 
-    if (!v18)
+    if (!queue)
     {
 LABEL_14:
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy2 = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -16727,12 +16727,12 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v19 = [(HMAccessory *)self settings];
+    settings = [(HMAccessory *)self settings];
 
-    if (v19)
+    if (settings)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy3 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -16743,11 +16743,11 @@ LABEL_17:
       }
 
       objc_autoreleasePoolPop(v20);
-      [(HMAccessory *)v21 setSettings:0];
+      [(HMAccessory *)selfCopy3 setSettings:0];
     }
 
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy4 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -16758,20 +16758,20 @@ LABEL_17:
     }
 
     objc_autoreleasePoolPop(v24);
-    v28 = [(HMAccessory *)v25 home];
-    v29 = [v28 homeManager];
-    v30 = [v29 createAccessorySettingsDataSource];
-    [(HMAccessory *)v25 setAccessorySettingsDataSource:v30];
+    home2 = [(HMAccessory *)selfCopy4 home];
+    homeManager2 = [home2 homeManager];
+    createAccessorySettingsDataSource = [homeManager2 createAccessorySettingsDataSource];
+    [(HMAccessory *)selfCopy4 setAccessorySettingsDataSource:createAccessorySettingsDataSource];
 
-    v31 = [v29 createAccessorySettingsController];
-    [(HMAccessory *)v25 setAccessorySettingsController:v31];
+    createAccessorySettingsController = [homeManager2 createAccessorySettingsController];
+    [(HMAccessory *)selfCopy4 setAccessorySettingsController:createAccessorySettingsController];
 
-    v32 = [(HMAccessory *)v25 accessorySettingsDataSource];
-    v33 = [(HMAccessory *)v25 accessorySettingsController];
-    v34 = [(HMAccessory *)v25 context];
-    [(HMAccessory *)v25 createSettingsAdapterWithDataSource:v32 controller:v33 context:v34];
+    accessorySettingsDataSource = [(HMAccessory *)selfCopy4 accessorySettingsDataSource];
+    accessorySettingsController = [(HMAccessory *)selfCopy4 accessorySettingsController];
+    context3 = [(HMAccessory *)selfCopy4 context];
+    [(HMAccessory *)selfCopy4 createSettingsAdapterWithDataSource:accessorySettingsDataSource controller:accessorySettingsController context:context3];
 
-    [(HMAccessory *)v25 configureSettingsAdapterWithCompletionHandler:0];
+    [(HMAccessory *)selfCopy4 configureSettingsAdapterWithCompletionHandler:0];
   }
 
 LABEL_18:
@@ -16792,25 +16792,25 @@ LABEL_18:
 
   [(HMAccessory *)self configureInfoDataProviderIfNeededWithOptions:4];
 LABEL_5:
-  v3 = [(HMAccessory *)self remoteLoginHandler];
-  [v3 postConfigure];
+  remoteLoginHandler = [(HMAccessory *)self remoteLoginHandler];
+  [remoteLoginHandler postConfigure];
 }
 
-- (void)__configureWithContext:(id)a3 home:(id)a4
+- (void)__configureWithContext:(id)context home:(id)home
 {
   v93 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v58 = [(HMAccessory *)self audioDestination];
-  v8 = [(HMAccessory *)self deviceIRKData];
-  v57 = [(HMAccessory *)self device];
+  contextCopy = context;
+  homeCopy = home;
+  audioDestination = [(HMAccessory *)self audioDestination];
+  deviceIRKData = [(HMAccessory *)self deviceIRKData];
+  device = [(HMAccessory *)self device];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    if (v58)
+    if (audioDestination)
     {
       v13 = @" audioDestination: ";
     }
@@ -16820,9 +16820,9 @@ LABEL_5:
       v13 = &stru_1F0E92498;
     }
 
-    if (v58)
+    if (audioDestination)
     {
-      v14 = v58;
+      v14 = audioDestination;
     }
 
     else
@@ -16832,16 +16832,16 @@ LABEL_5:
 
     v55 = v14;
     v15 = @" device: ";
-    if (!v57)
+    if (!device)
     {
       v15 = &stru_1F0E92498;
     }
 
     v51 = v15;
     v52 = v13;
-    if (v57)
+    if (device)
     {
-      v16 = v57;
+      v16 = device;
     }
 
     else
@@ -16850,15 +16850,15 @@ LABEL_5:
     }
 
     v17 = @" deviceIRKData: ";
-    if (!v8)
+    if (!deviceIRKData)
     {
       v17 = &stru_1F0E92498;
     }
 
     v49 = v17;
-    if (v8)
+    if (deviceIRKData)
     {
-      v18 = v8;
+      v18 = deviceIRKData;
     }
 
     else
@@ -16868,9 +16868,9 @@ LABEL_5:
 
     v53 = v18;
     v54 = v16;
-    v56 = [(HMAccessory *)v10 remoteLoginHandler];
-    v19 = v7;
-    if (v56)
+    remoteLoginHandler = [(HMAccessory *)selfCopy remoteLoginHandler];
+    v19 = homeCopy;
+    if (remoteLoginHandler)
     {
       v20 = @" remoteLogin";
     }
@@ -16880,12 +16880,12 @@ LABEL_5:
       v20 = &stru_1F0E92498;
     }
 
-    v21 = [(HMAccessory *)v10 remoteLoginHandler];
-    v22 = v21;
+    remoteLoginHandler2 = [(HMAccessory *)selfCopy remoteLoginHandler];
+    v22 = remoteLoginHandler2;
     *buf = 138546434;
-    if (v21)
+    if (remoteLoginHandler2)
     {
-      v23 = v21;
+      v23 = remoteLoginHandler2;
     }
 
     else
@@ -16895,9 +16895,9 @@ LABEL_5:
 
     v68 = v12;
     v69 = 2112;
-    v70 = v10;
+    v70 = selfCopy;
     v71 = 2112;
-    v72 = v6;
+    v72 = contextCopy;
     v73 = 2112;
     v74 = v52;
     v75 = 2112;
@@ -16912,7 +16912,7 @@ LABEL_5:
     v84 = v53;
     v85 = 2112;
     v86 = v20;
-    v7 = v19;
+    homeCopy = v19;
     v87 = 2112;
     v88 = v23;
     v89 = 2112;
@@ -16923,14 +16923,14 @@ LABEL_5:
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMAccessory *)v10 setContext:v6];
-  [(HMAccessory *)v10 setHome:v7];
+  [(HMAccessory *)selfCopy setContext:contextCopy];
+  [(HMAccessory *)selfCopy setHome:homeCopy];
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v24 = [(HMAccessory *)v10 services];
-  v25 = [v24 countByEnumeratingWithState:&v62 objects:v66 count:16];
+  services = [(HMAccessory *)selfCopy services];
+  v25 = [services countByEnumeratingWithState:&v62 objects:v66 count:16];
   if (v25)
   {
     v26 = v25;
@@ -16941,65 +16941,65 @@ LABEL_5:
       {
         if (*v63 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(services);
         }
 
-        [*(*(&v62 + 1) + 8 * i) __configureWithContext:v6 accessory:v10];
+        [*(*(&v62 + 1) + 8 * i) __configureWithContext:contextCopy accessory:selfCopy];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v62 objects:v66 count:16];
+      v26 = [services countByEnumeratingWithState:&v62 objects:v66 count:16];
     }
 
     while (v26);
   }
 
-  [(HMAccessory *)v10 _configureProfilesWithContext:v6];
-  v29 = [(HMAccessory *)v10 settings];
-  [v29 _configureWithContext:v6];
+  [(HMAccessory *)selfCopy _configureProfilesWithContext:contextCopy];
+  settings = [(HMAccessory *)selfCopy settings];
+  [settings _configureWithContext:contextCopy];
 
-  v30 = [(HMAccessory *)v10 softwareUpdateController];
-  [v30 configureWithContext:v6 accessory:v10];
+  softwareUpdateController = [(HMAccessory *)selfCopy softwareUpdateController];
+  [softwareUpdateController configureWithContext:contextCopy accessory:selfCopy];
 
-  v31 = [(HMAccessory *)v10 remoteLoginHandler];
-  [v31 _configureWithContext:v6 accessory:v10];
+  remoteLoginHandler3 = [(HMAccessory *)selfCopy remoteLoginHandler];
+  [remoteLoginHandler3 _configureWithContext:contextCopy accessory:selfCopy];
 
-  if ([(HMAccessory *)v10 hasSymptomsHandler])
+  if ([(HMAccessory *)selfCopy hasSymptomsHandler])
   {
-    [(HMAccessory *)v10 _createSymptomsHandler];
+    [(HMAccessory *)selfCopy _createSymptomsHandler];
   }
 
-  v32 = [(HMAccessory *)v10 audioDestinationController];
-  [v32 configureWithContext:v6 dataSource:v10];
+  audioDestinationController = [(HMAccessory *)selfCopy audioDestinationController];
+  [audioDestinationController configureWithContext:contextCopy dataSource:selfCopy];
 
-  v33 = v10;
-  v34 = [(HMAccessory *)v33 context];
-  v35 = [v34 messageDispatcher];
+  v33 = selfCopy;
+  context = [(HMAccessory *)v33 context];
+  messageDispatcher = [context messageDispatcher];
 
-  if (v7)
+  if (homeCopy)
   {
-    if (v35)
+    if (messageDispatcher)
     {
-      [v35 registerForMessage:@"kAccessoryNameChangedNotificationKey" receiver:v33 selector:sel__handleRenamed_];
-      [v35 registerForMessage:@"HMA.pairingStateChanged" receiver:v33 selector:sel__handlePairingStateChanged_];
-      [v35 registerForMessage:@"kCharacteristicValueUpdatedNotificationKey" receiver:v33 selector:sel__handleCharacteristicValueUpdated_];
-      [v35 registerForMessage:@"kAccessoryNotificationsUpdatedNotificationKey" receiver:v33 selector:sel__handleAccessoryNotificationsUpdated_];
-      [v35 registerForMessage:@"kAccessoryFlagsChangedNotificationKey" receiver:v33 selector:sel__handleAccessoryFlagsChanged_];
-      [v35 registerForMessage:@"kServiceRenamedNotificationKey" receiver:v33 selector:sel__handleServiceRenamed_];
-      [v35 registerForMessage:@"kServiceDefaultNameUpdatedNotificationKey" receiver:v33 selector:sel__handleServiceDefaultNameUpdate_];
-      [v35 registerForMessage:@"kServiceSubtypeUpdatedNotificationKey" receiver:v33 selector:sel__handleServiceSubtype_];
-      [v35 registerForMessage:@"kServiceConfigurationStateUpdatedNotificationKey" receiver:v33 selector:sel__handleServiceConfigurationState_];
-      [v35 registerForMessage:@"HM.acu" receiver:v33 selector:sel__handleAccessoryControllableChanged_];
-      [v35 registerForMessage:@"HM.us" receiver:v33 selector:sel__handleRootSettingsUpdated_];
-      v36 = [(HMAccessory *)v33 remoteLoginHandler];
-      [v36 registerForMessages];
+      [messageDispatcher registerForMessage:@"kAccessoryNameChangedNotificationKey" receiver:v33 selector:sel__handleRenamed_];
+      [messageDispatcher registerForMessage:@"HMA.pairingStateChanged" receiver:v33 selector:sel__handlePairingStateChanged_];
+      [messageDispatcher registerForMessage:@"kCharacteristicValueUpdatedNotificationKey" receiver:v33 selector:sel__handleCharacteristicValueUpdated_];
+      [messageDispatcher registerForMessage:@"kAccessoryNotificationsUpdatedNotificationKey" receiver:v33 selector:sel__handleAccessoryNotificationsUpdated_];
+      [messageDispatcher registerForMessage:@"kAccessoryFlagsChangedNotificationKey" receiver:v33 selector:sel__handleAccessoryFlagsChanged_];
+      [messageDispatcher registerForMessage:@"kServiceRenamedNotificationKey" receiver:v33 selector:sel__handleServiceRenamed_];
+      [messageDispatcher registerForMessage:@"kServiceDefaultNameUpdatedNotificationKey" receiver:v33 selector:sel__handleServiceDefaultNameUpdate_];
+      [messageDispatcher registerForMessage:@"kServiceSubtypeUpdatedNotificationKey" receiver:v33 selector:sel__handleServiceSubtype_];
+      [messageDispatcher registerForMessage:@"kServiceConfigurationStateUpdatedNotificationKey" receiver:v33 selector:sel__handleServiceConfigurationState_];
+      [messageDispatcher registerForMessage:@"HM.acu" receiver:v33 selector:sel__handleAccessoryControllableChanged_];
+      [messageDispatcher registerForMessage:@"HM.us" receiver:v33 selector:sel__handleRootSettingsUpdated_];
+      remoteLoginHandler4 = [(HMAccessory *)v33 remoteLoginHandler];
+      [remoteLoginHandler4 registerForMessages];
 
-      [v35 registerForMessage:@"HMCT.capabilities" receiver:v33 selector:sel__handleTargetControlSupportUpdatedMessage_];
-      [v35 registerForMessage:@"supportsMultiUser" receiver:v33 selector:sel__handleMultiUserSupportUpdatedMessage_];
-      [v35 registerForMessage:@"HMAccessorySupportsCompanionInitiatedRestartMessageKey" receiver:v33 selector:sel__handleSupportsCompanionInitiatedRestartUpdatedMessage_];
-      [v35 registerForMessage:@"HMAccessorySupportsCompanionInitiatedObliterateMessageKey" receiver:v33 selector:sel__handleSupportsCompanionInitiatedObliterateUpdatedMessage_];
-      [v35 registerForMessage:@"HMServiceMediaSourceIdentifierUpdatedNotification" receiver:v33 selector:sel__handleServiceMediaSourceIdentifierUpdated_];
-      [v35 registerForMessage:@"HMAccessoryPairingIdentityUpdatedNotification" receiver:v33 selector:sel__handlePairingIdentityUpdate_];
-      [v35 registerForMessage:@"HMA.supportedDiagnosticsUpdated" receiver:v33 selector:sel__handleSupportedDiagnosticsUpdatedMessage_];
+      [messageDispatcher registerForMessage:@"HMCT.capabilities" receiver:v33 selector:sel__handleTargetControlSupportUpdatedMessage_];
+      [messageDispatcher registerForMessage:@"supportsMultiUser" receiver:v33 selector:sel__handleMultiUserSupportUpdatedMessage_];
+      [messageDispatcher registerForMessage:@"HMAccessorySupportsCompanionInitiatedRestartMessageKey" receiver:v33 selector:sel__handleSupportsCompanionInitiatedRestartUpdatedMessage_];
+      [messageDispatcher registerForMessage:@"HMAccessorySupportsCompanionInitiatedObliterateMessageKey" receiver:v33 selector:sel__handleSupportsCompanionInitiatedObliterateUpdatedMessage_];
+      [messageDispatcher registerForMessage:@"HMServiceMediaSourceIdentifierUpdatedNotification" receiver:v33 selector:sel__handleServiceMediaSourceIdentifierUpdated_];
+      [messageDispatcher registerForMessage:@"HMAccessoryPairingIdentityUpdatedNotification" receiver:v33 selector:sel__handlePairingIdentityUpdate_];
+      [messageDispatcher registerForMessage:@"HMA.supportedDiagnosticsUpdated" receiver:v33 selector:sel__handleSupportedDiagnosticsUpdatedMessage_];
       v37 = @"HMAccessorySupportsCleanEnergyAutomationsMessage";
       v38 = &selRef__handleSupportsCleanEnergyAutomationMessage_;
       v39 = @"HMAccessorySupportsAdaptiveTemperatureAutomationsMessage";
@@ -17007,13 +17007,13 @@ LABEL_5:
       v41 = @"HMA.requiresThreadRouterUpdateMessage";
       v42 = &selRef__handleRequiresThreadRouterUpdateMessage_;
 LABEL_39:
-      [v35 registerForMessage:v41 receiver:v33 selector:*v42];
-      [v35 registerForMessage:v39 receiver:v33 selector:*v40];
-      [v35 registerForMessage:v37 receiver:v33 selector:*v38];
+      [messageDispatcher registerForMessage:v41 receiver:v33 selector:*v42];
+      [messageDispatcher registerForMessage:v39 receiver:v33 selector:*v40];
+      [messageDispatcher registerForMessage:v37 receiver:v33 selector:*v38];
     }
   }
 
-  else if (v35)
+  else if (messageDispatcher)
   {
     v37 = @"HMA.MatterDeviceTypeIDUpdateMessage";
     v38 = &selRef__handleMatterDeviceTypeIDChanged_;
@@ -17024,18 +17024,18 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v43 = [(HMAccessory *)v33 audioAnalysisEventBulletinBoardNotification];
-  [v43 __configureWithContext:v6];
+  audioAnalysisEventBulletinBoardNotification = [(HMAccessory *)v33 audioAnalysisEventBulletinBoardNotification];
+  [audioAnalysisEventBulletinBoardNotification __configureWithContext:contextCopy];
 
-  v44 = [(HMAccessory *)v33 bulletinBoardNotificationByEndpoint];
+  bulletinBoardNotificationByEndpoint = [(HMAccessory *)v33 bulletinBoardNotificationByEndpoint];
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = __43__HMAccessory___configureWithContext_home___block_invoke;
   v59[3] = &unk_1E754B400;
-  v60 = v6;
+  v60 = contextCopy;
   v61 = v33;
-  v45 = v6;
-  [v44 na_each:v59];
+  v45 = contextCopy;
+  [bulletinBoardNotificationByEndpoint na_each:v59];
 
   v46 = [[HMAccessoryWiFiController alloc] initWithAccessory:v33];
   accessoryWiFiController = v33->_accessoryWiFiController;
@@ -17044,16 +17044,16 @@ LABEL_39:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (HMAccessory)initWithUUID:(id)a3
+- (HMAccessory)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = HMAccessory;
   v6 = [(HMAccessory *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, d);
     v8 = +[HMMutableArray array];
     currentServices = v7->_currentServices;
     v7->_currentServices = v8;
@@ -17078,8 +17078,8 @@ LABEL_39:
 
 - (HMAccessory)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [(HMAccessory *)self initWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [(HMAccessory *)self initWithUUID:uUID];
 
   return v4;
 }
@@ -17113,17 +17113,17 @@ uint64_t __26__HMAccessory_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (void)updatePendingConfigurationIdentifier:(id)a3 completionHandler:(id)a4
+- (void)updatePendingConfigurationIdentifier:(id)identifier completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v6 = a4;
-  v7 = [(HMAccessory *)self context];
-  if (!v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  context = [(HMAccessory *)self context];
+  if (!handlerCopy)
   {
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory(PendingConfiguration) updatePendingConfigurationIdentifier:completionHandler:]", @"completionHandler"];
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -17140,31 +17140,31 @@ uint64_t __26__HMAccessory_logCategory__block_invoke()
     objc_exception_throw(v31);
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = context;
+  if (context)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:v33 forKeyedSubscript:@"HMA.pendingConfigurationIdentifier"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:identifierCopy forKeyedSubscript:@"HMA.pendingConfigurationIdentifier"];
     v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v11 = [(HMAccessory *)self messageTargetUUID];
-    v12 = [v10 initWithTarget:v11];
+    messageTargetUUID = [(HMAccessory *)self messageTargetUUID];
+    v12 = [v10 initWithTarget:messageTargetUUID];
 
     v32 = v12;
-    v13 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryUpdatePendingConfigurationIdentifierMessage" destination:v12 payload:v9];
+    v13 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryUpdatePendingConfigurationIdentifierMessage" destination:v12 payload:dictionary];
     objc_initWeak(&location, self);
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __92__HMAccessory_PendingConfiguration__updatePendingConfigurationIdentifier_completionHandler___block_invoke;
     v34[3] = &unk_1E754D820;
     objc_copyWeak(&v38, &location);
-    v14 = v33;
+    v14 = identifierCopy;
     v35 = v14;
     v15 = v8;
     v36 = v15;
-    v37 = v6;
+    v37 = handlerCopy;
     [v13 setResponseHandler:v34];
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -17177,8 +17177,8 @@ uint64_t __26__HMAccessory_logCategory__block_invoke()
     }
 
     objc_autoreleasePoolPop(v16);
-    v20 = [v15 messageDispatcher];
-    [v20 sendMessage:v13];
+    messageDispatcher = [v15 messageDispatcher];
+    [messageDispatcher sendMessage:v13];
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
@@ -17187,7 +17187,7 @@ uint64_t __26__HMAccessory_logCategory__block_invoke()
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -17200,8 +17200,8 @@ uint64_t __26__HMAccessory_logCategory__block_invoke()
     }
 
     objc_autoreleasePoolPop(v21);
-    v9 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v6 + 2))(v6, v9);
+    dictionary = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(handlerCopy + 2))(handlerCopy, dictionary);
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -17258,16 +17258,16 @@ void __92__HMAccessory_PendingConfiguration__updatePendingConfigurationIdentifie
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initiateDiagnosticsTransferWithOptions:(id)a3 completionHandler:(id)a4
+- (void)initiateDiagnosticsTransferWithOptions:(id)options completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory(Diagnostics) initiateDiagnosticsTransferWithOptions:completionHandler:]", @"completion"];
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -17284,60 +17284,60 @@ void __92__HMAccessory_PendingConfiguration__updatePendingConfigurationIdentifie
     objc_exception_throw(v35);
   }
 
-  v8 = v7;
-  v9 = [(HMAccessory *)self context];
+  v8 = handlerCopy;
+  context = [(HMAccessory *)self context];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy2 = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
-  if (v9)
+  if (context)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HMAccessory *)v11 uuid];
+      uuid = [(HMAccessory *)selfCopy2 uuid];
       *buf = 138543618;
       v40 = v14;
       v41 = 2112;
-      v42 = v15;
+      v42 = uuid;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Dispatching a message to request diagnostics transfer: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v16 = [MEMORY[0x1E695DF90] dictionary];
-    v17 = [(HMAccessory *)v11 uuid];
-    v18 = [v17 UUIDString];
-    [v16 setObject:v18 forKeyedSubscript:@"kAccessoryUUID"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    uuid2 = [(HMAccessory *)selfCopy2 uuid];
+    uUIDString = [uuid2 UUIDString];
+    [dictionary setObject:uUIDString forKeyedSubscript:@"kAccessoryUUID"];
 
-    if (v6)
+    if (optionsCopy)
     {
-      v19 = encodeRootObject(v6);
-      [v16 setObject:v19 forKeyedSubscript:@"kAccessoryDiagnosticsOptions"];
+      v19 = encodeRootObject(optionsCopy);
+      [dictionary setObject:v19 forKeyedSubscript:@"kAccessoryDiagnosticsOptions"];
     }
 
     else
     {
-      [v16 setObject:0 forKeyedSubscript:@"kAccessoryDiagnosticsOptions"];
+      [dictionary setObject:0 forKeyedSubscript:@"kAccessoryDiagnosticsOptions"];
     }
 
     v21 = objc_alloc(MEMORY[0x1E69A2A10]);
     v22 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v23 = [(HMAccessory *)v11 uuid];
-    v24 = [v22 initWithTarget:v23];
-    v25 = [v21 initWithName:@"HMA.diagnosticsTransferRequest" destination:v24 payload:v16];
+    uuid3 = [(HMAccessory *)selfCopy2 uuid];
+    v24 = [v22 initWithTarget:uuid3];
+    v25 = [v21 initWithName:@"HMA.diagnosticsTransferRequest" destination:v24 payload:dictionary];
 
-    v26 = [v25 identifier];
+    identifier = [v25 identifier];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __85__HMAccessory_Diagnostics__initiateDiagnosticsTransferWithOptions_completionHandler___block_invoke;
     v36[3] = &unk_1E754E480;
-    v36[4] = v11;
-    v37 = v26;
+    v36[4] = selfCopy2;
+    v37 = identifier;
     v38 = v8;
-    v27 = v26;
+    v27 = identifier;
     [v25 setResponseHandler:v36];
-    v28 = [v9 messageDispatcher];
-    [v28 sendMessage:v25];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v25];
   }
 
   else
@@ -17353,8 +17353,8 @@ void __92__HMAccessory_PendingConfiguration__updatePendingConfigurationIdentifie
     }
 
     objc_autoreleasePoolPop(v10);
-    v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (v8)[2](v8, v16, 0);
+    dictionary = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (v8)[2](v8, dictionary, 0);
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -17491,8 +17491,8 @@ void __85__HMAccessory_Diagnostics__initiateDiagnosticsTransferWithOptions_compl
   v8[0] = @"1.0";
   v8[1] = @"ProtoBuf";
   v7[2] = @"HMAccessorySerializedDataKey";
-  v3 = [v2 data];
-  v8[2] = v3;
+  data = [v2 data];
+  v8[2] = data;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:3];
 
   v5 = *MEMORY[0x1E69E9840];
@@ -17500,15 +17500,15 @@ void __85__HMAccessory_Diagnostics__initiateDiagnosticsTransferWithOptions_compl
   return v4;
 }
 
-+ (HMAccessory)accessoryWithAccessoryReference:(id)a3 home:(id)a4
++ (HMAccessory)accessoryWithAccessoryReference:(id)reference home:(id)home
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 hasUniqueIdentifier] & 1) == 0)
+  referenceCopy = reference;
+  homeCopy = home;
+  if (([referenceCopy hasUniqueIdentifier] & 1) == 0)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = a1;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -17527,10 +17527,10 @@ LABEL_14:
     goto LABEL_34;
   }
 
-  if (([v6 hasHomeReference] & 1) == 0)
+  if (([referenceCopy hasHomeReference] & 1) == 0)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = a1;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -17545,13 +17545,13 @@ LABEL_14:
   }
 
   v8 = MEMORY[0x1E696AFB0];
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v8 hmf_UUIDWithBytesAsData:v9];
+  uniqueIdentifier = [referenceCopy uniqueIdentifier];
+  v10 = [v8 hmf_UUIDWithBytesAsData:uniqueIdentifier];
 
   if (!v10)
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = a1;
+    selfCopy3 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -17566,11 +17566,11 @@ LABEL_14:
     goto LABEL_33;
   }
 
-  v11 = [v6 homeReference];
-  if (([v11 hasUniqueIdentifier] & 1) == 0)
+  homeReference = [referenceCopy homeReference];
+  if (([homeReference hasUniqueIdentifier] & 1) == 0)
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = a1;
+    selfCopy4 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -17586,19 +17586,19 @@ LABEL_14:
   }
 
   v12 = MEMORY[0x1E696AFB0];
-  v13 = [v11 uniqueIdentifier];
-  v14 = [v12 hmf_UUIDWithBytesAsData:v13];
+  uniqueIdentifier2 = [homeReference uniqueIdentifier];
+  v14 = [v12 hmf_UUIDWithBytesAsData:uniqueIdentifier2];
 
-  v15 = [v11 uniqueIdentifier];
+  uniqueIdentifier3 = [homeReference uniqueIdentifier];
 
-  if (v15)
+  if (uniqueIdentifier3)
   {
-    v16 = [v7 uniqueIdentifier];
-    v17 = [v14 isEqual:v16];
+    uniqueIdentifier4 = [homeCopy uniqueIdentifier];
+    v17 = [v14 isEqual:uniqueIdentifier4];
 
     if (v17)
     {
-      v18 = [v7 accessoryWithUniqueIdentifier:v10];
+      v18 = [homeCopy accessoryWithUniqueIdentifier:v10];
       v19 = v18;
       if (v18)
       {
@@ -17608,7 +17608,7 @@ LABEL_14:
       else
       {
         v39 = objc_autoreleasePoolPush();
-        v40 = a1;
+        selfCopy5 = self;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
@@ -17627,18 +17627,18 @@ LABEL_14:
     }
 
     v34 = objc_autoreleasePoolPush();
-    v35 = a1;
+    selfCopy7 = self;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       v37 = HMFGetLogIdentifier();
-      v38 = [v7 uniqueIdentifier];
+      uniqueIdentifier5 = [homeCopy uniqueIdentifier];
       v45 = 138543874;
       v46 = v37;
       v47 = 2112;
       v48 = v14;
       v49 = 2112;
-      v50 = v38;
+      v50 = uniqueIdentifier5;
       _os_log_impl(&dword_19BB39000, v36, OS_LOG_TYPE_ERROR, "%{public}@Trying to dereference Characteristic Reference from different home %@ %@", &v45, 0x20u);
 
       goto LABEL_25;
@@ -17648,7 +17648,7 @@ LABEL_14:
   else
   {
     v34 = objc_autoreleasePoolPush();
-    v35 = a1;
+    selfCopy7 = self;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -17673,12 +17673,12 @@ LABEL_34:
   return v19;
 }
 
-+ (HMAccessory)accessoryWithSerializedDictionaryRepresentation:(id)a3 home:(id)a4
++ (HMAccessory)accessoryWithSerializedDictionaryRepresentation:(id)representation home:(id)home
 {
-  v6 = a4;
-  v7 = [a3 hmf_dataForKey:@"HMAccessorySerializedDataKey"];
+  homeCopy = home;
+  v7 = [representation hmf_dataForKey:@"HMAccessorySerializedDataKey"];
   v8 = [HMPBAccessoryReference accessoryReferenceWithData:v7];
-  v9 = [a1 accessoryWithAccessoryReference:v8 home:v6];
+  v9 = [self accessoryWithAccessoryReference:v8 home:homeCopy];
 
   return v9;
 }
@@ -17686,13 +17686,13 @@ LABEL_34:
 - (NSArray)cameraProfiles
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(HMAccessory *)self profiles];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  profiles = [(HMAccessory *)self profiles];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(profiles, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v2;
+  v4 = profiles;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -17739,16 +17739,16 @@ LABEL_34:
   return v12;
 }
 
-+ (id)_cameraProfilesForAccessoryProfiles:(id)a3
++ (id)_cameraProfilesForAccessoryProfiles:(id)profiles
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  profilesCopy = profiles;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(profilesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = profilesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -17797,16 +17797,16 @@ LABEL_34:
   return v15;
 }
 
-- (void)removeCorrespondingSystemCommissionerPairingWithCompletion:(id)a3
+- (void)removeCorrespondingSystemCommissionerPairingWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
-  if (v5)
+  if (context)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -17818,21 +17818,21 @@ LABEL_34:
 
     objc_autoreleasePoolPop(v6);
     v11 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v12 = [(HMAccessory *)v7 uuid];
-    v13 = [v11 initWithTarget:v12];
+    uuid = [(HMAccessory *)selfCopy uuid];
+    v13 = [v11 initWithTarget:uuid];
 
     v14 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryRemoveCorrespondingSystemCommissionerPairingMessage" destination:v13 payload:0];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __80__HMAccessory_CHIP__removeCorrespondingSystemCommissionerPairingWithCompletion___block_invoke;
     v19[3] = &unk_1E754E480;
-    v19[4] = v7;
-    v15 = v5;
+    v19[4] = selfCopy;
+    v15 = context;
     v20 = v15;
-    v21 = v4;
+    v21 = completionCopy;
     [v14 setResponseHandler:v19];
-    v16 = [v15 messageDispatcher];
-    [v16 sendMessage:v14];
+    messageDispatcher = [v15 messageDispatcher];
+    [messageDispatcher sendMessage:v14];
 
     goto LABEL_9;
   }
@@ -17848,10 +17848,10 @@ LABEL_34:
   }
 
   objc_autoreleasePoolPop(v6);
-  if (v4)
+  if (completionCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
 LABEL_9:
   }
 
@@ -17904,16 +17904,16 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activateCHIPPairingModeAndCreateSetupPayloadStringWithCompletion:(id)a3
+- (void)activateCHIPPairingModeAndCreateSetupPayloadStringWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (!completionCopy)
   {
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory(CHIP) activateCHIPPairingModeAndCreateSetupPayloadStringWithCompletion:]", @"completion"];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -17930,9 +17930,9 @@ LABEL_6:
     objc_exception_throw(v25);
   }
 
-  v6 = v5;
+  v6 = context;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy2 = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v6)
@@ -17947,21 +17947,21 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v7);
     v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v13 = [(HMAccessory *)v8 uuid];
-    v14 = [v12 initWithTarget:v13];
+    uuid = [(HMAccessory *)selfCopy2 uuid];
+    v14 = [v12 initWithTarget:uuid];
 
     v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryActivateCHIPPairingModeAndCreateSetupPayloadStringMessage" destination:v14 payload:0];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __86__HMAccessory_CHIP__activateCHIPPairingModeAndCreateSetupPayloadStringWithCompletion___block_invoke;
     v26[3] = &unk_1E754E480;
-    v26[4] = v8;
+    v26[4] = selfCopy2;
     v16 = v6;
     v27 = v16;
-    v28 = v4;
+    v28 = completionCopy;
     [v15 setResponseHandler:v26];
-    v17 = [v16 messageDispatcher];
-    [v17 sendMessage:v15];
+    messageDispatcher = [v16 messageDispatcher];
+    [messageDispatcher sendMessage:v15];
   }
 
   else
@@ -17978,7 +17978,7 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v7);
     v14 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -18039,19 +18039,19 @@ void __86__HMAccessory_CHIP__activateCHIPPairingModeAndCreateSetupPayloadStringW
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCHIPPairingModeActive:(BOOL)a3 withCompletion:(id)a4
+- (void)setCHIPPairingModeActive:(BOOL)active withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (active)
   {
-    [(HMAccessory *)self activateCHIPPairingModeWithCompletion:v6];
+    [(HMAccessory *)self activateCHIPPairingModeWithCompletion:completionCopy];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -18062,25 +18062,25 @@ void __86__HMAccessory_CHIP__activateCHIPPairingModeAndCreateSetupPayloadStringW
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = [(HMAccessory *)v8 context];
-    v12 = [v11 delegateCaller];
+    context = [(HMAccessory *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v13 = [MEMORY[0x1E696ABC0] hmErrorWithCode:48];
-    [v12 callCompletion:v6 error:v13];
+    [delegateCaller callCompletion:completionCopy error:v13];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activateCHIPPairingModeWithCompletion:(id)a3
+- (void)activateCHIPPairingModeWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
-  if (v5)
+  if (context)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -18092,21 +18092,21 @@ void __86__HMAccessory_CHIP__activateCHIPPairingModeAndCreateSetupPayloadStringW
 
     objc_autoreleasePoolPop(v6);
     v11 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v12 = [(HMAccessory *)v7 uuid];
-    v13 = [v11 initWithTarget:v12];
+    uuid = [(HMAccessory *)selfCopy uuid];
+    v13 = [v11 initWithTarget:uuid];
 
     v14 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryActivateCHIPPairingModeMessage" destination:v13 payload:0];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __59__HMAccessory_CHIP__activateCHIPPairingModeWithCompletion___block_invoke;
     v19[3] = &unk_1E754E480;
-    v19[4] = v7;
-    v15 = v5;
+    v19[4] = selfCopy;
+    v15 = context;
     v20 = v15;
-    v21 = v4;
+    v21 = completionCopy;
     [v14 setResponseHandler:v19];
-    v16 = [v15 messageDispatcher];
-    [v16 sendMessage:v14];
+    messageDispatcher = [v15 messageDispatcher];
+    [messageDispatcher sendMessage:v14];
 
     goto LABEL_9;
   }
@@ -18122,10 +18122,10 @@ void __86__HMAccessory_CHIP__activateCHIPPairingModeAndCreateSetupPayloadStringW
   }
 
   objc_autoreleasePoolPop(v6);
-  if (v4)
+  if (completionCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
 LABEL_9:
   }
 
@@ -18178,17 +18178,17 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeCHIPPairings:(id)a3 completion:(id)a4
+- (void)removeCHIPPairings:(id)pairings completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessory *)self context];
+  pairingsCopy = pairings;
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
-  if (v8)
+  if (context)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -18196,17 +18196,17 @@ LABEL_6:
       *buf = 138543618;
       v30 = v13;
       v31 = 2112;
-      v32 = v6;
+      v32 = pairingsCopy;
       _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@Removing CHIP pairings: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
     v14 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v15 = [(HMAccessory *)v10 uuid];
-    v16 = [v14 initWithTarget:v15];
+    uuid = [(HMAccessory *)selfCopy uuid];
+    v16 = [v14 initWithTarget:uuid];
 
     v27 = @"HMA.chipPairings";
-    v17 = encodeRootObject(v6);
+    v17 = encodeRootObject(pairingsCopy);
     v28 = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
@@ -18215,13 +18215,13 @@ LABEL_6:
     v24[1] = 3221225472;
     v24[2] = __51__HMAccessory_CHIP__removeCHIPPairings_completion___block_invoke;
     v24[3] = &unk_1E754E480;
-    v24[4] = v10;
-    v20 = v8;
+    v24[4] = selfCopy;
+    v20 = context;
     v25 = v20;
-    v26 = v7;
+    v26 = completionCopy;
     [v19 setResponseHandler:v24];
-    v21 = [v20 messageDispatcher];
-    [v21 sendMessage:v19];
+    messageDispatcher = [v20 messageDispatcher];
+    [messageDispatcher sendMessage:v19];
 
     goto LABEL_9;
   }
@@ -18237,10 +18237,10 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v9);
-  if (v7)
+  if (completionCopy)
   {
     v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
 LABEL_9:
   }
 
@@ -18293,16 +18293,16 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCHIPPairingsWithCompletion:(id)a3
+- (void)fetchCHIPPairingsWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (!v4)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (!completionCopy)
   {
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessory(CHIP) fetchCHIPPairingsWithCompletion:]", @"completion"];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -18319,9 +18319,9 @@ LABEL_6:
     objc_exception_throw(v25);
   }
 
-  v6 = v5;
+  v6 = context;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy2 = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v6)
@@ -18336,21 +18336,21 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v7);
     v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v13 = [(HMAccessory *)v8 uuid];
-    v14 = [v12 initWithTarget:v13];
+    uuid = [(HMAccessory *)selfCopy2 uuid];
+    v14 = [v12 initWithTarget:uuid];
 
     v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMAccessoryFetchCHIPPairingsMessage" destination:v14 payload:0];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __53__HMAccessory_CHIP__fetchCHIPPairingsWithCompletion___block_invoke;
     v26[3] = &unk_1E754E480;
-    v26[4] = v8;
+    v26[4] = selfCopy2;
     v16 = v6;
     v27 = v16;
-    v28 = v4;
+    v28 = completionCopy;
     [v15 setResponseHandler:v26];
-    v17 = [v16 messageDispatcher];
-    [v17 sendMessage:v15];
+    messageDispatcher = [v16 messageDispatcher];
+    [messageDispatcher sendMessage:v15];
   }
 
   else
@@ -18367,7 +18367,7 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v7);
     v14 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -18517,31 +18517,31 @@ LABEL_12:
   return v7;
 }
 
-+ (id)_networkConfigurationProfilesForCoder:(id)a3 accessoryIdentifier:(id)a4
++ (id)_networkConfigurationProfilesForCoder:(id)coder accessoryIdentifier:(id)identifier
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 decodeBoolForKey:@"HMA.supportsNetworkProtection"])
+  coderCopy = coder;
+  identifierCopy = identifier;
+  if (![coderCopy decodeBoolForKey:@"HMA.supportsNetworkProtection"])
   {
     goto LABEL_4;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"HMA.targetNetworkProtectionMode"];
-  v8 = [v5 decodeIntegerForKey:@"HMA.currentNetworkProtectionMode"];
-  v9 = [v5 decodeBoolForKey:@"HMA.networkRestricted"];
-  v10 = [v5 decodeBoolForKey:@"HMA.supportsWiFiReconfiguration"];
-  v11 = [v5 decodeIntegerForKey:@"HMA.wifiCredentialType"];
+  v7 = [coderCopy decodeIntegerForKey:@"HMA.targetNetworkProtectionMode"];
+  v8 = [coderCopy decodeIntegerForKey:@"HMA.currentNetworkProtectionMode"];
+  v9 = [coderCopy decodeBoolForKey:@"HMA.networkRestricted"];
+  v10 = [coderCopy decodeBoolForKey:@"HMA.supportsWiFiReconfiguration"];
+  v11 = [coderCopy decodeIntegerForKey:@"HMA.wifiCredentialType"];
   v12 = MEMORY[0x1E695DFD8];
   v23[0] = objc_opt_class();
   v23[1] = objc_opt_class();
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v14 = [v12 setWithArray:v13];
-  v15 = [v5 decodeObjectOfClasses:v14 forKey:@"HMA.allowedHosts"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"HMA.allowedHosts"];
 
-  v16 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.networkAccessViolation"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.networkAccessViolation"];
   LOBYTE(v21) = v10;
-  v17 = [[HMNetworkConfigurationProfile alloc] initWithAccessoryIdentifier:v6 targetProtection:v7 currentProtection:v8 networkAccessRestricted:v9 allowedHosts:v15 accessViolation:v16 supportsWiFiReconfiguration:v21 credentialType:v11];
+  v17 = [[HMNetworkConfigurationProfile alloc] initWithAccessoryIdentifier:identifierCopy targetProtection:v7 currentProtection:v8 networkAccessRestricted:v9 allowedHosts:v15 accessViolation:v16 supportsWiFiReconfiguration:v21 credentialType:v11];
 
   if (v17)
   {
@@ -18560,16 +18560,16 @@ LABEL_4:
   return v18;
 }
 
-- (void)setHasOnboardedForNaturalLightingWithCompletion:(id)a3
+- (void)setHasOnboardedForNaturalLightingWithCompletion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessory *)self context];
-  if (v5)
+  completionCopy = completion;
+  context = [(HMAccessory *)self context];
+  if (context)
   {
     v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v7 = [(HMAccessory *)self uuid];
-    v8 = [v6 initWithTarget:v7];
+    uuid = [(HMAccessory *)self uuid];
+    v8 = [v6 initWithTarget:uuid];
 
     v9 = objc_alloc(MEMORY[0x1E69A2A10]);
     v10 = [v9 initWithName:HMAccessorySetHasOnboardedForNaturalLightingMessage destination:v8 payload:0];
@@ -18578,31 +18578,31 @@ LABEL_4:
     aBlock[2] = __70__HMAccessory_Light__setHasOnboardedForNaturalLightingWithCompletion___block_invoke;
     aBlock[3] = &unk_1E754DE00;
     aBlock[4] = self;
-    v30 = v4;
+    v30 = completionCopy;
     v11 = _Block_copy(aBlock);
-    v12 = [v10 identifier];
-    v13 = [v5 pendingRequests];
+    identifier = [v10 identifier];
+    pendingRequests = [context pendingRequests];
     v14 = _Block_copy(v11);
-    [v13 addCompletionBlock:v14 forIdentifier:v12];
+    [pendingRequests addCompletionBlock:v14 forIdentifier:identifier];
 
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __70__HMAccessory_Light__setHasOnboardedForNaturalLightingWithCompletion___block_invoke_5;
     v26 = &unk_1E754E570;
-    v27 = v13;
-    v28 = v12;
-    v15 = v12;
-    v16 = v13;
+    v27 = pendingRequests;
+    v28 = identifier;
+    v15 = identifier;
+    v16 = pendingRequests;
     [v10 setResponseHandler:&v23];
-    v17 = [v5 messageDispatcher];
-    [v17 sendMessage:v10];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v10];
 
 LABEL_7:
     goto LABEL_8;
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
@@ -18615,10 +18615,10 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v18);
-  if (v4)
+  if (completionCopy)
   {
     v8 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
     goto LABEL_7;
   }
 
@@ -18704,15 +18704,15 @@ void __70__HMAccessory_Light__setHasOnboardedForNaturalLightingWithCompletion___
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v4 = [(HMAccessory *)self profiles];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  profiles = [(HMAccessory *)self profiles];
+  v5 = [v3 initWithCapacity:{objc_msgSend(profiles, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HMAccessory *)self profiles];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  profiles2 = [(HMAccessory *)self profiles];
+  v7 = [profiles2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -18723,7 +18723,7 @@ void __70__HMAccessory_Light__setHasOnboardedForNaturalLightingWithCompletion___
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(profiles2);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -18746,7 +18746,7 @@ void __70__HMAccessory_Light__setHasOnboardedForNaturalLightingWithCompletion___
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [profiles2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -18761,14 +18761,14 @@ void __70__HMAccessory_Light__setHasOnboardedForNaturalLightingWithCompletion___
 - (id)mediaProfile
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(HMAccessory *)self accessoryProfiles];
-  v3 = [v2 array];
+  accessoryProfiles = [(HMAccessory *)self accessoryProfiles];
+  array = [accessoryProfiles array];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v3;
+  v4 = array;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -18817,15 +18817,15 @@ LABEL_12:
   return v9;
 }
 
-+ (id)_mediaProfilesForAccessoryProfiles:(id)a3
++ (id)_mediaProfilesForAccessoryProfiles:(id)profiles
 {
   v22 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  profilesCopy = profiles;
+  v4 = [profilesCopy countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -18837,7 +18837,7 @@ LABEL_12:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(profilesCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -18865,7 +18865,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v5 = [profilesCopy countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v5)
       {
         continue;

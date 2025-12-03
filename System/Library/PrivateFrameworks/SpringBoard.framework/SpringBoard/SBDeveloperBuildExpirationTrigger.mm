@@ -1,25 +1,25 @@
 @interface SBDeveloperBuildExpirationTrigger
-- (id)_initWithAlertItemsController:(id)a3 eventSource:(id)a4 expirationDate:(id)a5;
-- (void)_coverSheetDidDismiss:(id)a3;
+- (id)_initWithAlertItemsController:(id)controller eventSource:(id)source expirationDate:(id)date;
+- (void)_coverSheetDidDismiss:(id)dismiss;
 - (void)dealloc;
-- (void)eventSource:(id)a3 didFinishTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7;
-- (void)showDeveloperBuildExpirationAlertIfNecessaryFromLockscreen:(BOOL)a3 toLauncher:(BOOL)a4;
+- (void)eventSource:(id)source didFinishTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by;
+- (void)showDeveloperBuildExpirationAlertIfNecessaryFromLockscreen:(BOOL)lockscreen toLauncher:(BOOL)launcher;
 @end
 
 @implementation SBDeveloperBuildExpirationTrigger
 
-- (id)_initWithAlertItemsController:(id)a3 eventSource:(id)a4 expirationDate:(id)a5
+- (id)_initWithAlertItemsController:(id)controller eventSource:(id)source expirationDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v10)
+  controllerCopy = controller;
+  sourceCopy = source;
+  dateCopy = date;
+  v13 = dateCopy;
+  if (controllerCopy)
   {
-    if (!v12)
+    if (!dateCopy)
     {
 LABEL_8:
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_9;
     }
   }
@@ -42,22 +42,22 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v14->_expirationDate, a5);
-  objc_storeStrong(&self->_alertItemsController, a3);
-  if (v11)
+  objc_storeStrong(&v14->_expirationDate, date);
+  objc_storeStrong(&self->_alertItemsController, controller);
+  if (sourceCopy)
   {
-    objc_storeStrong(&self->_eventSource, a4);
+    objc_storeStrong(&self->_eventSource, source);
     [(SBAppInteractionEventSourceProviding *)self->_eventSource addObserver:self];
   }
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 addObserver:self selector:sel__coverSheetDidDismiss_ name:@"SBCoverSheetDidDismissNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__coverSheetDidDismiss_ name:@"SBCoverSheetDidDismissNotification" object:0];
 
   self = self;
-  v16 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -73,19 +73,19 @@ LABEL_9:
   [(SBDeveloperBuildExpirationTrigger *)&v4 dealloc];
 }
 
-- (void)showDeveloperBuildExpirationAlertIfNecessaryFromLockscreen:(BOOL)a3 toLauncher:(BOOL)a4
+- (void)showDeveloperBuildExpirationAlertIfNecessaryFromLockscreen:(BOOL)lockscreen toLauncher:(BOOL)launcher
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [MEMORY[0x277CBEAA8] date];
+  launcherCopy = launcher;
+  lockscreenCopy = lockscreen;
+  date = [MEMORY[0x277CBEAA8] date];
   if (self->_expirationDate)
   {
-    v22 = v7;
-    v8 = [v7 isAfterDate:?];
-    if ((v8 & 1) != 0 || !v4)
+    v22 = date;
+    v8 = [date isAfterDate:?];
+    if ((v8 & 1) != 0 || !launcherCopy)
     {
-      v18 = v8 & v5;
-      v7 = v22;
+      v18 = v8 & lockscreenCopy;
+      date = v22;
       if (v18 != 1)
       {
         goto LABEL_25;
@@ -96,17 +96,17 @@ LABEL_9:
 
     else
     {
-      v9 = [MEMORY[0x277CBEA80] currentCalendar];
-      v10 = [v9 timeZone];
-      v11 = [v10 secondsFromGMT];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      timeZone = [currentCalendar timeZone];
+      secondsFromGMT = [timeZone secondsFromGMT];
 
-      v12 = [(NSDate *)self->_expirationDate dateByAddingTimeInterval:-v11];
+      v12 = [(NSDate *)self->_expirationDate dateByAddingTimeInterval:-secondsFromGMT];
       v13 = +[SBDefaults localDefaults];
-      v14 = [v13 softwareUpdateDefaults];
+      softwareUpdateDefaults = [v13 softwareUpdateDefaults];
 
-      LOBYTE(v13) = [v14 hasDeveloperInstallBrickAlertShown7DayWarning];
-      v15 = [v14 hasDeveloperInstallBrickAlertShown3DayWarning];
-      v16 = [v14 hasDeveloperInstallBrickAlertShownTomorrowWarning];
+      LOBYTE(v13) = [softwareUpdateDefaults hasDeveloperInstallBrickAlertShown7DayWarning];
+      hasDeveloperInstallBrickAlertShown3DayWarning = [softwareUpdateDefaults hasDeveloperInstallBrickAlertShown3DayWarning];
+      hasDeveloperInstallBrickAlertShownTomorrowWarning = [softwareUpdateDefaults hasDeveloperInstallBrickAlertShownTomorrowWarning];
       if (v13)
       {
         v17 = 0;
@@ -115,10 +115,10 @@ LABEL_9:
       else
       {
         v19 = [v22 bs_dateByAddingDays:7];
-        if ([v9 date:v19 isSameDayAsDate:v12])
+        if ([currentCalendar date:v19 isSameDayAsDate:v12])
         {
           v17 = objc_alloc_init(SBDeveloperBuildExpirationAlert);
-          [v14 setDeveloperInstallBrickAlertShown7DayWarning:1];
+          [softwareUpdateDefaults setDeveloperInstallBrickAlertShown7DayWarning:1];
         }
 
         else
@@ -127,13 +127,13 @@ LABEL_9:
         }
       }
 
-      if (!((v17 != 0) | v15 & 1))
+      if (!((v17 != 0) | hasDeveloperInstallBrickAlertShown3DayWarning & 1))
       {
         v20 = [v22 bs_dateByAddingDays:3];
-        if ([v9 date:v20 isSameDayAsDate:v12])
+        if ([currentCalendar date:v20 isSameDayAsDate:v12])
         {
           v17 = objc_alloc_init(SBDeveloperBuildExpirationAlert);
-          [v14 setDeveloperInstallBrickAlertShown3DayWarning:1];
+          [softwareUpdateDefaults setDeveloperInstallBrickAlertShown3DayWarning:1];
         }
 
         else
@@ -142,13 +142,13 @@ LABEL_9:
         }
       }
 
-      if (!((v17 != 0) | v16 & 1))
+      if (!((v17 != 0) | hasDeveloperInstallBrickAlertShownTomorrowWarning & 1))
       {
         v21 = [v22 bs_dateByAddingDays:1];
-        if ([v9 date:v21 isSameDayAsDate:v12])
+        if ([currentCalendar date:v21 isSameDayAsDate:v12])
         {
           v17 = objc_alloc_init(SBDeveloperBuildExpirationAlert);
-          [v14 setDeveloperInstallBrickAlertShownTomorrowWarning:1];
+          [softwareUpdateDefaults setDeveloperInstallBrickAlertShownTomorrowWarning:1];
         }
 
         else
@@ -158,28 +158,28 @@ LABEL_9:
       }
     }
 
-    v7 = v22;
+    date = v22;
     if (v17)
     {
       [(SBAlertItemsController *)self->_alertItemsController deactivateAlertItemsOfClass:objc_opt_class()];
       [(SBAlertItemsController *)self->_alertItemsController activateAlertItem:v17];
 
-      v7 = v22;
+      date = v22;
     }
   }
 
 LABEL_25:
 }
 
-- (void)eventSource:(id)a3 didFinishTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7
+- (void)eventSource:(id)source didFinishTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by
 {
-  if (a4 == 1)
+  if (mode == 1)
   {
-    [(SBDeveloperBuildExpirationTrigger *)self showDeveloperBuildExpirationAlertIfNecessaryFromLockscreen:0 toLauncher:1, a5, a6, a7];
+    [(SBDeveloperBuildExpirationTrigger *)self showDeveloperBuildExpirationAlertIfNecessaryFromLockscreen:0 toLauncher:1, state, element, by];
   }
 }
 
-- (void)_coverSheetDidDismiss:(id)a3
+- (void)_coverSheetDidDismiss:(id)dismiss
 {
   v4 = +[SBMainSwitcherControllerCoordinator _shim_activeSwitcherController];
   -[SBDeveloperBuildExpirationTrigger showDeveloperBuildExpirationAlertIfNecessaryFromLockscreen:toLauncher:](self, "showDeveloperBuildExpirationAlertIfNecessaryFromLockscreen:toLauncher:", 1, [v4 unlockedEnvironmentMode] == 3);

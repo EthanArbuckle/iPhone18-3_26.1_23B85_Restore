@@ -6,7 +6,7 @@
 - (id)_emojiSkinToneDividerColor;
 - (id)_emojiSpaceKeyActiveBackgroundColorGradient;
 - (id)_emojiSpaceKeyBackgroundColorGradient;
-- (id)backgroundTraitsForKeyplane:(id)a3;
+- (id)backgroundTraitsForKeyplane:(id)keyplane;
 - (id)controlKeyBackgroundColorName;
 - (id)defaultKeyBackgroundColorName;
 @end
@@ -15,10 +15,10 @@
 
 - (id)defaultKeyBackgroundColorName
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorWhite_Alpha97;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorWhite_Alpha30;
   }
@@ -31,10 +31,10 @@
 
 - (id)controlKeyBackgroundColorName
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorKeyGrayKeyLightBackground;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorKeyGrayKeyDarkBackground;
   }
@@ -45,13 +45,13 @@
   return v5;
 }
 
-- (id)backgroundTraitsForKeyplane:(id)a3
+- (id)backgroundTraitsForKeyplane:(id)keyplane
 {
   v8.receiver = self;
   v8.super_class = UIKBRenderFactory_Emoji;
-  v4 = [(UIKBRenderFactory *)&v8 backgroundTraitsForKeyplane:a3];
-  v5 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v5 lightKeyboard])
+  v4 = [(UIKBRenderFactory *)&v8 backgroundTraitsForKeyplane:keyplane];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig lightKeyboard])
   {
     v6 = +[UIKBRenderFactory _graphicsQuality];
 
@@ -60,8 +60,8 @@
       goto LABEL_5;
     }
 
-    v5 = [UIKBGradient gradientWithFlatColor:@"UIKBColorLightEmojiBackdropTint"];
-    [v4 setBackgroundGradient:v5];
+    renderConfig = [UIKBGradient gradientWithFlatColor:@"UIKBColorLightEmojiBackdropTint"];
+    [v4 setBackgroundGradient:renderConfig];
   }
 
 LABEL_5:
@@ -71,10 +71,10 @@ LABEL_5:
 
 - (id)_emojiDefaultControlKeyActiveBackgroundColorGradient
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 whiteText];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  whiteText = [renderConfig whiteText];
   v4 = UIKBColorWhite_Alpha30;
-  if (!v3)
+  if (!whiteText)
   {
     v4 = UIKBColorWhite_Alpha87;
   }
@@ -88,10 +88,10 @@ LABEL_5:
 
 - (id)_emojiDefaultControlKeyBackgroundColorGradient
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 whiteText];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  whiteText = [renderConfig whiteText];
   v4 = UIKBColorKeyGrayKeyDarkBackground;
-  if (!v3)
+  if (!whiteText)
   {
     v4 = UIKBColorKeyGrayKeyLightBackground;
   }
@@ -105,10 +105,10 @@ LABEL_5:
 
 - (id)_emojiSpaceKeyActiveBackgroundColorGradient
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 whiteText];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  whiteText = [renderConfig whiteText];
   v4 = UIKBColorWhite_Alpha30;
-  if (!v3)
+  if (!whiteText)
   {
     v4 = UIKBColorKeyGrayKeyLightBackground;
   }
@@ -122,10 +122,10 @@ LABEL_5:
 
 - (id)_emojiSpaceKeyBackgroundColorGradient
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 whiteText];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  whiteText = [renderConfig whiteText];
   v4 = UIKBColorKeyGrayKeyDarkBackground;
-  if (!v3)
+  if (!whiteText)
   {
     v4 = UIKBColorWhite_Alpha87;
   }
@@ -140,10 +140,10 @@ LABEL_5:
 - (id)_emojiCategoryControlKeyActiveTraits
 {
   v3 = +[UIKBRenderTraits emptyTraits];
-  v4 = [(UIKBRenderFactory *)self renderConfig];
-  v5 = [v4 whiteText];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  whiteText = [renderConfig whiteText];
   v6 = UIKBColorWhite_Alpha10;
-  if (!v5)
+  if (!whiteText)
   {
     v6 = UIKBColorKeyGrayKeyLightBackground;
   }
@@ -159,10 +159,10 @@ LABEL_5:
 
 - (id)_emojiBorderColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 whiteText];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  whiteText = [renderConfig whiteText];
   v4 = UIKBColorWhite_Alpha10;
-  if (!v3)
+  if (!whiteText)
   {
     v4 = UIKBColorBlack_Alpha16;
   }
@@ -175,10 +175,10 @@ LABEL_5:
 
 - (id)_emojiSkinToneDividerColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorBlack_Alpha20;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorWhite_Alpha20;
   }

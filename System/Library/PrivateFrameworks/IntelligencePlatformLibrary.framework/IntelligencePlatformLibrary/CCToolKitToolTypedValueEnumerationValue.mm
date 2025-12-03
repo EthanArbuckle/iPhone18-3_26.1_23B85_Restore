@@ -1,26 +1,26 @@
 @interface CCToolKitToolTypedValueEnumerationValue
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolDisplayRepresentation)displayRepresentation;
 - (CCToolKitToolTypeIdentifier)type;
-- (CCToolKitToolTypedValueEnumerationValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValueEnumerationValue)initWithType:(id)a3 caseValue:(id)a4 displayRepresentation:(id)a5 error:(id *)a6;
+- (CCToolKitToolTypedValueEnumerationValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValueEnumerationValue)initWithType:(id)type caseValue:(id)value displayRepresentation:(id)representation error:(id *)error;
 - (NSString)caseValue;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValueEnumerationValue
 
-- (CCToolKitToolTypedValueEnumerationValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValueEnumerationValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v20[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"type"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if (v9)
     {
       v20[0] = 0;
@@ -36,8 +36,8 @@
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"caseValue"];
-    v13 = [v6 objectForKeyedSubscript:@"displayRepresentation"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"caseValue"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"displayRepresentation"];
     if (!v13)
     {
       v14 = 0;
@@ -53,7 +53,7 @@
     {
 
 LABEL_13:
-      v17 = [[CCToolKitToolTypedValueEnumerationValue alloc] initWithType:v9 caseValue:v12 displayRepresentation:v14 error:a4];
+      v17 = [[CCToolKitToolTypedValueEnumerationValue alloc] initWithType:v9 caseValue:v12 displayRepresentation:v14 error:error];
       v10 = v14;
 LABEL_16:
 
@@ -79,22 +79,22 @@ LABEL_17:
   v3 = objc_opt_new();
   if (self->_type)
   {
-    v4 = [(CCToolKitToolTypedValueEnumerationValue *)self type];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"type"];
+    type = [(CCToolKitToolTypedValueEnumerationValue *)self type];
+    jsonDictionary = [type jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"type"];
   }
 
   if (self->_caseValue)
   {
-    v6 = [(CCToolKitToolTypedValueEnumerationValue *)self caseValue];
-    [v3 setObject:v6 forKeyedSubscript:@"caseValue"];
+    caseValue = [(CCToolKitToolTypedValueEnumerationValue *)self caseValue];
+    [v3 setObject:caseValue forKeyedSubscript:@"caseValue"];
   }
 
   if (self->_displayRepresentation)
   {
-    v7 = [(CCToolKitToolTypedValueEnumerationValue *)self displayRepresentation];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"displayRepresentation"];
+    displayRepresentation = [(CCToolKitToolTypedValueEnumerationValue *)self displayRepresentation];
+    jsonDictionary2 = [displayRepresentation jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"displayRepresentation"];
   }
 
   v9 = [v3 copy];
@@ -102,11 +102,11 @@ LABEL_17:
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_type)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_type];
@@ -150,10 +150,10 @@ LABEL_17:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -323,13 +323,13 @@ LABEL_40:
   return v37;
 }
 
-- (CCToolKitToolTypedValueEnumerationValue)initWithType:(id)a3 caseValue:(id)a4 displayRepresentation:(id)a5 error:(id *)a6
+- (CCToolKitToolTypedValueEnumerationValue)initWithType:(id)type caseValue:(id)value displayRepresentation:(id)representation error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  valueCopy = value;
+  representationCopy = representation;
   v13 = objc_opt_new();
-  if (v10)
+  if (typeCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -339,14 +339,14 @@ LABEL_40:
       goto LABEL_7;
     }
 
-    v16 = [v10 data];
+    data = [typeCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!v11)
+    if (!valueCopy)
     {
 LABEL_4:
       v17 = v15;
-      if (v12)
+      if (representationCopy)
       {
         goto LABEL_5;
       }
@@ -360,7 +360,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!valueCopy)
     {
       goto LABEL_4;
     }
@@ -373,13 +373,13 @@ LABEL_11:
   if (!v21)
   {
     CCSetError();
-    v20 = 0;
+    selfCopy = 0;
     v15 = v17;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!representationCopy)
   {
     goto LABEL_11;
   }
@@ -391,23 +391,23 @@ LABEL_5:
 
   if (v18)
   {
-    v19 = [v12 data];
+    data2 = [representationCopy data];
     CCPBDataWriterWriteDataField();
 
 LABEL_12:
-    v22 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v22 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v20 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v20 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v20;
+  return selfCopy;
 }
 
 @end

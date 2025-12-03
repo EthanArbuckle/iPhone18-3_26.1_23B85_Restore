@@ -1,12 +1,12 @@
 @interface SYStartSyncSession
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYStartSyncSession
@@ -17,64 +17,64 @@
   v8.receiver = self;
   v8.super_class = SYStartSyncSession;
   v4 = [(SYStartSyncSession *)&v8 description];
-  v5 = [(SYStartSyncSession *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYStartSyncSession *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(SYMessageHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(SYMessageHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_isResetSync];
-  [v3 setObject:v6 forKey:@"isResetSync"];
+  [dictionary setObject:v6 forKey:@"isResetSync"];
 
   sessionID = self->_sessionID;
   if (sessionID)
   {
-    [v3 setObject:sessionID forKey:@"sessionID"];
+    [dictionary setObject:sessionID forKey:@"sessionID"];
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_expectsRollbackSupport];
-  [v3 setObject:v8 forKey:@"expectsRollbackSupport"];
+  [dictionary setObject:v8 forKey:@"expectsRollbackSupport"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_expectsRestartSupport];
-  [v3 setObject:v9 forKey:@"expectsRestartSupport"];
+  [dictionary setObject:v9 forKey:@"expectsRestartSupport"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sessionTimeout];
-  [v3 setObject:v10 forKey:@"sessionTimeout"];
+  [dictionary setObject:v10 forKey:@"sessionTimeout"];
 
   metadata = self->_metadata;
   if (metadata)
   {
-    [v3 setObject:metadata forKey:@"metadata"];
+    [dictionary setObject:metadata forKey:@"metadata"];
   }
 
   reason = self->_reason;
   if (reason)
   {
-    [v3 setObject:reason forKey:@"reason"];
+    [dictionary setObject:reason forKey:@"reason"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_header)
   {
     [SYStartSyncSession writeTo:];
   }
 
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteSubmessage();
   isResetSync = self->_isResetSync;
   PBDataWriterWriteBOOLField();
@@ -101,65 +101,65 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setHeader:self->_header];
-  *(v5 + 50) = self->_isResetSync;
-  [v5 setSessionID:self->_sessionID];
-  v4 = v5;
-  *(v5 + 49) = self->_expectsRollbackSupport;
-  *(v5 + 48) = self->_expectsRestartSupport;
-  *(v5 + 1) = *&self->_sessionTimeout;
+  toCopy = to;
+  [toCopy setHeader:self->_header];
+  *(toCopy + 50) = self->_isResetSync;
+  [toCopy setSessionID:self->_sessionID];
+  v4 = toCopy;
+  *(toCopy + 49) = self->_expectsRollbackSupport;
+  *(toCopy + 48) = self->_expectsRestartSupport;
+  *(toCopy + 1) = *&self->_sessionTimeout;
   if (self->_metadata)
   {
-    [v5 setMetadata:?];
-    v4 = v5;
+    [toCopy setMetadata:?];
+    v4 = toCopy;
   }
 
   if (self->_reason)
   {
-    [v5 setReason:?];
-    v4 = v5;
+    [toCopy setReason:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYMessageHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYMessageHeader *)self->_header copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 50) = self->_isResetSync;
-  v8 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionID copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
   *(v5 + 49) = self->_expectsRollbackSupport;
   *(v5 + 48) = self->_expectsRestartSupport;
   *(v5 + 8) = self->_sessionTimeout;
-  v10 = [(NSData *)self->_metadata copyWithZone:a3];
+  v10 = [(NSData *)self->_metadata copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSString *)self->_reason copyWithZone:a3];
+  v12 = [(NSString *)self->_reason copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   header = self->_header;
-  if (header | *(v4 + 2))
+  if (header | *(equalCopy + 2))
   {
     if (![(SYMessageHeader *)header isEqual:?])
     {
@@ -167,44 +167,44 @@
     }
   }
 
-  v6 = *(v4 + 50);
+  v6 = *(equalCopy + 50);
   if (self->_isResetSync)
   {
-    if ((*(v4 + 50) & 1) == 0)
+    if ((*(equalCopy + 50) & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 50))
+  else if (*(equalCopy + 50))
   {
     goto LABEL_23;
   }
 
   sessionID = self->_sessionID;
-  if (sessionID | *(v4 + 5) && ![(NSString *)sessionID isEqual:?])
+  if (sessionID | *(equalCopy + 5) && ![(NSString *)sessionID isEqual:?])
   {
     goto LABEL_23;
   }
 
-  v8 = *(v4 + 49);
+  v8 = *(equalCopy + 49);
   if (self->_expectsRollbackSupport)
   {
-    if ((*(v4 + 49) & 1) == 0)
+    if ((*(equalCopy + 49) & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 49))
+  else if (*(equalCopy + 49))
   {
     goto LABEL_23;
   }
 
-  v9 = *(v4 + 48);
+  v9 = *(equalCopy + 48);
   if (!self->_expectsRestartSupport)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_18;
     }
@@ -214,19 +214,19 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 48) & 1) == 0)
+  if ((*(equalCopy + 48) & 1) == 0)
   {
     goto LABEL_23;
   }
 
 LABEL_18:
-  if (self->_sessionTimeout != *(v4 + 1))
+  if (self->_sessionTimeout != *(equalCopy + 1))
   {
     goto LABEL_23;
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 3))
+  if (metadata | *(equalCopy + 3))
   {
     if (![(NSData *)metadata isEqual:?])
     {
@@ -235,7 +235,7 @@ LABEL_18:
   }
 
   reason = self->_reason;
-  if (reason | *(v4 + 4))
+  if (reason | *(equalCopy + 4))
   {
     v12 = [(NSString *)reason isEqual:?];
   }
@@ -291,12 +291,12 @@ LABEL_24:
   return v17 ^ [(NSString *)self->_reason hash]^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v7 = v4;
-  v6 = *(v4 + 2);
+  v7 = fromCopy;
+  v6 = *(fromCopy + 2);
   if (header)
   {
     if (v6)

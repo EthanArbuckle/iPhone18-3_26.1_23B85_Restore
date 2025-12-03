@@ -1,7 +1,7 @@
 @interface WFTripInfoContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
@@ -9,27 +9,27 @@
 - (WFTripInfo)tripInfo;
 - (id)arrivalTime;
 - (id)distance;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 - (id)routeName;
 - (id)travelTime;
 @end
 
 @implementation WFTripInfoContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Trip info (plural)", @"Trip info");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Trip info (singular)", @"Trip info");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -65,7 +65,7 @@
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Travel Time"];
+  v2 = [self propertyForName:@"Travel Time"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
@@ -93,35 +93,35 @@
   return v11;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFTripInfoContentItem *)self travelTime];
-    v9 = [v8 absoluteTimeString];
-    v7 = [WFObjectRepresentation object:v9];
+    travelTime = [(WFTripInfoContentItem *)self travelTime];
+    absoluteTimeString = [travelTime absoluteTimeString];
+    v7 = [WFObjectRepresentation object:absoluteTimeString];
   }
 
   else
   {
-    if (objc_opt_class() == a3)
+    if (objc_opt_class() == class)
     {
-      v10 = [(WFTripInfoContentItem *)self travelTime];
+      travelTime2 = [(WFTripInfoContentItem *)self travelTime];
     }
 
     else
     {
-      if (objc_opt_class() != a3)
+      if (objc_opt_class() != class)
       {
         v7 = 0;
         goto LABEL_10;
       }
 
-      v10 = [(WFTripInfoContentItem *)self distance];
+      travelTime2 = [(WFTripInfoContentItem *)self distance];
     }
 
-    v8 = v10;
-    v7 = [WFObjectRepresentation object:v10];
+    travelTime = travelTime2;
+    v7 = [WFObjectRepresentation object:travelTime2];
   }
 
 LABEL_10:
@@ -131,25 +131,25 @@ LABEL_10:
 
 - (id)distance
 {
-  v2 = [(WFTripInfoContentItem *)self tripInfo];
-  v3 = [v2 distance];
+  tripInfo = [(WFTripInfoContentItem *)self tripInfo];
+  distance = [tripInfo distance];
 
-  return v3;
+  return distance;
 }
 
 - (id)routeName
 {
-  v2 = [(WFTripInfoContentItem *)self tripInfo];
-  v3 = [v2 routeName];
+  tripInfo = [(WFTripInfoContentItem *)self tripInfo];
+  routeName = [tripInfo routeName];
 
-  return v3;
+  return routeName;
 }
 
 - (id)arrivalTime
 {
   v2 = MEMORY[0x277CBEAA8];
-  v3 = [(WFTripInfoContentItem *)self travelTime];
-  [v3 timeInterval];
+  travelTime = [(WFTripInfoContentItem *)self travelTime];
+  [travelTime timeInterval];
   v4 = [v2 dateWithTimeIntervalSinceNow:?];
 
   return v4;
@@ -157,10 +157,10 @@ LABEL_10:
 
 - (id)travelTime
 {
-  v2 = [(WFTripInfoContentItem *)self tripInfo];
-  v3 = [v2 expectedTravelTime];
+  tripInfo = [(WFTripInfoContentItem *)self tripInfo];
+  expectedTravelTime = [tripInfo expectedTravelTime];
 
-  return v3;
+  return expectedTravelTime;
 }
 
 - (WFTripInfo)tripInfo

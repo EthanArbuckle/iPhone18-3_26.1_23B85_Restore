@@ -1,31 +1,31 @@
 @interface RPNearFieldActiveClient
-- (void)receivedAlwaysOnEventWithSuggestedRole:(unsigned int)a3;
-- (void)startDiscoveryWithApplicationLabel:(id)a3 completion:(id)a4;
+- (void)receivedAlwaysOnEventWithSuggestedRole:(unsigned int)role;
+- (void)startDiscoveryWithApplicationLabel:(id)label completion:(id)completion;
 @end
 
 @implementation RPNearFieldActiveClient
 
-- (void)startDiscoveryWithApplicationLabel:(id)a3 completion:(id)a4
+- (void)startDiscoveryWithApplicationLabel:(id)label completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RPNearFieldClient *)self _ensureXPCStarted];
-  v9 = [(RPNearFieldClient *)self xpcCnx];
+  labelCopy = label;
+  completionCopy = completion;
+  _ensureXPCStarted = [(RPNearFieldClient *)self _ensureXPCStarted];
+  xpcCnx = [(RPNearFieldClient *)self xpcCnx];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __73__RPNearFieldActiveClient_startDiscoveryWithApplicationLabel_completion___block_invoke;
   v17[3] = &unk_1E7C92DA8;
-  v10 = v7;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
+  v11 = [xpcCnx remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73__RPNearFieldActiveClient_startDiscoveryWithApplicationLabel_completion___block_invoke_2;
   v14[3] = &unk_1E7C93470;
-  v15 = v6;
+  v15 = labelCopy;
   v16 = v10;
   v12 = v10;
-  v13 = v6;
+  v13 = labelCopy;
   [v11 startActiveDiscoveryWithApplicationLabel:v13 completion:v14];
 }
 
@@ -70,7 +70,7 @@ void __73__RPNearFieldActiveClient_startDiscoveryWithApplicationLabel_completion
   }
 }
 
-- (void)receivedAlwaysOnEventWithSuggestedRole:(unsigned int)a3
+- (void)receivedAlwaysOnEventWithSuggestedRole:(unsigned int)role
 {
   if (gLogCategory_RPNearFieldClient <= 90 && (gLogCategory_RPNearFieldClient != -1 || _LogCategory_Initialize()))
   {

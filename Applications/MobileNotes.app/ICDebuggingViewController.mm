@@ -1,88 +1,88 @@
 @interface ICDebuggingViewController
 + (id)createLayout;
-+ (void)presentDebugView:(id)a3;
-+ (void)setupDebuggingGestureInWindow:(id)a3;
++ (void)presentDebugView:(id)view;
++ (void)setupDebuggingGestureInWindow:(id)window;
 - (BOOL)disableSearchResultsAnimation;
 - (BOOL)shouldShowRecentItems;
 - (NSArray)filteredSections;
 - (NSArray)recentItemIdentifiers;
 - (NSArray)recentItems;
 - (id)URLsForTestDataDirectories;
-- (id)addRandomNoteToFolder:(id)a3;
+- (id)addRandomNoteToFolder:(id)folder;
 - (id)createSnapshot;
-- (void)addDivergedAttachment:(id)a3;
-- (void)addFolders:(unint64_t)a3 toAccount:(id)a4 maxNotesInFolder:(unint64_t)a5;
-- (void)addRecentItemWithIdentifier:(id)a3;
-- (void)addSomeFoldersWithRandomNotesToAllModernAccounts:(id)a3;
-- (void)addSomeRandomNotes:(id)a3;
-- (void)addSomeRandomNotes:(unint64_t)a3 toFolder:(id)a4;
-- (void)bluetoothKeyboardHint:(id)a3;
-- (void)checkiCloudKeychainSyncStatus:(id)a3;
-- (void)clearAnalyticsIdentifiers:(id)a3;
+- (void)addDivergedAttachment:(id)attachment;
+- (void)addFolders:(unint64_t)folders toAccount:(id)account maxNotesInFolder:(unint64_t)folder;
+- (void)addRecentItemWithIdentifier:(id)identifier;
+- (void)addSomeFoldersWithRandomNotesToAllModernAccounts:(id)accounts;
+- (void)addSomeRandomNotes:(id)notes;
+- (void)addSomeRandomNotes:(unint64_t)notes toFolder:(id)folder;
+- (void)bluetoothKeyboardHint:(id)hint;
+- (void)checkiCloudKeychainSyncStatus:(id)status;
+- (void)clearAnalyticsIdentifiers:(id)identifiers;
 - (void)clearRecentItems;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)confirmDestructiveActionWithTitle:(id)a3 message:(id)a4 buttonText:(id)a5 block:(id)a6;
-- (void)createPartiallySupportedSmartFolder:(id)a3;
-- (void)deleteAllTags:(id)a3;
-- (void)deleteMigratedDuplicates:(id)a3;
-- (void)deleteSearchIndex:(id)a3;
-- (void)deleteServerChangeTokens:(id)a3;
-- (void)dismiss:(id)a3;
-- (void)dumpAnalyticsIdentifiers:(id)a3;
-- (void)fakeIncompatibleDevices:(id)a3;
-- (void)fixDivergedAttachments:(id)a3;
-- (void)generateSystemPaperChrome:(id)a3;
-- (void)importTestDataFromDirectoryAtURL:(id)a3;
-- (void)loadTestData:(id)a3;
-- (void)logHashtagsIndexedByOtherApps:(id)a3;
-- (void)logSearchIndex:(id)a3;
-- (void)migrateAccounts:(id)a3 toMode:(signed __int16)a4;
-- (void)migrateLocalAccount:(id)a3;
-- (void)migratePrimaryICloudAccount:(id)a3;
-- (void)migrateToCustomPasswordMode:(id)a3;
-- (void)migrateToDevicePasscodeMode:(id)a3;
-- (void)prefetchHashtagsIndexedByOtherApps:(id)a3;
-- (void)purgeAllHandwritingSummaries:(id)a3;
-- (void)regenerateAllAttachmentPreviewImages:(id)a3;
-- (void)regenerateAllHandwritingSummaries:(id)a3;
-- (void)regenerateAllImageClassifications:(id)a3;
-- (void)regenerateAllOCR:(id)a3;
-- (void)regenerateAnalyticsIdentifiers:(id)a3;
-- (void)regenerateStandardizedContentForAllHashtags:(id)a3;
-- (void)regenerateSystemPaperThumbnails:(id)a3;
-- (void)reindexEverything:(id)a3;
-- (void)reloadDataAnimated:(BOOL)a3;
-- (void)removeAccountPassword:(id)a3;
-- (void)removeWhatsNewVersion:(id)a3;
-- (void)resetAutoSortChecklistAlert:(id)a3;
-- (void)resetLockedNotesMode:(id)a3;
-- (void)resetPassword:(id)a3;
-- (void)resetPencilUnsupportedAlertState:(id)a3;
-- (void)resetServerSideUpdateTaskState:(id)a3;
-- (void)resetSupportsV1Neo:(id)a3;
-- (void)resetUpdateDrawingsAlert:(id)a3;
-- (void)sendStateOfTheWorld:(id)a3;
-- (void)setCanShowRecentItems:(BOOL)a3;
-- (void)setCloudConfiguration:(id)a3;
-- (void)setRecentItemIdentifiers:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)confirmDestructiveActionWithTitle:(id)title message:(id)message buttonText:(id)text block:(id)block;
+- (void)createPartiallySupportedSmartFolder:(id)folder;
+- (void)deleteAllTags:(id)tags;
+- (void)deleteMigratedDuplicates:(id)duplicates;
+- (void)deleteSearchIndex:(id)index;
+- (void)deleteServerChangeTokens:(id)tokens;
+- (void)dismiss:(id)dismiss;
+- (void)dumpAnalyticsIdentifiers:(id)identifiers;
+- (void)fakeIncompatibleDevices:(id)devices;
+- (void)fixDivergedAttachments:(id)attachments;
+- (void)generateSystemPaperChrome:(id)chrome;
+- (void)importTestDataFromDirectoryAtURL:(id)l;
+- (void)loadTestData:(id)data;
+- (void)logHashtagsIndexedByOtherApps:(id)apps;
+- (void)logSearchIndex:(id)index;
+- (void)migrateAccounts:(id)accounts toMode:(signed __int16)mode;
+- (void)migrateLocalAccount:(id)account;
+- (void)migratePrimaryICloudAccount:(id)account;
+- (void)migrateToCustomPasswordMode:(id)mode;
+- (void)migrateToDevicePasscodeMode:(id)mode;
+- (void)prefetchHashtagsIndexedByOtherApps:(id)apps;
+- (void)purgeAllHandwritingSummaries:(id)summaries;
+- (void)regenerateAllAttachmentPreviewImages:(id)images;
+- (void)regenerateAllHandwritingSummaries:(id)summaries;
+- (void)regenerateAllImageClassifications:(id)classifications;
+- (void)regenerateAllOCR:(id)r;
+- (void)regenerateAnalyticsIdentifiers:(id)identifiers;
+- (void)regenerateStandardizedContentForAllHashtags:(id)hashtags;
+- (void)regenerateSystemPaperThumbnails:(id)thumbnails;
+- (void)reindexEverything:(id)everything;
+- (void)reloadDataAnimated:(BOOL)animated;
+- (void)removeAccountPassword:(id)password;
+- (void)removeWhatsNewVersion:(id)version;
+- (void)resetAutoSortChecklistAlert:(id)alert;
+- (void)resetLockedNotesMode:(id)mode;
+- (void)resetPassword:(id)password;
+- (void)resetPencilUnsupportedAlertState:(id)state;
+- (void)resetServerSideUpdateTaskState:(id)state;
+- (void)resetSupportsV1Neo:(id)neo;
+- (void)resetUpdateDrawingsAlert:(id)alert;
+- (void)sendStateOfTheWorld:(id)world;
+- (void)setCanShowRecentItems:(BOOL)items;
+- (void)setCloudConfiguration:(id)configuration;
+- (void)setRecentItemIdentifiers:(id)identifiers;
 - (void)setUpDataSource;
 - (void)setUpDebuggingItems;
 - (void)setUpSearch;
-- (void)setWhatsNewToCurrentOS:(id)a3;
-- (void)setWhatsNewToIOS9:(id)a3;
-- (void)showSimplifiedUITextViewEditor:(id)a3;
-- (void)showSimplifiedWebEditor:(id)a3;
-- (void)simulateBackgroundSnapshot:(id)a3;
-- (void)simulateBackgroundSnapshotExpiration:(id)a3;
-- (void)syncLocalWithCloud:(id)a3;
-- (void)testAllowNotificationsWarmingSheet:(id)a3;
-- (void)testAppRemoval:(id)a3;
-- (void)testNotificationsNotAllowedAlert:(id)a3;
-- (void)toggleDebuggingItemWithDefaultsKey:(id)a3 sender:(id)a4;
-- (void)toggleNonContiguousLayout:(id)a3;
-- (void)toggleSupportsV1Neo:(id)a3;
-- (void)triggerCloudOperationEndEventWithNilErrorDomain:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)setWhatsNewToCurrentOS:(id)s;
+- (void)setWhatsNewToIOS9:(id)s9;
+- (void)showSimplifiedUITextViewEditor:(id)editor;
+- (void)showSimplifiedWebEditor:(id)editor;
+- (void)simulateBackgroundSnapshot:(id)snapshot;
+- (void)simulateBackgroundSnapshotExpiration:(id)expiration;
+- (void)syncLocalWithCloud:(id)cloud;
+- (void)testAllowNotificationsWarmingSheet:(id)sheet;
+- (void)testAppRemoval:(id)removal;
+- (void)testNotificationsNotAllowedAlert:(id)alert;
+- (void)toggleDebuggingItemWithDefaultsKey:(id)key sender:(id)sender;
+- (void)toggleNonContiguousLayout:(id)layout;
+- (void)toggleSupportsV1Neo:(id)neo;
+- (void)triggerCloudOperationEndEventWithNilErrorDomain:(id)domain;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -98,23 +98,23 @@
   [(ICDebuggingViewController *)self setUpSearch];
 }
 
-+ (void)setupDebuggingGestureInWindow:(id)a3
++ (void)setupDebuggingGestureInWindow:(id)window
 {
-  v4 = a3;
-  v5 = [[ICShowDebugMenuGestureRecognizer alloc] initWithTarget:a1 action:"presentDebugView:"];
-  [v4 addGestureRecognizer:v5];
+  windowCopy = window;
+  v5 = [[ICShowDebugMenuGestureRecognizer alloc] initWithTarget:self action:"presentDebugView:"];
+  [windowCopy addGestureRecognizer:v5];
 }
 
-+ (void)presentDebugView:(id)a3
++ (void)presentDebugView:(id)view
 {
-  v24 = a3;
+  viewCopy = view;
   v4 = [ICDebuggingViewController alloc];
-  v5 = [a1 createLayout];
-  v6 = [(ICDebuggingViewController *)v4 initWithCollectionViewLayout:v5];
+  createLayout = [self createLayout];
+  v6 = [(ICDebuggingViewController *)v4 initWithCollectionViewLayout:createLayout];
 
   v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v6 action:"dismiss:"];
-  v8 = [(ICDebuggingViewController *)v6 navigationItem];
-  [v8 setLeftBarButtonItem:v7];
+  navigationItem = [(ICDebuggingViewController *)v6 navigationItem];
+  [navigationItem setLeftBarButtonItem:v7];
 
   v9 = +[UIDevice ic_isVision];
   v10 = @"ant.circle";
@@ -127,21 +127,21 @@
   v12 = [UIBarButtonItem alloc];
   v13 = [UIImage systemImageNamed:v11];
 
-  v14 = [v12 initWithImage:v13 style:0 target:a1 action:"fileRadar:"];
-  v15 = [(ICDebuggingViewController *)v6 navigationItem];
-  [v15 setRightBarButtonItem:v14];
+  v14 = [v12 initWithImage:v13 style:0 target:self action:"fileRadar:"];
+  navigationItem2 = [(ICDebuggingViewController *)v6 navigationItem];
+  [navigationItem2 setRightBarButtonItem:v14];
 
-  v16 = [(ICDebuggingViewController *)v6 navigationItem];
-  [v16 setTitle:@"Debugging"];
+  navigationItem3 = [(ICDebuggingViewController *)v6 navigationItem];
+  [navigationItem3 setTitle:@"Debugging"];
 
-  v17 = [(ICDebuggingViewController *)v6 ic_embedInNavigationControllerForModalPresentation];
-  [v17 setNavigationBarHidden:0];
+  ic_embedInNavigationControllerForModalPresentation = [(ICDebuggingViewController *)v6 ic_embedInNavigationControllerForModalPresentation];
+  [ic_embedInNavigationControllerForModalPresentation setNavigationBarHidden:0];
   objc_opt_class();
   v18 = ICDynamicCast();
   v19 = v18;
   if (v18)
   {
-    v20 = v18;
+    rootViewController = v18;
   }
 
   else
@@ -149,12 +149,12 @@
     objc_opt_class();
     objc_opt_class();
     v21 = ICDynamicCast();
-    v22 = [v21 view];
+    view = [v21 view];
     v23 = ICDynamicCast();
-    v20 = [v23 rootViewController];
+    rootViewController = [v23 rootViewController];
   }
 
-  [v20 presentViewController:v17 animated:1 completion:0];
+  [rootViewController presentViewController:ic_embedInNavigationControllerForModalPresentation animated:1 completion:0];
 }
 
 + (id)createLayout
@@ -170,38 +170,38 @@
   v3 = objc_alloc_init(UISearchController);
   [(ICDebuggingViewController *)self setSearchController:v3];
 
-  v4 = [(ICDebuggingViewController *)self searchController];
-  [v4 setSearchResultsUpdater:self];
+  searchController = [(ICDebuggingViewController *)self searchController];
+  [searchController setSearchResultsUpdater:self];
 
-  v5 = [(ICDebuggingViewController *)self searchController];
-  [v5 setDelegate:self];
+  searchController2 = [(ICDebuggingViewController *)self searchController];
+  [searchController2 setDelegate:self];
 
-  v6 = [(ICDebuggingViewController *)self searchController];
-  v7 = [v6 searchBar];
-  [v7 setAutocapitalizationType:0];
+  searchController3 = [(ICDebuggingViewController *)self searchController];
+  searchBar = [searchController3 searchBar];
+  [searchBar setAutocapitalizationType:0];
 
-  v8 = [(ICDebuggingViewController *)self searchController];
-  [v8 setObscuresBackgroundDuringPresentation:0];
+  searchController4 = [(ICDebuggingViewController *)self searchController];
+  [searchController4 setObscuresBackgroundDuringPresentation:0];
 
-  v9 = [(ICDebuggingViewController *)self searchController];
-  v10 = [(ICDebuggingViewController *)self navigationItem];
-  [v10 setSearchController:v9];
+  searchController5 = [(ICDebuggingViewController *)self searchController];
+  navigationItem = [(ICDebuggingViewController *)self navigationItem];
+  [navigationItem setSearchController:searchController5];
 
   [(ICDebuggingViewController *)self setCanShowRecentItems:0];
 }
 
-- (void)confirmDestructiveActionWithTitle:(id)a3 message:(id)a4 buttonText:(id)a5 block:(id)a6
+- (void)confirmDestructiveActionWithTitle:(id)title message:(id)message buttonText:(id)text block:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  blockCopy = block;
+  textCopy = text;
+  v12 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000D22DC;
   v16[3] = &unk_100646938;
-  v17 = v10;
-  v13 = v10;
-  v14 = [UIAlertAction actionWithTitle:v11 style:2 handler:v16];
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = [UIAlertAction actionWithTitle:textCopy style:2 handler:v16];
 
   [v12 addAction:v14];
   v15 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:0];
@@ -221,14 +221,14 @@
   objc_copyWeak(&v19, &location);
   v4 = [UICollectionViewCellRegistration registrationWithCellClass:v3 configurationHandler:v18];
   v5 = [UICollectionViewDiffableDataSource alloc];
-  v6 = [(ICDebuggingViewController *)self collectionView];
+  collectionView = [(ICDebuggingViewController *)self collectionView];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000D2724;
   v16[3] = &unk_100648F80;
   v7 = v4;
   v17 = v7;
-  v8 = [v5 initWithCollectionView:v6 cellProvider:v16];
+  v8 = [v5 initWithCollectionView:collectionView cellProvider:v16];
   [(ICDebuggingViewController *)self setDiffableDataSource:v8];
 
   v9 = objc_opt_class();
@@ -243,8 +243,8 @@
   v12[2] = sub_1000D2910;
   v10 = v12[3] = &unk_100648FD0;
   v13 = v10;
-  v11 = [(ICDebuggingViewController *)self diffableDataSource];
-  [v11 setSupplementaryViewProvider:v12];
+  diffableDataSource = [(ICDebuggingViewController *)self diffableDataSource];
+  [diffableDataSource setSupplementaryViewProvider:v12];
 
   [(ICDebuggingViewController *)self reloadDataAnimated:0];
   objc_destroyWeak(&v15);
@@ -253,12 +253,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)reloadDataAnimated:(BOOL)a3
+- (void)reloadDataAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [(ICDebuggingViewController *)self createSnapshot];
-  v5 = [(ICDebuggingViewController *)self diffableDataSource];
-  [v5 applySnapshot:v6 animatingDifferences:v3];
+  animatedCopy = animated;
+  createSnapshot = [(ICDebuggingViewController *)self createSnapshot];
+  diffableDataSource = [(ICDebuggingViewController *)self diffableDataSource];
+  [diffableDataSource applySnapshot:createSnapshot animatingDifferences:animatedCopy];
 }
 
 - (id)createSnapshot
@@ -270,43 +270,43 @@
     v4 = [NSArray arrayWithObjects:&v12 count:1];
     [v3 appendSectionsWithIdentifiers:v4];
 
-    v5 = [(ICDebuggingViewController *)self recentItems];
-    v6 = [v5 ic_map:&stru_100649010];
+    recentItems = [(ICDebuggingViewController *)self recentItems];
+    v6 = [recentItems ic_map:&stru_100649010];
 
     [v3 appendItemsWithIdentifiers:v6 intoSectionWithIdentifier:@"RECENT"];
   }
 
   else
   {
-    v7 = [(ICDebuggingViewController *)self filteredSections];
-    v6 = [v7 ic_map:&stru_100649050];
+    filteredSections = [(ICDebuggingViewController *)self filteredSections];
+    v6 = [filteredSections ic_map:&stru_100649050];
 
     [v3 appendSectionsWithIdentifiers:v6];
-    v8 = [(ICDebuggingViewController *)self filteredSections];
+    filteredSections2 = [(ICDebuggingViewController *)self filteredSections];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000D2B44;
     v10[3] = &unk_100649098;
     v11 = v3;
-    [v8 enumerateObjectsUsingBlock:v10];
+    [filteredSections2 enumerateObjectsUsingBlock:v10];
   }
 
   return v3;
 }
 
-- (void)addRecentItemWithIdentifier:(id)a3
+- (void)addRecentItemWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [(ICDebuggingViewController *)self recentItemIdentifiers];
-  v5 = [v4 mutableCopy];
+  identifierCopy = identifier;
+  recentItemIdentifiers = [(ICDebuggingViewController *)self recentItemIdentifiers];
+  v5 = [recentItemIdentifiers mutableCopy];
 
-  v6 = [v5 indexOfObject:v8];
+  v6 = [v5 indexOfObject:identifierCopy];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v5 removeObjectAtIndex:v6];
   }
 
-  [v5 insertObject:v8 atIndex:0];
+  [v5 insertObject:identifierCopy atIndex:0];
   v7 = [v5 copy];
   [(ICDebuggingViewController *)self setRecentItemIdentifiers:v7];
 }
@@ -321,11 +321,11 @@
   [(ICDebuggingViewController *)self reloadDataAnimated:v4];
 }
 
-- (void)setRecentItemIdentifiers:(id)a3
+- (void)setRecentItemIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setObject:v3 forKey:@"DebuggingRecentItemIdentifiers"];
+  [v4 setObject:identifiersCopy forKey:@"DebuggingRecentItemIdentifiers"];
 }
 
 - (NSArray)recentItemIdentifiers
@@ -350,11 +350,11 @@
 
 - (NSArray)recentItems
 {
-  v3 = [(ICDebuggingViewController *)self allSections];
-  v4 = [v3 ic_flatMap:&stru_1006490D8];
+  allSections = [(ICDebuggingViewController *)self allSections];
+  v4 = [allSections ic_flatMap:&stru_1006490D8];
 
   v5 = [v4 ic_map:&stru_1006490F8];
-  v6 = [(ICDebuggingViewController *)self recentItemIdentifiers];
+  recentItemIdentifiers = [(ICDebuggingViewController *)self recentItemIdentifiers];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000D2F0C;
@@ -363,37 +363,37 @@
   v13 = v4;
   v7 = v4;
   v8 = v5;
-  v9 = [v6 ic_compactMap:v11];
+  v9 = [recentItemIdentifiers ic_compactMap:v11];
 
   return v9;
 }
 
-- (void)toggleDebuggingItemWithDefaultsKey:(id)a3 sender:(id)a4
+- (void)toggleDebuggingItemWithDefaultsKey:(id)key sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
+  senderCopy = sender;
+  keyCopy = key;
   v8 = +[NSUserDefaults standardUserDefaults];
-  [v8 setBool:objc_msgSend(v8 forKey:{"BOOLForKey:", v7) ^ 1, v7}];
+  [v8 setBool:objc_msgSend(v8 forKey:{"BOOLForKey:", keyCopy) ^ 1, keyCopy}];
 
   objc_opt_class();
   v9 = ICDynamicCast();
 
-  v10 = [v9 item];
-  if (v10)
+  item = [v9 item];
+  if (item)
   {
-    v11 = [(ICDebuggingViewController *)self diffableDataSource];
-    v12 = [v11 snapshot];
-    v13 = [v10 identifier];
-    v15 = v13;
+    diffableDataSource = [(ICDebuggingViewController *)self diffableDataSource];
+    snapshot = [diffableDataSource snapshot];
+    identifier = [item identifier];
+    v15 = identifier;
     v14 = [NSArray arrayWithObjects:&v15 count:1];
-    [v12 reconfigureItemsWithIdentifiers:v14];
+    [snapshot reconfigureItemsWithIdentifiers:v14];
   }
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v3 = [(ICDebuggingViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(ICDebuggingViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (BOOL)disableSearchResultsAnimation
@@ -404,49 +404,49 @@
   return v3;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v15 = a4;
-  v6 = a3;
+  pathCopy = path;
+  viewCopy = view;
   if ([(ICDebuggingViewController *)self shouldShowRecentItems])
   {
-    v7 = [(ICDebuggingViewController *)self recentItems];
+    recentItems = [(ICDebuggingViewController *)self recentItems];
   }
 
   else
   {
-    v8 = [(ICDebuggingViewController *)self filteredSections];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v15, "section")}];
-    v7 = [v9 items];
+    filteredSections = [(ICDebuggingViewController *)self filteredSections];
+    v9 = [filteredSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    recentItems = [v9 items];
   }
 
-  v10 = [v7 objectAtIndexedSubscript:{objc_msgSend(v15, "row")}];
-  v11 = [v10 selector];
-  v12 = [(ICDebuggingViewController *)self methodForSelector:v11];
-  v13 = [v6 cellForItemAtIndexPath:v15];
-  v12(self, v11, v13);
-  v14 = [v10 identifier];
-  [(ICDebuggingViewController *)self addRecentItemWithIdentifier:v14];
+  v10 = [recentItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  selector = [v10 selector];
+  v12 = [(ICDebuggingViewController *)self methodForSelector:selector];
+  v13 = [viewCopy cellForItemAtIndexPath:pathCopy];
+  v12(self, selector, v13);
+  identifier = [v10 identifier];
+  [(ICDebuggingViewController *)self addRecentItemWithIdentifier:identifier];
 
-  [v6 deselectItemAtIndexPath:v15 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v7 = a3;
-  v4 = [v7 searchBar];
-  v5 = [v4 text];
-  if ([v5 length])
+  controllerCopy = controller;
+  searchBar = [controllerCopy searchBar];
+  text = [searchBar text];
+  if ([text length])
   {
-    v6 = 0;
+    isActive = 0;
   }
 
   else
   {
-    v6 = [v7 isActive];
+    isActive = [controllerCopy isActive];
   }
 
-  [(ICDebuggingViewController *)self setCanShowRecentItems:v6];
+  [(ICDebuggingViewController *)self setCanShowRecentItems:isActive];
 
   [(ICDebuggingViewController *)self reloadDataAnimated:[(ICDebuggingViewController *)self disableSearchResultsAnimation]^ 1];
 }
@@ -454,8 +454,8 @@
 - (void)setUpDebuggingItems
 {
   v2 = +[ICNoteContext sharedContext];
-  v3 = [v2 managedObjectContext];
-  v160 = [ICAccount allActiveAccountsInContext:v3];
+  managedObjectContext = [v2 managedObjectContext];
+  v160 = [ICAccount allActiveAccountsInContext:managedObjectContext];
 
   v145 = [[ICDebuggingItem alloc] initWithTitle:@"Reset Auto Sort Checklist Alert" selector:"resetAutoSortChecklistAlert:"];
   v181 = v145;
@@ -721,29 +721,29 @@
 
 - (NSArray)filteredSections
 {
-  v3 = [(ICDebuggingViewController *)self searchController];
-  v4 = [v3 searchBar];
-  v5 = [v4 text];
-  v6 = [v5 lowercaseString];
+  searchController = [(ICDebuggingViewController *)self searchController];
+  searchBar = [searchController searchBar];
+  text = [searchBar text];
+  lowercaseString = [text lowercaseString];
 
-  v7 = [(ICDebuggingViewController *)self searchController];
-  if (![v7 isActive])
+  searchController2 = [(ICDebuggingViewController *)self searchController];
+  if (![searchController2 isActive])
   {
 
     goto LABEL_17;
   }
 
-  v8 = [v6 length];
+  v8 = [lowercaseString length];
 
   if (!v8)
   {
 LABEL_17:
-    v21 = [(ICDebuggingViewController *)self allSections];
+    allSections = [(ICDebuggingViewController *)self allSections];
     goto LABEL_18;
   }
 
-  v9 = [(ICDebuggingViewController *)self allSections];
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+  allSections2 = [(ICDebuggingViewController *)self allSections];
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [allSections2 count]);
 
   v28 = 0u;
   v29 = 0u;
@@ -765,23 +765,23 @@ LABEL_17:
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 title];
-        v17 = [v16 lowercaseString];
+        title = [v15 title];
+        lowercaseString2 = [title lowercaseString];
 
-        if ([v17 containsString:v6])
+        if ([lowercaseString2 containsString:lowercaseString])
         {
           [v10 addObject:v15];
         }
 
         else
         {
-          v18 = [v15 items];
+          items = [v15 items];
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
           v24[2] = sub_1000D4A20;
           v24[3] = &unk_100649188;
-          v25 = v6;
-          v19 = [v18 ic_objectsPassingTest:v24];
+          v25 = lowercaseString;
+          v19 = [items ic_objectsPassingTest:v24];
 
           if ([v19 count])
           {
@@ -798,17 +798,17 @@ LABEL_17:
     while (v12);
   }
 
-  v21 = [v10 copy];
+  allSections = [v10 copy];
 LABEL_18:
 
-  return v21;
+  return allSections;
 }
 
-- (void)setCanShowRecentItems:(BOOL)a3
+- (void)setCanShowRecentItems:(BOOL)items
 {
-  if (self->_canShowRecentItems != a3)
+  if (self->_canShowRecentItems != items)
   {
-    self->_canShowRecentItems = a3;
+    self->_canShowRecentItems = items;
     [(ICDebuggingViewController *)self reloadDataAnimated:0];
   }
 }
@@ -820,20 +820,20 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [(ICDebuggingViewController *)self recentItems];
-  v4 = [v3 count] != 0;
+  recentItems = [(ICDebuggingViewController *)self recentItems];
+  v4 = [recentItems count] != 0;
 
   return v4;
 }
 
-- (void)resetAutoSortChecklistAlert:(id)a3
+- (void)resetAutoSortChecklistAlert:(id)alert
 {
   [ICTextController setChecklistAutoAlertShown:0];
 
   [ICTextController setChecklistAutoSortEnabled:0];
 }
 
-- (void)resetUpdateDrawingsAlert:(id)a3
+- (void)resetUpdateDrawingsAlert:(id)alert
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   [v3 removeObjectForKey:kICDidAlertAboutUpdatingDrawingsFall2021];
@@ -842,59 +842,59 @@ LABEL_18:
   [v4 removeObjectForKey:kICDidAlertAboutUpdatingDrawingsFall2022];
 }
 
-- (void)testAllowNotificationsWarmingSheet:(id)a3
+- (void)testAllowNotificationsWarmingSheet:(id)sheet
 {
   v3 = +[ICAppDelegate sharedInstance];
   [v3 showAllowNotificationsWarmingSheet:&stru_1006491A8];
 }
 
-- (void)testNotificationsNotAllowedAlert:(id)a3
+- (void)testNotificationsNotAllowedAlert:(id)alert
 {
   v3 = +[ICAppDelegate sharedInstance];
-  v4 = [v3 viewControllerManagers];
-  v7 = [v4 firstObject];
+  viewControllerManagers = [v3 viewControllerManagers];
+  firstObject = [viewControllerManagers firstObject];
 
-  v5 = [v7 folderListViewController];
-  v6 = [v5 collectionView];
+  folderListViewController = [firstObject folderListViewController];
+  collectionView = [folderListViewController collectionView];
 
-  [v6 setShouldShowAllowNotificationsView:1];
+  [collectionView setShouldShowAllowNotificationsView:1];
 }
 
-- (void)dumpAnalyticsIdentifiers:(id)a3
+- (void)dumpAnalyticsIdentifiers:(id)identifiers
 {
   v3 = +[ICNAIdentityManager sharedManager];
   [v3 debug_dumpIdentifiers];
 }
 
-- (void)regenerateAnalyticsIdentifiers:(id)a3
+- (void)regenerateAnalyticsIdentifiers:(id)identifiers
 {
   v3 = +[ICNAIdentityManager sharedManager];
   [v3 debug_forceRegenerateIdentifiers];
 }
 
-- (void)clearAnalyticsIdentifiers:(id)a3
+- (void)clearAnalyticsIdentifiers:(id)identifiers
 {
   v3 = +[ICNAIdentityManager sharedManager];
   [v3 debug_clearIdentifiers];
 }
 
-- (void)simulateBackgroundSnapshot:(id)a3
+- (void)simulateBackgroundSnapshot:(id)snapshot
 {
   v5 = +[ICNASnapshotBackgroundTask makeTaskRequest];
   v3 = +[BGTaskScheduler sharedScheduler];
-  v4 = [v5 identifier];
-  [v3 _simulateLaunchForTaskWithIdentifier:v4];
+  identifier = [v5 identifier];
+  [v3 _simulateLaunchForTaskWithIdentifier:identifier];
 }
 
-- (void)simulateBackgroundSnapshotExpiration:(id)a3
+- (void)simulateBackgroundSnapshotExpiration:(id)expiration
 {
   v5 = +[ICNASnapshotBackgroundTask makeTaskRequest];
   v3 = +[BGTaskScheduler sharedScheduler];
-  v4 = [v5 identifier];
-  [v3 _simulateExpirationForTaskWithIdentifier:v4];
+  identifier = [v5 identifier];
+  [v3 _simulateExpirationForTaskWithIdentifier:identifier];
 }
 
-- (void)triggerCloudOperationEndEventWithNilErrorDomain:(id)a3
+- (void)triggerCloudOperationEndEventWithNilErrorDomain:(id)domain
 {
   v3 = [ICASAccountData alloc];
   v4 = [[ICASAccountType alloc] initWithAccountType:1];
@@ -923,13 +923,13 @@ LABEL_18:
   [v16 submitEventOfType:v17 pushThenPopDataObjects:v18 subTracker:0];
 }
 
-- (void)syncLocalWithCloud:(id)a3
+- (void)syncLocalWithCloud:(id)cloud
 {
   v3 = +[ICCloudContext sharedContext];
   [v3 syncWithReason:@"DebugMenu-RefreshFromCloud" completionHandler:0];
 }
 
-- (void)deleteServerChangeTokens:(id)a3
+- (void)deleteServerChangeTokens:(id)tokens
 {
   v3 = +[ICCloudContext sharedContext];
   [v3 clearZoneFetchState];
@@ -938,7 +938,7 @@ LABEL_18:
   [v4 deleteAllServerChangeTokens];
 }
 
-- (void)setCloudConfiguration:(id)a3
+- (void)setCloudConfiguration:(id)configuration
 {
   v3 = [UIAlertController alertControllerWithTitle:@"Cloud Configuration" message:@"How often would you like to sync your notes?" preferredStyle:1];
   v19 = 0u;
@@ -961,17 +961,17 @@ LABEL_18:
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 lastPathComponent];
-        v10 = [v9 stringByDeletingPathExtension];
+        lastPathComponent = [v8 lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
         v11 = +[ICCloudConfiguration defaultConfigurationURL];
         v12 = [v8 isEqual:v11];
 
         if (v12)
         {
-          v13 = [NSString localizedStringWithFormat:@"✓ %@", v10];
+          v13 = [NSString localizedStringWithFormat:@"✓ %@", stringByDeletingPathExtension];
 
-          v10 = v13;
+          stringByDeletingPathExtension = v13;
         }
 
         v18[0] = _NSConcreteStackBlock;
@@ -979,7 +979,7 @@ LABEL_18:
         v18[2] = sub_1000D54C8;
         v18[3] = &unk_100647218;
         v18[4] = v8;
-        v14 = [UIAlertAction actionWithTitle:v10 style:0 handler:v18];
+        v14 = [UIAlertAction actionWithTitle:stringByDeletingPathExtension style:0 handler:v18];
         [v3 addAction:v14];
       }
 
@@ -995,22 +995,22 @@ LABEL_18:
   [(ICDebuggingViewController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)resetServerSideUpdateTaskState:(id)a3
+- (void)resetServerSideUpdateTaskState:(id)state
 {
   v3 = +[ICNoteContext sharedContext];
-  v5 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
-  v4 = [[ICServerSideUpdateTaskController alloc] initWithWorkerContext:v5];
+  v4 = [[ICServerSideUpdateTaskController alloc] initWithWorkerContext:managedObjectContext];
   [(ICServerSideUpdateTaskController *)v4 resetState];
 }
 
-- (void)loadTestData:(id)a3
+- (void)loadTestData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [UIAlertController alertControllerWithTitle:@"Load Test Data" message:@"Select a set of test data to load" preferredStyle:0];
-  v6 = [v5 popoverPresentationController];
-  v15 = v4;
-  [v6 setSourceView:v4];
+  popoverPresentationController = [v5 popoverPresentationController];
+  v15 = dataCopy;
+  [popoverPresentationController setSourceView:dataCopy];
 
   [(ICDebuggingViewController *)self URLsForTestDataDirectories];
   v18 = 0u;
@@ -1032,14 +1032,14 @@ LABEL_18:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 lastPathComponent];
+        lastPathComponent = [v11 lastPathComponent];
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_1000D599C;
         v17[3] = &unk_1006471F0;
         v17[4] = self;
         v17[5] = v11;
-        v13 = [UIAlertAction actionWithTitle:v12 style:0 handler:v17];
+        v13 = [UIAlertAction actionWithTitle:lastPathComponent style:0 handler:v17];
         [v5 addAction:v13];
       }
 
@@ -1058,29 +1058,29 @@ LABEL_18:
 - (id)URLsForTestDataDirectories
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 resourceURL];
-  v4 = [v3 URLByAppendingPathComponent:@"TestData" isDirectory:1];
+  resourceURL = [v2 resourceURL];
+  v4 = [resourceURL URLByAppendingPathComponent:@"TestData" isDirectory:1];
 
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 enumeratorAtURL:v4 includingPropertiesForKeys:0 options:5 errorHandler:0];
 
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
-- (void)importTestDataFromDirectoryAtURL:(id)a3
+- (void)importTestDataFromDirectoryAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 enumeratorAtURL:v3 includingPropertiesForKeys:0 options:5 errorHandler:0];
+  v5 = [v4 enumeratorAtURL:lCopy includingPropertiesForKeys:0 options:5 errorHandler:0];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allObjects = [v5 allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1092,7 +1092,7 @@ LABEL_18:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
@@ -1103,68 +1103,68 @@ LABEL_18:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)addSomeRandomNotes:(unint64_t)a3 toFolder:(id)a4
+- (void)addSomeRandomNotes:(unint64_t)notes toFolder:(id)folder
 {
-  if (a3)
+  if (notes)
   {
-    v5 = a3;
+    notesCopy = notes;
     do
     {
-      v7 = [(ICDebuggingViewController *)self addRandomNoteToFolder:a4];
-      --v5;
+      v7 = [(ICDebuggingViewController *)self addRandomNoteToFolder:folder];
+      --notesCopy;
     }
 
-    while (v5);
+    while (notesCopy);
   }
 
   v8 = +[ICNoteContext sharedContext];
   [v8 save];
 }
 
-- (id)addRandomNoteToFolder:(id)a3
+- (id)addRandomNoteToFolder:(id)folder
 {
-  v3 = [ICNote newEmptyNoteInFolder:a3];
+  v3 = [ICNote newEmptyNoteInFolder:folder];
   v4 = +[NSDate date];
   [v3 setCreationDate:v4];
 
   v5 = +[NSDate date];
   [v3 setModificationDate:v5];
 
-  v6 = [v3 textStorage];
-  [v6 setWantsUndoCommands:0];
+  textStorage = [v3 textStorage];
+  [textStorage setWantsUndoCommands:0];
 
   v8 = sub_1000D5DC4(v7, 8);
   v9 = sub_1000D5DC4(v8, 10);
   v10 = [NSString localizedStringWithFormat:@"%@\n%@", v8, v9];
 
-  v11 = [v3 textStorage];
-  v12 = [v3 textStorage];
-  [v11 replaceCharactersInRange:0 withString:{objc_msgSend(v12, "length"), v10}];
+  textStorage2 = [v3 textStorage];
+  textStorage3 = [v3 textStorage];
+  [textStorage2 replaceCharactersInRange:0 withString:{objc_msgSend(textStorage3, "length"), v10}];
 
-  v13 = [v3 textStorage];
-  [v13 setWantsUndoCommands:1];
+  textStorage4 = [v3 textStorage];
+  [textStorage4 setWantsUndoCommands:1];
 
   [v3 updateChangeCountWithReason:@"Created random note"];
 
   return v3;
 }
 
-- (void)addSomeFoldersWithRandomNotesToAllModernAccounts:(id)a3
+- (void)addSomeFoldersWithRandomNotesToAllModernAccounts:(id)accounts
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [ICNoteContext sharedContext:a3];
-  v5 = [v4 managedObjectContext];
-  v6 = [ICAccount allAccountsInContext:v5];
+  v4 = [ICNoteContext sharedContext:accounts];
+  managedObjectContext = [v4 managedObjectContext];
+  v6 = [ICAccount allAccountsInContext:managedObjectContext];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
@@ -1196,65 +1196,65 @@ LABEL_18:
   [v11 save];
 }
 
-- (void)addFolders:(unint64_t)a3 toAccount:(id)a4 maxNotesInFolder:(unint64_t)a5
+- (void)addFolders:(unint64_t)folders toAccount:(id)account maxNotesInFolder:(unint64_t)folder
 {
-  v12 = a4;
-  if (a3)
+  accountCopy = account;
+  if (folders)
   {
     v8 = 0;
     do
     {
       v9 = [NSString localizedStringWithFormat:@"Random Folder %lu", v8];
-      v10 = [ICFolder newFolderInAccount:v12];
+      v10 = [ICFolder newFolderInAccount:accountCopy];
       [v10 setTitle:v9];
       v11 = +[NSDate date];
       [v10 setDateForLastTitleModification:v11];
 
-      [(ICDebuggingViewController *)self addSomeRandomNotes:arc4random() % a5 toFolder:v10];
+      [(ICDebuggingViewController *)self addSomeRandomNotes:arc4random() % folder toFolder:v10];
       ++v8;
     }
 
-    while (a3 != v8);
+    while (folders != v8);
   }
 }
 
-- (void)addSomeRandomNotes:(id)a3
+- (void)addSomeRandomNotes:(id)notes
 {
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 managedObjectContext];
-  v10 = [ICAccount localAccountInContext:v5];
+  managedObjectContext = [v4 managedObjectContext];
+  v10 = [ICAccount localAccountInContext:managedObjectContext];
 
   v6 = v10;
   if (v10 || (+[ICNoteContext sharedContext](ICNoteContext, "sharedContext"), v7 = objc_claimAutoreleasedReturnValue(), [v7 managedObjectContext], v8 = objc_claimAutoreleasedReturnValue(), +[ICAccount cloudKitAccountInContext:](ICAccount, "cloudKitAccountInContext:", v8), v11 = objc_claimAutoreleasedReturnValue(), v8, v7, (v6 = v11) != 0))
   {
     v12 = v6;
-    v9 = [v6 defaultFolder];
-    [(ICDebuggingViewController *)self addSomeRandomNotes:1000 toFolder:v9];
+    defaultFolder = [v6 defaultFolder];
+    [(ICDebuggingViewController *)self addSomeRandomNotes:1000 toFolder:defaultFolder];
   }
 }
 
-- (void)fakeIncompatibleDevices:(id)a3
+- (void)fakeIncompatibleDevices:(id)devices
 {
   v5 = +[ICCompatibilityController sharedController];
-  v3 = [v5 fakesIncompatibleDevicesForDebugging];
+  fakesIncompatibleDevicesForDebugging = [v5 fakesIncompatibleDevicesForDebugging];
   v4 = +[ICCompatibilityController sharedController];
-  [v4 setFakesIncompatibleDevicesForDebugging:v3 ^ 1];
+  [v4 setFakesIncompatibleDevicesForDebugging:fakesIncompatibleDevicesForDebugging ^ 1];
 }
 
-- (void)migratePrimaryICloudAccount:(id)a3
+- (void)migratePrimaryICloudAccount:(id)account
 {
   v3 = +[ICAccountUtilities sharedInstance];
-  v6 = [v3 primaryICloudACAccount];
+  primaryICloudACAccount = [v3 primaryICloudACAccount];
 
-  v4 = [v6 identifier];
-  if (v4)
+  identifier = [primaryICloudACAccount identifier];
+  if (identifier)
   {
     v5 = +[ICMigrationController sharedController];
-    [v5 startMigrationForICloudAccountID:v4];
+    [v5 startMigrationForICloudAccountID:identifier];
   }
 }
 
-- (void)migrateLocalAccount:(id)a3
+- (void)migrateLocalAccount:(id)account
 {
   [ICMigrationController setDidChooseToMigrateLocalAccount:1];
   [ICMigrationController setDidMigrateLocalAccount:0];
@@ -1262,7 +1262,7 @@ LABEL_18:
   +[ICMigrationController migrateLocalAccountIfNecessary];
 }
 
-- (void)deleteMigratedDuplicates:(id)a3
+- (void)deleteMigratedDuplicates:(id)duplicates
 {
   v3 = objc_alloc_init(ICDebugSpinner);
   [(ICDebugSpinner *)v3 show];
@@ -1275,37 +1275,37 @@ LABEL_18:
   [ICDebugUtilities deleteMigratedDuplicatesWithCompletionHandler:v5];
 }
 
-- (void)resetPencilUnsupportedAlertState:(id)a3
+- (void)resetPencilUnsupportedAlertState:(id)state
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   [v3 removeObjectForKey:@"hasShownPencilUnsupportedAlertForHTMLNote"];
 }
 
-- (void)showSimplifiedUITextViewEditor:(id)a3
+- (void)showSimplifiedUITextViewEditor:(id)editor
 {
   v7 = objc_alloc_init(ICUITextViewDebuggingViewController);
   v4 = [[UINavigationController alloc] initWithRootViewController:v7];
   v5 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:2 target:v7 action:"dismiss:"];
-  v6 = [(ICUITextViewDebuggingViewController *)v7 navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem = [(ICUITextViewDebuggingViewController *)v7 navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 
   [(ICDebuggingViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)showSimplifiedWebEditor:(id)a3
+- (void)showSimplifiedWebEditor:(id)editor
 {
   v7 = objc_alloc_init(ICWKWebViewDebuggingViewController);
   v4 = [[UINavigationController alloc] initWithRootViewController:v7];
   v5 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:2 target:v7 action:"dismiss:"];
-  v6 = [(ICWKWebViewDebuggingViewController *)v7 navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem = [(ICWKWebViewDebuggingViewController *)v7 navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 
   [(ICDebuggingViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)sendStateOfTheWorld:(id)a3
+- (void)sendStateOfTheWorld:(id)world
 {
-  v4 = a3;
+  worldCopy = world;
   v5 = objc_alloc_init(ICDebugSpinner);
   [(ICDebugSpinner *)v5 show];
   v6 = dispatch_get_global_queue(2, 0);
@@ -1314,16 +1314,16 @@ LABEL_18:
   block[2] = sub_1000D6A38;
   block[3] = &unk_100645D40;
   v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = worldCopy;
+  selfCopy = self;
+  v7 = worldCopy;
   v8 = v5;
   dispatch_async(v6, block);
 }
 
-- (void)toggleNonContiguousLayout:(id)a3
+- (void)toggleNonContiguousLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = ICViewControllerUseNonContiguousLayoutDefaultKey;
   v23 = ICViewControllerUseNonContiguousLayoutDefaultKey;
@@ -1380,22 +1380,22 @@ LABEL_18:
 
   [v14 setModalPresentationStyle:v17];
   [(ICDebuggingViewController *)self presentViewController:v14 animated:1 completion:0];
-  v18 = [v14 popoverPresentationController];
+  popoverPresentationController = [v14 popoverPresentationController];
   objc_opt_class();
   v19 = ICDynamicCast();
 
-  v20 = [v19 viewForFirstBaselineLayout];
-  [v18 setSourceView:v20];
+  viewForFirstBaselineLayout = [v19 viewForFirstBaselineLayout];
+  [popoverPresentationController setSourceView:viewForFirstBaselineLayout];
 
-  [v18 setPermittedArrowDirections:3];
+  [popoverPresentationController setPermittedArrowDirections:3];
 }
 
-- (void)removeAccountPassword:(id)a3
+- (void)removeAccountPassword:(id)password
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
-  v5 = [ICAccount allAccountsInContext:v4];
+  v5 = [ICAccount allAccountsInContext:managedObjectContext];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1432,15 +1432,15 @@ LABEL_18:
   [v11 syncWithReason:@"DebugMenu-RemoveAccountPassword" completionHandler:&stru_100649268];
 }
 
-- (void)resetLockedNotesMode:(id)a3
+- (void)resetLockedNotesMode:(id)mode
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [ICNoteContext sharedContext:a3];
-  v4 = [v3 managedObjectContext];
-  v5 = [ICAccount allAccountsInContext:v4];
+  v3 = [ICNoteContext sharedContext:mode];
+  managedObjectContext = [v3 managedObjectContext];
+  v5 = [ICAccount allAccountsInContext:managedObjectContext];
 
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
@@ -1459,8 +1459,8 @@ LABEL_18:
         v10 = *(*(&v12 + 1) + 8 * i);
         [v10 setResolvedLockedNotesMode:0];
         [ICAuthenticationAlert resetPresentationsForAccount:v10];
-        v11 = [v10 managedObjectContext];
-        [v11 ic_save];
+        managedObjectContext2 = [v10 managedObjectContext];
+        [managedObjectContext2 ic_save];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1470,11 +1470,11 @@ LABEL_18:
   }
 }
 
-- (void)toggleSupportsV1Neo:(id)a3
+- (void)toggleSupportsV1Neo:(id)neo
 {
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 managedObjectContext];
-  v6 = [ICAccount allActiveAccountsInContext:v5];
+  managedObjectContext = [v4 managedObjectContext];
+  v6 = [ICAccount allActiveAccountsInContext:managedObjectContext];
 
   v7 = [v6 ic_allSatisfy:&stru_100649288];
   v14 = 0u;
@@ -1497,8 +1497,8 @@ LABEL_18:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) accountDataCreateIfNecessary];
-        [v13 setSupportsV1Neo:v7 ^ 1];
+        accountDataCreateIfNecessary = [*(*(&v14 + 1) + 8 * v12) accountDataCreateIfNecessary];
+        [accountDataCreateIfNecessary setSupportsV1Neo:v7 ^ 1];
 
         v12 = v12 + 1;
       }
@@ -1513,11 +1513,11 @@ LABEL_18:
   [(ICDebuggingViewController *)self setUpDebuggingItems];
 }
 
-- (void)resetSupportsV1Neo:(id)a3
+- (void)resetSupportsV1Neo:(id)neo
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
-  v5 = [ICAccount allActiveAccountsInContext:v4];
+  managedObjectContext = [v3 managedObjectContext];
+  v5 = [ICAccount allActiveAccountsInContext:managedObjectContext];
 
   v18 = 0u;
   v19 = 0u;
@@ -1543,12 +1543,12 @@ LABEL_18:
         v12 = +[ICCompatibilityController sharedController];
         [v12 clearCachedDevicesForAccount:v11];
 
-        v13 = [v11 accountDataCreateIfNecessary];
+        accountDataCreateIfNecessary = [v11 accountDataCreateIfNecessary];
         v14 = ICKeyPathFromSelector();
-        [v13 setPrimitiveValue:0 forKey:v14];
+        [accountDataCreateIfNecessary setPrimitiveValue:0 forKey:v14];
 
-        v15 = [v11 accountDataCreateIfNecessary];
-        [v15 updateSupportsV1Neo:0];
+        accountDataCreateIfNecessary2 = [v11 accountDataCreateIfNecessary];
+        [accountDataCreateIfNecessary2 updateSupportsV1Neo:0];
 
         v10 = v10 + 1;
       }
@@ -1561,79 +1561,79 @@ LABEL_18:
   }
 }
 
-- (void)migrateToCustomPasswordMode:(id)a3
+- (void)migrateToCustomPasswordMode:(id)mode
 {
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 managedObjectContext];
-  v6 = [ICAccount allAccountsInContext:v5];
+  managedObjectContext = [v4 managedObjectContext];
+  v6 = [ICAccount allAccountsInContext:managedObjectContext];
 
   [(ICDebuggingViewController *)self migrateAccounts:v6 toMode:1];
 }
 
-- (void)migrateToDevicePasscodeMode:(id)a3
+- (void)migrateToDevicePasscodeMode:(id)mode
 {
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 managedObjectContext];
-  v6 = [ICAccount allAccountsInContext:v5];
+  managedObjectContext = [v4 managedObjectContext];
+  v6 = [ICAccount allAccountsInContext:managedObjectContext];
 
   [(ICDebuggingViewController *)self migrateAccounts:v6 toMode:2];
 }
 
-- (void)migrateAccounts:(id)a3 toMode:(signed __int16)a4
+- (void)migrateAccounts:(id)accounts toMode:(signed __int16)mode
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 firstObject];
-  if (v7)
+  modeCopy = mode;
+  accountsCopy = accounts;
+  firstObject = [accountsCopy firstObject];
+  if (firstObject)
   {
-    v8 = [(ICDebuggingViewController *)self navigationController];
-    v9 = [v8 view];
-    v10 = [v9 window];
+    navigationController = [(ICDebuggingViewController *)self navigationController];
+    view = [navigationController view];
+    window = [view window];
 
-    v11 = [ICAuthenticationPrompt promptForChangingMode:v4 account:v7];
+    v11 = [ICAuthenticationPrompt promptForChangingMode:modeCopy account:firstObject];
     v12 = +[ICAuthentication shared];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000D7A44;
     v14[3] = &unk_100649300;
-    v19 = v4;
-    v15 = v7;
-    v16 = v10;
-    v17 = self;
-    v18 = v6;
-    v13 = v10;
+    v19 = modeCopy;
+    v15 = firstObject;
+    v16 = window;
+    selfCopy = self;
+    v18 = accountsCopy;
+    v13 = window;
     [v12 authenticateWithPrompt:v11 displayWindow:v13 completionHandler:v14];
   }
 }
 
-- (void)resetPassword:(id)a3
+- (void)resetPassword:(id)password
 {
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 managedObjectContext];
-  v6 = [ICAccount allActiveAccountsInContext:v5];
-  v7 = [v6 firstObject];
+  managedObjectContext = [v4 managedObjectContext];
+  v6 = [ICAccount allActiveAccountsInContext:managedObjectContext];
+  firstObject = [v6 firstObject];
 
-  v8 = [ICAuthenticationPrompt promptForIntent:6 object:v7];
+  v8 = [ICAuthenticationPrompt promptForIntent:6 object:firstObject];
   v9 = +[ICAuthentication shared];
-  v10 = [(ICDebuggingViewController *)self view];
-  v11 = [v10 window];
+  view = [(ICDebuggingViewController *)self view];
+  window = [view window];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000D7E24;
   v13[3] = &unk_100649328;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v9 authenticateWithPrompt:v8 displayWindow:v11 completionHandler:v13];
+  v14 = firstObject;
+  v12 = firstObject;
+  [v9 authenticateWithPrompt:v8 displayWindow:window completionHandler:v13];
 }
 
-- (void)addDivergedAttachment:(id)a3
+- (void)addDivergedAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v5 = +[ICNoteContext sharedContext];
-  v6 = [v5 currentNote];
+  currentNote = [v5 currentNote];
 
-  if ([v6 isPasswordProtected] && objc_msgSend(v6, "isAuthenticated"))
+  if ([currentNote isPasswordProtected] && objc_msgSend(currentNote, "isAuthenticated"))
   {
     v17[0] = 0;
     v17[1] = v17;
@@ -1659,7 +1659,7 @@ LABEL_18:
     v13[1] = 3221225472;
     v13[2] = sub_1000D81EC;
     v13[3] = &unk_100649378;
-    v14 = v6;
+    v14 = currentNote;
     v15 = v17;
     v12 = [UIAlertAction actionWithTitle:v11 style:0 handler:v13];
     [v8 addAction:v12];
@@ -1669,13 +1669,13 @@ LABEL_18:
   }
 }
 
-- (void)fixDivergedAttachments:(id)a3
+- (void)fixDivergedAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   v5 = +[ICNoteContext sharedContext];
-  v6 = [v5 currentNote];
+  currentNote = [v5 currentNote];
 
-  if ([v6 isPasswordProtected] && objc_msgSend(v6, "isAuthenticated"))
+  if ([currentNote isPasswordProtected] && objc_msgSend(currentNote, "isAuthenticated"))
   {
     v17[0] = 0;
     v17[1] = v17;
@@ -1702,7 +1702,7 @@ LABEL_18:
     v13[2] = sub_1000D86E8;
     v13[3] = &unk_1006493A0;
     v15 = v17;
-    v14 = v6;
+    v14 = currentNote;
     v12 = [UIAlertAction actionWithTitle:v11 style:0 handler:v13];
     [v8 addAction:v12];
 
@@ -1711,12 +1711,12 @@ LABEL_18:
   }
 }
 
-- (void)checkiCloudKeychainSyncStatus:(id)a3
+- (void)checkiCloudKeychainSyncStatus:(id)status
 {
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 managedObjectContext];
+  managedObjectContext = [v4 managedObjectContext];
 
-  [ICAccount allActiveCloudKitAccountsInContext:v5];
+  [ICAccount allActiveCloudKitAccountsInContext:managedObjectContext];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1737,7 +1737,7 @@ LABEL_18:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [ICKeychain isSyncAvailableForAccount:v10];
-        v12 = [v10 accountName];
+        accountName = [v10 accountName];
         if (v11)
         {
           v13 = @"Healthy";
@@ -1748,7 +1748,7 @@ LABEL_18:
           v13 = @"Unhealthy";
         }
 
-        [UIAlertController ic_showAlertWithTitle:v12 message:v13 viewController:self];
+        [UIAlertController ic_showAlertWithTitle:accountName message:v13 viewController:self];
       }
 
       v7 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1758,19 +1758,19 @@ LABEL_18:
   }
 }
 
-- (void)reindexEverything:(id)a3
+- (void)reindexEverything:(id)everything
 {
   v3 = +[ICReindexer reindexer];
   [v3 reindexAllSearchableItemsWithCompletionHandler:0];
 }
 
-- (void)logSearchIndex:(id)a3
+- (void)logSearchIndex:(id)index
 {
   v3 = dispatch_get_global_queue(2, 0);
   dispatch_async(v3, &stru_1006493C0);
 }
 
-- (void)deleteSearchIndex:(id)a3
+- (void)deleteSearchIndex:(id)index
 {
   v3 = objc_alloc_init(ICDebugSpinner);
   [(ICDebugSpinner *)v3 show];
@@ -1784,7 +1784,7 @@ LABEL_18:
   [v4 deleteAllSearchableItemsWithCompletionHandler:v6];
 }
 
-- (void)prefetchHashtagsIndexedByOtherApps:(id)a3
+- (void)prefetchHashtagsIndexedByOtherApps:(id)apps
 {
   +[ICCrossAppHashtagManager prefetchHashtagDisplayTextsFromOtherApps];
   v3 = os_log_create("com.apple.notes", "Internal");
@@ -1794,7 +1794,7 @@ LABEL_18:
   }
 }
 
-- (void)logHashtagsIndexedByOtherApps:(id)a3
+- (void)logHashtagsIndexedByOtherApps:(id)apps
 {
   v3 = +[ICCrossAppHashtagManager hashtagDisplayTextsFromOtherApps];
   v4 = os_log_create("com.apple.notes", "Internal");
@@ -1804,51 +1804,51 @@ LABEL_18:
   }
 }
 
-- (void)createPartiallySupportedSmartFolder:(id)a3
+- (void)createPartiallySupportedSmartFolder:(id)folder
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
-  v5 = [ICAccount defaultAccountInContext:v4];
+  managedObjectContext = [v3 managedObjectContext];
+  v5 = [ICAccount defaultAccountInContext:managedObjectContext];
   [ICQuery queryForPinnedNotes:1 allowsRecentlyDeleted:0];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000D8E0C;
   v10 = v9[3] = &unk_100645D40;
   v11 = v5;
-  v12 = v4;
-  v6 = v4;
+  v12 = managedObjectContext;
+  v6 = managedObjectContext;
   v7 = v5;
   v8 = v10;
   [v6 performBlockAndWait:v9];
 }
 
-- (void)deleteAllTags:(id)a3
+- (void)deleteAllTags:(id)tags
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000D8F28;
   v6[3] = &unk_100645E30;
-  v7 = v4;
-  v5 = v4;
+  v7 = managedObjectContext;
+  v5 = managedObjectContext;
   [v5 performBlockAndWait:v6];
 }
 
-- (void)regenerateStandardizedContentForAllHashtags:(id)a3
+- (void)regenerateStandardizedContentForAllHashtags:(id)hashtags
 {
   v4 = +[ICNoteContext sharedContext];
-  v3 = [v4 managedObjectContext];
-  [ICHashtag regenerateStandardizedContentForAllHashtagsInContext:v3 hasChanges:0];
+  managedObjectContext = [v4 managedObjectContext];
+  [ICHashtag regenerateStandardizedContentForAllHashtagsInContext:managedObjectContext hasChanges:0];
 }
 
-- (void)regenerateAllAttachmentPreviewImages:(id)a3
+- (void)regenerateAllAttachmentPreviewImages:(id)images
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
-  [ICAttachmentPreviewImage purgeAllAttachmentPreviewImagesInContext:v4];
+  [ICAttachmentPreviewImage purgeAllAttachmentPreviewImagesInContext:managedObjectContext];
   v5 = +[ICAttachmentPreviewGenerator sharedGenerator];
   [v5 generatePreviewsIfNeeded];
 
@@ -1856,79 +1856,79 @@ LABEL_18:
   v7[1] = 3221225472;
   v7[2] = sub_1000D91A0;
   v7[3] = &unk_100645E30;
-  v8 = v4;
-  v6 = v4;
+  v8 = managedObjectContext;
+  v6 = managedObjectContext;
   [v6 performBlockAndWait:v7];
 }
 
-- (void)regenerateAllOCR:(id)a3
+- (void)regenerateAllOCR:(id)r
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
-  [ICAttachmentPreviewGenerator purgeOCRInContext:v4];
+  [ICAttachmentPreviewGenerator purgeOCRInContext:managedObjectContext];
   v5 = +[ICAttachmentPreviewGenerator sharedGenerator];
-  [v5 generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:v4];
+  [v5 generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:managedObjectContext];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D9280;
   v7[3] = &unk_100645E30;
-  v8 = v4;
-  v6 = v4;
+  v8 = managedObjectContext;
+  v6 = managedObjectContext;
   [v6 performBlockAndWait:v7];
 }
 
-- (void)regenerateAllImageClassifications:(id)a3
+- (void)regenerateAllImageClassifications:(id)classifications
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
-  [ICAttachmentPreviewGenerator purgeImageClassificationsInContext:v4];
+  [ICAttachmentPreviewGenerator purgeImageClassificationsInContext:managedObjectContext];
   v5 = +[ICAttachmentPreviewGenerator sharedGenerator];
-  [v5 generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:v4];
+  [v5 generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:managedObjectContext];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D9360;
   v7[3] = &unk_100645E30;
-  v8 = v4;
-  v6 = v4;
+  v8 = managedObjectContext;
+  v6 = managedObjectContext;
   [v6 performBlockAndWait:v7];
 }
 
-- (void)regenerateAllHandwritingSummaries:(id)a3
+- (void)regenerateAllHandwritingSummaries:(id)summaries
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 workerManagedObjectContext];
+  workerManagedObjectContext = [v3 workerManagedObjectContext];
 
-  [ICAttachment purgeHandwritingSummariesInContext:v4];
+  [ICAttachment purgeHandwritingSummariesInContext:workerManagedObjectContext];
   v5 = +[ICPaperSearchIndexer shared];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D9444;
   v7[3] = &unk_100645E30;
-  v8 = v4;
-  v6 = v4;
+  v8 = workerManagedObjectContext;
+  v6 = workerManagedObjectContext;
   [v5 updateIndexWithManagedObjectContext:v6 completionHandler:v7];
 }
 
-- (void)purgeAllHandwritingSummaries:(id)a3
+- (void)purgeAllHandwritingSummaries:(id)summaries
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 workerManagedObjectContext];
+  workerManagedObjectContext = [v3 workerManagedObjectContext];
 
-  [ICAttachment purgeHandwritingSummariesInContext:v4];
+  [ICAttachment purgeHandwritingSummariesInContext:workerManagedObjectContext];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000D958C;
   v6[3] = &unk_100645E30;
-  v7 = v4;
-  v5 = v4;
+  v7 = workerManagedObjectContext;
+  v5 = workerManagedObjectContext;
   [v5 performBlockAndWait:v6];
 }
 
-- (void)regenerateSystemPaperThumbnails:(id)a3
+- (void)regenerateSystemPaperThumbnails:(id)thumbnails
 {
   v3 = +[ICSystemPaperThumbnailService sharedService];
   [v3 invalidate];
@@ -1937,9 +1937,9 @@ LABEL_18:
   [v4 updateIfNeededForNote:0 completion:0];
 }
 
-- (void)generateSystemPaperChrome:(id)a3
+- (void)generateSystemPaperChrome:(id)chrome
 {
-  v4 = a3;
+  chromeCopy = chrome;
   v5 = objc_alloc_init(_TtC11MobileNotes33ICSystemPaperChromeLayerGenerator);
   v11 = 0;
   v6 = [(ICSystemPaperChromeLayerGenerator *)v5 generateChromeThumbnailsWithError:&v11];
@@ -1962,14 +1962,14 @@ LABEL_18:
     v9 = [NSArray arrayWithObjects:v12 count:3];
     [v8 setExcludedActivityTypes:v9];
 
-    v10 = [v8 popoverPresentationController];
-    [v10 setSourceView:v4];
+    popoverPresentationController = [v8 popoverPresentationController];
+    [popoverPresentationController setSourceView:chromeCopy];
 
     [(ICDebuggingViewController *)self presentViewController:v8 animated:1 completion:0];
   }
 }
 
-- (void)bluetoothKeyboardHint:(id)a3
+- (void)bluetoothKeyboardHint:(id)hint
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = ICBluetoothKeyboardHintViewControllerForceShowDefaultsKey;
@@ -1979,14 +1979,14 @@ LABEL_18:
   [v6 setBool:v5 ^ 1 forKey:v4];
 }
 
-- (void)removeWhatsNewVersion:(id)a3
+- (void)removeWhatsNewVersion:(id)version
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v3 = +[ICStartupController lastShownStartupDefaultsKey];
   [v4 removeObjectForKey:v3];
 }
 
-- (void)setWhatsNewToCurrentOS:(id)a3
+- (void)setWhatsNewToCurrentOS:(id)s
 {
   v3 = +[NSProcessInfo processInfo];
   v4 = v3;
@@ -2008,14 +2008,14 @@ LABEL_18:
   [v9 setObject:v8 forKey:v10];
 }
 
-- (void)setWhatsNewToIOS9:(id)a3
+- (void)setWhatsNewToIOS9:(id)s9
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v3 = +[ICStartupController lastShownStartupDefaultsKey];
   [v4 setObject:&off_10066E320 forKey:v3];
 }
 
-- (void)testAppRemoval:(id)a3
+- (void)testAppRemoval:(id)removal
 {
   v4 = [UIAlertController alertControllerWithTitle:@"Test Notes App Removal" message:@"This will delete all Notes app data. Local notes will be lost!" preferredStyle:1];
   v5 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:0];

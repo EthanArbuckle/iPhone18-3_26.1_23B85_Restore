@@ -1,14 +1,14 @@
 @interface NTKVictoryColorEditOption
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesRestrictedByDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)colorNameForColorValue:(unint64_t)a3;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_orderedValuesRestrictedByDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)colorNameForColorValue:(unint64_t)value;
 + (id)fall2020VictoryColors;
 + (id)gloryEVictoryColors;
 + (id)graceVictoryColors;
 + (id)spring2020VictoryColors;
-+ (unint64_t)colorCodeForPigmentEditOption:(id)a3 forDevice:(id)a4;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (unint64_t)colorCodeForPigmentEditOption:(id)option forDevice:(id)device;
+- (BOOL)optionExistsInDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (id)pigmentEditOption;
@@ -18,21 +18,21 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKVictoryColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKVictoryColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 pdrDeviceVersion];
-  v6 = v5;
-  if (!(v5 >> 18))
+  deviceCopy = device;
+  pdrDeviceVersion = [deviceCopy pdrDeviceVersion];
+  v6 = pdrDeviceVersion;
+  if (!(pdrDeviceVersion >> 18))
   {
-    v7 = [(NTKEditOption *)self device];
-    v8 = ___NTKNewToFortuneVictoryColors_block_invoke(v7, v7);
+    device = [(NTKEditOption *)self device];
+    v8 = ___NTKNewToFortuneVictoryColors_block_invoke(device, device);
     v9 = [v8 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
     if (v9)
@@ -42,8 +42,8 @@
 
     if (v6 >> 9 <= 0x180)
     {
-      v10 = [(NTKEditOption *)self device];
-      v11 = ___NTKNewToElectricVictoryColors_block_invoke(v10, v10);
+      device2 = [(NTKEditOption *)self device];
+      v11 = ___NTKNewToElectricVictoryColors_block_invoke(device2, device2);
       v12 = [v11 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
       if (v12)
@@ -53,8 +53,8 @@
     }
 
 LABEL_7:
-    v13 = [(NTKEditOption *)self device];
-    v14 = ___NTKNewToGloryVictoryColors_block_invoke(v13, v13);
+    device3 = [(NTKEditOption *)self device];
+    v14 = ___NTKNewToGloryVictoryColors_block_invoke(device3, device3);
     v15 = [v14 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
     if (v15)
@@ -65,14 +65,14 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (HIWORD(v5) <= 4u)
+  if (HIWORD(pdrDeviceVersion) <= 4u)
   {
     goto LABEL_7;
   }
 
-  if (v5 >= 0x50200)
+  if (pdrDeviceVersion >= 0x50200)
   {
-    if (v5 >> 17 > 2)
+    if (pdrDeviceVersion >> 17 > 2)
     {
       goto LABEL_14;
     }
@@ -81,8 +81,8 @@ LABEL_7:
   }
 
 LABEL_10:
-  v16 = [(NTKEditOption *)self device];
-  v17 = ___NTKNewToGloryEVictoryColors_block_invoke(v16, v16);
+  device4 = [(NTKEditOption *)self device];
+  v17 = ___NTKNewToGloryEVictoryColors_block_invoke(device4, device4);
   v18 = [v17 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
   if (v18)
@@ -91,8 +91,8 @@ LABEL_10:
   }
 
 LABEL_13:
-  v19 = [(NTKEditOption *)self device];
-  v20 = ___NTKNewToGraceVictoryColors_block_invoke(v19, v19);
+  device5 = [(NTKEditOption *)self device];
+  v20 = ___NTKNewToGraceVictoryColors_block_invoke(device5, device5);
   v21 = [v20 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
   if (v21)
@@ -103,10 +103,10 @@ LABEL_21:
   }
 
 LABEL_14:
-  if (([v4 supportsPDRCapability:753405533] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:753405533] & 1) == 0)
   {
-    v22 = [(NTKEditOption *)self device];
-    v23 = ___NTKNewToGraceEVictoryColors_block_invoke(v22, v22);
+    device6 = [(NTKEditOption *)self device];
+    v23 = ___NTKNewToGraceEVictoryColors_block_invoke(device6, device6);
     v24 = [v23 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
     if (v24)
@@ -115,15 +115,15 @@ LABEL_14:
     }
   }
 
-  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(v4) & 1) == 0 && ([v4 isExplorer] & 1) == 0 && -[NTKValueEditOption _value](self, "_value") == 100)
+  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(deviceCopy) & 1) == 0 && ([deviceCopy isExplorer] & 1) == 0 && -[NTKValueEditOption _value](self, "_value") == 100)
   {
     goto LABEL_21;
   }
 
-  if (([v4 supportsPDRCapability:2919474315] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:2919474315] & 1) == 0)
   {
-    v25 = [(NTKEditOption *)self device];
-    v26 = ___NTKNewToHunterVictoryColors_block_invoke(v25, v25);
+    device7 = [(NTKEditOption *)self device];
+    v26 = ___NTKNewToHunterVictoryColors_block_invoke(device7, device7);
     v27 = [v26 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
     if (v27)
@@ -132,15 +132,15 @@ LABEL_14:
     }
   }
 
-  if ([v4 supportsPDRCapability:3356802055])
+  if ([deviceCopy supportsPDRCapability:3356802055])
   {
     v28 = 1;
   }
 
   else
   {
-    v30 = [(NTKEditOption *)self device];
-    v31 = ___NTKNewToHunterEVictoryColors_block_invoke(v30, v30);
+    device8 = [(NTKEditOption *)self device];
+    v31 = ___NTKNewToHunterEVictoryColors_block_invoke(device8, device8);
     v32 = [v31 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
     v28 = v32 ^ 1;
@@ -151,14 +151,14 @@ LABEL_22:
   return v28 & 1;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__NTKVictoryColorEditOption__orderedValuesForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __53__NTKVictoryColorEditOption__orderedValuesForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __53__NTKVictoryColorEditOption__orderedValuesForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -224,8 +224,8 @@ id __53__NTKVictoryColorEditOption__orderedValuesForDevice___block_invoke_2(uint
 
 + (id)fall2020VictoryColors
 {
-  v2 = [a1 spring2020VictoryColors];
-  v3 = [v2 arrayByExcludingObjectsInArray:&unk_28418B5D8];
+  spring2020VictoryColors = [self spring2020VictoryColors];
+  v3 = [spring2020VictoryColors arrayByExcludingObjectsInArray:&unk_28418B5D8];
   v4 = [&unk_28418B5C0 arrayByAddingObjectsFromArray:v3];
 
   return v4;
@@ -233,8 +233,8 @@ id __53__NTKVictoryColorEditOption__orderedValuesForDevice___block_invoke_2(uint
 
 + (id)spring2020VictoryColors
 {
-  v2 = [a1 graceVictoryColors];
-  v3 = [v2 arrayByExcludingObjectsInArray:&unk_28418B608];
+  graceVictoryColors = [self graceVictoryColors];
+  v3 = [graceVictoryColors arrayByExcludingObjectsInArray:&unk_28418B608];
   v4 = [&unk_28418B5F0 arrayByAddingObjectsFromArray:v3];
 
   return v4;
@@ -242,8 +242,8 @@ id __53__NTKVictoryColorEditOption__orderedValuesForDevice___block_invoke_2(uint
 
 + (id)graceVictoryColors
 {
-  v2 = [a1 gloryEVictoryColors];
-  v3 = [v2 arrayByExcludingObjectsInArray:&unk_28418B638];
+  gloryEVictoryColors = [self gloryEVictoryColors];
+  v3 = [gloryEVictoryColors arrayByExcludingObjectsInArray:&unk_28418B638];
   v4 = [&unk_28418B620 arrayByAddingObjectsFromArray:v3];
 
   return v4;
@@ -251,16 +251,16 @@ id __53__NTKVictoryColorEditOption__orderedValuesForDevice___block_invoke_2(uint
 
 + (id)gloryEVictoryColors
 {
-  v2 = [a1 gloryVictoryColors];
-  v3 = [v2 arrayByExcludingObjectsInArray:&unk_28418B668];
+  gloryVictoryColors = [self gloryVictoryColors];
+  v3 = [gloryVictoryColors arrayByExcludingObjectsInArray:&unk_28418B668];
   v4 = [&unk_28418B650 arrayByAddingObjectsFromArray:v3];
 
   return v4;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  switch(a3)
+  switch(value)
   {
     case 0uLL:
       result = @"white";
@@ -374,7 +374,7 @@ id __53__NTKVictoryColorEditOption__orderedValuesForDevice___block_invoke_2(uint
       result = @"ironstone";
       break;
     default:
-      if (a3 == 100)
+      if (value == 100)
       {
         result = @"explorer";
       }
@@ -486,7 +486,7 @@ void __57__NTKVictoryColorEditOption__valueToFaceBundleStringDict__block_invoke(
   _valueToFaceBundleStringDict_valueToFaceBundleString_1075 = v0;
 }
 
-+ (id)_orderedValuesRestrictedByDevice:(id)a3
++ (id)_orderedValuesRestrictedByDevice:(id)device
 {
   v3 = objc_opt_new();
 
@@ -496,7 +496,7 @@ void __57__NTKVictoryColorEditOption__valueToFaceBundleStringDict__block_invoke(
 - (id)pigmentEditOption
 {
   v3 = [objc_opt_class() colorNameForColorValue:{-[NTKVictoryColorEditOption victoryColor](self, "victoryColor")}];
-  v4 = [(NTKVictoryColorEditOption *)self pigmentCollectionName];
+  pigmentCollectionName = [(NTKVictoryColorEditOption *)self pigmentCollectionName];
   if ([(NTKVictoryColorEditOption *)self victoryColor]== 30)
   {
     v5 = [NTKPigmentEditOption pigmentNamed:@"special.rainbow"];
@@ -504,7 +504,7 @@ void __57__NTKVictoryColorEditOption__valueToFaceBundleStringDict__block_invoke(
 
   else
   {
-    v5 = [[NTKPigmentEditOption alloc] initWithOptionName:v3 collectionName:v4];
+    v5 = [[NTKPigmentEditOption alloc] initWithOptionName:v3 collectionName:pigmentCollectionName];
   }
 
   v6 = v5;
@@ -512,16 +512,16 @@ void __57__NTKVictoryColorEditOption__valueToFaceBundleStringDict__block_invoke(
   return v6;
 }
 
-+ (id)colorNameForColorValue:(unint64_t)a3
++ (id)colorNameForColorValue:(unint64_t)value
 {
-  switch(a3)
+  switch(value)
   {
     case 0uLL:
       v4 = @"white";
       break;
     case 1uLL:
-      v6 = [a1 colorNameForColorValue:0];
-      v7 = [a1 colorNameForColorValue:2];
+      v6 = [self colorNameForColorValue:0];
+      v7 = [self colorNameForColorValue:2];
       v4 = ntk_duotone(@"victory", v6, @"victory", v7);
 
       break;
@@ -631,9 +631,9 @@ void __57__NTKVictoryColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v4 = @"ironstone";
       break;
     default:
-      if (a3 == 100)
+      if (value == 100)
       {
-        v5 = [a1 colorNameForColorValue:0];
+        v5 = [self colorNameForColorValue:0];
         v4 = ntk_duotone(@"seasons.spring2015", v5, @"explorer", @"red");
       }
 
@@ -648,12 +648,12 @@ void __57__NTKVictoryColorEditOption__valueToFaceBundleStringDict__block_invoke(
   return v4;
 }
 
-+ (unint64_t)colorCodeForPigmentEditOption:(id)a3 forDevice:(id)a4
++ (unint64_t)colorCodeForPigmentEditOption:(id)option forDevice:(id)device
 {
-  v4 = [a1 legacyOptionWithPigmentEditOption:a3 forDevice:a4];
-  v5 = [v4 victoryColor];
+  v4 = [self legacyOptionWithPigmentEditOption:option forDevice:device];
+  victoryColor = [v4 victoryColor];
 
-  return v5;
+  return victoryColor;
 }
 
 @end

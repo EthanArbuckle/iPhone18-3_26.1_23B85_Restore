@@ -1,16 +1,16 @@
 @interface AssistantPlacardCell
-- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithCoder:(id)a3;
-- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithCoder:(id)coder;
+- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AssistantPlacardCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v3 = self;
-  [(AssistantPlacardCell *)v3 setSelectionStyle:0];
+  selfCopy = self;
+  [(AssistantPlacardCell *)selfCopy setSelectionStyle:0];
   v4[3] = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E542728, &qword_241412A18);
   v4[4] = sub_2413E90D0();
   __swift_allocate_boxed_opaque_existential_1(v4);
@@ -20,9 +20,9 @@
   MEMORY[0x245CE5C20](v4);
 }
 
-- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_24140EC1C();
     v9 = v8;
@@ -34,32 +34,32 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_2413E8E3C(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_2413E8E3C(style, v7, v9, specifier);
 }
 
-- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (identifier)
   {
     sub_24140EC1C();
-    a4 = sub_24140EC0C();
+    identifier = sub_24140EC0C();
   }
 
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v8 = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
 
   return v8;
 }
 
-- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithCoder:(id)a3
+- (_TtC24AssistantSettingsSupport20AssistantPlacardCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(AssistantPlacardCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AssistantPlacardCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

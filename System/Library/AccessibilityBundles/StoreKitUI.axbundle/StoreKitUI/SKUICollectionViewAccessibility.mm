@@ -1,21 +1,21 @@
 @interface SKUICollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view;
 - (BOOL)accessibilityScrollDownPageSupported;
 - (BOOL)accessibilityScrollUpPageSupported;
 @end
 
 @implementation SKUICollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIStorePageCollectionViewLayout"];
-  [v3 validateClass:@"SKUIStorePageCollectionViewLayout" hasInstanceMethod:@"_itemPinningConfigurationForItemAtIndexPath:" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIStorePageItemPinningConfiguration" hasInstanceMethod:@"hasValidPinningStyle" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SKUIStorePageItemPinningConfiguration" hasInstanceMethod:@"pinningStyle" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SKUIStorePageItemPinningConfiguration" hasInstanceMethod:@"hasValidPinningContentInset" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SKUIStorePageItemPinningConfiguration" hasInstanceMethod:@"pinningContentInset" withFullSignature:{"{UIEdgeInsets=dddd}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIStorePageCollectionViewLayout"];
+  [validationsCopy validateClass:@"SKUIStorePageCollectionViewLayout" hasInstanceMethod:@"_itemPinningConfigurationForItemAtIndexPath:" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIStorePageItemPinningConfiguration" hasInstanceMethod:@"hasValidPinningStyle" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SKUIStorePageItemPinningConfiguration" hasInstanceMethod:@"pinningStyle" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SKUIStorePageItemPinningConfiguration" hasInstanceMethod:@"hasValidPinningContentInset" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SKUIStorePageItemPinningConfiguration" hasInstanceMethod:@"pinningContentInset" withFullSignature:{"{UIEdgeInsets=dddd}", 0}];
 }
 
 - (BOOL)accessibilityScrollDownPageSupported
@@ -46,22 +46,22 @@
   return [(SKUICollectionViewAccessibility *)&v5 accessibilityScrollUpPageSupported];
 }
 
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view
 {
-  height = a3.size.height;
-  x = a3.origin.x;
-  width = a3.size.width;
-  y = a3.origin.y;
+  height = frame.size.height;
+  x = frame.origin.x;
+  width = frame.size.width;
+  y = frame.origin.y;
   v68 = *MEMORY[0x29EDCA608];
-  v37 = a4;
-  v38 = self;
-  v36 = [(SKUICollectionViewAccessibility *)self collectionViewLayout];
+  viewCopy = view;
+  selfCopy = self;
+  collectionViewLayout = [(SKUICollectionViewAccessibility *)self collectionViewLayout];
   NSClassFromString(&cfstr_Skuistorepagec.isa);
   if (objc_opt_isKindOfClass())
   {
-    v42 = v36;
-    v32 = [v42 indexPathsForPinningItems];
-    v33 = [v37 _accessibilityAncestorIsKindOf:objc_opt_class()];
+    v42 = collectionViewLayout;
+    indexPathsForPinningItems = [v42 indexPathsForPinningItems];
+    v33 = [viewCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
     if (v33)
     {
       v39 = [(SKUICollectionViewAccessibility *)self indexPathForCell:?];
@@ -71,7 +71,7 @@
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        obj = v32;
+        obj = indexPathsForPinningItems;
         v7 = [obj countByEnumeratingWithState:&v63 objects:v67 count:16];
         if (v7)
         {
@@ -130,13 +130,13 @@
                   v16 = v51[6];
 
                   _Block_object_dispose(&v50, 8);
-                  v17 = [(SKUICollectionViewAccessibility *)v38 layoutAttributesForItemAtIndexPath:v11];
+                  v17 = [(SKUICollectionViewAccessibility *)selfCopy layoutAttributesForItemAtIndexPath:v11];
                   [v17 size];
                   v19 = v18;
 
-                  v20 = [v11 section];
+                  section = [v11 section];
                   v21 = v15 + v16 + v19;
-                  if (v20 < [v39 section] || (v24 = objc_msgSend(v11, "section"), v24 == objc_msgSend(v39, "section")) && (v25 = objc_msgSend(v11, "row"), v25 < objc_msgSend(v39, "row")))
+                  if (section < [v39 section] || (v24 = objc_msgSend(v11, "section"), v24 == objc_msgSend(v39, "section")) && (v25 = objc_msgSend(v11, "row"), v25 < objc_msgSend(v39, "row")))
                   {
                     v22 = v10 == 1 || v8 == 1;
                     v13 = 0.0;
@@ -153,7 +153,7 @@
 
                   else
                   {
-                    v26 = [v11 isEqual:{v39, v32, v33}];
+                    v26 = [v11 isEqual:{v39, indexPathsForPinningItems, v33}];
                     if (v8 == 5)
                     {
                       v27 = v26;
@@ -206,9 +206,9 @@
     }
   }
 
-  v43.receiver = v38;
+  v43.receiver = selfCopy;
   v43.super_class = SKUICollectionViewAccessibility;
-  v29 = [(SKUICollectionViewAccessibility *)&v43 _accessibilityScrollToFrame:v37 forView:x, y, width, height, v32];
+  v29 = [(SKUICollectionViewAccessibility *)&v43 _accessibilityScrollToFrame:viewCopy forView:x, y, width, height, indexPathsForPinningItems];
 
   v30 = *MEMORY[0x29EDCA608];
   return v29;

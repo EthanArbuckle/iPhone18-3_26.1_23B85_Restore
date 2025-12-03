@@ -1,9 +1,9 @@
 @interface CBDRemoteXPCMessageStartDiagnostics
 - (CBDRemoteXPCMessageStartDiagnostics)init;
-- (CBDRemoteXPCMessageStartDiagnostics)initWithCoder:(id)a3;
+- (CBDRemoteXPCMessageStartDiagnostics)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CBDRemoteXPCMessageStartDiagnostics
@@ -27,21 +27,21 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CBDRemoteXPCMessageStartDiagnostics *)self uuid];
-  v6 = [NSString stringWithFormat:@"<%@: %p uuid = %@;>", v4, self, v5];;
+  uuid = [(CBDRemoteXPCMessageStartDiagnostics *)self uuid];
+  v6 = [NSString stringWithFormat:@"<%@: %p uuid = %@;>", v4, self, uuid];;
 
   return v6;
 }
 
-- (CBDRemoteXPCMessageStartDiagnostics)initWithCoder:(id)a3
+- (CBDRemoteXPCMessageStartDiagnostics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CBDRemoteXPCMessageStartDiagnostics;
   v5 = [(CBDRemoteXPCMessageStartDiagnostics *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -49,18 +49,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CBDRemoteXPCMessageStartDiagnostics *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(CBDRemoteXPCMessageStartDiagnostics *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CBDRemoteXPCMessageStartDiagnostics);
-  v5 = [(CBDRemoteXPCMessageStartDiagnostics *)self uuid];
-  v6 = [v5 copy];
+  uuid = [(CBDRemoteXPCMessageStartDiagnostics *)self uuid];
+  v6 = [uuid copy];
   uuid = v4->_uuid;
   v4->_uuid = v6;
 

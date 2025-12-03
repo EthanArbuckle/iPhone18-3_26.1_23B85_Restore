@@ -1,8 +1,8 @@
 @interface WBSQueryParameterFilteringData
 - (WBSQueryParameterFilteringData)init;
 - (int64_t)numberOfFilteredQueryParameters;
-- (void)addAdjustedURL:(id)a3 originalURL:(id)a4;
-- (void)addData:(id)a3;
+- (void)addAdjustedURL:(id)l originalURL:(id)rL;
+- (void)addData:(id)data;
 @end
 
 @implementation WBSQueryParameterFilteringData
@@ -14,9 +14,9 @@
   v2 = [(WBSQueryParameterFilteringData *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     originalAndAdjustedURLs = v2->_originalAndAdjustedURLs;
-    v2->_originalAndAdjustedURLs = v3;
+    v2->_originalAndAdjustedURLs = orderedSet;
 
     v5 = v2;
   }
@@ -24,22 +24,22 @@
   return v2;
 }
 
-- (void)addAdjustedURL:(id)a3 originalURL:(id)a4
+- (void)addAdjustedURL:(id)l originalURL:(id)rL
 {
   originalAndAdjustedURLs = self->_originalAndAdjustedURLs;
   v6 = MEMORY[0x1E69C88F0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithFirst:v7 second:v8];
+  rLCopy = rL;
+  lCopy = l;
+  v9 = [[v6 alloc] initWithFirst:rLCopy second:lCopy];
 
   [(NSMutableOrderedSet *)originalAndAdjustedURLs addObject:v9];
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
   originalAndAdjustedURLs = self->_originalAndAdjustedURLs;
-  v4 = [*(a3 + 1) array];
-  [(NSMutableOrderedSet *)originalAndAdjustedURLs addObjectsFromArray:v4];
+  array = [*(data + 1) array];
+  [(NSMutableOrderedSet *)originalAndAdjustedURLs addObjectsFromArray:array];
 }
 
 - (int64_t)numberOfFilteredQueryParameters

@@ -1,6 +1,6 @@
 @interface HDDataAggregationState
 - (HDDataAggregationState)init;
-- (HDDataAggregationState)initWithRemainingSensorData:(id)a3 currentSeries:(id)a4;
+- (HDDataAggregationState)initWithRemainingSensorData:(id)data currentSeries:(id)series;
 @end
 
 @implementation HDDataAggregationState
@@ -15,18 +15,18 @@
   return 0;
 }
 
-- (HDDataAggregationState)initWithRemainingSensorData:(id)a3 currentSeries:(id)a4
+- (HDDataAggregationState)initWithRemainingSensorData:(id)data currentSeries:(id)series
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  seriesCopy = series;
   v12.receiver = self;
   v12.super_class = HDDataAggregationState;
   v9 = [(HDDataAggregationState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_unaggregatedSensorData, a3);
-    objc_storeStrong(&v10->_openSeries, a4);
+    objc_storeStrong(&v9->_unaggregatedSensorData, data);
+    objc_storeStrong(&v10->_openSeries, series);
   }
 
   return v10;

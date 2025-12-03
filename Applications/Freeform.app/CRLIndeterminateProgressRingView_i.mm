@@ -1,20 +1,20 @@
 @interface CRLIndeterminateProgressRingView_i
-- (CRLIndeterminateProgressRingView_i)initWithCoder:(id)a3;
-- (CRLIndeterminateProgressRingView_i)initWithFrame:(CGRect)a3 color:(id)a4 strokeWidth:(double)a5;
-- (CRLIndeterminateProgressRingView_i)initWithFrame:(CGRect)a3 style:(unint64_t)a4 strokeWidth:(double)a5;
-- (id)p_strokeColorForStyle:(unint64_t)a3;
+- (CRLIndeterminateProgressRingView_i)initWithCoder:(id)coder;
+- (CRLIndeterminateProgressRingView_i)initWithFrame:(CGRect)frame color:(id)color strokeWidth:(double)width;
+- (CRLIndeterminateProgressRingView_i)initWithFrame:(CGRect)frame style:(unint64_t)style strokeWidth:(double)width;
+- (id)p_strokeColorForStyle:(unint64_t)style;
 - (void)_updateShapePath;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setColor:(id)color;
+- (void)setTintColor:(id)color;
 - (void)setup;
 @end
 
 @implementation CRLIndeterminateProgressRingView_i
 
-- (id)p_strokeColorForStyle:(unint64_t)a3
+- (id)p_strokeColorForStyle:(unint64_t)style
 {
-  switch(a3)
+  switch(style)
   {
     case 2uLL:
       self = self->_color;
@@ -30,11 +30,11 @@
   return self;
 }
 
-- (CRLIndeterminateProgressRingView_i)initWithCoder:(id)a3
+- (CRLIndeterminateProgressRingView_i)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CRLIndeterminateProgressRingView_i;
-  v3 = [(CRLIndeterminateProgressRingView_i *)&v8 initWithCoder:a3];
+  v3 = [(CRLIndeterminateProgressRingView_i *)&v8 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -51,47 +51,47 @@
   return v4;
 }
 
-- (CRLIndeterminateProgressRingView_i)initWithFrame:(CGRect)a3 style:(unint64_t)a4 strokeWidth:(double)a5
+- (CRLIndeterminateProgressRingView_i)initWithFrame:(CGRect)frame style:(unint64_t)style strokeWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12 = [(CRLIndeterminateProgressRingView_i *)self p_strokeColorForStyle:self->_style];
-  v13 = [(CRLIndeterminateProgressRingView_i *)self initWithFrame:v12 color:x strokeWidth:y, width, height, a5];
+  width = [(CRLIndeterminateProgressRingView_i *)self initWithFrame:v12 color:x strokeWidth:y, width, height, width];
 
-  if (v13)
+  if (width)
   {
-    v13->_style = a4;
-    v13->_strokeWidth = a5;
-    v13->_gapAngle = 26.0;
-    v14 = [(CRLIndeterminateProgressRingView_i *)v13 p_strokeColorForStyle:a4];
-    color = v13->_color;
-    v13->_color = v14;
+    width->_style = style;
+    width->_strokeWidth = width;
+    width->_gapAngle = 26.0;
+    v14 = [(CRLIndeterminateProgressRingView_i *)width p_strokeColorForStyle:style];
+    color = width->_color;
+    width->_color = v14;
 
-    [(CRLIndeterminateProgressRingView_i *)v13 setup];
+    [(CRLIndeterminateProgressRingView_i *)width setup];
   }
 
-  return v13;
+  return width;
 }
 
-- (CRLIndeterminateProgressRingView_i)initWithFrame:(CGRect)a3 color:(id)a4 strokeWidth:(double)a5
+- (CRLIndeterminateProgressRingView_i)initWithFrame:(CGRect)frame color:(id)color strokeWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v16.receiver = self;
   v16.super_class = CRLIndeterminateProgressRingView_i;
-  v13 = [(CRLIndeterminateProgressRingView_i *)&v16 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(CRLIndeterminateProgressRingView_i *)&v16 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    v13->_style = 2;
-    v13->_strokeWidth = a5;
-    v13->_gapAngle = 26.0;
-    objc_storeStrong(&v13->_color, a4);
+    height->_style = 2;
+    height->_strokeWidth = width;
+    height->_gapAngle = 26.0;
+    objc_storeStrong(&height->_color, color);
     [(CRLIndeterminateProgressRingView_i *)v14 setup];
   }
 
@@ -100,21 +100,21 @@
 
 - (void)setup
 {
-  v13 = [(CRLIndeterminateProgressRingView_i *)self layer];
+  layer = [(CRLIndeterminateProgressRingView_i *)self layer];
   [(CRLIndeterminateProgressRingView_i *)self strokeWidth];
-  [v13 setLineWidth:?];
-  [v13 setLineCap:kCALineCapRound];
+  [layer setLineWidth:?];
+  [layer setLineCap:kCALineCapRound];
   v3 = +[UIColor clearColor];
-  [v13 setFillColor:{objc_msgSend(v3, "CGColor")}];
+  [layer setFillColor:{objc_msgSend(v3, "CGColor")}];
 
-  [v13 setStrokeColor:{-[UIColor CGColor](self->_color, "CGColor")}];
+  [layer setStrokeColor:{-[UIColor CGColor](self->_color, "CGColor")}];
   v4 = +[UIColor clearColor];
-  [v13 setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+  [layer setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
 
   [(CRLIndeterminateProgressRingView_i *)self _updateShapePath];
   v5 = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-  v6 = [v5 keyPath];
-  v7 = [v13 valueForKeyPath:v6];
+  keyPath = [v5 keyPath];
+  v7 = [layer valueForKeyPath:keyPath];
 
   [v5 setFromValue:v7];
   [v7 floatValue];
@@ -126,7 +126,7 @@
   [v5 setRepeatCount:v10];
   [v5 setFillMode:kCAFillModeBoth];
   [v5 setDuration:1.0];
-  [v13 addAnimation:v5 forKey:@"CRLiOSIndeterminateProgressRingViewSpinnerAnimationKey"];
+  [layer addAnimation:v5 forKey:@"CRLiOSIndeterminateProgressRingViewSpinnerAnimationKey"];
   v11 = +[UITraitCollection systemTraitsAffectingColorAppearance];
   v12 = [(CRLIndeterminateProgressRingView_i *)self registerForTraitChanges:v11 withTarget:self action:"updateForAppearance"];
 }
@@ -136,34 +136,34 @@
   v5.receiver = self;
   v5.super_class = CRLIndeterminateProgressRingView_i;
   [(CRLIndeterminateProgressRingView_i *)&v5 layoutSubviews];
-  v3 = [(CRLIndeterminateProgressRingView_i *)self traitCollection];
+  traitCollection = [(CRLIndeterminateProgressRingView_i *)self traitCollection];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001BE17C;
   v4[3] = &unk_10183AB38;
   v4[4] = self;
-  [v3 performAsCurrentTraitCollection:v4];
+  [traitCollection performAsCurrentTraitCollection:v4];
 
   [(CRLIndeterminateProgressRingView_i *)self _updateShapePath];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  [(CRLIndeterminateProgressRingView_i *)self setColor:v4];
+  colorCopy = color;
+  [(CRLIndeterminateProgressRingView_i *)self setColor:colorCopy];
   v5.receiver = self;
   v5.super_class = CRLIndeterminateProgressRingView_i;
-  [(CRLIndeterminateProgressRingView_i *)&v5 setTintColor:v4];
+  [(CRLIndeterminateProgressRingView_i *)&v5 setTintColor:colorCopy];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 | self->_color)
+  colorCopy = color;
+  v5 = colorCopy;
+  if (colorCopy | self->_color)
   {
-    v11 = v4;
-    v6 = [v4 isEqual:?];
+    v11 = colorCopy;
+    v6 = [colorCopy isEqual:?];
     v5 = v11;
     if ((v6 & 1) == 0)
     {
@@ -180,10 +180,10 @@
       color = self->_color;
       self->_color = v7;
 
-      v9 = [(CRLIndeterminateProgressRingView_i *)self layer];
-      [v9 setStrokeColor:{-[UIColor CGColor](self->_color, "CGColor")}];
-      v10 = [(CRLIndeterminateProgressRingView_i *)self layer];
-      [v10 setNeedsDisplay];
+      layer = [(CRLIndeterminateProgressRingView_i *)self layer];
+      [layer setStrokeColor:{-[UIColor CGColor](self->_color, "CGColor")}];
+      layer2 = [(CRLIndeterminateProgressRingView_i *)self layer];
+      [layer2 setNeedsDisplay];
 
       v5 = v11;
     }
@@ -192,7 +192,7 @@
 
 - (void)_updateShapePath
 {
-  v17 = [(CRLIndeterminateProgressRingView_i *)self layer];
+  layer = [(CRLIndeterminateProgressRingView_i *)self layer];
   [(CRLIndeterminateProgressRingView_i *)self bounds];
   v4 = v3;
   v6 = v5;
@@ -204,8 +204,8 @@
   v15 = +[UIBezierPath bezierPath];
   [(CRLIndeterminateProgressRingView_i *)self gapAngle];
   [v15 addArcWithCenter:1 radius:v12 startAngle:v14 endAngle:v11 clockwise:{0.0, (v16 / -180.0 + 2.0) * 3.14159265}];
-  [v17 setPath:{objc_msgSend(v15, "CGPath")}];
-  [v17 setBounds:{v4, v6, v8, v10}];
+  [layer setPath:{objc_msgSend(v15, "CGPath")}];
+  [layer setBounds:{v4, v6, v8, v10}];
 }
 
 @end

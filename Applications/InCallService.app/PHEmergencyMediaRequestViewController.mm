@@ -1,39 +1,39 @@
 @interface PHEmergencyMediaRequestViewController
-- (PHEmergencyMediaRequestViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (PHEmergencyMediaRequestViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)requestCancel;
 - (void)requestContinue;
 @end
 
 @implementation PHEmergencyMediaRequestViewController
 
-- (PHEmergencyMediaRequestViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHEmergencyMediaRequestViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_10023D968();
 }
 
 - (void)requestCancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10023DAC8();
 }
 
 - (void)requestContinue
 {
-  v2 = self;
+  selfCopy = self;
   sub_10023DBEC();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_10023DD14();
 }
 

@@ -1,33 +1,33 @@
 @interface HKBloodPressureSeries
-+ (CGRect)_rectCenteredAt:(CGPoint)a3 width:(double)a4;
++ (CGRect)_rectCenteredAt:(CGPoint)at width:(double)width;
 + (id)_bloodPressureInactivePresentationStyle;
-+ (id)_bloodPressurePresentationStyleWithSystolicColor:(id)a3 diastolicColor:(id)a4;
-+ (id)defaultSeriesWithDiastolicColor:(id)a3;
-+ (id)diastolicImageCompatibleWithFont:(id)a3 withColor:(id)a4;
-+ (id)systolicImageCompatibleWithFont:(id)a3 withColor:(id)a4;
-+ (void)_drawDiastolicSymbolWithColor:(id)a3 atLocation:(CGPoint)a4 width:(double)a5 context:(CGContext *)a6;
-+ (void)_drawSystolicSymbolWithColor:(id)a3 atLocation:(CGPoint)a4 width:(double)a5 context:(CGContext *)a6;
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4;
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4;
++ (id)_bloodPressurePresentationStyleWithSystolicColor:(id)color diastolicColor:(id)diastolicColor;
++ (id)defaultSeriesWithDiastolicColor:(id)color;
++ (id)diastolicImageCompatibleWithFont:(id)font withColor:(id)color;
++ (id)systolicImageCompatibleWithFont:(id)font withColor:(id)color;
++ (void)_drawDiastolicSymbolWithColor:(id)color atLocation:(CGPoint)location width:(double)width context:(CGContext *)context;
++ (void)_drawSystolicSymbolWithColor:(id)color atLocation:(CGPoint)location width:(double)width context:(CGContext *)context;
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than;
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than;
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate;
 - (HKBloodPressureSeries)init;
 - (HKBloodPressureSeriesHighlightDelegate)seriesHighlightDelegate;
 - (HKBloodPressureSeriesHighlightDelegate)seriesHighlightDelegateStorage;
 - (HKBloodPressureSeriesPresentationStyle)inactivePresentationStyle;
 - (HKBloodPressureSeriesPresentationStyle)selectedPresentationStyle;
 - (HKBloodPressureSeriesPresentationStyle)unselectedPresentationStyle;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)_drawBloodPressureSymbol:(int64_t)a3 withColor:(id)a4 atLocation:(CGPoint)a5 width:(double)a6 context:(CGContext *)a7;
-- (void)_drawRangeBackgroundInContext:(CGContext *)a3 coordinate:(id)a4 width:(double)a5 symbolType:(int64_t)a6 symbolColor:(id)a7 fillColor:(id)a8;
-- (void)_drawRangeDotsInContext:(CGContext *)a3 coordinate:(id)a4 width:(double)a5 symbolType:(int64_t)a6 symbolColor:(id)a7 fillColor:(id)a8;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)setInactivePresentationStyle:(id)a3;
-- (void)setSelectedPresentationStyle:(id)a3;
-- (void)setSeriesHighlightDelegate:(id)a3;
-- (void)setUnselectedPresentationStyle:(id)a3;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)_drawBloodPressureSymbol:(int64_t)symbol withColor:(id)color atLocation:(CGPoint)location width:(double)width context:(CGContext *)context;
+- (void)_drawRangeBackgroundInContext:(CGContext *)context coordinate:(id)coordinate width:(double)width symbolType:(int64_t)type symbolColor:(id)color fillColor:(id)fillColor;
+- (void)_drawRangeDotsInContext:(CGContext *)context coordinate:(id)coordinate width:(double)width symbolType:(int64_t)type symbolColor:(id)color fillColor:(id)fillColor;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)setInactivePresentationStyle:(id)style;
+- (void)setSelectedPresentationStyle:(id)style;
+- (void)setSeriesHighlightDelegate:(id)delegate;
+- (void)setUnselectedPresentationStyle:(id)style;
 @end
 
 @implementation HKBloodPressureSeries
@@ -59,21 +59,21 @@
   return v2;
 }
 
-+ (id)_bloodPressurePresentationStyleWithSystolicColor:(id)a3 diastolicColor:(id)a4
++ (id)_bloodPressurePresentationStyleWithSystolicColor:(id)color diastolicColor:(id)diastolicColor
 {
-  v5 = a4;
-  v6 = a3;
+  diastolicColorCopy = diastolicColor;
+  colorCopy = color;
   v7 = objc_alloc_init(HKBloodPressureSeriesPresentationStyle);
   [(HKBloodPressureSeriesPresentationStyle *)v7 setWidth:8.0];
-  [(HKBloodPressureSeriesPresentationStyle *)v7 setSystolicSymbolColor:v6];
+  [(HKBloodPressureSeriesPresentationStyle *)v7 setSystolicSymbolColor:colorCopy];
 
-  v8 = [(HKBloodPressureSeriesPresentationStyle *)v7 systolicSymbolColor];
-  v9 = [v8 colorWithAlphaComponent:0.16];
+  systolicSymbolColor = [(HKBloodPressureSeriesPresentationStyle *)v7 systolicSymbolColor];
+  v9 = [systolicSymbolColor colorWithAlphaComponent:0.16];
   [(HKBloodPressureSeriesPresentationStyle *)v7 setSystolicFillColor:v9];
 
-  [(HKBloodPressureSeriesPresentationStyle *)v7 setDiastolicSymbolColor:v5];
-  v10 = [(HKBloodPressureSeriesPresentationStyle *)v7 diastolicSymbolColor];
-  v11 = [v10 colorWithAlphaComponent:0.3];
+  [(HKBloodPressureSeriesPresentationStyle *)v7 setDiastolicSymbolColor:diastolicColorCopy];
+  diastolicSymbolColor = [(HKBloodPressureSeriesPresentationStyle *)v7 diastolicSymbolColor];
+  v11 = [diastolicSymbolColor colorWithAlphaComponent:0.3];
   [(HKBloodPressureSeriesPresentationStyle *)v7 setDiastolicFillColor:v11];
 
   return v7;
@@ -83,135 +83,135 @@
 {
   v2 = objc_alloc_init(HKBloodPressureSeriesPresentationStyle);
   [(HKBloodPressureSeriesPresentationStyle *)v2 setWidth:8.0];
-  v3 = [MEMORY[0x1E69DC888] systemGray4Color];
-  v4 = [MEMORY[0x1E69DC888] systemGray4Color];
-  v5 = [v4 colorWithAlphaComponent:0.5];
+  systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+  systemGray4Color2 = [MEMORY[0x1E69DC888] systemGray4Color];
+  v5 = [systemGray4Color2 colorWithAlphaComponent:0.5];
 
-  [(HKBloodPressureSeriesPresentationStyle *)v2 setSystolicSymbolColor:v3];
+  [(HKBloodPressureSeriesPresentationStyle *)v2 setSystolicSymbolColor:systemGray4Color];
   [(HKBloodPressureSeriesPresentationStyle *)v2 setSystolicFillColor:v5];
-  [(HKBloodPressureSeriesPresentationStyle *)v2 setDiastolicSymbolColor:v3];
+  [(HKBloodPressureSeriesPresentationStyle *)v2 setDiastolicSymbolColor:systemGray4Color];
   [(HKBloodPressureSeriesPresentationStyle *)v2 setDiastolicFillColor:v5];
 
   return v2;
 }
 
-+ (id)defaultSeriesWithDiastolicColor:(id)a3
++ (id)defaultSeriesWithDiastolicColor:(id)color
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 labelColor];
-  v7 = [a1 _bloodPressurePresentationStyleWithSystolicColor:v6 diastolicColor:v5];
+  colorCopy = color;
+  labelColor = [v4 labelColor];
+  v7 = [self _bloodPressurePresentationStyleWithSystolicColor:labelColor diastolicColor:colorCopy];
 
-  v8 = [a1 _bloodPressureInactivePresentationStyle];
-  v9 = objc_alloc_init(a1);
+  _bloodPressureInactivePresentationStyle = [self _bloodPressureInactivePresentationStyle];
+  v9 = objc_alloc_init(self);
   [v9 setUnselectedPresentationStyle:v7];
-  [v9 setInactivePresentationStyle:v8];
+  [v9 setInactivePresentationStyle:_bloodPressureInactivePresentationStyle];
 
   return v9;
 }
 
 - (HKBloodPressureSeriesPresentationStyle)selectedPresentationStyle
 {
-  v3 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_selectedPresentationStyleStorage;
-  v5 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setSelectedPresentationStyle:(id)a3
+- (void)setSelectedPresentationStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   selectedPresentationStyleStorage = self->_selectedPresentationStyleStorage;
-  self->_selectedPresentationStyleStorage = v4;
+  self->_selectedPresentationStyleStorage = styleCopy;
 
-  v7 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKBloodPressureSeriesPresentationStyle)unselectedPresentationStyle
 {
-  v3 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_unselectedPresentationStyleStorage;
-  v5 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setUnselectedPresentationStyle:(id)a3
+- (void)setUnselectedPresentationStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   unselectedPresentationStyleStorage = self->_unselectedPresentationStyleStorage;
-  self->_unselectedPresentationStyleStorage = v4;
+  self->_unselectedPresentationStyleStorage = styleCopy;
 
-  v7 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKBloodPressureSeriesPresentationStyle)inactivePresentationStyle
 {
-  v3 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_inactivePresentationStyleStorage;
-  v5 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setInactivePresentationStyle:(id)a3
+- (void)setInactivePresentationStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   inactivePresentationStyleStorage = self->_inactivePresentationStyleStorage;
-  self->_inactivePresentationStyleStorage = v4;
+  self->_inactivePresentationStyleStorage = styleCopy;
 
-  v7 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKBloodPressureSeriesHighlightDelegate)seriesHighlightDelegate
 {
-  v3 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   WeakRetained = objc_loadWeakRetained(&self->_seriesHighlightDelegateStorage);
-  v5 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return WeakRetained;
 }
 
-- (void)setSeriesHighlightDelegate:(id)a3
+- (void)setSeriesHighlightDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  delegateCopy = delegate;
+  seriesMutableStateLock = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  objc_storeWeak(&self->_seriesHighlightDelegateStorage, v4);
-  v6 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  objc_storeWeak(&self->_seriesHighlightDelegateStorage, delegateCopy);
+  seriesMutableStateLock2 = [(HKBloodPressureSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  v12 = a3;
-  CGContextSaveGState(a7);
+  coordinatesCopy = coordinates;
+  CGContextSaveGState(context);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
@@ -226,14 +226,14 @@
   v18 = v23;
   v19 = v24;
   v15[4] = self;
-  v20 = a7;
-  v13 = *&a6->c;
-  v14[0] = *&a6->a;
+  contextCopy = context;
+  v13 = *&transform->c;
+  v14[0] = *&transform->a;
   v14[1] = v13;
-  v14[2] = *&a6->tx;
-  [v12 enumerateCoordinatesWithTransform:v14 roundToViewScale:1 block:v15];
+  v14[2] = *&transform->tx;
+  [coordinatesCopy enumerateCoordinatesWithTransform:v14 roundToViewScale:1 block:v15];
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
 void __164__HKBloodPressureSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate___block_invoke(uint64_t a1, void *a2, _OWORD *a3, void *a4)
@@ -432,175 +432,175 @@ LABEL_26:
   CGContextRestoreGState(*(a1 + 104));
 }
 
-- (void)_drawRangeDotsInContext:(CGContext *)a3 coordinate:(id)a4 width:(double)a5 symbolType:(int64_t)a6 symbolColor:(id)a7 fillColor:(id)a8
+- (void)_drawRangeDotsInContext:(CGContext *)context coordinate:(id)coordinate width:(double)width symbolType:(int64_t)type symbolColor:(id)color fillColor:(id)fillColor
 {
-  v16 = a4;
-  v12 = a7;
-  [v16 min];
-  [HKBloodPressureSeries _drawBloodPressureSymbol:"_drawBloodPressureSymbol:withColor:atLocation:width:context:" withColor:a6 atLocation:v12 width:a3 context:?];
-  [v16 max];
+  coordinateCopy = coordinate;
+  colorCopy = color;
+  [coordinateCopy min];
+  [HKBloodPressureSeries _drawBloodPressureSymbol:"_drawBloodPressureSymbol:withColor:atLocation:width:context:" withColor:type atLocation:colorCopy width:context context:?];
+  [coordinateCopy max];
   v14 = v13;
-  [v16 min];
+  [coordinateCopy min];
   if (!HKUIEqualDoubles(v14, v15))
   {
-    [v16 max];
-    [HKBloodPressureSeries _drawBloodPressureSymbol:"_drawBloodPressureSymbol:withColor:atLocation:width:context:" withColor:a6 atLocation:v12 width:a3 context:?];
+    [coordinateCopy max];
+    [HKBloodPressureSeries _drawBloodPressureSymbol:"_drawBloodPressureSymbol:withColor:atLocation:width:context:" withColor:type atLocation:colorCopy width:context context:?];
   }
 }
 
-- (void)_drawRangeBackgroundInContext:(CGContext *)a3 coordinate:(id)a4 width:(double)a5 symbolType:(int64_t)a6 symbolColor:(id)a7 fillColor:(id)a8
+- (void)_drawRangeBackgroundInContext:(CGContext *)context coordinate:(id)coordinate width:(double)width symbolType:(int64_t)type symbolColor:(id)color fillColor:(id)fillColor
 {
-  v36 = a4;
-  v12 = a8;
-  [v36 max];
+  coordinateCopy = coordinate;
+  fillColorCopy = fillColor;
+  [coordinateCopy max];
   v14 = v13;
-  [v36 min];
+  [coordinateCopy min];
   if (!HKUIEqualDoubles(v14, v15))
   {
-    CGContextSetFillColorWithColor(a3, [v12 CGColor]);
-    if (a6)
+    CGContextSetFillColorWithColor(context, [fillColorCopy CGColor]);
+    if (type)
     {
-      [v36 max];
-      v17 = v16 + a5 * -0.5;
-      [v36 max];
+      [coordinateCopy max];
+      v17 = v16 + width * -0.5;
+      [coordinateCopy max];
       v19 = v18;
-      [v36 min];
+      [coordinateCopy min];
       v21 = v20;
-      [v36 max];
+      [coordinateCopy max];
       v38.size.height = v21 - v22;
       v38.origin.x = v17;
       v38.origin.y = v19;
-      v38.size.width = a5;
-      CGContextFillRect(a3, v38);
+      v38.size.width = width;
+      CGContextFillRect(context, v38);
     }
 
     else
     {
-      v23 = a5 * 0.5;
-      [v36 max];
+      v23 = width * 0.5;
+      [coordinateCopy max];
       v25 = v24 - v23;
-      [v36 max];
-      CGContextMoveToPoint(a3, v25, v26);
-      [v36 max];
+      [coordinateCopy max];
+      CGContextMoveToPoint(context, v25, v26);
+      [coordinateCopy max];
       v28 = v27;
-      [v36 max];
-      CGContextAddArc(a3, v28, v29, v23, 3.14159265, 0.0, 1);
-      [v36 min];
+      [coordinateCopy max];
+      CGContextAddArc(context, v28, v29, v23, 3.14159265, 0.0, 1);
+      [coordinateCopy min];
       v31 = v23 + v30;
-      [v36 min];
-      CGContextAddLineToPoint(a3, v31, v32);
-      [v36 min];
+      [coordinateCopy min];
+      CGContextAddLineToPoint(context, v31, v32);
+      [coordinateCopy min];
       v34 = v33;
-      [v36 min];
-      CGContextAddArc(a3, v34, v35, v23, 0.0, 3.14159265, 1);
-      CGContextClosePath(a3);
-      CGContextFillPath(a3);
+      [coordinateCopy min];
+      CGContextAddArc(context, v34, v35, v23, 0.0, 3.14159265, 1);
+      CGContextClosePath(context);
+      CGContextFillPath(context);
     }
   }
 }
 
-- (void)_drawBloodPressureSymbol:(int64_t)a3 withColor:(id)a4 atLocation:(CGPoint)a5 width:(double)a6 context:(CGContext *)a7
+- (void)_drawBloodPressureSymbol:(int64_t)symbol withColor:(id)color atLocation:(CGPoint)location width:(double)width context:(CGContext *)context
 {
-  y = a5.y;
-  x = a5.x;
-  v12 = a4;
-  v13 = v12;
-  if (a3 == 1)
+  y = location.y;
+  x = location.x;
+  colorCopy = color;
+  v13 = colorCopy;
+  if (symbol == 1)
   {
-    v14 = v12;
-    v12 = [HKBloodPressureSeries _drawDiastolicSymbolWithColor:v12 atLocation:a7 width:x context:y, a6];
+    v14 = colorCopy;
+    colorCopy = [HKBloodPressureSeries _drawDiastolicSymbolWithColor:colorCopy atLocation:context width:x context:y, width];
   }
 
   else
   {
-    if (a3)
+    if (symbol)
     {
       goto LABEL_6;
     }
 
-    v14 = v12;
-    v12 = [HKBloodPressureSeries _drawSystolicSymbolWithColor:v12 atLocation:a7 width:x context:y, a6];
+    v14 = colorCopy;
+    colorCopy = [HKBloodPressureSeries _drawSystolicSymbolWithColor:colorCopy atLocation:context width:x context:y, width];
   }
 
   v13 = v14;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](v12, v13);
+  MEMORY[0x1EEE66BB8](colorCopy, v13);
 }
 
-+ (void)_drawSystolicSymbolWithColor:(id)a3 atLocation:(CGPoint)a4 width:(double)a5 context:(CGContext *)a6
++ (void)_drawSystolicSymbolWithColor:(id)color atLocation:(CGPoint)location width:(double)width context:(CGContext *)context
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  [a1 _rectCenteredAt:x width:{y, a5}];
+  y = location.y;
+  x = location.x;
+  colorCopy = color;
+  [self _rectCenteredAt:x width:{y, width}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v11 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(a6, v20);
+  CGContextSetFillColorWithColor(context, cGColor);
   v21 = v13;
   v22 = v15;
   v23 = v17;
   v24 = v19;
 
-  CGContextFillEllipseInRect(a6, *&v21);
+  CGContextFillEllipseInRect(context, *&v21);
 }
 
-+ (CGRect)_rectCenteredAt:(CGPoint)a3 width:(double)a4
++ (CGRect)_rectCenteredAt:(CGPoint)at width:(double)width
 {
-  v4 = a3.x - a4 * 0.5;
-  v5 = a3.y - a4 * 0.5;
-  result.size.height = a4;
-  result.size.width = a4;
+  v4 = at.x - width * 0.5;
+  v5 = at.y - width * 0.5;
+  result.size.height = width;
+  result.size.width = width;
   result.origin.y = v5;
   result.origin.x = v4;
   return result;
 }
 
-+ (void)_drawDiastolicSymbolWithColor:(id)a3 atLocation:(CGPoint)a4 width:(double)a5 context:(CGContext *)a6
++ (void)_drawDiastolicSymbolWithColor:(id)color atLocation:(CGPoint)location width:(double)width context:(CGContext *)context
 {
-  y = a4.y;
-  x = a4.x;
-  CGContextSetFillColorWithColor(a6, [a3 CGColor]);
-  v10 = a5 * 0.5;
-  CGContextMoveToPoint(a6, x - v10, y);
-  CGContextAddLineToPoint(a6, x, y - v10);
-  CGContextAddLineToPoint(a6, x + v10, y);
-  CGContextAddLineToPoint(a6, x, y + v10);
+  y = location.y;
+  x = location.x;
+  CGContextSetFillColorWithColor(context, [color CGColor]);
+  v10 = width * 0.5;
+  CGContextMoveToPoint(context, x - v10, y);
+  CGContextAddLineToPoint(context, x, y - v10);
+  CGContextAddLineToPoint(context, x + v10, y);
+  CGContextAddLineToPoint(context, x, y + v10);
 
-  CGContextFillPath(a6);
+  CGContextFillPath(context);
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 chartPoints];
-  if (!v11)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKBloodPressureSeries coordinatesForBlock:blockPath:xAxis:yAxis:];
   }
 
-  v12 = [v9 transform];
-  v13 = [v10 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
   v14 = objc_opt_new();
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __67__HKBloodPressureSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v22[3] = &unk_1E81B94C8;
-  v23 = v12;
-  v24 = v13;
+  v23 = transform;
+  v24 = transform2;
   v25 = v14;
   v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  [v11 enumerateObjectsUsingBlock:v22];
-  v20 = *&a4->index;
-  resolution = a4->resolution;
+  v16 = transform2;
+  v17 = transform;
+  [chartPoints enumerateObjectsUsingBlock:v22];
+  v20 = *&path->index;
+  resolution = path->resolution;
   v18 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v15 blockPath:&v20];
 
   return v18;
@@ -639,36 +639,36 @@ void __67__HKBloodPressureSeries_coordinatesForBlock_blockPath_xAxis_yAxis___blo
   }
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKBloodPressureSeries distanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  v8 = v7;
-  v9 = [v8 systolicCoordinate];
-  v10 = [v8 diastolicCoordinate];
+  v8 = coordinateCopy;
+  systolicCoordinate = [v8 systolicCoordinate];
+  diastolicCoordinate = [v8 diastolicCoordinate];
 
-  [v9 distanceToPoint:{x, y}];
+  [systolicCoordinate distanceToPoint:{x, y}];
   v12 = v11;
-  [v10 distanceToPoint:{x, y}];
+  [diastolicCoordinate distanceToPoint:{x, y}];
   v14 = 1.79769313e308;
-  if (v10)
+  if (diastolicCoordinate)
   {
     v14 = v13;
   }
 
-  if (v12 < v13 || v10 == 0)
+  if (v12 < v13 || diastolicCoordinate == 0)
   {
     v13 = v12;
   }
 
-  if (v9)
+  if (systolicCoordinate)
   {
     v16 = v13;
   }
@@ -681,40 +681,40 @@ void __67__HKBloodPressureSeries_coordinatesForBlock_blockPath_xAxis_yAxis___blo
   return v16;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
-  v6 = a4;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKBloodPressureSeries xAxisDistanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  [v6 startXValue];
+  [coordinateCopy startXValue];
   v8 = vabdd_f64(v7, x);
 
   return v8;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKBloodPressureSeries yAxisDifferenceToPoint:blockCoordinate:chartRect:];
   }
 
-  v8 = v7;
-  v9 = [v8 systolicCoordinate];
-  v10 = [v8 diastolicCoordinate];
-  [v9 yAxisDifferenceToPoint:{x, y}];
+  v8 = coordinateCopy;
+  systolicCoordinate = [v8 systolicCoordinate];
+  diastolicCoordinate = [v8 diastolicCoordinate];
+  [systolicCoordinate yAxisDifferenceToPoint:{x, y}];
   v12 = v11;
-  [v10 yAxisDifferenceToPoint:{x, y}];
-  if (v9 && v10)
+  [diastolicCoordinate yAxisDifferenceToPoint:{x, y}];
+  if (systolicCoordinate && diastolicCoordinate)
   {
     if (fabs(v12) >= fabs(v13))
     {
@@ -729,12 +729,12 @@ void __67__HKBloodPressureSeries_coordinatesForBlock_blockPath_xAxis_yAxis___blo
 
   else
   {
-    if (!v10)
+    if (!diastolicCoordinate)
     {
       v13 = 1.79769313e308;
     }
 
-    if (v9)
+    if (systolicCoordinate)
     {
       v14 = v12;
     }
@@ -748,53 +748,53 @@ void __67__HKBloodPressureSeries_coordinatesForBlock_blockPath_xAxis_yAxis___blo
   return v14;
 }
 
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [v8 systolicCoordinate];
-  v10 = [v8 diastolicCoordinate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinateCopy = coordinate;
+  systolicCoordinate = [coordinateCopy systolicCoordinate];
+  diastolicCoordinate = [coordinateCopy diastolicCoordinate];
 
-  if ([v9 isVisibleInChartRect:{x, y, width, height}])
+  if ([systolicCoordinate isVisibleInChartRect:{x, y, width, height}])
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = [v10 isVisibleInChartRect:{x, y, width, height}];
+    v11 = [diastolicCoordinate isVisibleInChartRect:{x, y, width, height}];
   }
 
   return v11;
 }
 
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKBloodPressureSeries blockCoordinate:lessThan:];
   }
 
-  v7 = v5;
-  v8 = [v7 systolicCoordinate];
-  v9 = [v7 diastolicCoordinate];
-  v10 = v6;
-  v11 = [v10 systolicCoordinate];
-  v12 = [v10 diastolicCoordinate];
-  [v8 min];
+  v7 = coordinateCopy;
+  systolicCoordinate = [v7 systolicCoordinate];
+  diastolicCoordinate = [v7 diastolicCoordinate];
+  v10 = thanCopy;
+  systolicCoordinate2 = [v10 systolicCoordinate];
+  diastolicCoordinate2 = [v10 diastolicCoordinate];
+  [systolicCoordinate min];
   v14 = v13;
-  [v11 min];
+  [systolicCoordinate2 min];
   if (v14 >= v15)
   {
-    [v9 min];
+    [diastolicCoordinate min];
     v18 = v17;
-    [v12 min];
+    [diastolicCoordinate2 min];
     v16 = v18 < v19;
   }
 
@@ -806,30 +806,30 @@ void __67__HKBloodPressureSeries_coordinatesForBlock_blockPath_xAxis_yAxis___blo
   return v16;
 }
 
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKBloodPressureSeries blockCoordinate:greaterThan:];
   }
 
-  v7 = v5;
-  v8 = [v7 systolicCoordinate];
-  v9 = [v7 diastolicCoordinate];
-  v10 = v6;
-  v11 = [v10 systolicCoordinate];
-  v12 = [v10 diastolicCoordinate];
-  [v8 max];
+  v7 = coordinateCopy;
+  systolicCoordinate = [v7 systolicCoordinate];
+  diastolicCoordinate = [v7 diastolicCoordinate];
+  v10 = thanCopy;
+  systolicCoordinate2 = [v10 systolicCoordinate];
+  diastolicCoordinate2 = [v10 diastolicCoordinate];
+  [systolicCoordinate max];
   v14 = v13;
-  [v11 max];
+  [systolicCoordinate2 max];
   if (v14 <= v15)
   {
-    [v9 max];
+    [diastolicCoordinate max];
     v18 = v17;
-    [v12 max];
+    [diastolicCoordinate2 max];
     v16 = v18 > v19;
   }
 
@@ -841,16 +841,16 @@ void __67__HKBloodPressureSeries_coordinatesForBlock_blockPath_xAxis_yAxis___blo
   return v16;
 }
 
-+ (id)systolicImageCompatibleWithFont:(id)a3 withColor:(id)a4
++ (id)systolicImageCompatibleWithFont:(id)font withColor:(id)color
 {
-  v5 = a4;
-  [a3 capHeight];
+  colorCopy = color;
+  [font capHeight];
   v12.height = v6;
   v7 = fmin(v6, 8.0);
   v8 = v6 * 0.5;
   v12.width = v7;
   UIGraphicsBeginImageContextWithOptions(v12, 0, 0.0);
-  [HKBloodPressureSeries _drawSystolicSymbolWithColor:v5 atLocation:UIGraphicsGetCurrentContext() width:v7 * 0.5 context:v8, v7];
+  [HKBloodPressureSeries _drawSystolicSymbolWithColor:colorCopy atLocation:UIGraphicsGetCurrentContext() width:v7 * 0.5 context:v8, v7];
 
   v9 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -858,16 +858,16 @@ void __67__HKBloodPressureSeries_coordinatesForBlock_blockPath_xAxis_yAxis___blo
   return v9;
 }
 
-+ (id)diastolicImageCompatibleWithFont:(id)a3 withColor:(id)a4
++ (id)diastolicImageCompatibleWithFont:(id)font withColor:(id)color
 {
-  v5 = a4;
-  [a3 capHeight];
+  colorCopy = color;
+  [font capHeight];
   v12.height = v6;
   v7 = fmin(v6, 8.0);
   v8 = v6 * 0.5;
   v12.width = v7;
   UIGraphicsBeginImageContextWithOptions(v12, 0, 0.0);
-  [HKBloodPressureSeries _drawDiastolicSymbolWithColor:v5 atLocation:UIGraphicsGetCurrentContext() width:v7 * 0.5 context:v8, v7];
+  [HKBloodPressureSeries _drawDiastolicSymbolWithColor:colorCopy atLocation:UIGraphicsGetCurrentContext() width:v7 * 0.5 context:v8, v7];
 
   v9 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();

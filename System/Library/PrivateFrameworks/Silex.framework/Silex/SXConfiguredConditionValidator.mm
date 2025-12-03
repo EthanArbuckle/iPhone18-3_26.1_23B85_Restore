@@ -1,43 +1,43 @@
 @interface SXConfiguredConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXConfiguredConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 configurationKey];
+  conditionCopy = condition;
+  contextCopy = context;
+  configurationKey = [conditionCopy configurationKey];
 
-  if (v7)
+  if (configurationKey)
   {
-    v8 = [v6 conditionKeys];
-    if (v8)
+    conditionKeys = [contextCopy conditionKeys];
+    if (conditionKeys)
     {
-      v9 = [v6 conditionKeys];
-      v10 = [v9 count];
+      conditionKeys2 = [contextCopy conditionKeys];
+      v10 = [conditionKeys2 count];
 
       if (v10)
       {
-        v11 = [v6 conditionKeys];
-        v12 = [v5 configurationKey];
-        LOBYTE(v8) = [v11 containsObject:v12];
+        conditionKeys3 = [contextCopy conditionKeys];
+        configurationKey2 = [conditionCopy configurationKey];
+        LOBYTE(conditionKeys) = [conditionKeys3 containsObject:configurationKey2];
       }
 
       else
       {
-        LOBYTE(v8) = 0;
+        LOBYTE(conditionKeys) = 0;
       }
     }
   }
 
   else
   {
-    LOBYTE(v8) = 1;
+    LOBYTE(conditionKeys) = 1;
   }
 
-  return v8;
+  return conditionKeys;
 }
 
 @end

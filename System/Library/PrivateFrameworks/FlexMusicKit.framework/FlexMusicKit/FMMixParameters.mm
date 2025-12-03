@@ -1,11 +1,11 @@
 @interface FMMixParameters
-- (BOOL)appendVolumeKeyframe:(id)a3;
+- (BOOL)appendVolumeKeyframe:(id)keyframe;
 - (BOOL)removeRedundantVolumeKeyFrames;
 - (BOOL)volumeKeyframesAreValid;
 - (FMMixParameters)init;
-- (float)volumeValueAtTime:(int64_t)a3;
+- (float)volumeValueAtTime:(int64_t)time;
 - (id)description;
-- (void)insertVolumeKeyframe:(id)a3;
+- (void)insertVolumeKeyframe:(id)keyframe;
 @end
 
 @implementation FMMixParameters
@@ -86,7 +86,7 @@
   return v13;
 }
 
-- (float)volumeValueAtTime:(int64_t)a3
+- (float)volumeValueAtTime:(int64_t)time
 {
   v15 = 0;
   v16 = &v15;
@@ -97,14 +97,14 @@
   v13[2] = 0x3032000000;
   v13[3] = sub_24B80E9E4;
   v13[4] = sub_24B80E9F4;
-  v14 = objc_msgSend_volumeKeyFrames(self, a2, a3, v3, v4);
+  v14 = objc_msgSend_volumeKeyFrames(self, a2, time, v3, v4);
   volumeKeyFrames = self->_volumeKeyFrames;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_24B80E9FC;
   v12[3] = &unk_27900F4E8;
   v12[5] = v13;
-  v12[6] = a3;
+  v12[6] = time;
   v12[4] = &v15;
   objc_msgSend_enumerateObjectsWithOptions_usingBlock_(volumeKeyFrames, v8, 2, v12, v9);
   v10 = v16[6];
@@ -114,27 +114,27 @@
   return v10;
 }
 
-- (BOOL)appendVolumeKeyframe:(id)a3
+- (BOOL)appendVolumeKeyframe:(id)keyframe
 {
-  v4 = a3;
+  keyframeCopy = keyframe;
   v13 = objc_msgSend_lastVolumeKeyFrame(self, v5, v6, v7, v8);
-  if (v13 && (v14 = objc_msgSend_sampleTime(v4, v9, v10, v11, v12), v14 < objc_msgSend_sampleTime(v13, v15, v16, v17, v18)))
+  if (v13 && (v14 = objc_msgSend_sampleTime(keyframeCopy, v9, v10, v11, v12), v14 < objc_msgSend_sampleTime(v13, v15, v16, v17, v18)))
   {
     v19 = 0;
   }
 
   else
   {
-    v20 = objc_msgSend_sampleTime(v4, v9, v10, v11, v12);
+    v20 = objc_msgSend_sampleTime(keyframeCopy, v9, v10, v11, v12);
     if (v20 == objc_msgSend_sampleTime(v13, v21, v22, v23, v24))
     {
-      objc_msgSend_value(v4, v25, v26, v27, v28);
+      objc_msgSend_value(keyframeCopy, v25, v26, v27, v28);
       objc_msgSend_setValue_(v13, v29, v30, v31, v32);
     }
 
     else
     {
-      objc_msgSend_addObject_(self->_volumeKeyFrames, v25, v4, v27, v28);
+      objc_msgSend_addObject_(self->_volumeKeyFrames, v25, keyframeCopy, v27, v28);
     }
 
     v19 = 1;
@@ -143,16 +143,16 @@
   return v19;
 }
 
-- (void)insertVolumeKeyframe:(id)a3
+- (void)insertVolumeKeyframe:(id)keyframe
 {
-  v4 = a3;
+  keyframeCopy = keyframe;
   objc_initWeak(&location, self);
   volumeKeyFrames = self->_volumeKeyFrames;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_24B80ECF0;
   v9[3] = &unk_27900F510;
-  v6 = v4;
+  v6 = keyframeCopy;
   v10 = v6;
   objc_copyWeak(&v11, &location);
   objc_msgSend_enumerateObjectsWithOptions_usingBlock_(volumeKeyFrames, v7, 2, v9, v8);

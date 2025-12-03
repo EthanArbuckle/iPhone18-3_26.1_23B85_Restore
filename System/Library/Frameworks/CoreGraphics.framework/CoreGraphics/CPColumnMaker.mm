@@ -1,25 +1,25 @@
 @interface CPColumnMaker
-- (BOOL)closeImagesBetween:(id)a3 and:(id)a4 bounds:(CGRect)a5;
-- (BOOL)column:(id)a3 isLinkedBelowTo:(id)a4;
-- (BOOL)cuttingShapeBetween:(id)a3 and:(id)a4;
-- (BOOL)intervalOverlapLeft:(double)a3 right:(double)a4 paragraphs:(id)a5;
-- (BOOL)paragraph:(id)a3 isAbove:(id)a4;
-- (BOOL)paragraph:(id)a3 isBelow:(id)a4;
-- (BOOL)paragraph:(id)a3 isLinkedBelowTo:(id)a4;
-- (BOOL)paragraph:(id)a3 notOnSameShapeAs:(id)a4;
+- (BOOL)closeImagesBetween:(id)between and:(id)and bounds:(CGRect)bounds;
+- (BOOL)column:(id)column isLinkedBelowTo:(id)to;
+- (BOOL)cuttingShapeBetween:(id)between and:(id)and;
+- (BOOL)intervalOverlapLeft:(double)left right:(double)right paragraphs:(id)paragraphs;
+- (BOOL)paragraph:(id)paragraph isAbove:(id)above;
+- (BOOL)paragraph:(id)paragraph isBelow:(id)below;
+- (BOOL)paragraph:(id)paragraph isLinkedBelowTo:(id)to;
+- (BOOL)paragraph:(id)paragraph notOnSameShapeAs:(id)as;
 - (CGRect)pageBounds;
 - (CPColumnMaker)init;
-- (double)averageSpacing:(id)a3;
-- (id)chunkAbove:(id)a3 in:(id)a4;
-- (id)paragraphAbove:(id)a3 in:(id)a4;
-- (id)paragraphBelow:(id)a3 in:(id)a4;
+- (double)averageSpacing:(id)spacing;
+- (id)chunkAbove:(id)above in:(id)in;
+- (id)paragraphAbove:(id)above in:(id)in;
+- (id)paragraphBelow:(id)below in:(id)in;
 - (void)anchorImages;
 - (void)callOuts;
 - (void)dealloc;
-- (void)intersectionCallout:(id)a3;
-- (void)makeColumnsFrom:(id)a3 zone:(id)a4;
-- (void)partitionShapes:(id)a3;
-- (void)splitColumns:(id)a3;
+- (void)intersectionCallout:(id)callout;
+- (void)makeColumnsFrom:(id)from zone:(id)zone;
+- (void)partitionShapes:(id)shapes;
+- (void)splitColumns:(id)columns;
 @end
 
 @implementation CPColumnMaker
@@ -38,14 +38,14 @@
   return result;
 }
 
-- (void)makeColumnsFrom:(id)a3 zone:(id)a4
+- (void)makeColumnsFrom:(id)from zone:(id)zone
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = [a3 count];
+  v7 = [from count];
   v8 = v7;
   if (v7)
   {
-    v9 = [a3 count];
+    v9 = [from count];
     if ((v9 * -0.01 + 15.0) / 100.0 >= 0.0)
     {
       v10 = (v9 * -0.01 + 15.0) / 100.0;
@@ -66,28 +66,28 @@
     }
 
     self->maxParagraphDistance = v10 * height;
-    self->currentZone = a4;
+    self->currentZone = zone;
     v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    [objc_msgSend(a4 "page")];
+    [objc_msgSend(zone "page")];
     if (v16 <= 0.8)
     {
-      [a4 descendantsOfClass:objc_opt_class() to:v15];
+      [zone descendantsOfClass:objc_opt_class() to:v15];
     }
 
     [(CPColumnMaker *)self partitionShapes:v15];
 
     self->images = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    [a4 descendantsOfClass:objc_opt_class() to:self->images];
+    [zone descendantsOfClass:objc_opt_class() to:self->images];
     [(NSMutableArray *)self->images sortUsingSelector:sel_compareZDescending_];
-    self->allParagraphs = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:a3];
-    v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:a3];
+    self->allParagraphs = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:from];
+    v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:from];
     [(NSMutableArray *)self->allParagraphs sortUsingSelector:sel_compareY_];
     [v17 sortUsingSelector:sel_compareTopDescending_];
     v18 = 0;
     self->paragraphWrappers = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     do
     {
-      v19 = -[CPParagraphFlow initWithParagraph:]([CPParagraphFlow alloc], "initWithParagraph:", [a3 objectAtIndex:v18]);
+      v19 = -[CPParagraphFlow initWithParagraph:]([CPParagraphFlow alloc], "initWithParagraph:", [from objectAtIndex:v18]);
       [(NSMutableArray *)self->paragraphWrappers addObject:v19];
       [(CPParagraphFlow *)v19 setParagraphsAboveIn:self->allParagraphs];
       [(CPParagraphFlow *)v19 setParagraphsBelowIn:v17];
@@ -141,14 +141,14 @@
                 break;
               }
 
-              v30 = [v29 flowProperties];
-              if (![v30 calloutType] && (objc_msgSend(v30, "placed") & 1) == 0)
+              flowProperties = [v29 flowProperties];
+              if (![flowProperties calloutType] && (objc_msgSend(flowProperties, "placed") & 1) == 0)
               {
                 [(CPChunk *)v27 add:v29];
-                [v30 setPlaced:1];
+                [flowProperties setPlaced:1];
               }
 
-              v29 = [v30 nextParagraphInColumn:v27];
+              v29 = [flowProperties nextParagraphInColumn:v27];
             }
 
             while (v29);
@@ -182,7 +182,7 @@
           v36 = *(*(&v45 + 1) + 8 * j);
           if ([v36 count])
           {
-            [a4 add:v36];
+            [zone add:v36];
           }
         }
 
@@ -204,7 +204,7 @@
         {
           v41 = objc_alloc_init(CPColumn);
           [(NSMutableArray *)self->columns addObject:v41];
-          [a4 add:v41];
+          [zone add:v41];
 
           -[CPChunk add:](v41, "add:", [v40 paragraph]);
         }
@@ -228,7 +228,7 @@
       while (v43 != v44);
     }
 
-    [objc_msgSend(a4 "page")];
+    [objc_msgSend(zone "page")];
   }
 }
 
@@ -320,15 +320,15 @@
   }
 }
 
-- (void)splitColumns:(id)a3
+- (void)splitColumns:(id)columns
 {
-  v41 = [a3 count];
+  v41 = [columns count];
   if (v41)
   {
     v4 = 0;
     do
     {
-      v5 = [a3 objectAtIndex:{v4, v41}];
+      v5 = [columns objectAtIndex:{v4, v41}];
       [v5 normalizedBounds];
       v45 = v7;
       v46 = v6;
@@ -405,9 +405,9 @@
   }
 }
 
-- (double)averageSpacing:(id)a3
+- (double)averageSpacing:(id)spacing
 {
-  v4 = [a3 count];
+  v4 = [spacing count];
   if (!v4)
   {
     return 0.0;
@@ -415,7 +415,7 @@
 
   if (v4 == 1)
   {
-    [a3 normalizedBounds];
+    [spacing normalizedBounds];
     if (v7 < 0.0 || v8 < 0.0)
     {
       *(&v8 - 3) = CGRectStandardize(*&v5);
@@ -431,9 +431,9 @@
     do
     {
       v13 = v9 + 1;
-      [objc_msgSend(a3 "childAtIndex:"baseline"")];
+      [objc_msgSend(spacing "childAtIndex:"baseline"")];
       v15 = v14;
-      [objc_msgSend(a3 childAtIndex:{v13), "baseline"}];
+      [objc_msgSend(spacing childAtIndex:{v13), "baseline"}];
       v12 = v12 + v15 - v16;
       v9 = v13;
     }
@@ -445,20 +445,20 @@
   return v8;
 }
 
-- (BOOL)closeImagesBetween:(id)a3 and:(id)a4 bounds:(CGRect)a5
+- (BOOL)closeImagesBetween:(id)between and:(id)and bounds:(CGRect)bounds
 {
-  r2_16 = a5.size.width;
-  r2_24 = a5.size.height;
-  r2_8 = a5.origin.y;
-  x = a5.origin.x;
+  r2_16 = bounds.size.width;
+  r2_24 = bounds.size.height;
+  r2_8 = bounds.origin.y;
+  x = bounds.origin.x;
   v83 = *MEMORY[0x1E69E9840];
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-  [a3 normalizedBounds];
+  [between normalizedBounds];
   v11 = v10;
   v68 = v12;
   v14 = v13;
   rect_8 = v15;
-  [a4 normalizedBounds];
+  [and normalizedBounds];
   rect = v16;
   rect_24 = v18;
   v67 = v17;
@@ -616,7 +616,7 @@
             objc_enumerationMutation(v9);
           }
 
-          [*(*(&v73 + 1) + 8 * j) setAnchoringParagraph:a3];
+          [*(*(&v73 + 1) + 8 * j) setAnchoringParagraph:between];
         }
 
         v58 = [v9 countByEnumeratingWithState:&v73 objects:v81 count:16];
@@ -898,18 +898,18 @@ LABEL_53:
   }
 }
 
-- (void)intersectionCallout:(id)a3
+- (void)intersectionCallout:(id)callout
 {
-  v3 = a3;
-  [objc_msgSend(a3 "paragraph")];
+  calloutCopy = callout;
+  [objc_msgSend(callout "paragraph")];
   v45 = v5;
   v46 = v6;
   r1 = v7;
   v9 = v8;
-  [v3 area];
+  [calloutCopy area];
   v41 = v10;
   v11 = [(NSMutableArray *)self->paragraphWrappers count];
-  [objc_msgSend(objc_msgSend(v3 "paragraph")];
+  [objc_msgSend(objc_msgSend(calloutCopy "paragraph")];
   v13 = v11;
   if (v11)
   {
@@ -921,8 +921,8 @@ LABEL_53:
     while (1)
     {
       v17 = [(NSMutableArray *)self->paragraphWrappers objectAtIndex:v15];
-      v18 = [v17 paragraph];
-      if (v18 != [v3 paragraph])
+      paragraph = [v17 paragraph];
+      if (paragraph != [calloutCopy paragraph])
       {
         [objc_msgSend(v17 "paragraph")];
         v23 = v22;
@@ -1028,58 +1028,58 @@ LABEL_53:
       {
         if ([v17 outOrder] > 1)
         {
-          v3 = v17;
+          calloutCopy = v17;
         }
       }
 
       else
       {
-        v3 = v17;
+        calloutCopy = v17;
       }
     }
 
-    [v3 setCalloutType:3];
+    [calloutCopy setCalloutType:3];
   }
 }
 
-- (BOOL)column:(id)a3 isLinkedBelowTo:(id)a4
+- (BOOL)column:(id)column isLinkedBelowTo:(id)to
 {
-  if (![a3 count] || !objc_msgSend(a4, "count"))
+  if (![column count] || !objc_msgSend(to, "count"))
   {
     return 0;
   }
 
-  v7 = [a3 lastChild];
+  lastChild = [column lastChild];
 
-  return [(CPColumnMaker *)self paragraph:v7 isLinkedBelowTo:a4];
+  return [(CPColumnMaker *)self paragraph:lastChild isLinkedBelowTo:to];
 }
 
-- (BOOL)paragraph:(id)a3 isLinkedBelowTo:(id)a4
+- (BOOL)paragraph:(id)paragraph isLinkedBelowTo:(id)to
 {
-  v7 = [a4 count];
+  v7 = [to count];
   if (v7)
   {
-    v8 = [objc_msgSend(a3 "flowProperties")];
-    v9 = [a4 inOrder];
+    v8 = [objc_msgSend(paragraph "flowProperties")];
+    inOrder = [to inOrder];
     LOBYTE(v7) = 0;
-    if (v9 == 1 && v8 == 1)
+    if (inOrder == 1 && v8 == 1)
     {
-      LOBYTE(v7) = -[CPColumnMaker paragraphAbove:in:](self, "paragraphAbove:in:", [a4 firstChild], self->allParagraphs) == a3;
+      LOBYTE(v7) = -[CPColumnMaker paragraphAbove:in:](self, "paragraphAbove:in:", [to firstChild], self->allParagraphs) == paragraph;
     }
   }
 
   return v7;
 }
 
-- (id)chunkAbove:(id)a3 in:(id)a4
+- (id)chunkAbove:(id)above in:(id)in
 {
-  v6 = [a4 count];
+  v6 = [in count];
   if (!v6)
   {
     return 0;
   }
 
-  [a3 bounds];
+  [above bounds];
   x = v7;
   v12 = v8;
   width = v9;
@@ -1117,9 +1117,9 @@ LABEL_53:
   v18 = (v6 & 0x7FFFFFFF) + 1;
   while (1)
   {
-    v19 = [a4 objectAtIndex:v18 - 2];
+    v19 = [in objectAtIndex:v18 - 2];
     v20 = [v19 count];
-    if (v19 != a3 && v20 != 0)
+    if (v19 != above && v20 != 0)
     {
       [v19 bounds];
       if (v24 < 0.0 || v25 < 0.0)
@@ -1160,15 +1160,15 @@ LABEL_53:
   return v19;
 }
 
-- (id)paragraphAbove:(id)a3 in:(id)a4
+- (id)paragraphAbove:(id)above in:(id)in
 {
-  v7 = [a4 count];
+  v7 = [in count];
   if (!v7)
   {
     return 0;
   }
 
-  [a3 normalizedBounds];
+  [above normalizedBounds];
   x = v8;
   v13 = v9;
   width = v10;
@@ -1199,11 +1199,11 @@ LABEL_53:
   v18 = (v7 & 0x7FFFFFFF) + 1;
   while (1)
   {
-    v19 = [a4 objectAtIndex:v18 - 2];
-    if (v19 != a3)
+    v19 = [in objectAtIndex:v18 - 2];
+    if (v19 != above)
     {
       v20 = v19;
-      if (![(CPColumnMaker *)self paragraph:v19 isBelow:a3])
+      if (![(CPColumnMaker *)self paragraph:v19 isBelow:above])
       {
         [v20 normalizedBounds];
         if (v23 < 0.0 || v24 < 0.0)
@@ -1236,16 +1236,16 @@ LABEL_53:
   return v20;
 }
 
-- (id)paragraphBelow:(id)a3 in:(id)a4
+- (id)paragraphBelow:(id)below in:(id)in
 {
-  v7 = [a4 count];
+  v7 = [in count];
   v8 = v7;
   if (!v7)
   {
     return 0;
   }
 
-  [a3 normalizedBounds];
+  [below normalizedBounds];
   x = v9;
   v14 = v10;
   width = v11;
@@ -1271,11 +1271,11 @@ LABEL_53:
   v19 = x + width + 4.0;
   while (1)
   {
-    v20 = [a4 objectAtIndex:v18];
-    if (v20 != a3)
+    v20 = [in objectAtIndex:v18];
+    if (v20 != below)
     {
       v21 = v20;
-      if (![(CPColumnMaker *)self paragraph:v20 isAbove:a3])
+      if (![(CPColumnMaker *)self paragraph:v20 isAbove:below])
       {
         [v21 normalizedBounds];
         if (v24 < 0.0 || v25 < 0.0)
@@ -1308,56 +1308,56 @@ LABEL_53:
   return v21;
 }
 
-- (BOOL)paragraph:(id)a3 isBelow:(id)a4
+- (BOOL)paragraph:(id)paragraph isBelow:(id)below
 {
-  v6 = [a3 count];
+  v6 = [paragraph count];
   if (v6)
   {
-    [a3 normalizedBounds];
+    [paragraph normalizedBounds];
     if (v9 < 0.0 || v10 < 0.0)
     {
       *&v7 = CGRectStandardize(*&v7);
     }
 
     v11 = v8 + v10;
-    [objc_msgSend(a4 lastChild];
+    [objc_msgSend(below lastChild];
     LOBYTE(v6) = v11 < v12;
   }
 
   return v6;
 }
 
-- (BOOL)paragraph:(id)a3 isAbove:(id)a4
+- (BOOL)paragraph:(id)paragraph isAbove:(id)above
 {
-  v6 = [a3 count];
+  v6 = [paragraph count];
   if (v6)
   {
-    [a4 normalizedBounds];
+    [above normalizedBounds];
     if (v9 < 0.0 || v10 < 0.0)
     {
       *&v7 = CGRectStandardize(*&v7);
     }
 
     v11 = v8 + v10;
-    [objc_msgSend(a3 lastChild];
+    [objc_msgSend(paragraph lastChild];
     LOBYTE(v6) = v12 > v11;
   }
 
   return v6;
 }
 
-- (BOOL)paragraph:(id)a3 notOnSameShapeAs:(id)a4
+- (BOOL)paragraph:(id)paragraph notOnSameShapeAs:(id)as
 {
   v7 = [(NSMutableArray *)self->otherShapes count];
   v8 = v7;
   if (v7)
   {
-    [a3 normalizedBounds];
+    [paragraph normalizedBounds];
     v38 = v10;
     v39 = v9;
     v36 = v12;
     v37 = v11;
-    [a4 normalizedBounds];
+    [as normalizedBounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -1449,18 +1449,18 @@ LABEL_5:
   return 0;
 }
 
-- (BOOL)cuttingShapeBetween:(id)a3 and:(id)a4
+- (BOOL)cuttingShapeBetween:(id)between and:(id)and
 {
   v7 = [(NSMutableArray *)self->thinHorizontalShapes count];
   v8 = v7;
   if (v7)
   {
-    [a3 normalizedBounds];
+    [between normalizedBounds];
     x = v9;
     y = v11;
     width = v13;
     v16 = v15;
-    [a4 normalizedBounds];
+    [and normalizedBounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -1685,19 +1685,19 @@ LABEL_51:
   return 0;
 }
 
-- (void)partitionShapes:(id)a3
+- (void)partitionShapes:(id)shapes
 {
   self->thinHorizontalShapes = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
   p_thinHorizontalShapes = &self->thinHorizontalShapes;
   self->otherShapes = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
   p_otherShapes = &self->otherShapes;
-  v7 = [a3 count];
+  v7 = [shapes count];
   v8 = v7;
   if (v7)
   {
     for (i = 0; v8 != i; ++i)
     {
-      v10 = [a3 objectAtIndex:i];
+      v10 = [shapes objectAtIndex:i];
       [v10 bounds];
       v15 = v11;
       v16 = v12;
@@ -1753,9 +1753,9 @@ LABEL_9:
   [(NSMutableArray *)v22 sortUsingSelector:sel_compareZDescending_];
 }
 
-- (BOOL)intervalOverlapLeft:(double)a3 right:(double)a4 paragraphs:(id)a5
+- (BOOL)intervalOverlapLeft:(double)left right:(double)right paragraphs:(id)paragraphs
 {
-  v8 = [a5 count];
+  v8 = [paragraphs count];
   v9 = v8;
   if (v8)
   {
@@ -1763,7 +1763,7 @@ LABEL_9:
     v11 = 1;
     do
     {
-      [objc_msgSend(a5 objectAtIndex:{v10), "normalizedBounds"}];
+      [objc_msgSend(paragraphs objectAtIndex:{v10), "normalizedBounds"}];
       x = v12;
       v17 = v13;
       width = v14;
@@ -1785,7 +1785,7 @@ LABEL_9:
         v20 = v12;
       }
 
-      if (x + width + 4.0 > a3 && v20 + -4.0 < a4)
+      if (x + width + 4.0 > left && v20 + -4.0 < right)
       {
         break;
       }

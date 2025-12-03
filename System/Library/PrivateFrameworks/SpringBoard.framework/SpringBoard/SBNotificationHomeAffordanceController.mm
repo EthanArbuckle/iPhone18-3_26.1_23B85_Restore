@@ -4,9 +4,9 @@
 - (BSAnimationSettings)unhideHomeAffordanceAnimationSettings;
 - (SBScreenEdgePanGestureRecognizer)screenEdgePanGesture;
 - (UIViewSpringAnimationBehaviorDescribing)settleHomeAffordanceAnimationBehaviorDescription;
-- (void)registerClient:(id)a3 withZStackIdentifier:(int64_t)a4;
-- (void)unregisterClient:(id)a3 withZStackIdentifier:(int64_t)a4;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)registerClient:(id)client withZStackIdentifier:(int64_t)identifier;
+- (void)unregisterClient:(id)client withZStackIdentifier:(int64_t)identifier;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBNotificationHomeAffordanceController
@@ -61,73 +61,73 @@ void __56__SBNotificationHomeAffordanceController_sharedInstance__block_invoke()
 
 - (BSAnimationSettings)hideHomeAffordanceAnimationSettings
 {
-  v2 = [MEMORY[0x277D65E80] rootSettings];
-  v3 = [v2 hideForHomeGestureOwnershipAnimationSettings];
-  v4 = [v3 BSAnimationSettings];
+  rootSettings = [MEMORY[0x277D65E80] rootSettings];
+  hideForHomeGestureOwnershipAnimationSettings = [rootSettings hideForHomeGestureOwnershipAnimationSettings];
+  bSAnimationSettings = [hideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
 
-  return v4;
+  return bSAnimationSettings;
 }
 
 - (BSAnimationSettings)unhideHomeAffordanceAnimationSettings
 {
-  v2 = [MEMORY[0x277D65E80] rootSettings];
-  v3 = [v2 unhideForHomeGestureOwnershipAnimationSettings];
-  v4 = [v3 BSAnimationSettings];
+  rootSettings = [MEMORY[0x277D65E80] rootSettings];
+  unhideForHomeGestureOwnershipAnimationSettings = [rootSettings unhideForHomeGestureOwnershipAnimationSettings];
+  bSAnimationSettings = [unhideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
 
-  return v4;
+  return bSAnimationSettings;
 }
 
 - (UIViewSpringAnimationBehaviorDescribing)settleHomeAffordanceAnimationBehaviorDescription
 {
   v2 = +[SBAppSwitcherDomain rootSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 alertBarSwipeDismissalSettings];
+  animationSettings = [v2 animationSettings];
+  alertBarSwipeDismissalSettings = [animationSettings alertBarSwipeDismissalSettings];
 
-  return v4;
+  return alertBarSwipeDismissalSettings;
 }
 
-- (void)registerClient:(id)a3 withZStackIdentifier:(int64_t)a4
+- (void)registerClient:(id)client withZStackIdentifier:(int64_t)identifier
 {
-  v18 = a3;
-  if (!v18)
+  clientCopy = client;
+  if (!clientCopy)
   {
     [SBNotificationHomeAffordanceController registerClient:a2 withZStackIdentifier:self];
   }
 
-  if (a4 != 14)
+  if (identifier != 14)
   {
-    [(SBNotificationHomeAffordanceController *)a2 registerClient:a4 withZStackIdentifier:?];
+    [(SBNotificationHomeAffordanceController *)a2 registerClient:identifier withZStackIdentifier:?];
   }
 
   clientsToZStackParticipants = self->_clientsToZStackParticipants;
   if (!clientsToZStackParticipants)
   {
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v9 = self->_clientsToZStackParticipants;
-    self->_clientsToZStackParticipants = v8;
+    self->_clientsToZStackParticipants = weakToStrongObjectsMapTable;
 
     clientsToZStackParticipants = self->_clientsToZStackParticipants;
   }
 
-  v10 = [(NSMapTable *)clientsToZStackParticipants keyEnumerator];
-  v11 = 0;
+  keyEnumerator = [(NSMapTable *)clientsToZStackParticipants keyEnumerator];
+  nextObject = 0;
   v12 = 0;
   while (1)
   {
-    v13 = v11;
-    v11 = [v10 nextObject];
+    v13 = nextObject;
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v11)
+    if (!nextObject)
     {
       break;
     }
 
-    v14 = [(NSMapTable *)self->_clientsToZStackParticipants objectForKey:v11];
+    v14 = [(NSMapTable *)self->_clientsToZStackParticipants objectForKey:nextObject];
 
     v12 = v14;
-    if ([v14 identifier] == a4)
+    if ([v14 identifier] == identifier)
     {
-      [(NSMapTable *)self->_clientsToZStackParticipants setObject:v14 forKey:v18];
+      [(NSMapTable *)self->_clientsToZStackParticipants setObject:v14 forKey:clientCopy];
       if (v14)
       {
         goto LABEL_17;
@@ -144,15 +144,15 @@ void __56__SBNotificationHomeAffordanceController_sharedInstance__block_invoke()
   }
 
 LABEL_13:
-  v15 = [SBApp windowSceneManager];
-  v16 = [v15 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v17 = [v16 zStackResolver];
-  v14 = [v17 acquireParticipantWithIdentifier:a4 delegate:self];
+  zStackResolver = [embeddedDisplayWindowScene zStackResolver];
+  v14 = [zStackResolver acquireParticipantWithIdentifier:identifier delegate:self];
 
   if (v14)
   {
-    [(NSMapTable *)self->_clientsToZStackParticipants setObject:v14 forKey:v18];
+    [(NSMapTable *)self->_clientsToZStackParticipants setObject:v14 forKey:clientCopy];
     if ([v14 ownsHomeGesture])
     {
       [(SBNotificationHomeAffordanceController *)self zStackParticipantDidChange:v14];
@@ -167,71 +167,71 @@ LABEL_13:
 LABEL_17:
 }
 
-- (void)unregisterClient:(id)a3 withZStackIdentifier:(int64_t)a4
+- (void)unregisterClient:(id)client withZStackIdentifier:(int64_t)identifier
 {
-  v8 = a3;
-  if (!v8)
+  clientCopy = client;
+  if (!clientCopy)
   {
     [SBNotificationHomeAffordanceController unregisterClient:a2 withZStackIdentifier:self];
   }
 
-  if (a4 != 14)
+  if (identifier != 14)
   {
-    [(SBNotificationHomeAffordanceController *)a2 unregisterClient:a4 withZStackIdentifier:?];
+    [(SBNotificationHomeAffordanceController *)a2 unregisterClient:identifier withZStackIdentifier:?];
   }
 
   v7 = [(NSMapTable *)self->_clientsToZStackParticipants objectForKey:?];
   [v7 invalidate];
-  [(NSMapTable *)self->_clientsToZStackParticipants removeObjectForKey:v8];
+  [(NSMapTable *)self->_clientsToZStackParticipants removeObjectForKey:clientCopy];
   if (![(NSMapTable *)self->_clientsToZStackParticipants count])
   {
     [(SBHomeGesturePanGestureRecognizer *)self->_screenEdgePanGesture setEnabled:0];
   }
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
-  v12 = a3;
-  v4 = [(NSMapTable *)self->_clientsToZStackParticipants keyEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  changeCopy = change;
+  keyEnumerator = [(NSMapTable *)self->_clientsToZStackParticipants keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
-    LOBYTE(v7) = 0;
+    v6 = nextObject;
+    LOBYTE(ownsHomeGesture) = 0;
     do
     {
       v8 = [(NSMapTable *)self->_clientsToZStackParticipants objectForKey:v6];
       v9 = v8;
-      if (v7)
+      if (ownsHomeGesture)
       {
-        v7 = 1;
+        ownsHomeGesture = 1;
       }
 
       else
       {
-        v7 = [v8 ownsHomeGesture];
+        ownsHomeGesture = [v8 ownsHomeGesture];
       }
 
-      if (v9 == v12)
+      if (v9 == changeCopy)
       {
         [v6 zStackParticipantDidChange:v9];
       }
 
-      v10 = [v4 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v6 = v10;
+      v6 = nextObject2;
     }
 
-    while (v10);
+    while (nextObject2);
   }
 
   else
   {
-    v7 = 0;
+    ownsHomeGesture = 0;
   }
 
-  v11 = [(SBNotificationHomeAffordanceController *)self screenEdgePanGesture];
-  [v11 setEnabled:v7];
+  screenEdgePanGesture = [(SBNotificationHomeAffordanceController *)self screenEdgePanGesture];
+  [screenEdgePanGesture setEnabled:ownsHomeGesture];
 }
 
 - (void)registerClient:(uint64_t)a1 withZStackIdentifier:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

@@ -1,32 +1,32 @@
 @interface SMEmergencyContactsNotifiedSyncMessage
-- (SMEmergencyContactsNotifiedSyncMessage)initWithCoder:(id)a3;
-- (SMEmergencyContactsNotifiedSyncMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 triggerCategory:(unint64_t)a6;
-- (SMEmergencyContactsNotifiedSyncMessage)initWithDictionary:(id)a3;
-- (SMEmergencyContactsNotifiedSyncMessage)initWithSessionID:(id)a3 triggerCategory:(unint64_t)a4;
+- (SMEmergencyContactsNotifiedSyncMessage)initWithCoder:(id)coder;
+- (SMEmergencyContactsNotifiedSyncMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD triggerCategory:(unint64_t)category;
+- (SMEmergencyContactsNotifiedSyncMessage)initWithDictionary:(id)dictionary;
+- (SMEmergencyContactsNotifiedSyncMessage)initWithSessionID:(id)d triggerCategory:(unint64_t)category;
 - (id)outputToDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMEmergencyContactsNotifiedSyncMessage
 
-- (SMEmergencyContactsNotifiedSyncMessage)initWithSessionID:(id)a3 triggerCategory:(unint64_t)a4
+- (SMEmergencyContactsNotifiedSyncMessage)initWithSessionID:(id)d triggerCategory:(unint64_t)category
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  dCopy = d;
   v8 = [v6 now];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [(SMEmergencyContactsNotifiedSyncMessage *)self initWithDate:v8 messageID:v9 sessionID:v7 triggerCategory:a4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v10 = [(SMEmergencyContactsNotifiedSyncMessage *)self initWithDate:v8 messageID:uUID sessionID:dCopy triggerCategory:category];
 
   return v10;
 }
 
-- (SMEmergencyContactsNotifiedSyncMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 triggerCategory:(unint64_t)a6
+- (SMEmergencyContactsNotifiedSyncMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD triggerCategory:(unint64_t)category
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  v13 = iDCopy;
+  if (!dateCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -41,7 +41,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v11)
+  if (!dCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -54,7 +54,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v12)
+  if (!iDCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -67,7 +67,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a6 - 1 >= 0x19)
+  if (category - 1 >= 0x19)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -79,31 +79,31 @@ LABEL_16:
 
 LABEL_17:
 
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   v19.receiver = self;
   v19.super_class = SMEmergencyContactsNotifiedSyncMessage;
-  v14 = [(SMMessage *)&v19 initWithDate:v10 messageID:v11 sessionID:v12];
+  v14 = [(SMMessage *)&v19 initWithDate:dateCopy messageID:dCopy sessionID:iDCopy];
   if (v14)
   {
-    v14->_triggerCategory = a6;
+    v14->_triggerCategory = category;
   }
 
   self = v14;
-  v15 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v15;
+  return selfCopy;
 }
 
-- (SMEmergencyContactsNotifiedSyncMessage)initWithDictionary:(id)a3
+- (SMEmergencyContactsNotifiedSyncMessage)initWithDictionary:(id)dictionary
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -115,10 +115,10 @@ LABEL_18:
     goto LABEL_14;
   }
 
-  v7 = [v5 valueForKey:@"messageType"];
-  v8 = [v7 intValue];
+  v7 = [dictionaryCopy valueForKey:@"messageType"];
+  intValue = [v7 intValue];
 
-  if ([objc_opt_class() messageType] != v8)
+  if ([objc_opt_class() messageType] != intValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -134,9 +134,9 @@ LABEL_18:
     v48 = 2112;
     v49 = v26;
     v50 = 1024;
-    v51 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v52 = 1024;
-    v53 = v8;
+    v53 = intValue;
     v27 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
     v28 = v12;
     v29 = 34;
@@ -147,9 +147,9 @@ LABEL_32:
   }
 
   v9 = [v6 valueForKey:@"interfaceVersion"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
-  if (v10 == 1)
+  if (intValue2 == 1)
   {
     v11 = [v6 valueForKey:@"sendDate"];
     v12 = v11;
@@ -168,7 +168,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v14, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", &v46, 0x16u);
       }
 
-      v23 = 0;
+      selfCopy = 0;
       goto LABEL_30;
     }
 
@@ -194,7 +194,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v20, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", &v46, 0x16u);
       }
 
-      v23 = 0;
+      selfCopy = 0;
       goto LABEL_29;
     }
 
@@ -209,7 +209,7 @@ LABEL_32:
       {
         v22 = v21;
         self = [(SMEmergencyContactsNotifiedSyncMessage *)self initWithDate:v14 messageID:v17 sessionID:v20 triggerCategory:[v21 intValue]];
-        v23 = self;
+        selfCopy = self;
 LABEL_28:
 
 LABEL_29:
@@ -250,7 +250,7 @@ LABEL_30:
       }
     }
 
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
@@ -265,7 +265,7 @@ LABEL_30:
     v48 = 2112;
     v49 = v26;
     v50 = 1024;
-    v51 = v10;
+    messageType = intValue2;
     v27 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v28 = v12;
     v29 = 28;
@@ -273,29 +273,29 @@ LABEL_30:
   }
 
 LABEL_14:
-  v23 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v30 = *MEMORY[0x277D85DE8];
-  return v23;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
 {
   v6.receiver = self;
   v6.super_class = SMEmergencyContactsNotifiedSyncMessage;
-  v3 = [(SMMessage *)&v6 outputToDictionary];
+  outputToDictionary = [(SMMessage *)&v6 outputToDictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMEmergencyContactsNotifiedSyncMessage triggerCategory](self, "triggerCategory")}];
-  [v3 setObject:v4 forKey:@"triggerCategory"];
+  [outputToDictionary setObject:v4 forKey:@"triggerCategory"];
 
-  return v3;
+  return outputToDictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -310,19 +310,19 @@ LABEL_15:
 
   v8.receiver = self;
   v8.super_class = SMEmergencyContactsNotifiedSyncMessage;
-  [(SMMessage *)&v8 encodeWithCoder:v4];
+  [(SMMessage *)&v8 encodeWithCoder:coderCopy];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMEmergencyContactsNotifiedSyncMessage triggerCategory](self, "triggerCategory")}];
-  [v4 encodeObject:v6 forKey:@"triggerCategory"];
+  [coderCopy encodeObject:v6 forKey:@"triggerCategory"];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (SMEmergencyContactsNotifiedSyncMessage)initWithCoder:(id)a3
+- (SMEmergencyContactsNotifiedSyncMessage)initWithCoder:(id)coder
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  coderCopy = coder;
+  v6 = coderCopy;
+  if (!coderCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -334,7 +334,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"messageType"];
+  v7 = [coderCopy decodeIntegerForKey:@"messageType"];
   if ([objc_opt_class() messageType] != v7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -351,7 +351,7 @@ LABEL_15:
     v40 = 2112;
     v41 = v17;
     v42 = 1024;
-    v43 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v44 = 1024;
     v45 = v7;
     v18 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
@@ -382,7 +382,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v10, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", &v38, 0x16u);
       }
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_30;
     }
 
@@ -402,7 +402,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v11, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", &v38, 0x16u);
       }
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_29;
     }
 
@@ -414,7 +414,7 @@ LABEL_32:
       {
         v13 = v12;
         self = [(SMEmergencyContactsNotifiedSyncMessage *)self initWithDate:v9 messageID:v10 sessionID:v11 triggerCategory:[v12 intValue]];
-        v14 = self;
+        selfCopy = self;
 LABEL_28:
 
 LABEL_29:
@@ -455,7 +455,7 @@ LABEL_30:
       }
     }
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
@@ -471,7 +471,7 @@ LABEL_30:
     v40 = 2112;
     v41 = v17;
     v42 = 1024;
-    v43 = v21;
+    messageType = v21;
     v18 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v19 = v9;
     v20 = 28;
@@ -479,11 +479,11 @@ LABEL_30:
   }
 
 LABEL_14:
-  v14 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v22 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
 @end

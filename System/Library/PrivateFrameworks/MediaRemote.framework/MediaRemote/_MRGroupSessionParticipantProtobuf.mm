@@ -1,21 +1,21 @@
 @interface _MRGroupSessionParticipantProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGuest:(BOOL)a3;
-- (void)setHasHidden:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGuest:(BOOL)guest;
+- (void)setHasHidden:(BOOL)hidden;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGroupSessionParticipantProtobuf
 
-- (void)setHasGuest:(BOOL)a3
+- (void)setHasGuest:(BOOL)guest
 {
-  if (a3)
+  if (guest)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasHidden:(BOOL)a3
+- (void)setHasHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = 4;
   }
@@ -49,27 +49,27 @@
   v8.receiver = self;
   v8.super_class = _MRGroupSessionParticipantProtobuf;
   v4 = [(_MRGroupSessionParticipantProtobuf *)&v8 description];
-  v5 = [(_MRGroupSessionParticipantProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGroupSessionParticipantProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   identity = self->_identity;
   if (identity)
   {
-    v7 = [(_MRUserIdentityProtobuf *)identity dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"identity"];
+    dictionaryRepresentation = [(_MRUserIdentityProtobuf *)identity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"identity"];
   }
 
   has = self->_has;
@@ -111,20 +111,20 @@ LABEL_9:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_identity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -132,7 +132,7 @@ LABEL_9:
   {
     connected = self->_connected;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -153,39 +153,39 @@ LABEL_7:
 
   guest = self->_guest;
   PBDataWriterWriteBOOLField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
     hidden = self->_hidden;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_identity)
   {
     [v6 setIdentity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    v4[24] = self->_connected;
-    v4[28] |= 1u;
+    toCopy[24] = self->_connected;
+    toCopy[28] |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -204,26 +204,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[25] = self->_guest;
-  v4[28] |= 2u;
+  toCopy[25] = self->_guest;
+  toCopy[28] |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
-    v4[26] = self->_hidden;
-    v4[28] |= 4u;
+    toCopy[26] = self->_hidden;
+    toCopy[28] |= 4u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(_MRUserIdentityProtobuf *)self->_identity copyWithZone:a3];
+  v8 = [(_MRUserIdentityProtobuf *)self->_identity copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -265,16 +265,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 1))
+  if (identifier | *(equalCopy + 1))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -283,7 +283,7 @@ LABEL_4:
   }
 
   identity = self->_identity;
-  if (identity | *(v4 + 2))
+  if (identity | *(equalCopy + 2))
   {
     if (![(_MRUserIdentityProtobuf *)identity isEqual:?])
     {
@@ -293,34 +293,34 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_28;
     }
 
-    v8 = *(v4 + 24);
+    v8 = *(equalCopy + 24);
     if (self->_connected)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
       goto LABEL_10;
     }
@@ -330,40 +330,40 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ((*(v4 + 28) & 2) == 0)
+  if ((*(equalCopy + 28) & 2) == 0)
   {
     goto LABEL_28;
   }
 
-  v9 = *(v4 + 25);
+  v9 = *(equalCopy + 25);
   if (self->_guest)
   {
-    if ((*(v4 + 25) & 1) == 0)
+    if ((*(equalCopy + 25) & 1) == 0)
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 25))
+  else if (*(equalCopy + 25))
   {
     goto LABEL_28;
   }
 
 LABEL_10:
-  v7 = (*(v4 + 28) & 4) == 0;
+  v7 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) != 0)
+    if ((*(equalCopy + 28) & 4) != 0)
     {
       if (self->_hidden)
       {
-        if (*(v4 + 26))
+        if (*(equalCopy + 26))
         {
           goto LABEL_30;
         }
       }
 
-      else if (!*(v4 + 26))
+      else if (!*(equalCopy + 26))
       {
 LABEL_30:
         v7 = 1;
@@ -421,18 +421,18 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(_MRGroupSessionParticipantProtobuf *)self setIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
   identity = self->_identity;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (identity)
   {
     if (!v6)
@@ -453,14 +453,14 @@ LABEL_4:
     [(_MRGroupSessionParticipantProtobuf *)self setIdentity:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_9:
-  v7 = v4[28];
+  v7 = fromCopy[28];
   if (v7)
   {
-    self->_connected = v4[24];
+    self->_connected = fromCopy[24];
     *&self->_has |= 1u;
-    v7 = v4[28];
+    v7 = fromCopy[28];
     if ((v7 & 2) == 0)
     {
 LABEL_11:
@@ -473,17 +473,17 @@ LABEL_11:
     }
   }
 
-  else if ((v4[28] & 2) == 0)
+  else if ((fromCopy[28] & 2) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_guest = v4[25];
+  self->_guest = fromCopy[25];
   *&self->_has |= 2u;
-  if ((v4[28] & 4) != 0)
+  if ((fromCopy[28] & 4) != 0)
   {
 LABEL_12:
-    self->_hidden = v4[26];
+    self->_hidden = fromCopy[26];
     *&self->_has |= 4u;
   }
 

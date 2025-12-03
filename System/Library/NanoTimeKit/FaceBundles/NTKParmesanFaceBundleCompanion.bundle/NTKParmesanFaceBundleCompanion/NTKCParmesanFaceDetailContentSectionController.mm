@@ -1,53 +1,53 @@
 @interface NTKCParmesanFaceDetailContentSectionController
 - (BOOL)_dynamicEditorHasSelection;
-- (BOOL)_handleDidSelectOption:(id)a3;
+- (BOOL)_handleDidSelectOption:(id)option;
 - (BOOL)canAddFace;
 - (BOOL)hasChanges;
-- (NTKCParmesanFaceDetailContentSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7 externalAssets:(id)a8;
+- (NTKCParmesanFaceDetailContentSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view externalAssets:(id)assets;
 - (UIViewController)parentViewController;
 - (id)_currentEditor;
 - (id)_previewNavigationControllerForCurrentEditor;
-- (id)cellForEditOption:(id)a3;
+- (id)cellForEditOption:(id)option;
 - (void)_reloadEditOptionCellContent;
-- (void)_setContentForCell:(id)a3 withEditOption:(id)a4;
-- (void)_setPhotos:(id)a3;
+- (void)_setContentForCell:(id)cell withEditOption:(id)option;
+- (void)_setPhotos:(id)photos;
 - (void)_updateSection;
-- (void)didSelectRow:(int64_t)a3;
+- (void)didSelectRow:(int64_t)row;
 - (void)faceDidChange;
 - (void)faceDidChangeResourceDirectory;
-- (void)saveChangesWithCompletion:(id)a3;
-- (void)setSelectedOptions:(id)a3;
-- (void)shuffleSelectionViewController:(id)a3 didFinishWithSelection:(id)a4;
+- (void)saveChangesWithCompletion:(id)completion;
+- (void)setSelectedOptions:(id)options;
+- (void)shuffleSelectionViewController:(id)controller didFinishWithSelection:(id)selection;
 @end
 
 @implementation NTKCParmesanFaceDetailContentSectionController
 
-- (NTKCParmesanFaceDetailContentSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7 externalAssets:(id)a8
+- (NTKCParmesanFaceDetailContentSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view externalAssets:(id)assets
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v20 = a8;
-  if (v20)
+  galleryCopy = gallery;
+  controllerCopy = controller;
+  faceCopy = face;
+  collectionCopy = collection;
+  viewCopy = view;
+  assetsCopy = assets;
+  if (assetsCopy)
   {
-    v21 = objc_msgSend_filteredCollectionWithObjectsPassingTest_(v16, v18, &unk_284EBA548, v19);
+    v21 = objc_msgSend_filteredCollectionWithObjectsPassingTest_(collectionCopy, v18, &unk_284EBA548, v19);
   }
 
   else
   {
-    v21 = v16;
+    v21 = collectionCopy;
   }
 
   v22 = v21;
   v28.receiver = self;
   v28.super_class = NTKCParmesanFaceDetailContentSectionController;
-  v23 = [(NTKCFaceDetailEditOptionVerticalSectionController *)&v28 initWithTableViewController:v14 face:v15 inGallery:v11 editOptionCollection:v21 faceView:v17];
+  v23 = [(NTKCFaceDetailEditOptionVerticalSectionController *)&v28 initWithTableViewController:controllerCopy face:faceCopy inGallery:galleryCopy editOptionCollection:v21 faceView:viewCopy];
   v26 = v23;
   if (v23)
   {
-    objc_msgSend_setExternalAssets_(v23, v24, v20, v25);
+    objc_msgSend_setExternalAssets_(v23, v24, assetsCopy, v25);
   }
 
   return v26;
@@ -97,20 +97,20 @@ LABEL_7:
   objc_msgSend_enumerateObjectsUsingBlock_(v9, v10, v12, v11);
 }
 
-- (void)_setContentForCell:(id)a3 withEditOption:(id)a4
+- (void)_setContentForCell:(id)cell withEditOption:(id)option
 {
-  v43 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = optionCopy;
     currentContent = self->_currentContent;
     v12 = objc_msgSend_content(v7, v9, v10, v11);
     if (objc_msgSend_content(v7, v13, v14, v15) == 1)
     {
       v17 = objc_msgSend_localizedStringForKey_comment_(NTKParmesanFaceBundle, v16, @"PARMESAN_CONTENT_EDIT_OPTION_MANUAL", @"Manual content option");
-      objc_msgSend_setTitleText_(v43, v18, v17, v19);
+      objc_msgSend_setTitleText_(cellCopy, v18, v17, v19);
 
       parmesanPhotosEditor = self->_parmesanPhotosEditor;
       if (parmesanPhotosEditor || (parmesanPhotosEditor = self->_imageEditor) != 0)
@@ -121,10 +121,10 @@ LABEL_7:
           v25 = v24;
           v26 = NTKCCustomizationLocalizedFormat();
           v29 = objc_msgSend_localizedStringWithFormat_(MEMORY[0x277CCACA8], v27, v26, v28, v25);
-          objc_msgSend_setValueText_(v43, v30, v29, v31);
+          objc_msgSend_setValueText_(cellCopy, v30, v29, v31);
 
 LABEL_10:
-          objc_msgSend_setActive_(v43, v41, currentContent == v12, v42);
+          objc_msgSend_setActive_(cellCopy, v41, currentContent == v12, v42);
 
           goto LABEL_11;
         }
@@ -136,13 +136,13 @@ LABEL_10:
     else
     {
       v32 = objc_msgSend_localizedStringForKey_comment_(NTKParmesanFaceBundle, v16, @"PARMESAN_CONTENT_EDIT_OPTION_DYNAMIC", @"Dynamic content title");
-      objc_msgSend_setTitleText_(v43, v33, v32, v34);
+      objc_msgSend_setTitleText_(cellCopy, v33, v32, v34);
 
       v38 = objc_msgSend_localizedShuffleDescription(self->_albumEditor, v35, v36, v37);
     }
 
     v26 = v38;
-    objc_msgSend_setValueText_(v43, v39, v38, v40);
+    objc_msgSend_setValueText_(cellCopy, v39, v38, v40);
     goto LABEL_10;
   }
 
@@ -165,39 +165,39 @@ LABEL_11:
   objc_msgSend__updateSection(self, v3, v4, v5);
 }
 
-- (id)cellForEditOption:(id)a3
+- (id)cellForEditOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_alloc(MEMORY[0x277D2BF98]);
-    v8 = objc_msgSend_initWithEditOption_(v5, v6, v4, v7);
-    objc_msgSend__setContentForCell_withEditOption_(self, v9, v8, v4);
+    v8 = objc_msgSend_initWithEditOption_(v5, v6, optionCopy, v7);
+    objc_msgSend__setContentForCell_withEditOption_(self, v9, v8, optionCopy);
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = NTKCParmesanFaceDetailContentSectionController;
-    v8 = [(NTKCFaceDetailEditOptionVerticalSectionController *)&v11 cellForEditOption:v4];
+    v8 = [(NTKCFaceDetailEditOptionVerticalSectionController *)&v11 cellForEditOption:optionCopy];
   }
 
   return v8;
 }
 
-- (void)setSelectedOptions:(id)a3
+- (void)setSelectedOptions:(id)options
 {
   v262.receiver = self;
   v262.super_class = NTKCParmesanFaceDetailContentSectionController;
-  v4 = a3;
-  [(NTKCFaceDetailEditOptionVerticalSectionController *)&v262 setSelectedOptions:v4];
+  optionsCopy = options;
+  [(NTKCFaceDetailEditOptionVerticalSectionController *)&v262 setSelectedOptions:optionsCopy];
   v105 = *&self->_parmesanPhotosEditor == 0 && self->_imageEditor == 0;
   v8 = MEMORY[0x277CCABB0];
   v9 = objc_msgSend_collection(self, v5, v6, v7);
   v13 = objc_msgSend_mode(v9, v10, v11, v12);
   v16 = objc_msgSend_numberWithInteger_(v8, v14, v13, v15);
-  v19 = objc_msgSend_objectForKeyedSubscript_(v4, v17, v16, v18);
+  v19 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v17, v16, v18);
 
   if (v105 || (v23 = self->_currentContent, v23 != objc_msgSend_content(v19, v20, v21, v22)))
   {
@@ -509,24 +509,24 @@ LABEL_58:
   }
 }
 
-- (void)didSelectRow:(int64_t)a3
+- (void)didSelectRow:(int64_t)row
 {
-  v6 = objc_msgSend_optionAtIndex_(self, a2, a3, v3);
+  v6 = objc_msgSend_optionAtIndex_(self, a2, row, v3);
   v9 = objc_msgSend__handleDidSelectOption_(self, v7, v6, v8);
 
   if (v9)
   {
     v14 = objc_msgSend_delegate(self, v10, v11, v12);
-    objc_msgSend_editOptionSection_didSelectOptionAtIndex_(v14, v13, self, a3);
+    objc_msgSend_editOptionSection_didSelectOptionAtIndex_(v14, v13, self, row);
   }
 }
 
-- (BOOL)_handleDidSelectOption:(id)a3
+- (BOOL)_handleDidSelectOption:(id)option
 {
-  v4 = a3;
-  if (objc_msgSend_content(v4, v5, v6, v7) || self->_currentContent != 1 || (objc_msgSend_inGallery(self, v8, v9, v10) & 1) != 0 || self->_canDeleteCustomPhotos)
+  optionCopy = option;
+  if (objc_msgSend_content(optionCopy, v5, v6, v7) || self->_currentContent != 1 || (objc_msgSend_inGallery(self, v8, v9, v10) & 1) != 0 || self->_canDeleteCustomPhotos)
   {
-    if (objc_msgSend_content(v4, v8, v9, v10) == 1)
+    if (objc_msgSend_content(optionCopy, v8, v9, v10) == 1)
     {
       if ((objc_msgSend__manualEditorHasPhotos(self, v11, v12, v13) & 1) == 0)
       {
@@ -553,7 +553,7 @@ LABEL_58:
 
     else
     {
-      if (objc_msgSend_content(v4, v11, v12, v13))
+      if (objc_msgSend_content(optionCopy, v11, v12, v13))
       {
 LABEL_17:
         self->_canDeleteCustomPhotos = 0;
@@ -599,7 +599,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (objc_msgSend_content(v4, v8, v9, v10))
+  if (objc_msgSend_content(optionCopy, v8, v9, v10))
   {
     v81 = 0;
     objc_msgSend_alertControllerWithTitle_message_preferredStyle_(MEMORY[0x277D75110], v80, 0, 0, 0);
@@ -629,7 +629,7 @@ LABEL_16:
   v109[2] = sub_23BF12254;
   v109[3] = &unk_278BA6938;
   v109[4] = self;
-  v110 = v4;
+  v110 = optionCopy;
   v93 = objc_msgSend_actionWithTitle_style_handler_(v91, v92, v90, 2, v109);
   objc_msgSend_addAction_(v83, v94, v93, v95);
   v96 = MEMORY[0x277D750F8];
@@ -685,9 +685,9 @@ LABEL_6:
   return v34;
 }
 
-- (void)_setPhotos:(id)a3
+- (void)_setPhotos:(id)photos
 {
-  objc_msgSend_addAssetsFromUIImagePicker_(self->_parmesanPhotosEditor, a2, a3, v3);
+  objc_msgSend_addAssetsFromUIImagePicker_(self->_parmesanPhotosEditor, a2, photos, v3);
   objc_msgSend__updateSection(self, v5, v6, v7);
   if (objc_msgSend_inGallery(self, v8, v9, v10))
   {
@@ -767,9 +767,9 @@ LABEL_7:
   return v8;
 }
 
-- (void)saveChangesWithCompletion:(id)a3
+- (void)saveChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (objc_msgSend_hasChanges(self, v5, v6, v7))
   {
     v14 = objc_msgSend__currentEditor(self, v8, v9, v10);
@@ -788,37 +788,37 @@ LABEL_7:
       v20[2] = sub_23BF12AC8;
       v20[3] = &unk_278BA6988;
       v20[4] = self;
-      v21 = v4;
+      v21 = completionCopy;
       objc_msgSend_finalizeWithProgress_completion_(v14, v19, v22, v20);
     }
 
-    else if (v4)
+    else if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)shuffleSelectionViewController:(id)a3 didFinishWithSelection:(id)a4
+- (void)shuffleSelectionViewController:(id)controller didFinishWithSelection:(id)selection
 {
   v117 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  selectionCopy = selection;
   v11 = objc_msgSend_logObject(NTKParmesanFaceBundle, v8, v9, v10);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = objc_msgSend_description(v7, v12, v13, v14);
+    v15 = objc_msgSend_description(selectionCopy, v12, v13, v14);
     *buf = 138412290;
     v116 = v15;
     _os_log_impl(&dword_23BF0C000, v11, OS_LOG_TYPE_DEFAULT, "Shuffle selection did finish with user selection =  %@", buf, 0xCu);
   }
 
-  v19 = objc_msgSend_manualSelection(v7, v16, v17, v18);
+  v19 = objc_msgSend_manualSelection(selectionCopy, v16, v17, v18);
   v23 = objc_msgSend_count(v19, v20, v21, v22);
 
   if (v23)
@@ -827,7 +827,7 @@ LABEL_7:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v116 = v7;
+      v116 = selectionCopy;
       _os_log_impl(&dword_23BF0C000, v27, OS_LOG_TYPE_DEFAULT, "shuffleSelection:didFinish: selected manual photos, switching editors: %@", buf, 0xCu);
     }
 
@@ -840,8 +840,8 @@ LABEL_7:
     self->_parmesanPhotosEditor = v38;
 
     v40 = MEMORY[0x277CD97A8];
-    v105 = v7;
-    v44 = objc_msgSend_manualSelection(v7, v41, v42, v43);
+    v105 = selectionCopy;
+    v44 = objc_msgSend_manualSelection(selectionCopy, v41, v42, v43);
     v46 = objc_msgSend_fetchAssetsWithLocalIdentifiers_options_(v40, v45, v44, 0);
 
     v111 = 0u;
@@ -876,12 +876,12 @@ LABEL_7:
     }
 
     v58 = self->_parmesanPhotosEditor;
-    v7 = v105;
+    selectionCopy = v105;
   }
 
   else
   {
-    v59 = objc_msgSend_editor(v6, v24, v25, v26);
+    v59 = objc_msgSend_editor(controllerCopy, v24, v25, v26);
     self->_currentContent = 0;
     v47 = v59;
     v63 = objc_msgSend_logObject(NTKParmesanFaceBundle, v60, v61, v62);

@@ -1,7 +1,7 @@
 @interface __SwiftNativeNSArrayWithContiguousStorage
 - (int64_t)count;
-- (int64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(int64_t)a5;
-- (void)getObjects:(id *)a3 range:(id)a4;
+- (int64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(int64_t)count;
+- (void)getObjects:(id *)objects range:(id)range;
 @end
 
 @implementation __SwiftNativeNSArrayWithContiguousStorage
@@ -15,24 +15,24 @@
   return v5;
 }
 
-- (void)getObjects:(id *)a3 range:(id)a4
+- (void)getObjects:(id *)objects range:(id)range
 {
-  v7 = a4;
-  v8 = a3;
+  rangeCopy = range;
+  objectsCopy = objects;
   v5 = *(self->super.super.super.isa + 11);
   self;
   v5(partial apply for closure #1 in __SwiftNativeNSArrayWithContiguousStorage.getObjects(_:range:), &v6, &unk_1EEEAC658);
   self;
 }
 
-- (int64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(int64_t)a5
+- (int64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(int64_t)count
 {
   result = 0;
-  var0 = a3->var0;
-  v13 = *&a3->var1;
-  v14 = *a3->var3;
-  v15 = *&a3->var3[2];
-  v16 = a3->var3[4];
+  var0 = state->var0;
+  v13 = *&state->var1;
+  v14 = *state->var3;
+  v15 = *&state->var3[2];
+  v16 = state->var3[4];
   v12 = var0;
   if (!var0)
   {

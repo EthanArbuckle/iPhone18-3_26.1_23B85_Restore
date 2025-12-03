@@ -11,35 +11,35 @@
   v3 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
+    albumIdentifier = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
     *buf = 138412290;
-    v48 = v4;
+    v48 = albumIdentifier;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "NTKCompanionSyncedAlbumEditor: fetching asset for albumIdentifier %@", buf, 0xCu);
   }
 
-  v5 = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
+  albumIdentifier2 = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
 
   v6 = objc_alloc(MEMORY[0x277D2BA48]);
-  v7 = [(NTKCompanionResourceDirectoryEditor *)self device];
-  v8 = [v7 nrDevice];
-  if (v5)
+  device = [(NTKCompanionResourceDirectoryEditor *)self device];
+  nrDevice = [device nrDevice];
+  if (albumIdentifier2)
   {
-    v9 = [v6 initWithCollectionTarget:4 device:v8];
+    v9 = [v6 initWithCollectionTarget:4 device:nrDevice];
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v10 = [v9 assetCollections];
-    v11 = [v10 countByEnumeratingWithState:&v41 objects:v46 count:16];
-    if (v11)
+    assetCollections = [v9 assetCollections];
+    albumIdentifier4 = [assetCollections countByEnumeratingWithState:&v41 objects:v46 count:16];
+    if (albumIdentifier4)
     {
       v39 = v9;
-      obj = v10;
+      obj = assetCollections;
       v12 = *v42;
       while (2)
       {
-        for (i = 0; i != v11; i = i + 1)
+        for (i = 0; i != albumIdentifier4; i = i + 1)
         {
           if (*v42 != v12)
           {
@@ -49,36 +49,36 @@
           v14 = *(*(&v41 + 1) + 8 * i);
           v15 = MEMORY[0x277CD97B8];
           v16 = NTK_npto_uuid(v14);
-          v17 = [v16 UUIDString];
-          v18 = [v15 localIdentifierWithUUID:v17];
-          v19 = self;
-          v20 = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
-          v21 = [v18 isEqualToString:v20];
+          uUIDString = [v16 UUIDString];
+          v18 = [v15 localIdentifierWithUUID:uUIDString];
+          selfCopy = self;
+          albumIdentifier3 = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
+          v21 = [v18 isEqualToString:albumIdentifier3];
 
           if (v21)
           {
-            self = v19;
-            v11 = [(NTKCompanionSinglePHAssetEditor *)v19 albumIdentifier];
+            self = selfCopy;
+            albumIdentifier4 = [(NTKCompanionSinglePHAssetEditor *)selfCopy albumIdentifier];
             v22 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v14 localizedTitle];
+              localizedTitle = [v14 localizedTitle];
               *buf = 138412290;
-              v48 = v23;
+              v48 = localizedTitle;
               _os_log_impl(&dword_22D9C5000, v22, OS_LOG_TYPE_DEFAULT, "NTKCompanionSyncedAlbumEditor: found photos face album from assetCollection %@", buf, 0xCu);
             }
 
             v9 = v39;
-            v10 = obj;
+            assetCollections = obj;
             goto LABEL_21;
           }
 
-          self = v19;
+          self = selfCopy;
         }
 
-        v10 = obj;
-        v11 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
-        if (v11)
+        assetCollections = obj;
+        albumIdentifier4 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
+        if (albumIdentifier4)
         {
           continue;
         }
@@ -92,30 +92,30 @@
 
   else
   {
-    v9 = [v6 initWithCollectionTarget:1 device:v8];
+    v9 = [v6 initWithCollectionTarget:1 device:nrDevice];
 
-    v24 = [v9 assetCollections];
-    v10 = [v24 anyObject];
+    assetCollections2 = [v9 assetCollections];
+    assetCollections = [assetCollections2 anyObject];
 
-    if (v10)
+    if (assetCollections)
     {
       v25 = MEMORY[0x277CD97B8];
-      v26 = NTK_npto_uuid(v10);
-      v27 = [v26 UUIDString];
-      v11 = [v25 localIdentifierWithUUID:v27];
+      v26 = NTK_npto_uuid(assetCollections);
+      uUIDString2 = [v26 UUIDString];
+      albumIdentifier4 = [v25 localIdentifierWithUUID:uUIDString2];
     }
 
     else
     {
-      v11 = 0;
+      albumIdentifier4 = 0;
     }
 
     v22 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v10 localizedTitle];
+      localizedTitle2 = [assetCollections localizedTitle];
       *buf = 138412290;
-      v48 = v28;
+      v48 = localizedTitle2;
       _os_log_impl(&dword_22D9C5000, v22, OS_LOG_TYPE_DEFAULT, "NTKCompanionSyncedAlbumEditor: found synced album from assetCollection %@", buf, 0xCu);
     }
 
@@ -126,44 +126,44 @@ LABEL_21:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v48 = v11;
+    v48 = albumIdentifier4;
     _os_log_impl(&dword_22D9C5000, v29, OS_LOG_TYPE_DEFAULT, "NTKCompanionSyncedAlbumEditor: realAlbumIdentifier == %@", buf, 0xCu);
   }
 
-  if (v11)
+  if (albumIdentifier4)
   {
-    v30 = [(NTKCompanionSinglePHAssetEditor *)self optionsForSingleAsset];
+    optionsForSingleAsset = [(NTKCompanionSinglePHAssetEditor *)self optionsForSingleAsset];
     v31 = MEMORY[0x277CD97B8];
-    v45 = v11;
+    v45 = albumIdentifier4;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
     v33 = [v31 fetchAssetCollectionsWithLocalIdentifiers:v32 options:0];
-    v34 = [v33 firstObject];
+    firstObject = [v33 firstObject];
 
-    v35 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v34 options:v30];
-    v36 = [v35 firstObject];
+    v35 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:firstObject options:optionsForSingleAsset];
+    firstObject2 = [v35 firstObject];
 
     v37 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v48 = v36;
+      v48 = firstObject2;
       _os_log_impl(&dword_22D9C5000, v37, OS_LOG_TYPE_DEFAULT, "NTKCompanionSyncedAlbumEditor: fetched asset %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v36 = 0;
+    firstObject2 = 0;
   }
 
-  return v36;
+  return firstObject2;
 }
 
 - (id)_fetchAlbumName
 {
-  v3 = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
-  v4 = [(NTKCompanionResourceDirectoryEditor *)self device];
-  v5 = NTKAlbumNameForLocalIdentifier(v3, v4);
+  albumIdentifier = [(NTKCompanionSinglePHAssetEditor *)self albumIdentifier];
+  device = [(NTKCompanionResourceDirectoryEditor *)self device];
+  v5 = NTKAlbumNameForLocalIdentifier(albumIdentifier, device);
 
   return v5;
 }

@@ -1,18 +1,18 @@
 @interface TSPKnownFieldRepeatedEnumValue
-- (TSPKnownFieldRepeatedEnumValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6 unknownFieldSet:(void *)a7;
+- (TSPKnownFieldRepeatedEnumValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection unknownFieldSet:(void *)set;
 - (id).cxx_construct;
 - (id)debugDescription;
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4;
-- (void)mergeToUnknownFieldSet:(void *)a3;
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection;
+- (void)mergeToUnknownFieldSet:(void *)set;
 @end
 
 @implementation TSPKnownFieldRepeatedEnumValue
 
-- (TSPKnownFieldRepeatedEnumValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6 unknownFieldSet:(void *)a7
+- (TSPKnownFieldRepeatedEnumValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection unknownFieldSet:(void *)set
 {
   v62.receiver = self;
   v62.super_class = TSPKnownFieldRepeatedEnumValue;
-  v11 = [TSPKnownFieldRepeatedNumericValue initSubclassWithFieldDescriptor:sel_initSubclassWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:a3 message:a4 reflection:?];
+  v11 = [TSPKnownFieldRepeatedNumericValue initSubclassWithFieldDescriptor:sel_initSubclassWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:descriptor message:info reflection:?];
   v12 = v11;
   if (v11)
   {
@@ -30,8 +30,8 @@
     }
 
     v13 = v11 + 38;
-    v15 = *a7;
-    v14 = *(a7 + 1);
+    v15 = *set;
+    v14 = *(set + 1);
     if (v14)
     {
       atomic_fetch_add_explicit((v14 + 8), 1uLL, memory_order_relaxed);
@@ -45,23 +45,23 @@
       sub_2769C1430(v16);
     }
 
-    v59 = a6;
-    v17 = google::protobuf::Reflection::FieldSize(a6, a5, a3);
+    reflectionCopy = reflection;
+    v17 = google::protobuf::Reflection::FieldSize(reflection, message, descriptor);
     v19 = v17;
     v58 = v17;
-    if (*a7 && v17)
+    if (*set && v17)
     {
       v20 = MEMORY[0x277D81150];
       v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPKnownFieldRepeatedEnumValue initWithFieldDescriptor:fieldInfo:message:reflection:unknownFieldSet:]");
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPKnownField.mm");
-      v24 = *(a3 + 1);
+      v24 = *(descriptor + 1);
       if (*(v24 + 23) < 0)
       {
         v24 = *v24;
       }
 
       number = v12->super.super._number;
-      (*(a5->var0 + 2))(__p, a5);
+      (*(message->var0 + 2))(__p, message);
       if (v61 >= 0)
       {
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v26, v21, v23, 652, 0, "Repeated enum field %{public}s (%d) for message %{public}s has both known and unknown values. The order of the values will not be preserved.", v24, number, __p);
@@ -86,12 +86,12 @@
     values = v12->super._values;
     v12->super._values = v31;
 
-    v33 = v59;
+    v33 = reflectionCopy;
     if (v19 >= 1)
     {
       for (i = 0; i != v19; ++i)
       {
-        RepeatedEnum = google::protobuf::Reflection::GetRepeatedEnum(v33, a5, a3, i);
+        RepeatedEnum = google::protobuf::Reflection::GetRepeatedEnum(v33, message, descriptor, i);
         if (RepeatedEnum)
         {
           v37 = v12->super._values;
@@ -104,14 +104,14 @@
           v40 = MEMORY[0x277D81150];
           v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, "[TSPKnownFieldRepeatedEnumValue initWithFieldDescriptor:fieldInfo:message:reflection:unknownFieldSet:]");
           v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPKnownField.mm");
-          v44 = *(a3 + 1);
+          v44 = *(descriptor + 1);
           if (*(v44 + 23) < 0)
           {
             v44 = *v44;
           }
 
           v45 = v12->super.super._number;
-          (*(a5->var0 + 2))(__p, a5);
+          (*(message->var0 + 2))(__p, message);
           v47 = __p;
           if (v61 < 0)
           {
@@ -120,7 +120,7 @@
 
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v46, v41, v43, 662, 0, "Found unexpected enum value for field %{public}s (%d) message %{public}s.", v44, v45, v47);
           v19 = v58;
-          v33 = v59;
+          v33 = reflectionCopy;
           if (v61 < 0)
           {
             operator delete(__p[0]);
@@ -137,36 +137,36 @@
   return v12;
 }
 
-- (void)mergeToUnknownFieldSet:(void *)a3
+- (void)mergeToUnknownFieldSet:(void *)set
 {
-  if (a3)
+  if (set)
   {
-    google::protobuf::UnknownFieldSet::MergeFrom(a3, self->_unknownFieldSet.__ptr_);
+    google::protobuf::UnknownFieldSet::MergeFrom(set, self->_unknownFieldSet.__ptr_);
   }
 }
 
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection
 {
-  v5 = self;
+  selfCopy = self;
   v60 = *MEMORY[0x277D85DE8];
-  if (!self->super._values && !objc_msgSend_hasUnknownValues(self, a2, a3))
+  if (!self->super._values && !objc_msgSend_hasUnknownValues(self, a2, message))
   {
 LABEL_20:
     v38 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  v6 = (*(a3->var0 + 19))(a3, a2);
-  FieldByNumber = google::protobuf::Descriptor::FindFieldByNumber(v6, v5->super.super._number);
-  if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(a4, v5->super.super._number)) != 0)
+  v6 = (*(message->var0 + 19))(message, a2);
+  FieldByNumber = google::protobuf::Descriptor::FindFieldByNumber(v6, selfCopy->super.super._number);
+  if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(reflection, selfCopy->super.super._number)) != 0)
   {
     v9 = FieldByNumber;
-    google::protobuf::Reflection::ClearField(a4, a3, FieldByNumber);
+    google::protobuf::Reflection::ClearField(reflection, message, FieldByNumber);
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = v5->super._values;
+    obj = selfCopy->super._values;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v55, v59, 16);
     if (v11)
     {
@@ -187,7 +187,7 @@ LABEL_20:
           ValueByNumber = google::protobuf::EnumDescriptor::FindValueByNumber(v16, v19);
           if (ValueByNumber)
           {
-            google::protobuf::Reflection::AddEnum(a4, a3, v9, ValueByNumber);
+            google::protobuf::Reflection::AddEnum(reflection, message, v9, ValueByNumber);
           }
 
           else
@@ -200,9 +200,9 @@ LABEL_20:
             v29 = v9;
             v30 = v11;
             v31 = v12;
-            v32 = v5;
-            number = v5->super.super._number;
-            (*(a3->var0 + 2))(__p, a3);
+            v32 = selfCopy;
+            number = selfCopy->super.super._number;
+            (*(message->var0 + 2))(__p, message);
             v35 = __p;
             if (v54 < 0)
             {
@@ -216,7 +216,7 @@ LABEL_20:
             }
 
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37);
-            v5 = v32;
+            selfCopy = v32;
             v12 = v31;
             v11 = v30;
             v9 = v29;
@@ -233,7 +233,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v39 = v5;
+  v39 = selfCopy;
   v40 = MEMORY[0x277D81150];
   v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSPKnownFieldRepeatedEnumValue mergeToMessage:reflection:]");
   v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPKnownField.mm");

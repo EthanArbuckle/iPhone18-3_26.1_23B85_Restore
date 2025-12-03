@@ -1,79 +1,79 @@
 @interface HKHRAFibBurdenNotificationMode
-- (BOOL)isEqual:(id)a3;
-- (HKHRAFibBurdenNotificationMode)initWithCoder:(id)a3;
-- (HKHRAFibBurdenNotificationMode)initWithType:(int64_t)a3 shouldForwardToWatch:(BOOL)a4 currentPercentage:(id)a5 currentValueClamped:(id)a6 currentValueDateInterval:(id)a7 currentValueUUID:(id)a8 previousPercentage:(id)a9 previousValueClamped:(id)a10 previousTimeZoneDiffersFromCurrent:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (HKHRAFibBurdenNotificationMode)initWithCoder:(id)coder;
+- (HKHRAFibBurdenNotificationMode)initWithType:(int64_t)type shouldForwardToWatch:(BOOL)watch currentPercentage:(id)percentage currentValueClamped:(id)clamped currentValueDateInterval:(id)interval currentValueUUID:(id)d previousPercentage:(id)previousPercentage previousValueClamped:(id)self0 previousTimeZoneDiffersFromCurrent:(id)self1;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHRAFibBurdenNotificationMode
 
-- (HKHRAFibBurdenNotificationMode)initWithType:(int64_t)a3 shouldForwardToWatch:(BOOL)a4 currentPercentage:(id)a5 currentValueClamped:(id)a6 currentValueDateInterval:(id)a7 currentValueUUID:(id)a8 previousPercentage:(id)a9 previousValueClamped:(id)a10 previousTimeZoneDiffersFromCurrent:(id)a11
+- (HKHRAFibBurdenNotificationMode)initWithType:(int64_t)type shouldForwardToWatch:(BOOL)watch currentPercentage:(id)percentage currentValueClamped:(id)clamped currentValueDateInterval:(id)interval currentValueUUID:(id)d previousPercentage:(id)previousPercentage previousValueClamped:(id)self0 previousTimeZoneDiffersFromCurrent:(id)self1
 {
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v16 = a10;
-  v17 = a11;
+  percentageCopy = percentage;
+  clampedCopy = clamped;
+  intervalCopy = interval;
+  dCopy = d;
+  previousPercentageCopy = previousPercentage;
+  valueClampedCopy = valueClamped;
+  currentCopy = current;
   v28.receiver = self;
   v28.super_class = HKHRAFibBurdenNotificationMode;
   v18 = [(HKHRAFibBurdenNotificationMode *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    v18->_type = a3;
-    v18->_shouldForwardToWatch = a4;
-    objc_storeStrong(&v18->_currentPercentage, a5);
-    objc_storeStrong(&v19->_currentValueClamped, a6);
-    objc_storeStrong(&v19->_currentValueDateInterval, a7);
-    objc_storeStrong(&v19->_currentValueUUID, a8);
-    objc_storeStrong(&v19->_previousPercentage, a9);
-    objc_storeStrong(&v19->_previousValueClamped, a10);
-    objc_storeStrong(&v19->_previousTimeZoneDiffersFromCurrent, a11);
+    v18->_type = type;
+    v18->_shouldForwardToWatch = watch;
+    objc_storeStrong(&v18->_currentPercentage, percentage);
+    objc_storeStrong(&v19->_currentValueClamped, clamped);
+    objc_storeStrong(&v19->_currentValueDateInterval, interval);
+    objc_storeStrong(&v19->_currentValueUUID, d);
+    objc_storeStrong(&v19->_previousPercentage, previousPercentage);
+    objc_storeStrong(&v19->_previousValueClamped, valueClamped);
+    objc_storeStrong(&v19->_previousTimeZoneDiffersFromCurrent, current);
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     type = self->_type;
     if (type == [v5 type] && (shouldForwardToWatch = self->_shouldForwardToWatch, shouldForwardToWatch == objc_msgSend(v5, "shouldForwardToWatch")))
     {
       currentPercentage = self->_currentPercentage;
-      v9 = [v5 currentPercentage];
-      if ([(NSNumber *)currentPercentage isEqualToNumber:v9])
+      currentPercentage = [v5 currentPercentage];
+      if ([(NSNumber *)currentPercentage isEqualToNumber:currentPercentage])
       {
         currentValueClamped = self->_currentValueClamped;
-        v11 = [v5 currentValueClamped];
-        if ([(NSNumber *)currentValueClamped isEqualToNumber:v11])
+        currentValueClamped = [v5 currentValueClamped];
+        if ([(NSNumber *)currentValueClamped isEqualToNumber:currentValueClamped])
         {
           currentValueDateInterval = self->_currentValueDateInterval;
-          v13 = [v5 currentValueDateInterval];
-          if ([(NSDateInterval *)currentValueDateInterval isEqualToDateInterval:v13])
+          currentValueDateInterval = [v5 currentValueDateInterval];
+          if ([(NSDateInterval *)currentValueDateInterval isEqualToDateInterval:currentValueDateInterval])
           {
             currentValueUUID = self->_currentValueUUID;
-            v15 = [v5 currentValueUUID];
-            if ([(NSUUID *)currentValueUUID isEqual:v15])
+            currentValueUUID = [v5 currentValueUUID];
+            if ([(NSUUID *)currentValueUUID isEqual:currentValueUUID])
             {
               previousPercentage = self->_previousPercentage;
-              v17 = [v5 previousPercentage];
-              if ([(NSNumber *)previousPercentage isEqualToNumber:v17])
+              previousPercentage = [v5 previousPercentage];
+              if ([(NSNumber *)previousPercentage isEqualToNumber:previousPercentage])
               {
                 previousValueClamped = self->_previousValueClamped;
-                v19 = [v5 previousValueClamped];
-                if ([(NSNumber *)previousValueClamped isEqualToNumber:v19])
+                previousValueClamped = [v5 previousValueClamped];
+                if ([(NSNumber *)previousValueClamped isEqualToNumber:previousValueClamped])
                 {
                   previousTimeZoneDiffersFromCurrent = self->_previousTimeZoneDiffersFromCurrent;
-                  v21 = [v5 previousTimeZoneDiffersFromCurrent];
-                  v22 = [(NSNumber *)previousTimeZoneDiffersFromCurrent isEqualToNumber:v21];
+                  previousTimeZoneDiffersFromCurrent = [v5 previousTimeZoneDiffersFromCurrent];
+                  v22 = [(NSNumber *)previousTimeZoneDiffersFromCurrent isEqualToNumber:previousTimeZoneDiffersFromCurrent];
                 }
 
                 else
@@ -138,56 +138,56 @@
   return v9 ^ [(NSNumber *)self->_previousTimeZoneDiffersFromCurrent hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeBool:self->_shouldForwardToWatch forKey:@"shouldForwardToWatch"];
-  [v5 encodeObject:self->_currentPercentage forKey:@"currentPercentage"];
-  [v5 encodeObject:self->_currentValueClamped forKey:@"currentValueClamped"];
-  [v5 encodeObject:self->_currentValueDateInterval forKey:@"currentValueDateInterval"];
-  [v5 encodeObject:self->_currentValueUUID forKey:@"currentValueUUID"];
-  [v5 encodeObject:self->_previousPercentage forKey:@"previousPercentage"];
-  [v5 encodeObject:self->_previousValueClamped forKey:@"previousValueClamped"];
-  [v5 encodeObject:self->_previousTimeZoneDiffersFromCurrent forKey:@"previousTimeZoneDiffersFromCurrent"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeBool:self->_shouldForwardToWatch forKey:@"shouldForwardToWatch"];
+  [coderCopy encodeObject:self->_currentPercentage forKey:@"currentPercentage"];
+  [coderCopy encodeObject:self->_currentValueClamped forKey:@"currentValueClamped"];
+  [coderCopy encodeObject:self->_currentValueDateInterval forKey:@"currentValueDateInterval"];
+  [coderCopy encodeObject:self->_currentValueUUID forKey:@"currentValueUUID"];
+  [coderCopy encodeObject:self->_previousPercentage forKey:@"previousPercentage"];
+  [coderCopy encodeObject:self->_previousValueClamped forKey:@"previousValueClamped"];
+  [coderCopy encodeObject:self->_previousTimeZoneDiffersFromCurrent forKey:@"previousTimeZoneDiffersFromCurrent"];
 }
 
-- (HKHRAFibBurdenNotificationMode)initWithCoder:(id)a3
+- (HKHRAFibBurdenNotificationMode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = HKHRAFibBurdenNotificationMode;
   v5 = [(HKHRAFibBurdenNotificationMode *)&v21 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_shouldForwardToWatch = [v4 decodeBoolForKey:@"shouldForwardToWatch"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentPercentage"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_shouldForwardToWatch = [coderCopy decodeBoolForKey:@"shouldForwardToWatch"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentPercentage"];
     currentPercentage = v5->_currentPercentage;
     v5->_currentPercentage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentValueClamped"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentValueClamped"];
     currentValueClamped = v5->_currentValueClamped;
     v5->_currentValueClamped = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentValueDateInterval"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentValueDateInterval"];
     currentValueDateInterval = v5->_currentValueDateInterval;
     v5->_currentValueDateInterval = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentValueUUID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentValueUUID"];
     currentValueUUID = v5->_currentValueUUID;
     v5->_currentValueUUID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousPercentage"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousPercentage"];
     previousPercentage = v5->_previousPercentage;
     v5->_previousPercentage = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousValueClamped"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousValueClamped"];
     previousValueClamped = v5->_previousValueClamped;
     v5->_previousValueClamped = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousTimeZoneDiffersFromCurrent"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousTimeZoneDiffersFromCurrent"];
     previousTimeZoneDiffersFromCurrent = v5->_previousTimeZoneDiffersFromCurrent;
     v5->_previousTimeZoneDiffersFromCurrent = v18;
   }

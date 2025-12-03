@@ -1,53 +1,53 @@
 @interface COStateManager
-+ (id)homed_COStateManagerWithSuiteName:(id)a3 homeIdentifier:(id)a4;
-- (BOOL)_onqueue_clustersValid:(id)a3;
-- (COStateManager)initWithConnectionProvider:(id)a3 suite:(id)a4 clusters:(id)a5;
-- (COStateManager)initWithSuiteName:(id)a3 clusters:(id)a4;
++ (id)homed_COStateManagerWithSuiteName:(id)name homeIdentifier:(id)identifier;
+- (BOOL)_onqueue_clustersValid:(id)valid;
+- (COStateManager)initWithConnectionProvider:(id)provider suite:(id)suite clusters:(id)clusters;
+- (COStateManager)initWithSuiteName:(id)name clusters:(id)clusters;
 - (NSXPCConnection)lastConnection;
-- (id)_clustersForClustersTmp:(id)a3;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
-- (id)_sanitizeChanges:(id)a3;
-- (id)addObserverForKeyPathUsingPredicate:(id)a3 queue:(id)a4 usingBlock:(id)a5;
+- (id)_clustersForClustersTmp:(id)tmp;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
+- (id)_sanitizeChanges:(id)changes;
+- (id)addObserverForKeyPathUsingPredicate:(id)predicate queue:(id)queue usingBlock:(id)block;
 - (void)_invalidate;
 - (void)_lostConnectionToService;
-- (void)_onqueue_registerObserver:(id)a3;
-- (void)_onqueue_removeObjectsForKeyPaths:(id)a3 clusters:(id)a4 cacheLocally:(BOOL)a5 completionHandler:(id)a6;
-- (void)_onqueue_setDictionary:(id)a3 clusters:(id)a4 cacheLocally:(BOOL)a5 completionHandler:(id)a6;
-- (void)_withLock:(id)a3;
-- (void)changesObserved:(id)a3 forPredicate:(id)a4;
+- (void)_onqueue_registerObserver:(id)observer;
+- (void)_onqueue_removeObjectsForKeyPaths:(id)paths clusters:(id)clusters cacheLocally:(BOOL)locally completionHandler:(id)handler;
+- (void)_onqueue_setDictionary:(id)dictionary clusters:(id)clusters cacheLocally:(BOOL)locally completionHandler:(id)handler;
+- (void)_withLock:(id)lock;
+- (void)changesObserved:(id)observed forPredicate:(id)predicate;
 - (void)dealloc;
-- (void)delayForDoorbellChimeWithCompletionHandler:(id)a3;
-- (void)fetchCompositionForCluster:(id)a3 dispatchQueue:(id)a4 block:(id)a5;
-- (void)removeObjectForKeyPath:(id)a3 clusters:(id)a4 completionHandler:(id)a5;
-- (void)removeObjectsForKeyPaths:(id)a3 clusters:(id)a4 completionHandler:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)setBool:(BOOL)a3 forKeyPath:(id)a4 clusters:(id)a5 completionHandler:(id)a6;
-- (void)setDate:(id)a3 forKeyPath:(id)a4 clusters:(id)a5 completionHandler:(id)a6;
-- (void)setDictionary:(id)a3 clusters:(id)a4 completionHandler:(id)a5;
-- (void)setNumber:(id)a3 forKeyPath:(id)a4 clusters:(id)a5 completionHandler:(id)a6;
-- (void)setString:(id)a3 forKeyPath:(id)a4 clusters:(id)a5 completionHandler:(id)a6;
+- (void)delayForDoorbellChimeWithCompletionHandler:(id)handler;
+- (void)fetchCompositionForCluster:(id)cluster dispatchQueue:(id)queue block:(id)block;
+- (void)removeObjectForKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler;
+- (void)removeObjectsForKeyPaths:(id)paths clusters:(id)clusters completionHandler:(id)handler;
+- (void)removeObserver:(id)observer;
+- (void)setBool:(BOOL)bool forKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler;
+- (void)setDate:(id)date forKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler;
+- (void)setDictionary:(id)dictionary clusters:(id)clusters completionHandler:(id)handler;
+- (void)setNumber:(id)number forKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler;
+- (void)setString:(id)string forKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler;
 @end
 
 @implementation COStateManager
 
-- (COStateManager)initWithConnectionProvider:(id)a3 suite:(id)a4 clusters:(id)a5
+- (COStateManager)initWithConnectionProvider:(id)provider suite:(id)suite clusters:(id)clusters
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  suiteCopy = suite;
+  clustersCopy = clusters;
   v21.receiver = self;
   v21.super_class = COStateManager;
   v12 = [(COStateManager *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_provider, a3);
+    objc_storeStrong(&v12->_provider, provider);
     v14 = objc_alloc_init(MEMORY[0x277CBEA60]);
     observers = v13->_observers;
     v13->_observers = v14;
 
-    objc_storeStrong(&v13->_suite, a4);
-    objc_storeStrong(&v13->_clusters, a5);
+    objc_storeStrong(&v13->_suite, suite);
+    objc_storeStrong(&v13->_clusters, clusters);
     v13->_lock._os_unfair_lock_opaque = 0;
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_create("com.apple.COStateManager.queue", v16);
@@ -57,24 +57,24 @@
     v19 = COLogForCategory(4);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      [COStateManager initWithConnectionProvider:v13 suite:v9 clusters:v19];
+      [COStateManager initWithConnectionProvider:v13 suite:providerCopy clusters:v19];
     }
   }
 
   return v13;
 }
 
-- (COStateManager)initWithSuiteName:(id)a3 clusters:(id)a4
+- (COStateManager)initWithSuiteName:(id)name clusters:(id)clusters
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  clustersCopy = clusters;
   v8 = objc_alloc_init(MEMORY[0x277CBEB98]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = clustersCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -106,7 +106,7 @@
   }
 
   v16 = objc_alloc_init(_COStateManagerConnectionProvider);
-  v17 = [(COStateManager *)self initWithConnectionProvider:v16 suite:v6 clusters:v8];
+  v17 = [(COStateManager *)self initWithConnectionProvider:v16 suite:nameCopy clusters:v8];
 
   v18 = *MEMORY[0x277D85DE8];
   return v17;
@@ -137,24 +137,24 @@ void __25__COStateManager_dealloc__block_invoke(uint64_t a1)
   [v3 invalidate];
 }
 
-- (void)setBool:(BOOL)a3 forKeyPath:(id)a4 clusters:(id)a5 completionHandler:(id)a6
+- (void)setBool:(BOOL)bool forKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(COStateManager *)self _clustersForClustersTmp:a5];
+  pathCopy = path;
+  handlerCopy = handler;
+  v12 = [(COStateManager *)self _clustersForClustersTmp:clusters];
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__COStateManager_setBool_forKeyPath_clusters_completionHandler___block_invoke;
   block[3] = &unk_278E12698;
   block[4] = self;
-  v18 = v10;
-  v21 = a3;
+  v18 = pathCopy;
+  boolCopy = bool;
   v19 = v12;
-  v20 = v11;
-  v14 = v11;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
   v15 = v12;
-  v16 = v10;
+  v16 = pathCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -171,26 +171,26 @@ void __64__COStateManager_setBool_forKeyPath_clusters_completionHandler___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNumber:(id)a3 forKeyPath:(id)a4 clusters:(id)a5 completionHandler:(id)a6
+- (void)setNumber:(id)number forKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(COStateManager *)self _clustersForClustersTmp:a5];
+  numberCopy = number;
+  pathCopy = path;
+  handlerCopy = handler;
+  v13 = [(COStateManager *)self _clustersForClustersTmp:clusters];
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__COStateManager_setNumber_forKeyPath_clusters_completionHandler___block_invoke;
   block[3] = &unk_278E126C0;
   block[4] = self;
-  v20 = v11;
-  v21 = v10;
+  v20 = pathCopy;
+  v21 = numberCopy;
   v22 = v13;
-  v23 = v12;
-  v15 = v12;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v13;
-  v17 = v10;
-  v18 = v11;
+  v17 = numberCopy;
+  v18 = pathCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -207,26 +207,26 @@ void __66__COStateManager_setNumber_forKeyPath_clusters_completionHandler___bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setString:(id)a3 forKeyPath:(id)a4 clusters:(id)a5 completionHandler:(id)a6
+- (void)setString:(id)string forKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(COStateManager *)self _clustersForClustersTmp:a5];
+  stringCopy = string;
+  pathCopy = path;
+  handlerCopy = handler;
+  v13 = [(COStateManager *)self _clustersForClustersTmp:clusters];
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__COStateManager_setString_forKeyPath_clusters_completionHandler___block_invoke;
   block[3] = &unk_278E126C0;
   block[4] = self;
-  v20 = v11;
-  v21 = v10;
+  v20 = pathCopy;
+  v21 = stringCopy;
   v22 = v13;
-  v23 = v12;
-  v15 = v12;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v13;
-  v17 = v10;
-  v18 = v11;
+  v17 = stringCopy;
+  v18 = pathCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -243,26 +243,26 @@ void __66__COStateManager_setString_forKeyPath_clusters_completionHandler___bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDate:(id)a3 forKeyPath:(id)a4 clusters:(id)a5 completionHandler:(id)a6
+- (void)setDate:(id)date forKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(COStateManager *)self _clustersForClustersTmp:a5];
+  dateCopy = date;
+  pathCopy = path;
+  handlerCopy = handler;
+  v13 = [(COStateManager *)self _clustersForClustersTmp:clusters];
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__COStateManager_setDate_forKeyPath_clusters_completionHandler___block_invoke;
   block[3] = &unk_278E126C0;
   block[4] = self;
-  v20 = v11;
-  v21 = v10;
+  v20 = pathCopy;
+  v21 = dateCopy;
   v22 = v13;
-  v23 = v12;
-  v15 = v12;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v13;
-  v17 = v10;
-  v18 = v11;
+  v17 = dateCopy;
+  v18 = pathCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -279,43 +279,43 @@ void __64__COStateManager_setDate_forKeyPath_clusters_completionHandler___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDictionary:(id)a3 clusters:(id)a4 completionHandler:(id)a5
+- (void)setDictionary:(id)dictionary clusters:(id)clusters completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(COStateManager *)self _clustersForClustersTmp:a4];
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
+  v10 = [(COStateManager *)self _clustersForClustersTmp:clusters];
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__COStateManager_setDictionary_clusters_completionHandler___block_invoke;
   v15[3] = &unk_278E12390;
   v15[4] = self;
-  v16 = v8;
+  v16 = dictionaryCopy;
   v17 = v10;
-  v18 = v9;
-  v12 = v9;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v10;
-  v14 = v8;
+  v14 = dictionaryCopy;
   dispatch_async(workQueue, v15);
 }
 
-- (void)removeObjectForKeyPath:(id)a3 clusters:(id)a4 completionHandler:(id)a5
+- (void)removeObjectForKeyPath:(id)path clusters:(id)clusters completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(COStateManager *)self _clustersForClustersTmp:a4];
+  pathCopy = path;
+  handlerCopy = handler;
+  v10 = [(COStateManager *)self _clustersForClustersTmp:clusters];
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__COStateManager_removeObjectForKeyPath_clusters_completionHandler___block_invoke;
   v15[3] = &unk_278E12390;
-  v16 = v8;
-  v17 = self;
+  v16 = pathCopy;
+  selfCopy = self;
   v18 = v10;
-  v19 = v9;
-  v12 = v9;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v10;
-  v14 = v8;
+  v14 = pathCopy;
   dispatch_async(workQueue, v15);
 }
 
@@ -325,31 +325,31 @@ void __68__COStateManager_removeObjectForKeyPath_clusters_completionHandler___bl
   [*(a1 + 40) removeObjectsForKeyPaths:v2 clusters:*(a1 + 48) completionHandler:*(a1 + 56)];
 }
 
-- (void)removeObjectsForKeyPaths:(id)a3 clusters:(id)a4 completionHandler:(id)a5
+- (void)removeObjectsForKeyPaths:(id)paths clusters:(id)clusters completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(COStateManager *)self _clustersForClustersTmp:a4];
+  pathsCopy = paths;
+  handlerCopy = handler;
+  v10 = [(COStateManager *)self _clustersForClustersTmp:clusters];
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__COStateManager_removeObjectsForKeyPaths_clusters_completionHandler___block_invoke;
   v15[3] = &unk_278E12390;
   v15[4] = self;
-  v16 = v8;
+  v16 = pathsCopy;
   v17 = v10;
-  v18 = v9;
-  v12 = v9;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v10;
-  v14 = v8;
+  v14 = pathsCopy;
   dispatch_async(workQueue, v15);
 }
 
-- (id)addObserverForKeyPathUsingPredicate:(id)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)addObserverForKeyPathUsingPredicate:(id)predicate queue:(id)queue usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  queueCopy = queue;
+  blockCopy = block;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -368,15 +368,15 @@ void __68__COStateManager_removeObjectForKeyPath_clusters_completionHandler___bl
   v17[1] = 3221225472;
   v17[2] = __71__COStateManager_addObserverForKeyPathUsingPredicate_queue_usingBlock___block_invoke;
   v17[3] = &unk_278E126E8;
-  v18 = v9;
-  v19 = v8;
-  v20 = self;
-  v21 = v10;
+  v18 = queueCopy;
+  v19 = predicateCopy;
+  selfCopy = self;
+  v21 = blockCopy;
   v22 = &v30;
   v23 = &v24;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v12 = blockCopy;
+  v13 = predicateCopy;
+  v14 = queueCopy;
   dispatch_async(workQueue, v17);
   dispatch_group_wait(v25[5], 0xFFFFFFFFFFFFFFFFLL);
   v15 = v31[5];
@@ -426,17 +426,17 @@ void __71__COStateManager_addObserverForKeyPathUsingPredicate_queue_usingBlock__
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__COStateManager_removeObserver___block_invoke;
   v7[3] = &unk_278E12368;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -489,20 +489,20 @@ void __33__COStateManager_removeObserver___block_invoke_2(uint64_t a1, void *a2)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)changesObserved:(id)a3 forPredicate:(id)a4
+- (void)changesObserved:(id)observed forPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  observedCopy = observed;
+  predicateCopy = predicate;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__COStateManager_changesObserved_forPredicate___block_invoke;
   block[3] = &unk_278E12738;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observedCopy;
+  v13 = predicateCopy;
+  v9 = predicateCopy;
+  v10 = observedCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -567,29 +567,29 @@ void __47__COStateManager_changesObserved_forPredicate___block_invoke(uint64_t a
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onqueue_setDictionary:(id)a3 clusters:(id)a4 cacheLocally:(BOOL)a5 completionHandler:(id)a6
+- (void)_onqueue_setDictionary:(id)dictionary clusters:(id)clusters cacheLocally:(BOOL)locally completionHandler:(id)handler
 {
   v76 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v41 = a6;
+  dictionaryCopy = dictionary;
+  clustersCopy = clusters;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_workQueue);
-  v40 = v11;
-  if ([(COStateManager *)self _onqueue_clustersValid:v11])
+  v40 = clustersCopy;
+  if ([(COStateManager *)self _onqueue_clustersValid:clustersCopy])
   {
-    v38 = a5;
+    locallyCopy = locally;
     val = self;
     if (_onqueue_setDictionary_clusters_cacheLocally_completionHandler__onceToken != -1)
     {
       [COStateManager _onqueue_setDictionary:clusters:cacheLocally:completionHandler:];
     }
 
-    v45 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    obj = [v10 allKeys];
+    obj = [dictionaryCopy allKeys];
     v12 = [obj countByEnumeratingWithState:&v65 objects:v75 count:16];
     if (v12)
     {
@@ -635,7 +635,7 @@ LABEL_12:
           }
 
           v20 = *(*(&v61 + 1) + 8 * v19);
-          v21 = [v10 objectForKeyedSubscript:v15];
+          v21 = [dictionaryCopy objectForKeyedSubscript:v15];
           LOBYTE(v20) = objc_opt_isKindOfClass();
 
           if (v20)
@@ -655,9 +655,9 @@ LABEL_12:
           }
         }
 
-        v22 = [v10 objectForKeyedSubscript:v15];
-        v23 = [v15 absoluteString];
-        [v45 setObject:v22 forKey:v23];
+        v22 = [dictionaryCopy objectForKeyedSubscript:v15];
+        absoluteString = [v15 absoluteString];
+        [dictionary setObject:v22 forKey:absoluteString];
 
         if (++v13 != v12)
         {
@@ -678,13 +678,13 @@ LABEL_12:
         *location = 134218498;
         *&location[4] = val;
         v70 = 2112;
-        v71 = v10;
+        v71 = dictionaryCopy;
         v72 = 2112;
         v73 = v31;
         _os_log_error_impl(&dword_244328000, v32, OS_LOG_TYPE_ERROR, "%p failed to set state %@ since it contains unsupported types - %@", location, 0x20u);
       }
 
-      v41[2](v41, v31);
+      handlerCopy[2](handlerCopy, v31);
     }
 
     else
@@ -699,9 +699,9 @@ LABEL_21:
       objc_copyWeak(&v60, location);
       v24 = v40;
       v57 = v24;
-      v45 = v45;
-      v58 = v45;
-      v25 = v10;
+      dictionary = dictionary;
+      v58 = dictionary;
+      v25 = dictionaryCopy;
       v59 = v25;
       v26 = MEMORY[0x245D5F6A0](v56);
       v50[0] = MEMORY[0x277D85DD0];
@@ -710,25 +710,25 @@ LABEL_21:
       v50[3] = &unk_278E127B0;
       objc_copyWeak(&v54, location);
       v51 = v25;
-      v27 = v41;
+      v27 = handlerCopy;
       v52 = v27;
-      v55 = v38;
+      v55 = locallyCopy;
       v28 = v26;
       v53 = v28;
       v44 = [(COStateManager *)val _remoteInterfaceWithErrorHandler:v50];
       if (v24)
       {
-        v29 = v24;
+        clusters = v24;
       }
 
       else
       {
-        v29 = [(COStateManager *)val clusters];
+        clusters = [(COStateManager *)val clusters];
       }
 
-      v33 = v29;
-      v34 = [(COStateManager *)val suite];
-      v35 = [(COStateManager *)val clusters];
+      v33 = clusters;
+      suite = [(COStateManager *)val suite];
+      clusters2 = [(COStateManager *)val clusters];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __81__COStateManager__onqueue_setDictionary_clusters_cacheLocally_completionHandler___block_invoke_88;
@@ -737,7 +737,7 @@ LABEL_21:
       v36 = v28;
       v47 = v36;
       v48 = v27;
-      [v44 setDictionary:v45 suite:v34 interestClusters:v35 targetCluster:v33 withCallback:v46];
+      [v44 setDictionary:dictionary suite:suite interestClusters:clusters2 targetCluster:v33 withCallback:v46];
 
       objc_destroyWeak(&v49);
       objc_destroyWeak(&v54);
@@ -755,8 +755,8 @@ LABEL_21:
       [COStateManager _onqueue_setDictionary:clusters:cacheLocally:completionHandler:];
     }
 
-    v45 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COStateManagerErrorDomain" code:-1000 userInfo:0];
-    v41[2](v41, v45);
+    dictionary = [MEMORY[0x277CCA9B8] errorWithDomain:@"COStateManagerErrorDomain" code:-1000 userInfo:0];
+    handlerCopy[2](handlerCopy, dictionary);
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -983,22 +983,22 @@ void __81__COStateManager__onqueue_setDictionary_clusters_cacheLocally_completio
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_onqueue_removeObjectsForKeyPaths:(id)a3 clusters:(id)a4 cacheLocally:(BOOL)a5 completionHandler:(id)a6
+- (void)_onqueue_removeObjectsForKeyPaths:(id)paths clusters:(id)clusters cacheLocally:(BOOL)locally completionHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v10 = a4;
-  v11 = a6;
+  pathsCopy = paths;
+  clustersCopy = clusters;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_workQueue);
-  if ([(COStateManager *)self _onqueue_clustersValid:v10])
+  if ([(COStateManager *)self _onqueue_clustersValid:clustersCopy])
   {
-    v30 = a5;
+    locallyCopy = locally;
     v12 = [MEMORY[0x277CBEB58] set];
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v13 = v31;
+    v13 = pathsCopy;
     v14 = [v13 countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v14)
     {
@@ -1017,8 +1017,8 @@ void __81__COStateManager__onqueue_setDictionary_clusters_cacheLocally_completio
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v17 absoluteString];
-            [v12 addObject:v18];
+            absoluteString = [v17 absoluteString];
+            [v12 addObject:absoluteString];
           }
 
           ++v16;
@@ -1037,7 +1037,7 @@ void __81__COStateManager__onqueue_setDictionary_clusters_cacheLocally_completio
     v41[2] = __92__COStateManager__onqueue_removeObjectsForKeyPaths_clusters_cacheLocally_completionHandler___block_invoke;
     v41[3] = &unk_278E12760;
     objc_copyWeak(&v45, &location);
-    v19 = v10;
+    v19 = clustersCopy;
     v42 = v19;
     v20 = v12;
     v43 = v20;
@@ -1048,23 +1048,23 @@ void __81__COStateManager__onqueue_setDictionary_clusters_cacheLocally_completio
     v36[2] = __92__COStateManager__onqueue_removeObjectsForKeyPaths_clusters_cacheLocally_completionHandler___block_invoke_2;
     v36[3] = &unk_278E12828;
     objc_copyWeak(&v39, &location);
-    v22 = v11;
+    v22 = handlerCopy;
     v37 = v22;
-    v40 = v30;
+    v40 = locallyCopy;
     v23 = v21;
     v38 = v23;
     v24 = [(COStateManager *)self _remoteInterfaceWithErrorHandler:v36];
     if (v19)
     {
-      v25 = v19;
+      clusters = v19;
     }
 
     else
     {
-      v25 = [(COStateManager *)self clusters];
+      clusters = [(COStateManager *)self clusters];
     }
 
-    v27 = v25;
+    v27 = clusters;
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __92__COStateManager__onqueue_removeObjectsForKeyPaths_clusters_cacheLocally_completionHandler___block_invoke_91;
@@ -1091,7 +1091,7 @@ void __81__COStateManager__onqueue_setDictionary_clusters_cacheLocally_completio
     }
 
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COStateManagerErrorDomain" code:-1000 userInfo:0];
-    (*(v11 + 2))(v11, v20);
+    (*(handlerCopy + 2))(handlerCopy, v20);
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -1306,9 +1306,9 @@ void __92__COStateManager__onqueue_removeObjectsForKeyPaths_clusters_cacheLocall
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_onqueue_registerObserver:(id)a3
+- (void)_onqueue_registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
@@ -1316,10 +1316,10 @@ void __92__COStateManager__onqueue_removeObjectsForKeyPaths_clusters_cacheLocall
   v12 = &unk_278E12710;
   objc_copyWeak(&v13, &location);
   v5 = [(COStateManager *)self _remoteInterfaceWithErrorHandler:&v9];
-  v6 = [v4 predicate];
-  v7 = [(COStateManager *)self suite];
-  v8 = [(COStateManager *)self clusters];
-  [v5 addObserverWithPredicate:v6 suite:v7 interestClusters:v8];
+  predicate = [observerCopy predicate];
+  suite = [(COStateManager *)self suite];
+  clusters = [(COStateManager *)self clusters];
+  [v5 addObserverWithPredicate:predicate suite:suite interestClusters:clusters];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -1524,32 +1524,32 @@ void __42__COStateManager__lostConnectionToService__block_invoke_2(void *a1, voi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_onqueue_clustersValid:(id)a3
+- (BOOL)_onqueue_clustersValid:(id)valid
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  validCopy = valid;
   dispatch_assert_queue_V2(workQueue);
-  v6 = [v5 mutableCopy];
+  v6 = [validCopy mutableCopy];
 
-  v7 = [(COStateManager *)self clusters];
-  [v6 minusSet:v7];
+  clusters = [(COStateManager *)self clusters];
+  [v6 minusSet:clusters];
 
-  LOBYTE(v7) = [v6 count] == 0;
-  return v7;
+  LOBYTE(clusters) = [v6 count] == 0;
+  return clusters;
 }
 
-- (id)_clustersForClustersTmp:(id)a3
+- (id)_clustersForClustersTmp:(id)tmp
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  tmpCopy = tmp;
+  if (tmpCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB98]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = tmpCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -1591,19 +1591,19 @@ void __42__COStateManager__lostConnectionToService__block_invoke_2(void *a1, voi
   return v4;
 }
 
-- (id)_sanitizeChanges:(id)a3
+- (id)_sanitizeChanges:(id)changes
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v25 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [v3 objectForKeyedSubscript:@"COStateManagerChangesUpdatedKeyPaths"];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  changesCopy = changes;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [changesCopy objectForKeyedSubscript:@"COStateManagerChangesUpdatedKeyPaths"];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  allKeys = [v4 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1614,22 +1614,22 @@ void __42__COStateManager__lostConnectionToService__block_invoke_2(void *a1, voi
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
         v12 = [COKeyPath createWithString:v11];
         v13 = [v4 objectForKeyedSubscript:v11];
-        [v5 setObject:v13 forKey:v12];
+        [dictionary2 setObject:v13 forKey:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [v3 objectForKeyedSubscript:@"COStateManagerChangesRemovedKeyPaths"];
+  v14 = [changesCopy objectForKeyedSubscript:@"COStateManagerChangesRemovedKeyPaths"];
   v15 = [MEMORY[0x277CBEB58] set];
   v26 = 0u;
   v27 = 0u;
@@ -1660,29 +1660,29 @@ void __42__COStateManager__lostConnectionToService__block_invoke_2(void *a1, voi
     while (v18);
   }
 
-  v22 = [v3 objectForKeyedSubscript:@"COStateManagerChangesCluster"];
-  [v25 setObject:v22 forKey:@"COStateManagerChangesCluster"];
+  v22 = [changesCopy objectForKeyedSubscript:@"COStateManagerChangesCluster"];
+  [dictionary setObject:v22 forKey:@"COStateManagerChangesCluster"];
 
-  [v25 setObject:v5 forKey:@"COStateManagerChangesUpdatedKeyPaths"];
-  [v25 setObject:v15 forKey:@"COStateManagerChangesRemovedKeyPaths"];
+  [dictionary setObject:dictionary2 forKey:@"COStateManagerChangesUpdatedKeyPaths"];
+  [dictionary setObject:v15 forKey:@"COStateManagerChangesRemovedKeyPaths"];
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return dictionary;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -1696,7 +1696,7 @@ void __42__COStateManager__lostConnectionToService__block_invoke_2(void *a1, voi
   v7[4] = self;
   v7[5] = &v8;
   [(COStateManager *)self _withLock:v7];
-  v5 = [v9[5] remoteObjectProxyWithErrorHandler:v4];
+  v5 = [v9[5] remoteObjectProxyWithErrorHandler:handlerCopy];
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -1836,8 +1836,8 @@ void __51__COStateManager__remoteInterfaceWithErrorHandler___block_invoke_167(ui
 
 - (void)_invalidate
 {
-  v2 = [(COStateManagerConnectionProvider *)self->_provider stateManagerServiceConnection];
-  [v2 invalidate];
+  stateManagerServiceConnection = [(COStateManagerConnectionProvider *)self->_provider stateManagerServiceConnection];
+  [stateManagerServiceConnection invalidate];
 }
 
 - (NSXPCConnection)lastConnection
@@ -1847,11 +1847,11 @@ void __51__COStateManager__remoteInterfaceWithErrorHandler___block_invoke_167(ui
   return WeakRetained;
 }
 
-- (void)fetchCompositionForCluster:(id)a3 dispatchQueue:(id)a4 block:(id)a5
+- (void)fetchCompositionForCluster:(id)cluster dispatchQueue:(id)queue block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clusterCopy = cluster;
+  queueCopy = queue;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1863,11 +1863,11 @@ void __51__COStateManager__remoteInterfaceWithErrorHandler___block_invoke_167(ui
   v14[1] = 3221225472;
   v14[2] = __85__COStateManager_ClusterExamination__fetchCompositionForCluster_dispatchQueue_block___block_invoke_242;
   v14[3] = &unk_278E128F0;
-  v12 = v9;
+  v12 = queueCopy;
   v15 = v12;
-  v13 = v10;
+  v13 = blockCopy;
   v16 = v13;
-  [v11 requestCompositionForCluster:v8 withCallback:v14];
+  [v11 requestCompositionForCluster:clusterCopy withCallback:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -1905,16 +1905,16 @@ void __85__COStateManager_ClusterExamination__fetchCompositionForCluster_dispatc
   dispatch_async(v7, block);
 }
 
-- (void)delayForDoorbellChimeWithCompletionHandler:(id)a3
+- (void)delayForDoorbellChimeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__COStateManager_Doorbell__delayForDoorbellChimeWithCompletionHandler___block_invoke;
   v10[3] = &unk_278E12458;
   objc_copyWeak(&v12, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v11 = v5;
   v6 = [(COStateManager *)self _remoteInterfaceWithErrorHandler:v10];
   v8[0] = MEMORY[0x277D85DD0];
@@ -1953,14 +1953,14 @@ void __71__COStateManager_Doorbell__delayForDoorbellChimeWithCompletionHandler__
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)homed_COStateManagerWithSuiteName:(id)a3 homeIdentifier:(id)a4
++ (id)homed_COStateManagerWithSuiteName:(id)name homeIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [COCluster _homeClusterForHomeKitHomeIdentifier:v5];
+  identifierCopy = identifier;
+  nameCopy = name;
+  v7 = [COCluster _homeClusterForHomeKitHomeIdentifier:identifierCopy];
   v8 = [MEMORY[0x277CBEB98] setWithObject:v7];
-  v9 = [[COStateManager alloc] initWithSuiteName:v6 clusters:v8];
+  v9 = [[COStateManager alloc] initWithSuiteName:nameCopy clusters:v8];
 
   v10 = COLogForCategory(4);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1968,7 +1968,7 @@ void __71__COStateManager_Doorbell__delayForDoorbellChimeWithCompletionHandler__
     v13 = 134218499;
     v14 = v9;
     v15 = 2113;
-    v16 = v5;
+    v16 = identifierCopy;
     v17 = 2112;
     v18 = v7;
     _os_log_impl(&dword_244328000, v10, OS_LOG_TYPE_DEFAULT, "%p Created homed COStateManager instance for %{private}@, cluster %@", &v13, 0x20u);

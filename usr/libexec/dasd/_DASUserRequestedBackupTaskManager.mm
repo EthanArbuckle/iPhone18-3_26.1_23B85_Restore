@@ -1,14 +1,14 @@
 @interface _DASUserRequestedBackupTaskManager
-+ (_DASUserRequestedBackupTaskManager)managerWithContext:(id)a3;
++ (_DASUserRequestedBackupTaskManager)managerWithContext:(id)context;
 + (id)userRequestedBackupKeyPath;
-- (BOOL)activityEligibleForRunning:(id)a3;
-- (_DASUserRequestedBackupTaskManager)initWithContext:(id)a3;
+- (BOOL)activityEligibleForRunning:(id)running;
+- (_DASUserRequestedBackupTaskManager)initWithContext:(id)context;
 - (id)currentClient;
-- (unint64_t)backupTaskStatusForCompletedActivity:(int64_t)a3;
+- (unint64_t)backupTaskStatusForCompletedActivity:(int64_t)activity;
 - (void)_queue_obtainPendingBackupTasks;
-- (void)activitySubmitted:(id)a3;
-- (void)reportActivityNoLongerRunning:(id)a3;
-- (void)reportActivityRunning:(id)a3;
+- (void)activitySubmitted:(id)submitted;
+- (void)reportActivityNoLongerRunning:(id)running;
+- (void)reportActivityRunning:(id)running;
 - (void)syncRequested;
 @end
 
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (_DASUserRequestedBackupTaskManager)initWithContext:(id)a3
+- (_DASUserRequestedBackupTaskManager)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = _DASUserRequestedBackupTaskManager;
   v6 = [(_DASUserRequestedBackupTaskManager *)&v18 init];
@@ -48,20 +48,20 @@
     clientsWithErrors = v7->_clientsWithErrors;
     v7->_clientsWithErrors = v12;
 
-    objc_storeStrong(&v7->_context, a3);
+    objc_storeStrong(&v7->_context, context);
     context = v7->_context;
-    v15 = [objc_opt_class() userRequestedBackupKeyPath];
-    v16 = [(_CDLocalContext *)context objectForKeyedSubscript:v15];
+    userRequestedBackupKeyPath = [objc_opt_class() userRequestedBackupKeyPath];
+    v16 = [(_CDLocalContext *)context objectForKeyedSubscript:userRequestedBackupKeyPath];
     v7->_syncInProgress = [v16 BOOLValue];
   }
 
   return v7;
 }
 
-+ (_DASUserRequestedBackupTaskManager)managerWithContext:(id)a3
++ (_DASUserRequestedBackupTaskManager)managerWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithContext:v3];
+  contextCopy = context;
+  v4 = [objc_alloc(objc_opt_class()) initWithContext:contextCopy];
 
   return v4;
 }
@@ -99,37 +99,37 @@
   return client;
 }
 
-- (void)activitySubmitted:(id)a3
+- (void)activitySubmitted:(id)submitted
 {
-  v4 = a3;
+  submittedCopy = submitted;
   os_unfair_lock_lock(&self->_lock);
   backupTasks = self->_backupTasks;
-  v6 = [v4 name];
-  v7 = [(NSMutableDictionary *)backupTasks objectForKeyedSubscript:v6];
-  v8 = [v7 unsignedIntegerValue];
+  name = [submittedCopy name];
+  v7 = [(NSMutableDictionary *)backupTasks objectForKeyedSubscript:name];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if (v8 == 1)
+  if (unsignedIntegerValue == 1)
   {
     v9 = 3;
   }
 
   else
   {
-    v9 = v8;
+    v9 = unsignedIntegerValue;
   }
 
   v10 = [NSNumber numberWithUnsignedInteger:v9];
   v11 = self->_backupTasks;
-  v12 = [v4 name];
+  name2 = [submittedCopy name];
 
-  [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
+  [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:name2];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)reportActivityRunning:(id)a3
+- (void)reportActivityRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   os_unfair_lock_lock(&self->_lock);
   syncInProgress = self->_syncInProgress;
   log = self->_log;
@@ -139,28 +139,28 @@
     if (v7)
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = runningCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%@ running", &v10, 0xCu);
     }
 
     backupTasks = self->_backupTasks;
-    v9 = [v4 name];
-    [(NSMutableDictionary *)backupTasks setObject:&off_1001CA978 forKeyedSubscript:v9];
+    name = [runningCopy name];
+    [(NSMutableDictionary *)backupTasks setObject:&off_1001CA978 forKeyedSubscript:name];
   }
 
   else if (v7)
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = runningCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%@ running (no sync in progress)", &v10, 0xCu);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (unint64_t)backupTaskStatusForCompletedActivity:(int64_t)a3
+- (unint64_t)backupTaskStatusForCompletedActivity:(int64_t)activity
 {
-  if (a3 == 3)
+  if (activity == 3)
   {
     return 2;
   }
@@ -171,9 +171,9 @@
   }
 }
 
-- (void)reportActivityNoLongerRunning:(id)a3
+- (void)reportActivityNoLongerRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   os_unfair_lock_lock(&self->_lock);
   syncInProgress = self->_syncInProgress;
   log = self->_log;
@@ -183,21 +183,21 @@
     if (v7)
     {
       *buf = 138412290;
-      v40 = v4;
+      v40 = runningCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%@ done running", buf, 0xCu);
     }
 
     backupTasks = self->_backupTasks;
-    v9 = [(NSMutableDictionary *)v4 name];
-    v10 = [(NSMutableDictionary *)backupTasks objectForKeyedSubscript:v9];
-    v11 = [v10 unsignedIntegerValue];
+    name = [(NSMutableDictionary *)runningCopy name];
+    v10 = [(NSMutableDictionary *)backupTasks objectForKeyedSubscript:name];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    if (![(_DASUserRequestedBackupTaskManager *)self isBackupStatusCompleted:v11])
+    if (![(_DASUserRequestedBackupTaskManager *)self isBackupStatusCompleted:unsignedIntegerValue])
     {
-      v12 = [NSNumber numberWithUnsignedInteger:[(_DASUserRequestedBackupTaskManager *)self backupTaskStatusForCompletedActivity:[(NSMutableDictionary *)v4 completionStatus]]];
+      v12 = [NSNumber numberWithUnsignedInteger:[(_DASUserRequestedBackupTaskManager *)self backupTaskStatusForCompletedActivity:[(NSMutableDictionary *)runningCopy completionStatus]]];
       v13 = self->_backupTasks;
-      v14 = [(NSMutableDictionary *)v4 name];
-      [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
+      name2 = [(NSMutableDictionary *)runningCopy name];
+      [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:name2];
     }
 
     v15 = self->_log;
@@ -221,19 +221,19 @@
     v34[4] = self;
     v34[5] = &v35;
     [(NSMutableDictionary *)v17 enumerateKeysAndObjectsUsingBlock:v34];
-    if ([(NSMutableDictionary *)v4 completionStatus]== 3)
+    if ([(NSMutableDictionary *)runningCopy completionStatus]== 3)
     {
       v18 = self->_log;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        sub_10012D3A0(v4, v18);
+        sub_10012D3A0(runningCopy, v18);
       }
 
-      v19 = [(NSMutableDictionary *)v4 name];
+      name3 = [(NSMutableDictionary *)runningCopy name];
       v47[0] = NSLocalizedDescriptionKey;
       v47[1] = @"client";
       v48[0] = @"Error attempting to sync local changes.";
-      v48[1] = v19;
+      v48[1] = name3;
       v20 = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:2];
       v21 = [NSError errorWithDomain:@"XPCSyncOnBackup" code:228965071 userInfo:v20];
 
@@ -258,12 +258,12 @@
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Total=%@ Completed=%@ Errors=%@ All=%@", buf, 0x2Au);
     }
 
-    v27 = [(_DASUserRequestedBackupTaskManager *)self currentClient];
+    currentClient = [(_DASUserRequestedBackupTaskManager *)self currentClient];
     totalClients = self->_totalClients;
     v29 = v36[3];
     v30 = [(NSMutableArray *)self->_clientsWithErrors count];
     v31 = [(NSMutableArray *)self->_clientsWithErrors copy];
-    [v27 cloudSyncProgressUpdate:totalClients completedClients:v29 - v30 errors:v31];
+    [currentClient cloudSyncProgressUpdate:totalClients completedClients:v29 - v30 errors:v31];
 
     if (v36[3] == self->_totalClients)
     {
@@ -285,7 +285,7 @@
     if (v7)
     {
       *buf = 138412290;
-      v40 = v4;
+      v40 = runningCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%@ done running (no sync in progress)", buf, 0xCu);
     }
 
@@ -293,15 +293,15 @@
   }
 }
 
-- (BOOL)activityEligibleForRunning:(id)a3
+- (BOOL)activityEligibleForRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   os_unfair_lock_lock(&self->_lock);
   syncInProgress = self->_syncInProgress;
   backupTasks = self->_backupTasks;
-  v7 = [v4 name];
+  name = [runningCopy name];
 
-  v8 = [(NSMutableDictionary *)backupTasks objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)backupTasks objectForKeyedSubscript:name];
 
   v9 = v8 != 0 && syncInProgress;
   if ([v8 unsignedIntegerValue])
@@ -318,13 +318,13 @@
 {
   [(NSMutableDictionary *)self->_backupTasks removeAllObjects];
   v3 = +[_DASDaemon sharedInstance];
-  v4 = [v3 allPendingSyncOnBackupTasks];
+  allPendingSyncOnBackupTasks = [v3 allPendingSyncOnBackupTasks];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = allPendingSyncOnBackupTasks;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -341,8 +341,8 @@
         }
 
         backupTasks = self->_backupTasks;
-        v11 = [*(*(&v12 + 1) + 8 * v9) name];
-        [(NSMutableDictionary *)backupTasks setObject:&off_1001CA9A8 forKeyedSubscript:v11];
+        name = [*(*(&v12 + 1) + 8 * v9) name];
+        [(NSMutableDictionary *)backupTasks setObject:&off_1001CA9A8 forKeyedSubscript:name];
 
         v9 = v9 + 1;
       }
@@ -361,11 +361,11 @@
   context = self->_context;
   v4 = +[_DASUserRequestedBackupTaskManager userRequestedBackupKeyPath];
   v5 = [(_CDLocalContext *)context objectForKeyedSubscript:v4];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   log = self->_log;
   v8 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (bOOLValue)
   {
     if (v8)
     {
@@ -394,8 +394,8 @@
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "No pending tasks, reporting update!", &v15, 2u);
       }
 
-      v12 = [(_DASUserRequestedBackupTaskManager *)self currentClient];
-      [v12 cloudSyncProgressUpdate:0 completedClients:0 errors:&__NSArray0__struct];
+      currentClient = [(_DASUserRequestedBackupTaskManager *)self currentClient];
+      [currentClient cloudSyncProgressUpdate:0 completedClients:0 errors:&__NSArray0__struct];
 
       self->_syncInProgress = 0;
       v13 = self->_context;

@@ -1,16 +1,16 @@
 @interface _EARSyncResultStreamHelper
-- (_EARSyncResultStreamHelper)initWithTagResults:(BOOL)a3;
-- (id)addPartialFinalTag:()basic_string<char result:()std:(std::allocator<char>> *)a3 :char_traits<char>;
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResults:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4;
+- (_EARSyncResultStreamHelper)initWithTagResults:(BOOL)results;
+- (id)addPartialFinalTag:()basic_string<char result:()std:(std::allocator<char>> *)std :char_traits<char>;
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error;
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResults:(id)results;
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result;
 @end
 
 @implementation _EARSyncResultStreamHelper
 
-- (_EARSyncResultStreamHelper)initWithTagResults:(BOOL)a3
+- (_EARSyncResultStreamHelper)initWithTagResults:(BOOL)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v10.receiver = self;
   v10.super_class = _EARSyncResultStreamHelper;
   v4 = [(_EARSyncResultStreamHelper *)&v10 init];
@@ -20,7 +20,7 @@
     finishSemaphore = v4->_finishSemaphore;
     v4->_finishSemaphore = v5;
 
-    if (v3)
+    if (resultsCopy)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
       taggedResults = v4->_taggedResults;
@@ -31,13 +31,13 @@
   return v4;
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   if (self->_taggedResults)
   {
     std::string::basic_string[abi:ne200100]<0>(__p, "partial");
-    v6 = [(_EARSyncResultStreamHelper *)self addPartialFinalTag:__p result:v5];
+    v6 = [(_EARSyncResultStreamHelper *)self addPartialFinalTag:__p result:resultCopy];
     if (v8 < 0)
     {
       operator delete(__p[0]);
@@ -47,22 +47,22 @@
   }
 }
 
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error
 {
-  objc_storeStrong(&self->_error, a4);
-  v6 = a4;
+  objc_storeStrong(&self->_error, error);
+  errorCopy = error;
   dispatch_semaphore_signal(self->_finishSemaphore);
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResults:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResults:(id)results
 {
-  v6 = a4;
-  objc_storeStrong(&self->_results, a4);
+  resultsCopy = results;
+  objc_storeStrong(&self->_results, results);
   if (self->_taggedResults)
   {
     std::string::basic_string[abi:ne200100]<0>(__p, "final");
-    v7 = [v6 firstObject];
-    v8 = [(_EARSyncResultStreamHelper *)self addPartialFinalTag:__p result:v7];
+    firstObject = [resultsCopy firstObject];
+    v8 = [(_EARSyncResultStreamHelper *)self addPartialFinalTag:__p result:firstObject];
 
     if (v10 < 0)
     {
@@ -73,20 +73,20 @@
   }
 }
 
-- (id)addPartialFinalTag:()basic_string<char result:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (id)addPartialFinalTag:()basic_string<char result:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v5 = v3;
   v44 = 0;
   v45 = 0;
   v46 = 0;
-  if (*(&a3->__rep_.__l + 23) < 0)
+  if (*(&std->__rep_.__l + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v33, a3->__rep_.__l.__data_, a3->__rep_.__l.__size_);
+    std::string::__init_copy_ctor_external(&v33, std->__rep_.__l.__data_, std->__rep_.__l.__size_);
   }
 
   else
   {
-    v33 = *a3;
+    v33 = *std;
   }
 
   std::string::basic_string[abi:ne200100]<0>(v31, "");
@@ -169,10 +169,10 @@ LABEL_42:
   }
 
 LABEL_22:
-  v6 = [v5 tokens];
-  for (i = 0; [v6 count] > i; ++i)
+  tokens = [v5 tokens];
+  for (i = 0; [tokens count] > i; ++i)
   {
-    v8 = [v6 objectAtIndex:i];
+    v8 = [tokens objectAtIndex:i];
     v9 = v8;
     if (v8)
     {

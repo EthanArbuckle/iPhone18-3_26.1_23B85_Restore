@@ -1,34 +1,34 @@
 @interface TSCH3DBarNormalDirectionMapper
-- (TSCH3DBarNormalDirectionMapper)initWithWallOffset:(int64_t)a3 crossSectionCount:(int64_t)a4 spineCount:(int64_t)a5 beginLimit:(int64_t)a6 endLimit:(int64_t)a7;
-- (void)mapFromVertexArray:(const void *)a3 normalArray:(const void *)a4 normalMatrix:(void *)a5 numVertices:(int64_t)a6 destination:(void *)a7;
+- (TSCH3DBarNormalDirectionMapper)initWithWallOffset:(int64_t)offset crossSectionCount:(int64_t)count spineCount:(int64_t)spineCount beginLimit:(int64_t)limit endLimit:(int64_t)endLimit;
+- (void)mapFromVertexArray:(const void *)array normalArray:(const void *)normalArray normalMatrix:(void *)matrix numVertices:(int64_t)vertices destination:(void *)destination;
 @end
 
 @implementation TSCH3DBarNormalDirectionMapper
 
-- (TSCH3DBarNormalDirectionMapper)initWithWallOffset:(int64_t)a3 crossSectionCount:(int64_t)a4 spineCount:(int64_t)a5 beginLimit:(int64_t)a6 endLimit:(int64_t)a7
+- (TSCH3DBarNormalDirectionMapper)initWithWallOffset:(int64_t)offset crossSectionCount:(int64_t)count spineCount:(int64_t)spineCount beginLimit:(int64_t)limit endLimit:(int64_t)endLimit
 {
   v13.receiver = self;
   v13.super_class = TSCH3DBarNormalDirectionMapper;
   result = [(TSCH3DBarNormalDirectionMapper *)&v13 init];
   if (result)
   {
-    result->_wallOffset = a3;
-    result->_crossSectionCount = a4;
-    result->_spineCount = a5;
-    result->_beginLimit = a6;
-    result->_endLimit = a7;
+    result->_wallOffset = offset;
+    result->_crossSectionCount = count;
+    result->_spineCount = spineCount;
+    result->_beginLimit = limit;
+    result->_endLimit = endLimit;
   }
 
   return result;
 }
 
-- (void)mapFromVertexArray:(const void *)a3 normalArray:(const void *)a4 normalMatrix:(void *)a5 numVertices:(int64_t)a6 destination:(void *)a7
+- (void)mapFromVertexArray:(const void *)array normalArray:(const void *)normalArray normalMatrix:(void *)matrix numVertices:(int64_t)vertices destination:(void *)destination
 {
   v73 = 0x3C23D70A3F444444;
   v74 = 1065353216;
   v71 = objc_msgSend_mapperWithNormalBias_(TSCH3DDefaultNormalDirectionMapper, a2, 5.37764281e-19, v7, v8, &v73);
-  objc_msgSend_mapFromVertexArray_normalArray_normalMatrix_numVertices_destination_(v71, v15, v16, v17, v18, a3, a4, a5, a6, a7);
-  v72 = self;
+  objc_msgSend_mapFromVertexArray_normalArray_normalMatrix_numVertices_destination_(v71, v15, v16, v17, v18, array, normalArray, matrix, vertices, destination);
+  selfCopy = self;
   beginLimit = self->_beginLimit;
   v24 = 0x277CCA000uLL;
   if (beginLimit >= 1)
@@ -43,8 +43,8 @@
         {
           v28 = ((self->_wallOffset + 6 * (i + v25 * crossSectionCount)) * 0x5555555555555556) >> 64;
           v29 = v28 + (v28 >> 63);
-          v30 = *a7;
-          if ((v29 + 1) >= *(a7 + 1) - *a7)
+          v30 = *destination;
+          if ((v29 + 1) >= *(destination + 1) - *destination)
           {
             v31 = v25;
             v32 = MEMORY[0x277D81150];
@@ -54,13 +54,13 @@
 
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
             v24 = 0x277CCA000uLL;
-            v30 = *a7;
+            v30 = *destination;
             v25 = v31;
-            self = v72;
+            self = selfCopy;
           }
 
           *(v30 + v29) = 1;
-          *(*a7 + v29 + 1) = 1;
+          *(*destination + v29 + 1) = 1;
           crossSectionCount = self->_crossSectionCount;
         }
 
@@ -87,8 +87,8 @@
         {
           v52 = ((self->_wallOffset + 6 * (j + v49 * v50)) * 0x5555555555555556) >> 64;
           v53 = v52 + (v52 >> 63);
-          v54 = *a7;
-          if ((v53 + 1) >= *(a7 + 1) - *a7)
+          v54 = *destination;
+          if ((v53 + 1) >= *(destination + 1) - *destination)
           {
             v55 = v49;
             v56 = MEMORY[0x277D81150];
@@ -98,13 +98,13 @@
 
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v67, v68, v69, v70);
             v24 = 0x277CCA000;
-            v54 = *a7;
+            v54 = *destination;
             v49 = v55;
-            self = v72;
+            self = selfCopy;
           }
 
           *(v54 + v53) = 1;
-          *(*a7 + v53 + 1) = 1;
+          *(*destination + v53 + 1) = 1;
           v50 = self->_crossSectionCount;
         }
 

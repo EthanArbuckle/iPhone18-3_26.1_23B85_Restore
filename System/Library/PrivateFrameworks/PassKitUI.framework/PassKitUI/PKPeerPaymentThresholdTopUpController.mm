@@ -1,50 +1,50 @@
 @interface PKPeerPaymentThresholdTopUpController
-- (PKPeerPaymentThresholdTopUpController)initWithPeerPaymentAccount:(id)a3 pass:(id)a4 context:(int64_t)a5 passLibraryDataProvider:(id)a6 delegate:(id)a7;
-- (id)_messageForErrorCode:(unint64_t)a3;
+- (PKPeerPaymentThresholdTopUpController)initWithPeerPaymentAccount:(id)account pass:(id)pass context:(int64_t)context passLibraryDataProvider:(id)provider delegate:(id)delegate;
+- (id)_messageForErrorCode:(unint64_t)code;
 - (id)_setupCompleteImage;
-- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)a3;
+- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)controller;
 - (void)_presentPeerPaymentAddDebitFlow;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)peerPaymentActionController:(id)a3 hasChangedState:(unint64_t)a4;
-- (void)peerPaymentActionController:(id)a3 requestPresentViewController:(id)a4;
-- (void)presentTopUpFlowForRecurringPayment:(id)a3;
-- (void)thresholdTopUpDidSelectCancel:(id)a3;
-- (void)thresholdTopUpDidSelectContinue:(id)a3 completion:(id)a4;
-- (void)thresholdTopUpDidSelectUpdate:(id)a3 completion:(id)a4;
-- (void)thresholdTopUpPerformCancel:(id)a3 completion:(id)a4;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)peerPaymentActionController:(id)controller hasChangedState:(unint64_t)state;
+- (void)peerPaymentActionController:(id)controller requestPresentViewController:(id)viewController;
+- (void)presentTopUpFlowForRecurringPayment:(id)payment;
+- (void)thresholdTopUpDidSelectCancel:(id)cancel;
+- (void)thresholdTopUpDidSelectContinue:(id)continue completion:(id)completion;
+- (void)thresholdTopUpDidSelectUpdate:(id)update completion:(id)completion;
+- (void)thresholdTopUpPerformCancel:(id)cancel completion:(id)completion;
 @end
 
 @implementation PKPeerPaymentThresholdTopUpController
 
-- (PKPeerPaymentThresholdTopUpController)initWithPeerPaymentAccount:(id)a3 pass:(id)a4 context:(int64_t)a5 passLibraryDataProvider:(id)a6 delegate:(id)a7
+- (PKPeerPaymentThresholdTopUpController)initWithPeerPaymentAccount:(id)account pass:(id)pass context:(int64_t)context passLibraryDataProvider:(id)provider delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  accountCopy = account;
+  passCopy = pass;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = PKPeerPaymentThresholdTopUpController;
   v15 = [(PKPeerPaymentThresholdTopUpController *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_pass, a4);
-    v16->_context = a5;
-    objc_storeStrong(&v16->_account, a3);
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeStrong(&v15->_pass, pass);
+    v16->_context = context;
+    objc_storeStrong(&v16->_account, account);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
   }
 
   return v16;
 }
 
-- (void)presentTopUpFlowForRecurringPayment:(id)a3
+- (void)presentTopUpFlowForRecurringPayment:(id)payment
 {
-  v4 = [MEMORY[0x1E69B9000] sharedInstance];
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __77__PKPeerPaymentThresholdTopUpController_presentTopUpFlowForRecurringPayment___block_invoke;
   v5[3] = &unk_1E8014878;
   v5[4] = self;
-  [v4 recurringPaymentsWithCompletion:v5];
+  [mEMORY[0x1E69B9000] recurringPaymentsWithCompletion:v5];
 }
 
 void __77__PKPeerPaymentThresholdTopUpController_presentTopUpFlowForRecurringPayment___block_invoke(uint64_t a1, void *a2)
@@ -304,15 +304,15 @@ void __77__PKPeerPaymentThresholdTopUpController_presentTopUpFlowForRecurringPay
   [WeakRetained _presentPeerPaymentAddDebitFlow];
 }
 
-- (id)_messageForErrorCode:(unint64_t)a3
+- (id)_messageForErrorCode:(unint64_t)code
 {
   v3 = @"AUTO_RELOAD_ERROR_PROBLEM_MESSAGE_CUMULATIVE_LIMIT";
-  if (a3 - 40305 > 1)
+  if (code - 40305 > 1)
   {
     v3 = @"AUTO_RELOAD_ERROR_PROBLEM_MESSAGE_PAYMENT_METHOD";
   }
 
-  if (a3 - 40340 >= 4)
+  if (code - 40340 >= 4)
   {
     v4 = v3;
   }
@@ -334,18 +334,18 @@ void __77__PKPeerPaymentThresholdTopUpController_presentTopUpFlowForRecurringPay
   [WeakRetained thresholdTopUpController:self requestsPresentViewController:v4];
 }
 
-- (void)thresholdTopUpDidSelectCancel:(id)a3
+- (void)thresholdTopUpDidSelectCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained thresholdTopUpController:self requestsDismissViewController:v4];
+  [WeakRetained thresholdTopUpController:self requestsDismissViewController:cancelCopy];
 }
 
-- (void)thresholdTopUpPerformCancel:(id)a3 completion:(id)a4
+- (void)thresholdTopUpPerformCancel:(id)cancel completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPeerPaymentRecurringPayment *)self->_existingTopUp identifier];
+  cancelCopy = cancel;
+  completionCopy = completion;
+  identifier = [(PKPeerPaymentRecurringPayment *)self->_existingTopUp identifier];
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -353,19 +353,19 @@ void __77__PKPeerPaymentThresholdTopUpController_presentTopUpFlowForRecurringPay
     _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Cancelling threshold top up", buf, 2u);
   }
 
-  v10 = [MEMORY[0x1E69B9020] sharedService];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__PKPeerPaymentThresholdTopUpController_thresholdTopUpPerformCancel_completion___block_invoke;
   v14[3] = &unk_1E8017498;
-  v15 = v8;
-  v16 = self;
-  v17 = v6;
-  v18 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = v8;
-  [v10 peerPaymentRecurringPaymentPerformAction:2 identifier:v13 completion:v14];
+  v15 = identifier;
+  selfCopy = self;
+  v17 = cancelCopy;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = cancelCopy;
+  v13 = identifier;
+  [mEMORY[0x1E69B9020] peerPaymentRecurringPaymentPerformAction:2 identifier:v13 completion:v14];
 }
 
 void __80__PKPeerPaymentThresholdTopUpController_thresholdTopUpPerformCancel_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -469,114 +469,114 @@ void __80__PKPeerPaymentThresholdTopUpController_thresholdTopUpPerformCancel_com
   }
 }
 
-- (void)thresholdTopUpDidSelectContinue:(id)a3 completion:(id)a4
+- (void)thresholdTopUpDidSelectContinue:(id)continue completion:(id)completion
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = v6;
+  continueCopy = continue;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_actionCompletedBlock)
   {
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   else
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(completionCopy);
     actionCompletedBlock = self->_actionCompletedBlock;
     self->_actionCompletedBlock = v8;
 
-    v10 = [MEMORY[0x1E69B9020] sharedService];
-    v11 = [[PKPeerPaymentActionController alloc] initWithPaymentPass:self->_pass webService:v10 context:self->_context passLibraryDataProvider:self->_passLibraryDataProvider delegate:self];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    v11 = [[PKPeerPaymentActionController alloc] initWithPaymentPass:self->_pass webService:mEMORY[0x1E69B9020] context:self->_context passLibraryDataProvider:self->_passLibraryDataProvider delegate:self];
     controller = self->_controller;
     self->_controller = v11;
 
     [(PKPeerPaymentActionController *)self->_controller setControllerAction:1];
-    v13 = [(PKPeerPaymentAccount *)self->_account currentBalance];
-    v14 = [v13 currency];
+    currentBalance = [(PKPeerPaymentAccount *)self->_account currentBalance];
+    currency = [currentBalance currency];
 
     v15 = self->_controller;
     WeakRetained = objc_loadWeakRetained(&self->_vc);
-    v17 = [WeakRetained currentThreshold];
+    currentThreshold = [WeakRetained currentThreshold];
     v18 = PKCurrencyAmountMake();
     [(PKPeerPaymentActionController *)v15 setThresholdAmount:v18];
 
     v19 = self->_controller;
     v20 = objc_loadWeakRetained(&self->_vc);
-    v21 = [v20 currentAmount];
+    currentAmount = [v20 currentAmount];
     v22 = PKCurrencyAmountMake();
     [(PKPeerPaymentActionController *)v19 performActionWithCurrencyAmount:v22];
   }
 }
 
-- (void)thresholdTopUpDidSelectUpdate:(id)a3 completion:(id)a4
+- (void)thresholdTopUpDidSelectUpdate:(id)update completion:(id)completion
 {
-  v28 = a3;
-  v6 = a4;
-  v7 = v6;
+  updateCopy = update;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_actionCompletedBlock)
   {
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   else
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(completionCopy);
     actionCompletedBlock = self->_actionCompletedBlock;
     self->_actionCompletedBlock = v8;
 
-    v10 = [MEMORY[0x1E69B9020] sharedService];
-    v11 = [[PKPeerPaymentActionController alloc] initWithPaymentPass:self->_pass webService:v10 context:self->_context passLibraryDataProvider:self->_passLibraryDataProvider delegate:self];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    v11 = [[PKPeerPaymentActionController alloc] initWithPaymentPass:self->_pass webService:mEMORY[0x1E69B9020] context:self->_context passLibraryDataProvider:self->_passLibraryDataProvider delegate:self];
     controller = self->_controller;
     self->_controller = v11;
 
     [(PKPeerPaymentActionController *)self->_controller setControllerAction:1];
-    v13 = [(PKPeerPaymentAccount *)self->_account currentBalance];
-    v14 = [v13 currency];
+    currentBalance = [(PKPeerPaymentAccount *)self->_account currentBalance];
+    currency = [currentBalance currency];
 
     v15 = self->_controller;
-    v16 = [(PKPeerPaymentRecurringPayment *)self->_existingTopUp identifier];
-    [(PKPeerPaymentActionController *)v15 setRecurringPaymentIdentifier:v16];
+    identifier = [(PKPeerPaymentRecurringPayment *)self->_existingTopUp identifier];
+    [(PKPeerPaymentActionController *)v15 setRecurringPaymentIdentifier:identifier];
 
     v17 = self->_controller;
     WeakRetained = objc_loadWeakRetained(&self->_vc);
-    v19 = [WeakRetained currentThreshold];
+    currentThreshold = [WeakRetained currentThreshold];
     v20 = PKCurrencyAmountMake();
     [(PKPeerPaymentActionController *)v17 setThresholdAmount:v20];
 
     v21 = self->_controller;
     v22 = objc_loadWeakRetained(&self->_vc);
-    v23 = [v22 selectedPass];
-    [(PKPeerPaymentActionController *)v21 setAlternateFundingSource:v23];
+    selectedPass = [v22 selectedPass];
+    [(PKPeerPaymentActionController *)v21 setAlternateFundingSource:selectedPass];
 
     v24 = self->_controller;
     v25 = objc_loadWeakRetained(&self->_vc);
-    v26 = [v25 currentAmount];
+    currentAmount = [v25 currentAmount];
     v27 = PKCurrencyAmountMake();
     [(PKPeerPaymentActionController *)v24 performActionWithCurrencyAmount:v27];
   }
 }
 
-- (void)peerPaymentActionController:(id)a3 hasChangedState:(unint64_t)a4
+- (void)peerPaymentActionController:(id)controller hasChangedState:(unint64_t)state
 {
-  v6 = a3;
-  if (!a4)
+  controllerCopy = controller;
+  if (!state)
   {
-    v12 = [MEMORY[0x1E69B9000] sharedInstance];
-    v13 = [(PKPeerPaymentAccount *)self->_account currentBalance];
-    v10 = [v13 currency];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+    currentBalance = [(PKPeerPaymentAccount *)self->_account currentBalance];
+    currency = [currentBalance currency];
 
     WeakRetained = objc_loadWeakRetained(&self->_vc);
-    v15 = [WeakRetained currentAmount];
+    currentAmount = [WeakRetained currentAmount];
     v16 = PKCurrencyAmountMake();
 
     v17 = objc_loadWeakRetained(&self->_vc);
-    v18 = [v17 currentThreshold];
+    currentThreshold = [v17 currentThreshold];
     v19 = PKCurrencyAmountMake();
 
     v20 = PKLogFacilityTypeGetObject();
@@ -586,7 +586,7 @@ void __80__PKPeerPaymentThresholdTopUpController_thresholdTopUpPerformCancel_com
       _os_log_impl(&dword_1BD026000, v20, OS_LOG_TYPE_DEFAULT, "Updating local threshold top up", buf, 2u);
     }
 
-    v21 = [v6 recurringPaymentIdentifier];
+    recurringPaymentIdentifier = [controllerCopy recurringPaymentIdentifier];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __85__PKPeerPaymentThresholdTopUpController_peerPaymentActionController_hasChangedState___block_invoke;
@@ -594,11 +594,11 @@ void __80__PKPeerPaymentThresholdTopUpController_thresholdTopUpPerformCancel_com
     v25[4] = self;
     v26 = v16;
     v27 = v19;
-    v28 = v12;
-    v22 = v12;
+    v28 = mEMORY[0x1E69B9000];
+    v22 = mEMORY[0x1E69B9000];
     v23 = v19;
     v24 = v16;
-    [v22 updateAutoReloadAmount:v24 threshold:v23 identifier:v21 completion:v25];
+    [v22 updateAutoReloadAmount:v24 threshold:v23 identifier:recurringPaymentIdentifier completion:v25];
 
     goto LABEL_10;
   }
@@ -611,16 +611,16 @@ void __80__PKPeerPaymentThresholdTopUpController_thresholdTopUpPerformCancel_com
     self->_actionCompletedBlock = 0;
   }
 
-  if (a4 - 3 <= 1)
+  if (state - 3 <= 1)
   {
     v9 = objc_loadWeakRetained(&self->_vc);
-    v10 = [v9 navigationController];
+    currency = [v9 navigationController];
 
-    v11 = [v10 presentedViewController];
+    presentedViewController = [currency presentedViewController];
 
-    if (v11)
+    if (presentedViewController)
     {
-      [v10 dismissViewControllerAnimated:1 completion:0];
+      [currency dismissViewControllerAnimated:1 completion:0];
     }
 
 LABEL_10:
@@ -727,34 +727,34 @@ void __85__PKPeerPaymentThresholdTopUpController_peerPaymentActionController_has
 {
   v2 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:60.0];
   v3 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"dollarsign.arrow.circlepath" withConfiguration:v2];
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  v5 = [v3 imageWithTintColor:v4];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v5 = [v3 imageWithTintColor:whiteColor];
 
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  v7 = PKUIImageWithBackgroundAndCornerRadius(v5, v6, 80.0, 80.0, 0.0);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v7 = PKUIImageWithBackgroundAndCornerRadius(v5, blackColor, 80.0, 80.0, 0.0);
 
   return v7;
 }
 
-- (void)peerPaymentActionController:(id)a3 requestPresentViewController:(id)a4
+- (void)peerPaymentActionController:(id)controller requestPresentViewController:(id)viewController
 {
-  v8 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_vc);
-  v6 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  if (v6)
+  if (navigationController)
   {
-    [v6 presentViewController:v8 animated:1 completion:0];
+    [navigationController presentViewController:viewControllerCopy animated:1 completion:0];
   }
 
   else
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 thresholdTopUpController:self requestsPresentViewController:v8];
+    [v7 thresholdTopUpController:self requestsPresentViewController:viewControllerCopy];
   }
 }
 
-- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)a3
+- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained presentationSceneIdentifierForTopUpController:self];
@@ -762,7 +762,7 @@ void __85__PKPeerPaymentThresholdTopUpController_peerPaymentActionController_has
   return v5;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained thresholdTopUpControllerCompletedSetup:self];

@@ -1,17 +1,17 @@
 @interface PKLocation
-- (BOOL)hasEqualCoordinatesToLocation:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasEqualCoordinatesToLocation:(id)location;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)coordinate;
 - (PKLocation)init;
-- (PKLocation)initWithCoder:(id)a3;
-- (PKLocation)initWithDictionary:(id)a3;
+- (PKLocation)initWithCoder:(id)coder;
+- (PKLocation)initWithDictionary:(id)dictionary;
 - (id)CLLocation;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAltitude:(double)a3;
-- (void)setName:(id)a3;
-- (void)setRelevantText:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAltitude:(double)altitude;
+- (void)setName:(id)name;
+- (void)setRelevantText:(id)text;
 @end
 
 @implementation PKLocation
@@ -23,33 +23,33 @@
   return [(PKLocation *)&v3 init];
 }
 
-- (PKLocation)initWithDictionary:(id)a3
+- (PKLocation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PKLocation *)self init];
   if (v5)
   {
-    v6 = [v4 PKNumberForKey:@"latitude"];
+    v6 = [dictionaryCopy PKNumberForKey:@"latitude"];
     [v6 doubleValue];
     v5->_latitude = v7;
 
-    v8 = [v4 PKNumberForKey:@"longitude"];
+    v8 = [dictionaryCopy PKNumberForKey:@"longitude"];
     [v8 doubleValue];
     v5->_longitude = v9;
 
-    v10 = [v4 PKNumberForKey:@"altitude"];
+    v10 = [dictionaryCopy PKNumberForKey:@"altitude"];
     v5->_hasAltitude = v10 != 0;
     [v10 doubleValue];
     v5->_altitude = v11;
-    v12 = [v4 PKNumberForKey:@"maxDistance"];
+    v12 = [dictionaryCopy PKNumberForKey:@"maxDistance"];
     [v12 doubleValue];
     v5->_maxDistance = v13;
 
-    v14 = [v4 PKStringForKey:@"name"];
+    v14 = [dictionaryCopy PKStringForKey:@"name"];
     name = v5->_name;
     v5->_name = v14;
 
-    v16 = [v4 PKStringForKey:@"relevantText"];
+    v16 = [dictionaryCopy PKStringForKey:@"relevantText"];
     relevantText = v5->_relevantText;
     v5->_relevantText = v16;
   }
@@ -57,35 +57,35 @@
   return v5;
 }
 
-- (PKLocation)initWithCoder:(id)a3
+- (PKLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKLocation *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = objc_opt_class();
-    v8 = [v4 decodeObjectOfClass:v6 forKey:@"latitude"];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:@"latitude"];
     [v8 doubleValue];
     v5->_latitude = v9;
 
-    v10 = [v4 decodeObjectOfClass:v6 forKey:@"longitude"];
+    v10 = [coderCopy decodeObjectOfClass:v6 forKey:@"longitude"];
     [v10 doubleValue];
     v5->_longitude = v11;
 
-    v12 = [v4 decodeObjectOfClass:v6 forKey:@"altitude"];
+    v12 = [coderCopy decodeObjectOfClass:v6 forKey:@"altitude"];
     v5->_hasAltitude = v12 != 0;
     [v12 doubleValue];
     v5->_altitude = v13;
-    v14 = [v4 decodeObjectOfClass:v6 forKey:@"maxDistance"];
+    v14 = [coderCopy decodeObjectOfClass:v6 forKey:@"maxDistance"];
     [v14 doubleValue];
     v5->_maxDistance = v15;
 
-    v16 = [v4 decodeObjectOfClass:v7 forKey:@"name"];
+    v16 = [coderCopy decodeObjectOfClass:v7 forKey:@"name"];
     name = v5->_name;
     v5->_name = v16;
 
-    v18 = [v4 decodeObjectOfClass:v7 forKey:@"relevantText"];
+    v18 = [coderCopy decodeObjectOfClass:v7 forKey:@"relevantText"];
     relevantText = v5->_relevantText;
     v5->_relevantText = v18;
   }
@@ -93,47 +93,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:self->_latitude];
-  [v8 encodeObject:v4 forKey:@"latitude"];
+  [coderCopy encodeObject:v4 forKey:@"latitude"];
 
   v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:self->_longitude];
-  [v8 encodeObject:v5 forKey:@"longitude"];
+  [coderCopy encodeObject:v5 forKey:@"longitude"];
 
   if (self->_hasAltitude)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:self->_altitude];
-    [v8 encodeObject:v6 forKey:@"altitude"];
+    [coderCopy encodeObject:v6 forKey:@"altitude"];
   }
 
   v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:self->_maxDistance];
-  [v8 encodeObject:v7 forKey:@"maxDistance"];
+  [coderCopy encodeObject:v7 forKey:@"maxDistance"];
 
-  [v8 encodeObject:self->_name forKey:@"name"];
-  [v8 encodeObject:self->_relevantText forKey:@"relevantText"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_relevantText forKey:@"relevantText"];
 }
 
-- (void)setAltitude:(double)a3
+- (void)setAltitude:(double)altitude
 {
-  self->_altitude = a3;
+  self->_altitude = altitude;
   self->_hasAltitude = 1;
   atomic_store(0, &self->_hashComputed);
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   atomic_store(0, &self->_hashComputed);
 }
 
-- (void)setRelevantText:(id)a3
+- (void)setRelevantText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   relevantText = self->_relevantText;
   self->_relevantText = v4;
 
@@ -163,13 +163,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (![(PKLocation *)self hasEqualCoordinatesToLocation:v5])
     {
       LOBYTE(v10) = 0;
@@ -232,23 +232,23 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)hasEqualCoordinatesToLocation:(id)a3
+- (BOOL)hasEqualCoordinatesToLocation:(id)location
 {
-  v4 = a3;
-  if (self->_latitude != v4[5] || self->_longitude != v4[6])
+  locationCopy = location;
+  if (self->_latitude != locationCopy[5] || self->_longitude != locationCopy[6])
   {
     goto LABEL_6;
   }
 
   if (!self->_hasAltitude)
   {
-    v5 = *(v4 + 8) ^ 1;
+    v5 = *(locationCopy + 8) ^ 1;
     goto LABEL_8;
   }
 
-  if (*(v4 + 8))
+  if (*(locationCopy + 8))
   {
-    v5 = self->_altitude == v4[7];
+    v5 = self->_altitude == locationCopy[7];
   }
 
   else

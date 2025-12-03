@@ -1,28 +1,28 @@
 @interface TranscriptWaitingHostingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC7Journal28TranscriptWaitingHostingView)initWithCoder:(id)a3;
-- (_TtC7Journal28TranscriptWaitingHostingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC7Journal28TranscriptWaitingHostingView)initWithCoder:(id)coder;
+- (_TtC7Journal28TranscriptWaitingHostingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TranscriptWaitingHostingView
 
-- (_TtC7Journal28TranscriptWaitingHostingView)initWithFrame:(CGRect)a3
+- (_TtC7Journal28TranscriptWaitingHostingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal28TranscriptWaitingHostingView_hostingController) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for TranscriptWaitingHostingView();
-  v7 = [(TranscriptWaitingHostingView *)&v9 initWithFrame:x, y, width, height];
+  height = [(TranscriptWaitingHostingView *)&v9 initWithFrame:x, y, width, height];
   sub_1002F8620();
 
-  return v7;
+  return height;
 }
 
-- (_TtC7Journal28TranscriptWaitingHostingView)initWithCoder:(id)a3
+- (_TtC7Journal28TranscriptWaitingHostingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal28TranscriptWaitingHostingView_hostingController) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -30,20 +30,20 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal28TranscriptWaitingHostingView_hostingController);
   if (v5)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = v5;
-    v8 = [v7 view];
-    if (v8)
+    view = [v7 view];
+    if (view)
     {
-      v11 = v8;
-      [v8 sizeThatFits:{width, height}];
+      v11 = view;
+      [view sizeThatFits:{width, height}];
       v13 = v12;
       v15 = v14;
 
@@ -74,12 +74,12 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal28TranscriptWaitingHostingView_hostingController);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 view];
-    if (v4)
+    selfCopy = self;
+    view = [v2 view];
+    if (view)
     {
-      v7 = v4;
-      [v4 intrinsicContentSize];
+      v7 = view;
+      [view intrinsicContentSize];
       v9 = v8;
       v11 = v10;
 

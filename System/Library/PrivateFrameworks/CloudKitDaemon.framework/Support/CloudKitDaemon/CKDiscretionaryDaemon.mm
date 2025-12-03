@@ -1,39 +1,39 @@
 @interface CKDiscretionaryDaemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CKDiscretionaryDaemon)initWithInSyncBubble:(BOOL)a3;
-- (CKDiscretionaryDaemon)initWithSchedulerClass:(Class)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CKDiscretionaryDaemon)initWithInSyncBubble:(BOOL)bubble;
+- (CKDiscretionaryDaemon)initWithSchedulerClass:(Class)class;
 @end
 
 @implementation CKDiscretionaryDaemon
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = +[CKContainer _CKXPCClientToDiscretionaryDaemonInterface];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  v9 = [[CKDiscretionaryClientConnection alloc] initWithDaemon:self connection:v7];
-  [v7 setExportedObject:v9];
+  v9 = [[CKDiscretionaryClientConnection alloc] initWithDaemon:self connection:connectionCopy];
+  [connectionCopy setExportedObject:v9];
 
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, connectionCopy);
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000011D8;
   v14 = &unk_100010480;
   objc_copyWeak(&v15, &location);
-  [v7 setInvalidationHandler:&v11];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:&v11];
+  [connectionCopy resume];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 
   return 1;
 }
 
-- (CKDiscretionaryDaemon)initWithInSyncBubble:(BOOL)a3
+- (CKDiscretionaryDaemon)initWithInSyncBubble:(BOOL)bubble
 {
   v5 = objc_opt_class();
-  if (!a3)
+  if (!bubble)
   {
     v5 = objc_opt_class();
   }
@@ -41,7 +41,7 @@
   return [(CKDiscretionaryDaemon *)self initWithSchedulerClass:v5];
 }
 
-- (CKDiscretionaryDaemon)initWithSchedulerClass:(Class)a3
+- (CKDiscretionaryDaemon)initWithSchedulerClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = CKDiscretionaryDaemon;
@@ -53,7 +53,7 @@
     serialQueue = v4->_serialQueue;
     v4->_serialQueue = v6;
 
-    objc_storeStrong(&v4->_schedulerClass, a3);
+    objc_storeStrong(&v4->_schedulerClass, class);
   }
 
   return v4;

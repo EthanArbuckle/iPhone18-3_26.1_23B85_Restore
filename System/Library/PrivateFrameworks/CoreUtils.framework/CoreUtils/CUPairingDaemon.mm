@@ -1,64 +1,64 @@
 @interface CUPairingDaemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CUPairingDaemon)init;
-- (id)_copyHomeKitExWithOptions:(unint64_t)a3 error:(int *)a4;
-- (id)_copyHomeKitLocalPairingIDWithOptions:(unint64_t)a3 error:(int *)a4;
-- (id)_copyHomeKitWithOptionsHAP:(unint64_t)a3 error:(int *)a4;
-- (id)_copyHomeKitWithOptionsKeychain:(unint64_t)a3 error:(int *)a4;
-- (id)_copyIdentityWithOptions:(unint64_t)a3 error:(int *)a4;
-- (id)_copyOrCreateWithOptions:(unint64_t)a3 error:(int *)a4;
-- (id)_copyPairedPeersWithOptions:(unint64_t)a3 error:(int *)a4;
-- (id)_findHomeKitExPairedPeer:(id)a3 options:(unint64_t)a4 error:(int *)a5;
-- (id)_findHomeKitPairedPeer:(id)a3 options:(unint64_t)a4 error:(int *)a5;
-- (id)_findPairedPeer:(id)a3 options:(unint64_t)a4 error:(int *)a5;
-- (id)copyIdentityWithOptions:(unint64_t)a3 error:(int *)a4;
-- (id)copyPairedPeersWithOptions:(unint64_t)a3 error:(int *)a4;
+- (id)_copyHomeKitExWithOptions:(unint64_t)options error:(int *)error;
+- (id)_copyHomeKitLocalPairingIDWithOptions:(unint64_t)options error:(int *)error;
+- (id)_copyHomeKitWithOptionsHAP:(unint64_t)p error:(int *)error;
+- (id)_copyHomeKitWithOptionsKeychain:(unint64_t)keychain error:(int *)error;
+- (id)_copyIdentityWithOptions:(unint64_t)options error:(int *)error;
+- (id)_copyOrCreateWithOptions:(unint64_t)options error:(int *)error;
+- (id)_copyPairedPeersWithOptions:(unint64_t)options error:(int *)error;
+- (id)_findHomeKitExPairedPeer:(id)peer options:(unint64_t)options error:(int *)error;
+- (id)_findHomeKitPairedPeer:(id)peer options:(unint64_t)options error:(int *)error;
+- (id)_findPairedPeer:(id)peer options:(unint64_t)options error:(int *)error;
+- (id)copyIdentityWithOptions:(unint64_t)options error:(int *)error;
+- (id)copyPairedPeersWithOptions:(unint64_t)options error:(int *)error;
 - (id)detailedDescription;
-- (id)findPairedPeer:(id)a3 options:(unint64_t)a4 error:(int *)a5;
+- (id)findPairedPeer:(id)peer options:(unint64_t)options error:(int *)error;
 - (id)initStandalone;
-- (int)_deleteIdentityWithOptions:(unint64_t)a3;
-- (int)_removePairedPeer:(id)a3 options:(unint64_t)a4 removeAdminAllowed:(BOOL)a5;
-- (int)_saveIdentity:(id)a3 options:(unint64_t)a4;
-- (int)_savePairedPeer:(id)a3 options:(unint64_t)a4 removeAdminAllowed:(BOOL)a5;
-- (int)deleteIdentityWithOptions:(unint64_t)a3;
-- (int)removePairedPeer:(id)a3 options:(unint64_t)a4;
-- (int)removePairedPeer:(id)a3 options:(unint64_t)a4 removeAdminAllowed:(BOOL)a5;
-- (int)savePairedPeer:(id)a3 options:(unint64_t)a4;
-- (int)savePairedPeer:(id)a3 options:(unint64_t)a4 removeAdminAllowed:(BOOL)a5;
+- (int)_deleteIdentityWithOptions:(unint64_t)options;
+- (int)_removePairedPeer:(id)peer options:(unint64_t)options removeAdminAllowed:(BOOL)allowed;
+- (int)_saveIdentity:(id)identity options:(unint64_t)options;
+- (int)_savePairedPeer:(id)peer options:(unint64_t)options removeAdminAllowed:(BOOL)allowed;
+- (int)deleteIdentityWithOptions:(unint64_t)options;
+- (int)removePairedPeer:(id)peer options:(unint64_t)options;
+- (int)removePairedPeer:(id)peer options:(unint64_t)options removeAdminAllowed:(BOOL)allowed;
+- (int)savePairedPeer:(id)peer options:(unint64_t)options;
+- (int)savePairedPeer:(id)peer options:(unint64_t)options removeAdminAllowed:(BOOL)allowed;
 - (void)_activate;
-- (void)_connectionInvalidated:(id)a3;
+- (void)_connectionInvalidated:(id)invalidated;
 - (void)_invalidate;
-- (void)_removeDups:(id)a3;
+- (void)_removeDups:(id)dups;
 - (void)_rpIdentityUpdate;
 - (void)activate;
 - (void)dealloc;
-- (void)getIdentityWithOptions:(unint64_t)a3 completionHandler:(id)a4;
+- (void)getIdentityWithOptions:(unint64_t)options completionHandler:(id)handler;
 - (void)invalidate;
 - (void)reset;
 @end
 
 @implementation CUPairingDaemon
 
-- (int)_removePairedPeer:(id)a3 options:(unint64_t)a4 removeAdminAllowed:(BOOL)a5
+- (int)_removePairedPeer:(id)peer options:(unint64_t)options removeAdminAllowed:(BOOL)allowed
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(CUPairingDaemon *)self _findPairedPeer:v7 options:a4 & 0xFFFFFFFFFFFFFFFDLL error:0];
+  peerCopy = peer;
+  v8 = [(CUPairingDaemon *)self _findPairedPeer:peerCopy options:options & 0xFFFFFFFFFFFFFFFDLL error:0];
   if (!v8)
   {
-    v8 = v7;
+    v8 = peerCopy;
   }
 
-  v9 = [v8 identifier];
-  v10 = v9;
-  if (!v9)
+  identifier = [v8 identifier];
+  v10 = identifier;
+  if (!identifier)
   {
-    v18 = 0;
+    uUIDString = 0;
     goto LABEL_22;
   }
 
-  v18 = [v9 UUIDString];
-  if (!v18)
+  uUIDString = [identifier UUIDString];
+  if (!uUIDString)
   {
 LABEL_22:
     v31 = -6708;
@@ -100,8 +100,8 @@ LABEL_22:
           v29 = *(*(&v33 + 1) + 8 * i);
           if (*(v29 + 32) == 1)
           {
-            v30 = [*(v29 + 40) remoteObjectProxy];
-            [v30 pairedPeerRemoved:v8 options:a4];
+            remoteObjectProxy = [*(v29 + 40) remoteObjectProxy];
+            [remoteObjectProxy pairedPeerRemoved:v8 options:options];
           }
         }
 
@@ -120,58 +120,58 @@ LABEL_20:
   return v31;
 }
 
-- (int)removePairedPeer:(id)a3 options:(unint64_t)a4 removeAdminAllowed:(BOOL)a5
+- (int)removePairedPeer:(id)peer options:(unint64_t)options removeAdminAllowed:(BOOL)allowed
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = self;
-  objc_sync_enter(v9);
-  LODWORD(v5) = [(CUPairingDaemon *)v9 _removePairedPeer:v8 options:a4 removeAdminAllowed:v5];
-  objc_sync_exit(v9);
+  allowedCopy = allowed;
+  peerCopy = peer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LODWORD(allowedCopy) = [(CUPairingDaemon *)selfCopy _removePairedPeer:peerCopy options:options removeAdminAllowed:allowedCopy];
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return allowedCopy;
 }
 
-- (int)removePairedPeer:(id)a3 options:(unint64_t)a4
+- (int)removePairedPeer:(id)peer options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  LODWORD(a4) = [(CUPairingDaemon *)v7 _removePairedPeer:v6 options:a4 removeAdminAllowed:0];
-  objc_sync_exit(v7);
+  peerCopy = peer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LODWORD(options) = [(CUPairingDaemon *)selfCopy _removePairedPeer:peerCopy options:options removeAdminAllowed:0];
+  objc_sync_exit(selfCopy);
 
-  return a4;
+  return options;
 }
 
-- (int)_savePairedPeer:(id)a3 options:(unint64_t)a4 removeAdminAllowed:(BOOL)a5
+- (int)_savePairedPeer:(id)peer options:(unint64_t)options removeAdminAllowed:(BOOL)allowed
 {
   v127 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  peerCopy = peer;
   v122 = 0;
-  v8 = [v7 identifier];
-  v9 = v8;
-  v99 = v8;
-  if (!v8)
+  identifier = [peerCopy identifier];
+  v9 = identifier;
+  v99 = identifier;
+  if (!identifier)
   {
     v103 = 0;
     v100 = 0;
 LABEL_102:
-    v38 = 0;
+    model = 0;
     v35 = 0;
     v40 = 0;
     v97 = 0;
     v98 = 0;
     v13 = 0;
     v41 = 0;
-    v42 = 0;
+    name = 0;
     v24 = 0;
     v45 = -6708;
     goto LABEL_109;
   }
 
-  v8 = [(CUPairedPeer *)v8 UUIDString];
-  v103 = v8;
-  if (!v8)
+  identifier = [(CUPairedPeer *)identifier UUIDString];
+  v103 = identifier;
+  if (!identifier)
   {
     v103 = 0;
     v100 = 0;
@@ -179,9 +179,9 @@ LABEL_102:
     goto LABEL_102;
   }
 
-  v93 = a5;
-  v91 = self;
-  v10 = [CUPairingDaemon _findPairedPeer:"_findPairedPeer:options:error:" options:v7 error:?];
+  allowedCopy = allowed;
+  selfCopy = self;
+  v10 = [CUPairingDaemon _findPairedPeer:"_findPairedPeer:options:error:" options:peerCopy error:?];
   v100 = v10;
   if (!v10)
   {
@@ -190,8 +190,8 @@ LABEL_102:
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v12 = [(CUPairedPeer *)v10 info];
-  v13 = [v12 mutableCopy];
+  info = [(CUPairedPeer *)v10 info];
+  v13 = [info mutableCopy];
 
   if (!v13)
   {
@@ -200,19 +200,19 @@ LABEL_102:
 
   v101 = v11;
   v105 = v10;
-  v14 = [v7 info];
-  if (v14)
+  info2 = [peerCopy info];
+  if (info2)
   {
-    [(__CFString *)v13 addEntriesFromDictionary:v14];
+    [(__CFString *)v13 addEntriesFromDictionary:info2];
   }
 
-  v98 = v14;
+  v98 = info2;
   v120 = 0u;
   v121 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v15 = [(__CFString *)v13 allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v118 objects:v126 count:16];
+  allKeys = [(__CFString *)v13 allKeys];
+  v16 = [allKeys countByEnumeratingWithState:&v118 objects:v126 count:16];
   if (v16)
   {
     v17 = v16;
@@ -223,7 +223,7 @@ LABEL_102:
       {
         if (*v119 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys);
         }
 
         v20 = *(*(&v118 + 1) + 8 * i);
@@ -237,7 +237,7 @@ LABEL_102:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v118 objects:v126 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v118 objects:v126 count:16];
     }
 
     while (v17);
@@ -252,8 +252,8 @@ LABEL_102:
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v102 = v7;
-  v25 = [v7 acl];
+  v102 = peerCopy;
+  v25 = [peerCopy acl];
   if (v25)
   {
     [(__CFDictionary *)v24 addEntriesFromDictionary:v25];
@@ -264,8 +264,8 @@ LABEL_102:
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v26 = [(__CFDictionary *)v24 allKeys];
-  v27 = [v26 countByEnumeratingWithState:&v114 objects:v125 count:16];
+  allKeys2 = [(__CFDictionary *)v24 allKeys];
+  v27 = [allKeys2 countByEnumeratingWithState:&v114 objects:v125 count:16];
   if (v27)
   {
     v28 = v27;
@@ -276,7 +276,7 @@ LABEL_102:
       {
         if (*v115 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allKeys2);
         }
 
         v31 = *(*(&v114 + 1) + 8 * j);
@@ -290,29 +290,29 @@ LABEL_102:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v114 objects:v125 count:16];
+      v28 = [allKeys2 countByEnumeratingWithState:&v114 objects:v125 count:16];
     }
 
     while (v28);
   }
 
   v34 = CFDictionaryGetInt64(v24, @"com.apple.admin", 0);
-  if (Int64 && !v34 && !v93)
+  if (Int64 && !v34 && !allowedCopy)
   {
-    v38 = 0;
-    v8 = 0;
+    model = 0;
+    identifier = 0;
     v40 = 0;
     v41 = 0;
-    v42 = 0;
+    name = 0;
     v122 = -6773;
     v35 = v11;
-    v7 = v102;
+    peerCopy = v102;
     v9 = v105;
     goto LABEL_99;
   }
 
   v35 = v11;
-  v7 = v102;
+  peerCopy = v102;
   if ([(__CFDictionary *)v24 count])
   {
     [(__CFString *)v11 setObject:v24 forKeyedSubscript:@"acl"];
@@ -324,39 +324,39 @@ LABEL_102:
   }
 
   v9 = v105;
-  v36 = [v102 altIRK];
-  if (v36)
+  altIRK = [v102 altIRK];
+  if (altIRK)
   {
-    v37 = v36;
-    [(CUPairedPeer *)v105 setAltIRK:v36];
+    altIRK2 = altIRK;
+    [(CUPairedPeer *)v105 setAltIRK:altIRK];
   }
 
   else
   {
-    v37 = [(CUPairedPeer *)v105 altIRK];
-    if (!v37)
+    altIRK2 = [(CUPairedPeer *)v105 altIRK];
+    if (!altIRK2)
     {
       goto LABEL_41;
     }
   }
 
-  [(__CFString *)v11 setObject:v37 forKeyedSubscript:@"altIRK"];
+  [(__CFString *)v11 setObject:altIRK2 forKeyedSubscript:@"altIRK"];
 
 LABEL_41:
-  v38 = [v102 model];
-  if (!v38)
+  model = [v102 model];
+  if (!model)
   {
     v39 = [(__CFString *)v13 objectForKeyedSubscript:@"model"];
     if (v39)
     {
-      v38 = v39;
+      model = v39;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v8 = 0;
+        identifier = 0;
         v40 = 0;
         v41 = 0;
-        v42 = 0;
+        name = 0;
 LABEL_52:
         v45 = -6756;
 LABEL_109:
@@ -367,32 +367,32 @@ LABEL_109:
 
     else
     {
-      v43 = [(CUPairedPeer *)v105 model];
-      if (v43)
+      model2 = [(CUPairedPeer *)v105 model];
+      if (model2)
       {
-        v38 = v43;
+        model = model2;
       }
 
       else
       {
-        v38 = &stru_1F068B090;
+        model = &stru_1F068B090;
       }
     }
   }
 
-  [(CUPairedPeer *)v105 setModel:v38];
-  [(__CFString *)v13 setObject:v38 forKeyedSubscript:@"model"];
-  v42 = [v102 name];
-  if (!v42)
+  [(CUPairedPeer *)v105 setModel:model];
+  [(__CFString *)v13 setObject:model forKeyedSubscript:@"model"];
+  name = [v102 name];
+  if (!name)
   {
     v44 = [(__CFString *)v13 objectForKeyedSubscript:@"name"];
     if (v44)
     {
-      v42 = v44;
+      name = v44;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v8 = 0;
+        identifier = 0;
         v40 = 0;
         v41 = 0;
         goto LABEL_52;
@@ -401,33 +401,33 @@ LABEL_109:
 
     else
     {
-      v46 = [(CUPairedPeer *)v105 name];
-      if (v46)
+      name2 = [(CUPairedPeer *)v105 name];
+      if (name2)
       {
-        v42 = v46;
+        name = name2;
       }
 
       else
       {
-        v42 = &stru_1F068B090;
+        name = &stru_1F068B090;
       }
     }
   }
 
-  [(CUPairedPeer *)v105 setName:v42];
+  [(CUPairedPeer *)v105 setName:name];
   [(__CFString *)v13 removeObjectForKey:@"name"];
-  v47 = [v102 publicKey];
-  if (v47)
+  publicKey = [v102 publicKey];
+  if (publicKey)
   {
-    v41 = v47;
-    [(CUPairedPeer *)v105 setPublicKey:v47];
+    v41 = publicKey;
+    [(CUPairedPeer *)v105 setPublicKey:publicKey];
   }
 
   else
   {
-    v8 = [(CUPairedPeer *)v105 publicKey];
-    v41 = v8;
-    if (!v8)
+    identifier = [(CUPairedPeer *)v105 publicKey];
+    v41 = identifier;
+    if (!identifier)
     {
       v40 = 0;
       if (v100)
@@ -450,24 +450,24 @@ LABEL_109:
   v40 = v48;
   if (v122)
   {
-    v8 = 0;
+    identifier = 0;
     goto LABEL_99;
   }
 
   if (!v48)
   {
-    v8 = 0;
+    identifier = 0;
     goto LABEL_108;
   }
 
-  v8 = OPACKEncoderCreateDataMutable(v11, 0, &v122);
+  identifier = OPACKEncoderCreateDataMutable(v11, 0, &v122);
   if (v122)
   {
     goto LABEL_99;
   }
 
-  v96 = v8;
-  if (!v8)
+  v96 = identifier;
+  if (!identifier)
   {
 LABEL_108:
     v45 = -6762;
@@ -508,7 +508,7 @@ LABEL_108:
       v109 = 0u;
       v106 = 0u;
       v107 = 0u;
-      v75 = v91->_xpcConnections;
+      v75 = selfCopy->_xpcConnections;
       v82 = [(NSMutableSet *)v75 countByEnumeratingWithState:&v106 objects:v123 count:16];
       if (v82)
       {
@@ -526,8 +526,8 @@ LABEL_108:
             v86 = *(*(&v106 + 1) + 8 * k);
             if (*(v86 + 32) == 1)
             {
-              v87 = [*(v86 + 40) remoteObjectProxy];
-              [v87 pairedPeerAdded:v105 options:a4];
+              remoteObjectProxy = [*(v86 + 40) remoteObjectProxy];
+              [remoteObjectProxy pairedPeerAdded:v105 options:options];
             }
           }
 
@@ -549,7 +549,7 @@ LABEL_108:
       v113 = 0u;
       v110 = 0u;
       v111 = 0u;
-      v75 = v91->_xpcConnections;
+      v75 = selfCopy->_xpcConnections;
       v76 = [(NSMutableSet *)v75 countByEnumeratingWithState:&v110 objects:v124 count:16];
       if (v76)
       {
@@ -567,8 +567,8 @@ LABEL_108:
             v80 = *(*(&v110 + 1) + 8 * m);
             if (*(v80 + 32) == 1)
             {
-              v81 = [*(v80 + 40) remoteObjectProxy];
-              [v81 pairedPeerChanged:v105 options:a4];
+              remoteObjectProxy2 = [*(v80 + 40) remoteObjectProxy];
+              [remoteObjectProxy2 pairedPeerChanged:v105 options:options];
             }
           }
 
@@ -591,52 +591,52 @@ LABEL_96:
     CFRelease(v62);
   }
 
-  v7 = v102;
+  peerCopy = v102;
   v40 = v94;
-  v8 = v96;
+  identifier = v96;
 LABEL_99:
   v88 = v122;
 
   return v88;
 }
 
-- (int)savePairedPeer:(id)a3 options:(unint64_t)a4 removeAdminAllowed:(BOOL)a5
+- (int)savePairedPeer:(id)peer options:(unint64_t)options removeAdminAllowed:(BOOL)allowed
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = self;
-  objc_sync_enter(v9);
-  LODWORD(v5) = [(CUPairingDaemon *)v9 _savePairedPeer:v8 options:a4 removeAdminAllowed:v5];
-  objc_sync_exit(v9);
+  allowedCopy = allowed;
+  peerCopy = peer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LODWORD(allowedCopy) = [(CUPairingDaemon *)selfCopy _savePairedPeer:peerCopy options:options removeAdminAllowed:allowedCopy];
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return allowedCopy;
 }
 
-- (int)savePairedPeer:(id)a3 options:(unint64_t)a4
+- (int)savePairedPeer:(id)peer options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  LODWORD(a4) = [(CUPairingDaemon *)v7 _savePairedPeer:v6 options:a4 removeAdminAllowed:0];
-  objc_sync_exit(v7);
+  peerCopy = peer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LODWORD(options) = [(CUPairingDaemon *)selfCopy _savePairedPeer:peerCopy options:options removeAdminAllowed:0];
+  objc_sync_exit(selfCopy);
 
-  return a4;
+  return options;
 }
 
-- (id)_findPairedPeer:(id)a3 options:(unint64_t)a4 error:(int *)a5
+- (id)_findPairedPeer:(id)peer options:(unint64_t)options error:(int *)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  peerCopy = peer;
   v66 = 0;
-  v8 = [v7 identifier];
-  v61 = v7;
-  v59 = v8;
-  if (!v8)
+  identifier = [peerCopy identifier];
+  v61 = peerCopy;
+  v59 = identifier;
+  if (!identifier)
   {
-    v31 = [v7 publicKey];
-    if (v31)
+    publicKey = [peerCopy publicKey];
+    if (publicKey)
     {
-      v32 = [(CUPairingDaemon *)self _copyPairedPeersWithOptions:a4 error:&v66];
+      v32 = [(CUPairingDaemon *)self _copyPairedPeersWithOptions:options error:&v66];
       v33 = v32;
       if (v66)
       {
@@ -669,8 +669,8 @@ LABEL_19:
 
             v36 = *(*(&v62 + 1) + 8 * v38);
 
-            v40 = [v36 publicKey];
-            v41 = [v40 isEqual:v31];
+            publicKey2 = [v36 publicKey];
+            v41 = [publicKey2 isEqual:publicKey];
 
             if (v41)
             {
@@ -725,7 +725,7 @@ LABEL_27:
     v66 = v43;
 LABEL_44:
 
-    v16 = 0;
+    uUIDString = 0;
     v29 = 0;
     v18 = 0;
     v46 = 0;
@@ -736,9 +736,9 @@ LABEL_44:
     goto LABEL_48;
   }
 
-  v9 = v8;
-  v16 = [v8 UUIDString];
-  if (v16)
+  v9 = identifier;
+  uUIDString = [identifier UUIDString];
+  if (uUIDString)
   {
     v17 = KeychainCopyMatchingFormatted(&v66, "{%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O}", v10, v11, v12, v13, v14, v15, *MEMORY[0x1E697AFF8]);
     v18 = v17;
@@ -855,7 +855,7 @@ LABEL_47:
                   if (v52)
                   {
                     [(CUPairedPeer *)v19 setPublicKey:v52];
-                    if ((a4 & 2) != 0)
+                    if ((options & 2) != 0)
                     {
                       v53 = CFDataGetTypeID();
                       v54 = CFDictionaryGetTypedValue(v48, @"altIRK", v53, 0);
@@ -942,9 +942,9 @@ LABEL_63:
 LABEL_67:
   v66 = v57;
 LABEL_48:
-  if (a5)
+  if (error)
   {
-    *a5 = v66;
+    *error = v66;
   }
 
   v55 = v42;
@@ -952,9 +952,9 @@ LABEL_48:
   return v55;
 }
 
-- (id)_findHomeKitExPairedPeer:(id)a3 options:(unint64_t)a4 error:(int *)a5
+- (id)_findHomeKitExPairedPeer:(id)peer options:(unint64_t)options error:(int *)error
 {
-  v8 = a3;
+  peerCopy = peer;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -977,7 +977,7 @@ LABEL_48:
   v19 = &v20;
   v11 = v9;
   v17 = v11;
-  [(CUHomeKitManager *)homeKitManager findPairedPeer:v8 options:a4 completion:v16];
+  [(CUHomeKitManager *)homeKitManager findPairedPeer:peerCopy options:options completion:v16];
   v12 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v11, v12))
   {
@@ -993,9 +993,9 @@ LABEL_48:
     }
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v13;
+    *error = v13;
   }
 
   v14 = v27[5];
@@ -1023,16 +1023,16 @@ void __58__CUPairingDaemon__findHomeKitExPairedPeer_options_error___block_invoke
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_findHomeKitPairedPeer:(id)a3 options:(unint64_t)a4 error:(int *)a5
+- (id)_findHomeKitPairedPeer:(id)peer options:(unint64_t)options error:(int *)error
 {
-  v8 = [a3 identifier];
-  if (!v8)
+  identifier = [peer identifier];
+  if (!identifier)
   {
     v14 = 0;
     v10 = 0;
-    v13 = 0;
+    publicKey = 0;
     v15 = -6708;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -1040,18 +1040,18 @@ void __58__CUPairingDaemon__findHomeKitExPairedPeer_options_error___block_invoke
     goto LABEL_9;
   }
 
-  v9 = [(CUPairingDaemon *)self _copyHomeKitWithOptions:a4 error:0];
+  v9 = [(CUPairingDaemon *)self _copyHomeKitWithOptions:options error:0];
   v10 = v9;
-  if (v9 && ([v9 identifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v8), v11, v12))
+  if (v9 && ([v9 identifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", identifier), v11, v12))
   {
-    v13 = [v10 publicKey];
-    if (v13)
+    publicKey = [v10 publicKey];
+    if (publicKey)
     {
       v14 = objc_alloc_init(CUPairedPeer);
-      [(CUPairedPeer *)v14 setIdentifier:v8];
-      [(CUPairedPeer *)v14 setPublicKey:v13];
+      [(CUPairedPeer *)v14 setIdentifier:identifier];
+      [(CUPairedPeer *)v14 setPublicKey:publicKey];
       v15 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -1065,14 +1065,14 @@ void __58__CUPairingDaemon__findHomeKitExPairedPeer_options_error___block_invoke
   else
   {
     v14 = 0;
-    v13 = 0;
+    publicKey = 0;
   }
 
   v15 = -25300;
-  if (a5)
+  if (error)
   {
 LABEL_9:
-    *a5 = v15;
+    *error = v15;
   }
 
 LABEL_10:
@@ -1081,37 +1081,37 @@ LABEL_10:
   return v14;
 }
 
-- (id)findPairedPeer:(id)a3 options:(unint64_t)a4 error:(int *)a5
+- (id)findPairedPeer:(id)peer options:(unint64_t)options error:(int *)error
 {
-  v8 = a3;
-  if ((a4 & 8) != 0)
+  peerCopy = peer;
+  if ((options & 8) != 0)
   {
-    v9 = [(CUPairingDaemon *)self _findHomeKitPairedPeer:v8 options:a4 error:a5];
+    v9 = [(CUPairingDaemon *)self _findHomeKitPairedPeer:peerCopy options:options error:error];
     goto LABEL_5;
   }
 
-  if ((a4 & 0x130) != 0)
+  if ((options & 0x130) != 0)
   {
-    v9 = [(CUPairingDaemon *)self _findHomeKitExPairedPeer:v8 options:a4 error:a5];
+    v9 = [(CUPairingDaemon *)self _findHomeKitExPairedPeer:peerCopy options:options error:error];
 LABEL_5:
     v10 = v9;
     goto LABEL_6;
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  v10 = [(CUPairingDaemon *)v12 _findPairedPeer:v8 options:a4 error:a5];
-  objc_sync_exit(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = [(CUPairingDaemon *)selfCopy _findPairedPeer:peerCopy options:options error:error];
+  objc_sync_exit(selfCopy);
 
 LABEL_6:
 
   return v10;
 }
 
-- (void)_removeDups:(id)a3
+- (void)_removeDups:(id)dups
 {
-  v15 = a3;
-  v3 = [v15 count];
+  dupsCopy = dups;
+  v3 = [dupsCopy count];
   if (!v3)
   {
     goto LABEL_18;
@@ -1120,17 +1120,17 @@ LABEL_6:
   v4 = v3;
   for (i = 0; i < v4; ++i)
   {
-    v6 = [v15 objectAtIndexedSubscript:i];
-    v7 = [v6 info];
-    v8 = [v7 objectForKeyedSubscript:@"mac"];
+    v6 = [dupsCopy objectAtIndexedSubscript:i];
+    info = [v6 info];
+    v8 = [info objectForKeyedSubscript:@"mac"];
 
     if (!v8)
     {
       goto LABEL_15;
     }
 
-    v9 = [v6 dateModified];
-    if (!v9)
+    dateModified = [v6 dateModified];
+    if (!dateModified)
     {
       goto LABEL_14;
     }
@@ -1145,24 +1145,24 @@ LABEL_13:
       }
     }
 
-    v11 = [v15 objectAtIndexedSubscript:v10];
-    v12 = [v11 info];
-    v13 = [v12 objectForKeyedSubscript:@"mac"];
+    v11 = [dupsCopy objectAtIndexedSubscript:v10];
+    info2 = [v11 info];
+    v13 = [info2 objectForKeyedSubscript:@"mac"];
 
     if (!v13 || ![v13 isEqual:v8])
     {
       goto LABEL_12;
     }
 
-    v14 = [v11 dateModified];
-    if (!v14 || [v9 compare:v14] >= 1)
+    dateModified2 = [v11 dateModified];
+    if (!dateModified2 || [dateModified compare:dateModified2] >= 1)
     {
 
 LABEL_12:
       goto LABEL_13;
     }
 
-    [v15 removeObjectAtIndex:i--];
+    [dupsCopy removeObjectAtIndex:i--];
     --v4;
 
 LABEL_14:
@@ -1172,14 +1172,14 @@ LABEL_15:
 LABEL_18:
 }
 
-- (id)_copyPairedPeersWithOptions:(unint64_t)a3 error:(int *)a4
+- (id)_copyPairedPeersWithOptions:(unint64_t)options error:(int *)error
 {
-  v8 = a4;
+  errorCopy = error;
   v72 = *MEMORY[0x1E69E9840];
   v69 = 0;
-  v62 = a3;
+  optionsCopy = options;
   v61 = *MEMORY[0x1E697AFF8];
-  v10 = KeychainCopyMatchingFormatted(&v69, "{%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O}", a3, a4, v4, v5, v6, v7, *MEMORY[0x1E697AFF8]);
+  v10 = KeychainCopyMatchingFormatted(&v69, "{%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O}", options, error, v4, v5, v6, v7, *MEMORY[0x1E697AFF8]);
   v11 = v10;
   if (v69)
   {
@@ -1214,8 +1214,8 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  v53 = self;
-  v55 = v8;
+  selfCopy = self;
+  v55 = errorCopy;
   v63 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v65 = 0u;
   v66 = 0u;
@@ -1250,7 +1250,7 @@ LABEL_67:
         v69 = -6756;
 LABEL_58:
         v11 = v54;
-        v8 = v55;
+        errorCopy = v55;
         goto LABEL_59;
       }
 
@@ -1269,8 +1269,8 @@ LABEL_58:
         goto LABEL_57;
       }
 
-      v19 = [v17 UTF8String];
-      v69 = StringToUUIDEx(v19, 0xFFFFFFFFFFFFFFFFLL, 0, 0, &v70, v20, v21, v22);
+      uTF8String = [v17 UTF8String];
+      v69 = StringToUUIDEx(uTF8String, 0xFFFFFFFFFFFFFFFFLL, 0, 0, &v70, v20, v21, v22);
       if (v69)
       {
 LABEL_42:
@@ -1280,7 +1280,7 @@ LABEL_43:
         v34 = 0;
 LABEL_54:
         v11 = v54;
-        v8 = v55;
+        errorCopy = v55;
 
 LABEL_59:
         v49 = 0;
@@ -1408,7 +1408,7 @@ LABEL_32:
       [(CUPairedPeer *)v15 setInfo:v46];
 
 LABEL_33:
-      if ((v62 & 2) != 0)
+      if ((optionsCopy & 2) != 0)
       {
         v47 = CFDataGetTypeID();
         v48 = CFDictionaryGetTypedValue(v34, @"altIRK", v47, 0);
@@ -1439,52 +1439,52 @@ LABEL_33:
 
 LABEL_39:
 
-  if (v62 < 0)
+  if (optionsCopy < 0)
   {
-    [(CUPairingDaemon *)v53 _removeDups:v63];
+    [(CUPairingDaemon *)selfCopy _removeDups:v63];
   }
 
   v49 = v63;
   v69 = 0;
   v63 = v49;
   v11 = v54;
-  v8 = v55;
+  errorCopy = v55;
 LABEL_60:
-  if (v8)
+  if (errorCopy)
   {
-    *v8 = v69;
+    *errorCopy = v69;
   }
 
   return v49;
 }
 
-- (id)copyPairedPeersWithOptions:(unint64_t)a3 error:(int *)a4
+- (id)copyPairedPeersWithOptions:(unint64_t)options error:(int *)error
 {
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(CUPairingDaemon *)v6 _copyPairedPeersWithOptions:a3 error:a4];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(CUPairingDaemon *)selfCopy _copyPairedPeersWithOptions:options error:error];
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (int)_saveIdentity:(id)a3 options:(unint64_t)a4
+- (int)_saveIdentity:(id)identity options:(unint64_t)options
 {
   v52 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  identityCopy = identity;
   v11 = &OBJC_IVAR___CUSystemMonitorImp__meDeviceFindMyLocateMonitor;
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _saveIdentity:options:]", 0x1Eu, "Save %@\n", v6, v7, v8, v9, v10);
+    LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _saveIdentity:options:]", 0x1Eu, "Save %@\n", v6, v7, v8, v9, identityCopy);
   }
 
   v50 = 0;
-  v12 = [v10 identifier];
-  v13 = [v12 UUIDString];
+  identifier = [identityCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (!v13)
+  if (!uUIDString)
   {
-    v21 = 0;
+    secretKey = 0;
     v24 = 0;
     v18 = 0;
     v25 = 0;
@@ -1495,24 +1495,24 @@ LABEL_50:
   }
 
   v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v19 = [v10 altIRK];
-  if (v19)
+  altIRK = [identityCopy altIRK];
+  if (altIRK)
   {
-    [(__CFString *)v18 setObject:v19 forKeyedSubscript:@"altIRK"];
+    [(__CFString *)v18 setObject:altIRK forKeyedSubscript:@"altIRK"];
   }
 
-  v20 = [v10 publicKey];
+  publicKey = [identityCopy publicKey];
 
-  if (v20)
+  if (publicKey)
   {
-    [(__CFString *)v18 setObject:v20 forKeyedSubscript:@"pk"];
+    [(__CFString *)v18 setObject:publicKey forKeyedSubscript:@"pk"];
   }
 
-  v21 = [v10 secretKey];
+  secretKey = [identityCopy secretKey];
 
-  if (v21)
+  if (secretKey)
   {
-    [(__CFString *)v18 setObject:v21 forKeyedSubscript:@"sk"];
+    [(__CFString *)v18 setObject:secretKey forKeyedSubscript:@"sk"];
   }
 
   v24 = OPACKEncoderCreateDataMutable(v18, 0, &v50);
@@ -1529,10 +1529,10 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  v43 = v21;
+  v43 = secretKey;
   v45 = v24;
   v26 = *MEMORY[0x1E697AFF8];
-  v44 = v13;
+  v44 = uUIDString;
   v25 = CFCreateF(&v50, "{%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O}", v22, v23, v14, v15, v16, v17, *MEMORY[0x1E697AFF8]);
   if (!v50)
   {
@@ -1543,12 +1543,12 @@ LABEL_50:
       if (updated != -25300)
       {
         v11 = &OBJC_IVAR___CUSystemMonitorImp__meDeviceFindMyLocateMonitor;
-        v21 = v43;
+        secretKey = v43;
         goto LABEL_41;
       }
 
       v50 = KeychainAddFormatted(0, "{%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O}", v30, v31, v14, v15, v16, v17, v26);
-      v21 = v43;
+      secretKey = v43;
       if (v50)
       {
         v11 = &OBJC_IVAR___CUSystemMonitorImp__meDeviceFindMyLocateMonitor;
@@ -1557,7 +1557,7 @@ LABEL_50:
 
       if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
       {
-        LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _saveIdentity:options:]", 0x1Eu, "Saved %@\n", v14, v15, v16, v17, v10);
+        LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _saveIdentity:options:]", 0x1Eu, "Saved %@\n", v14, v15, v16, v17, identityCopy);
       }
 
       v48 = 0u;
@@ -1582,8 +1582,8 @@ LABEL_50:
             v37 = *(*(&v46 + 1) + 8 * i);
             if (*(v37 + 32) == 1)
             {
-              v38 = [*(v37 + 40) remoteObjectProxy];
-              [v38 pairingIdentityCreated:v10 options:a4];
+              remoteObjectProxy = [*(v37 + 40) remoteObjectProxy];
+              [remoteObjectProxy pairingIdentityCreated:identityCopy options:options];
             }
           }
 
@@ -1594,7 +1594,7 @@ LABEL_50:
       }
 
       notify_post("com.apple.pairing.identityChanged");
-      v13 = v44;
+      uUIDString = v44;
       v24 = v45;
       v11 = &OBJC_IVAR___CUSystemMonitorImp__meDeviceFindMyLocateMonitor;
     }
@@ -1602,7 +1602,7 @@ LABEL_50:
     else
     {
       v11 = &OBJC_IVAR___CUSystemMonitorImp__meDeviceFindMyLocateMonitor;
-      v21 = v43;
+      secretKey = v43;
       if (gLogCategory_CUPairingDaemon > 30)
       {
         goto LABEL_45;
@@ -1610,7 +1610,7 @@ LABEL_50:
 
       if (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu))
       {
-        LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _saveIdentity:options:]", 0x1Eu, "Updated %@\n", v14, v15, v16, v17, v10);
+        LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _saveIdentity:options:]", 0x1Eu, "Updated %@\n", v14, v15, v16, v17, identityCopy);
       }
     }
 
@@ -1623,12 +1623,12 @@ LABEL_50:
   }
 
   v11 = &OBJC_IVAR___CUSystemMonitorImp__meDeviceFindMyLocateMonitor;
-  v21 = v43;
+  secretKey = v43;
 LABEL_41:
   v39 = v11[762];
   if (v39 <= 60 && (v39 != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x3Cu)))
   {
-    LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _saveIdentity:options:]", 0x3Cu, "### Save %@ failed: %#m\n", v14, v15, v16, v17, v10);
+    LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _saveIdentity:options:]", 0x3Cu, "### Save %@ failed: %#m\n", v14, v15, v16, v17, identityCopy);
   }
 
 LABEL_45:
@@ -1642,10 +1642,10 @@ LABEL_45:
   return v40;
 }
 
-- (int)_deleteIdentityWithOptions:(unint64_t)a3
+- (int)_deleteIdentityWithOptions:(unint64_t)options
 {
   v29 = *MEMORY[0x1E69E9840];
-  v14 = KeychainDeleteFormatted("{%kO=%O%kO=%O%kO=%O%kO=%O}", a2, a3, v3, v4, v5, v6, v7, *MEMORY[0x1E697AFF8]);
+  v14 = KeychainDeleteFormatted("{%kO=%O%kO=%O%kO=%O%kO=%O}", a2, options, v3, v4, v5, v6, v7, *MEMORY[0x1E697AFF8]);
   if (!v14)
   {
     if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
@@ -1675,8 +1675,8 @@ LABEL_45:
           v20 = *(*(&v24 + 1) + 8 * i);
           if (*(v20 + 32) == 1)
           {
-            v21 = [*(v20 + 40) remoteObjectProxy];
-            [v21 pairingIdentityDeletedWithOptions:a3];
+            remoteObjectProxy = [*(v20 + 40) remoteObjectProxy];
+            [remoteObjectProxy pairingIdentityDeletedWithOptions:options];
           }
         }
 
@@ -1692,22 +1692,22 @@ LABEL_45:
   return v14;
 }
 
-- (int)deleteIdentityWithOptions:(unint64_t)a3
+- (int)deleteIdentityWithOptions:(unint64_t)options
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  LODWORD(a3) = [(CUPairingDaemon *)v4 _deleteIdentityWithOptions:a3];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LODWORD(options) = [(CUPairingDaemon *)selfCopy _deleteIdentityWithOptions:options];
+  objc_sync_exit(selfCopy);
 
-  return a3;
+  return options;
 }
 
-- (id)_copyIdentityWithOptions:(unint64_t)a3 error:(int *)a4
+- (id)_copyIdentityWithOptions:(unint64_t)options error:(int *)error
 {
-  v9 = a3;
+  optionsCopy = options;
   v29 = *MEMORY[0x1E69E9840];
   v27 = 0;
-  v10 = KeychainCopyMatchingFormatted(&v27, "{%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O}", a3, a4, v4, v5, v6, v7, *MEMORY[0x1E697AFF8]);
+  v10 = KeychainCopyMatchingFormatted(&v27, "{%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O%kO=%O}", options, error, v4, v5, v6, v7, *MEMORY[0x1E697AFF8]);
   v11 = v27;
   if (v27)
   {
@@ -1793,7 +1793,7 @@ LABEL_39:
             }
 
             [(CUPairingIdentity *)v12 setPublicKey:v20];
-            if ((v9 & 2) == 0)
+            if ((optionsCopy & 2) == 0)
             {
               v17 = v20;
 LABEL_20:
@@ -1861,9 +1861,9 @@ LABEL_27:
 LABEL_40:
   v27 = v11;
 LABEL_21:
-  if (a4)
+  if (error)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
   v25 = v24;
@@ -1871,20 +1871,20 @@ LABEL_21:
   return v25;
 }
 
-- (id)_copyOrCreateWithOptions:(unint64_t)a3 error:(int *)a4
+- (id)_copyOrCreateWithOptions:(unint64_t)options error:(int *)error
 {
   v42 = *MEMORY[0x1E69E9840];
   v39 = 0;
-  v7 = [(CUPairingDaemon *)self _copyIdentityWithOptions:a3 error:&v39];
+  v7 = [(CUPairingDaemon *)self _copyIdentityWithOptions:options error:&v39];
   v8 = v7;
   if (v7 && !v39)
   {
-    if ((a3 & 2) != 0)
+    if ((options & 2) != 0)
     {
-      v9 = [(CUPairingIdentity *)v7 altIRK];
-      if (!v9)
+      altIRK = [(CUPairingIdentity *)v7 altIRK];
+      if (!altIRK)
       {
-        if ((a3 & 4) == 0)
+        if ((options & 4) == 0)
         {
           goto LABEL_30;
         }
@@ -1892,11 +1892,11 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      v10 = v9;
-      if ((a3 & 4) != 0 && self->_rpSelfIRK)
+      v10 = altIRK;
+      if ((options & 4) != 0 && self->_rpSelfIRK)
       {
-        v11 = [(CUPairingIdentity *)v8 altIRK];
-        v12 = [v11 isEqual:self->_rpSelfIRK];
+        altIRK2 = [(CUPairingIdentity *)v8 altIRK];
+        v12 = [altIRK2 isEqual:self->_rpSelfIRK];
 
         if (v12)
         {
@@ -1928,7 +1928,7 @@ LABEL_30:
         }
 
 LABEL_37:
-        v39 = [(CUPairingDaemon *)self _saveIdentity:v8 options:a3];
+        v39 = [(CUPairingDaemon *)self _saveIdentity:v8 options:options];
         if (v39)
         {
           v13 = 0;
@@ -1954,14 +1954,14 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ((a3 & 1) != 0 && v39 != -25293)
+  if ((options & 1) != 0 && v39 != -25293)
   {
     v14 = objc_alloc_init(CUPairingIdentity);
 
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    [(CUPairingIdentity *)v14 setIdentifier:v15];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(CUPairingIdentity *)v14 setIdentifier:uUID];
 
-    if ((a3 & 4) != 0 && self->_rpSelfIRK)
+    if ((options & 4) != 0 && self->_rpSelfIRK)
     {
       [(CUPairingIdentity *)v14 setAltIRK:?];
     }
@@ -1987,7 +1987,7 @@ LABEL_39:
       LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _copyOrCreateWithOptions:error:]", 0x1Eu, "Created %@\n", v19, v20, v21, v22, v14);
     }
 
-    v39 = [(CUPairingDaemon *)self _saveIdentity:v14 options:a3];
+    v39 = [(CUPairingDaemon *)self _saveIdentity:v14 options:options];
     if (v39)
     {
       v13 = 0;
@@ -1995,7 +1995,7 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    if ((a3 & 2) == 0)
+    if ((options & 2) == 0)
     {
       [(CUPairingIdentity *)v14 setAltIRK:0];
       [(CUPairingIdentity *)v14 setSecretKey:0];
@@ -2025,15 +2025,15 @@ LABEL_44:
   }
 
 LABEL_46:
-  if (a4)
+  if (error)
   {
-    *a4 = v39;
+    *error = v39;
   }
 
   return v13;
 }
 
-- (id)_copyHomeKitExWithOptions:(unint64_t)a3 error:(int *)a4
+- (id)_copyHomeKitExWithOptions:(unint64_t)options error:(int *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -2057,8 +2057,8 @@ LABEL_46:
   v18 = &v19;
   v9 = v7;
   v16 = v9;
-  [(CUHomeKitManager *)homeKitManager getPairingIdentityWithOptions:a3 completion:v15];
-  if ((a3 & 0x200) != 0)
+  [(CUHomeKitManager *)homeKitManager getPairingIdentityWithOptions:options completion:v15];
+  if ((options & 0x200) != 0)
   {
     v10 = 3000000000;
   }
@@ -2083,9 +2083,9 @@ LABEL_46:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v12;
+    *error = v12;
   }
 
   v13 = v26[5];
@@ -2113,9 +2113,9 @@ void __51__CUPairingDaemon__copyHomeKitExWithOptions_error___block_invoke(uint64
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_copyHomeKitWithOptionsKeychain:(unint64_t)a3 error:(int *)a4
+- (id)_copyHomeKitWithOptionsKeychain:(unint64_t)keychain error:(int *)error
 {
-  v53 = a3;
+  keychainCopy = keychain;
   v60 = *MEMORY[0x1E69E9840];
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
@@ -2126,7 +2126,7 @@ void __51__CUPairingDaemon__copyHomeKitExWithOptions_error___block_invoke(uint64
   v55 = 0;
   v56 = 0;
   v8 = *MEMORY[0x1E697AFF8];
-  v9 = KeychainCopyMatchingFormatted(&v57, "{%kO=%O%kO=%O%kO=%i%kO=%O%kO=%O%kO=%O}", a3, a4, v4, v5, v6, v7, *MEMORY[0x1E697AFF8]);
+  v9 = KeychainCopyMatchingFormatted(&v57, "{%kO=%O%kO=%O%kO=%i%kO=%O%kO=%O%kO=%O}", keychain, error, v4, v5, v6, v7, *MEMORY[0x1E697AFF8]);
   if (v9)
   {
     goto LABEL_11;
@@ -2210,10 +2210,10 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  v36 = [v34 bytes];
+  bytes = [v34 bytes];
   v37 = [v35 length];
   v56 = v37;
-  v38 = memchr(v36, 43, v37);
+  v38 = memchr(bytes, 43, v37);
   if (!v38)
   {
     v43 = 0;
@@ -2221,12 +2221,12 @@ LABEL_11:
     goto LABEL_52;
   }
 
-  v39 = &v36[v37];
+  v39 = &bytes[v37];
   v40 = v38 + 1;
   v41 = v39 - (v38 + 1);
   v55 = v41;
-  v56 = v38 - v36;
-  v42 = HexToData(v36, v38 - v36, 22, v59, 0x20uLL, &v56, 0, 0);
+  v56 = v38 - bytes;
+  v42 = HexToData(bytes, v38 - bytes, 22, v59, 0x20uLL, &v56, 0, 0);
   v57 = v42;
   if (v42)
   {
@@ -2263,7 +2263,7 @@ LABEL_41:
   v45 = [v44 initWithBytes:v59 length:v56];
   [(CUPairingIdentity *)v43 setPublicKey:v45];
 
-  if ((v53 & 2) != 0)
+  if ((keychainCopy & 2) != 0)
   {
     v46 = objc_alloc(MEMORY[0x1E695DEF0]);
     v47 = [v46 initWithBytes:v58 length:v55];
@@ -2302,9 +2302,9 @@ LABEL_30:
   }
 
 LABEL_35:
-  if (a4)
+  if (error)
   {
-    *a4 = v57;
+    *error = v57;
   }
 
   v49 = v43;
@@ -2312,7 +2312,7 @@ LABEL_35:
   return v49;
 }
 
-- (id)_copyHomeKitLocalPairingIDWithOptions:(unint64_t)a3 error:(int *)a4
+- (id)_copyHomeKitLocalPairingIDWithOptions:(unint64_t)options error:(int *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -2336,7 +2336,7 @@ LABEL_35:
   v17 = &v18;
   v9 = v7;
   v15 = v9;
-  [(CUHomeKitManager *)homeKitManager getHomeKitLocalPairingIdentityWithOptions:a3 completion:v14];
+  [(CUHomeKitManager *)homeKitManager getHomeKitLocalPairingIdentityWithOptions:options completion:v14];
   v10 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v9, v10))
   {
@@ -2352,9 +2352,9 @@ LABEL_35:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
   v12 = v25[5];
@@ -2382,7 +2382,7 @@ void __63__CUPairingDaemon__copyHomeKitLocalPairingIDWithOptions_error___block_i
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_copyHomeKitWithOptionsHAP:(unint64_t)a3 error:(int *)a4
+- (id)_copyHomeKitWithOptionsHAP:(unint64_t)p error:(int *)error
 {
   v11 = [CUPairingDaemon _copyHomeKitLocalPairingIDWithOptions:"_copyHomeKitLocalPairingIDWithOptions:error:" error:?];
   if (v11)
@@ -2395,33 +2395,33 @@ void __63__CUPairingDaemon__copyHomeKitLocalPairingIDWithOptions_error___block_i
     LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon _copyHomeKitWithOptionsHAP:error:]", 0x1Eu, "No HomeKit Local Pairing ID, trying HAP directly", v7, v8, v9, v10, v26);
   }
 
-  v12 = [getHAPSystemKeychainStoreClass_5802[0]() systemStore];
-  if (v12)
+  systemStore = [getHAPSystemKeychainStoreClass_5802[0]() systemStore];
+  if (systemStore)
   {
-    v13 = v12;
+    v13 = systemStore;
     v27 = 0;
-    v14 = [v12 getLocalPairingIdentity:&v27];
+    v14 = [systemStore getLocalPairingIdentity:&v27];
     v15 = v27;
     v16 = v15;
     if (v14)
     {
-      v17 = [v14 identifier];
-      if (v17)
+      identifier = [v14 identifier];
+      if (identifier)
       {
-        v18 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v17];
+        v18 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:identifier];
         if (v18)
         {
           v19 = objc_alloc_init(CUPairingIdentity);
           [(CUPairingIdentity *)v19 setIdentifier:v18];
-          v20 = [v14 publicKey];
-          v21 = [v20 data];
-          [(CUPairingIdentity *)v19 setPublicKey:v21];
+          publicKey = [v14 publicKey];
+          data = [publicKey data];
+          [(CUPairingIdentity *)v19 setPublicKey:data];
 
-          if ((a3 & 2) != 0)
+          if ((p & 2) != 0)
           {
-            v22 = [v14 privateKey];
-            v23 = [v22 data];
-            [(CUPairingIdentity *)v19 setSecretKey:v23];
+            privateKey = [v14 privateKey];
+            data2 = [privateKey data];
+            [(CUPairingIdentity *)v19 setSecretKey:data2];
           }
 
           v24 = 0;
@@ -2444,14 +2444,14 @@ void __63__CUPairingDaemon__copyHomeKitLocalPairingIDWithOptions_error___block_i
     {
       v24 = NSErrorToOSStatusEx(v15, 0);
       v19 = 0;
-      v17 = 0;
+      identifier = 0;
       v18 = 0;
     }
 
 LABEL_13:
-    if (a4)
+    if (error)
     {
-      *a4 = v24;
+      *error = v24;
     }
 
     v11 = v19;
@@ -2459,47 +2459,47 @@ LABEL_13:
     return v11;
   }
 
-  return [(CUPairingDaemon *)self _copyHomeKitWithOptionsKeychain:a3 error:a4];
+  return [(CUPairingDaemon *)self _copyHomeKitWithOptionsKeychain:p error:error];
 }
 
-- (void)getIdentityWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)getIdentityWithOptions:(unint64_t)options completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if ((a3 & 8) != 0)
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if ((options & 8) != 0)
   {
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create("CUPairingDaemonHomeKit", v12);
+    selfCopy = dispatch_queue_create("CUPairingDaemonHomeKit", v12);
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__CUPairingDaemon_getIdentityWithOptions_completionHandler___block_invoke;
     block[3] = &unk_1E73A4BB0;
     block[4] = self;
-    v24 = a3;
+    optionsCopy = options;
     v23 = v9;
-    dispatch_async(&v11->super, block);
+    dispatch_async(&selfCopy->super, block);
   }
 
-  else if ((a3 & 0x130) != 0)
+  else if ((options & 0x130) != 0)
   {
     homeKitManager = self->_homeKitManager;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __60__CUPairingDaemon_getIdentityWithOptions_completionHandler___block_invoke_2;
     v20[3] = &unk_1E73A3898;
-    v21 = v8;
-    [(CUHomeKitManager *)homeKitManager getPairingIdentityWithOptions:a3 completion:v20];
-    v11 = v21;
+    v21 = handlerCopy;
+    [(CUHomeKitManager *)homeKitManager getPairingIdentityWithOptions:options completion:v20];
+    selfCopy = v21;
   }
 
   else
   {
-    v11 = self;
-    objc_sync_enter(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v19 = 0;
-    v13 = [(CUPairingDaemon *)v11 _copyOrCreateWithOptions:a3 error:&v19];
+    v13 = [(CUPairingDaemon *)selfCopy _copyOrCreateWithOptions:options error:&v19];
     if (v9)
     {
       v14 = v19;
@@ -2531,7 +2531,7 @@ LABEL_13:
       }
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -2581,15 +2581,15 @@ uint64_t __60__CUPairingDaemon_getIdentityWithOptions_completionHandler___block_
   return result;
 }
 
-- (id)copyIdentityWithOptions:(unint64_t)a3 error:(int *)a4
+- (id)copyIdentityWithOptions:(unint64_t)options error:(int *)error
 {
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
 
     return [CUPairingDaemon _copyHomeKitWithOptions:"_copyHomeKitWithOptions:error:" error:?];
   }
 
-  else if ((a3 & 0x130) != 0)
+  else if ((options & 0x130) != 0)
   {
 
     return [CUPairingDaemon _copyHomeKitExWithOptions:"_copyHomeKitExWithOptions:error:" error:?];
@@ -2597,10 +2597,10 @@ uint64_t __60__CUPairingDaemon_getIdentityWithOptions_completionHandler___block_
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(CUPairingDaemon *)v7 _copyOrCreateWithOptions:a3 error:a4];
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [(CUPairingDaemon *)selfCopy _copyOrCreateWithOptions:options error:error];
+    objc_sync_exit(selfCopy);
 
     return v8;
   }
@@ -2620,7 +2620,7 @@ uint64_t __60__CUPairingDaemon_getIdentityWithOptions_completionHandler___block_
   v9[2] = __36__CUPairingDaemon__rpIdentityUpdate__block_invoke;
   v9[3] = &unk_1E73A3870;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v8 = v7;
   [v8 getIdentitiesWithFlags:1 completion:v9];
 }
@@ -2815,23 +2815,23 @@ LABEL_40:
   }
 }
 
-- (void)_connectionInvalidated:(id)a3
+- (void)_connectionInvalidated:(id)invalidated
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(dispatchQueue);
-  [v5 connectionInvalidated];
-  [(NSMutableSet *)self->_xpcConnections removeObject:v5];
+  [invalidatedCopy connectionInvalidated];
+  [(NSMutableSet *)self->_xpcConnections removeObject:invalidatedCopy];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v7 = objc_alloc_init(CUPairingXPCConnection);
   objc_storeStrong(&v7->_daemon, self);
   objc_storeStrong(&v7->_dispatchQueue, self->_dispatchQueue);
-  objc_storeStrong(&v7->_xpcCnx, a4);
+  objc_storeStrong(&v7->_xpcCnx, connection);
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
   {
@@ -2843,11 +2843,11 @@ LABEL_40:
   }
 
   [(NSMutableSet *)xpcConnections addObject:v7];
-  [v6 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F06AFA68];
-  [v6 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  [v6 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __54__CUPairingDaemon_listener_shouldAcceptNewConnection___block_invoke;
@@ -2855,15 +2855,15 @@ LABEL_40:
   v20[4] = self;
   v12 = v7;
   v21 = v12;
-  [v6 setInvalidationHandler:v20];
+  [connectionCopy setInvalidationHandler:v20];
   v13 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F06AFC28];
-  [v6 setRemoteObjectInterface:v13];
+  [connectionCopy setRemoteObjectInterface:v13];
 
-  [v6 resume];
+  [connectionCopy resume];
   if (gLogCategory_CUPairingDaemon <= 20 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x14u)))
   {
-    v14 = [v6 processIdentifier];
-    LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon listener:shouldAcceptNewConnection:]", 0x14u, "XPC connection started from %#{pid}\n", v15, v16, v17, v18, v14);
+    processIdentifier = [connectionCopy processIdentifier];
+    LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingDaemon listener:shouldAcceptNewConnection:]", 0x14u, "XPC connection started from %#{pid}\n", v15, v16, v17, v18, processIdentifier);
   }
 
   return 1;
@@ -3032,9 +3032,9 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
 {
   if (self->_testMode && !self->_xpcListener)
   {
-    v3 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     xpcListener = self->_xpcListener;
-    self->_xpcListener = v3;
+    self->_xpcListener = anonymousListener;
 
     [(NSXPCListener *)self->_xpcListener setDelegate:self];
     [(NSXPCListener *)self->_xpcListener _setQueue:self->_dispatchQueue];
@@ -3175,7 +3175,7 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
 
   v64 = *v63;
 
-  v176 = self;
+  selfCopy = self;
   v65 = [(CUPairingDaemon *)self copyPairedPeersWithOptions:514 error:0];
   v196 = v64;
   v66 = [v65 count];
@@ -3207,7 +3207,7 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
         v81 = v80;
         if (objc_opt_respondsToSelector())
         {
-          v82 = [v81 detailedDescription];
+          detailedDescription = [v81 detailedDescription];
         }
 
         else
@@ -3221,10 +3221,10 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
           {
             NSPrintF("%@\n", v83, v84, v85, v86, v87, v88, v89, v81);
           }
-          v82 = ;
+          detailedDescription = ;
         }
 
-        v90 = v82;
+        v90 = detailedDescription;
 
         NSAppendPrintF(&v191, "%@", v91, v92, v93, v94, v95, v96, v90);
         v73 = v191;
@@ -3245,7 +3245,7 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
     v73 = v103;
   }
 
-  v104 = [(CUPairingDaemon *)v176 copyPairedPeersWithOptions:518 error:0];
+  v104 = [(CUPairingDaemon *)selfCopy copyPairedPeersWithOptions:518 error:0];
 
   v189 = v73;
   v105 = [v104 count];
@@ -3277,7 +3277,7 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
         v120 = v119;
         if (objc_opt_respondsToSelector())
         {
-          v121 = [v120 detailedDescription];
+          detailedDescription2 = [v120 detailedDescription];
         }
 
         else
@@ -3291,10 +3291,10 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
           {
             NSPrintF("%@\n", v122, v123, v124, v125, v126, v127, v128, v120);
           }
-          v121 = ;
+          detailedDescription2 = ;
         }
 
-        v129 = v121;
+        v129 = detailedDescription2;
 
         NSAppendPrintF(&v184, "%@", v130, v131, v132, v133, v134, v135, v129);
         v112 = v184;
@@ -3316,7 +3316,7 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
   }
 
   v182 = v112;
-  v143 = [(NSMutableSet *)v176->_xpcConnections count];
+  v143 = [(NSMutableSet *)selfCopy->_xpcConnections count];
   NSAppendPrintF(&v182, "\n--- XPC connections (%ld) ---\n", v144, v145, v146, v147, v148, v149, v143);
   v150 = v182;
 
@@ -3324,7 +3324,7 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
   v181 = 0u;
   v178 = 0u;
   v179 = 0u;
-  v151 = v176->_xpcConnections;
+  v151 = selfCopy->_xpcConnections;
   v152 = [(NSMutableSet *)v151 countByEnumeratingWithState:&v178 objects:v210 count:16];
   if (v152)
   {
@@ -3343,8 +3343,8 @@ uint64_t __28__CUPairingDaemon__activate__block_invoke(uint64_t result, uint64_t
 
         v157 = *(*(&v178 + 1) + 8 * v155);
         v177 = v156;
-        v158 = [*(v157 + 40) processIdentifier];
-        NSAppendPrintF(&v177, "%#{pid}\n", v159, v160, v161, v162, v163, v164, v158);
+        processIdentifier = [*(v157 + 40) processIdentifier];
+        NSAppendPrintF(&v177, "%#{pid}\n", v159, v160, v161, v162, v163, v164, processIdentifier);
         v150 = v177;
 
         ++v155;

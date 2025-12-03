@@ -1,25 +1,25 @@
 @interface SFUIPeopleSuggestionImageRequest
-- (SFUIPeopleSuggestionImageRequest)initWithRequestID:(int)a3 peopleSuggestion:(id)a4 type:(int64_t)a5 resultHandler:(id)a6;
+- (SFUIPeopleSuggestionImageRequest)initWithRequestID:(int)d peopleSuggestion:(id)suggestion type:(int64_t)type resultHandler:(id)handler;
 @end
 
 @implementation SFUIPeopleSuggestionImageRequest
 
-- (SFUIPeopleSuggestionImageRequest)initWithRequestID:(int)a3 peopleSuggestion:(id)a4 type:(int64_t)a5 resultHandler:(id)a6
+- (SFUIPeopleSuggestionImageRequest)initWithRequestID:(int)d peopleSuggestion:(id)suggestion type:(int64_t)type resultHandler:(id)handler
 {
-  v9 = *&a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5 == 1)
+  v9 = *&d;
+  suggestionCopy = suggestion;
+  handlerCopy = handler;
+  if (type == 1)
   {
-    v13 = [v11 transportBundleIdentifier];
+    transportBundleIdentifier = [suggestionCopy transportBundleIdentifier];
     goto LABEL_5;
   }
 
-  if (!a5)
+  if (!type)
   {
-    v13 = [v11 identifier];
+    transportBundleIdentifier = [suggestionCopy identifier];
 LABEL_5:
-    v14 = v13;
+    v14 = transportBundleIdentifier;
     goto LABEL_7;
   }
 
@@ -27,12 +27,12 @@ LABEL_5:
 LABEL_7:
   v18.receiver = self;
   v18.super_class = SFUIPeopleSuggestionImageRequest;
-  v15 = [(SFUIImageRequest *)&v18 initWithRequestID:v9 identifier:v14 synchronous:0 resultHandler:v12];
+  v15 = [(SFUIImageRequest *)&v18 initWithRequestID:v9 identifier:v14 synchronous:0 resultHandler:handlerCopy];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_peopleSuggestion, a4);
-    v16->_type = a5;
+    objc_storeStrong(&v15->_peopleSuggestion, suggestion);
+    v16->_type = type;
   }
 
   return v16;

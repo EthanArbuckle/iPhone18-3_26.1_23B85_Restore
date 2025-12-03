@@ -1,22 +1,22 @@
 @interface MRRelevantRouteDetector
-- (BOOL)_isEndpointRelevant:(id)a3;
-- (BOOL)_isOutputDeviceRelevant:(id)a3;
+- (BOOL)_isEndpointRelevant:(id)relevant;
+- (BOOL)_isOutputDeviceRelevant:(id)relevant;
 - (BOOL)_onQueue_relevantRouteCurrentlyDetected;
 - (BOOL)isMonitoring;
 - (BOOL)relevantRouteDetected;
-- (MRRelevantRouteDetector)initWithInitiator:(id)a3 delegate:(id)a4 dataSource:(id)a5 delegateQueue:(id)a6;
+- (MRRelevantRouteDetector)initWithInitiator:(id)initiator delegate:(id)delegate dataSource:(id)source delegateQueue:(id)queue;
 - (MRRelevantRouteDetectorDataSource)dataSource;
 - (MRRelevantRouteDetectorDelegate)delegate;
 - (id)debugDescription;
 - (id)description;
-- (void)_handleEndpointDidDisconnectNotification:(id)a3;
-- (void)_handleOutputDevicesDidChangeNotification:(id)a3;
-- (void)_onQueue_addRelevantEndpoints:(id)a3 withReason:(id)a4;
-- (void)_onQueue_reevaluateWithReason:(id)a3;
+- (void)_handleEndpointDidDisconnectNotification:(id)notification;
+- (void)_handleOutputDevicesDidChangeNotification:(id)notification;
+- (void)_onQueue_addRelevantEndpoints:(id)endpoints withReason:(id)reason;
+- (void)_onQueue_reevaluateWithReason:(id)reason;
 - (void)_onQueue_startMonitoring;
-- (void)_registerForNotificationsForEndpoint:(id)a3;
+- (void)_registerForNotificationsForEndpoint:(id)endpoint;
 - (void)_stopMonitoring;
-- (void)_unregisterForNotificationsForEndpoint:(id)a3;
+- (void)_unregisterForNotificationsForEndpoint:(id)endpoint;
 - (void)dealloc;
 - (void)startMonitoring;
 - (void)stopMonitoring;
@@ -24,23 +24,23 @@
 
 @implementation MRRelevantRouteDetector
 
-- (MRRelevantRouteDetector)initWithInitiator:(id)a3 delegate:(id)a4 dataSource:(id)a5 delegateQueue:(id)a6
+- (MRRelevantRouteDetector)initWithInitiator:(id)initiator delegate:(id)delegate dataSource:(id)source delegateQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  initiatorCopy = initiator;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  queueCopy = queue;
   v27.receiver = self;
   v27.super_class = MRRelevantRouteDetector;
   v15 = [(MRRelevantRouteDetector *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v12);
-    objc_storeWeak(&v16->_dataSource, v13);
-    if (v14)
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeWeak(&v16->_dataSource, sourceCopy);
+    if (queueCopy)
     {
-      v17 = v14;
+      v17 = queueCopy;
       delegateQueue = v16->_delegateQueue;
       v16->_delegateQueue = v17;
     }
@@ -54,7 +54,7 @@
     }
 
     v16->_isMonitoring = 0;
-    objc_storeStrong(&v16->_initiator, a3);
+    objc_storeStrong(&v16->_initiator, initiator);
     v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
     relevantEndpoints = v16->_relevantEndpoints;
     v16->_relevantEndpoints = v21;
@@ -80,20 +80,20 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRRelevantRouteDetector *)self initiator];
-  v6 = [v3 initWithFormat:@"<%@:%p %@>", v4, self, v5];
+  initiator = [(MRRelevantRouteDetector *)self initiator];
+  v6 = [v3 initWithFormat:@"<%@:%p %@>", v4, self, initiator];
 
   return v6;
 }
 
 - (id)debugDescription
 {
-  v3 = [(MRRelevantRouteDetector *)self relevantEndpoints];
-  v4 = [v3 msv_map:&__block_literal_global_81];
+  relevantEndpoints = [(MRRelevantRouteDetector *)self relevantEndpoints];
+  v4 = [relevantEndpoints msv_map:&__block_literal_global_81];
 
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
   v6 = objc_opt_class();
-  v7 = [(MRRelevantRouteDetector *)self initiator];
+  initiator = [(MRRelevantRouteDetector *)self initiator];
   if ([(MRRelevantRouteDetector *)self relevantRouteDetected])
   {
     v8 = @"YES";
@@ -114,7 +114,7 @@
     v9 = @"NO";
   }
 
-  v10 = [v5 initWithFormat:@"<%@:%p initiator=%@, relevantRouteDetected=%@, isMonitoring=%@, relevantEndpoints=%@>", v6, self, v7, v8, v9, v4];
+  v10 = [v5 initWithFormat:@"<%@:%p initiator=%@, relevantRouteDetected=%@, isMonitoring=%@, relevantEndpoints=%@>", v6, self, initiator, v8, v9, v4];
 
   return v10;
 }
@@ -164,7 +164,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRRelevantRouteDetector] %@: Start Monitoring", buf, 0xCu);
   }
 
@@ -185,7 +185,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRRelevantRouteDetector] %@: Stop Monitoring", buf, 0xCu);
   }
 
@@ -199,20 +199,20 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleEndpointDidDisconnectNotification:(id)a3
+- (void)_handleEndpointDidDisconnectNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__MRRelevantRouteDetector__handleEndpointDidDisconnectNotification___block_invoke;
   block[3] = &unk_1E769BA00;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = object;
+  v11 = notificationCopy;
+  v7 = notificationCopy;
+  v8 = object;
   dispatch_async(queue, block);
 }
 
@@ -225,17 +225,17 @@ void __68__MRRelevantRouteDetector__handleEndpointDidDisconnectNotification___bl
   [v2 _onQueue_reevaluateWithReason:v3];
 }
 
-- (void)_handleOutputDevicesDidChangeNotification:(id)a3
+- (void)_handleOutputDevicesDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__MRRelevantRouteDetector__handleOutputDevicesDidChangeNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -246,32 +246,32 @@ void __69__MRRelevantRouteDetector__handleOutputDevicesDidChangeNotification___b
   [v1 _onQueue_reevaluateWithReason:v2];
 }
 
-- (void)_unregisterForNotificationsForEndpoint:(id)a3
+- (void)_unregisterForNotificationsForEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:@"MRAVEndpointDidDisconnectNotification" object:v5];
+  endpointCopy = endpoint;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:@"MRAVEndpointDidDisconnectNotification" object:endpointCopy];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self name:@"MRAVEndpointDidAddOutputDeviceNotification" object:v5];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"MRAVEndpointDidAddOutputDeviceNotification" object:endpointCopy];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self name:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:v5];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:endpointCopy];
 }
 
-- (void)_registerForNotificationsForEndpoint:(id)a3
+- (void)_registerForNotificationsForEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel__handleEndpointDidDisconnectNotification_ name:@"MRAVEndpointDidDisconnectNotification" object:v5];
+  endpointCopy = endpoint;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleEndpointDidDisconnectNotification_ name:@"MRAVEndpointDidDisconnectNotification" object:endpointCopy];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__handleOutputDevicesDidChangeNotification_ name:@"MRAVEndpointDidAddOutputDeviceNotification" object:v5];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleOutputDevicesDidChangeNotification_ name:@"MRAVEndpointDidAddOutputDeviceNotification" object:endpointCopy];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__handleOutputDevicesDidChangeNotification_ name:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:v5];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__handleOutputDevicesDidChangeNotification_ name:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:endpointCopy];
 }
 
 - (void)_onQueue_startMonitoring
@@ -399,21 +399,21 @@ uint64_t __51__MRRelevantRouteDetector__onQueue_startMonitoring__block_invoke_2(
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onQueue_addRelevantEndpoints:(id)a3 withReason:(id)a4
+- (void)_onQueue_addRelevantEndpoints:(id)endpoints withReason:(id)reason
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v21 = a4;
+  endpointsCopy = endpoints;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_queue);
   v7 = [MRRequestDetails alloc];
-  v8 = [(MRRelevantRouteDetector *)self initiator];
-  v9 = [(MRRequestDetails *)v7 initWithInitiator:v8 requestID:0 reason:@"connectToRelevantEndpoints"];
+  initiator = [(MRRelevantRouteDetector *)self initiator];
+  v9 = [(MRRequestDetails *)v7 initWithInitiator:initiator requestID:0 reason:@"connectToRelevantEndpoints"];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v6;
+  v10 = endpointsCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v11)
   {
@@ -433,11 +433,11 @@ uint64_t __51__MRRelevantRouteDetector__onQueue_startMonitoring__block_invoke_2(
         v16 = _MRLogForCategory(0);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v15 debugName];
+          debugName = [v15 debugName];
           *buf = 138412546;
-          v28 = self;
+          selfCopy2 = self;
           v29 = 2112;
-          v30 = v17;
+          v30 = debugName;
           _os_log_impl(&dword_1A2860000, v16, OS_LOG_TYPE_DEFAULT, "[MRRelevantRouteDetector] %@: Adding endpoint=%@", buf, 0x16u);
         }
 
@@ -446,11 +446,11 @@ uint64_t __51__MRRelevantRouteDetector__onQueue_startMonitoring__block_invoke_2(
           v18 = _MRLogForCategory(0);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v15 debugName];
+            debugName2 = [v15 debugName];
             *buf = 138412546;
-            v28 = self;
+            selfCopy2 = self;
             v29 = 2112;
-            v30 = v19;
+            v30 = debugName2;
             _os_log_impl(&dword_1A2860000, v18, OS_LOG_TYPE_DEFAULT, "[MRRelevantRouteDetector] %@: Connecting endpoint=%@", buf, 0x16u);
           }
 
@@ -471,7 +471,7 @@ uint64_t __51__MRRelevantRouteDetector__onQueue_startMonitoring__block_invoke_2(
   }
 
   [(NSMutableArray *)self->_relevantEndpoints addObjectsFromArray:v10];
-  [(MRRelevantRouteDetector *)self _onQueue_reevaluateWithReason:v21];
+  [(MRRelevantRouteDetector *)self _onQueue_reevaluateWithReason:reasonCopy];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -530,18 +530,18 @@ LABEL_6:
 
 - (BOOL)_onQueue_relevantRouteCurrentlyDetected
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
-  relevantEndpoints = v2->_relevantEndpoints;
+  relevantEndpoints = selfCopy->_relevantEndpoints;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__MRRelevantRouteDetector__onQueue_relevantRouteCurrentlyDetected__block_invoke;
   v6[3] = &unk_1E769B680;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v4 = [(NSMutableArray *)relevantEndpoints msv_firstWhere:v6];
-  LOBYTE(v2) = v4 != 0;
+  LOBYTE(selfCopy) = v4 != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 BOOL __66__MRRelevantRouteDetector__onQueue_relevantRouteCurrentlyDetected__block_invoke(uint64_t a1, void *a2)
@@ -558,42 +558,42 @@ BOOL __66__MRRelevantRouteDetector__onQueue_relevantRouteCurrentlyDetected__bloc
   return v5;
 }
 
-- (void)_onQueue_reevaluateWithReason:(id)a3
+- (void)_onQueue_reevaluateWithReason:(id)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_queue);
   v5 = _MRLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(MRRelevantRouteDetector *)self _onQueue_reevaluateWithReason:v4, v5];
+    [(MRRelevantRouteDetector *)self _onQueue_reevaluateWithReason:reasonCopy, v5];
   }
 
-  v6 = [(MRRelevantRouteDetector *)self _onQueue_relevantRouteCurrentlyDetected];
-  if (self->_relevantRouteDetected != v6)
+  _onQueue_relevantRouteCurrentlyDetected = [(MRRelevantRouteDetector *)self _onQueue_relevantRouteCurrentlyDetected];
+  if (self->_relevantRouteDetected != _onQueue_relevantRouteCurrentlyDetected)
   {
-    v7 = v6;
+    v7 = _onQueue_relevantRouteCurrentlyDetected;
     v8 = _MRLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v4;
+      v16 = reasonCopy;
       v17 = 1024;
       v18 = v7;
       _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEFAULT, "[MRRelevantRouteDetector] %@: reason=%@, didDetectRelevantRoute -> %{BOOL}u", buf, 0x1Cu);
     }
 
     self->_relevantRouteDetected = v7;
-    v9 = [(MRRelevantRouteDetector *)self delegateQueue];
+    delegateQueue = [(MRRelevantRouteDetector *)self delegateQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57__MRRelevantRouteDetector__onQueue_reevaluateWithReason___block_invoke;
     v11[3] = &unk_1E769BBE0;
     v11[4] = self;
     v12 = v7;
-    dispatch_async(v9, v11);
+    dispatch_async(delegateQueue, v11);
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -611,39 +611,39 @@ void __57__MRRelevantRouteDetector__onQueue_reevaluateWithReason___block_invoke(
   }
 }
 
-- (BOOL)_isEndpointRelevant:(id)a3
+- (BOOL)_isEndpointRelevant:(id)relevant
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  relevantCopy = relevant;
   v5 = _MRLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(MRRelevantRouteDetector *)self _isEndpointRelevant:v4];
+    [(MRRelevantRouteDetector *)self _isEndpointRelevant:relevantCopy];
   }
 
-  v6 = [(MRRelevantRouteDetector *)self dataSource];
+  dataSource = [(MRRelevantRouteDetector *)self dataSource];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MRRelevantRouteDetector *)self dataSource];
-    LODWORD(v9) = [v8 relevantRouteDetector:self isEndpointRelevant:v4];
+    dataSource2 = [(MRRelevantRouteDetector *)self dataSource];
+    LODWORD(v9) = [dataSource2 relevantRouteDetector:self isEndpointRelevant:relevantCopy];
 
     v10 = _MRLogForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v4 debugName];
-      v14 = v13;
+      debugName = [relevantCopy debugName];
+      v14 = debugName;
       v15 = @"not relevant";
       v16 = 138412802;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       if (v9)
       {
         v15 = @"relevant";
       }
 
-      v19 = v13;
+      v19 = debugName;
       v20 = 2112;
       v21 = v15;
       _os_log_debug_impl(&dword_1A2860000, v10, OS_LOG_TYPE_DEBUG, "[MRRelevantRouteDetector] %@: DataSource says endpoint %@ is %@", &v16, 0x20u);
@@ -658,46 +658,46 @@ void __57__MRRelevantRouteDetector__onQueue_reevaluateWithReason___block_invoke(
       [(MRRelevantRouteDetector *)self _isEndpointRelevant:v9];
     }
 
-    LOBYTE(v9) = [v4 isLocalEndpoint];
+    LOBYTE(v9) = [relevantCopy isLocalEndpoint];
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (BOOL)_isOutputDeviceRelevant:(id)a3
+- (BOOL)_isOutputDeviceRelevant:(id)relevant
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  relevantCopy = relevant;
   v5 = _MRLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(MRRelevantRouteDetector *)self _isOutputDeviceRelevant:v4];
+    [(MRRelevantRouteDetector *)self _isOutputDeviceRelevant:relevantCopy];
   }
 
-  v6 = [(MRRelevantRouteDetector *)self dataSource];
+  dataSource = [(MRRelevantRouteDetector *)self dataSource];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MRRelevantRouteDetector *)self dataSource];
-    v9 = [v8 relevantRouteDetector:self isOutputDeviceRelevant:v4];
+    dataSource2 = [(MRRelevantRouteDetector *)self dataSource];
+    v9 = [dataSource2 relevantRouteDetector:self isOutputDeviceRelevant:relevantCopy];
 
     v10 = _MRLogForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v4 debugName];
-      v12 = v11;
+      debugName = [relevantCopy debugName];
+      v12 = debugName;
       v13 = @"not relevant";
       v16 = 138412802;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       if (v9)
       {
         v13 = @"relevant";
       }
 
-      v19 = v11;
+      v19 = debugName;
       v20 = 2112;
       v21 = v13;
       _os_log_debug_impl(&dword_1A2860000, v10, OS_LOG_TYPE_DEBUG, "[MRRelevantRouteDetector] %@: DataSource says output device %@ is %@", &v16, 0x20u);

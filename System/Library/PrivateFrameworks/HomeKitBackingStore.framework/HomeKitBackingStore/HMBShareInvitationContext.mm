@@ -1,34 +1,34 @@
 @interface HMBShareInvitationContext
-- (BOOL)isEqual:(id)a3;
-- (HMBShareInvitationContext)initWithCoder:(id)a3;
-- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)a3 cloudShareID:(id)a4;
-- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)a3 emailAddress:(id)a4;
-- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)a3 lookupInfo:(id)a4;
-- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)a3 phoneNumber:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMBShareInvitationContext)initWithCoder:(id)coder;
+- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)identifier cloudShareID:(id)d;
+- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)identifier emailAddress:(id)address;
+- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)identifier lookupInfo:(id)info;
+- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)identifier phoneNumber:(id)number;
 - (id)attributeDescriptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMBShareInvitationContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMBShareInvitationContext *)self participantClientIdentifier];
-  [v4 encodeObject:v5 forKey:@"HMBUIC.pci"];
+  coderCopy = coder;
+  participantClientIdentifier = [(HMBShareInvitationContext *)self participantClientIdentifier];
+  [coderCopy encodeObject:participantClientIdentifier forKey:@"HMBUIC.pci"];
 
-  [v4 encodeBool:-[HMBShareInvitationContext shouldGrantWriteAccess](self forKey:{"shouldGrantWriteAccess"), @"HMBUIC.sgwa"}];
-  v6 = [(HMBShareInvitationContext *)self lookupInfo];
-  [v4 encodeObject:v6 forKey:@"HMBUIC.li"];
+  [coderCopy encodeBool:-[HMBShareInvitationContext shouldGrantWriteAccess](self forKey:{"shouldGrantWriteAccess"), @"HMBUIC.sgwa"}];
+  lookupInfo = [(HMBShareInvitationContext *)self lookupInfo];
+  [coderCopy encodeObject:lookupInfo forKey:@"HMBUIC.li"];
 }
 
-- (HMBShareInvitationContext)initWithCoder:(id)a3
+- (HMBShareInvitationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBUIC.pci"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBUIC.li"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBUIC.pci"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBUIC.li"];
   v7 = v6;
   if (v5)
   {
@@ -42,7 +42,7 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -51,22 +51,22 @@
     v11 = v10;
     if (v10)
     {
-      v10->_shouldGrantWriteAccess = [v4 decodeBoolForKey:@"HMBUIC.sgwa"];
+      v10->_shouldGrantWriteAccess = [coderCopy decodeBoolForKey:@"HMBUIC.sgwa"];
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMBShareInvitationContext allocWithZone:a3];
-  v5 = [(HMBShareInvitationContext *)self participantClientIdentifier];
-  v6 = [(HMBShareInvitationContext *)self lookupInfo];
-  v7 = [(HMBShareInvitationContext *)v4 initWithParticipantClientIdentifier:v5 lookupInfo:v6];
+  v4 = [HMBShareInvitationContext allocWithZone:zone];
+  participantClientIdentifier = [(HMBShareInvitationContext *)self participantClientIdentifier];
+  lookupInfo = [(HMBShareInvitationContext *)self lookupInfo];
+  v7 = [(HMBShareInvitationContext *)v4 initWithParticipantClientIdentifier:participantClientIdentifier lookupInfo:lookupInfo];
 
   [(HMBShareInvitationContext *)v7 setShouldGrantWriteAccess:[(HMBShareInvitationContext *)self shouldGrantWriteAccess]];
   return v7;
@@ -74,23 +74,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMBShareInvitationContext *)self participantClientIdentifier];
-  v4 = [v3 hash];
+  participantClientIdentifier = [(HMBShareInvitationContext *)self participantClientIdentifier];
+  v4 = [participantClientIdentifier hash];
 
-  v5 = [(HMBShareInvitationContext *)self shouldGrantWriteAccess];
-  v6 = [(HMBShareInvitationContext *)self lookupInfo];
-  v7 = v4 ^ [v6 hash];
+  shouldGrantWriteAccess = [(HMBShareInvitationContext *)self shouldGrantWriteAccess];
+  lookupInfo = [(HMBShareInvitationContext *)self lookupInfo];
+  v7 = v4 ^ [lookupInfo hash];
 
-  return v7 ^ v5;
+  return v7 ^ shouldGrantWriteAccess;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -101,13 +101,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMBShareInvitationContext *)self participantClientIdentifier];
-    v8 = [v6 participantClientIdentifier];
-    if ([v7 isEqual:v8] && (v9 = -[HMBShareInvitationContext shouldGrantWriteAccess](self, "shouldGrantWriteAccess"), v9 == objc_msgSend(v6, "shouldGrantWriteAccess")))
+    participantClientIdentifier = [(HMBShareInvitationContext *)self participantClientIdentifier];
+    participantClientIdentifier2 = [v6 participantClientIdentifier];
+    if ([participantClientIdentifier isEqual:participantClientIdentifier2] && (v9 = -[HMBShareInvitationContext shouldGrantWriteAccess](self, "shouldGrantWriteAccess"), v9 == objc_msgSend(v6, "shouldGrantWriteAccess")))
     {
-      v11 = [(HMBShareInvitationContext *)self lookupInfo];
-      v12 = [v6 lookupInfo];
-      v10 = [v11 isEqual:v12];
+      lookupInfo = [(HMBShareInvitationContext *)self lookupInfo];
+      lookupInfo2 = [v6 lookupInfo];
+      v10 = [lookupInfo isEqual:lookupInfo2];
     }
 
     else
@@ -128,17 +128,17 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBShareInvitationContext *)self participantClientIdentifier];
-  v5 = [v3 initWithName:@"User Client Identifier" value:v4];
+  participantClientIdentifier = [(HMBShareInvitationContext *)self participantClientIdentifier];
+  v5 = [v3 initWithName:@"User Client Identifier" value:participantClientIdentifier];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMBShareInvitationContext *)self shouldGrantWriteAccess];
   v7 = HMFBooleanToString();
   v8 = [v6 initWithName:@"Should Grant Write Access" value:v7];
   v16[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMBShareInvitationContext *)self lookupInfo];
-  v11 = [MEMORY[0x277D0F8D8] defaultFormatter];
-  v12 = [v9 initWithName:@"Lookup Info" value:v10 options:2 formatter:v11];
+  lookupInfo = [(HMBShareInvitationContext *)self lookupInfo];
+  defaultFormatter = [MEMORY[0x277D0F8D8] defaultFormatter];
+  v12 = [v9 initWithName:@"Lookup Info" value:lookupInfo options:2 formatter:defaultFormatter];
   v16[2] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
 
@@ -147,56 +147,56 @@
   return v13;
 }
 
-- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)a3 lookupInfo:(id)a4
+- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)identifier lookupInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = HMBShareInvitationContext;
   v9 = [(HMBShareInvitationContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_participantClientIdentifier, a3);
-    objc_storeStrong(&v10->_lookupInfo, a4);
+    objc_storeStrong(&v9->_participantClientIdentifier, identifier);
+    objc_storeStrong(&v10->_lookupInfo, info);
   }
 
   return v10;
 }
 
-- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)a3 cloudShareID:(id)a4
+- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)identifier cloudShareID:(id)d
 {
   v6 = MEMORY[0x277CBC7C8];
-  v7 = a4;
-  v8 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   v9 = [v6 alloc];
-  v10 = [v7 userRecordID];
+  userRecordID = [dCopy userRecordID];
 
-  v11 = [v9 initWithUserRecordID:v10];
-  v12 = [(HMBShareInvitationContext *)self initWithParticipantClientIdentifier:v8 lookupInfo:v11];
+  v11 = [v9 initWithUserRecordID:userRecordID];
+  v12 = [(HMBShareInvitationContext *)self initWithParticipantClientIdentifier:identifierCopy lookupInfo:v11];
 
   return v12;
 }
 
-- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)a3 phoneNumber:(id)a4
+- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)identifier phoneNumber:(id)number
 {
   v6 = MEMORY[0x277CBC7C8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithPhoneNumber:v7];
+  numberCopy = number;
+  identifierCopy = identifier;
+  v9 = [[v6 alloc] initWithPhoneNumber:numberCopy];
 
-  v10 = [(HMBShareInvitationContext *)self initWithParticipantClientIdentifier:v8 lookupInfo:v9];
+  v10 = [(HMBShareInvitationContext *)self initWithParticipantClientIdentifier:identifierCopy lookupInfo:v9];
   return v10;
 }
 
-- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)a3 emailAddress:(id)a4
+- (HMBShareInvitationContext)initWithParticipantClientIdentifier:(id)identifier emailAddress:(id)address
 {
   v6 = MEMORY[0x277CBC7C8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithEmailAddress:v7];
+  addressCopy = address;
+  identifierCopy = identifier;
+  v9 = [[v6 alloc] initWithEmailAddress:addressCopy];
 
-  v10 = [(HMBShareInvitationContext *)self initWithParticipantClientIdentifier:v8 lookupInfo:v9];
+  v10 = [(HMBShareInvitationContext *)self initWithParticipantClientIdentifier:identifierCopy lookupInfo:v9];
   return v10;
 }
 

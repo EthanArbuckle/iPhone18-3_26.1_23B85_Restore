@@ -1,22 +1,22 @@
 @interface IASTextInputActionsErrorChecking
-+ (id)validateLanguage:(id)a3;
-+ (id)validateLanguageHelper:(id)a3;
-+ (id)validateRegion:(id)a3;
-+ (id)validateRegionHelper:(id)a3;
++ (id)validateLanguage:(id)language;
++ (id)validateLanguageHelper:(id)helper;
++ (id)validateRegion:(id)region;
++ (id)validateRegionHelper:(id)helper;
 @end
 
 @implementation IASTextInputActionsErrorChecking
 
-+ (id)validateLanguageHelper:(id)a3
++ (id)validateLanguageHelper:(id)helper
 {
-  v3 = a3;
+  helperCopy = helper;
   v5 = objc_msgSend_setWithObjects_(MEMORY[0x1E695DFD8], v4, @"emoji", @"dictation", 0);
-  if (objc_msgSend_containsObject_(v5, v6, v3))
+  if (objc_msgSend_containsObject_(v5, v6, helperCopy))
   {
     goto LABEL_9;
   }
 
-  if (objc_msgSend_length(v3, v7, v8) != 2 && objc_msgSend_length(v3, v9, v10) != 3 && objc_msgSend_length(v3, v9, v10) != 7 && objc_msgSend_length(v3, v9, v10) != 8)
+  if (objc_msgSend_length(helperCopy, v7, v8) != 2 && objc_msgSend_length(helperCopy, v9, v10) != 3 && objc_msgSend_length(helperCopy, v9, v10) != 7 && objc_msgSend_length(helperCopy, v9, v10) != 8)
   {
     goto LABEL_10;
   }
@@ -27,8 +27,8 @@
   }
 
   v11 = qword_1ED82C590;
-  v12 = objc_msgSend_length(v3, v9, v10);
-  if (objc_msgSend_numberOfMatchesInString_options_range_(v11, v13, v3, 0, 0, v12) == 1)
+  v12 = objc_msgSend_length(helperCopy, v9, v10);
+  if (objc_msgSend_numberOfMatchesInString_options_range_(v11, v13, helperCopy, 0, 0, v12) == 1)
   {
 LABEL_9:
     v14 = 0;
@@ -43,11 +43,11 @@ LABEL_10:
   return v14;
 }
 
-+ (id)validateLanguage:(id)a3
++ (id)validateLanguage:(id)language
 {
-  v3 = a3;
-  v6 = v3;
-  if (v3 && objc_msgSend_length(v3, v4, v5))
+  languageCopy = language;
+  v6 = languageCopy;
+  if (languageCopy && objc_msgSend_length(languageCopy, v4, v5))
   {
     if (qword_1ED82C5A8 != -1)
     {
@@ -96,10 +96,10 @@ LABEL_10:
   return v14;
 }
 
-+ (id)validateRegionHelper:(id)a3
++ (id)validateRegionHelper:(id)helper
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5) < 2 || objc_msgSend_length(v3, v6, v7) > 4)
+  helperCopy = helper;
+  if (objc_msgSend_length(helperCopy, v4, v5) < 2 || objc_msgSend_length(helperCopy, v6, v7) > 4)
   {
     goto LABEL_6;
   }
@@ -110,8 +110,8 @@ LABEL_10:
   }
 
   v10 = qword_1ED82C5B0;
-  v11 = objc_msgSend_length(v3, v8, v9);
-  v13 = objc_msgSend_numberOfMatchesInString_options_range_(v10, v12, v3, 0, 0, v11);
+  v11 = objc_msgSend_length(helperCopy, v8, v9);
+  v13 = objc_msgSend_numberOfMatchesInString_options_range_(v10, v12, helperCopy, 0, 0, v11);
   v14 = 0;
   if (v13 != 1)
   {
@@ -122,11 +122,11 @@ LABEL_6:
   return v14;
 }
 
-+ (id)validateRegion:(id)a3
++ (id)validateRegion:(id)region
 {
-  v3 = a3;
-  v6 = v3;
-  if (v3 && objc_msgSend_length(v3, v4, v5))
+  regionCopy = region;
+  v6 = regionCopy;
+  if (regionCopy && objc_msgSend_length(regionCopy, v4, v5))
   {
     if (qword_1ED82C5C8 != -1)
     {

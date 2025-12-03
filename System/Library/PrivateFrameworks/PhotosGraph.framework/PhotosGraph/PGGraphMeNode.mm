@@ -1,15 +1,15 @@
 @interface PGGraphMeNode
 + (id)filter;
 + (id)inferredPersonOfMe;
-- (BOOL)_status:(unint64_t)a3 fitsQuery:(unint64_t)a4;
-- (id)_relationshipLabelForRelationship:(unint64_t)a3;
+- (BOOL)_status:(unint64_t)_status fitsQuery:(unint64_t)query;
+- (id)_relationshipLabelForRelationship:(unint64_t)relationship;
 - (id)inferredPersonNode;
-- (id)relationshipEdgesToPersonNode:(id)a3 matchingQuery:(unint64_t)a4;
-- (id)storytellingRelationshipLabelsToPersonNode:(id)a3;
-- (void)_enumerateRelationshipWithLabel:(id)a3 matchingQuery:(unint64_t)a4 usingBlock:(id)a5;
-- (void)_enumerateSocialGroupNodesForRelationshipLabel:(id)a3 usingBlock:(id)a4;
-- (void)enumeratePersonNodesWithRelationship:(unint64_t)a3 matchingQuery:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateSocialGroupNodesWithRelationship:(unint64_t)a3 usingBlock:(id)a4;
+- (id)relationshipEdgesToPersonNode:(id)node matchingQuery:(unint64_t)query;
+- (id)storytellingRelationshipLabelsToPersonNode:(id)node;
+- (void)_enumerateRelationshipWithLabel:(id)label matchingQuery:(unint64_t)query usingBlock:(id)block;
+- (void)_enumerateSocialGroupNodesForRelationshipLabel:(id)label usingBlock:(id)block;
+- (void)enumeratePersonNodesWithRelationship:(unint64_t)relationship matchingQuery:(unint64_t)query usingBlock:(id)block;
+- (void)enumerateSocialGroupNodesWithRelationship:(unint64_t)relationship usingBlock:(id)block;
 @end
 
 @implementation PGGraphMeNode
@@ -17,20 +17,20 @@
 - (id)inferredPersonNode
 {
   v2 = [(MANodeCollection *)[PGGraphMeNodeCollection alloc] initWithNode:self];
-  v3 = [(PGGraphMeNodeCollection *)v2 inferredPersonNodes];
-  v4 = [v3 anyNode];
+  inferredPersonNodes = [(PGGraphMeNodeCollection *)v2 inferredPersonNodes];
+  anyNode = [inferredPersonNodes anyNode];
 
-  return v4;
+  return anyNode;
 }
 
-- (id)relationshipEdgesToPersonNode:(id)a3 matchingQuery:(unint64_t)a4
+- (id)relationshipEdgesToPersonNode:(id)node matchingQuery:(unint64_t)query
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nodeCopy = node;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGGraphPersonNode *)self collection];
-  v9 = [v6 collection];
-  v10 = [(PGGraphEdgeCollection *)PGGraphRelationshipEdgeCollection edgesFromNodes:v8 toNodes:v9];
+  collection = [(PGGraphPersonNode *)self collection];
+  collection2 = [nodeCopy collection];
+  v10 = [(PGGraphEdgeCollection *)PGGraphRelationshipEdgeCollection edgesFromNodes:collection toNodes:collection2];
   v11 = [v10 set];
 
   v22 = 0u;
@@ -53,7 +53,7 @@
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
-        if (-[PGGraphMeNode _status:fitsQuery:](self, "_status:fitsQuery:", [v17 status], a4))
+        if (-[PGGraphMeNode _status:fitsQuery:](self, "_status:fitsQuery:", [v17 status], query))
         {
           [v7 addObject:v17];
         }
@@ -70,37 +70,37 @@
   return v7;
 }
 
-- (id)storytellingRelationshipLabelsToPersonNode:(id)a3
+- (id)storytellingRelationshipLabelsToPersonNode:(id)node
 {
-  v4 = a3;
-  v5 = [(PGGraphPersonNode *)self collection];
-  v6 = [v4 collection];
+  nodeCopy = node;
+  collection = [(PGGraphPersonNode *)self collection];
+  collection2 = [nodeCopy collection];
 
-  v7 = [(PGGraphEdgeCollection *)PGGraphStorytellingRelationshipEdgeCollection edgesFromNodes:v5 toNodes:v6];
+  v7 = [(PGGraphEdgeCollection *)PGGraphStorytellingRelationshipEdgeCollection edgesFromNodes:collection toNodes:collection2];
 
-  v8 = [v7 labels];
+  labels = [v7 labels];
 
-  return v8;
+  return labels;
 }
 
-- (void)enumeratePersonNodesWithRelationship:(unint64_t)a3 matchingQuery:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumeratePersonNodesWithRelationship:(unint64_t)relationship matchingQuery:(unint64_t)query usingBlock:(id)block
 {
-  v9 = a5;
-  v8 = [(PGGraphMeNode *)self _relationshipLabelForRelationship:a3];
+  blockCopy = block;
+  v8 = [(PGGraphMeNode *)self _relationshipLabelForRelationship:relationship];
   if (v8)
   {
-    [(PGGraphMeNode *)self _enumerateRelationshipWithLabel:v8 matchingQuery:a4 usingBlock:v9];
+    [(PGGraphMeNode *)self _enumerateRelationshipWithLabel:v8 matchingQuery:query usingBlock:blockCopy];
   }
 }
 
-- (id)_relationshipLabelForRelationship:(unint64_t)a3
+- (id)_relationshipLabelForRelationship:(unint64_t)relationship
 {
   if (_relationshipLabelForRelationship__onceToken != -1)
   {
     dispatch_once(&_relationshipLabelForRelationship__onceToken, &__block_literal_global_32282);
   }
 
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:relationship];
   v5 = [_relationshipLabelForRelationship__labelByRelationship objectForKeyedSubscript:v4];
 
   return v5;
@@ -140,20 +140,20 @@ void __51__PGGraphMeNode__relationshipLabelForRelationship___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateRelationshipWithLabel:(id)a3 matchingQuery:(unint64_t)a4 usingBlock:(id)a5
+- (void)_enumerateRelationshipWithLabel:(id)label matchingQuery:(unint64_t)query usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __74__PGGraphMeNode__enumerateRelationshipWithLabel_matchingQuery_usingBlock___block_invoke;
     v10[3] = &unk_278883058;
     v10[4] = self;
-    v12 = a4;
-    v11 = v8;
-    [(MANode *)self enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:a3 domain:300 usingBlock:v10];
+    queryCopy = query;
+    v11 = blockCopy;
+    [(MANode *)self enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:label domain:300 usingBlock:v10];
   }
 }
 
@@ -167,23 +167,23 @@ void __74__PGGraphMeNode__enumerateRelationshipWithLabel_matchingQuery_usingBloc
   }
 }
 
-- (BOOL)_status:(unint64_t)a3 fitsQuery:(unint64_t)a4
+- (BOOL)_status:(unint64_t)_status fitsQuery:(unint64_t)query
 {
-  v4 = (a4 >> 1) & 1;
-  v5 = a4 & 1;
-  if (a3)
+  v4 = (query >> 1) & 1;
+  v5 = query & 1;
+  if (_status)
   {
     v5 = 0;
   }
 
-  if (a3 != 1)
+  if (_status != 1)
   {
     LOBYTE(v4) = v5;
   }
 
-  if (a3 == 2)
+  if (_status == 2)
   {
-    return (a4 & 4) != 0;
+    return (query & 4) != 0;
   }
 
   else
@@ -192,39 +192,39 @@ void __74__PGGraphMeNode__enumerateRelationshipWithLabel_matchingQuery_usingBloc
   }
 }
 
-- (void)_enumerateSocialGroupNodesForRelationshipLabel:(id)a3 usingBlock:(id)a4
+- (void)_enumerateSocialGroupNodesForRelationshipLabel:(id)label usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __75__PGGraphMeNode__enumerateSocialGroupNodesForRelationshipLabel_usingBlock___block_invoke;
     v8[3] = &unk_278883030;
-    v9 = v6;
-    [(MANode *)self enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:a3 domain:302 usingBlock:v8];
+    v9 = blockCopy;
+    [(MANode *)self enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:label domain:302 usingBlock:v8];
   }
 }
 
-- (void)enumerateSocialGroupNodesWithRelationship:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateSocialGroupNodesWithRelationship:(unint64_t)relationship usingBlock:(id)block
 {
-  v6 = a4;
-  if (a3 == 4 || a3 == 1)
+  blockCopy = block;
+  if (relationship == 4 || relationship == 1)
   {
-    v7 = [(PGGraphMeNode *)self _relationshipLabelForRelationship:a3];
-    [(PGGraphMeNode *)self _enumerateSocialGroupNodesForRelationshipLabel:v7 usingBlock:v6];
+    v7 = [(PGGraphMeNode *)self _relationshipLabelForRelationship:relationship];
+    [(PGGraphMeNode *)self _enumerateSocialGroupNodesForRelationshipLabel:v7 usingBlock:blockCopy];
   }
 
   else
   {
     v8 = +[PGLogging sharedLogging];
-    v9 = [v8 loggingConnection];
+    loggingConnection = [v8 loggingConnection];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *v10 = 0;
-      _os_log_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_INFO, "Requesting a non supported relationship for social groups", v10, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Requesting a non supported relationship for social groups", v10, 2u);
     }
   }
 }
@@ -232,9 +232,9 @@ void __74__PGGraphMeNode__enumerateRelationshipWithLabel_matchingQuery_usingBloc
 + (id)inferredPersonOfMe
 {
   v2 = +[PGGraphInferredPersonEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (id)filter

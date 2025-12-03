@@ -1,6 +1,6 @@
 @interface INCodableCurrencyAmountAttributeMetadata
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (INCodableCurrencyAmountAttributeMetadata)initWithCoder:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (INCodableCurrencyAmountAttributeMetadata)initWithCoder:(id)coder;
 - (id)__INCodableDescriptionCurrencyCodeKey;
 - (id)__INCodableDescriptionCurrencyCodesKey;
 - (id)__INIntentResponseCodableDescriptionCurrencyCodeKey;
@@ -8,39 +8,39 @@
 - (id)__INTypeCodableDescriptionCurrencyCodeKey;
 - (id)__INTypeCodableDescriptionCurrencyCodesKey;
 - (id)defaultValueForIntentDefaultValueProvider;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableCurrencyAmountAttributeMetadata
 
 - (id)__INCodableDescriptionCurrencyCodesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey];
 
-  return v3;
+  return __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey;
 }
 
-- (INCodableCurrencyAmountAttributeMetadata)initWithCoder:(id)a3
+- (INCodableCurrencyAmountAttributeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = INCodableCurrencyAmountAttributeMetadata;
-  v5 = [(INCodableNumberAttributeMetadata *)&v15 initWithCoder:v4];
+  v5 = [(INCodableNumberAttributeMetadata *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"currencyCodes"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"currencyCodes"];
     currencyCodes = v5->_currencyCodes;
     v5->_currencyCodes = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v12;
   }
@@ -48,31 +48,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCodableCurrencyAmountAttributeMetadata;
-  v4 = a3;
-  [(INCodableNumberAttributeMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_currencyCodes forKey:{@"currencyCodes", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  coderCopy = coder;
+  [(INCodableNumberAttributeMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_currencyCodes forKey:{@"currencyCodes", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INCodableCurrencyAmountAttributeMetadata;
   v13 = 0;
-  v6 = [(INCodableNumberAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:a3 error:&v13];
+  v6 = [(INCodableNumberAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:parameters error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -93,86 +93,86 @@
 
 - (id)defaultValueForIntentDefaultValueProvider
 {
-  v3 = [(INCodableNumberAttributeMetadata *)self defaultValue];
-  v4 = [(INCodableCurrencyAmountAttributeMetadata *)self currencyCode];
-  v5 = v4;
-  if (v4)
+  defaultValue = [(INCodableNumberAttributeMetadata *)self defaultValue];
+  currencyCode = [(INCodableCurrencyAmountAttributeMetadata *)self currencyCode];
+  v5 = currencyCode;
+  if (currencyCode)
   {
-    v6 = v4;
+    firstObject = currencyCode;
   }
 
   else
   {
-    v7 = [(INCodableCurrencyAmountAttributeMetadata *)self currencyCodes];
-    v6 = [v7 firstObject];
+    currencyCodes = [(INCodableCurrencyAmountAttributeMetadata *)self currencyCodes];
+    firstObject = [currencyCodes firstObject];
   }
 
   v8 = 0;
-  if (v3 && v6)
+  if (defaultValue && firstObject)
   {
     v9 = objc_alloc(MEMORY[0x1E696AB90]);
-    [v3 decimalValue];
+    [defaultValue decimalValue];
     v10 = [v9 initWithDecimal:v12];
-    v8 = [[INCurrencyAmount alloc] initWithAmount:v10 currencyCode:v6];
+    v8 = [[INCurrencyAmount alloc] initWithAmount:v10 currencyCode:firstObject];
   }
 
   return v8;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = INCodableCurrencyAmountAttributeMetadata;
-  v4 = [(INCodableNumberAttributeMetadata *)&v16 dictionaryRepresentationWithLocalizer:a3];
-  v5 = [(INCodableCurrencyAmountAttributeMetadata *)self __INCodableDescriptionCurrencyCodesKey];
-  v17[0] = v5;
-  v6 = [(INCodableCurrencyAmountAttributeMetadata *)self currencyCodes];
-  v7 = v6;
-  if (!v6)
+  v4 = [(INCodableNumberAttributeMetadata *)&v16 dictionaryRepresentationWithLocalizer:localizer];
+  __INCodableDescriptionCurrencyCodesKey = [(INCodableCurrencyAmountAttributeMetadata *)self __INCodableDescriptionCurrencyCodesKey];
+  v17[0] = __INCodableDescriptionCurrencyCodesKey;
+  currencyCodes = [(INCodableCurrencyAmountAttributeMetadata *)self currencyCodes];
+  null = currencyCodes;
+  if (!currencyCodes)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v7;
-  v8 = [(INCodableCurrencyAmountAttributeMetadata *)self __INCodableDescriptionCurrencyCodeKey];
-  v17[1] = v8;
-  v9 = [(INCodableCurrencyAmountAttributeMetadata *)self currencyCode];
-  v10 = v9;
-  if (!v9)
+  v18[0] = null;
+  __INCodableDescriptionCurrencyCodeKey = [(INCodableCurrencyAmountAttributeMetadata *)self __INCodableDescriptionCurrencyCodeKey];
+  v17[1] = __INCodableDescriptionCurrencyCodeKey;
+  currencyCode = [(INCodableCurrencyAmountAttributeMetadata *)self currencyCode];
+  null2 = currencyCode;
+  if (!currencyCode)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v10;
+  v18[1] = null2;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v12 = [v4 if_dictionaryByAddingEntriesFromDictionary:v11];
 
-  if (!v9)
+  if (!currencyCode)
   {
   }
 
-  if (!v6)
+  if (!currencyCodes)
   {
   }
 
-  v13 = [v12 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v12 if_dictionaryWithNonEmptyValues];
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = INCodableCurrencyAmountAttributeMetadata;
-  [(INCodableNumberAttributeMetadata *)&v27 updateWithDictionary:v4];
-  v22 = self;
-  v5 = [(INCodableCurrencyAmountAttributeMetadata *)self __INCodableDescriptionCurrencyCodesKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  [(INCodableNumberAttributeMetadata *)&v27 updateWithDictionary:dictionaryCopy];
+  selfCopy = self;
+  __INCodableDescriptionCurrencyCodesKey = [(INCodableCurrencyAmountAttributeMetadata *)self __INCodableDescriptionCurrencyCodesKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionCurrencyCodesKey];
 
   if (v6)
   {
@@ -256,28 +256,28 @@
   }
 
   v19 = [v9 copy];
-  currencyCodes = v22->_currencyCodes;
-  v22->_currencyCodes = v19;
+  currencyCodes = selfCopy->_currencyCodes;
+  selfCopy->_currencyCodes = v19;
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v17.receiver = a1;
+  representationCopy = representation;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___INCodableCurrencyAmountAttributeMetadata;
   v18 = 0;
-  v7 = objc_msgSendSuper2(&v17, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v18);
+  v7 = objc_msgSendSuper2(&v17, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v18);
   v8 = v18;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -288,11 +288,11 @@
 
   else
   {
-    v12 = [v6 intents_safeObjectForKey:@"currencyCodes" ofType:objc_opt_class()];
+    v12 = [representationCopy intents_safeObjectForKey:@"currencyCodes" ofType:objc_opt_class()];
     v13 = v7[10];
     v7[10] = v12;
 
-    v14 = [v6 intents_stringForKey:@"currencyCode"];
+    v14 = [representationCopy intents_stringForKey:@"currencyCode"];
     v15 = v7[9];
     v7[9] = v14;
 
@@ -304,42 +304,42 @@
 
 - (id)__INTypeCodableDescriptionCurrencyCodesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey];
 
-  return v3;
+  return __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey;
 }
 
 - (id)__INTypeCodableDescriptionCurrencyCodeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey];
 
-  return v3;
+  return __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionCurrencyCodesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey];
 
-  return v3;
+  return __INCodableCurrencyAmountAttributeMetadataCurrencyCodesKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionCurrencyCodeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey];
 
-  return v3;
+  return __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey;
 }
 
 - (id)__INCodableDescriptionCurrencyCodeKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey = [objc_opt_class() __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey];
 
-  return v3;
+  return __INCodableCurrencyAmountAttributeMetadataCurrencyCodeKey;
 }
 
 @end

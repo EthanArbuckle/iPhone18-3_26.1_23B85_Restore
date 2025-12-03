@@ -1,5 +1,5 @@
 @interface FCNewsTabiUnloadGraphOnBackgroundConfiguration
-- (FCNewsTabiUnloadGraphOnBackgroundConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiUnloadGraphOnBackgroundConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -15,15 +15,15 @@
   return v3;
 }
 
-- (FCNewsTabiUnloadGraphOnBackgroundConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiUnloadGraphOnBackgroundConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = FCNewsTabiUnloadGraphOnBackgroundConfiguration;
   v5 = [(FCNewsTabiUnloadGraphOnBackgroundConfiguration *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
 
@@ -31,7 +31,7 @@
     v11[1] = 3221225472;
     v11[2] = __69__FCNewsTabiUnloadGraphOnBackgroundConfiguration_initWithDictionary___block_invoke;
     v11[3] = &unk_1E7C36F40;
-    v8 = v4;
+    v8 = dictionaryCopy;
     v12 = v8;
     v5->_enabled = __69__FCNewsTabiUnloadGraphOnBackgroundConfiguration_initWithDictionary___block_invoke(v11);
     v9 = FCAppConfigurationNumberValue(v8, @"graphIdleDuration", &unk_1F2E703F8);

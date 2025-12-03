@@ -1,22 +1,22 @@
 @interface HFStaleCachedValueReadPolicy
-- (unint64_t)evaluateWithCharacteristic:(id)a3 traits:(id *)a4;
+- (unint64_t)evaluateWithCharacteristic:(id)characteristic traits:(id *)traits;
 @end
 
 @implementation HFStaleCachedValueReadPolicy
 
-- (unint64_t)evaluateWithCharacteristic:(id)a3 traits:(id *)a4
+- (unint64_t)evaluateWithCharacteristic:(id)characteristic traits:(id *)traits
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 service];
-  v7 = [v6 accessory];
-  v8 = [v7 home];
-  v9 = [v8 hf_characteristicValueManager];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  accessory = [service accessory];
+  home = [accessory home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
 
-  if (v9)
+  if (hf_characteristicValueManager)
   {
     v10 = +[HFCharacteristicNotificationManager sharedManager];
-    v11 = [v9 cachedValueForCharacteristic:v5];
+    v11 = [hf_characteristicValueManager cachedValueForCharacteristic:characteristicCopy];
 
     if (v11)
     {
@@ -33,22 +33,22 @@
       v13 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v5 hf_prettyDescription];
-        v26 = [v9 cachedValueForCharacteristic:v5];
-        [v5 value];
+        hf_prettyDescription = [characteristicCopy hf_prettyDescription];
+        v26 = [hf_characteristicValueManager cachedValueForCharacteristic:characteristicCopy];
+        [characteristicCopy value];
         v15 = v27 = v12;
-        v16 = [v5 valueUpdatedTime];
+        valueUpdatedTime = [characteristicCopy valueUpdatedTime];
         [v10 lastNotificationsEnableRequestDate];
         *buf = 67110402;
         v29 = v11 != 0;
         v30 = 2112;
-        v31 = v14;
+        v31 = hf_prettyDescription;
         v32 = 2112;
         v33 = v26;
         v34 = 2112;
         v35 = v15;
         v36 = 2112;
-        v37 = v16;
+        v37 = valueUpdatedTime;
         v39 = v38 = 2112;
         v17 = v39;
         _os_log_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_DEFAULT, "HFStaleCachedValueReadPolicy: isCached=%{BOOL}d for characteristic %@\ncachedValue=%@, value=%@, valueUpdatedTime=%@, lastNotificationsEnableRequestDate=%@", buf, 0x3Au);
@@ -57,10 +57,10 @@
       }
     }
 
-    if (a4)
+    if (traits)
     {
       v18 = [MEMORY[0x277CBEB98] setWithObject:v12];
-      *a4 = v18;
+      *traits = v18;
     }
 
     v19 = v11 == 0;
@@ -70,11 +70,11 @@
   {
     if (!+[HFUtilities isInternalTest])
     {
-      v20 = [v5 hf_prettyDescription];
-      v21 = [v5 service];
-      v22 = [v21 accessory];
-      v23 = [v22 home];
-      NSLog(&cfstr_MissingValueMa.isa, v20, v23);
+      hf_prettyDescription2 = [characteristicCopy hf_prettyDescription];
+      service2 = [characteristicCopy service];
+      accessory2 = [service2 accessory];
+      home2 = [accessory2 home];
+      NSLog(&cfstr_MissingValueMa.isa, hf_prettyDescription2, home2);
     }
 
     v19 = 1;

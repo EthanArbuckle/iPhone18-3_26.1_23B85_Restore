@@ -21,8 +21,8 @@
 - (id)wallpaperType
 {
   v2 = objc_opt_class();
-  v3 = [a1 extensionBundleID];
-  v4 = [v2 wallpaperTypeFromExtensionBundleID:v3];
+  extensionBundleID = [self extensionBundleID];
+  v4 = [v2 wallpaperTypeFromExtensionBundleID:extensionBundleID];
 
   return v4;
 }
@@ -30,8 +30,8 @@
 - (id)backgroundColor
 {
   v2 = objc_opt_class();
-  v3 = [a1 backgroundColorDescription];
-  v4 = [v2 colorFromDescription:v3];
+  backgroundColorDescription = [self backgroundColorDescription];
+  v4 = [v2 colorFromDescription:backgroundColorDescription];
 
   return v4;
 }
@@ -39,20 +39,20 @@
 - (id)fontColor
 {
   v2 = *MEMORY[0x1E6996548];
-  v3 = [a1 fontColorDescription];
-  LOBYTE(v2) = (*(v2 + 16))(v2, v3);
+  fontColorDescription = [self fontColorDescription];
+  LOBYTE(v2) = (*(v2 + 16))(v2, fontColorDescription);
 
   if (v2)
   {
-    v4 = [a1 posterAttributes];
-    [v4 titleColor];
+    posterAttributes = [self posterAttributes];
+    [posterAttributes titleColor];
   }
 
   else
   {
     v5 = objc_opt_class();
-    v4 = [a1 fontColorDescription];
-    [v5 colorFromDescription:v4];
+    posterAttributes = [self fontColorDescription];
+    [v5 colorFromDescription:posterAttributes];
   }
   v6 = ;
 
@@ -62,20 +62,20 @@
 - (id)font
 {
   v2 = *MEMORY[0x1E6996548];
-  v3 = [a1 fontDescription];
-  LOBYTE(v2) = (*(v2 + 16))(v2, v3);
+  fontDescription = [self fontDescription];
+  LOBYTE(v2) = (*(v2 + 16))(v2, fontDescription);
 
   if (v2)
   {
-    v4 = [a1 posterAttributes];
-    [v4 titleFont];
+    posterAttributes = [self posterAttributes];
+    [posterAttributes titleFont];
   }
 
   else
   {
     v5 = objc_opt_class();
-    v4 = [a1 fontDescription];
-    [v5 fontFromDescription:v4];
+    posterAttributes = [self fontDescription];
+    [v5 fontFromDescription:posterAttributes];
   }
   v6 = ;
 
@@ -86,8 +86,8 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   v2 = *MEMORY[0x1E6996540];
-  v3 = [a1 posterArchiveData];
-  LOBYTE(v2) = (*(v2 + 16))(v2, v3);
+  posterArchiveData = [self posterArchiveData];
+  LOBYTE(v2) = (*(v2 + 16))(v2, posterArchiveData);
 
   if (v2)
   {
@@ -96,9 +96,9 @@
 
   else
   {
-    v5 = [a1 posterArchiveData];
+    posterArchiveData2 = [self posterArchiveData];
     v9 = 0;
-    v4 = [CNPRUISPosterTitleStyleAttributes attributesFromData:v5 error:&v9];
+    v4 = [CNPRUISPosterTitleStyleAttributes attributesFromData:posterArchiveData2 error:&v9];
     v6 = v9;
 
     if (!v4)
@@ -179,8 +179,8 @@
   v3 = a3;
   v4 = [[CNPRSPosterConfigurationAttributes alloc] initWithCNConfiguration:v3];
 
-  v5 = [(CNPRSPosterConfigurationAttributes *)v4 extensionIdentifier];
-  v6 = [objc_opt_class() wallpaperTypeFromExtensionBundleID:v5];
+  extensionIdentifier = [(CNPRSPosterConfigurationAttributes *)v4 extensionIdentifier];
+  v6 = [objc_opt_class() wallpaperTypeFromExtensionBundleID:extensionIdentifier];
 
   return v6;
 }
@@ -192,8 +192,8 @@
   {
     v13[0] = *MEMORY[0x1E695CCC8];
     v3 = a3;
-    v4 = [v3 fontName];
-    v14[0] = v4;
+    fontName = [v3 fontName];
+    v14[0] = fontName;
     v13[1] = *MEMORY[0x1E695CCD0];
     v5 = MEMORY[0x1E696AD98];
     [v3 pointSize];
@@ -229,9 +229,9 @@
     v6 = CNUILogPosters();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v5 localizedDescription];
+      localizedDescription = [v5 localizedDescription];
       *buf = 138412290;
-      v16 = v13;
+      v16 = localizedDescription;
       _os_log_error_impl(&dword_199A75000, v6, OS_LOG_TYPE_ERROR, "Unable to read background color, failed to load user info from configuration: %@", buf, 0xCu);
     }
   }
@@ -259,16 +259,16 @@
   v10 = [CNPRUISPosterTitleStyleAttributes attributesForCNConfiguration:v7];
   v11 = objc_alloc(MEMORY[0x1E695CFC8]);
   v12 = objc_opt_class();
-  v13 = [v10 titleFont];
-  v14 = [v12 fontDescriptionFromFont:v13];
+  titleFont = [v10 titleFont];
+  v14 = [v12 fontDescriptionFromFont:titleFont];
   v15 = objc_opt_class();
-  v16 = [v10 titleColor];
-  v17 = [v15 colorDescriptionFromColor:v16];
+  titleColor = [v10 titleColor];
+  v17 = [v15 colorDescriptionFromColor:titleColor];
   v18 = [objc_opt_class() backgroundColorDescriptionFromConfiguration:v7];
 
-  v19 = [(CNPRSPosterConfigurationAttributes *)v9 extensionIdentifier];
+  extensionIdentifier = [(CNPRSPosterConfigurationAttributes *)v9 extensionIdentifier];
   LOBYTE(v22) = a6;
-  v20 = [v11 initWithPosterArchiveData:v8 fontDescription:v14 fontColorDescription:v17 backgroundColorDescription:v18 extensionBundleID:v19 vertical:objc_msgSend(v10 contentIsSensitive:{"preferredTitleLayout") == 1, v22}];
+  v20 = [v11 initWithPosterArchiveData:v8 fontDescription:v14 fontColorDescription:v17 backgroundColorDescription:v18 extensionBundleID:extensionIdentifier vertical:objc_msgSend(v10 contentIsSensitive:{"preferredTitleLayout") == 1, v22}];
 
   return v20;
 }
@@ -410,8 +410,8 @@
 
 + (double)fontWeightFromFont:()UIAdditions
 {
-  v3 = [a3 fontDescriptor];
-  v4 = [v3 objectForKey:*MEMORY[0x1E69658F8]];
+  fontDescriptor = [a3 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:*MEMORY[0x1E69658F8]];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:2003265650.0];
   v6 = [v4 objectForKey:v5];
@@ -451,8 +451,8 @@
     v28[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
 
-    v15 = [(__CTFont *)v11 fontDescriptor];
-    v16 = [v15 fontDescriptorByAddingAttributes:v14];
+    fontDescriptor = [(__CTFont *)v11 fontDescriptor];
+    v16 = [fontDescriptor fontDescriptorByAddingAttributes:v14];
 
     v17 = MEMORY[0x1E69DB878];
     [v8 floatValue];
@@ -508,8 +508,8 @@ LABEL_30:
       }
     }
 
-    v12 = [v11 providerBundleIdentifier];
-    v13 = [v12 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+    providerBundleIdentifier = [v11 providerBundleIdentifier];
+    v13 = [providerBundleIdentifier isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
 
     if (v13)
     {
@@ -518,17 +518,17 @@ LABEL_30:
       v35 = v7;
       v36 = v6;
       v37 = v5;
-      v14 = [v11 assetDirectory];
-      v15 = [MEMORY[0x1E696AC08] defaultManager];
+      assetDirectory = [v11 assetDirectory];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v16 = *MEMORY[0x1E695DC30];
       v17 = *MEMORY[0x1E695DB78];
       v49[0] = *MEMORY[0x1E695DC30];
       v49[1] = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
-      v31 = v15;
-      v32 = v14;
-      v19 = [v15 enumeratorAtURL:v14 includingPropertiesForKeys:v18 options:4 errorHandler:0];
+      v31 = defaultManager;
+      v32 = assetDirectory;
+      v19 = [defaultManager enumeratorAtURL:assetDirectory includingPropertiesForKeys:v18 options:4 errorHandler:0];
 
       v45 = 0u;
       v46 = 0u;

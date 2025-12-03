@@ -1,39 +1,39 @@
 @interface PPLocationReadWriteClient
 + (id)sharedInstance;
-- (BOOL)_doDeletionSyncCallWithError:(id *)a3 deletedCount:(unint64_t *)a4 syncCall:(id)a5;
-- (BOOL)_doSyncCallWithError:(id *)a3 syncCall:(id)a4;
-- (BOOL)donateLocations:(id)a3 source:(id)a4 contextualNamedEntities:(id)a5 algorithm:(unsigned __int16)a6 cloudSync:(BOOL)a7 decayRate:(double)a8 error:(id *)a9;
+- (BOOL)_doDeletionSyncCallWithError:(id *)error deletedCount:(unint64_t *)count syncCall:(id)call;
+- (BOOL)_doSyncCallWithError:(id *)error syncCall:(id)call;
+- (BOOL)donateLocations:(id)locations source:(id)source contextualNamedEntities:(id)entities algorithm:(unsigned __int16)algorithm cloudSync:(BOOL)sync decayRate:(double)rate error:(id *)error;
 - (PPLocationReadWriteClient)init;
 @end
 
 @implementation PPLocationReadWriteClient
 
-- (BOOL)donateLocations:(id)a3 source:(id)a4 contextualNamedEntities:(id)a5 algorithm:(unsigned __int16)a6 cloudSync:(BOOL)a7 decayRate:(double)a8 error:(id *)a9
+- (BOOL)donateLocations:(id)locations source:(id)source contextualNamedEntities:(id)entities algorithm:(unsigned __int16)algorithm cloudSync:(BOOL)sync decayRate:(double)rate error:(id *)error
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  locationsCopy = locations;
+  sourceCopy = source;
+  entitiesCopy = entities;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __112__PPLocationReadWriteClient_donateLocations_source_contextualNamedEntities_algorithm_cloudSync_decayRate_error___block_invoke;
   v23[3] = &unk_1E77F7B98;
-  v24 = v16;
-  v25 = v17;
-  v26 = v18;
-  v28 = a6;
-  v29 = a7;
-  v27 = a8;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
-  LOBYTE(a9) = [(PPLocationReadWriteClient *)self _doSyncCallWithError:a9 syncCall:v23];
+  v24 = locationsCopy;
+  v25 = sourceCopy;
+  v26 = entitiesCopy;
+  algorithmCopy = algorithm;
+  syncCopy = sync;
+  rateCopy = rate;
+  v19 = entitiesCopy;
+  v20 = sourceCopy;
+  v21 = locationsCopy;
+  LOBYTE(error) = [(PPLocationReadWriteClient *)self _doSyncCallWithError:error syncCall:v23];
 
-  return a9;
+  return error;
 }
 
-- (BOOL)_doDeletionSyncCallWithError:(id *)a3 deletedCount:(unint64_t *)a4 syncCall:(id)a5
+- (BOOL)_doDeletionSyncCallWithError:(id *)error deletedCount:(unint64_t *)count syncCall:(id)call
 {
-  v8 = a5;
+  callCopy = call;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -69,28 +69,28 @@
   v15[6] = &v16;
   v10 = MEMORY[0x1AC568040](v15);
   v11 = [(PPLocationReadWriteClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v9];
-  v8[2](v8, v11, v10);
+  callCopy[2](callCopy, v11, v10);
 
-  if (a4)
+  if (count)
   {
-    *a4 = v17[3];
+    *count = v17[3];
   }
 
   v12 = v32[5];
   if (v12)
   {
     v13 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v12;
+      *error = v12;
     }
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v21[5];
+      *error = v21[5];
     }
 
     v13 = *(v27 + 24);
@@ -113,9 +113,9 @@ void __80__PPLocationReadWriteClient__doDeletionSyncCallWithError_deletedCount_s
   *(*(a1[6] + 8) + 24) = a3;
 }
 
-- (BOOL)_doSyncCallWithError:(id *)a3 syncCall:(id)a4
+- (BOOL)_doSyncCallWithError:(id *)error syncCall:(id)call
 {
-  v6 = a4;
+  callCopy = call;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -146,23 +146,23 @@ void __80__PPLocationReadWriteClient__doDeletionSyncCallWithError_deletedCount_s
   v13[5] = &v14;
   v8 = MEMORY[0x1AC568040](v13);
   v9 = [(PPLocationReadWriteClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v7];
-  v6[2](v6, v9, v8);
+  callCopy[2](callCopy, v9, v8);
 
   v10 = v26[5];
   if (v10)
   {
     v11 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v15[5];
+      *error = v15[5];
     }
 
     v11 = *(v21 + 24);
@@ -198,7 +198,7 @@ void __80__PPLocationReadWriteClient__doDeletionSyncCallWithError_deletedCount_s
   block[1] = 3221225472;
   block[2] = __43__PPLocationReadWriteClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_7699 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_7699, block);

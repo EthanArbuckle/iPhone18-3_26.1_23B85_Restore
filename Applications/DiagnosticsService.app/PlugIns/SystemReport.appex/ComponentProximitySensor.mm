@@ -1,7 +1,7 @@
 @interface ComponentProximitySensor
 - (BOOL)isPresent;
 - (id)supplyCurrent;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentProximitySensor
@@ -14,20 +14,20 @@
   }
 
   v3 = +[DAProximityManager sharedInstance];
-  v4 = [v3 sensorRegion];
-  v5 = [v4 allKeys];
-  v2 = [v5 count] != 0;
+  sensorRegion = [v3 sensorRegion];
+  allKeys = [sensorRegion allKeys];
+  v2 = [allKeys count] != 0;
 
   return v2;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v5 = a3;
-  v4 = [(ComponentProximitySensor *)self supplyCurrent];
-  if (v4)
+  attributesCopy = attributes;
+  supplyCurrent = [(ComponentProximitySensor *)self supplyCurrent];
+  if (supplyCurrent)
   {
-    [v5 setObject:v4 forKeyedSubscript:@"supplyCurrentReading"];
+    [attributesCopy setObject:supplyCurrent forKeyedSubscript:@"supplyCurrentReading"];
   }
 }
 

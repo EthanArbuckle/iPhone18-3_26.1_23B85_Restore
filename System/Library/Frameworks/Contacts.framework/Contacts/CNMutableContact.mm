@@ -7,7 +7,7 @@
 - (CNActivityAlert)textAlert;
 - (CNContactKeyVector)availableKeyDescriptor;
 - (CNContactType)contactType;
-- (CNMutableContact)initWithContact:(id)a3;
+- (CNMutableContact)initWithContact:(id)contact;
 - (CNSensitiveContentConfiguration)sensitiveContentConfiguration;
 - (CNWallpaper)wallpaper;
 - (CNWallpaperMetadata)wallpaperMetadata;
@@ -77,116 +77,116 @@
 - (id)freeze;
 - (id)freezeWithSelfAsSnapshot;
 - (int64_t)sharedPhotoDisplayPreference;
-- (void)_setAddressingGrammars:(id)a3;
-- (void)_setAddressingGrammarsEncrypted:(id)a3;
-- (void)_setCalendarURIs:(id)a3;
-- (void)_setContactRelations:(id)a3;
-- (void)_setDates:(id)a3;
-- (void)_setEmailAddresses:(id)a3;
-- (void)_setFullscreenImageData:(id)a3;
-- (void)_setImageData:(id)a3;
-- (void)_setInstantMessageAddresses:(id)a3;
-- (void)_setPhoneNumbers:(id)a3;
-- (void)_setPostalAddresses:(id)a3;
-- (void)_setSocialProfiles:(id)a3;
-- (void)_setThumbnailImageData:(id)a3;
-- (void)_setUrlAddresses:(id)a3;
-- (void)overwriteStateFromContact:(id)a3;
-- (void)removeKeys:(id)a3;
+- (void)_setAddressingGrammars:(id)grammars;
+- (void)_setAddressingGrammarsEncrypted:(id)encrypted;
+- (void)_setCalendarURIs:(id)is;
+- (void)_setContactRelations:(id)relations;
+- (void)_setDates:(id)dates;
+- (void)_setEmailAddresses:(id)addresses;
+- (void)_setFullscreenImageData:(id)data;
+- (void)_setImageData:(id)data;
+- (void)_setInstantMessageAddresses:(id)addresses;
+- (void)_setPhoneNumbers:(id)numbers;
+- (void)_setPostalAddresses:(id)addresses;
+- (void)_setSocialProfiles:(id)profiles;
+- (void)_setThumbnailImageData:(id)data;
+- (void)_setUrlAddresses:(id)addresses;
+- (void)overwriteStateFromContact:(id)contact;
+- (void)removeKeys:(id)keys;
 - (void)resetIsUsingSharedPhoto;
 - (void)resetToNewContact;
-- (void)setAddressingGrammars:(id)a3;
-- (void)setAddressingGrammarsEncrypted:(id)a3;
-- (void)setAvailableKeyDescriptor:(id)a3;
-- (void)setAvatarRecipeData:(id)a3;
+- (void)setAddressingGrammars:(id)grammars;
+- (void)setAddressingGrammarsEncrypted:(id)encrypted;
+- (void)setAvailableKeyDescriptor:(id)descriptor;
+- (void)setAvatarRecipeData:(id)data;
 - (void)setBirthday:(NSDateComponents *)birthday;
-- (void)setCalendarURIs:(id)a3;
-- (void)setCallAlert:(id)a3;
-- (void)setCardDAVUID:(id)a3;
+- (void)setCalendarURIs:(id)is;
+- (void)setCallAlert:(id)alert;
+- (void)setCardDAVUID:(id)d;
 - (void)setContactRelations:(NSArray *)contactRelations;
 - (void)setContactType:(CNContactType)contactType;
-- (void)setCreationDate:(id)a3;
-- (void)setCropRect:(CGRect)a3;
+- (void)setCreationDate:(id)date;
+- (void)setCropRect:(CGRect)rect;
 - (void)setDates:(NSArray *)dates;
 - (void)setDepartmentName:(NSString *)departmentName;
-- (void)setDowntimeWhitelist:(id)a3;
+- (void)setDowntimeWhitelist:(id)whitelist;
 - (void)setEmailAddresses:(NSArray *)emailAddresses;
-- (void)setExplicitDisplayName:(id)a3;
-- (void)setExternalIdentifier:(id)a3;
-- (void)setExternalImageURI:(id)a3;
-- (void)setExternalModificationTag:(id)a3;
-- (void)setExternalRepresentation:(id)a3;
-- (void)setExternalUUID:(id)a3;
+- (void)setExplicitDisplayName:(id)name;
+- (void)setExternalIdentifier:(id)identifier;
+- (void)setExternalImageURI:(id)i;
+- (void)setExternalModificationTag:(id)tag;
+- (void)setExternalRepresentation:(id)representation;
+- (void)setExternalUUID:(id)d;
 - (void)setFamilyName:(NSString *)familyName;
 - (void)setFrozenSelfAsSnapshot;
-- (void)setFullscreenImageData:(id)a3;
+- (void)setFullscreenImageData:(id)data;
 - (void)setGivenName:(NSString *)givenName;
-- (void)setImageBackgroundColorsData:(id)a3;
+- (void)setImageBackgroundColorsData:(id)data;
 - (void)setImageData:(NSData *)imageData;
-- (void)setImageHash:(id)a3;
-- (void)setImageSyncFailedTime:(id)a3;
-- (void)setImageType:(id)a3;
-- (void)setImplicitAugmentation:(BOOL)a3;
+- (void)setImageHash:(id)hash;
+- (void)setImageSyncFailedTime:(id)time;
+- (void)setImageType:(id)type;
+- (void)setImplicitAugmentation:(BOOL)augmentation;
 - (void)setInstantMessageAddresses:(NSArray *)instantMessageAddresses;
 - (void)setJobTitle:(NSString *)jobTitle;
-- (void)setLinkIdentifier:(id)a3;
-- (void)setLinkedContacts:(id)a3;
-- (void)setMapsData:(id)a3;
-- (void)setMemojiMetadata:(id)a3;
+- (void)setLinkIdentifier:(id)identifier;
+- (void)setLinkedContacts:(id)contacts;
+- (void)setMapsData:(id)data;
+- (void)setMemojiMetadata:(id)metadata;
 - (void)setMiddleName:(NSString *)middleName;
-- (void)setModificationDate:(id)a3;
+- (void)setModificationDate:(id)date;
 - (void)setNamePrefix:(NSString *)namePrefix;
 - (void)setNameSuffix:(NSString *)nameSuffix;
 - (void)setNickname:(NSString *)nickname;
-- (void)setNilValueForKey:(id)a3;
+- (void)setNilValueForKey:(id)key;
 - (void)setNonGregorianBirthday:(NSDateComponents *)nonGregorianBirthday;
 - (void)setNote:(NSString *)note;
 - (void)setOrganizationName:(NSString *)organizationName;
 - (void)setPhoneNumbers:(NSArray *)phoneNumbers;
-- (void)setPhonemeData:(id)a3;
+- (void)setPhonemeData:(id)data;
 - (void)setPhoneticFamilyName:(NSString *)phoneticFamilyName;
 - (void)setPhoneticGivenName:(NSString *)phoneticGivenName;
 - (void)setPhoneticMiddleName:(NSString *)phoneticMiddleName;
 - (void)setPhoneticOrganizationName:(NSString *)phoneticOrganizationName;
 - (void)setPostalAddresses:(NSArray *)postalAddresses;
-- (void)setPreferredApplePersonaIdentifier:(id)a3;
-- (void)setPreferredChannel:(id)a3;
-- (void)setPreferredForImage:(BOOL)a3;
-- (void)setPreferredForName:(BOOL)a3;
-- (void)setPreferredLikenessSource:(id)a3;
+- (void)setPreferredApplePersonaIdentifier:(id)identifier;
+- (void)setPreferredChannel:(id)channel;
+- (void)setPreferredForImage:(BOOL)image;
+- (void)setPreferredForName:(BOOL)name;
+- (void)setPreferredLikenessSource:(id)source;
 - (void)setPreviousFamilyName:(NSString *)previousFamilyName;
-- (void)setPronunciationFamilyName:(id)a3;
-- (void)setPronunciationGivenName:(id)a3;
-- (void)setRelatedNames:(id)a3;
-- (void)setSearchIndex:(id)a3;
-- (void)setSectionForSortingByFamilyName:(id)a3;
-- (void)setSectionForSortingByGivenName:(id)a3;
-- (void)setSensitiveContentConfiguration:(id)a3;
-- (void)setSharedPhotoDisplayPreference:(int64_t)a3;
-- (void)setSnapshot:(id)a3;
+- (void)setPronunciationFamilyName:(id)name;
+- (void)setPronunciationGivenName:(id)name;
+- (void)setRelatedNames:(id)names;
+- (void)setSearchIndex:(id)index;
+- (void)setSectionForSortingByFamilyName:(id)name;
+- (void)setSectionForSortingByGivenName:(id)name;
+- (void)setSensitiveContentConfiguration:(id)configuration;
+- (void)setSharedPhotoDisplayPreference:(int64_t)preference;
+- (void)setSnapshot:(id)snapshot;
 - (void)setSocialProfiles:(NSArray *)socialProfiles;
-- (void)setStoreIdentifier:(id)a3;
-- (void)setStoreInfo:(id)a3;
-- (void)setSyncImageData:(id)a3;
-- (void)setTextAlert:(id)a3;
-- (void)setThumbnailImageData:(id)a3;
+- (void)setStoreIdentifier:(id)identifier;
+- (void)setStoreInfo:(id)info;
+- (void)setSyncImageData:(id)data;
+- (void)setTextAlert:(id)alert;
+- (void)setThumbnailImageData:(id)data;
 - (void)setUrlAddresses:(NSArray *)urlAddresses;
-- (void)setWallpaper:(id)a3;
-- (void)setWallpaperMetadata:(id)a3;
-- (void)setWallpaperSyncFailedTime:(id)a3;
-- (void)setWallpaperURI:(id)a3;
-- (void)setWatchWallpaperImageData:(id)a3;
+- (void)setWallpaper:(id)wallpaper;
+- (void)setWallpaperMetadata:(id)metadata;
+- (void)setWallpaperSyncFailedTime:(id)time;
+- (void)setWallpaperURI:(id)i;
+- (void)setWatchWallpaperImageData:(id)data;
 - (void)updateImageDataAvailableFromCurrentState;
-- (void)updateStateFromContact:(id)a3;
-- (void)updateWithSharedProfile:(id)a3;
+- (void)updateStateFromContact:(id)contact;
+- (void)updateWithSharedProfile:(id)profile;
 @end
 
 @implementation CNMutableContact
 
 - (id)freezeWithSelfAsSnapshot
 {
-  v3 = [MEMORY[0x1E695DFB0] null];
-  [(CNMutableContact *)self setSnapshot:v3];
+  null = [MEMORY[0x1E695DFB0] null];
+  [(CNMutableContact *)self setSnapshot:null];
 
   return [(CNMutableContact *)self freeze];
 }
@@ -202,32 +202,32 @@
 {
   if ([(CNContact *)self isKeyAvailable:@"imageDataAvailable"])
   {
-    v3 = [objc_opt_class() imageDataDescriptions];
+    imageDataDescriptions = [objc_opt_class() imageDataDescriptions];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __60__CNMutableContact_updateImageDataAvailableFromCurrentState__block_invoke;
     v4[3] = &unk_1E7412278;
     v4[4] = self;
-    -[CNMutableContact setImageDataAvailable:](self, "setImageDataAvailable:", [v3 _cn_any:v4]);
+    -[CNMutableContact setImageDataAvailable:](self, "setImageDataAvailable:", [imageDataDescriptions _cn_any:v4]);
   }
 }
 
 + (id)imageDataDescriptions
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = +[CN imageDataDescription];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
   v4 = +[CN fullscreenImageDataDescription];
-  [v2 addObject:v4];
+  [array addObject:v4];
 
   v5 = +[CN thumbnailImageDataDescription];
-  [v2 addObject:v5];
+  [array addObject:v5];
 
   v6 = +[CN externalImageURIDescription];
-  [v2 addObject:v6];
+  [array addObject:v6];
 
-  return v2;
+  return array;
 }
 
 BOOL __60__CNMutableContact_updateImageDataAvailableFromCurrentState__block_invoke(uint64_t a1, void *a2)
@@ -942,15 +942,15 @@ LABEL_11:
   return v3;
 }
 
-- (CNMutableContact)initWithContact:(id)a3
+- (CNMutableContact)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v8.receiver = self;
   v8.super_class = CNMutableContact;
   v5 = [(CNContact *)&v8 init];
-  if (v5 && v4)
+  if (v5 && contactCopy)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [contactCopy mutableCopy];
 
     v5 = v6;
   }
@@ -961,9 +961,9 @@ LABEL_11:
 - (id)copyWithSelfAsSnapshot
 {
   v2 = [(CNMutableContact *)self copy];
-  v3 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v4 = v2[67];
-  v2[67] = v3;
+  v2[67] = null;
 
   return v2;
 }
@@ -1312,16 +1312,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSearchIndex:(id)a3
+- (void)setSearchIndex:(id)index
 {
-  v8 = a3;
+  indexCopy = index;
   if (self->super._searchIndex || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"searchIndex"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"searchIndex"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:indexCopy];
 
-    v6 = [v8 copy];
+    v6 = [indexCopy copy];
     [(CNMutableContact *)self _setSearchIndex:v6];
   }
 
@@ -1374,16 +1374,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPronunciationGivenName:(id)a3
+- (void)setPronunciationGivenName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   if (self->super._pronunciationGivenName || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"pronunciationGivenName"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"pronunciationGivenName"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:nameCopy];
 
-    v6 = [v8 copy];
+    v6 = [nameCopy copy];
     [(CNMutableContact *)self _setPronunciationGivenName:v6];
   }
 
@@ -1436,16 +1436,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPronunciationFamilyName:(id)a3
+- (void)setPronunciationFamilyName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   if (self->super._pronunciationFamilyName || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"pronunciationFamilyName"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"pronunciationFamilyName"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:nameCopy];
 
-    v6 = [v8 copy];
+    v6 = [nameCopy copy];
     [(CNMutableContact *)self _setPronunciationFamilyName:v6];
   }
 
@@ -1498,16 +1498,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setExplicitDisplayName:(id)a3
+- (void)setExplicitDisplayName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   if (self->super._explicitDisplayName || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"explicitDisplayName"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"explicitDisplayName"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:nameCopy];
 
-    v6 = [v8 copy];
+    v6 = [nameCopy copy];
     [(CNMutableContact *)self _setExplicitDisplayName:v6];
   }
 
@@ -1560,16 +1560,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSectionForSortingByFamilyName:(id)a3
+- (void)setSectionForSortingByFamilyName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   if (self->super._sectionForSortingByFamilyName || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"sectionForSortingByFamilyName"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"sectionForSortingByFamilyName"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:nameCopy];
 
-    v6 = [v8 copy];
+    v6 = [nameCopy copy];
     [(CNMutableContact *)self _setSectionForSortingByFamilyName:v6];
   }
 
@@ -1622,16 +1622,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSectionForSortingByGivenName:(id)a3
+- (void)setSectionForSortingByGivenName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   if (self->super._sectionForSortingByGivenName || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"sectionForSortingByGivenName"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"sectionForSortingByGivenName"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:nameCopy];
 
-    v6 = [v8 copy];
+    v6 = [nameCopy copy];
     [(CNMutableContact *)self _setSectionForSortingByGivenName:v6];
   }
 
@@ -1994,16 +1994,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v8 = a3;
+  dateCopy = date;
   if (self->super._creationDate || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"creationDate"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"creationDate"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dateCopy];
 
-    v6 = [v8 copy];
+    v6 = [dateCopy copy];
     [(CNMutableContact *)self _setCreationDate:v6];
   }
 
@@ -2056,16 +2056,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setModificationDate:(id)a3
+- (void)setModificationDate:(id)date
 {
-  v8 = a3;
+  dateCopy = date;
   if (self->super._modificationDate || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"modificationDate"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"modificationDate"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dateCopy];
 
-    v6 = [v8 copy];
+    v6 = [dateCopy copy];
     [(CNMutableContact *)self _setModificationDate:v6];
   }
 
@@ -2156,20 +2156,20 @@ LABEL_11:
   }
 }
 
-- (void)_setImageData:(id)a3
+- (void)_setImageData:(id)data
 {
-  objc_storeStrong(&self->super._imageData, a3);
+  objc_storeStrong(&self->super._imageData, data);
   [(CNMutableContact *)self updateImageDataAvailableFromCurrentState];
 
   [(CNMutableContact *)self resetIsUsingSharedPhoto];
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CNContact *)self assertKeyIsAvailable:@"cropRect"];
   self->super._cropRect.origin.x = x;
   self->super._cropRect.origin.y = y;
@@ -2177,16 +2177,16 @@ LABEL_11:
   self->super._cropRect.size.height = height;
 }
 
-- (void)setThumbnailImageData:(id)a3
+- (void)setThumbnailImageData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->super._thumbnailImageData || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"thumbnailImageData"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"thumbnailImageData"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dataCopy];
 
-    v6 = [v8 copy];
+    v6 = [dataCopy copy];
     [(CNMutableContact *)self _setThumbnailImageData:v6];
   }
 
@@ -2196,24 +2196,24 @@ LABEL_11:
   }
 }
 
-- (void)_setThumbnailImageData:(id)a3
+- (void)_setThumbnailImageData:(id)data
 {
-  objc_storeStrong(&self->super._thumbnailImageData, a3);
+  objc_storeStrong(&self->super._thumbnailImageData, data);
   [(CNMutableContact *)self updateImageDataAvailableFromCurrentState];
 
   [(CNMutableContact *)self resetIsUsingSharedPhoto];
 }
 
-- (void)setFullscreenImageData:(id)a3
+- (void)setFullscreenImageData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->super._fullscreenImageData || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"fullscreenImageData"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"fullscreenImageData"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dataCopy];
 
-    v6 = [v8 copy];
+    v6 = [dataCopy copy];
     [(CNMutableContact *)self _setFullscreenImageData:v6];
   }
 
@@ -2223,9 +2223,9 @@ LABEL_11:
   }
 }
 
-- (void)_setFullscreenImageData:(id)a3
+- (void)_setFullscreenImageData:(id)data
 {
-  objc_storeStrong(&self->super._fullscreenImageData, a3);
+  objc_storeStrong(&self->super._fullscreenImageData, data);
   [(CNMutableContact *)self updateImageDataAvailableFromCurrentState];
 
   [(CNMutableContact *)self resetIsUsingSharedPhoto];
@@ -2274,16 +2274,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSyncImageData:(id)a3
+- (void)setSyncImageData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->super._syncImageData || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"syncImageData"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"syncImageData"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dataCopy];
 
-    v6 = [v8 copy];
+    v6 = [dataCopy copy];
     [(CNMutableContact *)self _setSyncImageData:v6];
   }
 
@@ -2336,16 +2336,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setLinkIdentifier:(id)a3
+- (void)setLinkIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   if (self->super._linkIdentifier || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"linkIdentifier"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"linkIdentifier"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:identifierCopy];
 
-    v6 = [v8 copy];
+    v6 = [identifierCopy copy];
     [(CNMutableContact *)self _setLinkIdentifier:v6];
   }
 
@@ -2367,11 +2367,11 @@ LABEL_11:
   return preferredForName;
 }
 
-- (void)setPreferredForName:(BOOL)a3
+- (void)setPreferredForName:(BOOL)name
 {
   if (self->super._preferredForName || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"preferredForName"])
   {
-    self->super._preferredForName = a3;
+    self->super._preferredForName = name;
   }
 
   else
@@ -2393,11 +2393,11 @@ LABEL_11:
   return preferredForImage;
 }
 
-- (void)setPreferredForImage:(BOOL)a3
+- (void)setPreferredForImage:(BOOL)image
 {
   if (self->super._preferredForImage || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"preferredForImage"])
   {
-    self->super._preferredForImage = a3;
+    self->super._preferredForImage = image;
   }
 
   else
@@ -2421,11 +2421,11 @@ LABEL_11:
   }
 }
 
-- (void)setSharedPhotoDisplayPreference:(int64_t)a3
+- (void)setSharedPhotoDisplayPreference:(int64_t)preference
 {
   if (self->super._sharedPhotoDisplayPreference || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"sharedPhotoDisplayPreference"])
   {
-    self->super._sharedPhotoDisplayPreference = a3;
+    self->super._sharedPhotoDisplayPreference = preference;
   }
 
   else
@@ -2442,11 +2442,11 @@ LABEL_11:
   return v2;
 }
 
-- (void)setCardDAVUID:(id)a3
+- (void)setCardDAVUID:(id)d
 {
-  if (self->super._cardDAVUID != a3)
+  if (self->super._cardDAVUID != d)
   {
-    v4 = [a3 copy];
+    v4 = [d copy];
     cardDAVUID = self->super._cardDAVUID;
     self->super._cardDAVUID = v4;
 
@@ -2497,16 +2497,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPhonemeData:(id)a3
+- (void)setPhonemeData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->super._phonemeData || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"phonemeData"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"phonemeData"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dataCopy];
 
-    v6 = [v8 copy];
+    v6 = [dataCopy copy];
     [(CNMutableContact *)self _setPhonemeData:v6];
   }
 
@@ -2559,16 +2559,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setCallAlert:(id)a3
+- (void)setCallAlert:(id)alert
 {
-  v8 = a3;
+  alertCopy = alert;
   if (self->super._callAlert || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"callAlert"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"callAlert"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:alertCopy];
 
-    v6 = [v8 copy];
+    v6 = [alertCopy copy];
     [(CNMutableContact *)self _setCallAlert:v6];
   }
 
@@ -2621,16 +2621,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setTextAlert:(id)a3
+- (void)setTextAlert:(id)alert
 {
-  v8 = a3;
+  alertCopy = alert;
   if (self->super._textAlert || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"textAlert"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"textAlert"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:alertCopy];
 
-    v6 = [v8 copy];
+    v6 = [alertCopy copy];
     [(CNMutableContact *)self _setTextAlert:v6];
   }
 
@@ -2683,16 +2683,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setExternalIdentifier:(id)a3
+- (void)setExternalIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   if (self->super._externalIdentifier || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"externalIdentifier"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"externalIdentifier"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:identifierCopy];
 
-    v6 = [v8 copy];
+    v6 = [identifierCopy copy];
     [(CNMutableContact *)self _setExternalIdentifier:v6];
   }
 
@@ -2745,16 +2745,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setExternalRepresentation:(id)a3
+- (void)setExternalRepresentation:(id)representation
 {
-  v8 = a3;
+  representationCopy = representation;
   if (self->super._externalRepresentation || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"externalRepresentation"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"externalRepresentation"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:representationCopy];
 
-    v6 = [v8 copy];
+    v6 = [representationCopy copy];
     [(CNMutableContact *)self _setExternalRepresentation:v6];
   }
 
@@ -2807,16 +2807,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setExternalModificationTag:(id)a3
+- (void)setExternalModificationTag:(id)tag
 {
-  v8 = a3;
+  tagCopy = tag;
   if (self->super._externalModificationTag || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"externalModificationTag"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"externalModificationTag"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:tagCopy];
 
-    v6 = [v8 copy];
+    v6 = [tagCopy copy];
     [(CNMutableContact *)self _setExternalModificationTag:v6];
   }
 
@@ -2869,16 +2869,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setExternalUUID:(id)a3
+- (void)setExternalUUID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   if (self->super._externalUUID || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"externalUUID"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"externalUUID"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dCopy];
 
-    v6 = [v8 copy];
+    v6 = [dCopy copy];
     [(CNMutableContact *)self _setExternalUUID:v6];
   }
 
@@ -2931,16 +2931,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setExternalImageURI:(id)a3
+- (void)setExternalImageURI:(id)i
 {
-  v8 = a3;
+  iCopy = i;
   if (self->super._externalImageURI || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"externalImageURI"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"externalImageURI"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:iCopy];
 
-    v6 = [v8 copy];
+    v6 = [iCopy copy];
     [(CNMutableContact *)self _setExternalImageURI:v6];
   }
 
@@ -2993,16 +2993,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setMapsData:(id)a3
+- (void)setMapsData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->super._mapsData || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"mapsData"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"mapsData"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dataCopy];
 
-    v6 = [v8 copy];
+    v6 = [dataCopy copy];
     [(CNMutableContact *)self _setMapsData:v6];
   }
 
@@ -3012,9 +3012,9 @@ LABEL_11:
   }
 }
 
-- (void)setImplicitAugmentation:(BOOL)a3
+- (void)setImplicitAugmentation:(BOOL)augmentation
 {
-  v4 = [(CNContact *)self flags]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(CNContact *)self flags]& 0xFFFFFFFFFFFFFFFELL | augmentation;
 
   [(CNMutableContact *)self setFlags:v4];
 }
@@ -3061,19 +3061,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setPhoneNumbers:(id)a3
+- (void)_setPhoneNumbers:(id)numbers
 {
-  v4 = a3;
-  if (self->super._phoneNumbers != v4)
+  numbersCopy = numbers;
+  if (self->super._phoneNumbers != numbersCopy)
   {
-    if (!v4)
+    if (!numbersCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      numbersCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._phoneNumbers, v4);
-    v4 = obj;
+    obj = numbersCopy;
+    objc_storeStrong(&self->super._phoneNumbers, numbersCopy);
+    numbersCopy = obj;
   }
 }
 
@@ -3119,19 +3119,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setEmailAddresses:(id)a3
+- (void)_setEmailAddresses:(id)addresses
 {
-  v4 = a3;
-  if (self->super._emailAddresses != v4)
+  addressesCopy = addresses;
+  if (self->super._emailAddresses != addressesCopy)
   {
-    if (!v4)
+    if (!addressesCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      addressesCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._emailAddresses, v4);
-    v4 = obj;
+    obj = addressesCopy;
+    objc_storeStrong(&self->super._emailAddresses, addressesCopy);
+    addressesCopy = obj;
   }
 }
 
@@ -3220,19 +3220,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setUrlAddresses:(id)a3
+- (void)_setUrlAddresses:(id)addresses
 {
-  v4 = a3;
-  if (self->super._urlAddresses != v4)
+  addressesCopy = addresses;
+  if (self->super._urlAddresses != addressesCopy)
   {
-    if (!v4)
+    if (!addressesCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      addressesCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._urlAddresses, v4);
-    v4 = obj;
+    obj = addressesCopy;
+    objc_storeStrong(&self->super._urlAddresses, addressesCopy);
+    addressesCopy = obj;
   }
 }
 
@@ -3321,19 +3321,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setDates:(id)a3
+- (void)_setDates:(id)dates
 {
-  v4 = a3;
-  if (self->super._dates != v4)
+  datesCopy = dates;
+  if (self->super._dates != datesCopy)
   {
-    if (!v4)
+    if (!datesCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      datesCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._dates, v4);
-    v4 = obj;
+    obj = datesCopy;
+    objc_storeStrong(&self->super._dates, datesCopy);
+    datesCopy = obj;
   }
 }
 
@@ -3422,19 +3422,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setInstantMessageAddresses:(id)a3
+- (void)_setInstantMessageAddresses:(id)addresses
 {
-  v4 = a3;
-  if (self->super._instantMessageAddresses != v4)
+  addressesCopy = addresses;
+  if (self->super._instantMessageAddresses != addressesCopy)
   {
-    if (!v4)
+    if (!addressesCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      addressesCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._instantMessageAddresses, v4);
-    v4 = obj;
+    obj = addressesCopy;
+    objc_storeStrong(&self->super._instantMessageAddresses, addressesCopy);
+    addressesCopy = obj;
   }
 }
 
@@ -3523,19 +3523,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setContactRelations:(id)a3
+- (void)_setContactRelations:(id)relations
 {
-  v4 = a3;
-  if (self->super._contactRelations != v4)
+  relationsCopy = relations;
+  if (self->super._contactRelations != relationsCopy)
   {
-    if (!v4)
+    if (!relationsCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      relationsCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._contactRelations, v4);
-    v4 = obj;
+    obj = relationsCopy;
+    objc_storeStrong(&self->super._contactRelations, relationsCopy);
+    relationsCopy = obj;
   }
 }
 
@@ -3624,19 +3624,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setSocialProfiles:(id)a3
+- (void)_setSocialProfiles:(id)profiles
 {
-  v4 = a3;
-  if (self->super._socialProfiles != v4)
+  profilesCopy = profiles;
+  if (self->super._socialProfiles != profilesCopy)
   {
-    if (!v4)
+    if (!profilesCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      profilesCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._socialProfiles, v4);
-    v4 = obj;
+    obj = profilesCopy;
+    objc_storeStrong(&self->super._socialProfiles, profilesCopy);
+    profilesCopy = obj;
   }
 }
 
@@ -3725,19 +3725,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setPostalAddresses:(id)a3
+- (void)_setPostalAddresses:(id)addresses
 {
-  v4 = a3;
-  if (self->super._postalAddresses != v4)
+  addressesCopy = addresses;
+  if (self->super._postalAddresses != addressesCopy)
   {
-    if (!v4)
+    if (!addressesCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      addressesCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._postalAddresses, v4);
-    v4 = obj;
+    obj = addressesCopy;
+    objc_storeStrong(&self->super._postalAddresses, addressesCopy);
+    addressesCopy = obj;
   }
 }
 
@@ -3784,9 +3784,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)setCalendarURIs:(id)a3
+- (void)setCalendarURIs:(id)is
 {
-  v12 = a3;
+  isCopy = is;
   calendarURIs = self->super._calendarURIs;
   if (!calendarURIs)
   {
@@ -3799,9 +3799,9 @@ LABEL_11:
 LABEL_6:
     v7 = +[CN contactPropertiesByKey];
     v8 = [v7 objectForKey:@"calendarURIs"];
-    [v8 assertValueType:v12];
+    [v8 assertValueType:isCopy];
 
-    v9 = [v12 copy];
+    v9 = [isCopy copy];
     [(CNMutableContact *)self _setCalendarURIs:v9];
 
     goto LABEL_7;
@@ -3826,19 +3826,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setCalendarURIs:(id)a3
+- (void)_setCalendarURIs:(id)is
 {
-  v4 = a3;
-  if (self->super._calendarURIs != v4)
+  isCopy = is;
+  if (self->super._calendarURIs != isCopy)
   {
-    if (!v4)
+    if (!isCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      isCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._calendarURIs, v4);
-    v4 = obj;
+    obj = isCopy;
+    objc_storeStrong(&self->super._calendarURIs, isCopy);
+    isCopy = obj;
   }
 }
 
@@ -3885,9 +3885,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)setAddressingGrammars:(id)a3
+- (void)setAddressingGrammars:(id)grammars
 {
-  v12 = a3;
+  grammarsCopy = grammars;
   addressingGrammars = self->super._addressingGrammars;
   if (!addressingGrammars)
   {
@@ -3900,9 +3900,9 @@ LABEL_11:
 LABEL_6:
     v7 = +[CN contactPropertiesByKey];
     v8 = [v7 objectForKey:@"addressingGrammars"];
-    [v8 assertValueType:v12];
+    [v8 assertValueType:grammarsCopy];
 
-    v9 = [v12 copy];
+    v9 = [grammarsCopy copy];
     [(CNMutableContact *)self _setAddressingGrammars:v9];
 
     goto LABEL_7;
@@ -3927,19 +3927,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setAddressingGrammars:(id)a3
+- (void)_setAddressingGrammars:(id)grammars
 {
-  v4 = a3;
-  if (self->super._addressingGrammars != v4)
+  grammarsCopy = grammars;
+  if (self->super._addressingGrammars != grammarsCopy)
   {
-    if (!v4)
+    if (!grammarsCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      grammarsCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._addressingGrammars, v4);
-    v4 = obj;
+    obj = grammarsCopy;
+    objc_storeStrong(&self->super._addressingGrammars, grammarsCopy);
+    grammarsCopy = obj;
   }
 }
 
@@ -3986,9 +3986,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)setAddressingGrammarsEncrypted:(id)a3
+- (void)setAddressingGrammarsEncrypted:(id)encrypted
 {
-  v12 = a3;
+  encryptedCopy = encrypted;
   addressingGrammarsEncrypted = self->super._addressingGrammarsEncrypted;
   if (!addressingGrammarsEncrypted)
   {
@@ -4001,9 +4001,9 @@ LABEL_11:
 LABEL_6:
     v7 = +[CN contactPropertiesByKey];
     v8 = [v7 objectForKey:@"addressingGrammarsEncrypted"];
-    [v8 assertValueType:v12];
+    [v8 assertValueType:encryptedCopy];
 
-    v9 = [v12 copy];
+    v9 = [encryptedCopy copy];
     [(CNMutableContact *)self _setAddressingGrammarsEncrypted:v9];
 
     goto LABEL_7;
@@ -4028,19 +4028,19 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_setAddressingGrammarsEncrypted:(id)a3
+- (void)_setAddressingGrammarsEncrypted:(id)encrypted
 {
-  v4 = a3;
-  if (self->super._addressingGrammarsEncrypted != v4)
+  encryptedCopy = encrypted;
+  if (self->super._addressingGrammarsEncrypted != encryptedCopy)
   {
-    if (!v4)
+    if (!encryptedCopy)
     {
-      v4 = +[CNLabeledValue emptyEntries];
+      encryptedCopy = +[CNLabeledValue emptyEntries];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->super._addressingGrammarsEncrypted, v4);
-    v4 = obj;
+    obj = encryptedCopy;
+    objc_storeStrong(&self->super._addressingGrammarsEncrypted, encryptedCopy);
+    encryptedCopy = obj;
   }
 }
 
@@ -4087,16 +4087,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPreferredLikenessSource:(id)a3
+- (void)setPreferredLikenessSource:(id)source
 {
-  v8 = a3;
+  sourceCopy = source;
   if (self->super._preferredLikenessSource || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"preferredLikenessSource"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"preferredLikenessSource"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:sourceCopy];
 
-    v6 = [v8 copy];
+    v6 = [sourceCopy copy];
     [(CNMutableContact *)self _setPreferredLikenessSource:v6];
   }
 
@@ -4149,16 +4149,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPreferredApplePersonaIdentifier:(id)a3
+- (void)setPreferredApplePersonaIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   if (self->super._preferredApplePersonaIdentifier || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"preferredApplePersonaIdentifier"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"preferredApplePersonaIdentifier"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:identifierCopy];
 
-    v6 = [v8 copy];
+    v6 = [identifierCopy copy];
     [(CNMutableContact *)self _setPreferredApplePersonaIdentifier:v6];
   }
 
@@ -4211,16 +4211,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPreferredChannel:(id)a3
+- (void)setPreferredChannel:(id)channel
 {
-  v8 = a3;
+  channelCopy = channel;
   if (self->super._preferredChannel || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"preferredChannel"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"preferredChannel"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:channelCopy];
 
-    v6 = [v8 copy];
+    v6 = [channelCopy copy];
     [(CNMutableContact *)self _setPreferredChannel:v6];
   }
 
@@ -4273,16 +4273,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setDowntimeWhitelist:(id)a3
+- (void)setDowntimeWhitelist:(id)whitelist
 {
-  v8 = a3;
+  whitelistCopy = whitelist;
   if (self->super._downtimeWhitelist || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"downtimeWhitelist"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"downtimeWhitelist"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:whitelistCopy];
 
-    v6 = [v8 copy];
+    v6 = [whitelistCopy copy];
     [(CNMutableContact *)self _setDowntimeWhitelist:v6];
   }
 
@@ -4335,16 +4335,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setImageType:(id)a3
+- (void)setImageType:(id)type
 {
-  v8 = a3;
+  typeCopy = type;
   if (self->super._imageType || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"imageType"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"imageType"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:typeCopy];
 
-    v6 = [v8 copy];
+    v6 = [typeCopy copy];
     [(CNMutableContact *)self _setImageType:v6];
   }
 
@@ -4397,16 +4397,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setImageHash:(id)a3
+- (void)setImageHash:(id)hash
 {
-  v8 = a3;
+  hashCopy = hash;
   if (self->super._imageHash || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"imageHash"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"imageHash"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:hashCopy];
 
-    v6 = [v8 copy];
+    v6 = [hashCopy copy];
     [(CNMutableContact *)self _setImageHash:v6];
   }
 
@@ -4459,16 +4459,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setMemojiMetadata:(id)a3
+- (void)setMemojiMetadata:(id)metadata
 {
-  v8 = a3;
+  metadataCopy = metadata;
   if (self->super._memojiMetadata || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"memojiMetadata"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"memojiMetadata"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:metadataCopy];
 
-    v6 = [v8 copy];
+    v6 = [metadataCopy copy];
     [(CNMutableContact *)self _setMemojiMetadata:v6];
   }
 
@@ -4521,16 +4521,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setWallpaper:(id)a3
+- (void)setWallpaper:(id)wallpaper
 {
-  v8 = a3;
+  wallpaperCopy = wallpaper;
   if (self->super._wallpaper || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"wallpaper"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"wallpaper"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:wallpaperCopy];
 
-    v6 = [v8 copy];
+    v6 = [wallpaperCopy copy];
     [(CNMutableContact *)self _setWallpaper:v6];
   }
 
@@ -4583,16 +4583,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setWallpaperMetadata:(id)a3
+- (void)setWallpaperMetadata:(id)metadata
 {
-  v8 = a3;
+  metadataCopy = metadata;
   if (self->super._wallpaperMetadata || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"wallpaperMetadata"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"wallpaperMetadata"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:metadataCopy];
 
-    v6 = [v8 copy];
+    v6 = [metadataCopy copy];
     [(CNMutableContact *)self _setWallpaperMetadata:v6];
   }
 
@@ -4645,16 +4645,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setWatchWallpaperImageData:(id)a3
+- (void)setWatchWallpaperImageData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->super._watchWallpaperImageData || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"watchWallpaperImageData"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"watchWallpaperImageData"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dataCopy];
 
-    v6 = [v8 copy];
+    v6 = [dataCopy copy];
     [(CNMutableContact *)self _setWatchWallpaperImageData:v6];
   }
 
@@ -4707,16 +4707,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setWallpaperURI:(id)a3
+- (void)setWallpaperURI:(id)i
 {
-  v8 = a3;
+  iCopy = i;
   if (self->super._wallpaperURI || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"wallpaperURI"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"wallpaperURI"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:iCopy];
 
-    v6 = [v8 copy];
+    v6 = [iCopy copy];
     [(CNMutableContact *)self _setWallpaperURI:v6];
   }
 
@@ -4726,16 +4726,16 @@ LABEL_11:
   }
 }
 
-- (void)setAvatarRecipeData:(id)a3
+- (void)setAvatarRecipeData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->super._avatarRecipeData || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"avatarRecipeData"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"avatarRecipeData"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dataCopy];
 
-    v6 = [v8 copy];
+    v6 = [dataCopy copy];
     [(CNMutableContact *)self _setAvatarRecipeData:v6];
   }
 
@@ -4788,16 +4788,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setImageBackgroundColorsData:(id)a3
+- (void)setImageBackgroundColorsData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->super._imageBackgroundColorsData || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"imageBackgroundColorsData"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"imageBackgroundColorsData"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:dataCopy];
 
-    v6 = [v8 copy];
+    v6 = [dataCopy copy];
     [(CNMutableContact *)self _setImageBackgroundColorsData:v6];
   }
 
@@ -4850,16 +4850,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSensitiveContentConfiguration:(id)a3
+- (void)setSensitiveContentConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   if (self->super._sensitiveContentConfiguration || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"sensitiveContentConfiguration"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"sensitiveContentConfiguration"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:configurationCopy];
 
-    v6 = [v8 copy];
+    v6 = [configurationCopy copy];
     [(CNMutableContact *)self _setSensitiveContentConfiguration:v6];
   }
 
@@ -4912,16 +4912,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setImageSyncFailedTime:(id)a3
+- (void)setImageSyncFailedTime:(id)time
 {
-  v8 = a3;
+  timeCopy = time;
   if (self->super._imageSyncFailedTime || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"imageSyncFailedTime"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"imageSyncFailedTime"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:timeCopy];
 
-    v6 = [v8 copy];
+    v6 = [timeCopy copy];
     [(CNMutableContact *)self _setImageSyncFailedTime:v6];
   }
 
@@ -4974,16 +4974,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)setWallpaperSyncFailedTime:(id)a3
+- (void)setWallpaperSyncFailedTime:(id)time
 {
-  v8 = a3;
+  timeCopy = time;
   if (self->super._wallpaperSyncFailedTime || (availableKeyDescriptor = self->super._availableKeyDescriptor) == 0 || [(CNContactKeyVector *)availableKeyDescriptor containsKey:@"wallpaperSyncFailedTime"])
   {
     v4 = +[CN contactPropertiesByKey];
     v5 = [v4 objectForKey:@"wallpaperSyncFailedTime"];
-    [v5 assertValueType:v8];
+    [v5 assertValueType:timeCopy];
 
-    v6 = [v8 copy];
+    v6 = [timeCopy copy];
     [(CNMutableContact *)self _setWallpaperSyncFailedTime:v6];
   }
 
@@ -4993,11 +4993,11 @@ LABEL_11:
   }
 }
 
-- (void)setStoreIdentifier:(id)a3
+- (void)setStoreIdentifier:(id)identifier
 {
-  if (self->super._storeIdentifier != a3)
+  if (self->super._storeIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     storeIdentifier = self->super._storeIdentifier;
     self->super._storeIdentifier = v4;
 
@@ -5005,11 +5005,11 @@ LABEL_11:
   }
 }
 
-- (void)setStoreInfo:(id)a3
+- (void)setStoreInfo:(id)info
 {
-  if (self->super._storeInfo != a3)
+  if (self->super._storeInfo != info)
   {
-    v4 = [a3 copy];
+    v4 = [info copy];
     storeInfo = self->super._storeInfo;
     self->super._storeInfo = v4;
 
@@ -5017,29 +5017,29 @@ LABEL_11:
   }
 }
 
-- (void)setNilValueForKey:(id)a3
+- (void)setNilValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[CN contactPropertiesByKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
-    v7 = [v6 nilValue];
-    [v6 setCNValue:v7 onContact:self];
+    nilValue = [v6 nilValue];
+    [v6 setCNValue:nilValue onContact:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CNMutableContact;
-    [(CNMutableContact *)&v8 setNilValueForKey:v4];
+    [(CNMutableContact *)&v8 setNilValueForKey:keyCopy];
   }
 }
 
-- (void)updateStateFromContact:(id)a3
+- (void)updateStateFromContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
     [(CNMutableContact *)self overwriteStateFromContact:?];
   }
@@ -5058,18 +5058,18 @@ LABEL_11:
   [(CNMutableContact *)self setLinkedContacts:v3];
 }
 
-- (void)overwriteStateFromContact:(id)a3
+- (void)overwriteStateFromContact:(id)contact
 {
-  v4 = a3;
-  __46__CNMutableContact_overwriteStateFromContact___block_invoke(v4, v4, self);
-  v5 = [v4 snapshot];
+  contactCopy = contact;
+  __46__CNMutableContact_overwriteStateFromContact___block_invoke(contactCopy, contactCopy, self);
+  snapshot = [contactCopy snapshot];
 
-  if (v5)
+  if (snapshot)
   {
-    v6 = [(CNContact *)self snapshot];
-    if (v6)
+    snapshot2 = [(CNContact *)self snapshot];
+    if (snapshot2)
     {
-      v7 = [(CNContact *)CNMutableContact contactWithContact:v6];
+      v7 = [(CNContact *)CNMutableContact contactWithContact:snapshot2];
     }
 
     else
@@ -5078,25 +5078,25 @@ LABEL_11:
     }
 
     v8 = v7;
-    v9 = [v4 snapshot];
-    __46__CNMutableContact_overwriteStateFromContact___block_invoke(v9, v9, v8);
+    snapshot3 = [contactCopy snapshot];
+    __46__CNMutableContact_overwriteStateFromContact___block_invoke(snapshot3, snapshot3, v8);
 
-    v10 = [(CNMutableContact *)v8 freeze];
-    [(CNMutableContact *)self setSnapshot:v10];
+    freeze = [(CNMutableContact *)v8 freeze];
+    [(CNMutableContact *)self setSnapshot:freeze];
   }
 
   if ([(CNContact *)self isUnified])
   {
-    v11 = [(CNContact *)self linkedContacts];
-    v12 = [v11 _cn_indexBy:&__block_literal_global_229];
+    linkedContacts = [(CNContact *)self linkedContacts];
+    v12 = [linkedContacts _cn_indexBy:&__block_literal_global_229];
 
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
     v22 = __Block_byref_object_copy__15;
     v23 = __Block_byref_object_dispose__15;
-    v24 = [MEMORY[0x1E695DF70] array];
-    v13 = [v4 linkedContacts];
+    array = [MEMORY[0x1E695DF70] array];
+    linkedContacts2 = [contactCopy linkedContacts];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __46__CNMutableContact_overwriteStateFromContact___block_invoke_230;
@@ -5105,7 +5105,7 @@ LABEL_11:
     v16 = v14;
     v17 = &__block_literal_global_61;
     v18 = &v19;
-    [v13 enumerateObjectsUsingBlock:v15];
+    [linkedContacts2 enumerateObjectsUsingBlock:v15];
 
     [(CNMutableContact *)self setLinkedContacts:v20[5]];
     _Block_object_dispose(&v19, 8);
@@ -5164,23 +5164,23 @@ void __46__CNMutableContact_overwriteStateFromContact___block_invoke_230(void *a
   }
 }
 
-- (void)removeKeys:(id)a3
+- (void)removeKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
-    v5 = [CNContactKeyVector keyVectorWithKeys:v4];
+    v5 = [CNContactKeyVector keyVectorWithKeys:keysCopy];
     __31__CNMutableContact_removeKeys___block_invoke(v5, self, v5);
     if ([(CNContact *)self isUnified])
     {
-      v6 = [(CNContact *)self linkedContacts];
+      linkedContacts = [(CNContact *)self linkedContacts];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __31__CNMutableContact_removeKeys___block_invoke_3;
       v7[3] = &unk_1E7413FC0;
       v9 = &__block_literal_global_234;
       v8 = v5;
-      [v6 _cn_each:v7];
+      [linkedContacts _cn_each:v7];
     }
   }
 }
@@ -5209,23 +5209,23 @@ void __31__CNMutableContact_removeKeys___block_invoke_2(uint64_t a1, void *a2)
   [v3 setCNValue:v4 onContact:*(a1 + 32)];
 }
 
-- (void)setSnapshot:(id)a3
+- (void)setSnapshot:(id)snapshot
 {
   snapshot = self->super._snapshot;
-  if (snapshot != a3)
+  if (snapshot != snapshot)
   {
     self->super._snapshot = 0;
-    v5 = a3;
+    snapshotCopy = snapshot;
 
-    v6 = [v5 copy];
+    v6 = [snapshotCopy copy];
     v7 = self->super._snapshot;
     self->super._snapshot = v6;
   }
 }
 
-- (void)setAvailableKeyDescriptor:(id)a3
+- (void)setAvailableKeyDescriptor:(id)descriptor
 {
-  v4 = [a3 copy];
+  v4 = [descriptor copy];
   availableKeyDescriptor = self->super._availableKeyDescriptor;
   self->super._availableKeyDescriptor = v4;
 
@@ -5239,36 +5239,36 @@ void __31__CNMutableContact_removeKeys___block_invoke_2(uint64_t a1, void *a2)
   return v2;
 }
 
-- (void)setLinkedContacts:(id)a3
+- (void)setLinkedContacts:(id)contacts
 {
-  if (self->super._linkedContacts != a3)
+  if (self->super._linkedContacts != contacts)
   {
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithArray:v5];
+    contactsCopy = contacts;
+    v6 = [[v4 alloc] initWithArray:contactsCopy];
 
     linkedContacts = self->super._linkedContacts;
     self->super._linkedContacts = v6;
   }
 }
 
-- (void)updateWithSharedProfile:(id)a3
+- (void)updateWithSharedProfile:(id)profile
 {
-  v16 = a3;
-  v4 = [v16 imageData];
-  [(CNMutableContact *)self setImageData:v4];
+  profileCopy = profile;
+  imageData = [profileCopy imageData];
+  [(CNMutableContact *)self setImageData:imageData];
 
-  v5 = [v16 thumbnailImageData];
-  [(CNMutableContact *)self setThumbnailImageData:v5];
+  thumbnailImageData = [profileCopy thumbnailImageData];
+  [(CNMutableContact *)self setThumbnailImageData:thumbnailImageData];
 
-  [v16 cropRect];
+  [profileCopy cropRect];
   [(CNMutableContact *)self setCropRect:?];
   [(CNMutableContact *)self setMemojiMetadata:0];
-  v6 = [v16 imageType];
-  v7 = v6;
-  if (v6)
+  imageType = [profileCopy imageType];
+  v7 = imageType;
+  if (imageType)
   {
-    v8 = v6;
+    v8 = imageType;
   }
 
   else
@@ -5278,15 +5278,15 @@ void __31__CNMutableContact_removeKeys___block_invoke_2(uint64_t a1, void *a2)
 
   [(CNMutableContact *)self setImageType:v8];
 
-  v9 = [v16 imageData];
-  v10 = [v9 _cn_md5Hash];
-  [(CNMutableContact *)self setImageHash:v10];
+  imageData2 = [profileCopy imageData];
+  _cn_md5Hash = [imageData2 _cn_md5Hash];
+  [(CNMutableContact *)self setImageHash:_cn_md5Hash];
 
   [(CNMutableContact *)self setFullscreenImageData:0];
-  v11 = [v16 wallpaper];
-  LODWORD(v10) = [v11 contentIsSensitive];
+  wallpaper = [profileCopy wallpaper];
+  LODWORD(_cn_md5Hash) = [wallpaper contentIsSensitive];
 
-  if (v10)
+  if (_cn_md5Hash)
   {
     [(CNMutableContact *)self setWallpaper:0];
     [(CNMutableContact *)self setWatchWallpaperImageData:0];
@@ -5294,30 +5294,30 @@ void __31__CNMutableContact_removeKeys___block_invoke_2(uint64_t a1, void *a2)
 
   else
   {
-    v12 = [v16 wallpaper];
-    [(CNMutableContact *)self setWallpaper:v12];
+    wallpaper2 = [profileCopy wallpaper];
+    [(CNMutableContact *)self setWallpaper:wallpaper2];
 
-    v13 = [v16 watchWallpaperImageData];
-    [(CNMutableContact *)self setWatchWallpaperImageData:v13];
+    watchWallpaperImageData = [profileCopy watchWallpaperImageData];
+    [(CNMutableContact *)self setWatchWallpaperImageData:watchWallpaperImageData];
   }
 
   v14 = [CNSensitiveContentConfiguration configurationWithOverride:0];
   [(CNMutableContact *)self setSensitiveContentConfiguration:v14];
 
-  v15 = [v16 avatarRecipeData];
-  [(CNMutableContact *)self setAvatarRecipeData:v15];
+  avatarRecipeData = [profileCopy avatarRecipeData];
+  [(CNMutableContact *)self setAvatarRecipeData:avatarRecipeData];
 }
 
-- (void)setRelatedNames:(id)a3
+- (void)setRelatedNames:(id)names
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  namesCopy = names;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

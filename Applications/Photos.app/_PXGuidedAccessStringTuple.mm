@@ -1,21 +1,21 @@
 @interface _PXGuidedAccessStringTuple
-- (_PXGuidedAccessStringTuple)initWithPrimaryText:(id)a3 detailText:(id)a4;
+- (_PXGuidedAccessStringTuple)initWithPrimaryText:(id)text detailText:(id)detailText;
 @end
 
 @implementation _PXGuidedAccessStringTuple
 
-- (_PXGuidedAccessStringTuple)initWithPrimaryText:(id)a3 detailText:(id)a4
+- (_PXGuidedAccessStringTuple)initWithPrimaryText:(id)text detailText:(id)detailText
 {
-  v7 = a3;
-  v8 = a4;
+  textCopy = text;
+  detailTextCopy = detailText;
   v12.receiver = self;
   v12.super_class = _PXGuidedAccessStringTuple;
   v9 = [(_PXGuidedAccessStringTuple *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_primaryText, a3);
-    objc_storeStrong(&v10->_detailText, a4);
+    objc_storeStrong(&v9->_primaryText, text);
+    objc_storeStrong(&v10->_detailText, detailText);
   }
 
   return v10;

@@ -25,8 +25,8 @@
   v7[2] = @"savings";
   v6[2] = @"accountType";
   v6[3] = @"accountDetails";
-  v2 = [objc_opt_class() savingsAccountDetailsDictionary];
-  v7[3] = v2;
+  savingsAccountDetailsDictionary = [objc_opt_class() savingsAccountDetailsDictionary];
+  v7[3] = savingsAccountDetailsDictionary;
   v7[4] = @"active";
   v6[4] = @"state";
   v6[5] = @"accessLevel";
@@ -43,17 +43,17 @@
 
 + (id)savingsAccountDictionaryUpdated
 {
-  v2 = [objc_opt_class() savingsAccountSummaryDictionary];
-  v3 = [v2 mutableCopy];
+  savingsAccountSummaryDictionary = [objc_opt_class() savingsAccountSummaryDictionary];
+  v3 = [savingsAccountSummaryDictionary mutableCopy];
 
   [v3 setObject:@"47" forKeyedSubscript:@"currentBalance"];
   [v3 setObject:@"1000" forKeyedSubscript:@"pendingBalance"];
-  v4 = [objc_opt_class() savingsAccountDetailsDictionary];
-  v5 = [v4 mutableCopy];
+  savingsAccountDetailsDictionary = [objc_opt_class() savingsAccountDetailsDictionary];
+  v5 = [savingsAccountDetailsDictionary mutableCopy];
 
   [v5 setObject:v3 forKeyedSubscript:@"accountSummary"];
-  v6 = [objc_opt_class() savingsAccountDictionary];
-  v7 = [v6 mutableCopy];
+  savingsAccountDictionary = [objc_opt_class() savingsAccountDictionary];
+  v7 = [savingsAccountDictionary mutableCopy];
 
   [v7 setObject:v5 forKeyedSubscript:@"accountDetails"];
   v8 = [v7 copy];
@@ -71,8 +71,8 @@
   v7[2] = @"savings";
   v6[2] = @"accountType";
   v6[3] = @"accountDetails";
-  v2 = [objc_opt_class() savingsAccountDetailsDictionary2];
-  v7[3] = v2;
+  savingsAccountDetailsDictionary2 = [objc_opt_class() savingsAccountDetailsDictionary2];
+  v7[3] = savingsAccountDetailsDictionary2;
   v7[4] = @"restricted";
   v6[4] = @"state";
   v6[5] = @"blockNotifications";
@@ -80,9 +80,9 @@
   v7[6] = @"primary";
   v6[6] = @"accessLevel";
   v6[7] = @"supportedFeatures";
-  v3 = [objc_opt_class() supportedSavingsAccountFeaturesArray2];
+  supportedSavingsAccountFeaturesArray2 = [objc_opt_class() supportedSavingsAccountFeaturesArray2];
   v6[8] = @"accountBaseURL";
-  v7[7] = v3;
+  v7[7] = supportedSavingsAccountFeaturesArray2;
   v7[8] = @"https://localhost:3000/firebrand";
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:9];
 
@@ -93,11 +93,11 @@
 {
   v8[17] = *MEMORY[0x1E69E9840];
   v7[0] = @"lastUpdatedDate";
-  v2 = [objc_opt_class() date1];
-  v8[0] = v2;
+  date1 = [objc_opt_class() date1];
+  v8[0] = date1;
   v7[1] = @"createdDate";
-  v3 = [objc_opt_class() date2];
-  v8[1] = v3;
+  date2 = [objc_opt_class() date2];
+  v8[1] = date2;
   v8[2] = @"US";
   v7[2] = @"countryCode";
   v7[3] = @"currencyCode";
@@ -127,8 +127,8 @@
   v7[15] = @"fccStepUpRequired";
   v8[15] = MEMORY[0x1E695E110];
   v7[16] = @"accountSummary";
-  v4 = [objc_opt_class() savingsAccountSummaryDictionary];
-  v8[16] = v4;
+  savingsAccountSummaryDictionary = [objc_opt_class() savingsAccountSummaryDictionary];
+  v8[16] = savingsAccountSummaryDictionary;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:17];
 
   return v5;
@@ -138,11 +138,11 @@
 {
   v9[18] = *MEMORY[0x1E69E9840];
   v8[0] = @"lastUpdatedDate";
-  v2 = [objc_opt_class() date1];
-  v9[0] = v2;
+  date1 = [objc_opt_class() date1];
+  v9[0] = date1;
   v8[1] = @"createdDate";
-  v3 = [objc_opt_class() date2];
-  v9[1] = v3;
+  date2 = [objc_opt_class() date2];
+  v9[1] = date2;
   v9[2] = @"JP";
   v8[2] = @"countryCode";
   v8[3] = @"currencyCode";
@@ -172,11 +172,11 @@
   v8[15] = @"fccStepUpRequired";
   v9[15] = MEMORY[0x1E695E118];
   v8[16] = @"fccStepUpDetails";
-  v4 = [objc_opt_class() savingsAccountFCCStepUpDetailsDictionary];
-  v9[16] = v4;
+  savingsAccountFCCStepUpDetailsDictionary = [objc_opt_class() savingsAccountFCCStepUpDetailsDictionary];
+  v9[16] = savingsAccountFCCStepUpDetailsDictionary;
   v8[17] = @"accountSummary";
-  v5 = [objc_opt_class() savingsAccountSummaryDictionary2];
-  v9[17] = v5;
+  savingsAccountSummaryDictionary2 = [objc_opt_class() savingsAccountSummaryDictionary2];
+  v9[17] = savingsAccountSummaryDictionary2;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:18];
 
   return v6;
@@ -188,8 +188,8 @@
   v5[0] = @"thresholdExceeded";
   v5[1] = @"neededBy";
   v6[0] = &unk_1F23B5780;
-  v2 = [objc_opt_class() date2];
-  v6[1] = v2;
+  date2 = [objc_opt_class() date2];
+  v6[1] = date2;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:2];
 
   return v3;
@@ -203,11 +203,11 @@
   v33[0] = @"84019385-0249851-02984";
   v33[1] = @"USD";
   v32[2] = @"openingDate";
-  v21 = [objc_opt_class() date1];
-  v33[2] = v21;
+  date1 = [objc_opt_class() date1];
+  v33[2] = date1;
   v32[3] = @"closingDate";
-  v20 = [objc_opt_class() date2];
-  v33[3] = v20;
+  date2 = [objc_opt_class() date2];
+  v33[3] = date2;
   v33[4] = @"95";
   v32[4] = @"openingBalance";
   v32[5] = @"closingBalance";
@@ -231,11 +231,11 @@
   v31[0] = @"84019385-0249851-02985";
   v31[1] = @"USD";
   v30[2] = @"openingDate";
-  v18 = [objc_opt_class() date2];
-  v31[2] = v18;
+  date22 = [objc_opt_class() date2];
+  v31[2] = date22;
   v30[3] = @"closingDate";
-  v17 = [objc_opt_class() date3];
-  v31[3] = v17;
+  date3 = [objc_opt_class() date3];
+  v31[3] = date3;
   v31[4] = @"100";
   v30[4] = @"openingBalance";
   v30[5] = @"closingBalance";
@@ -259,11 +259,11 @@
   v29[0] = @"84019385-0249851-02986";
   v29[1] = @"USD";
   v28[2] = @"openingDate";
-  v15 = [objc_opt_class() date3];
-  v29[2] = v15;
+  date32 = [objc_opt_class() date3];
+  v29[2] = date32;
   v28[3] = @"closingDate";
-  v14 = [objc_opt_class() date4];
-  v29[3] = v14;
+  date4 = [objc_opt_class() date4];
+  v29[3] = date4;
   v29[4] = @"200";
   v28[4] = @"openingBalance";
   v28[5] = @"closingBalance";
@@ -287,11 +287,11 @@
   v27[0] = @"84019385-0249851-02987";
   v27[1] = @"USD";
   v26[2] = @"openingDate";
-  v12 = [objc_opt_class() date4];
-  v27[2] = v12;
+  date42 = [objc_opt_class() date4];
+  v27[2] = date42;
   v26[3] = @"closingDate";
-  v11 = [objc_opt_class() date5];
-  v27[3] = v11;
+  date5 = [objc_opt_class() date5];
+  v27[3] = date5;
   v27[4] = @"500";
   v26[4] = @"openingBalance";
   v26[5] = @"closingBalance";
@@ -315,11 +315,11 @@
   v25[0] = @"84019385-0249851-02988";
   v25[1] = @"USD";
   v24[2] = @"openingDate";
-  v2 = [objc_opt_class() date6];
-  v25[2] = v2;
+  date6 = [objc_opt_class() date6];
+  v25[2] = date6;
   v24[3] = @"closingDate";
-  v3 = [objc_opt_class() date7];
-  v25[3] = v3;
+  date7 = [objc_opt_class() date7];
+  v25[3] = date7;
   v25[4] = @"600";
   v24[4] = @"openingBalance";
   v24[5] = @"closingBalance";
@@ -343,11 +343,11 @@
   v23[0] = @"84019385-0249851-02989";
   v23[1] = @"USD";
   v22[2] = @"openingDate";
-  v5 = [objc_opt_class() date7];
-  v23[2] = v5;
+  date72 = [objc_opt_class() date7];
+  v23[2] = date72;
   v22[3] = @"closingDate";
-  v6 = [objc_opt_class() date8];
-  v23[3] = v6;
+  date8 = [objc_opt_class() date8];
+  v23[3] = date8;
   v23[4] = @"600";
   v22[4] = @"openingBalance";
   v22[5] = @"closingBalance";
@@ -383,10 +383,10 @@
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v6 setMonth:v2];
-    v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v8 = [MEMORY[0x1E695DF00] date];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date = [MEMORY[0x1E695DF00] date];
     v25 = v6;
-    v9 = [v7 dateByAddingComponents:v6 toDate:v8 options:0];
+    v9 = [currentCalendar dateByAddingComponents:v6 toDate:date options:0];
 
     v10 = objc_alloc(MEMORY[0x1E695DF90]);
     v27[0] = @"USD";
@@ -416,9 +416,9 @@
     v27[8] = @"20.0";
     v26[8] = @"totalWithdrawn";
     v26[9] = @"apy";
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.3f", 0x3FF3333340000000];
+    0x3FF3333340000000 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.3f", 0x3FF3333340000000];
     v26[10] = @"statementPeriodDays";
-    v27[9] = v16;
+    v27[9] = 0x3FF3333340000000;
     v27[10] = &unk_1F23B5798;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:11];
     v18 = [v10 initWithDictionary:v17];
@@ -451,9 +451,9 @@
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v4 setYear:v2];
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [v5 dateByAddingComponents:v4 toDate:v6 options:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [currentCalendar dateByAddingComponents:v4 toDate:date options:0];
 
     v8 = objc_alloc(MEMORY[0x1E695DF90]);
     v19[0] = @"1099-int";
@@ -491,11 +491,11 @@
   v7[0] = @"84019385-0249851-02984";
   v7[1] = @"USD";
   v6[2] = @"openingDate";
-  v2 = [objc_opt_class() date2];
-  v7[2] = v2;
+  date2 = [objc_opt_class() date2];
+  v7[2] = date2;
   v6[3] = @"closingDate";
-  v3 = [objc_opt_class() date3];
-  v7[3] = v3;
+  date3 = [objc_opt_class() date3];
+  v7[3] = date3;
   v7[4] = @"101";
   v6[4] = @"openingBalance";
   v6[5] = @"closingBalance";
@@ -523,11 +523,11 @@
   v7[0] = @"EUR";
   v6[0] = @"currencyCode";
   v6[1] = @"openingDate";
-  v2 = [objc_opt_class() date1];
-  v7[1] = v2;
+  date1 = [objc_opt_class() date1];
+  v7[1] = date1;
   v6[2] = @"closingDate";
-  v3 = [objc_opt_class() date2];
-  v7[2] = v3;
+  date2 = [objc_opt_class() date2];
+  v7[2] = date2;
   v7[3] = @"123";
   v6[3] = @"openingBalance";
   v6[4] = @"closingBalance";
@@ -559,9 +559,9 @@
   [(PKAccountTransfer *)v2 setType:2];
   [(PKAccountTransfer *)v2 setState:1];
   v5 = [(PKAccountPaymentFundingSource *)[PKAccountTransferExternalAccount alloc] initWithType:1];
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  [(PKAccountPaymentFundingSource *)v5 setIdentifier:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PKAccountPaymentFundingSource *)v5 setIdentifier:uUIDString];
 
   [(PKAccountPaymentFundingSource *)v5 setAccountSuffix:@"7890"];
   v8 = objc_alloc_init(PKAccountPaymentFundingDetailsBankAccount);
@@ -571,23 +571,23 @@
   [(PKAccountTransferScheduleDetails *)v9 setFrequency:2];
   [(PKAccountTransfer *)v2 setScheduleDetails:v9];
   [(PKAccountTransfer *)v2 setExternalAccount:v5];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
-  [(PKAccountTransfer *)v2 setIdentifier:v11];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  [(PKAccountTransfer *)v2 setIdentifier:uUIDString2];
 
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
-  [(PKAccountTransfer *)v2 setReferenceIdentifier:v13];
+  uUID3 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString3 = [uUID3 UUIDString];
+  [(PKAccountTransfer *)v2 setReferenceIdentifier:uUIDString3];
 
-  v14 = [MEMORY[0x1E696AFB0] UUID];
-  v15 = [v14 UUIDString];
-  [(PKAccountTransfer *)v2 setClientReferenceIdentifier:v15];
+  uUID4 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString4 = [uUID4 UUIDString];
+  [(PKAccountTransfer *)v2 setClientReferenceIdentifier:uUIDString4];
 
   v16 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:604800.0];
   [(PKAccountTransfer *)v2 setTransferDate:v16];
 
-  v17 = [MEMORY[0x1E695DF00] date];
-  [(PKAccountTransfer *)v2 setTransferStatusDate:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PKAccountTransfer *)v2 setTransferStatusDate:date];
 
   [(PKAccountTransfer *)v2 setCancellable:1];
 

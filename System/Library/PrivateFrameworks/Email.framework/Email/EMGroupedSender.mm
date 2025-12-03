@@ -2,14 +2,14 @@
 + (OS_os_log)log;
 - (EFFuture)displayMessage;
 - (EMCollectionItemID)itemID;
-- (EMGroupedSender)initWithCoder:(id)a3;
-- (EMGroupedSender)initWithObjectID:(id)a3 builder:(id)a4;
+- (EMGroupedSender)initWithCoder:(id)coder;
+- (EMGroupedSender)initWithObjectID:(id)d builder:(id)builder;
 - (EMObjectID)displayMessageObjectID;
 - (NSURL)brandIndicatorLocation;
-- (id)changeFrom:(id)a3;
-- (id)preferredSenderDisplayNameWithContactStore:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRepository:(id)a3;
+- (id)changeFrom:(id)from;
+- (id)preferredSenderDisplayNameWithContactStore:(id)store;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRepository:(id)repository;
 @end
 
 @implementation EMGroupedSender
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __22__EMGroupedSender_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_15 != -1)
   {
     dispatch_once(&log_onceToken_15, block);
@@ -39,43 +39,43 @@ void __22__EMGroupedSender_log__block_invoke(uint64_t a1)
   log_log_15 = v1;
 }
 
-- (EMGroupedSender)initWithObjectID:(id)a3 builder:(id)a4
+- (EMGroupedSender)initWithObjectID:(id)d builder:(id)builder
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"EMGroupedSender.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMGroupedSender.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __44__EMGroupedSender_initWithObjectID_builder___block_invoke;
   v14[3] = &unk_1E826D028;
-  v15 = self;
-  v9 = v8;
+  selfCopy = self;
+  v9 = builderCopy;
   v16 = v9;
-  v13.receiver = v15;
+  v13.receiver = selfCopy;
   v13.super_class = EMGroupedSender;
-  v10 = [(EMBaseMessageListItem *)&v13 initWithObjectID:v7 baseBuilder:v14];
+  v10 = [(EMBaseMessageListItem *)&v13 initWithObjectID:dCopy baseBuilder:v14];
 
   return v10;
 }
 
-- (EMGroupedSender)initWithCoder:(id)a3
+- (EMGroupedSender)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EMGroupedSender;
-  v5 = [(EMBaseMessageListItem *)&v9 initWithCoder:v4];
+  v5 = [(EMBaseMessageListItem *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __33__EMGroupedSender_initWithCoder___block_invoke;
     v7[3] = &unk_1E826D050;
-    v8 = v4;
+    v8 = coderCopy;
     [(EMGroupedSender *)v5 _commonInitWithBuilder:v7];
   }
 
@@ -95,43 +95,43 @@ void __33__EMGroupedSender_initWithCoder___block_invoke(uint64_t a1, void *a2)
   [v5 setDisplayMessageItemID:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = EMGroupedSender;
-  [(EMBaseMessageListItem *)&v7 encodeWithCoder:v4];
-  [v4 encodeInteger:-[EMGroupedSender unreadCount](self forKey:{"unreadCount"), @"EFPropertyKey_unreadCount"}];
-  [v4 encodeInteger:-[EMGroupedSender unseenCount](self forKey:{"unseenCount"), @"EFPropertyKey_unseenCount"}];
-  [v4 encodeInteger:-[EMGroupedSender count](self forKey:{"count"), @"EFPropertyKey_count"}];
-  v5 = [(EMGroupedSender *)self businessDisplayName];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_businessDisplayName"];
+  [(EMBaseMessageListItem *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[EMGroupedSender unreadCount](self forKey:{"unreadCount"), @"EFPropertyKey_unreadCount"}];
+  [coderCopy encodeInteger:-[EMGroupedSender unseenCount](self forKey:{"unseenCount"), @"EFPropertyKey_unseenCount"}];
+  [coderCopy encodeInteger:-[EMGroupedSender count](self forKey:{"count"), @"EFPropertyKey_count"}];
+  businessDisplayName = [(EMGroupedSender *)self businessDisplayName];
+  [coderCopy encodeObject:businessDisplayName forKey:@"EFPropertyKey_businessDisplayName"];
 
-  v6 = [(EMGroupedSender *)self displayMessageItemID];
-  [v4 encodeObject:v6 forKey:@"EFPropertyKey_displayMessageItemID"];
+  displayMessageItemID = [(EMGroupedSender *)self displayMessageItemID];
+  [coderCopy encodeObject:displayMessageItemID forKey:@"EFPropertyKey_displayMessageItemID"];
 }
 
-- (id)changeFrom:(id)a3
+- (id)changeFrom:(id)from
 {
-  v3 = [EMGroupedSenderChange changeFrom:a3 to:self];
+  v3 = [EMGroupedSenderChange changeFrom:from to:self];
 
   return v3;
 }
 
-- (void)setRepository:(id)a3
+- (void)setRepository:(id)repository
 {
-  v4 = a3;
+  repositoryCopy = repository;
   v9.receiver = self;
   v9.super_class = EMGroupedSender;
-  [(EMBaseMessageListItem *)&v9 setRepository:v4];
-  v5 = [(EMBaseMessageListItem *)self groupedSenderMessageListItems];
+  [(EMBaseMessageListItem *)&v9 setRepository:repositoryCopy];
+  groupedSenderMessageListItems = [(EMBaseMessageListItem *)self groupedSenderMessageListItems];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__EMGroupedSender_setRepository___block_invoke;
   v7[3] = &unk_1E826D078;
-  v6 = v4;
+  v6 = repositoryCopy;
   v8 = v6;
-  [v5 enumerateObjectsUsingBlock:v7];
+  [groupedSenderMessageListItems enumerateObjectsUsingBlock:v7];
 }
 
 void __33__EMGroupedSender_setRepository___block_invoke(uint64_t a1, void *a2)
@@ -159,42 +159,42 @@ void __33__EMGroupedSender_setRepository___block_invoke(uint64_t a1, void *a2)
 
 - (EMCollectionItemID)itemID
 {
-  v2 = [(EMObject *)self objectID];
-  v3 = [v2 collectionItemID];
+  objectID = [(EMObject *)self objectID];
+  collectionItemID = [objectID collectionItemID];
 
-  return v3;
+  return collectionItemID;
 }
 
 - (EMObjectID)displayMessageObjectID
 {
-  v4 = [(EMGroupedSender *)self displayMessageItemID];
+  displayMessageItemID = [(EMGroupedSender *)self displayMessageItemID];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"EMGroupedSender.m" lineNumber:104 description:@"displayMessageItemID is not an EMMessageCollectionItemID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMGroupedSender.m" lineNumber:104 description:@"displayMessageItemID is not an EMMessageCollectionItemID"];
   }
 
   v5 = [EMMessageObjectID alloc];
-  v6 = [(EMObject *)self objectID];
-  v7 = [v6 threadScope];
-  v8 = [v7 mailboxScope];
-  v9 = [(EMMessageObjectID *)v5 initWithCollectionItemID:v4 mailboxScope:v8];
+  objectID = [(EMObject *)self objectID];
+  threadScope = [objectID threadScope];
+  mailboxScope = [threadScope mailboxScope];
+  v9 = [(EMMessageObjectID *)v5 initWithCollectionItemID:displayMessageItemID mailboxScope:mailboxScope];
 
   return v9;
 }
 
 - (EFFuture)displayMessage
 {
-  v3 = [(EMGroupedSender *)self displayMessageObjectID];
-  v4 = [(EMBaseMessageListItem *)self repository];
-  v5 = [v4 messageForObjectID:v3];
+  displayMessageObjectID = [(EMGroupedSender *)self displayMessageObjectID];
+  repository = [(EMBaseMessageListItem *)self repository];
+  v5 = [repository messageForObjectID:displayMessageObjectID];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __33__EMGroupedSender_displayMessage__block_invoke;
   v13[3] = &unk_1E826D0A0;
   v13[4] = self;
-  v6 = v3;
+  v6 = displayMessageObjectID;
   v14 = v6;
   v7 = [v5 recover:v13];
 
@@ -303,30 +303,30 @@ id __33__EMGroupedSender_displayMessage__block_invoke_47(uint64_t a1, void *a2)
   return v7;
 }
 
-- (id)preferredSenderDisplayNameWithContactStore:(id)a3
+- (id)preferredSenderDisplayNameWithContactStore:(id)store
 {
-  v4 = a3;
-  v5 = [(EMGroupedSender *)self businessDisplayName];
-  v6 = [(EMBaseMessageListItem *)self senderList];
-  v7 = [v6 firstObject];
-  v8 = [v7 emailAddressValue];
+  storeCopy = store;
+  businessDisplayName = [(EMGroupedSender *)self businessDisplayName];
+  senderList = [(EMBaseMessageListItem *)self senderList];
+  firstObject = [senderList firstObject];
+  emailAddressValue = [firstObject emailAddressValue];
 
-  if (v5)
+  if (businessDisplayName)
   {
-    v9 = v5;
+    v9 = businessDisplayName;
 LABEL_3:
     v10 = v9;
     goto LABEL_16;
   }
 
-  if (!v8)
+  if (!emailAddressValue)
   {
     v9 = _EFLocalizedString();
     goto LABEL_3;
   }
 
-  v11 = [v8 stringValue];
-  v12 = [v4 displayNameForEmailAddress:v11];
+  stringValue = [emailAddressValue stringValue];
+  v12 = [storeCopy displayNameForEmailAddress:stringValue];
 
   if (v12)
   {
@@ -335,30 +335,30 @@ LABEL_3:
 
   else
   {
-    v13 = v8;
-    v14 = [v13 emailAddressValue];
-    v15 = [v14 em_displayableString];
-    v16 = v15;
-    if (v15)
+    v13 = emailAddressValue;
+    emailAddressValue2 = [v13 emailAddressValue];
+    em_displayableString = [emailAddressValue2 em_displayableString];
+    v16 = em_displayableString;
+    if (em_displayableString)
     {
-      v10 = v15;
+      v10 = em_displayableString;
     }
 
     else
     {
-      v17 = [v14 simpleAddress];
-      v18 = v17;
-      if (v17)
+      simpleAddress = [emailAddressValue2 simpleAddress];
+      v18 = simpleAddress;
+      if (simpleAddress)
       {
-        v19 = v17;
+        stringValue2 = simpleAddress;
       }
 
       else
       {
-        v19 = [v13 stringValue];
+        stringValue2 = [v13 stringValue];
       }
 
-      v10 = v19;
+      v10 = stringValue2;
     }
   }
 
@@ -373,15 +373,15 @@ LABEL_16:
   {
     v5.receiver = self;
     v5.super_class = EMGroupedSender;
-    v3 = [(EMBaseMessageListItem *)&v5 brandIndicatorLocation];
+    brandIndicatorLocation = [(EMBaseMessageListItem *)&v5 brandIndicatorLocation];
   }
 
   else
   {
-    v3 = 0;
+    brandIndicatorLocation = 0;
   }
 
-  return v3;
+  return brandIndicatorLocation;
 }
 
 void __33__EMGroupedSender_setRepository___block_invoke_cold_1(void *a1, uint8_t *buf, os_log_t log)

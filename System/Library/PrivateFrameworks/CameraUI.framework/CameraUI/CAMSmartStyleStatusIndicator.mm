@@ -1,27 +1,27 @@
 @interface CAMSmartStyleStatusIndicator
-+ (CGPoint)centerPositionForNormalizedValue:(CGPoint)a3 inGridOfSize:(CGSize)a4 strokeWidth:(double)a5 strokeToDotSpacing:(double)a6 gridDotWidth:(double)a7;
-+ (id)gridImageWithSize:(CGSize)a3 cornerRadius:(double)a4 strokeWidth:(double)a5 strokeToDotSpacing:(double)a6 gridDotWidth:(double)a7 valueDotWidth:(double)a8 value:(CGPoint)a9 color:(id)a10;
-+ (void)_drawCircleInContext:(id)a3 atCenter:(CGPoint)a4 diameter:(double)a5;
++ (CGPoint)centerPositionForNormalizedValue:(CGPoint)value inGridOfSize:(CGSize)size strokeWidth:(double)width strokeToDotSpacing:(double)spacing gridDotWidth:(double)dotWidth;
++ (id)gridImageWithSize:(CGSize)size cornerRadius:(double)radius strokeWidth:(double)width strokeToDotSpacing:(double)spacing gridDotWidth:(double)dotWidth valueDotWidth:(double)valueDotWidth value:(CGPoint)value color:(id)self0;
++ (void)_drawCircleInContext:(id)context atCenter:(CGPoint)center diameter:(double)diameter;
 - (BOOL)shouldUseActiveTintForCurrentState;
-- (CAMSmartStyleStatusIndicator)initWithFrame:(CGRect)a3;
+- (CAMSmartStyleStatusIndicator)initWithFrame:(CGRect)frame;
 - (CGPoint)_normalizedStyleValue;
 - (id)imageForAXHUD;
 - (id)imageForCurrentState;
 - (id)imageSymbolColorConfiguration;
-- (void)_setNormalizedStyleValue:(CGPoint)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setShowDisabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowValueDot:(BOOL)a3;
-- (void)setSmartStyle:(id)a3 animated:(BOOL)a4;
+- (void)_setNormalizedStyleValue:(CGPoint)value;
+- (void)setActive:(BOOL)active;
+- (void)setShowDisabled:(BOOL)disabled animated:(BOOL)animated;
+- (void)setShowValueDot:(BOOL)dot;
+- (void)setSmartStyle:(id)style animated:(BOOL)animated;
 @end
 
 @implementation CAMSmartStyleStatusIndicator
 
-- (CAMSmartStyleStatusIndicator)initWithFrame:(CGRect)a3
+- (CAMSmartStyleStatusIndicator)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMSmartStyleStatusIndicator;
-  v3 = [(CAMControlStatusIndicator *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMControlStatusIndicator *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,61 +31,61 @@
   return v4;
 }
 
-- (void)setSmartStyle:(id)a3 animated:(BOOL)a4
+- (void)setSmartStyle:(id)style animated:(BOOL)animated
 {
-  v6 = a3;
+  styleCopy = style;
   smartStyle = self->_smartStyle;
-  if (smartStyle != v6)
+  if (smartStyle != styleCopy)
   {
-    v11 = v6;
-    smartStyle = [smartStyle isEqualToSmartStyle:v6];
-    v6 = v11;
+    v11 = styleCopy;
+    smartStyle = [smartStyle isEqualToSmartStyle:styleCopy];
+    styleCopy = v11;
     if ((smartStyle & 1) == 0)
     {
-      objc_storeStrong(&self->_smartStyle, a3);
+      objc_storeStrong(&self->_smartStyle, style);
       [v11 colorBias];
       v9 = v8;
       [v11 toneBias];
       smartStyle = [(CAMSmartStyleStatusIndicator *)self _setNormalizedStyleValue:v9, v10];
-      v6 = v11;
+      styleCopy = v11;
     }
   }
 
-  MEMORY[0x1EEE66BB8](smartStyle, v6);
+  MEMORY[0x1EEE66BB8](smartStyle, styleCopy);
 }
 
-- (void)setShowDisabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowDisabled:(BOOL)disabled animated:(BOOL)animated
 {
-  if (self->_showDisabled != a3)
+  if (self->_showDisabled != disabled)
   {
-    self->_showDisabled = a3;
-    [(CAMControlStatusIndicator *)self updateImageAnimated:a4];
+    self->_showDisabled = disabled;
+    [(CAMControlStatusIndicator *)self updateImageAnimated:animated];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(CAMControlStatusIndicator *)self updateImageAnimated:0];
   }
 }
 
-- (void)setShowValueDot:(BOOL)a3
+- (void)setShowValueDot:(BOOL)dot
 {
-  if (self->_showValueDot != a3)
+  if (self->_showValueDot != dot)
   {
-    self->_showValueDot = a3;
+    self->_showValueDot = dot;
     [(CAMControlStatusIndicator *)self updateImageAnimated:0];
   }
 }
 
-- (void)_setNormalizedStyleValue:(CGPoint)a3
+- (void)_setNormalizedStyleValue:(CGPoint)value
 {
-  if (self->__normalizedStyleValue.x != a3.x || self->__normalizedStyleValue.y != a3.y)
+  if (self->__normalizedStyleValue.x != value.x || self->__normalizedStyleValue.y != value.y)
   {
-    self->__normalizedStyleValue = a3;
+    self->__normalizedStyleValue = value;
     if ([(CAMSmartStyleStatusIndicator *)self showValueDot])
     {
 
@@ -125,17 +125,17 @@
 
 - (BOOL)shouldUseActiveTintForCurrentState
 {
-  v2 = [(CAMSmartStyleStatusIndicator *)self smartStyle];
-  v3 = [v2 isCustomizable];
+  smartStyle = [(CAMSmartStyleStatusIndicator *)self smartStyle];
+  isCustomizable = [smartStyle isCustomizable];
 
-  return v3;
+  return isCustomizable;
 }
 
 - (id)imageSymbolColorConfiguration
 {
   v2 = MEMORY[0x1E69DCAD8];
-  v3 = [MEMORY[0x1E69DC888] tintColor];
-  v4 = [v2 configurationWithHierarchicalColor:v3];
+  tintColor = [MEMORY[0x1E69DC888] tintColor];
+  v4 = [v2 configurationWithHierarchicalColor:tintColor];
 
   return v4;
 }
@@ -143,17 +143,17 @@
 - (id)imageForAXHUD
 {
   v2 = objc_opt_class();
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [v2 gridImageWithSize:v3 cornerRadius:48.0 strokeWidth:48.0 strokeToDotSpacing:10.0 gridDotWidth:2.0 valueDotWidth:6.0 value:2.66666667 color:{8.66666667, 0x3FE0000000000000, 0x3FE0000000000000}];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v4 = [v2 gridImageWithSize:whiteColor cornerRadius:48.0 strokeWidth:48.0 strokeToDotSpacing:10.0 gridDotWidth:2.0 valueDotWidth:6.0 value:2.66666667 color:{8.66666667, 0x3FE0000000000000, 0x3FE0000000000000}];
 
   return v4;
 }
 
-+ (id)gridImageWithSize:(CGSize)a3 cornerRadius:(double)a4 strokeWidth:(double)a5 strokeToDotSpacing:(double)a6 gridDotWidth:(double)a7 valueDotWidth:(double)a8 value:(CGPoint)a9 color:(id)a10
++ (id)gridImageWithSize:(CGSize)size cornerRadius:(double)radius strokeWidth:(double)width strokeToDotSpacing:(double)spacing gridDotWidth:(double)dotWidth valueDotWidth:(double)valueDotWidth value:(CGPoint)value color:(id)self0
 {
-  height = a3.height;
-  width = a3.width;
-  v17 = a10;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
     v31 = 0;
@@ -161,35 +161,35 @@
 
   else
   {
-    v19 = [MEMORY[0x1E69DCA80] preferredFormat];
-    v20 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v19 format:{width, height}];
+    preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+    v20 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:preferredFormat format:{width, height}];
     CEKRectWithSize();
-    v33 = a4;
-    v34 = a8;
+    radiusCopy = radius;
+    valueDotWidthCopy = valueDotWidth;
     v22 = v21;
     v24 = v23;
-    v25 = a7;
+    dotWidthCopy = dotWidth;
     v27 = v26;
-    v28 = a6;
+    spacingCopy = spacing;
     v30 = v29;
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __133__CAMSmartStyleStatusIndicator_gridImageWithSize_cornerRadius_strokeWidth_strokeToDotSpacing_gridDotWidth_valueDotWidth_value_color___block_invoke;
     v36[3] = &unk_1E76F8888;
-    v37 = v17;
+    v37 = colorCopy;
     v38 = v22;
     v39 = v24;
     v40 = v27;
     v41 = v30;
-    v42 = a5;
-    v43 = v33;
-    v44 = a1;
-    v45 = width;
+    widthCopy = width;
+    v43 = radiusCopy;
+    selfCopy = self;
+    widthCopy2 = width;
     v46 = height;
-    v47 = v28;
-    v48 = v25;
-    v49 = v34;
-    v50 = a9;
+    v47 = spacingCopy;
+    v48 = dotWidthCopy;
+    v49 = valueDotWidthCopy;
+    valueCopy = value;
     v31 = [v20 imageWithActions:v36];
   }
 
@@ -238,12 +238,12 @@ void __133__CAMSmartStyleStatusIndicator_gridImageWithSize_cornerRadius_strokeWi
   }
 }
 
-+ (CGPoint)centerPositionForNormalizedValue:(CGPoint)a3 inGridOfSize:(CGSize)a4 strokeWidth:(double)a5 strokeToDotSpacing:(double)a6 gridDotWidth:(double)a7
++ (CGPoint)centerPositionForNormalizedValue:(CGPoint)value inGridOfSize:(CGSize)size strokeWidth:(double)width strokeToDotSpacing:(double)spacing gridDotWidth:(double)dotWidth
 {
-  y = a3.y;
-  x = a3.x;
+  y = value.y;
+  x = value.x;
   CEKRectWithSize();
-  v20 = CGRectInset(v19, a5 + a6 + a7 * 0.5, a5 + a6 + a7 * 0.5);
+  v20 = CGRectInset(v19, width + spacing + dotWidth * 0.5, width + spacing + dotWidth * 0.5);
   width = v20.size.width;
   height = v20.size.height;
   UIRectGetCenter();
@@ -254,18 +254,18 @@ void __133__CAMSmartStyleStatusIndicator_gridImageWithSize_cornerRadius_strokeWi
   return result;
 }
 
-+ (void)_drawCircleInContext:(id)a3 atCenter:(CGPoint)a4 diameter:(double)a5
++ (void)_drawCircleInContext:(id)context atCenter:(CGPoint)center diameter:(double)diameter
 {
-  v6 = a5 * 0.5;
-  v7 = a4.x - v6;
-  v8 = a4.y - v6;
-  v9 = [a3 CGContext];
+  v6 = diameter * 0.5;
+  v7 = center.x - v6;
+  v8 = center.y - v6;
+  cGContext = [context CGContext];
   v10 = v7;
   v11 = v8;
-  v12 = a5;
-  v13 = a5;
+  diameterCopy = diameter;
+  diameterCopy2 = diameter;
 
-  CGContextFillEllipseInRect(v9, *&v10);
+  CGContextFillEllipseInRect(cGContext, *&v10);
 }
 
 - (CGPoint)_normalizedStyleValue

@@ -1,16 +1,16 @@
 @interface STUIStatusBarDisplayItemPlacement
-+ (STUIStatusBarDisplayItemPlacement)placementWithIdentifier:(id)a3 priority:(int64_t)a4;
-+ (id)additionalEntryPlacementWithIdentifier:(id)a3 priority:(int64_t)a4;
-+ (id)separatorPlacementWithLineHeight:(double)a3 lineWidth:(double)a4 priority:(int64_t)a5;
-+ (id)spacerPlacementWithSize:(CGSize)a3 priority:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)excludingAllPlacementsInRegions:(id)a3 exceptPlacements:(id)a4;
-- (id)excludingPlacements:(id)a3;
-- (id)requiringAllPlacements:(id)a3;
-- (id)requiringAnyPlacements:(id)a3;
++ (STUIStatusBarDisplayItemPlacement)placementWithIdentifier:(id)identifier priority:(int64_t)priority;
++ (id)additionalEntryPlacementWithIdentifier:(id)identifier priority:(int64_t)priority;
++ (id)separatorPlacementWithLineHeight:(double)height lineWidth:(double)width priority:(int64_t)priority;
++ (id)spacerPlacementWithSize:(CGSize)size priority:(int64_t)priority;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)excludingAllPlacementsInRegions:(id)regions exceptPlacements:(id)placements;
+- (id)excludingPlacements:(id)placements;
+- (id)requiringAllPlacements:(id)placements;
+- (id)requiringAnyPlacements:(id)placements;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
@@ -19,21 +19,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendPointer:self->_identifier];
-  v5 = [v3 appendInteger:{-[STUIStatusBarDisplayItemPlacement priority](self, "priority")}];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendPointer:self->_identifier];
+  v5 = [builder appendInteger:{-[STUIStatusBarDisplayItemPlacement priority](self, "priority")}];
+  v6 = [builder hash];
 
   return v6;
 }
 
-+ (id)spacerPlacementWithSize:(CGSize)a3 priority:(int64_t)a4
++ (id)spacerPlacementWithSize:(CGSize)size priority:(int64_t)priority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14[1] = *MEMORY[0x277D85DE8];
   v7 = +[STUIStatusBarSpacerItem randomDisplayIdentifier];
-  v8 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:a4];
+  v8 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:priority];
   v13 = @"size";
   v9 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
   v14[0] = v9;
@@ -43,28 +43,28 @@
   return v11;
 }
 
-+ (STUIStatusBarDisplayItemPlacement)placementWithIdentifier:(id)a3 priority:(int64_t)a4
++ (STUIStatusBarDisplayItemPlacement)placementWithIdentifier:(id)identifier priority:(int64_t)priority
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
+  identifierCopy = identifier;
+  v7 = objc_alloc_init(self);
   v8 = v7[3];
-  v7[3] = v6;
+  v7[3] = identifierCopy;
 
-  v7[2] = a4;
+  v7[2] = priority;
   *(v7 + 8) = 1;
 
   return v7;
 }
 
-- (id)excludingPlacements:(id)a3
+- (id)excludingPlacements:(id)placements
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placementsCopy = placements;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v5 = [placementsCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -73,12 +73,12 @@
     {
       if (*v21 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(placementsCopy);
       }
 
       if (!--v6)
       {
-        v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v6 = [placementsCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (!v6)
         {
           break;
@@ -89,16 +89,16 @@
 
   if (!self->_excludedPlacements)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     excludedPlacements = self->_excludedPlacements;
-    self->_excludedPlacements = v8;
+    self->_excludedPlacements = weakObjectsHashTable;
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4;
+  v10 = placementsCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -127,28 +127,28 @@
   return self;
 }
 
-- (id)excludingAllPlacementsInRegions:(id)a3 exceptPlacements:(id)a4
+- (id)excludingAllPlacementsInRegions:(id)regions exceptPlacements:(id)placements
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  regionsCopy = regions;
+  placementsCopy = placements;
   excludedRegionIdentifiers = self->_excludedRegionIdentifiers;
   if (excludedRegionIdentifiers)
   {
-    v9 = [(NSSet *)excludedRegionIdentifiers setByAddingObjectsFromArray:v6];
+    v9 = [(NSSet *)excludedRegionIdentifiers setByAddingObjectsFromArray:regionsCopy];
     v10 = self->_excludedRegionIdentifiers;
     self->_excludedRegionIdentifiers = v9;
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    v11 = [MEMORY[0x277CBEB98] setWithArray:regionsCopy];
     v12 = self->_excludedRegionIdentifiers;
     self->_excludedRegionIdentifiers = v11;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     includedPlacements = self->_includedPlacements;
-    self->_includedPlacements = v13;
+    self->_includedPlacements = weakObjectsHashTable;
 
     [(NSHashTable *)self->_includedPlacements addObject:self];
   }
@@ -157,7 +157,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = v7;
+  v15 = placementsCopy;
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v16)
   {
@@ -186,15 +186,15 @@
   return self;
 }
 
-- (id)requiringAllPlacements:(id)a3
+- (id)requiringAllPlacements:(id)placements
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placementsCopy = placements;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v5 = [placementsCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -203,12 +203,12 @@
     {
       if (*v21 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(placementsCopy);
       }
 
       if (!--v6)
       {
-        v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v6 = [placementsCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (!v6)
         {
           break;
@@ -219,16 +219,16 @@
 
   if (!self->_allRequiredPlacements)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     allRequiredPlacements = self->_allRequiredPlacements;
-    self->_allRequiredPlacements = v8;
+    self->_allRequiredPlacements = weakObjectsHashTable;
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4;
+  v10 = placementsCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -257,15 +257,15 @@
   return self;
 }
 
-- (id)requiringAnyPlacements:(id)a3
+- (id)requiringAnyPlacements:(id)placements
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placementsCopy = placements;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v5 = [placementsCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -274,12 +274,12 @@
     {
       if (*v21 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(placementsCopy);
       }
 
       if (!--v6)
       {
-        v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v6 = [placementsCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (!v6)
         {
           break;
@@ -290,16 +290,16 @@
 
   if (!self->_anyRequiredPlacements)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     anyRequiredPlacements = self->_anyRequiredPlacements;
-    self->_anyRequiredPlacements = v8;
+    self->_anyRequiredPlacements = weakObjectsHashTable;
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4;
+  v10 = placementsCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -328,11 +328,11 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   identifier = self->_identifier;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -341,60 +341,60 @@
   v8 = v6;
   v20 = v8;
   v9 = [v5 appendPointer:identifier counterpart:v19];
-  v10 = [(STUIStatusBarDisplayItemPlacement *)self priority];
+  priority = [(STUIStatusBarDisplayItemPlacement *)self priority];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __45__STUIStatusBarDisplayItemPlacement_isEqual___block_invoke_2;
   v17 = &unk_279D38A98;
   v18 = v8;
   v11 = v8;
-  v12 = [v5 appendInteger:v10 counterpart:&v14];
-  LOBYTE(v10) = [v5 isEqual];
+  v12 = [v5 appendInteger:priority counterpart:&v14];
+  LOBYTE(priority) = [v5 isEqual];
 
-  return v10;
+  return priority;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarDisplayItemPlacement *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarDisplayItemPlacement *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDisplayItemPlacement *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDisplayItemPlacement *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDisplayItemPlacement *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDisplayItemPlacement *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(STUIStatusBarDisplayItemPlacement *)self succinctDescriptionBuilder];
-  [v7 setUseDebugDescription:v4];
-  [v7 setActiveMultilinePrefix:v6];
+  debugCopy = debug;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STUIStatusBarDisplayItemPlacement *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-  v8 = [v7 activeMultilinePrefix];
+  activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__STUIStatusBarDisplayItemPlacement__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
   v12[3] = &unk_279D38150;
-  v9 = v7;
+  v9 = succinctDescriptionBuilder;
   v13 = v9;
-  v14 = self;
-  [v9 appendBodySectionWithName:0 multilinePrefix:v8 block:v12];
+  selfCopy = self;
+  [v9 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v12];
 
   v10 = v9;
   return v9;
@@ -421,24 +421,24 @@ void __85__STUIStatusBarDisplayItemPlacement__descriptionBuilderWithMultilinePre
   v14 = [v13 appendInteger:objc_msgSend(v15 withName:{"count"), @"anyRequiredPlacements"}];
 }
 
-+ (id)additionalEntryPlacementWithIdentifier:(id)a3 priority:(int64_t)a4
++ (id)additionalEntryPlacementWithIdentifier:(id)identifier priority:(int64_t)priority
 {
-  v5 = [(STUIStatusBarItem *)STUIStatusBarAdditionalEntryItem displayItemIdentifierFromString:a3];
-  v6 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v5 priority:a4];
+  v5 = [(STUIStatusBarItem *)STUIStatusBarAdditionalEntryItem displayItemIdentifierFromString:identifier];
+  v6 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v5 priority:priority];
 
   return v6;
 }
 
-+ (id)separatorPlacementWithLineHeight:(double)a3 lineWidth:(double)a4 priority:(int64_t)a5
++ (id)separatorPlacementWithLineHeight:(double)height lineWidth:(double)width priority:(int64_t)priority
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v8 = +[STUIStatusBarSeparatorItem randomDisplayIdentifier];
-  v9 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v8 priority:a5];
+  v9 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v8 priority:priority];
   v15[0] = @"lineHeight";
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:height];
   v15[1] = @"lineWidth";
   v16[0] = v10;
-  v11 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithDouble:width];
   v16[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v13 = [v9 withItemInfo:v12];

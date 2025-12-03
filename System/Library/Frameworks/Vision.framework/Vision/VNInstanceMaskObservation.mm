@@ -1,34 +1,34 @@
 @interface VNInstanceMaskObservation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CVPixelBufferRef)generateMaskForInstances:(NSIndexSet *)instances error:(NSError *)error;
-- (CVPixelBufferRef)generateMaskedImageOfInstances:(void *)a3 imageBuffer:(int)a4 inPlace:(int)a5 croppedToInstancesExtent:(double *)a6 returnCropRect:(void *)a7 error:;
+- (CVPixelBufferRef)generateMaskedImageOfInstances:(void *)instances imageBuffer:(int)buffer inPlace:(int)place croppedToInstancesExtent:(double *)extent returnCropRect:(void *)rect error:;
 - (CVPixelBufferRef)generateScaledMaskForImageForInstances:(NSIndexSet *)instances fromRequestHandler:(VNImageRequestHandler *)requestHandler error:(NSError *)error;
 - (NSIndexSet)allInstances;
-- (VNInstanceMaskObservation)initWithCoder:(id)a3;
-- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)a3 instanceLowResMaskArray:(id)a4 instanceFeatureKeyIndexMap:(id)a5 instanceCategoryKeyIndexMap:(id)a6 instanceMask:(__CVBuffer *)a7 numComponents:(unint64_t)a8 regionOfInterest:(CGRect)a9;
-- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)a3 instanceLowResMaskArray:(id)a4 instanceMask:(__CVBuffer *)a5 numComponents:(unint64_t)a6 regionOfInterest:(CGRect)a7;
-- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)a3 lowResMask:(__CVBuffer *)a4 instanceMask:(__CVBuffer *)a5 numComponents:(unint64_t)a6 regionOfInterest:(CGRect)a7;
-- (__CVBuffer)generateMaskedImageOfInstances:(id)a3 fromRequestHandler:(id)a4 inPlace:(BOOL)a5 croppedToInstancesExtent:(BOOL)a6 returnCropRect:(CGRect *)a7 error:(id *)a8;
-- (__CVBuffer)generateScaledMaskForImageForInstances:(id)a3 imageBuffer:(id)a4 croppedToInstancesExtent:(BOOL)a5 error:(id *)a6;
-- (id)_maskProductionResourcesAndReturnError:(void *)a1;
+- (VNInstanceMaskObservation)initWithCoder:(id)coder;
+- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)specifier instanceLowResMaskArray:(id)array instanceFeatureKeyIndexMap:(id)map instanceCategoryKeyIndexMap:(id)indexMap instanceMask:(__CVBuffer *)mask numComponents:(unint64_t)components regionOfInterest:(CGRect)interest;
+- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)specifier instanceLowResMaskArray:(id)array instanceMask:(__CVBuffer *)mask numComponents:(unint64_t)components regionOfInterest:(CGRect)interest;
+- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)specifier lowResMask:(__CVBuffer *)mask instanceMask:(__CVBuffer *)instanceMask numComponents:(unint64_t)components regionOfInterest:(CGRect)interest;
+- (__CVBuffer)generateMaskedImageOfInstances:(id)instances fromRequestHandler:(id)handler inPlace:(BOOL)place croppedToInstancesExtent:(BOOL)extent returnCropRect:(CGRect *)rect error:(id *)error;
+- (__CVBuffer)generateScaledMaskForImageForInstances:(id)instances imageBuffer:(id)buffer croppedToInstancesExtent:(BOOL)extent error:(id *)error;
+- (id)_maskProductionResourcesAndReturnError:(void *)error;
 - (id)description;
-- (id)instanceAtPoint:(CGPoint)a3 error:(id *)a4;
-- (id)instancesForCategory:(id)a3 error:(id *)a4;
-- (id)instancesForFeature:(id)a3 error:(id *)a4;
+- (id)instanceAtPoint:(CGPoint)point error:(id *)error;
+- (id)instancesForCategory:(id)category error:(id *)error;
+- (id)instancesForFeature:(id)feature error:(id *)error;
 - (id)vn_cloneObject;
-- (id)vn_deepCloneObjectWithError:(id *)a3;
-- (uint64_t)_cropInOutPixelBuffer:(void *)a3 normalizedBoundingBox:(double *)a4 maskProductionResources:(void *)a5 returnCropRect:(double)a6 error:(double)a7;
-- (uint64_t)_upsampleLowResMask:(uint64_t)a3 reference:(void *)a4 maskProductionResources:(uint64_t)a5 error:;
+- (id)vn_deepCloneObjectWithError:(id *)error;
+- (uint64_t)_cropInOutPixelBuffer:(void *)buffer normalizedBoundingBox:(double *)box maskProductionResources:(void *)resources returnCropRect:(double)rect error:(double)error;
+- (uint64_t)_upsampleLowResMask:(uint64_t)mask reference:(void *)reference maskProductionResources:(uint64_t)resources error:;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNInstanceMaskObservation
 
-- (id)instancesForCategory:(id)a3 error:(id *)a4
+- (id)instancesForCategory:(id)category error:(id *)error
 {
-  v5 = a3;
+  categoryCopy = category;
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
   if (self->_numComponents != 1)
   {
@@ -36,7 +36,7 @@
     do
     {
       v8 = [(NSArray *)self->_instanceCategoriesMap objectAtIndexedSubscript:v7];
-      v9 = [v8 containsObject:v5];
+      v9 = [v8 containsObject:categoryCopy];
 
       ++v7;
       if (v9)
@@ -51,9 +51,9 @@
   return v6;
 }
 
-- (id)instancesForFeature:(id)a3 error:(id *)a4
+- (id)instancesForFeature:(id)feature error:(id *)error
 {
-  v5 = a3;
+  featureCopy = feature;
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
   if (self->_numComponents != 1)
   {
@@ -61,7 +61,7 @@
     do
     {
       v8 = [(NSArray *)self->_instanceSegmentationMaskFeatureMap objectAtIndexedSubscript:v7];
-      v9 = [v8 isEqualToString:v5];
+      v9 = [v8 isEqualToString:featureCopy];
 
       ++v7;
       if (v9)
@@ -76,10 +76,10 @@
   return v6;
 }
 
-- (id)instanceAtPoint:(CGPoint)a3 error:(id *)a4
+- (id)instanceAtPoint:(CGPoint)point error:(id *)error
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28.origin.x = 0.0;
   v28.origin.y = 0.0;
   v28.size.width = 1.0;
@@ -88,19 +88,19 @@
   v27.y = y;
   if (!CGRectContainsPoint(v28, v27))
   {
-    if (a4)
+    if (error)
     {
       v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@" pointOfInterest value is out of bounds: %f, %f", *&x, *&y];
-      *a4 = [VNError errorWithCode:4 message:v24];
+      *error = [VNError errorWithCode:4 message:v24];
     }
 
     v23 = 0;
     goto LABEL_21;
   }
 
-  v8 = [(VNInstanceMaskObservation *)self instanceMask];
-  CVPixelBufferGetWidth(v8);
-  Height = CVPixelBufferGetHeight(v8);
+  instanceMask = [(VNInstanceMaskObservation *)self instanceMask];
+  CVPixelBufferGetWidth(instanceMask);
+  Height = CVPixelBufferGetHeight(instanceMask);
   VisionCoreImagePointForNormalizedPoint();
   if (self->_numComponents == 1)
   {
@@ -145,9 +145,9 @@ LABEL_16:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [VNError errorForInvalidOptionWithLocalizedDescription:@"Unsupported output format specified. Please use kCVPixelFormatType_OneComponent32Float or kCVPixelFormatType_OneComponent8"];
+      *error = [VNError errorForInvalidOptionWithLocalizedDescription:@"Unsupported output format specified. Please use kCVPixelFormatType_OneComponent32Float or kCVPixelFormatType_OneComponent8"];
     }
 
 LABEL_15:
@@ -174,23 +174,23 @@ LABEL_21:
   return v23;
 }
 
-- (__CVBuffer)generateMaskedImageOfInstances:(id)a3 fromRequestHandler:(id)a4 inPlace:(BOOL)a5 croppedToInstancesExtent:(BOOL)a6 returnCropRect:(CGRect *)a7 error:(id *)a8
+- (__CVBuffer)generateMaskedImageOfInstances:(id)instances fromRequestHandler:(id)handler inPlace:(BOOL)place croppedToInstancesExtent:(BOOL)extent returnCropRect:(CGRect *)rect error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = v15;
-  if (v15)
+  extentCopy = extent;
+  placeCopy = place;
+  instancesCopy = instances;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  if (handlerCopy)
   {
-    v17 = [v15 imageBuffer];
-    v18 = [(VNInstanceMaskObservation *)self generateMaskedImageOfInstances:v14 imageBuffer:v17 inPlace:v11 croppedToInstancesExtent:v10 returnCropRect:&a7->origin.x error:a8];
+    imageBuffer = [handlerCopy imageBuffer];
+    v18 = [(VNInstanceMaskObservation *)self generateMaskedImageOfInstances:instancesCopy imageBuffer:imageBuffer inPlace:placeCopy croppedToInstancesExtent:extentCopy returnCropRect:&rect->origin.x error:error];
   }
 
-  else if (a8)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"requestHandler"];
-    *a8 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -201,21 +201,21 @@ LABEL_21:
   return v18;
 }
 
-- (CVPixelBufferRef)generateMaskedImageOfInstances:(void *)a3 imageBuffer:(int)a4 inPlace:(int)a5 croppedToInstancesExtent:(double *)a6 returnCropRect:(void *)a7 error:
+- (CVPixelBufferRef)generateMaskedImageOfInstances:(void *)instances imageBuffer:(int)buffer inPlace:(int)place croppedToInstancesExtent:(double *)extent returnCropRect:(void *)rect error:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = v14;
-  if (!a1)
+  instancesCopy = instances;
+  v15 = instancesCopy;
+  if (!self)
   {
     goto LABEL_12;
   }
 
   if (v13)
   {
-    if (v14)
+    if (instancesCopy)
     {
-      v16 = [(VNInstanceMaskObservation *)a1 _maskProductionResourcesAndReturnError:a7];
+      v16 = [(VNInstanceMaskObservation *)self _maskProductionResourcesAndReturnError:rect];
       v17 = v16;
       if (!v16)
       {
@@ -226,18 +226,18 @@ LABEL_36:
       }
 
       v44 = v16;
-      v42 = *(a1 + 136);
-      v43 = *(a1 + 120);
-      v18 = [v15 width];
-      v19 = [v15 height];
-      v41 = a5;
-      if (a4)
+      v42 = *(self + 136);
+      v43 = *(self + 120);
+      width = [v15 width];
+      height = [v15 height];
+      placeCopy = place;
+      if (buffer)
       {
         v80.origin.x = 0.0;
         v80.origin.y = 0.0;
         v80.size.width = 1.0;
         v80.size.height = 1.0;
-        v20 = !CGRectEqualToRect(*(a1 + 120), v80);
+        v20 = !CGRectEqualToRect(*(self + 120), v80);
       }
 
       else
@@ -245,8 +245,8 @@ LABEL_36:
         v20 = 0;
       }
 
-      v23.i64[0] = v18;
-      v23.i64[1] = v19;
+      v23.i64[0] = width;
+      v23.i64[1] = height;
       v24 = vcvtq_f64_u64(v23);
       v75 = 0;
       v76 = &v75;
@@ -272,13 +272,13 @@ LABEL_36:
       aBlock[1] = 3221225472;
       aBlock[2] = __126__VNInstanceMaskObservation_generateMaskedImageOfInstances_imageBuffer_inPlace_croppedToInstancesExtent_returnCropRect_error___block_invoke;
       aBlock[3] = &unk_1E77B2908;
-      v57 = a4;
+      bufferCopy = buffer;
       v50 = &v75;
       v55 = vmulq_f64(v43, v24);
       v56 = vmulq_f64(v42, v24);
       v51 = &v71;
       v46 = v15;
-      v47 = a1;
+      selfCopy = self;
       v58 = v20;
       v48 = v13;
       v52 = &v67;
@@ -288,14 +288,14 @@ LABEL_36:
       v53 = &v63;
       v54 = &v59;
       v26 = _Block_copy(aBlock);
-      if ((VNExecuteBlock(v26, a7) & 1) == 0)
+      if ((VNExecuteBlock(v26, rect) & 1) == 0)
       {
         goto LABEL_29;
       }
 
-      if (v41)
+      if (placeCopy)
       {
-        v79.origin.x = calculateCropSizeOfPixelBuffer(v72[3], a7);
+        v79.origin.x = calculateCropSizeOfPixelBuffer(v72[3], rect);
         x = v79.origin.x;
         y = v79.origin.y;
         width = v79.size.width;
@@ -338,18 +338,18 @@ LABEL_36:
 
       if (*(v60 + 24) == 1)
       {
-        v37 = [v25 completionSemaphore];
-        dispatch_semaphore_wait(v37, 0xFFFFFFFFFFFFFFFFLL);
+        completionSemaphore = [v25 completionSemaphore];
+        dispatch_semaphore_wait(completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
       }
 
-      if (!v41 || (a4 & 1) != 0 || [(VNInstanceMaskObservation *)a1 _cropInOutPixelBuffer:v25 normalizedBoundingBox:a6 maskProductionResources:a7 returnCropRect:v34 error:v33, v35, v36])
+      if (!placeCopy || (buffer & 1) != 0 || [(VNInstanceMaskObservation *)self _cropInOutPixelBuffer:v25 normalizedBoundingBox:extent maskProductionResources:rect returnCropRect:v34 error:v33, v35, v36])
       {
         v38 = 1;
 LABEL_30:
         if (*(v60 + 24) == 1)
         {
-          v39 = [v25 completionSemaphore];
-          dispatch_semaphore_wait(v39, 0);
+          completionSemaphore2 = [v25 completionSemaphore];
+          dispatch_semaphore_wait(completionSemaphore2, 0);
         }
 
         CVPixelBufferRelease(v68[3]);
@@ -381,7 +381,7 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (a7)
+    if (rect)
     {
       v21 = [VNError errorForInvalidArgument:0 named:@"imageBuffer"];
       goto LABEL_11;
@@ -392,7 +392,7 @@ LABEL_12:
     goto LABEL_37;
   }
 
-  if (!a7)
+  if (!rect)
   {
     goto LABEL_12;
   }
@@ -400,19 +400,19 @@ LABEL_12:
   v21 = [VNError errorForInvalidArgument:0 named:@"instances"];
 LABEL_11:
   v22 = 0;
-  *a7 = v21;
+  *rect = v21;
 LABEL_37:
 
   return v22;
 }
 
-- (id)_maskProductionResourcesAndReturnError:(void *)a1
+- (id)_maskProductionResourcesAndReturnError:(void *)error
 {
-  if (a1)
+  if (error)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    v4 = v3[19];
+    errorCopy = error;
+    objc_sync_enter(errorCopy);
+    v4 = errorCopy[19];
     if (v4)
     {
       goto LABEL_21;
@@ -423,15 +423,15 @@ LABEL_37:
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 metalDevice];
+      metalDevice = [v6 metalDevice];
     }
 
     else
     {
-      v8 = 0;
+      metalDevice = 0;
     }
 
-    v9 = [VNMetalContext metalContextForDevice:v8 error:a2];
+    v9 = [VNMetalContext metalContextForDevice:metalDevice error:a2];
     v10 = v5[2];
     v5[2] = v9;
 
@@ -496,10 +496,10 @@ LABEL_18:
     v23 = 0;
 LABEL_20:
 
-    v25 = v3[19];
-    v3[19] = v23;
+    v25 = errorCopy[19];
+    errorCopy[19] = v23;
 
-    v4 = v3[19];
+    v4 = errorCopy[19];
     if (!v4)
     {
       v26 = 0;
@@ -509,7 +509,7 @@ LABEL_20:
 LABEL_21:
     v26 = v4;
 LABEL_22:
-    objc_sync_exit(v3);
+    objc_sync_exit(errorCopy);
 
     goto LABEL_23;
   }
@@ -675,38 +675,38 @@ LABEL_23:
   return result;
 }
 
-- (uint64_t)_cropInOutPixelBuffer:(void *)a3 normalizedBoundingBox:(double *)a4 maskProductionResources:(void *)a5 returnCropRect:(double)a6 error:(double)a7
+- (uint64_t)_cropInOutPixelBuffer:(void *)buffer normalizedBoundingBox:(double *)box maskProductionResources:(void *)resources returnCropRect:(double)rect error:(double)error
 {
   v56[2] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  if (a1)
+  bufferCopy = buffer;
+  if (self)
   {
     v44 = a2;
     v17 = *a2;
     Width = CVPixelBufferGetWidth(*a2);
     Height = CVPixelBufferGetHeight(v17);
-    v57.origin.x = a6 * Width;
+    v57.origin.x = rect * Width;
     v57.size.width = a8 * Width;
-    v57.origin.y = (1.0 - a7 - a9) * Height;
+    v57.origin.y = (1.0 - error - a9) * Height;
     v57.size.height = a9 * Height;
     v58 = CGRectIntegral(v57);
     x = v58.origin.x;
     y = v58.origin.y;
     v22 = v58.size.width;
     v23 = v58.size.height;
-    if (a4)
+    if (box)
     {
       v24 = CVPixelBufferGetHeight(v17);
-      *a4 = x;
-      a4[1] = v24 - y - v23;
-      a4[2] = v22;
-      a4[3] = v23;
+      *box = x;
+      box[1] = v24 - y - v23;
+      box[2] = v22;
+      box[3] = v23;
     }
 
     v25 = objc_autoreleasePoolPush();
-    v26 = [v16 metalContext];
+    metalContext = [bufferCopy metalContext];
     v54 = 0;
-    v27 = [VNMetalContext bindPixelBufferToMTL2DTexture:v26 pixelFormat:v17 plane:80 error:&v54];
+    v27 = [VNMetalContext bindPixelBufferToMTL2DTexture:metalContext pixelFormat:v17 plane:80 error:&v54];
     v28 = v54;
     if (v27)
     {
@@ -717,23 +717,23 @@ LABEL_23:
       if (v29)
       {
         v52 = v30;
-        v31 = [VNMetalContext bindPixelBufferToMTL2DTexture:v26 pixelFormat:v29 plane:80 error:&v52];
+        v31 = [VNMetalContext bindPixelBufferToMTL2DTexture:metalContext pixelFormat:v29 plane:80 error:&v52];
         v28 = v52;
 
         if (v31)
         {
           v51 = v28;
-          v43 = [(VNMetalContext *)v26 commandQueueReturnError:?];
+          v43 = [(VNMetalContext *)metalContext commandQueueReturnError:?];
           v32 = v51;
 
           v33 = v43 != 0;
           if (v43)
           {
             v40 = v32;
-            v42 = [v43 commandBuffer];
-            v41 = [v16 cropCopyingComputeState];
-            v39 = [v31 width];
-            v34 = [v31 height];
+            commandBuffer = [v43 commandBuffer];
+            cropCopyingComputeState = [bufferCopy cropCopyingComputeState];
+            width = [v31 width];
+            height = [v31 height];
             v56[0] = v27;
             v56[1] = v31;
             v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
@@ -743,17 +743,17 @@ LABEL_23:
             v48[3] = &__block_descriptor_36_e36_v16__0___MTLComputeCommandEncoder__8l;
             v50 = y;
             v49 = x;
-            [VNMetalContext encodeCommandsForBuffer:v26 state:v42 label:v41 width:v39 height:v34 textures:v35 buffers:v48 block:?];
+            [VNMetalContext encodeCommandsForBuffer:metalContext state:commandBuffer label:cropCopyingComputeState width:width height:height textures:v35 buffers:v48 block:?];
 
             v32 = v40;
             v46[0] = MEMORY[0x1E69E9820];
             v46[1] = 3221225472;
             v46[2] = __118__VNInstanceMaskObservation__cropInOutPixelBuffer_normalizedBoundingBox_maskProductionResources_returnCropRect_error___block_invoke_2;
             v46[3] = &unk_1E77B5F28;
-            v47 = v16;
-            [v42 addCompletedHandler:v46];
-            [v42 commit];
-            [v42 waitUntilCompleted];
+            v47 = bufferCopy;
+            [commandBuffer addCompletedHandler:v46];
+            [commandBuffer commit];
+            [commandBuffer waitUntilCompleted];
           }
 
           else
@@ -789,10 +789,10 @@ LABEL_23:
     objc_autoreleasePoolPop(v25);
     CVPixelBufferRelease(v17);
     *v44 = v29;
-    if (a5 && v28)
+    if (resources && v28)
     {
       v36 = v28;
-      *a5 = v28;
+      *resources = v28;
     }
 
     if (v33)
@@ -817,10 +817,10 @@ void __118__VNInstanceMaskObservation__cropInOutPixelBuffer_normalizedBoundingBo
   dispatch_semaphore_signal(v1);
 }
 
-- (uint64_t)_upsampleLowResMask:(uint64_t)a3 reference:(void *)a4 maskProductionResources:(uint64_t)a5 error:
+- (uint64_t)_upsampleLowResMask:(uint64_t)mask reference:(void *)reference maskProductionResources:(uint64_t)resources error:
 {
-  v9 = a4;
-  if (a1)
+  referenceCopy = reference;
+  if (self)
   {
     v23 = 0;
     v24 = &v23;
@@ -829,19 +829,19 @@ void __118__VNInstanceMaskObservation__cropInOutPixelBuffer_normalizedBoundingBo
     v21[0] = 0;
     v21[1] = v21;
     v21[2] = 0x2020000000;
-    v22 = [*(a1 + 96) isSingleMask];
+    isSingleMask = [*(self + 96) isSingleMask];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __89__VNInstanceMaskObservation__upsampleLowResMask_reference_maskProductionResources_error___block_invoke;
     v14[3] = &unk_1E77B28E0;
-    v19 = a3;
+    maskCopy = mask;
     v20 = a2;
     v17 = &v23;
     v18 = v21;
-    v15 = v9;
-    v16 = a1;
+    v15 = referenceCopy;
+    selfCopy = self;
     v10 = _Block_copy(v14);
-    v11 = VNExecuteBlock(v10, a5);
+    v11 = VNExecuteBlock(v10, resources);
     v12 = v24[3];
     if ((v11 & 1) == 0)
     {
@@ -1013,14 +1013,14 @@ LABEL_20:
   return 0;
 }
 
-- (__CVBuffer)generateScaledMaskForImageForInstances:(id)a3 imageBuffer:(id)a4 croppedToInstancesExtent:(BOOL)a5 error:(id *)a6
+- (__CVBuffer)generateScaledMaskForImageForInstances:(id)instances imageBuffer:(id)buffer croppedToInstancesExtent:(BOOL)extent error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  extentCopy = extent;
+  instancesCopy = instances;
+  bufferCopy = buffer;
+  if (instancesCopy)
   {
-    v12 = [(VNInstanceMaskObservation *)self _maskProductionResourcesAndReturnError:a6];
+    v12 = [(VNInstanceMaskObservation *)self _maskProductionResourcesAndReturnError:error];
     if (v12)
     {
       v33 = 0;
@@ -1028,21 +1028,21 @@ LABEL_20:
       y = self->_regionOfInterest.origin.y;
       width = self->_regionOfInterest.size.width;
       height = self->_regionOfInterest.size.height;
-      v17 = [v11 width];
-      v18 = [v11 height];
-      v19 = [v11 croppedBufferWithWidth:(width * v17) height:(height * v18) format:1111970369 cropRect:0 options:a6 error:{x * v17, y * v18}];
+      width = [bufferCopy width];
+      height = [bufferCopy height];
+      v19 = [bufferCopy croppedBufferWithWidth:(width * width) height:(height * height) format:1111970369 cropRect:0 options:error error:{x * width, y * height}];
       if (v19)
       {
-        v20 = [(VNInstanceMaskObservation *)self generateMaskForInstances:v10 error:a6];
+        v20 = [(VNInstanceMaskObservation *)self generateMaskForInstances:instancesCopy error:error];
         if (v20)
         {
-          v33 = [(VNInstanceMaskObservation *)self _upsampleLowResMask:v20 reference:v19 maskProductionResources:v12 error:a6];
-          if (!v7)
+          v33 = [(VNInstanceMaskObservation *)self _upsampleLowResMask:v20 reference:v19 maskProductionResources:v12 error:error];
+          if (!extentCopy)
           {
             goto LABEL_12;
           }
 
-          v34.origin.x = calculateCropSizeOfPixelBuffer(v20, a6);
+          v34.origin.x = calculateCropSizeOfPixelBuffer(v20, error);
           v21 = v34.origin.x;
           v22 = v34.origin.y;
           v23 = v34.size.width;
@@ -1070,7 +1070,7 @@ LABEL_20:
             v30 = v24 / v26;
           }
 
-          if (![(VNInstanceMaskObservation *)self _cropInOutPixelBuffer:v12 normalizedBoundingBox:0 maskProductionResources:a6 returnCropRect:v28 error:v27, v29, v30])
+          if (![(VNInstanceMaskObservation *)self _cropInOutPixelBuffer:v12 normalizedBoundingBox:0 maskProductionResources:error returnCropRect:v28 error:v27, v29, v30])
           {
 LABEL_18:
             v31 = 0;
@@ -1109,10 +1109,10 @@ LABEL_12:
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"instances"];
-    *a6 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -1132,8 +1132,8 @@ LABEL_12:
   {
     if (v9)
     {
-      v11 = [(VNImageRequestHandler *)v9 imageBuffer];
-      self = [(VNInstanceMaskObservation *)self generateScaledMaskForImageForInstances:v8 imageBuffer:v11 croppedToInstancesExtent:0 error:error];
+      imageBuffer = [(VNImageRequestHandler *)v9 imageBuffer];
+      self = [(VNInstanceMaskObservation *)self generateScaledMaskForImageForInstances:v8 imageBuffer:imageBuffer croppedToInstancesExtent:0 error:error];
     }
 
     else if (error)
@@ -1156,12 +1156,12 @@ LABEL_12:
   v70 = instances;
   if (v70)
   {
-    v6 = [(_VNLowResAlphaMask *)self->_lowResAlphaMask isSingleMask];
+    isSingleMask = [(_VNLowResAlphaMask *)self->_lowResAlphaMask isSingleMask];
     v7 = v70;
-    if (v6)
+    if (isSingleMask)
     {
       pixelBuffer = 0;
-      v8 = self;
+      selfCopy = self;
       v9 = [(_VNLowResAlphaMask *)self->_lowResAlphaMask _alphaMaskAtIndex:0];
       Width = CVPixelBufferGetWidth(v9);
       Height = CVPixelBufferGetHeight(v9);
@@ -1200,7 +1200,7 @@ LABEL_12:
         }
 
         v31 = v7;
-        BaseAddress = CVPixelBufferGetBaseAddress(v8->_instanceMask);
+        BaseAddress = CVPixelBufferGetBaseAddress(selfCopy->_instanceMask);
         BytesPerRow = CVPixelBufferGetBytesPerRow(v9);
         v34 = CVPixelBufferGetHeight(v9);
         v35 = CVPixelBufferGetWidth(v9);
@@ -1260,7 +1260,7 @@ LABEL_12:
         }
 
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-        CVPixelBufferUnlockBaseAddress(v8->_instanceMask, 1uLL);
+        CVPixelBufferUnlockBaseAddress(selfCopy->_instanceMask, 1uLL);
         CVPixelBufferUnlockBaseAddress(v9, 1uLL);
         v17 = pixelBuffer;
         v7 = v31;
@@ -1289,7 +1289,7 @@ LABEL_62:
     else
     {
       __p[0] = 0;
-      v69 = self;
+      selfCopy2 = self;
       v18 = [(_VNLowResAlphaMask *)self->_lowResAlphaMask _alphaMaskAtIndex:0];
       v19 = CVPixelBufferGetWidth(v18);
       v20 = CVPixelBufferGetHeight(v18);
@@ -1324,7 +1324,7 @@ LABEL_62:
             v55 = v54 + 1;
             if (v53 != [(NSIndexSet *)v52 containsIndex:v54 + 1])
             {
-              v56 = [(_VNLowResAlphaMask *)v69->_lowResAlphaMask _alphaMaskAtIndex:v54];
+              v56 = [(_VNLowResAlphaMask *)selfCopy2->_lowResAlphaMask _alphaMaskAtIndex:v54];
               CVPixelBufferLockBaseAddress(v56, 1uLL);
               v57 = CVPixelBufferGetBaseAddress(v56);
               if (v47)
@@ -1450,12 +1450,12 @@ LABEL_63:
   return v3;
 }
 
-- (id)vn_deepCloneObjectWithError:(id *)a3
+- (id)vn_deepCloneObjectWithError:(id *)error
 {
   v22.receiver = self;
   v22.super_class = VNInstanceMaskObservation;
-  v5 = [(VNObservation *)&v22 vn_cloneObject];
-  if (v5)
+  vn_cloneObject = [(VNObservation *)&v22 vn_cloneObject];
+  if (vn_cloneObject)
   {
     instanceMask = self->_instanceMask;
     objc_opt_self();
@@ -1468,9 +1468,9 @@ LABEL_63:
     v12 = VNCVPixelBufferCreateUsingIOSurface(Width, Height, PixelFormatType, v10, &buffer);
     if (v12)
     {
-      if (a3)
+      if (error)
       {
-        *a3 = [VNError errorForCVReturnCode:v12 localizedDescription:@"failed to create pixel buffer"];
+        *error = [VNError errorForCVReturnCode:v12 localizedDescription:@"failed to create pixel buffer"];
       }
 
 LABEL_6:
@@ -1498,18 +1498,18 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    *(v5 + 104) = v17;
+    *(vn_cloneObject + 104) = v17;
     v18 = [(_VNLowResAlphaMask *)self->_lowResAlphaMask copy];
-    v19 = *(v5 + 96);
-    *(v5 + 96) = v18;
+    v19 = *(vn_cloneObject + 96);
+    *(vn_cloneObject + 96) = v18;
 
     size = self->_regionOfInterest.size;
-    *(v5 + 120) = self->_regionOfInterest.origin;
-    *(v5 + 136) = size;
-    *(v5 + 112) = self->_numComponents;
+    *(vn_cloneObject + 120) = self->_regionOfInterest.origin;
+    *(vn_cloneObject + 136) = size;
+    *(vn_cloneObject + 112) = self->_numComponents;
   }
 
-  v13 = v5;
+  v13 = vn_cloneObject;
 LABEL_12:
 
   return v13;
@@ -1519,21 +1519,21 @@ LABEL_12:
 {
   v8.receiver = self;
   v8.super_class = VNInstanceMaskObservation;
-  v3 = [(VNObservation *)&v8 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v8 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(_VNLowResAlphaMask *)self->_lowResAlphaMask copy];
-    v5 = *(v3 + 96);
-    *(v3 + 96) = v4;
+    v5 = *(vn_cloneObject + 96);
+    *(vn_cloneObject + 96) = v4;
 
-    *(v3 + 104) = CVPixelBufferRetain(self->_instanceMask);
+    *(vn_cloneObject + 104) = CVPixelBufferRetain(self->_instanceMask);
     size = self->_regionOfInterest.size;
-    *(v3 + 120) = self->_regionOfInterest.origin;
-    *(v3 + 136) = size;
-    *(v3 + 112) = self->_numComponents;
+    *(vn_cloneObject + 120) = self->_regionOfInterest.origin;
+    *(vn_cloneObject + 136) = size;
+    *(vn_cloneObject + 112) = self->_numComponents;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
 - (id)description
@@ -1550,10 +1550,10 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -1563,7 +1563,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(_VNLowResAlphaMask *)self->_lowResAlphaMask isEqual:v5->_lowResAlphaMask]&& [VNCVPixelBufferConversionHelpers isCVPixelBuffer:self->_instanceMask equalToCVPixelBuffer:v5->_instanceMask]&& self->_numComponents == v5->_numComponents && CGRectEqualToRect(self->_regionOfInterest, v5->_regionOfInterest);
     }
 
@@ -1610,30 +1610,30 @@ LABEL_12:
   return *&height ^ __ROR8__(v8, 51) ^ __ROR8__(v3, 51);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNInstanceMaskObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_lowResAlphaMask forKey:@"lowAlphaResMask"];
-  [v4 vn_encodePixelBuffer:self->_instanceMask forKey:@"instanceMask"];
-  [v4 encodeInt64:self->_numComponents forKey:@"numComponents"];
-  [v4 vn_encodeRect:@"regionOfInterest" forKey:{self->_regionOfInterest.origin.x, self->_regionOfInterest.origin.y, self->_regionOfInterest.size.width, self->_regionOfInterest.size.height}];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_lowResAlphaMask forKey:@"lowAlphaResMask"];
+  [coderCopy vn_encodePixelBuffer:self->_instanceMask forKey:@"instanceMask"];
+  [coderCopy encodeInt64:self->_numComponents forKey:@"numComponents"];
+  [coderCopy vn_encodeRect:@"regionOfInterest" forKey:{self->_regionOfInterest.origin.x, self->_regionOfInterest.origin.y, self->_regionOfInterest.size.width, self->_regionOfInterest.size.height}];
 }
 
-- (VNInstanceMaskObservation)initWithCoder:(id)a3
+- (VNInstanceMaskObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = VNInstanceMaskObservation;
-  v5 = [(VNObservation *)&v19 initWithCoder:v4];
+  v5 = [(VNObservation *)&v19 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    if ([v4 containsValueForKey:@"lowResMask"])
+    if ([coderCopy containsValueForKey:@"lowResMask"])
     {
-      v7 = [v4 vn_decodePixelBufferForKey:@"lowResMask"];
+      v7 = [coderCopy vn_decodePixelBufferForKey:@"lowResMask"];
       v8 = [[_VNLowResAlphaMask alloc] initWithSingleAlphaMask:v7];
       lowResAlphaMask = v5->_lowResAlphaMask;
       v5->_lowResAlphaMask = v8;
@@ -1643,12 +1643,12 @@ LABEL_12:
 
     else
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lowAlphaResMask"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lowAlphaResMask"];
       v11 = v5->_lowResAlphaMask;
       v5->_lowResAlphaMask = v10;
     }
 
-    v12 = [v4 vn_decodePixelBufferForKey:@"instanceMask"];
+    v12 = [coderCopy vn_decodePixelBufferForKey:@"instanceMask"];
     v5->_instanceMask = v12;
     if (!v12)
     {
@@ -1656,8 +1656,8 @@ LABEL_12:
       goto LABEL_9;
     }
 
-    v5->_numComponents = [v4 decodeInt64ForKey:@"numComponents"];
-    [v4 vn_decodeRectForKey:@"regionOfInterest"];
+    v5->_numComponents = [coderCopy decodeInt64ForKey:@"numComponents"];
+    [coderCopy vn_decodeRectForKey:@"regionOfInterest"];
     v5->_regionOfInterest.origin.x = v13;
     v5->_regionOfInterest.origin.y = v14;
     v5->_regionOfInterest.size.width = v15;
@@ -1679,39 +1679,39 @@ LABEL_9:
   [(VNInstanceMaskObservation *)&v3 dealloc];
 }
 
-- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)a3 instanceLowResMaskArray:(id)a4 instanceFeatureKeyIndexMap:(id)a5 instanceCategoryKeyIndexMap:(id)a6 instanceMask:(__CVBuffer *)a7 numComponents:(unint64_t)a8 regionOfInterest:(CGRect)a9
+- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)specifier instanceLowResMaskArray:(id)array instanceFeatureKeyIndexMap:(id)map instanceCategoryKeyIndexMap:(id)indexMap instanceMask:(__CVBuffer *)mask numComponents:(unint64_t)components regionOfInterest:(CGRect)interest
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  specifierCopy = specifier;
+  arrayCopy = array;
+  mapCopy = map;
+  indexMapCopy = indexMap;
   v28.receiver = self;
   v28.super_class = VNInstanceMaskObservation;
-  v23 = [(VNObservation *)&v28 initWithOriginatingRequestSpecifier:v19];
+  v23 = [(VNObservation *)&v28 initWithOriginatingRequestSpecifier:specifierCopy];
   if (v23)
   {
-    if ([v20 count] != a8 - 1)
+    if ([arrayCopy count] != components - 1)
     {
       v26 = 0;
       goto LABEL_6;
     }
 
-    v24 = [[_VNLowResAlphaMask alloc] initWithAlphaMaskArray:v20];
+    v24 = [[_VNLowResAlphaMask alloc] initWithAlphaMaskArray:arrayCopy];
     lowResAlphaMask = v23->_lowResAlphaMask;
     v23->_lowResAlphaMask = v24;
 
-    v23->_instanceMask = CVPixelBufferRetain(a7);
-    v23->_numComponents = a8;
+    v23->_instanceMask = CVPixelBufferRetain(mask);
+    v23->_numComponents = components;
     v23->_regionOfInterest.origin.x = x;
     v23->_regionOfInterest.origin.y = y;
     v23->_regionOfInterest.size.width = width;
     v23->_regionOfInterest.size.height = height;
-    objc_storeStrong(&v23->_instanceSegmentationMaskFeatureMap, a5);
-    objc_storeStrong(&v23->_instanceCategoriesMap, a6);
+    objc_storeStrong(&v23->_instanceSegmentationMaskFeatureMap, map);
+    objc_storeStrong(&v23->_instanceCategoriesMap, indexMap);
   }
 
   v26 = v23;
@@ -1720,39 +1720,39 @@ LABEL_6:
   return v26;
 }
 
-- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)a3 instanceLowResMaskArray:(id)a4 instanceMask:(__CVBuffer *)a5 numComponents:(unint64_t)a6 regionOfInterest:(CGRect)a7
+- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)specifier instanceLowResMaskArray:(id)array instanceMask:(__CVBuffer *)mask numComponents:(unint64_t)components regionOfInterest:(CGRect)interest
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a3;
-  v16 = a4;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  specifierCopy = specifier;
+  arrayCopy = array;
   v17 = objc_alloc_init(MEMORY[0x1E695DEC8]);
   v18 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  v19 = [(VNInstanceMaskObservation *)self initWithOriginatingRequestSpecifier:v15 instanceLowResMaskArray:v16 instanceFeatureKeyIndexMap:v17 instanceCategoryKeyIndexMap:v18 instanceMask:a5 numComponents:a6 regionOfInterest:x, y, width, height];
+  height = [(VNInstanceMaskObservation *)self initWithOriginatingRequestSpecifier:specifierCopy instanceLowResMaskArray:arrayCopy instanceFeatureKeyIndexMap:v17 instanceCategoryKeyIndexMap:v18 instanceMask:mask numComponents:components regionOfInterest:x, y, width, height];
 
-  return v19;
+  return height;
 }
 
-- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)a3 lowResMask:(__CVBuffer *)a4 instanceMask:(__CVBuffer *)a5 numComponents:(unint64_t)a6 regionOfInterest:(CGRect)a7
+- (VNInstanceMaskObservation)initWithOriginatingRequestSpecifier:(id)specifier lowResMask:(__CVBuffer *)mask instanceMask:(__CVBuffer *)instanceMask numComponents:(unint64_t)components regionOfInterest:(CGRect)interest
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a3;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = VNInstanceMaskObservation;
-  v16 = [(VNObservation *)&v20 initWithOriginatingRequestSpecifier:v15];
+  v16 = [(VNObservation *)&v20 initWithOriginatingRequestSpecifier:specifierCopy];
   if (v16)
   {
-    v17 = [[_VNLowResAlphaMask alloc] initWithSingleAlphaMask:a4];
+    v17 = [[_VNLowResAlphaMask alloc] initWithSingleAlphaMask:mask];
     lowResAlphaMask = v16->_lowResAlphaMask;
     v16->_lowResAlphaMask = v17;
 
-    v16->_instanceMask = CVPixelBufferRetain(a5);
-    v16->_numComponents = a6;
+    v16->_instanceMask = CVPixelBufferRetain(instanceMask);
+    v16->_numComponents = components;
     v16->_regionOfInterest.origin.x = x;
     v16->_regionOfInterest.origin.y = y;
     v16->_regionOfInterest.size.width = width;

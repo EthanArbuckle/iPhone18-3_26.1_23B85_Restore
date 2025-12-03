@@ -1,36 +1,36 @@
 @interface CPUINowPlayingView
-- (CPUINowPlayingView)initWithFrame:(CGRect)a3;
+- (CPUINowPlayingView)initWithFrame:(CGRect)frame;
 - (CPUINowPlayingViewVideoDelegate)videoDelegate;
-- (id)_constraintsForNowPlayingLayout:(id)a3;
-- (id)_equalHeightVerticalSpacers:(unint64_t)a3 minimumPadding:(double)a4 maximumPadding:(double)a5;
+- (id)_constraintsForNowPlayingLayout:(id)layout;
+- (id)_equalHeightVerticalSpacers:(unint64_t)spacers minimumPadding:(double)padding maximumPadding:(double)maximumPadding;
 - (void)_handleShowVideo;
 - (void)_stopGameTimer;
 - (void)_updateGameTimer;
-- (void)recalculateLayout:(BOOL)a3 allowsAlbumArt:(BOOL)a4 viewArea:(CGRect)a5 safeArea:(CGRect)a6 rightHandDrive:(BOOL)a7 sports:(BOOL)a8;
-- (void)setBadgeAnnotationView:(id)a3;
-- (void)setSportsData:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)recalculateLayout:(BOOL)layout allowsAlbumArt:(BOOL)art viewArea:(CGRect)area safeArea:(CGRect)safeArea rightHandDrive:(BOOL)drive sports:(BOOL)sports;
+- (void)setBadgeAnnotationView:(id)view;
+- (void)setSportsData:(id)data;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CPUINowPlayingView
 
-- (CPUINowPlayingView)initWithFrame:(CGRect)a3
+- (CPUINowPlayingView)initWithFrame:(CGRect)frame
 {
   v84.receiver = self;
   v84.super_class = CPUINowPlayingView;
-  v3 = [(CPUINowPlayingView *)&v84 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPUINowPlayingView *)&v84 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(CPUINowPlayingView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CPUINowPlayingView *)v3 setBackgroundColor:clearColor];
 
     [(CPUINowPlayingView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(CPUINowPlayingView *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(CPUINowPlayingView *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v6 = [(CPUINowPlayingView *)v3 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer2 = [(CPUINowPlayingView *)v3 layer];
+    [layer2 setAllowsGroupBlending:0];
 
     v7 = objc_alloc_init(_TtC9CarPlayUI15CPUIArtworkView);
     artworkViewBrick = v3->_artworkViewBrick;
@@ -83,8 +83,8 @@
     v3->_leftScoreLabel = v22;
 
     [(UILabel *)v3->_leftScoreLabel setTextAlignment:1];
-    v24 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v3->_leftScoreLabel setTextColor:v24];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v3->_leftScoreLabel setTextColor:labelColor];
 
     [(UILabel *)v3->_leftScoreLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v3->_leftScoreLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -94,8 +94,8 @@
     v3->_rightScoreLabel = v25;
 
     [(UILabel *)v3->_rightScoreLabel setTextAlignment:1];
-    v27 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v3->_rightScoreLabel setTextColor:v27];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v3->_rightScoreLabel setTextColor:labelColor2];
 
     [(UILabel *)v3->_rightScoreLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v3->_rightScoreLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -108,8 +108,8 @@
     v31 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
     [(UILabel *)v3->_leftTeamNameLabel setFont:v31];
 
-    v32 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v3->_leftTeamNameLabel setTextColor:v32];
+    labelColor3 = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v3->_leftTeamNameLabel setTextColor:labelColor3];
 
     [(UILabel *)v3->_leftTeamNameLabel setTextAlignment:1];
     [(UILabel *)v3->_leftTeamNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -121,8 +121,8 @@
     v35 = [MEMORY[0x277D74300] preferredFontForTextStyle:v30];
     [(UILabel *)v3->_rightTeamNameLabel setFont:v35];
 
-    v36 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v3->_rightTeamNameLabel setTextColor:v36];
+    labelColor4 = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v3->_rightTeamNameLabel setTextColor:labelColor4];
 
     [(UILabel *)v3->_rightTeamNameLabel setTextAlignment:1];
     [(UILabel *)v3->_rightTeamNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -134,8 +134,8 @@
     v39 = [MEMORY[0x277D74300] preferredFontForTextStyle:v30];
     [(UILabel *)v3->_leftTeamStandingLabel setFont:v39];
 
-    v40 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v3->_leftTeamStandingLabel setTextColor:v40];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v3->_leftTeamStandingLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v3->_leftTeamStandingLabel setTextAlignment:1];
     [(UILabel *)v3->_leftTeamStandingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -147,8 +147,8 @@
     v43 = [MEMORY[0x277D74300] preferredFontForTextStyle:v30];
     [(UILabel *)v3->_rightTeamStandingLabel setFont:v43];
 
-    v44 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v3->_rightTeamStandingLabel setTextColor:v44];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v3->_rightTeamStandingLabel setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v3->_rightTeamStandingLabel setTextAlignment:1];
     [(UILabel *)v3->_rightTeamStandingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -162,8 +162,8 @@
 
     [(UIImageView *)v3->_leftFavoriteStar setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_leftFavoriteStar setContentMode:1];
-    v50 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UIImageView *)v3->_leftFavoriteStar setTintColor:v50];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UIImageView *)v3->_leftFavoriteStar setTintColor:systemOrangeColor];
 
     [(UIImageView *)v3->_leftFavoriteStar setHidden:1];
     [(CPUINowPlayingView *)v3 addSubview:v3->_leftFavoriteStar];
@@ -176,8 +176,8 @@
 
     [(UIImageView *)v3->_rightFavoriteStar setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_rightFavoriteStar setContentMode:1];
-    v56 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UIImageView *)v3->_rightFavoriteStar setTintColor:v56];
+    systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UIImageView *)v3->_rightFavoriteStar setTintColor:systemOrangeColor2];
 
     [(UIImageView *)v3->_rightFavoriteStar setHidden:1];
     [(CPUINowPlayingView *)v3 addSubview:v3->_rightFavoriteStar];
@@ -187,8 +187,8 @@
 
     [(UIImageView *)v3->_possessionIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_possessionIndicator setContentMode:1];
-    v59 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UIImageView *)v3->_possessionIndicator setTintColor:v59];
+    secondaryLabelColor3 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UIImageView *)v3->_possessionIndicator setTintColor:secondaryLabelColor3];
 
     [(CPUINowPlayingView *)v3 addSubview:v3->_possessionIndicator];
     v60 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v10, v11, v12, v13}];
@@ -197,8 +197,8 @@
 
     [(UIImageView *)v3->_gameStatusImage setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_gameStatusImage setContentMode:1];
-    v62 = [MEMORY[0x277D75348] labelColor];
-    [(UIImageView *)v3->_gameStatusImage setTintColor:v62];
+    labelColor5 = [MEMORY[0x277D75348] labelColor];
+    [(UIImageView *)v3->_gameStatusImage setTintColor:labelColor5];
 
     [(CPUINowPlayingView *)v3 addSubview:v3->_gameStatusImage];
     v63 = [[CPUISongDetailsView alloc] initWithFrame:v10, v11, v12, v13];
@@ -229,15 +229,15 @@
     controlsFocusContainerGuide = v3->_controlsFocusContainerGuide;
     v3->_controlsFocusContainerGuide = v71;
 
-    v73 = [(CPUINowPlayingView *)v3 controlsFocusContainerGuide];
-    [(CPUINowPlayingView *)v3 addLayoutGuide:v73];
+    controlsFocusContainerGuide = [(CPUINowPlayingView *)v3 controlsFocusContainerGuide];
+    [(CPUINowPlayingView *)v3 addLayoutGuide:controlsFocusContainerGuide];
 
     v74 = objc_alloc_init(MEMORY[0x277D754F8]);
     bottomRegionFocusContainerGuide = v3->_bottomRegionFocusContainerGuide;
     v3->_bottomRegionFocusContainerGuide = v74;
 
-    v76 = [(CPUINowPlayingView *)v3 bottomRegionFocusContainerGuide];
-    [(CPUINowPlayingView *)v3 addLayoutGuide:v76];
+    bottomRegionFocusContainerGuide = [(CPUINowPlayingView *)v3 bottomRegionFocusContainerGuide];
+    [(CPUINowPlayingView *)v3 addLayoutGuide:bottomRegionFocusContainerGuide];
 
     objc_destroyWeak(&v82);
     objc_destroyWeak(&location);
@@ -259,113 +259,113 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
   self->_gameTimer = 0;
 }
 
-- (void)setSportsData:(id)a3
+- (void)setSportsData:(id)data
 {
   v117 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(CPUINowPlayingSportsData *)self->_sportsData isEqual:v5])
+  dataCopy = data;
+  if (![(CPUINowPlayingSportsData *)self->_sportsData isEqual:dataCopy])
   {
-    objc_storeStrong(&self->_sportsData, a3);
-    v6 = [(CPUINowPlayingView *)self sportsData];
+    objc_storeStrong(&self->_sportsData, data);
+    sportsData = [(CPUINowPlayingView *)self sportsData];
 
-    if (v6)
+    if (sportsData)
     {
-      v7 = [(CPUINowPlayingView *)self artworkViewBrick];
-      [v7 setHidden:1];
+      artworkViewBrick = [(CPUINowPlayingView *)self artworkViewBrick];
+      [artworkViewBrick setHidden:1];
 
-      v8 = [(CPUINowPlayingView *)self songDetailsView];
-      [v8 setHidden:1];
+      songDetailsView = [(CPUINowPlayingView *)self songDetailsView];
+      [songDetailsView setHidden:1];
 
-      v9 = [(CPUINowPlayingView *)self titleStackView];
-      [v9 setHidden:0];
+      titleStackView = [(CPUINowPlayingView *)self titleStackView];
+      [titleStackView setHidden:0];
 
-      v10 = [(CPUINowPlayingView *)self leftTeamArtwork];
-      [v10 setHidden:0];
+      leftTeamArtwork = [(CPUINowPlayingView *)self leftTeamArtwork];
+      [leftTeamArtwork setHidden:0];
 
-      v11 = [(CPUINowPlayingView *)self rightTeamArtwork];
-      [v11 setHidden:0];
+      rightTeamArtwork = [(CPUINowPlayingView *)self rightTeamArtwork];
+      [rightTeamArtwork setHidden:0];
 
-      v12 = [(CPUINowPlayingView *)self leftScoreLabel];
-      [v12 setHidden:0];
+      leftScoreLabel = [(CPUINowPlayingView *)self leftScoreLabel];
+      [leftScoreLabel setHidden:0];
 
-      v13 = [(CPUINowPlayingView *)self rightScoreLabel];
-      [v13 setHidden:0];
+      rightScoreLabel = [(CPUINowPlayingView *)self rightScoreLabel];
+      [rightScoreLabel setHidden:0];
 
-      v14 = [(CPUINowPlayingView *)self leftTeamNameLabel];
-      [v14 setHidden:0];
+      leftTeamNameLabel = [(CPUINowPlayingView *)self leftTeamNameLabel];
+      [leftTeamNameLabel setHidden:0];
 
-      v15 = [(CPUINowPlayingView *)self rightTeamNameLabel];
-      [v15 setHidden:0];
+      rightTeamNameLabel = [(CPUINowPlayingView *)self rightTeamNameLabel];
+      [rightTeamNameLabel setHidden:0];
 
-      v16 = [(CPUINowPlayingView *)self leftTeamStandingLabel];
-      [v16 setHidden:0];
+      leftTeamStandingLabel = [(CPUINowPlayingView *)self leftTeamStandingLabel];
+      [leftTeamStandingLabel setHidden:0];
 
-      v17 = [(CPUINowPlayingView *)self rightTeamStandingLabel];
-      [v17 setHidden:0];
+      rightTeamStandingLabel = [(CPUINowPlayingView *)self rightTeamStandingLabel];
+      [rightTeamStandingLabel setHidden:0];
 
-      v18 = [v5 leftTeamLogo];
-      v19 = [v18 imageWithAlignmentRectInsets:{-6.0, -6.0, -6.0, -6.0}];
+      leftTeamLogo = [dataCopy leftTeamLogo];
+      v19 = [leftTeamLogo imageWithAlignmentRectInsets:{-6.0, -6.0, -6.0, -6.0}];
       [(UIImageView *)self->_leftTeamArtwork setImage:v19];
 
-      v20 = [v5 rightTeamLogo];
-      v21 = [v20 imageWithAlignmentRectInsets:{-6.0, -6.0, -6.0, -6.0}];
+      rightTeamLogo = [dataCopy rightTeamLogo];
+      v21 = [rightTeamLogo imageWithAlignmentRectInsets:{-6.0, -6.0, -6.0, -6.0}];
       [(UIImageView *)self->_rightTeamArtwork setImage:v21];
 
-      -[UIImageView setHidden:](self->_leftFavoriteStar, "setHidden:", [v5 leftTeamFavorite] ^ 1);
+      -[UIImageView setHidden:](self->_leftFavoriteStar, "setHidden:", [dataCopy leftTeamFavorite] ^ 1);
       v22 = MEMORY[0x277D74300];
       [(CPUINowPlayingLayoutProtocol *)self->_nowPlayingLayout sportsScoreTextSize];
       v23 = [v22 systemFontOfSize:? weight:? width:?];
       [(UILabel *)self->_leftScoreLabel setFont:v23];
 
-      v24 = [v5 leftTeamScore];
-      [(UILabel *)self->_leftScoreLabel setText:v24];
+      leftTeamScore = [dataCopy leftTeamScore];
+      [(UILabel *)self->_leftScoreLabel setText:leftTeamScore];
 
-      -[UIImageView setHidden:](self->_rightFavoriteStar, "setHidden:", [v5 rightTeamFavorite] ^ 1);
-      v25 = [(UILabel *)self->_leftScoreLabel font];
-      [(UILabel *)self->_rightScoreLabel setFont:v25];
+      -[UIImageView setHidden:](self->_rightFavoriteStar, "setHidden:", [dataCopy rightTeamFavorite] ^ 1);
+      font = [(UILabel *)self->_leftScoreLabel font];
+      [(UILabel *)self->_rightScoreLabel setFont:font];
 
-      v26 = [v5 rightTeamScore];
-      [(UILabel *)self->_rightScoreLabel setText:v26];
+      rightTeamScore = [dataCopy rightTeamScore];
+      [(UILabel *)self->_rightScoreLabel setText:rightTeamScore];
 
-      v27 = [v5 leftTeamName];
-      [(UILabel *)self->_leftTeamNameLabel setText:v27];
+      leftTeamName = [dataCopy leftTeamName];
+      [(UILabel *)self->_leftTeamNameLabel setText:leftTeamName];
 
-      v28 = [v5 rightTeamName];
-      [(UILabel *)self->_rightTeamNameLabel setText:v28];
+      rightTeamName = [dataCopy rightTeamName];
+      [(UILabel *)self->_rightTeamNameLabel setText:rightTeamName];
 
-      v29 = [v5 leftTeamStanding];
-      [(UILabel *)self->_leftTeamStandingLabel setText:v29];
+      leftTeamStanding = [dataCopy leftTeamStanding];
+      [(UILabel *)self->_leftTeamStandingLabel setText:leftTeamStanding];
 
-      v30 = [v5 rightTeamStanding];
-      [(UILabel *)self->_rightTeamStandingLabel setText:v30];
+      rightTeamStanding = [dataCopy rightTeamStanding];
+      [(UILabel *)self->_rightTeamStandingLabel setText:rightTeamStanding];
 
-      v31 = [v5 eventStatusImage];
-      [(UIImageView *)self->_gameStatusImage setImage:v31];
+      eventStatusImage = [dataCopy eventStatusImage];
+      [(UIImageView *)self->_gameStatusImage setImage:eventStatusImage];
 
-      v32 = [v5 leftPossessionIndicator];
-      v33 = v32;
-      if (!v32)
+      leftPossessionIndicator = [dataCopy leftPossessionIndicator];
+      rightPossessionIndicator = leftPossessionIndicator;
+      if (!leftPossessionIndicator)
       {
-        v33 = [v5 rightPossessionIndicator];
+        rightPossessionIndicator = [dataCopy rightPossessionIndicator];
       }
 
-      v34 = [v33 imageWithRenderingMode:2];
+      v34 = [rightPossessionIndicator imageWithRenderingMode:2];
       [(UIImageView *)self->_possessionIndicator setImage:v34];
 
-      if (!v32)
+      if (!leftPossessionIndicator)
       {
       }
 
-      v35 = [(UIImageView *)self->_possessionIndicator image];
-      [(UIImageView *)self->_possessionIndicator setHidden:v35 == 0];
+      image = [(UIImageView *)self->_possessionIndicator image];
+      [(UIImageView *)self->_possessionIndicator setHidden:image == 0];
 
       v113 = 0u;
       v114 = 0u;
       v111 = 0u;
       v112 = 0u;
-      v36 = [(CPUINowPlayingView *)self titleStackView];
-      v37 = [v36 arrangedSubviews];
-      v38 = [v37 copy];
+      titleStackView2 = [(CPUINowPlayingView *)self titleStackView];
+      arrangedSubviews = [titleStackView2 arrangedSubviews];
+      v38 = [arrangedSubviews copy];
 
       v39 = [v38 countByEnumeratingWithState:&v111 objects:v116 count:16];
       if (v39)
@@ -382,8 +382,8 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
             }
 
             v43 = *(*(&v111 + 1) + 8 * i);
-            v44 = [(CPUINowPlayingView *)self titleStackView];
-            [v44 removeArrangedSubview:v43];
+            titleStackView3 = [(CPUINowPlayingView *)self titleStackView];
+            [titleStackView3 removeArrangedSubview:v43];
 
             [v43 removeFromSuperview];
           }
@@ -394,12 +394,12 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
         while (v40);
       }
 
-      v45 = [(UIImageView *)self->_gameStatusImage image];
+      image2 = [(UIImageView *)self->_gameStatusImage image];
 
-      if (v45)
+      if (image2)
       {
-        v46 = [(CPUINowPlayingView *)self titleStackView];
-        [v46 addArrangedSubview:self->_gameStatusImage];
+        titleStackView4 = [(CPUINowPlayingView *)self titleStackView];
+        [titleStackView4 addArrangedSubview:self->_gameStatusImage];
       }
 
       v47 = objc_alloc(MEMORY[0x277D756B8]);
@@ -411,26 +411,26 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
       v53 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] weight:*MEMORY[0x277D743F8]];
       [v52 setFont:v53];
 
-      v54 = [MEMORY[0x277D75348] labelColor];
-      [v52 setTextColor:v54];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [v52 setTextColor:labelColor];
 
-      v55 = [v5 eventStatusText];
-      v56 = [v55 firstObject];
-      v57 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v58 = [v56 stringByTrimmingCharactersInSet:v57];
+      eventStatusText = [dataCopy eventStatusText];
+      firstObject = [eventStatusText firstObject];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v58 = [firstObject stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
       [v52 setText:v58];
 
       LODWORD(v59) = 1132068864;
       [v52 setContentCompressionResistancePriority:0 forAxis:v59];
       LODWORD(v60) = 1148846080;
       [v52 setContentHuggingPriority:0 forAxis:v60];
-      [v5 timer];
+      [dataCopy timer];
       if (v61 <= 0.0)
       {
         [(CPUINowPlayingView *)self _stopGameTimer];
         [v52 setTextAlignment:1];
-        v71 = [(CPUINowPlayingView *)self titleStackView];
-        [v71 addArrangedSubview:v52];
+        titleStackView5 = [(CPUINowPlayingView *)self titleStackView];
+        [titleStackView5 addArrangedSubview:v52];
       }
 
       else
@@ -442,11 +442,11 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
           gameTimerLabel = self->_gameTimerLabel;
           self->_gameTimerLabel = v62;
 
-          v64 = [v52 font];
-          [(UILabel *)self->_gameTimerLabel setFont:v64];
+          font2 = [v52 font];
+          [(UILabel *)self->_gameTimerLabel setFont:font2];
 
-          v65 = [v52 textColor];
-          [(UILabel *)self->_gameTimerLabel setTextColor:v65];
+          textColor = [v52 textColor];
+          [(UILabel *)self->_gameTimerLabel setTextColor:textColor];
 
           [(UILabel *)self->_gameTimerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
           [(UILabel *)self->_gameTimerLabel setTextAlignment:4];
@@ -461,19 +461,19 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
         v115[0] = v52;
         v115[1] = v69;
         v70 = [MEMORY[0x277CBEA60] arrayWithObjects:v115 count:2];
-        v71 = [v68 initWithArrangedSubviews:v70];
+        titleStackView5 = [v68 initWithArrangedSubviews:v70];
 
-        [v71 setAxis:0];
-        [v71 setDistribution:2];
-        [v71 setAlignment:0];
-        [v71 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v71 setSpacing:4.0];
-        v72 = [(CPUINowPlayingView *)self titleStackView];
-        [v72 addArrangedSubview:v71];
+        [titleStackView5 setAxis:0];
+        [titleStackView5 setDistribution:2];
+        [titleStackView5 setAlignment:0];
+        [titleStackView5 setTranslatesAutoresizingMaskIntoConstraints:0];
+        [titleStackView5 setSpacing:4.0];
+        titleStackView6 = [(CPUINowPlayingView *)self titleStackView];
+        [titleStackView6 addArrangedSubview:titleStackView5];
 
-        [v5 timer];
+        [dataCopy timer];
         self->_gameTime = v73;
-        if ([v5 timerPaused])
+        if ([dataCopy timerPaused])
         {
           [(CPUINowPlayingView *)self _stopGameTimer];
         }
@@ -488,8 +488,8 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
         [(CPUINowPlayingView *)self _updateGameTimer];
       }
 
-      v92 = [v5 eventStatusText];
-      v93 = [v92 count];
+      eventStatusText2 = [dataCopy eventStatusText];
+      v93 = [eventStatusText2 count];
 
       if (v93 >= 2)
       {
@@ -497,21 +497,21 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
         v95 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
         [v94 setFont:v95];
 
-        v96 = [MEMORY[0x277D75348] labelColor];
-        [v94 setTextColor:v96];
+        labelColor2 = [MEMORY[0x277D75348] labelColor];
+        [v94 setTextColor:labelColor2];
 
         [v94 setTextAlignment:1];
-        v97 = [v5 eventStatusText];
-        v98 = [v97 objectAtIndexedSubscript:1];
+        eventStatusText3 = [dataCopy eventStatusText];
+        v98 = [eventStatusText3 objectAtIndexedSubscript:1];
         [v94 setText:v98];
 
         [v94 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v99 = [(CPUINowPlayingView *)self titleStackView];
-        [v99 addArrangedSubview:v94];
+        titleStackView7 = [(CPUINowPlayingView *)self titleStackView];
+        [titleStackView7 addArrangedSubview:v94];
       }
 
-      v100 = [v5 eventStatusText];
-      v101 = [v100 count];
+      eventStatusText4 = [dataCopy eventStatusText];
+      v101 = [eventStatusText4 count];
 
       if (v101 >= 3)
       {
@@ -519,73 +519,73 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
         v103 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
         [v102 setFont:v103];
 
-        v104 = [MEMORY[0x277D75348] secondaryLabelColor];
-        [v102 setTextColor:v104];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        [v102 setTextColor:secondaryLabelColor];
 
         [v102 setTextAlignment:1];
-        v105 = [v5 eventStatusText];
-        v106 = [v105 objectAtIndexedSubscript:2];
+        eventStatusText5 = [dataCopy eventStatusText];
+        v106 = [eventStatusText5 objectAtIndexedSubscript:2];
         [v102 setText:v106];
 
-        v107 = [v102 layer];
-        [v107 setAllowsGroupBlending:0];
+        layer = [v102 layer];
+        [layer setAllowsGroupBlending:0];
 
         v108 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-        v109 = [v102 layer];
-        [v109 setCompositingFilter:v108];
+        layer2 = [v102 layer];
+        [layer2 setCompositingFilter:v108];
 
         [v102 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v110 = [(CPUINowPlayingView *)self titleStackView];
-        [v110 addArrangedSubview:v102];
+        titleStackView8 = [(CPUINowPlayingView *)self titleStackView];
+        [titleStackView8 addArrangedSubview:v102];
       }
     }
 
     else
     {
       [(CPUINowPlayingView *)self _stopGameTimer];
-      v74 = [(CPUINowPlayingView *)self nowPlayingLayout];
-      v75 = [v74 showsArtwork];
-      v76 = [(CPUINowPlayingView *)self artworkViewBrick];
-      [v76 setHidden:v75 ^ 1u];
+      nowPlayingLayout = [(CPUINowPlayingView *)self nowPlayingLayout];
+      showsArtwork = [nowPlayingLayout showsArtwork];
+      artworkViewBrick2 = [(CPUINowPlayingView *)self artworkViewBrick];
+      [artworkViewBrick2 setHidden:showsArtwork ^ 1u];
 
-      v77 = [(CPUINowPlayingView *)self songDetailsView];
-      [v77 setHidden:0];
+      songDetailsView2 = [(CPUINowPlayingView *)self songDetailsView];
+      [songDetailsView2 setHidden:0];
 
-      v78 = [(CPUINowPlayingView *)self titleStackView];
-      [v78 setHidden:1];
+      titleStackView9 = [(CPUINowPlayingView *)self titleStackView];
+      [titleStackView9 setHidden:1];
 
-      v79 = [(CPUINowPlayingView *)self leftFavoriteStar];
-      [v79 setHidden:1];
+      leftFavoriteStar = [(CPUINowPlayingView *)self leftFavoriteStar];
+      [leftFavoriteStar setHidden:1];
 
-      v80 = [(CPUINowPlayingView *)self rightFavoriteStar];
-      [v80 setHidden:1];
+      rightFavoriteStar = [(CPUINowPlayingView *)self rightFavoriteStar];
+      [rightFavoriteStar setHidden:1];
 
-      v81 = [(CPUINowPlayingView *)self leftTeamArtwork];
-      [v81 setHidden:1];
+      leftTeamArtwork2 = [(CPUINowPlayingView *)self leftTeamArtwork];
+      [leftTeamArtwork2 setHidden:1];
 
-      v82 = [(CPUINowPlayingView *)self rightTeamArtwork];
-      [v82 setHidden:1];
+      rightTeamArtwork2 = [(CPUINowPlayingView *)self rightTeamArtwork];
+      [rightTeamArtwork2 setHidden:1];
 
-      v83 = [(CPUINowPlayingView *)self leftScoreLabel];
-      [v83 setHidden:1];
+      leftScoreLabel2 = [(CPUINowPlayingView *)self leftScoreLabel];
+      [leftScoreLabel2 setHidden:1];
 
-      v84 = [(CPUINowPlayingView *)self rightScoreLabel];
-      [v84 setHidden:1];
+      rightScoreLabel2 = [(CPUINowPlayingView *)self rightScoreLabel];
+      [rightScoreLabel2 setHidden:1];
 
-      v85 = [(CPUINowPlayingView *)self leftTeamNameLabel];
-      [v85 setHidden:1];
+      leftTeamNameLabel2 = [(CPUINowPlayingView *)self leftTeamNameLabel];
+      [leftTeamNameLabel2 setHidden:1];
 
-      v86 = [(CPUINowPlayingView *)self rightTeamNameLabel];
-      [v86 setHidden:1];
+      rightTeamNameLabel2 = [(CPUINowPlayingView *)self rightTeamNameLabel];
+      [rightTeamNameLabel2 setHidden:1];
 
-      v87 = [(CPUINowPlayingView *)self leftTeamStandingLabel];
-      [v87 setHidden:1];
+      leftTeamStandingLabel2 = [(CPUINowPlayingView *)self leftTeamStandingLabel];
+      [leftTeamStandingLabel2 setHidden:1];
 
-      v88 = [(CPUINowPlayingView *)self rightTeamStandingLabel];
-      [v88 setHidden:1];
+      rightTeamStandingLabel2 = [(CPUINowPlayingView *)self rightTeamStandingLabel];
+      [rightTeamStandingLabel2 setHidden:1];
 
-      v89 = [(CPUINowPlayingView *)self possessionIndicator];
-      [v89 setHidden:1];
+      possessionIndicator = [(CPUINowPlayingView *)self possessionIndicator];
+      [possessionIndicator setHidden:1];
     }
   }
 }
@@ -597,11 +597,11 @@ void __36__CPUINowPlayingView_initWithFrame___block_invoke(uint64_t a1)
     [CPUINowPlayingView _updateGameTimer];
   }
 
-  v3 = [(CPUINowPlayingView *)self sportsData];
-  v4 = [v3 countsUp];
+  sportsData = [(CPUINowPlayingView *)self sportsData];
+  countsUp = [sportsData countsUp];
 
   v5 = -1.0;
-  if (v4)
+  if (countsUp)
   {
     v5 = 1.0;
   }
@@ -666,41 +666,41 @@ uint64_t __38__CPUINowPlayingView__updateGameTimer__block_invoke()
   return [v2 setZeroFormattingBehavior:0x10000];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (!a3)
+  if (!window)
   {
     [(CPUINowPlayingView *)self _stopGameTimer];
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (!a3)
+  if (!superview)
   {
     [(CPUINowPlayingView *)self _stopGameTimer];
   }
 }
 
-- (void)recalculateLayout:(BOOL)a3 allowsAlbumArt:(BOOL)a4 viewArea:(CGRect)a5 safeArea:(CGRect)a6 rightHandDrive:(BOOL)a7 sports:(BOOL)a8
+- (void)recalculateLayout:(BOOL)layout allowsAlbumArt:(BOOL)art viewArea:(CGRect)area safeArea:(CGRect)safeArea rightHandDrive:(BOOL)drive sports:(BOOL)sports
 {
-  v8 = a8;
-  v9 = a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v14 = a5.size.height;
-  v15 = a5.size.width;
-  v16 = a5.origin.y;
-  v17 = a5.origin.x;
-  v18 = a4;
-  v41 = [(CPUINowPlayingView *)self nowPlayingLayout];
-  v21 = [(CPUINowPlayingView *)self traitCollection];
-  [v21 displayScale];
-  v28 = CPUINowPlayingLayoutForSafeAreaFrameScaleArtworkSports(v18, x, y, width, height, v17, v16, v15, v14, v9, v8, v22, v23, v24, v25, v26, v27);
+  sportsCopy = sports;
+  driveCopy = drive;
+  height = safeArea.size.height;
+  width = safeArea.size.width;
+  y = safeArea.origin.y;
+  x = safeArea.origin.x;
+  v14 = area.size.height;
+  v15 = area.size.width;
+  v16 = area.origin.y;
+  v17 = area.origin.x;
+  artCopy = art;
+  nowPlayingLayout = [(CPUINowPlayingView *)self nowPlayingLayout];
+  traitCollection = [(CPUINowPlayingView *)self traitCollection];
+  [traitCollection displayScale];
+  v28 = CPUINowPlayingLayoutForSafeAreaFrameScaleArtworkSports(artCopy, x, y, width, height, v17, v16, v15, v14, driveCopy, sportsCopy, v22, v23, v24, v25, v26, v27);
 
-  if (a3 || ([v41 isEqual:v28] & 1) == 0)
+  if (layout || ([nowPlayingLayout isEqual:v28] & 1) == 0)
   {
     objc_storeStrong(&self->_nowPlayingLayout, v28);
     -[CPUIPlayModeControlView setShowsArtwork:](self->_playModeControlView, "setShowsArtwork:", [v28 showsArtwork]);
@@ -711,9 +711,9 @@ uint64_t __38__CPUINowPlayingView__updateGameTimer__block_invoke()
     [(CPUITransportControlView *)self->_transportControlView setButtonHeight:?];
     [v28 transportControlButtonSpacing];
     [(CPUITransportControlView *)self->_transportControlView setButtonSpacing:?];
-    v29 = [(CPUIArtworkView *)self->_artworkViewBrick videoPlaybackState];
+    videoPlaybackState = [(CPUIArtworkView *)self->_artworkViewBrick videoPlaybackState];
     v30 = 0;
-    if (!v29 && !v8)
+    if (!videoPlaybackState && !sportsCopy)
     {
       v30 = [v28 showsArtwork] ^ 1;
     }
@@ -724,53 +724,53 @@ uint64_t __38__CPUINowPlayingView__updateGameTimer__block_invoke()
     [v28 playModeControlButtonSpacing];
     [(CPUIPlayModeControlView *)self->_playModeControlView setButtonSpacing:?];
     v31 = MEMORY[0x277CCAAD0];
-    v32 = [(CPUINowPlayingView *)self activeConstraints];
-    [v31 deactivateConstraints:v32];
+    activeConstraints = [(CPUINowPlayingView *)self activeConstraints];
+    [v31 deactivateConstraints:activeConstraints];
 
     v33 = [(CPUINowPlayingView *)self _constraintsForNowPlayingLayout:v28];
     [(CPUINowPlayingView *)self setActiveConstraints:v33];
 
     v34 = MEMORY[0x277CCAAD0];
-    v35 = [(CPUINowPlayingView *)self activeConstraints];
-    [v34 activateConstraints:v35];
+    activeConstraints2 = [(CPUINowPlayingView *)self activeConstraints];
+    [v34 activateConstraints:activeConstraints2];
   }
 
-  if (([v41 artworkPosition] == 3 || objc_msgSend(v41, "artworkPosition") == 2) && objc_msgSend(v41, "playModeControlButtonsFullWidth"))
+  if (([nowPlayingLayout artworkPosition] == 3 || objc_msgSend(nowPlayingLayout, "artworkPosition") == 2) && objc_msgSend(nowPlayingLayout, "playModeControlButtonsFullWidth"))
   {
-    v36 = [(CPUINowPlayingView *)self songDetailsView];
-    v37 = [v36 artistLabel];
+    songDetailsView = [(CPUINowPlayingView *)self songDetailsView];
+    artistLabel = [songDetailsView artistLabel];
     v38 = *MEMORY[0x277D76828];
-    [v37 setMaximumContentSizeCategory:*MEMORY[0x277D76828]];
+    [artistLabel setMaximumContentSizeCategory:*MEMORY[0x277D76828]];
 
-    v39 = [(CPUINowPlayingView *)self songDetailsView];
-    v40 = [v39 albumArtistLabelButton];
-    [v40 setMaximumContentSizeCategory:v38];
+    songDetailsView2 = [(CPUINowPlayingView *)self songDetailsView];
+    albumArtistLabelButton = [songDetailsView2 albumArtistLabelButton];
+    [albumArtistLabelButton setMaximumContentSizeCategory:v38];
   }
 }
 
-- (id)_equalHeightVerticalSpacers:(unint64_t)a3 minimumPadding:(double)a4 maximumPadding:(double)a5
+- (id)_equalHeightVerticalSpacers:(unint64_t)spacers minimumPadding:(double)padding maximumPadding:(double)maximumPadding
 {
-  v9 = [MEMORY[0x277CBEB18] array];
-  if (a3)
+  array = [MEMORY[0x277CBEB18] array];
+  if (spacers)
   {
     v10 = -1;
     do
     {
       v11 = objc_opt_new();
       [(CPUINowPlayingView *)self addLayoutGuide:v11];
-      [v9 addObject:v11];
-      if (a4 > 0.0)
+      [array addObject:v11];
+      if (padding > 0.0)
       {
-        v12 = [v11 heightAnchor];
-        v13 = [v12 constraintGreaterThanOrEqualToConstant:a4];
+        heightAnchor = [v11 heightAnchor];
+        v13 = [heightAnchor constraintGreaterThanOrEqualToConstant:padding];
 
         [v13 setActive:1];
       }
 
-      if (a5 > 0.0)
+      if (maximumPadding > 0.0)
       {
-        v14 = [v11 heightAnchor];
-        v15 = [v14 constraintLessThanOrEqualToConstant:a5];
+        heightAnchor2 = [v11 heightAnchor];
+        v15 = [heightAnchor2 constraintLessThanOrEqualToConstant:maximumPadding];
 
         [v15 setActive:1];
       }
@@ -778,180 +778,180 @@ uint64_t __38__CPUINowPlayingView__updateGameTimer__block_invoke()
       v16 = v10 + 1;
       if (v10 != -1)
       {
-        v17 = [v11 heightAnchor];
-        v18 = [v9 objectAtIndexedSubscript:v10];
-        v19 = [v18 heightAnchor];
-        v20 = [v17 constraintEqualToAnchor:v19];
+        heightAnchor3 = [v11 heightAnchor];
+        v18 = [array objectAtIndexedSubscript:v10];
+        heightAnchor4 = [v18 heightAnchor];
+        v20 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
 
         [v20 setActive:1];
       }
 
       v10 = v16;
-      --a3;
+      --spacers;
     }
 
-    while (a3);
+    while (spacers);
   }
 
-  return v9;
+  return array;
 }
 
-- (id)_constraintsForNowPlayingLayout:(id)a3
+- (id)_constraintsForNowPlayingLayout:(id)layout
 {
   v710[10] = *MEMORY[0x277D85DE8];
   v685 = objc_opt_new();
-  v682 = [(CPUINowPlayingView *)self nowPlayingLayout];
-  [v682 layoutMargins];
+  nowPlayingLayout = [(CPUINowPlayingView *)self nowPlayingLayout];
+  [nowPlayingLayout layoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CPUINowPlayingView *)self safeAreaLayoutGuide];
-  v13 = [(CPUINowPlayingView *)self verticalSpacerLayoutGuides];
-  v14 = [v13 count];
+  safeAreaLayoutGuide = [(CPUINowPlayingView *)self safeAreaLayoutGuide];
+  verticalSpacerLayoutGuides = [(CPUINowPlayingView *)self verticalSpacerLayoutGuides];
+  v14 = [verticalSpacerLayoutGuides count];
 
   if (v14)
   {
-    v15 = [(CPUINowPlayingView *)self verticalSpacerLayoutGuides];
+    verticalSpacerLayoutGuides2 = [(CPUINowPlayingView *)self verticalSpacerLayoutGuides];
     v686[0] = MEMORY[0x277D85DD0];
     v686[1] = 3221225472;
     v686[2] = __54__CPUINowPlayingView__constraintsForNowPlayingLayout___block_invoke;
     v686[3] = &unk_278D9C810;
     v686[4] = self;
-    [v15 enumerateObjectsUsingBlock:v686];
+    [verticalSpacerLayoutGuides2 enumerateObjectsUsingBlock:v686];
   }
 
-  v680 = [MEMORY[0x277CBEB18] array];
-  v668 = [(UIFocusContainerGuide *)self->_controlsFocusContainerGuide topAnchor];
-  v655 = [(CPUIProgressView *)v12 topAnchor];
-  v642 = [v668 constraintEqualToAnchor:v655];
+  array = [MEMORY[0x277CBEB18] array];
+  topAnchor = [(UIFocusContainerGuide *)self->_controlsFocusContainerGuide topAnchor];
+  topAnchor2 = [(CPUIProgressView *)safeAreaLayoutGuide topAnchor];
+  v642 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v710[0] = v642;
-  v629 = [(UIFocusContainerGuide *)self->_controlsFocusContainerGuide bottomAnchor];
-  v614 = [(CPUIProgressView *)v12 bottomAnchor];
-  v599 = [v629 constraintEqualToAnchor:v614];
+  bottomAnchor = [(UIFocusContainerGuide *)self->_controlsFocusContainerGuide bottomAnchor];
+  bottomAnchor2 = [(CPUIProgressView *)safeAreaLayoutGuide bottomAnchor];
+  v599 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v710[1] = v599;
-  v584 = [(UIFocusContainerGuide *)self->_controlsFocusContainerGuide leadingAnchor];
-  v569 = [(CPUIProgressView *)v12 leadingAnchor];
-  v554 = [v584 constraintEqualToAnchor:v569];
+  leadingAnchor = [(UIFocusContainerGuide *)self->_controlsFocusContainerGuide leadingAnchor];
+  leadingAnchor2 = [(CPUIProgressView *)safeAreaLayoutGuide leadingAnchor];
+  v554 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v710[2] = v554;
-  v539 = [(UIFocusContainerGuide *)self->_controlsFocusContainerGuide trailingAnchor];
-  v525 = [(CPUIProgressView *)v12 trailingAnchor];
-  v511 = [v539 constraintEqualToAnchor:v525];
+  trailingAnchor = [(UIFocusContainerGuide *)self->_controlsFocusContainerGuide trailingAnchor];
+  trailingAnchor2 = [(CPUIProgressView *)safeAreaLayoutGuide trailingAnchor];
+  v511 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v710[3] = v511;
-  v497 = [(CPUIProgressView *)self->_progressView heightAnchor];
-  v483 = [v497 constraintEqualToConstant:14.0];
+  heightAnchor = [(CPUIProgressView *)self->_progressView heightAnchor];
+  v483 = [heightAnchor constraintEqualToConstant:14.0];
   v710[4] = v483;
-  v469 = [(CPUIPlayModeControlView *)self->_playModeControlView heightAnchor];
-  v455 = [v469 constraintEqualToConstant:28.0];
+  heightAnchor2 = [(CPUIPlayModeControlView *)self->_playModeControlView heightAnchor];
+  v455 = [heightAnchor2 constraintEqualToConstant:28.0];
   v710[5] = v455;
-  v441 = [(UIFocusContainerGuide *)self->_bottomRegionFocusContainerGuide leadingAnchor];
-  v429 = [(CPUIProgressView *)v12 leadingAnchor];
-  v16 = [v441 constraintEqualToAnchor:v429];
+  leadingAnchor3 = [(UIFocusContainerGuide *)self->_bottomRegionFocusContainerGuide leadingAnchor];
+  leadingAnchor4 = [(CPUIProgressView *)safeAreaLayoutGuide leadingAnchor];
+  v16 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v710[6] = v16;
-  v17 = [(UIFocusContainerGuide *)self->_bottomRegionFocusContainerGuide trailingAnchor];
-  v18 = [(CPUIProgressView *)v12 trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  trailingAnchor3 = [(UIFocusContainerGuide *)self->_bottomRegionFocusContainerGuide trailingAnchor];
+  trailingAnchor4 = [(CPUIProgressView *)safeAreaLayoutGuide trailingAnchor];
+  v19 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v710[7] = v19;
-  v20 = [(UIFocusContainerGuide *)self->_bottomRegionFocusContainerGuide bottomAnchor];
-  v683 = v12;
-  v21 = [(CPUIProgressView *)v12 bottomAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  bottomAnchor3 = [(UIFocusContainerGuide *)self->_bottomRegionFocusContainerGuide bottomAnchor];
+  v683 = safeAreaLayoutGuide;
+  bottomAnchor4 = [(CPUIProgressView *)safeAreaLayoutGuide bottomAnchor];
+  v22 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v710[8] = v22;
-  v23 = [(UIFocusContainerGuide *)self->_bottomRegionFocusContainerGuide heightAnchor];
-  v24 = [v23 constraintEqualToConstant:28.0];
+  heightAnchor3 = [(UIFocusContainerGuide *)self->_bottomRegionFocusContainerGuide heightAnchor];
+  v24 = [heightAnchor3 constraintEqualToConstant:28.0];
   v710[9] = v24;
   [MEMORY[0x277CBEA60] arrayWithObjects:v710 count:10];
   v25 = v684 = self;
   [v685 addObjectsFromArray:v25];
 
   v26 = v684;
-  v27 = v682;
-  if (([v682 isSportsLayout] & 1) == 0)
+  v27 = nowPlayingLayout;
+  if (([nowPlayingLayout isSportsLayout] & 1) == 0)
   {
-    +[CPUISongDetailsView maximumHeightForTrackInfoFontStyle:](CPUISongDetailsView, "maximumHeightForTrackInfoFontStyle:", [v682 trackInfoFontStyle]);
+    +[CPUISongDetailsView maximumHeightForTrackInfoFontStyle:](CPUISongDetailsView, "maximumHeightForTrackInfoFontStyle:", [nowPlayingLayout trackInfoFontStyle]);
     v29 = v28;
-    [v682 maximumTitleViewSize];
+    [nowPlayingLayout maximumTitleViewSize];
     if (v29 >= v30)
     {
       v29 = v30;
     }
 
-    v31 = [(CPUISongDetailsView *)v684->_songDetailsView heightAnchor];
-    v32 = [v31 constraintLessThanOrEqualToConstant:v29];
+    heightAnchor4 = [(CPUISongDetailsView *)v684->_songDetailsView heightAnchor];
+    v32 = [heightAnchor4 constraintLessThanOrEqualToConstant:v29];
     [v685 addObject:v32];
   }
 
-  if ([v682 isSportsLayout])
+  if ([nowPlayingLayout isSportsLayout])
   {
-    v33 = [v682 artworkPosition];
-    v34 = [(UIImageView *)v684->_leftTeamArtwork leftAnchor];
-    v35 = [(CPUIProgressView *)v683 leftAnchor];
-    v669 = v35;
-    v630 = v34;
-    if (v33 == 1)
+    artworkPosition = [nowPlayingLayout artworkPosition];
+    leftAnchor = [(UIImageView *)v684->_leftTeamArtwork leftAnchor];
+    leftAnchor2 = [(CPUIProgressView *)v683 leftAnchor];
+    v669 = leftAnchor2;
+    v630 = leftAnchor;
+    if (artworkPosition == 1)
     {
-      v615 = [v34 constraintEqualToAnchor:v35 constant:v7 + 14.0];
+      v615 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v7 + 14.0];
       v709[0] = v615;
-      v600 = [(UIImageView *)v684->_rightTeamArtwork rightAnchor];
-      v585 = [(CPUIProgressView *)v683 rightAnchor];
-      v570 = [v600 constraintEqualToAnchor:v585 constant:-(v11 + 14.0)];
+      rightAnchor = [(UIImageView *)v684->_rightTeamArtwork rightAnchor];
+      rightAnchor2 = [(CPUIProgressView *)v683 rightAnchor];
+      v570 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-(v11 + 14.0)];
       v709[1] = v570;
-      v555 = [(UIImageView *)v684->_rightTeamArtwork centerYAnchor];
-      v540 = [(UIImageView *)v684->_leftTeamArtwork centerYAnchor];
-      v526 = [v555 constraintEqualToAnchor:v540];
+      centerYAnchor = [(UIImageView *)v684->_rightTeamArtwork centerYAnchor];
+      centerYAnchor2 = [(UIImageView *)v684->_leftTeamArtwork centerYAnchor];
+      v526 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v709[2] = v526;
-      v512 = [(UILabel *)v684->_leftScoreLabel centerXAnchor];
-      v498 = [(UIImageView *)v684->_leftTeamArtwork centerXAnchor];
-      v484 = [v512 constraintEqualToAnchor:v498];
+      centerXAnchor = [(UILabel *)v684->_leftScoreLabel centerXAnchor];
+      centerXAnchor2 = [(UIImageView *)v684->_leftTeamArtwork centerXAnchor];
+      v484 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v709[3] = v484;
-      v470 = [(UILabel *)v684->_rightScoreLabel centerXAnchor];
-      v456 = [(UIImageView *)v684->_rightTeamArtwork centerXAnchor];
-      v442 = [v470 constraintEqualToAnchor:v456];
+      centerXAnchor3 = [(UILabel *)v684->_rightScoreLabel centerXAnchor];
+      centerXAnchor4 = [(UIImageView *)v684->_rightTeamArtwork centerXAnchor];
+      v442 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       v709[4] = v442;
-      v430 = [(UIImageView *)v684->_leftFavoriteStar centerYAnchor];
-      v418 = [(UIImageView *)v684->_leftTeamArtwork centerYAnchor];
-      v407 = [v430 constraintEqualToAnchor:v418];
+      centerYAnchor3 = [(UIImageView *)v684->_leftFavoriteStar centerYAnchor];
+      centerYAnchor4 = [(UIImageView *)v684->_leftTeamArtwork centerYAnchor];
+      v407 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v709[5] = v407;
-      v36 = [(UIImageView *)v684->_leftFavoriteStar rightAnchor];
-      v37 = [(UIImageView *)v684->_leftTeamArtwork leftAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      rightAnchor3 = [(UIImageView *)v684->_leftFavoriteStar rightAnchor];
+      leftAnchor3 = [(UIImageView *)v684->_leftTeamArtwork leftAnchor];
+      v38 = [rightAnchor3 constraintEqualToAnchor:leftAnchor3];
       v709[6] = v38;
-      v39 = [(UIImageView *)v684->_rightFavoriteStar centerYAnchor];
-      v40 = [(UIImageView *)v684->_rightTeamArtwork centerYAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      centerYAnchor5 = [(UIImageView *)v684->_rightFavoriteStar centerYAnchor];
+      centerYAnchor6 = [(UIImageView *)v684->_rightTeamArtwork centerYAnchor];
+      v41 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
       v709[7] = v41;
-      v42 = [(UIImageView *)v684->_rightFavoriteStar leftAnchor];
-      v43 = [(UIImageView *)v684->_rightTeamArtwork rightAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      leftAnchor4 = [(UIImageView *)v684->_rightFavoriteStar leftAnchor];
+      rightAnchor4 = [(UIImageView *)v684->_rightTeamArtwork rightAnchor];
+      v44 = [leftAnchor4 constraintEqualToAnchor:rightAnchor4];
       v709[8] = v44;
       v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v709 count:9];
       [v685 addObjectsFromArray:v45];
 
       p_isa = &v684->super.super.super.isa;
-      v47 = [(CPUINowPlayingView *)v684 sportsData];
-      v48 = [v47 leftPossessionIndicator];
+      sportsData = [(CPUINowPlayingView *)v684 sportsData];
+      leftPossessionIndicator = [sportsData leftPossessionIndicator];
 
-      v49 = [(UIImageView *)v684->_possessionIndicator centerYAnchor];
-      if (v48)
+      centerYAnchor7 = [(UIImageView *)v684->_possessionIndicator centerYAnchor];
+      if (leftPossessionIndicator)
       {
-        v50 = [(UILabel *)v684->_leftScoreLabel centerYAnchor];
-        v51 = [v49 constraintEqualToAnchor:v50];
+        centerYAnchor8 = [(UILabel *)v684->_leftScoreLabel centerYAnchor];
+        v51 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
         v708[0] = v51;
-        v52 = [(UIImageView *)v684->_possessionIndicator rightAnchor];
-        v53 = [(UILabel *)v684->_leftScoreLabel leftAnchor];
-        v54 = [v52 constraintEqualToAnchor:v53 constant:-2.0];
+        rightAnchor5 = [(UIImageView *)v684->_possessionIndicator rightAnchor];
+        leftAnchor5 = [(UILabel *)v684->_leftScoreLabel leftAnchor];
+        v54 = [rightAnchor5 constraintEqualToAnchor:leftAnchor5 constant:-2.0];
         v708[1] = v54;
         v55 = v708;
       }
 
       else
       {
-        v50 = [(UILabel *)v684->_rightScoreLabel centerYAnchor];
-        v51 = [v49 constraintEqualToAnchor:v50];
+        centerYAnchor8 = [(UILabel *)v684->_rightScoreLabel centerYAnchor];
+        v51 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
         v707[0] = v51;
-        v52 = [(UIImageView *)v684->_possessionIndicator leftAnchor];
-        v53 = [(UILabel *)v684->_rightScoreLabel rightAnchor];
-        v54 = [v52 constraintEqualToAnchor:v53 constant:2.0];
+        rightAnchor5 = [(UIImageView *)v684->_possessionIndicator leftAnchor];
+        leftAnchor5 = [(UILabel *)v684->_rightScoreLabel rightAnchor];
+        v54 = [rightAnchor5 constraintEqualToAnchor:leftAnchor5 constant:2.0];
         v707[1] = v54;
         v55 = v707;
       }
@@ -959,88 +959,88 @@ uint64_t __38__CPUINowPlayingView__updateGameTimer__block_invoke()
 
     else
     {
-      v617 = [v34 constraintEqualToAnchor:v35 constant:v7];
+      v617 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v7];
       v706[0] = v617;
-      v602 = [(UIImageView *)v684->_leftTeamArtwork topAnchor];
-      v587 = [(CPUIProgressView *)v683 topAnchor];
-      v572 = [v602 constraintEqualToAnchor:v587 constant:v5];
+      topAnchor3 = [(UIImageView *)v684->_leftTeamArtwork topAnchor];
+      topAnchor4 = [(CPUIProgressView *)v683 topAnchor];
+      v572 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v5];
       v706[1] = v572;
-      v557 = [(UIImageView *)v684->_rightTeamArtwork topAnchor];
-      v542 = [(UIImageView *)v684->_leftTeamArtwork topAnchor];
-      v528 = [v557 constraintEqualToAnchor:v542];
+      topAnchor5 = [(UIImageView *)v684->_rightTeamArtwork topAnchor];
+      topAnchor6 = [(UIImageView *)v684->_leftTeamArtwork topAnchor];
+      v528 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
       v706[2] = v528;
-      v514 = [(UIImageView *)v684->_rightTeamArtwork rightAnchor];
-      v500 = [(CPUIProgressView *)v683 rightAnchor];
-      v486 = [v514 constraintEqualToAnchor:v500 constant:-v11];
+      rightAnchor6 = [(UIImageView *)v684->_rightTeamArtwork rightAnchor];
+      rightAnchor7 = [(CPUIProgressView *)v683 rightAnchor];
+      v486 = [rightAnchor6 constraintEqualToAnchor:rightAnchor7 constant:-v11];
       v706[3] = v486;
-      v458 = [(UILabel *)v684->_leftScoreLabel leftAnchor];
-      v472 = [(CPUITransportControlView *)v684->_transportControlView leftButton];
-      v444 = [v472 leftAnchor];
-      v432 = [v458 constraintEqualToAnchor:v444];
+      leftAnchor6 = [(UILabel *)v684->_leftScoreLabel leftAnchor];
+      leftButton = [(CPUITransportControlView *)v684->_transportControlView leftButton];
+      leftAnchor7 = [leftButton leftAnchor];
+      v432 = [leftAnchor6 constraintEqualToAnchor:leftAnchor7];
       v706[4] = v432;
-      v409 = [(UILabel *)v684->_leftScoreLabel rightAnchor];
-      v420 = [(CPUITransportControlView *)v684->_transportControlView leftButton];
-      v399 = [v420 rightAnchor];
-      v395 = [v409 constraintEqualToAnchor:v399];
+      rightAnchor8 = [(UILabel *)v684->_leftScoreLabel rightAnchor];
+      leftButton2 = [(CPUITransportControlView *)v684->_transportControlView leftButton];
+      rightAnchor9 = [leftButton2 rightAnchor];
+      v395 = [rightAnchor8 constraintEqualToAnchor:rightAnchor9];
       v706[5] = v395;
-      v388 = [(UILabel *)v684->_leftScoreLabel topAnchor];
-      v381 = [(UIImageView *)v684->_leftTeamArtwork topAnchor];
-      v375 = [v388 constraintEqualToAnchor:v381];
+      topAnchor7 = [(UILabel *)v684->_leftScoreLabel topAnchor];
+      topAnchor8 = [(UIImageView *)v684->_leftTeamArtwork topAnchor];
+      v375 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
       v706[6] = v375;
-      v364 = [(UILabel *)v684->_rightScoreLabel leftAnchor];
-      v369 = [(CPUITransportControlView *)v684->_transportControlView fastForwardButton];
-      v359 = [v369 leftAnchor];
-      v354 = [v364 constraintEqualToAnchor:v359];
+      leftAnchor8 = [(UILabel *)v684->_rightScoreLabel leftAnchor];
+      fastForwardButton = [(CPUITransportControlView *)v684->_transportControlView fastForwardButton];
+      leftAnchor9 = [fastForwardButton leftAnchor];
+      v354 = [leftAnchor8 constraintEqualToAnchor:leftAnchor9];
       v706[7] = v354;
-      v344 = [(UILabel *)v684->_rightScoreLabel rightAnchor];
-      v349 = [(CPUITransportControlView *)v684->_transportControlView fastForwardButton];
-      v339 = [v349 rightAnchor];
-      v334 = [v344 constraintEqualToAnchor:v339];
+      rightAnchor10 = [(UILabel *)v684->_rightScoreLabel rightAnchor];
+      fastForwardButton2 = [(CPUITransportControlView *)v684->_transportControlView fastForwardButton];
+      rightAnchor11 = [fastForwardButton2 rightAnchor];
+      v334 = [rightAnchor10 constraintEqualToAnchor:rightAnchor11];
       v706[8] = v334;
-      v330 = [(UIImageView *)v684->_leftFavoriteStar rightAnchor];
-      v327 = [(UIImageView *)v684->_leftTeamArtwork leftAnchor];
-      v324 = [v330 constraintEqualToAnchor:v327 constant:4.0];
+      rightAnchor12 = [(UIImageView *)v684->_leftFavoriteStar rightAnchor];
+      leftAnchor10 = [(UIImageView *)v684->_leftTeamArtwork leftAnchor];
+      v324 = [rightAnchor12 constraintEqualToAnchor:leftAnchor10 constant:4.0];
       v706[9] = v324;
-      v68 = [(UIImageView *)v684->_leftFavoriteStar centerYAnchor];
-      v69 = [(UIImageView *)v684->_leftTeamArtwork centerYAnchor];
-      v70 = [v68 constraintEqualToAnchor:v69];
+      centerYAnchor9 = [(UIImageView *)v684->_leftFavoriteStar centerYAnchor];
+      centerYAnchor10 = [(UIImageView *)v684->_leftTeamArtwork centerYAnchor];
+      v70 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
       v706[10] = v70;
-      v71 = [(UIImageView *)v684->_rightFavoriteStar leftAnchor];
-      v72 = [(UIImageView *)v684->_rightTeamArtwork rightAnchor];
-      v73 = [v71 constraintEqualToAnchor:v72 constant:-4.0];
+      leftAnchor11 = [(UIImageView *)v684->_rightFavoriteStar leftAnchor];
+      rightAnchor13 = [(UIImageView *)v684->_rightTeamArtwork rightAnchor];
+      v73 = [leftAnchor11 constraintEqualToAnchor:rightAnchor13 constant:-4.0];
       v706[11] = v73;
-      v74 = [(UIImageView *)v684->_rightFavoriteStar centerYAnchor];
-      v75 = [(UIImageView *)v684->_rightTeamArtwork centerYAnchor];
-      v76 = [v74 constraintEqualToAnchor:v75];
+      centerYAnchor11 = [(UIImageView *)v684->_rightFavoriteStar centerYAnchor];
+      centerYAnchor12 = [(UIImageView *)v684->_rightTeamArtwork centerYAnchor];
+      v76 = [centerYAnchor11 constraintEqualToAnchor:centerYAnchor12];
       v706[12] = v76;
       v77 = [MEMORY[0x277CBEA60] arrayWithObjects:v706 count:13];
       [v685 addObjectsFromArray:v77];
 
       p_isa = &v684->super.super.super.isa;
-      v78 = [(CPUINowPlayingView *)v684 sportsData];
-      v79 = [v78 leftPossessionIndicator];
+      sportsData2 = [(CPUINowPlayingView *)v684 sportsData];
+      leftPossessionIndicator2 = [sportsData2 leftPossessionIndicator];
 
-      v49 = [(UIImageView *)v684->_possessionIndicator centerXAnchor];
-      if (v79)
+      centerYAnchor7 = [(UIImageView *)v684->_possessionIndicator centerXAnchor];
+      if (leftPossessionIndicator2)
       {
-        v50 = [(UILabel *)v684->_leftScoreLabel centerXAnchor];
-        v51 = [v49 constraintEqualToAnchor:v50];
+        centerYAnchor8 = [(UILabel *)v684->_leftScoreLabel centerXAnchor];
+        v51 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
         v705[0] = v51;
-        v52 = [(UIImageView *)v684->_possessionIndicator topAnchor];
-        v53 = [(UILabel *)v684->_leftScoreLabel bottomAnchor];
-        v54 = [v52 constraintEqualToAnchor:v53 constant:-6.0];
+        rightAnchor5 = [(UIImageView *)v684->_possessionIndicator topAnchor];
+        leftAnchor5 = [(UILabel *)v684->_leftScoreLabel bottomAnchor];
+        v54 = [rightAnchor5 constraintEqualToAnchor:leftAnchor5 constant:-6.0];
         v705[1] = v54;
         v55 = v705;
       }
 
       else
       {
-        v50 = [(UILabel *)v684->_rightScoreLabel centerXAnchor];
-        v51 = [v49 constraintEqualToAnchor:v50];
+        centerYAnchor8 = [(UILabel *)v684->_rightScoreLabel centerXAnchor];
+        v51 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
         v704[0] = v51;
-        v52 = [(UIImageView *)v684->_possessionIndicator topAnchor];
-        v53 = [(UILabel *)v684->_rightScoreLabel bottomAnchor];
-        v54 = [v52 constraintEqualToAnchor:v53 constant:-6.0];
+        rightAnchor5 = [(UIImageView *)v684->_possessionIndicator topAnchor];
+        leftAnchor5 = [(UILabel *)v684->_rightScoreLabel bottomAnchor];
+        v54 = [rightAnchor5 constraintEqualToAnchor:leftAnchor5 constant:-6.0];
         v704[1] = v54;
         v55 = v704;
       }
@@ -1049,239 +1049,239 @@ uint64_t __38__CPUINowPlayingView__updateGameTimer__block_invoke()
     v80 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:2];
     [v685 addObjectsFromArray:v80];
 
-    v671 = [p_isa[67] widthAnchor];
-    v632 = [p_isa widthAnchor];
-    [v682 albumArtWidthMultiplier];
-    v618 = [v671 constraintEqualToAnchor:v632 multiplier:?];
+    widthAnchor = [p_isa[67] widthAnchor];
+    widthAnchor2 = [p_isa widthAnchor];
+    [nowPlayingLayout albumArtWidthMultiplier];
+    v618 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:?];
     v703[0] = v618;
-    v603 = [p_isa[67] heightAnchor];
-    v588 = [p_isa[67] widthAnchor];
-    v573 = [v603 constraintEqualToAnchor:v588];
+    heightAnchor5 = [p_isa[67] heightAnchor];
+    widthAnchor3 = [p_isa[67] widthAnchor];
+    v573 = [heightAnchor5 constraintEqualToAnchor:widthAnchor3];
     v703[1] = v573;
-    v558 = [p_isa[68] widthAnchor];
-    v543 = [p_isa widthAnchor];
-    [v682 albumArtWidthMultiplier];
-    v529 = [v558 constraintEqualToAnchor:v543 multiplier:?];
+    widthAnchor4 = [p_isa[68] widthAnchor];
+    widthAnchor5 = [p_isa widthAnchor];
+    [nowPlayingLayout albumArtWidthMultiplier];
+    v529 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5 multiplier:?];
     v703[2] = v529;
-    v515 = [p_isa[68] heightAnchor];
-    v501 = [p_isa[68] widthAnchor];
-    v487 = [v515 constraintEqualToAnchor:v501];
+    heightAnchor6 = [p_isa[68] heightAnchor];
+    widthAnchor6 = [p_isa[68] widthAnchor];
+    v487 = [heightAnchor6 constraintEqualToAnchor:widthAnchor6];
     v703[3] = v487;
-    v473 = [p_isa[72] centerYAnchor];
-    v459 = [p_isa[71] centerYAnchor];
-    v445 = [v473 constraintEqualToAnchor:v459];
+    centerYAnchor13 = [p_isa[72] centerYAnchor];
+    centerYAnchor14 = [p_isa[71] centerYAnchor];
+    v445 = [centerYAnchor13 constraintEqualToAnchor:centerYAnchor14];
     v703[4] = v445;
-    v433 = [p_isa[55] bottomAnchor];
-    v421 = [(CPUIProgressView *)v683 bottomAnchor];
-    v410 = [v433 constraintEqualToAnchor:v421 constant:-v9];
+    bottomAnchor5 = [p_isa[55] bottomAnchor];
+    bottomAnchor6 = [(CPUIProgressView *)v683 bottomAnchor];
+    v410 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-v9];
     v703[5] = v410;
-    v400 = [p_isa[69] heightAnchor];
-    v394 = [v400 constraintEqualToConstant:15.0];
-    v703[6] = v394;
-    v389 = [p_isa[69] widthAnchor];
-    v382 = [p_isa[69] heightAnchor];
-    v376 = [v389 constraintEqualToAnchor:v382];
+    heightAnchor7 = [p_isa[69] heightAnchor];
+    topAnchor27 = [heightAnchor7 constraintEqualToConstant:15.0];
+    v703[6] = topAnchor27;
+    widthAnchor7 = [p_isa[69] widthAnchor];
+    heightAnchor8 = [p_isa[69] heightAnchor];
+    v376 = [widthAnchor7 constraintEqualToAnchor:heightAnchor8];
     v703[7] = v376;
-    v370 = [p_isa[70] heightAnchor];
-    v365 = [v370 constraintEqualToConstant:15.0];
+    heightAnchor9 = [p_isa[70] heightAnchor];
+    v365 = [heightAnchor9 constraintEqualToConstant:15.0];
     v703[8] = v365;
-    v360 = [p_isa[70] widthAnchor];
-    v644 = [p_isa[70] heightAnchor];
-    v355 = [v360 constraintEqualToAnchor:v644];
+    widthAnchor8 = [p_isa[70] widthAnchor];
+    heightAnchor10 = [p_isa[70] heightAnchor];
+    v355 = [widthAnchor8 constraintEqualToAnchor:heightAnchor10];
     v703[9] = v355;
-    v350 = [p_isa[73] leftAnchor];
-    v345 = [p_isa[67] leftAnchor];
-    v340 = [v350 constraintEqualToAnchor:v345];
+    leftAnchor12 = [p_isa[73] leftAnchor];
+    leftAnchor13 = [p_isa[67] leftAnchor];
+    v340 = [leftAnchor12 constraintEqualToAnchor:leftAnchor13];
     v703[10] = v340;
-    v335 = [p_isa[73] rightAnchor];
-    v331 = [p_isa[67] rightAnchor];
-    v328 = [v335 constraintEqualToAnchor:v331];
+    rightAnchor14 = [p_isa[73] rightAnchor];
+    rightAnchor15 = [p_isa[67] rightAnchor];
+    v328 = [rightAnchor14 constraintEqualToAnchor:rightAnchor15];
     v703[11] = v328;
-    v325 = [p_isa[73] topAnchor];
-    v657 = [p_isa[67] bottomAnchor];
-    v322 = [v325 constraintEqualToAnchor:v657 constant:6.0];
+    topAnchor9 = [p_isa[73] topAnchor];
+    bottomAnchor7 = [p_isa[67] bottomAnchor];
+    v322 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:6.0];
     v703[12] = v322;
-    v320 = [p_isa[75] leftAnchor];
-    v318 = [p_isa[73] leftAnchor];
-    v316 = [v320 constraintEqualToAnchor:v318];
+    leftAnchor14 = [p_isa[75] leftAnchor];
+    leftAnchor15 = [p_isa[73] leftAnchor];
+    v316 = [leftAnchor14 constraintEqualToAnchor:leftAnchor15];
     v703[13] = v316;
-    v314 = [p_isa[75] rightAnchor];
-    v313 = [p_isa[73] rightAnchor];
-    v312 = [v314 constraintEqualToAnchor:v313];
+    rightAnchor16 = [p_isa[75] rightAnchor];
+    rightAnchor17 = [p_isa[73] rightAnchor];
+    v312 = [rightAnchor16 constraintEqualToAnchor:rightAnchor17];
     v703[14] = v312;
-    v311 = [p_isa[75] topAnchor];
-    v310 = [p_isa[73] bottomAnchor];
-    v309 = [v311 constraintEqualToAnchor:v310];
+    topAnchor10 = [p_isa[75] topAnchor];
+    bottomAnchor8 = [p_isa[73] bottomAnchor];
+    v309 = [topAnchor10 constraintEqualToAnchor:bottomAnchor8];
     v703[15] = v309;
-    v308 = [p_isa[74] leftAnchor];
-    v307 = [p_isa[68] leftAnchor];
-    v306 = [v308 constraintEqualToAnchor:v307];
+    leftAnchor16 = [p_isa[74] leftAnchor];
+    leftAnchor17 = [p_isa[68] leftAnchor];
+    v306 = [leftAnchor16 constraintEqualToAnchor:leftAnchor17];
     v703[16] = v306;
-    v305 = [p_isa[74] rightAnchor];
-    v304 = [p_isa[68] rightAnchor];
-    v303 = [v305 constraintEqualToAnchor:v304];
+    rightAnchor18 = [p_isa[74] rightAnchor];
+    rightAnchor19 = [p_isa[68] rightAnchor];
+    v303 = [rightAnchor18 constraintEqualToAnchor:rightAnchor19];
     v703[17] = v303;
-    v302 = [p_isa[74] topAnchor];
-    v301 = [p_isa[68] bottomAnchor];
-    v300 = [v302 constraintEqualToAnchor:v301 constant:6.0];
+    topAnchor11 = [p_isa[74] topAnchor];
+    bottomAnchor9 = [p_isa[68] bottomAnchor];
+    v300 = [topAnchor11 constraintEqualToAnchor:bottomAnchor9 constant:6.0];
     v703[18] = v300;
-    v299 = [p_isa[76] leftAnchor];
-    v298 = [p_isa[74] leftAnchor];
-    v297 = [v299 constraintEqualToAnchor:v298];
+    leftAnchor18 = [p_isa[76] leftAnchor];
+    leftAnchor19 = [p_isa[74] leftAnchor];
+    v297 = [leftAnchor18 constraintEqualToAnchor:leftAnchor19];
     v703[19] = v297;
-    v296 = [p_isa[76] rightAnchor];
-    v295 = [p_isa[74] rightAnchor];
-    v294 = [v296 constraintEqualToAnchor:v295];
+    rightAnchor20 = [p_isa[76] rightAnchor];
+    rightAnchor21 = [p_isa[74] rightAnchor];
+    v294 = [rightAnchor20 constraintEqualToAnchor:rightAnchor21];
     v703[20] = v294;
-    v293 = [p_isa[76] topAnchor];
-    v292 = [p_isa[74] bottomAnchor];
-    [v293 constraintEqualToAnchor:v292];
+    topAnchor12 = [p_isa[76] topAnchor];
+    bottomAnchor10 = [p_isa[74] bottomAnchor];
+    [topAnchor12 constraintEqualToAnchor:bottomAnchor10];
     v82 = v81 = p_isa;
     v703[21] = v82;
-    v83 = [v81[77] widthAnchor];
-    v84 = [v83 constraintEqualToConstant:12.0];
+    widthAnchor9 = [v81[77] widthAnchor];
+    v84 = [widthAnchor9 constraintEqualToConstant:12.0];
     v703[22] = v84;
-    v85 = [v81[77] heightAnchor];
-    v86 = [v85 constraintEqualToConstant:12.0];
+    heightAnchor11 = [v81[77] heightAnchor];
+    v86 = [heightAnchor11 constraintEqualToConstant:12.0];
     v703[23] = v86;
-    v87 = [v81[78] widthAnchor];
-    v88 = [v87 constraintLessThanOrEqualToConstant:20.0];
+    widthAnchor10 = [v81[78] widthAnchor];
+    v88 = [widthAnchor10 constraintLessThanOrEqualToConstant:20.0];
     v703[24] = v88;
-    v89 = [v81[78] heightAnchor];
-    v90 = [v89 constraintLessThanOrEqualToConstant:20.0];
+    heightAnchor12 = [v81[78] heightAnchor];
+    v90 = [heightAnchor12 constraintLessThanOrEqualToConstant:20.0];
     v703[25] = v90;
     v91 = [MEMORY[0x277CBEA60] arrayWithObjects:v703 count:26];
     [v685 addObjectsFromArray:v91];
 
-    v58 = v671;
-    v92 = v632;
+    v58 = widthAnchor;
+    v92 = widthAnchor2;
     goto LABEL_22;
   }
 
   progressView = v683;
-  if ([v682 showsArtwork] && objc_msgSend(v682, "artworkPosition") != 1)
+  if ([nowPlayingLayout showsArtwork] && objc_msgSend(nowPlayingLayout, "artworkPosition") != 1)
   {
-    v57 = [v682 verticalCenteringContent];
-    if (v57)
+    verticalCenteringContent = [nowPlayingLayout verticalCenteringContent];
+    if (verticalCenteringContent)
     {
-      if (v57 != 1)
+      if (verticalCenteringContent != 1)
       {
-        if (v57 != 2)
+        if (verticalCenteringContent != 2)
         {
           goto LABEL_24;
         }
 
         v58 = [(CPUINowPlayingView *)v684 _equalHeightVerticalSpacers:3 minimumPadding:6.0 maximumPadding:0.0];
-        v670 = [(CPUIArtworkView *)v684->_artworkViewBrick centerYAnchor];
-        v656 = [(CPUIProgressView *)v683 centerYAnchor];
-        v643 = [v670 constraintEqualToAnchor:v656 constant:-2.0];
+        centerYAnchor15 = [(CPUIArtworkView *)v684->_artworkViewBrick centerYAnchor];
+        centerYAnchor16 = [(CPUIProgressView *)v683 centerYAnchor];
+        v643 = [centerYAnchor15 constraintEqualToAnchor:centerYAnchor16 constant:-2.0];
         v702[0] = v643;
-        v631 = [(CPUISongDetailsView *)v684->_songDetailsView topAnchor];
-        v616 = [(CPUIArtworkView *)v684->_artworkViewBrick topAnchor];
-        v601 = [v631 constraintEqualToAnchor:v616];
+        topAnchor13 = [(CPUISongDetailsView *)v684->_songDetailsView topAnchor];
+        topAnchor14 = [(CPUIArtworkView *)v684->_artworkViewBrick topAnchor];
+        v601 = [topAnchor13 constraintEqualToAnchor:topAnchor14];
         v702[1] = v601;
-        v586 = [(CPUIPlayModeControlView *)v684->_playModeControlView bottomAnchor];
-        v571 = [(CPUIArtworkView *)v684->_artworkViewBrick bottomAnchor];
-        v556 = [v586 constraintEqualToAnchor:v571];
+        bottomAnchor11 = [(CPUIPlayModeControlView *)v684->_playModeControlView bottomAnchor];
+        bottomAnchor12 = [(CPUIArtworkView *)v684->_artworkViewBrick bottomAnchor];
+        v556 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12];
         v702[2] = v556;
         v541 = [v58 objectAtIndexedSubscript:0];
-        v527 = [v541 topAnchor];
-        v513 = [(CPUISongDetailsView *)v684->_songDetailsView bottomAnchor];
-        v499 = [v527 constraintEqualToAnchor:v513];
+        topAnchor15 = [v541 topAnchor];
+        bottomAnchor13 = [(CPUISongDetailsView *)v684->_songDetailsView bottomAnchor];
+        v499 = [topAnchor15 constraintEqualToAnchor:bottomAnchor13];
         v702[3] = v499;
         v485 = [v58 objectAtIndexedSubscript:0];
-        v471 = [v485 bottomAnchor];
-        v457 = [(CPUITransportControlView *)v684->_transportControlView topAnchor];
-        v443 = [v471 constraintEqualToAnchor:v457];
+        bottomAnchor14 = [v485 bottomAnchor];
+        topAnchor16 = [(CPUITransportControlView *)v684->_transportControlView topAnchor];
+        v443 = [bottomAnchor14 constraintEqualToAnchor:topAnchor16];
         v702[4] = v443;
         v431 = [v58 objectAtIndexedSubscript:1];
-        v419 = [v431 topAnchor];
-        v408 = [(CPUITransportControlView *)v684->_transportControlView bottomAnchor];
-        v398 = [v419 constraintEqualToAnchor:v408];
+        topAnchor17 = [v431 topAnchor];
+        bottomAnchor15 = [(CPUITransportControlView *)v684->_transportControlView bottomAnchor];
+        v398 = [topAnchor17 constraintEqualToAnchor:bottomAnchor15];
         v702[5] = v398;
-        v394 = [v58 objectAtIndexedSubscript:1];
-        v387 = [v394 bottomAnchor];
-        v380 = [(CPUIProgressView *)v684->_progressView topAnchor];
-        v374 = [v387 constraintEqualToAnchor:v380];
+        topAnchor27 = [v58 objectAtIndexedSubscript:1];
+        bottomAnchor16 = [topAnchor27 bottomAnchor];
+        topAnchor18 = [(CPUIProgressView *)v684->_progressView topAnchor];
+        v374 = [bottomAnchor16 constraintEqualToAnchor:topAnchor18];
         v702[6] = v374;
         v59 = [v58 objectAtIndexedSubscript:2];
-        v60 = [v59 topAnchor];
-        v61 = [(CPUIProgressView *)v684->_progressView bottomAnchor];
-        v62 = [v60 constraintEqualToAnchor:v61];
+        topAnchor19 = [v59 topAnchor];
+        bottomAnchor17 = [(CPUIProgressView *)v684->_progressView bottomAnchor];
+        v62 = [topAnchor19 constraintEqualToAnchor:bottomAnchor17];
         v702[7] = v62;
         v63 = [v58 objectAtIndexedSubscript:2];
-        v64 = [v63 bottomAnchor];
-        v65 = [(CPUIPlayModeControlView *)v684->_playModeControlView topAnchor];
-        v66 = [v64 constraintEqualToAnchor:v65];
+        bottomAnchor18 = [v63 bottomAnchor];
+        topAnchor20 = [(CPUIPlayModeControlView *)v684->_playModeControlView topAnchor];
+        v66 = [bottomAnchor18 constraintEqualToAnchor:topAnchor20];
         v702[8] = v66;
         v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v702 count:9];
         [v685 addObjectsFromArray:v67];
 
-        [v680 addObjectsFromArray:v58];
+        [array addObjectsFromArray:v58];
         goto LABEL_23;
       }
 
       v267 = [(CPUINowPlayingView *)v684 _equalHeightVerticalSpacers:2 minimumPadding:0.0 maximumPadding:0.0];
-      [v680 addObjectsFromArray:v267];
+      [array addObjectsFromArray:v267];
       v268 = objc_opt_new();
       [(CPUINowPlayingView *)v684 addLayoutGuide:v268];
-      [v680 addObject:v268];
+      [array addObject:v268];
       v269 = objc_opt_new();
       [(CPUINowPlayingView *)v684 addLayoutGuide:v269];
-      [v680 addObject:v269];
-      v666 = [v269 topAnchor];
-      v653 = [(CPUIProgressView *)v683 topAnchor];
-      [v666 constraintEqualToAnchor:v653];
+      [array addObject:v269];
+      topAnchor21 = [v269 topAnchor];
+      topAnchor22 = [(CPUIProgressView *)v683 topAnchor];
+      [topAnchor21 constraintEqualToAnchor:topAnchor22];
       v640 = v627 = v269;
       v701[0] = v640;
-      v612 = [v269 bottomAnchor];
-      v597 = [(CPUIProgressView *)v684->_progressView topAnchor];
-      v582 = [v612 constraintEqualToAnchor:v597];
+      bottomAnchor19 = [v269 bottomAnchor];
+      topAnchor23 = [(CPUIProgressView *)v684->_progressView topAnchor];
+      v582 = [bottomAnchor19 constraintEqualToAnchor:topAnchor23];
       v701[1] = v582;
-      v567 = [(CPUIArtworkView *)v684->_artworkViewBrick centerYAnchor];
-      v552 = [v269 centerYAnchor];
-      v537 = [v567 constraintEqualToAnchor:v552];
+      centerYAnchor17 = [(CPUIArtworkView *)v684->_artworkViewBrick centerYAnchor];
+      centerYAnchor18 = [v269 centerYAnchor];
+      v537 = [centerYAnchor17 constraintEqualToAnchor:centerYAnchor18];
       v701[2] = v537;
       v523 = [v267 objectAtIndexedSubscript:0];
-      v509 = [v523 topAnchor];
-      v495 = [(CPUIArtworkView *)v684->_artworkViewBrick topAnchor];
-      v481 = [v509 constraintEqualToAnchor:v495];
+      topAnchor24 = [v523 topAnchor];
+      topAnchor25 = [(CPUIArtworkView *)v684->_artworkViewBrick topAnchor];
+      v481 = [topAnchor24 constraintEqualToAnchor:topAnchor25];
       v701[3] = v481;
       v467 = [v267 objectAtIndexedSubscript:0];
-      v453 = [v467 bottomAnchor];
-      v439 = [(CPUISongDetailsView *)v684->_songDetailsView topAnchor];
-      v427 = [v453 constraintEqualToAnchor:v439];
+      bottomAnchor20 = [v467 bottomAnchor];
+      topAnchor26 = [(CPUISongDetailsView *)v684->_songDetailsView topAnchor];
+      v427 = [bottomAnchor20 constraintEqualToAnchor:topAnchor26];
       v701[4] = v427;
       v678 = v267;
       v416 = [v267 objectAtIndexedSubscript:1];
-      v394 = [v416 topAnchor];
-      v392 = [(CPUITransportControlView *)v684->_transportControlView bottomAnchor];
-      v385 = [v394 constraintEqualToAnchor:v392];
+      topAnchor27 = [v416 topAnchor];
+      bottomAnchor21 = [(CPUITransportControlView *)v684->_transportControlView bottomAnchor];
+      v385 = [topAnchor27 constraintEqualToAnchor:bottomAnchor21];
       v701[5] = v385;
       v379 = [v267 objectAtIndexedSubscript:1];
-      v373 = [v379 bottomAnchor];
-      v368 = [(CPUIArtworkView *)v684->_artworkViewBrick bottomAnchor];
-      v363 = [v373 constraintEqualToAnchor:v368];
+      bottomAnchor22 = [v379 bottomAnchor];
+      bottomAnchor23 = [(CPUIArtworkView *)v684->_artworkViewBrick bottomAnchor];
+      v363 = [bottomAnchor22 constraintEqualToAnchor:bottomAnchor23];
       v701[6] = v363;
-      v358 = [v268 topAnchor];
-      v353 = [(CPUISongDetailsView *)v684->_songDetailsView bottomAnchor];
-      v348 = [v358 constraintEqualToAnchor:v353];
+      topAnchor28 = [v268 topAnchor];
+      bottomAnchor24 = [(CPUISongDetailsView *)v684->_songDetailsView bottomAnchor];
+      v348 = [topAnchor28 constraintEqualToAnchor:bottomAnchor24];
       v701[7] = v348;
       v405 = v268;
-      v343 = [v268 bottomAnchor];
-      v338 = [(CPUITransportControlView *)v684->_transportControlView topAnchor];
-      v270 = [v343 constraintEqualToAnchor:v338];
+      bottomAnchor25 = [v268 bottomAnchor];
+      topAnchor29 = [(CPUITransportControlView *)v684->_transportControlView topAnchor];
+      v270 = [bottomAnchor25 constraintEqualToAnchor:topAnchor29];
       v701[8] = v270;
-      v271 = [v268 heightAnchor];
-      v272 = [v271 constraintLessThanOrEqualToConstant:12.0];
+      heightAnchor13 = [v268 heightAnchor];
+      v272 = [heightAnchor13 constraintLessThanOrEqualToConstant:12.0];
       v701[9] = v272;
-      v273 = [(CPUIPlayModeControlView *)v684->_playModeControlView bottomAnchor];
-      v274 = [(CPUIProgressView *)v683 bottomAnchor];
-      v275 = [v273 constraintEqualToAnchor:v274 constant:-v9];
+      bottomAnchor26 = [(CPUIPlayModeControlView *)v684->_playModeControlView bottomAnchor];
+      bottomAnchor27 = [(CPUIProgressView *)v683 bottomAnchor];
+      v275 = [bottomAnchor26 constraintEqualToAnchor:bottomAnchor27 constant:-v9];
       v701[10] = v275;
-      v276 = [(CPUIProgressView *)v684->_progressView bottomAnchor];
-      v277 = [(CPUIPlayModeControlView *)v684->_playModeControlView topAnchor];
-      v278 = [v276 constraintEqualToAnchor:v277 constant:-6.0];
+      bottomAnchor28 = [(CPUIProgressView *)v684->_progressView bottomAnchor];
+      topAnchor30 = [(CPUIPlayModeControlView *)v684->_playModeControlView topAnchor];
+      v278 = [bottomAnchor28 constraintEqualToAnchor:topAnchor30 constant:-6.0];
       v701[11] = v278;
       v279 = [MEMORY[0x277CBEA60] arrayWithObjects:v701 count:12];
       [v685 addObjectsFromArray:v279];
@@ -1293,51 +1293,51 @@ uint64_t __38__CPUINowPlayingView__updateGameTimer__block_invoke()
     else
     {
       v280 = [(CPUINowPlayingView *)v684 _equalHeightVerticalSpacers:2 minimumPadding:0.0 maximumPadding:0.0];
-      [v680 addObjectsFromArray:?];
+      [array addObjectsFromArray:?];
       v281 = objc_opt_new();
       [(CPUINowPlayingView *)v684 addLayoutGuide:v281];
-      [v680 addObject:v281];
-      v679 = [(CPUIPlayModeControlView *)v684->_playModeControlView bottomAnchor];
-      v667 = [(CPUIProgressView *)v683 bottomAnchor];
-      v654 = [v679 constraintEqualToAnchor:v667 constant:-v9];
+      [array addObject:v281];
+      bottomAnchor29 = [(CPUIPlayModeControlView *)v684->_playModeControlView bottomAnchor];
+      bottomAnchor30 = [(CPUIProgressView *)v683 bottomAnchor];
+      v654 = [bottomAnchor29 constraintEqualToAnchor:bottomAnchor30 constant:-v9];
       v700[0] = v654;
-      v641 = [(CPUIProgressView *)v684->_progressView bottomAnchor];
-      v628 = [(CPUIPlayModeControlView *)v684->_playModeControlView topAnchor];
-      v613 = [v641 constraintEqualToAnchor:v628 constant:-6.0];
+      bottomAnchor31 = [(CPUIProgressView *)v684->_progressView bottomAnchor];
+      topAnchor31 = [(CPUIPlayModeControlView *)v684->_playModeControlView topAnchor];
+      v613 = [bottomAnchor31 constraintEqualToAnchor:topAnchor31 constant:-6.0];
       v700[1] = v613;
-      v598 = [v281 topAnchor];
-      v568 = [(CPUISongDetailsView *)v684->_songDetailsView bottomAnchor];
-      v553 = [v598 constraintEqualToAnchor:v568];
+      topAnchor32 = [v281 topAnchor];
+      bottomAnchor32 = [(CPUISongDetailsView *)v684->_songDetailsView bottomAnchor];
+      v553 = [topAnchor32 constraintEqualToAnchor:bottomAnchor32];
       v700[2] = v553;
       v583 = v281;
-      v538 = [v281 bottomAnchor];
-      v524 = [(CPUIProgressView *)v684->_progressView topAnchor];
-      v510 = [v538 constraintEqualToAnchor:v524];
+      bottomAnchor33 = [v281 bottomAnchor];
+      topAnchor33 = [(CPUIProgressView *)v684->_progressView topAnchor];
+      v510 = [bottomAnchor33 constraintEqualToAnchor:topAnchor33];
       v700[3] = v510;
-      v496 = [(CPUITransportControlView *)v684->_transportControlView centerYAnchor];
-      v482 = [v281 centerYAnchor];
-      v468 = [v496 constraintEqualToAnchor:v482];
+      centerYAnchor19 = [(CPUITransportControlView *)v684->_transportControlView centerYAnchor];
+      centerYAnchor20 = [v281 centerYAnchor];
+      v468 = [centerYAnchor19 constraintEqualToAnchor:centerYAnchor20];
       v700[4] = v468;
       v454 = [v280 objectAtIndexedSubscript:0];
-      v440 = [v454 topAnchor];
-      v428 = [(CPUIProgressView *)v683 topAnchor];
-      v417 = [v440 constraintEqualToAnchor:v428 constant:v5];
+      topAnchor34 = [v454 topAnchor];
+      topAnchor35 = [(CPUIProgressView *)v683 topAnchor];
+      v417 = [topAnchor34 constraintEqualToAnchor:topAnchor35 constant:v5];
       v700[5] = v417;
       v282 = v280;
       v406 = [v280 objectAtIndexedSubscript:0];
-      v394 = [v406 bottomAnchor];
-      v393 = [(CPUISongDetailsView *)v684->_songDetailsView topAnchor];
-      v386 = [v394 constraintEqualToAnchor:v393];
+      topAnchor27 = [v406 bottomAnchor];
+      topAnchor36 = [(CPUISongDetailsView *)v684->_songDetailsView topAnchor];
+      v386 = [topAnchor27 constraintEqualToAnchor:topAnchor36];
       v700[6] = v386;
       v283 = [v280 objectAtIndexedSubscript:1];
-      v284 = [v283 topAnchor];
-      v285 = [(CPUIArtworkView *)v684->_artworkViewBrick bottomAnchor];
-      v286 = [v284 constraintEqualToAnchor:v285];
+      topAnchor37 = [v283 topAnchor];
+      bottomAnchor34 = [(CPUIArtworkView *)v684->_artworkViewBrick bottomAnchor];
+      v286 = [topAnchor37 constraintEqualToAnchor:bottomAnchor34];
       v700[7] = v286;
       v287 = [v280 objectAtIndexedSubscript:1];
-      v288 = [v287 bottomAnchor];
-      v289 = [(CPUIProgressView *)v684->_progressView topAnchor];
-      v290 = [v288 constraintEqualToAnchor:v289];
+      bottomAnchor35 = [v287 bottomAnchor];
+      topAnchor38 = [(CPUIProgressView *)v684->_progressView topAnchor];
+      v290 = [bottomAnchor35 constraintEqualToAnchor:topAnchor38];
       v700[8] = v290;
       v291 = [MEMORY[0x277CBEA60] arrayWithObjects:v700 count:9];
       [v685 addObjectsFromArray:v291];
@@ -1350,7 +1350,7 @@ LABEL_22:
 
 LABEL_23:
     v26 = v684;
-    v27 = v682;
+    v27 = nowPlayingLayout;
     progressView = v683;
   }
 
@@ -1362,15 +1362,15 @@ LABEL_24:
 
   if ([v27 showsArtwork])
   {
-    v93 = [(CPUIArtworkView *)v26->_artworkViewBrick widthAnchor];
-    v94 = [(CPUINowPlayingView *)v26 widthAnchor];
+    widthAnchor11 = [(CPUIArtworkView *)v26->_artworkViewBrick widthAnchor];
+    widthAnchor12 = [(CPUINowPlayingView *)v26 widthAnchor];
     [v27 albumArtWidthMultiplier];
-    v95 = [v93 constraintEqualToAnchor:v94 multiplier:?];
+    v95 = [widthAnchor11 constraintEqualToAnchor:widthAnchor12 multiplier:?];
     v699[0] = v95;
-    v96 = [(CPUIArtworkView *)v26->_artworkViewBrick heightAnchor];
-    v97 = [(CPUIArtworkView *)v26->_artworkViewBrick widthAnchor];
-    v98 = [v96 constraintEqualToAnchor:v97];
-    v699[1] = v98;
+    heightAnchor14 = [(CPUIArtworkView *)v26->_artworkViewBrick heightAnchor];
+    widthAnchor13 = [(CPUIArtworkView *)v26->_artworkViewBrick widthAnchor];
+    topAnchor41 = [heightAnchor14 constraintEqualToAnchor:widthAnchor13];
+    v699[1] = topAnchor41;
     v99 = [MEMORY[0x277CBEA60] arrayWithObjects:v699 count:2];
     [v685 addObjectsFromArray:v99];
 LABEL_29:
@@ -1384,52 +1384,52 @@ LABEL_29:
   [(CPUINowPlayingView *)v26 frame];
   if (v101 < v102)
   {
-    v93 = [(CPUINowPlayingView *)v26 _equalHeightVerticalSpacers:2 minimumPadding:6.0 maximumPadding:12.0];
-    [v680 addObjectsFromArray:v93];
-    v645 = [v93 objectAtIndexedSubscript:0];
-    v633 = [v645 topAnchor];
-    v589 = [(CPUIProgressView *)progressView topAnchor];
-    v559 = [v633 constraintEqualToAnchor:v589];
+    widthAnchor11 = [(CPUINowPlayingView *)v26 _equalHeightVerticalSpacers:2 minimumPadding:6.0 maximumPadding:12.0];
+    [array addObjectsFromArray:widthAnchor11];
+    v645 = [widthAnchor11 objectAtIndexedSubscript:0];
+    topAnchor39 = [v645 topAnchor];
+    topAnchor40 = [(CPUIProgressView *)progressView topAnchor];
+    v559 = [topAnchor39 constraintEqualToAnchor:topAnchor40];
     v698[0] = v559;
-    v98 = [(CPUISongDetailsView *)v26->_songDetailsView topAnchor];
-    [v93 objectAtIndexedSubscript:0];
+    topAnchor41 = [(CPUISongDetailsView *)v26->_songDetailsView topAnchor];
+    [widthAnchor11 objectAtIndexedSubscript:0];
     v99 = v103 = progressView;
-    v672 = [v99 bottomAnchor];
-    v658 = [v98 constraintEqualToAnchor:v672];
+    bottomAnchor36 = [v99 bottomAnchor];
+    v658 = [topAnchor41 constraintEqualToAnchor:bottomAnchor36];
     v698[1] = v658;
-    v619 = [(CPUITransportControlView *)v26->_transportControlView topAnchor];
-    v604 = [(CPUISongDetailsView *)v26->_songDetailsView bottomAnchor];
-    v574 = [v619 constraintEqualToAnchor:v604 constant:6.0];
+    topAnchor42 = [(CPUITransportControlView *)v26->_transportControlView topAnchor];
+    bottomAnchor37 = [(CPUISongDetailsView *)v26->_songDetailsView bottomAnchor];
+    v574 = [topAnchor42 constraintEqualToAnchor:bottomAnchor37 constant:6.0];
     v698[2] = v574;
-    v544 = [(CPUIProgressView *)v26->_progressView topAnchor];
-    v530 = [(CPUITransportControlView *)v26->_transportControlView bottomAnchor];
-    v516 = [v544 constraintEqualToAnchor:v530 constant:12.0];
+    topAnchor43 = [(CPUIProgressView *)v26->_progressView topAnchor];
+    bottomAnchor38 = [(CPUITransportControlView *)v26->_transportControlView bottomAnchor];
+    v516 = [topAnchor43 constraintEqualToAnchor:bottomAnchor38 constant:12.0];
     v698[3] = v516;
-    v502 = [(CPUIPlayModeControlView *)v26->_playModeControlView topAnchor];
-    v488 = [(CPUIProgressView *)v26->_progressView bottomAnchor];
-    v474 = [v502 constraintEqualToAnchor:v488 constant:12.0];
+    topAnchor44 = [(CPUIPlayModeControlView *)v26->_playModeControlView topAnchor];
+    bottomAnchor39 = [(CPUIProgressView *)v26->_progressView bottomAnchor];
+    v474 = [topAnchor44 constraintEqualToAnchor:bottomAnchor39 constant:12.0];
     v698[4] = v474;
-    v446 = [(CPUIPlayModeControlView *)v26->_playModeControlView bottomAnchor];
-    v460 = [v93 objectAtIndexedSubscript:1];
-    v104 = [v460 topAnchor];
-    v105 = [v446 constraintEqualToAnchor:v104];
+    bottomAnchor40 = [(CPUIPlayModeControlView *)v26->_playModeControlView bottomAnchor];
+    v460 = [widthAnchor11 objectAtIndexedSubscript:1];
+    topAnchor45 = [v460 topAnchor];
+    v105 = [bottomAnchor40 constraintEqualToAnchor:topAnchor45];
     v698[5] = v105;
-    v106 = [v93 objectAtIndexedSubscript:1];
-    v107 = [v106 bottomAnchor];
-    v108 = [(CPUIProgressView *)v103 bottomAnchor];
-    v109 = [v107 constraintEqualToAnchor:v108];
+    v106 = [widthAnchor11 objectAtIndexedSubscript:1];
+    bottomAnchor41 = [v106 bottomAnchor];
+    bottomAnchor42 = [(CPUIProgressView *)v103 bottomAnchor];
+    v109 = [bottomAnchor41 constraintEqualToAnchor:bottomAnchor42];
     v698[6] = v109;
     v110 = [MEMORY[0x277CBEA60] arrayWithObjects:v698 count:7];
     [v685 addObjectsFromArray:v110];
 
-    v97 = v559;
-    v96 = v589;
+    widthAnchor13 = v559;
+    heightAnchor14 = topAnchor40;
 
     v26 = v684;
-    v95 = v633;
+    v95 = topAnchor39;
 
-    v94 = v645;
-    v27 = v682;
+    widthAnchor12 = v645;
+    v27 = nowPlayingLayout;
 
     goto LABEL_29;
   }
@@ -1437,81 +1437,81 @@ LABEL_29:
 LABEL_30:
   if ([v27 showsArtwork] && objc_msgSend(v27, "artworkPosition") != 1)
   {
-    v111 = [(CPUISongDetailsView *)v26->_songDetailsView topAnchor];
-    v112 = [(CPUIArtworkView *)v26->_artworkViewBrick topAnchor];
-    v113 = [v111 constraintEqualToAnchor:v112];
+    topAnchor46 = [(CPUISongDetailsView *)v26->_songDetailsView topAnchor];
+    topAnchor47 = [(CPUIArtworkView *)v26->_artworkViewBrick topAnchor];
+    v113 = [topAnchor46 constraintEqualToAnchor:topAnchor47];
     [v685 addObject:v113];
   }
 
 LABEL_33:
-  v114 = [v27 artworkPosition];
-  if (v114 < 2)
+  artworkPosition2 = [v27 artworkPosition];
+  if (artworkPosition2 < 2)
   {
-    v134 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
+    rightAnchor22 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
     [(CPUIProgressView *)progressView rightAnchor];
     v660 = v135 = -v11;
-    v674 = v134;
-    v647 = [v134 constraintEqualToAnchor:v135 constant:?];
+    v674 = rightAnchor22;
+    v647 = [rightAnchor22 constraintEqualToAnchor:v135 constant:?];
     v697[0] = v647;
-    v136 = [(CPUITransportControlView *)v26->_transportControlView leftAnchor];
-    v621 = [(CPUIProgressView *)progressView leftAnchor];
-    v635 = v136;
-    v606 = [v136 constraintEqualToAnchor:v7 constant:?];
+    leftAnchor20 = [(CPUITransportControlView *)v26->_transportControlView leftAnchor];
+    leftAnchor21 = [(CPUIProgressView *)progressView leftAnchor];
+    v635 = leftAnchor20;
+    v606 = [leftAnchor20 constraintEqualToAnchor:v7 constant:?];
     v697[1] = v606;
-    v137 = [(CPUIProgressView *)v26->_progressView rightAnchor];
-    v576 = [(CPUIProgressView *)progressView rightAnchor];
-    v591 = v137;
-    v561 = [v137 constraintEqualToAnchor:v135 constant:?];
+    rightAnchor23 = [(CPUIProgressView *)v26->_progressView rightAnchor];
+    rightAnchor24 = [(CPUIProgressView *)progressView rightAnchor];
+    v591 = rightAnchor23;
+    v561 = [rightAnchor23 constraintEqualToAnchor:v135 constant:?];
     v697[2] = v561;
-    v138 = [(CPUIProgressView *)v26->_progressView leftAnchor];
-    v139 = [(CPUIProgressView *)progressView leftAnchor];
-    v546 = v138;
-    v140 = [v138 constraintEqualToAnchor:v139 constant:v7];
+    leftAnchor22 = [(CPUIProgressView *)v26->_progressView leftAnchor];
+    leftAnchor23 = [(CPUIProgressView *)progressView leftAnchor];
+    v546 = leftAnchor22;
+    v140 = [leftAnchor22 constraintEqualToAnchor:leftAnchor23 constant:v7];
     v697[3] = v140;
-    v141 = [(CPUIPlayModeControlView *)v26->_playModeControlView leftAnchor];
-    v142 = [(CPUIProgressView *)progressView leftAnchor];
-    v143 = [v141 constraintEqualToAnchor:v142 constant:v7];
+    leftAnchor24 = [(CPUIPlayModeControlView *)v26->_playModeControlView leftAnchor];
+    leftAnchor25 = [(CPUIProgressView *)progressView leftAnchor];
+    v143 = [leftAnchor24 constraintEqualToAnchor:leftAnchor25 constant:v7];
     v697[4] = v143;
-    v144 = [(CPUIPlayModeControlView *)v26->_playModeControlView rightAnchor];
+    rightAnchor25 = [(CPUIPlayModeControlView *)v26->_playModeControlView rightAnchor];
     if (([v27 playModeControlButtonsFullWidth] & 1) == 0)
     {
       progressView = v26->_progressView;
     }
 
-    v145 = [(CPUIProgressView *)progressView rightAnchor];
-    v27 = v682;
-    v146 = [v682 playModeControlButtonsFullWidth];
+    rightAnchor26 = [(CPUIProgressView *)progressView rightAnchor];
+    v27 = nowPlayingLayout;
+    playModeControlButtonsFullWidth = [nowPlayingLayout playModeControlButtonsFullWidth];
     v147 = 0.0;
-    if (v146)
+    if (playModeControlButtonsFullWidth)
     {
       v147 = v135;
     }
 
-    v148 = [v144 constraintEqualToAnchor:v145 constant:v147];
+    v148 = [rightAnchor25 constraintEqualToAnchor:rightAnchor26 constant:v147];
     v697[5] = v148;
     v149 = [MEMORY[0x277CBEA60] arrayWithObjects:v697 count:6];
     [v685 addObjectsFromArray:v149];
 
-    if (![v682 isSportsLayout])
+    if (![nowPlayingLayout isSportsLayout])
     {
       v26 = v684;
-      v167 = [(CPUISongDetailsView *)v684->_songDetailsView rightAnchor];
-      v168 = [(CPUITransportControlView *)v684->_transportControlView rightAnchor];
-      v169 = [v167 constraintEqualToAnchor:v168];
+      rightAnchor27 = [(CPUISongDetailsView *)v684->_songDetailsView rightAnchor];
+      rightAnchor28 = [(CPUITransportControlView *)v684->_transportControlView rightAnchor];
+      v169 = [rightAnchor27 constraintEqualToAnchor:rightAnchor28];
       v695[0] = v169;
-      v170 = [(CPUISongDetailsView *)v684->_songDetailsView leftAnchor];
-      v171 = [(CPUIProgressView *)v683 leftAnchor];
-      v172 = [v170 constraintEqualToAnchor:v171 constant:v7];
+      leftAnchor26 = [(CPUISongDetailsView *)v684->_songDetailsView leftAnchor];
+      leftAnchor27 = [(CPUIProgressView *)v683 leftAnchor];
+      v172 = [leftAnchor26 constraintEqualToAnchor:leftAnchor27 constant:v7];
       v695[1] = v172;
       v173 = [MEMORY[0x277CBEA60] arrayWithObjects:v695 count:2];
       [v685 addObjectsFromArray:v173];
 
-      if ([v682 showsArtwork])
+      if ([nowPlayingLayout showsArtwork])
       {
-        v150 = [(CPUIArtworkView *)v684->_artworkViewBrick centerXAnchor];
+        centerXAnchor5 = [(CPUIArtworkView *)v684->_artworkViewBrick centerXAnchor];
         progressView = v683;
-        v159 = [(CPUIProgressView *)v683 centerXAnchor];
-        v158 = [v150 constraintEqualToAnchor:v159];
+        centerXAnchor6 = [(CPUIProgressView *)v683 centerXAnchor];
+        v158 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
         v694 = v158;
         v174 = MEMORY[0x277CBEA60];
         v175 = &v694;
@@ -1519,10 +1519,10 @@ LABEL_33:
 
       else
       {
-        v150 = [(CPUISongDetailsView *)v684->_songDetailsView topAnchor];
+        centerXAnchor5 = [(CPUISongDetailsView *)v684->_songDetailsView topAnchor];
         progressView = v683;
-        v159 = [(CPUIProgressView *)v683 topAnchor];
-        v158 = [v150 constraintEqualToAnchor:v159 constant:v5];
+        centerXAnchor6 = [(CPUIProgressView *)v683 topAnchor];
+        v158 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6 constant:v5];
         v693 = v158;
         v174 = MEMORY[0x277CBEA60];
         v175 = &v693;
@@ -1535,68 +1535,68 @@ LABEL_33:
     }
 
     v26 = v684;
-    v150 = [(UIStackView *)v684->_titleStackView centerYAnchor];
-    v675 = [(UILabel *)v684->_leftScoreLabel centerYAnchor];
-    v661 = [v150 constraintEqualToAnchor:v675];
+    centerXAnchor5 = [(UIStackView *)v684->_titleStackView centerYAnchor];
+    centerYAnchor21 = [(UILabel *)v684->_leftScoreLabel centerYAnchor];
+    v661 = [centerXAnchor5 constraintEqualToAnchor:centerYAnchor21];
     v696[0] = v661;
-    v648 = [(UIStackView *)v684->_titleStackView leftAnchor];
-    v151 = [(UIImageView *)v684->_leftTeamArtwork rightAnchor];
-    v152 = [v648 constraintEqualToAnchor:v151];
+    leftAnchor28 = [(UIStackView *)v684->_titleStackView leftAnchor];
+    rightAnchor29 = [(UIImageView *)v684->_leftTeamArtwork rightAnchor];
+    v152 = [leftAnchor28 constraintEqualToAnchor:rightAnchor29];
     v696[1] = v152;
-    v153 = [(UIStackView *)v684->_titleStackView rightAnchor];
-    v154 = [(UIImageView *)v684->_rightTeamArtwork leftAnchor];
-    v155 = [v153 constraintEqualToAnchor:v154];
+    rightAnchor30 = [(UIStackView *)v684->_titleStackView rightAnchor];
+    leftAnchor29 = [(UIImageView *)v684->_rightTeamArtwork leftAnchor];
+    v155 = [rightAnchor30 constraintEqualToAnchor:leftAnchor29];
     v696[2] = v155;
     v156 = [MEMORY[0x277CBEA60] arrayWithObjects:v696 count:3];
     [v685 addObjectsFromArray:v156];
 
-    v157 = v648;
+    v157 = leftAnchor28;
     v158 = v661;
 
-    v159 = v675;
+    centerXAnchor6 = centerYAnchor21;
     v115 = v685;
     goto LABEL_81;
   }
 
-  if (v114 != 2)
+  if (artworkPosition2 != 2)
   {
     v115 = v685;
-    if (v114 != 3)
+    if (artworkPosition2 != 3)
     {
       goto LABEL_83;
     }
 
-    v116 = [(CPUIArtworkView *)v26->_artworkViewBrick leftAnchor];
+    leftAnchor30 = [(CPUIArtworkView *)v26->_artworkViewBrick leftAnchor];
     [(CPUIProgressView *)progressView leftAnchor];
-    v673 = v634 = v116;
-    v659 = [v116 constraintEqualToAnchor:v7 constant:?];
+    rightAnchor47 = v634 = leftAnchor30;
+    v659 = [leftAnchor30 constraintEqualToAnchor:v7 constant:?];
     v690[0] = v659;
-    v117 = [(CPUISongDetailsView *)v26->_songDetailsView leftAnchor];
+    leftAnchor31 = [(CPUISongDetailsView *)v26->_songDetailsView leftAnchor];
     [(CPUIArtworkView *)v26->_artworkViewBrick rightAnchor];
-    v620 = v646 = v117;
-    v605 = [v117 constraintEqualToAnchor:v7 constant:?];
+    v620 = v646 = leftAnchor31;
+    v605 = [leftAnchor31 constraintEqualToAnchor:v7 constant:?];
     v690[1] = v605;
-    v118 = [(CPUISongDetailsView *)v26->_songDetailsView rightAnchor];
-    v575 = [(CPUIProgressView *)progressView rightAnchor];
-    v590 = v118;
-    v560 = [v118 constraintEqualToAnchor:-v11 constant:?];
+    rightAnchor31 = [(CPUISongDetailsView *)v26->_songDetailsView rightAnchor];
+    rightAnchor32 = [(CPUIProgressView *)progressView rightAnchor];
+    v590 = rightAnchor31;
+    v560 = [rightAnchor31 constraintEqualToAnchor:-v11 constant:?];
     v690[2] = v560;
-    v119 = [(CPUITransportControlView *)v26->_transportControlView leftAnchor];
-    v531 = [(CPUIArtworkView *)v26->_artworkViewBrick rightAnchor];
-    v545 = v119;
-    v517 = [v119 constraintEqualToAnchor:v7 constant:?];
+    leftAnchor32 = [(CPUITransportControlView *)v26->_transportControlView leftAnchor];
+    rightAnchor33 = [(CPUIArtworkView *)v26->_artworkViewBrick rightAnchor];
+    v545 = leftAnchor32;
+    v517 = [leftAnchor32 constraintEqualToAnchor:v7 constant:?];
     v690[3] = v517;
-    v120 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
-    v489 = [(CPUIProgressView *)progressView rightAnchor];
-    v503 = v120;
-    v475 = [v120 constraintEqualToAnchor:-v11 constant:?];
+    rightAnchor34 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
+    rightAnchor35 = [(CPUIProgressView *)progressView rightAnchor];
+    v503 = rightAnchor34;
+    v475 = [rightAnchor34 constraintEqualToAnchor:-v11 constant:?];
     v690[4] = v475;
-    v121 = [(CPUIProgressView *)v26->_progressView rightAnchor];
-    v447 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
-    v461 = v121;
-    v434 = [v121 constraintEqualToAnchor:?];
+    rightAnchor36 = [(CPUIProgressView *)v26->_progressView rightAnchor];
+    rightAnchor37 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
+    v461 = rightAnchor36;
+    v434 = [rightAnchor36 constraintEqualToAnchor:?];
     v690[5] = v434;
-    v122 = [(CPUIProgressView *)v26->_progressView leftAnchor];
+    leftAnchor33 = [(CPUIProgressView *)v26->_progressView leftAnchor];
     if ([v27 progressViewFullWidth])
     {
       v123 = 464;
@@ -1607,125 +1607,125 @@ LABEL_33:
       v123 = 432;
     }
 
-    v411 = [*(&v26->super.super.super.isa + v123) leftAnchor];
-    v422 = v122;
-    v124 = [v122 constraintEqualToAnchor:?];
+    leftAnchor34 = [*(&v26->super.super.super.isa + v123) leftAnchor];
+    v422 = leftAnchor33;
+    v124 = [leftAnchor33 constraintEqualToAnchor:?];
     v690[6] = v124;
-    v125 = [(CPUIPlayModeControlView *)v26->_playModeControlView leftAnchor];
+    leftAnchor35 = [(CPUIPlayModeControlView *)v26->_playModeControlView leftAnchor];
     if (([v27 playModeControlButtonsFullWidth] & 1) == 0)
     {
       progressView = v26->_transportControlView;
     }
 
-    v126 = [(CPUIProgressView *)progressView leftAnchor];
-    v127 = [v27 playModeControlButtonsFullWidth];
+    leftAnchor36 = [(CPUIProgressView *)progressView leftAnchor];
+    playModeControlButtonsFullWidth2 = [v27 playModeControlButtonsFullWidth];
     v128 = 0.0;
-    if (v127)
+    if (playModeControlButtonsFullWidth2)
     {
       v128 = v7;
     }
 
-    v129 = [v125 constraintEqualToAnchor:v126 constant:v128];
+    v129 = [leftAnchor35 constraintEqualToAnchor:leftAnchor36 constant:v128];
     v690[7] = v129;
-    v130 = [(CPUIPlayModeControlView *)v26->_playModeControlView rightAnchor];
+    rightAnchor38 = [(CPUIPlayModeControlView *)v26->_playModeControlView rightAnchor];
     progressView = v683;
-    v131 = [(CPUIProgressView *)v683 rightAnchor];
-    v132 = [v130 constraintEqualToAnchor:v131 constant:-v11];
+    rightAnchor39 = [(CPUIProgressView *)v683 rightAnchor];
+    v132 = [rightAnchor38 constraintEqualToAnchor:rightAnchor39 constant:-v11];
     v690[8] = v132;
     v133 = [MEMORY[0x277CBEA60] arrayWithObjects:v690 count:9];
     [v685 addObjectsFromArray:v133];
 
     v26 = v684;
     v115 = v685;
-    v27 = v682;
+    v27 = nowPlayingLayout;
 
     goto LABEL_72;
   }
 
   if ([v27 isSportsLayout])
   {
-    v160 = [(UIStackView *)v26->_titleStackView centerYAnchor];
-    v676 = [(UILabel *)v26->_leftScoreLabel centerYAnchor];
-    v662 = [v160 constraintEqualToAnchor:?];
+    centerYAnchor22 = [(UIStackView *)v26->_titleStackView centerYAnchor];
+    centerYAnchor23 = [(UILabel *)v26->_leftScoreLabel centerYAnchor];
+    v662 = [centerYAnchor22 constraintEqualToAnchor:?];
     v692[0] = v662;
-    v161 = [(UIStackView *)v26->_titleStackView leftAnchor];
+    leftAnchor37 = [(UIStackView *)v26->_titleStackView leftAnchor];
     [(UILabel *)v26->_leftScoreLabel rightAnchor];
-    v622 = v649 = v161;
-    v607 = [v161 constraintEqualToAnchor:2.0 constant:?];
+    v622 = v649 = leftAnchor37;
+    v607 = [leftAnchor37 constraintEqualToAnchor:2.0 constant:?];
     v692[1] = v607;
-    v162 = [(UIStackView *)v26->_titleStackView rightAnchor];
-    v577 = [(UILabel *)v26->_rightScoreLabel leftAnchor];
-    v592 = v162;
-    v562 = [v162 constraintEqualToAnchor:-2.0 constant:?];
+    rightAnchor40 = [(UIStackView *)v26->_titleStackView rightAnchor];
+    leftAnchor38 = [(UILabel *)v26->_rightScoreLabel leftAnchor];
+    v592 = rightAnchor40;
+    v562 = [rightAnchor40 constraintEqualToAnchor:-2.0 constant:?];
     v692[2] = v562;
-    v163 = [(CPUITransportControlView *)v26->_transportControlView leftAnchor];
-    v532 = [(UIImageView *)v26->_leftTeamArtwork rightAnchor];
-    v547 = v163;
-    v518 = [v163 constraintEqualToAnchor:6.0 constant:?];
+    leftAnchor39 = [(CPUITransportControlView *)v26->_transportControlView leftAnchor];
+    rightAnchor41 = [(UIImageView *)v26->_leftTeamArtwork rightAnchor];
+    v547 = leftAnchor39;
+    v518 = [leftAnchor39 constraintEqualToAnchor:6.0 constant:?];
     v692[3] = v518;
-    v164 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
-    v490 = [(UIImageView *)v26->_rightTeamArtwork leftAnchor];
-    v504 = v164;
-    v476 = [v164 constraintEqualToAnchor:-6.0 constant:?];
+    rightAnchor42 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
+    leftAnchor40 = [(UIImageView *)v26->_rightTeamArtwork leftAnchor];
+    v504 = rightAnchor42;
+    v476 = [rightAnchor42 constraintEqualToAnchor:-6.0 constant:?];
     v692[4] = v476;
-    v165 = [(CPUIProgressView *)v26->_progressView leftAnchor];
-    v448 = [v27 progressViewFullWidth];
-    if (v448)
+    leftAnchor41 = [(CPUIProgressView *)v26->_progressView leftAnchor];
+    progressViewFullWidth = [v27 progressViewFullWidth];
+    if (progressViewFullWidth)
     {
-      v166 = [(CPUIProgressView *)progressView leftAnchor];
-      v435 = v166;
+      leftAnchor42 = [(CPUIProgressView *)progressView leftAnchor];
+      leftButton3 = leftAnchor42;
     }
 
     else
     {
-      v435 = [(CPUITransportControlView *)v26->_transportControlView leftButton];
-      v166 = [v435 leftAnchor];
+      leftButton3 = [(CPUITransportControlView *)v26->_transportControlView leftButton];
+      leftAnchor42 = [leftButton3 leftAnchor];
     }
 
-    v182 = [v27 playModeControlButtonsFullWidth];
+    playModeControlButtonsFullWidth3 = [v27 playModeControlButtonsFullWidth];
     v183 = 0.0;
-    if (v182)
+    if (playModeControlButtonsFullWidth3)
     {
       v183 = v7;
     }
 
-    v463 = v165;
-    v401 = v166;
-    v423 = [v165 constraintEqualToAnchor:v166 constant:v183];
+    v463 = leftAnchor41;
+    v401 = leftAnchor42;
+    v423 = [leftAnchor41 constraintEqualToAnchor:leftAnchor42 constant:v183];
     v692[5] = v423;
-    v184 = [(CPUIProgressView *)v26->_progressView rightAnchor];
-    v185 = [v27 progressViewFullWidth];
+    rightAnchor43 = [(CPUIProgressView *)v26->_progressView rightAnchor];
+    progressViewFullWidth2 = [v27 progressViewFullWidth];
     v186 = &v26->super.super.super.isa;
-    v187 = v185;
-    v636 = v160;
-    if (v185)
+    v187 = progressViewFullWidth2;
+    v636 = centerYAnchor22;
+    if (progressViewFullWidth2)
     {
       [(CPUIProgressView *)progressView rightAnchor];
     }
 
     else
     {
-      v394 = [v186[54] fastForwardButton];
-      [v394 rightAnchor];
+      topAnchor27 = [v186[54] fastForwardButton];
+      [topAnchor27 rightAnchor];
     }
     v188 = ;
-    v205 = [v27 playModeControlButtonsFullWidth];
+    playModeControlButtonsFullWidth4 = [v27 playModeControlButtonsFullWidth];
     v206 = -v11;
-    if (!v205)
+    if (!playModeControlButtonsFullWidth4)
     {
       v206 = 0.0;
     }
 
-    v413 = v184;
-    v207 = [v184 constraintEqualToAnchor:v188 constant:v206];
+    v413 = rightAnchor43;
+    v207 = [rightAnchor43 constraintEqualToAnchor:v188 constant:v206];
     v692[6] = v207;
-    v208 = [v186[55] leftAnchor];
-    v209 = [v186[56] leftAnchor];
-    v210 = [v208 constraintEqualToAnchor:v209];
+    leftAnchor43 = [v186[55] leftAnchor];
+    leftAnchor44 = [v186[56] leftAnchor];
+    v210 = [leftAnchor43 constraintEqualToAnchor:leftAnchor44];
     v692[7] = v210;
-    v211 = [v186[55] rightAnchor];
-    v212 = [v186[56] rightAnchor];
-    v213 = [v211 constraintEqualToAnchor:v212];
+    rightAnchor44 = [v186[55] rightAnchor];
+    rightAnchor45 = [v186[56] rightAnchor];
+    v213 = [rightAnchor44 constraintEqualToAnchor:rightAnchor45];
     v692[8] = v213;
     v214 = [MEMORY[0x277CBEA60] arrayWithObjects:v692 count:9];
     [v685 addObjectsFromArray:v214];
@@ -1733,117 +1733,117 @@ LABEL_33:
     if ((v187 & 1) == 0)
     {
 
-      v188 = v394;
+      v188 = topAnchor27;
     }
 
-    v150 = v636;
+    centerXAnchor5 = v636;
     v157 = v649;
     v158 = v662;
-    v159 = v676;
-    if ((v448 & 1) == 0)
+    centerXAnchor6 = centerYAnchor23;
+    if ((progressViewFullWidth & 1) == 0)
     {
     }
 
     v115 = v685;
     v26 = v684;
-    v27 = v682;
+    v27 = nowPlayingLayout;
 LABEL_81:
     progressView = v683;
     goto LABEL_82;
   }
 
-  v176 = [(CPUIArtworkView *)v26->_artworkViewBrick rightAnchor];
-  v673 = [(CPUIProgressView *)progressView rightAnchor];
-  v659 = [v176 constraintEqualToAnchor:-v11 constant:?];
+  rightAnchor46 = [(CPUIArtworkView *)v26->_artworkViewBrick rightAnchor];
+  rightAnchor47 = [(CPUIProgressView *)progressView rightAnchor];
+  v659 = [rightAnchor46 constraintEqualToAnchor:-v11 constant:?];
   v691[0] = v659;
-  v177 = [(CPUITransportControlView *)v26->_transportControlView leftAnchor];
+  leftAnchor45 = [(CPUITransportControlView *)v26->_transportControlView leftAnchor];
   [(CPUIProgressView *)progressView leftAnchor];
-  v623 = v646 = v177;
-  v608 = [v177 constraintEqualToAnchor:v7 constant:?];
+  v623 = v646 = leftAnchor45;
+  v608 = [leftAnchor45 constraintEqualToAnchor:v7 constant:?];
   v691[1] = v608;
-  v178 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
-  v578 = [(CPUIArtworkView *)v26->_artworkViewBrick leftAnchor];
-  v593 = v178;
-  v563 = [v178 constraintEqualToAnchor:-v11 constant:?];
+  rightAnchor48 = [(CPUITransportControlView *)v26->_transportControlView rightAnchor];
+  leftAnchor46 = [(CPUIArtworkView *)v26->_artworkViewBrick leftAnchor];
+  v593 = rightAnchor48;
+  v563 = [rightAnchor48 constraintEqualToAnchor:-v11 constant:?];
   v691[2] = v563;
-  v179 = [(CPUIProgressView *)v26->_progressView leftAnchor];
-  v533 = [(CPUITransportControlView *)v26->_transportControlView leftButton];
-  [v533 leftAnchor];
-  v519 = v548 = v179;
-  v505 = [v179 constraintEqualToAnchor:?];
+  leftAnchor47 = [(CPUIProgressView *)v26->_progressView leftAnchor];
+  leftButton4 = [(CPUITransportControlView *)v26->_transportControlView leftButton];
+  [leftButton4 leftAnchor];
+  v519 = v548 = leftAnchor47;
+  v505 = [leftAnchor47 constraintEqualToAnchor:?];
   v691[3] = v505;
-  v180 = [(CPUIProgressView *)v26->_progressView rightAnchor];
-  v477 = [v27 progressViewFullWidth];
-  v634 = v176;
-  if (v477)
+  rightAnchor49 = [(CPUIProgressView *)v26->_progressView rightAnchor];
+  progressViewFullWidth3 = [v27 progressViewFullWidth];
+  v634 = rightAnchor46;
+  if (progressViewFullWidth3)
   {
-    v181 = [(CPUIArtworkView *)v26->_artworkViewBrick rightAnchor];
-    v462 = v181;
+    rightAnchor50 = [(CPUIArtworkView *)v26->_artworkViewBrick rightAnchor];
+    fastForwardButton3 = rightAnchor50;
   }
 
   else
   {
-    v462 = [(CPUITransportControlView *)v26->_transportControlView fastForwardButton];
-    v181 = [v462 rightAnchor];
+    fastForwardButton3 = [(CPUITransportControlView *)v26->_transportControlView fastForwardButton];
+    rightAnchor50 = [fastForwardButton3 rightAnchor];
   }
 
-  v491 = v180;
-  v402 = v181;
-  v449 = [v180 constraintEqualToAnchor:v181];
+  v491 = rightAnchor49;
+  v402 = rightAnchor50;
+  v449 = [rightAnchor49 constraintEqualToAnchor:rightAnchor50];
   v691[4] = v449;
-  v189 = [(CPUISongDetailsView *)v26->_songDetailsView rightAnchor];
-  v424 = [(CPUIArtworkView *)v26->_artworkViewBrick leftAnchor];
-  v436 = v189;
-  v412 = [v189 constraintEqualToAnchor:-v11 constant:?];
+  rightAnchor51 = [(CPUISongDetailsView *)v26->_songDetailsView rightAnchor];
+  leftAnchor48 = [(CPUIArtworkView *)v26->_artworkViewBrick leftAnchor];
+  v436 = rightAnchor51;
+  v412 = [rightAnchor51 constraintEqualToAnchor:-v11 constant:?];
   v691[5] = v412;
-  v190 = [(CPUISongDetailsView *)v26->_songDetailsView leftAnchor];
-  v191 = [(CPUIProgressView *)progressView leftAnchor];
-  v192 = [v190 constraintEqualToAnchor:v191 constant:v7];
+  leftAnchor49 = [(CPUISongDetailsView *)v26->_songDetailsView leftAnchor];
+  leftAnchor50 = [(CPUIProgressView *)progressView leftAnchor];
+  v192 = [leftAnchor49 constraintEqualToAnchor:leftAnchor50 constant:v7];
   v691[6] = v192;
-  v193 = [(CPUIPlayModeControlView *)v26->_playModeControlView leftAnchor];
-  v194 = [(CPUIProgressView *)progressView leftAnchor];
-  v195 = [v193 constraintEqualToAnchor:v194 constant:v7];
+  leftAnchor51 = [(CPUIPlayModeControlView *)v26->_playModeControlView leftAnchor];
+  leftAnchor52 = [(CPUIProgressView *)progressView leftAnchor];
+  v195 = [leftAnchor51 constraintEqualToAnchor:leftAnchor52 constant:v7];
   v691[7] = v195;
   [(CPUIPlayModeControlView *)v26->_playModeControlView rightAnchor];
   v197 = v196 = progressView;
-  v198 = [v682 playModeControlButtonsFullWidth];
+  playModeControlButtonsFullWidth5 = [nowPlayingLayout playModeControlButtonsFullWidth];
   v199 = v196;
-  if ((v198 & 1) == 0)
+  if ((playModeControlButtonsFullWidth5 & 1) == 0)
   {
     v199 = v26->_progressView;
   }
 
-  v200 = [(CPUIProgressView *)v199 rightAnchor];
-  v201 = [v682 playModeControlButtonsFullWidth];
+  rightAnchor52 = [(CPUIProgressView *)v199 rightAnchor];
+  playModeControlButtonsFullWidth6 = [nowPlayingLayout playModeControlButtonsFullWidth];
   v202 = 0.0;
-  if (v201)
+  if (playModeControlButtonsFullWidth6)
   {
     v202 = -v11;
   }
 
-  v203 = [v197 constraintEqualToAnchor:v200 constant:v202];
+  v203 = [v197 constraintEqualToAnchor:rightAnchor52 constant:v202];
   v691[8] = v203;
   v204 = [MEMORY[0x277CBEA60] arrayWithObjects:v691 count:9];
   [v685 addObjectsFromArray:v204];
 
-  if ((v477 & 1) == 0)
+  if ((progressViewFullWidth3 & 1) == 0)
   {
   }
 
   v115 = v685;
   v26 = v684;
-  v27 = v682;
+  v27 = nowPlayingLayout;
   progressView = v683;
 LABEL_72:
-  v150 = v634;
+  centerXAnchor5 = v634;
   v157 = v646;
   v158 = v659;
-  v159 = v673;
+  centerXAnchor6 = rightAnchor47;
 LABEL_82:
 
 LABEL_83:
-  v215 = [v27 artworkPosition];
-  if (v215 - 2 < 2)
+  artworkPosition3 = [v27 artworkPosition];
+  if (artworkPosition3 - 2 < 2)
   {
     if (![v27 isSportsLayout])
     {
@@ -1852,48 +1852,48 @@ LABEL_83:
 
     v231 = [(CPUINowPlayingView *)v26 _equalHeightVerticalSpacers:3 minimumPadding:6.0 maximumPadding:12.0];
     v664 = [v231 objectAtIndexedSubscript:0];
-    v651 = [v664 topAnchor];
-    v638 = [(UILabel *)v26->_leftScoreLabel bottomAnchor];
-    v625 = [v651 constraintEqualToAnchor:v638];
+    topAnchor48 = [v664 topAnchor];
+    bottomAnchor43 = [(UILabel *)v26->_leftScoreLabel bottomAnchor];
+    v625 = [topAnchor48 constraintEqualToAnchor:bottomAnchor43];
     v687[0] = v625;
     v610 = [v231 objectAtIndexedSubscript:0];
-    v595 = [v610 bottomAnchor];
-    v580 = [(CPUITransportControlView *)v26->_transportControlView topAnchor];
-    v565 = [v595 constraintEqualToAnchor:v580];
+    bottomAnchor44 = [v610 bottomAnchor];
+    topAnchor49 = [(CPUITransportControlView *)v26->_transportControlView topAnchor];
+    v565 = [bottomAnchor44 constraintEqualToAnchor:topAnchor49];
     v687[1] = v565;
     v550 = [v231 objectAtIndexedSubscript:1];
-    v535 = [v550 topAnchor];
-    v521 = [(CPUITransportControlView *)v26->_transportControlView bottomAnchor];
-    v507 = [v535 constraintEqualToAnchor:v521];
+    topAnchor50 = [v550 topAnchor];
+    bottomAnchor45 = [(CPUITransportControlView *)v26->_transportControlView bottomAnchor];
+    v507 = [topAnchor50 constraintEqualToAnchor:bottomAnchor45];
     v687[2] = v507;
     v493 = [v231 objectAtIndexedSubscript:1];
-    v479 = [v493 bottomAnchor];
-    v465 = [(CPUIProgressView *)v26->_progressView topAnchor];
-    v451 = [v479 constraintEqualToAnchor:v465];
+    bottomAnchor46 = [v493 bottomAnchor];
+    topAnchor51 = [(CPUIProgressView *)v26->_progressView topAnchor];
+    v451 = [bottomAnchor46 constraintEqualToAnchor:topAnchor51];
     v687[3] = v451;
     v232 = [v231 objectAtIndexedSubscript:2];
-    v233 = [v232 topAnchor];
-    v234 = [(CPUIProgressView *)v26->_progressView bottomAnchor];
-    [v233 constraintEqualToAnchor:v234];
+    topAnchor52 = [v232 topAnchor];
+    bottomAnchor47 = [(CPUIProgressView *)v26->_progressView bottomAnchor];
+    [topAnchor52 constraintEqualToAnchor:bottomAnchor47];
     v235 = v26;
     v237 = v236 = v115;
     v687[4] = v237;
     v677 = v231;
     v238 = [v231 objectAtIndexedSubscript:2];
-    v239 = [v238 bottomAnchor];
-    v240 = [(CPUIPlayModeControlView *)v235->_playModeControlView topAnchor];
-    v241 = [v239 constraintEqualToAnchor:v240];
+    bottomAnchor48 = [v238 bottomAnchor];
+    topAnchor53 = [(CPUIPlayModeControlView *)v235->_playModeControlView topAnchor];
+    v241 = [bottomAnchor48 constraintEqualToAnchor:topAnchor53];
     v687[5] = v241;
     v242 = [MEMORY[0x277CBEA60] arrayWithObjects:v687 count:6];
     [v236 addObjectsFromArray:v242];
 
     v218 = v664;
-    v230 = v680;
+    v230 = array;
   }
 
   else
   {
-    if (v215 > 1)
+    if (artworkPosition3 > 1)
     {
       goto LABEL_96;
     }
@@ -1903,65 +1903,65 @@ LABEL_83:
       v216 = [(CPUINowPlayingView *)v26 _equalHeightVerticalSpacers:3 minimumPadding:6.0 maximumPadding:0.0];
       v217 = [(CPUINowPlayingView *)v26 _equalHeightVerticalSpacers:2 minimumPadding:6.0 maximumPadding:12.0];
       v663 = [v216 objectAtIndexedSubscript:0];
-      v650 = [v663 topAnchor];
-      v637 = [(CPUIProgressView *)progressView topAnchor];
-      v624 = [v650 constraintEqualToAnchor:v637];
+      topAnchor54 = [v663 topAnchor];
+      topAnchor55 = [(CPUIProgressView *)progressView topAnchor];
+      v624 = [topAnchor54 constraintEqualToAnchor:topAnchor55];
       v689[0] = v624;
       v609 = [v216 objectAtIndexedSubscript:0];
-      v594 = [v609 bottomAnchor];
-      v579 = [(UILabel *)v26->_leftScoreLabel topAnchor];
-      v564 = [v594 constraintEqualToAnchor:v579];
+      bottomAnchor49 = [v609 bottomAnchor];
+      topAnchor56 = [(UILabel *)v26->_leftScoreLabel topAnchor];
+      v564 = [bottomAnchor49 constraintEqualToAnchor:topAnchor56];
       v689[1] = v564;
       v549 = [v216 objectAtIndexedSubscript:1];
-      v534 = [v549 topAnchor];
-      v520 = [(UILabel *)v26->_leftScoreLabel bottomAnchor];
-      v506 = [v534 constraintEqualToAnchor:v520];
+      topAnchor57 = [v549 topAnchor];
+      bottomAnchor50 = [(UILabel *)v26->_leftScoreLabel bottomAnchor];
+      v506 = [topAnchor57 constraintEqualToAnchor:bottomAnchor50];
       v689[2] = v506;
       v492 = [v216 objectAtIndexedSubscript:1];
-      v478 = [v492 bottomAnchor];
-      v464 = [(UIImageView *)v26->_leftTeamArtwork topAnchor];
-      v450 = [v478 constraintEqualToAnchor:v464];
+      bottomAnchor51 = [v492 bottomAnchor];
+      topAnchor58 = [(UIImageView *)v26->_leftTeamArtwork topAnchor];
+      v450 = [bottomAnchor51 constraintEqualToAnchor:topAnchor58];
       v689[3] = v450;
       v437 = [v216 objectAtIndexedSubscript:2];
-      v425 = [v437 topAnchor];
-      v414 = [(UILabel *)v26->_leftTeamStandingLabel bottomAnchor];
-      v403 = [v425 constraintEqualToAnchor:v414];
+      topAnchor59 = [v437 topAnchor];
+      bottomAnchor52 = [(UILabel *)v26->_leftTeamStandingLabel bottomAnchor];
+      v403 = [topAnchor59 constraintEqualToAnchor:bottomAnchor52];
       v689[4] = v403;
       v677 = v216;
       v396 = [v216 objectAtIndexedSubscript:2];
-      v390 = [v396 bottomAnchor];
-      v383 = [(CPUITransportControlView *)v26->_transportControlView topAnchor];
-      v377 = [v390 constraintEqualToAnchor:v383];
+      bottomAnchor53 = [v396 bottomAnchor];
+      topAnchor60 = [(CPUITransportControlView *)v26->_transportControlView topAnchor];
+      v377 = [bottomAnchor53 constraintEqualToAnchor:topAnchor60];
       v689[5] = v377;
       v218 = v217;
       v371 = [v217 objectAtIndexedSubscript:0];
-      v366 = [v371 topAnchor];
-      v361 = [(CPUITransportControlView *)v26->_transportControlView bottomAnchor];
-      v356 = [v366 constraintEqualToAnchor:v361];
+      topAnchor61 = [v371 topAnchor];
+      bottomAnchor54 = [(CPUITransportControlView *)v26->_transportControlView bottomAnchor];
+      v356 = [topAnchor61 constraintEqualToAnchor:bottomAnchor54];
       v689[6] = v356;
       v351 = [v217 objectAtIndexedSubscript:0];
-      v346 = [v351 bottomAnchor];
-      v341 = [(CPUIProgressView *)v26->_progressView topAnchor];
-      v336 = [v346 constraintEqualToAnchor:v341];
+      bottomAnchor55 = [v351 bottomAnchor];
+      topAnchor62 = [(CPUIProgressView *)v26->_progressView topAnchor];
+      v336 = [bottomAnchor55 constraintEqualToAnchor:topAnchor62];
       v689[7] = v336;
       v332 = [v217 objectAtIndexedSubscript:1];
-      v219 = [v332 topAnchor];
+      topAnchor63 = [v332 topAnchor];
       [(CPUIProgressView *)v26->_progressView bottomAnchor];
       v221 = v220 = v115;
-      v222 = [v219 constraintEqualToAnchor:v221];
+      v222 = [topAnchor63 constraintEqualToAnchor:v221];
       v689[8] = v222;
       v223 = [v218 objectAtIndexedSubscript:1];
-      v224 = [v223 bottomAnchor];
+      bottomAnchor56 = [v223 bottomAnchor];
       v225 = v26;
-      v226 = v224;
-      v227 = [(CPUIPlayModeControlView *)v225->_playModeControlView topAnchor];
-      v228 = [v226 constraintEqualToAnchor:v227];
+      v226 = bottomAnchor56;
+      topAnchor64 = [(CPUIPlayModeControlView *)v225->_playModeControlView topAnchor];
+      v228 = [v226 constraintEqualToAnchor:topAnchor64];
       v689[9] = v228;
       v229 = [MEMORY[0x277CBEA60] arrayWithObjects:v689 count:10];
       [v220 addObjectsFromArray:v229];
 
-      v230 = v680;
-      [v680 addObjectsFromArray:v218];
+      v230 = array;
+      [array addObjectsFromArray:v218];
     }
 
     else
@@ -1970,30 +1970,30 @@ LABEL_83:
       v665 = [(CPUINowPlayingView *)v26 _equalHeightVerticalSpacers:1 minimumPadding:6.0 maximumPadding:6.0];
       v244 = [(CPUINowPlayingView *)v26 _equalHeightVerticalSpacers:2 minimumPadding:0.0 maximumPadding:0.0];
       v245 = [v244 objectAtIndexedSubscript:0];
-      v246 = [v245 topAnchor];
-      v247 = [(CPUIProgressView *)progressView topAnchor];
-      v248 = [v246 constraintEqualToAnchor:v247];
+      topAnchor65 = [v245 topAnchor];
+      topAnchor66 = [(CPUIProgressView *)progressView topAnchor];
+      v248 = [topAnchor65 constraintEqualToAnchor:topAnchor66];
       v688[0] = v248;
       v652 = v244;
       v581 = [v244 objectAtIndexedSubscript:0];
-      v249 = [v581 bottomAnchor];
-      v250 = [v27 showsArtwork];
+      bottomAnchor57 = [v581 bottomAnchor];
+      showsArtwork = [v27 showsArtwork];
       v251 = &OBJC_IVAR___CPUINowPlayingView__songDetailsView;
-      if (v250)
+      if (showsArtwork)
       {
         v251 = &OBJC_IVAR___CPUINowPlayingView__artworkViewBrick;
       }
 
-      v551 = [*(&v26->super.super.super.isa + *v251) topAnchor];
-      v566 = v249;
-      v252 = [v249 constraintEqualToAnchor:?];
+      topAnchor67 = [*(&v26->super.super.super.isa + *v251) topAnchor];
+      v566 = bottomAnchor57;
+      v252 = [bottomAnchor57 constraintEqualToAnchor:?];
       v688[1] = v252;
       v522 = [v243 objectAtIndexedSubscript:0];
-      v253 = [v522 topAnchor];
-      v626 = v246;
+      topAnchor68 = [v522 topAnchor];
+      v626 = topAnchor65;
       v639 = v245;
       v596 = v248;
-      v611 = v247;
+      v611 = topAnchor66;
       v536 = v252;
       if ([v27 showsArtwork])
       {
@@ -2005,137 +2005,137 @@ LABEL_83:
         [(CPUIProgressView *)progressView topAnchor];
       }
       v494 = ;
-      v508 = v253;
-      v480 = [v253 constraintEqualToAnchor:v494];
+      v508 = topAnchor68;
+      v480 = [topAnchor68 constraintEqualToAnchor:v494];
       v688[2] = v480;
       v466 = [v243 objectAtIndexedSubscript:0];
-      v452 = [v466 bottomAnchor];
-      v438 = [(CPUISongDetailsView *)v26->_songDetailsView topAnchor];
-      v426 = [v452 constraintEqualToAnchor:v438];
+      bottomAnchor58 = [v466 bottomAnchor];
+      topAnchor69 = [(CPUISongDetailsView *)v26->_songDetailsView topAnchor];
+      v426 = [bottomAnchor58 constraintEqualToAnchor:topAnchor69];
       v688[3] = v426;
       v415 = [v665 objectAtIndexedSubscript:0];
-      v404 = [v415 topAnchor];
-      v397 = [(CPUISongDetailsView *)v26->_songDetailsView bottomAnchor];
-      v391 = [v404 constraintEqualToAnchor:v397];
+      topAnchor70 = [v415 topAnchor];
+      bottomAnchor59 = [(CPUISongDetailsView *)v26->_songDetailsView bottomAnchor];
+      v391 = [topAnchor70 constraintEqualToAnchor:bottomAnchor59];
       v688[4] = v391;
       v384 = [v665 objectAtIndexedSubscript:0];
-      v378 = [v384 bottomAnchor];
-      v372 = [(CPUITransportControlView *)v26->_transportControlView topAnchor];
-      v367 = [v378 constraintEqualToAnchor:v372];
+      bottomAnchor60 = [v384 bottomAnchor];
+      topAnchor71 = [(CPUITransportControlView *)v26->_transportControlView topAnchor];
+      v367 = [bottomAnchor60 constraintEqualToAnchor:topAnchor71];
       v688[5] = v367;
       v362 = [v243 objectAtIndexedSubscript:1];
-      v357 = [v362 topAnchor];
-      v352 = [(CPUITransportControlView *)v26->_transportControlView bottomAnchor];
-      v347 = [v357 constraintEqualToAnchor:v352];
+      topAnchor72 = [v362 topAnchor];
+      bottomAnchor61 = [(CPUITransportControlView *)v26->_transportControlView bottomAnchor];
+      v347 = [topAnchor72 constraintEqualToAnchor:bottomAnchor61];
       v688[6] = v347;
       v342 = [v243 objectAtIndexedSubscript:1];
-      v337 = [v342 bottomAnchor];
-      v333 = [(CPUIProgressView *)v26->_progressView topAnchor];
-      v329 = [v337 constraintEqualToAnchor:v333];
+      bottomAnchor62 = [v342 bottomAnchor];
+      topAnchor73 = [(CPUIProgressView *)v26->_progressView topAnchor];
+      v329 = [bottomAnchor62 constraintEqualToAnchor:topAnchor73];
       v688[7] = v329;
       v326 = [v243 objectAtIndexedSubscript:2];
-      v323 = [v326 topAnchor];
-      v681 = [(CPUIProgressView *)v26->_progressView bottomAnchor];
-      v321 = [v323 constraintEqualToAnchor:v681];
+      topAnchor74 = [v326 topAnchor];
+      bottomAnchor63 = [(CPUIProgressView *)v26->_progressView bottomAnchor];
+      v321 = [topAnchor74 constraintEqualToAnchor:bottomAnchor63];
       v688[8] = v321;
       v319 = [v243 objectAtIndexedSubscript:2];
-      v317 = [v319 bottomAnchor];
-      v315 = [(CPUIPlayModeControlView *)v26->_playModeControlView topAnchor];
-      v254 = [v317 constraintEqualToAnchor:v315];
+      bottomAnchor64 = [v319 bottomAnchor];
+      topAnchor75 = [(CPUIPlayModeControlView *)v26->_playModeControlView topAnchor];
+      v254 = [bottomAnchor64 constraintEqualToAnchor:topAnchor75];
       v688[9] = v254;
       [v652 objectAtIndexedSubscript:1];
       v255 = v677 = v243;
-      v256 = [v255 topAnchor];
-      v257 = [(CPUIPlayModeControlView *)v26->_playModeControlView bottomAnchor];
-      v258 = [v256 constraintEqualToAnchor:v257];
+      topAnchor76 = [v255 topAnchor];
+      bottomAnchor65 = [(CPUIPlayModeControlView *)v26->_playModeControlView bottomAnchor];
+      v258 = [topAnchor76 constraintEqualToAnchor:bottomAnchor65];
       v688[10] = v258;
       v259 = [v652 objectAtIndexedSubscript:1];
-      v260 = [v259 bottomAnchor];
-      v261 = [(CPUIProgressView *)progressView bottomAnchor];
-      v262 = [v260 constraintEqualToAnchor:v261 constant:-v9];
+      bottomAnchor66 = [v259 bottomAnchor];
+      bottomAnchor67 = [(CPUIProgressView *)progressView bottomAnchor];
+      v262 = [bottomAnchor66 constraintEqualToAnchor:bottomAnchor67 constant:-v9];
       v688[11] = v262;
       v263 = [MEMORY[0x277CBEA60] arrayWithObjects:v688 count:12];
       [v685 addObjectsFromArray:v263];
 
       v218 = v665;
-      v230 = v680;
-      [v680 addObjectsFromArray:v665];
-      [v680 addObjectsFromArray:v652];
+      v230 = array;
+      [array addObjectsFromArray:v665];
+      [array addObjectsFromArray:v652];
     }
   }
 
   [v230 addObjectsFromArray:v677];
   v115 = v685;
   v26 = v684;
-  v27 = v682;
+  v27 = nowPlayingLayout;
   progressView = v683;
 LABEL_96:
-  v264 = [v680 copy];
+  v264 = [array copy];
   verticalSpacerLayoutGuides = v26->_verticalSpacerLayoutGuides;
   v26->_verticalSpacerLayoutGuides = v264;
 
   return v115;
 }
 
-- (void)setBadgeAnnotationView:(id)a3
+- (void)setBadgeAnnotationView:(id)view
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewCopy = view;
   badgeAnnotationView = self->_badgeAnnotationView;
   if (badgeAnnotationView)
   {
     [(UIView *)badgeAnnotationView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_badgeAnnotationView, a3);
-  if (v5)
+  objc_storeStrong(&self->_badgeAnnotationView, view);
+  if (viewCopy)
   {
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(CPUINowPlayingView *)self addSubview:v5];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(CPUINowPlayingView *)self addSubview:viewCopy];
     v18 = MEMORY[0x277CCAAD0];
-    v7 = [v5 centerXAnchor];
-    v8 = [(CPUINowPlayingView *)self sportsData];
+    centerXAnchor = [viewCopy centerXAnchor];
+    sportsData = [(CPUINowPlayingView *)self sportsData];
     v9 = &OBJC_IVAR___CPUINowPlayingView__titleStackView;
-    if (!v8)
+    if (!sportsData)
     {
       v9 = &OBJC_IVAR___CPUINowPlayingView__songDetailsView;
     }
 
-    v10 = [*(&self->super.super.super.isa + *v9) centerXAnchor];
-    v11 = [v7 constraintEqualToAnchor:v10];
+    centerXAnchor2 = [*(&self->super.super.super.isa + *v9) centerXAnchor];
+    v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v19[0] = v11;
-    v12 = [v5 topAnchor];
-    v13 = [(CPUINowPlayingView *)self sportsData];
-    if (v13)
+    topAnchor = [viewCopy topAnchor];
+    sportsData2 = [(CPUINowPlayingView *)self sportsData];
+    if (sportsData2)
     {
       [(UIStackView *)self->_titleStackView bottomAnchor];
     }
 
     else
     {
-      v17 = [(CPUISongDetailsView *)self->_songDetailsView albumArtistLabelButton];
-      [v17 bottomAnchor];
+      albumArtistLabelButton = [(CPUISongDetailsView *)self->_songDetailsView albumArtistLabelButton];
+      [albumArtistLabelButton bottomAnchor];
     }
     v14 = ;
-    v15 = [v12 constraintEqualToAnchor:v14 constant:3.0];
+    v15 = [topAnchor constraintEqualToAnchor:v14 constant:3.0];
     v19[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     [v18 activateConstraints:v16];
 
-    if (!v13)
+    if (!sportsData2)
     {
 
-      v14 = v17;
+      v14 = albumArtistLabelButton;
     }
   }
 }
 
 - (void)_handleShowVideo
 {
-  v3 = [(CPUINowPlayingView *)self videoDelegate];
-  if (v3)
+  videoDelegate = [(CPUINowPlayingView *)self videoDelegate];
+  if (videoDelegate)
   {
-    v4 = v3;
+    v4 = videoDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v4 nowPlayingViewWantsToShowVideo:self];

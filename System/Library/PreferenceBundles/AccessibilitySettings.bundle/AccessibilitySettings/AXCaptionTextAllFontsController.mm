@@ -1,6 +1,6 @@
 @interface AXCaptionTextAllFontsController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -11,10 +11,10 @@
   v6.receiver = self;
   v6.super_class = AXCaptionTextAllFontsController;
   [(AXCaptionTextAllFontsController *)&v6 viewDidLoad];
-  v3 = [(AXCaptionTextAllFontsController *)self table];
+  table = [(AXCaptionTextAllFontsController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionFontCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -23,7 +23,7 @@
   if (!v3)
   {
     v39 = OBJC_IVAR___PSListController__specifiers;
-    v43 = self;
+    selfCopy = self;
     v42 = objc_alloc_init(NSMutableArray);
     v4 = +[NSMutableArray array];
     v5 = AXCaptionFonts();
@@ -48,17 +48,17 @@
           }
 
           v11 = [*(*(&v53 + 1) + 8 * i) objectForKeyedSubscript:@"name"];
-          v12 = [v11 lowercaseString];
+          lowercaseString = [v11 lowercaseString];
 
-          v13 = [v12 rangeOfString:@"-"];
+          v13 = [lowercaseString rangeOfString:@"-"];
           if (v13 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v14 = [v12 substringToIndex:v13];
+            v14 = [lowercaseString substringToIndex:v13];
 
-            v12 = v14;
+            lowercaseString = v14;
           }
 
-          [v6 addObject:v12];
+          [v6 addObject:lowercaseString];
         }
 
         v8 = [obj countByEnumeratingWithState:&v53 objects:v59 count:16];
@@ -131,17 +131,17 @@
             }
 
             CFRelease(v26);
-            v31 = [(__CFString *)v28 lowercaseString];
-            v38 = [v30 lowercaseString];
+            lowercaseString2 = [(__CFString *)v28 lowercaseString];
+            lowercaseString3 = [v30 lowercaseString];
             LOBYTE(v37) = 1;
             _AXLogWithFacility();
 
-            v32 = [v30 lowercaseString];
-            v33 = [v6 containsObject:v32];
+            lowercaseString4 = [v30 lowercaseString];
+            v33 = [v6 containsObject:lowercaseString4];
 
             if ((v33 & 1) == 0)
             {
-              v34 = [PSSpecifier preferenceSpecifierNamed:v27 target:v43 set:0 get:0 detail:0 cell:3 edit:0];
+              v34 = [PSSpecifier preferenceSpecifierNamed:v27 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
               [v34 setProperty:objc_opt_class() forKey:v41];
               [v34 setProperty:v28 forKey:v40];
               [v34 setProperty:&__kCFBooleanTrue forKey:@"isFont"];
@@ -157,28 +157,28 @@
       while (v22);
     }
 
-    v35 = *&v43->AXUISettingsBaseListController_opaque[v39];
-    *&v43->AXUISettingsBaseListController_opaque[v39] = v42;
+    v35 = *&selfCopy->AXUISettingsBaseListController_opaque[v39];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v39] = v42;
 
-    v3 = *&v43->AXUISettingsBaseListController_opaque[v39];
+    v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v39];
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [v6 propertyForKey:PSIDKey];
+  v5 = [view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  v7 = [specifier propertyForKey:PSIDKey];
   v18[0] = @"name";
   v18[1] = @"size";
   v19[0] = v7;
   v19[1] = &off_27B4F0;
   v18[2] = @"displayName";
-  v8 = [v6 name];
+  name = [specifier name];
   v18[3] = @"isBold";
-  v19[2] = v8;
+  v19[2] = name;
   v19[3] = &__kCFBooleanFalse;
   v9 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:4];
 
@@ -203,8 +203,8 @@
     CFRelease(v14);
   }
 
-  v15 = [(AXCaptionTextAllFontsController *)self navigationController];
-  v16 = [v15 popViewControllerAnimated:1];
+  navigationController = [(AXCaptionTextAllFontsController *)self navigationController];
+  v16 = [navigationController popViewControllerAnimated:1];
 }
 
 @end

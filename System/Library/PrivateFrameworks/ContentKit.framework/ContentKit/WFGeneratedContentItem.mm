@@ -4,16 +4,16 @@
 + (id)coercions;
 + (id)dateCoercionHandler;
 + (id)dictionaryCoercionHandler;
-+ (id)getTextResponseWithItem:(id)a3;
-+ (id)itemWithResponse:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)getTextResponseWithItem:(id)item;
++ (id)itemWithResponse:(id)response;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)numberCoercionHandler;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)textCoercionHandler;
 - (WFGeneratedResponse)response;
 - (id)richListTitle;
-- (void)getSerializedItem:(id)a3;
+- (void)getSerializedItem:(id)item;
 @end
 
 @implementation WFGeneratedContentItem
@@ -60,10 +60,10 @@
   return v2;
 }
 
-+ (id)getTextResponseWithItem:(id)a3
++ (id)getTextResponseWithItem:(id)item
 {
-  v3 = a3;
-  sub_21E23A178(v3);
+  itemCopy = item;
+  sub_21E23A178(itemCopy);
   v5 = v4;
 
   if (v5)
@@ -81,28 +81,28 @@
 
 - (id)richListTitle
 {
-  v3 = [(WFGeneratedContentItem *)self textResponse];
-  if (v3 && (v4 = v3, -[WFGeneratedContentItem textResponse](self, "textResponse"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
+  textResponse = [(WFGeneratedContentItem *)self textResponse];
+  if (textResponse && (v4 = textResponse, -[WFGeneratedContentItem textResponse](self, "textResponse"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
   {
-    v7 = [(WFGeneratedContentItem *)self textResponse];
+    textResponse2 = [(WFGeneratedContentItem *)self textResponse];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = WFGeneratedContentItem;
-    v7 = [(WFContentItem *)&v9 richListTitle];
+    textResponse2 = [(WFContentItem *)&v9 richListTitle];
   }
 
-  return v7;
+  return textResponse2;
 }
 
-- (void)getSerializedItem:(id)a3
+- (void)getSerializedItem:(id)item
 {
-  v4 = a3;
-  v5 = [(WFGeneratedContentItem *)self response];
-  v6 = [v5 rawResponse];
-  v7 = [v6 length];
+  itemCopy = item;
+  response = [(WFGeneratedContentItem *)self response];
+  rawResponse = [response rawResponse];
+  v7 = [rawResponse length];
 
   if (v7)
   {
@@ -112,30 +112,30 @@
     v25[2] = __44__WFGeneratedContentItem_getSerializedItem___block_invoke;
     v25[3] = &unk_27834A430;
     v9 = &v26;
-    v26 = v4;
-    v10 = v4;
+    v26 = itemCopy;
+    v10 = itemCopy;
     v11 = v25;
   }
 
   else
   {
-    v12 = [(WFGeneratedContentItem *)self response];
-    v13 = [v12 date];
+    response2 = [(WFGeneratedContentItem *)self response];
+    date = [response2 date];
 
-    if (!v13)
+    if (!date)
     {
-      v14 = [(WFGeneratedContentItem *)self response];
-      v15 = [v14 dictionary];
+      response3 = [(WFGeneratedContentItem *)self response];
+      dictionary = [response3 dictionary];
 
-      if (!v15)
+      if (!dictionary)
       {
-        v16 = [(WFGeneratedContentItem *)self response];
-        v17 = [v16 BOOLeanValue];
+        response4 = [(WFGeneratedContentItem *)self response];
+        bOOLeanValue = [response4 BOOLeanValue];
 
-        if (!v17)
+        if (!bOOLeanValue)
         {
-          v18 = [(WFGeneratedContentItem *)self response];
-          [v18 numberValue];
+          response5 = [(WFGeneratedContentItem *)self response];
+          [response5 numberValue];
         }
       }
     }
@@ -146,8 +146,8 @@
     v22 = __44__WFGeneratedContentItem_getSerializedItem___block_invoke_2;
     v23 = &unk_27834A430;
     v9 = &v24;
-    v24 = v4;
-    v19 = v4;
+    v24 = itemCopy;
+    v19 = itemCopy;
     v11 = &v20;
   }
 
@@ -206,40 +206,40 @@ void __44__WFGeneratedContentItem_getSerializedItem___block_invoke_2(uint64_t a1
 {
   v24[6] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v23 = [a1 attributedStringCoercionHandler];
-  v22 = [WFCoercion coercionToClass:v3 handler:v23];
+  attributedStringCoercionHandler = [self attributedStringCoercionHandler];
+  v22 = [WFCoercion coercionToClass:v3 handler:attributedStringCoercionHandler];
   v24[0] = v22;
   v4 = objc_opt_class();
-  v21 = [a1 textCoercionHandler];
-  v20 = [WFCoercion coercionToClass:v4 handler:v21];
+  textCoercionHandler = [self textCoercionHandler];
+  v20 = [WFCoercion coercionToClass:v4 handler:textCoercionHandler];
   v24[1] = v20;
   v5 = objc_opt_class();
-  v19 = [a1 numberCoercionHandler];
-  v6 = [WFCoercion coercionToClass:v5 handler:v19];
+  numberCoercionHandler = [self numberCoercionHandler];
+  v6 = [WFCoercion coercionToClass:v5 handler:numberCoercionHandler];
   v24[2] = v6;
   v7 = [MEMORY[0x277CCABB0] numberWithBool:1];
   v8 = objc_opt_class();
-  v9 = [a1 BOOLCoercionHandler];
-  v10 = [WFCoercion coercionToClass:v8 handler:v9];
+  bOOLCoercionHandler = [self BOOLCoercionHandler];
+  v10 = [WFCoercion coercionToClass:v8 handler:bOOLCoercionHandler];
   v24[3] = v10;
   v11 = objc_opt_class();
-  v12 = [a1 dictionaryCoercionHandler];
-  v13 = [WFCoercion coercionToClass:v11 handler:v12];
+  dictionaryCoercionHandler = [self dictionaryCoercionHandler];
+  v13 = [WFCoercion coercionToClass:v11 handler:dictionaryCoercionHandler];
   v24[4] = v13;
   v14 = objc_opt_class();
-  v15 = [a1 dateCoercionHandler];
-  v16 = [WFCoercion coercionToClass:v14 handler:v15];
+  dateCoercionHandler = [self dateCoercionHandler];
+  v16 = [WFCoercion coercionToClass:v14 handler:dateCoercionHandler];
   v24[5] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:6];
 
   return v17;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Model Response", @"Model Response");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -280,16 +280,16 @@ void __42__WFGeneratedContentItem_propertyBuilders__block_invoke(uint64_t a1, ui
   (a4)[2](v6, v7);
 }
 
-+ (id)itemWithResponse:(id)a3
++ (id)itemWithResponse:(id)response
 {
-  v5 = a3;
-  if (!v5)
+  responseCopy = response;
+  if (!responseCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"WFGeneratedContentItem.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"response"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFGeneratedContentItem.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"response"}];
   }
 
-  v6 = [a1 itemWithObject:v5 named:0];
+  v6 = [self itemWithObject:responseCopy named:0];
 
   return v6;
 }

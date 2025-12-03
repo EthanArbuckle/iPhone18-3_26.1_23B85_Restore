@@ -3,7 +3,7 @@
 - (NSDictionary)prefetchedHeadlines;
 - (NSString)selectedArticleID;
 - (TSPrefetchedArticlesFetchResult)init;
-- (TSPrefetchedArticlesFetchResult)initWithSelectedArticleID:(id)a3 articleIDs:(id)a4 prefetchedHeadlines:(id)a5;
+- (TSPrefetchedArticlesFetchResult)initWithSelectedArticleID:(id)d articleIDs:(id)ds prefetchedHeadlines:(id)headlines;
 @end
 
 @implementation TSPrefetchedArticlesFetchResult
@@ -33,7 +33,7 @@
   return v2;
 }
 
-- (TSPrefetchedArticlesFetchResult)initWithSelectedArticleID:(id)a3 articleIDs:(id)a4 prefetchedHeadlines:(id)a5
+- (TSPrefetchedArticlesFetchResult)initWithSelectedArticleID:(id)d articleIDs:(id)ds prefetchedHeadlines:(id)headlines
 {
   ObjectType = swift_getObjectType();
   v7 = sub_219BF5414();

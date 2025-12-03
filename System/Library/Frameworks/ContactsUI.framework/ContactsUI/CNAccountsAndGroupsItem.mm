@@ -1,16 +1,16 @@
 @interface CNAccountsAndGroupsItem
 - (BOOL)isEditable;
-- (CNAccountsAndGroupsItem)initWithType:(int64_t)a3 nameProvider:(id)a4;
+- (CNAccountsAndGroupsItem)initWithType:(int64_t)type nameProvider:(id)provider;
 - (CNAccountsAndGroupsItem)parentItem;
 - (NSString)contactCountString;
 - (NSString)name;
 - (UIImage)groupSymbol;
-- (id)arrayForDisplay:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)localizedCompare:(id)a3;
-- (void)setChildItems:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 affectingChildren:(BOOL)a4;
+- (id)arrayForDisplay:(BOOL)display;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)localizedCompare:(id)compare;
+- (void)setChildItems:(id)items;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelected:(BOOL)selected affectingChildren:(BOOL)children;
 @end
 
 @implementation CNAccountsAndGroupsItem
@@ -22,27 +22,27 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNAccountsAndGroupsItem alloc];
-  v5 = [(CNAccountsAndGroupsItem *)self type];
-  v6 = [(CNAccountsAndGroupsItem *)self nameProvider];
-  v7 = [(CNAccountsAndGroupsItem *)v4 initWithType:v5 nameProvider:v6];
+  type = [(CNAccountsAndGroupsItem *)self type];
+  nameProvider = [(CNAccountsAndGroupsItem *)self nameProvider];
+  v7 = [(CNAccountsAndGroupsItem *)v4 initWithType:type nameProvider:nameProvider];
 
-  v8 = [(CNAccountsAndGroupsItem *)self containerIdentifier];
-  [(CNAccountsAndGroupsItem *)v7 setContainerIdentifier:v8];
+  containerIdentifier = [(CNAccountsAndGroupsItem *)self containerIdentifier];
+  [(CNAccountsAndGroupsItem *)v7 setContainerIdentifier:containerIdentifier];
 
   [(CNAccountsAndGroupsItem *)v7 setContactCount:[(CNAccountsAndGroupsItem *)self contactCount]];
-  v9 = [(CNAccountsAndGroupsItem *)self childItems];
-  [(CNAccountsAndGroupsItem *)v7 setChildItems:v9];
+  childItems = [(CNAccountsAndGroupsItem *)self childItems];
+  [(CNAccountsAndGroupsItem *)v7 setChildItems:childItems];
 
-  v10 = [(CNAccountsAndGroupsItem *)self parentItem];
-  [(CNAccountsAndGroupsItem *)v7 setParentItem:v10];
+  parentItem = [(CNAccountsAndGroupsItem *)self parentItem];
+  [(CNAccountsAndGroupsItem *)v7 setParentItem:parentItem];
 
   [(CNAccountsAndGroupsItem *)v7 setBypassIfUnique:[(CNAccountsAndGroupsItem *)self bypassIfUnique]];
   [(CNAccountsAndGroupsItem *)v7 setSoloSelect:[(CNAccountsAndGroupsItem *)self soloSelect]];
-  v11 = [(CNAccountsAndGroupsItem *)self identifier];
-  [(CNAccountsAndGroupsItem *)v7 setIdentifier:v11];
+  identifier = [(CNAccountsAndGroupsItem *)self identifier];
+  [(CNAccountsAndGroupsItem *)v7 setIdentifier:identifier];
 
   [(CNAccountsAndGroupsItem *)v7 setContainerType:[(CNAccountsAndGroupsItem *)self containerType]];
   [(CNAccountsAndGroupsItem *)v7 setSelected:[(CNAccountsAndGroupsItem *)self isSelected]];
@@ -51,20 +51,20 @@
 
 - (UIImage)groupSymbol
 {
-  v2 = [(CNAccountsAndGroupsItem *)self type];
+  type = [(CNAccountsAndGroupsItem *)self type];
   v3 = 0;
-  if (v2 <= 1)
+  if (type <= 1)
   {
-    if (v2)
+    if (type)
     {
-      if (v2 != 1)
+      if (type != 1)
       {
         goto LABEL_15;
       }
 
-      v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-      v5 = [v4 featureFlags];
-      v6 = [v5 isFeatureEnabled:29];
+      currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+      featureFlags = [currentEnvironment featureFlags];
+      v6 = [featureFlags isFeatureEnabled:29];
 
       if ((v6 & 1) == 0)
       {
@@ -79,9 +79,9 @@ LABEL_9:
       goto LABEL_15;
     }
 
-    v12 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v13 = [v12 featureFlags];
-    v14 = [v13 isFeatureEnabled:29];
+    currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags2 = [currentEnvironment2 featureFlags];
+    v14 = [featureFlags2 isFeatureEnabled:29];
 
     v7 = MEMORY[0x1E69DCAB8];
     if (!v14)
@@ -95,11 +95,11 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v2 == 2 || v2 == 4)
+  if (type == 2 || type == 4)
   {
-    v8 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v9 = [v8 featureFlags];
-    v10 = [v9 isFeatureEnabled:29];
+    currentEnvironment3 = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags3 = [currentEnvironment3 featureFlags];
+    v10 = [featureFlags3 isFeatureEnabled:29];
 
     if (v10)
     {
@@ -118,8 +118,8 @@ LABEL_15:
 
 - (NSString)contactCountString
 {
-  v3 = [(CNAccountsAndGroupsItem *)self identifier];
-  v4 = [v3 isEqualToString:@"groupPlaceholderIdentifier"];
+  identifier = [(CNAccountsAndGroupsItem *)self identifier];
+  v4 = [identifier isEqualToString:@"groupPlaceholderIdentifier"];
 
   if (v4)
   {
@@ -128,9 +128,9 @@ LABEL_15:
 
   else
   {
-    v6 = [(CNAccountsAndGroupsItem *)self type];
+    type = [(CNAccountsAndGroupsItem *)self type];
     v5 = 0;
-    if (v6 <= 4 && v6 != 3)
+    if (type <= 4 && type != 3)
     {
       v7 = MEMORY[0x1E696AEC0];
       v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNAccountsAndGroupsItem contactCount](self, "contactCount")}];
@@ -141,13 +141,13 @@ LABEL_15:
   return v5;
 }
 
-- (int64_t)localizedCompare:(id)a3
+- (int64_t)localizedCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsItem *)self name];
-  v6 = [v4 name];
+  compareCopy = compare;
+  name = [(CNAccountsAndGroupsItem *)self name];
+  name2 = [compareCopy name];
 
-  v7 = [v5 localizedStandardCompare:v6];
+  v7 = [name localizedStandardCompare:name2];
   return v7;
 }
 
@@ -155,12 +155,12 @@ LABEL_15:
 {
   if (!self->_name)
   {
-    v3 = [(CNAccountsAndGroupsItem *)self nameProvider];
+    nameProvider = [(CNAccountsAndGroupsItem *)self nameProvider];
 
-    if (v3)
+    if (nameProvider)
     {
-      v4 = [(CNAccountsAndGroupsItem *)self nameProvider];
-      v5 = v4[2]();
+      nameProvider2 = [(CNAccountsAndGroupsItem *)self nameProvider];
+      v5 = nameProvider2[2]();
       name = self->_name;
       self->_name = v5;
     }
@@ -171,26 +171,26 @@ LABEL_15:
   return v7;
 }
 
-- (id)arrayForDisplay:(BOOL)a3
+- (id)arrayForDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (![(CNAccountsAndGroupsItem *)self shouldHide])
   {
-    [v5 addObject:self];
+    [array addObject:self];
   }
 
-  v6 = [(CNAccountsAndGroupsItem *)self childItems];
-  v7 = v6;
-  if (v3 && [v6 count] == 1)
+  childItems = [(CNAccountsAndGroupsItem *)self childItems];
+  v7 = childItems;
+  if (displayCopy && [childItems count] == 1)
   {
-    v8 = [v7 firstObject];
-    if ([v8 bypassIfUnique])
+    firstObject = [v7 firstObject];
+    if ([firstObject bypassIfUnique])
     {
-      v9 = [v8 childItems];
+      childItems2 = [firstObject childItems];
 
-      v7 = v9;
+      v7 = childItems2;
     }
   }
 
@@ -213,8 +213,8 @@ LABEL_15:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * i) arrayForDisplay:{v3, v17}];
-        [v5 addObjectsFromArray:v15];
+        v15 = [*(*(&v17 + 1) + 8 * i) arrayForDisplay:{displayCopy, v17}];
+        [array addObjectsFromArray:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -223,17 +223,17 @@ LABEL_15:
     while (v12);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected == a3)
+  if (self->_selected == selected)
   {
     return;
   }
 
-  v3 = a3;
+  selectedCopy = selected;
   WeakRetained = objc_loadWeakRetained(&self->_parentItem);
   if (![WeakRetained isSelected])
   {
@@ -241,13 +241,13 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  v6 = [(CNAccountsAndGroupsItem *)self soloSelect];
+  soloSelect = [(CNAccountsAndGroupsItem *)self soloSelect];
 
-  if (!v6)
+  if (!soloSelect)
   {
 LABEL_6:
-    v8 = self;
-    v9 = v3;
+    selfCopy2 = self;
+    v9 = selectedCopy;
     v10 = 1;
     goto LABEL_7;
   }
@@ -255,28 +255,28 @@ LABEL_6:
   v7 = objc_loadWeakRetained(&self->_parentItem);
   [v7 setSelected:0 affectingChildren:1];
 
-  v8 = self;
+  selfCopy2 = self;
   v9 = 1;
   v10 = 0;
 LABEL_7:
 
-  [(CNAccountsAndGroupsItem *)v8 setSelected:v9 affectingChildren:v10];
+  [(CNAccountsAndGroupsItem *)selfCopy2 setSelected:v9 affectingChildren:v10];
 }
 
-- (void)setSelected:(BOOL)a3 affectingChildren:(BOOL)a4
+- (void)setSelected:(BOOL)selected affectingChildren:(BOOL)children
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v4 = a4;
-    v5 = a3;
+    childrenCopy = children;
+    selectedCopy = selected;
     [(CNAccountsAndGroupsItem *)self willChangeValueForKey:@"selected"];
-    self->_selected = v5;
+    self->_selected = selectedCopy;
     if (!self->_type)
     {
       v7 = CNContactsUIBundle();
       v8 = v7;
-      if (v5)
+      if (selectedCopy)
       {
         v9 = @"HIDE_ALL_CONTACTS";
       }
@@ -291,14 +291,14 @@ LABEL_7:
     }
 
     [(CNAccountsAndGroupsItem *)self didChangeValueForKey:@"selected"];
-    if (v4)
+    if (childrenCopy)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v11 = [(CNAccountsAndGroupsItem *)self childItems];
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      childItems = [(CNAccountsAndGroupsItem *)self childItems];
+      v12 = [childItems countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         v13 = v12;
@@ -310,21 +310,21 @@ LABEL_7:
           {
             if (*v18 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(childItems);
             }
 
-            [*(*(&v17 + 1) + 8 * v15++) setSelected:v5 affectingChildren:1];
+            [*(*(&v17 + 1) + 8 * v15++) setSelected:selectedCopy affectingChildren:1];
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v13 = [childItems countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v13);
       }
     }
 
-    if (!v5)
+    if (!selectedCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_parentItem);
       [WeakRetained setSelected:0 affectingChildren:0];
@@ -332,18 +332,18 @@ LABEL_7:
   }
 }
 
-- (void)setChildItems:(id)a3
+- (void)setChildItems:(id)items
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_childItems != v5)
+  itemsCopy = items;
+  if (self->_childItems != itemsCopy)
   {
-    objc_storeStrong(&self->_childItems, a3);
+    objc_storeStrong(&self->_childItems, items);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = v5;
+    v6 = itemsCopy;
     v7 = [(NSArray *)v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
@@ -379,17 +379,17 @@ LABEL_7:
   return [(CNAccountsAndGroupsItem *)self canDelete];
 }
 
-- (CNAccountsAndGroupsItem)initWithType:(int64_t)a3 nameProvider:(id)a4
+- (CNAccountsAndGroupsItem)initWithType:(int64_t)type nameProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = CNAccountsAndGroupsItem;
   v7 = [(CNAccountsAndGroupsItem *)&v12 init];
-  v7->_type = a3;
-  v8 = v6;
-  if (!v6)
+  v7->_type = type;
+  v8 = providerCopy;
+  if (!providerCopy)
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_4;
     }

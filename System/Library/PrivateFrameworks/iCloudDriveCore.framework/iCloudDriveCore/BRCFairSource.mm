@@ -1,5 +1,5 @@
 @interface BRCFairSource
-- (BRCFairSource)initWithName:(id)a3 scheduler:(id)a4;
+- (BRCFairSource)initWithName:(id)name scheduler:(id)scheduler;
 - (id)description;
 - (void)_runEventHandler;
 - (void)cancel;
@@ -32,32 +32,32 @@
 
 - (void)signal
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_signaled = 1;
-  suspendCount = v2->_suspendCount;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_signaled = 1;
+  suspendCount = selfCopy->_suspendCount;
+  objc_sync_exit(selfCopy);
 
   if (suspendCount <= 0)
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_scheduler);
-    [WeakRetained signalSourceForBitIndex:v2->_schedulerBitIndex];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_scheduler);
+    [WeakRetained signalSourceForBitIndex:selfCopy->_schedulerBitIndex];
   }
 }
 
-- (BRCFairSource)initWithName:(id)a3 scheduler:(id)a4
+- (BRCFairSource)initWithName:(id)name scheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  schedulerCopy = scheduler;
   v12.receiver = self;
   v12.super_class = BRCFairSource;
   v9 = [(BRCFairSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeWeak(&v10->_scheduler, v8);
-    [v8 addSource:v10];
+    objc_storeStrong(&v9->_name, name);
+    objc_storeWeak(&v10->_scheduler, schedulerCopy);
+    [schedulerCopy addSource:v10];
     v10->_suspendCount = 1;
   }
 
@@ -101,9 +101,9 @@
 
 - (void)resume
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suspendCount = v2->_suspendCount;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suspendCount = selfCopy->_suspendCount;
   if (suspendCount <= 0)
   {
     v7 = brc_bread_crumbs();
@@ -113,29 +113,29 @@
       [(BRCFairSource *)v7 resume];
     }
 
-    suspendCount = v2->_suspendCount;
+    suspendCount = selfCopy->_suspendCount;
   }
 
   v4 = suspendCount - 1;
-  v2->_suspendCount = v4;
+  selfCopy->_suspendCount = v4;
   if (v4)
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    signaled = v2->_signaled;
-    objc_sync_exit(v2);
+    signaled = selfCopy->_signaled;
+    objc_sync_exit(selfCopy);
 
     if (!signaled)
     {
       return;
     }
 
-    WeakRetained = objc_loadWeakRetained(&v2->_scheduler);
-    [(BRCFairSource *)WeakRetained signalSourceForBitIndex:v2->_schedulerBitIndex];
-    v2 = WeakRetained;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_scheduler);
+    [(BRCFairSource *)WeakRetained signalSourceForBitIndex:selfCopy->_schedulerBitIndex];
+    selfCopy = WeakRetained;
   }
 }
 

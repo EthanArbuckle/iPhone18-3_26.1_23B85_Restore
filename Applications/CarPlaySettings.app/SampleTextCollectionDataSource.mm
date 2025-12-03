@@ -1,45 +1,45 @@
 @interface SampleTextCollectionDataSource
-- (SampleTextCollectionDataSource)initWithFontTextStyles:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (SampleTextCollectionDataSource)initWithFontTextStyles:(id)styles;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 @end
 
 @implementation SampleTextCollectionDataSource
 
-- (SampleTextCollectionDataSource)initWithFontTextStyles:(id)a3
+- (SampleTextCollectionDataSource)initWithFontTextStyles:(id)styles
 {
-  v5 = a3;
+  stylesCopy = styles;
   v9.receiver = self;
   v9.super_class = SampleTextCollectionDataSource;
   v6 = [(SampleTextCollectionDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fontTextStyles, a3);
+    objc_storeStrong(&v6->_fontTextStyles, styles);
   }
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[SampleTextCollectionViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(SampleTextCollectionDataSource *)self fontTextStyles];
-  v11 = [v6 row];
+  fontTextStyles = [(SampleTextCollectionDataSource *)self fontTextStyles];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [fontTextStyles objectAtIndexedSubscript:v11];
   [v9 setFontTextStyle:v12];
 
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(SampleTextCollectionDataSource *)self fontTextStyles:a3];
+  v4 = [(SampleTextCollectionDataSource *)self fontTextStyles:view];
   v5 = [v4 count];
 
   return v5;

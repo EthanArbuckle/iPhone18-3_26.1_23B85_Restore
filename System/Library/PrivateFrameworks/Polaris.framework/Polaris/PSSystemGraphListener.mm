@@ -1,38 +1,38 @@
 @interface PSSystemGraphListener
-- (PSSystemGraphListener)initWithDispatchQueue:(id)a3 GSTManager:(id)a4 Builder:(id)a5 Orchestrator:(id)a6 FrameIDTranslator:(id)a7;
-- (id)handleMessage:(id)a3 withMessageType:(unint64_t)a4 withSession:(id)a5;
-- (id)initForLocalReplayWithDispatchQueue:(id)a3 localGSM:(ps_gsm_s *)a4 GSTManager:(id)a5 Builder:(id)a6 Orchestrator:(id)a7;
-- (void)builderAddGraphs:(id)a3 execSessionName:(const char *)a4 addedGraphs:(id)a5;
+- (PSSystemGraphListener)initWithDispatchQueue:(id)queue GSTManager:(id)manager Builder:(id)builder Orchestrator:(id)orchestrator FrameIDTranslator:(id)translator;
+- (id)handleMessage:(id)message withMessageType:(unint64_t)type withSession:(id)session;
+- (id)initForLocalReplayWithDispatchQueue:(id)queue localGSM:(ps_gsm_s *)m GSTManager:(id)manager Builder:(id)builder Orchestrator:(id)orchestrator;
+- (void)builderAddGraphs:(id)graphs execSessionName:(const char *)name addedGraphs:(id)addedGraphs;
 - (void)dealloc;
-- (void)handleAddRemoveGraphsMessage:(id)a3;
-- (void)handleBuilderDumpStateMessage:(id)a3 withSession:(id)a4;
-- (void)handleOrchestratorDumpStateMessage:(id)a3 withSession:(id)a4;
-- (void)sendDomainInfoToOrchestrator:(id)a3;
+- (void)handleAddRemoveGraphsMessage:(id)message;
+- (void)handleBuilderDumpStateMessage:(id)message withSession:(id)session;
+- (void)handleOrchestratorDumpStateMessage:(id)message withSession:(id)session;
+- (void)sendDomainInfoToOrchestrator:(id)orchestrator;
 @end
 
 @implementation PSSystemGraphListener
 
-- (id)handleMessage:(id)a3 withMessageType:(unint64_t)a4 withSession:(id)a5
+- (id)handleMessage:(id)message withMessageType:(unint64_t)type withSession:(id)session
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 <= 6)
+  messageCopy = message;
+  sessionCopy = session;
+  if (type <= 6)
   {
-    if (a4 - 2 < 4)
+    if (type - 2 < 4)
     {
 LABEL_3:
-      v10 = [(PSGSTManager *)self->_gstManager handleMessage:v8];
+      v10 = [(PSGSTManager *)self->_gstManager handleMessage:messageCopy];
       goto LABEL_24;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
-      [(PSSystemGraphListener *)self sendDomainInfoToOrchestrator:v8];
+      [(PSSystemGraphListener *)self sendDomainInfoToOrchestrator:messageCopy];
       goto LABEL_3;
     }
 
-    if (a4 == 6)
+    if (type == 6)
     {
       v11 = __PSSGLogSharedInstance();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@ LABEL_3:
       v16[2] = __67__PSSystemGraphListener_handleMessage_withMessageType_withSession___block_invoke;
       v16[3] = &unk_279A490C0;
       v16[4] = self;
-      [PSSystemGraphMessageDeserializer deserializeProducibleStridesHaveChangedToMessage:v8 completion:v16];
+      [PSSystemGraphMessageDeserializer deserializeProducibleStridesHaveChangedToMessage:messageCopy completion:v16];
       goto LABEL_23;
     }
 
@@ -55,43 +55,43 @@ LABEL_20:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v18 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_25EA3A000, v12, OS_LOG_TYPE_ERROR, "Received an unknown message type = %llu, this should never happen!", buf, 0xCu);
     }
 
     goto LABEL_23;
   }
 
-  if (a4 <= 8)
+  if (type <= 8)
   {
-    if (a4 == 7)
+    if (type == 7)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __67__PSSystemGraphListener_handleMessage_withMessageType_withSession___block_invoke_2;
       v15[3] = &unk_279A490E8;
       v15[4] = self;
-      [PSSystemGraphMessageDeserializer deserializeProducedStridesWillChangeMessage:v8 completion:v15];
+      [PSSystemGraphMessageDeserializer deserializeProducedStridesWillChangeMessage:messageCopy completion:v15];
     }
 
     else
     {
-      [(PSSystemGraphListener *)self handleAddRemoveGraphsMessage:v8];
+      [(PSSystemGraphListener *)self handleAddRemoveGraphsMessage:messageCopy];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 9uLL:
-        [(PSOrchestratorListenerProtocol *)self->_orchestrator setupSupportedStridesForLocalReplay:v8];
+        [(PSOrchestratorListenerProtocol *)self->_orchestrator setupSupportedStridesForLocalReplay:messageCopy];
         break;
       case 0xAuLL:
-        [(PSSystemGraphListener *)self handleBuilderDumpStateMessage:v8 withSession:v9];
+        [(PSSystemGraphListener *)self handleBuilderDumpStateMessage:messageCopy withSession:sessionCopy];
         break;
       case 0xBuLL:
-        [(PSSystemGraphListener *)self handleOrchestratorDumpStateMessage:v8 withSession:v9];
+        [(PSSystemGraphListener *)self handleOrchestratorDumpStateMessage:messageCopy withSession:sessionCopy];
         break;
       default:
         goto LABEL_20;
@@ -120,18 +120,18 @@ void __67__PSSystemGraphListener_handleMessage_withMessageType_withSession___blo
   [v9 frameIdUpdate:v11 frameId:v10];
 }
 
-- (void)builderAddGraphs:(id)a3 execSessionName:(const char *)a4 addedGraphs:(id)a5
+- (void)builderAddGraphs:(id)graphs execSessionName:(const char *)name addedGraphs:(id)addedGraphs
 {
-  v8 = a5;
+  addedGraphsCopy = addedGraphs;
   applier[0] = MEMORY[0x277D85DD0];
   applier[1] = 3221225472;
   applier[2] = __70__PSSystemGraphListener_builderAddGraphs_execSessionName_addedGraphs___block_invoke;
   applier[3] = &unk_279A49110;
-  v11 = v8;
-  v12 = a4;
+  v11 = addedGraphsCopy;
+  nameCopy = name;
   applier[4] = self;
-  v9 = v8;
-  xpc_array_apply(a3, applier);
+  v9 = addedGraphsCopy;
+  xpc_array_apply(graphs, applier);
 }
 
 uint64_t __70__PSSystemGraphListener_builderAddGraphs_execSessionName_addedGraphs___block_invoke(const char **a1, uint64_t a2, void *a3)
@@ -405,10 +405,10 @@ LABEL_15:
   return 1;
 }
 
-- (void)handleAddRemoveGraphsMessage:(id)a3
+- (void)handleAddRemoveGraphsMessage:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -416,8 +416,8 @@ LABEL_15:
   v21 = __Block_byref_object_dispose__1;
   v22 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  string = xpc_dictionary_get_string(v4, "exec_session_name");
-  v7 = xpc_dictionary_get_value(v4, "graphs_removed_array");
+  string = xpc_dictionary_get_string(messageCopy, "exec_session_name");
+  v7 = xpc_dictionary_get_value(messageCopy, "graphs_removed_array");
   v8 = v7;
   if (!v7)
   {
@@ -441,14 +441,14 @@ LABEL_15:
     {
       v10 = [v15 description];
       v11 = v10;
-      v12 = [v10 UTF8String];
+      uTF8String = [v10 UTF8String];
       *buf = 136315138;
-      v24 = v12;
+      v24 = uTF8String;
       _os_log_impl(&dword_25EA3A000, v9, OS_LOG_TYPE_ERROR, "Error occured while removing graphs within builder %s", buf, 0xCu);
     }
   }
 
-  v13 = xpc_dictionary_get_value(v4, "graphs_added_array");
+  v13 = xpc_dictionary_get_value(messageCopy, "graphs_added_array");
   if (!v13)
   {
     __assert_rtn("[PSSystemGraphListener handleAddRemoveGraphsMessage:]", "PSSystemGraphListener.m", 359, "graphsAddedArray");
@@ -487,12 +487,12 @@ uint64_t __54__PSSystemGraphListener_handleAddRemoveGraphsMessage___block_invoke
   return 1;
 }
 
-- (void)sendDomainInfoToOrchestrator:(id)a3
+- (void)sendDomainInfoToOrchestrator:(id)orchestrator
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_value(v4, "graphs_array");
+  orchestratorCopy = orchestrator;
+  v5 = xpc_dictionary_get_value(orchestratorCopy, "graphs_array");
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  string = xpc_dictionary_get_string(v4, "exec_session_name");
+  string = xpc_dictionary_get_string(orchestratorCopy, "exec_session_name");
 
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
@@ -523,18 +523,18 @@ uint64_t __54__PSSystemGraphListener_sendDomainInfoToOrchestrator___block_invoke
   return 1;
 }
 
-- (void)handleBuilderDumpStateMessage:(id)a3 withSession:(id)a4
+- (void)handleBuilderDumpStateMessage:(id)message withSession:(id)session
 {
-  v6 = a4;
-  reply = xpc_dictionary_create_reply(a3);
+  sessionCopy = session;
+  reply = xpc_dictionary_create_reply(message);
   builder = self->_builder;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__PSSystemGraphListener_handleBuilderDumpStateMessage_withSession___block_invoke;
   v11[3] = &unk_279A49160;
   v12 = reply;
-  v13 = v6;
-  v9 = v6;
+  v13 = sessionCopy;
+  v9 = sessionCopy;
   v10 = reply;
   [(PSSGBuilder *)builder dumpStateAsync:v11];
 }
@@ -584,15 +584,15 @@ void __67__PSSystemGraphListener_handleBuilderDumpStateMessage_withSession___blo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleOrchestratorDumpStateMessage:(id)a3 withSession:(id)a4
+- (void)handleOrchestratorDumpStateMessage:(id)message withSession:(id)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  reply = xpc_dictionary_create_reply(a3);
-  v8 = [(PSSystemGraphListener *)self orchestrator];
-  [v8 dumpStateToXPCDictionary:reply];
+  sessionCopy = session;
+  reply = xpc_dictionary_create_reply(message);
+  orchestrator = [(PSSystemGraphListener *)self orchestrator];
+  [orchestrator dumpStateToXPCDictionary:reply];
 
-  v9 = xpc_session_send_message(v6, reply);
+  v9 = xpc_session_send_message(sessionCopy, reply);
   if (v9)
   {
     v10 = xpc_rich_error_copy_description(v9);
@@ -610,24 +610,24 @@ void __67__PSSystemGraphListener_handleBuilderDumpStateMessage_withSession___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (PSSystemGraphListener)initWithDispatchQueue:(id)a3 GSTManager:(id)a4 Builder:(id)a5 Orchestrator:(id)a6 FrameIDTranslator:(id)a7
+- (PSSystemGraphListener)initWithDispatchQueue:(id)queue GSTManager:(id)manager Builder:(id)builder Orchestrator:(id)orchestrator FrameIDTranslator:(id)translator
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  queueCopy = queue;
+  managerCopy = manager;
+  builderCopy = builder;
+  orchestratorCopy = orchestrator;
+  translatorCopy = translator;
   v30.receiver = self;
   v30.super_class = PSSystemGraphListener;
   v17 = [(PSSystemGraphListener *)&v30 init];
   if (v17)
   {
     v17->_gsm = ps_gsm_map_shared();
-    objc_storeStrong(&v17->_gstManager, a4);
-    objc_storeStrong(&v17->_builder, a5);
-    objc_storeStrong(&v17->_orchestrator, a6);
-    objc_storeStrong(&v17->_frameIDTranslator, a7);
+    objc_storeStrong(&v17->_gstManager, manager);
+    objc_storeStrong(&v17->_builder, builder);
+    objc_storeStrong(&v17->_orchestrator, orchestrator);
+    objc_storeStrong(&v17->_frameIDTranslator, translator);
     incoming_session_handler[0] = MEMORY[0x277D85DD0];
     incoming_session_handler[1] = 3221225472;
     incoming_session_handler[2] = __97__PSSystemGraphListener_initWithDispatchQueue_GSTManager_Builder_Orchestrator_FrameIDTranslator___block_invoke;
@@ -635,7 +635,7 @@ void __67__PSSystemGraphListener_handleBuilderDumpStateMessage_withSession___blo
     v18 = v17;
     v29 = v18;
     v27 = 0;
-    v19 = xpc_listener_create("com.apple.polaris.systemgraph_v2", v12, XPC_LISTENER_CREATE_NONE, incoming_session_handler, &v27);
+    v19 = xpc_listener_create("com.apple.polaris.systemgraph_v2", queueCopy, XPC_LISTENER_CREATE_NONE, incoming_session_handler, &v27);
     v20 = v27;
     v21 = v18[6];
     v18[6] = v19;
@@ -714,23 +714,23 @@ void __97__PSSystemGraphListener_initWithDispatchQueue_GSTManager_Builder_Orches
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initForLocalReplayWithDispatchQueue:(id)a3 localGSM:(ps_gsm_s *)a4 GSTManager:(id)a5 Builder:(id)a6 Orchestrator:(id)a7
+- (id)initForLocalReplayWithDispatchQueue:(id)queue localGSM:(ps_gsm_s *)m GSTManager:(id)manager Builder:(id)builder Orchestrator:(id)orchestrator
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  queueCopy = queue;
+  managerCopy = manager;
+  builderCopy = builder;
+  orchestratorCopy = orchestrator;
   v26.receiver = self;
   v26.super_class = PSSystemGraphListener;
   v16 = [(PSSystemGraphListener *)&v26 init];
   p_isa = &v16->super.isa;
   if (v16)
   {
-    v16->_gsm = a4;
-    objc_storeStrong(&v16->_gstManager, a5);
-    objc_storeStrong(p_isa + 3, a6);
-    objc_storeStrong(p_isa + 4, a7);
+    v16->_gsm = m;
+    objc_storeStrong(&v16->_gstManager, manager);
+    objc_storeStrong(p_isa + 3, builder);
+    objc_storeStrong(p_isa + 4, orchestrator);
     v18 = p_isa;
     anonymous = xpc_listener_create_anonymous();
     v20 = v18[6];

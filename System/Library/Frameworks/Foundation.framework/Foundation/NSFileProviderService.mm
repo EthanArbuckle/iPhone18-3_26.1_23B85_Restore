@@ -1,6 +1,6 @@
 @interface NSFileProviderService
-- (NSFileProviderService)initWithName:(id)a3 endpointCreatingProxy:(id)a4 requestFinishedGroup:(id)a5;
-- (id)fetchFileProviderConnectionAndReturnError:(id *)a3;
+- (NSFileProviderService)initWithName:(id)name endpointCreatingProxy:(id)proxy requestFinishedGroup:(id)group;
+- (id)fetchFileProviderConnectionAndReturnError:(id *)error;
 - (void)dealloc;
 - (void)getFileProviderConnectionWithCompletionHandler:(void *)completionHandler;
 @end
@@ -18,7 +18,7 @@
   [(NSFileProviderService *)&v3 dealloc];
 }
 
-- (NSFileProviderService)initWithName:(id)a3 endpointCreatingProxy:(id)a4 requestFinishedGroup:(id)a5
+- (NSFileProviderService)initWithName:(id)name endpointCreatingProxy:(id)proxy requestFinishedGroup:(id)group
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -26,10 +26,10 @@
   v8 = [(NSFileProviderService *)&v10 init];
   if (v8)
   {
-    *(v8 + 1) = [a3 copy];
-    *(v8 + 2) = a4;
-    *(v8 + 3) = a5;
-    dispatch_retain(a5);
+    *(v8 + 1) = [name copy];
+    *(v8 + 2) = proxy;
+    *(v8 + 3) = group;
+    dispatch_retain(group);
     dispatch_group_enter(*(v8 + 3));
   }
 
@@ -120,7 +120,7 @@ void __72__NSFileProviderService_getFileProviderConnectionWithCompletionHandler_
   dispatch_release(v2);
 }
 
-- (id)fetchFileProviderConnectionAndReturnError:(id *)a3
+- (id)fetchFileProviderConnectionAndReturnError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -155,9 +155,9 @@ void __72__NSFileProviderService_getFileProviderConnectionWithCompletionHandler_
   v9 = v22[5];
   if (v9)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v9;
+      *error = v9;
       v9 = v8[5];
     }
 

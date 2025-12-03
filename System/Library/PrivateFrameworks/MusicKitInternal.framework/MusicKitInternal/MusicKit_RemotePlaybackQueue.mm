@@ -1,30 +1,30 @@
 @interface MusicKit_RemotePlaybackQueue
-+ (id)extractDialogFromCommandResult:(id)a3 error:(id *)a4;
-- (MusicKit_RemotePlaybackQueue)initWithReplaceQueueIntent:(int64_t)a3;
-- (id)mrPlayerPathFromPlaybackPath:(id)a3 error:(id *)a4;
-- (int)mrReplaceIntentFromMusicKitReplaceQueueIntent:(int64_t)a3;
++ (id)extractDialogFromCommandResult:(id)result error:(id *)error;
+- (MusicKit_RemotePlaybackQueue)initWithReplaceQueueIntent:(int64_t)intent;
+- (id)mrPlayerPathFromPlaybackPath:(id)path error:(id *)error;
+- (int)mrReplaceIntentFromMusicKitReplaceQueueIntent:(int64_t)intent;
 @end
 
 @implementation MusicKit_RemotePlaybackQueue
 
-- (MusicKit_RemotePlaybackQueue)initWithReplaceQueueIntent:(int64_t)a3
+- (MusicKit_RemotePlaybackQueue)initWithReplaceQueueIntent:(int64_t)intent
 {
   v5.receiver = self;
   v5.super_class = MusicKit_RemotePlaybackQueue;
   result = [(MusicKit_RemotePlaybackQueue *)&v5 init];
   if (result)
   {
-    result->_replaceQueueIntent = a3;
+    result->_replaceQueueIntent = intent;
   }
 
   return result;
 }
 
-- (int)mrReplaceIntentFromMusicKitReplaceQueueIntent:(int64_t)a3
+- (int)mrReplaceIntentFromMusicKitReplaceQueueIntent:(int64_t)intent
 {
-  if ((a3 - 1) < 3)
+  if ((intent - 1) < 3)
   {
-    return a3;
+    return intent;
   }
 
   else
@@ -33,61 +33,61 @@
   }
 }
 
-- (id)mrPlayerPathFromPlaybackPath:(id)a3 error:(id *)a4
+- (id)mrPlayerPathFromPlaybackPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 route];
-  v7 = [objc_msgSend(v6 "endpoint")];
+  pathCopy = path;
+  route = [pathCopy route];
+  v7 = [objc_msgSend(route "endpoint")];
 
   if (v7)
   {
     v8 = MEMORY[0x1E69775E0];
-    v9 = [v5 representedBundleID];
-    v10 = [v5 playerID];
-    v11 = [v8 playerPathWithCustomOrigin:v7 bundleID:v9 playerID:v10];
+    representedBundleID = [pathCopy representedBundleID];
+    playerID = [pathCopy playerID];
+    v11 = [v8 playerPathWithCustomOrigin:v7 bundleID:representedBundleID playerID:playerID];
 
-    v12 = [v11 musicKit_playerPath_mrPlayerPath];
+    musicKit_playerPath_mrPlayerPath = [v11 musicKit_playerPath_mrPlayerPath];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] musicKit_remotePlaybackEndpointDoesNotExist];
-    *a4 = v12 = 0;
+    *error = musicKit_playerPath_mrPlayerPath = 0;
   }
 
   else
   {
-    v12 = 0;
+    musicKit_playerPath_mrPlayerPath = 0;
   }
 
-  return v12;
+  return musicKit_playerPath_mrPlayerPath;
 }
 
-+ (id)extractDialogFromCommandResult:(id)a3 error:(id *)a4
++ (id)extractDialogFromCommandResult:(id)result error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 resultStatuses];
-  v7 = [v6 msv_firstWhere:&__block_literal_global_4];
+  resultCopy = result;
+  resultStatuses = [resultCopy resultStatuses];
+  v7 = [resultStatuses msv_firstWhere:&__block_literal_global_4];
 
   if (v7)
   {
-    v8 = [v7 dialog];
+    dialog = [v7 dialog];
   }
 
   else
   {
-    v9 = [v5 resultStatuses];
-    v10 = [v9 msv_firstWhere:&__block_literal_global_10];
+    resultStatuses2 = [resultCopy resultStatuses];
+    v10 = [resultStatuses2 msv_firstWhere:&__block_literal_global_10];
 
-    if (a4 && v10)
+    if (error && v10)
     {
-      *a4 = [v10 commandError];
+      *error = [v10 commandError];
     }
 
-    v8 = 0;
+    dialog = 0;
   }
 
-  return v8;
+  return dialog;
 }
 
 @end

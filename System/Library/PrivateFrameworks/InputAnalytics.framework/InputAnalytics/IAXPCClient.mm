@@ -1,9 +1,9 @@
 @interface IAXPCClient
-- (IAXPCClient)initWithServiceName:(id)a3;
+- (IAXPCClient)initWithServiceName:(id)name;
 - (IAXPCProtocolObject)server;
 - (void)dealloc;
 - (void)invalidateConnection;
-- (void)logMessage:(id)a3;
+- (void)logMessage:(id)message;
 @end
 
 @implementation IAXPCClient
@@ -23,19 +23,19 @@
   return v4;
 }
 
-- (IAXPCClient)initWithServiceName:(id)a3
+- (IAXPCClient)initWithServiceName:(id)name
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   if (!objc_msgSend_xpcEnabled(IAUtility, v5, v6) || (v54.receiver = self, v54.super_class = IAXPCClient, (self = [(IAXPCClient *)&v54 init]) == 0))
   {
-    v21 = 0;
+    selfCopy2 = 0;
     goto LABEL_23;
   }
 
   v8 = objc_msgSend_interfaceWithProtocol_(MEMORY[0x1E696B0D0], v7, &unk_1F4FE9D88);
   v9 = objc_alloc(MEMORY[0x1E696B0B8]);
-  v11 = objc_msgSend_initWithMachServiceName_options_(v9, v10, v4, 0);
+  v11 = objc_msgSend_initWithMachServiceName_options_(v9, v10, nameCopy, 0);
   connection = self->_connection;
   self->_connection = v11;
 
@@ -43,7 +43,7 @@
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
-  v53 = self;
+  selfCopy = self;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
@@ -158,11 +158,11 @@ LABEL_20:
   _Block_object_dispose(&v46, 8);
   _Block_object_dispose(&v50, 8);
 
-  v21 = self;
+  selfCopy2 = self;
 LABEL_23:
 
   v38 = *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy2;
 }
 
 - (void)dealloc
@@ -172,7 +172,7 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D460F000, v3, OS_LOG_TYPE_INFO, "dealloc 0x%lx", buf, 0xCu);
   }
 
@@ -197,7 +197,7 @@ LABEL_23:
   *&buf = 0;
   *(&buf + 1) = &buf;
   v12 = 0x2020000000;
-  v13 = self;
+  selfCopy = self;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1D4621FC8;
@@ -215,11 +215,11 @@ LABEL_23:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v8 = objc_msgSend_server(self, v5, v6);
-  objc_msgSend_logMessage_(v8, v7, v4);
+  objc_msgSend_logMessage_(v8, v7, messageCopy);
 }
 
 @end

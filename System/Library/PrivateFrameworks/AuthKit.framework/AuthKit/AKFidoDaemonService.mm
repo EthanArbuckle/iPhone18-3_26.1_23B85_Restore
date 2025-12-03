@@ -1,22 +1,22 @@
 @interface AKFidoDaemonService
 - (id)authorizationController;
 - (id)serverHandler;
-- (void)_handleGrandSlamFidoAuthorizationResponse:(id)a3 context:(id)a4 recoveryToken:(id)a5 error:(id)a6 completion:(id)a7;
-- (void)configureExportedInterface:(id)a3;
-- (void)registerFidoKeyWithContext:(id)a3 completion:(id)a4;
-- (void)verifyFidoKeyWithContext:(id)a3 completion:(id)a4;
-- (void)verifyFidoKeyWithFidoContext:(id)a3 completion:(id)a4;
-- (void)verifyFidoRecoveryWithContext:(id)a3 recoveryToken:(id)a4 completion:(id)a5;
+- (void)_handleGrandSlamFidoAuthorizationResponse:(id)response context:(id)context recoveryToken:(id)token error:(id)error completion:(id)completion;
+- (void)configureExportedInterface:(id)interface;
+- (void)registerFidoKeyWithContext:(id)context completion:(id)completion;
+- (void)verifyFidoKeyWithContext:(id)context completion:(id)completion;
+- (void)verifyFidoKeyWithFidoContext:(id)context completion:(id)completion;
+- (void)verifyFidoRecoveryWithContext:(id)context recoveryToken:(id)token completion:(id)completion;
 @end
 
 @implementation AKFidoDaemonService
 
-- (void)configureExportedInterface:(id)a3
+- (void)configureExportedInterface:(id)interface
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interface);
   v9[0] = objc_opt_class();
   v9[1] = objc_opt_class();
   v9[2] = objc_opt_class();
@@ -49,14 +49,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)registerFidoKeyWithContext:(id)a3 completion:(id)a4
+- (void)registerFidoKeyWithContext:(id)context completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, completion);
   v7 = _AKLogFido();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -67,21 +67,21 @@
   }
 
   objc_storeStrong(&v7, 0);
-  v4 = [(AKFidoDaemonService *)v10 authorizationController];
-  [v4 performRegistrationRequestWithContext:location[0] completion:v8];
-  _objc_release(v4);
+  authorizationController = [(AKFidoDaemonService *)selfCopy authorizationController];
+  [authorizationController performRegistrationRequestWithContext:location[0] completion:v8];
+  _objc_release(authorizationController);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)verifyFidoKeyWithFidoContext:(id)a3 completion:(id)a4
+- (void)verifyFidoKeyWithFidoContext:(id)context completion:(id)completion
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, completion);
   v6 = _AKLogFido();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -90,21 +90,21 @@
   }
 
   objc_storeStrong(&v6, 0);
-  v4 = [(AKFidoDaemonService *)v9 authorizationController];
-  [v4 performAuthenticationRequestWithContext:location[0] completion:v7];
-  _objc_release(v4);
+  authorizationController = [(AKFidoDaemonService *)selfCopy authorizationController];
+  [authorizationController performAuthenticationRequestWithContext:location[0] completion:v7];
+  _objc_release(authorizationController);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)verifyFidoKeyWithContext:(id)a3 completion:(id)a4
+- (void)verifyFidoKeyWithContext:(id)context completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   v18 = _AKLogFido();
   v17 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -116,7 +116,7 @@
   }
 
   objc_storeStrong(&v18, 0);
-  objc_initWeak(&from, v21);
+  objc_initWeak(&from, selfCopy);
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -126,9 +126,9 @@
   v13 = _objc_retain(v19);
   v12 = _objc_retain(location[0]);
   v15 = objc_retainBlock(&v7);
-  v4 = [(AKFidoDaemonService *)v21 serverHandler];
-  [v4 startFidoAuthWithContext:location[0] recoveryToken:0 client:0 completion:v15];
-  _objc_release(v4);
+  serverHandler = [(AKFidoDaemonService *)selfCopy serverHandler];
+  [serverHandler startFidoAuthWithContext:location[0] recoveryToken:0 client:0 completion:v15];
+  _objc_release(serverHandler);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -138,16 +138,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)verifyFidoRecoveryWithContext:(id)a3 recoveryToken:(id)a4 completion:(id)a5
+- (void)verifyFidoRecoveryWithContext:(id)context recoveryToken:(id)token completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, token);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, completion);
   v21 = _AKLogFido();
   v20 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -159,7 +159,7 @@
   }
 
   objc_storeStrong(&v21, 0);
-  objc_initWeak(&from, v25);
+  objc_initWeak(&from, selfCopy);
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
@@ -170,9 +170,9 @@
   v14 = _objc_retain(location[0]);
   v15 = _objc_retain(v23);
   v18 = objc_retainBlock(&v9);
-  v5 = [(AKFidoDaemonService *)v25 serverHandler];
-  [v5 startFidoAuthWithContext:location[0] recoveryToken:v23 client:0 completion:v18];
-  _objc_release(v5);
+  serverHandler = [(AKFidoDaemonService *)selfCopy serverHandler];
+  [serverHandler startFidoAuthWithContext:location[0] recoveryToken:v23 client:0 completion:v18];
+  _objc_release(serverHandler);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v14, 0);
@@ -184,20 +184,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleGrandSlamFidoAuthorizationResponse:(id)a3 context:(id)a4 recoveryToken:(id)a5 error:(id)a6 completion:(id)a7
+- (void)_handleGrandSlamFidoAuthorizationResponse:(id)response context:(id)context recoveryToken:(id)token error:(id)error completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, context);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, token);
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, error);
   v19 = 0;
-  objc_storeStrong(&v19, a7);
+  objc_storeStrong(&v19, completion);
   if (v20)
   {
     v18 = _AKLogFido();
@@ -215,13 +215,13 @@
 
   else
   {
-    v8 = [(AKFidoDaemonService *)v24 serverHandler];
+    serverHandler = [(AKFidoDaemonService *)selfCopy serverHandler];
     v7 = location[0];
     v15 = _objc_retain(v19);
     v13 = _objc_retain(v20);
     v14 = _objc_retain(location[0]);
-    [v8 finishFidoAuthWithResponse:v7 client:? context:? recoveryToken:? completion:?];
-    _objc_release(v8);
+    [serverHandler finishFidoAuthWithResponse:v7 client:? context:? recoveryToken:? completion:?];
+    _objc_release(serverHandler);
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v13, 0);
     objc_storeStrong(&v15, 0);

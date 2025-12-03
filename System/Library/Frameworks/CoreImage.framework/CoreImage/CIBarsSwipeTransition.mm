@@ -171,7 +171,7 @@
   [(CIVector *)v35 Z];
   v45 = v44;
   *&v46 = v59 * v40;
-  v47 = [(CIBarsSwipeTransition *)self _kernel];
+  _kernel = [(CIBarsSwipeTransition *)self _kernel];
   v48 = *MEMORY[0x1E695F040];
   v49 = *(MEMORY[0x1E695F040] + 8);
   v50 = *(MEMORY[0x1E695F040] + 16);
@@ -196,7 +196,7 @@
   v81[0] = v35;
   v81[1] = v28;
   v81[2] = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v58), v46))}];
-  return [objc_msgSend(objc_msgSend(v47 applyWithExtent:v69 roiCallback:v51 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v81, 3), v48, v49, v50, r2c), "imageByCompositingOverImage:", self->inputTargetImage), "imageByCroppingToRect:", v63, v62, v61, v60}];
+  return [objc_msgSend(objc_msgSend(_kernel applyWithExtent:v69 roiCallback:v51 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v81, 3), v48, v49, v50, r2c), "imageByCompositingOverImage:", self->inputTargetImage), "imageByCroppingToRect:", v63, v62, v61, v60}];
 }
 
 double __36__CIBarsSwipeTransition_outputImage__block_invoke(uint64_t a1, double a2, double a3, CGFloat a4, CGFloat a5)

@@ -1,18 +1,18 @@
 @interface CRBoxLayer
 + (id)layer;
 - (CRBoxLayer)init;
-- (CRBoxLayer)initWithCodeFrameRatio:(double)a3;
-- (void)addCompletionBlock:(id)a3;
+- (CRBoxLayer)initWithCodeFrameRatio:(double)ratio;
+- (void)addCompletionBlock:(id)block;
 - (void)animateConceal;
-- (void)animatePulseColor:(id)a3;
+- (void)animatePulseColor:(id)color;
 - (void)animateReveal;
-- (void)animateToPosition:(CGPoint)a3 transform:(CATransform3D *)a4 opacity:(double)a5 type:(int64_t)a6;
+- (void)animateToPosition:(CGPoint)position transform:(CATransform3D *)transform opacity:(double)opacity type:(int64_t)type;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)positionForCodeBoxPoints:(id)a3;
-- (void)setFrameRatio:(double)a3;
-- (void)setString:(id)a3 mirrored:(BOOL)a4 inverted:(BOOL)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)positionForCodeBoxPoints:(id)points;
+- (void)setFrameRatio:(double)ratio;
+- (void)setString:(id)string mirrored:(BOOL)mirrored inverted:(BOOL)inverted;
 @end
 
 @implementation CRBoxLayer
@@ -26,8 +26,8 @@
 
 - (CRBoxLayer)init
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"com.apple.CoreRecognition.RedeemerDemoMode"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"com.apple.CoreRecognition.RedeemerDemoMode"];
   v5 = 1.0;
   if (v4)
   {
@@ -39,7 +39,7 @@
   return [(CRBoxLayer *)self initWithCodeFrameRatio:3.79710145];
 }
 
-- (CRBoxLayer)initWithCodeFrameRatio:(double)a3
+- (CRBoxLayer)initWithCodeFrameRatio:(double)ratio
 {
   v7.receiver = self;
   v7.super_class = CRBoxLayer;
@@ -47,7 +47,7 @@
   v5 = v4;
   if (v4)
   {
-    [(CRBoxLayer *)v4 setFrameRatio:a3];
+    [(CRBoxLayer *)v4 setFrameRatio:ratio];
     v5->_customInit = 1;
     [(CRBoxLayer *)v5 addObserver:v5 forKeyPath:@"hidden" options:3 context:0];
   }
@@ -55,29 +55,29 @@
   return v5;
 }
 
-- (void)setFrameRatio:(double)a3
+- (void)setFrameRatio:(double)ratio
 {
-  if (self->_frameRatio != a3)
+  if (self->_frameRatio != ratio)
   {
-    self->_frameRatio = a3;
+    self->_frameRatio = ratio;
     [(CRBoxLayer *)self frameRatio];
     v6 = 971.487179 / v5 + 52.5128205;
     v7 = [CRColor colorWithWhite:1.0 alpha:0.5];
-    v8 = [v7 CGColor];
+    cGColor = [v7 CGColor];
 
     [(CRBoxLayer *)self setBounds:0.0, 0.0, 1024.0, ceil(v6)];
-    [(CRBoxLayer *)self setShadowColor:v8];
+    [(CRBoxLayer *)self setShadowColor:cGColor];
     [(CRBoxLayer *)self setHidden:1];
     [(CAReplicatorLayer *)self setInstanceCount:3];
-    v9 = [(CRBoxLayer *)self reticleLayer];
+    reticleLayer = [(CRBoxLayer *)self reticleLayer];
 
-    if (!v9)
+    if (!reticleLayer)
     {
-      v10 = [MEMORY[0x277CD9F90] layer];
-      [(CRBoxLayer *)self setReticleLayer:v10];
+      layer = [MEMORY[0x277CD9F90] layer];
+      [(CRBoxLayer *)self setReticleLayer:layer];
 
-      v11 = [(CRBoxLayer *)self reticleLayer];
-      [(CRBoxLayer *)self addSublayer:v11];
+      reticleLayer2 = [(CRBoxLayer *)self reticleLayer];
+      [(CRBoxLayer *)self addSublayer:reticleLayer2];
     }
 
     [(CRBoxLayer *)self bounds];
@@ -85,180 +85,180 @@
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(CRBoxLayer *)self reticleLayer];
-    [v20 setBounds:{v13, v15, v17, v19}];
+    reticleLayer3 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer3 setBounds:{v13, v15, v17, v19}];
 
-    v21 = [(CRBoxLayer *)self reticleLayer];
-    [v21 setShouldRasterize:1];
+    reticleLayer4 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer4 setShouldRasterize:1];
 
-    v22 = [(CRBoxLayer *)self reticleLayer];
-    [v22 setShadowColor:v8];
+    reticleLayer5 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer5 setShadowColor:cGColor];
 
-    v23 = [(CRBoxLayer *)self reticleLayer];
+    reticleLayer6 = [(CRBoxLayer *)self reticleLayer];
     LODWORD(v24) = 1.0;
-    [v23 setShadowOpacity:v24];
+    [reticleLayer6 setShadowOpacity:v24];
 
     v25 = *MEMORY[0x277CBF3A8];
     v26 = *(MEMORY[0x277CBF3A8] + 8);
-    v27 = [(CRBoxLayer *)self reticleLayer];
-    [v27 setShadowOffset:{v25, v26}];
+    reticleLayer7 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer7 setShadowOffset:{v25, v26}];
 
-    v28 = [(CRBoxLayer *)self reticleLayer];
-    [v28 setShadowRadius:26.2564103];
+    reticleLayer8 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer8 setShadowRadius:26.2564103];
 
     v29 = +[CRColor whiteColor];
-    v30 = [v29 CGColor];
-    v31 = [(CRBoxLayer *)self reticleLayer];
-    [v31 setFillColor:v30];
+    cGColor2 = [v29 CGColor];
+    reticleLayer9 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer9 setFillColor:cGColor2];
 
     Mutable = CGPathCreateMutable();
-    v33 = [(CRBoxLayer *)self reticleLayer];
-    [v33 bounds];
+    reticleLayer10 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer10 bounds];
     MinX = CGRectGetMinX(v81);
-    v35 = [(CRBoxLayer *)self reticleLayer];
-    [v35 bounds];
+    reticleLayer11 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer11 bounds];
     MinY = CGRectGetMinY(v82);
-    v37 = [(CRBoxLayer *)self reticleLayer];
-    [v37 bounds];
+    reticleLayer12 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer12 bounds];
     v84.size.width = CGRectGetWidth(v83);
     v84.origin.x = MinX;
     v84.origin.y = MinY;
     v84.size.height = 5.25128205;
     CGPathAddRect(Mutable, 0, v84);
 
-    v38 = [(CRBoxLayer *)self reticleLayer];
-    [v38 bounds];
+    reticleLayer13 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer13 bounds];
     v39 = CGRectGetMidX(v85) + -2.62564103;
-    v40 = [(CRBoxLayer *)self reticleLayer];
-    [v40 bounds];
+    reticleLayer14 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer14 bounds];
     v87.origin.y = CGRectGetMinY(v86) + 5.25128205;
     v87.origin.x = v39;
     v87.size.width = 5.25128205;
     v87.size.height = 21.0051282;
     CGPathAddRect(Mutable, 0, v87);
 
-    v41 = [(CRBoxLayer *)self reticleLayer];
-    [v41 bounds];
+    reticleLayer15 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer15 bounds];
     v42 = CGRectGetMinX(v88);
-    v43 = [(CRBoxLayer *)self reticleLayer];
-    [v43 bounds];
+    reticleLayer16 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer16 bounds];
     v44 = CGRectGetMaxY(v89) + -5.25128205;
-    v45 = [(CRBoxLayer *)self reticleLayer];
-    [v45 bounds];
+    reticleLayer17 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer17 bounds];
     v91.size.width = CGRectGetWidth(v90);
     v91.origin.x = v42;
     v91.origin.y = v44;
     v91.size.height = 5.25128205;
     CGPathAddRect(Mutable, 0, v91);
 
-    v46 = [(CRBoxLayer *)self reticleLayer];
-    [v46 bounds];
+    reticleLayer18 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer18 bounds];
     v47 = CGRectGetMidX(v92) + -2.62564103;
-    v48 = [(CRBoxLayer *)self reticleLayer];
-    [v48 bounds];
+    reticleLayer19 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer19 bounds];
     v94.origin.y = CGRectGetMaxY(v93) + -26.2564103;
     v94.origin.x = v47;
     v94.size.width = 5.25128205;
     v94.size.height = 21.0051282;
     CGPathAddRect(Mutable, 0, v94);
 
-    v49 = [(CRBoxLayer *)self reticleLayer];
-    [v49 bounds];
+    reticleLayer20 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer20 bounds];
     v50 = CGRectGetMinX(v95);
-    v51 = [(CRBoxLayer *)self reticleLayer];
-    [v51 bounds];
+    reticleLayer21 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer21 bounds];
     v52 = CGRectGetMinY(v96);
-    v53 = [(CRBoxLayer *)self reticleLayer];
-    [v53 bounds];
+    reticleLayer22 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer22 bounds];
     v98.size.height = CGRectGetHeight(v97);
     v98.origin.x = v50;
     v98.origin.y = v52;
     v98.size.width = 5.25128205;
     CGPathAddRect(Mutable, 0, v98);
 
-    v54 = [(CRBoxLayer *)self reticleLayer];
-    [v54 bounds];
+    reticleLayer23 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer23 bounds];
     v55 = CGRectGetMinX(v99) + 5.25128205;
-    v56 = [(CRBoxLayer *)self reticleLayer];
-    [v56 bounds];
+    reticleLayer24 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer24 bounds];
     v101.origin.y = CGRectGetMidY(v100) + -2.62564103;
     v101.origin.x = v55;
     v101.size.width = 21.0051282;
     v101.size.height = 5.25128205;
     CGPathAddRect(Mutable, 0, v101);
 
-    v57 = [(CRBoxLayer *)self reticleLayer];
-    [v57 bounds];
+    reticleLayer25 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer25 bounds];
     v58 = CGRectGetMaxX(v102) + -5.25128205;
-    v59 = [(CRBoxLayer *)self reticleLayer];
-    [v59 bounds];
+    reticleLayer26 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer26 bounds];
     v60 = CGRectGetMinY(v103);
-    v61 = [(CRBoxLayer *)self reticleLayer];
-    [v61 bounds];
+    reticleLayer27 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer27 bounds];
     v105.size.height = CGRectGetHeight(v104);
     v105.origin.x = v58;
     v105.origin.y = v60;
     v105.size.width = 5.25128205;
     CGPathAddRect(Mutable, 0, v105);
 
-    v62 = [(CRBoxLayer *)self reticleLayer];
-    [v62 bounds];
+    reticleLayer28 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer28 bounds];
     v63 = CGRectGetMaxX(v106) + -26.2564103;
-    v64 = [(CRBoxLayer *)self reticleLayer];
-    [v64 bounds];
+    reticleLayer29 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer29 bounds];
     v108.origin.y = CGRectGetMidY(v107) + -2.62564103;
     v108.origin.x = v63;
     v108.size.width = 21.0051282;
     v108.size.height = 5.25128205;
     CGPathAddRect(Mutable, 0, v108);
 
-    v65 = [(CRBoxLayer *)self reticleLayer];
-    [v65 setPath:Mutable];
+    reticleLayer30 = [(CRBoxLayer *)self reticleLayer];
+    [reticleLayer30 setPath:Mutable];
 
     CGPathRelease(Mutable);
-    v66 = [(CRBoxLayer *)self codeLayer];
+    codeLayer = [(CRBoxLayer *)self codeLayer];
 
-    if (!v66)
+    if (!codeLayer)
     {
-      v67 = [MEMORY[0x277CD9FC8] layer];
-      [(CRBoxLayer *)self setCodeLayer:v67];
+      layer2 = [MEMORY[0x277CD9FC8] layer];
+      [(CRBoxLayer *)self setCodeLayer:layer2];
 
-      v68 = [(CRBoxLayer *)self codeLayer];
-      [(CRBoxLayer *)self addSublayer:v68];
+      codeLayer2 = [(CRBoxLayer *)self codeLayer];
+      [(CRBoxLayer *)self addSublayer:codeLayer2];
     }
 
     [(CRBoxLayer *)self bounds];
     Width = CGRectGetWidth(v109);
-    v70 = [(CRBoxLayer *)self codeLayer];
-    [v70 setBounds:{0.0, 0.0, Width, 127.0}];
+    codeLayer3 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer3 setBounds:{0.0, 0.0, Width, 127.0}];
 
-    v71 = [(CRBoxLayer *)self codeLayer];
-    [v71 setAnchorPoint:{0.5, 0.41}];
+    codeLayer4 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer4 setAnchorPoint:{0.5, 0.41}];
 
-    v72 = [(CRBoxLayer *)self codeLayer];
-    [v72 setShouldRasterize:1];
+    codeLayer5 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer5 setShouldRasterize:1];
 
-    v73 = [(CRBoxLayer *)self codeLayer];
-    [v73 setShadowColor:v8];
+    codeLayer6 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer6 setShadowColor:cGColor];
 
-    v74 = [(CRBoxLayer *)self codeLayer];
+    codeLayer7 = [(CRBoxLayer *)self codeLayer];
     LODWORD(v75) = 1.0;
-    [v74 setShadowOpacity:v75];
+    [codeLayer7 setShadowOpacity:v75];
 
-    v76 = [(CRBoxLayer *)self codeLayer];
-    [v76 setShadowOffset:{v25, v26}];
+    codeLayer8 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer8 setShadowOffset:{v25, v26}];
 
-    v77 = [(CRBoxLayer *)self codeLayer];
-    [v77 setShadowRadius:26.2564103];
+    codeLayer9 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer9 setShadowRadius:26.2564103];
 
-    v78 = [(CRBoxLayer *)self codeLayer];
-    [v78 setFont:@"Scancardium"];
+    codeLayer10 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer10 setFont:@"Scancardium"];
 
-    v79 = [(CRBoxLayer *)self codeLayer];
-    [v79 setFontSize:126.030769];
+    codeLayer11 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer11 setFontSize:126.030769];
 
-    v80 = [(CRBoxLayer *)self codeLayer];
-    [v80 setAlignmentMode:@"center"];
+    codeLayer12 = [(CRBoxLayer *)self codeLayer];
+    [codeLayer12 setAlignmentMode:@"center"];
   }
 }
 
@@ -274,16 +274,16 @@
   [(CRBoxLayer *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v12 = a3;
+  pathCopy = path;
   v8 = *MEMORY[0x277CCA2F0];
-  v9 = a5;
-  v10 = [v9 objectForKey:v8];
-  v11 = [v9 objectForKey:*MEMORY[0x277CCA300]];
+  changeCopy = change;
+  v10 = [changeCopy objectForKey:v8];
+  v11 = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
 
-  LOBYTE(v9) = [v10 isEqual:v11];
-  if ((v9 & 1) == 0 && [v12 isEqualToString:@"hidden"])
+  LOBYTE(changeCopy) = [v10 isEqual:v11];
+  if ((changeCopy & 1) == 0 && [pathCopy isEqualToString:@"hidden"])
   {
     if (([(CRBoxLayer *)self isHidden]& 1) != 0)
     {
@@ -303,25 +303,25 @@
   MidX = CGRectGetMidX(v10);
   [(CRBoxLayer *)self bounds];
   MidY = CGRectGetMidY(v11);
-  v5 = [(CRBoxLayer *)self reticleLayer];
-  [v5 setPosition:{MidX, MidY}];
+  reticleLayer = [(CRBoxLayer *)self reticleLayer];
+  [reticleLayer setPosition:{MidX, MidY}];
 
   [(CRBoxLayer *)self bounds];
   v6 = CGRectGetMidX(v12);
   [(CRBoxLayer *)self bounds];
   v7 = CGRectGetMidY(v13);
-  v8 = [(CRBoxLayer *)self codeLayer];
-  [v8 setPosition:{v6, v7}];
+  codeLayer = [(CRBoxLayer *)self codeLayer];
+  [codeLayer setPosition:{v6, v7}];
 }
 
-- (void)positionForCodeBoxPoints:(id)a3
+- (void)positionForCodeBoxPoints:(id)points
 {
   v5 = 0;
   v38 = *MEMORY[0x277D85DE8];
   v6 = &v31;
   do
   {
-    v7 = [a3 objectAtIndex:v5];
+    v7 = [points objectAtIndex:v5];
     [v7 CGPointValue];
     *(v6 - 1) = v8;
     *v6 = v9;
@@ -384,10 +384,10 @@
   [(CRBoxLayer *)self animateToPosition:&v7 transform:2 opacity:v4 type:v6, 0.0];
 }
 
-- (void)animateToPosition:(CGPoint)a3 transform:(CATransform3D *)a4 opacity:(double)a5 type:(int64_t)a6
+- (void)animateToPosition:(CGPoint)position transform:(CATransform3D *)transform opacity:(double)opacity type:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [MEMORY[0x277CD9FF0] begin];
   [(CRBoxLayer *)self position];
   v14 = v13;
@@ -396,19 +396,19 @@
   [(CRBoxLayer *)self transform];
   [(CRBoxLayer *)self opacity];
   v18 = v17;
-  v19 = [(CRBoxLayer *)self animationKeys];
-  v20 = [v19 count];
+  animationKeys = [(CRBoxLayer *)self animationKeys];
+  v20 = [animationKeys count];
 
   if (v20)
   {
-    v21 = [(CRBoxLayer *)self presentationLayer];
-    v22 = [v21 valueForKeyPath:@"position"];
+    presentationLayer = [(CRBoxLayer *)self presentationLayer];
+    v22 = [presentationLayer valueForKeyPath:@"position"];
     [v22 CGPointValue];
     v14 = v23;
     v16 = v24;
 
-    v25 = [(CRBoxLayer *)self presentationLayer];
-    v26 = [v25 valueForKeyPath:@"transform"];
+    presentationLayer2 = [(CRBoxLayer *)self presentationLayer];
+    v26 = [presentationLayer2 valueForKeyPath:@"transform"];
     v27 = v26;
     if (v26)
     {
@@ -422,8 +422,8 @@
 
     v87 = v86;
 
-    v29 = [(CRBoxLayer *)self presentationLayer];
-    v30 = [v29 valueForKeyPath:@"opacity"];
+    presentationLayer3 = [(CRBoxLayer *)self presentationLayer];
+    v30 = [presentationLayer3 valueForKeyPath:@"opacity"];
     [v30 doubleValue];
     v28 = v31;
   }
@@ -438,19 +438,19 @@
   v33 = [(CRBoxLayer *)self animationForKey:@"CRBoxLayerAnimationConceal"];
   v34 = v33 != 0;
 
-  if (a6)
+  if (type)
   {
-    v35 = a6;
+    typeCopy = type;
   }
 
   else
   {
-    v35 = v34;
+    typeCopy = v34;
   }
 
   if (v32)
   {
-    v36 = a6 == 1;
+    v36 = type == 1;
   }
 
   else
@@ -465,7 +465,7 @@
 
   else
   {
-    v37 = v35;
+    v37 = typeCopy;
   }
 
   v86 = v87;
@@ -490,21 +490,21 @@ LABEL_26:
 
     if (!v32)
     {
-      v40 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v41 = animateToPosition_transform_opacity_type__sRevealStart;
-      animateToPosition_transform_opacity_type__sRevealStart = v40;
+      animateToPosition_transform_opacity_type__sRevealStart = date;
 
-      v42 = *&a4->m33;
-      *&v85.m31 = *&a4->m31;
+      v42 = *&transform->m33;
+      *&v85.m31 = *&transform->m31;
       *&v85.m33 = v42;
-      v43 = *&a4->m43;
-      *&v85.m41 = *&a4->m41;
+      v43 = *&transform->m43;
+      *&v85.m41 = *&transform->m41;
       *&v85.m43 = v43;
-      v44 = *&a4->m13;
-      *&v85.m11 = *&a4->m11;
+      v44 = *&transform->m13;
+      *&v85.m11 = *&transform->m11;
       *&v85.m13 = v44;
-      v45 = *&a4->m23;
-      *&v85.m21 = *&a4->m21;
+      v45 = *&transform->m23;
+      *&v85.m21 = *&transform->m21;
       *&v85.m23 = v45;
       CATransform3DScale(&v86, &v85, 2.0, 2.0, 1.0);
       v16 = y;
@@ -513,8 +513,8 @@ LABEL_26:
 
     [(CRBoxLayer *)self demoSpeed];
     v47 = 0.5 / v46;
-    v48 = [MEMORY[0x277CBEAA8] date];
-    [v48 timeIntervalSinceDate:animateToPosition_transform_opacity_type__sRevealStart];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSinceDate:animateToPosition_transform_opacity_type__sRevealStart];
     v39 = v47 - v49;
 
     v50 = @"CRBoxLayerAnimationReveal";
@@ -524,13 +524,13 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v51 = [(CRBoxLayer *)self isHidden];
+  isHidden = [(CRBoxLayer *)self isHidden];
   [(CRBoxLayer *)self demoSpeed];
   v53 = v52;
 
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   v38 = @"CRBoxLayerAnimationMove";
-  if (v51)
+  if (isHidden)
   {
     goto LABEL_30;
   }
@@ -543,15 +543,15 @@ LABEL_27:
   v80 = 3221225472;
   v81 = __55__CRBoxLayer_animateToPosition_transform_opacity_type___block_invoke;
   v82 = &unk_278EAABE8;
-  v83 = self;
+  selfCopy = self;
   v38 = v38;
   v84 = v38;
   [v55 setCompletionBlock:&v79];
   v56 = MEMORY[0x277CD9FF0];
-  v57 = [MEMORY[0x277CCABB0] numberWithDouble:{v39, v79, v80, v81, v82, v83}];
+  v57 = [MEMORY[0x277CCABB0] numberWithDouble:{v39, v79, v80, v81, v82, selfCopy}];
   [v56 setValue:v57 forKey:*MEMORY[0x277CDA908]];
 
-  v58 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v59 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
   v60 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v14, v16}];
   [v59 setFromValue:v60];
@@ -559,67 +559,67 @@ LABEL_27:
   v61 = [MEMORY[0x277CCAE60] valueWithCGPoint:{x, y}];
   [v59 setToValue:v61];
 
-  [v58 addObject:v59];
+  [array addObject:v59];
   v62 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform"];
   v85 = v86;
   v63 = [MEMORY[0x277CCAE60] valueWithCATransform3D:&v85];
   [v62 setFromValue:v63];
 
-  v64 = *&a4->m33;
-  *&v85.m31 = *&a4->m31;
+  v64 = *&transform->m33;
+  *&v85.m31 = *&transform->m31;
   *&v85.m33 = v64;
-  v65 = *&a4->m43;
-  *&v85.m41 = *&a4->m41;
+  v65 = *&transform->m43;
+  *&v85.m41 = *&transform->m41;
   *&v85.m43 = v65;
-  v66 = *&a4->m13;
-  *&v85.m11 = *&a4->m11;
+  v66 = *&transform->m13;
+  *&v85.m11 = *&transform->m11;
   *&v85.m13 = v66;
-  v67 = *&a4->m23;
-  *&v85.m21 = *&a4->m21;
+  v67 = *&transform->m23;
+  *&v85.m21 = *&transform->m21;
   *&v85.m23 = v67;
   v68 = [MEMORY[0x277CCAE60] valueWithCATransform3D:&v85];
   [v62 setToValue:v68];
 
-  [v58 addObject:v62];
+  [array addObject:v62];
   v69 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   v70 = [MEMORY[0x277CCABB0] numberWithDouble:v28];
   [v69 setFromValue:v70];
 
-  v71 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v71 = [MEMORY[0x277CCABB0] numberWithDouble:opacity];
   [v69 setToValue:v71];
 
-  [v58 addObject:v69];
+  [array addObject:v69];
   if (v37 == 2)
   {
     v72 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"hidden"];
     [v72 setValues:&unk_2859766F8];
     [v72 setKeyTimes:&unk_285976710];
     [v72 setCalculationMode:@"discrete"];
-    [v58 addObject:v72];
+    [array addObject:v72];
   }
 
-  v73 = [MEMORY[0x277CD9E00] animation];
-  [v73 setAnimations:v58];
-  [v73 setDuration:v39];
-  [v73 setTimingFunction:0];
-  [(CRBoxLayer *)self addAnimation:v73 forKey:v38];
+  animation = [MEMORY[0x277CD9E00] animation];
+  [animation setAnimations:array];
+  [animation setDuration:v39];
+  [animation setTimingFunction:0];
+  [(CRBoxLayer *)self addAnimation:animation forKey:v38];
 
 LABEL_30:
   [(CRBoxLayer *)self setPosition:x, y];
-  v74 = *&a4->m33;
-  *&v85.m31 = *&a4->m31;
+  v74 = *&transform->m33;
+  *&v85.m31 = *&transform->m31;
   *&v85.m33 = v74;
-  v75 = *&a4->m43;
-  *&v85.m41 = *&a4->m41;
+  v75 = *&transform->m43;
+  *&v85.m41 = *&transform->m41;
   *&v85.m43 = v75;
-  v76 = *&a4->m13;
-  *&v85.m11 = *&a4->m11;
+  v76 = *&transform->m13;
+  *&v85.m11 = *&transform->m11;
   *&v85.m13 = v76;
-  v77 = *&a4->m23;
-  *&v85.m21 = *&a4->m21;
+  v77 = *&transform->m23;
+  *&v85.m21 = *&transform->m21;
   *&v85.m23 = v77;
   [(CRBoxLayer *)self setTransform:&v85];
-  *&v78 = a5;
+  *&v78 = opacity;
   [(CRBoxLayer *)self setOpacity:v78];
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -676,11 +676,11 @@ void __55__CRBoxLayer_animateToPosition_transform_opacity_type___block_invoke(ui
   }
 }
 
-- (void)setString:(id)a3 mirrored:(BOOL)a4 inverted:(BOOL)a5
+- (void)setString:(id)string mirrored:(BOOL)mirrored inverted:(BOOL)inverted
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  invertedCopy = inverted;
+  mirroredCopy = mirrored;
+  stringCopy = string;
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   v9 = *(MEMORY[0x277CD9DE8] + 64);
@@ -699,7 +699,7 @@ void __55__CRBoxLayer_animateToPosition_transform_opacity_type___block_invoke(ui
   v16 = *(MEMORY[0x277CD9DE8] + 48);
   *&v24.m21 = v15;
   *&v24.m23 = v16;
-  if (v5)
+  if (invertedCopy)
   {
     *&v23.m31 = v9;
     *&v23.m33 = v10;
@@ -712,48 +712,48 @@ void __55__CRBoxLayer_animateToPosition_transform_opacity_type___block_invoke(ui
     CATransform3DRotate(&v24, &v23, 3.14159265, 0.0, 0.0, 1.0);
   }
 
-  if (v6)
+  if (mirroredCopy)
   {
     v22 = v24;
     CATransform3DRotate(&v23, &v22, 3.14159265, 0.0, 1.0, 0.0);
     v24 = v23;
   }
 
-  if ([v8 length] == 12)
+  if ([stringCopy length] == 12)
   {
     v17 = 110.276923;
   }
 
   else
   {
-    v17 = dbl_24783F750[[v8 length] == 10];
+    v17 = dbl_24783F750[[stringCopy length] == 10];
   }
 
-  v18 = [(CRBoxLayer *)self codeLayer];
-  [v18 setFontSize:v17];
+  codeLayer = [(CRBoxLayer *)self codeLayer];
+  [codeLayer setFontSize:v17];
 
   v21 = v24;
-  v19 = [(CRBoxLayer *)self codeLayer];
+  codeLayer2 = [(CRBoxLayer *)self codeLayer];
   v23 = v21;
-  [v19 setTransform:&v23];
+  [codeLayer2 setTransform:&v23];
 
   [MEMORY[0x277CD9FF0] commit];
-  v20 = [(CRBoxLayer *)self codeLayer];
-  [v20 setString:v8];
+  codeLayer3 = [(CRBoxLayer *)self codeLayer];
+  [codeLayer3 setString:stringCopy];
 }
 
-- (void)animatePulseColor:(id)a3
+- (void)animatePulseColor:(id)color
 {
   v4 = MEMORY[0x277CD9FF0];
-  v5 = a3;
+  colorCopy = color;
   [v4 begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   v6 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"shadowColor"];
-  v7 = [(CRBoxLayer *)self shadowColor];
-  v8 = [v5 CGColor];
+  shadowColor = [(CRBoxLayer *)self shadowColor];
+  cGColor = [colorCopy CGColor];
   [(CRBoxLayer *)self demoSpeed];
   [v6 setDuration:0.5 / v9];
-  v10 = [MEMORY[0x277CBEA60] arrayWithObjects:{v8, v7, v8, v7, v8, v8, 0}];
+  v10 = [MEMORY[0x277CBEA60] arrayWithObjects:{cGColor, shadowColor, cGColor, shadowColor, cGColor, cGColor, 0}];
   [v6 setValues:v10];
 
   [v6 setKeyTimes:&unk_285976728];
@@ -766,20 +766,20 @@ void __55__CRBoxLayer_animateToPosition_transform_opacity_type___block_invoke(ui
   v18 = @"CRBoxLayerAnimationPulseColor";
   [MEMORY[0x277CD9FF0] setCompletionBlock:v17];
   [(CRBoxLayer *)self addAnimation:v6 forKey:@"key"];
-  v11 = [(CRBoxLayer *)self reticleLayer];
-  [v11 addAnimation:v6 forKey:@"key"];
+  reticleLayer = [(CRBoxLayer *)self reticleLayer];
+  [reticleLayer addAnimation:v6 forKey:@"key"];
 
-  v12 = [(CRBoxLayer *)self codeLayer];
-  [v12 addAnimation:v6 forKey:@"key"];
+  codeLayer = [(CRBoxLayer *)self codeLayer];
+  [codeLayer addAnimation:v6 forKey:@"key"];
 
-  -[CRBoxLayer setShadowColor:](self, "setShadowColor:", [v5 CGColor]);
-  v13 = [v5 CGColor];
-  v14 = [(CRBoxLayer *)self reticleLayer];
-  [v14 setShadowColor:v13];
+  -[CRBoxLayer setShadowColor:](self, "setShadowColor:", [colorCopy CGColor]);
+  cGColor2 = [colorCopy CGColor];
+  reticleLayer2 = [(CRBoxLayer *)self reticleLayer];
+  [reticleLayer2 setShadowColor:cGColor2];
 
-  v15 = [v5 CGColor];
-  v16 = [(CRBoxLayer *)self codeLayer];
-  [v16 setShadowColor:v15];
+  cGColor3 = [colorCopy CGColor];
+  codeLayer2 = [(CRBoxLayer *)self codeLayer];
+  [codeLayer2 setShadowColor:cGColor3];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -830,24 +830,24 @@ uint64_t __32__CRBoxLayer_animatePulseColor___block_invoke(uint64_t a1)
   return [*(a1 + 32) setCompletionBlocks:0];
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CRBoxLayer *)self animationKeys];
+  blockCopy = block;
+  animationKeys = [(CRBoxLayer *)self animationKeys];
 
-  if (v5)
+  if (animationKeys)
   {
-    v6 = [(CRBoxLayer *)self completionBlocks];
+    completionBlocks = [(CRBoxLayer *)self completionBlocks];
 
-    if (!v6)
+    if (!completionBlocks)
     {
-      v7 = [MEMORY[0x277CBEB18] array];
-      [(CRBoxLayer *)self setCompletionBlocks:v7];
+      array = [MEMORY[0x277CBEB18] array];
+      [(CRBoxLayer *)self setCompletionBlocks:array];
     }
 
-    v8 = [(CRBoxLayer *)self completionBlocks];
-    v9 = MEMORY[0x24C1AAEF0](v4);
-    [v8 addObject:v9];
+    completionBlocks2 = [(CRBoxLayer *)self completionBlocks];
+    v9 = MEMORY[0x24C1AAEF0](blockCopy);
+    [completionBlocks2 addObject:v9];
   }
 
   else
@@ -856,7 +856,7 @@ uint64_t __32__CRBoxLayer_animatePulseColor___block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __33__CRBoxLayer_addCompletionBlock___block_invoke;
     block[3] = &unk_278EAAC10;
-    v11 = v4;
+    v11 = blockCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }

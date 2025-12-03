@@ -6,32 +6,32 @@
 - (CGRect)bodyRect;
 - (CGRect)firstLineRect;
 - (CGRect)lastLineRect;
-- (ICTextDragPreviewRenderer)initWithLayoutManager:(id)a3 range:(_NSRange)a4 textStorage:(id)a5;
+- (ICTextDragPreviewRenderer)initWithLayoutManager:(id)manager range:(_NSRange)range textStorage:(id)storage;
 - (UIImage)image;
 - (_NSRange)renderedGlyphRange;
 - (void)_calculate;
-- (void)_calculateRectsUsingLayoutManager:(id)a3;
+- (void)_calculateRectsUsingLayoutManager:(id)manager;
 @end
 
 @implementation ICTextDragPreviewRenderer
 
-- (ICTextDragPreviewRenderer)initWithLayoutManager:(id)a3 range:(_NSRange)a4 textStorage:(id)a5
+- (ICTextDragPreviewRenderer)initWithLayoutManager:(id)manager range:(_NSRange)range textStorage:(id)storage
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  v11 = a5;
+  length = range.length;
+  location = range.location;
+  managerCopy = manager;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = ICTextDragPreviewRenderer;
   v12 = [(ICTextDragPreviewRenderer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_layoutManager, a3);
+    objc_storeStrong(&v12->_layoutManager, manager);
     v13->_range.location = location;
     v13->_range.length = length;
     *&v13->_calculated = 256;
-    objc_storeStrong(&v13->_textStorage, a5);
+    objc_storeStrong(&v13->_textStorage, storage);
   }
 
   return v13;
@@ -100,13 +100,13 @@
     self->_middleRect.size = v4;
     self->_lastRect.origin = v3;
     self->_lastRect.size = v4;
-    v5 = [(ICTextDragPreviewRenderer *)self layoutManager];
+    layoutManager = [(ICTextDragPreviewRenderer *)self layoutManager];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__ICTextDragPreviewRenderer__calculate__block_invoke;
     v6[3] = &unk_1E846B160;
     v6[4] = self;
-    [v5 coordinateAccess:v6];
+    [layoutManager coordinateAccess:v6];
   }
 }
 
@@ -164,9 +164,9 @@ uint64_t __39__ICTextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
   return [v2 drawGlyphsForGlyphRange:v3 atPoint:{v4, v5, v6}];
 }
 
-- (void)_calculateRectsUsingLayoutManager:(id)a3
+- (void)_calculateRectsUsingLayoutManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v66 = 0;
   v67 = &v66;
   v68 = 0x4010000000;
@@ -186,7 +186,7 @@ uint64_t __39__ICTextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
   v58 = &unk_1D449C2A9;
   v59 = xmmword_1D4433FC0;
   v6 = objc_opt_new();
-  v7 = [v4 glyphRangeForCharacterRange:self->_range.location actualCharacterRange:{self->_range.length, 0}];
+  v7 = [managerCopy glyphRangeForCharacterRange:self->_range.location actualCharacterRange:{self->_range.length, 0}];
   v9 = v8;
   v43 = MEMORY[0x1E69E9820];
   v44 = 3221225472;
@@ -194,9 +194,9 @@ uint64_t __39__ICTextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
   v46 = &unk_1E846B1B0;
   v53 = v7;
   v54 = v8;
-  v47 = self;
+  selfCopy = self;
   v50 = &v55;
-  v10 = v4;
+  v10 = managerCopy;
   v48 = v10;
   v11 = v6;
   v49 = v11;
@@ -205,8 +205,8 @@ uint64_t __39__ICTextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
   [v10 enumerateLineFragmentsForGlyphRange:v7 usingBlock:{v9, &v43}];
   if ([v11 count] == 1)
   {
-    v12 = [v11 firstObject];
-    [v12 CGRectValue];
+    firstObject = [v11 firstObject];
+    [firstObject CGRectValue];
     self->_middleRect.origin.x = v13;
     self->_middleRect.origin.y = v14;
     self->_middleRect.size.width = v15;
@@ -215,15 +215,15 @@ uint64_t __39__ICTextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
 
   else if ([v11 count])
   {
-    v17 = [v11 firstObject];
-    [v17 CGRectValue];
+    firstObject2 = [v11 firstObject];
+    [firstObject2 CGRectValue];
     self->_firstRect.origin.x = v18;
     self->_firstRect.origin.y = v19;
     self->_firstRect.size.width = v20;
     self->_firstRect.size.height = v21;
 
-    v22 = [v11 lastObject];
-    [v22 CGRectValue];
+    lastObject = [v11 lastObject];
+    [lastObject CGRectValue];
     self->_lastRect.origin.x = v23;
     self->_lastRect.origin.y = v24;
     self->_lastRect.size.width = v25;

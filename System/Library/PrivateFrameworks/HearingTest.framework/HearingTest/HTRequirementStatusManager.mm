@@ -1,10 +1,10 @@
 @interface HTRequirementStatusManager
-- (void)handleRouteChangeWithNotification:(id)a3;
+- (void)handleRouteChangeWithNotification:(id)notification;
 @end
 
 @implementation HTRequirementStatusManager
 
-- (void)handleRouteChangeWithNotification:(id)a3
+- (void)handleRouteChangeWithNotification:(id)notification
 {
   v3 = sub_25214171C();
   v4 = *(v3 - 8);

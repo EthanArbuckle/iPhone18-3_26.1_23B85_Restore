@@ -1,40 +1,40 @@
 @interface DNDSMutableApplicationConfigurationRecord
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAllowedThreads:(id)a3;
-- (void)setDeniedThreads:(id)a3;
-- (void)setMinimumBreakthroughUrgency:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAllowedThreads:(id)threads;
+- (void)setDeniedThreads:(id)threads;
+- (void)setMinimumBreakthroughUrgency:(id)urgency;
 @end
 
 @implementation DNDSMutableApplicationConfigurationRecord
 
-- (void)setMinimumBreakthroughUrgency:(id)a3
+- (void)setMinimumBreakthroughUrgency:(id)urgency
 {
-  v4 = [a3 copy];
+  v4 = [urgency copy];
   minimumBreakthroughUrgency = self->super._minimumBreakthroughUrgency;
   self->super._minimumBreakthroughUrgency = v4;
 
   MEMORY[0x2821F96F8](v4, minimumBreakthroughUrgency);
 }
 
-- (void)setAllowedThreads:(id)a3
+- (void)setAllowedThreads:(id)threads
 {
-  v4 = [a3 copy];
+  v4 = [threads copy];
   allowedThreads = self->super._allowedThreads;
   self->super._allowedThreads = v4;
 
   MEMORY[0x2821F96F8](v4, allowedThreads);
 }
 
-- (void)setDeniedThreads:(id)a3
+- (void)setDeniedThreads:(id)threads
 {
-  v4 = [a3 copy];
+  v4 = [threads copy];
   deniedThreads = self->super._deniedThreads;
   self->super._deniedThreads = v4;
 
   MEMORY[0x2821F96F8](v4, deniedThreads);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSApplicationConfigurationRecord alloc];
 

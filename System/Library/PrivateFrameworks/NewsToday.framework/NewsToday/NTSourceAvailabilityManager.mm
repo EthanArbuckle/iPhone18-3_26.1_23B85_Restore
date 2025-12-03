@@ -1,10 +1,10 @@
 @interface NTSourceAvailabilityManager
 - (NTSourceAvailabilityManager)init;
-- (NTSourceAvailabilityManager)initWithAvailabilityEntriesInPreferredOrder:(id)a3 queue:(id)a4;
+- (NTSourceAvailabilityManager)initWithAvailabilityEntriesInPreferredOrder:(id)order queue:(id)queue;
 - (id)preferredSourceChangedNotificationBlock;
 - (void)_recomputePreferredAvailableTodayResultsSource;
-- (void)_setPreferredAvailableTodayResultsSource:(Class)a3;
-- (void)setPreferredSourceChangedNotificationBlock:(id)a3;
+- (void)_setPreferredAvailableTodayResultsSource:(Class)source;
+- (void)setPreferredSourceChangedNotificationBlock:(id)block;
 @end
 
 @implementation NTSourceAvailabilityManager
@@ -35,18 +35,18 @@
   objc_exception_throw(v6);
 }
 
-- (NTSourceAvailabilityManager)initWithAvailabilityEntriesInPreferredOrder:(id)a3 queue:(id)a4
+- (NTSourceAvailabilityManager)initWithAvailabilityEntriesInPreferredOrder:(id)order queue:(id)queue
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v18 = v6;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  orderCopy = order;
+  queueCopy = queue;
+  v18 = orderCopy;
+  if (!orderCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTSourceAvailabilityManager initWithAvailabilityEntriesInPreferredOrder:queue:];
   }
 
-  if (![v6 count] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (![orderCopy count] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTSourceAvailabilityManager initWithAvailabilityEntriesInPreferredOrder:queue:];
   }
@@ -56,17 +56,17 @@
   v8 = [(NTSourceAvailabilityManager *)&v27 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [orderCopy copy];
     availabilityEntriesInPreferredOrder = v8->_availabilityEntriesInPreferredOrder;
     v8->_availabilityEntriesInPreferredOrder = v9;
 
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
     objc_initWeak(&location, v8);
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = v6;
+    v11 = orderCopy;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v12)
     {
@@ -85,7 +85,7 @@
           v19[1] = 3221225472;
           v19[2] = __81__NTSourceAvailabilityManager_initWithAvailabilityEntriesInPreferredOrder_queue___block_invoke;
           v19[3] = &unk_2799835B8;
-          v20 = v7;
+          v20 = queueCopy;
           objc_copyWeak(&v21, &location);
           [v15 setAvailabilityChangedNotificationBlock:v19];
           objc_destroyWeak(&v21);
@@ -123,9 +123,9 @@ void __81__NTSourceAvailabilityManager_initWithAvailabilityEntriesInPreferredOrd
   [WeakRetained _recomputePreferredAvailableTodayResultsSource];
 }
 
-- (void)setPreferredSourceChangedNotificationBlock:(id)a3
+- (void)setPreferredSourceChangedNotificationBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   preferredSourceChangedNotificationBlock = self->_preferredSourceChangedNotificationBlock;
   self->_preferredSourceChangedNotificationBlock = v4;
 
@@ -141,8 +141,8 @@ void __81__NTSourceAvailabilityManager_initWithAvailabilityEntriesInPreferredOrd
 
 - (void)_recomputePreferredAvailableTodayResultsSource
 {
-  v5 = [(NTSourceAvailabilityManager *)self availabilityEntriesInPreferredOrder];
-  v3 = [v5 indexOfObjectPassingTest:&__block_literal_global_10];
+  availabilityEntriesInPreferredOrder = [(NTSourceAvailabilityManager *)self availabilityEntriesInPreferredOrder];
+  v3 = [availabilityEntriesInPreferredOrder indexOfObjectPassingTest:&__block_literal_global_10];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NTSourceAvailabilityManager *)self _setPreferredAvailableTodayResultsSource:0];
@@ -150,22 +150,22 @@ void __81__NTSourceAvailabilityManager_initWithAvailabilityEntriesInPreferredOrd
 
   else
   {
-    v4 = [v5 objectAtIndexedSubscript:v3];
+    v4 = [availabilityEntriesInPreferredOrder objectAtIndexedSubscript:v3];
     -[NTSourceAvailabilityManager _setPreferredAvailableTodayResultsSource:](self, "_setPreferredAvailableTodayResultsSource:", [v4 todayResultsFetchDescriptorClass]);
   }
 }
 
-- (void)_setPreferredAvailableTodayResultsSource:(Class)a3
+- (void)_setPreferredAvailableTodayResultsSource:(Class)source
 {
-  if ([(NTSourceAvailabilityManager *)self preferredSourceFetchDescriptorClass]!= a3)
+  if ([(NTSourceAvailabilityManager *)self preferredSourceFetchDescriptorClass]!= source)
   {
-    [(NTSourceAvailabilityManager *)self setPreferredSourceFetchDescriptorClass:a3];
-    v5 = [(NTSourceAvailabilityManager *)self preferredSourceChangedNotificationBlock];
+    [(NTSourceAvailabilityManager *)self setPreferredSourceFetchDescriptorClass:source];
+    preferredSourceChangedNotificationBlock = [(NTSourceAvailabilityManager *)self preferredSourceChangedNotificationBlock];
 
-    if (v5)
+    if (preferredSourceChangedNotificationBlock)
     {
-      v6 = [(NTSourceAvailabilityManager *)self preferredSourceChangedNotificationBlock];
-      v6[2]();
+      preferredSourceChangedNotificationBlock2 = [(NTSourceAvailabilityManager *)self preferredSourceChangedNotificationBlock];
+      preferredSourceChangedNotificationBlock2[2]();
     }
   }
 }

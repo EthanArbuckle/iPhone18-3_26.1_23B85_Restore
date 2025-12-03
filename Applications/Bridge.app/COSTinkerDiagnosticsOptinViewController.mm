@@ -7,9 +7,9 @@
 - (id)learnMoreButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation COSTinkerDiagnosticsOptinViewController
@@ -17,12 +17,12 @@
 + (BOOL)controllerNeedsToRun
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 activeWatch];
+  activeWatch = [v2 activeWatch];
 
-  v4 = [v3 valueForProperty:NRDevicePropertyIsInternalInstall];
-  v5 = [v4 BOOLValue];
+  v4 = [activeWatch valueForProperty:NRDevicePropertyIsInternalInstall];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = +[NSUserDefaults standardUserDefaults];
     v7 = [v6 BOOLForKey:@"QA-DiagsAndUsage-Testing"];
@@ -40,10 +40,10 @@
 {
   v2 = +[NSBundle mainBundle];
   v3 = [v2 localizedStringForKey:@"DIAG_TITLE_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v4 = [UIApp setupController];
-  v5 = [v4 tinkerUserName];
-  v6 = [v5 localizedCapitalizedString];
-  v7 = [NSString stringWithFormat:v3, v6];
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
+  v7 = [NSString stringWithFormat:v3, localizedCapitalizedString];
 
   return v7;
 }
@@ -52,10 +52,10 @@
 {
   v2 = +[NSBundle mainBundle];
   v3 = [v2 localizedStringForKey:@"DIAG_DETAIL_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v4 = [UIApp setupController];
-  v5 = [v4 tinkerUserName];
-  v6 = [v5 localizedCapitalizedString];
-  v7 = [NSString stringWithFormat:v3, v6];
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
+  v7 = [NSString stringWithFormat:v3, localizedCapitalizedString];
 
   return v7;
 }
@@ -74,22 +74,22 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   [PBBridgeCAReporter recordTinkerGuardianAcceptedDiagsAndUsage:1];
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 bridgeController];
-  [v5 tellGizmoToSetDiagnosticsEnabled:1];
+  bridgeController = [v4 bridgeController];
+  [bridgeController tellGizmoToSetDiagnosticsEnabled:1];
 
-  v6 = [(COSTinkerDiagnosticsOptinViewController *)self delegate];
-  [v6 buddyControllerDone:self];
+  delegate = [(COSTinkerDiagnosticsOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   [PBBridgeCAReporter recordTinkerGuardianAcceptedDiagsAndUsage:0];
-  v4 = [(COSTinkerDiagnosticsOptinViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSTinkerDiagnosticsOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle
@@ -124,7 +124,7 @@
   return v3;
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v9 = objc_alloc_init(COSAboutTextViewController);
   v4 = +[NSBundle mainBundle];

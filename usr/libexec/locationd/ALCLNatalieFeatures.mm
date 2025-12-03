@@ -1,44 +1,44 @@
 @interface ALCLNatalieFeatures
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)fEpochTypeAsString:(int)a3;
-- (int)StringAsFEpochType:(id)a3;
+- (id)fEpochTypeAsString:(int)string;
+- (int)StringAsFEpochType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCLNatalieFeatures
 
-- (id)fEpochTypeAsString:(int)a3
+- (id)fEpochTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_102457238 + a3);
+    return *(&off_102457238 + string);
   }
 }
 
-- (int)StringAsFEpochType:(id)a3
+- (int)StringAsFEpochType:(id)type
 {
-  if ([a3 isEqualToString:@"kInvalidEpoch"])
+  if ([type isEqualToString:@"kInvalidEpoch"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"K2560MsType"])
+  if ([type isEqualToString:@"K2560MsType"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"k10240MsType"])
+  if ([type isEqualToString:@"k10240MsType"])
   {
     return 2;
   }
@@ -82,7 +82,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteFloatField();
   PBDataWriterWriteFloatField();
@@ -94,20 +94,20 @@
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 7) = LODWORD(self->_fVectorMagnitude);
-  *(a3 + 3) = LODWORD(self->_fIQRX);
-  *(a3 + 4) = LODWORD(self->_fIQRY);
-  *(a3 + 5) = LODWORD(self->_fIQRZ);
-  *(a3 + 6) = LODWORD(self->_fMachineFrequency);
-  *(a3 + 2) = self->_fEpochType;
-  *(a3 + 32) = self->_fStanding;
+  *(to + 7) = LODWORD(self->_fVectorMagnitude);
+  *(to + 3) = LODWORD(self->_fIQRX);
+  *(to + 4) = LODWORD(self->_fIQRY);
+  *(to + 5) = LODWORD(self->_fIQRZ);
+  *(to + 6) = LODWORD(self->_fMachineFrequency);
+  *(to + 2) = self->_fEpochType;
+  *(to + 32) = self->_fStanding;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 7) = LODWORD(self->_fVectorMagnitude);
   *(result + 3) = LODWORD(self->_fIQRX);
   *(result + 4) = LODWORD(self->_fIQRY);
@@ -118,12 +118,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    LOBYTE(v5) = self->_fVectorMagnitude == *(a3 + 7) && self->_fIQRX == *(a3 + 3) && self->_fIQRY == *(a3 + 4) && self->_fIQRZ == *(a3 + 5) && self->_fMachineFrequency == *(a3 + 6) && self->_fEpochType == *(a3 + 2) && self->_fStanding == *(a3 + 32);
+    LOBYTE(v5) = self->_fVectorMagnitude == *(equal + 7) && self->_fIQRX == *(equal + 3) && self->_fIQRY == *(equal + 4) && self->_fIQRZ == *(equal + 5) && self->_fMachineFrequency == *(equal + 6) && self->_fEpochType == *(equal + 2) && self->_fStanding == *(equal + 32);
   }
 
   return v5;
@@ -252,15 +252,15 @@
   return v18 ^ v12 ^ v24 ^ v30 ^ v35 ^ (2654435761 * self->_fEpochType) ^ (2654435761 * self->_fStanding);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_fVectorMagnitude = *(a3 + 7);
-  self->_fIQRX = *(a3 + 3);
-  self->_fIQRY = *(a3 + 4);
-  self->_fIQRZ = *(a3 + 5);
-  self->_fMachineFrequency = *(a3 + 6);
-  self->_fEpochType = *(a3 + 2);
-  self->_fStanding = *(a3 + 32);
+  self->_fVectorMagnitude = *(from + 7);
+  self->_fIQRX = *(from + 3);
+  self->_fIQRY = *(from + 4);
+  self->_fIQRZ = *(from + 5);
+  self->_fMachineFrequency = *(from + 6);
+  self->_fEpochType = *(from + 2);
+  self->_fStanding = *(from + 32);
 }
 
 @end

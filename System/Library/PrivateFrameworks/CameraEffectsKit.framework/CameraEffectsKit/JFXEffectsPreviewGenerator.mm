@@ -1,11 +1,11 @@
 @interface JFXEffectsPreviewGenerator
 - (JFXEffectsPreviewGenerator)init;
-- (JFXEffectsPreviewGenerator)initWithRendererOptions:(id)a3;
+- (JFXEffectsPreviewGenerator)initWithRendererOptions:(id)options;
 - (id)colorSpace;
-- (void)_renderJob:(id)a3 completionHandler:(id)a4;
+- (void)_renderJob:(id)job completionHandler:(id)handler;
 - (void)dealloc;
-- (void)generatePreviewRequest:(id)a3 completionHandler:(id)a4;
-- (void)setName:(id)a3;
+- (void)generatePreviewRequest:(id)request completionHandler:(id)handler;
+- (void)setName:(id)name;
 @end
 
 @implementation JFXEffectsPreviewGenerator
@@ -14,23 +14,23 @@
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D41AC0];
-  v3 = [MEMORY[0x277D415E0] rec709GammaColorSpace];
-  v8[0] = v3;
+  rec709GammaColorSpace = [MEMORY[0x277D415E0] rec709GammaColorSpace];
+  v8[0] = rec709GammaColorSpace;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   v5 = [(JFXEffectsPreviewGenerator *)self initWithRendererOptions:v4];
   return v5;
 }
 
-- (JFXEffectsPreviewGenerator)initWithRendererOptions:(id)a3
+- (JFXEffectsPreviewGenerator)initWithRendererOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = JFXEffectsPreviewGenerator;
   v5 = [(JFXEffectsPreviewGenerator *)&v12 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D416A8]) initWithOptions:v4];
+    v6 = [objc_alloc(MEMORY[0x277D416A8]) initWithOptions:optionsCopy];
     renderer = v5->_renderer;
     v5->_renderer = v6;
 
@@ -52,33 +52,33 @@
   [(JFXEffectsPreviewGenerator *)&v3 dealloc];
 }
 
-- (void)generatePreviewRequest:(id)a3 completionHandler:(id)a4
+- (void)generatePreviewRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[JFXEffectsPreviewRequestHandler alloc] initWithRequest:v7];
+  handlerCopy = handler;
+  requestCopy = request;
+  v8 = [[JFXEffectsPreviewRequestHandler alloc] initWithRequest:requestCopy];
 
-  [(JFXEffectsPreviewGenerator *)self _renderJob:v8 completionHandler:v6];
+  [(JFXEffectsPreviewGenerator *)self _renderJob:v8 completionHandler:handlerCopy];
 }
 
-- (void)_renderJob:(id)a3 completionHandler:(id)a4
+- (void)_renderJob:(id)job completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PVRenderer *)self->_renderer compositingContext];
-  v9 = [v8 outputColorSpace];
+  jobCopy = job;
+  handlerCopy = handler;
+  compositingContext = [(PVRenderer *)self->_renderer compositingContext];
+  outputColorSpace = [compositingContext outputColorSpace];
 
-  v10 = [v6 buildPVRenderRequestWithOutputColorSpace:v9];
+  v10 = [jobCopy buildPVRenderRequestWithOutputColorSpace:outputColorSpace];
   renderer = self->_renderer;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__JFXEffectsPreviewGenerator__renderJob_completionHandler___block_invoke;
   v14[3] = &unk_278D7CD48;
-  v15 = v6;
-  v16 = v7;
+  v15 = jobCopy;
+  v16 = handlerCopy;
   v14[4] = self;
-  v12 = v6;
-  v13 = v7;
+  v12 = jobCopy;
+  v13 = handlerCopy;
   [(PVRenderer *)renderer startRenderRequest:v10 completionHandler:v14];
 }
 
@@ -128,19 +128,19 @@ void __59__JFXEffectsPreviewGenerator__renderJob_completionHandler___block_invok
   v4();
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  objc_storeStrong(&self->_name, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_name, name);
+  nameCopy = name;
   [(PVRenderer *)self->_renderer setName:self->_name];
 }
 
 - (id)colorSpace
 {
-  v2 = [(PVRenderer *)self->_renderer compositingContext];
-  v3 = [v2 outputColorSpace];
+  compositingContext = [(PVRenderer *)self->_renderer compositingContext];
+  outputColorSpace = [compositingContext outputColorSpace];
 
-  return v3;
+  return outputColorSpace;
 }
 
 @end

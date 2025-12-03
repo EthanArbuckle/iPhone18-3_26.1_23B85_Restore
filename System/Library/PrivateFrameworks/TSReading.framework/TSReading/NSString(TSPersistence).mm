@@ -27,7 +27,7 @@
 - (id)tsp_stringByAppendingExtensionFieldComponent:()TSPersistence
 {
   v2 = [MEMORY[0x277CCACA8] tsp_stringWithExtensionFieldComponent:?];
-  v3 = [a1 stringByAppendingPathComponent:v2];
+  v3 = [self stringByAppendingPathComponent:v2];
 
   return v3;
 }

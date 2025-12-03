@@ -1,18 +1,18 @@
 @interface PBUIImageSlotRepository
-- (BOOL)hasSlotForIdentifier:(id)a3;
-- (CGSize)sizeForIdentifier:(id)a3;
-- (PBUIImageSlotRepository)initWithWindowScene:(id)a3;
-- (id)ioSurfaceForIdentifier:(id)a3;
-- (id)urlForIdentifier:(id)a3;
-- (int64_t)actualStyleForIdentifier:(id)a3;
-- (void)allocateImageSlotForIdentifier:(id)a3 size:(CGSize)a4 actualStyle:(int64_t)a5 url:(id)a6 lifetimeObject:(id)a7;
-- (void)freeImageSlotWithIdentifier:(id)a3 lifetime:(id)a4;
-- (void)setImageSlot:(id)a3 forIdentifier:(id)a4;
+- (BOOL)hasSlotForIdentifier:(id)identifier;
+- (CGSize)sizeForIdentifier:(id)identifier;
+- (PBUIImageSlotRepository)initWithWindowScene:(id)scene;
+- (id)ioSurfaceForIdentifier:(id)identifier;
+- (id)urlForIdentifier:(id)identifier;
+- (int64_t)actualStyleForIdentifier:(id)identifier;
+- (void)allocateImageSlotForIdentifier:(id)identifier size:(CGSize)size actualStyle:(int64_t)style url:(id)url lifetimeObject:(id)object;
+- (void)freeImageSlotWithIdentifier:(id)identifier lifetime:(id)lifetime;
+- (void)setImageSlot:(id)slot forIdentifier:(id)identifier;
 @end
 
 @implementation PBUIImageSlotRepository
 
-- (PBUIImageSlotRepository)initWithWindowScene:(id)a3
+- (PBUIImageSlotRepository)initWithWindowScene:(id)scene
 {
   v9.receiver = self;
   v9.super_class = PBUIImageSlotRepository;
@@ -23,70 +23,70 @@
     lifetimes = v3->_lifetimes;
     v3->_lifetimes = v4;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     slots = v3->_slots;
-    v3->_slots = v6;
+    v3->_slots = dictionary;
   }
 
   return v3;
 }
 
-- (void)allocateImageSlotForIdentifier:(id)a3 size:(CGSize)a4 actualStyle:(int64_t)a5 url:(id)a6 lifetimeObject:(id)a7
+- (void)allocateImageSlotForIdentifier:(id)identifier size:(CGSize)size actualStyle:(int64_t)style url:(id)url lifetimeObject:(id)object
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   lifetimes = self->_lifetimes;
-  v14 = a6;
-  v15 = a3;
-  [(NSMutableSet *)lifetimes addObject:a7];
+  urlCopy = url;
+  identifierCopy = identifier;
+  [(NSMutableSet *)lifetimes addObject:object];
   v16 = objc_alloc_init(_PBUIImageSlotRepositoryEntry);
-  [(_PBUIImageSlotRepositoryEntry *)v16 setUrl:v14];
+  [(_PBUIImageSlotRepositoryEntry *)v16 setUrl:urlCopy];
 
   [(_PBUIImageSlotRepositoryEntry *)v16 setSize:width, height];
-  [(_PBUIImageSlotRepositoryEntry *)v16 setActualStyle:a5];
-  [(NSMutableDictionary *)self->_slots setObject:v16 forKey:v15];
+  [(_PBUIImageSlotRepositoryEntry *)v16 setActualStyle:style];
+  [(NSMutableDictionary *)self->_slots setObject:v16 forKey:identifierCopy];
 }
 
-- (void)freeImageSlotWithIdentifier:(id)a3 lifetime:(id)a4
+- (void)freeImageSlotWithIdentifier:(id)identifier lifetime:(id)lifetime
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:v8];
+  identifierCopy = identifier;
+  lifetimeCopy = lifetime;
+  v7 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:identifierCopy];
   if (v7)
   {
-    [(NSMutableDictionary *)self->_slots removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_slots removeObjectForKey:identifierCopy];
   }
 
-  [(NSMutableSet *)self->_lifetimes removeObject:v6];
+  [(NSMutableSet *)self->_lifetimes removeObject:lifetimeCopy];
 }
 
-- (void)setImageSlot:(id)a3 forIdentifier:(id)a4
+- (void)setImageSlot:(id)slot forIdentifier:(id)identifier
 {
   slots = self->_slots;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)slots objectForKeyedSubscript:a4];
-  [v7 setImage:v6];
+  slotCopy = slot;
+  v7 = [(NSMutableDictionary *)slots objectForKeyedSubscript:identifier];
+  [v7 setImage:slotCopy];
 }
 
-- (BOOL)hasSlotForIdentifier:(id)a3
+- (BOOL)hasSlotForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_slots objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_slots objectForKey:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)urlForIdentifier:(id)a3
+- (id)urlForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:identifier];
   v4 = [v3 url];
 
   return v4;
 }
 
-- (CGSize)sizeForIdentifier:(id)a3
+- (CGSize)sizeForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:identifier];
   [v3 size];
   v5 = v4;
   v7 = v6;
@@ -98,20 +98,20 @@
   return result;
 }
 
-- (int64_t)actualStyleForIdentifier:(id)a3
+- (int64_t)actualStyleForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:a3];
-  v4 = [v3 actualStyle];
+  v3 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:identifier];
+  actualStyle = [v3 actualStyle];
 
-  return v4;
+  return actualStyle;
 }
 
-- (id)ioSurfaceForIdentifier:(id)a3
+- (id)ioSurfaceForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:a3];
-  v4 = [v3 ioSurface];
+  v3 = [(NSMutableDictionary *)self->_slots objectForKeyedSubscript:identifier];
+  ioSurface = [v3 ioSurface];
 
-  return v4;
+  return ioSurface;
 }
 
 @end

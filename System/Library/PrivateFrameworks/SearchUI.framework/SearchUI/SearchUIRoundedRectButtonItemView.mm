@@ -8,9 +8,9 @@
 
 - (double)horizontalPadding
 {
-  v2 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   result = 12.0;
-  if (v2)
+  if (isMacOS)
   {
     return 15.0;
   }
@@ -20,9 +20,9 @@
 
 - (double)verticalPaddingFontMultipler
 {
-  v2 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   result = 2.45;
-  if (v2)
+  if (isMacOS)
   {
     return 1.75;
   }
@@ -43,17 +43,17 @@
     v4 = 10.0;
   }
 
-  v5 = [(SearchUIButtonItemView *)self buttonFont];
-  if (v5)
+  buttonFont = [(SearchUIButtonItemView *)self buttonFont];
+  if (buttonFont)
   {
-    [v3 scaledValueForValue:v5 withFont:self view:v4];
+    [v3 scaledValueForValue:buttonFont withFont:self view:v4];
     v7 = v6;
   }
 
   else
   {
-    v8 = [(SearchUIButtonItemView *)self defaultButtonFont];
-    [v3 scaledValueForValue:v8 withFont:self view:v4];
+    defaultButtonFont = [(SearchUIButtonItemView *)self defaultButtonFont];
+    [v3 scaledValueForValue:defaultButtonFont withFont:self view:v4];
     v7 = v9;
   }
 

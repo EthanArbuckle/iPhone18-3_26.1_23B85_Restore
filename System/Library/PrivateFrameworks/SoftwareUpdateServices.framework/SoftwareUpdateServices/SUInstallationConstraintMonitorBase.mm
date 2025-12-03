@@ -3,29 +3,29 @@
 - (SUDownload)download;
 - (SUInstallOptions)installOptions;
 - (SUInstallationConstraintMonitorDelegate)delegate;
-- (id)initOnQueue:(id)a3 withDownload:(id)a4 andInstallOptions:(id)a5;
-- (id)initOnQueue:(id)a3 withRepresentedInstallationConstraints:(unint64_t)a4 andDownload:(id)a5 andInstallOptions:(id)a6;
+- (id)initOnQueue:(id)queue withDownload:(id)download andInstallOptions:(id)options;
+- (id)initOnQueue:(id)queue withRepresentedInstallationConstraints:(unint64_t)constraints andDownload:(id)download andInstallOptions:(id)options;
 - (unint64_t)representedConstraints;
 - (unint64_t)unsatisfiedConstraints;
-- (unint64_t)unsatisfiedConstraintsWithIgnorableConstraints:(unint64_t)a3;
-- (void)setDelegate:(id)a3;
+- (unint64_t)unsatisfiedConstraintsWithIgnorableConstraints:(unint64_t)constraints;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SUInstallationConstraintMonitorBase
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4 andInstallOptions:(id)a5
+- (id)initOnQueue:(id)queue withDownload:(id)download andInstallOptions:(id)options
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"SUInstallationConstraintMonitorBase.m" lineNumber:31 description:@"Please use the subclass version: -initOnQueue:withRepresentedInstallationConstraints:andDownload:andInstallOptions"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUInstallationConstraintMonitorBase.m" lineNumber:31 description:@"Please use the subclass version: -initOnQueue:withRepresentedInstallationConstraints:andDownload:andInstallOptions"];
 
   return 0;
 }
 
-- (id)initOnQueue:(id)a3 withRepresentedInstallationConstraints:(unint64_t)a4 andDownload:(id)a5 andInstallOptions:(id)a6
+- (id)initOnQueue:(id)queue withRepresentedInstallationConstraints:(unint64_t)constraints andDownload:(id)download andInstallOptions:(id)options
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  queueCopy = queue;
+  downloadCopy = download;
+  optionsCopy = options;
   BSDispatchQueueAssert();
   v17.receiver = self;
   v17.super_class = SUInstallationConstraintMonitorBase;
@@ -33,10 +33,10 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_download, a5);
-    v15->_representedConstraints = a4;
-    objc_storeStrong(&v15->_installOptions, a6);
-    objc_storeStrong(&v15->_queue, a3);
+    objc_storeStrong(&v14->_download, download);
+    v15->_representedConstraints = constraints;
+    objc_storeStrong(&v15->_installOptions, options);
+    objc_storeStrong(&v15->_queue, queue);
   }
 
   return v15;
@@ -84,9 +84,9 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   queue = self->_queue;
   BSDispatchQueueAssert();
   WeakRetained = objc_loadWeakRetained(&self->_queue_delegate);
@@ -106,10 +106,10 @@
   return [(SUInstallationConstraintMonitorBase *)self unsatisfiedConstraints]== 0;
 }
 
-- (unint64_t)unsatisfiedConstraintsWithIgnorableConstraints:(unint64_t)a3
+- (unint64_t)unsatisfiedConstraintsWithIgnorableConstraints:(unint64_t)constraints
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SUInstallationConstraintMonitorBase.m" lineNumber:100 description:@"Not Implemented"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUInstallationConstraintMonitorBase.m" lineNumber:100 description:@"Not Implemented"];
 
   return 0;
 }

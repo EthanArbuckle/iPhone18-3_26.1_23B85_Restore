@@ -1,23 +1,23 @@
 @interface MSASEnqueuedCommand
 + (id)command;
-+ (id)commandwithCommand:(id)a3 variantParam:(id)a4 invariantParam:(id)a5;
-- (BOOL)canBeGroupedWithCommand:(id)a3;
-- (MSASEnqueuedCommand)initWithCoder:(id)a3;
-- (MSASEnqueuedCommand)initWithCommand:(id)a3 variantParam:(id)a4 invariantParam:(id)a5;
-- (void)encodeWithCoder:(id)a3;
++ (id)commandwithCommand:(id)command variantParam:(id)param invariantParam:(id)invariantParam;
+- (BOOL)canBeGroupedWithCommand:(id)command;
+- (MSASEnqueuedCommand)initWithCoder:(id)coder;
+- (MSASEnqueuedCommand)initWithCommand:(id)command variantParam:(id)param invariantParam:(id)invariantParam;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSASEnqueuedCommand
 
-- (MSASEnqueuedCommand)initWithCoder:(id)a3
+- (MSASEnqueuedCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = MSASEnqueuedCommand;
   v5 = [(MSASEnqueuedCommand *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"command"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"command"];
     command = v5->_command;
     v5->_command = v6;
 
@@ -30,7 +30,7 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v8 setWithObjects:{v9, v10, v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"variant"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"variant"];
     variantParam = v5->_variantParam;
     v5->_variantParam = v17;
 
@@ -41,7 +41,7 @@
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v19 setWithObjects:{v20, v21, v22, v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"invariant"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"invariant"];
     invariantParam = v5->_invariantParam;
     v5->_invariantParam = v26;
   }
@@ -49,42 +49,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   command = self->_command;
-  v8 = v4;
+  v8 = coderCopy;
   if (command)
   {
-    [v4 encodeObject:command forKey:@"command"];
-    v4 = v8;
+    [coderCopy encodeObject:command forKey:@"command"];
+    coderCopy = v8;
   }
 
   variantParam = self->_variantParam;
   if (variantParam)
   {
     [v8 encodeObject:variantParam forKey:@"variant"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   invariantParam = self->_invariantParam;
   if (invariantParam)
   {
     [v8 encodeObject:invariantParam forKey:@"invariant"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (BOOL)canBeGroupedWithCommand:(id)a3
+- (BOOL)canBeGroupedWithCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(MSASEnqueuedCommand *)self command];
-  v6 = [v4 command];
-  if (MSObjectsAreEquivalent(v5, v6))
+  commandCopy = command;
+  command = [(MSASEnqueuedCommand *)self command];
+  command2 = [commandCopy command];
+  if (MSObjectsAreEquivalent(command, command2))
   {
-    v7 = [(MSASEnqueuedCommand *)self invariantParam];
-    v8 = [v4 invariantParam];
-    v9 = MSObjectsAreEquivalent(v7, v8);
+    invariantParam = [(MSASEnqueuedCommand *)self invariantParam];
+    invariantParam2 = [commandCopy invariantParam];
+    v9 = MSObjectsAreEquivalent(invariantParam, invariantParam2);
   }
 
   else
@@ -95,31 +95,31 @@
   return v9;
 }
 
-- (MSASEnqueuedCommand)initWithCommand:(id)a3 variantParam:(id)a4 invariantParam:(id)a5
+- (MSASEnqueuedCommand)initWithCommand:(id)command variantParam:(id)param invariantParam:(id)invariantParam
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  commandCopy = command;
+  paramCopy = param;
+  invariantParamCopy = invariantParam;
   v15.receiver = self;
   v15.super_class = MSASEnqueuedCommand;
   v12 = [(MSASEnqueuedCommand *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_command, a3);
-    objc_storeStrong(&v13->_variantParam, a4);
-    objc_storeStrong(&v13->_invariantParam, a5);
+    objc_storeStrong(&v12->_command, command);
+    objc_storeStrong(&v13->_variantParam, param);
+    objc_storeStrong(&v13->_invariantParam, invariantParam);
   }
 
   return v13;
 }
 
-+ (id)commandwithCommand:(id)a3 variantParam:(id)a4 invariantParam:(id)a5
++ (id)commandwithCommand:(id)command variantParam:(id)param invariantParam:(id)invariantParam
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MSASEnqueuedCommand alloc] initWithCommand:v9 variantParam:v8 invariantParam:v7];
+  invariantParamCopy = invariantParam;
+  paramCopy = param;
+  commandCopy = command;
+  v10 = [[MSASEnqueuedCommand alloc] initWithCommand:commandCopy variantParam:paramCopy invariantParam:invariantParamCopy];
 
   return v10;
 }

@@ -2,8 +2,8 @@
 + (id)sharedTransactionMonitor;
 - (DATransactionMonitor)init;
 - (DATransactionMonitorDelegate)transactionMonitorDelegate;
-- (void)decrementTransactionCountForTransaction:(id)a3;
-- (void)incrementTransactionCountForTransaction:(id)a3;
+- (void)decrementTransactionCountForTransaction:(id)transaction;
+- (void)incrementTransactionCountForTransaction:(id)transaction;
 @end
 
 @implementation DATransactionMonitor
@@ -52,9 +52,9 @@ uint64_t __48__DATransactionMonitor_sharedTransactionMonitor__block_invoke()
   return v3;
 }
 
-- (void)incrementTransactionCountForTransaction:(id)a3
+- (void)incrementTransactionCountForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   if (incrementTransactionCountForTransaction__onceToken != -1)
   {
     [DATransactionMonitor incrementTransactionCountForTransaction:];
@@ -66,8 +66,8 @@ uint64_t __48__DATransactionMonitor_sharedTransactionMonitor__block_invoke()
   v7[2] = __64__DATransactionMonitor_incrementTransactionCountForTransaction___block_invoke_2;
   v7[3] = &unk_278F13350;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -106,18 +106,18 @@ void __64__DATransactionMonitor_incrementTransactionCountForTransaction___block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)decrementTransactionCountForTransaction:(id)a3
+- (void)decrementTransactionCountForTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v6 = transactionMonitorQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__DATransactionMonitor_decrementTransactionCountForTransaction___block_invoke;
   block[3] = &unk_278F13378;
   block[4] = self;
-  v9 = v5;
+  v9 = transactionCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = transactionCopy;
   dispatch_sync(v6, block);
 }
 

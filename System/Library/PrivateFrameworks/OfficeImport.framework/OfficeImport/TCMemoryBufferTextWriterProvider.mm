@@ -1,20 +1,20 @@
 @interface TCMemoryBufferTextWriterProvider
 - (BOOL)setUp;
-- (TCMemoryBufferTextWriterProvider)initWithMemoryBuffer:(id)a3;
+- (TCMemoryBufferTextWriterProvider)initWithMemoryBuffer:(id)buffer;
 @end
 
 @implementation TCMemoryBufferTextWriterProvider
 
-- (TCMemoryBufferTextWriterProvider)initWithMemoryBuffer:(id)a3
+- (TCMemoryBufferTextWriterProvider)initWithMemoryBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v9.receiver = self;
   v9.super_class = TCMemoryBufferTextWriterProvider;
   v6 = [(TCMemoryBufferTextWriterProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_memoryBuffer, a3);
+    objc_storeStrong(&v6->_memoryBuffer, buffer);
   }
 
   return v7;

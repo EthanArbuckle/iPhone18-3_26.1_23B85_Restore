@@ -1,19 +1,19 @@
 @interface CAInterAppAudioTransportView
 - (BOOL)isHostConnected;
-- (CAInterAppAudioTransportView)initWithCoder:(id)a3;
-- (CAInterAppAudioTransportView)initWithFrame:(CGRect)a3;
+- (CAInterAppAudioTransportView)initWithCoder:(id)coder;
+- (CAInterAppAudioTransportView)initWithFrame:(CGRect)frame;
 - (UIColor)recordButtonColor;
 - (UIColor)rewindButtonColor;
 - (id)getPlayTimeString;
 - (void)appHasGoneForeground;
-- (void)audioUnitPropertyChangedListener:(void *)a3 unit:(OpaqueAudioComponentInstance *)a4 propID:(unsigned int)a5 scope:(unsigned int)a6 element:(unsigned int)a7;
+- (void)audioUnitPropertyChangedListener:(void *)listener unit:(OpaqueAudioComponentInstance *)unit propID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element;
 - (void)dealloc;
 - (void)getHostCallbackInfo;
 - (void)initialize;
 - (void)layoutSubviews;
 - (void)pollHost;
-- (void)rewindAction:(id)a3;
-- (void)sendStateToRemoteHost:(unsigned int)a3;
+- (void)rewindAction:(id)action;
+- (void)sendStateToRemoteHost:(unsigned int)host;
 - (void)setCurrentTimeLabelFont:(UIFont *)currentTimeLabelFont;
 - (void)setEnabled:(BOOL)enabled;
 - (void)setOutputAudioUnit:(AudioUnit)au;
@@ -23,7 +23,7 @@
 - (void)setRewindButtonColor:(UIColor *)rewindButtonColor;
 - (void)startPollingPlayer;
 - (void)stopPollingPlayer;
-- (void)togglePlayback:(id)a3;
+- (void)togglePlayback:(id)playback;
 - (void)updateStatefromTransportCallBack;
 - (void)updateTransportControls;
 @end
@@ -76,20 +76,20 @@
   self->_playing = 0;
   self->_recording = 0;
   self->_connected = 0;
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v17 addObserver:self selector:sel_appHasGoneInBackground name:*MEMORY[0x277D76660] object:0];
-  v18 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v18 addObserver:self selector:sel_appHasGoneForeground name:*MEMORY[0x277D76758] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_appHasGoneInBackground name:*MEMORY[0x277D76660] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_appHasGoneForeground name:*MEMORY[0x277D76758] object:0];
   self->inForeground = [objc_msgSend(MEMORY[0x277D75128] "sharedApplication")] != 2;
 
   [(CAInterAppAudioTransportView *)self updateTransportControls];
 }
 
-- (CAInterAppAudioTransportView)initWithFrame:(CGRect)a3
+- (CAInterAppAudioTransportView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAInterAppAudioTransportView;
-  v3 = [(CAInterAppAudioTransportView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAInterAppAudioTransportView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -99,11 +99,11 @@
   return v4;
 }
 
-- (CAInterAppAudioTransportView)initWithCoder:(id)a3
+- (CAInterAppAudioTransportView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CAInterAppAudioTransportView;
-  v3 = [(CAInterAppAudioTransportView *)&v6 initWithCoder:a3];
+  v3 = [(CAInterAppAudioTransportView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -143,10 +143,10 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   [(UILabel *)self->currentTimeLabel setFont:?];
-  v5 = [(UILabel *)self->currentTimeLabel text];
+  text = [(UILabel *)self->currentTimeLabel text];
   v13 = *MEMORY[0x277D740A8];
   v14[0] = currentTimeLabelFont;
-  -[NSString sizeWithAttributes:](v5, "sizeWithAttributes:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1]);
+  -[NSString sizeWithAttributes:](text, "sizeWithAttributes:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1]);
   v7 = v6;
   v9 = v8;
   [(CAInterAppAudioTransportView *)self frame];
@@ -158,17 +158,17 @@
 - (UIColor)rewindButtonColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(CAUITransportButton *)self->rewindButton fillColor];
+  fillColor = [(CAUITransportButton *)self->rewindButton fillColor];
 
-  return [v2 colorWithCGColor:v3];
+  return [v2 colorWithCGColor:fillColor];
 }
 
 - (void)setRewindButtonColor:(UIColor *)rewindButtonColor
 {
-  v4 = [(UIColor *)rewindButtonColor CGColor];
+  cGColor = [(UIColor *)rewindButtonColor CGColor];
   rewindButton = self->rewindButton;
 
-  [(CAUITransportButton *)rewindButton setFillColor:v4];
+  [(CAUITransportButton *)rewindButton setFillColor:cGColor];
 }
 
 - (void)setPlayButtonColor:(UIColor *)playButtonColor
@@ -178,10 +178,10 @@
   self->playButtonColor = playButtonColor;
   if ([(CAUITransportButton *)self->playPauseButton drawingStyle]== 3)
   {
-    v6 = [(UIColor *)self->playButtonColor CGColor];
+    cGColor = [(UIColor *)self->playButtonColor CGColor];
     playPauseButton = self->playPauseButton;
 
-    [(CAUITransportButton *)playPauseButton setFillColor:v6];
+    [(CAUITransportButton *)playPauseButton setFillColor:cGColor];
   }
 }
 
@@ -192,27 +192,27 @@
   self->pauseButtonColor = pauseButtonColor;
   if ([(CAUITransportButton *)self->playPauseButton drawingStyle]== 2)
   {
-    v6 = [(UIColor *)self->pauseButtonColor CGColor];
+    cGColor = [(UIColor *)self->pauseButtonColor CGColor];
     playPauseButton = self->playPauseButton;
 
-    [(CAUITransportButton *)playPauseButton setFillColor:v6];
+    [(CAUITransportButton *)playPauseButton setFillColor:cGColor];
   }
 }
 
 - (UIColor)recordButtonColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(CAUITransportButton *)self->recordButton fillColor];
+  fillColor = [(CAUITransportButton *)self->recordButton fillColor];
 
-  return [v2 colorWithCGColor:v3];
+  return [v2 colorWithCGColor:fillColor];
 }
 
 - (void)setRecordButtonColor:(UIColor *)recordButtonColor
 {
-  v4 = [(UIColor *)recordButtonColor CGColor];
+  cGColor = [(UIColor *)recordButtonColor CGColor];
   recordButton = self->recordButton;
 
-  [(CAUITransportButton *)recordButton setFillColor:v4];
+  [(CAUITransportButton *)recordButton setFillColor:cGColor];
 }
 
 - (void)setOutputAudioUnit:(AudioUnit)au
@@ -275,10 +275,10 @@
 {
   if ([(CAInterAppAudioTransportView *)self isHostConnected])
   {
-    v3 = [(CAInterAppAudioTransportView *)self getPlayTimeString];
+    getPlayTimeString = [(CAInterAppAudioTransportView *)self getPlayTimeString];
     currentTimeLabel = self->currentTimeLabel;
 
-    [(UILabel *)currentTimeLabel setText:v3];
+    [(UILabel *)currentTimeLabel setText:getPlayTimeString];
   }
 }
 
@@ -340,13 +340,13 @@
     {
       if (self->callBackInfo || ([(CAInterAppAudioTransportView *)self getHostCallbackInfo], self->callBackInfo))
       {
-        v9 = [(CAInterAppAudioTransportView *)self isPlaying];
-        v8 = [(CAInterAppAudioTransportView *)self isRecording];
+        isPlaying = [(CAInterAppAudioTransportView *)self isPlaying];
+        isRecording = [(CAInterAppAudioTransportView *)self isRecording];
         v7 = 0.0;
         v6 = 0;
         v4 = 0;
         v5 = 0;
-        v3 = (self->callBackInfo->transportStateProc2)(self->callBackInfo->hostUserData, &v9, &v8, 0, &v7, &v6, &v5, &v4);
+        v3 = (self->callBackInfo->transportStateProc2)(self->callBackInfo->hostUserData, &isPlaying, &isRecording, 0, &v7, &v6, &v5, &v4);
         if (v3)
         {
           NSLog(&cfstr_ErrorOccuredFe_0.isa, v3);
@@ -354,8 +354,8 @@
 
         else
         {
-          self->_playing = v9;
-          self->_recording = v8;
+          self->_playing = isPlaying;
+          self->_recording = isRecording;
           self->_playTime = v7;
         }
       }
@@ -387,7 +387,7 @@
   return [(CAInterAppAudioTransportView *)self isConnected];
 }
 
-- (void)rewindAction:(id)a3
+- (void)rewindAction:(id)action
 {
   [(CAInterAppAudioTransportView *)self sendStateToRemoteHost:3];
   [(CAInterAppAudioTransportView *)self updateStatefromTransportCallBack];
@@ -395,11 +395,11 @@
   [(CAInterAppAudioTransportView *)self updateTransportControls];
 }
 
-- (void)togglePlayback:(id)a3
+- (void)togglePlayback:(id)playback
 {
-  v4 = [(CAUITransportButton *)self->playPauseButton drawingStyle];
+  drawingStyle = [(CAUITransportButton *)self->playPauseButton drawingStyle];
   v5 = &OBJC_IVAR___CAInterAppAudioTransportView_pauseButtonColor;
-  if (v4 == 3)
+  if (drawingStyle == 3)
   {
     v5 = &OBJC_IVAR___CAInterAppAudioTransportView_playButtonColor;
   }
@@ -410,13 +410,13 @@
   [(CAInterAppAudioTransportView *)self startPollingPlayer];
 }
 
-- (void)sendStateToRemoteHost:(unsigned int)a3
+- (void)sendStateToRemoteHost:(unsigned int)host
 {
   outputUnit = self->outputUnit;
   if (outputUnit)
   {
-    v4 = *&a3;
-    inData = a3;
+    v4 = *&host;
+    inData = host;
     v5 = AudioUnitSetProperty(outputUnit, 0x7DCu, 0, 0, &inData, 4u);
     if (v5)
     {
@@ -510,9 +510,9 @@
 
   [(CAUITransportButton *)self->rewindButton setAlpha:v7];
   [(UILabel *)self->currentTimeLabel setEnabled:[(CAInterAppAudioTransportView *)self canPlay]];
-  v8 = [(UILabel *)self->currentTimeLabel isEnabled];
+  isEnabled = [(UILabel *)self->currentTimeLabel isEnabled];
   v9 = 0.5;
-  if (v8)
+  if (isEnabled)
   {
     v9 = 1.0;
   }
@@ -522,19 +522,19 @@
   [(CAInterAppAudioTransportView *)self setNeedsDisplay];
 }
 
-- (void)audioUnitPropertyChangedListener:(void *)a3 unit:(OpaqueAudioComponentInstance *)a4 propID:(unsigned int)a5 scope:(unsigned int)a6 element:(unsigned int)a7
+- (void)audioUnitPropertyChangedListener:(void *)listener unit:(OpaqueAudioComponentInstance *)unit propID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element
 {
-  if (a5 == 2013)
+  if (d == 2013)
   {
-    [(CAInterAppAudioTransportView *)self updateStatefromTransportCallBack:a3];
+    [(CAInterAppAudioTransportView *)self updateStatefromTransportCallBack:listener];
 
     [(CAInterAppAudioTransportView *)self performSelectorOnMainThread:sel_updateTransportControls withObject:0 waitUntilDone:0];
   }
 
-  else if (a5 == 101)
+  else if (d == 101)
   {
 
-    [(CAInterAppAudioTransportView *)self isHostConnected:a3];
+    [(CAInterAppAudioTransportView *)self isHostConnected:listener];
   }
 }
 

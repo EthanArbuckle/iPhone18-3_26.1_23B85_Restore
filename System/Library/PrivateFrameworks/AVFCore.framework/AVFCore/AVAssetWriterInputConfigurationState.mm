@@ -3,8 +3,8 @@
 - (CGAffineTransform)transform;
 - (CGSize)naturalSize;
 - (void)dealloc;
-- (void)setPreferredMediaChunkDuration:(id *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setPreferredMediaChunkDuration:(id *)duration;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation AVAssetWriterInputConfigurationState
@@ -31,11 +31,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v4;
   *&self->_transform.a = v3;
 }
@@ -56,10 +56,10 @@
   return self;
 }
 
-- (void)setPreferredMediaChunkDuration:(id *)a3
+- (void)setPreferredMediaChunkDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  *&self->_chunkDuration.flags = a3->var3;
+  v3 = *&duration->var0;
+  *&self->_chunkDuration.flags = duration->var3;
   *(&self->_performsMultiPassEncodingIfSupported + 4) = v3;
 }
 

@@ -1,6 +1,6 @@
 @interface SBCaptureButtonInternalRestrictionGlue
-- (SBCaptureButtonInternalRestrictionGlue)initWithCoordinator:(id)a3;
-- (void)acquireRestriction:(id)a3;
+- (SBCaptureButtonInternalRestrictionGlue)initWithCoordinator:(id)coordinator;
+- (void)acquireRestriction:(id)restriction;
 - (void)dealloc;
 - (void)invalidate;
 - (void)relinquishRestriction;
@@ -8,15 +8,15 @@
 
 @implementation SBCaptureButtonInternalRestrictionGlue
 
-- (SBCaptureButtonInternalRestrictionGlue)initWithCoordinator:(id)a3
+- (SBCaptureButtonInternalRestrictionGlue)initWithCoordinator:(id)coordinator
 {
-  v6 = a3;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = SBCaptureButtonInternalRestrictionGlue;
   v7 = [(SBCaptureButtonInternalRestrictionGlue *)&v11 init];
   if (v7)
   {
-    v8 = v6;
+    v8 = coordinatorCopy;
     if (!v8)
     {
       [(SBCaptureButtonInternalRestrictionGlue *)a2 initWithCoordinator:v7];
@@ -30,7 +30,7 @@
       [(SBCaptureButtonInternalRestrictionGlue *)v9 initWithCoordinator:a2, v7];
     }
 
-    objc_storeStrong(&v7->_coordinator, a3);
+    objc_storeStrong(&v7->_coordinator, coordinator);
   }
 
   return v7;
@@ -41,7 +41,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"must -invalidate before dealloc"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v9 = 138544642;
@@ -77,23 +77,23 @@
   }
 }
 
-- (void)acquireRestriction:(id)a3
+- (void)acquireRestriction:(id)restriction
 {
-  v5 = a3;
+  restrictionCopy = restriction;
   coordinator = self->_coordinator;
   if (!coordinator)
   {
-    [(SBCaptureButtonInternalRestrictionGlue *)v5 acquireRestriction:a2, self];
+    [(SBCaptureButtonInternalRestrictionGlue *)restrictionCopy acquireRestriction:a2, self];
   }
 
   if (!self->_captureButtonInhibitionAssertion)
   {
-    v9 = v5;
-    v7 = [(SBCaptureButtonRestrictionCoordinator *)coordinator inhibitCaptureButtonActionAssertionWithReason:v5];
+    v9 = restrictionCopy;
+    v7 = [(SBCaptureButtonRestrictionCoordinator *)coordinator inhibitCaptureButtonActionAssertionWithReason:restrictionCopy];
     captureButtonInhibitionAssertion = self->_captureButtonInhibitionAssertion;
     self->_captureButtonInhibitionAssertion = v7;
 
-    v5 = v9;
+    restrictionCopy = v9;
   }
 }
 

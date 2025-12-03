@@ -49,54 +49,54 @@
 + (MARelation)workOfPerson;
 + (NSArray)personScoreSortDescriptors;
 + (NSArray)personSortDescriptors;
-+ (double)_specialDateTimeIntervalForDate:(id)a3;
-+ (id)_specialDateComponentsForDate:(id)a3;
++ (double)_specialDateTimeIntervalForDate:(id)date;
++ (id)_specialDateComponentsForDate:(id)date;
 + (id)changedPropertyNamesForContactsChange;
 + (id)filter;
-+ (id)filterForAgeCategories:(id)a3 includingMe:(BOOL)a4;
-+ (id)filterForBiologicalSex:(unint64_t)a3;
-+ (id)filterWithShareParticipantIdentifiers:(id)a3;
-+ (id)propertiesWithAgeCategory:(unint64_t)a3;
-+ (id)propertiesWithBiologicalSex:(unint64_t)a3;
-+ (id)propertiesWithPerson:(id)a3;
-+ (id)relationshipTagOfPersonWithConfidence:(double)a3;
-+ (void)setAnniversaryDateComponents:(id)a3 onPersonNodeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-+ (void)setBirthdayDateComponents:(id)a3 onPersonNodeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-+ (void)setName:(id)a3 onPersonNodeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-- (BOOL)_contactSuggestionEdge:(id)a3 fitsQuery:(unint64_t)a4;
-- (BOOL)_hasRelationshipLabel:(id)a3 withStatus:(unint64_t)a4;
++ (id)filterForAgeCategories:(id)categories includingMe:(BOOL)me;
++ (id)filterForBiologicalSex:(unint64_t)sex;
++ (id)filterWithShareParticipantIdentifiers:(id)identifiers;
++ (id)propertiesWithAgeCategory:(unint64_t)category;
++ (id)propertiesWithBiologicalSex:(unint64_t)sex;
++ (id)propertiesWithPerson:(id)person;
++ (id)relationshipTagOfPersonWithConfidence:(double)confidence;
++ (void)setAnniversaryDateComponents:(id)components onPersonNodeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
++ (void)setBirthdayDateComponents:(id)components onPersonNodeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
++ (void)setName:(id)name onPersonNodeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (BOOL)_contactSuggestionEdge:(id)edge fitsQuery:(unint64_t)query;
+- (BOOL)_hasRelationshipLabel:(id)label withStatus:(unint64_t)status;
 - (BOOL)belongsToBestSocialGroups;
-- (BOOL)hasProperties:(id)a3;
-- (BOOL)isIdentifiedByProperties:(id)a3;
+- (BOOL)hasProperties:(id)properties;
+- (BOOL)isIdentifiedByProperties:(id)properties;
 - (BOOL)isMeNode;
 - (BOOL)isMyAcquaintance;
 - (BOOL)isMyInferredAcquaintance;
 - (BOOL)isMyInferredSibling;
 - (BOOL)isMySibling;
-- (BOOL)isTaggedWithRelationship:(unint64_t)a3 withConfidence:(double)a4;
+- (BOOL)isTaggedWithRelationship:(unint64_t)relationship withConfidence:(double)confidence;
 - (NSDateComponents)anniversaryDateComponents;
 - (NSDateComponents)birthdayDateComponents;
 - (NSDateComponents)potentialBirthdayDateComponents;
 - (NSString)description;
 - (NSString)featureIdentifier;
 - (NSString)suggestedContactIdentifier;
-- (PGGraphPersonNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphPersonNode)initWithPerson:(id)a3;
+- (PGGraphPersonNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphPersonNode)initWithPerson:(id)person;
 - (PGGraphPersonNodeCollection)collection;
 - (double)personScore;
 - (id)_contactSuggestionEdgesSortedByConfidence;
 - (id)associatedNodesForRemoval;
-- (id)changingPropertiesWithProperties:(id)a3;
+- (id)changingPropertiesWithProperties:(id)properties;
 - (id)entityFilter;
 - (id)propertyDictionary;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (id)stringDescription;
-- (int64_t)compareToPerson:(id)a3;
-- (void)enumerateContactSuggestionsSortedByConfidenceMatchingQuery:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateHomeOrWorkAddressEdgesAndNodesUsingBlock:(id)a3;
-- (void)enumerateHomeOrWorkAddressNodesUsingBlock:(id)a3;
-- (void)enumerateHomeOrWorkNodesUsingBlock:(id)a3;
-- (void)setLocalProperties:(id)a3;
+- (int64_t)compareToPerson:(id)person;
+- (void)enumerateContactSuggestionsSortedByConfidenceMatchingQuery:(unint64_t)query usingBlock:(id)block;
+- (void)enumerateHomeOrWorkAddressEdgesAndNodesUsingBlock:(id)block;
+- (void)enumerateHomeOrWorkAddressNodesUsingBlock:(id)block;
+- (void)enumerateHomeOrWorkNodesUsingBlock:(id)block;
+- (void)setLocalProperties:(id)properties;
 @end
 
 @implementation PGGraphPersonNode
@@ -131,18 +131,18 @@ void __63__PGGraphPersonNode_PGPersonResult__suggestedContactIdentifier__block_i
   *a5 = 1;
 }
 
-- (int64_t)compareToPerson:(id)a3
+- (int64_t)compareToPerson:(id)person
 {
-  v4 = a3;
-  v5 = [objc_opt_class() type];
-  if (v5 == [objc_opt_class() type])
+  personCopy = person;
+  type = [objc_opt_class() type];
+  if (type == [objc_opt_class() type])
   {
-    v6 = v4;
-    v7 = [(PGGraphPersonNode *)self contactIdentifier];
-    v8 = [v7 length];
+    v6 = personCopy;
+    contactIdentifier = [(PGGraphPersonNode *)self contactIdentifier];
+    v8 = [contactIdentifier length];
 
-    v9 = [v6 contactIdentifier];
-    v10 = [v9 length];
+    contactIdentifier2 = [v6 contactIdentifier];
+    v10 = [contactIdentifier2 length];
 
     if (!v8 || v10)
     {
@@ -176,8 +176,8 @@ void __63__PGGraphPersonNode_PGPersonResult__suggestedContactIdentifier__block_i
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphPersonNode *)self localIdentifier];
-  if ([v6 length])
+  localIdentifier = [(PGGraphPersonNode *)self localIdentifier];
+  if ([localIdentifier length])
   {
     [(PGGraphPersonNode *)self localIdentifier];
   }
@@ -202,15 +202,15 @@ void __63__PGGraphPersonNode_PGPersonResult__suggestedContactIdentifier__block_i
 - (id)associatedNodesForRemoval
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphPersonNode *)self collection];
-  v5 = [v4 socialGroupNodes];
+  collection = [(PGGraphPersonNode *)self collection];
+  socialGroupNodes = [collection socialGroupNodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke;
   v8[3] = &unk_2788803E8;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateNodesUsingBlock:v8];
+  [socialGroupNodes enumerateNodesUsingBlock:v8];
 
   return v6;
 }
@@ -269,12 +269,12 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)changingPropertiesWithProperties:(id)a3
+- (id)changingPropertiesWithProperties:(id)properties
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGGraphPersonNode *)self propertyDictionary];
-  v6 = [v5 isEqualToDictionary:v4];
+  propertiesCopy = properties;
+  propertyDictionary = [(PGGraphPersonNode *)self propertyDictionary];
+  v6 = [propertyDictionary isEqualToDictionary:propertiesCopy];
 
   if (v6)
   {
@@ -282,8 +282,8 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
     goto LABEL_62;
   }
 
-  v8 = [v4 mutableCopy];
-  v9 = [v4 objectForKeyedSubscript:@"id"];
+  v8 = [propertiesCopy mutableCopy];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"id"];
   if (v9)
   {
     if (-[NSString length](self->_localIdentifier, "length") && [v9 length] && !-[NSString isEqualToString:](self->_localIdentifier, "isEqualToString:", v9))
@@ -293,7 +293,7 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
         *buf = 138412546;
         v44 = v9;
         v45 = 2112;
-        v46 = self;
+        selfCopy3 = self;
         _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Trying to merge local identifier %@ into person node %@", buf, 0x16u);
       }
 
@@ -307,7 +307,7 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
     }
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"cnid"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"cnid"];
   if (v10)
   {
     if (-[NSString length](self->_contactIdentifier, "length") && [v10 length] && !-[NSString isEqualToString:](self->_contactIdentifier, "isEqualToString:", v10) && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -315,7 +315,7 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
       *buf = 138412546;
       v44 = v10;
       v45 = 2112;
-      v46 = self;
+      selfCopy3 = self;
       _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Trying to merge ContactIdentifier %@ into person node %@", buf, 0x16u);
     }
 
@@ -326,7 +326,7 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
   }
 
   v41 = v10;
-  v11 = [v4 objectForKeyedSubscript:@"shareparticipant"];
+  v11 = [propertiesCopy objectForKeyedSubscript:@"shareparticipant"];
   v12 = v11;
   if (v11)
   {
@@ -336,7 +336,7 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
       *buf = 138412802;
       v44 = v12;
       v45 = 2112;
-      v46 = self;
+      selfCopy3 = self;
       v47 = 2112;
       v48 = shareParticipantLocalIdentifier;
       _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Trying to merge ShareParticipantIdentifier %@ into person node %@ with share participant identifier %@", buf, 0x20u);
@@ -349,40 +349,40 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
   }
 
   v42 = v9;
-  v40 = [v4 objectForKeyedSubscript:@"name"];
+  v40 = [propertiesCopy objectForKeyedSubscript:@"name"];
   v13 = [v40 length];
   if (v13 <= [(NSString *)self->_name length])
   {
     [v8 removeObjectForKey:@"name"];
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"sex"];
-  v15 = [v14 unsignedIntegerValue];
+  v14 = [propertiesCopy objectForKeyedSubscript:@"sex"];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-  if (self->_sex || !v15)
+  if (self->_sex || !unsignedIntegerValue)
   {
     [v8 removeObjectForKey:@"sex"];
   }
 
-  v16 = [v4 objectForKeyedSubscript:@"agecategory"];
-  v17 = [v16 unsignedIntegerValue];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"agecategory"];
+  unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-  if (self->_ageCategory || !v17)
+  if (self->_ageCategory || !unsignedIntegerValue2)
   {
     [v8 removeObjectForKey:@"agecategory"];
   }
 
-  if (self->_isFavorite || ([v4 objectForKeyedSubscript:@"fav"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, (v19 & 1) == 0))
+  if (self->_isFavorite || ([propertiesCopy objectForKeyedSubscript:@"fav"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, (v19 & 1) == 0))
   {
     [v8 removeObjectForKey:@"fav"];
   }
 
-  if (self->_isUserCreated || ([v4 objectForKeyedSubscript:@"usercreated"], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "BOOLValue"), v20, (v21 & 1) == 0))
+  if (self->_isUserCreated || ([propertiesCopy objectForKeyedSubscript:@"usercreated"], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "BOOLValue"), v20, (v21 & 1) == 0))
   {
     [v8 removeObjectForKey:@"usercreated"];
   }
 
-  v22 = [v4 objectForKeyedSubscript:@"bday"];
+  v22 = [propertiesCopy objectForKeyedSubscript:@"bday"];
   v23 = v22;
   if (v22)
   {
@@ -401,7 +401,7 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
     v25 = 0;
   }
 
-  v27 = [v4 objectForKeyedSubscript:@"pbday"];
+  v27 = [propertiesCopy objectForKeyedSubscript:@"pbday"];
   v28 = v27;
   if (v27)
   {
@@ -420,7 +420,7 @@ void __46__PGGraphPersonNode_associatedNodesForRemoval__block_invoke(uint64_t a1
     v30 = 0;
   }
 
-  v32 = [v4 objectForKeyedSubscript:@"anniv"];
+  v32 = [propertiesCopy objectForKeyedSubscript:@"anniv"];
   v33 = v32;
   if (v32)
   {
@@ -450,10 +450,10 @@ LABEL_62:
   return v7;
 }
 
-- (BOOL)isIdentifiedByProperties:(id)a3
+- (BOOL)isIdentifiedByProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"id"];
+  propertiesCopy = properties;
+  v5 = [propertiesCopy objectForKeyedSubscript:@"id"];
   if ([v5 length] && -[NSString length](self->_localIdentifier, "length"))
   {
     v6 = [v5 isEqualToString:self->_localIdentifier];
@@ -461,7 +461,7 @@ LABEL_62:
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:@"cnid"];
+    v7 = [propertiesCopy objectForKeyedSubscript:@"cnid"];
     if ([v7 length] && -[NSString length](self->_contactIdentifier, "length"))
     {
       v6 = [v7 isEqualToString:self->_contactIdentifier];
@@ -479,28 +479,28 @@ LABEL_62:
 - (id)stringDescription
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(PGGraphPersonNode *)self name];
-  if (![(__CFString *)v3 length])
+  name = [(PGGraphPersonNode *)self name];
+  if (![(__CFString *)name length])
   {
-    v6 = [(PGGraphPersonNode *)self localIdentifier];
+    localIdentifier = [(PGGraphPersonNode *)self localIdentifier];
 
-    if (![(__CFString *)v6 length])
+    if (![(__CFString *)localIdentifier length])
     {
-      v7 = [(PGGraphPersonNode *)self contactIdentifier];
+      contactIdentifier = [(PGGraphPersonNode *)self contactIdentifier];
 
-      v6 = v7;
+      localIdentifier = contactIdentifier;
     }
 
-    if ([(__CFString *)v6 length])
+    if ([(__CFString *)localIdentifier length])
     {
-      if ([(__CFString *)v6 length]< 9)
+      if ([(__CFString *)localIdentifier length]< 9)
       {
-        v3 = v6;
+        name = localIdentifier;
       }
 
       else
       {
-        v3 = [(__CFString *)v6 substringToIndex:8];
+        name = [(__CFString *)localIdentifier substringToIndex:8];
       }
     }
 
@@ -508,22 +508,22 @@ LABEL_62:
     {
 
       v8 = +[PGLogging sharedLogging];
-      v9 = [v8 loggingConnection];
+      loggingConnection = [v8 loggingConnection];
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = self;
-        _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "No identifiers for personNode %@", &v10, 0xCu);
+        selfCopy = self;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "No identifiers for personNode %@", &v10, 0xCu);
       }
 
-      v3 = @"unknown";
+      name = @"unknown";
     }
   }
 
   v4 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return name;
 }
 
 - (id)_contactSuggestionEdgesSortedByConfidence
@@ -547,36 +547,36 @@ LABEL_62:
   return v7;
 }
 
-- (BOOL)_contactSuggestionEdge:(id)a3 fitsQuery:(unint64_t)a4
+- (BOOL)_contactSuggestionEdge:(id)edge fitsQuery:(unint64_t)query
 {
-  v4 = a4;
-  [a3 confidence];
-  if ((v4 & 1) != 0 && v5 == 1.0 || (v4 & 2) != 0 && (v5 > 0.0 ? (v6 = v5 < 1.0) : (v6 = 0), v6))
+  queryCopy = query;
+  [edge confidence];
+  if ((queryCopy & 1) != 0 && v5 == 1.0 || (queryCopy & 2) != 0 && (v5 > 0.0 ? (v6 = v5 < 1.0) : (v6 = 0), v6))
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    return (v5 == 0.0) & (v4 >> 2);
+    return (v5 == 0.0) & (queryCopy >> 2);
   }
 
   return v7;
 }
 
-- (void)enumerateContactSuggestionsSortedByConfidenceMatchingQuery:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateContactSuggestionsSortedByConfidenceMatchingQuery:(unint64_t)query usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PGGraphPersonNode *)self _contactSuggestionEdgesSortedByConfidence];
+  blockCopy = block;
+  _contactSuggestionEdgesSortedByConfidence = [(PGGraphPersonNode *)self _contactSuggestionEdgesSortedByConfidence];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __91__PGGraphPersonNode_enumerateContactSuggestionsSortedByConfidenceMatchingQuery_usingBlock___block_invoke;
   v9[3] = &unk_278880398;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  queryCopy = query;
   v9[4] = self;
-  v8 = v6;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v8 = blockCopy;
+  [_contactSuggestionEdgesSortedByConfidence enumerateObjectsUsingBlock:v9];
 }
 
 void __91__PGGraphPersonNode_enumerateContactSuggestionsSortedByConfidenceMatchingQuery_usingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -592,11 +592,11 @@ void __91__PGGraphPersonNode_enumerateContactSuggestionsSortedByConfidenceMatchi
   }
 }
 
-- (BOOL)isTaggedWithRelationship:(unint64_t)a3 withConfidence:(double)a4
+- (BOOL)isTaggedWithRelationship:(unint64_t)relationship withConfidence:(double)confidence
 {
-  v5 = [PGGraphPersonNode relationshipTagOfPersonWithConfidence:a3, a4];
-  v6 = [(PGGraphPersonNode *)self collection];
-  v7 = [(MANodeCollection *)PGGraphPersonRelationshipTagNodeCollection nodesRelatedToNodes:v6 withRelation:v5];
+  confidence = [PGGraphPersonNode relationshipTagOfPersonWithConfidence:relationship, confidence];
+  collection = [(PGGraphPersonNode *)self collection];
+  v7 = [(MANodeCollection *)PGGraphPersonRelationshipTagNodeCollection nodesRelatedToNodes:collection withRelation:confidence];
   v8 = [v7 count] != 0;
 
   return v8;
@@ -648,10 +648,10 @@ void __91__PGGraphPersonNode_enumerateContactSuggestionsSortedByConfidenceMatchi
   return [(PGGraphPersonNode *)self isMyBrother];
 }
 
-- (BOOL)_hasRelationshipLabel:(id)a3 withStatus:(unint64_t)a4
+- (BOOL)_hasRelationshipLabel:(id)label withStatus:(unint64_t)status
 {
   v18 = *MEMORY[0x277D85DE8];
-  [(MANode *)self edgesForLabel:a3 domain:300];
+  [(MANode *)self edgesForLabel:label domain:300];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -670,7 +670,7 @@ void __91__PGGraphPersonNode_enumerateContactSuggestionsSortedByConfidenceMatchi
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) status] == a4)
+        if ([*(*(&v13 + 1) + 8 * i) status] == status)
         {
           v10 = 1;
           goto LABEL_11;
@@ -694,9 +694,9 @@ LABEL_11:
   return v10;
 }
 
-- (void)enumerateHomeOrWorkNodesUsingBlock:(id)a3
+- (void)enumerateHomeOrWorkNodesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -705,7 +705,7 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = __56__PGGraphPersonNode_enumerateHomeOrWorkNodesUsingBlock___block_invoke;
   v6[3] = &unk_278880348;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(MANode *)self enumerateNeighborNodesThroughEdgesWithLabel:@"IS_OWNED_BY" domain:202 usingBlock:v6];
@@ -725,9 +725,9 @@ uint64_t __56__PGGraphPersonNode_enumerateHomeOrWorkNodesUsingBlock___block_invo
   return result;
 }
 
-- (void)enumerateHomeOrWorkAddressNodesUsingBlock:(id)a3
+- (void)enumerateHomeOrWorkAddressNodesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -736,7 +736,7 @@ uint64_t __56__PGGraphPersonNode_enumerateHomeOrWorkNodesUsingBlock___block_invo
   v6[1] = 3221225472;
   v6[2] = __63__PGGraphPersonNode_enumerateHomeOrWorkAddressNodesUsingBlock___block_invoke;
   v6[3] = &unk_278880348;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(PGGraphPersonNode *)self enumerateHomeOrWorkNodesUsingBlock:v6];
@@ -774,9 +774,9 @@ uint64_t __63__PGGraphPersonNode_enumerateHomeOrWorkAddressNodesUsingBlock___blo
   return result;
 }
 
-- (void)enumerateHomeOrWorkAddressEdgesAndNodesUsingBlock:(id)a3
+- (void)enumerateHomeOrWorkAddressEdgesAndNodesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -785,7 +785,7 @@ uint64_t __63__PGGraphPersonNode_enumerateHomeOrWorkAddressNodesUsingBlock___blo
   v6[1] = 3221225472;
   v6[2] = __71__PGGraphPersonNode_enumerateHomeOrWorkAddressEdgesAndNodesUsingBlock___block_invoke;
   v6[3] = &unk_278880348;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(MANode *)self enumerateNeighborNodesThroughEdgesWithLabel:@"IS_OWNED_BY" domain:202 usingBlock:v6];
@@ -828,14 +828,14 @@ uint64_t __71__PGGraphPersonNode_enumerateHomeOrWorkAddressEdgesAndNodesUsingBlo
   v18 = *MEMORY[0x277D85DE8];
   if ([(MANode *)self hasEdgeWithLabel:@"BELONGSTO" domain:302])
   {
-    v3 = [(MANode *)self graph];
-    v4 = [v3 bestSocialGroupNodes];
+    graph = [(MANode *)self graph];
+    bestSocialGroupNodes = [graph bestSocialGroupNodes];
 
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v4;
+    v5 = bestSocialGroupNodes;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -882,25 +882,25 @@ LABEL_13:
 
 - (double)personScore
 {
-  v3 = [(PGGraphPersonNode *)self name];
-  v4 = [v3 length];
+  name = [(PGGraphPersonNode *)self name];
+  v4 = [name length];
 
-  v5 = [(PGGraphPersonNode *)self belongsToAnySocialGroup];
-  v6 = [(PGGraphPersonNode *)self isFavorite];
-  v7 = [(PGGraphPersonNode *)self isUserCreated];
+  belongsToAnySocialGroup = [(PGGraphPersonNode *)self belongsToAnySocialGroup];
+  isFavorite = [(PGGraphPersonNode *)self isFavorite];
+  isUserCreated = [(PGGraphPersonNode *)self isUserCreated];
   v8 = 0.0;
   if (v4)
   {
     v8 = 1.0;
   }
 
-  return (v6 + v7 + v8 + v5) * 0.25;
+  return (isFavorite + isUserCreated + v8 + belongsToAnySocialGroup) * 0.25;
 }
 
 - (BOOL)isMeNode
 {
-  v2 = [(PGGraphPersonNode *)self label];
-  v3 = [v2 isEqualToString:@"Me"];
+  label = [(PGGraphPersonNode *)self label];
+  v3 = [label isEqualToString:@"Me"];
 
   return v3;
 }
@@ -938,11 +938,11 @@ LABEL_13:
   return v9;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"name"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"name"])
   {
     v5 = 40;
 LABEL_7:
@@ -952,19 +952,19 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"id"])
+  if ([keyCopy isEqualToString:@"id"])
   {
     v5 = 48;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"cnid"])
+  if ([keyCopy isEqualToString:@"cnid"])
   {
     v5 = 56;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"sex"])
+  if ([keyCopy isEqualToString:@"sex"])
   {
     v10 = MEMORY[0x277CCABB0];
     v11 = 88;
@@ -973,14 +973,14 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"agecategory"])
+  if ([keyCopy isEqualToString:@"agecategory"])
   {
     v10 = MEMORY[0x277CCABB0];
     v11 = 96;
     goto LABEL_16;
   }
 
-  if ([v4 isEqualToString:@"fav"])
+  if ([keyCopy isEqualToString:@"fav"])
   {
     v12 = MEMORY[0x277CCABB0];
     v13 = 32;
@@ -989,20 +989,20 @@ LABEL_21:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"usercreated"])
+  if ([keyCopy isEqualToString:@"usercreated"])
   {
     v12 = MEMORY[0x277CCABB0];
     v13 = 33;
     goto LABEL_21;
   }
 
-  if ([v4 isEqualToString:@"shareparticipant"])
+  if ([keyCopy isEqualToString:@"shareparticipant"])
   {
     v5 = 104;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"bday"])
+  if ([keyCopy isEqualToString:@"bday"])
   {
     v14 = MEMORY[0x277CCABB0];
     v15 = 64;
@@ -1012,14 +1012,14 @@ LABEL_30:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"pbday"])
+  if ([keyCopy isEqualToString:@"pbday"])
   {
     v14 = MEMORY[0x277CCABB0];
     v15 = 72;
     goto LABEL_30;
   }
 
-  if ([v4 isEqualToString:@"anniv"])
+  if ([keyCopy isEqualToString:@"anniv"])
   {
     v14 = MEMORY[0x277CCABB0];
     v15 = 80;
@@ -1031,7 +1031,7 @@ LABEL_30:
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     v18 = 138412546;
-    v19 = v4;
+    v19 = keyCopy;
     v20 = 2112;
     v21 = v17;
     _os_log_fault_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "Unsupported property '%@' accessed on %@.", &v18, 0x16u);
@@ -1100,11 +1100,11 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"name"];
     v7 = v6;
@@ -1231,38 +1231,38 @@ LABEL_25:
   return v27;
 }
 
-- (void)setLocalProperties:(id)a3
+- (void)setLocalProperties:(id)properties
 {
-  v28 = a3;
-  v4 = [v28 objectForKeyedSubscript:@"name"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"name"];
   name = self->_name;
   self->_name = v4;
 
-  v6 = [v28 objectForKeyedSubscript:@"id"];
+  v6 = [propertiesCopy objectForKeyedSubscript:@"id"];
   localIdentifier = self->_localIdentifier;
   self->_localIdentifier = v6;
 
-  v8 = [v28 objectForKeyedSubscript:@"cnid"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"cnid"];
   contactIdentifier = self->_contactIdentifier;
   self->_contactIdentifier = v8;
 
-  v10 = [v28 objectForKeyedSubscript:@"sex"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"sex"];
   self->_sex = [v10 unsignedIntegerValue];
 
-  v11 = [v28 objectForKeyedSubscript:@"agecategory"];
+  v11 = [propertiesCopy objectForKeyedSubscript:@"agecategory"];
   self->_ageCategory = [v11 unsignedIntegerValue];
 
-  v12 = [v28 objectForKeyedSubscript:@"fav"];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"fav"];
   self->_isFavorite = [v12 BOOLValue];
 
-  v13 = [v28 objectForKeyedSubscript:@"usercreated"];
+  v13 = [propertiesCopy objectForKeyedSubscript:@"usercreated"];
   self->_isUserCreated = [v13 BOOLValue];
 
-  v14 = [v28 objectForKeyedSubscript:@"shareparticipant"];
+  v14 = [propertiesCopy objectForKeyedSubscript:@"shareparticipant"];
   shareParticipantLocalIdentifier = self->_shareParticipantLocalIdentifier;
   self->_shareParticipantLocalIdentifier = v14;
 
-  v16 = [v28 objectForKeyedSubscript:@"bday"];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"bday"];
   v17 = v16;
   if (v16)
   {
@@ -1281,7 +1281,7 @@ LABEL_25:
   {
   }
 
-  v20 = [v28 objectForKeyedSubscript:@"pbday"];
+  v20 = [propertiesCopy objectForKeyedSubscript:@"pbday"];
   v21 = v20;
   if (v20)
   {
@@ -1300,7 +1300,7 @@ LABEL_25:
   {
   }
 
-  v24 = [v28 objectForKeyedSubscript:@"anniv"];
+  v24 = [propertiesCopy objectForKeyedSubscript:@"anniv"];
   v25 = v24;
   if (v24)
   {
@@ -1326,7 +1326,7 @@ LABEL_25:
   if ([(NSString *)self->_localIdentifier length])
   {
     v3 = objc_alloc(MEMORY[0x277D22C78]);
-    v4 = [(PGGraphPersonNode *)self label];
+    label = [(PGGraphPersonNode *)self label];
     localIdentifier = self->_localIdentifier;
     v20 = @"id";
     v21[0] = localIdentifier;
@@ -1339,7 +1339,7 @@ LABEL_25:
   {
     v9 = [(NSString *)self->_contactIdentifier length];
     v3 = objc_alloc(MEMORY[0x277D22C78]);
-    v4 = [(PGGraphPersonNode *)self label];
+    label = [(PGGraphPersonNode *)self label];
     if (v9)
     {
       contactIdentifier = self->_contactIdentifier;
@@ -1362,61 +1362,61 @@ LABEL_25:
   }
 
   v12 = [v6 dictionaryWithObjects:v7 forKeys:v8 count:1];
-  v13 = [v3 initWithLabel:v4 domain:300 properties:v12];
+  v13 = [v3 initWithLabel:label domain:300 properties:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (PGGraphPersonNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphPersonNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
+  propertiesCopy = properties;
   v7 = [(PGGraphNode *)self init];
   v8 = v7;
   if (v7)
   {
-    [(PGGraphPersonNode *)v7 setLocalProperties:v6];
+    [(PGGraphPersonNode *)v7 setLocalProperties:propertiesCopy];
   }
 
   return v8;
 }
 
-- (PGGraphPersonNode)initWithPerson:(id)a3
+- (PGGraphPersonNode)initWithPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v8.receiver = self;
   v8.super_class = PGGraphPersonNode;
   v5 = [(PGGraphNode *)&v8 init];
   if (v5)
   {
-    v6 = [objc_opt_class() propertiesWithPerson:v4];
+    v6 = [objc_opt_class() propertiesWithPerson:personCopy];
     [(PGGraphPersonNode *)v5 setLocalProperties:v6];
   }
 
   return v5;
 }
 
-+ (id)filterForBiologicalSex:(unint64_t)a3
++ (id)filterForBiologicalSex:(unint64_t)sex
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [a1 filter];
+  filter = [self filter];
   v10 = @"sex";
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sex];
   v11[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [v4 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)filterForAgeCategories:(id)a3 includingMe:(BOOL)a4
++ (id)filterForAgeCategories:(id)categories includingMe:(BOOL)me
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a4)
+  categoriesCopy = categories;
+  if (me)
   {
     +[PGGraphPersonNode filterIncludingMe];
   }
@@ -1427,7 +1427,7 @@ LABEL_25:
   }
   v6 = ;
   v11 = @"agecategory";
-  v12[0] = v5;
+  v12[0] = categoriesCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
   v8 = [v6 filterBySettingProperties:v7];
@@ -1437,39 +1437,39 @@ LABEL_25:
   return v8;
 }
 
-+ (id)relationshipTagOfPersonWithConfidence:(double)a3
++ (id)relationshipTagOfPersonWithConfidence:(double)confidence
 {
-  v3 = [PGGraphRelationshipTagEdge filterWithConfidence:a3];
-  v4 = [v3 outRelation];
+  v3 = [PGGraphRelationshipTagEdge filterWithConfidence:confidence];
+  outRelation = [v3 outRelation];
 
-  return v4;
+  return outRelation;
 }
 
 + (MARelation)relationshipTagOfPerson
 {
   v2 = +[PGGraphRelationshipTagEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)personActivityMeaningOfPerson
 {
   v2 = +[PGGraphPracticesActivityEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)workOfPerson
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 homeOrWorkOfPerson];
-  v10[0] = v3;
+  homeOrWorkOfPerson = [self homeOrWorkOfPerson];
+  v10[0] = homeOrWorkOfPerson;
   v4 = +[PGGraphHomeWorkNode workFilter];
-  v5 = [v4 relation];
-  v10[1] = v5;
+  relation = [v4 relation];
+  v10[1] = relation;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v7 = [v2 chain:v6];
 
@@ -1482,11 +1482,11 @@ LABEL_25:
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 homeOrWorkOfPerson];
-  v10[0] = v3;
+  homeOrWorkOfPerson = [self homeOrWorkOfPerson];
+  v10[0] = homeOrWorkOfPerson;
   v4 = +[PGGraphHomeWorkNode homeFilter];
-  v5 = [v4 relation];
-  v10[1] = v5;
+  relation = [v4 relation];
+  v10[1] = relation;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v7 = [v2 chain:v6];
 
@@ -1498,33 +1498,33 @@ LABEL_25:
 + (MARelation)homeOrWorkOfPerson
 {
   v2 = +[PGGraphIsOwnedByEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)socialGroupOfPerson
 {
   v2 = +[PGGraphBelongsToEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)anniversaryMomentOfPerson
 {
   v2 = +[PGGraphAnniversaryEventEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)birthdayMomentOfPerson
 {
   v2 = +[PGGraphBirthdayEventEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)momentWithPhysicallyPresentPerson
@@ -1532,17 +1532,17 @@ LABEL_25:
   v15[4] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
   v3 = +[PGGraphPersonProximityEdge filter];
-  v4 = [v3 outRelation];
-  v15[0] = v4;
+  outRelation = [v3 outRelation];
+  v15[0] = outRelation;
   v5 = +[PGGraphPeoplePersonIsAroundEdge filter];
-  v6 = [v5 outRelation];
-  v15[1] = v6;
+  outRelation2 = [v5 outRelation];
+  v15[1] = outRelation2;
   v7 = +[PGGraphPersonPresentEdge filter];
-  v8 = [v7 outRelation];
-  v15[2] = v8;
+  outRelation3 = [v7 outRelation];
+  v15[2] = outRelation3;
   v9 = +[PGGraphAuthorEdge filter];
-  v10 = [v9 outRelation];
-  v15[3] = v10;
+  outRelation4 = [v9 outRelation];
+  v15[3] = outRelation4;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
   v12 = [v2 union:v11];
 
@@ -1554,280 +1554,280 @@ LABEL_25:
 + (MARelation)momentAuthoredByPerson
 {
   v2 = +[PGGraphAuthorEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)momentOfPerson
 {
   v2 = +[PGGraphPersonPresentEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)inferredVipOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredVipFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)vipOfPerson
 {
   v2 = +[PGGraphRelationshipEdge vipFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)inferredAcquaintanceOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredAcquaintanceFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)acquaintanceOfPerson
 {
   v2 = +[PGGraphRelationshipEdge acquaintanceFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)inferredCoworkerSocialGroupOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredCoworkerSocialGroupFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)coworkerSocialGroupOfPerson
 {
   v2 = +[PGGraphRelationshipEdge coworkerSocialGroupFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)inferredCoworkerOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredCoworkerFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)coworkerOfPerson
 {
   v2 = +[PGGraphRelationshipEdge coworkerFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)inferredFriendOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredFriendFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)friendOfPerson
 {
   v2 = +[PGGraphRelationshipEdge friendFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)inferredChildOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredChildFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)childOfPerson
 {
   v2 = +[PGGraphRelationshipEdge childFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)inferredFamilySocialGroupOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredFamilySocialGroupFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)familySocialGroupOfPerson
 {
   v2 = +[PGGraphRelationshipEdge familySocialGroupFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)inferredFamilyOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredFamilyFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)familyOfPerson
 {
   v2 = +[PGGraphRelationshipEdge familyFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)inferredParentOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredParentFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)parentOfPerson
 {
   v2 = +[PGGraphRelationshipEdge parentFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)inferredSonOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredSonFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)sonOfPerson
 {
   v2 = +[PGGraphRelationshipEdge sonFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)inferredDaughterOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredDaughterFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)daughterOfPerson
 {
   v2 = +[PGGraphRelationshipEdge daughterFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)inferredSisterOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredSisterFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)sisterOfPerson
 {
   v2 = +[PGGraphRelationshipEdge sisterFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)inferredBrotherOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredBrotherFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)brotherOfPerson
 {
   v2 = +[PGGraphRelationshipEdge brotherFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)inferredMotherOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredMotherFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)motherOfPerson
 {
   v2 = +[PGGraphRelationshipEdge motherFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)inferredFatherOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredFatherFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)fatherOfPerson
 {
   v2 = +[PGGraphRelationshipEdge fatherFilter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)inferredPartnerOfPerson
 {
   v2 = +[PGGraphRelationshipEdge inferredPartnerFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
 + (MARelation)partnerOfPerson
 {
   v2 = +[PGGraphRelationshipEdge partnerFilter];
-  v3 = [v2 anyDirectionRelation];
+  anyDirectionRelation = [v2 anyDirectionRelation];
 
-  return v3;
+  return anyDirectionRelation;
 }
 
-+ (id)_specialDateComponentsForDate:(id)a3
++ (id)_specialDateComponentsForDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v3 = [MEMORY[0x277D27690] components:28 fromDate:a3];
+    v3 = [MEMORY[0x277D27690] components:28 fromDate:date];
     if ([v3 year] == 1)
     {
       [v3 setYear:0x7FFFFFFFFFFFFFFFLL];
@@ -1842,9 +1842,9 @@ LABEL_25:
   return v3;
 }
 
-+ (double)_specialDateTimeIntervalForDate:(id)a3
++ (double)_specialDateTimeIntervalForDate:(id)date
 {
-  v3 = [a1 _specialDateComponentsForDate:a3];
+  v3 = [self _specialDateComponentsForDate:date];
   v4 = [PGGraphPersonNode _specialDateForDateComponents:v3];
   [v4 timeIntervalSince1970];
   v6 = v5;
@@ -1852,42 +1852,42 @@ LABEL_25:
   return v6;
 }
 
-+ (void)setAnniversaryDateComponents:(id)a3 onPersonNodeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setAnniversaryDateComponents:(id)components onPersonNodeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v7 = a5;
-  v9 = [PGGraphPersonNode _specialDateForDateComponents:a3];
+  graphCopy = graph;
+  v9 = [PGGraphPersonNode _specialDateForDateComponents:components];
   [PGGraphPersonNode _specialDateTimeIntervalForDate:v9];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  [v7 persistModelProperty:v8 forKey:@"anniv" forNodeWithIdentifier:a4];
+  [graphCopy persistModelProperty:v8 forKey:@"anniv" forNodeWithIdentifier:identifier];
 }
 
-+ (void)setBirthdayDateComponents:(id)a3 onPersonNodeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setBirthdayDateComponents:(id)components onPersonNodeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v7 = a5;
-  v9 = [PGGraphPersonNode _specialDateForDateComponents:a3];
+  graphCopy = graph;
+  v9 = [PGGraphPersonNode _specialDateForDateComponents:components];
   [PGGraphPersonNode _specialDateTimeIntervalForDate:v9];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  [v7 persistModelProperty:v8 forKey:@"bday" forNodeWithIdentifier:a4];
+  [graphCopy persistModelProperty:v8 forKey:@"bday" forNodeWithIdentifier:identifier];
 }
 
-+ (void)setName:(id)a3 onPersonNodeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setName:(id)name onPersonNodeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  if (a3)
+  if (name)
   {
-    [a5 persistModelProperty:a3 forKey:@"name" forNodeWithIdentifier:a4];
+    [graph persistModelProperty:name forKey:@"name" forNodeWithIdentifier:identifier];
   }
 
   else
   {
-    [a5 removeModelPropertyForKey:@"name" forNodeWithIdentifier:a4];
+    [graph removeModelPropertyForKey:@"name" forNodeWithIdentifier:identifier];
   }
 }
 
-+ (id)propertiesWithAgeCategory:(unint64_t)a3
++ (id)propertiesWithAgeCategory:(unint64_t)category
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"agecategory";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -1896,11 +1896,11 @@ LABEL_25:
   return v4;
 }
 
-+ (id)propertiesWithBiologicalSex:(unint64_t)a3
++ (id)propertiesWithBiologicalSex:(unint64_t)sex
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"sex";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sex];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -1909,15 +1909,15 @@ LABEL_25:
   return v4;
 }
 
-+ (id)propertiesWithPerson:(id)a3
++ (id)propertiesWithPerson:(id)person
 {
   v44[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 fullName];
-  v5 = v4;
-  if (v4)
+  personCopy = person;
+  fullName = [personCopy fullName];
+  v5 = fullName;
+  if (fullName)
   {
-    v6 = v4;
+    v6 = fullName;
   }
 
   else
@@ -1927,11 +1927,11 @@ LABEL_25:
 
   v7 = v6;
 
-  v8 = [v3 localIdentifier];
-  v9 = v8;
-  if (v8)
+  localIdentifier = [personCopy localIdentifier];
+  v9 = localIdentifier;
+  if (localIdentifier)
   {
-    v10 = v8;
+    v10 = localIdentifier;
   }
 
   else
@@ -1941,11 +1941,11 @@ LABEL_25:
 
   v11 = v10;
 
-  v12 = [v3 contactID];
-  v13 = v12;
-  if (v12)
+  contactID = [personCopy contactID];
+  v13 = contactID;
+  if (contactID)
   {
-    v14 = v12;
+    v14 = contactID;
   }
 
   else
@@ -1955,11 +1955,11 @@ LABEL_25:
 
   v15 = v14;
 
-  v16 = [v3 shareParticipantLocalIdentifier];
-  v17 = v16;
-  if (v16)
+  shareParticipantLocalIdentifier = [personCopy shareParticipantLocalIdentifier];
+  v17 = shareParticipantLocalIdentifier;
+  if (shareParticipantLocalIdentifier)
   {
-    v18 = v16;
+    v18 = shareParticipantLocalIdentifier;
   }
 
   else
@@ -1969,22 +1969,22 @@ LABEL_25:
 
   v19 = v18;
 
-  v20 = [v3 isFavorite];
-  v21 = [v3 isUserCreated];
-  v22 = [v3 sex];
-  v23 = [v3 ageCategory];
+  isFavorite = [personCopy isFavorite];
+  isUserCreated = [personCopy isUserCreated];
+  v22 = [personCopy sex];
+  ageCategory = [personCopy ageCategory];
   v42 = v7;
   v43[0] = @"name";
   v44[0] = v7;
   v43[1] = @"fav";
-  v24 = [MEMORY[0x277CCABB0] numberWithBool:v20];
+  v24 = [MEMORY[0x277CCABB0] numberWithBool:isFavorite];
   v44[1] = v24;
   v44[2] = v11;
   v41 = v11;
   v25 = v19;
   v43[2] = @"id";
   v43[3] = @"usercreated";
-  v26 = [MEMORY[0x277CCABB0] numberWithBool:v21];
+  v26 = [MEMORY[0x277CCABB0] numberWithBool:isUserCreated];
   v44[3] = v26;
   v44[4] = v15;
   v43[4] = @"cnid";
@@ -1994,37 +1994,37 @@ LABEL_25:
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
   v44[6] = v27;
   v43[7] = @"agecategory";
-  v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v23];
+  v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:ageCategory];
   v44[7] = v28;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:8];
   v30 = [v29 mutableCopy];
 
-  v31 = [v3 birthdayDate];
-  if (v31)
+  birthdayDate = [personCopy birthdayDate];
+  if (birthdayDate)
   {
     v32 = MEMORY[0x277CCABB0];
-    [PGGraphPersonNode _specialDateTimeIntervalForDate:v31];
-    v33 = [v32 numberWithDouble:?];
-    [v30 setObject:v33 forKeyedSubscript:@"bday"];
+    [PGGraphPersonNode _specialDateTimeIntervalForDate:birthdayDate];
+    potentialBirthdayDate = [v32 numberWithDouble:?];
+    [v30 setObject:potentialBirthdayDate forKeyedSubscript:@"bday"];
   }
 
   else
   {
-    v33 = [v3 potentialBirthdayDate];
-    if (v33)
+    potentialBirthdayDate = [personCopy potentialBirthdayDate];
+    if (potentialBirthdayDate)
     {
       v34 = MEMORY[0x277CCABB0];
-      [PGGraphPersonNode _specialDateTimeIntervalForDate:v33];
+      [PGGraphPersonNode _specialDateTimeIntervalForDate:potentialBirthdayDate];
       v35 = [v34 numberWithDouble:?];
       [v30 setObject:v35 forKeyedSubscript:@"pbday"];
     }
   }
 
-  v36 = [v3 anniversaryDate];
-  if (v36)
+  anniversaryDate = [personCopy anniversaryDate];
+  if (anniversaryDate)
   {
     v37 = MEMORY[0x277CCABB0];
-    [PGGraphPersonNode _specialDateTimeIntervalForDate:v36];
+    [PGGraphPersonNode _specialDateTimeIntervalForDate:anniversaryDate];
     v38 = [v37 numberWithDouble:?];
     [v30 setObject:v38 forKeyedSubscript:@"anniv"];
   }
@@ -2096,13 +2096,13 @@ LABEL_25:
   return v5;
 }
 
-+ (id)filterWithShareParticipantIdentifiers:(id)a3
++ (id)filterWithShareParticipantIdentifiers:(id)identifiers
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = +[PGGraphPersonNode filterIncludingMe];
   v9 = @"shareparticipant";
-  v10[0] = v3;
+  v10[0] = identifiersCopy;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v6 = [v4 filterBySettingProperties:v5];

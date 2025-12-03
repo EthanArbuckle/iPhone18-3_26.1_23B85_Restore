@@ -1,30 +1,30 @@
 @interface TKNetworkDefaultTask
-- (TKNetworkDefaultTask)initWithTask:(id)a3;
+- (TKNetworkDefaultTask)initWithTask:(id)task;
 - (void)cancel;
 @end
 
 @implementation TKNetworkDefaultTask
 
-- (TKNetworkDefaultTask)initWithTask:(id)a3
+- (TKNetworkDefaultTask)initWithTask:(id)task
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, task);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = TKNetworkDefaultTask;
-  v8 = [(TKNetworkDefaultTask *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(TKNetworkDefaultTask *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_task, location[0]);
+    objc_storeStrong(&selfCopy->_task, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v8);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 

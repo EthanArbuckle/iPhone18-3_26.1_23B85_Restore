@@ -2,9 +2,9 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)appTrackingTransparencyBag;
-+ (int64_t)reasonCodeFromNumberValue:(id)a3;
-- (int64_t)numberOfDayFrom:(id)a3 andNow:(id)a4;
-- (void)appTrackingEnforcement:(id)a3;
++ (int64_t)reasonCodeFromNumberValue:(id)value;
+- (int64_t)numberOfDayFrom:(id)from andNow:(id)now;
+- (void)appTrackingEnforcement:(id)enforcement;
 @end
 
 @implementation ATEnforcementService
@@ -41,14 +41,14 @@
   }
 
   v2 = [[AMSProcessInfo alloc] initWithBundleIdentifier:@"com.apple.AppTrackingTransparency.EnforcementService"];
-  v3 = [v2 executableName];
-  v4 = [v3 length];
+  executableName = [v2 executableName];
+  v4 = [executableName length];
 
   if (!v4)
   {
     v5 = +[NSProcessInfo processInfo];
-    v6 = [v5 processName];
-    [v2 setExecutableName:v6];
+    processName = [v5 processName];
+    [v2 setExecutableName:processName];
   }
 
   v7 = +[ATEnforcementService bagSubProfile];
@@ -58,9 +58,9 @@
   return v9;
 }
 
-- (void)appTrackingEnforcement:(id)a3
+- (void)appTrackingEnforcement:(id)enforcement
 {
-  v4 = a3;
+  enforcementCopy = enforcement;
   if (![(ATEnforcementService *)self isInternalInstall])
   {
 LABEL_6:
@@ -78,12 +78,12 @@ LABEL_6:
 
     if (v9 && v13 && !v14)
     {
-      v4[2](v4, [v9 BOOLValue], +[ATEnforcementService reasonCodeFromNumberValue:](ATEnforcementService, "reasonCodeFromNumberValue:", v11), 0);
+      enforcementCopy[2](enforcementCopy, [v9 BOOLValue], +[ATEnforcementService reasonCodeFromNumberValue:](ATEnforcementService, "reasonCodeFromNumberValue:", v11), 0);
     }
 
     else
     {
-      v4[2](v4, 1, 0, 1);
+      enforcementCopy[2](enforcementCopy, 1, 0, 1);
       if (!v13)
       {
         goto LABEL_12;
@@ -159,23 +159,23 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  v4[2](v4, [v5 BOOLForKey:@"TrackingEnforced"], objc_msgSend(v5, "integerForKey:", @"ReasonCode"), 1);
+  enforcementCopy[2](enforcementCopy, [v5 BOOLForKey:@"TrackingEnforced"], objc_msgSend(v5, "integerForKey:", @"ReasonCode"), 1);
 LABEL_14:
 }
 
-- (int64_t)numberOfDayFrom:(id)a3 andNow:(id)a4
+- (int64_t)numberOfDayFrom:(id)from andNow:(id)now
 {
-  if (!a3)
+  if (!from)
   {
     return 1;
   }
 
-  v5 = a4;
-  v6 = a3;
+  nowCopy = now;
+  fromCopy = from;
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 startOfDayForDate:v6];
+  v8 = [v7 startOfDayForDate:fromCopy];
 
-  v9 = [v7 startOfDayForDate:v5];
+  v9 = [v7 startOfDayForDate:nowCopy];
 
   v10 = [v7 components:16 fromDate:v8 toDate:v9 options:0];
 
@@ -183,9 +183,9 @@ LABEL_14:
   return v11;
 }
 
-+ (int64_t)reasonCodeFromNumberValue:(id)a3
++ (int64_t)reasonCodeFromNumberValue:(id)value
 {
-  result = [a3 integerValue];
+  result = [value integerValue];
   if (result == 1001)
   {
     v4 = 1001;

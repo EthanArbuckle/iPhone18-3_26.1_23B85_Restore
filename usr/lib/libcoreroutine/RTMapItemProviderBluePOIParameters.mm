@@ -1,18 +1,18 @@
 @interface RTMapItemProviderBluePOIParameters
-- (RTMapItemProviderBluePOIParameters)initWithBaseDuration:(double)a3 injectedPlistPath:(id)a4 aoiDistanceThreshold:(double)a5 poiDistanceThreshold:(double)a6 aoiConfidencePassThroughThreshold:(double)a7 aoiConfidenceConsiderThreshold:(double)a8 poiConfidencePassThroughThreshold:(double)a9 poiConfidenceConsiderThreshold:(double)a10 maxNumberOfQueries:(unint64_t)a11 earlyStop:(BOOL)a12 noFingerprintMinVisitDuration:(double)a13 minVisitLength:(double)a14 tileSize:(double)a15 performServerWithLocal:(BOOL)a16 harvestParameters:(id)a17 aoiCategoriesToSuppressContainingPOIs:(id)a18;
-- (RTMapItemProviderBluePOIParameters)initWithBaseDuration:(double)a3 injectedPlistPath:(id)a4 locationLookupWindowMaxMinutes:(double)a5 locationLookupWindowMinMinutes:(double)a6 maxLocationsPerFingerprint:(unint64_t)a7 locationUncertaintyThreshold:(double)a8 aoiDistanceThreshold:(double)a9 poiDistanceThreshold:(double)a10 harvestMask:(unint64_t)a11 aoiConfidencePassThroughThreshold:(double)a12 aoiConfidenceConsiderThreshold:(double)a13 poiConfidencePassThroughThreshold:(double)a14 poiConfidenceConsiderThreshold:(double)a15 maxNumberOfQueries:(unint64_t)a16 earlyStop:(BOOL)a17 noFingerprintMinVisitDuration:(double)a18 minVisitLength:(double)a19 tileSize:(double)a20 performServerWithLocal:(BOOL)a21;
-- (RTMapItemProviderBluePOIParameters)initWithDefaultsManager:(id)a3;
+- (RTMapItemProviderBluePOIParameters)initWithBaseDuration:(double)duration injectedPlistPath:(id)path aoiDistanceThreshold:(double)threshold poiDistanceThreshold:(double)distanceThreshold aoiConfidencePassThroughThreshold:(double)throughThreshold aoiConfidenceConsiderThreshold:(double)considerThreshold poiConfidencePassThroughThreshold:(double)passThroughThreshold poiConfidenceConsiderThreshold:(double)self0 maxNumberOfQueries:(unint64_t)self1 earlyStop:(BOOL)self2 noFingerprintMinVisitDuration:(double)self3 minVisitLength:(double)self4 tileSize:(double)self5 performServerWithLocal:(BOOL)self6 harvestParameters:(id)self7 aoiCategoriesToSuppressContainingPOIs:(id)self8;
+- (RTMapItemProviderBluePOIParameters)initWithBaseDuration:(double)duration injectedPlistPath:(id)path locationLookupWindowMaxMinutes:(double)minutes locationLookupWindowMinMinutes:(double)minMinutes maxLocationsPerFingerprint:(unint64_t)fingerprint locationUncertaintyThreshold:(double)threshold aoiDistanceThreshold:(double)distanceThreshold poiDistanceThreshold:(double)self0 harvestMask:(unint64_t)self1 aoiConfidencePassThroughThreshold:(double)self2 aoiConfidenceConsiderThreshold:(double)self3 poiConfidencePassThroughThreshold:(double)self4 poiConfidenceConsiderThreshold:(double)self5 maxNumberOfQueries:(unint64_t)self6 earlyStop:(BOOL)self7 noFingerprintMinVisitDuration:(double)self8 minVisitLength:(double)self9 tileSize:(double)size performServerWithLocal:(BOOL)local;
+- (RTMapItemProviderBluePOIParameters)initWithDefaultsManager:(id)manager;
 - (id)description;
 @end
 
 @implementation RTMapItemProviderBluePOIParameters
 
-- (RTMapItemProviderBluePOIParameters)initWithBaseDuration:(double)a3 injectedPlistPath:(id)a4 aoiDistanceThreshold:(double)a5 poiDistanceThreshold:(double)a6 aoiConfidencePassThroughThreshold:(double)a7 aoiConfidenceConsiderThreshold:(double)a8 poiConfidencePassThroughThreshold:(double)a9 poiConfidenceConsiderThreshold:(double)a10 maxNumberOfQueries:(unint64_t)a11 earlyStop:(BOOL)a12 noFingerprintMinVisitDuration:(double)a13 minVisitLength:(double)a14 tileSize:(double)a15 performServerWithLocal:(BOOL)a16 harvestParameters:(id)a17 aoiCategoriesToSuppressContainingPOIs:(id)a18
+- (RTMapItemProviderBluePOIParameters)initWithBaseDuration:(double)duration injectedPlistPath:(id)path aoiDistanceThreshold:(double)threshold poiDistanceThreshold:(double)distanceThreshold aoiConfidencePassThroughThreshold:(double)throughThreshold aoiConfidenceConsiderThreshold:(double)considerThreshold poiConfidencePassThroughThreshold:(double)passThroughThreshold poiConfidenceConsiderThreshold:(double)self0 maxNumberOfQueries:(unint64_t)self1 earlyStop:(BOOL)self2 noFingerprintMinVisitDuration:(double)self3 minVisitLength:(double)self4 tileSize:(double)self5 performServerWithLocal:(BOOL)self6 harvestParameters:(id)self7 aoiCategoriesToSuppressContainingPOIs:(id)self8
 {
-  v33 = a4;
-  v34 = a17;
-  v35 = a18;
-  if (a3 <= 0.0)
+  pathCopy = path;
+  parametersCopy = parameters;
+  isCopy = is;
+  if (duration <= 0.0)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (a5 <= 0.0)
+  if (threshold <= 0.0)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (a6 <= 0.0)
+  if (distanceThreshold <= 0.0)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (a7 <= 0.0)
+  if (throughThreshold <= 0.0)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (a8 <= 0.0)
+  if (considerThreshold <= 0.0)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -79,7 +79,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (a9 <= 0.0)
+  if (passThroughThreshold <= 0.0)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -92,7 +92,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (a10 <= 0.0)
+  if (confidenceConsiderThreshold <= 0.0)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -105,7 +105,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (!a11)
+  if (!queries)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -118,7 +118,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (a15 <= 0.0)
+  if (size <= 0.0)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -130,7 +130,7 @@ LABEL_31:
 
 LABEL_32:
 
-    v38 = 0;
+    selfCopy = 0;
     goto LABEL_33;
   }
 
@@ -140,37 +140,37 @@ LABEL_32:
   v37 = v36;
   if (v36)
   {
-    v36->_baseDuration = a3;
-    objc_storeStrong(&v36->_injectedPlistPath, a4);
-    v37->_aoiDistanceThreshold = a5;
-    v37->_poiDistanceThreshold = a6;
-    v37->_aoiConfidencePassThroughThreshold = a7;
-    v37->_aoiConfidenceConsiderThreshold = a8;
-    v37->_poiConfidencePassThroughThreshold = a9;
-    v37->_poiConfidenceConsiderThreshold = a10;
-    v37->_maxNumberOfQueries = a11;
-    v37->_earlyStop = a12;
-    v37->_noFingerprintMinVisitDuration = a13;
-    v37->_minVisitLength = a14;
-    v37->_tileSize = a15;
-    v37->_performServerWithLocal = a16;
-    objc_storeStrong(&v37->_harvestParameters, a17);
-    objc_storeStrong(&v37->_aoiCategoriesToSuppressContainingPOIs, a18);
+    v36->_baseDuration = duration;
+    objc_storeStrong(&v36->_injectedPlistPath, path);
+    v37->_aoiDistanceThreshold = threshold;
+    v37->_poiDistanceThreshold = distanceThreshold;
+    v37->_aoiConfidencePassThroughThreshold = throughThreshold;
+    v37->_aoiConfidenceConsiderThreshold = considerThreshold;
+    v37->_poiConfidencePassThroughThreshold = passThroughThreshold;
+    v37->_poiConfidenceConsiderThreshold = confidenceConsiderThreshold;
+    v37->_maxNumberOfQueries = queries;
+    v37->_earlyStop = stop;
+    v37->_noFingerprintMinVisitDuration = visitDuration;
+    v37->_minVisitLength = length;
+    v37->_tileSize = size;
+    v37->_performServerWithLocal = local;
+    objc_storeStrong(&v37->_harvestParameters, parameters);
+    objc_storeStrong(&v37->_aoiCategoriesToSuppressContainingPOIs, is);
   }
 
   self = v37;
-  v38 = self;
+  selfCopy = self;
 LABEL_33:
 
-  return v38;
+  return selfCopy;
 }
 
-- (RTMapItemProviderBluePOIParameters)initWithBaseDuration:(double)a3 injectedPlistPath:(id)a4 locationLookupWindowMaxMinutes:(double)a5 locationLookupWindowMinMinutes:(double)a6 maxLocationsPerFingerprint:(unint64_t)a7 locationUncertaintyThreshold:(double)a8 aoiDistanceThreshold:(double)a9 poiDistanceThreshold:(double)a10 harvestMask:(unint64_t)a11 aoiConfidencePassThroughThreshold:(double)a12 aoiConfidenceConsiderThreshold:(double)a13 poiConfidencePassThroughThreshold:(double)a14 poiConfidenceConsiderThreshold:(double)a15 maxNumberOfQueries:(unint64_t)a16 earlyStop:(BOOL)a17 noFingerprintMinVisitDuration:(double)a18 minVisitLength:(double)a19 tileSize:(double)a20 performServerWithLocal:(BOOL)a21
+- (RTMapItemProviderBluePOIParameters)initWithBaseDuration:(double)duration injectedPlistPath:(id)path locationLookupWindowMaxMinutes:(double)minutes locationLookupWindowMinMinutes:(double)minMinutes maxLocationsPerFingerprint:(unint64_t)fingerprint locationUncertaintyThreshold:(double)threshold aoiDistanceThreshold:(double)distanceThreshold poiDistanceThreshold:(double)self0 harvestMask:(unint64_t)self1 aoiConfidencePassThroughThreshold:(double)self2 aoiConfidenceConsiderThreshold:(double)self3 poiConfidencePassThroughThreshold:(double)self4 poiConfidenceConsiderThreshold:(double)self5 maxNumberOfQueries:(unint64_t)self6 earlyStop:(BOOL)self7 noFingerprintMinVisitDuration:(double)self8 minVisitLength:(double)self9 tileSize:(double)size performServerWithLocal:(BOOL)local
 {
-  v21 = a21;
-  v22 = a17;
-  v35 = a4;
-  if (a5 <= 0.0)
+  localCopy = local;
+  stopCopy = stop;
+  pathCopy = path;
+  if (minutes <= 0.0)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -186,7 +186,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a6 <= 0.0)
+  if (minMinutes <= 0.0)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -200,7 +200,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!a7)
+  if (!fingerprint)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -214,7 +214,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a8 <= 0.0)
+  if (threshold <= 0.0)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -227,27 +227,27 @@ LABEL_14:
 
 LABEL_15:
 
-    v37 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
-  v36 = [[RTPOIHarvestParameters alloc] initWithHarvestMask:a11 locationLookupWindowMaxMinutes:a7 locationLookupWindowMinMinutes:a5 locationUncertaintyThreshold:a6 maxLocationsPerFingerprint:a8];
-  self = [(RTMapItemProviderBluePOIParameters *)self initWithBaseDuration:v35 injectedPlistPath:a16 aoiDistanceThreshold:v22 poiDistanceThreshold:v21 aoiConfidencePassThroughThreshold:v36 aoiConfidenceConsiderThreshold:0 poiConfidencePassThroughThreshold:a3 poiConfidenceConsiderThreshold:a9 maxNumberOfQueries:a10 earlyStop:a12 noFingerprintMinVisitDuration:a13 minVisitLength:a14 tileSize:a15 performServerWithLocal:a18 harvestParameters:*&a19 aoiCategoriesToSuppressContainingPOIs:*&a20];
+  v36 = [[RTPOIHarvestParameters alloc] initWithHarvestMask:mask locationLookupWindowMaxMinutes:fingerprint locationLookupWindowMinMinutes:minutes locationUncertaintyThreshold:minMinutes maxLocationsPerFingerprint:threshold];
+  self = [(RTMapItemProviderBluePOIParameters *)self initWithBaseDuration:pathCopy injectedPlistPath:queries aoiDistanceThreshold:stopCopy poiDistanceThreshold:localCopy aoiConfidencePassThroughThreshold:v36 aoiConfidenceConsiderThreshold:0 poiConfidencePassThroughThreshold:duration poiConfidenceConsiderThreshold:distanceThreshold maxNumberOfQueries:poiDistanceThreshold earlyStop:throughThreshold noFingerprintMinVisitDuration:considerThreshold minVisitLength:passThroughThreshold tileSize:confidenceConsiderThreshold performServerWithLocal:visitDuration harvestParameters:*&length aoiCategoriesToSuppressContainingPOIs:*&size];
 
-  v37 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v37;
+  return selfCopy;
 }
 
-- (RTMapItemProviderBluePOIParameters)initWithDefaultsManager:(id)a3
+- (RTMapItemProviderBluePOIParameters)initWithDefaultsManager:(id)manager
 {
   v71[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsMapItemProviderBluePOIBaseDuration"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsMapItemProviderBluePOIBaseDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -350,24 +350,24 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v54 = [v29 unsignedIntegerValue];
+      unsignedIntegerValue = [v29 unsignedIntegerValue];
     }
 
     else
     {
-      v54 = 6;
+      unsignedIntegerValue = 6;
     }
 
     v30 = [v5 objectForKey:@"RTDefaultsMapItemProviderBluePOIEarlyStop"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v52 = [v30 BOOLValue];
+      bOOLValue = [v30 BOOLValue];
     }
 
     else
     {
-      v52 = 0;
+      bOOLValue = 0;
     }
 
     v58 = v23;
@@ -411,15 +411,15 @@ LABEL_16:
     objc_opt_class();
     v64 = v14;
     v55 = v30;
-    v41 = self;
+    selfCopy = self;
     if (objc_opt_isKindOfClass())
     {
-      v42 = [v40 BOOLValue];
+      bOOLValue2 = [v40 BOOLValue];
     }
 
     else
     {
-      v42 = 0;
+      bOOLValue2 = 0;
     }
 
     v43 = [[RTPOIHarvestParameters alloc] initWithDefaultsManager:v5];
@@ -452,10 +452,10 @@ LABEL_16:
       [v44 addObjectsFromArray:v46];
     }
 
-    v50 = [(RTMapItemProviderBluePOIParameters *)v41 initWithBaseDuration:v62 injectedPlistPath:v54 aoiDistanceThreshold:v52 poiDistanceThreshold:v42 aoiConfidencePassThroughThreshold:v43 aoiConfidenceConsiderThreshold:v44 poiConfidencePassThroughThreshold:v63 poiConfidenceConsiderThreshold:v60 maxNumberOfQueries:v16 earlyStop:v18 noFingerprintMinVisitDuration:v22 minVisitLength:v24 tileSize:v28 performServerWithLocal:v33 harvestParameters:v32 aoiCategoriesToSuppressContainingPOIs:v39];
+    v50 = [(RTMapItemProviderBluePOIParameters *)selfCopy initWithBaseDuration:v62 injectedPlistPath:unsignedIntegerValue aoiDistanceThreshold:bOOLValue poiDistanceThreshold:bOOLValue2 aoiConfidencePassThroughThreshold:v43 aoiConfidenceConsiderThreshold:v44 poiConfidencePassThroughThreshold:v63 poiConfidenceConsiderThreshold:v60 maxNumberOfQueries:v16 earlyStop:v18 noFingerprintMinVisitDuration:v22 minVisitLength:v24 tileSize:v28 performServerWithLocal:v33 harvestParameters:v32 aoiCategoriesToSuppressContainingPOIs:v39];
     self = v50;
 
-    v9 = self;
+    selfCopy2 = self;
     v8 = v67;
   }
 
@@ -468,10 +468,10 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", buf, 2u);
     }
 
-    v9 = 0;
+    selfCopy2 = 0;
   }
 
-  return v9;
+  return selfCopy2;
 }
 
 void __62__RTMapItemProviderBluePOIParameters_initWithDefaultsManager___block_invoke(uint64_t a1, void *a2)

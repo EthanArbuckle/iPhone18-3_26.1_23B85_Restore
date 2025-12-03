@@ -1,28 +1,28 @@
 @interface PKIssuerBindingViewController
-- (PKIssuerBindingViewController)initWithIssuerData:(id)a3 signature:(id)a4 referralSource:(unint64_t)a5;
+- (PKIssuerBindingViewController)initWithIssuerData:(id)data signature:(id)signature referralSource:(unint64_t)source;
 - (PKIssuerBindingViewControllerDelegate)delegate;
-- (id)_alertViewControllerForError:(id)a3;
+- (id)_alertViewControllerForError:(id)error;
 - (void)_cancel;
-- (void)_confirmSecurityCapabilitiesWithCompletion:(id)a3;
+- (void)_confirmSecurityCapabilitiesWithCompletion:(id)completion;
 - (void)_enableControls;
-- (void)_presentFailureWithError:(id)a3;
-- (void)_sendAnalyticsDidTapButton:(id)a3;
-- (void)_sendAnalyticsViewVisibilityUpdateWithType:(id)a3;
+- (void)_presentFailureWithError:(id)error;
+- (void)_sendAnalyticsDidTapButton:(id)button;
+- (void)_sendAnalyticsViewVisibilityUpdateWithType:(id)type;
 - (void)_sendAuthenticationEvent;
-- (void)_sendInternalErrorEventWithError:(id)a3;
-- (void)explanationViewControllerDidSelectCancel:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_sendInternalErrorEventWithError:(id)error;
+- (void)explanationViewControllerDidSelectCancel:(id)cancel;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKIssuerBindingViewController
 
-- (PKIssuerBindingViewController)initWithIssuerData:(id)a3 signature:(id)a4 referralSource:(unint64_t)a5
+- (PKIssuerBindingViewController)initWithIssuerData:(id)data signature:(id)signature referralSource:(unint64_t)source
 {
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  signatureCopy = signature;
   v28.receiver = self;
   v28.super_class = PKIssuerBindingViewController;
   v11 = [(PKExplanationViewController *)&v28 init];
@@ -36,17 +36,17 @@ LABEL_10:
   if (PKValidateIssuerBindingData())
   {
     v27 = 0;
-    v12 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v9 options:0 error:&v27];
+    v12 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v27];
     v13 = v27;
     v14 = objc_alloc(MEMORY[0x1E69B88B8]);
     v15 = [v12 objectForKey:@"fidoProfile"];
     v16 = [v14 initWithDictionary:v15];
 
-    v17 = [v16 relyingPartyIdentifier];
+    relyingPartyIdentifier = [v16 relyingPartyIdentifier];
     relyingPartyIdentifier = v11->_relyingPartyIdentifier;
-    v11->_relyingPartyIdentifier = v17;
+    v11->_relyingPartyIdentifier = relyingPartyIdentifier;
 
-    v11->_source = a5;
+    v11->_source = source;
     v19 = [v12 PKStringForKey:@"displayableName"];
     issuerName = v11->_issuerName;
     v11->_issuerName = v19;
@@ -67,12 +67,12 @@ LABEL_10:
     {
     }
 
-    v24 = [MEMORY[0x1E69B8A58] sharedInstance];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
     passLibrary = v11->_passLibrary;
-    v11->_passLibrary = v24;
+    v11->_passLibrary = mEMORY[0x1E69B8A58];
 
     [(PKPassLibrary *)v11->_passLibrary addDelegate:v11];
-    objc_storeStrong(&v11->_issuerData, a3);
+    objc_storeStrong(&v11->_issuerData, data);
     [(PKExplanationViewController *)v11 setExplanationViewControllerDelegate:v11];
 
     goto LABEL_10;
@@ -84,11 +84,11 @@ LABEL_11:
   return v23;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKIssuerBindingViewController;
-  [(PKIssuerBindingViewController *)&v4 viewDidAppear:a3];
+  [(PKIssuerBindingViewController *)&v4 viewDidAppear:appear];
   [(PKIssuerBindingViewController *)self _sendAnalyticsViewVisibilityUpdateWithType:*MEMORY[0x1E69BA818]];
 }
 
@@ -99,15 +99,15 @@ LABEL_11:
   [(PKExplanationViewController *)&v14 viewDidLoad];
   [(PKExplanationViewController *)self setShowDoneButton:0];
   [(PKExplanationViewController *)self setShowCancelButton:1];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  [v3 setDelegate:self];
-  [v3 setShowPrivacyView:0];
-  [v3 setBodyDataDetectorTypes:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setDelegate:self];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setBodyDataDetectorTypes:0];
   v4 = PKLocalizedString(&cfstr_Wallet_1.isa);
-  [v3 setTitleText:v4];
+  [explanationView setTitleText:v4];
 
   v5 = PKUIGetWalletAppIconWithSize(76.0, 76.0);
-  [v3 setImage:v5];
+  [explanationView setImage:v5];
   IsAvailable = PKPearlIsAvailable();
   accountName = self->_accountName;
   if (!IsAvailable)
@@ -140,32 +140,32 @@ LABEL_9:
 LABEL_6:
   PKLocalizedPaymentString(&v8->isa, &stru_1F3BD6370.isa, issuerName, v13);
   v10 = LABEL_10:;
-  [v3 setBodyText:v10];
+  [explanationView setBodyText:v10];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKIssuerBindingViewController;
-  [(PKIssuerBindingViewController *)&v4 viewDidDisappear:a3];
+  [(PKIssuerBindingViewController *)&v4 viewDidDisappear:disappear];
   [(PKIssuerBindingViewController *)self _sendAnalyticsViewVisibilityUpdateWithType:*MEMORY[0x1E69BA820]];
 }
 
-- (void)explanationViewControllerDidSelectCancel:(id)a3
+- (void)explanationViewControllerDidSelectCancel:(id)cancel
 {
   [(PKIssuerBindingViewController *)self _sendAnalyticsDidTapButton:*MEMORY[0x1E69BA468]];
 
   [(PKIssuerBindingViewController *)self _cancel];
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
+  continueCopy = continue;
   [(PKIssuerBindingViewController *)self _sendAnalyticsDidTapButton:*MEMORY[0x1E69BA500]];
   [(PKExplanationViewController *)self showNavigationBarSpinner:1];
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v6 = [v5 dockView];
-  [v6 setButtonsEnabled:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:0];
 
   if (!self->_accountName)
   {
@@ -288,14 +288,14 @@ uint64_t __66__PKIssuerBindingViewController_explanationViewDidSelectContinue___
 - (void)_enableControls
 {
   [(PKExplanationViewController *)self showNavigationBarSpinner:0];
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v3 = [v4 dockView];
-  [v3 setButtonsEnabled:1];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:1];
 }
 
-- (void)_confirmSecurityCapabilitiesWithCompletion:(id)a3
+- (void)_confirmSecurityCapabilitiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[PKSecurityCapabilitiesController alloc] initWithRequirements:24 context:0];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
@@ -303,7 +303,7 @@ uint64_t __66__PKIssuerBindingViewController_explanationViewDidSelectContinue___
   v7[2] = __76__PKIssuerBindingViewController__confirmSecurityCapabilitiesWithCompletion___block_invoke;
   v7[3] = &unk_1E8022F50;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(PKSecurityCapabilitiesController *)v5 presentSecurityRepairFlowWithPresentingViewController:self completion:v7];
 
@@ -388,18 +388,18 @@ void __76__PKIssuerBindingViewController__confirmSecurityCapabilitiesWithComplet
   }
 }
 
-- (void)_presentFailureWithError:(id)a3
+- (void)_presentFailureWithError:(id)error
 {
-  v4 = [(PKIssuerBindingViewController *)self _alertViewControllerForError:a3];
+  v4 = [(PKIssuerBindingViewController *)self _alertViewControllerForError:error];
   [(PKIssuerBindingViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (id)_alertViewControllerForError:(id)a3
+- (id)_alertViewControllerForError:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 code] == 1;
+  v6 = [errorCopy code] == 1;
   v7 = PKLocalizedPaymentString(&cfstr_IssuerDataGene_3.isa);
   if (v6)
   {
@@ -488,12 +488,12 @@ void __62__PKIssuerBindingViewController__alertViewControllerForError___block_in
   }
 }
 
-- (void)_sendAnalyticsViewVisibilityUpdateWithType:(id)a3
+- (void)_sendAnalyticsViewVisibilityUpdateWithType:(id)type
 {
   v15[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69B8540];
   v5 = *MEMORY[0x1E69BB710];
-  v6 = a3;
+  typeCopy = type;
   [v4 reporterForSubject:v5];
 
   v7 = MEMORY[0x1E69B8540];
@@ -501,7 +501,7 @@ void __62__PKIssuerBindingViewController__alertViewControllerForError___block_in
   v14[0] = *MEMORY[0x1E69BA680];
   v14[1] = v8;
   v9 = *MEMORY[0x1E69BABF8];
-  v15[0] = v6;
+  v15[0] = typeCopy;
   v15[1] = v9;
   relyingPartyIdentifier = self->_relyingPartyIdentifier;
   if (!relyingPartyIdentifier)
@@ -519,12 +519,12 @@ void __62__PKIssuerBindingViewController__alertViewControllerForError___block_in
   [v7 subject:v5 sendEvent:v13];
 }
 
-- (void)_sendAnalyticsDidTapButton:(id)a3
+- (void)_sendAnalyticsDidTapButton:(id)button
 {
   v15[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69B8540];
   v5 = *MEMORY[0x1E69BB710];
-  v6 = a3;
+  buttonCopy = button;
   [v4 reporterForSubject:v5];
 
   v7 = MEMORY[0x1E69B8540];
@@ -545,17 +545,17 @@ void __62__PKIssuerBindingViewController__alertViewControllerForError___block_in
   v14[2] = *MEMORY[0x1E69BB3E0];
   v14[3] = v12;
   v15[2] = relyingPartyIdentifier;
-  v15[3] = v6;
+  v15[3] = buttonCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
   [v7 subject:v5 sendEvent:v13];
 }
 
-- (void)_sendInternalErrorEventWithError:(id)a3
+- (void)_sendInternalErrorEventWithError:(id)error
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69B8540];
   v5 = *MEMORY[0x1E69BB710];
-  v6 = a3;
+  errorCopy = error;
   [v4 reporterForSubject:v5];
 
   v7 = MEMORY[0x1E69B8540];

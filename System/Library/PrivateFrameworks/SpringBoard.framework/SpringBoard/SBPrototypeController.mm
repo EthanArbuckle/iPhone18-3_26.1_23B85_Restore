@@ -1,7 +1,7 @@
 @interface SBPrototypeController
 + (SBPrototypeController)sharedInstance;
-- (BOOL)_handlePrototypingEvent:(int64_t)a3;
-- (BOOL)_shouldSendEvent:(int64_t)a3;
+- (BOOL)_handlePrototypingEvent:(int64_t)event;
+- (BOOL)_shouldSendEvent:(int64_t)event;
 - (SBPrototypeController)init;
 - (SBRestartManager)restartManager;
 - (SBWindowScene)windowScene;
@@ -9,11 +9,11 @@
 - (void)_acquireRemotePrototypingAssertion;
 - (void)_createConnection;
 - (void)_invalidateRemotePrototypingAssertion;
-- (void)_sendEvent:(int64_t)a3;
+- (void)_sendEvent:(int64_t)event;
 - (void)_updateRemoteEditingState;
 - (void)killSpringBoard;
 - (void)restartSpringBoard;
-- (void)setWindowScene:(id)a3;
+- (void)setWindowScene:(id)scene;
 @end
 
 @implementation SBPrototypeController
@@ -35,9 +35,9 @@
   rootSettings = self->_rootSettings;
   if (!rootSettings)
   {
-    v4 = [(_UISettings *)[SBRootSettings alloc] initWithDefaultValues];
+    initWithDefaultValues = [(_UISettings *)[SBRootSettings alloc] initWithDefaultValues];
     v5 = self->_rootSettings;
-    self->_rootSettings = v4;
+    self->_rootSettings = initWithDefaultValues;
 
     rootSettings = self->_rootSettings;
   }
@@ -62,14 +62,14 @@ void __39__SBPrototypeController_sharedInstance__block_invoke()
   {
     [(SBPrototypeController *)v2 _updateKeyHIDEventRouters];
     [(SBPrototypeController *)v3 _updateRemoteEditingState];
-    v4 = [MEMORY[0x277D431C0] sharedInstance];
+    mEMORY[0x277D431C0] = [MEMORY[0x277D431C0] sharedInstance];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __29__SBPrototypeController_init__block_invoke;
     v10[3] = &unk_2783A8C18;
     v5 = v3;
     v11 = v5;
-    v6 = [v4 observeEventDefaultsOnQueue:MEMORY[0x277D85CD0] withBlock:v10];
+    v6 = [mEMORY[0x277D431C0] observeEventDefaultsOnQueue:MEMORY[0x277D85CD0] withBlock:v10];
 
     +[SBTestRecipeRegistrar registerAllTestRecipes];
     v7 = objc_alloc_init(SBPrototypeDumpingGround);
@@ -88,9 +88,9 @@ uint64_t __29__SBPrototypeController_init__block_invoke(uint64_t a1)
   return [v2 _updateRemoteEditingState];
 }
 
-- (void)setWindowScene:(id)a3
+- (void)setWindowScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
 
   if (WeakRetained != obj)
@@ -104,8 +104,8 @@ uint64_t __29__SBPrototypeController_init__block_invoke(uint64_t a1)
 - (void)restartSpringBoard
 {
   v4 = [[SBRestartTransitionRequest alloc] initWithRequester:@"SBPrototypeController" reason:@"Prototyping"];
-  v3 = [(SBPrototypeController *)self restartManager];
-  [v3 restartWithTransitionRequest:v4];
+  restartManager = [(SBPrototypeController *)self restartManager];
+  [restartManager restartWithTransitionRequest:v4];
 }
 
 - (void)killSpringBoard
@@ -118,24 +118,24 @@ uint64_t __29__SBPrototypeController_init__block_invoke(uint64_t a1)
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (BOOL)_handlePrototypingEvent:(int64_t)a3
+- (BOOL)_handlePrototypingEvent:(int64_t)event
 {
   v5 = [(SBPrototypeController *)self _shouldSendEvent:?];
   if (v5)
   {
-    [(SBPrototypeController *)self _sendEvent:a3];
+    [(SBPrototypeController *)self _sendEvent:event];
   }
 
   return v5;
 }
 
-- (BOOL)_shouldSendEvent:(int64_t)a3
+- (BOOL)_shouldSendEvent:(int64_t)event
 {
   v4 = +[SBPlatformController sharedInstance];
   if ([v4 isInternalInstall])
   {
-    v5 = [MEMORY[0x277D431C0] sharedInstance];
-    v6 = [v5 prototypingServerWantsEvent:a3];
+    mEMORY[0x277D431C0] = [MEMORY[0x277D431C0] sharedInstance];
+    v6 = [mEMORY[0x277D431C0] prototypingServerWantsEvent:event];
   }
 
   else
@@ -146,7 +146,7 @@ uint64_t __29__SBPrototypeController_init__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_sendEvent:(int64_t)a3
+- (void)_sendEvent:(int64_t)event
 {
   prototypingUIServerConnection = self->_prototypingUIServerConnection;
   if (!prototypingUIServerConnection)
@@ -155,8 +155,8 @@ uint64_t __29__SBPrototypeController_init__block_invoke(uint64_t a1)
     prototypingUIServerConnection = self->_prototypingUIServerConnection;
   }
 
-  v6 = [(NSXPCConnection *)prototypingUIServerConnection remoteObjectProxy];
-  [v6 handlePrototypingEvent:a3];
+  remoteObjectProxy = [(NSXPCConnection *)prototypingUIServerConnection remoteObjectProxy];
+  [remoteObjectProxy handlePrototypingEvent:event];
 }
 
 - (void)_createConnection
@@ -183,14 +183,14 @@ uint64_t __29__SBPrototypeController_init__block_invoke(uint64_t a1)
 - (void)_updateRemoteEditingState
 {
   v3 = +[SBPlatformController sharedInstance];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
-    v5 = [MEMORY[0x277D431C0] sharedInstance];
-    v6 = [v5 remotePrototypingEnabled];
+    mEMORY[0x277D431C0] = [MEMORY[0x277D431C0] sharedInstance];
+    remotePrototypingEnabled = [mEMORY[0x277D431C0] remotePrototypingEnabled];
 
-    if (v6)
+    if (remotePrototypingEnabled)
     {
       prototypingUIServerConnection = self->_prototypingUIServerConnection;
       if (!prototypingUIServerConnection)
@@ -199,8 +199,8 @@ uint64_t __29__SBPrototypeController_init__block_invoke(uint64_t a1)
         prototypingUIServerConnection = self->_prototypingUIServerConnection;
       }
 
-      v8 = [(NSXPCConnection *)prototypingUIServerConnection remoteObjectProxy];
-      [v8 launchForRemoteEditing];
+      remoteObjectProxy = [(NSXPCConnection *)prototypingUIServerConnection remoteObjectProxy];
+      [remoteObjectProxy launchForRemoteEditing];
 
       [(SBPrototypeController *)self _acquireRemotePrototypingAssertion];
     }

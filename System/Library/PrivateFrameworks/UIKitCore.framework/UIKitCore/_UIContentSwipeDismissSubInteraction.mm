@@ -1,13 +1,13 @@
 @interface _UIContentSwipeDismissSubInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
-- (void)_gestureRecognizerFailed:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)handlePan:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_gestureRecognizerFailed:(id)failed;
+- (void)didMoveToView:(id)view;
+- (void)handlePan:(id)pan;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIContentSwipeDismissSubInteraction
@@ -19,51 +19,51 @@
   return Strong;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188C872A0(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188C872A0(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v5 = OBJC_IVAR____TtC5UIKit36_UIContentSwipeDismissSubInteraction_gesture;
   v6 = *(self + OBJC_IVAR____TtC5UIKit36_UIContentSwipeDismissSubInteraction_gesture);
-  v9 = self;
-  v7 = a3;
-  v8 = [v6 view];
-  if (v8)
+  selfCopy = self;
+  viewCopy = view;
+  view = [v6 view];
+  if (view)
   {
   }
 
-  else if (v7)
+  else if (viewCopy)
   {
-    [v7 addGestureRecognizer_];
+    [viewCopy addGestureRecognizer_];
   }
 
   swift_unknownObjectWeakAssign();
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  sub_189005A44(v4);
+  panCopy = pan;
+  selfCopy = self;
+  sub_189005A44(panCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
     v7 = *(self + OBJC_IVAR____TtC5UIKit36_UIContentSwipeDismissSubInteraction_gesture);
-    v8 = self;
-    v9 = [v6 delegate];
-    if (v9)
+    selfCopy = self;
+    delegate = [v6 delegate];
+    if (delegate)
     {
-      [v9 hysteresisForInteraction_];
+      [delegate hysteresisForInteraction_];
       v11 = v10;
       swift_unknownObjectRelease();
       v12 = v11;
@@ -80,41 +80,41 @@
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1890076E0(v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_1890076E0(gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1890077BC(v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_1890077BC(gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
+  beginCopy = begin;
+  selfCopy = self;
   sub_189006730();
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  v4 = a3;
-  v5 = self;
-  sub_189006BB0(v4);
+  failedCopy = failed;
+  selfCopy = self;
+  sub_189006BB0(failedCopy);
 }
 
 @end

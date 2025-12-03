@@ -6,9 +6,9 @@
 
 - (id)cls_localDateComponents
 {
-  v2 = [a1 creationDate];
-  v3 = [a1 localCreationDate];
-  v4 = [CLSCalendar dateComponentsWithUTCDate:v2 localDate:v3];
+  creationDate = [self creationDate];
+  localCreationDate = [self localCreationDate];
+  v4 = [CLSCalendar dateComponentsWithUTCDate:creationDate localDate:localCreationDate];
 
   return v4;
 }

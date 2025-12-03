@@ -1,20 +1,20 @@
 @interface _ICLLPlaybackControlSettingsQuery
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLPlaybackControlSettingsQuery
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     settings = self->_settings;
-    if (settings | v4[1])
+    if (settings | equalCopy[1])
     {
       v6 = [(_ICLLPlaybackControlSettings *)settings isEqual:?];
     }
@@ -33,17 +33,17 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_ICLLPlaybackControlSettings *)self->_settings copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_ICLLPlaybackControlSettings *)self->_settings copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_settings)
   {
@@ -53,15 +53,15 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   settings = self->_settings;
   if (settings)
   {
-    v5 = [(_ICLLPlaybackControlSettings *)settings dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"settings"];
+    dictionaryRepresentation = [(_ICLLPlaybackControlSettings *)settings dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"settings"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -70,8 +70,8 @@
   v8.receiver = self;
   v8.super_class = _ICLLPlaybackControlSettingsQuery;
   v4 = [(_ICLLPlaybackControlSettingsQuery *)&v8 description];
-  v5 = [(_ICLLPlaybackControlSettingsQuery *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLPlaybackControlSettingsQuery *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,24 +1,24 @@
 @interface UNCBundleLibrarian
-- (BOOL)_isUUIDString:(id)a3;
-- (BOOL)_queue_saveDictionary:(id)a3 atPath:(id)a4;
-- (UNCBundleLibrarian)initWithDirectory:(id)a3;
-- (id)_queue_bundleIdentifierForUniqueIdentifier:(id)a3;
-- (id)_queue_dataAtPath:(id)a3;
-- (id)_queue_dictionaryAtPath:(id)a3;
-- (id)_queue_uniqueIdentifierForBundleIdentifier:(id)a3;
-- (id)bundleIdentifierForUniqueIdentifier:(id)a3;
-- (id)uniqueIdentifierForBundleIdentifier:(id)a3;
-- (void)_queue_addEntryForBundleIdentifier:(id)a3 uniqueIdentifier:(id)a4;
+- (BOOL)_isUUIDString:(id)string;
+- (BOOL)_queue_saveDictionary:(id)dictionary atPath:(id)path;
+- (UNCBundleLibrarian)initWithDirectory:(id)directory;
+- (id)_queue_bundleIdentifierForUniqueIdentifier:(id)identifier;
+- (id)_queue_dataAtPath:(id)path;
+- (id)_queue_dictionaryAtPath:(id)path;
+- (id)_queue_uniqueIdentifierForBundleIdentifier:(id)identifier;
+- (id)bundleIdentifierForUniqueIdentifier:(id)identifier;
+- (id)uniqueIdentifierForBundleIdentifier:(id)identifier;
+- (void)_queue_addEntryForBundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier;
 - (void)_queue_loadBundleLibrary;
 - (void)_queue_loadBundleLibraryIfNeeded;
-- (void)_queue_migrateBundleDirectoriesInDirectory:(id)a3;
-- (void)_queue_removeEntryForBundleIdentifier:(id)a3;
+- (void)_queue_migrateBundleDirectoriesInDirectory:(id)directory;
+- (void)_queue_removeEntryForBundleIdentifier:(id)identifier;
 - (void)_queue_removeUnknownDirectoriesFromLibrary;
-- (void)_queue_removeUnknownDirectoriesInDirectory:(id)a3;
+- (void)_queue_removeUnknownDirectoriesInDirectory:(id)directory;
 - (void)_removeBundleLibrary;
-- (void)bootstrapLibraryForBundleIdentifiers:(id)a3;
-- (void)migrateLibraryFromDirectory:(id)a3 toDirectory:(id)a4;
-- (void)removeMappingForBundleIdentifier:(id)a3;
+- (void)bootstrapLibraryForBundleIdentifiers:(id)identifiers;
+- (void)migrateLibraryFromDirectory:(id)directory toDirectory:(id)toDirectory;
+- (void)removeMappingForBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNCBundleLibrarian
@@ -34,15 +34,15 @@
   }
 }
 
-- (UNCBundleLibrarian)initWithDirectory:(id)a3
+- (UNCBundleLibrarian)initWithDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v13.receiver = self;
   v13.super_class = UNCBundleLibrarian;
   v5 = [(UNCBundleLibrarian *)&v13 init];
   if (v5)
   {
-    v6 = [v4 stringByAppendingPathComponent:@"Library"];
+    v6 = [directoryCopy stringByAppendingPathComponent:@"Library"];
     v7 = [v6 stringByAppendingPathExtension:@"plist"];
     bundleLibraryPath = v5->_bundleLibraryPath;
     v5->_bundleLibraryPath = v7;
@@ -56,17 +56,17 @@
   return v5;
 }
 
-- (void)bootstrapLibraryForBundleIdentifiers:(id)a3
+- (void)bootstrapLibraryForBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__UNCBundleLibrarian_bootstrapLibraryForBundleIdentifiers___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -138,10 +138,10 @@ void __59__UNCBundleLibrarian_bootstrapLibraryForBundleIdentifiers___block_invok
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)bundleIdentifierForUniqueIdentifier:(id)a3
+- (id)bundleIdentifierForUniqueIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -155,7 +155,7 @@ void __59__UNCBundleLibrarian_bootstrapLibraryForBundleIdentifiers___block_invok
   block[3] = &unk_1E85D6F48;
   v14 = &v15;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v13 = v6;
   dispatch_sync(queue, block);
   v7 = v16[5];
@@ -190,10 +190,10 @@ uint64_t __58__UNCBundleLibrarian_bundleIdentifierForUniqueIdentifier___block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)uniqueIdentifierForBundleIdentifier:(id)a3
+- (id)uniqueIdentifierForBundleIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -206,7 +206,7 @@ uint64_t __58__UNCBundleLibrarian_bundleIdentifierForUniqueIdentifier___block_in
   block[2] = __58__UNCBundleLibrarian_uniqueIdentifierForBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D7290;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v13 = v6;
   v14 = &v15;
   dispatch_sync(queue, block);
@@ -268,17 +268,17 @@ void __58__UNCBundleLibrarian_uniqueIdentifierForBundleIdentifier___block_invoke
   }
 }
 
-- (void)removeMappingForBundleIdentifier:(id)a3
+- (void)removeMappingForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__UNCBundleLibrarian_removeMappingForBundleIdentifier___block_invoke;
   v7[3] = &unk_1E85D6E70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -299,20 +299,20 @@ uint64_t __55__UNCBundleLibrarian_removeMappingForBundleIdentifier___block_invok
   return result;
 }
 
-- (void)migrateLibraryFromDirectory:(id)a3 toDirectory:(id)a4
+- (void)migrateLibraryFromDirectory:(id)directory toDirectory:(id)toDirectory
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  toDirectoryCopy = toDirectory;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__UNCBundleLibrarian_migrateLibraryFromDirectory_toDirectory___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = directoryCopy;
+  v13 = toDirectoryCopy;
+  v9 = toDirectoryCopy;
+  v10 = directoryCopy;
   dispatch_sync(queue, block);
 }
 
@@ -405,8 +405,8 @@ void __62__UNCBundleLibrarian_migrateLibraryFromDirectory_toDirectory___block_in
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_bundleToUUIDMap allKeys];
-  v4 = [v3 copy];
+  allKeys = [(NSMutableDictionary *)self->_bundleToUUIDMap allKeys];
+  v4 = [allKeys copy];
 
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
@@ -449,14 +449,14 @@ void __62__UNCBundleLibrarian_migrateLibraryFromDirectory_toDirectory___block_in
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_removeUnknownDirectoriesInDirectory:(id)a3
+- (void)_queue_removeUnknownDirectoriesInDirectory:(id)directory
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   [(UNCBundleLibrarian *)self _queue_loadBundleLibraryIfNeeded];
-  v23 = [MEMORY[0x1E696AC08] defaultManager];
-  v24 = v4;
-  v5 = [v23 contentsOfDirectoryAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v24 = directoryCopy;
+  v5 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:0];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -487,8 +487,8 @@ void __62__UNCBundleLibrarian_migrateLibraryFromDirectory_toDirectory___block_in
         {
           v11 = [v24 stringByAppendingPathComponent:v10];
           v26 = 0;
-          v12 = [MEMORY[0x1E696AC08] defaultManager];
-          v13 = [v12 fileExistsAtPath:v11 isDirectory:&v26];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          v13 = [defaultManager2 fileExistsAtPath:v11 isDirectory:&v26];
           v14 = v26;
 
           if (v13 && (v14 & 1) != 0)
@@ -502,9 +502,9 @@ void __62__UNCBundleLibrarian_migrateLibraryFromDirectory_toDirectory___block_in
             }
 
             v16 = [v24 stringByAppendingPathComponent:v10];
-            v17 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
             v25 = 0;
-            v18 = [v17 removeItemAtPath:v16 error:&v25];
+            v18 = [defaultManager3 removeItemAtPath:v16 error:&v25];
             v19 = v25;
 
             if ((v18 & 1) == 0)
@@ -538,22 +538,22 @@ LABEL_7:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_migrateBundleDirectoriesInDirectory:(id)a3
+- (void)_queue_migrateBundleDirectoriesInDirectory:(id)directory
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   v5 = MEMORY[0x1E6983368];
   v6 = *MEMORY[0x1E6983368];
   if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v45 = v4;
+    v45 = directoryCopy;
     _os_log_impl(&dword_1DA7A9000, v6, OS_LOG_TYPE_DEFAULT, "Migrate library from bundle directory struction %{public}@", buf, 0xCu);
   }
 
   [(UNCBundleLibrarian *)self _queue_loadBundleLibraryIfNeeded];
-  v33 = [MEMORY[0x1E696AC08] defaultManager];
-  [v33 contentsOfDirectoryAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager contentsOfDirectoryAtPath:directoryCopy error:0];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -563,7 +563,7 @@ LABEL_7:
   {
     v8 = v7;
     v9 = *v41;
-    v34 = v4;
+    v34 = directoryCopy;
     v35 = *v41;
     do
     {
@@ -591,9 +591,9 @@ LABEL_7:
         else
         {
           v39 = 0;
-          v15 = [v4 stringByAppendingPathComponent:v11];
-          v16 = [MEMORY[0x1E696AC08] defaultManager];
-          v17 = [v16 fileExistsAtPath:v15 isDirectory:&v39];
+          v15 = [directoryCopy stringByAppendingPathComponent:v11];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          v17 = [defaultManager2 fileExistsAtPath:v15 isDirectory:&v39];
           v18 = v39;
 
           if (v17 && (v18 & 1) != 0)
@@ -608,9 +608,9 @@ LABEL_7:
                 _os_log_error_impl(&dword_1DA7A9000, v19, OS_LOG_TYPE_ERROR, "Removing %{public}@ as it is a stale notification source", buf, 0xCu);
               }
 
-              v20 = [MEMORY[0x1E696AC08] defaultManager];
+              defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
               v38 = 0;
-              v21 = [v20 removeItemAtPath:v15 error:&v38];
+              v21 = [defaultManager3 removeItemAtPath:v15 error:&v38];
               v22 = v38;
 
               if ((v21 & 1) == 0)
@@ -643,10 +643,10 @@ LABEL_7:
                 _os_log_impl(&dword_1DA7A9000, v26, OS_LOG_TYPE_DEFAULT, "Migrate directory from %{public}@ to %{public}@", buf, 0x16u);
               }
 
-              v27 = [v4 stringByAppendingPathComponent:v25];
-              v28 = [MEMORY[0x1E696AC08] defaultManager];
+              v27 = [directoryCopy stringByAppendingPathComponent:v25];
+              defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
               v37 = 0;
-              v29 = [v28 moveItemAtPath:v15 toPath:v27 error:&v37];
+              v29 = [defaultManager4 moveItemAtPath:v15 toPath:v27 error:&v37];
               v30 = v37;
 
               if ((v29 & 1) == 0)
@@ -664,7 +664,7 @@ LABEL_7:
                 }
               }
 
-              v4 = v34;
+              directoryCopy = v34;
             }
 
             v5 = MEMORY[0x1E6983368];
@@ -725,43 +725,43 @@ void __42__UNCBundleLibrarian__removeBundleLibrary__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_queue_bundleIdentifierForUniqueIdentifier:(id)a3
+- (id)_queue_bundleIdentifierForUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(UNCBundleLibrarian *)self _queue_loadBundleLibraryIfNeeded];
-  v5 = [(NSMutableDictionary *)self->_uuidToBundleMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_uuidToBundleMap objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (id)_queue_uniqueIdentifierForBundleIdentifier:(id)a3
+- (id)_queue_uniqueIdentifierForBundleIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   [(UNCBundleLibrarian *)self _queue_loadBundleLibraryIfNeeded];
-  v5 = [(NSMutableDictionary *)self->_bundleToUUIDMap objectForKey:v4];
-  v6 = v5;
-  if (v4 && !v5)
+  v5 = [(NSMutableDictionary *)self->_bundleToUUIDMap objectForKey:identifierCopy];
+  uUIDString = v5;
+  if (identifierCopy && !v5)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v8 = *MEMORY[0x1E6983368];
     if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = v4;
+      v12 = identifierCopy;
       v13 = 2114;
-      v14 = v6;
+      v14 = uUIDString;
       _os_log_impl(&dword_1DA7A9000, v8, OS_LOG_TYPE_DEFAULT, "No unique identifier for bundleID %{public}@ found; adding a mapping to %{public}@", &v11, 0x16u);
     }
 
-    [(UNCBundleLibrarian *)self _queue_addEntryForBundleIdentifier:v4 uniqueIdentifier:v6];
+    [(UNCBundleLibrarian *)self _queue_addEntryForBundleIdentifier:identifierCopy uniqueIdentifier:uUIDString];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return uUIDString;
 }
 
 - (void)_queue_loadBundleLibrary
@@ -774,25 +774,25 @@ void __42__UNCBundleLibrarian__removeBundleLibrary__block_invoke(uint64_t a1)
   v6 = self->_bundleToUUIDMap;
   if (v6)
   {
-    v18 = [(NSMutableDictionary *)v6 allKeys];
+    allKeys = [(NSMutableDictionary *)v6 allKeys];
     v7 = self->_bundleToUUIDMap;
-    v8 = [MEMORY[0x1E695DFB0] null];
-    v9 = [(NSMutableDictionary *)v7 objectsForKeys:v18 notFoundMarker:v8];
+    null = [MEMORY[0x1E695DFB0] null];
+    v9 = [(NSMutableDictionary *)v7 objectsForKeys:allKeys notFoundMarker:null];
 
-    v10 = [MEMORY[0x1E695DF90] dictionaryWithObjects:v18 forKeys:v9];
+    v10 = [MEMORY[0x1E695DF90] dictionaryWithObjects:allKeys forKeys:v9];
     uuidToBundleMap = self->_uuidToBundleMap;
     self->_uuidToBundleMap = v10;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v13 = self->_bundleToUUIDMap;
-    self->_bundleToUUIDMap = v12;
+    self->_bundleToUUIDMap = dictionary;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v15 = self->_uuidToBundleMap;
-    self->_uuidToBundleMap = v14;
+    self->_uuidToBundleMap = dictionary2;
 
     bundleLibraryPath = self->_bundleLibraryPath;
     v16 = self->_bundleToUUIDMap;
@@ -801,13 +801,13 @@ void __42__UNCBundleLibrarian__removeBundleLibrary__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_queue_addEntryForBundleIdentifier:(id)a3 uniqueIdentifier:(id)a4
+- (void)_queue_addEntryForBundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier
 {
   bundleToUUIDMap = self->_bundleToUUIDMap;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableDictionary *)bundleToUUIDMap setObject:v7 forKey:v8];
-  [(NSMutableDictionary *)self->_uuidToBundleMap setObject:v8 forKey:v7];
+  uniqueIdentifierCopy = uniqueIdentifier;
+  identifierCopy = identifier;
+  [(NSMutableDictionary *)bundleToUUIDMap setObject:uniqueIdentifierCopy forKey:identifierCopy];
+  [(NSMutableDictionary *)self->_uuidToBundleMap setObject:identifierCopy forKey:uniqueIdentifierCopy];
 
   bundleLibraryPath = self->_bundleLibraryPath;
   v9 = self->_bundleToUUIDMap;
@@ -815,20 +815,20 @@ void __42__UNCBundleLibrarian__removeBundleLibrary__block_invoke(uint64_t a1)
   [(UNCBundleLibrarian *)self _queue_saveDictionary:v9 atPath:bundleLibraryPath];
 }
 
-- (void)_queue_removeEntryForBundleIdentifier:(id)a3
+- (void)_queue_removeEntryForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(UNCBundleLibrarian *)self _queue_uniqueIdentifierForBundleIdentifier:v4];
-  [(NSMutableDictionary *)self->_bundleToUUIDMap removeObjectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(UNCBundleLibrarian *)self _queue_uniqueIdentifierForBundleIdentifier:identifierCopy];
+  [(NSMutableDictionary *)self->_bundleToUUIDMap removeObjectForKey:identifierCopy];
 
   [(NSMutableDictionary *)self->_uuidToBundleMap removeObjectForKey:v5];
   [(UNCBundleLibrarian *)self _queue_saveDictionary:self->_bundleToUUIDMap atPath:self->_bundleLibraryPath];
 }
 
-- (id)_queue_dictionaryAtPath:(id)a3
+- (id)_queue_dictionaryAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UNCBundleLibrarian *)self _queue_dataAtPath:v4];
+  pathCopy = path;
+  v5 = [(UNCBundleLibrarian *)self _queue_dataAtPath:pathCopy];
   if (!v5)
   {
 LABEL_7:
@@ -850,7 +850,7 @@ LABEL_7:
       v11 = *MEMORY[0x1E6983368];
       if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
       {
-        [(UNCBundleLibrarian *)v11 _queue_dictionaryAtPath:v10, v4];
+        [(UNCBundleLibrarian *)v11 _queue_dictionaryAtPath:v10, pathCopy];
       }
 
       goto LABEL_7;
@@ -862,11 +862,11 @@ LABEL_8:
   return v10;
 }
 
-- (id)_queue_dataAtPath:(id)a3
+- (id)_queue_dataAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v7 = 0;
-  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathCopy options:0 error:&v7];
   v5 = v7;
   if (!v4 && os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
   {
@@ -876,29 +876,29 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)_queue_saveDictionary:(id)a3 atPath:(id)a4
+- (BOOL)_queue_saveDictionary:(id)dictionary atPath:(id)path
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v7 = MEMORY[0x1E6983368];
   v8 = *MEMORY[0x1E6983368];
   if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     *buf = 138543618;
-    v26 = v6;
+    v26 = pathCopy;
     v27 = 2048;
-    v28 = [v5 count];
+    v28 = [dictionaryCopy count];
     _os_log_impl(&dword_1DA7A9000, v9, OS_LOG_TYPE_DEFAULT, "Saving file at %{public}@ with %lu items", buf, 0x16u);
   }
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v6 stringByDeletingLastPathComponent];
-  if (([v10 fileExistsAtPath:v11] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
   {
     v24 = 0;
-    v12 = [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v24];
+    v12 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v24];
     v13 = v24;
     if ((v12 & 1) == 0 && os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
     {
@@ -907,13 +907,13 @@ LABEL_8:
   }
 
   v23 = 0;
-  v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v23];
+  v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionaryCopy requiringSecureCoding:1 error:&v23];
   v15 = v23;
   v16 = v15;
   if (v14)
   {
     v22 = v15;
-    v17 = [v14 writeToFile:v6 options:268435457 error:&v22];
+    v17 = [v14 writeToFile:pathCopy options:268435457 error:&v22];
     v18 = v22;
 
     if (v17)
@@ -948,11 +948,11 @@ LABEL_8:
   return v19;
 }
 
-- (BOOL)_isUUIDString:(id)a3
+- (BOOL)_isUUIDString:(id)string
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithUUIDString:v4];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithUUIDString:stringCopy];
 
   return v5 != 0;
 }

@@ -1,45 +1,45 @@
 @interface PUAlbumListCellContentView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
 - (CGPoint)_deleteButtonCenter;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PUAlbumListCellContentView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PUAlbumListCellContentView)initWithFrame:(CGRect)frame;
 - (PUAlbumListCellDelegate)delegate;
 - (PXFocusInfo)focusInfo;
 - (UIView)springLoadingTargetView;
 - (double)_titleFieldAlpha;
-- (void)_deleteAction:(id)a3;
+- (void)_deleteAction:(id)action;
 - (void)_updateCheckmarkView;
-- (void)_updateDeleteButtonAnimated:(BOOL)a3;
-- (void)_updateStackViewAnimated:(BOOL)a3;
-- (void)_updateSubtitleLabelAnimated:(BOOL)a3;
+- (void)_updateDeleteButtonAnimated:(BOOL)animated;
+- (void)_updateStackViewAnimated:(BOOL)animated;
+- (void)_updateSubtitleLabelAnimated:(BOOL)animated;
 - (void)_updateSubtitleLabelStyle;
 - (void)_updateSubviewOrdering;
-- (void)_updateTitleFieldAnimated:(BOOL)a3;
+- (void)_updateTitleFieldAnimated:(BOOL)animated;
 - (void)_updateTitleStyle;
 - (void)cancelPerformRetitleAction;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setCombinesPhotoDecorations:(BOOL)a3;
-- (void)setCustomImageView:(id)a3;
-- (void)setEditCapabilities:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setShouldCenterTextHorizontally:(BOOL)a3;
-- (void)setShowsCheckmarkView:(BOOL)a3;
-- (void)setShowsDeleteButtonWhenEditing:(BOOL)a3;
-- (void)setShowsTitle:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSubtitle:(id)a3 animated:(BOOL)a4;
-- (void)setSubtitleFont:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setUsesLabelForTitle:(BOOL)a3;
-- (void)setXInset:(double)a3;
+- (void)setCombinesPhotoDecorations:(BOOL)decorations;
+- (void)setCustomImageView:(id)view;
+- (void)setEditCapabilities:(unint64_t)capabilities animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLayout:(int64_t)layout;
+- (void)setShouldCenterTextHorizontally:(BOOL)horizontally;
+- (void)setShowsCheckmarkView:(BOOL)view;
+- (void)setShowsDeleteButtonWhenEditing:(BOOL)editing;
+- (void)setShowsTitle:(BOOL)title animated:(BOOL)animated;
+- (void)setSubtitle:(id)subtitle animated:(BOOL)animated;
+- (void)setSubtitleFont:(id)font;
+- (void)setTitle:(id)title;
+- (void)setTitleFont:(id)font;
+- (void)setUsesLabelForTitle:(BOOL)title;
+- (void)setXInset:(double)inset;
 - (void)startPerformRetitleAction;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation PUAlbumListCellContentView
@@ -53,12 +53,12 @@
 
 - (void)_updateSubtitleLabelStyle
 {
-  v8 = [(PUAlbumListCellContentView *)self _subtitleLabel];
+  _subtitleLabel = [(PUAlbumListCellContentView *)self _subtitleLabel];
   layout = self->_layout;
-  v4 = [(PUAlbumListCellContentView *)self shouldCenterTextHorizontally];
-  if (v8)
+  shouldCenterTextHorizontally = [(PUAlbumListCellContentView *)self shouldCenterTextHorizontally];
+  if (_subtitleLabel)
   {
-    if (v4)
+    if (shouldCenterTextHorizontally)
     {
       v5 = 1;
     }
@@ -68,26 +68,26 @@
       v5 = 4;
     }
 
-    [v8 setTextAlignment:v5];
-    v6 = [(PUAlbumListCellContentView *)self subtitleFont];
-    [v8 setFont:v6];
+    [_subtitleLabel setTextAlignment:v5];
+    subtitleFont = [(PUAlbumListCellContentView *)self subtitleFont];
+    [_subtitleLabel setFont:subtitleFont];
 
     v7 = +[PUInterfaceManager currentTheme];
-    [v7 configureAlbumListSubtitleLabel:v8 asOpaque:layout == 0];
+    [v7 configureAlbumListSubtitleLabel:_subtitleLabel asOpaque:layout == 0];
 
-    [v8 setAdjustsFontSizeToFitWidth:0];
-    [v8 _setWantsContentAwareTypesettingLanguage:1];
-    [v8 setNeedsLayout];
+    [_subtitleLabel setAdjustsFontSizeToFitWidth:0];
+    [_subtitleLabel _setWantsContentAwareTypesettingLanguage:1];
+    [_subtitleLabel setNeedsLayout];
   }
 }
 
 - (void)_updateTitleStyle
 {
-  v2 = self;
-  v10 = [(PUAlbumListCellContentView *)self _titleTextField];
-  v3 = [(PUAlbumListCellContentView *)v2 _titleLabel];
-  layout = v2->_layout;
-  if ([(PUAlbumListCellContentView *)v2 shouldCenterTextHorizontally])
+  selfCopy = self;
+  _titleTextField = [(PUAlbumListCellContentView *)self _titleTextField];
+  _titleLabel = [(PUAlbumListCellContentView *)selfCopy _titleLabel];
+  layout = selfCopy->_layout;
+  if ([(PUAlbumListCellContentView *)selfCopy shouldCenterTextHorizontally])
   {
     v5 = 1;
   }
@@ -97,56 +97,56 @@
     v5 = 4;
   }
 
-  if (v10)
+  if (_titleTextField)
   {
-    [v10 setTextAlignment:v5];
-    [v10 setClearButtonMode:{-[PUAlbumListCellContentView _titleTextFieldClearButtonModeForLayout:](v2, "_titleTextFieldClearButtonModeForLayout:", v2->_layout)}];
-    v6 = [(PUAlbumListCellContentView *)v2 titleFont];
-    [v10 setFont:v6];
+    [_titleTextField setTextAlignment:v5];
+    [_titleTextField setClearButtonMode:{-[PUAlbumListCellContentView _titleTextFieldClearButtonModeForLayout:](selfCopy, "_titleTextFieldClearButtonModeForLayout:", selfCopy->_layout)}];
+    titleFont = [(PUAlbumListCellContentView *)selfCopy titleFont];
+    [_titleTextField setFont:titleFont];
 
     v7 = +[PUInterfaceManager currentTheme];
-    [v7 configureAlbumListTitleTextField:v10 asOpaque:layout == 0];
+    [v7 configureAlbumListTitleTextField:_titleTextField asOpaque:layout == 0];
 
-    [v10 setAdjustsFontSizeToFitWidth:0];
-    [v10 setContentVerticalAlignment:3];
+    [_titleTextField setAdjustsFontSizeToFitWidth:0];
+    [_titleTextField setContentVerticalAlignment:3];
   }
 
   else
   {
-    if (!v3)
+    if (!_titleLabel)
     {
       goto LABEL_9;
     }
 
-    [(PUAlbumListCellContentView *)v3 setTextAlignment:v5];
-    v8 = [(PUAlbumListCellContentView *)v2 titleFont];
-    [(PUAlbumListCellContentView *)v3 setFont:v8];
+    [(PUAlbumListCellContentView *)_titleLabel setTextAlignment:v5];
+    titleFont2 = [(PUAlbumListCellContentView *)selfCopy titleFont];
+    [(PUAlbumListCellContentView *)_titleLabel setFont:titleFont2];
 
     v9 = +[PUInterfaceManager currentTheme];
-    [v9 configureAlbumListTitleLabel:v3 asOpaque:layout == 0];
+    [v9 configureAlbumListTitleLabel:_titleLabel asOpaque:layout == 0];
 
-    [(PUAlbumListCellContentView *)v3 setAdjustsFontSizeToFitWidth:0];
-    [(PUAlbumListCellContentView *)v3 _setWantsContentAwareTypesettingLanguage:1];
-    v2 = v3;
+    [(PUAlbumListCellContentView *)_titleLabel setAdjustsFontSizeToFitWidth:0];
+    [(PUAlbumListCellContentView *)_titleLabel _setWantsContentAwareTypesettingLanguage:1];
+    selfCopy = _titleLabel;
   }
 
-  [(PUAlbumListCellContentView *)v2 setNeedsLayout];
+  [(PUAlbumListCellContentView *)selfCopy setNeedsLayout];
 LABEL_9:
 }
 
-- (void)_deleteAction:(id)a3
+- (void)_deleteAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PUAlbumListCellContentView *)self delegate];
-  [v5 albumListCellContentView:self performDeleteAction:v4];
+  actionCopy = action;
+  delegate = [(PUAlbumListCellContentView *)self delegate];
+  [delegate albumListCellContentView:self performDeleteAction:actionCopy];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  v5 = [(PUAlbumListCellContentView *)self _titleLabel];
+  view = [begin view];
+  _titleLabel = [(PUAlbumListCellContentView *)self _titleLabel];
 
-  if (v4 == v5)
+  if (view == _titleLabel)
   {
     LODWORD(v6) = [(PUAlbumListCellContentView *)self isEditing];
     if (v6)
@@ -163,46 +163,46 @@ LABEL_9:
   return v6;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v8 = a3;
+  editingCopy = editing;
   [(PUAlbumListCellContentView *)self setUsesLabelForTitle:1];
-  v4 = [(PUAlbumListCellContentView *)self title];
-  v5 = [v8 text];
-  if ([v5 length] && (objc_msgSend(v5, "isEqualToString:", v4) & 1) == 0)
+  title = [(PUAlbumListCellContentView *)self title];
+  text = [editingCopy text];
+  if ([text length] && (objc_msgSend(text, "isEqualToString:", title) & 1) == 0)
   {
-    [(PUAlbumListCellContentView *)self setTitle:v5];
+    [(PUAlbumListCellContentView *)self setTitle:text];
   }
 
   else
   {
-    v6 = v4;
+    v6 = title;
 
-    [v8 setText:v6];
-    v5 = v6;
+    [editingCopy setText:v6];
+    text = v6;
   }
 
-  v7 = [(PUAlbumListCellContentView *)self delegate];
-  [v7 albumListCellContentView:self didEndRetitlingFromTitle:v4 toTitle:v5];
+  delegate = [(PUAlbumListCellContentView *)self delegate];
+  [delegate albumListCellContentView:self didEndRetitlingFromTitle:title toTitle:text];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   if ((self->_layout - 1) <= 1)
   {
-    [(PUAlbumListCellContentView *)self setNeedsLayout:a3];
+    [(PUAlbumListCellContentView *)self setNeedsLayout:field];
   }
 
   return 1;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = [(PUAlbumListCellContentView *)self delegate];
-  v5 = v4;
+  delegate = [(PUAlbumListCellContentView *)self delegate];
+  v5 = delegate;
   if (self->_enabled && (self->_editCapabilities & 2) != 0)
   {
-    v6 = [v4 albumListCellContentViewShouldBeginRetitling:self];
+    v6 = [delegate albumListCellContentViewShouldBeginRetitling:self];
   }
 
   else
@@ -213,60 +213,60 @@ LABEL_9:
   return v6;
 }
 
-- (void)setUsesLabelForTitle:(BOOL)a3
+- (void)setUsesLabelForTitle:(BOOL)title
 {
-  if (self->_usesLabelForTitle != a3)
+  if (self->_usesLabelForTitle != title)
   {
-    self->_usesLabelForTitle = a3;
+    self->_usesLabelForTitle = title;
     [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:0];
 
     [(PUAlbumListCellContentView *)self layoutIfNeeded];
   }
 }
 
-- (void)setCombinesPhotoDecorations:(BOOL)a3
+- (void)setCombinesPhotoDecorations:(BOOL)decorations
 {
-  if (self->_combinesPhotoDecorations != a3)
+  if (self->_combinesPhotoDecorations != decorations)
   {
-    v4 = a3;
-    self->_combinesPhotoDecorations = a3;
-    v5 = [(PUAlbumListCellContentView *)self stackView];
-    [v5 setCombinesPhotoDecorations:v4];
+    decorationsCopy = decorations;
+    self->_combinesPhotoDecorations = decorations;
+    stackView = [(PUAlbumListCellContentView *)self stackView];
+    [stackView setCombinesPhotoDecorations:decorationsCopy];
   }
 }
 
 - (void)cancelPerformRetitleAction
 {
-  v3 = [(PUAlbumListCellContentView *)self _titleTextField];
-  v4 = [(PUAlbumListCellContentView *)self title];
-  [v3 setText:v4];
+  _titleTextField = [(PUAlbumListCellContentView *)self _titleTextField];
+  title = [(PUAlbumListCellContentView *)self title];
+  [_titleTextField setText:title];
 
-  v5 = [(PUAlbumListCellContentView *)self _titleTextField];
-  [v5 resignFirstResponder];
+  _titleTextField2 = [(PUAlbumListCellContentView *)self _titleTextField];
+  [_titleTextField2 resignFirstResponder];
 }
 
 - (void)startPerformRetitleAction
 {
   [(PUAlbumListCellContentView *)self setUsesLabelForTitle:0];
-  v3 = [(PUAlbumListCellContentView *)self _titleTextField];
-  [v3 becomeFirstResponder];
+  _titleTextField = [(PUAlbumListCellContentView *)self _titleTextField];
+  [_titleTextField becomeFirstResponder];
 
-  v4 = [(PUAlbumListCellContentView *)self _titleTextField];
-  [v4 selectAll];
+  _titleTextField2 = [(PUAlbumListCellContentView *)self _titleTextField];
+  [_titleTextField2 selectAll];
 }
 
-- (void)_updateSubtitleLabelAnimated:(BOOL)a3
+- (void)_updateSubtitleLabelAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUAlbumListCellContentView *)self subtitle];
-  v6 = [v5 length];
-  v7 = [(PUAlbumListCellContentView *)self _subtitleLabel];
-  v8 = v7;
-  if (!v6 || v7)
+  animatedCopy = animated;
+  subtitle = [(PUAlbumListCellContentView *)self subtitle];
+  v6 = [subtitle length];
+  _subtitleLabel = [(PUAlbumListCellContentView *)self _subtitleLabel];
+  v8 = _subtitleLabel;
+  if (!v6 || _subtitleLabel)
   {
     if (!v6)
     {
-      [v7 removeFromSuperview];
+      [_subtitleLabel removeFromSuperview];
       [(PUAlbumListCellContentView *)self _setSubtitleLabel:0];
     }
   }
@@ -280,11 +280,11 @@ LABEL_9:
     [(PUAlbumListCellContentView *)self _updateSubviewOrdering];
   }
 
-  [v8 setText:v5];
+  [v8 setText:subtitle];
   [(PUAlbumListCellContentView *)self setNeedsLayout];
   [(PUAlbumListCellContentView *)self _titleFieldAlpha];
   v10 = v9;
-  v11 = [v5 isEqualToString:@" "];
+  v11 = [subtitle isEqualToString:@" "];
   v12 = 1.0;
   v13 = 0.0;
   if (v11)
@@ -297,7 +297,7 @@ LABEL_9:
     v10 = v12;
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     [v8 alpha];
     if (v10 == v14)
@@ -322,72 +322,72 @@ LABEL_9:
   [v15 pu_animateWithDuration:v17 animations:v13];
 }
 
-- (void)_updateTitleFieldAnimated:(BOOL)a3
+- (void)_updateTitleFieldAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUAlbumListCellContentView *)self title];
-  v6 = [v5 length];
-  v7 = [(PUAlbumListCellContentView *)self _titleTextField];
-  v8 = [(PUAlbumListCellContentView *)self _titleLabel];
-  v9 = [(PUAlbumListCellContentView *)self usesLabelForTitle];
+  animatedCopy = animated;
+  title = [(PUAlbumListCellContentView *)self title];
+  v6 = [title length];
+  _titleTextField = [(PUAlbumListCellContentView *)self _titleTextField];
+  _titleLabel = [(PUAlbumListCellContentView *)self _titleLabel];
+  usesLabelForTitle = [(PUAlbumListCellContentView *)self usesLabelForTitle];
   if (v6)
   {
-    if (v9)
+    if (usesLabelForTitle)
     {
-      [v7 removeFromSuperview];
-      if (!v8)
+      [_titleTextField removeFromSuperview];
+      if (!_titleLabel)
       {
-        v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-        [v8 setUserInteractionEnabled:1];
+        _titleLabel = objc_alloc_init(MEMORY[0x1E69DCC10]);
+        [_titleLabel setUserInteractionEnabled:1];
         v10 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleLabelTap_];
         [v10 setDelegate:self];
-        [v8 addGestureRecognizer:v10];
-        [(PUAlbumListCellContentView *)self _setTitleLabel:v8];
+        [_titleLabel addGestureRecognizer:v10];
+        [(PUAlbumListCellContentView *)self _setTitleLabel:_titleLabel];
         [(PUAlbumListCellContentView *)self _updateTitleStyle];
         [(PUAlbumListCellContentView *)self _updateSubviewOrdering];
       }
 
-      v11 = [v8 superview];
+      superview = [_titleLabel superview];
 
-      if (v11 != self)
+      if (superview != self)
       {
-        [(PUAlbumListCellContentView *)self addSubview:v8];
+        [(PUAlbumListCellContentView *)self addSubview:_titleLabel];
       }
 
       goto LABEL_8;
     }
 
-    [v8 removeFromSuperview];
-    if (!v7)
+    [_titleLabel removeFromSuperview];
+    if (!_titleTextField)
     {
-      v7 = objc_alloc_init(MEMORY[0x1E69DD0B0]);
-      [v7 setDelegate:self];
-      [(PUAlbumListCellContentView *)self _setTitleTextField:v7];
+      _titleTextField = objc_alloc_init(MEMORY[0x1E69DD0B0]);
+      [_titleTextField setDelegate:self];
+      [(PUAlbumListCellContentView *)self _setTitleTextField:_titleTextField];
       [(PUAlbumListCellContentView *)self _updateTitleStyle];
       [(PUAlbumListCellContentView *)self _updateSubviewOrdering];
     }
 
-    v13 = [v7 superview];
+    superview2 = [_titleTextField superview];
 
-    if (v13 != self)
+    if (superview2 != self)
     {
-      [(PUAlbumListCellContentView *)self addSubview:v7];
+      [(PUAlbumListCellContentView *)self addSubview:_titleTextField];
     }
   }
 
-  else if (v9)
+  else if (usesLabelForTitle)
   {
 LABEL_8:
-    v12 = v8;
+    v12 = _titleLabel;
     goto LABEL_14;
   }
 
-  v12 = v7;
+  v12 = _titleTextField;
 LABEL_14:
-  [v12 setText:v5];
+  [v12 setText:title];
   [(PUAlbumListCellContentView *)self setNeedsLayout];
   [(PUAlbumListCellContentView *)self _titleFieldAlpha];
-  v15 = !v3;
+  v15 = !animatedCopy;
   v16 = MEMORY[0x1E69DD250];
   v20[1] = 3221225472;
   v20[0] = MEMORY[0x1E69E9820];
@@ -404,10 +404,10 @@ LABEL_14:
   }
 
   v23 = v14;
-  v21 = v7;
-  v22 = v8;
-  v18 = v8;
-  v19 = v7;
+  v21 = _titleTextField;
+  v22 = _titleLabel;
+  v18 = _titleLabel;
+  v19 = _titleTextField;
   [v16 pu_animateWithEnforcedDuration:v20 animations:0 completion:v17];
 }
 
@@ -424,7 +424,7 @@ uint64_t __56__PUAlbumListCellContentView__updateTitleFieldAnimated___block_invo
 {
   enabled = self->_enabled;
   editCapabilities = self->_editCapabilities;
-  v5 = [(PUAlbumListCellContentView *)self _showsTitleAndSubtitle];
+  _showsTitleAndSubtitle = [(PUAlbumListCellContentView *)self _showsTitleAndSubtitle];
   if (!enabled || (self->_editing ? (v6 = (editCapabilities & 2) == 0) : (v6 = 0), v6))
   {
     v8 = +[PUInterfaceManager currentTheme];
@@ -437,7 +437,7 @@ uint64_t __56__PUAlbumListCellContentView__updateTitleFieldAnimated___block_invo
   else
   {
     result = 0.0;
-    if (v5)
+    if (_showsTitleAndSubtitle)
     {
       return 1.0;
     }
@@ -446,9 +446,9 @@ uint64_t __56__PUAlbumListCellContentView__updateTitleFieldAnimated___block_invo
   return result;
 }
 
-- (void)_updateStackViewAnimated:(BOOL)a3
+- (void)_updateStackViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = +[PUInterfaceManager currentTheme];
   v6 = v5;
   v7 = self->_editing && (self->_editCapabilities & 4) == 0;
@@ -460,13 +460,13 @@ uint64_t __56__PUAlbumListCellContentView__updateTitleFieldAnimated___block_invo
     v9 = v10;
   }
 
-  v11 = [(PUAlbumListCellContentView *)self stackView];
-  v12 = [(PUAlbumListCellContentView *)self customImageView];
-  [v11 setHidden:v12 != 0];
-  v13 = [v11 layer];
-  [v13 setAllowsGroupOpacity:v9 < 1.0];
+  stackView = [(PUAlbumListCellContentView *)self stackView];
+  customImageView = [(PUAlbumListCellContentView *)self customImageView];
+  [stackView setHidden:customImageView != 0];
+  layer = [stackView layer];
+  [layer setAllowsGroupOpacity:v9 < 1.0];
 
-  v8 = !v3;
+  v8 = !animatedCopy;
   v14 = MEMORY[0x1E69DD250];
   v18[1] = 3221225472;
   v18[0] = MEMORY[0x1E69E9820];
@@ -483,10 +483,10 @@ uint64_t __56__PUAlbumListCellContentView__updateTitleFieldAnimated___block_invo
   }
 
   v21 = v9;
-  v19 = v11;
-  v20 = v12;
-  v16 = v12;
-  v17 = v11;
+  v19 = stackView;
+  v20 = customImageView;
+  v16 = customImageView;
+  v17 = stackView;
   [v14 pu_animateWithDuration:v18 animations:0 completion:v15];
 }
 
@@ -499,12 +499,12 @@ uint64_t __55__PUAlbumListCellContentView__updateStackViewAnimated___block_invok
   return [v2 setAlpha:v3];
 }
 
-- (void)_updateDeleteButtonAnimated:(BOOL)a3
+- (void)_updateDeleteButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = !self->_editing || (self->_editCapabilities & 1) == 0;
-  v6 = [(PUAlbumListCellContentView *)self showsDeleteButtonWhenEditing];
-  if (v3)
+  showsDeleteButtonWhenEditing = [(PUAlbumListCellContentView *)self showsDeleteButtonWhenEditing];
+  if (animatedCopy)
   {
     v7 = 0.3;
   }
@@ -514,11 +514,11 @@ uint64_t __55__PUAlbumListCellContentView__updateStackViewAnimated___block_invok
     v7 = 0.0;
   }
 
-  v8 = [(PUAlbumListCellContentView *)self _deleteButton];
-  v9 = v8;
-  if (v5 || !v6)
+  _deleteButton = [(PUAlbumListCellContentView *)self _deleteButton];
+  v9 = _deleteButton;
+  if (v5 || !showsDeleteButtonWhenEditing)
   {
-    if (!v8)
+    if (!_deleteButton)
     {
       return;
     }
@@ -529,7 +529,7 @@ uint64_t __55__PUAlbumListCellContentView__updateStackViewAnimated___block_invok
     v39[2] = __58__PUAlbumListCellContentView__updateDeleteButtonAnimated___block_invoke_3;
     v39[3] = &unk_1E7B80DD0;
     v31 = &v40;
-    v40 = v8;
+    v40 = _deleteButton;
     v34 = MEMORY[0x1E69E9820];
     v35 = 3221225472;
     v36 = __58__PUAlbumListCellContentView__updateDeleteButtonAnimated___block_invoke_4;
@@ -542,13 +542,13 @@ uint64_t __55__PUAlbumListCellContentView__updateStackViewAnimated___block_invok
 
   else
   {
-    if (!v8)
+    if (!_deleteButton)
     {
       v10 = [MEMORY[0x1E69C3BE8] buttonWithType:0];
       [v10 addTarget:self action:sel__deleteAction_ forControlEvents:64];
       v11 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
-      v12 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
-      v13 = [v11 configurationByApplyingConfiguration:v12];
+      configurationPreferringMulticolor = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
+      v13 = [v11 configurationByApplyingConfiguration:configurationPreferringMulticolor];
 
       v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"minus.circle.fill"];
       v15 = [v14 imageByApplyingSymbolConfiguration:v13];
@@ -572,8 +572,8 @@ uint64_t __55__PUAlbumListCellContentView__updateStackViewAnimated___block_invok
       v24 = v23;
       v26 = v25;
       v28 = v27;
-      v29 = [v9 px_configuration];
-      [v29 setHitTestOutset:{v22, v24, v26, v28}];
+      px_configuration = [v9 px_configuration];
+      [px_configuration setHitTestOutset:{v22, v24, v26, v28}];
 
       [(PUAlbumListCellContentView *)self addSubview:v9];
       [(PUAlbumListCellContentView *)self setNeedsLayout];
@@ -604,50 +604,50 @@ uint64_t __58__PUAlbumListCellContentView__updateDeleteButtonAnimated___block_in
 
 - (void)_updateSubviewOrdering
 {
-  v3 = [(PUAlbumListCellContentView *)self stackView];
-  [(PUAlbumListCellContentView *)self bringSubviewToFront:v3];
+  stackView = [(PUAlbumListCellContentView *)self stackView];
+  [(PUAlbumListCellContentView *)self bringSubviewToFront:stackView];
 
-  v4 = [(PUAlbumListCellContentView *)self customImageView];
-  [(PUAlbumListCellContentView *)self bringSubviewToFront:v4];
+  customImageView = [(PUAlbumListCellContentView *)self customImageView];
+  [(PUAlbumListCellContentView *)self bringSubviewToFront:customImageView];
 
-  v5 = [(PUAlbumListCellContentView *)self _deleteButton];
-  [(PUAlbumListCellContentView *)self bringSubviewToFront:v5];
+  _deleteButton = [(PUAlbumListCellContentView *)self _deleteButton];
+  [(PUAlbumListCellContentView *)self bringSubviewToFront:_deleteButton];
 
-  v6 = [(PUAlbumListCellContentView *)self _subtitleLabel];
-  [(PUAlbumListCellContentView *)self bringSubviewToFront:v6];
+  _subtitleLabel = [(PUAlbumListCellContentView *)self _subtitleLabel];
+  [(PUAlbumListCellContentView *)self bringSubviewToFront:_subtitleLabel];
 
-  v7 = [(PUAlbumListCellContentView *)self _titleTextField];
-  [(PUAlbumListCellContentView *)self bringSubviewToFront:v7];
+  _titleTextField = [(PUAlbumListCellContentView *)self _titleTextField];
+  [(PUAlbumListCellContentView *)self bringSubviewToFront:_titleTextField];
 
-  v8 = [(PUAlbumListCellContentView *)self _titleLabel];
-  [(PUAlbumListCellContentView *)self bringSubviewToFront:v8];
+  _titleLabel = [(PUAlbumListCellContentView *)self _titleLabel];
+  [(PUAlbumListCellContentView *)self bringSubviewToFront:_titleLabel];
 
-  v9 = [(PUAlbumListCellContentView *)self checkmarkView];
+  checkmarkView = [(PUAlbumListCellContentView *)self checkmarkView];
 
-  if (v9)
+  if (checkmarkView)
   {
-    v10 = [(PUAlbumListCellContentView *)self checkmarkView];
-    [(PUAlbumListCellContentView *)self bringSubviewToFront:v10];
+    checkmarkView2 = [(PUAlbumListCellContentView *)self checkmarkView];
+    [(PUAlbumListCellContentView *)self bringSubviewToFront:checkmarkView2];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(PUAlbumListCellContentView *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(PUAlbumListCellContentView *)self isHighlighted]!= highlighted)
   {
-    self->_highlighted = v3;
-    v5 = [(PUAlbumListCellContentView *)self stackView];
-    [v5 setHighlighted:v3];
+    self->_highlighted = highlightedCopy;
+    stackView = [(PUAlbumListCellContentView *)self stackView];
+    [stackView setHighlighted:highlightedCopy];
   }
 }
 
 - (void)_updateCheckmarkView
 {
-  v3 = [(PUAlbumListCellContentView *)self showsCheckmarkView];
-  v4 = [(PUAlbumListCellContentView *)self checkmarkView];
-  v7 = v4;
-  if (v3)
+  showsCheckmarkView = [(PUAlbumListCellContentView *)self showsCheckmarkView];
+  checkmarkView = [(PUAlbumListCellContentView *)self checkmarkView];
+  v7 = checkmarkView;
+  if (showsCheckmarkView)
   {
 
     if (v7)
@@ -656,8 +656,8 @@ uint64_t __58__PUAlbumListCellContentView__updateDeleteButtonAnimated___block_in
     }
 
     v5 = MEMORY[0x1E69DD250];
-    v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v7 = [v5 px_circularGlyphViewWithName:@"checkmark.circle" backgroundColor:v6];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v7 = [v5 px_circularGlyphViewWithName:@"checkmark.circle" backgroundColor:systemBlueColor];
 
     [v7 setUserInteractionEnabled:0];
     [(PUAlbumListCellContentView *)self addSubview:v7];
@@ -669,65 +669,65 @@ uint64_t __58__PUAlbumListCellContentView__updateDeleteButtonAnimated___block_in
 
   else
   {
-    [v4 removeFromSuperview];
+    [checkmarkView removeFromSuperview];
   }
 }
 
-- (void)setShowsCheckmarkView:(BOOL)a3
+- (void)setShowsCheckmarkView:(BOOL)view
 {
-  if (self->_showsCheckmarkView != a3)
+  if (self->_showsCheckmarkView != view)
   {
-    self->_showsCheckmarkView = a3;
+    self->_showsCheckmarkView = view;
     [(PUAlbumListCellContentView *)self _updateCheckmarkView];
   }
 }
 
-- (void)setShowsDeleteButtonWhenEditing:(BOOL)a3
+- (void)setShowsDeleteButtonWhenEditing:(BOOL)editing
 {
-  if (self->_showsDeleteButtonWhenEditing != a3)
+  if (self->_showsDeleteButtonWhenEditing != editing)
   {
-    self->_showsDeleteButtonWhenEditing = a3;
+    self->_showsDeleteButtonWhenEditing = editing;
     [(PUAlbumListCellContentView *)self _updateDeleteButtonAnimated:0];
   }
 }
 
-- (void)setEditCapabilities:(unint64_t)a3 animated:(BOOL)a4
+- (void)setEditCapabilities:(unint64_t)capabilities animated:(BOOL)animated
 {
-  if (self->_editCapabilities != a3)
+  if (self->_editCapabilities != capabilities)
   {
-    v5 = a4;
-    self->_editCapabilities = a3;
-    [(PUAlbumListCellContentView *)self _updateDeleteButtonAnimated:a4];
-    [(PUAlbumListCellContentView *)self _updateStackViewAnimated:v5];
-    [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:v5];
+    animatedCopy = animated;
+    self->_editCapabilities = capabilities;
+    [(PUAlbumListCellContentView *)self _updateDeleteButtonAnimated:animated];
+    [(PUAlbumListCellContentView *)self _updateStackViewAnimated:animatedCopy];
+    [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:animatedCopy];
 
-    [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:v5];
+    [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:animatedCopy];
   }
 }
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v5 = a4;
-    self->_enabled = a3;
-    [(PUAlbumListCellContentView *)self _updateStackViewAnimated:a4];
-    [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:v5];
+    animatedCopy = animated;
+    self->_enabled = enabled;
+    [(PUAlbumListCellContentView *)self _updateStackViewAnimated:animated];
+    [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:animatedCopy];
 
-    [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:v5];
+    [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:animatedCopy];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
     v14 = v7;
     v15 = v6;
     v16 = v4;
     v17 = v5;
-    self->_editing = a3;
-    if (a4)
+    self->_editing = editing;
+    if (animated)
     {
       v10 = 0.3;
     }
@@ -737,15 +737,15 @@ uint64_t __58__PUAlbumListCellContentView__updateDeleteButtonAnimated___block_in
       v10 = 0.0;
     }
 
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v11 beginIgnoringInteractionEvents];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] beginIgnoringInteractionEvents];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __50__PUAlbumListCellContentView_setEditing_animated___block_invoke;
     v12[3] = &unk_1E7B7FF98;
     v12[4] = self;
-    v13 = a4;
+    animatedCopy = animated;
     [MEMORY[0x1E69DD250] pu_animateWithEnforcedDuration:v12 animations:&__block_literal_global_6584 completion:v10];
   }
 }
@@ -768,11 +768,11 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
   [v0 endIgnoringInteractionEvents];
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:0];
     [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:0];
 
@@ -780,104 +780,104 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
   }
 }
 
-- (void)setXInset:(double)a3
+- (void)setXInset:(double)inset
 {
-  if (self->_xInset != a3)
+  if (self->_xInset != inset)
   {
-    self->_xInset = a3;
+    self->_xInset = inset;
     [(PUAlbumListCellContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitleFont:(id)a3
+- (void)setSubtitleFont:(id)font
 {
-  v5 = a3;
-  if (self->_subtitleFont != v5)
+  fontCopy = font;
+  if (self->_subtitleFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_subtitleFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_subtitleFont, font);
     [(PUAlbumListCellContentView *)self _updateSubtitleLabelStyle];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v5 = a3;
-  if (self->_titleFont != v5)
+  fontCopy = font;
+  if (self->_titleFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_titleFont, font);
     [(PUAlbumListCellContentView *)self _updateTitleStyle];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setSubtitle:(id)a3 animated:(BOOL)a4
+- (void)setSubtitle:(id)subtitle animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (self->_subtitle != v6)
+  animatedCopy = animated;
+  subtitleCopy = subtitle;
+  v7 = subtitleCopy;
+  if (self->_subtitle != subtitleCopy)
   {
-    v10 = v6;
-    v6 = [v6 isEqualToString:?];
+    v10 = subtitleCopy;
+    subtitleCopy = [subtitleCopy isEqualToString:?];
     v7 = v10;
-    if ((v6 & 1) == 0)
+    if ((subtitleCopy & 1) == 0)
     {
       v8 = [v10 copy];
       subtitle = self->_subtitle;
       self->_subtitle = v8;
 
-      v6 = [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:v4];
+      subtitleCopy = [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:animatedCopy];
       v7 = v10;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](subtitleCopy, v7);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_title != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_title != titleCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = titleCopy;
+    titleCopy = [titleCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((titleCopy & 1) == 0)
     {
       v6 = [v8 copy];
       title = self->_title;
       self->_title = v6;
 
-      v4 = [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:0];
+      titleCopy = [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:0];
       v5 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](titleCopy, v5);
 }
 
-- (void)setShouldCenterTextHorizontally:(BOOL)a3
+- (void)setShouldCenterTextHorizontally:(BOOL)horizontally
 {
-  if (self->_shouldCenterTextHorizontally != a3)
+  if (self->_shouldCenterTextHorizontally != horizontally)
   {
-    self->_shouldCenterTextHorizontally = a3;
+    self->_shouldCenterTextHorizontally = horizontally;
     [(PUAlbumListCellContentView *)self _updateTitleStyle];
   }
 }
 
-- (void)setCustomImageView:(id)a3
+- (void)setCustomImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customImageView = self->_customImageView;
-  if (customImageView != v5)
+  if (customImageView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)customImageView removeFromSuperview];
-    objc_storeStrong(&self->_customImageView, a3);
+    objc_storeStrong(&self->_customImageView, view);
     if (self->_customImageView)
     {
       [(PUAlbumListCellContentView *)self addSubview:?];
@@ -886,36 +886,36 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
 
     [(PUAlbumListCellContentView *)self _updateStackViewAnimated:0];
     customImageView = [(PUAlbumListCellContentView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](customImageView, v5);
+  MEMORY[0x1EEE66BB8](customImageView, viewCopy);
 }
 
 - (UIView)springLoadingTargetView
 {
-  v3 = [(PUAlbumListCellContentView *)self customImageView];
-  v4 = v3;
-  if (v3)
+  customImageView = [(PUAlbumListCellContentView *)self customImageView];
+  v4 = customImageView;
+  if (customImageView)
   {
-    v5 = v3;
+    v5 = customImageView;
   }
 
   else
   {
-    v6 = [(PUAlbumListCellContentView *)self stackView];
-    v7 = v6;
-    if (v6)
+    stackView = [(PUAlbumListCellContentView *)self stackView];
+    v7 = stackView;
+    if (stackView)
     {
-      v8 = v6;
+      selfCopy = stackView;
     }
 
     else
     {
-      v8 = self;
+      selfCopy = self;
     }
 
-    v5 = v8;
+    v5 = selfCopy;
   }
 
   return v5;
@@ -923,47 +923,47 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
 
 - (void)prepareForReuse
 {
-  v2 = [(PUAlbumListCellContentView *)self stackView];
-  [v2 prepareForReuse];
+  stackView = [(PUAlbumListCellContentView *)self stackView];
+  [stackView prepareForReuse];
 }
 
-- (void)setShowsTitle:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsTitle:(BOOL)title animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(PUAlbumListCellContentView *)self _showsTitleAndSubtitle]!= a3)
+  animatedCopy = animated;
+  titleCopy = title;
+  if ([(PUAlbumListCellContentView *)self _showsTitleAndSubtitle]!= title)
   {
-    [(PUAlbumListCellContentView *)self _setShowsTitleAndSubtitle:v5];
-    [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:v4];
+    [(PUAlbumListCellContentView *)self _setShowsTitleAndSubtitle:titleCopy];
+    [(PUAlbumListCellContentView *)self _updateTitleFieldAnimated:animatedCopy];
 
-    [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:v4];
+    [(PUAlbumListCellContentView *)self _updateSubtitleLabelAnimated:animatedCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 preferredContentSizeCategory];
+  height = fits.height;
+  width = fits.width;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v7) && !self->_layout)
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory) && !self->_layout)
   {
-    v13 = [(PUAlbumListCellContentView *)self _subtitleLabel];
-    [v13 sizeThatFits:{width, height}];
+    _subtitleLabel = [(PUAlbumListCellContentView *)self _subtitleLabel];
+    [_subtitleLabel sizeThatFits:{width, height}];
     v15 = v14;
 
-    v16 = [(PUAlbumListCellContentView *)self _titleTextField];
-    v17 = [(PUAlbumListCellContentView *)self _titleLabel];
-    v18 = v16;
-    if (v16 || (v18 = v17) != 0)
+    _titleTextField = [(PUAlbumListCellContentView *)self _titleTextField];
+    _titleLabel = [(PUAlbumListCellContentView *)self _titleLabel];
+    v18 = _titleTextField;
+    if (_titleTextField || (v18 = _titleLabel) != 0)
     {
       [v18 sizeThatFits:{width, height}];
       v15 = v15 + v19;
     }
 
-    v20 = [(PUAlbumListCellContentView *)self stackView];
-    [v20 frame];
+    stackView = [(PUAlbumListCellContentView *)self stackView];
+    [stackView frame];
     v22 = v21;
 
     if (v15 >= v22)
@@ -997,10 +997,10 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
 
 - (PXFocusInfo)focusInfo
 {
-  v2 = [(PUAlbumListCellContentView *)self stackView];
+  stackView = [(PUAlbumListCellContentView *)self stackView];
   v3 = MEMORY[0x1E69C3598];
-  [v2 cornerRadius];
-  v4 = [v3 focusInfoWithView:v2 cornerRadius:*MEMORY[0x1E69796E0] cornerCurve:?];
+  [stackView cornerRadius];
+  v4 = [v3 focusInfoWithView:stackView cornerRadius:*MEMORY[0x1E69796E0] cornerCurve:?];
 
   return v4;
 }
@@ -1015,14 +1015,14 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
   v6 = v5;
   v126 = v7;
   v9 = v8;
-  v10 = [(PUAlbumListCellContentView *)self _subtitleLabel];
-  v11 = [(PUAlbumListCellContentView *)self _titleTextField];
-  v12 = [(PUAlbumListCellContentView *)self _titleLabel];
-  v13 = [(PUAlbumListCellContentView *)self _deleteButton];
-  v14 = [(PUAlbumListCellContentView *)self stackView];
-  v15 = [(PUAlbumListCellContentView *)self customImageView];
-  v134 = v15;
-  if (v15 && (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  _subtitleLabel = [(PUAlbumListCellContentView *)self _subtitleLabel];
+  _titleTextField = [(PUAlbumListCellContentView *)self _titleTextField];
+  _titleLabel = [(PUAlbumListCellContentView *)self _titleLabel];
+  _deleteButton = [(PUAlbumListCellContentView *)self _deleteButton];
+  stackView = [(PUAlbumListCellContentView *)self stackView];
+  customImageView = [(PUAlbumListCellContentView *)self customImageView];
+  v134 = customImageView;
+  if (customImageView && (v16 = customImageView, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v17 = *(MEMORY[0x1E69DE258] + 8);
     v119 = *MEMORY[0x1E69DE258];
@@ -1033,10 +1033,10 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
 
   else
   {
-    [v14 stackSize];
+    [stackView stackSize];
     v19 = v21;
     v138 = v22;
-    [v14 stackOffset];
+    [stackView stackOffset];
     v119 = v23;
     v17 = v24;
   }
@@ -1044,9 +1044,9 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
   v130 = v19;
   v122 = v4;
   v123 = v6;
-  if (v10)
+  if (_subtitleLabel)
   {
-    v120 = [v10 isHidden] ^ 1;
+    v120 = [_subtitleLabel isHidden] ^ 1;
   }
 
   else
@@ -1056,43 +1056,43 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
 
   v25 = MEMORY[0x1E695F058];
   v26 = *MEMORY[0x1E695F058];
-  if (v11)
+  if (_titleTextField)
   {
-    v27 = v11;
+    v27 = _titleTextField;
   }
 
   else
   {
-    v27 = v12;
+    v27 = _titleLabel;
   }
 
   v28 = *MEMORY[0x1E695F060];
   v29 = *(MEMORY[0x1E695F060] + 8);
   [v27 sizeThatFits:{*MEMORY[0x1E695F060], v29}];
   v129 = v30;
-  [v10 sizeThatFits:{v28, v29}];
+  [_subtitleLabel sizeThatFits:{v28, v29}];
   v32 = v31;
   v33 = +[PUInterfaceManager currentTheme];
-  v34 = [v33 albumListTitleLabelFont];
+  albumListTitleLabelFont = [v33 albumListTitleLabelFont];
   v133 = v33;
-  v35 = [v33 albumListSubtitleLabelFont];
-  [v34 ascender];
+  albumListSubtitleLabelFont = [v33 albumListSubtitleLabelFont];
+  [albumListTitleLabelFont ascender];
   v37 = v36;
-  [v34 descender];
+  [albumListTitleLabelFont descender];
   v39 = v38;
-  [v35 ascender];
+  [albumListSubtitleLabelFont ascender];
   v41 = v40;
-  v142 = v35;
-  [v35 descender];
+  v142 = albumListSubtitleLabelFont;
+  [albumListSubtitleLabelFont descender];
   v43 = v42;
-  v124 = [(PUAlbumListCellContentView *)self shouldCenterTextHorizontally];
-  v125 = [(PUAlbumListCellContentView *)self _shouldReverseLayoutDirection];
-  v44 = [MEMORY[0x1E69DC668] sharedApplication];
-  v45 = [v44 preferredContentSizeCategory];
+  shouldCenterTextHorizontally = [(PUAlbumListCellContentView *)self shouldCenterTextHorizontally];
+  _shouldReverseLayoutDirection = [(PUAlbumListCellContentView *)self _shouldReverseLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  v132 = v45;
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v45);
-  v47 = v12;
+  v132 = preferredContentSizeCategory;
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  v47 = _titleLabel;
   layout = self->_layout;
   v137 = v17;
   v143.origin.x = v26;
@@ -1102,13 +1102,13 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
     v127 = 0.0;
     v49 = 0.0;
     v50 = v47;
-    v51 = v13;
-    v52 = v14;
+    v51 = _deleteButton;
+    v52 = stackView;
     v53 = v134;
-    if (v11 | v47)
+    if (_titleTextField | v47)
     {
       PXVisionScaledFloat();
-      [v34 _scaledValueForValue:1 useLanguageAwareScaling:?];
+      [albumListTitleLabelFont _scaledValueForValue:1 useLanguageAwareScaling:?];
       v55 = v54 - v37;
       if (PUMainScreenScale_onceToken != -1)
       {
@@ -1118,9 +1118,9 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
       v49 = round(*&PUMainScreenScale_screenScale * v55) / *&PUMainScreenScale_screenScale;
     }
 
-    v56 = [(PUAlbumListCellContentView *)self _subtitleLabel];
+    _subtitleLabel2 = [(PUAlbumListCellContentView *)self _subtitleLabel];
 
-    if (v56)
+    if (_subtitleLabel2)
     {
       [v142 _scaledValueForValue:1 useLanguageAwareScaling:20.0];
       v58 = v43 + v39 + v57 - v41;
@@ -1145,7 +1145,7 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
         v60 = 8.0;
       }
 
-      [v34 _scaledValueForValue:1 useLanguageAwareScaling:v60];
+      [albumListTitleLabelFont _scaledValueForValue:1 useLanguageAwareScaling:v60];
     }
 
     else
@@ -1163,7 +1163,7 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
     v147.size.width = v130;
     v147.size.height = v138;
     v77 = v49 + v137 + CGRectGetMaxY(v147);
-    if (v124)
+    if (shouldCenterTextHorizontally)
     {
       v78 = v130;
       v79 = v130;
@@ -1172,7 +1172,7 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
 
     else
     {
-      [v10 sizeThatFits:{v130, v138}];
+      [_subtitleLabel sizeThatFits:{v130, v138}];
       if (v130 >= v85)
       {
         v78 = v85;
@@ -1183,7 +1183,7 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
         v78 = v130;
       }
 
-      if (v125)
+      if (_shouldReverseLayoutDirection)
       {
         v148.origin.x = v59;
         v148.origin.y = rect;
@@ -1219,8 +1219,8 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
     v83 = 0.0;
     v84 = 0.0;
     v73 = 0.0;
-    v51 = v13;
-    v52 = v14;
+    v51 = _deleteButton;
+    v52 = stackView;
     v53 = v134;
     goto LABEL_60;
   }
@@ -1228,7 +1228,7 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
   v62 = IsAccessibilityCategory;
   v121 = v32;
   v127 = 0.0;
-  if (v11 | v47)
+  if (_titleTextField | v47)
   {
     v63 = 10.0;
   }
@@ -1238,7 +1238,7 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
     v63 = 0.0;
   }
 
-  if ((v11 | v47) != 0 && !IsAccessibilityCategory)
+  if ((_titleTextField | v47) != 0 && !IsAccessibilityCategory)
   {
     v64 = 48.0;
     if (v120)
@@ -1246,7 +1246,7 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
       v64 = 40.0;
     }
 
-    [v34 _scaledValueForValue:1 useLanguageAwareScaling:v64];
+    [albumListTitleLabelFont _scaledValueForValue:1 useLanguageAwareScaling:v64];
     v66 = v65 - v37;
     if (PUMainScreenScale_onceToken != -1)
     {
@@ -1256,9 +1256,9 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
     v63 = round(*&PUMainScreenScale_screenScale * v66) / *&PUMainScreenScale_screenScale;
   }
 
-  v67 = [(PUAlbumListCellContentView *)self _subtitleLabel];
+  _subtitleLabel3 = [(PUAlbumListCellContentView *)self _subtitleLabel];
 
-  if (v67)
+  if (_subtitleLabel3)
   {
     [v142 _scaledValueForValue:1 useLanguageAwareScaling:20.0];
     v69 = v39 + v68 - v41;
@@ -1288,12 +1288,12 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
     dispatch_once(&PUMainScreenScale_onceToken, &__block_literal_global_27106);
   }
 
-  v51 = v13;
+  v51 = _deleteButton;
   v74 = round(*&PUMainScreenScale_screenScale * ((v9 - v71) * 0.5));
   v75 = v74 / *&PUMainScreenScale_screenScale;
-  v52 = v14;
+  v52 = stackView;
   rect = v74 / *&PUMainScreenScale_screenScale;
-  if (v124 || (v125 & 1) == 0)
+  if (shouldCenterTextHorizontally || (_shouldReverseLayoutDirection & 1) == 0)
   {
     v145.origin.x = v73;
     v145.origin.y = v74 / *&PUMainScreenScale_screenScale;
@@ -1334,7 +1334,7 @@ void __50__PUAlbumListCellContentView_setEditing_animated___block_invoke_2()
   v90 = rect;
   v91 = v71;
   v92 = v71;
-  if (v125)
+  if (_shouldReverseLayoutDirection)
   {
     v93 = CGRectGetMinX(*&v89) + -8.0;
     v153.origin.x = v143.origin.x;
@@ -1393,20 +1393,20 @@ LABEL_60:
   v136 = v111;
   [v52 setFrame:{v95, v97, v99, v101}];
   [v53 setFrame:{v95, v97, v99, v101}];
-  [v11 setFrame:{v102, v104, v106, v108}];
+  [_titleTextField setFrame:{v102, v104, v106, v108}];
   [v50 setFrame:{v102, v104, v106, v108}];
-  [v10 setFrame:{v143.origin.x, v141, v139, v136}];
+  [_subtitleLabel setFrame:{v143.origin.x, v141, v139, v136}];
   [(PUAlbumListCellContentView *)self _deleteButtonCenter];
   [v51 setCenter:?];
-  v112 = [(PUAlbumListCellContentView *)self checkmarkView];
-  if (v112)
+  checkmarkView = [(PUAlbumListCellContentView *)self checkmarkView];
+  if (checkmarkView)
   {
     v155.origin.x = v95;
     v155.origin.y = v97;
     v155.size.width = v99;
     v155.size.height = v101;
     v113 = v137 + CGRectGetMaxY(v155) - v97;
-    [v112 bounds];
+    [checkmarkView bounds];
     v115 = v114;
     v117 = v116;
     v156.origin.x = v95;
@@ -1418,15 +1418,15 @@ LABEL_60:
     v157.origin.y = v97;
     v157.size.width = v99;
     v157.size.height = v113;
-    [v112 setFrame:{v118, CGRectGetMaxY(v157) - v117 + -3.5, v115, v117}];
+    [checkmarkView setFrame:{v118, CGRectGetMaxY(v157) - v117 + -3.5, v115, v117}];
   }
 }
 
 - (CGPoint)_deleteButtonCenter
 {
-  v3 = [(PUAlbumListCellContentView *)self stackView];
-  [v3 topLeftCornerOfFrontStackItem];
-  [(PUAlbumListCellContentView *)self convertPoint:v3 fromView:?];
+  stackView = [(PUAlbumListCellContentView *)self stackView];
+  [stackView topLeftCornerOfFrontStackItem];
+  [(PUAlbumListCellContentView *)self convertPoint:stackView fromView:?];
   v5 = v4 + 2.0;
   v7 = v6 + 3.0;
 
@@ -1437,11 +1437,11 @@ LABEL_60:
   return result;
 }
 
-- (PUAlbumListCellContentView)initWithFrame:(CGRect)a3
+- (PUAlbumListCellContentView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PUAlbumListCellContentView;
-  v3 = [(PUAlbumListCellContentView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUAlbumListCellContentView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

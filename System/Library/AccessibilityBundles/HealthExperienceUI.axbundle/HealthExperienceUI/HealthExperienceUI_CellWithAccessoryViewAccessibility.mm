@@ -9,53 +9,53 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)self _axSwitchView];
-  v4 = v3;
-  if (v3)
+  _axSwitchView = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)self _axSwitchView];
+  v4 = _axSwitchView;
+  if (_axSwitchView)
   {
-    v5 = [v3 accessibilityValue];
+    accessibilityValue = [_axSwitchView accessibilityValue];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = HealthExperienceUI_CellWithAccessoryViewAccessibility;
-    v5 = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)&v8 accessibilityValue];
+    accessibilityValue = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)&v8 accessibilityValue];
   }
 
-  v6 = v5;
+  v6 = accessibilityValue;
 
   return v6;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)self _axSwitchView];
-  v4 = v3;
-  if (v3)
+  _axSwitchView = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)self _axSwitchView];
+  v4 = _axSwitchView;
+  if (_axSwitchView)
   {
-    v5 = [v3 accessibilityTraits];
+    accessibilityTraits = [_axSwitchView accessibilityTraits];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = HealthExperienceUI_CellWithAccessoryViewAccessibility;
-    v5 = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)&v8 accessibilityTraits];
+    accessibilityTraits = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)&v8 accessibilityTraits];
   }
 
-  v6 = v5;
+  v6 = accessibilityTraits;
 
   return v6;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)self _axSwitchView];
-  v4 = v3;
-  if (v3)
+  _axSwitchView = [(HealthExperienceUI_CellWithAccessoryViewAccessibility *)self _axSwitchView];
+  v4 = _axSwitchView;
+  if (_axSwitchView)
   {
-    [v3 accessibilityActivationPoint];
+    [_axSwitchView accessibilityActivationPoint];
   }
 
   else

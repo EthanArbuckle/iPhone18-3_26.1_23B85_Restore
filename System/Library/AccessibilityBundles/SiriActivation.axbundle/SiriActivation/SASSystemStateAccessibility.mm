@@ -7,9 +7,9 @@
 - (BOOL)isConnectedToEyesFreeDevice
 {
   v3 = objc_opt_new();
-  v4 = [v3 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v3 isClarityBoardEnabled];
 
-  if (v4)
+  if (isClarityBoardEnabled)
   {
     return 0;
   }

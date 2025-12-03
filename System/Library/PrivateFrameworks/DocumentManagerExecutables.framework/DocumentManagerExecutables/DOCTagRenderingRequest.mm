@@ -1,10 +1,10 @@
 @interface DOCTagRenderingRequest
-+ (DOCTagRenderingRequest)requestWithTagDimension:(double)a3;
-+ (id)requestForChainedTags:(id)a3 tagDimension:(double)a4;
-+ (id)requestForTag:(id)a3 tagDimension:(double)a4 variant:(unint64_t)a5;
++ (DOCTagRenderingRequest)requestWithTagDimension:(double)dimension;
++ (id)requestForChainedTags:(id)tags tagDimension:(double)dimension;
++ (id)requestForTag:(id)tag tagDimension:(double)dimension variant:(unint64_t)variant;
 - (DOCTagRenderingRequest)init;
 - (UITraitCollection)traitCollection;
-- (id)_UIImageCacheKeyWithAdditionalComponents:(id)a3;
+- (id)_UIImageCacheKeyWithAdditionalComponents:(id)components;
 @end
 
 @implementation DOCTagRenderingRequest
@@ -22,9 +22,9 @@
     fillColors = v3->_fillColors;
     v3->_fillColors = MEMORY[0x277CBEBF8];
 
-    v5 = [MEMORY[0x277D06260] nonClearNoneTagColor];
+    nonClearNoneTagColor = [MEMORY[0x277D06260] nonClearNoneTagColor];
     ringColor = v3->_ringColor;
-    v3->_ringColor = v5;
+    v3->_ringColor = nonClearNoneTagColor;
 
     selectionOutlineColor = v3->_selectionOutlineColor;
     v3->_selectionOutlineColor = 0;
@@ -39,44 +39,44 @@
 
 - (UITraitCollection)traitCollection
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 traitCollection];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
-+ (DOCTagRenderingRequest)requestWithTagDimension:(double)a3
++ (DOCTagRenderingRequest)requestWithTagDimension:(double)dimension
 {
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setTagDimension:a3];
+  [v4 setTagDimension:dimension];
 
   return v4;
 }
 
-+ (id)requestForTag:(id)a3 tagDimension:(double)a4 variant:(unint64_t)a5
++ (id)requestForTag:(id)tag tagDimension:(double)dimension variant:(unint64_t)variant
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [objc_opt_class() requestWithTagDimension:a4];
-  v17[0] = v7;
+  tagCopy = tag;
+  v8 = [objc_opt_class() requestWithTagDimension:dimension];
+  v17[0] = tagCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   [v8 setTags:v9];
 
-  if (a5 == 1 && [v7 labelIndex])
+  if (variant == 1 && [tagCopy labelIndex])
   {
-    v10 = [MEMORY[0x277D75348] clearColor];
-    v16 = v10;
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    v16 = clearColor;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
     [v8 setFillColors:v11];
 
-    v12 = [v7 tagColor];
-    [v8 setRingColor:v12];
+    tagColor = [tagCopy tagColor];
+    [v8 setRingColor:tagColor];
   }
 
   else
   {
-    v12 = [v7 tagColor];
-    v15 = v12;
+    tagColor = [tagCopy tagColor];
+    v15 = tagColor;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
     [v8 setFillColors:v13];
   }
@@ -84,25 +84,25 @@
   return v8;
 }
 
-+ (id)requestForChainedTags:(id)a3 tagDimension:(double)a4
++ (id)requestForChainedTags:(id)tags tagDimension:(double)dimension
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
-  v7 = [v5 array];
-  v8 = [MEMORY[0x277CBEB18] array];
+  tagsCopy = tags;
+  array = [v5 array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __61__DOCTagRenderingRequest_requestForChainedTags_tagDimension___block_invoke;
   v16 = &unk_278FA27F0;
-  v9 = v7;
+  v9 = array;
   v17 = v9;
-  v10 = v8;
+  v10 = array2;
   v18 = v10;
-  [v6 enumerateObjectsWithOptions:2 usingBlock:&v13];
+  [tagsCopy enumerateObjectsWithOptions:2 usingBlock:&v13];
 
   if ([v9 count])
   {
-    v11 = [objc_opt_class() requestWithTagDimension:a4];
+    v11 = [objc_opt_class() requestWithTagDimension:dimension];
     [v11 setTags:v10];
     [v11 setFillColors:v9];
   }
@@ -127,17 +127,17 @@ void __61__DOCTagRenderingRequest_requestForChainedTags_tagDimension___block_inv
   }
 }
 
-- (id)_UIImageCacheKeyWithAdditionalComponents:(id)a3
+- (id)_UIImageCacheKeyWithAdditionalComponents:(id)components
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  componentsCopy = components;
+  array = [MEMORY[0x277CBEB18] array];
   aBlock = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __67__DOCTagRenderingRequest__UIImageCacheKeyWithAdditionalComponents___block_invoke;
   v19 = &unk_278FA2840;
-  v6 = v5;
+  v6 = array;
   v20 = v6;
-  v21 = self;
+  selfCopy = self;
   v7 = _Block_copy(&aBlock);
   v7[2](v7, @"fillColors", self->_fillColors);
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:{self->_ringColor, 0}];
@@ -152,9 +152,9 @@ void __61__DOCTagRenderingRequest_requestForChainedTags_tagDimension___block_inv
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:self->_layoutDirection];
   v14 = [v10 arrayWithObjects:{v6, v11, v12, v13, 0, aBlock, v17, v18, v19}];
 
-  if ([v4 count])
+  if ([componentsCopy count])
   {
-    [v14 addObjectsFromArray:v4];
+    [v14 addObjectsFromArray:componentsCopy];
   }
 
   return v14;

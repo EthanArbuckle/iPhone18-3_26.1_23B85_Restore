@@ -10,17 +10,17 @@
   v1 = v0;
   if (v0)
   {
-    v2 = [v0 imageConfiguration];
+    imageConfiguration = [v0 imageConfiguration];
   }
 
   else
   {
-    v2 = 0;
+    imageConfiguration = 0;
   }
 
-  v3 = v2;
+  v3 = imageConfiguration;
 
-  return v2;
+  return imageConfiguration;
 }
 
 @end

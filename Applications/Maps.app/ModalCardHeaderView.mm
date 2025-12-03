@@ -1,10 +1,10 @@
 @interface ModalCardHeaderView
 - (CGSize)intrinsicContentSize;
 - (CGSize)viewSize;
-- (_TtC4Maps19ModalCardHeaderView)initWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setShowTitle:(BOOL)a3;
-- (void)setViewSize:(CGSize)a3;
+- (_TtC4Maps19ModalCardHeaderView)initWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setShowTitle:(BOOL)title;
+- (void)setViewSize:(CGSize)size;
 @end
 
 @implementation ModalCardHeaderView
@@ -18,29 +18,29 @@
   return result;
 }
 
-- (void)setViewSize:(CGSize)a3
+- (void)setViewSize:(CGSize)size
 {
   v3 = *(self + OBJC_IVAR____TtC4Maps19ModalCardHeaderView_viewSize);
   v4 = *(self + OBJC_IVAR____TtC4Maps19ModalCardHeaderView_viewSize + 8);
-  *(self + OBJC_IVAR____TtC4Maps19ModalCardHeaderView_viewSize) = a3;
-  if (a3.width != v3 || a3.height != v4)
+  *(self + OBJC_IVAR____TtC4Maps19ModalCardHeaderView_viewSize) = size;
+  if (size.width != v3 || size.height != v4)
   {
     [(ModalCardHeaderView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setShowTitle:(BOOL)a3
+- (void)setShowTitle:(BOOL)title
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps19ModalCardHeaderView_showTitle);
-  *(self + OBJC_IVAR____TtC4Maps19ModalCardHeaderView_showTitle) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC4Maps19ModalCardHeaderView_showTitle) = title;
+  if (v4 != title)
   {
-    v5 = self;
+    selfCopy = self;
     sub_100282F08();
   }
 }
 
-- (_TtC4Maps19ModalCardHeaderView)initWithCoder:(id)a3
+- (_TtC4Maps19ModalCardHeaderView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC4Maps19ModalCardHeaderView_viewSize);
   *v3 = 0;
@@ -59,11 +59,11 @@
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a4)
+  if (object)
   {
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -72,7 +72,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v8 = self;
+    selfCopy2 = self;
   }
 
   sub_100282F08();

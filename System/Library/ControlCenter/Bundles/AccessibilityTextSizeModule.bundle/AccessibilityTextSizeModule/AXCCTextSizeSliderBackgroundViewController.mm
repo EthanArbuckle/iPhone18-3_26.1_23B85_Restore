@@ -1,21 +1,21 @@
 @interface AXCCTextSizeSliderBackgroundViewController
-- (id)_attachmentAttributedString:(id)a3 withSystemImage:(id)a4;
-- (id)_labelSubviewWithAttributedText:(id)a3;
-- (id)_labelSubviewWithText:(id)a3;
+- (id)_attachmentAttributedString:(id)string withSystemImage:(id)image;
+- (id)_labelSubviewWithAttributedText:(id)text;
+- (id)_labelSubviewWithText:(id)text;
 - (id)_preferredCategoryWithPerAppSettings;
-- (void)_contentSizeCategoryDidChange:(id)a3;
-- (void)_contentSizeCategoryDidChangeInternally:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
+- (void)_contentSizeCategoryDidChangeInternally:(id)internally;
 - (void)_layoutPerAppControls;
-- (void)_togglePerAppButton:(id)a3;
-- (void)_updateDefaultLabelPercentageForContentSizeCategory:(id)a3;
-- (void)_updateDefaultLabelVisibilityForContentSizeCategory:(id)a3;
+- (void)_togglePerAppButton:(id)button;
+- (void)_updateDefaultLabelPercentageForContentSizeCategory:(id)category;
+- (void)_updateDefaultLabelVisibilityForContentSizeCategory:(id)category;
 - (void)_updateLabelFonts;
 - (void)_updatePerAppControls;
 - (void)dealloc;
 - (void)moduleDidExpand;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -33,15 +33,15 @@
   textSizeLabel = self->_textSizeLabel;
   self->_textSizeLabel = v5;
 
-  v7 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-  [v7 addSubview:self->_textSizeLabel];
+  view = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+  [view addSubview:self->_textSizeLabel];
 
   v8 = [(AXCCTextSizeSliderBackgroundViewController *)self _labelSubviewWithText:&stru_2A23E1258];
   textPercentageLabel = self->_textPercentageLabel;
   self->_textPercentageLabel = v8;
 
-  v10 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-  [v10 addSubview:self->_textPercentageLabel];
+  view2 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+  [view2 addSubview:self->_textPercentageLabel];
 
   v11 = AXCCLocalizedString(@"default.label");
   v12 = [(AXCCTextSizeSliderBackgroundViewController *)self _labelSubviewWithText:v11];
@@ -49,19 +49,19 @@
   self->_defaultLabel = v12;
 
   [(UILabel *)self->_defaultLabel setAlpha:0.0];
-  v14 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-  [v14 addSubview:self->_defaultLabel];
+  view3 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+  [view3 addSubview:self->_defaultLabel];
 
-  v15 = [[AXCCExpandableButton alloc] initForControlCenter];
+  initForControlCenter = [[AXCCExpandableButton alloc] initForControlCenter];
   perAppModeSwitcher = self->_perAppModeSwitcher;
-  self->_perAppModeSwitcher = v15;
+  self->_perAppModeSwitcher = initForControlCenter;
 
   [(AXCCExpandableButton *)self->_perAppModeSwitcher addTarget:self action:sel__togglePerAppButton_ forControlEvents:4096];
   [(AXCCExpandableButton *)self->_perAppModeSwitcher setButtonImageSize:54.0, 54.0];
   [(AXCCExpandableButton *)self->_perAppModeSwitcher setMaximumExpandedSize:0.0, 228.0];
   [(AXCCExpandableButton *)self->_perAppModeSwitcher setExpanded:1];
-  v17 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-  [v17 addSubview:self->_perAppModeSwitcher];
+  view4 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+  [view4 addSubview:self->_perAppModeSwitcher];
 
   v18 = objc_opt_new();
   switcherOptions = self->_switcherOptions;
@@ -75,8 +75,8 @@
     v23 = [v21 systemImageNamed:v22];
 
     v24 = objc_alloc_init(AXCCExpandableButtonOption);
-    v25 = [MEMORY[0x29EDC7A00] systemWhiteColor];
-    [(AXCCExpandableButtonOption *)v24 setSelectedBackgroundColor:v25];
+    systemWhiteColor = [MEMORY[0x29EDC7A00] systemWhiteColor];
+    [(AXCCExpandableButtonOption *)v24 setSelectedBackgroundColor:systemWhiteColor];
 
     [(AXCCExpandableButtonOption *)v24 setImage:v23];
     [(NSMutableArray *)self->_switcherOptions addObject:v24];
@@ -94,27 +94,27 @@
   }
 
 LABEL_8:
-  v27 = [(NSMutableArray *)self->_switcherOptions lastObject];
+  lastObject = [(NSMutableArray *)self->_switcherOptions lastObject];
   v28 = AXCCLocalizedString(@"global.label");
-  [v27 setTitle:v28];
+  [lastObject setTitle:v28];
 
   [(AXCCTextSizeSliderBackgroundViewController *)self _updateLabelFonts];
-  v29 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v29 addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x29EDC8078] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x29EDC8078] object:0];
 
-  v30 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v30 addObserver:self selector:sel__contentSizeCategoryDidChangeInternally_ name:@"AXCCInternalTextSizeDidUpdate" object:0];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__contentSizeCategoryDidChangeInternally_ name:@"AXCCInternalTextSizeDidUpdate" object:0];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = AXCCTextSizeSliderBackgroundViewController;
-  [(AXCCTextSizeSliderBackgroundViewController *)&v9 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(AXCCTextSizeSliderBackgroundViewController *)&v9 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
-    v6 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-    v7 = [v6 visualStylingProviderForCategory:1];
+    view = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+    v7 = [view visualStylingProviderForCategory:1];
 
     v8 = [[AXCCVisualStylingProvider alloc] initWithVisualStylingProvider:v7];
     [(AXCCExpandableButton *)self->_perAppModeSwitcher setStylingProvider:v8];
@@ -123,8 +123,8 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXCCTextSizeSliderBackgroundViewController;
@@ -138,81 +138,81 @@ LABEL_8:
   [(AXCCTextSizeSliderBackgroundViewController *)self _contentSizeCategoryDidChange:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXCCTextSizeSliderBackgroundViewController;
-  [(AXCCTextSizeSliderBackgroundViewController *)&v4 viewWillAppear:a3];
+  [(AXCCTextSizeSliderBackgroundViewController *)&v4 viewWillAppear:appear];
   [(AXCCTextSizeSliderBackgroundViewController *)self _updatePerAppControls];
   [(AXCCTextSizeSliderBackgroundViewController *)self _contentSizeCategoryDidChange:0];
 }
 
-- (void)_updateDefaultLabelPercentageForContentSizeCategory:(id)a3
+- (void)_updateDefaultLabelPercentageForContentSizeCategory:(id)category
 {
   AXTextSizePercentage();
   v4 = AXFormatFloatWithPercentage();
   [(UILabel *)self->_textPercentageLabel setText:v4];
 }
 
-- (void)_updateDefaultLabelVisibilityForContentSizeCategory:(id)a3
+- (void)_updateDefaultLabelVisibilityForContentSizeCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = MEMORY[0x29EDC7DA0];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = sub_29C93DC30;
   v7[3] = &unk_29F335450;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = categoryCopy;
+  v6 = categoryCopy;
   [v5 animateWithDuration:v7 animations:0.1];
 }
 
-- (id)_labelSubviewWithText:(id)a3
+- (id)_labelSubviewWithText:(id)text
 {
   v3 = MEMORY[0x29EDC7B38];
-  v4 = a3;
+  textCopy = text;
   v5 = [v3 alloc];
   v6 = [v5 initWithFrame:{*MEMORY[0x29EDB90E0], *(MEMORY[0x29EDB90E0] + 8), *(MEMORY[0x29EDB90E0] + 16), *(MEMORY[0x29EDB90E0] + 24)}];
-  v7 = [MEMORY[0x29EDC7A00] whiteColor];
-  [v6 setTextColor:v7];
+  whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
+  [v6 setTextColor:whiteColor];
 
-  [v6 setText:v4];
+  [v6 setText:textCopy];
   [v6 controlCenterApplyPrimaryContentShadow];
 
   return v6;
 }
 
-- (id)_labelSubviewWithAttributedText:(id)a3
+- (id)_labelSubviewWithAttributedText:(id)text
 {
   v3 = MEMORY[0x29EDC7B38];
-  v4 = a3;
+  textCopy = text;
   v5 = [v3 alloc];
   v6 = [v5 initWithFrame:{*MEMORY[0x29EDB90E0], *(MEMORY[0x29EDB90E0] + 8), *(MEMORY[0x29EDB90E0] + 16), *(MEMORY[0x29EDB90E0] + 24)}];
-  v7 = [MEMORY[0x29EDC7A00] whiteColor];
-  [v6 setTextColor:v7];
+  whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
+  [v6 setTextColor:whiteColor];
 
-  [v6 setAttributedText:v4];
+  [v6 setAttributedText:textCopy];
   [v6 controlCenterApplyPrimaryContentShadow];
 
   return v6;
 }
 
-- (id)_attachmentAttributedString:(id)a3 withSystemImage:(id)a4
+- (id)_attachmentAttributedString:(id)string withSystemImage:(id)image
 {
   v5 = MEMORY[0x29EDC7698];
-  v6 = a4;
-  v7 = a3;
+  imageCopy = image;
+  stringCopy = string;
   v8 = objc_alloc_init(v5);
   v9 = [MEMORY[0x29EDC7AD0] configurationWithTextStyle:*MEMORY[0x29EDC8128]];
-  v10 = [MEMORY[0x29EDC7AC8] systemImageNamed:v6 withConfiguration:v9];
+  v10 = [MEMORY[0x29EDC7AC8] systemImageNamed:imageCopy withConfiguration:v9];
 
-  v11 = [MEMORY[0x29EDC7A00] whiteColor];
-  v12 = [v10 imageWithTintColor:v11];
+  whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
+  v12 = [v10 imageWithTintColor:whiteColor];
   [v8 setImage:v12];
 
   v13 = [MEMORY[0x29EDBA038] attributedStringWithAttachment:v8];
-  v14 = [objc_alloc(MEMORY[0x29EDBA038]) initWithString:v7];
+  v14 = [objc_alloc(MEMORY[0x29EDBA038]) initWithString:stringCopy];
 
   [v14 insertAttributedString:v13 atIndex:0];
 
@@ -222,25 +222,25 @@ LABEL_8:
 - (id)_preferredCategoryWithPerAppSettings
 {
   v11 = *MEMORY[0x29EDCA608];
-  v3 = [(AXCCTextSizeHelper *)self->_helper categoryName];
+  categoryName = [(AXCCTextSizeHelper *)self->_helper categoryName];
   v4 = AXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[AXCCTextSizeHelper state](self->_helper, "state")}];
     v7 = 138412546;
-    v8 = v3;
+    v8 = categoryName;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&dword_29C939000, v4, OS_LOG_TYPE_INFO, "Preferrefed category: %@ = %@", &v7, 0x16u);
   }
 
-  return v3;
+  return categoryName;
 }
 
 - (void)_updateLabelFonts
 {
-  v13 = [(AXCCTextSizeSliderBackgroundViewController *)self _preferredCategoryWithPerAppSettings];
-  v3 = [MEMORY[0x29EDC7D80] traitCollectionWithPreferredContentSizeCategory:v13];
+  _preferredCategoryWithPerAppSettings = [(AXCCTextSizeSliderBackgroundViewController *)self _preferredCategoryWithPerAppSettings];
+  v3 = [MEMORY[0x29EDC7D80] traitCollectionWithPreferredContentSizeCategory:_preferredCategoryWithPerAppSettings];
   textSizeLabel = self->_textSizeLabel;
   v5 = AXCCLocalizedString(@"text.size.label");
   v6 = [(AXCCTextSizeSliderBackgroundViewController *)self _attachmentAttributedString:v5 withSystemImage:@"textformat.size"];
@@ -252,8 +252,8 @@ LABEL_8:
   v8 = [MEMORY[0x29EDC76B0] preferredFontForTextStyle:*MEMORY[0x29EDC8120] compatibleWithTraitCollection:v3];
   [(UILabel *)self->_textPercentageLabel setFont:v8];
 
-  v9 = [(AXCCTextSizeSliderBackgroundViewController *)self _preferredCategoryWithPerAppSettings];
-  [(AXCCTextSizeSliderBackgroundViewController *)self _updateDefaultLabelPercentageForContentSizeCategory:v9];
+  _preferredCategoryWithPerAppSettings2 = [(AXCCTextSizeSliderBackgroundViewController *)self _preferredCategoryWithPerAppSettings];
+  [(AXCCTextSizeSliderBackgroundViewController *)self _updateDefaultLabelPercentageForContentSizeCategory:_preferredCategoryWithPerAppSettings2];
 
   v10 = [MEMORY[0x29EDC76B8] defaultFontDescriptorWithTextStyle:*MEMORY[0x29EDC80E0] addingSymbolicTraits:2 options:0];
   v11 = MEMORY[0x29EDC76B0];
@@ -262,45 +262,45 @@ LABEL_8:
   [(UILabel *)self->_defaultLabel setFont:v12];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   [(AXCCTextSizeSliderBackgroundViewController *)self _updateLabelFonts];
-  v5 = [(AXCCTextSizeSliderBackgroundViewController *)self _preferredCategoryWithPerAppSettings];
-  [(AXCCTextSizeSliderBackgroundViewController *)self _updateDefaultLabelPercentageForContentSizeCategory:v5];
-  [(AXCCTextSizeSliderBackgroundViewController *)self _updateDefaultLabelVisibilityForContentSizeCategory:v5];
-  v4 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-  [v4 setNeedsLayout];
+  _preferredCategoryWithPerAppSettings = [(AXCCTextSizeSliderBackgroundViewController *)self _preferredCategoryWithPerAppSettings];
+  [(AXCCTextSizeSliderBackgroundViewController *)self _updateDefaultLabelPercentageForContentSizeCategory:_preferredCategoryWithPerAppSettings];
+  [(AXCCTextSizeSliderBackgroundViewController *)self _updateDefaultLabelVisibilityForContentSizeCategory:_preferredCategoryWithPerAppSettings];
+  view = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)_contentSizeCategoryDidChangeInternally:(id)a3
+- (void)_contentSizeCategoryDidChangeInternally:(id)internally
 {
-  v12 = [a3 object];
+  object = [internally object];
   if ([(AXCCTextSizeHelper *)self->_helper state]== 3)
   {
-    v4 = v12;
+    v4 = object;
   }
 
   else
   {
-    v5 = [(AXCCTextSizeHelper *)self->_helper categoryName];
+    categoryName = [(AXCCTextSizeHelper *)self->_helper categoryName];
 
-    v4 = v5;
+    v4 = categoryName;
   }
 
   v13 = v4;
   v6 = [MEMORY[0x29EDC7D80] traitCollectionWithPreferredContentSizeCategory:v4];
-  v7 = [(UILabel *)self->_textSizeLabel font];
-  v8 = [v7 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
+  font = [(UILabel *)self->_textSizeLabel font];
+  v8 = [font _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
   [(UILabel *)self->_textSizeLabel setFont:v8];
 
-  v9 = [(UILabel *)self->_textPercentageLabel font];
-  v10 = [v9 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
+  font2 = [(UILabel *)self->_textPercentageLabel font];
+  v10 = [font2 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
   [(UILabel *)self->_textPercentageLabel setFont:v10];
 
   [(AXCCTextSizeSliderBackgroundViewController *)self _updateDefaultLabelPercentageForContentSizeCategory:v13];
   [(AXCCTextSizeSliderBackgroundViewController *)self _updateDefaultLabelVisibilityForContentSizeCategory:v13];
-  v11 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-  [v11 setNeedsLayout];
+  view = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)_updatePerAppControls
@@ -310,19 +310,19 @@ LABEL_8:
   [(AXCCTextSizeHelper *)self->_helper refreshCategoryName];
   if (self->_perAppModeSwitcher)
   {
-    v3 = [(AXCCTextSizeHelper *)self->_helper isPerAppAvailable];
+    isPerAppAvailable = [(AXCCTextSizeHelper *)self->_helper isPerAppAvailable];
     perAppModeSwitcher = self->_perAppModeSwitcher;
-    if (v3)
+    if (isPerAppAvailable)
     {
       [(AXCCExpandableButton *)perAppModeSwitcher setHidden:0];
       v5 = objc_opt_new();
-      v6 = [(AXCCTextSizeHelper *)self->_helper appsNames];
-      v28 = [(AXCCTextSizeHelper *)self->_helper appsIdentifiers];
+      appsNames = [(AXCCTextSizeHelper *)self->_helper appsNames];
+      appsIdentifiers = [(AXCCTextSizeHelper *)self->_helper appsIdentifiers];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      obj = v6;
+      obj = appsNames;
       v27 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v27)
       {
@@ -356,7 +356,7 @@ LABEL_8:
             v14 = [v12 localizedStringWithFormat:v13, v9];
             [v11 setTitle:v14];
 
-            v15 = [v28 objectAtIndexedSubscript:v7];
+            v15 = [appsIdentifiers objectAtIndexedSubscript:v7];
             v16 = [v15 isEqualToString:@"com.apple.springboard"];
 
             v17 = MEMORY[0x29EDC7AC8];
@@ -368,7 +368,7 @@ LABEL_8:
 
             else
             {
-              v18 = [v28 objectAtIndexedSubscript:v7];
+              v18 = [appsIdentifiers objectAtIndexedSubscript:v7];
               v19 = [v17 _applicationIconImageForBundleIdentifier:v18 format:0];
               [v11 setImage:v19];
             }
@@ -392,16 +392,16 @@ LABEL_21:
 
       if ([v5 count])
       {
-        v22 = [(NSMutableArray *)self->_switcherOptions lastObject];
-        [v5 addObject:v22];
+        lastObject = [(NSMutableArray *)self->_switcherOptions lastObject];
+        [v5 addObject:lastObject];
 
         [(AXCCExpandableButton *)self->_perAppModeSwitcher setOptions:v5];
         [(AXCCExpandableButton *)self->_perAppModeSwitcher setExpanded:1];
-        v23 = v28;
+        v23 = appsIdentifiers;
         if ([(AXCCTextSizeHelper *)self->_helper state]== 3)
         {
-          v24 = [(AXCCExpandableButton *)self->_perAppModeSwitcher options];
-          -[AXCCExpandableButton setSelectedOptionIndex:](self->_perAppModeSwitcher, "setSelectedOptionIndex:", [v24 count] - 1);
+          options = [(AXCCExpandableButton *)self->_perAppModeSwitcher options];
+          -[AXCCExpandableButton setSelectedOptionIndex:](self->_perAppModeSwitcher, "setSelectedOptionIndex:", [options count] - 1);
         }
 
         else
@@ -414,7 +414,7 @@ LABEL_21:
       {
         [(AXCCExpandableButton *)self->_perAppModeSwitcher setOptions:0];
         [(AXCCExpandableButton *)self->_perAppModeSwitcher setHidden:1];
-        v23 = v28;
+        v23 = appsIdentifiers;
       }
     }
 
@@ -428,31 +428,31 @@ LABEL_21:
   }
 }
 
-- (void)_togglePerAppButton:(id)a3
+- (void)_togglePerAppButton:(id)button
 {
-  v4 = [(AXCCExpandableButton *)self->_perAppModeSwitcher selectedOptionIndex];
-  v5 = [(AXCCExpandableButton *)self->_perAppModeSwitcher options];
-  v6 = [v5 count] - 1;
+  selectedOptionIndex = [(AXCCExpandableButton *)self->_perAppModeSwitcher selectedOptionIndex];
+  options = [(AXCCExpandableButton *)self->_perAppModeSwitcher options];
+  v6 = [options count] - 1;
 
-  if (v4 == v6)
+  if (selectedOptionIndex == v6)
   {
-    v7 = 3;
+    selectedOptionIndex2 = 3;
   }
 
   else
   {
-    v7 = [(AXCCExpandableButton *)self->_perAppModeSwitcher selectedOptionIndex];
+    selectedOptionIndex2 = [(AXCCExpandableButton *)self->_perAppModeSwitcher selectedOptionIndex];
   }
 
-  [(AXCCTextSizeHelper *)self->_helper setState:v7];
+  [(AXCCTextSizeHelper *)self->_helper setState:selectedOptionIndex2];
 
   [(AXCCTextSizeSliderBackgroundViewController *)self _contentSizeCategoryDidChange:0];
 }
 
 - (void)_layoutPerAppControls
 {
-  v3 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-  [v3 bounds];
+  view = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -524,8 +524,8 @@ LABEL_21:
   [(AXCCTextSizeSliderBackgroundViewController *)&v28 viewWillLayoutSubviews];
   [(UILabel *)self->_textSizeLabel setNumberOfLines:1];
   [(UILabel *)self->_textSizeLabel sizeToFit];
-  v3 = [(AXCCTextSizeSliderBackgroundViewController *)self view];
-  [v3 bounds];
+  view = [(AXCCTextSizeSliderBackgroundViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

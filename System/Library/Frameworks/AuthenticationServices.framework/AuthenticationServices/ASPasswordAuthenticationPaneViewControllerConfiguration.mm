@@ -1,10 +1,10 @@
 @interface ASPasswordAuthenticationPaneViewControllerConfiguration
 - (ASPasswordAuthenticationPaneViewControllerConfiguration)init;
-- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForCredentialProviderWithApplicationBundleID:(id)a3 site:(id)a4 serviceName:(id)a5 serviceType:(unint64_t)a6 proxiedOriginDeviceName:(id)a7;
-- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForCredentialProviderWithProxiedIconData:(id)a3 proxiedIconScale:(double)a4 site:(id)a5 serviceName:(id)a6 serviceType:(unint64_t)a7 proxiedOriginDeviceName:(id)a8;
-- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForPasswordManagerWithSite:(id)a3 serviceName:(id)a4 serviceType:(unint64_t)a5 proxiedOriginDeviceName:(id)a6;
-- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithPersona:(unint64_t)a3 presentationContext:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForCredentialProviderWithApplicationBundleID:(id)d site:(id)site serviceName:(id)name serviceType:(unint64_t)type proxiedOriginDeviceName:(id)deviceName;
+- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForCredentialProviderWithProxiedIconData:(id)data proxiedIconScale:(double)scale site:(id)site serviceName:(id)name serviceType:(unint64_t)type proxiedOriginDeviceName:(id)deviceName;
+- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForPasswordManagerWithSite:(id)site serviceName:(id)name serviceType:(unint64_t)type proxiedOriginDeviceName:(id)deviceName;
+- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithPersona:(unint64_t)persona presentationContext:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)passwordCredentialSite;
 - (id)headerConfiguration;
 - (int64_t)hash;
@@ -12,13 +12,13 @@
 
 @implementation ASPasswordAuthenticationPaneViewControllerConfiguration
 
-- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForPasswordManagerWithSite:(id)a3 serviceName:(id)a4 serviceType:(unint64_t)a5 proxiedOriginDeviceName:(id)a6
+- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForPasswordManagerWithSite:(id)site serviceName:(id)name serviceType:(unint64_t)type proxiedOriginDeviceName:(id)deviceName
 {
   v9 = sub_1B1D7BE4C();
   v11 = v10;
   v12 = sub_1B1D7BE4C();
   v14 = v13;
-  if (a6)
+  if (deviceName)
   {
     v15 = sub_1B1D7BE4C();
   }
@@ -42,7 +42,7 @@
   v19 = self + OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_contentFields;
   *v19 = v12;
   *(v19 + 1) = v14;
-  *(v19 + 2) = a5;
+  *(v19 + 2) = type;
   *(v19 + 3) = v9;
   *(v19 + 4) = v11;
   *(v19 + 5) = v15;
@@ -53,7 +53,7 @@
   return [(ASPasswordAuthenticationPaneViewControllerConfiguration *)&v21 init];
 }
 
-- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForCredentialProviderWithApplicationBundleID:(id)a3 site:(id)a4 serviceName:(id)a5 serviceType:(unint64_t)a6 proxiedOriginDeviceName:(id)a7
+- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForCredentialProviderWithApplicationBundleID:(id)d site:(id)site serviceName:(id)name serviceType:(unint64_t)type proxiedOriginDeviceName:(id)deviceName
 {
   v10 = sub_1B1D7BE4C();
   v12 = v11;
@@ -61,7 +61,7 @@
   v15 = v14;
   v16 = sub_1B1D7BE4C();
   v18 = v17;
-  if (a7)
+  if (deviceName)
   {
     v19 = sub_1B1D7BE4C();
   }
@@ -85,7 +85,7 @@
   v23 = self + OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_contentFields;
   *v23 = v16;
   *(v23 + 1) = v18;
-  *(v23 + 2) = a6;
+  *(v23 + 2) = type;
   *(v23 + 3) = v13;
   *(v23 + 4) = v15;
   *(v23 + 5) = v19;
@@ -96,12 +96,12 @@
   return [(ASPasswordAuthenticationPaneViewControllerConfiguration *)&v25 init];
 }
 
-- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForCredentialProviderWithProxiedIconData:(id)a3 proxiedIconScale:(double)a4 site:(id)a5 serviceName:(id)a6 serviceType:(unint64_t)a7 proxiedOriginDeviceName:(id)a8
+- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithManualPasswordEntryForCredentialProviderWithProxiedIconData:(id)data proxiedIconScale:(double)scale site:(id)site serviceName:(id)name serviceType:(unint64_t)type proxiedOriginDeviceName:(id)deviceName
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  dataCopy = data;
+  siteCopy = site;
+  nameCopy = name;
+  deviceNameCopy = deviceName;
   v17 = sub_1B1D7B4EC();
   v19 = v18;
 
@@ -111,7 +111,7 @@
   v23 = sub_1B1D7BE4C();
   v25 = v24;
 
-  if (v16)
+  if (deviceNameCopy)
   {
     v26 = sub_1B1D7BE4C();
     v28 = v27;
@@ -130,13 +130,13 @@
   v30 = self + OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon;
   *v30 = v17;
   *(v30 + 1) = v19;
-  *(v30 + 2) = a4;
+  *(v30 + 2) = scale;
   v30[24] = 97;
   v35 = 1;
   v31 = self + OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_contentFields;
   *v31 = v23;
   *(v31 + 1) = v25;
-  *(v31 + 2) = a7;
+  *(v31 + 2) = type;
   *(v31 + 3) = v20;
   *(v31 + 4) = v22;
   *(v31 + 5) = v26;
@@ -147,19 +147,19 @@
   return [(ASPasswordAuthenticationPaneViewControllerConfiguration *)&v34 init];
 }
 
-- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithPersona:(unint64_t)a3 presentationContext:(id)a4
+- (ASPasswordAuthenticationPaneViewControllerConfiguration)initWithPersona:(unint64_t)persona presentationContext:(id)context
 {
-  v5 = a4;
-  v6 = sub_1B1CED06C(a3, v5);
+  contextCopy = context;
+  v6 = sub_1B1CED06C(persona, contextCopy);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B1D7C1AC();
     swift_unknownObjectRelease();
@@ -168,7 +168,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ASPasswordAuthenticationPaneViewControllerConfiguration.isEqual(_:)(v8);
@@ -179,7 +179,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ASPasswordAuthenticationPaneViewControllerConfiguration.hash.getter();
 
   return v3;
@@ -209,15 +209,15 @@
 - (id)headerConfiguration
 {
   type metadata accessor for ASCredentialRequestPaneHeaderConfiguration();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1B1CEC55C();
   v6 = v5;
   v7 = sub_1B1CEC978();
   v9 = v8;
-  v10 = *(&v3->persona + OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon);
-  v11 = *&v3->overrideTitle[OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon];
-  v12 = v3->overrideTitle[OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon + 8];
-  v15[0] = *(&v3->super.isa + OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon);
+  v10 = *(&selfCopy->persona + OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon);
+  v11 = *&selfCopy->overrideTitle[OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon];
+  v12 = selfCopy->overrideTitle[OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon + 8];
+  v15[0] = *(&selfCopy->super.isa + OBJC_IVAR___ASPasswordAuthenticationPaneViewControllerConfiguration_icon);
   v15[1] = v10;
   v15[2] = v11;
   v16 = v12;

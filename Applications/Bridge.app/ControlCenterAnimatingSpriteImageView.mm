@@ -1,14 +1,14 @@
 @interface ControlCenterAnimatingSpriteImageView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC6Bridge37ControlCenterAnimatingSpriteImageView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC6Bridge37ControlCenterAnimatingSpriteImageView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation ControlCenterAnimatingSpriteImageView
 
-- (_TtC6Bridge37ControlCenterAnimatingSpriteImageView)initWithCoder:(id)a3
+- (_TtC6Bridge37ControlCenterAnimatingSpriteImageView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6Bridge37ControlCenterAnimatingSpriteImageView_imageLayer;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(CALayer) init];
@@ -23,7 +23,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_100142FC0();
   v4 = v3;
   v6 = v5;
@@ -35,9 +35,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_100142FC0();
   v5 = v4;
   v7 = v6;
@@ -51,7 +51,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100141B18();
 }
 

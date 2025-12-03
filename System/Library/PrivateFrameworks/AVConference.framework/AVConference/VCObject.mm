@@ -1,8 +1,8 @@
 @interface VCObject
 - (VCObject)init;
 - (void)dealloc;
-- (void)setReportingAgent:(opaqueRTCReporting *)a3;
-- (void)startTerminationTimer:(unsigned int)a3 terminationType:(int)a4;
+- (void)setReportingAgent:(opaqueRTCReporting *)agent;
+- (void)startTerminationTimer:(unsigned int)timer terminationType:(int)type;
 - (void)stopTerminationTimer;
 @end
 
@@ -38,16 +38,16 @@
   [(VCObject *)&v3 dealloc];
 }
 
-- (void)setReportingAgent:(opaqueRTCReporting *)a3
+- (void)setReportingAgent:(opaqueRTCReporting *)agent
 {
-  self->_reportingAgent = a3;
+  self->_reportingAgent = agent;
 
-  v4 = a3;
+  agentCopy = agent;
 }
 
-- (void)startTerminationTimer:(unsigned int)a3 terminationType:(int)a4
+- (void)startTerminationTimer:(unsigned int)timer terminationType:(int)type
 {
-  v5 = *&a3;
+  v5 = *&timer;
   v28 = *MEMORY[0x1E69E9840];
   if (!VCDefaults_GetBoolValueForKey(@"skipTerminationTimer", 0))
   {
@@ -95,7 +95,7 @@
       v18[1] = 3221225472;
       v18[2] = __50__VCObject_startTerminationTimer_terminationType___block_invoke;
       v18[3] = &unk_1E85F9EE8;
-      v19 = a4;
+      typeCopy = type;
       v18[4] = v9;
       v18[5] = v14;
       v18[6] = v15;
@@ -153,7 +153,7 @@ uint64_t __50__VCObject_startTerminationTimer_terminationType___block_invoke(uin
         v12 = 2112;
         v13 = NSStringFromClass(v5);
         v14 = 2048;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@(%p). Stopping timer", &v6, 0x30u);
       }
     }

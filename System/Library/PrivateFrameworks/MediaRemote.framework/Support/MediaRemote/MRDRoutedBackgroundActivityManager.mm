@@ -1,39 +1,39 @@
 @interface MRDRoutedBackgroundActivityManager
-- (BOOL)shouldUseVideoSymbolForEndpoint:(id)a3 bundleIdentifiers:(id)a4;
+- (BOOL)shouldUseVideoSymbolForEndpoint:(id)endpoint bundleIdentifiers:(id)identifiers;
 - (MRDRoutedBackgroundActivityManager)init;
-- (id)controllerForType:(unint64_t)a3;
-- (id)makeControllerWithIdentifier:(id)a3;
+- (id)controllerForType:(unint64_t)type;
+- (id)makeControllerWithIdentifier:(id)identifier;
 - (unint64_t)activeBackgroundActivityType;
-- (unint64_t)pillTypeWithEndpoint:(id)a3;
-- (void)_handleActiveSystemEndpointDidChangeNotification:(id)a3;
-- (void)_presentRoutePickerWithConfiguration:(id)a3;
-- (void)_reevaluatePillsIfDisplayMonitorAndFocusMonitorAreInSyncWithReason:(id)a3;
+- (unint64_t)pillTypeWithEndpoint:(id)endpoint;
+- (void)_handleActiveSystemEndpointDidChangeNotification:(id)notification;
+- (void)_presentRoutePickerWithConfiguration:(id)configuration;
+- (void)_reevaluatePillsIfDisplayMonitorAndFocusMonitorAreInSyncWithReason:(id)reason;
 - (void)dealloc;
-- (void)dismissPillWithReason:(id)a3;
-- (void)dismissSystemAperturePillWithReason:(id)a3;
+- (void)dismissPillWithReason:(id)reason;
+- (void)dismissSystemAperturePillWithReason:(id)reason;
 - (void)handlePillTap;
 - (void)openRoutePicker;
-- (void)presentBluePillWithPlainType:(unint64_t)a3 pulseType:(unint64_t)a4 route:(id)a5 remoteControl:(BOOL)a6 reason:(id)a7;
+- (void)presentBluePillWithPlainType:(unint64_t)type pulseType:(unint64_t)pulseType route:(id)route remoteControl:(BOOL)control reason:(id)reason;
 - (void)presentCarPlayBanner;
-- (void)reevaluatePillsWithReason:(id)a3;
-- (void)setActiveSystemEndpoint:(id)a3;
-- (void)setOptimisticRoute:(id)a3;
-- (void)updateActiveBackgroundActivityWithType:(unint64_t)a3 reason:(id)a4;
+- (void)reevaluatePillsWithReason:(id)reason;
+- (void)setActiveSystemEndpoint:(id)endpoint;
+- (void)setOptimisticRoute:(id)route;
+- (void)updateActiveBackgroundActivityWithType:(unint64_t)type reason:(id)reason;
 @end
 
 @implementation MRDRoutedBackgroundActivityManager
 
-- (unint64_t)pillTypeWithEndpoint:(id)a3
+- (unint64_t)pillTypeWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  endpointCopy = endpoint;
+  v5 = endpointCopy;
+  if (endpointCopy)
   {
-    v6 = [v4 isLocalEndpoint];
-    v7 = [v5 resolvedOutputDevices];
+    isLocalEndpoint = [endpointCopy isLocalEndpoint];
+    resolvedOutputDevices = [v5 resolvedOutputDevices];
     if ([v5 isLocalEndpoint])
     {
-      v8 = [v7 msv_firstWhere:&stru_1004B85A0];
+      v8 = [resolvedOutputDevices msv_firstWhere:&stru_1004B85A0];
       v9 = v8 != 0;
     }
 
@@ -43,24 +43,24 @@
     }
 
     v11 = +[MRDDisplayMonitor sharedMonitor];
-    v12 = [v11 routePickerVisible];
+    routePickerVisible = [v11 routePickerVisible];
 
-    v13 = [(MRDRoutedBackgroundActivityManager *)self focusMonitor];
-    v14 = [v13 mediaBundlesInFocus];
+    focusMonitor = [(MRDRoutedBackgroundActivityManager *)self focusMonitor];
+    mediaBundlesInFocus = [focusMonitor mediaBundlesInFocus];
 
-    v15 = [v14 msv_firstWhere:&stru_1004B85E0];
+    v15 = [mediaBundlesInFocus msv_firstWhere:&stru_1004B85E0];
 
-    v16 = [v14 count];
-    if (v12)
+    v16 = [mediaBundlesInFocus count];
+    if (routePickerVisible)
     {
-      [(MRDRoutedBackgroundActivityManager *)self shouldUseVideoSymbolForEndpoint:v5 bundleIdentifiers:v14];
+      [(MRDRoutedBackgroundActivityManager *)self shouldUseVideoSymbolForEndpoint:v5 bundleIdentifiers:mediaBundlesInFocus];
       v10 = 0;
     }
 
     else
     {
-      v17 = (v15 != 0) & ~v6 | (v9 && v16 != 0);
-      v18 = [(MRDRoutedBackgroundActivityManager *)self shouldUseVideoSymbolForEndpoint:v5 bundleIdentifiers:v14];
+      v17 = (v15 != 0) & ~isLocalEndpoint | (v9 && v16 != 0);
+      v18 = [(MRDRoutedBackgroundActivityManager *)self shouldUseVideoSymbolForEndpoint:v5 bundleIdentifiers:mediaBundlesInFocus];
       v19 = 1;
       if (v18)
       {
@@ -87,44 +87,44 @@
   return v10;
 }
 
-- (BOOL)shouldUseVideoSymbolForEndpoint:(id)a3 bundleIdentifiers:(id)a4
+- (BOOL)shouldUseVideoSymbolForEndpoint:(id)endpoint bundleIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v6 = [a4 anyObject];
-  v7 = [v5 outputDevices];
-  v8 = [v7 mr_containsVideoOutputDevice];
+  endpointCopy = endpoint;
+  anyObject = [identifiers anyObject];
+  outputDevices = [endpointCopy outputDevices];
+  mr_containsVideoOutputDevice = [outputDevices mr_containsVideoOutputDevice];
 
-  v9 = [v5 outputDevices];
-  v10 = [v9 mr_first:&stru_1004B8600];
+  outputDevices2 = [endpointCopy outputDevices];
+  v10 = [outputDevices2 mr_first:&stru_1004B8600];
 
-  if (v8)
+  if (mr_containsVideoOutputDevice)
   {
-    v11 = 1;
+    mr_containsVideoOutputDevice2 = 1;
   }
 
   else
   {
-    v11 = 0;
-    if ([v5 isLocalEndpoint] && v10)
+    mr_containsVideoOutputDevice2 = 0;
+    if ([endpointCopy isLocalEndpoint] && v10)
     {
       v12 = +[AVOutputContext sharedSystemRemoteDisplayContext];
       v13 = [v12 ID];
       v14 = [MRAVLocalEndpoint sharedLocalEndpointForRoutingContextWithUID:v13];
 
-      v15 = [v14 outputDevices];
-      v11 = [v15 mr_containsVideoOutputDevice];
+      outputDevices3 = [v14 outputDevices];
+      mr_containsVideoOutputDevice2 = [outputDevices3 mr_containsVideoOutputDevice];
     }
   }
 
-  if (v6)
+  if (anyObject)
   {
     v16 = +[MRDMediaBundleManager shared];
-    v17 = [v16 cachedEligibilityOf:v6];
+    v17 = [v16 cachedEligibilityOf:anyObject];
 
-    v11 &= [v17 isVideoApp];
+    mr_containsVideoOutputDevice2 &= [v17 isVideoApp];
   }
 
-  return v11;
+  return mr_containsVideoOutputDevice2;
 }
 
 - (MRDRoutedBackgroundActivityManager)init
@@ -182,10 +182,10 @@
   [(MRDRoutedBackgroundActivityManager *)&v3 dealloc];
 }
 
-- (id)makeControllerWithIdentifier:(id)a3
+- (id)makeControllerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MRDBackgroundActivityController controllerForBackgroundActivityIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [MRDBackgroundActivityController controllerForBackgroundActivityIdentifier:identifierCopy];
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -199,27 +199,27 @@
   return v5;
 }
 
-- (id)controllerForType:(unint64_t)a3
+- (id)controllerForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(MRDRoutedBackgroundActivityManager *)v4 backgroundActivityControllers];
-    v6 = [NSNumber numberWithUnsignedInteger:a3];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    backgroundActivityControllers = [(MRDRoutedBackgroundActivityManager *)selfCopy backgroundActivityControllers];
+    v6 = [NSNumber numberWithUnsignedInteger:type];
+    v7 = [backgroundActivityControllers objectForKeyedSubscript:v6];
 
     if (!v7)
     {
-      v8 = sub_100073EB4(a3);
-      v7 = [(MRDRoutedBackgroundActivityManager *)v4 makeControllerWithIdentifier:v8];
+      v8 = sub_100073EB4(type);
+      v7 = [(MRDRoutedBackgroundActivityManager *)selfCopy makeControllerWithIdentifier:v8];
 
-      v9 = [(MRDRoutedBackgroundActivityManager *)v4 backgroundActivityControllers];
-      v10 = [NSNumber numberWithUnsignedInteger:a3];
-      [v9 setObject:v7 forKeyedSubscript:v10];
+      backgroundActivityControllers2 = [(MRDRoutedBackgroundActivityManager *)selfCopy backgroundActivityControllers];
+      v10 = [NSNumber numberWithUnsignedInteger:type];
+      [backgroundActivityControllers2 setObject:v7 forKeyedSubscript:v10];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -230,74 +230,74 @@
   return v7;
 }
 
-- (void)dismissSystemAperturePillWithReason:(id)a3
+- (void)dismissSystemAperturePillWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(MRDRoutedBackgroundActivityManager *)self mediaActivityManager];
-  v6 = [v5 isPresentingConnectedPill];
+  reasonCopy = reason;
+  mediaActivityManager = [(MRDRoutedBackgroundActivityManager *)self mediaActivityManager];
+  isPresentingConnectedPill = [mediaActivityManager isPresentingConnectedPill];
 
-  if (v6)
+  if (isPresentingConnectedPill)
   {
     v7 = _MRLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[MRDRRC].RBAM Asked to dismissPill because %@", &v9, 0xCu);
     }
 
-    v8 = [(MRDRoutedBackgroundActivityManager *)self mediaActivityManager];
-    [v8 dismissConnectedBanner];
+    mediaActivityManager2 = [(MRDRoutedBackgroundActivityManager *)self mediaActivityManager];
+    [mediaActivityManager2 dismissConnectedBanner];
   }
 }
 
-- (void)presentBluePillWithPlainType:(unint64_t)a3 pulseType:(unint64_t)a4 route:(id)a5 remoteControl:(BOOL)a6 reason:(id)a7
+- (void)presentBluePillWithPlainType:(unint64_t)type pulseType:(unint64_t)pulseType route:(id)route remoteControl:(BOOL)control reason:(id)reason
 {
-  v17 = a7;
-  v11 = [(MRDRoutedBackgroundActivityManager *)self playbackState];
-  v12 = [(MRDRoutedBackgroundActivityManager *)self activeBackgroundActivityType];
-  if (a5)
+  reasonCopy = reason;
+  playbackState = [(MRDRoutedBackgroundActivityManager *)self playbackState];
+  activeBackgroundActivityType = [(MRDRoutedBackgroundActivityManager *)self activeBackgroundActivityType];
+  if (route)
   {
-    v13 = a4;
+    typeCopy = pulseType;
   }
 
   else
   {
-    v13 = a3;
+    typeCopy = type;
   }
 
-  if (v11 != 1 || a5 == 0)
+  if (playbackState != 1 || route == 0)
   {
-    v15 = a3;
+    pulseTypeCopy2 = type;
   }
 
   else
   {
-    v15 = a4;
+    pulseTypeCopy2 = pulseType;
   }
 
-  if (v12 == a4)
+  if (activeBackgroundActivityType == pulseType)
   {
-    v16 = v13;
+    v16 = typeCopy;
   }
 
   else
   {
-    v16 = v15;
+    v16 = pulseTypeCopy2;
   }
 
-  if (v12 != v16)
+  if (activeBackgroundActivityType != v16)
   {
     [MRDRoutedBackgroundActivityManager updateActiveBackgroundActivityWithType:"updateActiveBackgroundActivityWithType:reason:" reason:?];
   }
 }
 
-- (void)dismissPillWithReason:(id)a3
+- (void)dismissPillWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(MRDRoutedBackgroundActivityManager *)self supportsCustomSystemAperturePill])
   {
-    [(MRDRoutedBackgroundActivityManager *)self dismissSystemAperturePillWithReason:v4];
+    [(MRDRoutedBackgroundActivityManager *)self dismissSystemAperturePillWithReason:reasonCopy];
   }
 
   else if ([(MRDRoutedBackgroundActivityManager *)self isPresentingBackgroundActivity])
@@ -306,59 +306,59 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDRRC].RBAM Asked to dismissPill because %@", &v6, 0xCu);
     }
 
-    [(MRDRoutedBackgroundActivityManager *)self updateActiveBackgroundActivityWithType:0 reason:v4];
+    [(MRDRoutedBackgroundActivityManager *)self updateActiveBackgroundActivityWithType:0 reason:reasonCopy];
   }
 }
 
 - (unint64_t)activeBackgroundActivityType
 {
-  v2 = [(MRDRoutedBackgroundActivityManager *)self backgroundActivityControllers];
-  v3 = [v2 msv_firstWhere:&stru_1004B8668];
+  backgroundActivityControllers = [(MRDRoutedBackgroundActivityManager *)self backgroundActivityControllers];
+  v3 = [backgroundActivityControllers msv_firstWhere:&stru_1004B8668];
 
   if (v3)
   {
-    v4 = [v3 first];
-    v5 = [v4 unsignedIntegerValue];
+    first = [v3 first];
+    unsignedIntegerValue = [first unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (void)updateActiveBackgroundActivityWithType:(unint64_t)a3 reason:(id)a4
+- (void)updateActiveBackgroundActivityWithType:(unint64_t)type reason:(id)reason
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 - 1 > 3)
+    if (type - 1 > 3)
     {
       v9 = @"None";
     }
 
     else
     {
-      v9 = off_1004B8780[a3 - 1];
+      v9 = off_1004B8780[type - 1];
     }
 
     *buf = 138412546;
     v23 = v9;
     v24 = 2112;
-    v25 = v6;
+    v25 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDRRC].RBAM Asked to updateActiveBackgroundActivity withType:%@ because %@", buf, 0x16u);
   }
 
-  v10 = [(MRDRoutedBackgroundActivityManager *)v7 controllerForType:a3];
+  v10 = [(MRDRoutedBackgroundActivityManager *)selfCopy controllerForType:type];
   if (([v10 isBackgroundActivityActive] & 1) == 0)
   {
     [v10 setIsBackgroundActivityActive:1];
@@ -366,10 +366,10 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = [(MRDRoutedBackgroundActivityManager *)v7 backgroundActivityControllers];
-    v12 = [v11 allValues];
+    backgroundActivityControllers = [(MRDRoutedBackgroundActivityManager *)selfCopy backgroundActivityControllers];
+    allValues = [backgroundActivityControllers allValues];
 
-    v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v13 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v13)
     {
       v14 = *v18;
@@ -380,7 +380,7 @@
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues);
           }
 
           v16 = *(*(&v17 + 1) + 8 * v15);
@@ -393,91 +393,91 @@
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v13);
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_handleActiveSystemEndpointDidChangeNotification:(id)a3
+- (void)_handleActiveSystemEndpointDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:kMRMediaRemoteActiveEndpointTypeUserInfoKey];
-  v7 = [v6 intValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:kMRMediaRemoteActiveEndpointTypeUserInfoKey];
+  intValue = [v6 intValue];
 
-  if (!v7)
+  if (!intValue)
   {
     v8 = _MRLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDRRC].RBAM _handleActiveSystemEndpointDidChangeNotification: %@", buf, 0xCu);
     }
 
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:kMRAVEndpointOutputDeviceIdentifierUserInfoKey];
+    userInfo2 = [notificationCopy userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:kMRAVEndpointOutputDeviceIdentifierUserInfoKey];
 
-    v11 = [(MRDRoutedBackgroundActivityManager *)self queue];
+    queue = [(MRDRoutedBackgroundActivityManager *)self queue];
     v12 = v10;
     MRAVEndpointResolveActiveSystemEndpointWithType();
   }
 }
 
-- (void)_reevaluatePillsIfDisplayMonitorAndFocusMonitorAreInSyncWithReason:(id)a3
+- (void)_reevaluatePillsIfDisplayMonitorAndFocusMonitorAreInSyncWithReason:(id)reason
 {
-  v11 = a3;
+  reasonCopy = reason;
   v4 = +[MRDDisplayMonitor sharedMonitor];
-  v5 = [v4 presentedBundleIdentifiers];
-  v6 = [(MRDRoutedBackgroundActivityManager *)self focusMonitor];
-  v7 = [v6 bundlesInFocus];
-  v8 = v7;
-  if (v5 == v7)
+  presentedBundleIdentifiers = [v4 presentedBundleIdentifiers];
+  focusMonitor = [(MRDRoutedBackgroundActivityManager *)self focusMonitor];
+  bundlesInFocus = [focusMonitor bundlesInFocus];
+  v8 = bundlesInFocus;
+  if (presentedBundleIdentifiers == bundlesInFocus)
   {
 
     goto LABEL_5;
   }
 
-  v9 = [v5 isEqual:v7];
+  v9 = [presentedBundleIdentifiers isEqual:bundlesInFocus];
 
-  v10 = v11;
+  v10 = reasonCopy;
   if (v9)
   {
 LABEL_5:
-    [(MRDRoutedBackgroundActivityManager *)self reevaluatePillsWithReason:v11];
-    v10 = v11;
+    [(MRDRoutedBackgroundActivityManager *)self reevaluatePillsWithReason:reasonCopy];
+    v10 = reasonCopy;
   }
 }
 
-- (void)setActiveSystemEndpoint:(id)a3
+- (void)setActiveSystemEndpoint:(id)endpoint
 {
-  objc_storeStrong(&self->_activeSystemEndpoint, a3);
+  objc_storeStrong(&self->_activeSystemEndpoint, endpoint);
 
   [(MRDRoutedBackgroundActivityManager *)self reevaluatePillsWithReason:@"active system endpoint changed"];
 }
 
-- (void)setOptimisticRoute:(id)a3
+- (void)setOptimisticRoute:(id)route
 {
-  objc_storeStrong(&self->_optimisticRoute, a3);
+  objc_storeStrong(&self->_optimisticRoute, route);
 
   [(MRDRoutedBackgroundActivityManager *)self reevaluatePillsWithReason:@"optimistic route changed"];
 }
 
-- (void)reevaluatePillsWithReason:(id)a3
+- (void)reevaluatePillsWithReason:(id)reason
 {
-  v15 = a3;
-  v4 = [(MRDRoutedBackgroundActivityManager *)self mediaActivityManager];
-  if (([v4 isPresentingBanner] & 1) == 0)
+  reasonCopy = reason;
+  mediaActivityManager = [(MRDRoutedBackgroundActivityManager *)self mediaActivityManager];
+  if (([mediaActivityManager isPresentingBanner] & 1) == 0)
   {
 
 LABEL_5:
-    v6 = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
-    v7 = [(MRDRoutedBackgroundActivityManager *)self pillTypeWithEndpoint:v6];
+    activeSystemEndpoint = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
+    v7 = [(MRDRoutedBackgroundActivityManager *)self pillTypeWithEndpoint:activeSystemEndpoint];
 
     if (v7)
     {
@@ -488,53 +488,53 @@ LABEL_5:
           goto LABEL_15;
         }
 
-        v8 = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
-        v9 = [v8 isLocalEndpoint] ^ 1;
-        v10 = self;
+        activeSystemEndpoint2 = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
+        v9 = [activeSystemEndpoint2 isLocalEndpoint] ^ 1;
+        selfCopy3 = self;
         v11 = 0;
 LABEL_13:
-        [(MRDRoutedBackgroundActivityManager *)v10 presentAudioBluePill:v11 remoteControl:v9 reason:v15];
+        [(MRDRoutedBackgroundActivityManager *)selfCopy3 presentAudioBluePill:v11 remoteControl:v9 reason:reasonCopy];
         goto LABEL_14;
       }
 
-      v8 = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
-      v9 = [v8 isLocalEndpoint] ^ 1;
-      v10 = self;
+      activeSystemEndpoint2 = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
+      v9 = [activeSystemEndpoint2 isLocalEndpoint] ^ 1;
+      selfCopy3 = self;
       v11 = 0;
     }
 
     else
     {
-      v12 = [(MRDRoutedBackgroundActivityManager *)self optimisticRoute];
+      optimisticRoute = [(MRDRoutedBackgroundActivityManager *)self optimisticRoute];
 
-      if (!v12)
+      if (!optimisticRoute)
       {
-        [(MRDRoutedBackgroundActivityManager *)self dismissPillWithReason:v15];
+        [(MRDRoutedBackgroundActivityManager *)self dismissPillWithReason:reasonCopy];
         goto LABEL_15;
       }
 
-      v13 = [(MRDRoutedBackgroundActivityManager *)self optimisticDevices];
-      v14 = [v13 mr_containsVideoOutputDevice];
+      optimisticDevices = [(MRDRoutedBackgroundActivityManager *)self optimisticDevices];
+      mr_containsVideoOutputDevice = [optimisticDevices mr_containsVideoOutputDevice];
 
-      v8 = [(MRDRoutedBackgroundActivityManager *)self optimisticRoute];
-      v10 = self;
-      v11 = v8;
+      activeSystemEndpoint2 = [(MRDRoutedBackgroundActivityManager *)self optimisticRoute];
+      selfCopy3 = self;
+      v11 = activeSystemEndpoint2;
       v9 = 0;
-      if (!v14)
+      if (!mr_containsVideoOutputDevice)
       {
         goto LABEL_13;
       }
     }
 
-    [(MRDRoutedBackgroundActivityManager *)v10 presentVideoBluePill:v11 remoteControl:v9 reason:v15];
+    [(MRDRoutedBackgroundActivityManager *)selfCopy3 presentVideoBluePill:v11 remoteControl:v9 reason:reasonCopy];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v5 = [(MRDRoutedBackgroundActivityManager *)self optimisticRoute];
+  optimisticRoute2 = [(MRDRoutedBackgroundActivityManager *)self optimisticRoute];
 
-  if (v5)
+  if (optimisticRoute2)
   {
     goto LABEL_5;
   }
@@ -545,10 +545,10 @@ LABEL_15:
 - (void)handlePillTap
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 routingServer];
-  v5 = [v4 carPlayRecommendationController];
+  routingServer = [v3 routingServer];
+  carPlayRecommendationController = [routingServer carPlayRecommendationController];
 
-  if ([v5 isCarPlayVideoAllowed] && objc_msgSend(v5, "isCarPlayVideoActive"))
+  if ([carPlayRecommendationController isCarPlayVideoAllowed] && objc_msgSend(carPlayRecommendationController, "isCarPlayVideoActive"))
   {
     [(MRDRoutedBackgroundActivityManager *)self presentCarPlayBanner];
   }
@@ -561,18 +561,18 @@ LABEL_15:
 
 - (void)openRoutePicker
 {
-  v3 = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
-  v4 = [v3 outputDeviceUIDs];
-  v5 = [v4 firstObject];
+  activeSystemEndpoint = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
+  outputDeviceUIDs = [activeSystemEndpoint outputDeviceUIDs];
+  firstObject = [outputDeviceUIDs firstObject];
 
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
+    activeSystemEndpoint2 = [(MRDRoutedBackgroundActivityManager *)self activeSystemEndpoint];
     *buf = 138412546;
-    *&buf[4] = v5;
+    *&buf[4] = firstObject;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = activeSystemEndpoint2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDRRC].RBAM pill tapped, will open route picker for %@ (%@)", buf, 0x16u);
   }
 
@@ -595,10 +595,10 @@ LABEL_15:
   v9 = v8;
   _Block_object_dispose(&v31, 8);
   v10 = objc_alloc_init(v8);
-  v11 = [(MRDRoutedBackgroundActivityManager *)self focusMonitor];
-  v12 = [v11 bundlesInFocus];
+  focusMonitor = [(MRDRoutedBackgroundActivityManager *)self focusMonitor];
+  bundlesInFocus = [focusMonitor bundlesInFocus];
 
-  v13 = [v12 msv_firstWhere:&stru_1004B86D8];
+  v13 = [bundlesInFocus msv_firstWhere:&stru_1004B86D8];
   if (_os_feature_enabled_impl())
   {
     if (v13)
@@ -608,16 +608,16 @@ LABEL_15:
 
     else
     {
-      v16 = [v12 anyObject];
-      [v10 setPresentingAppBundleID:v16];
+      anyObject = [bundlesInFocus anyObject];
+      [v10 setPresentingAppBundleID:anyObject];
     }
   }
 
   else
   {
     v14 = +[NSBundle mainBundle];
-    v15 = [v14 bundleIdentifier];
-    [v10 setPresentingAppBundleID:v15];
+    bundleIdentifier = [v14 bundleIdentifier];
+    [v10 setPresentingAppBundleID:bundleIdentifier];
   }
 
   if (v13)
@@ -639,21 +639,21 @@ LABEL_15:
   }
 
   v19 = +[MRDDisplayMonitor sharedMonitor];
-  v20 = [v19 primaryUIApplicationBundleIdentifier];
+  primaryUIApplicationBundleIdentifier = [v19 primaryUIApplicationBundleIdentifier];
 
-  v21 = [(MRDRoutedBackgroundActivityManager *)self nowPlayingController];
-  v22 = [v21 destination];
-  v23 = [v22 client];
-  v24 = [v23 bundleIdentifier];
+  nowPlayingController = [(MRDRoutedBackgroundActivityManager *)self nowPlayingController];
+  destination = [nowPlayingController destination];
+  client = [destination client];
+  bundleIdentifier2 = [client bundleIdentifier];
 
-  if (v24)
+  if (bundleIdentifier2)
   {
-    v25 = v24;
+    v25 = bundleIdentifier2;
   }
 
   else
   {
-    v25 = v20;
+    v25 = primaryUIApplicationBundleIdentifier;
   }
 
   v26 = v25;
@@ -665,7 +665,7 @@ LABEL_15:
     v28[2] = sub_100075E58;
     v28[3] = &unk_1004B8700;
     v29 = v10;
-    v30 = self;
+    selfCopy = self;
     [v27 queryEligibilityOf:v26 completionHandler:v28];
   }
 
@@ -675,9 +675,9 @@ LABEL_15:
   }
 }
 
-- (void)_presentRoutePickerWithConfiguration:(id)a3
+- (void)_presentRoutePickerWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_initWeak(&location, self);
   v13 = 0;
   v14 = &v13;
@@ -697,7 +697,7 @@ LABEL_15:
 
   v6 = v5;
   _Block_object_dispose(&v13, 8);
-  v7 = [[v5 alloc] initWithConfiguration:v4 shouldObserveRoutingContextUIDChanges:0];
+  v7 = [[v5 alloc] initWithConfiguration:configurationCopy shouldObserveRoutingContextUIDChanges:0];
   mediaControls = self->_mediaControls;
   self->_mediaControls = v7;
 
@@ -715,15 +715,15 @@ LABEL_15:
 - (void)presentCarPlayBanner
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 routingServer];
-  v5 = [v4 carPlayRecommendationController];
+  routingServer = [v3 routingServer];
+  carPlayRecommendationController = [routingServer carPlayRecommendationController];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100076158;
   v6[3] = &unk_1004B7838;
   v6[4] = self;
-  [v5 displayCarPlayVideoConnectedBannerWithCompletion:v6];
+  [carPlayRecommendationController displayCarPlayVideoConnectedBannerWithCompletion:v6];
 }
 
 @end

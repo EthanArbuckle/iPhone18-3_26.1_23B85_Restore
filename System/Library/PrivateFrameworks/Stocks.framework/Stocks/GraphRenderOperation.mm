@@ -5,7 +5,7 @@
 - (GraphRenderOperationDelegate)delegate;
 - (UIEdgeInsets)graphInsets;
 - (void)render;
-- (void)renderGraphLineInContext:(CGContext *)a3 withColor:(id)a4 offset:(CGPoint)a5;
+- (void)renderGraphLineInContext:(CGContext *)context withColor:(id)color offset:(CGPoint)offset;
 - (void)renderLineGraph;
 - (void)renderVolumeGraph;
 @end
@@ -19,12 +19,12 @@
   self->_graphImageSet = v3;
 
   [(GraphRenderOperation *)self renderLineGraph];
-  v5 = [(GraphRenderOperation *)self displayMode];
-  if ([v5 showsVolume])
+  displayMode = [(GraphRenderOperation *)self displayMode];
+  if ([displayMode showsVolume])
   {
-    v6 = [(GraphRenderOperation *)self isCancelled];
+    isCancelled = [(GraphRenderOperation *)self isCancelled];
 
-    if (!v6)
+    if (!isCancelled)
     {
       [(GraphRenderOperation *)self renderVolumeGraph];
     }
@@ -57,19 +57,19 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)renderGraphLineInContext:(CGContext *)a3 withColor:(id)a4 offset:(CGPoint)a5
+- (void)renderGraphLineInContext:(CGContext *)context withColor:(id)color offset:(CGPoint)offset
 {
-  y = a5.y;
-  x = a5.x;
+  y = offset.y;
+  x = offset.x;
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  colorCopy = color;
   [(GraphRenderOperation *)self lineGraphSize];
   v11 = v10;
-  CGContextSetStrokeColorWithColor(a3, [v9 CGColor]);
+  CGContextSetStrokeColorWithColor(context, [colorCopy CGColor]);
   [(StockChartDisplayMode *)self->_displayMode lineWidth];
-  CGContextSetLineWidth(a3, v12);
-  CGContextSetLineJoin(a3, kCGLineJoinRound);
-  CGContextSetLineCap(a3, self->_roundLineCaps);
+  CGContextSetLineWidth(context, v12);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
+  CGContextSetLineCap(context, self->_roundLineCaps);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -91,11 +91,11 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
           objc_enumerationMutation(v13);
         }
 
-        v19 = [*(*(&v25 + 1) + 8 * v18) intValue];
-        CGContextBeginPath(a3);
+        intValue = [*(*(&v25 + 1) + 8 * v18) intValue];
+        CGContextBeginPath(context);
         v20 = &self->_points[v16];
-        CGContextMoveToPoint(a3, x + v20->x, y + self->_graphInsets.bottom + v20->y * v11);
-        v21 = v19 + v16;
+        CGContextMoveToPoint(context, x + v20->x, y + self->_graphInsets.bottom + v20->y * v11);
+        v21 = intValue + v16;
         if (v16 < v21)
         {
           v22 = v16;
@@ -103,7 +103,7 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
           v24 = v21 - v22;
           do
           {
-            CGContextAddLineToPoint(a3, x + self->_points[v23].x, y + self->_graphInsets.bottom + self->_points[v23].y * v11);
+            CGContextAddLineToPoint(context, x + self->_points[v23].x, y + self->_graphInsets.bottom + self->_points[v23].y * v11);
             ++v23;
             --v24;
           }
@@ -112,7 +112,7 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
           v16 = v21;
         }
 
-        CGContextStrokePath(a3);
+        CGContextStrokePath(context);
         ++v18;
       }
 
@@ -135,8 +135,8 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
   left = self->_graphInsets.left;
   bottom = self->_graphInsets.bottom;
   right = self->_graphInsets.right;
-  v11 = [(GraphRenderOperation *)self displayMode];
-  [v11 gutterHeight];
+  displayMode = [(GraphRenderOperation *)self displayMode];
+  [displayMode gutterHeight];
   v13 = v12;
 
   if (self->_points && [(NSArray *)self->_linePointCounts count])
@@ -171,10 +171,10 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
               objc_enumerationMutation(v18);
             }
 
-            v24 = [*(*(&v96 + 1) + 8 * i) intValue];
-            if (v24)
+            intValue = [*(*(&v96 + 1) + 8 * i) intValue];
+            if (intValue)
             {
-              v25 = v24;
+              v25 = intValue;
               v26 = &self->_points[v21];
               CGContextMoveToPoint(CurrentContext, v26->x, self->_graphInsets.bottom + v26->y * v4);
               v27 = v25 + v21;
@@ -206,8 +206,8 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
         while (v20);
       }
 
-      v31 = [(StockChartDisplayMode *)self->_displayMode HUDEnabled];
-      if (v31)
+      hUDEnabled = [(StockChartDisplayMode *)self->_displayMode HUDEnabled];
+      if (hUDEnabled)
       {
         v32 = CGContextCopyPath(CurrentContext);
       }
@@ -219,22 +219,22 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
 
       CGContextClip(CurrentContext);
       CGContextSetBlendMode(CurrentContext, kCGBlendModeCopy);
-      v33 = [(StockChartDisplayMode *)self->_displayMode backgroundGradient];
+      backgroundGradient = [(StockChartDisplayMode *)self->_displayMode backgroundGradient];
       v34 = MEMORY[0x277CBF348];
-      if (v33)
+      if (backgroundGradient)
       {
-        v35 = [(StockChartDisplayMode *)self->_displayMode backgroundGradient];
+        backgroundGradient2 = [(StockChartDisplayMode *)self->_displayMode backgroundGradient];
         v112.y = self->_graphSize.height;
         v112.x = 0.0;
-        CGContextDrawLinearGradient(CurrentContext, v35, *v34, v112, 0);
+        CGContextDrawLinearGradient(CurrentContext, backgroundGradient2, *v34, v112, 0);
       }
 
       v36 = height - top;
-      if (v31)
+      if (hUDEnabled)
       {
         v37 = width - left;
-        v38 = [(GraphRenderOperation *)self displayMode];
-        [v38 gutterHeight];
+        displayMode2 = [(GraphRenderOperation *)self displayMode];
+        [displayMode2 gutterHeight];
         v40 = v39;
 
         v110.width = 2.5;
@@ -244,8 +244,8 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
         v42 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.258823529 blue:0.439215686 alpha:1.0];
         CGContextSetStrokeColorWithColor(v41, [v42 CGColor]);
 
-        v43 = [MEMORY[0x277D759A0] mainScreen];
-        [v43 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         CGContextSetLineWidth(v41, 1.0 / v44);
 
         CGContextSetShouldAntialias(v41, 0);
@@ -273,9 +273,9 @@ void __30__GraphRenderOperation_render__block_invoke(uint64_t a1)
         DeviceRGB = CGColorSpaceCreateDeviceRGB();
         v51 = MEMORY[0x277CBEA60];
         v52 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.258823529 blue:0.447058824 alpha:0.5];
-        v53 = [v52 CGColor];
+        cGColor = [v52 CGColor];
         v54 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.57254902 blue:0.980392157 alpha:0.5];
-        v55 = [v51 arrayWithObjects:{v53, objc_msgSend(v54, "CGColor"), 0}];
+        v55 = [v51 arrayWithObjects:{cGColor, objc_msgSend(v54, "CGColor"), 0}];
 
         v56 = CGGradientCreateWithColors(DeviceRGB, v55, 0);
         CGColorSpaceRelease(DeviceRGB);
@@ -331,8 +331,8 @@ LABEL_55:
         CGContextTranslateCTM(v86, 0.0, v87 * 0.5 - self->_graphSize.height);
         [(StockChartDisplayMode *)self->_displayMode lineWidth];
         self->_graphSize.height = self->_graphSize.height - v88;
-        v89 = [(StockChartDisplayMode *)self->_displayMode lineColor];
-        [(GraphRenderOperation *)self renderGraphLineInContext:v86 withColor:v89 offset:v34->x, v34->y];
+        lineColor = [(StockChartDisplayMode *)self->_displayMode lineColor];
+        [(GraphRenderOperation *)self renderGraphLineInContext:v86 withColor:lineColor offset:v34->x, v34->y];
 
         CGContextRestoreGState(v86);
         if ([(StockChartDisplayMode *)self->_displayMode HUDEnabled])
@@ -353,21 +353,21 @@ LABEL_60:
       }
 
       CGContextSaveGState(CurrentContext);
-      v58 = [MEMORY[0x277D759A0] mainScreen];
-      [v58 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       CGContextSetLineWidth(CurrentContext, 1.0 / v59);
 
-      v60 = [MEMORY[0x277D759A0] mainScreen];
-      [v60 scale];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 scale];
       lengths[0] = 1.0 / v61;
-      v62 = [MEMORY[0x277D759A0] mainScreen];
-      [v62 scale];
+      mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen4 scale];
       lengths[1] = 1.0 / v63;
       CGContextSetLineDash(CurrentContext, 0.0, lengths, 2uLL);
 
-      v64 = [(GraphRenderOperation *)self displayMode];
-      v65 = [v64 backgroundLinesColor];
-      CGContextSetStrokeColorWithColor(CurrentContext, [v65 CGColor]);
+      displayMode3 = [(GraphRenderOperation *)self displayMode];
+      backgroundLinesColor = [displayMode3 backgroundLinesColor];
+      CGContextSetStrokeColorWithColor(CurrentContext, [backgroundLinesColor CGColor]);
 
       dottedLinePositions = self->_dottedLinePositions;
       if (!dottedLinePositions)
@@ -384,8 +384,8 @@ LABEL_60:
       else
       {
         v72 = self->_graphSize.height;
-        v73 = [(GraphRenderOperation *)self displayMode];
-        [v73 gutterHeight];
+        displayMode4 = [(GraphRenderOperation *)self displayMode];
+        [displayMode4 gutterHeight];
         v68 = v72 - v74;
 
         if (!self->_dottedLinePositions)
@@ -418,8 +418,8 @@ LABEL_47:
 
             [*(*(&v92 + 1) + 8 * j) doubleValue];
             v82 = RoundToPixel(v75 + v81 * v68);
-            v83 = [MEMORY[0x277D759A0] mainScreen];
-            [v83 scale];
+            mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen5 scale];
             v85 = v82 + -1.0 / v84 * 0.5;
 
             CGContextBeginPath(CurrentContext);

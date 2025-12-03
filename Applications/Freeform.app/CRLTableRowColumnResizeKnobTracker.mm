@@ -1,24 +1,24 @@
 @interface CRLTableRowColumnResizeKnobTracker
 - (_TtC8Freeform34CRLTableRowColumnResizeKnobTracker)init;
-- (id)currentGeometryForLayout:(id)a3;
+- (id)currentGeometryForLayout:(id)layout;
 @end
 
 @implementation CRLTableRowColumnResizeKnobTracker
 
-- (id)currentGeometryForLayout:(id)a3
+- (id)currentGeometryForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
-  result = [v4 info];
+  layoutCopy = layout;
+  selfCopy = self;
+  result = [layoutCopy info];
   if (result)
   {
-    v7 = [result geometry];
+    geometry = [result geometry];
     swift_unknownObjectRelease();
-    [v7 position];
+    [geometry position];
     v9 = v8;
     v11 = v10;
 
-    [(CRLResizeKnobTracker *)v5 currentResizedBounds];
+    [(CRLResizeKnobTracker *)selfCopy currentResizedBounds];
     v14 = [objc_allocWithZone(CRLCanvasInfoGeometry) initWithPosition:v9 size:{v11, v12, v13}];
 
     return v14;

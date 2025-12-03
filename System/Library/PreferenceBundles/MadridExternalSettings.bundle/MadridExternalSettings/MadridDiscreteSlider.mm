@@ -1,19 +1,19 @@
 @interface MadridDiscreteSlider
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (MadridDiscreteSlider)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setTrackMarkersColor:(id)a3;
-- (void)sliderTapped:(id)a3;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (MadridDiscreteSlider)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setTrackMarkersColor:(id)color;
+- (void)sliderTapped:(id)tapped;
 @end
 
 @implementation MadridDiscreteSlider
 
-- (MadridDiscreteSlider)initWithFrame:(CGRect)a3
+- (MadridDiscreteSlider)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MadridDiscreteSlider;
-  v3 = [(MadridDiscreteSlider *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MadridDiscreteSlider *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[MadridNonMovableTapGestureRecognizer alloc] initWithTarget:v3 action:"sliderTapped:"];
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (void)sliderTapped:(id)a3
+- (void)sliderTapped:(id)tapped
 {
-  [a3 locationInView:self];
+  [tapped locationInView:self];
   v5 = v4;
   [(MadridDiscreteSlider *)self bounds];
   [(MadridDiscreteSlider *)self trackRectForBounds:?];
@@ -95,21 +95,21 @@ LABEL_10:
   [(MadridDiscreteSlider *)self sendActionsForControlEvents:4096];
 }
 
-- (void)setTrackMarkersColor:(id)a3
+- (void)setTrackMarkersColor:(id)color
 {
-  v5 = a3;
-  if (self->_trackMarkersColor != v5)
+  colorCopy = color;
+  if (self->_trackMarkersColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_trackMarkersColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_trackMarkersColor, color);
     [(MadridDiscreteSlider *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(MadridDiscreteSlider *)self bounds:a3.origin.x];
+  [(MadridDiscreteSlider *)self bounds:rect.origin.x];
   [(MadridDiscreteSlider *)self trackRectForBounds:?];
   v5 = v4;
   v22 = v6;
@@ -150,10 +150,10 @@ LABEL_10:
   [v21 fill];
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  x = a3.origin.x;
+  width = bounds.size.width;
+  x = bounds.origin.x;
   PSRoundToPixel();
   v6 = v5;
   v7 = x + 10.0;
@@ -166,11 +166,11 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
   v17.receiver = self;
   v17.super_class = MadridDiscreteSlider;
-  [(MadridDiscreteSlider *)&v17 thumbRectForBounds:a3.origin.x trackRect:a3.origin.y value:a3.size.width, a3.size.height, LODWORD(a5)];
+  [(MadridDiscreteSlider *)&v17 thumbRectForBounds:bounds.origin.x trackRect:bounds.origin.y value:bounds.size.width, bounds.size.height, LODWORD(value)];
   v7 = v6;
   v9 = v8;
   v11 = v10;

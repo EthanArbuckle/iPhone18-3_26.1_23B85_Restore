@@ -1,70 +1,70 @@
 @interface PKPaymentPassDetailsNotificationSettingsSectionController
-+ (BOOL)_showsTransactionHistorySwitchForPass:(id)a3 peerPaymentAccount:(id)a4 bankConnectAccount:(id)a5 account:(id)a6;
-+ (BOOL)canShowSectionforPass:(id)a3 dataProvider:(id)a4 peerPaymentAccount:(id)a5 bankConnectAccount:(id)a6 account:(id)a7 transactionSourceCollection:(id)a8 notificationAuthorizationStatus:(int64_t)a9;
-+ (id)_updatedPeerPaymentAccountForPeerPaymentAccount:(id)a3 pass:(id)a4;
-+ (int64_t)_countOfRowsForPass:(id)a3 peerPaymentAccount:(id)a4 bankConnectAccount:(id)a5 account:(id)a6 notificationAuthorizationStatus:(int64_t)a7;
++ (BOOL)_showsTransactionHistorySwitchForPass:(id)pass peerPaymentAccount:(id)account bankConnectAccount:(id)connectAccount account:(id)a6;
++ (BOOL)canShowSectionforPass:(id)pass dataProvider:(id)provider peerPaymentAccount:(id)account bankConnectAccount:(id)connectAccount account:(id)a7 transactionSourceCollection:(id)collection notificationAuthorizationStatus:(int64_t)status;
++ (id)_updatedPeerPaymentAccountForPeerPaymentAccount:(id)account pass:(id)pass;
++ (int64_t)_countOfRowsForPass:(id)pass peerPaymentAccount:(id)account bankConnectAccount:(id)connectAccount account:(id)a6 notificationAuthorizationStatus:(int64_t)status;
 - (BOOL)_shouldShowBankConnectData;
-- (PKPaymentPassDetailsNotificationSettingsSectionController)initWithPass:(id)a3 peerPaymentAccount:(id)a4 bankConnectAccount:(id)a5 account:(id)a6 paymentDataProvider:(id)a7 transactionSourceCollection:(id)a8 detailViewStyle:(int64_t)a9 delegate:(id)a10;
+- (PKPaymentPassDetailsNotificationSettingsSectionController)initWithPass:(id)pass peerPaymentAccount:(id)account bankConnectAccount:(id)connectAccount account:(id)a6 paymentDataProvider:(id)provider transactionSourceCollection:(id)collection detailViewStyle:(int64_t)style delegate:(id)self0;
 - (PKPaymentPassDetailsNotificationSettingsSectionControllerDelegate)delegate;
-- (id)_accountServiceNotificationsSwitchCellForIndexPath:(id)a3 tableView:(id)a4;
-- (id)_allowNotificationsCellForTableView:(id)a3;
-- (id)_cellForType:(int64_t)a3;
-- (id)_indexPathForRowType:(int64_t)a3;
-- (id)_peerPaymentNotificationsSwitchCellForIndexPath:(id)a3 tableView:(id)a4;
-- (id)_transactionsSwitchCellForIndexPath:(id)a3 tableView:(id)a4;
+- (id)_accountServiceNotificationsSwitchCellForIndexPath:(id)path tableView:(id)view;
+- (id)_allowNotificationsCellForTableView:(id)view;
+- (id)_cellForType:(int64_t)type;
+- (id)_indexPathForRowType:(int64_t)type;
+- (id)_peerPaymentNotificationsSwitchCellForIndexPath:(id)path tableView:(id)view;
+- (id)_transactionsSwitchCellForIndexPath:(id)path tableView:(id)view;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (id)titleForFooterInSectionIdentifier:(id)a3;
-- (id)titleForHeaderInSectionIdentifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (id)titleForFooterInSectionIdentifier:(id)identifier;
+- (id)titleForHeaderInSectionIdentifier:(id)identifier;
 - (int64_t)_countOfRows;
 - (unint64_t)_accountFeature;
-- (void)_dailyCashSwitchChanged:(id)a3;
-- (void)_notificationSwitchChanged:(id)a3;
-- (void)_passSettingsChanged:(id)a3;
-- (void)_promptForTransactionSwitchChangeIfNecessaryWithConfirmationHandler:(id)a3;
-- (void)_transactionsSwitchChanged:(id)a3;
+- (void)_dailyCashSwitchChanged:(id)changed;
+- (void)_notificationSwitchChanged:(id)changed;
+- (void)_passSettingsChanged:(id)changed;
+- (void)_promptForTransactionSwitchChangeIfNecessaryWithConfirmationHandler:(id)handler;
+- (void)_transactionsSwitchChanged:(id)changed;
 - (void)dealloc;
-- (void)fetchAuthorizationStatusWithCompletion:(id)a3;
-- (void)setTransactionsEnabled:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (void)fetchAuthorizationStatusWithCompletion:(id)completion;
+- (void)setTransactionsEnabled:(BOOL)enabled;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPaymentPassDetailsNotificationSettingsSectionController
 
-- (PKPaymentPassDetailsNotificationSettingsSectionController)initWithPass:(id)a3 peerPaymentAccount:(id)a4 bankConnectAccount:(id)a5 account:(id)a6 paymentDataProvider:(id)a7 transactionSourceCollection:(id)a8 detailViewStyle:(int64_t)a9 delegate:(id)a10
+- (PKPaymentPassDetailsNotificationSettingsSectionController)initWithPass:(id)pass peerPaymentAccount:(id)account bankConnectAccount:(id)connectAccount account:(id)a6 paymentDataProvider:(id)provider transactionSourceCollection:(id)collection detailViewStyle:(int64_t)style delegate:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  obj = a5;
-  v19 = a5;
+  passCopy = pass;
+  accountCopy = account;
+  obj = connectAccount;
+  connectAccountCopy = connectAccount;
   v31 = a6;
-  v30 = a7;
-  v29 = a8;
-  v20 = a10;
+  providerCopy = provider;
+  collectionCopy = collection;
+  delegateCopy = delegate;
   v35.receiver = self;
   v35.super_class = PKPaymentPassDetailsNotificationSettingsSectionController;
   v21 = [(PKPaymentPassDetailSectionController *)&v35 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_pass, a3);
-    v23 = [(PKPaymentPass *)v22->_pass devicePrimaryPaymentApplication];
+    objc_storeStrong(&v21->_pass, pass);
+    devicePrimaryPaymentApplication = [(PKPaymentPass *)v22->_pass devicePrimaryPaymentApplication];
     paymentApplication = v22->_paymentApplication;
-    v22->_paymentApplication = v23;
+    v22->_paymentApplication = devicePrimaryPaymentApplication;
 
-    v25 = [objc_opt_class() _updatedPeerPaymentAccountForPeerPaymentAccount:v18 pass:v17];
+    v25 = [objc_opt_class() _updatedPeerPaymentAccountForPeerPaymentAccount:accountCopy pass:passCopy];
 
     if (v25)
     {
-      objc_storeStrong(&v22->_peerPaymentAccount, a4);
+      objc_storeStrong(&v22->_peerPaymentAccount, account);
     }
 
-    objc_storeStrong(&v22->_paymentDataProvider, a7);
-    objc_storeStrong(&v22->_transactionSourceCollection, a8);
+    objc_storeStrong(&v22->_paymentDataProvider, provider);
+    objc_storeStrong(&v22->_transactionSourceCollection, collection);
     objc_storeStrong(&v22->_account, a6);
-    v22->_detailViewStyle = a9;
-    objc_storeWeak(&v22->_delegate, v20);
+    v22->_detailViewStyle = style;
+    objc_storeWeak(&v22->_delegate, delegateCopy);
     if ([(PKPaymentPassDetailsNotificationSettingsSectionController *)v22 _shouldShowBankConnectData])
     {
       objc_storeStrong(&v22->_bankConnectAccount, obj);
@@ -78,8 +78,8 @@
     objc_copyWeak(&v33, &location);
     [(PKPaymentPassDetailsNotificationSettingsSectionController *)v22 fetchAuthorizationStatusWithCompletion:v32];
     PKObservePassSettingsChanged();
-    v26 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v26 addObserver:v22 selector:sel__passSettingsChanged_ name:*MEMORY[0x1E69BBBF0] object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v22 selector:sel__passSettingsChanged_ name:*MEMORY[0x1E69BBBF0] object:0];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
@@ -115,27 +115,27 @@ void __193__PKPaymentPassDetailsNotificationSettingsSectionController_initWithPa
 - (void)dealloc
 {
   PKUnregisterPassSettingsChangedObserver();
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69BBBF0] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69BBBF0] object:0];
 
   v4.receiver = self;
   v4.super_class = PKPaymentPassDetailsNotificationSettingsSectionController;
   [(PKPaymentPassDetailsNotificationSettingsSectionController *)&v4 dealloc];
 }
 
-- (void)fetchAuthorizationStatusWithCompletion:(id)a3
+- (void)fetchAuthorizationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E69B9328] sharedInstance];
+  mEMORY[0x1E69B9328] = [MEMORY[0x1E69B9328] sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuthorizationStatusWithCompletion___block_invoke;
   v7[3] = &unk_1E801B510;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 authorizationStatusWithCompletion:v7];
+  [mEMORY[0x1E69B9328] authorizationStatusWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -170,12 +170,12 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
   return result;
 }
 
-- (void)setTransactionsEnabled:(BOOL)a3
+- (void)setTransactionsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _cellForType:0];
-  v4 = [v5 settingSwitch];
-  [v4 setOn:v3];
+  settingSwitch = [v5 settingSwitch];
+  [settingSwitch setOn:enabledCopy];
 }
 
 - (id)allSectionIdentifiers
@@ -191,41 +191,41 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
 {
   if ([(PKPaymentPassDetailSectionController *)self currentSegment]|| ![(PKPaymentPassDetailsNotificationSettingsSectionController *)self _shouldMapSection])
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (PKEqualObjects())
   {
     if (self->_peerPaymentAccount)
     {
-      v9 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _peerPaymentNotificationsSwitchCellForIndexPath:v8 tableView:v7];
+      v9 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _peerPaymentNotificationsSwitchCellForIndexPath:pathCopy tableView:viewCopy];
     }
 
     else
     {
-      v11 = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
-      v12 = [v11 length];
+      associatedAccountServiceAccountIdentifier = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
+      v12 = [associatedAccountServiceAccountIdentifier length];
 
       if (v12)
       {
-        [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _accountServiceNotificationsSwitchCellForIndexPath:v8 tableView:v7];
+        [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _accountServiceNotificationsSwitchCellForIndexPath:pathCopy tableView:viewCopy];
       }
 
       else
       {
-        [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _transactionsSwitchCellForIndexPath:v8 tableView:v7];
+        [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _transactionsSwitchCellForIndexPath:pathCopy tableView:viewCopy];
       }
       v9 = ;
     }
@@ -241,12 +241,12 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
   return v10;
 }
 
-- (id)_indexPathForRowType:(int64_t)a3
+- (id)_indexPathForRowType:(int64_t)type
 {
   peerPaymentAccount = self->_peerPaymentAccount;
   v4 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = a3 != 0;
-  if (a3)
+  v5 = type != 0;
+  if (type)
   {
     v6 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -256,26 +256,26 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
     v6 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = 0;
     v6 = 1;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v5 = 0;
     v6 = 2;
   }
 
-  if (!a3)
+  if (!type)
   {
     v4 = 0;
   }
 
   if (peerPaymentAccount)
   {
-    v7 = a3 != 0;
+    v7 = type != 0;
   }
 
   else
@@ -309,7 +309,7 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
   if (PKEqualObjects())
   {
@@ -318,7 +318,7 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
   }
 }
 
-- (id)titleForHeaderInSectionIdentifier:(id)a3
+- (id)titleForHeaderInSectionIdentifier:(id)identifier
 {
   if (self->_peerPaymentAccount)
   {
@@ -327,8 +327,8 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
 
   else
   {
-    v5 = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
-    v6 = [v5 length];
+    associatedAccountServiceAccountIdentifier = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
+    v6 = [associatedAccountServiceAccountIdentifier length];
 
     if (v6)
     {
@@ -346,12 +346,12 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
   return v3;
 }
 
-- (id)titleForFooterInSectionIdentifier:(id)a3
+- (id)titleForFooterInSectionIdentifier:(id)identifier
 {
   if ([objc_opt_class() _showsTransactionHistorySwitchForPass:self->_pass peerPaymentAccount:self->_peerPaymentAccount bankConnectAccount:self->_bankConnectAccount account:self->_account])
   {
-    v4 = [(PKPaymentPass *)self->_pass organizationName];
-    v5 = PKLocalizedPaymentString(&cfstr_TransactionsSe_0.isa, &stru_1F3BD5BF0.isa, v4);
+    organizationName = [(PKPaymentPass *)self->_pass organizationName];
+    v5 = PKLocalizedPaymentString(&cfstr_TransactionsSe_0.isa, &stru_1F3BD5BF0.isa, organizationName);
   }
 
   else
@@ -387,25 +387,25 @@ void *__100__PKPaymentPassDetailsNotificationSettingsSectionController_fetchAuth
   return result;
 }
 
-+ (BOOL)_showsTransactionHistorySwitchForPass:(id)a3 peerPaymentAccount:(id)a4 bankConnectAccount:(id)a5 account:(id)a6
++ (BOOL)_showsTransactionHistorySwitchForPass:(id)pass peerPaymentAccount:(id)account bankConnectAccount:(id)connectAccount account:(id)a6
 {
-  v9 = a3;
-  if ([v9 supportsFPANNotifications])
+  passCopy = pass;
+  if ([passCopy supportsFPANNotifications])
   {
-    if (a4 | a6)
+    if (account | a6)
     {
       v10 = 0;
       goto LABEL_8;
     }
 
 LABEL_7:
-    v10 = a5 == 0;
+    v10 = connectAccount == 0;
     goto LABEL_8;
   }
 
-  v11 = [v9 supportsDPANNotifications];
+  supportsDPANNotifications = [passCopy supportsDPANNotifications];
   v10 = 0;
-  if (!a6 && !a4 && (v11 & 1) != 0)
+  if (!a6 && !account && (supportsDPANNotifications & 1) != 0)
   {
     goto LABEL_7;
   }
@@ -415,14 +415,14 @@ LABEL_8:
   return v10;
 }
 
-- (id)_peerPaymentNotificationsSwitchCellForIndexPath:(id)a3 tableView:(id)a4
+- (id)_peerPaymentNotificationsSwitchCellForIndexPath:(id)path tableView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"NotificationsInfoCell"];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"NotificationsInfoCell"];
   if (self->_notificationAuthorizationStatus == 1)
   {
-    v9 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _allowNotificationsCellForTableView:v7];
+    v9 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _allowNotificationsCellForTableView:viewCopy];
 LABEL_9:
     v12 = v9;
 
@@ -430,10 +430,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v6 row] && !v8)
+  if (![pathCopy row] && !v8)
   {
     v8 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPas_1.isa);
-    v10 = [(PKPaymentPass *)self->_pass settings];
+    settings = [(PKPaymentPass *)self->_pass settings];
     if (PKStoreDemoModeEnabled())
     {
       v11 = 0;
@@ -444,7 +444,7 @@ LABEL_9:
       v11 = PKUIOnlyDemoModeEnabled() ^ 1;
     }
 
-    v9 = [(PKPaymentPassDetailSectionController *)self settingsTableCellWithTitle:v8 action:sel__transactionsSwitchChanged_ setOn:(v10 >> 3) & 1 enabled:v11];
+    v9 = [(PKPaymentPassDetailSectionController *)self settingsTableCellWithTitle:v8 action:sel__transactionsSwitchChanged_ setOn:(settings >> 3) & 1 enabled:v11];
     goto LABEL_9;
   }
 
@@ -453,12 +453,12 @@ LABEL_10:
   return v8;
 }
 
-- (id)_accountServiceNotificationsSwitchCellForIndexPath:(id)a3 tableView:(id)a4
+- (id)_accountServiceNotificationsSwitchCellForIndexPath:(id)path tableView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"NotificationsInfoCell"];
-  v9 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"NotificationsInfoCell"];
+  v9 = [pathCopy row];
 
   if (v9 == 2)
   {
@@ -478,12 +478,12 @@ LABEL_10:
     v13 = ([(PKPaymentPass *)self->_pass settings]& 0x80) == 0;
 LABEL_14:
     v15 = v13;
-    v16 = self;
+    selfCopy2 = self;
     v17 = v8;
     v18 = v12;
     v11 = 1;
 LABEL_20:
-    v14 = [(PKPaymentPassDetailSectionController *)v16 settingsTableCellWithTitle:v17 action:v18 setOn:v15 enabled:v11];
+    v14 = [(PKPaymentPassDetailSectionController *)selfCopy2 settingsTableCellWithTitle:v17 action:v18 setOn:v15 enabled:v11];
     goto LABEL_21;
   }
 
@@ -514,7 +514,7 @@ LABEL_20:
 
     [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _accountFeature];
     v8 = PKLocalizedFeatureString();
-    v10 = [(PKPaymentPass *)self->_pass settings];
+    settings = [(PKPaymentPass *)self->_pass settings];
     if (PKStoreDemoModeEnabled())
     {
       v11 = 0;
@@ -525,15 +525,15 @@ LABEL_20:
       v11 = PKUIOnlyDemoModeEnabled() ^ 1;
     }
 
-    v15 = (v10 >> 3) & 1;
-    v16 = self;
+    v15 = (settings >> 3) & 1;
+    selfCopy2 = self;
     v17 = v8;
     v18 = sel__transactionsSwitchChanged_;
     goto LABEL_20;
   }
 
 LABEL_11:
-  v14 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _allowNotificationsCellForTableView:v6];
+  v14 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _allowNotificationsCellForTableView:viewCopy];
 LABEL_21:
   v19 = v14;
 
@@ -543,14 +543,14 @@ LABEL_22:
   return v8;
 }
 
-- (id)_transactionsSwitchCellForIndexPath:(id)a3 tableView:(id)a4
+- (id)_transactionsSwitchCellForIndexPath:(id)path tableView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"NotificationsInfoCell"];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"NotificationsInfoCell"];
   if ([objc_opt_class() _showsTransactionHistorySwitchForPass:self->_pass peerPaymentAccount:self->_peerPaymentAccount bankConnectAccount:self->_bankConnectAccount account:self->_account])
   {
-    if (![v6 row])
+    if (![pathCopy row])
     {
       if (v8)
       {
@@ -558,7 +558,7 @@ LABEL_22:
       }
 
       v8 = PKLocalizedPaymentString(&cfstr_TransactionsSe_1.isa);
-      v15 = [(PKPaymentPass *)self->_pass settings];
+      settings = [(PKPaymentPass *)self->_pass settings];
       if (PKStoreDemoModeEnabled())
       {
         v14 = 0;
@@ -569,14 +569,14 @@ LABEL_22:
         v14 = PKUIOnlyDemoModeEnabled() ^ 1;
       }
 
-      v10 = (v15 >> 3) & 1;
-      v11 = self;
+      v10 = (settings >> 3) & 1;
+      selfCopy2 = self;
       v12 = v8;
       v13 = sel__transactionsSwitchChanged_;
       goto LABEL_13;
     }
 
-    if ([v6 row] != 1)
+    if ([pathCopy row] != 1)
     {
       goto LABEL_15;
     }
@@ -591,16 +591,16 @@ LABEL_22:
 
     v8 = PKLocalizedString(&cfstr_SettingsShowNo.isa);
     v10 = ([(PKPaymentPass *)self->_pass settings]& 0x80) == 0;
-    v11 = self;
+    selfCopy2 = self;
     v12 = v8;
     v13 = sel__notificationSwitchChanged_;
     v14 = 1;
 LABEL_13:
-    v9 = [(PKPaymentPassDetailSectionController *)v11 settingsTableCellWithTitle:v12 action:v13 setOn:v10 enabled:v14];
+    v9 = [(PKPaymentPassDetailSectionController *)selfCopy2 settingsTableCellWithTitle:v12 action:v13 setOn:v10 enabled:v14];
     goto LABEL_14;
   }
 
-  v9 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _allowNotificationsCellForTableView:v7];
+  v9 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _allowNotificationsCellForTableView:viewCopy];
 LABEL_14:
   v16 = v9;
 
@@ -610,24 +610,24 @@ LABEL_15:
   return v8;
 }
 
-- (void)_transactionsSwitchChanged:(id)a3
+- (void)_transactionsSwitchChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
-  v19 = [(PKPaymentPass *)self->_pass settings];
+  settings = [(PKPaymentPass *)self->_pass settings];
   v5 = v17[3];
-  v6 = [v4 isOn];
-  v7 = v6;
+  isOn = [changedCopy isOn];
+  v7 = isOn;
   v8 = v5 & 8;
-  if (((v6 ^ (v8 == 0)) & 1) == 0)
+  if (((isOn ^ (v8 == 0)) & 1) == 0)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __88__PKPaymentPassDetailsNotificationSettingsSectionController__transactionsSwitchChanged___block_invoke;
     aBlock[3] = &unk_1E801B538;
-    v15 = v6;
+    v15 = isOn;
     aBlock[4] = self;
     aBlock[5] = &v16;
     v9 = _Block_copy(aBlock);
@@ -697,19 +697,19 @@ void __88__PKPaymentPassDetailsNotificationSettingsSectionController__transactio
   }
 }
 
-- (void)_promptForTransactionSwitchChangeIfNecessaryWithConfirmationHandler:(id)a3
+- (void)_promptForTransactionSwitchChangeIfNecessaryWithConfirmationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   paymentDataProvider = self->_paymentDataProvider;
-  v6 = [(PKPaymentPass *)self->_pass uniqueID];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptForTransactionSwitchChangeIfNecessaryWithConfirmationHandler___block_invoke;
   v8[3] = &unk_1E80109C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [(PKPaymentDataProvider *)paymentDataProvider hasEligibleCriteriaForPassUniqueID:v6 completion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(PKPaymentDataProvider *)paymentDataProvider hasEligibleCriteriaForPassUniqueID:uniqueID completion:v8];
 }
 
 void __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptForTransactionSwitchChangeIfNecessaryWithConfirmationHandler___block_invoke(uint64_t a1, char a2)
@@ -744,59 +744,59 @@ void __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptFor
   }
 }
 
-- (void)_notificationSwitchChanged:(id)a3
+- (void)_notificationSwitchChanged:(id)changed
 {
   pass = self->_pass;
-  v5 = a3;
-  v6 = [(PKPaymentPass *)pass settings];
-  v7 = [v5 isOn];
+  changedCopy = changed;
+  settings = [(PKPaymentPass *)pass settings];
+  isOn = [changedCopy isOn];
 
-  if (v7 == ((v6 >> 7) & 1))
+  if (isOn == ((settings >> 7) & 1))
   {
     v8 = 128;
-    if (v7)
+    if (isOn)
     {
       v8 = 0;
     }
 
     v9 = self->_pass;
 
-    [(PKPaymentPass *)v9 setSettings:v8 | v6 & 0xFFFFFFFFFFFFFF7FLL];
+    [(PKPaymentPass *)v9 setSettings:v8 | settings & 0xFFFFFFFFFFFFFF7FLL];
   }
 }
 
-- (void)_dailyCashSwitchChanged:(id)a3
+- (void)_dailyCashSwitchChanged:(id)changed
 {
   pass = self->_pass;
-  v5 = a3;
-  v6 = [(PKPaymentPass *)pass settings];
-  v7 = [v5 isOn];
+  changedCopy = changed;
+  settings = [(PKPaymentPass *)pass settings];
+  isOn = [changedCopy isOn];
 
-  if (v7 == ((v6 >> 10) & 1))
+  if (isOn == ((settings >> 10) & 1))
   {
     v8 = 1024;
-    if (v7)
+    if (isOn)
     {
       v8 = 0;
     }
 
     v9 = self->_pass;
 
-    [(PKPaymentPass *)v9 setSettings:v8 | v6 & 0xFFFFFFFFFFFFFBFFLL];
+    [(PKPaymentPass *)v9 setSettings:v8 | settings & 0xFFFFFFFFFFFFFBFFLL];
   }
 }
 
-+ (BOOL)canShowSectionforPass:(id)a3 dataProvider:(id)a4 peerPaymentAccount:(id)a5 bankConnectAccount:(id)a6 account:(id)a7 transactionSourceCollection:(id)a8 notificationAuthorizationStatus:(int64_t)a9
++ (BOOL)canShowSectionforPass:(id)pass dataProvider:(id)provider peerPaymentAccount:(id)account bankConnectAccount:(id)connectAccount account:(id)a7 transactionSourceCollection:(id)collection notificationAuthorizationStatus:(int64_t)status
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
+  passCopy = pass;
+  providerCopy = provider;
+  connectAccountCopy = connectAccount;
   v18 = a7;
-  v19 = a8;
-  v20 = [a1 _updatedPeerPaymentAccountForPeerPaymentAccount:a5 pass:v15];
-  if ([v15 activationState])
+  collectionCopy = collection;
+  v20 = [self _updatedPeerPaymentAccountForPeerPaymentAccount:account pass:passCopy];
+  if ([passCopy activationState])
   {
-    v21 = [v15 isShellPass] ^ 1;
+    v21 = [passCopy isShellPass] ^ 1;
   }
 
   else
@@ -804,51 +804,51 @@ void __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptFor
     v21 = 0;
   }
 
-  v22 = 0;
-  if ([a1 _countOfRowsForPass:v15 peerPaymentAccount:v20 bankConnectAccount:v17 account:v18 notificationAuthorizationStatus:a9] >= 1 && (v21 & 1) == 0)
+  isAppleBalancePass = 0;
+  if ([self _countOfRowsForPass:passCopy peerPaymentAccount:v20 bankConnectAccount:connectAccountCopy account:v18 notificationAuthorizationStatus:status] >= 1 && (v21 & 1) == 0)
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v16 supportsTransactionsForPass:v15])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [providerCopy supportsTransactionsForPass:passCopy])
     {
-      if (v20 || ([v15 supportsDPANNotifications] & 1) != 0 || (objc_msgSend(v15, "supportsFPANNotifications") & 1) != 0)
+      if (v20 || ([passCopy supportsDPANNotifications] & 1) != 0 || (objc_msgSend(passCopy, "supportsFPANNotifications") & 1) != 0)
       {
-        v22 = 1;
+        isAppleBalancePass = 1;
       }
 
       else
       {
-        v24 = [v15 devicePrimaryPaymentApplication];
-        if ([v24 generatesLocalTransactions] & 1) != 0 || v18 && (objc_msgSend(MEMORY[0x1E69B8770], "shouldDisplayAccountInformationForTransactionSourceCollection:withAccount:", v19, v18) & 1) != 0 || (objc_msgSend(v15, "isAppleCardPass") & 1) != 0 || (objc_msgSend(v15, "isPeerPaymentPass"))
+        devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
+        if ([devicePrimaryPaymentApplication generatesLocalTransactions] & 1) != 0 || v18 && (objc_msgSend(MEMORY[0x1E69B8770], "shouldDisplayAccountInformationForTransactionSourceCollection:withAccount:", collectionCopy, v18) & 1) != 0 || (objc_msgSend(passCopy, "isAppleCardPass") & 1) != 0 || (objc_msgSend(passCopy, "isPeerPaymentPass"))
         {
-          v22 = 1;
+          isAppleBalancePass = 1;
         }
 
         else
         {
-          v22 = [v15 isAppleBalancePass];
+          isAppleBalancePass = [passCopy isAppleBalancePass];
         }
       }
     }
 
     else
     {
-      v22 = 0;
+      isAppleBalancePass = 0;
     }
   }
 
-  return v22;
+  return isAppleBalancePass;
 }
 
-+ (id)_updatedPeerPaymentAccountForPeerPaymentAccount:(id)a3 pass:(id)a4
++ (id)_updatedPeerPaymentAccountForPeerPaymentAccount:(id)account pass:(id)pass
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 associatedPassUniqueID];
-  v8 = [v6 uniqueID];
+  accountCopy = account;
+  passCopy = pass;
+  associatedPassUniqueID = [accountCopy associatedPassUniqueID];
+  uniqueID = [passCopy uniqueID];
 
-  LODWORD(v6) = [v7 isEqualToString:v8];
-  if (v6)
+  LODWORD(passCopy) = [associatedPassUniqueID isEqualToString:uniqueID];
+  if (passCopy)
   {
-    v9 = v5;
+    v9 = accountCopy;
   }
 
   else
@@ -859,19 +859,19 @@ void __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptFor
   return v9;
 }
 
-+ (int64_t)_countOfRowsForPass:(id)a3 peerPaymentAccount:(id)a4 bankConnectAccount:(id)a5 account:(id)a6 notificationAuthorizationStatus:(int64_t)a7
++ (int64_t)_countOfRowsForPass:(id)pass peerPaymentAccount:(id)account bankConnectAccount:(id)connectAccount account:(id)a6 notificationAuthorizationStatus:(int64_t)status
 {
   v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  LOBYTE(a3) = [objc_opt_class() _showsTransactionHistorySwitchForPass:v14 peerPaymentAccount:v13 bankConnectAccount:v12 account:v11];
+  connectAccountCopy = connectAccount;
+  accountCopy = account;
+  passCopy = pass;
+  LOBYTE(pass) = [objc_opt_class() _showsTransactionHistorySwitchForPass:passCopy peerPaymentAccount:accountCopy bankConnectAccount:connectAccountCopy account:v11];
 
-  if (a3)
+  if (pass)
   {
-    v15 = [v14 settings];
+    settings = [passCopy settings];
 
-    if ((v15 & 8) != 0)
+    if ((settings & 8) != 0)
     {
       return 2;
     }
@@ -884,15 +884,15 @@ void __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptFor
 
   else
   {
-    v17 = [v14 isAppleCardPass];
+    isAppleCardPass = [passCopy isAppleCardPass];
 
     v18 = 1;
-    if (a7 != 1)
+    if (status != 1)
     {
       v18 = 2;
     }
 
-    if (v17)
+    if (isAppleCardPass)
     {
       return v18;
     }
@@ -915,9 +915,9 @@ void __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptFor
   return v3;
 }
 
-- (id)_cellForType:(int64_t)a3
+- (id)_cellForType:(int64_t)type
 {
-  v4 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _indexPathForRowType:a3];
+  v4 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _indexPathForRowType:type];
   if (v4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -932,9 +932,9 @@ void __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptFor
   return v6;
 }
 
-- (id)_allowNotificationsCellForTableView:(id)a3
+- (id)_allowNotificationsCellForTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_detailViewStyle == 2)
   {
     v5 = @"SETTINGS_ALLOW_NOTIFICATIONS_TITLE_WATCH";
@@ -946,35 +946,35 @@ void __129__PKPaymentPassDetailsNotificationSettingsSectionController__promptFor
   }
 
   v6 = PKLocalizedString(&v5->isa);
-  v7 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v6 forTableView:v4];
+  v7 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v6 forTableView:viewCopy];
 
   return v7;
 }
 
-- (void)_passSettingsChanged:(id)a3
+- (void)_passSettingsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _cellForType:0];
   v6 = [(PKPaymentPassDetailsNotificationSettingsSectionController *)self _cellForType:2];
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKey:*MEMORY[0x1E69BBC18]];
-  v9 = [(PKPaymentPass *)self->_pass uniqueID];
-  v10 = [v8 isEqual:v9];
+  userInfo = [changedCopy userInfo];
+  v8 = [userInfo objectForKey:*MEMORY[0x1E69BBC18]];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+  v10 = [v8 isEqual:uniqueID];
 
   if (v10)
   {
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKey:*MEMORY[0x1E69BBC10]];
+    userInfo2 = [changedCopy userInfo];
+    v12 = [userInfo2 objectForKey:*MEMORY[0x1E69BBC10]];
 
     if (v12)
     {
-      v13 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __82__PKPaymentPassDetailsNotificationSettingsSectionController__passSettingsChanged___block_invoke;
       v14[3] = &unk_1E8014DD0;
       v14[4] = self;
-      v17 = v13;
+      v17 = unsignedIntegerValue;
       v15 = v5;
       v16 = v6;
       dispatch_async(MEMORY[0x1E69E96A0], v14);

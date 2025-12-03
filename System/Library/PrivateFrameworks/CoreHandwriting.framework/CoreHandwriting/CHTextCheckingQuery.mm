@@ -1,17 +1,17 @@
 @interface CHTextCheckingQuery
-- (CHTextCheckingQuery)initWithRecognitionSession:(id)a3;
+- (CHTextCheckingQuery)initWithRecognitionSession:(id)session;
 - (NSArray)foundItems;
 - (void)q_updateQueryResult;
 @end
 
 @implementation CHTextCheckingQuery
 
-- (CHTextCheckingQuery)initWithRecognitionSession:(id)a3
+- (CHTextCheckingQuery)initWithRecognitionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = CHTextCheckingQuery;
-  v5 = [(CHQuery *)&v9 initWithRecognitionSession:v4];
+  v5 = [(CHQuery *)&v9 initWithRecognitionSession:sessionCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);

@@ -6,8 +6,8 @@
 
 - (BOOL)isStateRestorationActivity
 {
-  v2 = self;
-  v3 = [(NSUserActivity *)v2 activityType];
+  selfCopy = self;
+  activityType = [(NSUserActivity *)selfCopy activityType];
   v4 = sub_3ED244();
   v6 = v5;
 

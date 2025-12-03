@@ -1,17 +1,17 @@
 @interface LACPreboardErrorBuilder
-+ (BOOL)hasCode:(id)a3 code:(int64_t)a4;
-+ (id)genericErrorWithMessage:(id)a3;
-+ (id)genericErrorWithUnderlyingError:(id)a3;
++ (BOOL)hasCode:(id)code code:(int64_t)a4;
++ (id)genericErrorWithMessage:(id)message;
++ (id)genericErrorWithUnderlyingError:(id)error;
 + (id)notSupportedError;
 - (_TtC23LocalAuthenticationCore23LACPreboardErrorBuilder)init;
 @end
 
 @implementation LACPreboardErrorBuilder
 
-+ (BOOL)hasCode:(id)a3 code:(int64_t)a4
++ (BOOL)hasCode:(id)code code:(int64_t)a4
 {
-  v5 = a3;
-  LOBYTE(a4) = specialized static LACPreboardErrorBuilder.hasCode(_:code:)(v5, a4);
+  codeCopy = code;
+  LOBYTE(a4) = specialized static LACPreboardErrorBuilder.hasCode(_:code:)(codeCopy, a4);
 
   return a4 & 1;
 }
@@ -24,17 +24,17 @@
   return v3;
 }
 
-+ (id)genericErrorWithUnderlyingError:(id)a3
++ (id)genericErrorWithUnderlyingError:(id)error
 {
-  v4 = a3;
-  v5 = specialized static LACPreboardErrorBuilder.error(code:underlyingError:)(2, a3);
+  errorCopy = error;
+  v5 = specialized static LACPreboardErrorBuilder.error(code:underlyingError:)(2, error);
 
   v6 = _convertErrorToNSError(_:)();
 
   return v6;
 }
 
-+ (id)genericErrorWithMessage:(id)a3
++ (id)genericErrorWithMessage:(id)message
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = specialized static LACPreboardErrorBuilder.genericError(with:)(v3, v4);

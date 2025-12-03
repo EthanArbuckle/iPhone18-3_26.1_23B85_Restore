@@ -1,15 +1,15 @@
 @interface BMFeedbackLearningUserInteraction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMFeedbackLearningUserInteraction)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMFeedbackLearningUserInteraction)initWithTupleInteraction:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMFeedbackLearningUserInteraction)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMFeedbackLearningUserInteraction)initWithTupleInteraction:(id)interaction;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMFeedbackLearningUserInteraction
@@ -26,25 +26,25 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMFeedbackLearningUserInteraction *)self tupleInteraction];
-    v7 = [v5 tupleInteraction];
-    if (v6 == v7)
+    v5 = equalCopy;
+    tupleInteraction = [(BMFeedbackLearningUserInteraction *)self tupleInteraction];
+    tupleInteraction2 = [v5 tupleInteraction];
+    if (tupleInteraction == tupleInteraction2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMFeedbackLearningUserInteraction *)self tupleInteraction];
-      v9 = [v5 tupleInteraction];
-      v10 = [v8 isEqual:v9];
+      tupleInteraction3 = [(BMFeedbackLearningUserInteraction *)self tupleInteraction];
+      tupleInteraction4 = [v5 tupleInteraction];
+      v10 = [tupleInteraction3 isEqual:tupleInteraction4];
     }
   }
 
@@ -59,19 +59,19 @@
 - (id)jsonDictionary
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BMFeedbackLearningUserInteraction *)self tupleInteraction];
-  v3 = [v2 jsonDictionary];
+  tupleInteraction = [(BMFeedbackLearningUserInteraction *)self tupleInteraction];
+  jsonDictionary = [tupleInteraction jsonDictionary];
 
   v8 = @"tupleInteraction";
-  v4 = v3;
-  if (!v3)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v9[0] = v4;
+  v9[0] = null;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  if (!v3)
+  if (!jsonDictionary)
   {
   }
 
@@ -80,10 +80,10 @@
   return v5;
 }
 
-- (BMFeedbackLearningUserInteraction)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMFeedbackLearningUserInteraction)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"tupleInteraction"];
+  v6 = [dictionary objectForKeyedSubscript:@"tupleInteraction"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -142,25 +142,25 @@ LABEL_14:
 {
   v3 = objc_opt_new();
   [(BMFeedbackLearningUserInteraction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_tupleInteraction)
   {
-    v4 = a3;
+    toCopy = to;
     PBDataWriterPlaceMark();
-    [(BMFeedbackLearningTupleInteraction *)self->_tupleInteraction writeTo:v4];
+    [(BMFeedbackLearningTupleInteraction *)self->_tupleInteraction writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v20.receiver = self;
   v20.super_class = BMFeedbackLearningUserInteraction;
   v5 = [(BMEventBase *)&v20 init];
@@ -169,12 +169,12 @@ LABEL_14:
     goto LABEL_26;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -185,18 +185,18 @@ LABEL_14:
       while (1)
       {
         LOBYTE(v21[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v21 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v21 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v21[0] & 0x7F) << v7;
@@ -213,9 +213,9 @@ LABEL_14:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -229,7 +229,7 @@ LABEL_16:
           goto LABEL_25;
         }
 
-        v15 = [[BMFeedbackLearningTupleInteraction alloc] initByReadFrom:v4];
+        v15 = [[BMFeedbackLearningTupleInteraction alloc] initByReadFrom:fromCopy];
         if (!v15)
         {
           goto LABEL_25;
@@ -246,13 +246,13 @@ LABEL_16:
         goto LABEL_25;
       }
 
-      v17 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v17 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_25:
     v18 = 0;
@@ -270,22 +270,22 @@ LABEL_26:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMFeedbackLearningUserInteraction *)self tupleInteraction];
-  v5 = [v3 initWithFormat:@"BMFeedbackLearningUserInteraction with tupleInteraction: %@", v4];
+  tupleInteraction = [(BMFeedbackLearningUserInteraction *)self tupleInteraction];
+  v5 = [v3 initWithFormat:@"BMFeedbackLearningUserInteraction with tupleInteraction: %@", tupleInteraction];
 
   return v5;
 }
 
-- (BMFeedbackLearningUserInteraction)initWithTupleInteraction:(id)a3
+- (BMFeedbackLearningUserInteraction)initWithTupleInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v8.receiver = self;
   v8.super_class = BMFeedbackLearningUserInteraction;
   v6 = [(BMEventBase *)&v8 init];
   if (v6)
   {
     v6->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v6->_tupleInteraction, a3);
+    objc_storeStrong(&v6->_tupleInteraction, interaction);
   }
 
   return v6;
@@ -313,9 +313,9 @@ id __44__BMFeedbackLearningUserInteraction_columns__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -323,8 +323,8 @@ id __44__BMFeedbackLearningUserInteraction_columns__block_invoke(uint64_t a1, vo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMFeedbackLearningUserInteraction alloc] initByReadFrom:v7];
     v4 = v8;

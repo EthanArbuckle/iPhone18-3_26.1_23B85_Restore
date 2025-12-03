@@ -2,7 +2,7 @@
 + (OS_os_log)log;
 - (id)deliverSynchronously;
 - (id)newMessageWriter;
-- (void)_updateBasedOnOriginalMessage:(id)a3;
+- (void)_updateBasedOnOriginalMessage:(id)message;
 @end
 
 @implementation MFDADelivery
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __19__MFDADelivery_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -36,9 +36,9 @@ void __19__MFDADelivery_log__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = MFDADelivery;
-  v2 = [(MFMailDelivery *)&v4 newMessageWriter];
-  [v2 setAllowsQuotedPrintable:0];
-  return v2;
+  newMessageWriter = [(MFMailDelivery *)&v4 newMessageWriter];
+  [newMessageWriter setAllowsQuotedPrintable:0];
+  return newMessageWriter;
 }
 
 - (id)deliverSynchronously
@@ -49,15 +49,15 @@ void __19__MFDADelivery_log__block_invoke(uint64_t a1)
   v3 = MFUserAgent();
   [v3 networkActivityStarted:self];
 
-  v4 = [(MFMailDelivery *)self message];
-  v38 = [v4 messageIDHeaderInFortyBytesOrLess];
+  message = [(MFMailDelivery *)self message];
+  messageIDHeaderInFortyBytesOrLess = [message messageIDHeaderInFortyBytesOrLess];
 
-  v5 = [(MFMailDelivery *)self originalMessage];
+  originalMessage = [(MFMailDelivery *)self originalMessage];
 
-  if (v5)
+  if (originalMessage)
   {
-    v6 = [(MFMailDelivery *)self originalMessage];
-    [(MFDADelivery *)self _updateBasedOnOriginalMessage:v6];
+    originalMessage2 = [(MFMailDelivery *)self originalMessage];
+    [(MFDADelivery *)self _updateBasedOnOriginalMessage:originalMessage2];
   }
 
   if ([(MFMailDelivery *)self action])
@@ -89,8 +89,8 @@ void __19__MFDADelivery_log__block_invoke(uint64_t a1)
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v10 = [(MFMailDelivery *)self message];
-  v37 = [v10 messageDataHolder];
+  message2 = [(MFMailDelivery *)self message];
+  messageDataHolder = [message2 messageDataHolder];
 
   v11 = +[MFDADelivery log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -111,20 +111,20 @@ void __19__MFDADelivery_log__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1B0389000, v11, OS_LOG_TYPE_DEFAULT, "Sending message with type: %{public}u, folderID: %{public}@, originalMessageID: %{public}@, originalLongID: %{public}@, useSmartTask: %{public}d", buf, 0x2Cu);
   }
 
-  v15 = [self->_DAMailAccount accountConduit];
-  v16 = [v37 data];
+  accountConduit = [self->_DAMailAccount accountConduit];
+  data = [messageDataHolder data];
   v17 = self->_folderID;
   v18 = self->_originalMessageID;
   v19 = self->_originalLongID;
   accountID = self->_accountID;
   BYTE1(v35) = [(MFMailDelivery *)self isUserRequested];
   LOBYTE(v35) = v8;
-  [v15 sendMessageWithRFC822Data:v16 messageID:v38 outgoingMessageType:v7 originalMessageFolderID:v17 originalMessageItemID:v18 originalMessageLongID:v19 originalAccountID:accountID useSmartTasksIfPossible:v35 isUserRequested:v39 consumer:0 context:?];
+  [accountConduit sendMessageWithRFC822Data:data messageID:messageIDHeaderInFortyBytesOrLess outgoingMessageType:v7 originalMessageFolderID:v17 originalMessageItemID:v18 originalMessageLongID:v19 originalAccountID:accountID useSmartTasksIfPossible:v35 isUserRequested:v39 consumer:0 context:?];
 
   [(MFDAMailAccountConsumer *)v39 waitUntilDone];
   v21 = CFAbsoluteTimeGetCurrent();
-  v22 = [(MFDADeliveryConsumer *)v39 error];
-  [v36 setError:v22];
+  error = [(MFDADeliveryConsumer *)v39 error];
+  [v36 setError:error];
 
   v23 = MFUserAgent();
   [v23 networkActivityEnded:self];
@@ -138,14 +138,14 @@ void __19__MFDADelivery_log__block_invoke(uint64_t a1)
   if (!v7 && [self->_DAMailAccount supportsThreadOperations]&& [(MFMailDelivery *)self conversationFlags])
   {
     v26 = [self->_DAMailAccount mailboxUidOfType:4 createIfNeeded:0];
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     DAMailAccount = self->_DAMailAccount;
     v40 = v26;
     v41 = @"MailAccountContentsDidChangeUids";
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
     v42 = v29;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-    [v27 postNotificationName:@"MailAccountContentsDidChange" object:DAMailAccount userInfo:v30];
+    [defaultCenter postNotificationName:@"MailAccountContentsDidChange" object:DAMailAccount userInfo:v30];
   }
 
   v31 = self->super._result;
@@ -155,40 +155,40 @@ void __19__MFDADelivery_log__block_invoke(uint64_t a1)
   return v31;
 }
 
-- (void)_updateBasedOnOriginalMessage:(id)a3
+- (void)_updateBasedOnOriginalMessage:(id)message
 {
-  v24 = a3;
-  v4 = [v24 messageStore];
+  messageCopy = message;
+  messageStore = [messageCopy messageStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v24;
-    v6 = [v5 DAMailMessage];
-    v7 = [v6 longID];
+    v5 = messageCopy;
+    dAMailMessage = [v5 DAMailMessage];
+    longID = [dAMailMessage longID];
     originalLongID = self->_originalLongID;
-    self->_originalLongID = v7;
+    self->_originalLongID = longID;
 
-    v9 = [v5 DAMailMessage];
-    v10 = [v9 remoteID];
+    dAMailMessage2 = [v5 DAMailMessage];
+    remoteID = [dAMailMessage2 remoteID];
     originalMessageID = self->_originalMessageID;
-    self->_originalMessageID = v10;
+    self->_originalMessageID = remoteID;
 
-    v12 = [v5 DAMailMessage];
-    v13 = [v12 folderID];
+    dAMailMessage3 = [v5 DAMailMessage];
+    folderID = [dAMailMessage3 folderID];
     goto LABEL_3;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v15 = v24;
+  v15 = messageCopy;
   if (isKindOfClass)
   {
-    v17 = v24;
+    v17 = messageCopy;
     if ([v17 isSearchResultWithBogusRemoteId])
     {
-      v18 = [v17 remoteID];
-      v12 = self->_originalLongID;
-      self->_originalLongID = v18;
+      remoteID2 = [v17 remoteID];
+      dAMailMessage3 = self->_originalLongID;
+      self->_originalLongID = remoteID2;
       goto LABEL_4;
     }
 
@@ -198,26 +198,26 @@ void __19__MFDADelivery_log__block_invoke(uint64_t a1)
       goto LABEL_5;
     }
 
-    v12 = v4;
-    v22 = [v17 remoteID];
+    dAMailMessage3 = messageStore;
+    remoteID3 = [v17 remoteID];
     v23 = self->_originalMessageID;
-    self->_originalMessageID = v22;
+    self->_originalMessageID = remoteID3;
 
-    v13 = [v12 folderIDForFetching];
+    folderID = [dAMailMessage3 folderIDForFetching];
 LABEL_3:
     folderID = self->_folderID;
-    self->_folderID = v13;
+    self->_folderID = folderID;
 
 LABEL_4:
 LABEL_5:
 
-    v15 = v24;
+    v15 = messageCopy;
   }
 
-  v19 = [v15 account];
-  v20 = [v19 uniqueID];
+  account = [v15 account];
+  uniqueID = [account uniqueID];
   accountID = self->_accountID;
-  self->_accountID = v20;
+  self->_accountID = uniqueID;
 }
 
 @end

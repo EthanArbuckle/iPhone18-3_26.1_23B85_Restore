@@ -1,18 +1,18 @@
 @interface SearchUISportsLiveActivitiesEnabledCache
-- (void)computeObjectForKey:(id)a3 completionHandler:(id)a4;
+- (void)computeObjectForKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation SearchUISportsLiveActivitiesEnabledCache
 
-- (void)computeObjectForKey:(id)a3 completionHandler:(id)a4
+- (void)computeObjectForKey:(id)key completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __82__SearchUISportsLiveActivitiesEnabledCache_computeObjectForKey_completionHandler___block_invoke;
   v6[3] = &unk_1E85B2F88;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [_TtC8SearchUI26SearchUISportsKitUtilities liveActivitiesEnabledWithCompletionBlock:v6];
 }
 

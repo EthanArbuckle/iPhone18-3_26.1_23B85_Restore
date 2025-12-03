@@ -1,19 +1,19 @@
 @interface BPSCorrelate
-+ (id)correlatePublisherChainWithPrior:(id)a3 current:(id)a4 comparator:(id)a5 correlateHandler:(id)a6;
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
-+ (int64_t)correlateSourceForIndex:(int64_t)a3;
-- (BPSCorrelate)initWithPrior:(id)a3 current:(id)a4 comparator:(id)a5 updatedInitialContext:(id)a6 correlateHandler:(id)a7;
++ (id)correlatePublisherChainWithPrior:(id)prior current:(id)current comparator:(id)comparator correlateHandler:(id)handler;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
++ (int64_t)correlateSourceForIndex:(int64_t)index;
+- (BPSCorrelate)initWithPrior:(id)prior current:(id)current comparator:(id)comparator updatedInitialContext:(id)context correlateHandler:(id)handler;
 - (id)bookmarkableUpstreams;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSCorrelate
 
-+ (int64_t)correlateSourceForIndex:(int64_t)a3
++ (int64_t)correlateSourceForIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
-    return 2 * (a3 == 1);
+    return 2 * (index == 1);
   }
 
   else
@@ -22,28 +22,28 @@
   }
 }
 
-- (BPSCorrelate)initWithPrior:(id)a3 current:(id)a4 comparator:(id)a5 updatedInitialContext:(id)a6 correlateHandler:(id)a7
+- (BPSCorrelate)initWithPrior:(id)prior current:(id)current comparator:(id)comparator updatedInitialContext:(id)context correlateHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  priorCopy = prior;
+  currentCopy = current;
+  comparatorCopy = comparator;
+  contextCopy = context;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = BPSCorrelate;
   v18 = [(BPSCorrelate *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_prior, a3);
-    objc_storeStrong(&v19->_current, a4);
-    objc_storeStrong(&v19->_correlateHandler, a7);
-    if (v16)
+    objc_storeStrong(&v18->_prior, prior);
+    objc_storeStrong(&v19->_current, current);
+    objc_storeStrong(&v19->_correlateHandler, handler);
+    if (contextCopy)
     {
-      [(BPSCorrelateHandler *)v19->_correlateHandler updateContext:v16];
+      [(BPSCorrelateHandler *)v19->_correlateHandler updateContext:contextCopy];
     }
 
-    v20 = [[BPSCorrelateOrderedMerge alloc] initWithA:v19->_prior b:v19->_current comparator:v15];
+    v20 = [[BPSCorrelateOrderedMerge alloc] initWithA:v19->_prior b:v19->_current comparator:comparatorCopy];
     merger = v19->_merger;
     v19->_merger = v20;
   }
@@ -51,10 +51,10 @@
   return v19;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = [[_BPSCorrelateInner alloc] initWithDownstream:v4 correlateHandler:self->_correlateHandler];
+  subscribeCopy = subscribe;
+  v5 = [[_BPSCorrelateInner alloc] initWithDownstream:subscribeCopy correlateHandler:self->_correlateHandler];
 
   [(BPSCorrelateOrderedMerge *)self->_merger subscribe:v5];
 }
@@ -69,45 +69,45 @@
   return v2;
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v22 = a5;
-  if ([v10 count] != 1)
+  publisherCopy = publisher;
+  upstreamsCopy = upstreams;
+  stateCopy = state;
+  if ([upstreamsCopy count] != 1)
   {
-    [BPSCorrelate publisherWithPublisher:v10 upstreams:a2 bookmarkState:a1];
+    [BPSCorrelate publisherWithPublisher:upstreamsCopy upstreams:a2 bookmarkState:self];
   }
 
-  v11 = v9;
-  v12 = [v10 objectAtIndexedSubscript:0];
+  v11 = publisherCopy;
+  v12 = [upstreamsCopy objectAtIndexedSubscript:0];
   v13 = [BPSCorrelate alloc];
-  v21 = [v12 publishers];
-  v14 = [v21 objectAtIndexedSubscript:0];
-  v15 = [v12 publishers];
-  v16 = [v15 objectAtIndexedSubscript:1];
-  v17 = [v11[1] comparator];
-  v18 = [v11 correlateHandler];
+  publishers = [v12 publishers];
+  v14 = [publishers objectAtIndexedSubscript:0];
+  publishers2 = [v12 publishers];
+  v16 = [publishers2 objectAtIndexedSubscript:1];
+  comparator = [v11[1] comparator];
+  correlateHandler = [v11 correlateHandler];
 
-  v19 = [(BPSCorrelate *)v13 initWithPrior:v14 current:v16 comparator:v17 updatedInitialContext:v22 correlateHandler:v18];
+  v19 = [(BPSCorrelate *)v13 initWithPrior:v14 current:v16 comparator:comparator updatedInitialContext:stateCopy correlateHandler:correlateHandler];
 
   return v19;
 }
 
-+ (id)correlatePublisherChainWithPrior:(id)a3 current:(id)a4 comparator:(id)a5 correlateHandler:(id)a6
++ (id)correlatePublisherChainWithPrior:(id)prior current:(id)current comparator:(id)comparator correlateHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = [a3 mapWithTransform:&__block_literal_global];
-  v13 = [v11 mapWithTransform:&__block_literal_global_74];
+  comparatorCopy = comparator;
+  handlerCopy = handler;
+  currentCopy = current;
+  v12 = [prior mapWithTransform:&__block_literal_global];
+  v13 = [currentCopy mapWithTransform:&__block_literal_global_74];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__BPSCorrelate_correlatePublisherChainWithPrior_current_comparator_correlateHandler___block_invoke_3;
   aBlock[3] = &unk_1E8320BA0;
-  v29 = v9;
-  v14 = v9;
+  v29 = comparatorCopy;
+  v14 = comparatorCopy;
   v15 = _Block_copy(aBlock);
   v16 = [v12 orderedMergeWithOther:v13 comparator:v15];
   v17 = [[BPSTuple alloc] initWithFirst:0 second:0];
@@ -115,8 +115,8 @@
   v24 = 3221225472;
   v25 = __85__BPSCorrelate_correlatePublisherChainWithPrior_current_comparator_correlateHandler___block_invoke_4;
   v26 = &unk_1E8320BC8;
-  v27 = v10;
-  v18 = v10;
+  v27 = handlerCopy;
+  v18 = handlerCopy;
   v19 = [v16 scanWithInitial:v17 nextPartialResult:&v23];
 
   v20 = [v19 filterWithIsIncluded:{&__block_literal_global_82, v23, v24, v25, v26}];

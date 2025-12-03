@@ -2,7 +2,7 @@
 - (BOOL)_criticalIsCountingDown;
 - (BOOL)isCountingDown;
 - (BOOL)startCountingDown;
-- (IDSCountdown)initWithTimeInterval:(double)a3;
+- (IDSCountdown)initWithTimeInterval:(double)interval;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   [(IDSCountdown *)&v3 dealloc];
 }
 
-- (IDSCountdown)initWithTimeInterval:(double)a3
+- (IDSCountdown)initWithTimeInterval:(double)interval
 {
   v7.receiver = self;
   v7.super_class = IDSCountdown;
@@ -24,7 +24,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_timeInterval = a3;
+    v4->_timeInterval = interval;
     pthread_mutex_init(&v4->_startDateMutex, 0);
   }
 
@@ -34,8 +34,8 @@
 - (BOOL)startCountingDown
 {
   pthread_mutex_lock(&self->_startDateMutex);
-  v3 = [(IDSCountdown *)self _criticalIsCountingDown];
-  if ((v3 & 1) == 0)
+  _criticalIsCountingDown = [(IDSCountdown *)self _criticalIsCountingDown];
+  if ((_criticalIsCountingDown & 1) == 0)
   {
     v4 = objc_alloc_init(NSDate);
     startDate = self->_startDate;
@@ -43,15 +43,15 @@
   }
 
   pthread_mutex_unlock(&self->_startDateMutex);
-  return v3 ^ 1;
+  return _criticalIsCountingDown ^ 1;
 }
 
 - (BOOL)isCountingDown
 {
   pthread_mutex_lock(&self->_startDateMutex);
-  v3 = [(IDSCountdown *)self _criticalIsCountingDown];
+  _criticalIsCountingDown = [(IDSCountdown *)self _criticalIsCountingDown];
   pthread_mutex_unlock(&self->_startDateMutex);
-  return v3;
+  return _criticalIsCountingDown;
 }
 
 - (BOOL)_criticalIsCountingDown

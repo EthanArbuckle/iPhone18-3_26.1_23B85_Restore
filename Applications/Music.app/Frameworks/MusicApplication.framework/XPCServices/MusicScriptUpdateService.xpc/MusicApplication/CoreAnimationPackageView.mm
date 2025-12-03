@@ -1,5 +1,5 @@
 @interface CoreAnimationPackageView
-- (_TtC11MusicCoreUI24CoreAnimationPackageView)initWithFrame:(CGRect)a3;
+- (_TtC11MusicCoreUI24CoreAnimationPackageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CoreAnimationPackageView.layoutSubviews()();
 }
 
-- (_TtC11MusicCoreUI24CoreAnimationPackageView)initWithFrame:(CGRect)a3
+- (_TtC11MusicCoreUI24CoreAnimationPackageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

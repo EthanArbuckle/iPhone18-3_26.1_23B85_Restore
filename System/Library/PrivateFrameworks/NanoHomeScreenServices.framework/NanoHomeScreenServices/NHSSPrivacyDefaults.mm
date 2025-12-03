@@ -5,10 +5,10 @@
 - (void)_mainQueue_notifyObserversDefaultsDidChange;
 - (void)_observeChangesToPrivacyDefaults;
 - (void)_postPrivacyDefaultsDidChangeNotification;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)privacyDefaultsDidChange;
-- (void)removeObserver:(id)a3;
-- (void)setMicrophonePermission:(int64_t)a3;
+- (void)removeObserver:(id)observer;
+- (void)setMicrophonePermission:(int64_t)permission;
 @end
 
 @implementation NHSSPrivacyDefaults
@@ -44,9 +44,9 @@ uint64_t __37__NHSSPrivacyDefaults_sharedInstance__block_invoke()
     v2->_bundle = v3;
 
     v2->_lock._os_unfair_lock_opaque = 0;
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     lock_observers = v2->_lock_observers;
-    v2->_lock_observers = v5;
+    v2->_lock_observers = weakObjectsHashTable;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.NanoHomeScreen.PrivacyDefaults.syncQueue", v7);
@@ -67,8 +67,8 @@ uint64_t __37__NHSSPrivacyDefaults_sharedInstance__block_invoke()
   if (v3)
   {
     v5 = [v3 objectForKey:@"microphonePermission"];
-    v6 = [v5 integerValue];
-    if (v6 == 1735552628)
+    integerValue = [v5 integerValue];
+    if (integerValue == 1735552628)
     {
       v7 = 1735552628;
     }
@@ -78,7 +78,7 @@ uint64_t __37__NHSSPrivacyDefaults_sharedInstance__block_invoke()
       v7 = 1970168948;
     }
 
-    if (v6 == 1684369017)
+    if (integerValue == 1684369017)
     {
       v2 = 1684369017;
     }
@@ -101,7 +101,7 @@ uint64_t __37__NHSSPrivacyDefaults_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)setMicrophonePermission:(int64_t)a3
+- (void)setMicrophonePermission:(int64_t)permission
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -109,7 +109,7 @@ uint64_t __37__NHSSPrivacyDefaults_sharedInstance__block_invoke()
   v4[2] = __47__NHSSPrivacyDefaults_setMicrophonePermission___block_invoke;
   v4[3] = &unk_279932E18;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = permission;
   dispatch_async(queue, v4);
 }
 
@@ -137,20 +137,20 @@ void __47__NHSSPrivacyDefaults_setMicrophonePermission___block_invoke(uint64_t a
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v4];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -183,13 +183,13 @@ void __47__NHSSPrivacyDefaults_setMicrophonePermission___block_invoke(uint64_t a
 {
   v15 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_lock_observers allObjects];
+  allObjects = [(NSHashTable *)self->_lock_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v3;
+  v4 = allObjects;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

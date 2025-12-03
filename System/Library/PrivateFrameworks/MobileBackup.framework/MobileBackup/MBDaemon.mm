@@ -2,17 +2,17 @@
 + (MBDaemon)sharedDaemon;
 - (BOOL)_shouldIdleExit;
 - (MBDaemon)init;
-- (void)_handleSignal:(int)a3;
-- (void)_holdWorkAssertionWithDescription:(const char *)a3;
-- (void)_releaseWorkAssertionWithDescription:(const char *)a3;
+- (void)_handleSignal:(int)signal;
+- (void)_holdWorkAssertionWithDescription:(const char *)description;
+- (void)_releaseWorkAssertionWithDescription:(const char *)description;
 - (void)_resetIdleTimer;
 - (void)_scheduleIdleTimer;
-- (void)holdWorkAssertion:(SEL)a3;
-- (void)holdWorkAssertionWithClass:(Class)a3;
-- (void)holdingWorkAssertionWithDescription:(id)a3 forScope:(id)a4;
-- (void)reboot:(BOOL)a3;
-- (void)releaseWorkAssertion:(SEL)a3;
-- (void)releaseWorkAssertionWithClass:(Class)a3;
+- (void)holdWorkAssertion:(SEL)assertion;
+- (void)holdWorkAssertionWithClass:(Class)class;
+- (void)holdingWorkAssertionWithDescription:(id)description forScope:(id)scope;
+- (void)reboot:(BOOL)reboot;
+- (void)releaseWorkAssertion:(SEL)assertion;
+- (void)releaseWorkAssertionWithClass:(Class)class;
 - (void)resetIdleTimer;
 - (void)run;
 - (void)setupSignalHandlers;
@@ -56,9 +56,9 @@
   [v2 run];
 }
 
-- (void)reboot:(BOOL)a3
+- (void)reboot:(BOOL)reboot
 {
-  v3 = a3;
+  rebootCopy = reboot;
   v4 = MKBKeyBagKeyStashCommit();
   v5 = MBGetDefaultLog();
   v6 = v5;
@@ -108,7 +108,7 @@ LABEL_6:
   MBLogStashLogs();
   v10 = MBGetDefaultLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (rebootCopy)
   {
     if (!v11)
     {
@@ -149,11 +149,11 @@ LABEL_18:
   exit(v12 != 0);
 }
 
-- (void)_handleSignal:(int)a3
+- (void)_handleSignal:(int)signal
 {
-  if (a3 <= 14)
+  if (signal <= 14)
   {
-    if (a3 == 1)
+    if (signal == 1)
     {
       v4 = MBGetDefaultLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -166,7 +166,7 @@ LABEL_18:
       goto LABEL_17;
     }
 
-    if (a3 == 3)
+    if (signal == 3)
     {
       v4 = MBGetDefaultLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -184,7 +184,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a3 == 15)
+  if (signal == 15)
   {
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -197,9 +197,9 @@ LABEL_17:
     MBExit(1);
   }
 
-  if (a3 != 30)
+  if (signal != 30)
   {
-    if (a3 == 31)
+    if (signal == 31)
     {
       v4 = MBGetDefaultLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -219,7 +219,7 @@ LABEL_18:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v8 = a3;
+      signalCopy = signal;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "=daemon= Unhandled signal %d", buf, 8u);
       _MBLog();
     }
@@ -353,7 +353,7 @@ LABEL_18:
   dispatch_sync(assertionsQueue, block);
 }
 
-- (void)_holdWorkAssertionWithDescription:(const char *)a3
+- (void)_holdWorkAssertionWithDescription:(const char *)description
 {
   dispatch_assert_queue_V2(self->_assertionsQueue);
   ++self->_assertions;
@@ -370,7 +370,7 @@ LABEL_18:
   {
     assertions = self->_assertions;
     *buf = 136315394;
-    v11 = a3;
+    descriptionCopy = description;
     v12 = 1024;
     v13 = assertions;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "=daemon= holdWorkAssertion: %s, %d", buf, 0x12u);
@@ -379,7 +379,7 @@ LABEL_18:
   }
 }
 
-- (void)holdWorkAssertionWithClass:(Class)a3
+- (void)holdWorkAssertionWithClass:(Class)class
 {
   dispatch_assert_queue_not_V2(self->_assertionsQueue);
   assertionsQueue = self->_assertionsQueue;
@@ -388,11 +388,11 @@ LABEL_18:
   v6[2] = sub_100169C04;
   v6[3] = &unk_1003C0020;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = class;
   dispatch_sync(assertionsQueue, v6);
 }
 
-- (void)holdWorkAssertion:(SEL)a3
+- (void)holdWorkAssertion:(SEL)assertion
 {
   dispatch_assert_queue_not_V2(self->_assertionsQueue);
   assertionsQueue = self->_assertionsQueue;
@@ -401,11 +401,11 @@ LABEL_18:
   v6[2] = sub_100169CC8;
   v6[3] = &unk_1003BDAE8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = assertion;
   dispatch_sync(assertionsQueue, v6);
 }
 
-- (void)_releaseWorkAssertionWithDescription:(const char *)a3
+- (void)_releaseWorkAssertionWithDescription:(const char *)description
 {
   assertions = self->_assertions;
   if (!assertions)
@@ -416,7 +416,7 @@ LABEL_18:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
-        v12 = a3;
+        descriptionCopy2 = description;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "=daemon= Over-released work assertion: %s", buf, 0xCu);
         _MBLog();
       }
@@ -437,7 +437,7 @@ LABEL_18:
   {
     v8 = self->_assertions;
     *buf = 136315394;
-    v12 = a3;
+    descriptionCopy2 = description;
     v13 = 1024;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "=daemon= releaseWorkAssertion: %s, %d", buf, 0x12u);
@@ -446,7 +446,7 @@ LABEL_18:
   }
 }
 
-- (void)releaseWorkAssertionWithClass:(Class)a3
+- (void)releaseWorkAssertionWithClass:(Class)class
 {
   assertionsQueue = self->_assertionsQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -454,11 +454,11 @@ LABEL_18:
   v4[2] = sub_100169F04;
   v4[3] = &unk_1003C0020;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = class;
   dispatch_async(assertionsQueue, v4);
 }
 
-- (void)releaseWorkAssertion:(SEL)a3
+- (void)releaseWorkAssertion:(SEL)assertion
 {
   assertionsQueue = self->_assertionsQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -466,14 +466,14 @@ LABEL_18:
   v4[2] = sub_100169FB4;
   v4[3] = &unk_1003BDAE8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = assertion;
   dispatch_async(assertionsQueue, v4);
 }
 
-- (void)holdingWorkAssertionWithDescription:(id)a3 forScope:(id)a4
+- (void)holdingWorkAssertionWithDescription:(id)description forScope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  scopeCopy = scope;
   dispatch_assert_queue_not_V2(self->_assertionsQueue);
   assertionsQueue = self->_assertionsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -481,10 +481,10 @@ LABEL_18:
   block[2] = sub_10016A15C;
   block[3] = &unk_1003BC060;
   block[4] = self;
-  v9 = v6;
+  v9 = descriptionCopy;
   v15 = v9;
   dispatch_sync(assertionsQueue, block);
-  v7[2](v7);
+  scopeCopy[2](scopeCopy);
   v10 = self->_assertionsQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;

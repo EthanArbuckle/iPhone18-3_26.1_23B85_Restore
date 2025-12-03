@@ -1,11 +1,11 @@
 @interface NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse;
   v4 = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)&v8 description];
-  v5 = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   nonceData = self->_nonceData;
   if (nonceData)
   {
-    [v3 setObject:nonceData forKey:@"nonceData"];
+    [dictionary setObject:nonceData forKey:@"nonceData"];
   }
 
   errorData = self->_errorData;
@@ -41,61 +41,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_nonceData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_nonceData)
   {
-    [v4 setNonceData:?];
-    v4 = v5;
+    [toCopy setNonceData:?];
+    toCopy = v5;
   }
 
   if (self->_errorData)
   {
     [v5 setErrorData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_nonceData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_nonceData copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((nonceData = self->_nonceData, !(nonceData | v4[2])) || -[NSData isEqual:](nonceData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((nonceData = self->_nonceData, !(nonceData | equalCopy[2])) || -[NSData isEqual:](nonceData, "isEqual:")))
   {
     errorData = self->_errorData;
-    if (errorData | v4[1])
+    if (errorData | equalCopy[1])
     {
       v7 = [(NSData *)errorData isEqual:?];
     }
@@ -114,20 +114,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)self setNonceData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)self setErrorData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

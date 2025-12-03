@@ -1,23 +1,23 @@
 @interface CNExternalIdentifierContactPredicate
-- (BOOL)isEqual:(id)a3;
-- (CNExternalIdentifierContactPredicate)initWithCoder:(id)a3;
-- (CNExternalIdentifierContactPredicate)initWithExternalIdentifiers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNExternalIdentifierContactPredicate)initWithCoder:(id)coder;
+- (CNExternalIdentifierContactPredicate)initWithExternalIdentifiers:(id)identifiers;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNExternalIdentifierContactPredicate
 
-- (CNExternalIdentifierContactPredicate)initWithExternalIdentifiers:(id)a3
+- (CNExternalIdentifierContactPredicate)initWithExternalIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v10.receiver = self;
   v10.super_class = CNExternalIdentifierContactPredicate;
   v5 = [(CNPredicate *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifiersCopy copy];
     externalIdentifiers = v5->_externalIdentifiers;
     v5->_externalIdentifiers = v6;
 
@@ -27,27 +27,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNExternalIdentifierContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_externalIdentifiers forKey:{@"_externalIdentifiers", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_externalIdentifiers forKey:{@"_externalIdentifiers", v5.receiver, v5.super_class}];
 }
 
-- (CNExternalIdentifierContactPredicate)initWithCoder:(id)a3
+- (CNExternalIdentifierContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CNExternalIdentifierContactPredicate;
-  v5 = [(CNPredicate *)&v14 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_externalIdentifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_externalIdentifiers"];
     v10 = [v9 copy];
     externalIdentifiers = v5->_externalIdentifiers;
     v5->_externalIdentifiers = v10;
@@ -58,25 +58,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __48__CNExternalIdentifierContactPredicate_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
-  v16 = v4;
-  v17 = self;
+  v16 = equalCopy;
+  selfCopy = self;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __48__CNExternalIdentifierContactPredicate_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy2 = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy2}];
 
   return self;
 }
@@ -149,12 +149,12 @@ uint64_t __44__CNExternalIdentifierContactPredicate_hash__block_invoke(uint64_t 
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsWithExternalIdentifiers:]"];
-  v5 = [(CNExternalIdentifierContactPredicate *)self externalIdentifiers];
-  v6 = [v3 appendName:@"externalIdentifiers" object:v5];
+  externalIdentifiers = [(CNExternalIdentifierContactPredicate *)self externalIdentifiers];
+  v6 = [v3 appendName:@"externalIdentifiers" object:externalIdentifiers];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

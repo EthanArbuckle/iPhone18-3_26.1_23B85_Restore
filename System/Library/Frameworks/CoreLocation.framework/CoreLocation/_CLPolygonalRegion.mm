@@ -1,21 +1,21 @@
 @interface _CLPolygonalRegion
-- (BOOL)pointInPolygonWithCoordinate:(CLLocationCoordinate2D)a3 withDistanceToBorder:(double *)a4;
-- (_CLPolygonalRegion)initWithCoder:(id)a3;
-- (_CLPolygonalRegion)initWithVertices:(id)a3 identifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initNearbyAllowedWithVertices:(id)a3 identifier:(id)a4;
+- (BOOL)pointInPolygonWithCoordinate:(CLLocationCoordinate2D)coordinate withDistanceToBorder:(double *)border;
+- (_CLPolygonalRegion)initWithCoder:(id)coder;
+- (_CLPolygonalRegion)initWithVertices:(id)vertices identifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initNearbyAllowedWithVertices:(id)vertices identifier:(id)identifier;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CLPolygonalRegion
 
-- (_CLPolygonalRegion)initWithVertices:(id)a3 identifier:(id)a4
+- (_CLPolygonalRegion)initWithVertices:(id)vertices identifier:(id)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (vertices)
   {
-    v7 = [a3 count];
+    v7 = [vertices count];
     v8 = v7;
     if (v7 >= 0x66)
     {
@@ -99,10 +99,10 @@ LABEL_38:
       goto LABEL_36;
     }
 
-    [objc_msgSend(a3 "lastObject")];
+    [objc_msgSend(vertices "lastObject")];
     v14 = v13;
-    [objc_msgSend(a3 "firstObject")];
-    if (v14 != v15 || ([objc_msgSend(a3 "lastObject")], v17 = v16, objc_msgSend(objc_msgSend(a3, "firstObject"), "coordinate"), v17 != v18))
+    [objc_msgSend(vertices "firstObject")];
+    if (v14 != v15 || ([objc_msgSend(vertices "lastObject")], v17 = v16, objc_msgSend(objc_msgSend(vertices, "firstObject"), "coordinate"), v17 != v18))
     {
       if (qword_1ED519088 != -1)
       {
@@ -132,7 +132,7 @@ LABEL_38:
       goto LABEL_36;
     }
 
-    if (v8 != [objc_msgSend(MEMORY[0x1E695DFD8] setWithArray:{a3), "count"}] + 1)
+    if (v8 != [objc_msgSend(MEMORY[0x1E695DFD8] setWithArray:{vertices), "count"}] + 1)
     {
       if (qword_1ED519088 != -1)
       {
@@ -165,10 +165,10 @@ LABEL_38:
 
   v27.receiver = self;
   v27.super_class = _CLPolygonalRegion;
-  v22 = [(CLRegion *)&v27 initWithIdentifier:a4 andRegionType:2];
+  v22 = [(CLRegion *)&v27 initWithIdentifier:identifier andRegionType:2];
   if (v22)
   {
-    v22->_vertices = a3;
+    v22->_vertices = vertices;
     v22->_allowMonitoringWhileNearby = 0;
   }
 
@@ -177,9 +177,9 @@ LABEL_42:
   return v22;
 }
 
-- (id)initNearbyAllowedWithVertices:(id)a3 identifier:(id)a4
+- (id)initNearbyAllowedWithVertices:(id)vertices identifier:(id)identifier
 {
-  result = [(_CLPolygonalRegion *)self initWithVertices:a3 identifier:a4];
+  result = [(_CLPolygonalRegion *)self initWithVertices:vertices identifier:identifier];
   if (result)
   {
     *(result + 80) = 1;
@@ -196,22 +196,22 @@ LABEL_42:
   [(CLRegion *)&v3 dealloc];
 }
 
-- (_CLPolygonalRegion)initWithCoder:(id)a3
+- (_CLPolygonalRegion)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v11.receiver = self;
   v11.super_class = _CLPolygonalRegion;
-  v6 = [(CLRegion *)&v11 initWithCoder:a3];
+  v6 = [(CLRegion *)&v11 initWithCoder:coder];
   if (v6)
   {
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLPolygonalRegionCodingKeyVertices"];
-    if ([a3 containsValueForKey:@"kCLPolygonalRegionCodingKeyReferenceFrame"])
+    v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLPolygonalRegionCodingKeyVertices"];
+    if ([coder containsValueForKey:@"kCLPolygonalRegionCodingKeyReferenceFrame"])
     {
-      v8 = [a3 decodeIntForKey:@"kCLPolygonalRegionCodingKeyReferenceFrame"];
+      v8 = [coder decodeIntForKey:@"kCLPolygonalRegionCodingKeyReferenceFrame"];
     }
 
     else
@@ -219,9 +219,9 @@ LABEL_42:
       v8 = 0;
     }
 
-    if ([a3 containsValueForKey:@"kCLPolygonalRegionCodingKeyMonitoringNearby"])
+    if ([coder containsValueForKey:@"kCLPolygonalRegionCodingKeyMonitoringNearby"])
     {
-      v9 = [a3 decodeBoolForKey:@"kCLPolygonalRegionCodingKeyMonitoringNearby"];
+      v9 = [coder decodeBoolForKey:@"kCLPolygonalRegionCodingKeyMonitoringNearby"];
     }
 
     else
@@ -238,29 +238,29 @@ LABEL_42:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v9.receiver = self;
   v9.super_class = _CLPolygonalRegion;
-  [(CLRegion *)&v9 encodeWithCoder:a3];
-  v6 = [(_CLPolygonalRegion *)self vertices];
-  v7 = [(_CLPolygonalRegion *)self geoReferenceFrame];
-  v8 = [(_CLPolygonalRegion *)self allowMonitoringWhileNearby];
-  [a3 encodeObject:v6 forKey:@"kCLPolygonalRegionCodingKeyVertices"];
-  [a3 encodeInt:v7 forKey:@"kCLPolygonalRegionCodingKeyReferenceFrame"];
-  [a3 encodeBool:v8 forKey:@"kCLPolygonalRegionCodingKeyMonitoringNearby"];
+  [(CLRegion *)&v9 encodeWithCoder:coder];
+  vertices = [(_CLPolygonalRegion *)self vertices];
+  geoReferenceFrame = [(_CLPolygonalRegion *)self geoReferenceFrame];
+  allowMonitoringWhileNearby = [(_CLPolygonalRegion *)self allowMonitoringWhileNearby];
+  [coder encodeObject:vertices forKey:@"kCLPolygonalRegionCodingKeyVertices"];
+  [coder encodeInt:geoReferenceFrame forKey:@"kCLPolygonalRegionCodingKeyReferenceFrame"];
+  [coder encodeBool:allowMonitoringWhileNearby forKey:@"kCLPolygonalRegionCodingKeyMonitoringNearby"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _CLPolygonalRegion;
-  v4 = [(CLRegion *)&v6 copyWithZone:a3];
+  v4 = [(CLRegion *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[80] = [(_CLPolygonalRegion *)self allowMonitoringWhileNearby];
@@ -271,12 +271,12 @@ LABEL_42:
   return v4;
 }
 
-- (BOOL)pointInPolygonWithCoordinate:(CLLocationCoordinate2D)a3 withDistanceToBorder:(double *)a4
+- (BOOL)pointInPolygonWithCoordinate:(CLLocationCoordinate2D)coordinate withDistanceToBorder:(double *)border
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v49 = *MEMORY[0x1E69E9840];
-  if (!CLLocationCoordinate2DIsValid(a3))
+  if (!CLLocationCoordinate2DIsValid(coordinate))
   {
     if (qword_1ED519088 != -1)
     {
@@ -335,7 +335,7 @@ LABEL_42:
     goto LABEL_90;
   }
 
-  if (!a4)
+  if (!border)
   {
     if (qword_1ED519088 != -1)
     {
@@ -457,9 +457,9 @@ LABEL_32:
     }
 
     v30 = sub_19B87E164(latitude, longitude, v28, v29);
-    if (*a4 < 0.0 || v30 < *a4)
+    if (*border < 0.0 || v30 < *border)
     {
-      *a4 = v30;
+      *border = v30;
     }
 
     goto LABEL_39;
@@ -475,7 +475,7 @@ LABEL_72:
   v40 = qword_1ED519090;
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEBUG))
   {
-    v41 = *a4;
+    v41 = *border;
     *buf = 134218240;
     v46 = v41;
     v47 = 1024;
@@ -492,7 +492,7 @@ LABEL_72:
       dispatch_once(&qword_1ED519088, &unk_1F0E6E728);
     }
 
-    v44 = *a4;
+    v44 = *border;
     v43 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[_CLPolygonalRegion pointInPolygonWithCoordinate:withDistanceToBorder:]", "CoreLocation: %s\n", v43);
     if (v43 != buf)

@@ -1,7 +1,7 @@
 @interface AVCMediaStreamNegotiatorSettingsImmersiveVideo
-- (AVCMediaStreamNegotiatorSettingsImmersiveVideo)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsImmersiveVideo)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 - (OpaqueCMTagCollection)newTagCollectionForMetadata;
-- (OpaqueCMTagCollection)newTagCollectionForPixelBufferAtChannelIndex:(int)a3;
+- (OpaqueCMTagCollection)newTagCollectionForPixelBufferAtChannelIndex:(int)index;
 - (__CFArray)newTagCollectionArray;
 - (void)newTagCollectionArray;
 - (void)newTagCollectionForMetadata;
@@ -9,9 +9,9 @@
 
 @implementation AVCMediaStreamNegotiatorSettingsImmersiveVideo
 
-- (AVCMediaStreamNegotiatorSettingsImmersiveVideo)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsImmersiveVideo)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
-  v6 = a4;
+  roleCopy = role;
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = AVCMediaStreamNegotiatorSettingsImmersiveVideo;
@@ -29,7 +29,7 @@
     v8->super._ltrpEnabled = 0;
     v8->super._enableInterleavedEncoding = 1;
     v8->super._bitrateArbiterMode = 8;
-    if (v6 == 1)
+    if (roleCopy == 1)
     {
       if (+[AVCMediaStreamNegotiatorSettingsImmersiveVideo isOfferSupported])
       {
@@ -38,12 +38,12 @@
       }
     }
 
-    else if (v6 == 2)
+    else if (roleCopy == 2)
     {
       v10 = 2;
 LABEL_8:
       v8->_captureSource = v10;
-      if ([AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:a3]> 1)
+      if ([AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:options]> 1)
       {
         v13 = @"HDR mode is not supported";
       }
@@ -74,27 +74,27 @@ LABEL_8:
   }
 
 LABEL_16:
-  if (a5)
+  if (error)
   {
-    *a5 = v13;
+    *error = v13;
   }
 
   return 0;
 }
 
-- (OpaqueCMTagCollection)newTagCollectionForPixelBufferAtChannelIndex:(int)a3
+- (OpaqueCMTagCollection)newTagCollectionForPixelBufferAtChannelIndex:(int)index
 {
   tagCollection[1] = *MEMORY[0x1E69E9840];
   tagCollection[0] = 0;
   if (CMTagCollectionCreateMutable(*MEMORY[0x1E695E480], 0, tagCollection))
   {
-    [AVCMediaStreamNegotiatorSettingsImmersiveVideo newTagCollectionForPixelBufferAtChannelIndex:a3];
+    [AVCMediaStreamNegotiatorSettingsImmersiveVideo newTagCollectionForPixelBufferAtChannelIndex:index];
   }
 
   else
   {
-    v4 = a3;
-    if (a3)
+    indexCopy = index;
+    if (index)
     {
       v5 = 2;
     }
@@ -111,10 +111,10 @@ LABEL_16:
     v9.value = v5;
     CMTagCollectionAddTag(tagCollection[0], v9);
     *&v10.category = 0x27663686ELL;
-    v10.value = v4;
+    v10.value = indexCopy;
     CMTagCollectionAddTag(tagCollection[0], v10);
     *&v11.category = 0x2766C6179;
-    v11.value = v4;
+    v11.value = indexCopy;
     CMTagCollectionAddTag(tagCollection[0], v11);
     *&v12.category = 0x57061636BLL;
     v12.value = 1852796517;
@@ -158,12 +158,12 @@ LABEL_16:
 
   v5 = v4;
   v6 = [(AVCMediaStreamNegotiatorSettingsImmersiveVideo *)self newTagCollectionForPixelBufferAtChannelIndex:1];
-  v7 = [(AVCMediaStreamNegotiatorSettingsImmersiveVideo *)self newTagCollectionForMetadata];
-  if (v7)
+  newTagCollectionForMetadata = [(AVCMediaStreamNegotiatorSettingsImmersiveVideo *)self newTagCollectionForMetadata];
+  if (newTagCollectionForMetadata)
   {
     CFArrayAppendValue(Mutable, v5);
     CFArrayAppendValue(Mutable, v6);
-    CFArrayAppendValue(Mutable, v7);
+    CFArrayAppendValue(Mutable, newTagCollectionForMetadata);
   }
 
   else
@@ -177,9 +177,9 @@ LABEL_16:
     CFRelease(v6);
   }
 
-  if (v7)
+  if (newTagCollectionForMetadata)
   {
-    CFRelease(v7);
+    CFRelease(newTagCollectionForMetadata);
   }
 
   return Mutable;
@@ -226,13 +226,13 @@ LABEL_16:
   v2 = VRTraceErrorLogLevelToCSTR();
   v3 = *MEMORY[0x1E6986650];
   os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
-  *a1 = 136315650;
-  *(a1 + 4) = v2;
-  *(a1 + 12) = 2080;
-  *(a1 + 14) = "[AVCMediaStreamNegotiatorSettingsImmersiveVideo newTagCollectionArray]";
-  *(a1 + 22) = 1024;
-  *(a1 + 24) = 115;
-  _os_log_error_impl(&dword_1DB56E000, v3, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to create tagCollection for left pixel buffer", a1, 0x1Cu);
+  *self = 136315650;
+  *(self + 4) = v2;
+  *(self + 12) = 2080;
+  *(self + 14) = "[AVCMediaStreamNegotiatorSettingsImmersiveVideo newTagCollectionArray]";
+  *(self + 22) = 1024;
+  *(self + 24) = 115;
+  _os_log_error_impl(&dword_1DB56E000, v3, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to create tagCollection for left pixel buffer", self, 0x1Cu);
   __break(1u);
 }
 

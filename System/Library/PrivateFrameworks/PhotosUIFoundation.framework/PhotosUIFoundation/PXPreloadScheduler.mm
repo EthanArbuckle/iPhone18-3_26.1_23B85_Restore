@@ -4,19 +4,19 @@
 - (PXPreloadScheduler)init;
 - (void)_activateQueues;
 - (void)_activateQueuesIfAllowed;
-- (void)_didExecuteTaskWithQoS:(unint64_t)a3;
+- (void)_didExecuteTaskWithQoS:(unint64_t)s;
 - (void)_runLoopWillStartWaiting;
-- (void)_setActive:(BOOL)a3;
+- (void)_setActive:(BOOL)active;
 - (void)_updateIsActive;
-- (void)_willScheduleTaskWithQoS:(unint64_t)a3;
+- (void)_willScheduleTaskWithQoS:(unint64_t)s;
 - (void)applicationDidFinishExtendedLaunch;
 - (void)dealloc;
-- (void)scheduleDeferredMainQueueTask:(id)a3;
-- (void)scheduleDeferredTaskWithQoS:(unint64_t)a3 block:(id)a4;
-- (void)scheduleMainQueueTask:(id)a3;
-- (void)scheduleMainQueueTaskAndWait:(id)a3;
-- (void)scheduleTaskAfterCATransactionCommits:(id)a3;
-- (void)scheduleTaskWithQoS:(unint64_t)a3 block:(id)a4;
+- (void)scheduleDeferredMainQueueTask:(id)task;
+- (void)scheduleDeferredTaskWithQoS:(unint64_t)s block:(id)block;
+- (void)scheduleMainQueueTask:(id)task;
+- (void)scheduleMainQueueTaskAndWait:(id)wait;
+- (void)scheduleTaskAfterCATransactionCommits:(id)commits;
+- (void)scheduleTaskWithQoS:(unint64_t)s block:(id)block;
 @end
 
 @implementation PXPreloadScheduler
@@ -121,26 +121,26 @@ uint64_t __37__PXPreloadScheduler_sharedScheduler__block_invoke()
   }
 }
 
-- (void)scheduleTaskAfterCATransactionCommits:(id)a3
+- (void)scheduleTaskAfterCATransactionCommits:(id)commits
 {
-  v3 = a3;
+  commitsCopy = commits;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__PXPreloadScheduler_scheduleTaskAfterCATransactionCommits___block_invoke;
   v5[3] = &unk_1E7BB56D0;
-  v6 = v3;
-  v4 = v3;
+  v6 = commitsCopy;
+  v4 = commitsCopy;
   px_dispatch_on_main_queue(v5);
 }
 
-- (void)_setActive:(BOOL)a3
+- (void)_setActive:(BOOL)active
 {
-  if (self->__isActive != a3)
+  if (self->__isActive != active)
   {
     block[7] = v3;
     block[8] = v4;
-    self->__isActive = a3;
-    if (a3)
+    self->__isActive = active;
+    if (active)
     {
       v6 = [PXDisplayLink alloc];
       v7 = [(PXDisplayLink *)v6 initWithWeakTarget:self selector:sel__displayLinkTick_ deferredStart:0 runloopModes:*MEMORY[0x1E695D918] preferredFramesPerSecond:0];
@@ -200,11 +200,11 @@ uint64_t __37__PXPreloadScheduler_sharedScheduler__block_invoke()
 {
   if ([(NSMutableArray *)self->_pendingBlocks count]&& [(PXPreloadScheduler *)self _shouldExecutePendingBlock])
   {
-    v3 = [(NSMutableArray *)self->_pendingBlocks firstObject];
-    if (v3)
+    firstObject = [(NSMutableArray *)self->_pendingBlocks firstObject];
+    if (firstObject)
     {
       [(NSMutableArray *)self->_pendingBlocks removeObjectAtIndex:0];
-      v3[2](v3);
+      firstObject[2](firstObject);
     }
   }
 
@@ -267,34 +267,34 @@ LABEL_18:
   return result;
 }
 
-- (void)_didExecuteTaskWithQoS:(unint64_t)a3
+- (void)_didExecuteTaskWithQoS:(unint64_t)s
 {
-  if (a3 == 1)
+  if (s == 1)
   {
     dispatch_group_leave(self->_pendingUtilityTasks);
   }
 }
 
-- (void)_willScheduleTaskWithQoS:(unint64_t)a3
+- (void)_willScheduleTaskWithQoS:(unint64_t)s
 {
-  if (a3 == 1)
+  if (s == 1)
   {
     dispatch_group_enter(self->_pendingUtilityTasks);
   }
 }
 
-- (void)scheduleDeferredTaskWithQoS:(unint64_t)a3 block:(id)a4
+- (void)scheduleDeferredTaskWithQoS:(unint64_t)s block:(id)block
 {
-  v6 = a4;
-  [(PXPreloadScheduler *)self _willScheduleTaskWithQoS:a3];
+  blockCopy = block;
+  [(PXPreloadScheduler *)self _willScheduleTaskWithQoS:s];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__PXPreloadScheduler_scheduleDeferredTaskWithQoS_block___block_invoke;
   v8[3] = &unk_1E7BB5680;
-  v9 = v6;
-  v10 = a3;
+  v9 = blockCopy;
+  sCopy = s;
   v8[4] = self;
-  v7 = v6;
+  v7 = blockCopy;
   [(PXPreloadScheduler *)self scheduleMainQueueTask:v8];
 }
 
@@ -322,10 +322,10 @@ uint64_t __56__PXPreloadScheduler_scheduleDeferredTaskWithQoS_block___block_invo
   return [v2 _didExecuteTaskWithQoS:v3];
 }
 
-- (void)scheduleTaskWithQoS:(unint64_t)a3 block:(id)a4
+- (void)scheduleTaskWithQoS:(unint64_t)s block:(id)block
 {
-  v6 = a4;
-  if (a3 == 2)
+  blockCopy = block;
+  if (s == 2)
   {
     v9 = self->_backgroundQueue;
     pendingUtilityTasks = self->_pendingUtilityTasks;
@@ -333,7 +333,7 @@ uint64_t __56__PXPreloadScheduler_scheduleDeferredTaskWithQoS_block___block_invo
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (s == 1)
   {
     v7 = 0;
     pendingUtilityTasks = self->_utilityQueue;
@@ -341,7 +341,7 @@ uint64_t __56__PXPreloadScheduler_scheduleDeferredTaskWithQoS_block___block_invo
   }
 
   v7 = 0;
-  if (!a3)
+  if (!s)
   {
     pendingUtilityTasks = self->_defaultQueue;
 LABEL_6:
@@ -353,15 +353,15 @@ LABEL_8:
 
   v9 = 0;
 LABEL_10:
-  [(PXPreloadScheduler *)self _willScheduleTaskWithQoS:a3];
+  [(PXPreloadScheduler *)self _willScheduleTaskWithQoS:s];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__PXPreloadScheduler_scheduleTaskWithQoS_block___block_invoke;
   block[3] = &unk_1E7BB5680;
   block[4] = self;
-  v11 = v6;
+  v11 = blockCopy;
   v14 = v11;
-  v15 = a3;
+  sCopy = s;
   v12 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, block);
   if (v7)
   {
@@ -385,19 +385,19 @@ uint64_t __48__PXPreloadScheduler_scheduleTaskWithQoS_block___block_invoke(void 
   return [v2 _didExecuteTaskWithQoS:v3];
 }
 
-- (void)scheduleMainQueueTaskAndWait:(id)a3
+- (void)scheduleMainQueueTaskAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v5 = dispatch_semaphore_create(0);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__PXPreloadScheduler_scheduleMainQueueTaskAndWait___block_invoke;
   aBlock[3] = &unk_1E7BB7A10;
   v13 = v5;
-  v14 = v4;
+  v14 = waitCopy;
   aBlock[4] = self;
   v6 = v5;
-  v7 = v4;
+  v7 = waitCopy;
   v8 = _Block_copy(aBlock);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -431,29 +431,29 @@ uint64_t __51__PXPreloadScheduler_scheduleMainQueueTaskAndWait___block_invoke_2(
   return [v4 _updateIsActive];
 }
 
-- (void)scheduleDeferredMainQueueTask:(id)a3
+- (void)scheduleDeferredMainQueueTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PXPreloadScheduler_scheduleDeferredMainQueueTask___block_invoke;
   v6[3] = &unk_1E7BB7DA8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = taskCopy;
+  v5 = taskCopy;
   [(PXPreloadScheduler *)self scheduleDeferredTaskWithQoS:2 block:v6];
 }
 
-- (void)scheduleMainQueueTask:(id)a3
+- (void)scheduleMainQueueTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__PXPreloadScheduler_scheduleMainQueueTask___block_invoke;
   v6[3] = &unk_1E7BB7DA8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = taskCopy;
+  v5 = taskCopy;
   [(PXPreloadScheduler *)self scheduleTaskWithQoS:1 block:v6];
 }
 

@@ -1,21 +1,21 @@
 @interface PluginSchedulerTimestamp
 - (NSString)debugDescription;
 - (_TtC28SiriPrivateLearningAnalytics24PluginSchedulerTimestamp)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PluginSchedulerTimestamp
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_222A75BC0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_222A75BC0(coderCopy);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_222A75F2C();
 
   v3 = _sSS28SiriPrivateLearningAnalyticsE10toNSObjectSo0F0CyF_0();

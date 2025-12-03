@@ -23,39 +23,39 @@
 
 + (void)br_gatherBehaviour
 {
-  v2 = [a1 br_behaviourMap];
-  objc_sync_enter(v2);
-  v3 = NSStringFromClass(a1);
-  v4 = [v2 objectForKey:v3];
+  br_behaviourMap = [self br_behaviourMap];
+  objc_sync_enter(br_behaviourMap);
+  unsignedIntegerValue = NSStringFromClass(self);
+  v4 = [br_behaviourMap objectForKey:unsignedIntegerValue];
 
   if (v4)
   {
-    v3 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(br_behaviourMap);
   if (!v4)
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
-      v3 = 0;
+      unsignedIntegerValue = 0;
     }
 
     else
     {
-      v3 = [objc_msgSend(a1 "superclass")];
+      unsignedIntegerValue = [objc_msgSend(self "superclass")];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (void)br_setGatherBehaviour:()BRGeometry
 {
-  obj = [a1 br_behaviourMap];
+  obj = [self br_behaviourMap];
   objc_sync_enter(obj);
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = NSStringFromClass(a1);
+  v6 = NSStringFromClass(self);
   [obj setObject:v5 forKey:v6];
 
   objc_sync_exit(obj);
@@ -65,8 +65,8 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [a1 br_behaviourMap];
-  objc_sync_enter(v7);
+  br_behaviourMap = [self br_behaviourMap];
+  objc_sync_enter(br_behaviourMap);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -88,7 +88,7 @@
 
         v12 = *(*(&v14 + 1) + 8 * v11);
         v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{a3, v14}];
-        [v7 setObject:v13 forKey:v12];
+        [br_behaviourMap setObject:v13 forKey:v12];
 
         ++v11;
       }
@@ -100,30 +100,30 @@
     while (v9);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(br_behaviourMap);
 }
 
 - (void)br_setLayerNames
 {
-  v2 = [a1 layer];
-  v5.receiver = a1;
+  layer = [self layer];
+  v5.receiver = self;
   v5.super_class = UIView_0;
   v3 = objc_msgSendSuper2(&v5, sel_description);
-  [v2 setName:v3];
+  [layer setName:v3];
 
-  v4 = [a1 subviews];
-  [v4 makeObjectsPerformSelector:sel_br_setLayerNames];
+  subviews = [self subviews];
+  [subviews makeObjectsPerformSelector:sel_br_setLayerNames];
 }
 
 - (uint64_t)br_viewIsClipped
 {
   v35 = *MEMORY[0x277D85DE8];
-  v2 = objc_getAssociatedObject(a1, &BRIgnoreClippingKey);
+  v2 = objc_getAssociatedObject(self, &BRIgnoreClippingKey);
   v3 = v2;
   if (v2 && ([v2 BOOLValue] & 1) != 0)
   {
 LABEL_33:
-    v23 = 0;
+    _UIViewDebuggingIsViewClipping = 0;
   }
 
   else
@@ -132,7 +132,7 @@ LABEL_33:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v4 = [a1 constraintsAffectingLayoutForAxis:1];
+    v4 = [self constraintsAffectingLayoutForAxis:1];
     v5 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v5)
     {
@@ -149,8 +149,8 @@ LABEL_33:
           }
 
           v9 = *(*(&v29 + 1) + 8 * v8);
-          v10 = [v9 firstItem];
-          if (v10 == a1 && [v9 firstAttribute] == 8 && !objc_msgSend(v9, "secondAttribute"))
+          firstItem = [v9 firstItem];
+          if (firstItem == self && [v9 firstAttribute] == 8 && !objc_msgSend(v9, "secondAttribute"))
           {
             [v9 constant];
             v12 = v11;
@@ -182,7 +182,7 @@ LABEL_32:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = [a1 constraintsAffectingLayoutForAxis:{0, 0}];
+    v4 = [self constraintsAffectingLayoutForAxis:{0, 0}];
     v14 = [v4 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v14)
     {
@@ -199,8 +199,8 @@ LABEL_32:
           }
 
           v18 = *(*(&v25 + 1) + 8 * v17);
-          v19 = [v18 firstItem];
-          if (v19 == a1 && [v18 firstAttribute] == 7 && !objc_msgSend(v18, "secondAttribute"))
+          firstItem2 = [v18 firstItem];
+          if (firstItem2 == self && [v18 firstAttribute] == 7 && !objc_msgSend(v18, "secondAttribute"))
           {
             [v18 constant];
             v21 = v20;
@@ -226,10 +226,10 @@ LABEL_32:
       while (v22);
     }
 
-    v23 = [a1 _UIViewDebuggingIsViewClipping];
+    _UIViewDebuggingIsViewClipping = [self _UIViewDebuggingIsViewClipping];
   }
 
-  return v23;
+  return _UIViewDebuggingIsViewClipping;
 }
 
 @end

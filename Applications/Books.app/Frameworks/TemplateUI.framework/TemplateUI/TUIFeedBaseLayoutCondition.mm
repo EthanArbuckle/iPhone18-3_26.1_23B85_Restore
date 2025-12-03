@@ -1,16 +1,16 @@
 @interface TUIFeedBaseLayoutCondition
-- (TUIFeedBaseLayoutCondition)initWithCompletion:(id)a3;
+- (TUIFeedBaseLayoutCondition)initWithCompletion:(id)completion;
 - (void)completed;
 - (void)dealloc;
 - (void)invalidate;
-- (void)onInvalidate:(id)a3;
+- (void)onInvalidate:(id)invalidate;
 @end
 
 @implementation TUIFeedBaseLayoutCondition
 
-- (TUIFeedBaseLayoutCondition)initWithCompletion:(id)a3
+- (TUIFeedBaseLayoutCondition)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10.receiver = self;
   v10.super_class = TUIFeedBaseLayoutCondition;
   v5 = [(TUIFeedBaseLayoutCondition *)&v10 init];
@@ -19,7 +19,7 @@
   {
     v5->_lock._os_unfair_lock_opaque = 0;
     *&v5->_state &= ~1u;
-    v7 = [v4 copy];
+    v7 = [completionCopy copy];
     completion = v6->_completion;
     v6->_completion = v7;
   }
@@ -35,12 +35,12 @@
   [(TUIFeedBaseLayoutCondition *)&v3 dealloc];
 }
 
-- (void)onInvalidate:(id)a3
+- (void)onInvalidate:(id)invalidate
 {
-  v4 = a3;
-  if (v4)
+  invalidateCopy = invalidate;
+  if (invalidateCopy)
   {
-    v9 = v4;
+    v9 = invalidateCopy;
     os_unfair_lock_lock_with_options();
     if (*&self->_state)
     {
@@ -66,7 +66,7 @@
       os_unfair_lock_unlock(&self->_lock);
     }
 
-    v4 = v9;
+    invalidateCopy = v9;
   }
 }
 

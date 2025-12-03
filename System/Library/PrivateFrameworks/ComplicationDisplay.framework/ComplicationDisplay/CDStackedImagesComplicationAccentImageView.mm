@@ -7,9 +7,9 @@
 
 - (int64_t)_backgroundFilterStyle
 {
-  v2 = [(CDStackedImagesComplicationImageView *)self filterProvider];
-  v3 = [v2 device];
-  v4 = CDShowGossamerUI(v3);
+  filterProvider = [(CDStackedImagesComplicationImageView *)self filterProvider];
+  device = [filterProvider device];
+  v4 = CDShowGossamerUI(device);
 
   if (v4)
   {
@@ -24,9 +24,9 @@
 
 - (int64_t)_foregroundFilterStyle
 {
-  v2 = [(CDStackedImagesComplicationImageView *)self filterProvider];
-  v3 = [v2 device];
-  v4 = CDShowGossamerUI(v3);
+  filterProvider = [(CDStackedImagesComplicationImageView *)self filterProvider];
+  device = [filterProvider device];
+  v4 = CDShowGossamerUI(device);
 
   if (v4)
   {

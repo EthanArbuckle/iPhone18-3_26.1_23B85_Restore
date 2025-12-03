@@ -1,5 +1,5 @@
 @interface OTFetchViewsOperation
-- (OTFetchViewsOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5;
+- (OTFetchViewsOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -14,10 +14,10 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "fetching views", buf, 2u);
   }
 
-  v4 = [(OTFetchViewsOperation *)self deps];
-  v5 = [v4 stateHolder];
+  deps = [(OTFetchViewsOperation *)self deps];
+  stateHolder = [deps stateHolder];
   v16 = 0;
-  v6 = [v5 loadOrCreateAccountMetadata:&v16];
+  v6 = [stateHolder loadOrCreateAccountMetadata:&v16];
   v7 = v16;
 
   if (!v6 || v7)
@@ -37,36 +37,36 @@
   }
 
   objc_initWeak(buf, self);
-  v9 = [(OTFetchViewsOperation *)self deps];
-  v10 = [v9 cuttlefishXPCWrapper];
-  v11 = [(OTFetchViewsOperation *)self deps];
-  v12 = [v11 activeAccount];
-  v13 = [(OTFetchViewsOperation *)self isInheritedAccount];
+  deps2 = [(OTFetchViewsOperation *)self deps];
+  cuttlefishXPCWrapper = [deps2 cuttlefishXPCWrapper];
+  deps3 = [(OTFetchViewsOperation *)self deps];
+  activeAccount = [deps3 activeAccount];
+  isInheritedAccount = [(OTFetchViewsOperation *)self isInheritedAccount];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10015EF98;
   v14[3] = &unk_100338738;
   objc_copyWeak(&v15, buf);
-  [v10 fetchCurrentPolicyWithSpecificUser:v12 modelIDOverride:0 isInheritedAccount:v13 reply:v14];
+  [cuttlefishXPCWrapper fetchCurrentPolicyWithSpecificUser:activeAccount modelIDOverride:0 isInheritedAccount:isInheritedAccount reply:v14];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (OTFetchViewsOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5
+- (OTFetchViewsOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v15.receiver = self;
   v15.super_class = OTFetchViewsOperation;
   v12 = [(CKKSGroupOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong((v12 + 150), a3);
-    objc_storeStrong((v13 + 134), a4);
-    objc_storeStrong((v13 + 142), a5);
+    objc_storeStrong((v12 + 150), dependencies);
+    objc_storeStrong((v13 + 134), state);
+    objc_storeStrong((v13 + 142), errorState);
   }
 
   return v13;

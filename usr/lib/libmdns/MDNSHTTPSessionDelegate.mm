@@ -1,29 +1,29 @@
 @interface MDNSHTTPSessionDelegate
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation MDNSHTTPSessionDelegate
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v13 = a5;
-  v7 = a6;
-  v8 = [v13 protectionSpace];
-  v9 = [v8 authenticationMethod];
-  v10 = [v9 isEqualToString:*MEMORY[0x29EDB84E8]];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v10 = [authenticationMethod isEqualToString:*MEMORY[0x29EDB84E8]];
 
   if (v10)
   {
-    v11 = [v13 protectionSpace];
-    v12 = [v11 serverTrust];
+    protectionSpace2 = [challengeCopy protectionSpace];
+    serverTrust = [protectionSpace2 serverTrust];
 
-    if (v12)
+    if (serverTrust)
     {
-      SecTrustSetNetworkFetchAllowed(v12, 0);
+      SecTrustSetNetworkFetchAllowed(serverTrust, 0);
     }
   }
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
 @end

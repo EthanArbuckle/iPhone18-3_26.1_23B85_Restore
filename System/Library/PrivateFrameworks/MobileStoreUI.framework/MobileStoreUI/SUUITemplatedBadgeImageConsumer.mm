@@ -1,25 +1,25 @@
 @interface SUUITemplatedBadgeImageConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SUUITemplatedBadgeImageConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = SUUITemplatedBadgeImageConsumer;
-  v6 = [(SUUIImageDataConsumer *)&v12 objectForData:a3 response:a4 error:a5];
+  v6 = [(SUUIImageDataConsumer *)&v12 objectForData:data response:response error:error];
   if (v6)
   {
     v7 = v6;
-    v8 = [(SUUITemplatedBadgeImageConsumer *)self templateColor];
+    templateColor = [(SUUITemplatedBadgeImageConsumer *)self templateColor];
 
-    if (v8)
+    if (templateColor)
     {
-      v9 = [(SUUITemplatedBadgeImageConsumer *)self templateColor];
-      v10 = [v7 _flatImageWithColor:v9];
+      templateColor2 = [(SUUITemplatedBadgeImageConsumer *)self templateColor];
+      v10 = [v7 _flatImageWithColor:templateColor2];
 
-      v7 = v9;
+      v7 = templateColor2;
     }
 
     else

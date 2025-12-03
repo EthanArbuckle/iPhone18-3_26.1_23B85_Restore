@@ -1,9 +1,9 @@
 @interface PULayoutSectionListSampler
-- (PULayoutSectionListSampler)initWithNumberOfVisibleItems:(int64_t)a3 numberOfRealItems:(int64_t)a4;
-- (int64_t)indexForUnsampledIndex:(int64_t)a3 isMainItem:(BOOL *)a4;
+- (PULayoutSectionListSampler)initWithNumberOfVisibleItems:(int64_t)items numberOfRealItems:(int64_t)realItems;
+- (int64_t)indexForUnsampledIndex:(int64_t)index isMainItem:(BOOL *)item;
 - (void)dealloc;
 - (void)dumpInternalMemory;
-- (void)enumerateUnsampledIndexesForSampledIndexInRange:(_NSRange)a3 usingBlock:(id)a4;
+- (void)enumerateUnsampledIndexesForSampledIndexInRange:(_NSRange)range usingBlock:(id)block;
 @end
 
 @implementation PULayoutSectionListSampler
@@ -17,16 +17,16 @@
   NSLog(&cfstr_SpreadLdItemsO_0.isa, numberOfVisibleItems, numberOfRealItems, v5);
 }
 
-- (void)enumerateUnsampledIndexesForSampledIndexInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateUnsampledIndexesForSampledIndexInRange:(_NSRange)range usingBlock:(id)block
 {
   v8 = 0;
-  if (a3.location < (a3.location + a3.length))
+  if (range.location < (range.location + range.length))
   {
-    location = a3.location;
-    v7 = a3.length - 1;
+    location = range.location;
+    v7 = range.length - 1;
     do
     {
-      (*(a4 + 2))(a4, location, self->_visibleItemIndexes[location], &v8);
+      (*(block + 2))(block, location, self->_visibleItemIndexes[location], &v8);
       if (!v7)
       {
         break;
@@ -40,23 +40,23 @@
   }
 }
 
-- (int64_t)indexForUnsampledIndex:(int64_t)a3 isMainItem:(BOOL *)a4
+- (int64_t)indexForUnsampledIndex:(int64_t)index isMainItem:(BOOL *)item
 {
-  if (a3 < 0 || self->_numberOfRealItems <= a3)
+  if (index < 0 || self->_numberOfRealItems <= index)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:656 description:{@"Invalid unsampled index %ld for %ld real items", a3, self->_numberOfRealItems}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:656 description:{@"Invalid unsampled index %ld for %ld real items", index, self->_numberOfRealItems}];
   }
 
   visibleItemIndexes = self->_visibleItemIndexes;
   v9 = *visibleItemIndexes;
-  if (*visibleItemIndexes >= a3)
+  if (*visibleItemIndexes >= index)
   {
     result = 0;
 LABEL_8:
-    if (a4)
+    if (item)
     {
-      *a4 = v9 == a3;
+      *item = v9 == index;
     }
 
     return result;
@@ -64,13 +64,13 @@ LABEL_8:
 
   result = self->_numberOfVisibleItems - 1;
   v9 = visibleItemIndexes[result];
-  if (v9 <= a3)
+  if (v9 <= index)
   {
     goto LABEL_8;
   }
 
   lastSeenUnsampledIndex = self->_lastSeenUnsampledIndex;
-  if (lastSeenUnsampledIndex > a3)
+  if (lastSeenUnsampledIndex > index)
   {
 LABEL_6:
     result = 0;
@@ -78,11 +78,11 @@ LABEL_6:
   }
 
   result = self->_lastSeenSampledIndex;
-  if (self->_lastSeenTopUnsampledIndex > a3)
+  if (self->_lastSeenTopUnsampledIndex > index)
   {
-    if (a4)
+    if (item)
     {
-      *a4 = lastSeenUnsampledIndex == a3;
+      *item = lastSeenUnsampledIndex == index;
     }
 
     if (result != 0x7FFFFFFFFFFFFFFFLL)
@@ -105,11 +105,11 @@ LABEL_16:
     }
 
     v12 = visibleItemIndexes[result];
-    if (v12 == a3)
+    if (v12 == index)
     {
-      self->_lastSeenUnsampledIndex = a3;
+      self->_lastSeenUnsampledIndex = index;
       self->_lastSeenTopUnsampledIndex = visibleItemIndexes[result + 1];
-      if (!a4)
+      if (!item)
       {
         goto LABEL_27;
       }
@@ -118,7 +118,7 @@ LABEL_16:
       goto LABEL_26;
     }
 
-    if (v12 > a3)
+    if (v12 > index)
     {
       break;
     }
@@ -129,14 +129,14 @@ LABEL_16:
 
   self->_lastSeenTopUnsampledIndex = v12;
   --result;
-  if (!a4)
+  if (!item)
   {
     goto LABEL_27;
   }
 
   v13 = 0;
 LABEL_26:
-  *a4 = v13;
+  *item = v13;
 LABEL_27:
   self->_lastSeenSampledIndex = result;
   return result;
@@ -150,7 +150,7 @@ LABEL_27:
   [(PULayoutSectionListSampler *)&v3 dealloc];
 }
 
-- (PULayoutSectionListSampler)initWithNumberOfVisibleItems:(int64_t)a3 numberOfRealItems:(int64_t)a4
+- (PULayoutSectionListSampler)initWithNumberOfVisibleItems:(int64_t)items numberOfRealItems:(int64_t)realItems
 {
   v9.receiver = self;
   v9.super_class = PULayoutSectionListSampler;
@@ -158,9 +158,9 @@ LABEL_27:
   v7 = v6;
   if (v6)
   {
-    v6->_numberOfVisibleItems = a3;
-    v6->_numberOfRealItems = a4;
-    v6->_visibleItemIndexes = malloc_type_malloc(8 * a3, 0x100004000313F17uLL);
+    v6->_numberOfVisibleItems = items;
+    v6->_numberOfRealItems = realItems;
+    v6->_visibleItemIndexes = malloc_type_malloc(8 * items, 0x100004000313F17uLL);
     v7->_lastSeenUnsampledIndex = 0x7FFFFFFFFFFFFFFFLL;
     v7->_lastSeenTopUnsampledIndex = 0;
   }

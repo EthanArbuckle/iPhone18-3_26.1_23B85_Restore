@@ -1,6 +1,6 @@
 @interface PGTitle
-+ (PGTitle)titleWithString:(id)a3 category:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (PGTitle)titleWithString:(id)string category:(int64_t)category;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -16,10 +16,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -29,20 +29,20 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
-      v8 = [(PGTitle *)v7 stringValue];
+      v7 = equalCopy;
+      stringValue = [(PGTitle *)v7 stringValue];
       category = self->_category;
       if (category == [(PGTitle *)v7 category])
       {
         stringValue = self->_stringValue;
-        if (stringValue == v8)
+        if (stringValue == stringValue)
         {
           v6 = 1;
         }
 
         else
         {
-          v6 = [(NSString *)stringValue isEqualToString:v8];
+          v6 = [(NSString *)stringValue isEqualToString:stringValue];
         }
       }
 
@@ -61,14 +61,14 @@
   return v6;
 }
 
-+ (PGTitle)titleWithString:(id)a3 category:(int64_t)a4
++ (PGTitle)titleWithString:(id)string category:(int64_t)category
 {
-  v5 = a3;
+  stringCopy = string;
   v6 = objc_alloc_init(PGTitle);
   stringValue = v6->_stringValue;
-  v6->_stringValue = v5;
+  v6->_stringValue = stringCopy;
 
-  v6->_category = a4;
+  v6->_category = category;
 
   return v6;
 }

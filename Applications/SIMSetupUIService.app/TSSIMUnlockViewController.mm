@@ -6,23 +6,23 @@
 - (BOOL)resignFirstResponder;
 - (TSSIMUnlockViewController)init;
 - (id)_presentedUnlockViewController;
-- (unint64_t)_indexForSubscriptionContextWithUUID:(id)a3;
+- (unint64_t)_indexForSubscriptionContextWithUUID:(id)d;
 - (unint64_t)_numberOfLockedSubscriptionContexts;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_applySubscriptionContext:(id)a3 withSubscriptionAction:(id)a4;
+- (void)_applySubscriptionContext:(id)context withSubscriptionAction:(id)action;
 - (void)_deactivate;
 - (void)_dismissUnlockViewControllerAndDeactivate;
 - (void)_presentUnlockViewController;
-- (void)_queue_processSubscriptionContext:(id)a3 withSubscriptionSIMStatus:(id)a4;
-- (void)carrierBundleChange:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)phoneNumberChanged:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)screenLockDidUpdate:(BOOL)a3;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
-- (void)unlockDetailViewController:(id)a3 didCompleteWithResult:(int64_t)a4;
-- (void)unlockListViewControllerDidComplete:(id)a3;
+- (void)_queue_processSubscriptionContext:(id)context withSubscriptionSIMStatus:(id)status;
+- (void)carrierBundleChange:(id)change;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)phoneNumberChanged:(id)changed;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)screenLockDidUpdate:(BOOL)update;
+- (void)simStatusDidChange:(id)change status:(id)status;
+- (void)unlockDetailViewController:(id)controller didCompleteWithResult:(int64_t)result;
+- (void)unlockListViewControllerDidComplete:(id)complete;
 - (void)viewDidLoad;
 @end
 
@@ -59,9 +59,9 @@
 - (void)viewDidLoad
 {
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(TSSIMUnlockViewController *)self navigationController];
-  v5 = [v4 view];
-  [v5 setBackgroundColor:v3];
+  navigationController = [(TSSIMUnlockViewController *)self navigationController];
+  view = [navigationController view];
+  [view setBackgroundColor:v3];
 
   v8.receiver = self;
   v8.super_class = TSSIMUnlockViewController;
@@ -93,70 +93,70 @@
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
-  v3 = [v2 canResignFirstResponder];
+  _presentedUnlockViewController = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
+  canResignFirstResponder = [_presentedUnlockViewController canResignFirstResponder];
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
-  v3 = [v2 resignFirstResponder];
+  _presentedUnlockViewController = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
+  resignFirstResponder = [_presentedUnlockViewController resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
-  v3 = [v2 canBecomeFirstResponder];
+  _presentedUnlockViewController = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
+  canBecomeFirstResponder = [_presentedUnlockViewController canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
-  v3 = [v2 becomeFirstResponder];
+  _presentedUnlockViewController = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
+  becomeFirstResponder = [_presentedUnlockViewController becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)isFirstResponder
 {
-  v2 = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
-  v3 = [v2 isFirstResponder];
+  _presentedUnlockViewController = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
+  isFirstResponder = [_presentedUnlockViewController isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TSSIMUnlockViewController *)self _remoteViewControllerProxy];
-  [v8 setWallpaperTunnelActive:0];
-  [v8 setWallpaperStyle:1 withDuration:0.0];
-  [v8 setDesiredHardwareButtonEvents:16];
-  [v8 setAllowsMenuButtonDismissal:0];
-  [v8 setAllowsAlertStacking:1];
-  v9 = [v7 userInfo];
+  completionCopy = completion;
+  contextCopy = context;
+  _remoteViewControllerProxy = [(TSSIMUnlockViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:0];
+  [_remoteViewControllerProxy setWallpaperStyle:1 withDuration:0.0];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:0];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  userInfo = [contextCopy userInfo];
 
   v10 = sub_10000C1BC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v9;
+    v14 = userInfo;
     v15 = 2080;
     v16 = "[TSSIMUnlockViewController configureWithContext:completion:]";
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "User info: %@ @%s", &v13, 0x16u);
   }
 
-  if (v9)
+  if (userInfo)
   {
-    v11 = [v9 objectForKey:kCTSubscriberUnlockPromptReasonKey];
-    v12 = [v9 objectForKey:kCTSubscriberSuppressUnlockCancellationKey];
+    v11 = [userInfo objectForKey:kCTSubscriberUnlockPromptReasonKey];
+    v12 = [userInfo objectForKey:kCTSubscriberSuppressUnlockCancellationKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -170,16 +170,16 @@
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = dispatch_group_create();
   subscriptionInfoAndDidAppearGroup = self->_subscriptionInfoAndDidAppearGroup;
@@ -201,9 +201,9 @@
   v12[3] = &unk_10001C750;
   objc_copyWeak(&v13, &location);
   [(CoreTelephonyClient *)telephonyClient getSubscriptionInfo:v12];
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   objc_destroyWeak(&v13);
@@ -211,17 +211,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10000420C;
   v3[3] = &unk_10001C778;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [actions enumerateObjectsUsingBlock:v3];
 }
 
-- (void)unlockListViewControllerDidComplete:(id)a3
+- (void)unlockListViewControllerDidComplete:(id)complete
 {
   v4 = sub_10000C1BC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -234,25 +234,25 @@
   [(TSSIMUnlockViewController *)self _dismissUnlockViewControllerAndDeactivate];
 }
 
-- (void)unlockDetailViewController:(id)a3 didCompleteWithResult:(int64_t)a4
+- (void)unlockDetailViewController:(id)controller didCompleteWithResult:(int64_t)result
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = sub_10000C1BC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v10 = a4;
+    resultCopy = result;
     v11 = 2080;
     v12 = "[TSSIMUnlockViewController unlockDetailViewController:didCompleteWithResult:]";
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "result %ld @%s", buf, 0x16u);
   }
 
-  if (a4 < 3)
+  if (result < 3)
   {
     goto LABEL_6;
   }
 
-  if (a4 == 3)
+  if (result == 3)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -263,41 +263,41 @@
     goto LABEL_7;
   }
 
-  if (a4 == 6)
+  if (result == 6)
   {
 LABEL_6:
-    [v6 resignFirstResponder];
+    [controllerCopy resignFirstResponder];
     [(TSSIMUnlockViewController *)self _dismissUnlockViewControllerAndDeactivate];
   }
 
 LABEL_7:
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  statusCopy = status;
   v8 = sub_10000C1BC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    [v6 slotID];
+    [changeCopy slotID];
     v9 = 136315650;
     v10 = CTSubscriptionSlotAsString();
     v11 = 2112;
-    v12 = v7;
+    v12 = statusCopy;
     v13 = 2080;
     v14 = "[TSSIMUnlockViewController simStatusDidChange:status:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "context %s, status %@ @%s", &v9, 0x20u);
   }
 
-  [(TSSIMUnlockViewController *)self _queue_processSubscriptionContext:v6 withSubscriptionSIMStatus:v7];
+  [(TSSIMUnlockViewController *)self _queue_processSubscriptionContext:changeCopy withSubscriptionSIMStatus:statusCopy];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  if ([(TSSIMUnlockViewController *)self _indexForSubscriptionContextWithUUID:v5]== 0x7FFFFFFFFFFFFFFFLL)
+  changeCopy = change;
+  uuid = [changeCopy uuid];
+  if ([(TSSIMUnlockViewController *)self _indexForSubscriptionContextWithUUID:uuid]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = sub_10000C1BC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -309,7 +309,7 @@ LABEL_7:
   else
   {
     v6 = [[CTBundle alloc] initWithBundleType:1];
-    v14 = [(CoreTelephonyClient *)self->_telephonyClient copyCarrierBundleValue:v4 key:@"CarrierName" bundleType:v6 error:0];
+    v14 = [(CoreTelephonyClient *)self->_telephonyClient copyCarrierBundleValue:changeCopy key:@"CarrierName" bundleType:v6 error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -319,9 +319,9 @@ LABEL_7:
       block[2] = sub_100004744;
       block[3] = &unk_10001C7C8;
       objc_copyWeak(&v27, &location);
-      v24 = v5;
+      v24 = uuid;
       v25 = v14;
-      v26 = v4;
+      v26 = changeCopy;
       dispatch_async(&_dispatch_main_q, block);
 
       objc_destroyWeak(&v27);
@@ -339,11 +339,11 @@ LABEL_7:
   }
 }
 
-- (void)phoneNumberChanged:(id)a3
+- (void)phoneNumberChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  if ([(TSSIMUnlockViewController *)self _indexForSubscriptionContextWithUUID:v5]== 0x7FFFFFFFFFFFFFFFLL)
+  changedCopy = changed;
+  uuid = [changedCopy uuid];
+  if ([(TSSIMUnlockViewController *)self _indexForSubscriptionContextWithUUID:uuid]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = sub_10000C1BC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -354,9 +354,9 @@ LABEL_7:
 
   else
   {
-    v6 = [(CoreTelephonyClient *)self->_telephonyClient getPhoneNumber:v4 error:0];
-    v14 = [v6 number];
-    if (v14)
+    v6 = [(CoreTelephonyClient *)self->_telephonyClient getPhoneNumber:changedCopy error:0];
+    number = [v6 number];
+    if (number)
     {
       objc_initWeak(&location, self);
       block[0] = _NSConcreteStackBlock;
@@ -364,9 +364,9 @@ LABEL_7:
       block[2] = sub_100004A38;
       block[3] = &unk_10001C7C8;
       objc_copyWeak(&v27, &location);
-      v24 = v5;
-      v25 = v14;
-      v26 = v4;
+      v24 = uuid;
+      v25 = number;
+      v26 = changedCopy;
       dispatch_async(&_dispatch_main_q, block);
 
       objc_destroyWeak(&v27);
@@ -384,9 +384,9 @@ LABEL_7:
   }
 }
 
-- (void)screenLockDidUpdate:(BOOL)a3
+- (void)screenLockDidUpdate:(BOOL)update
 {
-  if (a3)
+  if (update)
   {
     v4 = sub_10000C1BC();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -400,39 +400,39 @@ LABEL_7:
   }
 }
 
-- (void)_queue_processSubscriptionContext:(id)a3 withSubscriptionSIMStatus:(id)a4
+- (void)_queue_processSubscriptionContext:(id)context withSubscriptionSIMStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  statusCopy = status;
   v8 = sub_10000C1BC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000F070(v6, v7, v8);
+    sub_10000F070(contextCopy, statusCopy, v8);
   }
 
-  if (([v7 isEqualToString:kCTSIMSupportSIMStatusNotReady] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", kCTSIMSupportSIMStatusInserted) & 1) == 0)
+  if (([statusCopy isEqualToString:kCTSIMSupportSIMStatusNotReady] & 1) == 0 && (objc_msgSend(statusCopy, "isEqualToString:", kCTSIMSupportSIMStatusInserted) & 1) == 0)
   {
-    v9 = [TSSubscriptionAction subscriptionActionForSubscriptionSIMStatus:v7];
+    v9 = [TSSubscriptionAction subscriptionActionForSubscriptionSIMStatus:statusCopy];
     if (v9)
     {
       v10 = [[CTBundle alloc] initWithBundleType:1];
-      v11 = [(CoreTelephonyClient *)self->_telephonyClient copyCarrierBundleValue:v6 key:@"CarrierName" bundleType:v10 error:0];
+      v11 = [(CoreTelephonyClient *)self->_telephonyClient copyCarrierBundleValue:contextCopy key:@"CarrierName" bundleType:v10 error:0];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         [v9 setCarrierName:v11];
       }
 
-      v12 = [(CoreTelephonyClient *)self->_telephonyClient getPhoneNumber:v6 error:0];
+      v12 = [(CoreTelephonyClient *)self->_telephonyClient getPhoneNumber:contextCopy error:0];
       v13 = v12;
       if (v12)
       {
-        v14 = [v12 number];
+        number = [v12 number];
 
-        if (v14)
+        if (number)
         {
-          v15 = [v13 displayPhoneNumber];
-          [v9 setPhoneNumber:v15];
+          displayPhoneNumber = [v13 displayPhoneNumber];
+          [v9 setPhoneNumber:displayPhoneNumber];
         }
       }
     }
@@ -442,71 +442,71 @@ LABEL_7:
     block[2] = sub_100004E60;
     block[3] = &unk_10001C7F0;
     block[4] = self;
-    v18 = v6;
+    v18 = contextCopy;
     v19 = v9;
     v16 = v9;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)_applySubscriptionContext:(id)a3 withSubscriptionAction:(id)a4
+- (void)_applySubscriptionContext:(id)context withSubscriptionAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  actionCopy = action;
   v8 = sub_10000C1BC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v7;
+    v15 = actionCopy;
     v16 = 2080;
     v17 = "[TSSIMUnlockViewController _applySubscriptionContext:withSubscriptionAction:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ @%s", &v14, 0x16u);
   }
 
-  v9 = [v6 uuid];
-  v10 = [(TSSIMUnlockViewController *)self _indexForSubscriptionContextWithUUID:v9];
-  v11 = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
-  if (v7 && v10 == 0x7FFFFFFFFFFFFFFFLL)
+  uuid = [contextCopy uuid];
+  v10 = [(TSSIMUnlockViewController *)self _indexForSubscriptionContextWithUUID:uuid];
+  _presentedUnlockViewController = [(TSSIMUnlockViewController *)self _presentedUnlockViewController];
+  if (actionCopy && v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [(NSMutableArray *)self->_subscriptionContexts indexOfObject:v6 inSortedRange:0 options:[(NSMutableArray *)self->_subscriptionContexts count] usingComparator:1024, &stru_10001C728];
-    [(NSMutableArray *)self->_subscriptionContexts insertObject:v6 atIndex:v12];
-    [(NSMutableDictionary *)self->_subscriptionActions setObject:v7 forKeyedSubscript:v9];
+    v12 = [(NSMutableArray *)self->_subscriptionContexts indexOfObject:contextCopy inSortedRange:0 options:[(NSMutableArray *)self->_subscriptionContexts count] usingComparator:1024, &stru_10001C728];
+    [(NSMutableArray *)self->_subscriptionContexts insertObject:contextCopy atIndex:v12];
+    [(NSMutableDictionary *)self->_subscriptionActions setObject:actionCopy forKeyedSubscript:uuid];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v11 addSubscriptionContext:v6 withSubscriptionAction:v7 atIndex:v12];
+      [_presentedUnlockViewController addSubscriptionContext:contextCopy withSubscriptionAction:actionCopy atIndex:v12];
     }
   }
 
-  else if (!v7 || v10 == 0x7FFFFFFFFFFFFFFFLL)
+  else if (!actionCopy || v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!v7 && v10 != 0x7FFFFFFFFFFFFFFFLL)
+    if (!actionCopy && v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSMutableArray *)self->_subscriptionContexts removeObjectAtIndex:v10];
-      [(NSMutableDictionary *)self->_subscriptionActions setObject:0 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_subscriptionActions setObject:0 forKeyedSubscript:uuid];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v11 removeSubscriptionContextAtIndex:v10];
+        [_presentedUnlockViewController removeSubscriptionContextAtIndex:v10];
       }
     }
   }
 
   else
   {
-    [(NSMutableArray *)self->_subscriptionContexts replaceObjectAtIndex:v10 withObject:v6];
-    [(NSMutableDictionary *)self->_subscriptionActions setObject:v7 forKeyedSubscript:v9];
+    [(NSMutableArray *)self->_subscriptionContexts replaceObjectAtIndex:v10 withObject:contextCopy];
+    [(NSMutableDictionary *)self->_subscriptionActions setObject:actionCopy forKeyedSubscript:uuid];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v11 updateSubscriptionContext:v6 withSubscriptionAction:v7 atIndex:v10];
+      [_presentedUnlockViewController updateSubscriptionContext:contextCopy withSubscriptionAction:actionCopy atIndex:v10];
     }
   }
 
-  v13 = [(TSSIMUnlockViewController *)self _numberOfLockedSubscriptionContexts];
-  if (!v11 || v13)
+  _numberOfLockedSubscriptionContexts = [(TSSIMUnlockViewController *)self _numberOfLockedSubscriptionContexts];
+  if (!_presentedUnlockViewController || _numberOfLockedSubscriptionContexts)
   {
-    if (!v11)
+    if (!_presentedUnlockViewController)
     {
       goto LABEL_21;
     }
@@ -531,8 +531,8 @@ LABEL_21:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->_subscriptionActions allValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_subscriptionActions allValues];
+  v3 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -544,7 +544,7 @@ LABEL_21:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) actionType] & 0xFFFFFFFFFFFFFFFELL) == 2)
@@ -553,7 +553,7 @@ LABEL_21:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -592,9 +592,9 @@ LABEL_21:
     return;
   }
 
-  v5 = [(TSSIMUnlockViewController *)self presentedViewController];
+  presentedViewController = [(TSSIMUnlockViewController *)self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     return;
   }
@@ -628,10 +628,10 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v10 = [(NSMutableArray *)self->_subscriptionContexts firstObject];
-  v11 = [v10 uuid];
-  v12 = [(NSMutableDictionary *)self->_subscriptionActions objectForKeyedSubscript:v11];
-  v8 = [[TSSIMUnlockDetailViewController alloc] initWithSubscriptionContext:v10 subscriptionAction:v12 suppressCancellation:self->_suppressCancellation delegate:self];
+  firstObject = [(NSMutableArray *)self->_subscriptionContexts firstObject];
+  uuid = [firstObject uuid];
+  v12 = [(NSMutableDictionary *)self->_subscriptionActions objectForKeyedSubscript:uuid];
+  v8 = [[TSSIMUnlockDetailViewController alloc] initWithSubscriptionContext:firstObject subscriptionAction:v12 suppressCancellation:self->_suppressCancellation delegate:self];
 
   if (!v8)
   {
@@ -689,9 +689,9 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (unint64_t)_indexForSubscriptionContextWithUUID:(id)a3
+- (unint64_t)_indexForSubscriptionContextWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -701,7 +701,7 @@ LABEL_13:
   v9[1] = 3221225472;
   v9[2] = sub_100005A00;
   v9[3] = &unk_10001C818;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)subscriptionContexts enumerateObjectsUsingBlock:v9];
@@ -713,17 +713,17 @@ LABEL_13:
 
 - (id)_presentedUnlockViewController
 {
-  v2 = [(TSSIMUnlockViewController *)self presentedViewController];
+  presentedViewController = [(TSSIMUnlockViewController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 viewControllers];
-    v4 = [v3 firstObject];
+    viewControllers = [presentedViewController viewControllers];
+    firstObject = [viewControllers firstObject];
 
-    v2 = v4;
+    presentedViewController = firstObject;
   }
 
-  return v2;
+  return presentedViewController;
 }
 
 @end

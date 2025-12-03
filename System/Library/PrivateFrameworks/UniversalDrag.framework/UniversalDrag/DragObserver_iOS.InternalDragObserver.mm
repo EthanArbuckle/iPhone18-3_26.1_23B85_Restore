@@ -1,47 +1,47 @@
 @interface DragObserver_iOS.InternalDragObserver
-- (BOOL)dragMonitorSessionShouldHideLocalDragDisplay:(id)a3;
-- (void)dragMonitor:(id)a3 didBeginDragSession:(id)a4;
-- (void)dragMonitor:(id)a3 didEndDragSessionWithIdentifier:(unsigned int)a4;
-- (void)dragMonitorSession:(id)a3 didConnectWithItems:(id)a4;
-- (void)dragMonitorSession:(id)a3 didUpdateDragPresentation:(id)a4;
+- (BOOL)dragMonitorSessionShouldHideLocalDragDisplay:(id)display;
+- (void)dragMonitor:(id)monitor didBeginDragSession:(id)session;
+- (void)dragMonitor:(id)monitor didEndDragSessionWithIdentifier:(unsigned int)identifier;
+- (void)dragMonitorSession:(id)session didConnectWithItems:(id)items;
+- (void)dragMonitorSession:(id)session didUpdateDragPresentation:(id)presentation;
 @end
 
 @implementation DragObserver_iOS.InternalDragObserver
 
-- (void)dragMonitor:(id)a3 didBeginDragSession:(id)a4
+- (void)dragMonitor:(id)monitor didBeginDragSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2706CA404(v6, v7);
+  monitorCopy = monitor;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_2706CA404(monitorCopy, sessionCopy);
 }
 
-- (void)dragMonitor:(id)a3 didEndDragSessionWithIdentifier:(unsigned int)a4
+- (void)dragMonitor:(id)monitor didEndDragSessionWithIdentifier:(unsigned int)identifier
 {
-  v6 = a3;
-  v7 = self;
-  sub_2706CA53C(v6, a4);
+  monitorCopy = monitor;
+  selfCopy = self;
+  sub_2706CA53C(monitorCopy, identifier);
 }
 
-- (void)dragMonitorSession:(id)a3 didConnectWithItems:(id)a4
+- (void)dragMonitorSession:(id)session didConnectWithItems:(id)items
 {
   sub_270690D44(0, &qword_28081CEC0, 0x277CCAA88);
   v5 = sub_2706E5B1C();
-  nullsub_1(a3, v5);
+  nullsub_1(session, v5);
 }
 
-- (void)dragMonitorSession:(id)a3 didUpdateDragPresentation:(id)a4
+- (void)dragMonitorSession:(id)session didUpdateDragPresentation:(id)presentation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2706CA730(v6, v7);
+  sessionCopy = session;
+  presentationCopy = presentation;
+  selfCopy = self;
+  sub_2706CA730(sessionCopy, presentationCopy);
 }
 
-- (BOOL)dragMonitorSessionShouldHideLocalDragDisplay:(id)a3
+- (BOOL)dragMonitorSessionShouldHideLocalDragDisplay:(id)display
 {
-  v4 = a3;
-  v5 = self;
+  displayCopy = display;
+  selfCopy = self;
   LOBYTE(self) = sub_2706CA990();
 
   return self & 1;

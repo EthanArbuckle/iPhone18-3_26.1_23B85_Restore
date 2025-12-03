@@ -1,15 +1,15 @@
 @interface UARPDynamicAssetCmapMapping
 + (id)tag;
-- (BOOL)appendCmapEvents:(id)a3;
-- (BOOL)appendCmapEventsArray:(id)a3;
-- (BOOL)isEqualAppleModel:(id)a3;
+- (BOOL)appendCmapEvents:(id)events;
+- (BOOL)appendCmapEventsArray:(id)array;
+- (BOOL)isEqualAppleModel:(id)model;
 - (UARPDynamicAssetCmapMapping)init;
-- (UARPDynamicAssetCmapMapping)initWithCoder:(id)a3;
-- (UARPDynamicAssetCmapMapping)initWithEvents:(id)a3 appleModelNumber:(id)a4;
-- (UARPDynamicAssetCmapMapping)initWithEventsArray:(id)a3 appleModelNumber:(id)a4;
-- (id)expandCrshDictionary:(id)a3;
-- (id)findCmapEvent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UARPDynamicAssetCmapMapping)initWithCoder:(id)coder;
+- (UARPDynamicAssetCmapMapping)initWithEvents:(id)events appleModelNumber:(id)number;
+- (UARPDynamicAssetCmapMapping)initWithEventsArray:(id)array appleModelNumber:(id)number;
+- (id)expandCrshDictionary:(id)dictionary;
+- (id)findCmapEvent:(id)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPDynamicAssetCmapMapping
@@ -21,48 +21,48 @@
   return 0;
 }
 
-- (UARPDynamicAssetCmapMapping)initWithEvents:(id)a3 appleModelNumber:(id)a4
+- (UARPDynamicAssetCmapMapping)initWithEvents:(id)events appleModelNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  numberCopy = number;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(UARPDynamicAssetCmapMapping *)self initWithEventsArray:v6 appleModelNumber:v7];
-    v8 = self;
+    self = [(UARPDynamicAssetCmapMapping *)self initWithEventsArray:eventsCopy appleModelNumber:numberCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (UARPDynamicAssetCmapMapping)initWithEventsArray:(id)a3 appleModelNumber:(id)a4
+- (UARPDynamicAssetCmapMapping)initWithEventsArray:(id)array appleModelNumber:(id)number
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  numberCopy = number;
   v8 = os_log_create("com.apple.accessoryupdater.uarp", "crsh");
   log = self->_log;
   self->_log = v8;
 
-  objc_storeStrong(&self->_appleModelNumber, a4);
+  objc_storeStrong(&self->_appleModelNumber, number);
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
+  obj = arrayCopy;
   v10 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v32;
-    v27 = v7;
-    v28 = self;
+    v27 = numberCopy;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v11; ++i)
@@ -82,7 +82,7 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (os_log_type_enabled(v28->_log, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
           {
             [UARPDynamicAssetCmapMapping initWithEventsArray:appleModelNumber:];
           }
@@ -90,7 +90,7 @@
           goto LABEL_23;
         }
 
-        v16 = [v15 unsignedIntValue];
+        unsignedIntValue = [v15 unsignedIntValue];
         v17 = [v14 objectForKeyedSubscript:@"SectionName"];
         if (!v17)
         {
@@ -100,7 +100,7 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (os_log_type_enabled(v28->_log, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
           {
             [UARPDynamicAssetCmapMapping initWithEventsArray:appleModelNumber:];
           }
@@ -117,7 +117,7 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (os_log_type_enabled(v28->_log, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
           {
             [UARPDynamicAssetCmapMapping initWithEventsArray:appleModelNumber:];
           }
@@ -128,20 +128,20 @@ LABEL_22:
 LABEL_23:
 
           v20 = obj;
-          v24 = 0;
-          v7 = v27;
-          self = v28;
+          selfCopy2 = 0;
+          numberCopy = v27;
+          self = selfCopy;
           v21 = v30;
           goto LABEL_24;
         }
 
-        v19 = [[UARPDynamicAssetCmapEvent alloc] initWithSectionName:v17 decoderId:v16 inputDictionary:v18];
+        v19 = [[UARPDynamicAssetCmapEvent alloc] initWithSectionName:v17 decoderId:unsignedIntValue inputDictionary:v18];
         [v30 addObject:v19];
       }
 
       v11 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
-      v7 = v27;
-      self = v28;
+      numberCopy = v27;
+      self = selfCopy;
       if (v11)
       {
         continue;
@@ -158,17 +158,17 @@ LABEL_23:
   cmapEvents = self->_cmapEvents;
   self->_cmapEvents = v22;
 
-  v24 = self;
+  selfCopy2 = self;
 LABEL_24:
 
   v25 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy2;
 }
 
-- (UARPDynamicAssetCmapMapping)initWithCoder:(id)a3
+- (UARPDynamicAssetCmapMapping)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = UARPDynamicAssetCmapMapping;
   v5 = [(UARPDynamicAssetCmapMapping *)&v20 init];
@@ -178,7 +178,7 @@ LABEL_24:
     log = v5->_log;
     v5->_log = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppleModelNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppleModelNumber"];
     appleModelNumber = v5->_appleModelNumber;
     v5->_appleModelNumber = v8;
 
@@ -187,7 +187,7 @@ LABEL_24:
     v23[1] = objc_opt_class();
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"CmapEvents"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"CmapEvents"];
     cmapEvents = v5->_cmapEvents;
     v5->_cmapEvents = v13;
 
@@ -207,19 +207,19 @@ LABEL_24:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appleModelNumber = self->_appleModelNumber;
-  v5 = a3;
-  [v5 encodeObject:appleModelNumber forKey:@"AppleModelNumber"];
-  [v5 encodeObject:self->_cmapEvents forKey:@"CmapEvents"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appleModelNumber forKey:@"AppleModelNumber"];
+  [coderCopy encodeObject:self->_cmapEvents forKey:@"CmapEvents"];
 }
 
-- (BOOL)isEqualAppleModel:(id)a3
+- (BOOL)isEqualAppleModel:(id)model
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSString *)self->_appleModelNumber isEqualToString:v4])
+  modelCopy = model;
+  if ([(NSString *)self->_appleModelNumber isEqualToString:modelCopy])
   {
     LOBYTE(v5) = 1;
   }
@@ -227,8 +227,8 @@ LABEL_24:
   else
   {
     v6 = [UARPSupportedAccessory findByAppleModelNumber:self->_appleModelNumber];
-    v7 = [v6 appleModelNumber];
-    v8 = [v4 isEqualToString:v7];
+    appleModelNumber = [v6 appleModelNumber];
+    v8 = [modelCopy isEqualToString:appleModelNumber];
 
     if (v8)
     {
@@ -241,8 +241,8 @@ LABEL_24:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v9 = [v6 alternativeAppleModelNumbers];
-      v5 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      alternativeAppleModelNumbers = [v6 alternativeAppleModelNumbers];
+      v5 = [alternativeAppleModelNumbers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         v10 = *v15;
@@ -252,17 +252,17 @@ LABEL_24:
           {
             if (*v15 != v10)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(alternativeAppleModelNumbers);
             }
 
-            if ([v4 isEqualToString:*(*(&v14 + 1) + 8 * i)])
+            if ([modelCopy isEqualToString:*(*(&v14 + 1) + 8 * i)])
             {
               LOBYTE(v5) = 1;
               goto LABEL_15;
             }
           }
 
-          v5 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v5 = [alternativeAppleModelNumbers countByEnumeratingWithState:&v14 objects:v18 count:16];
           if (v5)
           {
             continue;
@@ -280,10 +280,10 @@ LABEL_15:
   return v5;
 }
 
-- (id)findCmapEvent:(id)a3
+- (id)findCmapEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -304,7 +304,7 @@ LABEL_15:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v10 isSection:{v4, v15}])
+        if ([v10 isSection:{eventCopy, v15}])
         {
           v12 = v10;
 
@@ -336,25 +336,25 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)appendCmapEvents:(id)a3
+- (BOOL)appendCmapEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(UARPDynamicAssetCmapMapping *)self appendCmapEventsArray:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(UARPDynamicAssetCmapMapping *)self appendCmapEventsArray:eventsCopy];
 
   return v5;
 }
 
-- (BOOL)appendCmapEventsArray:(id)a3
+- (BOOL)appendCmapEventsArray:(id)array
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(NSArray *)self->_cmapEvents mutableCopy];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = arrayCopy;
   v6 = [(NSArray *)obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -481,50 +481,50 @@ LABEL_30:
   return v18;
 }
 
-- (id)expandCrshDictionary:(id)a3
+- (id)expandCrshDictionary:(id)dictionary
 {
   v43[9] = *MEMORY[0x277D85DE8];
-  v31 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   v42[0] = @"mailboxes";
   v29 = objc_opt_new();
   v43[0] = v29;
   v42[1] = @"panic";
-  v28 = [MEMORY[0x277CBEB68] null];
-  v43[1] = v28;
+  null = [MEMORY[0x277CBEB68] null];
+  v43[1] = null;
   v42[2] = @"crashlog-version";
-  v27 = [MEMORY[0x277CBEB68] null];
-  v43[2] = v27;
+  null2 = [MEMORY[0x277CBEB68] null];
+  v43[2] = null2;
   v42[3] = @"exception";
-  v5 = [MEMORY[0x277CBEB68] null];
-  v43[3] = v5;
+  null3 = [MEMORY[0x277CBEB68] null];
+  v43[3] = null3;
   v42[4] = @"uuid";
-  v6 = [MEMORY[0x277CBEB68] null];
-  v43[4] = v6;
+  null4 = [MEMORY[0x277CBEB68] null];
+  v43[4] = null4;
   v42[5] = @"call-stack";
-  v7 = [MEMORY[0x277CBEB68] null];
-  v43[5] = v7;
+  null5 = [MEMORY[0x277CBEB68] null];
+  v43[5] = null5;
   v42[6] = @"tasks";
-  v8 = [MEMORY[0x277CBEB68] null];
-  v43[6] = v8;
+  null6 = [MEMORY[0x277CBEB68] null];
+  v43[6] = null6;
   v42[7] = @"registers";
-  v9 = [MEMORY[0x277CBEB68] null];
-  v43[7] = v9;
+  null7 = [MEMORY[0x277CBEB68] null];
+  v43[7] = null7;
   v42[8] = @"scenario";
-  v10 = [MEMORY[0x277CBEB68] null];
-  v43[8] = v10;
+  null8 = [MEMORY[0x277CBEB68] null];
+  v43[8] = null8;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:9];
   v32 = v4;
   [v4 setDictionary:v11];
 
-  v12 = [v31 objectForKeyedSubscript:@"panic"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"panic"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setObject:v12 forKey:@"panic"];
   }
 
-  v13 = [v31 objectForKeyedSubscript:@"crashlog-version"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"crashlog-version"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -532,7 +532,7 @@ LABEL_30:
     [v4 setObject:v13 forKey:@"crashlog-version"];
   }
 
-  v14 = [v31 objectForKeyedSubscript:@"exception"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"exception"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -541,7 +541,7 @@ LABEL_30:
   }
 
   v30 = v14;
-  v15 = [v31 objectForKeyedSubscript:@"sections"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"sections"];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;

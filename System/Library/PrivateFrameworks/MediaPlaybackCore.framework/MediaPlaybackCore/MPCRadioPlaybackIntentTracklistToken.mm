@@ -1,32 +1,32 @@
 @interface MPCRadioPlaybackIntentTracklistToken
-- (MPCRadioPlaybackIntentTracklistToken)initWithCoder:(id)a3;
+- (MPCRadioPlaybackIntentTracklistToken)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPCRadioPlaybackIntentTracklistToken
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   continueListeningStation = self->_continueListeningStation;
-  v5 = a3;
-  [v5 encodeBool:continueListeningStation forKey:@"continue-listening"];
-  [v5 encodeObject:self->_radioStation forKey:@"station"];
-  [v5 encodeObject:self->_radioStationURL forKey:@"url"];
+  coderCopy = coder;
+  [coderCopy encodeBool:continueListeningStation forKey:@"continue-listening"];
+  [coderCopy encodeObject:self->_radioStation forKey:@"station"];
+  [coderCopy encodeObject:self->_radioStationURL forKey:@"url"];
 }
 
-- (MPCRadioPlaybackIntentTracklistToken)initWithCoder:(id)a3
+- (MPCRadioPlaybackIntentTracklistToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MPCRadioPlaybackIntentTracklistToken *)self init];
   if (v5)
   {
-    v5->_continueListeningStation = [v4 decodeBoolForKey:@"continue-listening"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"station"];
+    v5->_continueListeningStation = [coderCopy decodeBoolForKey:@"continue-listening"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"station"];
     radioStation = v5->_radioStation;
     v5->_radioStation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     radioStationURL = v5->_radioStationURL;
     v5->_radioStationURL = v8;
   }

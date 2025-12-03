@@ -1,94 +1,94 @@
 @interface PGGraphHighlightTypeNodeCollection
-+ (id)aggregationTypeNodesInGraph:(id)a3;
-+ (id)concludedTripTypeNodesInGraph:(id)a3;
-+ (id)defaultTypeNodesInGraph:(id)a3;
-+ (id)longTripTypeNodesInGraph:(id)a3;
-+ (id)onGoingTripTypeNodesInGraph:(id)a3;
-+ (id)shortTripTypeNodesInGraph:(id)a3;
-+ (id)tripTypeNodesInGraph:(id)a3;
-+ (id)typeNodesWithLabel:(id)a3 inGraph:(id)a4;
++ (id)aggregationTypeNodesInGraph:(id)graph;
++ (id)concludedTripTypeNodesInGraph:(id)graph;
++ (id)defaultTypeNodesInGraph:(id)graph;
++ (id)longTripTypeNodesInGraph:(id)graph;
++ (id)onGoingTripTypeNodesInGraph:(id)graph;
++ (id)shortTripTypeNodesInGraph:(id)graph;
++ (id)tripTypeNodesInGraph:(id)graph;
++ (id)typeNodesWithLabel:(id)label inGraph:(id)graph;
 - (PGGraphHighlightGroupNodeCollection)highlightGroupNodes;
 - (PGGraphHighlightNodeCollection)highlightNodes;
 @end
 
 @implementation PGGraphHighlightTypeNodeCollection
 
-+ (id)typeNodesWithLabel:(id)a3 inGraph:(id)a4
++ (id)typeNodesWithLabel:(id)label inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphHighlightTypeNode typeNodeFilterForLabel:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphHighlightTypeNode typeNodeFilterForLabel:label];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }
 
-+ (id)defaultTypeNodesInGraph:(id)a3
++ (id)defaultTypeNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHighlightTypeNode defaultTypeNodeFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)onGoingTripTypeNodesInGraph:(id)a3
++ (id)onGoingTripTypeNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHighlightTypeNode onGoingTripTypeNodeFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)aggregationTypeNodesInGraph:(id)a3
++ (id)aggregationTypeNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHighlightTypeNode aggregationTypeNodeFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)shortTripTypeNodesInGraph:(id)a3
++ (id)shortTripTypeNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHighlightTypeNode shortTripTypeNodeFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)longTripTypeNodesInGraph:(id)a3
++ (id)longTripTypeNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHighlightTypeNode longTripTypeNodeFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)concludedTripTypeNodesInGraph:(id)a3
++ (id)concludedTripTypeNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHighlightTypeNode concludedTripTypeNodeFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)tripTypeNodesInGraph:(id)a3
++ (id)tripTypeNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHighlightTypeNode tripTypeNodeFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
 - (PGGraphHighlightGroupNodeCollection)highlightGroupNodes
 {
-  v2 = [(PGGraphHighlightTypeNodeCollection *)self highlightNodes];
-  v3 = [(PGGraphNodeCollection *)PGGraphHighlightGroupNodeCollection subsetInCollection:v2];
+  highlightNodes = [(PGGraphHighlightTypeNodeCollection *)self highlightNodes];
+  v3 = [(PGGraphNodeCollection *)PGGraphHighlightGroupNodeCollection subsetInCollection:highlightNodes];
 
   return v3;
 }
@@ -96,8 +96,8 @@
 - (PGGraphHighlightNodeCollection)highlightNodes
 {
   v3 = +[PGGraphHasTypeEdge filter];
-  v4 = [v3 inRelation];
-  v5 = [(MANodeCollection *)PGGraphHighlightNodeCollection nodesRelatedToNodes:self withRelation:v4];
+  inRelation = [v3 inRelation];
+  v5 = [(MANodeCollection *)PGGraphHighlightNodeCollection nodesRelatedToNodes:self withRelation:inRelation];
 
   return v5;
 }

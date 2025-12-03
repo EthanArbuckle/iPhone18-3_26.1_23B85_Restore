@@ -1,28 +1,28 @@
 @interface WFInputTextDialogViewController
 - (BOOL)actingAsNumberField;
 - (BOOL)allowsDecimalNumbers;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (BOOL)useNumberValidation;
 - (UIButton)clearButton;
 - (UILabel)hintLabel;
 - (UITextField)textField;
 - (UITextView)textView;
-- (id)styledFontForTextStyle:(id)a3;
+- (id)styledFontForTextStyle:(id)style;
 - (void)clearText;
 - (void)finishEditing;
 - (void)finishWithInputtedText;
 - (void)loadView;
 - (void)negateText;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidChange:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidChange:(id)change;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateClearButtonVisibility;
 - (void)updateDateFormattingHint;
 - (void)updateTextViewPlaceholder;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFInputTextDialogViewController
@@ -55,30 +55,30 @@
   return WeakRetained;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = [(WFInputTextDialogViewController *)self resetIdleTimerSuppressionBlock];
+  resetIdleTimerSuppressionBlock = [(WFInputTextDialogViewController *)self resetIdleTimerSuppressionBlock];
 
-  if (v4)
+  if (resetIdleTimerSuppressionBlock)
   {
-    v5 = [(WFInputTextDialogViewController *)self resetIdleTimerSuppressionBlock];
-    v5[2]();
+    resetIdleTimerSuppressionBlock2 = [(WFInputTextDialogViewController *)self resetIdleTimerSuppressionBlock];
+    resetIdleTimerSuppressionBlock2[2]();
   }
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(WFInputTextDialogViewController *)self initialInsertionIndex];
-  if ((v5 & 0x8000000000000000) == 0)
+  editingCopy = editing;
+  initialInsertionIndex = [(WFInputTextDialogViewController *)self initialInsertionIndex];
+  if ((initialInsertionIndex & 0x8000000000000000) == 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__WFInputTextDialogViewController_textViewDidBeginEditing___block_invoke;
     block[3] = &unk_279EE84A0;
-    v8 = self;
-    v9 = v5;
-    v7 = v4;
+    selfCopy = self;
+    v9 = initialInsertionIndex;
+    v7 = editingCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -91,41 +91,41 @@ uint64_t __59__WFInputTextDialogViewController_textViewDidBeginEditing___block_i
   return [v2 setInitialInsertionIndex:-1];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  if ([v4 returnKeyType])
+  returnCopy = return;
+  if ([returnCopy returnKeyType])
   {
     [(WFInputTextDialogViewController *)self finishWithInputtedText];
   }
 
-  [v4 resignFirstResponder];
+  [returnCopy resignFirstResponder];
 
   return 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
   if ([(WFInputTextDialogViewController *)self useNumberValidation])
   {
-    v11 = [(WFCompactDialogViewController *)self request];
-    v12 = [v11 textFieldConfiguration];
-    v13 = [v12 allowsNegativeNumbers];
+    request = [(WFCompactDialogViewController *)self request];
+    textFieldConfiguration = [request textFieldConfiguration];
+    allowsNegativeNumbers = [textFieldConfiguration allowsNegativeNumbers];
 
-    v14 = [v9 text];
-    v15 = v14;
-    if (!v14)
+    text = [fieldCopy text];
+    v15 = text;
+    if (!text)
     {
-      v14 = &stru_2883A0E78;
+      text = &stru_2883A0E78;
     }
 
-    v16 = [(__CFString *)v14 stringByReplacingCharactersInRange:location withString:length, v10];
+    stringCopy = [(__CFString *)text stringByReplacingCharactersInRange:location withString:length, stringCopy];
 
-    v17 = [MEMORY[0x277D7BDC8] shouldChangeText:v16 allowMinus:v13];
+    v17 = [MEMORY[0x277D7BDC8] shouldChangeText:stringCopy allowMinus:allowsNegativeNumbers];
   }
 
   else
@@ -138,60 +138,60 @@ uint64_t __59__WFInputTextDialogViewController_textViewDidBeginEditing___block_i
 
 - (void)updateDateFormattingHint
 {
-  v5 = [(WFInputTextDialogViewController *)self dateFormatter];
+  dateFormatter = [(WFInputTextDialogViewController *)self dateFormatter];
 
-  if (v5)
+  if (dateFormatter)
   {
-    v6 = [(WFInputTextDialogViewController *)self textField];
-    v7 = [v6 text];
+    textField = [(WFInputTextDialogViewController *)self textField];
+    text = [textField text];
 
-    if ([v7 length])
+    if ([text length])
     {
-      v8 = [MEMORY[0x277CFC370] detectedDatesInString:v7 error:0];
-      v9 = [v8 firstObject];
+      v8 = [MEMORY[0x277CFC370] detectedDatesInString:text error:0];
+      firstObject = [v8 firstObject];
 
-      v10 = [v9 timeIsSignificant];
-      if (v10)
+      timeIsSignificant = [firstObject timeIsSignificant];
+      if (timeIsSignificant)
       {
-        v2 = [(WFCompactDialogViewController *)self request];
-        v3 = [v2 textFieldConfiguration];
-        v11 = [v3 timeFormatStyle];
+        request = [(WFCompactDialogViewController *)self request];
+        textFieldConfiguration = [request textFieldConfiguration];
+        timeFormatStyle = [textFieldConfiguration timeFormatStyle];
       }
 
       else
       {
-        v11 = 0;
+        timeFormatStyle = 0;
       }
 
-      v12 = [(WFInputTextDialogViewController *)self dateFormatter];
-      [v12 setTimeStyle:v11];
+      dateFormatter2 = [(WFInputTextDialogViewController *)self dateFormatter];
+      [dateFormatter2 setTimeStyle:timeFormatStyle];
 
-      if (v10)
+      if (timeIsSignificant)
       {
       }
 
-      if (v9)
+      if (firstObject)
       {
-        v13 = [(WFInputTextDialogViewController *)self dateFormatter];
-        v14 = [v9 date];
-        v18 = [v13 stringFromDate:v14];
+        dateFormatter3 = [(WFInputTextDialogViewController *)self dateFormatter];
+        date = [firstObject date];
+        localizedIncompleteHintString = [dateFormatter3 stringFromDate:date];
       }
 
       else
       {
-        v18 = [(WFInputTextDialogViewController *)self localizedIncompleteHintString];
+        localizedIncompleteHintString = [(WFInputTextDialogViewController *)self localizedIncompleteHintString];
       }
     }
 
     else
     {
-      v18 = 0;
+      localizedIncompleteHintString = 0;
     }
 
-    v15 = [(WFInputTextDialogViewController *)self hintLabel];
-    [v15 setText:v18];
+    hintLabel = [(WFInputTextDialogViewController *)self hintLabel];
+    [hintLabel setText:localizedIncompleteHintString];
 
-    if ([v18 length])
+    if ([localizedIncompleteHintString length])
     {
       v16 = 69.0;
     }
@@ -201,32 +201,32 @@ uint64_t __59__WFInputTextDialogViewController_textViewDidBeginEditing___block_i
       v16 = 54.0;
     }
 
-    v17 = [(WFInputTextDialogViewController *)self contentViewHeightAnchor];
-    [v17 setConstant:v16];
+    contentViewHeightAnchor = [(WFInputTextDialogViewController *)self contentViewHeightAnchor];
+    [contentViewHeightAnchor setConstant:v16];
   }
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v15 = a3;
+  changeCopy = change;
   if ([(WFInputTextDialogViewController *)self useNumberValidation])
   {
-    v4 = [(WFInputTextDialogViewController *)self allowsDecimalNumbers];
+    allowsDecimalNumbers = [(WFInputTextDialogViewController *)self allowsDecimalNumbers];
     v5 = MEMORY[0x277D7BDC8];
-    v6 = [v15 text];
-    v7 = [v5 stringBySanitizingNumberString:v6 allowDecimalNumbers:v4];
+    text = [changeCopy text];
+    v7 = [v5 stringBySanitizingNumberString:text allowDecimalNumbers:allowsDecimalNumbers];
 
-    v8 = [v15 text];
-    LOBYTE(v6) = [v8 isEqualToString:v7];
+    text2 = [changeCopy text];
+    LOBYTE(text) = [text2 isEqualToString:v7];
 
-    if ((v6 & 1) == 0)
+    if ((text & 1) == 0)
     {
-      v9 = [(WFInputTextDialogViewController *)self textField];
-      v10 = [v9 beginningOfDocument];
-      v11 = [v9 endOfDocument];
-      v12 = [v9 textRangeFromPosition:v10 toPosition:v11];
+      textField = [(WFInputTextDialogViewController *)self textField];
+      beginningOfDocument = [textField beginningOfDocument];
+      endOfDocument = [textField endOfDocument];
+      v12 = [textField textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-      [v9 replaceRange:v12 withText:v7];
+      [textField replaceRange:v12 withText:v7];
     }
   }
 
@@ -236,29 +236,29 @@ uint64_t __59__WFInputTextDialogViewController_textViewDidBeginEditing___block_i
   }
 
   [(WFInputTextDialogViewController *)self updateClearButtonVisibility];
-  v13 = [(WFInputTextDialogViewController *)self resetIdleTimerSuppressionBlock];
+  resetIdleTimerSuppressionBlock = [(WFInputTextDialogViewController *)self resetIdleTimerSuppressionBlock];
 
-  if (v13)
+  if (resetIdleTimerSuppressionBlock)
   {
-    v14 = [(WFInputTextDialogViewController *)self resetIdleTimerSuppressionBlock];
-    v14[2]();
+    resetIdleTimerSuppressionBlock2 = [(WFInputTextDialogViewController *)self resetIdleTimerSuppressionBlock];
+    resetIdleTimerSuppressionBlock2[2]();
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   [(WFInputTextDialogViewController *)self updateClearButtonVisibility];
-  v5 = [(WFInputTextDialogViewController *)self initialInsertionIndex];
-  if ((v5 & 0x8000000000000000) == 0)
+  initialInsertionIndex = [(WFInputTextDialogViewController *)self initialInsertionIndex];
+  if ((initialInsertionIndex & 0x8000000000000000) == 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__WFInputTextDialogViewController_textFieldDidBeginEditing___block_invoke;
     block[3] = &unk_279EE84A0;
-    v8 = self;
-    v9 = v5;
-    v7 = v4;
+    selfCopy = self;
+    v9 = initialInsertionIndex;
+    v7 = editingCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -275,17 +275,17 @@ void __60__WFInputTextDialogViewController_textFieldDidBeginEditing___block_invo
   [*(a1 + 40) setInitialInsertionIndex:-1];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = WFInputTextDialogViewController;
-  v4 = a3;
-  [(WFInputTextDialogViewController *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(WFInputTextDialogViewController *)&v9 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(WFInputTextDialogViewController *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 isEqualToString:v7];
+  traitCollection = [(WFInputTextDialogViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v8 & 1) == 0)
   {
@@ -293,14 +293,14 @@ void __60__WFInputTextDialogViewController_textFieldDidBeginEditing___block_invo
   }
 }
 
-- (id)styledFontForTextStyle:(id)a3
+- (id)styledFontForTextStyle:(id)style
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFCompactDialogViewController *)self request];
-  v6 = [v5 attribution];
-  v7 = [v6 appBundleIdentifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D7A2A0]];
+  styleCopy = style;
+  request = [(WFCompactDialogViewController *)self request];
+  attribution = [request attribution];
+  appBundleIdentifier = [attribution appBundleIdentifier];
+  v8 = [appBundleIdentifier isEqualToString:*MEMORY[0x277D7A2A0]];
 
   if (v8)
   {
@@ -316,7 +316,7 @@ void __60__WFInputTextDialogViewController_textFieldDidBeginEditing___block_invo
     v21[0] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
 
-    v13 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:v4];
+    v13 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:styleCopy];
     v14 = [v13 fontDescriptorByAddingAttributes:v12];
 
     v15 = [MEMORY[0x277D74300] fontWithDescriptor:v14 size:0.0];
@@ -324,7 +324,7 @@ void __60__WFInputTextDialogViewController_textFieldDidBeginEditing___block_invo
 
   else
   {
-    v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:v4];
+    v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:styleCopy];
   }
 
   return v15;
@@ -333,27 +333,27 @@ void __60__WFInputTextDialogViewController_textFieldDidBeginEditing___block_invo
 - (void)updateTextViewPlaceholder
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+  universalPreviewsEnabled = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
   v7 = MEMORY[0x277D76A28];
-  if (!v6)
+  if (!universalPreviewsEnabled)
   {
     v7 = MEMORY[0x277D76918];
   }
 
   v8 = [(WFInputTextDialogViewController *)self styledFontForTextStyle:*v7];
-  v9 = [(WFInputTextDialogViewController *)self placeholder];
-  if (v9)
+  placeholder = [(WFInputTextDialogViewController *)self placeholder];
+  if (placeholder)
   {
     v10 = objc_alloc(MEMORY[0x277CCA898]);
     v11 = *MEMORY[0x277D740C0];
     v14[0] = *MEMORY[0x277D740A8];
     v14[1] = v11;
     v15[0] = v8;
-    v2 = [MEMORY[0x277D75348] labelColor];
-    v3 = [v2 colorWithAlphaComponent:0.3];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v3 = [labelColor colorWithAlphaComponent:0.3];
     v15[1] = v3;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v12 = [v10 initWithString:v9 attributes:v4];
+    v12 = [v10 initWithString:placeholder attributes:v4];
   }
 
   else
@@ -361,34 +361,34 @@ void __60__WFInputTextDialogViewController_textFieldDidBeginEditing___block_invo
     v12 = 0;
   }
 
-  v13 = [(WFInputTextDialogViewController *)self textView];
-  [v13 setAttributedPlaceholder:v12];
+  textView = [(WFInputTextDialogViewController *)self textView];
+  [textView setAttributedPlaceholder:v12];
 
-  if (v9)
+  if (placeholder)
   {
   }
 }
 
 - (void)updateClearButtonVisibility
 {
-  v3 = [(WFInputTextDialogViewController *)self clearButton];
+  clearButton = [(WFInputTextDialogViewController *)self clearButton];
 
-  if (v3)
+  if (clearButton)
   {
-    v4 = [(WFInputTextDialogViewController *)self textField];
-    v5 = [(WFCompactDialogViewController *)self request];
-    v6 = [v5 textFieldConfiguration];
-    v7 = [v6 clearButtonMode];
+    textField = [(WFInputTextDialogViewController *)self textField];
+    request = [(WFCompactDialogViewController *)self request];
+    textFieldConfiguration = [request textFieldConfiguration];
+    clearButtonMode = [textFieldConfiguration clearButtonMode];
     v8 = WFClearButtonModeFromString();
 
-    v9 = [v4 isFirstResponder];
-    v10 = [v4 text];
-    v11 = [v10 length];
+    isFirstResponder = [textField isFirstResponder];
+    text = [textField text];
+    v11 = [text length];
 
-    v12 = v9 ^ 1;
+    v12 = isFirstResponder ^ 1;
     if (v11)
     {
-      v13 = v9;
+      v13 = isFirstResponder;
     }
 
     else
@@ -478,29 +478,29 @@ void __62__WFInputTextDialogViewController_updateClearButtonVisibility__block_in
 
 - (void)clearText
 {
-  v5 = [(WFInputTextDialogViewController *)self textField];
-  v2 = [v5 beginningOfDocument];
-  v3 = [v5 endOfDocument];
-  v4 = [v5 textRangeFromPosition:v2 toPosition:v3];
+  textField = [(WFInputTextDialogViewController *)self textField];
+  beginningOfDocument = [textField beginningOfDocument];
+  endOfDocument = [textField endOfDocument];
+  v4 = [textField textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-  [v5 replaceRange:v4 withText:&stru_2883A0E78];
+  [textField replaceRange:v4 withText:&stru_2883A0E78];
 }
 
 - (void)negateText
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  [v3 playInputClick];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice playInputClick];
 
   v4 = MEMORY[0x277D7BDC8];
-  v5 = [(WFInputTextDialogViewController *)self textField];
-  [v4 negateTextInput:v5];
+  textField = [(WFInputTextDialogViewController *)self textField];
+  [v4 negateTextInput:textField];
 }
 
 - (BOOL)allowsDecimalNumbers
 {
-  v2 = [(WFCompactDialogViewController *)self request];
-  v3 = [v2 textFieldConfiguration];
-  v4 = [v3 keyboardType];
+  request = [(WFCompactDialogViewController *)self request];
+  textFieldConfiguration = [request textFieldConfiguration];
+  keyboardType = [textFieldConfiguration keyboardType];
   v5 = WFKeyboardTypeFromString();
 
   return v5 == 8;
@@ -508,9 +508,9 @@ void __62__WFInputTextDialogViewController_updateClearButtonVisibility__block_in
 
 - (BOOL)useNumberValidation
 {
-  v2 = [(WFCompactDialogViewController *)self request];
-  v3 = [v2 textFieldConfiguration];
-  v4 = [v3 keyboardType];
+  request = [(WFCompactDialogViewController *)self request];
+  textFieldConfiguration = [request textFieldConfiguration];
+  keyboardType = [textFieldConfiguration keyboardType];
   v5 = WFKeyboardTypeFromString();
 
   return v5 == 4 || v5 == 8;
@@ -518,22 +518,22 @@ void __62__WFInputTextDialogViewController_updateClearButtonVisibility__block_in
 
 - (BOOL)actingAsNumberField
 {
-  v2 = [(WFCompactDialogViewController *)self request];
-  v3 = [v2 textFieldConfiguration];
-  v4 = [v3 keyboardType];
+  request = [(WFCompactDialogViewController *)self request];
+  textFieldConfiguration = [request textFieldConfiguration];
+  keyboardType = [textFieldConfiguration keyboardType];
   v5 = WFKeyboardTypeFromString();
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
-  LOBYTE(v3) = [&unk_2883C21B0 containsObject:v6];
+  LOBYTE(textFieldConfiguration) = [&unk_2883C21B0 containsObject:v6];
 
-  return v3;
+  return textFieldConfiguration;
 }
 
 - (void)finishEditing
 {
-  v3 = [(WFInputTextDialogViewController *)self textField];
+  textField = [(WFInputTextDialogViewController *)self textField];
 
-  if (v3)
+  if (textField)
   {
     [(WFInputTextDialogViewController *)self textField];
   }
@@ -546,11 +546,11 @@ void __62__WFInputTextDialogViewController_updateClearButtonVisibility__block_in
   [v4 resignFirstResponder];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = WFInputTextDialogViewController;
-  [(WFInputTextDialogViewController *)&v6 viewWillAppear:a3];
+  [(WFInputTextDialogViewController *)&v6 viewWillAppear:appear];
   if ([(WFInputTextDialogViewController *)self focusImmediatelyOnAppear])
   {
     [(WFInputTextDialogViewController *)self setFocusImmediatelyOnAppear:0];
@@ -585,8 +585,8 @@ void __50__WFInputTextDialogViewController_viewWillAppear___block_invoke(uint64_
 - (void)finishWithInputtedText
 {
   v3 = objc_alloc(MEMORY[0x277D79FF0]);
-  v7 = [(WFInputTextDialogViewController *)self textView];
-  if (v7)
+  textView = [(WFInputTextDialogViewController *)self textView];
+  if (textView)
   {
     [(WFInputTextDialogViewController *)self textView];
   }
@@ -596,8 +596,8 @@ void __50__WFInputTextDialogViewController_viewWillAppear___block_invoke(uint64_
     [(WFInputTextDialogViewController *)self textField];
   }
   v4 = ;
-  v5 = [v4 text];
-  v6 = [v3 initWithInputtedText:v5 cancelled:0];
+  text = [v4 text];
+  v6 = [v3 initWithInputtedText:text cancelled:0];
   [(WFCompactDialogViewController *)self finishWithResponse:v6];
 }
 
@@ -607,44 +607,44 @@ void __50__WFInputTextDialogViewController_viewWillAppear___block_invoke(uint64_
   v180.receiver = self;
   v180.super_class = WFInputTextDialogViewController;
   [(WFCompactDialogViewController *)&v180 loadView];
-  v166 = [(WFCompactPlatterViewController *)self platterView];
-  v170 = [(WFCompactDialogViewController *)self request];
-  v2 = [v170 message];
-  [v166 setSecondaryText:v2];
+  platterView = [(WFCompactPlatterViewController *)self platterView];
+  request = [(WFCompactDialogViewController *)self request];
+  message = [request message];
+  [platterView setSecondaryText:message];
 
-  [v166 setHidesContentViewTopSeparator:1];
-  v174 = [v170 textFieldConfiguration];
-  v150 = [v174 prefix];
-  v157 = [v174 text];
-  v3 = [v174 placeholder];
-  v134 = [v174 isSecureTextEntry];
-  v133 = [v174 allowsNegativeNumbers];
-  v144 = [v174 smartQuotesDisabled];
-  v141 = [v174 smartDashesDisabled];
-  v4 = [v174 keyboardType];
+  [platterView setHidesContentViewTopSeparator:1];
+  textFieldConfiguration = [request textFieldConfiguration];
+  prefix = [textFieldConfiguration prefix];
+  text = [textFieldConfiguration text];
+  placeholder = [textFieldConfiguration placeholder];
+  isSecureTextEntry = [textFieldConfiguration isSecureTextEntry];
+  allowsNegativeNumbers = [textFieldConfiguration allowsNegativeNumbers];
+  smartQuotesDisabled = [textFieldConfiguration smartQuotesDisabled];
+  smartDashesDisabled = [textFieldConfiguration smartDashesDisabled];
+  keyboardType = [textFieldConfiguration keyboardType];
   v151 = WFKeyboardTypeFromString();
 
-  v5 = [v174 clearButtonMode];
+  clearButtonMode = [textFieldConfiguration clearButtonMode];
   v137 = WFClearButtonModeFromString();
 
-  v6 = [v174 autocapitalizationType];
+  autocapitalizationType = [textFieldConfiguration autocapitalizationType];
   v139 = WFAutocapitalizationTypeFromString();
 
-  v7 = [v174 autocorrectionType];
+  autocorrectionType = [textFieldConfiguration autocorrectionType];
   v138 = WFAutocorrectionTypeFromString();
 
-  v8 = [v174 returnKeyType];
+  returnKeyType = [textFieldConfiguration returnKeyType];
   v136 = WFReturnKeyTypeFromString();
 
-  v9 = [v174 textContentType];
+  textContentType = [textFieldConfiguration textContentType];
   v156 = WFTextContentTypeFromString();
 
-  v10 = [v174 textAlignment];
+  textAlignment = [textFieldConfiguration textAlignment];
   v147 = WFTextAlignmentFromString();
 
-  if ([(__CFString *)v3 length])
+  if ([(__CFString *)placeholder length])
   {
-    v11 = v3;
+    v11 = placeholder;
     goto LABEL_10;
   }
 
@@ -672,29 +672,29 @@ LABEL_10:
   placeholder = self->_placeholder;
   self->_placeholder = v14;
 
-  self->_focusImmediatelyOnAppear = [v174 focusImmediatelyWhenPresented];
-  self->_initialInsertionIndex = [v174 initialInsertionIndex];
-  v16 = [v174 localizedIncompleteHintString];
-  v17 = [v16 copy];
+  self->_focusImmediatelyOnAppear = [textFieldConfiguration focusImmediatelyWhenPresented];
+  self->_initialInsertionIndex = [textFieldConfiguration initialInsertionIndex];
+  localizedIncompleteHintString = [textFieldConfiguration localizedIncompleteHintString];
+  v17 = [localizedIncompleteHintString copy];
   localizedIncompleteHintString = self->_localizedIncompleteHintString;
   self->_localizedIncompleteHintString = v17;
 
   v165 = objc_opt_new();
-  v172 = [v165 view];
-  [v172 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [v172 layer];
-  [v19 setAllowsGroupBlending:0];
+  view = [v165 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  layer = [view layer];
+  [layer setAllowsGroupBlending:0];
 
   v171 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v20 = [MEMORY[0x277D75348] whiteColor];
-  v21 = [v20 colorWithAlphaComponent:0.07];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v21 = [whiteColor colorWithAlphaComponent:0.07];
   v22 = v21;
-  v23 = [v21 CGColor];
-  v24 = [v171 layer];
-  [v24 setBackgroundColor:v23];
+  cGColor = [v21 CGColor];
+  layer2 = [v171 layer];
+  [layer2 setBackgroundColor:cGColor];
 
   v25 = 26.0;
-  if (([v174 isMultiline] & 1) == 0)
+  if (([textFieldConfiguration isMultiline] & 1) == 0)
   {
     if ([(WFInputTextDialogViewController *)self actingAsNumberField])
     {
@@ -707,46 +707,46 @@ LABEL_10:
     }
   }
 
-  v26 = [v171 layer];
-  [v26 setCornerRadius:v25];
+  layer3 = [v171 layer];
+  [layer3 setCornerRadius:v25];
 
-  v27 = [v171 layer];
-  [v27 setCornerCurve:*MEMORY[0x277CDA138]];
+  layer4 = [v171 layer];
+  [layer4 setCornerCurve:*MEMORY[0x277CDA138]];
 
   v28 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-  v29 = [v171 layer];
-  [v29 setCompositingFilter:v28];
+  layer5 = [v171 layer];
+  [layer5 setCompositingFilter:v28];
 
-  [v172 addSubview:v171];
+  [view addSubview:v171];
   [v171 setTranslatesAutoresizingMaskIntoConstraints:0];
   v135 = MEMORY[0x277CCAAD0];
-  v167 = [v171 topAnchor];
-  v163 = [v172 topAnchor];
-  v158 = [v167 constraintEqualToAnchor:v163];
+  topAnchor = [v171 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v158 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v187[0] = v158;
-  v30 = [v171 bottomAnchor];
-  v31 = [v172 bottomAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  bottomAnchor = [v171 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v187[1] = v32;
-  v33 = [v171 leadingAnchor];
-  v34 = [v172 leadingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34 constant:15.0];
+  leadingAnchor = [v171 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   v187[2] = v35;
-  v36 = [v171 trailingAnchor];
-  v37 = [v172 trailingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:-15.0];
+  trailingAnchor = [v171 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
   v187[3] = v38;
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v187 count:4];
   [v135 activateConstraints:v39];
 
-  if ([v174 isMultiline])
+  if ([textFieldConfiguration isMultiline])
   {
     v40 = objc_alloc(MEMORY[0x277D75C40]);
     v41 = [v40 initWithFrame:0 textContainer:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    [v41 setText:v157];
+    [v41 setText:text];
     [v41 setDelegate:self];
-    [v41 setSmartQuotesType:v144];
-    [v41 setSmartDashesType:v141];
+    [v41 setSmartQuotesType:smartQuotesDisabled];
+    [v41 setSmartDashesType:smartDashesDisabled];
     [v41 setKeyboardType:v151];
     [v41 setKeyboardAppearance:0];
     [v41 setAutocapitalizationType:v139];
@@ -754,9 +754,9 @@ LABEL_10:
     [v41 setReturnKeyType:v136];
     [v41 setTextContentType:v156];
     [v41 setTextAlignment:v147];
-    v42 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+    universalPreviewsEnabled = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
     v43 = MEMORY[0x277D76A28];
-    if (!v42)
+    if (!universalPreviewsEnabled)
     {
       v43 = MEMORY[0x277D76918];
     }
@@ -765,37 +765,37 @@ LABEL_10:
     [v41 setFont:v44];
 
     [v41 setAdjustsFontForContentSizeCategory:1];
-    v45 = [MEMORY[0x277D75348] clearColor];
-    [v41 setBackgroundColor:v45];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v41 setBackgroundColor:clearColor];
 
-    v46 = [v41 textContainer];
-    [v46 setLineFragmentPadding:0.0];
+    textContainer = [v41 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [v41 setTextContainerInset:{15.0, 18.0, 15.0, 18.0}];
     [v41 setScrollIndicatorInsets:{16.0, 0.0, 16.0, 0.0}];
     [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v172 addSubview:v41];
+    [view addSubview:v41];
     objc_storeWeak(&self->_textView, v41);
     [(WFInputTextDialogViewController *)self updateTextViewPlaceholder];
     v142 = MEMORY[0x277CCAAD0];
-    v168 = [v41 leadingAnchor];
-    v164 = [v172 leadingAnchor];
-    v159 = [v168 constraintEqualToAnchor:v164 constant:15.0];
+    leadingAnchor3 = [v41 leadingAnchor];
+    leadingAnchor4 = [view leadingAnchor];
+    v159 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:15.0];
     v186[0] = v159;
-    v152 = [v41 trailingAnchor];
-    v148 = [v172 trailingAnchor];
-    v145 = [v152 constraintEqualToAnchor:v148 constant:-15.0];
+    trailingAnchor3 = [v41 trailingAnchor];
+    trailingAnchor4 = [view trailingAnchor];
+    v145 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-15.0];
     v186[1] = v145;
-    v47 = [v41 heightAnchor];
-    v48 = [v47 constraintGreaterThanOrEqualToConstant:114.0];
+    heightAnchor = [v41 heightAnchor];
+    v48 = [heightAnchor constraintGreaterThanOrEqualToConstant:114.0];
     v186[2] = v48;
-    v49 = [v41 topAnchor];
-    v50 = [v172 topAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    topAnchor3 = [v41 topAnchor];
+    topAnchor4 = [view topAnchor];
+    v51 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v186[3] = v51;
-    v52 = [v41 bottomAnchor];
-    v53 = [v172 bottomAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    bottomAnchor3 = [v41 bottomAnchor];
+    bottomAnchor4 = [view bottomAnchor];
+    v54 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v186[4] = v54;
     v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v186 count:5];
     [v142 activateConstraints:v55];
@@ -805,11 +805,11 @@ LABEL_10:
   {
     v41 = objc_opt_new();
     [v41 setDelegate:self];
-    [v41 setText:v157];
+    [v41 setText:text];
     [v41 setPlaceholder:v155];
-    [v41 setSecureTextEntry:v134];
-    [v41 setSmartQuotesType:v144];
-    [v41 setSmartDashesType:v141];
+    [v41 setSecureTextEntry:isSecureTextEntry];
+    [v41 setSmartQuotesType:smartQuotesDisabled];
+    [v41 setSmartDashesType:smartDashesDisabled];
     [v41 setKeyboardType:v151];
     [v41 setKeyboardAppearance:0];
     [v41 setClearButtonMode:v137];
@@ -820,9 +820,9 @@ LABEL_10:
     [v41 setTextAlignment:v147];
     [v41 setClearButtonMode:0];
     v56 = MEMORY[0x277D74300];
-    v57 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+    universalPreviewsEnabled2 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
     v58 = *MEMORY[0x277D76A28];
-    if (v57)
+    if (universalPreviewsEnabled2)
     {
       v59 = *MEMORY[0x277D76A28];
     }
@@ -838,7 +838,7 @@ LABEL_10:
     [v41 setAdjustsFontForContentSizeCategory:1];
     [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v41 addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
-    [v172 addSubview:v41];
+    [view addSubview:v41];
     objc_storeWeak(&self->_textField, v41);
     if (v137)
     {
@@ -849,12 +849,12 @@ LABEL_10:
       v169 = [v61 systemImageNamed:@"xmark.circle.fill" withConfiguration:v64];
 
       v65 = [MEMORY[0x277D75220] systemButtonWithImage:v169 target:self action:sel_clearText];
-      v66 = [MEMORY[0x277D75348] tertiaryLabelColor];
-      [v65 setTintColor:v66];
+      tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+      [v65 setTintColor:tertiaryLabelColor];
 
       [v65 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v65 setContentEdgeInsets:{30.0, 0.0, 30.0, 0.0}];
-      [v172 addSubview:v65];
+      [view addSubview:v65];
       objc_storeWeak(&self->_clearButton, v65);
       [(WFInputTextDialogViewController *)self updateClearButtonVisibility];
       [v169 size];
@@ -870,13 +870,13 @@ LABEL_10:
       }
 
       v70 = MEMORY[0x277CCAAD0];
-      v71 = [v65 centerYAnchor];
-      v72 = [v172 centerYAnchor];
-      v73 = [v71 constraintEqualToAnchor:v72];
+      centerYAnchor = [v65 centerYAnchor];
+      centerYAnchor2 = [view centerYAnchor];
+      v73 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v185[0] = v73;
-      v74 = [v65 trailingAnchor];
-      v75 = [v172 trailingAnchor];
-      v76 = [v74 constraintEqualToAnchor:v75 constant:-28.0];
+      trailingAnchor5 = [v65 trailingAnchor];
+      trailingAnchor6 = [view trailingAnchor];
+      v76 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-28.0];
       v185[1] = v76;
       v77 = [MEMORY[0x277CBEA60] arrayWithObjects:v185 count:2];
       [v70 activateConstraints:v77];
@@ -895,25 +895,25 @@ LABEL_10:
       v80 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769A8]];
       v81 = [v80 fontDescriptorWithSymbolicTraits:2];
 
-      v168 = [v81 fontDescriptorWithDesign:*MEMORY[0x277D74368]];
+      leadingAnchor3 = [v81 fontDescriptorWithDesign:*MEMORY[0x277D74368]];
 
-      v82 = [MEMORY[0x277D74300] fontWithDescriptor:v168 size:0.0];
+      v82 = [MEMORY[0x277D74300] fontWithDescriptor:leadingAnchor3 size:0.0];
       [v41 setFont:v82];
 
       [v41 setAdjustsFontSizeToFitWidth:1];
       [v41 setTextAlignment:1];
       v83 = MEMORY[0x277D74310];
       v84 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x277D76830]];
-      v164 = [v83 preferredFontDescriptorWithTextStyle:v79 compatibleWithTraitCollection:v84];
+      leadingAnchor4 = [v83 preferredFontDescriptorWithTextStyle:v79 compatibleWithTraitCollection:v84];
 
-      [v164 pointSize];
+      [leadingAnchor4 pointSize];
       [v41 setMinimumFontSize:?];
-      if (v133)
+      if (allowsNegativeNumbers)
       {
         if ([(WFInputTextDialogViewController *)self useNumberValidation])
         {
-          v85 = [MEMORY[0x277D75418] currentDevice];
-          v86 = [v85 userInterfaceIdiom] == 0;
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          v86 = [currentDevice userInterfaceIdiom] == 0;
 
           if (v86)
           {
@@ -922,8 +922,8 @@ LABEL_10:
             v89 = [v87 configurationByApplyingConfiguration:v88];
 
             v90 = [MEMORY[0x277D75220] buttonWithType:1];
-            v91 = [MEMORY[0x277D75348] labelColor];
-            [v90 setTintColor:v91];
+            labelColor = [MEMORY[0x277D75348] labelColor];
+            [v90 setTintColor:labelColor];
 
             [v90 setContentEdgeInsets:{0.0, 50.0, 0.0, 50.0}];
             [v90 setAdjustsImageWhenHighlighted:0];
@@ -933,36 +933,36 @@ LABEL_10:
             [v90 addTarget:self action:sel_negateText forControlEvents:64];
             v93 = objc_alloc_init(WFKeyboardToolbarAccessoryView);
             [v41 setInputAccessoryView:v93];
-            v94 = [(WFKeyboardToolbarAccessoryView *)v93 flexibleSpaceItem];
-            [(WFKeyboardToolbarAccessoryView *)v93 appendBarItem:v94];
+            flexibleSpaceItem = [(WFKeyboardToolbarAccessoryView *)v93 flexibleSpaceItem];
+            [(WFKeyboardToolbarAccessoryView *)v93 appendBarItem:flexibleSpaceItem];
 
             v95 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v90];
             [(WFKeyboardToolbarAccessoryView *)v93 appendBarItem:v95];
 
-            v96 = [(WFKeyboardToolbarAccessoryView *)v93 flexibleSpaceItem];
-            [(WFKeyboardToolbarAccessoryView *)v93 appendBarItem:v96];
+            flexibleSpaceItem2 = [(WFKeyboardToolbarAccessoryView *)v93 flexibleSpaceItem];
+            [(WFKeyboardToolbarAccessoryView *)v93 appendBarItem:flexibleSpaceItem2];
           }
         }
       }
 
       v140 = MEMORY[0x277CCAAD0];
-      v160 = [v41 leadingAnchor];
-      v153 = [v172 leadingAnchor];
-      v149 = [v160 constraintGreaterThanOrEqualToAnchor:v153 constant:15.0];
+      leadingAnchor5 = [v41 leadingAnchor];
+      leadingAnchor6 = [view leadingAnchor];
+      v149 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6 constant:15.0];
       v184[0] = v149;
-      v146 = [v41 leadingAnchor];
-      v143 = [v172 leadingAnchor];
-      v97 = [v146 constraintLessThanOrEqualToAnchor:v143 constant:v78];
+      leadingAnchor7 = [v41 leadingAnchor];
+      leadingAnchor8 = [view leadingAnchor];
+      v97 = [leadingAnchor7 constraintLessThanOrEqualToAnchor:leadingAnchor8 constant:v78];
       v184[1] = v97;
-      v98 = [v41 trailingAnchor];
-      v99 = [v172 trailingAnchor];
-      v100 = [v98 constraintEqualToAnchor:v99 constant:-v78];
+      trailingAnchor7 = [v41 trailingAnchor];
+      trailingAnchor8 = [view trailingAnchor];
+      v100 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-v78];
       v184[2] = v100;
-      v101 = [v41 heightAnchor];
-      v102 = [v101 constraintEqualToConstant:87.0];
+      heightAnchor2 = [v41 heightAnchor];
+      v102 = [heightAnchor2 constraintEqualToConstant:87.0];
       v184[3] = v102;
-      v103 = [v172 heightAnchor];
-      v104 = [v103 constraintEqualToConstant:87.0];
+      heightAnchor3 = [view heightAnchor];
+      v104 = [heightAnchor3 constraintEqualToConstant:87.0];
       v184[4] = v104;
       v105 = [MEMORY[0x277CBEA60] arrayWithObjects:v184 count:5];
       [v140 activateConstraints:v105];
@@ -970,72 +970,72 @@ LABEL_10:
 
     else
     {
-      [v41 _setPrefix:v150];
-      if ([v174 showsDateFormattingHint])
+      [v41 _setPrefix:prefix];
+      if ([textFieldConfiguration showsDateFormattingHint])
       {
         [(WFCompactPlatterViewController *)self setPlatterHeightAnimationsDisabled:1];
         v106 = objc_opt_new();
-        [v106 setDateStyle:{objc_msgSend(v174, "dateFormatStyle")}];
-        [v106 setTimeStyle:{objc_msgSend(v174, "timeFormatStyle")}];
-        [v106 setDoesRelativeDateFormatting:{objc_msgSend(v174, "doesRelativeDateFormatting")}];
+        [v106 setDateStyle:{objc_msgSend(textFieldConfiguration, "dateFormatStyle")}];
+        [v106 setTimeStyle:{objc_msgSend(textFieldConfiguration, "timeFormatStyle")}];
+        [v106 setDoesRelativeDateFormatting:{objc_msgSend(textFieldConfiguration, "doesRelativeDateFormatting")}];
         [(WFInputTextDialogViewController *)self setDateFormatter:v106];
-        v168 = objc_alloc_init(MEMORY[0x277D756B8]);
+        leadingAnchor3 = objc_alloc_init(MEMORY[0x277D756B8]);
         v107 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
-        [v168 setFont:v107];
+        [leadingAnchor3 setFont:v107];
 
-        [v168 setAdjustsFontForContentSizeCategory:1];
-        [v168 setMaximumContentSizeCategory:*MEMORY[0x277D76820]];
-        v108 = [MEMORY[0x277D75348] secondaryLabelColor];
-        [v168 setTextColor:v108];
+        [leadingAnchor3 setAdjustsFontForContentSizeCategory:1];
+        [leadingAnchor3 setMaximumContentSizeCategory:*MEMORY[0x277D76820]];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        [leadingAnchor3 setTextColor:secondaryLabelColor];
 
-        [v168 setNumberOfLines:1];
-        [v168 setTextAlignment:v147];
-        [v168 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v168 sizeToFit];
-        [v172 addSubview:v168];
-        [v172 sendSubviewToBack:v168];
-        [(WFInputTextDialogViewController *)self setHintLabel:v168];
+        [leadingAnchor3 setNumberOfLines:1];
+        [leadingAnchor3 setTextAlignment:v147];
+        [leadingAnchor3 setTranslatesAutoresizingMaskIntoConstraints:0];
+        [leadingAnchor3 sizeToFit];
+        [view addSubview:leadingAnchor3];
+        [view sendSubviewToBack:leadingAnchor3];
+        [(WFInputTextDialogViewController *)self setHintLabel:leadingAnchor3];
       }
 
       else
       {
-        v168 = 0;
+        leadingAnchor3 = 0;
       }
 
-      v109 = [v172 heightAnchor];
-      v164 = [v109 constraintEqualToConstant:54.0];
+      heightAnchor4 = [view heightAnchor];
+      leadingAnchor4 = [heightAnchor4 constraintEqualToConstant:54.0];
 
       v161 = MEMORY[0x277CCAAD0];
-      v110 = [v41 leadingAnchor];
-      v111 = [v172 leadingAnchor];
-      v112 = [v110 constraintEqualToAnchor:v111 constant:34.0];
+      leadingAnchor9 = [v41 leadingAnchor];
+      leadingAnchor10 = [view leadingAnchor];
+      v112 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:34.0];
       v183[0] = v112;
-      v113 = [v41 trailingAnchor];
-      v114 = [v172 trailingAnchor];
-      v115 = [v113 constraintEqualToAnchor:v114 constant:-v78];
+      trailingAnchor9 = [v41 trailingAnchor];
+      trailingAnchor10 = [view trailingAnchor];
+      v115 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-v78];
       v183[1] = v115;
-      v116 = [v41 heightAnchor];
-      v117 = [v116 constraintEqualToConstant:54.0];
+      heightAnchor5 = [v41 heightAnchor];
+      v117 = [heightAnchor5 constraintEqualToConstant:54.0];
       v183[2] = v117;
-      v183[3] = v164;
+      v183[3] = leadingAnchor4;
       v118 = [MEMORY[0x277CBEA60] arrayWithObjects:v183 count:4];
       [v161 activateConstraints:v118];
 
-      if (v168)
+      if (leadingAnchor3)
       {
-        [(WFInputTextDialogViewController *)self setContentViewHeightAnchor:v164];
+        [(WFInputTextDialogViewController *)self setContentViewHeightAnchor:leadingAnchor4];
         v154 = MEMORY[0x277CCAAD0];
-        v162 = [v168 topAnchor];
-        v119 = [v41 bottomAnchor];
-        v120 = [v162 constraintEqualToAnchor:v119 constant:-10.0];
+        topAnchor5 = [leadingAnchor3 topAnchor];
+        bottomAnchor5 = [v41 bottomAnchor];
+        v120 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5 constant:-10.0];
         v182[0] = v120;
-        v121 = [v168 leadingAnchor];
-        v122 = [v41 leadingAnchor];
-        v123 = [v121 constraintEqualToAnchor:v122];
+        v168LeadingAnchor = [leadingAnchor3 leadingAnchor];
+        leadingAnchor11 = [v41 leadingAnchor];
+        v123 = [v168LeadingAnchor constraintEqualToAnchor:leadingAnchor11];
         v182[1] = v123;
-        v124 = [v168 trailingAnchor];
-        v125 = [v41 trailingAnchor];
-        v126 = [v124 constraintEqualToAnchor:v125];
+        trailingAnchor11 = [leadingAnchor3 trailingAnchor];
+        trailingAnchor12 = [v41 trailingAnchor];
+        v126 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
         v182[2] = v126;
         v127 = [MEMORY[0x277CBEA60] arrayWithObjects:v182 count:3];
         [v154 activateConstraints:v127];
@@ -1045,28 +1045,28 @@ LABEL_10:
 
       else
       {
-        v168 = 0;
+        leadingAnchor3 = 0;
       }
     }
   }
 
   [(WFCompactPlatterViewController *)self setContentViewController:v165];
   objc_initWeak(&location, self);
-  v128 = [v170 cancelButton];
+  cancelButton = [request cancelButton];
   v177[0] = MEMORY[0x277D85DD0];
   v177[1] = 3221225472;
   v177[2] = __43__WFInputTextDialogViewController_loadView__block_invoke;
   v177[3] = &unk_279EE8908;
   objc_copyWeak(&v178, &location);
-  v129 = [WFCompactDialogAction actionForButton:v128 handler:v177];
+  v129 = [WFCompactDialogAction actionForButton:cancelButton handler:v177];
 
-  v130 = [v170 doneButton];
+  doneButton = [request doneButton];
   v175[0] = MEMORY[0x277D85DD0];
   v175[1] = 3221225472;
   v175[2] = __43__WFInputTextDialogViewController_loadView__block_invoke_2;
   v175[3] = &unk_279EE8908;
   objc_copyWeak(&v176, &location);
-  v131 = [WFCompactDialogAction actionForButton:v130 handler:v175];
+  v131 = [WFCompactDialogAction actionForButton:doneButton handler:v175];
 
   v181[0] = v129;
   v181[1] = v131;

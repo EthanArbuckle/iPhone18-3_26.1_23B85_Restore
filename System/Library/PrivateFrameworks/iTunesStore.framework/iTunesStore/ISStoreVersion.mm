@@ -1,16 +1,16 @@
 @interface ISStoreVersion
-- (ISStoreVersion)initWithDictionary:(id)a3;
+- (ISStoreVersion)initWithDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation ISStoreVersion
 
-- (ISStoreVersion)initWithDictionary:(id)a3
+- (ISStoreVersion)initWithDictionary:(id)dictionary
 {
   v4 = [(ISStoreVersion *)self init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"redirect-url"];
+    v5 = [dictionary objectForKey:@"redirect-url"];
     if (v5)
     {
       v4->_redirectURL = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v5];

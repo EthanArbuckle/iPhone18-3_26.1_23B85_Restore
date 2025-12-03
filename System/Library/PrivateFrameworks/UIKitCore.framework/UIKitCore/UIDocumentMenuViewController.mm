@@ -1,27 +1,27 @@
 @interface UIDocumentMenuViewController
 - (UIDocumentMenuViewController)initWithCoder:(NSCoder *)coder;
 - (UIDocumentMenuViewController)initWithDocumentTypes:(NSArray *)allowedUTIs inMode:(UIDocumentPickerMode)mode;
-- (UIDocumentMenuViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (UIDocumentMenuViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIDocumentMenuViewController)initWithURL:(NSURL *)url inMode:(UIDocumentPickerMode)mode;
 - (id)delegate;
-- (void)_commonInitWithCompletion:(id)a3;
+- (void)_commonInitWithCompletion:(id)completion;
 - (void)_didSelectPicker;
 - (void)_dismissViewController;
-- (void)_dismissWithOption:(id)a3;
-- (void)_displayLocationsMenuFromRect:(CGRect)a3;
-- (void)_setChildViewController:(id)a3;
-- (void)_setIsContentManaged:(BOOL)a3;
+- (void)_dismissWithOption:(id)option;
+- (void)_displayLocationsMenuFromRect:(CGRect)rect;
+- (void)_setChildViewController:(id)controller;
+- (void)_setIsContentManaged:(BOOL)managed;
 - (void)addOptionWithTitle:(NSString *)title image:(UIImage *)image order:(UIDocumentMenuOrder)order handler:(void *)handler;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setModalPresentationStyle:(int64_t)style;
 @end
 
 @implementation UIDocumentMenuViewController
 
-- (UIDocumentMenuViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDocumentMenuViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D940];
   v9 = MEMORY[0x1E696AEC0];
@@ -40,8 +40,8 @@
   v7 = allowedUTIs;
   if (mode >= UIDocumentPickerModeExportToService)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:73 description:{@"%s can only be called with mode Import or Open", "-[UIDocumentMenuViewController initWithDocumentTypes:inMode:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:73 description:{@"%s can only be called with mode Import or Open", "-[UIDocumentMenuViewController initWithDocumentTypes:inMode:]"}];
   }
 
   v15.receiver = self;
@@ -86,8 +86,8 @@ void __61__UIDocumentMenuViewController_initWithDocumentTypes_inMode___block_inv
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:96 description:{@"%s can only be called with mode Export or Move", "-[UIDocumentMenuViewController initWithURL:inMode:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:96 description:{@"%s can only be called with mode Export or Move", "-[UIDocumentMenuViewController initWithURL:inMode:]"}];
 
     if (v8)
     {
@@ -95,16 +95,16 @@ void __61__UIDocumentMenuViewController_initWithDocumentTypes_inMode___block_inv
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:97 description:{@"%s must be called with a valid URL", "-[UIDocumentMenuViewController initWithURL:inMode:]"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:97 description:{@"%s must be called with a valid URL", "-[UIDocumentMenuViewController initWithURL:inMode:]"}];
 
 LABEL_3:
-  v9 = [(NSURL *)v8 lastPathComponent];
+  lastPathComponent = [(NSURL *)v8 lastPathComponent];
 
-  if (!v9)
+  if (!lastPathComponent)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:98 description:{@"%s must be called with a URL pointing to a file", "-[UIDocumentMenuViewController initWithURL:inMode:]"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:98 description:{@"%s must be called with a URL pointing to a file", "-[UIDocumentMenuViewController initWithURL:inMode:]"}];
   }
 
   v28 = 0;
@@ -115,8 +115,8 @@ LABEL_3:
   v13 = v27;
   if (!v11)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:102 description:{@"%s must be called with a URL pointing to an existing file", "-[UIDocumentMenuViewController initWithURL:inMode:]"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:102 description:{@"%s must be called with a URL pointing to an existing file", "-[UIDocumentMenuViewController initWithURL:inMode:]"}];
   }
 
   v26.receiver = self;
@@ -127,14 +127,14 @@ LABEL_3:
   {
     [(UIDocumentMenuViewController *)v14 setDocumentPickerMode:mode];
     [(UIDocumentMenuViewController *)v15 setUploadURL:v8];
-    v16 = [_UIDocumentPickerNSURLWrapper wrapperWithURL:v8 readonly:mode == UIDocumentPickerModeExportToService];
+    uIDocumentPickerModeExportToService = [_UIDocumentPickerNSURLWrapper wrapperWithURL:v8 readonly:mode == UIDocumentPickerModeExportToService];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __51__UIDocumentMenuViewController_initWithURL_inMode___block_invoke;
     v23[3] = &unk_1E7105528;
-    v24 = v16;
+    v24 = uIDocumentPickerModeExportToService;
     v25 = mode;
-    v17 = v16;
+    v17 = uIDocumentPickerModeExportToService;
     [(UIDocumentMenuViewController *)v15 _commonInitWithCompletion:v23];
   }
 
@@ -149,9 +149,9 @@ void __51__UIDocumentMenuViewController_initWithURL_inMode___block_invoke(uint64
   [v4 _setPickerMode:*(a1 + 40)];
 }
 
-- (void)_commonInitWithCompletion:(id)a3
+- (void)_commonInitWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v26 = 0;
   v32 = 0;
   v33 = &v32;
@@ -174,9 +174,9 @@ void __51__UIDocumentMenuViewController_initWithURL_inMode___block_invoke(uint64
   _Block_object_dispose(&v32, 8);
   if (!v7)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BRCloudEnabledStatus _BRGetCloudEnabledStatus(NSError *__autoreleasing *)"];
-    [v22 handleFailureInFunction:v23 file:@"UIDocumentMenuViewController.m" lineNumber:44 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v23 file:@"UIDocumentMenuViewController.m" lineNumber:44 description:{@"%s", dlerror()}];
     goto LABEL_13;
   }
 
@@ -185,7 +185,7 @@ void __51__UIDocumentMenuViewController_initWithURL_inMode___block_invoke(uint64
   if (v9 == -3 && (!self->_ignoreApplicationEntitlementForImport || [(UIDocumentMenuViewController *)self documentPickerMode]))
   {
     v3 = 0x1E696A000uLL;
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = 0;
     v33 = &v32;
     v34 = 0x2020000000;
@@ -210,30 +210,30 @@ void __51__UIDocumentMenuViewController_initWithURL_inMode___block_invoke(uint64
     {
       while (1)
       {
-        v22 = [*(v3 + 2728) currentHandler];
+        currentHandler = [*(v3 + 2728) currentHandler];
         v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getBRICloudContainerIdentifiersEntitlement(void)"];
-        [v22 handleFailureInFunction:v23 file:@"UIDocumentMenuViewController.m" lineNumber:45 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v23 file:@"UIDocumentMenuViewController.m" lineNumber:45 description:{@"%s", dlerror()}];
 LABEL_13:
 
         __break(1u);
       }
     }
 
-    [v11 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:125 description:{@"Application initializing document picker is missing the iCloud entitlement. Is %@ set?", *v12}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:125 description:{@"Application initializing document picker is missing the iCloud entitlement. Is %@ set?", *v12}];
   }
 
   [(UIViewController *)self _beginDelayingPresentation:0 cancellationHandler:3.0];
   [(UIDocumentMenuViewController *)self setModalPresentationStyle:100];
   [(UIViewController *)self setModalTransitionStyle:12];
-  v15 = [(UIViewController *)self actionSheetPresentationController];
+  actionSheetPresentationController = [(UIViewController *)self actionSheetPresentationController];
   v16 = _UINSLocalizedStringWithDefaultValue(@"Cancel", @"Cancel");
-  [v15 setDismissActionTitle:v16];
+  [actionSheetPresentationController setDismissActionTitle:v16];
 
-  v17 = [(UIViewController *)self actionSheetPresentationController];
-  [v17 setActionSheetDelegate:self];
+  actionSheetPresentationController2 = [(UIViewController *)self actionSheetPresentationController];
+  [actionSheetPresentationController2 setActionSheetDelegate:self];
 
-  v18 = [MEMORY[0x1E695DF70] array];
-  [(UIDocumentMenuViewController *)self setAuxiliaryOptions:v18];
+  array = [MEMORY[0x1E695DF70] array];
+  [(UIDocumentMenuViewController *)self setAuxiliaryOptions:array];
 
   v19 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:@"com.apple.CloudDocsUI.DocumentPicker" error:0];
   v24[0] = MEMORY[0x1E69E9820];
@@ -241,8 +241,8 @@ LABEL_13:
   v24[2] = __58__UIDocumentMenuViewController__commonInitWithCompletion___block_invoke;
   v24[3] = &unk_1E7105578;
   v24[4] = self;
-  v25 = v6;
-  v20 = v6;
+  v25 = completionCopy;
+  v20 = completionCopy;
   v21 = [_UIResilientRemoteViewContainerViewController instantiateWithExtension:v19 completion:v24];
   [(UIDocumentMenuViewController *)self _setChildViewController:v21];
   [v21 preferredContentSize];
@@ -305,11 +305,11 @@ uint64_t __58__UIDocumentMenuViewController__commonInitWithCompletion___block_in
   return [(UIViewController *)&v4 initWithCoder:coder];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4.receiver = self;
   v4.super_class = UIDocumentMenuViewController;
-  [(UIViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(UIViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:container];
   [(UIViewController *)self->_childViewController preferredContentSize];
   [(UIViewController *)self setPreferredContentSize:?];
 }
@@ -326,73 +326,73 @@ uint64_t __58__UIDocumentMenuViewController__commonInitWithCompletion___block_in
   [(_UIDocumentPickerAuxiliaryOption *)v14 setHandler:v10];
 
   [(_UIDocumentPickerAuxiliaryOption *)v14 setOrder:order];
-  v13 = [(UIDocumentMenuViewController *)self auxiliaryOptions];
-  [v13 addObject:v14];
+  auxiliaryOptions = [(UIDocumentMenuViewController *)self auxiliaryOptions];
+  [auxiliaryOptions addObject:v14];
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v25 = a3;
-  v5 = [(UIViewController *)self->_childViewController view];
-  [v5 removeFromSuperview];
+  controllerCopy = controller;
+  view = [(UIViewController *)self->_childViewController view];
+  [view removeFromSuperview];
 
   [(UIViewController *)self->_childViewController removeFromParentViewController];
-  objc_storeStrong(&self->_childViewController, a3);
+  objc_storeStrong(&self->_childViewController, controller);
   if (self->_childViewController)
   {
-    [v25 willMoveToParentViewController:self];
-    [(UIViewController *)self addChildViewController:v25];
-    v6 = [(UIViewController *)self view];
-    v7 = [v25 view];
-    [v6 addSubview:v7];
+    [controllerCopy willMoveToParentViewController:self];
+    [(UIViewController *)self addChildViewController:controllerCopy];
+    view2 = [(UIViewController *)self view];
+    view3 = [controllerCopy view];
+    [view2 addSubview:view3];
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9 = MEMORY[0x1E69977A0];
-    v10 = [v25 view];
-    v11 = [(UIViewController *)self view];
-    v12 = [v9 constraintWithItem:v10 attribute:7 relatedBy:0 toItem:v11 attribute:7 multiplier:1.0 constant:0.0];
-    [v8 addObject:v12];
+    view4 = [controllerCopy view];
+    view5 = [(UIViewController *)self view];
+    v12 = [v9 constraintWithItem:view4 attribute:7 relatedBy:0 toItem:view5 attribute:7 multiplier:1.0 constant:0.0];
+    [array addObject:v12];
 
     v13 = MEMORY[0x1E69977A0];
-    v14 = [v25 view];
-    v15 = [(UIViewController *)self view];
-    v16 = [v13 constraintWithItem:v14 attribute:8 relatedBy:0 toItem:v15 attribute:8 multiplier:1.0 constant:0.0];
-    [v8 addObject:v16];
+    view6 = [controllerCopy view];
+    view7 = [(UIViewController *)self view];
+    v16 = [v13 constraintWithItem:view6 attribute:8 relatedBy:0 toItem:view7 attribute:8 multiplier:1.0 constant:0.0];
+    [array addObject:v16];
 
     v17 = MEMORY[0x1E69977A0];
-    v18 = [v25 view];
-    v19 = [(UIViewController *)self view];
-    v20 = [v17 constraintWithItem:v18 attribute:1 relatedBy:0 toItem:v19 attribute:1 multiplier:1.0 constant:0.0];
-    [v8 addObject:v20];
+    view8 = [controllerCopy view];
+    view9 = [(UIViewController *)self view];
+    v20 = [v17 constraintWithItem:view8 attribute:1 relatedBy:0 toItem:view9 attribute:1 multiplier:1.0 constant:0.0];
+    [array addObject:v20];
 
     v21 = MEMORY[0x1E69977A0];
-    v22 = [v25 view];
-    v23 = [(UIViewController *)self view];
-    v24 = [v21 constraintWithItem:v22 attribute:3 relatedBy:0 toItem:v23 attribute:3 multiplier:1.0 constant:0.0];
-    [v8 addObject:v24];
+    view10 = [controllerCopy view];
+    view11 = [(UIViewController *)self view];
+    v24 = [v21 constraintWithItem:view10 attribute:3 relatedBy:0 toItem:view11 attribute:3 multiplier:1.0 constant:0.0];
+    [array addObject:v24];
 
-    [MEMORY[0x1E69977A0] activateConstraints:v8];
-    [v25 didMoveToParentViewController:self];
+    [MEMORY[0x1E69977A0] activateConstraints:array];
+    [controllerCopy didMoveToParentViewController:self];
   }
 }
 
-- (void)_setIsContentManaged:(BOOL)a3
+- (void)_setIsContentManaged:(BOOL)managed
 {
-  self->_isContentManaged = a3;
-  v5 = [(UIDocumentMenuViewController *)self _remoteViewController];
-  v4 = [v5 serviceViewControllerProxy];
-  [v4 _setIsContentManaged:self->_isContentManaged];
+  self->_isContentManaged = managed;
+  _remoteViewController = [(UIDocumentMenuViewController *)self _remoteViewController];
+  serviceViewControllerProxy = [_remoteViewController serviceViewControllerProxy];
+  [serviceViewControllerProxy _setIsContentManaged:self->_isContentManaged];
 }
 
 - (void)_didSelectPicker
 {
-  v3 = [(UIViewController *)self presentingViewController];
+  presentingViewController = [(UIViewController *)self presentingViewController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__UIDocumentMenuViewController__didSelectPicker__block_invoke;
   v4[3] = &unk_1E70F3590;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
 void __48__UIDocumentMenuViewController__didSelectPicker__block_invoke(uint64_t a1)
@@ -427,74 +427,74 @@ LABEL_6:
   [*(a1 + 32) setDismissDelegateCalled:1];
 }
 
-- (void)_displayLocationsMenuFromRect:(CGRect)a3
+- (void)_displayLocationsMenuFromRect:(CGRect)rect
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:274 description:@"1st party doc picker requested locations menu display"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:274 description:@"1st party doc picker requested locations menu display"];
 }
 
 - (void)_dismissViewController
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [(UIDocumentMenuViewController *)self setAuxiliaryOptions:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  [(UIDocumentMenuViewController *)self setAuxiliaryOptions:array];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [(UIDocumentMenuViewController *)self _remoteViewController];
-  [v5 invalidate];
+  _remoteViewController = [(UIDocumentMenuViewController *)self _remoteViewController];
+  [_remoteViewController invalidate];
 
-  v6 = [(UIDocumentMenuViewController *)self _childViewController];
-  [v6 invalidate];
+  _childViewController = [(UIDocumentMenuViewController *)self _childViewController];
+  [_childViewController invalidate];
 
   if (![(UIDocumentMenuViewController *)self dismissDelegateCalled])
   {
-    v7 = [(UIDocumentMenuViewController *)self delegate];
+    delegate = [(UIDocumentMenuViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       [(UIDocumentMenuViewController *)self setDismissDelegateCalled:1];
-      [v7 documentMenuWasCancelled:self];
+      [delegate documentMenuWasCancelled:self];
     }
   }
 }
 
-- (void)_dismissWithOption:(id)a3
+- (void)_dismissWithOption:(id)option
 {
-  v5 = a3;
+  optionCopy = option;
   auxiliaryOptions = self->_auxiliaryOptions;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __51__UIDocumentMenuViewController__dismissWithOption___block_invoke;
   v17[3] = &unk_1E71055A0;
-  v7 = v5;
+  v7 = optionCopy;
   v18 = v7;
   v8 = [(NSMutableArray *)self->_auxiliaryOptions objectAtIndex:[(NSMutableArray *)auxiliaryOptions indexOfObjectPassingTest:v17]];
   if (!v8)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:304 description:@"Document picker menu dismissed with an option not previously specified?"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:304 description:@"Document picker menu dismissed with an option not previously specified?"];
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  [(UIDocumentMenuViewController *)self setAuxiliaryOptions:v9];
+  array = [MEMORY[0x1E695DF70] array];
+  [(UIDocumentMenuViewController *)self setAuxiliaryOptions:array];
 
   [(UIDocumentMenuViewController *)self setDismissDelegateCalled:1];
-  v10 = [(UIViewController *)self presentingViewController];
+  presentingViewController = [(UIViewController *)self presentingViewController];
 
-  if (!v10)
+  if (!presentingViewController)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:308 description:{@"%s: presenting view controller is nil", "-[UIDocumentMenuViewController _dismissWithOption:]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentMenuViewController.m" lineNumber:308 description:{@"%s: presenting view controller is nil", "-[UIDocumentMenuViewController _dismissWithOption:]"}];
   }
 
-  v11 = [(UIViewController *)self presentingViewController];
+  presentingViewController2 = [(UIViewController *)self presentingViewController];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __51__UIDocumentMenuViewController__dismissWithOption___block_invoke_2;
   v15[3] = &unk_1E70F3590;
   v16 = v8;
   v12 = v8;
-  [v11 dismissViewControllerAnimated:1 completion:v15];
+  [presentingViewController2 dismissViewControllerAnimated:1 completion:v15];
 }
 
 uint64_t __51__UIDocumentMenuViewController__dismissWithOption___block_invoke(uint64_t a1, void *a2)
@@ -516,7 +516,7 @@ void __51__UIDocumentMenuViewController__dismissWithOption___block_invoke_2(uint
   }
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = UIDocumentMenuViewController;

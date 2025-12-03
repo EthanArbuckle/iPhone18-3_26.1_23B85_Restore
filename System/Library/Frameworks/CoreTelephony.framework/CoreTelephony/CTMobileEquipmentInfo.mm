@@ -1,9 +1,9 @@
 @interface CTMobileEquipmentInfo
-- (BOOL)isEqual:(id)a3;
-- (CTMobileEquipmentInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTMobileEquipmentInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTMobileEquipmentInfo
@@ -12,35 +12,35 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", slotID=%s", CTSubscriptionSlotAsString(-[CTMobileEquipmentInfo slotId](self, "slotId"))];
-  v4 = [(CTMobileEquipmentInfo *)self currentMobileId];
-  [v3 appendFormat:@", currentMobileId=%@", v4];
+  currentMobileId = [(CTMobileEquipmentInfo *)self currentMobileId];
+  [v3 appendFormat:@", currentMobileId=%@", currentMobileId];
 
-  v5 = [(CTMobileEquipmentInfo *)self currentSubscriberId];
-  [v3 appendFormat:@", currentSubscriberId=%@", v5];
+  currentSubscriberId = [(CTMobileEquipmentInfo *)self currentSubscriberId];
+  [v3 appendFormat:@", currentSubscriberId=%@", currentSubscriberId];
 
-  v6 = [(CTMobileEquipmentInfo *)self IMEI];
-  [v3 appendFormat:@", IMEI=%@", v6];
+  iMEI = [(CTMobileEquipmentInfo *)self IMEI];
+  [v3 appendFormat:@", IMEI=%@", iMEI];
 
-  v7 = [(CTMobileEquipmentInfo *)self ICCID];
-  [v3 appendFormat:@", ICCID=%@", v7];
+  iCCID = [(CTMobileEquipmentInfo *)self ICCID];
+  [v3 appendFormat:@", ICCID=%@", iCCID];
 
-  v8 = [(CTMobileEquipmentInfo *)self IMSI];
-  [v3 appendFormat:@", IMSI=%@", v8];
+  iMSI = [(CTMobileEquipmentInfo *)self IMSI];
+  [v3 appendFormat:@", IMSI=%@", iMSI];
 
-  v9 = [(CTMobileEquipmentInfo *)self cdmaIMSI];
-  [v3 appendFormat:@", CDMA IMSI=%@", v9];
+  cdmaIMSI = [(CTMobileEquipmentInfo *)self cdmaIMSI];
+  [v3 appendFormat:@", CDMA IMSI=%@", cdmaIMSI];
 
-  v10 = [(CTMobileEquipmentInfo *)self MEID];
-  [v3 appendFormat:@", CDMA MEID=%@", v10];
+  mEID = [(CTMobileEquipmentInfo *)self MEID];
+  [v3 appendFormat:@", CDMA MEID=%@", mEID];
 
-  v11 = [(CTMobileEquipmentInfo *)self EUIMID];
-  [v3 appendFormat:@", CDMA EUIMID=%@", v11];
+  eUIMID = [(CTMobileEquipmentInfo *)self EUIMID];
+  [v3 appendFormat:@", CDMA EUIMID=%@", eUIMID];
 
-  v12 = [(CTMobileEquipmentInfo *)self PRLVersion];
-  [v3 appendFormat:@", CDMA PRL Version=%@", v12];
+  pRLVersion = [(CTMobileEquipmentInfo *)self PRLVersion];
+  [v3 appendFormat:@", CDMA PRL Version=%@", pRLVersion];
 
-  v13 = [(CTMobileEquipmentInfo *)self ERIVersion];
-  [v3 appendFormat:@", CDMA ERI Version=%@", v13];
+  eRIVersion = [(CTMobileEquipmentInfo *)self ERIVersion];
+  [v3 appendFormat:@", CDMA ERI Version=%@", eRIVersion];
 
   v14 = [(CTMobileEquipmentInfo *)self MIN];
   [v3 appendFormat:@", CDMA MIN=%@", v14];
@@ -48,32 +48,32 @@
   v15 = [(CTMobileEquipmentInfo *)self NAI];
   [v3 appendFormat:@", CDMA NAI=%@", v15];
 
-  v16 = [(CTMobileEquipmentInfo *)self baseVersion];
-  [v3 appendFormat:@", baseVersion=%@", v16];
+  baseVersion = [(CTMobileEquipmentInfo *)self baseVersion];
+  [v3 appendFormat:@", baseVersion=%@", baseVersion];
 
-  v17 = [(CTMobileEquipmentInfo *)self baseId];
-  [v3 appendFormat:@", baseId=%@", v17];
+  baseId = [(CTMobileEquipmentInfo *)self baseId];
+  [v3 appendFormat:@", baseId=%@", baseId];
 
-  v18 = [(CTMobileEquipmentInfo *)self baseProfile];
-  [v3 appendFormat:@", baseProfile=%@", v18];
+  baseProfile = [(CTMobileEquipmentInfo *)self baseProfile];
+  [v3 appendFormat:@", baseProfile=%@", baseProfile];
 
-  v19 = [(CTMobileEquipmentInfo *)self effectiveICCID];
-  [v3 appendFormat:@", effectiveICCID=%@", v19];
+  effectiveICCID = [(CTMobileEquipmentInfo *)self effectiveICCID];
+  [v3 appendFormat:@", effectiveICCID=%@", effectiveICCID];
 
   v20 = [(CTMobileEquipmentInfo *)self CSN];
   [v3 appendFormat:@", CSN=%@", v20];
 
-  v21 = [(CTMobileEquipmentInfo *)self displayCSN];
-  [v3 appendFormat:@", displayCSN=%@", v21];
+  displayCSN = [(CTMobileEquipmentInfo *)self displayCSN];
+  [v3 appendFormat:@", displayCSN=%@", displayCSN];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -81,23 +81,23 @@
   }
 
   slotId = self->_slotId;
-  if (slotId != [v4 slotId])
+  if (slotId != [equalCopy slotId])
   {
     goto LABEL_65;
   }
 
   currentMobileId = self->_currentMobileId;
-  v7 = [v4 currentMobileId];
-  v8 = v7;
-  if (currentMobileId == v7)
+  currentMobileId = [equalCopy currentMobileId];
+  v8 = currentMobileId;
+  if (currentMobileId == currentMobileId)
   {
   }
 
   else
   {
     v9 = self->_currentMobileId;
-    v10 = [v4 currentMobileId];
-    LODWORD(v9) = [(NSString *)v9 isEqualToString:v10];
+    currentMobileId2 = [equalCopy currentMobileId];
+    LODWORD(v9) = [(NSString *)v9 isEqualToString:currentMobileId2];
 
     if (!v9)
     {
@@ -106,17 +106,17 @@
   }
 
   currentSubscriberId = self->_currentSubscriberId;
-  v12 = [v4 currentSubscriberId];
-  v13 = v12;
-  if (currentSubscriberId == v12)
+  currentSubscriberId = [equalCopy currentSubscriberId];
+  v13 = currentSubscriberId;
+  if (currentSubscriberId == currentSubscriberId)
   {
   }
 
   else
   {
     v14 = self->_currentSubscriberId;
-    v15 = [v4 currentSubscriberId];
-    LODWORD(v14) = [(NSString *)v14 isEqualToString:v15];
+    currentSubscriberId2 = [equalCopy currentSubscriberId];
+    LODWORD(v14) = [(NSString *)v14 isEqualToString:currentSubscriberId2];
 
     if (!v14)
     {
@@ -125,17 +125,17 @@
   }
 
   IMEI = self->_IMEI;
-  v17 = [v4 IMEI];
-  v18 = v17;
-  if (IMEI == v17)
+  iMEI = [equalCopy IMEI];
+  v18 = iMEI;
+  if (IMEI == iMEI)
   {
   }
 
   else
   {
     v19 = self->_IMEI;
-    v20 = [v4 IMEI];
-    LODWORD(v19) = [(NSString *)v19 isEqualToString:v20];
+    iMEI2 = [equalCopy IMEI];
+    LODWORD(v19) = [(NSString *)v19 isEqualToString:iMEI2];
 
     if (!v19)
     {
@@ -144,17 +144,17 @@
   }
 
   ICCID = self->_ICCID;
-  v22 = [v4 ICCID];
-  v23 = v22;
-  if (ICCID == v22)
+  iCCID = [equalCopy ICCID];
+  v23 = iCCID;
+  if (ICCID == iCCID)
   {
   }
 
   else
   {
     v24 = self->_ICCID;
-    v25 = [v4 ICCID];
-    LODWORD(v24) = [(NSString *)v24 isEqualToString:v25];
+    iCCID2 = [equalCopy ICCID];
+    LODWORD(v24) = [(NSString *)v24 isEqualToString:iCCID2];
 
     if (!v24)
     {
@@ -163,17 +163,17 @@
   }
 
   IMSI = self->_IMSI;
-  v27 = [v4 IMSI];
-  v28 = v27;
-  if (IMSI == v27)
+  iMSI = [equalCopy IMSI];
+  v28 = iMSI;
+  if (IMSI == iMSI)
   {
   }
 
   else
   {
     v29 = self->_IMSI;
-    v30 = [v4 IMSI];
-    LODWORD(v29) = [(NSString *)v29 isEqualToString:v30];
+    iMSI2 = [equalCopy IMSI];
+    LODWORD(v29) = [(NSString *)v29 isEqualToString:iMSI2];
 
     if (!v29)
     {
@@ -182,17 +182,17 @@
   }
 
   cdmaIMSI = self->_cdmaIMSI;
-  v32 = [v4 cdmaIMSI];
-  v33 = v32;
-  if (cdmaIMSI == v32)
+  cdmaIMSI = [equalCopy cdmaIMSI];
+  v33 = cdmaIMSI;
+  if (cdmaIMSI == cdmaIMSI)
   {
   }
 
   else
   {
     v34 = self->_cdmaIMSI;
-    v35 = [v4 cdmaIMSI];
-    LODWORD(v34) = [(NSString *)v34 isEqualToString:v35];
+    cdmaIMSI2 = [equalCopy cdmaIMSI];
+    LODWORD(v34) = [(NSString *)v34 isEqualToString:cdmaIMSI2];
 
     if (!v34)
     {
@@ -201,17 +201,17 @@
   }
 
   EUIMID = self->_EUIMID;
-  v37 = [v4 EUIMID];
-  v38 = v37;
-  if (EUIMID == v37)
+  eUIMID = [equalCopy EUIMID];
+  v38 = eUIMID;
+  if (EUIMID == eUIMID)
   {
   }
 
   else
   {
     v39 = self->_EUIMID;
-    v40 = [v4 EUIMID];
-    LODWORD(v39) = [(NSString *)v39 isEqualToString:v40];
+    eUIMID2 = [equalCopy EUIMID];
+    LODWORD(v39) = [(NSString *)v39 isEqualToString:eUIMID2];
 
     if (!v39)
     {
@@ -220,17 +220,17 @@
   }
 
   PRLVersion = self->_PRLVersion;
-  v42 = [v4 PRLVersion];
-  v43 = v42;
-  if (PRLVersion == v42)
+  pRLVersion = [equalCopy PRLVersion];
+  v43 = pRLVersion;
+  if (PRLVersion == pRLVersion)
   {
   }
 
   else
   {
     v44 = self->_PRLVersion;
-    v45 = [v4 PRLVersion];
-    LODWORD(v44) = [(NSNumber *)v44 isEqual:v45];
+    pRLVersion2 = [equalCopy PRLVersion];
+    LODWORD(v44) = [(NSNumber *)v44 isEqual:pRLVersion2];
 
     if (!v44)
     {
@@ -239,17 +239,17 @@
   }
 
   ERIVersion = self->_ERIVersion;
-  v47 = [v4 ERIVersion];
-  v48 = v47;
-  if (ERIVersion == v47)
+  eRIVersion = [equalCopy ERIVersion];
+  v48 = eRIVersion;
+  if (ERIVersion == eRIVersion)
   {
   }
 
   else
   {
     v49 = self->_ERIVersion;
-    v50 = [v4 ERIVersion];
-    LODWORD(v49) = [(NSNumber *)v49 isEqual:v50];
+    eRIVersion2 = [equalCopy ERIVersion];
+    LODWORD(v49) = [(NSNumber *)v49 isEqual:eRIVersion2];
 
     if (!v49)
     {
@@ -258,7 +258,7 @@
   }
 
   MIN = self->_MIN;
-  v52 = [v4 MIN];
+  v52 = [equalCopy MIN];
   v53 = v52;
   if (MIN == v52)
   {
@@ -267,7 +267,7 @@
   else
   {
     v54 = self->_MIN;
-    v55 = [v4 MIN];
+    v55 = [equalCopy MIN];
     LODWORD(v54) = [(NSString *)v54 isEqualToString:v55];
 
     if (!v54)
@@ -277,7 +277,7 @@
   }
 
   NAI = self->_NAI;
-  v57 = [v4 NAI];
+  v57 = [equalCopy NAI];
   v58 = v57;
   if (NAI == v57)
   {
@@ -286,7 +286,7 @@
   else
   {
     v59 = self->_NAI;
-    v60 = [v4 NAI];
+    v60 = [equalCopy NAI];
     LODWORD(v59) = [(NSString *)v59 isEqualToString:v60];
 
     if (!v59)
@@ -296,17 +296,17 @@
   }
 
   baseVersion = self->_baseVersion;
-  v62 = [v4 baseVersion];
-  v63 = v62;
-  if (baseVersion == v62)
+  baseVersion = [equalCopy baseVersion];
+  v63 = baseVersion;
+  if (baseVersion == baseVersion)
   {
   }
 
   else
   {
     v64 = self->_baseVersion;
-    v65 = [v4 baseVersion];
-    LODWORD(v64) = [(NSString *)v64 isEqualToString:v65];
+    baseVersion2 = [equalCopy baseVersion];
+    LODWORD(v64) = [(NSString *)v64 isEqualToString:baseVersion2];
 
     if (!v64)
     {
@@ -315,17 +315,17 @@
   }
 
   baseId = self->_baseId;
-  v67 = [v4 baseId];
-  v68 = v67;
-  if (baseId == v67)
+  baseId = [equalCopy baseId];
+  v68 = baseId;
+  if (baseId == baseId)
   {
   }
 
   else
   {
     v69 = self->_baseId;
-    v70 = [v4 baseId];
-    LODWORD(v69) = [(NSString *)v69 isEqualToString:v70];
+    baseId2 = [equalCopy baseId];
+    LODWORD(v69) = [(NSString *)v69 isEqualToString:baseId2];
 
     if (!v69)
     {
@@ -334,17 +334,17 @@
   }
 
   baseProfile = self->_baseProfile;
-  v72 = [v4 baseProfile];
-  v73 = v72;
-  if (baseProfile == v72)
+  baseProfile = [equalCopy baseProfile];
+  v73 = baseProfile;
+  if (baseProfile == baseProfile)
   {
   }
 
   else
   {
     v74 = self->_baseProfile;
-    v75 = [v4 baseProfile];
-    LODWORD(v74) = [(NSString *)v74 isEqualToString:v75];
+    baseProfile2 = [equalCopy baseProfile];
+    LODWORD(v74) = [(NSString *)v74 isEqualToString:baseProfile2];
 
     if (!v74)
     {
@@ -353,17 +353,17 @@
   }
 
   effectiveICCID = self->_effectiveICCID;
-  v77 = [v4 effectiveICCID];
-  v78 = v77;
-  if (effectiveICCID == v77)
+  effectiveICCID = [equalCopy effectiveICCID];
+  v78 = effectiveICCID;
+  if (effectiveICCID == effectiveICCID)
   {
   }
 
   else
   {
     v79 = self->_effectiveICCID;
-    v80 = [v4 effectiveICCID];
-    LODWORD(v79) = [(NSString *)v79 isEqualToString:v80];
+    effectiveICCID2 = [equalCopy effectiveICCID];
+    LODWORD(v79) = [(NSString *)v79 isEqualToString:effectiveICCID2];
 
     if (!v79)
     {
@@ -372,7 +372,7 @@
   }
 
   CSN = self->_CSN;
-  v82 = [v4 CSN];
+  v82 = [equalCopy CSN];
   v83 = v82;
   if (CSN == v82)
   {
@@ -381,7 +381,7 @@
   else
   {
     v84 = self->_CSN;
-    v85 = [v4 CSN];
+    v85 = [equalCopy CSN];
     LODWORD(v84) = [(NSString *)v84 isEqualToString:v85];
 
     if (!v84)
@@ -393,8 +393,8 @@ LABEL_65:
   }
 
   displayCSN = self->_displayCSN;
-  v89 = [v4 displayCSN];
-  if (displayCSN == v89)
+  displayCSN = [equalCopy displayCSN];
+  if (displayCSN == displayCSN)
   {
     v86 = 1;
   }
@@ -402,56 +402,56 @@ LABEL_65:
   else
   {
     v90 = self->_displayCSN;
-    v91 = [v4 displayCSN];
-    v86 = [(NSString *)v90 isEqualToString:v91];
+    displayCSN2 = [equalCopy displayCSN];
+    v86 = [(NSString *)v90 isEqualToString:displayCSN2];
   }
 
 LABEL_66:
   return v86 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSlotId:{-[CTMobileEquipmentInfo slotId](self, "slotId")}];
-  v5 = [(CTMobileEquipmentInfo *)self currentMobileId];
-  v6 = [v5 copy];
+  currentMobileId = [(CTMobileEquipmentInfo *)self currentMobileId];
+  v6 = [currentMobileId copy];
   [v4 setCurrentMobileId:v6];
 
-  v7 = [(CTMobileEquipmentInfo *)self currentSubscriberId];
-  v8 = [v7 copy];
+  currentSubscriberId = [(CTMobileEquipmentInfo *)self currentSubscriberId];
+  v8 = [currentSubscriberId copy];
   [v4 setCurrentSubscriberId:v8];
 
-  v9 = [(CTMobileEquipmentInfo *)self IMEI];
-  v10 = [v9 copy];
+  iMEI = [(CTMobileEquipmentInfo *)self IMEI];
+  v10 = [iMEI copy];
   [v4 setIMEI:v10];
 
-  v11 = [(CTMobileEquipmentInfo *)self ICCID];
-  v12 = [v11 copy];
+  iCCID = [(CTMobileEquipmentInfo *)self ICCID];
+  v12 = [iCCID copy];
   [v4 setICCID:v12];
 
-  v13 = [(CTMobileEquipmentInfo *)self IMSI];
-  v14 = [v13 copy];
+  iMSI = [(CTMobileEquipmentInfo *)self IMSI];
+  v14 = [iMSI copy];
   [v4 setIMSI:v14];
 
-  v15 = [(CTMobileEquipmentInfo *)self cdmaIMSI];
-  v16 = [v15 copy];
+  cdmaIMSI = [(CTMobileEquipmentInfo *)self cdmaIMSI];
+  v16 = [cdmaIMSI copy];
   [v4 setCdmaIMSI:v16];
 
-  v17 = [(CTMobileEquipmentInfo *)self MEID];
-  v18 = [v17 copy];
+  mEID = [(CTMobileEquipmentInfo *)self MEID];
+  v18 = [mEID copy];
   [v4 setMEID:v18];
 
-  v19 = [(CTMobileEquipmentInfo *)self EUIMID];
-  v20 = [v19 copy];
+  eUIMID = [(CTMobileEquipmentInfo *)self EUIMID];
+  v20 = [eUIMID copy];
   [v4 setEUIMID:v20];
 
-  v21 = [(CTMobileEquipmentInfo *)self PRLVersion];
-  v22 = [v21 copy];
+  pRLVersion = [(CTMobileEquipmentInfo *)self PRLVersion];
+  v22 = [pRLVersion copy];
   [v4 setPRLVersion:v22];
 
-  v23 = [(CTMobileEquipmentInfo *)self ERIVersion];
-  v24 = [v23 copy];
+  eRIVersion = [(CTMobileEquipmentInfo *)self ERIVersion];
+  v24 = [eRIVersion copy];
   [v4 setERIVersion:v24];
 
   v25 = [(CTMobileEquipmentInfo *)self MIN];
@@ -462,170 +462,170 @@ LABEL_66:
   v28 = [v27 copy];
   [v4 setNAI:v28];
 
-  v29 = [(CTMobileEquipmentInfo *)self baseVersion];
-  v30 = [v29 copy];
+  baseVersion = [(CTMobileEquipmentInfo *)self baseVersion];
+  v30 = [baseVersion copy];
   [v4 setBaseVersion:v30];
 
-  v31 = [(CTMobileEquipmentInfo *)self baseId];
-  v32 = [v31 copy];
+  baseId = [(CTMobileEquipmentInfo *)self baseId];
+  v32 = [baseId copy];
   [v4 setBaseId:v32];
 
-  v33 = [(CTMobileEquipmentInfo *)self baseProfile];
-  v34 = [v33 copy];
+  baseProfile = [(CTMobileEquipmentInfo *)self baseProfile];
+  v34 = [baseProfile copy];
   [v4 setBaseProfile:v34];
 
-  v35 = [(CTMobileEquipmentInfo *)self effectiveICCID];
-  v36 = [v35 copy];
+  effectiveICCID = [(CTMobileEquipmentInfo *)self effectiveICCID];
+  v36 = [effectiveICCID copy];
   [v4 setEffectiveICCID:v36];
 
   v37 = [(CTMobileEquipmentInfo *)self CSN];
   v38 = [v37 copy];
   [v4 setCSN:v38];
 
-  v39 = [(CTMobileEquipmentInfo *)self displayCSN];
-  v40 = [v39 copy];
+  displayCSN = [(CTMobileEquipmentInfo *)self displayCSN];
+  v40 = [displayCSN copy];
   [v4 setDisplayCSN:v40];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CTMobileEquipmentInfo slotId](self forKey:{"slotId"), @"slotId"}];
-  v5 = [(CTMobileEquipmentInfo *)self currentMobileId];
-  [v4 encodeObject:v5 forKey:@"currentMobileId"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CTMobileEquipmentInfo slotId](self forKey:{"slotId"), @"slotId"}];
+  currentMobileId = [(CTMobileEquipmentInfo *)self currentMobileId];
+  [coderCopy encodeObject:currentMobileId forKey:@"currentMobileId"];
 
-  v6 = [(CTMobileEquipmentInfo *)self currentSubscriberId];
-  [v4 encodeObject:v6 forKey:@"currentSubscriberId"];
+  currentSubscriberId = [(CTMobileEquipmentInfo *)self currentSubscriberId];
+  [coderCopy encodeObject:currentSubscriberId forKey:@"currentSubscriberId"];
 
-  v7 = [(CTMobileEquipmentInfo *)self IMEI];
-  [v4 encodeObject:v7 forKey:@"IMEI"];
+  iMEI = [(CTMobileEquipmentInfo *)self IMEI];
+  [coderCopy encodeObject:iMEI forKey:@"IMEI"];
 
-  v8 = [(CTMobileEquipmentInfo *)self ICCID];
-  [v4 encodeObject:v8 forKey:@"ICCID"];
+  iCCID = [(CTMobileEquipmentInfo *)self ICCID];
+  [coderCopy encodeObject:iCCID forKey:@"ICCID"];
 
-  v9 = [(CTMobileEquipmentInfo *)self IMSI];
-  [v4 encodeObject:v9 forKey:@"IMSI"];
+  iMSI = [(CTMobileEquipmentInfo *)self IMSI];
+  [coderCopy encodeObject:iMSI forKey:@"IMSI"];
 
-  v10 = [(CTMobileEquipmentInfo *)self cdmaIMSI];
-  [v4 encodeObject:v10 forKey:@"cdmaIMSI"];
+  cdmaIMSI = [(CTMobileEquipmentInfo *)self cdmaIMSI];
+  [coderCopy encodeObject:cdmaIMSI forKey:@"cdmaIMSI"];
 
-  v11 = [(CTMobileEquipmentInfo *)self MEID];
-  [v4 encodeObject:v11 forKey:@"MEID"];
+  mEID = [(CTMobileEquipmentInfo *)self MEID];
+  [coderCopy encodeObject:mEID forKey:@"MEID"];
 
-  v12 = [(CTMobileEquipmentInfo *)self EUIMID];
-  [v4 encodeObject:v12 forKey:@"EUIMID"];
+  eUIMID = [(CTMobileEquipmentInfo *)self EUIMID];
+  [coderCopy encodeObject:eUIMID forKey:@"EUIMID"];
 
-  v13 = [(CTMobileEquipmentInfo *)self PRLVersion];
-  [v4 encodeObject:v13 forKey:@"PRLVersion"];
+  pRLVersion = [(CTMobileEquipmentInfo *)self PRLVersion];
+  [coderCopy encodeObject:pRLVersion forKey:@"PRLVersion"];
 
-  v14 = [(CTMobileEquipmentInfo *)self ERIVersion];
-  [v4 encodeObject:v14 forKey:@"ERIVersion"];
+  eRIVersion = [(CTMobileEquipmentInfo *)self ERIVersion];
+  [coderCopy encodeObject:eRIVersion forKey:@"ERIVersion"];
 
   v15 = [(CTMobileEquipmentInfo *)self MIN];
-  [v4 encodeObject:v15 forKey:@"MIN"];
+  [coderCopy encodeObject:v15 forKey:@"MIN"];
 
   v16 = [(CTMobileEquipmentInfo *)self NAI];
-  [v4 encodeObject:v16 forKey:@"NAI"];
+  [coderCopy encodeObject:v16 forKey:@"NAI"];
 
-  v17 = [(CTMobileEquipmentInfo *)self baseVersion];
-  [v4 encodeObject:v17 forKey:@"baseVersion"];
+  baseVersion = [(CTMobileEquipmentInfo *)self baseVersion];
+  [coderCopy encodeObject:baseVersion forKey:@"baseVersion"];
 
-  v18 = [(CTMobileEquipmentInfo *)self baseId];
-  [v4 encodeObject:v18 forKey:@"baseId"];
+  baseId = [(CTMobileEquipmentInfo *)self baseId];
+  [coderCopy encodeObject:baseId forKey:@"baseId"];
 
-  v19 = [(CTMobileEquipmentInfo *)self baseProfile];
-  [v4 encodeObject:v19 forKey:@"baseProfile"];
+  baseProfile = [(CTMobileEquipmentInfo *)self baseProfile];
+  [coderCopy encodeObject:baseProfile forKey:@"baseProfile"];
 
-  v20 = [(CTMobileEquipmentInfo *)self effectiveICCID];
-  [v4 encodeObject:v20 forKey:@"effectiveICCID"];
+  effectiveICCID = [(CTMobileEquipmentInfo *)self effectiveICCID];
+  [coderCopy encodeObject:effectiveICCID forKey:@"effectiveICCID"];
 
   v21 = [(CTMobileEquipmentInfo *)self CSN];
-  [v4 encodeObject:v21 forKey:@"CSN"];
+  [coderCopy encodeObject:v21 forKey:@"CSN"];
 
-  v22 = [(CTMobileEquipmentInfo *)self displayCSN];
-  [v4 encodeObject:v22 forKey:@"displayCSN"];
+  displayCSN = [(CTMobileEquipmentInfo *)self displayCSN];
+  [coderCopy encodeObject:displayCSN forKey:@"displayCSN"];
 }
 
-- (CTMobileEquipmentInfo)initWithCoder:(id)a3
+- (CTMobileEquipmentInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = CTMobileEquipmentInfo;
   v5 = [(CTMobileEquipmentInfo *)&v43 init];
   if (v5)
   {
-    v5->_slotId = [v4 decodeIntegerForKey:@"slotId"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentMobileId"];
+    v5->_slotId = [coderCopy decodeIntegerForKey:@"slotId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentMobileId"];
     currentMobileId = v5->_currentMobileId;
     v5->_currentMobileId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentSubscriberId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentSubscriberId"];
     currentSubscriberId = v5->_currentSubscriberId;
     v5->_currentSubscriberId = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IMEI"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IMEI"];
     IMEI = v5->_IMEI;
     v5->_IMEI = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICCID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICCID"];
     ICCID = v5->_ICCID;
     v5->_ICCID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IMSI"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IMSI"];
     IMSI = v5->_IMSI;
     v5->_IMSI = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cdmaIMSI"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cdmaIMSI"];
     cdmaIMSI = v5->_cdmaIMSI;
     v5->_cdmaIMSI = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MEID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MEID"];
     MEID = v5->_MEID;
     v5->_MEID = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EUIMID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EUIMID"];
     EUIMID = v5->_EUIMID;
     v5->_EUIMID = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PRLVersion"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PRLVersion"];
     PRLVersion = v5->_PRLVersion;
     v5->_PRLVersion = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ERIVersion"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ERIVersion"];
     ERIVersion = v5->_ERIVersion;
     v5->_ERIVersion = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MIN"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MIN"];
     MIN = v5->_MIN;
     v5->_MIN = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NAI"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NAI"];
     NAI = v5->_NAI;
     v5->_NAI = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseVersion"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseVersion"];
     baseVersion = v5->_baseVersion;
     v5->_baseVersion = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseId"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseId"];
     baseId = v5->_baseId;
     v5->_baseId = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseProfile"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseProfile"];
     baseProfile = v5->_baseProfile;
     v5->_baseProfile = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"effectiveICCID"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"effectiveICCID"];
     effectiveICCID = v5->_effectiveICCID;
     v5->_effectiveICCID = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSN"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSN"];
     CSN = v5->_CSN;
     v5->_CSN = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayCSN"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayCSN"];
     displayCSN = v5->_displayCSN;
     v5->_displayCSN = v40;
   }

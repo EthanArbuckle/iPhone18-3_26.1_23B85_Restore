@@ -1,16 +1,16 @@
 @interface PDURLOperationStats
 - (id)failedPayloadsCountsDictionary;
 - (id)successPayloadsCountsDictionary;
-- (void)_incrementCounterForKey:(id)a3 inDictionary:(id)a4;
+- (void)_incrementCounterForKey:(id)key inDictionary:(id)dictionary;
 @end
 
 @implementation PDURLOperationStats
 
-- (void)_incrementCounterForKey:(id)a3 inDictionary:(id)a4
+- (void)_incrementCounterForKey:(id)key inDictionary:(id)dictionary
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v5 valueForKey:v9];
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy valueForKey:keyCopy];
   v7 = v6;
   if (v6)
   {
@@ -22,7 +22,7 @@
     v8 = &off_10021B678;
   }
 
-  [v5 setValue:v8 forKey:v9];
+  [dictionaryCopy setValue:v8 forKey:keyCopy];
 }
 
 - (id)successPayloadsCountsDictionary

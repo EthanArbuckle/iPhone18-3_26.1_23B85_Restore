@@ -1,8 +1,8 @@
 @interface _BBGenerativeModelAvailabilityCache
 + (id)sharedInstance;
 - (_BBGenerativeModelAvailabilityCache)init;
-- (int64_t)_currentStatusForUseCase:(id)a3;
-- (int64_t)statusForUseCaseIdentifier:(id)a3;
+- (int64_t)_currentStatusForUseCase:(id)case;
+- (int64_t)statusForUseCaseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)generativeModelsAvailabilityDidChange;
 @end
@@ -28,9 +28,9 @@
   v2 = [(_BBGenerativeModelAvailabilityCache *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     cache = v2->_cache;
-    v2->_cache = v3;
+    v2->_cache = dictionary;
 
     v2->_lock._os_unfair_lock_opaque = 0;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -49,32 +49,32 @@
   [(_BBGenerativeModelAvailabilityCache *)&v4 dealloc];
 }
 
-- (int64_t)statusForUseCaseIdentifier:(id)a3
+- (int64_t)statusForUseCaseIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v7 = [(_BBGenerativeModelAvailabilityCache *)self _currentStatusForUseCase:v4];
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
-    [(NSMutableDictionary *)self->_cache setObject:v8 forKeyedSubscript:v4];
+    integerValue = [(_BBGenerativeModelAvailabilityCache *)self _currentStatusForUseCase:identifierCopy];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+    [(NSMutableDictionary *)self->_cache setObject:v8 forKeyedSubscript:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v7;
+  return integerValue;
 }
 
-- (int64_t)_currentStatusForUseCase:(id)a3
+- (int64_t)_currentStatusForUseCase:(id)case
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  caseCopy = case;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -93,7 +93,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v11, 8);
-  v15[0] = v3;
+  v15[0] = caseCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v7 = [v4 currentWithUseCaseIdentifiers:v6];
 

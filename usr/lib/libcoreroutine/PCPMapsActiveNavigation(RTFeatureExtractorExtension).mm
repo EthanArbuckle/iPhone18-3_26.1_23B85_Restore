@@ -11,22 +11,22 @@
   if (v6)
   {
     v8 = objc_alloc_init(MEMORY[0x277D3F8B0]);
-    v9 = [v6 originMapItem];
-    v10 = [v9 location];
+    originMapItem = [v6 originMapItem];
+    location = [originMapItem location];
 
-    if (v10)
+    if (location)
     {
       v11 = objc_alloc(MEMORY[0x277D3F888]);
-      v12 = [v6 originMapItem];
-      v13 = [v12 location];
-      v14 = [v11 initWithRTLocation:v13];
+      originMapItem2 = [v6 originMapItem];
+      location2 = [originMapItem2 location];
+      v14 = [v11 initWithRTLocation:location2];
       [v8 setOriginLocation:v14];
     }
 
     v15 = objc_alloc(MEMORY[0x277D3F888]);
-    v16 = [v6 destinationMapItem];
-    v17 = [v16 location];
-    v18 = [v15 initWithRTLocation:v17];
+    destinationMapItem = [v6 destinationMapItem];
+    location3 = [destinationMapItem location];
+    v18 = [v15 initWithRTLocation:location3];
     [v8 setDestinationLocation:v18];
 
     [v6 travelTime];

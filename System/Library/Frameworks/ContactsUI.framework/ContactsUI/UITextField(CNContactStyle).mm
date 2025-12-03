@@ -7,58 +7,58 @@
 - (void)_cnui_applyContactStyle
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 _cnui_contactStyle];
-  v3 = [v2 placeholderTextColor];
-  v4 = [v2 textColor];
+  _cnui_contactStyle = [self _cnui_contactStyle];
+  placeholderTextColor = [_cnui_contactStyle placeholderTextColor];
+  textColor = [_cnui_contactStyle textColor];
 
-  if (v4)
+  if (textColor)
   {
-    if ([a1 isEnabled])
+    if ([self isEnabled])
     {
-      [v2 textColor];
+      [_cnui_contactStyle textColor];
     }
 
     else
     {
-      [v2 readOnlyTextColor];
+      [_cnui_contactStyle readOnlyTextColor];
     }
     v5 = ;
-    [a1 setTextColor:v5];
+    [self setTextColor:v5];
   }
 
-  if ([v2 keyboardAppearance])
+  if ([_cnui_contactStyle keyboardAppearance])
   {
-    [a1 setKeyboardAppearance:{objc_msgSend(v2, "keyboardAppearance")}];
+    [self setKeyboardAppearance:{objc_msgSend(_cnui_contactStyle, "keyboardAppearance")}];
   }
 
-  if (!v3)
+  if (!placeholderTextColor)
   {
-    v3 = [v2 textColor];
+    placeholderTextColor = [_cnui_contactStyle textColor];
 
-    if (v3)
+    if (placeholderTextColor)
     {
       v14 = 0.0;
       v15 = 0.0;
       v12 = 0.0;
       v13 = 0.0;
-      v6 = [a1 textColor];
-      [v6 getRed:&v15 green:&v14 blue:&v13 alpha:&v12];
+      textColor2 = [self textColor];
+      [textColor2 getRed:&v15 green:&v14 blue:&v13 alpha:&v12];
 
-      v3 = [MEMORY[0x1E69DC888] colorWithRed:v15 green:v14 blue:v13 alpha:v12 * 0.5];
+      placeholderTextColor = [MEMORY[0x1E69DC888] colorWithRed:v15 green:v14 blue:v13 alpha:v12 * 0.5];
     }
   }
 
-  v7 = [a1 placeholder];
+  placeholder = [self placeholder];
 
-  if (v7 && v3)
+  if (placeholder && placeholderTextColor)
   {
     v16 = *MEMORY[0x1E69DB650];
-    v17[0] = v3;
+    v17[0] = placeholderTextColor;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v9 = objc_alloc(MEMORY[0x1E696AD40]);
-    v10 = [a1 placeholder];
-    v11 = [v9 initWithString:v10 attributes:v8];
-    [a1 setAttributedPlaceholder:v11];
+    placeholder2 = [self placeholder];
+    v11 = [v9 initWithString:placeholder2 attributes:v8];
+    [self setAttributedPlaceholder:v11];
   }
 }
 

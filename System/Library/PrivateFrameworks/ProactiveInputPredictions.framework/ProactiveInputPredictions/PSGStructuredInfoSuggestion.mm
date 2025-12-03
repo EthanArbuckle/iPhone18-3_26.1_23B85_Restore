@@ -1,14 +1,14 @@
 @interface PSGStructuredInfoSuggestion
 - (BOOL)isApplePay;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItem:(id)a3;
-- (PSGStructuredInfoSuggestion)initWithCoder:(id)a3;
-- (PSGStructuredInfoSuggestion)initWithProactiveTrigger:(id)a3 portraitItem:(id)a4 operationalItem:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItem:(id)item;
+- (PSGStructuredInfoSuggestion)initWithCoder:(id)coder;
+- (PSGStructuredInfoSuggestion)initWithProactiveTrigger:(id)trigger portraitItem:(id)item operationalItem:(id)operationalItem;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)predictedValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSGStructuredInfoSuggestion
@@ -27,34 +27,34 @@
   return [(PSGOperationalPredictedItem *)self->_operationalItem hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGStructuredInfoSuggestion *)self isEqualToItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGStructuredInfoSuggestion *)self isEqualToItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToItem:(id)a3
+- (BOOL)isEqualToItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     goto LABEL_8;
   }
 
   v5 = self->_proactiveTrigger;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == itemCopy[1])
   {
   }
 
@@ -70,7 +70,7 @@
 
   v8 = self->_portraitItem;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == itemCopy[2])
   {
   }
 
@@ -88,7 +88,7 @@ LABEL_8:
 
   v12 = self->_operationalItem;
   v13 = v12;
-  if (v12 == v4[3])
+  if (v12 == itemCopy[3])
   {
     v11 = 1;
   }
@@ -102,13 +102,13 @@ LABEL_14:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
   if (v5)
   {
-    v6 = [(PSGProactiveTrigger *)self->_proactiveTrigger copyWithZone:a3];
+    v6 = [(PSGProactiveTrigger *)self->_proactiveTrigger copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
@@ -116,7 +116,7 @@ LABEL_14:
     v9 = v5[2];
     v5[2] = v8;
 
-    v10 = [(PSGOperationalPredictedItem *)self->_operationalItem copyWithZone:a3];
+    v10 = [(PSGOperationalPredictedItem *)self->_operationalItem copyWithZone:zone];
     v11 = v5[3];
     v5[3] = v10;
   }
@@ -124,34 +124,34 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   proactiveTrigger = self->_proactiveTrigger;
-  v5 = a3;
-  [v5 encodeObject:proactiveTrigger forKey:@"prt"];
-  [v5 encodeObject:self->_portraitItem forKey:@"ppi"];
-  [v5 encodeObject:self->_operationalItem forKey:@"opi"];
+  coderCopy = coder;
+  [coderCopy encodeObject:proactiveTrigger forKey:@"prt"];
+  [coderCopy encodeObject:self->_portraitItem forKey:@"ppi"];
+  [coderCopy encodeObject:self->_operationalItem forKey:@"opi"];
 }
 
-- (PSGStructuredInfoSuggestion)initWithCoder:(id)a3
+- (PSGStructuredInfoSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prt"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prt"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ppi"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"opi"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ppi"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"opi"];
     self = [(PSGStructuredInfoSuggestion *)self initWithProactiveTrigger:v5 portraitItem:v6 operationalItem:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)isApplePay
@@ -162,11 +162,11 @@ LABEL_14:
     return 0;
   }
 
-  v4 = [(PSGOperationalPredictedItem *)operationalItem itemIdentifier];
-  if (v4)
+  itemIdentifier = [(PSGOperationalPredictedItem *)operationalItem itemIdentifier];
+  if (itemIdentifier)
   {
-    v5 = [(PSGOperationalPredictedItem *)self->_operationalItem itemIdentifier];
-    v6 = [v5 isEqualToString:@"surf"];
+    itemIdentifier2 = [(PSGOperationalPredictedItem *)self->_operationalItem itemIdentifier];
+    v6 = [itemIdentifier2 isEqualToString:@"surf"];
   }
 
   else
@@ -182,31 +182,31 @@ LABEL_14:
   portraitItem = self->_portraitItem;
   if (portraitItem || (portraitItem = self->_operationalItem) != 0)
   {
-    v5 = [portraitItem value];
+    value = [portraitItem value];
   }
 
   else
   {
-    v5 = &stru_287343650;
+    value = &stru_287343650;
   }
 
-  return v5;
+  return value;
 }
 
-- (PSGStructuredInfoSuggestion)initWithProactiveTrigger:(id)a3 portraitItem:(id)a4 operationalItem:(id)a5
+- (PSGStructuredInfoSuggestion)initWithProactiveTrigger:(id)trigger portraitItem:(id)item operationalItem:(id)operationalItem
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  triggerCopy = trigger;
+  itemCopy = item;
+  operationalItemCopy = operationalItem;
   v15.receiver = self;
   v15.super_class = PSGStructuredInfoSuggestion;
   v12 = [(PSGStructuredInfoSuggestion *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_proactiveTrigger, a3);
-    objc_storeStrong(&v13->_portraitItem, a4);
-    objc_storeStrong(&v13->_operationalItem, a5);
+    objc_storeStrong(&v12->_proactiveTrigger, trigger);
+    objc_storeStrong(&v13->_portraitItem, item);
+    objc_storeStrong(&v13->_operationalItem, operationalItem);
   }
 
   return v13;

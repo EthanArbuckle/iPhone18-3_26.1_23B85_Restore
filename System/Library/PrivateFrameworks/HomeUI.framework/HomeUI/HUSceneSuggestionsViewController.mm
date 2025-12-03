@@ -1,14 +1,14 @@
 @interface HUSceneSuggestionsViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUPresentationDelegate)presentationDelegate;
 - (HUSceneEditorDelegate)sceneEditorDelegate;
 - (HUSceneSuggestionsItemManager)suggestionsItemManager;
 - (HUSceneSuggestionsViewController)init;
-- (void)_cancel:(id)a3;
-- (void)_showActionEditorForActionSetSuggestionItem:(id)a3;
+- (void)_cancel:(id)_cancel;
+- (void)_showActionEditorForActionSetSuggestionItem:(id)item;
 - (void)_showActionEditorForNewCustomScene;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HUSceneSuggestionsViewController
@@ -27,46 +27,46 @@
     [(HUSceneSuggestionsViewController *)v5 setTitle:v6];
 
     v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v5 action:sel__cancel_];
-    v8 = [(HUSceneSuggestionsViewController *)v5 navigationItem];
-    [v8 setLeftBarButtonItem:v7];
+    navigationItem = [(HUSceneSuggestionsViewController *)v5 navigationItem];
+    [navigationItem setLeftBarButtonItem:v7];
 
-    v9 = [(HUSceneSuggestionsViewController *)v5 navigationItem];
-    v10 = [v9 leftBarButtonItem];
-    [v10 setAccessibilityIdentifier:@"Home.NewScene.Cancel"];
+    navigationItem2 = [(HUSceneSuggestionsViewController *)v5 navigationItem];
+    leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+    [leftBarButtonItem setAccessibilityIdentifier:@"Home.NewScene.Cancel"];
   }
 
   return v5;
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v5 = [(HUSceneSuggestionsViewController *)self presentationDelegate];
-  v4 = [v5 finishPresentation:self animated:1];
+  presentationDelegate = [(HUSceneSuggestionsViewController *)self presentationDelegate];
+  v4 = [presentationDelegate finishPresentation:self animated:1];
 }
 
-- (void)_showActionEditorForActionSetSuggestionItem:(id)a3
+- (void)_showActionEditorForActionSetSuggestionItem:(id)item
 {
-  v11 = a3;
-  v4 = [v11 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13D40]];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13D40]];
 
   if (v5)
   {
     v6 = [[HUSceneActionEditorViewController alloc] initWithActionSetBuilder:v5 mode:1];
     [(HUSceneActionEditorViewController *)v6 setShowCancelButton:0];
-    v7 = [(HUSceneSuggestionsViewController *)self sceneEditorDelegate];
-    [(HUSceneActionEditorViewController *)v6 setSceneEditorDelegate:v7];
+    sceneEditorDelegate = [(HUSceneSuggestionsViewController *)self sceneEditorDelegate];
+    [(HUSceneActionEditorViewController *)v6 setSceneEditorDelegate:sceneEditorDelegate];
 
-    v8 = [(HUSceneSuggestionsViewController *)self presentationDelegate];
-    [(HUSceneActionEditorViewController *)v6 setPresentationDelegate:v8];
+    presentationDelegate = [(HUSceneSuggestionsViewController *)self presentationDelegate];
+    [(HUSceneActionEditorViewController *)v6 setPresentationDelegate:presentationDelegate];
 
-    v9 = [(HUSceneSuggestionsViewController *)self navigationController];
-    v10 = [v9 hu_pushPreloadableViewController:v6 animated:1];
+    navigationController = [(HUSceneSuggestionsViewController *)self navigationController];
+    v10 = [navigationController hu_pushPreloadableViewController:v6 animated:1];
   }
 
   else
   {
-    NSLog(&cfstr_Hfactionsetsug.isa, v11);
+    NSLog(&cfstr_Hfactionsetsug.isa, itemCopy);
   }
 }
 
@@ -74,40 +74,40 @@
 {
   v7 = [[HUSceneActionEditorViewController alloc] initWithActionSetBuilder:0 mode:2];
   [(HUSceneActionEditorViewController *)v7 setShowCancelButton:0];
-  v3 = [(HUSceneSuggestionsViewController *)self sceneEditorDelegate];
-  [(HUSceneActionEditorViewController *)v7 setSceneEditorDelegate:v3];
+  sceneEditorDelegate = [(HUSceneSuggestionsViewController *)self sceneEditorDelegate];
+  [(HUSceneActionEditorViewController *)v7 setSceneEditorDelegate:sceneEditorDelegate];
 
-  v4 = [(HUSceneSuggestionsViewController *)self presentationDelegate];
-  [(HUSceneActionEditorViewController *)v7 setPresentationDelegate:v4];
+  presentationDelegate = [(HUSceneSuggestionsViewController *)self presentationDelegate];
+  [(HUSceneActionEditorViewController *)v7 setPresentationDelegate:presentationDelegate];
 
-  v5 = [(HUSceneSuggestionsViewController *)self navigationController];
-  v6 = [v5 hu_pushPreloadableViewController:v7 animated:1];
+  navigationController = [(HUSceneSuggestionsViewController *)self navigationController];
+  v6 = [navigationController hu_pushPreloadableViewController:v7 animated:1];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUSceneSuggestionsViewController *)self suggestionsItemManager];
-  v7 = [v6 addCustomSceneItem];
+  itemCopy = item;
+  suggestionsItemManager = [(HUSceneSuggestionsViewController *)self suggestionsItemManager];
+  addCustomSceneItem = [suggestionsItemManager addCustomSceneItem];
 
   v8 = objc_opt_class();
 
   return v8;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v14 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v14;
+    v5 = cellCopy;
     [v5 setHideDescription:1];
     [v5 setAccessoryType:1];
     [v5 setIconDisplayStyle:1];
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v5 titleText];
-    v8 = [v7 stringByReplacingOccurrencesOfString:@" " withString:&stru_2823E0EE8];
+    titleText = [v5 titleText];
+    v8 = [titleText stringByReplacingOccurrencesOfString:@" " withString:&stru_2823E0EE8];
     v9 = [v6 stringWithFormat:@"Home.NewScene.%@", v8];
     [v5 setAccessibilityIdentifier:v9];
 
@@ -115,8 +115,8 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v10 = [HUGridSceneCellLayoutOptions defaultOptionsForCellSizeSubclass:1];
-      v11 = [v10 font];
-      [v5 setTitleFont:v11];
+      font = [v10 font];
+      [v5 setTitleFont:font];
     }
   }
 
@@ -124,30 +124,30 @@
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v13 = v14;
+    v13 = cellCopy;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    [v14 setAccessibilityIdentifier:@"Home.NewScene.Custom"];
+    [cellCopy setAccessibilityIdentifier:@"Home.NewScene.Custom"];
   }
 
-  v13 = v14;
+  v13 = cellCopy;
 LABEL_8:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = HUSceneSuggestionsViewController;
-  v6 = a4;
-  v7 = a3;
-  [(HUItemTableViewController *)&v13 tableView:v7 didSelectRowAtIndexPath:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:{1, v13.receiver, v13.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(HUItemTableViewController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v13.receiver, v13.super_class}];
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -157,9 +157,9 @@ LABEL_8:
 
   else
   {
-    v10 = [(HUSceneSuggestionsViewController *)self suggestionsItemManager];
-    v11 = [v10 addCustomSceneItem];
-    v12 = [v9 isEqual:v11];
+    suggestionsItemManager = [(HUSceneSuggestionsViewController *)self suggestionsItemManager];
+    addCustomSceneItem = [suggestionsItemManager addCustomSceneItem];
+    v12 = [v9 isEqual:addCustomSceneItem];
 
     if (v12)
     {

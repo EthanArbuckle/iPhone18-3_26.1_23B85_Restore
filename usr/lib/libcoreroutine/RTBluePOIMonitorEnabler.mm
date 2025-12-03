@@ -1,26 +1,26 @@
 @interface RTBluePOIMonitorEnabler
 - (BOOL)enabled;
-- (RTBluePOIMonitorEnabler)initWithDefaultsManager:(id)a3;
-- (void)_onVisitManagerNotification:(id)a3;
+- (RTBluePOIMonitorEnabler)initWithDefaultsManager:(id)manager;
+- (void)_onVisitManagerNotification:(id)notification;
 - (void)_setup;
-- (void)onMotionActivityManagerNotification:(id)a3;
-- (void)onVisitManagerNotification:(id)a3;
-- (void)onVisitManagerVisitIncidentNotification:(id)a3;
-- (void)setLearnedLocationManager:(id)a3;
-- (void)setMotionActivityManager:(id)a3;
-- (void)setVisitManager:(id)a3;
+- (void)onMotionActivityManagerNotification:(id)notification;
+- (void)onVisitManagerNotification:(id)notification;
+- (void)onVisitManagerVisitIncidentNotification:(id)notification;
+- (void)setLearnedLocationManager:(id)manager;
+- (void)setMotionActivityManager:(id)manager;
+- (void)setVisitManager:(id)manager;
 @end
 
 @implementation RTBluePOIMonitorEnabler
 
 - (BOOL)enabled
 {
-  v3 = [(RTBluePOIMonitorEnabler *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsBluePOIMonitorEnablerDisableBackgroundPOIMonitoring"];
-  v5 = [v4 BOOLValue];
+  defaultsManager = [(RTBluePOIMonitorEnabler *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsBluePOIMonitorEnablerDisableBackgroundPOIMonitoring"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(RTBluePOIMonitorEnabler *)self defaultsManager];
-  v7 = [v6 objectForKey:@"RTDefaultsBluePOIMonitorEnablerStationaryDurationForPausing"];
+  defaultsManager2 = [(RTBluePOIMonitorEnabler *)self defaultsManager];
+  v7 = [defaultsManager2 objectForKey:@"RTDefaultsBluePOIMonitorEnablerStationaryDurationForPausing"];
 
   if (v7)
   {
@@ -43,7 +43,7 @@
     }
 
     v12 = v11 < v9;
-    if (v5)
+    if (bOOLValue)
     {
       goto LABEL_11;
     }
@@ -52,7 +52,7 @@
   else
   {
     v12 = 1;
-    if (v5)
+    if (bOOLValue)
     {
       goto LABEL_11;
     }
@@ -71,10 +71,10 @@ LABEL_13:
   return v13;
 }
 
-- (RTBluePOIMonitorEnabler)initWithDefaultsManager:(id)a3
+- (RTBluePOIMonitorEnabler)initWithDefaultsManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v13.receiver = self;
     v13.super_class = RTBluePOIMonitorEnabler;
@@ -84,7 +84,7 @@ LABEL_13:
     {
       v6->_isDriving = 0;
       v6->_atHomeOrWork = 0;
-      objc_storeStrong(&v6->_defaultsManager, a3);
+      objc_storeStrong(&v6->_defaultsManager, manager);
       v8 = [MEMORY[0x277CBEAA8] now];
       stationaryStartDate = v7->_stationaryStartDate;
       v7->_stationaryStartDate = v8;
@@ -93,7 +93,7 @@ LABEL_13:
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -105,10 +105,10 @@ LABEL_13:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", buf, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)_setup
@@ -124,18 +124,18 @@ LABEL_13:
   }
 }
 
-- (void)setMotionActivityManager:(id)a3
+- (void)setMotionActivityManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  managerCopy = manager;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__RTBluePOIMonitorEnabler_setMotionActivityManager___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = managerCopy;
+  v6 = managerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__RTBluePOIMonitorEnabler_setMotionActivityManager___block_invoke(uint64_t a1)
@@ -147,18 +147,18 @@ void __52__RTBluePOIMonitorEnabler_setMotionActivityManager___block_invoke(uint6
   [v3 addObserver:v2 selector:sel_onMotionActivityManagerNotification_ name:v4];
 }
 
-- (void)setVisitManager:(id)a3
+- (void)setVisitManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  managerCopy = manager;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__RTBluePOIMonitorEnabler_setVisitManager___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = managerCopy;
+  v6 = managerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __43__RTBluePOIMonitorEnabler_setVisitManager___block_invoke(uint64_t a1)
@@ -175,30 +175,30 @@ void __43__RTBluePOIMonitorEnabler_setVisitManager___block_invoke(uint64_t a1)
   [v6 addObserver:v5 selector:sel_onVisitManagerNotification_ name:v7];
 }
 
-- (void)setLearnedLocationManager:(id)a3
+- (void)setLearnedLocationManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  managerCopy = manager;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__RTBluePOIMonitorEnabler_setLearnedLocationManager___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = managerCopy;
+  v6 = managerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)onMotionActivityManagerNotification:(id)a3
+- (void)onMotionActivityManagerNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __63__RTBluePOIMonitorEnabler_onMotionActivityManagerNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(RTNotifier *)self queue:v8];
   dispatch_async(v7, v6);
@@ -295,16 +295,16 @@ LABEL_25:
   }
 }
 
-- (void)onVisitManagerVisitIncidentNotification:(id)a3
+- (void)onVisitManagerVisitIncidentNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __67__RTBluePOIMonitorEnabler_onVisitManagerVisitIncidentNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(RTNotifier *)self queue:v8];
   dispatch_async(v7, v6);
@@ -432,13 +432,13 @@ LABEL_12:
   *(*(a1 + 32) + 33) = v7;
 }
 
-- (void)_onVisitManagerNotification:(id)a3
+- (void)_onVisitManagerNotification:(id)notification
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTVisitManagerAvailableNotification];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
@@ -468,11 +468,11 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 name];
+      name2 = [notificationCopy name];
       *buf = 138412546;
       v18 = v13;
       v19 = 2112;
-      v20 = v14;
+      v20 = name2;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, unhandled notification, %@", buf, 0x16u);
     }
   }
@@ -541,18 +541,18 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)onVisitManagerNotification:(id)a3
+- (void)onVisitManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__RTBluePOIMonitorEnabler_onVisitManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 @end

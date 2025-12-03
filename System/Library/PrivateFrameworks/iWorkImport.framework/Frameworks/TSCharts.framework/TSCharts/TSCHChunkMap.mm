@@ -1,26 +1,26 @@
 @interface TSCHChunkMap
-- (BOOL)p_canAddChunkForSeries:(id)a3 groupIndex:(int64_t)a4;
-- (TSCHChunkMap)initWithChart:(id)a3 chunkStyle:(unint64_t)a4;
-- (unint64_t)groupIndexAtMapIndex:(unint64_t)a3;
-- (unint64_t)seriesIndexAtIndex:(unint64_t)a3;
+- (BOOL)p_canAddChunkForSeries:(id)series groupIndex:(int64_t)index;
+- (TSCHChunkMap)initWithChart:(id)chart chunkStyle:(unint64_t)style;
+- (unint64_t)groupIndexAtMapIndex:(unint64_t)index;
+- (unint64_t)seriesIndexAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)p_setupCacheForElementsInSeriesWithModel:(id)a3;
-- (void)p_setupCacheForElementsInSetsWithModel:(id)a3;
-- (void)p_setupCacheForSeriesWithModel:(id)a3;
-- (void)p_setupCacheForSetsWithModel:(id)a3;
+- (void)p_setupCacheForElementsInSeriesWithModel:(id)model;
+- (void)p_setupCacheForElementsInSetsWithModel:(id)model;
+- (void)p_setupCacheForSeriesWithModel:(id)model;
+- (void)p_setupCacheForSetsWithModel:(id)model;
 @end
 
 @implementation TSCHChunkMap
 
-- (TSCHChunkMap)initWithChart:(id)a3 chunkStyle:(unint64_t)a4
+- (TSCHChunkMap)initWithChart:(id)chart chunkStyle:(unint64_t)style
 {
-  v6 = a3;
+  chartCopy = chart;
   v48.receiver = self;
   v48.super_class = TSCHChunkMap;
   v8 = [(TSCHChunkMap *)&v48 init];
   if (v8)
   {
-    if (!v6)
+    if (!chartCopy)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHChunkMap initWithChart:chunkStyle:]");
@@ -30,7 +30,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
     }
 
-    v28 = objc_msgSend_model(v6, v7, v9, v10, v11);
+    v28 = objc_msgSend_model(chartCopy, v7, v9, v10, v11);
     if (!v28)
     {
       v32 = MEMORY[0x277D81150];
@@ -41,11 +41,11 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
     }
 
-    if (a4 <= 105)
+    if (style <= 105)
     {
-      if (a4 != 102)
+      if (style != 102)
       {
-        if (a4 == 105)
+        if (style == 105)
         {
           objc_msgSend_p_setupCacheForSeriesWithModel_(v8, v27, v29, v30, v31, v28);
         }
@@ -56,15 +56,15 @@
 
     else
     {
-      if (a4 == 106)
+      if (style == 106)
       {
         objc_msgSend_p_setupCacheForSetsWithModel_(v8, v27, v29, v30, v31, v28);
         goto LABEL_16;
       }
 
-      if (a4 != 107)
+      if (style != 107)
       {
-        if (a4 == 108)
+        if (style == 108)
         {
           objc_msgSend_p_setupCacheForElementsInSetsWithModel_(v8, v27, v29, v30, v31, v28);
         }
@@ -89,10 +89,10 @@ LABEL_16:
   [(TSCHChunkMap *)&v3 dealloc];
 }
 
-- (void)p_setupCacheForSeriesWithModel:(id)a3
+- (void)p_setupCacheForSeriesWithModel:(id)model
 {
-  v81 = a3;
-  if (!v81)
+  modelCopy = model;
+  if (!modelCopy)
   {
     v57 = MEMORY[0x277D81150];
     v58 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v5, v6, v7, "[TSCHChunkMap p_setupCacheForSeriesWithModel:]");
@@ -124,7 +124,7 @@ LABEL_20:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
   }
 
-  v38 = objc_msgSend_numberOfSeries(v81, v4, v5, v6, v7);
+  v38 = objc_msgSend_numberOfSeries(modelCopy, v4, v5, v6, v7);
   v39 = malloc_type_malloc(8 * v38, 0x100004000313F17uLL);
   self->_seriesMap = v39;
   self->_chunkMapCount = 0;
@@ -146,8 +146,8 @@ LABEL_20:
   {
     for (i = 0; i != v38; ++i)
     {
-      v45 = objc_msgSend_seriesAtIndex_(v81, v40, v41, v42, v43, i);
-      v50 = objc_msgSend_numberOfGroupsInSeries_(v81, v46, v47, v48, v49, v45);
+      v45 = objc_msgSend_seriesAtIndex_(modelCopy, v40, v41, v42, v43, i);
+      v50 = objc_msgSend_numberOfGroupsInSeries_(modelCopy, v46, v47, v48, v49, v45);
       if (v50)
       {
         v55 = v50;
@@ -170,9 +170,9 @@ LABEL_15:
 LABEL_21:
 }
 
-- (void)p_setupCacheForSetsWithModel:(id)a3
+- (void)p_setupCacheForSetsWithModel:(id)model
 {
-  v57 = a3;
+  modelCopy = model;
   if (self->_seriesMap)
   {
     v8 = MEMORY[0x277D81150];
@@ -193,8 +193,8 @@ LABEL_21:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
   }
 
-  v38 = objc_msgSend_numberOfSeries(v57, v4, v5, v6, v7);
-  v43 = objc_msgSend_numberOfGroupsInAllSeries(v57, v39, v40, v41, v42);
+  v38 = objc_msgSend_numberOfSeries(modelCopy, v4, v5, v6, v7);
+  v43 = objc_msgSend_numberOfGroupsInAllSeries(modelCopy, v39, v40, v41, v42);
   if (v43)
   {
     v44 = v43;
@@ -210,7 +210,7 @@ LABEL_21:
           v51 = 0;
           while (1)
           {
-            v52 = objc_msgSend_seriesAtIndex_(v57, v46, v47, v48, v49, v51);
+            v52 = objc_msgSend_seriesAtIndex_(modelCopy, v46, v47, v48, v49, v51);
             if (objc_msgSend_p_canAddChunkForSeries_groupIndex_(self, v53, v54, v55, v56, v52, i))
             {
               break;
@@ -237,9 +237,9 @@ LABEL_14:
   }
 }
 
-- (void)p_setupCacheForElementsInSeriesWithModel:(id)a3
+- (void)p_setupCacheForElementsInSeriesWithModel:(id)model
 {
-  v72 = a3;
+  modelCopy = model;
   if (self->_seriesMap)
   {
     v8 = MEMORY[0x277D81150];
@@ -260,8 +260,8 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
   }
 
-  v38 = objc_msgSend_numberOfSeries(v72, v4, v5, v6, v7);
-  v44 = objc_msgSend_numberOfGroupsInAllSeries(v72, v39, v40, v41, v42);
+  v38 = objc_msgSend_numberOfSeries(modelCopy, v4, v5, v6, v7);
+  v44 = objc_msgSend_numberOfGroupsInAllSeries(modelCopy, v39, v40, v41, v42);
   v48 = v44 * v38;
   if (v44 * v38)
   {
@@ -276,7 +276,7 @@ LABEL_14:
     {
       for (i = 0; i != v38; ++i)
       {
-        v51 = objc_msgSend_seriesAtIndex_(v72, v43, v45, v46, v47, i);
+        v51 = objc_msgSend_seriesAtIndex_(modelCopy, v43, v45, v46, v47, i);
         if (v44)
         {
           for (j = 0; j != v44; ++j)
@@ -304,9 +304,9 @@ LABEL_14:
   }
 }
 
-- (void)p_setupCacheForElementsInSetsWithModel:(id)a3
+- (void)p_setupCacheForElementsInSetsWithModel:(id)model
 {
-  v72 = a3;
+  modelCopy = model;
   if (self->_seriesMap)
   {
     v8 = MEMORY[0x277D81150];
@@ -327,8 +327,8 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
   }
 
-  v38 = objc_msgSend_numberOfSeries(v72, v4, v5, v6, v7);
-  v44 = objc_msgSend_numberOfGroupsInAllSeries(v72, v39, v40, v41, v42);
+  v38 = objc_msgSend_numberOfSeries(modelCopy, v4, v5, v6, v7);
+  v44 = objc_msgSend_numberOfGroupsInAllSeries(modelCopy, v39, v40, v41, v42);
   v48 = v44 * v38;
   if (v44 * v38)
   {
@@ -347,7 +347,7 @@ LABEL_14:
         {
           for (j = 0; j != v38; ++j)
           {
-            v51 = objc_msgSend_seriesAtIndex_(v72, v43, v45, v46, v47, j);
+            v51 = objc_msgSend_seriesAtIndex_(modelCopy, v43, v45, v46, v47, j);
             if (objc_msgSend_p_canAddChunkForSeries_groupIndex_(self, v52, v53, v54, v55, v51, i))
             {
               groupsMap = self->_groupsMap;
@@ -371,13 +371,13 @@ LABEL_14:
   }
 }
 
-- (BOOL)p_canAddChunkForSeries:(id)a3 groupIndex:(int64_t)a4
+- (BOOL)p_canAddChunkForSeries:(id)series groupIndex:(int64_t)index
 {
   v119 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v10 = objc_msgSend_model(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_seriesType(v5, v11, v12, v13, v14);
-  v24 = (objc_msgSend_chunkedBuildsIncludeInterceptValues(v15, v16, v17, v18, v19) & 1) != 0 || objc_msgSend_intValueForProperty_defaultValue_(v5, v20, v21, v22, v23, 1181, 0) != 0;
+  seriesCopy = series;
+  v10 = objc_msgSend_model(seriesCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_seriesType(seriesCopy, v11, v12, v13, v14);
+  v24 = (objc_msgSend_chunkedBuildsIncludeInterceptValues(v15, v16, v17, v18, v19) & 1) != 0 || objc_msgSend_intValueForProperty_defaultValue_(seriesCopy, v20, v21, v22, v23, 1181, 0) != 0;
   v115 = 0u;
   v116 = 0u;
   v113 = 0u;
@@ -388,9 +388,9 @@ LABEL_14:
   {
     v107 = *v114;
     v102 = v10;
-    v103 = v5;
+    v103 = seriesCopy;
     v104 = v15;
-    v100 = a4;
+    indexCopy = index;
     v101 = v25;
     v99 = v24;
     while (2)
@@ -407,14 +407,14 @@ LABEL_14:
         v36 = *(*(&v113 + 1) + 8 * v34);
         v37 = objc_msgSend_axisID(v36, v30, v31, v32, v33);
         v42 = objc_msgSend_type(v37, v38, v39, v40, v41);
-        v47 = objc_msgSend_axisIDForAxisType_(v5, v43, v44, v45, v46, v42);
+        v47 = objc_msgSend_axisIDForAxisType_(seriesCopy, v43, v44, v45, v46, v42);
 
         v52 = v47;
         if (v47)
         {
-          v53 = objc_msgSend_valueForAxisID_groupIndex_(v5, v48, v49, v50, v51, v47, a4);
+          v53 = objc_msgSend_valueForAxisID_groupIndex_(seriesCopy, v48, v49, v50, v51, v47, index);
           v58 = v53;
-          if (!v53 || (objc_msgSend_doubleValue(v53, v54, v55, v56, v57), objc_msgSend_doubleModelToAxisValue_forSeries_(v36, v59, v60, v61, v62, v5), v67 = v64, (*&v64 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL))
+          if (!v53 || (objc_msgSend_doubleValue(v53, v54, v55, v56, v57), objc_msgSend_doubleModelToAxisValue_forSeries_(v36, v59, v60, v61, v62, seriesCopy), v67 = v64, (*&v64 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL))
           {
 LABEL_31:
 
@@ -460,7 +460,7 @@ LABEL_31:
                       {
 
                         v10 = v102;
-                        v5 = v103;
+                        seriesCopy = v103;
                         v25 = v101;
                         v58 = v105;
                         v52 = v106;
@@ -481,8 +481,8 @@ LABEL_31:
             }
 
             v10 = v102;
-            v5 = v103;
-            a4 = v100;
+            seriesCopy = v103;
+            index = indexCopy;
             v25 = v101;
             v24 = v99;
             v52 = v106;
@@ -517,35 +517,35 @@ LABEL_33:
   return v97;
 }
 
-- (unint64_t)seriesIndexAtIndex:(unint64_t)a3
+- (unint64_t)seriesIndexAtIndex:(unint64_t)index
 {
-  if (self->_seriesMap && objc_msgSend_count(self, a2, v3, v4, v5) > a3)
+  if (self->_seriesMap && objc_msgSend_count(self, a2, v3, v4, v5) > index)
   {
-    return self->_seriesMap[a3];
+    return self->_seriesMap[index];
   }
 
   v9 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCHChunkMap seriesIndexAtIndex:]");
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
   v20 = objc_msgSend_count(self, v16, v17, v18, v19);
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v21, v22, v23, v24, v10, v15, 254, 0, "Index out of range %lu count %lu has series map %ld", a3, v20, self->_seriesMap != 0);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v21, v22, v23, v24, v10, v15, 254, 0, "Index out of range %lu count %lu has series map %ld", index, v20, self->_seriesMap != 0);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   return 0;
 }
 
-- (unint64_t)groupIndexAtMapIndex:(unint64_t)a3
+- (unint64_t)groupIndexAtMapIndex:(unint64_t)index
 {
-  if (self->_groupsMap && objc_msgSend_count(self, a2, v3, v4, v5) > a3)
+  if (self->_groupsMap && objc_msgSend_count(self, a2, v3, v4, v5) > index)
   {
-    return self->_groupsMap[a3];
+    return self->_groupsMap[index];
   }
 
   v9 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCHChunkMap groupIndexAtMapIndex:]");
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
   v20 = objc_msgSend_count(self, v16, v17, v18, v19);
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v21, v22, v23, v24, v10, v15, 264, 0, "Index out of range %lu count %lu has values map %ld", a3, v20, self->_groupsMap != 0);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v21, v22, v23, v24, v10, v15, 264, 0, "Index out of range %lu count %lu has values map %ld", index, v20, self->_groupsMap != 0);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   return 0;

@@ -1,54 +1,54 @@
 @interface SCNAuthoringEnvironment2
-+ (id)authoringEnvironmentForScene:(id)a3 createIfNeeded:(BOOL)a4;
-- (SCNAuthoringEnvironment2)initWithScene:(id)a3;
-- (id)authoringCamera:(int64_t)a3;
++ (id)authoringEnvironmentForScene:(id)scene createIfNeeded:(BOOL)needed;
+- (SCNAuthoringEnvironment2)initWithScene:(id)scene;
+- (id)authoringCamera:(int64_t)camera;
 - (id)cameraFrustumGeometry;
 - (id)cameraGeometry;
 - (id)cameraNearPlaneGeometry;
 - (id)cameraOrthographicFrustumGeometry;
 - (id)fieldGeometry;
-- (id)geometryForLightType:(id)a3;
+- (id)geometryForLightType:(id)type;
 - (id)particlesGeometry;
-- (void)_resetLightAuthoringWithContainerNode:(id)a3 source:(id)a4 light:(id)a5;
+- (void)_resetLightAuthoringWithContainerNode:(id)node source:(id)source light:(id)light;
 - (void)_updateRootsVisibility;
-- (void)addCameraNode:(id)a3;
-- (void)addLightNode:(id)a3;
-- (void)addNodeToSelection:(id)a3;
-- (void)addParticlesNode:(id)a3;
-- (void)addPhysicsFieldNode:(id)a3;
-- (void)addedNode:(id)a3;
+- (void)addCameraNode:(id)node;
+- (void)addLightNode:(id)node;
+- (void)addNodeToSelection:(id)selection;
+- (void)addParticlesNode:(id)node;
+- (void)addPhysicsFieldNode:(id)node;
+- (void)addedNode:(id)node;
 - (void)cancelSelection;
 - (void)dealloc;
-- (void)prepareScene:(id)a3;
-- (void)removeCameraNode:(id)a3;
-- (void)removeLightNode:(id)a3;
-- (void)removeParticlesNode:(id)a3;
-- (void)removePhysicsFieldNode:(id)a3;
-- (void)removedNode:(id)a3;
-- (void)selectNode:(id)a3;
-- (void)selectNodes:(id)a3;
-- (void)setAuthoringCamera:(int64_t)a3 forView:(id)a4;
-- (void)setupParticleMeshEmitter:(id)a3 authoringNode:(id)a4;
-- (void)updateCameraNode:(id)a3 withSourceNode:(id)a4;
-- (void)updateFieldNode:(id)a3 withSourceNode:(id)a4;
-- (void)updateLightNode:(id)a3 withSourceNode:(id)a4;
-- (void)updateLightTypeForNode:(id)a3 source:(id)a4 light:(id)a5 screenspaceScalingFactor:(float)a6;
-- (void)updateParticlesNode:(id)a3 withSourceNode:(id)a4;
-- (void)updateWithRenderer:(id)a3;
+- (void)prepareScene:(id)scene;
+- (void)removeCameraNode:(id)node;
+- (void)removeLightNode:(id)node;
+- (void)removeParticlesNode:(id)node;
+- (void)removePhysicsFieldNode:(id)node;
+- (void)removedNode:(id)node;
+- (void)selectNode:(id)node;
+- (void)selectNodes:(id)nodes;
+- (void)setAuthoringCamera:(int64_t)camera forView:(id)view;
+- (void)setupParticleMeshEmitter:(id)emitter authoringNode:(id)node;
+- (void)updateCameraNode:(id)node withSourceNode:(id)sourceNode;
+- (void)updateFieldNode:(id)node withSourceNode:(id)sourceNode;
+- (void)updateLightNode:(id)node withSourceNode:(id)sourceNode;
+- (void)updateLightTypeForNode:(id)node source:(id)source light:(id)light screenspaceScalingFactor:(float)factor;
+- (void)updateParticlesNode:(id)node withSourceNode:(id)sourceNode;
+- (void)updateWithRenderer:(id)renderer;
 @end
 
 @implementation SCNAuthoringEnvironment2
 
-+ (id)authoringEnvironmentForScene:(id)a3 createIfNeeded:(BOOL)a4
++ (id)authoringEnvironmentForScene:(id)scene createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   +[SCNTransaction lock];
-  v6 = [a3 sceneRef];
-  if (v6)
+  sceneRef = [scene sceneRef];
+  if (sceneRef)
   {
-    v7 = v6;
-    C3DSceneLock(v6);
-    AuthoringEnvironment2 = C3DSceneGetAuthoringEnvironment2(v7, v4);
+    v7 = sceneRef;
+    C3DSceneLock(sceneRef);
+    AuthoringEnvironment2 = C3DSceneGetAuthoringEnvironment2(v7, neededCopy);
     C3DSceneUnlock(v7);
   }
 
@@ -61,7 +61,7 @@
   return AuthoringEnvironment2;
 }
 
-- (SCNAuthoringEnvironment2)initWithScene:(id)a3
+- (SCNAuthoringEnvironment2)initWithScene:(id)scene
 {
   v7.receiver = self;
   v7.super_class = SCNAuthoringEnvironment2;
@@ -69,7 +69,7 @@
   v5 = v4;
   if (v4)
   {
-    [(SCNAuthoringEnvironment2 *)v4 prepareScene:a3];
+    [(SCNAuthoringEnvironment2 *)v4 prepareScene:scene];
   }
 
   return v5;
@@ -87,10 +87,10 @@
   [(SCNAuthoringEnvironment2 *)&v3 dealloc];
 }
 
-- (void)prepareScene:(id)a3
+- (void)prepareScene:(id)scene
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  self->_scene = [a3 sceneRef];
+  self->_scene = [scene sceneRef];
   self->_manipulator = objc_alloc_init(SCNManipulator);
   self->_selection = objc_alloc_init(MEMORY[0x277CBEB58]);
   v4 = MEMORY[0x277CBF138];
@@ -164,15 +164,15 @@
   [(SCNNode *)self->_lightRoot setHidden:1];
   [(SCNNode *)self->_cameraRoot setHidden:1];
   [(SCNNode *)self->_particlesRoot setHidden:1];
-  [a3 setRootNode:self->_layerRoot forLayer:1];
-  [a3 setRootNode:self->_overlayLayerRoot forLayer:2];
+  [scene setRootNode:self->_layerRoot forLayer:1];
+  [scene setRootNode:self->_overlayLayerRoot forLayer:2];
   [(SCNNode *)self->_layerRoot addChildNode:self->_lightRoot];
   [(SCNNode *)self->_layerRoot addChildNode:self->_cameraRoot];
   [(SCNNode *)self->_layerRoot addChildNode:self->_particlesRoot];
   [(SCNNode *)self->_layerRoot addChildNode:self->_physicsFieldsRoot];
   [(SCNNode *)self->_layerRoot addChildNode:self->_cameraTarget];
   [(SCNNode *)self->_layerRoot addChildNode:self->_pointsOfViewRoot];
-  v42 = [a3 rootNode];
+  rootNode = [scene rootNode];
   +[SCNTransaction begin];
   [SCNTransaction setDisableActions:1];
   v56[0] = MEMORY[0x277D85DD0];
@@ -180,9 +180,9 @@
   v56[2] = __41__SCNAuthoringEnvironment2_prepareScene___block_invoke;
   v56[3] = &unk_2782FBA38;
   v56[4] = self;
-  [v42 enumerateChildNodesUsingBlock:v56];
+  [rootNode enumerateChildNodesUsingBlock:v56];
   +[SCNTransaction commit];
-  v62[0] = [a3 rootNode];
+  v62[0] = [scene rootNode];
   BoundingSphere = SCNNodeGetBoundingSphere([MEMORY[0x277CBEA60] arrayWithObjects:v62 count:1], 0x10000);
   v9 = v8;
   +[SCNNode simdLocalUp];
@@ -268,7 +268,7 @@
 
         else
         {
-          v36 = [objc_msgSend(v42 childNodesWithAttribute:objc_opt_class() recursively:{1), "firstObject"}];
+          v36 = [objc_msgSend(rootNode childNodesWithAttribute:objc_opt_class() recursively:{1), "firstObject"}];
           if (v36)
           {
             [v36 transform];
@@ -339,9 +339,9 @@
   [(SCNAuthoringEnvironment2 *)self setDisplayMask:0];
 }
 
-- (id)geometryForLightType:(id)a3
+- (id)geometryForLightType:(id)type
 {
-  if ([a3 isEqualToString:@"probe"])
+  if ([type isEqualToString:@"probe"])
   {
     return 0;
   }
@@ -382,9 +382,9 @@
   return v6;
 }
 
-- (void)addLightNode:(id)a3
+- (void)addLightNode:(id)node
 {
-  if (CFDictionaryContainsKey(self->_lightsDictionary, a3))
+  if (CFDictionaryContainsKey(self->_lightsDictionary, node))
   {
     v5 = scn_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -395,15 +395,15 @@
 
   else
   {
-    v6 = +[SCNNode nodeWithGeometry:](SCNNode, "nodeWithGeometry:", -[SCNAuthoringEnvironment2 geometryForLightType:](self, "geometryForLightType:", [objc_msgSend(a3 "light")]));
+    v6 = +[SCNNode nodeWithGeometry:](SCNNode, "nodeWithGeometry:", -[SCNAuthoringEnvironment2 geometryForLightType:](self, "geometryForLightType:", [objc_msgSend(node "light")]));
     [(SCNNode *)v6 setName:@"lightAuth"];
     [(SCNNode *)v6 setAuthoringEnvironmentNode:1];
-    [(SCNNode *)v6 setAuthoringEnvironmentCompanionNode:a3];
-    [a3 setAuthoringEnvironmentPresentationNode:v6];
+    [(SCNNode *)v6 setAuthoringEnvironmentCompanionNode:node];
+    [node setAuthoringEnvironmentPresentationNode:v6];
     [(SCNNode *)self->_lightRoot addChildNode:v6];
     lightsDictionary = self->_lightsDictionary;
 
-    CFDictionaryAddValue(lightsDictionary, a3, v6);
+    CFDictionaryAddValue(lightsDictionary, node, v6);
   }
 }
 
@@ -453,18 +453,18 @@
   return v4;
 }
 
-- (void)setupParticleMeshEmitter:(id)a3 authoringNode:(id)a4
+- (void)setupParticleMeshEmitter:(id)emitter authoringNode:(id)node
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if ([objc_msgSend(a4 "childNodes")] == 2)
+  if ([objc_msgSend(node "childNodes")] == 2)
   {
-    [objc_msgSend(objc_msgSend(a4 "childNodes")];
+    [objc_msgSend(objc_msgSend(node "childNodes")];
   }
 
-  v7 = [a3 nodeRef];
-  if (v7)
+  nodeRef = [emitter nodeRef];
+  if (nodeRef)
   {
-    ParticleSystems = C3DNodeGetParticleSystems(v7);
+    ParticleSystems = C3DNodeGetParticleSystems(nodeRef);
     if (ParticleSystems)
     {
       v9 = ParticleSystems;
@@ -485,18 +485,18 @@
           -[SCNGeometry setMaterials:](v13, "setMaterials:", [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1]);
           v15 = [SCNNode nodeWithGeometry:v13];
           [(SCNNode *)v15 setAuthoringEnvironmentNode:1];
-          [(SCNNode *)v15 setAuthoringEnvironmentCompanionNode:a3];
-          [a3 setAuthoringEnvironmentPresentationNode:v15];
-          [a4 addChildNode:v15];
+          [(SCNNode *)v15 setAuthoringEnvironmentCompanionNode:emitter];
+          [emitter setAuthoringEnvironmentPresentationNode:v15];
+          [node addChildNode:v15];
         }
       }
     }
   }
 }
 
-- (void)addParticlesNode:(id)a3
+- (void)addParticlesNode:(id)node
 {
-  if (CFDictionaryContainsKey(self->_particlesDictionary, a3))
+  if (CFDictionaryContainsKey(self->_particlesDictionary, node))
   {
     v5 = scn_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -511,14 +511,14 @@
     v7 = [SCNNode nodeWithGeometry:[(SCNAuthoringEnvironment2 *)self particlesGeometry]];
     [(SCNNode *)v7 setName:@"particlesAuth"];
     [(SCNNode *)v7 setAuthoringEnvironmentNode:1];
-    [(SCNNode *)v7 setAuthoringEnvironmentCompanionNode:a3];
-    [a3 setAuthoringEnvironmentPresentationNode:v7];
+    [(SCNNode *)v7 setAuthoringEnvironmentCompanionNode:node];
+    [node setAuthoringEnvironmentPresentationNode:v7];
     [(SCNNode *)v6 setAuthoringEnvironmentNode:1];
     [(SCNNode *)v6 addChildNode:v7];
     [(SCNNode *)self->_particlesRoot addChildNode:v6];
     particlesDictionary = self->_particlesDictionary;
 
-    CFDictionaryAddValue(particlesDictionary, a3, v6);
+    CFDictionaryAddValue(particlesDictionary, node, v6);
   }
 }
 
@@ -582,9 +582,9 @@
   return result;
 }
 
-- (void)addCameraNode:(id)a3
+- (void)addCameraNode:(id)node
 {
-  if (CFDictionaryContainsKey(self->_camerasDictionary, a3))
+  if (CFDictionaryContainsKey(self->_camerasDictionary, node))
   {
     v5 = scn_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -593,24 +593,24 @@
     }
   }
 
-  else if ((![a3 name] || objc_msgSend(objc_msgSend(a3, "name"), "compare:", @"kSCNFreeViewCameraName")) && (objc_msgSend(a3, "authoringEnvironmentNode") & 1) == 0)
+  else if ((![node name] || objc_msgSend(objc_msgSend(node, "name"), "compare:", @"kSCNFreeViewCameraName")) && (objc_msgSend(node, "authoringEnvironmentNode") & 1) == 0)
   {
     v6 = [SCNNode nodeWithGeometry:[(SCNAuthoringEnvironment2 *)self cameraGeometry]];
     [(SCNNode *)v6 setName:@"cameraAuth"];
     [(SCNNode *)v6 setAuthoringEnvironmentNode:1];
-    [(SCNNode *)v6 setAuthoringEnvironmentCompanionNode:a3];
-    [a3 setAuthoringEnvironmentPresentationNode:v6];
-    if ([objc_msgSend(a3 "camera")])
+    [(SCNNode *)v6 setAuthoringEnvironmentCompanionNode:node];
+    [node setAuthoringEnvironmentPresentationNode:v6];
+    if ([objc_msgSend(node "camera")])
     {
-      v7 = [(SCNAuthoringEnvironment2 *)self cameraOrthographicFrustumGeometry];
+      cameraOrthographicFrustumGeometry = [(SCNAuthoringEnvironment2 *)self cameraOrthographicFrustumGeometry];
     }
 
     else
     {
-      v7 = [(SCNAuthoringEnvironment2 *)self cameraFrustumGeometry];
+      cameraOrthographicFrustumGeometry = [(SCNAuthoringEnvironment2 *)self cameraFrustumGeometry];
     }
 
-    v8 = [SCNNode nodeWithGeometry:v7];
+    v8 = [SCNNode nodeWithGeometry:cameraOrthographicFrustumGeometry];
     [(SCNNode *)v8 setName:@"cameraFrustumAuth"];
     [(SCNNode *)v8 setAuthoringEnvironmentNode:1];
     [(SCNNode *)v8 setHittable:0];
@@ -623,21 +623,21 @@
     [(SCNNode *)v8 addChildNode:v9];
     camerasDictionary = self->_camerasDictionary;
 
-    CFDictionaryAddValue(camerasDictionary, a3, v6);
+    CFDictionaryAddValue(camerasDictionary, node, v6);
   }
 }
 
-- (void)removeCameraNode:(id)a3
+- (void)removeCameraNode:(id)node
 {
-  [CFDictionaryGetValue(self->_camerasDictionary a3)];
+  [CFDictionaryGetValue(self->_camerasDictionary node)];
   camerasDictionary = self->_camerasDictionary;
 
-  CFDictionaryRemoveValue(camerasDictionary, a3);
+  CFDictionaryRemoveValue(camerasDictionary, node);
 }
 
-- (void)addPhysicsFieldNode:(id)a3
+- (void)addPhysicsFieldNode:(id)node
 {
-  if (CFDictionaryContainsKey(self->_physicsFieldsDictionary, a3))
+  if (CFDictionaryContainsKey(self->_physicsFieldsDictionary, node))
   {
     v5 = scn_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -651,115 +651,115 @@
     v6 = [SCNNode nodeWithGeometry:[(SCNAuthoringEnvironment2 *)self fieldGeometry]];
     [(SCNNode *)v6 setName:@"fieldAuth"];
     [(SCNNode *)v6 setAuthoringEnvironmentNode:1];
-    [(SCNNode *)v6 setAuthoringEnvironmentCompanionNode:a3];
-    [a3 setAuthoringEnvironmentPresentationNode:v6];
+    [(SCNNode *)v6 setAuthoringEnvironmentCompanionNode:node];
+    [node setAuthoringEnvironmentPresentationNode:v6];
     [(SCNNode *)self->_physicsFieldsRoot addChildNode:v6];
     physicsFieldsDictionary = self->_physicsFieldsDictionary;
 
-    CFDictionaryAddValue(physicsFieldsDictionary, a3, v6);
+    CFDictionaryAddValue(physicsFieldsDictionary, node, v6);
   }
 }
 
-- (void)removePhysicsFieldNode:(id)a3
+- (void)removePhysicsFieldNode:(id)node
 {
-  [CFDictionaryGetValue(self->_physicsFieldsDictionary a3)];
+  [CFDictionaryGetValue(self->_physicsFieldsDictionary node)];
   physicsFieldsDictionary = self->_physicsFieldsDictionary;
 
-  CFDictionaryRemoveValue(physicsFieldsDictionary, a3);
+  CFDictionaryRemoveValue(physicsFieldsDictionary, node);
 }
 
-- (void)removeLightNode:(id)a3
+- (void)removeLightNode:(id)node
 {
-  [CFDictionaryGetValue(self->_lightsDictionary a3)];
+  [CFDictionaryGetValue(self->_lightsDictionary node)];
   lightsDictionary = self->_lightsDictionary;
 
-  CFDictionaryRemoveValue(lightsDictionary, a3);
+  CFDictionaryRemoveValue(lightsDictionary, node);
 }
 
-- (void)removeParticlesNode:(id)a3
+- (void)removeParticlesNode:(id)node
 {
-  [CFDictionaryGetValue(self->_particlesDictionary a3)];
+  [CFDictionaryGetValue(self->_particlesDictionary node)];
   particlesDictionary = self->_particlesDictionary;
 
-  CFDictionaryRemoveValue(particlesDictionary, a3);
+  CFDictionaryRemoveValue(particlesDictionary, node);
 }
 
-- (void)addedNode:(id)a3
+- (void)addedNode:(id)node
 {
-  if (([a3 authoringEnvironmentNode] & 1) == 0)
+  if (([node authoringEnvironmentNode] & 1) == 0)
   {
-    if ([a3 light])
+    if ([node light])
     {
-      [(SCNAuthoringEnvironment2 *)self addLightNode:a3];
+      [(SCNAuthoringEnvironment2 *)self addLightNode:node];
     }
 
-    if ([a3 particleSystems])
+    if ([node particleSystems])
     {
-      [(SCNAuthoringEnvironment2 *)self addParticlesNode:a3];
+      [(SCNAuthoringEnvironment2 *)self addParticlesNode:node];
     }
 
-    if ([a3 camera])
+    if ([node camera])
     {
-      [(SCNAuthoringEnvironment2 *)self addCameraNode:a3];
+      [(SCNAuthoringEnvironment2 *)self addCameraNode:node];
     }
 
-    if ([a3 physicsField])
+    if ([node physicsField])
     {
 
-      [(SCNAuthoringEnvironment2 *)self addPhysicsFieldNode:a3];
+      [(SCNAuthoringEnvironment2 *)self addPhysicsFieldNode:node];
     }
   }
 }
 
-- (void)removedNode:(id)a3
+- (void)removedNode:(id)node
 {
-  if (([a3 authoringEnvironmentNode] & 1) == 0)
+  if (([node authoringEnvironmentNode] & 1) == 0)
   {
-    v4 = a3;
-    if ([a3 light])
+    nodeCopy = node;
+    if ([node light])
     {
-      [(SCNAuthoringEnvironment2 *)self removeLightNode:a3];
+      [(SCNAuthoringEnvironment2 *)self removeLightNode:node];
     }
 
-    if ([a3 particleSystems])
+    if ([node particleSystems])
     {
-      [(SCNAuthoringEnvironment2 *)self removeParticlesNode:a3];
+      [(SCNAuthoringEnvironment2 *)self removeParticlesNode:node];
     }
 
-    if ([a3 camera])
+    if ([node camera])
     {
-      [(SCNAuthoringEnvironment2 *)self removeCameraNode:a3];
+      [(SCNAuthoringEnvironment2 *)self removeCameraNode:node];
     }
 
-    if ([a3 physicsField])
+    if ([node physicsField])
     {
-      [(SCNAuthoringEnvironment2 *)self removePhysicsFieldNode:a3];
+      [(SCNAuthoringEnvironment2 *)self removePhysicsFieldNode:node];
     }
   }
 }
 
-- (void)selectNode:(id)a3
+- (void)selectNode:(id)node
 {
   objc_sync_enter(self);
-  if (([a3 authoringEnvironmentNode] & 1) == 0)
+  if (([node authoringEnvironmentNode] & 1) == 0)
   {
     [(NSMutableSet *)self->_selection removeAllObjects];
-    if (a3)
+    if (node)
     {
-      [(NSMutableSet *)self->_selection addObject:a3];
+      [(NSMutableSet *)self->_selection addObject:node];
     }
   }
 
   objc_sync_exit(self);
 }
 
-- (void)addNodeToSelection:(id)a3
+- (void)addNodeToSelection:(id)selection
 {
   objc_sync_enter(self);
-  v5 = [a3 authoringEnvironmentNode];
-  if (a3)
+  authoringEnvironmentNode = [selection authoringEnvironmentNode];
+  if (selection)
   {
-    v6 = v5;
+    v6 = authoringEnvironmentNode;
   }
 
   else
@@ -769,24 +769,24 @@
 
   if ((v6 & 1) == 0)
   {
-    [(NSMutableSet *)self->_selection addObject:a3];
+    [(NSMutableSet *)self->_selection addObject:selection];
   }
 
   objc_sync_exit(self);
 }
 
-- (void)selectNodes:(id)a3
+- (void)selectNodes:(id)nodes
 {
   v14 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   [(NSMutableSet *)self->_selection removeAllObjects];
-  if (a3)
+  if (nodes)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [nodes countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = *v10;
@@ -796,7 +796,7 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(nodes);
           }
 
           v8 = *(*(&v9 + 1) + 8 * i);
@@ -806,7 +806,7 @@
           }
         }
 
-        v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [nodes countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -824,17 +824,17 @@
   objc_sync_exit(self);
 }
 
-- (void)_resetLightAuthoringWithContainerNode:(id)a3 source:(id)a4 light:(id)a5
+- (void)_resetLightAuthoringWithContainerNode:(id)node source:(id)source light:(id)light
 {
-  [a3 removeAllChilds];
-  [a3 setValue:objc_msgSend(a5 forKey:{"type"), @"SCNDebugLightTypeKey"}];
-  [a3 setValue:0 forKey:@"SCNDebugLightSubTypeKey"];
-  if ([objc_msgSend(a5 "type")])
+  [node removeAllChilds];
+  [node setValue:objc_msgSend(light forKey:{"type"), @"SCNDebugLightTypeKey"}];
+  [node setValue:0 forKey:@"SCNDebugLightSubTypeKey"];
+  if ([objc_msgSend(light "type")])
   {
     return;
   }
 
-  if ([objc_msgSend(a5 "type")])
+  if ([objc_msgSend(light "type")])
   {
     *__p = 0u;
     v59 = 0u;
@@ -846,7 +846,7 @@
     [(SCNNode *)v9 setName:@"lightInnerAuth"];
     [(SCNNode *)v9 setAuthoringEnvironmentNode:1];
     [(SCNNode *)v9 setHittable:0];
-    [a3 addChildNode:v9];
+    [node addChildNode:v9];
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -875,7 +875,7 @@
     [(SCNNode *)v10 setName:@"lightOuterAuth"];
     [(SCNNode *)v10 setAuthoringEnvironmentNode:1];
     [(SCNNode *)v10 setHittable:0];
-    [a3 addChildNode:v10];
+    [node addChildNode:v10];
 LABEL_19:
     if (__p[0])
     {
@@ -898,7 +898,7 @@ LABEL_19:
     return;
   }
 
-  if (([objc_msgSend(a5 "type")] & 1) != 0 || objc_msgSend(objc_msgSend(a5, "type"), "isEqualToString:", @"ies"))
+  if (([objc_msgSend(light "type")] & 1) != 0 || objc_msgSend(objc_msgSend(light, "type"), "isEqualToString:", @"ies"))
   {
     *__p = 0u;
     v59 = 0u;
@@ -916,7 +916,7 @@ LABEL_19:
     LODWORD(v15) = 10.0;
     [(SCNNode *)v11 setScale:v13, v14, v15];
     [(SCNNode *)v11 setHittable:0];
-    [a3 addChildNode:v11];
+    [node addChildNode:v11];
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -951,17 +951,17 @@ LABEL_19:
     [(SCNNode *)v16 setName:@"lightShadowAuth"];
     [(SCNNode *)v16 setAuthoringEnvironmentNode:1];
     [(SCNNode *)v16 setHittable:0];
-    [a3 addChildNode:v16];
+    [node addChildNode:v16];
     goto LABEL_19;
   }
 
-  if (![objc_msgSend(a5 "type")])
+  if (![objc_msgSend(light "type")])
   {
-    if ([objc_msgSend(a5 "type")])
+    if ([objc_msgSend(light "type")])
     {
-      v18 = +[SCNSphere sphereWithRadius:](SCNSphere, "sphereWithRadius:", dbl_21C2A2360[[a5 probeType] == 1]);
+      v18 = +[SCNSphere sphereWithRadius:](SCNSphere, "sphereWithRadius:", dbl_21C2A2360[[light probeType] == 1]);
       [(SCNGeometry *)v18 setName:@"probeGeometry"];
-      if ([a5 probeType])
+      if ([light probeType])
       {
         *__p = 0u;
         v59 = 0u;
@@ -976,28 +976,28 @@ LABEL_19:
         [(SCNNode *)v19 setName:@"lightProbeExtents"];
         [(SCNNode *)v19 setAuthoringEnvironmentNode:1];
         [(SCNNode *)v19 setHittable:0];
-        [a3 addChildNode:v19];
+        [node addChildNode:v19];
         vmesh::StaticAdjacencyInformation<Pair>::~StaticAdjacencyInformation(v55);
         [(SCNMaterial *)[(SCNGeometry *)v18 firstMaterial] setColorBufferWriteMask:0];
       }
 
       else
       {
-        v29 = [a5 _sphericalHarmonics];
+        _sphericalHarmonics = [light _sphericalHarmonics];
         [objc_msgSend(-[SCNGeometry material](v18 "material")];
         [-[SCNGeometry material](v18 "material")];
-        if (v29)
+        if (_sphericalHarmonics)
         {
           v30 = +[SCNProgram program];
-          v31 = [(SCNMTLRenderContext *)[(SCNRenderer *)self->_renderer _renderContextMetal] resourceManager];
-          -[SCNProgram setLibrary:](v30, "setLibrary:", [-[SCNMTLResourceManager libraryManager](v31) frameworkLibrary]);
+          resourceManager = [(SCNMTLRenderContext *)[(SCNRenderer *)self->_renderer _renderContextMetal] resourceManager];
+          -[SCNProgram setLibrary:](v30, "setLibrary:", [-[SCNMTLResourceManager libraryManager](resourceManager) frameworkLibrary]);
           [(SCNProgram *)v30 setVertexFunctionName:@"scn_probesphere_from_sh_vertex"];
           [(SCNProgram *)v30 setFragmentFunctionName:@"scn_probesphere_from_sh_fragment"];
           v54[0] = MEMORY[0x277D85DD0];
           v54[1] = 3221225472;
           v54[2] = __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source_light___block_invoke;
           v54[3] = &unk_2782FF710;
-          v54[4] = a5;
+          v54[4] = light;
           [(SCNProgram *)v30 handleBindingOfBufferNamed:@"sh" frequency:1 usingBlock:v54];
           [-[SCNGeometry material](v18 "material")];
         }
@@ -1006,10 +1006,10 @@ LABEL_19:
       v32 = [SCNNode nodeWithGeometry:v18];
       [(SCNNode *)v32 setName:@"probe"];
       [(SCNNode *)v32 setAuthoringEnvironmentNode:1];
-      [(SCNNode *)v32 setAuthoringEnvironmentCompanionNode:a4];
-      [a4 setAuthoringEnvironmentPresentationNode:v32];
+      [(SCNNode *)v32 setAuthoringEnvironmentCompanionNode:source];
+      [source setAuthoringEnvironmentPresentationNode:v32];
       [(SCNNode *)v32 setHittable:1];
-      [a3 addChildNode:v32];
+      [node addChildNode:v32];
       *__p = 0u;
       v59 = 0u;
       *v56 = 0u;
@@ -1022,27 +1022,27 @@ LABEL_19:
       [(SCNNode *)v34 setName:@"lightInnerAuth"];
       [(SCNNode *)v34 setAuthoringEnvironmentNode:1];
       [(SCNNode *)v34 setHittable:0];
-      [a5 zFar];
+      [light zFar];
       v35 = 0.5;
       v37 = v36 * 0.5;
       *&v37 = v37;
       LODWORD(v35) = LODWORD(v37);
       LODWORD(v38) = LODWORD(v37);
       [(SCNNode *)v34 setScale:v37, v35, v38];
-      v39 = a3;
+      nodeCopy2 = node;
       v40 = v34;
       goto LABEL_56;
     }
 
-    if (![objc_msgSend(a5 "type")])
+    if (![objc_msgSend(light "type")])
     {
       return;
     }
 
     v52 = 0u;
     v53 = 0u;
-    *&v20 = C3DLightGetAreaDescription([a5 lightRef], &v52).n128_u64[0];
-    [a3 setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedChar:", v52, v20), @"SCNDebugLightSubTypeKey"}];
+    *&v20 = C3DLightGetAreaDescription([light lightRef], &v52).n128_u64[0];
+    [node setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedChar:", v52, v20), @"SCNDebugLightSubTypeKey"}];
     v21 = 0;
     if (v52 <= 1u)
     {
@@ -1157,11 +1157,11 @@ LABEL_55:
           v47 = [SCNNode nodeWithGeometry:v21];
           [(SCNNode *)v47 setName:@"lightAreaAuth"];
           [(SCNNode *)v47 setAuthoringEnvironmentNode:1];
-          [(SCNNode *)v47 setAuthoringEnvironmentCompanionNode:a4];
-          v39 = a3;
+          [(SCNNode *)v47 setAuthoringEnvironmentCompanionNode:source];
+          nodeCopy2 = node;
           v40 = v47;
 LABEL_56:
-          [v39 addChildNode:v40];
+          [nodeCopy2 addChildNode:v40];
           return;
       }
     }
@@ -1176,7 +1176,7 @@ LABEL_56:
   [(SCNNode *)v17 setAuthoringEnvironmentNode:1];
   [(SCNNode *)v17 setHittable:0];
 
-  [a3 addChildNode:v17];
+  [node addChildNode:v17];
 }
 
 void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source_light___block_invoke(uint64_t a1, void *a2)
@@ -1202,39 +1202,39 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
   }
 }
 
-- (void)updateLightTypeForNode:(id)a3 source:(id)a4 light:(id)a5 screenspaceScalingFactor:(float)a6
+- (void)updateLightTypeForNode:(id)node source:(id)source light:(id)light screenspaceScalingFactor:(float)factor
 {
-  v11 = [a3 valueForKey:@"SCNDebugLightTypeKey"];
-  v12 = [a3 valueForKey:@"SCNDebugLightSubTypeKey"];
-  v13 = [objc_msgSend(a3 valueForKey:{@"disabled", "BOOLValue"}];
+  v11 = [node valueForKey:@"SCNDebugLightTypeKey"];
+  v12 = [node valueForKey:@"SCNDebugLightSubTypeKey"];
+  v13 = [objc_msgSend(node valueForKey:{@"disabled", "BOOLValue"}];
   v14 = 0;
-  if ([(NSMutableSet *)self->_selection count]&& a4)
+  if ([(NSMutableSet *)self->_selection count]&& source)
   {
-    v15 = a4;
+    sourceCopy = source;
     do
     {
-      v14 = [(NSMutableSet *)self->_selection containsObject:v15];
-      v16 = [v15 parentNode];
+      v14 = [(NSMutableSet *)self->_selection containsObject:sourceCopy];
+      parentNode = [sourceCopy parentNode];
       if (v14)
       {
         break;
       }
 
-      v15 = v16;
+      sourceCopy = parentNode;
     }
 
-    while (v16);
+    while (parentNode);
   }
 
-  v94 = a4;
-  v17 = [a4 isHidden] & (v14 ^ 1);
+  sourceCopy2 = source;
+  v17 = [source isHidden] & (v14 ^ 1);
   v18 = v13 ^ v17;
   if ((v13 ^ v17) == 1)
   {
-    [a3 setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", v17), @"disabled"}];
+    [node setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", v17), @"disabled"}];
   }
 
-  if ([objc_msgSend(a3 "childNodes")] && objc_msgSend(objc_msgSend(a5, "type"), "isEqualToString:", @"probe"))
+  if ([objc_msgSend(node "childNodes")] && objc_msgSend(objc_msgSend(light, "type"), "isEqualToString:", @"probe"))
   {
     if ((v14 | v18))
     {
@@ -1243,9 +1243,9 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
 
     else
     {
-      v92 = [a5 _sphericalHarmonics];
-      v98 = [objc_msgSend(a5 "probeEnvironment")];
-      v19 = [objc_msgSend(objc_msgSend(a3 childNodeWithName:@"probe" recursively:{1), "geometry"), "firstMaterial"}];
+      _sphericalHarmonics = [light _sphericalHarmonics];
+      v98 = [objc_msgSend(light "probeEnvironment")];
+      v19 = [objc_msgSend(objc_msgSend(node childNodeWithName:@"probe" recursively:{1), "geometry"), "firstMaterial"}];
       v20 = v19;
       if (v19)
       {
@@ -1258,14 +1258,14 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
         v21 = 0;
       }
 
-      if ([a5 probeType])
+      if ([light probeType])
       {
         _ZF = v20 == (v98 != 0);
       }
 
-      else if (a5)
+      else if (light)
       {
-        _ZF = v21 == (v92 != 0);
+        _ZF = v21 == (_sphericalHarmonics != 0);
       }
 
       else
@@ -1277,27 +1277,27 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
     }
   }
 
-  if ([objc_msgSend(a5 "type")])
+  if ([objc_msgSend(light "type")])
   {
-    v24 = [a5 areaType];
-    LOBYTE(v18) = (v24 != [v12 integerValue]) | v18;
+    areaType = [light areaType];
+    LOBYTE(v18) = (areaType != [v12 integerValue]) | v18;
   }
 
-  v25 = v94;
-  *&v23 = fmaxf(a6, 0.001);
+  v25 = sourceCopy2;
+  *&v23 = fmaxf(factor, 0.001);
   v99 = v23;
-  if (![objc_msgSend(a5 "type")] || (v18 & 1) != 0)
+  if (![objc_msgSend(light "type")] || (v18 & 1) != 0)
   {
-    [(SCNAuthoringEnvironment2 *)self _resetLightAuthoringWithContainerNode:a3 source:v94 light:a5];
+    [(SCNAuthoringEnvironment2 *)self _resetLightAuthoringWithContainerNode:node source:sourceCopy2 light:light];
   }
 
   v26.i32[1] = HIDWORD(v99);
   *v26.i32 = 1.0 / *&v99;
   v93 = v26;
-  if ([objc_msgSend(a5 "type")])
+  if ([objc_msgSend(light "type")])
   {
-    v27 = [objc_msgSend(a3 "childNodes")];
-    [a5 attenuationStartDistance];
+    v27 = [objc_msgSend(node "childNodes")];
+    [light attenuationStartDistance];
     v29 = v28 * *v93.i32;
     *&v29 = v29;
     if (*&v29 < 0.0)
@@ -1308,8 +1308,8 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
     v95 = v29;
     [v27 setSimdScale:{*vdupq_lane_s32(*&v29, 0).i64}];
     [v27 setHidden:{*&v95 == 0.0, v95}];
-    v30 = [objc_msgSend(a3 "childNodes")];
-    [a5 attenuationEndDistance];
+    v30 = [objc_msgSend(node "childNodes")];
+    [light attenuationEndDistance];
     v32 = v31 * *v93.i32;
     *&v32 = v32;
     if (*&v32 < 0.0)
@@ -1329,7 +1329,7 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
       }
 
       v34 = *(&self->super.isa + v33);
-      [objc_msgSend(objc_msgSend(objc_msgSend(a3 "geometry")];
+      [objc_msgSend(objc_msgSend(objc_msgSend(node "geometry")];
       [objc_msgSend(objc_msgSend(objc_msgSend(v27 "geometry")];
     }
 
@@ -1347,7 +1347,7 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
         v49 = 248;
       }
 
-      [objc_msgSend(objc_msgSend(objc_msgSend(a3 "geometry")];
+      [objc_msgSend(objc_msgSend(objc_msgSend(node "geometry")];
       [objc_msgSend(objc_msgSend(objc_msgSend(v27 "geometry")];
       v34 = *(&self->super.isa + v49);
     }
@@ -1356,11 +1356,11 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
     goto LABEL_87;
   }
 
-  if ([objc_msgSend(a5 "type")])
+  if ([objc_msgSend(light "type")])
   {
-    [a5 spotOuterAngle];
+    [light spotOuterAngle];
     v36 = fmin(v35 / 180.0 * 3.14159265, 3.13159265);
-    [a5 spotInnerAngle];
+    [light spotInnerAngle];
     v38 = v37 / 180.0 * 3.14159265;
     if (v38 >= v36)
     {
@@ -1372,11 +1372,11 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
       v39 = v38;
     }
 
-    [a5 attenuationStartDistance];
+    [light attenuationStartDistance];
     v41 = v40;
-    [a5 attenuationEndDistance];
+    [light attenuationEndDistance];
     v43 = v42;
-    v44 = [objc_msgSend(a3 "childNodes")];
+    v44 = [objc_msgSend(node "childNodes")];
     v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"oa:%f ia:%f s:%f e:%f", v36, v39, v41, v43];
     v46 = [v44 valueForKey:@"AuthEnvHash"];
     if (!v46 || [v45 compare:v46])
@@ -1442,7 +1442,7 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
     }
 
     [v44 setSimdScale:{*vdupq_lane_s32(v93, 0).i64}];
-    if ([v94 isHidden])
+    if ([sourceCopy2 isHidden])
     {
       if (v14)
       {
@@ -1477,32 +1477,32 @@ void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source
       }
     }
 
-    [objc_msgSend(objc_msgSend(objc_msgSend(a3 "geometry")];
+    [objc_msgSend(objc_msgSend(objc_msgSend(node "geometry")];
     v62 = *(&self->super.isa + v59);
-    v63 = v44;
+    nodeCopy = v44;
 LABEL_86:
-    [objc_msgSend(objc_msgSend(objc_msgSend(v63 "geometry")];
+    [objc_msgSend(objc_msgSend(objc_msgSend(nodeCopy "geometry")];
     goto LABEL_87;
   }
 
-  if (([objc_msgSend(a5 "type")] & 1) != 0 || objc_msgSend(objc_msgSend(a5, "type"), "isEqualToString:", @"ies"))
+  if (([objc_msgSend(light "type")] & 1) != 0 || objc_msgSend(objc_msgSend(light, "type"), "isEqualToString:", @"ies"))
   {
-    v50 = [objc_msgSend(a3 "childNodes")];
-    [objc_msgSend(objc_msgSend(a3 "childNodes")];
-    v51 = [objc_msgSend(a3 "childNodes")];
-    [v51 setHidden:{objc_msgSend(a5, "automaticallyAdjustsShadowProjection")}];
-    if (([a5 automaticallyAdjustsShadowProjection] & 1) == 0)
+    v50 = [objc_msgSend(node "childNodes")];
+    [objc_msgSend(objc_msgSend(node "childNodes")];
+    v51 = [objc_msgSend(node "childNodes")];
+    [v51 setHidden:{objc_msgSend(light, "automaticallyAdjustsShadowProjection")}];
+    if (([light automaticallyAdjustsShadowProjection] & 1) == 0)
     {
-      [a5 zNear];
+      [light zNear];
       [v51 setSimdPosition:0.0];
-      [a5 orthographicScale];
+      [light orthographicScale];
       v90 = v52;
-      [a5 orthographicScale];
+      [light orthographicScale];
       v53.f64[0] = v90;
       v53.f64[1] = v54;
       v91 = COERCE_DOUBLE(vcvt_f32_f64(vmulq_n_f64(v53, *v93.i32)));
-      [a5 zFar];
-      [a5 zNear];
+      [light zFar];
+      [light zNear];
       [v51 setSimdScale:v91];
     }
 
@@ -1511,12 +1511,12 @@ LABEL_86:
     v100[2] = __89__SCNAuthoringEnvironment2_updateLightTypeForNode_source_light_screenspaceScalingFactor___block_invoke;
     v100[3] = &unk_2782FF738;
     v101 = v14;
-    v100[4] = v94;
+    v100[4] = sourceCopy2;
     v100[5] = self;
-    [a3 enumerateChildNodesUsingBlock:v100];
-    v55 = [v94 isHidden];
+    [node enumerateChildNodesUsingBlock:v100];
+    isHidden = [sourceCopy2 isHidden];
     v56 = v14 == 0;
-    if (v55)
+    if (isHidden)
     {
       v57 = 272;
     }
@@ -1533,21 +1533,21 @@ LABEL_83:
     }
 
     v62 = *(&self->super.isa + v57);
-    v63 = a3;
+    nodeCopy = node;
     goto LABEL_86;
   }
 
-  if (![objc_msgSend(a5 "type")])
+  if (![objc_msgSend(light "type")])
   {
-    if (![objc_msgSend(a5 "type")])
+    if (![objc_msgSend(light "type")])
     {
       goto LABEL_87;
     }
 
     *v104 = 0u;
     *v105 = 0u;
-    v81 = [objc_msgSend(a3 childNodes];
-    [v81 setSimdScale:{*vdupq_lane_s32(v93, 0).i64}];
+    childNodes = [objc_msgSend(node childNodes];
+    [childNodes setSimdScale:{*vdupq_lane_s32(v93, 0).i64}];
     if (LOBYTE(v104[0]) > 1u)
     {
       if (LOBYTE(v104[0]) != 2)
@@ -1555,9 +1555,9 @@ LABEL_83:
         if (LOBYTE(v104[0]) != 3)
         {
 LABEL_107:
-          v89 = [v25 isHidden];
+          isHidden2 = [v25 isHidden];
           v57 = 240;
-          if (v89)
+          if (isHidden2)
           {
             v57 = 272;
           }
@@ -1566,10 +1566,10 @@ LABEL_107:
           goto LABEL_83;
         }
 
-        [v81 simdScale];
+        [childNodes simdScale];
         v83 = *v105;
 LABEL_106:
-        [v81 setSimdScale:{*vmulq_f32(v82, v83).i64}];
+        [childNodes setSimdScale:{*vmulq_f32(v82, v83).i64}];
         goto LABEL_107;
       }
     }
@@ -1595,7 +1595,7 @@ LABEL_106:
     v84.i32[2] = 1.0;
     v97 = v84;
 LABEL_105:
-    [v81 simdScale];
+    [childNodes simdScale];
     v83 = v97;
     goto LABEL_106;
   }
@@ -1606,38 +1606,38 @@ LABEL_105:
     v65 = 256;
   }
 
-  [objc_msgSend(objc_msgSend(objc_msgSend(a3 "geometry")];
-  [a3 setHidden:(self->_displayMask & 0x200) == 0];
-  v66 = [a3 childNodeWithName:@"lightInnerAuth" recursively:0];
+  [objc_msgSend(objc_msgSend(objc_msgSend(node "geometry")];
+  [node setHidden:(self->_displayMask & 0x200) == 0];
+  v66 = [node childNodeWithName:@"lightInnerAuth" recursively:0];
   [v66 setHidden:v14 ^ 1u];
-  [a5 zFar];
+  [light zFar];
   v67 = 0.5;
   v69 = v68 * 0.5;
   *&v69 = v69;
   LODWORD(v67) = LODWORD(v69);
   LODWORD(v70) = LODWORD(v69);
   [v66 setScale:{v69, v67, v70}];
-  v71 = [a3 childNodeWithName:@"lightProbeExtents" recursively:0];
-  [a5 probeExtents];
+  v71 = [node childNodeWithName:@"lightProbeExtents" recursively:0];
+  [light probeExtents];
   v72.i64[0] = 0x3F0000003F000000;
   v72.i64[1] = 0x3F0000003F000000;
   v74 = vmulq_f32(v73, v72);
   v72.i32[0] = v74.i32[1];
   LODWORD(v75) = v74.i32[2];
   [v71 setScale:{*v74.i64, *v72.i64, v75}];
-  v76 = [a3 childNodeWithName:@"probe" recursively:0];
-  [a5 probeOffset];
+  v76 = [node childNodeWithName:@"probe" recursively:0];
+  [light probeOffset];
   LODWORD(v78) = HIDWORD(v77);
   LODWORD(v80) = v79;
   [v76 setPosition:{v77, v78, v80}];
 LABEL_87:
-  if (a5)
+  if (light)
   {
-    if (([objc_msgSend(a5 "type")] & 1) == 0)
+    if (([objc_msgSend(light "type")] & 1) == 0)
     {
-      [a3 simdScale];
-      [a3 setSimdScale:{*vmulq_n_f32(v64, *&v99).i64}];
-      [a3 setHidden:(self->_displayMask & 0x20) == 0];
+      [node simdScale];
+      [node setSimdScale:{*vmulq_n_f32(v64, *&v99).i64}];
+      [node setHidden:(self->_displayMask & 0x20) == 0];
     }
   }
 }
@@ -1669,35 +1669,35 @@ uint64_t __89__SCNAuthoringEnvironment2_updateLightTypeForNode_source_light_scre
   return result;
 }
 
-- (void)updateLightNode:(id)a3 withSourceNode:(id)a4
+- (void)updateLightNode:(id)node withSourceNode:(id)sourceNode
 {
-  v7 = [a4 light];
-  if (v7)
+  light = [sourceNode light];
+  if (light)
   {
-    v8 = v7;
-    if ([(SCNRenderer *)self->_renderer pointOfView]== a4)
+    v8 = light;
+    if ([(SCNRenderer *)self->_renderer pointOfView]== sourceNode)
     {
-      v9 = 1;
+      isHidden = 1;
     }
 
     else
     {
-      v9 = [a4 isHidden];
+      isHidden = [sourceNode isHidden];
     }
 
-    [a3 setHidden:v9];
-    if (([a3 isHidden] & 1) == 0)
+    [node setHidden:isHidden];
+    if (([node isHidden] & 1) == 0)
     {
-      [objc_msgSend(a4 "presentationNode")];
-      [a3 setSimdWorldTransform:?];
+      [objc_msgSend(sourceNode "presentationNode")];
+      [node setSimdWorldTransform:?];
       v10 = [objc_msgSend(v8 "type")];
       C3DSizeForScreenSpaceSizeAndTransform([(SCNRenderer *)self->_renderer _engineContext]);
-      [(SCNAuthoringEnvironment2 *)self updateLightTypeForNode:a3 source:a4 light:v8 screenspaceScalingFactor:?];
+      [(SCNAuthoringEnvironment2 *)self updateLightTypeForNode:node source:sourceNode light:v8 screenspaceScalingFactor:?];
       if (v10)
       {
         v11 = (self->_displayMask & 0x200) == 0;
 
-        [a3 setHidden:v11];
+        [node setHidden:v11];
       }
     }
   }
@@ -1705,54 +1705,54 @@ uint64_t __89__SCNAuthoringEnvironment2_updateLightTypeForNode_source_light_scre
   else
   {
 
-    [(SCNAuthoringEnvironment2 *)self removeLightNode:a4];
+    [(SCNAuthoringEnvironment2 *)self removeLightNode:sourceNode];
   }
 }
 
-- (void)updateParticlesNode:(id)a3 withSourceNode:(id)a4
+- (void)updateParticlesNode:(id)node withSourceNode:(id)sourceNode
 {
-  if ([a4 particleSystems] && objc_msgSend(objc_msgSend(a4, "particleSystems"), "count"))
+  if ([sourceNode particleSystems] && objc_msgSend(objc_msgSend(sourceNode, "particleSystems"), "count"))
   {
-    [a3 setHidden:{objc_msgSend(a4, "isHidden")}];
-    if ([a3 isHidden])
+    [node setHidden:{objc_msgSend(sourceNode, "isHidden")}];
+    if ([node isHidden])
     {
       return;
     }
 
-    v7 = [a4 presentationNode];
+    presentationNode = [sourceNode presentationNode];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    if (v7)
+    if (presentationNode)
     {
-      [v7 worldTransform];
+      [presentationNode worldTransform];
     }
 
     v25[0] = v26;
     v25[1] = v27;
     v25[2] = v28;
     v25[3] = v29;
-    [a3 setTransform:v25];
+    [node setTransform:v25];
     v8 = [(SCNRenderer *)self->_renderer _engineContext:C3DMatrix4x4FromSCNMatrix4(v25];
     C3DSizeForScreenSpaceSizeAndTransform(v8);
     v10 = v9;
-    if (a4)
+    if (sourceNode)
     {
-      v11 = a4;
+      sourceNodeCopy = sourceNode;
       do
       {
-        v12 = [(NSMutableSet *)self->_selection containsObject:v11];
-        v13 = [v11 parentNode];
+        v12 = [(NSMutableSet *)self->_selection containsObject:sourceNodeCopy];
+        parentNode = [sourceNodeCopy parentNode];
         if (v12)
         {
           break;
         }
 
-        v11 = v13;
+        sourceNodeCopy = parentNode;
       }
 
-      while (v13);
+      while (parentNode);
     }
 
     else
@@ -1760,10 +1760,10 @@ uint64_t __89__SCNAuthoringEnvironment2_updateLightTypeForNode_source_light_scre
       v12 = 0;
     }
 
-    v14 = [objc_msgSend(a3 "childNodes")];
-    v15 = [v14 isHidden];
+    v14 = [objc_msgSend(node "childNodes")];
+    isHidden = [v14 isHidden];
     v16 = 240;
-    if (v15)
+    if (isHidden)
     {
       v16 = 272;
     }
@@ -1774,11 +1774,11 @@ uint64_t __89__SCNAuthoringEnvironment2_updateLightTypeForNode_source_light_scre
     }
 
     [objc_msgSend(objc_msgSend(objc_msgSend(v14 "geometry")];
-    v17 = [objc_msgSend(a3 "childNodes")];
+    v17 = [objc_msgSend(node "childNodes")];
     v18 = 0;
     if (v17 == 2)
     {
-      v18 = [objc_msgSend(a3 "childNodes")];
+      v18 = [objc_msgSend(node "childNodes")];
     }
 
     v19 = v12 ^ 1u;
@@ -1790,8 +1790,8 @@ uint64_t __89__SCNAuthoringEnvironment2_updateLightTypeForNode_source_light_scre
 
     else
     {
-      v20 = [objc_msgSend(objc_msgSend(objc_msgSend(a4 "particleSystems")];
-      if (v20 == [objc_msgSend(a3 valueForKey:{@"sourceShape", "unsignedLongValue"}])
+      v20 = [objc_msgSend(objc_msgSend(objc_msgSend(sourceNode "particleSystems")];
+      if (v20 == [objc_msgSend(node valueForKey:{@"sourceShape", "unsignedLongValue"}])
       {
 LABEL_26:
         LODWORD(v21) = v10;
@@ -1801,52 +1801,52 @@ LABEL_26:
         return;
       }
 
-      [(SCNAuthoringEnvironment2 *)self setupParticleMeshEmitter:a4 authoringNode:a3];
+      [(SCNAuthoringEnvironment2 *)self setupParticleMeshEmitter:sourceNode authoringNode:node];
       v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v20];
     }
 
-    [a3 setValue:v24 forKey:@"sourceShape"];
+    [node setValue:v24 forKey:@"sourceShape"];
     goto LABEL_26;
   }
 
-  [(SCNAuthoringEnvironment2 *)self removeParticlesNode:a4];
+  [(SCNAuthoringEnvironment2 *)self removeParticlesNode:sourceNode];
 }
 
-- (void)updateCameraNode:(id)a3 withSourceNode:(id)a4
+- (void)updateCameraNode:(id)node withSourceNode:(id)sourceNode
 {
-  v7 = [a4 camera];
-  if (v7)
+  camera = [sourceNode camera];
+  if (camera)
   {
-    v8 = v7;
-    if ([(SCNRenderer *)self->_renderer pointOfView]== a4)
+    v8 = camera;
+    if ([(SCNRenderer *)self->_renderer pointOfView]== sourceNode)
     {
-      v9 = 1;
+      isHidden = 1;
     }
 
     else
     {
-      v9 = [a4 isHidden];
+      isHidden = [sourceNode isHidden];
     }
 
-    [a3 setHidden:v9];
-    if (([a3 isHidden] & 1) == 0)
+    [node setHidden:isHidden];
+    if (([node isHidden] & 1) == 0)
     {
-      if (a4)
+      if (sourceNode)
       {
-        v10 = a4;
+        sourceNodeCopy = sourceNode;
         do
         {
-          v11 = [(NSMutableSet *)self->_selection containsObject:v10];
-          v12 = [v10 parentNode];
+          v11 = [(NSMutableSet *)self->_selection containsObject:sourceNodeCopy];
+          parentNode = [sourceNodeCopy parentNode];
           if (v11)
           {
             break;
           }
 
-          v10 = v12;
+          sourceNodeCopy = parentNode;
         }
 
-        while (v12);
+        while (parentNode);
         if (v11)
         {
           v13 = 256;
@@ -1863,36 +1863,36 @@ LABEL_26:
         v13 = 200;
       }
 
-      v14 = [a4 presentationNode];
+      presentationNode = [sourceNode presentationNode];
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      if (v14)
+      if (presentationNode)
       {
-        [v14 worldTransform];
+        [presentationNode worldTransform];
       }
 
       v42[0] = v43;
       v42[1] = v44;
       v42[2] = v45;
       v42[3] = v46;
-      [a3 setTransform:v42];
+      [node setTransform:v42];
       v15 = [(SCNRenderer *)self->_renderer _engineContext:C3DMatrix4x4FromSCNMatrix4(v42];
       C3DSizeForScreenSpaceSizeAndTransform(v15);
       v17 = *&v16;
       LODWORD(v18) = LODWORD(v16);
       LODWORD(v19) = LODWORD(v16);
-      [a3 setScale:{v16, v18, v19}];
-      v20 = [v8 cameraRef];
-      ZNear = C3DCameraGetZNear(v20);
-      ZFar = C3DCameraGetZFar(v20);
-      UsesOrthographicProjection = C3DCameraGetUsesOrthographicProjection(v20);
-      v24 = [objc_msgSend(a3 "childNodes")];
+      [node setScale:{v16, v18, v19}];
+      cameraRef = [v8 cameraRef];
+      ZNear = C3DCameraGetZNear(cameraRef);
+      ZFar = C3DCameraGetZFar(cameraRef);
+      UsesOrthographicProjection = C3DCameraGetUsesOrthographicProjection(cameraRef);
+      v24 = [objc_msgSend(node "childNodes")];
       if (UsesOrthographicProjection)
       {
         [v24 setGeometry:{-[SCNAuthoringEnvironment2 cameraOrthographicFrustumGeometry](self, "cameraOrthographicFrustumGeometry")}];
-        OrthographicScale = C3DCameraGetOrthographicScale(v20);
+        OrthographicScale = C3DCameraGetOrthographicScale(cameraRef);
         *&OrthographicScale = OrthographicScale;
         *&OrthographicScale = *&OrthographicScale / v17;
         *&v26 = ZFar / v17;
@@ -1908,7 +1908,7 @@ LABEL_26:
         __asm { FMOV            V1.2S, #1.0 }
 
         Viewport.n128_u64[0] = vmaxnm_f32(*&vextq_s8(Viewport, Viewport, 8uLL), _D1);
-        C3DCameraGetEffectiveFovForAspectRatio(v20, &v41 + 1, &v41, vdiv_f32(Viewport.n128_u64[0], vdup_lane_s32(Viewport.n128_u64[0], 1)).f32[0]);
+        C3DCameraGetEffectiveFovForAspectRatio(cameraRef, &v41 + 1, &v41, vdiv_f32(Viewport.n128_u64[0], vdup_lane_s32(Viewport.n128_u64[0], 1)).f32[0]);
         if (v17 == 0.0)
         {
 LABEL_24:
@@ -1920,7 +1920,7 @@ LABEL_24:
           v40 = (self->_displayMask & 4) == 0;
           [v24 setHidden:v40];
           [v36 setHidden:v40];
-          [objc_msgSend(objc_msgSend(objc_msgSend(a3 "geometry")];
+          [objc_msgSend(objc_msgSend(objc_msgSend(node "geometry")];
           [objc_msgSend(objc_msgSend(objc_msgSend(v24 "geometry")];
           [objc_msgSend(objc_msgSend(objc_msgSend(v36 "geometry")];
           return;
@@ -1943,48 +1943,48 @@ LABEL_24:
   else
   {
 
-    [(SCNAuthoringEnvironment2 *)self removeCameraNode:a4];
+    [(SCNAuthoringEnvironment2 *)self removeCameraNode:sourceNode];
   }
 }
 
-- (void)updateFieldNode:(id)a3 withSourceNode:(id)a4
+- (void)updateFieldNode:(id)node withSourceNode:(id)sourceNode
 {
-  v4 = a4;
-  if ([a4 physicsField])
+  sourceNodeCopy = sourceNode;
+  if ([sourceNode physicsField])
   {
-    [a3 setHidden:{objc_msgSend(v4, "isHidden")}];
-    if (([a3 isHidden] & 1) == 0)
+    [node setHidden:{objc_msgSend(sourceNodeCopy, "isHidden")}];
+    if (([node isHidden] & 1) == 0)
     {
-      v7 = [v4 presentationNode];
+      presentationNode = [sourceNodeCopy presentationNode];
       v14 = 0u;
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      if (v7)
+      if (presentationNode)
       {
-        [v7 worldTransform];
+        [presentationNode worldTransform];
       }
 
       v11[0] = v12;
       v11[1] = v13;
       v11[2] = v14;
       v11[3] = v15;
-      [a3 setTransform:v11];
-      if (v4)
+      [node setTransform:v11];
+      if (sourceNodeCopy)
       {
         do
         {
-          v8 = [(NSMutableSet *)self->_selection containsObject:v4];
-          v9 = [v4 parentNode];
+          v8 = [(NSMutableSet *)self->_selection containsObject:sourceNodeCopy];
+          parentNode = [sourceNodeCopy parentNode];
           if (v8)
           {
             break;
           }
 
-          v4 = v9;
+          sourceNodeCopy = parentNode;
         }
 
-        while (v9);
+        while (parentNode);
         v10 = 200;
         if (v8)
         {
@@ -1997,23 +1997,23 @@ LABEL_24:
         v10 = 200;
       }
 
-      [objc_msgSend(objc_msgSend(objc_msgSend(a3 "geometry")];
+      [objc_msgSend(objc_msgSend(objc_msgSend(node "geometry")];
     }
   }
 
   else
   {
 
-    [(SCNAuthoringEnvironment2 *)self removePhysicsFieldNode:v4];
+    [(SCNAuthoringEnvironment2 *)self removePhysicsFieldNode:sourceNodeCopy];
   }
 }
 
-- (void)updateWithRenderer:(id)a3
+- (void)updateWithRenderer:(id)renderer
 {
   objc_sync_enter(self);
-  self->_renderer = a3;
-  v5 = [a3 _engineContext];
-  RendererContextGL = C3DEngineContextGetRendererContextGL(v5);
+  self->_renderer = renderer;
+  _engineContext = [renderer _engineContext];
+  RendererContextGL = C3DEngineContextGetRendererContextGL(_engineContext);
   if (RendererContextGL)
   {
     ShowsAuthoringEnvironment = C3DRendererContextGetShowsAuthoringEnvironment(RendererContextGL);
@@ -2024,7 +2024,7 @@ LABEL_24:
     ShowsAuthoringEnvironment = 0;
   }
 
-  RenderContext = C3DEngineContextGetRenderContext(v5);
+  RenderContext = C3DEngineContextGetRenderContext(_engineContext);
   if (RenderContext)
   {
     ShowsAuthoringEnvironment = [(SCNMTLRenderContext *)RenderContext showsAuthoringEnvironment];
@@ -2052,34 +2052,34 @@ LABEL_24:
       CFDictionaryApplyFunction(self->_physicsFieldsDictionary, __UpdateFields, self);
     }
 
-    v9 = [a3 privateRendererOwner];
+    privateRendererOwner = [renderer privateRendererOwner];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [objc_msgSend(v9 "defaultCameraController")];
+      [objc_msgSend(privateRendererOwner "defaultCameraController")];
       [(SCNNode *)self->_cameraTarget setPosition:?];
     }
 
     [(SCNNode *)self->_cameraTarget setHidden:1];
   }
 
-  [(SCNManipulator *)self->_manipulator updateManipulatorPosition:v5];
-  v10 = [a3 privateRendererOwner];
-  v11 = v10;
-  if (v10 && [v10 pointOfView])
+  [(SCNManipulator *)self->_manipulator updateManipulatorPosition:_engineContext];
+  privateRendererOwner2 = [renderer privateRendererOwner];
+  v11 = privateRendererOwner2;
+  if (privateRendererOwner2 && [privateRendererOwner2 pointOfView])
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = [(NSOrderedSet *)[(SCNManipulator *)self->_manipulator targets] count]== 0;
-    v12 = [(SCNManipulator *)self->_manipulator targets];
+    targets = [(SCNManipulator *)self->_manipulator targets];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __47__SCNAuthoringEnvironment2_updateWithRenderer___block_invoke;
     v13[3] = &unk_2782FCAE0;
     v13[4] = v11;
     v13[5] = &v14;
-    [(NSOrderedSet *)v12 enumerateObjectsUsingBlock:v13];
+    [(NSOrderedSet *)targets enumerateObjectsUsingBlock:v13];
     [(SCNNode *)[(SCNManipulator *)self->_manipulator manipulatorNode] setHidden:*(v15 + 24)];
     _Block_object_dispose(&v14, 8);
   }
@@ -2122,15 +2122,15 @@ uint64_t __47__SCNAuthoringEnvironment2_updateWithRenderer___block_invoke(uint64
   [(SCNNode *)cameraRoot setHidden:v3];
 }
 
-- (void)setAuthoringCamera:(int64_t)a3 forView:(id)a4
+- (void)setAuthoringCamera:(int64_t)camera forView:(id)view
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  if ([a4 scene])
+  if ([view scene])
   {
-    [objc_msgSend(a4 "defaultCameraController")];
+    [objc_msgSend(view "defaultCameraController")];
     v30 = v7;
-    v8 = [(NSArray *)[(SCNNode *)self->_pointsOfViewRoot childNodes] objectAtIndexedSubscript:a3];
-    v31[0] = [objc_msgSend(a4 "scene")];
+    v8 = [(NSArray *)[(SCNNode *)self->_pointsOfViewRoot childNodes] objectAtIndexedSubscript:camera];
+    v31[0] = [objc_msgSend(view "scene")];
     v9.i64[0] = SCNNodeGetBoundingSphere([MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1], 0x10000);
     v9.i64[1] = v10;
     v28 = v9;
@@ -2146,9 +2146,9 @@ uint64_t __47__SCNAuthoringEnvironment2_updateWithRenderer___block_invoke(uint64
     +[SCNNode simdLocalRight];
     v27 = v16;
     +[SCNNode simdLocalFront];
-    if (a3 > 3)
+    if (camera > 3)
     {
-      switch(a3)
+      switch(camera)
       {
         case 4:
           LODWORD(v18) = 1070141403;
@@ -2163,8 +2163,8 @@ uint64_t __47__SCNAuthoringEnvironment2_updateWithRenderer___block_invoke(uint64
           break;
         default:
 LABEL_20:
-          [a4 setPointOfView:v8];
-          [objc_msgSend(a4 "defaultCameraController")];
+          [view setPointOfView:v8];
+          [objc_msgSend(view "defaultCameraController")];
           return;
       }
 
@@ -2176,9 +2176,9 @@ LABEL_20:
 
     else
     {
-      if (a3 != 1)
+      if (camera != 1)
       {
-        if (a3 == 2)
+        if (camera == 2)
         {
           v17.i32[0] = 1070141403;
           [v8 setEulerAngles:{*v17.i64, 0.0, 0.0}];
@@ -2190,7 +2190,7 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        if (a3 == 3)
+        if (camera == 3)
         {
           LODWORD(v18) = -1077342245;
 LABEL_17:
@@ -2218,11 +2218,11 @@ LABEL_19:
   }
 }
 
-- (id)authoringCamera:(int64_t)a3
+- (id)authoringCamera:(int64_t)camera
 {
-  v4 = [(SCNNode *)self->_pointsOfViewRoot childNodes];
+  childNodes = [(SCNNode *)self->_pointsOfViewRoot childNodes];
 
-  return [(NSArray *)v4 objectAtIndexedSubscript:a3];
+  return [(NSArray *)childNodes objectAtIndexedSubscript:camera];
 }
 
 void __79__SCNAuthoringEnvironment2__resetLightAuthoringWithContainerNode_source_light___block_invoke_cold_1(int a1, NSObject *a2)

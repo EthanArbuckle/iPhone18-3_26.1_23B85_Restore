@@ -1,27 +1,27 @@
 @interface MOContextPersistenceManager
 + (id)createModel;
-+ (id)currentManagedObjectModelWithClientID:(id)a3;
++ (id)currentManagedObjectModelWithClientID:(id)d;
 + (id)modelsDirectory;
 + (id)protectedStoreFilesExtensions;
-+ (id)storeDirectoryPathWithSuffix:(id)a3;
-+ (id)storesDirectoryWithClientID:(id)a3;
++ (id)storeDirectoryPathWithSuffix:(id)suffix;
++ (id)storesDirectoryWithClientID:(id)d;
 - (BOOL)available;
 - (BOOL)loadStore;
-- (MOContextPersistenceManager)initWithClientID:(id)a3;
-- (int)_getFileDescriptorForPersistenceStoreFile:(id)a3;
-- (unint64_t)_acquireBackgroundProcessingPermissionForStoreURL:(id)a3 cacheFileExtension:(id)a4;
-- (unint64_t)acquireBackgroundProcessingPermissionsWithClientID:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)performBlockAndWait:(id)a3;
+- (MOContextPersistenceManager)initWithClientID:(id)d;
+- (int)_getFileDescriptorForPersistenceStoreFile:(id)file;
+- (unint64_t)_acquireBackgroundProcessingPermissionForStoreURL:(id)l cacheFileExtension:(id)extension;
+- (unint64_t)acquireBackgroundProcessingPermissionsWithClientID:(id)d;
+- (void)performBlock:(id)block;
+- (void)performBlockAndWait:(id)wait;
 @end
 
 @implementation MOContextPersistenceManager
 
-- (MOContextPersistenceManager)initWithClientID:(id)a3
+- (MOContextPersistenceManager)initWithClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[MOContextPersistenceManager modelsDirectory];
-  v6 = [MOContextPersistenceManager storesDirectoryWithClientID:v4];
+  v6 = [MOContextPersistenceManager storesDirectoryWithClientID:dCopy];
   if (v6)
   {
     v7 = v5 == 0;
@@ -34,7 +34,7 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -44,7 +44,7 @@
     v9 = [(MOContextPersistenceManager *)&v29 init];
     objc_storeStrong(&v9->_modelsDirectory, v5);
     objc_storeStrong(&v9->_storesDirectory, v6);
-    v10 = [MOContextPersistenceManager currentManagedObjectModelWithClientID:v4];
+    v10 = [MOContextPersistenceManager currentManagedObjectModelWithClientID:dCopy];
     v11 = [[NSPersistentContainer alloc] initWithName:@"personalizedsensing" managedObjectModel:v10];
     persistentContainer = v9->_persistentContainer;
     v9->_persistentContainer = v11;
@@ -59,9 +59,9 @@
     v14 = [NSArray arrayWithObjects:v13, 0];
     [(NSPersistentContainer *)v9->_persistentContainer setPersistentStoreDescriptions:v14];
 
-    v15 = [(NSPersistentContainer *)v9->_persistentContainer newBackgroundContext];
+    newBackgroundContext = [(NSPersistentContainer *)v9->_persistentContainer newBackgroundContext];
     managedObjectContext = v9->_managedObjectContext;
-    v9->_managedObjectContext = v15;
+    v9->_managedObjectContext = newBackgroundContext;
 
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("MOContextPersistenceManager", v17);
@@ -75,24 +75,24 @@
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)available
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_available && [(MOContextPersistenceManager *)v2 loadStore])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_available && [(MOContextPersistenceManager *)selfCopy loadStore])
   {
-    v2->_available = 1;
+    selfCopy->_available = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v2->_available;
+  return selfCopy->_available;
 }
 
 - (BOOL)loadStore
@@ -101,9 +101,9 @@
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v3 = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
-  v4 = [v3 persistentStores];
-  v5 = [v4 count];
+  persistentStoreCoordinator = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v5 = [persistentStores count];
 
   if (v5)
   {
@@ -161,17 +161,17 @@ void __40__MOContextPersistenceManager_loadStore__block_invoke(uint64_t a1, uint
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(MOContextPersistenceManager *)self managedObjectContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __44__MOContextPersistenceManager_performBlock___block_invoke;
   v8 = v7[3] = &unk_1000B4B38;
-  v9 = v4;
+  v9 = blockCopy;
   v5 = v8;
-  v6 = v4;
+  v6 = blockCopy;
   [v5 performBlock:v7];
 }
 
@@ -184,17 +184,17 @@ void __44__MOContextPersistenceManager_performBlock___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   [(MOContextPersistenceManager *)self managedObjectContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __51__MOContextPersistenceManager_performBlockAndWait___block_invoke;
   v8 = v7[3] = &unk_1000B4B38;
-  v9 = v4;
+  v9 = waitCopy;
   v5 = v8;
-  v6 = v4;
+  v6 = waitCopy;
   [v5 performBlockAndWait:v7];
 }
 
@@ -210,7 +210,7 @@ void __51__MOContextPersistenceManager_performBlockAndWait___block_invoke(uint64
 + (id)modelsDirectory
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 resourceURL];
+  resourceURL = [v2 resourceURL];
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityContextPersistence);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -224,7 +224,7 @@ void __51__MOContextPersistenceManager_performBlockAndWait___block_invoke(uint64
     +[MOContextPersistenceManager modelsDirectory];
   }
 
-  v7 = [[NSURL alloc] initFileURLWithPath:v5 relativeToURL:v3];
+  v7 = [[NSURL alloc] initFileURLWithPath:v5 relativeToURL:resourceURL];
   v13 = 0;
   v8 = [v7 checkResourceIsReachableAndReturnError:&v13];
   v9 = v13;
@@ -246,9 +246,9 @@ void __51__MOContextPersistenceManager_performBlockAndWait___block_invoke(uint64
   return v7;
 }
 
-+ (id)storesDirectoryWithClientID:(id)a3
++ (id)storesDirectoryWithClientID:(id)d
 {
-  v3 = [a1 storeDirectoryPathWithSuffix:a3];
+  v3 = [self storeDirectoryPathWithSuffix:d];
   if (v3)
   {
     v4 = [NSURL fileURLWithPath:v3 isDirectory:1];
@@ -277,13 +277,13 @@ void __51__MOContextPersistenceManager_performBlockAndWait___block_invoke(uint64
   return v5;
 }
 
-+ (id)currentManagedObjectModelWithClientID:(id)a3
++ (id)currentManagedObjectModelWithClientID:(id)d
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __69__MOContextPersistenceManager_currentManagedObjectModelWithClientID___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentManagedObjectModelWithClientID__onceToken != -1)
   {
     dispatch_once(&currentManagedObjectModelWithClientID__onceToken, block);
@@ -304,30 +304,30 @@ uint64_t __69__MOContextPersistenceManager_currentManagedObjectModelWithClientID
 + (id)createModel
 {
   v3 = [NSManagedObjectModel alloc];
-  v4 = [a1 modelsDirectory];
-  v5 = [v3 initWithContentsOfURL:v4];
+  modelsDirectory = [self modelsDirectory];
+  v5 = [v3 initWithContentsOfURL:modelsDirectory];
 
   return v5;
 }
 
-+ (id)storeDirectoryPathWithSuffix:(id)a3
++ (id)storeDirectoryPathWithSuffix:(id)suffix
 {
-  v3 = a3;
+  suffixCopy = suffix;
   v4 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
   if ([v4 count])
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityContextPersistence);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v20 = v5;
+      v20 = firstObject;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "user cache path, %@", buf, 0xCu);
     }
 
-    v7 = [v5 stringByAppendingPathComponent:@"com.apple.momentsd"];
+    v7 = [firstObject stringByAppendingPathComponent:@"com.apple.momentsd"];
     v8 = [v7 stringByAppendingPathComponent:@"personalizedSensing"];
-    v9 = [v8 stringByAppendingPathComponent:v3];
+    v9 = [v8 stringByAppendingPathComponent:suffixCopy];
 
     if (!v9)
     {
@@ -373,22 +373,22 @@ LABEL_8:
   return v15;
 }
 
-- (int)_getFileDescriptorForPersistenceStoreFile:(id)a3
+- (int)_getFileDescriptorForPersistenceStoreFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
+  fileCopy = file;
+  uTF8String = [fileCopy UTF8String];
   if (MGGetBoolAnswer())
   {
     v5 = _mo_log_facility_get_os_log(&MOLogFacilityContextPersistence);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v10 = v3;
+      v10 = fileCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "file to open: %@", buf, 0xCu);
     }
   }
 
-  v6 = open_dprotected_np(v4, 2, 2, 0, 416);
+  v6 = open_dprotected_np(uTF8String, 2, 2, 0, 416);
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityContextPersistence);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -415,12 +415,12 @@ LABEL_8:
   return v2;
 }
 
-- (unint64_t)_acquireBackgroundProcessingPermissionForStoreURL:(id)a3 cacheFileExtension:(id)a4
+- (unint64_t)_acquireBackgroundProcessingPermissionForStoreURL:(id)l cacheFileExtension:(id)extension
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 path];
-  v10 = [v9 stringByReplacingOccurrencesOfString:@"sqlite" withString:v8];
+  lCopy = l;
+  extensionCopy = extension;
+  path = [lCopy path];
+  v10 = [path stringByReplacingOccurrencesOfString:@"sqlite" withString:extensionCopy];
 
   memset(&v24, 0, sizeof(v24));
   stat([v10 UTF8String], &v24);
@@ -460,7 +460,7 @@ LABEL_8:
         *buf = 138413314;
         st_ino = v20;
         v27 = 2112;
-        v28 = v7;
+        v28 = lCopy;
         v29 = 1024;
         *v30 = v13;
         *&v30[4] = 1024;
@@ -504,9 +504,9 @@ LABEL_8:
         *buf = 138412802;
         st_ino = v18;
         v27 = 2112;
-        v28 = v7;
+        v28 = lCopy;
         v29 = 2112;
-        *v30 = v8;
+        *v30 = extensionCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%@ Succeed to acquire background processing assertion for the persistence store type %@ and the extension %@", buf, 0x20u);
       }
 
@@ -517,9 +517,9 @@ LABEL_8:
   return v16;
 }
 
-- (unint64_t)acquireBackgroundProcessingPermissionsWithClientID:(id)a3
+- (unint64_t)acquireBackgroundProcessingPermissionsWithClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MOContextPersistenceManager *)self loadStore];
   v14 = 0u;
   v15 = 0u;
@@ -541,7 +541,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
-      v11 = [MOContextPersistenceManager storesDirectoryWithClientID:v4];
+      v11 = [MOContextPersistenceManager storesDirectoryWithClientID:dCopy];
       v12 = [(MOContextPersistenceManager *)self _acquireBackgroundProcessingPermissionForStoreURL:v11 cacheFileExtension:v10];
 
       if (v12 != 1)

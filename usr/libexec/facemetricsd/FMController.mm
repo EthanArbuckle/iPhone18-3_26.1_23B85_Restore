@@ -3,21 +3,21 @@
 - (BOOL)_registerForMessagesAppForegroundedNotifications;
 - (FMController)init;
 - (void)_deviceUnlockTimerExpiration;
-- (void)_handleBiomeEvent:(id)a3;
-- (void)_handleDeviceLockAtTimestamp:(id *)a3;
-- (void)_handleDeviceUnlockAtTimestamp:(id *)a3;
-- (void)_handleEligibilityStatus:(int64_t)a3 bundleId:(id)a4 event:(id)a5;
-- (void)_handleLockStatusNotificationAtTimestamp:(id *)a3;
-- (void)_handleMessageAppBackgroundedWithTimestamp:(double)a3;
-- (void)_handleMessageAppForegroundedWithTimestamp:(double)a3;
-- (void)_handleMessageAppStatusNotification:(id)a3;
-- (void)_reportSkBundleIdEligibilityCheckLatencyWithStartTimestamp:(unint64_t)a3 andStopTimestamp:(unint64_t)a4;
+- (void)_handleBiomeEvent:(id)event;
+- (void)_handleDeviceLockAtTimestamp:(id *)timestamp;
+- (void)_handleDeviceUnlockAtTimestamp:(id *)timestamp;
+- (void)_handleEligibilityStatus:(int64_t)status bundleId:(id)id event:(id)event;
+- (void)_handleLockStatusNotificationAtTimestamp:(id *)timestamp;
+- (void)_handleMessageAppBackgroundedWithTimestamp:(double)timestamp;
+- (void)_handleMessageAppForegroundedWithTimestamp:(double)timestamp;
+- (void)_handleMessageAppStatusNotification:(id)notification;
+- (void)_reportSkBundleIdEligibilityCheckLatencyWithStartTimestamp:(unint64_t)timestamp andStopTimestamp:(unint64_t)stopTimestamp;
 - (void)_requestToStopCameraSession;
 - (void)_setupCameraSession;
 - (void)_stopCameraSession;
-- (void)handleFacialMetricsPacket:(id)a3 withTimestamp:(unint64_t)a4;
-- (void)sensorWriterDidStopMonitoring:(id)a3;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
+- (void)handleFacialMetricsPacket:(id)packet withTimestamp:(unint64_t)timestamp;
+- (void)sensorWriterDidStopMonitoring:(id)monitoring;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
 @end
 
 @implementation FMController
@@ -37,8 +37,8 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = +[NSBundle mainBundle];
-      v7 = [v6 infoDictionary];
-      v8 = [v7 objectForKeyedSubscript:kCFBundleVersionKey];
+      infoDictionary = [v6 infoDictionary];
+      v8 = [infoDictionary objectForKeyedSubscript:kCFBundleVersionKey];
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v8;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "version: %{public}@", &buf, 0xCu);
@@ -132,7 +132,7 @@
   return v4 == 0;
 }
 
-- (void)_handleLockStatusNotificationAtTimestamp:(id *)a3
+- (void)_handleLockStatusNotificationAtTimestamp:(id *)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
   deviceIsUnlocked = self->_deviceIsUnlocked;
@@ -140,8 +140,8 @@
   {
     v6 = self->_deviceIsUnlocked;
     self->_deviceIsUnlocked = !v6;
-    v7 = *&a3->var0;
-    var3 = a3->var3;
+    v7 = *&timestamp->var0;
+    var3 = timestamp->var3;
     if (v6)
     {
       [(FMController *)self _handleDeviceLockAtTimestamp:&v7];
@@ -154,7 +154,7 @@
   }
 }
 
-- (void)_handleDeviceUnlockAtTimestamp:(id *)a3
+- (void)_handleDeviceUnlockAtTimestamp:(id *)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_100004784();
@@ -166,13 +166,13 @@
 
   if ([(SRSensorWriter *)self->_sensorWriter isMonitoring])
   {
-    v6 = [(FMController *)self cameraSession];
-    if (v6)
+    cameraSession = [(FMController *)self cameraSession];
+    if (cameraSession)
     {
-      v7 = v6;
-      v8 = [(FMController *)self cameraSessionActiveReason];
+      v7 = cameraSession;
+      cameraSessionActiveReason = [(FMController *)self cameraSessionActiveReason];
 
-      if (v8)
+      if (cameraSessionActiveReason)
       {
         v9 = sub_100004784();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -186,40 +186,40 @@
     }
 
     [(FMController *)self setCameraSessionActiveReason:[(FMController *)self cameraSessionActiveReason]| 1];
-    v10 = [(FMController *)self cameraSession];
+    cameraSession2 = [(FMController *)self cameraSession];
 
-    if (v10)
+    if (cameraSession2)
     {
-      v11 = [(FMController *)self cameraSession];
-      *buf = *&a3->var0;
-      var3 = a3->var3;
-      [v11 generateUnlockSessionIdWithSessionStartTimestamp:buf];
+      cameraSession3 = [(FMController *)self cameraSession];
+      *buf = *&timestamp->var0;
+      var3 = timestamp->var3;
+      [cameraSession3 generateUnlockSessionIdWithSessionStartTimestamp:buf];
     }
 
     else
     {
       [(FMController *)self _setupCameraSession];
-      v12 = [(FMController *)self cameraSession];
-      *buf = *&a3->var0;
-      var3 = a3->var3;
-      [v12 generateUnlockSessionIdWithSessionStartTimestamp:buf];
+      cameraSession4 = [(FMController *)self cameraSession];
+      *buf = *&timestamp->var0;
+      var3 = timestamp->var3;
+      [cameraSession4 generateUnlockSessionIdWithSessionStartTimestamp:buf];
 
-      v11 = [(FMController *)self cameraSession];
-      [v11 startCameraSession];
+      cameraSession3 = [(FMController *)self cameraSession];
+      [cameraSession3 startCameraSession];
     }
 
     v13 = dispatch_time(0, 5000000000);
-    v14 = [(FMController *)self deviceUnlockTimer];
-    dispatch_source_set_timer(v14, v13, 0xFFFFFFFFFFFFFFFFLL, 0);
+    deviceUnlockTimer = [(FMController *)self deviceUnlockTimer];
+    dispatch_source_set_timer(deviceUnlockTimer, v13, 0xFFFFFFFFFFFFFFFFLL, 0);
 
     objc_initWeak(buf, self);
-    v15 = [(FMController *)self deviceUnlockTimer];
+    deviceUnlockTimer2 = [(FMController *)self deviceUnlockTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100003080;
     handler[3] = &unk_10000C540;
     objc_copyWeak(&v20, buf);
-    dispatch_source_set_event_handler(v15, handler);
+    dispatch_source_set_event_handler(deviceUnlockTimer2, handler);
 
     v16 = sub_100004784();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -229,8 +229,8 @@
     }
 
     self->_unlockTimerStartTime = CFAbsoluteTimeGetCurrent();
-    v17 = [(FMController *)self deviceUnlockTimer];
-    dispatch_activate(v17);
+    deviceUnlockTimer3 = [(FMController *)self deviceUnlockTimer];
+    dispatch_activate(deviceUnlockTimer3);
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -266,15 +266,15 @@
   }
 
   [(FMController *)self setCameraSessionActiveReason:[(FMController *)self cameraSessionActiveReason]& 0xFE];
-  v7 = [(FMController *)self cameraSession];
+  cameraSession = [(FMController *)self cameraSession];
   HostTimeClock = CMClockGetHostTimeClock();
   CMClockGetTime(&v9, HostTimeClock);
-  [v7 updateUnlockSessionWithSessionStopTimestamp:&v9];
+  [cameraSession updateUnlockSessionWithSessionStopTimestamp:&v9];
 
   [(FMController *)self _requestToStopCameraSession];
 }
 
-- (void)_handleDeviceLockAtTimestamp:(id *)a3
+- (void)_handleDeviceLockAtTimestamp:(id *)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_100004784();
@@ -285,10 +285,10 @@
   }
 
   [(FMController *)self setCameraSessionActiveReason:0];
-  v6 = [(FMController *)self cameraSession];
-  v7 = *&a3->var0;
-  var3 = a3->var3;
-  [v6 updateUnlockSessionWithSessionStopTimestamp:&v7];
+  cameraSession = [(FMController *)self cameraSession];
+  v7 = *&timestamp->var0;
+  var3 = timestamp->var3;
+  [cameraSession updateUnlockSessionWithSessionStopTimestamp:&v7];
 
   [(FMController *)self _requestToStopCameraSession];
 }
@@ -299,11 +299,11 @@
   objc_initWeak(&location, self);
   v3 = BiomeLibrary();
   v4 = [v3 App];
-  v5 = [v4 InFocus];
+  inFocus = [v4 InFocus];
 
   v6 = [[BMBiomeScheduler alloc] initWithIdentifier:@"com.apple.facemetricsd" targetQueue:self->_queue waking:1];
-  v7 = [v5 DSLPublisher];
-  v8 = [v7 subscribeOn:v6];
+  dSLPublisher = [inFocus DSLPublisher];
+  v8 = [dSLPublisher subscribeOn:v6];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100003484;
@@ -317,32 +317,32 @@
   return 1;
 }
 
-- (void)_handleBiomeEvent:(id)a3
+- (void)_handleBiomeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 eventBody];
-  v6 = [v5 bundleID];
+  eventBody = [eventCopy eventBody];
+  bundleID = [eventBody bundleID];
 
   v7 = sub_100004784();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v21 = v6;
+    v21 = bundleID;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Received Biome notification for BundleId : %{public}@", buf, 0xCu);
   }
 
-  v8 = [(FMController *)self cachedBundleIdEligibility];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  cachedBundleIdEligibility = [(FMController *)self cachedBundleIdEligibility];
+  v9 = [cachedBundleIdEligibility objectForKeyedSubscript:bundleID];
 
   if ([v9 BOOLValue])
   {
     v10 = sub_100004784();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
       v12 = "not ";
-      if (v11)
+      if (bOOLValue)
       {
         v12 = "";
       }
@@ -350,14 +350,14 @@
       *buf = 136446466;
       v21 = v12;
       v22 = 2114;
-      v23 = v6;
+      v23 = bundleID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "From cached eligibility, data collection is %{public}seligible for bundleID %{public}@", buf, 0x16u);
     }
 
     if ([v9 BOOLValue])
     {
-      v13 = [v4 eventBody];
-      [(FMController *)self _handleMessageAppStatusNotification:v13];
+      eventBody2 = [eventCopy eventBody];
+      [(FMController *)self _handleMessageAppStatusNotification:eventBody2];
     }
   }
 
@@ -370,61 +370,61 @@
     v16[2] = sub_100003738;
     v16[3] = &unk_10000C5F8;
     v16[4] = self;
-    v17 = v6;
-    v18 = v4;
+    v17 = bundleID;
+    v18 = eventCopy;
     v19 = v14;
     [(SRSensorWriter *)sensorWriter bundleEligibility:v17 completion:v16];
   }
 }
 
-- (void)_handleEligibilityStatus:(int64_t)a3 bundleId:(id)a4 event:(id)a5
+- (void)_handleEligibilityStatus:(int64_t)status bundleId:(id)id event:(id)event
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  if (!a3)
+  if (!status)
   {
-    v11 = sub_100004784();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    eventBody = sub_100004784();
+    if (os_log_type_enabled(eventBody, OS_LOG_TYPE_INFO))
     {
       v14 = 138543362;
-      v15 = v8;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Received SREligibilityStatusNotEligible for bundleID %{public}@", &v14, 0xCu);
+      v15 = idCopy;
+      _os_log_impl(&_mh_execute_header, eventBody, OS_LOG_TYPE_INFO, "Received SREligibilityStatusNotEligible for bundleID %{public}@", &v14, 0xCu);
     }
 
     v12 = &__kCFBooleanFalse;
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (status == 1)
   {
     v10 = sub_100004784();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v14 = 138543362;
-      v15 = v8;
+      v15 = idCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Received SREligibilityStatusEligible for bundleID %{public}@", &v14, 0xCu);
     }
 
-    v11 = [v9 eventBody];
-    [(FMController *)self _handleMessageAppStatusNotification:v11];
+    eventBody = [eventCopy eventBody];
+    [(FMController *)self _handleMessageAppStatusNotification:eventBody];
     v12 = &__kCFBooleanTrue;
 LABEL_9:
 
-    v13 = [(FMController *)self cachedBundleIdEligibility];
-    [v13 setObject:v12 forKeyedSubscript:v8];
+    cachedBundleIdEligibility = [(FMController *)self cachedBundleIdEligibility];
+    [cachedBundleIdEligibility setObject:v12 forKeyedSubscript:idCopy];
   }
 }
 
-- (void)_handleMessageAppStatusNotification:(id)a3
+- (void)_handleMessageAppStatusNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(self->_queue);
   messageAppForegrounded = self->_messageAppForegrounded;
-  if (messageAppForegrounded == [v4 starting])
+  if (messageAppForegrounded == [notificationCopy starting])
   {
-    v6 = sub_100004784();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    absoluteTimestamp = sub_100004784();
+    if (os_log_type_enabled(absoluteTimestamp, OS_LOG_TYPE_ERROR))
     {
       sub_100005E6C();
     }
@@ -440,14 +440,14 @@ LABEL_9:
     {
       if (v9)
       {
-        v10 = [v4 bundleID];
+        bundleID = [notificationCopy bundleID];
         v12 = 138412290;
-        v13 = v10;
+        v13 = bundleID;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ backgrounded", &v12, 0xCu);
       }
 
-      v6 = [v4 absoluteTimestamp];
-      [v6 timeIntervalSinceReferenceDate];
+      absoluteTimestamp = [notificationCopy absoluteTimestamp];
+      [absoluteTimestamp timeIntervalSinceReferenceDate];
       [(FMController *)self _handleMessageAppBackgroundedWithTimestamp:?];
     }
 
@@ -455,55 +455,55 @@ LABEL_9:
     {
       if (v9)
       {
-        v11 = [v4 bundleID];
+        bundleID2 = [notificationCopy bundleID];
         v12 = 138412290;
-        v13 = v11;
+        v13 = bundleID2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ foregrounded", &v12, 0xCu);
       }
 
-      v6 = [v4 absoluteTimestamp];
-      [v6 timeIntervalSinceReferenceDate];
+      absoluteTimestamp = [notificationCopy absoluteTimestamp];
+      [absoluteTimestamp timeIntervalSinceReferenceDate];
       [(FMController *)self _handleMessageAppForegroundedWithTimestamp:?];
     }
   }
 }
 
-- (void)_handleMessageAppForegroundedWithTimestamp:(double)a3
+- (void)_handleMessageAppForegroundedWithTimestamp:(double)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
   if ([(SRSensorWriter *)self->_sensorWriter isMonitoring])
   {
     [(FMController *)self setCameraSessionActiveReason:[(FMController *)self cameraSessionActiveReason]| 2];
-    v5 = [(FMController *)self cameraSession];
+    cameraSession = [(FMController *)self cameraSession];
 
-    if (v5)
+    if (cameraSession)
     {
-      v6 = [(FMController *)self cameraSession];
-      [v6 generateMessageSessionIdWithSessionStartTimestamp:a3];
+      cameraSession2 = [(FMController *)self cameraSession];
+      [cameraSession2 generateMessageSessionIdWithSessionStartTimestamp:timestamp];
     }
 
     else
     {
       [(FMController *)self _setupCameraSession];
-      v7 = [(FMController *)self cameraSession];
-      [v7 generateMessageSessionIdWithSessionStartTimestamp:a3];
+      cameraSession3 = [(FMController *)self cameraSession];
+      [cameraSession3 generateMessageSessionIdWithSessionStartTimestamp:timestamp];
 
-      v6 = [(FMController *)self cameraSession];
-      [v6 startCameraSession];
+      cameraSession2 = [(FMController *)self cameraSession];
+      [cameraSession2 startCameraSession];
     }
 
     v8 = dispatch_time(0, 30000000000);
-    v9 = [(FMController *)self messageAppForegroundedTimer];
-    dispatch_source_set_timer(v9, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
+    messageAppForegroundedTimer = [(FMController *)self messageAppForegroundedTimer];
+    dispatch_source_set_timer(messageAppForegroundedTimer, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
 
     objc_initWeak(&location, self);
-    v10 = [(FMController *)self messageAppForegroundedTimer];
+    messageAppForegroundedTimer2 = [(FMController *)self messageAppForegroundedTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100003DBC;
     handler[3] = &unk_10000C540;
     objc_copyWeak(&v15, &location);
-    dispatch_source_set_event_handler(v10, handler);
+    dispatch_source_set_event_handler(messageAppForegroundedTimer2, handler);
 
     v11 = sub_100004784();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -513,20 +513,20 @@ LABEL_9:
     }
 
     self->_foregroundTimerStartTime = CFAbsoluteTimeGetCurrent();
-    v12 = [(FMController *)self messageAppForegroundedTimer];
-    dispatch_activate(v12);
+    messageAppForegroundedTimer3 = [(FMController *)self messageAppForegroundedTimer];
+    dispatch_activate(messageAppForegroundedTimer3);
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_handleMessageAppBackgroundedWithTimestamp:(double)a3
+- (void)_handleMessageAppBackgroundedWithTimestamp:(double)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
   [(FMController *)self setCameraSessionActiveReason:[(FMController *)self cameraSessionActiveReason]& 0xFFFFFFFD];
-  v5 = [(FMController *)self cameraSession];
-  [v5 updateMessageSessionWithSessionStopTimestamp:a3];
+  cameraSession = [(FMController *)self cameraSession];
+  [cameraSession updateMessageSessionWithSessionStopTimestamp:timestamp];
 
   [(FMController *)self _requestToStopCameraSession];
 }
@@ -544,15 +544,15 @@ LABEL_9:
   v4 = [[FMCameraSession alloc] initWithQueue:self->_queue];
   [(FMController *)self setCameraSession:v4];
 
-  v5 = [(FMController *)self cameraSession];
+  cameraSession = [(FMController *)self cameraSession];
 
-  if (v5)
+  if (cameraSession)
   {
-    v6 = [(FMController *)self cameraSession];
-    [v6 resetUnlockSessionId];
+    cameraSession2 = [(FMController *)self cameraSession];
+    [cameraSession2 resetUnlockSessionId];
 
-    v7 = [(FMController *)self cameraSession];
-    [v7 resetMessageSessionId];
+    cameraSession3 = [(FMController *)self cameraSession];
+    [cameraSession3 resetMessageSessionId];
 
     v8 = sub_100004784();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -561,14 +561,14 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "started camera session", v10, 2u);
     }
 
-    v9 = [(FMController *)self cameraSession];
-    [v9 setDelegate:self];
+    cameraSession4 = [(FMController *)self cameraSession];
+    [cameraSession4 setDelegate:self];
   }
 
   else
   {
-    v9 = sub_100004784();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    cameraSession4 = sub_100004784();
+    if (os_log_type_enabled(cameraSession4, OS_LOG_TYPE_ERROR))
     {
       sub_100005F24();
     }
@@ -578,9 +578,9 @@ LABEL_9:
 - (void)_requestToStopCameraSession
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(FMController *)self cameraSession];
+  cameraSession = [(FMController *)self cameraSession];
 
-  if (v3)
+  if (cameraSession)
   {
     if ([(FMController *)self cameraSessionActiveReason])
     {
@@ -610,37 +610,37 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "stopping camera session", v5, 2u);
   }
 
-  v4 = [(FMController *)self cameraSession];
-  [v4 stop];
+  cameraSession = [(FMController *)self cameraSession];
+  [cameraSession stop];
 
   [(FMController *)self setCameraSession:0];
 }
 
-- (void)_reportSkBundleIdEligibilityCheckLatencyWithStartTimestamp:(unint64_t)a3 andStopTimestamp:(unint64_t)a4
+- (void)_reportSkBundleIdEligibilityCheckLatencyWithStartTimestamp:(unint64_t)timestamp andStopTimestamp:(unint64_t)stopTimestamp
 {
   v6 = @"skLatencyMilliSeconds";
-  v4 = [NSNumber numberWithDouble:(a4 - a3) / 1000000.0];
+  v4 = [NSNumber numberWithDouble:(stopTimestamp - timestamp) / 1000000.0];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
   AnalyticsSendEvent();
 }
 
-- (void)handleFacialMetricsPacket:(id)a3 withTimestamp:(unint64_t)a4
+- (void)handleFacialMetricsPacket:(id)packet withTimestamp:(unint64_t)timestamp
 {
-  v6 = a3;
+  packetCopy = packet;
   dispatch_assert_queue_V2(self->_queue);
   if ([(SRSensorWriter *)self->_sensorWriter isMonitoring])
   {
     v7 = sub_100004784();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_100005F60(v6, a4, v7);
+      sub_100005F60(packetCopy, timestamp, v7);
     }
 
     sensorWriter = self->_sensorWriter;
     v12 = 0;
-    v9 = [(SRSensorWriter *)sensorWriter provideSampleData:v6 continuousTimestamp:a4 error:&v12];
+    v9 = [(SRSensorWriter *)sensorWriter provideSampleData:packetCopy continuousTimestamp:timestamp error:&v12];
     v10 = v12;
     if ((v9 & 1) == 0)
     {
@@ -653,7 +653,7 @@ LABEL_9:
   }
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
   v4 = sub_100004784();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -665,7 +665,7 @@ LABEL_9:
   dispatch_async(self->_queue, &stru_10000C638);
 }
 
-- (void)sensorWriterDidStopMonitoring:(id)a3
+- (void)sensorWriterDidStopMonitoring:(id)monitoring
 {
   objc_initWeak(&location, self);
   queue = self->_queue;

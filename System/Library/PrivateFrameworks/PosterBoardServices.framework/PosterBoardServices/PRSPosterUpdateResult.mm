@@ -1,20 +1,20 @@
 @interface PRSPosterUpdateResult
-+ (id)failedUpdateResultForUpdate:(id)a3 error:(id)a4;
-+ (id)successfulUpdateResultForUpdate:(id)a3;
-- (PRSPosterUpdateResult)initWithCoder:(id)a3;
-- (PRSPosterUpdateResult)initWithUpdate:(id)a3;
++ (id)failedUpdateResultForUpdate:(id)update error:(id)error;
++ (id)successfulUpdateResultForUpdate:(id)update;
+- (PRSPosterUpdateResult)initWithCoder:(id)coder;
+- (PRSPosterUpdateResult)initWithUpdate:(id)update;
 - (id)description;
 - (id)requestedValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSPosterUpdateResult
 
-- (PRSPosterUpdateResult)initWithUpdate:(id)a3
+- (PRSPosterUpdateResult)initWithUpdate:(id)update
 {
-  v6 = a3;
+  updateCopy = update;
   NSClassFromString(&cfstr_Prsposterupdat_25.isa);
-  if (!v6)
+  if (!updateCopy)
   {
     [PRSPosterUpdateResult initWithUpdate:a2];
   }
@@ -30,27 +30,27 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_update, a3);
+    objc_storeStrong(&v7->_update, update);
   }
 
   return v8;
 }
 
-- (PRSPosterUpdateResult)initWithCoder:(id)a3
+- (PRSPosterUpdateResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PRSPosterUpdateResult;
   v5 = [(PRSPosterUpdateResult *)&v13 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"_error"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_error"];
     error = v5->_error;
     v5->_error = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"_update"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"_update"];
     update = v5->_update;
     v5->_update = v10;
   }
@@ -58,19 +58,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   update = self->_update;
-  v5 = a3;
-  [v5 encodeObject:update forKey:@"_update"];
-  [v5 encodeObject:self->_error forKey:@"_error"];
+  coderCopy = coder;
+  [coderCopy encodeObject:update forKey:@"_update"];
+  [coderCopy encodeObject:self->_error forKey:@"_error"];
 }
 
-+ (id)successfulUpdateResultForUpdate:(id)a3
++ (id)successfulUpdateResultForUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   NSClassFromString(&cfstr_Prsposterupdat_25.isa);
-  if (!v4)
+  if (!updateCopy)
   {
     [PRSPosterUpdateResult successfulUpdateResultForUpdate:a2];
   }
@@ -80,16 +80,16 @@
     [PRSPosterUpdateResult successfulUpdateResultForUpdate:a2];
   }
 
-  v5 = [[PRSPosterUpdateResult alloc] initWithUpdate:v4];
+  v5 = [[PRSPosterUpdateResult alloc] initWithUpdate:updateCopy];
 
   return v5;
 }
 
-+ (id)failedUpdateResultForUpdate:(id)a3 error:(id)a4
++ (id)failedUpdateResultForUpdate:(id)update error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  updateCopy = update;
+  errorCopy = error;
+  v8 = updateCopy;
   NSClassFromString(&cfstr_Prsposterupdat_25.isa);
   if (!v8)
   {
@@ -101,7 +101,7 @@
     [PRSPosterUpdateResult failedUpdateResultForUpdate:a2 error:?];
   }
 
-  v9 = v7;
+  v9 = errorCopy;
   NSClassFromString(&cfstr_Nserror.isa);
   if (!v9)
   {
@@ -122,10 +122,10 @@
 
 - (id)requestedValue
 {
-  v2 = [(PRSPosterUpdate *)self->_update payload];
-  v3 = [v2 rawValue];
+  payload = [(PRSPosterUpdate *)self->_update payload];
+  rawValue = [payload rawValue];
 
-  return v3;
+  return rawValue;
 }
 
 - (id)description
@@ -133,9 +133,9 @@
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_error withName:@"error"];
   v5 = [v3 appendObject:self->_update withName:@"update"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (void)initWithUpdate:(char *)a1 .cold.1(char *a1)

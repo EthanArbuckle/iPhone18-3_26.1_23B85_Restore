@@ -1,19 +1,19 @@
 @interface CHGrammar
-- (CHGrammar)initWithFile:(id)a3;
+- (CHGrammar)initWithFile:(id)file;
 - (id)description;
 @end
 
 @implementation CHGrammar
 
-- (CHGrammar)initWithFile:(id)a3
+- (CHGrammar)initWithFile:(id)file
 {
   v414 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  fileCopy = file;
   v13 = objc_msgSend_init(self, v6, v7, v8, v9, v10);
   if (v13)
   {
     v407 = 0;
-    v14 = objc_msgSend_stringWithContentsOfFile_encoding_error_(MEMORY[0x1E696AEC0], v11, v5, 4, &v407, v12);
+    v14 = objc_msgSend_stringWithContentsOfFile_encoding_error_(MEMORY[0x1E696AEC0], v11, fileCopy, 4, &v407, v12);
     v15 = v407;
     if (v15)
     {
@@ -34,8 +34,8 @@
 
     else
     {
-      v390 = v5;
-      objc_storeStrong(&v13->_file, a3);
+      v390 = fileCopy;
+      objc_storeStrong(&v13->_file, file);
       v23 = objc_msgSend_array(MEMORY[0x1E695DF70], v18, v19, v20, v21, v22);
       terminalProductions = v13->_terminalProductions;
       v13->_terminalProductions = v23;
@@ -295,7 +295,7 @@
       v13->_characterSet = v386;
 
       v16 = v389;
-      v5 = v390;
+      fileCopy = v390;
     }
   }
 

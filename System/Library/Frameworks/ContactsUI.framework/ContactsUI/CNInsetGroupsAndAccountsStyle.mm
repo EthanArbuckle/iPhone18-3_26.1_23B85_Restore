@@ -1,7 +1,7 @@
 @interface CNInsetGroupsAndAccountsStyle
-- (id)cellAccessoriesForItem:(id)a3;
-- (id)parentCellConfigurationUpdateHandlerWithText:(id)a3;
-- (id)sectionConfigurationForLayoutEnvironment:(id)a3 withLeadingActionsProvider:(id)a4 withTrailingActionsProvider:(id)a5 hasHeader:(BOOL)a6;
+- (id)cellAccessoriesForItem:(id)item;
+- (id)parentCellConfigurationUpdateHandlerWithText:(id)text;
+- (id)sectionConfigurationForLayoutEnvironment:(id)environment withLeadingActionsProvider:(id)provider withTrailingActionsProvider:(id)actionsProvider hasHeader:(BOOL)header;
 @end
 
 @implementation CNInsetGroupsAndAccountsStyle
@@ -42,20 +42,20 @@ void __63__CNInsetGroupsAndAccountsStyle_cellConfigurationUpdateHandler__block_i
   }
 }
 
-- (id)cellAccessoriesForItem:(id)a3
+- (id)cellAccessoriesForItem:(id)item
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  itemCopy = item;
   v6 = [v4 alloc];
   v12.receiver = self;
   v12.super_class = CNInsetGroupsAndAccountsStyle;
-  v7 = [(CNAccountsAndGroupsStyle *)&v12 cellAccessoriesForItem:v5];
+  v7 = [(CNAccountsAndGroupsStyle *)&v12 cellAccessoriesForItem:itemCopy];
   v8 = [v6 initWithArray:v7];
 
-  v9 = [v5 identifier];
+  identifier = [itemCopy identifier];
 
-  LOBYTE(v5) = [v9 isEqualToString:@"groupPlaceholderIdentifier"];
-  if ((v5 & 1) == 0)
+  LOBYTE(itemCopy) = [identifier isEqualToString:@"groupPlaceholderIdentifier"];
+  if ((itemCopy & 1) == 0)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69DC7A8]);
     [v8 addObject:v10];
@@ -64,15 +64,15 @@ void __63__CNInsetGroupsAndAccountsStyle_cellConfigurationUpdateHandler__block_i
   return v8;
 }
 
-- (id)parentCellConfigurationUpdateHandlerWithText:(id)a3
+- (id)parentCellConfigurationUpdateHandlerWithText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__CNInsetGroupsAndAccountsStyle_parentCellConfigurationUpdateHandlerWithText___block_invoke;
   aBlock[3] = &unk_1E74E2CC8;
-  v8 = v3;
-  v4 = v3;
+  v8 = textCopy;
+  v4 = textCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -87,19 +87,19 @@ void __78__CNInsetGroupsAndAccountsStyle_parentCellConfigurationUpdateHandlerWit
   [v4 setContentConfiguration:v5];
 }
 
-- (id)sectionConfigurationForLayoutEnvironment:(id)a3 withLeadingActionsProvider:(id)a4 withTrailingActionsProvider:(id)a5 hasHeader:(BOOL)a6
+- (id)sectionConfigurationForLayoutEnvironment:(id)environment withLeadingActionsProvider:(id)provider withTrailingActionsProvider:(id)actionsProvider hasHeader:(BOOL)header
 {
-  v6 = a6;
+  headerCopy = header;
   v9 = MEMORY[0x1E69DD3F8];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[v9 alloc] initWithAppearanceStyle:2 layoutEnvironment:v12];
-  [v13 setStylesFirstItemAsHeader:v6];
-  [v13 setLeadingSwipeActionsConfigurationProvider:v11];
+  actionsProviderCopy = actionsProvider;
+  providerCopy = provider;
+  environmentCopy = environment;
+  v13 = [[v9 alloc] initWithAppearanceStyle:2 layoutEnvironment:environmentCopy];
+  [v13 setStylesFirstItemAsHeader:headerCopy];
+  [v13 setLeadingSwipeActionsConfigurationProvider:providerCopy];
 
-  [v13 setTrailingSwipeActionsConfigurationProvider:v10];
-  v14 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v13 layoutEnvironment:v12];
+  [v13 setTrailingSwipeActionsConfigurationProvider:actionsProviderCopy];
+  v14 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v13 layoutEnvironment:environmentCopy];
 
   return v14;
 }

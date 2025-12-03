@@ -1,22 +1,22 @@
 @interface BatteryAnalysisManager
 + (id)sharedInstance;
 - (BOOL)hasDeviceRebooted;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)setUpChargeLimitChangeNotification;
 - (BOOL)setUpChargingStatusChangeNotification;
 - (BOOL)setUpExternalConnectedChangeNotification;
 - (BOOL)start;
-- (BOOL)tryEstimatorRunWithName:(id)a3 withError:(id *)a4;
+- (BOOL)tryEstimatorRunWithName:(id)name withError:(id *)error;
 - (BatteryAnalysisManager)init;
-- (double)shortChargingSessionThresholdForEndSOCEnum:(int64_t)a3;
+- (double)shortChargingSessionThresholdForEndSOCEnum:(int64_t)enum;
 - (double)timeSincePlugin;
 - (id)endSOCEnumMapping;
-- (id)getBatteryAnalysisEstimatesFromDate:(id)a3 toDate:(id)a4 predicate:(id)a5 limit:(unint64_t)a6;
-- (int64_t)enumForEndSOC:(id)a3;
+- (id)getBatteryAnalysisEstimatesFromDate:(id)date toDate:(id)toDate predicate:(id)predicate limit:(unint64_t)limit;
+- (int64_t)enumForEndSOC:(id)c;
 - (void)checkChargeLimitChangeAndSetUp;
 - (void)checkChargingStatusChangeAndSetUp;
 - (void)checkExternalConnectedChangeAndSetUp;
-- (void)computeAndSendCoreAnalyticsMetricsForEndSOC:(id)a3;
+- (void)computeAndSendCoreAnalyticsMetricsForEndSOC:(id)c;
 - (void)dealloc;
 - (void)deleteAllAlarms;
 - (void)deviceChargeLimitChangedDuringChargingSetUp;
@@ -25,16 +25,16 @@
 - (void)deviceConnectedSetUp;
 - (void)deviceDisconnectedSetUp;
 - (void)initFromDefaults;
-- (void)postInternalTT80Notification:(double)a3;
-- (void)postNotificationForBatteryAnalysisTarget:(int64_t)a3;
-- (void)postNotificationForComparision:(double)a3 against:(double)a4;
-- (void)runAndReply:(id)a3;
+- (void)postInternalTT80Notification:(double)notification;
+- (void)postNotificationForBatteryAnalysisTarget:(int64_t)target;
+- (void)postNotificationForComparision:(double)comparision against:(double)against;
+- (void)runAndReply:(id)reply;
 - (void)setUpContextStoreRegistration;
 - (void)setUpForChangeInExternalConnected;
-- (void)setUpWithNewChargeLimit:(int64_t)a3;
-- (void)setUpWithNewChargingStatus:(id)a3;
-- (void)submitEstimatorJobWithName:(id)a3;
-- (void)updateTarget:(int64_t)a3 withEstimate:(double)a4 andReply:(id)a5;
+- (void)setUpWithNewChargeLimit:(int64_t)limit;
+- (void)setUpWithNewChargingStatus:(id)status;
+- (void)submitEstimatorJobWithName:(id)name;
+- (void)updateTarget:(int64_t)target withEstimate:(double)estimate andReply:(id)reply;
 @end
 
 @implementation BatteryAnalysisManager
@@ -202,8 +202,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v4 = [(BatteryAnalysisManager *)self bootUUID];
-  v5 = [v4 isEqualToString:v3];
+  bootUUID = [(BatteryAnalysisManager *)self bootUUID];
+  v5 = [bootUUID isEqualToString:v3];
 
   v6 = qword_1000578F0;
   v7 = os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT);
@@ -246,25 +246,25 @@ LABEL_16:
 
   if ([(BatteryAnalysisManager *)self setUpChargeLimitChangeNotification]&& [(BatteryAnalysisManager *)self setUpChargingStatusChangeNotification])
   {
-    v4 = [(BatteryAnalysisManager *)self setUpExternalConnectedChangeNotification];
+    setUpExternalConnectedChangeNotification = [(BatteryAnalysisManager *)self setUpExternalConnectedChangeNotification];
   }
 
   else
   {
-    v4 = 0;
+    setUpExternalConnectedChangeNotification = 0;
   }
 
-  return v4;
+  return setUpExternalConnectedChangeNotification;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BIBatteryAnalysisManagerProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  v7 = [v5 valueForEntitlement:@"com.apple.batteryintelligenced.batteryanalysismanager"];
+  [connectionCopy setExportedObject:self];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.batteryintelligenced.batteryanalysismanager"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v7 BOOLValue])
   {
     v8 = qword_1000578F0;
@@ -272,11 +272,11 @@ LABEL_16:
     {
       v9 = v8;
       v13[0] = 67109120;
-      v13[1] = [v5 processIdentifier];
+      v13[1] = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Accepted new connection from pid %d.", v13, 8u);
     }
 
-    [v5 resume];
+    [connectionCopy resume];
     v10 = 1;
   }
 
@@ -285,7 +285,7 @@ LABEL_16:
     v11 = qword_1000578F0;
     if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_ERROR))
     {
-      sub_10002F6E4(v11, v5);
+      sub_10002F6E4(v11, connectionCopy);
     }
 
     v10 = 0;
@@ -311,8 +311,8 @@ LABEL_16:
     [qword_1000578F8 setInteger:-[BatteryAnalysisManager caMetricsComputedBitMask](self forKey:{"caMetricsComputedBitMask"), @"caMetricsComputedBitMask"}];
     [qword_1000578F8 setBool:-[BatteryAnalysisManager isFirstEstimateComputed](self forKey:{"isFirstEstimateComputed"), @"isFirstEstimateComputed"}];
     v6 = qword_1000578F8;
-    v7 = [(BatteryAnalysisManager *)self isAdapterWireless];
-    [v6 setObject:v7 forKey:@"isWirelessAdapter"];
+    isAdapterWireless = [(BatteryAnalysisManager *)self isAdapterWireless];
+    [v6 setObject:isAdapterWireless forKey:@"isWirelessAdapter"];
 
     v8 = +[BatteryAnalysisService sharedInstance];
     [v8 updateAdditionalInformationForAllTarget:2];
@@ -361,8 +361,8 @@ LABEL_16:
         handler[3] = &unk_1000487D0;
         objc_copyWeak(&v34, &location);
         dispatch_source_set_event_handler(v16, handler);
-        v17 = [(BatteryAnalysisManager *)self pluginJobTimer];
-        dispatch_resume(v17);
+        pluginJobTimer = [(BatteryAnalysisManager *)self pluginJobTimer];
+        dispatch_resume(pluginJobTimer);
 
         v18 = qword_1000578F0;
         if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
@@ -440,9 +440,9 @@ LABEL_16:
     if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(BatteryAnalysisManager *)self chargingStatus];
+      chargingStatus = [(BatteryAnalysisManager *)self chargingStatus];
       *buf = 138412546;
-      v38 = v14;
+      v38 = chargingStatus;
       v39 = 1024;
       LODWORD(v40) = [(BatteryAnalysisManager *)self isDrawingUnlimitedPower];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Current Charging status: %@, isDrawingUnlimitedPower: %i. Aborting deviceConnectedSetUp.", buf, 0x12u);
@@ -574,11 +574,11 @@ LABEL_6:
     if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(BatteryAnalysisManager *)self chargingStatus];
+      chargingStatus = [(BatteryAnalysisManager *)self chargingStatus];
       v20 = 138412546;
-      v21 = v8;
+      v21 = chargingStatus;
       v22 = 1024;
-      v23 = [(BatteryAnalysisManager *)self isDrawingUnlimitedPower];
+      isDrawingUnlimitedPower = [(BatteryAnalysisManager *)self isDrawingUnlimitedPower];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Current Charging status: %@, isDrawingUnlimitedPower: %i. Aborting deviceDisconnectedSetUp.", &v20, 0x12u);
     }
   }
@@ -644,8 +644,8 @@ LABEL_6:
     [qword_1000578F8 setBool:-[BatteryAnalysisManager isFirstEstimateComputed](self forKey:{"isFirstEstimateComputed"), @"isFirstEstimateComputed"}];
     [qword_1000578F8 setInteger:-[BatteryAnalysisManager caMetricsComputedBitMask](self forKey:{"caMetricsComputedBitMask"), @"caMetricsComputedBitMask"}];
     v18 = qword_1000578F8;
-    v19 = [(BatteryAnalysisManager *)self isAdapterWireless];
-    [v18 setObject:v19 forKey:@"isWirelessAdapter"];
+    isAdapterWireless = [(BatteryAnalysisManager *)self isAdapterWireless];
+    [v18 setObject:isAdapterWireless forKey:@"isWirelessAdapter"];
   }
 }
 
@@ -701,12 +701,12 @@ LABEL_6:
   }
 }
 
-- (void)setUpWithNewChargingStatus:(id)a3
+- (void)setUpWithNewChargingStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = os_transaction_create();
-  v6 = [(BatteryAnalysisManager *)self chargingStatus];
-  v7 = [v6 isEqualToString:v4];
+  chargingStatus = [(BatteryAnalysisManager *)self chargingStatus];
+  v7 = [chargingStatus isEqualToString:statusCopy];
 
   if (v7)
   {
@@ -720,23 +720,23 @@ LABEL_6:
 
   else
   {
-    v9 = [(BatteryAnalysisManager *)self chargingStatus];
-    [(BatteryAnalysisManager *)self setChargingStatus:v4];
+    chargingStatus2 = [(BatteryAnalysisManager *)self chargingStatus];
+    [(BatteryAnalysisManager *)self setChargingStatus:statusCopy];
     v10 = qword_1000578F8;
-    v11 = [(BatteryAnalysisManager *)self chargingStatus];
-    [v10 setObject:v11 forKey:@"chargingStatus"];
+    chargingStatus3 = [(BatteryAnalysisManager *)self chargingStatus];
+    [v10 setObject:chargingStatus3 forKey:@"chargingStatus"];
 
-    if ([v4 isEqualToString:@"Charging"] && objc_msgSend(v9, "isEqualToString:", @"Disconnected"))
+    if ([statusCopy isEqualToString:@"Charging"] && objc_msgSend(chargingStatus2, "isEqualToString:", @"Disconnected"))
     {
       [(BatteryAnalysisManager *)self deviceConnectedSetUp];
     }
 
-    else if ([v4 isEqualToString:@"Charging"])
+    else if ([statusCopy isEqualToString:@"Charging"])
     {
       [(BatteryAnalysisManager *)self deviceChargingResumedSetUp];
     }
 
-    else if ([v4 isEqualToString:@"Disconnected"])
+    else if ([statusCopy isEqualToString:@"Disconnected"])
     {
       [(BatteryAnalysisManager *)self deviceDisconnectedSetUp];
     }
@@ -748,10 +748,10 @@ LABEL_6:
   }
 }
 
-- (void)setUpWithNewChargeLimit:(int64_t)a3
+- (void)setUpWithNewChargeLimit:(int64_t)limit
 {
   v5 = os_transaction_create();
-  if ([(BatteryAnalysisManager *)self chargeLimit]== a3)
+  if ([(BatteryAnalysisManager *)self chargeLimit]== limit)
   {
     v6 = qword_1000578F0;
     if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
@@ -766,15 +766,15 @@ LABEL_9:
 
   else
   {
-    v9 = [(BatteryAnalysisManager *)self chargingStatus];
-    if (v9 && (v10 = v9, -[BatteryAnalysisManager chargingStatus](self, "chargingStatus"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqualToString:@"Charging"], v11, v10, v12))
+    chargingStatus = [(BatteryAnalysisManager *)self chargingStatus];
+    if (chargingStatus && (v10 = chargingStatus, -[BatteryAnalysisManager chargingStatus](self, "chargingStatus"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqualToString:@"Charging"], v11, v10, v12))
     {
       [(BatteryAnalysisManager *)self deviceChargeLimitChangedDuringChargingSetUp];
     }
 
     else
     {
-      [(BatteryAnalysisManager *)self setChargeLimit:a3];
+      [(BatteryAnalysisManager *)self setChargeLimit:limit];
       [qword_1000578F8 setInteger:-[BatteryAnalysisManager chargeLimit](self forKey:{"chargeLimit"), @"chargeLimit"}];
       v6 = qword_1000578F0;
       if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
@@ -804,7 +804,7 @@ LABEL_9:
 
   else
   {
-    v5 = [(BatteryAnalysisManager *)self isDrawingUnlimitedPower];
+    isDrawingUnlimitedPower = [(BatteryAnalysisManager *)self isDrawingUnlimitedPower];
     [(BatteryAnalysisManager *)self setIsDrawingUnlimitedPower:v4];
     [qword_1000578F8 setBool:-[BatteryAnalysisManager isDrawingUnlimitedPower](self forKey:{"isDrawingUnlimitedPower"), @"isDrawingUnlimitedPower"}];
     v6 = qword_1000578F0;
@@ -812,9 +812,9 @@ LABEL_9:
     {
       v7 = v6;
       v9[0] = 67109376;
-      v9[1] = v5;
+      v9[1] = isDrawingUnlimitedPower;
       v10 = 1024;
-      v11 = [(BatteryAnalysisManager *)self isDrawingUnlimitedPower];
+      isDrawingUnlimitedPower2 = [(BatteryAnalysisManager *)self isDrawingUnlimitedPower];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "isDrawingUnlimitedPower changed. Current value: %i, updated value:%i.", v9, 0xEu);
     }
 
@@ -848,14 +848,14 @@ LABEL_9:
 {
   out_token = 0;
   objc_initWeak(&location, self);
-  v3 = [(BatteryAnalysisManager *)self collectionQueue];
+  collectionQueue = [(BatteryAnalysisManager *)self collectionQueue];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10000C20C;
   v11 = &unk_1000487F8;
   objc_copyWeak(&v13, &location);
-  v12 = self;
-  v4 = notify_register_dispatch("com.apple.system.powersources.chargingiconography", &out_token, v3, &v8);
+  selfCopy = self;
+  v4 = notify_register_dispatch("com.apple.system.powersources.chargingiconography", &out_token, collectionQueue, &v8);
 
   if (v4)
   {
@@ -895,14 +895,14 @@ LABEL_9:
 {
   out_token = 0;
   objc_initWeak(&location, self);
-  v3 = [@"com.apple.powerui.mclstatuschanged" UTF8String];
-  v4 = [(BatteryAnalysisManager *)self collectionQueue];
+  uTF8String = [@"com.apple.powerui.mclstatuschanged" UTF8String];
+  collectionQueue = [(BatteryAnalysisManager *)self collectionQueue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10000C678;
   handler[3] = &unk_100048820;
   objc_copyWeak(&v10, &location);
-  v5 = notify_register_dispatch(v3, &out_token, v4, handler);
+  v5 = notify_register_dispatch(uTF8String, &out_token, collectionQueue, handler);
 
   if (v5)
   {
@@ -942,13 +942,13 @@ LABEL_9:
 {
   out_token = 0;
   objc_initWeak(&location, self);
-  v3 = [(BatteryAnalysisManager *)self collectionQueue];
+  collectionQueue = [(BatteryAnalysisManager *)self collectionQueue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10000CA20;
   handler[3] = &unk_100048820;
   objc_copyWeak(&v9, &location);
-  v4 = notify_register_dispatch("com.apple.system.powersources.source", &out_token, v3, handler);
+  v4 = notify_register_dispatch("com.apple.system.powersources.source", &out_token, collectionQueue, handler);
 
   if (v4)
   {
@@ -978,9 +978,9 @@ LABEL_9:
 
   v5 = +[_CDContextQueries keyPathForBatteryLevel];
   v6 = +[_CDContextQueries keyPathForBatteryStateDataDictionary];
-  v7 = [(BatteryAnalysisManager *)self endSOCEnumMapping];
-  v8 = [v7 allKeys];
-  v9 = [_CDContextualPredicate predicateForKeyPath:v5 withFormat:@"SELF.%@.value.externalConnected = %@ AND SELF.%@.value IN %@", v6, &__kCFBooleanTrue, v5, v8];
+  endSOCEnumMapping = [(BatteryAnalysisManager *)self endSOCEnumMapping];
+  allKeys = [endSOCEnumMapping allKeys];
+  v9 = [_CDContextualPredicate predicateForKeyPath:v5 withFormat:@"SELF.%@.value.externalConnected = %@ AND SELF.%@.value IN %@", v6, &__kCFBooleanTrue, v5, allKeys];
 
   objc_initWeak(&location, self);
   v16[0] = _NSConcreteStackBlock;
@@ -993,9 +993,9 @@ LABEL_9:
   v11 = [_CDContextualChangeRegistration localWakingRegistrationWithIdentifier:@"com.apple.batteryintelligence.batteryanalysismanager" contextualPredicate:v9 clientIdentifier:@"com.apple.batteryintelligenced.contextstore-registration" callback:v10];
   [(BatteryAnalysisManager *)self setContextStoreRegistration:v11];
 
-  v12 = [(BatteryAnalysisManager *)self context];
-  v13 = [(BatteryAnalysisManager *)self contextStoreRegistration];
-  [v12 registerCallback:v13];
+  context = [(BatteryAnalysisManager *)self context];
+  contextStoreRegistration = [(BatteryAnalysisManager *)self contextStoreRegistration];
+  [context registerCallback:contextStoreRegistration];
 
   v14 = qword_1000578F0;
   if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
@@ -1020,7 +1020,7 @@ LABEL_9:
   return v3;
 }
 
-- (double)shortChargingSessionThresholdForEndSOCEnum:(int64_t)a3
+- (double)shortChargingSessionThresholdForEndSOCEnum:(int64_t)enum
 {
   if (qword_100057908 != -1)
   {
@@ -1028,30 +1028,30 @@ LABEL_9:
   }
 
   v4 = qword_1000578D8;
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:enum];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0.0;
+    integerValue = 0.0;
     if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_ERROR))
     {
       sub_10002FA00();
     }
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (int64_t)enumForEndSOC:(id)a3
+- (int64_t)enumForEndSOC:(id)c
 {
-  v4 = a3;
-  if (sub_10001F78C(v4))
+  cCopy = c;
+  if (sub_10001F78C(cCopy))
   {
     v5 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
     if (v5)
@@ -1059,24 +1059,24 @@ LABEL_9:
       sub_10002FB24(v5, v6, v7, v8, v9, v10, v11, v12);
     }
 
-    v13 = 0;
+    integerValue = 0;
   }
 
   else
   {
-    v14 = [(BatteryAnalysisManager *)self endSOCEnumMapping];
-    v15 = [v14 objectForKeyedSubscript:v4];
+    endSOCEnumMapping = [(BatteryAnalysisManager *)self endSOCEnumMapping];
+    v15 = [endSOCEnumMapping objectForKeyedSubscript:cCopy];
 
     if (v15)
     {
-      v13 = [v15 integerValue];
+      integerValue = [v15 integerValue];
     }
 
     else
     {
-      v16 = [(BatteryAnalysisManager *)self endSOCEnumMapping];
-      v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 integerValue] + 1);
-      v18 = [v16 objectForKeyedSubscript:v17];
+      endSOCEnumMapping2 = [(BatteryAnalysisManager *)self endSOCEnumMapping];
+      v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [cCopy integerValue] + 1);
+      v18 = [endSOCEnumMapping2 objectForKeyedSubscript:v17];
 
       if (v18)
       {
@@ -1085,14 +1085,14 @@ LABEL_9:
           sub_10002FA34();
         }
 
-        v13 = [v18 integerValue];
+        integerValue = [v18 integerValue];
       }
 
       else
       {
-        v19 = [(BatteryAnalysisManager *)self endSOCEnumMapping];
-        v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 integerValue] - 1);
-        v21 = [v19 objectForKeyedSubscript:v20];
+        endSOCEnumMapping3 = [(BatteryAnalysisManager *)self endSOCEnumMapping];
+        v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [cCopy integerValue] - 1);
+        v21 = [endSOCEnumMapping3 objectForKeyedSubscript:v20];
 
         if (v21)
         {
@@ -1101,25 +1101,25 @@ LABEL_9:
             sub_10002FAAC();
           }
 
-          v13 = [v21 integerValue];
+          integerValue = [v21 integerValue];
         }
 
         else
         {
-          v13 = 0;
+          integerValue = 0;
         }
       }
     }
   }
 
-  return v13;
+  return integerValue;
 }
 
-- (id)getBatteryAnalysisEstimatesFromDate:(id)a3 toDate:(id)a4 predicate:(id)a5 limit:(unint64_t)a6
+- (id)getBatteryAnalysisEstimatesFromDate:(id)date toDate:(id)toDate predicate:(id)predicate limit:(unint64_t)limit
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  toDateCopy = toDate;
+  predicateCopy = predicate;
   v12 = PPSCreateSubsystemCategoryPredicate();
   if (v12)
   {
@@ -1131,26 +1131,26 @@ LABEL_9:
     v13 = [NSArray arrayWithObjects:v37 count:5];
     v14 = [NSSet setWithArray:v13];
 
-    [v9 timeIntervalSinceDate:v10];
+    [dateCopy timeIntervalSinceDate:toDateCopy];
     if (v15 <= 0.0)
     {
-      v20 = [[NSDateInterval alloc] initWithStartDate:v9 endDate:v10];
+      v20 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:toDateCopy];
       v21 = qword_1000578F0;
       if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413058;
-        v30 = v9;
+        v30 = dateCopy;
         v31 = 2112;
-        v32 = v10;
+        v32 = toDateCopy;
         v33 = 2112;
         v34 = v20;
         v35 = 2112;
-        v36 = v11;
+        v36 = predicateCopy;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Getting data from PPS for the following inputs:\ndateFrom - %@, dateTill - %@, interval - %@, predicate - %@", buf, 0x2Au);
       }
 
       sub_10001F740();
-      v22 = [[PPSTimeSeriesRequest alloc] initWithMetrics:v14 predicate:v12 timeFilter:v20 limitCount:a6 offsetCount:0 readDirection:0];
+      v22 = [[PPSTimeSeriesRequest alloc] initWithMetrics:v14 predicate:v12 timeFilter:v20 limitCount:limit offsetCount:0 readDirection:0];
       if (v22)
       {
         v23 = PerfPowerServicesGetData();
@@ -1194,7 +1194,7 @@ LABEL_9:
 
     else
     {
-      [v9 timeIntervalSinceDate:v10];
+      [dateCopy timeIntervalSinceDate:toDateCopy];
       v17 = v16;
       v18 = qword_1000578F0;
       if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_FAULT))
@@ -1202,9 +1202,9 @@ LABEL_9:
         *buf = 134218498;
         v30 = v17;
         v31 = 2112;
-        v32 = v9;
+        v32 = dateCopy;
         v33 = 2112;
-        v34 = v10;
+        v34 = toDateCopy;
         _os_log_fault_impl(&_mh_execute_header, v18, OS_LOG_TYPE_FAULT, "Invalid date range: dateFrom is %.6f seconds after dateTill. From: %@, Till: %@", buf, 0x20u);
       }
 
@@ -1225,10 +1225,10 @@ LABEL_9:
   return v19;
 }
 
-- (void)computeAndSendCoreAnalyticsMetricsForEndSOC:(id)a3
+- (void)computeAndSendCoreAnalyticsMetricsForEndSOC:(id)c
 {
-  v4 = a3;
-  v5 = [(BatteryAnalysisManager *)self enumForEndSOC:v4];
+  cCopy = c;
+  v5 = [(BatteryAnalysisManager *)self enumForEndSOC:cCopy];
   if (v5)
   {
     v6 = v5;
@@ -1251,7 +1251,7 @@ LABEL_9:
       if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v95 = v4;
+        v95 = cCopy;
         v96 = 2048;
         v97 = v10;
         v98 = 2048;
@@ -1261,7 +1261,7 @@ LABEL_9:
 
       v13 = +[NSDate date];
       v14 = [v13 dateByAddingTimeInterval:-v10];
-      v15 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"%K >= %ld AND %K <= %ld", @"end_soc", [v4 integerValue] - 1, @"end_soc", objc_msgSend(v4, "integerValue") + 1);
+      v15 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"%K >= %ld AND %K <= %ld", @"end_soc", [cCopy integerValue] - 1, @"end_soc", objc_msgSend(cCopy, "integerValue") + 1);
       v84 = v14;
       v82 = v13;
       v16 = [(BatteryAnalysisManager *)self getBatteryAnalysisEstimatesFromDate:v14 toDate:v13 predicate:v15 limit:30];
@@ -1271,7 +1271,7 @@ LABEL_9:
         if ([v16 count])
         {
           v62 = v15;
-          v63 = v4;
+          v63 = cCopy;
           v64 = v6;
           v89 = 0u;
           v90 = 0u;
@@ -1428,12 +1428,12 @@ LABEL_9:
                         v53 = [NSDictionary dictionaryWithObjects:v92 forKeys:v91 count:9];
                         logb = [v53 mutableCopy];
 
-                        v54 = [(BatteryAnalysisManager *)self isAdapterWireless];
+                        isAdapterWireless = [(BatteryAnalysisManager *)self isAdapterWireless];
 
-                        if (v54)
+                        if (isAdapterWireless)
                         {
-                          v55 = [(BatteryAnalysisManager *)self isAdapterWireless];
-                          [logb setObject:v55 forKeyedSubscript:@"is_wireless"];
+                          isAdapterWireless2 = [(BatteryAnalysisManager *)self isAdapterWireless];
+                          [logb setObject:isAdapterWireless2 forKeyedSubscript:@"is_wireless"];
                         }
 
                         v56 = qword_1000578F0;
@@ -1492,7 +1492,7 @@ LABEL_9:
           }
 
           v60 = p_vtable[286];
-          v4 = v63;
+          cCopy = v63;
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
@@ -1527,9 +1527,9 @@ LABEL_9:
   }
 }
 
-- (void)updateTarget:(int64_t)a3 withEstimate:(double)a4 andReply:(id)a5
+- (void)updateTarget:(int64_t)target withEstimate:(double)estimate andReply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   collectionQueue = self->_collectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1537,19 +1537,19 @@ LABEL_9:
   block[2] = sub_10000E42C;
   block[3] = &unk_1000488D8;
   objc_copyWeak(v13, &location);
-  v12 = v8;
-  v13[1] = a3;
-  v13[2] = *&a4;
-  v10 = v8;
+  v12 = replyCopy;
+  v13[1] = target;
+  v13[2] = *&estimate;
+  v10 = replyCopy;
   dispatch_async(collectionQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)runAndReply:(id)a3
+- (void)runAndReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   collectionQueue = self->_collectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1557,8 +1557,8 @@ LABEL_9:
   block[2] = sub_10000E780;
   block[3] = &unk_100048900;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(collectionQueue, block);
 
   objc_destroyWeak(&v9);
@@ -1617,7 +1617,7 @@ LABEL_9:
   {
     v13 = v12;
     v15 = 134218496;
-    v16 = [(BatteryAnalysisManager *)self monotonicPluginTimeInSeconds];
+    monotonicPluginTimeInSeconds = [(BatteryAnalysisManager *)self monotonicPluginTimeInSeconds];
     v17 = 2048;
     v18 = v4;
     v19 = 2048;
@@ -1628,10 +1628,10 @@ LABEL_9:
   return v7;
 }
 
-- (void)submitEstimatorJobWithName:(id)a3
+- (void)submitEstimatorJobWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     objc_initWeak(&location, self);
     collectionQueue = self->_collectionQueue;
@@ -1640,7 +1640,7 @@ LABEL_9:
     block[2] = sub_10000ECD0;
     block[3] = &unk_100048928;
     objc_copyWeak(&v10, &location);
-    v6 = v4;
+    v6 = nameCopy;
     v9 = v6;
     dispatch_async(collectionQueue, block);
     v7 = qword_1000578F0;
@@ -1661,23 +1661,23 @@ LABEL_9:
   }
 }
 
-- (BOOL)tryEstimatorRunWithName:(id)a3 withError:(id *)a4
+- (BOOL)tryEstimatorRunWithName:(id)name withError:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = os_transaction_create();
   v8 = qword_1000578F0;
-  if (!v6)
+  if (!nameCopy)
   {
     if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_ERROR))
     {
       sub_10002FDD8();
-      if (!a4)
+      if (!error)
       {
         goto LABEL_47;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_47;
     }
@@ -1690,7 +1690,7 @@ LABEL_9:
   if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *v66 = v6;
+    *v66 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Running inference for job Name: %@!", buf, 0xCu);
   }
 
@@ -1709,7 +1709,7 @@ LABEL_9:
 LABEL_19:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, v15, buf, 2u);
 LABEL_20:
-      if (a4)
+      if (error)
       {
         v10 = BIBatteryAnalysisErrorDomain;
         v11 = 5;
@@ -1722,7 +1722,7 @@ LABEL_47:
     }
 
     v12 = sub_10001E8F4();
-    v61 = [v6 isEqualToString:@"batteryAnalysisRunAtPlugin"];
+    v61 = [nameCopy isEqualToString:@"batteryAnalysisRunAtPlugin"];
     if (v61)
     {
       self->_isFirstEstimateComputed = 1;
@@ -1810,10 +1810,10 @@ LABEL_51:
 
         self->_chargeLimit = [v31 integerValue];
         v36 = qword_1000578F8;
-        v37 = [(BatteryAnalysisManager *)self chargeLimit];
+        chargeLimit = [(BatteryAnalysisManager *)self chargeLimit];
         v38 = v36;
         v31 = v64;
-        [v38 setInteger:v37 forKey:@"chargeLimit"];
+        [v38 setInteger:chargeLimit forKey:@"chargeLimit"];
       }
 
       v39 = self->_chargeLimit;
@@ -1842,7 +1842,7 @@ LABEL_51:
       else
       {
         v41 = +[BatteryAnalysisEstimator sharedPredictor];
-        v42 = [v31 integerValue];
+        integerValue = [v31 integerValue];
         v72[0] = @"timeSincePlugin";
         [(BatteryAnalysisManager *)self timeSincePlugin];
         v43 = [NSNumber numberWithDouble:?];
@@ -1851,7 +1851,7 @@ LABEL_51:
         v44 = [NSNumber numberWithInteger:self->_socAtPlugin];
         v73[1] = v44;
         v45 = [NSDictionary dictionaryWithObjects:v73 forKeys:v72 count:2];
-        [v41 estimateAndRecordForEndSOC:v42 withParams:v45];
+        [v41 estimateAndRecordForEndSOC:integerValue withParams:v45];
         v47 = v46;
 
         if (v27 > 0.0 && v47 > 0.0 && v47 < v27 + 300.0)
@@ -1921,7 +1921,7 @@ LABEL_51:
         [(BatteryAnalysisManager *)self postNotificationForBatteryAnalysisTarget:1];
       }
 
-      if ([v6 isEqualToString:@"batteryAnalysisRunDuringCharging"])
+      if ([nameCopy isEqualToString:@"batteryAnalysisRunDuringCharging"])
       {
         v16 = 1;
         [BIXPCAlarm setAlarmWithName:@"batteryAnalysisRunDuringCharging" withClock:4 afterSeconds:1 wakeUpAP:300.0];
@@ -2013,7 +2013,7 @@ LABEL_84:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Estimates overridden. Skipping the estimator run.", buf, 2u);
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_47;
   }
@@ -2022,32 +2022,32 @@ LABEL_84:
   v11 = 6;
 LABEL_22:
   [NSError errorWithDomain:v10 code:v11 userInfo:0];
-  *a4 = v16 = 0;
+  *error = v16 = 0;
 LABEL_85:
 
   return v16;
 }
 
-- (void)postNotificationForBatteryAnalysisTarget:(int64_t)a3
+- (void)postNotificationForBatteryAnalysisTarget:(int64_t)target
 {
   v4 = +[BIBatteryAnalysisSharedResources sharedTargetDetails];
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:target];
   v6 = [v4 objectForKey:v5];
 
-  v7 = [v6 notificationName];
-  notify_post([v7 UTF8String]);
+  notificationName = [v6 notificationName];
+  notify_post([notificationName UTF8String]);
   v8 = qword_1000578F0;
   if (os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 friendlyName];
+    friendlyName = [v6 friendlyName];
     v11 = 138412290;
-    v12 = v10;
+    v12 = friendlyName;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Posted notification to clients for battery analysis %@ target estimate update.", &v11, 0xCu);
   }
 }
 
-- (void)postInternalTT80Notification:(double)a3
+- (void)postInternalTT80Notification:(double)notification
 {
   if (sub_10001E444())
   {
@@ -2059,7 +2059,7 @@ LABEL_85:
     }
 
     v6 = sub_10001F960();
-    v7 = [v6 stringFromTimeInterval:a3];
+    v7 = [v6 stringFromTimeInterval:notification];
 
     v8 = [NSString stringWithFormat:@"It will take %@ to charge to 80%%.", v7];
     v9 = objc_alloc_init(UNMutableNotificationContent);
@@ -2086,15 +2086,15 @@ LABEL_85:
   }
 }
 
-- (void)postNotificationForComparision:(double)a3 against:(double)a4
+- (void)postNotificationForComparision:(double)comparision against:(double)against
 {
   if (sub_10001E444())
   {
     v7 = sub_10001F960();
-    v8 = [v7 stringFromTimeInterval:a3];
+    v8 = [v7 stringFromTimeInterval:comparision];
 
     v9 = sub_10001F960();
-    v10 = [v9 stringFromTimeInterval:a4];
+    v10 = [v9 stringFromTimeInterval:against];
 
     v11 = [NSString stringWithFormat:@"Device reached %d in %@, First estimate for the latest charging session was %@.", sub_10001E8F4(), v10, v8];
     v12 = objc_alloc_init(UNMutableNotificationContent);
@@ -2160,8 +2160,8 @@ LABEL_85:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
-        v11 = notify_cancel(v10);
+        unsignedIntValue = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
+        v11 = notify_cancel(unsignedIntValue);
         v12 = qword_1000578F0;
         v13 = os_log_type_enabled(qword_1000578F0, OS_LOG_TYPE_DEFAULT);
         if (v11)
@@ -2172,7 +2172,7 @@ LABEL_85:
           }
 
           *buf = 67109376;
-          v23 = v10;
+          v23 = unsignedIntValue;
           v24 = 1024;
           v25 = v11;
           v14 = v12;
@@ -2188,7 +2188,7 @@ LABEL_85:
           }
 
           *buf = 67109120;
-          v23 = v10;
+          v23 = unsignedIntValue;
           v14 = v12;
           v15 = "Successfully cancelled notification token: %u.";
           v16 = 8;

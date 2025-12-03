@@ -7,9 +7,9 @@
 - (BOOL)canShowSelectionCommands
 {
   v3 = +[(UISubstituteKeyboardSession *)UITextFormattingKeyboardSession];
-  v4 = [v3 isPresented];
+  isPresented = [v3 isPresented];
 
-  if (v4)
+  if (isPresented)
   {
     return 0;
   }

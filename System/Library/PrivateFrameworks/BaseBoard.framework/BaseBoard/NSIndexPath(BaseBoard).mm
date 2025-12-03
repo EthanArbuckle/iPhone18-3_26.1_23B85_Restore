@@ -24,10 +24,10 @@
 - (id)bs_subpathWithRange:()BaseBoard
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3 + a4 > [a1 length])
+  if (a3 + a4 > [self length])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"NSIndexPath+BaseBoard.m" lineNumber:25 description:{@"constraint violation: range.location(%lu) + range.length(%lu) <= self.length(%lu)", a3, a4, objc_msgSend(a1, "length")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSIndexPath+BaseBoard.m" lineNumber:25 description:{@"constraint violation: range.location(%lu) + range.length(%lu) <= self.length(%lu)", a3, a4, objc_msgSend(self, "length")}];
 
     if (a4)
     {
@@ -38,21 +38,21 @@
   else if (a4)
   {
 LABEL_3:
-    v8 = v12 - ((8 * [a1 length] + 15) & 0xFFFFFFFFFFFFFFF0);
-    [a1 getIndexes:v8];
-    v9 = [MEMORY[0x1E696AC88] indexPathWithIndexes:&v8[8 * a3] length:a4];
+    v8 = v12 - ((8 * [self length] + 15) & 0xFFFFFFFFFFFFFFF0);
+    [self getIndexes:v8];
+    bs_emptyPath = [MEMORY[0x1E696AC88] indexPathWithIndexes:&v8[8 * a3] length:a4];
     goto LABEL_6;
   }
 
-  v9 = [MEMORY[0x1E696AC88] bs_emptyPath];
+  bs_emptyPath = [MEMORY[0x1E696AC88] bs_emptyPath];
 LABEL_6:
 
-  return v9;
+  return bs_emptyPath;
 }
 
 - (id)bs_subpathFromPosition:()BaseBoard
 {
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 <= a3)
   {
     [MEMORY[0x1E696AC88] bs_emptyPath];
@@ -60,7 +60,7 @@ LABEL_6:
 
   else
   {
-    [a1 bs_subpathWithRange:{a3, v5 - a3}];
+    [self bs_subpathWithRange:{a3, v5 - a3}];
   }
   v6 = ;
 
@@ -72,27 +72,27 @@ LABEL_6:
   v9[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = [v4 length];
-  v6 = [a1 length] + v5;
+  v6 = [self length] + v5;
   if (v6)
   {
     [v4 getIndexes:v9 - ((8 * v6 + 15) & 0xFFFFFFFFFFFFFFF0)];
-    [a1 getIndexes:&v9[v5] - ((8 * v6 + 15) & 0xFFFFFFFFFFFFFFF0)];
-    v7 = [MEMORY[0x1E696AC88] indexPathWithIndexes:v9 - ((8 * v6 + 15) & 0xFFFFFFFFFFFFFFF0) length:v6];
+    [self getIndexes:&v9[v5] - ((8 * v6 + 15) & 0xFFFFFFFFFFFFFFF0)];
+    bs_emptyPath = [MEMORY[0x1E696AC88] indexPathWithIndexes:v9 - ((8 * v6 + 15) & 0xFFFFFFFFFFFFFFF0) length:v6];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AC88] bs_emptyPath];
+    bs_emptyPath = [MEMORY[0x1E696AC88] bs_emptyPath];
   }
 
-  return v7;
+  return bs_emptyPath;
 }
 
 - (uint64_t)bs_hasPrefix:()BaseBoard
 {
   v4 = a3;
   v5 = [v4 length];
-  if (v5 <= [a1 length])
+  if (v5 <= [self length])
   {
     if (v5)
     {
@@ -100,7 +100,7 @@ LABEL_6:
       v8 = v5 - 1;
       do
       {
-        v9 = [a1 indexAtPosition:v7];
+        v9 = [self indexAtPosition:v7];
         v10 = v9 == [v4 indexAtPosition:v7];
         v6 = v10;
         if (!v10)
@@ -134,11 +134,11 @@ LABEL_6:
   v5 = a3;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"NSIndexPath+BaseBoard.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSIndexPath+BaseBoard.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
   }
 
-  v6 = [a1 length];
+  v6 = [self length];
   v7 = [v5 length];
   if (!v6 || !v7)
   {
@@ -149,22 +149,22 @@ LABEL_6:
   v9 = v15 - ((8 * v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   for (i = 0; ; ++i)
   {
-    v11 = [a1 indexAtPosition:i];
+    v11 = [self indexAtPosition:i];
     if (v11 != [v5 indexAtPosition:i])
     {
       break;
     }
 
-    *&v9[8 * i] = [a1 indexAtPosition:i];
+    *&v9[8 * i] = [self indexAtPosition:i];
   }
 
-  if (!i || ([MEMORY[0x1E696AC88] indexPathWithIndexes:v9 length:i], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!i || ([MEMORY[0x1E696AC88] indexPathWithIndexes:v9 length:i], (bs_emptyPath = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_13:
-    v12 = [MEMORY[0x1E696AC88] bs_emptyPath];
+    bs_emptyPath = [MEMORY[0x1E696AC88] bs_emptyPath];
   }
 
-  return v12;
+  return bs_emptyPath;
 }
 
 @end

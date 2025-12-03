@@ -1,8 +1,8 @@
 @interface CRLPasteboardItemSource
-- (BOOL)canLoadItemsOfClass:(Class)a3;
+- (BOOL)canLoadItemsOfClass:(Class)class;
 - (BOOL)canProduceBoardItems;
 - (BOOL)hasContentLanguageDrawablesType;
-- (BOOL)hasImportableBoardItemsDetectingImportableURLsInText:(BOOL)a3 skipFileURLs:(BOOL)a4;
+- (BOOL)hasImportableBoardItemsDetectingImportableURLsInText:(BOOL)text skipFileURLs:(BOOL)ls;
 - (BOOL)hasImportableImages;
 - (BOOL)hasImportableRichText;
 - (BOOL)hasImportableText;
@@ -18,31 +18,31 @@
 - (BOOL)hasSingleNativeMovieBoardItem;
 - (CRLPasteboardController)pasteboardController;
 - (CRLPasteboardItemSource)init;
-- (CRLPasteboardItemSource)initWithPasteboard:(id)a3 pasteboardController:(id)a4;
-- (id)loadImportedImagesForAssetOwner:(id)a3 compatibilityAlertPresenter:(id)a4 withHandler:(id)a5;
-- (id)loadImportedRichTextStringWithHandler:(id)a3;
-- (id)loadImportedTextStringWithHandler:(id)a3;
-- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)a3 WithLoadHandler:(id)a4;
-- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)a3 maximumStringLength:(unint64_t)a4 WithLoadHandler:(id)a5;
-- (id)loadProvidersForNativeBoardItemsWithBoardItemFactory:(id)a3 loadHandler:(id)a4;
-- (id)loadTextStorageUsingBoardItemFactory:(id)a3 forTargetContext:(id)a4 targetStorage:(id)a5 loadHandler:(id)a6;
-- (unint64_t)preferredImportableDataTypeDetectingImportableURLsInText:(BOOL)a3 skipFileURLs:(BOOL)a4;
+- (CRLPasteboardItemSource)initWithPasteboard:(id)pasteboard pasteboardController:(id)controller;
+- (id)loadImportedImagesForAssetOwner:(id)owner compatibilityAlertPresenter:(id)presenter withHandler:(id)handler;
+- (id)loadImportedRichTextStringWithHandler:(id)handler;
+- (id)loadImportedTextStringWithHandler:(id)handler;
+- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)factory WithLoadHandler:(id)handler;
+- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)factory maximumStringLength:(unint64_t)length WithLoadHandler:(id)handler;
+- (id)loadProvidersForNativeBoardItemsWithBoardItemFactory:(id)factory loadHandler:(id)handler;
+- (id)loadTextStorageUsingBoardItemFactory:(id)factory forTargetContext:(id)context targetStorage:(id)storage loadHandler:(id)handler;
+- (unint64_t)preferredImportableDataTypeDetectingImportableURLsInText:(BOOL)text skipFileURLs:(BOOL)ls;
 @end
 
 @implementation CRLPasteboardItemSource
 
-- (CRLPasteboardItemSource)initWithPasteboard:(id)a3 pasteboardController:(id)a4
+- (CRLPasteboardItemSource)initWithPasteboard:(id)pasteboard pasteboardController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  pasteboardCopy = pasteboard;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CRLPasteboardItemSource;
   v9 = [(CRLPasteboardItemSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_pbController, v8);
-    objc_storeStrong(&v10->_pasteboard, a3);
+    objc_storeWeak(&v9->_pbController, controllerCopy);
+    objc_storeStrong(&v10->_pasteboard, pasteboard);
   }
 
   return v10;
@@ -98,90 +98,90 @@
   objc_exception_throw(v10);
 }
 
-- (BOOL)canLoadItemsOfClass:(Class)a3
+- (BOOL)canLoadItemsOfClass:(Class)class
 {
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  LOBYTE(a3) = [v4 canLoadItemsOfClass:a3];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  LOBYTE(class) = [pasteboard canLoadItemsOfClass:class];
 
-  return a3;
+  return class;
 }
 
-- (unint64_t)preferredImportableDataTypeDetectingImportableURLsInText:(BOOL)a3 skipFileURLs:(BOOL)a4
+- (unint64_t)preferredImportableDataTypeDetectingImportableURLsInText:(BOOL)text skipFileURLs:(BOOL)ls
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v8 = [(CRLPasteboardItemSource *)self pasteboard];
-  v9 = [v7 preferredImportableDataTypeOnPasteboard:v8 detectImportableURLsInText:v5 skipFileURLs:v4];
+  lsCopy = ls;
+  textCopy = text;
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v9 = [pasteboardController preferredImportableDataTypeOnPasteboard:pasteboard detectImportableURLsInText:textCopy skipFileURLs:lsCopy];
 
   return v9;
 }
 
 - (BOOL)hasImportableImages
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasImportableImagesOnPasteboard:v4 skipFileURLs:0];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasImportableImagesOnPasteboard:pasteboard skipFileURLs:0];
 
   return v5;
 }
 
-- (BOOL)hasImportableBoardItemsDetectingImportableURLsInText:(BOOL)a3 skipFileURLs:(BOOL)a4
+- (BOOL)hasImportableBoardItemsDetectingImportableURLsInText:(BOOL)text skipFileURLs:(BOOL)ls
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v8 = [(CRLPasteboardItemSource *)self pasteboard];
-  LOBYTE(v4) = [v7 hasImportableBoardItemsOnPasteboard:v8 detectImportableURLsInText:v5 skipFileURLs:v4];
+  lsCopy = ls;
+  textCopy = text;
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  LOBYTE(lsCopy) = [pasteboardController hasImportableBoardItemsOnPasteboard:pasteboard detectImportableURLsInText:textCopy skipFileURLs:lsCopy];
 
-  return v4;
+  return lsCopy;
 }
 
 - (BOOL)hasImportableText
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasImportablePlainTextOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasImportablePlainTextOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasImportableRichText
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasImportableRichTextOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasImportableRichTextOnPasteboard:pasteboard];
 
   return v5;
 }
 
-- (id)loadImportedRichTextStringWithHandler:(id)a3
+- (id)loadImportedRichTextStringWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
-  v5 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v6 = [(CRLPasteboardItemSource *)self pasteboard];
-  v7 = [v5 importedRichTextStringFromPasteboard:v6 smartPaste:&v9];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v7 = [pasteboardController importedRichTextStringFromPasteboard:pasteboard smartPaste:&v9];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v7, v9);
+    handlerCopy[2](handlerCopy, v7, v9);
   }
 
   return 0;
 }
 
-- (id)loadImportedTextStringWithHandler:(id)a3
+- (id)loadImportedTextStringWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
-  v5 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v6 = [(CRLPasteboardItemSource *)self pasteboard];
-  v7 = [v5 importedTextStringFromPasteboard:v6 smartPaste:&v9];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v7 = [pasteboardController importedTextStringFromPasteboard:pasteboard smartPaste:&v9];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v7, v9);
+    handlerCopy[2](handlerCopy, v7, v9);
   }
 
   return 0;
@@ -189,35 +189,35 @@
 
 - (BOOL)hasNativeTypes
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasNativeTypesOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasNativeTypesOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasNativeBoardItems
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasNativeBoardItemsOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasNativeBoardItemsOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasContentLanguageDrawablesType
 {
-  v2 = [(CRLPasteboardItemSource *)self pasteboard];
-  v3 = [v2 containsContentLanguageDrawableTypes];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  containsContentLanguageDrawableTypes = [pasteboard containsContentLanguageDrawableTypes];
 
-  return v3;
+  return containsContentLanguageDrawableTypes;
 }
 
 - (BOOL)canProduceBoardItems
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
 
-  if (!v3)
+  if (!pasteboardController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -246,152 +246,152 @@
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:145 isFatal:0 description:"invalid nil value for '%{public}s'", "self.pasteboardController"];
   }
 
-  v7 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v8 = [(CRLPasteboardItemSource *)self pasteboard];
-  v9 = [v7 canProduceBoardItemsFromPasteboard:v8];
+  pasteboardController2 = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v9 = [pasteboardController2 canProduceBoardItemsFromPasteboard:pasteboard];
 
   return v9;
 }
 
 - (BOOL)hasSingleNativeImageBoardItem
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasSingleNativeImageBoardItemOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasSingleNativeImageBoardItemOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasSingleNativeMovieBoardItem
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasSingleNativeMovieBoardItemOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasSingleNativeMovieBoardItemOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasOnlyNativeFreehandDrawingBoardItems
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasOnlyNativeFreehandDrawingBoardItemsOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasOnlyNativeFreehandDrawingBoardItemsOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasNativeFreehandDrawingBoardItems
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasNativeFreehandDrawingBoardItemsOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasNativeFreehandDrawingBoardItemsOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasOnlyNativeTextBoxItems
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasOnlyNativeTextBoxItemsOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasOnlyNativeTextBoxItemsOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasNativeTextStorages
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasTextStoragesOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasTextStoragesOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasNativeText
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasNativeTextOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasNativeTextOnPasteboard:pasteboard];
 
   return v5;
 }
 
 - (BOOL)hasNativeBoardItemsContainingText
 {
-  v3 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v4 = [(CRLPasteboardItemSource *)self pasteboard];
-  v5 = [v3 hasNativeBoardItemsContainingTextOnPasteboard:v4];
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v5 = [pasteboardController hasNativeBoardItemsContainingTextOnPasteboard:pasteboard];
 
   return v5;
 }
 
-- (id)loadTextStorageUsingBoardItemFactory:(id)a3 forTargetContext:(id)a4 targetStorage:(id)a5 loadHandler:(id)a6
+- (id)loadTextStorageUsingBoardItemFactory:(id)factory forTargetContext:(id)context targetStorage:(id)storage loadHandler:(id)handler
 {
-  v8 = a6;
+  handlerCopy = handler;
   v14 = 0;
-  v9 = a5;
-  v10 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v11 = [(CRLPasteboardItemSource *)self pasteboard];
-  v12 = [v10 textStorageFromPasteboard:v11 forTargetStorage:v9 smartPaste:&v14];
+  storageCopy = storage;
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v12 = [pasteboardController textStorageFromPasteboard:pasteboard forTargetStorage:storageCopy smartPaste:&v14];
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, v12, v14);
+    handlerCopy[2](handlerCopy, v12, v14);
   }
 
   return 0;
 }
 
-- (id)loadProvidersForNativeBoardItemsWithBoardItemFactory:(id)a3 loadHandler:(id)a4
+- (id)loadProvidersForNativeBoardItemsWithBoardItemFactory:(id)factory loadHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v7 = [(CRLPasteboardItemSource *)self pasteboard];
-  v8 = [v6 providersForBoardItemsFromPasteboard:v7];
+  handlerCopy = handler;
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v8 = [pasteboardController providersForBoardItemsFromPasteboard:pasteboard];
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v8, &__NSArray0__struct);
+    handlerCopy[2](handlerCopy, v8, &__NSArray0__struct);
   }
 
   return 0;
 }
 
-- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)a3 WithLoadHandler:(id)a4
+- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)factory WithLoadHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v7 = [(CRLPasteboardItemSource *)self pasteboard];
-  v8 = [v6 providersForBoardItemsImportedFromPasteboard:v7];
+  handlerCopy = handler;
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v8 = [pasteboardController providersForBoardItemsImportedFromPasteboard:pasteboard];
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 
   return 0;
 }
 
-- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)a3 maximumStringLength:(unint64_t)a4 WithLoadHandler:(id)a5
+- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)factory maximumStringLength:(unint64_t)length WithLoadHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(CRLPasteboardItemSource *)self pasteboardController];
-  v8 = [(CRLPasteboardItemSource *)self pasteboard];
-  v9 = [v7 providersForBoardItemsImportedFromPasteboard:v8];
+  handlerCopy = handler;
+  pasteboardController = [(CRLPasteboardItemSource *)self pasteboardController];
+  pasteboard = [(CRLPasteboardItemSource *)self pasteboard];
+  v9 = [pasteboardController providersForBoardItemsImportedFromPasteboard:pasteboard];
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   return 0;
 }
 
-- (id)loadImportedImagesForAssetOwner:(id)a3 compatibilityAlertPresenter:(id)a4 withHandler:(id)a5
+- (id)loadImportedImagesForAssetOwner:(id)owner compatibilityAlertPresenter:(id)presenter withHandler:(id)handler
 {
-  v52 = a3;
-  v51 = a4;
-  v48 = a5;
+  ownerCopy = owner;
+  presenterCopy = presenter;
+  handlerCopy = handler;
   v8 = &_s10Foundation9IndexPathVSHAAMc_ptr;
   if (!+[NSThread isMainThread])
   {
@@ -472,19 +472,19 @@
     v19 = 0;
     v20 = UTTypeURL;
     v21 = &_s5UIKit15UIPointerEffectO5hoveryACSo17UITargetedPreviewC_AC8TintModeOS2btcACmFWC_ptr;
-    v54 = self;
+    selfCopy = self;
     do
     {
       v53 = v19;
       v57 = [NSIndexSet indexSetWithIndex:v19];
       v22 = [(CRLPasteboard *)self->_pasteboard pasteboardTypesForItemSet:?];
-      v23 = [v22 firstObject];
+      firstObject = [v22 firstObject];
 
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      obj = v23;
+      obj = firstObject;
       v24 = [obj countByEnumeratingWithState:&v63 objects:v71 count:16];
       if (v24)
       {
@@ -507,10 +507,10 @@
             {
               dispatch_group_enter(group);
               v39 = [(CRLPasteboard *)self->_pasteboard dataForPasteboardType:v28 inItemSet:v57];
-              v35 = [v39 firstObject];
+              firstObject2 = [v39 firstObject];
 
-              v32 = [[CRLImageFillProvider alloc] initWithData:v35 type:v28];
-              [(CRLImageFillProvider *)v32 provideImageDataForAssetOwner:v52 compatibilityAlertPresenter:v51 completionHandler:v49];
+              firstObject3 = [[CRLImageFillProvider alloc] initWithData:firstObject2 type:v28];
+              [(CRLImageFillProvider *)firstObject3 provideImageDataForAssetOwner:ownerCopy compatibilityAlertPresenter:presenterCopy completionHandler:v49];
 LABEL_44:
 
               goto LABEL_45;
@@ -520,36 +520,36 @@ LABEL_44:
             {
               v30 = v20;
               v31 = [(CRLPasteboard *)self->_pasteboard dataForPasteboardType:v28 inItemSet:v57];
-              v32 = [v31 firstObject];
+              firstObject3 = [v31 firstObject];
 
-              if (v32)
+              if (firstObject3)
               {
-                v33 = [objc_alloc(v8[101]) initWithData:v32 encoding:4];
+                v33 = [objc_alloc(v8[101]) initWithData:firstObject3 encoding:4];
                 if (v33)
                 {
                   v34 = [NSURL URLWithString:v33];
                   if (v34)
                   {
-                    v35 = v34;
+                    firstObject2 = v34;
                     if ([(CRLImageFillProvider *)v34 isFileURL])
                     {
-                      v36 = [(CRLImageFillProvider *)v35 crl_fileTypeIdentifierHandlingFileCoordinationPromises];
+                      crl_fileTypeIdentifierHandlingFileCoordinationPromises = [(CRLImageFillProvider *)firstObject2 crl_fileTypeIdentifierHandlingFileCoordinationPromises];
                     }
 
                     else
                     {
-                      v36 = 0;
+                      crl_fileTypeIdentifierHandlingFileCoordinationPromises = 0;
                     }
 
-                    v37 = [v36 identifier];
-                    v38 = [v37 crl_conformsToAnyUTI:v55];
+                    identifier = [crl_fileTypeIdentifierHandlingFileCoordinationPromises identifier];
+                    v38 = [identifier crl_conformsToAnyUTI:v55];
 
                     if (v38)
                     {
                       dispatch_group_enter(group);
-                      [CRLImageFillProvider makeCompatibleImageFillDataFromURL:v35 forAssetOwner:v52 modalOperationPresenter:v51 compatibilityAlertPresenter:v51 completionHandler:v49];
+                      [CRLImageFillProvider makeCompatibleImageFillDataFromURL:firstObject2 forAssetOwner:ownerCopy modalOperationPresenter:presenterCopy compatibilityAlertPresenter:presenterCopy completionHandler:v49];
 
-                      self = v54;
+                      self = selfCopy;
                       v12 = v55;
                       v8 = &_s10Foundation9IndexPathVSHAAMc_ptr;
                       v20 = v30;
@@ -557,9 +557,9 @@ LABEL_44:
                       goto LABEL_44;
                     }
 
-                    v33 = v32;
-                    v32 = v35;
-                    self = v54;
+                    v33 = firstObject3;
+                    firstObject3 = firstObject2;
+                    self = selfCopy;
                     v12 = v55;
                     v8 = &_s10Foundation9IndexPathVSHAAMc_ptr;
                   }
@@ -605,10 +605,10 @@ LABEL_45:
   block[3] = &unk_101847170;
   v60 = v47;
   v61 = v46;
-  v62 = v48;
+  v62 = handlerCopy;
   v41 = v46;
   v42 = v47;
-  v43 = v48;
+  v43 = handlerCopy;
   dispatch_group_notify(group, v40, block);
 
   return 0;

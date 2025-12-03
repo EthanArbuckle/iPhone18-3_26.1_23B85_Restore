@@ -1,38 +1,38 @@
 @interface DTSpringBoardProcessControlService
-+ (void)registerCapabilities:(id)a3;
-- (BOOL)_HIDEvent:(unsigned int)a3 hold:(BOOL)a4;
++ (void)registerCapabilities:(id)capabilities;
+- (BOOL)_HIDEvent:(unsigned int)event hold:(BOOL)hold;
 - (BOOL)_triggerSiri;
-- (BOOL)sendProcessControlEvent:(id)a3 toPid:(id)a4 error:(id *)a5;
-- (BOOL)showNotificiationCenterWidget:(id)a3 withError:(id *)a4;
-- (BOOL)showSBWidget:(id)a3 withError:(id *)a4;
-- (BOOL)simulateNotificationForBundleID:(id)a3 payload:(id)a4 withError:(id *)a5;
-- (id)_launchSuspendedProcessWithBundleIdentifier:(id)a3 orDevicePath:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 error:(id *)a8;
-- (id)launchSuspendedProcessWithDevicePath:(id)a3 bundleIdentifier:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7;
-- (id)processIdentifierForBundleIdentifier:(id)a3;
-- (void)sendProcessControlEvent:(id)a3 toPid:(id)a4;
+- (BOOL)sendProcessControlEvent:(id)event toPid:(id)pid error:(id *)error;
+- (BOOL)showNotificiationCenterWidget:(id)widget withError:(id *)error;
+- (BOOL)showSBWidget:(id)widget withError:(id *)error;
+- (BOOL)simulateNotificationForBundleID:(id)d payload:(id)payload withError:(id *)error;
+- (id)_launchSuspendedProcessWithBundleIdentifier:(id)identifier orDevicePath:(id)path environment:(id)environment arguments:(id)arguments options:(id)options error:(id *)error;
+- (id)launchSuspendedProcessWithDevicePath:(id)path bundleIdentifier:(id)identifier environment:(id)environment arguments:(id)arguments options:(id)options;
+- (id)processIdentifierForBundleIdentifier:(id)identifier;
+- (void)sendProcessControlEvent:(id)event toPid:(id)pid;
 @end
 
 @implementation DTSpringBoardProcessControlService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
   v4 = DTDefaultProcessControlServiceIdentifier;
-  v5 = a3;
-  [v5 publishCapability:v4 withVersion:107 forClass:a1];
-  [v5 publishCapability:@"com.apple.instruments.server.services.processcontrol.feature.deviceio" withVersion:103 forClass:a1];
-  [v5 publishCapability:@"com.apple.instruments.server.services.processcontrolbydictionary" withVersion:4 forClass:a1];
+  capabilitiesCopy = capabilities;
+  [capabilitiesCopy publishCapability:v4 withVersion:107 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.processcontrol.feature.deviceio" withVersion:103 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.processcontrolbydictionary" withVersion:4 forClass:self];
 }
 
-- (id)launchSuspendedProcessWithDevicePath:(id)a3 bundleIdentifier:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7
+- (id)launchSuspendedProcessWithDevicePath:(id)path bundleIdentifier:(id)identifier environment:(id)environment arguments:(id)arguments options:(id)options
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  optionsCopy = options;
+  argumentsCopy = arguments;
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  pathCopy = path;
   v17 = objc_opt_new();
   v21 = 0;
-  v18 = [(DTSpringBoardProcessControlService *)self _launchSuspendedProcessWithBundleIdentifier:v15 orDevicePath:v16 environment:v14 arguments:v13 options:v12 error:&v21];
+  v18 = [(DTSpringBoardProcessControlService *)self _launchSuspendedProcessWithBundleIdentifier:identifierCopy orDevicePath:pathCopy environment:environmentCopy arguments:argumentsCopy options:optionsCopy error:&v21];
 
   v19 = v21;
   [v17 invokeCompletionWithReturnValue:v18 error:v19];
@@ -40,16 +40,16 @@
   return v17;
 }
 
-- (id)_launchSuspendedProcessWithBundleIdentifier:(id)a3 orDevicePath:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 error:(id *)a8
+- (id)_launchSuspendedProcessWithBundleIdentifier:(id)identifier orDevicePath:(id)path environment:(id)environment arguments:(id)arguments options:(id)options error:(id *)error
 {
   v200[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v160 = a7;
-  v165 = v12;
-  v16 = [v12 length];
+  identifierCopy = identifier;
+  pathCopy = path;
+  environmentCopy = environment;
+  argumentsCopy = arguments;
+  optionsCopy = options;
+  filePath = identifierCopy;
+  v16 = [identifierCopy length];
   v17 = MEMORY[0x277D86220];
   v18 = MEMORY[0x277D86220];
   v19 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
@@ -61,13 +61,13 @@
     }
 
     *buf = 138544130;
-    *&buf[4] = v12;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v14;
+    *&buf[14] = environmentCopy;
     *&buf[22] = 2114;
-    v191 = v15;
+    v191 = argumentsCopy;
     LOWORD(v192) = 2114;
-    *(&v192 + 2) = v160;
+    *(&v192 + 2) = optionsCopy;
     v20 = MEMORY[0x277D86220];
     v21 = "Received request to launch process with bundle ID '%{public}@:'\n\tEnvironment variables: %{public}@\n\tArguments: %{public}@\n\tOptions: %{public}@";
   }
@@ -80,31 +80,31 @@
     }
 
     *buf = 138544130;
-    *&buf[4] = v13;
+    *&buf[4] = pathCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v14;
+    *&buf[14] = environmentCopy;
     *&buf[22] = 2114;
-    v191 = v15;
+    v191 = argumentsCopy;
     LOWORD(v192) = 2114;
-    *(&v192 + 2) = v160;
+    *(&v192 + 2) = optionsCopy;
     v20 = MEMORY[0x277D86220];
     v21 = "Received request to launch process at path '%{public}@:'\n\tEnvironment variables: %{public}@\n\tArguments: %{public}@\n\tOptions: %{public}@";
   }
 
   _os_log_impl(&dword_247F67000, v20, OS_LOG_TYPE_INFO, v21, buf, 0x2Au);
 LABEL_7:
-  filePath = v13;
+  filePath = pathCopy;
 
   v22 = MEMORY[0x277CBEBF8];
-  if (v15)
+  if (argumentsCopy)
   {
-    v22 = v15;
+    v22 = argumentsCopy;
   }
 
   v153 = v22;
-  if (v14)
+  if (environmentCopy)
   {
-    v23 = v14;
+    v23 = environmentCopy;
   }
 
   else
@@ -113,27 +113,27 @@ LABEL_7:
   }
 
   v155 = v23;
-  v24 = [v160 objectForKeyedSubscript:@"StartSuspendedKey"];
+  v24 = [optionsCopy objectForKeyedSubscript:@"StartSuspendedKey"];
   v151 = [v24 isEqualToNumber:MEMORY[0x277CBEC28]];
 
-  v25 = [v160 objectForKeyedSubscript:@"KillExisting"];
+  v25 = [optionsCopy objectForKeyedSubscript:@"KillExisting"];
   v164 = [v25 isEqualToNumber:MEMORY[0x277CBEC28]];
 
-  v26 = [v160 objectForKeyedSubscript:@"ActivateSuspended"];
+  v26 = [optionsCopy objectForKeyedSubscript:@"ActivateSuspended"];
   v27 = MEMORY[0x277CBEC38];
   v28 = [v26 isEqualToNumber:MEMORY[0x277CBEC38]];
 
-  v162 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
-  v29 = [MEMORY[0x277CCAC38] processInfo];
-  v30 = [v29 environment];
-  v159 = [v30 mutableCopy];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v159 = [environment mutableCopy];
 
   [v159 addEntriesFromDictionary:v155];
   v179 = 0;
-  if (v12)
+  if (identifierCopy)
   {
 LABEL_13:
-    v163 = sub_247FE827C(v165);
+    v163 = sub_247FE827C(filePath);
     if ((v163 < 1) | v164 & 1)
     {
       goto LABEL_18;
@@ -143,10 +143,10 @@ LABEL_13:
     v32 = MEMORY[0x277D86220];
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
-      v33 = v165;
-      v34 = [v165 UTF8String];
+      v33 = filePath;
+      uTF8String = [filePath UTF8String];
       *buf = 136446466;
-      *&buf[4] = v34;
+      *&buf[4] = uTF8String;
       *&buf[12] = 1024;
       *&buf[14] = v163;
       _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Killing existing instance of bundle ID %{public}s with PID %i", buf, 0x12u);
@@ -179,7 +179,7 @@ LABEL_18:
       v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v196 forKeys:v195 count:3];
       v157 = [v44 mutableCopy];
 
-      if (DTProcessShouldCaptureOutputWithOptions(v160))
+      if (DTProcessShouldCaptureOutputWithOptions(optionsCopy))
       {
         v45 = NSTemporaryDirectory();
         v46 = [v45 stringByAppendingPathComponent:@"instruments_XXXXXX"];
@@ -198,11 +198,11 @@ LABEL_18:
             if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
             {
               v52 = v154;
-              v53 = [v154 UTF8String];
+              uTF8String2 = [v154 UTF8String];
               v54 = __error();
               v55 = strerror(*v54);
               *buf = 136315394;
-              *&buf[4] = v53;
+              *&buf[4] = uTF8String2;
               *&buf[12] = 2080;
               *&buf[14] = v55;
               _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "mkfifo failed for '%s': %s", buf, 0x16u);
@@ -253,9 +253,9 @@ LABEL_18:
         [v161 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0ABF0]];
       }
 
-      if (v160)
+      if (optionsCopy)
       {
-        v88 = v160;
+        v88 = optionsCopy;
         v89 = objc_opt_new();
         v90 = DTProcessControlOptionsGetEvent(v88);
 
@@ -301,7 +301,7 @@ LABEL_18:
         v170[3] = &unk_278EF3DB8;
         v172 = buf;
         v173 = &v174;
-        v96 = v165;
+        v96 = filePath;
         v171 = v96;
         v97 = [v95 blockOperationWithBlock:v170];
         v98 = [MEMORY[0x277D0AD60] optionsWithDictionary:v161];
@@ -312,7 +312,7 @@ LABEL_18:
         v169 = buf;
         v99 = v97;
         v168 = v99;
-        [v162 openApplication:v96 withOptions:v98 completion:v167];
+        [serviceWithDefaultShellEndpoint openApplication:v96 withOptions:v98 completion:v167];
 
         [v99 waitUntilFinished];
         v100 = *(*&buf[8] + 40);
@@ -340,7 +340,7 @@ LABEL_18:
 
       if (*(*&buf[8] + 40))
       {
-        v102 = [MEMORY[0x277CCACA8] stringWithFormat:@"Request to launch %@ failed.", v96];
+        v163 = [MEMORY[0x277CCACA8] stringWithFormat:@"Request to launch %@ failed.", v96];
         if ([*(*&buf[8] + 40) code] == 6)
         {
           v103 = @"Device busy or Instruments is trying to launch several targets, and one of them is a foreground app.";
@@ -359,35 +359,35 @@ LABEL_18:
         else
         {
           v109 = MEMORY[0x277CCACA8];
-          v110 = [*(*&buf[8] + 40) localizedDescription];
-          v103 = [v109 stringWithFormat:@"%@ : Failed to launch process with bundle identifier '%@'.", v110, v96];
+          localizedDescription = [*(*&buf[8] + 40) localizedDescription];
+          v103 = [v109 stringWithFormat:@"%@ : Failed to launch process with bundle identifier '%@'.", localizedDescription, v96];
         }
 
         v111 = MEMORY[0x277D86220];
         v112 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v111, OS_LOG_TYPE_ERROR))
         {
-          v113 = [*(*&buf[8] + 40) code];
-          v114 = [*(*&buf[8] + 40) localizedDescription];
+          code = [*(*&buf[8] + 40) code];
+          localizedDescription2 = [*(*&buf[8] + 40) localizedDescription];
           *v182 = 134218242;
-          *v183 = v113;
+          *v183 = code;
           *&v183[8] = 2112;
-          *&v183[10] = v114;
+          *&v183[10] = localizedDescription2;
           _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "DTSpringBoardProcessControlService -- Error: %ld. %@.", v182, 0x16u);
         }
 
-        if (a8)
+        if (error)
         {
           v115 = MEMORY[0x277CCA9B8];
           v116 = *MEMORY[0x277CCA470];
           v188[0] = *MEMORY[0x277CCA450];
           v188[1] = v116;
-          v189[0] = v102;
+          v189[0] = v163;
           v189[1] = v103;
           v188[2] = *MEMORY[0x277CCA7E8];
           v189[2] = *(*&buf[8] + 40);
           v117 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v189 forKeys:v188 count:3];
-          *a8 = [v115 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:2 userInfo:v117];
+          *error = [v115 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:2 userInfo:v117];
         }
       }
 
@@ -401,19 +401,19 @@ LABEL_18:
             if ((v164 & 1) == 0)
             {
               v121 = MEMORY[0x277CCACA8];
-              v122 = [(__CFString *)filePath lastPathComponent];
-              v102 = [v121 stringWithFormat:@"Executable '%@' is already running as process %d.", v122, v163];
+              lastPathComponent = [(__CFString *)filePath lastPathComponent];
+              v163 = [v121 stringWithFormat:@"Executable '%@' is already running as process %d.", lastPathComponent, v163];
 
-              if (a8)
+              if (error)
               {
                 v123 = MEMORY[0x277CCA9B8];
                 v124 = *MEMORY[0x277CCA470];
                 v184[0] = *MEMORY[0x277CCA450];
                 v184[1] = v124;
-                v185[0] = v102;
+                v185[0] = v163;
                 v185[1] = @"killExisting requested, but found the existing PID.";
                 v125 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v185 forKeys:v184 count:2];
-                *a8 = [v123 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:2 userInfo:v125];
+                *error = [v123 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:2 userInfo:v125];
               }
 
               goto LABEL_99;
@@ -443,12 +443,12 @@ LABEL_18:
                 _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to acquire task port after launch of pid %d (%@)", v182, 0x12u);
               }
 
-              v102 = [objc_alloc(MEMORY[0x277D47010]) initWithExplanation:@"Permission to debug process denied"];
+              v163 = [objc_alloc(MEMORY[0x277D47010]) initWithExplanation:@"Permission to debug process denied"];
               v133 = objc_alloc(MEMORY[0x277D47018]);
               v134 = MEMORY[0x277D46FA0];
               v135 = [MEMORY[0x277D46F50] identifierWithPid:*(v175 + 6)];
               v136 = [v134 predicateMatchingIdentifier:v135];
-              v137 = [v133 initWithPredicate:v136 context:v102];
+              v137 = [v133 initWithPredicate:v136 context:v163];
 
               v166 = 0;
               LOBYTE(v133) = [v137 execute:&v166];
@@ -476,7 +476,7 @@ LABEL_18:
               v143 = [MEMORY[0x277CCACA8] stringWithFormat:@"Permission to debug %@ was denied.", v96];
               v144 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to acquire task port for PID: %d", *(v175 + 6)];
               v145 = v144;
-              if (a8)
+              if (error)
               {
                 v146 = MEMORY[0x277CCA9B8];
                 v147 = *MEMORY[0x277CCA470];
@@ -487,7 +487,7 @@ LABEL_18:
                 v180[2] = *MEMORY[0x277CCA498];
                 v181[2] = @"The app must be debuggable and signed with 'get-task-allow'.";
                 v148 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v181 forKeys:v180 count:3];
-                *a8 = [v146 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:2 userInfo:v148];
+                *error = [v146 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:2 userInfo:v148];
               }
 
               goto LABEL_99;
@@ -501,13 +501,13 @@ LABEL_101:
           _Block_object_dispose(&v174, 8);
           _Block_object_dispose(buf, 8);
 
-          v165 = v96;
+          filePath = v96;
 LABEL_102:
 
           goto LABEL_103;
         }
 
-        if (!a8)
+        if (!error)
         {
 LABEL_100:
           v71 = 0;
@@ -520,8 +520,8 @@ LABEL_100:
         v186[1] = v107;
         v187[0] = @"Failed looking up pid of launched process.";
         v187[1] = @"Call to openApplication:withOptions:completion: succeeded, but a PID could not be found for the target Bundle Identifier.";
-        v102 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v187 forKeys:v186 count:2];
-        *a8 = [v106 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:4 userInfo:v102];
+        v163 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v187 forKeys:v186 count:2];
+        *error = [v106 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:4 userInfo:v163];
       }
 
 LABEL_99:
@@ -529,8 +529,8 @@ LABEL_99:
       goto LABEL_100;
     }
 
-    v72 = [v40 domain];
-    if ([v72 isEqualToString:*MEMORY[0x277D47088]])
+    domain = [v40 domain];
+    if ([domain isEqualToString:*MEMORY[0x277D47088]])
     {
       v73 = [v41 code] == 3;
 
@@ -540,10 +540,10 @@ LABEL_99:
         v75 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v74, OS_LOG_TYPE_INFO))
         {
-          v76 = v165;
-          v77 = [v165 UTF8String];
+          v76 = filePath;
+          uTF8String3 = [filePath UTF8String];
           *buf = 136446210;
-          *&buf[4] = v77;
+          *&buf[4] = uTF8String3;
           _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Request to terminate existing instance of bundle ID %{public}s failed because the existing instance could no longer be found. Continuing with launch.", buf, 0xCu);
         }
 
@@ -555,26 +555,26 @@ LABEL_99:
     {
     }
 
-    v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to terminate existing instance (%i) of bundle ID '%@'", v163, v165];
-    v79 = v78;
-    if (a8)
+    filePath = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to terminate existing instance (%i) of bundle ID '%@'", v163, filePath];
+    v79 = filePath;
+    if (error)
     {
       v80 = MEMORY[0x277CCA9B8];
       v81 = *MEMORY[0x277CCA7E8];
       v197[0] = *MEMORY[0x277CCA450];
       v197[1] = v81;
-      v198[0] = v78;
+      v198[0] = filePath;
       v198[1] = v41;
       v82 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v198 forKeys:v197 count:2];
-      *a8 = [v80 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:16 userInfo:v82];
+      *error = [v80 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:16 userInfo:v82];
     }
 
     v71 = 0;
     goto LABEL_102;
   }
 
-  v56 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v56 fileExistsAtPath:v13 isDirectory:&v179] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:pathCopy isDirectory:&v179] & 1) == 0)
   {
 
     goto LABEL_32;
@@ -587,7 +587,7 @@ LABEL_99:
     goto LABEL_32;
   }
 
-  v58 = CFURLCreateWithFileSystemPath(0, v13, kCFURLPOSIXPathStyle, 1u);
+  v58 = CFURLCreateWithFileSystemPath(0, pathCopy, kCFURLPOSIXPathStyle, 1u);
   v59 = CFBundleCreate(*MEMORY[0x277CBECE8], v58);
   v60 = v59;
   if (!v59)
@@ -631,7 +631,7 @@ LABEL_111:
   InfoDictionary = CFBundleGetInfoDictionary(v60);
   filePath = v66;
 LABEL_112:
-  v165 = [(__CFDictionary *)InfoDictionary objectForKeyedSubscript:@"CFBundleIdentifier"];
+  filePath = [(__CFDictionary *)InfoDictionary objectForKeyedSubscript:@"CFBundleIdentifier"];
   if (v58)
   {
     CFRelease(v58);
@@ -657,30 +657,30 @@ LABEL_112:
   if (os_log_type_enabled(v126, OS_LOG_TYPE_ERROR))
   {
     v128 = filePath;
-    v129 = [(__CFString *)filePath UTF8String];
+    uTF8String4 = [(__CFString *)filePath UTF8String];
     *buf = 136315138;
-    *&buf[4] = v129;
+    *&buf[4] = uTF8String4;
     _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "No bundle ID passed in path: %s", buf, 0xCu);
   }
 
-  if (v165)
+  if (filePath)
   {
     goto LABEL_13;
   }
 
 LABEL_32:
-  v165 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to locate CFBundleIdentifier for path: %@.", filePath];
-  if (a8)
+  filePath = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to locate CFBundleIdentifier for path: %@.", filePath];
+  if (error)
   {
     v69 = MEMORY[0x277CCA9B8];
     v70 = *MEMORY[0x277CCA470];
     v199[0] = *MEMORY[0x277CCA450];
     v199[1] = v70;
-    v200[0] = v165;
+    v200[0] = filePath;
     v200[1] = @"Either a Bundle Identifier or a path to a bundle must be provided.";
     v158 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v200 forKeys:v199 count:2];
     [v69 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:1 userInfo:v158];
-    *a8 = v71 = 0;
+    *error = v71 = 0;
   }
 
   else
@@ -695,34 +695,34 @@ LABEL_103:
   return v71;
 }
 
-- (id)processIdentifierForBundleIdentifier:(id)a3
+- (id)processIdentifierForBundleIdentifier:(id)identifier
 {
-  v3 = sub_247FE827C(a3);
+  v3 = sub_247FE827C(identifier);
   v4 = v3 & ~(v3 >> 31);
   v5 = MEMORY[0x277CCABB0];
 
   return [v5 numberWithInt:v4];
 }
 
-- (BOOL)sendProcessControlEvent:(id)a3 toPid:(id)a4 error:(id *)a5
+- (BOOL)sendProcessControlEvent:(id)event toPid:(id)pid error:(id *)error
 {
   v130[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  pidCopy = pid;
   v101 = 0;
   v102 = &v101;
   v103 = 0x3032000000;
   v104 = sub_247FE82E8;
   v105 = sub_247FE82F8;
   v106 = 0;
-  v10 = DTProcessControlEventUnarchive(v8);
-  v11 = [v9 intValue];
+  v10 = DTProcessControlEventUnarchive(eventCopy);
+  intValue = [pidCopy intValue];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v86.receiver = self;
     v86.super_class = DTSpringBoardProcessControlService;
-    [(DTProcessControlService *)&v86 sendProcessControlEvent:v8 toPid:v9];
+    [(DTProcessControlService *)&v86 sendProcessControlEvent:eventCopy toPid:pidCopy];
     goto LABEL_7;
   }
 
@@ -734,22 +734,22 @@ LABEL_103:
     v100 = v102[5];
     [(DTSpringBoardProcessControlService *)self showSBWidget:v85 withError:&v100];
     v14 = v100;
-    v15 = v13[5];
+    identifier = v13[5];
     v13[5] = v14;
     goto LABEL_4;
   }
 
   if ([v12 isEqualToString:@"ShowNotificationCenter"])
   {
-    v15 = [v85 objectForKey:@"WidgetIdentifier"];
-    if (v15)
+    identifier = [v85 objectForKey:@"WidgetIdentifier"];
+    if (identifier)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v20 = (v102 + 5);
         obj = v102[5];
-        [(DTSpringBoardProcessControlService *)self showNotificiationCenterWidget:v15 withError:&obj];
+        [(DTSpringBoardProcessControlService *)self showNotificiationCenterWidget:identifier withError:&obj];
         objc_storeStrong(v20, obj);
       }
     }
@@ -759,7 +759,7 @@ LABEL_103:
 
   if ([v12 isEqualToString:@"BackgroundFetchEvent"])
   {
-    v21 = [MEMORY[0x277D46F50] identifierWithPid:v11];
+    v21 = [MEMORY[0x277D46F50] identifierWithPid:intValue];
     v80 = v21;
     if (v21)
     {
@@ -767,13 +767,13 @@ LABEL_103:
       v23 = [MEMORY[0x277D46FA0] predicateMatchingIdentifier:v21];
       v24 = [v22 handleForPredicate:v23 error:0];
 
-      v25 = [v24 bundle];
-      v15 = [v25 identifier];
+      bundle = [v24 bundle];
+      identifier = [bundle identifier];
     }
 
     else
     {
-      v15 = 0;
+      identifier = 0;
     }
 
     v129 = *MEMORY[0x277D0ABE0];
@@ -784,18 +784,18 @@ LABEL_103:
     v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v130 forKeys:&v129 count:1];
 
     v82 = [MEMORY[0x277D0AD60] optionsWithDictionary:v34];
-    if (v15)
+    if (identifier)
     {
-      v35 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+      serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
       v94[0] = MEMORY[0x277D85DD0];
       v94[1] = 3221225472;
       v94[2] = sub_247FE9134;
       v94[3] = &unk_278EF3E08;
-      v95 = v15;
+      v95 = identifier;
       v96 = v34;
       v97 = v82;
       v98 = &v101;
-      [v35 openApplication:v95 withOptions:v97 completion:v94];
+      [serviceWithDefaultShellEndpoint openApplication:v95 withOptions:v97 completion:v94];
 
       v36 = v95;
     }
@@ -803,8 +803,8 @@ LABEL_103:
     else
     {
       dsemaa = v34;
-      v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to trigger Background Fetch for PID %d, no bundle identifier found.", v11];
-      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find CFBundleIdentifier for PID: %d.", v11];
+      v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to trigger Background Fetch for PID %d, no bundle identifier found.", intValue];
+      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find CFBundleIdentifier for PID: %d.", intValue];
       v77 = MEMORY[0x277CCA9B8];
       v38 = *MEMORY[0x277CCA470];
       v125[0] = *MEMORY[0x277CCA450];
@@ -825,12 +825,12 @@ LABEL_103:
 
   if ([v12 isEqualToString:@"TriggerSiri"])
   {
-    v15 = [v85 objectForKeyedSubscript:@"SiriRequestPayload"];
+    identifier = [v85 objectForKeyedSubscript:@"SiriRequestPayload"];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v15 length] && NSClassFromString(&cfstr_Afsettingsconn.isa))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [identifier length] && NSClassFromString(&cfstr_Afsettingsconn.isa))
     {
       v26 = objc_alloc_init(MEMORY[0x277CEF3A0]);
-      [v26 startUIRequest:v15];
+      [v26 startUIRequest:identifier];
       [v26 barrier];
     }
 
@@ -865,10 +865,10 @@ LABEL_103:
           goto LABEL_5;
         }
 
-        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error sending Messages notification for '%s' status: %d.", "com.apple.MobileSMS.CKAppExtension.launch", v51];
+        identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"Error sending Messages notification for '%s' status: %d.", "com.apple.MobileSMS.CKAppExtension.launch", v51];
         v52 = MEMORY[0x277CCA9B8];
         v115 = *MEMORY[0x277CCA450];
-        v116 = v15;
+        v116 = identifier;
         v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
         v54 = [v52 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:8 userInfo:v53];
         v55 = v102[5];
@@ -880,8 +880,8 @@ LABEL_103:
         v56 = MEMORY[0x277CCA9B8];
         v113 = *MEMORY[0x277CCA450];
         v114 = @"Snapshot UI is not supported for this platform.";
-        v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
-        v57 = [v56 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:8 userInfo:v15];
+        identifier = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
+        v57 = [v56 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:8 userInfo:identifier];
         v58 = v102[5];
         v102[5] = v57;
       }
@@ -892,11 +892,11 @@ LABEL_103:
         {
           v87.receiver = self;
           v87.super_class = DTSpringBoardProcessControlService;
-          [(DTProcessControlService *)&v87 sendProcessControlEvent:v8 toPid:v9];
+          [(DTProcessControlService *)&v87 sendProcessControlEvent:eventCopy toPid:pidCopy];
           goto LABEL_5;
         }
 
-        v15 = [v85 objectForKeyedSubscript:@"BundleIdentifier"];
+        identifier = [v85 objectForKeyedSubscript:@"BundleIdentifier"];
         v64 = [v85 objectForKeyedSubscript:@"AppClipPayload"];
         v65 = MEMORY[0x277CBEBC0];
         if ([(__CFString *)v64 length])
@@ -921,7 +921,7 @@ LABEL_103:
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v110 = v15;
+              v110 = identifier;
               v111 = 2112;
               v112 = v84;
               _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Clip Request for bundleID:'%@' url:'%@'", buf, 0x16u);
@@ -931,23 +931,23 @@ LABEL_103:
             v88[1] = 3221225472;
             v88[2] = sub_247FE92D8;
             v88[3] = &unk_278EF3E30;
-            v89 = v15;
+            v89 = identifier;
             v90 = v84;
             v92 = &v101;
             dsema = v68;
             v91 = dsema;
             [v81 installClipWithBundleID:v89 completion:v88];
             v69 = [v85 objectForKeyedSubscript:@"Timeout"];
-            v70 = [v69 intValue];
+            intValue2 = [v69 intValue];
 
-            if (v70 <= 0)
+            if (intValue2 <= 0)
             {
               v71 = 30000000000;
             }
 
             else
             {
-              v71 = (v70 * 1000000000.0);
+              v71 = (intValue2 * 1000000000.0);
             }
 
             v72 = dispatch_time(0, v71);
@@ -973,13 +973,13 @@ LABEL_103:
       goto LABEL_4;
     }
 
-    v15 = [v85 objectForKey:@"BundleIdentifier"];
+    identifier = [v85 objectForKey:@"BundleIdentifier"];
     v43 = [v85 objectForKey:@"NotificationPayload"];
     v44 = v43;
-    if (v43 && v15)
+    if (v43 && identifier)
     {
       v93 = 0;
-      [(DTSpringBoardProcessControlService *)self simulateNotificationForBundleID:v15 payload:v43 withError:&v93];
+      [(DTSpringBoardProcessControlService *)self simulateNotificationForBundleID:identifier payload:v43 withError:&v93];
       v45 = v93;
       if (!v45)
       {
@@ -988,7 +988,7 @@ LABEL_53:
         goto LABEL_4;
       }
 
-      v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to simulate notification for bundleID: %@.", v15];
+      v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to simulate notification for bundleID: %@.", identifier];
       v83 = MEMORY[0x277CCA9B8];
       v47 = *MEMORY[0x277CCA7E8];
       v119[0] = *MEMORY[0x277CCA450];
@@ -1009,7 +1009,7 @@ LABEL_53:
         v59 = @"Notification payload is nil.";
       }
 
-      if (!v15)
+      if (!identifier)
       {
         v59 = @"BundleIdentifer for notification is nil.";
       }
@@ -1021,7 +1021,7 @@ LABEL_53:
       v118[0] = @"Failed to simulate notification.";
       v118[1] = v59;
       v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v118 forKeys:v117 count:2];
-      if (v15)
+      if (identifier)
       {
         v62 = 8;
       }
@@ -1047,8 +1047,8 @@ LABEL_53:
   v27 = MEMORY[0x277CCA9B8];
   v121 = *MEMORY[0x277CCA450];
   v122 = @"Failed to press Home button";
-  v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
-  v28 = [v27 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:8 userInfo:v15];
+  identifier = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
+  v28 = [v27 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:8 userInfo:identifier];
   v29 = v102[5];
   v102[5] = v28;
 
@@ -1057,9 +1057,9 @@ LABEL_5:
 
 LABEL_7:
   v16 = v102[5];
-  if (a5 && v16)
+  if (error && v16)
   {
-    *a5 = v16;
+    *error = v16;
     v16 = v102[5];
   }
 
@@ -1070,10 +1070,10 @@ LABEL_7:
   return v17;
 }
 
-- (void)sendProcessControlEvent:(id)a3 toPid:(id)a4
+- (void)sendProcessControlEvent:(id)event toPid:(id)pid
 {
   v5 = 0;
-  [(DTSpringBoardProcessControlService *)self sendProcessControlEvent:a3 toPid:a4 error:&v5];
+  [(DTSpringBoardProcessControlService *)self sendProcessControlEvent:event toPid:pid error:&v5];
   v4 = v5;
   if (v4)
   {
@@ -1081,18 +1081,18 @@ LABEL_7:
   }
 }
 
-- (BOOL)simulateNotificationForBundleID:(id)a3 payload:(id)a4 withError:(id *)a5
+- (BOOL)simulateNotificationForBundleID:(id)d payload:(id)payload withError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  payloadCopy = payload;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_247FE82E8;
   v19 = sub_247FE82F8;
   v20 = 0;
-  v9 = [MEMORY[0x277CE1FC0] requestWithIdentifier:&stru_285A19CB8 pushPayload:v8 bundleIdentifier:v7];
-  v10 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:v7];
+  v9 = [MEMORY[0x277CE1FC0] requestWithIdentifier:&stru_285A19CB8 pushPayload:payloadCopy bundleIdentifier:dCopy];
+  v10 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:dCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_247FE9604;
@@ -1100,9 +1100,9 @@ LABEL_7:
   v14[4] = &v15;
   [v10 addNotificationRequest:v9 withCompletionHandler:v14];
   v11 = v16[5];
-  if (a5 && v11)
+  if (error && v11)
   {
-    *a5 = v11;
+    *error = v11;
     v11 = v16[5];
   }
 
@@ -1112,41 +1112,41 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)showNotificiationCenterWidget:(id)a3 withError:(id *)a4
+- (BOOL)showNotificiationCenterWidget:(id)widget withError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  widgetCopy = widget;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 136315138;
-    v13 = [@"Notification Center widgets are no longer supported." UTF8String];
+    uTF8String = [@"Notification Center widgets are no longer supported." UTF8String];
     _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%s", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v6 = MEMORY[0x277CCA9B8];
     v10 = *MEMORY[0x277CCA450];
     v11 = @"Notification Center widgets are no longer supported.";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    *a4 = [v6 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:8 userInfo:v7];
+    *error = [v6 errorWithDomain:@"com.apple.dt.deviceprocesscontrolservice" code:8 userInfo:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (BOOL)showSBWidget:(id)a3 withError:(id *)a4
+- (BOOL)showSBWidget:(id)widget withError:(id *)error
 {
   v63[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  widgetCopy = widget;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
   v51 = sub_247FE82E8;
   v52 = sub_247FE82F8;
   v53 = 0;
-  v5 = [v4 objectForKey:@"WidgetIdentifier"];
+  v5 = [widgetCopy objectForKey:@"WidgetIdentifier"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
@@ -1159,7 +1159,7 @@ LABEL_7:
 
   v43 = *MEMORY[0x277CFA1B8];
   v7 = *MEMORY[0x277CFA1A8];
-  v8 = [v4 objectForKeyedSubscript:@"_XCWidgetKind"];
+  v8 = [widgetCopy objectForKeyedSubscript:@"_XCWidgetKind"];
   v9 = v8;
   if (v8)
   {
@@ -1173,7 +1173,7 @@ LABEL_7:
 
   v11 = v10;
 
-  v12 = [v4 objectForKeyedSubscript:@"_XCWidgetFamily"];
+  v12 = [widgetCopy objectForKeyedSubscript:@"_XCWidgetFamily"];
   v13 = v12;
   if (v12)
   {
@@ -1208,7 +1208,7 @@ LABEL_7:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:2];
 
     v21 = dispatch_semaphore_create(0);
-    v22 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+    serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
     v23 = [MEMORY[0x277D0AD60] optionsWithDictionary:v20];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
@@ -1218,19 +1218,19 @@ LABEL_7:
     v47 = &v48;
     v24 = v21;
     v46 = v24;
-    [v22 openApplication:@"com.apple.springboard" withOptions:v23 completion:v44];
+    [serviceWithDefaultShellEndpoint openApplication:@"com.apple.springboard" withOptions:v23 completion:v44];
 
-    v25 = [v4 objectForKeyedSubscript:@"Timeout"];
-    v26 = [v25 intValue];
+    v25 = [widgetCopy objectForKeyedSubscript:@"Timeout"];
+    intValue = [v25 intValue];
 
-    if (v26 <= 0)
+    if (intValue <= 0)
     {
       v27 = 10000000000;
     }
 
     else
     {
-      v27 = (v26 * 1000000000.0);
+      v27 = (intValue * 1000000000.0);
     }
 
     v28 = dispatch_time(0, v27);
@@ -1258,9 +1258,9 @@ LABEL_7:
     v34 = MEMORY[0x277D86220];
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      v35 = [@"No Widget specified." UTF8String];
+      uTF8String = [@"No Widget specified." UTF8String];
       *buf = 136315138;
-      v57 = v35;
+      v57 = uTF8String;
       _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%s", buf, 0xCu);
     }
 
@@ -1274,9 +1274,9 @@ LABEL_7:
   }
 
   v38 = v49[5];
-  if (a4 && v38)
+  if (error && v38)
   {
-    *a4 = v38;
+    *error = v38;
     v38 = v49[5];
   }
 
@@ -1310,9 +1310,9 @@ LABEL_7:
   return v2;
 }
 
-- (BOOL)_HIDEvent:(unsigned int)a3 hold:(BOOL)a4
+- (BOOL)_HIDEvent:(unsigned int)event hold:(BOOL)hold
 {
-  if (a4)
+  if (hold)
   {
     v4 = 1.0;
   }
@@ -1322,7 +1322,7 @@ LABEL_7:
     v4 = 0.1;
   }
 
-  if (a3 != 1 && a3 != 2)
+  if (event != 1 && event != 2)
   {
     return 0;
   }

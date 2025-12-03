@@ -1,16 +1,16 @@
 @interface ML3NegationPredicate
 - (id)description;
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4;
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class;
 @end
 
 @implementation ML3NegationPredicate
 
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class
 {
-  v6 = a3;
-  objc_msgSend(v6, "appendString:", @"(NOT ");
-  [(ML3Predicate *)self->super._predicate appendSQLToMutableString:v6 entityClass:a4];
-  [v6 appendString:@""]);
+  stringCopy = string;
+  objc_msgSend(stringCopy, "appendString:", @"(NOT ");
+  [(ML3Predicate *)self->super._predicate appendSQLToMutableString:stringCopy entityClass:class];
+  [stringCopy appendString:@""]);
 }
 
 - (id)description

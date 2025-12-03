@@ -1,11 +1,11 @@
 @interface _UIPinchDismissSubInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
-- (void)didMoveToView:(id)a3;
-- (void)handlePinch:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)handlePinch:(id)pinch;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIPinchDismissSubInteraction
@@ -17,52 +17,52 @@
   return Strong;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188C874B8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188C874B8(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v5 = OBJC_IVAR____TtC5UIKit29_UIPinchDismissSubInteraction_gesture;
   v6 = *(self + OBJC_IVAR____TtC5UIKit29_UIPinchDismissSubInteraction_gesture);
-  v9 = self;
-  v7 = a3;
-  v8 = [v6 view];
-  if (v8)
+  selfCopy = self;
+  viewCopy = view;
+  view = [v6 view];
+  if (view)
   {
   }
 
-  else if (v7)
+  else if (viewCopy)
   {
-    [v7 addGestureRecognizer_];
+    [viewCopy addGestureRecognizer_];
   }
 
   swift_unknownObjectWeakAssign();
 }
 
-- (void)handlePinch:(id)a3
+- (void)handlePinch:(id)pinch
 {
-  v4 = a3;
-  v5 = self;
-  sub_189238A48(v4);
+  pinchCopy = pinch;
+  selfCopy = self;
+  sub_189238A48(pinchCopy);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
+  beginCopy = begin;
+  selfCopy = self;
   LOBYTE(self) = sub_18923B520();
 
   return self & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
-  if ([v4 _isGestureType_] && (v5 = objc_msgSend(v4, sel_view)) != 0)
+  gestureRecognizerCopy = gestureRecognizer;
+  if ([gestureRecognizerCopy _isGestureType_] && (v5 = objc_msgSend(gestureRecognizerCopy, sel_view)) != 0)
   {
     v6 = v5;
     objc_opt_self();
@@ -86,12 +86,12 @@
   return 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_18923B690(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_18923B690(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }

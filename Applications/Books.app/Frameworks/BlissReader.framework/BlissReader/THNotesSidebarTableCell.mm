@@ -2,41 +2,41 @@
 - (BOOL)bottomBorderVisible;
 - (BOOL)imageBorderVisible;
 - (BOOL)topBorderVisible;
-- (THNotesSidebarTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (THNotesSidebarTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UILabel)noResultsLabel;
 - (void)_updateCountLabel;
-- (void)p_handleHighlightChange:(BOOL)a3;
+- (void)p_handleHighlightChange:(BOOL)change;
 - (void)prepareForReuse;
-- (void)setAnnotationCount:(unint64_t)a3;
-- (void)setBottomBorderVisible:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setImageBorderVisible:(BOOL)a3;
-- (void)setNeedsMigration:(BOOL)a3;
-- (void)setSectionProvider:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTopBorderVisible:(BOOL)a3;
+- (void)setAnnotationCount:(unint64_t)count;
+- (void)setBottomBorderVisible:(BOOL)visible;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setImageBorderVisible:(BOOL)visible;
+- (void)setNeedsMigration:(BOOL)migration;
+- (void)setSectionProvider:(id)provider;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setTopBorderVisible:(BOOL)visible;
 @end
 
 @implementation THNotesSidebarTableCell
 
-- (THNotesSidebarTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (THNotesSidebarTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = THNotesSidebarTableCell;
-  v4 = [(THNotesSidebarTableCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(THNotesSidebarTableCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(THNotesSidebarTableCell *)v4 p_borderWidth];
     v7 = v6;
-    v8 = [(THNotesSidebarTableCell *)v5 imageBorderWidthConstraint];
-    [v8 setConstant:v7];
+    imageBorderWidthConstraint = [(THNotesSidebarTableCell *)v5 imageBorderWidthConstraint];
+    [imageBorderWidthConstraint setConstant:v7];
 
-    v9 = [(THNotesSidebarTableCell *)v5 topBorderWidthConstraint];
-    [v9 setConstant:v7];
+    topBorderWidthConstraint = [(THNotesSidebarTableCell *)v5 topBorderWidthConstraint];
+    [topBorderWidthConstraint setConstant:v7];
 
-    v10 = [(THNotesSidebarTableCell *)v5 bottomBorderWidthConstraint];
-    [v10 setConstant:v7];
+    bottomBorderWidthConstraint = [(THNotesSidebarTableCell *)v5 bottomBorderWidthConstraint];
+    [bottomBorderWidthConstraint setConstant:v7];
 
     [(THNotesSidebarTableCell *)v5 p_handleHighlightChange:0];
   }
@@ -44,20 +44,20 @@
   return v5;
 }
 
-- (void)setNeedsMigration:(BOOL)a3
+- (void)setNeedsMigration:(BOOL)migration
 {
-  if (self->_needsMigration != a3)
+  if (self->_needsMigration != migration)
   {
-    self->_needsMigration = a3;
+    self->_needsMigration = migration;
     [(THNotesSidebarTableCell *)self _updateCountLabel];
   }
 }
 
-- (void)setAnnotationCount:(unint64_t)a3
+- (void)setAnnotationCount:(unint64_t)count
 {
-  if (self->_annotationCount != a3)
+  if (self->_annotationCount != count)
   {
-    self->_annotationCount = a3;
+    self->_annotationCount = count;
     [(THNotesSidebarTableCell *)self _updateCountLabel];
   }
 }
@@ -70,172 +70,172 @@
   [(THNotesSidebarTableCell *)self setDelegate:0];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(THNotesSidebarTableCell *)self isSelected];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  isSelected = [(THNotesSidebarTableCell *)self isSelected];
   v9.receiver = self;
   v9.super_class = THNotesSidebarTableCell;
-  [(THNotesSidebarTableCell *)&v9 setSelected:v5 animated:v4];
-  [(THNotesSidebarTableCell *)self p_handleHighlightChange:v5];
-  if (v7 != v5)
+  [(THNotesSidebarTableCell *)&v9 setSelected:selectedCopy animated:animatedCopy];
+  [(THNotesSidebarTableCell *)self p_handleHighlightChange:selectedCopy];
+  if (isSelected != selectedCopy)
   {
-    v8 = [(THNotesSidebarTableCell *)self delegate];
-    [v8 notesSidebarCell:self selectionDidChange:v5];
+    delegate = [(THNotesSidebarTableCell *)self delegate];
+    [delegate notesSidebarCell:self selectionDidChange:selectedCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(THNotesSidebarTableCell *)self isHighlighted];
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
+  isHighlighted = [(THNotesSidebarTableCell *)self isHighlighted];
   v9.receiver = self;
   v9.super_class = THNotesSidebarTableCell;
-  [(THNotesSidebarTableCell *)&v9 setHighlighted:v5 animated:v4];
-  [(THNotesSidebarTableCell *)self p_handleHighlightChange:v5];
-  if (v7 != v5)
+  [(THNotesSidebarTableCell *)&v9 setHighlighted:highlightedCopy animated:animatedCopy];
+  [(THNotesSidebarTableCell *)self p_handleHighlightChange:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    v8 = [(THNotesSidebarTableCell *)self delegate];
-    [v8 notesSidebarCell:self highlightDidChange:v5];
+    delegate = [(THNotesSidebarTableCell *)self delegate];
+    [delegate notesSidebarCell:self highlightDidChange:highlightedCopy];
   }
 }
 
-- (void)setSectionProvider:(id)a3
+- (void)setSectionProvider:(id)provider
 {
-  v13 = a3;
-  -[THNotesSidebarTableCell setAnnotationCount:](self, "setAnnotationCount:", [v13 annotationCount]);
-  -[THNotesSidebarTableCell setNeedsMigration:](self, "setNeedsMigration:", [v13 needsMigration]);
-  v4 = [v13 subtitle];
+  providerCopy = provider;
+  -[THNotesSidebarTableCell setAnnotationCount:](self, "setAnnotationCount:", [providerCopy annotationCount]);
+  -[THNotesSidebarTableCell setNeedsMigration:](self, "setNeedsMigration:", [providerCopy needsMigration]);
+  subtitle = [providerCopy subtitle];
 
-  if (v4)
+  if (subtitle)
   {
-    v5 = [v13 subtitle];
-    v6 = [(THNotesSidebarTableCell *)self chapterLabel];
-    [v6 setText:v5];
+    subtitle2 = [providerCopy subtitle];
+    chapterLabel = [(THNotesSidebarTableCell *)self chapterLabel];
+    [chapterLabel setText:subtitle2];
   }
 
   else
   {
-    v5 = [(THNotesSidebarTableCell *)self chapterLabel];
-    [v5 setText:&stru_471858];
+    subtitle2 = [(THNotesSidebarTableCell *)self chapterLabel];
+    [subtitle2 setText:&stru_471858];
   }
 
-  v7 = [v13 title];
-  v8 = [(THNotesSidebarTableCell *)self chapterName];
-  [v8 setText:v7];
+  title = [providerCopy title];
+  chapterName = [(THNotesSidebarTableCell *)self chapterName];
+  [chapterName setText:title];
 
-  v9 = [v13 image];
+  image = [providerCopy image];
 
-  v10 = [(THNotesSidebarTableCell *)self chapterThumb];
-  v11 = v10;
-  if (v9)
+  chapterThumb = [(THNotesSidebarTableCell *)self chapterThumb];
+  image2 = chapterThumb;
+  if (image)
   {
-    [v10 setHidden:0];
+    [chapterThumb setHidden:0];
 
-    v11 = [v13 image];
-    v12 = [(THNotesSidebarTableCell *)self chapterThumb];
-    [v12 setImage:v11];
+    image2 = [providerCopy image];
+    chapterThumb2 = [(THNotesSidebarTableCell *)self chapterThumb];
+    [chapterThumb2 setImage:image2];
   }
 
   else
   {
-    [v10 setHidden:1];
+    [chapterThumb setHidden:1];
   }
 }
 
-- (void)p_handleHighlightChange:(BOOL)a3
+- (void)p_handleHighlightChange:(BOOL)change
 {
   v4 = +[UIColor bc_booksSecondaryLabelColor];
-  v5 = [(THNotesSidebarTableCell *)self countLabel];
-  [v5 setTextColor:v4];
+  countLabel = [(THNotesSidebarTableCell *)self countLabel];
+  [countLabel setTextColor:v4];
 
   v6 = +[UIColor bc_booksSecondaryLabelColor];
-  v7 = [(THNotesSidebarTableCell *)self chapterLabel];
-  [v7 setTextColor:v6];
+  chapterLabel = [(THNotesSidebarTableCell *)self chapterLabel];
+  [chapterLabel setTextColor:v6];
 
   v8 = +[UIColor bc_booksLabelColor];
-  v9 = [(THNotesSidebarTableCell *)self chapterName];
-  [v9 setTextColor:v8];
+  chapterName = [(THNotesSidebarTableCell *)self chapterName];
+  [chapterName setTextColor:v8];
 
   v10 = +[UIColor bc_booksSeparatorColor];
-  v11 = [(THNotesSidebarTableCell *)self topBorder];
-  [v11 setBackgroundColor:v10];
+  topBorder = [(THNotesSidebarTableCell *)self topBorder];
+  [topBorder setBackgroundColor:v10];
 
   v12 = +[UIColor bc_booksSeparatorColor];
-  v13 = [(THNotesSidebarTableCell *)self bottomBorder];
-  [v13 setBackgroundColor:v12];
+  bottomBorder = [(THNotesSidebarTableCell *)self bottomBorder];
+  [bottomBorder setBackgroundColor:v12];
 
   v15 = +[UIColor bc_booksSeparatorColor];
-  v14 = [(THNotesSidebarTableCell *)self imageBorder];
-  [v14 setBackgroundColor:v15];
+  imageBorder = [(THNotesSidebarTableCell *)self imageBorder];
+  [imageBorder setBackgroundColor:v15];
 }
 
 - (BOOL)topBorderVisible
 {
-  v2 = [(THNotesSidebarTableCell *)self topBorderWidthConstraint];
-  [v2 constant];
+  topBorderWidthConstraint = [(THNotesSidebarTableCell *)self topBorderWidthConstraint];
+  [topBorderWidthConstraint constant];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)setTopBorderVisible:(BOOL)a3
+- (void)setTopBorderVisible:(BOOL)visible
 {
   v4 = 0.0;
-  if (a3)
+  if (visible)
   {
     [(THNotesSidebarTableCell *)self p_borderWidth];
     v4 = v5;
   }
 
-  v6 = [(THNotesSidebarTableCell *)self topBorderWidthConstraint];
-  [v6 setConstant:v4];
+  topBorderWidthConstraint = [(THNotesSidebarTableCell *)self topBorderWidthConstraint];
+  [topBorderWidthConstraint setConstant:v4];
 }
 
 - (BOOL)bottomBorderVisible
 {
-  v2 = [(THNotesSidebarTableCell *)self bottomBorderWidthConstraint];
-  [v2 constant];
+  bottomBorderWidthConstraint = [(THNotesSidebarTableCell *)self bottomBorderWidthConstraint];
+  [bottomBorderWidthConstraint constant];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)setBottomBorderVisible:(BOOL)a3
+- (void)setBottomBorderVisible:(BOOL)visible
 {
   v4 = 0.0;
-  if (a3)
+  if (visible)
   {
     [(THNotesSidebarTableCell *)self p_borderWidth];
     v4 = v5;
   }
 
-  v6 = [(THNotesSidebarTableCell *)self bottomBorderWidthConstraint];
-  [v6 setConstant:v4];
+  bottomBorderWidthConstraint = [(THNotesSidebarTableCell *)self bottomBorderWidthConstraint];
+  [bottomBorderWidthConstraint setConstant:v4];
 }
 
 - (BOOL)imageBorderVisible
 {
-  v2 = [(THNotesSidebarTableCell *)self imageBorderWidthConstraint];
-  [v2 constant];
+  imageBorderWidthConstraint = [(THNotesSidebarTableCell *)self imageBorderWidthConstraint];
+  [imageBorderWidthConstraint constant];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)setImageBorderVisible:(BOOL)a3
+- (void)setImageBorderVisible:(BOOL)visible
 {
   v4 = 0.0;
-  if (a3)
+  if (visible)
   {
     [(THNotesSidebarTableCell *)self p_borderWidth];
     v4 = v5;
   }
 
-  v6 = [(THNotesSidebarTableCell *)self imageBorderWidthConstraint];
-  [v6 setConstant:v4];
+  imageBorderWidthConstraint = [(THNotesSidebarTableCell *)self imageBorderWidthConstraint];
+  [imageBorderWidthConstraint setConstant:v4];
 }
 
 - (void)_updateCountLabel
@@ -258,8 +258,8 @@ LABEL_5:
   v6 = [NSNumberFormatter localizedStringFromNumber:v4 numberStyle:1];
 
 LABEL_7:
-  v5 = [(THNotesSidebarTableCell *)self countLabel];
-  [v5 setText:v6];
+  countLabel = [(THNotesSidebarTableCell *)self countLabel];
+  [countLabel setText:v6];
 }
 
 - (UILabel)noResultsLabel

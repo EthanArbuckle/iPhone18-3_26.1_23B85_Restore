@@ -1,6 +1,6 @@
 @interface SPUISWindowResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SPUISWindowResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SPUISWindowResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildWindowAppImage;
@@ -9,35 +9,35 @@
 
 @implementation SPUISWindowResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 uniformContentType];
+  resultCopy = result;
+  uniformContentType = [resultCopy uniformContentType];
   v5 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"com.apple.window-tab"];
-  if ([v4 conformsToType:v5])
+  if ([uniformContentType conformsToType:v5])
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v7 = [v3 valueForAttribute:*MEMORY[0x277CC2CC8] withType:objc_opt_class()];
-    v6 = [v7 BOOLValue];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC2CC8] withType:objc_opt_class()];
+    bOOLValue = [v7 BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (SPUISWindowResultBuilder)initWithResult:(id)a3
+- (SPUISWindowResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = SPUISWindowResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v10 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v10 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC32A8] withType:objc_opt_class()];
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC32B0] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC32A8] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC32B0] withType:objc_opt_class()];
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v6, v7];
     [(SPUISWindowResultBuilder *)v5 setProcessInstanceIdentifier:v8];
   }
@@ -48,9 +48,9 @@
 - (id)buildWindowAppImage
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISResultBuilder *)self result];
-  v5 = [v4 applicationBundleIdentifier];
-  [v3 setBundleIdentifier:v5];
+  result = [(SPUISResultBuilder *)self result];
+  applicationBundleIdentifier = [result applicationBundleIdentifier];
+  [v3 setBundleIdentifier:applicationBundleIdentifier];
 
   return v3;
 }
@@ -72,24 +72,24 @@
 
 - (id)buildCommand
 {
-  v3 = [(SPUISResultBuilder *)self resultAppBundleId];
-  v4 = [(SPUISWindowResultBuilder *)self processInstanceIdentifier];
-  v5 = [(SPUISResultBuilder *)self coreSpotlightId];
-  v6 = [_TtC19SpotlightUIServices23SPUISWindowTabUtilities openWindowCommandWithAppBundleId:v3 processInstanceIdentifier:v4 entityIdentifier:v5];
+  resultAppBundleId = [(SPUISResultBuilder *)self resultAppBundleId];
+  processInstanceIdentifier = [(SPUISWindowResultBuilder *)self processInstanceIdentifier];
+  coreSpotlightId = [(SPUISResultBuilder *)self coreSpotlightId];
+  v6 = [_TtC19SpotlightUIServices23SPUISWindowTabUtilities openWindowCommandWithAppBundleId:resultAppBundleId processInstanceIdentifier:processInstanceIdentifier entityIdentifier:coreSpotlightId];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    buildCommand = v6;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SPUISWindowResultBuilder;
-    v8 = [(SPUISResultBuilder *)&v11 buildCommand];
+    buildCommand = [(SPUISResultBuilder *)&v11 buildCommand];
   }
 
-  v9 = v8;
+  v9 = buildCommand;
 
   return v9;
 }

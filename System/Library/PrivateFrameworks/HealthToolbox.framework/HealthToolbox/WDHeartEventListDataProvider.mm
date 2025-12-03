@@ -1,9 +1,9 @@
 @interface WDHeartEventListDataProvider
 - (id)_heartEventType;
-- (id)createQueryForSampleType:(id)a3 predicate:(id)a4 limit:(int64_t)a5 sortDescriptors:(id)a6 resultsHandler:(id)a7;
-- (id)customCellForObject:(id)a3 indexPath:(id)a4 tableView:(id)a5;
+- (id)createQueryForSampleType:(id)type predicate:(id)predicate limit:(int64_t)limit sortDescriptors:(id)descriptors resultsHandler:(id)handler;
+- (id)customCellForObject:(id)object indexPath:(id)path tableView:(id)view;
 - (id)sampleTypes;
-- (id)titleForSection:(unint64_t)a3;
+- (id)titleForSection:(unint64_t)section;
 @end
 
 @implementation WDHeartEventListDataProvider
@@ -11,8 +11,8 @@
 - (id)sampleTypes
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(WDHeartEventListDataProvider *)self _heartEventType];
-  v6[0] = v2;
+  _heartEventType = [(WDHeartEventListDataProvider *)self _heartEventType];
+  v6[0] = _heartEventType;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -20,18 +20,18 @@
   return v3;
 }
 
-- (id)customCellForObject:(id)a3 indexPath:(id)a4 tableView:(id)a5
+- (id)customCellForObject:(id)object indexPath:(id)path tableView:(id)view
 {
-  v6 = a3;
-  v7 = [a5 dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+  objectCopy = object;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellIdentifier"];
   if (!v7)
   {
     v7 = [[WDDataTableViewCell alloc] initWithStyle:1 reuseIdentifier:@"CellIdentifier"];
   }
 
   [(WDDataTableViewCell *)v7 setAccessoryType:1];
-  v8 = [v6 metadata];
-  v9 = [v8 valueForKey:*MEMORY[0x277CCE040]];
+  metadata = [objectCopy metadata];
+  v9 = [metadata valueForKey:*MEMORY[0x277CCE040]];
   if (v9)
   {
     [(WDDataTableViewCell *)v7 setDisplayValue:v9];
@@ -44,17 +44,17 @@
     [(WDDataTableViewCell *)v7 setDisplayValue:v11];
   }
 
-  v12 = [v6 endDate];
+  endDate = [objectCopy endDate];
   v13 = HKFormattedStringForDate();
   [(WDDataTableViewCell *)v7 setDateString:v13];
 
   return v7;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  v3 = [(WDSampleListDataProvider *)self samples];
-  if ([v3 count] < 1)
+  samples = [(WDSampleListDataProvider *)self samples];
+  if ([samples count] < 1)
   {
     v5 = &stru_28641D9B8;
   }
@@ -68,22 +68,22 @@
   return v5;
 }
 
-- (id)createQueryForSampleType:(id)a3 predicate:(id)a4 limit:(int64_t)a5 sortDescriptors:(id)a6 resultsHandler:(id)a7
+- (id)createQueryForSampleType:(id)type predicate:(id)predicate limit:(int64_t)limit sortDescriptors:(id)descriptors resultsHandler:(id)handler
 {
-  v11 = a7;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCD8D0];
-  v13 = a6;
-  v14 = a4;
+  descriptorsCopy = descriptors;
+  predicateCopy = predicate;
   v15 = [v12 alloc];
-  v16 = [(WDHeartEventListDataProvider *)self _heartEventType];
+  _heartEventType = [(WDHeartEventListDataProvider *)self _heartEventType];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __104__WDHeartEventListDataProvider_createQueryForSampleType_predicate_limit_sortDescriptors_resultsHandler___block_invoke;
   v20[3] = &unk_2796E79A0;
   v20[4] = self;
-  v21 = v11;
-  v17 = v11;
-  v18 = [v15 initWithSampleType:v16 predicate:v14 limit:a5 sortDescriptors:v13 resultsHandler:v20];
+  v21 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = [v15 initWithSampleType:_heartEventType predicate:predicateCopy limit:limit sortDescriptors:descriptorsCopy resultsHandler:v20];
 
   return v18;
 }

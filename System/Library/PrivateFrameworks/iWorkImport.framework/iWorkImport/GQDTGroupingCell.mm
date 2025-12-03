@@ -1,11 +1,11 @@
 @interface GQDTGroupingCell
-+ (__CFString)displayTypeString:(int)a3;
++ (__CFString)displayTypeString:(int)string;
 - (__CFString)createFormattedValue;
 - (id)value;
-- (int)readAttributes:(_xmlTextReader *)a3;
-- (int)readElement:(_xmlTextReader *)a3;
-- (int)readRootFormat:(_xmlTextReader *)a3;
-- (int)readValue:(_xmlTextReader *)a3;
+- (int)readAttributes:(_xmlTextReader *)attributes;
+- (int)readElement:(_xmlTextReader *)element;
+- (int)readRootFormat:(_xmlTextReader *)format;
+- (int)readValue:(_xmlTextReader *)value;
 - (void)dealloc;
 @end
 
@@ -64,15 +64,15 @@
   v6 = self->mFormat;
   if (isKindOfClass)
   {
-    v7 = [self->mFormat formatString];
+    formatString = [self->mFormat formatString];
     mValue = self->mValue;
     v9 = sub_52308();
     v10 = CFDateFormatterCreate(0, v9, kCFDateFormatterNoStyle, kCFDateFormatterNoStyle);
     v11 = sub_13AF8();
     CFDateFormatterSetProperty(v10, kCFDateFormatterTimeZone, v11);
-    if (v7)
+    if (formatString)
     {
-      CFDateFormatterSetFormat(v10, v7);
+      CFDateFormatterSetFormat(v10, formatString);
     }
 
     mFormulaValue = CFDateFormatterCreateStringWithDate(0, v10, mValue);
@@ -84,10 +84,10 @@
   if (objc_opt_isKindOfClass())
   {
     DoubleValue = CFStringGetDoubleValue(self->mValue);
-    v14 = [self->mFormat formatString];
+    formatString2 = [self->mFormat formatString];
     mProcessorBundle = self->mProcessorBundle;
 
-    return sub_4DCD0(v14, mProcessorBundle, DoubleValue);
+    return sub_4DCD0(formatString2, mProcessorBundle, DoubleValue);
   }
 
   else
@@ -114,11 +114,11 @@
   }
 }
 
-+ (__CFString)displayTypeString:(int)a3
++ (__CFString)displayTypeString:(int)string
 {
-  if (a3 <= 3)
+  if (string <= 3)
   {
-    if (a3 == 2)
+    if (string == 2)
     {
       v3 = [NSBundle bundleForClass:objc_opt_class()];
       v4 = @"GQDTDisplayTypeSubtotal";
@@ -126,7 +126,7 @@
       goto LABEL_12;
     }
 
-    if (a3 == 3)
+    if (string == 3)
     {
       v3 = [NSBundle bundleForClass:objc_opt_class()];
       v4 = @"GQDTDisplayTypeAverage";
@@ -137,7 +137,7 @@
     return 0;
   }
 
-  if (a3 == 4)
+  if (string == 4)
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
     v4 = @"GQDTDisplayTypeMinimum";
@@ -145,7 +145,7 @@
     goto LABEL_12;
   }
 
-  if (a3 == 5)
+  if (string == 5)
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
     v4 = @"GQDTDisplayTypeMaximum";
@@ -153,7 +153,7 @@
     goto LABEL_12;
   }
 
-  if (a3 != 6)
+  if (string != 6)
   {
     return 0;
   }
@@ -166,9 +166,9 @@ LABEL_12:
   return [(NSBundle *)v3 localizedStringForKey:v4 value:v5 table:0];
 }
 
-- (int)readValue:(_xmlTextReader *)a3
+- (int)readValue:(_xmlTextReader *)value
 {
-  self->mValue = sub_4294C(a3, qword_A35E8, "value");
+  self->mValue = sub_4294C(value, qword_A35E8, "value");
   mFormat = self->mFormat;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -185,18 +185,18 @@ LABEL_12:
   return 1;
 }
 
-- (int)readElement:(_xmlTextReader *)a3
+- (int)readElement:(_xmlTextReader *)element
 {
-  self->mLevel = sub_4258C(a3, qword_A35E8, "level", 0);
-  self->mRowIdx = sub_4258C(a3, qword_A35E8, "row-index", 0);
-  self->mRowCount = sub_4258C(a3, qword_A35E8, "row-count", 0);
-  self->mIsCollapsed = sub_42340(a3, qword_A35E8, "collapsed", 0);
+  self->mLevel = sub_4258C(element, qword_A35E8, "level", 0);
+  self->mRowIdx = sub_4258C(element, qword_A35E8, "row-index", 0);
+  self->mRowCount = sub_4258C(element, qword_A35E8, "row-count", 0);
+  self->mIsCollapsed = sub_42340(element, qword_A35E8, "collapsed", 0);
   return 1;
 }
 
-- (int)readRootFormat:(_xmlTextReader *)a3
+- (int)readRootFormat:(_xmlTextReader *)format
 {
-  v5 = sub_4294C(a3, qword_A35E8, "group-date-format");
+  v5 = sub_4294C(format, qword_A35E8, "group-date-format");
   if (v5)
   {
     v6 = v5;
@@ -205,7 +205,7 @@ LABEL_12:
 
   else
   {
-    v8 = sub_4294C(a3, qword_A35E8, "group-duration-format");
+    v8 = sub_4294C(format, qword_A35E8, "group-duration-format");
     if (!v8)
     {
       return 1;
@@ -235,13 +235,13 @@ LABEL_12:
   return 1;
 }
 
-- (int)readAttributes:(_xmlTextReader *)a3
+- (int)readAttributes:(_xmlTextReader *)attributes
 {
-  v5 = sub_42340(a3, qword_A35E8, "group-formula-value-valid", 0);
+  v5 = sub_42340(attributes, qword_A35E8, "group-formula-value-valid", 0);
   self->mHasValidFormulaValue = v5;
   if (v5)
   {
-    self->mFormulaValue = sub_4294C(a3, qword_A35E8, "group-formula-string");
+    self->mFormulaValue = sub_4294C(attributes, qword_A35E8, "group-formula-string");
   }
 
   return 1;

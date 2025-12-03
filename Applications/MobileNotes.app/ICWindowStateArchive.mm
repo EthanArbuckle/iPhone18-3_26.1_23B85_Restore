@@ -1,7 +1,7 @@
 @interface ICWindowStateArchive
 + (ICWindowStateArchive)windowStateArchiveWithDefaultState;
 + (ICWindowStateArchive)windowStateArchiveWithEmptyState;
-+ (id)windowStateArchiveFromDictionary:(id)a3;
++ (id)windowStateArchiveFromDictionary:(id)dictionary;
 - (BOOL)isActiveEditorInEditMode;
 - (BOOL)isAttachmentBrowserOpen;
 - (BOOL)isAuxiliaryWindow;
@@ -11,7 +11,7 @@
 - (BOOL)isTrailingContentVisible;
 - (ICActivityStreamSelection)currentActivityStreamSelection;
 - (ICWindowStateArchive)init;
-- (ICWindowStateArchive)initWithDictionary:(id)a3;
+- (ICWindowStateArchive)initWithDictionary:(id)dictionary;
 - (NSArray)currentContainerObjectIDURLs;
 - (NSArray)currentTagIdentifiers;
 - (NSData)selectionState;
@@ -31,42 +31,42 @@
 - (NSURL)currentVirtualSmartFolderAccountObjectIDURL;
 - (NSURL)focusedNoteObjectIDURL;
 - (id)description;
-- (id)scrollStateForNote:(id)a3;
+- (id)scrollStateForNote:(id)note;
 - (int64_t)currentActivityStreamViewMode;
 - (int64_t)currentNoteContainerViewMode;
 - (int64_t)noteCreationApproach;
 - (int64_t)preferredNoteContainerViewMode;
-- (void)setActiveEditorInEditMode:(BOOL)a3;
-- (void)setAttachmentBrowserOpen:(BOOL)a3;
-- (void)setCurrentActivityStreamSelection:(id)a3;
-- (void)setCurrentActivityStreamViewMode:(int64_t)a3;
-- (void)setCurrentContainerObjectIDURLs:(id)a3;
-- (void)setCurrentFirstVisibleObjectIDURLForContainerObjectIDURL:(id)a3;
-- (void)setCurrentInvitationObjectIDURL:(id)a3;
-- (void)setCurrentNoteContainerViewMode:(int64_t)a3;
-- (void)setCurrentNoteLastViewedDate:(id)a3;
-- (void)setCurrentNoteObjectIDURL:(id)a3;
-- (void)setCurrentObjectIDURL:(id)a3;
-- (void)setCurrentSearchTerm:(id)a3;
-- (void)setCurrentTagIdentifiers:(id)a3;
-- (void)setCurrentVirtualSmartFolderAccountObjectIDURL:(id)a3;
-- (void)setCurrentVirtualSmartFolderType:(id)a3;
-- (void)setExpansionState:(id)a3;
-- (void)setFocusedNoteObjectIDURL:(id)a3;
-- (void)setHostApplicationIdentifier:(id)a3;
-- (void)setIsAuxiliaryWindow:(BOOL)a3;
-- (void)setIsPrimaryContentVisible:(BOOL)a3;
-- (void)setIsSupplementaryContentVisible:(BOOL)a3;
-- (void)setIsTrailingContentVisible:(BOOL)a3;
-- (void)setMainSplitViewPrimaryColumnWidth:(id)a3;
-- (void)setMainSplitViewSupplementaryColumnWidth:(id)a3;
-- (void)setNoteCreationApproach:(int64_t)a3;
-- (void)setPreferredNoteContainerViewMode:(int64_t)a3;
-- (void)setScrollState:(id)a3;
-- (void)setSelectionState:(id)a3;
-- (void)setSystemPaper:(BOOL)a3;
-- (void)setToolPickerIdentifier:(id)a3;
-- (void)setWindowIdentifier:(id)a3;
+- (void)setActiveEditorInEditMode:(BOOL)mode;
+- (void)setAttachmentBrowserOpen:(BOOL)open;
+- (void)setCurrentActivityStreamSelection:(id)selection;
+- (void)setCurrentActivityStreamViewMode:(int64_t)mode;
+- (void)setCurrentContainerObjectIDURLs:(id)ls;
+- (void)setCurrentFirstVisibleObjectIDURLForContainerObjectIDURL:(id)l;
+- (void)setCurrentInvitationObjectIDURL:(id)l;
+- (void)setCurrentNoteContainerViewMode:(int64_t)mode;
+- (void)setCurrentNoteLastViewedDate:(id)date;
+- (void)setCurrentNoteObjectIDURL:(id)l;
+- (void)setCurrentObjectIDURL:(id)l;
+- (void)setCurrentSearchTerm:(id)term;
+- (void)setCurrentTagIdentifiers:(id)identifiers;
+- (void)setCurrentVirtualSmartFolderAccountObjectIDURL:(id)l;
+- (void)setCurrentVirtualSmartFolderType:(id)type;
+- (void)setExpansionState:(id)state;
+- (void)setFocusedNoteObjectIDURL:(id)l;
+- (void)setHostApplicationIdentifier:(id)identifier;
+- (void)setIsAuxiliaryWindow:(BOOL)window;
+- (void)setIsPrimaryContentVisible:(BOOL)visible;
+- (void)setIsSupplementaryContentVisible:(BOOL)visible;
+- (void)setIsTrailingContentVisible:(BOOL)visible;
+- (void)setMainSplitViewPrimaryColumnWidth:(id)width;
+- (void)setMainSplitViewSupplementaryColumnWidth:(id)width;
+- (void)setNoteCreationApproach:(int64_t)approach;
+- (void)setPreferredNoteContainerViewMode:(int64_t)mode;
+- (void)setScrollState:(id)state;
+- (void)setSelectionState:(id)state;
+- (void)setSystemPaper:(BOOL)paper;
+- (void)setToolPickerIdentifier:(id)identifier;
+- (void)setWindowIdentifier:(id)identifier;
 @end
 
 @implementation ICWindowStateArchive
@@ -87,63 +87,63 @@
 
 - (NSString)windowIdentifier
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"windowIdentifier"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  uUIDString = [stateDictionary objectForKeyedSubscript:@"windowIdentifier"];
 
-  if (!v3)
+  if (!uUIDString)
   {
     v4 = +[NSUUID UUID];
-    v3 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
   }
 
-  return v3;
+  return uUIDString;
 }
 
 - (NSString)toolPickerIdentifier
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"toolPickerIdentifier"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"toolPickerIdentifier"];
 
   return v3;
 }
 
 - (NSDictionary)expansionState
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"kICWindowStateExpansionState"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"kICWindowStateExpansionState"];
 
   return v3;
 }
 
 - (BOOL)isAuxiliaryWindow
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"isAuxiliaryWindow"];
-  v4 = [v3 BOOLValue];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"isAuxiliaryWindow"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)hostApplicationIdentifier
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"hostApplicationIdentifier"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"hostApplicationIdentifier"];
 
   return v3;
 }
 
 - (NSData)selectionState
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"kICWindowStateSelectionState"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"kICWindowStateSelectionState"];
 
   return v3;
 }
 
 - (NSURL)currentObjectIDURL
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentObjectID"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentObjectID"];
 
   if (v3)
   {
@@ -160,8 +160,8 @@
 
 - (NSArray)currentContainerObjectIDURLs
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentContainerObjectIDURLs"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentContainerObjectIDURLs"];
 
   v4 = [v3 ic_compactMap:&stru_100647450];
 
@@ -170,8 +170,8 @@
 
 - (NSURL)currentNoteObjectIDURL
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentNoteObjectID"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentNoteObjectID"];
 
   if (v3)
   {
@@ -188,80 +188,80 @@
 
 - (NSString)currentSearchTerm
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentSearchTerm"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentSearchTerm"];
 
   return v3;
 }
 
 - (int64_t)noteCreationApproach
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"createNewNoteApproach"];
-  v4 = [v3 integerValue];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"createNewNoteApproach"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)isSystemPaper
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"isSystemPaper"];
-  v4 = [v3 BOOLValue];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"isSystemPaper"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)currentNoteContainerViewMode
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentNoteContainerViewMode"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentNoteContainerViewMode"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)preferredNoteContainerViewMode
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"kICWindowStatePreferredNoteContainerViewMode"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"kICWindowStatePreferredNoteContainerViewMode"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)isAttachmentBrowserOpen
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attachmentBrowserOpen"];
-  v4 = [v3 BOOLValue];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"attachmentBrowserOpen"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setCurrentContainerObjectIDURLs:(id)a3
+- (void)setCurrentContainerObjectIDURLs:(id)ls
 {
-  v7 = [a3 ic_compactMap:&stru_100647490];
-  v4 = [(ICWindowStateArchive *)self stateDictionary];
-  v5 = [v4 mutableCopy];
+  v7 = [ls ic_compactMap:&stru_100647490];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v5 = [stateDictionary mutableCopy];
 
   [v5 setObject:v7 forKeyedSubscript:@"currentContainerObjectIDURLs"];
   v6 = [v5 copy];
@@ -270,46 +270,46 @@
 
 - (NSArray)currentTagIdentifiers
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentTagIdentifiers"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentTagIdentifiers"];
 
   return v3;
 }
 
-- (void)setCurrentTagIdentifiers:(id)a3
+- (void)setCurrentTagIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v7 = [v5 mutableCopy];
+  identifiersCopy = identifiers;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v7 = [stateDictionary mutableCopy];
 
-  [v7 setObject:v4 forKeyedSubscript:@"currentTagIdentifiers"];
+  [v7 setObject:identifiersCopy forKeyedSubscript:@"currentTagIdentifiers"];
   v6 = [v7 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v6];
 }
 
 - (NSString)currentVirtualSmartFolderType
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentVirtualSmartFolderType"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentVirtualSmartFolderType"];
 
   return v3;
 }
 
-- (void)setCurrentVirtualSmartFolderType:(id)a3
+- (void)setCurrentVirtualSmartFolderType:(id)type
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v7 = [v5 mutableCopy];
+  typeCopy = type;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v7 = [stateDictionary mutableCopy];
 
-  [v7 setObject:v4 forKeyedSubscript:@"currentVirtualSmartFolderType"];
+  [v7 setObject:typeCopy forKeyedSubscript:@"currentVirtualSmartFolderType"];
   v6 = [v7 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v6];
 }
 
 - (NSURL)currentVirtualSmartFolderAccountObjectIDURL
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentVirtualSmartFolderAccountObjectIDURL"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentVirtualSmartFolderAccountObjectIDURL"];
 
   if (v3)
   {
@@ -324,23 +324,23 @@
   return v4;
 }
 
-- (void)setCurrentVirtualSmartFolderAccountObjectIDURL:(id)a3
+- (void)setCurrentVirtualSmartFolderAccountObjectIDURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  lCopy = l;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v8 setObject:v6 forKeyedSubscript:@"currentVirtualSmartFolderAccountObjectIDURL"];
+  [v8 setObject:absoluteString forKeyedSubscript:@"currentVirtualSmartFolderAccountObjectIDURL"];
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
 - (NSDictionary)currentFirstVisibleObjectIDURLForContainerObjectIDURL
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"firstVisibleIdentifierForContainerIdentifier"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"firstVisibleIdentifierForContainerIdentifier"];
 
   v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
   v15 = 0u;
@@ -378,15 +378,15 @@
   return v4;
 }
 
-- (void)setCurrentFirstVisibleObjectIDURLForContainerObjectIDURL:(id)a3
+- (void)setCurrentFirstVisibleObjectIDURLForContainerObjectIDURL:(id)l
 {
-  v4 = a3;
-  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  lCopy = l;
+  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [lCopy count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = lCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -403,9 +403,9 @@
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = [v6 objectForKeyedSubscript:{v11, v19}];
-        v13 = [v12 absoluteString];
-        v14 = [v11 absoluteString];
-        [v5 setObject:v13 forKeyedSubscript:v14];
+        absoluteString = [v12 absoluteString];
+        absoluteString2 = [v11 absoluteString];
+        [v5 setObject:absoluteString forKeyedSubscript:absoluteString2];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -414,8 +414,8 @@
     while (v8);
   }
 
-  v15 = [(ICWindowStateArchive *)self stateDictionary];
-  v16 = [v15 mutableCopy];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v16 = [stateDictionary mutableCopy];
 
   v17 = [v5 copy];
   [v16 setObject:v17 forKeyedSubscript:@"firstVisibleIdentifierForContainerIdentifier"];
@@ -424,23 +424,23 @@
   [(ICWindowStateArchive *)self setStateDictionary:v18];
 }
 
-- (void)setCurrentNoteObjectIDURL:(id)a3
+- (void)setCurrentNoteObjectIDURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  lCopy = l;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v8 setObject:v6 forKeyedSubscript:@"currentNoteObjectID"];
+  [v8 setObject:absoluteString forKeyedSubscript:@"currentNoteObjectID"];
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
 - (NSURL)currentInvitationObjectIDURL
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentInvitationObjectID"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentInvitationObjectID"];
 
   if (v3)
   {
@@ -455,36 +455,36 @@
   return v4;
 }
 
-- (void)setCurrentInvitationObjectIDURL:(id)a3
+- (void)setCurrentInvitationObjectIDURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  lCopy = l;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v8 setObject:v6 forKeyedSubscript:@"currentInvitationObjectID"];
+  [v8 setObject:absoluteString forKeyedSubscript:@"currentInvitationObjectID"];
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setCurrentObjectIDURL:(id)a3
+- (void)setCurrentObjectIDURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  lCopy = l;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v8 setObject:v6 forKeyedSubscript:@"currentObjectID"];
+  [v8 setObject:absoluteString forKeyedSubscript:@"currentObjectID"];
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
 - (NSURL)focusedNoteObjectIDURL
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"focusedNoteObjectIDURL"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"focusedNoteObjectIDURL"];
 
   if (v3)
   {
@@ -499,48 +499,48 @@
   return v4;
 }
 
-- (void)setFocusedNoteObjectIDURL:(id)a3
+- (void)setFocusedNoteObjectIDURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  lCopy = l;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v8 setObject:v6 forKeyedSubscript:@"focusedNoteObjectIDURL"];
+  [v8 setObject:absoluteString forKeyedSubscript:@"focusedNoteObjectIDURL"];
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setCurrentSearchTerm:(id)a3
+- (void)setCurrentSearchTerm:(id)term
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v7 = [v5 mutableCopy];
+  termCopy = term;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v7 = [stateDictionary mutableCopy];
 
-  [v7 setObject:v4 forKeyedSubscript:@"currentSearchTerm"];
+  [v7 setObject:termCopy forKeyedSubscript:@"currentSearchTerm"];
   v6 = [v7 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v6];
 }
 
-- (void)setCurrentNoteContainerViewMode:(int64_t)a3
+- (void)setCurrentNoteContainerViewMode:(int64_t)mode
 {
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:mode];
   [v8 setObject:v6 forKeyedSubscript:@"currentNoteContainerViewMode"];
 
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setPreferredNoteContainerViewMode:(int64_t)a3
+- (void)setPreferredNoteContainerViewMode:(int64_t)mode
 {
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:mode];
   [v8 setObject:v6 forKeyedSubscript:@"kICWindowStatePreferredNoteContainerViewMode"];
 
   v7 = [v8 copy];
@@ -549,8 +549,8 @@
 
 - (ICActivityStreamSelection)currentActivityStreamSelection
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentActivityStreamSelection"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentActivityStreamSelection"];
 
   if (v3)
   {
@@ -565,43 +565,43 @@
   return v4;
 }
 
-- (void)setCurrentActivityStreamSelection:(id)a3
+- (void)setCurrentActivityStreamSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  selectionCopy = selection;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 encodedData];
+  encodedData = [selectionCopy encodedData];
 
-  [v8 setObject:v6 forKeyedSubscript:@"currentActivityStreamSelection"];
+  [v8 setObject:encodedData forKeyedSubscript:@"currentActivityStreamSelection"];
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
 - (int64_t)currentActivityStreamViewMode
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentActivityStreamViewMode"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentActivityStreamViewMode"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setCurrentActivityStreamViewMode:(int64_t)a3
+- (void)setCurrentActivityStreamViewMode:(int64_t)mode
 {
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:mode];
   [v8 setObject:v6 forKeyedSubscript:@"currentActivityStreamViewMode"];
 
   v7 = [v8 copy];
@@ -610,20 +610,20 @@
 
 - (BOOL)isPrimaryContentVisible
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"isPrimaryContentVisible"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"isPrimaryContentVisible"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(stateDictionary) = [v3 BOOLValue];
+  return stateDictionary;
 }
 
-- (void)setIsPrimaryContentVisible:(BOOL)a3
+- (void)setIsPrimaryContentVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  visibleCopy = visible;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:visibleCopy];
   [v8 setObject:v6 forKeyedSubscript:@"isPrimaryContentVisible"];
 
   v7 = [v8 copy];
@@ -632,20 +632,20 @@
 
 - (BOOL)isSupplementaryContentVisible
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"isSupplementaryContentVisible"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"isSupplementaryContentVisible"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(stateDictionary) = [v3 BOOLValue];
+  return stateDictionary;
 }
 
-- (void)setIsSupplementaryContentVisible:(BOOL)a3
+- (void)setIsSupplementaryContentVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  visibleCopy = visible;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:visibleCopy];
   [v8 setObject:v6 forKeyedSubscript:@"isSupplementaryContentVisible"];
 
   v7 = [v8 copy];
@@ -654,20 +654,20 @@
 
 - (BOOL)isTrailingContentVisible
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"isTrailingContentVisible"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"isTrailingContentVisible"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(stateDictionary) = [v3 BOOLValue];
+  return stateDictionary;
 }
 
-- (void)setIsTrailingContentVisible:(BOOL)a3
+- (void)setIsTrailingContentVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  visibleCopy = visible;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:visibleCopy];
   [v8 setObject:v6 forKeyedSubscript:@"isTrailingContentVisible"];
 
   v7 = [v8 copy];
@@ -676,143 +676,143 @@
 
 - (NSNumber)mainSplitViewPrimaryColumnWidth
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"mainSplitViewPrimaryColumnWidth"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"mainSplitViewPrimaryColumnWidth"];
 
   return v3;
 }
 
-- (void)setMainSplitViewPrimaryColumnWidth:(id)a3
+- (void)setMainSplitViewPrimaryColumnWidth:(id)width
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v7 = [v5 mutableCopy];
+  widthCopy = width;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v7 = [stateDictionary mutableCopy];
 
-  [v7 setObject:v4 forKeyedSubscript:@"mainSplitViewPrimaryColumnWidth"];
+  [v7 setObject:widthCopy forKeyedSubscript:@"mainSplitViewPrimaryColumnWidth"];
   v6 = [v7 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v6];
 }
 
 - (NSNumber)mainSplitViewSupplementaryColumnWidth
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"mainSplitViewSupplementaryColumnWidth"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"mainSplitViewSupplementaryColumnWidth"];
 
   return v3;
 }
 
-- (void)setMainSplitViewSupplementaryColumnWidth:(id)a3
+- (void)setMainSplitViewSupplementaryColumnWidth:(id)width
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v7 = [v5 mutableCopy];
+  widthCopy = width;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v7 = [stateDictionary mutableCopy];
 
-  [v7 setObject:v4 forKeyedSubscript:@"mainSplitViewSupplementaryColumnWidth"];
+  [v7 setObject:widthCopy forKeyedSubscript:@"mainSplitViewSupplementaryColumnWidth"];
   v6 = [v7 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v6];
 }
 
-- (void)setExpansionState:(id)a3
+- (void)setExpansionState:(id)state
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v7 = [v5 mutableCopy];
+  stateCopy = state;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v7 = [stateDictionary mutableCopy];
 
-  [v7 setObject:v4 forKeyedSubscript:@"kICWindowStateExpansionState"];
+  [v7 setObject:stateCopy forKeyedSubscript:@"kICWindowStateExpansionState"];
   v6 = [v7 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v6];
 }
 
 - (NSDate)currentNoteLastViewedDate
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"currentNoteLastViewedDate"];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"currentNoteLastViewedDate"];
 
   return v3;
 }
 
-- (void)setCurrentNoteLastViewedDate:(id)a3
+- (void)setCurrentNoteLastViewedDate:(id)date
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  dateCopy = date;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 copy];
+  v6 = [dateCopy copy];
   [v8 setObject:v6 forKeyedSubscript:@"currentNoteLastViewedDate"];
 
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setWindowIdentifier:(id)a3
+- (void)setWindowIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v7 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v7 = [stateDictionary mutableCopy];
 
-  [v7 setObject:v4 forKeyedSubscript:@"windowIdentifier"];
+  [v7 setObject:identifierCopy forKeyedSubscript:@"windowIdentifier"];
   v6 = [v7 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v6];
 }
 
-- (void)setNoteCreationApproach:(int64_t)a3
+- (void)setNoteCreationApproach:(int64_t)approach
 {
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:approach];
   [v8 setObject:v6 forKeyedSubscript:@"createNewNoteApproach"];
 
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setToolPickerIdentifier:(id)a3
+- (void)setToolPickerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 copy];
+  v6 = [identifierCopy copy];
   [v8 setObject:v6 forKeyedSubscript:@"toolPickerIdentifier"];
 
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setSystemPaper:(BOOL)a3
+- (void)setSystemPaper:(BOOL)paper
 {
-  v3 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  paperCopy = paper;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:paperCopy];
   [v8 setObject:v6 forKeyedSubscript:@"isSystemPaper"];
 
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setHostApplicationIdentifier:(id)a3
+- (void)setHostApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [v4 copy];
+  v6 = [identifierCopy copy];
   [v8 setObject:v6 forKeyedSubscript:@"hostApplicationIdentifier"];
 
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setAttachmentBrowserOpen:(BOOL)a3
+- (void)setAttachmentBrowserOpen:(BOOL)open
 {
-  v3 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  openCopy = open;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:openCopy];
   [v8 setObject:v6 forKeyedSubscript:@"attachmentBrowserOpen"];
 
   v7 = [v8 copy];
@@ -821,51 +821,51 @@
 
 - (BOOL)isActiveEditorInEditMode
 {
-  v2 = [(ICWindowStateArchive *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"activeEditorInEditMode"];
-  v4 = [v3 BOOLValue];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"activeEditorInEditMode"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setActiveEditorInEditMode:(BOOL)a3
+- (void)setActiveEditorInEditMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  modeCopy = mode;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:modeCopy];
   [v8 setObject:v6 forKeyedSubscript:@"activeEditorInEditMode"];
 
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (void)setIsAuxiliaryWindow:(BOOL)a3
+- (void)setIsAuxiliaryWindow:(BOOL)window
 {
-  v3 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v8 = [v5 mutableCopy];
+  windowCopy = window;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v8 = [stateDictionary mutableCopy];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:windowCopy];
   [v8 setObject:v6 forKeyedSubscript:@"isAuxiliaryWindow"];
 
   v7 = [v8 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v7];
 }
 
-- (id)scrollStateForNote:(id)a3
+- (id)scrollStateForNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"scrollState"];
+  noteCopy = note;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v6 = [stateDictionary objectForKeyedSubscript:@"scrollState"];
 
   objc_opt_class();
   v7 = ICDynamicCast();
 
   if (v7)
   {
-    v8 = [[ICTextViewScrollState alloc] initWithDictionary:v7 note:v4];
+    v8 = [[ICTextViewScrollState alloc] initWithDictionary:v7 note:noteCopy];
   }
 
   else
@@ -876,38 +876,38 @@
   return v8;
 }
 
-- (void)setScrollState:(id)a3
+- (void)setScrollState:(id)state
 {
-  v4 = [a3 dictionaryRepresentation];
-  if (v4)
+  dictionaryRepresentation = [state dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    v8 = v4;
-    v5 = [(ICWindowStateArchive *)self stateDictionary];
-    v6 = [v5 mutableCopy];
+    v8 = dictionaryRepresentation;
+    stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+    v6 = [stateDictionary mutableCopy];
 
     [v6 setObject:v8 forKeyedSubscript:@"scrollState"];
     v7 = [v6 copy];
     [(ICWindowStateArchive *)self setStateDictionary:v7];
 
-    v4 = v8;
+    dictionaryRepresentation = v8;
   }
 }
 
-- (void)setSelectionState:(id)a3
+- (void)setSelectionState:(id)state
 {
-  v4 = a3;
-  v5 = [(ICWindowStateArchive *)self stateDictionary];
-  v7 = [v5 mutableCopy];
+  stateCopy = state;
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v7 = [stateDictionary mutableCopy];
 
-  [v7 ic_setNonNilObject:v4 forNonNilKey:@"kICWindowStateSelectionState"];
+  [v7 ic_setNonNilObject:stateCopy forNonNilKey:@"kICWindowStateSelectionState"];
   v6 = [v7 copy];
   [(ICWindowStateArchive *)self setStateDictionary:v6];
 }
 
-+ (id)windowStateArchiveFromDictionary:(id)a3
++ (id)windowStateArchiveFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[ICWindowStateArchive alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[ICWindowStateArchive alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
@@ -917,22 +917,22 @@
   v7.receiver = self;
   v7.super_class = ICWindowStateArchive;
   v3 = [(ICWindowStateArchive *)&v7 description];
-  v4 = [(ICWindowStateArchive *)self stateDictionary];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  stateDictionary = [(ICWindowStateArchive *)self stateDictionary];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, stateDictionary];
 
   return v5;
 }
 
-- (ICWindowStateArchive)initWithDictionary:(id)a3
+- (ICWindowStateArchive)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = ICWindowStateArchive;
   v5 = [(ICWindowStateArchive *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICWindowStateArchive *)v5 setStateDictionary:v4];
+    [(ICWindowStateArchive *)v5 setStateDictionary:dictionaryCopy];
   }
 
   return v6;
@@ -940,27 +940,27 @@
 
 + (ICWindowStateArchive)windowStateArchiveWithEmptyState
 {
-  v2 = [[a1 alloc] initWithDictionary:&__NSDictionary0__struct];
+  v2 = [[self alloc] initWithDictionary:&__NSDictionary0__struct];
 
   return v2;
 }
 
 + (ICWindowStateArchive)windowStateArchiveWithDefaultState
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setCurrentNoteContainerViewMode:0];
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
-  v5 = [ICAccount allActiveAccountsInContext:v4];
+  managedObjectContext = [v3 managedObjectContext];
+  v5 = [ICAccount allActiveAccountsInContext:managedObjectContext];
 
   v6 = [v5 count];
   if (v6 < 2)
   {
     v8 = v6;
     v9 = +[NotesApp sharedNotesApp];
-    v10 = [v9 noteContext];
-    v11 = [v10 allAccounts];
-    v7 = [v11 ic_objectsPassingTest:&stru_1006474D0];
+    noteContext = [v9 noteContext];
+    allAccounts = [noteContext allAccounts];
+    v7 = [allAccounts ic_objectsPassingTest:&stru_1006474D0];
 
     v12 = &v8[[v7 count]];
     [v2 setIsPrimaryContentVisible:v12 > 1];
@@ -976,17 +976,17 @@
         v13 = v7;
       }
 
-      v14 = [v13 firstObject];
-      v15 = [v14 objectID];
-      v16 = [v15 URIRepresentation];
+      firstObject = [v13 firstObject];
+      objectID = [firstObject objectID];
+      uRIRepresentation = [objectID URIRepresentation];
 
-      if (v16)
+      if (uRIRepresentation)
       {
-        v19 = v16;
+        v19 = uRIRepresentation;
         v17 = [NSArray arrayWithObjects:&v19 count:1];
         [v2 setCurrentContainerObjectIDURLs:v17];
 
-        [v2 setCurrentObjectIDURL:v16];
+        [v2 setCurrentObjectIDURL:uRIRepresentation];
       }
     }
   }

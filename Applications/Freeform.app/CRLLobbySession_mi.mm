@@ -1,31 +1,31 @@
 @interface CRLLobbySession_mi
-- (BOOL)isEqual:(id)a3;
-- (CRLLobbySession_mi)initWithDisplayName:(id)a3 indicatorDarkColor:(id)a4 cnContact:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (CRLLobbySession_mi)initWithDisplayName:(id)name indicatorDarkColor:(id)color cnContact:(id)contact;
 - (id)description;
 @end
 
 @implementation CRLLobbySession_mi
 
-- (CRLLobbySession_mi)initWithDisplayName:(id)a3 indicatorDarkColor:(id)a4 cnContact:(id)a5
+- (CRLLobbySession_mi)initWithDisplayName:(id)name indicatorDarkColor:(id)color cnContact:(id)contact
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  colorCopy = color;
+  contactCopy = contact;
   v18.receiver = self;
   v18.super_class = CRLLobbySession_mi;
   v11 = [(CRLLobbySession_mi *)&v18 init];
   if (v11)
   {
-    v12 = [v8 crl_substringWithComposedCharacterSequencesTruncatedToLength:30];
+    v12 = [nameCopy crl_substringWithComposedCharacterSequencesTruncatedToLength:30];
     v13 = [v12 copy];
     displayName = v11->_displayName;
     v11->_displayName = v13;
 
-    v15 = [v9 copy];
+    v15 = [colorCopy copy];
     indicatorDarkColor = v11->_indicatorDarkColor;
     v11->_indicatorDarkColor = v15;
 
-    objc_storeStrong(&v11->_cnContact, a5);
+    objc_storeStrong(&v11->_cnContact, contact);
   }
 
   return v11;
@@ -41,13 +41,13 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v4 = a3;
+    equalCopy = equal;
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v4);
+    v6 = sub_100014370(v5, equalCopy);
 
     if (v6)
     {

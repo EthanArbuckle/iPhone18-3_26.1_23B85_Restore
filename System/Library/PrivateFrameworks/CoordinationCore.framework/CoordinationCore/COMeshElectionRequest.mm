@@ -1,48 +1,48 @@
 @interface COMeshElectionRequest
 + (id)acceptableResponses;
-- (COMeshElectionRequest)initWithBallot:(id)a3 generation:(unint64_t)a4 listeningPort:(int)a5;
-- (COMeshElectionRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COMeshElectionRequest)initWithBallot:(id)ballot generation:(unint64_t)generation listeningPort:(int)port;
+- (COMeshElectionRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMeshElectionRequest
 
-- (COMeshElectionRequest)initWithBallot:(id)a3 generation:(unint64_t)a4 listeningPort:(int)a5
+- (COMeshElectionRequest)initWithBallot:(id)ballot generation:(unint64_t)generation listeningPort:(int)port
 {
-  result = [(COMeshBaseBallotRequest *)self initWithBallot:a3 generation:a4];
+  result = [(COMeshBaseBallotRequest *)self initWithBallot:ballot generation:generation];
   if (result)
   {
-    result->_listeningPort = a5;
+    result->_listeningPort = port;
   }
 
   return result;
 }
 
-- (COMeshElectionRequest)initWithCoder:(id)a3
+- (COMeshElectionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = COMeshElectionRequest;
-  v5 = [(COMeshBaseBallotRequest *)&v8 initWithCoder:v4];
+  v5 = [(COMeshBaseBallotRequest *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"listeningPort"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listeningPort"];
     v5->_listeningPort = [v6 unsignedShortValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = COMeshElectionRequest;
-  [(COMeshBaseBallotRequest *)&v6 encodeWithCoder:v4];
+  [(COMeshBaseBallotRequest *)&v6 encodeWithCoder:coderCopy];
   if (self->_listeningPort)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInt:{-[COMeshElectionRequest listeningPort](self, "listeningPort")}];
-    [v4 encodeObject:v5 forKey:@"listeningPort"];
+    [coderCopy encodeObject:v5 forKey:@"listeningPort"];
   }
 }
 

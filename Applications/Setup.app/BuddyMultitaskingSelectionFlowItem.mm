@@ -4,7 +4,7 @@
 - (_TtP5Setup37BuddyMultitaskingSelectionManagerType_)iPadMultitaskingModeManager;
 - (id)viewController;
 - (void)controllerWasPopped;
-- (void)setSettingsManager:(id)a3;
+- (void)setSettingsManager:(id)manager;
 @end
 
 @implementation BuddyMultitaskingSelectionFlowItem
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (void)setSettingsManager:(id)a3
+- (void)setSettingsManager:(id)manager
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5Setup34BuddyMultitaskingSelectionFlowItem_settingsManager);
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup34BuddyMultitaskingSelectionFlowItem_settingsManager) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup34BuddyMultitaskingSelectionFlowItem_settingsManager) = manager;
+  managerCopy = manager;
 }
 
 - (BOOL)controllerNeedsToRun
@@ -55,7 +55,7 @@
 
 - (id)viewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100042470();
 
   return v3;

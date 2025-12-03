@@ -12,12 +12,12 @@
 
 - (uint64_t)fc_isMissingZoneError
 {
-  if ([a1 fc_isCKErrorWithCode:26])
+  if ([self fc_isCKErrorWithCode:26])
   {
     return 1;
   }
 
-  return [a1 fc_isCKErrorWithCode:28];
+  return [self fc_isCKErrorWithCode:28];
 }
 
 - (uint64_t)fc_hasCKErrorWithCode:()FCCKAdditions
@@ -27,7 +27,7 @@
   v4[2] = __48__NSError_FCCKAdditions__fc_hasCKErrorWithCode___block_invoke;
   v4[3] = &__block_descriptor_40_e8_B16__0q8l;
   v4[4] = a3;
-  return [a1 fc_hasCKErrorWithCodePassingTest:v4];
+  return [self fc_hasCKErrorWithCodePassingTest:v4];
 }
 
 - (uint64_t)fc_isCKErrorWithCode:()FCCKAdditions
@@ -37,34 +37,34 @@
   v4[2] = __47__NSError_FCCKAdditions__fc_isCKErrorWithCode___block_invoke;
   v4[3] = &__block_descriptor_40_e8_B16__0q8l;
   v4[4] = a3;
-  return [a1 fc_isCKErrorWithCodePassingTest:v4];
+  return [self fc_isCKErrorWithCodePassingTest:v4];
 }
 
 - (uint64_t)fc_isCKErrorWithCodePassingTest:()FCCKAdditions
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695B740]];
+  domain = [self domain];
+  v6 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
   if (v6)
   {
-    if ((v4[2])(v4, [a1 code]))
+    if ((v4[2])(v4, [self code]))
     {
       v6 = 1;
     }
 
-    else if ([a1 code] == 2)
+    else if ([self code] == 2)
     {
-      v7 = [a1 userInfo];
-      v8 = [v7 objectForKey:*MEMORY[0x1E695B798]];
+      userInfo = [self userInfo];
+      v8 = [userInfo objectForKey:*MEMORY[0x1E695B798]];
 
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v9 = [v8 allValues];
-      v6 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      allValues = [v8 allValues];
+      v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         v10 = *v15;
@@ -75,7 +75,7 @@
           {
             if (*v15 != v10)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allValues);
             }
 
             if (!v4[2](v4, [*(*(&v14 + 1) + 8 * v11) code]))
@@ -88,7 +88,7 @@
           }
 
           while (v6 != v11);
-          v6 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
           if (v6)
           {
             continue;
@@ -117,27 +117,27 @@ LABEL_16:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695B740]];
+  domain = [self domain];
+  v6 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
   if (v6)
   {
-    if (v4[2](v4, [a1 code]))
+    if (v4[2](v4, [self code]))
     {
       v6 = 1;
     }
 
-    else if ([a1 code] == 2)
+    else if ([self code] == 2)
     {
-      v7 = [a1 userInfo];
-      v8 = [v7 objectForKey:*MEMORY[0x1E695B798]];
+      userInfo = [self userInfo];
+      v8 = [userInfo objectForKey:*MEMORY[0x1E695B798]];
 
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v9 = [v8 allValues];
-      v6 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      allValues = [v8 allValues];
+      v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         v10 = *v15;
@@ -147,7 +147,7 @@ LABEL_16:
           {
             if (*v15 != v10)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allValues);
             }
 
             if (v4[2](v4, [*(*(&v14 + 1) + 8 * i) code]))
@@ -157,7 +157,7 @@ LABEL_16:
             }
           }
 
-          v6 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
           if (v6)
           {
             continue;
@@ -184,30 +184,30 @@ LABEL_16:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 domain];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E695B740]];
+  domain = [self domain];
+  v9 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  v10 = [a1 userInfo];
-  v11 = [v10 objectForKey:v6];
+  userInfo = [self userInfo];
+  v11 = [userInfo objectForKey:v6];
 
   if (v11)
   {
     goto LABEL_6;
   }
 
-  if ([a1 code] == 2)
+  if ([self code] == 2)
   {
-    v12 = [a1 userInfo];
-    v13 = [v12 objectForKey:*MEMORY[0x1E695B798]];
+    userInfo2 = [self userInfo];
+    v13 = [userInfo2 objectForKey:*MEMORY[0x1E695B798]];
 
     v14 = [v13 objectForKey:v7];
-    v15 = [v14 userInfo];
-    v11 = [v15 objectForKey:v6];
+    userInfo3 = [v14 userInfo];
+    v11 = [userInfo3 objectForKey:v6];
   }
 
   else
@@ -223,13 +223,13 @@ LABEL_6:
 
 - (id)fc_zoneIDsWithIdentityLossError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E695B740]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
-  if (v3 && [a1 code] == 2)
+  if (v3 && [self code] == 2)
   {
-    v4 = [a1 userInfo];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695B798]];
+    userInfo = [self userInfo];
+    v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B798]];
 
     if (v5)
     {
@@ -244,21 +244,21 @@ LABEL_6:
       v9 = v8;
       [v7 enumerateKeysAndObjectsUsingBlock:v12];
 
-      v10 = [v9 allObjects];
+      allObjects = [v9 allObjects];
     }
 
     else
     {
-      v10 = MEMORY[0x1E695E0F0];
+      allObjects = MEMORY[0x1E695E0F0];
     }
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
-  return v10;
+  return allObjects;
 }
 
 @end

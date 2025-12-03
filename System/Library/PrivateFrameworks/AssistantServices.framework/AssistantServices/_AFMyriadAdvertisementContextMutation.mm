@@ -1,5 +1,5 @@
 @interface _AFMyriadAdvertisementContextMutation
-- (_AFMyriadAdvertisementContextMutation)initWithBase:(id)a3;
+- (_AFMyriadAdvertisementContextMutation)initWithBase:(id)base;
 - (double)getContextFetchDelay;
 - (id)getContextData;
 - (unint64_t)getGeneration;
@@ -22,15 +22,15 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_contextData;
+    contextData = self->_contextData;
   }
 
   else
   {
-    v2 = [(AFMyriadAdvertisementContext *)self->_base contextData];
+    contextData = [(AFMyriadAdvertisementContext *)self->_base contextData];
   }
 
-  return v2;
+  return contextData;
 }
 
 - (unint64_t)getGeneration
@@ -46,16 +46,16 @@
   }
 }
 
-- (_AFMyriadAdvertisementContextMutation)initWithBase:(id)a3
+- (_AFMyriadAdvertisementContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFMyriadAdvertisementContextMutation;
   v6 = [(_AFMyriadAdvertisementContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,29 +1,29 @@
 @interface GEOToolServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (void)calculatePurgableSpaceWithMessage:(id)a3;
-- (void)checkProactiveTileDownloadPolicyEnabledWithMessage:(id)a3;
-- (void)fetchOfflineMetadataWithMessage:(id)a3;
-- (void)flushPurgeableOfflineDataWithMessage:(id)a3;
-- (void)forceProactiveTileDownloaderRunWithMessage:(id)a3;
-- (void)freePurgableSpaceWithMessage:(id)a3;
-- (void)getDefaultWithMessage:(id)a3;
-- (void)invalidateTileCacheWithMessage:(id)a3;
-- (void)listFilePathsWithMessage:(id)a3;
-- (void)lockDBsWithMessage:(id)a3;
-- (void)notifyNetworkDefaultsChangedWithMessage:(id)a3;
-- (void)unlockDBsWithMessage:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (void)calculatePurgableSpaceWithMessage:(id)message;
+- (void)checkProactiveTileDownloadPolicyEnabledWithMessage:(id)message;
+- (void)fetchOfflineMetadataWithMessage:(id)message;
+- (void)flushPurgeableOfflineDataWithMessage:(id)message;
+- (void)forceProactiveTileDownloaderRunWithMessage:(id)message;
+- (void)freePurgableSpaceWithMessage:(id)message;
+- (void)getDefaultWithMessage:(id)message;
+- (void)invalidateTileCacheWithMessage:(id)message;
+- (void)listFilePathsWithMessage:(id)message;
+- (void)lockDBsWithMessage:(id)message;
+- (void)notifyNetworkDefaultsChangedWithMessage:(id)message;
+- (void)unlockDBsWithMessage:(id)message;
 @end
 
 @implementation GEOToolServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (sub_100001B78(v12, v11, @"geotool", v10, &off_100088B50, 0))
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  if (sub_100001B78(peerCopy, objectCopy, @"geotool", messageCopy, &off_100088B50, 0))
   {
-    v13 = sub_100001334(v10);
+    v13 = sub_100001334(messageCopy);
     v14 = 0;
     if (v13 <= 1922)
     {
@@ -32,33 +32,33 @@
         switch(v13)
         {
           case 1029:
-            v26 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+            v26 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
             v16 = v26;
             if (v26)
             {
-              [v26 setSignpostId:a6];
+              [v26 setSignpostId:id];
               [(GEOToolServer *)self getDefaultWithMessage:v16];
               goto LABEL_46;
             }
 
             goto LABEL_49;
           case 1340:
-            v28 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+            v28 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
             v16 = v28;
             if (v28)
             {
-              [v28 setSignpostId:a6];
+              [v28 setSignpostId:id];
               [(GEOToolServer *)self listFilePathsWithMessage:v16];
               goto LABEL_46;
             }
 
             goto LABEL_49;
           case 1728:
-            v19 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+            v19 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
             v16 = v19;
             if (v19)
             {
-              [v19 setSignpostId:a6];
+              [v19 setSignpostId:id];
               [(GEOToolServer *)self freePurgableSpaceWithMessage:v16];
               goto LABEL_46;
             }
@@ -72,33 +72,33 @@
         switch(v13)
         {
           case 430:
-            v25 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+            v25 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
             v16 = v25;
             if (v25)
             {
-              [v25 setSignpostId:a6];
+              [v25 setSignpostId:id];
               [(GEOToolServer *)self pingWithMessage:v16];
               goto LABEL_46;
             }
 
             goto LABEL_49;
           case 674:
-            v27 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+            v27 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
             v16 = v27;
             if (v27)
             {
-              [v27 setSignpostId:a6];
+              [v27 setSignpostId:id];
               [(GEOToolServer *)self lockDBsWithMessage:v16];
               goto LABEL_46;
             }
 
             goto LABEL_49;
           case 901:
-            v17 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+            v17 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
             v16 = v17;
             if (v17)
             {
-              [v17 setSignpostId:a6];
+              [v17 setSignpostId:id];
               [(GEOToolServer *)self unlockDBsWithMessage:v16];
               goto LABEL_46;
             }
@@ -115,33 +115,33 @@ LABEL_49:
       switch(v13)
       {
         case 1923:
-          v23 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+          v23 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
           v16 = v23;
           if (v23)
           {
-            [v23 setSignpostId:a6];
+            [v23 setSignpostId:id];
             [(GEOToolServer *)self invalidateTileCacheWithMessage:v16];
             goto LABEL_46;
           }
 
           goto LABEL_49;
         case 2030:
-          v24 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+          v24 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
           v16 = v24;
           if (v24)
           {
-            [v24 setSignpostId:a6];
+            [v24 setSignpostId:id];
             [(GEOToolServer *)self fetchOfflineMetadataWithMessage:v16];
             goto LABEL_46;
           }
 
           goto LABEL_49;
         case 2252:
-          v18 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+          v18 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
           v16 = v18;
           if (v18)
           {
-            [v18 setSignpostId:a6];
+            [v18 setSignpostId:id];
             [(GEOToolServer *)self calculatePurgableSpaceWithMessage:v16];
             goto LABEL_46;
           }
@@ -154,11 +154,11 @@ LABEL_49:
     {
       if (v13 == 3214)
       {
-        v22 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v22 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v22;
         if (v22)
         {
-          [v22 setSignpostId:a6];
+          [v22 setSignpostId:id];
           [(GEOToolServer *)self forceProactiveTileDownloaderRunWithMessage:v16];
           goto LABEL_46;
         }
@@ -168,11 +168,11 @@ LABEL_49:
 
       if (v13 == 3980)
       {
-        v20 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v20 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v20;
         if (v20)
         {
-          [v20 setSignpostId:a6];
+          [v20 setSignpostId:id];
           [(GEOToolServer *)self checkProactiveTileDownloadPolicyEnabledWithMessage:v16];
           goto LABEL_46;
         }
@@ -185,11 +185,11 @@ LABEL_49:
     {
       if (v13 == 2550)
       {
-        v21 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v21 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v21;
         if (v21)
         {
-          [v21 setSignpostId:a6];
+          [v21 setSignpostId:id];
           [(GEOToolServer *)self flushPurgeableOfflineDataWithMessage:v16];
           goto LABEL_46;
         }
@@ -199,11 +199,11 @@ LABEL_49:
 
       if (v13 == 2917)
       {
-        v15 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v15 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v15;
         if (v15)
         {
-          [v15 setSignpostId:a6];
+          [v15 setSignpostId:id];
           [(GEOToolServer *)self notifyNetworkDefaultsChangedWithMessage:v16];
 LABEL_46:
           v14 = 1;
@@ -227,9 +227,9 @@ LABEL_48:
   return v14;
 }
 
-- (void)notifyNetworkDefaultsChangedWithMessage:(id)a3
+- (void)notifyNetworkDefaultsChangedWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [GEOFilePaths urlFor:23];
   v13 = 0;
   v5 = [NSData dataWithContentsOfURL:v4 options:1 error:&v13];
@@ -269,43 +269,43 @@ LABEL_48:
     v11 = &off_1000890E0;
   }
 
-  [v3 sendReply:v11];
+  [messageCopy sendReply:v11];
 }
 
-- (void)flushPurgeableOfflineDataWithMessage:(id)a3
+- (void)flushPurgeableOfflineDataWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[GEOTileLoader modernLoader];
-  v5 = [v4 proxy];
+  proxy = [v4 proxy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 tileCache];
+    tileCache = [proxy tileCache];
     v9 = @"success";
-    v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 clearPurgeableOfflineData]);
+    v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [tileCache clearPurgeableOfflineData]);
     v10 = v7;
     v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    [v3 sendReply:v8];
+    [messageCopy sendReply:v8];
   }
 
   else
   {
-    [v3 sendReply:0];
+    [messageCopy sendReply:0];
   }
 }
 
-- (void)fetchOfflineMetadataWithMessage:(id)a3
+- (void)fetchOfflineMetadataWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[GEOOfflineDataConfiguration sharedConfiguration];
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 activeVersions];
-  v7 = v6;
-  if (v6)
+  activeVersions = [v4 activeVersions];
+  v7 = activeVersions;
+  if (activeVersions)
   {
     v22 = v5;
-    v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
+    v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [activeVersions count]);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -327,15 +327,15 @@ LABEL_48:
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 unsignedIntValue];
-          if (v15 >= 0x1D)
+          unsignedIntValue = [v14 unsignedIntValue];
+          if (unsignedIntValue >= 0x1D)
           {
-            v16 = [NSString stringWithFormat:@"(unknown: %i)", v15];
+            v16 = [NSString stringWithFormat:@"(unknown: %i)", unsignedIntValue];
           }
 
           else
           {
-            v16 = off_100082358[v15];
+            v16 = off_100082358[unsignedIntValue];
           }
 
           v17 = [v9 objectForKeyedSubscript:v14];
@@ -354,28 +354,28 @@ LABEL_48:
     v7 = v21;
   }
 
-  v18 = [v4 lastUpdatedDate];
-  v19 = v18;
-  if (v18)
+  lastUpdatedDate = [v4 lastUpdatedDate];
+  v19 = lastUpdatedDate;
+  if (lastUpdatedDate)
   {
-    [v18 timeIntervalSinceReferenceDate];
+    [lastUpdatedDate timeIntervalSinceReferenceDate];
     v20 = [NSNumber numberWithDouble:?];
     [v5 setObject:v20 forKeyedSubscript:@"updated"];
   }
 
-  [v3 sendReply:v5];
+  [messageCopy sendReply:v5];
 }
 
-- (void)listFilePathsWithMessage:(id)a3
+- (void)listFilePathsWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[GEOFilePaths dictionaryRepresentation];
-  [v3 sendReply:v4];
+  [messageCopy sendReply:v4];
 }
 
-- (void)invalidateTileCacheWithMessage:(id)a3
+- (void)invalidateTileCacheWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_alloc_init(GEOTileEditionUpdate);
   [v5 setInvalidateEverything:1];
   v6 = +[NSNotificationCenter defaultCenter];
@@ -392,40 +392,40 @@ LABEL_48:
   v10[3] = &unk_1000838C8;
   v10[4] = self;
   dispatch_after(v9, &_dispatch_main_q, v10);
-  [v4 sendReply:0];
+  [messageCopy sendReply:0];
 }
 
-- (void)freePurgableSpaceWithMessage:(id)a3
+- (void)freePurgableSpaceWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = dispatch_get_global_queue(17, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100027AE4;
   block[3] = &unk_1000838C8;
-  v7 = v3;
-  v5 = v3;
+  v7 = messageCopy;
+  v5 = messageCopy;
   dispatch_async(v4, block);
 }
 
-- (void)calculatePurgableSpaceWithMessage:(id)a3
+- (void)calculatePurgableSpaceWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = dispatch_get_global_queue(17, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100027E30;
   block[3] = &unk_1000838C8;
-  v7 = v3;
-  v5 = v3;
+  v7 = messageCopy;
+  v5 = messageCopy;
   dispatch_async(v4, block);
 }
 
-- (void)getDefaultWithMessage:(id)a3
+- (void)getDefaultWithMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"key"];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"key"];
 
   v6 = GEOGetDefaultWithSource();
   v10 = @"value";
@@ -443,44 +443,44 @@ LABEL_48:
   {
   }
 
-  [v3 sendReply:v9];
+  [messageCopy sendReply:v9];
 }
 
-- (void)checkProactiveTileDownloadPolicyEnabledWithMessage:(id)a3
+- (void)checkProactiveTileDownloadPolicyEnabledWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v6 = @"enabled";
   v4 = [NSNumber numberWithBool:GEOProactiveTileDownloadPolicyIsEnabled()];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
-  [v3 sendReply:v5];
+  [messageCopy sendReply:v5];
 }
 
-- (void)forceProactiveTileDownloaderRunWithMessage:(id)a3
+- (void)forceProactiveTileDownloaderRunWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:GEOTileServerLocalProxyForceExplicitProactiveTileDownloadRunNotification object:self];
 
-  [v5 sendReply:0];
+  [messageCopy sendReply:0];
 }
 
-- (void)lockDBsWithMessage:(id)a3
+- (void)lockDBsWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:GEOLockSQLiteDBNotificationName object:self];
 
-  [v5 sendReply:0];
+  [messageCopy sendReply:0];
 }
 
-- (void)unlockDBsWithMessage:(id)a3
+- (void)unlockDBsWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:GEOUnlockSQLiteDBNotificationName object:self];
 
-  [v5 sendReply:0];
+  [messageCopy sendReply:0];
 }
 
 @end

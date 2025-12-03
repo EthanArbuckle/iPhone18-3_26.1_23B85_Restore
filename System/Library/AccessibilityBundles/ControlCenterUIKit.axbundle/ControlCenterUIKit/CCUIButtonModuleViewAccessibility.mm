@@ -1,5 +1,5 @@
 @interface CCUIButtonModuleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityCustomActions;
 - (id)accessibilityPath;
@@ -9,11 +9,11 @@
 
 @implementation CCUIButtonModuleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIButtonModuleView" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"CCUIButtonModuleView" hasInstanceVariable:@"_highlightedBackgroundView" withType:"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIButtonModuleView" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"CCUIButtonModuleView" hasInstanceVariable:@"_highlightedBackgroundView" withType:"UIView"];
 }
 
 - (id)accessibilityPath
@@ -36,31 +36,31 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(CCUIButtonModuleViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(CCUIButtonModuleViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (v3)
+  if (isAccessibilityUserDefinedElement)
   {
-    v4 = [(CCUIButtonModuleViewAccessibility *)self isAccessibilityUserDefinedElement];
-    v5 = [v4 BOOLValue];
+    isAccessibilityUserDefinedElement2 = [(CCUIButtonModuleViewAccessibility *)self isAccessibilityUserDefinedElement];
+    bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
   }
 
   else
   {
     objc_opt_class();
-    v4 = __UIAccessibilityCastAsClass();
-    if ([v4 _accessibilityViewIsVisible])
+    isAccessibilityUserDefinedElement2 = __UIAccessibilityCastAsClass();
+    if ([isAccessibilityUserDefinedElement2 _accessibilityViewIsVisible])
     {
-      v6 = [v4 superview];
-      v5 = [v6 _accessibilityViewIsVisible];
+      superview = [isAccessibilityUserDefinedElement2 superview];
+      bOOLValue = [superview _accessibilityViewIsVisible];
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (unint64_t)_accesibilityRawTraits
@@ -71,9 +71,9 @@
   v4 = *MEMORY[0x29EDC7F70];
   if (v2)
   {
-    v5 = [v2 isEnabled];
+    isEnabled = [v2 isEnabled];
     v6 = *MEMORY[0x29EDC7FA8];
-    if (v5)
+    if (isEnabled)
     {
       v6 = 0;
     }
@@ -94,15 +94,15 @@
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    _accesibilityRawTraits = (*(v3 + 16))(v3);
   }
 
   else
   {
-    v5 = [(CCUIButtonModuleViewAccessibility *)self _accesibilityRawTraits];
+    _accesibilityRawTraits = [(CCUIButtonModuleViewAccessibility *)self _accesibilityRawTraits];
   }
 
-  v6 = v5;
+  v6 = _accesibilityRawTraits;
 
   return v6;
 }
@@ -111,7 +111,7 @@
 {
   v5.receiver = self;
   v5.super_class = CCUIButtonModuleViewAccessibility;
-  v2 = [(CCUIButtonModuleViewAccessibility *)&v5 accessibilityCustomActions];
+  accessibilityCustomActions = [(CCUIButtonModuleViewAccessibility *)&v5 accessibilityCustomActions];
   v3 = AXGuaranteedMutableArray();
 
   UIAccessibilityControlCenterAttachOpenCloseCustomActionsIfNeeded();

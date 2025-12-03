@@ -1,26 +1,26 @@
 @interface OADEffect
-- (BOOL)isEqual:(id)a3;
-- (OADEffect)initWithType:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADEffect)initWithType:(int)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation OADEffect
 
-- (OADEffect)initWithType:(int)a3
+- (OADEffect)initWithType:(int)type
 {
   v5.receiver = self;
   v5.super_class = OADEffect;
   result = [(OADEffect *)&v5 init];
   if (result)
   {
-    result->mType = a3;
+    result->mType = type;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADEffect copyWithZone:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADEffect.mm"];
@@ -40,11 +40,11 @@
   objc_exception_throw(v12);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && self->mType == v4[2];
+  v6 = v5 == objc_opt_class() && self->mType == equalCopy[2];
 
   return v6;
 }

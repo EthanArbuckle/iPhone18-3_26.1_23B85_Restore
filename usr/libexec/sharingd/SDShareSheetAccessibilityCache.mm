@@ -1,10 +1,10 @@
 @interface SDShareSheetAccessibilityCache
 - (SDShareSheetAccessibilityCache)init;
-- (id)labelForSlotID:(id)a3;
-- (void)addEntriesFromDictionary:(id)a3;
-- (void)removeLabelForSlotID:(id)a3;
-- (void)removeLabelsForSlotIDs:(id)a3;
-- (void)setLabel:(id)a3 forSlotID:(id)a4;
+- (id)labelForSlotID:(id)d;
+- (void)addEntriesFromDictionary:(id)dictionary;
+- (void)removeLabelForSlotID:(id)d;
+- (void)removeLabelsForSlotIDs:(id)ds;
+- (void)setLabel:(id)label forSlotID:(id)d;
 @end
 
 @implementation SDShareSheetAccessibilityCache
@@ -26,52 +26,52 @@
   return v3;
 }
 
-- (void)setLabel:(id)a3 forSlotID:(id)a4
+- (void)setLabel:(id)label forSlotID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  labelCopy = label;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_cache setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_cache setObject:labelCopy forKey:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([v4 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_cache addEntriesFromDictionary:v4];
+    [(NSMutableDictionary *)self->_cache addEntriesFromDictionary:dictionaryCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)removeLabelForSlotID:(id)a3
+- (void)removeLabelForSlotID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_cache removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_cache removeObjectForKey:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeLabelsForSlotIDs:(id)a3
+- (void)removeLabelsForSlotIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_cache removeObjectsForKeys:v4];
+    [(NSMutableDictionary *)self->_cache removeObjectsForKeys:dsCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (id)labelForSlotID:(id)a3
+- (id)labelForSlotID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_cache objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_cache objectForKey:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 

@@ -1,36 +1,36 @@
 @interface TAVehicleStateNotification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (TAVehicleStateNotification)initWithCoder:(id)a3;
-- (TAVehicleStateNotification)initWithVehicularState:(unint64_t)a3 andVehicularHints:(unint64_t)a4 andOperatorState:(unint64_t)a5 date:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TAVehicleStateNotification)initWithCoder:(id)coder;
+- (TAVehicleStateNotification)initWithVehicularState:(unint64_t)state andVehicularHints:(unint64_t)hints andOperatorState:(unint64_t)operatorState date:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation TAVehicleStateNotification
 
-- (TAVehicleStateNotification)initWithVehicularState:(unint64_t)a3 andVehicularHints:(unint64_t)a4 andOperatorState:(unint64_t)a5 date:(id)a6
+- (TAVehicleStateNotification)initWithVehicularState:(unint64_t)state andVehicularHints:(unint64_t)hints andOperatorState:(unint64_t)operatorState date:(id)date
 {
-  v10 = a6;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = TAVehicleStateNotification;
   v11 = [(TAVehicleStateNotification *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    if (!v10)
+    if (!dateCopy)
     {
       v15 = 0;
       goto LABEL_6;
     }
 
-    v11->_vehicularHints = a4;
-    v11->_operatorState = a5;
-    v11->_vehicularState = a3;
-    v13 = [v10 copy];
+    v11->_vehicularHints = hints;
+    v11->_operatorState = operatorState;
+    v11->_vehicularState = state;
+    v13 = [dateCopy copy];
     date = v12->_date;
     v12->_date = v13;
   }
@@ -43,19 +43,19 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(TAVehicleStateNotification *)self vehicularState];
-  v4 = [(TAVehicleStateNotification *)self vehicularHints]^ v3;
+  vehicularState = [(TAVehicleStateNotification *)self vehicularState];
+  v4 = [(TAVehicleStateNotification *)self vehicularHints]^ vehicularState;
   v5 = v4 ^ [(TAVehicleStateNotification *)self operatorState];
-  v6 = [(TAVehicleStateNotification *)self date];
-  v7 = [v6 hash];
+  date = [(TAVehicleStateNotification *)self date];
+  v7 = [date hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -65,22 +65,22 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TAVehicleStateNotification *)self vehicularState];
-      if (v6 == [(TAVehicleStateNotification *)v5 vehicularState]&& (v7 = [(TAVehicleStateNotification *)self vehicularHints], v7 == [(TAVehicleStateNotification *)v5 vehicularHints]) && (v8 = [(TAVehicleStateNotification *)self operatorState], v8 == [(TAVehicleStateNotification *)v5 operatorState]))
+      v5 = equalCopy;
+      vehicularState = [(TAVehicleStateNotification *)self vehicularState];
+      if (vehicularState == [(TAVehicleStateNotification *)v5 vehicularState]&& (v7 = [(TAVehicleStateNotification *)self vehicularHints], v7 == [(TAVehicleStateNotification *)v5 vehicularHints]) && (v8 = [(TAVehicleStateNotification *)self operatorState], v8 == [(TAVehicleStateNotification *)v5 operatorState]))
       {
-        v9 = [(TAVehicleStateNotification *)self date];
-        v10 = [(TAVehicleStateNotification *)v5 date];
-        if (v9 == v10)
+        date = [(TAVehicleStateNotification *)self date];
+        date2 = [(TAVehicleStateNotification *)v5 date];
+        if (date == date2)
         {
           v13 = 1;
         }
 
         else
         {
-          v11 = [(TAVehicleStateNotification *)self date];
-          v12 = [(TAVehicleStateNotification *)v5 date];
-          v13 = [v11 isEqual:v12];
+          date3 = [(TAVehicleStateNotification *)self date];
+          date4 = [(TAVehicleStateNotification *)v5 date];
+          v13 = [date3 isEqual:date4];
         }
       }
 
@@ -136,22 +136,22 @@ LABEL_6:
   v12 = [MEMORY[0x277CCABB0] numberWithInt:{(-[TAVehicleStateNotification vehicularHints](self, "vehicularHints") >> 4) & 1}];
   v21[7] = v12;
   v20[8] = @"OperatorState";
-  v13 = [(TAVehicleStateNotification *)self operatorState];
-  if (v13 > 2)
+  operatorState = [(TAVehicleStateNotification *)self operatorState];
+  if (operatorState > 2)
   {
     v14 = @"Invalid";
   }
 
   else
   {
-    v14 = off_279DD1C38[v13];
+    v14 = off_279DD1C38[operatorState];
   }
 
   v21[8] = v14;
   v20[9] = @"Date";
-  v15 = [(TAVehicleStateNotification *)self date];
-  v16 = [v15 getDateString];
-  v21[9] = v16;
+  date = [(TAVehicleStateNotification *)self date];
+  getDateString = [date getDateString];
+  v21[9] = getDateString;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:10];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -161,9 +161,9 @@ LABEL_6:
 
 - (NSString)description
 {
-  v3 = [(TAVehicleStateNotification *)self descriptionDictionary];
+  descriptionDictionary = [(TAVehicleStateNotification *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -173,52 +173,52 @@ LABEL_6:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (TAVehicleStateNotification)initWithCoder:(id)a3
+- (TAVehicleStateNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"VehicularState"];
-  v6 = [v4 decodeIntegerForKey:@"VehicularHints"];
-  v7 = [v4 decodeIntegerForKey:@"OperatorState"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"VehicularState"];
+  v6 = [coderCopy decodeIntegerForKey:@"VehicularHints"];
+  v7 = [coderCopy decodeIntegerForKey:@"OperatorState"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
 
   v9 = [(TAVehicleStateNotification *)self initWithVehicularState:v5 andVehicularHints:v6 andOperatorState:v7 date:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   vehicularState = self->_vehicularState;
-  v5 = a3;
-  [v5 encodeInteger:vehicularState forKey:@"VehicularState"];
-  [v5 encodeInteger:self->_vehicularHints forKey:@"VehicularHints"];
-  [v5 encodeInteger:self->_operatorState forKey:@"OperatorState"];
-  [v5 encodeObject:self->_date forKey:@"Date"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:vehicularState forKey:@"VehicularState"];
+  [coderCopy encodeInteger:self->_vehicularHints forKey:@"VehicularHints"];
+  [coderCopy encodeInteger:self->_operatorState forKey:@"OperatorState"];
+  [coderCopy encodeObject:self->_date forKey:@"Date"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TAVehicleStateNotification alloc];
   vehicularHints = self->_vehicularHints;

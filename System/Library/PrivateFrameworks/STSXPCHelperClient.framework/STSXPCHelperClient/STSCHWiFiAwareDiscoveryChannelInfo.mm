@@ -1,39 +1,39 @@
 @interface STSCHWiFiAwareDiscoveryChannelInfo
-- (BOOL)isEqual:(id)a3;
-- (STSCHWiFiAwareDiscoveryChannelInfo)initWithCoder:(id)a3;
-- (STSCHWiFiAwareDiscoveryChannelInfo)initWithSupportedBands:(id)a3 operatingClass:(id)a4 channelNumber:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (STSCHWiFiAwareDiscoveryChannelInfo)initWithCoder:(id)coder;
+- (STSCHWiFiAwareDiscoveryChannelInfo)initWithSupportedBands:(id)bands operatingClass:(id)class channelNumber:(id)number;
 - (id)asData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHWiFiAwareDiscoveryChannelInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   supportedBands = self->_supportedBands;
-  v8 = a3;
-  objc_msgSend_encodeObject_forKey_(v8, v5, supportedBands, @"supportedBands");
-  objc_msgSend_encodeObject_forKey_(v8, v6, self->_operatingClass, @"operatingClass");
-  objc_msgSend_encodeObject_forKey_(v8, v7, self->_channelNumber, @"channelNumber");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, supportedBands, @"supportedBands");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_operatingClass, @"operatingClass");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_channelNumber, @"channelNumber");
 }
 
-- (STSCHWiFiAwareDiscoveryChannelInfo)initWithCoder:(id)a3
+- (STSCHWiFiAwareDiscoveryChannelInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = STSCHWiFiAwareDiscoveryChannelInfo;
   v6 = [(STSCHWiFiAwareDiscoveryChannelInfo *)&v16 init];
   if (v6)
   {
-    v7 = objc_msgSend_decodeObjectForKey_(v4, v5, @"supportedBands");
+    v7 = objc_msgSend_decodeObjectForKey_(coderCopy, v5, @"supportedBands");
     supportedBands = v6->_supportedBands;
     v6->_supportedBands = v7;
 
-    v10 = objc_msgSend_decodeObjectForKey_(v4, v9, @"operatingClass");
+    v10 = objc_msgSend_decodeObjectForKey_(coderCopy, v9, @"operatingClass");
     operatingClass = v6->_operatingClass;
     v6->_operatingClass = v10;
 
-    v13 = objc_msgSend_decodeObjectForKey_(v4, v12, @"channelNumber");
+    v13 = objc_msgSend_decodeObjectForKey_(coderCopy, v12, @"channelNumber");
     channelNumber = v6->_channelNumber;
     v6->_channelNumber = v13;
   }
@@ -41,18 +41,18 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -172,20 +172,20 @@ LABEL_26:
   return v17;
 }
 
-- (STSCHWiFiAwareDiscoveryChannelInfo)initWithSupportedBands:(id)a3 operatingClass:(id)a4 channelNumber:(id)a5
+- (STSCHWiFiAwareDiscoveryChannelInfo)initWithSupportedBands:(id)bands operatingClass:(id)class channelNumber:(id)number
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bandsCopy = bands;
+  classCopy = class;
+  numberCopy = number;
   v15.receiver = self;
   v15.super_class = STSCHWiFiAwareDiscoveryChannelInfo;
   v12 = [(STSCHWiFiAwareDiscoveryChannelInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_supportedBands, a3);
-    objc_storeStrong(&v13->_operatingClass, a4);
-    objc_storeStrong(&v13->_channelNumber, a5);
+    objc_storeStrong(&v12->_supportedBands, bands);
+    objc_storeStrong(&v13->_operatingClass, class);
+    objc_storeStrong(&v13->_channelNumber, number);
   }
 
   return v13;

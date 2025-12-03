@@ -18,20 +18,20 @@
 
 - (CMTime)CMTimeValue
 {
-  v4 = [a1 objCType];
+  objCType = [self objCType];
   *(a2 + 8) = 0;
   *(a2 + 16) = 0;
   *a2 = 0;
-  result = strcmp("{?=qiIq}", v4);
+  result = strcmp("{?=qiIq}", objCType);
   if (result)
   {
-    v6 = *v4;
+    v6 = *objCType;
     if (v6 == 100)
     {
-      if (!v4[1])
+      if (!objCType[1])
       {
         v10 = 0.0;
-        [a1 getValue:&v10];
+        [self getValue:&v10];
         v7 = v10;
         return CMTimeMakeWithSeconds(a2, v7, 1000000);
       }
@@ -45,7 +45,7 @@ LABEL_10:
 
     if (v6 == 102)
     {
-      if (v4[1])
+      if (objCType[1])
       {
         goto LABEL_10;
       }
@@ -57,12 +57,12 @@ LABEL_10:
     }
 
     v9 = 0.0;
-    [a1 getValue:&v9];
+    [self getValue:&v9];
     v7 = v9;
     return CMTimeMakeWithSeconds(a2, v7, 1000000);
   }
 
-  return [a1 getValue:a2];
+  return [self getValue:a2];
 }
 
 + (CMAVRoutingTimeRangeAsValue)valueWithCMTimeRange:()NSValueCMTimeExtensions
@@ -76,11 +76,11 @@ LABEL_10:
 
 - (uint64_t)CMTimeRangeValue
 {
-  v4 = [a1 objCType];
+  objCType = [self objCType];
   *a2 = 0u;
   a2[1] = 0u;
   a2[2] = 0u;
-  result = strcmp("{?={?=qiIq}{?=qiIq}}", v4);
+  result = strcmp("{?={?=qiIq}{?=qiIq}}", objCType);
   if (result)
   {
     v6 = MEMORY[0x1E6960C98];
@@ -93,7 +93,7 @@ LABEL_10:
   else
   {
 
-    return [a1 getValue:a2];
+    return [self getValue:a2];
   }
 
   return result;
@@ -115,14 +115,14 @@ LABEL_10:
 
 - (uint64_t)CMTimeMappingValue
 {
-  v4 = [a1 objCType];
+  objCType = [self objCType];
   *a2 = 0u;
   a2[1] = 0u;
   a2[2] = 0u;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[5] = 0u;
-  result = strcmp("{?={?={?=qiIq}{?=qiIq}}{?={?=qiIq}{?=qiIq}}}", v4);
+  result = strcmp("{?={?={?=qiIq}{?=qiIq}}{?={?=qiIq}{?=qiIq}}}", objCType);
   if (result)
   {
     v6 = MEMORY[0x1E6960C98];
@@ -140,7 +140,7 @@ LABEL_10:
   else
   {
 
-    return [a1 getValue:a2];
+    return [self getValue:a2];
   }
 
   return result;

@@ -1,13 +1,13 @@
 @interface VCCellularAudioTapIO
-- (VCCellularAudioTapIO)initWithStreamToken:(int64_t)a3 powerSpectrumSource:(id)a4 tapType:(unsigned int)a5;
+- (VCCellularAudioTapIO)initWithStreamToken:(int64_t)token powerSpectrumSource:(id)source tapType:(unsigned int)type;
 - (VCMediaRecorder)mediaRecorder;
 - (void)dealloc;
-- (void)setMediaRecorder:(id)a3;
+- (void)setMediaRecorder:(id)recorder;
 @end
 
 @implementation VCCellularAudioTapIO
 
-- (VCCellularAudioTapIO)initWithStreamToken:(int64_t)a3 powerSpectrumSource:(id)a4 tapType:(unsigned int)a5
+- (VCCellularAudioTapIO)initWithStreamToken:(int64_t)token powerSpectrumSource:(id)source tapType:(unsigned int)type
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -16,16 +16,16 @@
   v9 = v8;
   if (v8)
   {
-    if (a3)
+    if (token)
     {
-      v10 = a4;
-      v9->_powerSpectrumSource = v10;
-      if (v10)
+      sourceCopy = source;
+      v9->_powerSpectrumSource = sourceCopy;
+      if (sourceCopy)
       {
-        v11 = [(VCAudioPowerSpectrumSource *)v10 realtimeContext];
-        v9->_realtimeContext.streamToken = a3;
-        v9->_realtimeContext.tapType = a5;
-        v9->_realtimeContext.powerSpectrumSourceRealtimeContext = v11;
+        realtimeContext = [(VCAudioPowerSpectrumSource *)sourceCopy realtimeContext];
+        v9->_realtimeContext.streamToken = token;
+        v9->_realtimeContext.tapType = type;
+        v9->_realtimeContext.powerSpectrumSourceRealtimeContext = realtimeContext;
         v9->_realtimeContext.mediaRecorder = 0;
         v9->_realtimeContext.averageAudioPower = 0.0;
         return v9;
@@ -54,13 +54,13 @@
   [(VCCellularAudioTapIO *)&v3 dealloc];
 }
 
-- (void)setMediaRecorder:(id)a3
+- (void)setMediaRecorder:(id)recorder
 {
   mediaRecorder = self->_realtimeContext.mediaRecorder;
-  if (mediaRecorder != a3)
+  if (mediaRecorder != recorder)
   {
 
-    self->_realtimeContext.mediaRecorder = a3;
+    self->_realtimeContext.mediaRecorder = recorder;
   }
 }
 

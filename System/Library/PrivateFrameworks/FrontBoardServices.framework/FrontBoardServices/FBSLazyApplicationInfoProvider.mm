@@ -1,7 +1,7 @@
 @interface FBSLazyApplicationInfoProvider
 - (FBSLazyApplicationInfoProvider)init;
-- (id)applicationInfoForAuditToken:(id)a3;
-- (id)applicationInfoForBundleIdentifier:(id)a3;
+- (id)applicationInfoForAuditToken:(id)token;
+- (id)applicationInfoForBundleIdentifier:(id)identifier;
 @end
 
 @implementation FBSLazyApplicationInfoProvider
@@ -19,22 +19,22 @@
   return v2;
 }
 
-- (id)applicationInfoForBundleIdentifier:(id)a3
+- (id)applicationInfoForBundleIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:a3];
-  v5 = [v4 bundleURL];
-  if (v5 && (v6 = v5, [v4 appState], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isValid"), v7, v6, v8))
+  v4 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:identifier];
+  bundleURL = [v4 bundleURL];
+  if (bundleURL && (v6 = bundleURL, [v4 appState], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isValid"), v7, v6, v8))
   {
-    v9 = [v4 fbs_correspondingApplicationRecord];
-    v10 = [v9 identities];
-    v11 = [v10 firstObject];
+    fbs_correspondingApplicationRecord = [v4 fbs_correspondingApplicationRecord];
+    identities = [fbs_correspondingApplicationRecord identities];
+    firstObject = [identities firstObject];
 
-    v12 = [v9 fbs_processIdentityForApplicationIdentity:v11];
+    v12 = [fbs_correspondingApplicationRecord fbs_processIdentityForApplicationIdentity:firstObject];
     v13 = v12;
     v14 = 0;
-    if (v9 && v11 && v12)
+    if (fbs_correspondingApplicationRecord && firstObject && v12)
     {
-      v14 = [objc_alloc(self->_applicationInfoSubclass) _initWithApplicationProxy:v4 record:v9 appIdentity:v11 processIdentity:v12 overrideURL:0];
+      v14 = [objc_alloc(self->_applicationInfoSubclass) _initWithApplicationProxy:v4 record:fbs_correspondingApplicationRecord appIdentity:firstObject processIdentity:v12 overrideURL:0];
     }
   }
 
@@ -46,14 +46,14 @@
   return v14;
 }
 
-- (id)applicationInfoForAuditToken:(id)a3
+- (id)applicationInfoForAuditToken:(id)token
 {
-  v4 = a3;
-  v5 = v4;
+  tokenCopy = token;
+  v5 = tokenCopy;
   v6 = MEMORY[0x1E6963618];
-  if (v4)
+  if (tokenCopy)
   {
-    [v4 realToken];
+    [tokenCopy realToken];
   }
 
   else
@@ -66,22 +66,22 @@
   if (v7)
   {
     v9 = MEMORY[0x1E69635E0];
-    v10 = [v7 bundleURL];
-    v11 = [v9 applicationProxyForBundleURL:v10];
+    bundleURL = [v7 bundleURL];
+    v11 = [v9 applicationProxyForBundleURL:bundleURL];
 
-    v12 = [v11 bundleURL];
-    if (v12 && (v13 = v12, [v11 appState], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isValid"), v14, v13, v15))
+    bundleURL2 = [v11 bundleURL];
+    if (bundleURL2 && (v13 = bundleURL2, [v11 appState], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isValid"), v14, v13, v15))
     {
-      v16 = [v11 fbs_correspondingApplicationRecord];
-      v17 = [v16 identities];
-      v18 = [v17 firstObject];
+      fbs_correspondingApplicationRecord = [v11 fbs_correspondingApplicationRecord];
+      identities = [fbs_correspondingApplicationRecord identities];
+      firstObject = [identities firstObject];
 
-      v19 = [v16 fbs_processIdentityForApplicationIdentity:v18];
+      v19 = [fbs_correspondingApplicationRecord fbs_processIdentityForApplicationIdentity:firstObject];
       v20 = v19;
       v21 = 0;
-      if (v16 && v18 && v19)
+      if (fbs_correspondingApplicationRecord && firstObject && v19)
       {
-        v21 = [objc_alloc(self->_applicationInfoSubclass) _initWithApplicationProxy:v11 record:v16 appIdentity:v18 processIdentity:v19 overrideURL:0];
+        v21 = [objc_alloc(self->_applicationInfoSubclass) _initWithApplicationProxy:v11 record:fbs_correspondingApplicationRecord appIdentity:firstObject processIdentity:v19 overrideURL:0];
       }
     }
 

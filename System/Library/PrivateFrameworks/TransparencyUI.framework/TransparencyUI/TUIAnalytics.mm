@@ -1,8 +1,8 @@
 @interface TUIAnalytics
 - (TUIAnalytics)init;
-- (void)ktConversationNoMatch:(BOOL)a3;
-- (void)ktInteraction:(id)a3;
-- (void)ktMarkAsVerified:(BOOL)a3 sasCodeGenerated:(BOOL)a4 publicKeyVisible:(BOOL)a5;
+- (void)ktConversationNoMatch:(BOOL)match;
+- (void)ktInteraction:(id)interaction;
+- (void)ktMarkAsVerified:(BOOL)verified sasCodeGenerated:(BOOL)generated publicKeyVisible:(BOOL)visible;
 @end
 
 @implementation TUIAnalytics
@@ -15,7 +15,7 @@
   return self;
 }
 
-- (void)ktConversationNoMatch:(BOOL)a3
+- (void)ktConversationNoMatch:(BOOL)match
 {
   timeConversationUIDisplayed = self->_timeConversationUIDisplayed;
   if (timeConversationUIDisplayed)
@@ -42,7 +42,7 @@ id __38__TUIAnalytics_ktConversationNoMatch___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)ktMarkAsVerified:(BOOL)a3 sasCodeGenerated:(BOOL)a4 publicKeyVisible:(BOOL)a5
+- (void)ktMarkAsVerified:(BOOL)verified sasCodeGenerated:(BOOL)generated publicKeyVisible:(BOOL)visible
 {
   timeConversationUIDisplayed = self->_timeConversationUIDisplayed;
   if (timeConversationUIDisplayed)
@@ -75,17 +75,17 @@ id __67__TUIAnalytics_ktMarkAsVerified_sasCodeGenerated_publicKeyVisible___block
   return v6;
 }
 
-- (void)ktInteraction:(id)a3
+- (void)ktInteraction:(id)interaction
 {
-  v4 = a3;
-  if ([@"conversationUIDisplayed" isEqualToString:v4])
+  interactionCopy = interaction;
+  if ([@"conversationUIDisplayed" isEqualToString:interactionCopy])
   {
     v5 = [MEMORY[0x277CBEAA8] now];
     [(TUIAnalytics *)self setTimeConversationUIDisplayed:v5];
   }
 
-  v7 = v4;
-  v6 = v4;
+  v7 = interactionCopy;
+  v6 = interactionCopy;
   AnalyticsSendEventLazy();
 }
 

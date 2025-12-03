@@ -1,12 +1,12 @@
 @interface GKScopedIDs
-+ (BOOL)availableForPlayerID:(id)a3;
-+ (id)makeNonpersistentWithPlayerID:(id)a3 gameBundleID:(id)a4;
-+ (id)makePersistentWithPlayerID:(id)a3 gameBundleID:(id)a4 gamePlayerID:(id)a5 teamPlayerID:(id)a6;
-+ (id)makePlayerIDtoScopedIDsDictFromScopedIDs:(id)a3;
++ (BOOL)availableForPlayerID:(id)d;
++ (id)makeNonpersistentWithPlayerID:(id)d gameBundleID:(id)iD;
++ (id)makePersistentWithPlayerID:(id)d gameBundleID:(id)iD gamePlayerID:(id)playerID teamPlayerID:(id)teamPlayerID;
++ (id)makePlayerIDtoScopedIDsDictFromScopedIDs:(id)ds;
 + (id)secureCodedPropertyKeys;
 - (BOOL)arePersistent;
-- (BOOL)isForPlayerID:(id)a3 gameBundleID:(id)a4;
-- (GKScopedIDs)initWithPersistentPlayerID:(id)a3 gameBundleID:(id)a4 gamePlayerID:(id)a5 teamPlayerID:(id)a6;
+- (BOOL)isForPlayerID:(id)d gameBundleID:(id)iD;
+- (GKScopedIDs)initWithPersistentPlayerID:(id)d gameBundleID:(id)iD gamePlayerID:(id)playerID teamPlayerID:(id)teamPlayerID;
 @end
 
 @implementation GKScopedIDs
@@ -43,12 +43,12 @@ void __38__GKScopedIDs_secureCodedPropertyKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKScopedIDs)initWithPersistentPlayerID:(id)a3 gameBundleID:(id)a4 gamePlayerID:(id)a5 teamPlayerID:(id)a6
+- (GKScopedIDs)initWithPersistentPlayerID:(id)d gameBundleID:(id)iD gamePlayerID:(id)playerID teamPlayerID:(id)teamPlayerID
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  playerIDCopy = playerID;
+  teamPlayerIDCopy = teamPlayerID;
   v19.receiver = self;
   v19.super_class = GKScopedIDs;
   v15 = [(GKScopedIDs *)&v19 init];
@@ -58,10 +58,10 @@ void __38__GKScopedIDs_secureCodedPropertyKeys__block_invoke()
     createdPersistent = v15->_createdPersistent;
     v15->_createdPersistent = v16;
 
-    objc_storeStrong(&v15->_playerID, a3);
-    objc_storeStrong(&v15->_gameBundleID, a4);
-    objc_storeStrong(&v15->_gamePlayerID, a5);
-    objc_storeStrong(&v15->_teamPlayerID, a6);
+    objc_storeStrong(&v15->_playerID, d);
+    objc_storeStrong(&v15->_gameBundleID, iD);
+    objc_storeStrong(&v15->_gamePlayerID, playerID);
+    objc_storeStrong(&v15->_teamPlayerID, teamPlayerID);
   }
 
   return v15;
@@ -69,23 +69,23 @@ void __38__GKScopedIDs_secureCodedPropertyKeys__block_invoke()
 
 - (BOOL)arePersistent
 {
-  v2 = [(GKScopedIDs *)self createdPersistent];
-  v3 = [v2 BOOLValue];
+  createdPersistent = [(GKScopedIDs *)self createdPersistent];
+  bOOLValue = [createdPersistent BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)isForPlayerID:(id)a3 gameBundleID:(id)a4
+- (BOOL)isForPlayerID:(id)d gameBundleID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKScopedIDs *)self playerID];
-  v9 = [v8 isEqualToString:v7];
+  iDCopy = iD;
+  dCopy = d;
+  playerID = [(GKScopedIDs *)self playerID];
+  v9 = [playerID isEqualToString:dCopy];
 
   if (v9)
   {
-    v10 = [(GKScopedIDs *)self gameBundleID];
-    v11 = [v10 isEqualToString:v6];
+    gameBundleID = [(GKScopedIDs *)self gameBundleID];
+    v11 = [gameBundleID isEqualToString:iDCopy];
   }
 
   else
@@ -96,29 +96,29 @@ void __38__GKScopedIDs_secureCodedPropertyKeys__block_invoke()
   return v11;
 }
 
-+ (id)makePersistentWithPlayerID:(id)a3 gameBundleID:(id)a4 gamePlayerID:(id)a5 teamPlayerID:(id)a6
++ (id)makePersistentWithPlayerID:(id)d gameBundleID:(id)iD gamePlayerID:(id)playerID teamPlayerID:(id)teamPlayerID
 {
   v6 = 0;
-  if (a3 && a4 && a5 && a6)
+  if (d && iD && playerID && teamPlayerID)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
-    v6 = [[GKScopedIDs alloc] initWithPersistentPlayerID:v13 gameBundleID:v12 gamePlayerID:v11 teamPlayerID:v10];
+    teamPlayerIDCopy = teamPlayerID;
+    playerIDCopy = playerID;
+    iDCopy = iD;
+    dCopy = d;
+    v6 = [[GKScopedIDs alloc] initWithPersistentPlayerID:dCopy gameBundleID:iDCopy gamePlayerID:playerIDCopy teamPlayerID:teamPlayerIDCopy];
   }
 
   return v6;
 }
 
-+ (id)makeNonpersistentWithPlayerID:(id)a3 gameBundleID:(id)a4
++ (id)makeNonpersistentWithPlayerID:(id)d gameBundleID:(id)iD
 {
-  v5 = a4;
-  v6 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v7 = [GKScopedIDs alloc];
-  if (v6)
+  if (dCopy)
   {
-    v8 = v6;
+    v8 = dCopy;
   }
 
   else
@@ -126,9 +126,9 @@ void __38__GKScopedIDs_secureCodedPropertyKeys__block_invoke()
     v8 = @"UnknownID";
   }
 
-  if (v5)
+  if (iDCopy)
   {
-    v9 = v5;
+    v9 = iDCopy;
   }
 
   else
@@ -136,22 +136,22 @@ void __38__GKScopedIDs_secureCodedPropertyKeys__block_invoke()
     v9 = @"UnknownBundleID";
   }
 
-  v10 = [MEMORY[0x277CCAC38] processInfo];
-  v11 = -[GKScopedIDs initWithNonpersistentPlayerID:gameBundleID:salt:](v7, "initWithNonpersistentPlayerID:gameBundleID:salt:", v8, v9, [v10 processIdentifier]);
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v11 = -[GKScopedIDs initWithNonpersistentPlayerID:gameBundleID:salt:](v7, "initWithNonpersistentPlayerID:gameBundleID:salt:", v8, v9, [processInfo processIdentifier]);
 
   return v11;
 }
 
-+ (id)makePlayerIDtoScopedIDsDictFromScopedIDs:(id)a3
++ (id)makePlayerIDtoScopedIDsDictFromScopedIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dsCopy = ds;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -167,8 +167,8 @@ void __38__GKScopedIDs_secureCodedPropertyKeys__block_invoke()
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 playerID];
-        [v4 setObject:v10 forKey:v11];
+        playerID = [v10 playerID];
+        [dictionary setObject:v10 forKey:playerID];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -177,17 +177,17 @@ void __38__GKScopedIDs_secureCodedPropertyKeys__block_invoke()
     while (v7);
   }
 
-  v12 = [v4 copy];
+  v12 = [dictionary copy];
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (BOOL)availableForPlayerID:(id)a3
++ (BOOL)availableForPlayerID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ([v3 isEqualToString:@"AnonymousID"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"AutoMatchID") & 1) != 0)
+  dCopy = d;
+  v4 = dCopy;
+  if (!dCopy || ([dCopy isEqualToString:@"AnonymousID"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"AutoMatchID") & 1) != 0)
   {
     LOBYTE(v5) = 0;
   }

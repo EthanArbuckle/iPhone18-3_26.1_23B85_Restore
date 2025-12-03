@@ -1,27 +1,27 @@
 @interface CarSearchItemCell
 + (id)distanceFormatter;
-- (BOOL)_hasRealTimeChargerInfo:(id)a3;
+- (BOOL)_hasRealTimeChargerInfo:(id)info;
 - (BOOL)displaysThirdDetailLine;
 - (BOOL)hasChargerNumberString;
 - (BOOL)shouldShowRating;
 - (BOOL)shouldShowThirdLine;
-- (CarSearchItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CarSearchItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_detourDistanceString;
 - (id)_etaString;
-- (id)_evChargerConstraints:(id)a3;
+- (id)_evChargerConstraints:(id)constraints;
 - (id)_firstLineString;
 - (id)_leftSecondLineString;
 - (id)_rightSecondLineString;
 - (void)_refreshRouteETAIfCalculating;
-- (void)_updateLabelColors:(BOOL)a3;
+- (void)_updateLabelColors:(BOOL)colors;
 - (void)_updateSubtitle;
 - (void)expectUpdatedRouteETA;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setRouteETA:(id)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setRouteETA:(id)a animated:(BOOL)animated;
 - (void)setupStyles;
 - (void)setupSubviews;
-- (void)setupWithModel:(id)a3 cellStyle:(int64_t)a4;
+- (void)setupWithModel:(id)model cellStyle:(int64_t)style;
 - (void)updateConstraints;
 - (void)updateUIForError;
 @end
@@ -33,19 +33,19 @@
   v3 = sub_100006E1C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CarSearchItemCell *)self model];
-    v5 = [v4 mapItem];
-    v6 = [v5 _shortAddress];
+    model = [(CarSearchItemCell *)self model];
+    mapItem = [model mapItem];
+    _shortAddress = [mapItem _shortAddress];
     [(_MKRouteETA *)self->_routeETA travelTime];
     v9 = 138412546;
-    v10 = v6;
+    v10 = _shortAddress;
     v11 = 2048;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "CarSearchItemCell: Setting ETA for address : %@, travel time: %ld", &v9, 0x16u);
   }
 
-  v8 = [(CarSearchItemCell *)self trailingSubtitleLabel];
-  [v8 setText:0];
+  trailingSubtitleLabel = [(CarSearchItemCell *)self trailingSubtitleLabel];
+  [trailingSubtitleLabel setText:0];
 }
 
 - (void)expectUpdatedRouteETA
@@ -79,28 +79,28 @@
   self->_delayedCalculatingTimer = 0;
 }
 
-- (void)setRouteETA:(id)a3 animated:(BOOL)a4
+- (void)setRouteETA:(id)a animated:(BOOL)animated
 {
-  v5 = a3;
+  aCopy = a;
   v6 = sub_100006E1C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(CarSearchItemCell *)self model];
-    v8 = [v7 mapItem];
-    v9 = [v8 _shortAddress];
+    model = [(CarSearchItemCell *)self model];
+    mapItem = [model mapItem];
+    _shortAddress = [mapItem _shortAddress];
     v14 = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v9;
+    v17 = _shortAddress;
     v18 = 2112;
-    v19 = v5;
+    v19 = aCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "CarSearchItemCell: Setting ETA for %@(model: %@) : %@", &v14, 0x20u);
   }
 
-  [v5 travelTime];
+  [aCopy travelTime];
   if (v10 >= 0.0 || !self->_routeETA)
   {
-    [v5 travelTime];
+    [aCopy travelTime];
     if (v11 < 0.0)
     {
       v12 = 0;
@@ -108,7 +108,7 @@
 
     else
     {
-      v12 = v5;
+      v12 = aCopy;
     }
 
     objc_storeStrong(&self->_routeETA, v12);
@@ -146,8 +146,8 @@
 
   if (v4)
   {
-    v5 = [(CarSearchItemCell *)self _leftSecondLineString];
-    v6 = [v5 length];
+    _leftSecondLineString = [(CarSearchItemCell *)self _leftSecondLineString];
+    v6 = [_leftSecondLineString length];
 
     if (v6)
     {
@@ -194,18 +194,18 @@ LABEL_11:
     }
   }
 
-  v7 = [(CarSearchItemCell *)self _leftSecondLineString];
-  v8 = [v7 length];
+  _leftSecondLineString = [(CarSearchItemCell *)self _leftSecondLineString];
+  v8 = [_leftSecondLineString length];
 
   if (v8)
   {
-    v9 = [(CarSearchItemCell *)self traitCollection];
-    v10 = [v9 layoutDirection];
+    traitCollection = [(CarSearchItemCell *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@".[List view details separator]" value:@"localized string not found" table:0];
 
-    if (v10 == 1)
+    if (layoutDirection == 1)
     {
       [NSString stringWithFormat:@"%@ %@", v4, v12];
     }
@@ -226,63 +226,63 @@ LABEL_13:
 
 - (id)_rightSecondLineString
 {
-  v3 = [(CarSearchItemCell *)self cellStyle];
-  if (v3 == 2)
+  cellStyle = [(CarSearchItemCell *)self cellStyle];
+  if (cellStyle == 2)
   {
-    v7 = [(CarSearchItemCell *)self _detourDistanceString];
+    _detourDistanceString = [(CarSearchItemCell *)self _detourDistanceString];
   }
 
   else
   {
-    if (v3 != 1)
+    if (cellStyle != 1)
     {
-      if (v3)
+      if (cellStyle)
       {
-        v6 = 0;
+        _etaString = 0;
       }
 
       else
       {
-        v4 = [(CarSearchItemCell *)self model];
-        v5 = [v4 mapItem];
-        if (v5)
+        model = [(CarSearchItemCell *)self model];
+        mapItem = [model mapItem];
+        if (mapItem)
         {
-          v6 = [(CarSearchItemCell *)self _etaString];
+          _etaString = [(CarSearchItemCell *)self _etaString];
         }
 
         else
         {
-          v6 = 0;
+          _etaString = 0;
         }
       }
 
       goto LABEL_12;
     }
 
-    v7 = [(CarSearchItemCell *)self _etaString];
+    _detourDistanceString = [(CarSearchItemCell *)self _etaString];
   }
 
-  v6 = v7;
+  _etaString = _detourDistanceString;
 LABEL_12:
 
-  return v6;
+  return _etaString;
 }
 
 - (id)_leftSecondLineString
 {
-  v3 = [(CarSearchItemCell *)self cellStyle];
-  if (v3 >= 2)
+  cellStyle = [(CarSearchItemCell *)self cellStyle];
+  if (cellStyle >= 2)
   {
-    if (v3 != 2)
+    if (cellStyle != 2)
     {
-      v5 = 0;
+      secondLine = 0;
       goto LABEL_12;
     }
 
-    v6 = [(CarSearchItemCell *)self model];
-    v7 = [v6 mapItem];
-    v8 = [v7 _detourInfo];
-    if (v8)
+    model = [(CarSearchItemCell *)self model];
+    mapItem = [model mapItem];
+    _detourInfo = [mapItem _detourInfo];
+    if (_detourInfo)
     {
     }
 
@@ -292,64 +292,64 @@ LABEL_12:
 
       if (routeETA)
       {
-        v4 = [(CarSearchItemCell *)self model];
-        v9 = [v4 mapItem];
+        model2 = [(CarSearchItemCell *)self model];
+        mapItem2 = [model2 mapItem];
         [(_MKRouteETA *)self->_routeETA travelTime];
-        v10 = [v9 _maps_detourTextForIdiom:3 travelTime:?];
+        v10 = [mapItem2 _maps_detourTextForIdiom:3 travelTime:?];
         goto LABEL_10;
       }
     }
 
-    v4 = [(CarSearchItemCell *)self model];
-    v9 = [v4 mapItem];
-    v10 = [v9 _maps_detourTextForIdiom:3];
+    model2 = [(CarSearchItemCell *)self model];
+    mapItem2 = [model2 mapItem];
+    v10 = [mapItem2 _maps_detourTextForIdiom:3];
 LABEL_10:
-    v5 = v10;
+    secondLine = v10;
 
     goto LABEL_11;
   }
 
-  v4 = [(CarSearchItemCell *)self model];
-  v5 = [v4 secondLine];
+  model2 = [(CarSearchItemCell *)self model];
+  secondLine = [model2 secondLine];
 LABEL_11:
 
 LABEL_12:
 
-  return v5;
+  return secondLine;
 }
 
 - (id)_firstLineString
 {
-  v3 = [(CarSearchItemCell *)self cellStyle];
-  switch(v3)
+  cellStyle = [(CarSearchItemCell *)self cellStyle];
+  switch(cellStyle)
   {
     case 2:
       goto LABEL_4;
     case 1:
-      v4 = [(CarSearchItemCell *)self model];
-      v6 = [v4 mapItem];
-      v5 = [v6 _addressFormattedAsName];
+      model = [(CarSearchItemCell *)self model];
+      mapItem = [model mapItem];
+      _addressFormattedAsName = [mapItem _addressFormattedAsName];
 
       goto LABEL_6;
     case 0:
 LABEL_4:
-      v4 = [(CarSearchItemCell *)self model];
-      v5 = [v4 firstLine];
+      model = [(CarSearchItemCell *)self model];
+      _addressFormattedAsName = [model firstLine];
 LABEL_6:
 
       goto LABEL_8;
   }
 
-  v5 = 0;
+  _addressFormattedAsName = 0;
 LABEL_8:
 
-  return v5;
+  return _addressFormattedAsName;
 }
 
-- (void)_updateLabelColors:(BOOL)a3
+- (void)_updateLabelColors:(BOOL)colors
 {
-  v3 = a3;
-  if (a3)
+  colorsCopy = colors;
+  if (colors)
   {
     +[UIColor _carSystemFocusLabelColor];
   }
@@ -359,8 +359,8 @@ LABEL_8:
     +[UIColor labelColor];
   }
   v5 = ;
-  v6 = [(CarSearchItemCell *)self titleLabel];
-  [v6 setTextColor:v5];
+  titleLabel = [(CarSearchItemCell *)self titleLabel];
+  [titleLabel setTextColor:v5];
 
   if ([(CarSearchItemCell *)self cellStyle]== 2)
   {
@@ -373,15 +373,15 @@ LABEL_8:
   }
   v15 = ;
   v7 = v15;
-  if (v3)
+  if (colorsCopy)
   {
     v7 = +[UIColor _carSystemFocusLabelColor];
   }
 
-  v8 = [(CarSearchItemCell *)self leadingSubtitleLabel];
-  [v8 setTextColor:v7];
+  leadingSubtitleLabel = [(CarSearchItemCell *)self leadingSubtitleLabel];
+  [leadingSubtitleLabel setTextColor:v7];
 
-  if (v3)
+  if (colorsCopy)
   {
 
     +[UIColor _carSystemFocusLabelColor];
@@ -392,24 +392,24 @@ LABEL_8:
     +[UIColor _carSystemPrimaryColor];
   }
   v9 = ;
-  v10 = [(CarSearchItemCell *)self trailingSubtitleLabel];
-  [v10 setTextColor:v9];
+  trailingSubtitleLabel = [(CarSearchItemCell *)self trailingSubtitleLabel];
+  [trailingSubtitleLabel setTextColor:v9];
 
-  v11 = [(CarSearchItemCell *)self ratingView];
-  [v11 setHighlighted:v3];
+  ratingView = [(CarSearchItemCell *)self ratingView];
+  [ratingView setHighlighted:colorsCopy];
 
-  v12 = [(CarSearchItemCell *)self model];
-  if ([v12 isRecent])
+  model = [(CarSearchItemCell *)self model];
+  if ([model isRecent])
   {
-    v13 = [(CarSearchItemCell *)self model];
-    v14 = [v13 isShowingStops];
+    model2 = [(CarSearchItemCell *)self model];
+    isShowingStops = [model2 isShowingStops];
 
-    if (!v14)
+    if (!isShowingStops)
     {
       goto LABEL_19;
     }
 
-    if (v3)
+    if (colorsCopy)
     {
       +[UIColor _carSystemFocusLabelColor];
     }
@@ -418,35 +418,35 @@ LABEL_8:
     {
       +[UIColor _carSystemPrimaryColor];
     }
-    v12 = ;
-    [(CarSearchResultEVChargerView *)self->_evChargerInfoView updateLabelColors:v12];
+    model = ;
+    [(CarSearchResultEVChargerView *)self->_evChargerInfoView updateLabelColors:model];
   }
 
 LABEL_19:
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = CarSearchItemCell;
-  [(CarSearchItemCell *)&v6 setHighlighted:a3 animated:a4];
-  [(CarSearchItemCell *)self _updateLabelColors:v4];
+  [(CarSearchItemCell *)&v6 setHighlighted:highlighted animated:animated];
+  [(CarSearchItemCell *)self _updateLabelColors:highlightedCopy];
 }
 
 - (BOOL)hasChargerNumberString
 {
-  v2 = [(CarSearchItemCell *)self model];
-  v3 = [v2 chargerNumberString];
-  v4 = v3 != 0;
+  model = [(CarSearchItemCell *)self model];
+  chargerNumberString = [model chargerNumberString];
+  v4 = chargerNumberString != 0;
 
   return v4;
 }
 
 - (BOOL)shouldShowThirdLine
 {
-  v3 = [(CarSearchItemCell *)self model];
-  if ([v3 shouldShowChargerlabel])
+  model = [(CarSearchItemCell *)self model];
+  if ([model shouldShowChargerlabel])
   {
     v4 = [(CarSearchItemCell *)self cellStyle]!= 1;
   }
@@ -461,12 +461,12 @@ LABEL_19:
 
 - (BOOL)shouldShowRating
 {
-  v3 = [(CarSearchItemCell *)self model];
-  v4 = [v3 rating];
-  if (v4)
+  model = [(CarSearchItemCell *)self model];
+  rating = [model rating];
+  if (rating)
   {
-    v5 = [(CarSearchItemCell *)self model];
-    v6 = ([v5 shouldShowChargerlabel] & 1) == 0 && -[CarSearchItemCell cellStyle](self, "cellStyle") != 1;
+    model2 = [(CarSearchItemCell *)self model];
+    v6 = ([model2 shouldShowChargerlabel] & 1) == 0 && -[CarSearchItemCell cellStyle](self, "cellStyle") != 1;
   }
 
   else
@@ -487,30 +487,30 @@ LABEL_19:
   return [(CarSearchItemCell *)self shouldShowThirdLine];
 }
 
-- (id)_evChargerConstraints:(id)a3
+- (id)_evChargerConstraints:(id)constraints
 {
   if (self->_evChargerInfoView)
   {
-    v4 = a3;
+    constraintsCopy = constraints;
     v5 = +[NSMutableArray array];
-    v21 = [(CarSearchResultEVChargerView *)self->_evChargerInfoView firstBaselineAnchor];
-    v20 = [v21 constraintEqualToAnchor:v4 constant:4.0];
+    firstBaselineAnchor = [(CarSearchResultEVChargerView *)self->_evChargerInfoView firstBaselineAnchor];
+    v20 = [firstBaselineAnchor constraintEqualToAnchor:constraintsCopy constant:4.0];
 
     v22[0] = v20;
-    v18 = [(CarSearchResultEVChargerView *)self->_evChargerInfoView leadingAnchor];
-    v19 = [(CarSearchItemCell *)self contentView];
-    v17 = [v19 leadingAnchor];
-    v16 = [v18 constraintEqualToAnchor:v17 constant:6.0];
+    leadingAnchor = [(CarSearchResultEVChargerView *)self->_evChargerInfoView leadingAnchor];
+    contentView = [(CarSearchItemCell *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:6.0];
     v22[1] = v16;
-    v6 = [(CarSearchResultEVChargerView *)self->_evChargerInfoView trailingAnchor];
-    v7 = [(CarSearchItemCell *)self contentView];
-    v8 = [v7 trailingAnchor];
-    v9 = [v6 constraintLessThanOrEqualToAnchor:v8 constant:-6.0];
+    trailingAnchor = [(CarSearchResultEVChargerView *)self->_evChargerInfoView trailingAnchor];
+    contentView2 = [(CarSearchItemCell *)self contentView];
+    trailingAnchor2 = [contentView2 trailingAnchor];
+    v9 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-6.0];
     v22[2] = v9;
-    v10 = [(CarSearchResultEVChargerView *)self->_evChargerInfoView bottomAnchor];
-    v11 = [(CarSearchItemCell *)self contentView];
-    v12 = [v11 bottomAnchor];
-    v13 = [v10 constraintLessThanOrEqualToAnchor:v12 constant:-4.0];
+    bottomAnchor = [(CarSearchResultEVChargerView *)self->_evChargerInfoView bottomAnchor];
+    contentView3 = [(CarSearchItemCell *)self contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v13 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-4.0];
     v22[3] = v13;
     v14 = [NSArray arrayWithObjects:v22 count:4];
     [v5 addObjectsFromArray:v14];
@@ -535,52 +535,52 @@ LABEL_19:
   }
 
   v85 = +[NSMutableArray array];
-  v82 = [(CarSearchItemCell *)self _car_usingLargeTextSizes];
-  v77 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v80 = [(CarSearchItemCell *)self contentView];
-  v74 = [v80 trailingAnchor];
-  v70 = [v77 constraintEqualToAnchor:v74 constant:-6.0];
+  _car_usingLargeTextSizes = [(CarSearchItemCell *)self _car_usingLargeTextSizes];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  contentView = [(CarSearchItemCell *)self contentView];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v70 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-6.0];
   v90[0] = v70;
-  v67 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v3 = [(CarSearchItemCell *)self contentView];
-  v4 = [v3 leadingAnchor];
-  v5 = [v67 constraintEqualToAnchor:v4 constant:6.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  contentView2 = [(CarSearchItemCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:6.0];
   v90[1] = v5;
   p_leadingSubtitleLabel = &self->_leadingSubtitleLabel;
-  v6 = [(UILabel *)self->_leadingSubtitleLabel leadingAnchor];
-  v7 = [(CarSearchItemCell *)self contentView];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:6.0];
+  leadingAnchor3 = [(UILabel *)self->_leadingSubtitleLabel leadingAnchor];
+  contentView3 = [(CarSearchItemCell *)self contentView];
+  leadingAnchor4 = [contentView3 leadingAnchor];
+  v9 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:6.0];
   v90[2] = v9;
   v10 = [NSArray arrayWithObjects:v90 count:3];
   [v85 addObjectsFromArray:v10];
 
-  v11 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v81 = [(CarSearchItemCell *)self contentView];
-  v12 = [v81 topAnchor];
-  v75 = v12;
-  v78 = v11;
-  if (v82)
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  contentView4 = [(CarSearchItemCell *)self contentView];
+  topAnchor = [contentView4 topAnchor];
+  v75 = topAnchor;
+  v78 = firstBaselineAnchor;
+  if (_car_usingLargeTextSizes)
   {
-    v71 = [v11 constraintEqualToAnchor:v12 constant:22.0];
+    v71 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:22.0];
     v89[0] = v71;
-    v68 = [(UILabel *)*p_leadingSubtitleLabel firstBaselineAnchor];
-    v65 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v63 = [v68 constraintEqualToAnchor:v65 constant:17.0];
+    firstBaselineAnchor2 = [(UILabel *)*p_leadingSubtitleLabel firstBaselineAnchor];
+    firstBaselineAnchor3 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    v63 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:17.0];
     v89[1] = v63;
-    v59 = [(UILabel *)*p_leadingSubtitleLabel trailingAnchor];
-    v61 = [(CarSearchItemCell *)self contentView];
-    v57 = [v61 trailingAnchor];
-    v56 = [v59 constraintLessThanOrEqualToAnchor:v57 constant:-6.0];
+    trailingAnchor3 = [(UILabel *)*p_leadingSubtitleLabel trailingAnchor];
+    contentView5 = [(CarSearchItemCell *)self contentView];
+    trailingAnchor4 = [contentView5 trailingAnchor];
+    v56 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-6.0];
     v89[2] = v56;
     p_trailingSubtitleLabel = &self->_trailingSubtitleLabel;
-    v14 = [(UILabel *)self->_trailingSubtitleLabel firstBaselineAnchor];
-    v15 = [(UILabel *)*p_leadingSubtitleLabel firstBaselineAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:17.0];
+    firstBaselineAnchor4 = [(UILabel *)self->_trailingSubtitleLabel firstBaselineAnchor];
+    firstBaselineAnchor5 = [(UILabel *)*p_leadingSubtitleLabel firstBaselineAnchor];
+    v16 = [firstBaselineAnchor4 constraintEqualToAnchor:firstBaselineAnchor5 constant:17.0];
     v89[3] = v16;
-    v17 = [(UILabel *)self->_trailingSubtitleLabel leadingAnchor];
-    v18 = [(UILabel *)*p_leadingSubtitleLabel leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    leadingAnchor5 = [(UILabel *)self->_trailingSubtitleLabel leadingAnchor];
+    leadingAnchor6 = [(UILabel *)*p_leadingSubtitleLabel leadingAnchor];
+    v19 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v89[4] = v19;
     v20 = [NSArray arrayWithObjects:v89 count:5];
     [v85 addObjectsFromArray:v20];
@@ -597,45 +597,45 @@ LABEL_19:
 
     v49 = &self->_leadingSubtitleLabel;
 LABEL_19:
-    v47 = [*p_trailingSubtitleLabel firstBaselineAnchor];
-    v48 = [(CarSearchItemCell *)self _evChargerConstraints:v47];
+    firstBaselineAnchor6 = [*p_trailingSubtitleLabel firstBaselineAnchor];
+    v48 = [(CarSearchItemCell *)self _evChargerConstraints:firstBaselineAnchor6];
     v46 = v85;
     goto LABEL_20;
   }
 
-  v21 = [(CarSearchItemCell *)self displaysThirdDetailLine];
+  displaysThirdDetailLine = [(CarSearchItemCell *)self displaysThirdDetailLine];
   v22 = 19.0;
-  if (v21)
+  if (displaysThirdDetailLine)
   {
     v22 = 20.0;
   }
 
-  v72 = [v11 constraintEqualToAnchor:v12 constant:v22];
+  v72 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:v22];
   v88[0] = v72;
-  v23 = [(UILabel *)*p_leadingSubtitleLabel firstBaselineAnchor];
-  v24 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v66 = v24;
-  v25 = [(CarSearchItemCell *)self displaysThirdDetailLine];
+  firstBaselineAnchor7 = [(UILabel *)*p_leadingSubtitleLabel firstBaselineAnchor];
+  firstBaselineAnchor8 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  v66 = firstBaselineAnchor8;
+  displaysThirdDetailLine2 = [(CarSearchItemCell *)self displaysThirdDetailLine];
   v26 = 17.0;
-  if (v25)
+  if (displaysThirdDetailLine2)
   {
     v26 = 14.0;
   }
 
-  v64 = [v23 constraintEqualToAnchor:v24 constant:v26];
+  v64 = [firstBaselineAnchor7 constraintEqualToAnchor:firstBaselineAnchor8 constant:v26];
   v88[1] = v64;
-  v62 = [(UILabel *)self->_trailingSubtitleLabel firstBaselineAnchor];
-  v60 = [(UILabel *)*p_leadingSubtitleLabel firstBaselineAnchor];
-  v58 = [v62 constraintEqualToAnchor:v60];
+  firstBaselineAnchor9 = [(UILabel *)self->_trailingSubtitleLabel firstBaselineAnchor];
+  firstBaselineAnchor10 = [(UILabel *)*p_leadingSubtitleLabel firstBaselineAnchor];
+  v58 = [firstBaselineAnchor9 constraintEqualToAnchor:firstBaselineAnchor10];
   v88[2] = v58;
-  v27 = [(UILabel *)self->_trailingSubtitleLabel leadingAnchor];
-  v28 = [(UILabel *)*p_leadingSubtitleLabel trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:3.0];
+  leadingAnchor7 = [(UILabel *)self->_trailingSubtitleLabel leadingAnchor];
+  trailingAnchor5 = [(UILabel *)*p_leadingSubtitleLabel trailingAnchor];
+  v29 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor5 constant:3.0];
   v88[3] = v29;
-  v30 = [(UILabel *)self->_trailingSubtitleLabel trailingAnchor];
-  v31 = [(CarSearchItemCell *)self contentView];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintLessThanOrEqualToAnchor:v32 constant:-6.0];
+  trailingAnchor6 = [(UILabel *)self->_trailingSubtitleLabel trailingAnchor];
+  contentView6 = [(CarSearchItemCell *)self contentView];
+  trailingAnchor7 = [contentView6 trailingAnchor];
+  v33 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:trailingAnchor7 constant:-6.0];
   v88[4] = v33;
   v34 = [NSArray arrayWithObjects:v88 count:5];
   [v85 addObjectsFromArray:v34];
@@ -656,34 +656,34 @@ LABEL_13:
 
 LABEL_14:
   v35 = *p_trailingSubtitleLabel;
-  v36 = [v35 firstBaselineAnchor];
-  v79 = v36;
-  v37 = [(UILabel *)self->_trailingSubtitleLabel firstBaselineAnchor];
-  v76 = v37;
+  firstBaselineAnchor11 = [v35 firstBaselineAnchor];
+  v79 = firstBaselineAnchor11;
+  firstBaselineAnchor12 = [(UILabel *)self->_trailingSubtitleLabel firstBaselineAnchor];
+  v76 = firstBaselineAnchor12;
   v38 = 14.0;
-  if (v82)
+  if (_car_usingLargeTextSizes)
   {
     v38 = 20.0;
   }
 
-  v83 = [v36 constraintEqualToAnchor:v37 constant:v38];
+  v83 = [firstBaselineAnchor11 constraintEqualToAnchor:firstBaselineAnchor12 constant:v38];
   v87[0] = v83;
-  v69 = [v35 leadingAnchor];
-  v73 = [(CarSearchItemCell *)self contentView];
-  v39 = [v73 leadingAnchor];
-  v40 = [v69 constraintEqualToAnchor:v39 constant:6.0];
+  leadingAnchor8 = [v35 leadingAnchor];
+  contentView7 = [(CarSearchItemCell *)self contentView];
+  leadingAnchor9 = [contentView7 leadingAnchor];
+  v40 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:6.0];
   v87[1] = v40;
-  v41 = [v35 trailingAnchor];
-  v42 = [(CarSearchItemCell *)self contentView];
-  v43 = [v42 trailingAnchor];
-  v44 = [v41 constraintLessThanOrEqualToAnchor:v43 constant:-6.0];
+  trailingAnchor8 = [v35 trailingAnchor];
+  contentView8 = [(CarSearchItemCell *)self contentView];
+  trailingAnchor9 = [contentView8 trailingAnchor];
+  v44 = [trailingAnchor8 constraintLessThanOrEqualToAnchor:trailingAnchor9 constant:-6.0];
   v87[2] = v44;
   v45 = [NSArray arrayWithObjects:v87 count:3];
   v46 = v85;
   [v85 addObjectsFromArray:v45];
 
-  v47 = [v35 firstBaselineAnchor];
-  v48 = [(CarSearchItemCell *)self _evChargerConstraints:v47];
+  firstBaselineAnchor6 = [v35 firstBaselineAnchor];
+  v48 = [(CarSearchItemCell *)self _evChargerConstraints:firstBaselineAnchor6];
 
   v49 = &self->_leadingSubtitleLabel;
 LABEL_20:
@@ -734,70 +734,70 @@ LABEL_20:
 
 - (void)_updateSubtitle
 {
-  v3 = [(CarSearchItemCell *)self _rightSecondLineString];
-  v4 = [(CarSearchItemCell *)self trailingSubtitleLabel];
-  [v4 setText:v3];
+  _rightSecondLineString = [(CarSearchItemCell *)self _rightSecondLineString];
+  trailingSubtitleLabel = [(CarSearchItemCell *)self trailingSubtitleLabel];
+  [trailingSubtitleLabel setText:_rightSecondLineString];
 
-  v6 = [(CarSearchItemCell *)self _leftSecondLineString];
-  v5 = [(CarSearchItemCell *)self leadingSubtitleLabel];
-  [v5 setText:v6];
+  _leftSecondLineString = [(CarSearchItemCell *)self _leftSecondLineString];
+  leadingSubtitleLabel = [(CarSearchItemCell *)self leadingSubtitleLabel];
+  [leadingSubtitleLabel setText:_leftSecondLineString];
 }
 
-- (BOOL)_hasRealTimeChargerInfo:(id)a3
+- (BOOL)_hasRealTimeChargerInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   if (MapsFeature_IsEnabled_RealTimeEVCharger())
   {
-    v4 = [v3 mapItem];
-    v5 = [v4 _geoMapItem];
-    v6 = [v5 _hasEVCharger];
+    mapItem = [infoCopy mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
+    _hasEVCharger = [_geoMapItem _hasEVCharger];
   }
 
   else
   {
-    v6 = 0;
+    _hasEVCharger = 0;
   }
 
-  return v6;
+  return _hasEVCharger;
 }
 
-- (void)setupWithModel:(id)a3 cellStyle:(int64_t)a4
+- (void)setupWithModel:(id)model cellStyle:(int64_t)style
 {
-  v6 = a3;
+  modelCopy = model;
   v7 = sub_100006E1C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 mapItem];
-    v9 = [v8 _shortAddress];
+    mapItem = [modelCopy mapItem];
+    _shortAddress = [mapItem _shortAddress];
     v29 = 138412546;
-    v30 = self;
+    selfCopy = self;
     v31 = 2112;
-    v32 = v9;
+    v32 = _shortAddress;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "CarSearchItemCell: Initialize cell:%@ with model: %@", &v29, 0x16u);
   }
 
-  [(CarSearchItemCell *)self setModel:v6];
-  [(CarSearchItemCell *)self setCellStyle:a4];
-  v10 = [(CarSearchItemCell *)self _firstLineString];
-  v11 = [(CarSearchItemCell *)self titleLabel];
-  [v11 setText:v10];
+  [(CarSearchItemCell *)self setModel:modelCopy];
+  [(CarSearchItemCell *)self setCellStyle:style];
+  _firstLineString = [(CarSearchItemCell *)self _firstLineString];
+  titleLabel = [(CarSearchItemCell *)self titleLabel];
+  [titleLabel setText:_firstLineString];
 
   [(CarSearchItemCell *)self _updateSubtitle];
-  v12 = [(CarSearchItemCell *)self ratingView];
-  v13 = [v6 mapItem];
-  [v12 setupWithMapItem:v13];
+  ratingView = [(CarSearchItemCell *)self ratingView];
+  mapItem2 = [modelCopy mapItem];
+  [ratingView setupWithMapItem:mapItem2];
 
-  LODWORD(v12) = [(CarSearchItemCell *)self shouldShowRating];
-  v14 = [(CarSearchItemCell *)self ratingView];
-  [v14 setHidden:v12 ^ 1];
+  LODWORD(ratingView) = [(CarSearchItemCell *)self shouldShowRating];
+  ratingView2 = [(CarSearchItemCell *)self ratingView];
+  [ratingView2 setHidden:ratingView ^ 1];
 
   [(CarSearchItemCell *)self _updateLabelColors:[(CarSearchItemCell *)self isHighlighted]];
-  v15 = [v6 mapItem];
-  v16 = [v15 _realTimeAvailableEVCharger];
+  mapItem3 = [modelCopy mapItem];
+  _realTimeAvailableEVCharger = [mapItem3 _realTimeAvailableEVCharger];
 
-  v17 = [_TtC4Maps16EVChargerUtility realTimeEVChargerStatusWithEvCharger:v16];
+  v17 = [_TtC4Maps16EVChargerUtility realTimeEVChargerStatusWithEvCharger:_realTimeAvailableEVCharger];
   v18 = +[UIColor _carSystemSecondaryColor];
-  if ([(CarSearchItemCell *)self _hasRealTimeChargerInfo:v6])
+  if ([(CarSearchItemCell *)self _hasRealTimeChargerInfo:modelCopy])
   {
     if (v17 == 1)
     {
@@ -808,33 +808,33 @@ LABEL_20:
 
     [(CarSearchResultEVChargerView *)self->_evChargerInfoView setTextAndIconColor:v18 status:v17];
     evChargerInfoView = self->_evChargerInfoView;
-    v21 = [v6 evChargerLabelText];
-    [(CarSearchResultEVChargerView *)evChargerInfoView updateContentsWithPlugStatus:v17 displayString:v21];
+    evChargerLabelText = [modelCopy evChargerLabelText];
+    [(CarSearchResultEVChargerView *)evChargerInfoView updateContentsWithPlugStatus:v17 displayString:evChargerLabelText];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v22 = [(CarSearchItemCell *)self model];
-  v23 = [v22 chargerNumberString];
-  v24 = [v23 length];
+  model = [(CarSearchItemCell *)self model];
+  chargerNumberString = [model chargerNumberString];
+  v24 = [chargerNumberString length];
 
   if (v24)
   {
     [(CarSearchResultEVChargerView *)self->_evChargerInfoView setTextAndIconColor:v18 status:0];
     v25 = self->_evChargerInfoView;
-    v26 = [(CarSearchItemCell *)self model];
-    v27 = [v26 chargerNumberString];
-    [(CarSearchResultEVChargerView *)v25 updateContentsWithPlugStatus:0 displayString:v27];
+    model2 = [(CarSearchItemCell *)self model];
+    chargerNumberString2 = [model2 chargerNumberString];
+    [(CarSearchResultEVChargerView *)v25 updateContentsWithPlugStatus:0 displayString:chargerNumberString2];
 
-    v28 = 0;
-    if ([v6 isShowingStops])
+    isRecent = 0;
+    if ([modelCopy isShowingStops])
     {
-      v28 = [v6 isRecent];
+      isRecent = [modelCopy isRecent];
     }
 
-    v21 = [(CarSearchResultEVChargerView *)self->_evChargerInfoView leadingIcon];
-    [v21 setHidden:v28];
+    evChargerLabelText = [(CarSearchResultEVChargerView *)self->_evChargerInfoView leadingIcon];
+    [evChargerLabelText setHidden:isRecent];
     goto LABEL_11;
   }
 
@@ -845,31 +845,31 @@ LABEL_12:
 - (void)setupStyles
 {
   v3 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCallout weight:UIFontWeightMedium];
-  v4 = [(CarSearchItemCell *)self titleLabel];
-  [v4 setFont:v3];
+  titleLabel = [(CarSearchItemCell *)self titleLabel];
+  [titleLabel setFont:v3];
 
   v5 = +[UIColor labelColor];
-  v6 = [(CarSearchItemCell *)self titleLabel];
-  [v6 setTextColor:v5];
+  titleLabel2 = [(CarSearchItemCell *)self titleLabel];
+  [titleLabel2 setTextColor:v5];
 
-  v7 = [(CarSearchItemCell *)self titleLabel];
-  [v7 setAdjustsFontSizeToFitWidth:0];
+  titleLabel3 = [(CarSearchItemCell *)self titleLabel];
+  [titleLabel3 setAdjustsFontSizeToFitWidth:0];
 
   v8 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption2 weight:3 grade:UIFontWeightRegular];
-  v9 = [(CarSearchItemCell *)self leadingSubtitleLabel];
-  [v9 setFont:v8];
+  leadingSubtitleLabel = [(CarSearchItemCell *)self leadingSubtitleLabel];
+  [leadingSubtitleLabel setFont:v8];
 
   v10 = +[UIColor _carSystemPrimaryColor];
-  v11 = [(CarSearchItemCell *)self leadingSubtitleLabel];
-  [v11 setTextColor:v10];
+  leadingSubtitleLabel2 = [(CarSearchItemCell *)self leadingSubtitleLabel];
+  [leadingSubtitleLabel2 setTextColor:v10];
 
   v12 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption2 weight:3 grade:UIFontWeightRegular];
-  v13 = [(CarSearchItemCell *)self trailingSubtitleLabel];
-  [v13 setFont:v12];
+  trailingSubtitleLabel = [(CarSearchItemCell *)self trailingSubtitleLabel];
+  [trailingSubtitleLabel setFont:v12];
 
   v15 = +[UIColor _carSystemPrimaryColor];
-  v14 = [(CarSearchItemCell *)self trailingSubtitleLabel];
-  [v14 setTextColor:v15];
+  trailingSubtitleLabel2 = [(CarSearchItemCell *)self trailingSubtitleLabel];
+  [trailingSubtitleLabel2 setTextColor:v15];
 }
 
 - (void)setupSubviews
@@ -890,8 +890,8 @@ LABEL_12:
   [(UILabel *)self->_titleLabel setContentHuggingPriority:0 forAxis:v10];
   LODWORD(v11) = 1148829696;
   [(UILabel *)self->_titleLabel setContentCompressionResistancePriority:0 forAxis:v11];
-  v12 = [(CarSearchItemCell *)self contentView];
-  [v12 addSubview:self->_titleLabel];
+  contentView = [(CarSearchItemCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 
   v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   leadingSubtitleLabel = self->_leadingSubtitleLabel;
@@ -903,8 +903,8 @@ LABEL_12:
   [(UILabel *)self->_leadingSubtitleLabel setContentHuggingPriority:1 forAxis:v15];
   LODWORD(v16) = 1148846080;
   [(UILabel *)self->_leadingSubtitleLabel setContentHuggingPriority:0 forAxis:v16];
-  v17 = [(CarSearchItemCell *)self contentView];
-  [v17 addSubview:self->_leadingSubtitleLabel];
+  contentView2 = [(CarSearchItemCell *)self contentView];
+  [contentView2 addSubview:self->_leadingSubtitleLabel];
 
   v18 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   trailingSubtitleLabel = self->_trailingSubtitleLabel;
@@ -918,8 +918,8 @@ LABEL_12:
   [(UILabel *)self->_trailingSubtitleLabel setContentHuggingPriority:0 forAxis:v21];
   LODWORD(v22) = 1148846080;
   [(UILabel *)self->_trailingSubtitleLabel setContentCompressionResistancePriority:1 forAxis:v22];
-  v23 = [(CarSearchItemCell *)self contentView];
-  [v23 addSubview:self->_trailingSubtitleLabel];
+  contentView3 = [(CarSearchItemCell *)self contentView];
+  [contentView3 addSubview:self->_trailingSubtitleLabel];
 
   v24 = objc_alloc_init(CarStarRatingView);
   ratingView = self->_ratingView;
@@ -930,12 +930,12 @@ LABEL_12:
   [(CarStarRatingView *)self->_ratingView setContentCompressionResistancePriority:1 forAxis:v26];
   LODWORD(v27) = 1148846080;
   [(CarStarRatingView *)self->_ratingView setContentHuggingPriority:1 forAxis:v27];
-  v28 = [(CarSearchItemCell *)self contentView];
-  [v28 addSubview:self->_ratingView];
+  contentView4 = [(CarSearchItemCell *)self contentView];
+  [contentView4 addSubview:self->_ratingView];
 
-  v29 = [[_TtC4Maps28CarSearchResultEVChargerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[_TtC4Maps28CarSearchResultEVChargerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   evChargerInfoView = self->_evChargerInfoView;
-  self->_evChargerInfoView = v29;
+  self->_evChargerInfoView = height;
 
   [(CarSearchResultEVChargerView *)self->_evChargerInfoView setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v31) = 1148846080;
@@ -944,20 +944,20 @@ LABEL_12:
   [(CarSearchResultEVChargerView *)self->_evChargerInfoView setContentHuggingPriority:0 forAxis:v32];
   LODWORD(v33) = 1148846080;
   [(CarSearchResultEVChargerView *)self->_evChargerInfoView setContentCompressionResistancePriority:1 forAxis:v33];
-  v34 = [(CarSearchItemCell *)self contentView];
-  [v34 addSubview:self->_evChargerInfoView];
+  contentView5 = [(CarSearchItemCell *)self contentView];
+  [contentView5 addSubview:self->_evChargerInfoView];
 }
 
-- (CarSearchItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CarSearchItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CarSearchItemCell;
-  v4 = [(CarSearchItemCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CarSearchItemCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CarSearchItemCell *)v4 contentView];
-    [v6 setClipsToBounds:1];
+    contentView = [(CarSearchItemCell *)v4 contentView];
+    [contentView setClipsToBounds:1];
 
     [(CarSearchItemCell *)v5 setupSubviews];
     [(CarSearchItemCell *)v5 setupStyles];

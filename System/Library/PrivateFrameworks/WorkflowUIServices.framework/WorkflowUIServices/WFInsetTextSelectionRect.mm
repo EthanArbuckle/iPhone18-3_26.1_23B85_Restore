@@ -4,7 +4,7 @@
 - (BOOL)isVertical;
 - (CGRect)rect;
 - (UIEdgeInsets)insets;
-- (WFInsetTextSelectionRect)initWithSelectionRect:(id)a3 insets:(UIEdgeInsets)a4;
+- (WFInsetTextSelectionRect)initWithSelectionRect:(id)rect insets:(UIEdgeInsets)insets;
 - (int64_t)writingDirection;
 @end
 
@@ -25,40 +25,40 @@
 
 - (BOOL)isVertical
 {
-  v2 = [(WFInsetTextSelectionRect *)self selectionRect];
-  v3 = [v2 isVertical];
+  selectionRect = [(WFInsetTextSelectionRect *)self selectionRect];
+  isVertical = [selectionRect isVertical];
 
-  return v3;
+  return isVertical;
 }
 
 - (BOOL)containsEnd
 {
-  v2 = [(WFInsetTextSelectionRect *)self selectionRect];
-  v3 = [v2 containsEnd];
+  selectionRect = [(WFInsetTextSelectionRect *)self selectionRect];
+  containsEnd = [selectionRect containsEnd];
 
-  return v3;
+  return containsEnd;
 }
 
 - (BOOL)containsStart
 {
-  v2 = [(WFInsetTextSelectionRect *)self selectionRect];
-  v3 = [v2 containsStart];
+  selectionRect = [(WFInsetTextSelectionRect *)self selectionRect];
+  containsStart = [selectionRect containsStart];
 
-  return v3;
+  return containsStart;
 }
 
 - (int64_t)writingDirection
 {
-  v2 = [(WFInsetTextSelectionRect *)self selectionRect];
-  v3 = [v2 writingDirection];
+  selectionRect = [(WFInsetTextSelectionRect *)self selectionRect];
+  writingDirection = [selectionRect writingDirection];
 
-  return v3;
+  return writingDirection;
 }
 
 - (CGRect)rect
 {
-  v3 = [(WFInsetTextSelectionRect *)self selectionRect];
-  [v3 rect];
+  selectionRect = [(WFInsetTextSelectionRect *)self selectionRect];
+  [selectionRect rect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -80,20 +80,20 @@
   return result;
 }
 
-- (WFInsetTextSelectionRect)initWithSelectionRect:(id)a3 insets:(UIEdgeInsets)a4
+- (WFInsetTextSelectionRect)initWithSelectionRect:(id)rect insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  rectCopy = rect;
   v15.receiver = self;
   v15.super_class = WFInsetTextSelectionRect;
   v11 = [(WFInsetTextSelectionRect *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_selectionRect, a3);
+    objc_storeStrong(&v11->_selectionRect, rect);
     v12->_insets.top = top;
     v12->_insets.left = left;
     v12->_insets.bottom = bottom;

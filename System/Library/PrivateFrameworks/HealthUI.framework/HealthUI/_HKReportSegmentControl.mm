@@ -1,23 +1,23 @@
 @interface _HKReportSegmentControl
 - (CGSize)intrinsicContentSize;
-- (_HKReportSegmentControl)initWithBackgroundColor:(id)a3 dividerColor:(id)a4 rightControl:(id)a5;
+- (_HKReportSegmentControl)initWithBackgroundColor:(id)color dividerColor:(id)dividerColor rightControl:(id)control;
 - (void)layoutSubviews;
 @end
 
 @implementation _HKReportSegmentControl
 
-- (_HKReportSegmentControl)initWithBackgroundColor:(id)a3 dividerColor:(id)a4 rightControl:(id)a5
+- (_HKReportSegmentControl)initWithBackgroundColor:(id)color dividerColor:(id)dividerColor rightControl:(id)control
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  colorCopy = color;
+  dividerColorCopy = dividerColor;
+  controlCopy = control;
   v23.receiver = self;
   v23.super_class = _HKReportSegmentControl;
   v11 = [(_HKReportSegmentControl *)&v23 init];
   if (v11)
   {
-    v22 = v10;
+    v22 = controlCopy;
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v13 = [v12 localizedStringForKey:@"REPORT_FORMATTED" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v24[0] = v13;
@@ -36,17 +36,17 @@
     dividerView = v11->_dividerView;
     v11->_dividerView = v19;
 
-    [(UIView *)v11->_dividerView setBackgroundColor:v9];
+    [(UIView *)v11->_dividerView setBackgroundColor:dividerColorCopy];
     [(_HKReportSegmentControl *)v11 addSubview:v11->_dividerView];
-    objc_storeStrong(&v11->_rightControl, a5);
+    objc_storeStrong(&v11->_rightControl, control);
     if (v11->_rightControl)
     {
       [(_HKReportSegmentControl *)v11 addSubview:?];
     }
 
-    [(_HKReportSegmentControl *)v11 setBackgroundColor:v8];
+    [(_HKReportSegmentControl *)v11 setBackgroundColor:colorCopy];
 
-    v10 = v22;
+    controlCopy = v22;
   }
 
   return v11;
@@ -67,8 +67,8 @@
   [(_HKReportSegmentControl *)self frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(_HKReportSegmentControl *)self layoutMarginsGuide];
-  [v7 layoutFrame];
+  layoutMarginsGuide = [(_HKReportSegmentControl *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   v9 = v8;
   v11 = v10;
 

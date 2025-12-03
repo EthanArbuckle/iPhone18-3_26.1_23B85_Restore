@@ -1,40 +1,40 @@
 @interface PocketAPILogin
 - (PocketAPILogin)init;
-- (PocketAPILogin)initWithAPI:(id)a3 delegate:(id)a4;
-- (PocketAPILogin)initWithCoder:(id)a3;
+- (PocketAPILogin)initWithAPI:(id)i delegate:(id)delegate;
+- (PocketAPILogin)initWithCoder:(id)coder;
 - (id)redirectURL;
-- (void)_setRequestToken:(id)a3;
+- (void)_setRequestToken:(id)token;
 - (void)convertRequestTokenToAccessToken;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)fetchRequestToken;
-- (void)loginDidFinish:(BOOL)a3;
+- (void)loginDidFinish:(BOOL)finish;
 - (void)loginDidStart;
-- (void)pocketAPI:(id)a3 hadLoginError:(id)a4;
-- (void)pocketAPI:(id)a3 receivedRequestToken:(id)a4;
-- (void)pocketAPILoggedIn:(id)a3;
+- (void)pocketAPI:(id)i hadLoginError:(id)error;
+- (void)pocketAPI:(id)i receivedRequestToken:(id)token;
+- (void)pocketAPILoggedIn:(id)in;
 @end
 
 @implementation PocketAPILogin
 
-- (void)loginDidFinish:(BOOL)a3
+- (void)loginDidFinish:(BOOL)finish
 {
   if (!self->didFinish)
   {
-    v3 = a3;
+    finishCopy = finish;
     self->didFinish = 1;
     if (self->delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [(PocketAPIDelegate *)self->delegate pocketAPIDidFinishLogin:[(PocketAPILogin *)self API]];
     }
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:PocketAPILoginFinishedNotification object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:PocketAPILoginFinishedNotification object:0];
     if (self->reverseAuth)
     {
       v6 = MEMORY[0x277CCACA8];
       v7 = +[PocketAPI pocketAppURLScheme];
-      if (v3)
+      if (finishCopy)
       {
         v8 = @"success";
       }
@@ -65,26 +65,26 @@
       [(PocketAPIDelegate *)self->delegate pocketAPIDidStartLogin:[(PocketAPILogin *)self API]];
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = PocketAPILoginStartedNotification;
 
-    [v7 postNotificationName:v8 object:0];
+    [defaultCenter postNotificationName:v8 object:0];
   }
 }
 
-- (void)pocketAPI:(id)a3 hadLoginError:(id)a4
+- (void)pocketAPI:(id)i hadLoginError:(id)error
 {
   if (self->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(PocketAPIDelegate *)self->delegate pocketAPI:a3 hadLoginError:a4];
+    [(PocketAPIDelegate *)self->delegate pocketAPI:i hadLoginError:error];
   }
 
-  [(PocketAPILogin *)self loginDidFinish:0, a4];
+  [(PocketAPILogin *)self loginDidFinish:0, error];
 
   self->delegate = 0;
 }
 
-- (void)pocketAPILoggedIn:(id)a3
+- (void)pocketAPILoggedIn:(id)in
 {
   if (self->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -96,9 +96,9 @@
   self->delegate = 0;
 }
 
-- (void)pocketAPI:(id)a3 receivedRequestToken:(id)a4
+- (void)pocketAPI:(id)i receivedRequestToken:(id)token
 {
-  [(PocketAPILogin *)self _setRequestToken:a4];
+  [(PocketAPILogin *)self _setRequestToken:token];
   v6 = +[PocketAPIOperation encodeForURL:](PocketAPIOperation, "encodeForURL:", [-[PocketAPILogin redirectURL](self "redirectURL")]);
   delegate = self->delegate;
   v8 = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"pocket-oauth-v1:///authorize?request_token=%@&redirect_uri=%@", self->requestToken, v6)}];
@@ -107,9 +107,9 @@
   v9[2] = __49__PocketAPILogin_pocketAPI_receivedRequestToken___block_invoke;
   v9[3] = &unk_278C1FF80;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = i;
   v9[6] = v6;
-  [(PocketAPIDelegate *)delegate pocketAPI:a3 requestedOpenURL:v8 completionHandler:v9];
+  [(PocketAPIDelegate *)delegate pocketAPI:i requestedOpenURL:v8 completionHandler:v9];
 }
 
 void *__49__PocketAPILogin_pocketAPI_receivedRequestToken___block_invoke(void *result, char a2)
@@ -158,12 +158,12 @@ uint64_t __49__PocketAPILogin_pocketAPI_receivedRequestToken___block_invoke_2(ui
   [(PocketAPIOperation *)v9 setHTTPMethod:1];
   [(PocketAPIOperation *)v9 setAPIMethod:@"authorize"];
   v3 = [objc_msgSend(MEMORY[0x277CBEAF8] "preferredLanguages")];
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 objectForKey:*MEMORY[0x277CBE690]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v5 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
   v6 = [objc_msgSend(MEMORY[0x277CBEBB0] "systemTimeZone")] / 60;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = [(PocketAPILogin *)self requestToken];
-  -[PocketAPIOperation setArguments:](v9, "setArguments:", [v7 dictionaryWithObjectsAndKeys:{v8, @"code", v3, @"locale", v5, @"country", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%i", v6), @"timezone", 0}]);
+  requestToken = [(PocketAPILogin *)self requestToken];
+  -[PocketAPIOperation setArguments:](v9, "setArguments:", [v7 dictionaryWithObjectsAndKeys:{requestToken, @"code", v3, @"locale", v5, @"country", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%i", v6), @"timezone", 0}]);
   [(NSOperationQueue *)self->operationQueue addOperation:v9];
 }
 
@@ -189,15 +189,15 @@ uint64_t __49__PocketAPILogin_pocketAPI_receivedRequestToken___block_invoke_2(ui
   return [v2 URLWithString:v3];
 }
 
-- (PocketAPILogin)initWithAPI:(id)a3 delegate:(id)a4
+- (PocketAPILogin)initWithAPI:(id)i delegate:(id)delegate
 {
   v6 = [(PocketAPILogin *)self init];
   if (v6)
   {
-    v7 = a3;
+    iCopy = i;
 
-    v6->API = a3;
-    v6->delegate = a4;
+    v6->API = i;
+    v6->delegate = delegate;
   }
 
   return v6;
@@ -236,35 +236,35 @@ uint64_t __49__PocketAPILogin_pocketAPI_receivedRequestToken___block_invoke_2(ui
   [(PocketAPILogin *)&v3 dealloc];
 }
 
-- (void)_setRequestToken:(id)a3
+- (void)_setRequestToken:(id)token
 {
   [(PocketAPILogin *)self willChangeValueForKey:@"requestToken"];
   v5 = self->requestToken;
-  self->requestToken = [a3 copy];
+  self->requestToken = [token copy];
 
   [(PocketAPILogin *)self didChangeValueForKey:@"requestToken"];
 }
 
-- (PocketAPILogin)initWithCoder:(id)a3
+- (PocketAPILogin)initWithCoder:(id)coder
 {
   v4 = [(PocketAPILogin *)self init];
   if (v4)
   {
-    v4->requestToken = [a3 decodeObjectForKey:@"requestToken"];
-    v4->accessToken = [a3 decodeObjectForKey:@"accessToken"];
-    v4->uuid = [a3 decodeObjectForKey:@"uuid"];
+    v4->requestToken = [coder decodeObjectForKey:@"requestToken"];
+    v4->accessToken = [coder decodeObjectForKey:@"accessToken"];
+    v4->uuid = [coder decodeObjectForKey:@"uuid"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[PocketAPILogin requestToken](self forKey:{"requestToken"), @"requestToken"}];
-  [a3 encodeObject:-[PocketAPILogin accessToken](self forKey:{"accessToken"), @"accessToken"}];
-  v5 = [(PocketAPILogin *)self uuid];
+  [coder encodeObject:-[PocketAPILogin requestToken](self forKey:{"requestToken"), @"requestToken"}];
+  [coder encodeObject:-[PocketAPILogin accessToken](self forKey:{"accessToken"), @"accessToken"}];
+  uuid = [(PocketAPILogin *)self uuid];
 
-  [a3 encodeObject:v5 forKey:@"uuid"];
+  [coder encodeObject:uuid forKey:@"uuid"];
 }
 
 @end

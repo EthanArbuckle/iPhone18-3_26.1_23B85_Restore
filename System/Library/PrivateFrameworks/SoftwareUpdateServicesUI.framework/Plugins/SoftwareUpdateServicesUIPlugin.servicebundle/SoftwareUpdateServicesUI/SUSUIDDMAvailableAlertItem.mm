@@ -1,5 +1,5 @@
 @interface SUSUIDDMAvailableAlertItem
-- (SUSUIDDMAvailableAlertItem)initWithDescriptor:(id)a3 softwareUpdateController:(id)a4 alertWindow:(unint64_t)a5;
+- (SUSUIDDMAvailableAlertItem)initWithDescriptor:(id)descriptor softwareUpdateController:(id)controller alertWindow:(unint64_t)window;
 - (id)allowedApps;
 - (id)buttons;
 - (id)message;
@@ -8,36 +8,36 @@
 
 @implementation SUSUIDDMAvailableAlertItem
 
-- (SUSUIDDMAvailableAlertItem)initWithDescriptor:(id)a3 softwareUpdateController:(id)a4 alertWindow:(unint64_t)a5
+- (SUSUIDDMAvailableAlertItem)initWithDescriptor:(id)descriptor softwareUpdateController:(id)controller alertWindow:(unint64_t)window
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12 = a5;
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v13, controller);
+  windowCopy = window;
+  v5 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v5;
   v11.super_class = SUSUIDDMAvailableAlertItem;
   v10 = [(SUSUIBaseSoftwareUpdateAlertItem *)&v11 initWithDescriptor:location[0] softwareUpdateController:v13];
-  v15 = v10;
-  objc_storeStrong(&v15, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    *(&v15->super.super._controller + 1) = v12;
+    *(&selfCopy->super.super._controller + 1) = windowCopy;
   }
 
   else
   {
-    *(&v15->super.super._controller + 1) = 0;
+    *(&selfCopy->super.super._controller + 1) = 0;
   }
 
-  v7 = v15;
+  v7 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
@@ -51,13 +51,13 @@
 
 - (id)message
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v3 = [(SUSUIBaseSoftwareUpdateAlertItem *)self softwareUpdateController];
-  v8[0] = [(SUSUISoftwareUpdateController *)v3 ddmController];
+  softwareUpdateController = [(SUSUIBaseSoftwareUpdateAlertItem *)self softwareUpdateController];
+  v8[0] = [(SUSUISoftwareUpdateController *)softwareUpdateController ddmController];
 
   v4 = v8[0];
-  v5 = [(SUSUIBaseSoftwareUpdateAlertItem *)v9 updateName];
+  updateName = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
   v7 = [v4 alertBodyLocallizedStrWithUpdateName:?];
 
   v6 = v7;
@@ -72,11 +72,11 @@
   v12[2] = self;
   v12[1] = a2;
   v12[0] = 0;
-  v11 = self;
+  selfCopy = self;
   v5 = [SUSUIAlertButtonDefinition alloc];
   v7 = sub_C5A4();
   v6 = [v7 localizedStringForKey:@"SOFTWARE_UPDATE_AVAILABLE_ALERT_ACTION_DETAILS" value:&stru_62DF0 table:@"ui_alerts"];
-  v9 = v11;
+  v9 = selfCopy;
   v10 = [(SUSUIAlertButtonDefinition *)v5 initWithLabel:v6 presentationStyle:2 isPreferredButton:1 handler:?];
 
   v13 = v10;
@@ -87,7 +87,7 @@
   v8 = v12[0];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   objc_storeStrong(v12, 0);
 
   return v8;

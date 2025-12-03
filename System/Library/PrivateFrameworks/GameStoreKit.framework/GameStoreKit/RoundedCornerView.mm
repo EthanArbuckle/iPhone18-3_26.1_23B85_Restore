@@ -1,6 +1,6 @@
 @interface RoundedCornerView
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RoundedCornerView
@@ -22,17 +22,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for RoundedCornerView();
   v4 = v8.receiver;
-  v5 = a3;
-  [(RoundedCornerView *)&v8 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  changeCopy = change;
+  [(RoundedCornerView *)&v8 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (!v5 || v7 != [v5 userInterfaceStyle])
+  if (!changeCopy || userInterfaceStyle != [changeCopy userInterfaceStyle])
   {
     (*((*MEMORY[0x277D85000] & *v4) + 0xE8))();
   }

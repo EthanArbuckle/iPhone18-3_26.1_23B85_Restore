@@ -1,15 +1,15 @@
 @interface VTFrameRateConversionConfiguration
 + (NSIndexSet)supportedRevisions;
 + (int64_t)defaultRevision;
-- (VTFrameRateConversionConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 usePrecomputedFlow:(BOOL)a5 qualityPrioritization:(int64_t)a6 revision:(int64_t)a7;
+- (VTFrameRateConversionConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision;
 - (void)dealloc;
 @end
 
 @implementation VTFrameRateConversionConfiguration
 
-- (VTFrameRateConversionConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 usePrecomputedFlow:(BOOL)a5 qualityPrioritization:(int64_t)a6 revision:(int64_t)a7
+- (VTFrameRateConversionConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision
 {
-  v9 = a5;
+  flowCopy = flow;
   v29[4] = *MEMORY[0x1E69E9840];
   if (!loadVEFrameworkOnce())
   {
@@ -28,7 +28,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v13 = [objc_alloc(NSClassFromString(&cfstr_Veframeratecon.isa)) initWithFrameWidth:a3 frameHeight:a4 usePrecomputedFlow:v9 qualityPrioritization:a6 revision:a7];
+  v13 = [objc_alloc(NSClassFromString(&cfstr_Veframeratecon.isa)) initWithFrameWidth:width frameHeight:height usePrecomputedFlow:flowCopy qualityPrioritization:prioritization revision:revision];
   self->_veConfiguration = v13;
   if (!v13)
   {
@@ -37,21 +37,21 @@ LABEL_9:
   }
 
   v14 = [-[VEFrameRateConversionConfiguration framePreferredPixelFormats](v13 "framePreferredPixelFormats")];
-  self->_revision = a7;
+  self->_revision = revision;
   self->_frameSupportedPixelFormats = v14;
-  self->_frameWidth = a3;
-  self->_frameHeight = a4;
-  self->_usePrecomputedFlow = v9;
-  self->_qualityPrioritization = a6;
+  self->_frameWidth = width;
+  self->_frameHeight = height;
+  self->_usePrecomputedFlow = flowCopy;
+  self->_qualityPrioritization = prioritization;
   v15 = *MEMORY[0x1E6966130];
   v29[0] = v14;
   v16 = *MEMORY[0x1E6966208];
   v26[0] = v15;
   v26[1] = v16;
-  v29[1] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v29[1] = [MEMORY[0x1E696AD98] numberWithInteger:width];
   v27 = *MEMORY[0x1E69660B8];
   v17 = v27;
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:height];
   v28 = *MEMORY[0x1E69660D8];
   v19 = v28;
   v20 = MEMORY[0x1E695E0F8];
@@ -61,9 +61,9 @@ LABEL_9:
   v25[0] = self->_frameSupportedPixelFormats;
   v24[0] = v15;
   v24[1] = v16;
-  v25[1] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v25[1] = [MEMORY[0x1E696AD98] numberWithInteger:width];
   v24[2] = v17;
-  v21 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v21 = [MEMORY[0x1E696AD98] numberWithInteger:height];
   v24[3] = v19;
   v25[2] = v21;
   v25[3] = v20;

@@ -1,23 +1,23 @@
 @interface KNLiveVideoSourceUsageEntry
-- (BOOL)isEqual:(id)a3;
-- (KNLiveVideoSourceUsageEntry)initWithArchivedBackgroundKinds:(id)a3;
-- (KNLiveVideoSourceUsageEntry)initWithMessage:(const void *)a3 unarchiver:(id)a4;
-- (id)entryByMergingEntry:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KNLiveVideoSourceUsageEntry)initWithArchivedBackgroundKinds:(id)kinds;
+- (KNLiveVideoSourceUsageEntry)initWithMessage:(const void *)message unarchiver:(id)unarchiver;
+- (id)entryByMergingEntry:(id)entry;
 - (unint64_t)hash;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation KNLiveVideoSourceUsageEntry
 
-- (KNLiveVideoSourceUsageEntry)initWithArchivedBackgroundKinds:(id)a3
+- (KNLiveVideoSourceUsageEntry)initWithArchivedBackgroundKinds:(id)kinds
 {
-  v4 = a3;
+  kindsCopy = kinds;
   v11.receiver = self;
   v11.super_class = KNLiveVideoSourceUsageEntry;
   v7 = [(KNLiveVideoSourceUsageEntry *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(kindsCopy, v5, v6);
     archivedBackgroundKinds = v7->_archivedBackgroundKinds;
     v7->_archivedBackgroundKinds = v8;
   }
@@ -25,10 +25,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -61,11 +61,11 @@
   return v6;
 }
 
-- (id)entryByMergingEntry:(id)a3
+- (id)entryByMergingEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v7 = objc_msgSend_archivedBackgroundKinds(self, v5, v6);
-  v10 = objc_msgSend_archivedBackgroundKinds(v4, v8, v9);
+  v10 = objc_msgSend_archivedBackgroundKinds(entryCopy, v8, v9);
   v12 = objc_msgSend_setByAddingObjectsFromSet_(v7, v11, v10);
 
   v13 = [KNLiveVideoSourceUsageEntry alloc];
@@ -74,16 +74,16 @@
   return v15;
 }
 
-- (KNLiveVideoSourceUsageEntry)initWithMessage:(const void *)a3 unarchiver:(id)a4
+- (KNLiveVideoSourceUsageEntry)initWithMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v29.receiver = self;
   v29.super_class = KNLiveVideoSourceUsageEntry;
   v7 = [(KNLiveVideoSourceUsageEntry *)&v29 init];
   if (v7)
   {
     v9 = objc_alloc(MEMORY[0x277CBEB58]);
-    v10 = *(a3 + 4);
+    v10 = *(message + 4);
     if ((v10 & 0x80000000) != 0)
     {
       v21 = MEMORY[0x277D81150];
@@ -101,10 +101,10 @@
     }
 
     v13 = v11;
-    v14 = *(a3 + 4);
+    v14 = *(message + 4);
     if (v14)
     {
-      v15 = *(a3 + 3);
+      v15 = *(message + 3);
       v16 = 4 * v14;
       do
       {
@@ -125,10 +125,10 @@
   return v7;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_archivedBackgroundKinds(self, a2, a3, a4);
+  v5 = objc_msgSend_archivedBackgroundKinds(self, a2, message, archiver);
   v8 = objc_msgSend_allObjects(v5, v6, v7);
   v10 = objc_msgSend_sortedArrayUsingSelector_(v8, v9, sel_compare_);
 
@@ -175,21 +175,21 @@
           v19 = 0x80000000;
         }
 
-        v20 = *(a3 + 4);
-        if (v20 == *(a3 + 5))
+        v20 = *(message + 4);
+        if (v20 == *(message + 5))
         {
           v21 = v20 + 1;
-          sub_275D98CF0(a3 + 4, v20 + 1);
-          *(*(a3 + 3) + 4 * v20) = v19;
+          sub_275D98CF0(message + 4, v20 + 1);
+          *(*(message + 3) + 4 * v20) = v19;
         }
 
         else
         {
-          *(*(a3 + 3) + 4 * v20) = v19;
+          *(*(message + 3) + 4 * v20) = v19;
           v21 = v20 + 1;
         }
 
-        *(a3 + 4) = v21;
+        *(message + 4) = v21;
         ++v17;
       }
 

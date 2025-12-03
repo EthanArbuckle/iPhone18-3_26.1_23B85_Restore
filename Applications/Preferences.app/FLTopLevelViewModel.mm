@@ -1,20 +1,20 @@
 @interface FLTopLevelViewModel
-- (void)sapp_groupsWithQueue:(id)a3 completion:(id)a4;
+- (void)sapp_groupsWithQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation FLTopLevelViewModel
 
-- (void)sapp_groupsWithQueue:(id)a3 completion:(id)a4
+- (void)sapp_groupsWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = +[ACAccountStore defaultStore];
-  v9 = [v8 aa_primaryAppleAccount];
-  v10 = [v9 identifier];
+  aa_primaryAppleAccount = [v8 aa_primaryAppleAccount];
+  identifier = [aa_primaryAppleAccount identifier];
 
   v11 = +[ACAccountStore defaultStore];
-  v12 = [v11 dmc_visibleSecondaryRemoteManagementAccounts];
-  v13 = [v12 na_flatMap:&stru_10014CA08];
+  dmc_visibleSecondaryRemoteManagementAccounts = [v11 dmc_visibleSecondaryRemoteManagementAccounts];
+  v13 = [dmc_visibleSecondaryRemoteManagementAccounts na_flatMap:&stru_10014CA08];
 
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
@@ -22,13 +22,13 @@
   block[2] = sub_10004CF08;
   block[3] = &unk_10014CA30;
   objc_copyWeak(&v21, &location);
-  v18 = v10;
+  v18 = identifier;
   v19 = v13;
-  v20 = v6;
-  v14 = v6;
+  v20 = completionCopy;
+  v14 = completionCopy;
   v15 = v13;
-  v16 = v10;
-  dispatch_async(v7, block);
+  v16 = identifier;
+  dispatch_async(queueCopy, block);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);

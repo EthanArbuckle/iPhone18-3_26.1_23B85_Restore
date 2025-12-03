@@ -1,30 +1,30 @@
 @interface EQKitPaddedBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)erasableBounds;
-- (EQKitPaddedBox)initWithBox:(id)a3 height:(double)a4 width:(double)a5 depth:(double)a6 lspace:(double)a7 voffset:(double)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EQKitPaddedBox)initWithBox:(id)box height:(double)height width:(double)width depth:(double)depth lspace:(double)lspace voffset:(double)voffset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitPaddedBox
 
-- (EQKitPaddedBox)initWithBox:(id)a3 height:(double)a4 width:(double)a5 depth:(double)a6 lspace:(double)a7 voffset:(double)a8
+- (EQKitPaddedBox)initWithBox:(id)box height:(double)height width:(double)width depth:(double)depth lspace:(double)lspace voffset:(double)voffset
 {
   v16.receiver = self;
   v16.super_class = EQKitPaddedBox;
   v14 = [(EQKitPaddedBox *)&v16 init];
   if (v14)
   {
-    v14->mBox = a3;
-    v14->mHeight = a4;
-    v14->mWidth = a5;
-    v14->mDepth = a6;
-    v14->mLspace = a7;
-    v14->mVoffset = a8;
+    v14->mBox = box;
+    v14->mHeight = height;
+    v14->mWidth = width;
+    v14->mDepth = depth;
+    v14->mLspace = lspace;
+    v14->mVoffset = voffset;
   }
 
   return v14;
@@ -46,41 +46,41 @@
   return CGRectOffset(*&v3, mLspace, v8);
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v8.receiver = self;
   v8.super_class = EQKitPaddedBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  [(EQKitBox *)self->mBox renderIntoContext:a3 offset:x + self->mLspace, y - self->mVoffset];
+  [(EQKitBox *)self->mBox renderIntoContext:context offset:x + self->mLspace, y - self->mVoffset];
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  v4 = *(a3 + 6);
+  v4 = *(spec + 6);
   if (v4 <= 1)
   {
     if (v4)
     {
       if (v4 != 1)
       {
-        return [(EQKitBox *)self->mBox appendOpticalAlignToSpec:a4.x offset:a4.y];
+        return [(EQKitBox *)self->mBox appendOpticalAlignToSpec:offset.x offset:offset.y];
       }
 
       goto LABEL_8;
     }
 
 LABEL_7:
-    a4.y = a4.y - self->mVoffset;
-    return [(EQKitBox *)self->mBox appendOpticalAlignToSpec:a4.x offset:a4.y];
+    offset.y = offset.y - self->mVoffset;
+    return [(EQKitBox *)self->mBox appendOpticalAlignToSpec:offset.x offset:offset.y];
   }
 
   if (v4 == 3)
   {
 LABEL_8:
-    a4.x = a4.x + self->mLspace;
-    return [(EQKitBox *)self->mBox appendOpticalAlignToSpec:a4.x offset:a4.y];
+    offset.x = offset.x + self->mLspace;
+    return [(EQKitBox *)self->mBox appendOpticalAlignToSpec:offset.x offset:offset.y];
   }
 
   if (v4 == 2)
@@ -88,12 +88,12 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  return [(EQKitBox *)self->mBox appendOpticalAlignToSpec:a4.x offset:a4.y];
+  return [(EQKitBox *)self->mBox appendOpticalAlignToSpec:offset.x offset:offset.y];
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
-  if (a4 == self)
+  if (descendant == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -105,16 +105,16 @@ LABEL_8:
     v8 = [EQKitBox p_getTransform:"p_getTransform:fromDescendant:" fromDescendant:?];
     if (v8)
     {
-      v9 = *&a3->c;
-      *&v13.a = *&a3->a;
+      v9 = *&transform->c;
+      *&v13.a = *&transform->a;
       *&v13.c = v9;
       mLspace = self->mLspace;
-      *&v13.tx = *&a3->tx;
+      *&v13.tx = *&transform->tx;
       CGAffineTransformTranslate(&v14, &v13, mLspace, -self->mVoffset);
       v11 = *&v14.c;
-      *&a3->a = *&v14.a;
-      *&a3->c = v11;
-      *&a3->tx = *&v14.tx;
+      *&transform->a = *&v14.a;
+      *&transform->c = v11;
+      *&transform->tx = *&v14.tx;
       LOBYTE(v8) = 1;
     }
   }
@@ -122,9 +122,9 @@ LABEL_8:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(EQKitPaddedBox *)self box];
   [(EQKitPaddedBox *)self height];
   v7 = v6;
@@ -139,25 +139,25 @@ LABEL_8:
   return [v4 initWithBox:v5 height:v7 width:v9 depth:v11 lspace:v13 voffset:v14];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
-      LODWORD(self) = [a3 isMemberOfClass:objc_opt_class()];
+      LODWORD(self) = [equal isMemberOfClass:objc_opt_class()];
       if (self)
       {
-        [(EQKitPaddedBox *)v3 height];
+        [(EQKitPaddedBox *)selfCopy height];
         v7 = v6;
-        [a3 height];
-        if (v7 == v8 && (-[EQKitPaddedBox width](v3, "width"), v10 = v9, [a3 width], v10 == v11) && (-[EQKitPaddedBox depth](v3, "depth"), v13 = v12, objc_msgSend(a3, "depth"), v13 == v14) && (-[EQKitPaddedBox lspace](v3, "lspace"), v16 = v15, objc_msgSend(a3, "lspace"), v16 == v17) && (-[EQKitPaddedBox voffset](v3, "voffset"), v19 = v18, objc_msgSend(a3, "voffset"), v19 == v20))
+        [equal height];
+        if (v7 == v8 && (-[EQKitPaddedBox width](selfCopy, "width"), v10 = v9, [equal width], v10 == v11) && (-[EQKitPaddedBox depth](selfCopy, "depth"), v13 = v12, objc_msgSend(equal, "depth"), v13 == v14) && (-[EQKitPaddedBox lspace](selfCopy, "lspace"), v16 = v15, objc_msgSend(equal, "lspace"), v16 == v17) && (-[EQKitPaddedBox voffset](selfCopy, "voffset"), v19 = v18, objc_msgSend(equal, "voffset"), v19 == v20))
         {
-          v21 = [(EQKitPaddedBox *)v3 box];
-          self = [a3 box];
+          v21 = [(EQKitPaddedBox *)selfCopy box];
+          self = [equal box];
           if (v21 == self)
           {
             LOBYTE(self) = 1;
@@ -165,9 +165,9 @@ LABEL_8:
 
           else
           {
-            v22 = self;
+            selfCopy2 = self;
             LOBYTE(self) = 0;
-            if (v21 && v22)
+            if (v21 && selfCopy2)
             {
 
               LOBYTE(self) = [(EQKitPaddedBox *)v21 isEqual:?];

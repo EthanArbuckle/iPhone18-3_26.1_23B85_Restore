@@ -1,6 +1,6 @@
 @interface SUUIItemGridCollectionViewLayout
 - (SUUIItemGridCollectionViewLayout)init;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation SUUIItemGridCollectionViewLayout
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v33 = *MEMORY[0x277D85DE8];
   ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
   v31.receiver = self;
@@ -50,10 +50,10 @@
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
-        v14 = [v13 indexPath];
-        v15 = [v14 item];
+        indexPath = [v13 indexPath];
+        item = [indexPath item];
 
-        if ((v15 / self->_numberOfColumns))
+        if ((item / self->_numberOfColumns))
         {
           v16 = 568;
         }
@@ -70,19 +70,19 @@
 
         else
         {
-          v17 = [MEMORY[0x277D75348] whiteColor];
-          [v13 setBackgroundColor:v17];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          [v13 setBackgroundColor:whiteColor];
         }
 
         numberOfColumns = self->_numberOfColumns;
         v19 = 16;
-        if (v15 < numberOfColumns)
+        if (item < numberOfColumns)
         {
           v19 = 8;
         }
 
-        v20 = v15 % numberOfColumns == 0;
-        v21 = v15 % numberOfColumns == numberOfColumns - 1;
+        v20 = item % numberOfColumns == 0;
+        v21 = item % numberOfColumns == numberOfColumns - 1;
         if (ShouldReverseLayoutDirection)
         {
           v22 = v21;

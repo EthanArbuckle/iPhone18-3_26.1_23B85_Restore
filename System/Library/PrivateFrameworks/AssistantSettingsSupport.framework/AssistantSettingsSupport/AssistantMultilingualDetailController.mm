@@ -1,14 +1,14 @@
 @interface AssistantMultilingualDetailController
 + (id)bundle;
-- (id)_languageSpecificLocalizedStringForKey:(id)a3;
+- (id)_languageSpecificLocalizedStringForKey:(id)key;
 - (id)specifiers;
 - (void)_addLinkAttributesToHeaderSpecifier;
 - (void)_learnMoreTapped;
-- (void)_refreshFooterForSpecifier:(id)a3;
+- (void)_refreshFooterForSpecifier:(id)specifier;
 - (void)_syncSelectionToPrefs;
-- (void)listItemSelected:(id)a3;
-- (void)setParentController:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)listItemSelected:(id)selected;
+- (void)setParentController:(id)controller;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AssistantMultilingualDetailController
@@ -28,18 +28,18 @@
   return v2;
 }
 
-- (void)setParentController:(id)a3
+- (void)setParentController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_languageController, a3);
+    objc_storeStrong(&self->_languageController, controller);
   }
 
   v6.receiver = self;
   v6.super_class = AssistantMultilingualDetailController;
-  [(AssistantMultilingualDetailController *)&v6 setParentController:v5];
+  [(AssistantMultilingualDetailController *)&v6 setParentController:controllerCopy];
 }
 
 - (id)specifiers
@@ -92,15 +92,15 @@
     [(AssistantDetailListController *)self setChecked:0 forSpecifier:self->_preferMultilingualSpecifier];
     [(AssistantDetailListController *)self setChecked:0 forSpecifier:self->_preferEnglishOnlySpecifier];
     [(AssistantMultilingualDetailController *)self _syncSelectionToPrefs];
-    v25 = [(AssistantMultilingualDetailController *)self specifier];
-    v26 = [v25 name];
-    [(AssistantMultilingualDetailController *)self setTitle:v26];
+    specifier = [(AssistantMultilingualDetailController *)self specifier];
+    name = [specifier name];
+    [(AssistantMultilingualDetailController *)self setTitle:name];
 
-    v27 = [(AssistantMultilingualDetailController *)self specifier];
-    v28 = [v27 values];
-    v29 = [v28 firstObject];
+    specifier2 = [(AssistantMultilingualDetailController *)self specifier];
+    values = [specifier2 values];
+    firstObject = [values firstObject];
     setterValue = self->_setterValue;
-    self->_setterValue = v29;
+    self->_setterValue = firstObject;
 
     v4 = *(&self->super.super.super.super.super.super.isa + v3);
   }
@@ -108,9 +108,9 @@
   return v4;
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v4 = [(AssistantMultilingualDetailController *)self indexForIndexPath:a3];
+  v4 = [(AssistantMultilingualDetailController *)self indexForIndexPath:selected];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v4];
@@ -130,19 +130,19 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [(AssistantMultilingualDetailController *)self listItemSelected:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  [(AssistantMultilingualDetailController *)self listItemSelected:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 - (void)_syncSelectionToPrefs
 {
-  v3 = [(AssistantMultilingualDetailController *)self specifier];
-  v4 = [v3 values];
-  v10 = [v4 objectAtIndexedSubscript:0];
+  specifier = [(AssistantMultilingualDetailController *)self specifier];
+  values = [specifier values];
+  v10 = [values objectAtIndexedSubscript:0];
 
   v5 = [(AssistantLanguageController *)self->_languageController multilingualEnabledForLanguageCode:v10];
   v6 = &OBJC_IVAR___AssistantMultilingualDetailController__preferEnglishOnlySpecifier;
@@ -161,10 +161,10 @@
   [(AssistantMultilingualDetailController *)self _refreshFooterForSpecifier:v9];
 }
 
-- (void)_refreshFooterForSpecifier:(id)a3
+- (void)_refreshFooterForSpecifier:(id)specifier
 {
   v4 = *MEMORY[0x277D3FF88];
-  v5 = [a3 propertyForKey:*MEMORY[0x277D3FF88]];
+  v5 = [specifier propertyForKey:*MEMORY[0x277D3FF88]];
   [(PSSpecifier *)self->super._groupSpecifier setProperty:v5 forKey:v4];
   [(AssistantMultilingualDetailController *)self reloadSpecifier:self->super._groupSpecifier];
 }
@@ -214,14 +214,14 @@ void __57__AssistantMultilingualDetailController__learnMoreTapped__block_invoke(
   [v3 openSensitiveURL:v2 withOptions:0];
 }
 
-- (id)_languageSpecificLocalizedStringForKey:(id)a3
+- (id)_languageSpecificLocalizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(AssistantMultilingualDetailController *)self specifier];
-  v7 = [v6 values];
-  v8 = [v7 firstObject];
-  v9 = [v5 stringWithFormat:@"%@_%@", v4, v8, 0];
+  specifier = [(AssistantMultilingualDetailController *)self specifier];
+  values = [specifier values];
+  firstObject = [values firstObject];
+  v9 = [v5 stringWithFormat:@"%@_%@", keyCopy, firstObject, 0];
 
   v10 = +[AssistantMultilingualDetailController bundle];
   v11 = [v10 localizedStringForKey:v9 value:&stru_285317CF0 table:@"AssistantMultilingualDetail"];
@@ -229,7 +229,7 @@ void __57__AssistantMultilingualDetailController__learnMoreTapped__block_invoke(
   if ([v11 isEqualToString:v9])
   {
     v12 = +[AssistantMultilingualDetailController bundle];
-    v13 = [v12 localizedStringForKey:v4 value:&stru_285317CF0 table:@"AssistantMultilingualDetail"];
+    v13 = [v12 localizedStringForKey:keyCopy value:&stru_285317CF0 table:@"AssistantMultilingualDetail"];
 
     v11 = v13;
   }

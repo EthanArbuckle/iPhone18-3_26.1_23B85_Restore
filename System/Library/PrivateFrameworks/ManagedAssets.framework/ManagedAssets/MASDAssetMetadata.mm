@@ -1,73 +1,73 @@
 @interface MASDAssetMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForAllFields:(id)a3;
-- (MASDAssetMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForAllFields:(id)fields;
+- (MASDAssetMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initAssetMetadataWithInfoDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initAssetMetadataWithInfoDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MASDAssetMetadata
 
-- (id)initAssetMetadataWithInfoDictionary:(id)a3
+- (id)initAssetMetadataWithInfoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = MASDAssetMetadata;
   v5 = [(MASDAssetMetadata *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"_type"];
+    v6 = [dictionaryCopy objectForKey:@"_type"];
     v5->_type = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKey:@"_label"];
+    v7 = [dictionaryCopy objectForKey:@"_label"];
     label = v5->_label;
     v5->_label = v7;
 
-    v9 = [v4 objectForKey:@"_creationTime"];
+    v9 = [dictionaryCopy objectForKey:@"_creationTime"];
     creationTime = v5->_creationTime;
     v5->_creationTime = v9;
 
-    v11 = [v4 objectForKey:@"_lastUpdatedTime"];
+    v11 = [dictionaryCopy objectForKey:@"_lastUpdatedTime"];
     lastUpdatedTime = v5->_lastUpdatedTime;
     v5->_lastUpdatedTime = v11;
 
-    v13 = [v4 objectForKey:@"_lastUpdatedOSVersion"];
+    v13 = [dictionaryCopy objectForKey:@"_lastUpdatedOSVersion"];
     lastUpdatedOSVersion = v5->_lastUpdatedOSVersion;
     v5->_lastUpdatedOSVersion = v13;
 
-    v15 = [v4 objectForKey:@"_lastUpdatedAlgorithmVersion"];
+    v15 = [dictionaryCopy objectForKey:@"_lastUpdatedAlgorithmVersion"];
     lastUpdatedAlgorithmVersion = v5->_lastUpdatedAlgorithmVersion;
     v5->_lastUpdatedAlgorithmVersion = v15;
 
-    v17 = [v4 objectForKey:@"_sessionIdentifier"];
+    v17 = [dictionaryCopy objectForKey:@"_sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v17;
 
-    v19 = [v4 objectForKey:@"_participantIdentifier"];
+    v19 = [dictionaryCopy objectForKey:@"_participantIdentifier"];
     participantIdentifier = v5->_participantIdentifier;
     v5->_participantIdentifier = v19;
 
-    v21 = [v4 objectForKey:@"_syncOption"];
+    v21 = [dictionaryCopy objectForKey:@"_syncOption"];
     v5->_syncOption = [v21 unsignedIntegerValue];
 
-    v22 = [v4 objectForKey:@"_ckrecordIdentifier"];
+    v22 = [dictionaryCopy objectForKey:@"_ckrecordIdentifier"];
     ckrecordIdentifier = v5->_ckrecordIdentifier;
     v5->_ckrecordIdentifier = v22;
 
-    v24 = [v4 objectForKey:@"_assetState"];
+    v24 = [dictionaryCopy objectForKey:@"_assetState"];
     v5->_assetState = [v24 unsignedIntegerValue];
 
-    v25 = [v4 objectForKey:@"_enrollmentIdentifier"];
+    v25 = [dictionaryCopy objectForKey:@"_enrollmentIdentifier"];
     enrollmentIdentifier = v5->_enrollmentIdentifier;
     v5->_enrollmentIdentifier = v25;
 
-    v27 = [v4 objectForKey:@"_deviceIdentifier"];
+    v27 = [dictionaryCopy objectForKey:@"_deviceIdentifier"];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v27;
 
-    v29 = [v4 objectForKey:@"_deviceName"];
+    v29 = [dictionaryCopy objectForKey:@"_deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v29;
   }
@@ -75,78 +75,78 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"_type"];
-  [v5 encodeObject:self->_label forKey:@"_label"];
-  [v5 encodeObject:self->_creationTime forKey:@"_creationTime"];
-  [v5 encodeObject:self->_lastUpdatedTime forKey:@"_lastUpdatedTime"];
-  [v5 encodeObject:self->_lastUpdatedOSVersion forKey:@"_lastUpdatedOSVersion"];
-  [v5 encodeObject:self->_lastUpdatedAlgorithmVersion forKey:@"_lastUpdatedAlgorithmVersion"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"_sessionIdentifier"];
-  [v5 encodeObject:self->_participantIdentifier forKey:@"_participantIdentifier"];
-  [v5 encodeInteger:self->_syncOption forKey:@"_syncOption"];
-  [v5 encodeObject:self->_ckrecordIdentifier forKey:@"_ckrecordIdentifier"];
-  [v5 encodeInteger:self->_assetState forKey:@"_assetState"];
-  [v5 encodeObject:self->_enrollmentIdentifier forKey:@"_enrollmentIdentifier"];
-  [v5 encodeObject:self->_deviceIdentifier forKey:@"_deviceIdentifier"];
-  [v5 encodeObject:self->_deviceName forKey:@"_deviceName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"_type"];
+  [coderCopy encodeObject:self->_label forKey:@"_label"];
+  [coderCopy encodeObject:self->_creationTime forKey:@"_creationTime"];
+  [coderCopy encodeObject:self->_lastUpdatedTime forKey:@"_lastUpdatedTime"];
+  [coderCopy encodeObject:self->_lastUpdatedOSVersion forKey:@"_lastUpdatedOSVersion"];
+  [coderCopy encodeObject:self->_lastUpdatedAlgorithmVersion forKey:@"_lastUpdatedAlgorithmVersion"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"_sessionIdentifier"];
+  [coderCopy encodeObject:self->_participantIdentifier forKey:@"_participantIdentifier"];
+  [coderCopy encodeInteger:self->_syncOption forKey:@"_syncOption"];
+  [coderCopy encodeObject:self->_ckrecordIdentifier forKey:@"_ckrecordIdentifier"];
+  [coderCopy encodeInteger:self->_assetState forKey:@"_assetState"];
+  [coderCopy encodeObject:self->_enrollmentIdentifier forKey:@"_enrollmentIdentifier"];
+  [coderCopy encodeObject:self->_deviceIdentifier forKey:@"_deviceIdentifier"];
+  [coderCopy encodeObject:self->_deviceName forKey:@"_deviceName"];
 }
 
-- (MASDAssetMetadata)initWithCoder:(id)a3
+- (MASDAssetMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = MASDAssetMetadata;
   v5 = [(MASDAssetMetadata *)&v29 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_creationTime"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_creationTime"];
     creationTime = v5->_creationTime;
     v5->_creationTime = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastUpdatedTime"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastUpdatedTime"];
     lastUpdatedTime = v5->_lastUpdatedTime;
     v5->_lastUpdatedTime = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastUpdatedOSVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastUpdatedOSVersion"];
     lastUpdatedOSVersion = v5->_lastUpdatedOSVersion;
     v5->_lastUpdatedOSVersion = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastUpdatedAlgorithmVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastUpdatedAlgorithmVersion"];
     lastUpdatedAlgorithmVersion = v5->_lastUpdatedAlgorithmVersion;
     v5->_lastUpdatedAlgorithmVersion = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sessionIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_participantIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_participantIdentifier"];
     participantIdentifier = v5->_participantIdentifier;
     v5->_participantIdentifier = v18;
 
-    v5->_syncOption = [v4 decodeIntegerForKey:@"_syncOption"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ckrecordIdentifier"];
+    v5->_syncOption = [coderCopy decodeIntegerForKey:@"_syncOption"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ckrecordIdentifier"];
     ckrecordIdentifier = v5->_ckrecordIdentifier;
     v5->_ckrecordIdentifier = v20;
 
-    v5->_assetState = [v4 decodeIntegerForKey:@"_assetState"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_enrollmentIdentifier"];
+    v5->_assetState = [coderCopy decodeIntegerForKey:@"_assetState"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_enrollmentIdentifier"];
     enrollmentIdentifier = v5->_enrollmentIdentifier;
     v5->_enrollmentIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_deviceIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_deviceIdentifier"];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_deviceName"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v26;
   }
@@ -164,96 +164,96 @@
   return [v3 stringWithFormat:@"Metadata:{Label: %@, Type: %s, Create: %@, Update: %@, OS: %@, Algorithm: %@, CoP-Session: %@, CoP-Participant: %@, SyncOption: %ld, CKRecordID: %@, assetState: %ld, Enrollment Identifier: %@, Device Identifier: %@, Device Name: %@} ", label, v5, self->_creationTime, self->_lastUpdatedTime, self->_lastUpdatedOSVersion, self->_lastUpdatedAlgorithmVersion, self->_sessionIdentifier, self->_participantIdentifier, self->_syncOption, self->_ckrecordIdentifier, self->_assetState, self->_enrollmentIdentifier, self->_deviceIdentifier, self->_deviceName];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MASDAssetMetadata *)self isEqualForAllFields:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MASDAssetMetadata *)self isEqualForAllFields:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualForAllFields:(id)a3
+- (BOOL)isEqualForAllFields:(id)fields
 {
-  v4 = a3;
-  v5 = [(MASDAssetMetadata *)self type];
-  if (v5 != [v4 type])
+  fieldsCopy = fields;
+  type = [(MASDAssetMetadata *)self type];
+  if (type != [fieldsCopy type])
   {
     goto LABEL_74;
   }
 
-  v6 = [(MASDAssetMetadata *)self creationTime];
-  v7 = [v4 creationTime];
-  v8 = [v6 isEqualToDate:v7];
+  creationTime = [(MASDAssetMetadata *)self creationTime];
+  creationTime2 = [fieldsCopy creationTime];
+  v8 = [creationTime isEqualToDate:creationTime2];
 
   if (!v8)
   {
     goto LABEL_74;
   }
 
-  v9 = [(MASDAssetMetadata *)self lastUpdatedTime];
-  v10 = [v4 lastUpdatedTime];
-  v11 = [v9 isEqualToDate:v10];
+  lastUpdatedTime = [(MASDAssetMetadata *)self lastUpdatedTime];
+  lastUpdatedTime2 = [fieldsCopy lastUpdatedTime];
+  v11 = [lastUpdatedTime isEqualToDate:lastUpdatedTime2];
 
   if (!v11)
   {
     goto LABEL_74;
   }
 
-  v12 = [(MASDAssetMetadata *)self lastUpdatedOSVersion];
-  v13 = [v4 lastUpdatedOSVersion];
-  v14 = [v12 isEqualToString:v13];
+  lastUpdatedOSVersion = [(MASDAssetMetadata *)self lastUpdatedOSVersion];
+  lastUpdatedOSVersion2 = [fieldsCopy lastUpdatedOSVersion];
+  v14 = [lastUpdatedOSVersion isEqualToString:lastUpdatedOSVersion2];
 
   if (!v14)
   {
     goto LABEL_74;
   }
 
-  v15 = [(MASDAssetMetadata *)self label];
-  if (!v15 || ([v4 label], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  label = [(MASDAssetMetadata *)self label];
+  if (!label || ([fieldsCopy label], (lastUpdatedOSVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v16 = [(MASDAssetMetadata *)self label];
-    if (v16)
+    label2 = [(MASDAssetMetadata *)self label];
+    if (label2)
     {
 
-      if (v15)
+      if (label)
       {
       }
     }
 
     else
     {
-      v17 = [v4 label];
+      label3 = [fieldsCopy label];
 
-      if (v15)
+      if (label)
       {
       }
 
-      if (v17)
+      if (label3)
       {
         goto LABEL_74;
       }
     }
 
-    v18 = [(MASDAssetMetadata *)self label];
-    if (v18)
+    label4 = [(MASDAssetMetadata *)self label];
+    if (label4)
     {
-      v19 = v18;
-      v20 = [v4 label];
-      if (v20)
+      v19 = label4;
+      label5 = [fieldsCopy label];
+      if (label5)
       {
-        v13 = v20;
-        v21 = [(MASDAssetMetadata *)self label];
-        v22 = [v4 label];
-        v23 = [v21 isEqualToString:v22];
+        lastUpdatedOSVersion2 = label5;
+        label6 = [(MASDAssetMetadata *)self label];
+        label7 = [fieldsCopy label];
+        v23 = [label6 isEqualToString:label7];
 
         if (!v23)
         {
@@ -266,43 +266,43 @@
       }
     }
 
-    v15 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
-    if (!v15 || ([v4 lastUpdatedAlgorithmVersion], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    label = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
+    if (!label || ([fieldsCopy lastUpdatedAlgorithmVersion], (lastUpdatedOSVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v24 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
-      if (v24)
+      lastUpdatedAlgorithmVersion = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
+      if (lastUpdatedAlgorithmVersion)
       {
 
-        if (v15)
+        if (label)
         {
         }
       }
 
       else
       {
-        v25 = [v4 lastUpdatedAlgorithmVersion];
+        lastUpdatedAlgorithmVersion2 = [fieldsCopy lastUpdatedAlgorithmVersion];
 
-        if (v15)
+        if (label)
         {
         }
 
-        if (v25)
+        if (lastUpdatedAlgorithmVersion2)
         {
           goto LABEL_74;
         }
       }
 
-      v26 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
-      if (v26)
+      lastUpdatedAlgorithmVersion3 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
+      if (lastUpdatedAlgorithmVersion3)
       {
-        v27 = v26;
-        v28 = [v4 lastUpdatedAlgorithmVersion];
-        if (v28)
+        v27 = lastUpdatedAlgorithmVersion3;
+        lastUpdatedAlgorithmVersion4 = [fieldsCopy lastUpdatedAlgorithmVersion];
+        if (lastUpdatedAlgorithmVersion4)
         {
-          v13 = v28;
-          v29 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
-          v30 = [v4 lastUpdatedAlgorithmVersion];
-          v31 = [v29 isEqualToString:v30];
+          lastUpdatedOSVersion2 = lastUpdatedAlgorithmVersion4;
+          lastUpdatedAlgorithmVersion5 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
+          lastUpdatedAlgorithmVersion6 = [fieldsCopy lastUpdatedAlgorithmVersion];
+          v31 = [lastUpdatedAlgorithmVersion5 isEqualToString:lastUpdatedAlgorithmVersion6];
 
           if (!v31)
           {
@@ -315,43 +315,43 @@
         }
       }
 
-      v15 = [(MASDAssetMetadata *)self participantIdentifier];
-      if (!v15 || ([v4 participantIdentifier], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      label = [(MASDAssetMetadata *)self participantIdentifier];
+      if (!label || ([fieldsCopy participantIdentifier], (lastUpdatedOSVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v32 = [(MASDAssetMetadata *)self participantIdentifier];
-        if (v32)
+        participantIdentifier = [(MASDAssetMetadata *)self participantIdentifier];
+        if (participantIdentifier)
         {
 
-          if (v15)
+          if (label)
           {
           }
         }
 
         else
         {
-          v33 = [v4 participantIdentifier];
+          participantIdentifier2 = [fieldsCopy participantIdentifier];
 
-          if (v15)
+          if (label)
           {
           }
 
-          if (v33)
+          if (participantIdentifier2)
           {
             goto LABEL_74;
           }
         }
 
-        v34 = [(MASDAssetMetadata *)self participantIdentifier];
-        if (v34)
+        participantIdentifier3 = [(MASDAssetMetadata *)self participantIdentifier];
+        if (participantIdentifier3)
         {
-          v35 = v34;
-          v36 = [v4 participantIdentifier];
-          if (v36)
+          v35 = participantIdentifier3;
+          participantIdentifier4 = [fieldsCopy participantIdentifier];
+          if (participantIdentifier4)
           {
-            v13 = v36;
-            v37 = [(MASDAssetMetadata *)self participantIdentifier];
-            v38 = [v4 participantIdentifier];
-            v39 = [v37 isEqualToString:v38];
+            lastUpdatedOSVersion2 = participantIdentifier4;
+            participantIdentifier5 = [(MASDAssetMetadata *)self participantIdentifier];
+            participantIdentifier6 = [fieldsCopy participantIdentifier];
+            v39 = [participantIdentifier5 isEqualToString:participantIdentifier6];
 
             if (!v39)
             {
@@ -364,43 +364,43 @@
           }
         }
 
-        v15 = [(MASDAssetMetadata *)self sessionIdentifier];
-        if (!v15 || ([v4 sessionIdentifier], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+        label = [(MASDAssetMetadata *)self sessionIdentifier];
+        if (!label || ([fieldsCopy sessionIdentifier], (lastUpdatedOSVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v41 = [(MASDAssetMetadata *)self sessionIdentifier];
-          if (v41)
+          sessionIdentifier = [(MASDAssetMetadata *)self sessionIdentifier];
+          if (sessionIdentifier)
           {
 
-            if (v15)
+            if (label)
             {
             }
           }
 
           else
           {
-            v42 = [v4 sessionIdentifier];
+            sessionIdentifier2 = [fieldsCopy sessionIdentifier];
 
-            if (v15)
+            if (label)
             {
             }
 
-            if (v42)
+            if (sessionIdentifier2)
             {
               goto LABEL_74;
             }
           }
 
-          v43 = [(MASDAssetMetadata *)self sessionIdentifier];
-          if (v43)
+          sessionIdentifier3 = [(MASDAssetMetadata *)self sessionIdentifier];
+          if (sessionIdentifier3)
           {
-            v44 = v43;
-            v45 = [v4 sessionIdentifier];
-            if (v45)
+            v44 = sessionIdentifier3;
+            sessionIdentifier4 = [fieldsCopy sessionIdentifier];
+            if (sessionIdentifier4)
             {
-              v46 = v45;
-              v47 = [(MASDAssetMetadata *)self sessionIdentifier];
-              v48 = [v4 sessionIdentifier];
-              v49 = [v47 isEqualToString:v48];
+              v46 = sessionIdentifier4;
+              sessionIdentifier5 = [(MASDAssetMetadata *)self sessionIdentifier];
+              sessionIdentifier6 = [fieldsCopy sessionIdentifier];
+              v49 = [sessionIdentifier5 isEqualToString:sessionIdentifier6];
 
               if (!v49)
               {
@@ -413,20 +413,20 @@
             }
           }
 
-          v50 = [(MASDAssetMetadata *)self syncOption];
-          if (v50 == [v4 syncOption])
+          syncOption = [(MASDAssetMetadata *)self syncOption];
+          if (syncOption == [fieldsCopy syncOption])
           {
-            v51 = [(MASDAssetMetadata *)self ckrecordIdentifier];
-            if (v51)
+            ckrecordIdentifier = [(MASDAssetMetadata *)self ckrecordIdentifier];
+            if (ckrecordIdentifier)
             {
-              v52 = v51;
-              v53 = [v4 ckrecordIdentifier];
-              if (v53)
+              v52 = ckrecordIdentifier;
+              ckrecordIdentifier2 = [fieldsCopy ckrecordIdentifier];
+              if (ckrecordIdentifier2)
               {
-                v54 = v53;
-                v55 = [(MASDAssetMetadata *)self ckrecordIdentifier];
-                v56 = [v4 ckrecordIdentifier];
-                v57 = [v55 isEqualToString:v56];
+                v54 = ckrecordIdentifier2;
+                ckrecordIdentifier3 = [(MASDAssetMetadata *)self ckrecordIdentifier];
+                ckrecordIdentifier4 = [fieldsCopy ckrecordIdentifier];
+                v57 = [ckrecordIdentifier3 isEqualToString:ckrecordIdentifier4];
 
                 if (!v57)
                 {
@@ -439,20 +439,20 @@
               }
             }
 
-            v58 = [(MASDAssetMetadata *)self assetState];
-            if (v58 == [v4 assetState])
+            assetState = [(MASDAssetMetadata *)self assetState];
+            if (assetState == [fieldsCopy assetState])
             {
-              v59 = [(MASDAssetMetadata *)self enrollmentIdentifier];
-              if (v59)
+              enrollmentIdentifier = [(MASDAssetMetadata *)self enrollmentIdentifier];
+              if (enrollmentIdentifier)
               {
-                v60 = v59;
-                v61 = [v4 enrollmentIdentifier];
-                if (v61)
+                v60 = enrollmentIdentifier;
+                enrollmentIdentifier2 = [fieldsCopy enrollmentIdentifier];
+                if (enrollmentIdentifier2)
                 {
-                  v62 = v61;
-                  v63 = [(MASDAssetMetadata *)self enrollmentIdentifier];
-                  v64 = [v4 enrollmentIdentifier];
-                  v65 = [v63 isEqualToString:v64];
+                  v62 = enrollmentIdentifier2;
+                  enrollmentIdentifier3 = [(MASDAssetMetadata *)self enrollmentIdentifier];
+                  enrollmentIdentifier4 = [fieldsCopy enrollmentIdentifier];
+                  v65 = [enrollmentIdentifier3 isEqualToString:enrollmentIdentifier4];
 
                   if (!v65)
                   {
@@ -465,17 +465,17 @@
                 }
               }
 
-              v66 = [(MASDAssetMetadata *)self deviceIdentifier];
-              if (v66)
+              deviceIdentifier = [(MASDAssetMetadata *)self deviceIdentifier];
+              if (deviceIdentifier)
               {
-                v67 = v66;
-                v68 = [v4 deviceIdentifier];
-                if (v68)
+                v67 = deviceIdentifier;
+                deviceIdentifier2 = [fieldsCopy deviceIdentifier];
+                if (deviceIdentifier2)
                 {
-                  v69 = v68;
-                  v70 = [(MASDAssetMetadata *)self deviceIdentifier];
-                  v71 = [v4 deviceIdentifier];
-                  v72 = [v70 isEqualToString:v71];
+                  v69 = deviceIdentifier2;
+                  deviceIdentifier3 = [(MASDAssetMetadata *)self deviceIdentifier];
+                  deviceIdentifier4 = [fieldsCopy deviceIdentifier];
+                  v72 = [deviceIdentifier3 isEqualToString:deviceIdentifier4];
 
                   if (!v72)
                   {
@@ -488,21 +488,21 @@
                 }
               }
 
-              v74 = [(MASDAssetMetadata *)self deviceName];
-              if (!v74)
+              deviceName = [(MASDAssetMetadata *)self deviceName];
+              if (!deviceName)
               {
                 v40 = 1;
                 goto LABEL_75;
               }
 
-              v15 = v74;
-              v75 = [v4 deviceName];
-              if (v75)
+              label = deviceName;
+              deviceName2 = [fieldsCopy deviceName];
+              if (deviceName2)
               {
-                v76 = v75;
-                v77 = [(MASDAssetMetadata *)self deviceName];
-                v78 = [v4 deviceName];
-                v40 = [v77 isEqualToString:v78];
+                v76 = deviceName2;
+                deviceName3 = [(MASDAssetMetadata *)self deviceName];
+                deviceName4 = [fieldsCopy deviceName];
+                v40 = [deviceName3 isEqualToString:deviceName4];
               }
 
               else
@@ -529,53 +529,53 @@ LABEL_75:
   return v40 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_type;
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSDate *)self->_creationTime copyWithZone:a3];
+  v8 = [(NSDate *)self->_creationTime copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSDate *)self->_lastUpdatedTime copyWithZone:a3];
+  v10 = [(NSDate *)self->_lastUpdatedTime copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSString *)self->_lastUpdatedOSVersion copyWithZone:a3];
+  v12 = [(NSString *)self->_lastUpdatedOSVersion copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSString *)self->_lastUpdatedAlgorithmVersion copyWithZone:a3];
+  v14 = [(NSString *)self->_lastUpdatedAlgorithmVersion copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(NSString *)self->_sessionIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_sessionIdentifier copyWithZone:zone];
   v17 = v5[7];
   v5[7] = v16;
 
-  v18 = [(NSString *)self->_participantIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_participantIdentifier copyWithZone:zone];
   v19 = v5[8];
   v5[8] = v18;
 
   v5[9] = self->_syncOption;
-  v20 = [(NSString *)self->_ckrecordIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_ckrecordIdentifier copyWithZone:zone];
   v21 = v5[10];
   v5[10] = v20;
 
   v5[11] = self->_assetState;
-  v22 = [(NSString *)self->_enrollmentIdentifier copyWithZone:a3];
+  v22 = [(NSString *)self->_enrollmentIdentifier copyWithZone:zone];
   v23 = v5[12];
   v5[12] = v22;
 
-  v24 = [(NSString *)self->_deviceIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_deviceIdentifier copyWithZone:zone];
   v25 = v5[13];
   v5[13] = v24;
 
-  v26 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v26 = [(NSString *)self->_deviceName copyWithZone:zone];
   v27 = v5[14];
   v5[14] = v26;
 

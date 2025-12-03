@@ -9,27 +9,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(_IDSDataChannelLinkConnections *)self udp];
-  v5 = [(_IDSDataChannelLinkConnections *)self qpod];
-  v6 = [v3 stringWithFormat:@"<_IDSDataChannelLinkConnections\n    udp: %@\n    qpod: %@\n>", v4, v5];
+  qpod = [(_IDSDataChannelLinkConnections *)self qpod];
+  v6 = [v3 stringWithFormat:@"<_IDSDataChannelLinkConnections\n    udp: %@\n    qpod: %@\n>", v4, qpod];
 
   return v6;
 }
 
 - (BOOL)isQUICPod
 {
-  v3 = [(_IDSDataChannelLinkConnections *)self qpod];
-  if (v3)
+  qpod = [(_IDSDataChannelLinkConnections *)self qpod];
+  if (qpod)
   {
-    v4 = [(_IDSDataChannelLinkConnections *)self qpod];
-    v5 = [v4 allowOutgoing];
+    qpod2 = [(_IDSDataChannelLinkConnections *)self qpod];
+    allowOutgoing = [qpod2 allowOutgoing];
   }
 
   else
   {
-    v5 = 0;
+    allowOutgoing = 0;
   }
 
-  return v5;
+  return allowOutgoing;
 }
 
 @end

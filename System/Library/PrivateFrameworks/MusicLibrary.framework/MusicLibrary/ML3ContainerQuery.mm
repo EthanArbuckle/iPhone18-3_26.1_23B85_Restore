@@ -1,44 +1,44 @@
 @interface ML3ContainerQuery
 - (BOOL)hasEntities;
 - (BOOL)requiresSmartLimiting;
-- (ML3ContainerQuery)initWithCoder:(id)a3;
-- (ML3ContainerQuery)initWithEntityClass:(Class)a3 container:(id)a4 predicate:(id)a5 orderingTerms:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)enumerationDatabaseResultForSQL:(id)a3 onConnection:(id)a4 withParameters:(id)a5;
-- (id)selectPersistentIDsSQLAndProperties:(id)a3 ordered:(BOOL)a4;
-- (id)valueForAggregateFunction:(id)a3 onEntitiesForProperty:(id)a4;
-- (unint64_t)countOfDistinctRowsForColumn:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ML3ContainerQuery)initWithCoder:(id)coder;
+- (ML3ContainerQuery)initWithEntityClass:(Class)class container:(id)container predicate:(id)predicate orderingTerms:(id)terms;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)enumerationDatabaseResultForSQL:(id)l onConnection:(id)connection withParameters:(id)parameters;
+- (id)selectPersistentIDsSQLAndProperties:(id)properties ordered:(BOOL)ordered;
+- (id)valueForAggregateFunction:(id)function onEntitiesForProperty:(id)property;
+- (unint64_t)countOfDistinctRowsForColumn:(id)column;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3ContainerQuery
 
-- (id)enumerationDatabaseResultForSQL:(id)a3 onConnection:(id)a4 withParameters:(id)a5
+- (id)enumerationDatabaseResultForSQL:(id)l onConnection:(id)connection withParameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  connectionCopy = connection;
+  parametersCopy = parameters;
   if ([(ML3ContainerQuery *)self requiresSmartLimiting]&& ![(ML3Container *)self->_container isLimitedByCount])
   {
-    v12 = [(ML3Container *)self->_container limitingProperty];
-    v11 = [v9 executeQuery:v8 withParameters:v10 limitProperty:v12 limitValue:{-[ML3Container limitValue](self->_container, "limitValue")}];
+    limitingProperty = [(ML3Container *)self->_container limitingProperty];
+    v11 = [connectionCopy executeQuery:lCopy withParameters:parametersCopy limitProperty:limitingProperty limitValue:{-[ML3Container limitValue](self->_container, "limitValue")}];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = ML3ContainerQuery;
-    v11 = [(ML3Query *)&v14 enumerationDatabaseResultForSQL:v8 onConnection:v9 withParameters:v10];
+    v11 = [(ML3Query *)&v14 enumerationDatabaseResultForSQL:lCopy onConnection:connectionCopy withParameters:parametersCopy];
   }
 
   return v11;
 }
 
-- (id)selectPersistentIDsSQLAndProperties:(id)a3 ordered:(BOOL)a4
+- (id)selectPersistentIDsSQLAndProperties:(id)properties ordered:(BOOL)ordered
 {
-  v4 = a4;
+  orderedCopy = ordered;
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  propertiesCopy = properties;
   if ([(ML3ContainerQuery *)self requiresSmartLimiting])
   {
     if ([(ML3Container *)self->_container isLimitedByCount])
@@ -47,26 +47,26 @@
       goto LABEL_8;
     }
 
-    v8 = [(ML3Container *)self->_container limitingProperty];
-    v9 = v8;
-    if (v6)
+    limitingProperty = [(ML3Container *)self->_container limitingProperty];
+    v9 = limitingProperty;
+    if (propertiesCopy)
     {
-      v10 = [v6 arrayByAddingObject:v8];
+      v10 = [propertiesCopy arrayByAddingObject:limitingProperty];
 
       v7 = 0;
-      v6 = v10;
+      propertiesCopy = v10;
       goto LABEL_8;
     }
 
-    v15[0] = v8;
-    v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
+    v15[0] = limitingProperty;
+    propertiesCopy = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   }
 
   v7 = 0;
 LABEL_8:
   v14.receiver = self;
   v14.super_class = ML3ContainerQuery;
-  v11 = [(ML3Query *)&v14 selectPersistentIDsSQLAndProperties:v6 ordered:v4];
+  v11 = [(ML3Query *)&v14 selectPersistentIDsSQLAndProperties:propertiesCopy ordered:orderedCopy];
   if (v7)
   {
     v12 = [v11 stringByAppendingFormat:@" LIMIT %lu", -[ML3Container limitValue](self->_container, "limitValue")];
@@ -77,10 +77,10 @@ LABEL_8:
   return v11;
 }
 
-- (id)valueForAggregateFunction:(id)a3 onEntitiesForProperty:(id)a4
+- (id)valueForAggregateFunction:(id)function onEntitiesForProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
+  functionCopy = function;
+  propertyCopy = property;
   if (valueForAggregateFunction_onEntitiesForProperty__onceToken != -1)
   {
     dispatch_once(&valueForAggregateFunction_onEntitiesForProperty__onceToken, &__block_literal_global_8701);
@@ -88,7 +88,7 @@ LABEL_8:
 
   if ([(ML3ContainerQuery *)self requiresSmartLimiting])
   {
-    if ([__supportedAggregateFunctions containsObject:v7])
+    if ([__supportedAggregateFunctions containsObject:functionCopy])
     {
       v17 = 0;
       v18 = &v17;
@@ -100,8 +100,8 @@ LABEL_8:
       v13[2] = __69__ML3ContainerQuery_valueForAggregateFunction_onEntitiesForProperty___block_invoke_2;
       v13[3] = &unk_2787628F8;
       v13[4] = self;
-      v14 = v8;
-      v15 = v7;
+      v14 = propertyCopy;
+      v15 = functionCopy;
       v16 = &v17;
       [(ML3MusicLibrary *)library databaseConnectionAllowingWrites:0 withBlock:v13];
       v10 = [MEMORY[0x277CCABB0] numberWithLongLong:v18[3]];
@@ -111,8 +111,8 @@ LABEL_8:
 
     else
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"ML3ContainerQuery.m" lineNumber:209 description:{@"Attempting to get value for unsupported aggregate function %@", v7}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3ContainerQuery.m" lineNumber:209 description:{@"Attempting to get value for unsupported aggregate function %@", functionCopy}];
 
       v10 = 0;
     }
@@ -122,7 +122,7 @@ LABEL_8:
   {
     v21.receiver = self;
     v21.super_class = ML3ContainerQuery;
-    v10 = [(ML3Query *)&v21 valueForAggregateFunction:v7 onEntitiesForProperty:v8];
+    v10 = [(ML3Query *)&v21 valueForAggregateFunction:functionCopy onEntitiesForProperty:propertyCopy];
   }
 
   return v10;
@@ -236,20 +236,20 @@ uint64_t __69__ML3ContainerQuery_valueForAggregateFunction_onEntitiesForProperty
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (unint64_t)countOfDistinctRowsForColumn:(id)a3
+- (unint64_t)countOfDistinctRowsForColumn:(id)column
 {
-  v4 = a3;
+  columnCopy = column;
   if ([(ML3ContainerQuery *)self requiresSmartLimiting])
   {
     if ([(ML3Container *)self->_container isLimitedByCount])
     {
       v15.receiver = self;
       v15.super_class = ML3ContainerQuery;
-      v5 = [(ML3Query *)&v15 countOfDistinctRowsForColumn:v4];
-      v6 = [(ML3Container *)self->_container limitValue];
-      if (v5 >= v6)
+      v5 = [(ML3Query *)&v15 countOfDistinctRowsForColumn:columnCopy];
+      limitValue = [(ML3Container *)self->_container limitValue];
+      if (v5 >= limitValue)
       {
-        v7 = v6;
+        v7 = limitValue;
       }
 
       else
@@ -281,7 +281,7 @@ uint64_t __69__ML3ContainerQuery_valueForAggregateFunction_onEntitiesForProperty
   {
     v16.receiver = self;
     v16.super_class = ML3ContainerQuery;
-    v7 = [(ML3Query *)&v16 countOfDistinctRowsForColumn:v4];
+    v7 = [(ML3Query *)&v16 countOfDistinctRowsForColumn:columnCopy];
   }
 
   return v7;
@@ -325,7 +325,7 @@ void __50__ML3ContainerQuery_countOfDistinctRowsForColumn___block_invoke(uint64_
     v6[4] = self;
     v6[5] = &v7;
     [(ML3MusicLibrary *)library databaseConnectionAllowingWrites:0 withBlock:v6];
-    v4 = *(v8 + 24);
+    hasEntities = *(v8 + 24);
     _Block_object_dispose(&v7, 8);
   }
 
@@ -333,10 +333,10 @@ void __50__ML3ContainerQuery_countOfDistinctRowsForColumn___block_invoke(uint64_
   {
     v11.receiver = self;
     v11.super_class = ML3ContainerQuery;
-    v4 = [(ML3Query *)&v11 hasEntities];
+    hasEntities = [(ML3Query *)&v11 hasEntities];
   }
 
-  return v4 & 1;
+  return hasEntities & 1;
 }
 
 void __32__ML3ContainerQuery_hasEntities__block_invoke(uint64_t a1, void *a2)
@@ -395,78 +395,78 @@ void __32__ML3ContainerQuery_hasEntities__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ML3Query *)self library];
-  [v4 encodeObject:v5 forKey:@"musicLibrary"];
+  coderCopy = coder;
+  library = [(ML3Query *)self library];
+  [coderCopy encodeObject:library forKey:@"musicLibrary"];
 
   v6 = NSStringFromClass([(ML3Query *)self entityClass]);
-  [v4 encodeObject:v6 forKey:@"entityClass"];
+  [coderCopy encodeObject:v6 forKey:@"entityClass"];
 
-  v7 = [(ML3ContainerQuery *)self container];
-  [v4 encodeInt64:objc_msgSend(v7 forKey:{"persistentID"), @"containerPersistentID"}];
+  container = [(ML3ContainerQuery *)self container];
+  [coderCopy encodeInt64:objc_msgSend(container forKey:{"persistentID"), @"containerPersistentID"}];
 
-  v8 = [(ML3Query *)self predicate];
-  [v4 encodeObject:v8 forKey:@"predicate"];
+  predicate = [(ML3Query *)self predicate];
+  [coderCopy encodeObject:predicate forKey:@"predicate"];
 
-  v9 = [(ML3Query *)self orderingTerms];
-  [v4 encodeObject:v9 forKey:@"orderingTerms"];
+  orderingTerms = [(ML3Query *)self orderingTerms];
+  [coderCopy encodeObject:orderingTerms forKey:@"orderingTerms"];
 }
 
-- (ML3ContainerQuery)initWithCoder:(id)a3
+- (ML3ContainerQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"musicLibrary"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityClass"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"musicLibrary"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityClass"];
   v7 = NSClassFromString(v6);
 
-  v8 = +[ML3Entity newWithPersistentID:inLibrary:](ML3Container, "newWithPersistentID:inLibrary:", [v4 decodeInt64ForKey:@"containerPersistentID"], v5);
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+  v8 = +[ML3Entity newWithPersistentID:inLibrary:](ML3Container, "newWithPersistentID:inLibrary:", [coderCopy decodeInt64ForKey:@"containerPersistentID"], v5);
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"orderingTerm"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"orderingTerm"];
 
   v14 = [(ML3ContainerQuery *)self initWithEntityClass:v7 container:v8 predicate:v9 orderingTerms:v13];
   return v14;
 }
 
-- (ML3ContainerQuery)initWithEntityClass:(Class)a3 container:(id)a4 predicate:(id)a5 orderingTerms:(id)a6
+- (ML3ContainerQuery)initWithEntityClass:(Class)class container:(id)container predicate:(id)predicate orderingTerms:(id)terms
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "persistentID")}];
+  containerCopy = container;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  v14 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(containerCopy, "persistentID")}];
   v15 = [ML3ComparisonPredicate predicateWithProperty:@"container_item.container_pid" value:v14 comparison:1];
   containerPredicate = self->_containerPredicate;
   self->_containerPredicate = v15;
 
-  objc_storeStrong(&self->_container, a4);
-  v17 = [v11 valueForProperty:@"smart_is_dynamic"];
-  v18 = [v17 intValue];
+  objc_storeStrong(&self->_container, container);
+  v17 = [containerCopy valueForProperty:@"smart_is_dynamic"];
+  intValue = [v17 intValue];
 
-  v19 = [v11 valueForProperty:@"distinguished_kind"];
-  v20 = [v19 intValue];
+  v19 = [containerCopy valueForProperty:@"distinguished_kind"];
+  intValue2 = [v19 intValue];
 
-  if (v18)
+  if (intValue)
   {
-    v21 = [v11 smartCriteriaPredicate];
+    smartCriteriaPredicate = [containerCopy smartCriteriaPredicate];
   }
 
   else
   {
-    v21 = self->_containerPredicate;
+    smartCriteriaPredicate = self->_containerPredicate;
   }
 
-  v22 = v21;
-  if (v12)
+  v22 = smartCriteriaPredicate;
+  if (predicateCopy)
   {
-    v23 = [MEMORY[0x277CBEA60] arrayWithObjects:{v12, v21, 0}];
+    v23 = [MEMORY[0x277CBEA60] arrayWithObjects:{predicateCopy, smartCriteriaPredicate, 0}];
     v24 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v23];
 
-    if (v13)
+    if (termsCopy)
     {
       goto LABEL_20;
     }
@@ -474,8 +474,8 @@ void __32__ML3ContainerQuery_hasEntities__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v24 = v21;
-    if (v13)
+    v24 = smartCriteriaPredicate;
+    if (termsCopy)
     {
       goto LABEL_20;
     }
@@ -483,34 +483,34 @@ void __32__ML3ContainerQuery_hasEntities__block_invoke(uint64_t a1, void *a2)
 
   if ([(ML3ContainerQuery *)self requiresSmartLimiting])
   {
-    v25 = [v11 limitOrderingTerms];
-    v26 = v25;
-    if (v25)
+    limitOrderingTerms = [containerCopy limitOrderingTerms];
+    v26 = limitOrderingTerms;
+    if (limitOrderingTerms)
     {
-      v27 = v25;
+      displayOrderingTerms = limitOrderingTerms;
     }
 
     else
     {
-      v27 = [v11 displayOrderingTerms];
+      displayOrderingTerms = [containerCopy displayOrderingTerms];
     }
   }
 
   else
   {
-    if (v18)
+    if (intValue)
     {
-      v13 = [v11 displayOrderingTerms];
+      termsCopy = [containerCopy displayOrderingTerms];
       goto LABEL_20;
     }
 
-    v28 = [v11 valueForProperty:@"has_cloud_play_order"];
-    v29 = [v28 intValue];
+    v28 = [containerCopy valueForProperty:@"has_cloud_play_order"];
+    intValue3 = [v28 intValue];
 
-    if (v29)
+    if (intValue3)
     {
-      v13 = [v11 cloudDisplayOrderingTerms];
-      if (v13)
+      termsCopy = [containerCopy cloudDisplayOrderingTerms];
+      if (termsCopy)
       {
         goto LABEL_20;
       }
@@ -529,14 +529,14 @@ void __32__ML3ContainerQuery_hasEntities__block_invoke(uint64_t a1, void *a2)
       v31 = &v40;
     }
 
-    v27 = [v30 arrayWithObjects:v31 count:1];
+    displayOrderingTerms = [v30 arrayWithObjects:v31 count:1];
   }
 
-  v13 = v27;
+  termsCopy = displayOrderingTerms;
 
 LABEL_20:
-  v32 = v18 == 0;
-  if (v20 == 71)
+  v32 = intValue == 0;
+  if (intValue2 == 71)
   {
     v32 = 1;
   }
@@ -548,20 +548,20 @@ LABEL_20:
     v34 = 0;
   }
 
-  v35 = v34 | (8 * (v20 == 71));
-  v36 = [v11 library];
+  v35 = v34 | (8 * (intValue2 == 71));
+  library = [containerCopy library];
   v39.receiver = self;
   v39.super_class = ML3ContainerQuery;
-  v37 = [(ML3Query *)&v39 initWithLibrary:v36 entityClass:a3 predicate:v24 orderingTerms:v13 usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:v35];
+  v37 = [(ML3Query *)&v39 initWithLibrary:library entityClass:class predicate:v24 orderingTerms:termsCopy usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:v35];
 
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = ML3ContainerQuery;
-  v4 = [(ML3Query *)&v8 copyWithZone:a3];
+  v4 = [(ML3Query *)&v8 copyWithZone:zone];
   v5 = [(ML3Predicate *)self->_containerPredicate copy];
   v6 = *(v4 + 11);
   *(v4 + 11) = v5;

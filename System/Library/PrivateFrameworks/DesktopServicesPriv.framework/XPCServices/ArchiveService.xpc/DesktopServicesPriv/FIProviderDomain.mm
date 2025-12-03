@@ -1,13 +1,13 @@
 @interface FIProviderDomain
-+ (id)providerDomainForDomain:(id)a3;
-+ (id)providerDomainForID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
-+ (id)providerDomainForItem:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
-+ (id)providerDomainForRootURL:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
-+ (id)providerDomainForURL:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
-+ (id)rootURLForProviderDomainID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
++ (id)providerDomainForDomain:(id)domain;
++ (id)providerDomainForID:(id)d cachePolicy:(unint64_t)policy error:(id *)error;
++ (id)providerDomainForItem:(id)item cachePolicy:(unint64_t)policy error:(id *)error;
++ (id)providerDomainForRootURL:(id)l cachePolicy:(unint64_t)policy error:(id *)error;
++ (id)providerDomainForURL:(id)l cachePolicy:(unint64_t)policy error:(id *)error;
++ (id)rootURLForProviderDomainID:(id)d cachePolicy:(unint64_t)policy error:(id *)error;
 - (BOOL)expectFPItems;
 - (BOOL)isDataSeparatedDomain;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExternalDeviceDomain;
 - (BOOL)isFPv2;
 - (BOOL)isLocalStorageDomain;
@@ -17,8 +17,8 @@
 - (BOOL)supportsEnumeration;
 - (BOOL)supportsSyncingTrash;
 - (BOOL)updateRootURLIfDetached;
-- (FIProviderDomain)initWithDomain:(id)a3;
-- (FIProviderDomain)initWithDomainID:(id)a3 cachePolicy:(unint64_t)a4 rootURL:(id)a5 domain:(id)a6;
+- (FIProviderDomain)initWithDomain:(id)domain;
+- (FIProviderDomain)initWithDomainID:(id)d cachePolicy:(unint64_t)policy rootURL:(id)l domain:(id)domain;
 - (NSURL)rootURL;
 - (id).cxx_construct;
 - (id)description;
@@ -27,47 +27,47 @@
 
 @implementation FIProviderDomain
 
-- (FIProviderDomain)initWithDomain:(id)a3
+- (FIProviderDomain)initWithDomain:(id)domain
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  v7 = [v5 isUsingFPFS];
-  if (v7)
+  domainCopy = domain;
+  identifier = [domainCopy identifier];
+  isUsingFPFS = [domainCopy isUsingFPFS];
+  if (isUsingFPFS)
   {
-    v3 = [v5 storageURLs];
-    v8 = [v3 firstObject];
+    storageURLs = [domainCopy storageURLs];
+    firstObject = [storageURLs firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
-  v9 = [(FIProviderDomain *)self initWithDomainID:v6 cachePolicy:1 rootURL:v8 domain:v5];
-  if (v7)
+  v9 = [(FIProviderDomain *)self initWithDomainID:identifier cachePolicy:1 rootURL:firstObject domain:domainCopy];
+  if (isUsingFPFS)
   {
   }
 
   return v9;
 }
 
-- (FIProviderDomain)initWithDomainID:(id)a3 cachePolicy:(unint64_t)a4 rootURL:(id)a5 domain:(id)a6
+- (FIProviderDomain)initWithDomainID:(id)d cachePolicy:(unint64_t)policy rootURL:(id)l domain:(id)domain
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  lCopy = l;
+  domainCopy = domain;
   v19.receiver = self;
   v19.super_class = FIProviderDomain;
   v14 = [(FIProviderDomain *)&v19 init];
-  if ([v11 length])
+  if ([dCopy length])
   {
-    objc_storeStrong(v14 + 12, a3);
-    *(v14 + 16) = a4;
-    objc_storeStrong(v14 + 2, a5);
-    objc_storeStrong(v14 + 13, a6);
+    objc_storeStrong(v14 + 12, d);
+    *(v14 + 16) = policy;
+    objc_storeStrong(v14 + 2, l);
+    objc_storeStrong(v14 + 13, domain);
     if (!*(v14 + 13) && !*(v14 + 2) && [v14 isiCloudDriveProvider])
     {
-      v15 = [(objc_class *)FPProviderDomainClass() rootURLForProviderDomainID:v11 cachePolicy:1 error:0];
+      v15 = [(objc_class *)FPProviderDomainClass() rootURLForProviderDomainID:dCopy cachePolicy:1 error:0];
       v16 = *(v14 + 2);
       *(v14 + 2) = v15;
     }
@@ -83,23 +83,23 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = sub_100008560(v4);
+    v6 = sub_100008560(equalCopy);
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 domainID];
-      v9 = [v8 isEqual:*(self + 12)];
+      domainID = [v6 domainID];
+      v9 = [domainID isEqual:*(self + 12)];
     }
 
     else
@@ -124,7 +124,7 @@
 
 - (BOOL)isFPv2
 {
-  v3 = [(FIProviderDomain *)self identifier];
+  identifier = [(FIProviderDomain *)self identifier];
   if ([(FIProviderDomain *)self isUsingFPFS])
   {
     LOBYTE(v4) = 0;
@@ -132,7 +132,7 @@
 
   else
   {
-    v5 = v3;
+    v5 = identifier;
     v9 = &stru_10002D580;
     CFRetain(&stru_10002D580);
     TString::SetStringRefAsImmutable(&v9, v5);
@@ -199,11 +199,11 @@
 {
   if (!*(self + 13))
   {
-    v3 = [(FIProviderDomain *)self rootURL];
-    if (v3)
+    rootURL = [(FIProviderDomain *)self rootURL];
+    if (rootURL)
     {
       v4 = [(FIProviderDomain *)self urlForKnownFolder:1];
-      if (IsEqual(v3, v4))
+      if (IsEqual(rootURL, v4))
       {
 
 LABEL_6:
@@ -214,7 +214,7 @@ LABEL_6:
       }
 
       v5 = [(FIProviderDomain *)self urlForKnownFolder:2];
-      v6 = IsEqual(v3, v5);
+      v6 = IsEqual(rootURL, v5);
 
       if (v6)
       {
@@ -230,24 +230,24 @@ LABEL_7:
 
 - (NSURL)rootURL
 {
-  v3 = *(self + 13);
-  if (!v3)
+  asyncFetchedDomain = *(self + 13);
+  if (!asyncFetchedDomain)
   {
-    v3 = [(FIProviderDomain *)self asyncFetchedDomain];
+    asyncFetchedDomain = [(FIProviderDomain *)self asyncFetchedDomain];
   }
 
   if ([(FIProviderDomain *)self isUsingFPFS]|| [(FIProviderDomain *)self isLocalStorageDomain])
   {
-    v4 = [v3 storageURLs];
-    v5 = [v4 firstObject];
+    storageURLs = [asyncFetchedDomain storageURLs];
+    firstObject = [storageURLs firstObject];
   }
 
   else
   {
-    v5 = *(self + 2);
+    firstObject = *(self + 2);
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (BOOL)isMainiCloudDriveDomain
@@ -368,17 +368,17 @@ LABEL_7:
 
 - (BOOL)expectFPItems
 {
-  v3 = *(self + 13);
-  if (!v3)
+  asyncFetchedDomain = *(self + 13);
+  if (!asyncFetchedDomain)
   {
-    v3 = [(FIProviderDomain *)self asyncFetchedDomain];
-    if (!v3)
+    asyncFetchedDomain = [(FIProviderDomain *)self asyncFetchedDomain];
+    if (!asyncFetchedDomain)
     {
       return 0;
     }
   }
 
-  v4 = ([v3 disconnectionState] & 0xFFFFFFFFFFFFFFFELL) != 6;
+  v4 = ([asyncFetchedDomain disconnectionState] & 0xFFFFFFFFFFFFFFFELL) != 6;
 
   return v4;
 }
@@ -408,13 +408,13 @@ LABEL_7:
   {
     if ([(FIProviderDomain *)self asyncResultAvailable])
     {
-      v4 = [(FIProviderDomain *)self asyncFetchedDomain];
-      v5 = [v4 description];
+      asyncFetchedDomain = [(FIProviderDomain *)self asyncFetchedDomain];
+      v5 = [asyncFetchedDomain description];
 
       if (!v5)
       {
-        v6 = [(FIProviderDomain *)self asyncError];
-        v5 = [v6 description];
+        asyncError = [(FIProviderDomain *)self asyncError];
+        v5 = [asyncError description];
       }
     }
 
@@ -439,45 +439,45 @@ LABEL_7:
   return v3;
 }
 
-+ (id)providerDomainForDomain:(id)a3
++ (id)providerDomainForDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [[FIProviderDomain alloc] initWithDomain:v3];
+  domainCopy = domain;
+  v4 = [[FIProviderDomain alloc] initWithDomain:domainCopy];
 
   return v4;
 }
 
-+ (id)providerDomainForID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (id)providerDomainForID:(id)d cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v6 = a3;
-  v7 = FIProviderDomainFetcher::Singleton(v6);
-  v8 = FIProviderDomainFetcher::FetchDomainForID(v7, v6, a4, 0, 0);
+  dCopy = d;
+  v7 = FIProviderDomainFetcher::Singleton(dCopy);
+  v8 = FIProviderDomainFetcher::FetchDomainForID(v7, dCopy, policy, 0, 0);
 
   return v8;
 }
 
-+ (id)providerDomainForRootURL:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (id)providerDomainForRootURL:(id)l cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v7 = a3;
-  v8 = FIProviderDomainFetcher::Singleton(v7);
-  v9 = FIProviderDomainFetcher::FetchDomainForURL(v8, v7, 0, a4, a5);
+  lCopy = l;
+  v8 = FIProviderDomainFetcher::Singleton(lCopy);
+  v9 = FIProviderDomainFetcher::FetchDomainForURL(v8, lCopy, 0, policy, error);
 
   return v9;
 }
 
-+ (id)providerDomainForURL:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (id)providerDomainForURL:(id)l cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v7 = a3;
-  v8 = FIProviderDomainFetcher::Singleton(v7);
-  v9 = FIProviderDomainFetcher::FetchDomainForURL(v8, v7, 0, a4, a5);
+  lCopy = l;
+  v8 = FIProviderDomainFetcher::Singleton(lCopy);
+  v9 = FIProviderDomainFetcher::FetchDomainForURL(v8, lCopy, 0, policy, error);
 
   return v9;
 }
 
-+ (id)providerDomainForItem:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (id)providerDomainForItem:(id)item cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v7 = a3;
-  v8 = [(objc_class *)FPProviderDomainClass() providerDomainForItem:v7 cachePolicy:a4 error:a5];
+  itemCopy = item;
+  v8 = [(objc_class *)FPProviderDomainClass() providerDomainForItem:itemCopy cachePolicy:policy error:error];
   if (v8)
   {
     v9 = [[FIProviderDomain alloc] initWithDomain:v8];
@@ -491,10 +491,10 @@ LABEL_7:
   return v9;
 }
 
-+ (id)rootURLForProviderDomainID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (id)rootURLForProviderDomainID:(id)d cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v7 = a3;
-  v8 = [(objc_class *)FPProviderDomainClass() rootURLForProviderDomainID:v7 cachePolicy:a4 error:a5];
+  dCopy = d;
+  v8 = [(objc_class *)FPProviderDomainClass() rootURLForProviderDomainID:dCopy cachePolicy:policy error:error];
 
   return v8;
 }

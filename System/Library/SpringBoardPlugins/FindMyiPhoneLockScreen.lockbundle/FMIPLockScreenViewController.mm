@@ -1,14 +1,14 @@
 @interface FMIPLockScreenViewController
 - (BOOL)isDeviceActivated;
 - (SBLockScreenPluginController)pluginController;
-- (void)bottomButtonPressed:(id)a3;
-- (void)callOwner:(id)a3;
-- (void)canCallWithCompletion:(id)a3;
+- (void)bottomButtonPressed:(id)pressed;
+- (void)callOwner:(id)owner;
+- (void)canCallWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)disable;
 - (void)loadView;
-- (void)setCallButtonEnabled:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setCallButtonEnabled:(BOOL)enabled;
+- (void)setLegibilitySettings:(id)settings;
 - (void)updateAppearance;
 - (void)updateLockScreenView;
 - (void)viewDidLoad;
@@ -77,32 +77,32 @@
 {
   [(FMIPLockScreenViewController *)self setCtClient:0];
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(FMIPLockScreenViewController *)self lostModeChangedToken];
+  lostModeChangedToken = [(FMIPLockScreenViewController *)self lostModeChangedToken];
 
-  if (v4)
+  if (lostModeChangedToken)
   {
-    v5 = [(FMIPLockScreenViewController *)self lostModeChangedToken];
-    [v3 removeObserver:v5];
+    lostModeChangedToken2 = [(FMIPLockScreenViewController *)self lostModeChangedToken];
+    [v3 removeObserver:lostModeChangedToken2];
 
     [(FMIPLockScreenViewController *)self setLostModeChangedToken:0];
   }
 
-  v6 = [(FMIPLockScreenViewController *)self simStatusChangedToken];
+  simStatusChangedToken = [(FMIPLockScreenViewController *)self simStatusChangedToken];
 
-  if (v6)
+  if (simStatusChangedToken)
   {
-    v7 = [(FMIPLockScreenViewController *)self simStatusChangedToken];
-    [v3 removeObserver:v7];
+    simStatusChangedToken2 = [(FMIPLockScreenViewController *)self simStatusChangedToken];
+    [v3 removeObserver:simStatusChangedToken2];
 
     [(FMIPLockScreenViewController *)self setSimStatusChangedToken:0];
   }
 
-  v8 = [(FMIPLockScreenViewController *)self registrationStatusChangedToken];
+  registrationStatusChangedToken = [(FMIPLockScreenViewController *)self registrationStatusChangedToken];
 
-  if (v8)
+  if (registrationStatusChangedToken)
   {
-    v9 = [(FMIPLockScreenViewController *)self registrationStatusChangedToken];
-    [v3 removeObserver:v9];
+    registrationStatusChangedToken2 = [(FMIPLockScreenViewController *)self registrationStatusChangedToken];
+    [v3 removeObserver:registrationStatusChangedToken2];
 
     [(FMIPLockScreenViewController *)self setRegistrationStatusChangedToken:0];
   }
@@ -112,14 +112,14 @@
   [(FMIPLockScreenViewController *)&v10 dealloc];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-  [v5 setLegibilitySettings:v4];
+  settingsCopy = settings;
+  lockScreenModalView = [(FMIPLockScreenViewController *)self lockScreenModalView];
+  [lockScreenModalView setLegibilitySettings:settingsCopy];
 }
 
-- (void)callOwner:(id)a3
+- (void)callOwner:(id)owner
 {
   v4 = sub_3FBC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -129,36 +129,36 @@
   }
 
   v5 = +[FMDFMIPManager sharedInstance];
-  v6 = [v5 lostModeInfo];
+  lostModeInfo = [v5 lostModeInfo];
 
-  if (v6)
+  if (lostModeInfo)
   {
-    v7 = [v6 phoneNumber];
-    v8 = [v7 length];
+    phoneNumber = [lostModeInfo phoneNumber];
+    v8 = [phoneNumber length];
 
     if (v8)
     {
       v9 = objc_alloc_init(NSURLComponents);
       [v9 setScheme:@"tel"];
-      v10 = [v6 phoneNumber];
-      [v9 setHost:v10];
+      phoneNumber2 = [lostModeInfo phoneNumber];
+      [v9 setHost:phoneNumber2];
 
       v11 = [v9 URL];
-      v12 = [(FMIPLockScreenViewController *)self pluginController];
+      pluginController = [(FMIPLockScreenViewController *)self pluginController];
       v13 = [[SBLockScreenPluginCallAction alloc] initWithURL:v11];
       v14 = sub_3FBC();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v6 phoneNumber];
+        phoneNumber3 = [lostModeInfo phoneNumber];
         v18 = 138412546;
-        v19 = v15;
+        v19 = phoneNumber3;
         v20 = 2112;
         v21 = v11;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Dialing %@ at URL %@", &v18, 0x16u);
       }
 
-      v16 = [v12 pluginAgent];
-      [v16 pluginController:v12 sendAction:v13];
+      pluginAgent = [pluginController pluginAgent];
+      [pluginAgent pluginController:pluginController sendAction:v13];
 
       v17 = sub_3FBC();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -171,7 +171,7 @@
   }
 }
 
-- (void)bottomButtonPressed:(id)a3
+- (void)bottomButtonPressed:(id)pressed
 {
   v4 = sub_3FBC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -181,9 +181,9 @@
   }
 
   v5 = +[FMDFMIPManager sharedInstance];
-  v6 = [v5 lostModeInfo];
+  lostModeInfo = [v5 lostModeInfo];
 
-  if ([v6 lostModeType] == &dword_4 + 1)
+  if ([lostModeInfo lostModeType] == &dword_4 + 1)
   {
     activity_block[0] = _NSConcreteStackBlock;
     activity_block[1] = 3221225472;
@@ -195,7 +195,7 @@
 
   else
   {
-    v7 = [(FMIPLockScreenViewController *)self pluginController];
+    pluginController = [(FMIPLockScreenViewController *)self pluginController];
     v8 = +[SBLockScreenPluginEmergencyDialerAction action];
     v9 = sub_3FBC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -208,32 +208,32 @@
     v12[1] = 3221225472;
     v12[2] = sub_2808;
     v12[3] = &unk_8390;
-    v13 = v7;
+    v13 = pluginController;
     v14 = v8;
     v10 = v8;
-    v11 = v7;
+    v11 = pluginController;
     _os_activity_initiate(&dword_0, "ShowEmergencyDialer", OS_ACTIVITY_FLAG_DEFAULT, v12);
   }
 }
 
 - (void)disable
 {
-  v2 = [(FMIPLockScreenViewController *)self pluginController];
+  pluginController = [(FMIPLockScreenViewController *)self pluginController];
   v3 = sub_3FBC();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v2;
+    v6 = pluginController;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "FMIPLockScreenController disabling with pluginController: %@", &v5, 0xCu);
   }
 
-  v4 = [v2 pluginAgent];
-  [v4 deactivatePluginController:v2];
+  pluginAgent = [pluginController pluginAgent];
+  [pluginAgent deactivatePluginController:pluginController];
 }
 
-- (void)canCallWithCompletion:(id)a3
+- (void)canCallWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MGCopyAnswer();
   if (v5)
   {
@@ -257,19 +257,19 @@
 
   if ([(FMIPLockScreenViewController *)self isDeviceActivated]&& v7)
   {
-    v9 = [(FMIPLockScreenViewController *)self ctClient];
+    ctClient = [(FMIPLockScreenViewController *)self ctClient];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_2C0C;
     v10[3] = &unk_8430;
     v10[4] = self;
-    v11 = v4;
-    [v9 getSubscriptionInfo:v10];
+    v11 = completionCopy;
+    [ctClient getSubscriptionInfo:v10];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -291,83 +291,83 @@
 
 - (void)updateAppearance
 {
-  v4 = [(FMIPLockScreenViewController *)self pluginController];
-  v2 = [v4 pluginAppearance];
-  v3 = [v4 pluginAgent];
-  [v3 pluginController:v4 updateAppearance:v2];
+  pluginController = [(FMIPLockScreenViewController *)self pluginController];
+  pluginAppearance = [pluginController pluginAppearance];
+  pluginAgent = [pluginController pluginAgent];
+  [pluginAgent pluginController:pluginController updateAppearance:pluginAppearance];
 }
 
-- (void)setCallButtonEnabled:(BOOL)a3
+- (void)setCallButtonEnabled:(BOOL)enabled
 {
-  if (a3 && [(FMIPLockScreenViewController *)self currentState]!= &dword_0 + 2)
+  if (enabled && [(FMIPLockScreenViewController *)self currentState]!= &dword_0 + 2)
   {
     v4 = sub_EE0(@"TAP_TO_CALL");
-    v5 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v5 setPrimaryActionButtonText:v4];
+    lockScreenModalView = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView setPrimaryActionButtonText:v4];
 
-    v7 = +[UIColor systemGreenColor];
-    v6 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v6 setPrimaryActionButtonBackgroundColor:v7];
+    lockScreenModalView3 = +[UIColor systemGreenColor];
+    lockScreenModalView2 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView2 setPrimaryActionButtonBackgroundColor:lockScreenModalView3];
   }
 
   else
   {
-    v7 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v7 setPrimaryActionButtonText:0];
+    lockScreenModalView3 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView3 setPrimaryActionButtonText:0];
   }
 }
 
 - (void)updateLockScreenView
 {
   v3 = +[FMDFMIPManager sharedInstance];
-  v4 = [v3 lostModeInfo];
+  lostModeInfo = [v3 lostModeInfo];
 
   v5 = sub_3FBC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v58 = v4;
+    v58 = lostModeInfo;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "lostModeInfo = %@", buf, 0xCu);
   }
 
-  -[FMIPLockScreenViewController setIsManagedLostmode:](self, "setIsManagedLostmode:", [v4 lostModeType] == &dword_0 + 3);
+  -[FMIPLockScreenViewController setIsManagedLostmode:](self, "setIsManagedLostmode:", [lostModeInfo lostModeType] == &dword_0 + 3);
   v6 = sub_3FBC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(FMIPLockScreenViewController *)self isManagedLostmode];
+    isManagedLostmode = [(FMIPLockScreenViewController *)self isManagedLostmode];
     *buf = 67109120;
-    LODWORD(v58) = v7;
+    LODWORD(v58) = isManagedLostmode;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "updateLockScreenView in managedLostMode %i", buf, 8u);
   }
 
-  if (!v4 || ![v4 lostModeEnabled])
+  if (!lostModeInfo || ![lostModeInfo lostModeEnabled])
   {
-    v11 = 0;
+    phoneNumber = 0;
     v12 = 0;
     v13 = 0;
     goto LABEL_30;
   }
 
   v8 = +[FMSystemInfo sharedInstance];
-  v9 = [v8 deviceClass];
+  deviceClass = [v8 deviceClass];
 
-  if ([v4 lostModeType] == &dword_4 + 1)
+  if ([lostModeInfo lostModeType] == &dword_4 + 1)
   {
-    if ([v9 hasPrefix:@"iPad"])
+    if ([deviceClass hasPrefix:@"iPad"])
     {
       v10 = @"LOCATED_IPAD_TITLE";
       goto LABEL_22;
     }
 
-    v16 = [v9 hasPrefix:@"iPod"];
+    v16 = [deviceClass hasPrefix:@"iPod"];
     v17 = @"LOCATED_IPHONE_TITLE";
     v18 = @"LOCATED_IPOD_TITLE";
   }
 
   else
   {
-    v14 = [v4 lostModeType] == &dword_4;
-    v15 = [v9 hasPrefix:@"iPad"];
+    v14 = [lostModeInfo lostModeType] == &dword_4;
+    v15 = [deviceClass hasPrefix:@"iPad"];
     if (v14)
     {
       if (v15)
@@ -376,7 +376,7 @@
         goto LABEL_22;
       }
 
-      v16 = [v9 hasPrefix:@"iPod"];
+      v16 = [deviceClass hasPrefix:@"iPod"];
       v17 = @"ERASED_IPHONE_TITLE";
       v18 = @"ERASED_IPOD_TITLE";
     }
@@ -389,7 +389,7 @@
         goto LABEL_22;
       }
 
-      v16 = [v9 hasPrefix:@"iPod"];
+      v16 = [deviceClass hasPrefix:@"iPod"];
       v17 = @"LOST_IPHONE_TITLE";
       v18 = @"LOST_IPOD_TITLE";
     }
@@ -407,26 +407,26 @@
 
 LABEL_22:
   v13 = sub_EE0(v10);
-  v19 = [v4 message];
+  message = [lostModeInfo message];
   v20 = +[NSCharacterSet newlineCharacterSet];
-  v21 = [v19 componentsSeparatedByCharactersInSet:v20];
+  v21 = [message componentsSeparatedByCharactersInSet:v20];
   v22 = [v21 componentsJoinedByString:@" "];
 
   v23 = +[NSCharacterSet whitespaceCharacterSet];
   v12 = [v22 stringByTrimmingCharactersInSet:v23];
 
-  v11 = [v4 phoneNumber];
-  if ([v4 lostModeType] == &dword_4 + 1)
+  phoneNumber = [lostModeInfo phoneNumber];
+  if ([lostModeInfo lostModeType] == &dword_4 + 1)
   {
     v24 = sub_EE0(@"CONTINUE_BUTTON");
-    v25 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v25 setSecondaryActionButtonText:v24];
+    lockScreenModalView = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView setSecondaryActionButtonText:v24];
   }
 
   else
   {
-    v26 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v26 setSecondaryActionButtonText:0];
+    lockScreenModalView2 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView2 setSecondaryActionButtonText:0];
 
     objc_initWeak(buf, self);
     v55[0] = _NSConcreteStackBlock;
@@ -439,12 +439,12 @@ LABEL_22:
     objc_destroyWeak(buf);
   }
 
-  v27 = [v4 lostModeType] == &dword_0 + 3;
-  v28 = [v4 footnoteText];
-  v29 = v28;
+  v27 = [lostModeInfo lostModeType] == &dword_0 + 3;
+  footnoteText = [lostModeInfo footnoteText];
+  v29 = footnoteText;
   if (v27)
   {
-    v30 = [v28 length] == 0;
+    v30 = [footnoteText length] == 0;
 
     if (v30)
     {
@@ -453,9 +453,9 @@ LABEL_22:
 
     else
     {
-      v31 = [v4 footnoteText];
+      footnoteText2 = [lostModeInfo footnoteText];
       v32 = +[NSCharacterSet newlineCharacterSet];
-      v33 = [v31 componentsSeparatedByCharactersInSet:v32];
+      v33 = [footnoteText2 componentsSeparatedByCharactersInSet:v32];
       v34 = [v33 componentsJoinedByString:@" "];
 
       v35 = +[NSCharacterSet whitespaceCharacterSet];
@@ -463,11 +463,11 @@ LABEL_22:
     }
   }
 
-  v36 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-  [v36 setFooterText:v29];
+  lockScreenModalView3 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+  [lockScreenModalView3 setFooterText:v29];
 
 LABEL_30:
-  if ([v12 length] || objc_msgSend(v11, "length"))
+  if ([v12 length] || objc_msgSend(phoneNumber, "length"))
   {
     v37 = sub_3FBC();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -477,18 +477,18 @@ LABEL_30:
     }
 
     [(FMIPLockScreenViewController *)self setCurrentState:1];
-    v38 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v38 setTitleText:v13];
+    lockScreenModalView4 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView4 setTitleText:v13];
 
-    v39 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v39 setSubtitleText:v12];
+    lockScreenModalView5 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView5 setSubtitleText:v12];
 
-    v40 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v40 setSecondarySubtitleText:v11];
+    lockScreenModalView6 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView6 setSecondarySubtitleText:phoneNumber];
 
-    LOBYTE(v40) = [v11 length] == 0;
+    LOBYTE(lockScreenModalView6) = [phoneNumber length] == 0;
     [(FMIPLockScreenViewController *)self setCallButtonEnabled:0];
-    if ((v40 & 1) == 0)
+    if ((lockScreenModalView6 & 1) == 0)
     {
       objc_initWeak(buf, self);
       v50 = _NSConcreteStackBlock;
@@ -514,30 +514,30 @@ LABEL_30:
     }
 
     [(FMIPLockScreenViewController *)self setCurrentState:2];
-    v42 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v42 setTitleText:0];
+    lockScreenModalView7 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView7 setTitleText:0];
 
-    v43 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v43 setSubtitleText:0];
+    lockScreenModalView8 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView8 setSubtitleText:0];
 
-    v44 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v44 setSecondarySubtitleText:0];
+    lockScreenModalView9 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView9 setSecondarySubtitleText:0];
 
-    v45 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v45 setPrimaryActionButtonText:0];
+    lockScreenModalView10 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView10 setPrimaryActionButtonText:0];
 
-    v46 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v46 setSecondaryActionButtonText:0];
+    lockScreenModalView11 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView11 setSecondaryActionButtonText:0];
 
-    v47 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v47 setFooterText:0];
+    lockScreenModalView12 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView12 setFooterText:0];
 
-    v48 = [(FMIPLockScreenViewController *)self lockScreenModalView];
-    [v48 setImage:0];
+    lockScreenModalView13 = [(FMIPLockScreenViewController *)self lockScreenModalView];
+    [lockScreenModalView13 setImage:0];
 
     [(FMIPLockScreenViewController *)self updateAppearance];
-    v49 = [(FMIPLockScreenViewController *)self view];
-    [v49 setNeedsDisplay];
+    view = [(FMIPLockScreenViewController *)self view];
+    [view setNeedsDisplay];
   }
 }
 

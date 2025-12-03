@@ -15,18 +15,18 @@
 {
   if (a3 == 1)
   {
-    v5 = [a1 photoLibrary];
-    v6 = [v5 px_standardLibrarySpecificFetchOptions];
+    photoLibrary = [self photoLibrary];
+    px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
 
-    [v6 setFetchLimit:2];
-    [v6 setShouldPrefetchCount:1];
-    v7 = [MEMORY[0x1E6978630] fetchAssetsForPerson:a1 options:v6];
+    [px_standardLibrarySpecificFetchOptions setFetchLimit:2];
+    [px_standardLibrarySpecificFetchOptions setShouldPrefetchCount:1];
+    v7 = [MEMORY[0x1E6978630] fetchAssetsForPerson:self options:px_standardLibrarySpecificFetchOptions];
     v4 = [v7 count] > 1;
   }
 
   else
   {
-    return !a3 && [a1 faceCount] > 1;
+    return !a3 && [self faceCount] > 1;
   }
 
   return v4;
@@ -35,11 +35,11 @@
 - (BOOL)px_isSameDetectionTypeAsPerson:()PhotosUICore
 {
   v4 = a3;
-  v5 = [a1 detectionType];
+  detectionType = [self detectionType];
   v6 = 0;
-  if (v5 <= 4 && ((1 << v5) & 0x1A) != 0)
+  if (detectionType <= 4 && ((1 << detectionType) & 0x1A) != 0)
   {
-    v6 = v5 == [v4 detectionType];
+    v6 = detectionType == [v4 detectionType];
   }
 
   return v6;
@@ -48,8 +48,8 @@
 - (id)px_navigationURL
 {
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [a1 localIdentifier];
-  v3 = [v1 stringWithFormat:@"photos://people?identifier=%@", v2];
+  localIdentifier = [self localIdentifier];
+  v3 = [v1 stringWithFormat:@"photos://people?identifier=%@", localIdentifier];
 
   v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
 
@@ -58,9 +58,9 @@
 
 - (id)px_nameComponents
 {
-  v1 = [a1 contactMatchingDictionary];
-  v2 = [v1 objectForKeyedSubscript:@"first-name"];
-  v3 = [v1 objectForKeyedSubscript:@"last-name"];
+  contactMatchingDictionary = [self contactMatchingDictionary];
+  v2 = [contactMatchingDictionary objectForKeyedSubscript:@"first-name"];
+  v3 = [contactMatchingDictionary objectForKeyedSubscript:@"last-name"];
   if ([v2 length] || objc_msgSend(v3, "length"))
   {
     v4 = objc_alloc_init(MEMORY[0x1E696ADF0]);
@@ -78,10 +78,10 @@
 
 - (id)_px_localizedNameWithStyle:()PhotosUICore
 {
-  v4 = [a1 px_nameComponents];
-  if (v4)
+  px_nameComponents = [self px_nameComponents];
+  if (px_nameComponents)
   {
-    v5 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v4 style:a3 options:0];
+    v5 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:px_nameComponents style:a3 options:0];
   }
 
   else
@@ -94,14 +94,14 @@
 
 - (__CFString)px_longStyleLocalizedName
 {
-  v2 = [a1 _px_localizedNameWithStyle:3];
+  v2 = [self _px_localizedNameWithStyle:3];
   if (![(__CFString *)v2 length])
   {
-    v3 = [a1 name];
+    name = [self name];
 
-    if ([(__CFString *)v3 length])
+    if ([(__CFString *)name length])
     {
-      v2 = v3;
+      v2 = name;
     }
 
     else
@@ -116,31 +116,31 @@
 
 - (id)px_localizedName
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = objc_getAssociatedObject(v1, &PersonLocalizedNameKey);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = objc_getAssociatedObject(selfCopy, &PersonLocalizedNameKey);
   if (!v2)
   {
-    v2 = [v1 _px_localizedNameWithStyle:1];
+    v2 = [selfCopy _px_localizedNameWithStyle:1];
     if ([v2 length])
     {
 LABEL_9:
-      objc_setAssociatedObject(v1, &PersonLocalizedNameKey, v2, 0x301);
+      objc_setAssociatedObject(selfCopy, &PersonLocalizedNameKey, v2, 0x301);
       goto LABEL_10;
     }
 
-    v3 = [v1 displayName];
-    v4 = [v3 length];
+    displayName = [selfCopy displayName];
+    v4 = [displayName length];
 
     if (v4)
     {
-      v5 = [v1 displayName];
+      displayName2 = [selfCopy displayName];
     }
 
     else
     {
-      v6 = [v1 name];
-      v7 = [v6 length];
+      name = [selfCopy name];
+      v7 = [name length];
 
       if (!v7)
       {
@@ -148,10 +148,10 @@ LABEL_9:
         goto LABEL_8;
       }
 
-      v5 = [v1 name];
+      displayName2 = [selfCopy name];
     }
 
-    v8 = v5;
+    v8 = displayName2;
 LABEL_8:
 
     v2 = v8;
@@ -159,7 +159,7 @@ LABEL_8:
   }
 
 LABEL_10:
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v2;
 }
@@ -169,12 +169,12 @@ LABEL_10:
   v3 = MEMORY[0x1E696ADF0];
   v4 = a3;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 givenName];
-  [v5 setGivenName:v6];
+  givenName = [v4 givenName];
+  [v5 setGivenName:givenName];
 
-  v7 = [v4 familyName];
+  familyName = [v4 familyName];
 
-  [v5 setFamilyName:v7];
+  [v5 setFamilyName:familyName];
   v8 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v5 style:1 options:0];
 
   return v8;

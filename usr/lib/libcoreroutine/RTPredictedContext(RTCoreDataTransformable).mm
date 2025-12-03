@@ -50,14 +50,14 @@ LABEL_8:
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D01220]);
-    v5 = [v3 predictionStartDate];
+    predictionStartDate = [v3 predictionStartDate];
     [v3 predictionStartDateConfidenceInterval];
-    v6 = [v4 initWithDate:v5 confidenceInterval:?];
+    v6 = [v4 initWithDate:predictionStartDate confidenceInterval:?];
 
     v7 = objc_alloc(MEMORY[0x277D01220]);
-    v8 = [v3 predictionEndDate];
+    predictionEndDate = [v3 predictionEndDate];
     [v3 predictionEndDateConfidenceInterval];
-    v9 = [v7 initWithDate:v8 confidenceInterval:?];
+    v9 = [v7 initWithDate:predictionEndDate confidenceInterval:?];
 
     v10 = [objc_alloc(MEMORY[0x277D01228]) initWithStartDate:v6 endDate:v9];
     v11 = objc_opt_new();
@@ -94,16 +94,16 @@ LABEL_8:
     if (([v3 predictionSourceMask] & 0x40) != 0)
     {
       v17 = objc_alloc(MEMORY[0x277D012F0]);
-      v18 = [MEMORY[0x277CBEAA8] date];
-      v19 = [v17 initWithIdentifier:&stru_284528390 parkDate:v18];
+      date = [MEMORY[0x277CBEAA8] date];
+      v19 = [v17 initWithIdentifier:&stru_284528390 parkDate:date];
       [v11 addObject:v19];
     }
 
     if (([v3 predictionSourceMask] & 0x80) != 0)
     {
       v20 = objc_alloc(MEMORY[0x277D012F8]);
-      v21 = [MEMORY[0x277CBEAA8] date];
-      v22 = [v20 initWithDate:v21];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v22 = [v20 initWithDate:date2];
       [v11 addObject:v22];
     }
 
@@ -117,12 +117,12 @@ LABEL_8:
       v27 = v26;
       [v3 locationLongitude];
       v29 = v28;
-      v30 = [v6 date];
-      v31 = [v25 initWithLatitude:v30 longitude:v27 horizontalUncertainty:v29 date:1.0];
+      date3 = [v6 date];
+      sourceBundleIdentifier = [v25 initWithLatitude:date3 longitude:v27 horizontalUncertainty:v29 date:1.0];
 
       v32 = objc_alloc(MEMORY[0x277D01170]);
-      v33 = [v3 loiIdentifier];
-      v34 = [v32 initWithLocation:v31 confidence:v33 identifier:objc_msgSend(v3 type:"locationOfInterestType") typeSource:0 visits:0 customLabel:0 mapItem:{1.0, 0}];
+      loiIdentifier = [v3 loiIdentifier];
+      v34 = [v32 initWithLocation:sourceBundleIdentifier confidence:loiIdentifier identifier:objc_msgSend(v3 type:"locationOfInterestType") typeSource:0 visits:0 customLabel:0 mapItem:{1.0, 0}];
 
       v35 = objc_alloc(MEMORY[0x277D01230]);
       [v3 probability];
@@ -131,9 +131,9 @@ LABEL_8:
 
     else if ([v3 contextType] == 2)
     {
-      v31 = [objc_alloc(MEMORY[0x277D01258]) initWithTransportMode:objc_msgSend(v3 probability:{"transportMode"), 1.0}];
+      sourceBundleIdentifier = [objc_alloc(MEMORY[0x277D01258]) initWithTransportMode:objc_msgSend(v3 probability:{"transportMode"), 1.0}];
       v37 = objc_alloc(MEMORY[0x277D01250]);
-      v44[0] = v31;
+      v44[0] = sourceBundleIdentifier;
       v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
       [v3 probability];
       v36 = [v37 initWithPredictedContextTransports:v38 predictedContextDateInterval:v10 predictionSources:v11 probability:?];
@@ -150,8 +150,8 @@ LABEL_8:
       v39 = objc_alloc(MEMORY[0x277D01260]);
       [v3 probability];
       v41 = v40;
-      v31 = [v3 sourceBundleIdentifier];
-      v36 = [v39 initWithDateInterval:v10 predictionSources:v11 probability:v31 sourceBundleIdentifier:objc_msgSend(v3 workoutActivityType:"workoutActivityType") workoutLocationType:{objc_msgSend(v3, "workoutLocationType"), v41}];
+      sourceBundleIdentifier = [v3 sourceBundleIdentifier];
+      v36 = [v39 initWithDateInterval:v10 predictionSources:v11 probability:sourceBundleIdentifier sourceBundleIdentifier:objc_msgSend(v3 workoutActivityType:"workoutActivityType") workoutLocationType:{objc_msgSend(v3, "workoutLocationType"), v41}];
     }
 
 LABEL_26:
@@ -175,7 +175,7 @@ LABEL_27:
 {
   if (a3)
   {
-    v3 = [RTPredictedContextMO managedObjectWithPredictedContext:a1 inManagedObjectContext:a3];
+    v3 = [RTPredictedContextMO managedObjectWithPredictedContext:self inManagedObjectContext:a3];
   }
 
   else

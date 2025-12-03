@@ -1,41 +1,41 @@
 @interface UIMutableStatusBarStyleRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setOverrideHeight:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setForegroundColor:(id)color;
+- (void)setOverrideHeight:(id)height;
 @end
 
 @implementation UIMutableStatusBarStyleRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(UIStatusBarStyleRequest *)self _copyWithZone:a3 class:v5];
+  return [(UIStatusBarStyleRequest *)self _copyWithZone:zone class:v5];
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   foregroundColor = self->super._foregroundColor;
   p_foregroundColor = &self->super._foregroundColor;
-  if (foregroundColor != v5)
+  if (foregroundColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_foregroundColor, a3);
-    v5 = v8;
+    v8 = colorCopy;
+    objc_storeStrong(p_foregroundColor, color);
+    colorCopy = v8;
   }
 }
 
-- (void)setOverrideHeight:(id)a3
+- (void)setOverrideHeight:(id)height
 {
-  v5 = a3;
+  heightCopy = height;
   overrideHeight = self->super._overrideHeight;
   p_overrideHeight = &self->super._overrideHeight;
-  if (overrideHeight != v5)
+  if (overrideHeight != heightCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_overrideHeight, a3);
-    v5 = v8;
+    v8 = heightCopy;
+    objc_storeStrong(p_overrideHeight, height);
+    heightCopy = v8;
   }
 }
 

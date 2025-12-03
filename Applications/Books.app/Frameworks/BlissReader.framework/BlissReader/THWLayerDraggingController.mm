@@ -1,18 +1,18 @@
 @interface THWLayerDraggingController
-- (BOOL)handleGesture:(id)a3;
-- (THWLayerDraggingController)initWithLayer:(id)a3 hostView:(id)a4 gesture:(id)a5 anchorPoint:(CGPoint)a6 delegate:(id)a7;
+- (BOOL)handleGesture:(id)gesture;
+- (THWLayerDraggingController)initWithLayer:(id)layer hostView:(id)view gesture:(id)gesture anchorPoint:(CGPoint)point delegate:(id)delegate;
 - (void)dealloc;
-- (void)p_didEndWithPosition:(CGPoint)a3;
-- (void)p_dragLayerToPosition:(CGPoint)a3 boundsPosition:(CGPoint)a4;
+- (void)p_didEndWithPosition:(CGPoint)position;
+- (void)p_dragLayerToPosition:(CGPoint)position boundsPosition:(CGPoint)boundsPosition;
 @end
 
 @implementation THWLayerDraggingController
 
-- (THWLayerDraggingController)initWithLayer:(id)a3 hostView:(id)a4 gesture:(id)a5 anchorPoint:(CGPoint)a6 delegate:(id)a7
+- (THWLayerDraggingController)initWithLayer:(id)layer hostView:(id)view gesture:(id)gesture anchorPoint:(CGPoint)point delegate:(id)delegate
 {
-  if (a3)
+  if (layer)
   {
-    if (a7)
+    if (delegate)
     {
       goto LABEL_3;
     }
@@ -21,7 +21,7 @@
   else
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a7)
+    if (delegate)
     {
       goto LABEL_3;
     }
@@ -35,9 +35,9 @@ LABEL_3:
   v13 = v12;
   if (v12)
   {
-    v12->_delegate = a7;
-    v12->_hostView = a4;
-    v13->_layer = a3;
+    v12->_delegate = delegate;
+    v12->_hostView = view;
+    v13->_layer = layer;
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
     [(CALayer *)v13->_layer bounds];
@@ -63,7 +63,7 @@ LABEL_3:
     [(CALayer *)[(UIView *)v13->_wrapperView layer] setZPosition:5.0];
     [(UIView *)v13->_hostView addSubview:v13->_wrapperView];
     delegate = v13->_delegate;
-    [(THWLayerDraggingDelegate *)delegate layerDragging:v13 naturalPositionWithGesture:a5];
+    [(THWLayerDraggingDelegate *)delegate layerDragging:v13 naturalPositionWithGesture:gesture];
     [(THWLayerDraggingDelegate *)delegate layerDragging:v13 convertNaturalPointToBounds:?];
     TSDRoundedPoint();
     [(CALayer *)v13->_wrapperLayer setPosition:?];
@@ -84,9 +84,9 @@ LABEL_3:
   [(THWLayerDraggingController *)&v3 dealloc];
 }
 
-- (void)p_dragLayerToPosition:(CGPoint)a3 boundsPosition:(CGPoint)a4
+- (void)p_dragLayerToPosition:(CGPoint)position boundsPosition:(CGPoint)boundsPosition
 {
-  [CATransaction begin:a3.x];
+  [CATransaction begin:position.x];
   [CATransaction setValue:kCFBooleanTrue forKey:kCATransactionDisableActions];
   TSDRoundedPoint();
   [(CALayer *)self->_wrapperLayer setPosition:?];
@@ -94,22 +94,22 @@ LABEL_3:
   +[CATransaction commit];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  [(THWLayerDraggingDelegate *)self->_delegate layerDragging:self naturalPositionWithGesture:a3];
+  [(THWLayerDraggingDelegate *)self->_delegate layerDragging:self naturalPositionWithGesture:gesture];
   v6 = v5;
   v8 = v7;
   [(THWLayerDraggingDelegate *)self->_delegate layerDragging:self convertNaturalPointToBounds:?];
   v10 = v9;
   v12 = v11;
-  v13 = [a3 gestureKind];
+  gestureKind = [gesture gestureKind];
   v14 = TSWPImmediatePress;
-  if (v13 == TSWPImmediatePress)
+  if (gestureKind == TSWPImmediatePress)
   {
-    v15 = [a3 gestureState];
-    if (v15 <= 3)
+    gestureState = [gesture gestureState];
+    if (gestureState <= 3)
     {
-      switch(v15)
+      switch(gestureState)
       {
         case 1:
           [(THWLayerDraggingController *)self p_didBeginWithPosition:v6 boundsPosition:v8, v10, v12];
@@ -120,28 +120,28 @@ LABEL_3:
         case 3:
           goto LABEL_8;
         default:
-          return v13 == v14;
+          return gestureKind == v14;
       }
 
       [(THWLayerDraggingController *)self p_dragLayerToPosition:v6 boundsPosition:v8, v10, v12];
-      return v13 == v14;
+      return gestureKind == v14;
     }
 
-    if ((v15 - 4) < 2)
+    if ((gestureState - 4) < 2)
     {
 LABEL_8:
       [(THWLayerDraggingController *)self p_didEndWithPosition:v6, v8];
     }
   }
 
-  return v13 == v14;
+  return gestureKind == v14;
 }
 
-- (void)p_didEndWithPosition:(CGPoint)a3
+- (void)p_didEndWithPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = position.y;
+  x = position.x;
+  selfCopy = self;
   delegate = self->_delegate;
 
   [(THWLayerDraggingDelegate *)delegate layerDraggingDidEnd:self withPosition:x, y];

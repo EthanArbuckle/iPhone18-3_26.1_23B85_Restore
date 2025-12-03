@@ -1,12 +1,12 @@
 @interface CalDistributedNotificationCenter
 + (id)defaultCenter;
-+ (void)_addHandler:(id)a3 toObserver:(id)a4;
-+ (void)_clearHandlersForObserver:(id)a3;
-+ (void)_handleNotification:(id)a3;
-+ (void)_removeHandler:(id)a3 fromObserver:(id)a4;
-+ (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5;
-+ (void)removeObserver:(id)a3;
-+ (void)removeObserver:(id)a3 name:(id)a4;
++ (void)_addHandler:(id)handler toObserver:(id)observer;
++ (void)_clearHandlersForObserver:(id)observer;
++ (void)_handleNotification:(id)notification;
++ (void)_removeHandler:(id)handler fromObserver:(id)observer;
++ (void)addObserver:(id)observer selector:(SEL)selector name:(id)name;
++ (void)removeObserver:(id)observer;
++ (void)removeObserver:(id)observer name:(id)name;
 - (CalDistributedNotificationCenter)init;
 @end
 
@@ -46,21 +46,21 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
   return v2;
 }
 
-+ (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5
++ (void)addObserver:(id)observer selector:(SEL)selector name:(id)name
 {
-  name = a5;
-  v8 = a3;
+  name = name;
+  observerCopy = observer;
   v9 = +[CalDistributedNotificationCenter defaultCenter];
-  v10 = [[CalDistributedNotificationHandler alloc] initWithObserver:v8 selector:a4];
+  v10 = [[CalDistributedNotificationHandler alloc] initWithObserver:observerCopy selector:selector];
   os_unfair_lock_lock(&handlersLock);
-  [a1 _addHandler:v10 toObserver:v8];
+  [self _addHandler:v10 toObserver:observerCopy];
 
-  v11 = [v9 handlers];
-  v12 = [v11 objectForKeyedSubscript:name];
+  handlers = [v9 handlers];
+  v12 = [handlers objectForKeyedSubscript:name];
   if (!v12)
   {
     v12 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:5 capacity:1];
-    [v11 setObject:v12 forKeyedSubscript:name];
+    [handlers setObject:v12 forKeyedSubscript:name];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, +[CalDistributedNotificationCenter defaultCenter], _notificationCallback, name, 0, 0);
   }
@@ -70,15 +70,15 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
   os_unfair_lock_unlock(&handlersLock);
 }
 
-+ (void)removeObserver:(id)a3
++ (void)removeObserver:(id)observer
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = +[CalDistributedNotificationCenter defaultCenter];
   context = objc_autoreleasePoolPush();
   center = CFNotificationCenterGetDarwinNotifyCenter();
   os_unfair_lock_lock(&handlersLock);
-  [a1 _clearHandlersForObserver:v4];
+  [self _clearHandlersForObserver:observerCopy];
   v25 = v5;
   [v5 handlers];
   v39 = 0u;
@@ -106,8 +106,8 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v10 = [v8 allObjects];
-        v11 = [v10 countByEnumeratingWithState:&v35 objects:v44 count:16];
+        allObjects = [v8 allObjects];
+        v11 = [allObjects countByEnumeratingWithState:&v35 objects:v44 count:16];
         if (v11)
         {
           v12 = v11;
@@ -118,14 +118,14 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
             {
               if (*v36 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allObjects);
               }
 
               v15 = *(*(&v35 + 1) + 8 * j);
-              v16 = [v15 observer];
-              if (v16)
+              observer = [v15 observer];
+              if (observer)
               {
-                v17 = v16 == v4;
+                v17 = observer == observerCopy;
               }
 
               else
@@ -139,7 +139,7 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v35 objects:v44 count:16];
+            v12 = [allObjects countByEnumeratingWithState:&v35 objects:v44 count:16];
           }
 
           while (v12);
@@ -192,26 +192,26 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
   v23 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeObserver:(id)a3 name:(id)a4
++ (void)removeObserver:(id)observer name:(id)name
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v8 = +[CalDistributedNotificationCenter defaultCenter];
   context = objc_autoreleasePoolPush();
   center = CFNotificationCenterGetDarwinNotifyCenter();
   os_unfair_lock_lock(&handlersLock);
   v30 = v8;
-  v9 = [v8 handlers];
-  v31 = v7;
-  v10 = [v9 objectForKeyedSubscript:v7];
+  handlers = [v8 handlers];
+  v31 = nameCopy;
+  v10 = [handlers objectForKeyedSubscript:nameCopy];
   v11 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v12 = [v10 allObjects];
-  v13 = [v12 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  allObjects = [v10 allObjects];
+  v13 = [allObjects countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v13)
   {
     v14 = v13;
@@ -222,14 +222,14 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
       {
         if (*v37 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allObjects);
         }
 
         v17 = *(*(&v36 + 1) + 8 * i);
-        v18 = [v17 observer];
-        if (v18)
+        observer = [v17 observer];
+        if (observer)
         {
-          v19 = v18 == v6;
+          v19 = observer == observerCopy;
         }
 
         else
@@ -239,12 +239,12 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
 
         if (v19)
         {
-          [a1 _removeHandler:v17 fromObserver:v6];
+          [self _removeHandler:v17 fromObserver:observerCopy];
           [v11 addObject:v17];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v14 = [allObjects countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v14);
@@ -278,12 +278,12 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
     while (v22);
   }
 
-  v25 = [v10 allObjects];
-  v26 = [v25 count];
+  allObjects2 = [v10 allObjects];
+  v26 = [allObjects2 count];
 
   if (!v26)
   {
-    [v9 removeObjectForKey:v31];
+    [handlers removeObjectForKey:v31];
     CFNotificationCenterRemoveObserver(center, v30, v31, 0);
   }
 
@@ -293,34 +293,34 @@ uint64_t __49__CalDistributedNotificationCenter_defaultCenter__block_invoke()
   v27 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_handleNotification:(id)a3
++ (void)_handleNotification:(id)notification
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  notificationCopy = notification;
   v4 = +[CalDistributedNotificationCenter defaultCenter];
   os_unfair_lock_lock(&handlersLock);
-  v5 = [v4 handlers];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  handlers = [v4 handlers];
+  v6 = [handlers objectForKeyedSubscript:notificationCopy];
 
   if (!v6)
   {
     goto LABEL_13;
   }
 
-  v7 = [v6 allObjects];
-  if (![v7 count])
+  allObjects = [v6 allObjects];
+  if (![allObjects count])
   {
-    v13 = [v4 handlers];
-    [v13 removeObjectForKey:v3];
+    handlers2 = [v4 handlers];
+    [handlers2 removeObjectForKey:notificationCopy];
 
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!allObjects)
   {
 LABEL_13:
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v4, v3, 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v4, notificationCopy, 0);
 
     os_unfair_lock_unlock(&handlersLock);
     goto LABEL_14;
@@ -331,7 +331,7 @@ LABEL_13:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v7;
+  v8 = allObjects;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -347,7 +347,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v16 + 1) + 8 * v12++) handleNotification:{v3, v16}];
+        [*(*(&v16 + 1) + 8 * v12++) handleNotification:{notificationCopy, v16}];
       }
 
       while (v10 != v12);
@@ -361,41 +361,41 @@ LABEL_14:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_addHandler:(id)a3 toObserver:(id)a4
++ (void)_addHandler:(id)handler toObserver:(id)observer
 {
-  v7 = a3;
-  v5 = a4;
+  handlerCopy = handler;
+  observerCopy = observer;
   os_unfair_lock_assert_owner(&handlersLock);
-  v6 = objc_getAssociatedObject(v5, &handlersForObserverKey);
+  v6 = objc_getAssociatedObject(observerCopy, &handlersForObserverKey);
   if (!v6)
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
-    objc_setAssociatedObject(v5, &handlersForObserverKey, v6, 1);
+    objc_setAssociatedObject(observerCopy, &handlersForObserverKey, v6, 1);
   }
 
-  [v6 addObject:v7];
+  [v6 addObject:handlerCopy];
 }
 
-+ (void)_removeHandler:(id)a3 fromObserver:(id)a4
++ (void)_removeHandler:(id)handler fromObserver:(id)observer
 {
-  v9 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  observerCopy = observer;
   os_unfair_lock_assert_owner(&handlersLock);
-  v7 = objc_getAssociatedObject(v6, &handlersForObserverKey);
+  v7 = objc_getAssociatedObject(observerCopy, &handlersForObserverKey);
   v8 = v7;
   if (v7)
   {
-    [v7 removeObject:v9];
+    [v7 removeObject:handlerCopy];
     if (![v8 count])
     {
-      [a1 _clearHandlersForObserver:v6];
+      [self _clearHandlersForObserver:observerCopy];
     }
   }
 }
 
-+ (void)_clearHandlersForObserver:(id)a3
++ (void)_clearHandlersForObserver:(id)observer
 {
-  object = a3;
+  object = observer;
   os_unfair_lock_assert_owner(&handlersLock);
   objc_setAssociatedObject(object, &handlersForObserverKey, 0, 1);
 }

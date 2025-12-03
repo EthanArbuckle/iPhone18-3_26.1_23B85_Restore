@@ -1,18 +1,18 @@
 @interface PXHighFidelityVideoOverlayButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
-- (PXHighFidelityVideoOverlayButtonAccessibility)initWithConfiguration:(id)a3;
+- (PXHighFidelityVideoOverlayButtonAccessibility)initWithConfiguration:(id)configuration;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PXHighFidelityVideoOverlayButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXHighFidelityVideoOverlayButton" hasInstanceVariable:@"_button" withType:"UIButton"];
-  [v3 validateClass:@"PXHighFidelityVideoOverlayButton" hasInstanceMethod:@"initWithConfiguration:" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXHighFidelityVideoOverlayButton" hasInstanceVariable:@"_button" withType:"UIButton"];
+  [validationsCopy validateClass:@"PXHighFidelityVideoOverlayButton" hasInstanceMethod:@"initWithConfiguration:" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,30 +24,30 @@
   [v3 setIsAccessibilityElement:0];
 }
 
-- (PXHighFidelityVideoOverlayButtonAccessibility)initWithConfiguration:(id)a3
+- (PXHighFidelityVideoOverlayButtonAccessibility)initWithConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = PXHighFidelityVideoOverlayButtonAccessibility;
-  v3 = [(PXHighFidelityVideoOverlayButtonAccessibility *)&v5 initWithConfiguration:a3];
+  v3 = [(PXHighFidelityVideoOverlayButtonAccessibility *)&v5 initWithConfiguration:configuration];
   [(PXHighFidelityVideoOverlayButtonAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(PXHighFidelityVideoOverlayButtonAccessibility *)self isAccessibilityUserDefinedElement];
-  v3 = v2;
-  if (v2)
+  isAccessibilityUserDefinedElement = [(PXHighFidelityVideoOverlayButtonAccessibility *)self isAccessibilityUserDefinedElement];
+  v3 = isAccessibilityUserDefinedElement;
+  if (isAccessibilityUserDefinedElement)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [isAccessibilityUserDefinedElement BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)accessibilityTraits

@@ -2,36 +2,36 @@
 - (BOOL)isEmpty;
 - (EFSQLInsertStatementValue)insertValue;
 - (EFSQLUpdateStatementValue)updateValue;
-- (EFSQLUpsertStatement)initWithTable:(id)a3 conflictTarget:(id)a4;
+- (EFSQLUpsertStatement)initWithTable:(id)table conflictTarget:(id)target;
 - (EFSQLValueExpressable)whereClause;
 - (NSString)queryString;
-- (id)excludedColumnExpressionForColumnName:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)enumerateBindingNamesAndValuesUsingBlock:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)setWhereClause:(id)a3;
+- (id)excludedColumnExpressionForColumnName:(id)name;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)enumerateBindingNamesAndValuesUsingBlock:(id)block;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)setWhereClause:(id)clause;
 @end
 
 @implementation EFSQLUpsertStatement
 
-- (EFSQLUpsertStatement)initWithTable:(id)a3 conflictTarget:(id)a4
+- (EFSQLUpsertStatement)initWithTable:(id)table conflictTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
+  tableCopy = table;
+  targetCopy = target;
   v16.receiver = self;
   v16.super_class = EFSQLUpsertStatement;
   v8 = [(EFSQLUpsertStatement *)&v16 init];
   if (v8)
   {
-    v9 = [[EFSQLInsertStatement alloc] initWithTable:v6];
+    v9 = [[EFSQLInsertStatement alloc] initWithTable:tableCopy];
     insertStatement = v8->_insertStatement;
     v8->_insertStatement = v9;
 
-    v11 = [[EFSQLUpdateStatement alloc] initWithTable:v6];
+    v11 = [[EFSQLUpdateStatement alloc] initWithTable:tableCopy];
     updateStatement = v8->_updateStatement;
     v8->_updateStatement = v11;
 
-    v13 = [v7 copy];
+    v13 = [targetCopy copy];
     conflictTarget = v8->_conflictTarget;
     v8->_conflictTarget = v13;
   }
@@ -61,8 +61,8 @@
 
   if (!v6)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"EFSQLUpsertStatement.m" lineNumber:81 description:@"Must have insertion values for all conflict target columns"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLUpsertStatement.m" lineNumber:81 description:@"Must have insertion values for all conflict target columns"];
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -130,14 +130,14 @@ void __35__EFSQLUpsertStatement_queryString__block_invoke_2(uint64_t a1, void *a
     self = self->_updateStatement;
   }
 
-  v2 = [(EFSQLUpsertStatement *)self whereClause];
+  whereClause = [(EFSQLUpsertStatement *)self whereClause];
 
-  return v2;
+  return whereClause;
 }
 
-- (void)setWhereClause:(id)a3
+- (void)setWhereClause:(id)clause
 {
-  v4 = a3;
+  clauseCopy = clause;
   if (self)
   {
     updateStatement = self->_updateStatement;
@@ -148,13 +148,13 @@ void __35__EFSQLUpsertStatement_queryString__block_invoke_2(uint64_t a1, void *a
     updateStatement = 0;
   }
 
-  v6 = v4;
-  [(EFSQLUpdateStatement *)updateStatement setWhereClause:v4];
+  v6 = clauseCopy;
+  [(EFSQLUpdateStatement *)updateStatement setWhereClause:clauseCopy];
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
+  subscriptCopy = subscript;
   if (self)
   {
     insertStatement = self->_insertStatement;
@@ -165,15 +165,15 @@ void __35__EFSQLUpsertStatement_queryString__block_invoke_2(uint64_t a1, void *a
     insertStatement = 0;
   }
 
-  v6 = [(EFSQLInsertStatement *)insertStatement objectForKeyedSubscript:v4];
+  v6 = [(EFSQLInsertStatement *)insertStatement objectForKeyedSubscript:subscriptCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v11 = a3;
-  v6 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   if (self)
   {
     insertStatement = self->_insertStatement;
@@ -184,7 +184,7 @@ void __35__EFSQLUpsertStatement_queryString__block_invoke_2(uint64_t a1, void *a
     insertStatement = 0;
   }
 
-  [(EFSQLInsertStatement *)insertStatement setObject:v11 forKeyedSubscript:v6];
+  [(EFSQLInsertStatement *)insertStatement setObject:objectCopy forKeyedSubscript:subscriptCopy];
   if (self)
   {
     conflictTarget = self->_conflictTarget;
@@ -195,9 +195,9 @@ void __35__EFSQLUpsertStatement_queryString__block_invoke_2(uint64_t a1, void *a
     conflictTarget = 0;
   }
 
-  if (![(NSArray *)conflictTarget containsObject:v6])
+  if (![(NSArray *)conflictTarget containsObject:subscriptCopy])
   {
-    v9 = [(EFSQLUpsertStatement *)self excludedColumnExpressionForColumnName:v6];
+    v9 = [(EFSQLUpsertStatement *)self excludedColumnExpressionForColumnName:subscriptCopy];
     if (self)
     {
       updateStatement = self->_updateStatement;
@@ -208,13 +208,13 @@ void __35__EFSQLUpsertStatement_queryString__block_invoke_2(uint64_t a1, void *a
       updateStatement = 0;
     }
 
-    [(EFSQLUpdateStatement *)updateStatement setObject:v9 forKeyedSubscript:v6];
+    [(EFSQLUpdateStatement *)updateStatement setObject:v9 forKeyedSubscript:subscriptCopy];
   }
 }
 
-- (void)enumerateBindingNamesAndValuesUsingBlock:(id)a3
+- (void)enumerateBindingNamesAndValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self)
   {
     insertStatement = self->_insertStatement;
@@ -225,8 +225,8 @@ void __35__EFSQLUpsertStatement_queryString__block_invoke_2(uint64_t a1, void *a
     insertStatement = 0;
   }
 
-  v7 = v4;
-  [(EFSQLInsertStatement *)insertStatement enumerateBindingNamesAndValuesUsingBlock:v4];
+  v7 = blockCopy;
+  [(EFSQLInsertStatement *)insertStatement enumerateBindingNamesAndValuesUsingBlock:blockCopy];
   if (self)
   {
     updateStatement = self->_updateStatement;
@@ -270,9 +270,9 @@ BOOL __35__EFSQLUpsertStatement_queryString__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (id)excludedColumnExpressionForColumnName:(id)a3
+- (id)excludedColumnExpressionForColumnName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if (self)
   {
     insertStatement = self->_insertStatement;
@@ -283,15 +283,15 @@ BOOL __35__EFSQLUpsertStatement_queryString__block_invoke(uint64_t a1, void *a2)
     insertStatement = 0;
   }
 
-  v7 = [(EFSQLInsertStatement *)insertStatement objectForKeyedSubscript:v5];
+  v7 = [(EFSQLInsertStatement *)insertStatement objectForKeyedSubscript:nameCopy];
 
   if (!v7)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"EFSQLUpsertStatement.m" lineNumber:101 description:@"Cannot generate excluded expression for column that was not inserted"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLUpsertStatement.m" lineNumber:101 description:@"Cannot generate excluded expression for column that was not inserted"];
   }
 
-  v8 = [EFSQLColumnExpression table:@"excluded" column:v5];
+  v8 = [EFSQLColumnExpression table:@"excluded" column:nameCopy];
 
   return v8;
 }

@@ -12,33 +12,33 @@
 {
   v6 = a4;
   v7 = +[CUIKNotificationDescriptionGenerator sharedGenerator];
-  if ([a1 type] == 4)
+  if ([self type] == 4)
   {
     v8 = CUIKBundle();
     v9 = [v8 localizedStringForKey:@"Added to %@ by %@" value:&stru_1F4AA8958 table:0];
 
-    v10 = [a1 calendarName];
+    calendarName = [self calendarName];
 LABEL_9:
-    v15 = [a1 _identityStringWithOptions:a3];
+    calendarName2 = [self _identityStringWithOptions:a3];
     v16 = 0;
     v17 = 1;
     goto LABEL_126;
   }
 
-  if ([a1 type] != 5 && objc_msgSend(a1, "type") != 13)
+  if ([self type] != 5 && objc_msgSend(self, "type") != 13)
   {
-    if ([a1 type] == 6 || objc_msgSend(a1, "type") == 14)
+    if ([self type] == 6 || objc_msgSend(self, "type") == 14)
     {
-      v18 = [a1 dateChanged];
-      v19 = [a1 timeChanged] + v18;
-      v20 = [a1 titleChanged];
-      v21 = v19 + v20 + [a1 locationChanged];
-      v22 = [a1 _identityStringWithOptions:a3];
-      v23 = [a1 type];
-      v17 = v23 == 6 && v22 != 0;
+      dateChanged = [self dateChanged];
+      v19 = [self timeChanged] + dateChanged;
+      titleChanged = [self titleChanged];
+      v21 = v19 + titleChanged + [self locationChanged];
+      v22 = [self _identityStringWithOptions:a3];
+      type = [self type];
+      v17 = type == 6 && v22 != 0;
       if (v21 == 1)
       {
-        if ([a1 dateChanged])
+        if ([self dateChanged])
         {
           v25 = CUIKBundle();
           v26 = v25;
@@ -46,30 +46,30 @@ LABEL_9:
           {
             v9 = [v25 localizedStringForKey:@"Date changed to %@ by %@" value:&stru_1F4AA8958 table:0];
 
-            v15 = v22;
+            calendarName2 = v22;
           }
 
           else
           {
             v9 = [v25 localizedStringForKey:@"Date changed to %@" value:&stru_1F4AA8958 table:0];
 
-            v15 = 0;
+            calendarName2 = 0;
           }
 
-          v74 = [v7 _sharedDateFormatter];
+          _sharedDateFormatter = [v7 _sharedDateFormatter];
 LABEL_124:
-          v90 = v74;
-          v91 = [a1 startDate];
-          v10 = [v90 stringFromDate:v91];
+          v90 = _sharedDateFormatter;
+          startDate = [self startDate];
+          calendarName = [v90 stringFromDate:startDate];
 
           goto LABEL_125;
         }
 
-        if ([a1 timeChanged])
+        if ([self timeChanged])
         {
           v43 = MEMORY[0x1E6992F68];
-          v44 = [a1 startDate];
-          v45 = [v43 requiresSingularLocalizationForDate:v44];
+          startDate2 = [self startDate];
+          v45 = [v43 requiresSingularLocalizationForDate:startDate2];
 
           v46 = CUIKBundle();
           v47 = v46;
@@ -87,7 +87,7 @@ LABEL_124:
 
             v9 = [v46 localizedStringForKey:v48 value:@"Time changed to %@ by %@" table:0];
 
-            v15 = v22;
+            calendarName2 = v22;
           }
 
           else
@@ -104,14 +104,14 @@ LABEL_124:
 
             v9 = [v46 localizedStringForKey:v81 value:@"Time changed to %@" table:0];
 
-            v15 = 0;
+            calendarName2 = 0;
           }
 
-          v74 = [v7 _sharedTimeFormatter];
+          _sharedDateFormatter = [v7 _sharedTimeFormatter];
           goto LABEL_124;
         }
 
-        if ([a1 titleChanged])
+        if ([self titleChanged])
         {
           v75 = CUIKBundle();
           if (v17)
@@ -128,16 +128,16 @@ LABEL_90:
 
         else
         {
-          if (![a1 locationChanged])
+          if (![self locationChanged])
           {
-            v15 = 0;
-            v10 = 0;
+            calendarName2 = 0;
+            calendarName = 0;
             v9 = 0;
             goto LABEL_125;
           }
 
-          v82 = [a1 location];
-          v83 = [v82 length];
+          location = [self location];
+          v83 = [location length];
 
           if (v83)
           {
@@ -155,8 +155,8 @@ LABEL_90:
           {
             v9 = [v85 localizedStringForKey:@"Location changed to %@ by %@" value:&stru_1F4AA8958 table:0];
 
-            v15 = v22;
-            v10 = [a1 location];
+            calendarName2 = v22;
+            calendarName = [self location];
             goto LABEL_125;
           }
 
@@ -170,7 +170,7 @@ LABEL_90:
           {
             v9 = [v85 localizedStringForKey:@"Location changed to %@" value:&stru_1F4AA8958 table:0];
 
-            v77 = [a1 location];
+            location2 = [self location];
             goto LABEL_92;
           }
 
@@ -184,7 +184,7 @@ LABEL_90:
       {
         if ((v21 - 1) > 1)
         {
-          v49 = v23;
+          v49 = type;
           v50 = CUIKBundle();
           v51 = v50;
           if (v17)
@@ -209,12 +209,12 @@ LABEL_90:
 
           v9 = [v50 localizedStringForKey:v52 value:&stru_1F4AA8958 table:0];
 
-          v10 = [a1 calendarName];
-          v15 = v53;
+          calendarName = [self calendarName];
+          calendarName2 = v53;
           goto LABEL_125;
         }
 
-        if ([a1 dateChanged] && objc_msgSend(a1, "timeChanged"))
+        if ([self dateChanged] && objc_msgSend(self, "timeChanged"))
         {
           v27 = CUIKBundle();
           v28 = v27;
@@ -236,7 +236,7 @@ LABEL_90:
           v9 = 0;
         }
 
-        if ([a1 dateChanged] && objc_msgSend(a1, "titleChanged"))
+        if ([self dateChanged] && objc_msgSend(self, "titleChanged"))
         {
           v54 = CUIKBundle();
           v55 = v54;
@@ -255,7 +255,7 @@ LABEL_90:
           v9 = v57;
         }
 
-        if ([a1 dateChanged] && objc_msgSend(a1, "locationChanged"))
+        if ([self dateChanged] && objc_msgSend(self, "locationChanged"))
         {
           v58 = CUIKBundle();
           v59 = v58;
@@ -274,7 +274,7 @@ LABEL_90:
           v9 = v61;
         }
 
-        if ([a1 timeChanged] && objc_msgSend(a1, "titleChanged"))
+        if ([self timeChanged] && objc_msgSend(self, "titleChanged"))
         {
           v62 = CUIKBundle();
           v63 = v62;
@@ -293,7 +293,7 @@ LABEL_90:
           v9 = v65;
         }
 
-        if ([a1 timeChanged] && objc_msgSend(a1, "locationChanged"))
+        if ([self timeChanged] && objc_msgSend(self, "locationChanged"))
         {
           v66 = CUIKBundle();
           v67 = v66;
@@ -312,7 +312,7 @@ LABEL_90:
           v9 = v69;
         }
 
-        if ([a1 titleChanged] && objc_msgSend(a1, "locationChanged"))
+        if ([self titleChanged] && objc_msgSend(self, "locationChanged"))
         {
           v70 = CUIKBundle();
           v71 = v70;
@@ -320,8 +320,8 @@ LABEL_90:
           {
             v88 = [v70 localizedStringForKey:@"Location and title changed" value:&stru_1F4AA8958 table:0];
 
-            v15 = 0;
-            v10 = 0;
+            calendarName2 = 0;
+            calendarName = 0;
             v9 = v88;
             goto LABEL_125;
           }
@@ -335,10 +335,10 @@ LABEL_90:
         if (v17)
         {
 LABEL_91:
-          v77 = v22;
+          location2 = v22;
 LABEL_92:
-          v10 = v77;
-          v15 = 0;
+          calendarName = location2;
+          calendarName2 = 0;
 LABEL_125:
 
           v16 = 0;
@@ -346,56 +346,56 @@ LABEL_125:
         }
       }
 
-      v15 = 0;
-      v10 = 0;
+      calendarName2 = 0;
+      calendarName = 0;
       goto LABEL_125;
     }
 
-    if ([a1 type] != 7)
+    if ([self type] != 7)
     {
-      if ([a1 type] == 11)
+      if ([self type] == 11)
       {
         v73 = CUIKBundle();
         v9 = [v73 localizedStringForKey:@"This calendar is now public." value:&stru_1F4AA8958 table:0];
 
         v17 = 0;
         v16 = 0;
-        v15 = 0;
-        v10 = 0;
+        calendarName2 = 0;
+        calendarName = 0;
       }
 
       else
       {
         v17 = 0;
         v16 = 0;
-        v15 = 0;
-        v10 = 0;
+        calendarName2 = 0;
+        calendarName = 0;
         v9 = 0;
       }
 
       goto LABEL_126;
     }
 
-    v30 = [a1 updateCount];
-    v31 = [a1 createCount];
-    v32 = [a1 deleteCount];
-    v108 = v30;
-    v33 = [v30 intValue];
-    v34 = [v31 intValue];
-    v35 = [v32 intValue];
-    v36 = v35;
-    if (v34 && !v35 && !v33)
+    updateCount = [self updateCount];
+    createCount = [self createCount];
+    deleteCount = [self deleteCount];
+    v108 = updateCount;
+    intValue = [updateCount intValue];
+    intValue2 = [createCount intValue];
+    intValue3 = [deleteCount intValue];
+    v36 = intValue3;
+    if (intValue2 && !intValue3 && !intValue)
     {
-      v37 = [a1 name];
-      if (v37 || ([a1 emailAddress], (v37 = objc_claimAutoreleasedReturnValue()) != 0))
+      name = [self name];
+      if (name || ([self emailAddress], (name = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v101 = [a1 phoneNumber];
+        phoneNumber = [self phoneNumber];
 
-        if (!v101)
+        if (!phoneNumber)
         {
           v17 = 0;
           v38 = @"%@ events were added to %@.";
@@ -409,31 +409,31 @@ LABEL_38:
       v39 = CUIKBundle();
       v9 = [v39 localizedStringForKey:v38 value:&stru_1F4AA8958 table:0];
 
-      v40 = [v7 _sharedNumberFormatter];
-      v41 = v40;
-      v42 = v31;
+      _sharedNumberFormatter = [v7 _sharedNumberFormatter];
+      _sharedNumberFormatter2 = _sharedNumberFormatter;
+      v42 = createCount;
 LABEL_101:
-      v10 = [v40 stringFromNumber:v42];
+      calendarName = [_sharedNumberFormatter stringFromNumber:v42];
 LABEL_116:
 
-      v15 = [a1 calendarName];
-      v16 = [a1 _identityStringWithOptions:a3];
+      calendarName2 = [self calendarName];
+      v16 = [self _identityStringWithOptions:a3];
 
       goto LABEL_126;
     }
 
-    v78 = [a1 name];
-    if (v36 && !v34 && !v33)
+    name2 = [self name];
+    if (v36 && !intValue2 && !intValue)
     {
-      if (v78 || ([a1 emailAddress], (v78 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (name2 || ([self emailAddress], (name2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v103 = [a1 phoneNumber];
+        phoneNumber2 = [self phoneNumber];
 
-        if (!v103)
+        if (!phoneNumber2)
         {
           v17 = 0;
           v79 = @"%@ events were deleted from %@.";
@@ -447,21 +447,21 @@ LABEL_100:
       v80 = CUIKBundle();
       v9 = [v80 localizedStringForKey:v79 value:&stru_1F4AA8958 table:0];
 
-      v40 = [v7 _sharedNumberFormatter];
-      v41 = v40;
-      v42 = v32;
+      _sharedNumberFormatter = [v7 _sharedNumberFormatter];
+      _sharedNumberFormatter2 = _sharedNumberFormatter;
+      v42 = deleteCount;
       goto LABEL_101;
     }
 
-    if (v78 || ([a1 emailAddress], (v78 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (name2 || ([self emailAddress], (name2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v102 = [a1 phoneNumber];
+      phoneNumber3 = [self phoneNumber];
 
-      if (!v102)
+      if (!phoneNumber3)
       {
         v17 = 0;
         v86 = @"%@ events were updated in %@.";
@@ -476,19 +476,19 @@ LABEL_115:
     v9 = [v87 localizedStringForKey:v86 value:&stru_1F4AA8958 table:0];
 
     LODWORD(v87) = [v108 intValue];
-    v106 = [v31 intValue] + v87;
-    LODWORD(v87) = [v32 intValue];
-    v41 = [v7 _sharedNumberFormatter];
+    v106 = [createCount intValue] + v87;
+    LODWORD(v87) = [deleteCount intValue];
+    _sharedNumberFormatter2 = [v7 _sharedNumberFormatter];
     v107 = [MEMORY[0x1E696AD98] numberWithInt:(v106 + v87)];
-    v10 = [v41 stringFromNumber:v107];
+    calendarName = [_sharedNumberFormatter2 stringFromNumber:v107];
 
     goto LABEL_116;
   }
 
-  v11 = [a1 type];
+  type2 = [self type];
   v12 = CUIKBundle();
   v13 = v12;
-  if (v11 == 5)
+  if (type2 == 5)
   {
     v14 = @"Deleted from %@ by %@";
   }
@@ -500,19 +500,19 @@ LABEL_115:
 
   v9 = [v12 localizedStringForKey:v14 value:&stru_1F4AA8958 table:0];
 
-  v10 = [a1 calendarName];
-  if (v11 == 5)
+  calendarName = [self calendarName];
+  if (type2 == 5)
   {
     goto LABEL_9;
   }
 
   v17 = 0;
   v16 = 0;
-  v15 = 0;
+  calendarName2 = 0;
 LABEL_126:
   if (v9)
   {
-    v92 = v10 == 0;
+    v92 = calendarName == 0;
   }
 
   else
@@ -521,7 +521,7 @@ LABEL_126:
   }
 
   v93 = !v92;
-  if (v15)
+  if (calendarName2)
   {
     v94 = v93;
   }
@@ -533,20 +533,20 @@ LABEL_126:
 
   if (v94 == 1 && v16 != 0)
   {
-    [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@%@" error:0, v10, v15, v16];
+    [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@%@" error:0, calendarName, calendarName2, v16];
     v96 = LABEL_142:;
     goto LABEL_143;
   }
 
   if (v94)
   {
-    [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@" error:0, v10, v15, v105];
+    [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@" error:0, calendarName, calendarName2, v105];
     goto LABEL_142;
   }
 
   if (v93)
   {
-    [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, v10, v104, v105];
+    [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, calendarName, v104, v105];
     goto LABEL_142;
   }
 
@@ -566,7 +566,7 @@ LABEL_143:
   v99 = +[CUIKLogSubsystem defaultCategory];
   if (os_log_type_enabled(v99, OS_LOG_TYPE_FAULT))
   {
-    [EKCalendarResourceChangeNotification(CUIKDescription) _resourceChangeStringWithOptions:a1 dict:v99];
+    [EKCalendarResourceChangeNotification(CUIKDescription) _resourceChangeStringWithOptions:self dict:v99];
   }
 
   v97 = 0;
@@ -576,7 +576,7 @@ LABEL_143:
   }
 
 LABEL_144:
-  if ([a1 _changedPropertyCount] == 1 && objc_msgSend(a1, "dateChanged"))
+  if ([self _changedPropertyCount] == 1 && objc_msgSend(self, "dateChanged"))
   {
     v98 = @"Date";
     goto LABEL_157;
@@ -601,30 +601,30 @@ LABEL_157:
 
 - (id)_dateStringWithOptions:()CUIKDescription
 {
-  if (a3 & 0x40) == 0 || [a1 type] != 4 && (objc_msgSend(a1, "type") != 6 || objc_msgSend(a1, "_changedPropertyCount") == 1 && ((objc_msgSend(a1, "dateChanged") & 1) != 0 || (objc_msgSend(a1, "timeChanged"))))
+  if (a3 & 0x40) == 0 || [self type] != 4 && (objc_msgSend(self, "type") != 6 || objc_msgSend(self, "_changedPropertyCount") == 1 && ((objc_msgSend(self, "dateChanged") & 1) != 0 || (objc_msgSend(self, "timeChanged"))))
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [a1 allDay];
-    v6 = [a1 startDateForNextOccurrence];
-    v7 = v6;
-    if (v6)
+    allDay = [self allDay];
+    startDateForNextOccurrence = [self startDateForNextOccurrence];
+    v7 = startDateForNextOccurrence;
+    if (startDateForNextOccurrence)
     {
-      v8 = v6;
+      startDate = startDateForNextOccurrence;
     }
 
     else
     {
-      v8 = [a1 startDate];
+      startDate = [self startDate];
     }
 
-    v9 = v8;
+    v9 = startDate;
 
     v10 = +[CUIKDateDescriptionGenerator sharedGenerator];
-    v3 = [v10 dateStringForDate:v9 allDay:v5 shortFormat:0];
+    v3 = [v10 dateStringForDate:v9 allDay:allDay shortFormat:0];
   }
 
   return v3;
@@ -632,8 +632,8 @@ LABEL_157:
 
 - (id)allDescriptionStringsWithOptions:()CUIKDescription
 {
-  v5 = [a1 _resourceChangeStringWithOptions:a3 dict:0];
-  v6 = [a1 _dateStringWithOptions:a3];
+  v5 = [self _resourceChangeStringWithOptions:a3 dict:0];
+  v6 = [self _dateStringWithOptions:a3];
   v7 = objc_alloc(MEMORY[0x1E695DEC8]);
   if (v6)
   {
@@ -653,8 +653,8 @@ LABEL_157:
 - (id)descriptionStrings:()CUIKDescription
 {
   v5 = objc_opt_new();
-  v6 = [a1 _resourceChangeStringWithOptions:a3 dict:v5];
-  v7 = [a1 _dateStringWithOptions:a3];
+  v6 = [self _resourceChangeStringWithOptions:a3 dict:v5];
+  v7 = [self _dateStringWithOptions:a3];
   if (v7)
   {
     [v5 setObject:v7 forKeyedSubscript:@"Date"];
@@ -665,15 +665,15 @@ LABEL_157:
 
 - (uint64_t)_changedPropertyCount
 {
-  LODWORD(v2) = [a1 dateChanged];
-  v3 = [a1 timeChanged];
+  LODWORD(v2) = [self dateChanged];
+  timeChanged = [self timeChanged];
   v4 = 1;
   if (v2)
   {
     v4 = 2;
   }
 
-  if (v3)
+  if (timeChanged)
   {
     v2 = v4;
   }
@@ -683,8 +683,8 @@ LABEL_157:
     v2 = v2;
   }
 
-  v5 = v2 + [a1 titleChanged];
-  return v5 + [a1 locationChanged];
+  v5 = v2 + [self titleChanged];
+  return v5 + [self locationChanged];
 }
 
 - (void)_resourceChangeStringWithOptions:()CUIKDescription dict:.cold.1(void *a1, NSObject *a2)

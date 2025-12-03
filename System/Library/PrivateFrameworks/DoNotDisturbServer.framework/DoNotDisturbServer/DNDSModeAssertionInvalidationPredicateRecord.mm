@@ -1,29 +1,29 @@
 @interface DNDSModeAssertionInvalidationPredicateRecord
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4;
-+ (id)recordForInvalidationPredicate:(id)a3;
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4;
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys;
++ (id)recordForInvalidationPredicate:(id)predicate;
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options;
 - (id)object;
 @end
 
 @implementation DNDSModeAssertionInvalidationPredicateRecord
 
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys
 {
-  if (a3)
+  if (dictionary)
   {
-    v5 = a3;
+    dictionaryCopy = dictionary;
     v6 = objc_alloc_init(DNDSModeAssertionInvalidationPredicateRecord);
-    v7 = [v5 bs_safeStringForKey:a4->var8.var0];
+    v7 = [dictionaryCopy bs_safeStringForKey:keys->var8.var0];
     [(DNDSModeAssertionInvalidationPredicateRecord *)v6 setPredicateType:v7];
 
-    v8 = [v5 bs_safeNumberForKey:a4->var8.var1];
+    v8 = [dictionaryCopy bs_safeNumberForKey:keys->var8.var1];
     [(DNDSModeAssertionInvalidationPredicateRecord *)v6 setDate:v8];
 
-    v9 = [v5 bs_safeArrayForKey:a4->var8.var2];
+    v9 = [dictionaryCopy bs_safeArrayForKey:keys->var8.var2];
     v10 = [v9 bs_filter:&__block_literal_global_18];
     [(DNDSModeAssertionInvalidationPredicateRecord *)v6 setClientIdentifiers:v10];
 
-    v11 = [v5 bs_safeArrayForKey:a4->var8.var3];
+    v11 = [dictionaryCopy bs_safeArrayForKey:keys->var8.var3];
 
     v12 = [v11 bs_filter:&__block_literal_global_81];
     [(DNDSModeAssertionInvalidationPredicateRecord *)v6 setUUIDs:v12];
@@ -79,58 +79,58 @@ BOOL __85__DNDSModeAssertionInvalidationPredicateRecord_Dictionary__recordForDic
   return v3 != 0;
 }
 
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options
 {
-  v4 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [(DNDSModeAssertionInvalidationPredicateRecord *)self predicateType];
-  [v7 bs_setSafeObject:v8 forKey:a3->var8.var0];
+  optionsCopy = options;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  predicateType = [(DNDSModeAssertionInvalidationPredicateRecord *)self predicateType];
+  [dictionary bs_setSafeObject:predicateType forKey:keys->var8.var0];
 
-  v9 = [(DNDSModeAssertionInvalidationPredicateRecord *)self date];
-  [v7 bs_setSafeObject:v9 forKey:a3->var8.var1];
+  date = [(DNDSModeAssertionInvalidationPredicateRecord *)self date];
+  [dictionary bs_setSafeObject:date forKey:keys->var8.var1];
 
-  v10 = [(DNDSModeAssertionInvalidationPredicateRecord *)self clientIdentifiers];
-  [v7 bs_setSafeObject:v10 forKey:a3->var8.var2];
+  clientIdentifiers = [(DNDSModeAssertionInvalidationPredicateRecord *)self clientIdentifiers];
+  [dictionary bs_setSafeObject:clientIdentifiers forKey:keys->var8.var2];
 
-  v11 = [(DNDSModeAssertionInvalidationPredicateRecord *)self UUIDs];
-  [v7 bs_setSafeObject:v11 forKey:a3->var8.var3];
+  uUIDs = [(DNDSModeAssertionInvalidationPredicateRecord *)self UUIDs];
+  [dictionary bs_setSafeObject:uUIDs forKey:keys->var8.var3];
 
-  if (v4)
+  if (optionsCopy)
   {
-    v12 = [(DNDSModeAssertionInvalidationPredicateRecord *)self date];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@Local", a3->var8.var1];
-    [v7 dnds_setSafeLocalDateForTimestamp:v12 key:v13];
+    date2 = [(DNDSModeAssertionInvalidationPredicateRecord *)self date];
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@Local", keys->var8.var1];
+    [dictionary dnds_setSafeLocalDateForTimestamp:date2 key:v13];
   }
 
-  return v7;
+  return dictionary;
 }
 
-+ (id)recordForInvalidationPredicate:(id)a3
++ (id)recordForInvalidationPredicate:(id)predicate
 {
-  v3 = a3;
-  if (v3)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
     v4 = objc_alloc_init(DNDSModeAssertionInvalidationPredicateRecord);
-    v5 = [v3 predicateType];
-    v6 = [MEMORY[0x277CCACA8] dnds_stringForPredicateType:v5];
+    predicateType = [predicateCopy predicateType];
+    v6 = [MEMORY[0x277CCACA8] dnds_stringForPredicateType:predicateType];
     [(DNDSModeAssertionInvalidationPredicateRecord *)v4 setPredicateType:v6];
 
-    switch(v5)
+    switch(predicateType)
     {
       case 3:
-        v10 = [v3 UUIDs];
-        v8 = [v10 bs_mapNoNulls:&__block_literal_global_314];
+        uUIDs = [predicateCopy UUIDs];
+        clientIdentifiers = [uUIDs bs_mapNoNulls:&__block_literal_global_314];
 
-        [(DNDSModeAssertionInvalidationPredicateRecord *)v4 setUUIDs:v8];
+        [(DNDSModeAssertionInvalidationPredicateRecord *)v4 setUUIDs:clientIdentifiers];
         break;
       case 2:
-        v8 = [v3 clientIdentifiers];
-        [(DNDSModeAssertionInvalidationPredicateRecord *)v4 setClientIdentifiers:v8];
+        clientIdentifiers = [predicateCopy clientIdentifiers];
+        [(DNDSModeAssertionInvalidationPredicateRecord *)v4 setClientIdentifiers:clientIdentifiers];
         break;
       case 1:
         v7 = MEMORY[0x277CCABB0];
-        v8 = [v3 date];
-        v9 = [v7 dnds_numberWithDate:v8];
+        clientIdentifiers = [predicateCopy date];
+        v9 = [v7 dnds_numberWithDate:clientIdentifiers];
         [(DNDSModeAssertionInvalidationPredicateRecord *)v4 setDate:v9];
 
         break;
@@ -174,35 +174,35 @@ id __79__DNDSModeAssertionInvalidationPredicateRecord_recordForInvalidationPredi
 
 - (id)object
 {
-  v3 = [(DNDSModeAssertionInvalidationPredicateRecord *)self predicateType];
-  v4 = [v3 dnds_predicateTypeValue];
+  predicateType = [(DNDSModeAssertionInvalidationPredicateRecord *)self predicateType];
+  dnds_predicateTypeValue = [predicateType dnds_predicateTypeValue];
 
   v5 = 0;
-  if (v4 > 1)
+  if (dnds_predicateTypeValue > 1)
   {
-    if (v4 == 2)
+    if (dnds_predicateTypeValue == 2)
     {
-      v7 = [(DNDSModeAssertionInvalidationPredicateRecord *)self clientIdentifiers];
-      if ([v7 count])
+      clientIdentifiers = [(DNDSModeAssertionInvalidationPredicateRecord *)self clientIdentifiers];
+      if ([clientIdentifiers count])
       {
-        v8 = [[DNDSModeAssertionClientIdentifierInvalidationPredicate alloc] initWithClientIdentifiers:v7];
+        v8 = [[DNDSModeAssertionClientIdentifierInvalidationPredicate alloc] initWithClientIdentifiers:clientIdentifiers];
         goto LABEL_13;
       }
     }
 
     else
     {
-      if (v4 != 3)
+      if (dnds_predicateTypeValue != 3)
       {
         goto LABEL_16;
       }
 
-      v9 = [(DNDSModeAssertionInvalidationPredicateRecord *)self UUIDs];
-      v7 = [v9 bs_mapNoNulls:&__block_literal_global_320];
+      uUIDs = [(DNDSModeAssertionInvalidationPredicateRecord *)self UUIDs];
+      clientIdentifiers = [uUIDs bs_mapNoNulls:&__block_literal_global_320];
 
-      if ([v7 count])
+      if ([clientIdentifiers count])
       {
-        v8 = [[DNDSModeAssertionUUIDInvalidationPredicate alloc] initWithUUIDs:v7];
+        v8 = [[DNDSModeAssertionUUIDInvalidationPredicate alloc] initWithUUIDs:clientIdentifiers];
         goto LABEL_13;
       }
     }
@@ -212,26 +212,26 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!dnds_predicateTypeValue)
   {
     v5 = +[DNDSAnyModeAssertionInvalidationPredicate sharedInstance];
     goto LABEL_16;
   }
 
-  if (v4 != 1)
+  if (dnds_predicateTypeValue != 1)
   {
     goto LABEL_16;
   }
 
-  v6 = [(DNDSModeAssertionInvalidationPredicateRecord *)self date];
-  v7 = [v6 dnds_dateValue];
+  date = [(DNDSModeAssertionInvalidationPredicateRecord *)self date];
+  clientIdentifiers = [date dnds_dateValue];
 
-  if (!v7)
+  if (!clientIdentifiers)
   {
     goto LABEL_14;
   }
 
-  v8 = [[DNDSModeAssertionDateInvalidationPredicate alloc] initWithDate:v7];
+  v8 = [[DNDSModeAssertionDateInvalidationPredicate alloc] initWithDate:clientIdentifiers];
 LABEL_13:
   v5 = v8;
 LABEL_15:

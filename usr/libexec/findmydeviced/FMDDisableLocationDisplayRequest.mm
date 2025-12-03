@@ -1,5 +1,5 @@
 @interface FMDDisableLocationDisplayRequest
-- (FMDDisableLocationDisplayRequest)initWithAccount:(id)a3;
+- (FMDDisableLocationDisplayRequest)initWithAccount:(id)account;
 - (id)requestBody;
 - (id)requestHeaders;
 - (id)requestUrl;
@@ -7,16 +7,16 @@
 
 @implementation FMDDisableLocationDisplayRequest
 
-- (FMDDisableLocationDisplayRequest)initWithAccount:(id)a3
+- (FMDDisableLocationDisplayRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = FMDDisableLocationDisplayRequest;
-  v6 = [(FMDRequest *)&v9 initWithAccount:v5];
+  v6 = [(FMDRequest *)&v9 initWithAccount:accountCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -26,19 +26,19 @@
 {
   v4.receiver = self;
   v4.super_class = FMDDisableLocationDisplayRequest;
-  v2 = [(FMDRequest *)&v4 requestHeaders];
+  requestHeaders = [(FMDRequest *)&v4 requestHeaders];
 
-  return v2;
+  return requestHeaders;
 }
 
 - (id)requestUrl
 {
   v3 = +[FMDSystemConfig sharedInstance];
-  v4 = [v3 deviceUDID];
+  deviceUDID = [v3 deviceUDID];
 
   v5 = objc_alloc_init(RequestTemplateURL);
-  v6 = [(FMDDisableLocationDisplayRequest *)self account];
-  v7 = [(RequestTemplateURL *)v5 urlFromTemplate:@"${scheme}://${hostname}/fmipservice/${service}/disableLocations" account:v6 udid:v4];
+  account = [(FMDDisableLocationDisplayRequest *)self account];
+  v7 = [(RequestTemplateURL *)v5 urlFromTemplate:@"${scheme}://${hostname}/fmipservice/${service}/disableLocations" account:account udid:deviceUDID];
 
   return v7;
 }
@@ -47,9 +47,9 @@
 {
   v4.receiver = self;
   v4.super_class = FMDDisableLocationDisplayRequest;
-  v2 = [(FMDRequest *)&v4 requestBody];
+  requestBody = [(FMDRequest *)&v4 requestBody];
 
-  return v2;
+  return requestBody;
 }
 
 @end

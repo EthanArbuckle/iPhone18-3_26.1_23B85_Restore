@@ -1,5 +1,5 @@
 @interface _CESRSpeechParametersMutation
-- (_CESRSpeechParametersMutation)initWithBaseModel:(id)a3;
+- (_CESRSpeechParametersMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -24,112 +24,112 @@
   {
     if ((v4 & 2) != 0)
     {
-      v58 = self->_language;
+      language = self->_language;
     }
 
     else
     {
-      v58 = [(CESRSpeechParameters *)baseModel language];
+      language = [(CESRSpeechParameters *)baseModel language];
     }
 
     if ((*&self->_mutationFlags & 4) != 0)
     {
-      v57 = self->_requestIdentifier;
+      requestIdentifier = self->_requestIdentifier;
     }
 
     else
     {
-      v57 = [(CESRSpeechParameters *)self->_baseModel requestIdentifier];
+      requestIdentifier = [(CESRSpeechParameters *)self->_baseModel requestIdentifier];
     }
 
     if ((*&self->_mutationFlags & 8) != 0)
     {
-      v56 = self->_dictationUIInteractionIdentifier;
+      dictationUIInteractionIdentifier = self->_dictationUIInteractionIdentifier;
     }
 
     else
     {
-      v56 = [(CESRSpeechParameters *)self->_baseModel dictationUIInteractionIdentifier];
+      dictationUIInteractionIdentifier = [(CESRSpeechParameters *)self->_baseModel dictationUIInteractionIdentifier];
     }
 
     if ((*&self->_mutationFlags & 0x10) != 0)
     {
-      v55 = self->_task;
+      task = self->_task;
     }
 
     else
     {
-      v55 = [(CESRSpeechParameters *)self->_baseModel task];
+      task = [(CESRSpeechParameters *)self->_baseModel task];
     }
 
     if ((*&self->_mutationFlags & 0x20) != 0)
     {
-      v54 = self->_loggingContext;
+      loggingContext = self->_loggingContext;
     }
 
     else
     {
-      v54 = [(CESRSpeechParameters *)self->_baseModel loggingContext];
+      loggingContext = [(CESRSpeechParameters *)self->_baseModel loggingContext];
     }
 
     if ((*&self->_mutationFlags & 0x40) != 0)
     {
-      v53 = self->_applicationName;
+      applicationName = self->_applicationName;
     }
 
     else
     {
-      v53 = [(CESRSpeechParameters *)self->_baseModel applicationName];
+      applicationName = [(CESRSpeechParameters *)self->_baseModel applicationName];
     }
 
     if ((*&self->_mutationFlags & 0x80) != 0)
     {
-      v52 = self->_profile;
+      profile = self->_profile;
     }
 
     else
     {
-      v52 = [(CESRSpeechParameters *)self->_baseModel profile];
+      profile = [(CESRSpeechParameters *)self->_baseModel profile];
     }
 
     if (*(&self->_mutationFlags + 1))
     {
-      v50 = self->_overrides;
+      overrides = self->_overrides;
     }
 
     else
     {
-      v50 = [(CESRSpeechParameters *)self->_baseModel overrides];
+      overrides = [(CESRSpeechParameters *)self->_baseModel overrides];
     }
 
     if ((*(&self->_mutationFlags + 1) & 2) != 0)
     {
-      v49 = self->_modelOverrideURL;
+      modelOverrideURL = self->_modelOverrideURL;
     }
 
     else
     {
-      v49 = [(CESRSpeechParameters *)self->_baseModel modelOverrideURL];
+      modelOverrideURL = [(CESRSpeechParameters *)self->_baseModel modelOverrideURL];
     }
 
     if ((*(&self->_mutationFlags + 1) & 4) != 0)
     {
-      v48 = self->_originalAudioFileURL;
+      originalAudioFileURL = self->_originalAudioFileURL;
     }
 
     else
     {
-      v48 = [(CESRSpeechParameters *)self->_baseModel originalAudioFileURL];
+      originalAudioFileURL = [(CESRSpeechParameters *)self->_baseModel originalAudioFileURL];
     }
 
     if ((*(&self->_mutationFlags + 1) & 8) != 0)
     {
-      v47 = self->_codec;
+      codec = self->_codec;
     }
 
     else
     {
-      v47 = [(CESRSpeechParameters *)self->_baseModel codec];
+      codec = [(CESRSpeechParameters *)self->_baseModel codec];
     }
 
     v8 = *&self->_mutationFlags;
@@ -289,32 +289,32 @@ LABEL_50:
       if ((v8 & 0x800000) != 0)
       {
 LABEL_51:
-        v51 = self->_inputOrigin;
+        inputOrigin = self->_inputOrigin;
         goto LABEL_64;
       }
 
 LABEL_63:
-      v51 = [(CESRSpeechParameters *)self->_baseModel inputOrigin];
+      inputOrigin = [(CESRSpeechParameters *)self->_baseModel inputOrigin];
 
 LABEL_64:
       if (*(&self->_mutationFlags + 3))
       {
-        v33 = self->_location;
+        location = self->_location;
       }
 
       else
       {
-        v33 = [(CESRSpeechParameters *)self->_baseModel location];
+        location = [(CESRSpeechParameters *)self->_baseModel location];
       }
 
       if ((*(&self->_mutationFlags + 3) & 2) != 0)
       {
-        v13 = self->_jitGrammar;
+        jitGrammar = self->_jitGrammar;
       }
 
       else
       {
-        v13 = [(CESRSpeechParameters *)self->_baseModel jitGrammar];
+        jitGrammar = [(CESRSpeechParameters *)self->_baseModel jitGrammar];
       }
 
       v14 = *&self->_mutationFlags;
@@ -383,52 +383,52 @@ LABEL_75:
         if ((v14 & 0x80000000) != 0)
         {
 LABEL_76:
-          v31 = self->_sharedUserInfos;
+          sharedUserInfos = self->_sharedUserInfos;
           goto LABEL_83;
         }
 
 LABEL_82:
-        v31 = [(CESRSpeechParameters *)self->_baseModel sharedUserInfos];
+        sharedUserInfos = [(CESRSpeechParameters *)self->_baseModel sharedUserInfos];
 
 LABEL_83:
         if (*(&self->_mutationFlags + 1))
         {
-          v15 = self->_prefixText;
+          prefixText = self->_prefixText;
         }
 
         else
         {
-          v15 = [(CESRSpeechParameters *)self->_baseModel prefixText];
+          prefixText = [(CESRSpeechParameters *)self->_baseModel prefixText];
         }
 
         if ((*(&self->_mutationFlags + 1) & 2) != 0)
         {
-          v16 = self->_postfixText;
+          postfixText = self->_postfixText;
         }
 
         else
         {
-          v16 = [(CESRSpeechParameters *)self->_baseModel postfixText];
+          postfixText = [(CESRSpeechParameters *)self->_baseModel postfixText];
         }
 
         if ((*(&self->_mutationFlags + 1) & 4) != 0)
         {
-          v17 = self->_selectedText;
+          selectedText = self->_selectedText;
         }
 
         else
         {
-          v17 = [(CESRSpeechParameters *)self->_baseModel selectedText];
+          selectedText = [(CESRSpeechParameters *)self->_baseModel selectedText];
         }
 
         if ((*(&self->_mutationFlags + 1) & 8) != 0)
         {
-          v18 = self->_powerContext;
+          powerContext = self->_powerContext;
         }
 
         else
         {
-          v18 = [(CESRSpeechParameters *)self->_baseModel powerContext];
+          powerContext = [(CESRSpeechParameters *)self->_baseModel powerContext];
         }
 
         v19 = *&self->_mutationFlags;
@@ -442,26 +442,26 @@ LABEL_97:
             if ((v19 & 0x4000000000) != 0)
             {
 LABEL_98:
-              v23 = self->_asrId;
+              asrId = self->_asrId;
 LABEL_102:
               if ((*(&self->_mutationFlags + 1) & 0x80) != 0)
               {
-                v24 = self->_activeUserInfo;
+                activeUserInfo = self->_activeUserInfo;
               }
 
               else
               {
-                v24 = [(CESRSpeechParameters *)self->_baseModel activeUserInfo];
+                activeUserInfo = [(CESRSpeechParameters *)self->_baseModel activeUserInfo];
               }
 
               if (*(&self->_mutationFlags + 5))
               {
-                v25 = self->_messagesContext;
+                messagesContext = self->_messagesContext;
               }
 
               else
               {
-                v25 = [(CESRSpeechParameters *)self->_baseModel messagesContext];
+                messagesContext = [(CESRSpeechParameters *)self->_baseModel messagesContext];
               }
 
               LOBYTE(v30) = shouldGenerateVoiceCommandCandidates;
@@ -479,13 +479,13 @@ LABEL_102:
               BYTE2(v27) = censorSpeech;
               BYTE1(v27) = detectUtterances;
               LOBYTE(v27) = narrowband;
-              v7 = [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:activeUserInfo:messagesContext:" requestIdentifier:v58 dictationUIInteractionIdentifier:v57 task:v56 loggingContext:v55 applicationName:v54 profile:v53 overrides:maximumRecognitionDuration modelOverrideURL:endpointStart originalAudioFileURL:recognitionStart codec:v52 narrowband:v50 detectUtterances:v49 censorSpeech:v48 farField:v47 secureOfflineOnly:v27 shouldStoreAudioOnDevice:v28 continuousListening:v51 shouldHandleCapitalization:v33 isSpeechAPIRequest:v13 maximumRecognitionDuration:v29 endpointStart:v31 inputOrigin:v15 location:v16 jitGrammar:v17 deliverEagerPackage:v18 disableDeliveringAsrFeatures:v30 enableEmojiRecognition:v23 enableAutoPunctuation:v24 enableVoiceCommands:v25 sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:? activeUserInfo:? messagesContext:?];
+              v7 = [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:activeUserInfo:messagesContext:" requestIdentifier:language dictationUIInteractionIdentifier:requestIdentifier task:dictationUIInteractionIdentifier loggingContext:task applicationName:loggingContext profile:applicationName overrides:maximumRecognitionDuration modelOverrideURL:endpointStart originalAudioFileURL:recognitionStart codec:profile narrowband:overrides detectUtterances:modelOverrideURL censorSpeech:originalAudioFileURL farField:codec secureOfflineOnly:v27 shouldStoreAudioOnDevice:v28 continuousListening:inputOrigin shouldHandleCapitalization:location isSpeechAPIRequest:jitGrammar maximumRecognitionDuration:v29 endpointStart:sharedUserInfos inputOrigin:prefixText location:postfixText jitGrammar:selectedText deliverEagerPackage:powerContext disableDeliveringAsrFeatures:v30 enableEmojiRecognition:asrId enableAutoPunctuation:activeUserInfo enableVoiceCommands:messagesContext sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:? activeUserInfo:? messagesContext:?];
 
               goto LABEL_109;
             }
 
 LABEL_101:
-            v23 = [(CESRSpeechParameters *)self->_baseModel asrId];
+            asrId = [(CESRSpeechParameters *)self->_baseModel asrId];
 
             goto LABEL_102;
           }
@@ -540,16 +540,16 @@ LABEL_109:
   return v7;
 }
 
-- (_CESRSpeechParametersMutation)initWithBaseModel:(id)a3
+- (_CESRSpeechParametersMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _CESRSpeechParametersMutation;
   v6 = [(_CESRSpeechParametersMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

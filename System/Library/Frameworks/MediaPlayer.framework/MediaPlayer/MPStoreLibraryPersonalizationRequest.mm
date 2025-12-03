@@ -1,21 +1,21 @@
 @interface MPStoreLibraryPersonalizationRequest
-+ (id)libraryViewAllowingEmptyCollectionsAndNonLibraryContentForUserIdentity:(id)a3;
-+ (id)libraryViewAllowingEmptyCollectionsForUserIdentity:(id)a3;
-+ (id)libraryViewIgnoringContentRestrictionsWithUserIdentity:(id)a3;
-+ (id)libraryViewWithMediaLibraryOverrideForTestingOnly:(id)a3;
-+ (id)libraryViewWithUserIdentity:(id)a3;
-+ (id)personalizedResponseForContentDescriptor:(id)a3 requestedProperties:(id)a4;
-+ (id)personalizedResponseForContentDescriptor:(id)a3 requestedProperties:(id)a4 matchAlbumArtistOnStoreIdAndName:(BOOL)a5;
++ (id)libraryViewAllowingEmptyCollectionsAndNonLibraryContentForUserIdentity:(id)identity;
++ (id)libraryViewAllowingEmptyCollectionsForUserIdentity:(id)identity;
++ (id)libraryViewIgnoringContentRestrictionsWithUserIdentity:(id)identity;
++ (id)libraryViewWithMediaLibraryOverrideForTestingOnly:(id)only;
++ (id)libraryViewWithUserIdentity:(id)identity;
++ (id)personalizedResponseForContentDescriptor:(id)descriptor requestedProperties:(id)properties;
++ (id)personalizedResponseForContentDescriptor:(id)descriptor requestedProperties:(id)properties matchAlbumArtistOnStoreIdAndName:(BOOL)name;
 + (id)preferredQueue;
 - (MPStoreLibraryPersonalizationRequest)init;
-- (MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedContentDescriptors:(id)a3;
-- (MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedRequest:(id)a3 unpersonalizedContentDescriptors:(id)a4;
+- (MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedContentDescriptors:(id)descriptors;
+- (MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedRequest:(id)request unpersonalizedContentDescriptors:(id)descriptors;
 - (NSDictionary)itemIndexPathToOverridePropertySet;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (id)propertiesForItemAtIndexPath:(id)a3;
-- (void)setProperties:(id)a3 forItemAtIndexPath:(id)a4;
-- (void)setUserIdentity:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (id)propertiesForItemAtIndexPath:(id)path;
+- (void)setProperties:(id)properties forItemAtIndexPath:(id)path;
+- (void)setUserIdentity:(id)identity;
 @end
 
 @implementation MPStoreLibraryPersonalizationRequest
@@ -27,28 +27,28 @@
   return v2;
 }
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
-    v4 = [MEMORY[0x1E69E4680] activeAccount];
+    identityCopy = [MEMORY[0x1E69E4680] activeAccount];
   }
 
-  if (self->_userIdentity != v4)
+  if (self->_userIdentity != identityCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&self->_userIdentity, v4);
-    v4 = v5;
+    v5 = identityCopy;
+    objc_storeStrong(&self->_userIdentity, identityCopy);
+    identityCopy = v5;
   }
 }
 
-- (void)setProperties:(id)a3 forItemAtIndexPath:(id)a4
+- (void)setProperties:(id)properties forItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  pathCopy = path;
   itemIndexPathToOverridePropertySet = self->_itemIndexPathToOverridePropertySet;
-  if (v10)
+  if (propertiesCopy)
   {
     if (!itemIndexPathToOverridePropertySet)
     {
@@ -59,52 +59,52 @@
       itemIndexPathToOverridePropertySet = self->_itemIndexPathToOverridePropertySet;
     }
 
-    [(NSMutableDictionary *)itemIndexPathToOverridePropertySet setObject:v10 forKey:v6];
+    [(NSMutableDictionary *)itemIndexPathToOverridePropertySet setObject:propertiesCopy forKey:pathCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)itemIndexPathToOverridePropertySet removeObjectForKey:v6];
+    [(NSMutableDictionary *)itemIndexPathToOverridePropertySet removeObjectForKey:pathCopy];
   }
 }
 
-- (id)propertiesForItemAtIndexPath:(id)a3
+- (id)propertiesForItemAtIndexPath:(id)path
 {
-  v4 = [(NSMutableDictionary *)self->_itemIndexPathToOverridePropertySet objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_itemIndexPathToOverridePropertySet objectForKey:path];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    itemProperties = v4;
   }
 
   else
   {
-    v6 = [(MPModelRequest *)self itemProperties];
+    itemProperties = [(MPModelRequest *)self itemProperties];
   }
 
-  v7 = v6;
+  v7 = itemProperties;
 
   return v7;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPStoreLibraryPersonalizationRequestOperation);
-  v6 = [(MPStoreLibraryPersonalizationRequest *)self userIdentity];
-  [(MPAsyncOperation *)v5 setUserIdentity:v6];
+  userIdentity = [(MPStoreLibraryPersonalizationRequest *)self userIdentity];
+  [(MPAsyncOperation *)v5 setUserIdentity:userIdentity];
 
   [(MPStoreLibraryPersonalizationRequestOperation *)v5 setRequest:self];
-  [(MPStoreLibraryPersonalizationRequestOperation *)v5 setResponseHandler:v4];
+  [(MPStoreLibraryPersonalizationRequestOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = MPStoreLibraryPersonalizationRequest;
-  v4 = [(MPModelRequest *)&v8 copyWithZone:a3];
+  v4 = [(MPModelRequest *)&v8 copyWithZone:zone];
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_itemIndexPathToOverridePropertySet mutableCopy];
@@ -121,31 +121,31 @@
   return v4;
 }
 
-- (MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedRequest:(id)a3 unpersonalizedContentDescriptors:(id)a4
+- (MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedRequest:(id)request unpersonalizedContentDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPStoreLibraryPersonalizationRequest *)self initWithUnpersonalizedContentDescriptors:v7];
+  requestCopy = request;
+  descriptorsCopy = descriptors;
+  v8 = [(MPStoreLibraryPersonalizationRequest *)self initWithUnpersonalizedContentDescriptors:descriptorsCopy];
   if (v8)
   {
-    v9 = [v6 itemProperties];
-    [(MPModelRequest *)v8 setItemProperties:v9];
+    itemProperties = [requestCopy itemProperties];
+    [(MPModelRequest *)v8 setItemProperties:itemProperties];
 
-    v10 = [v6 sectionProperties];
-    [(MPModelRequest *)v8 setSectionProperties:v10];
+    sectionProperties = [requestCopy sectionProperties];
+    [(MPModelRequest *)v8 setSectionProperties:sectionProperties];
   }
 
   return v8;
 }
 
-- (MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedContentDescriptors:(id)a3
+- (MPStoreLibraryPersonalizationRequest)initWithUnpersonalizedContentDescriptors:(id)descriptors
 {
-  v5 = a3;
+  descriptorsCopy = descriptors;
   v6 = [(MPStoreLibraryPersonalizationRequest *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_unpersonalizedContentDescriptors, a3);
+    objc_storeStrong(&v6->_unpersonalizedContentDescriptors, descriptors);
     v7->_matchAlbumArtistsOnNameAndStoreID = 1;
     v7->_ignoreExplicitContentRestrictions = 0;
   }
@@ -167,64 +167,64 @@
   return result;
 }
 
-+ (id)libraryViewAllowingEmptyCollectionsAndNonLibraryContentForUserIdentity:(id)a3
++ (id)libraryViewAllowingEmptyCollectionsAndNonLibraryContentForUserIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = [MPMediaLibraryView alloc];
-  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v3];
+  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:identityCopy];
   v6 = [(MPMediaLibraryView *)v4 initWithLibrary:v5 filteringOptions:4194308];
 
   return v6;
 }
 
-+ (id)libraryViewAllowingEmptyCollectionsForUserIdentity:(id)a3
++ (id)libraryViewAllowingEmptyCollectionsForUserIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = [MPMediaLibraryView alloc];
-  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v3];
+  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:identityCopy];
   v6 = [(MPMediaLibraryView *)v4 initWithLibrary:v5 filteringOptions:0x400000];
 
   return v6;
 }
 
-+ (id)libraryViewIgnoringContentRestrictionsWithUserIdentity:(id)a3
++ (id)libraryViewIgnoringContentRestrictionsWithUserIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = [MPMediaLibraryView alloc];
-  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v3];
+  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:identityCopy];
   v6 = [(MPMediaLibraryView *)v4 initWithLibrary:v5 filteringOptions:65540];
 
   return v6;
 }
 
-+ (id)libraryViewWithUserIdentity:(id)a3
++ (id)libraryViewWithUserIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = [MPMediaLibraryView alloc];
-  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v3];
+  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:identityCopy];
   v6 = [(MPMediaLibraryView *)v4 initWithLibrary:v5 filteringOptions:4];
 
   return v6;
 }
 
-+ (id)libraryViewWithMediaLibraryOverrideForTestingOnly:(id)a3
++ (id)libraryViewWithMediaLibraryOverrideForTestingOnly:(id)only
 {
-  v3 = a3;
-  v4 = [[MPMediaLibraryView alloc] initWithLibrary:v3 filteringOptions:4];
+  onlyCopy = only;
+  v4 = [[MPMediaLibraryView alloc] initWithLibrary:onlyCopy filteringOptions:4];
 
   return v4;
 }
 
-+ (id)personalizedResponseForContentDescriptor:(id)a3 requestedProperties:(id)a4 matchAlbumArtistOnStoreIdAndName:(BOOL)a5
++ (id)personalizedResponseForContentDescriptor:(id)descriptor requestedProperties:(id)properties matchAlbumArtistOnStoreIdAndName:(BOOL)name
 {
-  v5 = [MPStoreLibraryPersonalizationRequestOperation personalizedResponseForContentDescriptor:a3 requestedProperties:a4 matchAlbumArtistOnStoreIdAndName:a5];
+  v5 = [MPStoreLibraryPersonalizationRequestOperation personalizedResponseForContentDescriptor:descriptor requestedProperties:properties matchAlbumArtistOnStoreIdAndName:name];
 
   return v5;
 }
 
-+ (id)personalizedResponseForContentDescriptor:(id)a3 requestedProperties:(id)a4
++ (id)personalizedResponseForContentDescriptor:(id)descriptor requestedProperties:(id)properties
 {
-  v4 = [MPStoreLibraryPersonalizationRequest personalizedResponseForContentDescriptor:a3 requestedProperties:a4 matchAlbumArtistOnStoreIdAndName:1];
+  v4 = [MPStoreLibraryPersonalizationRequest personalizedResponseForContentDescriptor:descriptor requestedProperties:properties matchAlbumArtistOnStoreIdAndName:1];
 
   return v4;
 }

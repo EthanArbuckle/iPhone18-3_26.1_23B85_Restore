@@ -1,45 +1,45 @@
 @interface AFAudioDeviceInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFAudioDeviceInfo)initWithBuilder:(id)a3;
-- (AFAudioDeviceInfo)initWithCoder:(id)a3;
-- (AFAudioDeviceInfo)initWithRoute:(id)a3 isRemoteDevice:(BOOL)a4 deviceUID:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFAudioDeviceInfo)initWithBuilder:(id)builder;
+- (AFAudioDeviceInfo)initWithCoder:(id)coder;
+- (AFAudioDeviceInfo)initWithRoute:(id)route isRemoteDevice:(BOOL)device deviceUID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAudioDeviceInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   route = self->_route;
-  v6 = a3;
-  [v6 encodeObject:route forKey:@"AFAudioDeviceInfo::route"];
+  coderCopy = coder;
+  [coderCopy encodeObject:route forKey:@"AFAudioDeviceInfo::route"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isRemoteDevice];
-  [v6 encodeObject:v5 forKey:@"AFAudioDeviceInfo::isRemoteDevice"];
+  [coderCopy encodeObject:v5 forKey:@"AFAudioDeviceInfo::isRemoteDevice"];
 
-  [v6 encodeObject:self->_deviceUID forKey:@"AFAudioDeviceInfo::deviceUID"];
+  [coderCopy encodeObject:self->_deviceUID forKey:@"AFAudioDeviceInfo::deviceUID"];
 }
 
-- (AFAudioDeviceInfo)initWithCoder:(id)a3
+- (AFAudioDeviceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioDeviceInfo::route"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioDeviceInfo::isRemoteDevice"];
-  v7 = [v6 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioDeviceInfo::route"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioDeviceInfo::isRemoteDevice"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioDeviceInfo::deviceUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioDeviceInfo::deviceUID"];
 
-  v9 = [(AFAudioDeviceInfo *)self initWithRoute:v5 isRemoteDevice:v7 deviceUID:v8];
+  v9 = [(AFAudioDeviceInfo *)self initWithRoute:v5 isRemoteDevice:bOOLValue deviceUID:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -49,17 +49,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isRemoteDevice = self->_isRemoteDevice;
       if (isRemoteDevice == [(AFAudioDeviceInfo *)v5 isRemoteDevice])
       {
-        v7 = [(AFAudioDeviceInfo *)v5 route];
+        route = [(AFAudioDeviceInfo *)v5 route];
         route = self->_route;
-        if (route == v7 || [(NSString *)route isEqual:v7])
+        if (route == route || [(NSString *)route isEqual:route])
         {
-          v9 = [(AFAudioDeviceInfo *)v5 deviceUID];
+          deviceUID = [(AFAudioDeviceInfo *)v5 deviceUID];
           deviceUID = self->_deviceUID;
-          v11 = deviceUID == v9 || [(NSUUID *)deviceUID isEqual:v9];
+          v11 = deviceUID == deviceUID || [(NSUUID *)deviceUID isEqual:deviceUID];
         }
 
         else
@@ -93,7 +93,7 @@
   return v5 ^ v6;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10.receiver = self;
@@ -115,19 +115,19 @@
   return v8;
 }
 
-- (AFAudioDeviceInfo)initWithRoute:(id)a3 isRemoteDevice:(BOOL)a4 deviceUID:(id)a5
+- (AFAudioDeviceInfo)initWithRoute:(id)route isRemoteDevice:(BOOL)device deviceUID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  routeCopy = route;
+  dCopy = d;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__AFAudioDeviceInfo_initWithRoute_isRemoteDevice_deviceUID___block_invoke;
   v14[3] = &unk_1E7345B20;
-  v17 = a4;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
+  deviceCopy = device;
+  v15 = routeCopy;
+  v16 = dCopy;
+  v10 = dCopy;
+  v11 = routeCopy;
   v12 = [(AFAudioDeviceInfo *)self initWithBuilder:v14];
 
   return v12;
@@ -142,27 +142,27 @@ void __60__AFAudioDeviceInfo_initWithRoute_isRemoteDevice_deviceUID___block_invo
   [v4 setDeviceUID:*(a1 + 40)];
 }
 
-- (AFAudioDeviceInfo)initWithBuilder:(id)a3
+- (AFAudioDeviceInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFAudioDeviceInfo;
   v5 = [(AFAudioDeviceInfo *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFAudioDeviceInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFAudioDeviceInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFAudioDeviceInfoMutation *)v7 getRoute];
-      v9 = [v8 copy];
+      getRoute = [(_AFAudioDeviceInfoMutation *)v7 getRoute];
+      v9 = [getRoute copy];
       route = v6->_route;
       v6->_route = v9;
 
       v6->_isRemoteDevice = [(_AFAudioDeviceInfoMutation *)v7 getIsRemoteDevice];
-      v11 = [(_AFAudioDeviceInfoMutation *)v7 getDeviceUID];
-      v12 = [v11 copy];
+      getDeviceUID = [(_AFAudioDeviceInfoMutation *)v7 getDeviceUID];
+      v12 = [getDeviceUID copy];
       deviceUID = v6->_deviceUID;
       v6->_deviceUID = v12;
     }
@@ -171,32 +171,32 @@ void __60__AFAudioDeviceInfo_initWithRoute_isRemoteDevice_deviceUID___block_invo
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFAudioDeviceInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFAudioDeviceInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFAudioDeviceInfo);
-      v7 = [(_AFAudioDeviceInfoMutation *)v5 getRoute];
-      v8 = [v7 copy];
+      getRoute = [(_AFAudioDeviceInfoMutation *)v5 getRoute];
+      v8 = [getRoute copy];
       route = v6->_route;
       v6->_route = v8;
 
       v6->_isRemoteDevice = [(_AFAudioDeviceInfoMutation *)v5 getIsRemoteDevice];
-      v10 = [(_AFAudioDeviceInfoMutation *)v5 getDeviceUID];
-      v11 = [v10 copy];
+      getDeviceUID = [(_AFAudioDeviceInfoMutation *)v5 getDeviceUID];
+      v11 = [getDeviceUID copy];
       deviceUID = v6->_deviceUID;
       v6->_deviceUID = v11;
     }

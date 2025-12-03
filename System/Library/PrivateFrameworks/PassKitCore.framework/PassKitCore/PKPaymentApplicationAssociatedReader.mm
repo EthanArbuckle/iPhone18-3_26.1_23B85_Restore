@@ -1,27 +1,27 @@
 @interface PKPaymentApplicationAssociatedReader
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentApplicationAssociatedReader:(id)a3;
-- (PKPaymentApplicationAssociatedReader)initWithCoder:(id)a3;
-- (PKPaymentApplicationAssociatedReader)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentApplicationAssociatedReader:(id)reader;
+- (PKPaymentApplicationAssociatedReader)initWithCoder:(id)coder;
+- (PKPaymentApplicationAssociatedReader)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentApplicationAssociatedReader
 
-- (PKPaymentApplicationAssociatedReader)initWithDictionary:(id)a3
+- (PKPaymentApplicationAssociatedReader)initWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v4 PKStringForKey:@"readerID"];
-    v7 = [v6 pk_decodeHexadecimal];
-    if (v7)
+    v6 = [dictionaryCopy PKStringForKey:@"readerID"];
+    pk_decodeHexadecimal = [v6 pk_decodeHexadecimal];
+    if (pk_decodeHexadecimal)
     {
       v24 = v6;
       v8 = [v5 PKArrayContaining:objc_opt_class() forKey:@"readerCAs"];
@@ -79,20 +79,20 @@
         v19 = v18;
         if (v18)
         {
-          objc_storeStrong(&v18->_readerIdentifier, v7);
+          objc_storeStrong(&v18->_readerIdentifier, pk_decodeHexadecimal);
           v20 = [v9 copy];
           readerCAs = v19->_readerCAs;
           v19->_readerCAs = v20;
         }
 
         self = v19;
-        v22 = self;
+        selfCopy = self;
       }
 
       else
       {
 LABEL_19:
-        v22 = 0;
+        selfCopy = 0;
       }
 
       v6 = v24;
@@ -100,24 +100,24 @@ LABEL_19:
 
     else
     {
-      v22 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 - (id)asDictionary
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSData *)self->_readerIdentifier hexEncoding];
-  [v3 setObject:v4 forKeyedSubscript:@"readerID"];
+  hexEncoding = [(NSData *)self->_readerIdentifier hexEncoding];
+  [v3 setObject:hexEncoding forKeyedSubscript:@"readerID"];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
@@ -139,8 +139,8 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) asDictionary];
-        [v5 addObject:v11];
+        asDictionary = [*(*(&v15 + 1) + 8 * i) asDictionary];
+        [v5 addObject:asDictionary];
       }
 
       v8 = [(NSSet *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -157,30 +157,30 @@ LABEL_19:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   readerIdentifier = self->_readerIdentifier;
-  v5 = a3;
-  [v5 encodeObject:readerIdentifier forKey:@"readerID"];
-  [v5 encodeObject:self->_readerCAs forKey:@"readerCAs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:readerIdentifier forKey:@"readerID"];
+  [coderCopy encodeObject:self->_readerCAs forKey:@"readerCAs"];
 }
 
-- (PKPaymentApplicationAssociatedReader)initWithCoder:(id)a3
+- (PKPaymentApplicationAssociatedReader)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKPaymentApplicationAssociatedReader;
   v5 = [(PKPaymentApplicationAssociatedReader *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerID"];
     readerIdentifier = v5->_readerIdentifier;
     v5->_readerIdentifier = v6;
 
     v8 = objc_alloc(MEMORY[0x1E695DFD8]);
     v9 = objc_opt_class();
     v10 = [v8 initWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"readerCAs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"readerCAs"];
     readerCAs = v5->_readerCAs;
     v5->_readerCAs = v11;
   }
@@ -281,8 +281,8 @@ LABEL_19:
           objc_enumerationMutation(v8);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v13) redactedDescription];
-        [v6 appendString:v15];
+        redactedDescription = [*(*(&v18 + 1) + 8 * v13) redactedDescription];
+        [v6 appendString:redactedDescription];
 
         if (v14 < v7)
         {
@@ -308,30 +308,30 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentApplicationAssociatedReader *)self isEqualToPaymentApplicationAssociatedReader:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentApplicationAssociatedReader *)self isEqualToPaymentApplicationAssociatedReader:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPaymentApplicationAssociatedReader:(id)a3
+- (BOOL)isEqualToPaymentApplicationAssociatedReader:(id)reader
 {
-  v4 = a3;
-  if (v4)
+  readerCopy = reader;
+  if (readerCopy)
   {
     readerIdentifier = self->_readerIdentifier;
-    v6 = v4[1];
+    v6 = readerCopy[1];
     if (readerIdentifier)
     {
       v7 = v6 == 0;
@@ -347,7 +347,7 @@ LABEL_19:
       if (readerIdentifier == v6)
       {
 LABEL_10:
-        v8 = [(NSSet *)self->_readerCAs isEqualToSet:v4[2]];
+        v8 = [(NSSet *)self->_readerCAs isEqualToSet:readerCopy[2]];
         goto LABEL_11;
       }
     }
@@ -364,14 +364,14 @@ LABEL_11:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentApplicationAssociatedReader allocWithZone:](PKPaymentApplicationAssociatedReader init];
-  v6 = [(NSData *)self->_readerIdentifier copyWithZone:a3];
+  v6 = [(NSData *)self->_readerIdentifier copyWithZone:zone];
   readerIdentifier = v5->_readerIdentifier;
   v5->_readerIdentifier = v6;
 
-  v8 = [(NSSet *)self->_readerCAs copyWithZone:a3];
+  v8 = [(NSSet *)self->_readerCAs copyWithZone:zone];
   readerCAs = v5->_readerCAs;
   v5->_readerCAs = v8;
 

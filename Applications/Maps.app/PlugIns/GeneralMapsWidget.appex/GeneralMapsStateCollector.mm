@@ -1,8 +1,8 @@
 @interface GeneralMapsStateCollector
 - (NSString)uniqueName;
 - (_TtC17GeneralMapsWidget25GeneralMapsStateCollector)init;
-- (void)invalidateForMapsSuggestionsManager:(id)a3;
-- (void)navigationServiceDidSynchronize:(id)a3;
+- (void)invalidateForMapsSuggestionsManager:(id)manager;
+- (void)navigationServiceDidSynchronize:(id)synchronize;
 @end
 
 @implementation GeneralMapsStateCollector
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (void)invalidateForMapsSuggestionsManager:(id)a3
+- (void)invalidateForMapsSuggestionsManager:(id)manager
 {
-  if (a3)
+  if (manager)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_10007E3D8();
     swift_unknownObjectRelease();
@@ -30,7 +30,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100025BA0();
@@ -38,10 +38,10 @@
   sub_1000256C0(v6, &qword_1000DE930, &unk_100083CC0);
 }
 
-- (void)navigationServiceDidSynchronize:(id)a3
+- (void)navigationServiceDidSynchronize:(id)synchronize
 {
-  v4 = a3;
-  v5 = self;
+  synchronizeCopy = synchronize;
+  selfCopy = self;
   sub_100025C88();
 }
 

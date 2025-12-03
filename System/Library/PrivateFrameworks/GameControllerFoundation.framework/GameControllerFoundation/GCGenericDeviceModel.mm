@@ -1,11 +1,11 @@
 @interface GCGenericDeviceModel
-+ (GCGenericDeviceModel)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (GCGenericDeviceModel)modelWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceModel)init;
-- (GCGenericDeviceModel)initWithCoder:(id)a3;
+- (GCGenericDeviceModel)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDeviceModel
@@ -17,29 +17,29 @@
   return 0;
 }
 
-- (GCGenericDeviceModel)initWithCoder:(id)a3
+- (GCGenericDeviceModel)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = GCGenericDeviceModel;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCGenericDeviceModel *)&v16 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"productCategory", v16.receiver, v16.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"productCategory", v16.receiver, v16.super_class}];
   productCategory = v4->_productCategory;
   v4->_productCategory = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"productName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productName"];
   productName = v4->_productName;
   v4->_productName = v7;
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"formFitting"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formFitting"];
   formFitting = v4->_formFitting;
   v4->_formFitting = v9;
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"driver"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"driver"];
   driver = v4->_driver;
   v4->_driver = v11;
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"physicalInput"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"physicalInput"];
 
   physicalInput = v4->_physicalInput;
   v4->_physicalInput = v13;
@@ -47,23 +47,23 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GCGenericDeviceModel *)self productCategory];
-  [v4 encodeObject:v5 forKey:@"productCategory"];
+  coderCopy = coder;
+  productCategory = [(GCGenericDeviceModel *)self productCategory];
+  [coderCopy encodeObject:productCategory forKey:@"productCategory"];
 
-  v6 = [(GCGenericDeviceModel *)self productName];
-  [v4 encodeObject:v6 forKey:@"productName"];
+  productName = [(GCGenericDeviceModel *)self productName];
+  [coderCopy encodeObject:productName forKey:@"productName"];
 
-  v7 = [(GCGenericDeviceModel *)self isFormFitting];
-  [v4 encodeObject:v7 forKey:@"formFitting"];
+  isFormFitting = [(GCGenericDeviceModel *)self isFormFitting];
+  [coderCopy encodeObject:isFormFitting forKey:@"formFitting"];
 
-  v8 = [(GCGenericDeviceModel *)self driver];
-  [v4 encodeObject:v8 forKey:@"driver"];
+  driver = [(GCGenericDeviceModel *)self driver];
+  [coderCopy encodeObject:driver forKey:@"driver"];
 
-  v9 = [(GCGenericDeviceModel *)self physicalInput];
-  [v4 encodeObject:v9 forKey:@"physicalInput"];
+  physicalInput = [(GCGenericDeviceModel *)self physicalInput];
+  [coderCopy encodeObject:physicalInput forKey:@"physicalInput"];
 }
 
 - (unint64_t)hash
@@ -73,9 +73,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -86,9 +86,9 @@
     }
 
 LABEL_6:
-    v5 = [(GCGenericDeviceModel *)self productCategory];
-    v6 = [v4 productCategory];
-    if (![v5 isEqual:v6])
+    productCategory = [(GCGenericDeviceModel *)self productCategory];
+    productCategory2 = [equalCopy productCategory];
+    if (![productCategory isEqual:productCategory2])
     {
       v10 = 0;
 LABEL_30:
@@ -96,34 +96,34 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v7 = [(GCGenericDeviceModel *)self productName];
-    v8 = [v4 productName];
-    if (v7 != v8)
+    productName = [(GCGenericDeviceModel *)self productName];
+    productName2 = [equalCopy productName];
+    if (productName != productName2)
     {
-      v9 = [(GCGenericDeviceModel *)self productName];
-      v36 = [v4 productName];
-      v37 = v9;
-      if (![v9 isEqual:?])
+      productName3 = [(GCGenericDeviceModel *)self productName];
+      productName4 = [equalCopy productName];
+      v37 = productName3;
+      if (![productName3 isEqual:?])
       {
         v10 = 0;
         goto LABEL_28;
       }
     }
 
-    v11 = [(GCGenericDeviceModel *)self isFormFitting];
-    v12 = [v4 isFormFitting];
-    if (v11 != v12)
+    isFormFitting = [(GCGenericDeviceModel *)self isFormFitting];
+    isFormFitting2 = [equalCopy isFormFitting];
+    if (isFormFitting != isFormFitting2)
     {
-      v13 = [(GCGenericDeviceModel *)self isFormFitting];
-      v33 = [v4 isFormFitting];
-      v34 = v13;
-      if (![v13 isEqual:v33])
+      isFormFitting3 = [(GCGenericDeviceModel *)self isFormFitting];
+      isFormFitting4 = [equalCopy isFormFitting];
+      v34 = isFormFitting3;
+      if (![isFormFitting3 isEqual:isFormFitting4])
       {
         v10 = 0;
 LABEL_26:
 
 LABEL_27:
-        if (v7 == v8)
+        if (productName == productName2)
         {
 LABEL_29:
 
@@ -136,38 +136,38 @@ LABEL_28:
       }
     }
 
-    v14 = [(GCGenericDeviceModel *)self driver];
-    v15 = [v4 driver];
-    v35 = v14;
-    v16 = v14 == v15;
-    v17 = v15;
+    driver = [(GCGenericDeviceModel *)self driver];
+    driver2 = [equalCopy driver];
+    v35 = driver;
+    v16 = driver == driver2;
+    v17 = driver2;
     if (v16)
     {
-      v31 = v12;
-      v32 = v11;
+      v31 = isFormFitting2;
+      v32 = isFormFitting;
     }
 
     else
     {
-      v18 = [(GCGenericDeviceModel *)self driver];
-      v28 = [v4 driver];
-      v29 = v18;
-      if (![v18 isEqual:?])
+      driver3 = [(GCGenericDeviceModel *)self driver];
+      driver4 = [equalCopy driver];
+      v29 = driver3;
+      if (![driver3 isEqual:?])
       {
         v10 = 0;
         v26 = v35;
         goto LABEL_24;
       }
 
-      v31 = v12;
-      v32 = v11;
+      v31 = isFormFitting2;
+      v32 = isFormFitting;
     }
 
     v30 = v17;
-    v19 = [(GCGenericDeviceModel *)self physicalInput];
-    v20 = [v4 physicalInput];
-    v21 = v20;
-    if (v19 == v20)
+    physicalInput = [(GCGenericDeviceModel *)self physicalInput];
+    physicalInput2 = [equalCopy physicalInput];
+    v21 = physicalInput2;
+    if (physicalInput == physicalInput2)
     {
 
       v10 = 1;
@@ -175,25 +175,25 @@ LABEL_28:
 
     else
     {
-      v22 = [(GCGenericDeviceModel *)self physicalInput];
-      [v4 physicalInput];
-      v23 = v8;
-      v25 = v24 = v7;
-      v10 = [v22 isEqual:v25];
+      physicalInput3 = [(GCGenericDeviceModel *)self physicalInput];
+      [equalCopy physicalInput];
+      v23 = productName2;
+      v25 = v24 = productName;
+      v10 = [physicalInput3 isEqual:v25];
 
-      v7 = v24;
-      v8 = v23;
+      productName = v24;
+      productName2 = v23;
     }
 
     v26 = v35;
     v17 = v30;
-    v12 = v31;
-    v11 = v32;
+    isFormFitting2 = v31;
+    isFormFitting = v32;
     if (v35 == v30)
     {
 LABEL_25:
 
-      if (v11 == v12)
+      if (isFormFitting == isFormFitting2)
       {
         goto LABEL_27;
       }
@@ -223,25 +223,25 @@ LABEL_31:
   v16 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v14 = NSStringFromClass(v3);
-  v4 = [(GCGenericDeviceModel *)self productCategory];
-  v5 = [(GCGenericDeviceModel *)self productName];
-  v6 = [(GCGenericDeviceModel *)self isFormFitting];
-  v15 = [(GCGenericDeviceModel *)self driver];
-  v7 = [v15 debugDescription];
+  productCategory = [(GCGenericDeviceModel *)self productCategory];
+  productName = [(GCGenericDeviceModel *)self productName];
+  isFormFitting = [(GCGenericDeviceModel *)self isFormFitting];
+  driver = [(GCGenericDeviceModel *)self driver];
+  v7 = [driver debugDescription];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v9 = [(GCGenericDeviceModel *)self physicalInput];
-  v10 = [v9 debugDescription];
+  physicalInput = [(GCGenericDeviceModel *)self physicalInput];
+  v10 = [physicalInput debugDescription];
   v11 = [v10 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v12 = [v16 stringWithFormat:@"<%@ %p> {\n\t productCategory = %@\n\t productName = %@\n\t formFitting = %@\n\t driver = %@\n\t physicalInput = %@\n}", v14, self, v4, v5, v6, v8, v11];
+  v12 = [v16 stringWithFormat:@"<%@ %p> {\n\t productCategory = %@\n\t productName = %@\n\t formFitting = %@\n\t driver = %@\n\t physicalInput = %@\n}", v14, self, productCategory, productName, isFormFitting, v8, v11];
 
   return v12;
 }
 
-+ (GCGenericDeviceModel)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (GCGenericDeviceModel)modelWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v23[0] = 0;
-  v7 = [a3 gc_objectForKey:@"ProductClass" ofClass:objc_opt_class() error:v23];
+  v7 = [representation gc_objectForKey:@"ProductClass" ofClass:objc_opt_class() error:v23];
   v8 = v23[0];
   v9 = v8;
   if (v7)
@@ -256,23 +256,23 @@ LABEL_31:
 
   if (!v10)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_24:
 
-      v15 = 0;
+      build = 0;
       goto LABEL_13;
     }
 
     v18 = MEMORY[0x1E696ABC0];
     v26[0] = *MEMORY[0x1E696A578];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
     v27[0] = v12;
     v26[1] = *MEMORY[0x1E696A588];
-    v19 = [v9 localizedFailureReason];
-    v27[1] = v19;
+    localizedFailureReason = [v9 localizedFailureReason];
+    v27[1] = localizedFailureReason;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
-    *a4 = [(NSError *)v18 gc_modelError:v20 userInfo:?];
+    *error = [(NSError *)v18 gc_modelError:v20 userInfo:?];
     goto LABEL_22;
   }
 
@@ -283,7 +283,7 @@ LABEL_24:
     v13 = NSClassFromString(v12);
     if (!v13 || ([(objc_class *)v13 isSubclassOfClass:objc_opt_class()]& 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_23:
 
@@ -292,13 +292,13 @@ LABEL_23:
 
       v21 = MEMORY[0x1E696ABC0];
       v24[0] = *MEMORY[0x1E696A578];
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
-      v25[0] = v19;
+      localizedFailureReason = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
+      v25[0] = localizedFailureReason;
       v24[1] = *MEMORY[0x1E696A588];
       v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' is not a valid product class.", v7];
       v25[1] = v20;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
-      *a4 = [(NSError *)v21 gc_modelError:v22 userInfo:?];
+      *error = [(NSError *)v21 gc_modelError:v22 userInfo:?];
 
 LABEL_22:
       goto LABEL_23;
@@ -310,22 +310,22 @@ LABEL_22:
     v13 = v11;
   }
 
-  v14 = [[v13 alloc] initWithDictionaryRepresentation:a3 error:a4];
+  v14 = [[v13 alloc] initWithDictionaryRepresentation:representation error:error];
 
   if (v14)
   {
-    v15 = [v14 build];
+    build = [v14 build];
     v9 = v14;
 LABEL_13:
 
     goto LABEL_15;
   }
 
-  v15 = 0;
+  build = 0;
 LABEL_15:
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return build;
 }
 
 @end

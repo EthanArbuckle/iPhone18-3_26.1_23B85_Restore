@@ -1,18 +1,18 @@
 @interface GTTransportMessage_replayer
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (BOOL)BOOLPayload;
 - (GTTransportMessage_replayer)init;
-- (GTTransportMessage_replayer)initWithKind:(int)a3 attributes:(id)a4 payload:(id)a5;
-- (double)doubleForKey:(id)a3;
-- (id)attributeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTTransportMessage_replayer)initWithKind:(int)kind attributes:(id)attributes payload:(id)payload;
+- (double)doubleForKey:(id)key;
+- (id)attributeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)objectPayload;
 - (id)plistPayload;
 - (id)stringPayload;
-- (unint64_t)uint64ForKey:(id)a3;
-- (unsigned)uint32ForKey:(id)a3;
-- (void)_setSerial:(unsigned int)a3 replySerial:(unsigned int)a4 transport:(id)a5;
+- (unint64_t)uint64ForKey:(id)key;
+- (unsigned)uint32ForKey:(id)key;
+- (void)_setSerial:(unsigned int)serial replySerial:(unsigned int)replySerial transport:(id)transport;
 - (void)dealloc;
 @end
 
@@ -211,47 +211,47 @@ LABEL_11:
   return payload;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(NSDictionary *)[(GTTransportMessage_replayer *)self attributes] objectForKey:a3];
+  v3 = [(NSDictionary *)[(GTTransportMessage_replayer *)self attributes] objectForKey:key];
 
   return [v3 BOOLValue];
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v3 = [(NSDictionary *)[(GTTransportMessage_replayer *)self attributes] objectForKey:a3];
+  v3 = [(NSDictionary *)[(GTTransportMessage_replayer *)self attributes] objectForKey:key];
 
   [v3 doubleValue];
   return result;
 }
 
-- (unint64_t)uint64ForKey:(id)a3
+- (unint64_t)uint64ForKey:(id)key
 {
-  v3 = [(NSDictionary *)[(GTTransportMessage_replayer *)self attributes] objectForKey:a3];
+  v3 = [(NSDictionary *)[(GTTransportMessage_replayer *)self attributes] objectForKey:key];
 
   return [v3 unsignedLongLongValue];
 }
 
-- (unsigned)uint32ForKey:(id)a3
+- (unsigned)uint32ForKey:(id)key
 {
-  v3 = [(NSDictionary *)[(GTTransportMessage_replayer *)self attributes] objectForKey:a3];
+  v3 = [(NSDictionary *)[(GTTransportMessage_replayer *)self attributes] objectForKey:key];
 
   return [v3 unsignedIntValue];
 }
 
-- (id)attributeForKey:(id)a3
+- (id)attributeForKey:(id)key
 {
-  v4 = [(GTTransportMessage_replayer *)self attributes];
+  attributes = [(GTTransportMessage_replayer *)self attributes];
 
-  return [(NSDictionary *)v4 objectForKey:a3];
+  return [(NSDictionary *)attributes objectForKey:key];
 }
 
-- (void)_setSerial:(unsigned int)a3 replySerial:(unsigned int)a4 transport:(id)a5
+- (void)_setSerial:(unsigned int)serial replySerial:(unsigned int)replySerial transport:(id)transport
 {
-  self->_serial = a3;
-  self->_replySerial = a4;
-  self->_transport = a5;
+  self->_serial = serial;
+  self->_replySerial = replySerial;
+  self->_transport = transport;
 }
 
 - (id)description
@@ -268,9 +268,9 @@ LABEL_11:
   [(GTTransportMessage_replayer *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   kind = self->_kind;
   payload = self->_payload;
   attributes = self->_attributes;
@@ -278,7 +278,7 @@ LABEL_11:
   return [v4 initWithKind:kind attributes:attributes payload:payload];
 }
 
-- (GTTransportMessage_replayer)initWithKind:(int)a3 attributes:(id)a4 payload:(id)a5
+- (GTTransportMessage_replayer)initWithKind:(int)kind attributes:(id)attributes payload:(id)payload
 {
   v11.receiver = self;
   v11.super_class = GTTransportMessage_replayer;
@@ -286,10 +286,10 @@ LABEL_11:
   v9 = v8;
   if (v8)
   {
-    v8->_kind = a3;
+    v8->_kind = kind;
     *&v8->_serial = -1;
-    v8->_attributes = a4;
-    v9->_payload = a5;
+    v8->_attributes = attributes;
+    v9->_payload = payload;
   }
 
   return v9;

@@ -1,106 +1,106 @@
 @interface INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEntityAbsoluteCount10Min:(BOOL)a3;
-- (void)setHasEntityAbsoluteCount14Day:(BOOL)a3;
-- (void)setHasEntityAbsoluteCount1Day:(BOOL)a3;
-- (void)setHasEntityAbsoluteCount1Hr:(BOOL)a3;
-- (void)setHasEntityAbsoluteCount28Day:(BOOL)a3;
-- (void)setHasEntityAbsoluteCount2Min:(BOOL)a3;
-- (void)setHasEntityAbsoluteCount6Hr:(BOOL)a3;
-- (void)setHasEntityAbsoluteCount7Day:(BOOL)a3;
-- (void)setHasEntityPartialAppCount10Min:(BOOL)a3;
-- (void)setHasEntityPartialAppCount1Day:(BOOL)a3;
-- (void)setHasEntityPartialAppCount1Hr:(BOOL)a3;
-- (void)setHasEntityPartialAppCount28Day:(BOOL)a3;
-- (void)setHasEntityPartialAppCount2Min:(BOOL)a3;
-- (void)setHasEntityPartialAppCount6Hr:(BOOL)a3;
-- (void)setHasEntityPartialAppCount7Day:(BOOL)a3;
-- (void)setHasEntityPartialSiriCount10Min:(BOOL)a3;
-- (void)setHasEntityPartialSiriCount1Day:(BOOL)a3;
-- (void)setHasEntityPartialSiriCount1Hr:(BOOL)a3;
-- (void)setHasEntityPartialSiriCount28Day:(BOOL)a3;
-- (void)setHasEntityPartialSiriCount2Min:(BOOL)a3;
-- (void)setHasEntityPartialSiriCount6Hr:(BOOL)a3;
-- (void)setHasEntityPartialSiriCount7Day:(BOOL)a3;
-- (void)setHasEntityRecency:(BOOL)a3;
-- (void)setHasIsLastForegroundApp:(BOOL)a3;
-- (void)setHasIsLastNowPlayingApp:(BOOL)a3;
-- (void)setHasIsNowPlayingApp:(BOOL)a3;
-- (void)setHasIsSelectedApp:(BOOL)a3;
-- (void)setHasMediaUserContextNumberOfLibraryItems:(BOOL)a3;
-- (void)setHasMediaUserContextSubscriptionStatus:(BOOL)a3;
-- (void)setHasNowPlayingAbsoluteCount10Min:(BOOL)a3;
-- (void)setHasNowPlayingAbsoluteCount14Day:(BOOL)a3;
-- (void)setHasNowPlayingAbsoluteCount1Day:(BOOL)a3;
-- (void)setHasNowPlayingAbsoluteCount1Hr:(BOOL)a3;
-- (void)setHasNowPlayingAbsoluteCount28Day:(BOOL)a3;
-- (void)setHasNowPlayingAbsoluteCount2Min:(BOOL)a3;
-- (void)setHasNowPlayingAbsoluteCount6Hr:(BOOL)a3;
-- (void)setHasNowPlayingAbsoluteCount7Day:(BOOL)a3;
-- (void)setHasRelativeAppUsage14Day:(BOOL)a3;
-- (void)setHasRelativeAppUsage7Day:(BOOL)a3;
-- (void)setHasSpotlightRelativeCount:(BOOL)a3;
-- (void)setHasSupportedMediaCategories:(BOOL)a3;
-- (void)setHasTimeSinceLastForegroundAppEndInSec:(BOOL)a3;
-- (void)setHasTimeSinceLastForegroundAppStartInSec:(BOOL)a3;
-- (void)setHasTimeSinceLastNowPlayingAppEndInSec:(BOOL)a3;
-- (void)setHasTimeSinceLastNowPlayingAppStartInSec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEntityAbsoluteCount10Min:(BOOL)min;
+- (void)setHasEntityAbsoluteCount14Day:(BOOL)day;
+- (void)setHasEntityAbsoluteCount1Day:(BOOL)day;
+- (void)setHasEntityAbsoluteCount1Hr:(BOOL)hr;
+- (void)setHasEntityAbsoluteCount28Day:(BOOL)day;
+- (void)setHasEntityAbsoluteCount2Min:(BOOL)min;
+- (void)setHasEntityAbsoluteCount6Hr:(BOOL)hr;
+- (void)setHasEntityAbsoluteCount7Day:(BOOL)day;
+- (void)setHasEntityPartialAppCount10Min:(BOOL)min;
+- (void)setHasEntityPartialAppCount1Day:(BOOL)day;
+- (void)setHasEntityPartialAppCount1Hr:(BOOL)hr;
+- (void)setHasEntityPartialAppCount28Day:(BOOL)day;
+- (void)setHasEntityPartialAppCount2Min:(BOOL)min;
+- (void)setHasEntityPartialAppCount6Hr:(BOOL)hr;
+- (void)setHasEntityPartialAppCount7Day:(BOOL)day;
+- (void)setHasEntityPartialSiriCount10Min:(BOOL)min;
+- (void)setHasEntityPartialSiriCount1Day:(BOOL)day;
+- (void)setHasEntityPartialSiriCount1Hr:(BOOL)hr;
+- (void)setHasEntityPartialSiriCount28Day:(BOOL)day;
+- (void)setHasEntityPartialSiriCount2Min:(BOOL)min;
+- (void)setHasEntityPartialSiriCount6Hr:(BOOL)hr;
+- (void)setHasEntityPartialSiriCount7Day:(BOOL)day;
+- (void)setHasEntityRecency:(BOOL)recency;
+- (void)setHasIsLastForegroundApp:(BOOL)app;
+- (void)setHasIsLastNowPlayingApp:(BOOL)app;
+- (void)setHasIsNowPlayingApp:(BOOL)app;
+- (void)setHasIsSelectedApp:(BOOL)app;
+- (void)setHasMediaUserContextNumberOfLibraryItems:(BOOL)items;
+- (void)setHasMediaUserContextSubscriptionStatus:(BOOL)status;
+- (void)setHasNowPlayingAbsoluteCount10Min:(BOOL)min;
+- (void)setHasNowPlayingAbsoluteCount14Day:(BOOL)day;
+- (void)setHasNowPlayingAbsoluteCount1Day:(BOOL)day;
+- (void)setHasNowPlayingAbsoluteCount1Hr:(BOOL)hr;
+- (void)setHasNowPlayingAbsoluteCount28Day:(BOOL)day;
+- (void)setHasNowPlayingAbsoluteCount2Min:(BOOL)min;
+- (void)setHasNowPlayingAbsoluteCount6Hr:(BOOL)hr;
+- (void)setHasNowPlayingAbsoluteCount7Day:(BOOL)day;
+- (void)setHasRelativeAppUsage14Day:(BOOL)day;
+- (void)setHasRelativeAppUsage7Day:(BOOL)day;
+- (void)setHasSpotlightRelativeCount:(BOOL)count;
+- (void)setHasSupportedMediaCategories:(BOOL)categories;
+- (void)setHasTimeSinceLastForegroundAppEndInSec:(BOOL)sec;
+- (void)setHasTimeSinceLastForegroundAppStartInSec:(BOOL)sec;
+- (void)setHasTimeSinceLastNowPlayingAppEndInSec:(BOOL)sec;
+- (void)setHasTimeSinceLastNowPlayingAppStartInSec:(BOOL)sec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals
 
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v102.receiver = self;
   v102.super_class = INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals;
   v5 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals *)&v102 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"relativeAppUsage1Day"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"relativeAppUsage1Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setRelativeAppUsage1Day:](v5, "setRelativeAppUsage1Day:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"relativeAppUsage7Day"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"relativeAppUsage7Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setRelativeAppUsage7Day:](v5, "setRelativeAppUsage7Day:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"relativeAppUsage14Day"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"relativeAppUsage14Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setRelativeAppUsage14Day:](v5, "setRelativeAppUsage14Day:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"entityAbsoluteCount2Min"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"entityAbsoluteCount2Min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setEntityAbsoluteCount2Min:](v5, "setEntityAbsoluteCount2Min:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"entityAbsoluteCount10Min"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entityAbsoluteCount10Min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setEntityAbsoluteCount10Min:](v5, "setEntityAbsoluteCount10Min:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"entityAbsoluteCount1Hr"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"entityAbsoluteCount1Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@
     }
 
     v82 = v6;
-    v12 = [v4 objectForKeyedSubscript:@"entityAbsoluteCount6Hr"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"entityAbsoluteCount6Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
     }
 
     v76 = v12;
-    v13 = [v4 objectForKeyedSubscript:@"entityAbsoluteCount1Day"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"entityAbsoluteCount1Day"];
     objc_opt_class();
     v101 = v13;
     if (objc_opt_isKindOfClass())
@@ -125,14 +125,14 @@
     }
 
     v81 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"entityAbsoluteCount7Day"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"entityAbsoluteCount7Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setEntityAbsoluteCount7Day:](v5, "setEntityAbsoluteCount7Day:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"entityAbsoluteCount14Day"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"entityAbsoluteCount14Day"];
     objc_opt_class();
     v100 = v15;
     if (objc_opt_isKindOfClass())
@@ -141,7 +141,7 @@
     }
 
     v80 = v8;
-    v16 = [v4 objectForKeyedSubscript:@"entityAbsoluteCount28Day"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"entityAbsoluteCount28Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,7 +149,7 @@
     }
 
     v17 = v10;
-    v18 = [v4 objectForKeyedSubscript:@"entityRecency"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"entityRecency"];
     objc_opt_class();
     v99 = v18;
     if (objc_opt_isKindOfClass())
@@ -158,14 +158,14 @@
     }
 
     v19 = v9;
-    v20 = [v4 objectForKeyedSubscript:@"mediaUserContextNumberOfLibraryItems"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"mediaUserContextNumberOfLibraryItems"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setMediaUserContextNumberOfLibraryItems:](v5, "setMediaUserContextNumberOfLibraryItems:", [v20 intValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"mediaUserContextSubscriptionStatus"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"mediaUserContextSubscriptionStatus"];
     objc_opt_class();
     v98 = v21;
     if (objc_opt_isKindOfClass())
@@ -173,7 +173,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setMediaUserContextSubscriptionStatus:](v5, "setMediaUserContextSubscriptionStatus:", [v21 intValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"isLastForegroundApp"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isLastForegroundApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,7 +181,7 @@
     }
 
     v72 = v22;
-    v23 = [v4 objectForKeyedSubscript:@"isLastNowPlayingApp"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isLastNowPlayingApp"];
     objc_opt_class();
     v97 = v23;
     v79 = v19;
@@ -190,7 +190,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setIsLastNowPlayingApp:](v5, "setIsLastNowPlayingApp:", [v23 BOOLValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"nowPlayingAbsoluteCount2Min"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingAbsoluteCount2Min"];
     objc_opt_class();
     v96 = v24;
     v78 = v17;
@@ -199,7 +199,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setNowPlayingAbsoluteCount2Min:](v5, "setNowPlayingAbsoluteCount2Min:", [v24 intValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"nowPlayingAbsoluteCount10Min"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingAbsoluteCount10Min"];
     objc_opt_class();
     v95 = v25;
     v77 = v11;
@@ -208,7 +208,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setNowPlayingAbsoluteCount10Min:](v5, "setNowPlayingAbsoluteCount10Min:", [v25 intValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"nowPlayingAbsoluteCount1Hr"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingAbsoluteCount1Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -216,7 +216,7 @@
     }
 
     v71 = v26;
-    v27 = [v4 objectForKeyedSubscript:@"nowPlayingAbsoluteCount6Hr"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingAbsoluteCount6Hr"];
     objc_opt_class();
     v94 = v27;
     if (objc_opt_isKindOfClass())
@@ -224,14 +224,14 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setNowPlayingAbsoluteCount6Hr:](v5, "setNowPlayingAbsoluteCount6Hr:", [v27 intValue]);
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"nowPlayingAbsoluteCount1Day"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingAbsoluteCount1Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setNowPlayingAbsoluteCount1Day:](v5, "setNowPlayingAbsoluteCount1Day:", [v28 intValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"nowPlayingAbsoluteCount7Day"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingAbsoluteCount7Day"];
     objc_opt_class();
     v93 = v29;
     if (objc_opt_isKindOfClass())
@@ -240,7 +240,7 @@
     }
 
     v30 = v20;
-    v31 = [v4 objectForKeyedSubscript:@"nowPlayingAbsoluteCount14Day"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingAbsoluteCount14Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -249,7 +249,7 @@
 
     v69 = v31;
     v32 = v16;
-    v33 = [v4 objectForKeyedSubscript:@"nowPlayingAbsoluteCount28Day"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingAbsoluteCount28Day"];
     objc_opt_class();
     v92 = v33;
     if (objc_opt_isKindOfClass())
@@ -258,14 +258,14 @@
     }
 
     v34 = v14;
-    v35 = [v4 objectForKeyedSubscript:@"isNowPlayingApp"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"isNowPlayingApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setIsNowPlayingApp:](v5, "setIsNowPlayingApp:", [v35 BOOLValue]);
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"isSelectedApp"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"isSelectedApp"];
     objc_opt_class();
     v91 = v36;
     if (objc_opt_isKindOfClass())
@@ -273,7 +273,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setIsSelectedApp:](v5, "setIsSelectedApp:", [v36 BOOLValue]);
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"timeSinceLastForegroundAppStartInSec"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastForegroundAppStartInSec"];
     objc_opt_class();
     v90 = v37;
     v75 = v34;
@@ -282,7 +282,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setTimeSinceLastForegroundAppStartInSec:](v5, "setTimeSinceLastForegroundAppStartInSec:", [v37 intValue]);
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"timeSinceLastForegroundAppEndInSec"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastForegroundAppEndInSec"];
     objc_opt_class();
     v89 = v38;
     v74 = v32;
@@ -291,7 +291,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setTimeSinceLastForegroundAppEndInSec:](v5, "setTimeSinceLastForegroundAppEndInSec:", [v38 intValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"timeSinceLastNowPlayingAppStartInSec"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastNowPlayingAppStartInSec"];
     objc_opt_class();
     v88 = v39;
     v73 = v30;
@@ -300,14 +300,14 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setTimeSinceLastNowPlayingAppStartInSec:](v5, "setTimeSinceLastNowPlayingAppStartInSec:", [v39 intValue]);
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"timeSinceLastNowPlayingAppEndInSec"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastNowPlayingAppEndInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setTimeSinceLastNowPlayingAppEndInSec:](v5, "setTimeSinceLastNowPlayingAppEndInSec:", [v40 intValue]);
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"spotlightRelativeCount"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"spotlightRelativeCount"];
     objc_opt_class();
     v87 = v41;
     if (objc_opt_isKindOfClass())
@@ -315,14 +315,14 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setSpotlightRelativeCount:](v5, "setSpotlightRelativeCount:", [v41 intValue]);
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"supportedMediaCategories"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"supportedMediaCategories"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setSupportedMediaCategories:](v5, "setSupportedMediaCategories:", [v42 unsignedLongLongValue]);
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"isForegroundApp"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"isForegroundApp"];
     objc_opt_class();
     v86 = v43;
     if (objc_opt_isKindOfClass())
@@ -330,14 +330,14 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setIsForegroundApp:](v5, "setIsForegroundApp:", [v43 BOOLValue]);
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"entityPartialSiriCount2Min"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialSiriCount2Min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setEntityPartialSiriCount2Min:](v5, "setEntityPartialSiriCount2Min:", [v44 intValue]);
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"entityPartialSiriCount10Min"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialSiriCount10Min"];
     objc_opt_class();
     v85 = v45;
     if (objc_opt_isKindOfClass())
@@ -346,14 +346,14 @@
     }
 
     v46 = v28;
-    v47 = [v4 objectForKeyedSubscript:@"entityPartialSiriCount1Hr"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialSiriCount1Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setEntityPartialSiriCount1Hr:](v5, "setEntityPartialSiriCount1Hr:", [v47 intValue]);
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"entityPartialSiriCount6Hr"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialSiriCount6Hr"];
     objc_opt_class();
     v84 = v48;
     if (objc_opt_isKindOfClass())
@@ -361,7 +361,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setEntityPartialSiriCount6Hr:](v5, "setEntityPartialSiriCount6Hr:", [v48 intValue]);
     }
 
-    v49 = [v4 objectForKeyedSubscript:@"entityPartialSiriCount1Day"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialSiriCount1Day"];
     objc_opt_class();
     v83 = v49;
     v50 = v46;
@@ -370,7 +370,7 @@
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setEntityPartialSiriCount1Day:](v5, "setEntityPartialSiriCount1Day:", [v83 intValue]);
     }
 
-    v51 = [v4 objectForKeyedSubscript:@"entityPartialSiriCount7Day"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialSiriCount7Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -378,7 +378,7 @@
     }
 
     v66 = v42;
-    v52 = [v4 objectForKeyedSubscript:@"entityPartialSiriCount28Day"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialSiriCount28Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -387,7 +387,7 @@
 
     v62 = v52;
     v65 = v44;
-    v53 = [v4 objectForKeyedSubscript:@"entityPartialAppCount2Min"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialAppCount2Min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -395,7 +395,7 @@
     }
 
     v64 = v47;
-    v54 = [v4 objectForKeyedSubscript:@"entityPartialAppCount10Min"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialAppCount10Min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -403,7 +403,7 @@
     }
 
     v70 = v50;
-    v55 = [v4 objectForKeyedSubscript:@"entityPartialAppCount1Hr"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialAppCount1Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -411,7 +411,7 @@
     }
 
     v63 = v51;
-    v56 = [v4 objectForKeyedSubscript:@"entityPartialAppCount6Hr"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialAppCount6Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -419,7 +419,7 @@
     }
 
     v68 = v35;
-    v57 = [v4 objectForKeyedSubscript:@"entityPartialAppCount1Day"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialAppCount1Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -427,14 +427,14 @@
     }
 
     v67 = v40;
-    v58 = [v4 objectForKeyedSubscript:@"entityPartialAppCount7Day"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialAppCount7Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals setEntityPartialAppCount7Day:](v5, "setEntityPartialAppCount7Day:", [v58 intValue]);
     }
 
-    v59 = [v4 objectForKeyedSubscript:@"entityPartialAppCount28Day"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"entityPartialAppCount28Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -447,30 +447,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -483,13 +483,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityAbsoluteCount10Min](self, "entityAbsoluteCount10Min")}];
-    [v3 setObject:v15 forKeyedSubscript:@"entityAbsoluteCount10Min"];
+    [dictionary setObject:v15 forKeyedSubscript:@"entityAbsoluteCount10Min"];
 
     has = *p_has;
     if ((*p_has & 0x200) == 0)
@@ -510,7 +510,7 @@ LABEL_3:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityAbsoluteCount14Day](self, "entityAbsoluteCount14Day")}];
-  [v3 setObject:v16 forKeyedSubscript:@"entityAbsoluteCount14Day"];
+  [dictionary setObject:v16 forKeyedSubscript:@"entityAbsoluteCount14Day"];
 
   has = *p_has;
   if ((*p_has & 0x80) == 0)
@@ -526,7 +526,7 @@ LABEL_4:
 
 LABEL_56:
   v17 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityAbsoluteCount1Day](self, "entityAbsoluteCount1Day")}];
-  [v3 setObject:v17 forKeyedSubscript:@"entityAbsoluteCount1Day"];
+  [dictionary setObject:v17 forKeyedSubscript:@"entityAbsoluteCount1Day"];
 
   has = *p_has;
   if ((*p_has & 0x20) == 0)
@@ -542,7 +542,7 @@ LABEL_5:
 
 LABEL_57:
   v18 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityAbsoluteCount1Hr](self, "entityAbsoluteCount1Hr")}];
-  [v3 setObject:v18 forKeyedSubscript:@"entityAbsoluteCount1Hr"];
+  [dictionary setObject:v18 forKeyedSubscript:@"entityAbsoluteCount1Hr"];
 
   has = *p_has;
   if ((*p_has & 0x400) == 0)
@@ -558,7 +558,7 @@ LABEL_6:
 
 LABEL_58:
   v19 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityAbsoluteCount28Day](self, "entityAbsoluteCount28Day")}];
-  [v3 setObject:v19 forKeyedSubscript:@"entityAbsoluteCount28Day"];
+  [dictionary setObject:v19 forKeyedSubscript:@"entityAbsoluteCount28Day"];
 
   has = *p_has;
   if ((*p_has & 8) == 0)
@@ -574,7 +574,7 @@ LABEL_7:
 
 LABEL_59:
   v20 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityAbsoluteCount2Min](self, "entityAbsoluteCount2Min")}];
-  [v3 setObject:v20 forKeyedSubscript:@"entityAbsoluteCount2Min"];
+  [dictionary setObject:v20 forKeyedSubscript:@"entityAbsoluteCount2Min"];
 
   has = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -590,13 +590,13 @@ LABEL_8:
 
 LABEL_60:
   v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityAbsoluteCount6Hr](self, "entityAbsoluteCount6Hr")}];
-  [v3 setObject:v21 forKeyedSubscript:@"entityAbsoluteCount6Hr"];
+  [dictionary setObject:v21 forKeyedSubscript:@"entityAbsoluteCount6Hr"];
 
   if ((*p_has & 0x100) != 0)
   {
 LABEL_9:
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityAbsoluteCount7Day](self, "entityAbsoluteCount7Day")}];
-    [v3 setObject:v6 forKeyedSubscript:@"entityAbsoluteCount7Day"];
+    [dictionary setObject:v6 forKeyedSubscript:@"entityAbsoluteCount7Day"];
   }
 
 LABEL_10:
@@ -604,7 +604,7 @@ LABEL_10:
   if ((v7 & 0x200) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialAppCount10Min](self, "entityPartialAppCount10Min")}];
-    [v3 setObject:v22 forKeyedSubscript:@"entityPartialAppCount10Min"];
+    [dictionary setObject:v22 forKeyedSubscript:@"entityPartialAppCount10Min"];
 
     v7 = *(&self->_has + 2);
     if ((v7 & 0x1000) == 0)
@@ -625,7 +625,7 @@ LABEL_12:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialAppCount1Day](self, "entityPartialAppCount1Day")}];
-  [v3 setObject:v23 forKeyedSubscript:@"entityPartialAppCount1Day"];
+  [dictionary setObject:v23 forKeyedSubscript:@"entityPartialAppCount1Day"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x400) == 0)
@@ -641,7 +641,7 @@ LABEL_13:
 
 LABEL_64:
   v24 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialAppCount1Hr](self, "entityPartialAppCount1Hr")}];
-  [v3 setObject:v24 forKeyedSubscript:@"entityPartialAppCount1Hr"];
+  [dictionary setObject:v24 forKeyedSubscript:@"entityPartialAppCount1Hr"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x4000) == 0)
@@ -657,7 +657,7 @@ LABEL_14:
 
 LABEL_65:
   v25 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialAppCount28Day](self, "entityPartialAppCount28Day")}];
-  [v3 setObject:v25 forKeyedSubscript:@"entityPartialAppCount28Day"];
+  [dictionary setObject:v25 forKeyedSubscript:@"entityPartialAppCount28Day"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x100) == 0)
@@ -673,7 +673,7 @@ LABEL_15:
 
 LABEL_66:
   v26 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialAppCount2Min](self, "entityPartialAppCount2Min")}];
-  [v3 setObject:v26 forKeyedSubscript:@"entityPartialAppCount2Min"];
+  [dictionary setObject:v26 forKeyedSubscript:@"entityPartialAppCount2Min"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x800) == 0)
@@ -689,7 +689,7 @@ LABEL_16:
 
 LABEL_67:
   v27 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialAppCount6Hr](self, "entityPartialAppCount6Hr")}];
-  [v3 setObject:v27 forKeyedSubscript:@"entityPartialAppCount6Hr"];
+  [dictionary setObject:v27 forKeyedSubscript:@"entityPartialAppCount6Hr"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x2000) == 0)
@@ -705,7 +705,7 @@ LABEL_17:
 
 LABEL_68:
   v28 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialAppCount7Day](self, "entityPartialAppCount7Day")}];
-  [v3 setObject:v28 forKeyedSubscript:@"entityPartialAppCount7Day"];
+  [dictionary setObject:v28 forKeyedSubscript:@"entityPartialAppCount7Day"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 4) == 0)
@@ -721,7 +721,7 @@ LABEL_18:
 
 LABEL_69:
   v29 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialSiriCount10Min](self, "entityPartialSiriCount10Min")}];
-  [v3 setObject:v29 forKeyedSubscript:@"entityPartialSiriCount10Min"];
+  [dictionary setObject:v29 forKeyedSubscript:@"entityPartialSiriCount10Min"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x20) == 0)
@@ -737,7 +737,7 @@ LABEL_19:
 
 LABEL_70:
   v30 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialSiriCount1Day](self, "entityPartialSiriCount1Day")}];
-  [v3 setObject:v30 forKeyedSubscript:@"entityPartialSiriCount1Day"];
+  [dictionary setObject:v30 forKeyedSubscript:@"entityPartialSiriCount1Day"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 8) == 0)
@@ -753,7 +753,7 @@ LABEL_20:
 
 LABEL_71:
   v31 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialSiriCount1Hr](self, "entityPartialSiriCount1Hr")}];
-  [v3 setObject:v31 forKeyedSubscript:@"entityPartialSiriCount1Hr"];
+  [dictionary setObject:v31 forKeyedSubscript:@"entityPartialSiriCount1Hr"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x80) == 0)
@@ -769,7 +769,7 @@ LABEL_21:
 
 LABEL_72:
   v32 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialSiriCount28Day](self, "entityPartialSiriCount28Day")}];
-  [v3 setObject:v32 forKeyedSubscript:@"entityPartialSiriCount28Day"];
+  [dictionary setObject:v32 forKeyedSubscript:@"entityPartialSiriCount28Day"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 2) == 0)
@@ -785,7 +785,7 @@ LABEL_22:
 
 LABEL_73:
   v33 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialSiriCount2Min](self, "entityPartialSiriCount2Min")}];
-  [v3 setObject:v33 forKeyedSubscript:@"entityPartialSiriCount2Min"];
+  [dictionary setObject:v33 forKeyedSubscript:@"entityPartialSiriCount2Min"];
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x10) == 0)
@@ -801,33 +801,33 @@ LABEL_23:
 
 LABEL_74:
   v34 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialSiriCount6Hr](self, "entityPartialSiriCount6Hr")}];
-  [v3 setObject:v34 forKeyedSubscript:@"entityPartialSiriCount6Hr"];
+  [dictionary setObject:v34 forKeyedSubscript:@"entityPartialSiriCount6Hr"];
 
   if ((*(&self->_has + 2) & 0x40) != 0)
   {
 LABEL_24:
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityPartialSiriCount7Day](self, "entityPartialSiriCount7Day")}];
-    [v3 setObject:v8 forKeyedSubscript:@"entityPartialSiriCount7Day"];
+    [dictionary setObject:v8 forKeyedSubscript:@"entityPartialSiriCount7Day"];
   }
 
 LABEL_25:
   if ((*(&self->_has + 1) & 8) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals entityRecency](self, "entityRecency")}];
-    [v3 setObject:v9 forKeyedSubscript:@"entityRecency"];
+    [dictionary setObject:v9 forKeyedSubscript:@"entityRecency"];
   }
 
   if (*(&self->_has + 2))
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals isForegroundApp](self, "isForegroundApp")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isForegroundApp"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isForegroundApp"];
   }
 
   v11 = *p_has;
   if ((*p_has & 0x4000) != 0)
   {
     v35 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals isLastForegroundApp](self, "isLastForegroundApp")}];
-    [v3 setObject:v35 forKeyedSubscript:@"isLastForegroundApp"];
+    [dictionary setObject:v35 forKeyedSubscript:@"isLastForegroundApp"];
 
     v11 = *p_has;
     if ((*p_has & 0x8000) == 0)
@@ -848,7 +848,7 @@ LABEL_31:
   }
 
   v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals isLastNowPlayingApp](self, "isLastNowPlayingApp")}];
-  [v3 setObject:v36 forKeyedSubscript:@"isLastNowPlayingApp"];
+  [dictionary setObject:v36 forKeyedSubscript:@"isLastNowPlayingApp"];
 
   v11 = *p_has;
   if ((*p_has & 0x1000000) == 0)
@@ -864,7 +864,7 @@ LABEL_32:
 
 LABEL_78:
   v37 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals isNowPlayingApp](self, "isNowPlayingApp")}];
-  [v3 setObject:v37 forKeyedSubscript:@"isNowPlayingApp"];
+  [dictionary setObject:v37 forKeyedSubscript:@"isNowPlayingApp"];
 
   v11 = *p_has;
   if ((*p_has & 0x2000000) == 0)
@@ -880,7 +880,7 @@ LABEL_33:
 
 LABEL_79:
   v38 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals isSelectedApp](self, "isSelectedApp")}];
-  [v3 setObject:v38 forKeyedSubscript:@"isSelectedApp"];
+  [dictionary setObject:v38 forKeyedSubscript:@"isSelectedApp"];
 
   v11 = *p_has;
   if ((*p_has & 0x1000) == 0)
@@ -896,7 +896,7 @@ LABEL_34:
 
 LABEL_80:
   v39 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals mediaUserContextNumberOfLibraryItems](self, "mediaUserContextNumberOfLibraryItems")}];
-  [v3 setObject:v39 forKeyedSubscript:@"mediaUserContextNumberOfLibraryItems"];
+  [dictionary setObject:v39 forKeyedSubscript:@"mediaUserContextNumberOfLibraryItems"];
 
   v11 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -912,7 +912,7 @@ LABEL_35:
 
 LABEL_81:
   v40 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals mediaUserContextSubscriptionStatus](self, "mediaUserContextSubscriptionStatus")}];
-  [v3 setObject:v40 forKeyedSubscript:@"mediaUserContextSubscriptionStatus"];
+  [dictionary setObject:v40 forKeyedSubscript:@"mediaUserContextSubscriptionStatus"];
 
   v11 = *p_has;
   if ((*p_has & 0x20000) == 0)
@@ -928,7 +928,7 @@ LABEL_36:
 
 LABEL_82:
   v41 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals nowPlayingAbsoluteCount10Min](self, "nowPlayingAbsoluteCount10Min")}];
-  [v3 setObject:v41 forKeyedSubscript:@"nowPlayingAbsoluteCount10Min"];
+  [dictionary setObject:v41 forKeyedSubscript:@"nowPlayingAbsoluteCount10Min"];
 
   v11 = *p_has;
   if ((*p_has & 0x400000) == 0)
@@ -944,7 +944,7 @@ LABEL_37:
 
 LABEL_83:
   v42 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals nowPlayingAbsoluteCount14Day](self, "nowPlayingAbsoluteCount14Day")}];
-  [v3 setObject:v42 forKeyedSubscript:@"nowPlayingAbsoluteCount14Day"];
+  [dictionary setObject:v42 forKeyedSubscript:@"nowPlayingAbsoluteCount14Day"];
 
   v11 = *p_has;
   if ((*p_has & 0x100000) == 0)
@@ -960,7 +960,7 @@ LABEL_38:
 
 LABEL_84:
   v43 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals nowPlayingAbsoluteCount1Day](self, "nowPlayingAbsoluteCount1Day")}];
-  [v3 setObject:v43 forKeyedSubscript:@"nowPlayingAbsoluteCount1Day"];
+  [dictionary setObject:v43 forKeyedSubscript:@"nowPlayingAbsoluteCount1Day"];
 
   v11 = *p_has;
   if ((*p_has & 0x40000) == 0)
@@ -976,7 +976,7 @@ LABEL_39:
 
 LABEL_85:
   v44 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals nowPlayingAbsoluteCount1Hr](self, "nowPlayingAbsoluteCount1Hr")}];
-  [v3 setObject:v44 forKeyedSubscript:@"nowPlayingAbsoluteCount1Hr"];
+  [dictionary setObject:v44 forKeyedSubscript:@"nowPlayingAbsoluteCount1Hr"];
 
   v11 = *p_has;
   if ((*p_has & 0x800000) == 0)
@@ -992,7 +992,7 @@ LABEL_40:
 
 LABEL_86:
   v45 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals nowPlayingAbsoluteCount28Day](self, "nowPlayingAbsoluteCount28Day")}];
-  [v3 setObject:v45 forKeyedSubscript:@"nowPlayingAbsoluteCount28Day"];
+  [dictionary setObject:v45 forKeyedSubscript:@"nowPlayingAbsoluteCount28Day"];
 
   v11 = *p_has;
   if ((*p_has & 0x10000) == 0)
@@ -1008,7 +1008,7 @@ LABEL_41:
 
 LABEL_87:
   v46 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals nowPlayingAbsoluteCount2Min](self, "nowPlayingAbsoluteCount2Min")}];
-  [v3 setObject:v46 forKeyedSubscript:@"nowPlayingAbsoluteCount2Min"];
+  [dictionary setObject:v46 forKeyedSubscript:@"nowPlayingAbsoluteCount2Min"];
 
   v11 = *p_has;
   if ((*p_has & 0x80000) == 0)
@@ -1024,7 +1024,7 @@ LABEL_42:
 
 LABEL_88:
   v47 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals nowPlayingAbsoluteCount6Hr](self, "nowPlayingAbsoluteCount6Hr")}];
-  [v3 setObject:v47 forKeyedSubscript:@"nowPlayingAbsoluteCount6Hr"];
+  [dictionary setObject:v47 forKeyedSubscript:@"nowPlayingAbsoluteCount6Hr"];
 
   v11 = *p_has;
   if ((*p_has & 0x200000) == 0)
@@ -1040,7 +1040,7 @@ LABEL_43:
 
 LABEL_89:
   v48 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals nowPlayingAbsoluteCount7Day](self, "nowPlayingAbsoluteCount7Day")}];
-  [v3 setObject:v48 forKeyedSubscript:@"nowPlayingAbsoluteCount7Day"];
+  [dictionary setObject:v48 forKeyedSubscript:@"nowPlayingAbsoluteCount7Day"];
 
   v11 = *p_has;
   if ((*p_has & 4) == 0)
@@ -1056,7 +1056,7 @@ LABEL_44:
 
 LABEL_90:
   v49 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals relativeAppUsage14Day](self, "relativeAppUsage14Day")}];
-  [v3 setObject:v49 forKeyedSubscript:@"relativeAppUsage14Day"];
+  [dictionary setObject:v49 forKeyedSubscript:@"relativeAppUsage14Day"];
 
   v11 = *p_has;
   if ((*p_has & 1) == 0)
@@ -1072,7 +1072,7 @@ LABEL_45:
 
 LABEL_91:
   v50 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals relativeAppUsage1Day](self, "relativeAppUsage1Day")}];
-  [v3 setObject:v50 forKeyedSubscript:@"relativeAppUsage1Day"];
+  [dictionary setObject:v50 forKeyedSubscript:@"relativeAppUsage1Day"];
 
   v11 = *p_has;
   if ((*p_has & 2) == 0)
@@ -1088,7 +1088,7 @@ LABEL_46:
 
 LABEL_92:
   v51 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals relativeAppUsage7Day](self, "relativeAppUsage7Day")}];
-  [v3 setObject:v51 forKeyedSubscript:@"relativeAppUsage7Day"];
+  [dictionary setObject:v51 forKeyedSubscript:@"relativeAppUsage7Day"];
 
   v11 = *p_has;
   if ((*p_has & 0x40000000) == 0)
@@ -1104,7 +1104,7 @@ LABEL_47:
 
 LABEL_93:
   v52 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals spotlightRelativeCount](self, "spotlightRelativeCount")}];
-  [v3 setObject:v52 forKeyedSubscript:@"spotlightRelativeCount"];
+  [dictionary setObject:v52 forKeyedSubscript:@"spotlightRelativeCount"];
 
   v11 = *p_has;
   if ((*p_has & 0x80000000) == 0)
@@ -1120,7 +1120,7 @@ LABEL_48:
 
 LABEL_94:
   v53 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals supportedMediaCategories](self, "supportedMediaCategories")}];
-  [v3 setObject:v53 forKeyedSubscript:@"supportedMediaCategories"];
+  [dictionary setObject:v53 forKeyedSubscript:@"supportedMediaCategories"];
 
   v11 = *p_has;
   if ((*p_has & 0x8000000) == 0)
@@ -1136,7 +1136,7 @@ LABEL_49:
 
 LABEL_95:
   v54 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals timeSinceLastForegroundAppEndInSec](self, "timeSinceLastForegroundAppEndInSec")}];
-  [v3 setObject:v54 forKeyedSubscript:@"timeSinceLastForegroundAppEndInSec"];
+  [dictionary setObject:v54 forKeyedSubscript:@"timeSinceLastForegroundAppEndInSec"];
 
   v11 = *p_has;
   if ((*p_has & 0x4000000) == 0)
@@ -1149,7 +1149,7 @@ LABEL_50:
 
 LABEL_97:
     v56 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals timeSinceLastNowPlayingAppEndInSec](self, "timeSinceLastNowPlayingAppEndInSec")}];
-    [v3 setObject:v56 forKeyedSubscript:@"timeSinceLastNowPlayingAppEndInSec"];
+    [dictionary setObject:v56 forKeyedSubscript:@"timeSinceLastNowPlayingAppEndInSec"];
 
     if ((*p_has & 0x10000000) == 0)
     {
@@ -1161,7 +1161,7 @@ LABEL_97:
 
 LABEL_96:
   v55 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals timeSinceLastForegroundAppStartInSec](self, "timeSinceLastForegroundAppStartInSec")}];
-  [v3 setObject:v55 forKeyedSubscript:@"timeSinceLastForegroundAppStartInSec"];
+  [dictionary setObject:v55 forKeyedSubscript:@"timeSinceLastForegroundAppStartInSec"];
 
   v11 = *p_has;
   if ((*p_has & 0x20000000) != 0)
@@ -1174,14 +1174,14 @@ LABEL_51:
   {
 LABEL_52:
     v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppDependentSignals timeSinceLastNowPlayingAppStartInSec](self, "timeSinceLastNowPlayingAppStartInSec")}];
-    [v3 setObject:v12 forKeyedSubscript:@"timeSinceLastNowPlayingAppStartInSec"];
+    [dictionary setObject:v12 forKeyedSubscript:@"timeSinceLastNowPlayingAppStartInSec"];
   }
 
 LABEL_53:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v13 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v13 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1836,18 +1836,18 @@ LABEL_81:
   return v50 ^ v51 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_189;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = v4 + 49;
-  v8 = v4[49];
+  v7 = equalCopy + 49;
+  v8 = equalCopy[49];
   if ((has & 1) != (v8 & 1))
   {
     goto LABEL_189;
@@ -1856,7 +1856,7 @@ LABEL_81:
   if (has)
   {
     relativeAppUsage1Day = self->_relativeAppUsage1Day;
-    if (relativeAppUsage1Day != [v4 relativeAppUsage1Day])
+    if (relativeAppUsage1Day != [equalCopy relativeAppUsage1Day])
     {
       goto LABEL_189;
     }
@@ -1874,7 +1874,7 @@ LABEL_81:
   if (v10)
   {
     relativeAppUsage7Day = self->_relativeAppUsage7Day;
-    if (relativeAppUsage7Day != [v4 relativeAppUsage7Day])
+    if (relativeAppUsage7Day != [equalCopy relativeAppUsage7Day])
     {
       goto LABEL_189;
     }
@@ -1892,7 +1892,7 @@ LABEL_81:
   if (v12)
   {
     relativeAppUsage14Day = self->_relativeAppUsage14Day;
-    if (relativeAppUsage14Day != [v4 relativeAppUsage14Day])
+    if (relativeAppUsage14Day != [equalCopy relativeAppUsage14Day])
     {
       goto LABEL_189;
     }
@@ -1910,7 +1910,7 @@ LABEL_81:
   if (v14)
   {
     entityAbsoluteCount2Min = self->_entityAbsoluteCount2Min;
-    if (entityAbsoluteCount2Min != [v4 entityAbsoluteCount2Min])
+    if (entityAbsoluteCount2Min != [equalCopy entityAbsoluteCount2Min])
     {
       goto LABEL_189;
     }
@@ -1928,7 +1928,7 @@ LABEL_81:
   if (v16)
   {
     entityAbsoluteCount10Min = self->_entityAbsoluteCount10Min;
-    if (entityAbsoluteCount10Min != [v4 entityAbsoluteCount10Min])
+    if (entityAbsoluteCount10Min != [equalCopy entityAbsoluteCount10Min])
     {
       goto LABEL_189;
     }
@@ -1946,7 +1946,7 @@ LABEL_81:
   if (v18)
   {
     entityAbsoluteCount1Hr = self->_entityAbsoluteCount1Hr;
-    if (entityAbsoluteCount1Hr != [v4 entityAbsoluteCount1Hr])
+    if (entityAbsoluteCount1Hr != [equalCopy entityAbsoluteCount1Hr])
     {
       goto LABEL_189;
     }
@@ -1964,7 +1964,7 @@ LABEL_81:
   if (v20)
   {
     entityAbsoluteCount6Hr = self->_entityAbsoluteCount6Hr;
-    if (entityAbsoluteCount6Hr != [v4 entityAbsoluteCount6Hr])
+    if (entityAbsoluteCount6Hr != [equalCopy entityAbsoluteCount6Hr])
     {
       goto LABEL_189;
     }
@@ -1982,7 +1982,7 @@ LABEL_81:
   if (v22)
   {
     entityAbsoluteCount1Day = self->_entityAbsoluteCount1Day;
-    if (entityAbsoluteCount1Day != [v4 entityAbsoluteCount1Day])
+    if (entityAbsoluteCount1Day != [equalCopy entityAbsoluteCount1Day])
     {
       goto LABEL_189;
     }
@@ -2000,7 +2000,7 @@ LABEL_81:
   if (v24)
   {
     entityAbsoluteCount7Day = self->_entityAbsoluteCount7Day;
-    if (entityAbsoluteCount7Day != [v4 entityAbsoluteCount7Day])
+    if (entityAbsoluteCount7Day != [equalCopy entityAbsoluteCount7Day])
     {
       goto LABEL_189;
     }
@@ -2018,7 +2018,7 @@ LABEL_81:
   if (v26)
   {
     entityAbsoluteCount14Day = self->_entityAbsoluteCount14Day;
-    if (entityAbsoluteCount14Day != [v4 entityAbsoluteCount14Day])
+    if (entityAbsoluteCount14Day != [equalCopy entityAbsoluteCount14Day])
     {
       goto LABEL_189;
     }
@@ -2036,7 +2036,7 @@ LABEL_81:
   if (v28)
   {
     entityAbsoluteCount28Day = self->_entityAbsoluteCount28Day;
-    if (entityAbsoluteCount28Day != [v4 entityAbsoluteCount28Day])
+    if (entityAbsoluteCount28Day != [equalCopy entityAbsoluteCount28Day])
     {
       goto LABEL_189;
     }
@@ -2054,7 +2054,7 @@ LABEL_81:
   if (v30)
   {
     entityRecency = self->_entityRecency;
-    if (entityRecency != [v4 entityRecency])
+    if (entityRecency != [equalCopy entityRecency])
     {
       goto LABEL_189;
     }
@@ -2072,7 +2072,7 @@ LABEL_81:
   if (v32)
   {
     mediaUserContextNumberOfLibraryItems = self->_mediaUserContextNumberOfLibraryItems;
-    if (mediaUserContextNumberOfLibraryItems != [v4 mediaUserContextNumberOfLibraryItems])
+    if (mediaUserContextNumberOfLibraryItems != [equalCopy mediaUserContextNumberOfLibraryItems])
     {
       goto LABEL_189;
     }
@@ -2090,7 +2090,7 @@ LABEL_81:
   if (v34)
   {
     mediaUserContextSubscriptionStatus = self->_mediaUserContextSubscriptionStatus;
-    if (mediaUserContextSubscriptionStatus != [v4 mediaUserContextSubscriptionStatus])
+    if (mediaUserContextSubscriptionStatus != [equalCopy mediaUserContextSubscriptionStatus])
     {
       goto LABEL_189;
     }
@@ -2108,7 +2108,7 @@ LABEL_81:
   if (v36)
   {
     isLastForegroundApp = self->_isLastForegroundApp;
-    if (isLastForegroundApp != [v4 isLastForegroundApp])
+    if (isLastForegroundApp != [equalCopy isLastForegroundApp])
     {
       goto LABEL_189;
     }
@@ -2126,7 +2126,7 @@ LABEL_81:
   if (v38)
   {
     isLastNowPlayingApp = self->_isLastNowPlayingApp;
-    if (isLastNowPlayingApp != [v4 isLastNowPlayingApp])
+    if (isLastNowPlayingApp != [equalCopy isLastNowPlayingApp])
     {
       goto LABEL_189;
     }
@@ -2144,7 +2144,7 @@ LABEL_81:
   if (v40)
   {
     nowPlayingAbsoluteCount2Min = self->_nowPlayingAbsoluteCount2Min;
-    if (nowPlayingAbsoluteCount2Min != [v4 nowPlayingAbsoluteCount2Min])
+    if (nowPlayingAbsoluteCount2Min != [equalCopy nowPlayingAbsoluteCount2Min])
     {
       goto LABEL_189;
     }
@@ -2162,7 +2162,7 @@ LABEL_81:
   if (v42)
   {
     nowPlayingAbsoluteCount10Min = self->_nowPlayingAbsoluteCount10Min;
-    if (nowPlayingAbsoluteCount10Min != [v4 nowPlayingAbsoluteCount10Min])
+    if (nowPlayingAbsoluteCount10Min != [equalCopy nowPlayingAbsoluteCount10Min])
     {
       goto LABEL_189;
     }
@@ -2180,7 +2180,7 @@ LABEL_81:
   if (v44)
   {
     nowPlayingAbsoluteCount1Hr = self->_nowPlayingAbsoluteCount1Hr;
-    if (nowPlayingAbsoluteCount1Hr != [v4 nowPlayingAbsoluteCount1Hr])
+    if (nowPlayingAbsoluteCount1Hr != [equalCopy nowPlayingAbsoluteCount1Hr])
     {
       goto LABEL_189;
     }
@@ -2198,7 +2198,7 @@ LABEL_81:
   if (v46)
   {
     nowPlayingAbsoluteCount6Hr = self->_nowPlayingAbsoluteCount6Hr;
-    if (nowPlayingAbsoluteCount6Hr != [v4 nowPlayingAbsoluteCount6Hr])
+    if (nowPlayingAbsoluteCount6Hr != [equalCopy nowPlayingAbsoluteCount6Hr])
     {
       goto LABEL_189;
     }
@@ -2216,7 +2216,7 @@ LABEL_81:
   if (v48)
   {
     nowPlayingAbsoluteCount1Day = self->_nowPlayingAbsoluteCount1Day;
-    if (nowPlayingAbsoluteCount1Day != [v4 nowPlayingAbsoluteCount1Day])
+    if (nowPlayingAbsoluteCount1Day != [equalCopy nowPlayingAbsoluteCount1Day])
     {
       goto LABEL_189;
     }
@@ -2234,7 +2234,7 @@ LABEL_81:
   if (v50)
   {
     nowPlayingAbsoluteCount7Day = self->_nowPlayingAbsoluteCount7Day;
-    if (nowPlayingAbsoluteCount7Day != [v4 nowPlayingAbsoluteCount7Day])
+    if (nowPlayingAbsoluteCount7Day != [equalCopy nowPlayingAbsoluteCount7Day])
     {
       goto LABEL_189;
     }
@@ -2252,7 +2252,7 @@ LABEL_81:
   if (v52)
   {
     nowPlayingAbsoluteCount14Day = self->_nowPlayingAbsoluteCount14Day;
-    if (nowPlayingAbsoluteCount14Day != [v4 nowPlayingAbsoluteCount14Day])
+    if (nowPlayingAbsoluteCount14Day != [equalCopy nowPlayingAbsoluteCount14Day])
     {
       goto LABEL_189;
     }
@@ -2270,7 +2270,7 @@ LABEL_81:
   if (v54)
   {
     nowPlayingAbsoluteCount28Day = self->_nowPlayingAbsoluteCount28Day;
-    if (nowPlayingAbsoluteCount28Day != [v4 nowPlayingAbsoluteCount28Day])
+    if (nowPlayingAbsoluteCount28Day != [equalCopy nowPlayingAbsoluteCount28Day])
     {
       goto LABEL_189;
     }
@@ -2288,7 +2288,7 @@ LABEL_81:
   if (v56)
   {
     isNowPlayingApp = self->_isNowPlayingApp;
-    if (isNowPlayingApp != [v4 isNowPlayingApp])
+    if (isNowPlayingApp != [equalCopy isNowPlayingApp])
     {
       goto LABEL_189;
     }
@@ -2306,7 +2306,7 @@ LABEL_81:
   if (v58)
   {
     isSelectedApp = self->_isSelectedApp;
-    if (isSelectedApp != [v4 isSelectedApp])
+    if (isSelectedApp != [equalCopy isSelectedApp])
     {
       goto LABEL_189;
     }
@@ -2324,7 +2324,7 @@ LABEL_81:
   if (v60)
   {
     timeSinceLastForegroundAppStartInSec = self->_timeSinceLastForegroundAppStartInSec;
-    if (timeSinceLastForegroundAppStartInSec != [v4 timeSinceLastForegroundAppStartInSec])
+    if (timeSinceLastForegroundAppStartInSec != [equalCopy timeSinceLastForegroundAppStartInSec])
     {
       goto LABEL_189;
     }
@@ -2342,7 +2342,7 @@ LABEL_81:
   if (v62)
   {
     timeSinceLastForegroundAppEndInSec = self->_timeSinceLastForegroundAppEndInSec;
-    if (timeSinceLastForegroundAppEndInSec != [v4 timeSinceLastForegroundAppEndInSec])
+    if (timeSinceLastForegroundAppEndInSec != [equalCopy timeSinceLastForegroundAppEndInSec])
     {
       goto LABEL_189;
     }
@@ -2360,7 +2360,7 @@ LABEL_81:
   if (v64)
   {
     timeSinceLastNowPlayingAppStartInSec = self->_timeSinceLastNowPlayingAppStartInSec;
-    if (timeSinceLastNowPlayingAppStartInSec != [v4 timeSinceLastNowPlayingAppStartInSec])
+    if (timeSinceLastNowPlayingAppStartInSec != [equalCopy timeSinceLastNowPlayingAppStartInSec])
     {
       goto LABEL_189;
     }
@@ -2378,7 +2378,7 @@ LABEL_81:
   if (v66)
   {
     timeSinceLastNowPlayingAppEndInSec = self->_timeSinceLastNowPlayingAppEndInSec;
-    if (timeSinceLastNowPlayingAppEndInSec != [v4 timeSinceLastNowPlayingAppEndInSec])
+    if (timeSinceLastNowPlayingAppEndInSec != [equalCopy timeSinceLastNowPlayingAppEndInSec])
     {
       goto LABEL_189;
     }
@@ -2396,7 +2396,7 @@ LABEL_81:
   if (v68)
   {
     spotlightRelativeCount = self->_spotlightRelativeCount;
-    if (spotlightRelativeCount != [v4 spotlightRelativeCount])
+    if (spotlightRelativeCount != [equalCopy spotlightRelativeCount])
     {
       goto LABEL_189;
     }
@@ -2413,14 +2413,14 @@ LABEL_81:
   if ((has & 0x80000000) != 0)
   {
     supportedMediaCategories = self->_supportedMediaCategories;
-    if (supportedMediaCategories != [v4 supportedMediaCategories])
+    if (supportedMediaCategories != [equalCopy supportedMediaCategories])
     {
       goto LABEL_189;
     }
   }
 
   v71 = *(&self->_has + 2);
-  v72 = *(v4 + 100);
+  v72 = *(equalCopy + 100);
   if ((v71 & 1) != (v72 & 1))
   {
     goto LABEL_189;
@@ -2429,13 +2429,13 @@ LABEL_81:
   if (v71)
   {
     isForegroundApp = self->_isForegroundApp;
-    if (isForegroundApp != [v4 isForegroundApp])
+    if (isForegroundApp != [equalCopy isForegroundApp])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v74 = (v71 >> 1) & 1;
@@ -2447,13 +2447,13 @@ LABEL_81:
   if (v74)
   {
     entityPartialSiriCount2Min = self->_entityPartialSiriCount2Min;
-    if (entityPartialSiriCount2Min != [v4 entityPartialSiriCount2Min])
+    if (entityPartialSiriCount2Min != [equalCopy entityPartialSiriCount2Min])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v76 = (v71 >> 2) & 1;
@@ -2465,13 +2465,13 @@ LABEL_81:
   if (v76)
   {
     entityPartialSiriCount10Min = self->_entityPartialSiriCount10Min;
-    if (entityPartialSiriCount10Min != [v4 entityPartialSiriCount10Min])
+    if (entityPartialSiriCount10Min != [equalCopy entityPartialSiriCount10Min])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v78 = (v71 >> 3) & 1;
@@ -2483,13 +2483,13 @@ LABEL_81:
   if (v78)
   {
     entityPartialSiriCount1Hr = self->_entityPartialSiriCount1Hr;
-    if (entityPartialSiriCount1Hr != [v4 entityPartialSiriCount1Hr])
+    if (entityPartialSiriCount1Hr != [equalCopy entityPartialSiriCount1Hr])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v80 = (v71 >> 4) & 1;
@@ -2501,13 +2501,13 @@ LABEL_81:
   if (v80)
   {
     entityPartialSiriCount6Hr = self->_entityPartialSiriCount6Hr;
-    if (entityPartialSiriCount6Hr != [v4 entityPartialSiriCount6Hr])
+    if (entityPartialSiriCount6Hr != [equalCopy entityPartialSiriCount6Hr])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v82 = (v71 >> 5) & 1;
@@ -2519,13 +2519,13 @@ LABEL_81:
   if (v82)
   {
     entityPartialSiriCount1Day = self->_entityPartialSiriCount1Day;
-    if (entityPartialSiriCount1Day != [v4 entityPartialSiriCount1Day])
+    if (entityPartialSiriCount1Day != [equalCopy entityPartialSiriCount1Day])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v84 = (v71 >> 6) & 1;
@@ -2537,13 +2537,13 @@ LABEL_81:
   if (v84)
   {
     entityPartialSiriCount7Day = self->_entityPartialSiriCount7Day;
-    if (entityPartialSiriCount7Day != [v4 entityPartialSiriCount7Day])
+    if (entityPartialSiriCount7Day != [equalCopy entityPartialSiriCount7Day])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v86 = (v71 >> 7) & 1;
@@ -2555,13 +2555,13 @@ LABEL_81:
   if (v86)
   {
     entityPartialSiriCount28Day = self->_entityPartialSiriCount28Day;
-    if (entityPartialSiriCount28Day != [v4 entityPartialSiriCount28Day])
+    if (entityPartialSiriCount28Day != [equalCopy entityPartialSiriCount28Day])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v88 = (v71 >> 8) & 1;
@@ -2573,13 +2573,13 @@ LABEL_81:
   if (v88)
   {
     entityPartialAppCount2Min = self->_entityPartialAppCount2Min;
-    if (entityPartialAppCount2Min != [v4 entityPartialAppCount2Min])
+    if (entityPartialAppCount2Min != [equalCopy entityPartialAppCount2Min])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v90 = (v71 >> 9) & 1;
@@ -2591,13 +2591,13 @@ LABEL_81:
   if (v90)
   {
     entityPartialAppCount10Min = self->_entityPartialAppCount10Min;
-    if (entityPartialAppCount10Min != [v4 entityPartialAppCount10Min])
+    if (entityPartialAppCount10Min != [equalCopy entityPartialAppCount10Min])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v92 = (v71 >> 10) & 1;
@@ -2609,13 +2609,13 @@ LABEL_81:
   if (v92)
   {
     entityPartialAppCount1Hr = self->_entityPartialAppCount1Hr;
-    if (entityPartialAppCount1Hr != [v4 entityPartialAppCount1Hr])
+    if (entityPartialAppCount1Hr != [equalCopy entityPartialAppCount1Hr])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v94 = (v71 >> 11) & 1;
@@ -2627,13 +2627,13 @@ LABEL_81:
   if (v94)
   {
     entityPartialAppCount6Hr = self->_entityPartialAppCount6Hr;
-    if (entityPartialAppCount6Hr != [v4 entityPartialAppCount6Hr])
+    if (entityPartialAppCount6Hr != [equalCopy entityPartialAppCount6Hr])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v96 = (v71 >> 12) & 1;
@@ -2645,13 +2645,13 @@ LABEL_81:
   if (v96)
   {
     entityPartialAppCount1Day = self->_entityPartialAppCount1Day;
-    if (entityPartialAppCount1Day != [v4 entityPartialAppCount1Day])
+    if (entityPartialAppCount1Day != [equalCopy entityPartialAppCount1Day])
     {
       goto LABEL_189;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 100);
+    v72 = *(equalCopy + 100);
   }
 
   v98 = (v71 >> 13) & 1;
@@ -2663,10 +2663,10 @@ LABEL_81:
   if (v98)
   {
     entityPartialAppCount7Day = self->_entityPartialAppCount7Day;
-    if (entityPartialAppCount7Day == [v4 entityPartialAppCount7Day])
+    if (entityPartialAppCount7Day == [equalCopy entityPartialAppCount7Day])
     {
       v71 = *(&self->_has + 2);
-      v72 = *(v4 + 100);
+      v72 = *(equalCopy + 100);
       goto LABEL_185;
     }
 
@@ -2685,7 +2685,7 @@ LABEL_185:
   if (v100)
   {
     entityPartialAppCount28Day = self->_entityPartialAppCount28Day;
-    if (entityPartialAppCount28Day != [v4 entityPartialAppCount28Day])
+    if (entityPartialAppCount28Day != [equalCopy entityPartialAppCount28Day])
     {
       goto LABEL_189;
     }
@@ -2697,9 +2697,9 @@ LABEL_190:
   return v102;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if (has)
@@ -3338,9 +3338,9 @@ LABEL_48:
 LABEL_49:
 }
 
-- (void)setHasEntityPartialAppCount28Day:(BOOL)a3
+- (void)setHasEntityPartialAppCount28Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x4000;
   }
@@ -3353,9 +3353,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xBFFF | v3;
 }
 
-- (void)setHasEntityPartialAppCount7Day:(BOOL)a3
+- (void)setHasEntityPartialAppCount7Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x2000;
   }
@@ -3368,9 +3368,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xDFFF | v3;
 }
 
-- (void)setHasEntityPartialAppCount1Day:(BOOL)a3
+- (void)setHasEntityPartialAppCount1Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 4096;
   }
@@ -3383,9 +3383,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xEFFF | v3;
 }
 
-- (void)setHasEntityPartialAppCount6Hr:(BOOL)a3
+- (void)setHasEntityPartialAppCount6Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 2048;
   }
@@ -3398,9 +3398,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xF7FF | v3;
 }
 
-- (void)setHasEntityPartialAppCount1Hr:(BOOL)a3
+- (void)setHasEntityPartialAppCount1Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 1024;
   }
@@ -3413,9 +3413,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFBFF | v3;
 }
 
-- (void)setHasEntityPartialAppCount10Min:(BOOL)a3
+- (void)setHasEntityPartialAppCount10Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 512;
   }
@@ -3428,9 +3428,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFDFF | v3;
 }
 
-- (void)setHasEntityPartialAppCount2Min:(BOOL)a3
+- (void)setHasEntityPartialAppCount2Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 256;
   }
@@ -3443,9 +3443,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFEFF | v3;
 }
 
-- (void)setHasEntityPartialSiriCount28Day:(BOOL)a3
+- (void)setHasEntityPartialSiriCount28Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 128;
   }
@@ -3458,9 +3458,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFF7F | v3;
 }
 
-- (void)setHasEntityPartialSiriCount7Day:(BOOL)a3
+- (void)setHasEntityPartialSiriCount7Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 64;
   }
@@ -3473,9 +3473,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFBF | v3;
 }
 
-- (void)setHasEntityPartialSiriCount1Day:(BOOL)a3
+- (void)setHasEntityPartialSiriCount1Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 32;
   }
@@ -3488,9 +3488,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFDF | v3;
 }
 
-- (void)setHasEntityPartialSiriCount6Hr:(BOOL)a3
+- (void)setHasEntityPartialSiriCount6Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 16;
   }
@@ -3503,9 +3503,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFEF | v3;
 }
 
-- (void)setHasEntityPartialSiriCount1Hr:(BOOL)a3
+- (void)setHasEntityPartialSiriCount1Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 8;
   }
@@ -3518,9 +3518,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFF7 | v3;
 }
 
-- (void)setHasEntityPartialSiriCount10Min:(BOOL)a3
+- (void)setHasEntityPartialSiriCount10Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 4;
   }
@@ -3533,9 +3533,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFB | v3;
 }
 
-- (void)setHasEntityPartialSiriCount2Min:(BOOL)a3
+- (void)setHasEntityPartialSiriCount2Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 2;
   }
@@ -3548,9 +3548,9 @@ LABEL_49:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFD | v3;
 }
 
-- (void)setHasSupportedMediaCategories:(BOOL)a3
+- (void)setHasSupportedMediaCategories:(BOOL)categories
 {
-  if (a3)
+  if (categories)
   {
     v3 = 0x80000000;
   }
@@ -3563,9 +3563,9 @@ LABEL_49:
   *&self->_has = v3 & 0x80000000 | *&self->_has & 0x7FFFFFFF;
 }
 
-- (void)setHasSpotlightRelativeCount:(BOOL)a3
+- (void)setHasSpotlightRelativeCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x40000000;
   }
@@ -3578,9 +3578,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xBFFFFFFF | v3;
 }
 
-- (void)setHasTimeSinceLastNowPlayingAppEndInSec:(BOOL)a3
+- (void)setHasTimeSinceLastNowPlayingAppEndInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x20000000;
   }
@@ -3593,9 +3593,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xDFFFFFFF | v3;
 }
 
-- (void)setHasTimeSinceLastNowPlayingAppStartInSec:(BOOL)a3
+- (void)setHasTimeSinceLastNowPlayingAppStartInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x10000000;
   }
@@ -3608,9 +3608,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xEFFFFFFF | v3;
 }
 
-- (void)setHasTimeSinceLastForegroundAppEndInSec:(BOOL)a3
+- (void)setHasTimeSinceLastForegroundAppEndInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x8000000;
   }
@@ -3623,9 +3623,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xF7FFFFFF | v3;
 }
 
-- (void)setHasTimeSinceLastForegroundAppStartInSec:(BOOL)a3
+- (void)setHasTimeSinceLastForegroundAppStartInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x4000000;
   }
@@ -3638,9 +3638,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFBFFFFFF | v3;
 }
 
-- (void)setHasIsSelectedApp:(BOOL)a3
+- (void)setHasIsSelectedApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 0x2000000;
   }
@@ -3653,9 +3653,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFDFFFFFF | v3;
 }
 
-- (void)setHasIsNowPlayingApp:(BOOL)a3
+- (void)setHasIsNowPlayingApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 0x1000000;
   }
@@ -3668,9 +3668,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFEFFFFFF | v3;
 }
 
-- (void)setHasNowPlayingAbsoluteCount28Day:(BOOL)a3
+- (void)setHasNowPlayingAbsoluteCount28Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x800000;
   }
@@ -3683,9 +3683,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFF7FFFFF | v3;
 }
 
-- (void)setHasNowPlayingAbsoluteCount14Day:(BOOL)a3
+- (void)setHasNowPlayingAbsoluteCount14Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x400000;
   }
@@ -3698,9 +3698,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFBFFFFF | v3;
 }
 
-- (void)setHasNowPlayingAbsoluteCount7Day:(BOOL)a3
+- (void)setHasNowPlayingAbsoluteCount7Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x200000;
   }
@@ -3713,9 +3713,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFDFFFFF | v3;
 }
 
-- (void)setHasNowPlayingAbsoluteCount1Day:(BOOL)a3
+- (void)setHasNowPlayingAbsoluteCount1Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x100000;
   }
@@ -3728,9 +3728,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFEFFFFF | v3;
 }
 
-- (void)setHasNowPlayingAbsoluteCount6Hr:(BOOL)a3
+- (void)setHasNowPlayingAbsoluteCount6Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 0x80000;
   }
@@ -3743,9 +3743,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFF7FFFF | v3;
 }
 
-- (void)setHasNowPlayingAbsoluteCount1Hr:(BOOL)a3
+- (void)setHasNowPlayingAbsoluteCount1Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 0x40000;
   }
@@ -3758,9 +3758,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFBFFFF | v3;
 }
 
-- (void)setHasNowPlayingAbsoluteCount10Min:(BOOL)a3
+- (void)setHasNowPlayingAbsoluteCount10Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 0x20000;
   }
@@ -3773,9 +3773,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFDFFFF | v3;
 }
 
-- (void)setHasNowPlayingAbsoluteCount2Min:(BOOL)a3
+- (void)setHasNowPlayingAbsoluteCount2Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 0x10000;
   }
@@ -3788,9 +3788,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFEFFFF | v3;
 }
 
-- (void)setHasIsLastNowPlayingApp:(BOOL)a3
+- (void)setHasIsLastNowPlayingApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 0x8000;
   }
@@ -3803,9 +3803,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFF7FFF | v3;
 }
 
-- (void)setHasIsLastForegroundApp:(BOOL)a3
+- (void)setHasIsLastForegroundApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 0x4000;
   }
@@ -3818,9 +3818,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFBFFF | v3;
 }
 
-- (void)setHasMediaUserContextSubscriptionStatus:(BOOL)a3
+- (void)setHasMediaUserContextSubscriptionStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x2000;
   }
@@ -3833,9 +3833,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFDFFF | v3;
 }
 
-- (void)setHasMediaUserContextNumberOfLibraryItems:(BOOL)a3
+- (void)setHasMediaUserContextNumberOfLibraryItems:(BOOL)items
 {
-  if (a3)
+  if (items)
   {
     v3 = 4096;
   }
@@ -3848,9 +3848,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFEFFF | v3;
 }
 
-- (void)setHasEntityRecency:(BOOL)a3
+- (void)setHasEntityRecency:(BOOL)recency
 {
-  if (a3)
+  if (recency)
   {
     v3 = 2048;
   }
@@ -3863,9 +3863,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFF7FF | v3;
 }
 
-- (void)setHasEntityAbsoluteCount28Day:(BOOL)a3
+- (void)setHasEntityAbsoluteCount28Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 1024;
   }
@@ -3878,9 +3878,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFBFF | v3;
 }
 
-- (void)setHasEntityAbsoluteCount14Day:(BOOL)a3
+- (void)setHasEntityAbsoluteCount14Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 512;
   }
@@ -3893,9 +3893,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFDFF | v3;
 }
 
-- (void)setHasEntityAbsoluteCount7Day:(BOOL)a3
+- (void)setHasEntityAbsoluteCount7Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 256;
   }
@@ -3908,9 +3908,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFEFF | v3;
 }
 
-- (void)setHasEntityAbsoluteCount1Day:(BOOL)a3
+- (void)setHasEntityAbsoluteCount1Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 128;
   }
@@ -3923,9 +3923,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFF7F | v3;
 }
 
-- (void)setHasEntityAbsoluteCount6Hr:(BOOL)a3
+- (void)setHasEntityAbsoluteCount6Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 64;
   }
@@ -3938,9 +3938,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFFBF | v3;
 }
 
-- (void)setHasEntityAbsoluteCount1Hr:(BOOL)a3
+- (void)setHasEntityAbsoluteCount1Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 32;
   }
@@ -3953,9 +3953,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFFDF | v3;
 }
 
-- (void)setHasEntityAbsoluteCount10Min:(BOOL)a3
+- (void)setHasEntityAbsoluteCount10Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 16;
   }
@@ -3968,9 +3968,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFFEF | v3;
 }
 
-- (void)setHasEntityAbsoluteCount2Min:(BOOL)a3
+- (void)setHasEntityAbsoluteCount2Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 8;
   }
@@ -3983,9 +3983,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFFF7 | v3;
 }
 
-- (void)setHasRelativeAppUsage14Day:(BOOL)a3
+- (void)setHasRelativeAppUsage14Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 4;
   }
@@ -3998,9 +3998,9 @@ LABEL_49:
   *&self->_has = *&self->_has & 0xFFFFFFFB | v3;
 }
 
-- (void)setHasRelativeAppUsage7Day:(BOOL)a3
+- (void)setHasRelativeAppUsage7Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 2;
   }

@@ -1,23 +1,23 @@
 @interface AXSDVoiceTriggerModelManager
-- (AXSDVoiceTriggerModelManager)initWithError:(id *)a3;
+- (AXSDVoiceTriggerModelManager)initWithError:(id *)error;
 - (AXSDVoiceTriggerModelManagerDelegate)delegate;
-- (id)_readConfigFileWithError:(id *)a3;
+- (id)_readConfigFileWithError:(id *)error;
 - (void)_startListening;
-- (void)_startListeningWithFormat:(id)a3;
-- (void)_stopListeningWithError:(id)a3;
-- (void)modelDidUpdate:(id)a3 assetVersion:(unint64_t)a4 withError:(id)a5;
-- (void)processAudioBuffer:(id)a3 atTime:(id)a4;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
+- (void)_startListeningWithFormat:(id)format;
+- (void)_stopListeningWithError:(id)error;
+- (void)modelDidUpdate:(id)update assetVersion:(unint64_t)version withError:(id)error;
+- (void)processAudioBuffer:(id)buffer atTime:(id)time;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
 - (void)startListening;
-- (void)startListeningWithFormat:(id)a3;
+- (void)startListeningWithFormat:(id)format;
 - (void)stopListening;
-- (void)stopListeningWithError:(id)a3;
+- (void)stopListeningWithError:(id)error;
 @end
 
 @implementation AXSDVoiceTriggerModelManager
 
-- (AXSDVoiceTriggerModelManager)initWithError:(id *)a3
+- (AXSDVoiceTriggerModelManager)initWithError:(id *)error
 {
   v13.receiver = self;
   v13.super_class = AXSDVoiceTriggerModelManager;
@@ -45,23 +45,23 @@
   return v4;
 }
 
-- (void)startListeningWithFormat:(id)a3
+- (void)startListeningWithFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   analyzerQueue = self->_analyzerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__AXSDVoiceTriggerModelManager_startListeningWithFormat___block_invoke;
   v7[3] = &unk_278BDD2C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = formatCopy;
+  v6 = formatCopy;
   dispatch_async(analyzerQueue, v7);
 }
 
-- (void)_startListeningWithFormat:(id)a3
+- (void)_startListeningWithFormat:(id)format
 {
-  objc_storeStrong(&self->_format, a3);
+  objc_storeStrong(&self->_format, format);
   self->_startRequested = 1;
   if (self->_assetPath)
   {
@@ -85,25 +85,25 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23D62D000, a2, OS_LOG_TYPE_ERROR, "Unable to add request to stream analyzer: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processAudioBuffer:(id)a3 atTime:(id)a4
+- (void)processAudioBuffer:(id)buffer atTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  timeCopy = time;
   analyzerQueue = self->_analyzerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__AXSDVoiceTriggerModelManager_processAudioBuffer_atTime___block_invoke;
   block[3] = &unk_278BDD338;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bufferCopy;
+  v13 = timeCopy;
+  v9 = timeCopy;
+  v10 = bufferCopy;
   dispatch_async(analyzerQueue, block);
 }
 
@@ -127,7 +127,7 @@ uint64_t __58__AXSDVoiceTriggerModelManager_processAudioBuffer_atTime___block_in
   dispatch_async(analyzerQueue, block);
 }
 
-- (void)stopListeningWithError:(id)a3
+- (void)stopListeningWithError:(id)error
 {
   analyzerQueue = self->_analyzerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -138,59 +138,59 @@ uint64_t __58__AXSDVoiceTriggerModelManager_processAudioBuffer_atTime___block_in
   dispatch_async(analyzerQueue, block);
 }
 
-- (void)_stopListeningWithError:(id)a3
+- (void)_stopListeningWithError:(id)error
 {
   self->_startRequested = 0;
   streamAnalyzer = self->_streamAnalyzer;
-  v5 = a3;
+  errorCopy = error;
   [(SNAudioStreamAnalyzer *)streamAnalyzer removeAllRequests];
   v6 = self->_streamAnalyzer;
   self->_streamAnalyzer = 0;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained listeningStoppedWithError:v5];
+  [WeakRetained listeningStoppedWithError:errorCopy];
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  resultCopy = result;
   v8 = AXLogSoundActions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [AXSDVoiceTriggerModelManager request:v7 didProduceResult:v8];
+    [AXSDVoiceTriggerModelManager request:resultCopy didProduceResult:v8];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(AXSDVoiceTriggerModelManager *)self delegate];
-    [v9 receivedObservation:v7 forDetector:v6];
+    delegate = [(AXSDVoiceTriggerModelManager *)self delegate];
+    [delegate receivedObservation:resultCopy forDetector:requestCopy];
   }
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v8 = AXLogSoundActions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(AXSDVoiceTriggerModelManager *)v6 request:v7 didFailWithError:v8];
+    [(AXSDVoiceTriggerModelManager *)requestCopy request:errorCopy didFailWithError:v8];
   }
 
-  v9 = [(AXSDVoiceTriggerModelManager *)self delegate];
-  [v9 receivedError:v7 fromDetector:v6];
+  delegate = [(AXSDVoiceTriggerModelManager *)self delegate];
+  [delegate receivedError:errorCopy fromDetector:requestCopy];
 }
 
-- (id)_readConfigFileWithError:(id *)a3
+- (id)_readConfigFileWithError:(id *)error
 {
   v4 = [(NSURL *)self->_assetPath URLByAppendingPathComponent:@"VoiceTriggerConfig"];
   v5 = [v4 URLByAppendingPathExtension:@"json"];
 
   if (!v5)
   {
-    if (!a3)
+    if (!error)
     {
       v8 = 0;
       goto LABEL_14;
@@ -201,14 +201,14 @@ uint64_t __58__AXSDVoiceTriggerModelManager_processAudioBuffer_atTime___block_in
 LABEL_10:
     [v12 ax_errorWithDomain:@"VoiceTrigger" description:{v13, v16}];
     v8 = 0;
-    *a3 = v14 = 0;
+    *error = v14 = 0;
     goto LABEL_17;
   }
 
   v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v5];
   if (!v6)
   {
-    if (!a3)
+    if (!error)
     {
       v8 = 0;
       goto LABEL_16;
@@ -225,7 +225,7 @@ LABEL_10:
   v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:&v17];
   v9 = v17;
   v10 = v9;
-  if (!a3 || !v9)
+  if (!error || !v9)
   {
 
     if (v10)
@@ -240,7 +240,7 @@ LABEL_14:
   }
 
   v11 = v9;
-  *a3 = v10;
+  *error = v10;
 
 LABEL_16:
   v14 = 0;
@@ -249,12 +249,12 @@ LABEL_17:
   return v14;
 }
 
-- (void)modelDidUpdate:(id)a3 assetVersion:(unint64_t)a4 withError:(id)a5
+- (void)modelDidUpdate:(id)update assetVersion:(unint64_t)version withError:(id)error
 {
-  v6 = a3;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  updateCopy = update;
+  errorCopy = error;
+  v7 = errorCopy;
+  v8 = updateCopy;
   AXPerformBlockOnMainThread();
 }
 

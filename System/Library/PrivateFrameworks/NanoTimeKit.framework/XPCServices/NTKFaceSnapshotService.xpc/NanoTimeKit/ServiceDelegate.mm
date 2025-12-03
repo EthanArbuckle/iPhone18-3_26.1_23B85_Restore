@@ -1,6 +1,6 @@
 @interface ServiceDelegate
 + (id)sharedQueue;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
@@ -17,21 +17,21 @@
   return v3;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = +[NSXPCInterface faceSnapshotServiceInterface];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
   v8 = objc_opt_new();
-  [v6 setExportedObject:v8];
+  [connectionCopy setExportedObject:v8];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = sub_100001078;
   v13[4] = sub_100001088;
-  v9 = v6;
+  v9 = connectionCopy;
   v14 = v9;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;

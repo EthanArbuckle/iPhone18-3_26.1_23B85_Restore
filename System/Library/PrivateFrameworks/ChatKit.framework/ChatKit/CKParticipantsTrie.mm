@@ -1,38 +1,38 @@
 @interface CKParticipantsTrie
-- (BOOL)_trieContainsEntity:(id)a3;
-- (BOOL)hasPrefix:(id)a3;
-- (CKParticipantsTrie)initWithKey:(id)a3;
-- (id)_composedCharactersForString:(id)a3 appendRootKey:(BOOL)a4;
-- (id)_lastNodeForString:(id)a3;
-- (id)entitiesForPrefix:(id)a3;
-- (id)rawHandlesForParticipantName:(id)a3;
-- (void)_addEntity:(id)a3 named:(id)a4 forCharacters:(id)a5;
-- (void)addParticipantName:(id)a3 entity:(id)a4;
-- (void)loadHandleEntityFromLastNode:(id)a3 intoResult:(id)a4;
+- (BOOL)_trieContainsEntity:(id)entity;
+- (BOOL)hasPrefix:(id)prefix;
+- (CKParticipantsTrie)initWithKey:(id)key;
+- (id)_composedCharactersForString:(id)string appendRootKey:(BOOL)key;
+- (id)_lastNodeForString:(id)string;
+- (id)entitiesForPrefix:(id)prefix;
+- (id)rawHandlesForParticipantName:(id)name;
+- (void)_addEntity:(id)entity named:(id)named forCharacters:(id)characters;
+- (void)addParticipantName:(id)name entity:(id)entity;
+- (void)loadHandleEntityFromLastNode:(id)node intoResult:(id)result;
 @end
 
 @implementation CKParticipantsTrie
 
-- (CKParticipantsTrie)initWithKey:(id)a3
+- (CKParticipantsTrie)initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = CKParticipantsTrie;
   v6 = [(CKParticipantsTrie *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_key, a3);
+    objc_storeStrong(&v6->_key, key);
   }
 
   return v7;
 }
 
-- (void)addParticipantName:(id)a3 entity:(id)a4
+- (void)addParticipantName:(id)name entity:(id)entity
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11 && v6)
+  nameCopy = name;
+  entityCopy = entity;
+  if (nameCopy && entityCopy)
   {
     if (!self->_children)
     {
@@ -41,33 +41,33 @@
       self->_children = v7;
     }
 
-    v9 = [v11 lowercaseString];
-    v10 = [(CKParticipantsTrie *)self _composedCharactersForString:v9 appendRootKey:1];
-    [(CKParticipantsTrie *)self _addEntity:v6 named:v9 forCharacters:v10];
+    lowercaseString = [nameCopy lowercaseString];
+    v10 = [(CKParticipantsTrie *)self _composedCharactersForString:lowercaseString appendRootKey:1];
+    [(CKParticipantsTrie *)self _addEntity:entityCopy named:lowercaseString forCharacters:v10];
   }
 }
 
-- (BOOL)hasPrefix:(id)a3
+- (BOOL)hasPrefix:(id)prefix
 {
-  v3 = [(CKParticipantsTrie *)self _lastNodeForString:a3];
+  v3 = [(CKParticipantsTrie *)self _lastNodeForString:prefix];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)rawHandlesForParticipantName:(id)a3
+- (id)rawHandlesForParticipantName:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(CKParticipantsTrie *)self _lastNodeForString:v4, 0];
-  v7 = [v6 entities];
+  v6 = [(CKParticipantsTrie *)self _lastNodeForString:nameCopy, 0];
+  entities = [v6 entities];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [entities countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -78,15 +78,15 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(entities);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) defaultIMHandle];
-        v13 = [v12 ID];
+        defaultIMHandle = [*(*(&v16 + 1) + 8 * i) defaultIMHandle];
+        v13 = [defaultIMHandle ID];
         [v5 addObject:v13];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [entities countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -105,21 +105,21 @@
   return v14;
 }
 
-- (id)entitiesForPrefix:(id)a3
+- (id)entitiesForPrefix:(id)prefix
 {
-  v4 = a3;
-  if ([(CKParticipantsTrie *)self hasPrefix:v4])
+  prefixCopy = prefix;
+  if ([(CKParticipantsTrie *)self hasPrefix:prefixCopy])
   {
     v5 = objc_opt_new();
-    v6 = [(CKParticipantsTrie *)self _lastNodeForString:v4];
+    v6 = [(CKParticipantsTrie *)self _lastNodeForString:prefixCopy];
     [(CKParticipantsTrie *)self loadHandleEntityFromLastNode:v6 intoResult:v5];
 
     v7 = [v5 sortedArrayUsingComparator:&__block_literal_global_193];
     if (![v5 count])
     {
       v9 = MEMORY[0x1E695DF30];
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No trie node values for valid prefix: [%@]", v4];
-      v11 = [v9 exceptionWithName:@"CKParticipantsTrie/NodeValuesIntegrityError" reason:v10 userInfo:0];
+      prefixCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No trie node values for valid prefix: [%@]", prefixCopy];
+      v11 = [v9 exceptionWithName:@"CKParticipantsTrie/NodeValuesIntegrityError" reason:prefixCopy userInfo:0];
 
       objc_exception_throw(v11);
     }
@@ -143,25 +143,25 @@ uint64_t __40__CKParticipantsTrie_entitiesForPrefix___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (id)_composedCharactersForString:(id)a3 appendRootKey:(BOOL)a4
+- (id)_composedCharactersForString:(id)string appendRootKey:(BOOL)key
 {
-  v4 = a4;
-  v6 = a3;
+  keyCopy = key;
+  stringCopy = string;
   v7 = objc_opt_new();
-  if (v4)
+  if (keyCopy)
   {
     v8 = [(CKParticipantsTrie *)self key];
     [v7 addObject:v8];
   }
 
-  v9 = [v6 length];
+  v9 = [stringCopy length];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__CKParticipantsTrie__composedCharactersForString_appendRootKey___block_invoke;
   v12[3] = &unk_1E72F52B0;
   v10 = v7;
   v13 = v10;
-  [v6 enumerateSubstringsInRange:0 options:v9 usingBlock:{2, v12}];
+  [stringCopy enumerateSubstringsInRange:0 options:v9 usingBlock:{2, v12}];
 
   return v10;
 }
@@ -176,14 +176,14 @@ uint64_t __65__CKParticipantsTrie__composedCharactersForString_appendRootKey___b
   return result;
 }
 
-- (void)_addEntity:(id)a3 named:(id)a4 forCharacters:(id)a5
+- (void)_addEntity:(id)entity named:(id)named forCharacters:(id)characters
 {
   v32 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 firstObject];
-  [v9 removeFirstObject];
+  entityCopy = entity;
+  namedCopy = named;
+  charactersCopy = characters;
+  firstObject = [charactersCopy firstObject];
+  [charactersCopy removeFirstObject];
   [(CKParticipantsTrie *)self children];
   v27 = 0u;
   v28 = 0u;
@@ -205,7 +205,7 @@ LABEL_3:
 
       v16 = *(*(&v27 + 1) + 8 * v15);
       v17 = [v16 key];
-      v18 = [v17 isEqualToString:v10];
+      v18 = [v17 isEqualToString:firstObject];
 
       if (v18)
       {
@@ -237,58 +237,58 @@ LABEL_3:
 LABEL_9:
   }
 
-  v19 = [[CKParticipantsTrie alloc] initWithKey:v10];
+  v19 = [[CKParticipantsTrie alloc] initWithKey:firstObject];
   [v11 addObject:v19];
 LABEL_12:
-  if (![v9 count])
+  if (![charactersCopy count])
   {
-    v22 = [(CKParticipantsTrie *)v19 entities];
+    entities = [(CKParticipantsTrie *)v19 entities];
 
-    if (v22)
+    if (entities)
     {
-      v23 = [(CKParticipantsTrie *)v19 entities];
-      v24 = [v23 containsObject:v26];
+      entities2 = [(CKParticipantsTrie *)v19 entities];
+      v24 = [entities2 containsObject:entityCopy];
 
       if (v24)
       {
         goto LABEL_21;
       }
 
-      v25 = [(CKParticipantsTrie *)v19 entities];
-      [v25 addObject:v26];
+      entities3 = [(CKParticipantsTrie *)v19 entities];
+      [entities3 addObject:entityCopy];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DF70] arrayWithObject:v26];
-      [(CKParticipantsTrie *)v19 setEntities:v25];
+      entities3 = [MEMORY[0x1E695DF70] arrayWithObject:entityCopy];
+      [(CKParticipantsTrie *)v19 setEntities:entities3];
     }
 
     goto LABEL_21;
   }
 
-  v20 = [(CKParticipantsTrie *)v19 children];
+  children = [(CKParticipantsTrie *)v19 children];
 
-  if (!v20)
+  if (!children)
   {
     v21 = objc_opt_new();
     [(CKParticipantsTrie *)v19 setChildren:v21];
   }
 
-  [(CKParticipantsTrie *)v19 _addEntity:v26 named:v8 forCharacters:v9];
+  [(CKParticipantsTrie *)v19 _addEntity:entityCopy named:namedCopy forCharacters:charactersCopy];
 LABEL_21:
 }
 
-- (BOOL)_trieContainsEntity:(id)a3
+- (BOOL)_trieContainsEntity:(id)entity
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entityCopy = entity;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CKParticipantsTrie *)self entities];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  entities = [(CKParticipantsTrie *)self entities];
+  v6 = [entities countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -298,13 +298,13 @@ LABEL_21:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entities);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) defaultIMHandle];
-        v10 = [v9 ID];
-        v11 = [v4 defaultIMHandle];
-        v12 = [v11 ID];
+        defaultIMHandle = [*(*(&v15 + 1) + 8 * i) defaultIMHandle];
+        v10 = [defaultIMHandle ID];
+        defaultIMHandle2 = [entityCopy defaultIMHandle];
+        v12 = [defaultIMHandle2 ID];
         v13 = [v10 isEqualToString:v12];
 
         if (v13)
@@ -314,7 +314,7 @@ LABEL_21:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [entities countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -329,21 +329,21 @@ LABEL_11:
   return v6;
 }
 
-- (id)_lastNodeForString:(id)a3
+- (id)_lastNodeForString:(id)string
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v23 = v4;
-    v5 = [(CKParticipantsTrie *)self _composedCharactersForString:v4 appendRootKey:0];
-    v6 = self;
-    v7 = [(CKParticipantsTrie *)v6 children];
-    if (v7)
+    v23 = stringCopy;
+    v5 = [(CKParticipantsTrie *)self _composedCharactersForString:stringCopy appendRootKey:0];
+    selfCopy = self;
+    children = [(CKParticipantsTrie *)selfCopy children];
+    if (children)
     {
-      v8 = v7;
+      children3 = children;
       v9 = 0;
-      v10 = v6;
+      v10 = selfCopy;
       v24 = v5;
       while (2)
       {
@@ -351,7 +351,7 @@ LABEL_11:
 
         if (v9 >= v11)
         {
-          v6 = v10;
+          selfCopy = v10;
         }
 
         else
@@ -361,8 +361,8 @@ LABEL_11:
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v13 = [(CKParticipantsTrie *)v10 children];
-          v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          children2 = [(CKParticipantsTrie *)v10 children];
+          v14 = [children2 countByEnumeratingWithState:&v25 objects:v29 count:16];
           if (v14)
           {
             v15 = v14;
@@ -373,7 +373,7 @@ LABEL_7:
             {
               if (*v26 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(children2);
               }
 
               v18 = *(*(&v25 + 1) + 8 * v17);
@@ -387,7 +387,7 @@ LABEL_7:
 
               if (v15 == ++v17)
               {
-                v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+                v15 = [children2 countByEnumeratingWithState:&v25 objects:v29 count:16];
                 if (v15)
                 {
                   goto LABEL_7;
@@ -397,13 +397,13 @@ LABEL_7:
               }
             }
 
-            v6 = v18;
+            selfCopy = v18;
 
             ++v9;
-            v8 = [(CKParticipantsTrie *)v6 children];
-            v10 = v6;
+            children3 = [(CKParticipantsTrie *)selfCopy children];
+            v10 = selfCopy;
             v5 = v24;
-            if (v8)
+            if (children3)
             {
               continue;
             }
@@ -413,7 +413,7 @@ LABEL_7:
           {
 LABEL_18:
 
-            v6 = v10;
+            selfCopy = v10;
             v5 = v24;
           }
         }
@@ -429,7 +429,7 @@ LABEL_18:
 
     if (v9 == [v5 count])
     {
-      v21 = v6;
+      v21 = selfCopy;
     }
 
     else
@@ -437,7 +437,7 @@ LABEL_18:
       v21 = 0;
     }
 
-    v4 = v23;
+    stringCopy = v23;
   }
 
   else
@@ -448,21 +448,21 @@ LABEL_18:
   return v21;
 }
 
-- (void)loadHandleEntityFromLastNode:(id)a3 intoResult:(id)a4
+- (void)loadHandleEntityFromLastNode:(id)node intoResult:(id)result
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 entities];
+  nodeCopy = node;
+  resultCopy = result;
+  entities = [nodeCopy entities];
 
-  if (v8)
+  if (entities)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [v6 entities];
-    v10 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    entities2 = [nodeCopy entities];
+    v10 = [entities2 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v10)
     {
       v11 = v10;
@@ -473,25 +473,25 @@ LABEL_18:
         {
           if (*v27 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(entities2);
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
-          if (([v7 containsObject:v14] & 1) == 0)
+          if (([resultCopy containsObject:v14] & 1) == 0)
           {
-            [v7 addObject:v14];
+            [resultCopy addObject:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v11 = [entities2 countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v11);
     }
   }
 
-  v15 = [v6 children];
-  v16 = [v15 count];
+  children = [nodeCopy children];
+  v16 = [children count];
 
   if (v16)
   {
@@ -499,8 +499,8 @@ LABEL_18:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v17 = [v6 children];
-    v18 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    children2 = [nodeCopy children];
+    v18 = [children2 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v18)
     {
       v19 = v18;
@@ -511,13 +511,13 @@ LABEL_18:
         {
           if (*v23 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(children2);
           }
 
-          [(CKParticipantsTrie *)self loadHandleEntityFromLastNode:*(*(&v22 + 1) + 8 * j) intoResult:v7];
+          [(CKParticipantsTrie *)self loadHandleEntityFromLastNode:*(*(&v22 + 1) + 8 * j) intoResult:resultCopy];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v19 = [children2 countByEnumeratingWithState:&v22 objects:v30 count:16];
       }
 
       while (v19);

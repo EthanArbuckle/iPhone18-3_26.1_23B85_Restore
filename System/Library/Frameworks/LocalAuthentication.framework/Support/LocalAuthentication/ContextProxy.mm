@@ -1,49 +1,49 @@
 @interface ContextProxy
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)_isPreflightOnCleanContext:(id)a3;
+- (BOOL)_isPreflightOnCleanContext:(id)context;
 - (BOOL)isFirstPartyClient;
-- (ContextProxy)initWithContext:(id)a3 processId:(int)a4 userId:(unsigned int)a5 auditSessionId:(int)a6 auditToken:(id *)a7 cApiOrigin:(BOOL)a8 checkEntitlementBlock:(id)a9 invalidationBlock:(id)a10 callback:(id)a11 clientId:(unint64_t)a12;
+- (ContextProxy)initWithContext:(id)context processId:(int)id userId:(unsigned int)userId auditSessionId:(int)sessionId auditToken:(id *)token cApiOrigin:(BOOL)origin checkEntitlementBlock:(id)block invalidationBlock:(id)self0 callback:(id)self1 clientId:(unint64_t)self2;
 - (NSString)description;
 - (NSString)signingID;
-- (id)_analyticsSessionForEvaluationRequest:(id)a3;
-- (void)_evaluateRequest:(id)a3 originator:(id)a4 preflightKey:(id)a5 uiDelegate:(id)a6 reply:(id)a7;
-- (void)allowTransferToProcess:(int)a3 receiverAuditTokenData:(id)a4 reply:(id)a5;
-- (void)authMethodWithReply:(id)a3;
-- (void)credentialEncodingSeedWithReply:(id)a3;
-- (void)credentialOfType:(int64_t)a3 reply:(id)a4;
-- (void)credentialsUUIDWithReply:(id)a3;
+- (id)_analyticsSessionForEvaluationRequest:(id)request;
+- (void)_evaluateRequest:(id)request originator:(id)originator preflightKey:(id)key uiDelegate:(id)delegate reply:(id)reply;
+- (void)allowTransferToProcess:(int)process receiverAuditTokenData:(id)data reply:(id)reply;
+- (void)authMethodWithReply:(id)reply;
+- (void)credentialEncodingSeedWithReply:(id)reply;
+- (void)credentialOfType:(int64_t)type reply:(id)reply;
+- (void)credentialsUUIDWithReply:(id)reply;
 - (void)dealloc;
-- (void)evaluateACL:(id)a3 operation:(id)a4 options:(id)a5 uiDelegate:(id)a6 originator:(id)a7 reply:(id)a8;
-- (void)evaluatePolicy:(int64_t)a3 options:(id)a4 uiDelegate:(id)a5 originator:(id)a6 reply:(id)a7;
-- (void)externalizedContextWithReply:(id)a3;
-- (void)failProcessedEvent:(int64_t)a3 failureError:(id)a4 reply:(id)a5;
-- (void)getDomainStateWithOptions:(id)a3 originator:(id)a4 reply:(id)a5;
-- (void)interruptWithReply:(id)a3;
-- (void)invalidateWithError:(id)a3;
-- (void)invalidateWithReply:(id)a3;
-- (void)isCredentialSet:(int64_t)a3 reply:(id)a4;
-- (void)optionsForInternalOperation:(int64_t)a3 reply:(id)a4;
-- (void)resetProcessedEvent:(int64_t)a3 reply:(id)a4;
-- (void)retryProcessedEvent:(int64_t)a3 reply:(id)a4;
-- (void)serverPropertyForOption:(int64_t)a3 reply:(id)a4;
-- (void)setCredential:(id)a3 forProcessedEvent:(int64_t)a4 credentialType:(int64_t)a5 reply:(id)a6;
-- (void)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 reply:(id)a6;
-- (void)setCredentialsUUID:(id)a3 reply:(id)a4;
-- (void)setOptions:(id)a3 forInternalOperation:(int64_t)a4 reply:(id)a5;
-- (void)setServerPropertyForOption:(int64_t)a3 value:(id)a4 reply:(id)a5;
-- (void)tokenForTransferToUnknownProcess:(id)a3;
-- (void)verifyFileVaultUser:(id)a3 volumeUuid:(id)a4 options:(unint64_t)a5 reply:(id)a6;
+- (void)evaluateACL:(id)l operation:(id)operation options:(id)options uiDelegate:(id)delegate originator:(id)originator reply:(id)reply;
+- (void)evaluatePolicy:(int64_t)policy options:(id)options uiDelegate:(id)delegate originator:(id)originator reply:(id)reply;
+- (void)externalizedContextWithReply:(id)reply;
+- (void)failProcessedEvent:(int64_t)event failureError:(id)error reply:(id)reply;
+- (void)getDomainStateWithOptions:(id)options originator:(id)originator reply:(id)reply;
+- (void)interruptWithReply:(id)reply;
+- (void)invalidateWithError:(id)error;
+- (void)invalidateWithReply:(id)reply;
+- (void)isCredentialSet:(int64_t)set reply:(id)reply;
+- (void)optionsForInternalOperation:(int64_t)operation reply:(id)reply;
+- (void)resetProcessedEvent:(int64_t)event reply:(id)reply;
+- (void)retryProcessedEvent:(int64_t)event reply:(id)reply;
+- (void)serverPropertyForOption:(int64_t)option reply:(id)reply;
+- (void)setCredential:(id)credential forProcessedEvent:(int64_t)event credentialType:(int64_t)type reply:(id)reply;
+- (void)setCredential:(id)credential type:(int64_t)type options:(id)options reply:(id)reply;
+- (void)setCredentialsUUID:(id)d reply:(id)reply;
+- (void)setOptions:(id)options forInternalOperation:(int64_t)operation reply:(id)reply;
+- (void)setServerPropertyForOption:(int64_t)option value:(id)value reply:(id)reply;
+- (void)tokenForTransferToUnknownProcess:(id)process;
+- (void)verifyFileVaultUser:(id)user volumeUuid:(id)uuid options:(unint64_t)options reply:(id)reply;
 @end
 
 @implementation ContextProxy
 
 - (NSString)description
 {
-  v3 = [(ContextProxy *)self processId];
+  processId = [(ContextProxy *)self processId];
   clientId = self->_clientId;
-  v5 = [self->_managedContext instanceId];
-  v6 = [self->_managedContext plugin];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"ContextProxy[%u:%u:%u:%u]", v3, clientId, v5, [v6 instanceId]);
+  instanceId = [self->_managedContext instanceId];
+  plugin = [self->_managedContext plugin];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"ContextProxy[%u:%u:%u:%u]", processId, clientId, instanceId, [plugin instanceId]);
 
   return v7;
 }
@@ -67,15 +67,15 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocated", buf, 0xCu);
   }
 
-  v4 = [self->_managedContext plugin];
-  v5 = [v4 module];
-  v6 = [self->_managedContext plugin];
+  plugin = [self->_managedContext plugin];
+  module = [plugin module];
+  plugin2 = [self->_managedContext plugin];
   v7 = [NSString stringWithFormat:@"%@ deallocated", self];
-  [v5 untrackProxy:self fromPlugin:v6 reason:v7];
+  [module untrackProxy:self fromPlugin:plugin2 reason:v7];
 
   [(ContextProxy *)self interruptWithReply:0];
   v8.receiver = self;
@@ -83,55 +83,55 @@
   [(ContextProxy *)&v8 dealloc];
 }
 
-- (ContextProxy)initWithContext:(id)a3 processId:(int)a4 userId:(unsigned int)a5 auditSessionId:(int)a6 auditToken:(id *)a7 cApiOrigin:(BOOL)a8 checkEntitlementBlock:(id)a9 invalidationBlock:(id)a10 callback:(id)a11 clientId:(unint64_t)a12
+- (ContextProxy)initWithContext:(id)context processId:(int)id userId:(unsigned int)userId auditSessionId:(int)sessionId auditToken:(id *)token cApiOrigin:(BOOL)origin checkEntitlementBlock:(id)block invalidationBlock:(id)self0 callback:(id)self1 clientId:(unint64_t)self2
 {
-  v18 = a3;
-  v19 = a9;
-  v20 = a10;
-  v41 = a11;
+  contextCopy = context;
+  blockCopy = block;
+  invalidationBlockCopy = invalidationBlock;
+  callbackCopy = callback;
   v43.receiver = self;
   v43.super_class = ContextProxy;
   v21 = [(ContextProxy *)&v43 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_managedContext, a3);
-    v22->_processId = a4;
-    v22->_userId = a5;
-    v22->_auditSessionId = a6;
+    objc_storeStrong(&v21->_managedContext, context);
+    v22->_processId = id;
+    v22->_userId = userId;
+    v22->_auditSessionId = sessionId;
     v23 = [LACAuditToken alloc];
-    v24 = *&a7->var0[4];
-    *buf = *a7->var0;
+    v24 = *&token->var0[4];
+    *buf = *token->var0;
     *&buf[16] = v24;
     v25 = [v23 initWithRawValue:buf];
     auditToken = v22->_auditToken;
     v22->_auditToken = v25;
 
-    v22->_cApiOrigin = a8;
-    v27 = objc_retainBlock(v19);
+    v22->_cApiOrigin = origin;
+    v27 = objc_retainBlock(blockCopy);
     checkEntitlementBlock = v22->_checkEntitlementBlock;
     v22->_checkEntitlementBlock = v27;
 
-    v29 = objc_retainBlock(v20);
+    v29 = objc_retainBlock(invalidationBlockCopy);
     invalidationBlock = v22->_invalidationBlock;
     v22->_invalidationBlock = v29;
 
-    objc_storeStrong(&v22->_callback, a11);
+    objc_storeStrong(&v22->_callback, callback);
     v22->_originatorId = atomic_fetch_add(&qword_100063058, 1uLL) + 1;
-    v31 = [v18 instanceId];
-    v32 = [v18 plugin];
-    v33 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u:%u", v31, [v32 instanceId]);
+    instanceId = [contextCopy instanceId];
+    plugin = [contextCopy plugin];
+    v33 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u:%u", instanceId, [plugin instanceId]);
     proxyId = v22->_proxyId;
     v22->_proxyId = v33;
 
-    v22->_clientId = a12;
+    v22->_clientId = clientId;
   }
 
-  v35 = [v18 plugin];
-  v36 = [v35 module];
-  v37 = [v18 plugin];
-  v38 = [(ContextProxy *)v22 managedContext];
-  [v36 trackPlugin:v37 processId:a4 proxy:v22 context:v38 invalidationBlock:v20];
+  plugin2 = [contextCopy plugin];
+  module = [plugin2 module];
+  plugin3 = [contextCopy plugin];
+  managedContext = [(ContextProxy *)v22 managedContext];
+  [module trackPlugin:plugin3 processId:id proxy:v22 context:managedContext invalidationBlock:invalidationBlockCopy];
 
   v39 = LALogForCategory();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -139,45 +139,45 @@
     *buf = 138543874;
     *&buf[4] = v22;
     *&buf[12] = 2114;
-    *&buf[14] = v18;
+    *&buf[14] = contextCopy;
     *&buf[22] = 1024;
-    *&buf[24] = a5;
+    *&buf[24] = userId;
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%{public}@ created for %{public}@ uid:%u", buf, 0x1Cu);
   }
 
   return v22;
 }
 
-- (void)interruptWithReply:(id)a3
+- (void)interruptWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(ContextProxy *)self originatorId];
+  replyCopy = reply;
+  originatorId = [(ContextProxy *)self originatorId];
   v6 = [(ContextProxy *)self description];
-  v7 = [self->_managedContext uuid];
+  uuid = [self->_managedContext uuid];
   v8 = +[DaemonUtils sharedInstance];
-  v9 = [v8 serverQueue];
+  serverQueue = [v8 serverQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000082B0;
   v13[3] = &unk_1000550E8;
-  v16 = v4;
-  v17 = v5;
+  v16 = replyCopy;
+  v17 = originatorId;
   v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v4;
+  v15 = uuid;
+  v10 = uuid;
+  v11 = replyCopy;
   v12 = v6;
-  dispatch_async(v9, v13);
+  dispatch_async(serverQueue, v13);
 }
 
-- (void)getDomainStateWithOptions:(id)a3 originator:(id)a4 reply:(id)a5
+- (void)getDomainStateWithOptions:(id)options originator:(id)originator reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   managedContext = self->_managedContext;
-  if (v8)
+  if (optionsCopy)
   {
-    v11 = v8;
+    v11 = optionsCopy;
   }
 
   else
@@ -185,19 +185,19 @@
     v11 = &__NSDictionary0__struct;
   }
 
-  v12 = a4;
+  originatorCopy = originator;
   v13 = [managedContext updateOptionsWithServerProperties:v11];
   v14 = [DomainStateRequest alloc];
-  v15 = [self->_managedContext uuid];
-  v16 = [v14 initWithOptions:v13 client:v12 contextID:v15];
+  uuid = [self->_managedContext uuid];
+  v16 = [v14 initWithOptions:v13 client:originatorCopy contextID:uuid];
 
   v17 = objc_opt_new();
   v18 = +[LACDomainStateProviderBiometry sharedInstance];
   [v17 addObject:v18];
 
   v19 = +[DaemonServiceLocator sharedInstance];
-  v20 = [v19 companions];
-  [v17 addObject:v20];
+  companions = [v19 companions];
+  [v17 addObject:companions];
 
   v21 = [[LACDomainStateProvider alloc] initWithProviders:v17];
   LALogCategoryForOptions();
@@ -208,7 +208,7 @@
     *buf = 138543874;
     v34 = v17;
     v35 = 2114;
-    v36 = v8;
+    v36 = optionsCopy;
     v37 = 2114;
     v38 = v23;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Requesting domain state with providers: %{public}@ options: %{public}@ uuid: %{public}@", buf, 0x20u);
@@ -221,23 +221,23 @@
   v29 = v22;
   v30 = v23;
   v31 = v21;
-  v32 = v9;
+  v32 = replyCopy;
   v24 = v21;
-  v25 = v9;
+  v25 = replyCopy;
   v26 = v23;
   v27 = v22;
   [v24 domainStateForRequest:v16 completion:v28];
 }
 
-- (void)evaluatePolicy:(int64_t)a3 options:(id)a4 uiDelegate:(id)a5 originator:(id)a6 reply:(id)a7
+- (void)evaluatePolicy:(int64_t)policy options:(id)options uiDelegate:(id)delegate originator:(id)originator reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  optionsCopy = options;
+  delegateCopy = delegate;
+  originatorCopy = originator;
+  replyCopy = reply;
+  if (optionsCopy)
   {
-    v16 = v12;
+    v16 = optionsCopy;
   }
 
   else
@@ -247,9 +247,9 @@
 
   v17 = [self->_managedContext updateOptionsWithServerProperties:v16];
   v18 = [EvaluationRequest alloc];
-  v19 = [self->_managedContext uuid];
+  uuid = [self->_managedContext uuid];
   v38 = v17;
-  v20 = [v18 initWithPolicy:a3 options:v17 uiDelegate:v13 contextID:v19];
+  v20 = [v18 initWithPolicy:policy options:v17 uiDelegate:delegateCopy contextID:uuid];
 
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
@@ -257,16 +257,16 @@
   v43[3] = &unk_100055138;
   v21 = v20;
   v44 = v21;
-  v22 = v15;
+  v22 = replyCopy;
   v45 = v22;
   v23 = objc_retainBlock(v43);
-  if ([(ContextProxy *)self _isPreflightOnCleanContext:v12])
+  if ([(ContextProxy *)self _isPreflightOnCleanContext:optionsCopy])
   {
     v36 = v22;
     v24 = +[PreflightCache sharedInstance];
-    if (v14)
+    if (originatorCopy)
     {
-      [v14 auditToken];
+      [originatorCopy auditToken];
     }
 
     else
@@ -274,7 +274,7 @@
       memset(buf, 0, 32);
     }
 
-    v25 = [v24 keyForPreflightOfPolicy:a3 options:v16 auditToken:buf uid:{objc_msgSend(v14, "userId")}];
+    v25 = [v24 keyForPreflightOfPolicy:policy options:v16 auditToken:buf uid:{objc_msgSend(originatorCopy, "userId")}];
 
     if (v25)
     {
@@ -300,29 +300,29 @@
   v28 = [v21 log];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = v13 == 0;
-    v37 = self;
+    v29 = delegateCopy == 0;
+    selfCopy = self;
     v30 = v23;
-    v31 = v14;
-    v32 = v13;
+    v31 = originatorCopy;
+    v32 = delegateCopy;
     v33 = v22;
     v34 = !v29;
-    v35 = [v21 identifier];
+    identifier = [v21 identifier];
     *buf = 67110146;
-    *&buf[4] = a3;
+    *&buf[4] = policy;
     *&buf[8] = 2114;
-    *&buf[10] = v12;
+    *&buf[10] = optionsCopy;
     *&buf[18] = 1024;
     *&buf[20] = v34;
     v22 = v33;
-    v13 = v32;
-    v14 = v31;
+    delegateCopy = v32;
+    originatorCopy = v31;
     v23 = v30;
-    self = v37;
+    self = selfCopy;
     *&buf[24] = 2114;
-    *&buf[26] = v37;
+    *&buf[26] = selfCopy;
     v47 = 1024;
-    v48 = v35;
+    v48 = identifier;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "evaluatePolicy:%d options:%{public}@, uiDelegate:%d on %{public}@ rid:%u", buf, 0x28u);
   }
 
@@ -334,23 +334,23 @@
   v25 = v25;
   v41 = v25;
   v42 = v23;
-  [(ContextProxy *)self _evaluateRequest:v40 originator:v14 preflightKey:v25 uiDelegate:v13 reply:v39];
+  [(ContextProxy *)self _evaluateRequest:v40 originator:originatorCopy preflightKey:v25 uiDelegate:delegateCopy reply:v39];
 
   v27 = v40;
 LABEL_19:
 }
 
-- (void)evaluateACL:(id)a3 operation:(id)a4 options:(id)a5 uiDelegate:(id)a6 originator:(id)a7 reply:(id)a8
+- (void)evaluateACL:(id)l operation:(id)operation options:(id)options uiDelegate:(id)delegate originator:(id)originator reply:(id)reply
 {
-  v14 = a3;
-  v34 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v31 = a8;
-  if (v15)
+  lCopy = l;
+  operationCopy = operation;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  originatorCopy = originator;
+  replyCopy = reply;
+  if (optionsCopy)
   {
-    v18 = v15;
+    v18 = optionsCopy;
   }
 
   else
@@ -358,13 +358,13 @@ LABEL_19:
     v18 = &__NSDictionary0__struct;
   }
 
-  v33 = [self->_managedContext updateOptionsWithServerProperties:v18, v31];
-  if ([(ContextProxy *)self _isPreflightOnCleanContext:v15])
+  replyCopy = [self->_managedContext updateOptionsWithServerProperties:v18, replyCopy];
+  if ([(ContextProxy *)self _isPreflightOnCleanContext:optionsCopy])
   {
     v19 = +[PreflightCache sharedInstance];
-    if (v17)
+    if (originatorCopy)
     {
-      [v17 auditToken];
+      [originatorCopy auditToken];
     }
 
     else
@@ -372,8 +372,8 @@ LABEL_19:
       memset(buf, 0, 32);
     }
 
-    v21 = v14;
-    v20 = [v19 keyForPreflightOfACL:v14 operation:v34 options:v18 auditToken:buf uid:{objc_msgSend(v17, "userId")}];
+    v21 = lCopy;
+    v20 = [v19 keyForPreflightOfACL:lCopy operation:operationCopy options:v18 auditToken:buf uid:{objc_msgSend(originatorCopy, "userId")}];
 
     if (v20)
     {
@@ -392,31 +392,31 @@ LABEL_19:
   else
   {
     v20 = 0;
-    v21 = v14;
+    v21 = lCopy;
   }
 
   v25 = [EvaluationRequest alloc];
-  v26 = [self->_managedContext uuid];
-  v27 = [v25 initWithAcl:v21 operation:v34 options:v33 uiDelegate:v16 contextID:v26];
+  uuid = [self->_managedContext uuid];
+  v27 = [v25 initWithAcl:v21 operation:operationCopy options:replyCopy uiDelegate:delegateCopy contextID:uuid];
 
   v28 = [v27 log];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     v29 = [v21 hash];
-    v30 = [v27 identifier];
+    identifier = [v27 identifier];
     *buf = 67110402;
     *&buf[4] = v29;
     *&buf[8] = 2114;
-    *&buf[10] = v34;
+    *&buf[10] = operationCopy;
     *&buf[18] = 2114;
-    *&buf[20] = v33;
+    *&buf[20] = replyCopy;
     *&buf[28] = 1024;
-    *&buf[30] = v16 != 0;
-    v21 = v14;
+    *&buf[30] = delegateCopy != 0;
+    v21 = lCopy;
     v40 = 2114;
-    v41 = self;
+    selfCopy = self;
     v42 = 1024;
-    v43 = v30;
+    v43 = identifier;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "evaluateACL:%x operation:%{public}@ options:%{public}@, uiDelegate:%d on %{public}@ rid:%u", buf, 0x32u);
   }
 
@@ -430,52 +430,52 @@ LABEL_19:
   v24 = v32;
   v38 = v32;
   v23 = v27;
-  [(ContextProxy *)self _evaluateRequest:v23 originator:v17 preflightKey:v20 uiDelegate:v16 reply:v35];
+  [(ContextProxy *)self _evaluateRequest:v23 originator:originatorCopy preflightKey:v20 uiDelegate:delegateCopy reply:v35];
 
 LABEL_15:
 }
 
-- (void)_evaluateRequest:(id)a3 originator:(id)a4 preflightKey:(id)a5 uiDelegate:(id)a6 reply:(id)a7
+- (void)_evaluateRequest:(id)request originator:(id)originator preflightKey:(id)key uiDelegate:(id)delegate reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v36 = a5;
-  v14 = a6;
-  v15 = a7;
+  requestCopy = request;
+  originatorCopy = originator;
+  keyCopy = key;
+  delegateCopy = delegate;
+  replyCopy = reply;
   v16 = +[DaemonServiceLocator sharedInstance];
-  [v12 setServiceLocator:v16];
+  [requestCopy setServiceLocator:v16];
 
-  [v12 setClient:v13];
-  v17 = [self->_managedContext externalizedContext];
-  [v12 setExternalizedContext:v17];
+  [requestCopy setClient:originatorCopy];
+  externalizedContext = [self->_managedContext externalizedContext];
+  [requestCopy setExternalizedContext:externalizedContext];
 
   v18 = objc_opt_new();
   v19 = [LACAnalyticsProcessor alloc];
-  v20 = [(ContextProxy *)self _analyticsSessionForEvaluationRequest:v12];
+  v20 = [(ContextProxy *)self _analyticsSessionForEvaluationRequest:requestCopy];
   v21 = [v19 initWithAnalyticsSession:v20];
   [v18 addObject:v21];
 
   v22 = +[DaemonServiceLocator sharedInstance];
-  v23 = [v22 sharedMode];
-  v24 = [v23 processor];
-  [v18 addObject:v24];
+  sharedMode = [v22 sharedMode];
+  processor = [sharedMode processor];
+  [v18 addObject:processor];
 
-  v25 = [v12 acl];
+  v25 = [requestCopy acl];
 
   if (!v25)
   {
     v26 = +[DaemonServiceLocator sharedInstance];
     v27 = [v26 dto];
-    v28 = [v27 processor];
-    [v18 addObject:v28];
+    processor2 = [v27 processor];
+    [v18 addObject:processor2];
   }
 
   v29 = +[DaemonServiceLocator sharedInstance];
-  v30 = [v29 companions];
-  v31 = [v30 processor];
-  [v18 addObject:v31];
+  companions = [v29 companions];
+  processor3 = [companions processor];
+  [v18 addObject:processor3];
 
-  v32 = [[EvaluationRequestProcessor alloc] initWithContext:self->_managedContext uiDelegate:v14];
+  v32 = [[EvaluationRequestProcessor alloc] initWithContext:self->_managedContext uiDelegate:delegateCopy];
   [v18 addObject:v32];
 
   v33 = [LACEvaluationRequestProcessorFactory makeRootProcessorWithSubprocessors:v18];
@@ -485,41 +485,41 @@ LABEL_15:
   v37[2] = sub_100009574;
   v37[3] = &unk_100055188;
   objc_copyWeak(&v40, &location);
-  v34 = v15;
+  v34 = replyCopy;
   v39 = v34;
   v35 = v33;
   v38 = v35;
-  [v35 handleRequest:v12 completion:v37];
+  [v35 handleRequest:requestCopy completion:v37];
 
   objc_destroyWeak(&v40);
   objc_destroyWeak(&location);
 }
 
-- (id)_analyticsSessionForEvaluationRequest:(id)a3
+- (id)_analyticsSessionForEvaluationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 serviceLocator];
+  requestCopy = request;
+  serviceLocator = [requestCopy serviceLocator];
   v6 = NSStringFromProtocol(&OBJC_PROTOCOL___LACAnalyticsService);
-  v7 = [v5 serviceWithIdentifier:v6];
+  v7 = [serviceLocator serviceWithIdentifier:v6];
 
-  v8 = [(ContextProxy *)self managedContext];
-  v9 = [v8 uuid];
-  v10 = [v7 sessionForContextUUID:v9];
+  managedContext = [(ContextProxy *)self managedContext];
+  uuid = [managedContext uuid];
+  v10 = [v7 sessionForContextUUID:uuid];
 
-  v11 = [v4 analyticsData];
+  analyticsData = [requestCopy analyticsData];
 
-  [v10 trackEvaluationAnalytics:v11];
+  [v10 trackEvaluationAnalytics:analyticsData];
 
   return v10;
 }
 
-- (BOOL)_isPreflightOnCleanContext:(id)a3
+- (BOOL)_isPreflightOnCleanContext:(id)context
 {
-  v4 = [self->_managedContext updateOptionsWithServerProperties:a3];
+  v4 = [self->_managedContext updateOptionsWithServerProperties:context];
   v5 = [v4 objectForKeyedSubscript:&off_100057EE8];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6 && (-[Context plugin](self->_managedContext, "plugin"), v7 = objc_claimAutoreleasedReturnValue(), [v7 resultInfo], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, !v9) && os_variant_allows_internal_security_policies())
+  if (bOOLValue && (-[Context plugin](self->_managedContext, "plugin"), v7 = objc_claimAutoreleasedReturnValue(), [v7 resultInfo], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, !v9) && os_variant_allows_internal_security_policies())
   {
     v10 = +[NSUserDefaults standardUserDefaults];
     v11 = [v10 persistentDomainForName:NSGlobalDomain];
@@ -531,33 +531,33 @@ LABEL_15:
       v12 = &__kCFBooleanFalse;
     }
 
-    v14 = [v12 BOOLValue];
+    bOOLValue2 = [v12 BOOLValue];
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue2 = 0;
   }
 
-  return v14;
+  return bOOLValue2;
 }
 
-- (void)failProcessedEvent:(int64_t)a3 failureError:(id)a4 reply:(id)a5
+- (void)failProcessedEvent:(int64_t)event failureError:(id)error reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  replyCopy = reply;
   v10 = +[Request requestFromCurrentConnection];
   v11 = [v10 log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    v18 = a3;
+    eventCopy = event;
     v19 = 2114;
-    v20 = v8;
+    v20 = errorCopy;
     v21 = 2114;
-    v22 = self;
+    selfCopy = self;
     v23 = 1024;
-    v24 = [v10 identifier];
+    identifier = [v10 identifier];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "failProcessedEvent:%d failureError:%{public}@ on %{public}@ rid:%u", buf, 0x22u);
   }
 
@@ -569,8 +569,8 @@ LABEL_15:
     v14[2] = sub_1000099F4;
     v14[3] = &unk_1000551B0;
     v15 = v10;
-    v16 = v9;
-    [managedContext failProcessedEvent:a3 failureError:v8 reply:v14];
+    v16 = replyCopy;
+    [managedContext failProcessedEvent:event failureError:errorCopy reply:v14];
 
     v13 = v15;
   }
@@ -578,23 +578,23 @@ LABEL_15:
   else
   {
     v13 = [LAErrorHelper missingEntitlementError:@"com.apple.private.CoreAuthentication.SPI"];
-    (*(v9 + 2))(v9, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
   }
 }
 
-- (void)retryProcessedEvent:(int64_t)a3 reply:(id)a4
+- (void)retryProcessedEvent:(int64_t)event reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = +[Request requestFromCurrentConnection];
   v8 = [v7 log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    v15 = a3;
+    eventCopy = event;
     v16 = 2114;
-    v17 = self;
+    selfCopy = self;
     v18 = 1024;
-    v19 = [v7 identifier];
+    identifier = [v7 identifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "retryProcessedEvent:%d on %{public}@ rid:%u", buf, 0x18u);
   }
 
@@ -606,8 +606,8 @@ LABEL_15:
     v11[2] = sub_100009CB4;
     v11[3] = &unk_1000551B0;
     v12 = v7;
-    v13 = v6;
-    [managedContext retryEvent:a3 originator:self reply:v11];
+    v13 = replyCopy;
+    [managedContext retryEvent:event originator:self reply:v11];
 
     v10 = v12;
   }
@@ -615,23 +615,23 @@ LABEL_15:
   else
   {
     v10 = [LAErrorHelper missingEntitlementError:@"com.apple.private.CoreAuthentication.SPI"];
-    (*(v6 + 2))(v6, 0, v10);
+    (*(replyCopy + 2))(replyCopy, 0, v10);
   }
 }
 
-- (void)resetProcessedEvent:(int64_t)a3 reply:(id)a4
+- (void)resetProcessedEvent:(int64_t)event reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = +[Request requestFromCurrentConnection];
   v8 = [v7 log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    v15 = a3;
+    eventCopy = event;
     v16 = 2114;
-    v17 = self;
+    selfCopy = self;
     v18 = 1024;
-    v19 = [v7 identifier];
+    identifier = [v7 identifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "resetProcessedEvent:%d on %{public}@ rid:%u", buf, 0x18u);
   }
 
@@ -643,8 +643,8 @@ LABEL_15:
     v11[2] = sub_100009F74;
     v11[3] = &unk_1000551B0;
     v12 = v7;
-    v13 = v6;
-    [managedContext resetEvent:a3 originator:self reply:v11];
+    v13 = replyCopy;
+    [managedContext resetEvent:event originator:self reply:v11];
 
     v10 = v12;
   }
@@ -652,33 +652,33 @@ LABEL_15:
   else
   {
     v10 = [LAErrorHelper missingEntitlementError:@"com.apple.private.CoreAuthentication.SPI"];
-    (*(v6 + 2))(v6, 0, v10);
+    (*(replyCopy + 2))(replyCopy, 0, v10);
   }
 }
 
-- (void)setCredential:(id)a3 forProcessedEvent:(int64_t)a4 credentialType:(int64_t)a5 reply:(id)a6
+- (void)setCredential:(id)credential forProcessedEvent:(int64_t)event credentialType:(int64_t)type reply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  credentialCopy = credential;
+  replyCopy = reply;
   v12 = +[Request requestFromCurrentConnection];
   v13 = [v12 log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    v20 = a4;
+    eventCopy = event;
     v21 = 1024;
-    v22 = a5;
+    typeCopy = type;
     v23 = 2114;
-    v24 = self;
+    selfCopy = self;
     v25 = 1024;
-    v26 = [v12 identifier];
+    identifier = [v12 identifier];
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "setCredential:forProcessedEvent:%d credentialType:%d on %{public}@ rid:%u", buf, 0x1Eu);
   }
 
-  if (v10 && ![(ContextProxy *)self checkEntitlement:@"com.apple.private.CoreAuthentication.SPI"])
+  if (credentialCopy && ![(ContextProxy *)self checkEntitlement:@"com.apple.private.CoreAuthentication.SPI"])
   {
     v15 = [LAErrorHelper missingEntitlementError:@"com.apple.private.CoreAuthentication.SPI"];
-    v11[2](v11, 0, v15);
+    replyCopy[2](replyCopy, 0, v15);
   }
 
   else
@@ -689,26 +689,26 @@ LABEL_15:
     v16[2] = sub_10000A7F4;
     v16[3] = &unk_1000551B0;
     v17 = v12;
-    v18 = v11;
-    [managedContext setCredential:v10 forProcessedEvent:a4 credentialType:a5 reply:v16];
+    v18 = replyCopy;
+    [managedContext setCredential:credentialCopy forProcessedEvent:event credentialType:type reply:v16];
 
     v15 = v17;
   }
 }
 
-- (void)isCredentialSet:(int64_t)a3 reply:(id)a4
+- (void)isCredentialSet:(int64_t)set reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = +[Request requestFromCurrentConnection];
   v8 = [v7 log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    v16 = a3;
+    setCopy = set;
     v17 = 2114;
-    v18 = self;
+    selfCopy = self;
     v19 = 1024;
-    v20 = [v7 identifier];
+    identifier = [v7 identifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "isCredentialSet:%d on %{public}@ rid:%u", buf, 0x18u);
   }
 
@@ -718,33 +718,33 @@ LABEL_15:
   v12[2] = sub_10000AA6C;
   v12[3] = &unk_1000551B0;
   v13 = v7;
-  v14 = v6;
-  v10 = v6;
+  v14 = replyCopy;
+  v10 = replyCopy;
   v11 = v7;
-  [managedContext isCredentialSet:a3 originator:self reply:v12];
+  [managedContext isCredentialSet:set originator:self reply:v12];
 }
 
-- (void)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 reply:(id)a6
+- (void)setCredential:(id)credential type:(int64_t)type options:(id)options reply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  credentialCopy = credential;
+  optionsCopy = options;
+  replyCopy = reply;
   v13 = +[Request requestFromCurrentConnection];
   v14 = [v13 log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    v22 = a4;
+    typeCopy = type;
     v23 = 2114;
-    v24 = v11;
+    v24 = optionsCopy;
     v25 = 2114;
-    v26 = self;
+    selfCopy = self;
     v27 = 1024;
-    v28 = [v13 identifier];
+    identifier = [v13 identifier];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "setCredential:type:%d options:%{public}@ on %{public}@ rid:%u", buf, 0x22u);
   }
 
-  if (a4 == -6)
+  if (type == -6)
   {
     if (![(ContextProxy *)self checkEntitlement:@"com.apple.private.LocalAuthentication.RGBCapture"])
     {
@@ -753,12 +753,12 @@ LABEL_15:
     }
   }
 
-  else if (a4 == -1 && ![(ContextProxy *)self checkEntitlement:@"com.apple.private.CoreAuthentication.SPI"])
+  else if (type == -1 && ![(ContextProxy *)self checkEntitlement:@"com.apple.private.CoreAuthentication.SPI"])
   {
     v15 = @"com.apple.private.CoreAuthentication.SPI";
 LABEL_10:
     v17 = [LAErrorHelper missingEntitlementError:v15];
-    v12[2](v12, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
     goto LABEL_11;
   }
 
@@ -768,24 +768,24 @@ LABEL_10:
   v18[2] = sub_10000AD9C;
   v18[3] = &unk_1000551B0;
   v19 = v13;
-  v20 = v12;
-  [managedContext setCredential:v10 type:a4 options:v11 originator:self reply:v18];
+  v20 = replyCopy;
+  [managedContext setCredential:credentialCopy type:type options:optionsCopy originator:self reply:v18];
 
   v17 = v19;
 LABEL_11:
 }
 
-- (void)invalidateWithReply:(id)a3
+- (void)invalidateWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[Request requestFromCurrentConnection];
   v6 = [v5 log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
-    v15 = [v5 identifier];
+    identifier = [v5 identifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "invalidateWithReply on %{public}@ rid:%u", buf, 0x12u);
   }
 
@@ -794,25 +794,25 @@ LABEL_11:
   v9[2] = sub_10000AFF0;
   v9[3] = &unk_1000551D8;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = replyCopy;
+  v7 = replyCopy;
   v8 = v5;
   [(ContextProxy *)self interruptWithReply:v9];
 }
 
-- (void)credentialOfType:(int64_t)a3 reply:(id)a4
+- (void)credentialOfType:(int64_t)type reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = +[Request requestFromCurrentConnection];
   v8 = [v7 log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    v16 = a3;
+    typeCopy = type;
     v17 = 2114;
-    v18 = self;
+    selfCopy = self;
     v19 = 1024;
-    v20 = [v7 identifier];
+    identifier = [v7 identifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "credentialOfType:%d on %{public}@ rid:%u", buf, 0x18u);
   }
 
@@ -822,24 +822,24 @@ LABEL_11:
   v12[2] = sub_10000B234;
   v12[3] = &unk_100055200;
   v13 = v7;
-  v14 = v6;
-  v10 = v6;
+  v14 = replyCopy;
+  v10 = replyCopy;
   v11 = v7;
-  [managedContext credentialOfType:a3 originator:self reply:v12];
+  [managedContext credentialOfType:type originator:self reply:v12];
 }
 
-- (void)setCredentialsUUID:(id)a3 reply:(id)a4
+- (void)setCredentialsUUID:(id)d reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v8 = +[Request requestFromCurrentConnection];
   v9 = [v8 log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 1024;
-    v19 = [v8 identifier];
+    identifier = [v8 identifier];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "setCredentialsUUID on %{public}@ rid:%u", buf, 0x12u);
   }
 
@@ -849,23 +849,23 @@ LABEL_11:
   v13[2] = sub_10000B4D8;
   v13[3] = &unk_1000551B0;
   v14 = v8;
-  v15 = v6;
-  v11 = v6;
+  v15 = replyCopy;
+  v11 = replyCopy;
   v12 = v8;
-  [managedContext setCredentialsUUID:v7 originator:self reply:v13];
+  [managedContext setCredentialsUUID:dCopy originator:self reply:v13];
 }
 
-- (void)credentialsUUIDWithReply:(id)a3
+- (void)credentialsUUIDWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[Request requestFromCurrentConnection];
   v6 = [v5 log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 1024;
-    v16 = [v5 identifier];
+    identifier = [v5 identifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "credentialsUUID on %{public}@ rid:%u", buf, 0x12u);
   }
 
@@ -875,23 +875,23 @@ LABEL_11:
   v10[2] = sub_10000B74C;
   v10[3] = &unk_100055228;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = replyCopy;
+  v8 = replyCopy;
   v9 = v5;
   [managedContext credentialsUUIDWithOriginator:self reply:v10];
 }
 
-- (void)credentialEncodingSeedWithReply:(id)a3
+- (void)credentialEncodingSeedWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[Request requestFromCurrentConnection];
   v6 = [v5 log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 1024;
-    v16 = [v5 identifier];
+    identifier = [v5 identifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "credentialEncodingSeed on %{public}@ rid:%u", buf, 0x12u);
   }
 
@@ -901,25 +901,25 @@ LABEL_11:
   v10[2] = sub_10000B9CC;
   v10[3] = &unk_100055200;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = replyCopy;
+  v8 = replyCopy;
   v9 = v5;
   [managedContext credentialEncodingSeedWithReply:v10];
 }
 
-- (void)optionsForInternalOperation:(int64_t)a3 reply:(id)a4
+- (void)optionsForInternalOperation:(int64_t)operation reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = +[Request requestFromCurrentConnection];
   v8 = [v7 log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    v16 = a3;
+    operationCopy = operation;
     v17 = 2114;
-    v18 = self;
+    selfCopy = self;
     v19 = 1024;
-    v20 = [v7 identifier];
+    identifier = [v7 identifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "optionsForInternalOperation:%d on %{public}@ rid:%u", buf, 0x18u);
   }
 
@@ -929,28 +929,28 @@ LABEL_11:
   v12[2] = sub_10000BC6C;
   v12[3] = &unk_100055250;
   v13 = v7;
-  v14 = v6;
-  v10 = v6;
+  v14 = replyCopy;
+  v10 = replyCopy;
   v11 = v7;
-  [managedContext optionsForInternalOperation:a3 originator:self reply:v12];
+  [managedContext optionsForInternalOperation:operation originator:self reply:v12];
 }
 
-- (void)setOptions:(id)a3 forInternalOperation:(int64_t)a4 reply:(id)a5
+- (void)setOptions:(id)options forInternalOperation:(int64_t)operation reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   v10 = +[Request requestFromCurrentConnection];
   v11 = [v10 log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    v19 = [v8 hash];
+    v19 = [optionsCopy hash];
     v20 = 1024;
-    v21 = a4;
+    operationCopy = operation;
     v22 = 2114;
-    v23 = self;
+    selfCopy = self;
     v24 = 1024;
-    v25 = [v10 identifier];
+    identifier = [v10 identifier];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "setOptions:%u forInternalOperation:%d on %{public}@ rid:%u", buf, 0x1Eu);
   }
 
@@ -960,25 +960,25 @@ LABEL_11:
   v15[2] = sub_10000BF54;
   v15[3] = &unk_1000551B0;
   v16 = v10;
-  v17 = v9;
-  v13 = v9;
+  v17 = replyCopy;
+  v13 = replyCopy;
   v14 = v10;
-  [managedContext setOptions:v8 forInternalOperation:a4 originator:self reply:v15];
+  [managedContext setOptions:optionsCopy forInternalOperation:operation originator:self reply:v15];
 }
 
-- (void)serverPropertyForOption:(int64_t)a3 reply:(id)a4
+- (void)serverPropertyForOption:(int64_t)option reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = +[Request requestFromCurrentConnection];
   v8 = [v7 log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    v16 = a3;
+    optionCopy = option;
     v17 = 2114;
-    v18 = self;
+    selfCopy = self;
     v19 = 1024;
-    v20 = [v7 identifier];
+    identifier = [v7 identifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "serverPropertyForOption:%d on %{public}@ rid:%u", buf, 0x18u);
   }
 
@@ -988,28 +988,28 @@ LABEL_11:
   v12[2] = sub_10000C1C8;
   v12[3] = &unk_100055250;
   v13 = v7;
-  v14 = v6;
-  v10 = v6;
+  v14 = replyCopy;
+  v10 = replyCopy;
   v11 = v7;
-  [managedContext serverPropertyForOption:a3 reply:v12];
+  [managedContext serverPropertyForOption:option reply:v12];
 }
 
-- (void)setServerPropertyForOption:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)setServerPropertyForOption:(int64_t)option value:(id)value reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  replyCopy = reply;
   v10 = +[Request requestFromCurrentConnection];
   v11 = [v10 log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    v19 = a3;
+    optionCopy = option;
     v20 = 2114;
-    v21 = v8;
+    v21 = valueCopy;
     v22 = 2114;
-    v23 = self;
+    selfCopy = self;
     v24 = 1024;
-    v25 = [v10 identifier];
+    identifier = [v10 identifier];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "setServerPropertyForOption:%d value:%{public}@ on %{public}@ rid:%u", buf, 0x22u);
   }
 
@@ -1019,23 +1019,23 @@ LABEL_11:
   v15[2] = sub_10000C45C;
   v15[3] = &unk_1000551B0;
   v16 = v10;
-  v17 = v9;
-  v13 = v9;
+  v17 = replyCopy;
+  v13 = replyCopy;
   v14 = v10;
-  [managedContext setServerPropertyForOption:a3 value:v8 reply:v15];
+  [managedContext setServerPropertyForOption:option value:valueCopy reply:v15];
 }
 
-- (void)externalizedContextWithReply:(id)a3
+- (void)externalizedContextWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[Request requestFromCurrentConnection];
   v6 = [v5 log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 1024;
-    v16 = [v5 identifier];
+    identifier = [v5 identifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "externalizedContextWithReply on %{public}@ rid:%u", buf, 0x12u);
   }
 
@@ -1045,23 +1045,23 @@ LABEL_11:
   v10[2] = sub_10000C6B4;
   v10[3] = &unk_100055200;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = replyCopy;
+  v8 = replyCopy;
   v9 = v5;
   [managedContext externalizedContextWithReply:v10];
 }
 
-- (void)authMethodWithReply:(id)a3
+- (void)authMethodWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[Request requestFromCurrentConnection];
   v6 = [v5 log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 1024;
-    v16 = [v5 identifier];
+    identifier = [v5 identifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "authMethodWithReply on %{public}@ rid:%u", buf, 0x12u);
   }
 
@@ -1071,31 +1071,31 @@ LABEL_11:
   v10[2] = sub_10000C948;
   v10[3] = &unk_100055200;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = replyCopy;
+  v8 = replyCopy;
   v9 = v5;
   [managedContext authMethodWithReply:v10];
 }
 
-- (void)verifyFileVaultUser:(id)a3 volumeUuid:(id)a4 options:(unint64_t)a5 reply:(id)a6
+- (void)verifyFileVaultUser:(id)user volumeUuid:(id)uuid options:(unint64_t)options reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  userCopy = user;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v13 = +[Request requestFromCurrentConnection];
   v14 = [v13 log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544386;
-    v22 = v10;
+    v22 = userCopy;
     v23 = 2114;
-    v24 = v11;
+    v24 = uuidCopy;
     v25 = 1024;
-    v26 = a5;
+    optionsCopy = options;
     v27 = 2114;
-    v28 = self;
+    selfCopy = self;
     v29 = 1024;
-    v30 = [v13 identifier];
+    identifier = [v13 identifier];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "verifyFileVaultUser:%{public}@ volumeUuid:%{public}@, options:%u on %{public}@ rid:%u", buf, 0x2Cu);
   }
 
@@ -1105,74 +1105,74 @@ LABEL_11:
   v18[2] = sub_10000CC3C;
   v18[3] = &unk_1000551B0;
   v19 = v13;
-  v20 = v12;
-  v16 = v12;
+  v20 = replyCopy;
+  v16 = replyCopy;
   v17 = v13;
-  [managedContext verifyFileVaultUser:v10 volumeUuid:v11 options:a5 reply:v18];
+  [managedContext verifyFileVaultUser:userCopy volumeUuid:uuidCopy options:options reply:v18];
 }
 
-- (void)allowTransferToProcess:(int)a3 receiverAuditTokenData:(id)a4 reply:(id)a5
+- (void)allowTransferToProcess:(int)process receiverAuditTokenData:(id)data reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  replyCopy = reply;
   v10 = +[Request requestFromCurrentConnection];
   v11 = [v10 log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    v20 = a3;
+    processCopy = process;
     v21 = 1024;
-    v22 = [v8 hash];
+    v22 = [dataCopy hash];
     v23 = 2114;
-    v24 = self;
+    selfCopy = self;
     v25 = 1024;
-    v26 = [v10 identifier];
+    identifier = [v10 identifier];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "allowTransferToProcess:%d receiverAuditTokenData:%x on %{public}@ rid:%u", buf, 0x1Eu);
   }
 
   managedContext = self->_managedContext;
-  v13 = [v10 caller];
+  caller = [v10 caller];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10000CEF4;
   v16[3] = &unk_1000551B0;
   v17 = v10;
-  v18 = v9;
-  v14 = v9;
+  v18 = replyCopy;
+  v14 = replyCopy;
   v15 = v10;
-  [managedContext allowTransferFromCaller:v13 receiverAuditTokenData:v8 reply:v16];
+  [managedContext allowTransferFromCaller:caller receiverAuditTokenData:dataCopy reply:v16];
 }
 
-- (void)tokenForTransferToUnknownProcess:(id)a3
+- (void)tokenForTransferToUnknownProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v5 = +[Request requestFromCurrentConnection];
   v6 = [v5 log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
-    v17 = [v5 identifier];
+    identifier = [v5 identifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "tokenForTransferToUnknownProcess on %{public}@ rid:%u", buf, 0x12u);
   }
 
   managedContext = self->_managedContext;
-  v8 = [v5 caller];
+  caller = [v5 caller];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000D164;
   v11[3] = &unk_100055200;
   v12 = v5;
-  v13 = v4;
-  v9 = v4;
+  v13 = processCopy;
+  v9 = processCopy;
   v10 = v5;
-  [managedContext tokenForTransferFromCaller:v8 reply:v11];
+  [managedContext tokenForTransferFromCaller:caller reply:v11];
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  [(LACContextCallbackXPC *)self->_callback invalidatedWithError:a3];
+  [(LACContextCallbackXPC *)self->_callback invalidatedWithError:error];
   invalidationBlock = self->_invalidationBlock;
   if (invalidationBlock)
   {
@@ -1185,9 +1185,9 @@ LABEL_11:
 - (BOOL)isFirstPartyClient
 {
   v2 = [(LACAuditToken *)self->_auditToken belongsToPlatformBinary:0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)signingID

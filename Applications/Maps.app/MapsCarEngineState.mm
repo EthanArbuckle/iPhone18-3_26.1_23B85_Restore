@@ -4,13 +4,13 @@
 + (id)engineStateElectric;
 + (id)engineStateGasoline;
 + (void)prepareForUse;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEngineState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEngineState:(id)state;
 - (MapsCarEngineState)init;
-- (MapsCarEngineState)initWithEngineType:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MapsCarEngineState)initWithEngineType:(int)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)updateWithVehicleInfo:(id)a3;
+- (void)updateWithVehicleInfo:(id)info;
 @end
 
 @implementation MapsCarEngineState
@@ -20,51 +20,51 @@
   v12.receiver = self;
   v12.super_class = MapsCarEngineState;
   v3 = [(MapsCarEngineState *)&v12 description];
-  v4 = [(MapsCarEngineState *)self engineType];
-  v5 = sub_100AD6E38(v4 & 1 | (((v4 >> 2) & 1) << 16) & 0xFEFFFEFF | (((v4 >> 3) & 1) << 24) | (((v4 >> 1) & 1) << 8));
-  v6 = [(MapsCarEngineState *)self range];
-  v7 = [(MapsCarEngineState *)self lowRangeWarning];
+  engineType = [(MapsCarEngineState *)self engineType];
+  v5 = sub_100AD6E38(engineType & 1 | (((engineType >> 2) & 1) << 16) & 0xFEFFFEFF | (((engineType >> 3) & 1) << 24) | (((engineType >> 1) & 1) << 8));
+  range = [(MapsCarEngineState *)self range];
+  lowRangeWarning = [(MapsCarEngineState *)self lowRangeWarning];
   v8 = @"NO";
-  if (v7)
+  if (lowRangeWarning)
   {
     v8 = @"YES";
   }
 
-  v9 = [NSString stringWithFormat:@" %@ range=%@ warning=%@>", v5, v6, v8];
+  v9 = [NSString stringWithFormat:@" %@ range=%@ warning=%@>", v5, range, v8];
   v10 = [v3 stringByReplacingOccurrencesOfString:@">" withString:v9];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MapsCarEngineState alloc] initWithEngineType:[(MapsCarEngineState *)self engineType]];
   [(MapsCarEngineState *)v4 setLowRangeWarning:[(MapsCarEngineState *)self lowRangeWarning]];
-  v5 = [(MapsCarEngineState *)self range];
-  [(MapsCarEngineState *)v4 setRange:v5];
+  range = [(MapsCarEngineState *)self range];
+  [(MapsCarEngineState *)v4 setRange:range];
 
   return v4;
 }
 
-- (BOOL)isEqualToEngineState:(id)a3
+- (BOOL)isEqualToEngineState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v12 = 0;
-  if (v4)
+  if (stateCopy)
   {
-    v5 = [(MapsCarEngineState *)self engineType];
-    if (v5 == [v4 engineType])
+    engineType = [(MapsCarEngineState *)self engineType];
+    if (engineType == [stateCopy engineType])
     {
-      v6 = [(MapsCarEngineState *)self lowRangeWarning];
-      if (v6 == [v4 lowRangeWarning])
+      lowRangeWarning = [(MapsCarEngineState *)self lowRangeWarning];
+      if (lowRangeWarning == [stateCopy lowRangeWarning])
       {
-        v7 = [v4 range];
-        if (v7)
+        range = [stateCopy range];
+        if (range)
         {
-          v8 = v7;
-          v9 = [(MapsCarEngineState *)self range];
-          v10 = [v4 range];
-          v11 = [v9 isEqualToNumber:v10];
+          v8 = range;
+          range2 = [(MapsCarEngineState *)self range];
+          range3 = [stateCopy range];
+          v11 = [range2 isEqualToNumber:range3];
 
           if (v11)
           {
@@ -78,13 +78,13 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MapsCarEngineState *)self isEqualToEngineState:v4];
+    v5 = [(MapsCarEngineState *)self isEqualToEngineState:equalCopy];
   }
 
   else
@@ -95,20 +95,20 @@
   return v5;
 }
 
-- (void)updateWithVehicleInfo:(id)a3
+- (void)updateWithVehicleInfo:(id)info
 {
-  v32 = a3;
+  infoCopy = info;
   v4 = qword_10195E518;
   v5 = [NSNumber numberWithUnsignedInt:[(MapsCarEngineState *)self engineType]];
   v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v32 objectForKeyedSubscript:v6];
+  v7 = [infoCopy objectForKeyedSubscript:v6];
 
   if (v7)
   {
     v8 = qword_10195E518;
     v9 = [NSNumber numberWithUnsignedInt:[(MapsCarEngineState *)self engineType]];
     v10 = [v8 objectForKeyedSubscript:v9];
-    v11 = [v32 objectForKeyedSubscript:v10];
+    v11 = [infoCopy objectForKeyedSubscript:v10];
     [v11 doubleValue];
     v12 = [NSNumber numberWithDouble:?];
     [(MapsCarEngineState *)self setRange:v12];
@@ -117,14 +117,14 @@
   v13 = qword_10195E520;
   v14 = [NSNumber numberWithUnsignedInt:[(MapsCarEngineState *)self engineType]];
   v15 = [v13 objectForKeyedSubscript:v14];
-  v16 = [v32 objectForKeyedSubscript:v15];
+  v16 = [infoCopy objectForKeyedSubscript:v15];
 
   if (v16)
   {
     v17 = qword_10195E520;
     v18 = [NSNumber numberWithUnsignedInt:[(MapsCarEngineState *)self engineType]];
     v19 = [v17 objectForKeyedSubscript:v18];
-    v20 = [v32 objectForKeyedSubscript:v19];
+    v20 = [infoCopy objectForKeyedSubscript:v19];
     -[MapsCarEngineState setLowRangeWarning:](self, "setLowRangeWarning:", [v20 BOOLValue]);
   }
 
@@ -144,18 +144,18 @@
 
   v25 = v24;
 
-  v26 = [v25 BOOLValue];
-  if (v26)
+  bOOLValue = [v25 BOOLValue];
+  if (bOOLValue)
   {
-    v27 = [(MapsCarEngineState *)self range];
+    range = [(MapsCarEngineState *)self range];
     v31 = 0;
-    if (v27)
+    if (range)
     {
-      v28 = v27;
-      v29 = [(MapsCarEngineState *)self range];
-      v30 = [v29 integerValue];
+      v28 = range;
+      range2 = [(MapsCarEngineState *)self range];
+      integerValue = [range2 integerValue];
 
-      if (v30 < 51)
+      if (integerValue < 51)
       {
         v31 = 1;
       }
@@ -165,12 +165,12 @@
   }
 }
 
-- (MapsCarEngineState)initWithEngineType:(int)a3
+- (MapsCarEngineState)initWithEngineType:(int)type
 {
   result = [(MapsCarEngineState *)self init];
   if (result)
   {
-    result->_engineType = a3;
+    result->_engineType = type;
   }
 
   return result;

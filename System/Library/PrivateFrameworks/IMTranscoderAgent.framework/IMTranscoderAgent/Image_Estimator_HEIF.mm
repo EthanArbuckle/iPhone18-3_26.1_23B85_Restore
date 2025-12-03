@@ -1,18 +1,18 @@
 @interface Image_Estimator_HEIF
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (Image_Estimator_HEIF)init;
-- (Image_Estimator_HEIF)initWithConfiguration:(id)a3 error:(id *)a4;
-- (Image_Estimator_HEIF)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (Image_Estimator_HEIF)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (Image_Estimator_HEIF)initWithMLModel:(id)a3;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromInput_File_Size:(double)a3 Input_Height:(double)a4 Input_Entropy:(double)a5 Aspect_Ratio:(double)a6 Target_File_Size:(double)a7 Target_Max_Dimension_4032:(int64_t)a8 Target_Max_Dimension_3000:(int64_t)a9 Target_Max_Dimension_2048:(int64_t)a10 Target_Max_Dimension_1600:(int64_t)a11 Target_Max_Dimension_1280:(int64_t)a12 Target_Max_Dimension_1024:(int64_t)a13 Target_Max_Dimension_800:(int64_t)a14 Compression_Ratio:(double)a15 Input_H_x_W__NumOfPixels_:(double)a16 Target_Height:(double)a17 Target_Width:(double)a18 Input_log_NumOfPixels_:(double)a19 Ratio_of_NumOfPixels:(double)a20 Exponential_Entropy:(double)a21 error:(id *)a22;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (Image_Estimator_HEIF)initWithConfiguration:(id)configuration error:(id *)error;
+- (Image_Estimator_HEIF)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (Image_Estimator_HEIF)initWithContentsOfURL:(id)l error:(id *)error;
+- (Image_Estimator_HEIF)initWithMLModel:(id)model;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromInput_File_Size:(double)size Input_Height:(double)height Input_Entropy:(double)entropy Aspect_Ratio:(double)ratio Target_File_Size:(double)file_Size Target_Max_Dimension_4032:(int64_t)dimension_4032 Target_Max_Dimension_3000:(int64_t)dimension_3000 Target_Max_Dimension_2048:(int64_t)self0 Target_Max_Dimension_1600:(int64_t)self1 Target_Max_Dimension_1280:(int64_t)self2 Target_Max_Dimension_1024:(int64_t)self3 Target_Max_Dimension_800:(int64_t)self4 Compression_Ratio:(double)self5 Input_H_x_W__NumOfPixels_:(double)self6 Target_Height:(double)self7 Target_Width:(double)self8 Input_log_NumOfPixels_:(double)self9 Ratio_of_NumOfPixels:(double)pixels Exponential_Entropy:(double)exponential_Entropy error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation Image_Estimator_HEIF
@@ -42,10 +42,10 @@
   return v20;
 }
 
-- (Image_Estimator_HEIF)initWithMLModel:(id)a3
+- (Image_Estimator_HEIF)initWithMLModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v10.receiver = self;
     v10.super_class = Image_Estimator_HEIF;
@@ -53,19 +53,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_model, a3);
+      objc_storeStrong(&v6->_model, model);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (Image_Estimator_HEIF)init
@@ -77,87 +77,87 @@
   return v15;
 }
 
-- (Image_Estimator_HEIF)initWithConfiguration:(id)a3 error:(id *)a4
+- (Image_Estimator_HEIF)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = objc_opt_class();
   v14 = objc_msgSend_URLOfModelInThisBundle(v7, v8, v9, v10, v11, v12, v13);
-  v18 = objc_msgSend_initWithContentsOfURL_configuration_error_(self, v15, v14, v6, a4, v16, v17);
+  v18 = objc_msgSend_initWithContentsOfURL_configuration_error_(self, v15, v14, configurationCopy, error, v16, v17);
 
   return v18;
 }
 
-- (Image_Estimator_HEIF)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (Image_Estimator_HEIF)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v13 = objc_msgSend_modelWithContentsOfURL_error_(MEMORY[0x277CBFF20], a2, a3, a4, v4, v5, v6);
+  v13 = objc_msgSend_modelWithContentsOfURL_error_(MEMORY[0x277CBFF20], a2, l, error, v4, v5, v6);
   if (v13)
   {
     self = objc_msgSend_initWithMLModel_(self, v8, v13, v9, v10, v11, v12);
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (Image_Estimator_HEIF)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (Image_Estimator_HEIF)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v13 = objc_msgSend_modelWithContentsOfURL_configuration_error_(MEMORY[0x277CBFF20], a2, a3, a4, a5, v5, v6);
+  v13 = objc_msgSend_modelWithContentsOfURL_configuration_error_(MEMORY[0x277CBFF20], a2, l, configuration, error, v5, v6);
   if (v13)
   {
     self = objc_msgSend_initWithMLModel_(self, v8, v13, v9, v10, v11, v12);
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v17 = objc_msgSend_URLOfModelInThisBundle(a1, v8, v9, v10, v11, v12, v13);
-  objc_msgSend_loadContentsOfURL_configuration_completionHandler_(a1, v14, v17, v7, v6, v15, v16);
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  v17 = objc_msgSend_URLOfModelInThisBundle(self, v8, v9, v10, v11, v12, v13);
+  objc_msgSend_loadContentsOfURL_configuration_completionHandler_(self, v14, v17, configurationCopy, handlerCopy, v15, v16);
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBFF20];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_254830784;
   v13[3] = &unk_27978B0E8;
-  v14 = v7;
-  v9 = v7;
-  objc_msgSend_loadContentsOfURL_configuration_completionHandler_(v8, v10, a3, a4, v13, v11, v12);
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  objc_msgSend_loadContentsOfURL_configuration_completionHandler_(v8, v10, l, configuration, v13, v11, v12);
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x277CBFF68];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v12 = objc_msgSend_predictionFromFeatures_options_error_(self, v9, v7, v8, a4, v10, v11);
+  v12 = objc_msgSend_predictionFromFeatures_options_error_(self, v9, featuresCopy, v8, error, v10, v11);
 
   return v12;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  optionsCopy = options;
+  featuresCopy = features;
   v16 = objc_msgSend_model(self, v10, v11, v12, v13, v14, v15);
-  v20 = objc_msgSend_predictionFromFeatures_options_error_(v16, v17, v9, v8, a5, v18, v19);
+  v20 = objc_msgSend_predictionFromFeatures_options_error_(v16, v17, featuresCopy, optionsCopy, error, v18, v19);
 
   if (v20)
   {
@@ -175,52 +175,52 @@
   return v40;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  featuresCopy = features;
   v14 = objc_msgSend_model(self, v8, v9, v10, v11, v12, v13);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_254830A3C;
   v20[3] = &unk_27978B110;
-  v21 = v6;
-  v15 = v6;
-  objc_msgSend_predictionFromFeatures_completionHandler_(v14, v16, v7, v20, v17, v18, v19);
+  v21 = handlerCopy;
+  v15 = handlerCopy;
+  objc_msgSend_predictionFromFeatures_completionHandler_(v14, v16, featuresCopy, v20, v17, v18, v19);
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
   v17 = objc_msgSend_model(self, v11, v12, v13, v14, v15, v16);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = sub_254830BFC;
   v22[3] = &unk_27978B110;
-  v23 = v8;
-  v18 = v8;
-  objc_msgSend_predictionFromFeatures_options_completionHandler_(v17, v19, v10, v9, v22, v20, v21);
+  v23 = handlerCopy;
+  v18 = handlerCopy;
+  objc_msgSend_predictionFromFeatures_options_completionHandler_(v17, v19, featuresCopy, optionsCopy, v22, v20, v21);
 }
 
-- (id)predictionFromInput_File_Size:(double)a3 Input_Height:(double)a4 Input_Entropy:(double)a5 Aspect_Ratio:(double)a6 Target_File_Size:(double)a7 Target_Max_Dimension_4032:(int64_t)a8 Target_Max_Dimension_3000:(int64_t)a9 Target_Max_Dimension_2048:(int64_t)a10 Target_Max_Dimension_1600:(int64_t)a11 Target_Max_Dimension_1280:(int64_t)a12 Target_Max_Dimension_1024:(int64_t)a13 Target_Max_Dimension_800:(int64_t)a14 Compression_Ratio:(double)a15 Input_H_x_W__NumOfPixels_:(double)a16 Target_Height:(double)a17 Target_Width:(double)a18 Input_log_NumOfPixels_:(double)a19 Ratio_of_NumOfPixels:(double)a20 Exponential_Entropy:(double)a21 error:(id *)a22
+- (id)predictionFromInput_File_Size:(double)size Input_Height:(double)height Input_Entropy:(double)entropy Aspect_Ratio:(double)ratio Target_File_Size:(double)file_Size Target_Max_Dimension_4032:(int64_t)dimension_4032 Target_Max_Dimension_3000:(int64_t)dimension_3000 Target_Max_Dimension_2048:(int64_t)self0 Target_Max_Dimension_1600:(int64_t)self1 Target_Max_Dimension_1280:(int64_t)self2 Target_Max_Dimension_1024:(int64_t)self3 Target_Max_Dimension_800:(int64_t)self4 Compression_Ratio:(double)self5 Input_H_x_W__NumOfPixels_:(double)self6 Target_Height:(double)self7 Target_Width:(double)self8 Input_log_NumOfPixels_:(double)self9 Ratio_of_NumOfPixels:(double)pixels Exponential_Entropy:(double)exponential_Entropy error:(id *)error
 {
   v35 = [Image_Estimator_HEIFInput alloc];
-  v37 = objc_msgSend_initWithInput_File_Size_Input_Height_Input_Entropy_Aspect_Ratio_Target_File_Size_Target_Max_Dimension_4032_Target_Max_Dimension_3000_Target_Max_Dimension_2048_Target_Max_Dimension_1600_Target_Max_Dimension_1280_Target_Max_Dimension_1024_Target_Max_Dimension_800_Compression_Ratio_Input_H_x_W__NumOfPixels__Target_Height_Target_Width_Input_log_NumOfPixels__Ratio_of_NumOfPixels_Exponential_Entropy_(v35, v36, a8, a9, a10, a11, a12, a13, a3, a4, a5, a6, a7, a15, a16, a17, a14, *&a18, *&a19, *&a20, *&a21);
-  v42 = objc_msgSend_predictionFromFeatures_error_(self, v38, v37, a22, v39, v40, v41);
+  v37 = objc_msgSend_initWithInput_File_Size_Input_Height_Input_Entropy_Aspect_Ratio_Target_File_Size_Target_Max_Dimension_4032_Target_Max_Dimension_3000_Target_Max_Dimension_2048_Target_Max_Dimension_1600_Target_Max_Dimension_1280_Target_Max_Dimension_1024_Target_Max_Dimension_800_Compression_Ratio_Input_H_x_W__NumOfPixels__Target_Height_Target_Width_Input_log_NumOfPixels__Ratio_of_NumOfPixels_Exponential_Entropy_(v35, v36, dimension_4032, dimension_3000, dimension_2048, dimension_1600, dimension_1280, dimension_1024, size, height, entropy, ratio, file_Size, compression_Ratio, pixels_, target_Height, dimension_800, *&width, *&ofPixels_, *&pixels, *&exponential_Entropy);
+  v42 = objc_msgSend_predictionFromFeatures_error_(self, v38, v37, error, v39, v40, v41);
 
   return v42;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  inputsCopy = inputs;
+  optionsCopy = options;
   v10 = objc_alloc(MEMORY[0x277CBFEB0]);
-  v16 = objc_msgSend_initWithFeatureProviderArray_(v10, v11, v8, v12, v13, v14, v15);
+  v16 = objc_msgSend_initWithFeatureProviderArray_(v10, v11, inputsCopy, v12, v13, v14, v15);
   v23 = objc_msgSend_model(self, v17, v18, v19, v20, v21, v22);
-  v27 = objc_msgSend_predictionsFromBatch_options_error_(v23, v24, v16, v9, a5, v25, v26);
+  v27 = objc_msgSend_predictionsFromBatch_options_error_(v23, v24, v16, optionsCopy, error, v25, v26);
 
   if (v27)
   {

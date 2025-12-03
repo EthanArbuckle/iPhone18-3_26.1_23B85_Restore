@@ -1,59 +1,59 @@
 @interface TSCHElementBuilder
-+ (CGRect)clipRectForElementsDrawnByRenderState:(id)a3;
-+ (CGRect)elementsRectForElementsDrawnByRenderState:(id)a3;
-+ (CGRect)p_chartLayoutSpaceClipRectUnionForElementsDrawnByRenderState:(id)a3 returningItemCount:(unint64_t *)a4;
-- (BOOL)hasAxisLineInBody:(id)a3 forAxis:(id)a4 outTransform:(CGAffineTransform *)a5 outLine:(id *)a6;
-- (BOOL)p_testIntersectionOfRect:(CGRect)a3 againstSortedRects:(id)a4 withInset:(double)a5 isVertical:(BOOL)a6;
-- (CGAffineTransform)p_transformForRenderingTrendlineTextNotR2:(SEL)a3 forSeries:(BOOL)a4 forAreaLayout:(id)a5 outElementSize:(id)a6 outClipRect:(CGSize *)a7 outParagraphStyle:(CGRect *)a8 outString:(id *)a9;
-- (CGAffineTransform)transformForRenderingLabelForReferenceLine:(SEL)a3 ofType:(id)a4 range:(unint64_t)a5 inLayoutItem:(_NSRange)a6 outElementSize:(id)a7 outClipRect:(CGSize *)a8;
-- (CGAffineTransform)transformForRenderingR2TextForSeries:(SEL)a3 forAreaLayout:(id)a4 outElementSize:(id)a5 outClipRect:(CGSize *)a6 outParagraphStyle:(CGRect *)a7 outString:(id *)a8;
-- (CGPoint)labelPointForPosition:(unsigned int)a3 rect:(CGRect)a4 stringSize:(CGSize)a5;
-- (CGPoint)labelPointForPosition:(unsigned int)a3 rect:(CGRect)a4 stringSize:(CGSize)a5 offset:(double)a6;
-- (CGRect)p_strideTestingRectFromRect:(CGRect)a3 withOffset:(double)a4 isVertical:(BOOL)a5;
-- (unint64_t)countOfCalloutLinesForSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewClipRects:(CGRect *)a6;
-- (unint64_t)countOfElementsInSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewElementBounds:(CGRect *)a6 outNewClipRects:(CGRect *)a7 outNewElementPaths:(const CGPath *)a8 outSelectionKnobLocations:(id *)a9 forHighlightPath:(BOOL)a10;
-- (unint64_t)countOfErrorBarsInSeries:(id)a3 forGroups:(id)a4 forAxisID:(id)a5 forBodyLayout:(id)a6 outClipRect:(CGRect *)a7 outNewErrorBarDescriptors:(id *)a8;
-- (unint64_t)countOfGridLinesInBody:(id)a3 forAxis:(id)a4 minor:(BOOL)a5 outNewLineDescriptors:(id *)a6;
-- (unint64_t)countOfLabelsForSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewTransforms:(CGAffineTransform *)a6 outNewElementSizes:(CGSize *)a7 outNewClipRects:(CGRect *)a8 outNewStrings:(id *)a9;
-- (unint64_t)countOfReferenceLineLabelsForAxisID:(id)a3 model:(id)a4 forRefLineLabelsLayout:(id)a5 outNewTransforms:(CGAffineTransform *)a6 outNewElementSizes:(CGSize *)a7 outNewClipRects:(CGRect *)a8 outNewParagraphStyles:(id *)a9 outNewStrings:(id *)a10 outNewLabelTypes:(unint64_t *)a11 outReferenceLines:(id *)a12 includeOutsideChartBodyBounds:(BOOL)a13 outOutsideChartBodyBounds:(BOOL *)a14;
-- (unint64_t)countOfReferenceLinesForAxisID:(id)a3 model:(id)a4 forBodyLayout:(id)a5 outClipRect:(CGRect *)a6 outNewClipRects:(CGRect *)a7 outNewLineDescriptors:(id *)a8 outReferenceLines:(id *)a9 includeOutsideChartBodyBounds:(BOOL)a10 outOutsideChartBodyBounds:(BOOL *)a11;
-- (unint64_t)countOfSummaryLabelsForGroups:(id)a3 forBodyLayout:(id)a4 outNewTransforms:(CGAffineTransform *)a5 outNewElementSizes:(CGSize *)a6 outNewClipRects:(CGRect *)a7 outNewStrings:(id *)a8;
-- (unint64_t)p_countOfReferenceLineLabelsForReferenceLine:(id)a3 forRefLineLabelsLayout:(id)a4 substringRange:(_NSRange *)a5 outNewTransforms:(CGAffineTransform *)a6 outNewElementSizes:(CGSize *)a7 outNewClipRects:(CGRect *)a8 outNewParagraphStyles:(id *)a9 outNewStrings:(id *)a10 outNewLabelTypes:(unint64_t *)a11 includeOutsideChartBodyBounds:(BOOL)a12 outOutsideChartBodyBounds:(BOOL *)a13;
-- (void)p_insertRectValue:(id)a3 intoArray:(id)a4 isVertical:(BOOL)a5 showAll:(BOOL)a6;
-- (void)p_trendlineInfoForSeries:(id)a3 forBodyLayout:(id)a4 outVertical:(BOOL *)a5 outOffsetInBody:(double *)a6;
-- (void)trendlineElementForSeries:(id)a3 forBodyLayout:(id)a4 outElementBounds:(CGRect *)a5 outElementClipRect:(CGRect *)a6 outElementPath:(id *)a7;
++ (CGRect)clipRectForElementsDrawnByRenderState:(id)state;
++ (CGRect)elementsRectForElementsDrawnByRenderState:(id)state;
++ (CGRect)p_chartLayoutSpaceClipRectUnionForElementsDrawnByRenderState:(id)state returningItemCount:(unint64_t *)count;
+- (BOOL)hasAxisLineInBody:(id)body forAxis:(id)axis outTransform:(CGAffineTransform *)transform outLine:(id *)line;
+- (BOOL)p_testIntersectionOfRect:(CGRect)rect againstSortedRects:(id)rects withInset:(double)inset isVertical:(BOOL)vertical;
+- (CGAffineTransform)p_transformForRenderingTrendlineTextNotR2:(SEL)r2 forSeries:(BOOL)series forAreaLayout:(id)layout outElementSize:(id)size outClipRect:(CGSize *)rect outParagraphStyle:(CGRect *)style outString:(id *)string;
+- (CGAffineTransform)transformForRenderingLabelForReferenceLine:(SEL)line ofType:(id)type range:(unint64_t)range inLayoutItem:(_NSRange)item outElementSize:(id)size outClipRect:(CGSize *)rect;
+- (CGAffineTransform)transformForRenderingR2TextForSeries:(SEL)series forAreaLayout:(id)layout outElementSize:(id)size outClipRect:(CGSize *)rect outParagraphStyle:(CGRect *)style outString:(id *)string;
+- (CGPoint)labelPointForPosition:(unsigned int)position rect:(CGRect)rect stringSize:(CGSize)size;
+- (CGPoint)labelPointForPosition:(unsigned int)position rect:(CGRect)rect stringSize:(CGSize)size offset:(double)offset;
+- (CGRect)p_strideTestingRectFromRect:(CGRect)rect withOffset:(double)offset isVertical:(BOOL)vertical;
+- (unint64_t)countOfCalloutLinesForSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewClipRects:(CGRect *)rects;
+- (unint64_t)countOfElementsInSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewElementBounds:(CGRect *)bounds outNewClipRects:(CGRect *)rects outNewElementPaths:(const CGPath *)paths outSelectionKnobLocations:(id *)locations forHighlightPath:(BOOL)self0;
+- (unint64_t)countOfErrorBarsInSeries:(id)series forGroups:(id)groups forAxisID:(id)d forBodyLayout:(id)layout outClipRect:(CGRect *)rect outNewErrorBarDescriptors:(id *)descriptors;
+- (unint64_t)countOfGridLinesInBody:(id)body forAxis:(id)axis minor:(BOOL)minor outNewLineDescriptors:(id *)descriptors;
+- (unint64_t)countOfLabelsForSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings;
+- (unint64_t)countOfReferenceLineLabelsForAxisID:(id)d model:(id)model forRefLineLabelsLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewParagraphStyles:(id *)styles outNewStrings:(id *)self0 outNewLabelTypes:(unint64_t *)self1 outReferenceLines:(id *)self2 includeOutsideChartBodyBounds:(BOOL)self3 outOutsideChartBodyBounds:(BOOL *)self4;
+- (unint64_t)countOfReferenceLinesForAxisID:(id)d model:(id)model forBodyLayout:(id)layout outClipRect:(CGRect *)rect outNewClipRects:(CGRect *)rects outNewLineDescriptors:(id *)descriptors outReferenceLines:(id *)lines includeOutsideChartBodyBounds:(BOOL)self0 outOutsideChartBodyBounds:(BOOL *)self1;
+- (unint64_t)countOfSummaryLabelsForGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings;
+- (unint64_t)p_countOfReferenceLineLabelsForReferenceLine:(id)line forRefLineLabelsLayout:(id)layout substringRange:(_NSRange *)range outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewParagraphStyles:(id *)styles outNewStrings:(id *)self0 outNewLabelTypes:(unint64_t *)self1 includeOutsideChartBodyBounds:(BOOL)self2 outOutsideChartBodyBounds:(BOOL *)self3;
+- (void)p_insertRectValue:(id)value intoArray:(id)array isVertical:(BOOL)vertical showAll:(BOOL)all;
+- (void)p_trendlineInfoForSeries:(id)series forBodyLayout:(id)layout outVertical:(BOOL *)vertical outOffsetInBody:(double *)body;
+- (void)trendlineElementForSeries:(id)series forBodyLayout:(id)layout outElementBounds:(CGRect *)bounds outElementClipRect:(CGRect *)rect outElementPath:(id *)path;
 @end
 
 @implementation TSCHElementBuilder
 
-- (unint64_t)countOfReferenceLinesForAxisID:(id)a3 model:(id)a4 forBodyLayout:(id)a5 outClipRect:(CGRect *)a6 outNewClipRects:(CGRect *)a7 outNewLineDescriptors:(id *)a8 outReferenceLines:(id *)a9 includeOutsideChartBodyBounds:(BOOL)a10 outOutsideChartBodyBounds:(BOOL *)a11
+- (unint64_t)countOfReferenceLinesForAxisID:(id)d model:(id)model forBodyLayout:(id)layout outClipRect:(CGRect *)rect outNewClipRects:(CGRect *)rects outNewLineDescriptors:(id *)descriptors outReferenceLines:(id *)lines includeOutsideChartBodyBounds:(BOOL)self0 outOutsideChartBodyBounds:(BOOL *)self1
 {
   v201[1] = *MEMORY[0x277D85DE8];
-  v156 = a3;
-  v162 = a4;
-  v157 = a5;
+  dCopy = d;
+  modelCopy = model;
+  layoutCopy = layout;
   v19 = MEMORY[0x277CBF398];
-  if (a6)
+  if (rect)
   {
     v16 = *MEMORY[0x277CBF398];
     v17 = *(MEMORY[0x277CBF398] + 16);
-    a6->origin = *MEMORY[0x277CBF398];
-    a6->size = v17;
+    rect->origin = *MEMORY[0x277CBF398];
+    rect->size = v17;
   }
 
-  if (a7)
+  if (rects)
   {
-    *a7 = 0;
+    *rects = 0;
   }
 
-  if (a8)
+  if (descriptors)
   {
-    *a8 = 0;
+    *descriptors = 0;
   }
 
-  if (a9)
+  if (lines)
   {
-    *a9 = 0;
+    *lines = 0;
   }
 
   v20 = *v19;
@@ -69,7 +69,7 @@
   __p = 0;
   size = 0;
   v188 = 0;
-  if (a9)
+  if (lines)
   {
     v173 = objc_msgSend_array(MEMORY[0x277CBEB18], v15, *&v16, v17.width, v18);
   }
@@ -79,16 +79,16 @@
     v173 = 0;
   }
 
-  v158 = objc_msgSend_chartInfo(v162, v15, *&v16, v17.width, v18);
-  objc_msgSend_rootedLayoutRect(v157, v24, v25, v26, v27);
+  v158 = objc_msgSend_chartInfo(modelCopy, v15, *&v16, v17.width, v18);
+  objc_msgSend_rootedLayoutRect(layoutCopy, v24, v25, v26, v27);
   v172 = v28;
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v155 = objc_msgSend_chartType(v158, v35, v29, v31, v33);
-  if (v156)
+  if (dCopy)
   {
-    v201[0] = v156;
+    v201[0] = dCopy;
     v40 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v36, v37, v38, v39, v201, 1);
   }
 
@@ -103,13 +103,13 @@
   v183 = 0u;
   obj = v40;
   v45 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v41, v42, v43, v44, &v182, v200, 16);
-  v154 = a6;
+  rectCopy = rect;
   if (v45)
   {
     v163 = v45;
     v174 = 0;
     v161 = *v183;
-    v166 = a8;
+    descriptorsCopy = descriptors;
     v170 = v32;
     v171 = v30;
     v169 = v34;
@@ -123,7 +123,7 @@
         }
 
         v50 = *(*(&v182 + 1) + 8 * i);
-        v164 = objc_msgSend_axisForID_(v162, v46, v47, v48, v49, v50, v154);
+        v164 = objc_msgSend_axisForID_(modelCopy, v46, v47, v48, v49, v50, rectCopy);
         if (objc_msgSend_supportsReferenceLines(v164, v51, v52, v53, v54))
         {
           v59 = objc_msgSend_type(v50, v55, v56, v57, v58);
@@ -170,7 +170,7 @@
                   }
 
                   LOBYTE(v197) = v80;
-                  if (v80 != 1 || a10)
+                  if (v80 != 1 || bounds)
                   {
                     v176 = v23;
                     v81 = v22;
@@ -220,7 +220,7 @@
                     v100 = v82;
                     v101 = v81;
                     v102 = v176;
-                    if (a8)
+                    if (descriptors)
                     {
                       v103 = v193;
                       if (v193 >= v194)
@@ -266,7 +266,7 @@
                           operator delete(v111);
                         }
 
-                        a8 = v166;
+                        descriptors = descriptorsCopy;
                       }
 
                       else
@@ -388,7 +388,7 @@
     v174 = 0;
   }
 
-  if (!a8 || __src == v193)
+  if (!descriptors || __src == v193)
   {
     v149 = 0;
   }
@@ -404,7 +404,7 @@
     }
   }
 
-  if (a7)
+  if (rects)
   {
     v150 = malloc_type_calloc(0x20uLL, (v190 - v189) >> 5, 0x1000040E0EAB150uLL);
     v151 = v150;
@@ -420,7 +420,7 @@
     v151 = 0;
   }
 
-  if (a11)
+  if (bodyBounds)
   {
     v152 = malloc_type_calloc(1uLL, size, 0x100004077774924uLL);
     v197 = __p;
@@ -435,32 +435,32 @@
     v152 = 0;
   }
 
-  if (v154)
+  if (rectCopy)
   {
-    v154->origin.x = v20;
-    v154->origin.y = v21;
-    v154->size.width = v22;
-    v154->size.height = v23;
+    rectCopy->origin.x = v20;
+    rectCopy->origin.y = v21;
+    rectCopy->size.width = v22;
+    rectCopy->size.height = v23;
   }
 
-  if (a7)
+  if (rects)
   {
-    *a7 = v151;
+    *rects = v151;
   }
 
-  if (a8)
+  if (descriptors)
   {
-    *a8 = v149;
+    *descriptors = v149;
   }
 
-  if (a9)
+  if (lines)
   {
-    *a9 = objc_msgSend_copy(v173, v144, v145, v146, v147);
+    *lines = objc_msgSend_copy(v173, v144, v145, v146, v147);
   }
 
-  if (a11)
+  if (bodyBounds)
   {
-    *a11 = v152;
+    *bodyBounds = v152;
   }
 
   if (__p)
@@ -483,57 +483,57 @@
   return v174;
 }
 
-- (unint64_t)countOfReferenceLineLabelsForAxisID:(id)a3 model:(id)a4 forRefLineLabelsLayout:(id)a5 outNewTransforms:(CGAffineTransform *)a6 outNewElementSizes:(CGSize *)a7 outNewClipRects:(CGRect *)a8 outNewParagraphStyles:(id *)a9 outNewStrings:(id *)a10 outNewLabelTypes:(unint64_t *)a11 outReferenceLines:(id *)a12 includeOutsideChartBodyBounds:(BOOL)a13 outOutsideChartBodyBounds:(BOOL *)a14
+- (unint64_t)countOfReferenceLineLabelsForAxisID:(id)d model:(id)model forRefLineLabelsLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewParagraphStyles:(id *)styles outNewStrings:(id *)self0 outNewLabelTypes:(unint64_t *)self1 outReferenceLines:(id *)self2 includeOutsideChartBodyBounds:(BOOL)self3 outOutsideChartBodyBounds:(BOOL *)self4
 {
   v222[1] = *MEMORY[0x277D85DE8];
-  v167 = a3;
-  v171 = a4;
-  v184 = a5;
-  if (a6)
+  dCopy = d;
+  modelCopy = model;
+  layoutCopy = layout;
+  if (transforms)
   {
-    *a6 = 0;
+    *transforms = 0;
   }
 
-  if (a7)
+  if (sizes)
   {
-    *a7 = 0;
+    *sizes = 0;
   }
 
-  if (a8)
+  if (rects)
   {
-    *a8 = 0;
+    *rects = 0;
   }
 
-  if (a9)
+  if (styles)
   {
-    *a9 = 0;
+    *styles = 0;
   }
 
-  v164 = a7;
-  v165 = a6;
-  v166 = a8;
-  if (a10)
+  sizesCopy = sizes;
+  transformsCopy = transforms;
+  rectsCopy = rects;
+  if (strings)
   {
-    *a10 = 0;
+    *strings = 0;
   }
 
-  v23 = a14;
-  if (a11)
+  bodyBoundsCopy2 = bodyBounds;
+  if (types)
   {
-    *a11 = 0;
+    *types = 0;
   }
 
-  if (a12)
+  if (lines)
   {
-    *a12 = 0;
+    *lines = 0;
   }
 
-  if (a14)
+  if (bodyBounds)
   {
-    *a14 = 0;
+    *bodyBounds = 0;
   }
 
-  if (!v184)
+  if (!layoutCopy)
   {
     v33 = MEMORY[0x277D81150];
     v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, v20, v21, v22, "[TSCHElementBuilder(TSCHReferenceLines) countOfReferenceLineLabelsForAxisID:model:forRefLineLabelsLayout:outNewTransforms:outNewElementSizes:outNewClipRects:outNewParagraphStyles:outNewStrings:outNewLabelTypes:outReferenceLines:includeOutsideChartBodyBounds:outOutsideChartBodyBounds:]");
@@ -546,17 +546,17 @@
   }
 
   size = 0;
-  if (a14)
+  if (bodyBounds)
   {
-    v24 = 0;
+    boundsCopy = 0;
   }
 
   else
   {
-    v24 = a13;
+    boundsCopy = bounds;
   }
 
-  if (a12 | a11 | a8 | a6 | a9 | a10 && !v24)
+  if (lines | types | rects | transforms | styles | strings && !boundsCopy)
   {
     v218 = 0;
     v217 = 0;
@@ -573,7 +573,7 @@
     memset(__p, 0, sizeof(__p));
     v188 = objc_msgSend_array(MEMORY[0x277CBEB18], v19, v20, v21, v22);
     v189 = objc_msgSend_array(MEMORY[0x277CBEB18], v25, v26, v27, v28);
-    if (a12)
+    if (lines)
     {
       v190 = objc_msgSend_array(MEMORY[0x277CBEB18], v29, v30, v31, v32);
     }
@@ -583,11 +583,11 @@
       v190 = 0;
     }
 
-    v162 = objc_msgSend_chartInfo(v171, v29, v30, v31, v32);
+    v162 = objc_msgSend_chartInfo(modelCopy, v29, v30, v31, v32);
     v163 = objc_msgSend_chartType(v162, v49, v50, v51, v52);
-    if (v167)
+    if (dCopy)
     {
-      v222[0] = v167;
+      v222[0] = dCopy;
       v57 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v53, v54, v55, v56, v222, 1);
     }
 
@@ -605,15 +605,15 @@
     if (!v170)
     {
 
-      if (!a6)
+      if (!transforms)
       {
-        v141 = a7;
-        if (a7)
+        sizesCopy2 = sizes;
+        if (sizes)
         {
           goto LABEL_117;
         }
 
-        if (a8)
+        if (rects)
         {
           goto LABEL_134;
         }
@@ -626,7 +626,7 @@
 
     size = 0;
     v169 = *v204;
-    if (a6)
+    if (transforms)
     {
       v66 = &v198;
     }
@@ -637,14 +637,14 @@
     }
 
     v67 = &v197;
-    if (!a7)
+    if (!sizes)
     {
       v67 = 0;
     }
 
     v180 = v67;
     v181 = v66;
-    if (a8)
+    if (rects)
     {
       v68 = &v196;
     }
@@ -655,14 +655,14 @@
     }
 
     v69 = &v193;
-    if (!a9)
+    if (!styles)
     {
       v69 = 0;
     }
 
     v178 = v69;
     v179 = v68;
-    if (a10)
+    if (strings)
     {
       v70 = &v192;
     }
@@ -673,7 +673,7 @@
     }
 
     v71 = &v195;
-    if (!a11)
+    if (!types)
     {
       v71 = 0;
     }
@@ -681,7 +681,7 @@
     v176 = v71;
     v177 = v70;
     v72 = &v194;
-    if (!a14)
+    if (!bodyBounds)
     {
       v72 = 0;
     }
@@ -697,10 +697,10 @@ LABEL_50:
       }
 
       v73 = *(*(&v203 + 1) + 8 * v173);
-      v172 = objc_msgSend_axisForID_(v171, v62, v63, v64, v65, v73);
+      v172 = objc_msgSend_axisForID_(modelCopy, v62, v63, v64, v65, v73);
       if (objc_msgSend_supportsReferenceLines(v172, v74, v75, v76, v77))
       {
-        v82 = objc_msgSend_axisID(v184, v78, v79, v80, v81);
+        v82 = objc_msgSend_axisID(layoutCopy, v78, v79, v80, v81);
         isEqual = objc_msgSend_isEqual_(v73, v83, v84, v85, v86, v82);
 
         if (isEqual)
@@ -717,7 +717,7 @@ LABEL_102:
         if (!v170)
         {
 
-          if (!v165)
+          if (!transformsCopy)
           {
             goto LABEL_108;
           }
@@ -727,12 +727,12 @@ LABEL_102:
           {
             v136 = malloc_type_calloc(0x30uLL, size, 0x1000040EED21634uLL);
             v137 = 0;
-            *v165 = v136;
+            *transformsCopy = v136;
             v138 = v217;
             v139 = size;
             do
             {
-              v140 = &(*v165)[v137 / 0x30];
+              v140 = &(*transformsCopy)[v137 / 0x30];
               v133 = *&v138[v137];
               v134 = *&v138[v137 + 16];
               v135 = *&v138[v137 + 32];
@@ -745,20 +745,20 @@ LABEL_102:
 
             while (v139);
 LABEL_108:
-            if (v164)
+            if (sizesCopy)
             {
               v132 = size;
-              v141 = v164;
+              sizesCopy2 = sizesCopy;
               if (size)
               {
                 v142 = malloc_type_calloc(0x10uLL, size, 0x1000040451B5BE8uLL);
                 v143 = 0;
-                *v164 = v142;
+                *sizesCopy = v142;
                 v144 = size;
                 do
                 {
                   v133 = *(v214 + v143 * 16);
-                  (*v164)[v143++] = v133;
+                  (*sizesCopy)[v143++] = v133;
                   --v144;
                 }
 
@@ -768,23 +768,23 @@ LABEL_108:
 
 LABEL_117:
               size = 0;
-              *v141 = 0;
+              *sizesCopy2 = 0;
             }
 
 LABEL_118:
-            if (v166)
+            if (rectsCopy)
             {
               v132 = size;
               if (size)
               {
                 v145 = malloc_type_calloc(0x20uLL, size, 0x1000040E0EAB150uLL);
                 v146 = 0;
-                *v166 = v145;
+                *rectsCopy = v145;
                 v147 = v211;
                 v148 = size;
                 do
                 {
-                  v149 = &(*v166)[v146];
+                  v149 = &(*rectsCopy)[v146];
                   v133 = *&v147[v146 * 32];
                   v134 = *&v147[v146 * 32 + 16];
                   *v149 = v133;
@@ -798,13 +798,13 @@ LABEL_118:
               }
 
 LABEL_134:
-              *v166 = 0;
+              *rectsCopy = 0;
 LABEL_135:
-              if (a11)
+              if (types)
               {
 LABEL_136:
                 size = 0;
-                *a11 = 0;
+                *types = 0;
               }
 
               else
@@ -816,18 +816,18 @@ LABEL_136:
             else
             {
 LABEL_122:
-              if (a10 && size)
+              if (strings && size)
               {
-                *a10 = objc_msgSend_subarrayWithRange_(v188, v132, v133.width, v134.width, v135.width, 0, size);
+                *strings = objc_msgSend_subarrayWithRange_(v188, v132, v133.width, v134.width, v135.width, 0, size);
               }
 
-              if (a9 && size)
+              if (styles && size)
               {
                 v150 = v189;
-                *a9 = objc_msgSend_subarrayWithRange_(v189, v151, v152, v153, v154, 0, size);
+                *styles = objc_msgSend_subarrayWithRange_(v189, v151, v152, v153, v154, 0, size);
               }
 
-              if (a11)
+              if (types)
               {
                 v132 = size;
                 if (!size)
@@ -837,7 +837,7 @@ LABEL_122:
 
                 v155 = malloc_type_calloc(8uLL, size, 0x100004000313F17uLL);
                 v156 = 0;
-                *a11 = v155;
+                *types = v155;
                 v157 = __src;
                 do
                 {
@@ -849,18 +849,18 @@ LABEL_122:
               }
             }
 
-            if (a12)
+            if (lines)
             {
-              *a12 = objc_msgSend_copy(v190, v132, v133.width, v134.width, v135.width);
+              *lines = objc_msgSend_copy(v190, v132, v133.width, v134.width, v135.width);
             }
 
-            if (v23)
+            if (bodyBoundsCopy2)
             {
               if (size)
               {
                 v158 = malloc_type_calloc(1uLL, size, 0x100004077774924uLL);
                 v159 = 0;
-                *v23 = v158;
+                *bodyBoundsCopy2 = v158;
                 v160 = __p[0];
                 do
                 {
@@ -873,7 +873,7 @@ LABEL_122:
 
               else
               {
-                *v23 = 0;
+                *bodyBoundsCopy2 = 0;
               }
             }
 
@@ -910,9 +910,9 @@ LABEL_122:
           }
 
 LABEL_114:
-          v141 = v164;
-          *v165 = 0;
-          if (!v164)
+          sizesCopy2 = sizesCopy;
+          *transformsCopy = 0;
+          if (!sizesCopy)
           {
             size = 0;
             goto LABEL_118;
@@ -952,19 +952,19 @@ LABEL_57:
       v195 = 0;
       v196 = 0;
       v194 = 0;
-      if (a9)
+      if (styles)
       {
         v193 = 0;
       }
 
-      if (a10)
+      if (strings)
       {
         v192 = 0;
       }
 
-      LOBYTE(v161) = a13;
-      v100 = objc_msgSend_countOfReferenceLineLabelsForReferenceLine_forRefLineLabelsLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewParagraphStyles_outNewStrings_outNewLabelTypes_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(self, v95, v96, v97, v98, v191, v184, v181, v180, v179, v178, v177, v176, v161, v175);
-      if (a9)
+      LOBYTE(v161) = bounds;
+      v100 = objc_msgSend_countOfReferenceLineLabelsForReferenceLine_forRefLineLabelsLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewParagraphStyles_outNewStrings_outNewLabelTypes_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(self, v95, v96, v97, v98, v191, layoutCopy, v181, v180, v179, v178, v177, v176, v161, v175);
+      if (styles)
       {
         v104 = v193;
       }
@@ -974,7 +974,7 @@ LABEL_57:
         v104 = 0;
       }
 
-      if (a10)
+      if (strings)
       {
         v105 = v192;
         if (v100)
@@ -1069,7 +1069,7 @@ LABEL_71:
                   operator delete(v131);
                 }
 
-                v23 = a14;
+                bodyBoundsCopy2 = bodyBounds;
               }
 
               else
@@ -1122,15 +1122,15 @@ LABEL_26:
   return size;
 }
 
-- (CGAffineTransform)transformForRenderingLabelForReferenceLine:(SEL)a3 ofType:(id)a4 range:(unint64_t)a5 inLayoutItem:(_NSRange)a6 outElementSize:(id)a7 outClipRect:(CGSize *)a8
+- (CGAffineTransform)transformForRenderingLabelForReferenceLine:(SEL)line ofType:(id)type range:(unint64_t)range inLayoutItem:(_NSRange)item outElementSize:(id)size outClipRect:(CGSize *)rect
 {
-  v42 = a6;
-  v14 = a4;
-  v16 = a7;
+  itemCopy = item;
+  typeCopy = type;
+  sizeCopy = size;
   v18 = MEMORY[0x277CBF3A8];
-  if (a8)
+  if (rect)
   {
-    *a8 = *MEMORY[0x277CBF3A8];
+    *rect = *MEMORY[0x277CBF3A8];
   }
 
   v19 = MEMORY[0x277CBF398];
@@ -1154,7 +1154,7 @@ LABEL_26:
   v38 = 0;
   v35 = 0;
   v36 = 0;
-  v24 = objc_msgSend_p_countOfReferenceLineLabelsForReferenceLine_forRefLineLabelsLayout_substringRange_outNewTransforms_outNewElementSizes_outNewClipRects_outNewParagraphStyles_outNewStrings_outNewLabelTypes_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(self, v15, v39.x, v23.width, v17, v14, v16, &v42, &v38, &v37, &v36, 0, 0, &v35, 0, 0);
+  v24 = objc_msgSend_p_countOfReferenceLineLabelsForReferenceLine_forRefLineLabelsLayout_substringRange_outNewTransforms_outNewElementSizes_outNewClipRects_outNewParagraphStyles_outNewStrings_outNewLabelTypes_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(self, v15, v39.x, v23.width, v17, typeCopy, sizeCopy, &itemCopy, &v38, &v37, &v36, 0, 0, &v35, 0, 0);
   v25 = v38;
   if (v24)
   {
@@ -1165,7 +1165,7 @@ LABEL_26:
     do
     {
       v30 = *v26++;
-      if (v30 == a5)
+      if (v30 == range)
       {
         v31 = v29[1];
         *&retstr->a = *v29;
@@ -1209,9 +1209,9 @@ LABEL_26:
     free(v35);
   }
 
-  if (a8)
+  if (rect)
   {
-    *a8 = v41;
+    *rect = v41;
   }
 
   if (a9)
@@ -1224,59 +1224,59 @@ LABEL_26:
   return result;
 }
 
-- (unint64_t)p_countOfReferenceLineLabelsForReferenceLine:(id)a3 forRefLineLabelsLayout:(id)a4 substringRange:(_NSRange *)a5 outNewTransforms:(CGAffineTransform *)a6 outNewElementSizes:(CGSize *)a7 outNewClipRects:(CGRect *)a8 outNewParagraphStyles:(id *)a9 outNewStrings:(id *)a10 outNewLabelTypes:(unint64_t *)a11 includeOutsideChartBodyBounds:(BOOL)a12 outOutsideChartBodyBounds:(BOOL *)a13
+- (unint64_t)p_countOfReferenceLineLabelsForReferenceLine:(id)line forRefLineLabelsLayout:(id)layout substringRange:(_NSRange *)range outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewParagraphStyles:(id *)styles outNewStrings:(id *)self0 outNewLabelTypes:(unint64_t *)self1 includeOutsideChartBodyBounds:(BOOL)self2 outOutsideChartBodyBounds:(BOOL *)self3
 {
-  v18 = a3;
-  v20 = a4;
-  if (a6)
+  lineCopy = line;
+  layoutCopy = layout;
+  if (transforms)
   {
-    *a6 = 0;
+    *transforms = 0;
   }
 
-  if (a7)
+  if (sizes)
   {
-    *a7 = 0;
+    *sizes = 0;
   }
 
-  if (a8)
+  if (rects)
   {
-    *a8 = 0;
+    *rects = 0;
   }
 
-  if (a9)
+  if (styles)
   {
-    *a9 = 0;
+    *styles = 0;
   }
 
-  if (a10)
+  if (strings)
   {
-    *a10 = 0;
+    *strings = 0;
   }
 
-  if (a11)
+  if (types)
   {
-    *a11 = 0;
+    *types = 0;
   }
 
-  if (a13)
+  if (bodyBounds)
   {
-    *a13 = 0;
+    *bodyBounds = 0;
   }
 
-  v407 = v20;
-  if (!objc_msgSend_intValueForProperty_defaultValue_(v18, v19, v21, v22, v23, 1223, 0))
+  v407 = layoutCopy;
+  if (!objc_msgSend_intValueForProperty_defaultValue_(lineCopy, v19, v21, v22, v23, 1223, 0))
   {
     goto LABEL_31;
   }
 
-  v28 = objc_msgSend_labelShowing(v18, v24, v25, v26, v27);
-  v33 = objc_msgSend_valueLabelShowing(v18, v29, v30, v31, v32);
+  v28 = objc_msgSend_labelShowing(lineCopy, v24, v25, v26, v27);
+  v33 = objc_msgSend_valueLabelShowing(lineCopy, v29, v30, v31, v32);
   if (((v28 | v33) & 1) == 0)
   {
     goto LABEL_31;
   }
 
-  v37 = sub_276297280(v18);
+  v37 = sub_276297280(lineCopy);
   v38 = (*&v37 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
   v39 = v37 < 0.0 && ((*&v37 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
   if (v37 >= 0.0)
@@ -1297,7 +1297,7 @@ LABEL_26:
   }
 
   v428[0] = v41;
-  if (!a12)
+  if (!bounds)
   {
     if (v41)
     {
@@ -1323,21 +1323,21 @@ LABEL_31:
   memset(__p, 0, sizeof(__p));
   v405 = objc_msgSend_array(MEMORY[0x277CBEB18], v34, 1.0, v35, v36);
   v406 = objc_msgSend_array(MEMORY[0x277CBEB18], v44, v45, v46, v47);
-  v400 = objc_msgSend_model(v20, v48, v49, v50, v51);
+  v400 = objc_msgSend_model(layoutCopy, v48, v49, v50, v51);
   v404 = objc_msgSend_chartInfo(v400, v52, v53, v54, v55);
-  objc_msgSend_rootedLayoutRect(v20, v56, v57, v58, v59);
+  objc_msgSend_rootedLayoutRect(layoutCopy, v56, v57, v58, v59);
   v395 = v60;
   v62 = v61;
   v64 = v63;
   v66 = v65;
-  v68 = objc_msgSend_axis(v18, v67, v61, v60, v63);
+  v68 = objc_msgSend_axis(lineCopy, v67, v61, v60, v63);
   v399 = v68;
   v398 = objc_msgSend_axisID(v68, v69, v70, v71, v72);
   v396 = objc_msgSend_type(v398, v73, v74, v75, v76);
-  if (a5)
+  if (range)
   {
-    length = a5->length;
-    location = a5->location;
+    length = range->length;
+    location = range->location;
   }
 
   else
@@ -1362,7 +1362,7 @@ LABEL_31:
   v80 = *(MEMORY[0x277CBF398] + 16);
   v413 = *MEMORY[0x277CBF398];
   v414 = v80;
-  objc_msgSend_referenceLineAxisValue(v18, v77, *&v413, *&v80, v78);
+  objc_msgSend_referenceLineAxisValue(lineCopy, v77, *&v413, *&v80, v78);
   v85 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v81, v82, v83, v84);
   v90 = objc_msgSend_formattedStringForAxisValue_(v68, v86, v87, v88, v89, v85);
 
@@ -1384,7 +1384,7 @@ LABEL_31:
   v431.location = location;
   v431.length = range2;
   v111 = NSIntersectionRange(v429, v431);
-  v115 = objc_msgSend_intValueForProperty_defaultValue_(v18, v111.length, v112, v113, v114, 1227, 0);
+  v115 = objc_msgSend_intValueForProperty_defaultValue_(lineCopy, v111.length, v112, v113, v114, 1227, 0);
   v392 = objc_msgSend_paragraphStyleAtIndex_(v404, v116, v117, v118, v119, v115);
   v124 = objc_msgSend_sharedText(TSCHText, v120, v121, v122, v123);
   objc_msgSend_measureText_paragraphStyle_outErasableFrame_(v124, v125, v126, v127, v128, v393, v392, &v413);
@@ -1503,14 +1503,14 @@ LABEL_56:
     v231 = *(MEMORY[0x277CBF398] + 16);
     v413 = *MEMORY[0x277CBF398];
     v414 = v231;
-    v394 = objc_msgSend_objectValueForProperty_(v18, v77, *&v413, *&v231, v78, 1219, v389);
+    v394 = objc_msgSend_objectValueForProperty_(lineCopy, v77, *&v413, *&v231, v78, 1219, v389);
     v236 = objc_msgSend_length(v394, v232, v233, v234, v235);
     v430.location = 0;
     v430.length = v236;
     v432.location = location;
     v432.length = range2;
     v237 = NSIntersectionRange(v430, v432);
-    v241 = objc_msgSend_intValueForProperty_defaultValue_(v18, v237.length, v238, v239, v240, 1220, 0);
+    v241 = objc_msgSend_intValueForProperty_defaultValue_(lineCopy, v237.length, v238, v239, v240, 1220, 0);
     v390 = v236;
     v402 = objc_msgSend_paragraphStyleAtIndex_(v404, v242, v243, v244, v245, v241);
     v412 = 0uLL;
@@ -1638,16 +1638,16 @@ LABEL_56:
   }
 
 LABEL_75:
-  if (a6)
+  if (transforms)
   {
-    *a6 = malloc_type_calloc(0x30uLL, v42, 0x1000040EED21634uLL);
+    *transforms = malloc_type_calloc(0x30uLL, v42, 0x1000040EED21634uLL);
     if (v42)
     {
       v360 = 0;
       v361 = v425;
       do
       {
-        v362 = &(*a6)[v360];
+        v362 = &(*transforms)[v360];
         v363 = *&v361[v360 * 48];
         v364 = *&v361[v360 * 48 + 32];
         *&v362->c = *&v361[v360 * 48 + 16];
@@ -1660,21 +1660,21 @@ LABEL_75:
     }
   }
 
-  if (!a7)
+  if (!sizes)
   {
     goto LABEL_83;
   }
 
-  *a7 = malloc_type_calloc(0x10uLL, v42, 0x1000040451B5BE8uLL);
+  *sizes = malloc_type_calloc(0x10uLL, v42, 0x1000040451B5BE8uLL);
   if (v42)
   {
     for (i = 0; i != v42; ++i)
     {
-      (*a7)[i] = *&v422[i * 16];
+      (*sizes)[i] = *&v422[i * 16];
     }
 
 LABEL_83:
-    if (!a8)
+    if (!rects)
     {
       goto LABEL_87;
     }
@@ -1683,11 +1683,11 @@ LABEL_83:
     {
       v366 = malloc_type_calloc(0x20uLL, v42, 0x1000040E0EAB150uLL);
       v367 = 0;
-      *a8 = v366;
+      *rects = v366;
       v368 = v419;
       do
       {
-        v369 = &(*a8)[v367];
+        v369 = &(*rects)[v367];
         v370 = *&v368[v367 * 32 + 16];
         v369->origin = *&v368[v367 * 32];
         v369->size = v370;
@@ -1697,12 +1697,12 @@ LABEL_83:
       while (v42 != v367);
 LABEL_87:
       v371 = v42 != 0;
-      if (a10 && v42)
+      if (strings && v42)
       {
         v372 = v405;
-        *a10 = objc_msgSend_subarrayWithRange_(v372, v373, v374, v375, v376, 0, v42);
+        *strings = objc_msgSend_subarrayWithRange_(v372, v373, v374, v375, v376, 0, v42);
         v371 = 1;
-        if (!a9)
+        if (!styles)
         {
           goto LABEL_96;
         }
@@ -1711,14 +1711,14 @@ LABEL_94:
         if (v371)
         {
           v377 = v406;
-          *a9 = objc_msgSend_subarrayWithRange_(v377, v378, v379, v380, v381, 0, v42);
+          *styles = objc_msgSend_subarrayWithRange_(v377, v378, v379, v380, v381, 0, v42);
         }
 
         goto LABEL_96;
       }
 
 LABEL_93:
-      if (!a9)
+      if (!styles)
       {
         goto LABEL_96;
       }
@@ -1728,26 +1728,26 @@ LABEL_93:
 
 LABEL_92:
     v371 = 0;
-    *a8 = 0;
+    *rects = 0;
     goto LABEL_93;
   }
 
-  if (a8)
+  if (rects)
   {
     goto LABEL_92;
   }
 
   v371 = 0;
-  if (a9)
+  if (styles)
   {
     goto LABEL_94;
   }
 
 LABEL_96:
-  if (a11)
+  if (types)
   {
     v382 = malloc_type_calloc(8uLL, v42, 0x100004000313F17uLL);
-    *a11 = v382;
+    *types = v382;
     if (v42)
     {
       v383 = v416;
@@ -1763,10 +1763,10 @@ LABEL_96:
     }
   }
 
-  if (a13)
+  if (bodyBounds)
   {
     v386 = malloc_type_calloc(1uLL, v42, 0x100004077774924uLL);
-    *a13 = v386;
+    *bodyBounds = v386;
     if (v42)
     {
       v387 = __p[0];
@@ -1817,150 +1817,150 @@ LABEL_32:
   return v42;
 }
 
-- (unint64_t)countOfElementsInSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewElementBounds:(CGRect *)a6 outNewClipRects:(CGRect *)a7 outNewElementPaths:(const CGPath *)a8 outSelectionKnobLocations:(id *)a9 forHighlightPath:(BOOL)a10
+- (unint64_t)countOfElementsInSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewElementBounds:(CGRect *)bounds outNewClipRects:(CGRect *)rects outNewElementPaths:(const CGPath *)paths outSelectionKnobLocations:(id *)locations forHighlightPath:(BOOL)self0
 {
-  if (a6)
+  if (bounds)
   {
-    *a6 = 0;
+    *bounds = 0;
   }
 
-  if (a7)
+  if (rects)
   {
-    *a7 = 0;
+    *rects = 0;
   }
 
-  if (a8)
+  if (paths)
   {
-    *a8 = 0;
+    *paths = 0;
   }
 
-  if (a9)
+  if (locations)
   {
-    *a9 = 0;
+    *locations = 0;
   }
 
   return 0;
 }
 
-- (unint64_t)countOfLabelsForSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewTransforms:(CGAffineTransform *)a6 outNewElementSizes:(CGSize *)a7 outNewClipRects:(CGRect *)a8 outNewStrings:(id *)a9
+- (unint64_t)countOfLabelsForSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings
 {
-  if (a6)
+  if (transforms)
   {
-    *a6 = 0;
+    *transforms = 0;
   }
 
-  if (a7)
+  if (sizes)
   {
-    *a7 = 0;
+    *sizes = 0;
   }
 
-  if (a8)
+  if (rects)
   {
-    *a8 = 0;
+    *rects = 0;
   }
 
-  if (a9)
+  if (strings)
   {
-    *a9 = 0;
+    *strings = 0;
   }
 
   return 0;
 }
 
-- (unint64_t)countOfSummaryLabelsForGroups:(id)a3 forBodyLayout:(id)a4 outNewTransforms:(CGAffineTransform *)a5 outNewElementSizes:(CGSize *)a6 outNewClipRects:(CGRect *)a7 outNewStrings:(id *)a8
+- (unint64_t)countOfSummaryLabelsForGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings
 {
-  if (a5)
+  if (transforms)
   {
-    *a5 = 0;
+    *transforms = 0;
   }
 
-  if (a6)
+  if (sizes)
   {
-    *a6 = 0;
+    *sizes = 0;
   }
 
-  if (a7)
+  if (rects)
   {
-    *a7 = 0;
+    *rects = 0;
   }
 
-  if (a8)
+  if (strings)
   {
-    *a8 = 0;
+    *strings = 0;
   }
 
   return 0;
 }
 
-- (unint64_t)countOfCalloutLinesForSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewClipRects:(CGRect *)a6
+- (unint64_t)countOfCalloutLinesForSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewClipRects:(CGRect *)rects
 {
-  if (a6)
+  if (rects)
   {
     v6 = *(MEMORY[0x277CBF398] + 16);
-    a6->origin = *MEMORY[0x277CBF398];
-    a6->size = v6;
+    rects->origin = *MEMORY[0x277CBF398];
+    rects->size = v6;
   }
 
   return 0;
 }
 
-- (unint64_t)countOfErrorBarsInSeries:(id)a3 forGroups:(id)a4 forAxisID:(id)a5 forBodyLayout:(id)a6 outClipRect:(CGRect *)a7 outNewErrorBarDescriptors:(id *)a8
+- (unint64_t)countOfErrorBarsInSeries:(id)series forGroups:(id)groups forAxisID:(id)d forBodyLayout:(id)layout outClipRect:(CGRect *)rect outNewErrorBarDescriptors:(id *)descriptors
 {
-  if (a7)
+  if (rect)
   {
     v8 = *(MEMORY[0x277CBF398] + 16);
-    a7->origin = *MEMORY[0x277CBF398];
-    a7->size = v8;
+    rect->origin = *MEMORY[0x277CBF398];
+    rect->size = v8;
   }
 
-  if (a8)
+  if (descriptors)
   {
-    *a8 = 0;
+    *descriptors = 0;
   }
 
   return 0;
 }
 
-- (void)p_trendlineInfoForSeries:(id)a3 forBodyLayout:(id)a4 outVertical:(BOOL *)a5 outOffsetInBody:(double *)a6
+- (void)p_trendlineInfoForSeries:(id)series forBodyLayout:(id)layout outVertical:(BOOL *)vertical outOffsetInBody:(double *)body
 {
-  if (a5)
+  if (vertical)
   {
-    *a5 = 1;
+    *vertical = 1;
   }
 
-  if (a6)
+  if (body)
   {
-    *a6 = 0.0;
+    *body = 0.0;
   }
 }
 
-- (void)trendlineElementForSeries:(id)a3 forBodyLayout:(id)a4 outElementBounds:(CGRect *)a5 outElementClipRect:(CGRect *)a6 outElementPath:(id *)a7
+- (void)trendlineElementForSeries:(id)series forBodyLayout:(id)layout outElementBounds:(CGRect *)bounds outElementClipRect:(CGRect *)rect outElementPath:(id *)path
 {
-  v12 = a3;
-  v13 = a4;
-  v18 = v13;
-  if (a5)
+  seriesCopy = series;
+  layoutCopy = layout;
+  v18 = layoutCopy;
+  if (bounds)
   {
     v15 = *MEMORY[0x277CBF398];
     v16 = *(MEMORY[0x277CBF398] + 16);
-    a5->origin = *MEMORY[0x277CBF398];
-    a5->size = v16;
+    bounds->origin = *MEMORY[0x277CBF398];
+    bounds->size = v16;
   }
 
-  if (a6)
+  if (rect)
   {
     v15 = *MEMORY[0x277CBF398];
     v16 = *(MEMORY[0x277CBF398] + 16);
-    a6->origin = *MEMORY[0x277CBF398];
-    a6->size = v16;
+    rect->origin = *MEMORY[0x277CBF398];
+    rect->size = v16;
   }
 
-  if (a7)
+  if (path)
   {
-    *a7 = 0;
+    *path = 0;
   }
 
-  if (!v12)
+  if (!seriesCopy)
   {
     v96 = MEMORY[0x277D81150];
     v97 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, *&v15, v16.width, v17, "[TSCHElementBuilder trendlineElementForSeries:forBodyLayout:outElementBounds:outElementClipRect:outElementPath:]");
@@ -1983,16 +1983,16 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (!v13)
+  if (!layoutCopy)
   {
     goto LABEL_34;
   }
 
-  v19 = objc_msgSend_trendLineData(v12, v14, *&v15, v16.width, v17);
+  v19 = objc_msgSend_trendLineData(seriesCopy, v14, *&v15, v16.width, v17);
   v24 = v19;
   if (v19 && objc_msgSend_showTrendLine(v19, v20, v21, v22, v23))
   {
-    v29 = objc_msgSend_objectValueForProperty_(v12, v25, v26, v27, v28, 1202);
+    v29 = objc_msgSend_objectValueForProperty_(seriesCopy, v25, v26, v27, v28, 1202);
     v34 = v29;
     if (v29 && objc_msgSend_shouldRender(v29, v30, v31, v32, v33))
     {
@@ -2002,8 +2002,8 @@ LABEL_34:
       v42 = *(MEMORY[0x277CBF398] + 24);
       v127 = 1;
       v126 = 0;
-      objc_msgSend_p_trendlineInfoForSeries_forBodyLayout_outVertical_outOffsetInBody_(self, v35, v36, v37, v38, v12, v18, &v127, &v126);
-      if (a6 || a5 || a7)
+      objc_msgSend_p_trendlineInfoForSeries_forBodyLayout_outVertical_outOffsetInBody_(self, v35, v36, v37, v38, seriesCopy, v18, &v127, &v126);
+      if (rect || bounds || path)
       {
         objc_msgSend_rootedLayoutRect(v18, v43, v44, v45, v46);
         v51 = objc_msgSend_trendLinePathForChartRect_offsetInBody_vertical_(v24, v47, v48, v49, v50, v127);
@@ -2017,10 +2017,10 @@ LABEL_34:
           v42 = v64;
         }
 
-        if (a7)
+        if (path)
         {
           v65 = v56;
-          *a7 = v56;
+          *path = v56;
         }
       }
 
@@ -2030,17 +2030,17 @@ LABEL_34:
       v128.size.height = v42;
       if (!CGRectIsNull(v128))
       {
-        if (a5)
+        if (bounds)
         {
-          a5->origin.x = v39;
-          a5->origin.y = v40;
-          a5->size.width = v41;
-          a5->size.height = v42;
+          bounds->origin.x = v39;
+          bounds->origin.y = v40;
+          bounds->size.width = v41;
+          bounds->size.height = v42;
         }
 
-        if (a6)
+        if (rect)
         {
-          v70 = objc_msgSend_objectValueForProperty_(v12, v66, v67, v68, v69, 1198);
+          v70 = objc_msgSend_objectValueForProperty_(seriesCopy, v66, v67, v68, v69, 1198);
           shouldRender = objc_msgSend_shouldRender(v34, v71, v72, v73, v74);
           v79 = 0.0;
           if (shouldRender)
@@ -2076,7 +2076,7 @@ LABEL_34:
           v131.origin.y = y;
           v131.size.width = width;
           v131.size.height = height;
-          *a6 = CGRectUnion(v131, *&v88);
+          *rect = CGRectUnion(v131, *&v88);
         }
       }
     }
@@ -2085,15 +2085,15 @@ LABEL_34:
 LABEL_35:
 }
 
-- (CGAffineTransform)p_transformForRenderingTrendlineTextNotR2:(SEL)a3 forSeries:(BOOL)a4 forAreaLayout:(id)a5 outElementSize:(id)a6 outClipRect:(CGSize *)a7 outParagraphStyle:(CGRect *)a8 outString:(id *)a9
+- (CGAffineTransform)p_transformForRenderingTrendlineTextNotR2:(SEL)r2 forSeries:(BOOL)series forAreaLayout:(id)layout outElementSize:(id)size outClipRect:(CGSize *)rect outParagraphStyle:(CGRect *)style outString:(id *)string
 {
-  v154 = a4;
-  v15 = a5;
-  v16 = a6;
-  v21 = v16;
-  if (v15)
+  seriesCopy = series;
+  layoutCopy = layout;
+  sizeCopy = size;
+  v21 = sizeCopy;
+  if (layoutCopy)
   {
-    if (v16)
+    if (sizeCopy)
     {
       goto LABEL_3;
     }
@@ -2126,18 +2126,18 @@ LABEL_3:
   *&retstr->c = v23;
   v24 = *(v22 + 32);
   *&retstr->tx = v24;
-  if (a7)
+  if (rect)
   {
     v24 = *MEMORY[0x277CBF3A8];
-    *a7 = *MEMORY[0x277CBF3A8];
+    *rect = *MEMORY[0x277CBF3A8];
   }
 
-  if (a8)
+  if (style)
   {
     v24 = *MEMORY[0x277CBF398];
     v23 = *(MEMORY[0x277CBF398] + 16);
-    a8->origin = *MEMORY[0x277CBF398];
-    a8->size = v23;
+    style->origin = *MEMORY[0x277CBF398];
+    style->size = v23;
   }
 
   if (a10)
@@ -2145,18 +2145,18 @@ LABEL_3:
     *a10 = 0;
   }
 
-  if (a9)
+  if (string)
   {
-    *a9 = 0;
+    *string = 0;
   }
 
-  if (v15 && v21)
+  if (layoutCopy && v21)
   {
-    v25 = objc_msgSend_trendLineData(v15, v17, *&v24, v23.width, v20);
+    v25 = objc_msgSend_trendLineData(layoutCopy, v17, *&v24, v23.width, v20);
     v30 = v25;
     if (v25)
     {
-      if (v154)
+      if (seriesCopy)
       {
         if ((objc_msgSend_showEquation(v25, v26, v27, v28, v29) & 1) == 0)
         {
@@ -2189,7 +2189,7 @@ LABEL_3:
       if (CFAttributedStringGetLength(v35))
       {
         cf = v35;
-        if (v154)
+        if (seriesCopy)
         {
           v75 = objc_msgSend_rSquaredText(v30, v71, v72, v73, v74);
           v146 = CFAttributedStringCreate(0, v75, 0);
@@ -2210,12 +2210,12 @@ LABEL_3:
         v85 = v84;
         v87 = v86;
         v157[0] = 1;
-        objc_msgSend_p_trendlineInfoForSeries_forBodyLayout_outVertical_outOffsetInBody_(self, v88, v81, v83, v84, v15, 0, v157, 0);
+        objc_msgSend_p_trendlineInfoForSeries_forBodyLayout_outVertical_outOffsetInBody_(self, v88, v81, v83, v84, layoutCopy, 0, v157, 0);
         v153 = objc_msgSend_sharedText(TSCHText, v89, v90, v91, v92);
-        v97 = objc_msgSend_model(v15, v93, v94, v95, v96);
+        v97 = objc_msgSend_model(layoutCopy, v93, v94, v95, v96);
         v102 = objc_msgSend_chartInfo(v97, v98, v99, v100, v101);
 
-        v107 = objc_msgSend_intValueForProperty_defaultValue_(v15, v103, v104, v105, v106, v148, 0);
+        v107 = objc_msgSend_intValueForProperty_defaultValue_(layoutCopy, v103, v104, v105, v106, v148, 0);
         v149 = v102;
         v112 = objc_msgSend_paragraphStyleAtIndex_(v102, v108, v109, v110, v111, v107);
         v113 = *(MEMORY[0x277CBF398] + 16);
@@ -2236,7 +2236,7 @@ LABEL_3:
           CFRelease(v146);
         }
 
-        if (v154)
+        if (seriesCopy)
         {
           v123 = 1191;
         }
@@ -2246,7 +2246,7 @@ LABEL_3:
           v123 = 1196;
         }
 
-        if (v154)
+        if (seriesCopy)
         {
           v124 = 1192;
         }
@@ -2257,14 +2257,14 @@ LABEL_3:
         }
 
         LODWORD(v117) = -1.0;
-        objc_msgSend_floatValueForProperty_defaultValue_(v15, v116, v117, v118, v119, v123);
+        objc_msgSend_floatValueForProperty_defaultValue_(layoutCopy, v116, v117, v118, v119, v123);
         v126 = v125;
         v127 = v125;
         LODWORD(v128) = -1.0;
-        objc_msgSend_floatValueForProperty_defaultValue_(v15, v129, v128, v130, v131, v124);
+        objc_msgSend_floatValueForProperty_defaultValue_(layoutCopy, v129, v128, v130, v131, v124);
         if ((*&v127 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (v134 = *&v133, v140 = COERCE__INT64(fabs(*&v133)) > 0x7FEFFFFFFFFFFFFFLL, v126 < 0.0) || v140 || *&v133 < 0.0)
         {
-          objc_msgSend_seriesIndex(v15, v132, v133, v134, v135);
+          objc_msgSend_seriesIndex(layoutCopy, v132, v133, v134, v135);
           objc_msgSend_chartBodyLayoutRect(v21, v136, v137, v138, v139);
           v158.origin.x = v82;
           v158.origin.y = rect;
@@ -2275,22 +2275,22 @@ LABEL_3:
 
         TSURectWithCenterAndSize();
         CGAffineTransformMakeTranslation(retstr, v141, v142);
-        if (a7)
+        if (rect)
         {
-          a7->width = v120;
-          a7->height = v121;
+          rect->width = v120;
+          rect->height = v121;
         }
 
         if (a10)
         {
           *a10 = cf;
-          if (!a8)
+          if (!style)
           {
 LABEL_47:
-            if (a9)
+            if (string)
             {
               v144 = v147;
-              *a9 = v147;
+              *string = v147;
             }
 
             goto LABEL_50;
@@ -2300,15 +2300,15 @@ LABEL_47:
         else
         {
           CFRelease(cf);
-          if (!a8)
+          if (!style)
           {
             goto LABEL_47;
           }
         }
 
         v143 = v156;
-        a8->origin = v155;
-        a8->size = v143;
+        style->origin = v155;
+        style->size = v143;
         goto LABEL_47;
       }
 
@@ -2321,10 +2321,10 @@ LABEL_50:
   return result;
 }
 
-- (CGAffineTransform)transformForRenderingR2TextForSeries:(SEL)a3 forAreaLayout:(id)a4 outElementSize:(id)a5 outClipRect:(CGSize *)a6 outParagraphStyle:(CGRect *)a7 outString:(id *)a8
+- (CGAffineTransform)transformForRenderingR2TextForSeries:(SEL)series forAreaLayout:(id)layout outElementSize:(id)size outClipRect:(CGSize *)rect outParagraphStyle:(CGRect *)style outString:(id *)string
 {
-  v16 = a4;
-  v18 = a5;
+  layoutCopy = layout;
+  sizeCopy = size;
   if (a9)
   {
     *a9 = 0;
@@ -2332,7 +2332,7 @@ LABEL_50:
     *&retstr->c = 0u;
     *&retstr->tx = 0u;
     aStr = 0;
-    objc_msgSend_p_transformForRenderingTrendlineTextNotR2_forSeries_forAreaLayout_outElementSize_outClipRect_outParagraphStyle_outString_(self, v17, 0.0, v19, v20, 0, v16, v18, a6, a7, a8, &aStr);
+    objc_msgSend_p_transformForRenderingTrendlineTextNotR2_forSeries_forAreaLayout_outElementSize_outClipRect_outParagraphStyle_outString_(self, v17, 0.0, v19, v20, 0, layoutCopy, sizeCopy, rect, style, string, &aStr);
     String = aStr;
     if (aStr)
     {
@@ -2348,7 +2348,7 @@ LABEL_50:
     *&retstr->c = 0u;
     *&retstr->tx = 0u;
     aStr = 0;
-    objc_msgSend_p_transformForRenderingTrendlineTextNotR2_forSeries_forAreaLayout_outElementSize_outClipRect_outParagraphStyle_outString_(self, v17, 0.0, v19, v20, 0, v16, v18, a6, a7, a8, &aStr);
+    objc_msgSend_p_transformForRenderingTrendlineTextNotR2_forSeries_forAreaLayout_outElementSize_outClipRect_outParagraphStyle_outString_(self, v17, 0.0, v19, v20, 0, layoutCopy, sizeCopy, rect, style, string, &aStr);
   }
 
   if (aStr)
@@ -2359,10 +2359,10 @@ LABEL_50:
   return result;
 }
 
-+ (CGRect)p_chartLayoutSpaceClipRectUnionForElementsDrawnByRenderState:(id)a3 returningItemCount:(unint64_t *)a4
++ (CGRect)p_chartLayoutSpaceClipRectUnionForElementsDrawnByRenderState:(id)state returningItemCount:(unint64_t *)count
 {
   v192 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   v184 = 0;
   v185 = &v184;
   v187 = &unk_27657B92B;
@@ -2375,8 +2375,8 @@ LABEL_50:
   v181 = &v180;
   v182 = 0x2020000000;
   v183 = 0;
-  v141 = v5;
-  v140 = objc_msgSend_chartLayout(v5, v6, COERCE_DOUBLE(0x2020000000), v147.width, v7);
+  v141 = stateCopy;
+  v140 = objc_msgSend_chartLayout(stateCopy, v6, COERCE_DOUBLE(0x2020000000), v147.width, v7);
   if (!v140)
   {
     v12 = MEMORY[0x277D81150];
@@ -2424,7 +2424,7 @@ LABEL_50:
     v62 = objc_msgSend_countByEnumeratingWithState_objects_count_(v56, v57, v58, v59, v60, &v170, v191, 16);
     if (v62)
     {
-      v144 = a4;
+      countCopy = count;
       v145 = *v171;
       v142 = v56;
       v143 = v42;
@@ -2542,7 +2542,7 @@ LABEL_50:
           }
 
           v42 = v143;
-          a4 = v144;
+          count = countCopy;
           v56 = v142;
 
           v66 = v153 + 1;
@@ -2572,9 +2572,9 @@ LABEL_50:
     objc_msgSend_enumerateIndexesUsingBlock_(v124, v125, v126, v127, v128, v155);
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = v181[3];
+    *count = v181[3];
   }
 
   x = v185[1].origin.x;
@@ -2596,10 +2596,10 @@ LABEL_50:
   return result;
 }
 
-+ (CGRect)clipRectForElementsDrawnByRenderState:(id)a3
++ (CGRect)clipRectForElementsDrawnByRenderState:(id)state
 {
-  v4 = a3;
-  v10 = objc_msgSend_chartLayout(v4, v5, v6, v7, v8);
+  stateCopy = state;
+  v10 = objc_msgSend_chartLayout(stateCopy, v5, v6, v7, v8);
   if (!v10)
   {
     v14 = MEMORY[0x277D81150];
@@ -2616,7 +2616,7 @@ LABEL_50:
   v34 = v33;
   v36 = v35;
   v64 = 0;
-  objc_msgSend_p_chartLayoutSpaceClipRectUnionForElementsDrawnByRenderState_returningItemCount_(a1, v37, v29, v31, v33, v4, &v64);
+  objc_msgSend_p_chartLayoutSpaceClipRectUnionForElementsDrawnByRenderState_returningItemCount_(self, v37, v29, v31, v33, stateCopy, &v64);
   v39 = v38;
   v41 = v40;
   v43 = v42;
@@ -2684,15 +2684,15 @@ LABEL_50:
   return result;
 }
 
-+ (CGRect)elementsRectForElementsDrawnByRenderState:(id)a3
++ (CGRect)elementsRectForElementsDrawnByRenderState:(id)state
 {
-  v4 = a3;
-  objc_msgSend_p_chartLayoutSpaceClipRectUnionForElementsDrawnByRenderState_returningItemCount_(a1, v5, v6, v7, v8, v4, 0);
+  stateCopy = state;
+  objc_msgSend_p_chartLayoutSpaceClipRectUnionForElementsDrawnByRenderState_returningItemCount_(self, v5, v6, v7, v8, stateCopy, 0);
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v18 = objc_msgSend_chartLayout(v4, v17, v9, v11, v13);
+  v18 = objc_msgSend_chartLayout(stateCopy, v17, v9, v11, v13);
 
   if (!v18)
   {
@@ -2721,56 +2721,56 @@ LABEL_50:
   return result;
 }
 
-- (CGPoint)labelPointForPosition:(unsigned int)a3 rect:(CGRect)a4 stringSize:(CGSize)a5 offset:(double)a6
+- (CGPoint)labelPointForPosition:(unsigned int)position rect:(CGRect)rect stringSize:(CGSize)size offset:(double)offset
 {
-  v6 = a4.origin.y + (a4.size.height - a5.height) * 0.5;
-  v7 = a4.origin.x + (a4.size.width - a5.width) * 0.5;
-  v8 = a4.origin.y + a6;
-  v9 = a5.height + a6;
-  if ((a3 & 2) != 0)
+  v6 = rect.origin.y + (rect.size.height - size.height) * 0.5;
+  v7 = rect.origin.x + (rect.size.width - size.width) * 0.5;
+  v8 = rect.origin.y + offset;
+  v9 = size.height + offset;
+  if ((position & 2) != 0)
   {
-    v8 = a4.origin.y - v9;
+    v8 = rect.origin.y - v9;
   }
 
-  if ((a3 & 4) != 0)
+  if ((position & 4) != 0)
   {
     v6 = v8;
   }
 
-  v10 = a4.origin.y + a4.size.height;
+  v10 = rect.origin.y + rect.size.height;
   v11 = v10 - v9;
-  v12 = v10 + a6;
-  if ((a3 & 2) == 0)
+  v12 = v10 + offset;
+  if ((position & 2) == 0)
   {
     v12 = v11;
   }
 
-  if ((a3 & 8) == 0)
+  if ((position & 8) == 0)
   {
     v12 = v6;
   }
 
-  v13 = a4.origin.x + a6;
-  v14 = a5.width + a6;
-  if ((a3 & 2) != 0)
+  v13 = rect.origin.x + offset;
+  v14 = size.width + offset;
+  if ((position & 2) != 0)
   {
-    v13 = a4.origin.x - v14;
+    v13 = rect.origin.x - v14;
   }
 
-  if ((a3 & 0x10) == 0)
+  if ((position & 0x10) == 0)
   {
     v13 = v7;
   }
 
-  v15 = a4.origin.x + a4.size.width;
+  v15 = rect.origin.x + rect.size.width;
   v16 = v15 - v14;
-  v17 = v15 + a6;
-  if ((a3 & 2) == 0)
+  v17 = v15 + offset;
+  if ((position & 2) == 0)
   {
     v17 = v16;
   }
 
-  if ((a3 & 0x20) == 0)
+  if ((position & 0x20) == 0)
   {
     v17 = v13;
   }
@@ -2780,30 +2780,30 @@ LABEL_50:
   return result;
 }
 
-- (CGPoint)labelPointForPosition:(unsigned int)a3 rect:(CGRect)a4 stringSize:(CGSize)a5
+- (CGPoint)labelPointForPosition:(unsigned int)position rect:(CGRect)rect stringSize:(CGSize)size
 {
-  objc_msgSend_labelPointForPosition_rect_stringSize_offset_(self, a2, a4.origin.x, a4.origin.y, a4.size.width, *&a3, a4.size.height, a5.width, a5.height, 2.0);
+  objc_msgSend_labelPointForPosition_rect_stringSize_offset_(self, a2, rect.origin.x, rect.origin.y, rect.size.width, *&position, rect.size.height, size.width, size.height, 2.0);
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (unint64_t)countOfGridLinesInBody:(id)a3 forAxis:(id)a4 minor:(BOOL)a5 outNewLineDescriptors:(id *)a6
+- (unint64_t)countOfGridLinesInBody:(id)body forAxis:(id)axis minor:(BOOL)minor outNewLineDescriptors:(id *)descriptors
 {
-  v7 = a5;
+  minorCopy = minor;
   v193 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v15 = v10;
+  bodyCopy = body;
+  axisCopy = axis;
+  v15 = axisCopy;
   v16 = 0;
-  if (!v9 || !v10)
+  if (!bodyCopy || !axisCopy)
   {
     goto LABEL_68;
   }
 
-  if (v7)
+  if (minorCopy)
   {
-    if (objc_msgSend_intValueForProperty_defaultValue_(v10, v11, v12, v13, v14, 1057, 0))
+    if (objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v11, v12, v13, v14, 1057, 0))
     {
       objc_msgSend_objectValueForProperty_(v15, v17, v18, v19, v20, 1041);
       goto LABEL_8;
@@ -2814,7 +2814,7 @@ LABEL_11:
     goto LABEL_68;
   }
 
-  if (!objc_msgSend_intValueForProperty_defaultValue_(v10, v11, v12, v13, v14, 1054, 0))
+  if (!objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v11, v12, v13, v14, 1054, 0))
   {
     goto LABEL_11;
   }
@@ -2828,9 +2828,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!minorCopy)
   {
-    v181 = a6;
+    descriptorsCopy = descriptors;
     v45 = objc_msgSend_majorGridLocations(v15, v31, v32, v33, v34);
     v40 = objc_msgSend_mutableCopy(v45, v46, v47, v48, v49);
 
@@ -2849,7 +2849,7 @@ LABEL_11:
     if (v78)
     {
       v83 = v78;
-      v179 = v9;
+      v179 = bodyCopy;
       v185 = 0;
       v84 = *v189;
       v186 = v64 != 0;
@@ -2914,7 +2914,7 @@ LABEL_11:
         objc_msgSend_sortUsingSelector_(v40, v41, v42, v43, v44, sel_compare_);
       }
 
-      v9 = v179;
+      bodyCopy = v179;
       v114 = v186;
       if (!v183)
       {
@@ -2928,7 +2928,7 @@ LABEL_11:
       if (!v64)
       {
 LABEL_41:
-        a6 = v181;
+        descriptors = descriptorsCopy;
         goto LABEL_42;
       }
 
@@ -2955,7 +2955,7 @@ LABEL_38:
 LABEL_42:
   if (objc_msgSend_count(v40, v41, v42, v43, v44))
   {
-    objc_msgSend_rootedLayoutRect(v9, v115, v116, v117, v118);
+    objc_msgSend_rootedLayoutRect(bodyCopy, v115, v116, v117, v118);
     v120 = v119;
     v122 = v121;
     v124 = v123;
@@ -2963,10 +2963,10 @@ LABEL_42:
     v128 = objc_msgSend_axisID(v15, v127, v119, v121, v123);
     v133 = objc_msgSend_type(v128, v129, v130, v131, v132);
     v16 = objc_msgSend_count(v40, v134, v135, v136, v137);
-    if (a6)
+    if (descriptors)
     {
-      v180 = v9;
-      v182 = a6;
+      v180 = bodyCopy;
+      descriptorsCopy2 = descriptors;
       objc_msgSend_min(v15, v138, v139, v140, v141);
       v187 = v142;
       objc_msgSend_max(v15, v143, v142, v144, v145);
@@ -3064,8 +3064,8 @@ LABEL_42:
         while (v16 != v151);
       }
 
-      *v182 = v184;
-      v9 = v180;
+      *descriptorsCopy2 = v184;
+      bodyCopy = v180;
     }
   }
 
@@ -3078,16 +3078,16 @@ LABEL_68:
   return v16;
 }
 
-- (BOOL)hasAxisLineInBody:(id)a3 forAxis:(id)a4 outTransform:(CGAffineTransform *)a5 outLine:(id *)a6
+- (BOOL)hasAxisLineInBody:(id)body forAxis:(id)axis outTransform:(CGAffineTransform *)transform outLine:(id *)line
 {
   v92 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v15 = v10;
+  bodyCopy = body;
+  axisCopy = axis;
+  v15 = axisCopy;
   v16 = 0;
-  if (v9 && v10)
+  if (bodyCopy && axisCopy)
   {
-    v17 = objc_msgSend_model(v10, v11, v12, v13, v14);
+    v17 = objc_msgSend_model(axisCopy, v11, v12, v13, v14);
     v22 = objc_msgSend_chartInfo(v17, v18, v19, v20, v21);
     v27 = objc_msgSend_intValueForProperty_defaultValue_(v22, v23, v24, v25, v26, 1112, 0);
 
@@ -3138,14 +3138,14 @@ LABEL_33:
       }
 
       v16 = 1;
-      if (!a5 || !a6)
+      if (!transform || !line)
       {
 LABEL_32:
 
         goto LABEL_33;
       }
 
-      objc_msgSend_rootedLayoutRect(v9, v62, v63, v64, v65);
+      objc_msgSend_rootedLayoutRect(bodyCopy, v62, v63, v64, v65);
       v70 = v67;
       v72 = v71;
       v73 = v68;
@@ -3242,14 +3242,14 @@ LABEL_29:
 LABEL_31:
       v85 = v86;
       CGAffineTransformInvert(&v87, &v85);
-      a6->var0 = vaddq_f64(*&v87.tx, vmlaq_n_f64(vmulq_n_f64(*&v87.c, MaxY), *&v87.a, MinX));
+      line->var0 = vaddq_f64(*&v87.tx, vmlaq_n_f64(vmulq_n_f64(*&v87.c, MaxY), *&v87.a, MinX));
       v85 = v86;
       CGAffineTransformInvert(&v87, &v85);
-      a6->var1 = vaddq_f64(*&v87.tx, vmlaq_n_f64(vmulq_n_f64(*&v87.c, Height + MaxY), *&v87.a, Width + MinX));
+      line->var1 = vaddq_f64(*&v87.tx, vmlaq_n_f64(vmulq_n_f64(*&v87.c, Height + MaxY), *&v87.a, Width + MinX));
       v81 = *&v86.c;
-      *&a5->a = *&v86.a;
-      *&a5->c = v81;
-      *&a5->tx = *&v86.tx;
+      *&transform->a = *&v86.a;
+      *&transform->c = v81;
+      *&transform->tx = *&v86.tx;
       v16 = 1;
       goto LABEL_32;
     }
@@ -3262,16 +3262,16 @@ LABEL_34:
   return v16;
 }
 
-- (CGRect)p_strideTestingRectFromRect:(CGRect)a3 withOffset:(double)a4 isVertical:(BOOL)a5
+- (CGRect)p_strideTestingRectFromRect:(CGRect)rect withOffset:(double)offset isVertical:(BOOL)vertical
 {
-  if (a5)
+  if (vertical)
   {
-    CGRectGetMidX(a3);
+    CGRectGetMidX(rect);
   }
 
   else
   {
-    CGRectGetMidY(a3);
+    CGRectGetMidY(rect);
   }
 
   TSURectWithCenterAndSize();
@@ -3282,21 +3282,21 @@ LABEL_34:
   return result;
 }
 
-- (BOOL)p_testIntersectionOfRect:(CGRect)a3 againstSortedRects:(id)a4 withInset:(double)a5 isVertical:(BOOL)a6
+- (BOOL)p_testIntersectionOfRect:(CGRect)rect againstSortedRects:(id)rects withInset:(double)inset isVertical:(BOOL)vertical
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  verticalCopy = vertical;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a4;
+  rectsCopy = rects;
   v50.origin.x = x;
   v50.origin.y = y;
   v50.size.width = width;
   v50.size.height = height;
-  dx = a5;
-  v51 = CGRectInset(v50, a5, a5);
+  dx = inset;
+  v51 = CGRectInset(v50, inset, inset);
   v13 = v51.origin.x;
   v14 = v51.origin.y;
   v15 = v51.size.width;
@@ -3305,7 +3305,7 @@ LABEL_34:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v18 = objc_msgSend_reverseObjectEnumerator(v12, v17, 0.0, v51.origin.y, v51.size.width);
+  v18 = objc_msgSend_reverseObjectEnumerator(rectsCopy, v17, 0.0, v51.origin.y, v51.size.width);
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, v20, v21, v22, &v44, v48, 16);
   if (v23)
   {
@@ -3330,7 +3330,7 @@ LABEL_3:
       v36 = v14;
       v37 = v15;
       v38 = v16;
-      if (v6)
+      if (verticalCopy)
       {
         MaxX = CGRectGetMaxX(*&v35);
         v54.origin.x = v31;
@@ -3389,30 +3389,30 @@ LABEL_16:
   return v40;
 }
 
-- (void)p_insertRectValue:(id)a3 intoArray:(id)a4 isVertical:(BOOL)a5 showAll:(BOOL)a6
+- (void)p_insertRectValue:(id)value intoArray:(id)array isVertical:(BOOL)vertical showAll:(BOOL)all
 {
-  v9 = a3;
-  v10 = a4;
-  v15 = objc_msgSend_count(v10, v11, v12, v13, v14);
+  valueCopy = value;
+  arrayCopy = array;
+  v15 = objc_msgSend_count(arrayCopy, v11, v12, v13, v14);
   v20 = v15;
-  if (!a6 && v15)
+  if (!all && v15)
   {
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = sub_276348208;
     v32[3] = &unk_27A6B9D00;
-    v33 = a5;
+    verticalCopy = vertical;
     v21 = MEMORY[0x277C98B30](v32);
-    v26 = objc_msgSend_lastObject(v10, v22, v23, v24, v25);
-    v27 = (v21)[2](v21, v9, v26);
+    v26 = objc_msgSend_lastObject(arrayCopy, v22, v23, v24, v25);
+    v27 = (v21)[2](v21, valueCopy, v26);
 
     if (v27 != 1)
     {
-      v20 = objc_msgSend_indexOfObject_inSortedRange_options_usingComparator_(v10, v28, v29, v30, v31, v9, 0, v20, 1024, v21);
+      v20 = objc_msgSend_indexOfObject_inSortedRange_options_usingComparator_(arrayCopy, v28, v29, v30, v31, valueCopy, 0, v20, 1024, v21);
     }
   }
 
-  objc_msgSend_insertObject_atIndex_(v10, v16, v17, v18, v19, v9, v20);
+  objc_msgSend_insertObject_atIndex_(arrayCopy, v16, v17, v18, v19, valueCopy, v20);
 }
 
 @end

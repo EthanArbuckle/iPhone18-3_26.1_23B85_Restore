@@ -1,6 +1,6 @@
 @interface CNSaveRequestVisitationTask
-- (CNSaveRequestVisitationTask)initWithSaveRequest:(id)a3 visitor:(id)a4 factory:(id)a5;
-- (id)run:(id *)a3;
+- (CNSaveRequestVisitationTask)initWithSaveRequest:(id)request visitor:(id)visitor factory:(id)factory;
+- (id)run:(id *)run;
 - (void)sendAddMemberToGroupEvents;
 - (void)sendAddSubgroupToGroupEvents;
 - (void)sendAddedContactEvents;
@@ -20,27 +20,27 @@
 
 @implementation CNSaveRequestVisitationTask
 
-- (CNSaveRequestVisitationTask)initWithSaveRequest:(id)a3 visitor:(id)a4 factory:(id)a5
+- (CNSaveRequestVisitationTask)initWithSaveRequest:(id)request visitor:(id)visitor factory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  visitorCopy = visitor;
+  factoryCopy = factory;
   v16.receiver = self;
   v16.super_class = CNSaveRequestVisitationTask;
   v12 = [(CNTask *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_saveRequest, a3);
-    objc_storeStrong(&v13->_visitor, a4);
-    objc_storeStrong(&v13->_factory, a5);
+    objc_storeStrong(&v12->_saveRequest, request);
+    objc_storeStrong(&v13->_visitor, visitor);
+    objc_storeStrong(&v13->_factory, factory);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (id)run:(id *)a3
+- (id)run:(id *)run
 {
   [(CNSaveRequestVisitationTask *)self sendAddedContactEvents];
   [(CNSaveRequestVisitationTask *)self sendUpdatedContactEvents];

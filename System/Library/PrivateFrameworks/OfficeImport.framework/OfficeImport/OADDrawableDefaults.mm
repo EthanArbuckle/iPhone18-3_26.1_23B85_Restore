@@ -12,23 +12,23 @@
 {
   if (!self->mShapeDefaults)
   {
-    v3 = [[OADDrawableCategoryDefaults alloc] initWithDefaults];
+    initWithDefaults = [[OADDrawableCategoryDefaults alloc] initWithDefaults];
     mShapeDefaults = self->mShapeDefaults;
-    self->mShapeDefaults = v3;
+    self->mShapeDefaults = initWithDefaults;
   }
 
   if (!self->mLineDefaults)
   {
-    v5 = [[OADDrawableCategoryDefaults alloc] initWithDefaults];
+    initWithDefaults2 = [[OADDrawableCategoryDefaults alloc] initWithDefaults];
     mLineDefaults = self->mLineDefaults;
-    self->mLineDefaults = v5;
+    self->mLineDefaults = initWithDefaults2;
   }
 
   if (!self->mTextDefaults)
   {
-    v7 = [[OADDrawableCategoryDefaults alloc] initWithDefaults];
+    initWithDefaults3 = [[OADDrawableCategoryDefaults alloc] initWithDefaults];
     mTextDefaults = self->mTextDefaults;
-    self->mTextDefaults = v7;
+    self->mTextDefaults = initWithDefaults3;
   }
 }
 

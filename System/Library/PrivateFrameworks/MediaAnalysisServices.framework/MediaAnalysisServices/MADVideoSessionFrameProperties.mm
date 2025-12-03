@@ -2,10 +2,10 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timestamp;
 - (CGRect)regionOfInterest;
 - (MADVideoSessionFrameProperties)init;
-- (MADVideoSessionFrameProperties)initWithCoder:(id)a3;
+- (MADVideoSessionFrameProperties)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTimestamp:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTimestamp:(id *)timestamp;
 @end
 
 @implementation MADVideoSessionFrameProperties
@@ -29,18 +29,18 @@
   return result;
 }
 
-- (MADVideoSessionFrameProperties)initWithCoder:(id)a3
+- (MADVideoSessionFrameProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MADVideoSessionFrameProperties;
   v5 = [(MADVideoSessionFrameProperties *)&v13 init];
   if (v5)
   {
-    *(v5 + 2) = [v4 decodeInt32ForKey:@"Orientation"];
-    if (v4)
+    *(v5 + 2) = [coderCopy decodeInt32ForKey:@"Orientation"];
+    if (coderCopy)
     {
-      [v4 decodeCMTimeForKey:@"Timestamp"];
+      [coderCopy decodeCMTimeForKey:@"Timestamp"];
     }
 
     else
@@ -51,7 +51,7 @@
 
     *(v5 + 28) = v12;
     *(v5 + 12) = v11;
-    [v4 decodeRectForKey:@"RegionOfInterest"];
+    [coderCopy decodeRectForKey:@"RegionOfInterest"];
     *(v5 + 5) = v6;
     *(v5 + 6) = v7;
     *(v5 + 7) = v8;
@@ -61,30 +61,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:self->_orientation forKey:@"Orientation"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_orientation forKey:@"Orientation"];
   v5 = *(&self->_orientation + 1);
   v6 = *&self->_timestamp.flags;
-  [v4 encodeCMTime:&v5 forKey:@"Timestamp"];
-  [v4 encodeRect:@"RegionOfInterest" forKey:{self->_regionOfInterest.origin.x, self->_regionOfInterest.origin.y, self->_regionOfInterest.size.width, self->_regionOfInterest.size.height}];
+  [coderCopy encodeCMTime:&v5 forKey:@"Timestamp"];
+  [coderCopy encodeRect:@"RegionOfInterest" forKey:{self->_regionOfInterest.origin.x, self->_regionOfInterest.origin.y, self->_regionOfInterest.size.width, self->_regionOfInterest.size.height}];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"orientation: %u", self->_orientation];
+  [string appendFormat:@"orientation: %u", self->_orientation];
   *&time.value = *(&self->_orientation + 1);
   time.epoch = *&self->_timestamp.flags;
-  [v3 appendFormat:@"timestamp: %.4f", CMTimeGetSeconds(&time)];
-  [v3 appendFormat:@"regionOfInterest: origin(%.4f, %.4f), size(%.4f, %.4f)>", *&self->_regionOfInterest.origin.x, *&self->_regionOfInterest.origin.y, *&self->_regionOfInterest.size.width, *&self->_regionOfInterest.size.height];
+  [string appendFormat:@"timestamp: %.4f", CMTimeGetSeconds(&time)];
+  [string appendFormat:@"regionOfInterest: origin(%.4f, %.4f), size(%.4f, %.4f)>", *&self->_regionOfInterest.origin.x, *&self->_regionOfInterest.origin.y, *&self->_regionOfInterest.size.width, *&self->_regionOfInterest.size.height];
 
-  return v3;
+  return string;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timestamp
@@ -94,10 +94,10 @@
   return self;
 }
 
-- (void)setTimestamp:(id *)a3
+- (void)setTimestamp:(id *)timestamp
 {
-  v3 = *&a3->var0;
-  *&self->_timestamp.flags = a3->var3;
+  v3 = *&timestamp->var0;
+  *&self->_timestamp.flags = timestamp->var3;
   *(&self->_orientation + 1) = v3;
 }
 

@@ -4,16 +4,16 @@
 - (id)_initInternal;
 - (id)_internalPrintableState;
 - (id)printableState;
-- (void)_handlePrewarmSecureElementChannelResult:(const void *)a3 prefix:(id)a4;
-- (void)_relayBlockToClients:(id)a3;
+- (void)_handlePrewarmSecureElementChannelResult:(const void *)result prefix:(id)prefix;
+- (void)_relayBlockToClients:(id)clients;
 - (void)_updateAggregatedClientInfo;
-- (void)addClient:(id)a3 identifier:(id)a4;
-- (void)clientWithIdentifier:(id)a3 notifiedPassiveAccessIntent:(unsigned int)a4;
-- (void)clientWithIdentifier:(id)a3 notifiedResourceUsageLimitExceeded:(BOOL)a4 forSessionConfigurationType:(Class)a5;
-- (void)clientWithIdentifier:(id)a3 requestedPrewarmUWB:(BOOL)a4 prewarmSecureElementChannel:(BOOL)a5;
+- (void)addClient:(id)client identifier:(id)identifier;
+- (void)clientWithIdentifier:(id)identifier notifiedPassiveAccessIntent:(unsigned int)intent;
+- (void)clientWithIdentifier:(id)identifier notifiedResourceUsageLimitExceeded:(BOOL)exceeded forSessionConfigurationType:(Class)type;
+- (void)clientWithIdentifier:(id)identifier requestedPrewarmUWB:(BOOL)b prewarmSecureElementChannel:(BOOL)channel;
 - (void)configureSubsystemsOnFirstUnlock;
-- (void)rangingServiceDidUpdateState:(int)a3 cause:(int)a4;
-- (void)removeClientWithIdentifier:(id)a3;
+- (void)rangingServiceDidUpdateState:(int)state cause:(int)cause;
+- (void)removeClientWithIdentifier:(id)identifier;
 @end
 
 @implementation NIServerSystemConfigurator
@@ -72,81 +72,81 @@
   dispatch_sync(queue, block);
 }
 
-- (void)addClient:(id)a3 identifier:(id)a4
+- (void)addClient:(id)client identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002CB704;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = clientCopy;
+  v9 = clientCopy;
+  v10 = identifierCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)removeClientWithIdentifier:(id)a3
+- (void)removeClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002CB9C8;
   v7[3] = &unk_10098A2E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)clientWithIdentifier:(id)a3 requestedPrewarmUWB:(BOOL)a4 prewarmSecureElementChannel:(BOOL)a5
+- (void)clientWithIdentifier:(id)identifier requestedPrewarmUWB:(BOOL)b prewarmSecureElementChannel:(BOOL)channel
 {
-  v8 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002CBBD0;
   block[3] = &unk_1009A0350;
   block[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = identifierCopy;
+  bCopy = b;
+  channelCopy = channel;
+  v10 = identifierCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)clientWithIdentifier:(id)a3 notifiedResourceUsageLimitExceeded:(BOOL)a4 forSessionConfigurationType:(Class)a5
+- (void)clientWithIdentifier:(id)identifier notifiedResourceUsageLimitExceeded:(BOOL)exceeded forSessionConfigurationType:(Class)type
 {
-  v8 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002CBF1C;
   v11[3] = &unk_1009A30E0;
   v11[4] = self;
-  v12 = v8;
-  v13 = a5;
-  v14 = a4;
-  v10 = v8;
+  v12 = identifierCopy;
+  typeCopy = type;
+  exceededCopy = exceeded;
+  v10 = identifierCopy;
   dispatch_sync(queue, v11);
 }
 
-- (void)clientWithIdentifier:(id)a3 notifiedPassiveAccessIntent:(unsigned int)a4
+- (void)clientWithIdentifier:(id)identifier notifiedPassiveAccessIntent:(unsigned int)intent
 {
-  v6 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002CC2D8;
   block[3] = &unk_1009A1A18;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = identifierCopy;
+  intentCopy = intent;
+  v8 = identifierCopy;
   dispatch_sync(queue, block);
 }
 
@@ -184,8 +184,8 @@
   v3 = objc_autoreleasePoolPush();
   v4 = v15[5];
   activated = self->_activated;
-  v6 = [(NISystemState *)self->_systemState descriptionInternal];
-  v7 = [NSString stringWithFormat:@"Activated: %d. System state: %@", activated, v6];
+  descriptionInternal = [(NISystemState *)self->_systemState descriptionInternal];
+  v7 = [NSString stringWithFormat:@"Activated: %d. System state: %@", activated, descriptionInternal];
   [v4 addObject:v7];
 
   v8 = v15[5];
@@ -259,10 +259,10 @@
 
   if (+[NIPlatformInfo supportsUWB]&& [(ConfiguratorClientInfo *)self->_aggregatedClientInfo prewarmSecureElementChannel]&& ![(ConfiguratorClientInfo *)v3 prewarmSecureElementChannel])
   {
-    v12 = [(NISystemState *)self->_systemState uwbPreciseDistanceAvailability];
+    uwbPreciseDistanceAvailability = [(NISystemState *)self->_systemState uwbPreciseDistanceAvailability];
     v13 = qword_1009F9820;
     v14 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (uwbPreciseDistanceAvailability)
     {
       if (v14)
       {
@@ -285,8 +285,8 @@
     }
   }
 
-  v16 = [(ConfiguratorClientInfo *)self->_aggregatedClientInfo carKeyRangingLimitExceeded];
-  if (v16 != [(ConfiguratorClientInfo *)v3 carKeyRangingLimitExceeded])
+  carKeyRangingLimitExceeded = [(ConfiguratorClientInfo *)self->_aggregatedClientInfo carKeyRangingLimitExceeded];
+  if (carKeyRangingLimitExceeded != [(ConfiguratorClientInfo *)v3 carKeyRangingLimitExceeded])
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -296,8 +296,8 @@
     [(NIServerSystemConfigurator *)self _relayBlockToClients:v22];
   }
 
-  v17 = [(ConfiguratorClientInfo *)self->_aggregatedClientInfo acwgRangingLimitExceeded];
-  if (v17 != [(ConfiguratorClientInfo *)v3 acwgRangingLimitExceeded])
+  acwgRangingLimitExceeded = [(ConfiguratorClientInfo *)self->_aggregatedClientInfo acwgRangingLimitExceeded];
+  if (acwgRangingLimitExceeded != [(ConfiguratorClientInfo *)v3 acwgRangingLimitExceeded])
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -307,8 +307,8 @@
     [(NIServerSystemConfigurator *)self _relayBlockToClients:v21];
   }
 
-  v18 = [(ConfiguratorClientInfo *)self->_aggregatedClientInfo passiveAccessIntent];
-  if (v18 != [(ConfiguratorClientInfo *)v3 passiveAccessIntent])
+  passiveAccessIntent = [(ConfiguratorClientInfo *)self->_aggregatedClientInfo passiveAccessIntent];
+  if (passiveAccessIntent != [(ConfiguratorClientInfo *)v3 passiveAccessIntent])
   {
     v19 = sub_10035D02C();
     sub_10035D29C(v19, [(ConfiguratorClientInfo *)self->_aggregatedClientInfo passiveAccessIntent]);
@@ -323,60 +323,60 @@
   _Block_object_dispose(v25, 8);
 }
 
-- (void)_relayBlockToClients:(id)a3
+- (void)_relayBlockToClients:(id)clients
 {
-  v7 = a3;
+  clientsCopy = clients;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(NSMapTable *)self->_clients keyEnumerator];
+  keyEnumerator = [(NSMapTable *)self->_clients keyEnumerator];
   while (1)
   {
-    v5 = [v4 nextObject];
-    if (!v5)
+    nextObject = [keyEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    v6 = [(NSMapTable *)self->_clients objectForKey:v5];
+    v6 = [(NSMapTable *)self->_clients objectForKey:nextObject];
     if (v6)
     {
-      v7[2](v7, v6);
+      clientsCopy[2](clientsCopy, v6);
     }
   }
 }
 
-- (void)_handlePrewarmSecureElementChannelResult:(const void *)a3 prefix:(id)a4
+- (void)_handlePrewarmSecureElementChannelResult:(const void *)result prefix:(id)prefix
 {
-  v5 = a4;
-  if (*a3)
+  prefixCopy = prefix;
+  if (*result)
   {
     v6 = qword_1009F9820;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_1003A03C4(*a3, &v18);
-      sub_1004B9A7C(v5, &v18, buf, v6);
+      sub_1003A03C4(*result, &v18);
+      sub_1004B9A7C(prefixCopy, &v18, buf, v6);
     }
   }
 
-  else if (*(a3 + 73))
+  else if (*(result + 73))
   {
-    if (*(a3 + 4) == 1)
+    if (*(result + 4) == 1)
     {
-      v8 = *(a3 + 25);
-      v7 = (a3 + 25);
+      v8 = *(result + 25);
+      v7 = (result + 25);
       v9 = qword_1009F9820;
       if (v8 == 54)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138412290;
-          v19 = v5;
+          v19 = prefixCopy;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#configurator,%@ UWB-SE secure channel succeeded with expected get-key-complete-event status!", &v18, 0xCu);
         }
       }
 
       else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
-        sub_1004B9C24(v5, v7, v9);
+        sub_1004B9C24(prefixCopy, v7, v9);
       }
     }
 
@@ -385,7 +385,7 @@
       v17 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
-        sub_1004B9B6C(v5, a3 + 4, v17);
+        sub_1004B9B6C(prefixCopy, result + 4, v17);
       }
     }
   }
@@ -395,20 +395,20 @@
     v10 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
-      sub_1004B9B00(v5, v10, v11, v12, v13, v14, v15, v16);
+      sub_1004B9B00(prefixCopy, v10, v11, v12, v13, v14, v15, v16);
     }
   }
 }
 
-- (void)rangingServiceDidUpdateState:(int)a3 cause:(int)a4
+- (void)rangingServiceDidUpdateState:(int)state cause:(int)cause
 {
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100004A08(v18, off_1009A32B8[a3]);
+    sub_100004A08(v18, off_1009A32B8[state]);
     v8 = v19;
     v9 = v18[0];
-    sub_100004A08(__p, off_1009A32E0[a4]);
+    sub_100004A08(__p, off_1009A32E0[cause]);
     v10 = v18;
     if (v8 < 0)
     {
@@ -447,8 +447,8 @@
   v13[2] = sub_1002CD494;
   v13[3] = &unk_10098A450;
   v13[4] = self;
-  v14 = a3;
-  v15 = a4;
+  stateCopy = state;
+  causeCopy = cause;
   dispatch_async(queue, v13);
 }
 

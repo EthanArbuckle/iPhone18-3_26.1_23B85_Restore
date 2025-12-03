@@ -9,11 +9,11 @@
   v1 = *(MEMORY[0x277CBF3A0] + 16);
   v7.origin = *MEMORY[0x277CBF3A0];
   v7.size = v1;
-  v2 = [a1 trackingData];
-  v3 = v2;
-  if (v2)
+  trackingData = [self trackingData];
+  v3 = trackingData;
+  if (trackingData)
   {
-    v4 = [v2 objectForKeyedSubscript:*MEMORY[0x277CECE20]];
+    v4 = [trackingData objectForKeyedSubscript:*MEMORY[0x277CECE20]];
     v5 = v4;
     if (v4)
     {

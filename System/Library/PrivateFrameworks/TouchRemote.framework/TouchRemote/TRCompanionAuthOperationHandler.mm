@@ -1,21 +1,21 @@
 @interface TRCompanionAuthOperationHandler
-- (TRCompanionAuthOperationHandler)initWithCompanionAuthHandler:(id)a3;
-- (TRCompanionAuthOperationHandler)initWithCompanionAuthHandlerWithError:(id)a3;
-- (void)_handleCompanionAuthenticationRequest:(id)a3 withResponseHandler:(id)a4;
-- (void)registerMessageHandlersForSession:(id)a3;
+- (TRCompanionAuthOperationHandler)initWithCompanionAuthHandler:(id)handler;
+- (TRCompanionAuthOperationHandler)initWithCompanionAuthHandlerWithError:(id)error;
+- (void)_handleCompanionAuthenticationRequest:(id)request withResponseHandler:(id)handler;
+- (void)registerMessageHandlersForSession:(id)session;
 @end
 
 @implementation TRCompanionAuthOperationHandler
 
-- (TRCompanionAuthOperationHandler)initWithCompanionAuthHandler:(id)a3
+- (TRCompanionAuthOperationHandler)initWithCompanionAuthHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = TRCompanionAuthOperationHandler;
   v5 = [(TRCompanionAuthOperationHandler *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     companionAuthHandler = v5->_companionAuthHandler;
     v5->_companionAuthHandler = v6;
   }
@@ -23,15 +23,15 @@
   return v5;
 }
 
-- (TRCompanionAuthOperationHandler)initWithCompanionAuthHandlerWithError:(id)a3
+- (TRCompanionAuthOperationHandler)initWithCompanionAuthHandlerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = TRCompanionAuthOperationHandler;
   v5 = [(TRCompanionAuthOperationHandler *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [errorCopy copy];
     companionAuthHandlerWithError = v5->_companionAuthHandlerWithError;
     v5->_companionAuthHandlerWithError = v6;
   }
@@ -39,42 +39,42 @@
   return v5;
 }
 
-- (void)registerMessageHandlersForSession:(id)a3
+- (void)registerMessageHandlersForSession:(id)session
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __69__TRCompanionAuthOperationHandler_registerMessageHandlersForSession___block_invoke;
   v4[3] = &unk_279DCEAD8;
   v4[4] = self;
-  v3 = a3;
-  [v3 setRequestHandler:v4 forRequestClass:objc_opt_class()];
+  sessionCopy = session;
+  [sessionCopy setRequestHandler:v4 forRequestClass:objc_opt_class()];
 }
 
-- (void)_handleCompanionAuthenticationRequest:(id)a3 withResponseHandler:(id)a4
+- (void)_handleCompanionAuthenticationRequest:(id)request withResponseHandler:(id)handler
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (*&self->_companionAuthHandler != 0)
   {
-    v20 = [v6 account];
-    v8 = [v6 targetedAccountServices];
-    v9 = [v6 companionDevice];
-    v10 = [v6 shouldUseAIDA];
-    if (v20)
+    account = [requestCopy account];
+    targetedAccountServices = [requestCopy targetedAccountServices];
+    companionDevice = [requestCopy companionDevice];
+    shouldUseAIDA = [requestCopy shouldUseAIDA];
+    if (account)
     {
-      if (v8)
+      if (targetedAccountServices)
       {
-        if (v9)
+        if (companionDevice)
         {
           v29[0] = @"TRCompanionAuthOperationHandlerParamKeyAccount";
           v29[1] = @"TRCompanionAuthOperationHandlerParamKeyTargetedAccountServices";
-          v30[0] = v20;
-          v30[1] = v8;
-          v30[2] = v9;
+          v30[0] = account;
+          v30[1] = targetedAccountServices;
+          v30[2] = companionDevice;
           v29[2] = @"TRCompanionAuthOperationHandlerParamKeyCompanionDevice";
           v29[3] = @"TRCompanionAuthOperationHandlerParamKeyUseAIDA";
-          v11 = [MEMORY[0x277CCABB0] numberWithBool:v10];
+          v11 = [MEMORY[0x277CCABB0] numberWithBool:shouldUseAIDA];
           v30[3] = v11;
           v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:4];
 
@@ -86,7 +86,7 @@
             v27[2] = __93__TRCompanionAuthOperationHandler__handleCompanionAuthenticationRequest_withResponseHandler___block_invoke;
             v27[3] = &unk_279DCED18;
             v14 = &v28;
-            v28 = v7;
+            v28 = handlerCopy;
             companionAuthHandlerWithError[2](companionAuthHandlerWithError, v12, v27);
           }
 
@@ -98,7 +98,7 @@
             v25[2] = __93__TRCompanionAuthOperationHandler__handleCompanionAuthenticationRequest_withResponseHandler___block_invoke_2;
             v25[3] = &unk_279DCED40;
             v14 = &v26;
-            v26 = v7;
+            v26 = handlerCopy;
             companionAuthHandler[2](companionAuthHandler, v12, v25);
           }
 
@@ -143,14 +143,14 @@
 
     v12 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:2];
     v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9202 userInfo:v12];
-    (*(v7 + 2))(v7, v22, 0);
+    (*(handlerCopy + 2))(handlerCopy, v22, 0);
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9001 userInfo:0];
-  (*(v7 + 2))(v7, v20, 0);
+  account = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9001 userInfo:0];
+  (*(handlerCopy + 2))(handlerCopy, account, 0);
 LABEL_15:
 
   v24 = *MEMORY[0x277D85DE8];

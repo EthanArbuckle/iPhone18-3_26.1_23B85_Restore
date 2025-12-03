@@ -1,24 +1,24 @@
 @interface BPSMulticastDownstream
 - (BOOL)completed;
-- (BPSMulticastDownstream)initWithMulticast:(id)a3;
+- (BPSMulticastDownstream)initWithMulticast:(id)multicast;
 - (id)nextEvent;
-- (id)startWithSubscriber:(id)a3;
+- (id)startWithSubscriber:(id)subscriber;
 - (id)upstreamPublishers;
 - (void)reset;
 @end
 
 @implementation BPSMulticastDownstream
 
-- (BPSMulticastDownstream)initWithMulticast:(id)a3
+- (BPSMulticastDownstream)initWithMulticast:(id)multicast
 {
-  v5 = a3;
+  multicastCopy = multicast;
   v9.receiver = self;
   v9.super_class = BPSMulticastDownstream;
   v6 = [(BPSMulticastDownstream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_multicast, a3);
+    objc_storeStrong(&v6->_multicast, multicast);
   }
 
   return v7;
@@ -27,8 +27,8 @@
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSMulticastDownstream *)self multicast];
-  v6[0] = v2;
+  multicast = [(BPSMulticastDownstream *)self multicast];
+  v6[0] = multicast;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -36,32 +36,32 @@
   return v3;
 }
 
-- (id)startWithSubscriber:(id)a3
+- (id)startWithSubscriber:(id)subscriber
 {
-  v4 = a3;
-  [(BPSMulticastDownstream *)self setSubscriber:v4];
+  subscriberCopy = subscriber;
+  [(BPSMulticastDownstream *)self setSubscriber:subscriberCopy];
   v7.receiver = self;
   v7.super_class = BPSMulticastDownstream;
-  v5 = [(BPSPublisher *)&v7 startWithSubscriber:v4];
+  v5 = [(BPSPublisher *)&v7 startWithSubscriber:subscriberCopy];
 
   return v5;
 }
 
 - (id)nextEvent
 {
-  v3 = [(BPSMulticastDownstream *)self multicast];
-  v4 = [v3 nextEventForMulticastDownstream:self];
+  multicast = [(BPSMulticastDownstream *)self multicast];
+  v4 = [multicast nextEventForMulticastDownstream:self];
 
   return v4;
 }
 
 - (BOOL)completed
 {
-  v2 = self;
-  v3 = [(BPSMulticastDownstream *)self multicast];
-  LOBYTE(v2) = [v3 completedForMulticastDownstream:v2];
+  selfCopy = self;
+  multicast = [(BPSMulticastDownstream *)self multicast];
+  LOBYTE(selfCopy) = [multicast completedForMulticastDownstream:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)reset

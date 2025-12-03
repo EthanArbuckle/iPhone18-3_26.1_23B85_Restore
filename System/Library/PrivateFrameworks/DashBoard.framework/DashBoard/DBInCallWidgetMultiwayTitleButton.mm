@@ -1,18 +1,18 @@
 @interface DBInCallWidgetMultiwayTitleButton
-- (DBInCallWidgetMultiwayTitleButton)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
+- (DBInCallWidgetMultiwayTitleButton)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setupConstraints;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DBInCallWidgetMultiwayTitleButton
 
-- (DBInCallWidgetMultiwayTitleButton)initWithFrame:(CGRect)a3
+- (DBInCallWidgetMultiwayTitleButton)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = DBInCallWidgetMultiwayTitleButton;
-  v3 = [(DBInCallWidgetMultiwayTitleButton *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DBInCallWidgetMultiwayTitleButton *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277CF90E8]);
@@ -27,8 +27,8 @@
     v8 = [v7 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v8 setUserInteractionEnabled:0];
-    v9 = [MEMORY[0x277D75348] labelColor];
-    [v8 setTextColor:v9];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v8 setTextColor:labelColor];
 
     [v8 setTextAlignment:1];
     v10 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] variant:1280];
@@ -45,49 +45,49 @@
   return v3;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = DBInCallWidgetMultiwayTitleButton;
   [(DBInCallWidgetMultiwayTitleButton *)&v5 setHighlighted:?];
-  [(CPUIFocusEffectView *)self->_focusEffectView setPressed:v3];
+  [(CPUIFocusEffectView *)self->_focusEffectView setPressed:highlightedCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = DBInCallWidgetMultiwayTitleButton;
-  [(DBInCallWidgetMultiwayTitleButton *)&v6 traitCollectionDidChange:a3];
+  [(DBInCallWidgetMultiwayTitleButton *)&v6 traitCollectionDidChange:change];
   v4 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] variant:1280];
-  v5 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
-  [v5 setFont:v4];
+  multilineTitleLabel = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
+  [multilineTitleLabel setFont:v4];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v14.receiver = self;
   v14.super_class = DBInCallWidgetMultiwayTitleButton;
-  v6 = a3;
-  [(DBInCallWidgetMultiwayTitleButton *)&v14 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
+  contextCopy = context;
+  [(DBInCallWidgetMultiwayTitleButton *)&v14 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  v8 = [(DBInCallWidgetMultiwayTitleButton *)self focusEffectView];
-  v9 = v8;
-  if (v8)
+  focusEffectView = [(DBInCallWidgetMultiwayTitleButton *)self focusEffectView];
+  v9 = focusEffectView;
+  if (focusEffectView)
   {
-    v10 = v8;
+    focusView = focusEffectView;
   }
 
   else
   {
-    v10 = [(DBInCallWidgetMultiwayTitleButton *)self focusView];
+    focusView = [(DBInCallWidgetMultiwayTitleButton *)self focusView];
   }
 
-  v11 = v10;
+  v11 = focusView;
 
-  [v11 setHidden:v7 != self];
-  if (v7 == self)
+  [v11 setHidden:nextFocusedItem != self];
+  if (nextFocusedItem == self)
   {
     [MEMORY[0x277D75348] _carSystemFocusLabelColor];
   }
@@ -97,70 +97,70 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v12 = ;
-  v13 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
-  [v13 setTextColor:v12];
+  multilineTitleLabel = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
+  [multilineTitleLabel setTextColor:v12];
 }
 
 - (void)setupConstraints
 {
   v43[8] = *MEMORY[0x277D85DE8];
-  v3 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
-  v4 = [v3 textLayoutGuide];
+  multilineTitleLabel = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
+  textLayoutGuide = [multilineTitleLabel textLayoutGuide];
 
-  v5 = [(DBInCallWidgetMultiwayTitleButton *)self focusEffectView];
-  v6 = v5;
-  if (v5)
+  focusEffectView = [(DBInCallWidgetMultiwayTitleButton *)self focusEffectView];
+  v6 = focusEffectView;
+  if (focusEffectView)
   {
-    v7 = v5;
+    focusView = focusEffectView;
   }
 
   else
   {
-    v7 = [(DBInCallWidgetMultiwayTitleButton *)self focusView];
+    focusView = [(DBInCallWidgetMultiwayTitleButton *)self focusView];
   }
 
-  v8 = v7;
-  v24 = v7;
+  v8 = focusView;
+  v24 = focusView;
 
   v30 = MEMORY[0x277CCAAD0];
-  v42 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
-  v41 = [v42 leadingAnchor];
-  v40 = [(DBInCallWidgetMultiwayTitleButton *)self leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  multilineTitleLabel2 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
+  leadingAnchor = [multilineTitleLabel2 leadingAnchor];
+  leadingAnchor2 = [(DBInCallWidgetMultiwayTitleButton *)self leadingAnchor];
+  v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v43[0] = v39;
-  v38 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
-  v37 = [v38 trailingAnchor];
-  v36 = [(DBInCallWidgetMultiwayTitleButton *)self trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  multilineTitleLabel3 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
+  trailingAnchor = [multilineTitleLabel3 trailingAnchor];
+  trailingAnchor2 = [(DBInCallWidgetMultiwayTitleButton *)self trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v43[1] = v35;
-  v34 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
-  v33 = [v34 topAnchor];
-  v32 = [(DBInCallWidgetMultiwayTitleButton *)self topAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  multilineTitleLabel4 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
+  topAnchor = [multilineTitleLabel4 topAnchor];
+  topAnchor2 = [(DBInCallWidgetMultiwayTitleButton *)self topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v43[2] = v31;
-  v29 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
-  v28 = [v29 bottomAnchor];
-  v27 = [(DBInCallWidgetMultiwayTitleButton *)self bottomAnchor];
-  v25 = [v28 constraintEqualToAnchor:v27];
+  multilineTitleLabel5 = [(DBInCallWidgetMultiwayTitleButton *)self multilineTitleLabel];
+  bottomAnchor = [multilineTitleLabel5 bottomAnchor];
+  bottomAnchor2 = [(DBInCallWidgetMultiwayTitleButton *)self bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v43[3] = v25;
-  v23 = [v8 leadingAnchor];
-  v22 = [v4 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:-2.0];
+  leadingAnchor3 = [v8 leadingAnchor];
+  leadingAnchor4 = [textLayoutGuide leadingAnchor];
+  v21 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:-2.0];
   v43[4] = v21;
-  v9 = [v8 trailingAnchor];
-  v10 = [v4 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:2.0];
+  trailingAnchor3 = [v8 trailingAnchor];
+  trailingAnchor4 = [textLayoutGuide trailingAnchor];
+  v11 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:2.0];
   v43[5] = v11;
-  v12 = [v8 topAnchor];
-  v13 = [v4 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor3 = [v8 topAnchor];
+  topAnchor4 = [textLayoutGuide topAnchor];
+  v14 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v43[6] = v14;
-  v15 = [v8 bottomAnchor];
-  v16 = v4;
-  v26 = v4;
-  v17 = v15;
-  v18 = [v16 bottomAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  bottomAnchor3 = [v8 bottomAnchor];
+  v16 = textLayoutGuide;
+  v26 = textLayoutGuide;
+  v17 = bottomAnchor3;
+  bottomAnchor4 = [v16 bottomAnchor];
+  v19 = [v17 constraintEqualToAnchor:bottomAnchor4];
   v43[7] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:8];
   [v30 activateConstraints:v20];

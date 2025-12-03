@@ -1,11 +1,11 @@
 @interface MIDaemon
 - (MIDaemon)init;
-- (void)connection:(id)a3 didCloseConnection:(int64_t)a4;
-- (void)connection:(id)a3 didRecieveData:(id)a4;
-- (void)connectionMade:(id)a3;
-- (void)handleClientRequest:(id)a3 withDataRequest:(id)a4;
-- (void)handleConnection:(id)a3;
-- (void)handleServerResponse:(id)a3 withResponse:(id)a4;
+- (void)connection:(id)connection didCloseConnection:(int64_t)closeConnection;
+- (void)connection:(id)connection didRecieveData:(id)data;
+- (void)connectionMade:(id)made;
+- (void)handleClientRequest:(id)request withDataRequest:(id)dataRequest;
+- (void)handleConnection:(id)connection;
+- (void)handleServerResponse:(id)response withResponse:(id)withResponse;
 @end
 
 @implementation MIDaemon
@@ -52,33 +52,33 @@
   return v2;
 }
 
-- (void)handleConnection:(id)a3
+- (void)handleConnection:(id)connection
 {
-  v4 = a3;
-  if (xpc_get_type(v4) == &_xpc_type_connection)
+  connectionCopy = connection;
+  if (xpc_get_type(connectionCopy) == &_xpc_type_connection)
   {
-    [MIConnection createConnectionWithXPCObject:v4 withSelector:"connectionMade:" onTarget:self];
+    [MIConnection createConnectionWithXPCObject:connectionCopy withSelector:"connectionMade:" onTarget:self];
   }
 }
 
-- (void)connectionMade:(id)a3
+- (void)connectionMade:(id)made
 {
-  v4 = a3;
-  [v4 setDelegate:self];
-  [(NSMutableArray *)self->_connections addObject:v4];
+  madeCopy = made;
+  [madeCopy setDelegate:self];
+  [(NSMutableArray *)self->_connections addObject:madeCopy];
 }
 
-- (void)connection:(id)a3 didRecieveData:(id)a4
+- (void)connection:(id)connection didRecieveData:(id)data
 {
-  v11 = a3;
-  v6 = [NSPropertyListSerialization propertyListWithData:a4 options:0 format:0 error:0];
+  connectionCopy = connection;
+  v6 = [NSPropertyListSerialization propertyListWithData:data options:0 format:0 error:0];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 objectForKey:@"Type"];
     if ([v8 isEqualToString:@"Server"])
     {
-      [(MIDaemon *)self handleServerRequest:v11];
+      [(MIDaemon *)self handleServerRequest:connectionCopy];
     }
 
     else
@@ -86,7 +86,7 @@
       v9 = [v7 objectForKey:@"Data Request"];
       if (v9)
       {
-        [(MIDaemon *)self handleClientRequest:v11 withDataRequest:v9];
+        [(MIDaemon *)self handleClientRequest:connectionCopy withDataRequest:v9];
       }
 
       else
@@ -94,19 +94,19 @@
         v10 = [v7 objectForKey:@"Data Response ID"];
         if (v10)
         {
-          [(MIDaemon *)self handleServerResponse:v11 withResponse:v7];
+          [(MIDaemon *)self handleServerResponse:connectionCopy withResponse:v7];
         }
       }
     }
   }
 }
 
-- (void)connection:(id)a3 didCloseConnection:(int64_t)a4
+- (void)connection:(id)connection didCloseConnection:(int64_t)closeConnection
 {
   serverArray = self->_serverArray;
-  v6 = a3;
-  [(NSMutableArray *)serverArray removeObject:v6];
-  [(NSMutableArray *)self->_connections removeObject:v6];
+  connectionCopy = connection;
+  [(NSMutableArray *)serverArray removeObject:connectionCopy];
+  [(NSMutableArray *)self->_connections removeObject:connectionCopy];
 
   if (![(NSMutableArray *)self->_connections count])
   {
@@ -116,18 +116,18 @@
   }
 }
 
-- (void)handleClientRequest:(id)a3 withDataRequest:(id)a4
+- (void)handleClientRequest:(id)request withDataRequest:(id)dataRequest
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  dataRequestCopy = dataRequest;
   v8 = self->_clientRequestID + 1;
   self->_clientRequestID = v8;
   v9 = [NSNumber numberWithUnsignedChar:v8];
-  [(NSMutableDictionary *)self->_clientReqDict setObject:v6 forKey:v9];
-  [(NSMutableDictionary *)self->_clientRequestInfosDict setObject:v7 forKey:v9];
+  [(NSMutableDictionary *)self->_clientReqDict setObject:requestCopy forKey:v9];
+  [(NSMutableDictionary *)self->_clientRequestInfosDict setObject:dataRequestCopy forKey:v9];
   v10 = +[NSMutableDictionary dictionary];
   [v10 setObject:v9 forKey:@"Client Request ID"];
-  [v10 setObject:v7 forKey:@"Data Request"];
+  [v10 setObject:dataRequestCopy forKey:@"Data Request"];
   v11 = [NSPropertyListSerialization dataWithPropertyList:v10 format:200 options:0 error:0];
   v17 = 0u;
   v18 = 0u;
@@ -158,16 +158,16 @@
   }
 }
 
-- (void)handleServerResponse:(id)a3 withResponse:(id)a4
+- (void)handleServerResponse:(id)response withResponse:(id)withResponse
 {
-  v5 = a4;
+  withResponseCopy = withResponse;
   v17 = +[NSMutableDictionary dictionary];
-  v6 = [v5 objectForKey:@"Display Type"];
+  v6 = [withResponseCopy objectForKey:@"Display Type"];
   [v17 setObject:v6 forKey:@"Display Type"];
 
-  v7 = [v5 objectForKey:@"Data"];
+  v7 = [withResponseCopy objectForKey:@"Data"];
   v8 = [v7 objectForKey:@"Map View"];
-  v9 = [v5 objectForKey:@"Data Response ID"];
+  v9 = [withResponseCopy objectForKey:@"Data Response ID"];
 
   v10 = [(NSMutableDictionary *)self->_clientRequestInfosDict objectForKey:v9];
   if ([v10 containsObject:@"CameraController"])

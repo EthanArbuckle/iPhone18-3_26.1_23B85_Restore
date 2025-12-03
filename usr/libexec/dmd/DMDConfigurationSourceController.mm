@@ -1,34 +1,34 @@
 @interface DMDConfigurationSourceController
-- (DMDConfigurationSourceController)initWithConfigurationSource:(id)a3 delegate:(id)a4;
+- (DMDConfigurationSourceController)initWithConfigurationSource:(id)source delegate:(id)delegate;
 - (DMDConfigurationSourceControllerDelegate)delegate;
 - (DMFConfigurationSource)configurationSource;
 - (NSString)displayName;
 - (NSString)organizationIdentifier;
 - (id)debugDescription;
 - (id)description;
-- (void)eventsForSourceDidChange:(id)a3;
+- (void)eventsForSourceDidChange:(id)change;
 - (void)reportEvents;
 - (void)reportStatus;
-- (void)resolveAssetWithContext:(id)a3;
-- (void)statusForSourceDidChange:(id)a3;
+- (void)resolveAssetWithContext:(id)context;
+- (void)statusForSourceDidChange:(id)change;
 - (void)updateStatusChangeListener;
-- (void)updateWithConfigurationSource:(id)a3;
+- (void)updateWithConfigurationSource:(id)source;
 @end
 
 @implementation DMDConfigurationSourceController
 
-- (DMDConfigurationSourceController)initWithConfigurationSource:(id)a3 delegate:(id)a4
+- (DMDConfigurationSourceController)initWithConfigurationSource:(id)source delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  sourceCopy = source;
+  delegateCopy = delegate;
+  if (!sourceCopy)
   {
     sub_100080A84(a2, self);
   }
 
-  v9 = [v7 identifier];
+  identifier = [sourceCopy identifier];
 
-  if (!v9)
+  if (!identifier)
   {
     sub_100080B00(a2, self);
   }
@@ -38,16 +38,16 @@
   v10 = [(DMDConfigurationSourceController *)&v16 init];
   if (v10)
   {
-    v11 = [v7 identifier];
+    identifier2 = [sourceCopy identifier];
     identifier = v10->_identifier;
-    v10->_identifier = v11;
+    v10->_identifier = identifier2;
 
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v13 = objc_opt_new();
     queue = v10->_queue;
     v10->_queue = v13;
 
-    [(DMDConfigurationSourceController *)v10 updateWithConfigurationSource:v7];
+    [(DMDConfigurationSourceController *)v10 updateWithConfigurationSource:sourceCopy];
   }
 
   return v10;
@@ -75,33 +75,33 @@
 
 - (NSString)organizationIdentifier
 {
-  v2 = [(DMDConfigurationSourceController *)self source];
-  v3 = [v2 organizationIdentifier];
+  source = [(DMDConfigurationSourceController *)self source];
+  organizationIdentifier = [source organizationIdentifier];
 
-  return v3;
+  return organizationIdentifier;
 }
 
 - (NSString)displayName
 {
-  v2 = [(DMDConfigurationSourceController *)self source];
-  v3 = [v2 displayName];
+  source = [(DMDConfigurationSourceController *)self source];
+  displayName = [source displayName];
 
-  return v3;
+  return displayName;
 }
 
-- (void)updateWithConfigurationSource:(id)a3
+- (void)updateWithConfigurationSource:(id)source
 {
-  v9 = a3;
-  v5 = [(DMDConfigurationSourceController *)self identifier];
-  v6 = [v9 identifier];
-  v7 = [v5 isEqualToString:v6];
+  sourceCopy = source;
+  identifier = [(DMDConfigurationSourceController *)self identifier];
+  identifier2 = [sourceCopy identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if ((v7 & 1) == 0)
   {
     sub_100080B7C(a2, self);
   }
 
-  v8 = [[DMDConfigurationSourceRepresentation alloc] initWithConfigurationSource:v9];
+  v8 = [[DMDConfigurationSourceRepresentation alloc] initWithConfigurationSource:sourceCopy];
   [(DMDConfigurationSourceController *)self setSource:v8];
 
   [(DMDConfigurationSourceController *)self updateStatusChangeListener];
@@ -111,21 +111,21 @@
 - (DMFConfigurationSource)configurationSource
 {
   v3 = objc_opt_new();
-  v4 = [(DMDConfigurationSourceController *)self source];
-  v5 = [v4 identifier];
-  [v3 setIdentifier:v5];
+  source = [(DMDConfigurationSourceController *)self source];
+  identifier = [source identifier];
+  [v3 setIdentifier:identifier];
 
-  v6 = [(DMDConfigurationSourceController *)self source];
-  v7 = [v6 displayName];
-  [v3 setDisplayName:v7];
+  source2 = [(DMDConfigurationSourceController *)self source];
+  displayName = [source2 displayName];
+  [v3 setDisplayName:displayName];
 
-  v8 = [(DMDConfigurationSourceController *)self source];
-  v9 = [v8 machServiceName];
-  [v3 setMachServiceName:v9];
+  source3 = [(DMDConfigurationSourceController *)self source];
+  machServiceName = [source3 machServiceName];
+  [v3 setMachServiceName:machServiceName];
 
-  v10 = [(DMDConfigurationSourceController *)self source];
-  v11 = [v10 reportingRequirements];
-  [v3 setReportingRequirements:v11];
+  source4 = [(DMDConfigurationSourceController *)self source];
+  reportingRequirements = [source4 reportingRequirements];
+  [v3 setReportingRequirements:reportingRequirements];
 
   return v3;
 }
@@ -142,14 +142,14 @@
   [v5 addObserver:self selector:"eventsForSourceDidChange:" name:@"DMDConfigurationSourceEventsDidChange" object:0];
 }
 
-- (void)statusForSourceDidChange:(id)a3
+- (void)statusForSourceDidChange:(id)change
 {
-  v14 = a3;
+  changeCopy = change;
   if (+[NSThread isMainThread])
   {
-    if (v14)
+    if (changeCopy)
     {
-      [v14 object];
+      [changeCopy object];
     }
 
     else
@@ -157,22 +157,22 @@
       [(DMDConfigurationSourceController *)self organizationIdentifier];
     }
     v5 = ;
-    v6 = [(DMDConfigurationSourceController *)self organizationIdentifier];
-    v7 = [v6 isEqualToString:v5];
+    organizationIdentifier = [(DMDConfigurationSourceController *)self organizationIdentifier];
+    v7 = [organizationIdentifier isEqualToString:v5];
 
     if (v7)
     {
-      v8 = [(DMDConfigurationSourceController *)self source];
-      v9 = [v8 reportingRequirements];
+      source = [(DMDConfigurationSourceController *)self source];
+      reportingRequirements = [source reportingRequirements];
 
       v10 = 10.0;
       v11 = 3.0;
-      if (v9)
+      if (reportingRequirements)
       {
-        [v9 updateCoalescenceInterval];
+        [reportingRequirements updateCoalescenceInterval];
         if (v12 > DMFReportingRequirementsUpdateCoalescenceIntervalDefault)
         {
-          [v9 updateCoalescenceInterval];
+          [reportingRequirements updateCoalescenceInterval];
           v11 = v13;
           v10 = v13;
         }
@@ -189,7 +189,7 @@
 
   else
   {
-    [(DMDConfigurationSourceController *)self performSelectorOnMainThread:a2 withObject:v14 waitUntilDone:0];
+    [(DMDConfigurationSourceController *)self performSelectorOnMainThread:a2 withObject:changeCopy waitUntilDone:0];
   }
 }
 
@@ -204,18 +204,18 @@
 
   v4 = [(DMDConfigurationSourceTaskOperation *)[DMDConfigurationSourceStatusUpdateOperation alloc] initWithController:self];
   [(DMDConfigurationSourceTaskOperation *)v4 setController:self];
-  v5 = [(DMDConfigurationSourceController *)self queue];
-  [v5 addOperation:v4];
+  queue = [(DMDConfigurationSourceController *)self queue];
+  [queue addOperation:v4];
 }
 
-- (void)eventsForSourceDidChange:(id)a3
+- (void)eventsForSourceDidChange:(id)change
 {
-  v14 = a3;
+  changeCopy = change;
   if (+[NSThread isMainThread])
   {
-    if (v14)
+    if (changeCopy)
     {
-      [v14 object];
+      [changeCopy object];
     }
 
     else
@@ -223,22 +223,22 @@
       [(DMDConfigurationSourceController *)self organizationIdentifier];
     }
     v5 = ;
-    v6 = [(DMDConfigurationSourceController *)self organizationIdentifier];
-    v7 = [v6 isEqualToString:v5];
+    organizationIdentifier = [(DMDConfigurationSourceController *)self organizationIdentifier];
+    v7 = [organizationIdentifier isEqualToString:v5];
 
     if (v7)
     {
-      v8 = [(DMDConfigurationSourceController *)self source];
-      v9 = [v8 reportingRequirements];
+      source = [(DMDConfigurationSourceController *)self source];
+      reportingRequirements = [source reportingRequirements];
 
       v10 = 10.0;
       v11 = 3.0;
-      if (v9)
+      if (reportingRequirements)
       {
-        [v9 updateCoalescenceInterval];
+        [reportingRequirements updateCoalescenceInterval];
         if (v12 > DMFReportingRequirementsUpdateCoalescenceIntervalDefault)
         {
-          [v9 updateCoalescenceInterval];
+          [reportingRequirements updateCoalescenceInterval];
           v11 = v13;
           v10 = v13;
         }
@@ -255,7 +255,7 @@
 
   else
   {
-    [(DMDConfigurationSourceController *)self performSelectorOnMainThread:a2 withObject:v14 waitUntilDone:0];
+    [(DMDConfigurationSourceController *)self performSelectorOnMainThread:a2 withObject:changeCopy waitUntilDone:0];
   }
 }
 
@@ -270,18 +270,18 @@
 
   v4 = [(DMDConfigurationSourceTaskOperation *)[DMDConfigurationSourceEventsOperation alloc] initWithController:self];
   [(DMDConfigurationSourceTaskOperation *)v4 setController:self];
-  v5 = [(DMDConfigurationSourceController *)self queue];
-  [v5 addOperation:v4];
+  queue = [(DMDConfigurationSourceController *)self queue];
+  [queue addOperation:v4];
 }
 
-- (void)resolveAssetWithContext:(id)a3
+- (void)resolveAssetWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6 = [(DMDConfigurationSourceTaskOperation *)[DMDConfigurationSourceAssetResolveOperation alloc] initWithController:self];
-  [(DMDConfigurationSourceAssetResolveOperation *)v6 setContext:v4];
+  [(DMDConfigurationSourceAssetResolveOperation *)v6 setContext:contextCopy];
 
-  v5 = [(DMDConfigurationSourceController *)self queue];
-  [v5 addOperation:v6];
+  queue = [(DMDConfigurationSourceController *)self queue];
+  [queue addOperation:v6];
 }
 
 - (DMDConfigurationSourceControllerDelegate)delegate

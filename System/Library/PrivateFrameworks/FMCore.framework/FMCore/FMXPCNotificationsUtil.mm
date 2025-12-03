@@ -1,16 +1,16 @@
 @interface FMXPCNotificationsUtil
 + (id)sharedInstance;
-+ (void)handleDarwinNotificationsWithHandlers:(id)a3;
-+ (void)handleDistributedNotificationsWithHandlers:(id)a3;
-- (BOOL)isHandlerRegisteredForDarwinNotification:(id)a3;
-- (BOOL)isHandlerRegisteredForDistributedNotification:(id)a3;
++ (void)handleDarwinNotificationsWithHandlers:(id)handlers;
++ (void)handleDistributedNotificationsWithHandlers:(id)handlers;
+- (BOOL)isHandlerRegisteredForDarwinNotification:(id)notification;
+- (BOOL)isHandlerRegisteredForDistributedNotification:(id)notification;
 - (FMXPCNotificationsUtil)init;
-- (void)_didReceiveDarwinNotification:(id)a3;
-- (void)_didReceiveDistributedNotification:(id)a3 withContext:(id)a4;
-- (void)deregisterHandlerForDarwinNotification:(id)a3;
-- (void)deregisterHandlerForDistributedNotification:(id)a3;
-- (void)registerHandler:(id)a3 forDarwinNotification:(id)a4;
-- (void)registerHandler:(id)a3 forDistributedNotification:(id)a4;
+- (void)_didReceiveDarwinNotification:(id)notification;
+- (void)_didReceiveDistributedNotification:(id)notification withContext:(id)context;
+- (void)deregisterHandlerForDarwinNotification:(id)notification;
+- (void)deregisterHandlerForDistributedNotification:(id)notification;
+- (void)registerHandler:(id)handler forDarwinNotification:(id)notification;
+- (void)registerHandler:(id)handler forDistributedNotification:(id)notification;
 @end
 
 @implementation FMXPCNotificationsUtil
@@ -34,9 +34,9 @@ uint64_t __40__FMXPCNotificationsUtil_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)handleDarwinNotificationsWithHandlers:(id)a3
++ (void)handleDarwinNotificationsWithHandlers:(id)handlers
 {
-  [a3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_3];
+  [handlers enumerateKeysAndObjectsUsingBlock:&__block_literal_global_3];
   v3 = MEMORY[0x277D85CD0];
 
   xpc_set_event_stream_handler("com.apple.notifyd.matching", v3, &__block_literal_global_9);
@@ -113,9 +113,9 @@ void __64__FMXPCNotificationsUtil_handleDarwinNotificationsWithHandlers___block_
   [v4 _didReceiveDarwinNotification:v3];
 }
 
-+ (void)handleDistributedNotificationsWithHandlers:(id)a3
++ (void)handleDistributedNotificationsWithHandlers:(id)handlers
 {
-  [a3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_12];
+  [handlers enumerateKeysAndObjectsUsingBlock:&__block_literal_global_12];
   v3 = MEMORY[0x277D85CD0];
 
   xpc_set_event_stream_handler("com.apple.distnoted.matching", v3, &__block_literal_global_15);
@@ -217,27 +217,27 @@ void __69__FMXPCNotificationsUtil_handleDistributedNotificationsWithHandlers___b
   return v2;
 }
 
-- (BOOL)isHandlerRegisteredForDarwinNotification:(id)a3
+- (BOOL)isHandlerRegisteredForDarwinNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(FMXPCNotificationsUtil *)self modificationQueue];
+  modificationQueue = [(FMXPCNotificationsUtil *)self modificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__FMXPCNotificationsUtil_isHandlerRegisteredForDarwinNotification___block_invoke;
   block[3] = &unk_278FD9B28;
-  v9 = v4;
+  v9 = notificationCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = notificationCopy;
+  dispatch_sync(modificationQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(notificationCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return notificationCopy;
 }
 
 void __67__FMXPCNotificationsUtil_isHandlerRegisteredForDarwinNotification___block_invoke(uint64_t a1)
@@ -247,22 +247,22 @@ void __67__FMXPCNotificationsUtil_isHandlerRegisteredForDarwinNotification___blo
   *(*(*(a1 + 48) + 8) + 24) = v2 != 0;
 }
 
-- (void)registerHandler:(id)a3 forDarwinNotification:(id)a4
+- (void)registerHandler:(id)handler forDarwinNotification:(id)notification
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
-  v8 = [(FMXPCNotificationsUtil *)self modificationQueue];
+  modificationQueue = [(FMXPCNotificationsUtil *)self modificationQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__FMXPCNotificationsUtil_registerHandler_forDarwinNotification___block_invoke;
   v11[3] = &unk_278FD98C0;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = notificationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = notificationCopy;
+  dispatch_async(modificationQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -302,19 +302,19 @@ void __64__FMXPCNotificationsUtil_registerHandler_forDarwinNotification___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterHandlerForDarwinNotification:(id)a3
+- (void)deregisterHandlerForDarwinNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
-  v5 = [(FMXPCNotificationsUtil *)self modificationQueue];
+  modificationQueue = [(FMXPCNotificationsUtil *)self modificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__FMXPCNotificationsUtil_deregisterHandlerForDarwinNotification___block_invoke;
   block[3] = &unk_278FD9B50;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(modificationQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -336,31 +336,31 @@ void __65__FMXPCNotificationsUtil_deregisterHandlerForDarwinNotification___block
   xpc_set_event();
 }
 
-- (BOOL)isHandlerRegisteredForDistributedNotification:(id)a3
+- (BOOL)isHandlerRegisteredForDistributedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(FMXPCNotificationsUtil *)self distributedNotificationHandlers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  notificationCopy = notification;
+  distributedNotificationHandlers = [(FMXPCNotificationsUtil *)self distributedNotificationHandlers];
+  v6 = [distributedNotificationHandlers objectForKeyedSubscript:notificationCopy];
 
   return v6 != 0;
 }
 
-- (void)registerHandler:(id)a3 forDistributedNotification:(id)a4
+- (void)registerHandler:(id)handler forDistributedNotification:(id)notification
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
-  v8 = [(FMXPCNotificationsUtil *)self modificationQueue];
+  modificationQueue = [(FMXPCNotificationsUtil *)self modificationQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__FMXPCNotificationsUtil_registerHandler_forDistributedNotification___block_invoke;
   v11[3] = &unk_278FD98C0;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = notificationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = notificationCopy;
+  dispatch_async(modificationQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -400,19 +400,19 @@ void __69__FMXPCNotificationsUtil_registerHandler_forDistributedNotification___b
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterHandlerForDistributedNotification:(id)a3
+- (void)deregisterHandlerForDistributedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
-  v5 = [(FMXPCNotificationsUtil *)self modificationQueue];
+  modificationQueue = [(FMXPCNotificationsUtil *)self modificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__FMXPCNotificationsUtil_deregisterHandlerForDistributedNotification___block_invoke;
   block[3] = &unk_278FD9B50;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(modificationQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -434,19 +434,19 @@ void __70__FMXPCNotificationsUtil_deregisterHandlerForDistributedNotification___
   xpc_set_event();
 }
 
-- (void)_didReceiveDarwinNotification:(id)a3
+- (void)_didReceiveDarwinNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
-  v5 = [(FMXPCNotificationsUtil *)self modificationQueue];
+  modificationQueue = [(FMXPCNotificationsUtil *)self modificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__FMXPCNotificationsUtil__didReceiveDarwinNotification___block_invoke;
   block[3] = &unk_278FD9B50;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(modificationQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -487,22 +487,22 @@ void __56__FMXPCNotificationsUtil__didReceiveDarwinNotification___block_invoke(u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didReceiveDistributedNotification:(id)a3 withContext:(id)a4
+- (void)_didReceiveDistributedNotification:(id)notification withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  v8 = [(FMXPCNotificationsUtil *)self modificationQueue];
+  modificationQueue = [(FMXPCNotificationsUtil *)self modificationQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__FMXPCNotificationsUtil__didReceiveDistributedNotification_withContext___block_invoke;
   v11[3] = &unk_278FD9BA0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = notificationCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = notificationCopy;
+  dispatch_async(modificationQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

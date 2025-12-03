@@ -1,24 +1,24 @@
 @interface ArcadeHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 @end
 
 @implementation ArcadeHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppInstallExtension.ArcadeHeaderView" isKindOfClass:@"AppStore.TitleHeaderView"];
-  [v3 validateClass:@"AppInstallExtension.TitleHeaderView" hasSwiftField:@"accessoryView" withSwiftType:"Optional<UIView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppInstallExtension.ArcadeHeaderView" isKindOfClass:@"AppStore.TitleHeaderView"];
+  [validationsCopy validateClass:@"AppInstallExtension.TitleHeaderView" hasSwiftField:@"accessoryView" withSwiftType:"Optional<UIView>"];
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(ArcadeHeaderViewAccessibility *)self safeSwiftValueForKey:@"accessoryView"];
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
-  return v3;
+  return array;
 }
 
 @end

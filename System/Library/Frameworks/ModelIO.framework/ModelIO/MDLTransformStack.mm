@@ -1,25 +1,25 @@
 @interface MDLTransformStack
-+ (__n128)globalTransformWithObject:(uint64_t)a3 atTime:(void *)a4;
-+ (__n128)localTransformWithObject:(const char *)a3 atTime:(void *)a4;
++ (__n128)globalTransformWithObject:(uint64_t)object atTime:(void *)time;
++ (__n128)localTransformWithObject:(const char *)object atTime:(void *)time;
 - (BOOL)isScaleRotateTransformOrder;
 - (CAAnimation)transformAnimation;
 - (MDLAnimatedValue)animatedValueWithName:(NSString *)name;
 - (NSArray)keyTimes;
 - (double)maximumTime;
 - (double)minimumTime;
-- (id)animatedMatrix4x4WithName:(id)a3 shouldCreateIfMissing:(BOOL)a4;
-- (id)animatedQuaternionWithName:(id)a3 shouldCreateIfMissing:(BOOL)a4;
-- (id)animatedScalarWithName:(id)a3 shouldCreateIfMissing:(BOOL)a4;
-- (id)animatedVector3WithName:(id)a3 shouldCreateIfMissing:(BOOL)a4;
-- (id)animatedVector4WithName:(id)a3 shouldCreateIfMissing:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)animatedMatrix4x4WithName:(id)name shouldCreateIfMissing:(BOOL)missing;
+- (id)animatedQuaternionWithName:(id)name shouldCreateIfMissing:(BOOL)missing;
+- (id)animatedScalarWithName:(id)name shouldCreateIfMissing:(BOOL)missing;
+- (id)animatedVector3WithName:(id)name shouldCreateIfMissing:(BOOL)missing;
+- (id)animatedVector4WithName:(id)name shouldCreateIfMissing:(BOOL)missing;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decomposedTransformAnimation;
 - (id)init;
 - (matrix_float4x4)float4x4AtTime:(NSTimeInterval)time;
-- (unint64_t)double4x4AtTime:(uint64_t)a3@<X2>;
+- (unint64_t)double4x4AtTime:(uint64_t)time@<X2>;
 - (void)clearTransformStack;
-- (void)setLocalTransform:(uint64_t)a1 forTime:(const char *)a2;
-- (void)setLocalTransform:(uint64_t)a3;
+- (void)setLocalTransform:(uint64_t)transform;
+- (void)setLocalTransform:(uint64_t)transform forTime:(const char *)time;
 @end
 
 @implementation MDLTransformStack
@@ -45,11 +45,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v104 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   *(v10 + 8) = self->_resetsTransform;
   v100 = 0u;
@@ -354,11 +354,11 @@ LABEL_30:
   return v24;
 }
 
-- (id)animatedVector3WithName:(id)a3 shouldCreateIfMissing:(BOOL)a4
+- (id)animatedVector3WithName:(id)name shouldCreateIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, v6);
+  missingCopy = missing;
+  nameCopy = name;
+  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, nameCopy);
   if (v9)
   {
     v10 = 1;
@@ -366,12 +366,12 @@ LABEL_30:
 
   else
   {
-    v10 = !v4;
+    v10 = !missingCopy;
   }
 
   if (!v10)
   {
-    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, v6);
+    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, nameCopy);
 
     if (v11)
     {
@@ -381,7 +381,7 @@ LABEL_30:
     else
     {
       v9 = objc_opt_new();
-      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, v6);
+      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, nameCopy);
     }
   }
 
@@ -393,18 +393,18 @@ LABEL_30:
 
   else
   {
-    NSLog(&cfstr_WarningIsNotOf.isa, v6);
+    NSLog(&cfstr_WarningIsNotOf.isa, nameCopy);
     v13 = 0;
   }
 
   return v13;
 }
 
-- (id)animatedVector4WithName:(id)a3 shouldCreateIfMissing:(BOOL)a4
+- (id)animatedVector4WithName:(id)name shouldCreateIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, v6);
+  missingCopy = missing;
+  nameCopy = name;
+  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, nameCopy);
   if (v9)
   {
     v10 = 1;
@@ -412,12 +412,12 @@ LABEL_30:
 
   else
   {
-    v10 = !v4;
+    v10 = !missingCopy;
   }
 
   if (!v10)
   {
-    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, v6);
+    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, nameCopy);
 
     if (v11)
     {
@@ -427,7 +427,7 @@ LABEL_30:
     else
     {
       v9 = objc_opt_new();
-      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, v6);
+      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, nameCopy);
     }
   }
 
@@ -439,18 +439,18 @@ LABEL_30:
 
   else
   {
-    NSLog(&cfstr_WarningIsNotOf_0.isa, v6);
+    NSLog(&cfstr_WarningIsNotOf_0.isa, nameCopy);
     v13 = 0;
   }
 
   return v13;
 }
 
-- (id)animatedQuaternionWithName:(id)a3 shouldCreateIfMissing:(BOOL)a4
+- (id)animatedQuaternionWithName:(id)name shouldCreateIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, v6);
+  missingCopy = missing;
+  nameCopy = name;
+  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, nameCopy);
   if (v9)
   {
     v10 = 1;
@@ -458,12 +458,12 @@ LABEL_30:
 
   else
   {
-    v10 = !v4;
+    v10 = !missingCopy;
   }
 
   if (!v10)
   {
-    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, v6);
+    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, nameCopy);
 
     if (v11)
     {
@@ -473,7 +473,7 @@ LABEL_30:
     else
     {
       v9 = objc_opt_new();
-      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, v6);
+      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, nameCopy);
     }
   }
 
@@ -485,18 +485,18 @@ LABEL_30:
 
   else
   {
-    NSLog(&cfstr_WarningIsNotOf_1.isa, v6);
+    NSLog(&cfstr_WarningIsNotOf_1.isa, nameCopy);
     v13 = 0;
   }
 
   return v13;
 }
 
-- (id)animatedMatrix4x4WithName:(id)a3 shouldCreateIfMissing:(BOOL)a4
+- (id)animatedMatrix4x4WithName:(id)name shouldCreateIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, v6);
+  missingCopy = missing;
+  nameCopy = name;
+  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, nameCopy);
   if (v9)
   {
     v10 = 1;
@@ -504,12 +504,12 @@ LABEL_30:
 
   else
   {
-    v10 = !v4;
+    v10 = !missingCopy;
   }
 
   if (!v10)
   {
-    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, v6);
+    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, nameCopy);
 
     if (v11)
     {
@@ -519,7 +519,7 @@ LABEL_30:
     else
     {
       v9 = objc_opt_new();
-      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, v6);
+      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, nameCopy);
     }
   }
 
@@ -531,18 +531,18 @@ LABEL_30:
 
   else
   {
-    NSLog(&cfstr_WarningIsNotOf_2.isa, v6);
+    NSLog(&cfstr_WarningIsNotOf_2.isa, nameCopy);
     v13 = 0;
   }
 
   return v13;
 }
 
-- (id)animatedScalarWithName:(id)a3 shouldCreateIfMissing:(BOOL)a4
+- (id)animatedScalarWithName:(id)name shouldCreateIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, v6);
+  missingCopy = missing;
+  nameCopy = name;
+  v9 = objc_msgSend_objectForKey_(self->_animatedValues, v7, nameCopy);
   if (v9)
   {
     v10 = 1;
@@ -550,12 +550,12 @@ LABEL_30:
 
   else
   {
-    v10 = !v4;
+    v10 = !missingCopy;
   }
 
   if (!v10)
   {
-    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, v6);
+    v11 = objc_msgSend_objectForKey_(self->_animatedValues, v8, nameCopy);
 
     if (v11)
     {
@@ -565,7 +565,7 @@ LABEL_30:
     else
     {
       v9 = objc_opt_new();
-      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, v6);
+      objc_msgSend_setObject_forKey_(self->_animatedValues, v12, v9, nameCopy);
     }
   }
 
@@ -577,7 +577,7 @@ LABEL_30:
 
   else
   {
-    NSLog(&cfstr_WarningIsNotOf_2.isa, v6);
+    NSLog(&cfstr_WarningIsNotOf_2.isa, nameCopy);
     v13 = 0;
   }
 
@@ -642,7 +642,7 @@ LABEL_30:
   return result;
 }
 
-- (unint64_t)double4x4AtTime:(uint64_t)a3@<X2>
+- (unint64_t)double4x4AtTime:(uint64_t)time@<X2>
 {
   v36 = MEMORY[0x277D860A0];
   v37 = *(MEMORY[0x277D860A0] + 80);
@@ -657,12 +657,12 @@ LABEL_30:
   v40 = v36[3];
   a4[2] = v36[2];
   a4[3] = v40;
-  result = objc_msgSend_count(*(a1 + 16), a2, a3);
+  result = objc_msgSend_count(*(self + 16), a2, time);
   if (result)
   {
     for (i = 0; i < result; ++i)
     {
-      v44 = objc_msgSend_objectAtIndexedSubscript_(*(a1 + 16), v42, i, *&v65);
+      v44 = objc_msgSend_objectAtIndexedSubscript_(*(self + 16), v42, i, *&v65);
       v47 = v44;
       if (v44)
       {
@@ -715,37 +715,37 @@ LABEL_30:
       a4[2] = v67;
       a4[3] = v62;
 
-      result = objc_msgSend_count(*(a1 + 16), v63, v64);
+      result = objc_msgSend_count(*(self + 16), v63, v64);
     }
   }
 
   return result;
 }
 
-- (void)setLocalTransform:(uint64_t)a1 forTime:(const char *)a2
+- (void)setLocalTransform:(uint64_t)transform forTime:(const char *)time
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = objc_opt_class();
   v7 = NSStringFromClass(v4);
-  v5 = NSStringFromSelector(a2);
+  v5 = NSStringFromSelector(time);
   objc_msgSend_raise_format_(v3, v6, @"ModelIOException", @"[%@ %@]:set local transform forTime not yet supported", v7, v5);
 }
 
-- (void)setLocalTransform:(uint64_t)a3
+- (void)setLocalTransform:(uint64_t)transform
 {
-  objc_msgSend_clearTransformStack(a1, a2, a3);
-  v17 = objc_msgSend_animatedMatrix4x4WithName_shouldCreateIfMissing_(a1, v8, @"transform", 1);
+  objc_msgSend_clearTransformStack(self, a2, transform);
+  v17 = objc_msgSend_animatedMatrix4x4WithName_shouldCreateIfMissing_(self, v8, @"transform", 1);
   objc_msgSend_setFloat4x4_atTime_(v17, v9, v10, a4, a5, a6, a7, 0.0);
-  v12 = objc_msgSend_addMatrixOp_inverse_(a1, v11, @"transform", 0);
+  v12 = objc_msgSend_addMatrixOp_inverse_(self, v11, @"transform", 0);
 }
 
-+ (__n128)localTransformWithObject:(const char *)a3 atTime:(void *)a4
++ (__n128)localTransformWithObject:(const char *)object atTime:(void *)time
 {
-  v5 = objc_msgSend_componentConformingToProtocol_(a4, a3, &unk_284D27B70);
+  v5 = objc_msgSend_componentConformingToProtocol_(time, object, &unk_284D27B70);
   v8 = v5;
   if (v5)
   {
-    objc_msgSend_localTransformAtTime_(v5, v6, v7, a1);
+    objc_msgSend_localTransformAtTime_(v5, v6, v7, self);
     v14 = v9;
   }
 
@@ -760,10 +760,10 @@ LABEL_30:
   return v14;
 }
 
-+ (__n128)globalTransformWithObject:(uint64_t)a3 atTime:(void *)a4
++ (__n128)globalTransformWithObject:(uint64_t)object atTime:(void *)time
 {
-  v5 = a4;
-  v9 = objc_msgSend_parent(v5, v6, v7);
+  timeCopy = time;
+  v9 = objc_msgSend_parent(timeCopy, v6, v7);
   if (v9)
   {
     do
@@ -786,18 +786,18 @@ LABEL_30:
   v13 = objc_msgSend_componentConformingToProtocol_(v9, v8, &unk_284D27B70);
   if (objc_msgSend_resetsTransform(v13, v14, v15) || !v13)
   {
-    objc_msgSend_localTransformWithObject_atTime_(MDLTransformStack, v16, v5, a1);
+    objc_msgSend_localTransformWithObject_atTime_(MDLTransformStack, v16, timeCopy, self);
     v33 = v27;
   }
 
   else
   {
-    objc_msgSend_globalTransformWithObject_atTime_(MDLTransformStack, v16, v9, a1);
+    objc_msgSend_globalTransformWithObject_atTime_(MDLTransformStack, v16, v9, self);
     v31 = v18;
     v32 = v17;
     v29 = v20;
     v30 = v19;
-    objc_msgSend_localTransformWithObject_atTime_(MDLTransformStack, v21, v5, a1);
+    objc_msgSend_localTransformWithObject_atTime_(MDLTransformStack, v21, timeCopy, self);
     v22 = 0;
     v34[0] = v23;
     v34[1] = v24;

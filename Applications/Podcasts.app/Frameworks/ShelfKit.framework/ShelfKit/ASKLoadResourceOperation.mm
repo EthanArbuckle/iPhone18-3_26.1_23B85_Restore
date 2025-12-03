@@ -1,18 +1,18 @@
 @interface ASKLoadResourceOperation
-- (void)didCompleteWithResource:(id)a3 error:(id)a4;
+- (void)didCompleteWithResource:(id)resource error:(id)error;
 @end
 
 @implementation ASKLoadResourceOperation
 
-- (void)didCompleteWithResource:(id)a3 error:(id)a4
+- (void)didCompleteWithResource:(id)resource error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ASKLoadResourceOperation *)self outputBlock];
-  v8 = v7;
-  if (v7)
+  resourceCopy = resource;
+  errorCopy = error;
+  outputBlock = [(ASKLoadResourceOperation *)self outputBlock];
+  v8 = outputBlock;
+  if (outputBlock)
   {
-    (*(v7 + 16))(v7, v9, v6);
+    (*(outputBlock + 16))(outputBlock, resourceCopy, errorCopy);
     [(ASKLoadResourceOperation *)self setOutputBlock:0];
   }
 }

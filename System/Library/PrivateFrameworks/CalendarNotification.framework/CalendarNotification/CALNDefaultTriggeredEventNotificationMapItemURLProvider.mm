@@ -1,13 +1,13 @@
 @interface CALNDefaultTriggeredEventNotificationMapItemURLProvider
 + (CALNDefaultTriggeredEventNotificationMapItemURLProvider)sharedInstance;
-+ (id)_directionsModeForHypothesis:(id)a3 routing:(id)a4;
-+ (id)_directionsModeForLocationRoutingMode:(int64_t)a3;
-+ (id)_directionsModeForRouting:(id)a3;
-+ (id)_directionsModeForTransportType:(int)a3;
-+ (id)_eventLocationFromStructuredLocation:(id)a3;
-+ (id)_mapItemURLForEventLocation:(id)a3 hypothesis:(id)a4;
-+ (id)_mapItemURLLaunchOptionsForHypothesis:(id)a3 routing:(id)a4;
-- (id)mapItemURLForOptionalEventLocation:(id)a3 hypothesis:(id)a4;
++ (id)_directionsModeForHypothesis:(id)hypothesis routing:(id)routing;
++ (id)_directionsModeForLocationRoutingMode:(int64_t)mode;
++ (id)_directionsModeForRouting:(id)routing;
++ (id)_directionsModeForTransportType:(int)type;
++ (id)_eventLocationFromStructuredLocation:(id)location;
++ (id)_mapItemURLForEventLocation:(id)location hypothesis:(id)hypothesis;
++ (id)_mapItemURLLaunchOptionsForHypothesis:(id)hypothesis routing:(id)routing;
+- (id)mapItemURLForOptionalEventLocation:(id)location hypothesis:(id)hypothesis;
 @end
 
 @implementation CALNDefaultTriggeredEventNotificationMapItemURLProvider
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __73__CALNDefaultTriggeredEventNotificationMapItemURLProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_8 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_8, block);
@@ -36,13 +36,13 @@ uint64_t __73__CALNDefaultTriggeredEventNotificationMapItemURLProvider_sharedIns
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)mapItemURLForOptionalEventLocation:(id)a3 hypothesis:(id)a4
+- (id)mapItemURLForOptionalEventLocation:(id)location hypothesis:(id)hypothesis
 {
-  if (a3)
+  if (location)
   {
-    v5 = a4;
-    v6 = a3;
-    v7 = [objc_opt_class() _mapItemURLForEventLocation:v6 hypothesis:v5];
+    hypothesisCopy = hypothesis;
+    locationCopy = location;
+    v7 = [objc_opt_class() _mapItemURLForEventLocation:locationCopy hypothesis:hypothesisCopy];
   }
 
   else
@@ -53,21 +53,21 @@ uint64_t __73__CALNDefaultTriggeredEventNotificationMapItemURLProvider_sharedIns
   return v7;
 }
 
-+ (id)_mapItemURLForEventLocation:(id)a3 hypothesis:(id)a4
++ (id)_mapItemURLForEventLocation:(id)location hypothesis:(id)hypothesis
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 routing];
-  v9 = [a1 _mapItemURLLaunchOptionsForHypothesis:v7 routing:v8];
+  locationCopy = location;
+  hypothesisCopy = hypothesis;
+  routing = [locationCopy routing];
+  v9 = [self _mapItemURLLaunchOptionsForHypothesis:hypothesisCopy routing:routing];
 
-  v10 = [v6 mapKitHandle];
-  v11 = [v6 geoLocation];
-  v12 = v11;
-  if (v10)
+  mapKitHandle = [locationCopy mapKitHandle];
+  geoLocation = [locationCopy geoLocation];
+  v12 = geoLocation;
+  if (mapKitHandle)
   {
     v13 = MEMORY[0x277CD4E80];
-    v21[0] = v10;
+    v21[0] = mapKitHandle;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     v15 = [v13 _urlForMapItemHandles:v14 options:v9];
 LABEL_5:
@@ -75,13 +75,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v11)
+  if (geoLocation)
   {
-    v14 = [a1 _eventLocationFromStructuredLocation:v6];
-    v16 = [a1 _mapItemNameFromEventLocation:v14];
+    v14 = [self _eventLocationFromStructuredLocation:locationCopy];
+    v16 = [self _mapItemNameFromEventLocation:v14];
     v17 = MEMORY[0x277CD4E80];
-    v18 = [v6 address];
-    v15 = [v17 _urlForLocation:v12 address:v18 label:v16 options:v9];
+    address = [locationCopy address];
+    v15 = [v17 _urlForLocation:v12 address:address label:v16 options:v9];
 
     goto LABEL_5;
   }
@@ -94,48 +94,48 @@ LABEL_6:
   return v15;
 }
 
-+ (id)_eventLocationFromStructuredLocation:(id)a3
++ (id)_eventLocationFromStructuredLocation:(id)location
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v3 address];
+  locationCopy = location;
+  title = [locationCopy title];
+  address = [locationCopy address];
 
-  if (![v4 length])
+  if (![title length])
   {
-    v6 = v5;
+    v6 = address;
 
-    v4 = v6;
+    title = v6;
   }
 
-  return v4;
+  return title;
 }
 
-+ (id)_mapItemURLLaunchOptionsForHypothesis:(id)a3 routing:(id)a4
++ (id)_mapItemURLLaunchOptionsForHypothesis:(id)hypothesis routing:(id)routing
 {
-  v6 = [a1 _directionsModeForHypothesis:a3 routing:a4];
-  v7 = [a1 _mapItemURLLaunchOptionsForDirectionsMode:v6 isFromTimeToLeaveNotification:a3 != 0];
+  v6 = [self _directionsModeForHypothesis:hypothesis routing:routing];
+  v7 = [self _mapItemURLLaunchOptionsForDirectionsMode:v6 isFromTimeToLeaveNotification:hypothesis != 0];
 
   return v7;
 }
 
-+ (id)_directionsModeForHypothesis:(id)a3 routing:(id)a4
++ (id)_directionsModeForHypothesis:(id)hypothesis routing:(id)routing
 {
-  v6 = a3;
-  v7 = a4;
+  hypothesisCopy = hypothesis;
+  routingCopy = routing;
   v8 = *MEMORY[0x277CD4B58];
-  if (v6)
+  if (hypothesisCopy)
   {
-    v9 = [a1 _directionsModeForTransportType:{objc_msgSend(v6, "transportType")}];
+    v9 = [self _directionsModeForTransportType:{objc_msgSend(hypothesisCopy, "transportType")}];
   }
 
   else
   {
-    if (!v7)
+    if (!routingCopy)
     {
       goto LABEL_6;
     }
 
-    v9 = [a1 _directionsModeForRouting:v7];
+    v9 = [self _directionsModeForRouting:routingCopy];
   }
 
   v10 = v9;
@@ -146,12 +146,12 @@ LABEL_6:
   return v8;
 }
 
-+ (id)_directionsModeForTransportType:(int)a3
++ (id)_directionsModeForTransportType:(int)type
 {
   v4 = *MEMORY[0x277CD4B58];
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    v5 = **(&unk_278D6F748 + a3);
+    v5 = **(&unk_278D6F748 + type);
 
     v4 = v5;
   }
@@ -159,19 +159,19 @@ LABEL_6:
   return v4;
 }
 
-+ (id)_directionsModeForRouting:(id)a3
++ (id)_directionsModeForRouting:(id)routing
 {
-  v4 = [MEMORY[0x277CF77E8] routingModeEnumForCalRouteType:a3];
+  v4 = [MEMORY[0x277CF77E8] routingModeEnumForCalRouteType:routing];
 
-  return [a1 _directionsModeForLocationRoutingMode:v4];
+  return [self _directionsModeForLocationRoutingMode:v4];
 }
 
-+ (id)_directionsModeForLocationRoutingMode:(int64_t)a3
++ (id)_directionsModeForLocationRoutingMode:(int64_t)mode
 {
   v4 = *MEMORY[0x277CD4B58];
-  if ((a3 - 1) <= 3)
+  if ((mode - 1) <= 3)
   {
-    v5 = **(&unk_278D6F768 + a3 - 1);
+    v5 = **(&unk_278D6F768 + mode - 1);
 
     v4 = v5;
   }

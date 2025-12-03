@@ -1,12 +1,12 @@
 @interface HRLDLogArchiveProcessor
-- (BOOL)writeLogsToDiskFrom:(id)a3 error:(id *)a4 progressHandler:(id)a5;
+- (BOOL)writeLogsToDiskFrom:(id)from error:(id *)error progressHandler:(id)handler;
 - (HRLDLogArchiveProcessor)init;
-- (HRLDLogArchiveProcessor)initWithArchiveStartDate:(id)a3 deviceName:(id)a4 logArchiveURL:(id)a5 outputFileURL:(id)a6 redactedToken:(id)a7 windowSize:(double)a8 error:(id *)a9;
+- (HRLDLogArchiveProcessor)initWithArchiveStartDate:(id)date deviceName:(id)name logArchiveURL:(id)l outputFileURL:(id)rL redactedToken:(id)token windowSize:(double)size error:(id *)error;
 @end
 
 @implementation HRLDLogArchiveProcessor
 
-- (HRLDLogArchiveProcessor)initWithArchiveStartDate:(id)a3 deviceName:(id)a4 logArchiveURL:(id)a5 outputFileURL:(id)a6 redactedToken:(id)a7 windowSize:(double)a8 error:(id *)a9
+- (HRLDLogArchiveProcessor)initWithArchiveStartDate:(id)date deviceName:(id)name logArchiveURL:(id)l outputFileURL:(id)rL redactedToken:(id)token windowSize:(double)size error:(id *)error
 {
   v10 = sub_100007738();
   v11 = *(*(v10 - 8) + 64);
@@ -24,16 +24,16 @@
   sub_100007718();
   sub_100007718();
   v24 = sub_100007808();
-  return sub_100001E10(v20, v21, v23, v16, v14, v24, v25, a8);
+  return sub_100001E10(v20, v21, v23, v16, v14, v24, v25, size);
 }
 
-- (BOOL)writeLogsToDiskFrom:(id)a3 error:(id *)a4 progressHandler:(id)a5
+- (BOOL)writeLogsToDiskFrom:(id)from error:(id *)error progressHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_1000078B8();
   _Block_copy(v6);
-  v8 = self;
-  sub_100002704(v7, v8, v6);
+  selfCopy = self;
+  sub_100002704(v7, selfCopy, v6);
 
   _Block_release(v6);
 

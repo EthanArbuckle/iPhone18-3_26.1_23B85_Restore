@@ -1,23 +1,23 @@
 @interface PUINumberingSystemPickerMenuController
 - (NSLocale)displayLocale;
 - (PUINumberingSystemPickerControllerDelegate)delegate;
-- (PUINumberingSystemPickerMenuController)initWithNumberingSystem:(id)a3 font:(id)a4;
+- (PUINumberingSystemPickerMenuController)initWithNumberingSystem:(id)system font:(id)font;
 - (UIMenu)menu;
-- (void)didSelectNumberingSystem:(id)a3;
+- (void)didSelectNumberingSystem:(id)system;
 @end
 
 @implementation PUINumberingSystemPickerMenuController
 
-- (PUINumberingSystemPickerMenuController)initWithNumberingSystem:(id)a3 font:(id)a4
+- (PUINumberingSystemPickerMenuController)initWithNumberingSystem:(id)system font:(id)font
 {
-  v6 = a3;
-  v7 = a4;
+  systemCopy = system;
+  fontCopy = font;
   v16.receiver = self;
   v16.super_class = PUINumberingSystemPickerMenuController;
   v8 = [(PUINumberingSystemPickerMenuController *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [systemCopy copy];
     v10 = v9;
     if (v9)
     {
@@ -32,9 +32,9 @@
     selectedNumberingSystem = v8->_selectedNumberingSystem;
     v8->_selectedNumberingSystem = v11;
 
-    if (v7)
+    if (fontCopy)
     {
-      v13 = v7;
+      v13 = fontCopy;
     }
 
     else
@@ -63,13 +63,13 @@
     objc_initWeak(&location, self);
     v5 = MEMORY[0x1E69DCC60];
     v6 = +[PUINumberingSystem supportedNumberingSystemTypes];
-    v7 = [v6 array];
+    array = [v6 array];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __46__PUINumberingSystemPickerMenuController_menu__block_invoke;
     v13 = &unk_1E7854798;
     objc_copyWeak(&v14, &location);
-    v8 = [v7 bs_mapNoNulls:&v10];
+    v8 = [array bs_mapNoNulls:&v10];
     v4 = [v5 menuWithChildren:{v8, v10, v11, v12, v13}];
 
     objc_storeStrong(p_menu, v4);
@@ -126,15 +126,15 @@ void __46__PUINumberingSystemPickerMenuController_menu__block_invoke_2(uint64_t 
 
 - (NSLocale)displayLocale
 {
-  v2 = [(PUINumberingSystemPickerMenuController *)self selectedNumberingSystem];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 localeIdentifier];
+  selectedNumberingSystem = [(PUINumberingSystemPickerMenuController *)self selectedNumberingSystem];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v5 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v4];
+  v5 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:localeIdentifier];
   v6 = [v5 mutableCopy];
 
-  v7 = [v2 systemName];
-  [v6 setObject:v7 forKey:@"numbers"];
+  systemName = [selectedNumberingSystem systemName];
+  [v6 setObject:systemName forKey:@"numbers"];
 
   v8 = [MEMORY[0x1E695DF58] localeIdentifierFromComponents:v6];
   v9 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v8];
@@ -142,17 +142,17 @@ void __46__PUINumberingSystemPickerMenuController_menu__block_invoke_2(uint64_t 
   return v9;
 }
 
-- (void)didSelectNumberingSystem:(id)a3
+- (void)didSelectNumberingSystem:(id)system
 {
-  v7 = a3;
+  systemCopy = system;
   if (![(PUINumberingSystem *)self->_selectedNumberingSystem isEqual:?])
   {
-    objc_storeStrong(&self->_selectedNumberingSystem, a3);
+    objc_storeStrong(&self->_selectedNumberingSystem, system);
     menu = self->_menu;
     self->_menu = 0;
 
-    v6 = [(PUINumberingSystemPickerMenuController *)self delegate];
-    [v6 numberingSystemPickerMenuController:self didSelectNumberingSystem:v7];
+    delegate = [(PUINumberingSystemPickerMenuController *)self delegate];
+    [delegate numberingSystemPickerMenuController:self didSelectNumberingSystem:systemCopy];
   }
 }
 

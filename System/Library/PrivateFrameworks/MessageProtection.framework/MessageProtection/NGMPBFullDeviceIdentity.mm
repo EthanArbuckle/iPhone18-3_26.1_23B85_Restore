@@ -1,32 +1,32 @@
 @interface NGMPBFullDeviceIdentity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPrekeys:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPrekeys:(id)prekeys;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NGMPBFullDeviceIdentity
 
-- (void)addPrekeys:(id)a3
+- (void)addPrekeys:(id)prekeys
 {
-  v4 = a3;
+  prekeysCopy = prekeys;
   prekeys = self->_prekeys;
-  v8 = v4;
+  v8 = prekeysCopy;
   if (!prekeys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_prekeys;
     self->_prekeys = v6;
 
-    v4 = v8;
+    prekeysCopy = v8;
     prekeys = self->_prekeys;
   }
 
-  [(NSMutableArray *)prekeys addObject:v4];
+  [(NSMutableArray *)prekeys addObject:prekeysCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = NGMPBFullDeviceIdentity;
   v4 = [(NGMPBFullDeviceIdentity *)&v8 description];
-  v5 = [(NGMPBFullDeviceIdentity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NGMPBFullDeviceIdentity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   signingKey = self->_signingKey;
   if (signingKey)
   {
-    v5 = [(NGMPBP256Key *)signingKey dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"signingKey"];
+    dictionaryRepresentation = [(NGMPBP256Key *)signingKey dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"signingKey"];
   }
 
   if ([(NSMutableArray *)self->_prekeys count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -84,24 +84,24 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"prekeys"];
+    [dictionary setObject:v6 forKey:@"prekeys"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_signingKey)
   {
     [NGMPBFullDeviceIdentity writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   v15 = 0u;
   v16 = 0u;
@@ -138,31 +138,31 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setSigningKey:self->_signingKey];
+  toCopy = to;
+  [toCopy setSigningKey:self->_signingKey];
   if ([(NGMPBFullDeviceIdentity *)self prekeysCount])
   {
-    [v8 clearPrekeys];
-    v4 = [(NGMPBFullDeviceIdentity *)self prekeysCount];
-    if (v4)
+    [toCopy clearPrekeys];
+    prekeysCount = [(NGMPBFullDeviceIdentity *)self prekeysCount];
+    if (prekeysCount)
     {
-      v5 = v4;
+      v5 = prekeysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NGMPBFullDeviceIdentity *)self prekeysAtIndex:i];
-        [v8 addPrekeys:v7];
+        [toCopy addPrekeys:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NGMPBP256Key *)self->_signingKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NGMPBP256Key *)self->_signingKey copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addPrekeys:v13];
 
         ++v12;
@@ -203,13 +203,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((signingKey = self->_signingKey, !(signingKey | v4[2])) || -[NGMPBP256Key isEqual:](signingKey, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((signingKey = self->_signingKey, !(signingKey | equalCopy[2])) || -[NGMPBP256Key isEqual:](signingKey, "isEqual:")))
   {
     prekeys = self->_prekeys;
-    if (prekeys | v4[1])
+    if (prekeys | equalCopy[1])
     {
       v7 = [(NSMutableArray *)prekeys isEqual:?];
     }
@@ -228,12 +228,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   signingKey = self->_signingKey;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (signingKey)
   {
     if (v6)
@@ -251,7 +251,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

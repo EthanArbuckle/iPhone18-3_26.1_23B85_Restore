@@ -1,34 +1,34 @@
 @interface FedStatsCategoricalTypeNgramTokenizer
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4;
-+ (id)mutateParameters:(id)a3 usingFieldValues:(id)a4 assetURLs:(id)a5 requiredFields:(id *)a6 assetNames:(id *)a7 error:(id *)a8;
-- (FedStatsCategoricalTypeNgramTokenizer)initWithShuffleMethod:(id)a3 popularWordsDB:(id)a4;
-- (id)tokenize:(id)a3;
-- (void)shuffleWords:(id)a3;
++ (id)instanceWithParameters:(id)parameters error:(id *)error;
++ (id)mutateParameters:(id)parameters usingFieldValues:(id)values assetURLs:(id)ls requiredFields:(id *)fields assetNames:(id *)names error:(id *)error;
+- (FedStatsCategoricalTypeNgramTokenizer)initWithShuffleMethod:(id)method popularWordsDB:(id)b;
+- (id)tokenize:(id)tokenize;
+- (void)shuffleWords:(id)words;
 @end
 
 @implementation FedStatsCategoricalTypeNgramTokenizer
 
-- (FedStatsCategoricalTypeNgramTokenizer)initWithShuffleMethod:(id)a3 popularWordsDB:(id)a4
+- (FedStatsCategoricalTypeNgramTokenizer)initWithShuffleMethod:(id)method popularWordsDB:(id)b
 {
-  v7 = a3;
-  v8 = a4;
+  methodCopy = method;
+  bCopy = b;
   v12.receiver = self;
   v12.super_class = FedStatsCategoricalTypeNgramTokenizer;
   v9 = [(FedStatsCategoricalTypeNgramTokenizer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_shuffleMethod, a3);
-    objc_storeStrong(&v10->_popularWordsDB, a4);
+    objc_storeStrong(&v9->_shuffleMethod, method);
+    objc_storeStrong(&v10->_popularWordsDB, b);
   }
 
   return v10;
 }
 
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4
++ (id)instanceWithParameters:(id)parameters error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"shuffleMethod"];
+  parametersCopy = parameters;
+  v6 = [parametersCopy objectForKey:@"shuffleMethod"];
   v7 = v6;
   if (!v6)
   {
@@ -38,9 +38,9 @@
 
   if (([v6 isEqualToString:@"popular"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"nonPopular") & 1) == 0)
   {
-    if (a4)
+    if (error)
       v14 = {;
-      *a4 = [FedStatsError errorWithCode:101 description:v14];
+      *error = [FedStatsError errorWithCode:101 description:v14];
     }
 
 LABEL_14:
@@ -48,14 +48,14 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v8 = [v5 objectForKey:@"fileName"];
+  v8 = [parametersCopy objectForKey:@"fileName"];
   if (!v8)
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:300 description:@"No popular words downloaded."];
       v10 = 0;
-      *a4 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_17;
     }
 
@@ -67,7 +67,7 @@ LABEL_14:
   v10 = [FedStatsSQLiteCategoryDatabase databaseWithFileURL:v8 minIndex:0x7FFFFFFFFFFFFFFFLL maxIndex:0x7FFFFFFFFFFFFFFFLL checkForPrimaryKey:1 error:&v16];
   v11 = v16;
   v12 = v11;
-  if (!a4 || !v11)
+  if (!error || !v11)
   {
 
     if (v12)
@@ -80,7 +80,7 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  *a4 = [FedStatsError errorWithCode:101 underlyingError:v11 description:@"Load popular words for database failed."];
+  *error = [FedStatsError errorWithCode:101 underlyingError:v11 description:@"Load popular words for database failed."];
 
 LABEL_16:
   v13 = 0;
@@ -89,20 +89,20 @@ LABEL_17:
   return v13;
 }
 
-- (void)shuffleWords:(id)a3
+- (void)shuffleWords:(id)words
 {
-  v4 = a3;
-  v5 = [(FedStatsCategoricalTypeNgramTokenizer *)self shuffleMethod];
-  if (v5)
+  wordsCopy = words;
+  shuffleMethod = [(FedStatsCategoricalTypeNgramTokenizer *)self shuffleMethod];
+  if (shuffleMethod)
   {
-    v6 = v5;
-    v7 = [(FedStatsCategoricalTypeNgramTokenizer *)self popularWordsDB];
+    v6 = shuffleMethod;
+    popularWordsDB = [(FedStatsCategoricalTypeNgramTokenizer *)self popularWordsDB];
 
-    if (v7)
+    if (popularWordsDB)
     {
-      v8 = [(FedStatsCategoricalTypeNgramTokenizer *)self popularWordsDB];
+      popularWordsDB2 = [(FedStatsCategoricalTypeNgramTokenizer *)self popularWordsDB];
       v14 = 0;
-      v9 = [v8 encodeCategories:v4 error:&v14];
+      v9 = [popularWordsDB2 encodeCategories:wordsCopy error:&v14];
       v10 = v14;
 
       if (!v10)
@@ -112,8 +112,8 @@ LABEL_17:
         v11[2] = __54__FedStatsCategoricalTypeNgramTokenizer_shuffleWords___block_invoke;
         v11[3] = &unk_278FF6100;
         v12 = v9;
-        v13 = self;
-        [v4 sortUsingComparator:v11];
+        selfCopy = self;
+        [wordsCopy sortUsingComparator:v11];
       }
     }
   }
@@ -185,13 +185,13 @@ uint64_t __54__FedStatsCategoricalTypeNgramTokenizer_shuffleWords___block_invoke
   return v17;
 }
 
-- (id)tokenize:(id)a3
+- (id)tokenize:(id)tokenize
 {
-  v4 = a3;
+  tokenizeCopy = tokenize;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 componentsSeparatedByString:@" "];
+    v5 = [tokenizeCopy componentsSeparatedByString:@" "];
     v6 = [v5 mutableCopy];
 
     if ([v6 count])
@@ -232,21 +232,21 @@ uint64_t __54__FedStatsCategoricalTypeNgramTokenizer_shuffleWords___block_invoke
   return v10;
 }
 
-+ (id)mutateParameters:(id)a3 usingFieldValues:(id)a4 assetURLs:(id)a5 requiredFields:(id *)a6 assetNames:(id *)a7 error:(id *)a8
++ (id)mutateParameters:(id)parameters usingFieldValues:(id)values assetURLs:(id)ls requiredFields:(id *)fields assetNames:(id *)names error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = [v13 objectForKey:@"fileName"];
+  parametersCopy = parameters;
+  valuesCopy = values;
+  lsCopy = ls;
+  v16 = [parametersCopy objectForKey:@"fileName"];
 
   if (v16)
   {
-    v17 = [FedStatsCategoricalTypeAssetSpecifier mutateParameters:v13 forKey:@"fileName" usingFieldValues:v14 assetURLs:v15 requiredFields:a6 assetNames:a7 error:a8];
+    v17 = [FedStatsCategoricalTypeAssetSpecifier mutateParameters:parametersCopy forKey:@"fileName" usingFieldValues:valuesCopy assetURLs:lsCopy requiredFields:fields assetNames:names error:error];
   }
 
   else
   {
-    v17 = v13;
+    v17 = parametersCopy;
   }
 
   v18 = v17;

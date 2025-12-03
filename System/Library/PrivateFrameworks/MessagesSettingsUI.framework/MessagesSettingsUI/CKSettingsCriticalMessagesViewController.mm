@@ -1,7 +1,7 @@
 @interface CKSettingsCriticalMessagesViewController
 - (CKSettingsCriticalMessagesViewController)init;
-- (id)_specifierForApp:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (id)_specifierForApp:(id)app;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)viewDidLoad;
 @end
@@ -15,8 +15,8 @@
   v2 = [(CKSettingsCriticalMessagesViewController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_criticalAppsDidChange_ name:@"CKSettingsCriticalMessagesAppsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_criticalAppsDidChange_ name:@"CKSettingsCriticalMessagesAppsChangedNotification" object:0];
 
     v4 = objc_alloc_init(CKSettingsCriticalMessagesAppManager);
     appManager = v2->_appManager;
@@ -54,8 +54,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(CKSettingsCriticalMessagesAppManager *)self->_appManager criticalMessagesApps];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    criticalMessagesApps = [(CKSettingsCriticalMessagesAppManager *)self->_appManager criticalMessagesApps];
+    v10 = [criticalMessagesApps countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -67,7 +67,7 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(criticalMessagesApps);
           }
 
           v14 = [(CKSettingsCriticalMessagesViewController *)self _specifierForApp:*(*(&v18 + 1) + 8 * v13)];
@@ -77,7 +77,7 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [criticalMessagesApps countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -94,23 +94,23 @@
   return v4;
 }
 
-- (id)_specifierForApp:(id)a3
+- (id)_specifierForApp:(id)app
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = a3;
+  appCopy = app;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 bundleID];
-  [v5 setIdentifier:v6];
+  bundleID = [appCopy bundleID];
+  [v5 setIdentifier:bundleID];
 
-  v7 = [v4 displayName];
-  [v5 setName:v7];
+  displayName = [appCopy displayName];
+  [v5 setName:displayName];
 
-  v8 = [v4 activeNumberCountLocalizedString];
-  [v5 setProperty:v8 forKey:*MEMORY[0x277D40160]];
+  activeNumberCountLocalizedString = [appCopy activeNumberCountLocalizedString];
+  [v5 setProperty:activeNumberCountLocalizedString forKey:*MEMORY[0x277D40160]];
 
-  v9 = [v4 bundleID];
+  bundleID2 = [appCopy bundleID];
 
-  [v5 setProperty:v9 forKey:*MEMORY[0x277D40008]];
+  [v5 setProperty:bundleID2 forKey:*MEMORY[0x277D40008]];
   [v5 setProperty:@"YES" forKey:*MEMORY[0x277D40020]];
   [v5 setCellType:2];
   [v5 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
@@ -119,15 +119,15 @@
   return v5;
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [[CKSettingsCriticalMessagesDetailViewController alloc] initWithAppManager:self->_appManager];
   [(CKSettingsCriticalMessagesDetailViewController *)v5 setParentController:self];
-  v6 = [(CKSettingsCriticalMessagesViewController *)self rootController];
-  [(CKSettingsCriticalMessagesDetailViewController *)v5 setRootController:v6];
+  rootController = [(CKSettingsCriticalMessagesViewController *)self rootController];
+  [(CKSettingsCriticalMessagesDetailViewController *)v5 setRootController:rootController];
 
-  [(CKSettingsCriticalMessagesDetailViewController *)v5 setSpecifier:v4];
+  [(CKSettingsCriticalMessagesDetailViewController *)v5 setSpecifier:specifierCopy];
 
   return v5;
 }

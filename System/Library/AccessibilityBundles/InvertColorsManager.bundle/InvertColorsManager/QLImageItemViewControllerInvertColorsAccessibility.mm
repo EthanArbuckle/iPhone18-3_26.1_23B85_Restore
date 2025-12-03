@@ -1,15 +1,15 @@
 @interface QLImageItemViewControllerInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 @end
 
 @implementation QLImageItemViewControllerInvertColorsAccessibility
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = QLImageItemViewControllerInvertColorsAccessibility;
-  [(QLImageItemViewControllerInvertColorsAccessibility *)&v6 loadPreviewControllerWithContents:a3 context:a4 completionHandler:a5];
+  [(QLImageItemViewControllerInvertColorsAccessibility *)&v6 loadPreviewControllerWithContents:contents context:context completionHandler:handler];
   [(QLImageItemViewControllerInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

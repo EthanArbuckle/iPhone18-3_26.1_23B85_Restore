@@ -1,26 +1,26 @@
 @interface CRKASMConcreteOrganization
-- (BOOL)isEqual:(id)a3;
-- (CRKASMConcreteOrganization)initWithIdentifier:(id)a3 name:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CRKASMConcreteOrganization)initWithIdentifier:(id)identifier name:(id)name;
 - (NSString)description;
 - (unint64_t)hash;
 @end
 
 @implementation CRKASMConcreteOrganization
 
-- (CRKASMConcreteOrganization)initWithIdentifier:(id)a3 name:(id)a4
+- (CRKASMConcreteOrganization)initWithIdentifier:(id)identifier name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = CRKASMConcreteOrganization;
   v8 = [(CRKASMConcreteOrganization *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAD78] crk_UUIDWithOpaqueString:v6];
+    v9 = [MEMORY[0x277CCAD78] crk_UUIDWithOpaqueString:identifierCopy];
     UUID = v8->_UUID;
     v8->_UUID = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v11;
   }
@@ -30,18 +30,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRKASMConcreteOrganization *)self UUID];
-  v4 = [v3 hash];
-  v5 = [(CRKASMConcreteOrganization *)self name];
-  v6 = [v5 hash];
+  uUID = [(CRKASMConcreteOrganization *)self UUID];
+  v4 = [uUID hash];
+  name = [(CRKASMConcreteOrganization *)self name];
+  v6 = [name hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [@"UUID name"];
   v6 = [v5 mutableCopy];
 
@@ -53,10 +53,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -85,7 +85,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMConcreteOrganization *)v8 valueForKey:v16];
+          v18 = [(CRKASMConcreteOrganization *)selfCopy valueForKey:v16];
           v19 = [(CRKASMConcreteOrganization *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -132,10 +132,10 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKASMConcreteOrganization *)self UUID];
-  v6 = [v5 UUIDString];
-  v7 = [(CRKASMConcreteOrganization *)self name];
-  v8 = [v3 stringWithFormat:@"<%@: %p { UUID = %@, name = %@ }>", v4, self, v6, v7];
+  uUID = [(CRKASMConcreteOrganization *)self UUID];
+  uUIDString = [uUID UUIDString];
+  name = [(CRKASMConcreteOrganization *)self name];
+  v8 = [v3 stringWithFormat:@"<%@: %p { UUID = %@, name = %@ }>", v4, self, uUIDString, name];
 
   return v8;
 }

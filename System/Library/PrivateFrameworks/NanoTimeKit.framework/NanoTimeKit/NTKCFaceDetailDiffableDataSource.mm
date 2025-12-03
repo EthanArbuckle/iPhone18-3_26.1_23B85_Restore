@@ -1,29 +1,29 @@
 @interface NTKCFaceDetailDiffableDataSource
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 @end
 
 @implementation NTKCFaceDetailDiffableDataSource
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(UITableViewDiffableDataSource *)self snapshot];
-  v6 = [v5 sectionIdentifiers];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  snapshot = [(UITableViewDiffableDataSource *)self snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v7 = [sectionIdentifiers objectAtIndexedSubscript:section];
 
-  v8 = [v7 ntk_identifier];
-  LOBYTE(v6) = [v8 isEqual:@"com.apple.nanotimekit.off"];
+  ntk_identifier = [v7 ntk_identifier];
+  LOBYTE(sectionIdentifiers) = [ntk_identifier isEqual:@"com.apple.nanotimekit.off"];
 
-  if (v6)
+  if (sectionIdentifiers)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v7 ntk_localizedSectionName];
-    if ([v10 length])
+    ntk_localizedSectionName = [v7 ntk_localizedSectionName];
+    if ([ntk_localizedSectionName length])
     {
-      v9 = v10;
+      v9 = ntk_localizedSectionName;
     }
 
     else

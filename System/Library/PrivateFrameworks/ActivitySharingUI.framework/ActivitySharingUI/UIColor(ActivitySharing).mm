@@ -11,40 +11,40 @@
 
 + (id)as_competitionFriendListPlatterGold
 {
-  v0 = [MEMORY[0x277D75348] as_darkCompetitionGold];
-  v1 = [v0 colorWithAlphaComponent:0.12];
+  as_darkCompetitionGold = [MEMORY[0x277D75348] as_darkCompetitionGold];
+  v1 = [as_darkCompetitionGold colorWithAlphaComponent:0.12];
 
   return v1;
 }
 
 + (id)as_competitionNotificationPlatterGold
 {
-  v0 = [MEMORY[0x277D75348] as_lightCompetitionGold];
-  v1 = [v0 colorWithAlphaComponent:0.18];
+  as_lightCompetitionGold = [MEMORY[0x277D75348] as_lightCompetitionGold];
+  v1 = [as_lightCompetitionGold colorWithAlphaComponent:0.18];
 
   return v1;
 }
 
 + (id)as_competitionNotificationAccentGold
 {
-  v0 = [MEMORY[0x277D75348] as_lightCompetitionGold];
-  v1 = [v0 colorWithAlphaComponent:0.2];
+  as_lightCompetitionGold = [MEMORY[0x277D75348] as_lightCompetitionGold];
+  v1 = [as_lightCompetitionGold colorWithAlphaComponent:0.2];
 
   return v1;
 }
 
 + (id)as_competitionButtonGold
 {
-  v0 = [MEMORY[0x277D75348] as_lightCompetitionGold];
-  v1 = [v0 colorWithAlphaComponent:0.5];
+  as_lightCompetitionGold = [MEMORY[0x277D75348] as_lightCompetitionGold];
+  v1 = [as_lightCompetitionGold colorWithAlphaComponent:0.5];
 
   return v1;
 }
 
 + (id)as_competitionGraphBackgroundGold
 {
-  v0 = [MEMORY[0x277D75348] as_darkCompetitionGold];
-  v1 = [v0 colorWithAlphaComponent:0.3];
+  as_darkCompetitionGold = [MEMORY[0x277D75348] as_darkCompetitionGold];
+  v1 = [as_darkCompetitionGold colorWithAlphaComponent:0.3];
 
   return v1;
 }

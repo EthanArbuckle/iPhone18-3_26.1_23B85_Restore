@@ -1,12 +1,12 @@
 @interface RTInferredMapItemDeduper
-- (BOOL)inferredMapItem:(id)a3 dedupesToInferredMapItem:(id)a4 error:(id *)a5;
-- (RTInferredMapItemDeduper)initWithDeduperFunction:(id)a3;
-- (id)dedupeDoubleArrayOfInferredMapItems:(id)a3 error:(id *)a4;
-- (id)dedupeDoubleArrayOfInferredMapItems:(id)a3 state:(id)a4 error:(id *)a5;
-- (id)dedupeInferredMapItems:(id)a3 error:(id *)a4;
-- (id)dedupeInferredMapItems:(id)a3 state:(id)a4 error:(id *)a5;
-- (id)ingestInferredMapItem:(id)a3 state:(id)a4 error:(id *)a5;
-- (id)ingestInferredMapItems:(id)a3 state:(id)a4 error:(id *)a5;
+- (BOOL)inferredMapItem:(id)item dedupesToInferredMapItem:(id)mapItem error:(id *)error;
+- (RTInferredMapItemDeduper)initWithDeduperFunction:(id)function;
+- (id)dedupeDoubleArrayOfInferredMapItems:(id)items error:(id *)error;
+- (id)dedupeDoubleArrayOfInferredMapItems:(id)items state:(id)state error:(id *)error;
+- (id)dedupeInferredMapItems:(id)items error:(id *)error;
+- (id)dedupeInferredMapItems:(id)items state:(id)state error:(id *)error;
+- (id)ingestInferredMapItem:(id)item state:(id)state error:(id *)error;
+- (id)ingestInferredMapItems:(id)items state:(id)state error:(id *)error;
 @end
 
 @implementation RTInferredMapItemDeduper
@@ -21,23 +21,23 @@ uint64_t __32__RTInferredMapItemDeduper_init__block_invoke(uint64_t a1, void *a2
   return v7;
 }
 
-- (RTInferredMapItemDeduper)initWithDeduperFunction:(id)a3
+- (RTInferredMapItemDeduper)initWithDeduperFunction:(id)function
 {
-  v4 = a3;
-  if (v4)
+  functionCopy = function;
+  if (functionCopy)
   {
     v11.receiver = self;
     v11.super_class = RTInferredMapItemDeduper;
     v5 = [(RTInferredMapItemDeduper *)&v11 init];
     if (v5)
     {
-      v6 = _Block_copy(v4);
+      v6 = _Block_copy(functionCopy);
       deduperFunction = v5->_deduperFunction;
       v5->_deduperFunction = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -49,18 +49,18 @@ uint64_t __32__RTInferredMapItemDeduper_init__block_invoke(uint64_t a1, void *a2
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: deduperFunction", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)inferredMapItem:(id)a3 dedupesToInferredMapItem:(id)a4 error:(id *)a5
+- (BOOL)inferredMapItem:(id)item dedupesToInferredMapItem:(id)mapItem error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  itemCopy = item;
+  mapItemCopy = mapItem;
+  v10 = mapItemCopy;
+  if (!itemCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -69,12 +69,12 @@ uint64_t __32__RTInferredMapItemDeduper_init__block_invoke(uint64_t a1, void *a2
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItem1", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = @"inferredMapItem1";
 LABEL_12:
       _RTErrorInvalidParameterCreate(v13);
-      *a5 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_14;
     }
 
@@ -83,7 +83,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!mapItemCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -92,7 +92,7 @@ LABEL_13:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItem2", v16, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = @"inferredMapItem2";
       goto LABEL_12;
@@ -107,13 +107,13 @@ LABEL_14:
   return v11;
 }
 
-- (id)ingestInferredMapItem:(id)a3 state:(id)a4 error:(id *)a5
+- (id)ingestInferredMapItem:(id)item state:(id)state error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  itemCopy = item;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (!itemCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -122,12 +122,12 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItem", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v17 = @"inferredMapItem";
 LABEL_13:
       _RTErrorInvalidParameterCreate(v17);
-      *a5 = v19 = 0;
+      *error = v19 = 0;
       goto LABEL_26;
     }
 
@@ -136,7 +136,7 @@ LABEL_14:
     goto LABEL_26;
   }
 
-  if (!v9)
+  if (!stateCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -145,7 +145,7 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: state", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v17 = @"state";
       goto LABEL_13;
@@ -154,31 +154,31 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v11 = [v9 uniqueInferredMapItems];
+  uniqueInferredMapItems = [stateCopy uniqueInferredMapItems];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __62__RTInferredMapItemDeduper_ingestInferredMapItem_state_error___block_invoke;
   v33[3] = &unk_2788D2D48;
   v33[4] = self;
-  v12 = v8;
+  v12 = itemCopy;
   v34 = v12;
-  v13 = [v11 indexOfObjectPassingTest:v33];
+  v13 = [uniqueInferredMapItems indexOfObjectPassingTest:v33];
 
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [v12 mapItem];
-    v15 = [v14 identifier];
+    mapItem = [v12 mapItem];
+    identifier = [mapItem identifier];
   }
 
   else
   {
-    v14 = [v10 uniqueInferredMapItems];
-    v20 = [v14 objectAtIndexedSubscript:v13];
-    v21 = [v20 mapItem];
-    v15 = [v21 identifier];
+    mapItem = [v10 uniqueInferredMapItems];
+    v20 = [mapItem objectAtIndexedSubscript:v13];
+    mapItem2 = [v20 mapItem];
+    identifier = [mapItem2 identifier];
   }
 
-  v22 = [objc_alloc(MEMORY[0x277D011C0]) initWithFirstObject:v12 secondObject:v15];
+  v22 = [objc_alloc(MEMORY[0x277D011C0]) initWithFirstObject:v12 secondObject:identifier];
   if (!v22)
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"intermediateInferredMapitem was nil for inferredMapItem, %@", v12];
@@ -189,10 +189,10 @@ LABEL_14:
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v29 = [v26 errorWithDomain:v27 code:0 userInfo:v28];
 
-    if (a5)
+    if (error)
     {
       v30 = v29;
-      *a5 = v29;
+      *error = v29;
     }
 
 LABEL_23:
@@ -210,14 +210,14 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_23;
   }
 
   v25 = v23;
   v19 = 0;
-  *a5 = v24;
+  *error = v24;
 LABEL_25:
 
 LABEL_26:
@@ -236,13 +236,13 @@ uint64_t __62__RTInferredMapItemDeduper_ingestInferredMapItem_state_error___bloc
   return result;
 }
 
-- (id)ingestInferredMapItems:(id)a3 state:(id)a4 error:(id *)a5
+- (id)ingestInferredMapItems:(id)items state:(id)state error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  itemsCopy = items;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (!itemsCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -251,12 +251,12 @@ uint64_t __62__RTInferredMapItemDeduper_ingestInferredMapItem_state_error___bloc
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItems", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v22 = @"inferredMapItems";
 LABEL_24:
       _RTErrorInvalidParameterCreate(v22);
-      *a5 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_26;
     }
 
@@ -265,7 +265,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!v9)
+  if (!stateCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -274,7 +274,7 @@ LABEL_25:
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: state", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v22 = @"state";
       goto LABEL_24;
@@ -283,13 +283,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v27 = a5;
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  errorCopy = error;
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = v8;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v13)
   {
@@ -311,10 +311,10 @@ LABEL_25:
         if (v19)
         {
           v23 = v19;
-          if (v27)
+          if (errorCopy)
           {
             v24 = v19;
-            *v27 = v23;
+            *errorCopy = v23;
           }
 
           v20 = 0;
@@ -342,13 +342,13 @@ LABEL_26:
   return v20;
 }
 
-- (id)dedupeInferredMapItems:(id)a3 state:(id)a4 error:(id *)a5
+- (id)dedupeInferredMapItems:(id)items state:(id)state error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  itemsCopy = items;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (!itemsCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -357,12 +357,12 @@ LABEL_26:
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItems", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v17 = @"inferredMapItems";
 LABEL_14:
       _RTErrorInvalidParameterCreate(v17);
-      *a5 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_31;
     }
 
@@ -371,7 +371,7 @@ LABEL_15:
     goto LABEL_31;
   }
 
-  if (!v9)
+  if (!stateCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -380,7 +380,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: state", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v17 = @"state";
       goto LABEL_14;
@@ -390,16 +390,16 @@ LABEL_15:
   }
 
   v37 = 0;
-  v11 = [(RTInferredMapItemDeduper *)self ingestInferredMapItems:v8 state:v9 error:&v37];
+  v11 = [(RTInferredMapItemDeduper *)self ingestInferredMapItems:itemsCopy state:stateCopy error:&v37];
   v12 = v37;
   v13 = v12;
   if (v12)
   {
-    if (a5)
+    if (error)
     {
       v14 = v12;
       v15 = 0;
-      *a5 = v13;
+      *error = v13;
     }
 
     else
@@ -438,10 +438,10 @@ LABEL_15:
           if (v27)
           {
             v28 = v27;
-            if (a5)
+            if (error)
             {
               v29 = v27;
-              *a5 = v28;
+              *error = v28;
             }
 
             v15 = 0;
@@ -472,15 +472,15 @@ LABEL_31:
   return v15;
 }
 
-- (id)dedupeInferredMapItems:(id)a3 error:(id *)a4
+- (id)dedupeInferredMapItems:(id)items error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  itemsCopy = items;
+  if (itemsCopy)
   {
-    if (a4)
+    if (error)
     {
       v7 = objc_alloc_init(RTInferredMapItemDeduperState);
-      v8 = [(RTInferredMapItemDeduper *)self dedupeInferredMapItems:v6 state:v7 error:a4];
+      v8 = [(RTInferredMapItemDeduper *)self dedupeInferredMapItems:itemsCopy state:v7 error:error];
 
       goto LABEL_12;
     }
@@ -502,10 +502,10 @@ LABEL_31:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItems", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"inferredMapItems");
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_12;
     }
   }
@@ -516,13 +516,13 @@ LABEL_12:
   return v8;
 }
 
-- (id)dedupeDoubleArrayOfInferredMapItems:(id)a3 state:(id)a4 error:(id *)a5
+- (id)dedupeDoubleArrayOfInferredMapItems:(id)items state:(id)state error:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  itemsCopy = items;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (!itemsCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -531,12 +531,12 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: doubleArrayOfInferredMapItems", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v35 = @"doubleArrayOfInferredMapItems";
 LABEL_38:
       _RTErrorInvalidParameterCreate(v35);
-      *a5 = v33 = 0;
+      *error = v33 = 0;
       goto LABEL_45;
     }
 
@@ -545,7 +545,7 @@ LABEL_39:
     goto LABEL_45;
   }
 
-  if (!v9)
+  if (!stateCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -554,7 +554,7 @@ LABEL_39:
       _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: state", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v35 = @"state";
       goto LABEL_38;
@@ -563,14 +563,14 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v46 = a5;
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  errorCopy = error;
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v47 = v8;
-  v12 = v8;
+  v47 = itemsCopy;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v58 objects:v65 count:16];
   if (v13)
   {
@@ -592,10 +592,10 @@ LABEL_39:
         if (v19)
         {
           v36 = v19;
-          if (a5)
+          if (error)
           {
             v37 = v19;
-            *a5 = v36;
+            *error = v36;
           }
 
 LABEL_43:
@@ -667,10 +667,10 @@ LABEL_43:
               if (v32)
               {
                 v39 = v32;
-                if (v46)
+                if (errorCopy)
                 {
                   v40 = v32;
-                  *v46 = v39;
+                  *errorCopy = v39;
                 }
 
                 goto LABEL_43;
@@ -704,22 +704,22 @@ LABEL_43:
 
   v33 = v12;
 LABEL_44:
-  v8 = v47;
+  itemsCopy = v47;
 
 LABEL_45:
 
   return v33;
 }
 
-- (id)dedupeDoubleArrayOfInferredMapItems:(id)a3 error:(id *)a4
+- (id)dedupeDoubleArrayOfInferredMapItems:(id)items error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  itemsCopy = items;
+  if (itemsCopy)
   {
-    if (a4)
+    if (error)
     {
       v7 = objc_alloc_init(RTInferredMapItemDeduperState);
-      v8 = [(RTInferredMapItemDeduper *)self dedupeDoubleArrayOfInferredMapItems:v6 state:v7 error:a4];
+      v8 = [(RTInferredMapItemDeduper *)self dedupeDoubleArrayOfInferredMapItems:itemsCopy state:v7 error:error];
 
       goto LABEL_12;
     }
@@ -741,10 +741,10 @@ LABEL_45:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: doubleArrayOfInferredMapItems", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"doubleArrayOfInferredMapItems");
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_12;
     }
   }

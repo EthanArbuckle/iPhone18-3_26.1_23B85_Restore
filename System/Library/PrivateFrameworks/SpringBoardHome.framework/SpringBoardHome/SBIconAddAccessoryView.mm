@@ -1,10 +1,10 @@
 @interface SBIconAddAccessoryView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)accessoryCenterForIconBounds:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)accessoryCenterForIconBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
 - (SBIconAddAccessoryView)init;
 - (UIEdgeInsets)_hitTestPadding;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
 @end
 
@@ -20,10 +20,10 @@
   {
     v3 = [MEMORY[0x1E69DCAD8] configurationWithScale:2];
     v4 = MEMORY[0x1E69DCAD8];
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    v16[0] = v5;
-    v6 = [MEMORY[0x1E69DC888] systemGreenColor];
-    v16[1] = v6;
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v16[0] = whiteColor;
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    v16[1] = systemGreenColor;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v8 = [v4 configurationWithPaletteColors:v7];
 
@@ -54,10 +54,10 @@
   [(UIImageView *)addImageView setFrame:?];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SBIconAddAccessoryView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -78,8 +78,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(SBIconAddAccessoryView *)self listLayout];
-  v3 = SBHIconListLayoutIconAccessorySize(v2);
+  listLayout = [(SBIconAddAccessoryView *)self listLayout];
+  v3 = SBHIconListLayoutIconAccessorySize(listLayout);
   v5 = v4;
 
   v6 = v3;
@@ -89,18 +89,18 @@
   return result;
 }
 
-- (CGPoint)accessoryCenterForIconBounds:(CGRect)a3
+- (CGPoint)accessoryCenterForIconBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBIconAddAccessoryView *)self listLayout];
-  v9 = SBHIconListLayoutIconAccessoryOffset(v8);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  listLayout = [(SBIconAddAccessoryView *)self listLayout];
+  v9 = SBHIconListLayoutIconAccessoryOffset(listLayout);
   v11 = v10;
 
-  v12 = [(SBIconAddAccessoryView *)self listLayout];
-  v13 = SBHIconListLayoutIconAccessorySize(v12);
+  listLayout2 = [(SBIconAddAccessoryView *)self listLayout];
+  v13 = SBHIconListLayoutIconAccessorySize(listLayout2);
   v15 = v14;
 
   v16 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1;
@@ -111,7 +111,7 @@
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DCE28]);
   v6 = MEMORY[0x1E69DC728];

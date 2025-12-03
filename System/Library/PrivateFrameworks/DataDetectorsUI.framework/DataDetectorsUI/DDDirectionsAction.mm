@@ -15,9 +15,9 @@
 
   if (v7)
   {
-    v8 = [(NSURL *)self->super.super._url scheme];
-    v9 = [v8 lowercaseString];
-    v10 = [v9 isEqualToString:@"geo"];
+    scheme = [(NSURL *)self->super.super._url scheme];
+    lowercaseString = [scheme lowercaseString];
+    v10 = [lowercaseString isEqualToString:@"geo"];
 
     v11 = MEMORY[0x277CCACA8];
     if (v10)

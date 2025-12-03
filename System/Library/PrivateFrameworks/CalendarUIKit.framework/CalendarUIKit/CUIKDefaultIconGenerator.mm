@@ -1,28 +1,28 @@
 @interface CUIKDefaultIconGenerator
-+ (BOOL)_isNonRedDayOfWeekRequiredForLocale:(id)a3;
-+ (id)_adjustedAttributesWithLanguageIdentifierIfNeeded:(id)a3 calendar:(id)a4;
++ (BOOL)_isNonRedDayOfWeekRequiredForLocale:(id)locale;
++ (id)_adjustedAttributesWithLanguageIdentifierIfNeeded:(id)needed calendar:(id)calendar;
 + (id)_countriesRequiringNonRedDayOfWeek;
-+ (id)_dateNameFromDateComponents:(id)a3 calendar:(id)a4 type:(int64_t)a5 forceAbbreviated:(BOOL)a6;
-+ (id)_dayNumberStringFromDateComponents:(id)a3 calendar:(id)a4;
-+ (id)_languageIdentifierForNumberingSystem:(id)a3;
-- (CGImage)iconImageWithDateComponents:(id)a3 calendar:(id)a4 format:(int64_t)a5 size:(CGSize)a6 scale:(double)a7 appearance:(int64_t)a8 layers:(unint64_t)a9;
++ (id)_dateNameFromDateComponents:(id)components calendar:(id)calendar type:(int64_t)type forceAbbreviated:(BOOL)abbreviated;
++ (id)_dayNumberStringFromDateComponents:(id)components calendar:(id)calendar;
++ (id)_languageIdentifierForNumberingSystem:(id)system;
+- (CGImage)iconImageWithDateComponents:(id)components calendar:(id)calendar format:(int64_t)format size:(CGSize)size scale:(double)scale appearance:(int64_t)appearance layers:(unint64_t)layers;
 - (CGSize)canvasSize;
-- (CUIKDefaultIconGenerator)initWithForceNoTextEffects:(BOOL)a3;
-- (id)_colorForDayNumberWithAppearance:(int64_t)a3;
-- (id)_colorForDayOfWeekWithAppearance:(int64_t)a3;
+- (CUIKDefaultIconGenerator)initWithForceNoTextEffects:(BOOL)effects;
+- (id)_colorForDayNumberWithAppearance:(int64_t)appearance;
+- (id)_colorForDayOfWeekWithAppearance:(int64_t)appearance;
 - (id)_dateNameFont;
 - (id)_dayNumberFont;
-- (void)_drawBackgroundWithContext:(CGContext *)a3;
-- (void)_drawDateNameWithContext:(CGContext *)a3;
-- (void)_drawDayNumberWithContext:(CGContext *)a3;
+- (void)_drawBackgroundWithContext:(CGContext *)context;
+- (void)_drawDateNameWithContext:(CGContext *)context;
+- (void)_drawDayNumberWithContext:(CGContext *)context;
 @end
 
 @implementation CUIKDefaultIconGenerator
 
 - (id)_dayNumberFont
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 objectForKey:*MEMORY[0x1E695D9B0]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v4 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
 
   v5 = CUIKLocalizedStringForInteger(1uLL);
   v6 = [v5 isEqual:@"൧"];
@@ -80,25 +80,25 @@
   return [v2 systemFontOfSize:? weight:?];
 }
 
-- (CUIKDefaultIconGenerator)initWithForceNoTextEffects:(BOOL)a3
+- (CUIKDefaultIconGenerator)initWithForceNoTextEffects:(BOOL)effects
 {
   v4.receiver = self;
   v4.super_class = CUIKDefaultIconGenerator;
   return [(CUIKDefaultIconGenerator *)&v4 init];
 }
 
-- (CGImage)iconImageWithDateComponents:(id)a3 calendar:(id)a4 format:(int64_t)a5 size:(CGSize)a6 scale:(double)a7 appearance:(int64_t)a8 layers:(unint64_t)a9
+- (CGImage)iconImageWithDateComponents:(id)components calendar:(id)calendar format:(int64_t)format size:(CGSize)size scale:(double)scale appearance:(int64_t)appearance layers:(unint64_t)layers
 {
-  height = a6.height;
-  width = a6.width;
-  v18 = a3;
-  v19 = a4;
+  height = size.height;
+  width = size.width;
+  componentsCopy = components;
+  calendarCopy = calendar;
   self->_canvasSize.width = width;
   self->_canvasSize.height = height;
-  self->_canvasScale = a7;
-  self->_iconFormat = a5;
-  self->_appearance = a8;
-  if (!v18)
+  self->_canvasScale = scale;
+  self->_iconFormat = format;
+  self->_appearance = appearance;
+  if (!componentsCopy)
   {
     v23 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -109,8 +109,8 @@
     goto LABEL_10;
   }
 
-  objc_storeStrong(&self->_dateComponents, a3);
-  if (!v19)
+  objc_storeStrong(&self->_dateComponents, components);
+  if (!calendarCopy)
   {
     v23 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -124,19 +124,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&self->_calendar, a4);
+  objc_storeStrong(&self->_calendar, calendar);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __101__CUIKDefaultIconGenerator_iconImageWithDateComponents_calendar_format_size_scale_appearance_layers___block_invoke;
   v25[3] = &unk_1E839AB60;
   v25[4] = self;
-  v25[5] = a9;
-  v20 = [MEMORY[0x1E69DCAB8] cuik_drawImageWithSize:v25 scale:width drawBlock:{height, a7}];
-  v21 = [v20 cuik_CGImage];
-  v22 = v21;
-  if (v21)
+  v25[5] = layers;
+  v20 = [MEMORY[0x1E69DCAB8] cuik_drawImageWithSize:v25 scale:width drawBlock:{height, scale}];
+  cuik_CGImage = [v20 cuik_CGImage];
+  v22 = cuik_CGImage;
+  if (cuik_CGImage)
   {
-    CFRetain(v21);
+    CFRetain(cuik_CGImage);
   }
 
 LABEL_11:
@@ -183,7 +183,7 @@ LABEL_7:
   return [v5 _drawDateNameWithContext:a2];
 }
 
-- (void)_drawBackgroundWithContext:(CGContext *)a3
+- (void)_drawBackgroundWithContext:(CGContext *)context
 {
   v16[2] = *MEMORY[0x1E69E9840];
   width = self->_canvasSize.width;
@@ -210,7 +210,7 @@ LABEL_7:
     v18.x = 0.0;
     v19.x = 0.0;
     v18.y = MinY;
-    CGContextDrawLinearGradient(a3, v14, v18, v19, 0);
+    CGContextDrawLinearGradient(context, v14, v18, v19, 0);
     CGGradientRelease(v14);
     CGColorRelease(GenericRGB);
     CGColorRelease(v12);
@@ -218,21 +218,21 @@ LABEL_7:
 
   else if (!appearance)
   {
-    CGContextSetRGBFillColor(a3, 1.0, 1.0, 1.0, 1.0);
+    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
     v7 = 0;
     v8 = 0;
     v9 = width;
     v10 = height;
 
-    CGContextFillRect(a3, *&v7);
+    CGContextFillRect(context, *&v7);
   }
 }
 
-+ (id)_dayNumberStringFromDateComponents:(id)a3 calendar:(id)a4
++ (id)_dayNumberStringFromDateComponents:(id)components calendar:(id)calendar
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 day] == 0x7FFFFFFFFFFFFFFFLL)
+  componentsCopy = components;
+  calendarCopy = calendar;
+  if ([componentsCopy day] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -246,10 +246,10 @@ LABEL_7:
   else
   {
     v9 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-    v10 = [v6 locale];
-    [v9 setLocale:v10];
+    locale = [calendarCopy locale];
+    [v9 setLocale:locale];
 
-    v11 = [v5 day];
+    v11 = [componentsCopy day];
     v12 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
     v8 = [v9 stringFromNumber:v12];
   }
@@ -257,24 +257,24 @@ LABEL_7:
   return v8;
 }
 
-- (void)_drawDayNumberWithContext:(CGContext *)a3
+- (void)_drawDayNumberWithContext:(CGContext *)context
 {
   v35[4] = *MEMORY[0x1E69E9840];
   v4 = objc_opt_class();
-  v5 = [(CUIKDefaultIconGenerator *)self dateComponents];
-  v6 = [(CUIKDefaultIconGenerator *)self calendar];
-  v7 = [v4 _dayNumberStringFromDateComponents:v5 calendar:v6];
+  dateComponents = [(CUIKDefaultIconGenerator *)self dateComponents];
+  calendar = [(CUIKDefaultIconGenerator *)self calendar];
+  v7 = [v4 _dayNumberStringFromDateComponents:dateComponents calendar:calendar];
 
   if (v7)
   {
     v8 = objc_opt_new();
     [v8 setAlignment:1];
     [v8 setLineBreakMode:0];
-    v9 = [(CUIKDefaultIconGenerator *)self _dayNumberFont];
+    _dayNumberFont = [(CUIKDefaultIconGenerator *)self _dayNumberFont];
     v10 = *MEMORY[0x1E69DB748];
     v34[0] = *MEMORY[0x1E69DB648];
     v34[1] = v10;
-    v35[0] = v9;
+    v35[0] = _dayNumberFont;
     v35[1] = &unk_1F4ABEBD0;
     v11 = *MEMORY[0x1E69DB688];
     v35[2] = v8;
@@ -286,19 +286,19 @@ LABEL_7:
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:4];
 
     v15 = objc_opt_class();
-    v16 = [(CUIKDefaultIconGenerator *)self calendar];
-    v17 = [v15 _adjustedAttributesWithLanguageIdentifierIfNeeded:v14 calendar:v16];
+    calendar2 = [(CUIKDefaultIconGenerator *)self calendar];
+    v17 = [v15 _adjustedAttributesWithLanguageIdentifierIfNeeded:v14 calendar:calendar2];
 
     v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:v17];
     [(CUIKDefaultIconGenerator *)self canvasSize];
-    [v18 boundingRectWithSize:1 options:0 context:{v20, -[UIFont cuik_lineHeight](v9, v19)}];
+    [v18 boundingRectWithSize:1 options:0 context:{v20, -[UIFont cuik_lineHeight](_dayNumberFont, v19)}];
     v22 = v21;
     v24 = v23;
     [(CUIKDefaultIconGenerator *)self canvasSize];
     v26 = (v25 - v22) * 0.5;
     [(CUIKDefaultIconGenerator *)self _roundSpecToActual:850.0];
     v28 = v27;
-    [v9 ascender];
+    [_dayNumberFont ascender];
     v30 = v28 - v29;
     [(CUIKDefaultIconGenerator *)self canvasScale];
     v32 = v31;
@@ -333,30 +333,30 @@ LABEL_6:
 LABEL_9:
 }
 
-+ (id)_adjustedAttributesWithLanguageIdentifierIfNeeded:(id)a3 calendar:(id)a4
++ (id)_adjustedAttributesWithLanguageIdentifierIfNeeded:(id)needed calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [a4 locale];
-  v8 = [v7 _numberingSystem];
+  neededCopy = needed;
+  locale = [calendar locale];
+  _numberingSystem = [locale _numberingSystem];
 
-  v9 = [a1 _languageIdentifierForNumberingSystem:v8];
+  v9 = [self _languageIdentifierForNumberingSystem:_numberingSystem];
   if (v9)
   {
-    v10 = [v6 mutableCopy];
+    v10 = [neededCopy mutableCopy];
     [v10 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A518]];
   }
 
   else
   {
-    v10 = v6;
+    v10 = neededCopy;
   }
 
   return v10;
 }
 
-+ (id)_languageIdentifierForNumberingSystem:(id)a3
++ (id)_languageIdentifierForNumberingSystem:(id)system
 {
-  if ([a3 isEqualToString:@"arabext"])
+  if ([system isEqualToString:@"arabext"])
   {
     return @"ur";
   }
@@ -367,16 +367,16 @@ LABEL_9:
   }
 }
 
-+ (id)_dateNameFromDateComponents:(id)a3 calendar:(id)a4 type:(int64_t)a5 forceAbbreviated:(BOOL)a6
++ (id)_dateNameFromDateComponents:(id)components calendar:(id)calendar type:(int64_t)type forceAbbreviated:(BOOL)abbreviated
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = [CUIKApplicationIconUtilities dateFormatterWithCalendar:v10];
+  abbreviatedCopy = abbreviated;
+  componentsCopy = components;
+  calendarCopy = calendar;
+  v11 = [CUIKApplicationIconUtilities dateFormatterWithCalendar:calendarCopy];
   [v11 setFormattingContext:2];
-  if (a5 != 1)
+  if (type != 1)
   {
-    if ([v9 weekday] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy weekday] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = +[CUIKLogSubsystem defaultCategory];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -388,20 +388,20 @@ LABEL_9:
     }
 
     v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v14 = [v17 localizedStringForKey:@"ccc" value:&stru_1F4AA8958 table:0];
+    shortStandaloneMonthSymbols = [v17 localizedStringForKey:@"ccc" value:&stru_1F4AA8958 table:0];
 
-    if (([v14 isEqualToString:@"ccc"] & 1) != 0 || v6)
+    if (([shortStandaloneMonthSymbols isEqualToString:@"ccc"] & 1) != 0 || abbreviatedCopy)
     {
-      v18 = [v11 shortStandaloneWeekdaySymbols];
+      shortStandaloneWeekdaySymbols = [v11 shortStandaloneWeekdaySymbols];
     }
 
     else
     {
-      v18 = [v11 standaloneWeekdaySymbols];
+      shortStandaloneWeekdaySymbols = [v11 standaloneWeekdaySymbols];
     }
 
-    v15 = v18;
-    v16 = [v18 objectAtIndexedSubscript:{objc_msgSend(v9, "weekday") - 1}];
+    locale2 = shortStandaloneWeekdaySymbols;
+    v16 = [shortStandaloneWeekdaySymbols objectAtIndexedSubscript:{objc_msgSend(componentsCopy, "weekday") - 1}];
     if (CalSystemSolariumEnabled())
     {
       goto LABEL_19;
@@ -412,8 +412,8 @@ LABEL_9:
 
     if ([v13 isEqualToString:@"1"])
     {
-      v20 = [v10 locale];
-      v21 = [v16 uppercaseStringWithLocale:v20];
+      locale = [calendarCopy locale];
+      v21 = [v16 uppercaseStringWithLocale:locale];
 
       v16 = v21;
     }
@@ -425,7 +425,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v9 month] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([componentsCopy month] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -439,12 +439,12 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  v14 = [v11 shortStandaloneMonthSymbols];
-  v13 = [v14 objectAtIndexedSubscript:{objc_msgSend(v9, "month") - 1}];
+  shortStandaloneMonthSymbols = [v11 shortStandaloneMonthSymbols];
+  v13 = [shortStandaloneMonthSymbols objectAtIndexedSubscript:{objc_msgSend(componentsCopy, "month") - 1}];
   if ((CalSystemSolariumEnabled() & 1) == 0)
   {
-    v15 = [v10 locale];
-    v16 = [v13 uppercaseStringWithLocale:v15];
+    locale2 = [calendarCopy locale];
+    v16 = [v13 uppercaseStringWithLocale:locale2];
     goto LABEL_18;
   }
 
@@ -455,10 +455,10 @@ LABEL_21:
   return v13;
 }
 
-- (void)_drawDateNameWithContext:(CGContext *)a3
+- (void)_drawDateNameWithContext:(CGContext *)context
 {
   v52[4] = *MEMORY[0x1E69E9840];
-  [(CUIKDefaultIconGenerator *)self _roundSpecToActual:a3, 34.0];
+  [(CUIKDefaultIconGenerator *)self _roundSpecToActual:context, 34.0];
   v5 = v4;
   [(CUIKDefaultIconGenerator *)self canvasSize];
   v7 = v6 + v5 * -2.0;
@@ -466,12 +466,12 @@ LABEL_21:
   [v8 setAlignment:1];
   [v8 setLineBreakMode:4];
   v9 = [(CUIKDefaultIconGenerator *)self _colorForDayOfWeekWithAppearance:self->_appearance];
-  v10 = [(CUIKDefaultIconGenerator *)self _dateNameFont];
+  _dateNameFont = [(CUIKDefaultIconGenerator *)self _dateNameFont];
   v12 = *MEMORY[0x1E69DB748];
   v51[0] = *MEMORY[0x1E69DB648];
   v11 = v51[0];
   v51[1] = v12;
-  v52[0] = v10;
+  v52[0] = _dateNameFont;
   v52[1] = &unk_1F4ABEBD0;
   v46 = *MEMORY[0x1E69DB650];
   v47 = *MEMORY[0x1E69DB688];
@@ -482,21 +482,21 @@ LABEL_21:
   v48 = v9;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:4];
   v14 = objc_opt_class();
-  v15 = [(CUIKDefaultIconGenerator *)self dateComponents];
-  v16 = [(CUIKDefaultIconGenerator *)self calendar];
-  v17 = [v14 _dateNameFromDateComponents:v15 calendar:v16 type:-[CUIKDefaultIconGenerator iconFormat](self forceAbbreviated:{"iconFormat"), 0}];
+  dateComponents = [(CUIKDefaultIconGenerator *)self dateComponents];
+  calendar = [(CUIKDefaultIconGenerator *)self calendar];
+  v17 = [v14 _dateNameFromDateComponents:dateComponents calendar:calendar type:-[CUIKDefaultIconGenerator iconFormat](self forceAbbreviated:{"iconFormat"), 0}];
 
   v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v13];
-  v19 = [v10 cuik_fontScaledByScaleFactor:0.8];
+  v19 = [_dateNameFont cuik_fontScaledByScaleFactor:0.8];
   [v18 setObject:v19 forKeyedSubscript:v11];
 
   [v17 sizeWithAttributes:v18];
   if (v20 > v7)
   {
     v21 = objc_opt_class();
-    v22 = [(CUIKDefaultIconGenerator *)self dateComponents];
-    v23 = [(CUIKDefaultIconGenerator *)self calendar];
-    v24 = [v21 _dateNameFromDateComponents:v22 calendar:v23 type:-[CUIKDefaultIconGenerator iconFormat](self forceAbbreviated:{"iconFormat"), 1}];
+    dateComponents2 = [(CUIKDefaultIconGenerator *)self dateComponents];
+    calendar2 = [(CUIKDefaultIconGenerator *)self calendar];
+    v24 = [v21 _dateNameFromDateComponents:dateComponents2 calendar:calendar2 type:-[CUIKDefaultIconGenerator iconFormat](self forceAbbreviated:{"iconFormat"), 1}];
 
     v17 = v24;
   }
@@ -504,12 +504,12 @@ LABEL_21:
   if (v17)
   {
     v25 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v17 attributes:v13];
-    v27 = [(UIFont *)v10 cuik_lineHeight];
+    cuik_lineHeight = [(UIFont *)_dateNameFont cuik_lineHeight];
     v28 = objc_opt_new();
     [v28 setMaximumNumberOfLines:1];
     [v28 setMinimumScaleFactor:0.8];
     [v17 sizeWithAttributes:v13];
-    [v25 boundingRectWithSize:1 options:v28 context:v7, v27];
+    [v25 boundingRectWithSize:1 options:v28 context:v7, cuik_lineHeight];
     v30 = v29;
     v32 = v31;
     [v28 actualScaleFactor];
@@ -521,7 +521,7 @@ LABEL_21:
     else
     {
       [v28 actualScaleFactor];
-      v34 = [v10 cuik_fontScaledByScaleFactor:?];
+      v34 = [_dateNameFont cuik_fontScaledByScaleFactor:?];
 
       v49[0] = v11;
       v49[1] = v47;
@@ -538,14 +538,14 @@ LABEL_21:
       v32 = v40;
       v25 = v37;
       v13 = v36;
-      v10 = v34;
+      _dateNameFont = v34;
     }
 
     [(CUIKDefaultIconGenerator *)self canvasSize];
     v42 = (v41 - v30) * 0.5;
     [(CUIKDefaultIconGenerator *)self _roundSpecToActual:300.0];
     v44 = v43;
-    [v10 ascender];
+    [_dateNameFont ascender];
     [v25 drawWithRect:1 options:0 context:v42, v44 - v45, v30, v32];
   }
 
@@ -561,13 +561,13 @@ LABEL_21:
   }
 }
 
-- (id)_colorForDayOfWeekWithAppearance:(int64_t)a3
+- (id)_colorForDayOfWeekWithAppearance:(int64_t)appearance
 {
-  v5 = [(CUIKDefaultIconGenerator *)self calendar];
-  v6 = [v5 locale];
+  calendar = [(CUIKDefaultIconGenerator *)self calendar];
+  locale = [calendar locale];
 
-  v7 = [objc_opt_class() _isNonRedDayOfWeekRequiredForLocale:v6];
-  if (a3 == 2)
+  v7 = [objc_opt_class() _isNonRedDayOfWeekRequiredForLocale:locale];
+  if (appearance == 2)
   {
     v10 = MEMORY[0x1E69DC888];
     v11 = 0.819607843;
@@ -575,17 +575,17 @@ LABEL_21:
     v13 = 0.819607843;
     v14 = 0.819607843;
 LABEL_13:
-    v9 = [v10 colorWithRed:v11 green:v13 blue:v14 alpha:v12];
+    cuik_systemWhiteColor = [v10 colorWithRed:v11 green:v13 blue:v14 alpha:v12];
     goto LABEL_14;
   }
 
   v8 = v7;
-  if (a3 == 1)
+  if (appearance == 1)
   {
     v10 = MEMORY[0x1E69DC888];
     if (v8)
     {
-      v9 = [MEMORY[0x1E69DC888] cuik_systemWhiteColor];
+      cuik_systemWhiteColor = [MEMORY[0x1E69DC888] cuik_systemWhiteColor];
       goto LABEL_14;
     }
 
@@ -594,7 +594,7 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  if (a3)
+  if (appearance)
   {
     v15 = 0;
     goto LABEL_15;
@@ -611,35 +611,35 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(CUIKDefaultIconGenerator *)self _iconBlackColor];
+  cuik_systemWhiteColor = [(CUIKDefaultIconGenerator *)self _iconBlackColor];
 LABEL_14:
-  v15 = v9;
+  v15 = cuik_systemWhiteColor;
 LABEL_15:
 
   return v15;
 }
 
-- (id)_colorForDayNumberWithAppearance:(int64_t)a3
+- (id)_colorForDayNumberWithAppearance:(int64_t)appearance
 {
-  if ((a3 - 1) >= 2)
+  if ((appearance - 1) >= 2)
   {
-    if (a3)
+    if (appearance)
     {
-      v3 = 0;
+      _iconBlackColor = 0;
     }
 
     else
     {
-      v3 = [(CUIKDefaultIconGenerator *)self _iconBlackColor];
+      _iconBlackColor = [(CUIKDefaultIconGenerator *)self _iconBlackColor];
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] cuik_systemWhiteColor];
+    _iconBlackColor = [MEMORY[0x1E69DC888] cuik_systemWhiteColor];
   }
 
-  return v3;
+  return _iconBlackColor;
 }
 
 uint64_t __62__CUIKDefaultIconGenerator__countriesRequiringNonRedDayOfWeek__block_invoke()
@@ -651,11 +651,11 @@ uint64_t __62__CUIKDefaultIconGenerator__countriesRequiringNonRedDayOfWeek__bloc
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)_isNonRedDayOfWeekRequiredForLocale:(id)a3
++ (BOOL)_isNonRedDayOfWeekRequiredForLocale:(id)locale
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E695D978]];
-  v4 = [objc_opt_class() _countriesRequiringNonRedDayOfWeek];
-  v5 = [v4 containsObject:v3];
+  v3 = [locale objectForKey:*MEMORY[0x1E695D978]];
+  _countriesRequiringNonRedDayOfWeek = [objc_opt_class() _countriesRequiringNonRedDayOfWeek];
+  v5 = [_countriesRequiringNonRedDayOfWeek containsObject:v3];
 
   return v5;
 }

@@ -1,127 +1,127 @@
 @interface CompletionList
-+ (id)_completionsByMergingRecentSearches:(id)a3 withSuggestions:(id)a4 andLiteralSearch:(id)a5 queryID:(int64_t)a6 topHits:(id)a7 forPrivateBrowsing:(BOOL)a8;
++ (id)_completionsByMergingRecentSearches:(id)searches withSuggestions:(id)suggestions andLiteralSearch:(id)search queryID:(int64_t)d topHits:(id)hits forPrivateBrowsing:(BOOL)browsing;
 + (id)completionBookmarkProvider;
 - (BOOL)_canUseOfflineSearchSuggestions;
 - (BOOL)_defaultSearchEngineIsGoogle;
-- (BOOL)_deleteCompletionListItemAndCheckIfLastInSection:(id)a3 atIndexPath:(id)a4 forItemType:(unint64_t)a5;
-- (BOOL)_isPegasusMapsCompositeResult:(id)a3;
-- (BOOL)_navigationalIntentShouldBlockSearchResult:(id)a3 givenFirstSearchSuggestion:(id)a4 completionListing:(id)a5;
+- (BOOL)_deleteCompletionListItemAndCheckIfLastInSection:(id)section atIndexPath:(id)path forItemType:(unint64_t)type;
+- (BOOL)_isPegasusMapsCompositeResult:(id)result;
+- (BOOL)_navigationalIntentShouldBlockSearchResult:(id)result givenFirstSearchSuggestion:(id)suggestion completionListing:(id)listing;
 - (BOOL)_searchRenderTimeoutHasElapsed;
 - (BOOL)_shouldFetchSearchSuggestions;
-- (BOOL)_shouldSearchUIHandleEngagementForURL:(id)a3;
+- (BOOL)_shouldSearchUIHandleEngagementForURL:(id)l;
 - (BOOL)_supportsPrefixNavigationalIntent;
-- (BOOL)_topHitMatchesString:(id)a3;
-- (BOOL)_urlString:(id)a3 isProbablyContainedIn:(id)a4;
-- (BOOL)canPerformCommand:(id)a3;
+- (BOOL)_topHitMatchesString:(id)string;
+- (BOOL)_urlString:(id)string isProbablyContainedIn:(id)in;
+- (BOOL)canPerformCommand:(id)command;
 - (BOOL)hasCompletions;
 - (BOOL)isPresentingItemDeletionAlert;
-- (BOOL)shouldHandleCardSectionEngagement:(id)a3;
-- (BOOL)shouldOverrideBackgroundViewForItem:(id)a3;
+- (BOOL)shouldHandleCardSectionEngagement:(id)engagement;
+- (BOOL)shouldOverrideBackgroundViewForItem:(id)item;
 - (BOOL)shouldRestoreCachedCompletions;
 - (BrowserController)browserController;
-- (CompletionList)initWithParsecSearchSession:(id)a3 browserController:(id)a4;
+- (CompletionList)initWithParsecSearchSession:(id)session browserController:(id)controller;
 - (CompletionListDelegate)delegate;
 - (LoadProgressObserver)loadProgressObserver;
 - (NSIndexPath)indexPathOfAsTypedSearchSuggestion;
 - (NSString)titleForSearchSuggestionsCompletion;
 - (id)_allRecentSearches;
-- (id)_bestTabCompletionItemWithTopHits:(id)a3;
+- (id)_bestTabCompletionItemWithTopHits:(id)hits;
 - (id)_completionsRequiringFavicon;
-- (id)_contextualActionForSwipeToDeleteItem:(id)a3 atIndexPath:(id)a4 itemType:(unint64_t)a5;
-- (id)_indexPathForEquivalentCompletionItem:(id)a3;
-- (id)_listingForQuery:(id)a3;
-- (id)_recentSearchesForQuery:(id)a3;
-- (id)_swipeActionForHistory:(id)a3 atIndexPath:(id)a4;
-- (id)_swipeActionForSwitchToTab:(id)a3 atIndexPath:(id)a4;
-- (id)_swipeActionForTopHit:(id)a3 atIndexPath:(id)a4;
-- (id)_swipeToDeleteButtonTitleForHistoryAndBookmarks:(id)a3;
-- (id)_swipeToDeleteDestructiveAlertTitleForHistoryAndBookmarks:(id)a3 forBookmarks:(id)a4;
-- (id)_swipeToDeleteTitleForHistoryAndBookmarks:(id)a3;
-- (id)_titleForFindOnPageHeaderWithMatchCount:(unint64_t)a3;
-- (id)_urlFromCommand:(id)a3;
-- (id)cachedIconForParsecResult:(id)a3;
-- (id)completionsForGroupAtIndex:(unint64_t)a3;
+- (id)_contextualActionForSwipeToDeleteItem:(id)item atIndexPath:(id)path itemType:(unint64_t)type;
+- (id)_indexPathForEquivalentCompletionItem:(id)item;
+- (id)_listingForQuery:(id)query;
+- (id)_recentSearchesForQuery:(id)query;
+- (id)_swipeActionForHistory:(id)history atIndexPath:(id)path;
+- (id)_swipeActionForSwitchToTab:(id)tab atIndexPath:(id)path;
+- (id)_swipeActionForTopHit:(id)hit atIndexPath:(id)path;
+- (id)_swipeToDeleteButtonTitleForHistoryAndBookmarks:(id)bookmarks;
+- (id)_swipeToDeleteDestructiveAlertTitleForHistoryAndBookmarks:(id)bookmarks forBookmarks:(id)forBookmarks;
+- (id)_swipeToDeleteTitleForHistoryAndBookmarks:(id)bookmarks;
+- (id)_titleForFindOnPageHeaderWithMatchCount:(unint64_t)count;
+- (id)_urlFromCommand:(id)command;
+- (id)cachedIconForParsecResult:(id)result;
+- (id)completionsForGroupAtIndex:(unint64_t)index;
 - (id)currentSearchEngineHostSuffixes;
-- (id)currentWindowUUIDForTabCompletionProvider:(id)a3;
-- (id)defaultSectionTitleForGroupAtIndex:(unint64_t)a3;
-- (id)headerViewForGroupAtIndex:(unint64_t)a3;
-- (id)headerViewReuseIdentifierForGroupAtIndex:(unint64_t)a3;
-- (id)identifierForGroupAtIndex:(unint64_t)a3;
+- (id)currentWindowUUIDForTabCompletionProvider:(id)provider;
+- (id)defaultSectionTitleForGroupAtIndex:(unint64_t)index;
+- (id)headerViewForGroupAtIndex:(unint64_t)index;
+- (id)headerViewReuseIdentifierForGroupAtIndex:(unint64_t)index;
+- (id)identifierForGroupAtIndex:(unint64_t)index;
 - (id)rankingFeedbackConfiguration;
-- (id)selectedTabDocumentForTabCompletionProvider:(id)a3;
-- (id)swipeActionsForCompletionItemAtIndexPath:(id)a3;
-- (id)tabDocumentForFindOnPageCompletionProvider:(id)a3;
-- (id)tabGroupsForTabCompletionProvider:(id)a3;
-- (id)titleForFindOnPageCompletion:(id)a3;
-- (id)titleForGroupAtIndex:(unint64_t)a3;
-- (id)topHitForString:(id)a3;
-- (id)windowHostingCompletionProvider:(id)a3;
-- (id)windowUUIDsToTabsForTabCompletionProvider:(id)a3;
-- (void)_addResult:(id)a3 intoGroup:(id)a4 unlessHiddenBy:(id)a5 topHit:(id)a6;
-- (void)_addSearchProviderSuggestions:(id)a3 toListing:(id)a4;
-- (void)_addURLCompletions:(id)a3 toListing:(id)a4 isCFSearch:(BOOL)a5;
-- (void)_addUniversalSearchCompletions:(id)a3 toCompletionListing:(id)a4 delaySiriSuggestedSite:(BOOL)a5;
-- (void)_cacheImageFromData:(id)a3 forURLString:(id)a4;
-- (void)_cacheResultsIfApplicable:(id)a3;
-- (void)_defaultSearchEngineChanged:(id)a3;
-- (void)_deleteTopHitCompletionItem:(id)a3 atIndexPath:(id)a4;
-- (void)_postFeedback:(id)a3;
-- (void)_removeIgnoredSiriSuggestedSiteRecordsForHistoryItem:(id)a3;
-- (void)_removeSearchURLsFromCompletions:(id)a3;
+- (id)selectedTabDocumentForTabCompletionProvider:(id)provider;
+- (id)swipeActionsForCompletionItemAtIndexPath:(id)path;
+- (id)tabDocumentForFindOnPageCompletionProvider:(id)provider;
+- (id)tabGroupsForTabCompletionProvider:(id)provider;
+- (id)titleForFindOnPageCompletion:(id)completion;
+- (id)titleForGroupAtIndex:(unint64_t)index;
+- (id)topHitForString:(id)string;
+- (id)windowHostingCompletionProvider:(id)provider;
+- (id)windowUUIDsToTabsForTabCompletionProvider:(id)provider;
+- (void)_addResult:(id)result intoGroup:(id)group unlessHiddenBy:(id)by topHit:(id)hit;
+- (void)_addSearchProviderSuggestions:(id)suggestions toListing:(id)listing;
+- (void)_addURLCompletions:(id)completions toListing:(id)listing isCFSearch:(BOOL)search;
+- (void)_addUniversalSearchCompletions:(id)completions toCompletionListing:(id)listing delaySiriSuggestedSite:(BOOL)site;
+- (void)_cacheImageFromData:(id)data forURLString:(id)string;
+- (void)_cacheResultsIfApplicable:(id)applicable;
+- (void)_defaultSearchEngineChanged:(id)changed;
+- (void)_deleteTopHitCompletionItem:(id)item atIndexPath:(id)path;
+- (void)_postFeedback:(id)feedback;
+- (void)_removeIgnoredSiriSuggestedSiteRecordsForHistoryItem:(id)item;
+- (void)_removeSearchURLsFromCompletions:(id)completions;
 - (void)_requestFavicons;
-- (void)_searchForURLTopHits:(id)a3 intoTopHits:(id)a4;
+- (void)_searchForURLTopHits:(id)hits intoTopHits:(id)topHits;
 - (void)_updateCompletionListing;
-- (void)_updateIconsForSearchUIRowsInGroups:(id)a3 topHit:(id)a4;
+- (void)_updateIconsForSearchUIRowsInGroups:(id)groups topHit:(id)hit;
 - (void)_updateOfflineSearchSuggestionAvailability;
 - (void)_updateProviders;
 - (void)_updateQueryIDForGroups;
-- (void)cacheCurrentCompletionsAfterAcceptanceOfCompletionItem:(id)a3;
-- (void)cacheIconForParsecResult:(id)a3;
+- (void)cacheCurrentCompletionsAfterAcceptanceOfCompletionItem:(id)item;
+- (void)cacheIconForParsecResult:(id)result;
 - (void)clearCachedSearchQuery;
 - (void)clearCompletionListings;
-- (void)completionProvider:(id)a3 didFinishCompletingString:(id)a4;
-- (void)configureHeaderView:(id)a3 forGroupAtIndex:(unint64_t)a4;
+- (void)completionProvider:(id)provider didFinishCompletingString:(id)string;
+- (void)configureHeaderView:(id)view forGroupAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)didEngageResult:(id)a3;
-- (void)didResumeSearchWithQuery:(id)a3;
-- (void)performCommand:(id)a3;
-- (void)recordIgnoredSiriSuggestedSitesWithURL:(id)a3;
+- (void)didEngageResult:(id)result;
+- (void)didResumeSearchWithQuery:(id)query;
+- (void)performCommand:(id)command;
+- (void)recordIgnoredSiriSuggestedSitesWithURL:(id)l;
 - (void)restoreCachedCompletions;
-- (void)setLoadProgressObserver:(id)a3;
-- (void)setParsecSearchSession:(id)a3;
-- (void)setQuery:(id)a3;
-- (void)setShouldIncludeNetworkedSearchSuggestions:(BOOL)a3;
+- (void)setLoadProgressObserver:(id)observer;
+- (void)setParsecSearchSession:(id)session;
+- (void)setQuery:(id)query;
+- (void)setShouldIncludeNetworkedSearchSuggestions:(BOOL)suggestions;
 - (void)showRecentSearches;
 - (void)stopCompleting;
-- (void)updateRestorationCompletionItemForCompletionItem:(id)a3 isCF:(BOOL)a4;
-- (void)willDismissViewController:(id)a3;
+- (void)updateRestorationCompletionItemForCompletionItem:(id)item isCF:(BOOL)f;
+- (void)willDismissViewController:(id)controller;
 @end
 
 @implementation CompletionList
 
-- (CompletionList)initWithParsecSearchSession:(id)a3 browserController:(id)a4
+- (CompletionList)initWithParsecSearchSession:(id)session browserController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = CompletionList;
   v8 = [(CompletionList *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_browserController, v7);
-    [(CompletionList *)v9 setParsecSearchSession:v6];
+    objc_storeWeak(&v8->_browserController, controllerCopy);
+    [(CompletionList *)v9 setParsecSearchSession:sessionCopy];
     [(CompletionList *)v9 _updateOfflineSearchSuggestionAvailability];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.mobilesafari.IgnoredSiriSuggestedSites", v10);
     ignoredSiriSuggestedSitesQueue = v9->_ignoredSiriSuggestedSitesQueue;
     v9->_ignoredSiriSuggestedSitesQueue = v11;
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v9 selector:sel__defaultSearchEngineChanged_ name:*MEMORY[0x277D49BE0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__defaultSearchEngineChanged_ name:*MEMORY[0x277D49BE0] object:0];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v9 selector:sel__defaultSearchEngineChanged_ name:*MEMORY[0x277D4A950] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__defaultSearchEngineChanged_ name:*MEMORY[0x277D4A950] object:0];
 
     v15 = v9;
   }
@@ -139,25 +139,25 @@
   currentListing = self->_currentListing;
   self->_currentListing = v5;
 
-  v7 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
   v8 = self->_query;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v10 = [WeakRetained activeSearchEngine];
-  [v7 didBeginSearchOfType:2 withQuery:v8 endpoint:{objc_msgSend(v10, "parsecSearchEndpointType")}];
+  activeSearchEngine = [WeakRetained activeSearchEngine];
+  [feedbackDispatcher didBeginSearchOfType:2 withQuery:v8 endpoint:{objc_msgSend(activeSearchEngine, "parsecSearchEndpointType")}];
 
   [(CompletionList *)self _addSearchProviderSuggestions:MEMORY[0x277CBEBF8] toListing:self->_currentListing];
-  v11 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-  [v11 didReceiveResultsForQuery:self->_query searchType:2];
+  feedbackDispatcher2 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  [feedbackDispatcher2 didReceiveResultsForQuery:self->_query searchType:2];
 
   objc_storeStrong(&self->_listingOnDisplay, self->_currentListing);
-  v19 = [(CompletionGroupListing *)self->_listingOnDisplay groups];
-  v12 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  groups = [(CompletionGroupListing *)self->_listingOnDisplay groups];
+  feedbackDispatcher3 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
   v13 = [MEMORY[0x277CBEAA8] now];
   [v13 timeIntervalSinceNow];
   v15 = -v14;
-  v16 = [(WBSCompletionQuery *)self->_query queryID];
-  v17 = [(CompletionList *)self rankingFeedbackConfiguration];
-  [v12 didRankSections:v19 blendingDuration:MEMORY[0x277CBEC10] feedbackForHiddenAndDuplicateResults:v16 forQueryID:v17 rankingFeedbackConfiguration:v15];
+  queryID = [(WBSCompletionQuery *)self->_query queryID];
+  rankingFeedbackConfiguration = [(CompletionList *)self rankingFeedbackConfiguration];
+  [feedbackDispatcher3 didRankSections:groups blendingDuration:MEMORY[0x277CBEC10] feedbackForHiddenAndDuplicateResults:queryID forQueryID:rankingFeedbackConfiguration rankingFeedbackConfiguration:v15];
 
   v18 = objc_loadWeakRetained(&self->_delegate);
   [v18 completionListDidUpdate:self forQuery:self->_query];
@@ -170,8 +170,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -183,18 +183,18 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-        [v9 cancelRequestsWithTokens:v8];
+        mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+        [mEMORY[0x277D28F58] cancelRequestsWithTokens:v8];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -205,23 +205,23 @@
   [(CompletionList *)&v10 dealloc];
 }
 
-- (void)_defaultSearchEngineChanged:(id)a3
+- (void)_defaultSearchEngineChanged:(id)changed
 {
   v4 = self->_query;
   [(CompletionList *)self stopCompleting];
   [(CompletionList *)self setQuery:v4];
 }
 
-- (id)_recentSearchesForQuery:(id)a3
+- (id)_recentSearchesForQuery:(id)query
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queryCopy = query;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v6 = +[RecentWebSearchesController sharedController];
-  v7 = [v4 queryString];
-  v8 = [v6 recentSearchesMatchingPrefix:v7];
+  queryString = [queryCopy queryString];
+  v8 = [v6 recentSearchesMatchingPrefix:queryString];
 
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -243,8 +243,8 @@
 
         v15 = *(*(&v19 + 1) + 8 * i);
         v16 = [SearchSuggestion alloc];
-        v17 = -[SearchSuggestion initWithRecentSearchString:userQuery:forPrivateBrowsing:](v16, "initWithRecentSearchString:userQuery:forPrivateBrowsing:", v15, v4, [WeakRetained isPrivateBrowsingEnabled]);
-        [v9 addObject:v17];
+        v17 = -[SearchSuggestion initWithRecentSearchString:userQuery:forPrivateBrowsing:](v16, "initWithRecentSearchString:userQuery:forPrivateBrowsing:", v15, queryCopy, [WeakRetained isPrivateBrowsingEnabled]);
+        [array addObject:v17];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -253,20 +253,20 @@
     while (v12);
   }
 
-  return v9;
+  return array;
 }
 
 - (id)_allRecentSearches
 {
   v3 = +[RecentWebSearchesController sharedController];
-  v4 = [v3 recentWebSearchEntriesFilteredByTimeIntervalForDisplayInMainRecentSearchesView];
+  recentWebSearchEntriesFilteredByTimeIntervalForDisplayInMainRecentSearchesView = [v3 recentWebSearchEntriesFilteredByTimeIntervalForDisplayInMainRecentSearchesView];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__CompletionList__allRecentSearches__block_invoke;
   v7[3] = &unk_2781DC218;
   v7[4] = self;
-  v5 = [v4 safari_mapObjectsUsingBlock:v7];
+  v5 = [recentWebSearchEntriesFilteredByTimeIntervalForDisplayInMainRecentSearchesView safari_mapObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -283,21 +283,21 @@ SearchSuggestion *__36__CompletionList__allRecentSearches__block_invoke(uint64_t
   return v7;
 }
 
-+ (id)_completionsByMergingRecentSearches:(id)a3 withSuggestions:(id)a4 andLiteralSearch:(id)a5 queryID:(int64_t)a6 topHits:(id)a7 forPrivateBrowsing:(BOOL)a8
++ (id)_completionsByMergingRecentSearches:(id)searches withSuggestions:(id)suggestions andLiteralSearch:(id)search queryID:(int64_t)d topHits:(id)hits forPrivateBrowsing:(BOOL)browsing
 {
-  v52 = a8;
-  v49 = a6;
+  browsingCopy = browsing;
+  dCopy = d;
   v71 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  searchesCopy = searches;
+  suggestionsCopy = suggestions;
+  searchCopy = search;
+  hitsCopy = hits;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v16 = v12;
+  v16 = suggestionsCopy;
   v17 = [v16 countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (v17)
   {
@@ -313,8 +313,8 @@ SearchSuggestion *__36__CompletionList__allRecentSearches__block_invoke(uint64_t
         }
 
         v21 = *(*(&v64 + 1) + 8 * i);
-        v22 = [v21 string];
-        [v15 setObject:v21 forKeyedSubscript:v22];
+        string = [v21 string];
+        [dictionary setObject:v21 forKeyedSubscript:string];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v64 objects:v70 count:16];
@@ -327,7 +327,7 @@ SearchSuggestion *__36__CompletionList__allRecentSearches__block_invoke(uint64_t
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v23 = v11;
+  v23 = searchesCopy;
   v24 = [v23 countByEnumeratingWithState:&v60 objects:v69 count:16];
   if (v24)
   {
@@ -343,8 +343,8 @@ SearchSuggestion *__36__CompletionList__allRecentSearches__block_invoke(uint64_t
         }
 
         v28 = *(*(&v60 + 1) + 8 * j);
-        v29 = [v28 string];
-        [v15 setObject:v28 forKeyedSubscript:v29];
+        string2 = [v28 string];
+        [dictionary setObject:v28 forKeyedSubscript:string2];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v60 objects:v69 count:16];
@@ -356,11 +356,11 @@ SearchSuggestion *__36__CompletionList__allRecentSearches__block_invoke(uint64_t
   v30 = MEMORY[0x277D49ED8];
   v31 = [v23 safari_mapObjectsUsingBlock:&__block_literal_global_71];
   v32 = [v16 safari_mapObjectsUsingBlock:&__block_literal_global_71];
-  v33 = [v30 recentAndSuggestedCompletionStringsByMergingRecentSearches:v31 withSuggestions:v32 literalSearch:v13];
+  v33 = [v30 recentAndSuggestedCompletionStringsByMergingRecentSearches:v31 withSuggestions:v32 literalSearch:searchCopy];
 
   v34 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v23, "count") + objc_msgSend(v33, "count") + 1}];
-  v35 = [MEMORY[0x277CDB8A8] sharedInstance];
-  v36 = [v35 defaultSearchEngineForPrivateBrowsing:v52];
+  mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+  v36 = [mEMORY[0x277CDB8A8] defaultSearchEngineForPrivateBrowsing:browsingCopy];
 
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
@@ -368,18 +368,18 @@ SearchSuggestion *__36__CompletionList__allRecentSearches__block_invoke(uint64_t
   v58[3] = &unk_2781DC260;
   v50 = v36;
   v59 = v50;
-  v51 = [v14 safari_mapAndFilterObjectsUsingBlock:v58];
-  if (v13)
+  v51 = [hitsCopy safari_mapAndFilterObjectsUsingBlock:v58];
+  if (searchCopy)
   {
     if ([MEMORY[0x277D49A08] isStreamlinedCompletionListEnabled])
     {
-      v37 = [v13 safari_stringByTrimmingWhitespace];
-      v38 = [v37 lowercaseString];
-      if ([v51 containsObject:v38])
+      safari_stringByTrimmingWhitespace = [searchCopy safari_stringByTrimmingWhitespace];
+      lowercaseString = [safari_stringByTrimmingWhitespace lowercaseString];
+      if ([v51 containsObject:lowercaseString])
       {
-        v39 = [MEMORY[0x277D49A08] isStreamlinedCompletionListEnabled];
+        isStreamlinedCompletionListEnabled = [MEMORY[0x277D49A08] isStreamlinedCompletionListEnabled];
 
-        if (v39)
+        if (isStreamlinedCompletionListEnabled)
         {
           goto LABEL_24;
         }
@@ -390,8 +390,8 @@ SearchSuggestion *__36__CompletionList__allRecentSearches__block_invoke(uint64_t
       }
 
 LABEL_23:
-      v40 = [objc_alloc(MEMORY[0x277D49ED8]) initWithQueryString:v13 queryID:v49];
-      v41 = [[SearchSuggestion alloc] initWithUserTypedQuery:v40 forPrivateBrowsing:v52];
+      v40 = [objc_alloc(MEMORY[0x277D49ED8]) initWithQueryString:searchCopy queryID:dCopy];
+      v41 = [[SearchSuggestion alloc] initWithUserTypedQuery:v40 forPrivateBrowsing:browsingCopy];
       [v34 addObject:v41];
 
       goto LABEL_24;
@@ -404,7 +404,7 @@ LABEL_23:
   }
 
 LABEL_24:
-  v53 = v13;
+  v53 = searchCopy;
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
@@ -424,7 +424,7 @@ LABEL_24:
           objc_enumerationMutation(v42);
         }
 
-        v47 = [v15 objectForKeyedSubscript:{*(*(&v54 + 1) + 8 * k), v49}];
+        v47 = [dictionary objectForKeyedSubscript:{*(*(&v54 + 1) + 8 * k), dCopy}];
         [v34 addObject:v47];
       }
 
@@ -449,16 +449,16 @@ id __122__CompletionList__completionsByMergingRecentSearches_withSuggestions_and
   return v7;
 }
 
-- (id)_titleForFindOnPageHeaderWithMatchCount:(unint64_t)a3
+- (id)_titleForFindOnPageHeaderWithMatchCount:(unint64_t)count
 {
   v5 = &stru_2827BF158;
-  if ((_SFDeviceIsPad() & 1) == 0 && *MEMORY[0x277D292B8] != a3)
+  if ((_SFDeviceIsPad() & 1) == 0 && *MEMORY[0x277D292B8] != count)
   {
     v6 = *MEMORY[0x277CDB930];
-    if (*MEMORY[0x277CDB930] >= a3)
+    if (*MEMORY[0x277CDB930] >= count)
     {
       v9 = MEMORY[0x277CCABB8];
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
       [v9 localizedStringFromNumber:v8 numberStyle:1];
     }
 
@@ -470,9 +470,9 @@ id __122__CompletionList__completionsByMergingRecentSearches_withSuggestions_and
     }
     v10 = ;
 
-    if (a3 < 2)
+    if (count < 2)
     {
-      if (a3 != 1)
+      if (count != 1)
       {
         v5 = _WBSLocalizedString();
         goto LABEL_12;
@@ -496,9 +496,9 @@ LABEL_12:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v16 = [WeakRetained tabController];
-  v17 = [v16 activeTabDocument];
-  [v17 isPDFDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  [activeTabDocument isPDFDocument];
 
   v18 = MEMORY[0x277CCACA8];
   v19 = _WBSLocalizedString();
@@ -507,25 +507,25 @@ LABEL_12:
   return v20;
 }
 
-- (void)_removeSearchURLsFromCompletions:(id)a3
+- (void)_removeSearchURLsFromCompletions:(id)completions
 {
-  v11 = a3;
+  completionsCopy = completions;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained activeSearchEngine];
+  activeSearchEngine = [WeakRetained activeSearchEngine];
 
-  if ([v11 count])
+  if ([completionsCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v11 objectAtIndex:v6];
-      v8 = [v7 userVisibleURLString];
-      v9 = [MEMORY[0x277CBEBC0] safari_URLWithUserTypedString:v8];
-      v10 = [v5 urlIsValidSearch:v9];
+      v7 = [completionsCopy objectAtIndex:v6];
+      userVisibleURLString = [v7 userVisibleURLString];
+      v9 = [MEMORY[0x277CBEBC0] safari_URLWithUserTypedString:userVisibleURLString];
+      v10 = [activeSearchEngine urlIsValidSearch:v9];
 
       if (v10)
       {
-        [v11 removeObjectAtIndex:v6];
+        [completionsCopy removeObjectAtIndex:v6];
       }
 
       else
@@ -534,7 +534,7 @@ LABEL_12:
       }
     }
 
-    while (v6 < [v11 count]);
+    while (v6 < [completionsCopy count]);
   }
 }
 
@@ -554,9 +554,9 @@ LABEL_12:
 - (BOOL)_defaultSearchEngineIsGoogle
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained activeSearchEngine];
-  v4 = [v3 shortName];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D49D90]];
+  activeSearchEngine = [WeakRetained activeSearchEngine];
+  shortName = [activeSearchEngine shortName];
+  v5 = [shortName isEqualToString:*MEMORY[0x277D49D90]];
 
   return v5;
 }
@@ -571,21 +571,21 @@ LABEL_12:
   return v3;
 }
 
-- (void)_addURLCompletions:(id)a3 toListing:(id)a4 isCFSearch:(BOOL)a5
+- (void)_addURLCompletions:(id)completions toListing:(id)listing isCFSearch:(BOOL)search
 {
-  v5 = a5;
+  searchCopy = search;
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  completionsCopy = completions;
+  listingCopy = listing;
   rewrittenQuery = self->_rewrittenQuery;
   if (rewrittenQuery)
   {
-    v11 = [(WBSCompletionQuery *)rewrittenQuery queryString];
+    queryString = [(WBSCompletionQuery *)rewrittenQuery queryString];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v12 = v8;
+    v12 = completionsCopy;
     v13 = [v12 countByEnumeratingWithState:&v45 objects:v52 count:16];
     if (v13)
     {
@@ -600,8 +600,8 @@ LABEL_12:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v45 + 1) + 8 * i) sfSearchResultValue];
-          [v17 setCorrectedQuery:v11];
+          sfSearchResultValue = [*(*(&v45 + 1) + 8 * i) sfSearchResultValue];
+          [sfSearchResultValue setCorrectedQuery:queryString];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v45 objects:v52 count:16];
@@ -613,14 +613,14 @@ LABEL_12:
 
   v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v20 = [WeakRetained activeSearchEngine];
+  activeSearchEngine = [WeakRetained activeSearchEngine];
   query = self->_rewrittenQuery;
   if (!query)
   {
     query = self->_query;
   }
 
-  v22 = [MEMORY[0x277D4A030] filterOutUnlikelyMatchesFromTopHits:v8 forQuery:query searchProvider:v20];
+  v22 = [MEMORY[0x277D4A030] filterOutUnlikelyMatchesFromTopHits:completionsCopy forQuery:query searchProvider:activeSearchEngine];
 
   [(CompletionList *)self _searchForURLTopHits:v22 intoTopHits:v18];
   v23 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
@@ -636,27 +636,27 @@ LABEL_12:
   if (![v18 count] && self->_tryParsecRewritesIfNoTopHit)
   {
     self->_tryParsecRewritesIfNoTopHit = 0;
-    v26 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider parsecSearchSession];
-    v27 = [v26 rewrittenQueryStringFromParsec];
+    parsecSearchSession = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider parsecSearchSession];
+    rewrittenQueryStringFromParsec = [parsecSearchSession rewrittenQueryStringFromParsec];
 
-    v28 = [objc_alloc(MEMORY[0x277D49ED8]) initWithQueryString:v27];
+    v28 = [objc_alloc(MEMORY[0x277D49ED8]) initWithQueryString:rewrittenQueryStringFromParsec];
     v29 = self->_rewrittenQuery;
     self->_rewrittenQuery = v28;
 
-    v30 = [WeakRetained effectiveProfileIdentifier];
-    [(WBSCompletionQuery *)self->_rewrittenQuery setProfileIdentifierToFilterResults:v30];
+    effectiveProfileIdentifier = [WeakRetained effectiveProfileIdentifier];
+    [(WBSCompletionQuery *)self->_rewrittenQuery setProfileIdentifierToFilterResults:effectiveProfileIdentifier];
 
     [(WBSCompletionQuery *)self->_rewrittenQuery setTriggerEvent:18];
-    v31 = [self->_URLCompletionProvider completionsForQuery:self->_rewrittenQuery isCFSearch:v5];
+    v31 = [self->_URLCompletionProvider completionsForQuery:self->_rewrittenQuery isCFSearch:searchCopy];
 
     if (!v31)
     {
-      [v9 setNeedsParsecDatabaseQueryRewrite];
+      [listingCopy setNeedsParsecDatabaseQueryRewrite];
       goto LABEL_28;
     }
 
     v40 = WeakRetained;
-    v32 = [MEMORY[0x277D4A030] filterOutUnlikelyMatchesBeforeTopHitPromotionFromMatches:v31 forQuery:self->_rewrittenQuery searchProvider:v20];
+    v32 = [MEMORY[0x277D4A030] filterOutUnlikelyMatchesBeforeTopHitPromotionFromMatches:v31 forQuery:self->_rewrittenQuery searchProvider:activeSearchEngine];
 
     [(CompletionList *)self _searchForURLTopHits:v32 intoTopHits:v18];
     v43 = 0u;
@@ -678,8 +678,8 @@ LABEL_12:
             objc_enumerationMutation(v22);
           }
 
-          v37 = [*(*(&v41 + 1) + 8 * j) sfSearchResultValue];
-          [v37 setCorrectedQuery:v27];
+          sfSearchResultValue2 = [*(*(&v41 + 1) + 8 * j) sfSearchResultValue];
+          [sfSearchResultValue2 setCorrectedQuery:rewrittenQueryStringFromParsec];
         }
 
         v34 = [v22 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -699,19 +699,19 @@ LABEL_12:
     v22 = v39;
   }
 
-  [v9 setURLCompletionMatches:v22];
-  [v9 setLocalTopHits:v18];
-  [v9 setRewrittenQuery:self->_rewrittenQuery];
-  v27 = v22;
+  [listingCopy setURLCompletionMatches:v22];
+  [listingCopy setLocalTopHits:v18];
+  [listingCopy setRewrittenQuery:self->_rewrittenQuery];
+  rewrittenQueryStringFromParsec = v22;
 LABEL_28:
 }
 
-- (void)_addUniversalSearchCompletions:(id)a3 toCompletionListing:(id)a4 delaySiriSuggestedSite:(BOOL)a5
+- (void)_addUniversalSearchCompletions:(id)completions toCompletionListing:(id)listing delaySiriSuggestedSite:(BOOL)site
 {
-  v94 = a5;
+  siteCopy = site;
   v117 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  completionsCopy = completions;
+  listingCopy = listing;
   if ([MEMORY[0x277D49A08] isSearchEvaluationLoggingEnabled])
   {
     v9 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
@@ -725,26 +725,26 @@ LABEL_28:
   location = &self->_delayedSiriSuggestedSite;
   self->_delayedSiriSuggestedSite = 0;
 
-  if ([v7 count])
+  if ([completionsCopy count])
   {
-    v11 = [v8 topHits];
-    v92 = v8;
-    v12 = [v8 topHitAddresses];
-    v100 = [MEMORY[0x277CBEB18] array];
-    v97 = [MEMORY[0x277CBEB18] array];
-    v96 = [MEMORY[0x277CBEB18] array];
-    v13 = [v11 firstObject];
-    v103 = [(CompletionList *)self _isPegasusMapsCompositeResult:v7];
+    topHits = [listingCopy topHits];
+    v92 = listingCopy;
+    topHitAddresses = [listingCopy topHitAddresses];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
+    firstObject = [topHits firstObject];
+    v103 = [(CompletionList *)self _isPegasusMapsCompositeResult:completionsCopy];
     v109 = 0u;
     v110 = 0u;
     v111 = 0u;
     v112 = 0u;
-    v90 = v7;
-    obj = v7;
+    v90 = completionsCopy;
+    obj = completionsCopy;
     v14 = [obj countByEnumeratingWithState:&v109 objects:v116 count:16];
-    v95 = v11;
-    v98 = v12;
-    v99 = v13;
+    v95 = topHits;
+    v98 = topHitAddresses;
+    v99 = firstObject;
     if (!v14)
     {
       v93 = 0;
@@ -772,7 +772,7 @@ LABEL_28:
           goto LABEL_45;
         }
 
-        v20 = [v19 resultType];
+        resultType = [v19 resultType];
         v21 = WBSIsEqual();
 
         if (!v21)
@@ -782,56 +782,56 @@ LABEL_28:
 
         siriSuggestedSitesURLStringsToIgnore = self->_siriSuggestedSitesURLStringsToIgnore;
         v23 = [v19 url];
-        v24 = [v23 absoluteString];
-        LODWORD(siriSuggestedSitesURLStringsToIgnore) = [(NSSet *)siriSuggestedSitesURLStringsToIgnore containsObject:v24];
+        absoluteString = [v23 absoluteString];
+        LODWORD(siriSuggestedSitesURLStringsToIgnore) = [(NSSet *)siriSuggestedSitesURLStringsToIgnore containsObject:absoluteString];
 
         if (siriSuggestedSitesURLStringsToIgnore)
         {
-          v25 = [MEMORY[0x277D4A0A0] shared];
-          if (![v25 inExperiment])
+          mEMORY[0x277D4A0A0] = [MEMORY[0x277D4A0A0] shared];
+          if (![mEMORY[0x277D4A0A0] inExperiment])
           {
             goto LABEL_19;
           }
 
-          v26 = [(NSArray *)self->_searchParametersList firstObject];
-          if (![v26 shouldEmitTriggerLoggingForHidingIgnoredSiriSuggestedWebsite])
+          firstObject2 = [(NSArray *)self->_searchParametersList firstObject];
+          if (![firstObject2 shouldEmitTriggerLoggingForHidingIgnoredSiriSuggestedWebsite])
           {
             goto LABEL_18;
           }
 
-          v27 = [MEMORY[0x277D4A030] searchParameters];
-          v28 = [v27 thresholdForHidingIgnoredSiriSuggestedSites];
+          searchParameters = [MEMORY[0x277D4A030] searchParameters];
+          thresholdForHidingIgnoredSiriSuggestedSites = [searchParameters thresholdForHidingIgnoredSiriSuggestedSites];
 
-          if (v28)
+          if (thresholdForHidingIgnoredSiriSuggestedSites)
           {
-            v25 = objc_alloc_init(MEMORY[0x277D4C360]);
-            [v25 setQueryId:{-[WBSCompletionQuery queryID](self->_query, "queryID")}];
-            v29 = [MEMORY[0x277D4A0A8] codePathUUIDForHideIgnoredSiriSuggestedWebsites];
-            [v25 setCodepathId:v29];
+            mEMORY[0x277D4A0A0] = objc_alloc_init(MEMORY[0x277D4C360]);
+            [mEMORY[0x277D4A0A0] setQueryId:{-[WBSCompletionQuery queryID](self->_query, "queryID")}];
+            codePathUUIDForHideIgnoredSiriSuggestedWebsites = [MEMORY[0x277D4A0A8] codePathUUIDForHideIgnoredSiriSuggestedWebsites];
+            [mEMORY[0x277D4A0A0] setCodepathId:codePathUUIDForHideIgnoredSiriSuggestedWebsites];
 
-            v26 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-            [v26 didHideRepeatedlyIgnoredSiriSuggestedSiteWithFeedbackEvent:v25];
+            firstObject2 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+            [firstObject2 didHideRepeatedlyIgnoredSiriSuggestedSiteWithFeedbackEvent:mEMORY[0x277D4A0A0]];
 LABEL_18:
 
 LABEL_19:
           }
 
-          v30 = [MEMORY[0x277D4A030] searchParameters];
-          if ([v30 thresholdForHidingIgnoredSiriSuggestedSites])
+          searchParameters2 = [MEMORY[0x277D4A030] searchParameters];
+          if ([searchParameters2 thresholdForHidingIgnoredSiriSuggestedSites])
           {
-            v31 = [MEMORY[0x277D4A030] searchParameters];
-            v32 = [v31 shouldHideIgnoredSiriSuggestedSites];
+            searchParameters3 = [MEMORY[0x277D4A030] searchParameters];
+            shouldHideIgnoredSiriSuggestedSites = [searchParameters3 shouldHideIgnoredSiriSuggestedSites];
 
-            if (v32)
+            if (shouldHideIgnoredSiriSuggestedSites)
             {
               v33 = WBS_LOG_CHANNEL_PREFIXSiriSuggestedSites();
               if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
               {
                 v34 = v33;
                 v35 = [v19 url];
-                v36 = [v35 absoluteString];
+                absoluteString2 = [v35 absoluteString];
                 *buf = 138739971;
-                v115 = v36;
+                v115 = absoluteString2;
                 _os_log_impl(&dword_215819000, v34, OS_LOG_TYPE_INFO, "Hiding repeatedly ignored Siri suggested site: %{sensitive}@", buf, 0xCu);
               }
 
@@ -841,10 +841,10 @@ LABEL_19:
               v38 = v19;
 
               v93 = v38;
-              v11 = v95;
+              topHits = v95;
 LABEL_43:
-              v12 = v98;
-              v13 = v99;
+              topHitAddresses = v98;
+              firstObject = v99;
               goto LABEL_59;
             }
           }
@@ -856,11 +856,11 @@ LABEL_43:
 
         if ([(CompletionList *)self _supportsPrefixNavigationalIntent])
         {
-          v11 = v95;
-          v13 = v99;
-          if (!v94)
+          topHits = v95;
+          firstObject = v99;
+          if (!siteCopy)
           {
-            v12 = v98;
+            topHitAddresses = v98;
             goto LABEL_45;
           }
 
@@ -875,15 +875,15 @@ LABEL_43:
               previousPrefixNavigationalIntent = self->_previousPrefixNavigationalIntent;
               if (previousPrefixNavigationalIntent)
               {
-                v43 = [(NSNumber *)previousPrefixNavigationalIntent integerValue];
-                v44 = [MEMORY[0x277D4A030] searchParameters];
-                v45 = [v44 prefixNavigationalIntentThreshold];
-                v46 = [v45 integerValue];
+                integerValue = [(NSNumber *)previousPrefixNavigationalIntent integerValue];
+                searchParameters4 = [MEMORY[0x277D4A030] searchParameters];
+                prefixNavigationalIntentThreshold = [searchParameters4 prefixNavigationalIntentThreshold];
+                integerValue2 = [prefixNavigationalIntentThreshold integerValue];
 
-                if (v43 >= v46)
+                if (integerValue >= integerValue2)
                 {
                   v41 = 1;
-                  v11 = v95;
+                  topHits = v95;
                 }
 
                 else
@@ -892,14 +892,14 @@ LABEL_43:
                   *location = 0;
 
                   v48 = WBS_LOG_CHANNEL_PREFIXSiriSuggestedSites();
-                  v11 = v95;
+                  topHits = v95;
                   if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
                   {
                     v49 = v48;
                     v50 = [v19 url];
-                    v51 = [v50 absoluteString];
+                    absoluteString3 = [v50 absoluteString];
                     *buf = 138739971;
-                    v115 = v51;
+                    v115 = absoluteString3;
                     _os_log_impl(&dword_215819000, v49, OS_LOG_TYPE_INFO, "Hiding Siri Suggested Site due to query having navigational intent: %{sensitive}@", buf, 0xCu);
                   }
 
@@ -927,11 +927,11 @@ LABEL_43:
               self->_shouldForceSuppressionOfSiriSuggestedSite = 0;
             }
 
-            v12 = v98;
-            v13 = v99;
-            v70 = [v19 serverCompletion];
+            topHitAddresses = v98;
+            firstObject = v99;
+            serverCompletion = [v19 serverCompletion];
             previousServerCompletion = self->_previousServerCompletion;
-            self->_previousServerCompletion = v70;
+            self->_previousServerCompletion = serverCompletion;
 
             if (!v41)
             {
@@ -941,9 +941,9 @@ LABEL_43:
             goto LABEL_45;
           }
 
-          v54 = [v92 searchSuggestions];
-          v55 = [v54 firstObject];
-          v56 = [(CompletionList *)self _navigationalIntentShouldBlockSearchResult:v19 givenFirstSearchSuggestion:v55 completionListing:v92];
+          searchSuggestions = [v92 searchSuggestions];
+          firstObject3 = [searchSuggestions firstObject];
+          v56 = [(CompletionList *)self _navigationalIntentShouldBlockSearchResult:v19 givenFirstSearchSuggestion:firstObject3 completionListing:v92];
 
           if (v56)
           {
@@ -955,9 +955,9 @@ LABEL_43:
             {
               v59 = v58;
               v60 = [v19 url];
-              v61 = [v60 absoluteString];
+              absoluteString4 = [v60 absoluteString];
               *buf = 138739971;
-              v115 = v61;
+              v115 = absoluteString4;
               _os_log_impl(&dword_215819000, v59, OS_LOG_TYPE_INFO, "Hiding Siri Suggested Site due to query having navigational intent: %{sensitive}@", buf, 0xCu);
             }
 
@@ -973,36 +973,36 @@ LABEL_43:
 
         else
         {
-          v11 = v95;
+          topHits = v95;
         }
 
 LABEL_44:
-        v12 = v98;
-        v13 = v99;
+        topHitAddresses = v98;
+        firstObject = v99;
 LABEL_45:
         [v19 setQueryId:{-[WBSCompletionQuery queryID](self->_query, "queryID")}];
-        if (![v11 count] && objc_msgSend(v19, "topHit") && v17 <= 1)
+        if (![topHits count] && objc_msgSend(v19, "topHit") && v17 <= 1)
         {
-          v66 = self;
+          selfCopy2 = self;
           v67 = v19;
-          v68 = v96;
+          v68 = array3;
 LABEL_58:
-          [(CompletionList *)v66 _addResult:v67 intoGroup:v68 unlessHiddenBy:v12 topHit:v13];
+          [(CompletionList *)selfCopy2 _addResult:v67 intoGroup:v68 unlessHiddenBy:topHitAddresses topHit:firstObject];
           ++v17;
           goto LABEL_59;
         }
 
         if ([v19 placement] != 2 && v17 <= 1)
         {
-          v66 = self;
+          selfCopy2 = self;
           v67 = v19;
-          v68 = v100;
+          v68 = array;
           goto LABEL_58;
         }
 
         if (v16 <= 1)
         {
-          [(CompletionList *)self _addResult:v19 intoGroup:v97 unlessHiddenBy:v12 topHit:v13];
+          [(CompletionList *)self _addResult:v19 intoGroup:array2 unlessHiddenBy:topHitAddresses topHit:firstObject];
           ++v16;
         }
 
@@ -1017,31 +1017,31 @@ LABEL_59:
       {
 LABEL_70:
 
-        v8 = v92;
+        listingCopy = v92;
         v73 = v93;
         [v92 setHiddenSiriSuggestedSite:v93];
-        if (![v11 count] && objc_msgSend(v96, "count"))
+        if (![topHits count] && objc_msgSend(array3, "count"))
         {
-          [v92 setParsecTopHits:v96];
+          [v92 setParsecTopHits:array3];
         }
 
-        v74 = [v92 calculationResultItem];
-        v75 = v74;
-        v7 = v90;
-        if (!v74 || ([v74 calculationResult], v76 = objc_claimAutoreleasedReturnValue(), v77 = objc_msgSend(v76, "isCurrencyConversion"), v76, (v77 & 1) == 0))
+        calculationResultItem = [v92 calculationResultItem];
+        v75 = calculationResultItem;
+        completionsCopy = v90;
+        if (!calculationResultItem || ([calculationResultItem calculationResult], v76 = objc_claimAutoreleasedReturnValue(), v77 = objc_msgSend(v76, "isCurrencyConversion"), v76, (v77 & 1) == 0))
         {
-          [v92 setTopParsecResults:v100];
+          [v92 setTopParsecResults:array];
         }
 
         if ([MEMORY[0x277D49A08] isSearchEvaluationLoggingEnabled])
         {
           v104 = v75;
-          v78 = [MEMORY[0x277CCAB68] string];
+          string = [MEMORY[0x277CCAB68] string];
           v105 = 0u;
           v106 = 0u;
           v107 = 0u;
           v108 = 0u;
-          v79 = v100;
+          v79 = array;
           v80 = [v79 countByEnumeratingWithState:&v105 objects:v113 count:16];
           if (v80)
           {
@@ -1057,11 +1057,11 @@ LABEL_70:
                 }
 
                 v84 = *(*(&v105 + 1) + 8 * i);
-                v85 = [v84 uuidString];
+                uuidString = [v84 uuidString];
                 v86 = [v84 url];
-                v87 = [v86 absoluteString];
-                v88 = [v87 safari_urlHashesOfComponents];
-                [v78 appendFormat:@" %@ <%@>, ", v85, v88];
+                absoluteString5 = [v86 absoluteString];
+                safari_urlHashesOfComponents = [absoluteString5 safari_urlHashesOfComponents];
+                [string appendFormat:@" %@ <%@>, ", uuidString, safari_urlHashesOfComponents];
               }
 
               v81 = [v79 countByEnumeratingWithState:&v105 objects:v113 count:16];
@@ -1073,18 +1073,18 @@ LABEL_70:
           v89 = WBS_LOG_CHANNEL_PREFIXParsec();
           if (os_log_type_enabled(v89, OS_LOG_TYPE_DEBUG))
           {
-            [CompletionList _addUniversalSearchCompletions:v78 toCompletionListing:v89 delaySiriSuggestedSite:?];
+            [CompletionList _addUniversalSearchCompletions:string toCompletionListing:v89 delaySiriSuggestedSite:?];
           }
 
-          v7 = v90;
-          v8 = v92;
+          completionsCopy = v90;
+          listingCopy = v92;
           v73 = v93;
-          v11 = v95;
-          v12 = v98;
+          topHits = v95;
+          topHitAddresses = v98;
           v75 = v104;
         }
 
-        [v8 setBottomParsecResults:v97];
+        [listingCopy setBottomParsecResults:array2];
 
         break;
       }
@@ -1092,23 +1092,23 @@ LABEL_70:
   }
 }
 
-- (void)_addSearchProviderSuggestions:(id)a3 toListing:(id)a4
+- (void)_addSearchProviderSuggestions:(id)suggestions toListing:(id)listing
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSCompletionQuery *)self->_query queryString];
+  suggestionsCopy = suggestions;
+  listingCopy = listing;
+  queryString = [(WBSCompletionQuery *)self->_query queryString];
   delayedSiriSuggestedSite = self->_delayedSiriSuggestedSite;
   if (delayedSiriSuggestedSite)
   {
-    v10 = [v6 firstObject];
-    v11 = [(CompletionList *)self _navigationalIntentShouldBlockSearchResult:delayedSiriSuggestedSite givenFirstSearchSuggestion:v10 completionListing:v7];
+    firstObject = [suggestionsCopy firstObject];
+    v11 = [(CompletionList *)self _navigationalIntentShouldBlockSearchResult:delayedSiriSuggestedSite givenFirstSearchSuggestion:firstObject completionListing:listingCopy];
 
     if (!v11)
     {
       v42[0] = self->_delayedSiriSuggestedSite;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
-      [(CompletionList *)self _addUniversalSearchCompletions:v17 toCompletionListing:v7 delaySiriSuggestedSite:0];
+      [(CompletionList *)self _addUniversalSearchCompletions:v17 toCompletionListing:listingCopy delaySiriSuggestedSite:0];
 LABEL_8:
 
       goto LABEL_9;
@@ -1122,31 +1122,31 @@ LABEL_8:
         v13 = self->_delayedSiriSuggestedSite;
         v14 = v12;
         v15 = [(SFSearchResult *)v13 url];
-        v16 = [v15 absoluteString];
+        absoluteString = [v15 absoluteString];
         *buf = 138739971;
-        v41 = v16;
+        v41 = absoluteString;
         _os_log_impl(&dword_215819000, v14, OS_LOG_TYPE_INFO, "Hiding Siri Suggested Site due to query having navigational intent: %{sensitive}@", buf, 0xCu);
       }
 
       v17 = objc_alloc_init(MEMORY[0x277D4C5B8]);
       [v17 setHideReason:2];
       [(SFSearchResult *)self->_delayedSiriSuggestedSite setSafariAttributes:v17];
-      [v7 setHiddenSiriSuggestedSite:self->_delayedSiriSuggestedSite];
+      [listingCopy setHiddenSiriSuggestedSite:self->_delayedSiriSuggestedSite];
       goto LABEL_8;
     }
   }
 
 LABEL_9:
-  v18 = [v6 firstObject];
-  v19 = [v18 prefixNavigationalIntent];
+  firstObject2 = [suggestionsCopy firstObject];
+  prefixNavigationalIntent = [firstObject2 prefixNavigationalIntent];
   previousPrefixNavigationalIntent = self->_previousPrefixNavigationalIntent;
-  self->_previousPrefixNavigationalIntent = v19;
+  self->_previousPrefixNavigationalIntent = prefixNavigationalIntent;
 
-  if (self->_showingRecentSearches || self->_inputTypeOfStringToComplete != 1 && [v8 length])
+  if (self->_showingRecentSearches || self->_inputTypeOfStringToComplete != 1 && [queryString length])
   {
     v21 = [(CompletionProvider *)self->_quickWebsiteSearchProvider completionsForQuery:self->_query];
-    v22 = [v21 firstObject];
-    [v7 setQuickWebsiteSearchItem:v22];
+    firstObject3 = [v21 firstObject];
+    [listingCopy setQuickWebsiteSearchItem:firstObject3];
 
     if (self->_showingRecentSearches)
     {
@@ -1159,14 +1159,14 @@ LABEL_9:
     }
     v23 = ;
     v24 = objc_opt_class();
-    v25 = [(WBSCompletionQuery *)self->_query queryID];
-    v26 = [v7 topHits];
+    queryID = [(WBSCompletionQuery *)self->_query queryID];
+    topHits = [listingCopy topHits];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v28 = [v24 _completionsByMergingRecentSearches:v23 withSuggestions:v6 andLiteralSearch:v8 queryID:v25 topHits:v26 forPrivateBrowsing:{objc_msgSend(WeakRetained, "isPrivateBrowsingEnabled")}];
+    v28 = [v24 _completionsByMergingRecentSearches:v23 withSuggestions:suggestionsCopy andLiteralSearch:queryString queryID:queryID topHits:topHits forPrivateBrowsing:{objc_msgSend(WeakRetained, "isPrivateBrowsingEnabled")}];
 
-    v38 = v8;
-    v39 = v6;
-    if ([v6 count])
+    v38 = queryString;
+    v39 = suggestionsCopy;
+    if ([suggestionsCopy count])
     {
       v29 = 3;
     }
@@ -1187,9 +1187,9 @@ LABEL_9:
         if ([v32 goesToURL])
         {
           [v28 removeObjectAtIndex:v31];
-          v33 = [v32 string];
-          v34 = [v7 topHitAddresses];
-          if ([(CompletionList *)self _urlString:v33 isProbablyContainedIn:v34])
+          string = [v32 string];
+          topHitAddresses = [listingCopy topHitAddresses];
+          if ([(CompletionList *)self _urlString:string isProbablyContainedIn:topHitAddresses])
           {
           }
 
@@ -1213,7 +1213,7 @@ LABEL_9:
       while (v31 < [v28 count]);
     }
 
-    [v7 setSuggestedSites:v30];
+    [listingCopy setSuggestedSites:v30];
     if (self->_showingRecentSearches)
     {
       v36 = v23;
@@ -1224,41 +1224,41 @@ LABEL_9:
       v36 = v28;
     }
 
-    [v7 setSearchSuggestions:v36 fromSource:v37];
+    [listingCopy setSearchSuggestions:v36 fromSource:v37];
 
-    v8 = v38;
-    v6 = v39;
+    queryString = v38;
+    suggestionsCopy = v39;
   }
 }
 
-- (id)_listingForQuery:(id)a3
+- (id)_listingForQuery:(id)query
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queryCopy = query;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [MEMORY[0x277D4A030] searchParameters];
-  v7 = [v6 isCFSearch];
+  searchParameters = [MEMORY[0x277D4A030] searchParameters];
+  isCFSearch = [searchParameters isCFSearch];
 
   v8 = 96;
-  if (v7)
+  if (isCFSearch)
   {
     v8 = 104;
   }
 
   v9 = *(&self->super.isa + v8);
-  v10 = [(CompletionProvider *)self->_quickWebsiteSearchProvider completionsForQuery:v4];
-  v11 = [v10 firstObject];
-  [(CompletionGroupListing *)v9 setQuickWebsiteSearchItem:v11];
+  v10 = [(CompletionProvider *)self->_quickWebsiteSearchProvider completionsForQuery:queryCopy];
+  firstObject = [v10 firstObject];
+  [(CompletionGroupListing *)v9 setQuickWebsiteSearchItem:firstObject];
 
-  v12 = [(CompletionProvider *)self->_calculationResultProvider completionsForQuery:v4];
-  v13 = [v12 firstObject];
-  [(CompletionGroupListing *)v9 setCalculationResultItem:v13];
+  v12 = [(CompletionProvider *)self->_calculationResultProvider completionsForQuery:queryCopy];
+  firstObject2 = [v12 firstObject];
+  [(CompletionGroupListing *)v9 setCalculationResultItem:firstObject2];
 
   if (self->_usingPencilInput)
   {
-    v14 = [self->_pencilInputCompletionProvider completionsForQuery:v4];
-    v15 = [v14 firstObject];
-    [(CompletionGroupListing *)v9 setPencilCompletionItem:v15];
+    v14 = [self->_pencilInputCompletionProvider completionsForQuery:queryCopy];
+    firstObject3 = [v14 firstObject];
+    [(CompletionGroupListing *)v9 setPencilCompletionItem:firstObject3];
   }
 
   else
@@ -1268,9 +1268,9 @@ LABEL_9:
 
   if ([WeakRetained canFindOnPage])
   {
-    v16 = [(FindOnPageCompletionProvider *)self->_findOnPageProvider completionsForQuery:v4];
-    v17 = [v16 firstObject];
-    [(CompletionGroupListing *)v9 setFindOnPageCompletionItem:v17];
+    v16 = [(FindOnPageCompletionProvider *)self->_findOnPageProvider completionsForQuery:queryCopy];
+    firstObject4 = [v16 firstObject];
+    [(CompletionGroupListing *)v9 setFindOnPageCompletionItem:firstObject4];
   }
 
   else
@@ -1287,31 +1287,31 @@ LABEL_9:
 
     else
     {
-      rewrittenQuery = v4;
+      rewrittenQuery = queryCopy;
     }
 
-    v19 = [self->_URLCompletionProvider completionsForQuery:rewrittenQuery isCFSearch:v7];
+    v19 = [self->_URLCompletionProvider completionsForQuery:rewrittenQuery isCFSearch:isCFSearch];
     if ([self->_URLCompletionProvider isFailing]|| v19)
     {
       [(CompletionGroupListing *)v9 markDatabaseResultsReceived];
       if (v19)
       {
-        [(CompletionList *)self _addURLCompletions:v19 toListing:v9 isCFSearch:v7];
+        [(CompletionList *)self _addURLCompletions:v19 toListing:v9 isCFSearch:isCFSearch];
       }
     }
   }
 
-  v20 = [(CompletionGroupListing *)v9 isAwaitingCompletionDatabase];
+  isAwaitingCompletionDatabase = [(CompletionGroupListing *)v9 isAwaitingCompletionDatabase];
   if ([MEMORY[0x277D49A08] isSearchEvaluationLoggingEnabled])
   {
     v21 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [(CompletionList *)!v20 _listingForQuery:v21];
+      [(CompletionList *)!isAwaitingCompletionDatabase _listingForQuery:v21];
     }
   }
 
-  if (!(v20 | ![(CompletionGroupListing *)v9 isAwaitingParsec]))
+  if (!(isAwaitingCompletionDatabase | ![(CompletionGroupListing *)v9 isAwaitingParsec]))
   {
     universalSearchProvider = self->_universalSearchProvider;
     if (universalSearchProvider)
@@ -1324,7 +1324,7 @@ LABEL_9:
       v23 = 0;
     }
 
-    v24 = [(UniversalSearchCompletionProvider *)universalSearchProvider completionsForQuery:v4];
+    v24 = [(UniversalSearchCompletionProvider *)universalSearchProvider completionsForQuery:queryCopy];
     if ([MEMORY[0x277D49A08] isSearchEvaluationLoggingEnabled])
     {
       v25 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
@@ -1351,28 +1351,28 @@ LABEL_9:
     }
   }
 
-  v27 = [self->_tabCompletionProvider completionsForQuery:v4];
-  if (v27 && [(CompletionGroupListing *)v9 isAwaitingTabCompletion]&& ![(CompletionGroupListing *)v9 isAwaitingParsec])
+  topHits = [self->_tabCompletionProvider completionsForQuery:queryCopy];
+  if (topHits && [(CompletionGroupListing *)v9 isAwaitingTabCompletion]&& ![(CompletionGroupListing *)v9 isAwaitingParsec])
   {
 
-    if (v20)
+    if (isAwaitingCompletionDatabase)
     {
       goto LABEL_41;
     }
 
     [(CompletionGroupListing *)v9 markTabCompletionReceived];
-    v27 = [(CompletionGroupListing *)v9 topHits];
-    v28 = [(CompletionList *)self _bestTabCompletionItemWithTopHits:v27];
+    topHits = [(CompletionGroupListing *)v9 topHits];
+    v28 = [(CompletionList *)self _bestTabCompletionItemWithTopHits:topHits];
     [(CompletionGroupListing *)v9 setTabCompletionMatch:v28];
   }
 
 LABEL_41:
   if ([(CompletionGroupListing *)v9 isAwaitingSearchProvider])
   {
-    v29 = [(CompletionList *)self _shouldFetchSearchSuggestions];
-    if (v29 && self->_shouldIncludeNetworkedSearchSuggestions)
+    _shouldFetchSearchSuggestions = [(CompletionList *)self _shouldFetchSearchSuggestions];
+    if (_shouldFetchSearchSuggestions && self->_shouldIncludeNetworkedSearchSuggestions)
     {
-      v30 = [(CompletionProvider *)self->_suggestionProvider completionsForQuery:v4];
+      v30 = [(CompletionProvider *)self->_suggestionProvider completionsForQuery:queryCopy];
     }
 
     else
@@ -1381,7 +1381,7 @@ LABEL_41:
     }
 
     v31 = [v30 count];
-    v32 = !v29;
+    v32 = !_shouldFetchSearchSuggestions;
     if (v31)
     {
       v32 = 1;
@@ -1394,7 +1394,7 @@ LABEL_41:
 
     else
     {
-      v33 = [self->_offlineSearchSuggestionsCompletionProvider completionsForQuery:v4];
+      v33 = [self->_offlineSearchSuggestionsCompletionProvider completionsForQuery:queryCopy];
 
       v34 = 1;
       v30 = v33;
@@ -1407,7 +1407,7 @@ LABEL_41:
 
     else
     {
-      v35 = v29;
+      v35 = _shouldFetchSearchSuggestions;
     }
 
     if (v35 && ![(CompletionProvider *)self->_suggestionProvider isFailing]|| [(CompletionGroupListing *)v9 isAwaitingParsec])
@@ -1415,14 +1415,14 @@ LABEL_41:
       listingOnDisplay = self->_listingOnDisplay;
       if (v9 != listingOnDisplay)
       {
-        v37 = [(CompletionGroupListing *)listingOnDisplay searchSuggestions];
-        if (![v37 count])
+        searchSuggestions = [(CompletionGroupListing *)listingOnDisplay searchSuggestions];
+        if (![searchSuggestions count])
         {
-          v38 = -[SearchSuggestion initWithUserTypedQuery:forPrivateBrowsing:]([SearchSuggestion alloc], "initWithUserTypedQuery:forPrivateBrowsing:", v4, [WeakRetained isPrivateBrowsingEnabled]);
+          v38 = -[SearchSuggestion initWithUserTypedQuery:forPrivateBrowsing:]([SearchSuggestion alloc], "initWithUserTypedQuery:forPrivateBrowsing:", queryCopy, [WeakRetained isPrivateBrowsingEnabled]);
           v46[0] = v38;
           v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
 
-          v37 = v39;
+          searchSuggestions = v39;
         }
 
         if ([(CompletionGroupListing *)self->_listingOnDisplay searchSuggestionsSource]== 1)
@@ -1444,10 +1444,10 @@ LABEL_41:
           }
         }
 
-        v44 = [(CompletionGroupListing *)self->_listingOnDisplay suggestedSites];
-        [(CompletionGroupListing *)v9 setSuggestedSites:v44];
+        suggestedSites = [(CompletionGroupListing *)self->_listingOnDisplay suggestedSites];
+        [(CompletionGroupListing *)v9 setSuggestedSites:suggestedSites];
 
-        [(CompletionGroupListing *)v9 setSearchSuggestions:v37 fromSource:v40];
+        [(CompletionGroupListing *)v9 setSearchSuggestions:searchSuggestions fromSource:v40];
       }
     }
 
@@ -1477,11 +1477,11 @@ LABEL_41:
   return v9;
 }
 
-- (id)titleForFindOnPageCompletion:(id)a3
+- (id)titleForFindOnPageCompletion:(id)completion
 {
-  v4 = [a3 numberOfMatches];
+  numberOfMatches = [completion numberOfMatches];
 
-  return [(CompletionList *)self _titleForFindOnPageHeaderWithMatchCount:v4];
+  return [(CompletionList *)self _titleForFindOnPageHeaderWithMatchCount:numberOfMatches];
 }
 
 - (NSString)titleForSearchSuggestionsCompletion
@@ -1492,39 +1492,39 @@ LABEL_41:
     goto LABEL_8;
   }
 
-  v4 = [MEMORY[0x277CDB8A8] sharedInstance];
+  mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [v4 defaultSearchEngineForPrivateBrowsing:{objc_msgSend(WeakRetained, "isPrivateBrowsingEnabled")}];
+  v6 = [mEMORY[0x277CDB8A8] defaultSearchEngineForPrivateBrowsing:{objc_msgSend(WeakRetained, "isPrivateBrowsingEnabled")}];
 
   v7 = MEMORY[0x277CCACA8];
   v8 = _WBSLocalizedString();
-  v9 = [v6 displayName];
-  v10 = [v7 stringWithFormat:v8, v9];
+  displayName = [v6 displayName];
+  v10 = [v7 stringWithFormat:v8, displayName];
 
   if (self->_shouldIncludeNetworkedSearchSuggestions || [(CompletionList *)self _canUseOfflineSearchSuggestions])
   {
-    v11 = v10;
+    displayName3 = v10;
   }
 
   else
   {
-    v13 = [v6 shortName];
-    v14 = [v13 isEqualToString:*MEMORY[0x277D4A948]];
+    shortName = [v6 shortName];
+    v14 = [shortName isEqualToString:*MEMORY[0x277D4A948]];
 
     if (!v14)
     {
       v15 = MEMORY[0x277CCACA8];
       v16 = _WBSLocalizedString();
-      v17 = [v6 displayName];
-      v2 = [v15 stringWithFormat:v16, v17];
+      displayName2 = [v6 displayName];
+      v2 = [v15 stringWithFormat:v16, displayName2];
 
       goto LABEL_7;
     }
 
-    v11 = [v6 displayName];
+    displayName3 = [v6 displayName];
   }
 
-  v2 = v11;
+  v2 = displayName3;
 LABEL_7:
 
 LABEL_8:
@@ -1532,26 +1532,26 @@ LABEL_8:
   return v2;
 }
 
-- (void)_addResult:(id)a3 intoGroup:(id)a4 unlessHiddenBy:(id)a5 topHit:(id)a6
+- (void)_addResult:(id)result intoGroup:(id)group unlessHiddenBy:(id)by topHit:(id)hit
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v57[0] = v10;
+  resultCopy = result;
+  groupCopy = group;
+  byCopy = by;
+  hitCopy = hit;
+  v57[0] = resultCopy;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
   [(CompletionList *)self _cacheResultsIfApplicable:v14];
 
-  v15 = [v10 sectionBundleIdentifier];
-  if ([v15 isEqualToString:@"com.apple.parsec.maps"])
+  sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+  if ([sectionBundleIdentifier isEqualToString:@"com.apple.parsec.maps"])
   {
     v16 = 0;
   }
 
   else
   {
-    v17 = [v10 url];
+    v17 = [resultCopy url];
 
     if (!v17)
     {
@@ -1559,17 +1559,17 @@ LABEL_8:
       goto LABEL_21;
     }
 
-    v18 = [v10 url];
+    v18 = [resultCopy url];
     v56 = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
 
-    v20 = [MEMORY[0x277D4A030] searchParameters];
-    v21 = [v20 isDedupeThroughAlternativeURLsEnabled];
+    searchParameters = [MEMORY[0x277D4A030] searchParameters];
+    isDedupeThroughAlternativeURLsEnabled = [searchParameters isDedupeThroughAlternativeURLsEnabled];
 
-    if (v21)
+    if (isDedupeThroughAlternativeURLsEnabled)
     {
-      v22 = [v10 alternativeURLs];
-      v23 = [v19 arrayByAddingObjectsFromArray:v22];
+      alternativeURLs = [resultCopy alternativeURLs];
+      v23 = [v19 arrayByAddingObjectsFromArray:alternativeURLs];
 
       v19 = v23;
     }
@@ -1578,12 +1578,12 @@ LABEL_8:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v15 = v19;
-    v24 = [v15 countByEnumeratingWithState:&v49 objects:v55 count:16];
+    sectionBundleIdentifier = v19;
+    v24 = [sectionBundleIdentifier countByEnumeratingWithState:&v49 objects:v55 count:16];
     if (v24)
     {
       v25 = v24;
-      v47 = v11;
+      v47 = groupCopy;
       v26 = *v50;
       while (2)
       {
@@ -1591,21 +1591,21 @@ LABEL_8:
         {
           if (*v50 != v26)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(sectionBundleIdentifier);
           }
 
-          v28 = [*(*(&v49 + 1) + 8 * i) absoluteString];
-          v29 = [v28 safari_simplifiedUserVisibleURLStringWithSimplifications:3 forDisplayOnly:0 simplifiedStringOffset:0];
+          absoluteString = [*(*(&v49 + 1) + 8 * i) absoluteString];
+          v29 = [absoluteString safari_simplifiedUserVisibleURLStringWithSimplifications:3 forDisplayOnly:0 simplifiedStringOffset:0];
 
-          LOBYTE(v28) = [(CompletionList *)self _urlString:v29 isProbablyContainedIn:v12];
-          if (v28)
+          LOBYTE(absoluteString) = [(CompletionList *)self _urlString:v29 isProbablyContainedIn:byCopy];
+          if (absoluteString)
           {
             v16 = 1;
             goto LABEL_16;
           }
         }
 
-        v25 = [v15 countByEnumeratingWithState:&v49 objects:v55 count:16];
+        v25 = [sectionBundleIdentifier countByEnumeratingWithState:&v49 objects:v55 count:16];
         if (v25)
         {
           continue;
@@ -1616,7 +1616,7 @@ LABEL_8:
 
       v16 = 0;
 LABEL_16:
-      v11 = v47;
+      groupCopy = v47;
     }
 
     else
@@ -1627,10 +1627,10 @@ LABEL_16:
 
 LABEL_21:
   v48 = 0;
-  v30 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider shouldHideParsecResult:v10 basedOnHideRankGivenTopHit:v13 indexOfTopHitInFrequentlyVisitedSites:&v48];
-  v31 = [v13 sfSearchResultValue];
-  v32 = [v31 identifier];
-  v33 = [v32 length];
+  v30 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider shouldHideParsecResult:resultCopy basedOnHideRankGivenTopHit:hitCopy indexOfTopHitInFrequentlyVisitedSites:&v48];
+  sfSearchResultValue = [hitCopy sfSearchResultValue];
+  identifier = [sfSearchResultValue identifier];
+  v33 = [identifier length];
 
   if (v33)
   {
@@ -1638,11 +1638,11 @@ LABEL_21:
     {
 LABEL_23:
       v34 = objc_alloc(MEMORY[0x277D4C580]);
-      v54 = v10;
+      v54 = resultCopy;
       v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
-      v36 = [v11 count] - 1;
+      v36 = [groupCopy count] - 1;
       v37 = v34;
-      v38 = v31;
+      v38 = sfSearchResultValue;
       v39 = v35;
       v40 = 0;
       goto LABEL_27;
@@ -1651,9 +1651,9 @@ LABEL_23:
 
   else
   {
-    v41 = [MEMORY[0x277CCAD78] UUID];
-    v42 = [v41 UUIDString];
-    [v31 setIdentifier:v42];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [sfSearchResultValue setIdentifier:uUIDString];
 
     if (v16)
     {
@@ -1663,91 +1663,91 @@ LABEL_23:
 
   if (!v30)
   {
-    [v11 addObject:v10];
+    [groupCopy addObject:resultCopy];
     goto LABEL_29;
   }
 
   v43 = objc_alloc(MEMORY[0x277D4C580]);
-  v53 = v10;
+  v53 = resultCopy;
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
-  v36 = [v11 count] - 1;
+  v36 = [groupCopy count] - 1;
   v37 = v43;
-  v38 = v31;
+  v38 = sfSearchResultValue;
   v39 = 0;
   v40 = v35;
 LABEL_27:
   v44 = [v37 initWithResult:v38 hiddenResults:v39 duplicateResults:v40 localResultPosition:v36];
   rankingFeedbackForHiddenOrDuplicateResults = self->_rankingFeedbackForHiddenOrDuplicateResults;
-  v46 = [v31 identifier];
-  [(NSMutableDictionary *)rankingFeedbackForHiddenOrDuplicateResults setObject:v44 forKeyedSubscript:v46];
+  identifier2 = [sfSearchResultValue identifier];
+  [(NSMutableDictionary *)rankingFeedbackForHiddenOrDuplicateResults setObject:v44 forKeyedSubscript:identifier2];
 
 LABEL_29:
 }
 
-- (void)_cacheResultsIfApplicable:(id)a3
+- (void)_cacheResultsIfApplicable:(id)applicable
 {
-  v3 = a3;
+  applicableCopy = applicable;
   v4 = +[Application sharedApplication];
-  v5 = [v4 forYouRecentParsecResultsManager];
+  forYouRecentParsecResultsManager = [v4 forYouRecentParsecResultsManager];
 
-  [v5 appendResultsIfApplicable:v3];
+  [forYouRecentParsecResultsManager appendResultsIfApplicable:applicableCopy];
 }
 
-- (id)_bestTabCompletionItemWithTopHits:(id)a3
+- (id)_bestTabCompletionItemWithTopHits:(id)hits
 {
-  v4 = a3;
-  v5 = [(CompletionList *)self tabCompletionProvider];
-  v6 = [v5 isFailing];
+  hitsCopy = hits;
+  tabCompletionProvider = [(CompletionList *)self tabCompletionProvider];
+  isFailing = [tabCompletionProvider isFailing];
 
-  if (v6)
+  if (isFailing)
   {
     v7 = 0;
     goto LABEL_9;
   }
 
-  v8 = [v4 firstObject];
+  firstObject = [hitsCopy firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 firstObject];
+    firstObject2 = [hitsCopy firstObject];
 
-    if (!v9)
+    if (!firstObject2)
     {
       v11 = 0;
       goto LABEL_8;
     }
 
     v10 = MEMORY[0x277CBEBC0];
-    v8 = [v9 userVisibleURLString];
-    v11 = [v10 safari_URLWithUserTypedString:v8];
+    firstObject = [firstObject2 userVisibleURLString];
+    v11 = [v10 safari_URLWithUserTypedString:firstObject];
   }
 
   else
   {
     v11 = 0;
-    v9 = 0;
+    firstObject2 = 0;
   }
 
 LABEL_8:
-  v12 = [(CompletionList *)self tabCompletionProvider];
-  v13 = [(CompletionList *)self query];
-  v7 = [v12 bestTabCompletionMatchForQuery:v13 withTopHitURL:v11];
+  tabCompletionProvider2 = [(CompletionList *)self tabCompletionProvider];
+  query = [(CompletionList *)self query];
+  v7 = [tabCompletionProvider2 bestTabCompletionMatchForQuery:query withTopHitURL:v11];
 
 LABEL_9:
 
   return v7;
 }
 
-- (void)_searchForURLTopHits:(id)a3 intoTopHits:(id)a4
+- (void)_searchForURLTopHits:(id)hits intoTopHits:(id)topHits
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  hitsCopy = hits;
+  topHitsCopy = topHits;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = hitsCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -1768,7 +1768,7 @@ LABEL_3:
         break;
       }
 
-      [v6 addObject:v12];
+      [topHitsCopy addObject:v12];
       if (v9 == ++v11)
       {
         v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1783,11 +1783,11 @@ LABEL_3:
   }
 }
 
-- (BOOL)_urlString:(id)a3 isProbablyContainedIn:(id)a4
+- (BOOL)_urlString:(id)string isProbablyContainedIn:(id)in
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  stringCopy = string;
+  inCopy = in;
+  if ([stringCopy length])
   {
     v13 = 0;
     v14 = &v13;
@@ -1798,9 +1798,9 @@ LABEL_3:
     v10[1] = 3221225472;
     v10[2] = __51__CompletionList__urlString_isProbablyContainedIn___block_invoke;
     v10[3] = &unk_2781DC288;
-    v11 = v6;
+    v11 = inCopy;
     v12 = &v13;
-    [v7 safari_enumeratePossibleURLsForUserTypedString:v5 withBlock:v10];
+    [v7 safari_enumeratePossibleURLsForUserTypedString:stringCopy withBlock:v10];
     v8 = *(v14 + 24);
 
     _Block_object_dispose(&v13, 8);
@@ -1826,16 +1826,16 @@ void __51__CompletionList__urlString_isProbablyContainedIn___block_invoke(uint64
   }
 }
 
-- (void)_updateIconsForSearchUIRowsInGroups:(id)a3 topHit:(id)a4
+- (void)_updateIconsForSearchUIRowsInGroups:(id)groups topHit:(id)hit
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  groupsCopy = groups;
+  hitCopy = hit;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v21 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v21 = [groupsCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v21)
   {
     v20 = *v28;
@@ -1845,20 +1845,20 @@ void __51__CompletionList__urlString_isProbablyContainedIn___block_invoke(uint64
       {
         if (*v28 != v20)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groupsCopy);
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
-        v9 = [v8 completions];
-        if ([v9 count] < 2 || (objc_msgSend(v9, "lastObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) != 0))
+        completions = [v8 completions];
+        if ([completions count] < 2 || (objc_msgSend(completions, "lastObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) != 0))
         {
-          v22 = v9;
+          v22 = completions;
           v25 = 0u;
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v12 = [v8 results];
-          v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          results = [v8 results];
+          v13 = [results countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v13)
           {
             v14 = v13;
@@ -1869,12 +1869,12 @@ void __51__CompletionList__urlString_isProbablyContainedIn___block_invoke(uint64
               {
                 if (*v24 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(results);
                 }
 
                 v17 = *(*(&v23 + 1) + 8 * j);
-                v18 = [v6 sfSearchResultValue];
-                if (v17 == v18)
+                sfSearchResultValue = [hitCopy sfSearchResultValue];
+                if (v17 == sfSearchResultValue)
                 {
                   v19 = 7;
                 }
@@ -1887,17 +1887,17 @@ void __51__CompletionList__urlString_isProbablyContainedIn___block_invoke(uint64
                 [v17 safari_setCompletionIconForCompactRow:v19];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v14 = [results countByEnumeratingWithState:&v23 objects:v31 count:16];
             }
 
             while (v14);
           }
 
-          v9 = v22;
+          completions = v22;
         }
       }
 
-      v21 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v21 = [groupsCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v21);
@@ -1911,8 +1911,8 @@ void __51__CompletionList__urlString_isProbablyContainedIn___block_invoke(uint64
   v4 = WeakRetained;
   if ((v3 & 1) == 0)
   {
-    v5 = [(WBSCompletionQuery *)self->_query queryString];
-    if ([v5 length])
+    queryString = [(WBSCompletionQuery *)self->_query queryString];
+    if ([queryString length])
     {
     }
 
@@ -1930,18 +1930,18 @@ LABEL_52:
       }
     }
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     rankingFeedbackForHiddenOrDuplicateResults = self->_rankingFeedbackForHiddenOrDuplicateResults;
-    self->_rankingFeedbackForHiddenOrDuplicateResults = v7;
+    self->_rankingFeedbackForHiddenOrDuplicateResults = dictionary;
 
     v9 = [MEMORY[0x277CBEAA8] now];
-    v10 = [(NSArray *)self->_searchParametersList firstObject];
-    v11 = [v10 isCFSearch];
+    firstObject = [(NSArray *)self->_searchParametersList firstObject];
+    isCFSearch = [firstObject isCFSearch];
 
-    if (v11)
+    if (isCFSearch)
     {
-      v12 = [(NSArray *)self->_searchParametersList firstObject];
-      [MEMORY[0x277D4A030] setSearchParameters:v12];
+      firstObject2 = [(NSArray *)self->_searchParametersList firstObject];
+      [MEMORY[0x277D4A030] setSearchParameters:firstObject2];
 
       v13 = [self->_URLCompletionProvider cfErrorForQuery:self->_query];
       if (!v13)
@@ -1958,51 +1958,51 @@ LABEL_52:
 
     v14 = 0;
 LABEL_10:
-    v15 = [(NSArray *)self->_searchParametersList lastObject];
-    [MEMORY[0x277D4A030] setSearchParameters:v15];
+    lastObject = [(NSArray *)self->_searchParametersList lastObject];
+    [MEMORY[0x277D4A030] setSearchParameters:lastObject];
 
     v16 = [(CompletionList *)self _listingForQuery:self->_query];
-    v17 = [v16 topHit];
-    v18 = [v16 isAwaitingCompletionDatabase];
-    if (([v16 isAwaitingParsec] & 1) == 0 && (v18 & 1) == 0)
+    topHit = [v16 topHit];
+    isAwaitingCompletionDatabase = [v16 isAwaitingCompletionDatabase];
+    if (([v16 isAwaitingParsec] & 1) == 0 && (isAwaitingCompletionDatabase & 1) == 0)
     {
       v19 = v13;
-      v20 = [(WBSCompletionQuery *)self->_query queryString];
-      v21 = [v20 copy];
+      queryString2 = [(WBSCompletionQuery *)self->_query queryString];
+      v21 = [queryString2 copy];
       stringMatchedByTopHit = self->_stringMatchedByTopHit;
       self->_stringMatchedByTopHit = v21;
 
-      v23 = [(WBSCompletionQuery *)self->_rewrittenQuery queryString];
-      v24 = v23;
-      if (v23)
+      queryString3 = [(WBSCompletionQuery *)self->_rewrittenQuery queryString];
+      v24 = queryString3;
+      if (queryString3)
       {
-        v25 = v23;
+        queryString4 = queryString3;
       }
 
       else
       {
-        v25 = [(WBSCompletionQuery *)self->_query queryString];
+        queryString4 = [(WBSCompletionQuery *)self->_query queryString];
       }
 
-      v26 = v25;
+      v26 = queryString4;
 
       v27 = [(NSString *)self->_stringMatchedByTopHit length];
       if (v27)
       {
-        v27 = [v17 reflectedStringForUserTypedString:v26];
+        v27 = [topHit reflectedStringForUserTypedString:v26];
       }
 
       matchingStringInTopHit = self->_matchingStringInTopHit;
       self->_matchingStringInTopHit = v27;
 
-      if (!self->_matchingStringInTopHit && [(CompletionItem *)self->_topHit isEquivalentTo:v17])
+      if (!self->_matchingStringInTopHit && [(CompletionItem *)self->_topHit isEquivalentTo:topHit])
       {
         objc_storeStrong(&self->_matchingStringInTopHit, v26);
       }
 
       if ([(NSString *)self->_matchingStringInTopHit length])
       {
-        v29 = v17;
+        v29 = topHit;
       }
 
       else
@@ -2012,8 +2012,8 @@ LABEL_10:
 
       objc_storeStrong(&self->_topHit, v29);
       v30 = *MEMORY[0x277D4A2B0];
-      v31 = [(CompletionItem *)self->_topHit sfSearchResultValue];
-      [v31 setResultBundleId:v30];
+      sfSearchResultValue = [(CompletionItem *)self->_topHit sfSearchResultValue];
+      [sfSearchResultValue setResultBundleId:v30];
 
       if ([(NSString *)self->_stringMatchedByTopHit length])
       {
@@ -2028,31 +2028,31 @@ LABEL_10:
       objc_storeStrong(&self->_listingOnDisplay, v16);
       v71 = v14;
       objc_storeStrong(&self->_cfListingOnDisplay, v14);
-      v32 = [(CompletionGroupListing *)self->_listingOnDisplay groups];
+      groups = [(CompletionGroupListing *)self->_listingOnDisplay groups];
       v33 = [(NSMutableDictionary *)self->_rankingFeedbackForHiddenOrDuplicateResults copy];
-      v34 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+      feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
       v72 = v9;
       [v9 timeIntervalSinceNow];
       v36 = -v35;
-      v37 = [(WBSCompletionQuery *)self->_query queryID];
-      v38 = [(CompletionList *)self rankingFeedbackConfiguration];
-      [v34 didRankSections:v32 blendingDuration:v33 feedbackForHiddenAndDuplicateResults:v37 forQueryID:v38 rankingFeedbackConfiguration:v36];
+      queryID = [(WBSCompletionQuery *)self->_query queryID];
+      rankingFeedbackConfiguration = [(CompletionList *)self rankingFeedbackConfiguration];
+      [feedbackDispatcher didRankSections:groups blendingDuration:v33 feedbackForHiddenAndDuplicateResults:queryID forQueryID:rankingFeedbackConfiguration rankingFeedbackConfiguration:v36];
 
-      if (v11)
+      if (isCFSearch)
       {
         if (v13)
         {
-          v39 = v32;
+          v39 = groups;
           v40 = 0;
         }
 
         else
         {
           v69 = v33;
-          v41 = [(CompletionGroupListing *)self->_cfListingOnDisplay groups];
-          v42 = [(CompletionGroupListing *)self->_listingOnDisplay groups];
-          v43 = v41;
-          v44 = v42;
+          groups2 = [(CompletionGroupListing *)self->_cfListingOnDisplay groups];
+          groups3 = [(CompletionGroupListing *)self->_listingOnDisplay groups];
+          v43 = groups2;
+          v44 = groups3;
           v45 = [v43 count];
           v46 = [v44 count];
           v47 = v45 == v46;
@@ -2062,7 +2062,7 @@ LABEL_10:
             if ([v43 count])
             {
               v48 = 0;
-              v63 = v32;
+              v63 = groups;
               v64 = 0;
               v68 = v43;
               v65 = v44;
@@ -2070,9 +2070,9 @@ LABEL_10:
               {
                 v70 = v48;
                 v66 = [v43 objectAtIndexedSubscript:{v48, v63, v64}];
-                v49 = [v66 title];
+                title = [v66 title];
                 v50 = [v44 objectAtIndexedSubscript:v48];
-                v51 = [v50 title];
+                title2 = [v50 title];
                 v52 = WBSIsEqual();
 
                 v43 = v68;
@@ -2085,20 +2085,20 @@ LABEL_44:
                 }
 
                 v53 = [v68 objectAtIndexedSubscript:v70];
-                v54 = [v53 completions];
+                completions = [v53 completions];
 
                 v55 = [v44 objectAtIndexedSubscript:v70];
-                v56 = [v55 completions];
+                completions2 = [v55 completions];
 
-                v57 = [v54 count];
-                if (v57 != [v56 count])
+                v57 = [completions count];
+                if (v57 != [completions2 count])
                 {
 
                   v40 = 1;
                   goto LABEL_46;
                 }
 
-                if ([v54 count])
+                if ([completions count])
                 {
                   break;
                 }
@@ -2107,7 +2107,7 @@ LABEL_43:
 
                 v48 = v70 + 1;
                 v43 = v68;
-                v32 = v63;
+                groups = v63;
                 v13 = v64;
                 v44 = v65;
                 if (v70 + 1 >= [v68 count])
@@ -2119,8 +2119,8 @@ LABEL_43:
               v58 = 0;
               while (1)
               {
-                v59 = [v54 objectAtIndexedSubscript:v58];
-                v60 = [v56 objectAtIndexedSubscript:v58];
+                v59 = [completions objectAtIndexedSubscript:v58];
+                v60 = [completions2 objectAtIndexedSubscript:v58];
                 v61 = [v59 isEquivalentTo:v60];
 
                 if ((v61 & 1) == 0)
@@ -2128,14 +2128,14 @@ LABEL_43:
                   break;
                 }
 
-                if (++v58 >= [v54 count])
+                if (++v58 >= [completions count])
                 {
                   goto LABEL_43;
                 }
               }
 
               v40 = 1;
-              v32 = v63;
+              groups = v63;
               v13 = v64;
               v43 = v68;
 LABEL_46:
@@ -2149,15 +2149,15 @@ LABEL_46:
           }
 
 LABEL_48:
-          v39 = v32;
+          v39 = groups;
 
           v33 = v69;
         }
 
-        v62 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-        [v62 triggeredExperimentWithTreatmentId:self->_treatmentId withQueryID:-[WBSCompletionQuery queryID](self->_query cfDiffered:"queryID") cfUsed:v40 cfError:{1, v13}];
+        feedbackDispatcher2 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+        [feedbackDispatcher2 triggeredExperimentWithTreatmentId:self->_treatmentId withQueryID:-[WBSCompletionQuery queryID](self->_query cfDiffered:"queryID") cfUsed:v40 cfError:{1, v13}];
 
-        v32 = v39;
+        groups = v39;
       }
 
       [WeakRetained completionListDidUpdate:self forQuery:self->_query];
@@ -2187,12 +2187,12 @@ LABEL_53:
     self->_rankingFeedbackConfiguration = v3;
   }
 
-  v5 = [(CompletionGroupListing *)self->_listingOnDisplay prefixNavigationalIntent];
-  [(WBSParsecRankingFeedbackConfiguration *)self->_rankingFeedbackConfiguration setPrefixNavigationalIntent:v5];
+  prefixNavigationalIntent = [(CompletionGroupListing *)self->_listingOnDisplay prefixNavigationalIntent];
+  [(WBSParsecRankingFeedbackConfiguration *)self->_rankingFeedbackConfiguration setPrefixNavigationalIntent:prefixNavigationalIntent];
 
   [(WBSParsecRankingFeedbackConfiguration *)self->_rankingFeedbackConfiguration setServerCompletionDidMatchFirstSearchSuggestionFrom3rdParty:[(CompletionGroupListing *)self->_listingOnDisplay serverCompletionDidMatchFirstSearchSuggestionFrom3rdParty]];
-  v6 = [(CompletionGroupListing *)self->_listingOnDisplay hiddenSiriSuggestedSite];
-  [(WBSParsecRankingFeedbackConfiguration *)self->_rankingFeedbackConfiguration setHiddenSiriSuggestedSite:v6];
+  hiddenSiriSuggestedSite = [(CompletionGroupListing *)self->_listingOnDisplay hiddenSiriSuggestedSite];
+  [(WBSParsecRankingFeedbackConfiguration *)self->_rankingFeedbackConfiguration setHiddenSiriSuggestedSite:hiddenSiriSuggestedSite];
 
   v7 = self->_rankingFeedbackConfiguration;
 
@@ -2226,8 +2226,8 @@ LABEL_53:
 {
   [(NSDate *)self->_searchRenderTimeoutStartTime timeIntervalSinceNow];
   v4 = -v3;
-  v5 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider searchRenderTimeout];
-  [v5 doubleValue];
+  searchRenderTimeout = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider searchRenderTimeout];
+  [searchRenderTimeout doubleValue];
   if (v6 / 1000.0 >= v4)
   {
     v11 = 0;
@@ -2237,8 +2237,8 @@ LABEL_53:
   {
     [(NSDate *)self->_minRenderTimeoutStartTime timeIntervalSinceNow];
     v8 = -v7;
-    v9 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider minRenderTimeout];
-    [v9 doubleValue];
+    minRenderTimeout = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider minRenderTimeout];
+    [minRenderTimeout doubleValue];
     v11 = v10 / 1000.0 < v8;
   }
 
@@ -2272,29 +2272,29 @@ void __44__CompletionList_completionBookmarkProvider__block_invoke()
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 activeTabDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
   v6 = +[Application sharedApplication];
-  v7 = [v6 isRunningPPT];
+  isRunningPPT = [v6 isRunningPPT];
 
-  if ((v7 & 1) == 0)
+  if ((isRunningPPT & 1) == 0)
   {
-    v8 = [MEMORY[0x277D4A0A8] searchParameters];
+    searchParameters = [MEMORY[0x277D4A0A8] searchParameters];
     searchParametersList = self->_searchParametersList;
-    self->_searchParametersList = v8;
+    self->_searchParametersList = searchParameters;
 
-    v10 = [MEMORY[0x277D4A0A0] shared];
-    if (v10)
+    mEMORY[0x277D4A0A0] = [MEMORY[0x277D4A0A0] shared];
+    if (mEMORY[0x277D4A0A0])
     {
-      v11 = v10;
-      v12 = [MEMORY[0x277D4A0A0] shared];
-      v13 = [v12 identifiers];
+      v11 = mEMORY[0x277D4A0A0];
+      mEMORY[0x277D4A0A0]2 = [MEMORY[0x277D4A0A0] shared];
+      identifiers = [mEMORY[0x277D4A0A0]2 identifiers];
 
-      if (v13)
+      if (identifiers)
       {
-        v14 = [v13 treatmentId];
+        treatmentId = [identifiers treatmentId];
         treatmentId = self->_treatmentId;
-        self->_treatmentId = v14;
+        self->_treatmentId = treatmentId;
       }
     }
   }
@@ -2302,11 +2302,11 @@ void __44__CompletionList_completionBookmarkProvider__block_invoke()
   URLCompletionProvider = self->_URLCompletionProvider;
   if (!URLCompletionProvider)
   {
-    v17 = [v4 profileCloudTabStore];
+    profileCloudTabStore = [tabController profileCloudTabStore];
     v18 = [URLCompletionProvider alloc];
-    v19 = [objc_opt_class() completionBookmarkProvider];
-    v20 = [v4 activeProfileIdentifier];
-    v21 = [(URLCompletionProvider *)v18 initWithBookmarkProvider:v19 cloudTabStore:v17 profileIdentifier:v20 maxResults:16 searchableCollectionsMask:7];
+    completionBookmarkProvider = [objc_opt_class() completionBookmarkProvider];
+    activeProfileIdentifier = [tabController activeProfileIdentifier];
+    v21 = [(URLCompletionProvider *)v18 initWithBookmarkProvider:completionBookmarkProvider cloudTabStore:profileCloudTabStore profileIdentifier:activeProfileIdentifier maxResults:16 searchableCollectionsMask:7];
     v22 = self->_URLCompletionProvider;
     self->_URLCompletionProvider = v21;
 
@@ -2320,12 +2320,12 @@ void __44__CompletionList_completionBookmarkProvider__block_invoke()
   if (!self->_universalSearchProvider && self->_parsecSearchSession)
   {
     v23 = +[Application sharedApplication];
-    v24 = [v23 historyController];
-    v25 = [v4 activeProfileIdentifier];
-    v26 = v25;
-    if (v25)
+    historyController = [v23 historyController];
+    activeProfileIdentifier2 = [tabController activeProfileIdentifier];
+    v26 = activeProfileIdentifier2;
+    if (activeProfileIdentifier2)
     {
-      v27 = v25;
+      v27 = activeProfileIdentifier2;
     }
 
     else
@@ -2333,7 +2333,7 @@ void __44__CompletionList_completionBookmarkProvider__block_invoke()
       v27 = *MEMORY[0x277D49BD8];
     }
 
-    v28 = [v24 frequentlyVisitedSitesControllerForProfileIdentifier:v27 loadIfNeeded:1];
+    v28 = [historyController frequentlyVisitedSitesControllerForProfileIdentifier:v27 loadIfNeeded:1];
 
     v29 = [[UniversalSearchCompletionProvider alloc] initWithFrequentlyVisitedSitesController:v28];
     universalSearchProvider = self->_universalSearchProvider;
@@ -2405,8 +2405,8 @@ LABEL_24:
     rewrittenQuery = self->_query;
   }
 
-  v41 = [(NSArray *)self->_searchParametersList firstObject];
-  v42 = -[URLCompletionProvider completionsForQuery:isCFSearch:](v39, "completionsForQuery:isCFSearch:", rewrittenQuery, [v41 isCFSearch]);
+  firstObject = [(NSArray *)self->_searchParametersList firstObject];
+  v42 = -[URLCompletionProvider completionsForQuery:isCFSearch:](v39, "completionsForQuery:isCFSearch:", rewrittenQuery, [firstObject isCFSearch]);
 
   v43 = [(CompletionProvider *)self->_suggestionProvider completionsForQuery:self->_query];
   v44 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider completionsForQuery:self->_query];
@@ -2416,13 +2416,13 @@ LABEL_24:
   otherRenderTimeoutStartTime = self->_otherRenderTimeoutStartTime;
   self->_otherRenderTimeoutStartTime = 0;
 
-  v47 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   minRenderTimeoutStartTime = self->_minRenderTimeoutStartTime;
-  self->_minRenderTimeoutStartTime = v47;
+  self->_minRenderTimeoutStartTime = date;
 
-  if (self->_findOnPageProvider || ([v5 isBlank] & 1) != 0)
+  if (self->_findOnPageProvider || ([activeTabDocument isBlank] & 1) != 0)
   {
-    if ([v5 isBlank])
+    if ([activeTabDocument isBlank])
     {
       findOnPageProvider = self->_findOnPageProvider;
       self->_findOnPageProvider = 0;
@@ -2479,17 +2479,17 @@ LABEL_24:
   v64 = [(CompletionProvider *)calculationResultProvider completionsForQuery:self->_query];
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (self->_query != v5)
+  queryCopy = query;
+  v6 = queryCopy;
+  if (self->_query != queryCopy)
   {
     showingRecentSearches = self->_showingRecentSearches;
-    v8 = [(WBSCompletionQuery *)v5 queryString];
-    v9 = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
-    v10 = [v8 stringByTrimmingCharactersInSet:v9];
+    queryString = [(WBSCompletionQuery *)queryCopy queryString];
+    safari_whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
+    v10 = [queryString stringByTrimmingCharactersInSet:safari_whitespaceAndNewlineCharacterSet];
     v11 = [v10 length];
 
     self->_showingRecentSearches = v11 == 0;
@@ -2498,12 +2498,12 @@ LABEL_24:
       [(CompletionList *)self clearCompletionListings];
     }
 
-    objc_storeStrong(&self->_query, a3);
-    v12 = [(WBSCompletionQuery *)v6 queryString];
+    objc_storeStrong(&self->_query, query);
+    queryString2 = [(WBSCompletionQuery *)v6 queryString];
     self->_inputTypeOfStringToComplete = WBSUnifiedFieldInputTypeForString();
 
-    v13 = [(WBSCompletionQuery *)self->_query queryString];
-    if ([v13 length])
+    queryString3 = [(WBSCompletionQuery *)self->_query queryString];
+    if ([queryString3 length])
     {
       v14 = self->_showingRecentSearches;
 
@@ -2531,16 +2531,16 @@ LABEL_24:
     self->_siriSuggestedSitesURLStringsToIgnore = 0;
 
     objc_initWeak(&location, self);
-    v19 = [MEMORY[0x277D49F90] sharedController];
-    v20 = [WeakRetained tabController];
-    v21 = [v20 activeProfileIdentifier];
-    v22 = [(WBSCompletionQuery *)v6 queryString];
+    mEMORY[0x277D49F90] = [MEMORY[0x277D49F90] sharedController];
+    tabController = [WeakRetained tabController];
+    activeProfileIdentifier = [tabController activeProfileIdentifier];
+    queryString4 = [(WBSCompletionQuery *)v6 queryString];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __27__CompletionList_setQuery___block_invoke;
     v41[3] = &unk_2781DC2B0;
     objc_copyWeak(&v42, &location);
-    [v19 getIgnoredSiriSuggestedSitesURLStringsInProfile:v21 withQuery:v22 completionHandler:v41];
+    [mEMORY[0x277D49F90] getIgnoredSiriSuggestedSitesURLStringsInProfile:activeProfileIdentifier withQuery:queryString4 completionHandler:v41];
 
     listingOnDisplay = self->_listingOnDisplay;
     v24 = (!listingOnDisplay || [(CompletionGroupListing *)listingOnDisplay isEmpty]) && !self->_executingVoiceSearch;
@@ -2549,11 +2549,11 @@ LABEL_24:
       v24 |= 2uLL;
     }
 
-    v25 = [MEMORY[0x277D4A0A8] searchParameters];
-    v26 = [v25 firstObject];
-    v27 = [v26 isCFSearch];
+    searchParameters = [MEMORY[0x277D4A0A8] searchParameters];
+    firstObject = [searchParameters firstObject];
+    isCFSearch = [firstObject isCFSearch];
 
-    if (v27)
+    if (isCFSearch)
     {
       v28 = [[CompletionGroupListing alloc] initWithQuery:self->_query titleProvider:self options:v24];
       currentCFListing = self->_currentCFListing;
@@ -2566,10 +2566,10 @@ LABEL_24:
 
     [(CompletionList *)self _updateCompletionListing];
     [(NSTimer *)self->_parsecTimeout invalidate];
-    v32 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider minRenderTimeout];
-    v33 = [v32 integerValue];
+    minRenderTimeout = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider minRenderTimeout];
+    integerValue = [minRenderTimeout integerValue];
 
-    if (v33 < *MEMORY[0x277D4A2E0] || v33 > *MEMORY[0x277D4A2E8])
+    if (integerValue < *MEMORY[0x277D4A2E0] || integerValue > *MEMORY[0x277D4A2E8])
     {
       v35 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
       v36 = os_log_type_enabled(v35, OS_LOG_TYPE_ERROR);
@@ -2578,7 +2578,7 @@ LABEL_24:
       {
         universalSearchProvider = self->_universalSearchProvider;
         *buf = 134218498;
-        v45 = v33;
+        v45 = integerValue;
         v46 = 2048;
         v47 = v34;
         v48 = 2112;
@@ -2589,7 +2589,7 @@ LABEL_24:
 
     else
     {
-      v34 = v33;
+      v34 = integerValue;
     }
 
     v40[0] = MEMORY[0x277D85DD0];
@@ -2667,12 +2667,12 @@ uint64_t __27__CompletionList_setQuery___block_invoke_99(uint64_t a1)
   return result;
 }
 
-- (void)setParsecSearchSession:(id)a3
+- (void)setParsecSearchSession:(id)session
 {
-  v5 = a3;
-  if (self->_parsecSearchSession != v5)
+  sessionCopy = session;
+  if (self->_parsecSearchSession != sessionCopy)
   {
-    objc_storeStrong(&self->_parsecSearchSession, a3);
+    objc_storeStrong(&self->_parsecSearchSession, session);
     [(CompletionList *)self _updateProviders];
     if (!self->_parsecSearchSession)
     {
@@ -2684,9 +2684,9 @@ uint64_t __27__CompletionList_setQuery___block_invoke_99(uint64_t a1)
   }
 }
 
-- (void)setLoadProgressObserver:(id)a3
+- (void)setLoadProgressObserver:(id)observer
 {
-  obj = a3;
+  obj = observer;
   WeakRetained = objc_loadWeakRetained(&self->_loadProgressObserver);
 
   if (WeakRetained != obj)
@@ -2696,16 +2696,16 @@ uint64_t __27__CompletionList_setQuery___block_invoke_99(uint64_t a1)
   }
 }
 
-- (BOOL)_topHitMatchesString:(id)a3
+- (BOOL)_topHitMatchesString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   stringMatchedByTopHit = self->_stringMatchedByTopHit;
   if (!stringMatchedByTopHit)
   {
     goto LABEL_8;
   }
 
-  if ([(NSString *)stringMatchedByTopHit isEqualToString:v4])
+  if ([(NSString *)stringMatchedByTopHit isEqualToString:stringCopy])
   {
     v6 = 1;
     goto LABEL_13;
@@ -2718,34 +2718,34 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v7 = [(CompletionGroupListing *)self->_currentListing topHit];
-  if ([(CompletionItem *)self->_topHit isEquivalentTo:v7])
+  topHit = [(CompletionGroupListing *)self->_currentListing topHit];
+  if ([(CompletionItem *)self->_topHit isEquivalentTo:topHit])
   {
-    v8 = [(WBSCompletionQuery *)self->_rewrittenQuery queryString];
-    if (v8)
+    queryString = [(WBSCompletionQuery *)self->_rewrittenQuery queryString];
+    if (queryString)
     {
       v6 = 1;
     }
 
     else
     {
-      v9 = [(WBSCompletionQuery *)self->_query queryString];
-      v6 = v9 != 0;
+      queryString2 = [(WBSCompletionQuery *)self->_query queryString];
+      v6 = queryString2 != 0;
     }
   }
 
   else
   {
-    v6 = [(NSString *)self->_matchingStringInTopHit safari_hasCaseInsensitivePrefix:v4];
+    v6 = [(NSString *)self->_matchingStringInTopHit safari_hasCaseInsensitivePrefix:stringCopy];
   }
 
 LABEL_13:
   return v6;
 }
 
-- (id)topHitForString:(id)a3
+- (id)topHitForString:(id)string
 {
-  if ([(CompletionList *)self _topHitMatchesString:a3])
+  if ([(CompletionList *)self _topHitMatchesString:string])
   {
     v4 = self->_topHit;
   }
@@ -2758,19 +2758,19 @@ LABEL_13:
   return v4;
 }
 
-- (void)completionProvider:(id)a3 didFinishCompletingString:(id)a4
+- (void)completionProvider:(id)provider didFinishCompletingString:(id)string
 {
-  v28 = a3;
-  v7 = a4;
-  v8 = [(WBSCompletionQuery *)self->_query queryString];
-  if ([v7 isEqualToString:v8])
+  providerCopy = provider;
+  stringCopy = string;
+  queryString = [(WBSCompletionQuery *)self->_query queryString];
+  if ([stringCopy isEqualToString:queryString])
   {
   }
 
   else
   {
-    v9 = [(WBSCompletionQuery *)self->_rewrittenQuery queryString];
-    v10 = [v7 isEqualToString:v9];
+    queryString2 = [(WBSCompletionQuery *)self->_rewrittenQuery queryString];
+    v10 = [stringCopy isEqualToString:queryString2];
 
     if (!v10)
     {
@@ -2780,46 +2780,46 @@ LABEL_13:
 
   if (!self->_queryRestorationCompletionItem)
   {
-    v11 = v28;
-    if (self->_suggestionProvider == v28 && !self->_firstRemoteCompletionProviderToRespondToQuery)
+    v11 = providerCopy;
+    if (self->_suggestionProvider == providerCopy && !self->_firstRemoteCompletionProviderToRespondToQuery)
     {
-      v12 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider searchRenderTimeout];
-      v13 = [v12 integerValue];
+      searchRenderTimeout = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider searchRenderTimeout];
+      integerValue = [searchRenderTimeout integerValue];
 
-      v11 = v28;
-      if (v13)
+      v11 = providerCopy;
+      if (integerValue)
       {
-        objc_storeStrong(&self->_firstRemoteCompletionProviderToRespondToQuery, a3);
-        v14 = [MEMORY[0x277CBEAA8] date];
+        objc_storeStrong(&self->_firstRemoteCompletionProviderToRespondToQuery, provider);
+        date = [MEMORY[0x277CBEAA8] date];
         searchRenderTimeoutStartTime = self->_searchRenderTimeoutStartTime;
-        self->_searchRenderTimeoutStartTime = v14;
+        self->_searchRenderTimeoutStartTime = date;
 
-        v11 = v28;
+        v11 = providerCopy;
       }
     }
 
     universalSearchProvider = self->_universalSearchProvider;
     if (universalSearchProvider == v11)
     {
-      v17 = [(UniversalSearchCompletionProvider *)universalSearchProvider parsecSearchSession];
-      v18 = [v17 rewrittenQueryStringFromParsec];
+      parsecSearchSession = [(UniversalSearchCompletionProvider *)universalSearchProvider parsecSearchSession];
+      rewrittenQueryStringFromParsec = [parsecSearchSession rewrittenQueryStringFromParsec];
 
-      if (v18)
+      if (rewrittenQueryStringFromParsec)
       {
         self->_tryParsecRewritesIfNoTopHit = 1;
       }
 
       if (!self->_firstRemoteCompletionProviderToRespondToQuery)
       {
-        v23 = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider otherRenderTimeout];
-        v24 = [v23 integerValue];
+        otherRenderTimeout = [(UniversalSearchCompletionProvider *)self->_universalSearchProvider otherRenderTimeout];
+        integerValue2 = [otherRenderTimeout integerValue];
 
-        if (v24 >= 1)
+        if (integerValue2 >= 1)
         {
-          objc_storeStrong(&self->_firstRemoteCompletionProviderToRespondToQuery, a3);
-          v25 = [MEMORY[0x277CBEAA8] date];
+          objc_storeStrong(&self->_firstRemoteCompletionProviderToRespondToQuery, provider);
+          date2 = [MEMORY[0x277CBEAA8] date];
           otherRenderTimeoutStartTime = self->_otherRenderTimeoutStartTime;
-          self->_otherRenderTimeoutStartTime = v25;
+          self->_otherRenderTimeoutStartTime = date2;
           goto LABEL_18;
         }
       }
@@ -2828,7 +2828,7 @@ LABEL_13:
       {
         otherRenderTimeoutStartTime = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
         v20 = objc_alloc(MEMORY[0x277D4C590]);
-        v21 = [(CompletionProvider *)v28 completionsForQuery:self->_query];
+        v21 = [(CompletionProvider *)providerCopy completionsForQuery:self->_query];
         v22 = [v20 initWithResults:v21];
         [otherRenderTimeoutStartTime postFeedback:v22 forQueryID:{-[WBSCompletionQuery queryID](self->_query, "queryID")}];
 
@@ -2846,7 +2846,7 @@ LABEL_18:
       v26 = ![(CompletionGroupListing *)self->_currentListing isAwaitingTabCompletion];
     }
 
-    if (self->_suggestionProvider == v28)
+    if (self->_suggestionProvider == providerCopy)
     {
       v27 = 1;
       if (!v26)
@@ -2859,7 +2859,7 @@ LABEL_28:
 
     else
     {
-      v27 = self->_offlineSearchSuggestionsCompletionProvider == v28;
+      v27 = self->_offlineSearchSuggestionsCompletionProvider == providerCopy;
       if (!v26)
       {
         goto LABEL_28;
@@ -2877,76 +2877,76 @@ LABEL_28:
 LABEL_29:
 }
 
-- (id)windowHostingCompletionProvider:(id)a3
+- (id)windowHostingCompletionProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained window];
+  window = [WeakRetained window];
 
-  return v4;
+  return window;
 }
 
 - (id)currentSearchEngineHostSuffixes
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained activeSearchEngine];
-  v4 = [v3 hostSuffixes];
+  activeSearchEngine = [WeakRetained activeSearchEngine];
+  hostSuffixes = [activeSearchEngine hostSuffixes];
 
-  return v4;
+  return hostSuffixes;
 }
 
-- (id)defaultSectionTitleForGroupAtIndex:(unint64_t)a3
+- (id)defaultSectionTitleForGroupAtIndex:(unint64_t)index
 {
-  v3 = [(CompletionList *)self _groupOrNilAtIndex:a3];
-  v4 = [v3 defaultHeaderTitle];
+  v3 = [(CompletionList *)self _groupOrNilAtIndex:index];
+  defaultHeaderTitle = [v3 defaultHeaderTitle];
 
-  return v4;
+  return defaultHeaderTitle;
 }
 
-- (id)titleForGroupAtIndex:(unint64_t)a3
+- (id)titleForGroupAtIndex:(unint64_t)index
 {
-  v3 = [(CompletionList *)self _groupOrNilAtIndex:a3];
-  v4 = [v3 title];
+  v3 = [(CompletionList *)self _groupOrNilAtIndex:index];
+  title = [v3 title];
 
-  return v4;
+  return title;
 }
 
-- (id)identifierForGroupAtIndex:(unint64_t)a3
+- (id)identifierForGroupAtIndex:(unint64_t)index
 {
-  v3 = [(CompletionList *)self _groupOrNilAtIndex:a3];
-  v4 = [v3 groupIdentifier];
+  v3 = [(CompletionList *)self _groupOrNilAtIndex:index];
+  groupIdentifier = [v3 groupIdentifier];
 
-  return v4;
+  return groupIdentifier;
 }
 
-- (id)completionsForGroupAtIndex:(unint64_t)a3
+- (id)completionsForGroupAtIndex:(unint64_t)index
 {
-  v3 = [(CompletionList *)self _groupOrNilAtIndex:a3];
-  v4 = [v3 completions];
+  v3 = [(CompletionList *)self _groupOrNilAtIndex:index];
+  completions = [v3 completions];
 
-  return v4;
+  return completions;
 }
 
-- (id)headerViewReuseIdentifierForGroupAtIndex:(unint64_t)a3
+- (id)headerViewReuseIdentifierForGroupAtIndex:(unint64_t)index
 {
-  v3 = [(CompletionList *)self _groupOrNilAtIndex:a3];
-  v4 = [v3 headerViewReuseIdentifier];
+  v3 = [(CompletionList *)self _groupOrNilAtIndex:index];
+  headerViewReuseIdentifier = [v3 headerViewReuseIdentifier];
 
-  return v4;
+  return headerViewReuseIdentifier;
 }
 
-- (id)headerViewForGroupAtIndex:(unint64_t)a3
+- (id)headerViewForGroupAtIndex:(unint64_t)index
 {
-  v3 = [(CompletionList *)self _groupOrNilAtIndex:a3];
-  v4 = [v3 headerView];
+  v3 = [(CompletionList *)self _groupOrNilAtIndex:index];
+  headerView = [v3 headerView];
 
-  return v4;
+  return headerView;
 }
 
-- (void)configureHeaderView:(id)a3 forGroupAtIndex:(unint64_t)a4
+- (void)configureHeaderView:(id)view forGroupAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(CompletionList *)self _groupOrNilAtIndex:a4];
-  [v7 configureHeaderView:v6 forCompletionList:self];
+  viewCopy = view;
+  v7 = [(CompletionList *)self _groupOrNilAtIndex:index];
+  [v7 configureHeaderView:viewCopy forCompletionList:self];
 }
 
 - (BOOL)hasCompletions
@@ -2960,11 +2960,11 @@ LABEL_29:
   return listingOnDisplay;
 }
 
-- (void)setShouldIncludeNetworkedSearchSuggestions:(BOOL)a3
+- (void)setShouldIncludeNetworkedSearchSuggestions:(BOOL)suggestions
 {
-  if (self->_shouldIncludeNetworkedSearchSuggestions != a3)
+  if (self->_shouldIncludeNetworkedSearchSuggestions != suggestions)
   {
-    self->_shouldIncludeNetworkedSearchSuggestions = a3;
+    self->_shouldIncludeNetworkedSearchSuggestions = suggestions;
     [(CompletionList *)self _updateProviders];
 
     [(CompletionList *)self _updateCompletionListing];
@@ -3003,9 +3003,9 @@ LABEL_29:
   self->_query = 0;
 }
 
-- (void)updateRestorationCompletionItemForCompletionItem:(id)a3 isCF:(BOOL)a4
+- (void)updateRestorationCompletionItemForCompletionItem:(id)item isCF:(BOOL)f
 {
-  if (a4)
+  if (f)
   {
     v5 = 24;
   }
@@ -3017,9 +3017,9 @@ LABEL_29:
 
   v6 = *(&self->super.isa + v5);
   listingOnDisplay = self->_listingOnDisplay;
-  v8 = [(SearchQueryRestorationCompletionItem *)v6 listingToRestore];
+  listingToRestore = [(SearchQueryRestorationCompletionItem *)v6 listingToRestore];
 
-  if (listingOnDisplay != v8)
+  if (listingOnDisplay != listingToRestore)
   {
     v9 = [[SearchQueryRestorationCompletionItem alloc] initWithQuery:self->_query];
 
@@ -3031,41 +3031,41 @@ LABEL_29:
   *(&self->super.isa + v5) = v6;
 }
 
-- (void)cacheCurrentCompletionsAfterAcceptanceOfCompletionItem:(id)a3
+- (void)cacheCurrentCompletionsAfterAcceptanceOfCompletionItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   [CompletionList updateRestorationCompletionItemForCompletionItem:"updateRestorationCompletionItemForCompletionItem:isCF:" isCF:?];
-  v4 = [(NSArray *)self->_searchParametersList firstObject];
-  v5 = [v4 isCFSearch];
+  firstObject = [(NSArray *)self->_searchParametersList firstObject];
+  isCFSearch = [firstObject isCFSearch];
 
-  if (v5)
+  if (isCFSearch)
   {
-    [(CompletionList *)self updateRestorationCompletionItemForCompletionItem:v6 isCF:1];
+    [(CompletionList *)self updateRestorationCompletionItemForCompletionItem:itemCopy isCF:1];
   }
 }
 
 - (BOOL)shouldRestoreCachedCompletions
 {
-  v3 = [(SearchQueryRestorationCompletionItem *)self->_queryRestorationCompletionItem queryToRestore];
-  v4 = [v3 queryString];
+  queryToRestore = [(SearchQueryRestorationCompletionItem *)self->_queryRestorationCompletionItem queryToRestore];
+  queryString = [queryToRestore queryString];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained tabController];
-  v7 = [v6 activeTabDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
 
-  if ([v7 isSearchPage])
+  if ([activeTabDocument isSearchPage])
   {
-    v8 = [v7 currentSearchQuery];
-    v9 = v8;
-    if (v8)
+    currentSearchQuery = [activeTabDocument currentSearchQuery];
+    v9 = currentSearchQuery;
+    if (currentSearchQuery)
     {
-      v10 = [v8 isEqualToString:v4];
+      v10 = [currentSearchQuery isEqualToString:queryString];
     }
 
     else
     {
-      v11 = [v7 currentSearchQueryAllowingQueryThatLooksLikeURL];
-      v10 = [v11 isEqualToString:v4];
+      currentSearchQueryAllowingQueryThatLooksLikeURL = [activeTabDocument currentSearchQueryAllowingQueryThatLooksLikeURL];
+      v10 = [currentSearchQueryAllowingQueryThatLooksLikeURL isEqualToString:queryString];
     }
   }
 
@@ -3079,24 +3079,24 @@ LABEL_29:
 
 - (void)restoreCachedCompletions
 {
-  v3 = [(SearchQueryRestorationCompletionItem *)self->_queryRestorationCompletionItem listingToRestore];
+  listingToRestore = [(SearchQueryRestorationCompletionItem *)self->_queryRestorationCompletionItem listingToRestore];
   listingOnDisplay = self->_listingOnDisplay;
-  self->_listingOnDisplay = v3;
+  self->_listingOnDisplay = listingToRestore;
 
-  v5 = [(NSArray *)self->_searchParametersList firstObject];
-  v6 = [v5 isCFSearch];
+  firstObject = [(NSArray *)self->_searchParametersList firstObject];
+  isCFSearch = [firstObject isCFSearch];
 
-  if (v6)
+  if (isCFSearch)
   {
-    v7 = [(SearchQueryRestorationCompletionItem *)self->_cfQueryRestorationCompletionItem listingToRestore];
+    listingToRestore2 = [(SearchQueryRestorationCompletionItem *)self->_cfQueryRestorationCompletionItem listingToRestore];
     cfListingOnDisplay = self->_cfListingOnDisplay;
-    self->_cfListingOnDisplay = v7;
+    self->_cfListingOnDisplay = listingToRestore2;
   }
 
   v9 = objc_alloc(MEMORY[0x277D49ED8]);
-  v10 = [(SearchQueryRestorationCompletionItem *)self->_queryRestorationCompletionItem queryToRestore];
-  v11 = [v10 queryString];
-  v12 = [v9 initWithQueryString:v11 triggerEvent:26];
+  queryToRestore = [(SearchQueryRestorationCompletionItem *)self->_queryRestorationCompletionItem queryToRestore];
+  queryString = [queryToRestore queryString];
+  v12 = [v9 initWithQueryString:queryString triggerEvent:26];
   query = self->_query;
   self->_query = v12;
 
@@ -3108,12 +3108,12 @@ LABEL_29:
 - (void)_updateQueryIDForGroups
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(CompletionGroupListing *)self->_listingOnDisplay groups];
+  groups = [(CompletionGroupListing *)self->_listingOnDisplay groups];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v4 = [groups countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3125,7 +3125,7 @@ LABEL_29:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(groups);
         }
 
         v8 = *(*(&v18 + 1) + 8 * v7);
@@ -3133,8 +3133,8 @@ LABEL_29:
         v15 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v9 = [v8 completions];
-        v10 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        completions = [v8 completions];
+        v10 = [completions countByEnumeratingWithState:&v14 objects:v22 count:16];
         if (v10)
         {
           v11 = v10;
@@ -3146,14 +3146,14 @@ LABEL_29:
             {
               if (*v15 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(completions);
               }
 
               [*(*(&v14 + 1) + 8 * v13++) setParsecQueryID:{-[WBSCompletionQuery queryID](self->_query, "queryID")}];
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+            v11 = [completions countByEnumeratingWithState:&v14 objects:v22 count:16];
           }
 
           while (v11);
@@ -3163,34 +3163,34 @@ LABEL_29:
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [groups countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)didResumeSearchWithQuery:(id)a3
+- (void)didResumeSearchWithQuery:(id)query
 {
   listingOnDisplay = self->_listingOnDisplay;
-  v5 = a3;
-  v15 = [(CompletionGroupListing *)listingOnDisplay groups];
+  queryCopy = query;
+  groups = [(CompletionGroupListing *)listingOnDisplay groups];
   v6 = objc_alloc(MEMORY[0x277D49ED8]);
-  v7 = [v5 queryString];
+  queryString = [queryCopy queryString];
 
-  v8 = [v6 initWithQueryString:v7];
+  v8 = [v6 initWithQueryString:queryString];
   query = self->_query;
   self->_query = v8;
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v11 = [WeakRetained effectiveProfileIdentifier];
-  [(WBSCompletionQuery *)self->_query setProfileIdentifierToFilterResults:v11];
+  effectiveProfileIdentifier = [WeakRetained effectiveProfileIdentifier];
+  [(WBSCompletionQuery *)self->_query setProfileIdentifierToFilterResults:effectiveProfileIdentifier];
 
   [(CompletionList *)self _updateQueryIDForGroups];
-  v12 = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
-  v13 = [(WBSCompletionQuery *)self->_query queryID];
-  v14 = [(CompletionList *)self rankingFeedbackConfiguration];
-  [v12 didRankSections:v15 blendingDuration:0 feedbackForHiddenAndDuplicateResults:v13 forQueryID:v14 rankingFeedbackConfiguration:0.0];
+  feedbackDispatcher = [(WBSParsecDSession *)self->_parsecSearchSession feedbackDispatcher];
+  queryID = [(WBSCompletionQuery *)self->_query queryID];
+  rankingFeedbackConfiguration = [(CompletionList *)self rankingFeedbackConfiguration];
+  [feedbackDispatcher didRankSections:groups blendingDuration:0 feedbackForHiddenAndDuplicateResults:queryID forQueryID:rankingFeedbackConfiguration rankingFeedbackConfiguration:0.0];
 }
 
 - (void)clearCachedSearchQuery
@@ -3199,44 +3199,44 @@ LABEL_29:
   self->_queryRestorationCompletionItem = 0;
 }
 
-- (id)swipeActionsForCompletionItemAtIndexPath:(id)a3
+- (id)swipeActionsForCompletionItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
-  v7 = -[CompletionGroupListing groupAtIndex:](self->_listingOnDisplay, "groupAtIndex:", [v4 section]);
-  v8 = [v7 completions];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
+  v7 = -[CompletionGroupListing groupAtIndex:](self->_listingOnDisplay, "groupAtIndex:", [pathCopy section]);
+  completions = [v7 completions];
+  v9 = [completions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [(CompletionGroupListing *)self->_listingOnDisplay parsecTopHits];
-  if ([v10 count] || v5 != -[CompletionGroupListing indexOfTopHitsGroup](self->_listingOnDisplay, "indexOfTopHitsGroup"))
+  parsecTopHits = [(CompletionGroupListing *)self->_listingOnDisplay parsecTopHits];
+  if ([parsecTopHits count] || section != -[CompletionGroupListing indexOfTopHitsGroup](self->_listingOnDisplay, "indexOfTopHitsGroup"))
   {
   }
 
   else
   {
-    v11 = [(CompletionGroupListing *)self->_listingOnDisplay localTopHits];
-    v12 = [v11 count];
+    localTopHits = [(CompletionGroupListing *)self->_listingOnDisplay localTopHits];
+    v12 = [localTopHits count];
 
     if (v6 < v12)
     {
-      v13 = [(CompletionGroupListing *)self->_listingOnDisplay localTopHits];
-      v14 = [v13 objectAtIndexedSubscript:v6];
-      v15 = [(CompletionList *)self _swipeActionForTopHit:v14 atIndexPath:v4];
+      localTopHits2 = [(CompletionGroupListing *)self->_listingOnDisplay localTopHits];
+      v14 = [localTopHits2 objectAtIndexedSubscript:v6];
+      v15 = [(CompletionList *)self _swipeActionForTopHit:v14 atIndexPath:pathCopy];
 
       goto LABEL_11;
     }
   }
 
-  if (v5 == [(CompletionGroupListing *)self->_listingOnDisplay indexOfBookmarksAndHistoryGroup])
+  if (section == [(CompletionGroupListing *)self->_listingOnDisplay indexOfBookmarksAndHistoryGroup])
   {
-    v16 = [(CompletionGroupListing *)self->_listingOnDisplay groups];
-    v17 = [v16 objectAtIndexedSubscript:{-[CompletionGroupListing indexOfBookmarksAndHistoryGroup](self->_listingOnDisplay, "indexOfBookmarksAndHistoryGroup")}];
+    groups = [(CompletionGroupListing *)self->_listingOnDisplay groups];
+    v17 = [groups objectAtIndexedSubscript:{-[CompletionGroupListing indexOfBookmarksAndHistoryGroup](self->_listingOnDisplay, "indexOfBookmarksAndHistoryGroup")}];
 
-    v18 = [v17 completions];
-    v19 = [v18 objectAtIndexedSubscript:v6];
+    completions2 = [v17 completions];
+    v19 = [completions2 objectAtIndexedSubscript:v6];
 
-    v15 = [(CompletionList *)self _swipeActionForHistory:v19 atIndexPath:v4];
+    v15 = [(CompletionList *)self _swipeActionForHistory:v19 atIndexPath:pathCopy];
   }
 
   else
@@ -3244,7 +3244,7 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [(CompletionList *)self _swipeActionForSwitchToTab:v9 atIndexPath:v4];
+      v15 = [(CompletionList *)self _swipeActionForSwitchToTab:v9 atIndexPath:pathCopy];
     }
 
     else
@@ -3258,14 +3258,14 @@ LABEL_11:
   return v15;
 }
 
-- (id)_swipeActionForTopHit:(id)a3 atIndexPath:(id)a4
+- (id)_swipeActionForTopHit:(id)hit atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  hitCopy = hit;
+  pathCopy = path;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 isTopHit])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [hitCopy isTopHit])
   {
-    v8 = [(CompletionList *)self _contextualActionForSwipeToDeleteItem:v6 atIndexPath:v7 itemType:1];
+    v8 = [(CompletionList *)self _contextualActionForSwipeToDeleteItem:hitCopy atIndexPath:pathCopy itemType:1];
   }
 
   else
@@ -3276,10 +3276,10 @@ LABEL_11:
   return v8;
 }
 
-- (id)_swipeActionForHistory:(id)a3 atIndexPath:(id)a4
+- (id)_swipeActionForHistory:(id)history atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  historyCopy = history;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3294,7 +3294,7 @@ LABEL_11:
       v8 = 2;
     }
 
-    v9 = [(CompletionList *)self _contextualActionForSwipeToDeleteItem:v6 atIndexPath:v7 itemType:v8];
+    v9 = [(CompletionList *)self _contextualActionForSwipeToDeleteItem:historyCopy atIndexPath:pathCopy itemType:v8];
   }
 
   else
@@ -3305,14 +3305,14 @@ LABEL_11:
   return v9;
 }
 
-- (id)_swipeActionForSwitchToTab:(id)a3 atIndexPath:(id)a4
+- (id)_swipeActionForSwitchToTab:(id)tab atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  tabCopy = tab;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(CompletionList *)self _contextualActionForSwipeToDeleteItem:v6 atIndexPath:v7 itemType:3];
+    v8 = [(CompletionList *)self _contextualActionForSwipeToDeleteItem:tabCopy atIndexPath:pathCopy itemType:3];
   }
 
   else
@@ -3325,8 +3325,8 @@ LABEL_11:
 
 - (BOOL)isPresentingItemDeletionAlert
 {
-  v3 = [(UIAlertController *)self->_destructiveDeletionAlert parentViewController];
-  if (v3)
+  parentViewController = [(UIAlertController *)self->_destructiveDeletionAlert parentViewController];
+  if (parentViewController)
   {
     destructiveDeletionAlertIsPending = 1;
   }
@@ -3339,12 +3339,12 @@ LABEL_11:
   return destructiveDeletionAlertIsPending;
 }
 
-- (id)_swipeToDeleteTitleForHistoryAndBookmarks:(id)a3
+- (id)_swipeToDeleteTitleForHistoryAndBookmarks:(id)bookmarks
 {
-  v3 = a3;
-  if (![v3 containsReadingListItem] && !objc_msgSend(v3, "containsBookmark"))
+  bookmarksCopy = bookmarks;
+  if (![bookmarksCopy containsReadingListItem] && !objc_msgSend(bookmarksCopy, "containsBookmark"))
   {
-    [v3 onlyContainsCloudTab];
+    [bookmarksCopy onlyContainsCloudTab];
   }
 
   v4 = _WBSLocalizedString();
@@ -3352,29 +3352,29 @@ LABEL_11:
   return v4;
 }
 
-- (id)_swipeToDeleteButtonTitleForHistoryAndBookmarks:(id)a3
+- (id)_swipeToDeleteButtonTitleForHistoryAndBookmarks:(id)bookmarks
 {
-  [a3 onlyContainsCloudTab];
+  [bookmarks onlyContainsCloudTab];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-- (id)_swipeToDeleteDestructiveAlertTitleForHistoryAndBookmarks:(id)a3 forBookmarks:(id)a4
+- (id)_swipeToDeleteDestructiveAlertTitleForHistoryAndBookmarks:(id)bookmarks forBookmarks:(id)forBookmarks
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([a3 onlyContainsCloudTab])
+  forBookmarksCopy = forBookmarks;
+  if ([bookmarks onlyContainsCloudTab])
   {
     goto LABEL_2;
   }
 
-  v6 = [v5 count];
+  v6 = [forBookmarksCopy count];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = forBookmarksCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -3439,30 +3439,30 @@ LABEL_3:
   return v6;
 }
 
-- (id)_contextualActionForSwipeToDeleteItem:(id)a3 atIndexPath:(id)a4 itemType:(unint64_t)a5
+- (id)_contextualActionForSwipeToDeleteItem:(id)item atIndexPath:(id)path itemType:(unint64_t)type
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v31 = a4;
+  itemCopy = item;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v10 = [WeakRetained tabController];
-  v11 = [v10 activeTabDocument];
-  v34 = [v11 history];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  history = [activeTabDocument history];
 
-  v12 = [v8 originalURLString];
-  v33 = [v34 itemForURLString:v12];
+  originalURLString = [itemCopy originalURLString];
+  v33 = [history itemForURLString:originalURLString];
 
   v13 = _WBSLocalizedString();
-  v14 = [MEMORY[0x277D7B5A8] safariBookmarkCollection];
-  v15 = [v8 originalURLString];
-  v32 = [v14 bookmarksMatchingString:v15];
+  safariBookmarkCollection = [MEMORY[0x277D7B5A8] safariBookmarkCollection];
+  originalURLString2 = [itemCopy originalURLString];
+  v32 = [safariBookmarkCollection bookmarksMatchingString:originalURLString2];
 
-  if (a5 - 1 >= 2)
+  if (type - 1 >= 2)
   {
-    if (a5 != 3)
+    if (type != 3)
     {
       v21 = 0;
-      LOBYTE(v18) = 0;
+      LOBYTE(onlyContainsCloudTab) = 0;
       v22 = 0;
       v30 = 0;
       goto LABEL_10;
@@ -3471,7 +3471,7 @@ LABEL_3:
     v30 = _WBSLocalizedString();
     v21 = _WBSLocalizedString();
     v19 = _WBSLocalizedString();
-    LOBYTE(v18) = 0;
+    LOBYTE(onlyContainsCloudTab) = 0;
     v22 = 1;
     v16 = v13;
 LABEL_8:
@@ -3486,17 +3486,17 @@ LABEL_10:
     v35[3] = &unk_2781DC350;
     objc_copyWeak(v44, &location);
     v45 = v22 & 1;
-    v36 = v8;
-    v37 = v31;
-    v44[1] = a5;
-    v38 = v34;
+    v36 = itemCopy;
+    v37 = pathCopy;
+    v44[1] = type;
+    v38 = history;
     v39 = v33;
     v24 = v21;
     v40 = v24;
     v25 = v30;
     v41 = v25;
-    v46 = v18;
-    v42 = v14;
+    v46 = onlyContainsCloudTab;
+    v42 = safariBookmarkCollection;
     v43 = v32;
     v26 = [v23 contextualActionWithStyle:1 title:v13 handler:v35];
     v48[0] = v26;
@@ -3511,20 +3511,20 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v8;
+    v16 = itemCopy;
     if (([v16 isSynthesized] & 1) == 0)
     {
-      v17 = [v16 containsReadingListItem];
-      v29 = [v16 containsBookmark];
-      v18 = [v16 onlyContainsCloudTab];
+      containsReadingListItem = [v16 containsReadingListItem];
+      containsBookmark = [v16 containsBookmark];
+      onlyContainsCloudTab = [v16 onlyContainsCloudTab];
       v19 = [(CompletionList *)self _swipeToDeleteTitleForHistoryAndBookmarks:v16];
 
       v30 = [(CompletionList *)self _swipeToDeleteButtonTitleForHistoryAndBookmarks:v16];
       v20 = [(CompletionList *)self _swipeToDeleteDestructiveAlertTitleForHistoryAndBookmarks:v16 forBookmarks:v32];
       v21 = v20;
-      if ((v33 != 0) | (v17 | v29 | v18) & 1)
+      if ((v33 != 0) | (containsReadingListItem | containsBookmark | onlyContainsCloudTab) & 1)
       {
-        v22 = v17 | v29 | v18;
+        v22 = containsReadingListItem | containsBookmark | onlyContainsCloudTab;
         goto LABEL_8;
       }
 
@@ -3731,28 +3731,28 @@ void __77__CompletionList__contextualActionForSwipeToDeleteItem_atIndexPath_item
   [v7 closeTab:v6 onDevice:v5];
 }
 
-- (BOOL)_deleteCompletionListItemAndCheckIfLastInSection:(id)a3 atIndexPath:(id)a4 forItemType:(unint64_t)a5
+- (BOOL)_deleteCompletionListItemAndCheckIfLastInSection:(id)section atIndexPath:(id)path forItemType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  switch(a5)
+  sectionCopy = section;
+  pathCopy = path;
+  v10 = pathCopy;
+  switch(type)
   {
     case 3uLL:
-      v14 = -[CompletionGroupListing deleteSwitchToTabItemAndReturnWhetherSectionIsEmpty:inSection:atIndex:](self->_listingOnDisplay, "deleteSwitchToTabItemAndReturnWhetherSectionIsEmpty:inSection:atIndex:", v8, [v9 section], objc_msgSend(v9, "row"));
+      v14 = -[CompletionGroupListing deleteSwitchToTabItemAndReturnWhetherSectionIsEmpty:inSection:atIndex:](self->_listingOnDisplay, "deleteSwitchToTabItemAndReturnWhetherSectionIsEmpty:inSection:atIndex:", sectionCopy, [pathCopy section], objc_msgSend(pathCopy, "row"));
       goto LABEL_8;
     case 2uLL:
-      v14 = -[CompletionGroupListing deleteHistoryItemAndCheckIfLastInSection:atIndex:](self->_listingOnDisplay, "deleteHistoryItemAndCheckIfLastInSection:atIndex:", v8, [v9 row]);
+      v14 = -[CompletionGroupListing deleteHistoryItemAndCheckIfLastInSection:atIndex:](self->_listingOnDisplay, "deleteHistoryItemAndCheckIfLastInSection:atIndex:", sectionCopy, [pathCopy row]);
 LABEL_8:
       v12 = v14;
       break;
     case 1uLL:
-      [(CompletionList *)self _deleteTopHitCompletionItem:v8 atIndexPath:v9];
-      v11 = [(CompletionGroupListing *)self->_listingOnDisplay localTopHits];
-      v12 = [v11 count] == 0;
+      [(CompletionList *)self _deleteTopHitCompletionItem:sectionCopy atIndexPath:pathCopy];
+      localTopHits = [(CompletionGroupListing *)self->_listingOnDisplay localTopHits];
+      v12 = [localTopHits count] == 0;
 
       topHit = self->_topHit;
-      if (topHit == v8)
+      if (topHit == sectionCopy)
       {
         self->_topHit = 0;
       }
@@ -3766,11 +3766,11 @@ LABEL_8:
   return v12;
 }
 
-- (void)_deleteTopHitCompletionItem:(id)a3 atIndexPath:(id)a4
+- (void)_deleteTopHitCompletionItem:(id)item atIndexPath:(id)path
 {
   listingOnDisplay = self->_listingOnDisplay;
-  v6 = a3;
-  -[CompletionGroupListing deleteTopHit:atIndex:](listingOnDisplay, "deleteTopHit:atIndex:", v6, [a4 row]);
+  itemCopy = item;
+  -[CompletionGroupListing deleteTopHit:atIndex:](listingOnDisplay, "deleteTopHit:atIndex:", itemCopy, [path row]);
 }
 
 - (void)_requestFavicons
@@ -3785,22 +3785,22 @@ LABEL_8:
 
   if (!self->_urlStringToFaviconRequestTokens)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     urlStringToFaviconRequestTokens = self->_urlStringToFaviconRequestTokens;
-    self->_urlStringToFaviconRequestTokens = v5;
+    self->_urlStringToFaviconRequestTokens = dictionary;
   }
 
-  v7 = [(CompletionList *)self _completionsRequiringFavicon];
+  _completionsRequiringFavicon = [(CompletionList *)self _completionsRequiringFavicon];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v7 safari_mapObjectsUsingBlock:&__block_literal_global_162_1];
+  v9 = [_completionsRequiringFavicon safari_mapObjectsUsingBlock:&__block_literal_global_162_1];
   v30 = [v8 setWithArray:v9];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  allKeys = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v11)
   {
     v12 = *v43;
@@ -3810,21 +3810,21 @@ LABEL_8:
       {
         if (*v43 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v42 + 1) + 8 * i);
         if (([v30 containsObject:v14] & 1) == 0)
         {
-          v15 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+          mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
           v16 = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens objectForKeyedSubscript:v14];
-          [v15 cancelRequestsWithTokens:v16];
+          [mEMORY[0x277D28F58] cancelRequestsWithTokens:v16];
 
           [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens setObject:0 forKeyedSubscript:v14];
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v42 objects:v47 count:16];
     }
 
     while (v11);
@@ -3834,7 +3834,7 @@ LABEL_8:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v7;
+  obj = _completionsRequiringFavicon;
   v17 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v17)
   {
@@ -3849,9 +3849,9 @@ LABEL_8:
         }
 
         v19 = *(*(&v38 + 1) + 8 * j);
-        v20 = [v19 originalURLString];
+        originalURLString = [v19 originalURLString];
         v21 = objc_alloc(MEMORY[0x277D4A730]);
-        v22 = [MEMORY[0x277CBEBC0] URLWithString:v20];
+        v22 = [MEMORY[0x277CBEBC0] URLWithString:originalURLString];
         v23 = [v21 initWithURL:v22 iconSize:0 fallbackType:{24.0, 24.0}];
 
         v34 = 0;
@@ -3859,7 +3859,7 @@ LABEL_8:
         v36 = 0x2020000000;
         v37 = 1;
         objc_initWeak(&location, self);
-        v24 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+        mEMORY[0x277D28F58]2 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __34__CompletionList__requestFavicons__block_invoke_2;
@@ -3867,21 +3867,21 @@ LABEL_8:
         objc_copyWeak(&v32, &location);
         v31[4] = v19;
         v31[5] = &v34;
-        v25 = [v24 registerRequest:v23 priority:2 responseHandler:v31];
+        v25 = [mEMORY[0x277D28F58]2 registerRequest:v23 priority:2 responseHandler:v31];
 
         *(v35 + 24) = 0;
-        v26 = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens objectForKeyedSubscript:v20];
+        v26 = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens objectForKeyedSubscript:originalURLString];
 
         if (v26)
         {
-          v27 = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens objectForKeyedSubscript:v20];
+          v27 = [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens objectForKeyedSubscript:originalURLString];
           [v27 addObject:v25];
         }
 
         else
         {
           v27 = [MEMORY[0x277CBEB18] arrayWithObject:v25];
-          [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens setObject:v27 forKeyedSubscript:v20];
+          [(NSMutableDictionary *)self->_urlStringToFaviconRequestTokens setObject:v27 forKeyedSubscript:originalURLString];
         }
 
         objc_destroyWeak(&v32);
@@ -3939,32 +3939,32 @@ void __34__CompletionList__requestFavicons__block_invoke_2(uint64_t a1, void *a2
 
 - (id)_completionsRequiringFavicon
 {
-  v3 = [(CompletionGroupListing *)self->_listingOnDisplay parsecTopHits];
-  if (v3)
+  parsecTopHits = [(CompletionGroupListing *)self->_listingOnDisplay parsecTopHits];
+  if (parsecTopHits)
   {
-    v4 = 0;
+    localTopHits = 0;
   }
 
   else
   {
-    v4 = [(CompletionGroupListing *)self->_listingOnDisplay localTopHits];
+    localTopHits = [(CompletionGroupListing *)self->_listingOnDisplay localTopHits];
   }
 
-  return v4;
+  return localTopHits;
 }
 
-- (id)_indexPathForEquivalentCompletionItem:(id)a3
+- (id)_indexPathForEquivalentCompletionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CompletionGroupListing *)self->_listingOnDisplay groups];
-  if ([v5 count])
+  itemCopy = item;
+  groups = [(CompletionGroupListing *)self->_listingOnDisplay groups];
+  if ([groups count])
   {
     v6 = 0;
     while (1)
     {
-      v7 = [v5 objectAtIndexedSubscript:v6];
-      v8 = [v7 completions];
-      v9 = [v8 count];
+      v7 = [groups objectAtIndexedSubscript:v6];
+      completions = [v7 completions];
+      v9 = [completions count];
 
       if (v9)
       {
@@ -3973,7 +3973,7 @@ void __34__CompletionList__requestFavicons__block_invoke_2(uint64_t a1, void *a2
 
 LABEL_9:
 
-      if (++v6 >= [v5 count])
+      if (++v6 >= [groups count])
       {
         goto LABEL_10;
       }
@@ -3982,17 +3982,17 @@ LABEL_9:
     v10 = 0;
     while (1)
     {
-      v11 = [v7 completions];
-      v12 = [v11 objectAtIndexedSubscript:v10];
+      completions2 = [v7 completions];
+      v12 = [completions2 objectAtIndexedSubscript:v10];
 
-      if (([v4 isEqual:v12] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v4, "isEquivalentTo:", v12))
+      if (([itemCopy isEqual:v12] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(itemCopy, "isEquivalentTo:", v12))
       {
         break;
       }
 
       ++v10;
-      v13 = [v7 completions];
-      v14 = [v13 count];
+      completions3 = [v7 completions];
+      v14 = [completions3 count];
 
       if (v10 >= v14)
       {
@@ -4012,9 +4012,9 @@ LABEL_10:
   return v15;
 }
 
-- (void)cacheIconForParsecResult:(id)a3
+- (void)cacheIconForParsecResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (!self->_parsecIconCache)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEA78]);
@@ -4029,37 +4029,37 @@ LABEL_10:
     self->_urlStringsLoadingParsecIcon = v7;
   }
 
-  v9 = [v4 originalURLString];
-  v10 = [(NSCache *)self->_parsecIconCache objectForKey:v9];
+  originalURLString = [resultCopy originalURLString];
+  v10 = [(NSCache *)self->_parsecIconCache objectForKey:originalURLString];
   if (v10)
   {
   }
 
-  else if (([(NSMutableSet *)self->_urlStringsLoadingParsecIcon containsObject:v9]& 1) == 0)
+  else if (([(NSMutableSet *)self->_urlStringsLoadingParsecIcon containsObject:originalURLString]& 1) == 0)
   {
-    v11 = [v4 safari_firstInlineCardSectionOfClass:objc_opt_class()];
-    v12 = [v11 thumbnail];
+    v11 = [resultCopy safari_firstInlineCardSectionOfClass:objc_opt_class()];
+    thumbnail = [v11 thumbnail];
 
-    if (v12 || ([v4 safari_firstInlineCardSectionOfClass:objc_opt_class()], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "image"), v12 = objc_claimAutoreleasedReturnValue(), v13, v12))
+    if (thumbnail || ([resultCopy safari_firstInlineCardSectionOfClass:objc_opt_class()], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "image"), thumbnail = objc_claimAutoreleasedReturnValue(), v13, thumbnail))
     {
-      v14 = [v12 imageData];
+      imageData = [thumbnail imageData];
 
-      if (v14)
+      if (imageData)
       {
-        v15 = [v12 imageData];
-        [(CompletionList *)self _cacheImageFromData:v15 forURLString:v9];
+        imageData2 = [thumbnail imageData];
+        [(CompletionList *)self _cacheImageFromData:imageData2 forURLString:originalURLString];
       }
 
       else
       {
-        [(NSMutableSet *)self->_urlStringsLoadingParsecIcon addObject:v9];
+        [(NSMutableSet *)self->_urlStringsLoadingParsecIcon addObject:originalURLString];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __43__CompletionList_cacheIconForParsecResult___block_invoke;
         v16[3] = &unk_2781DC3A0;
         v16[4] = self;
-        v17 = v9;
-        [v12 loadImageDataWithCompletionHandler:v16];
+        v17 = originalURLString;
+        [thumbnail loadImageDataWithCompletionHandler:v16];
       }
     }
   }
@@ -4089,16 +4089,16 @@ uint64_t __43__CompletionList_cacheIconForParsecResult___block_invoke_2(uint64_t
   return [v2 removeObject:v3];
 }
 
-- (void)_cacheImageFromData:(id)a3 forURLString:(id)a4
+- (void)_cacheImageFromData:(id)data forURLString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  stringCopy = string;
+  if (dataCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v6];
+    v8 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:dataCopy];
     if (v8)
     {
-      [(NSCache *)self->_parsecIconCache setObject:v8 forKey:v7];
+      [(NSCache *)self->_parsecIconCache setObject:v8 forKey:stringCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained completionListDidFetchParsecIcon:self];
     }
@@ -4123,32 +4123,32 @@ uint64_t __43__CompletionList_cacheIconForParsecResult___block_invoke_2(uint64_t
   }
 }
 
-- (id)cachedIconForParsecResult:(id)a3
+- (id)cachedIconForParsecResult:(id)result
 {
   parsecIconCache = self->_parsecIconCache;
-  v4 = [a3 originalURLString];
-  v5 = [(NSCache *)parsecIconCache objectForKey:v4];
+  originalURLString = [result originalURLString];
+  v5 = [(NSCache *)parsecIconCache objectForKey:originalURLString];
 
   return v5;
 }
 
 - (NSIndexPath)indexPathOfAsTypedSearchSuggestion
 {
-  v3 = [(CompletionGroupListing *)self->_listingOnDisplay indexOfSearchSuggestionsGroup];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  indexOfSearchSuggestionsGroup = [(CompletionGroupListing *)self->_listingOnDisplay indexOfSearchSuggestionsGroup];
+  if (indexOfSearchSuggestionsGroup == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = v3;
-    v6 = [(CompletionGroupListing *)self->_listingOnDisplay searchSuggestions];
-    v7 = [v6 firstObject];
+    v5 = indexOfSearchSuggestionsGroup;
+    searchSuggestions = [(CompletionGroupListing *)self->_listingOnDisplay searchSuggestions];
+    firstObject = [searchSuggestions firstObject];
 
-    v8 = [v7 string];
-    v9 = [(WBSCompletionQuery *)self->_query queryString];
-    v10 = [v8 isEqualToString:v9];
+    string = [firstObject string];
+    queryString = [(WBSCompletionQuery *)self->_query queryString];
+    v10 = [string isEqualToString:queryString];
 
     if (v10)
     {
@@ -4164,19 +4164,19 @@ uint64_t __43__CompletionList_cacheIconForParsecResult___block_invoke_2(uint64_t
   return v4;
 }
 
-- (BOOL)shouldOverrideBackgroundViewForItem:(id)a3
+- (BOOL)shouldOverrideBackgroundViewForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(CompletionList *)self completionsForGroupAtIndex:0];
   if ([v5 count] == 1)
   {
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v5 firstObject];
-      v8 = [v7 resultType];
-      v9 = [v8 isEqualToString:@"maps"];
+      firstObject2 = [v5 firstObject];
+      resultType = [firstObject2 resultType];
+      v9 = [resultType isEqualToString:@"maps"];
 
       if (v9)
       {
@@ -4196,8 +4196,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [v5 firstObject];
-  v11 = v10 != v4;
+  firstObject3 = [v5 firstObject];
+  v11 = firstObject3 != itemCopy;
 
 LABEL_9:
   return v11;
@@ -4229,22 +4229,22 @@ LABEL_9:
   }
 }
 
-- (void)recordIgnoredSiriSuggestedSitesWithURL:(id)a3
+- (void)recordIgnoredSiriSuggestedSitesWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CompletionGroupListing *)self->_listingOnDisplay query];
-  v6 = [v5 queryString];
+  lCopy = l;
+  query = [(CompletionGroupListing *)self->_listingOnDisplay query];
+  queryString = [query queryString];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v8 = [WeakRetained tabController];
-  v9 = [v8 activeProfileIdentifier];
+  tabController = [WeakRetained tabController];
+  activeProfileIdentifier = [tabController activeProfileIdentifier];
 
-  v10 = [(CompletionGroupListing *)self->_listingOnDisplay parsecTopHits];
-  v11 = v10;
+  parsecTopHits = [(CompletionGroupListing *)self->_listingOnDisplay parsecTopHits];
+  v11 = parsecTopHits;
   v12 = MEMORY[0x277CBEBF8];
-  if (v10)
+  if (parsecTopHits)
   {
-    v13 = v10;
+    v13 = parsecTopHits;
   }
 
   else
@@ -4254,11 +4254,11 @@ LABEL_9:
 
   v14 = v13;
 
-  v15 = [(CompletionGroupListing *)self->_listingOnDisplay topParsecResults];
-  v16 = v15;
-  if (v15)
+  topParsecResults = [(CompletionGroupListing *)self->_listingOnDisplay topParsecResults];
+  v16 = topParsecResults;
+  if (topParsecResults)
   {
-    v17 = v15;
+    v17 = topParsecResults;
   }
 
   else
@@ -4275,13 +4275,13 @@ LABEL_9:
   v25[3] = &unk_2781D7CE8;
   v26 = v14;
   v27 = v18;
-  v28 = self;
-  v29 = v4;
-  v30 = v9;
-  v31 = v6;
-  v20 = v6;
-  v21 = v9;
-  v22 = v4;
+  selfCopy = self;
+  v29 = lCopy;
+  v30 = activeProfileIdentifier;
+  v31 = queryString;
+  v20 = queryString;
+  v21 = activeProfileIdentifier;
+  v22 = lCopy;
   v23 = v18;
   v24 = v14;
   dispatch_async(ignoredSiriSuggestedSitesQueue, v25);
@@ -4376,34 +4376,34 @@ LABEL_15:
   }
 }
 
-- (void)_removeIgnoredSiriSuggestedSiteRecordsForHistoryItem:(id)a3
+- (void)_removeIgnoredSiriSuggestedSiteRecordsForHistoryItem:(id)item
 {
-  v12 = [a3 url];
+  v12 = [item url];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained tabController];
-  v6 = [v5 activeProfileIdentifier];
+  tabController = [WeakRetained tabController];
+  activeProfileIdentifier = [tabController activeProfileIdentifier];
 
-  v7 = [MEMORY[0x277CDB8A8] sharedInstance];
-  v8 = [v7 userVisibleQueryFromSearchURL:v12];
+  mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+  v8 = [mEMORY[0x277CDB8A8] userVisibleQueryFromSearchURL:v12];
 
-  v9 = [MEMORY[0x277D49F90] sharedController];
-  v10 = v9;
+  mEMORY[0x277D49F90] = [MEMORY[0x277D49F90] sharedController];
+  v10 = mEMORY[0x277D49F90];
   if (v8)
   {
-    [v9 removeIgnoredSiriSuggestedSitesInProfile:v6 query:v8];
+    [mEMORY[0x277D49F90] removeIgnoredSiriSuggestedSitesInProfile:activeProfileIdentifier query:v8];
   }
 
   else
   {
-    v11 = [v12 host];
-    [v10 removeIgnoredSiriSuggestedSitesInProfile:v6 visitedURLHost:v11];
+    host = [v12 host];
+    [v10 removeIgnoredSiriSuggestedSitesInProfile:activeProfileIdentifier visitedURLHost:host];
   }
 }
 
-- (BOOL)_isPegasusMapsCompositeResult:(id)a3
+- (BOOL)_isPegasusMapsCompositeResult:(id)result
 {
-  v3 = a3;
-  if ([v3 count] < 2)
+  resultCopy = result;
+  if ([resultCopy count] < 2)
   {
     v8 = 0;
   }
@@ -4411,11 +4411,11 @@ LABEL_15:
   else
   {
     v4 = MEMORY[0x277D49FD8];
-    v5 = [v3 objectAtIndexedSubscript:0];
+    v5 = [resultCopy objectAtIndexedSubscript:0];
     if ([v4 typeForSFSearchResult:v5] == 2)
     {
       v6 = MEMORY[0x277D49FD8];
-      v7 = [v3 objectAtIndexedSubscript:1];
+      v7 = [resultCopy objectAtIndexedSubscript:1];
       v8 = [v6 typeForSFSearchResult:v7] == 1;
     }
 
@@ -4430,36 +4430,36 @@ LABEL_15:
 
 - (BOOL)_supportsPrefixNavigationalIntent
 {
-  v3 = [(SearchSuggestionProvider *)self->_suggestionProvider supportsPrefixNavigationalIntent];
-  if (v3)
+  supportsPrefixNavigationalIntent = [(SearchSuggestionProvider *)self->_suggestionProvider supportsPrefixNavigationalIntent];
+  if (supportsPrefixNavigationalIntent)
   {
-    LOBYTE(v3) = ![(UniversalSearchCompletionProvider *)self->_universalSearchProvider disableNavigationalIntentProbability];
+    LOBYTE(supportsPrefixNavigationalIntent) = ![(UniversalSearchCompletionProvider *)self->_universalSearchProvider disableNavigationalIntentProbability];
   }
 
-  return v3;
+  return supportsPrefixNavigationalIntent;
 }
 
-- (BOOL)_navigationalIntentShouldBlockSearchResult:(id)a3 givenFirstSearchSuggestion:(id)a4 completionListing:(id)a5
+- (BOOL)_navigationalIntentShouldBlockSearchResult:(id)result givenFirstSearchSuggestion:(id)suggestion completionListing:(id)listing
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  suggestionCopy = suggestion;
+  listingCopy = listing;
   if ([(CompletionList *)self _supportsPrefixNavigationalIntent])
   {
-    v11 = [v8 serverCompletion];
-    v12 = [v9 string];
-    v13 = [v9 prefixNavigationalIntent];
-    [v10 setPrefixNavigationalIntent:v13];
-    v14 = [MEMORY[0x277D4A030] searchParameters];
-    if ([v14 checkServerCompletionForPrefixNavigationalIntent])
+    serverCompletion = [resultCopy serverCompletion];
+    string = [suggestionCopy string];
+    prefixNavigationalIntent = [suggestionCopy prefixNavigationalIntent];
+    [listingCopy setPrefixNavigationalIntent:prefixNavigationalIntent];
+    searchParameters = [MEMORY[0x277D4A030] searchParameters];
+    if ([searchParameters checkServerCompletionForPrefixNavigationalIntent])
     {
       v15 = 0;
-      if (!v11 || !v12)
+      if (!serverCompletion || !string)
       {
         goto LABEL_13;
       }
 
-      v16 = [v11 isEqualToString:v12];
+      v16 = [serverCompletion isEqualToString:string];
 
       if ((v16 & 1) == 0)
       {
@@ -4473,23 +4473,23 @@ LABEL_14:
     {
     }
 
-    v17 = [MEMORY[0x277D4A030] searchParameters];
-    v18 = [v17 checkServerCompletionForPrefixNavigationalIntent];
+    searchParameters2 = [MEMORY[0x277D4A030] searchParameters];
+    checkServerCompletionForPrefixNavigationalIntent = [searchParameters2 checkServerCompletionForPrefixNavigationalIntent];
 
-    if (v18)
+    if (checkServerCompletionForPrefixNavigationalIntent)
     {
-      [v10 setServerCompletionDidMatchFirstSearchSuggestionFrom3rdParty:1];
+      [listingCopy setServerCompletionDidMatchFirstSearchSuggestionFrom3rdParty:1];
     }
 
-    if (!v13)
+    if (!prefixNavigationalIntent)
     {
       goto LABEL_14;
     }
 
-    v19 = [v13 integerValue];
-    v14 = [MEMORY[0x277D4A030] searchParameters];
-    v20 = [v14 prefixNavigationalIntentThreshold];
-    v15 = v19 < [v20 integerValue];
+    integerValue = [prefixNavigationalIntent integerValue];
+    searchParameters = [MEMORY[0x277D4A030] searchParameters];
+    prefixNavigationalIntentThreshold = [searchParameters prefixNavigationalIntentThreshold];
+    v15 = integerValue < [prefixNavigationalIntentThreshold integerValue];
 
 LABEL_13:
 LABEL_15:
@@ -4503,29 +4503,29 @@ LABEL_16:
   return v15;
 }
 
-- (id)tabDocumentForFindOnPageCompletionProvider:(id)a3
+- (id)tabDocumentForFindOnPageCompletionProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 activeTabDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
 
-  return v5;
+  return activeTabDocument;
 }
 
-- (id)windowUUIDsToTabsForTabCompletionProvider:(id)a3
+- (id)windowUUIDsToTabsForTabCompletionProvider:(id)provider
 {
   v25 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained isPrivateBrowsingEnabled];
-  v19 = [MEMORY[0x277CBEB38] dictionary];
+  isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [WeakRetained browserWindowController];
-  v6 = [v5 browserControllers];
+  browserWindowController = [WeakRetained browserWindowController];
+  browserControllers = [browserWindowController browserControllers];
 
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v7 = [browserControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4536,68 +4536,68 @@ LABEL_16:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(browserControllers);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        if (v4 == [v11 isPrivateBrowsingEnabled])
+        if (isPrivateBrowsingEnabled == [v11 isPrivateBrowsingEnabled])
         {
-          v12 = [WeakRetained activeProfileIdentifier];
-          v13 = [v11 activeProfileIdentifier];
-          v14 = [v12 isEqualToString:v13];
+          activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+          activeProfileIdentifier2 = [v11 activeProfileIdentifier];
+          v14 = [activeProfileIdentifier isEqualToString:activeProfileIdentifier2];
 
           if (v14)
           {
-            v15 = [v11 tabController];
-            v16 = [v15 currentTabs];
-            v17 = [v11 UUID];
-            [v19 setObject:v16 forKeyedSubscript:v17];
+            tabController = [v11 tabController];
+            currentTabs = [tabController currentTabs];
+            uUID = [v11 UUID];
+            [dictionary setObject:currentTabs forKeyedSubscript:uUID];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [browserControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  return v19;
+  return dictionary;
 }
 
-- (id)selectedTabDocumentForTabCompletionProvider:(id)a3
+- (id)selectedTabDocumentForTabCompletionProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 activeTabDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
 
-  return v5;
+  return activeTabDocument;
 }
 
-- (id)tabGroupsForTabCompletionProvider:(id)a3
+- (id)tabGroupsForTabCompletionProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 nonActiveTabGroupsInCurrentBrowsingMode];
+  tabController = [WeakRetained tabController];
+  nonActiveTabGroupsInCurrentBrowsingMode = [tabController nonActiveTabGroupsInCurrentBrowsingMode];
 
-  return v5;
+  return nonActiveTabGroupsInCurrentBrowsingMode;
 }
 
-- (id)currentWindowUUIDForTabCompletionProvider:(id)a3
+- (id)currentWindowUUIDForTabCompletionProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained UUID];
+  uUID = [WeakRetained UUID];
 
-  return v4;
+  return uUID;
 }
 
-- (BOOL)canPerformCommand:(id)a3
+- (BOOL)canPerformCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CompletionList *)self _urlFromCommand:v4];
+    v5 = [(CompletionList *)self _urlFromCommand:commandCopy];
     v6 = ![(CompletionList *)self _shouldSearchUIHandleEngagementForURL:v5];
   }
 
@@ -4609,68 +4609,68 @@ LABEL_16:
   return v6;
 }
 
-- (void)performCommand:(id)a3
+- (void)performCommand:(id)command
 {
-  v12 = a3;
+  commandCopy = command;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v12;
+  v5 = commandCopy;
   if (isKindOfClass)
   {
-    v6 = v12;
+    v6 = commandCopy;
     v7 = [(CompletionList *)self _urlFromCommand:v6];
-    v8 = [v6 punchout];
+    punchout = [v6 punchout];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 forceOpenInBrowser];
+      forceOpenInBrowser = [punchout forceOpenInBrowser];
     }
 
     else
     {
-      v9 = 0;
+      forceOpenInBrowser = 0;
     }
 
-    v10 = [(CompletionList *)self delegate];
-    [v10 completionList:self willGoToURL:v7 fromPegasusSearchResult:self->_pegasusSearchResult forImageAttribution:v9];
+    delegate = [(CompletionList *)self delegate];
+    [delegate completionList:self willGoToURL:v7 fromPegasusSearchResult:self->_pegasusSearchResult forImageAttribution:forceOpenInBrowser];
 
     pegasusSearchResult = self->_pegasusSearchResult;
     self->_pegasusSearchResult = 0;
 
     self->_safariShouldHandleCardSectionEngagement = 0;
-    v5 = v12;
+    v5 = commandCopy;
   }
 }
 
-- (id)_urlFromCommand:(id)a3
+- (id)_urlFromCommand:(id)command
 {
-  v3 = [a3 punchout];
-  v4 = [v3 preferredOpenableURL];
+  punchout = [command punchout];
+  preferredOpenableURL = [punchout preferredOpenableURL];
 
-  return v4;
+  return preferredOpenableURL;
 }
 
-- (BOOL)shouldHandleCardSectionEngagement:(id)a3
+- (BOOL)shouldHandleCardSectionEngagement:(id)engagement
 {
-  v4 = a3;
-  v5 = [v4 destination];
-  v6 = [v5 preferredOpenableURL];
+  engagementCopy = engagement;
+  destination = [engagementCopy destination];
+  preferredOpenableURL = [destination preferredOpenableURL];
 
-  v7 = [(CompletionList *)self _shouldSearchUIHandleEngagementForURL:v6];
+  v7 = [(CompletionList *)self _shouldSearchUIHandleEngagementForURL:preferredOpenableURL];
   if (!v7)
   {
-    v8 = [v4 destination];
+    destination2 = [engagementCopy destination];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 forceOpenInBrowser];
+      forceOpenInBrowser = [destination2 forceOpenInBrowser];
     }
 
     else
     {
-      v9 = 0;
+      forceOpenInBrowser = 0;
     }
 
-    v10 = [(CompletionList *)self delegate];
-    [v10 completionList:self willGoToURL:v6 fromPegasusSearchResult:self->_pegasusSearchResult forImageAttribution:v9];
+    delegate = [(CompletionList *)self delegate];
+    [delegate completionList:self willGoToURL:preferredOpenableURL fromPegasusSearchResult:self->_pegasusSearchResult forImageAttribution:forceOpenInBrowser];
 
     pegasusSearchResult = self->_pegasusSearchResult;
     self->_pegasusSearchResult = 0;
@@ -4681,15 +4681,15 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)_shouldSearchUIHandleEngagementForURL:(id)a3
+- (BOOL)_shouldSearchUIHandleEngagementForURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
+  lCopy = l;
+  v5 = lCopy;
   v8 = 1;
   if (self->_safariShouldHandleCardSectionEngagement)
   {
-    v6 = [v4 host];
-    v7 = [v6 isEqualToString:@"weather.apple.com"];
+    host = [lCopy host];
+    v7 = [host isEqualToString:@"weather.apple.com"];
 
     if ((v7 & 1) == 0 && (([v5 safari_isHTTPURL] & 1) != 0 || objc_msgSend(v5, "safari_isHTTPSURL")))
     {
@@ -4700,36 +4700,36 @@ LABEL_16:
   return v8;
 }
 
-- (void)willDismissViewController:(id)a3
+- (void)willDismissViewController:(id)controller
 {
-  v4 = [(CompletionList *)self delegate];
-  [v4 completionListDidDismissSearchUIViewController:self];
+  delegate = [(CompletionList *)self delegate];
+  [delegate completionListDidDismissSearchUIViewController:self];
 }
 
-- (void)didEngageResult:(id)a3
+- (void)didEngageResult:(id)result
 {
-  v4 = a3;
-  [(CompletionList *)self _postFeedback:v4];
+  resultCopy = result;
+  [(CompletionList *)self _postFeedback:resultCopy];
   self->_safariShouldHandleCardSectionEngagement = 1;
-  v5 = [v4 result];
+  result = [resultCopy result];
 
   pegasusSearchResult = self->_pegasusSearchResult;
-  self->_pegasusSearchResult = v5;
+  self->_pegasusSearchResult = result;
 }
 
-- (void)_postFeedback:(id)a3
+- (void)_postFeedback:(id)feedback
 {
-  v8 = a3;
+  feedbackCopy = feedback;
   v4 = +[UniversalSearchSession sharedSession];
-  v5 = [v4 feedbackDispatcher];
-  v6 = [(CompletionList *)self query];
-  v7 = [v6 queryID];
-  if (!v7)
+  feedbackDispatcher = [v4 feedbackDispatcher];
+  query = [(CompletionList *)self query];
+  queryID = [query queryID];
+  if (!queryID)
   {
-    v7 = [MEMORY[0x277D49ED8] currentQueryID];
+    queryID = [MEMORY[0x277D49ED8] currentQueryID];
   }
 
-  [v5 postFeedback:v8 forQueryID:v7];
+  [feedbackDispatcher postFeedback:feedbackCopy forQueryID:queryID];
 }
 
 - (BrowserController)browserController

@@ -1,24 +1,24 @@
 @interface VMAccountsView
-- (VMAccountsView)initWithFrame:(CGRect)a3;
+- (VMAccountsView)initWithFrame:(CGRect)frame;
 - (VMAccountsViewDataSource)dataSource;
 - (VMAccountsViewDelegate)delegate;
 - (double)messageLabelFirstBaselineAnchorLayoutConstraintConstant;
 - (double)messageLabelLastBaselineAnchorLayoutConstraintConstant;
-- (id)buttonAtIndex:(unint64_t)a3;
+- (id)buttonAtIndex:(unint64_t)index;
 - (void)commonInit;
-- (void)handleActionForButtonSender:(id)a3 event:(id)a4;
+- (void)handleActionForButtonSender:(id)sender event:(id)event;
 - (void)loadConstraints;
 - (void)reloadData;
-- (void)setDataSource:(id)a3;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation VMAccountsView
 
-- (VMAccountsView)initWithFrame:(CGRect)a3
+- (VMAccountsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VMAccountsView;
-  v3 = [(VMAccountsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VMAccountsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -63,9 +63,9 @@
   [(VMAccountsView *)self loadConstraints];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -77,35 +77,35 @@
   }
 }
 
-- (void)handleActionForButtonSender:(id)a3 event:(id)a4
+- (void)handleActionForButtonSender:(id)sender event:(id)event
 {
-  v11 = a3;
-  v5 = [(VMAccountsView *)self buttons];
-  if ([v5 count])
+  senderCopy = sender;
+  buttons = [(VMAccountsView *)self buttons];
+  if ([buttons count])
   {
     v6 = 0;
     while (1)
     {
-      v7 = [v5 objectAtIndexedSubscript:v6];
+      v7 = [buttons objectAtIndexedSubscript:v6];
 
-      if (v7 == v11)
+      if (v7 == senderCopy)
       {
         break;
       }
 
-      if (++v6 >= [v5 count])
+      if (++v6 >= [buttons count])
       {
         goto LABEL_8;
       }
     }
 
-    v8 = [(VMAccountsView *)self delegate];
+    delegate = [(VMAccountsView *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(VMAccountsView *)self delegate];
-      [v10 accountsView:self buttonTappedForRowWithIndex:v6];
+      delegate2 = [(VMAccountsView *)self delegate];
+      [delegate2 accountsView:self buttonTappedForRowWithIndex:v6];
     }
   }
 
@@ -114,84 +114,84 @@ LABEL_8:
 
 - (void)loadConstraints
 {
-  v3 = [(VMAccountsView *)self messageLabel];
-  v4 = [v3 centerXAnchor];
-  v5 = [(VMAccountsView *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  messageLabel = [(VMAccountsView *)self messageLabel];
+  centerXAnchor = [messageLabel centerXAnchor];
+  centerXAnchor2 = [(VMAccountsView *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
   [v6 setActive:1];
-  v7 = [(VMAccountsView *)self messageLabel];
-  v8 = [v7 leadingAnchor];
-  v9 = [(VMAccountsView *)self safeAreaLayoutGuide];
-  v10 = [v9 leadingAnchor];
-  v11 = [v8 constraintGreaterThanOrEqualToAnchor:v10 constant:70.0];
+  messageLabel2 = [(VMAccountsView *)self messageLabel];
+  leadingAnchor = [messageLabel2 leadingAnchor];
+  safeAreaLayoutGuide = [(VMAccountsView *)self safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v11 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:70.0];
 
   [v11 setActive:1];
-  v12 = [(VMAccountsView *)self trailingAnchor];
-  v13 = [(VMAccountsView *)self messageLabel];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintGreaterThanOrEqualToAnchor:v14 constant:70.0];
+  trailingAnchor = [(VMAccountsView *)self trailingAnchor];
+  messageLabel3 = [(VMAccountsView *)self messageLabel];
+  trailingAnchor2 = [messageLabel3 trailingAnchor];
+  v15 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:70.0];
 
   [v15 setActive:1];
-  v16 = [(VMAccountsView *)self messageLabel];
-  v17 = [v16 firstBaselineAnchor];
-  v18 = [(VMAccountsView *)self safeAreaLayoutGuide];
-  v19 = [v18 topAnchor];
+  messageLabel4 = [(VMAccountsView *)self messageLabel];
+  firstBaselineAnchor = [messageLabel4 firstBaselineAnchor];
+  safeAreaLayoutGuide2 = [(VMAccountsView *)self safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide2 topAnchor];
   [(VMAccountsView *)self messageLabelFirstBaselineAnchorLayoutConstraintConstant];
-  v20 = [v17 constraintGreaterThanOrEqualToAnchor:v19 constant:?];
+  v20 = [firstBaselineAnchor constraintGreaterThanOrEqualToAnchor:topAnchor constant:?];
 
   [v20 setActive:1];
-  v21 = [(VMAccountsView *)self buttonStackView];
-  v22 = [v21 topAnchor];
-  v23 = [(VMAccountsView *)self messageLabel];
-  v24 = [v23 lastBaselineAnchor];
+  buttonStackView = [(VMAccountsView *)self buttonStackView];
+  topAnchor2 = [buttonStackView topAnchor];
+  messageLabel5 = [(VMAccountsView *)self messageLabel];
+  lastBaselineAnchor = [messageLabel5 lastBaselineAnchor];
   [(VMAccountsView *)self messageLabelLastBaselineAnchorLayoutConstraintConstant];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:?];
+  v25 = [topAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
 
   [v25 setActive:1];
-  v26 = [(VMAccountsView *)self buttonStackView];
-  v27 = [v26 centerXAnchor];
-  v28 = [(VMAccountsView *)self centerXAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  buttonStackView2 = [(VMAccountsView *)self buttonStackView];
+  centerXAnchor3 = [buttonStackView2 centerXAnchor];
+  centerXAnchor4 = [(VMAccountsView *)self centerXAnchor];
+  v29 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
   [v29 setActive:1];
-  v30 = [(VMAccountsView *)self buttonStackView];
-  v31 = [v30 leadingAnchor];
-  v32 = [(VMAccountsView *)self leadingAnchor];
-  v33 = [v31 constraintGreaterThanOrEqualToAnchor:v32];
+  buttonStackView3 = [(VMAccountsView *)self buttonStackView];
+  leadingAnchor3 = [buttonStackView3 leadingAnchor];
+  leadingAnchor4 = [(VMAccountsView *)self leadingAnchor];
+  v33 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
 
   [v33 setActive:1];
-  v34 = [(VMAccountsView *)self trailingAnchor];
-  v35 = [(VMAccountsView *)self buttonStackView];
-  v36 = [v35 trailingAnchor];
-  v37 = [v34 constraintGreaterThanOrEqualToAnchor:v36];
+  trailingAnchor3 = [(VMAccountsView *)self trailingAnchor];
+  buttonStackView4 = [(VMAccountsView *)self buttonStackView];
+  trailingAnchor4 = [buttonStackView4 trailingAnchor];
+  v37 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
 
   [v37 setActive:1];
-  v38 = [(VMAccountsView *)self buttonStackView];
-  v39 = [v38 centerYAnchor];
-  v40 = [(VMAccountsView *)self centerYAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  buttonStackView5 = [(VMAccountsView *)self buttonStackView];
+  centerYAnchor = [buttonStackView5 centerYAnchor];
+  centerYAnchor2 = [(VMAccountsView *)self centerYAnchor];
+  v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   LODWORD(v42) = 1132068864;
   [v41 setPriority:v42];
   [v41 setActive:1];
-  v43 = [(VMAccountsView *)self bottomAnchor];
-  v44 = [(VMAccountsView *)self buttonStackView];
-  v45 = [v44 bottomAnchor];
-  v46 = [v43 constraintGreaterThanOrEqualToAnchor:v45];
+  bottomAnchor = [(VMAccountsView *)self bottomAnchor];
+  buttonStackView6 = [(VMAccountsView *)self buttonStackView];
+  bottomAnchor2 = [buttonStackView6 bottomAnchor];
+  v46 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
 
   [v46 setActive:1];
 }
 
 - (void)reloadData
 {
-  v3 = [(VMAccountsView *)self dataSource];
+  dataSource = [(VMAccountsView *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VMAccountsView *)self dataSource];
-    v6 = [v5 titleForAccountsView:self];
+    dataSource2 = [(VMAccountsView *)self dataSource];
+    v6 = [dataSource2 titleForAccountsView:self];
   }
 
   else
@@ -199,20 +199,20 @@ LABEL_8:
     v6 = 0;
   }
 
-  v7 = [(VMAccountsView *)self messageLabel];
-  [v7 setText:v6];
+  messageLabel = [(VMAccountsView *)self messageLabel];
+  [messageLabel setText:v6];
 
-  v8 = [(VMAccountsView *)self dataSource];
-  v9 = [v8 numberOfRowsForAccountsView:self];
+  dataSource3 = [(VMAccountsView *)self dataSource];
+  v9 = [dataSource3 numberOfRowsForAccountsView:self];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = [(VMAccountsView *)self buttonStackView];
-  v11 = [v10 arrangedSubviews];
+  buttonStackView = [(VMAccountsView *)self buttonStackView];
+  arrangedSubviews = [buttonStackView arrangedSubviews];
 
-  v12 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  v12 = [arrangedSubviews countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v12)
   {
     v13 = v12;
@@ -223,7 +223,7 @@ LABEL_8:
       {
         if (*v36 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v16 = *(*(&v35 + 1) + 8 * i);
@@ -231,12 +231,12 @@ LABEL_8:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [(VMAccountsView *)self buttons];
-          [v17 removeObject:v16];
+          buttons = [(VMAccountsView *)self buttons];
+          [buttons removeObject:v16];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v13 = [arrangedSubviews countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v13);
@@ -249,15 +249,15 @@ LABEL_8:
     for (j = 0; j != v9; ++j)
     {
       v20 = [(VMAccountsView *)self buttonAtIndex:j];
-      v21 = [(VMAccountsView *)self dataSource];
-      v22 = [v21 accountsView:self buttonForRowAtIndex:j];
+      dataSource4 = [(VMAccountsView *)self dataSource];
+      v22 = [dataSource4 accountsView:self buttonForRowAtIndex:j];
 
       [v22 addTarget:self action:"handleActionForButtonSender:event:" forControlEvents:64];
-      v23 = [(VMAccountsView *)self buttons];
-      [v23 setObject:v22 atIndexedSubscript:j];
+      buttons2 = [(VMAccountsView *)self buttons];
+      [buttons2 setObject:v22 atIndexedSubscript:j];
 
-      v24 = [(VMAccountsView *)self buttonStackView];
-      [v24 addArrangedSubview:v22];
+      buttonStackView2 = [(VMAccountsView *)self buttonStackView];
+      [buttonStackView2 addArrangedSubview:v22];
 
       [v22 preferredIntrinsicContentSizeWidth];
       if (v18 < v25)
@@ -271,8 +271,8 @@ LABEL_8:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = [(VMAccountsView *)self buttons];
-  v27 = [v26 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  buttons3 = [(VMAccountsView *)self buttons];
+  v27 = [buttons3 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v27)
   {
     v28 = v27;
@@ -283,30 +283,30 @@ LABEL_8:
       {
         if (*v32 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(buttons3);
         }
 
         [*(*(&v31 + 1) + 8 * k) setPreferredIntrinsicContentSizeWidth:v18];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v28 = [buttons3 countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v28);
   }
 }
 
-- (id)buttonAtIndex:(unint64_t)a3
+- (id)buttonAtIndex:(unint64_t)index
 {
-  v4 = [(VMAccountsView *)self buttons];
-  if ([v4 count] <= a3)
+  buttons = [(VMAccountsView *)self buttons];
+  if ([buttons count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [buttons objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -314,10 +314,10 @@ LABEL_8:
 
 - (double)messageLabelFirstBaselineAnchorLayoutConstraintConstant
 {
-  v2 = [(VMAccountsView *)self messageLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:UIFontDescriptorTextStyleAttribute];
+  messageLabel = [(VMAccountsView *)self messageLabel];
+  font = [messageLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v5)
   {
@@ -336,10 +336,10 @@ LABEL_8:
 
 - (double)messageLabelLastBaselineAnchorLayoutConstraintConstant
 {
-  v2 = [(VMAccountsView *)self messageLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:UIFontDescriptorTextStyleAttribute];
+  messageLabel = [(VMAccountsView *)self messageLabel];
+  font = [messageLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v5)
   {

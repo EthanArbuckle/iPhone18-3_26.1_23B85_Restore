@@ -9,20 +9,20 @@
 
 - (id)fpfs_extractFSEventsBarrierUUID
 {
-  v1 = [a1 lastPathComponent];
-  if ([v1 hasPrefix:@".rendez-vous."])
+  lastPathComponent = [self lastPathComponent];
+  if ([lastPathComponent hasPrefix:@".rendez-vous."])
   {
     if (fpfs_extractFSEventsBarrierUUID_once != -1)
     {
       [NSString(FSPathAdditions) fpfs_extractFSEventsBarrierUUID];
     }
 
-    v2 = [fpfs_extractFSEventsBarrierUUID_regexp firstMatchInString:v1 options:0 range:{0, objc_msgSend(v1, "length")}];
+    v2 = [fpfs_extractFSEventsBarrierUUID_regexp firstMatchInString:lastPathComponent options:0 range:{0, objc_msgSend(lastPathComponent, "length")}];
     if (v2)
     {
       v3 = objc_alloc(MEMORY[0x1E696AFB0]);
       v4 = [v2 rangeAtIndex:1];
-      v6 = [v1 substringWithRange:{v4, v5}];
+      v6 = [lastPathComponent substringWithRange:{v4, v5}];
       v7 = [v3 initWithUUIDString:v6];
     }
 
@@ -42,20 +42,20 @@
 
 - (id)fpfs_extractFSEventsNotifyUUID
 {
-  v1 = [a1 lastPathComponent];
-  if ([v1 hasPrefix:@".notify."])
+  lastPathComponent = [self lastPathComponent];
+  if ([lastPathComponent hasPrefix:@".notify."])
   {
     if (fpfs_extractFSEventsNotifyUUID_once != -1)
     {
       [NSString(FSPathAdditions) fpfs_extractFSEventsNotifyUUID];
     }
 
-    v2 = [fpfs_extractFSEventsNotifyUUID_regexp firstMatchInString:v1 options:0 range:{0, objc_msgSend(v1, "length")}];
+    v2 = [fpfs_extractFSEventsNotifyUUID_regexp firstMatchInString:lastPathComponent options:0 range:{0, objc_msgSend(lastPathComponent, "length")}];
     if (v2)
     {
       v3 = objc_alloc(MEMORY[0x1E696AFB0]);
       v4 = [v2 rangeAtIndex:1];
-      v6 = [v1 substringWithRange:{v4, v5}];
+      v6 = [lastPathComponent substringWithRange:{v4, v5}];
       v7 = [v3 initWithUUIDString:v6];
     }
 
@@ -75,7 +75,7 @@
 
 - (id)fpfs_filenameExtension
 {
-  [a1 fileSystemRepresentation];
+  [self fileSystemRepresentation];
   v1 = fpfs_extension_in_filename();
   if (v1)
   {
@@ -88,13 +88,13 @@
 - (uint64_t)fpfs_isSafeSaveTempFile:()FSPathAdditions
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([a1 length])
+  if ([self length])
   {
     bzero(v7, 0x400uLL);
-    v2 = [a1 fileSystemRepresentation];
+    fileSystemRepresentation = [self fileSystemRepresentation];
     if (__strlcpy_chk() > 0x3FF)
     {
-      v4 = strdup(v2);
+      v4 = strdup(fileSystemRepresentation);
       is_safe_save_temp_file = fpfs_path_is_safe_save_temp_file();
       free(v4);
     }

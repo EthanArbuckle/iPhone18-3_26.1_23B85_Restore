@@ -1,8 +1,8 @@
 @interface ATXClipboardContents
 + (void)_observeLocalPasteboard;
-- (ATXClipboardContents)contentsWithCallback:(id)a3;
-- (ATXClipboardContents)initWithDevice:(id)a3;
-- (ATXClipboardContents)initWithDevice:(id)a3 pasteboardConnection:(id)a4;
+- (ATXClipboardContents)contentsWithCallback:(id)callback;
+- (ATXClipboardContents)initWithDevice:(id)device;
+- (ATXClipboardContents)initWithDevice:(id)device pasteboardConnection:(id)connection;
 @end
 
 @implementation ATXClipboardContents
@@ -75,37 +75,37 @@ void __47__ATXClipboardContents__observeLocalPasteboard__block_invoke_40(uint64_
   }
 }
 
-- (ATXClipboardContents)initWithDevice:(id)a3 pasteboardConnection:(id)a4
+- (ATXClipboardContents)initWithDevice:(id)device pasteboardConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = ATXClipboardContents;
   v9 = [(ATXClipboardContents *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_pasteboardServerConnection, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_pasteboardServerConnection, connection);
     [objc_opt_class() _observeLocalPasteboard];
   }
 
   return v10;
 }
 
-- (ATXClipboardContents)initWithDevice:(id)a3
+- (ATXClipboardContents)initWithDevice:(id)device
 {
   v4 = MEMORY[0x277D38BC0];
-  v5 = a3;
-  v6 = [v4 defaultConnection];
-  v7 = [(ATXClipboardContents *)self initWithDevice:v5 pasteboardConnection:v6];
+  deviceCopy = device;
+  defaultConnection = [v4 defaultConnection];
+  v7 = [(ATXClipboardContents *)self initWithDevice:deviceCopy pasteboardConnection:defaultConnection];
 
   return v7;
 }
 
-- (ATXClipboardContents)contentsWithCallback:(id)a3
+- (ATXClipboardContents)contentsWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -128,7 +128,7 @@ void __47__ATXClipboardContents__observeLocalPasteboard__block_invoke_40(uint64_
   v7 = v5;
   v20 = &v27;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   [(PBServerConnection *)pasteboardServerConnection localGeneralPasteboardCompletionBlock:v16];
   if ([MEMORY[0x277D425A0] waitForSemaphore:v7 timeoutSeconds:5.0] == 1)
   {
@@ -152,10 +152,10 @@ void __47__ATXClipboardContents__observeLocalPasteboard__block_invoke_40(uint64_
     if (!v10)
     {
 LABEL_9:
-      v11 = [v28[5] content];
-      v12 = [v28[5] creationDate];
-      v13 = [v28[5] originatorBundleId];
-      v4[2](v4, v11, v12, v13, 0);
+      content = [v28[5] content];
+      creationDate = [v28[5] creationDate];
+      originatorBundleId = [v28[5] originatorBundleId];
+      callbackCopy[2](callbackCopy, content, creationDate, originatorBundleId, 0);
 
       v8 = 0;
       goto LABEL_10;
@@ -164,7 +164,7 @@ LABEL_9:
     v8 = v10;
   }
 
-  (v4)[2](v4, 0, 0, 0, v8);
+  (callbackCopy)[2](callbackCopy, 0, 0, 0, v8);
 LABEL_10:
 
   _Block_object_dispose(&v21, 8);

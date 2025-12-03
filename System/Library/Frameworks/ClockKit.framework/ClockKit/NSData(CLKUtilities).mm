@@ -23,10 +23,10 @@
     [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"value for key '%@' must be a string - invalid value: %@", @"file name", v8}];
   }
 
-  v9 = [v7 bundlePath];
-  v10 = [v9 stringByAppendingPathComponent:v8];
+  bundlePath = [v7 bundlePath];
+  v10 = [bundlePath stringByAppendingPathComponent:v8];
 
-  v11 = [a1 dataWithContentsOfFile:v10];
+  v11 = [self dataWithContentsOfFile:v10];
 
   return v11;
 }
@@ -36,14 +36,14 @@
   v4 = a3;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [v6 UUIDString];
-  v8 = [v7 stringByAppendingPathExtension:@"sui"];
+  uUIDString = [v6 UUIDString];
+  v8 = [uUIDString stringByAppendingPathExtension:@"sui"];
 
   [v5 setObject:v8 forKeyedSubscript:@"file name"];
   v9 = [v4 stringByAppendingPathComponent:v8];
 
   v13 = 0;
-  LOBYTE(v4) = [a1 writeToFile:v9 options:1 error:&v13];
+  LOBYTE(v4) = [self writeToFile:v9 options:1 error:&v13];
   v10 = v13;
   if ((v4 & 1) == 0)
   {
@@ -59,17 +59,17 @@
 
 - (id)clk_hexEncodedString
 {
-  v2 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(a1, "length")}];
-  v3 = [a1 bytes];
-  if ([a1 length])
+  v2 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(self, "length")}];
+  bytes = [self bytes];
+  if ([self length])
   {
     v4 = 0;
     do
     {
-      [v2 appendFormat:@"%02x", *(v3 + v4++)];
+      [v2 appendFormat:@"%02x", *(bytes + v4++)];
     }
 
-    while (v4 < [a1 length]);
+    while (v4 < [self length]);
   }
 
   v5 = [v2 copy];

@@ -1,34 +1,34 @@
 @interface FPTestingOperation
-- (BOOL)isEqual:(id)a3;
-- (FPTestingOperation)initWithCoder:(id)a3;
-- (FPTestingOperation)initWithOperationIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FPTestingOperation)initWithCoder:(id)coder;
+- (FPTestingOperation)initWithOperationIdentifier:(id)identifier;
 - (int64_t)type;
 @end
 
 @implementation FPTestingOperation
 
-- (FPTestingOperation)initWithOperationIdentifier:(id)a3
+- (FPTestingOperation)initWithOperationIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FPTestingOperation;
   v6 = [(FPTestingOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operationIdentifier, a3);
+    objc_storeStrong(&v6->_operationIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4[1] isEqualToString:self->_operationIdentifier];
+    v5 = [equalCopy[1] isEqualToString:self->_operationIdentifier];
   }
 
   else
@@ -39,23 +39,23 @@
   return v5;
 }
 
-- (FPTestingOperation)initWithCoder:(id)a3
+- (FPTestingOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_operationIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_operationIdentifier"];
 
   if (v5)
   {
     self = [(FPTestingOperation *)self initWithOperationIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (int64_t)type

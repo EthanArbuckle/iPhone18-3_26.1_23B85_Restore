@@ -1,11 +1,11 @@
 @interface MUPlaceRibbonSectionController
 - (BOOL)_supportsAddRatingsCallToAction;
-- (MUPlaceRibbonSectionController)initWithMapItem:(id)a3 configuration:(id)a4;
+- (MUPlaceRibbonSectionController)initWithMapItem:(id)item configuration:(id)configuration;
 - (MUPlaceRibbonSectionControllerDelegate)ribbonDelegate;
 - (void)_setupRibbonView;
-- (void)_updateWithPreviousState:(BOOL)a3;
+- (void)_updateWithPreviousState:(BOOL)state;
 - (void)buildContent;
-- (void)ribbonView:(id)a3 didTapItemWithViewModel:(id)a4 withPresentationOptions:(id)a5;
+- (void)ribbonView:(id)view didTapItemWithViewModel:(id)model withPresentationOptions:(id)options;
 @end
 
 @implementation MUPlaceRibbonSectionController
@@ -17,49 +17,49 @@
   return WeakRetained;
 }
 
-- (void)ribbonView:(id)a3 didTapItemWithViewModel:(id)a4 withPresentationOptions:(id)a5
+- (void)ribbonView:(id)view didTapItemWithViewModel:(id)model withPresentationOptions:(id)options
 {
-  v10 = a5;
-  v7 = [a4 type];
-  if (v7 == 2)
+  optionsCopy = options;
+  type = [model type];
+  if (type == 2)
   {
-    v8 = [(MUPlaceRibbonSectionController *)self ribbonDelegate];
-    [v8 ribbonSectionControllerDidTapHours:self];
+    ribbonDelegate = [(MUPlaceRibbonSectionController *)self ribbonDelegate];
+    [ribbonDelegate ribbonSectionControllerDidTapHours:self];
   }
 
   else
   {
-    if (v7 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
 
-    v8 = [(MUPlaceRibbonSectionController *)self ribbonDelegate];
-    v9 = [(MUPlaceRibbonSectionController *)self submissionStatus];
-    [v8 ribbonSectionControllerDidTapAddRatings:self initialRatingState:objc_msgSend(v9 withPresentationOptions:{"ratingState"), v10}];
+    ribbonDelegate = [(MUPlaceRibbonSectionController *)self ribbonDelegate];
+    submissionStatus = [(MUPlaceRibbonSectionController *)self submissionStatus];
+    [ribbonDelegate ribbonSectionControllerDidTapAddRatings:self initialRatingState:objc_msgSend(submissionStatus withPresentationOptions:{"ratingState"), optionsCopy}];
   }
 
 LABEL_6:
 }
 
-- (void)_updateWithPreviousState:(BOOL)a3
+- (void)_updateWithPreviousState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v11 = *MEMORY[0x1E69E9840];
-  if ([(MUPlaceRibbonSectionController *)self hasContent]!= a3)
+  if ([(MUPlaceRibbonSectionController *)self hasContent]!= state)
   {
     v5 = MUGetPlaceCardLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8[0] = 67109376;
-      v8[1] = v3;
+      v8[1] = stateCopy;
       v9 = 1024;
-      v10 = [(MUPlaceRibbonSectionController *)self hasContent];
+      hasContent = [(MUPlaceRibbonSectionController *)self hasContent];
       _os_log_impl(&dword_1C5620000, v5, OS_LOG_TYPE_INFO, "MUPlaceHeaderButtonsSectionController: hasContent changed from %d to %d, will tell parent to update.", v8, 0xEu);
     }
 
-    v6 = [(MUPlaceSectionController *)self delegate];
-    [v6 placeSectionControllerDidUpdateContent:self];
+    delegate = [(MUPlaceSectionController *)self delegate];
+    [delegate placeSectionControllerDidUpdateContent:self];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -67,18 +67,18 @@ LABEL_6:
 
 - (BOOL)_supportsAddRatingsCallToAction
 {
-  v3 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration availability];
-  v4 = [v3 supportsPhotoOnlyDataCollection];
+  availability = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration availability];
+  supportsPhotoOnlyDataCollection = [availability supportsPhotoOnlyDataCollection];
 
-  if (v4)
+  if (supportsPhotoOnlyDataCollection)
   {
     return 0;
   }
 
-  v6 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration availability];
-  v7 = [v6 supportsCallToAction];
+  availability2 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration availability];
+  supportsCallToAction = [availability2 supportsCallToAction];
 
-  return v7;
+  return supportsCallToAction;
 }
 
 - (void)buildContent
@@ -92,26 +92,26 @@ LABEL_6:
   v4 = v3;
   v79 = v4;
   v5 = _Block_copy(aBlock);
-  v6 = [(MUPlaceSectionController *)self mapItem];
-  v7 = [(MUPlaceRibbonSectionController *)self ribbonConfig];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  ribbonConfig = [(MUPlaceRibbonSectionController *)self ribbonConfig];
 
-  if (v7)
+  if (ribbonConfig)
   {
     v76 = 0u;
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v8 = [(MUPlaceRibbonSectionController *)self ribbonConfig];
-    v9 = [v8 ribbonItems];
+    ribbonConfig2 = [(MUPlaceRibbonSectionController *)self ribbonConfig];
+    ribbonItems = [ribbonConfig2 ribbonItems];
 
-    v10 = [v9 countByEnumeratingWithState:&v74 objects:v85 count:16];
+    v10 = [ribbonItems countByEnumeratingWithState:&v74 objects:v85 count:16];
     if (v10)
     {
       v11 = v10;
-      v69 = v6;
+      v69 = mapItem;
       v67 = v4;
       v12 = *v75;
-      v68 = self;
+      selfCopy = self;
       while (1)
       {
         v13 = 0;
@@ -119,14 +119,14 @@ LABEL_6:
         {
           if (*v75 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(ribbonItems);
           }
 
           v14 = *(*(&v74 + 1) + 8 * v13);
-          v15 = [v14 isValid];
+          isValid = [v14 isValid];
           v16 = MUGetPlaceCardLog();
           v17 = v16;
-          if ((v15 & 1) == 0)
+          if ((isValid & 1) == 0)
           {
             if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
             {
@@ -149,23 +149,23 @@ LABEL_6:
 
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v18 = [v14 type];
+            type = [v14 type];
             *buf = 67109120;
-            LODWORD(v82) = v18;
+            LODWORD(v82) = type;
             _os_log_impl(&dword_1C5620000, v17, OS_LOG_TYPE_INFO, "Creating a ribbon from ribbon type %d", buf, 8u);
           }
 
-          v19 = [v14 type];
-          if (v19 <= 4)
+          type2 = [v14 type];
+          if (type2 <= 4)
           {
-            if (v19 > 1)
+            if (type2 > 1)
             {
-              if (v19 != 2)
+              if (type2 != 2)
               {
-                if (v19 == 3)
+                if (type2 == 3)
                 {
-                  v29 = [v14 amenityItem];
-                  v32 = [MUPlaceRibbonItemViewModel amenityItemViewForMapItem:v69 amenityItemConfiguration:v29];
+                  amenityItem = [v14 amenityItem];
+                  v32 = [MUPlaceRibbonItemViewModel amenityItemViewForMapItem:v69 amenityItemConfiguration:amenityItem];
                   v5[2](v5, v32);
 
                   goto LABEL_44;
@@ -173,7 +173,7 @@ LABEL_6:
 
                 v28 = [MUPlaceRibbonItemViewModel costItemViewForMapItem:v69];
 LABEL_43:
-                v29 = v28;
+                amenityItem = v28;
                 v5[2](v5, v28);
                 goto LABEL_44;
               }
@@ -186,9 +186,9 @@ LABEL_43:
               goto LABEL_49;
             }
 
-            if (v19)
+            if (type2)
             {
-              if (v19 != 1)
+              if (type2 != 1)
               {
                 goto LABEL_50;
               }
@@ -208,20 +208,20 @@ LABEL_43:
 
           else
           {
-            if (v19 <= 8)
+            if (type2 <= 8)
             {
-              if (v19 == 5)
+              if (type2 == 5)
               {
                 v28 = [MUPlaceRibbonItemViewModel guidesItemViewModelForMapItem:v69];
                 goto LABEL_43;
               }
 
-              if (v19 == 6)
+              if (type2 == 6)
               {
-                v33 = [(MUPlaceSectionController *)self mapItem];
-                v34 = [v33 _encyclopedicInfo];
-                v35 = [v14 factoidItem];
-                v17 = [v34 factoidAtIndex:{objc_msgSend(v35, "indexWithinFactoidComponent")}];
+                mapItem2 = [(MUPlaceSectionController *)self mapItem];
+                _encyclopedicInfo = [mapItem2 _encyclopedicInfo];
+                factoidItem = [v14 factoidItem];
+                v17 = [_encyclopedicInfo factoidAtIndex:{objc_msgSend(factoidItem, "indexWithinFactoidComponent")}];
 
                 if (v17)
                 {
@@ -234,29 +234,29 @@ LABEL_43:
                   v36 = MUGetPlaceCardLog();
                   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
                   {
-                    v43 = [v14 factoidItem];
-                    v44 = [v43 indexWithinFactoidComponent];
+                    factoidItem2 = [v14 factoidItem];
+                    indexWithinFactoidComponent = [factoidItem2 indexWithinFactoidComponent];
                     *buf = 67109120;
-                    LODWORD(v82) = v44;
+                    LODWORD(v82) = indexWithinFactoidComponent;
                     _os_log_impl(&dword_1C5620000, v36, OS_LOG_TYPE_ERROR, "Failed to find a factoid with index %d", buf, 8u);
                   }
                 }
 
-                self = v68;
+                self = selfCopy;
 
 LABEL_20:
                 goto LABEL_50;
               }
 
-              if (v19 != 8)
+              if (type2 != 8)
               {
                 goto LABEL_50;
               }
 
               v20 = [MUPlaceDistanceRibbonViewModel alloc];
-              v21 = [(MUPlaceSectionController *)self mapItem];
-              v22 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration etaProvider];
-              v23 = [(MUPlaceDistanceRibbonViewModel *)v20 initWithMapItem:v21 etaProvider:v22];
+              mapItem3 = [(MUPlaceSectionController *)self mapItem];
+              etaProvider = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration etaProvider];
+              v23 = [(MUPlaceDistanceRibbonViewModel *)v20 initWithMapItem:mapItem3 etaProvider:etaProvider];
               v24 = 104;
               distanceViewModel = self->_distanceViewModel;
               self->_distanceViewModel = v23;
@@ -267,21 +267,21 @@ LABEL_49:
               goto LABEL_50;
             }
 
-            if (v19 == 9)
+            if (type2 == 9)
             {
-              v29 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration availability];
-              if (([v29 supportsEVCharging] & 1) == 0)
+              amenityItem = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration availability];
+              if (([amenityItem supportsEVCharging] & 1) == 0)
               {
                 goto LABEL_44;
               }
 
-              v39 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration evChargerAvailabilityProvider];
+              evChargerAvailabilityProvider = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration evChargerAvailabilityProvider];
 
-              if (v39)
+              if (evChargerAvailabilityProvider)
               {
                 v40 = [MUPlaceRibbonEVChargingViewModel alloc];
-                v21 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration evChargerAvailabilityProvider];
-                v41 = [(MUPlaceRibbonEVChargingViewModel *)v40 initWithAvailabilityProvider:v21];
+                mapItem3 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration evChargerAvailabilityProvider];
+                v41 = [(MUPlaceRibbonEVChargingViewModel *)v40 initWithAvailabilityProvider:mapItem3];
                 v24 = 112;
                 evChargingViewModel = self->_evChargingViewModel;
                 self->_evChargingViewModel = v41;
@@ -292,7 +292,7 @@ LABEL_49:
 
             else
             {
-              if (v19 == 10)
+              if (type2 == 10)
               {
                 if (!MapsFeature_IsEnabled_ExpertPartners())
                 {
@@ -303,10 +303,10 @@ LABEL_49:
                 goto LABEL_43;
               }
 
-              if (v19 == 11 && MapsFeature_IsEnabled_ApplePayEnhancementsEnabled())
+              if (type2 == 11 && MapsFeature_IsEnabled_ApplePayEnhancementsEnabled())
               {
-                v29 = [v14 contactlessPaymentsItem];
-                v30 = [MUPlaceRibbonItemViewModel acceptsPaymentsViewForMapItem:v69 contactlessPaymentsRibbonItem:v29];
+                amenityItem = [v14 contactlessPaymentsItem];
+                v30 = [MUPlaceRibbonItemViewModel acceptsPaymentsViewForMapItem:v69 contactlessPaymentsRibbonItem:amenityItem];
                 v5[2](v5, v30);
 
 LABEL_44:
@@ -319,7 +319,7 @@ LABEL_50:
         }
 
         while (v11 != v13);
-        v45 = [v9 countByEnumeratingWithState:&v74 objects:v85 count:16];
+        v45 = [ribbonItems countByEnumeratingWithState:&v74 objects:v85 count:16];
         v11 = v45;
         if (!v45)
         {
@@ -332,28 +332,28 @@ LABEL_50:
 
   else
   {
-    v46 = [MUPlaceRibbonItemViewModel hoursItemViewModelForMapItem:v6];
+    v46 = [MUPlaceRibbonItemViewModel hoursItemViewModelForMapItem:mapItem];
     v5[2](v5, v46);
 
-    v47 = [[MUPlaceRatingRibbonViewModel alloc] initWithMapItem:v6];
+    v47 = [[MUPlaceRatingRibbonViewModel alloc] initWithMapItem:mapItem];
     v48 = self->_ratingViewModel;
     self->_ratingViewModel = v47;
 
     v5[2](v5, self->_ratingViewModel);
-    v49 = [MUPlaceRibbonItemViewModel guidesItemViewModelForMapItem:v6];
+    v49 = [MUPlaceRibbonItemViewModel guidesItemViewModelForMapItem:mapItem];
     v5[2](v5, v49);
 
-    v50 = [MUPlaceRibbonItemViewModel costItemViewForMapItem:v6];
+    v50 = [MUPlaceRibbonItemViewModel costItemViewForMapItem:mapItem];
     v5[2](v5, v50);
 
-    v69 = v6;
-    v51 = [MUPlaceRibbonItemViewModel amenityItemViewForMapItem:v6 amenityItemConfiguration:0];
+    v69 = mapItem;
+    v51 = [MUPlaceRibbonItemViewModel amenityItemViewForMapItem:mapItem amenityItemConfiguration:0];
     v5[2](v5, v51);
 
     v52 = [MUPlaceDistanceRibbonViewModel alloc];
-    v53 = [(MUPlaceSectionController *)self mapItem];
-    v54 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration etaProvider];
-    v55 = [(MUPlaceDistanceRibbonViewModel *)v52 initWithMapItem:v53 etaProvider:v54];
+    mapItem4 = [(MUPlaceSectionController *)self mapItem];
+    etaProvider2 = [(MUPlaceRibbonSectionControllerConfiguration *)self->_configuration etaProvider];
+    v55 = [(MUPlaceDistanceRibbonViewModel *)v52 initWithMapItem:mapItem4 etaProvider:etaProvider2];
     v56 = self->_distanceViewModel;
     self->_distanceViewModel = v55;
 
@@ -362,12 +362,12 @@ LABEL_50:
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v57 = [(MUPlaceSectionController *)self mapItem];
-    v58 = [v57 _geoMapItem];
-    v59 = [v58 _encyclopedicInfo];
-    v9 = [v59 factoids];
+    mapItem5 = [(MUPlaceSectionController *)self mapItem];
+    _geoMapItem = [mapItem5 _geoMapItem];
+    _encyclopedicInfo2 = [_geoMapItem _encyclopedicInfo];
+    ribbonItems = [_encyclopedicInfo2 factoids];
 
-    v60 = [v9 countByEnumeratingWithState:&v70 objects:v80 count:16];
+    v60 = [ribbonItems countByEnumeratingWithState:&v70 objects:v80 count:16];
     if (v60)
     {
       v61 = v60;
@@ -379,14 +379,14 @@ LABEL_50:
         {
           if (*v71 != v63)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(ribbonItems);
           }
 
           v65 = [MUPlaceRibbonItemViewModel factoidItemForFactoid:*(*(&v70 + 1) + 8 * i)];
           v5[2](v5, v65);
         }
 
-        v61 = [v9 countByEnumeratingWithState:&v70 objects:v80 count:16];
+        v61 = [ribbonItems countByEnumeratingWithState:&v70 objects:v80 count:16];
       }
 
       while (v61);
@@ -394,7 +394,7 @@ LABEL_50:
     }
 
 LABEL_65:
-    v6 = v69;
+    mapItem = v69;
   }
 
   [(MUPlaceRibbonView *)self->_ribbonView setViewModels:v4];
@@ -430,12 +430,12 @@ uint64_t __46__MUPlaceRibbonSectionController_buildContent__block_invoke(uint64_
   [(MUPlaceRibbonSectionController *)self buildContent];
 }
 
-- (MUPlaceRibbonSectionController)initWithMapItem:(id)a3 configuration:(id)a4
+- (MUPlaceRibbonSectionController)initWithMapItem:(id)item configuration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = MUPlaceRibbonSectionController;
-  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:a3];
+  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:item];
   if (v8)
   {
     v9 = MUGetPlaceCardLog();
@@ -445,7 +445,7 @@ uint64_t __46__MUPlaceRibbonSectionController_buildContent__block_invoke(uint64_
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceRibbonSectionControllerInit", "", v12, 2u);
     }
 
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeStrong(&v8->_configuration, configuration);
     [(MUPlaceRibbonSectionController *)v8 _setupRibbonView];
     v10 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v10))

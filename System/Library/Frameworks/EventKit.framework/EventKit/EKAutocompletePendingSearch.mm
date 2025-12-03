@@ -1,34 +1,34 @@
 @interface EKAutocompletePendingSearch
 + (id)_eventKitQueue;
 + (id)_queue;
-- (BOOL)_shouldReturnResultForEvent:(id)a3 considerReadonlyEvents:(BOOL)a4;
-- (EKAutocompletePendingSearch)initWithEventStore:(id)a3 searchString:(id)a4 maximumResultCount:(unint64_t)a5 ignoreScheduledEvents:(BOOL)a6 initialEvent:(id)a7 pasteboardItemProvider:(id)a8 completionHandler:(id)a9;
-- (EKAutocompletePendingSearch)searchWithString:(id)a3 completionHandler:(id)a4;
-- (id)firstNaturalLanguageResultWithSearchString:(id)a3;
+- (BOOL)_shouldReturnResultForEvent:(id)event considerReadonlyEvents:(BOOL)events;
+- (EKAutocompletePendingSearch)initWithEventStore:(id)store searchString:(id)string maximumResultCount:(unint64_t)count ignoreScheduledEvents:(BOOL)events initialEvent:(id)event pasteboardItemProvider:(id)provider completionHandler:(id)handler;
+- (EKAutocompletePendingSearch)searchWithString:(id)string completionHandler:(id)handler;
+- (id)firstNaturalLanguageResultWithSearchString:(id)string;
 - (void)cancel;
 @end
 
 @implementation EKAutocompletePendingSearch
 
-- (EKAutocompletePendingSearch)initWithEventStore:(id)a3 searchString:(id)a4 maximumResultCount:(unint64_t)a5 ignoreScheduledEvents:(BOOL)a6 initialEvent:(id)a7 pasteboardItemProvider:(id)a8 completionHandler:(id)a9
+- (EKAutocompletePendingSearch)initWithEventStore:(id)store searchString:(id)string maximumResultCount:(unint64_t)count ignoreScheduledEvents:(BOOL)events initialEvent:(id)event pasteboardItemProvider:(id)provider completionHandler:(id)handler
 {
-  v23 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  storeCopy = store;
+  stringCopy = string;
+  eventCopy = event;
+  providerCopy = provider;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = EKAutocompletePendingSearch;
   v19 = [(EKAutocompletePendingSearch *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_eventStore, a3);
-    v20->_maximumResultCount = a5;
-    v20->_ignoreScheduledEvents = a6;
-    objc_storeStrong(&v20->_initialEvent, a7);
-    objc_storeStrong(&v20->_pasteboardItemProvider, a8);
-    [(EKAutocompletePendingSearch *)v20 searchWithString:v15 completionHandler:v18];
+    objc_storeStrong(&v19->_eventStore, store);
+    v20->_maximumResultCount = count;
+    v20->_ignoreScheduledEvents = events;
+    objc_storeStrong(&v20->_initialEvent, event);
+    objc_storeStrong(&v20->_pasteboardItemProvider, provider);
+    [(EKAutocompletePendingSearch *)v20 searchWithString:stringCopy completionHandler:handlerCopy];
   }
 
   return v20;
@@ -72,19 +72,19 @@ uint64_t __45__EKAutocompletePendingSearch__eventKitQueue__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)firstNaturalLanguageResultWithSearchString:(id)a3
+- (id)firstNaturalLanguageResultWithSearchString:(id)string
 {
-  v4 = [(EKEventStore *)self->_eventStore predicateForNaturalLanguageSuggestedEventsWithSearchString:a3];
+  v4 = [(EKEventStore *)self->_eventStore predicateForNaturalLanguageSuggestedEventsWithSearchString:string];
   v5 = [(EKEventStore *)self->_eventStore eventsMatchingPredicate:v4];
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     v7 = objc_opt_new();
-    v8 = [v6 uniqueID];
-    [v7 setIdentifier:v8];
+    uniqueID = [firstObject uniqueID];
+    [v7 setIdentifier:uniqueID];
 
-    v9 = [v6 title];
-    [v7 setTitle:v9];
+    title = [firstObject title];
+    [v7 setTitle:title];
 
     [v7 setNaturalLanguageSuggestedEvent:1];
   }
@@ -97,28 +97,28 @@ uint64_t __45__EKAutocompletePendingSearch__eventKitQueue__block_invoke()
   return v7;
 }
 
-- (BOOL)_shouldReturnResultForEvent:(id)a3 considerReadonlyEvents:(BOOL)a4
+- (BOOL)_shouldReturnResultForEvent:(id)event considerReadonlyEvents:(BOOL)events
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  eventCopy = event;
+  v7 = eventCopy;
+  if (!eventCopy)
   {
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!events)
   {
-    v8 = [v6 calendar];
-    if ([v8 allowsContentModifications])
+    calendar = [eventCopy calendar];
+    if ([calendar allowsContentModifications])
     {
     }
 
     else
     {
-      v9 = [v7 calendar];
-      v10 = [v9 isNaturalLanguageSuggestedEventCalendar];
+      calendar2 = [v7 calendar];
+      isNaturalLanguageSuggestedEventCalendar = [calendar2 isNaturalLanguageSuggestedEventCalendar];
 
-      if (!v10)
+      if (!isNaturalLanguageSuggestedEventCalendar)
       {
 LABEL_8:
         v11 = 0;
@@ -135,9 +135,9 @@ LABEL_8:
   initialEvent = self->_initialEvent;
   if (initialEvent)
   {
-    v13 = [(EKObject *)initialEvent uniqueIdentifier];
-    v14 = [v7 uniqueIdentifier];
-    v15 = [v13 isEqualToString:v14];
+    uniqueIdentifier = [(EKObject *)initialEvent uniqueIdentifier];
+    uniqueIdentifier2 = [v7 uniqueIdentifier];
+    v15 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
 
     v11 = v15 ^ 1;
   }
@@ -152,10 +152,10 @@ LABEL_12:
   return v11 & 1;
 }
 
-- (EKAutocompletePendingSearch)searchWithString:(id)a3 completionHandler:(id)a4
+- (EKAutocompletePendingSearch)searchWithString:(id)string completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   if (self->_pendingSearch)
   {
     [EKAutocompletePendingSearch searchWithString:a2 completionHandler:self];
@@ -167,16 +167,16 @@ LABEL_12:
   v25[3] = __Block_byref_object_copy__3;
   v25[4] = __Block_byref_object_dispose__3;
   v26 = 0;
-  v9 = [objc_opt_class() _eventKitQueue];
+  _eventKitQueue = [objc_opt_class() _eventKitQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__EKAutocompletePendingSearch_searchWithString_completionHandler___block_invoke;
   block[3] = &unk_1E77FD688;
   v24 = v25;
   block[4] = self;
-  v10 = v7;
+  v10 = stringCopy;
   v23 = v10;
-  dispatch_async(v9, block);
+  dispatch_async(_eventKitQueue, block);
 
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -192,7 +192,7 @@ LABEL_12:
   v18[4] = self;
   v13 = v10;
   v19 = v13;
-  v14 = v8;
+  v14 = handlerCopy;
   v20 = v14;
   v21 = v25;
   v15 = [v12 searchWithString:v13 clientBundleID:v11 completionHandler:v18];
@@ -568,13 +568,13 @@ void __66__EKAutocompletePendingSearch_searchWithString_completionHandler___bloc
 
 - (void)cancel
 {
-  v3 = [objc_opt_class() _queue];
+  _queue = [objc_opt_class() _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__EKAutocompletePendingSearch_cancel__block_invoke;
   block[3] = &unk_1E77FD418;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_queue, block);
 }
 
 void __37__EKAutocompletePendingSearch_cancel__block_invoke(uint64_t a1)

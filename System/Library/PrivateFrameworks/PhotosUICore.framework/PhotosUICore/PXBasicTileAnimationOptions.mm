@@ -1,7 +1,7 @@
 @interface PXBasicTileAnimationOptions
 + (id)defaultAnimationOptions;
 - (PXBasicTileAnimationOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,9 +20,9 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = *&self->_duration;
   *(result + 2) = *&self->_delay;
   *(result + 4) = self->_style;

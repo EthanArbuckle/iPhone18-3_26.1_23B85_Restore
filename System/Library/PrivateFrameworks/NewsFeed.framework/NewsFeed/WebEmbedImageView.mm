@@ -1,5 +1,5 @@
 @interface WebEmbedImageView
-- (void)handleTapActionWithGesture:(id)a3;
+- (void)handleTapActionWithGesture:(id)gesture;
 - (void)layoutSubviews;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   WebEmbedImageView.layoutSubviews()();
 }
 
-- (void)handleTapActionWithGesture:(id)a3
+- (void)handleTapActionWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6F28164(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_1D6F28164(gestureCopy);
 }
 
 @end

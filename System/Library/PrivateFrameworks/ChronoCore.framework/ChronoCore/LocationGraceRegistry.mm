@@ -1,14 +1,14 @@
 @interface LocationGraceRegistry
-+ (id)deserializeFromReader:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)serializeToWriter:(id)a3;
-- (id)copyWithZone:(void *)a3;
++ (id)deserializeFromReader:(id)reader;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)serializeToWriter:(id)writer;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)serializedDataLength;
 @end
 
 @implementation LocationGraceRegistry
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   isa = self->super.isa;
   swift_beginAccess();
@@ -21,9 +21,9 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
 
     swift_unknownObjectRetain();
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (BOOL)serializeToWriter:(id)a3
+- (BOOL)serializeToWriter:(id)writer
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(writer);
   _Block_copy(v3);
 
   v5 = sub_224A8DE4C(v4, v3);
@@ -63,9 +63,9 @@
   return v5;
 }
 
-+ (id)deserializeFromReader:(id)a3
++ (id)deserializeFromReader:(id)reader
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reader);
   v4 = sub_224CBDF70(v3);
   _Block_release(v3);
 

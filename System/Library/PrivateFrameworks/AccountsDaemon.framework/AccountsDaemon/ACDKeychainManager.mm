@@ -1,31 +1,31 @@
 @interface ACDKeychainManager
 + (ACDServer)server;
-+ (BOOL)_keychainLock_removeItemForService:(id)a3 username:(id)a4 accessGroup:(id)a5 options:(id)a6 error:(id *)a7;
-+ (BOOL)_removeCredentialItemWithKey:(id)a3 forAccountWithID:(id)a4 username:(id)a5 accountTypeID:(id)a6 clientID:(id)a7 options:(id)a8 error:(id *)a9;
-+ (BOOL)_removeItemForService:(id)a3 username:(id)a4 accessGroup:(id)a5 options:(id)a6 error:(id *)a7;
-+ (BOOL)_shouldSyncCredentialForAccount:(id)a3;
-+ (id)_credentialForAccountWithID:(id)a3 accountTypeID:(id)a4 credentialType:(id)a5 clientID:(id)a6 allowAdditionalAccountTypeSegment:(BOOL)a7 options:(id)a8 error:(id *)a9;
-+ (id)_fetchOptionsForAccount:(id)a3;
-+ (id)_itemForServiceName:(id)a3 username:(id)a4 accessGroup:(id)a5 options:(id)a6 error:(id *)a7;
-+ (id)credentialForAccount:(id)a3 clientID:(id)a4 error:(id *)a5;
-+ (id)credentialForManagedAccountObject:(id)a3 clientID:(id)a4 error:(id *)a5;
-+ (id)keychainServiceNameForClientID:(id)a3 accountTypeIdentifier:(id)a4 additionalAccountTypeSegment:(id)a5 key:(id)a6;
-+ (void)_accountTypeIdentifierFromComponents:(id)a3 handler:(id)a4;
-+ (void)_createNoSyncOAuthTokens:(id)a3 account:(id)a4 clientID:(id)a5;
-+ (void)_fallbackToUnsyncedOAuthTokens:(id)a3;
-+ (void)_keychainLock_addItem:(id)a3 forServiceName:(id)a4 username:(id)a5 accessGroup:(id)a6 accessibility:(id)a7 syncable:(BOOL)a8 requiresTouchID:(BOOL)a9 error:(id *)a10;
-+ (void)_keychainLock_updateItem:(id)a3 existingPassword:(id)a4 forServiceName:(id)a5 username:(id)a6 accessGroup:(id)a7 accessibility:(id)a8 options:(id)a9 error:(id *)a10;
-+ (void)_migrateCredential:(id)a3 forAccount:(id)a4 clientID:(id)a5;
-+ (void)_removeCredentialsForAccount:(id)a3 clientID:(id)a4 options:(id)a5 error:(id *)a6;
-+ (void)_saveCredential:(id)a3 forAccount:(id)a4 clientID:(id)a5 error:(id *)a6;
-+ (void)_setItem:(id)a3 forServiceName:(id)a4 username:(id)a5 accessGroup:(id)a6 accessibility:(id)a7 syncable:(BOOL)a8 requiresTouchID:(BOOL)a9 options:(id)a10 error:(id *)a11;
-+ (void)_setNonPersistentCredentialTimerForAccount:(id)a3;
-+ (void)componentsFromKeychainServiceName:(id)a3 handler:(id)a4;
++ (BOOL)_keychainLock_removeItemForService:(id)service username:(id)username accessGroup:(id)group options:(id)options error:(id *)error;
++ (BOOL)_removeCredentialItemWithKey:(id)key forAccountWithID:(id)d username:(id)username accountTypeID:(id)iD clientID:(id)clientID options:(id)options error:(id *)error;
++ (BOOL)_removeItemForService:(id)service username:(id)username accessGroup:(id)group options:(id)options error:(id *)error;
++ (BOOL)_shouldSyncCredentialForAccount:(id)account;
++ (id)_credentialForAccountWithID:(id)d accountTypeID:(id)iD credentialType:(id)type clientID:(id)clientID allowAdditionalAccountTypeSegment:(BOOL)segment options:(id)options error:(id *)error;
++ (id)_fetchOptionsForAccount:(id)account;
++ (id)_itemForServiceName:(id)name username:(id)username accessGroup:(id)group options:(id)options error:(id *)error;
++ (id)credentialForAccount:(id)account clientID:(id)d error:(id *)error;
++ (id)credentialForManagedAccountObject:(id)object clientID:(id)d error:(id *)error;
++ (id)keychainServiceNameForClientID:(id)d accountTypeIdentifier:(id)identifier additionalAccountTypeSegment:(id)segment key:(id)key;
++ (void)_accountTypeIdentifierFromComponents:(id)components handler:(id)handler;
++ (void)_createNoSyncOAuthTokens:(id)tokens account:(id)account clientID:(id)d;
++ (void)_fallbackToUnsyncedOAuthTokens:(id)tokens;
++ (void)_keychainLock_addItem:(id)item forServiceName:(id)name username:(id)username accessGroup:(id)group accessibility:(id)accessibility syncable:(BOOL)syncable requiresTouchID:(BOOL)d error:(id *)self0;
++ (void)_keychainLock_updateItem:(id)item existingPassword:(id)password forServiceName:(id)name username:(id)username accessGroup:(id)group accessibility:(id)accessibility options:(id)options error:(id *)self0;
++ (void)_migrateCredential:(id)credential forAccount:(id)account clientID:(id)d;
++ (void)_removeCredentialsForAccount:(id)account clientID:(id)d options:(id)options error:(id *)error;
++ (void)_saveCredential:(id)credential forAccount:(id)account clientID:(id)d error:(id *)error;
++ (void)_setItem:(id)item forServiceName:(id)name username:(id)username accessGroup:(id)group accessibility:(id)accessibility syncable:(BOOL)syncable requiresTouchID:(BOOL)d options:(id)self0 error:(id *)self1;
++ (void)_setNonPersistentCredentialTimerForAccount:(id)account;
++ (void)componentsFromKeychainServiceName:(id)name handler:(id)handler;
 + (void)initialize;
-+ (void)notifiyCredentialChangedForAccount:(id)a3;
-+ (void)removeCredentialForAccount:(id)a3 clientID:(id)a4 error:(id *)a5;
-+ (void)removeCredentialForAccount:(id)a3 error:(id *)a4;
-+ (void)removeCredentialForAccount:(id)a3 key:(id)a4 error:(id *)a5;
++ (void)notifiyCredentialChangedForAccount:(id)account;
++ (void)removeCredentialForAccount:(id)account clientID:(id)d error:(id *)error;
++ (void)removeCredentialForAccount:(id)account error:(id *)error;
++ (void)removeCredentialForAccount:(id)account key:(id)key error:(id *)error;
 @end
 
 @implementation ACDKeychainManager
@@ -44,18 +44,18 @@
   return WeakRetained;
 }
 
-+ (id)_fetchOptionsForAccount:(id)a3
++ (id)_fetchOptionsForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if ([a1 _shouldSyncCredentialForAccount:v4])
+  if ([self _shouldSyncCredentialForAccount:accountCopy])
   {
     [v5 setObject:*MEMORY[0x277CDC148] forKeyedSubscript:*MEMORY[0x277CDC140]];
   }
 
-  v6 = [v4 accountType];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqual:*MEMORY[0x277CB8BB0]];
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v8 = [identifier isEqual:*MEMORY[0x277CB8BB0]];
 
   if (v8)
   {
@@ -77,28 +77,28 @@
   return v11;
 }
 
-+ (id)credentialForManagedAccountObject:(id)a3 clientID:(id)a4 error:(id *)a5
++ (id)credentialForManagedAccountObject:(id)object clientID:(id)d error:(id *)error
 {
   v8 = MEMORY[0x277CB8F30];
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithManagedAccount:v10];
+  dCopy = d;
+  objectCopy = object;
+  v11 = [[v8 alloc] initWithManagedAccount:objectCopy];
 
-  v12 = [a1 credentialForAccount:v11 clientID:v9 error:a5];
+  v12 = [self credentialForAccount:v11 clientID:dCopy error:error];
 
   return v12;
 }
 
-+ (id)credentialForAccount:(id)a3 clientID:(id)a4 error:(id *)a5
++ (id)credentialForAccount:(id)account clientID:(id)d error:(id *)error
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 accountType];
-  v11 = [v10 identifier];
+  accountCopy = account;
+  dCopy = d;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
 
-  v12 = [v8 accountType];
-  v13 = [v12 credentialType];
+  accountType2 = [accountCopy accountType];
+  credentialType = [accountType2 credentialType];
 
   v14 = _ACDKeychainLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -106,10 +106,10 @@
     +[ACDKeychainManager credentialForAccount:clientID:error:];
   }
 
-  v15 = [MEMORY[0x277CB8F38] credentialPolicyIsMixedForAccountTypeIdentifier:v11];
-  v16 = [v8 accountType];
-  v17 = [v16 credentialProtectionPolicy];
-  v18 = [ACDKeychain canAccessPasswordsWithPolicy:v17];
+  v15 = [MEMORY[0x277CB8F38] credentialPolicyIsMixedForAccountTypeIdentifier:identifier];
+  accountType3 = [accountCopy accountType];
+  credentialProtectionPolicy = [accountType3 credentialProtectionPolicy];
+  v18 = [ACDKeychain canAccessPasswordsWithPolicy:credentialProtectionPolicy];
 
   if ((v18 | v15))
   {
@@ -119,9 +119,9 @@
     v41 = __Block_byref_object_copy_;
     v42 = __Block_byref_object_dispose_;
     v43 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     v36 = 0;
@@ -135,13 +135,13 @@
     v28[1] = 3221225472;
     v28[2] = __58__ACDKeychainManager_credentialForAccount_clientID_error___block_invoke;
     v28[3] = &unk_27848BCA8;
-    v29 = v8;
+    v29 = accountCopy;
     p_buf = &buf;
     v34 = &v36;
-    v35 = a1;
-    v30 = v11;
-    v31 = v13;
-    v32 = v9;
+    selfCopy = self;
+    v30 = identifier;
+    v31 = credentialType;
+    v32 = dCopy;
     [v19 performWithinPersonaForAccount:v29 withBlock:v28];
     if (*(*(&buf + 1) + 40))
     {
@@ -151,9 +151,9 @@
         [ACDKeychainManager credentialForAccount:? clientID:? error:?];
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = *(*(&buf + 1) + 40);
+        *error = *(*(&buf + 1) + 40);
       }
     }
 
@@ -163,7 +163,7 @@
       [ACDKeychainManager credentialForAccount:v37 clientID:? error:?];
     }
 
-    a5 = *(v37[0] + 40);
+    error = *(v37[0] + 40);
     _Block_object_dispose(&v36, 8);
 
     _Block_object_dispose(&buf, 8);
@@ -174,27 +174,27 @@
     v22 = _ACDKeychainLogSystem();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v8 identifier];
+      identifier2 = [accountCopy identifier];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v23;
+      *(&buf + 4) = identifier2;
       _os_log_impl(&dword_221D2F000, v22, OS_LOG_TYPE_DEFAULT, "Credential for account %@ is not currently available", &buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v24 = MEMORY[0x277CCA9B8];
       v44 = *MEMORY[0x277CCA450];
       v45[0] = @"Credential data is currently unavailable for Account ";
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:1];
-      *a5 = [v24 errorWithDomain:*MEMORY[0x277CB8DC0] code:10 userInfo:v25];
+      *error = [v24 errorWithDomain:*MEMORY[0x277CB8DC0] code:10 userInfo:v25];
 
-      a5 = 0;
+      error = 0;
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return error;
 }
 
 void __58__ACDKeychainManager_credentialForAccount_clientID_error___block_invoke(uint64_t a1)
@@ -455,15 +455,15 @@ LABEL_48:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_credentialForAccountWithID:(id)a3 accountTypeID:(id)a4 credentialType:(id)a5 clientID:(id)a6 allowAdditionalAccountTypeSegment:(BOOL)a7 options:(id)a8 error:(id *)a9
++ (id)_credentialForAccountWithID:(id)d accountTypeID:(id)iD credentialType:(id)type clientID:(id)clientID allowAdditionalAccountTypeSegment:(BOOL)segment options:(id)options error:(id *)error
 {
-  v10 = a7;
+  segmentCopy = segment;
   v47 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v14 = a4;
-  v15 = a5;
-  v39 = a6;
-  v38 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  clientIDCopy = clientID;
+  optionsCopy = options;
   v16 = _ACDKeychainLogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -471,14 +471,14 @@ LABEL_48:
   }
 
   v37 = objc_alloc_init(MEMORY[0x277CB8F38]);
-  [v37 setCredentialType:v15];
-  v17 = [MEMORY[0x277CB8F38] supportedKeysForAccountTypeIdentifier:v14 credentialType:v15];
+  [v37 setCredentialType:typeCopy];
+  v17 = [MEMORY[0x277CB8F38] supportedKeysForAccountTypeIdentifier:iDCopy credentialType:typeCopy];
   if ([v17 count])
   {
-    if (v10)
+    if (segmentCopy)
     {
 LABEL_5:
-      v18 = [MEMORY[0x277CB8F38] additionalServiceSegmentForAccountTypeIdentifier:v14];
+      v18 = [MEMORY[0x277CB8F38] additionalServiceSegmentForAccountTypeIdentifier:iDCopy];
       goto LABEL_10;
     }
   }
@@ -491,7 +491,7 @@ LABEL_5:
       +[ACDKeychainManager _credentialForAccountWithID:accountTypeID:credentialType:clientID:allowAdditionalAccountTypeSegment:options:error:];
     }
 
-    if (v10)
+    if (segmentCopy)
     {
       goto LABEL_5;
     }
@@ -499,7 +499,7 @@ LABEL_5:
 
   v18 = 0;
 LABEL_10:
-  v36 = [MEMORY[0x277CB8F38] credentialPolicyIsMixedForAccountTypeIdentifier:v14];
+  v36 = [MEMORY[0x277CB8F38] credentialPolicyIsMixedForAccountTypeIdentifier:iDCopy];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -509,7 +509,7 @@ LABEL_10:
   if (v21)
   {
     v22 = v21;
-    v35 = v15;
+    v35 = typeCopy;
     v23 = *v43;
     while (2)
     {
@@ -521,22 +521,22 @@ LABEL_10:
         }
 
         v25 = *(*(&v42 + 1) + 8 * i);
-        v26 = v14;
-        v27 = [ACDKeychainManager keychainServiceNameForClientID:v39 accountTypeIdentifier:v14 additionalAccountTypeSegment:v18 key:v25];
+        v26 = iDCopy;
+        v27 = [ACDKeychainManager keychainServiceNameForClientID:clientIDCopy accountTypeIdentifier:iDCopy additionalAccountTypeSegment:v18 key:v25];
         v41 = 0;
-        v28 = [ACDKeychainManager _itemForServiceName:v27 username:v40 accessGroup:0 options:v38 error:&v41];
+        v28 = [ACDKeychainManager _itemForServiceName:v27 username:dCopy accessGroup:0 options:optionsCopy error:&v41];
         v29 = v41;
         v30 = v29;
         if (v29 && !(([v29 code] == 11) | v36 & 1))
         {
-          if (a9)
+          if (error)
           {
             v31 = v30;
-            *a9 = v30;
+            *error = v30;
           }
 
           v37 = 0;
-          v14 = v26;
+          iDCopy = v26;
           goto LABEL_25;
         }
 
@@ -545,7 +545,7 @@ LABEL_10:
           [v37 setCredentialItem:v28 forKey:v25];
         }
 
-        v14 = v26;
+        iDCopy = v26;
       }
 
       v22 = [v20 countByEnumeratingWithState:&v42 objects:v46 count:16];
@@ -558,7 +558,7 @@ LABEL_10:
     }
 
 LABEL_25:
-    v15 = v35;
+    typeCopy = v35;
   }
 
   v32 = _ACDKeychainLogSystem();
@@ -647,36 +647,36 @@ void __91__ACDKeychainManager__setCredentialForAccount_clientID_handleCredential
   [v3 credentialsDidChangeForAccount:*(a1 + 32)];
 }
 
-+ (void)_saveCredential:(id)a3 forAccount:(id)a4 clientID:(id)a5 error:(id *)a6
++ (void)_saveCredential:(id)credential forAccount:(id)account clientID:(id)d error:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v8 = a4;
-  v41 = a5;
-  v42 = v8;
-  v9 = [v8 accountType];
-  v10 = [v9 identifier];
+  credentialCopy = credential;
+  accountCopy = account;
+  dCopy = d;
+  v42 = accountCopy;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
 
-  if (v10)
+  if (identifier)
   {
-    v11 = [v40 keysForCredentialItems];
+    keysForCredentialItems = [credentialCopy keysForCredentialItems];
     v12 = _ACDKeychainLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      *&buf[4] = v40;
+      *&buf[4] = credentialCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = accountCopy;
       *&buf[22] = 2112;
-      v58 = v41;
+      v58 = dCopy;
       _os_log_debug_impl(&dword_221D2F000, v12, OS_LOG_TYPE_DEBUG, "Asked to save credential: %@ for Account - %@ with the clientID - %@", buf, 0x20u);
     }
 
-    v13 = [a1 _shouldSyncCredentialForAccount:v8];
+    v13 = [self _shouldSyncCredentialForAccount:accountCopy];
     v14 = MEMORY[0x277CB8F38];
-    v15 = [v8 accountType];
-    v16 = [v15 identifier];
-    v37 = [v14 additionalServiceSegmentForAccountTypeIdentifier:v16];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
+    v37 = [v14 additionalServiceSegmentForAccountTypeIdentifier:identifier2];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -688,7 +688,7 @@ void __91__ACDKeychainManager__setCredentialForAccount_clientID_handleCredential
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    obj = v11;
+    obj = keysForCredentialItems;
     v17 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (v17)
     {
@@ -706,14 +706,14 @@ LABEL_6:
         v21 = *(*(&v52 + 1) + 8 * v20);
         if (![v21 isEqualToString:v19] || (v13 & 1) != 0)
         {
-          v22 = [v42 accountType];
-          v23 = [v22 identifier];
-          v24 = [ACDKeychainManager keychainServiceNameForClientID:v41 accountTypeIdentifier:v23 additionalAccountTypeSegment:v37 key:v21];
+          accountType3 = [v42 accountType];
+          identifier3 = [accountType3 identifier];
+          v24 = [ACDKeychainManager keychainServiceNameForClientID:dCopy accountTypeIdentifier:identifier3 additionalAccountTypeSegment:v37 key:v21];
 
           v25 = MEMORY[0x277CB8F38];
-          v26 = [v42 accountType];
-          v27 = [v26 identifier];
-          v28 = [v25 credentialPolicyForAccountTypeIdentifier:v27 key:v21 clientID:v41];
+          accountType4 = [v42 accountType];
+          identifier4 = [accountType4 identifier];
+          v28 = [v25 credentialPolicyForAccountTypeIdentifier:identifier4 key:v21 clientID:dCopy];
 
           v29 = MEMORY[0x277CB8F98];
           v43[0] = MEMORY[0x277D85DD0];
@@ -722,7 +722,7 @@ LABEL_6:
           v43[3] = &unk_27848BD48;
           v30 = v42;
           v44 = v30;
-          v45 = v40;
+          v45 = credentialCopy;
           v46 = v21;
           v31 = v24;
           v47 = v31;
@@ -730,7 +730,7 @@ LABEL_6:
           v51 = v13;
           v48 = v32;
           v49 = buf;
-          v50 = a1;
+          selfCopy = self;
           [v29 performWithinPersonaForAccount:v30 withBlock:v43];
           LOBYTE(v28) = *(*&buf[8] + 40) == 0;
 
@@ -753,12 +753,12 @@ LABEL_6:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v33 = *(*&buf[8] + 40);
       if (v33)
       {
-        *a6 = v33;
+        *error = v33;
       }
     }
 
@@ -770,12 +770,12 @@ LABEL_6:
     v34 = _ACDLogSystem();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      [ACDKeychainManager _saveCredential:v8 forAccount:v34 clientID:? error:?];
+      [ACDKeychainManager _saveCredential:accountCopy forAccount:v34 clientID:? error:?];
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:4 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:4 userInfo:0];
     }
   }
 
@@ -818,16 +818,16 @@ void __64__ACDKeychainManager__saveCredential_forAccount_clientID_error___block_
   objc_storeStrong((v11 + 40), obj);
 }
 
-+ (void)_setNonPersistentCredentialTimerForAccount:(id)a3
++ (void)_setNonPersistentCredentialTimerForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CB8F78] sharedInstance];
-  v5 = [v4 valueForManagedDefault:*MEMORY[0x277CB8E08]];
-  v6 = [v5 BOOLValue];
+  accountCopy = account;
+  mEMORY[0x277CB8F78] = [MEMORY[0x277CB8F78] sharedInstance];
+  v5 = [mEMORY[0x277CB8F78] valueForManagedDefault:*MEMORY[0x277CB8E08]];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = _ACDKeychainLogSystem();
   v8 = v7;
-  if (v6)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -844,33 +844,33 @@ void __64__ACDKeychainManager__saveCredential_forAccount_clientID_error___block_
     }
 
     v8 = +[ACDKeychainCleanupActivity sharedActivity];
-    [v8 queueNonPersistentCredentialRemoval:v3];
+    [v8 queueNonPersistentCredentialRemoval:accountCopy];
   }
 }
 
-+ (void)removeCredentialForAccount:(id)a3 error:(id *)a4
++ (void)removeCredentialForAccount:(id)account error:(id *)error
 {
   v6 = MEMORY[0x277CB8F30];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithManagedAccount:v7];
+  accountCopy = account;
+  v8 = [[v6 alloc] initWithManagedAccount:accountCopy];
 
-  [a1 removeCredentialForAccount:v8 clientID:0 error:a4];
+  [self removeCredentialForAccount:v8 clientID:0 error:error];
 }
 
-+ (void)removeCredentialForAccount:(id)a3 clientID:(id)a4 error:(id *)a5
++ (void)removeCredentialForAccount:(id)account clientID:(id)d error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  dCopy = d;
   v10 = _ACDLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     +[ACDKeychainManager removeCredentialForAccount:clientID:error:];
   }
 
-  v11 = [v8 accountType];
-  v12 = [v11 credentialProtectionPolicy];
-  v13 = [ACDKeychain canAccessPasswordsWithPolicy:v12];
+  accountType = [accountCopy accountType];
+  credentialProtectionPolicy = [accountType credentialProtectionPolicy];
+  v13 = [ACDKeychain canAccessPasswordsWithPolicy:credentialProtectionPolicy];
 
   if (v13)
   {
@@ -885,17 +885,17 @@ void __64__ACDKeychainManager__saveCredential_forAccount_clientID_error___block_
     v20[1] = 3221225472;
     v20[2] = __64__ACDKeychainManager_removeCredentialForAccount_clientID_error___block_invoke;
     v20[3] = &unk_27848BD70;
-    v24 = a1;
-    v21 = v8;
-    v22 = v9;
+    selfCopy = self;
+    v21 = accountCopy;
+    v22 = dCopy;
     v23 = &v25;
     [v14 performWithinPersonaForAccount:v21 withBlock:v20];
-    if (a5)
+    if (error)
     {
       v15 = v26[5];
       if (v15)
       {
-        *a5 = v15;
+        *error = v15;
       }
     }
 
@@ -908,13 +908,13 @@ void __64__ACDKeychainManager__saveCredential_forAccount_clientID_error___block_
     _Block_object_dispose(&v25, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     v17 = MEMORY[0x277CCA9B8];
     v31 = *MEMORY[0x277CCA450];
     v32[0] = @"Credential data is currently unavailable.";
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    *a5 = [v17 errorWithDomain:*MEMORY[0x277CB8DC0] code:10 userInfo:v18];
+    *error = [v17 errorWithDomain:*MEMORY[0x277CB8DC0] code:10 userInfo:v18];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -932,26 +932,26 @@ void __64__ACDKeychainManager_removeCredentialForAccount_clientID_error___block_
   objc_storeStrong((v6 + 40), obj);
 }
 
-+ (void)_removeCredentialsForAccount:(id)a3 clientID:(id)a4 options:(id)a5 error:(id *)a6
++ (void)_removeCredentialsForAccount:(id)account clientID:(id)d options:(id)options error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v35 = a5;
+  accountCopy = account;
+  dCopy = d;
+  optionsCopy = options;
   v11 = _ACDKeychainLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     +[ACDKeychainManager _removeCredentialsForAccount:clientID:options:error:];
   }
 
-  v36 = v10;
+  v36 = dCopy;
 
   v12 = MEMORY[0x277CB8F38];
-  v13 = [v9 accountType];
-  v14 = [v13 identifier];
-  v15 = [v9 accountType];
-  v16 = [v15 credentialType];
-  v17 = [v12 supportedKeysForAccountTypeIdentifier:v14 credentialType:v16];
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  accountType2 = [accountCopy accountType];
+  credentialType = [accountType2 credentialType];
+  v17 = [v12 supportedKeysForAccountTypeIdentifier:identifier credentialType:credentialType];
 
   v39 = 0u;
   v40 = 0u;
@@ -974,23 +974,23 @@ void __64__ACDKeychainManager_removeCredentialForAccount_clientID_error___block_
         }
 
         v23 = *(*(&v37 + 1) + 8 * i);
-        v24 = [v9 identifier];
-        v25 = [v9 qualifiedUsername];
-        v26 = [v9 accountType];
-        v27 = [v26 identifier];
-        [a1 _removeCredentialItemWithKey:v23 forAccountWithID:v24 username:v25 accountTypeID:v27 clientID:v36 options:v35 error:a6];
+        identifier2 = [accountCopy identifier];
+        qualifiedUsername = [accountCopy qualifiedUsername];
+        accountType3 = [accountCopy accountType];
+        identifier3 = [accountType3 identifier];
+        [self _removeCredentialItemWithKey:v23 forAccountWithID:identifier2 username:qualifiedUsername accountTypeID:identifier3 clientID:v36 options:optionsCopy error:error];
 
-        if (a6 && *a6)
+        if (error && *error)
         {
           v28 = _ACDKeychainLogSystem();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v9 identifier];
-            v30 = *a6;
+            identifier4 = [accountCopy identifier];
+            v30 = *error;
             *buf = 138412802;
             v42 = v23;
             v43 = 2112;
-            v44 = v29;
+            v44 = identifier4;
             v45 = 2112;
             v46 = v30;
             _os_log_impl(&dword_221D2F000, v28, OS_LOG_TYPE_DEFAULT, "Unable to remove credential %@ from %@. Error: %@", buf, 0x20u);
@@ -1007,25 +1007,25 @@ void __64__ACDKeychainManager_removeCredentialForAccount_clientID_error___block_
 
   if (!v36)
   {
-    v31 = [objc_opt_class() server];
-    [v31 credentialsDidChangeForAccount:v9];
+    server = [objc_opt_class() server];
+    [server credentialsDidChangeForAccount:accountCopy];
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeCredentialForAccount:(id)a3 key:(id)a4 error:(id *)a5
++ (void)removeCredentialForAccount:(id)account key:(id)key error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  keyCopy = key;
   v10 = _ACDKeychainLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = keyCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = accountCopy;
     _os_log_impl(&dword_221D2F000, v10, OS_LOG_TYPE_DEFAULT, "Remove credential key: %@ for account: %@", buf, 0x16u);
   }
 
@@ -1045,19 +1045,19 @@ void __64__ACDKeychainManager_removeCredentialForAccount_clientID_error___block_
   v16[2] = __59__ACDKeychainManager_removeCredentialForAccount_key_error___block_invoke;
   v16[3] = &unk_27848BD98;
   v19 = v22;
-  v21 = a1;
-  v12 = v9;
+  selfCopy = self;
+  v12 = keyCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = accountCopy;
   v18 = v13;
   v20 = buf;
   [v11 performWithinPersonaForAccount:v13 withBlock:v16];
-  if (a5)
+  if (error)
   {
     v14 = *(*&buf[8] + 40);
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -1090,75 +1090,75 @@ void __59__ACDKeychainManager_removeCredentialForAccount_key_error___block_invok
   }
 }
 
-+ (BOOL)_removeCredentialItemWithKey:(id)a3 forAccountWithID:(id)a4 username:(id)a5 accountTypeID:(id)a6 clientID:(id)a7 options:(id)a8 error:(id *)a9
++ (BOOL)_removeCredentialItemWithKey:(id)key forAccountWithID:(id)d username:(id)username accountTypeID:(id)iD clientID:(id)clientID options:(id)options error:(id *)error
 {
-  v14 = a4;
-  v15 = a8;
+  dCopy = d;
+  optionsCopy = options;
   v16 = MEMORY[0x277CB8F38];
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a3;
-  v21 = [v16 additionalServiceSegmentForAccountTypeIdentifier:v18];
-  v22 = [ACDKeychainManager keychainServiceNameForClientID:v17 accountTypeIdentifier:v18 additionalAccountTypeSegment:v21 key:v20];
+  clientIDCopy = clientID;
+  iDCopy = iD;
+  usernameCopy = username;
+  keyCopy = key;
+  v21 = [v16 additionalServiceSegmentForAccountTypeIdentifier:iDCopy];
+  v22 = [ACDKeychainManager keychainServiceNameForClientID:clientIDCopy accountTypeIdentifier:iDCopy additionalAccountTypeSegment:v21 key:keyCopy];
 
-  v23 = [ACDKeychainManager _removeItemForService:v22 username:v19 accessGroup:0 options:v15 error:a9];
-  v24 = v14 != 0 || v23;
-  if (v14 && !v23)
+  v23 = [ACDKeychainManager _removeItemForService:v22 username:usernameCopy accessGroup:0 options:optionsCopy error:error];
+  v24 = dCopy != 0 || v23;
+  if (dCopy && !v23)
   {
-    v24 = [ACDKeychainManager _removeItemForService:v22 username:v14 accessGroup:0 options:v15 error:a9];
+    v24 = [ACDKeychainManager _removeItemForService:v22 username:dCopy accessGroup:0 options:optionsCopy error:error];
   }
 
   return v24;
 }
 
-+ (id)keychainServiceNameForClientID:(id)a3 accountTypeIdentifier:(id)a4 additionalAccountTypeSegment:(id)a5 key:(id)a6
++ (id)keychainServiceNameForClientID:(id)d accountTypeIdentifier:(id)identifier additionalAccountTypeSegment:(id)segment key:(id)key
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  segmentCopy = segment;
+  keyCopy = key;
   v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
   v14 = v13;
-  if (v9)
+  if (dCopy)
   {
-    [v13 addObject:v9];
+    [v13 addObject:dCopy];
   }
 
-  [v14 addObject:v10];
-  if (v11)
+  [v14 addObject:identifierCopy];
+  if (segmentCopy)
   {
-    [v14 addObject:v11];
+    [v14 addObject:segmentCopy];
   }
 
-  [v14 addObject:v12];
+  [v14 addObject:keyCopy];
   v15 = [v14 componentsJoinedByString:@"."];
 
   return v15;
 }
 
-+ (void)componentsFromKeychainServiceName:(id)a3 handler:(id)a4
++ (void)componentsFromKeychainServiceName:(id)name handler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 componentsSeparatedByString:@"."];
+  handlerCopy = handler;
+  v7 = [name componentsSeparatedByString:@"."];
   v8 = [v7 mutableCopy];
 
-  v9 = [v8 lastObject];
+  lastObject = [v8 lastObject];
   [v8 removeLastObject];
-  if ([v9 length] && (objc_msgSend(MEMORY[0x277CB8F38], "allSupportedKeys"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", v9), v10, (v11 & 1) != 0))
+  if ([lastObject length] && (objc_msgSend(MEMORY[0x277CB8F38], "allSupportedKeys"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", lastObject), v10, (v11 & 1) != 0))
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __64__ACDKeychainManager_componentsFromKeychainServiceName_handler___block_invoke;
     v12[3] = &unk_27848BDC0;
-    v14 = v6;
-    v13 = v9;
-    [a1 _accountTypeIdentifierFromComponents:v8 handler:v12];
+    v14 = handlerCopy;
+    v13 = lastObject;
+    [self _accountTypeIdentifierFromComponents:v8 handler:v12];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 }
 
@@ -1190,10 +1190,10 @@ void __64__ACDKeychainManager_componentsFromKeychainServiceName_handler___block_
 LABEL_7:
 }
 
-+ (void)_accountTypeIdentifierFromComponents:(id)a3 handler:(id)a4
++ (void)_accountTypeIdentifierFromComponents:(id)components handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  componentsCopy = components;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -1211,26 +1211,26 @@ LABEL_7:
   v13 = v8;
   v14 = v20;
   v15 = &v16;
-  [v5 enumerateObjectsWithOptions:2 usingBlock:v12];
+  [componentsCopy enumerateObjectsWithOptions:2 usingBlock:v12];
   if (v17[3])
   {
     v9 = [v8 componentsJoinedByString:@"."];
     v10 = [v8 count];
-    if (v10 == [v5 count])
+    if (v10 == [componentsCopy count])
     {
-      v6[2](v6, v9, 0);
+      handlerCopy[2](handlerCopy, v9, 0);
     }
 
     else
     {
-      v11 = [v5 subarrayWithRange:{0, objc_msgSend(v5, "count") - objc_msgSend(v8, "count")}];
-      (v6)[2](v6, v9, v11);
+      v11 = [componentsCopy subarrayWithRange:{0, objc_msgSend(componentsCopy, "count") - objc_msgSend(v8, "count")}];
+      (handlerCopy)[2](handlerCopy, v9, v11);
     }
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   _Block_object_dispose(&v16, 8);
@@ -1250,13 +1250,13 @@ void __67__ACDKeychainManager__accountTypeIdentifierFromComponents_handler___blo
   *(*(*(a1 + 40) + 8) + 24) = [v6 isEqualToString:@"apple"];
 }
 
-+ (void)_migrateCredential:(id)a3 forAccount:(id)a4 clientID:(id)a5
++ (void)_migrateCredential:(id)credential forAccount:(id)account clientID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialCopy = credential;
+  accountCopy = account;
+  dCopy = d;
   v18 = 0;
-  [a1 _saveCredential:v8 forAccount:v9 clientID:v10 error:&v18];
+  [self _saveCredential:credentialCopy forAccount:accountCopy clientID:dCopy error:&v18];
   v11 = v18;
   if (!v11)
   {
@@ -1265,10 +1265,10 @@ void __67__ACDKeychainManager__accountTypeIdentifierFromComponents_handler___blo
     v13[1] = 3221225472;
     v13[2] = __61__ACDKeychainManager__migrateCredential_forAccount_clientID___block_invoke;
     v13[3] = &unk_27848BE10;
-    v14 = v8;
-    v15 = v10;
-    v16 = v9;
-    v17 = a1;
+    v14 = credentialCopy;
+    v15 = dCopy;
+    v16 = accountCopy;
+    selfCopy = self;
     [v12 performWithinPersonaForAccount:v16 withBlock:v13];
   }
 }
@@ -1338,12 +1338,12 @@ void __61__ACDKeychainManager__migrateCredential_forAccount_clientID___block_inv
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_itemForServiceName:(id)a3 username:(id)a4 accessGroup:(id)a5 options:(id)a6 error:(id *)a7
++ (id)_itemForServiceName:(id)name username:(id)username accessGroup:(id)group options:(id)options error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  usernameCopy = username;
+  groupCopy = group;
+  optionsCopy = options;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -1362,19 +1362,19 @@ void __61__ACDKeychainManager__migrateCredential_forAccount_clientID___block_inv
   v22[2] = __77__ACDKeychainManager__itemForServiceName_username_accessGroup_options_error___block_invoke;
   v22[3] = &unk_27848BE38;
   v27 = &v35;
-  v16 = v11;
+  v16 = nameCopy;
   v23 = v16;
-  v17 = v12;
+  v17 = usernameCopy;
   v24 = v17;
-  v18 = v13;
+  v18 = groupCopy;
   v25 = v18;
-  v19 = v14;
+  v19 = optionsCopy;
   v26 = v19;
   v28 = &v29;
   [v15 lockPerformForService:v16 username:v17 block:v22];
-  if (a7)
+  if (error)
   {
-    *a7 = v30[5];
+    *error = v30[5];
   }
 
   v20 = v36[5];
@@ -1490,10 +1490,10 @@ void __77__ACDKeychainManager__itemForServiceName_username_accessGroup_options_e
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_shouldSyncCredentialForAccount:(id)a3
++ (BOOL)_shouldSyncCredentialForAccount:(id)account
 {
   v24[25] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accountCopy = account;
   v4 = *MEMORY[0x277CB8D30];
   v24[0] = *MEMORY[0x277CB8C30];
   v24[1] = v4;
@@ -1531,11 +1531,11 @@ void __77__ACDKeychainManager__itemForServiceName_username_accessGroup_options_e
   v24[23] = v14;
   v24[24] = *MEMORY[0x277CB8CC8];
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:25];
-  v16 = [v3 accountType];
-  v17 = [v16 identifier];
-  if ([v15 containsObject:v17])
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  if ([v15 containsObject:identifier])
   {
-    v18 = [v3 objectForKeyedSubscript:*MEMORY[0x277CB8A90]];
+    v18 = [accountCopy objectForKeyedSubscript:*MEMORY[0x277CB8A90]];
     if (v18)
     {
       LOBYTE(v19) = 0;
@@ -1543,7 +1543,7 @@ void __77__ACDKeychainManager__itemForServiceName_username_accessGroup_options_e
 
     else
     {
-      v20 = [v3 accountPropertyForKey:@"mcPayloadUUID"];
+      v20 = [accountCopy accountPropertyForKey:@"mcPayloadUUID"];
       if (v20)
       {
         LOBYTE(v19) = 0;
@@ -1551,7 +1551,7 @@ void __77__ACDKeychainManager__itemForServiceName_username_accessGroup_options_e
 
       else
       {
-        v21 = [v3 objectForKeyedSubscript:*MEMORY[0x277CB8B68]];
+        v21 = [accountCopy objectForKeyedSubscript:*MEMORY[0x277CB8B68]];
         v19 = [v21 BOOLValue] ^ 1;
       }
     }
@@ -1566,14 +1566,14 @@ void __77__ACDKeychainManager__itemForServiceName_username_accessGroup_options_e
   return v19;
 }
 
-+ (void)_setItem:(id)a3 forServiceName:(id)a4 username:(id)a5 accessGroup:(id)a6 accessibility:(id)a7 syncable:(BOOL)a8 requiresTouchID:(BOOL)a9 options:(id)a10 error:(id *)a11
++ (void)_setItem:(id)item forServiceName:(id)name username:(id)username accessGroup:(id)group accessibility:(id)accessibility syncable:(BOOL)syncable requiresTouchID:(BOOL)d options:(id)self0 error:(id *)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  itemCopy = item;
+  nameCopy = name;
+  usernameCopy = username;
+  groupCopy = group;
+  accessibilityCopy = accessibility;
+  optionsCopy = options;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -1585,26 +1585,26 @@ void __77__ACDKeychainManager__itemForServiceName_username_accessGroup_options_e
   v30[1] = 3221225472;
   v30[2] = __120__ACDKeychainManager__setItem_forServiceName_username_accessGroup_accessibility_syncable_requiresTouchID_options_error___block_invoke;
   v30[3] = &unk_27848BE60;
-  v23 = v17;
+  v23 = nameCopy;
   v31 = v23;
-  v24 = v16;
+  v24 = itemCopy;
   v32 = v24;
-  v25 = v18;
+  v25 = usernameCopy;
   v33 = v25;
-  v26 = v19;
+  v26 = groupCopy;
   v34 = v26;
-  v27 = v21;
+  v27 = optionsCopy;
   v35 = v27;
   v37 = &v41;
-  v38 = a1;
-  v28 = v20;
+  selfCopy = self;
+  v28 = accessibilityCopy;
   v36 = v28;
-  v39 = a8;
-  v40 = a9;
+  syncableCopy = syncable;
+  dCopy = d;
   [v22 lockPerformForService:v23 username:v25 block:v30];
-  if (a11)
+  if (error)
   {
-    *a11 = v42[5];
+    *error = v42[5];
   }
 
   _Block_object_dispose(&v41, 8);
@@ -1680,21 +1680,21 @@ void __120__ACDKeychainManager__setItem_forServiceName_username_accessGroup_acce
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_keychainLock_updateItem:(id)a3 existingPassword:(id)a4 forServiceName:(id)a5 username:(id)a6 accessGroup:(id)a7 accessibility:(id)a8 options:(id)a9 error:(id *)a10
++ (void)_keychainLock_updateItem:(id)item existingPassword:(id)password forServiceName:(id)name username:(id)username accessGroup:(id)group accessibility:(id)accessibility options:(id)options error:(id *)self0
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (([a4 isEqualToString:v15] & 1) == 0)
+  itemCopy = item;
+  nameCopy = name;
+  usernameCopy = username;
+  groupCopy = group;
+  accessibilityCopy = accessibility;
+  optionsCopy = options;
+  if (([password isEqualToString:itemCopy] & 1) == 0)
   {
     v21 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-    v22 = [v15 dataUsingEncoding:4];
+    v22 = [itemCopy dataUsingEncoding:4];
     [v21 setObject:v22 forKey:*MEMORY[0x277CDC5E8]];
-    if (v19)
+    if (accessibilityCopy)
     {
       v23 = _ACDKeychainLogSystem();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1702,11 +1702,11 @@ void __120__ACDKeychainManager__setItem_forServiceName_username_accessGroup_acce
         +[ACDKeychainManager _keychainLock_updateItem:existingPassword:forServiceName:username:accessGroup:accessibility:options:error:];
       }
 
-      [v21 setObject:v19 forKey:*MEMORY[0x277CDBED8]];
+      [v21 setObject:accessibilityCopy forKey:*MEMORY[0x277CDBED8]];
     }
 
     v35 = 0;
-    [ACDKeychain updateItemForServiceName:v16 username:v17 accessGroup:v18 newValues:v21 options:v20 error:&v35];
+    [ACDKeychain updateItemForServiceName:nameCopy username:usernameCopy accessGroup:groupCopy newValues:v21 options:optionsCopy error:&v35];
     v24 = v35;
     v25 = _ACDKeychainLogSystem();
     v26 = v25;
@@ -1717,7 +1717,7 @@ void __120__ACDKeychainManager__setItem_forServiceName_username_accessGroup_acce
         +[ACDKeychainManager _keychainLock_updateItem:existingPassword:forServiceName:username:accessGroup:accessibility:options:error:];
       }
 
-      if (!a10)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1735,7 +1735,7 @@ void __120__ACDKeychainManager__setItem_forServiceName_username_accessGroup_acce
       v37[0] = v26;
       v37[1] = v24;
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
-      *a10 = [v33 errorWithDomain:v32 code:13 userInfo:v30];
+      *error = [v33 errorWithDomain:v32 code:13 userInfo:v30];
 
       v22 = v34;
     }
@@ -1760,17 +1760,17 @@ LABEL_17:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_keychainLock_addItem:(id)a3 forServiceName:(id)a4 username:(id)a5 accessGroup:(id)a6 accessibility:(id)a7 syncable:(BOOL)a8 requiresTouchID:(BOOL)a9 error:(id *)a10
++ (void)_keychainLock_addItem:(id)item forServiceName:(id)name username:(id)username accessGroup:(id)group accessibility:(id)accessibility syncable:(BOOL)syncable requiresTouchID:(BOOL)d error:(id *)self0
 {
-  v10 = a8;
+  syncableCopy = syncable;
   v49[1] = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  itemCopy = item;
+  nameCopy = name;
+  usernameCopy = username;
+  groupCopy = group;
+  accessibilityCopy = accessibility;
   v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-  if (v18 && !a9)
+  if (accessibilityCopy && !d)
   {
     v20 = _ACDKeychainLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -1778,22 +1778,22 @@ LABEL_17:
       +[ACDKeychainManager _keychainLock_updateItem:existingPassword:forServiceName:username:accessGroup:accessibility:options:error:];
     }
 
-    [v19 setObject:v18 forKey:*MEMORY[0x277CDBED8]];
+    [v19 setObject:accessibilityCopy forKey:*MEMORY[0x277CDBED8]];
   }
 
   v21 = MEMORY[0x277CBED10];
-  if (v10)
+  if (syncableCopy)
   {
     v21 = MEMORY[0x277CBED28];
   }
 
   [v19 setObject:*v21 forKey:*MEMORY[0x277CDC140]];
-  if (!a9)
+  if (!d)
   {
 LABEL_20:
-    v27 = [v43 dataUsingEncoding:4];
+    v27 = [itemCopy dataUsingEncoding:4];
     v44 = 0;
-    [ACDKeychain addItemWithServiceName:v15 username:v16 accessGroup:v17 passwordData:v27 options:v19 error:&v44];
+    [ACDKeychain addItemWithServiceName:nameCopy username:usernameCopy accessGroup:groupCopy passwordData:v27 options:v19 error:&v44];
     v29 = v44;
     v30 = _ACDKeychainLogSystem();
     v31 = v30;
@@ -1804,12 +1804,12 @@ LABEL_20:
         +[ACDKeychainManager _keychainLock_addItem:forServiceName:username:accessGroup:accessibility:syncable:requiresTouchID:error:];
       }
 
-      if (!a10)
+      if (!error)
       {
         goto LABEL_28;
       }
 
-      v42 = v15;
+      v42 = nameCopy;
       v32 = MEMORY[0x277CCACA8];
       v33 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v29, "code")}];
       v31 = [v32 stringWithFormat:@"Unable to store credential due to error %@", v33];
@@ -1822,14 +1822,14 @@ LABEL_20:
       v47[0] = v31;
       v47[1] = v29;
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
-      v37 = v17;
-      v39 = v38 = v16;
+      v37 = groupCopy;
+      v39 = v38 = usernameCopy;
       v40 = v34;
-      v15 = v42;
-      *a10 = [v40 errorWithDomain:v35 code:13 userInfo:v39];
+      nameCopy = v42;
+      *error = [v40 errorWithDomain:v35 code:13 userInfo:v39];
 
-      v16 = v38;
-      v17 = v37;
+      usernameCopy = v38;
+      groupCopy = v37;
     }
 
     else if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -1872,26 +1872,26 @@ LABEL_28:
     CFRelease(error);
   }
 
-  if (a10)
+  if (error)
   {
     v25 = MEMORY[0x277CCA9B8];
     v26 = *MEMORY[0x277CB8DC0];
     v48 = *MEMORY[0x277CCA450];
     v49[0] = @"Unable to store credential due to error with SecAccessControlRef";
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-    *a10 = [v25 errorWithDomain:v26 code:13 userInfo:v27];
+    *error = [v25 errorWithDomain:v26 code:13 userInfo:v27];
 LABEL_29:
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_removeItemForService:(id)a3 username:(id)a4 accessGroup:(id)a5 options:(id)a6 error:(id *)a7
++ (BOOL)_removeItemForService:(id)service username:(id)username accessGroup:(id)group options:(id)options error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  serviceCopy = service;
+  usernameCopy = username;
+  groupCopy = group;
+  optionsCopy = options;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -1908,14 +1908,14 @@ LABEL_29:
   v24[2] = __79__ACDKeychainManager__removeItemForService_username_accessGroup_options_error___block_invoke;
   v24[3] = &unk_27848BE88;
   v29 = &v38;
-  v31 = a1;
-  v17 = v12;
+  selfCopy = self;
+  v17 = serviceCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = usernameCopy;
   v26 = v18;
-  v19 = v14;
+  v19 = groupCopy;
   v27 = v19;
-  v20 = v15;
+  v20 = optionsCopy;
   v28 = v20;
   v30 = &v32;
   [v16 lockPerformForService:v17 username:v18 block:v24];
@@ -1925,9 +1925,9 @@ LABEL_29:
     [ACDKeychainManager _removeItemForService:v21 username:? accessGroup:? options:? error:?];
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v33[5];
+    *error = v33[5];
   }
 
   v22 = *(v39 + 24);
@@ -1952,22 +1952,22 @@ void __79__ACDKeychainManager__removeItemForService_username_accessGroup_options
   *(*(a1[8] + 8) + 24) = v8;
 }
 
-+ (BOOL)_keychainLock_removeItemForService:(id)a3 username:(id)a4 accessGroup:(id)a5 options:(id)a6 error:(id *)a7
++ (BOOL)_keychainLock_removeItemForService:(id)service username:(id)username accessGroup:(id)group options:(id)options error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v11 length] && objc_msgSend(v12, "length"))
+  serviceCopy = service;
+  usernameCopy = username;
+  groupCopy = group;
+  optionsCopy = options;
+  if ([serviceCopy length] && objc_msgSend(usernameCopy, "length"))
   {
-    if (a7)
+    if (error)
     {
-      *a7 = 0;
+      *error = 0;
     }
 
     v28 = 0;
-    [ACDKeychain removeItemForServiceName:v11 username:v12 accessGroup:v13 options:v14 error:&v28];
+    [ACDKeychain removeItemForServiceName:serviceCopy username:usernameCopy accessGroup:groupCopy options:optionsCopy error:&v28];
     v15 = v28;
     v16 = v15 == 0;
     v17 = _ACDKeychainLogSystem();
@@ -1979,7 +1979,7 @@ void __79__ACDKeychainManager__removeItemForService_username_accessGroup_options
         +[ACDKeychainManager _keychainLock_removeItemForService:username:accessGroup:options:error:];
       }
 
-      if (!a7)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -1996,18 +1996,18 @@ void __79__ACDKeychainManager__removeItemForService_username_accessGroup_options
       v30[0] = v17;
       v30[1] = v15;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
-      *a7 = [v27 errorWithDomain:v21 code:14 userInfo:v23];
+      *error = [v27 errorWithDomain:v21 code:14 userInfo:v23];
     }
 
     else if (v18)
     {
       v26 = ACHashedString();
       *buf = 138412802;
-      v32 = v11;
+      v32 = serviceCopy;
       v33 = 2112;
       v34 = v26;
       v35 = 2112;
-      v36 = v13;
+      v36 = groupCopy;
       _os_log_debug_impl(&dword_221D2F000, v17, OS_LOG_TYPE_DEBUG, "Keychain item removal succeeded for item service:%@ username:%@ group:%@", buf, 0x20u);
     }
 
@@ -2022,20 +2022,20 @@ LABEL_15:
   return v16;
 }
 
-+ (void)_createNoSyncOAuthTokens:(id)a3 account:(id)a4 clientID:(id)a5
++ (void)_createNoSyncOAuthTokens:(id)tokens account:(id)account clientID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 credentialType];
-  if ([v11 isEqualToString:*MEMORY[0x277CB8D98]])
+  tokensCopy = tokens;
+  accountCopy = account;
+  dCopy = d;
+  credentialType = [tokensCopy credentialType];
+  if ([credentialType isEqualToString:*MEMORY[0x277CB8D98]])
   {
-    v12 = [v8 oauthToken];
+    oauthToken = [tokensCopy oauthToken];
 
-    if (v12)
+    if (oauthToken)
     {
-      v13 = [v8 oauthToken];
-      [v8 setOauthTokenNoSync:v13];
+      oauthToken2 = [tokensCopy oauthToken];
+      [tokensCopy setOauthTokenNoSync:oauthToken2];
       goto LABEL_9;
     }
   }
@@ -2044,55 +2044,55 @@ LABEL_15:
   {
   }
 
-  v13 = [v8 credentialType];
-  if ([v13 isEqualToString:*MEMORY[0x277CB8D90]])
+  oauthToken2 = [tokensCopy credentialType];
+  if ([oauthToken2 isEqualToString:*MEMORY[0x277CB8D90]])
   {
-    v14 = [v8 oauthToken];
-    if (v14)
+    oauthToken3 = [tokensCopy oauthToken];
+    if (oauthToken3)
     {
-      v15 = v14;
-      v16 = [v8 oauthTokenSecret];
+      v15 = oauthToken3;
+      oauthTokenSecret = [tokensCopy oauthTokenSecret];
 
-      if (!v16)
+      if (!oauthTokenSecret)
       {
         goto LABEL_10;
       }
 
       v17 = MEMORY[0x277CCACA8];
-      v13 = [v8 oauthToken];
+      oauthToken2 = [tokensCopy oauthToken];
       v18 = *MEMORY[0x277CB8E28];
-      v19 = [v8 oauthTokenSecret];
-      v20 = [v17 stringWithFormat:@"%@%@%@", v13, v18, v19];
-      [v8 setOauthTokenNoSync:v20];
+      oauthTokenSecret2 = [tokensCopy oauthTokenSecret];
+      v20 = [v17 stringWithFormat:@"%@%@%@", oauthToken2, v18, oauthTokenSecret2];
+      [tokensCopy setOauthTokenNoSync:v20];
     }
   }
 
 LABEL_9:
 
 LABEL_10:
-  v21 = [v8 oauthTokenNoSync];
+  oauthTokenNoSync = [tokensCopy oauthTokenNoSync];
 
-  if (v21)
+  if (oauthTokenNoSync)
   {
     v22 = 0;
-    [a1 _saveCredential:v8 forAccount:v9 clientID:v10 error:&v22];
+    [self _saveCredential:tokensCopy forAccount:accountCopy clientID:dCopy error:&v22];
   }
 }
 
-+ (void)_fallbackToUnsyncedOAuthTokens:(id)a3
++ (void)_fallbackToUnsyncedOAuthTokens:(id)tokens
 {
-  v14 = a3;
-  v5 = [v14 oauthTokenNoSync];
-  if (v5)
+  tokensCopy = tokens;
+  oauthTokenNoSync = [tokensCopy oauthTokenNoSync];
+  if (oauthTokenNoSync)
   {
-    v6 = [v14 credentialType];
-    if ([v6 isEqualToString:*MEMORY[0x277CB8D98]])
+    credentialType = [tokensCopy credentialType];
+    if ([credentialType isEqualToString:*MEMORY[0x277CB8D98]])
     {
-      v7 = [v14 oauthToken];
+      oauthToken = [tokensCopy oauthToken];
 
-      if (!v7)
+      if (!oauthToken)
       {
-        [v14 setOauthToken:v5];
+        [tokensCopy setOauthToken:oauthTokenNoSync];
         goto LABEL_15;
       }
     }
@@ -2101,16 +2101,16 @@ LABEL_10:
     {
     }
 
-    v8 = [v14 credentialType];
-    if ([v8 isEqualToString:*MEMORY[0x277CB8D90]])
+    credentialType2 = [tokensCopy credentialType];
+    if ([credentialType2 isEqualToString:*MEMORY[0x277CB8D90]])
     {
-      v9 = [v14 oauthToken];
-      if (v9)
+      oauthToken2 = [tokensCopy oauthToken];
+      if (oauthToken2)
       {
-        v10 = v9;
-        v11 = [v14 oauthTokenSecret];
+        v10 = oauthToken2;
+        oauthTokenSecret = [tokensCopy oauthTokenSecret];
 
-        if (v11)
+        if (oauthTokenSecret)
         {
           goto LABEL_15;
         }
@@ -2120,28 +2120,28 @@ LABEL_10:
       {
       }
 
-      v8 = [v5 componentsSeparatedByString:*MEMORY[0x277CB8E28]];
-      if ([v8 count] != 2)
+      credentialType2 = [oauthTokenNoSync componentsSeparatedByString:*MEMORY[0x277CB8E28]];
+      if ([credentialType2 count] != 2)
       {
-        [(ACDKeychainManager *)a2 _fallbackToUnsyncedOAuthTokens:a1];
+        [(ACDKeychainManager *)a2 _fallbackToUnsyncedOAuthTokens:self];
       }
 
-      v12 = [v8 objectAtIndexedSubscript:0];
-      [v14 setOauthToken:v12];
+      v12 = [credentialType2 objectAtIndexedSubscript:0];
+      [tokensCopy setOauthToken:v12];
 
-      v13 = [v8 objectAtIndexedSubscript:1];
-      [v14 setOauthTokenSecret:v13];
+      v13 = [credentialType2 objectAtIndexedSubscript:1];
+      [tokensCopy setOauthTokenSecret:v13];
     }
   }
 
 LABEL_15:
 }
 
-+ (void)notifiyCredentialChangedForAccount:(id)a3
++ (void)notifiyCredentialChangedForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [objc_opt_class() server];
-  [v4 credentialsDidChangeForAccount:v3];
+  accountCopy = account;
+  server = [objc_opt_class() server];
+  [server credentialsDidChangeForAccount:accountCopy];
 }
 
 + (void)credentialForAccount:clientID:error:.cold.1()

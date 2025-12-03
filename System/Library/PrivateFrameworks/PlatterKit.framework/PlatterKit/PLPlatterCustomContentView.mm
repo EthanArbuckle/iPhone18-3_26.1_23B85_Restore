@@ -1,33 +1,33 @@
 @interface PLPlatterCustomContentView
-- (PLPlatterCustomContentView)initWithAncestorPlatterView:(id)a3;
-- (void)willRemoveSubview:(id)a3;
+- (PLPlatterCustomContentView)initWithAncestorPlatterView:(id)view;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation PLPlatterCustomContentView
 
-- (PLPlatterCustomContentView)initWithAncestorPlatterView:(id)a3
+- (PLPlatterCustomContentView)initWithAncestorPlatterView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = PLPlatterCustomContentView;
   v5 = [(PLPlatterCustomContentView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_ancestorPlatterView, v4);
+    objc_storeWeak(&v5->_ancestorPlatterView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = PLPlatterCustomContentView;
-  v4 = a3;
-  [(PLPlatterCustomContentView *)&v6 willRemoveSubview:v4];
+  subviewCopy = subview;
+  [(PLPlatterCustomContentView *)&v6 willRemoveSubview:subviewCopy];
   WeakRetained = objc_loadWeakRetained(&self->_ancestorPlatterView);
-  [WeakRetained _willRemoveCustomContent:{v4, v6.receiver, v6.super_class}];
+  [WeakRetained _willRemoveCustomContent:{subviewCopy, v6.receiver, v6.super_class}];
 }
 
 @end

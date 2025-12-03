@@ -1,28 +1,28 @@
 @interface SUUICompletionList
 - (NSMutableDictionary)cacheRepresentation;
-- (SUUICompletionList)initWithCacheRepresentation:(id)a3;
-- (SUUICompletionList)initWithCompletionListDictionary:(id)a3;
+- (SUUICompletionList)initWithCacheRepresentation:(id)representation;
+- (SUUICompletionList)initWithCompletionListDictionary:(id)dictionary;
 @end
 
 @implementation SUUICompletionList
 
-- (SUUICompletionList)initWithCompletionListDictionary:(id)a3
+- (SUUICompletionList)initWithCompletionListDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = SUUICompletionList;
   v5 = [(SUUICompletionList *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"item"];
+    v6 = [dictionaryCopy objectForKey:@"item"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v5->_title, v6);
     }
 
-    v7 = [v4 objectForKey:@"hints"];
+    v7 = [dictionaryCopy objectForKey:@"hints"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -77,9 +77,9 @@
   return v5;
 }
 
-- (SUUICompletionList)initWithCacheRepresentation:(id)a3
+- (SUUICompletionList)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -88,7 +88,7 @@
     v5 = [(SUUICompletionList *)&v14 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"title"];
+      v6 = [representationCopy objectForKey:@"title"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -97,7 +97,7 @@
         v5->_title = v7;
       }
 
-      v9 = [v4 objectForKey:@"completions"];
+      v9 = [representationCopy objectForKey:@"completions"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -121,21 +121,21 @@
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   completions = self->_completions;
   if (completions)
   {
     v5 = SUUICacheCodingEncodeArray(completions);
-    [v3 setObject:v5 forKey:@"completions"];
+    [dictionary setObject:v5 forKey:@"completions"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface TypistHWKeyboard
-+ (id)_convertKeyboardLanguageToHIDCountryCode:(int64_t)a3;
-+ (id)convertHIDCountryCodeToLanguage:(int64_t)a3;
++ (id)_convertKeyboardLanguageToHIDCountryCode:(int64_t)code;
++ (id)convertHIDCountryCodeToLanguage:(int64_t)language;
 + (id)keyboardLanguageValueMap;
 + (id)keyboardLayoutValueMap;
-+ (unsigned)_convertHIDKeyboardTypeToGSKeyboardType:(unsigned int)a3;
-+ (unsigned)_convertKeyboardLanguageToHIDKeyboardType:(id)a3;
-- (TypistHWKeyboard)initWithLanguage:(id)a3;
-- (id)_generateKeystrokeStream:(id)a3 appendTypeInterval:(BOOL)a4;
++ (unsigned)_convertHIDKeyboardTypeToGSKeyboardType:(unsigned int)type;
++ (unsigned)_convertKeyboardLanguageToHIDKeyboardType:(id)type;
+- (TypistHWKeyboard)initWithLanguage:(id)language;
+- (id)_generateKeystrokeStream:(id)stream appendTypeInterval:(BOOL)interval;
 - (id)_getModifierMaskMap;
-- (id)_subsequentKeyPressPairForCharacter:(id)a3;
-- (id)generateKeystrokeStream:(id)a3;
+- (id)_subsequentKeyPressPairForCharacter:(id)character;
+- (id)generateKeystrokeStream:(id)stream;
 - (id)getPropertyDictionaryString;
-- (id)pressKeycodes:(id)a3;
-- (id)usagePairsForText:(id)a3;
+- (id)pressKeycodes:(id)keycodes;
+- (id)usagePairsForText:(id)text;
 - (unsigned)getHIDKeyboardType;
 - (void)_insertStaticKeys;
 - (void)_setupCharacterToKeycodeMap;
 - (void)dealloc;
 - (void)detach;
-- (void)pressAndHoldKeys:(id)a3 forDuration:(double)a4 withValidation:(id)a5 after:(double)a6;
-- (void)setHidKeyboardType:(unsigned int)a3;
-- (void)setKeyboardLanguage:(id)a3;
+- (void)pressAndHoldKeys:(id)keys forDuration:(double)duration withValidation:(id)validation after:(double)after;
+- (void)setHidKeyboardType:(unsigned int)type;
+- (void)setKeyboardLanguage:(id)language;
 - (void)setModifierCharMap;
-- (void)typeString:(id)a3;
+- (void)typeString:(id)string;
 @end
 
 @implementation TypistHWKeyboard
@@ -37,14 +37,14 @@
   [(TypistHWKeyboard *)&v4 dealloc];
 }
 
-- (void)setKeyboardLanguage:(id)a3
+- (void)setKeyboardLanguage:(id)language
 {
-  objc_storeStrong(&self->_keyboardLanguage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_keyboardLanguage, language);
+  languageCopy = language;
   v6 = +[TypistHWKeyboard keyboardLayoutValueMap];
 
-  v7 = [(TypistHWKeyboard *)self keyboardLanguage];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  keyboardLanguage = [(TypistHWKeyboard *)self keyboardLanguage];
+  v8 = [v6 objectForKeyedSubscript:keyboardLanguage];
   v9 = v8;
   if (v8)
   {
@@ -58,27 +58,27 @@
 
   [(TypistHWKeyboard *)self setKeyboardLanguageString:v10];
 
-  v19 = [(TypistHWKeyboard *)self keyboardLanguage];
-  v18 = [(TypistHWKeyboard *)self keyboardLanguageString];
-  TYLog(@"Keyboard language set to [%@ - %@]", v11, v12, v13, v14, v15, v16, v17, v19);
+  keyboardLanguage2 = [(TypistHWKeyboard *)self keyboardLanguage];
+  keyboardLanguageString = [(TypistHWKeyboard *)self keyboardLanguageString];
+  TYLog(@"Keyboard language set to [%@ - %@]", v11, v12, v13, v14, v15, v16, v17, keyboardLanguage2);
 }
 
-- (void)setHidKeyboardType:(unsigned int)a3
+- (void)setHidKeyboardType:(unsigned int)type
 {
-  self->_hidKeyboardType = a3;
-  if (a3 <= 2)
+  self->_hidKeyboardType = type;
+  if (type <= 2)
   {
-    v3 = *(&off_279DF46D0 + a3);
+    v3 = *(&off_279DF46D0 + type);
   }
 
-  v4 = [(TypistHWKeyboard *)self hidKeyboardType];
-  TYLog(@"Setting hidKeyboardType: [%u - %@]", v5, v6, v7, v8, v9, v10, v11, v4);
+  hidKeyboardType = [(TypistHWKeyboard *)self hidKeyboardType];
+  TYLog(@"Setting hidKeyboardType: [%u - %@]", v5, v6, v7, v8, v9, v10, v11, hidKeyboardType);
 }
 
-- (TypistHWKeyboard)initWithLanguage:(id)a3
+- (TypistHWKeyboard)initWithLanguage:(id)language
 {
   v45[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   v43.receiver = self;
   v43.super_class = TypistHWKeyboard;
   v5 = [(TypistHWKeyboard *)&v43 init];
@@ -88,7 +88,7 @@
   }
 
   GSInitialize();
-  if (!v4)
+  if (!languageCopy)
   {
     v38 = @"[TypistHWKeyboard]: No keyboard language has been provided.";
 LABEL_9:
@@ -99,20 +99,20 @@ LABEL_10:
   }
 
   v12 = +[TypistHWKeyboard keyboardLayoutValueMap];
-  v13 = [v12 objectForKey:v4];
+  v13 = [v12 objectForKey:languageCopy];
 
   if (!v13)
   {
-    v41 = v4;
+    v41 = languageCopy;
     v38 = @"[TypistHWKeyboard]: Unrecognized Keyboard Language Identifier (%@)";
     goto LABEL_9;
   }
 
-  [(TypistHWKeyboard *)v5 setKeyboardLanguage:v4];
+  [(TypistHWKeyboard *)v5 setKeyboardLanguage:languageCopy];
   [(TypistHWKeyboard *)v5 setUsagePage:7];
   [(TypistHWKeyboard *)v5 setHidKeyboardType:[(TypistHWKeyboard *)v5 getHIDKeyboardType]];
-  v14 = [(TypistHWKeyboard *)v5 keyboardLanguage];
-  v15 = +[TypistHWKeyboard _convertKeyboardLanguageToHIDCountryCode:](TypistHWKeyboard, "_convertKeyboardLanguageToHIDCountryCode:", [v14 integerValue]);
+  keyboardLanguage = [(TypistHWKeyboard *)v5 keyboardLanguage];
+  v15 = +[TypistHWKeyboard _convertKeyboardLanguageToHIDCountryCode:](TypistHWKeyboard, "_convertKeyboardLanguageToHIDCountryCode:", [keyboardLanguage integerValue]);
   [(TypistHWKeyboard *)v5 setKeyboardCountryCode:v15];
 
   v44[0] = @"PrimaryUsagePage";
@@ -120,34 +120,34 @@ LABEL_10:
   v45[0] = &unk_288029550;
   v45[1] = &unk_288029568;
   v44[2] = @"KeyboardLanguage";
-  v16 = [(TypistHWKeyboard *)v5 keyboardLanguageString];
-  v45[2] = v16;
+  keyboardLanguageString = [(TypistHWKeyboard *)v5 keyboardLanguageString];
+  v45[2] = keyboardLanguageString;
   v44[3] = @"StandardType";
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[TypistHWKeyboard hidKeyboardType](v5, "hidKeyboardType")}];
   v45[3] = v17;
   v44[4] = @"CountryCode";
-  v18 = [(TypistHWKeyboard *)v5 keyboardCountryCode];
-  v45[4] = v18;
+  keyboardCountryCode = [(TypistHWKeyboard *)v5 keyboardCountryCode];
+  v45[4] = keyboardCountryCode;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:5];
   [(TypistHWKeyboard *)v5 setPropertyDictionary:v19];
 
   v20 = objc_alloc(MEMORY[0x277CCACA8]);
   v21 = MEMORY[0x277CCAAA0];
-  v22 = [(TypistHWKeyboard *)v5 propertyDictionary];
+  propertyDictionary = [(TypistHWKeyboard *)v5 propertyDictionary];
   v42 = 0;
-  v23 = [v21 dataWithJSONObject:v22 options:0 error:&v42];
+  v23 = [v21 dataWithJSONObject:propertyDictionary options:0 error:&v42];
   v24 = v42;
   v25 = [v20 initWithData:v23 encoding:4];
   [(TypistHWKeyboard *)v5 setPropertyDictionaryString:v25];
 
   [TypistHWKeyboard _convertHIDKeyboardTypeToGSKeyboardType:[(TypistHWKeyboard *)v5 hidKeyboardType]];
-  v26 = [(TypistHWKeyboard *)v5 keyboardCountryCode];
-  [v26 unsignedIntValue];
+  keyboardCountryCode2 = [(TypistHWKeyboard *)v5 keyboardCountryCode];
+  [keyboardCountryCode2 unsignedIntValue];
   [(TypistHWKeyboard *)v5 hidKeyboardType];
   GSEventSetHardwareKeyboardAttachedWithCountryCodeAndType();
 
   v27 = +[TypistHWKeyboard keyboardLayoutValueMap];
-  v28 = [v27 objectForKey:v4];
+  v28 = [v27 objectForKey:languageCopy];
 
   [(TypistHWKeyboard *)v5 setHardwareKeyboard:GSKeyboardCreate()];
   if (![(TypistHWKeyboard *)v5 hardwareKeyboard])
@@ -174,8 +174,8 @@ LABEL_11:
 
 - (unsigned)getHIDKeyboardType
 {
-  v2 = [(TypistHWKeyboard *)self keyboardLanguage];
-  v3 = [TypistHWKeyboard _convertKeyboardLanguageToHIDKeyboardType:v2];
+  keyboardLanguage = [(TypistHWKeyboard *)self keyboardLanguage];
+  v3 = [TypistHWKeyboard _convertKeyboardLanguageToHIDKeyboardType:keyboardLanguage];
 
   return v3;
 }
@@ -265,101 +265,101 @@ LABEL_11:
 
 - (void)_insertStaticKeys
 {
-  v3 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 76];
-  [v3 setObject:v4 forKey:@"⌦"];
+  [characterToKeycodeMap setObject:v4 forKey:@"⌦"];
 
-  v5 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap2 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 75];
-  [v5 setObject:v6 forKey:@"⇞"];
+  [characterToKeycodeMap2 setObject:v6 forKey:@"⇞"];
 
-  v7 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap3 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 78];
-  [v7 setObject:v8 forKey:@"⇟"];
+  [characterToKeycodeMap3 setObject:v8 forKey:@"⇟"];
 
-  v9 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap4 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 74];
-  [v9 setObject:v10 forKey:@"⇱"];
+  [characterToKeycodeMap4 setObject:v10 forKey:@"⇱"];
 
-  v11 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap5 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 77];
-  [v11 setObject:v12 forKey:@"⇲"];
+  [characterToKeycodeMap5 setObject:v12 forKey:@"⇲"];
 
-  v13 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap6 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 79];
-  [v13 setObject:v14 forKey:@"→"];
+  [characterToKeycodeMap6 setObject:v14 forKey:@"→"];
 
-  v15 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap7 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 80];
-  [v15 setObject:v16 forKey:@"←"];
+  [characterToKeycodeMap7 setObject:v16 forKey:@"←"];
 
-  v17 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap8 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 81];
-  [v17 setObject:v18 forKey:@"↓"];
+  [characterToKeycodeMap8 setObject:v18 forKey:@"↓"];
 
-  v19 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap9 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", -[TypistHWKeyboard usagePage](self, "usagePage"), 82];
-  [v19 setObject:v20 forKey:@"↑"];
+  [characterToKeycodeMap9 setObject:v20 forKey:@"↑"];
 
-  v21 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap10 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 255, 3];
-  [v21 setObject:v22 forKey:@"⌨"];
+  [characterToKeycodeMap10 setObject:v22 forKey:@"⌨"];
 
-  v23 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap11 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 65281, 16];
-  [v23 setObject:v24 forKey:@"𓃑"];
+  [characterToKeycodeMap11 setObject:v24 forKey:@"𓃑"];
 
-  v25 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap12 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 1, 155];
-  [v25 setObject:v26 forKey:@"☾"];
+  [characterToKeycodeMap12 setObject:v26 forKey:@"☾"];
 
-  v27 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap13 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 111];
-  [v27 setObject:v28 forKey:@"🔆"];
+  [characterToKeycodeMap13 setObject:v28 forKey:@"🔆"];
 
-  v29 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap14 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 112];
-  [v29 setObject:v30 forKey:@"🔅"];
+  [characterToKeycodeMap14 setObject:v30 forKey:@"🔅"];
 
-  v31 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap15 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 121];
-  [v31 setObject:v32 forKey:@"明"];
+  [characterToKeycodeMap15 setObject:v32 forKey:@"明"];
 
-  v33 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap16 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 122];
-  [v33 setObject:v34 forKey:@"暗"];
+  [characterToKeycodeMap16 setObject:v34 forKey:@"暗"];
 
-  v35 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap17 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 233];
-  [v35 setObject:v36 forKey:@"🔊"];
+  [characterToKeycodeMap17 setObject:v36 forKey:@"🔊"];
 
-  v37 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap18 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 234];
-  [v37 setObject:v38 forKey:@"🔉"];
+  [characterToKeycodeMap18 setObject:v38 forKey:@"🔉"];
 
-  v39 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap19 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 226];
-  [v39 setObject:v40 forKey:@"🔇"];
+  [characterToKeycodeMap19 setObject:v40 forKey:@"🔇"];
 
-  v41 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap20 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 207];
-  [v41 setObject:v42 forKey:@"🎙"];
+  [characterToKeycodeMap20 setObject:v42 forKey:@"🎙"];
 
-  v43 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap21 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 181];
-  [v43 setObject:v44 forKey:@"⏭️"];
+  [characterToKeycodeMap21 setObject:v44 forKey:@"⏭️"];
 
-  v45 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap22 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 182];
-  [v45 setObject:v46 forKey:@"⏮️"];
+  [characterToKeycodeMap22 setObject:v46 forKey:@"⏮️"];
 
-  v47 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap23 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 205];
-  [v47 setObject:v48 forKey:@"⏯"];
+  [characterToKeycodeMap23 setObject:v48 forKey:@"⏯"];
 
-  v50 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+  characterToKeycodeMap24 = [(TypistHWKeyboard *)self characterToKeycodeMap];
   v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x, %x", 12, 545];
-  [v50 setObject:v49 forKey:@"🔎"];
+  [characterToKeycodeMap24 setObject:v49 forKey:@"🔎"];
 }
 
 - (void)_setupCharacterToKeycodeMap
@@ -407,8 +407,8 @@ LABEL_10:
 
 - (void)detach
 {
-  v3 = [(TypistHWKeyboard *)self keyboardCountryCode];
-  [v3 unsignedIntValue];
+  keyboardCountryCode = [(TypistHWKeyboard *)self keyboardCountryCode];
+  [keyboardCountryCode unsignedIntValue];
   GSEventSetHardwareKeyboardAttached();
 
   if ([(TypistHWKeyboard *)self hardwareKeyboard])
@@ -423,9 +423,9 @@ LABEL_10:
   +[TypistKeyboardUtilities tearDownRecapInlinePlayer];
 }
 
-- (id)generateKeystrokeStream:(id)a3
+- (id)generateKeystrokeStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   [(TypistHWKeyboard *)self pressDuration];
   v6 = v5;
   [(TypistHWKeyboard *)self typeInterval];
@@ -436,8 +436,8 @@ LABEL_10:
   v18[2] = __44__TypistHWKeyboard_generateKeystrokeStream___block_invoke;
   v18[3] = &unk_279DF4628;
   v18[4] = self;
-  v19 = v4;
-  v15 = v4;
+  v19 = streamCopy;
+  v15 = streamCopy;
   v16 = [v14 eventStreamWithEventActions:v18];
 
   return v16;
@@ -517,10 +517,10 @@ void __44__TypistHWKeyboard_generateKeystrokeStream___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)_generateKeystrokeStream:(id)a3 appendTypeInterval:(BOOL)a4
+- (id)_generateKeystrokeStream:(id)stream appendTypeInterval:(BOOL)interval
 {
-  v4 = a4;
-  v6 = a3;
+  intervalCopy = interval;
+  streamCopy = stream;
   if (![(TypistHWKeyboard *)self hardwareKeyboard])
   {
     TYLogl(OS_LOG_TYPE_ERROR, @"No hardware keyboard reference is attached. It may have been detached.", v7, v8, v9, v10, v11, v12, v55);
@@ -542,12 +542,12 @@ void __44__TypistHWKeyboard_generateKeystrokeStream___block_invoke(uint64_t a1, 
   v17 = [v16 numberWithDouble:?];
   v62 = [v13 stringFromNumber:v17];
 
-  v18 = [v6 stringByReplacingOccurrencesOfString:@"\t" withString:@"⇥"];
+  v18 = [streamCopy stringByReplacingOccurrencesOfString:@"\t" withString:@"⇥"];
   v19 = [v18 stringByReplacingOccurrencesOfString:@"\n" withString:@"⏎"];
 
-  v20 = [(TypistHWKeyboard *)self modifierCharMap];
+  modifierCharMap = [(TypistHWKeyboard *)self modifierCharMap];
   v21 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  TYLogl(OS_LOG_TYPE_DEBUG, @"Generating hardware keystroke stream for input: [%@]", v22, v23, v24, v25, v26, v27, v6);
+  TYLogl(OS_LOG_TYPE_DEBUG, @"Generating hardware keystroke stream for input: [%@]", v22, v23, v24, v25, v26, v27, streamCopy);
   if (![v19 graphemeCount])
   {
     v36 = 0;
@@ -555,22 +555,22 @@ void __44__TypistHWKeyboard_generateKeystrokeStream___block_invoke(uint64_t a1, 
   }
 
   v57 = v13;
-  v58 = v6;
+  v58 = streamCopy;
   v35 = 0;
   v36 = 0;
-  v60 = v4;
-  v59 = self;
+  v60 = intervalCopy;
+  selfCopy = self;
   v61 = v21;
-  v64 = v20;
+  v64 = modifierCharMap;
   do
   {
     v37 = [v19 graphemeAtIndex:v35];
-    v38 = [v20 objectForKey:v37];
+    v38 = [modifierCharMap objectForKey:v37];
     v39 = v38;
     if (!v38)
     {
-      v40 = [(TypistHWKeyboard *)self characterToKeycodeMap];
-      v41 = [v40 objectForKey:v37];
+      characterToKeycodeMap = [(TypistHWKeyboard *)self characterToKeycodeMap];
+      v41 = [characterToKeycodeMap objectForKey:v37];
 
       if (v41)
       {
@@ -589,36 +589,36 @@ void __44__TypistHWKeyboard_generateKeystrokeStream___block_invoke(uint64_t a1, 
 
       [(TypistHWKeyboard *)self hardwareKeyboard];
       GSKeyboardHWKeyboardNormalizeInput();
-      v42 = [(TypistHWKeyboard *)self characterToKeycodeMap];
-      v43 = [v42 objectForKey:v37];
+      characterToKeycodeMap2 = [(TypistHWKeyboard *)self characterToKeycodeMap];
+      v43 = [characterToKeycodeMap2 objectForKey:v37];
 
       if (!v43)
       {
         TYLogl(OS_LOG_TYPE_ERROR, @"The character %@ is not in the character map and cannot be normalized to a known character.", v44, v45, v46, v47, v48, v49, v37);
         v21 = v61;
-        v20 = v64;
+        modifierCharMap = v64;
 LABEL_27:
 
         goto LABEL_28;
       }
 
-      v50 = [(TypistHWKeyboard *)self _getModifierMaskMap];
+      _getModifierMaskMap = [(TypistHWKeyboard *)self _getModifierMaskMap];
       v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:0];
-      v52 = [v50 objectForKey:v51];
+      v52 = [_getModifierMaskMap objectForKey:v51];
 
       if ([v52 length])
       {
-        v4 = v60;
+        intervalCopy = v60;
         if (v36)
         {
           [v36 appendFormat:@"/%@/%@", v52, v43];
 LABEL_23:
-          self = v59;
+          self = selfCopy;
 
           v21 = v61;
 LABEL_24:
-          v20 = v64;
-          if (v4)
+          modifierCharMap = v64;
+          if (intervalCopy)
           {
             v56 = v62;
             [v36 appendFormat:@" %@ wait %@ ", v63];
@@ -636,7 +636,7 @@ LABEL_24:
 
       else
       {
-        v4 = v60;
+        intervalCopy = v60;
         if (v36)
         {
           [v36 appendFormat:@"/%@", v43, v56];
@@ -673,7 +673,7 @@ LABEL_28:
   }
 
   v13 = v57;
-  v6 = v58;
+  streamCopy = v58;
 LABEL_34:
   TYLog(@"Hardware keystroke stream: %@", v28, v29, v30, v31, v32, v33, v34, v21);
 
@@ -682,10 +682,10 @@ LABEL_35:
   return v21;
 }
 
-- (id)pressKeycodes:(id)a3
+- (id)pressKeycodes:(id)keycodes
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keycodesCopy = keycodes;
   v5 = objc_opt_new();
   v6 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v6 setDecimalSeparator:@"."];
@@ -705,7 +705,7 @@ LABEL_35:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v11 = v4;
+  v11 = keycodesCopy;
   v46 = [v11 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v46)
   {
@@ -729,10 +729,10 @@ LABEL_35:
           do
           {
             v16 = [v13 objectAtIndexedSubscript:v15];
-            v17 = [v16 unsignedShortValue];
+            unsignedShortValue = [v16 unsignedShortValue];
 
             v18 = [v13 objectAtIndexedSubscript:v15 + 1];
-            v19 = [v18 unsignedShortValue];
+            unsignedShortValue2 = [v18 unsignedShortValue];
 
             if ([v14 length])
             {
@@ -744,7 +744,7 @@ LABEL_35:
               v20 = &stru_288014100;
             }
 
-            [v14 appendFormat:@"%@%02x, %02x", v20, v17, v19];
+            [v14 appendFormat:@"%@%02x, %02x", v20, unsignedShortValue, unsignedShortValue2];
             v15 += 2;
           }
 
@@ -765,8 +765,8 @@ LABEL_35:
   if ([v5 length])
   {
     v27 = MEMORY[0x277CCACA8];
-    v28 = [(TypistHWKeyboard *)self propertyDictionaryString];
-    v29 = [v27 stringWithFormat:@"sender %@ %@", v28, v5];
+    propertyDictionaryString = [(TypistHWKeyboard *)self propertyDictionaryString];
+    v29 = [v27 stringWithFormat:@"sender %@ %@", propertyDictionaryString, v5];
 
     TYLog(@"TypistHWKeyboard - pressKeycodes: keystroke stream generated for input: [%@]\n%@", v30, v31, v32, v33, v34, v35, v36, v11);
     v37 = [[TYRecapCommand alloc] initWithCommandType:1 commandString:v29 commandDescription:0];
@@ -786,42 +786,42 @@ LABEL_35:
   return v29;
 }
 
-- (void)typeString:(id)a3
+- (void)typeString:(id)string
 {
-  v3 = [(TypistHWKeyboard *)self generateKeystrokeStream:a3];
+  v3 = [(TypistHWKeyboard *)self generateKeystrokeStream:string];
   [TypistKeyboardUtilities launchRecapWithSyntheticEventStream:v3];
 }
 
-- (id)_subsequentKeyPressPairForCharacter:(id)a3
+- (id)_subsequentKeyPressPairForCharacter:(id)character
 {
-  v3 = [(TypistHWKeyboard *)self _generateKeystrokeStream:a3 appendTypeInterval:0];
+  v3 = [(TypistHWKeyboard *)self _generateKeystrokeStream:character appendTypeInterval:0];
   if ([v3 hasPrefix:@"bx"])
   {
     v4 = [v3 substringFromIndex:{objc_msgSend(@"bx", "length")}];
 
-    v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v3 = [v4 stringByTrimmingCharactersInSet:v5];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v3 = [v4 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   }
 
   return v3;
 }
 
-- (void)pressAndHoldKeys:(id)a3 forDuration:(double)a4 withValidation:(id)a5 after:(double)a6
+- (void)pressAndHoldKeys:(id)keys forDuration:(double)duration withValidation:(id)validation after:(double)after
 {
-  v10 = a3;
-  v30 = a5;
+  keysCopy = keys;
+  validationCopy = validation;
   v11 = objc_alloc(MEMORY[0x277CCAB68]);
-  v12 = [(TypistHWKeyboard *)self propertyDictionaryString];
-  v13 = [v11 initWithFormat:@"sender %@ ", v12];
+  propertyDictionaryString = [(TypistHWKeyboard *)self propertyDictionaryString];
+  v13 = [v11 initWithFormat:@"sender %@ ", propertyDictionaryString];
 
-  if ([v10 count])
+  if ([keysCopy count])
   {
     v14 = 0;
     do
     {
       if (v14)
       {
-        v15 = [v10 objectAtIndexedSubscript:v14];
+        v15 = [keysCopy objectAtIndexedSubscript:v14];
         v16 = [(TypistHWKeyboard *)self _subsequentKeyPressPairForCharacter:v15];
 
         [v13 appendFormat:@"/%@", v16];
@@ -829,22 +829,22 @@ LABEL_35:
 
       else
       {
-        v16 = [v10 objectAtIndexedSubscript:0];
+        v16 = [keysCopy objectAtIndexedSubscript:0];
         v17 = [(TypistHWKeyboard *)self _generateKeystrokeStream:v16 appendTypeInterval:0];
-        v18 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        v19 = [v17 stringByTrimmingCharactersInSet:v18];
+        whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+        v19 = [v17 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
         [v13 appendString:v19];
       }
 
       ++v14;
     }
 
-    while ([v10 count] > v14);
+    while ([keysCopy count] > v14);
   }
 
-  [v13 appendFormat:@" %f", *&a4];
+  [v13 appendFormat:@" %f", *&duration];
   v20 = [[TYRecapCommand alloc] initWithCommandType:1 commandString:v13 commandDescription:0];
-  TYLog(@"TypistHWKeyboard - pressAndHoldKeys: keystroke stream generated for input: [%@]\n%@", v21, v22, v23, v24, v25, v26, v27, v10);
+  TYLog(@"TypistHWKeyboard - pressAndHoldKeys: keystroke stream generated for input: [%@]\n%@", v21, v22, v23, v24, v25, v26, v27, keysCopy);
   v28 = dispatch_queue_create("launchRecapQueue", 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -853,10 +853,10 @@ LABEL_35:
   v29 = v20;
   v32 = v29;
   dispatch_async(v28, block);
-  [TypistKeyboardUtilities waitFor:a6];
-  if (v30)
+  [TypistKeyboardUtilities waitFor:after];
+  if (validationCopy)
   {
-    v30[2](v30);
+    validationCopy[2](validationCopy);
   }
 }
 
@@ -960,10 +960,10 @@ void __39__TypistHWKeyboard__getModifierMaskMap__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (unsigned)_convertHIDKeyboardTypeToGSKeyboardType:(unsigned int)a3
++ (unsigned)_convertHIDKeyboardTypeToGSKeyboardType:(unsigned int)type
 {
-  v3 = 0xCFCBCAu >> (8 * a3);
-  if (a3 >= 3)
+  v3 = 0xCFCBCAu >> (8 * type);
+  if (type >= 3)
   {
     LOBYTE(v3) = 0;
   }
@@ -971,17 +971,17 @@ void __39__TypistHWKeyboard__getModifierMaskMap__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (unsigned)_convertKeyboardLanguageToHIDKeyboardType:(id)a3
++ (unsigned)_convertKeyboardLanguageToHIDKeyboardType:(id)type
 {
-  v3 = [a3 integerValue];
-  if (v3 > 0x21)
+  integerValue = [type integerValue];
+  if (integerValue > 0x21)
   {
     return 1;
   }
 
-  if (((1 << v3) & 0x200048820) == 0)
+  if (((1 << integerValue) & 0x200048820) == 0)
   {
-    if (v3 == 3)
+    if (integerValue == 3)
     {
       return 2;
     }
@@ -998,7 +998,7 @@ void __39__TypistHWKeyboard__getModifierMaskMap__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__TypistHWKeyboard_keyboardLanguageValueMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (keyboardLanguageValueMap_onceToken != -1)
   {
     dispatch_once(&keyboardLanguageValueMap_onceToken, block);
@@ -1121,7 +1121,7 @@ void __42__TypistHWKeyboard_keyboardLayoutValueMap__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_convertKeyboardLanguageToHIDCountryCode:(int64_t)a3
++ (id)_convertKeyboardLanguageToHIDCountryCode:(int64_t)code
 {
   if (_convertKeyboardLanguageToHIDCountryCode__onceToken != -1)
   {
@@ -1129,7 +1129,7 @@ void __42__TypistHWKeyboard_keyboardLayoutValueMap__block_invoke()
   }
 
   v4 = _convertKeyboardLanguageToHIDCountryCode__countryCodeMap;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:code];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -1225,7 +1225,7 @@ void __61__TypistHWKeyboard__convertKeyboardLanguageToHIDCountryCode___block_inv
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)convertHIDCountryCodeToLanguage:(int64_t)a3
++ (id)convertHIDCountryCodeToLanguage:(int64_t)language
 {
   if (convertHIDCountryCodeToLanguage__onceToken != -1)
   {
@@ -1233,7 +1233,7 @@ void __61__TypistHWKeyboard__convertKeyboardLanguageToHIDCountryCode___block_inv
   }
 
   v4 = convertHIDCountryCodeToLanguage__countryCodeMap;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:language];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -1323,15 +1323,15 @@ void __52__TypistHWKeyboard_convertHIDCountryCodeToLanguage___block_invoke()
 
 - (id)getPropertyDictionaryString
 {
-  v2 = [(TypistHWKeyboard *)self propertyDictionaryString];
-  v3 = [v2 copy];
+  propertyDictionaryString = [(TypistHWKeyboard *)self propertyDictionaryString];
+  v3 = [propertyDictionaryString copy];
 
   return v3;
 }
 
-- (id)usagePairsForText:(id)a3
+- (id)usagePairsForText:(id)text
 {
-  v3 = [(TypistHWKeyboard *)self _generateKeystrokeStream:a3 appendTypeInterval:0];
+  v3 = [(TypistHWKeyboard *)self _generateKeystrokeStream:text appendTypeInterval:0];
   v4 = [v3 componentsSeparatedByString:@"bx "];
   v5 = [v4 arrayByExcludingObjectsInArray:&unk_28802A2D0];
 

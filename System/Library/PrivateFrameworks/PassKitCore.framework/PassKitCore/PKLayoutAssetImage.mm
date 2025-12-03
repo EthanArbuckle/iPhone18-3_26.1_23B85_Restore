@@ -1,26 +1,26 @@
 @interface PKLayoutAssetImage
-+ (id)nameToAssetsMapFromDictionaries:(id)a3;
-- (PKLayoutAssetImage)initWithName:(id)a3 remoteImage:(id)a4;
-- (PKLayoutAssetImage)initWithName:(id)a3 subimages:(id)a4;
++ (id)nameToAssetsMapFromDictionaries:(id)dictionaries;
+- (PKLayoutAssetImage)initWithName:(id)name remoteImage:(id)image;
+- (PKLayoutAssetImage)initWithName:(id)name subimages:(id)subimages;
 @end
 
 @implementation PKLayoutAssetImage
 
-+ (id)nameToAssetsMapFromDictionaries:(id)a3
++ (id)nameToAssetsMapFromDictionaries:(id)dictionaries
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionariesCopy = dictionaries;
+  v4 = dictionariesCopy;
+  if (dictionariesCopy)
   {
-    if ([v3 count])
+    if ([dictionariesCopy count])
     {
-      v5 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __54__PKLayoutAssetImage_nameToAssetsMapFromDictionaries___block_invoke;
       v16[3] = &unk_1E79DBD50;
-      v17 = v5;
-      v6 = v5;
+      v17 = dictionary;
+      v6 = dictionary;
       [v4 enumerateObjectsUsingBlock:v16];
       v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
       v11 = MEMORY[0x1E69E9820];
@@ -30,21 +30,21 @@
       v15 = v7;
       v8 = v7;
       [v6 enumerateKeysAndObjectsUsingBlock:&v11];
-      v9 = [v8 copy];
+      dictionary2 = [v8 copy];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DF20] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF20] dictionary];
     }
   }
 
   else
   {
-    v9 = 0;
+    dictionary2 = 0;
   }
 
-  return v9;
+  return dictionary2;
 }
 
 void __54__PKLayoutAssetImage_nameToAssetsMapFromDictionaries___block_invoke(uint64_t a1, void *a2)
@@ -208,10 +208,10 @@ PKLayoutAssetImage *__54__PKLayoutAssetImage_nameToAssetsMapFromDictionaries___b
   return v4;
 }
 
-- (PKLayoutAssetImage)initWithName:(id)a3 remoteImage:(id)a4
+- (PKLayoutAssetImage)initWithName:(id)name remoteImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  imageCopy = image;
   v13.receiver = self;
   v13.super_class = PKLayoutAssetImage;
   v9 = [(PKLayoutAssetImage *)&v13 init];
@@ -220,18 +220,18 @@ PKLayoutAssetImage *__54__PKLayoutAssetImage_nameToAssetsMapFromDictionaries___b
     goto LABEL_6;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
     v11 = 0;
     goto LABEL_8;
   }
 
-  v10 = [v7 length];
+  v10 = [nameCopy length];
   v11 = 0;
-  if (v8 && v10)
+  if (imageCopy && v10)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v9->_remoteImage, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v9->_remoteImage, image);
 LABEL_6:
     v11 = v9;
   }
@@ -241,10 +241,10 @@ LABEL_8:
   return v11;
 }
 
-- (PKLayoutAssetImage)initWithName:(id)a3 subimages:(id)a4
+- (PKLayoutAssetImage)initWithName:(id)name subimages:(id)subimages
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  subimagesCopy = subimages;
   v13.receiver = self;
   v13.super_class = PKLayoutAssetImage;
   v9 = [(PKLayoutAssetImage *)&v13 init];
@@ -253,18 +253,18 @@ LABEL_8:
     goto LABEL_6;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
     v11 = 0;
     goto LABEL_8;
   }
 
-  v10 = [v7 length];
+  v10 = [nameCopy length];
   v11 = 0;
-  if (v8 && v10)
+  if (subimagesCopy && v10)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v9->_subimages, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v9->_subimages, subimages);
 LABEL_6:
     v11 = v9;
   }

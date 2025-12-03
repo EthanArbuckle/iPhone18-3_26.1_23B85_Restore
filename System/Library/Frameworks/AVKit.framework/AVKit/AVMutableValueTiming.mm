@@ -1,60 +1,60 @@
 @interface AVMutableValueTiming
-+ (id)allocWithZone:(_NSZone *)a3;
-- (void)setAnchorTimeStamp:(double)a3;
-- (void)setAnchorValue:(double)a3;
-- (void)setRate:(double)a3;
-- (void)setValueTiming:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (void)setAnchorTimeStamp:(double)stamp;
+- (void)setAnchorValue:(double)value;
+- (void)setRate:(double)rate;
+- (void)setValueTiming:(id)timing;
 @end
 
 @implementation AVMutableValueTiming
 
-- (void)setRate:(double)a3
+- (void)setRate:(double)rate
 {
   v5 = objc_opt_class();
 
   AVRequestConcreteImplementation(self, a2, v5);
 }
 
-- (void)setAnchorTimeStamp:(double)a3
+- (void)setAnchorTimeStamp:(double)stamp
 {
   v5 = objc_opt_class();
 
   AVRequestConcreteImplementation(self, a2, v5);
 }
 
-- (void)setAnchorValue:(double)a3
+- (void)setAnchorValue:(double)value
 {
   v5 = objc_opt_class();
 
   AVRequestConcreteImplementation(self, a2, v5);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(AVMutableValueTiming *)AVConcreteMutableValueTiming allocWithZone:a3];
+    return [(AVMutableValueTiming *)AVConcreteMutableValueTiming allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___AVMutableValueTiming;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (void)setValueTiming:(id)a3
+- (void)setValueTiming:(id)timing
 {
-  v4 = a3;
-  [v4 anchorValue];
+  timingCopy = timing;
+  [timingCopy anchorValue];
   [(AVMutableValueTiming *)self setAnchorValue:?];
-  [v4 anchorTimeStamp];
+  [timingCopy anchorTimeStamp];
   [(AVMutableValueTiming *)self setAnchorTimeStamp:?];
-  [v4 rate];
+  [timingCopy rate];
   v6 = v5;
 
   [(AVMutableValueTiming *)self setRate:v6];

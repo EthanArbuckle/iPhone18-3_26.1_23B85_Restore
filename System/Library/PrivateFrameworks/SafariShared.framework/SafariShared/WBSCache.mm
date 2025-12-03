@@ -1,10 +1,10 @@
 @interface WBSCache
 - (WBSCache)init;
-- (id)objectForKey:(id)a3;
-- (void)_recacheObjectForKey:(id)a3;
+- (id)objectForKey:(id)key;
+- (void)_recacheObjectForKey:(id)key;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation WBSCache
@@ -20,13 +20,13 @@
     cache = v2->_cache;
     v2->_cache = v3;
 
-    v5 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     weakObjectsTable = v2->_weakObjectsTable;
-    v2->_weakObjectsTable = v5;
+    v2->_weakObjectsTable = strongToWeakObjectsMapTable;
 
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.SafariShared.WBSCache.%p", v2];
-    v8 = [v7 UTF8String];
-    v9 = dispatch_queue_create(v8, MEMORY[0x1E69E96A8]);
+    uTF8String = [v7 UTF8String];
+    v9 = dispatch_queue_create(uTF8String, MEMORY[0x1E69E96A8]);
     cacheQueue = v2->_cacheQueue;
     v2->_cacheQueue = v9;
 
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -55,14 +55,14 @@
   v11 = __25__WBSCache_objectForKey___block_invoke;
   v12 = &unk_1E7FB7320;
   v15 = &v21;
-  v13 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = keyCopy;
   v14 = v6;
   v16 = &v17;
   dispatch_sync(cacheQueue, &v9);
   if (*(v18 + 24) == 1)
   {
-    [(WBSCache *)self _recacheObjectForKey:v6, v9, v10, v11, v12, v13];
+    [(WBSCache *)self _recacheObjectForKey:v6, v9, v10, v11, v12, selfCopy];
   }
 
   v7 = v22[5];
@@ -91,17 +91,17 @@ void __25__WBSCache_objectForKey___block_invoke(void *a1)
   }
 }
 
-- (void)_recacheObjectForKey:(id)a3
+- (void)_recacheObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   cacheQueue = self->_cacheQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__WBSCache__recacheObjectForKey___block_invoke;
   v7[3] = &unk_1E7FB6E30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_barrier_async(cacheQueue, v7);
 }
 
@@ -116,20 +116,20 @@ void __33__WBSCache__recacheObjectForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   cacheQueue = self->_cacheQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__WBSCache_setObject_forKey___block_invoke;
   block[3] = &unk_1E7FB7258;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = objectCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
   dispatch_barrier_async(cacheQueue, block);
 }
 
@@ -143,17 +143,17 @@ uint64_t __29__WBSCache_setObject_forKey___block_invoke(void *a1)
   return [v3 setObject:v2 forKey:v4];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   cacheQueue = self->_cacheQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__WBSCache_removeObjectForKey___block_invoke;
   v7[3] = &unk_1E7FB6E30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_barrier_async(cacheQueue, v7);
 }
 

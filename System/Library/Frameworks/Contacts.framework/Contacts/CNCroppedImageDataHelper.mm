@@ -1,9 +1,9 @@
 @interface CNCroppedImageDataHelper
-+ (BOOL)croppedImageDataAvailableForContact:(id)a3;
++ (BOOL)croppedImageDataAvailableForContact:(id)contact;
 + (id)descriptorForRequiredKeys;
-- (CNCroppedImageDataHelper)initWithContactStore:(id)a3;
-- (id)croppedImageDataForContact:(id)a3;
-- (id)squareImageData:(id)a3;
+- (CNCroppedImageDataHelper)initWithContactStore:(id)store;
+- (id)croppedImageDataForContact:(id)contact;
+- (id)squareImageData:(id)data;
 @end
 
 @implementation CNCroppedImageDataHelper
@@ -15,32 +15,32 @@
   v7[1] = @"cropRect";
   v7[2] = @"imageDataAvailable";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:3];
-  v4 = [a1 description];
+  v4 = [self description];
   v5 = [CNContact descriptorWithKeyDescriptors:v3 description:v4];
 
   return v5;
 }
 
-- (CNCroppedImageDataHelper)initWithContactStore:(id)a3
+- (CNCroppedImageDataHelper)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = CNCroppedImageDataHelper;
   v6 = [(CNCroppedImageDataHelper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (BOOL)croppedImageDataAvailableForContact:(id)a3
++ (BOOL)croppedImageDataAvailableForContact:(id)contact
 {
-  v3 = a3;
-  if ([v3 imageDataAvailable])
+  contactCopy = contact;
+  if ([contactCopy imageDataAvailable])
   {
     LOBYTE(v4) = 1;
   }
@@ -48,73 +48,73 @@
   else
   {
     v5 = *MEMORY[0x1E6996540];
-    v6 = [v3 thumbnailImageData];
-    v4 = (*(v5 + 16))(v5, v6) ^ 1;
+    thumbnailImageData = [contactCopy thumbnailImageData];
+    v4 = (*(v5 + 16))(v5, thumbnailImageData) ^ 1;
   }
 
   return v4;
 }
 
-- (id)croppedImageDataForContact:(id)a3
+- (id)croppedImageDataForContact:(id)contact
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([objc_opt_class() croppedImageDataAvailableForContact:v4])
+  contactCopy = contact;
+  if ([objc_opt_class() croppedImageDataAvailableForContact:contactCopy])
   {
-    v5 = [v4 thumbnailImageData];
-    if (v5 && (v6 = v5, [v4 thumbnailImageData], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+    thumbnailImageData = [contactCopy thumbnailImageData];
+    if (thumbnailImageData && (v6 = thumbnailImageData, [contactCopy thumbnailImageData], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
     {
-      v9 = [v4 thumbnailImageData];
-      v10 = [(CNCroppedImageDataHelper *)self squareImageData:v9];
+      thumbnailImageData2 = [contactCopy thumbnailImageData];
+      imageData = [(CNCroppedImageDataHelper *)self squareImageData:thumbnailImageData2];
     }
 
     else
     {
-      if ([v4 isKeyAvailable:@"imageData"])
+      if ([contactCopy isKeyAvailable:@"imageData"])
       {
-        v11 = v4;
+        v11 = contactCopy;
       }
 
       else
       {
-        v12 = [(CNCroppedImageDataHelper *)self contactStore];
-        v13 = [v4 identifier];
+        contactStore = [(CNCroppedImageDataHelper *)self contactStore];
+        identifier = [contactCopy identifier];
         v21[0] = @"imageData";
         v21[1] = @"cropRect";
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-        v11 = [v12 unifiedContactWithIdentifier:v13 keysToFetch:v14 error:0];
+        v11 = [contactStore unifiedContactWithIdentifier:identifier keysToFetch:v14 error:0];
       }
 
-      v10 = [v11 imageData];
+      imageData = [v11 imageData];
 
-      if (v10)
+      if (imageData)
       {
-        v15 = [v11 imageData];
+        imageData2 = [v11 imageData];
         [v11 cropRect];
-        v10 = CNImageUtilsCroppedImageDataFromFullSizeImageData(v15, 0, v16, v17, v18, v19);
+        imageData = CNImageUtilsCroppedImageDataFromFullSizeImageData(imageData2, 0, v16, v17, v18, v19);
       }
     }
   }
 
   else
   {
-    v10 = 0;
+    imageData = 0;
   }
 
-  return v10;
+  return imageData;
 }
 
-- (id)squareImageData:(id)a3
+- (id)squareImageData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (!dataCopy)
   {
     v15 = 0;
     goto LABEL_14;
   }
 
-  v5 = CGImageSourceCreateWithData(v3, 0);
+  v5 = CGImageSourceCreateWithData(dataCopy, 0);
   if (v5)
   {
     v6 = v5;
@@ -165,9 +165,9 @@
   if (v21)
   {
     v22 = v21;
-    v23 = [MEMORY[0x1E695DF90] dictionary];
-    [v23 setObject:&unk_1F0987288 forKeyedSubscript:*MEMORY[0x1E696D338]];
-    CGImageDestinationAddImage(v22, v20, v23);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:&unk_1F0987288 forKeyedSubscript:*MEMORY[0x1E696D338]];
+    CGImageDestinationAddImage(v22, v20, dictionary);
     CGImageDestinationFinalize(v22);
     CFRelease(v22);
   }

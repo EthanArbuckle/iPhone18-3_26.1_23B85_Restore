@@ -1,6 +1,6 @@
 @interface ProductTitleView
 - (void)contentDidChange;
-- (void)didTapIcon:(id)a3;
+- (void)didTapIcon:(id)icon;
 - (void)layoutSubviews;
 @end
 
@@ -8,16 +8,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004F7850();
 }
 
-- (void)didTapIcon:(id)a3
+- (void)didTapIcon:(id)icon
 {
   v3 = *&self->_UINavigationBarTitleView_opaque[OBJC_IVAR____TtC22SubscribePageExtension16ProductTitleView_iconTapHandler];
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10001B5AC(v3);
     v3(v5);
 

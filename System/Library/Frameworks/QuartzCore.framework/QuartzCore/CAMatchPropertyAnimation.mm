@@ -1,18 +1,18 @@
 @interface CAMatchPropertyAnimation
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4;
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer;
 - (BOOL)isAdditive;
 - (CALayer)sourceLayer;
 - (NSString)keyPath;
 - (unint64_t)sourceLayerRenderId;
-- (unsigned)_propertyFlagsForLayer:(id)a3;
+- (unsigned)_propertyFlagsForLayer:(id)layer;
 - (unsigned)sourceContextId;
-- (void)_copyRenderAnimationForLayer:(id)a3;
-- (void)applyForTime:(double)a3 presentationObject:(id)a4 modelObject:(id)a5;
-- (void)setAdditive:(BOOL)a3;
-- (void)setKeyPath:(id)a3;
-- (void)setSourceContextId:(unsigned int)a3;
-- (void)setSourceLayer:(id)a3;
-- (void)setSourceLayerRenderId:(unint64_t)a3;
+- (void)_copyRenderAnimationForLayer:(id)layer;
+- (void)applyForTime:(double)time presentationObject:(id)object modelObject:(id)modelObject;
+- (void)setAdditive:(BOOL)additive;
+- (void)setKeyPath:(id)path;
+- (void)setSourceContextId:(unsigned int)id;
+- (void)setSourceLayer:(id)layer;
+- (void)setSourceLayerRenderId:(unint64_t)id;
 @end
 
 @implementation CAMatchPropertyAnimation
@@ -41,25 +41,25 @@
   return v3 != 0;
 }
 
-- (void)setAdditive:(BOOL)a3
+- (void)setAdditive:(BOOL)additive
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 3, 7, &v3);
+  additiveCopy = additive;
+  CAAnimation_setter(self, 3, 7, &additiveCopy);
 }
 
-- (void)setKeyPath:(id)a3
+- (void)setKeyPath:(id)path
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = path;
   CAAnimation_setter(self, 0x1CD, 3, v3);
 }
 
-- (void)setSourceContextId:(unsigned int)a3
+- (void)setSourceContextId:(unsigned int)id
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x297, 12, &v3);
+  idCopy = id;
+  CAAnimation_setter(self, 0x297, 12, &idCopy);
 }
 
 - (unsigned)sourceContextId
@@ -70,10 +70,10 @@
   return v3;
 }
 
-- (void)setSourceLayerRenderId:(unint64_t)a3
+- (void)setSourceLayerRenderId:(unint64_t)id
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = id;
   CAAnimation_setter(self, 0x29B, 16, v3);
 }
 
@@ -85,21 +85,21 @@
   return v3[0];
 }
 
-- (void)setSourceLayer:(id)a3
+- (void)setSourceLayer:(id)layer
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = layer;
   CAAnimation_setter(self, 0x299, 4, v3);
 }
 
-- (unsigned)_propertyFlagsForLayer:(id)a3
+- (unsigned)_propertyFlagsForLayer:(id)layer
 {
-  v4 = [(CAMatchPropertyAnimation *)self keyPath];
+  keyPath = [(CAMatchPropertyAnimation *)self keyPath];
 
-  return animation_property_flags(v4, a3);
+  return animation_property_flags(keyPath, layer);
 }
 
-- (void)_copyRenderAnimationForLayer:(id)a3
+- (void)_copyRenderAnimationForLayer:(id)layer
 {
   if (x_malloc_get_zone::once != -1)
   {
@@ -124,7 +124,7 @@
     *(v5 + 3) = 33;
     ++dword_1ED4EAABC;
     *v5 = &unk_1EF200BF0;
-    if (![(CAMatchPropertyAnimation *)self _setCARenderAnimation:v5 layer:a3])
+    if (![(CAMatchPropertyAnimation *)self _setCARenderAnimation:v5 layer:layer])
     {
       if (atomic_fetch_add(v6 + 2, 0xFFFFFFFF) == 1)
       {
@@ -137,13 +137,13 @@
 
   else
   {
-    [(CAMatchPropertyAnimation *)self _setCARenderAnimation:0 layer:a3];
+    [(CAMatchPropertyAnimation *)self _setCARenderAnimation:0 layer:layer];
   }
 
   return v6;
 }
 
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer
 {
   v23 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -154,15 +154,15 @@
     return v7;
   }
 
-  v8 = [(CAMatchPropertyAnimation *)self keyPath];
-  if (!v8)
+  keyPath = [(CAMatchPropertyAnimation *)self keyPath];
+  if (!keyPath)
   {
     v13 = 0;
     goto LABEL_15;
   }
 
   v21 = 0;
-  CA::Render::key_path_set(&v21, v8, v9);
+  CA::Render::key_path_set(&v21, keyPath, v9);
   v11 = v21;
   if (!v21)
   {
@@ -184,11 +184,11 @@ LABEL_8:
 
   v12 = v21 >> 1;
 LABEL_10:
-  CA::Render::key_path_free(*(a3 + 15), v10);
-  *(a3 + 15) = v11;
-  if (a4)
+  CA::Render::key_path_free(*(animation + 15), v10);
+  *(animation + 15) = v11;
+  if (layer)
   {
-    v13 = [a4 _renderLayerPropertyAnimationFlags:v12] << 8;
+    v13 = [layer _renderLayerPropertyAnimationFlags:v12] << 8;
   }
 
   else
@@ -202,50 +202,50 @@ LABEL_10:
   }
 
 LABEL_15:
-  v14 = [(CAMatchPropertyAnimation *)self isAdditive];
-  *(a3 + 12) = CA::Render::Object::render_id(*(a4 + 2));
-  v15 = [(CAMatchPropertyAnimation *)self sourceLayer];
-  if (v15)
+  isAdditive = [(CAMatchPropertyAnimation *)self isAdditive];
+  *(animation + 12) = CA::Render::Object::render_id(*(layer + 2));
+  sourceLayer = [(CAMatchPropertyAnimation *)self sourceLayer];
+  if (sourceLayer)
   {
-    v16 = v15;
-    *(a3 + 13) = CA::Render::Object::render_id(v15->_attr.layer);
-    v17 = [-[CALayer context](v16 "context")];
+    v16 = sourceLayer;
+    *(animation + 13) = CA::Render::Object::render_id(sourceLayer->_attr.layer);
+    sourceContextId = [-[CALayer context](v16 "context")];
 LABEL_19:
-    *(a3 + 28) = v17;
+    *(animation + 28) = sourceContextId;
     goto LABEL_20;
   }
 
-  v18 = [(CAMatchPropertyAnimation *)self sourceLayerRenderId];
-  if (v18)
+  sourceLayerRenderId = [(CAMatchPropertyAnimation *)self sourceLayerRenderId];
+  if (sourceLayerRenderId)
   {
-    *(a3 + 13) = v18;
-    v17 = [(CAMatchPropertyAnimation *)self sourceContextId];
+    *(animation + 13) = sourceLayerRenderId;
+    sourceContextId = [(CAMatchPropertyAnimation *)self sourceContextId];
     goto LABEL_19;
   }
 
 LABEL_20:
   v19 = v13 | 0x200;
-  if (!v14)
+  if (!isAdditive)
   {
     v19 = v13;
   }
 
-  *(a3 + 3) |= v19;
+  *(animation + 3) |= v19;
   return v7;
 }
 
-- (void)applyForTime:(double)a3 presentationObject:(id)a4 modelObject:(id)a5
+- (void)applyForTime:(double)time presentationObject:(id)object modelObject:(id)modelObject
 {
   if ([(CAAnimation *)self isEnabled])
   {
-    v8 = [(CAMatchPropertyAnimation *)self sourceLayer];
-    v9 = v8;
-    if (v8)
+    sourceLayer = [(CAMatchPropertyAnimation *)self sourceLayer];
+    v9 = sourceLayer;
+    if (sourceLayer)
     {
-      while (v8 != a5)
+      while (sourceLayer != modelObject)
       {
-        v8 = [(CALayer *)v8 superlayer];
-        if (!v8)
+        sourceLayer = [(CALayer *)sourceLayer superlayer];
+        if (!sourceLayer)
         {
           goto LABEL_5;
         }
@@ -255,22 +255,22 @@ LABEL_20:
     else
     {
 LABEL_5:
-      v10 = a4;
-      if (v9 != a5)
+      objectCopy = object;
+      if (v9 != modelObject)
       {
-        v10 = [(CALayer *)v9 presentationLayer];
+        objectCopy = [(CALayer *)v9 presentationLayer];
       }
 
-      if (v10)
+      if (objectCopy)
       {
-        v11 = [(CAMatchPropertyAnimation *)self keyPath];
-        v12 = [(CALayer *)v10 valueForKeyPath:v11];
+        keyPath = [(CAMatchPropertyAnimation *)self keyPath];
+        v12 = [(CALayer *)objectCopy valueForKeyPath:keyPath];
         if ([(CAMatchPropertyAnimation *)self isAdditive])
         {
-          v12 = [objc_msgSend(a4 valueForKeyPath:{v11), "CA_addValue:multipliedBy:", v12, 1}];
+          v12 = [objc_msgSend(object valueForKeyPath:{keyPath), "CA_addValue:multipliedBy:", v12, 1}];
         }
 
-        [a4 setValue:v12 forKeyPath:v11];
+        [object setValue:v12 forKeyPath:keyPath];
       }
     }
   }

@@ -1,6 +1,6 @@
 @interface CustomImageView
 - (CGSize)intrinsicContentSize;
-- (_TtC14WorkflowUICoreP33_05C30733584E7BCE9234AF268964879815CustomImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC14WorkflowUICoreP33_05C30733584E7BCE9234AF268964879815CustomImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation CustomImageView
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (_TtC14WorkflowUICoreP33_05C30733584E7BCE9234AF268964879815CustomImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC14WorkflowUICoreP33_05C30733584E7BCE9234AF268964879815CustomImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
-  v6 = a3;
-  v7 = a4;
-  return sub_274B33258(a3, a4);
+  imageCopy = image;
+  highlightedImageCopy = highlightedImage;
+  return sub_274B33258(image, highlightedImage);
 }
 
 @end

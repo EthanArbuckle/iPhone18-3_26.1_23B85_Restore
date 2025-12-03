@@ -1,18 +1,18 @@
 @interface SESExpress
-+ (id)getUWBExpressKeyIdentifiers:(id)a3 appletIdentifiers:(id)a4;
-+ (id)processConfigurationChange:(id)a3 newConfiguration:(id)a4;
++ (id)getUWBExpressKeyIdentifiers:(id)identifiers appletIdentifiers:(id)appletIdentifiers;
++ (id)processConfigurationChange:(id)change newConfiguration:(id)configuration;
 @end
 
 @implementation SESExpress
 
-+ (id)processConfigurationChange:(id)a3 newConfiguration:(id)a4
++ (id)processConfigurationChange:(id)change newConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
+  changeCopy = change;
+  configurationCopy = configuration;
   v7 = MEMORY[0x1E695DFD8];
-  if (v5)
+  if (changeCopy)
   {
-    v8 = [SESExpress getUWBExpressKeyIdentifiers:v5 appletIdentifiers:&unk_1F4762D28];
+    v8 = [SESExpress getUWBExpressKeyIdentifiers:changeCopy appletIdentifiers:&unk_1F4762D28];
     v9 = [v7 setWithArray:v8];
   }
 
@@ -22,9 +22,9 @@
   }
 
   v10 = MEMORY[0x1E695DFD8];
-  if (v6)
+  if (configurationCopy)
   {
-    v11 = [SESExpress getUWBExpressKeyIdentifiers:v6 appletIdentifiers:&unk_1F4762D40];
+    v11 = [SESExpress getUWBExpressKeyIdentifiers:configurationCopy appletIdentifiers:&unk_1F4762D40];
     v12 = [v10 setWithArray:v11];
   }
 
@@ -126,16 +126,16 @@ uint64_t __58__SESExpress_processConfigurationChange_newConfiguration___block_in
   return v5;
 }
 
-+ (id)getUWBExpressKeyIdentifiers:(id)a3 appletIdentifiers:(id)a4
++ (id)getUWBExpressKeyIdentifiers:(id)identifiers appletIdentifiers:(id)appletIdentifiers
 {
-  v5 = a4;
+  appletIdentifiersCopy = appletIdentifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__SESExpress_getUWBExpressKeyIdentifiers_appletIdentifiers___block_invoke;
   v9[3] = &unk_1E82D0F30;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 filterMap:v9];
+  v10 = appletIdentifiersCopy;
+  v6 = appletIdentifiersCopy;
+  v7 = [identifiers filterMap:v9];
 
   return v7;
 }

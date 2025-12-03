@@ -1,6 +1,6 @@
 @interface AVPointCloudData
 - (ADJasperPointCloud)jasperPointCloud;
-- (AVPointCloudData)initWithDataBuffer:(__CVBuffer *)a3;
+- (AVPointCloudData)initWithDataBuffer:(__CVBuffer *)buffer;
 - (const)bankIdentifiers;
 - (const)confidenceScores;
 - (const)spotIdentifiers;
@@ -17,9 +17,9 @@
 {
   [(AVPointCloudData *)self pointCloudFormatType];
   v3 = AVStringForOSType();
-  v4 = [(AVPointCloudData *)self pointCount];
-  v5 = [MEMORY[0x1E696AD60] stringWithFormat:@"'%@' %d points", v3, v4];
-  if (v4 >= 1)
+  pointCount = [(AVPointCloudData *)self pointCount];
+  v5 = [MEMORY[0x1E696AD60] stringWithFormat:@"'%@' %d points", v3, pointCount];
+  if (pointCount >= 1)
   {
     [v5 appendFormat:@", bank:%d", *-[AVPointCloudData bankIdentifiers](self, "bankIdentifiers")];
   }
@@ -93,14 +93,14 @@
 
 - (uint64_t)points
 {
-  if ([a1 pointCloudFormatType] != 1785950320)
+  if ([self pointCloudFormatType] != 1785950320)
   {
     return 0;
   }
 
-  v2 = [a1 jasperPointCloud];
+  jasperPointCloud = [self jasperPointCloud];
 
-  return [v2 points];
+  return [jasperPointCloud points];
 }
 
 - (const)confidenceScores
@@ -110,9 +110,9 @@
     return 0;
   }
 
-  v3 = [(AVPointCloudData *)self jasperPointCloud];
+  jasperPointCloud = [(AVPointCloudData *)self jasperPointCloud];
 
-  return [(ADJasperPointCloud *)v3 confidences];
+  return [(ADJasperPointCloud *)jasperPointCloud confidences];
 }
 
 - (const)spotIdentifiers
@@ -122,9 +122,9 @@
     return 0;
   }
 
-  v3 = [(AVPointCloudData *)self jasperPointCloud];
+  jasperPointCloud = [(AVPointCloudData *)self jasperPointCloud];
 
-  return [(ADJasperPointCloud *)v3 spotIds];
+  return [(ADJasperPointCloud *)jasperPointCloud spotIds];
 }
 
 - (const)bankIdentifiers
@@ -134,21 +134,21 @@
     return 0;
   }
 
-  v3 = [(AVPointCloudData *)self jasperPointCloud];
+  jasperPointCloud = [(AVPointCloudData *)self jasperPointCloud];
 
-  return [(ADJasperPointCloud *)v3 bankIds];
+  return [(ADJasperPointCloud *)jasperPointCloud bankIds];
 }
 
-- (AVPointCloudData)initWithDataBuffer:(__CVBuffer *)a3
+- (AVPointCloudData)initWithDataBuffer:(__CVBuffer *)buffer
 {
   v8.receiver = self;
   v8.super_class = AVPointCloudData;
   v4 = [(AVPointCloudData *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (buffer)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(buffer);
     }
 
     else

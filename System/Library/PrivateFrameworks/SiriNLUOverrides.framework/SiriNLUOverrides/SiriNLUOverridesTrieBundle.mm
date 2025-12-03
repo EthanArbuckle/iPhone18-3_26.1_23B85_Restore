@@ -1,23 +1,23 @@
 @interface SiriNLUOverridesTrieBundle
-+ (id)getTrieURLs:(id)a3;
-- (id)fetchOverrideId:(id)a3;
-- (id)fetchOverrideIdArray:(id)a3;
-- (id)fetchRuleId:(id)a3 locale:(id)a4 overrideNamespace:(int64_t)a5;
-- (id)fetchSerializedNluRequestRule:(id)a3;
-- (id)fetchSerializedUserParse:(id)a3;
-- (id)init:(id)a3;
-- (unint64_t)fetchOverrideTimeStamp:(id)a3;
++ (id)getTrieURLs:(id)ls;
+- (id)fetchOverrideId:(id)id;
+- (id)fetchOverrideIdArray:(id)array;
+- (id)fetchRuleId:(id)id locale:(id)locale overrideNamespace:(int64_t)namespace;
+- (id)fetchSerializedNluRequestRule:(id)rule;
+- (id)fetchSerializedUserParse:(id)parse;
+- (id)init:(id)init;
+- (unint64_t)fetchOverrideTimeStamp:(id)stamp;
 @end
 
 @implementation SiriNLUOverridesTrieBundle
 
-- (id)fetchRuleId:(id)a3 locale:(id)a4 overrideNamespace:(int64_t)a5
+- (id)fetchRuleId:(id)id locale:(id)locale overrideNamespace:(int64_t)namespace
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  localeCopy = locale;
+  idCopy = id;
   v10 = objc_opt_new();
-  v11 = [SiriNLUOverridesTrieBundle buildPatternTrieLookupKey:v9 locale:v8 overrideNamespace:a5];
+  v11 = [SiriNLUOverridesTrieBundle buildPatternTrieLookupKey:idCopy locale:localeCopy overrideNamespace:namespace];
 
   v12 = OverridesLogContext;
   if (os_log_type_enabled(OverridesLogContext, OS_LOG_TYPE_DEBUG))
@@ -73,9 +73,9 @@ void __67__SiriNLUOverridesTrieBundle_fetchRuleId_locale_overrideNamespace___blo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchSerializedUserParse:(id)a3
+- (id)fetchSerializedUserParse:(id)parse
 {
-  v4 = a3;
+  parseCopy = parse;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -87,7 +87,7 @@ void __67__SiriNLUOverridesTrieBundle_fetchRuleId_locale_overrideNamespace___blo
   v9[1] = 3221225472;
   v9[2] = __55__SiriNLUOverridesTrieBundle_fetchSerializedUserParse___block_invoke;
   v9[3] = &unk_279C32BE0;
-  v6 = v4;
+  v6 = parseCopy;
   v10 = v6;
   v11 = &v12;
   [(SiriNLUMarisaTrie *)userParseTrie lookupKey:v6 resultBlock:v9];
@@ -124,9 +124,9 @@ void __55__SiriNLUOverridesTrieBundle_fetchSerializedUserParse___block_invoke(ui
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)fetchOverrideTimeStamp:(id)a3
+- (unint64_t)fetchOverrideTimeStamp:(id)stamp
 {
-  v4 = a3;
+  stampCopy = stamp;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -140,7 +140,7 @@ void __55__SiriNLUOverridesTrieBundle_fetchSerializedUserParse___block_invoke(ui
   v9[1] = 3221225472;
   v9[2] = __53__SiriNLUOverridesTrieBundle_fetchOverrideTimeStamp___block_invoke;
   v9[3] = &unk_279C32C30;
-  v6 = v4;
+  v6 = stampCopy;
   v10 = v6;
   v11 = v13;
   v12 = &v15;
@@ -202,19 +202,19 @@ LABEL_9:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchOverrideIdArray:(id)a3
+- (id)fetchOverrideIdArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
   overrideIdTrie = self->overrideIdTrie;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__SiriNLUOverridesTrieBundle_fetchOverrideIdArray___block_invoke;
   v12[3] = &unk_279C32C08;
-  v13 = v4;
+  v13 = arrayCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = arrayCopy;
   [(SiriNLUMarisaTrie *)overrideIdTrie lookupKey:v8 resultBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -249,13 +249,13 @@ void __51__SiriNLUOverridesTrieBundle_fetchOverrideIdArray___block_invoke(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchOverrideId:(id)a3
+- (id)fetchOverrideId:(id)id
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SiriNLUOverridesTrieBundle *)self fetchOverrideIdArray:a3];
+  v3 = [(SiriNLUOverridesTrieBundle *)self fetchOverrideIdArray:id];
   if ([v3 count])
   {
-    v4 = [v3 lastObject];
+    lastObject = [v3 lastObject];
     if ([v3 count] >= 2)
     {
       v5 = OverridesLogContext;
@@ -267,7 +267,7 @@ void __51__SiriNLUOverridesTrieBundle_fetchOverrideIdArray___block_invoke(uint64
         v12 = 2048;
         v13 = [v3 count];
         v14 = 2112;
-        v15 = v4;
+        v15 = lastObject;
         _os_log_error_impl(&dword_268086000, v6, OS_LOG_TYPE_ERROR, "%s [ERR]: OverrrideId has multiple values (length:%lu), possibly mal-formed data, returning the last one from the array. OverrideId returned:%@. ", &v10, 0x20u);
       }
     }
@@ -283,17 +283,17 @@ void __51__SiriNLUOverridesTrieBundle_fetchOverrideIdArray___block_invoke(uint64
       _os_log_impl(&dword_268086000, v7, OS_LOG_TYPE_INFO, "%s [WARN]: OverrideId not found, returning nil", &v10, 0xCu);
     }
 
-    v4 = 0;
+    lastObject = 0;
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return lastObject;
 }
 
-- (id)fetchSerializedNluRequestRule:(id)a3
+- (id)fetchSerializedNluRequestRule:(id)rule
 {
-  v4 = a3;
+  ruleCopy = rule;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -305,7 +305,7 @@ void __51__SiriNLUOverridesTrieBundle_fetchOverrideIdArray___block_invoke(uint64
   v9[1] = 3221225472;
   v9[2] = __60__SiriNLUOverridesTrieBundle_fetchSerializedNluRequestRule___block_invoke;
   v9[3] = &unk_279C32BE0;
-  v6 = v4;
+  v6 = ruleCopy;
   v10 = v6;
   v11 = &v12;
   [(SiriNLUMarisaTrie *)ruleTrie lookupKey:v6 resultBlock:v9];
@@ -342,17 +342,17 @@ void __60__SiriNLUOverridesTrieBundle_fetchSerializedNluRequestRule___block_invo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  initCopy = init;
   +[SiriNLUOverridesLogging SiriNLUOverridesLogInitIfNeeded];
   v34.receiver = self;
   v34.super_class = SiriNLUOverridesTrieBundle;
   v5 = [(SiriNLUOverridesTrieBundle *)&v34 init];
   if (v5)
   {
-    v6 = [SiriNLUOverridesTrieBundle getTrieURLs:v4];
+    v6 = [SiriNLUOverridesTrieBundle getTrieURLs:initCopy];
     v7 = OverridesLogContext;
     if (os_log_type_enabled(OverridesLogContext, OS_LOG_TYPE_DEBUG))
     {
@@ -437,14 +437,14 @@ void __60__SiriNLUOverridesTrieBundle_fetchSerializedNluRequestRule___block_invo
   return v29;
 }
 
-+ (id)getTrieURLs:(id)a3
++ (id)getTrieURLs:(id)ls
 {
-  v3 = a3;
-  v15 = [v3 stringByAppendingPathComponent:@"rule_id_to_serialized_rule.trie"];
-  v4 = [v3 stringByAppendingPathComponent:@"pattern_to_rule_id.trie"];
-  v5 = [v3 stringByAppendingPathComponent:@"rule_id_to_override_id.trie"];
-  v6 = [v3 stringByAppendingPathComponent:@"override_id_to_serialized_parse.trie"];
-  v7 = [v3 stringByAppendingPathComponent:@"override_id_to_timestamp.trie"];
+  lsCopy = ls;
+  v15 = [lsCopy stringByAppendingPathComponent:@"rule_id_to_serialized_rule.trie"];
+  v4 = [lsCopy stringByAppendingPathComponent:@"pattern_to_rule_id.trie"];
+  v5 = [lsCopy stringByAppendingPathComponent:@"rule_id_to_override_id.trie"];
+  v6 = [lsCopy stringByAppendingPathComponent:@"override_id_to_serialized_parse.trie"];
+  v7 = [lsCopy stringByAppendingPathComponent:@"override_id_to_timestamp.trie"];
 
   v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v15];
   v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];

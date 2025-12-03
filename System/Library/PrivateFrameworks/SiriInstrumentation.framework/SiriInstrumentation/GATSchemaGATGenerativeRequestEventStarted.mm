@@ -1,49 +1,49 @@
 @interface GATSchemaGATGenerativeRequestEventStarted
-- (BOOL)isEqual:(id)a3;
-- (GATSchemaGATGenerativeRequestEventStarted)initWithDictionary:(id)a3;
-- (GATSchemaGATGenerativeRequestEventStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GATSchemaGATGenerativeRequestEventStarted)initWithDictionary:(id)dictionary;
+- (GATSchemaGATGenerativeRequestEventStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasGenAIAgentUsed:(BOOL)a3;
-- (void)setHasLlmAgentName:(BOOL)a3;
-- (void)setHasMediaQAUseCase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasGenAIAgentUsed:(BOOL)used;
+- (void)setHasLlmAgentName:(BOOL)name;
+- (void)setHasMediaQAUseCase:(BOOL)case;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GATSchemaGATGenerativeRequestEventStarted
 
-- (GATSchemaGATGenerativeRequestEventStarted)initWithDictionary:(id)a3
+- (GATSchemaGATGenerativeRequestEventStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = GATSchemaGATGenerativeRequestEventStarted;
   v5 = [(GATSchemaGATGenerativeRequestEventStarted *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usecase"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usecase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATGenerativeRequestEventStarted setUsecase:](v5, "setUsecase:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"mediaQAUseCase"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"mediaQAUseCase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATGenerativeRequestEventStarted setMediaQAUseCase:](v5, "setMediaQAUseCase:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"llmAgentName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"llmAgentName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATGenerativeRequestEventStarted setLlmAgentName:](v5, "setLlmAgentName:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"genAIAgentUsed"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"genAIAgentUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (GATSchemaGATGenerativeRequestEventStarted)initWithJSON:(id)a3
+- (GATSchemaGATGenerativeRequestEventStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GATSchemaGATGenerativeRequestEventStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GATSchemaGATGenerativeRequestEventStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GATSchemaGATGenerativeRequestEventStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,7 +92,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -107,7 +107,7 @@
       v6 = off_1E78D7080[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"genAIAgentUsed"];
+    [dictionary setObject:v6 forKeyedSubscript:@"genAIAgentUsed"];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -129,7 +129,7 @@ LABEL_14:
         v9 = off_1E78D70A8[v8];
       }
 
-      [v3 setObject:v9 forKeyedSubscript:@"mediaQAUseCase"];
+      [dictionary setObject:v9 forKeyedSubscript:@"mediaQAUseCase"];
       if ((*&self->_has & 1) == 0)
       {
         goto LABEL_22;
@@ -154,7 +154,7 @@ LABEL_14:
     v7 = @"GATLLMAGENT_UNKNOWN";
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"llmAgentName"];
+  [dictionary setObject:v7 forKeyedSubscript:@"llmAgentName"];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -176,13 +176,13 @@ LABEL_18:
       v11 = off_1E78D70C8[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"usecase"];
+    [dictionary setObject:v11 forKeyedSubscript:@"usecase"];
   }
 
 LABEL_22:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -239,16 +239,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -257,13 +257,13 @@ LABEL_5:
   if (*&has)
   {
     usecase = self->_usecase;
-    if (usecase != [v4 usecase])
+    if (usecase != [equalCopy usecase])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -275,13 +275,13 @@ LABEL_5:
   if (v8)
   {
     mediaQAUseCase = self->_mediaQAUseCase;
-    if (mediaQAUseCase != [v4 mediaQAUseCase])
+    if (mediaQAUseCase != [equalCopy mediaQAUseCase])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -293,10 +293,10 @@ LABEL_5:
   if (v10)
   {
     llmAgentName = self->_llmAgentName;
-    if (llmAgentName == [v4 llmAgentName])
+    if (llmAgentName == [equalCopy llmAgentName])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -315,7 +315,7 @@ LABEL_14:
   if (v12)
   {
     genAIAgentUsed = self->_genAIAgentUsed;
-    if (genAIAgentUsed != [v4 genAIAgentUsed])
+    if (genAIAgentUsed != [equalCopy genAIAgentUsed])
     {
       goto LABEL_18;
     }
@@ -327,9 +327,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -376,9 +376,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasGenAIAgentUsed:(BOOL)a3
+- (void)setHasGenAIAgentUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 8;
   }
@@ -391,9 +391,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLlmAgentName:(BOOL)a3
+- (void)setHasLlmAgentName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 4;
   }
@@ -406,9 +406,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMediaQAUseCase:(BOOL)a3
+- (void)setHasMediaQAUseCase:(BOOL)case
 {
-  if (a3)
+  if (case)
   {
     v3 = 2;
   }

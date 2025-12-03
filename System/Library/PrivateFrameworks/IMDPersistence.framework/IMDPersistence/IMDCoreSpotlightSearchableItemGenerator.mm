@@ -1,38 +1,38 @@
 @interface IMDCoreSpotlightSearchableItemGenerator
-- (BOOL)_shouldSkipMessagePartPrefixingForItemDictionary:(id)a3;
-- (IMDCoreSpotlightSearchableItemGenerator)initWithScrutinyController:(id)a3 delegate:(id)a4;
-- (id)newChatSearchableItemForChatDictionary:(id)a3 optionalLastMessageDate:(id)a4;
-- (id)newChatSearchableItemForChatDictionary:(id)a3 optionalLastMessageDate:(id)a4 error:(id *)a5;
-- (id)newSearchableItemsForMessageItemDictionary:(id)a3 chatDictionary:(id)a4 context:(id)a5 rejectedItems:(id)a6 populatedChatItems:(id)a7;
-- (void)_updateFilteringForSearchableItem:(id)a3 chatDictionary:(id)a4;
+- (BOOL)_shouldSkipMessagePartPrefixingForItemDictionary:(id)dictionary;
+- (IMDCoreSpotlightSearchableItemGenerator)initWithScrutinyController:(id)controller delegate:(id)delegate;
+- (id)newChatSearchableItemForChatDictionary:(id)dictionary optionalLastMessageDate:(id)date;
+- (id)newChatSearchableItemForChatDictionary:(id)dictionary optionalLastMessageDate:(id)date error:(id *)error;
+- (id)newSearchableItemsForMessageItemDictionary:(id)dictionary chatDictionary:(id)chatDictionary context:(id)context rejectedItems:(id)items populatedChatItems:(id)chatItems;
+- (void)_updateFilteringForSearchableItem:(id)item chatDictionary:(id)dictionary;
 @end
 
 @implementation IMDCoreSpotlightSearchableItemGenerator
 
-- (IMDCoreSpotlightSearchableItemGenerator)initWithScrutinyController:(id)a3 delegate:(id)a4
+- (IMDCoreSpotlightSearchableItemGenerator)initWithScrutinyController:(id)controller delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = IMDCoreSpotlightSearchableItemGenerator;
   v9 = [(IMDCoreSpotlightSearchableItemGenerator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scrutinyController, a3);
-    objc_storeStrong(&v10->_delegate, a4);
+    objc_storeStrong(&v9->_scrutinyController, controller);
+    objc_storeStrong(&v10->_delegate, delegate);
   }
 
   return v10;
 }
 
-- (id)newChatSearchableItemForChatDictionary:(id)a3 optionalLastMessageDate:(id)a4
+- (id)newChatSearchableItemForChatDictionary:(id)dictionary optionalLastMessageDate:(id)date
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
   v15 = 0;
-  v9 = objc_msgSend_newChatSearchableItemForChatDictionary_optionalLastMessageDate_error_(self, v8, v6, v7, &v15);
+  v9 = objc_msgSend_newChatSearchableItemForChatDictionary_optionalLastMessageDate_error_(self, v8, dictionaryCopy, dateCopy, &v15);
   v10 = v15;
   if (v10)
   {
@@ -42,7 +42,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v17 = v6;
+        v17 = dictionaryCopy;
         _os_log_impl(&dword_1B7AD5000, v11, OS_LOG_TYPE_INFO, "(1/2) Failed to generate searchable chat item for chat dictionary %@", buf, 0xCu);
       }
     }
@@ -63,22 +63,22 @@
   return v9;
 }
 
-- (id)newChatSearchableItemForChatDictionary:(id)a3 optionalLastMessageDate:(id)a4 error:(id *)a5
+- (id)newChatSearchableItemForChatDictionary:(id)dictionary optionalLastMessageDate:(id)date error:(id *)error
 {
   v151 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  dictionaryCopy = dictionary;
+  dateCopy = date;
+  if (dictionaryCopy)
   {
     IMDPersistenceCheckNotDatabaseThread();
     IMDIndexingAssertClientRequestQueue();
-    v9 = _IMDCoreSpotlightChatUIDForChatDictionary(v7);
-    v11 = objc_msgSend_objectForKey_(v7, v10, @"guid");
+    v9 = _IMDCoreSpotlightChatUIDForChatDictionary(dictionaryCopy);
+    v11 = objc_msgSend_objectForKey_(dictionaryCopy, v10, @"guid");
     v13 = v11;
     v134 = v11;
     if (!v9 || !v11)
     {
-      if (!a5)
+      if (!error)
       {
         v44 = 0;
 LABEL_51:
@@ -89,25 +89,25 @@ LABEL_51:
       v45 = MEMORY[0x1E696ABC0];
       v147 = *MEMORY[0x1E696A578];
       v46 = MEMORY[0x1E696AEC0];
-      v47 = objc_msgSend_objectForKeyedSubscript_(v7, v12, @"chatIdentifier");
-      v49 = objc_msgSend_objectForKeyedSubscript_(v7, v48, @"groupID");
-      v51 = objc_msgSend_objectForKeyedSubscript_(v7, v50, @"style");
+      v47 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v12, @"chatIdentifier");
+      v49 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v48, @"groupID");
+      v51 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v50, @"style");
       v53 = objc_msgSend_stringWithFormat_(v46, v52, @"Chat dictionary malformed. unique identifier %@ guid %@ chat identifier %@ group ID %@ style %@", v9, v13, v47, v49, v51);
       v148 = v53;
       v55 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v54, &v148, &v147, 1);
       v56 = v45;
       v57 = v55;
       objc_msgSend_errorWithDomain_code_userInfo_(v56, v58, @"com.apple.Messages.IMDCoreSpotlight", 1, v55);
-      *a5 = v44 = 0;
+      *error = v44 = 0;
 LABEL_50:
 
       goto LABEL_51;
     }
 
     v132 = v9;
-    v14 = objc_msgSend_objectForKey_(v7, v12, @"lastMessageDate");
+    v14 = objc_msgSend_objectForKey_(dictionaryCopy, v12, @"lastMessageDate");
     v15 = v14;
-    v133 = v8;
+    v133 = dateCopy;
     if (v14)
     {
       v16 = v14;
@@ -115,7 +115,7 @@ LABEL_50:
 
     else
     {
-      v16 = v8;
+      v16 = dateCopy;
     }
 
     v17 = v16;
@@ -126,7 +126,7 @@ LABEL_50:
     v135 = v20;
     v131 = v17;
     objc_msgSend_setLastUsedDate_(v20, v22, v17);
-    v24 = objc_msgSend_objectForKey_(v7, v23, @"participants");
+    v24 = objc_msgSend_objectForKey_(dictionaryCopy, v23, @"participants");
     v138 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v137 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v143 = 0u;
@@ -189,9 +189,9 @@ LABEL_50:
 
     objc_msgSend_setPrimaryRecipients_(v135, v59, v138);
     objc_msgSend_setRecipientAddresses_(v135, v60, v137);
-    v62 = objc_msgSend_integerValueForKey_withDefault_(v7, v61, @"isFiltered", 0);
+    v62 = objc_msgSend_integerValueForKey_withDefault_(dictionaryCopy, v61, @"isFiltered", 0);
     shouldDisplayGroupNameAndPhotoWith_handles = objc_msgSend_shouldDisplayGroupNameAndPhotoWith_handles_(IMDGroupNameAndPhotoHelper, v63, v62, v137);
-    v66 = objc_msgSend_objectForKey_(v7, v65, @"groupName");
+    v66 = objc_msgSend_objectForKey_(dictionaryCopy, v65, @"groupName");
     v69 = v66;
     if (v66 && ((objc_msgSend_length(v66, v67, v68) != 0) & shouldDisplayGroupNameAndPhotoWith_handles) == 1)
     {
@@ -239,11 +239,11 @@ LABEL_50:
       v69 = v85;
     }
 
-    v88 = objc_msgSend_valueForKey_(v7, v72, @"style");
+    v88 = objc_msgSend_valueForKey_(dictionaryCopy, v72, @"style");
 
     if (v88)
     {
-      v90 = objc_msgSend_valueForKey_(v7, v89, @"style");
+      v90 = objc_msgSend_valueForKey_(dictionaryCopy, v89, @"style");
       v93 = objc_msgSend_charValue(v90, v91, v92);
 
       v95 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v94, @"%c", v93);
@@ -254,23 +254,23 @@ LABEL_50:
       objc_msgSend_setIsGroupThread_(v135, v102, v101);
     }
 
-    v103 = objc_msgSend_objectForKey_(v7, v89, @"syndicationType");
+    v103 = objc_msgSend_objectForKey_(dictionaryCopy, v89, @"syndicationType");
 
     v47 = v131;
-    if (v103 && (objc_msgSend_objectForKey_(v7, v104, @"syndicationType"), v105 = objc_claimAutoreleasedReturnValue(), v108 = objc_msgSend_integerValue(v105, v106, v107), v105, (v29 & (v108 < 2)) == 1))
+    if (v103 && (objc_msgSend_objectForKey_(dictionaryCopy, v104, @"syndicationType"), v105 = objc_claimAutoreleasedReturnValue(), v108 = objc_msgSend_integerValue(v105, v106, v107), v105, (v29 & (v108 < 2)) == 1))
     {
       v109 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], v104, 1);
       v112 = objc_msgSend_chatAutoDonatingCutomKey(MEMORY[0x1E69A7FF8], v110, v111);
       objc_msgSend_setValue_forCustomKey_(v135, v113, v109, v112);
 
-      v115 = objc_msgSend_objectForKey_(v7, v114, @"syndicationDate");
+      v115 = objc_msgSend_objectForKey_(dictionaryCopy, v114, @"syndicationDate");
 
       v9 = v132;
-      v8 = v133;
+      dateCopy = v133;
       if (!v115)
       {
 LABEL_47:
-        v126 = objc_msgSend_objectForKeyedSubscript_(v7, v116, @"chatIdentifier");
+        v126 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v116, @"chatIdentifier");
         v49 = v135;
         if (v126)
         {
@@ -286,7 +286,7 @@ LABEL_47:
         goto LABEL_50;
       }
 
-      v119 = objc_msgSend_objectForKey_(v7, v116, @"syndicationDate");
+      v119 = objc_msgSend_objectForKey_(dictionaryCopy, v116, @"syndicationDate");
       if (!v119)
       {
 LABEL_46:
@@ -304,7 +304,7 @@ LABEL_46:
       v120 = objc_msgSend_chatAutoDonatingCutomKey(MEMORY[0x1E69A7FF8], v122, v123);
       objc_msgSend_setValue_forCustomKey_(v135, v124, v119, v120);
       v9 = v132;
-      v8 = v133;
+      dateCopy = v133;
     }
 
     goto LABEL_46;
@@ -317,14 +317,14 @@ LABEL_52:
   return v44;
 }
 
-- (id)newSearchableItemsForMessageItemDictionary:(id)a3 chatDictionary:(id)a4 context:(id)a5 rejectedItems:(id)a6 populatedChatItems:(id)a7
+- (id)newSearchableItemsForMessageItemDictionary:(id)dictionary chatDictionary:(id)chatDictionary context:(id)context rejectedItems:(id)items populatedChatItems:(id)chatItems
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (IMDCoreSpotlightDisabled(v16, v17, v18))
+  dictionaryCopy = dictionary;
+  chatDictionaryCopy = chatDictionary;
+  contextCopy = context;
+  itemsCopy = items;
+  chatItemsCopy = chatItems;
+  if (IMDCoreSpotlightDisabled(chatItemsCopy, v17, v18))
   {
     v19 = 0;
   }
@@ -334,33 +334,33 @@ LABEL_52:
     IMDPersistenceCheckNotDatabaseThread();
     IMDIndexingAssertClientRequestQueue();
     v20 = [_IMDCoreSpotlightSearchableMessageItemGenerator alloc];
-    v22 = objc_msgSend_initWithGenerator_messageItemDictionary_chatDictionary_context_rejectedItems_populatedChatItems_(v20, v21, self, v12, v13, v14, v15, v16);
+    v22 = objc_msgSend_initWithGenerator_messageItemDictionary_chatDictionary_context_rejectedItems_populatedChatItems_(v20, v21, self, dictionaryCopy, chatDictionaryCopy, contextCopy, itemsCopy, chatItemsCopy);
     v25 = objc_msgSend_generate(v22, v23, v24);
     if (objc_msgSend_count(v25, v26, v27))
     {
-      if ((objc_msgSend_isReindexing(v14, v28, v29) & 1) == 0 && (sub_1B7BC1A24(v14) & 1) == 0)
+      if ((objc_msgSend_isReindexing(contextCopy, v28, v29) & 1) == 0 && (sub_1B7BC1A24(contextCopy) & 1) == 0)
       {
         v32 = objc_msgSend_chatGUID(v22, v30, v31);
-        v34 = objc_msgSend_containsObject_(v16, v33, v32);
+        v34 = objc_msgSend_containsObject_(chatItemsCopy, v33, v32);
 
         if ((v34 & 1) == 0)
         {
           v35 = objc_msgSend_date(v22, v30, v31);
-          MessageDate = objc_msgSend_newChatSearchableItemForChatDictionary_optionalLastMessageDate_(self, v36, v13, v35);
+          MessageDate = objc_msgSend_newChatSearchableItemForChatDictionary_optionalLastMessageDate_(self, v36, chatDictionaryCopy, v35);
 
           if (MessageDate)
           {
             v39 = objc_msgSend_arrayByAddingObject_(v25, v38, MessageDate);
 
             v42 = objc_msgSend_chatGUID(v22, v40, v41);
-            objc_msgSend_addObject_(v16, v43, v42);
+            objc_msgSend_addObject_(chatItemsCopy, v43, v42);
 
             v25 = v39;
           }
         }
       }
 
-      if (!IMDSpotlightIndexingUsesPartialIndexersForIndexingContext(v14, v30, v31))
+      if (!IMDSpotlightIndexingUsesPartialIndexersForIndexingContext(contextCopy, v30, v31))
       {
         v46 = objc_msgSend_delegate(self, v44, v45);
         v47 = objc_opt_respondsToSelector();
@@ -385,9 +385,9 @@ LABEL_52:
   return v19;
 }
 
-- (BOOL)_shouldSkipMessagePartPrefixingForItemDictionary:(id)a3
+- (BOOL)_shouldSkipMessagePartPrefixingForItemDictionary:(id)dictionary
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"associatedMessageType");
+  v3 = objc_msgSend_objectForKey_(dictionary, a2, @"associatedMessageType");
   v6 = v3;
   if (v3)
   {
@@ -402,23 +402,23 @@ LABEL_52:
   return v7;
 }
 
-- (void)_updateFilteringForSearchableItem:(id)a3 chatDictionary:(id)a4
+- (void)_updateFilteringForSearchableItem:(id)item chatDictionary:(id)dictionary
 {
-  v26 = a3;
-  v6 = a4;
+  itemCopy = item;
+  dictionaryCopy = dictionary;
   v9 = objc_msgSend_delegate(self, v7, v8);
   v12 = objc_msgSend_filteringExtensionBundleID(v9, v10, v11);
   isEqualToString = objc_msgSend_isEqualToString_(v12, v13, @"com.apple.smsFilter.extension");
 
   if (isEqualToString)
   {
-    v16 = objc_msgSend_objectForKey_(v6, v15, @"properties");
+    v16 = objc_msgSend_objectForKey_(dictionaryCopy, v15, @"properties");
     v18 = objc_msgSend_objectForKey_(v16, v17, @"SMSSubCategory");
     v21 = objc_msgSend_integerValue(v18, v19, v20);
 
     if (v21 == 4)
     {
-      v24 = objc_msgSend_attributeSet(v26, v22, v23);
+      v24 = objc_msgSend_attributeSet(itemCopy, v22, v23);
       objc_msgSend_setPotentialEventMessage_(v24, v25, MEMORY[0x1E695E118]);
     }
   }

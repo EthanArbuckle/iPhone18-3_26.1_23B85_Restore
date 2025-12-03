@@ -11,9 +11,9 @@
 
 - (void)_generateItemListAndSizesDictIfNecessary
 {
-  v3 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+  remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
 
-  if (!v3)
+  if (!remainingItemLists)
   {
     v4.receiver = self;
     v4.super_class = NMSAlternatingMediaItemGroupIterator;
@@ -33,8 +33,8 @@
     }
 
     v3 = [(NMSMediaItemGroupIterator *)self currentContainerIndex]+ 1;
-    v4 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-    v5 = [v4 count];
+    remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+    v5 = [remainingItemLists count];
 
     if (v3 >= v5)
     {
@@ -47,10 +47,10 @@
       [(NMSMediaItemGroupIterator *)self setCurrentContainerIndex:[(NMSMediaItemGroupIterator *)self currentContainerIndex]+ 1];
     }
 
-    v6 = [(NMSMediaItemGroupIterator *)self currentItem];
+    currentItem = [(NMSMediaItemGroupIterator *)self currentItem];
   }
 
-  while (!v6);
+  while (!currentItem);
 }
 
 - (void)_continueToNextContainer
@@ -64,12 +64,12 @@
 - (void)markAllRemainingContainersAsSkipped
 {
   [(NMSAlternatingMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
-  v3 = [(NMSMediaItemGroupIterator *)self currentContainerIndex];
+  currentContainerIndex = [(NMSMediaItemGroupIterator *)self currentContainerIndex];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
-  v4 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-  v5 = [v4 count];
+  remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+  v5 = [remainingItemLists count];
 
   v11 = v5;
   v7[0] = MEMORY[0x277D85DD0];
@@ -82,7 +82,7 @@
   v6[2]();
   [(NMSMediaItemGroupIterator *)self setCurrentContainerIndex:0];
   [(NMSMediaItemGroupIterator *)self setCurrentItemIndex:[(NMSMediaItemGroupIterator *)self currentItemIndex]+ 1];
-  v9[3] = v3;
+  v9[3] = currentContainerIndex;
   (v6[2])(v6);
 
   _Block_object_dispose(&v8, 8);
@@ -130,8 +130,8 @@ unint64_t __75__NMSAlternatingMediaItemGroupIterator_markAllRemainingContainersA
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+  v4 = [remainingItemLists countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -143,7 +143,7 @@ unint64_t __75__NMSAlternatingMediaItemGroupIterator_markAllRemainingContainersA
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(remainingItemLists);
         }
 
         maxItemListSize = self->_maxItemListSize;
@@ -163,7 +163,7 @@ unint64_t __75__NMSAlternatingMediaItemGroupIterator_markAllRemainingContainersA
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [remainingItemLists countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

@@ -1,6 +1,6 @@
 @interface _SBApplicationLaunchAlertInfo
 - (id)description;
-- (void)initWithBundleID:(void *)a1;
+- (void)initWithBundleID:(void *)d;
 @end
 
 @implementation _SBApplicationLaunchAlertInfo
@@ -15,29 +15,29 @@
   return v6;
 }
 
-- (void)initWithBundleID:(void *)a1
+- (void)initWithBundleID:(void *)d
 {
   v4 = a2;
-  if (a1)
+  if (d)
   {
-    v11.receiver = a1;
+    v11.receiver = d;
     v11.super_class = _SBApplicationLaunchAlertInfo;
     v5 = objc_msgSendSuper2(&v11, sel_init);
-    a1 = v5;
+    d = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = d[2];
+      d[2] = v6;
 
       v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v9 = a1[3];
-      a1[3] = v8;
+      v9 = d[3];
+      d[3] = v8;
     }
   }
 
-  return a1;
+  return d;
 }
 
 @end

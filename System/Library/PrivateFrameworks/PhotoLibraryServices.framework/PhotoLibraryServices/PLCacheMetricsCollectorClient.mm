@@ -1,5 +1,5 @@
 @interface PLCacheMetricsCollectorClient
-- (PLCacheMetricsCollectorClient)initWithAssetsdClient:(id)a3;
+- (PLCacheMetricsCollectorClient)initWithAssetsdClient:(id)client;
 - (void)incrementImageCacheHitCount;
 - (void)incrementImageCacheMissCount;
 - (void)incrementVideoComplementCacheHitCount;
@@ -107,9 +107,9 @@
   }
 }
 
-- (PLCacheMetricsCollectorClient)initWithAssetsdClient:(id)a3
+- (PLCacheMetricsCollectorClient)initWithAssetsdClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = PLCacheMetricsCollectorClient;
   v5 = [(PLCacheMetricsCollectorClient *)&v16 init];
@@ -136,10 +136,10 @@ LABEL_12:
   {
     v8 = xpc_shmem_create(v7, 0x1000uLL);
     v9 = [objc_alloc(MEMORY[0x1E69BF358]) initWithXPCObject:v8];
-    if (v4)
+    if (clientCopy)
     {
-      v10 = [v4 resourceAvailabilityClient];
-      [v10 setSharedMemoryForCacheMetricsCollector:v9];
+      resourceAvailabilityClient = [clientCopy resourceAvailabilityClient];
+      [resourceAvailabilityClient setSharedMemoryForCacheMetricsCollector:v9];
     }
 
     v11 = PLCacheMetricsCollectorGetLog();

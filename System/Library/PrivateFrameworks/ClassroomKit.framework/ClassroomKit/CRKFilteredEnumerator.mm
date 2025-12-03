@@ -1,23 +1,23 @@
 @interface CRKFilteredEnumerator
-- (BOOL)shouldRejectItem:(id)a3;
-- (CRKFilteredEnumerator)initWithEnumerator:(id)a3 filterBlock:(id)a4;
+- (BOOL)shouldRejectItem:(id)item;
+- (CRKFilteredEnumerator)initWithEnumerator:(id)enumerator filterBlock:(id)block;
 - (id)nextObject;
 @end
 
 @implementation CRKFilteredEnumerator
 
-- (CRKFilteredEnumerator)initWithEnumerator:(id)a3 filterBlock:(id)a4
+- (CRKFilteredEnumerator)initWithEnumerator:(id)enumerator filterBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  enumeratorCopy = enumerator;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = CRKFilteredEnumerator;
   v9 = [(CRKFilteredEnumerator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_enumerator, a3);
-    v11 = MEMORY[0x245D3AAD0](v8);
+    objc_storeStrong(&v9->_enumerator, enumerator);
+    v11 = MEMORY[0x245D3AAD0](blockCopy);
     filterBlock = v10->_filterBlock;
     v10->_filterBlock = v11;
   }
@@ -27,29 +27,29 @@
 
 - (id)nextObject
 {
-  v3 = 0;
+  nextObject = 0;
   do
   {
-    v4 = v3;
-    v5 = [(CRKFilteredEnumerator *)self enumerator];
-    v3 = [v5 nextObject];
+    v4 = nextObject;
+    enumerator = [(CRKFilteredEnumerator *)self enumerator];
+    nextObject = [enumerator nextObject];
   }
 
-  while ([(CRKFilteredEnumerator *)self shouldRejectItem:v3]);
+  while ([(CRKFilteredEnumerator *)self shouldRejectItem:nextObject]);
 
-  return v3;
+  return nextObject;
 }
 
-- (BOOL)shouldRejectItem:(id)a3
+- (BOOL)shouldRejectItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(CRKFilteredEnumerator *)self filterBlock];
-  LOBYTE(self) = (v5)[2](v5, v4);
+  itemCopy = item;
+  filterBlock = [(CRKFilteredEnumerator *)self filterBlock];
+  LOBYTE(self) = (filterBlock)[2](filterBlock, itemCopy);
 
   v6 = self ^ 1;
   return v6;

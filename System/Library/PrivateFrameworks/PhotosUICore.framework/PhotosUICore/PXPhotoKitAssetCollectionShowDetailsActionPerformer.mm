@@ -1,8 +1,8 @@
 @interface PXPhotoKitAssetCollectionShowDetailsActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (int64_t)_originForAssetCollection:(id)a3;
-- (id)_displayTitleInfoForDetailsOfAssetCollection:(id)a3 withTitleCategory:(int64_t)a4 preferredAttributesPromise:(id)a5;
-- (id)_localizedTitleForAssetCollection:(id)a3 titleCategory:(int64_t *)a4;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (int64_t)_originForAssetCollection:(id)collection;
+- (id)_displayTitleInfoForDetailsOfAssetCollection:(id)collection withTitleCategory:(int64_t)category preferredAttributesPromise:(id)promise;
+- (id)_localizedTitleForAssetCollection:(id)collection titleCategory:(int64_t *)category;
 - (void)performUserInteractionTask;
 @end
 
@@ -11,31 +11,31 @@
 - (void)performUserInteractionTask
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v4 = v3;
-  if (v3)
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  v4 = assetCollection;
+  if (assetCollection)
   {
-    v5 = [v3 photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    photoLibrary = [assetCollection photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v28 = v6;
+    v28 = librarySpecificFetchOptions;
     if ([v4 isTransient])
     {
       v7 = MEMORY[0x1E6978760];
       v36[0] = v4;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-      v9 = [v7 transientCollectionListWithCollections:v8 title:0];
+      localIdentifier = [v7 transientCollectionListWithCollections:v8 title:0];
 
-      v10 = [MEMORY[0x1E6978760] fetchCollectionsInCollectionList:v9 options:v6];
+      v10 = [MEMORY[0x1E6978760] fetchCollectionsInCollectionList:localIdentifier options:librarySpecificFetchOptions];
     }
 
     else
     {
       v12 = MEMORY[0x1E6978650];
-      v9 = [v4 localIdentifier];
-      v35 = v9;
+      localIdentifier = [v4 localIdentifier];
+      v35 = localIdentifier;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
-      v10 = [v12 fetchAssetCollectionsWithLocalIdentifiers:v13 options:v6];
+      v10 = [v12 fetchAssetCollectionsWithLocalIdentifiers:v13 options:librarySpecificFetchOptions];
     }
 
     v27 = v10;
@@ -46,10 +46,10 @@
     [(PXPhotosDataSourceConfiguration *)v14 setFetchPropertySets:v15];
 
     v16 = [[PXPhotosDataSource alloc] initWithPhotosDataSourceConfiguration:v14];
-    v17 = [v4 titleCategory];
-    if (v17)
+    titleCategory = [v4 titleCategory];
+    if (titleCategory)
     {
-      v18 = v17;
+      v18 = titleCategory;
     }
 
     else
@@ -101,54 +101,54 @@
   }
 }
 
-- (id)_displayTitleInfoForDetailsOfAssetCollection:(id)a3 withTitleCategory:(int64_t)a4 preferredAttributesPromise:(id)a5
+- (id)_displayTitleInfoForDetailsOfAssetCollection:(id)collection withTitleCategory:(int64_t)category preferredAttributesPromise:(id)promise
 {
-  v15 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXPhotoKitAssetCollectionShowDetailsActionPerformer *)self _localizedTitleForAssetCollection:v9 titleCategory:&v15];
-  v11 = [off_1E77217B8 defaultHelper];
-  v12 = [v11 titleForDisplayableText:v10 titleCategory:v15 options:1];
+  categoryCopy = category;
+  promiseCopy = promise;
+  collectionCopy = collection;
+  v10 = [(PXPhotoKitAssetCollectionShowDetailsActionPerformer *)self _localizedTitleForAssetCollection:collectionCopy titleCategory:&categoryCopy];
+  defaultHelper = [off_1E77217B8 defaultHelper];
+  v12 = [defaultHelper titleForDisplayableText:v10 titleCategory:categoryCopy options:1];
 
-  v13 = [PXDisplayTitleInfo displayTitleInfoForDetailsOfAssetCollection:v9 withTitleCategory:a4 defaultTitle:v12 defaultTitleCategory:v15 titleKey:*MEMORY[0x1E6978EE8] titleCategoryKey:*MEMORY[0x1E6978EE0] defaultSubtitle:0.0 subtitleKey:0 simulatedLoadingDelay:*MEMORY[0x1E6978ED8] preferredAttributesPromise:v8];
+  v13 = [PXDisplayTitleInfo displayTitleInfoForDetailsOfAssetCollection:collectionCopy withTitleCategory:category defaultTitle:v12 defaultTitleCategory:categoryCopy titleKey:*MEMORY[0x1E6978EE8] titleCategoryKey:*MEMORY[0x1E6978EE0] defaultSubtitle:0.0 subtitleKey:0 simulatedLoadingDelay:*MEMORY[0x1E6978ED8] preferredAttributesPromise:promiseCopy];
 
   return v13;
 }
 
-- (id)_localizedTitleForAssetCollection:(id)a3 titleCategory:(int64_t *)a4
+- (id)_localizedTitleForAssetCollection:(id)collection titleCategory:(int64_t *)category
 {
-  v5 = a3;
-  v6 = [v5 localizedTitle];
-  if (![v6 length])
+  collectionCopy = collection;
+  localizedTitle = [collectionCopy localizedTitle];
+  if (![localizedTitle length])
   {
-    v7 = [v5 startDate];
-    if (v7)
+    startDate = [collectionCopy startDate];
+    if (startDate)
     {
       v8 = [objc_alloc(MEMORY[0x1E69BE3B8]) initWithPreset:2];
-      v9 = [v5 endDate];
-      v10 = [v8 stringFromDate:v7 toDate:v9];
+      endDate = [collectionCopy endDate];
+      v10 = [v8 stringFromDate:startDate toDate:endDate];
 
-      if (a4)
+      if (category)
       {
-        *a4 = 5;
+        *category = 5;
       }
 
-      v6 = v10;
+      localizedTitle = v10;
     }
   }
 
-  return v6;
+  return localizedTitle;
 }
 
-+ (int64_t)_originForAssetCollection:(id)a3
++ (int64_t)_originForAssetCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 px_isRegularAlbum])
+  collectionCopy = collection;
+  if ([collectionCopy px_isRegularAlbum])
   {
     v4 = 7;
   }
 
-  else if ([v3 px_isMoment])
+  else if ([collectionCopy px_isMoment])
   {
     v4 = 8;
   }
@@ -161,14 +161,14 @@
   return v4;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = a3;
-  v6 = [a4 assetsDataSource];
-  v7 = v6;
-  if (v6)
+  referenceCopy = reference;
+  assetsDataSource = [inputs assetsDataSource];
+  v7 = assetsDataSource;
+  if (assetsDataSource)
   {
-    [v6 indexPathForAssetCollectionReference:v5];
+    [assetsDataSource indexPathForAssetCollectionReference:referenceCopy];
   }
 
   return 0;

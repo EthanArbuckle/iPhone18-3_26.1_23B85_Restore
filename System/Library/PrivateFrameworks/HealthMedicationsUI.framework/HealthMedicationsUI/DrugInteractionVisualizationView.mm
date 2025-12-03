@@ -1,7 +1,7 @@
 @interface DrugInteractionVisualizationView
 - (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)init;
-- (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DrugInteractionVisualizationView
@@ -19,7 +19,7 @@
   return [(DrugInteractionVisualizationView *)&v6 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC19HealthMedicationsUI32DrugInteractionVisualizationView_visualizationConfig;
   v5 = type metadata accessor for DrugInteractionVisualizationConfig(0);
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI32DrugInteractionVisualizationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,20 +1,20 @@
 @interface ARSpatialMappingPointCloud
-+ (id)dictionaryFromArray:(id)a3;
-- (ARSpatialMappingPointCloud)initWithPointCloud:(__n128)a3 transform:(__n128)a4 identifier:(__n128)a5 timestamp:(double)a6;
++ (id)dictionaryFromArray:(id)array;
+- (ARSpatialMappingPointCloud)initWithPointCloud:(__n128)cloud transform:(__n128)transform identifier:(__n128)identifier timestamp:(double)timestamp;
 - (float32x4_t)pointsToWorld;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)updateTransform:(void *)a1;
-- (void)setCameraPose:(__n128)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)updateTransform:(void *)transform;
+- (void)setCameraPose:(__n128)pose;
 @end
 
 @implementation ARSpatialMappingPointCloud
 
-- (ARSpatialMappingPointCloud)initWithPointCloud:(__n128)a3 transform:(__n128)a4 identifier:(__n128)a5 timestamp:(double)a6
+- (ARSpatialMappingPointCloud)initWithPointCloud:(__n128)cloud transform:(__n128)transform identifier:(__n128)identifier timestamp:(double)timestamp
 {
   v53 = *MEMORY[0x1E69E9840];
   v12 = a9;
-  v46.receiver = a1;
+  v46.receiver = self;
   v46.super_class = ARSpatialMappingPointCloud;
   v13 = [(ARSpatialMappingPointCloud *)&v46 init];
   if (!v13)
@@ -158,36 +158,36 @@ LABEL_30:
   }
 
   *&v13[1].super.isa = a2;
-  *&v13[1]._anon_8[8] = a3;
-  *v13[1]._anon_20 = a4;
-  *&v13[1]._anon_20[16] = a5;
+  *&v13[1]._anon_8[8] = cloud;
+  *v13[1]._anon_20 = transform;
+  *&v13[1]._anon_20[16] = identifier;
   objc_storeStrong(&v13->_identifier, a9);
-  v13->_timestamp = a6;
+  v13->_timestamp = timestamp;
   v40 = v13;
 LABEL_31:
 
   return v40;
 }
 
-- (uint64_t)updateTransform:(void *)a1
+- (uint64_t)updateTransform:(void *)transform
 {
-  result = [a1 setCameraPose:?];
-  a1[20] = a1[19];
+  result = [transform setCameraPose:?];
+  transform[20] = transform[19];
   return result;
 }
 
 - (float32x4_t)pointsToWorld
 {
-  v2 = a1 + 19;
-  v3 = a1[20] - a1[19];
-  if ([a1 count] != v3 >> 4)
+  v2 = self + 19;
+  v3 = self[20] - self[19];
+  if ([self count] != v3 >> 4)
   {
-    v4 = a1;
-    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v2, [v4 count]);
-    v5 = v4[1];
-    v6 = v4[2];
+    selfCopy = self;
+    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v2, [selfCopy count]);
+    v5 = selfCopy[1];
+    v6 = selfCopy[2];
     v7 = *v2;
-    v8 = v4;
+    v8 = selfCopy;
     while (v5 != v6)
     {
       [v8 cameraPose];
@@ -199,9 +199,9 @@ LABEL_31:
   return *v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -227,21 +227,21 @@ LABEL_31:
   return v5;
 }
 
-+ (id)dictionaryFromArray:(id)a3
++ (id)dictionaryFromArray:(id)array
 {
   v68 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v47 = [MEMORY[0x1E695DF70] array];
-  v52 = [MEMORY[0x1E695DF70] array];
-  v51 = [MEMORY[0x1E695DF70] array];
-  v53 = [MEMORY[0x1E695DF70] array];
-  v50 = [MEMORY[0x1E695DF70] array];
-  v49 = [MEMORY[0x1E695DF70] array];
+  arrayCopy = array;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v44;
+  obj = arrayCopy;
   v3 = [obj countByEnumeratingWithState:&v57 objects:v67 count:16];
   if (v3)
   {
@@ -259,7 +259,7 @@ LABEL_31:
 
         v4 = *(*(&v57 + 1) + 8 * v48);
         v5 = +[ARQAHelper arrayOf3dPoints:count:](ARQAHelper, "arrayOf3dPoints:count:", [v4 pointsToWorld], objc_msgSend(v4, "count"));
-        [v47 addObjectsFromArray:v5];
+        [array addObjectsFromArray:v5];
 
         v55 = 0;
         v56 = 0;
@@ -267,10 +267,10 @@ LABEL_31:
         v7 = 0;
         while (v56 < [v4 count])
         {
-          v8 = [v4 semanticLabels];
-          v9 = [v4 semanticVotes];
+          semanticLabels = [v4 semanticLabels];
+          semanticVotes = [v4 semanticVotes];
           v10 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{*(objc_msgSend(v4, "semantics") + v56)}];
-          [v53 addObject:v10];
+          [array4 addObject:v10];
 
           v11 = MEMORY[0x1E696AD98];
           LODWORD(v12) = *([v4 normals] + v55);
@@ -285,7 +285,7 @@ LABEL_31:
           v19 = [v17 numberWithFloat:v18];
           v66[2] = v19;
           v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:3];
-          [v52 addObject:v20];
+          [array2 addObject:v20];
 
           v21 = MEMORY[0x1E696AD98];
           LODWORD(v22) = *([v4 colors] + v55);
@@ -300,29 +300,29 @@ LABEL_31:
           v29 = [v27 numberWithFloat:v28];
           v65[2] = v29;
           v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:3];
-          [v51 addObject:v30];
+          [array3 addObject:v30];
 
-          v31 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v8 + v7)];
+          v31 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(semanticLabels + v7)];
           v64[0] = v31;
-          v32 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v8 + v7 + 1)];
+          v32 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(semanticLabels + v7 + 1)];
           v64[1] = v32;
-          v33 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v8 + v7 + 2)];
+          v33 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(semanticLabels + v7 + 2)];
           v64[2] = v33;
-          v34 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v8 + v7 + 3)];
+          v34 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(semanticLabels + v7 + 3)];
           v64[3] = v34;
           v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
-          [v50 addObject:v35];
+          [array5 addObject:v35];
 
-          v36 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v9 + v6)];
+          v36 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(semanticVotes + v6)];
           v63[0] = v36;
-          v37 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v9 + v6 + 1)];
+          v37 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(semanticVotes + v6 + 1)];
           v63[1] = v37;
-          v38 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v9 + v6 + 2)];
+          v38 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(semanticVotes + v6 + 2)];
           v63[2] = v38;
-          v39 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v9 + v6 + 3)];
+          v39 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(semanticVotes + v6 + 3)];
           v63[3] = v39;
           v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:4];
-          [v49 addObject:v40];
+          [array6 addObject:v40];
 
           v7 += 4;
           v6 += 8;
@@ -343,32 +343,32 @@ LABEL_31:
   v62[0] = @"V8A";
   v61[0] = @"semanticVersion";
   v61[1] = @"count";
-  v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v47, "count")}];
+  v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(array, "count")}];
   v62[1] = v41;
-  v62[2] = v47;
+  v62[2] = array;
   v61[2] = @"points";
   v61[3] = @"normals";
-  v62[3] = v52;
-  v62[4] = v51;
+  v62[3] = array2;
+  v62[4] = array3;
   v61[4] = @"colors";
   v61[5] = @"semantics";
-  v62[5] = v53;
-  v62[6] = v50;
+  v62[5] = array4;
+  v62[6] = array5;
   v61[6] = @"semanticLabels";
   v61[7] = @"semanticVotes";
-  v62[7] = v49;
+  v62[7] = array6;
   v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:v61 count:8];
 
   return v42;
 }
 
-- (void)setCameraPose:(__n128)a3
+- (void)setCameraPose:(__n128)pose
 {
   v5[0] = a2;
-  v5[1] = a3;
+  v5[1] = pose;
   v5[2] = a4;
   v5[3] = a5;
-  objc_copyStruct((a1 + 208), v5, 64, 1, 0);
+  objc_copyStruct((self + 208), v5, 64, 1, 0);
 }
 
 - (id).cxx_construct

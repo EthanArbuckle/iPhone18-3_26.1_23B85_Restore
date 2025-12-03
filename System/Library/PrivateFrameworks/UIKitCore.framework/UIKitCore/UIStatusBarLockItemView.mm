@@ -1,12 +1,12 @@
 @interface UIStatusBarLockItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (UIView)viewToAnimateAlongside;
 - (double)updateContentsAndWidth;
 - (id)accessibilityHUDRepresentation;
 - (void)_endAnimation;
-- (void)animateUnlockForegroundView:(id)a3 timeItemSnapshot:(id)a4 completionBlock:(id)a5;
-- (void)jiggleCompletionBlock:(id)a3;
-- (void)setVisible:(BOOL)a3 frame:(CGRect)a4 duration:(double)a5;
+- (void)animateUnlockForegroundView:(id)view timeItemSnapshot:(id)snapshot completionBlock:(id)block;
+- (void)jiggleCompletionBlock:(id)block;
+- (void)setVisible:(BOOL)visible frame:(CGRect)frame duration:(double)duration;
 @end
 
 @implementation UIStatusBarLockItemView
@@ -101,28 +101,28 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v4 = *&a4;
+  v4 = *&actions;
   padlockView = self->_padlockView;
-  v7 = a3;
+  dataCopy = data;
   [(_UIStatusBarLockItemPadlockView *)padlockView reset];
   v9.receiver = self;
   v9.super_class = UIStatusBarLockItemView;
-  LOBYTE(v4) = [(UIStatusBarItemView *)&v9 updateForNewData:v7 actions:v4];
+  LOBYTE(v4) = [(UIStatusBarItemView *)&v9 updateForNewData:dataCopy actions:v4];
 
   return v4;
 }
 
-- (void)setVisible:(BOOL)a3 frame:(CGRect)a4 duration:(double)a5
+- (void)setVisible:(BOOL)visible frame:(CGRect)frame duration:(double)duration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  v12 = [(UIStatusBarItemView *)self isVisible]^ a3;
-  if (a5 > 0.0 && v12 == 0)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  visibleCopy = visible;
+  v12 = [(UIStatusBarItemView *)self isVisible]^ visible;
+  if (duration > 0.0 && v12 == 0)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -140,7 +140,7 @@ LABEL_3:
   {
     v15.receiver = self;
     v15.super_class = UIStatusBarLockItemView;
-    [(UIStatusBarItemView *)&v15 setVisible:v10 frame:x duration:y, width, height, a5];
+    [(UIStatusBarItemView *)&v15 setVisible:visibleCopy frame:x duration:y, width, height, duration];
   }
 }
 
@@ -210,17 +210,17 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
   }
 }
 
-- (void)animateUnlockForegroundView:(id)a3 timeItemSnapshot:(id)a4 completionBlock:(id)a5
+- (void)animateUnlockForegroundView:(id)view timeItemSnapshot:(id)snapshot completionBlock:(id)block
 {
   v181[2] = *MEMORY[0x1E69E9840];
-  v172 = a3;
-  v167 = a4;
-  v8 = a5;
+  viewCopy = view;
+  snapshotCopy = snapshot;
+  blockCopy = block;
   if ([(UIStatusBarLockItemView *)self _isAnimating])
   {
-    if (v8)
+    if (blockCopy)
     {
-      dispatch_async(MEMORY[0x1E69E96A0], v8);
+      dispatch_async(MEMORY[0x1E69E96A0], blockCopy);
     }
   }
 
@@ -269,11 +269,11 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
       textView = self->_textView;
       self->_textView = v13;
 
-      v15 = [(UIStatusBarItemView *)self foregroundStyle];
-      v16 = [v15 textFontForStyle:3];
+      foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+      v16 = [foregroundStyle textFontForStyle:3];
 
-      v17 = [(UIStatusBarItemView *)self foregroundStyle];
-      v18 = [v17 textColorForStyle:3];
+      foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+      v18 = [foregroundStyle2 textColorForStyle:3];
 
       v19 = objc_alloc(MEMORY[0x1E696AAB0]);
       v20 = _UILocalizedStringInSystemLanguage(@"UIStatusBar: Unlocked", @"Unlocked");
@@ -330,8 +330,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
         MinX = v42 + Width - CGRectGetWidth(v185);
       }
 
-      v44 = [(UIStatusBarItemView *)self foregroundStyle];
-      [v44 baselineOffsetForStyle:3];
+      foregroundStyle3 = [(UIStatusBarItemView *)self foregroundStyle];
+      [foregroundStyle3 baselineOffsetForStyle:3];
       v46 = v45;
 
       [(_UIExpandingGlyphsView *)self->_textView baselineOffset];
@@ -342,11 +342,11 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
     }
 
     [(UIView *)self addSubview:textClippingView];
-    [v172 bounds];
+    [viewCopy bounds];
     MidX = CGRectGetMidX(v186);
-    v49 = [(UIView *)self->_padlockView superview];
+    superview = [(UIView *)self->_padlockView superview];
     [(UIView *)self->_padlockView frame];
-    [v49 convertRect:v172 toCoordinateSpace:?];
+    [superview convertRect:viewCopy toCoordinateSpace:?];
     v51 = v50;
     v53 = v52;
     v55 = v54;
@@ -382,8 +382,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
 
     [(UIView *)self->_padlockView frame];
     v64 = CGRectGetWidth(v190);
-    v65 = [(UIStatusBarItemView *)self foregroundStyle];
-    [v65 standardPadding];
+    foregroundStyle4 = [(UIStatusBarItemView *)self foregroundStyle];
+    [foregroundStyle4 standardPadding];
     v67 = v66;
     [(UIView *)self->_textView frame];
     self->_widthNeededForFinalState = v64 + v67 + CGRectGetWidth(v191);
@@ -395,26 +395,26 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
     }
 
     self->_widthNeededDuringAnimation = v68 + v68;
-    if (v167)
+    if (snapshotCopy)
     {
-      [v167 frame];
+      [snapshotCopy frame];
       self->_timeItemSnapshotCenterOffsetFromForegroundViewCenter = vabdd_f64(CGRectGetMidX(v192), v58);
-      objc_storeStrong(&self->_timeItemSnapshot, a4);
-      [(UIView *)self insertSubview:v167 atIndex:0];
+      objc_storeStrong(&self->_timeItemSnapshot, snapshot);
+      [(UIView *)self insertSubview:snapshotCopy atIndex:0];
     }
 
     [(UIStatusBarLockItemView *)self _beginAnimation];
     [(UIStatusBarLockItemView *)self updateContentsAndWidth];
-    [v172 reflowItemViewsForgettingEitherSideItemHistory];
+    [viewCopy reflowItemViewsForgettingEitherSideItemHistory];
     objc_initWeak(location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __88__UIStatusBarLockItemView_animateUnlockForegroundView_timeItemSnapshot_completionBlock___block_invoke;
     aBlock[3] = &unk_1E71177E8;
     objc_copyWeak(&v178, location);
-    v69 = v172;
+    v69 = viewCopy;
     v176 = v69;
-    v177 = v8;
+    v177 = blockCopy;
     v70 = _Block_copy(aBlock);
     animationCompletionBlock = self->_animationCompletionBlock;
     self->_animationCompletionBlock = v70;
@@ -439,8 +439,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
       v77 = CGRectGetWidth(v195);
       [(UIView *)self->_timeItemSnapshot frame];
       Height = CGRectGetHeight(v196);
-      v79 = [(UIView *)self->_timeItemSnapshot superview];
-      [v79 convertRect:v69 fromCoordinateSpace:{v58 + timeItemSnapshotCenterOffsetFromForegroundViewCenter + v75 * -0.5, MinY, v77, Height}];
+      superview2 = [(UIView *)self->_timeItemSnapshot superview];
+      [superview2 convertRect:v69 fromCoordinateSpace:{v58 + timeItemSnapshotCenterOffsetFromForegroundViewCenter + v75 * -0.5, MinY, v77, Height}];
       v81 = v80;
       v83 = v82;
       v85 = v84;
@@ -458,8 +458,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
       v90 = [_UIViewWeakCAAnimationDelegate weakAnimationDelegate:self];
       [v88 setDelegate:v90];
 
-      v91 = [(UIView *)self->_timeItemSnapshot layer];
-      [v91 addAnimation:v88 forKey:@"fade"];
+      layer = [(UIView *)self->_timeItemSnapshot layer];
+      [layer addAnimation:v88 forKey:@"fade"];
     }
 
     padlockViewCenterOffsetFromForegroundViewCenter = self->_padlockViewCenterOffsetFromForegroundViewCenter;
@@ -471,8 +471,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
     v95 = CGRectGetWidth(v199);
     [(UIView *)self->_padlockView frame];
     v96 = CGRectGetHeight(v200);
-    v97 = [(UIView *)self->_padlockView superview];
-    [v97 convertRect:v69 fromCoordinateSpace:{v58 + padlockViewCenterOffsetFromForegroundViewCenter + v93 * -0.5, v94, v95, v96}];
+    superview3 = [(UIView *)self->_padlockView superview];
+    [superview3 convertRect:v69 fromCoordinateSpace:{v58 + padlockViewCenterOffsetFromForegroundViewCenter + v93 * -0.5, v94, v95, v96}];
     v166 = v98;
     v169 = v100;
     recta = v99;
@@ -508,8 +508,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
     [v105 setDelegate:v108];
 
     [(UIStatusBarLockItemView *)self _beginAnimation];
-    v109 = [(UIView *)self->_padlockView layer];
-    [v109 addAnimation:v105 forKey:@"padlock translation"];
+    layer2 = [(UIView *)self->_padlockView layer];
+    [layer2 addAnimation:v105 forKey:@"padlock translation"];
 
     [(UIView *)self->_padlockView setFrame:v104, recta, v169, v168];
     [(UIView *)self bounds];
@@ -577,8 +577,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
     [v118 setDelegate:v121];
 
     [(UIStatusBarLockItemView *)self _beginAnimation];
-    v122 = [(UIView *)self->_textClippingView layer];
-    [v122 addAnimation:v118 forKey:@"text clipping translation"];
+    layer3 = [(UIView *)self->_textClippingView layer];
+    [layer3 addAnimation:v118 forKey:@"text clipping translation"];
 
     v123 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
     setDefaultLockAnimationParameters(v123);
@@ -612,8 +612,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
     [v123 setDelegate:v130];
 
     [(UIStatusBarLockItemView *)self _beginAnimation];
-    v131 = [(UIView *)self->_textClippingView layer];
-    [v131 addAnimation:v123 forKey:@"text clipping bounds"];
+    layer4 = [(UIView *)self->_textClippingView layer];
+    [layer4 addAnimation:v123 forKey:@"text clipping bounds"];
 
     [(UIView *)self->_textView frame];
     v133 = v132;
@@ -637,16 +637,16 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
       v217.size.width = v117;
       v217.size.height = v110;
       v141 = CGRectGetWidth(v217);
-      v142 = [(UIStatusBarItemView *)self foregroundStyle];
-      [v142 standardPadding];
+      foregroundStyle5 = [(UIStatusBarItemView *)self foregroundStyle];
+      [foregroundStyle5 standardPadding];
       v144 = v141 - v143;
       v145 = v140;
     }
 
     else
     {
-      v142 = [(UIStatusBarItemView *)self foregroundStyle];
-      [v142 standardPadding];
+      foregroundStyle5 = [(UIStatusBarItemView *)self foregroundStyle];
+      [foregroundStyle5 standardPadding];
       v145 = v146;
       v144 = v137;
     }
@@ -664,8 +664,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
     [v147 setDelegate:v150];
 
     [(UIStatusBarLockItemView *)self _beginAnimation];
-    v151 = [(UIView *)self->_textView layer];
-    [v151 addAnimation:v147 forKey:@"text translation"];
+    layer5 = [(UIView *)self->_textView layer];
+    [layer5 addAnimation:v147 forKey:@"text translation"];
 
     v152 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
     setDefaultLockAnimationParameters(v152);
@@ -699,8 +699,8 @@ void __53__UIStatusBarLockItemView_setVisible_frame_duration___block_invoke(uint
     [v152 setDelegate:v159];
 
     [(UIStatusBarLockItemView *)self _beginAnimation];
-    v160 = [(UIView *)self->_textView layer];
-    [v160 addAnimation:v152 forKey:@"text bounds"];
+    layer6 = [(UIView *)self->_textView layer];
+    [layer6 addAnimation:v152 forKey:@"text bounds"];
 
     [(UIStatusBarLockItemView *)self _beginAnimation];
     [(_UIExpandingGlyphsView *)self->_textView setExpandsFromLeftToRight:[(UIStatusBarItemView *)self _shouldReverseLayoutDirection]];
@@ -764,9 +764,9 @@ uint64_t __88__UIStatusBarLockItemView_animateUnlockForegroundView_timeItemSnaps
   return [v2 _endAnimation];
 }
 
-- (void)jiggleCompletionBlock:(id)a3
+- (void)jiggleCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   padlockView = self->_padlockView;
   if (has_internal_diagnostics)
@@ -794,15 +794,15 @@ uint64_t __88__UIStatusBarLockItemView_animateUnlockForegroundView_timeItemSnaps
 
   if ([(UIStatusBarLockItemView *)self _isAnimating])
   {
-    if (v4)
+    if (blockCopy)
     {
-      dispatch_async(MEMORY[0x1E69E96A0], v4);
+      dispatch_async(MEMORY[0x1E69E96A0], blockCopy);
     }
   }
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(blockCopy);
     animationCompletionBlock = self->_animationCompletionBlock;
     self->_animationCompletionBlock = v7;
 

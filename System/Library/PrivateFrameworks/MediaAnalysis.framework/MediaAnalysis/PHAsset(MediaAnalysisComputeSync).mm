@@ -19,19 +19,19 @@
     return 0;
   }
 
-  v3 = [a1 photoLibrary];
-  v2 = [v3 isSystemPhotoLibrary];
+  photoLibrary = [self photoLibrary];
+  isSystemPhotoLibrary = [photoLibrary isSystemPhotoLibrary];
 
-  return v2;
+  return isSystemPhotoLibrary;
 }
 
 - (uint64_t)mad_isEligibleForComputeSyncIngestion
 {
   {
-    v3 = [a1 photoLibrary];
-    v4 = [v3 isCloudPhotoLibraryEnabled];
+    photoLibrary = [self photoLibrary];
+    isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-    [PHAsset(MediaAnalysisComputeSync) mad_isEligibleForComputeSyncIngestion]::eligible = v4;
+    [PHAsset(MediaAnalysisComputeSync) mad_isEligibleForComputeSyncIngestion]::eligible = isCloudPhotoLibraryEnabled;
   }
 
   return [PHAsset(MediaAnalysisComputeSync) mad_isEligibleForComputeSyncIngestion]::eligible;
@@ -77,12 +77,12 @@
       {
         if (a3 == 5)
         {
-          return ([a1 sourceType] & 1) != 0 || (objc_msgSend(a1, "sourceType") & 4) != 0 || (objc_msgSend(a1, "sourceType") & 0x20) != 0;
+          return ([self sourceType] & 1) != 0 || (objc_msgSend(self, "sourceType") & 4) != 0 || (objc_msgSend(self, "sourceType") & 0x20) != 0;
         }
 
         if (a3 == 10)
         {
-          if ((([a1 sourceType] & 1) != 0 || (objc_msgSend(a1, "sourceType") & 4) != 0 || (objc_msgSend(a1, "sourceType") & 0x20) != 0) && (objc_msgSend(a1, "isPartOfBurst") & 1) == 0 && (objc_msgSend(a1, "vcp_isPano") & 1) == 0)
+          if ((([self sourceType] & 1) != 0 || (objc_msgSend(self, "sourceType") & 4) != 0 || (objc_msgSend(self, "sourceType") & 0x20) != 0) && (objc_msgSend(self, "isPartOfBurst") & 1) == 0 && (objc_msgSend(self, "vcp_isPano") & 1) == 0)
           {
             goto LABEL_63;
           }
@@ -102,7 +102,7 @@
       {
         if (a3 == 2)
         {
-          if ((([a1 sourceType] & 1) != 0 || (objc_msgSend(a1, "sourceType") & 4) != 0 || (objc_msgSend(a1, "sourceType") & 0x20) != 0) && (objc_msgSend(a1, "isPartOfBurst") & 1) == 0)
+          if ((([self sourceType] & 1) != 0 || (objc_msgSend(self, "sourceType") & 4) != 0 || (objc_msgSend(self, "sourceType") & 0x20) != 0) && (objc_msgSend(self, "isPartOfBurst") & 1) == 0)
           {
             goto LABEL_63;
           }
@@ -118,10 +118,10 @@ LABEL_36:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unknown taskID (%d), any untrashed asset will be considered eligible", v11, 8u);
         }
 
-        if (([a1 sourceType] & 1) != 0 || (objc_msgSend(a1, "sourceType") & 4) != 0 || (objc_msgSend(a1, "sourceType") & 0x20) != 0)
+        if (([self sourceType] & 1) != 0 || (objc_msgSend(self, "sourceType") & 4) != 0 || (objc_msgSend(self, "sourceType") & 0x20) != 0)
         {
-          v6 = [a1 isTrashed];
-          return v6 ^ 1u;
+          isTrashed = [self isTrashed];
+          return isTrashed ^ 1u;
         }
 
         return 0;
@@ -132,17 +132,17 @@ LABEL_36:
 
     if (a3 == 3)
     {
-      if ([a1 sourceType] & 1) == 0 && (objc_msgSend(a1, "sourceType") & 4) == 0 && (objc_msgSend(a1, "sourceType") & 0x20) == 0 || (objc_msgSend(a1, "isPartOfBurst"))
+      if ([self sourceType] & 1) == 0 && (objc_msgSend(self, "sourceType") & 4) == 0 && (objc_msgSend(self, "sourceType") & 0x20) == 0 || (objc_msgSend(self, "isPartOfBurst"))
       {
         return 0;
       }
 
-      v7 = [a1 photoLibrary];
-      if ([v7 isSystemPhotoLibrary])
+      photoLibrary = [self photoLibrary];
+      if ([photoLibrary isSystemPhotoLibrary])
       {
-        v8 = [a1 isGuestAsset];
+        isGuestAsset = [self isGuestAsset];
 
-        if (v8)
+        if (isGuestAsset)
         {
           return 0;
         }
@@ -153,12 +153,12 @@ LABEL_36:
       }
 
 LABEL_63:
-      v6 = [a1 isTrashed];
-      return v6 ^ 1u;
+      isTrashed = [self isTrashed];
+      return isTrashed ^ 1u;
     }
 
 LABEL_14:
-    if (([a1 sourceType] & 1) == 0 && (objc_msgSend(a1, "sourceType") & 4) == 0 && (objc_msgSend(a1, "sourceType") & 0x20) == 0)
+    if (([self sourceType] & 1) == 0 && (objc_msgSend(self, "sourceType") & 4) == 0 && (objc_msgSend(self, "sourceType") & 0x20) == 0)
     {
       return 0;
     }
@@ -178,12 +178,12 @@ LABEL_14:
 
   if (a3 == 12 || a3 == 16)
   {
-    if ([a1 sourceType] & 1) == 0 && (objc_msgSend(a1, "sourceType") & 4) == 0 && (objc_msgSend(a1, "sourceType") & 0x20) == 0 || (objc_msgSend(a1, "isPartOfBurst"))
+    if ([self sourceType] & 1) == 0 && (objc_msgSend(self, "sourceType") & 4) == 0 && (objc_msgSend(self, "sourceType") & 0x20) == 0 || (objc_msgSend(self, "isPartOfBurst"))
     {
       return 0;
     }
 
-    result = [a1 isPhoto];
+    result = [self isPhoto];
     if (result)
     {
       goto LABEL_63;
@@ -203,17 +203,17 @@ LABEL_34:
       goto LABEL_14;
     }
 
-    if (([a1 sourceType] & 1) == 0 && (objc_msgSend(a1, "sourceType") & 4) == 0 && (objc_msgSend(a1, "sourceType") & 0x20) == 0)
+    if (([self sourceType] & 1) == 0 && (objc_msgSend(self, "sourceType") & 4) == 0 && (objc_msgSend(self, "sourceType") & 0x20) == 0)
     {
       return 0;
     }
 
-    if (([a1 vcp_isLivePhoto] & 1) != 0 || (result = objc_msgSend(a1, "isVideo"), result))
+    if (([self vcp_isLivePhoto] & 1) != 0 || (result = objc_msgSend(self, "isVideo"), result))
     {
-      v9 = [a1 mediaAnalysisProperties];
-      v10 = [v9 mediaAnalysisVersion];
+      mediaAnalysisProperties = [self mediaAnalysisProperties];
+      mediaAnalysisVersion = [mediaAnalysisProperties mediaAnalysisVersion];
 
-      if (v10 >= 0x27)
+      if (mediaAnalysisVersion >= 0x27)
       {
         return 0;
       }
@@ -228,15 +228,15 @@ LABEL_34:
 - (uint64_t)mad_isEligibleForComputeSyncDownloadWithAnalysisTask:()MediaAnalysisComputeSync
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [a1 mediaAnalysisProperties];
-  v6 = v5;
-  if (!v5)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  v6 = mediaAnalysisProperties;
+  if (!mediaAnalysisProperties)
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v8 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v12 = 138412290;
-      v13 = v8;
+      v13 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@] missing MediaAnalysisProperties, ineligible for compute sync analysis download", &v12, 0xCu);
     }
 
@@ -247,7 +247,7 @@ LABEL_34:
   {
     if (a3 == 3 || a3 == 10 || a3 == 12)
     {
-      v7 = [v5 cloudAnalysisStage];
+      cloudAnalysisStage = [mediaAnalysisProperties cloudAnalysisStage];
       goto LABEL_7;
     }
 
@@ -257,7 +257,7 @@ LABEL_34:
   if (a3 == 1)
   {
 LABEL_16:
-    v9 = [a1 mad_isComputeSyncStageFull:{objc_msgSend(v6, "cloudAnalysisStage")}];
+    v9 = [self mad_isComputeSyncStageFull:{objc_msgSend(v6, "cloudAnalysisStage")}];
     goto LABEL_21;
   }
 
@@ -266,9 +266,9 @@ LABEL_16:
 LABEL_17:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v10 = [a1 localIdentifier];
+      localIdentifier2 = [self localIdentifier];
       v12 = 138412546;
-      v13 = v10;
+      v13 = localIdentifier2;
       v14 = 1024;
       v15 = a3;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Unsupported taskID (%d), ineligible for compute sync analysis download", &v12, 0x12u);
@@ -279,14 +279,14 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([v5 cloudAnalysisStage] == 100)
+  if ([mediaAnalysisProperties cloudAnalysisStage] == 100)
   {
     goto LABEL_15;
   }
 
-  v7 = [v6 cloudAnalysisStage];
+  cloudAnalysisStage = [v6 cloudAnalysisStage];
 LABEL_7:
-  if (v7 != 200)
+  if (cloudAnalysisStage != 200)
   {
     goto LABEL_16;
   }
@@ -302,12 +302,12 @@ LABEL_21:
 {
   if (a3 == 10)
   {
-    v4 = [a1 characterRecognitionProperties];
-    if ([v4 algorithmVersion] == 8 || objc_msgSend(v4, "algorithmVersion") == 0x7FFF)
+    characterRecognitionProperties = [self characterRecognitionProperties];
+    if ([characterRecognitionProperties algorithmVersion] == 8 || objc_msgSend(characterRecognitionProperties, "algorithmVersion") == 0x7FFF)
     {
-      v5 = [v4 adjustmentVersion];
-      v6 = [a1 adjustmentVersion];
-      v7 = [v5 isEqualToDate:v6] ^ 1;
+      adjustmentVersion = [characterRecognitionProperties adjustmentVersion];
+      adjustmentVersion2 = [self adjustmentVersion];
+      v7 = [adjustmentVersion isEqualToDate:adjustmentVersion2] ^ 1;
     }
 
     else
@@ -321,7 +321,7 @@ LABEL_21:
   else
   {
 
-    return [a1 vcp_needsProcessingForTask:?];
+    return [self vcp_needsProcessingForTask:?];
   }
 }
 
@@ -358,8 +358,8 @@ LABEL_21:
 
         v9 = *(*(&v35 + 1) + 8 * v8);
         context = objc_autoreleasePoolPush();
-        v10 = [v9 intValue];
-        v11 = [objc_opt_class() vcp_requiredAnalysisForNextAnalysisStage:v10];
+        intValue = [v9 intValue];
+        v11 = [objc_opt_class() vcp_requiredAnalysisForNextAnalysisStage:intValue];
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
@@ -378,18 +378,18 @@ LABEL_21:
                 objc_enumerationMutation(v12);
               }
 
-              v16 = [*(*(&v31 + 1) + 8 * i) unsignedIntegerValue];
-              if (v16 != a3 && [a1 mad_isEligibleForAnalysis:v16] && objc_msgSend(a1, "mad_needsProcessingForComputeSyncWithAnalysis:", v16))
+              unsignedIntegerValue = [*(*(&v31 + 1) + 8 * i) unsignedIntegerValue];
+              if (unsignedIntegerValue != a3 && [self mad_isEligibleForAnalysis:unsignedIntegerValue] && objc_msgSend(self, "mad_needsProcessingForComputeSyncWithAnalysis:", unsignedIntegerValue))
               {
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
-                  v18 = [a1 localIdentifier];
+                  localIdentifier = [self localIdentifier];
                   v19 = VCPTaskIDDescription(a3);
-                  v20 = VCPTaskIDDescription(v16);
+                  v20 = VCPTaskIDDescription(unsignedIntegerValue);
                   *buf = v24;
-                  v40 = v18;
+                  v40 = localIdentifier;
                   v41 = 1024;
-                  v42 = v10;
+                  v42 = intValue;
                   v43 = 1024;
                   *v44 = v29;
                   *&v44[4] = 2112;
@@ -426,12 +426,12 @@ LABEL_21:
         }
 
         ++v8;
-        v29 = v10;
+        v29 = intValue;
       }
 
       while (v8 != v27);
       v6 = [obj countByEnumeratingWithState:&v35 objects:v49 count:16];
-      v29 = v10;
+      v29 = intValue;
       if (v6)
       {
         continue;
@@ -443,23 +443,23 @@ LABEL_21:
 
   else
   {
-    v10 = 0;
+    intValue = 0;
   }
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v21 = [a1 localIdentifier];
+    localIdentifier2 = [self localIdentifier];
     v22 = VCPTaskIDDescription(a3);
     *buf = 138412802;
-    v40 = v21;
+    v40 = localIdentifier2;
     v41 = 1024;
-    v42 = v10;
+    v42 = intValue;
     v43 = 2112;
     *v44 = v22;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[ComputeSyncStage][%@] Reaching stage %d after completing %@", buf, 0x1Cu);
   }
 
-  return v10;
+  return intValue;
 }
 
 - (uint64_t)mad_analysisStageAfterDroppingAnalysis:()MediaAnalysisComputeSync
@@ -495,9 +495,9 @@ LABEL_21:
 
         v10 = *(*(&v39 + 1) + 8 * v9);
         context = objc_autoreleasePoolPush();
-        v11 = [v10 intValue];
-        v12 = v11;
-        v13 = [objc_opt_class() vcp_requiredAnalysisForNextAnalysisStage:v11];
+        intValue = [v10 intValue];
+        v12 = intValue;
+        v13 = [objc_opt_class() vcp_requiredAnalysisForNextAnalysisStage:intValue];
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
@@ -517,15 +517,15 @@ LABEL_21:
                 objc_enumerationMutation(v14);
               }
 
-              v18 = [*(*(&v35 + 1) + 8 * i) unsignedIntegerValue];
-              if (v18 == a3)
+              unsignedIntegerValue = [*(*(&v35 + 1) + 8 * i) unsignedIntegerValue];
+              if (unsignedIntegerValue == a3)
               {
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
-                  v20 = [a1 localIdentifier];
+                  localIdentifier = [self localIdentifier];
                   v21 = VCPTaskIDDescription(a3);
                   *buf = 138412802;
-                  v44 = v20;
+                  v44 = localIdentifier;
                   v45 = 1024;
                   v46 = v33;
                   v47 = 2112;
@@ -536,15 +536,15 @@ LABEL_21:
                 goto LABEL_24;
               }
 
-              if ([a1 mad_isEligibleForAnalysis:v18] && objc_msgSend(a1, "mad_needsProcessingForComputeSyncWithAnalysis:", v18))
+              if ([self mad_isEligibleForAnalysis:unsignedIntegerValue] && objc_msgSend(self, "mad_needsProcessingForComputeSyncWithAnalysis:", unsignedIntegerValue))
               {
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
-                  v22 = [a1 localIdentifier];
+                  localIdentifier2 = [self localIdentifier];
                   v23 = VCPTaskIDDescription(a3);
-                  v24 = VCPTaskIDDescription(v18);
+                  v24 = VCPTaskIDDescription(unsignedIntegerValue);
                   *buf = v28;
-                  v44 = v22;
+                  v44 = localIdentifier2;
                   v45 = 1024;
                   v46 = v12;
                   v47 = 1024;
@@ -573,14 +573,14 @@ LABEL_24:
           }
 
           v19 = 1;
-          v33 = v11;
+          v33 = intValue;
           v3 = v29;
         }
 
         else
         {
           v19 = 1;
-          v33 = v11;
+          v33 = intValue;
         }
 
 LABEL_25:
@@ -613,10 +613,10 @@ LABEL_25:
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v25 = [a1 localIdentifier];
+    localIdentifier3 = [self localIdentifier];
     v26 = VCPTaskIDDescription(a3);
     *buf = 138412802;
-    v44 = v25;
+    v44 = localIdentifier3;
     v45 = 1024;
     v46 = v33;
     v47 = 2112;
@@ -632,8 +632,8 @@ LABEL_25:
 {
   v28[6] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E6978838]);
-  v3 = [a1 photoLibrary];
-  [v2 setPhotoLibrary:v3];
+  photoLibrary = [self photoLibrary];
+  [v2 setPhotoLibrary:photoLibrary];
 
   v4 = *MEMORY[0x1E6978CE8];
   v28[0] = *MEMORY[0x1E6978CA0];
@@ -659,8 +659,8 @@ LABEL_25:
   }
 
   v12 = MEMORY[0x1E6978628];
-  v13 = [a1 localIdentifier];
-  v27 = v13;
+  localIdentifier = [self localIdentifier];
+  v27 = localIdentifier;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
   v15 = [v12 fetchAssetsWithLocalIdentifiers:v14 options:v2];
 
@@ -676,10 +676,10 @@ LABEL_25:
   {
     if ([v15 count] >= 2 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [a1 localIdentifier];
+      localIdentifier2 = [self localIdentifier];
       v19 = [v15 count];
       v23 = 138412546;
-      v24 = v18;
+      v24 = localIdentifier2;
       v25 = 1024;
       v26 = v19;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Re-fetched %d assets, using first one", &v23, 0x12u);
@@ -692,9 +692,9 @@ LABEL_25:
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v21 = [a1 localIdentifier];
+      localIdentifier3 = [self localIdentifier];
       v23 = 138412290;
-      v24 = v21;
+      v24 = localIdentifier3;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to re-fetch asset to obtain updated properties", &v23, 0xCu);
     }
 

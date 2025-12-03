@@ -1,6 +1,6 @@
 @interface LoadingIndicatorViewController
 - (LoadingIndicatorViewController)init;
-- (LoadingIndicatorViewController)initWithTitle:(id)a3 message:(id)a4;
+- (LoadingIndicatorViewController)initWithTitle:(id)title message:(id)message;
 - (UIActivityIndicatorView)spinnerView;
 - (UILabel)messageLabel;
 - (UILabel)titleLabel;
@@ -22,16 +22,16 @@
   return v6;
 }
 
-- (LoadingIndicatorViewController)initWithTitle:(id)a3 message:(id)a4
+- (LoadingIndicatorViewController)initWithTitle:(id)title message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v9 = [(LoadingIndicatorViewController *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_titleText, a3);
-    objc_storeStrong(&v10->_messageText, a4);
+    objc_storeStrong(&v9->_titleText, title);
+    objc_storeStrong(&v10->_messageText, message);
   }
 
   return v10;
@@ -43,12 +43,12 @@
   v7.super_class = LoadingIndicatorViewController;
   [(LoadingIndicatorViewController *)&v7 viewDidLoad];
   titleText = self->_titleText;
-  v4 = [(LoadingIndicatorViewController *)self titleLabel];
-  [v4 setText:titleText];
+  titleLabel = [(LoadingIndicatorViewController *)self titleLabel];
+  [titleLabel setText:titleText];
 
   messageText = self->_messageText;
-  v6 = [(LoadingIndicatorViewController *)self messageLabel];
-  [v6 setText:messageText];
+  messageLabel = [(LoadingIndicatorViewController *)self messageLabel];
+  [messageLabel setText:messageText];
 }
 
 - (void)dealloc

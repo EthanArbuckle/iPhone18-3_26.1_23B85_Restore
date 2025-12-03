@@ -13,27 +13,27 @@
   if (v2)
   {
     v2->_clientIsSandboxed = 1;
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     trustedCallerBundleID = v3->_trustedCallerBundleID;
-    v3->_trustedCallerBundleID = v5;
+    v3->_trustedCallerBundleID = bundleIdentifier;
 
     trustedCallerContainingBundleRecord = v3->_trustedCallerContainingBundleRecord;
     v3->_trustedCallerContainingBundleRecord = 0;
 
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
     trustedCallerDisplayName = v3->_trustedCallerDisplayName;
-    v3->_trustedCallerDisplayName = v9;
+    v3->_trustedCallerDisplayName = bundleIdentifier2;
 
     v3->_clientProcessIdentifier = getpid();
     *&v3->_directDatabaseAccessAuthorized = 257;
     v3->_limitedLibraryMode = 0;
     v3->_clientIsSandboxed = 1;
     v3->_managedSpotlightIndexReadWriteEntitled = 0;
-    v11 = [MEMORY[0x1E69BF1C8] none];
+    none = [MEMORY[0x1E69BF1C8] none];
     captureSessionState = v3->_captureSessionState;
-    v3->_captureSessionState = v11;
+    v3->_captureSessionState = none;
 
     v3->_isBackgroundResourceUploadExtensionClient = 0;
   }

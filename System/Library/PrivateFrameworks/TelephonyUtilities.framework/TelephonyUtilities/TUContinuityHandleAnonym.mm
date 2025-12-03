@@ -1,28 +1,28 @@
 @interface TUContinuityHandleAnonym
 - (NSString)localizedDisplayName;
-- (TUContinuityHandleAnonym)initWithCoder:(id)a3;
-- (TUContinuityHandleAnonym)initWithIdentifier:(id)a3 label:(id)a4 localizedDisplayName:(id)a5 type:(int64_t)a6;
+- (TUContinuityHandleAnonym)initWithCoder:(id)coder;
+- (TUContinuityHandleAnonym)initWithIdentifier:(id)identifier label:(id)label localizedDisplayName:(id)name type:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUContinuityHandleAnonym
 
-- (TUContinuityHandleAnonym)initWithIdentifier:(id)a3 label:(id)a4 localizedDisplayName:(id)a5 type:(int64_t)a6
+- (TUContinuityHandleAnonym)initWithIdentifier:(id)identifier label:(id)label localizedDisplayName:(id)name type:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  labelCopy = label;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = TUContinuityHandleAnonym;
   v14 = [(TUContinuityHandleAnonym *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    objc_storeStrong(&v15->_label, a4);
-    objc_storeStrong(&v15->_localizedDisplayName, a5);
-    v15->_type = a6;
+    objc_storeStrong(&v14->_identifier, identifier);
+    objc_storeStrong(&v15->_label, label);
+    objc_storeStrong(&v15->_localizedDisplayName, name);
+    v15->_type = type;
   }
 
   return v15;
@@ -60,43 +60,43 @@
   return v7;
 }
 
-- (TUContinuityHandleAnonym)initWithCoder:(id)a3
+- (TUContinuityHandleAnonym)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_identifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_label);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_localizedDisplayName);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
   v14 = NSStringFromSelector(sel_type);
-  v15 = [v4 decodeIntegerForKey:v14];
+  v15 = [coderCopy decodeIntegerForKey:v14];
 
   v16 = [(TUContinuityHandleAnonym *)self initWithIdentifier:v7 label:v10 localizedDisplayName:v13 type:v15];
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_identifier);
-  [v5 encodeObject:identifier forKey:v6];
+  [coderCopy encodeObject:identifier forKey:v6];
 
   label = self->_label;
   v8 = NSStringFromSelector(sel_label);
-  [v5 encodeObject:label forKey:v8];
+  [coderCopy encodeObject:label forKey:v8];
 
   localizedDisplayName = self->_localizedDisplayName;
   v10 = NSStringFromSelector(sel_localizedDisplayName);
-  [v5 encodeObject:localizedDisplayName forKey:v10];
+  [coderCopy encodeObject:localizedDisplayName forKey:v10];
 
   type = self->_type;
   v12 = NSStringFromSelector(sel_type);
-  [v5 encodeInteger:type forKey:v12];
+  [coderCopy encodeInteger:type forKey:v12];
 }
 
 @end

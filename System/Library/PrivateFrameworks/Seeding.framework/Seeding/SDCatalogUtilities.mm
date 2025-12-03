@@ -1,19 +1,19 @@
 @interface SDCatalogUtilities
 + (id)_currentCatalog;
 + (void)_resetAssetAudience;
-+ (void)_setAudience:(id)a3;
-+ (void)_setCatalog:(id)a3;
++ (void)_setAudience:(id)audience;
++ (void)_setCatalog:(id)catalog;
 @end
 
 @implementation SDCatalogUtilities
 
-+ (void)_setCatalog:(id)a3
++ (void)_setCatalog:(id)catalog
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  catalogCopy = catalog;
   v4 = +[SDSeedingLogging fwHandle];
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (catalogCopy)
   {
     if (!v5)
     {
@@ -21,7 +21,7 @@
     }
 
     v12 = 136315138;
-    v13 = [v3 UTF8String];
+    uTF8String = [catalogCopy UTF8String];
     v6 = "Seeding: Setting catalog URL: %s";
     v7 = v4;
     v8 = 12;
@@ -43,8 +43,8 @@
   _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, v6, &v12, v8);
 LABEL_7:
 
-  v9 = [objc_opt_class() _currentCatalog];
-  if ([v9 isEqualToString:v3])
+  _currentCatalog = [objc_opt_class() _currentCatalog];
+  if ([_currentCatalog isEqualToString:catalogCopy])
   {
     v10 = +[SDSeedingLogging fwHandle];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@ LABEL_7:
 
   else
   {
-    CFPreferencesSetValue(@"CatalogURL", v3, @"com.apple.SoftwareUpdate", *MEMORY[0x277CBF020], *MEMORY[0x277CBF030]);
+    CFPreferencesSetValue(@"CatalogURL", catalogCopy, @"com.apple.SoftwareUpdate", *MEMORY[0x277CBF020], *MEMORY[0x277CBF030]);
     CFPreferencesAppSynchronize(@"com.apple.SoftwareUpdate");
     notify_post("com.apple.SoftwareUpdate.CheckForCatalogChange");
   }
@@ -63,19 +63,19 @@ LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_setAudience:(id)a3
++ (void)_setAudience:(id)audience
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  audienceCopy = audience;
   v4 = +[SDSeedingLogging fwHandle];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = v3;
+    v10 = audienceCopy;
     _os_log_impl(&dword_22E41E000, v4, OS_LOG_TYPE_DEFAULT, "will set mobile asset audience [%{public}@]", buf, 0xCu);
   }
 
-  if ([v3 length])
+  if ([audienceCopy length])
   {
     v5 = MASetPallasAudience();
     v6 = +[SDSeedingLogging fwHandle];

@@ -1,13 +1,13 @@
 @interface AXIPCOutstandingAsyncRequest
-+ (id)lookupByPort:(unsigned int)a3;
++ (id)lookupByPort:(unsigned int)port;
 + (void)initialize;
-+ (void)registerOutstandingRequest:(id)a3;
-+ (void)unregisterByPort:(unsigned int)a3;
-- (AXIPCOutstandingAsyncRequest)initWithReplyPort:(unsigned int)a3 handlerQueue:(id)a4 handler:(id)a5;
-- (void)_responseReceived:(id)a3;
++ (void)registerOutstandingRequest:(id)request;
++ (void)unregisterByPort:(unsigned int)port;
+- (AXIPCOutstandingAsyncRequest)initWithReplyPort:(unsigned int)port handlerQueue:(id)queue handler:(id)handler;
+- (void)_responseReceived:(id)received;
 - (void)dealloc;
 - (void)initialSendAborted;
-- (void)rawResponseReceived:(id)a3;
+- (void)rawResponseReceived:(id)received;
 - (void)registerAndListenForResponse;
 - (void)sendOnceRightDestroyed;
 @end
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___AXIPCOutstandingAsyncRequest;
   objc_msgSendSuper2(&v2, sel_initialize);
   if (initialize_token != -1)
@@ -36,11 +36,11 @@ uint64_t __42__AXIPCOutstandingAsyncRequest_initialize__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)lookupByPort:(unsigned int)a3
++ (id)lookupByPort:(unsigned int)port
 {
   [OutstandingAsyncRequestsLock lock];
   v4 = AllOutstandingAsyncRequests;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:port];
   v6 = [v4 objectForKey:v5];
 
   v7 = AXRetainAutorelease(v6);
@@ -49,11 +49,11 @@ uint64_t __42__AXIPCOutstandingAsyncRequest_initialize__block_invoke()
   return v6;
 }
 
-+ (void)unregisterByPort:(unsigned int)a3
++ (void)unregisterByPort:(unsigned int)port
 {
   [OutstandingAsyncRequestsLock lock];
   v4 = AllOutstandingAsyncRequests;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:port];
   [v4 removeObjectForKey:v5];
 
   v6 = OutstandingAsyncRequestsLock;
@@ -61,31 +61,31 @@ uint64_t __42__AXIPCOutstandingAsyncRequest_initialize__block_invoke()
   [v6 unlock];
 }
 
-+ (void)registerOutstandingRequest:(id)a3
++ (void)registerOutstandingRequest:(id)request
 {
   v3 = OutstandingAsyncRequestsLock;
-  v4 = a3;
+  requestCopy = request;
   [v3 lock];
   v5 = AllOutstandingAsyncRequests;
-  v6 = [v4 replyPort];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
-  [v5 setObject:v4 forKey:v7];
+  replyPort = [requestCopy replyPort];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:replyPort];
+  [v5 setObject:requestCopy forKey:v7];
 
   v8 = OutstandingAsyncRequestsLock;
 
   [v8 unlock];
 }
 
-- (AXIPCOutstandingAsyncRequest)initWithReplyPort:(unsigned int)a3 handlerQueue:(id)a4 handler:(id)a5
+- (AXIPCOutstandingAsyncRequest)initWithReplyPort:(unsigned int)port handlerQueue:(id)queue handler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = AXIPCOutstandingAsyncRequest;
   v11 = [(AXIPCOutstandingAsyncRequest *)&v16 init];
   if (v11)
   {
-    if (a3 - 1 >= 0xFFFFFFFE)
+    if (port - 1 >= 0xFFFFFFFE)
     {
       _AXAssert();
     }
@@ -95,9 +95,9 @@ uint64_t __42__AXIPCOutstandingAsyncRequest_initialize__block_invoke()
     if (v12)
     {
       MSHMIGSourceSetSendOnceCallback();
-      v11->_replyPort = a3;
-      objc_storeStrong(&v11->_replyQueue, a4);
-      v13 = [v10 copy];
+      v11->_replyPort = port;
+      objc_storeStrong(&v11->_replyQueue, queue);
+      v13 = [handlerCopy copy];
       replyHandler = v11->_replyHandler;
       v11->_replyHandler = v13;
     }
@@ -156,27 +156,27 @@ uint64_t __42__AXIPCOutstandingAsyncRequest_initialize__block_invoke()
 {
   [objc_opt_class() registerOutstandingRequest:self];
   Main = CFRunLoopGetMain();
-  v4 = [(AXIPCOutstandingAsyncRequest *)self replyMachPortSource];
+  replyMachPortSource = [(AXIPCOutstandingAsyncRequest *)self replyMachPortSource];
   v5 = *MEMORY[0x1E695E8D0];
 
-  CFRunLoopAddSource(Main, v4, v5);
+  CFRunLoopAddSource(Main, replyMachPortSource, v5);
 }
 
-- (void)_responseReceived:(id)a3
+- (void)_responseReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   [(AXIPCOutstandingAsyncRequest *)self replyMachPortSource];
   MSHMIGSourceSetSendOnceCallback();
   [objc_opt_class() unregisterByPort:{-[AXIPCOutstandingAsyncRequest replyPort](self, "replyPort")}];
-  v5 = [(AXIPCOutstandingAsyncRequest *)self replyQueue];
+  replyQueue = [(AXIPCOutstandingAsyncRequest *)self replyQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__AXIPCOutstandingAsyncRequest__responseReceived___block_invoke;
   v7[3] = &unk_1E71EA128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = receivedCopy;
+  v6 = receivedCopy;
+  dispatch_async(replyQueue, v7);
 }
 
 void __50__AXIPCOutstandingAsyncRequest__responseReceived___block_invoke(uint64_t a1)
@@ -185,22 +185,22 @@ void __50__AXIPCOutstandingAsyncRequest__responseReceived___block_invoke(uint64_
   (*(v2 + 2))(v2, *(a1 + 40), 0);
 }
 
-- (void)rawResponseReceived:(id)a3
+- (void)rawResponseReceived:(id)received
 {
-  v4 = [AXIPCMessage archivedMessageFromData:a3];
+  v4 = [AXIPCMessage archivedMessageFromData:received];
   [(AXIPCOutstandingAsyncRequest *)self _responseReceived:v4];
 }
 
 - (void)sendOnceRightDestroyed
 {
   [objc_opt_class() unregisterByPort:{-[AXIPCOutstandingAsyncRequest replyPort](self, "replyPort")}];
-  v3 = [(AXIPCOutstandingAsyncRequest *)self replyQueue];
+  replyQueue = [(AXIPCOutstandingAsyncRequest *)self replyQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__AXIPCOutstandingAsyncRequest_sendOnceRightDestroyed__block_invoke;
   block[3] = &unk_1E71E9B98;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(replyQueue, block);
 }
 
 void __54__AXIPCOutstandingAsyncRequest_sendOnceRightDestroyed__block_invoke(uint64_t a1)
@@ -217,9 +217,9 @@ void __54__AXIPCOutstandingAsyncRequest_sendOnceRightDestroyed__block_invoke(uin
 - (void)initialSendAborted
 {
   v3 = objc_opt_class();
-  v4 = [(AXIPCOutstandingAsyncRequest *)self replyPort];
+  replyPort = [(AXIPCOutstandingAsyncRequest *)self replyPort];
 
-  [v3 unregisterByPort:v4];
+  [v3 unregisterByPort:replyPort];
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (void)vcp_syncPoint
 {
-  v3 = [a1 objectForKey:@"SyncPoint"];
+  v3 = [self objectForKey:@"SyncPoint"];
   v5 = v3;
   if (v3)
   {

@@ -5,30 +5,30 @@
 - (TURoute)pickedRoute;
 - (TURoute)receiverRoute;
 - (TURoute)speakerRoute;
-- (TURouteController)initWithActionsDelegate:(id)a3 serialQueue:(id)a4;
+- (TURouteController)initWithActionsDelegate:(id)delegate serialQueue:(id)queue;
 - (TURouteControllerActions)actionsDelegate;
-- (id)routeWithSourceIdentifier:(id)a3;
-- (void)addDelegate:(id)a3;
+- (id)routeWithSourceIdentifier:(id)identifier;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)handleRoutesByUniqueIdentifierUpdated:(id)a3;
+- (void)handleRoutesByUniqueIdentifierUpdated:(id)updated;
 - (void)handleServerDisconnect;
 - (void)handleServerReconnect;
-- (void)handleVolumeUpdateFromHost:(float)a3;
-- (void)performBlockOnQueue:(id)a3;
-- (void)pickRoute:(id)a3;
-- (void)pickRouteWhenAvailableWithUniqueIdentifier:(id)a3;
-- (void)pickRouteWithUniqueIdentifier:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)handleVolumeUpdateFromHost:(float)host;
+- (void)performBlockOnQueue:(id)queue;
+- (void)pickRoute:(id)route;
+- (void)pickRouteWhenAvailableWithUniqueIdentifier:(id)identifier;
+- (void)pickRouteWithUniqueIdentifier:(id)identifier;
+- (void)removeDelegate:(id)delegate;
 - (void)requeryRoutes;
-- (void)setVolume:(float)a3;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation TURouteController
 
 - (NSDictionary)routesByUniqueIdentifier
 {
-  v3 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   routesByUniqueIdentifier = self->_routesByUniqueIdentifier;
   if (!routesByUniqueIdentifier)
@@ -53,15 +53,15 @@
 - (TURoute)pickedRoute
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(TURouteController *)self routes];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  routes = [(TURouteController *)self routes];
+  v5 = [routes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -71,7 +71,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routes);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -82,7 +82,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [routes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -101,27 +101,27 @@ LABEL_11:
 
 - (NSArray)routes
 {
-  v3 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(TURouteController *)self routesByUniqueIdentifier];
-  v5 = [v4 allValues];
+  routesByUniqueIdentifier = [(TURouteController *)self routesByUniqueIdentifier];
+  allValues = [routesByUniqueIdentifier allValues];
 
-  return v5;
+  return allValues;
 }
 
 - (TURoute)receiverRoute
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(TURouteController *)self routes];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  routes = [(TURouteController *)self routes];
+  v5 = [routes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -131,7 +131,7 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routes);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -142,7 +142,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [routes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -162,15 +162,15 @@ LABEL_11:
 - (TURoute)speakerRoute
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(TURouteController *)self routes];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  routes = [(TURouteController *)self routes];
+  v5 = [routes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -180,7 +180,7 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routes);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -191,7 +191,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [routes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -215,8 +215,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(TURouteController *)self routes];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  routes = [(TURouteController *)self routes];
+  v3 = [routes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -226,7 +226,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(routes);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isAuxiliary])
@@ -236,7 +236,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [routes countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -252,22 +252,22 @@ LABEL_11:
   return v3;
 }
 
-- (TURouteController)initWithActionsDelegate:(id)a3 serialQueue:(id)a4
+- (TURouteController)initWithActionsDelegate:(id)delegate serialQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = TURouteController;
   v8 = [(TURouteController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
     dispatch_queue_set_specific(v9->_queue, [(TURouteController *)v9 queueContext], [(TURouteController *)v9 queueContext], 0);
-    objc_storeWeak(&v9->_actionsDelegate, v6);
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeWeak(&v9->_actionsDelegate, delegateCopy);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v9->_delegates;
-    v9->_delegates = v10;
+    v9->_delegates = weakObjectsHashTable;
   }
 
   return v9;
@@ -281,101 +281,101 @@ LABEL_11:
   [(TURouteController *)&v3 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(TURouteController *)self delegates];
-  [v6 addObject:v4];
+  delegates = [(TURouteController *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(TURouteController *)self delegates];
-  [v6 removeObject:v4];
+  delegates = [(TURouteController *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
-- (void)pickRoute:(id)a3
+- (void)pickRoute:(id)route
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  routeCopy = route;
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = routeCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Asked to pick route: %@", &v9, 0xCu);
   }
 
-  v7 = [v4 uniqueIdentifier];
-  [(TURouteController *)self pickRouteWithUniqueIdentifier:v7];
+  uniqueIdentifier = [routeCopy uniqueIdentifier];
+  [(TURouteController *)self pickRouteWithUniqueIdentifier:uniqueIdentifier];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pickRouteWithUniqueIdentifier:(id)a3
+- (void)pickRouteWithUniqueIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Asked to pick route with unique identifier: %@", &v9, 0xCu);
   }
 
-  v7 = [(TURouteController *)self actionsDelegate];
-  [v7 pickRouteWithUniqueIdentifier:v4 shouldWaitUntilAvailable:0 forRouteController:self];
+  actionsDelegate = [(TURouteController *)self actionsDelegate];
+  [actionsDelegate pickRouteWithUniqueIdentifier:identifierCopy shouldWaitUntilAvailable:0 forRouteController:self];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pickRouteWhenAvailableWithUniqueIdentifier:(id)a3
+- (void)pickRouteWhenAvailableWithUniqueIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Asked to pick route when available with unique identifier: %@", &v9, 0xCu);
   }
 
-  v7 = [(TURouteController *)self actionsDelegate];
-  [v7 pickRouteWithUniqueIdentifier:v4 shouldWaitUntilAvailable:1 forRouteController:self];
+  actionsDelegate = [(TURouteController *)self actionsDelegate];
+  [actionsDelegate pickRouteWithUniqueIdentifier:identifierCopy shouldWaitUntilAvailable:1 forRouteController:self];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)requeryRoutes
 {
-  v3 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(TURouteController *)self actionsDelegate];
+  actionsDelegate = [(TURouteController *)self actionsDelegate];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__TURouteController_requeryRoutes__block_invoke;
   v5[3] = &unk_1E74248C0;
   v5[4] = self;
-  [v4 routesByUniqueIdentifierForRouteController:self completionHandler:v5];
+  [actionsDelegate routesByUniqueIdentifierForRouteController:self completionHandler:v5];
 }
 
 void __34__TURouteController_requeryRoutes__block_invoke(uint64_t a1, void *a2)
@@ -392,19 +392,19 @@ void __34__TURouteController_requeryRoutes__block_invoke(uint64_t a1, void *a2)
   [v4 performBlockOnQueue:v6];
 }
 
-- (id)routeWithSourceIdentifier:(id)a3
+- (id)routeWithSourceIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(TURouteController *)self routes];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  routes = [(TURouteController *)self routes];
+  v7 = [routes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -414,12 +414,12 @@ void __34__TURouteController_requeryRoutes__block_invoke(uint64_t a1, void *a2)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(routes);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 uniqueIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        uniqueIdentifier = [v10 uniqueIdentifier];
+        v12 = [uniqueIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -428,7 +428,7 @@ void __34__TURouteController_requeryRoutes__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [routes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -445,34 +445,34 @@ LABEL_11:
   return v7;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
+    self->_volume = volume;
     v6 = TUDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = a3;
+      volumeCopy = volume;
       _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Asked to change volume %f", &v10, 0xCu);
     }
 
-    v7 = [(TURouteController *)self actionsDelegate];
-    *&v8 = a3;
-    [v7 setVolume:self forRouteController:v8];
+    actionsDelegate = [(TURouteController *)self actionsDelegate];
+    *&v8 = volume;
+    [actionsDelegate setVolume:self forRouteController:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBlockOnQueue:(id)a3
+- (void)performBlockOnQueue:(id)queue
 {
-  block = a3;
+  block = queue;
   specific = dispatch_get_specific([(TURouteController *)self queueContext]);
   if (specific == [(TURouteController *)self queueContext])
   {
@@ -481,27 +481,27 @@ LABEL_11:
 
   else
   {
-    v5 = [(TURouteController *)self queue];
-    dispatch_async(v5, block);
+    queue = [(TURouteController *)self queue];
+    dispatch_async(queue, block);
   }
 }
 
-- (void)handleRoutesByUniqueIdentifierUpdated:(id)a3
+- (void)handleRoutesByUniqueIdentifierUpdated:(id)updated
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  updatedCopy = updated;
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (![(NSDictionary *)self->_routesByUniqueIdentifier isEqualToDictionary:v4])
+  if (![(NSDictionary *)self->_routesByUniqueIdentifier isEqualToDictionary:updatedCopy])
   {
-    [(TURouteController *)self setRoutesByUniqueIdentifier:v4];
+    [(TURouteController *)self setRoutesByUniqueIdentifier:updatedCopy];
     v6 = TUDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(TURouteController *)self routesByUniqueIdentifier];
+      routesByUniqueIdentifier = [(TURouteController *)self routesByUniqueIdentifier];
       *buf = 138412290;
-      v22 = v7;
+      v22 = routesByUniqueIdentifier;
       _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Updated routes to %@", buf, 0xCu);
     }
 
@@ -509,10 +509,10 @@ LABEL_11:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(TURouteController *)self delegates];
-    v9 = [v8 allObjects];
+    delegates = [(TURouteController *)self delegates];
+    allObjects = [delegates allObjects];
 
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v10 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -524,7 +524,7 @@ LABEL_11:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           v14 = *(*(&v16 + 1) + 8 * v13);
@@ -537,7 +537,7 @@ LABEL_11:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -549,8 +549,8 @@ LABEL_11:
 
 - (void)handleServerReconnect
 {
-  v3 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -564,8 +564,8 @@ LABEL_11:
 
 - (void)handleServerDisconnect
 {
-  v3 = [(TURouteController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURouteController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -577,17 +577,17 @@ LABEL_11:
   [(TURouteController *)self handleRoutesByUniqueIdentifierUpdated:MEMORY[0x1E695E0F8]];
 }
 
-- (void)handleVolumeUpdateFromHost:(float)a3
+- (void)handleVolumeUpdateFromHost:(float)host
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(TURouteController *)self delegates];
-  v6 = [v5 allObjects];
+  delegates = [(TURouteController *)self delegates];
+  allObjects = [delegates allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -599,13 +599,13 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          self->_volume = a3;
+          self->_volume = host;
           [v11 volumeChangedForRouteController:self];
         }
 
@@ -613,7 +613,7 @@ LABEL_11:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);

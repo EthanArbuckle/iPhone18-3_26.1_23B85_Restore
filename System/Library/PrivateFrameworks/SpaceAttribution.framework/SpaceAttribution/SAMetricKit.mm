@@ -1,13 +1,13 @@
 @interface SAMetricKit
-+ (void)sendDataToMetricKit:(id)a3 telemetryManager:(id)a4;
++ (void)sendDataToMetricKit:(id)kit telemetryManager:(id)manager;
 @end
 
 @implementation SAMetricKit
 
-+ (void)sendDataToMetricKit:(id)a3 telemetryManager:(id)a4
++ (void)sendDataToMetricKit:(id)kit telemetryManager:(id)manager
 {
-  v5 = a4;
-  v6 = a3;
+  managerCopy = manager;
+  kitCopy = kit;
   v7 = SALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,14 +17,14 @@
   }
 
   v8 = [NSMeasurement alloc];
-  v9 = [v6 APFSDiskUsed];
+  aPFSDiskUsed = [kitCopy APFSDiskUsed];
   v10 = +[NSUnitInformationStorage bytes];
-  v11 = [v8 initWithDoubleValue:v10 unit:v9];
+  v11 = [v8 initWithDoubleValue:v10 unit:aPFSDiskUsed];
 
   v12 = [NSMeasurement alloc];
-  v13 = [v6 diskCapacity];
+  diskCapacity = [kitCopy diskCapacity];
   v14 = +[NSUnitInformationStorage bytes];
-  v15 = [v12 initWithDoubleValue:v14 unit:v13];
+  v15 = [v12 initWithDoubleValue:v14 unit:diskCapacity];
 
   v16 = +[MXSourceManager sharedManager];
   v17 = objc_opt_new();
@@ -32,7 +32,7 @@
   v24 = 3221225472;
   v25 = sub_100006318;
   v26 = &unk_1000649F8;
-  v18 = v5;
+  v18 = managerCopy;
   v27 = v18;
   v19 = v11;
   v28 = v19;
@@ -40,7 +40,7 @@
   v29 = v20;
   v21 = v17;
   v30 = v21;
-  [v6 enumerateAppsDataUsingBlock:&v23];
+  [kitCopy enumerateAppsDataUsingBlock:&v23];
 
   if ([v21 count])
   {

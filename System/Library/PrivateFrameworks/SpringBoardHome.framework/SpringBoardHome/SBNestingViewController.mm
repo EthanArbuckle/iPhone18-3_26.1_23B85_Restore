@@ -1,45 +1,45 @@
 @interface SBNestingViewController
 - (BOOL)_shouldAddTransitioningViewControllerAfterCurrentTransitionCompletes;
 - (BOOL)isTransitioning;
-- (CGRect)frameForNestedViewController:(id)a3 afterOperation:(int64_t)a4 withParentContainerSize:(CGSize)a5;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGRect)frameForNestedViewController:(id)controller afterOperation:(int64_t)operation withParentContainerSize:(CGSize)size;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (NSArray)nestedViewControllers;
 - (SBNestingViewController)deepestNestedDescendantViewController;
-- (SBNestingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBNestingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SBNestingViewController)parentNestingViewController;
 - (SBNestingViewController)viewControllerCurrentlyDrivingTransition;
 - (SBNestingViewControllerDelegate)delegate;
-- (id)_descriptionForOperation:(int64_t)a3;
-- (id)nestingViewController:(id)a3 animationControllerForOperation:(int64_t)a4 onViewController:(id)a5 animated:(BOOL)a6;
-- (id)nestingViewController:(id)a3 interactionControllerForAnimationController:(id)a4;
+- (id)_descriptionForOperation:(int64_t)operation;
+- (id)nestingViewController:(id)controller animationControllerForOperation:(int64_t)operation onViewController:(id)viewController animated:(BOOL)animated;
+- (id)nestingViewController:(id)controller interactionControllerForAnimationController:(id)animationController;
 - (id)transitionCoordinator;
-- (void)_handleRemoveChildViewController:(id)a3;
-- (void)_handleWillAddChildViewController:(id)a3;
-- (void)_performOperation:(int64_t)a3 onViewController:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6;
-- (void)_setFinalStateForTransitioningViewController:(id)a3;
-- (void)_updateStateForTransitioningViewController:(id)a3;
-- (void)addNestedViewController:(id)a3;
-- (void)addTransitionObserver:(id)a3;
-- (void)addViewToHierarchyForNestedViewController:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)nestingViewController:(id)a3 willPerformOperation:(int64_t)a4 onViewController:(id)a5 withTransitionCoordinator:(id)a6;
-- (void)nestingViewController:(id)a3 willPresentViewController:(id)a4;
-- (void)popNestedViewControllerAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)pushNestedViewController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)removeNestedViewController:(id)a3;
-- (void)removeTransitionObserver:(id)a3;
-- (void)removeViewFromHierarchyForNestedViewController:(id)a3;
-- (void)setNestedViewControllers:(id)a3 withCompletion:(id)a4;
-- (void)transitionDidFinish:(id)a3;
-- (void)transitionDidReverse:(id)a3;
-- (void)transitionWillFinish:(id)a3;
-- (void)transitionWillReverse:(id)a3;
-- (void)traverseNestedViewControllersWithBlock:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 forOperation:(int64_t)a4 withTransitionCoordinator:(id)a5;
+- (void)_handleRemoveChildViewController:(id)controller;
+- (void)_handleWillAddChildViewController:(id)controller;
+- (void)_performOperation:(int64_t)operation onViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion;
+- (void)_setFinalStateForTransitioningViewController:(id)controller;
+- (void)_updateStateForTransitioningViewController:(id)controller;
+- (void)addNestedViewController:(id)controller;
+- (void)addTransitionObserver:(id)observer;
+- (void)addViewToHierarchyForNestedViewController:(id)controller;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)nestingViewController:(id)controller willPerformOperation:(int64_t)operation onViewController:(id)viewController withTransitionCoordinator:(id)coordinator;
+- (void)nestingViewController:(id)controller willPresentViewController:(id)viewController;
+- (void)popNestedViewControllerAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)pushNestedViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion;
+- (void)removeNestedViewController:(id)controller;
+- (void)removeTransitionObserver:(id)observer;
+- (void)removeViewFromHierarchyForNestedViewController:(id)controller;
+- (void)setNestedViewControllers:(id)controllers withCompletion:(id)completion;
+- (void)transitionDidFinish:(id)finish;
+- (void)transitionDidReverse:(id)reverse;
+- (void)transitionWillFinish:(id)finish;
+- (void)transitionWillReverse:(id)reverse;
+- (void)traverseNestedViewControllersWithBlock:(id)block;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size forOperation:(int64_t)operation withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBNestingViewController
@@ -79,29 +79,29 @@
   return v2;
 }
 
-- (SBNestingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBNestingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = SBNestingViewController;
-  v4 = [(SBNestingViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(SBNestingViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     transitionObservers = v4->_transitionObservers;
-    v4->_transitionObservers = v5;
+    v4->_transitionObservers = weakObjectsHashTable;
   }
 
   return v4;
 }
 
-- (void)pushNestedViewController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)pushNestedViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion
 {
-  v6 = a4;
-  v15 = a3;
-  v8 = a5;
-  v9 = [(SBNestingViewController *)self parentNestingViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  parentNestingViewController = [(SBNestingViewController *)self parentNestingViewController];
 
-  if (v9)
+  if (parentNestingViewController)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Cannot modify the nested view controller stack via a non-root view controller" userInfo:0];
     objc_exception_throw(v14);
@@ -109,39 +109,39 @@
 
   if ([(SBNestingViewController *)self isTransitioning])
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v10 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
-    v11 = v10;
-    if (v10)
+    deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+    v11 = deepestNestedDescendantViewController;
+    if (deepestNestedDescendantViewController)
     {
-      v12 = v10;
+      selfCopy = deepestNestedDescendantViewController;
     }
 
     else
     {
-      v12 = self;
+      selfCopy = self;
     }
 
-    v13 = v12;
+    v13 = selfCopy;
 
-    [(SBNestingViewController *)v13 _performOperation:1 onViewController:v15 animated:v6 withCompletion:v8];
+    [(SBNestingViewController *)v13 _performOperation:1 onViewController:controllerCopy animated:animatedCopy withCompletion:completionCopy];
   }
 }
 
-- (void)popNestedViewControllerAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)popNestedViewControllerAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v11 = a4;
-  v6 = [(SBNestingViewController *)self parentNestingViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  parentNestingViewController = [(SBNestingViewController *)self parentNestingViewController];
 
-  if (v6)
+  if (parentNestingViewController)
   {
     v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Cannot modify the nested view controller stack via a non-root view controller" userInfo:0];
     objc_exception_throw(v10);
@@ -149,33 +149,33 @@
 
   if ([(SBNestingViewController *)self isTransitioning])
   {
-    v7 = v11;
-    if (!v11)
+    v7 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
 
-    (*(v11 + 2))(v11, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   else
   {
-    v8 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
-    v9 = [v8 parentNestingViewController];
-    [v9 _performOperation:2 onViewController:v8 animated:v4 withCompletion:v11];
+    deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+    parentNestingViewController2 = [deepestNestedDescendantViewController parentNestingViewController];
+    [parentNestingViewController2 _performOperation:2 onViewController:deepestNestedDescendantViewController animated:animatedCopy withCompletion:completionCopy];
   }
 
-  v7 = v11;
+  v7 = completionCopy;
 LABEL_7:
 }
 
-- (void)setNestedViewControllers:(id)a3 withCompletion:(id)a4
+- (void)setNestedViewControllers:(id)controllers withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBNestingViewController *)self parentNestingViewController];
+  controllersCopy = controllers;
+  completionCopy = completion;
+  parentNestingViewController = [(SBNestingViewController *)self parentNestingViewController];
 
-  if (v8)
+  if (parentNestingViewController)
   {
     v25 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Cannot modify the nested view controller stack via a non-root view controller" userInfo:0];
     objc_exception_throw(v25);
@@ -183,9 +183,9 @@ LABEL_7:
 
   if (![(SBNestingViewController *)self isTransitioning])
   {
-    v9 = [(SBNestingViewController *)self nestedViewControllers];
-    v10 = [v9 count];
-    v11 = [v6 count];
+    nestedViewControllers = [(SBNestingViewController *)self nestedViewControllers];
+    v10 = [nestedViewControllers count];
+    v11 = [controllersCopy count];
     if (v10 >= v11)
     {
       v12 = v11;
@@ -200,8 +200,8 @@ LABEL_7:
     {
       for (i = 0; i < v12; ++i)
       {
-        v14 = [v9 objectAtIndex:i];
-        v15 = [v6 objectAtIndex:i];
+        v14 = [nestedViewControllers objectAtIndex:i];
+        v15 = [controllersCopy objectAtIndex:i];
         v16 = [v14 isEqual:v15];
 
         if (!v16)
@@ -211,15 +211,15 @@ LABEL_7:
       }
     }
 
-    v17 = [v9 count];
+    v17 = [nestedViewControllers count];
     v18 = v17 - v12;
     if (v17 == v12)
     {
-      if (v12 >= [v6 count])
+      if (v12 >= [controllersCopy count])
       {
-        if (v7)
+        if (completionCopy)
         {
-          v7[2](v7, 1);
+          completionCopy[2](completionCopy, 1);
         }
 
         goto LABEL_28;
@@ -248,7 +248,7 @@ LABEL_7:
       if (!v17)
       {
         v23 = 0;
-        if (!v7)
+        if (!completionCopy)
         {
 LABEL_28:
 
@@ -256,14 +256,14 @@ LABEL_28:
         }
 
 LABEL_27:
-        v7[2](v7, v23);
+        completionCopy[2](completionCopy, v23);
         goto LABEL_28;
       }
     }
 
     do
     {
-      v22 = [v6 count];
+      v22 = [controllersCopy count];
       v23 = v12 >= v22;
       if (v12 >= v22)
       {
@@ -275,7 +275,7 @@ LABEL_27:
       v26[2] = __67__SBNestingViewController_setNestedViewControllers_withCompletion___block_invoke_4;
       v26[3] = &unk_1E8091390;
       v26[4] = self;
-      v27 = v6;
+      v27 = controllersCopy;
       v28 = v12;
       v24 = __67__SBNestingViewController_setNestedViewControllers_withCompletion___block_invoke(v27, v26);
 
@@ -283,7 +283,7 @@ LABEL_27:
     }
 
     while (v24);
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_28;
     }
@@ -291,9 +291,9 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_29:
@@ -340,18 +340,18 @@ void __64__SBNestingViewController_deepestNestedDescendantViewController__block_
   }
 }
 
-- (void)addTransitionObserver:(id)a3
+- (void)addTransitionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SBNestingViewController *)self transitionObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  transitionObservers = [(SBNestingViewController *)self transitionObservers];
+  [transitionObservers addObject:observerCopy];
 }
 
-- (void)removeTransitionObserver:(id)a3
+- (void)removeTransitionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SBNestingViewController *)self transitionObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  transitionObservers = [(SBNestingViewController *)self transitionObservers];
+  [transitionObservers removeObject:observerCopy];
 }
 
 - (SBNestingViewController)viewControllerCurrentlyDrivingTransition
@@ -363,15 +363,15 @@ void __64__SBNestingViewController_deepestNestedDescendantViewController__block_
   v12 = __Block_byref_object_dispose__25;
   if ([(SBNestingViewController *)self currentTransitionOperation])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  v13 = v3;
+  v13 = selfCopy;
   v4 = v9[5];
   if (!v4)
   {
@@ -402,68 +402,68 @@ void __67__SBNestingViewController_viewControllerCurrentlyDrivingTransition__blo
 
 - (BOOL)isTransitioning
 {
-  v2 = [(SBNestingViewController *)self viewControllerCurrentlyDrivingTransition];
-  v3 = v2 != 0;
+  viewControllerCurrentlyDrivingTransition = [(SBNestingViewController *)self viewControllerCurrentlyDrivingTransition];
+  v3 = viewControllerCurrentlyDrivingTransition != 0;
 
   return v3;
 }
 
-- (void)addNestedViewController:(id)a3
+- (void)addNestedViewController:(id)controller
 {
-  v4 = a3;
-  [(SBNestingViewController *)self _handleWillAddChildViewController:v4];
-  [v4 setDelegate:self];
-  [v4 setParentNestingViewController:self];
+  controllerCopy = controller;
+  [(SBNestingViewController *)self _handleWillAddChildViewController:controllerCopy];
+  [controllerCopy setDelegate:self];
+  [controllerCopy setParentNestingViewController:self];
 }
 
-- (void)removeNestedViewController:(id)a3
+- (void)removeNestedViewController:(id)controller
 {
-  v4 = a3;
-  [v4 setDelegate:0];
-  [v4 setParentNestingViewController:0];
-  [(SBNestingViewController *)self _handleRemoveChildViewController:v4];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:0];
+  [controllerCopy setParentNestingViewController:0];
+  [(SBNestingViewController *)self _handleRemoveChildViewController:controllerCopy];
 }
 
-- (void)addViewToHierarchyForNestedViewController:(id)a3
+- (void)addViewToHierarchyForNestedViewController:(id)controller
 {
-  v4 = a3;
-  v6 = [(SBNestingViewController *)self view];
-  v5 = [v4 view];
+  controllerCopy = controller;
+  view = [(SBNestingViewController *)self view];
+  view2 = [controllerCopy view];
 
-  [v6 addSubview:v5];
+  [view addSubview:view2];
 }
 
-- (void)removeViewFromHierarchyForNestedViewController:(id)a3
+- (void)removeViewFromHierarchyForNestedViewController:(id)controller
 {
-  v3 = [a3 view];
-  [v3 removeFromSuperview];
+  view = [controller view];
+  [view removeFromSuperview];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 forOperation:(int64_t)a4 withTransitionCoordinator:(id)a5
+- (void)viewWillTransitionToSize:(CGSize)size forOperation:(int64_t)operation withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v19 = a5;
-  v9 = [(SBNestingViewController *)self nestedViewController];
-  v10 = v9;
-  if (v9)
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
+  v10 = nestedViewController;
+  if (nestedViewController)
   {
-    v11 = [v9 view];
-    [v11 frame];
+    view = [nestedViewController view];
+    [view frame];
     v13 = v12;
     v15 = v14;
 
     [(SBNestingViewController *)self sizeForChildContentContainer:v10 withParentContainerSize:width, height];
     if (v13 != v17 || v15 != v16)
     {
-      [v10 viewWillTransitionToSize:a4 forOperation:v19 withTransitionCoordinator:?];
+      [v10 viewWillTransitionToSize:operation forOperation:coordinatorCopy withTransitionCoordinator:?];
     }
   }
 }
 
-- (CGRect)frameForNestedViewController:(id)a3 afterOperation:(int64_t)a4 withParentContainerSize:(CGSize)a5
+- (CGRect)frameForNestedViewController:(id)controller afterOperation:(int64_t)operation withParentContainerSize:(CGSize)size
 {
-  if (a4 == 1)
+  if (operation == 1)
   {
     BSRectWithSize();
   }
@@ -483,78 +483,78 @@ void __67__SBNestingViewController_viewControllerCurrentlyDrivingTransition__blo
   return result;
 }
 
-- (void)traverseNestedViewControllersWithBlock:(id)a3
+- (void)traverseNestedViewControllersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = 0;
-  v5 = [(SBNestingViewController *)self nestedViewController];
-  if (v5)
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
+  if (nestedViewController)
   {
-    v6 = v5;
+    v6 = nestedViewController;
     do
     {
-      v4[2](v4, v6, &v8);
+      blockCopy[2](blockCopy, v6, &v8);
       if (v8)
       {
         break;
       }
 
-      v7 = [v6 nestedViewController];
+      nestedViewController2 = [v6 nestedViewController];
 
-      v6 = v7;
+      v6 = nestedViewController2;
     }
 
-    while (v7);
+    while (nestedViewController2);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBNestingViewController;
   [(SBNestingViewController *)&v6 viewWillAppear:?];
-  v5 = [(SBNestingViewController *)self nestedViewController];
-  [v5 beginAppearanceTransition:1 animated:v3];
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
+  [nestedViewController beginAppearanceTransition:1 animated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SBNestingViewController;
-  [(SBNestingViewController *)&v5 viewDidAppear:a3];
-  v4 = [(SBNestingViewController *)self nestedViewController];
-  [v4 endAppearanceTransition];
+  [(SBNestingViewController *)&v5 viewDidAppear:appear];
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
+  [nestedViewController endAppearanceTransition];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBNestingViewController;
   [(SBNestingViewController *)&v6 viewWillDisappear:?];
-  v5 = [(SBNestingViewController *)self nestedViewController];
-  [v5 beginAppearanceTransition:0 animated:v3];
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
+  [nestedViewController beginAppearanceTransition:0 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBNestingViewController;
-  [(SBNestingViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(SBNestingViewController *)self nestedViewController];
-  [v4 endAppearanceTransition];
+  [(SBNestingViewController *)&v5 viewDidDisappear:disappear];
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
+  [nestedViewController endAppearanceTransition];
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SBNestingViewController *)self frameForNestedViewController:v7 afterOperation:1 withParentContainerSize:width, height];
+    [(SBNestingViewController *)self frameForNestedViewController:containerCopy afterOperation:1 withParentContainerSize:width, height];
     width = v8;
     height = v9;
   }
@@ -568,27 +568,27 @@ void __67__SBNestingViewController_viewControllerCurrentlyDrivingTransition__blo
 
 - (id)transitionCoordinator
 {
-  v2 = [(SBNestingViewController *)self viewControllerCurrentlyDrivingTransition];
-  v3 = [v2 currentTransition];
+  viewControllerCurrentlyDrivingTransition = [(SBNestingViewController *)self viewControllerCurrentlyDrivingTransition];
+  currentTransition = [viewControllerCurrentlyDrivingTransition currentTransition];
 
-  return v3;
+  return currentTransition;
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__SBNestingViewController_dismissViewControllerAnimated_completion___block_invoke;
   v9[3] = &unk_1E8091408;
-  v11 = v4;
+  v11 = animatedCopy;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = SBNestingViewController;
-  v7 = v6;
-  [(SBNestingViewController *)&v8 dismissViewControllerAnimated:v4 completion:v9];
+  v7 = completionCopy;
+  [(SBNestingViewController *)&v8 dismissViewControllerAnimated:animatedCopy completion:v9];
 }
 
 uint64_t __68__SBNestingViewController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -611,62 +611,62 @@ uint64_t __68__SBNestingViewController_dismissViewControllerAnimated_completion_
   return result;
 }
 
-- (id)nestingViewController:(id)a3 animationControllerForOperation:(int64_t)a4 onViewController:(id)a5 animated:(BOOL)a6
+- (id)nestingViewController:(id)controller animationControllerForOperation:(int64_t)operation onViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  v12 = [(SBNestingViewController *)self delegate];
-  if (v12 == self || (objc_opt_respondsToSelector() & 1) == 0)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  delegate = [(SBNestingViewController *)self delegate];
+  if (delegate == self || (objc_opt_respondsToSelector() & 1) == 0)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [(SBNestingViewController *)v12 nestingViewController:v10 animationControllerForOperation:a4 onViewController:v11 animated:v6];
+    v13 = [(SBNestingViewController *)delegate nestingViewController:controllerCopy animationControllerForOperation:operation onViewController:viewControllerCopy animated:animatedCopy];
   }
 
   return v13;
 }
 
-- (id)nestingViewController:(id)a3 interactionControllerForAnimationController:(id)a4
+- (id)nestingViewController:(id)controller interactionControllerForAnimationController:(id)animationController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBNestingViewController *)self delegate];
-  if (v8 == self || (objc_opt_respondsToSelector() & 1) == 0)
+  controllerCopy = controller;
+  animationControllerCopy = animationController;
+  delegate = [(SBNestingViewController *)self delegate];
+  if (delegate == self || (objc_opt_respondsToSelector() & 1) == 0)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [(SBNestingViewController *)v8 nestingViewController:v6 interactionControllerForAnimationController:v7];
+    v9 = [(SBNestingViewController *)delegate nestingViewController:controllerCopy interactionControllerForAnimationController:animationControllerCopy];
   }
 
   return v9;
 }
 
-- (void)nestingViewController:(id)a3 willPerformOperation:(int64_t)a4 onViewController:(id)a5 withTransitionCoordinator:(id)a6
+- (void)nestingViewController:(id)controller willPerformOperation:(int64_t)operation onViewController:(id)viewController withTransitionCoordinator:(id)coordinator
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(SBNestingViewController *)self delegate];
-  if (v13 != self && (objc_opt_respondsToSelector() & 1) != 0)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  coordinatorCopy = coordinator;
+  delegate = [(SBNestingViewController *)self delegate];
+  if (delegate != self && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(SBNestingViewController *)v13 nestingViewController:v10 willPerformOperation:a4 onViewController:v11 withTransitionCoordinator:v12];
+    [(SBNestingViewController *)delegate nestingViewController:controllerCopy willPerformOperation:operation onViewController:viewControllerCopy withTransitionCoordinator:coordinatorCopy];
   }
 
-  v21 = v13;
+  v21 = delegate;
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = [(SBNestingViewController *)self transitionObservers];
-  v15 = [v14 copy];
+  transitionObservers = [(SBNestingViewController *)self transitionObservers];
+  v15 = [transitionObservers copy];
 
   v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v16)
@@ -686,7 +686,7 @@ uint64_t __68__SBNestingViewController_dismissViewControllerAnimated_completion_
         v20 = *(*(&v22 + 1) + 8 * v19);
         if (objc_opt_respondsToSelector())
         {
-          [v20 nestingViewController:v10 willPerformOperation:a4 onViewController:v11 withTransitionCoordinator:v12];
+          [v20 nestingViewController:controllerCopy willPerformOperation:operation onViewController:viewControllerCopy withTransitionCoordinator:coordinatorCopy];
         }
 
         ++v19;
@@ -700,230 +700,230 @@ uint64_t __68__SBNestingViewController_dismissViewControllerAnimated_completion_
   }
 }
 
-- (void)nestingViewController:(id)a3 willPresentViewController:(id)a4
+- (void)nestingViewController:(id)controller willPresentViewController:(id)viewController
 {
-  v5 = a4;
-  v7 = [(SBNestingViewController *)self nestingViewController:self sourceViewForPresentingViewController:v5];
-  v6 = [v5 popoverPresentationController];
+  viewControllerCopy = viewController;
+  v7 = [(SBNestingViewController *)self nestingViewController:self sourceViewForPresentingViewController:viewControllerCopy];
+  popoverPresentationController = [viewControllerCopy popoverPresentationController];
 
-  [v6 setSourceView:v7];
+  [popoverPresentationController setSourceView:v7];
   [v7 bounds];
-  [v6 setSourceRect:?];
-  [v6 setCanOverlapSourceViewRect:1];
+  [popoverPresentationController setSourceRect:?];
+  [popoverPresentationController setCanOverlapSourceViewRect:1];
 }
 
-- (void)transitionWillReverse:(id)a3
+- (void)transitionWillReverse:(id)reverse
 {
-  v9 = a3;
-  v4 = [(SBNestingViewController *)self currentTransition];
+  reverseCopy = reverse;
+  currentTransition = [(SBNestingViewController *)self currentTransition];
 
-  v6 = v9;
-  if (v4 == v9)
+  v6 = reverseCopy;
+  if (currentTransition == reverseCopy)
   {
-    v5 = [v9 isCancelled];
-    v6 = v9;
-    if (v5)
+    isCancelled = [reverseCopy isCancelled];
+    v6 = reverseCopy;
+    if (isCancelled)
     {
-      v7 = [v9 animator];
-      v8 = [(SBNestingViewController *)self nestingViewController:self interactionControllerForAnimationController:v7];
+      animator = [reverseCopy animator];
+      v8 = [(SBNestingViewController *)self nestingViewController:self interactionControllerForAnimationController:animator];
 
-      [v9 setInteractor:v8];
-      v6 = v9;
+      [reverseCopy setInteractor:v8];
+      v6 = reverseCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](isCancelled, v6);
 }
 
-- (void)transitionDidReverse:(id)a3
+- (void)transitionDidReverse:(id)reverse
 {
-  v4 = a3;
-  v5 = [(SBNestingViewController *)self currentTransition];
+  reverseCopy = reverse;
+  currentTransition = [(SBNestingViewController *)self currentTransition];
 
-  if (v5 == v4)
+  if (currentTransition == reverseCopy)
   {
-    v6 = [(SBNestingViewController *)self nestedViewController];
-    [(SBNestingViewController *)self _updateStateForTransitioningViewController:v6];
+    nestedViewController = [(SBNestingViewController *)self nestedViewController];
+    [(SBNestingViewController *)self _updateStateForTransitioningViewController:nestedViewController];
   }
 }
 
-- (void)transitionWillFinish:(id)a3
+- (void)transitionWillFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(SBNestingViewController *)self currentTransition];
+  finishCopy = finish;
+  currentTransition = [(SBNestingViewController *)self currentTransition];
 
-  if (v5 == v4)
+  if (currentTransition == finishCopy)
   {
-    v6 = [(SBNestingViewController *)self nestedViewController];
-    [(SBNestingViewController *)self _setFinalStateForTransitioningViewController:v6];
+    nestedViewController = [(SBNestingViewController *)self nestedViewController];
+    [(SBNestingViewController *)self _setFinalStateForTransitioningViewController:nestedViewController];
   }
 }
 
-- (void)transitionDidFinish:(id)a3
+- (void)transitionDidFinish:(id)finish
 {
-  v7 = a3;
-  v4 = [(SBNestingViewController *)self currentTransition];
-  if (v4 == v7)
+  finishCopy = finish;
+  currentTransition = [(SBNestingViewController *)self currentTransition];
+  if (currentTransition == finishCopy)
   {
     [(SBNestingViewController *)self setCurrentTransitionOperation:0];
-    [v4 setDelegate:0];
+    [currentTransition setDelegate:0];
     [(SBNestingViewController *)self setCurrentTransition:0];
-    v5 = [v7 transitionWasCancelled];
-    v6 = [(SBNestingViewController *)self clientOperationCompletion];
-    if (v6)
+    transitionWasCancelled = [finishCopy transitionWasCancelled];
+    clientOperationCompletion = [(SBNestingViewController *)self clientOperationCompletion];
+    if (clientOperationCompletion)
     {
       [(SBNestingViewController *)self setClientOperationCompletion:0];
-      v6[2](v6, v5 ^ 1u);
+      clientOperationCompletion[2](clientOperationCompletion, transitionWasCancelled ^ 1u);
     }
   }
 }
 
 - (BOOL)_shouldAddTransitioningViewControllerAfterCurrentTransitionCompletes
 {
-  v3 = [(SBNestingViewController *)self currentTransition];
-  v4 = [v3 transitionWasCancelled];
+  currentTransition = [(SBNestingViewController *)self currentTransition];
+  transitionWasCancelled = [currentTransition transitionWasCancelled];
 
-  v5 = [(SBNestingViewController *)self currentTransitionOperation];
-  if ((v4 & 1) != 0 || v5 != 1)
+  currentTransitionOperation = [(SBNestingViewController *)self currentTransitionOperation];
+  if ((transitionWasCancelled & 1) != 0 || currentTransitionOperation != 1)
   {
-    if (v5 == 2)
+    if (currentTransitionOperation == 2)
     {
-      LOBYTE(v5) = v4;
+      LOBYTE(currentTransitionOperation) = transitionWasCancelled;
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(currentTransitionOperation) = 0;
     }
   }
 
-  return v5;
+  return currentTransitionOperation;
 }
 
-- (void)_performOperation:(int64_t)a3 onViewController:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6
+- (void)_performOperation:(int64_t)operation onViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (a3)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (operation)
   {
-    if (a3 == 1 && [(SBNestingViewController *)v10 wantsModalPresentation])
+    if (operation == 1 && [(SBNestingViewController *)controllerCopy wantsModalPresentation])
     {
-      [(SBNestingViewController *)v10 setDelegate:self];
-      [(SBNestingViewController *)v10 setParentNestingViewController:self];
-      [(SBNestingViewController *)self nestingViewController:self willPresentViewController:v10];
+      [(SBNestingViewController *)controllerCopy setDelegate:self];
+      [(SBNestingViewController *)controllerCopy setParentNestingViewController:self];
+      [(SBNestingViewController *)self nestingViewController:self willPresentViewController:controllerCopy];
       v78[0] = MEMORY[0x1E69E9820];
       v78[1] = 3221225472;
       v78[2] = __86__SBNestingViewController__performOperation_onViewController_animated_withCompletion___block_invoke;
       v78[3] = &unk_1E8089600;
       v79 = v12;
-      [(SBNestingViewController *)self presentViewController:v10 animated:v7 completion:v78];
+      [(SBNestingViewController *)self presentViewController:controllerCopy animated:animatedCopy completion:v78];
     }
 
     else
     {
-      v13 = [(SBNestingViewController *)self nestingViewController:self animationControllerForOperation:a3 onViewController:v10 animated:v7];
+      v13 = [(SBNestingViewController *)self nestingViewController:self animationControllerForOperation:operation onViewController:controllerCopy animated:animatedCopy];
       v14 = 0;
-      if (v13 && v7)
+      if (v13 && animatedCopy)
       {
         v14 = [(SBNestingViewController *)self nestingViewController:self interactionControllerForAnimationController:v13];
       }
 
       v15 = objc_alloc_init(SBViewControllerTransitionContext);
       [(SBViewControllerTransitionContext *)v15 setDelegate:self];
-      v16 = [(SBNestingViewController *)self view];
-      [(SBViewControllerTransitionContext *)v15 setContainerView:v16];
+      view = [(SBNestingViewController *)self view];
+      [(SBViewControllerTransitionContext *)v15 setContainerView:view];
 
-      [(SBViewControllerTransitionContext *)v15 setWantsAnimation:v7];
+      [(SBViewControllerTransitionContext *)v15 setWantsAnimation:animatedCopy];
       [(SBViewControllerTransitionContext *)v15 setAnimator:v13];
       [(SBViewControllerTransitionContext *)v15 setInteractor:v14];
       v17 = *MEMORY[0x1E69DE768];
-      if (a3 == 1)
+      if (operation == 1)
       {
         [(SBViewControllerTransitionContext *)v15 setViewController:self forKey:v17];
-        [(SBViewControllerTransitionContext *)v15 setViewController:v10 forKey:*MEMORY[0x1E69DE778]];
-        v18 = [(SBNestingViewController *)v10 view];
-        [(SBViewControllerTransitionContext *)v15 setView:v18 forKey:*MEMORY[0x1E69DE780]];
+        [(SBViewControllerTransitionContext *)v15 setViewController:controllerCopy forKey:*MEMORY[0x1E69DE778]];
+        view2 = [(SBNestingViewController *)controllerCopy view];
+        [(SBViewControllerTransitionContext *)v15 setView:view2 forKey:*MEMORY[0x1E69DE780]];
 
-        v19 = [(SBNestingViewController *)self view];
-        [v19 bounds];
+        view3 = [(SBNestingViewController *)self view];
+        [view3 bounds];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
 
-        [(SBNestingViewController *)self frameForNestedViewController:v10 afterOperation:2 withParentContainerSize:v25, v27];
+        [(SBNestingViewController *)self frameForNestedViewController:controllerCopy afterOperation:2 withParentContainerSize:v25, v27];
         v74 = v29;
         v76 = v28;
         v70 = v31;
         v72 = v30;
-        [(SBNestingViewController *)self frameForNestedViewController:v10 afterOperation:1 withParentContainerSize:v25, v27];
+        [(SBNestingViewController *)self frameForNestedViewController:controllerCopy afterOperation:1 withParentContainerSize:v25, v27];
         v33 = v32;
         v35 = v34;
         v37 = v36;
         v39 = v38;
         [(SBViewControllerTransitionContext *)v15 setInitialFrame:self forViewController:v21, v23, v25, v27];
         [(SBViewControllerTransitionContext *)v15 setFinalFrame:self forViewController:v21, v23, v25, v27];
-        [(SBViewControllerTransitionContext *)v15 setInitialFrame:v10 forViewController:v76, v74, v72, v70];
+        [(SBViewControllerTransitionContext *)v15 setInitialFrame:controllerCopy forViewController:v76, v74, v72, v70];
         v40 = v15;
         v41 = v33;
         v42 = v35;
         v43 = v37;
         v44 = v39;
-        v45 = v10;
+        selfCopy = controllerCopy;
       }
 
       else
       {
-        [(SBViewControllerTransitionContext *)v15 setViewController:v10 forKey:v17];
+        [(SBViewControllerTransitionContext *)v15 setViewController:controllerCopy forKey:v17];
         [(SBViewControllerTransitionContext *)v15 setViewController:self forKey:*MEMORY[0x1E69DE778]];
-        v46 = [(SBNestingViewController *)v10 view];
-        [(SBViewControllerTransitionContext *)v15 setView:v46 forKey:*MEMORY[0x1E69DE770]];
+        view4 = [(SBNestingViewController *)controllerCopy view];
+        [(SBViewControllerTransitionContext *)v15 setView:view4 forKey:*MEMORY[0x1E69DE770]];
 
-        v47 = [(SBNestingViewController *)self view];
-        [v47 bounds];
+        view5 = [(SBNestingViewController *)self view];
+        [view5 bounds];
         v75 = v49;
         v77 = v48;
         v51 = v50;
         v53 = v52;
 
-        [(SBNestingViewController *)self frameForNestedViewController:v10 afterOperation:1 withParentContainerSize:v51, v53];
+        [(SBNestingViewController *)self frameForNestedViewController:controllerCopy afterOperation:1 withParentContainerSize:v51, v53];
         v71 = v55;
         v73 = v54;
         v57 = v56;
         v59 = v58;
-        [(SBNestingViewController *)self frameForNestedViewController:v10 afterOperation:2 withParentContainerSize:v51, v53];
+        [(SBNestingViewController *)self frameForNestedViewController:controllerCopy afterOperation:2 withParentContainerSize:v51, v53];
         v61 = v60;
         v63 = v62;
         v65 = v64;
         v67 = v66;
-        [(SBViewControllerTransitionContext *)v15 setInitialFrame:v10 forViewController:v73, v71, v57, v59];
-        [(SBViewControllerTransitionContext *)v15 setFinalFrame:v10 forViewController:v61, v63, v65, v67];
+        [(SBViewControllerTransitionContext *)v15 setInitialFrame:controllerCopy forViewController:v73, v71, v57, v59];
+        [(SBViewControllerTransitionContext *)v15 setFinalFrame:controllerCopy forViewController:v61, v63, v65, v67];
         [(SBViewControllerTransitionContext *)v15 setInitialFrame:self forViewController:v77, v75, v51, v53];
         v40 = v15;
         v41 = v77;
         v42 = v75;
         v43 = v51;
         v44 = v53;
-        v45 = self;
+        selfCopy = self;
       }
 
-      [(SBViewControllerTransitionContext *)v40 setFinalFrame:v45 forViewController:v41, v42, v43, v44];
-      [(SBNestingViewController *)self nestingViewController:self willPerformOperation:a3 onViewController:v10 withTransitionCoordinator:v15];
-      [(SBNestingViewController *)self setCurrentTransitionOperation:a3];
+      [(SBViewControllerTransitionContext *)v40 setFinalFrame:selfCopy forViewController:v41, v42, v43, v44];
+      [(SBNestingViewController *)self nestingViewController:self willPerformOperation:operation onViewController:controllerCopy withTransitionCoordinator:v15];
+      [(SBNestingViewController *)self setCurrentTransitionOperation:operation];
       [(SBNestingViewController *)self setCurrentTransition:v15];
       [(SBNestingViewController *)self setClientOperationCompletion:v12];
-      [(SBNestingViewController *)self _updateStateForTransitioningViewController:v10];
-      [(SBViewControllerTransitionContext *)v15 finalFrameForViewController:v10];
-      [(SBNestingViewController *)v10 viewWillTransitionToSize:a3 forOperation:v15 withTransitionCoordinator:v68, v69];
+      [(SBNestingViewController *)self _updateStateForTransitioningViewController:controllerCopy];
+      [(SBViewControllerTransitionContext *)v15 finalFrameForViewController:controllerCopy];
+      [(SBNestingViewController *)controllerCopy viewWillTransitionToSize:operation forOperation:v15 withTransitionCoordinator:v68, v69];
       [(SBViewControllerTransitionContext *)v15 startTransition];
     }
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -938,115 +938,115 @@ uint64_t __86__SBNestingViewController__performOperation_onViewController_animat
   return result;
 }
 
-- (void)_handleWillAddChildViewController:(id)a3
+- (void)_handleWillAddChildViewController:(id)controller
 {
-  v5 = a3;
-  v4 = [v5 parentViewController];
+  controllerCopy = controller;
+  parentViewController = [controllerCopy parentViewController];
 
-  if (v4 == self)
+  if (parentViewController == self)
   {
-    [v5 willMoveToParentViewController:self];
+    [controllerCopy willMoveToParentViewController:self];
   }
 
   else
   {
-    [(SBNestingViewController *)self addChildViewController:v5];
+    [(SBNestingViewController *)self addChildViewController:controllerCopy];
   }
 }
 
-- (void)_handleRemoveChildViewController:(id)a3
+- (void)_handleRemoveChildViewController:(id)controller
 {
-  v5 = a3;
-  v4 = [v5 parentViewController];
+  controllerCopy = controller;
+  parentViewController = [controllerCopy parentViewController];
 
-  if (v4 == self)
+  if (parentViewController == self)
   {
-    [v5 removeFromParentViewController];
+    [controllerCopy removeFromParentViewController];
   }
 
   else
   {
-    [v5 didMoveToParentViewController:0];
+    [controllerCopy didMoveToParentViewController:0];
   }
 }
 
-- (void)_updateStateForTransitioningViewController:(id)a3
+- (void)_updateStateForTransitioningViewController:(id)controller
 {
-  v6 = a3;
-  v4 = [(SBNestingViewController *)self currentTransition];
-  v5 = [v4 isAnimated];
+  controllerCopy = controller;
+  currentTransition = [(SBNestingViewController *)self currentTransition];
+  isAnimated = [currentTransition isAnimated];
 
   if ([(SBNestingViewController *)self _shouldAddTransitioningViewControllerAfterCurrentTransitionCompletes])
   {
-    [(SBNestingViewController *)self _handleWillAddChildViewController:v6];
-    [v6 beginAppearanceTransition:1 animated:v5];
-    [v6 setDelegate:self];
-    [v6 setParentNestingViewController:self];
-    [(SBNestingViewController *)self setNestedViewController:v6];
+    [(SBNestingViewController *)self _handleWillAddChildViewController:controllerCopy];
+    [controllerCopy beginAppearanceTransition:1 animated:isAnimated];
+    [controllerCopy setDelegate:self];
+    [controllerCopy setParentNestingViewController:self];
+    [(SBNestingViewController *)self setNestedViewController:controllerCopy];
   }
 
   else
   {
-    [(SBNestingViewController *)self _handleWillRemoveChildViewController:v6];
-    [v6 beginAppearanceTransition:0 animated:v5];
+    [(SBNestingViewController *)self _handleWillRemoveChildViewController:controllerCopy];
+    [controllerCopy beginAppearanceTransition:0 animated:isAnimated];
   }
 }
 
-- (void)_setFinalStateForTransitioningViewController:(id)a3
+- (void)_setFinalStateForTransitioningViewController:(id)controller
 {
-  v9 = a3;
-  v4 = [(SBNestingViewController *)self _shouldAddTransitioningViewControllerAfterCurrentTransitionCompletes];
-  v5 = [v9 view];
-  v6 = [(SBNestingViewController *)self view];
-  v7 = [v5 isDescendantOfView:v6];
+  controllerCopy = controller;
+  _shouldAddTransitioningViewControllerAfterCurrentTransitionCompletes = [(SBNestingViewController *)self _shouldAddTransitioningViewControllerAfterCurrentTransitionCompletes];
+  view = [controllerCopy view];
+  view2 = [(SBNestingViewController *)self view];
+  v7 = [view isDescendantOfView:view2];
 
-  if (v4)
+  if (_shouldAddTransitioningViewControllerAfterCurrentTransitionCompletes)
   {
     if ((v7 & 1) == 0)
     {
-      [(SBNestingViewController *)self addViewToHierarchyForNestedViewController:v9];
+      [(SBNestingViewController *)self addViewToHierarchyForNestedViewController:controllerCopy];
     }
 
-    [v9 endAppearanceTransition];
-    [(SBNestingViewController *)self _handleAddChildViewController:v9];
-    v8 = [(SBNestingViewController *)self currentTransition];
-    if ([v8 transitionWasCancelled])
+    [controllerCopy endAppearanceTransition];
+    [(SBNestingViewController *)self _handleAddChildViewController:controllerCopy];
+    currentTransition = [(SBNestingViewController *)self currentTransition];
+    if ([currentTransition transitionWasCancelled])
     {
-      [v8 initialFrameForViewController:v9];
+      [currentTransition initialFrameForViewController:controllerCopy];
     }
 
     else
     {
-      [v8 finalFrameForViewController:v9];
+      [currentTransition finalFrameForViewController:controllerCopy];
     }
 
-    [v5 setFrame:?];
+    [view setFrame:?];
   }
 
   else
   {
     if (v7)
     {
-      [(SBNestingViewController *)self removeViewFromHierarchyForNestedViewController:v9];
+      [(SBNestingViewController *)self removeViewFromHierarchyForNestedViewController:controllerCopy];
     }
 
-    [v9 endAppearanceTransition];
-    [(SBNestingViewController *)self _handleRemoveChildViewController:v9];
-    [v9 setDelegate:0];
-    [v9 setParentNestingViewController:0];
+    [controllerCopy endAppearanceTransition];
+    [(SBNestingViewController *)self _handleRemoveChildViewController:controllerCopy];
+    [controllerCopy setDelegate:0];
+    [controllerCopy setParentNestingViewController:0];
     [(SBNestingViewController *)self setNestedViewController:0];
   }
 }
 
-- (id)_descriptionForOperation:(int64_t)a3
+- (id)_descriptionForOperation:(int64_t)operation
 {
   v3 = @"none";
-  if (a3 == 2)
+  if (operation == 2)
   {
     v3 = @"pop";
   }
 
-  if (a3 == 1)
+  if (operation == 1)
   {
     return @"push";
   }

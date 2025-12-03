@@ -1,33 +1,33 @@
 @interface REMLElementComparator
-- (REMLElementComparator)initWithModel:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compareElement:(id)a3 toElement:(id)a4 level:(unint64_t)a5;
+- (REMLElementComparator)initWithModel:(id)model;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compareElement:(id)element toElement:(id)toElement level:(unint64_t)level;
 @end
 
 @implementation REMLElementComparator
 
-- (REMLElementComparator)initWithModel:(id)a3
+- (REMLElementComparator)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = REMLElementComparator;
   v6 = [(REMLElementComparator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
 }
 
-- (int64_t)compareElement:(id)a3 toElement:(id)a4 level:(unint64_t)a5
+- (int64_t)compareElement:(id)element toElement:(id)toElement level:(unint64_t)level
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [v6 identifier];
+  toElementCopy = toElement;
+  identifier = [element identifier];
+  identifier2 = [toElementCopy identifier];
 
-  v9 = [v7 compare:v8];
+  v9 = [identifier compare:identifier2];
   if (v9 == 1)
   {
     v10 = 1;
@@ -49,7 +49,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   model = self->_model;

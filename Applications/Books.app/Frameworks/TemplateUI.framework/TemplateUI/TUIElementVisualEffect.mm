@@ -1,6 +1,6 @@
 @interface TUIElementVisualEffect
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementVisualEffect
@@ -17,12 +17,12 @@
   return v3;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  v9 = [a5 stringForAttribute:40 node:var0];
-  [v8 setBlurStyle:{+[TUIVisualEffectBox blurEffectStyleFromString:](TUIVisualEffectBox, "blurEffectStyleFromString:", v9)}];
+  var0 = node.var0;
+  boxCopy = box;
+  v9 = [attributes stringForAttribute:40 node:var0];
+  [boxCopy setBlurStyle:{+[TUIVisualEffectBox blurEffectStyleFromString:](TUIVisualEffectBox, "blurEffectStyleFromString:", v9)}];
 }
 
 @end

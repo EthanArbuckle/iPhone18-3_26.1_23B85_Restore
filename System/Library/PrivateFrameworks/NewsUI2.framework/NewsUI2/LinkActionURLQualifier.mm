@@ -1,13 +1,13 @@
 @interface LinkActionURLQualifier
-- (BOOL)allowCopyingOfURL:(id)a3;
-- (BOOL)allowOpenInNewWindowForURL:(id)a3;
-- (BOOL)allowOpenInSafariForURL:(id)a3;
+- (BOOL)allowCopyingOfURL:(id)l;
+- (BOOL)allowOpenInNewWindowForURL:(id)l;
+- (BOOL)allowOpenInSafariForURL:(id)l;
 - (_TtC7NewsUI222LinkActionURLQualifier)init;
 @end
 
 @implementation LinkActionURLQualifier
 
-- (BOOL)allowCopyingOfURL:(id)a3
+- (BOOL)allowCopyingOfURL:(id)l
 {
   v3 = sub_219BDB954();
   v4 = *(v3 - 8);
@@ -21,7 +21,7 @@
   return v8 ^ 1;
 }
 
-- (BOOL)allowOpenInSafariForURL:(id)a3
+- (BOOL)allowOpenInSafariForURL:(id)l
 {
   v3 = sub_219BDB954();
   v4 = *(v3 - 8);
@@ -29,13 +29,13 @@
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_219BDB8B4();
   v7 = sub_219BDB854();
-  v8 = [v7 fc_isNewsURL];
+  fc_isNewsURL = [v7 fc_isNewsURL];
 
   (*(v4 + 8))(v6, v3);
-  return v8 ^ 1;
+  return fc_isNewsURL ^ 1;
 }
 
-- (BOOL)allowOpenInNewWindowForURL:(id)a3
+- (BOOL)allowOpenInNewWindowForURL:(id)l
 {
   v3 = sub_219BDB954();
   v4 = *(v3 - 8);
@@ -43,21 +43,21 @@
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_219BDB8B4();
   v7 = sub_219BDB854();
-  v8 = [v7 fc_isNewsURL];
+  fc_isNewsURL = [v7 fc_isNewsURL];
 
-  if (v8)
+  if (fc_isNewsURL)
   {
-    v9 = [objc_opt_self() sharedApplication];
-    v10 = [v9 supportsMultipleScenes];
+    sharedApplication = [objc_opt_self() sharedApplication];
+    supportsMultipleScenes = [sharedApplication supportsMultipleScenes];
   }
 
   else
   {
-    v10 = 0;
+    supportsMultipleScenes = 0;
   }
 
   (*(v4 + 8))(v6, v3);
-  return v10;
+  return supportsMultipleScenes;
 }
 
 - (_TtC7NewsUI222LinkActionURLQualifier)init

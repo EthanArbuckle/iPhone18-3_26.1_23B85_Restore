@@ -6,7 +6,7 @@
 
 - (BOOL)isSystemPodcastsPath
 {
-  v3 = [(MPCPlayerPath *)self bundleID];
+  bundleID = [(MPCPlayerPath *)self bundleID];
   if ([(MPCPlayerPath *)self mediaRemotePlayerPath])
   {
     [(MPCPlayerPath *)self mediaRemotePlayerPath];
@@ -14,13 +14,13 @@
     v4 = MRNowPlayingClientCopyBundleIdentifierHierarchy();
     if ([v4 count])
     {
-      v5 = [v4 lastObject];
+      lastObject = [v4 lastObject];
 
-      v3 = v5;
+      bundleID = lastObject;
     }
   }
 
-  v6 = [v3 isEqualToString:@"com.apple.podcasts"];
+  v6 = [bundleID isEqualToString:@"com.apple.podcasts"];
 
   return v6;
 }

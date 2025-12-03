@@ -1,37 +1,37 @@
 @interface STConfigurationCoreDataTransformerComponent
 + (NSDictionary)observationFiltersByTriggerPredicate;
-+ (id)_blueprintBackedConfigurationChangesOfBlueprintType:(id)a3 configurationType:(int64_t)a4 userID:(id)a5 containter:(id)a6;
-+ (id)_configurationFromChangedObject:(id)a3 context:(id)a4 error:(id *)a5;
-+ (id)_coreDataChangeFromBlueprintConfiguration:(id)a3 configurationType:(int64_t)a4 container:(id)a5;
-+ (id)_coreDataChangeFromSettingsConfiguration:(id)a3 configurationType:(int64_t)a4 container:(id)a5;
-+ (id)_familyManagedCoreUsersFromCoreUsers:(id)a3 inContext:(id)a4;
-+ (id)_familySettingsBackedConfigurationChangesForUserID:(id)a3 configurationType:(int64_t)a4 container:(id)a5;
-+ (id)_fetchAuthorCoreUserInContext:(id)a3 error:(id *)a4;
-+ (id)_setupConfigurationFromSettingsConfiguration:(id)a3 familyProvider:(id)a4 container:(id)a5;
-+ (id)_targetCoreUserFromChangedObject:(id)a3 ofConfigurationType:(int64_t)a4 error:(id *)a5;
-+ (id)_targetDevicesForCoreUser:(id)a3;
-+ (id)_validatedConfigurationTypeFromSecondaryType:(int64_t)a3;
-+ (id)communicationConfigurationForLocalUserFromPersistentContainer:(id)a3;
-+ (id)communicationConfigurationForUserID:(id)a3 container:(id)a4;
-+ (id)configurationChangeForCoreDataChange:(id)a3 container:(id)a4 error:(id *)a5;
-+ (id)configurationChangeForRelatedConfigurationChange:(id)a3 container:(id)a4;
-+ (id)configurationChangesOfType:(int64_t)a3 userID:(id)a4 containter:(id)a5;
-+ (id)downtimeConfigurationForUserID:(id)a3 container:(id)a4;
-+ (id)handleOnDemandDowntimeToggleForUserID:(id)a3 persistentContainer:(id)a4;
-+ (id)handleSetupConfiguration:(id)a3 persistentContainter:(id)a4;
-+ (id)setupConfigurationFromSettingsConfigurationChange:(id)a3 familyProvider:(id)a4 container:(id)a5;
-+ (int64_t)_setupConfigurationContactManagementStateForContactManagementState:(int64_t)a3;
-+ (int64_t)_setupConfigurationScreenTimeStateForManagementState:(BOOL)a3;
++ (id)_blueprintBackedConfigurationChangesOfBlueprintType:(id)type configurationType:(int64_t)configurationType userID:(id)d containter:(id)containter;
++ (id)_configurationFromChangedObject:(id)object context:(id)context error:(id *)error;
++ (id)_coreDataChangeFromBlueprintConfiguration:(id)configuration configurationType:(int64_t)type container:(id)container;
++ (id)_coreDataChangeFromSettingsConfiguration:(id)configuration configurationType:(int64_t)type container:(id)container;
++ (id)_familyManagedCoreUsersFromCoreUsers:(id)users inContext:(id)context;
++ (id)_familySettingsBackedConfigurationChangesForUserID:(id)d configurationType:(int64_t)type container:(id)container;
++ (id)_fetchAuthorCoreUserInContext:(id)context error:(id *)error;
++ (id)_setupConfigurationFromSettingsConfiguration:(id)configuration familyProvider:(id)provider container:(id)container;
++ (id)_targetCoreUserFromChangedObject:(id)object ofConfigurationType:(int64_t)type error:(id *)error;
++ (id)_targetDevicesForCoreUser:(id)user;
++ (id)_validatedConfigurationTypeFromSecondaryType:(int64_t)type;
++ (id)communicationConfigurationForLocalUserFromPersistentContainer:(id)container;
++ (id)communicationConfigurationForUserID:(id)d container:(id)container;
++ (id)configurationChangeForCoreDataChange:(id)change container:(id)container error:(id *)error;
++ (id)configurationChangeForRelatedConfigurationChange:(id)change container:(id)container;
++ (id)configurationChangesOfType:(int64_t)type userID:(id)d containter:(id)containter;
++ (id)downtimeConfigurationForUserID:(id)d container:(id)container;
++ (id)handleOnDemandDowntimeToggleForUserID:(id)d persistentContainer:(id)container;
++ (id)handleSetupConfiguration:(id)configuration persistentContainter:(id)containter;
++ (id)setupConfigurationFromSettingsConfigurationChange:(id)change familyProvider:(id)provider container:(id)container;
++ (int64_t)_setupConfigurationContactManagementStateForContactManagementState:(int64_t)state;
++ (int64_t)_setupConfigurationScreenTimeStateForManagementState:(BOOL)state;
 @end
 
 @implementation STConfigurationCoreDataTransformerComponent
 
-+ (id)configurationChangeForCoreDataChange:(id)a3 container:(id)a4 error:(id *)a5
++ (id)configurationChangeForCoreDataChange:(id)change container:(id)container error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 newBackgroundContext];
-  if ([v8 primaryType] != 1)
+  changeCopy = change;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
+  if ([changeCopy primaryType] != 1)
   {
     v12 = +[STLog coreDataTransformer];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@
     goto LABEL_12;
   }
 
-  v11 = [a1 _validatedConfigurationTypeFromSecondaryType:{objc_msgSend(v8, "secondaryType")}];
+  v11 = [self _validatedConfigurationTypeFromSecondaryType:{objc_msgSend(changeCopy, "secondaryType")}];
   v12 = v11;
   if (!v11)
   {
@@ -57,7 +57,7 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v17 = [v11 integerValue];
+  integerValue = [v11 integerValue];
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -92,19 +92,19 @@ LABEL_12:
   v18[1] = 3221225472;
   v18[2] = sub_100020F28;
   v18[3] = &unk_1001A35C0;
-  v19 = v8;
-  v20 = v10;
+  v19 = changeCopy;
+  v20 = newBackgroundContext;
   v21 = &v28;
   v25 = &v34;
-  v26 = a1;
-  v27 = v17;
+  selfCopy = self;
+  v27 = integerValue;
   v22 = &v40;
   v23 = &v52;
   v24 = &v46;
   [v20 performBlockAndWait:v18];
-  if (a5)
+  if (error)
   {
-    *a5 = v29[5];
+    *error = v29[5];
   }
 
   if (v29[5])
@@ -115,7 +115,7 @@ LABEL_12:
   else
   {
     v15 = [STConfigurationChange alloc];
-    v13 = [(STConfigurationChange *)v15 initWithTargetUser:v53[5] targetDevices:v47[5] configuration:v41[5] configurationType:v17 author:v35[5]];
+    v13 = [(STConfigurationChange *)v15 initWithTargetUser:v53[5] targetDevices:v47[5] configuration:v41[5] configurationType:integerValue author:v35[5]];
   }
 
   _Block_object_dispose(&v28, 8);
@@ -130,30 +130,30 @@ LABEL_15:
   return v13;
 }
 
-+ (id)configurationChangeForRelatedConfigurationChange:(id)a3 container:(id)a4
++ (id)configurationChangeForRelatedConfigurationChange:(id)change container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 configuration];
+  changeCopy = change;
+  containerCopy = container;
+  configuration = [changeCopy configuration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v10 = [v6 configurationType];
-    if (v10 > 6)
+    v9 = configuration;
+    configurationType = [changeCopy configurationType];
+    if (configurationType > 6)
     {
       v18 = 0;
       goto LABEL_11;
     }
 
-    if (((1 << v10) & 0x74) != 0)
+    if (((1 << configurationType) & 0x74) != 0)
     {
-      v11 = [a1 _coreDataChangeFromBlueprintConfiguration:v9 configurationType:v10 container:v7];
+      v11 = [self _coreDataChangeFromBlueprintConfiguration:v9 configurationType:configurationType container:containerCopy];
     }
 
     else
     {
-      if (((1 << v10) & 0xA) == 0)
+      if (((1 << configurationType) & 0xA) == 0)
       {
         v20 = [NSError alloc];
         v21 = STErrorDomain;
@@ -167,7 +167,7 @@ LABEL_15:
         goto LABEL_11;
       }
 
-      v11 = [a1 _coreDataChangeFromSettingsConfiguration:v9 configurationType:v10 container:v7];
+      v11 = [self _coreDataChangeFromSettingsConfiguration:v9 configurationType:configurationType container:containerCopy];
     }
 
     v18 = v11;
@@ -176,8 +176,8 @@ LABEL_11:
     v25[1] = 3221225472;
     v25[2] = sub_1000215C4;
     v25[3] = &unk_1001A35E8;
-    v27 = a1;
-    v26 = v7;
+    selfCopy = self;
+    v26 = containerCopy;
     v17 = [v18 flatMap:v25];
 
     goto LABEL_12;
@@ -203,19 +203,19 @@ LABEL_12:
   return v17;
 }
 
-+ (id)configurationChangesOfType:(int64_t)a3 userID:(id)a4 containter:(id)a5
++ (id)configurationChangesOfType:(int64_t)type userID:(id)d containter:(id)containter
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  containterCopy = containter;
   v9 = 0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (!a3)
+    if (!type)
     {
       v13 = [NSError alloc];
       v14 = STErrorDomain;
-      v15 = [NSString stringWithFormat:@"Invalid type: %@", @"Invalid", NSLocalizedDescriptionKey];
-      v20 = v15;
+      nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Invalid type: %@", @"Invalid", NSLocalizedDescriptionKey];
+      v20 = nSLocalizedDescriptionKey;
       v16 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
       v17 = [v13 initWithDomain:v14 code:32 userInfo:v16];
 
@@ -224,9 +224,9 @@ LABEL_12:
       goto LABEL_17;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_17;
       }
@@ -239,9 +239,9 @@ LABEL_12:
 
   else
   {
-    if (a3 > 4)
+    if (type > 4)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
         v10 = STBlueprintTypeRestrictions;
         v11 = 5;
@@ -249,7 +249,7 @@ LABEL_12:
 
       else
       {
-        if (a3 != 6)
+        if (type != 6)
         {
           goto LABEL_17;
         }
@@ -261,17 +261,17 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       v10 = STBlueprintTypeAlwaysAllowedApps;
       v11 = 4;
 LABEL_15:
-      v12 = [STConfigurationCoreDataTransformerComponent _blueprintBackedConfigurationChangesOfBlueprintType:v10 configurationType:v11 userID:v7 containter:v8];
+      v12 = [STConfigurationCoreDataTransformerComponent _blueprintBackedConfigurationChangesOfBlueprintType:v10 configurationType:v11 userID:dCopy containter:containterCopy];
       goto LABEL_16;
     }
   }
 
-  v12 = [STConfigurationCoreDataTransformerComponent _familySettingsBackedConfigurationChangesForUserID:v7 configurationType:a3 container:v8];
+  v12 = [STConfigurationCoreDataTransformerComponent _familySettingsBackedConfigurationChangesForUserID:dCopy configurationType:type container:containterCopy];
 LABEL_16:
   v9 = v12;
 LABEL_17:
@@ -279,9 +279,9 @@ LABEL_17:
   return v9;
 }
 
-+ (id)communicationConfigurationForLocalUserFromPersistentContainer:(id)a3
++ (id)communicationConfigurationForLocalUserFromPersistentContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -312,15 +312,15 @@ LABEL_17:
   v9[1] = 3221225472;
   v9[2] = sub_100021B58;
   v9[3] = &unk_1001A3610;
-  v4 = [v3 newBackgroundContext];
-  v10 = v4;
+  newBackgroundContext = [containerCopy newBackgroundContext];
+  v10 = newBackgroundContext;
   v11 = &v21;
   v12 = &v39;
   v13 = &v35;
   v14 = &v31;
   v15 = &v27;
   v16 = &v17;
-  [v4 performBlockAndWait:v9];
+  [newBackgroundContext performBlockAndWait:v9];
   if (v18[3])
   {
     v5 = [STCommunicationConfiguration alloc];
@@ -344,11 +344,11 @@ LABEL_17:
   return v7;
 }
 
-+ (id)communicationConfigurationForUserID:(id)a3 container:(id)a4
++ (id)communicationConfigurationForUserID:(id)d container:(id)container
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 newBackgroundContext];
+  dCopy = d;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
@@ -379,9 +379,9 @@ LABEL_17:
   v15 = 3221225472;
   v16 = sub_100021EDC;
   v17 = &unk_1001A3638;
-  v8 = v5;
+  v8 = dCopy;
   v18 = v8;
-  v9 = v7;
+  v9 = newBackgroundContext;
   v19 = v9;
   v20 = &v30;
   v21 = &v48;
@@ -413,11 +413,11 @@ LABEL_17:
   return v12;
 }
 
-+ (id)downtimeConfigurationForUserID:(id)a3 container:(id)a4
++ (id)downtimeConfigurationForUserID:(id)d container:(id)container
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 newBackgroundContext];
+  dCopy = d;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -435,9 +435,9 @@ LABEL_17:
   v14 = sub_100022198;
   v15 = &unk_1001A3660;
   v18 = &v26;
-  v8 = v5;
+  v8 = dCopy;
   v16 = v8;
-  v9 = v7;
+  v9 = newBackgroundContext;
   v17 = v9;
   v19 = &v20;
   [v9 performBlockAndWait:&v12];
@@ -458,11 +458,11 @@ LABEL_17:
   return v10;
 }
 
-+ (id)_blueprintBackedConfigurationChangesOfBlueprintType:(id)a3 configurationType:(int64_t)a4 userID:(id)a5 containter:(id)a6
++ (id)_blueprintBackedConfigurationChangesOfBlueprintType:(id)type configurationType:(int64_t)configurationType userID:(id)d containter:(id)containter
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  typeCopy = type;
+  dCopy = d;
+  containterCopy = containter;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -473,15 +473,15 @@ LABEL_17:
   v17[1] = 3221225472;
   v17[2] = sub_1000223A0;
   v17[3] = &unk_1001A3688;
-  v12 = [v11 newBackgroundContext];
-  v18 = v12;
+  newBackgroundContext = [containterCopy newBackgroundContext];
+  v18 = newBackgroundContext;
   v21 = &v23;
-  v13 = v10;
+  v13 = dCopy;
   v19 = v13;
-  v14 = v9;
+  v14 = typeCopy;
   v20 = v14;
-  v22 = a4;
-  [v12 performBlockAndWait:v17];
+  configurationTypeCopy = configurationType;
+  [newBackgroundContext performBlockAndWait:v17];
   v15 = v24[5];
 
   _Block_object_dispose(&v23, 8);
@@ -489,16 +489,16 @@ LABEL_17:
   return v15;
 }
 
-+ (id)_familyManagedCoreUsersFromCoreUsers:(id)a3 inContext:(id)a4
++ (id)_familyManagedCoreUsersFromCoreUsers:(id)users inContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  usersCopy = users;
+  contextCopy = context;
   v7 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = usersCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -514,7 +514,7 @@ LABEL_17:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([STSharedCoreDataTransformerComponent managingOrganizationIsFamilyOrganizationForCoreUser:v13 inContext:v6, v16])
+        if ([STSharedCoreDataTransformerComponent managingOrganizationIsFamilyOrganizationForCoreUser:v13 inContext:contextCopy, v16])
         {
           [v7 addObject:v13];
         }
@@ -531,17 +531,17 @@ LABEL_17:
   return v14;
 }
 
-+ (id)_targetDevicesForCoreUser:(id)a3
++ (id)_targetDevicesForCoreUser:(id)user
 {
-  v3 = [a3 userDeviceStates];
-  if (v3)
+  userDeviceStates = [user userDeviceStates];
+  if (userDeviceStates)
   {
     v4 = objc_opt_new();
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = userDeviceStates;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -556,12 +556,12 @@ LABEL_17:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) device];
-          if (v10)
+          device = [*(*(&v16 + 1) + 8 * i) device];
+          if (device)
           {
             v11 = [STDeviceID alloc];
-            v12 = [v10 identifier];
-            v13 = [(STDeviceID *)v11 initWithIdentifier:v12];
+            identifier = [device identifier];
+            v13 = [(STDeviceID *)v11 initWithIdentifier:identifier];
 
             [v4 addObject:v13];
           }
@@ -584,10 +584,10 @@ LABEL_17:
   return v14;
 }
 
-+ (id)_familySettingsBackedConfigurationChangesForUserID:(id)a3 configurationType:(int64_t)a4 container:(id)a5
++ (id)_familySettingsBackedConfigurationChangesForUserID:(id)d configurationType:(int64_t)type container:(id)container
 {
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  containerCopy = container;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -598,13 +598,13 @@ LABEL_17:
   v13[1] = 3221225472;
   v13[2] = sub_100022D10;
   v13[3] = &unk_1001A36B0;
-  v9 = [v8 newBackgroundContext];
-  v14 = v9;
+  newBackgroundContext = [containerCopy newBackgroundContext];
+  v14 = newBackgroundContext;
   v16 = &v18;
-  v10 = v7;
+  v10 = dCopy;
   v15 = v10;
-  v17 = a4;
-  [v9 performBlockAndWait:v13];
+  typeCopy = type;
+  [newBackgroundContext performBlockAndWait:v13];
   v11 = v19[5];
 
   _Block_object_dispose(&v18, 8);
@@ -612,9 +612,9 @@ LABEL_17:
   return v11;
 }
 
-+ (id)_validatedConfigurationTypeFromSecondaryType:(int64_t)a3
++ (id)_validatedConfigurationTypeFromSecondaryType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     v5 = 0;
   }
@@ -627,14 +627,14 @@ LABEL_17:
   return v5;
 }
 
-+ (id)_configurationFromChangedObject:(id)a3 context:(id)a4 error:(id *)a5
++ (id)_configurationFromChangedObject:(id)object context:(id)context error:(id *)error
 {
-  v6 = a3;
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___STSerializableManagedObject])
+  objectCopy = object;
+  if ([objectCopy conformsToProtocol:&OBJC_PROTOCOL___STSerializableManagedObject])
   {
-    if ([v6 conformsToProtocol:&OBJC_PROTOCOL___STVersionVectorable])
+    if ([objectCopy conformsToProtocol:&OBJC_PROTOCOL___STVersionVectorable])
     {
-      a5 = [v6 dictionaryRepresentation];
+      error = [objectCopy dictionaryRepresentation];
       goto LABEL_12;
     }
   }
@@ -647,7 +647,7 @@ LABEL_17:
       sub_100113418();
     }
 
-    if ([v6 conformsToProtocol:&OBJC_PROTOCOL___STVersionVectorable])
+    if ([objectCopy conformsToProtocol:&OBJC_PROTOCOL___STVersionVectorable])
     {
       goto LABEL_10;
     }
@@ -660,52 +660,52 @@ LABEL_17:
   }
 
 LABEL_10:
-  if (a5)
+  if (error)
   {
     v9 = [NSError alloc];
     v10 = STErrorDomain;
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [NSString stringWithFormat:@"Changed Object Class: %@", v12, NSLocalizedDescriptionKey];
-    v17 = v13;
+    nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Changed Object Class: %@", v12, NSLocalizedDescriptionKey];
+    v17 = nSLocalizedDescriptionKey;
     v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    *a5 = [v9 initWithDomain:v10 code:34 userInfo:v14];
+    *error = [v9 initWithDomain:v10 code:34 userInfo:v14];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_12:
 
-  return a5;
+  return error;
 }
 
-+ (id)_targetCoreUserFromChangedObject:(id)a3 ofConfigurationType:(int64_t)a4 error:(id *)a5
++ (id)_targetCoreUserFromChangedObject:(id)object ofConfigurationType:(int64_t)type error:(id *)error
 {
-  v7 = a3;
-  if (a4 <= 6)
+  objectCopy = object;
+  if (type <= 6)
   {
-    if (((1 << a4) & 0x74) != 0)
+    if (((1 << type) & 0x74) != 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v7 users];
-        v9 = [v8 anyObject];
+        users = [objectCopy users];
+        anyObject = [users anyObject];
 
-        if (v9)
+        if (anyObject)
         {
           goto LABEL_14;
         }
       }
     }
 
-    else if (((1 << a4) & 0xA) != 0)
+    else if (((1 << type) & 0xA) != 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v7 user];
-        if (v9)
+        anyObject = [objectCopy user];
+        if (anyObject)
         {
           goto LABEL_14;
         }
@@ -719,29 +719,29 @@ LABEL_12:
     sub_100113530();
   }
 
-  if (a5)
+  if (error)
   {
     v11 = [NSError alloc];
     v12 = STErrorDomain;
     v18 = NSLocalizedDescriptionKey;
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [NSString stringWithFormat:@"Changed object class: %@, does not map to configuration type: %ld", v14, a4];
-    v19 = v15;
+    type = [NSString stringWithFormat:@"Changed object class: %@, does not map to configuration type: %ld", v14, type];
+    v19 = type;
     v16 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    *a5 = [v11 initWithDomain:v12 code:34 userInfo:v16];
+    *error = [v11 initWithDomain:v12 code:34 userInfo:v16];
   }
 
-  v9 = 0;
+  anyObject = 0;
 LABEL_14:
 
-  return v9;
+  return anyObject;
 }
 
-+ (id)_fetchAuthorCoreUserInContext:(id)a3 error:(id *)a4
++ (id)_fetchAuthorCoreUserInContext:(id)context error:(id *)error
 {
   v12 = 0;
-  v5 = [STCoreUser fetchLocalUserInContext:a3 error:&v12];
+  v5 = [STCoreUser fetchLocalUserInContext:context error:&v12];
   v6 = v12;
   if (v5)
   {
@@ -756,7 +756,7 @@ LABEL_14:
       sub_1001135CC();
     }
 
-    if (a4)
+    if (error)
     {
       if (v6)
       {
@@ -771,18 +771,18 @@ LABEL_14:
       }
 
       v10 = [NSError alloc];
-      *a4 = [v10 initWithDomain:STErrorDomain code:32 userInfo:v9];
+      *error = [v10 initWithDomain:STErrorDomain code:32 userInfo:v9];
     }
   }
 
   return v5;
 }
 
-+ (id)_coreDataChangeFromSettingsConfiguration:(id)a3 configurationType:(int64_t)a4 container:(id)a5
++ (id)_coreDataChangeFromSettingsConfiguration:(id)configuration configurationType:(int64_t)type container:(id)container
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 newBackgroundContext];
+  configurationCopy = configuration;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -793,12 +793,12 @@ LABEL_14:
   v14[1] = 3221225472;
   v14[2] = sub_1000236DC;
   v14[3] = &unk_1001A36D8;
-  v10 = v7;
+  v10 = configurationCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = newBackgroundContext;
   v16 = v11;
   v17 = &v19;
-  v18 = a4;
+  typeCopy = type;
   [v11 performBlockAndWait:v14];
   v12 = v20[5];
 
@@ -807,11 +807,11 @@ LABEL_14:
   return v12;
 }
 
-+ (id)_coreDataChangeFromBlueprintConfiguration:(id)a3 configurationType:(int64_t)a4 container:(id)a5
++ (id)_coreDataChangeFromBlueprintConfiguration:(id)configuration configurationType:(int64_t)type container:(id)container
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 newBackgroundContext];
+  configurationCopy = configuration;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -822,12 +822,12 @@ LABEL_14:
   v14[1] = 3221225472;
   v14[2] = sub_100023974;
   v14[3] = &unk_1001A36D8;
-  v10 = v7;
+  v10 = configurationCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = newBackgroundContext;
   v16 = v11;
   v17 = &v19;
-  v18 = a4;
+  typeCopy = type;
   [v11 performBlockAndWait:v14];
   v12 = v20[5];
 
@@ -836,34 +836,34 @@ LABEL_14:
   return v12;
 }
 
-+ (id)setupConfigurationFromSettingsConfigurationChange:(id)a3 familyProvider:(id)a4 container:(id)a5
++ (id)setupConfigurationFromSettingsConfigurationChange:(id)change familyProvider:(id)provider container:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 matchingAny:&off_1001B2520];
+  changeCopy = change;
+  providerCopy = provider;
+  containerCopy = container;
+  v11 = [changeCopy matchingAny:&off_1001B2520];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100023BCC;
   v17[3] = &unk_1001A3700;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v21 = a1;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = changeCopy;
+  v19 = providerCopy;
+  v20 = containerCopy;
+  selfCopy = self;
+  v12 = containerCopy;
+  v13 = providerCopy;
+  v14 = changeCopy;
   v15 = [v11 flatMap:v17];
 
   return v15;
 }
 
-+ (id)_setupConfigurationFromSettingsConfiguration:(id)a3 familyProvider:(id)a4 container:(id)a5
++ (id)_setupConfigurationFromSettingsConfiguration:(id)configuration familyProvider:(id)provider container:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 newBackgroundContext];
+  configurationCopy = configuration;
+  providerCopy = provider;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -874,13 +874,13 @@ LABEL_14:
   v17[1] = 3221225472;
   v17[2] = sub_100023F04;
   v17[3] = &unk_1001A3778;
-  v12 = v8;
+  v12 = configurationCopy;
   v18 = v12;
-  v13 = v11;
+  v13 = newBackgroundContext;
   v19 = v13;
   v21 = &v23;
-  v22 = a1;
-  v14 = v9;
+  selfCopy = self;
+  v14 = providerCopy;
   v20 = v14;
   [v13 performBlockAndWait:v17];
   v15 = v24[5];
@@ -890,9 +890,9 @@ LABEL_14:
   return v15;
 }
 
-+ (int64_t)_setupConfigurationScreenTimeStateForManagementState:(BOOL)a3
++ (int64_t)_setupConfigurationScreenTimeStateForManagementState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return 1;
   }
@@ -903,16 +903,16 @@ LABEL_14:
   }
 }
 
-+ (int64_t)_setupConfigurationContactManagementStateForContactManagementState:(int64_t)a3
++ (int64_t)_setupConfigurationContactManagementStateForContactManagementState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
@@ -928,10 +928,10 @@ LABEL_14:
   return v3;
 }
 
-+ (id)handleSetupConfiguration:(id)a3 persistentContainter:(id)a4
++ (id)handleSetupConfiguration:(id)configuration persistentContainter:(id)containter
 {
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  containterCopy = containter;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -942,12 +942,12 @@ LABEL_14:
   v11[1] = 3221225472;
   v11[2] = sub_10002482C;
   v11[3] = &unk_1001A37C0;
-  v7 = [v6 newBackgroundContext];
-  v12 = v7;
+  newBackgroundContext = [containterCopy newBackgroundContext];
+  v12 = newBackgroundContext;
   v14 = &v15;
-  v8 = v5;
+  v8 = configurationCopy;
   v13 = v8;
-  [v7 performBlockAndWait:v11];
+  [newBackgroundContext performBlockAndWait:v11];
   if (v16[5])
   {
     [STResult failure:?];
@@ -964,11 +964,11 @@ LABEL_14:
   return v9;
 }
 
-+ (id)handleOnDemandDowntimeToggleForUserID:(id)a3 persistentContainer:(id)a4
++ (id)handleOnDemandDowntimeToggleForUserID:(id)d persistentContainer:(id)container
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 newBackgroundContext];
+  dCopy = d;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x2020000000;
@@ -992,9 +992,9 @@ LABEL_14:
   v14 = sub_100025010;
   v15 = &unk_1001A37E8;
   v18 = v34;
-  v8 = v5;
+  v8 = dCopy;
   v16 = v8;
-  v9 = v7;
+  v9 = newBackgroundContext;
   v17 = v9;
   v19 = &v26;
   v20 = v32;

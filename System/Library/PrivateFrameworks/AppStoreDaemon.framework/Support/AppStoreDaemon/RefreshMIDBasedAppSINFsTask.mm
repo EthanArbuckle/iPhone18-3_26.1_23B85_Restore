@@ -30,14 +30,14 @@
   v42 = v3;
   sub_1003D31A8(ApplicationProxy, 0, v41);
   v4 = ASDLogHandleForCategory();
-  v34 = self;
+  selfCopy = self;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     v6 = [v3 count];
     *buf = 138412546;
     v44 = logKey;
-    self = v34;
+    self = selfCopy;
     v45 = 2048;
     v46 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%@] Attempting to update %ld MID app(s)", buf, 0x16u);
@@ -100,10 +100,10 @@
           v22 = sub_1003D251C(v11);
           v23 = [v19 initWithItemIdentifer:v20 externalVersionIdentifier:v21 bundleIdentifier:v13 bundleVersion:v22 skipDownloads:0];
 
-          self = v34;
+          self = selfCopy;
           v24 = sub_1002C7044([ManagedApplicationTask alloc], v23, 0);
           v36 = 0;
-          [(Task *)v34 runSubTask:v24 returningError:&v36];
+          [(Task *)selfCopy runSubTask:v24 returningError:&v36];
           v15 = v36;
           v25 = ASDLogHandleForCategory();
           v26 = v25;
@@ -111,7 +111,7 @@
           {
             if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
             {
-              v27 = v34->_logKey;
+              v27 = selfCopy->_logKey;
               *buf = 138412802;
               v44 = v27;
               v45 = 2114;
@@ -136,7 +136,7 @@
               v29 = 0;
             }
 
-            v30 = v34->_logKey;
+            v30 = selfCopy->_logKey;
             *buf = 138413058;
             v44 = v30;
             v45 = 2114;

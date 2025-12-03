@@ -1,7 +1,7 @@
 @interface TTRWebViewLoadingStateHelper
 - (void)dealloc;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation TTRWebViewLoadingStateHelper
@@ -10,21 +10,21 @@
 {
   ObjectType = swift_getObjectType();
   v6 = 1;
-  v4 = self;
+  selfCopy = self;
 
   PassthroughSubject.send(completion:)();
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(TTRWebViewLoadingStateHelper *)&v5 dealloc];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  if (a4)
+  if (navigation)
   {
-    v5 = self;
-    v6 = a4;
+    selfCopy = self;
+    navigationCopy = navigation;
     PassthroughSubject.send(_:)();
   }
 
@@ -34,13 +34,13 @@
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  if (a4)
+  if (navigation)
   {
-    v7 = a5;
-    v8 = self;
-    v9 = a4;
+    errorCopy = error;
+    selfCopy = self;
+    navigationCopy = navigation;
     PassthroughSubject.send(_:)();
   }
 

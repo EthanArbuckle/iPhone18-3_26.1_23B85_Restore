@@ -1,12 +1,12 @@
 @interface FigDisplaySleepAssertion
-- (FigDisplaySleepAssertion)initWithReason:(id)a3 queue:(id)a4 expirationHandler:(id)a5;
-- (unsigned)resetIdleTimerOnBehalfOfSceneWithPID:(int)a3;
+- (FigDisplaySleepAssertion)initWithReason:(id)reason queue:(id)queue expirationHandler:(id)handler;
+- (unsigned)resetIdleTimerOnBehalfOfSceneWithPID:(int)d;
 - (void)dealloc;
 @end
 
 @implementation FigDisplaySleepAssertion
 
-- (FigDisplaySleepAssertion)initWithReason:(id)a3 queue:(id)a4 expirationHandler:(id)a5
+- (FigDisplaySleepAssertion)initWithReason:(id)reason queue:(id)queue expirationHandler:(id)handler
 {
   if (initWithReason_queue_expirationHandler__onceToken != -1)
   {
@@ -18,8 +18,8 @@
   v9 = [(FigDisplaySleepAssertion *)&v14 init];
   if (v9)
   {
-    *(v9 + 2) = a3;
-    v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, a4);
+    *(v9 + 2) = reason;
+    v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queue);
     *(v9 + 1) = v10;
     *(v9 + 3) = 0;
     *(v9 + 4) = 0;
@@ -31,7 +31,7 @@
       handler[1] = 3221225472;
       handler[2] = __67__FigDisplaySleepAssertion_initWithReason_queue_expirationHandler___block_invoke_2;
       handler[3] = &unk_1E7492498;
-      handler[4] = a5;
+      handler[4] = handler;
       dispatch_source_set_event_handler(v11, handler);
       dispatch_activate(*(v9 + 1));
     }
@@ -68,7 +68,7 @@ uint64_t __67__FigDisplaySleepAssertion_initWithReason_queue_expirationHandler__
   [(FigDisplaySleepAssertion *)&v5 dealloc];
 }
 
-- (unsigned)resetIdleTimerOnBehalfOfSceneWithPID:(int)a3
+- (unsigned)resetIdleTimerOnBehalfOfSceneWithPID:(int)d
 {
   if (self->_timer)
   {
@@ -85,16 +85,16 @@ uint64_t __67__FigDisplaySleepAssertion_initWithReason_queue_expirationHandler__
 
     if (!v5)
     {
-      v6 = *&a3;
-      v7 = [ITIdleTimerStateClass sharedInstance];
+      v6 = *&d;
+      iTIdleTimerStateClass = [ITIdleTimerStateClass sharedInstance];
       if (v6 <= 0)
       {
-        idleTimerAssertion = [v7 newAssertionToDisableIdleTimerForReason:self->_reason error:0];
+        idleTimerAssertion = [iTIdleTimerStateClass newAssertionToDisableIdleTimerForReason:self->_reason error:0];
       }
 
       else
       {
-        idleTimerAssertion = [v7 newAssertionToDisableIdleTimerOnBehalfOfSceneWithPID:v6 forReason:self->_reason error:0];
+        idleTimerAssertion = [iTIdleTimerStateClass newAssertionToDisableIdleTimerOnBehalfOfSceneWithPID:v6 forReason:self->_reason error:0];
       }
 
       self->_idleTimerAssertion = idleTimerAssertion;

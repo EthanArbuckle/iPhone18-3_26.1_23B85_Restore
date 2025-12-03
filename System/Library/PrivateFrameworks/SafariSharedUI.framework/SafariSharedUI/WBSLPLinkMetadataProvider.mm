@@ -1,37 +1,37 @@
 @interface WBSLPLinkMetadataProvider
-+ (id)linkMetadataForURL:(id)a3 webView:(id)a4 iconCache:(id)a5;
-- (BOOL)_isImageInMetadata:(id)a3;
-- (BOOL)_shouldStartFetchOperationForRequestIgnoringRequestFetchingPreference:(id)a3 withMetadataInfo:(id)a4;
-- (BOOL)_shouldUseWebViewToUpdateMetadataWithInfo:(id)a3 request:(id)a4 existingOperation:(id)a5;
-- (BOOL)cacheData:(id)a3 forRequest:(id)a4 usingToken:(id)a5;
-- (BOOL)canHandleRequest:(id)a3;
-- (WBSLPLinkMetadataProvider)initWithCacheDirectoryURL:(id)a3;
++ (id)linkMetadataForURL:(id)l webView:(id)view iconCache:(id)cache;
+- (BOOL)_isImageInMetadata:(id)metadata;
+- (BOOL)_shouldStartFetchOperationForRequestIgnoringRequestFetchingPreference:(id)preference withMetadataInfo:(id)info;
+- (BOOL)_shouldUseWebViewToUpdateMetadataWithInfo:(id)info request:(id)request existingOperation:(id)operation;
+- (BOOL)cacheData:(id)data forRequest:(id)request usingToken:(id)token;
+- (BOOL)canHandleRequest:(id)request;
+- (WBSLPLinkMetadataProvider)initWithCacheDirectoryURL:(id)l;
 - (WBSSiteMetadataProviderDelegate)providerDelegate;
-- (id)_preparedResponseForRequest:(id)a3;
-- (void)_cacheMetadata:(id)a3 forRequest:(id)a4 completionHandler:(id)a5;
-- (void)_didReceiveNewMetadata:(id)a3 forRequest:(id)a4;
-- (void)_discardPreparedResponseForRequest:(id)a3;
-- (void)_fetchMetadataForWebView:(id)a3 url:(id)a4 completionHandler:(id)a5;
-- (void)_getCachedMetadataInfoForRequest:(id)a3 completionHandler:(id)a4;
-- (void)_getCachedMetadataWithInfo:(id)a3 completionHandler:(id)a4;
-- (void)_notifyResponse:(id)a3 ofType:(int64_t)a4 didReceiveNewData:(BOOL)a5 forRequest:(id)a6;
-- (void)_prepareCachedResponseForRequest:(id)a3;
-- (void)_provideCachedResponseIfAvailableForRequest:(id)a3 withMetadataInfo:(id)a4;
-- (void)_replacePreparedResponseWithData:(id)a3 forRequest:(id)a4;
+- (id)_preparedResponseForRequest:(id)request;
+- (void)_cacheMetadata:(id)metadata forRequest:(id)request completionHandler:(id)handler;
+- (void)_didReceiveNewMetadata:(id)metadata forRequest:(id)request;
+- (void)_discardPreparedResponseForRequest:(id)request;
+- (void)_fetchMetadataForWebView:(id)view url:(id)url completionHandler:(id)handler;
+- (void)_getCachedMetadataInfoForRequest:(id)request completionHandler:(id)handler;
+- (void)_getCachedMetadataWithInfo:(id)info completionHandler:(id)handler;
+- (void)_notifyResponse:(id)response ofType:(int64_t)type didReceiveNewData:(BOOL)data forRequest:(id)request;
+- (void)_prepareCachedResponseForRequest:(id)request;
+- (void)_provideCachedResponseIfAvailableForRequest:(id)request withMetadataInfo:(id)info;
+- (void)_replacePreparedResponseWithData:(id)data forRequest:(id)request;
 - (void)_serveAllPendingRequests;
 - (void)_setUpCache;
 - (void)_setUpCachedResponsePolicy;
-- (void)_storeAndNotifySuccessfulResponseForRequest:(id)a3 withMetadata:(id)a4 info:(id)a5 didReceiveNewData:(BOOL)a6;
-- (void)_storePreparedResponse:(id)a3 forRequest:(id)a4;
-- (void)_updateMetadataIfNeededUsingWebView:(id)a3 url:(id)a4;
+- (void)_storeAndNotifySuccessfulResponseForRequest:(id)request withMetadata:(id)metadata info:(id)info didReceiveNewData:(BOOL)data;
+- (void)_storePreparedResponse:(id)response forRequest:(id)request;
+- (void)_updateMetadataIfNeededUsingWebView:(id)view url:(id)url;
 - (void)emptyCaches;
-- (void)prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4;
-- (void)releaseResponseForURLString:(id)a3;
-- (void)retainResponseForURLString:(id)a3;
-- (void)reuseMetadataOfURLString:(id)a3 forURLString:(id)a4 completionHandler:(id)a5;
+- (void)prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response;
+- (void)releaseResponseForURLString:(id)string;
+- (void)retainResponseForURLString:(id)string;
+- (void)reuseMetadataOfURLString:(id)string forURLString:(id)lString completionHandler:(id)handler;
 - (void)savePendingChangesBeforeTermination;
-- (void)stopWatchingUpdatesForRequest:(id)a3;
-- (void)updateMetadataIfNeededUsingWebView:(id)a3;
+- (void)stopWatchingUpdatesForRequest:(id)request;
+- (void)updateMetadataIfNeededUsingWebView:(id)view;
 @end
 
 @implementation WBSLPLinkMetadataProvider
@@ -152,11 +152,11 @@ uint64_t __40__WBSLPLinkMetadataProvider__setUpCache__block_invoke_4(uint64_t a1
         }
 
         v8 = *(*(&v24 + 1) + 8 * i);
-        v9 = [v8 webView];
-        if (v9)
+        webView = [v8 webView];
+        if (webView)
         {
           v10 = [v8 url];
-          [(WBSLPLinkMetadataProvider *)self _updateMetadataIfNeededUsingWebView:v9 url:v10];
+          [(WBSLPLinkMetadataProvider *)self _updateMetadataIfNeededUsingWebView:webView url:v10];
         }
       }
 
@@ -186,8 +186,8 @@ uint64_t __40__WBSLPLinkMetadataProvider__setUpCache__block_invoke_4(uint64_t a1
         }
 
         v16 = *(*(&v20 + 1) + 8 * j);
-        v17 = [v16 request];
-        -[WBSLPLinkMetadataProvider prepareResponseForRequest:allowDelayedResponse:](self, "prepareResponseForRequest:allowDelayedResponse:", v17, [v16 allowDelayedResponse]);
+        request = [v16 request];
+        -[WBSLPLinkMetadataProvider prepareResponseForRequest:allowDelayedResponse:](self, "prepareResponseForRequest:allowDelayedResponse:", request, [v16 allowDelayedResponse]);
       }
 
       v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -203,13 +203,13 @@ uint64_t __40__WBSLPLinkMetadataProvider__setUpCache__block_invoke_4(uint64_t a1
   self->_pendingRequests = 0;
 }
 
-+ (id)linkMetadataForURL:(id)a3 webView:(id)a4 iconCache:(id)a5
++ (id)linkMetadataForURL:(id)l webView:(id)view iconCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 host];
-  if (!v10)
+  lCopy = l;
+  viewCopy = view;
+  cacheCopy = cache;
+  host = [lCopy host];
+  if (!host)
   {
     goto LABEL_7;
   }
@@ -237,7 +237,7 @@ uint64_t __40__WBSLPLinkMetadataProvider__setUpCache__block_invoke_4(uint64_t a1
   if (v11)
   {
     v13 = objc_alloc_init(v11);
-    v14 = [v9 imageForHost:v10];
+    v14 = [cacheCopy imageForHost:host];
     v35 = 0;
     v36 = &v35;
     v37 = 0x3032000000;
@@ -251,28 +251,28 @@ uint64_t __40__WBSLPLinkMetadataProvider__setUpCache__block_invoke_4(uint64_t a1
     v34 = &v35;
     v15 = v14;
     v31 = v15;
-    v32 = v9;
-    v33 = v10;
+    v32 = cacheCopy;
+    v33 = host;
     v16 = _Block_copy(aBlock);
-    v17 = [v8 URL];
-    v18 = [v7 isEqual:v17];
+    v17 = [viewCopy URL];
+    v18 = [lCopy isEqual:v17];
 
     if (v18)
     {
-      v19 = [v13 _startFetchingMetadataForWebView:v8 isNonAppInitiated:1 completionHandler:v16];
-      v20 = *(v36 + 40);
+      v19 = [v13 _startFetchingMetadataForWebView:viewCopy isNonAppInitiated:1 completionHandler:v16];
+      title = *(v36 + 40);
       *(v36 + 40) = v19;
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695AC68] safari_nonAppInitiatedRequestWithURL:v7];
+      v22 = [MEMORY[0x1E695AC68] safari_nonAppInitiatedRequestWithURL:lCopy];
       v23 = [v13 _startFetchingMetadataForRequest:v22 completionHandler:v16];
       v24 = *(v36 + 40);
       *(v36 + 40) = v23;
 
-      v20 = [v8 title];
-      [*(v36 + 40) setTitle:v20];
+      title = [viewCopy title];
+      [*(v36 + 40) setTitle:title];
     }
 
     v46 = 0;
@@ -336,25 +336,25 @@ void __66__WBSLPLinkMetadataProvider_linkMetadataForURL_webView_iconCache___bloc
   }
 }
 
-- (WBSLPLinkMetadataProvider)initWithCacheDirectoryURL:(id)a3
+- (WBSLPLinkMetadataProvider)initWithCacheDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v27.receiver = self;
   v27.super_class = WBSLPLinkMetadataProvider;
   v5 = [(WBSLPLinkMetadataProvider *)&v27 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     cacheDirectoryURL = v5->_cacheDirectoryURL;
     v5->_cacheDirectoryURL = v6;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     requestsToResponses = v5->_requestsToResponses;
-    v5->_requestsToResponses = v8;
+    v5->_requestsToResponses = dictionary;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     requestsToOperations = v5->_requestsToOperations;
-    v5->_requestsToOperations = v10;
+    v5->_requestsToOperations = dictionary2;
 
     v12 = [MEMORY[0x1E695DFA8] set];
     urlsWithActiveWebViewFetches = v5->_urlsWithActiveWebViewFetches;
@@ -404,12 +404,12 @@ uint64_t __55__WBSLPLinkMetadataProvider_initWithCacheDirectoryURL___block_invok
   return result;
 }
 
-- (void)reuseMetadataOfURLString:(id)a3 forURLString:(id)a4 completionHandler:(id)a5
+- (void)reuseMetadataOfURLString:(id)string forURLString:(id)lString completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  stringCopy = string;
+  lStringCopy = lString;
+  handlerCopy = handler;
+  if ([stringCopy length] && objc_msgSend(lStringCopy, "length"))
   {
     internalQueue = self->_internalQueue;
     v13[0] = MEMORY[0x1E69E9820];
@@ -417,9 +417,9 @@ uint64_t __55__WBSLPLinkMetadataProvider_initWithCacheDirectoryURL___block_invok
     v13[2] = __85__WBSLPLinkMetadataProvider_reuseMetadataOfURLString_forURLString_completionHandler___block_invoke;
     v13[3] = &unk_1E8284AB0;
     v13[4] = self;
-    v16 = v10;
-    v14 = v8;
-    v15 = v9;
+    v16 = handlerCopy;
+    v14 = stringCopy;
+    v15 = lStringCopy;
     dispatch_async(internalQueue, v13);
   }
 
@@ -431,7 +431,7 @@ uint64_t __55__WBSLPLinkMetadataProvider_initWithCacheDirectoryURL___block_invok
       [WBSLPLinkMetadataProvider reuseMetadataOfURLString:forURLString:completionHandler:];
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -448,10 +448,10 @@ uint64_t __85__WBSLPLinkMetadataProvider_reuseMetadataOfURLString_forURLString_c
   }
 }
 
-- (void)retainResponseForURLString:(id)a3
+- (void)retainResponseForURLString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -459,7 +459,7 @@ uint64_t __85__WBSLPLinkMetadataProvider_reuseMetadataOfURLString_forURLString_c
     v7[2] = __56__WBSLPLinkMetadataProvider_retainResponseForURLString___block_invoke;
     v7[3] = &unk_1E82834A0;
     v7[4] = self;
-    v8 = v4;
+    v8 = stringCopy;
     dispatch_async(internalQueue, v7);
   }
 
@@ -473,10 +473,10 @@ uint64_t __85__WBSLPLinkMetadataProvider_reuseMetadataOfURLString_forURLString_c
   }
 }
 
-- (void)releaseResponseForURLString:(id)a3
+- (void)releaseResponseForURLString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -484,7 +484,7 @@ uint64_t __85__WBSLPLinkMetadataProvider_reuseMetadataOfURLString_forURLString_c
     v7[2] = __57__WBSLPLinkMetadataProvider_releaseResponseForURLString___block_invoke;
     v7[3] = &unk_1E82834A0;
     v7[4] = self;
-    v8 = v4;
+    v8 = stringCopy;
     dispatch_async(internalQueue, v7);
   }
 
@@ -498,13 +498,13 @@ uint64_t __85__WBSLPLinkMetadataProvider_reuseMetadataOfURLString_forURLString_c
   }
 }
 
-- (void)updateMetadataIfNeededUsingWebView:(id)a3
+- (void)updateMetadataIfNeededUsingWebView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 URL];
-  v6 = [v5 host];
+  viewCopy = view;
+  v5 = [viewCopy URL];
+  host = [v5 host];
 
-  if (v6)
+  if (host)
   {
     internalQueue = self->_internalQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -512,7 +512,7 @@ uint64_t __85__WBSLPLinkMetadataProvider_reuseMetadataOfURLString_forURLString_c
     block[2] = __64__WBSLPLinkMetadataProvider_updateMetadataIfNeededUsingWebView___block_invoke;
     block[3] = &unk_1E8285F48;
     block[4] = self;
-    v9 = v4;
+    v9 = viewCopy;
     v10 = v5;
     dispatch_async(internalQueue, block);
   }
@@ -547,27 +547,27 @@ void __64__WBSLPLinkMetadataProvider_updateMetadataIfNeededUsingWebView___block_
   }
 }
 
-- (BOOL)canHandleRequest:(id)a3
+- (BOOL)canHandleRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4
+- (void)prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response
 {
-  v6 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__WBSLPLinkMetadataProvider_prepareResponseForRequest_allowDelayedResponse___block_invoke;
   block[3] = &unk_1E82834C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = requestCopy;
+  responseCopy = response;
+  v8 = requestCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -633,17 +633,17 @@ uint64_t __64__WBSLPLinkMetadataProvider_savePendingChangesBeforeTermination__bl
   return [v2 savePendingChangesBeforeTermination];
 }
 
-- (void)stopWatchingUpdatesForRequest:(id)a3
+- (void)stopWatchingUpdatesForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__WBSLPLinkMetadataProvider_stopWatchingUpdatesForRequest___block_invoke;
   v7[3] = &unk_1E82834A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -693,27 +693,27 @@ void __59__WBSLPLinkMetadataProvider_stopWatchingUpdatesForRequest___block_invok
   dispatch_async(internalQueue, block);
 }
 
-- (BOOL)cacheData:(id)a3 forRequest:(id)a4 usingToken:(id)a5
+- (BOOL)cacheData:(id)data forRequest:(id)request usingToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  requestCopy = request;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v8;
-      v12 = [v11 first];
-      v13 = [v11 second];
+      v11 = dataCopy;
+      first = [v11 first];
+      second = [v11 second];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        if (!second || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v14 = [v12 urlString];
-          v15 = [v14 length];
+          urlString = [first urlString];
+          v15 = [urlString length];
 
           if (v15)
           {
@@ -723,10 +723,10 @@ void __59__WBSLPLinkMetadataProvider_stopWatchingUpdatesForRequest___block_invok
             block[2] = __61__WBSLPLinkMetadataProvider_cacheData_forRequest_usingToken___block_invoke;
             block[3] = &unk_1E8285F98;
             block[4] = self;
-            v21 = v10;
-            v22 = v12;
-            v23 = v13;
-            v24 = v9;
+            v21 = tokenCopy;
+            v22 = first;
+            v23 = second;
+            v24 = requestCopy;
             dispatch_async(internalQueue, block);
 
             v17 = 1;
@@ -832,16 +832,16 @@ void __55__WBSLPLinkMetadataProvider__setUpCachedResponsePolicy__block_invoke_2(
   }
 }
 
-- (void)_prepareCachedResponseForRequest:(id)a3
+- (void)_prepareCachedResponseForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__WBSLPLinkMetadataProvider__prepareCachedResponseForRequest___block_invoke;
   v6[3] = &unk_1E8286060;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = requestCopy;
   v7 = v5;
   [(WBSLPLinkMetadataProvider *)self _getCachedMetadataInfoForRequest:v5 completionHandler:v6];
 
@@ -919,19 +919,19 @@ void __62__WBSLPLinkMetadataProvider__prepareCachedResponseForRequest___block_in
   }
 }
 
-- (void)_didReceiveNewMetadata:(id)a3 forRequest:(id)a4
+- (void)_didReceiveNewMetadata:(id)metadata forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  requestCopy = request;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__WBSLPLinkMetadataProvider__didReceiveNewMetadata_forRequest___block_invoke;
   v10[3] = &unk_1E8286088;
   objc_copyWeak(&v13, &location);
-  v8 = v7;
+  v8 = requestCopy;
   v11 = v8;
-  v9 = v6;
+  v9 = metadataCopy;
   v12 = v9;
   [(WBSLPLinkMetadataProvider *)self _cacheMetadata:v9 forRequest:v8 completionHandler:v10];
 
@@ -1006,52 +1006,52 @@ LABEL_7:
   [v9 _removeOperationForRequest:v10];
 }
 
-- (void)_getCachedMetadataWithInfo:(id)a3 completionHandler:(id)a4
+- (void)_getCachedMetadataWithInfo:(id)info completionHandler:(id)handler
 {
   cache = self->_cache;
   if (cache)
   {
-    [(WBSLPLinkMetadataCache *)cache getMetadataWithInfo:a3 completionHandler:a4];
+    [(WBSLPLinkMetadataCache *)cache getMetadataWithInfo:info completionHandler:handler];
   }
 
   else
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)_cacheMetadata:(id)a3 forRequest:(id)a4 completionHandler:(id)a5
+- (void)_cacheMetadata:(id)metadata forRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  metadataCopy = metadata;
+  requestCopy = request;
+  handlerCopy = handler;
+  v11 = handlerCopy;
   if (self->_cache)
   {
-    v12 = [v9 url];
-    v13 = [v12 absoluteString];
+    v12 = [requestCopy url];
+    absoluteString = [v12 absoluteString];
 
-    if ([v13 length])
+    if ([absoluteString length])
     {
       objc_initWeak(&location, self);
-      v14 = [v8 dataRepresentation];
-      v15 = [v8 URL];
-      v16 = [v15 absoluteString];
+      dataRepresentation = [metadataCopy dataRepresentation];
+      v15 = [metadataCopy URL];
+      absoluteString2 = [v15 absoluteString];
 
-      v22 = [(WBSLPLinkMetadataProvider *)self _isImageInMetadata:v8];
+      v22 = [(WBSLPLinkMetadataProvider *)self _isImageInMetadata:metadataCopy];
       cache = self->_cache;
-      v17 = [MEMORY[0x1E695DF00] date];
-      v18 = [v14 length] != 0;
+      date = [MEMORY[0x1E695DF00] date];
+      v18 = [dataRepresentation length] != 0;
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __73__WBSLPLinkMetadataProvider__cacheMetadata_forRequest_completionHandler___block_invoke;
       v23[3] = &unk_1E82860B0;
-      v19 = v16;
+      v19 = absoluteString2;
       v24 = v19;
-      v25 = v13;
+      v25 = absoluteString;
       v26 = v11;
       objc_copyWeak(&v27, &location);
-      [(WBSLPLinkMetadataCache *)cache setMetadata:v14 forURLString:v25 lastFetchDate:v17 lastFetchDidSucceed:v18 metadataHasImage:v22 completionHandler:v23];
+      [(WBSLPLinkMetadataCache *)cache setMetadata:dataRepresentation forURLString:v25 lastFetchDate:date lastFetchDidSucceed:v18 metadataHasImage:v22 completionHandler:v23];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(&location);
@@ -1071,7 +1071,7 @@ LABEL_7:
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1108,63 +1108,63 @@ void __73__WBSLPLinkMetadataProvider__cacheMetadata_forRequest_completionHandler
   }
 }
 
-- (BOOL)_isImageInMetadata:(id)a3
+- (BOOL)_isImageInMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [v3 image];
-  if (v4)
+  metadataCopy = metadata;
+  image = [metadataCopy image];
+  if (image)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 icon];
-    v5 = v6 != 0;
+    icon = [metadataCopy icon];
+    v5 = icon != 0;
   }
 
   return v5;
 }
 
-- (void)_getCachedMetadataInfoForRequest:(id)a3 completionHandler:(id)a4
+- (void)_getCachedMetadataInfoForRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a4;
-  v6 = [a3 url];
-  v7 = [v6 absoluteString];
+  handlerCopy = handler;
+  v6 = [request url];
+  absoluteString = [v6 absoluteString];
 
-  if (self->_cache && [v7 length])
+  if (self->_cache && [absoluteString length])
   {
-    [(WBSLPLinkMetadataCache *)self->_cache getMetadataInfoForURLString:v7 completionHandler:v8];
+    [(WBSLPLinkMetadataCache *)self->_cache getMetadataInfoForURLString:absoluteString completionHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (BOOL)_shouldStartFetchOperationForRequestIgnoringRequestFetchingPreference:(id)a3 withMetadataInfo:(id)a4
+- (BOOL)_shouldStartFetchOperationForRequestIgnoringRequestFetchingPreference:(id)preference withMetadataInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 url];
-  v9 = [v8 absoluteString];
-  v10 = [v9 length];
+  preferenceCopy = preference;
+  infoCopy = info;
+  v8 = [preferenceCopy url];
+  absoluteString = [v8 absoluteString];
+  v10 = [absoluteString length];
 
   if (v10)
   {
-    if (v7)
+    if (infoCopy)
     {
       if ([(WBSLPLinkMetadataCache *)self->_cache storesMetadataOnDisk])
       {
-        if ([v7 lastFetchDidSucceed])
+        if ([infoCopy lastFetchDidSucceed])
         {
-          v11 = [v7 metadataHasImage];
-          v12 = [v7 lastFetchDate];
-          [v12 timeIntervalSinceNow];
+          metadataHasImage = [infoCopy metadataHasImage];
+          lastFetchDate = [infoCopy lastFetchDate];
+          [lastFetchDate timeIntervalSinceNow];
           v14 = v13;
 
-          if (v11)
+          if (metadataHasImage)
           {
             v15 = -345600.0;
           }
@@ -1179,15 +1179,15 @@ void __73__WBSLPLinkMetadataProvider__cacheMetadata_forRequest_completionHandler
 
         else
         {
-          v18 = [v7 lastFetchDate];
-          [v18 timeIntervalSinceNow];
+          lastFetchDate2 = [infoCopy lastFetchDate];
+          [lastFetchDate2 timeIntervalSinceNow];
           v16 = v19 < -604800.0;
         }
       }
 
       else
       {
-        v17 = [(WBSLPLinkMetadataProvider *)self _preparedResponseForRequest:v6];
+        v17 = [(WBSLPLinkMetadataProvider *)self _preparedResponseForRequest:preferenceCopy];
         v16 = v17 == 0;
       }
     }
@@ -1206,43 +1206,43 @@ void __73__WBSLPLinkMetadataProvider__cacheMetadata_forRequest_completionHandler
   return v16;
 }
 
-- (void)_provideCachedResponseIfAvailableForRequest:(id)a3 withMetadataInfo:(id)a4
+- (void)_provideCachedResponseIfAvailableForRequest:(id)request withMetadataInfo:(id)info
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSLPLinkMetadataProvider *)self _preparedResponseForRequest:v6];
+  requestCopy = request;
+  infoCopy = info;
+  v8 = [(WBSLPLinkMetadataProvider *)self _preparedResponseForRequest:requestCopy];
   if (v8)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = v9;
-      v11 = [v6 url];
-      v12 = [v11 absoluteString];
+      v11 = [requestCopy url];
+      absoluteString = [v11 absoluteString];
       *buf = 141558275;
       v26 = 1752392040;
       v27 = 2117;
-      v28 = v12;
+      v28 = absoluteString;
       _os_log_impl(&dword_1C6968000, v10, OS_LOG_TYPE_INFO, "Providing retained LP metadata response for URL: %{sensitive, mask.hash}@", buf, 0x16u);
     }
 
-    [(WBSLPLinkMetadataProvider *)self _notifyResponse:v8 ofType:0 didReceiveNewData:1 forRequest:v6];
-    [(WBSLPLinkMetadataProvider *)self _removeOperationForRequest:v6];
+    [(WBSLPLinkMetadataProvider *)self _notifyResponse:v8 ofType:0 didReceiveNewData:1 forRequest:requestCopy];
+    [(WBSLPLinkMetadataProvider *)self _removeOperationForRequest:requestCopy];
   }
 
-  else if ([(WBSLPLinkMetadataCache *)self->_cache isMetadataCachedWithInfo:v7])
+  else if ([(WBSLPLinkMetadataCache *)self->_cache isMetadataCachedWithInfo:infoCopy])
   {
     objc_initWeak(&location, self);
     v13 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v6 url];
-      v15 = [v14 absoluteString];
+      v14 = [requestCopy url];
+      absoluteString2 = [v14 absoluteString];
       *buf = 141558275;
       v26 = 1752392040;
       v27 = 2117;
-      v28 = v15;
+      v28 = absoluteString2;
       _os_log_impl(&dword_1C6968000, v13, OS_LOG_TYPE_INFO, "Providing cached LP metadata for URL: %{sensitive, mask.hash}@", buf, 0x16u);
     }
 
@@ -1251,8 +1251,8 @@ void __73__WBSLPLinkMetadataProvider__cacheMetadata_forRequest_completionHandler
     v20[2] = __90__WBSLPLinkMetadataProvider__provideCachedResponseIfAvailableForRequest_withMetadataInfo___block_invoke;
     v20[3] = &unk_1E82860D8;
     objc_copyWeak(&v23, &location);
-    v21 = v6;
-    v22 = v7;
+    v21 = requestCopy;
+    v22 = infoCopy;
     [(WBSLPLinkMetadataProvider *)self _getCachedMetadataWithInfo:v22 completionHandler:v20];
 
     objc_destroyWeak(&v23);
@@ -1265,17 +1265,17 @@ void __73__WBSLPLinkMetadataProvider__cacheMetadata_forRequest_completionHandler
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = v16;
-      v18 = [v6 url];
-      v19 = [v18 absoluteString];
+      v18 = [requestCopy url];
+      absoluteString3 = [v18 absoluteString];
       *buf = 141558275;
       v26 = 1752392040;
       v27 = 2117;
-      v28 = v19;
+      v28 = absoluteString3;
       _os_log_impl(&dword_1C6968000, v17, OS_LOG_TYPE_INFO, "No cached LP metadata found for URL: %{sensitive, mask.hash}@", buf, 0x16u);
     }
 
-    [(WBSLPLinkMetadataProvider *)self _storeAndNotifySuccessfulResponseForRequest:v6 withMetadata:0 info:v7 didReceiveNewData:0];
-    [(WBSLPLinkMetadataProvider *)self _removeOperationForRequest:v6];
+    [(WBSLPLinkMetadataProvider *)self _storeAndNotifySuccessfulResponseForRequest:requestCopy withMetadata:0 info:infoCopy didReceiveNewData:0];
+    [(WBSLPLinkMetadataProvider *)self _removeOperationForRequest:requestCopy];
   }
 }
 
@@ -1316,13 +1316,13 @@ void __90__WBSLPLinkMetadataProvider__provideCachedResponseIfAvailableForRequest
   [*(a1 + 40) _removeOperationForRequest:*(a1 + 48)];
 }
 
-- (void)_updateMetadataIfNeededUsingWebView:(id)a3 url:(id)a4
+- (void)_updateMetadataIfNeededUsingWebView:(id)view url:(id)url
 {
-  v6 = a3;
-  v7 = a4;
-  if (([(NSMutableSet *)self->_urlsWithActiveWebViewFetches containsObject:v7]& 1) == 0)
+  viewCopy = view;
+  urlCopy = url;
+  if (([(NSMutableSet *)self->_urlsWithActiveWebViewFetches containsObject:urlCopy]& 1) == 0)
   {
-    v8 = [[WBSLPLinkMetadataRequest alloc] initWithURL:v7];
+    v8 = [[WBSLPLinkMetadataRequest alloc] initWithURL:urlCopy];
     v9 = [(WBSLPLinkMetadataProvider *)self _operationForRequest:v8];
     if (![v9 _status])
     {
@@ -1335,8 +1335,8 @@ void __90__WBSLPLinkMetadataProvider__provideCachedResponseIfAvailableForRequest
       objc_copyWeak(&v15, &location);
       v11 = v8;
       v12 = v9;
-      v13 = v7;
-      v14 = v6;
+      v13 = urlCopy;
+      v14 = viewCopy;
       [(WBSLPLinkMetadataProvider *)self _getCachedMetadataInfoForRequest:v11 completionHandler:v10];
 
       objc_destroyWeak(&v15);
@@ -1425,25 +1425,25 @@ uint64_t __69__WBSLPLinkMetadataProvider__updateMetadataIfNeededUsingWebView_url
   return [v2 removeObject:v3];
 }
 
-- (BOOL)_shouldUseWebViewToUpdateMetadataWithInfo:(id)a3 request:(id)a4 existingOperation:(id)a5
+- (BOOL)_shouldUseWebViewToUpdateMetadataWithInfo:(id)info request:(id)request existingOperation:(id)operation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  infoCopy = info;
+  requestCopy = request;
+  operationCopy = operation;
+  if (operationCopy)
   {
 LABEL_2:
     v11 = 1;
     goto LABEL_3;
   }
 
-  if (v8)
+  if (infoCopy)
   {
-    v13 = [v8 lastFetchDate];
-    [v13 timeIntervalSinceNow];
+    lastFetchDate = [infoCopy lastFetchDate];
+    [lastFetchDate timeIntervalSinceNow];
     v15 = v14;
 
-    if ([v8 metadataHasImage])
+    if ([infoCopy metadataHasImage])
     {
       v16 = -345600.0;
     }
@@ -1462,7 +1462,7 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  v17 = [(WBSLPLinkMetadataProvider *)self _preparedResponseForRequest:v9];
+  v17 = [(WBSLPLinkMetadataProvider *)self _preparedResponseForRequest:requestCopy];
   if (v17)
   {
     v11 = 1;
@@ -1471,30 +1471,30 @@ LABEL_2:
   else
   {
     cachedResponsePolicy = self->_cachedResponsePolicy;
-    v19 = [v9 url];
-    v20 = [v19 absoluteString];
-    v11 = [(WBSCacheRetainReleasePolicy *)cachedResponsePolicy isEntryRetainedForKeyString:v20];
+    v19 = [requestCopy url];
+    absoluteString = [v19 absoluteString];
+    v11 = [(WBSCacheRetainReleasePolicy *)cachedResponsePolicy isEntryRetainedForKeyString:absoluteString];
   }
 
 LABEL_3:
   return v11;
 }
 
-- (void)_fetchMetadataForWebView:(id)a3 url:(id)a4 completionHandler:(id)a5
+- (void)_fetchMetadataForWebView:(id)view url:(id)url completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  urlCopy = url;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__WBSLPLinkMetadataProvider__fetchMetadataForWebView_url_completionHandler___block_invoke;
   block[3] = &unk_1E8283058;
-  v14 = v8;
-  v15 = v7;
-  v16 = v9;
-  v10 = v9;
-  v11 = v7;
-  v12 = v8;
+  v14 = urlCopy;
+  v15 = viewCopy;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = viewCopy;
+  v12 = urlCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1590,79 +1590,79 @@ uint64_t __76__WBSLPLinkMetadataProvider__fetchMetadataForWebView_url_completion
   return result;
 }
 
-- (void)_storeAndNotifySuccessfulResponseForRequest:(id)a3 withMetadata:(id)a4 info:(id)a5 didReceiveNewData:(BOOL)a6
+- (void)_storeAndNotifySuccessfulResponseForRequest:(id)request withMetadata:(id)metadata info:(id)info didReceiveNewData:(BOOL)data
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(WBSLPLinkMetadataProvider *)self _shouldStartFetchOperationForRequestIgnoringRequestFetchingPreference:v11 withMetadataInfo:a5];
+  dataCopy = data;
+  metadataCopy = metadata;
+  requestCopy = request;
+  v12 = [(WBSLPLinkMetadataProvider *)self _shouldStartFetchOperationForRequestIgnoringRequestFetchingPreference:requestCopy withMetadataInfo:info];
   v13 = [WBSLPLinkMetadataResponse alloc];
-  v14 = [v11 url];
-  v15 = [(WBSLPLinkMetadataResponse *)v13 initWithURL:v14 metadata:v10 canAttemptFetchNow:v12];
+  v14 = [requestCopy url];
+  v15 = [(WBSLPLinkMetadataResponse *)v13 initWithURL:v14 metadata:metadataCopy canAttemptFetchNow:v12];
 
-  [(WBSLPLinkMetadataProvider *)self _storePreparedResponse:v15 forRequest:v11];
-  [(WBSLPLinkMetadataProvider *)self _notifyResponse:v15 ofType:0 didReceiveNewData:v6 forRequest:v11];
+  [(WBSLPLinkMetadataProvider *)self _storePreparedResponse:v15 forRequest:requestCopy];
+  [(WBSLPLinkMetadataProvider *)self _notifyResponse:v15 ofType:0 didReceiveNewData:dataCopy forRequest:requestCopy];
 }
 
-- (void)_notifyResponse:(id)a3 ofType:(int64_t)a4 didReceiveNewData:(BOOL)a5 forRequest:(id)a6
+- (void)_notifyResponse:(id)response ofType:(int64_t)type didReceiveNewData:(BOOL)data forRequest:(id)request
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
+  dataCopy = data;
+  requestCopy = request;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_providerDelegate);
-  [WeakRetained siteMetadataProvider:self didReceiveResponse:v11 ofType:a4 didReceiveNewData:v6 forRequest:v10];
+  [WeakRetained siteMetadataProvider:self didReceiveResponse:responseCopy ofType:type didReceiveNewData:dataCopy forRequest:requestCopy];
 }
 
-- (id)_preparedResponseForRequest:(id)a3
+- (id)_preparedResponseForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = self->_requestsToResponses;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_requestsToResponses objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_requestsToResponses objectForKeyedSubscript:requestCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (void)_discardPreparedResponseForRequest:(id)a3
+- (void)_discardPreparedResponseForRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v4 = self->_requestsToResponses;
   objc_sync_enter(v4);
-  [(NSMutableDictionary *)self->_requestsToResponses removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_requestsToResponses removeObjectForKey:requestCopy];
   objc_sync_exit(v4);
 }
 
-- (void)_storePreparedResponse:(id)a3 forRequest:(id)a4
+- (void)_storePreparedResponse:(id)response forRequest:(id)request
 {
-  v8 = a3;
-  v6 = a4;
+  responseCopy = response;
+  requestCopy = request;
   v7 = self->_requestsToResponses;
   objc_sync_enter(v7);
-  [(NSMutableDictionary *)self->_requestsToResponses setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_requestsToResponses setObject:responseCopy forKeyedSubscript:requestCopy];
   objc_sync_exit(v7);
 }
 
-- (void)_replacePreparedResponseWithData:(id)a3 forRequest:(id)a4
+- (void)_replacePreparedResponseWithData:(id)data forRequest:(id)request
 {
-  v15 = a3;
-  v6 = a4;
-  if (v15)
+  dataCopy = data;
+  requestCopy = request;
+  if (dataCopy)
   {
     v7 = self->_requestsToResponses;
     objc_sync_enter(v7);
-    v8 = [(NSMutableDictionary *)self->_requestsToResponses objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)self->_requestsToResponses objectForKeyedSubscript:requestCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 metadata];
-      v11 = [MEMORY[0x1E696ECA0] metadataWithDataRepresentation:v15];
-      if (v11 && (![(WBSLPLinkMetadataProvider *)self _isImageInMetadata:v10]|| [(WBSLPLinkMetadataProvider *)self _isImageInMetadata:v11]))
+      metadata = [v8 metadata];
+      v11 = [MEMORY[0x1E696ECA0] metadataWithDataRepresentation:dataCopy];
+      if (v11 && (![(WBSLPLinkMetadataProvider *)self _isImageInMetadata:metadata]|| [(WBSLPLinkMetadataProvider *)self _isImageInMetadata:v11]))
       {
         v12 = [WBSLPLinkMetadataResponse alloc];
-        v13 = [v6 url];
+        v13 = [requestCopy url];
         v14 = [(WBSLPLinkMetadataResponse *)v12 initWithURL:v13 metadata:v11 canAttemptFetchNow:0];
-        [(NSMutableDictionary *)self->_requestsToResponses setObject:v14 forKeyedSubscript:v6];
+        [(NSMutableDictionary *)self->_requestsToResponses setObject:v14 forKeyedSubscript:requestCopy];
       }
     }
 

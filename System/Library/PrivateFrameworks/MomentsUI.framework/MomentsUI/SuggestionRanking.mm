@@ -1,22 +1,22 @@
 @interface SuggestionRanking
 - (_TtC9MomentsUI17SuggestionRanking)init;
-- (_TtC9MomentsUI17SuggestionRanking)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9MomentsUI17SuggestionRanking)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SuggestionRanking
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SuggestionRanking.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SuggestionRanking.encode(with:)(coderCopy);
 }
 
-- (_TtC9MomentsUI17SuggestionRanking)initWithCoder:(id)a3
+- (_TtC9MomentsUI17SuggestionRanking)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized SuggestionRanking.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized SuggestionRanking.init(coder:)(coderCopy);
 
   return v4;
 }

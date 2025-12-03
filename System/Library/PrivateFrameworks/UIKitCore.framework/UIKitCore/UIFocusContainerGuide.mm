@@ -1,23 +1,23 @@
 @interface UIFocusContainerGuide
 - (id)fallbackItemProvider;
-- (void)setFallbackItemProvider:(id)a3;
+- (void)setFallbackItemProvider:(id)provider;
 @end
 
 @implementation UIFocusContainerGuide
 
-- (void)setFallbackItemProvider:(id)a3
+- (void)setFallbackItemProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(UIFocusGuide *)self _impl];
-  [v5 setFallbackItemProvider:v4];
+  providerCopy = provider;
+  _impl = [(UIFocusGuide *)self _impl];
+  [_impl setFallbackItemProvider:providerCopy];
 }
 
 - (id)fallbackItemProvider
 {
-  v2 = [(UIFocusGuide *)self _impl];
-  v3 = [v2 fallbackItemProvider];
+  _impl = [(UIFocusGuide *)self _impl];
+  fallbackItemProvider = [_impl fallbackItemProvider];
 
-  return v3;
+  return fallbackItemProvider;
 }
 
 @end

@@ -25,7 +25,7 @@
   v15[2] = __107__NSKeyedArchiver_ICUserIdentity__ic_archivedDataWithRootUserIdentity_inStore_requiringSecureCoding_error___block_invoke;
   v15[3] = &unk_1E7BF4298;
   v17 = &v27;
-  v19 = a1;
+  selfCopy = self;
   v12 = v10;
   v20 = a5;
   v16 = v12;

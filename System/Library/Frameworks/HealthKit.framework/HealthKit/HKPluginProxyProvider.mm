@@ -1,19 +1,19 @@
 @interface HKPluginProxyProvider
-- (HKPluginProxyProvider)initWithHealthStore:(id)a3 pluginIdentifier:(id)a4 exportedObject:(id)a5;
+- (HKPluginProxyProvider)initWithHealthStore:(id)store pluginIdentifier:(id)identifier exportedObject:(id)object;
 @end
 
 @implementation HKPluginProxyProvider
 
-- (HKPluginProxyProvider)initWithHealthStore:(id)a3 pluginIdentifier:(id)a4 exportedObject:(id)a5
+- (HKPluginProxyProvider)initWithHealthStore:(id)store pluginIdentifier:(id)identifier exportedObject:(id)object
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 exportedInterface];
-  v12 = [v8 remoteInterface];
+  objectCopy = object;
+  identifierCopy = identifier;
+  storeCopy = store;
+  exportedInterface = [objectCopy exportedInterface];
+  remoteInterface = [objectCopy remoteInterface];
   v15.receiver = self;
   v15.super_class = HKPluginProxyProvider;
-  v13 = [(HKProxyProvider *)&v15 initWithSource:v10 serviceIdentifier:v9 exportedObject:v8 exportedInterface:v11 remoteInterface:v12];
+  v13 = [(HKProxyProvider *)&v15 initWithSource:storeCopy serviceIdentifier:identifierCopy exportedObject:objectCopy exportedInterface:exportedInterface remoteInterface:remoteInterface];
 
   return v13;
 }

@@ -6,14 +6,14 @@
 - (NSString)pluginMetaDataFolder;
 - (id)extensionMatchingContext;
 - (id)highMemoryExtensionMatchingContext;
-- (void)setExtensionMatchingContext:(id)a3;
-- (void)setHasCompletedInitialization:(BOOL)a3;
-- (void)setHasDeferredInstalledAppsChangedNotification:(BOOL)a3;
-- (void)setHighMemoryExtensionMatchingContext:(id)a3;
-- (void)setPluginIDToMetadataCache:(id)a3;
-- (void)setPluginMetaDataFolder:(id)a3;
-- (void)setPluginsToRemoveAfterExtensionsUpdate:(id)a3;
-- (void)setRichLinksDataSourceClass:(Class)a3;
+- (void)setExtensionMatchingContext:(id)context;
+- (void)setHasCompletedInitialization:(BOOL)initialization;
+- (void)setHasDeferredInstalledAppsChangedNotification:(BOOL)notification;
+- (void)setHighMemoryExtensionMatchingContext:(id)context;
+- (void)setPluginIDToMetadataCache:(id)cache;
+- (void)setPluginMetaDataFolder:(id)folder;
+- (void)setPluginsToRemoveAfterExtensionsUpdate:(id)update;
+- (void)setRichLinksDataSourceClass:(Class)class;
 @end
 
 @implementation IMBalloonPluginManagerModel
@@ -51,140 +51,140 @@
 
 - (BOOL)hasCompletedInitialization
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hasCompletedInitialization = v2->_hasCompletedInitialization;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasCompletedInitialization = selfCopy->_hasCompletedInitialization;
+  objc_sync_exit(selfCopy);
 
   return hasCompletedInitialization;
 }
 
 - (BOOL)hasDeferredInstalledAppsChangedNotification
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hasDeferredInstalledAppsChangedNotification = v2->_hasDeferredInstalledAppsChangedNotification;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasDeferredInstalledAppsChangedNotification = selfCopy->_hasDeferredInstalledAppsChangedNotification;
+  objc_sync_exit(selfCopy);
 
   return hasDeferredInstalledAppsChangedNotification;
 }
 
-- (void)setExtensionMatchingContext:(id)a3
+- (void)setExtensionMatchingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   obj = self;
   objc_sync_enter(obj);
   extensionMatchingContext = obj->_extensionMatchingContext;
-  obj->_extensionMatchingContext = v4;
+  obj->_extensionMatchingContext = contextCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)extensionMatchingContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_extensionMatchingContext;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_extensionMatchingContext;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setHighMemoryExtensionMatchingContext:(id)a3
+- (void)setHighMemoryExtensionMatchingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   obj = self;
   objc_sync_enter(obj);
   highMemoryExtensionMatchingContext = obj->_highMemoryExtensionMatchingContext;
-  obj->_highMemoryExtensionMatchingContext = v4;
+  obj->_highMemoryExtensionMatchingContext = contextCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)highMemoryExtensionMatchingContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_highMemoryExtensionMatchingContext;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_highMemoryExtensionMatchingContext;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setPluginMetaDataFolder:(id)a3
+- (void)setPluginMetaDataFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   obj = self;
   objc_sync_enter(obj);
   pluginMetaDataFolder = obj->_pluginMetaDataFolder;
-  obj->_pluginMetaDataFolder = v4;
+  obj->_pluginMetaDataFolder = folderCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSString)pluginMetaDataFolder
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_pluginMetaDataFolder;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_pluginMetaDataFolder;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setPluginsToRemoveAfterExtensionsUpdate:(id)a3
+- (void)setPluginsToRemoveAfterExtensionsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   obj = self;
   objc_sync_enter(obj);
   pluginsToRemoveAfterExtensionsUpdate = obj->_pluginsToRemoveAfterExtensionsUpdate;
-  obj->_pluginsToRemoveAfterExtensionsUpdate = v4;
+  obj->_pluginsToRemoveAfterExtensionsUpdate = updateCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setPluginIDToMetadataCache:(id)a3
+- (void)setPluginIDToMetadataCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   obj = self;
   objc_sync_enter(obj);
   pluginIDToMetadataCache = obj->_pluginIDToMetadataCache;
-  obj->_pluginIDToMetadataCache = v4;
+  obj->_pluginIDToMetadataCache = cacheCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setHasCompletedInitialization:(BOOL)a3
+- (void)setHasCompletedInitialization:(BOOL)initialization
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_hasCompletedInitialization = a3;
+  obj->_hasCompletedInitialization = initialization;
   objc_sync_exit(obj);
 }
 
-- (void)setHasDeferredInstalledAppsChangedNotification:(BOOL)a3
+- (void)setHasDeferredInstalledAppsChangedNotification:(BOOL)notification
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_hasDeferredInstalledAppsChangedNotification = a3;
+  obj->_hasDeferredInstalledAppsChangedNotification = notification;
   objc_sync_exit(obj);
 }
 
 - (Class)richLinksDataSourceClass
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_richLinksDataSourceClass;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_richLinksDataSourceClass;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setRichLinksDataSourceClass:(Class)a3
+- (void)setRichLinksDataSourceClass:(Class)class
 {
   obj = self;
   objc_sync_enter(obj);
-  objc_storeStrong(&obj->_richLinksDataSourceClass, a3);
+  objc_storeStrong(&obj->_richLinksDataSourceClass, class);
   objc_sync_exit(obj);
 }
 

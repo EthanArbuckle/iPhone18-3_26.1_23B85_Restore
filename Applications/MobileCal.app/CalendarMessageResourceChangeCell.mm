@@ -2,36 +2,36 @@
 - (id)bodyStringDict;
 - (id)titleStrings;
 - (int64_t)_changedPropertyCount;
-- (void)setNotification:(id)a3;
+- (void)setNotification:(id)notification;
 @end
 
 @implementation CalendarMessageResourceChangeCell
 
 - (id)titleStrings
 {
-  v4 = self;
-  v5 = [(CalendarMessageCell *)self notification];
-  if ([v5 changeType] == 1 || objc_msgSend(v5, "changeType") == 3 || objc_msgSend(v5, "changeType") == 2)
+  selfCopy = self;
+  notification = [(CalendarMessageCell *)self notification];
+  if ([notification changeType] == 1 || objc_msgSend(notification, "changeType") == 3 || objc_msgSend(notification, "changeType") == 2)
   {
-    v6 = [v5 title];
+    title = [notification title];
     v7 = 1;
   }
 
   else
   {
-    v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v2 = [v4 localizedStringForKey:@"“%@”" value:&stru_1002133B8 table:0];
-    v3 = [v5 title];
-    v6 = [NSString localizedStringWithFormat:v2, v3];
+    selfCopy = [NSBundle bundleForClass:objc_opt_class()];
+    v2 = [selfCopy localizedStringForKey:@"“%@”" value:&stru_1002133B8 table:0];
+    title2 = [notification title];
+    title = [NSString localizedStringWithFormat:v2, title2];
     v7 = 0;
   }
 
-  v10 = v6;
+  v10 = title;
   v8 = [NSArray arrayWithObjects:&v10 count:1];
   if ((v7 & 1) == 0)
   {
 
-    v6 = v4;
+    title = selfCopy;
   }
 
   return v8;
@@ -39,24 +39,24 @@
 
 - (id)bodyStringDict
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 descriptionStrings:CUIKCalendarNoboDescriptionProfile];
+  notification = [(CalendarMessageCell *)self notification];
+  v3 = [notification descriptionStrings:CUIKCalendarNoboDescriptionProfile];
 
   return v3;
 }
 
 - (int64_t)_changedPropertyCount
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  LODWORD(v3) = [v2 dateChanged];
-  v4 = [v2 timeChanged];
+  notification = [(CalendarMessageCell *)self notification];
+  LODWORD(v3) = [notification dateChanged];
+  timeChanged = [notification timeChanged];
   v5 = 1;
   if (v3)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (timeChanged)
   {
     v3 = v5;
   }
@@ -66,17 +66,17 @@
     v3 = v3;
   }
 
-  v6 = v3 + [v2 titleChanged];
-  v7 = v6 + [v2 locationChanged];
+  v6 = v3 + [notification titleChanged];
+  v7 = v6 + [notification locationChanged];
 
   return v7;
 }
 
-- (void)setNotification:(id)a3
+- (void)setNotification:(id)notification
 {
   v6.receiver = self;
   v6.super_class = CalendarMessageResourceChangeCell;
-  [(CalendarMessageCell *)&v6 setNotification:a3];
+  [(CalendarMessageCell *)&v6 setNotification:notification];
   dateString = self->_dateString;
   self->_dateString = 0;
 

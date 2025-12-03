@@ -1,39 +1,39 @@
 @interface BKPDFLocation
-+ (id)deserializeLocationFromDictionary:(id)a3;
-+ (id)locationForSelection:(id)a3 offset:(unint64_t)a4;
-- (BKPDFLocation)initWithCoder:(id)a3;
-- (BKPDFLocation)initWithLocationDictionary:(id)a3;
++ (id)deserializeLocationFromDictionary:(id)dictionary;
++ (id)locationForSelection:(id)selection offset:(unint64_t)offset;
+- (BKPDFLocation)initWithCoder:(id)coder;
+- (BKPDFLocation)initWithLocationDictionary:(id)dictionary;
 - (id)serialString;
 - (id)serializeLocationToDictionary;
 - (id)stringValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKPDFLocation
 
-+ (id)locationForSelection:(id)a3 offset:(unint64_t)a4
++ (id)locationForSelection:(id)selection offset:(unint64_t)offset
 {
-  v5 = a3;
-  v6 = [(BKPageLocation *)[BKPDFLocation alloc] initWithOrdinal:0 andOffset:a4];
-  [(BKPDFLocation *)v6 setSelection:v5];
-  v7 = [v5 html];
+  selectionCopy = selection;
+  v6 = [(BKPageLocation *)[BKPDFLocation alloc] initWithOrdinal:0 andOffset:offset];
+  [(BKPDFLocation *)v6 setSelection:selectionCopy];
+  html = [selectionCopy html];
 
-  v8 = sub_9A9A4(v7);
+  v8 = sub_9A9A4(html);
   [(BKPDFLocation *)v6 setSerialData:v8];
 
   return v6;
 }
 
-- (BKPDFLocation)initWithLocationDictionary:(id)a3
+- (BKPDFLocation)initWithLocationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"super"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"super"];
   v10.receiver = self;
   v10.super_class = BKPDFLocation;
   v6 = [(BKPageLocation *)&v10 initWithLocationDictionary:v5];
   if (v6)
   {
-    v7 = [v4 objectForKey:@"serialData"];
+    v7 = [dictionaryCopy objectForKey:@"serialData"];
     serialData = v6->_serialData;
     v6->_serialData = v7;
   }
@@ -45,21 +45,21 @@
 {
   v11.receiver = self;
   v11.super_class = BKPDFLocation;
-  v3 = [(BKPageLocation *)&v11 serializeLocationToDictionary];
-  v4 = [(BKPDFLocation *)self selection];
+  serializeLocationToDictionary = [(BKPageLocation *)&v11 serializeLocationToDictionary];
+  selection = [(BKPDFLocation *)self selection];
 
-  if (v4)
+  if (selection)
   {
-    v5 = [(BKPDFLocation *)self selection];
-    v6 = [v5 html];
+    selection2 = [(BKPDFLocation *)self selection];
+    html = [selection2 html];
 
-    v7 = sub_9A9A4(v6);
+    v7 = sub_9A9A4(html);
     [(BKPDFLocation *)self setSerialData:v7];
   }
 
-  if (v3 && (serialData = self->_serialData) != 0)
+  if (serializeLocationToDictionary && (serialData = self->_serialData) != 0)
   {
-    v9 = [NSDictionary dictionaryWithObjectsAndKeys:v3, @"super", serialData, @"serialData", @"BKPDFLocation", @"class", 0];
+    v9 = [NSDictionary dictionaryWithObjectsAndKeys:serializeLocationToDictionary, @"super", serialData, @"serialData", @"BKPDFLocation", @"class", 0];
   }
 
   else
@@ -70,13 +70,13 @@
   return v9;
 }
 
-+ (id)deserializeLocationFromDictionary:(id)a3
++ (id)deserializeLocationFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"class"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"class"];
   if ([v4 isEqualToString:@"BKPDFLocation"])
   {
-    v5 = [[BKPDFLocation alloc] initWithLocationDictionary:v3];
+    v5 = [[BKPDFLocation alloc] initWithLocationDictionary:dictionaryCopy];
   }
 
   else
@@ -91,24 +91,24 @@
 {
   v7.receiver = self;
   v7.super_class = BKPDFLocation;
-  v3 = [(BKPageLocation *)&v7 stringValue];
-  v4 = [(BKPDFLocation *)self serialString];
-  v5 = [NSString stringWithFormat:@"{ %@, serialString: %@ }", v3, v4];
+  stringValue = [(BKPageLocation *)&v7 stringValue];
+  serialString = [(BKPDFLocation *)self serialString];
+  v5 = [NSString stringWithFormat:@"{ %@, serialString: %@ }", stringValue, serialString];
 
   return v5;
 }
 
 - (id)serialString
 {
-  v3 = [(BKPDFLocation *)self serialData];
+  serialData = [(BKPDFLocation *)self serialData];
 
-  if (v3)
+  if (serialData)
   {
-    v4 = [(BKPDFLocation *)self serialData];
-    v5 = [v4 bytes];
-    v7 = (v5 + 1);
-    v6 = *v5;
-    v8 = malloc_type_malloc(*v5, 0xFA933F4BuLL);
+    serialData2 = [(BKPDFLocation *)self serialData];
+    bytes = [serialData2 bytes];
+    v7 = (bytes + 1);
+    v6 = *bytes;
+    v8 = malloc_type_malloc(*bytes, 0xFA933F4BuLL);
     *&v11.avail_in = 0u;
     memset(&v11.total_out, 0, 72);
     v11.next_in = v7;
@@ -141,15 +141,15 @@
   return v9;
 }
 
-- (BKPDFLocation)initWithCoder:(id)a3
+- (BKPDFLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = BKPDFLocation;
-  v5 = [(BKPageLocation *)&v9 initWithCoder:v4];
+  v5 = [(BKPageLocation *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialData"];
     serialData = v5->_serialData;
     v5->_serialData = v6;
 
@@ -159,13 +159,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BKPDFLocation;
-  v4 = a3;
-  [(BKPageLocation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_serialData forKey:{@"serialData", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(BKPageLocation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_serialData forKey:{@"serialData", v5.receiver, v5.super_class}];
 }
 
 @end

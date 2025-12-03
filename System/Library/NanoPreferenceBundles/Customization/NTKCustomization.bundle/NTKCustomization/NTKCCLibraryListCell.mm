@@ -1,11 +1,11 @@
 @interface NTKCCLibraryListCell
 + (id)reuseIdentifier;
-- (NTKCCLibraryListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NTKCCLibraryListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_fontSizeDidChange;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setCurrentFace:(BOOL)a3;
-- (void)setFaceName:(id)a3;
+- (void)setCurrentFace:(BOOL)face;
+- (void)setFaceName:(id)name;
 @end
 
 @implementation NTKCCLibraryListCell
@@ -17,11 +17,11 @@
   return NSStringFromClass(v2);
 }
 
-- (NTKCCLibraryListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NTKCCLibraryListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v37.receiver = self;
   v37.super_class = NTKCCLibraryListCell;
-  v4 = [(NTKCCLibraryListCell *)&v37 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(NTKCCLibraryListCell *)&v37 initWithStyle:3 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = BPSBackgroundColor();
@@ -50,9 +50,9 @@
     [(UIStackView *)v4->_verticalStack setAlignment:1];
     [(UIStackView *)v4->_verticalStack setSpacing:11.0];
     v12 = +[CLKDevice currentDevice];
-    v13 = [v12 deviceCategory];
+    deviceCategory = [v12 deviceCategory];
 
-    if (v13 == &dword_0 + 1)
+    if (deviceCategory == &dword_0 + 1)
     {
       v14 = 90.0;
     }
@@ -62,7 +62,7 @@
       v14 = 92.0;
     }
 
-    if (v13 == &dword_0 + 1)
+    if (deviceCategory == &dword_0 + 1)
     {
       v15 = 72.0;
     }
@@ -109,8 +109,8 @@
     [(UIStackView *)v4->_verticalStack addArrangedSubview:v4->_subtitle];
     LODWORD(v29) = 1132068864;
     [(UIStackView *)v4->_verticalStack setContentHuggingPriority:1 forAxis:v29];
-    v30 = [(NTKCCLibraryListCell *)v4 contentView];
-    [v30 addSubview:v4->_horizontalStack];
+    contentView = [(NTKCCLibraryListCell *)v4 contentView];
+    [contentView addSubview:v4->_horizontalStack];
 
     v31 = _NSDictionaryOfVariableBindings(@"_horizontalStack", v4->_horizontalStack, 0);
     v32 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-(LeadingMargin)-[_horizontalStack]-(TrailingMargin)-|", 0, &off_21B18, v31);
@@ -139,18 +139,18 @@
   [(NTKCCLibraryListCell *)&v4 dealloc];
 }
 
-- (void)setFaceName:(id)a3
+- (void)setFaceName:(id)name
 {
-  v4 = [NSAttributedString NTKHyphenatableString:a3];
+  v4 = [NSAttributedString NTKHyphenatableString:name];
   [(UILabel *)self->_name setAttributedText:v4];
 }
 
-- (void)setCurrentFace:(BOOL)a3
+- (void)setCurrentFace:(BOOL)face
 {
-  if (self->_currentFace != a3)
+  if (self->_currentFace != face)
   {
-    self->_currentFace = a3;
-    [(UILabel *)self->_subtitle setHidden:!a3];
+    self->_currentFace = face;
+    [(UILabel *)self->_subtitle setHidden:!face];
   }
 }
 
@@ -163,16 +163,16 @@
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(NTKCFaceContainerView *)self->_faceContainer superview];
+  superview = [(NTKCFaceContainerView *)self->_faceContainer superview];
   horizontalStack = self->_horizontalStack;
 
   v11 = 0.0;
-  if (v9 == horizontalStack)
+  if (superview == horizontalStack)
   {
     [(UIStackView *)self->_horizontalStack spacing];
     v13 = v12 + 80.0 + 23.0;
-    v14 = [(NTKCCLibraryListCell *)self contentView];
-    [(NTKCCLibraryListCell *)self convertPoint:v14 fromView:v13, 0.0];
+    contentView = [(NTKCCLibraryListCell *)self contentView];
+    [(NTKCCLibraryListCell *)self convertPoint:contentView fromView:v13, 0.0];
     v11 = v15;
   }
 
@@ -227,8 +227,8 @@
   [v20 bounds];
   v22 = v21;
 
-  v23 = [(NTKCFaceContainerView *)self->_faceContainer superview];
-  v24 = v23;
+  superview = [(NTKCFaceContainerView *)self->_faceContainer superview];
+  v24 = superview;
   if ((v22 / TypographicBounds) > 0x10)
   {
     v25 = 32;

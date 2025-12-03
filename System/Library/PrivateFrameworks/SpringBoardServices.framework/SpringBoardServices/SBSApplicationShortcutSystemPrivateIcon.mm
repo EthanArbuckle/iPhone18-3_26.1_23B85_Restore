@@ -1,28 +1,28 @@
 @interface SBSApplicationShortcutSystemPrivateIcon
-- (BOOL)isEqual:(id)a3;
-- (SBSApplicationShortcutSystemPrivateIcon)initWithSystemImageName:(id)a3;
-- (SBSApplicationShortcutSystemPrivateIcon)initWithXPCDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSApplicationShortcutSystemPrivateIcon)initWithSystemImageName:(id)name;
+- (SBSApplicationShortcutSystemPrivateIcon)initWithXPCDictionary:(id)dictionary;
 - (id)_initForSubclass;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSApplicationShortcutSystemPrivateIcon
 
-- (SBSApplicationShortcutSystemPrivateIcon)initWithSystemImageName:(id)a3
+- (SBSApplicationShortcutSystemPrivateIcon)initWithSystemImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SBSApplicationShortcutSystemPrivateIcon;
-  v5 = [(SBSApplicationShortcutIcon *)&v9 _initForSubclass];
-  if (v5)
+  _initForSubclass = [(SBSApplicationShortcutIcon *)&v9 _initForSubclass];
+  if (_initForSubclass)
   {
-    v6 = [v4 copy];
-    systemImageName = v5->_systemImageName;
-    v5->_systemImageName = v6;
+    v6 = [nameCopy copy];
+    systemImageName = _initForSubclass->_systemImageName;
+    _initForSubclass->_systemImageName = v6;
   }
 
-  return v5;
+  return _initForSubclass;
 }
 
 - (id)_initForSubclass
@@ -36,24 +36,24 @@
   return [(SBSApplicationShortcutSystemPrivateIcon *)self initWithSystemImageName:&stru_1F058B7C8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-    v6 = [(SBSApplicationShortcutSystemPrivateIcon *)self systemImageName];
+    v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+    systemImageName = [(SBSApplicationShortcutSystemPrivateIcon *)self systemImageName];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __51__SBSApplicationShortcutSystemPrivateIcon_isEqual___block_invoke;
     v10[3] = &unk_1E7360810;
-    v11 = v4;
-    v7 = [v5 appendObject:v6 counterpart:v10];
+    v11 = equalCopy;
+    v7 = [v5 appendObject:systemImageName counterpart:v10];
 
     v8 = [v5 isEqual];
   }
@@ -63,50 +63,50 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SBSApplicationShortcutSystemPrivateIcon *)self systemImageName];
-  v3 = [v2 hash];
+  systemImageName = [(SBSApplicationShortcutSystemPrivateIcon *)self systemImageName];
+  v3 = [systemImageName hash];
 
   return v3;
 }
 
-- (SBSApplicationShortcutSystemPrivateIcon)initWithXPCDictionary:(id)a3
+- (SBSApplicationShortcutSystemPrivateIcon)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = BSDeserializeStringFromXPCDictionaryWithKey();
     if (v4)
     {
       self = [(SBSApplicationShortcutSystemPrivateIcon *)self initWithSystemImageName:v4];
-      v5 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v6 = v4;
-    v5 = [(SBSApplicationShortcutSystemPrivateIcon *)self systemImageName];
-    if (v5)
+    v6 = dictionaryCopy;
+    systemImageName = [(SBSApplicationShortcutSystemPrivateIcon *)self systemImageName];
+    if (systemImageName)
     {
       BSSerializeStringToXPCDictionaryWithKey();
     }
 
-    v4 = v6;
+    dictionaryCopy = v6;
   }
 }
 

@@ -1,12 +1,12 @@
 @interface HMDSiriAccessoryMonitor
 - (BOOL)hasAnyActiveTargetingAccessories;
-- (HMDSiriAccessoryMonitor)initWithDelegate:(id)a3;
+- (HMDSiriAccessoryMonitor)initWithDelegate:(id)delegate;
 - (HMDSiriAccessoryMonitorDelegate)delegate;
-- (id)_accessoriesTargetingAccessory:(id)a3;
-- (id)_getInfoForAccessory:(id)a3;
-- (void)_addAccessory:(id)a3 withTarget:(id)a4;
-- (void)_removeAccessory:(id)a3;
-- (void)setTargetableAccessory:(id)a3 withControllers:(id)a4;
+- (id)_accessoriesTargetingAccessory:(id)accessory;
+- (id)_getInfoForAccessory:(id)accessory;
+- (void)_addAccessory:(id)accessory withTarget:(id)target;
+- (void)_removeAccessory:(id)accessory;
+- (void)setTargetableAccessory:(id)accessory withControllers:(id)controllers;
 @end
 
 @implementation HMDSiriAccessoryMonitor
@@ -18,13 +18,13 @@
   return WeakRetained;
 }
 
-- (void)setTargetableAccessory:(id)a3 withControllers:(id)a4
+- (void)setTargetableAccessory:(id)accessory withControllers:(id)controllers
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDSiriAccessoryMonitor *)self _accessoriesTargetingAccessory:v6];
-  v9 = [MEMORY[0x277CBEB98] setWithArray:v7];
+  accessoryCopy = accessory;
+  controllersCopy = controllers;
+  v8 = [(HMDSiriAccessoryMonitor *)self _accessoriesTargetingAccessory:accessoryCopy];
+  v9 = [MEMORY[0x277CBEB98] setWithArray:controllersCopy];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __66__HMDSiriAccessoryMonitor_setTargetableAccessory_withControllers___block_invoke;
@@ -37,7 +37,7 @@
   v33[1] = 3221225472;
   v33[2] = __66__HMDSiriAccessoryMonitor_setTargetableAccessory_withControllers___block_invoke_2;
   v33[3] = &unk_278670C80;
-  v12 = v7;
+  v12 = controllersCopy;
   v34 = v12;
   v13 = [v10 objectsPassingTest:v33];
   v29 = 0u;
@@ -60,7 +60,7 @@
           objc_enumerationMutation(v14);
         }
 
-        [(HMDSiriAccessoryMonitor *)self _addAccessory:*(*(&v29 + 1) + 8 * v18++) withTarget:v6];
+        [(HMDSiriAccessoryMonitor *)self _addAccessory:*(*(&v29 + 1) + 8 * v18++) withTarget:accessoryCopy];
       }
 
       while (v16 != v18);
@@ -103,50 +103,50 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeAccessory:(id)a3
+- (void)_removeAccessory:(id)accessory
 {
-  v7 = a3;
+  accessoryCopy = accessory;
   v4 = [(HMDSiriAccessoryMonitor *)self _getInfoForAccessory:?];
   if (v4)
   {
-    v5 = [(HMDSiriAccessoryMonitor *)self accessories];
-    [v5 removeObjectForKey:v7];
+    accessories = [(HMDSiriAccessoryMonitor *)self accessories];
+    [accessories removeObjectForKey:accessoryCopy];
 
     if ([v4 isActiveAndSupportsDragonSiri])
     {
-      v6 = [(HMDSiriAccessoryMonitor *)self delegate];
-      [v6 monitor:self willNotAllowAccessoryForDragonSiri:v7];
+      delegate = [(HMDSiriAccessoryMonitor *)self delegate];
+      [delegate monitor:self willNotAllowAccessoryForDragonSiri:accessoryCopy];
       if (![(HMDSiriAccessoryMonitor *)self hasAnyActiveTargetingAccessories])
       {
-        [v6 monitorHasNoAccessoriesForDragonSiri:self];
+        [delegate monitorHasNoAccessoriesForDragonSiri:self];
       }
     }
   }
 }
 
-- (void)_addAccessory:(id)a3 withTarget:(id)a4
+- (void)_addAccessory:(id)accessory withTarget:(id)target
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDSiriAccessoryMonitor *)self accessories];
-  v9 = [HMDSiriAccessoryInfo infoWithTargetableAccessory:v6];
+  targetCopy = target;
+  accessoryCopy = accessory;
+  accessories = [(HMDSiriAccessoryMonitor *)self accessories];
+  v9 = [HMDSiriAccessoryInfo infoWithTargetableAccessory:targetCopy];
 
-  [v8 setObject:v9 forKey:v7];
-  v10 = [(HMDSiriAccessoryMonitor *)self delegate];
-  [v10 monitor:self needsSiriCapabilityForAccessory:v7];
+  [accessories setObject:v9 forKey:accessoryCopy];
+  delegate = [(HMDSiriAccessoryMonitor *)self delegate];
+  [delegate monitor:self needsSiriCapabilityForAccessory:accessoryCopy];
 }
 
-- (id)_accessoriesTargetingAccessory:(id)a3
+- (id)_accessoriesTargetingAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = [MEMORY[0x277CBEB58] set];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(HMDSiriAccessoryMonitor *)self accessories];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  accessories = [(HMDSiriAccessoryMonitor *)self accessories];
+  v7 = [accessories countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -157,25 +157,25 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accessories);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(HMDSiriAccessoryMonitor *)self accessories];
-        v13 = [v12 objectForKey:v11];
+        accessories2 = [(HMDSiriAccessoryMonitor *)self accessories];
+        v13 = [accessories2 objectForKey:v11];
 
         if (v13)
         {
-          v14 = [v13 targetsAccessory];
+          targetsAccessory = [v13 targetsAccessory];
 
-          if (v14 == v4)
+          if (targetsAccessory == accessoryCopy)
           {
             [v5 addObject:v11];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [accessories countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -193,10 +193,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(HMDSiriAccessoryMonitor *)self accessories];
-  v3 = [v2 objectEnumerator];
+  accessories = [(HMDSiriAccessoryMonitor *)self accessories];
+  objectEnumerator = [accessories objectEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -206,7 +206,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) isActiveAndSupportsDragonSiri])
@@ -216,7 +216,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -232,28 +232,28 @@ LABEL_11:
   return v4;
 }
 
-- (id)_getInfoForAccessory:(id)a3
+- (id)_getInfoForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(HMDSiriAccessoryMonitor *)self accessories];
-  v6 = [v5 objectForKey:v4];
+  accessoryCopy = accessory;
+  accessories = [(HMDSiriAccessoryMonitor *)self accessories];
+  v6 = [accessories objectForKey:accessoryCopy];
 
   return v6;
 }
 
-- (HMDSiriAccessoryMonitor)initWithDelegate:(id)a3
+- (HMDSiriAccessoryMonitor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HMDSiriAccessoryMonitor;
   v5 = [(HMDSiriAccessoryMonitor *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     accessories = v6->_accessories;
-    v6->_accessories = v7;
+    v6->_accessories = weakToStrongObjectsMapTable;
   }
 
   return v6;

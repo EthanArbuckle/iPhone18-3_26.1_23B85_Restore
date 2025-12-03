@@ -1,55 +1,55 @@
 @interface ASGeoCodeResult
-- (ASGeoCodeResult)initWithAddress:(id)a3 location:(id)a4 updated:(id)a5;
-- (ASGeoCodeResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASGeoCodeResult)initWithAddress:(id)address location:(id)location updated:(id)updated;
+- (ASGeoCodeResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASGeoCodeResult
 
-- (ASGeoCodeResult)initWithAddress:(id)a3 location:(id)a4 updated:(id)a5
+- (ASGeoCodeResult)initWithAddress:(id)address location:(id)location updated:(id)updated
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  addressCopy = address;
+  locationCopy = location;
+  updatedCopy = updated;
   v15.receiver = self;
   v15.super_class = ASGeoCodeResult;
   v12 = [(ASGeoCodeResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_address, a3);
-    objc_storeStrong(&v13->_location, a4);
-    objc_storeStrong(&v13->_updated, a5);
+    objc_storeStrong(&v12->_address, address);
+    objc_storeStrong(&v13->_location, location);
+    objc_storeStrong(&v13->_updated, updated);
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   address = self->_address;
-  v5 = a3;
-  [v5 encodeObject:address forKey:@"address"];
-  [v5 encodeObject:self->_updated forKey:@"updated"];
-  [v5 encodeObject:self->_location forKey:@"location"];
+  coderCopy = coder;
+  [coderCopy encodeObject:address forKey:@"address"];
+  [coderCopy encodeObject:self->_updated forKey:@"updated"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
 }
 
-- (ASGeoCodeResult)initWithCoder:(id)a3
+- (ASGeoCodeResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ASGeoCodeResult;
   v5 = [(ASGeoCodeResult *)&v19 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"address"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"address"];
 
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"updated"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"updated"];
 
     v10 = objc_opt_self();
-    v11 = [v4 decodeObjectOfClass:v10 forKey:@"location"];
+    v11 = [coderCopy decodeObjectOfClass:v10 forKey:@"location"];
 
     if (!v7 || !v9)
     {

@@ -1,23 +1,23 @@
 @interface CNContactListCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CNContactListCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNContactListCollectionViewCell" hasInstanceMethod:@"isEmergencyContact" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNContactListCollectionViewCell" isKindOfClass:@"UICollectionViewListCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNContactListCollectionViewCell" hasInstanceMethod:@"isEmergencyContact" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNContactListCollectionViewCell" isKindOfClass:@"UICollectionViewListCell"];
 }
 
 - (id)accessibilityLabel
 {
   v13.receiver = self;
   v13.super_class = CNContactListCollectionViewCellAccessibility;
-  v3 = [(CNContactListCollectionViewCellAccessibility *)&v13 accessibilityLabel];
+  accessibilityLabel = [(CNContactListCollectionViewCellAccessibility *)&v13 accessibilityLabel];
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -37,13 +37,13 @@
   v10 = 0;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = [v5 accessories];
+  accessories = [v5 accessories];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __66__CNContactListCollectionViewCellAccessibility_accessibilityLabel__block_invoke;
   v9[3] = &unk_29F2B5C90;
   v9[4] = v11;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [accessories enumerateObjectsUsingBlock:v9];
 
   v7 = __UIAXStringForVariables();
 

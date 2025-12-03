@@ -12,9 +12,9 @@
   v8.receiver = self;
   v8.super_class = NPKRemotePassActionRequest;
   v3 = [(NPKRemotePassAction *)&v8 description];
-  v4 = [(NPKRemotePassActionRequest *)self identifier];
-  v5 = [(NPKRemotePassActionRequest *)self action];
-  v6 = [v3 stringByAppendingFormat:@" (ID:%@, action:%@)", v4, v5];
+  identifier = [(NPKRemotePassActionRequest *)self identifier];
+  action = [(NPKRemotePassActionRequest *)self action];
+  v6 = [v3 stringByAppendingFormat:@" (ID:%@, action:%@)", identifier, action];
 
   return v6;
 }
@@ -75,20 +75,20 @@
 
 - (NSString)actionText
 {
-  v2 = [(NPKRemotePassActionRequest *)self action];
-  v3 = [v2 title];
-  v4 = v3;
-  if (v3)
+  action = [(NPKRemotePassActionRequest *)self action];
+  title = [action title];
+  v4 = title;
+  if (title)
   {
-    v5 = v3;
+    confirmationTitle = title;
   }
 
   else
   {
-    v5 = [v2 confirmationTitle];
+    confirmationTitle = [action confirmationTitle];
   }
 
-  v6 = v5;
+  v6 = confirmationTitle;
 
   return v6;
 }

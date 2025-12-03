@@ -1,15 +1,15 @@
 @interface ACAccountStoreCache
 + (id)sharedCache;
 - (ACAccountStoreCache)init;
-- (id)cachedAccountTypeWithIdentifier:(id)a3;
-- (id)cachedAccountsForSuffix:(id)a3;
+- (id)cachedAccountTypeWithIdentifier:(id)identifier;
+- (id)cachedAccountsForSuffix:(id)suffix;
 - (id)cachedAllAccountTypes;
-- (unint64_t)generationForCacheSuffix:(id)a3;
+- (unint64_t)generationForCacheSuffix:(id)suffix;
 - (void)_clearAllCaches;
-- (void)_lock_cacheAccountType:(id)a3;
-- (void)cacheAccountType:(id)a3;
-- (void)cacheAccounts:(id)a3 forSuffix:(id)a4;
-- (void)cacheAllAccountTypes:(id)a3;
+- (void)_lock_cacheAccountType:(id)type;
+- (void)cacheAccountType:(id)type;
+- (void)cacheAccounts:(id)accounts forSuffix:(id)suffix;
+- (void)cacheAllAccountTypes:(id)types;
 - (void)setupMemoryNotifications;
 @end
 
@@ -93,7 +93,7 @@ void __47__ACAccountStoreCache_setupMemoryNotifications__block_invoke(uint64_t a
   v10[1] = 3221225472;
   v11 = __38__ACAccountStoreCache__clearAllCaches__block_invoke;
   v12 = &unk_1E7975AD8;
-  v13 = self;
+  selfCopy = self;
   v3 = v10;
   os_unfair_lock_lock(&self->_accountTypeCacheLock);
   v11(v3);
@@ -103,20 +103,20 @@ void __47__ACAccountStoreCache_setupMemoryNotifications__block_invoke(uint64_t a
   v6[1] = 3221225472;
   v7 = __38__ACAccountStoreCache__clearAllCaches__block_invoke_2;
   v8 = &unk_1E7975AD8;
-  v9 = self;
+  selfCopy2 = self;
   v4 = v6;
   os_unfair_lock_lock(&self->_accountNotifyCachesLock);
   v7(v4);
   os_unfair_lock_unlock(&self->_accountNotifyCachesLock);
 
-  v5 = [(ACAccountStoreCache *)self credentialCache];
-  [v5 _clearAllCaches];
+  credentialCache = [(ACAccountStoreCache *)self credentialCache];
+  [credentialCache _clearAllCaches];
 }
 
-- (unint64_t)generationForCacheSuffix:(id)a3
+- (unint64_t)generationForCacheSuffix:(id)suffix
 {
-  v4 = a3;
-  v5 = [ACNotifyAccountCache cacheKeyForSuffix:v4];
+  suffixCopy = suffix;
+  v5 = [ACNotifyAccountCache cacheKeyForSuffix:suffixCopy];
   v6 = v5;
   v16 = 0;
   v17 = &v16;
@@ -128,7 +128,7 @@ void __47__ACAccountStoreCache_setupMemoryNotifications__block_invoke(uint64_t a
     v10[1] = 3221225472;
     v11 = __48__ACAccountStoreCache_generationForCacheSuffix___block_invoke;
     v12 = &unk_1E79772E0;
-    v13 = self;
+    selfCopy = self;
     v14 = v5;
     v15 = &v16;
     v7 = v10;
@@ -163,9 +163,9 @@ void __48__ACAccountStoreCache_generationForCacheSuffix___block_invoke(void *a1)
   *(*(a1[6] + 8) + 24) = [v4 generation];
 }
 
-- (id)cachedAccountsForSuffix:(id)a3
+- (id)cachedAccountsForSuffix:(id)suffix
 {
-  v4 = a3;
+  suffixCopy = suffix;
   if (ACIsAccountsd())
   {
     v5 = 0;
@@ -173,7 +173,7 @@ void __48__ACAccountStoreCache_generationForCacheSuffix___block_invoke(void *a1)
 
   else
   {
-    v6 = [ACNotifyAccountCache cacheKeyForSuffix:v4];
+    v6 = [ACNotifyAccountCache cacheKeyForSuffix:suffixCopy];
     v7 = v6;
     if (v6)
     {
@@ -211,13 +211,13 @@ id __47__ACAccountStoreCache_cachedAccountsForSuffix___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)cacheAccounts:(id)a3 forSuffix:(id)a4
+- (void)cacheAccounts:(id)accounts forSuffix:(id)suffix
 {
-  v6 = a3;
-  v7 = a4;
+  accountsCopy = accounts;
+  suffixCopy = suffix;
   if ((ACIsAccountsd() & 1) == 0)
   {
-    v8 = [ACNotifyAccountCache cacheKeyForSuffix:v7];
+    v8 = [ACNotifyAccountCache cacheKeyForSuffix:suffixCopy];
     v9 = v8;
     if (v8)
     {
@@ -225,9 +225,9 @@ id __47__ACAccountStoreCache_cachedAccountsForSuffix___block_invoke(uint64_t a1)
       v11[1] = 3221225472;
       v12 = __47__ACAccountStoreCache_cacheAccounts_forSuffix___block_invoke;
       v13 = &unk_1E7975540;
-      v14 = self;
+      selfCopy = self;
       v15 = v8;
-      v16 = v6;
+      v16 = accountsCopy;
       v10 = v11;
       os_unfair_lock_lock(&self->_accountNotifyCachesLock);
       v12(v10);
@@ -250,16 +250,16 @@ void __47__ACAccountStoreCache_cacheAccounts_forSuffix___block_invoke(void *a1)
   [v4 cacheAccounts:a1[6]];
 }
 
-- (id)cachedAccountTypeWithIdentifier:(id)a3
+- (id)cachedAccountTypeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__ACAccountStoreCache_cachedAccountTypeWithIdentifier___block_invoke;
   v8[3] = &unk_1E7975450;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = identifierCopy;
+  v5 = identifierCopy;
   v6 = ac_unfair_lock_perform_with_result_2(&self->_accountTypeCacheLock, v8);
 
   return v6;
@@ -273,15 +273,15 @@ id __55__ACAccountStoreCache_cachedAccountTypeWithIdentifier___block_invoke(uint
   return v2;
 }
 
-- (void)cacheAccountType:(id)a3
+- (void)cacheAccountType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __40__ACAccountStoreCache_cacheAccountType___block_invoke;
   v9 = &unk_1E7975590;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = typeCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_accountTypeCacheLock);
@@ -289,29 +289,29 @@ id __55__ACAccountStoreCache_cachedAccountTypeWithIdentifier___block_invoke(uint
   os_unfair_lock_unlock(&self->_accountTypeCacheLock);
 }
 
-- (void)_lock_cacheAccountType:(id)a3
+- (void)_lock_cacheAccountType:(id)type
 {
-  v7 = a3;
-  v4 = [v7 identifier];
+  typeCopy = type;
+  identifier = [typeCopy identifier];
 
-  if (v4)
+  if (identifier)
   {
     accountTypeCache = self->_accountTypeCache;
-    v6 = [v7 identifier];
-    [(NSMutableDictionary *)accountTypeCache setObject:v7 forKeyedSubscript:v6];
+    identifier2 = [typeCopy identifier];
+    [(NSMutableDictionary *)accountTypeCache setObject:typeCopy forKeyedSubscript:identifier2];
   }
 }
 
-- (void)cacheAllAccountTypes:(id)a3
+- (void)cacheAllAccountTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __44__ACAccountStoreCache_cacheAllAccountTypes___block_invoke;
   v9 = &unk_1E7975590;
-  v5 = v4;
+  v5 = typesCopy;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = v7;
   os_unfair_lock_lock(&self->_accountTypeCacheLock);
   v8(v6);

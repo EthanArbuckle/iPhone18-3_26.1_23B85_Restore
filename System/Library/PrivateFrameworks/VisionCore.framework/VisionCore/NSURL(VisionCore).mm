@@ -6,14 +6,14 @@
 
 - (id)VisionCoreFileSystemPathAndReturnError:()VisionCore
 {
-  v4 = [a1 filePathURL];
-  v5 = v4;
-  if (v4)
+  filePathURL = [self filePathURL];
+  v5 = filePathURL;
+  if (filePathURL)
   {
-    v6 = [v4 fileSystemRepresentation];
-    if (v6)
+    fileSystemRepresentation = [filePathURL fileSystemRepresentation];
+    if (fileSystemRepresentation)
     {
-      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v6];
+      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:fileSystemRepresentation];
       goto LABEL_9;
     }
 

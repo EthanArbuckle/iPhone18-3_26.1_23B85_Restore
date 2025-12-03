@@ -1,67 +1,67 @@
 @interface MBAssetRecordFetcher
-+ (id)assetFetcherWithTracker:(id)a3 device:(id)a4 error:(id *)a5;
-- (BOOL)begin:(id *)a3;
-- (BOOL)disposeWithError:(id *)a3;
-- (BOOL)finishWithError:(id *)a3;
-- (BOOL)requestAsset:(id)a3 error:(id *)a4;
++ (id)assetFetcherWithTracker:(id)tracker device:(id)device error:(id *)error;
+- (BOOL)begin:(id *)begin;
+- (BOOL)disposeWithError:(id *)error;
+- (BOOL)finishWithError:(id *)error;
+- (BOOL)requestAsset:(id)asset error:(id *)error;
 - (MBAssetReceiver)delegate;
-- (id)_initWithTracker:(id)a3 device:(id)a4;
-- (void)_handleAssetFetchResponseFor:(id)a3 record:(id)a4 withFetchError:(id)a5;
-- (void)_trackFetchError:(id)a3;
+- (id)_initWithTracker:(id)tracker device:(id)device;
+- (void)_handleAssetFetchResponseFor:(id)for record:(id)record withFetchError:(id)error;
+- (void)_trackFetchError:(id)error;
 - (void)dealloc;
 @end
 
 @implementation MBAssetRecordFetcher
 
-+ (id)assetFetcherWithTracker:(id)a3 device:(id)a4 error:(id *)a5
++ (id)assetFetcherWithTracker:(id)tracker device:(id)device error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  trackerCopy = tracker;
+  deviceCopy = device;
+  if (!trackerCopy)
   {
     __assert_rtn("+[MBAssetRecordFetcher assetFetcherWithTracker:device:error:]", "MBAssetRecordFetcher.m", 37, "tracker");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = deviceCopy;
+  if (!deviceCopy)
   {
     __assert_rtn("+[MBAssetRecordFetcher assetFetcherWithTracker:device:error:]", "MBAssetRecordFetcher.m", 38, "device");
   }
 
-  v9 = [[MBAssetRecordFetcher alloc] _initWithTracker:v6 device:v7];
+  v9 = [[MBAssetRecordFetcher alloc] _initWithTracker:trackerCopy device:deviceCopy];
 
   return v9;
 }
 
-- (id)_initWithTracker:(id)a3 device:(id)a4
+- (id)_initWithTracker:(id)tracker device:(id)device
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  trackerCopy = tracker;
+  deviceCopy = device;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBAssetRecordFetcher _initWithTracker:device:]", "MBAssetRecordFetcher.m", 44, "tracker");
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = deviceCopy;
+  if (!deviceCopy)
   {
     __assert_rtn("[MBAssetRecordFetcher _initWithTracker:device:]", "MBAssetRecordFetcher.m", 45, "device");
   }
 
-  v10 = [v8 assetIDPrefix];
-  if (!v10)
+  assetIDPrefix = [deviceCopy assetIDPrefix];
+  if (!assetIDPrefix)
   {
     __assert_rtn("[MBAssetRecordFetcher _initWithTracker:device:]", "MBAssetRecordFetcher.m", 48, "assetIDPrefix");
   }
 
-  v11 = v10;
+  v11 = assetIDPrefix;
   v23.receiver = self;
   v23.super_class = MBAssetRecordFetcher;
   v12 = [(MBAssetRecordFetcher *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_tracker, a3);
+    objc_storeStrong(&v12->_tracker, tracker);
     objc_storeStrong(&v13->_assetIDPrefix, v11);
     v14 = objc_alloc_init(MBAssetFetchSummary);
     summary = v13->_summary;
@@ -73,8 +73,8 @@
 
     atomic_store(0, &v13->_errorCount);
     v18 = +[MBBehaviorOptions sharedOptions];
-    v19 = [v18 restoreAssetIDsToFailFetchingRegex];
-    v20 = [MBErrorInjector errorInjectorForRegex:v19 maxFailureCount:0];
+    restoreAssetIDsToFailFetchingRegex = [v18 restoreAssetIDsToFailFetchingRegex];
+    v20 = [MBErrorInjector errorInjectorForRegex:restoreAssetIDsToFailFetchingRegex maxFailureCount:0];
     errorInjector = v13->_errorInjector;
     v13->_errorInjector = v20;
   }
@@ -90,9 +90,9 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "=asset-fetch= %@ was not disposed before dealloc", buf, 0xCu);
-      v4 = self;
+      selfCopy2 = self;
       _MBLog();
     }
   }
@@ -102,9 +102,9 @@
   [(MBAssetRecordFetcher *)&v5 dealloc];
 }
 
-- (BOOL)begin:(id *)a3
+- (BOOL)begin:(id *)begin
 {
-  if (!a3)
+  if (!begin)
   {
     __assert_rtn("[MBAssetRecordFetcher begin:]", "MBAssetRecordFetcher.m", 74, "error");
   }
@@ -112,7 +112,7 @@
   disposed = self->_disposed;
   if (disposed)
   {
-    *a3 = [MBError errorWithCode:1 format:@"Fetcher already disposed"];
+    *begin = [MBError errorWithCode:1 format:@"Fetcher already disposed"];
   }
 
   else
@@ -138,9 +138,9 @@
   return !disposed;
 }
 
-- (BOOL)disposeWithError:(id *)a3
+- (BOOL)disposeWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBAssetRecordFetcher disposeWithError:]", "MBAssetRecordFetcher.m", 96, "error");
   }
@@ -148,7 +148,7 @@
   disposed = self->_disposed;
   if (disposed)
   {
-    *a3 = [MBError errorWithCode:1 format:@"Fetcher already disposed"];
+    *error = [MBError errorWithCode:1 format:@"Fetcher already disposed"];
   }
 
   else
@@ -161,9 +161,9 @@
   return !disposed;
 }
 
-- (BOOL)finishWithError:(id *)a3
+- (BOOL)finishWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBAssetRecordFetcher finishWithError:]", "MBAssetRecordFetcher.m", 111, "error");
   }
@@ -213,22 +213,22 @@
   }
 
   v14 = 0;
-  *a3 = v13;
+  *error = v13;
 LABEL_7:
 
   _Block_object_dispose(&v22, 8);
   return v14;
 }
 
-- (BOOL)requestAsset:(id)a3 error:(id *)a4
+- (BOOL)requestAsset:(id)asset error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     __assert_rtn("[MBAssetRecordFetcher requestAsset:error:]", "MBAssetRecordFetcher.m", 140, "asset");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBAssetRecordFetcher requestAsset:error:]", "MBAssetRecordFetcher.m", 141, "error");
   }
@@ -238,37 +238,37 @@ LABEL_7:
     __assert_rtn("[MBAssetRecordFetcher requestAsset:error:]", "MBAssetRecordFetcher.m", 142, "_batchFetch");
   }
 
-  v7 = v6;
+  v7 = assetCopy;
   v8 = atomic_load(&self->_errorCount);
   if (v8)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(NSMutableArray *)v9->_errors lastObject];
-    objc_sync_exit(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    lastObject = [(NSMutableArray *)selfCopy->_errors lastObject];
+    objc_sync_exit(selfCopy);
 
-    v11 = v10;
-    *a4 = v10;
+    v11 = lastObject;
+    *error = lastObject;
   }
 
   else
   {
     assetIDPrefix = self->_assetIDPrefix;
-    v13 = [v6 metadata];
-    v14 = [v13 recordIDSuffix];
-    v15 = [MBAssetRecord recordIDFromAssetIDPrefix:assetIDPrefix recordIDSuffix:v14];
+    metadata = [assetCopy metadata];
+    recordIDSuffix = [metadata recordIDSuffix];
+    v15 = [MBAssetRecord recordIDFromAssetIDPrefix:assetIDPrefix recordIDSuffix:recordIDSuffix];
 
     objc_initWeak(&location, self);
     batchFetch = self->_batchFetch;
-    v17 = [v7 metadata];
-    v18 = [v17 assetSize];
+    metadata2 = [v7 metadata];
+    assetSize = [metadata2 assetSize];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10004CDE0;
     v20[3] = &unk_1003BC228;
     objc_copyWeak(&v22, &location);
     v21 = v7;
-    [(MBCKBatchFetch *)batchFetch fetchRecordWithID:v15 assetSize:v18 completion:v20];
+    [(MBCKBatchFetch *)batchFetch fetchRecordWithID:v15 assetSize:assetSize completion:v20];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -277,38 +277,38 @@ LABEL_7:
   return v8 == 0;
 }
 
-- (void)_trackFetchError:(id)a3
+- (void)_trackFetchError:(id)error
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  atomic_fetch_add(&v4->_errorCount, 1uLL);
-  [(NSMutableArray *)v4->_errors addObject:v5];
-  objc_sync_exit(v4);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  atomic_fetch_add(&selfCopy->_errorCount, 1uLL);
+  [(NSMutableArray *)selfCopy->_errors addObject:errorCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_handleAssetFetchResponseFor:(id)a3 record:(id)a4 withFetchError:(id)a5
+- (void)_handleAssetFetchResponseFor:(id)for record:(id)record withFetchError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  forCopy = for;
+  recordCopy = record;
+  errorCopy = error;
+  if (!forCopy)
   {
     __assert_rtn("[MBAssetRecordFetcher _handleAssetFetchResponseFor:record:withFetchError:]", "MBAssetRecordFetcher.m", 174, "asset");
   }
 
-  v11 = v10;
-  v12 = [(MBAssetRecordFetcher *)self delegate];
-  if (v12)
+  v11 = errorCopy;
+  delegate = [(MBAssetRecordFetcher *)self delegate];
+  if (delegate)
   {
     if (!v11)
     {
       errorInjector = self->_errorInjector;
       if (errorInjector)
       {
-        v14 = [v9 recordID];
-        v15 = [v14 recordName];
-        v11 = [(MBErrorInjector *)errorInjector errorIfMatches:v15];
+        recordID = [recordCopy recordID];
+        recordName = [recordID recordName];
+        v11 = [(MBErrorInjector *)errorInjector errorIfMatches:recordName];
       }
     }
 
@@ -319,64 +319,64 @@ LABEL_7:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v30 = v8;
+        v30 = forCopy;
         v31 = 2112;
-        v32 = v11;
+        originalInode = v11;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "=asset-fetch= Failed fetching asset record for asset %@: %@", buf, 0x16u);
         _MBLog();
       }
 
-      [v12 fetcher:self failedFetchingAsset:v8 withFetchError:v11];
+      [delegate fetcher:self failedFetchingAsset:forCopy withFetchError:v11];
     }
 
     else
     {
-      v17 = [MBAssetRecord assetRecordFromCKRecord:v9];
-      v18 = [v17 recordID];
-      v19 = [v18 recordName];
+      v17 = [MBAssetRecord assetRecordFromCKRecord:recordCopy];
+      recordID2 = [v17 recordID];
+      recordName2 = [recordID2 recordName];
 
-      v20 = [v17 contents];
-      v21 = [v20 fileURL];
-      v22 = [v21 path];
+      contents = [v17 contents];
+      fileURL = [contents fileURL];
+      path = [fileURL path];
 
-      if (!v20 || v22)
+      if (!contents || path)
       {
         v24 = MBGetDefaultLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
-          v30 = v19;
+          v30 = recordName2;
           v31 = 2048;
-          v32 = [v8 originalInode];
+          originalInode = [forCopy originalInode];
           v33 = 2112;
-          v34 = v22;
+          v34 = path;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "=asset-fetch= Fetched asset record %@ for ino: %llu at %@", buf, 0x20u);
-          [v8 originalInode];
+          [forCopy originalInode];
           _MBLog();
         }
 
         v28 = 0;
-        v25 = [v12 fetcher:self didReceiveAsset:v8 path:v22 error:&v28];
-        v23 = v28;
+        v25 = [delegate fetcher:self didReceiveAsset:forCopy path:path error:&v28];
+        forCopy = v28;
         if (v25)
         {
           atomic_fetch_add_explicit(&self->_registeredAssetCount, 1uLL, memory_order_relaxed);
           p_bytesFetched = &self->_bytesFetched;
-          v27 = [v17 contents];
-          atomic_fetch_add_explicit(p_bytesFetched, [v27 size], memory_order_relaxed);
+          contents2 = [v17 contents];
+          atomic_fetch_add_explicit(p_bytesFetched, [contents2 size], memory_order_relaxed);
         }
 
         else
         {
-          [(MBAssetRecordFetcher *)self _trackFetchError:v23];
+          [(MBAssetRecordFetcher *)self _trackFetchError:forCopy];
         }
       }
 
       else
       {
-        v23 = [MBError errorWithCode:302 format:@"Nil fileURL for fetched asset %@", v8];
-        [(MBAssetRecordFetcher *)self _trackFetchError:v23];
-        [v12 fetcher:self failedFetchingAsset:v8 withFetchError:v23];
+        forCopy = [MBError errorWithCode:302 format:@"Nil fileURL for fetched asset %@", forCopy];
+        [(MBAssetRecordFetcher *)self _trackFetchError:forCopy];
+        [delegate fetcher:self failedFetchingAsset:forCopy withFetchError:forCopy];
       }
 
       v11 = 0;

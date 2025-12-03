@@ -1,16 +1,16 @@
 @interface TSUTemporaryDocumentCacheManager
 + (id)baseDirectoryURL;
 + (id)sharedManager;
-- (id)newDirectoryForDocumentUUID:(id)a3;
+- (id)newDirectoryForDocumentUUID:(id)d;
 @end
 
 @implementation TSUTemporaryDocumentCacheManager
 
 + (id)baseDirectoryURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = 0;
-  v3 = [v2 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v6];
+  v3 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v6];
 
   if (v3)
   {
@@ -43,7 +43,7 @@ void __52__TSUTemporaryDocumentCacheManager_baseDirectoryURL__block_invoke()
   block[1] = 3221225472;
   block[2] = __49__TSUTemporaryDocumentCacheManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -61,10 +61,10 @@ void __49__TSUTemporaryDocumentCacheManager_sharedManager__block_invoke()
   sharedManager_sharedManager = v0;
 }
 
-- (id)newDirectoryForDocumentUUID:(id)a3
+- (id)newDirectoryForDocumentUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  v5 = [(TSUTemporaryDirectoryManager *)self newDirectoryWithFilename:v4];
+  uUIDString = [d UUIDString];
+  v5 = [(TSUTemporaryDirectoryManager *)self newDirectoryWithFilename:uUIDString];
 
   return v5;
 }

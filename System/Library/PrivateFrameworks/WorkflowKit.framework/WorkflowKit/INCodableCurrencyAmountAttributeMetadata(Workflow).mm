@@ -16,8 +16,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v5 currencyCode];
-      [a1 setCurrencyCode:v4];
+      currencyCode = [v5 currencyCode];
+      [self setCurrencyCode:currencyCode];
     }
   }
 }
@@ -30,8 +30,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v5 unitString];
-      [a1 setCurrencyCode:v4];
+      unitString = [v5 unitString];
+      [self setCurrencyCode:unitString];
     }
   }
 }
@@ -46,17 +46,17 @@
     v8 = v6;
     v9 = [WFQuantityParameterState alloc];
     v10 = [WFNumberStringSubstitutableState alloc];
-    v11 = [v8 amount];
-    v12 = [v11 stringValue];
-    v13 = [(WFNumberStringSubstitutableState *)v10 initWithValue:v12];
-    v14 = [v8 currencyCode];
+    amount = [v8 amount];
+    stringValue = [amount stringValue];
+    v13 = [(WFNumberStringSubstitutableState *)v10 initWithValue:stringValue];
+    currencyCode = [v8 currencyCode];
 
-    v15 = [(WFQuantityParameterState *)v9 initWithMagnitudeState:v13 unitString:v14];
+    v15 = [(WFQuantityParameterState *)v9 initWithMagnitudeState:v13 unitString:currencyCode];
   }
 
   else
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = &off_1F4AFF5D8;
     v15 = objc_msgSendSuper2(&v17, sel_wf_parameterStateForIntentValue_parameterDefinition_, v6, v7);
   }
@@ -75,10 +75,10 @@
     v11 = MEMORY[0x1E696E7E8];
     v12 = v8;
     v13 = [v11 alloc];
-    v14 = [v12 magnitude];
-    v15 = [v12 unitString];
+    magnitude = [v12 magnitude];
+    unitString = [v12 unitString];
 
-    v16 = [v13 initWithAmount:v14 currencyCode:v15];
+    v16 = [v13 initWithAmount:magnitude currencyCode:unitString];
     v9[2](v9, v16, 0);
   }
 
@@ -88,14 +88,14 @@
 - (id)wf_updatedParameterDefinition:()Workflow forCodableAttribute:localizer:
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &off_1F4AFF5D8;
   v2 = objc_msgSendSuper2(&v9, sel_wf_updatedParameterDefinition_forCodableAttribute_localizer_);
   v10[0] = @"PossibleUnits";
-  v3 = [a1 currencyCodes];
+  currencyCodes = [self currencyCodes];
   v10[1] = @"AllowsNegativeNumbers";
-  v11[0] = v3;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "supportsNegativeNumbers")}];
+  v11[0] = currencyCodes;
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "supportsNegativeNumbers")}];
   v11[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v6 = [v2 definitionByAddingEntriesInDictionary:v5];

@@ -1,6 +1,6 @@
 @interface DSP_HostCallbacks
 - (id).cxx_construct;
-- (void)notifyClientsOfCustomPropertyChange:(AudioObjectPropertyAddress)a3;
+- (void)notifyClientsOfCustomPropertyChange:(AudioObjectPropertyAddress)change;
 - (void)setMutationRequestListener:(function<void (const DSP_Host_Types::MutationRequestConfiguration)&;
 - (void)setPropertyChangeListener:(function<void (const AudioObjectPropertyAddress)&;
 @end
@@ -76,10 +76,10 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyClientsOfCustomPropertyChange:(AudioObjectPropertyAddress)a3
+- (void)notifyClientsOfCustomPropertyChange:(AudioObjectPropertyAddress)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  changeCopy = change;
   if ([(DSP_HostCallbacks *)self owner])
   {
     [(DSP_HostCallbacks *)self propertyChangeListener];
@@ -93,7 +93,7 @@
         std::__throw_bad_function_call[abi:ne200100]();
       }
 
-      (*(*v8 + 48))(v8, &v6);
+      (*(*v8 + 48))(v8, &changeCopy);
       std::__function::__value_func<void ()(AudioObjectPropertyAddress const&)>::~__value_func[abi:ne200100](v7);
     }
   }

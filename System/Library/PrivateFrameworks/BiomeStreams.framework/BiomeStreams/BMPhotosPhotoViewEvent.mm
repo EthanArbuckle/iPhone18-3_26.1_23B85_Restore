@@ -1,30 +1,30 @@
 @interface BMPhotosPhotoViewEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMPhotosPhotoViewEvent)initWithCoder:(id)a3;
-- (BMPhotosPhotoViewEvent)initWithProto:(id)a3;
-- (BMPhotosPhotoViewEvent)initWithProtoData:(id)a3;
-- (BMPhotosPhotoViewEvent)initWithUniqueId:(id)a3 personaId:(id)a4 locations:(id)a5 absoluteTimestamp:(double)a6 contentProtection:(id)a7;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMPhotosPhotoViewEvent)initWithCoder:(id)coder;
+- (BMPhotosPhotoViewEvent)initWithProto:(id)proto;
+- (BMPhotosPhotoViewEvent)initWithProtoData:(id)data;
+- (BMPhotosPhotoViewEvent)initWithUniqueId:(id)id personaId:(id)personaId locations:(id)locations absoluteTimestamp:(double)timestamp contentProtection:(id)protection;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMPhotosPhotoViewEvent
 
-- (BMPhotosPhotoViewEvent)initWithUniqueId:(id)a3 personaId:(id)a4 locations:(id)a5 absoluteTimestamp:(double)a6 contentProtection:(id)a7
+- (BMPhotosPhotoViewEvent)initWithUniqueId:(id)id personaId:(id)personaId locations:(id)locations absoluteTimestamp:(double)timestamp contentProtection:(id)protection
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  if (v14)
+  idCopy = id;
+  personaIdCopy = personaId;
+  locationsCopy = locations;
+  protectionCopy = protection;
+  if (idCopy)
   {
-    if (v16)
+    if (locationsCopy)
     {
       goto LABEL_3;
     }
@@ -33,7 +33,7 @@
   else
   {
     [BMPhotosPhotoViewEvent initWithUniqueId:a2 personaId:self locations:? absoluteTimestamp:? contentProtection:?];
-    if (v16)
+    if (locationsCopy)
     {
       goto LABEL_3;
     }
@@ -47,22 +47,22 @@ LABEL_3:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_locations, a5);
-    v19->_absoluteTimestamp = a6;
-    objc_storeStrong(&v19->_uniqueId, a3);
-    objc_storeStrong(&v19->_personaId, a4);
-    objc_storeStrong(&v19->_contentProtection, a7);
+    objc_storeStrong(&v18->_locations, locations);
+    v19->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v19->_uniqueId, id);
+    objc_storeStrong(&v19->_personaId, personaId);
+    objc_storeStrong(&v19->_contentProtection, protection);
   }
 
   return v19;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -70,7 +70,7 @@ LABEL_3:
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMPhotosPhotoViewEvent eventWithData:a4 dataVersion:v8];
+      [BMPhotosPhotoViewEvent eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -81,18 +81,18 @@ LABEL_3:
 
 - (id)jsonDict
 {
-  v2 = [(BMPhotosPhotoViewEvent *)self proto];
-  v3 = [v2 dictionaryRepresentation];
+  proto = [(BMPhotosPhotoViewEvent *)self proto];
+  dictionaryRepresentation = [proto dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMPhotosPhotoViewEvent *)self jsonDict];
+  jsonDict = [(BMPhotosPhotoViewEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -107,61 +107,61 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMPhotosPhotoViewEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMPhotosPhotoViewEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMPhotosPhotoViewEvent)initWithCoder:(id)a3
+- (BMPhotosPhotoViewEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMPhotosPhotoViewEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMPhotosPhotoViewEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMPhotosPhotoViewEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMPhotosPhotoViewEvent)initWithProto:(id)a3
+- (BMPhotosPhotoViewEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasAbsoluteTimestamp]&& ([v5 hasUniqueId]& 1) != 0)
       {
-        v6 = [v5 uniqueId];
-        v7 = [v5 personaId];
-        v8 = [v5 locations];
+        uniqueId = [v5 uniqueId];
+        personaId = [v5 personaId];
+        locations = [v5 locations];
         [v5 absoluteTimestamp];
         v10 = v9;
-        v11 = [v5 contentProtection];
-        self = [(BMPhotosPhotoViewEvent *)self initWithUniqueId:v6 personaId:v7 locations:v8 absoluteTimestamp:v11 contentProtection:v10];
+        contentProtection = [v5 contentProtection];
+        self = [(BMPhotosPhotoViewEvent *)self initWithUniqueId:uniqueId personaId:personaId locations:locations absoluteTimestamp:contentProtection contentProtection:v10];
 
-        v12 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -183,52 +183,52 @@ LABEL_13:
       }
     }
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v12;
+  return selfCopy;
 }
 
-- (BMPhotosPhotoViewEvent)initWithProtoData:(id)a3
+- (BMPhotosPhotoViewEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBPhotosPhotoViewEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBPhotosPhotoViewEvent alloc] initWithData:dataCopy];
 
     self = [(BMPhotosPhotoViewEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMPhotosPhotoViewEvent *)self locations];
-  v5 = [v4 mutableCopy];
+  locations = [(BMPhotosPhotoViewEvent *)self locations];
+  v5 = [locations mutableCopy];
   [v3 setLocations:v5];
 
   [(BMPhotosPhotoViewEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v6 = [(BMPhotosPhotoViewEvent *)self uniqueId];
-  [v3 setUniqueId:v6];
+  uniqueId = [(BMPhotosPhotoViewEvent *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
-  v7 = [(BMPhotosPhotoViewEvent *)self personaId];
-  [v3 setPersonaId:v7];
+  personaId = [(BMPhotosPhotoViewEvent *)self personaId];
+  [v3 setPersonaId:personaId];
 
-  v8 = [(BMPhotosPhotoViewEvent *)self contentProtection];
-  [v3 setContentProtection:v8];
+  contentProtection = [(BMPhotosPhotoViewEvent *)self contentProtection];
+  [v3 setContentProtection:contentProtection];
 
   return v3;
 }
@@ -242,17 +242,17 @@ LABEL_14:
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPhotosPhotoViewEvent *)self proto];
-    v7 = [v5 proto];
+    v5 = equalCopy;
+    proto = [(BMPhotosPhotoViewEvent *)self proto];
+    proto2 = [v5 proto];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [proto isEqual:proto2];
   }
 
   else
@@ -263,14 +263,14 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   if ([(NSArray *)self->_locations count]&& self->_uniqueId)
   {
     return 1;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
@@ -278,7 +278,7 @@ LABEL_14:
   v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
   v8 = v7;
   result = 0;
-  *a4 = v7;
+  *error = v7;
   return result;
 }
 

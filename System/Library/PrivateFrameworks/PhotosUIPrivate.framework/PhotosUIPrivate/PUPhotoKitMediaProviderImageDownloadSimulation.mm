@@ -1,76 +1,76 @@
 @interface PUPhotoKitMediaProviderImageDownloadSimulation
 - (PUPhotoKitMediaProviderImageDownloadSimulation)init;
-- (void)_handleResultImage:(id)a3 info:(id)a4;
-- (void)endSimulationWithError:(id)a3;
-- (void)updateSimulationWithProgress:(double)a3;
+- (void)_handleResultImage:(id)image info:(id)info;
+- (void)endSimulationWithError:(id)error;
+- (void)updateSimulationWithProgress:(double)progress;
 @end
 
 @implementation PUPhotoKitMediaProviderImageDownloadSimulation
 
-- (void)endSimulationWithError:(id)a3
+- (void)endSimulationWithError:(id)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = PUPhotoKitMediaProviderImageDownloadSimulation;
-  [(PUPhotoKitMediaProviderDownloadSimulation *)&v10 endSimulationWithError:v4];
-  v5 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self _resultImage];
-  v6 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self _resultInfo];
-  if (v4)
+  [(PUPhotoKitMediaProviderDownloadSimulation *)&v10 endSimulationWithError:errorCopy];
+  _resultImage = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self _resultImage];
+  _resultInfo = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self _resultInfo];
+  if (errorCopy)
   {
 
     v11 = *MEMORY[0x1E6978DF0];
-    v12[0] = v4;
+    v12[0] = errorCopy;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-    v5 = 0;
-    v6 = v7;
+    _resultImage = 0;
+    _resultInfo = v7;
   }
 
-  v8 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self externalResultHandler];
-  (v8)[2](v8, v5, v6);
+  externalResultHandler = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self externalResultHandler];
+  (externalResultHandler)[2](externalResultHandler, _resultImage, _resultInfo);
 
   internalResultHandler = self->_internalResultHandler;
   self->_internalResultHandler = 0;
 }
 
-- (void)updateSimulationWithProgress:(double)a3
+- (void)updateSimulationWithProgress:(double)progress
 {
   v8.receiver = self;
   v8.super_class = PUPhotoKitMediaProviderImageDownloadSimulation;
   [(PUPhotoKitMediaProviderDownloadSimulation *)&v8 updateSimulationWithProgress:?];
-  v5 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self externalProgressHandler];
+  externalProgressHandler = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self externalProgressHandler];
 
-  if (v5)
+  if (externalProgressHandler)
   {
     v7 = 0;
-    v6 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self externalProgressHandler];
-    (v6)[2](v6, 0, &v7, 0, a3);
+    externalProgressHandler2 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self externalProgressHandler];
+    (externalProgressHandler2)[2](externalProgressHandler2, 0, &v7, 0, progress);
   }
 }
 
-- (void)_handleResultImage:(id)a3 info:(id)a4
+- (void)_handleResultImage:(id)image info:(id)info
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
-  v8 = [v7 BOOLValue];
+  imageCopy = image;
+  infoCopy = info;
+  v7 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = MEMORY[0x1E69BF260];
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x1E6978E40]];
+  v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978E40]];
   v11 = [v9 formatWithID:{objc_msgSend(v10, "integerValue")}];
 
-  v12 = [v11 isThumbnail];
-  if ((v8 & 1) != 0 || v12)
+  isThumbnail = [v11 isThumbnail];
+  if ((bOOLValue & 1) != 0 || isThumbnail)
   {
-    v13 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self externalResultHandler];
-    (v13)[2](v13, v14, v6);
+    externalResultHandler = [(PUPhotoKitMediaProviderImageDownloadSimulation *)self externalResultHandler];
+    (externalResultHandler)[2](externalResultHandler, imageCopy, infoCopy);
   }
 
   else
   {
-    [(PUPhotoKitMediaProviderImageDownloadSimulation *)self _setResultImage:v14];
-    [(PUPhotoKitMediaProviderImageDownloadSimulation *)self _setResultInfo:v6];
+    [(PUPhotoKitMediaProviderImageDownloadSimulation *)self _setResultImage:imageCopy];
+    [(PUPhotoKitMediaProviderImageDownloadSimulation *)self _setResultInfo:infoCopy];
     [(PUPhotoKitMediaProviderDownloadSimulation *)self beginSimulation];
   }
 }

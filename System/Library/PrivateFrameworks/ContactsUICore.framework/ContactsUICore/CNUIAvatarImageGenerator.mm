@@ -1,16 +1,16 @@
 @interface CNUIAvatarImageGenerator
-+ (id)imageDataFromMetadata:(id)a3;
-+ (id)imageWithOverscaledBackgroundForMemojiImage:(id)a3 overscaleMultiplier:(double)a4 poseHasBody:(BOOL)a5;
-+ (id)stickerImageFromMetadata:(id)a3 size:(double)a4;
-+ (void)imageFromMetadata:(id)a3 size:(CGSize)a4 completionHandler:(id)a5;
-+ (void)stickerImageFromMetadata:(id)a3 generateAsynchronously:(BOOL)a4 size:(double)a5 completionHandler:(id)a6;
++ (id)imageDataFromMetadata:(id)metadata;
++ (id)imageWithOverscaledBackgroundForMemojiImage:(id)image overscaleMultiplier:(double)multiplier poseHasBody:(BOOL)body;
++ (id)stickerImageFromMetadata:(id)metadata size:(double)size;
++ (void)imageFromMetadata:(id)metadata size:(CGSize)size completionHandler:(id)handler;
++ (void)stickerImageFromMetadata:(id)metadata generateAsynchronously:(BOOL)asynchronously size:(double)size completionHandler:(id)handler;
 @end
 
 @implementation CNUIAvatarImageGenerator
 
-+ (id)imageDataFromMetadata:(id)a3
++ (id)imageDataFromMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2050000000;
@@ -48,23 +48,23 @@
 
   v8 = v7;
   _Block_object_dispose(&v19, 8);
-  v9 = [v7 largeThumbnailScope];
-  v10 = [v3 avatarRecord];
-  v11 = [v6 imageForRecord:v10 scope:v9];
-  v12 = [v11 HEICRepresentation];
+  largeThumbnailScope = [v7 largeThumbnailScope];
+  avatarRecord = [metadataCopy avatarRecord];
+  v11 = [v6 imageForRecord:avatarRecord scope:largeThumbnailScope];
+  hEICRepresentation = [v11 HEICRepresentation];
 
-  return v12;
+  return hEICRepresentation;
 }
 
-+ (void)imageFromMetadata:(id)a3 size:(CGSize)a4 completionHandler:(id)a5
++ (void)imageFromMetadata:(id)metadata size:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v10 = objc_alloc(getAVTStickerGeneratorClass());
-  v11 = [v8 avatar];
-  v12 = [v10 initWithAvatar:v11];
+  avatar = [metadataCopy avatar];
+  v12 = [v10 initWithAvatar:avatar];
 
   v21 = 0;
   v22 = &v21;
@@ -86,14 +86,14 @@
   _Block_object_dispose(&v21, 8);
   v15 = objc_alloc_init(v13);
   [v15 setSize:{width, height}];
-  v16 = [v8 poseConfiguration];
+  poseConfiguration = [metadataCopy poseConfiguration];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __69__CNUIAvatarImageGenerator_imageFromMetadata_size_completionHandler___block_invoke;
   v18[3] = &unk_1E76E8440;
-  v19 = v9;
-  v17 = v9;
-  [v12 posterWithConfiguration:v16 options:v15 completionHandler:v18];
+  v19 = handlerCopy;
+  v17 = handlerCopy;
+  [v12 posterWithConfiguration:poseConfiguration options:v15 completionHandler:v18];
 }
 
 void __69__CNUIAvatarImageGenerator_imageFromMetadata_size_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -105,16 +105,16 @@ void __69__CNUIAvatarImageGenerator_imageFromMetadata_size_completionHandler___b
   (*(v2 + 16))(v2, v4);
 }
 
-+ (void)stickerImageFromMetadata:(id)a3 generateAsynchronously:(BOOL)a4 size:(double)a5 completionHandler:(id)a6
++ (void)stickerImageFromMetadata:(id)metadata generateAsynchronously:(BOOL)asynchronously size:(double)size completionHandler:(id)handler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  asynchronouslyCopy = asynchronously;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v12 = objc_alloc(getAVTStickerGeneratorClass());
-  v13 = [v10 avatar];
-  v14 = [v12 initWithAvatar:v13];
+  avatar = [metadataCopy avatar];
+  v14 = [v12 initWithAvatar:avatar];
 
-  [v14 setAsync:v8];
+  [v14 setAsync:asynchronouslyCopy];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2050000000;
@@ -134,18 +134,18 @@ void __69__CNUIAvatarImageGenerator_imageFromMetadata_size_completionHandler___b
   v16 = v15;
   _Block_object_dispose(&v26, 8);
   v17 = objc_alloc_init(v15);
-  [v17 setSize:a5];
-  v18 = [v10 poseConfiguration];
+  [v17 setSize:size];
+  poseConfiguration = [metadataCopy poseConfiguration];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __99__CNUIAvatarImageGenerator_stickerImageFromMetadata_generateAsynchronously_size_completionHandler___block_invoke;
   v21[3] = &unk_1E76E8468;
-  v23 = v11;
-  v24 = a1;
-  v22 = v10;
-  v19 = v11;
-  v20 = v10;
-  [v14 stickerImageWithConfiguration:v18 options:v17 completionHandler:v21];
+  v23 = handlerCopy;
+  selfCopy = self;
+  v22 = metadataCopy;
+  v19 = handlerCopy;
+  v20 = metadataCopy;
+  [v14 stickerImageWithConfiguration:poseConfiguration options:v17 completionHandler:v21];
 }
 
 void __99__CNUIAvatarImageGenerator_stickerImageFromMetadata_generateAsynchronously_size_completionHandler___block_invoke(void *a1, void *a2)
@@ -158,18 +158,18 @@ void __99__CNUIAvatarImageGenerator_stickerImageFromMetadata_generateAsynchronou
   (*(a1[5] + 16))();
 }
 
-+ (id)imageWithOverscaledBackgroundForMemojiImage:(id)a3 overscaleMultiplier:(double)a4 poseHasBody:(BOOL)a5
++ (id)imageWithOverscaledBackgroundForMemojiImage:(id)image overscaleMultiplier:(double)multiplier poseHasBody:(BOOL)body
 {
-  v7 = a3;
+  imageCopy = image;
   v8 = objc_alloc_init(MEMORY[0x1E69DCA80]);
-  [v7 scale];
+  [imageCopy scale];
   [v8 setScale:?];
-  [v7 size];
+  [imageCopy size];
   v10 = v9;
-  [v7 size];
+  [imageCopy size];
   v12 = v11;
-  v13 = v10 * a4;
-  v14 = v11 * a4;
+  v13 = v10 * multiplier;
+  v14 = v11 * multiplier;
   v15 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v8 format:{v13, v14}];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -183,9 +183,9 @@ void __99__CNUIAvatarImageGenerator_stickerImageFromMetadata_generateAsynchronou
   v26 = 0;
   v27 = v10;
   v28 = v12;
-  v29 = a5;
-  v20 = v7;
-  v16 = v7;
+  bodyCopy = body;
+  v20 = imageCopy;
+  v16 = imageCopy;
   v17 = [v15 imageWithActions:v19];
 
   return v17;
@@ -214,9 +214,9 @@ uint64_t __104__CNUIAvatarImageGenerator_imageWithOverscaledBackgroundForMemojiI
   return [v9 drawInRect:{MidX - v3, v8, v6, v7}];
 }
 
-+ (id)stickerImageFromMetadata:(id)a3 size:(double)a4
++ (id)stickerImageFromMetadata:(id)metadata size:(double)size
 {
-  v6 = a3;
+  metadataCopy = metadata;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -228,7 +228,7 @@ uint64_t __104__CNUIAvatarImageGenerator_imageWithOverscaledBackgroundForMemojiI
   v9[2] = __58__CNUIAvatarImageGenerator_stickerImageFromMetadata_size___block_invoke;
   v9[3] = &unk_1E76E7CE8;
   v9[4] = &v10;
-  [a1 stickerImageFromMetadata:v6 generateAsynchronously:0 size:v9 completionHandler:a4];
+  [self stickerImageFromMetadata:metadataCopy generateAsynchronously:0 size:v9 completionHandler:size];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 

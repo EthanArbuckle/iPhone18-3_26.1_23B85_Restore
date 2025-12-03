@@ -11,7 +11,7 @@
 - (id)getThresholdMapFilePath;
 - (int64_t)loadTransitionTimer;
 - (void)cleanupModels;
-- (void)initializeWithNamespace:(id)a3;
+- (void)initializeWithNamespace:(id)namespace;
 @end
 
 @implementation SmsFilterTrialModelManager
@@ -39,25 +39,25 @@
   return v3;
 }
 
-- (void)initializeWithNamespace:(id)a3
+- (void)initializeWithNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   objc_initWeak(&location, self);
-  v5 = [[SmsFilterTrialManager alloc] initWithNamespace:v4];
+  v5 = [[SmsFilterTrialManager alloc] initWithNamespace:namespaceCopy];
   trialManager = self->_trialManager;
   self->_trialManager = v5;
 
   v7 = self->_trialManager;
   if (v7)
   {
-    v8 = [(SmsFilterTrialManager *)v7 trialClient];
-    v9 = [(SmsFilterTrialManager *)self->_trialManager trialNamespaceName];
+    trialClient = [(SmsFilterTrialManager *)v7 trialClient];
+    trialNamespaceName = [(SmsFilterTrialManager *)self->_trialManager trialNamespaceName];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __54__SmsFilterTrialModelManager_initializeWithNamespace___block_invoke;
     v12[3] = &unk_10002CB88;
     objc_copyWeak(&v13, &location);
-    v10 = [v8 addUpdateHandlerForNamespaceName:v9 usingBlock:v12];
+    v10 = [trialClient addUpdateHandlerForNamespaceName:trialNamespaceName usingBlock:v12];
 
     objc_destroyWeak(&v13);
   }
@@ -195,19 +195,19 @@ void __54__SmsFilterTrialModelManager_initializeWithNamespace___block_invoke(uin
 
 - (id)getRegexFilePath
 {
-  v3 = [(SmsFilterTrialManager *)self->_trialManager getRegexFileNameWithPath];
-  if (v3)
+  getRegexFileNameWithPath = [(SmsFilterTrialManager *)self->_trialManager getRegexFileNameWithPath];
+  if (getRegexFileNameWithPath)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v3;
+      v7 = getRegexFileNameWithPath;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "regex filepath: %@", &v6, 0xCu);
     }
   }
 
-  return v3;
+  return getRegexFileNameWithPath;
 }
 
 - (double)loadTransactionalThreshold
@@ -260,14 +260,14 @@ void __54__SmsFilterTrialModelManager_initializeWithNamespace___block_invoke(uin
 
 - (int64_t)loadTransitionTimer
 {
-  v3 = [(SmsFilterTrialManager *)self->_trialManager loadTrialModelTransitionTimer];
-  if (v3 <= 0)
+  loadTrialModelTransitionTimer = [(SmsFilterTrialManager *)self->_trialManager loadTrialModelTransitionTimer];
+  if (loadTrialModelTransitionTimer <= 0)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v3 = 1440;
+      loadTrialModelTransitionTimer = 1440;
       v7 = 1440;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Failed to load trial transition timer value. Falling back to default %ld", &v6, 0xCu);
     }
@@ -278,7 +278,7 @@ void __54__SmsFilterTrialModelManager_initializeWithNamespace___block_invoke(uin
     }
   }
 
-  return v3;
+  return loadTrialModelTransitionTimer;
 }
 
 - (BOOL)updateAvailable
@@ -295,17 +295,17 @@ void __54__SmsFilterTrialModelManager_initializeWithNamespace___block_invoke(uin
 - (id)getModelVersion
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(SmsFilterTrialModelManager *)self trialManager];
-  v5 = [v4 trialNamespaceName];
+  trialManager = [(SmsFilterTrialModelManager *)self trialManager];
+  trialNamespaceName = [trialManager trialNamespaceName];
 
-  [v3 appendString:v5];
-  v6 = [(SmsFilterTrialModelManager *)self getMainModel];
-  v7 = v6;
-  if (v6)
+  [v3 appendString:trialNamespaceName];
+  getMainModel = [(SmsFilterTrialModelManager *)self getMainModel];
+  v7 = getMainModel;
+  if (getMainModel)
   {
-    v8 = [v6 modelDescription];
-    v9 = [v8 metadata];
-    v10 = [v9 objectForKeyedSubscript:MLModelVersionStringKey];
+    modelDescription = [getMainModel modelDescription];
+    metadata = [modelDescription metadata];
+    v10 = [metadata objectForKeyedSubscript:MLModelVersionStringKey];
     v11 = v10;
     if (v10)
     {
@@ -317,16 +317,16 @@ void __54__SmsFilterTrialModelManager_initializeWithNamespace___block_invoke(uin
       v12 = @"0";
     }
 
-    v13 = v12;
+    getBasicModel = v12;
 
-    [v3 appendFormat:@"-m%@", v13];
-    v14 = [(SmsFilterTrialModelManager *)self getSubClassificationModel];
-    v15 = v14;
-    if (v14)
+    [v3 appendFormat:@"-m%@", getBasicModel];
+    getSubClassificationModel = [(SmsFilterTrialModelManager *)self getSubClassificationModel];
+    v15 = getSubClassificationModel;
+    if (getSubClassificationModel)
     {
-      v16 = [(__CFString *)v14 modelDescription];
-      v17 = [v16 metadata];
-      v18 = [v17 objectForKeyedSubscript:MLModelVersionStringKey];
+      modelDescription2 = [(__CFString *)getSubClassificationModel modelDescription];
+      metadata2 = [modelDescription2 metadata];
+      v18 = [metadata2 objectForKeyedSubscript:MLModelVersionStringKey];
       v19 = v18;
       if (v18)
       {
@@ -346,10 +346,10 @@ void __54__SmsFilterTrialModelManager_initializeWithNamespace___block_invoke(uin
 
   else
   {
-    v13 = [(SmsFilterTrialModelManager *)self getBasicModel];
-    v22 = [(__CFString *)v13 modelDescription];
-    v23 = [v22 metadata];
-    v24 = [v23 objectForKeyedSubscript:MLModelVersionStringKey];
+    getBasicModel = [(SmsFilterTrialModelManager *)self getBasicModel];
+    modelDescription3 = [(__CFString *)getBasicModel modelDescription];
+    metadata3 = [modelDescription3 metadata];
+    v24 = [metadata3 objectForKeyedSubscript:MLModelVersionStringKey];
     v25 = v24;
     v26 = @"0";
     if (v24)
@@ -367,19 +367,19 @@ void __54__SmsFilterTrialModelManager_initializeWithNamespace___block_invoke(uin
 
 - (id)getThresholdMapFilePath
 {
-  v3 = [(SmsFilterTrialManager *)self->_trialManager getThresholdMapFilePath];
-  if (v3)
+  getThresholdMapFilePath = [(SmsFilterTrialManager *)self->_trialManager getThresholdMapFilePath];
+  if (getThresholdMapFilePath)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v3;
+      v7 = getThresholdMapFilePath;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "threshold filepath: %@", &v6, 0xCu);
     }
   }
 
-  return v3;
+  return getThresholdMapFilePath;
 }
 
 @end

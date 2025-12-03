@@ -1,41 +1,41 @@
 @interface FCM3U8Parser
-- (BOOL)parseWithError:(uint64_t)a1;
-- (uint64_t)saveLine:(uint64_t)a1;
-- (void)initWithData:(void *)a1;
+- (BOOL)parseWithError:(uint64_t)error;
+- (uint64_t)saveLine:(uint64_t)line;
+- (void)initWithData:(void *)data;
 - (void)processLine;
 @end
 
 @implementation FCM3U8Parser
 
-- (void)initWithData:(void *)a1
+- (void)initWithData:(void *)data
 {
   v4 = a2;
-  if (a1)
+  if (data)
   {
-    v9.receiver = a1;
+    v9.receiver = data;
     v9.super_class = FCM3U8Parser;
     v5 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v5;
+    data = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 3, a2);
-      v6 = [MEMORY[0x1E695DF88] data];
-      v7 = a1[4];
-      a1[4] = v6;
+      data = [MEMORY[0x1E695DF88] data];
+      v7 = data[4];
+      data[4] = data;
     }
   }
 
-  return a1;
+  return data;
 }
 
-- (BOOL)parseWithError:(uint64_t)a1
+- (BOOL)parseWithError:(uint64_t)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
-  v3 = *(a1 + 40);
+  v3 = *(error + 40);
   v4 = v3 == 0;
   if (v3)
   {
@@ -48,16 +48,16 @@
 
   else
   {
-    v7 = *(a1 + 24);
+    v7 = *(error + 24);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __31__FCM3U8Parser_parseWithError___block_invoke;
     v9[3] = &unk_1E7C36FC0;
-    v9[4] = a1;
+    v9[4] = error;
     [v7 enumerateByteRangesUsingBlock:v9];
-    if ([*(a1 + 32) length])
+    if ([*(error + 32) length])
     {
-      [(FCM3U8Parser *)a1 processLine];
+      [(FCM3U8Parser *)error processLine];
     }
   }
 
@@ -146,18 +146,18 @@ LABEL_17:
 
 - (void)processLine
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if ([*(a1 + 32) length])
+  if ([*(self + 32) length])
   {
-    v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:*(a1 + 32) encoding:4];
+    v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:*(self + 32) encoding:4];
     if (![v31 length])
     {
 LABEL_46:
-      v29 = *(a1 + 32);
+      v29 = *(self + 32);
       [v29 replaceBytesInRange:0 withBytes:objc_msgSend(v29 length:{"length"), 0, 0}];
 
       return;
@@ -167,37 +167,37 @@ LABEL_46:
     {
       if ([v31 hasPrefix:@"#"])
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 16));
-        [WeakRetained parser:a1 lineIsComment:v31];
+        WeakRetained = objc_loadWeakRetained((self + 16));
+        [WeakRetained parser:self lineIsComment:v31];
 
-        if (*(a1 + 8) == 1)
+        if (*(self + 8) == 1)
         {
-          v8 = objc_loadWeakRetained((a1 + 16));
-          v9 = [v8 parserShouldCollectLine:a1];
+          v8 = objc_loadWeakRetained((self + 16));
+          v9 = [v8 parserShouldCollectLine:self];
 
           if (v9)
           {
-            [(FCM3U8Parser *)a1 saveLine:v31];
+            [(FCM3U8Parser *)self saveLine:v31];
           }
         }
       }
 
       else
       {
-        if (*(a1 + 8) == 1)
+        if (*(self + 8) == 1)
         {
-          v22 = objc_loadWeakRetained((a1 + 16));
-          v23 = [v22 parserShouldCollectLine:a1];
+          v22 = objc_loadWeakRetained((self + 16));
+          v23 = [v22 parserShouldCollectLine:self];
 
           if (v23)
           {
-            [(FCM3U8Parser *)a1 saveLine:v31];
+            [(FCM3U8Parser *)self saveLine:v31];
           }
         }
 
-        v24 = objc_loadWeakRetained((a1 + 16));
+        v24 = objc_loadWeakRetained((self + 16));
         v25 = [MEMORY[0x1E695DFF8] URLWithString:v31];
-        [v24 parser:a1 lineIsURL:v25];
+        [v24 parser:self lineIsURL:v25];
       }
 
       goto LABEL_46;
@@ -220,7 +220,7 @@ LABEL_46:
     if ([(__CFString *)v5 length])
     {
       v5 = v5;
-      v30 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       if ([(__CFString *)v5 length])
       {
         v11 = 0;
@@ -292,7 +292,7 @@ LABEL_34:
           }
 
 LABEL_27:
-          [v30 setObject:v19 forKeyedSubscript:v14];
+          [dictionary setObject:v19 forKeyedSubscript:v14];
           goto LABEL_28;
         }
 
@@ -302,7 +302,7 @@ LABEL_25:
       }
 
 LABEL_40:
-      v4 = [v30 copy];
+      v4 = [dictionary copy];
     }
 
     else
@@ -311,49 +311,49 @@ LABEL_40:
     }
 
 LABEL_42:
-    v26 = objc_loadWeakRetained((a1 + 16));
-    [v26 parser:a1 lineIsTag:v6 value:v5 attributeList:v4];
+    v26 = objc_loadWeakRetained((self + 16));
+    [v26 parser:self lineIsTag:v6 value:v5 attributeList:v4];
 
-    if (*(a1 + 8) == 1)
+    if (*(self + 8) == 1)
     {
-      v27 = objc_loadWeakRetained((a1 + 16));
-      v28 = [v27 parserShouldCollectLine:a1];
+      v27 = objc_loadWeakRetained((self + 16));
+      v28 = [v27 parserShouldCollectLine:self];
 
       if (v28)
       {
-        [(FCM3U8Parser *)a1 saveLine:v2];
+        [(FCM3U8Parser *)self saveLine:v2];
       }
     }
 
     goto LABEL_46;
   }
 
-  if (*(a1 + 8) == 1)
+  if (*(self + 8) == 1)
   {
 
-    [(FCM3U8Parser *)a1 saveLine:?];
+    [(FCM3U8Parser *)self saveLine:?];
   }
 }
 
-- (uint64_t)saveLine:(uint64_t)a1
+- (uint64_t)saveLine:(uint64_t)line
 {
-  v3 = *(a1 + 48);
+  v3 = *(line + 48);
   v4 = a2;
   if (!v3)
   {
-    v5 = [MEMORY[0x1E695DF88] data];
-    v6 = *(a1 + 48);
-    *(a1 + 48) = v5;
+    data = [MEMORY[0x1E695DF88] data];
+    v6 = *(line + 48);
+    *(line + 48) = data;
   }
 
-  v7 = *(a1 + 48);
+  v7 = *(line + 48);
   v8 = v4;
   v9 = v7;
-  v10 = [v4 UTF8String];
-  v11 = [v4 UTF8String];
+  uTF8String = [v4 UTF8String];
+  uTF8String2 = [v4 UTF8String];
 
-  [v9 appendBytes:v10 length:strlen(v11)];
-  v12 = *(a1 + 48);
+  [v9 appendBytes:uTF8String length:strlen(uTF8String2)];
+  v12 = *(line + 48);
 
   return [v12 appendBytes:"\n" length:1];
 }

@@ -1,11 +1,11 @@
 @interface REMUserDefaults
 + (REMDaemonUserDefaults)daemonUserDefaults;
-- (REMUserDefaults)initWithSuiteName:(id)a3 containerURL:(id)a4;
-- (id)_addObserverForKey:(id)a3 block:(id)a4;
-- (id)_startObservingValuesForKey:(id)a3 block:(id)a4;
-- (id)_startStreamingValuesForKey:(id)a3 block:(id)a4;
-- (void)_removeObserver:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (REMUserDefaults)initWithSuiteName:(id)name containerURL:(id)l;
+- (id)_addObserverForKey:(id)key block:(id)block;
+- (id)_startObservingValuesForKey:(id)key block:(id)block;
+- (id)_startStreamingValuesForKey:(id)key block:(id)block;
+- (void)_removeObserver:(id)observer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation REMUserDefaults
@@ -29,23 +29,23 @@ uint64_t __37__REMUserDefaults_daemonUserDefaults__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (REMUserDefaults)initWithSuiteName:(id)a3 containerURL:(id)a4
+- (REMUserDefaults)initWithSuiteName:(id)name containerURL:(id)l
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lCopy = l;
   v30.receiver = self;
   v30.super_class = REMUserDefaults;
   v8 = [(REMUserDefaults *)&v30 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     suiteName = v8->_suiteName;
     v8->_suiteName = v9;
 
-    if (v7)
+    if (lCopy)
     {
-      v11 = [objc_alloc(MEMORY[0x1E695E000]) _initWithSuiteName:v8->_suiteName container:v7];
+      v11 = [objc_alloc(MEMORY[0x1E695E000]) _initWithSuiteName:v8->_suiteName container:lCopy];
       userDefaults = v8->_userDefaults;
       v8->_userDefaults = v11;
 
@@ -56,7 +56,7 @@ uint64_t __37__REMUserDefaults_daemonUserDefaults__block_invoke()
         *buf = 138412546;
         v32 = v14;
         v33 = 2112;
-        v34 = v7;
+        v34 = lCopy;
         v15 = "REMUserDefaults created {suiteName: %@, container: %@}";
         v16 = v13;
         v17 = 22;
@@ -67,15 +67,15 @@ LABEL_10:
 
     else
     {
-      v18 = [MEMORY[0x1E696AAE8] mainBundle];
-      v19 = [v18 bundleIdentifier];
-      v20 = [v19 isEqualToString:v8->_suiteName];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v20 = [bundleIdentifier isEqualToString:v8->_suiteName];
 
       if (v20)
       {
-        v21 = [MEMORY[0x1E695E000] standardUserDefaults];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
         v22 = v8->_userDefaults;
-        v8->_userDefaults = v21;
+        v8->_userDefaults = standardUserDefaults;
 
         v13 = +[REMLog utility];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -117,85 +117,85 @@ LABEL_10:
   return v8;
 }
 
-- (id)_startObservingValuesForKey:(id)a3 block:(id)a4
+- (id)_startObservingValuesForKey:(id)key block:(id)block
 {
-  v6 = a3;
-  v7 = [(REMUserDefaults *)self _addObserverForKey:v6 block:a4];
-  v8 = [(REMUserDefaults *)self userDefaults];
-  [v8 addObserver:self forKeyPath:v6 options:0 context:0];
+  keyCopy = key;
+  v7 = [(REMUserDefaults *)self _addObserverForKey:keyCopy block:block];
+  userDefaults = [(REMUserDefaults *)self userDefaults];
+  [userDefaults addObserver:self forKeyPath:keyCopy options:0 context:0];
 
   return v7;
 }
 
-- (id)_startStreamingValuesForKey:(id)a3 block:(id)a4
+- (id)_startStreamingValuesForKey:(id)key block:(id)block
 {
-  v6 = a3;
-  v7 = [(REMUserDefaults *)self _addObserverForKey:v6 block:a4];
-  v8 = [(REMUserDefaults *)self userDefaults];
-  [v8 addObserver:self forKeyPath:v6 options:4 context:0];
+  keyCopy = key;
+  v7 = [(REMUserDefaults *)self _addObserverForKey:keyCopy block:block];
+  userDefaults = [(REMUserDefaults *)self userDefaults];
+  [userDefaults addObserver:self forKeyPath:keyCopy options:4 context:0];
 
   return v7;
 }
 
-- (id)_addObserverForKey:(id)a3 block:(id)a4
+- (id)_addObserverForKey:(id)key block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(REMUserDefaults *)self observers];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  blockCopy = block;
+  observers = [(REMUserDefaults *)self observers];
+  v9 = [observers objectForKeyedSubscript:keyCopy];
 
   if (!v9)
   {
     v9 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:8];
-    v10 = [(REMUserDefaults *)self observers];
-    [v10 setObject:v9 forKeyedSubscript:v6];
+    observers2 = [(REMUserDefaults *)self observers];
+    [observers2 setObject:v9 forKeyedSubscript:keyCopy];
   }
 
-  v11 = [[REMUserDefaultsObserver alloc] initWithUserDefaults:self key:v6 block:v7];
+  v11 = [[REMUserDefaultsObserver alloc] initWithUserDefaults:self key:keyCopy block:blockCopy];
 
   [v9 addObject:v11];
 
   return v11;
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v9 = a3;
-  v4 = [v9 userDefaultsKey];
-  v5 = [(REMUserDefaults *)self observers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  observerCopy = observer;
+  userDefaultsKey = [observerCopy userDefaultsKey];
+  observers = [(REMUserDefaults *)self observers];
+  v6 = [observers objectForKeyedSubscript:userDefaultsKey];
 
   if (v6)
   {
-    [v6 removeObject:v9];
+    [v6 removeObject:observerCopy];
     if (![v6 count])
     {
-      v7 = [(REMUserDefaults *)self observers];
-      [v7 removeObjectForKey:v4];
+      observers2 = [(REMUserDefaults *)self observers];
+      [observers2 removeObjectForKey:userDefaultsKey];
 
-      v8 = [(REMUserDefaults *)self userDefaults];
-      [v8 removeObserver:self forKeyPath:v4];
+      userDefaults = [(REMUserDefaults *)self userDefaults];
+      [userDefaults removeObserver:self forKeyPath:userDefaultsKey];
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   v10 = +[REMLog utility];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [REMUserDefaults observeValueForKeyPath:v8 ofObject:v10 change:? context:?];
+    [REMUserDefaults observeValueForKeyPath:pathCopy ofObject:v10 change:? context:?];
   }
 
-  v11 = [(REMUserDefaults *)self userDefaults];
+  userDefaults = [(REMUserDefaults *)self userDefaults];
 
-  if (v11 == v9)
+  if (userDefaults == objectCopy)
   {
-    v12 = [(REMUserDefaults *)self observers];
-    v13 = [v12 objectForKeyedSubscript:v8];
+    observers = [(REMUserDefaults *)self observers];
+    v13 = [observers objectForKeyedSubscript:pathCopy];
 
     if ([v13 count])
     {
@@ -219,8 +219,8 @@ LABEL_10:
               objc_enumerationMutation(v14);
             }
 
-            v19 = [*(*(&v21 + 1) + 8 * v18) block];
-            v19[2]();
+            block = [*(*(&v21 + 1) + 8 * v18) block];
+            block[2]();
 
             ++v18;
           }

@@ -1,9 +1,9 @@
 @interface SUCoreRollbackDescriptor
 - (SUCoreRollbackDescriptor)init;
-- (SUCoreRollbackDescriptor)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCoreRollbackDescriptor)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreRollbackDescriptor
@@ -15,32 +15,32 @@
   v2 = [(SUCoreRollbackDescriptor *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D64418] sharedDevice];
-    v4 = [v3 splatCryptex1RestoreVersion];
+    mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1RestoreVersion = [mEMORY[0x277D64418] splatCryptex1RestoreVersion];
     restoreVersion = v2->_restoreVersion;
-    v2->_restoreVersion = v4;
+    v2->_restoreVersion = splatCryptex1RestoreVersion;
 
     v6 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277D64418] sharedDevice];
-    v8 = [v7 splatCryptex1ProductVersion];
-    v9 = [MEMORY[0x277D64418] sharedDevice];
-    v10 = [v9 splatCryptex1ProductVersionExtra];
-    v11 = [v6 stringWithFormat:@"%@ %@", v8, v10];
+    mEMORY[0x277D64418]2 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ProductVersion = [mEMORY[0x277D64418]2 splatCryptex1ProductVersion];
+    mEMORY[0x277D64418]3 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ProductVersionExtra = [mEMORY[0x277D64418]3 splatCryptex1ProductVersionExtra];
+    v11 = [v6 stringWithFormat:@"%@ %@", splatCryptex1ProductVersion, splatCryptex1ProductVersionExtra];
     productVersion = v2->_productVersion;
     v2->_productVersion = v11;
 
-    v13 = [MEMORY[0x277D64418] sharedDevice];
-    v14 = [v13 splatCryptex1BuildVersion];
+    mEMORY[0x277D64418]4 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1BuildVersion = [mEMORY[0x277D64418]4 splatCryptex1BuildVersion];
     productBuildVersion = v2->_productBuildVersion;
-    v2->_productBuildVersion = v14;
+    v2->_productBuildVersion = splatCryptex1BuildVersion;
 
-    v16 = [MEMORY[0x277D64418] sharedDevice];
-    v17 = [v16 splatCryptex1ReleaseType];
+    mEMORY[0x277D64418]5 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ReleaseType = [mEMORY[0x277D64418]5 splatCryptex1ReleaseType];
     releaseType = v2->_releaseType;
-    v2->_releaseType = v17;
+    v2->_releaseType = splatCryptex1ReleaseType;
 
-    v19 = [MEMORY[0x277D64418] sharedDevice];
-    v2->_rollbackEligible = [v19 hasEligibleRollback];
+    mEMORY[0x277D64418]6 = [MEMORY[0x277D64418] sharedDevice];
+    v2->_rollbackEligible = [mEMORY[0x277D64418]6 hasEligibleRollback];
 
     rollbackDate = v2->_rollbackDate;
     v2->_rollbackDate = 0;
@@ -52,10 +52,10 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SUCoreRollbackDescriptor *)self restoreVersion];
-  v5 = [(SUCoreRollbackDescriptor *)self productVersion];
-  v6 = [(SUCoreRollbackDescriptor *)self productBuildVersion];
-  v7 = [(SUCoreRollbackDescriptor *)self releaseType];
+  restoreVersion = [(SUCoreRollbackDescriptor *)self restoreVersion];
+  productVersion = [(SUCoreRollbackDescriptor *)self productVersion];
+  productBuildVersion = [(SUCoreRollbackDescriptor *)self productBuildVersion];
+  releaseType = [(SUCoreRollbackDescriptor *)self releaseType];
   if ([(SUCoreRollbackDescriptor *)self rollbackEligible])
   {
     v8 = @"YES";
@@ -66,82 +66,82 @@
     v8 = @"NO";
   }
 
-  v9 = [(SUCoreRollbackDescriptor *)self rollbackDate];
-  v10 = [v3 initWithFormat:@"restoreVersion:%@ productVersion:%@ producBuildVersion:%@ releaseType:%@ rollbackEligible:%@ rollbackDate:%@", v4, v5, v6, v7, v8, v9];
+  rollbackDate = [(SUCoreRollbackDescriptor *)self rollbackDate];
+  v10 = [v3 initWithFormat:@"restoreVersion:%@ productVersion:%@ producBuildVersion:%@ releaseType:%@ rollbackEligible:%@ rollbackDate:%@", restoreVersion, productVersion, productBuildVersion, releaseType, v8, rollbackDate];
 
   return v10;
 }
 
-- (SUCoreRollbackDescriptor)initWithCoder:(id)a3
+- (SUCoreRollbackDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SUCoreRollbackDescriptor;
   v5 = [(SUCoreRollbackDescriptor *)&v12 init];
   if (v5)
   {
-    -[SUCoreRollbackDescriptor setRollbackEligible:](v5, "setRollbackEligible:", [v4 decodeBoolForKey:@"rollbackEligible"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"restoreVersion"];
+    -[SUCoreRollbackDescriptor setRollbackEligible:](v5, "setRollbackEligible:", [coderCopy decodeBoolForKey:@"rollbackEligible"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"restoreVersion"];
     [(SUCoreRollbackDescriptor *)v5 setRestoreVersion:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productVersion"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productVersion"];
     [(SUCoreRollbackDescriptor *)v5 setProductVersion:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productBuildVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productBuildVersion"];
     [(SUCoreRollbackDescriptor *)v5 setProductBuildVersion:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseType"];
     [(SUCoreRollbackDescriptor *)v5 setReleaseType:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rollbackDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rollbackDate"];
     [(SUCoreRollbackDescriptor *)v5 setRollbackDate:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[SUCoreRollbackDescriptor rollbackEligible](self forKey:{"rollbackEligible"), @"rollbackEligible"}];
-  v5 = [(SUCoreRollbackDescriptor *)self restoreVersion];
-  [v4 encodeObject:v5 forKey:@"restoreVersion"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SUCoreRollbackDescriptor rollbackEligible](self forKey:{"rollbackEligible"), @"rollbackEligible"}];
+  restoreVersion = [(SUCoreRollbackDescriptor *)self restoreVersion];
+  [coderCopy encodeObject:restoreVersion forKey:@"restoreVersion"];
 
-  v6 = [(SUCoreRollbackDescriptor *)self productVersion];
-  [v4 encodeObject:v6 forKey:@"productVersion"];
+  productVersion = [(SUCoreRollbackDescriptor *)self productVersion];
+  [coderCopy encodeObject:productVersion forKey:@"productVersion"];
 
-  v7 = [(SUCoreRollbackDescriptor *)self productBuildVersion];
-  [v4 encodeObject:v7 forKey:@"productBuildVersion"];
+  productBuildVersion = [(SUCoreRollbackDescriptor *)self productBuildVersion];
+  [coderCopy encodeObject:productBuildVersion forKey:@"productBuildVersion"];
 
-  v8 = [(SUCoreRollbackDescriptor *)self releaseType];
-  [v4 encodeObject:v8 forKey:@"releaseType"];
+  releaseType = [(SUCoreRollbackDescriptor *)self releaseType];
+  [coderCopy encodeObject:releaseType forKey:@"releaseType"];
 
-  v9 = [(SUCoreRollbackDescriptor *)self rollbackDate];
-  [v4 encodeObject:v9 forKey:@"rollbackDate"];
+  rollbackDate = [(SUCoreRollbackDescriptor *)self rollbackDate];
+  [coderCopy encodeObject:rollbackDate forKey:@"rollbackDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[SUCoreRollbackDescriptor allocWithZone:](SUCoreRollbackDescriptor init];
   [(SUCoreRollbackDescriptor *)v5 setRollbackEligible:[(SUCoreRollbackDescriptor *)self rollbackEligible]];
-  v6 = [(SUCoreRollbackDescriptor *)self restoreVersion];
-  v7 = [v6 copyWithZone:a3];
+  restoreVersion = [(SUCoreRollbackDescriptor *)self restoreVersion];
+  v7 = [restoreVersion copyWithZone:zone];
   [(SUCoreRollbackDescriptor *)v5 setRestoreVersion:v7];
 
-  v8 = [(SUCoreRollbackDescriptor *)self productVersion];
-  v9 = [v8 copyWithZone:a3];
+  productVersion = [(SUCoreRollbackDescriptor *)self productVersion];
+  v9 = [productVersion copyWithZone:zone];
   [(SUCoreRollbackDescriptor *)v5 setProductVersion:v9];
 
-  v10 = [(SUCoreRollbackDescriptor *)self productBuildVersion];
-  v11 = [v10 copyWithZone:a3];
+  productBuildVersion = [(SUCoreRollbackDescriptor *)self productBuildVersion];
+  v11 = [productBuildVersion copyWithZone:zone];
   [(SUCoreRollbackDescriptor *)v5 setProductBuildVersion:v11];
 
-  v12 = [(SUCoreRollbackDescriptor *)self releaseType];
-  v13 = [v12 copyWithZone:a3];
+  releaseType = [(SUCoreRollbackDescriptor *)self releaseType];
+  v13 = [releaseType copyWithZone:zone];
   [(SUCoreRollbackDescriptor *)v5 setReleaseType:v13];
 
-  v14 = [(SUCoreRollbackDescriptor *)self rollbackDate];
-  v15 = [v14 copyWithZone:a3];
+  rollbackDate = [(SUCoreRollbackDescriptor *)self rollbackDate];
+  v15 = [rollbackDate copyWithZone:zone];
   [(SUCoreRollbackDescriptor *)v5 setRollbackDate:v15];
 
   return v5;

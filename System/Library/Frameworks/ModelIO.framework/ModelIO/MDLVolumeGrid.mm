@@ -1,15 +1,15 @@
 @interface MDLVolumeGrid
-- (MDLVolumeGrid)initWithAsset:(id)a3 divisions:(int)a4;
-- (MDLVolumeGrid)initWithObject:(id)a3 divisions:(int)a4;
-- (id)meshWithStyle:(unint64_t)a3;
-- (unint64_t)trianglesIntersectingRayWithOrigin:(MDLVolumeGrid *)self direction:(SEL)a2 count:(unint64_t *)a3;
+- (MDLVolumeGrid)initWithAsset:(id)asset divisions:(int)divisions;
+- (MDLVolumeGrid)initWithObject:(id)object divisions:(int)divisions;
+- (id)meshWithStyle:(unint64_t)style;
+- (unint64_t)trianglesIntersectingRayWithOrigin:(MDLVolumeGrid *)self direction:(SEL)direction count:(unint64_t *)count;
 @end
 
 @implementation MDLVolumeGrid
 
-- (MDLVolumeGrid)initWithObject:(id)a3 divisions:(int)a4
+- (MDLVolumeGrid)initWithObject:(id)object divisions:(int)divisions
 {
-  v5 = a3;
+  objectCopy = object;
   v7.receiver = self;
   v7.super_class = MDLVolumeGrid;
   if ([(MDLVolumeGrid *)&v7 init])
@@ -20,9 +20,9 @@
   return 0;
 }
 
-- (MDLVolumeGrid)initWithAsset:(id)a3 divisions:(int)a4
+- (MDLVolumeGrid)initWithAsset:(id)asset divisions:(int)divisions
 {
-  v5 = a3;
+  assetCopy = asset;
   v7.receiver = self;
   v7.super_class = MDLVolumeGrid;
   if ([(MDLVolumeGrid *)&v7 init])
@@ -33,19 +33,19 @@
   return 0;
 }
 
-- (id)meshWithStyle:(unint64_t)a3
+- (id)meshWithStyle:(unint64_t)style
 {
   ptr = self->_octree.__ptr_;
   if (ptr)
   {
-    ptr = sub_239EBFBE4(ptr, *(ptr + 144), a3 == 2, a3 == 1);
+    ptr = sub_239EBFBE4(ptr, *(ptr + 144), style == 2, style == 1);
     v3 = vars8;
   }
 
   return ptr;
 }
 
-- (unint64_t)trianglesIntersectingRayWithOrigin:(MDLVolumeGrid *)self direction:(SEL)a2 count:(unint64_t *)a3
+- (unint64_t)trianglesIntersectingRayWithOrigin:(MDLVolumeGrid *)self direction:(SEL)direction count:(unint64_t *)count
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = vmulq_f32(v4, v4);
@@ -92,7 +92,7 @@
       v14 = v15;
     }
 
-    *a3 = v14;
+    *count = v14;
     sub_239E7B644(&v27);
   }
 

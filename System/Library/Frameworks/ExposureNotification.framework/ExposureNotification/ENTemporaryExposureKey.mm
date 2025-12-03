@@ -1,10 +1,10 @@
 @interface ENTemporaryExposureKey
 - (ENTemporaryExposureKey)init;
-- (ENTemporaryExposureKey)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENTemporaryExposureKey)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)deriveRollingProximityIdentifiersWithBuffer:(id *)a3 count:(unint64_t)a4;
-- (void)encodeWithXPCObject:(id)a3;
-- (void)getAEMBytes:(void *)a3 input:(const void *)a4 length:(unint64_t)a5 RPI:(id *)a6;
+- (void)deriveRollingProximityIdentifiersWithBuffer:(id *)buffer count:(unint64_t)count;
+- (void)encodeWithXPCObject:(id)object;
+- (void)getAEMBytes:(void *)bytes input:(const void *)input length:(unint64_t)length RPI:(id *)i;
 @end
 
 @implementation ENTemporaryExposureKey
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  xdict = a3;
+  xdict = object;
   daysSinceOnsetOfSymptoms = self->_daysSinceOnsetOfSymptoms;
   if (daysSinceOnsetOfSymptoms != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -46,10 +46,10 @@
     v7 = keyData;
     v8 = xdict;
     v9 = keyData;
-    v10 = [(NSData *)v9 bytes];
-    if (v10)
+    bytes = [(NSData *)v9 bytes];
+    if (bytes)
     {
-      v11 = v10;
+      v11 = bytes;
     }
 
     else
@@ -87,7 +87,7 @@
   xpc_dictionary_set_BOOL(xdict, "vaccinated", self->_vaccinated);
 }
 
-- (void)deriveRollingProximityIdentifiersWithBuffer:(id *)a3 count:(unint64_t)a4
+- (void)deriveRollingProximityIdentifiersWithBuffer:(id *)buffer count:(unint64_t)count
 {
   v9[4] = *MEMORY[0x277D85DE8];
   if (![(ENTemporaryExposureKey *)self isValid])
@@ -107,11 +107,11 @@
   v9[0] = 0;
   v9[1] = 0;
   ENRPIKDerive();
-  ENRPIDeriveBatch(a3, v9, self->_rollingStartNumber, a4);
+  ENRPIDeriveBatch(buffer, v9, self->_rollingStartNumber, count);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAEMBytes:(void *)a3 input:(const void *)a4 length:(unint64_t)a5 RPI:(id *)a6
+- (void)getAEMBytes:(void *)bytes input:(const void *)input length:(unint64_t)length RPI:(id *)i
 {
   v9 = *MEMORY[0x277D85DE8];
   if (![(ENTemporaryExposureKey *)self isValid])
@@ -211,26 +211,26 @@
   return v16;
 }
 
-- (ENTemporaryExposureKey)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENTemporaryExposureKey)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENTemporaryExposureKey *)self init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_25;
     }
 
 LABEL_24:
     ENErrorF(2);
-    *a4 = v13 = 0;
+    *error = v13 = 0;
     goto LABEL_20;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -306,9 +306,9 @@ LABEL_25:
 
   v7->_variantOfConcernType = 0;
 LABEL_19:
-  v7->_revised = xpc_dictionary_get_BOOL(v6, "tekRv");
-  v7->_rollingPeriod = xpc_dictionary_get_uint64(v6, "rlgP");
-  v7->_vaccinated = xpc_dictionary_get_BOOL(v6, "vaccinated");
+  v7->_revised = xpc_dictionary_get_BOOL(objectCopy, "tekRv");
+  v7->_rollingPeriod = xpc_dictionary_get_uint64(objectCopy, "rlgP");
+  v7->_vaccinated = xpc_dictionary_get_BOOL(objectCopy, "vaccinated");
   v13 = v7;
 LABEL_20:
 

@@ -1,68 +1,68 @@
 @interface PKAccountModuleCollectionViewCell
-- (BOOL)configureWithAccount:(id)a3;
-- (BOOL)shouldShowBalanceFor:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAccountModuleCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)reportDeviceEvent:(int64_t)a3 account:(id)a4;
+- (BOOL)configureWithAccount:(id)account;
+- (BOOL)shouldShowBalanceFor:(id)for;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAccountModuleCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)reportDeviceEvent:(int64_t)event account:(id)account;
 @end
 
 @implementation PKAccountModuleCollectionViewCell
 
-- (BOOL)configureWithAccount:(id)a3
+- (BOOL)configureWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = PKAccountModuleCollectionViewCell.configure(account:)(v4);
+  accountCopy = account;
+  selfCopy = self;
+  LOBYTE(self) = PKAccountModuleCollectionViewCell.configure(account:)(accountCopy);
 
   return self & 1;
 }
 
-- (BOOL)shouldShowBalanceFor:(id)a3
+- (BOOL)shouldShowBalanceFor:(id)for
 {
-  v3 = a3;
-  if ([v3 type] == 4)
+  forCopy = for;
+  if ([forCopy type] == 4)
   {
     if (PKSavingsFDICSignageEnabled())
     {
-      v4 = [v3 FDICBehaviorShowCreditDashboardBalance];
+      fDICBehaviorShowCreditDashboardBalance = [forCopy FDICBehaviorShowCreditDashboardBalance];
     }
 
     else
     {
-      v4 = 1;
+      fDICBehaviorShowCreditDashboardBalance = 1;
     }
   }
 
   else
   {
-    v4 = 0;
+    fDICBehaviorShowCreditDashboardBalance = 0;
   }
 
-  return v4;
+  return fDICBehaviorShowCreditDashboardBalance;
 }
 
-- (void)reportDeviceEvent:(int64_t)a3 account:(id)a4
+- (void)reportDeviceEvent:(int64_t)event account:(id)account
 {
-  v6 = a4;
-  v7 = self;
-  _sSo33PKAccountModuleCollectionViewCellC9PassKitUIE17reportDeviceEvent_7accountySo0ajK0V_So0A0CtF_0(a3, v6);
+  accountCopy = account;
+  selfCopy = self;
+  _sSo33PKAccountModuleCollectionViewCellC9PassKitUIE17reportDeviceEvent_7accountySo0ajK0V_So0A0CtF_0(event, accountCopy);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   LODWORD(v3) = 1148846080;
   LODWORD(v4) = 1112014848;
-  [(PKAccountModuleCollectionViewCell *)self systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:v3, v4];
+  [(PKAccountModuleCollectionViewCell *)self systemLayoutSizeFittingSize:fits.width withHorizontalFittingPriority:fits.height verticalFittingPriority:v3, v4];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (PKAccountModuleCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKAccountModuleCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKAccountModuleCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

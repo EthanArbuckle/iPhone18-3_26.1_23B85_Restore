@@ -1,22 +1,22 @@
 @interface WFVariablePillHostingView
 - (CGSize)intrinsicContentSize;
-- (WFVariablePillHostingView)initWithName:(id)a3 icon:(id)a4 font:(id)a5 available:(BOOL)a6 height:(double)a7 controlState:(unint64_t)a8;
+- (WFVariablePillHostingView)initWithName:(id)name icon:(id)icon font:(id)font available:(BOOL)available height:(double)height controlState:(unint64_t)state;
 @end
 
 @implementation WFVariablePillHostingView
 
-- (WFVariablePillHostingView)initWithName:(id)a3 icon:(id)a4 font:(id)a5 available:(BOOL)a6 height:(double)a7 controlState:(unint64_t)a8
+- (WFVariablePillHostingView)initWithName:(id)name icon:(id)icon font:(id)font available:(BOOL)available height:(double)height controlState:(unint64_t)state
 {
   v13 = sub_1C840CDDC();
   v15 = v14;
-  v16 = a4;
-  v17 = a5;
-  return sub_1C8340218(v13, v15, a4, a5, a6, a8, a7);
+  iconCopy = icon;
+  fontCopy = font;
+  return sub_1C8340218(v13, v15, icon, font, available, state, height);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C83405C0();
   v4 = v3;
   v6 = v5;

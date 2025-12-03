@@ -1,20 +1,20 @@
 @interface SKUIAdornedImageViewReuseView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForButtonText:(id)a3 type:(int64_t)a4 style:(id)a5 context:(id)a6;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringForMenuItem:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (CGRect)frameForView:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForButtonText:(id)text type:(int64_t)type style:(id)style context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (id)_attributedStringForMenuItem:(id)item context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (CGRect)frameForView:(id)view;
 - (SKUIAdornedImageViewReuseView)init;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_buttonAction:(id)a3;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
 - (void)layoutSubviews;
-- (void)mediaPlayer:(id)a3 itemStateChanged:(id)a4;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)mediaPlayer:(id)player itemStateChanged:(id)changed;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SKUIAdornedImageViewReuseView
@@ -46,10 +46,10 @@
   return v11;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -70,11 +70,11 @@
   v20[1] = 3221225472;
   v20[2] = __80__SKUIAdornedImageViewReuseView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v20[3] = &unk_2781F95A0;
-  v17 = v8;
+  v17 = contextCopy;
   v22 = &v24;
-  v23 = a4;
+  reasonCopy = reason;
   v21 = v17;
-  [v7 enumerateChildrenUsingBlock:v20];
+  [elementCopy enumerateChildrenUsingBlock:v20];
   v18 = *(v25 + 24);
 
   _Block_object_dispose(&v24, 8);
@@ -88,10 +88,10 @@ uint64_t __80__SKUIAdornedImageViewReuseView_prefetchResourcesForViewElement_rea
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -104,8 +104,8 @@ uint64_t __80__SKUIAdornedImageViewReuseView_prefetchResourcesForViewElement_rea
     }
   }
 
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v17 = v16;
   v19 = v18;
 
@@ -116,33 +116,33 @@ uint64_t __80__SKUIAdornedImageViewReuseView_prefetchResourcesForViewElement_rea
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[SKUIAdornedImageViewReuseView requestLayoutForViewElement:width:context:];
   }
 
-  [v9 size];
-  if (v10 <= a4)
+  [elementCopy size];
+  if (v10 <= width)
   {
-    a4 = v10;
+    width = v10;
   }
 
-  v11 = [v8 labelLayoutCache];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__SKUIAdornedImageViewReuseView_requestLayoutForViewElement_width_context___block_invoke;
   v14[3] = &unk_2781FAEB8;
-  v17 = a4;
-  v18 = a1;
-  v15 = v11;
-  v16 = v8;
-  v12 = v8;
-  v13 = v11;
-  [v9 enumerateChildrenUsingBlock:v14];
+  widthCopy = width;
+  selfCopy = self;
+  v15 = labelLayoutCache;
+  v16 = contextCopy;
+  v12 = contextCopy;
+  v13 = labelLayoutCache;
+  [elementCopy enumerateChildrenUsingBlock:v14];
 }
 
 void __75__SKUIAdornedImageViewReuseView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -198,10 +198,10 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -214,7 +214,7 @@ LABEL_13:
     }
   }
 
-  [v8 sizeForViewElement:v7 width:a3];
+  [contextCopy sizeForViewElement:elementCopy width:width];
   v18 = v17;
   v20 = v19;
 
@@ -225,13 +225,13 @@ LABEL_13:
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  elementCopy = element;
+  contextCopy = context;
   [(NSMapTable *)self->_viewElementViews removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
-  objc_storeStrong(&self->_imageViewElement, a3);
+  objc_storeStrong(&self->_imageViewElement, element);
   playButton = self->_playButton;
   self->_playButton = 0;
 
@@ -240,12 +240,12 @@ LABEL_13:
   v30 = 3221225472;
   v31 = __69__SKUIAdornedImageViewReuseView_reloadWithViewElement_width_context___block_invoke;
   v32 = &unk_2781F95C8;
-  v12 = v9;
+  v12 = elementCopy;
   v33 = v12;
-  v36 = a4;
-  v13 = v10;
+  widthCopy = width;
+  v13 = contextCopy;
   v34 = v13;
-  v35 = self;
+  selfCopy = self;
   [(SKUIViewReuseView *)self modifyUsingBlock:&v29];
   v14 = [SKUIMediaPlayerInterface sharedInstance:v29];
   [v14 removeObserver:self];
@@ -253,20 +253,20 @@ LABEL_13:
   v15 = self->_playButton;
   if (v15)
   {
-    v16 = [(SKUIPlayButton *)v15 playItemIdentifier];
+    playItemIdentifier = [(SKUIPlayButton *)v15 playItemIdentifier];
 
-    if (v16)
+    if (playItemIdentifier)
     {
       v17 = +[SKUIMediaPlayerInterface sharedInstance];
-      v18 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
-      v19 = [v17 playerForItemWithIdentifier:v18];
+      playItemIdentifier2 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
+      v19 = [v17 playerForItemWithIdentifier:playItemIdentifier2];
 
-      v20 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
-      if ([v17 identifierIsOnDeck:v20])
+      playItemIdentifier3 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
+      if ([v17 identifierIsOnDeck:playItemIdentifier3])
       {
-        v21 = [(SKUIPlayButtonControl *)self->_playButton isIndeterminate];
+        isIndeterminate = [(SKUIPlayButtonControl *)self->_playButton isIndeterminate];
 
-        if (!v21)
+        if (!isIndeterminate)
         {
           [(SKUIPlayButtonControl *)self->_playButton beginIndeterminateAnimation];
           v22 = self->_playButton;
@@ -290,15 +290,15 @@ LABEL_13:
         goto LABEL_17;
       }
 
-      v24 = [v19 playerItem];
-      v25 = [v24 playState];
+      playerItem = [v19 playerItem];
+      playState = [playerItem playState];
 
       if ([(SKUIPlayButton *)self->_playButton showOnDemand])
       {
         [(SKUIPlayButton *)self->_playButton setHidden:0];
       }
 
-      if (v25 <= 5 && ((1 << v25) & 0x31) != 0)
+      if (playState <= 5 && ((1 << playState) & 0x31) != 0)
       {
         [(SKUIPlayButtonControl *)self->_playButton hideProgressAnimated:1];
 LABEL_17:
@@ -309,11 +309,11 @@ LABEL_17:
       }
 
       v26 = self->_playButton;
-      v27 = [v19 playerItem];
-      [(SKUIPlayButton *)v26 reloadWithItemStatus:v27 animated:0];
+      playerItem2 = [v19 playerItem];
+      [(SKUIPlayButton *)v26 reloadWithItemStatus:playerItem2 animated:0];
 
       v22 = self->_playButton;
-      v23 = v25 == 3;
+      v23 = playState == 3;
 LABEL_16:
       [(SKUIPlayButtonControl *)v22 showPlayIndicator:v23];
       goto LABEL_17;
@@ -520,12 +520,12 @@ LABEL_30:
 LABEL_38:
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 requestIdentifier];
+  imageCopy = image;
+  contextCopy = context;
+  requestIdentifier = [request requestIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -535,7 +535,7 @@ LABEL_38:
   if (v11)
   {
     v12 = v11;
-    v22 = v8;
+    v22 = imageCopy;
     v13 = *v25;
     while (2)
     {
@@ -548,21 +548,21 @@ LABEL_38:
 
         v15 = *(*(&v24 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15, v22];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v10)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = [v15 imageView];
-            v8 = v22;
-            [v20 setImage:v22];
+            imageView = [v15 imageView];
+            imageCopy = v22;
+            [imageView setImage:v22];
           }
 
           else
           {
-            v8 = v22;
+            imageCopy = v22;
             [v15 setImage:v22];
           }
 
@@ -581,7 +581,7 @@ LABEL_38:
     }
 
     v19 = 0;
-    v8 = v22;
+    imageCopy = v22;
   }
 
   else
@@ -594,11 +594,11 @@ LABEL_16:
   return v19;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SKUIViewElement *)self->_imageViewElement flattenedChildren];
-  v6 = [(SKUIViewReuseView *)self allExistingViews];
+  identifierCopy = identifier;
+  flattenedChildren = [(SKUIViewElement *)self->_imageViewElement flattenedChildren];
+  allExistingViews = [(SKUIViewReuseView *)self allExistingViews];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -609,12 +609,12 @@ LABEL_16:
   v11[1] = 3221225472;
   v11[2] = __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke;
   v11[3] = &unk_2781FB2C0;
-  v7 = v4;
+  v7 = identifierCopy;
   v12 = v7;
-  v8 = v6;
+  v8 = allExistingViews;
   v13 = v8;
   v14 = &v15;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [flattenedChildren enumerateObjectsUsingBlock:v11];
   v9 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -645,14 +645,14 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
   }
 }
 
-- (CGRect)frameForView:(id)a3
+- (CGRect)frameForView:(id)view
 {
   viewElementViews = self->_viewElementViews;
-  v5 = a3;
-  v6 = [(NSMapTable *)viewElementViews objectForKey:v5];
-  v7 = [v6 style];
+  viewCopy = view;
+  v6 = [(NSMapTable *)viewElementViews objectForKey:viewCopy];
+  style = [v6 style];
   v38 = 0;
-  v8 = SKUIViewElementMarginForStyle(v7, &v38);
+  v8 = SKUIViewElementMarginForStyle(style, &v38);
   if (v38)
   {
     v12 = v11;
@@ -699,17 +699,17 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
   Height = CGRectGetHeight(v40);
   v19 = *MEMORY[0x277CBF3A0];
   v18 = *(MEMORY[0x277CBF3A0] + 8);
-  [v5 sizeThatFits:{v16, Height - (v13 + v15)}];
+  [viewCopy sizeThatFits:{v16, Height - (v13 + v15)}];
   v21 = v20;
   v23 = v22;
 
-  v24 = [v7 elementPosition];
-  if (v24 > 9)
+  elementPosition = [style elementPosition];
+  if (elementPosition > 9)
   {
     v14 = v19;
   }
 
-  else if (((1 << v24) & 0x2A1) != 0)
+  else if (((1 << elementPosition) & 0x2A1) != 0)
   {
     [(SKUIAdornedImageViewReuseView *)self bounds];
     Width = CGRectGetWidth(v43);
@@ -720,7 +720,7 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
     v14 = Width - CGRectGetWidth(v44) - v12;
   }
 
-  else if (((1 << v24) & 0xE) != 0)
+  else if (((1 << elementPosition) & 0xE) != 0)
   {
     [(SKUIAdornedImageViewReuseView *)self bounds];
     MidX = CGRectGetMidX(v41);
@@ -731,13 +731,13 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
     v14 = MidX + CGRectGetWidth(v42) * -0.5;
   }
 
-  v27 = [v7 elementPosition];
-  if (v27 > 9)
+  elementPosition2 = [style elementPosition];
+  if (elementPosition2 > 9)
   {
     v15 = v18;
   }
 
-  else if (((1 << v27) & 0x309) != 0)
+  else if (((1 << elementPosition2) & 0x309) != 0)
   {
     [(SKUIAdornedImageViewReuseView *)self bounds];
     v29 = CGRectGetHeight(v47);
@@ -748,7 +748,7 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
     v15 = v29 - CGRectGetHeight(v48) - v13;
   }
 
-  else if (((1 << v27) & 0x32) != 0)
+  else if (((1 << elementPosition2) & 0x32) != 0)
   {
     [(SKUIAdornedImageViewReuseView *)self bounds];
     MidY = CGRectGetMidY(v45);
@@ -786,12 +786,12 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
   v13.receiver = self;
   v13.super_class = SKUIAdornedImageViewReuseView;
   [(SKUIAdornedImageViewReuseView *)&v13 layoutSubviews];
-  v3 = [(SKUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SKUIViewReuseView *)self allExistingViews];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  v4 = [allExistingViews countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -802,7 +802,7 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allExistingViews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -810,48 +810,48 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
         [v8 setFrame:?];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [allExistingViews countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  if (self->_playButton == a3)
+  if (self->_playButton == action)
   {
     v9 = +[SKUIMediaPlayerInterface sharedInstance];
-    v5 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
-    v6 = [v9 isItemWithIdentifierActive:v5];
+    playItemIdentifier = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
+    v6 = [v9 isItemWithIdentifierActive:playItemIdentifier];
 
     if (v6)
     {
-      v7 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
-      [v9 togglePlayStateForItemWithIdentifier:v7];
+      playItemIdentifier2 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
+      [v9 togglePlayStateForItemWithIdentifier:playItemIdentifier2];
     }
 
     else
     {
-      v7 = [(NSMapTable *)self->_viewElementViews objectForKey:self->_playButton];
-      if (v7)
+      playItemIdentifier2 = [(NSMapTable *)self->_viewElementViews objectForKey:self->_playButton];
+      if (playItemIdentifier2)
       {
         if ([(SKUIPlayButtonControl *)self->_playButton isDisabledButSelectable])
         {
-          [v7 dispatchEvent:0x28280CC48 eventAttribute:0x28280CC68 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
+          [playItemIdentifier2 dispatchEvent:0x28280CC48 eventAttribute:0x28280CC68 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
         }
 
         else
         {
-          v8 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
-          [v9 notifyWillChangeToItemWithItemIdentifer:v8];
+          playItemIdentifier3 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
+          [v9 notifyWillChangeToItemWithItemIdentifer:playItemIdentifier3];
 
           if (![(SKUIPlayButtonControl *)self->_playButton isIndeterminate])
           {
             [(SKUIPlayButtonControl *)self->_playButton beginIndeterminateAnimation];
           }
 
-          [v7 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+          [playItemIdentifier2 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
         }
       }
     }
@@ -876,15 +876,15 @@ void __58__SKUIAdornedImageViewReuseView_viewForElementIdentifier___block_invoke
 LABEL_15:
 }
 
-- (void)mediaPlayer:(id)a3 itemStateChanged:(id)a4
+- (void)mediaPlayer:(id)player itemStateChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  playerCopy = player;
+  changedCopy = changed;
   playButton = self->_playButton;
   if (playButton)
   {
-    v9 = [(SKUIPlayButton *)playButton playItemIdentifier];
-    v10 = [SKUIMediaPlayerInterface identifierMatches:v9 item:v7];
+    playItemIdentifier = [(SKUIPlayButton *)playButton playItemIdentifier];
+    v10 = [SKUIMediaPlayerInterface identifierMatches:playItemIdentifier item:changedCopy];
 
     if (v10)
     {
@@ -893,7 +893,7 @@ LABEL_15:
       block[2] = __62__SKUIAdornedImageViewReuseView_mediaPlayer_itemStateChanged___block_invoke;
       block[3] = &unk_2781F80C8;
       block[4] = self;
-      v17 = v7;
+      v17 = changedCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
       v11 = v17;
 LABEL_7:
@@ -907,8 +907,8 @@ LABEL_7:
       v13[1] = 3221225472;
       v13[2] = __62__SKUIAdornedImageViewReuseView_mediaPlayer_itemStateChanged___block_invoke_2;
       v13[3] = &unk_2781F80C8;
-      v14 = v7;
-      v15 = self;
+      v14 = changedCopy;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], v13);
       v11 = v14;
       goto LABEL_7;
@@ -970,36 +970,36 @@ uint64_t __62__SKUIAdornedImageViewReuseView_mediaPlayer_itemStateChanged___bloc
   return result;
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buttonText];
-  v9 = [v6 buttonViewType];
-  v10 = [v6 buttonTitleStyle];
-  if (v10)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonText = [buttonCopy buttonText];
+  buttonViewType = [buttonCopy buttonViewType];
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  if (buttonTitleStyle)
   {
-    v11 = [a1 _attributedStringForButtonText:v8 type:v9 style:v10 context:v7];
+    v11 = [self _attributedStringForButtonText:buttonText type:buttonViewType style:buttonTitleStyle context:contextCopy];
   }
 
   else
   {
-    v12 = [v6 style];
-    v11 = [a1 _attributedStringForButtonText:v8 type:v9 style:v12 context:v7];
+    style = [buttonCopy style];
+    v11 = [self _attributedStringForButtonText:buttonText type:buttonViewType style:style context:contextCopy];
   }
 
   return v11;
 }
 
-+ (id)_attributedStringForButtonText:(id)a3 type:(int64_t)a4 style:(id)a5 context:(id)a6
++ (id)_attributedStringForButtonText:(id)text type:(int64_t)type style:(id)style context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = SKUIViewElementFontWithStyle(v10);
+  textCopy = text;
+  styleCopy = style;
+  contextCopy = context;
+  v12 = SKUIViewElementFontWithStyle(styleCopy);
   if (!v12)
   {
-    if (a4)
+    if (type)
     {
       v13 = 5;
     }
@@ -1012,39 +1012,39 @@ uint64_t __62__SKUIAdornedImageViewReuseView_mediaPlayer_itemStateChanged___bloc
     v12 = SKUIFontPreferredFontForTextStyle(v13);
   }
 
-  v14 = [v11 tintColor];
-  v15 = SKUIViewElementPlainColorWithStyle(v10, v14);
+  tintColor = [contextCopy tintColor];
+  blackColor = SKUIViewElementPlainColorWithStyle(styleCopy, tintColor);
 
-  if (!v15)
+  if (!blackColor)
   {
-    v15 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v16 = [v9 attributedStringWithDefaultFont:v12 foregroundColor:v15 style:v10];
+  v16 = [textCopy attributedStringWithDefaultFont:v12 foregroundColor:blackColor style:styleCopy];
 
   return v16;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SKUIFontPreferredFontForTextStyle(5);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SKUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.8];
   }
 
-  v11 = SKUIViewElementAlignmentForStyle(v7);
+  v11 = SKUIViewElementAlignmentForStyle(style);
   if (v11)
   {
     v12 = SKUIViewElementNSTextAlignmentForIKElementAlignment(v11);
@@ -1055,20 +1055,20 @@ uint64_t __62__SKUIAdornedImageViewReuseView_mediaPlayer_itemStateChanged___bloc
     v12 = 0;
   }
 
-  v13 = [v5 text];
-  v14 = [v13 attributedStringWithDefaultFont:v8 foregroundColor:v10 textAlignment:v12 style:v7];
+  text = [labelCopy text];
+  v14 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 textAlignment:v12 style:style];
 
   return v14;
 }
 
-+ (id)_attributedStringForMenuItem:(id)a3 context:(id)a4
++ (id)_attributedStringForMenuItem:(id)item context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 itemText];
-  v9 = [v7 style];
+  contextCopy = context;
+  itemCopy = item;
+  itemText = [itemCopy itemText];
+  style = [itemCopy style];
 
-  v10 = [a1 _attributedStringForButtonText:v8 type:0 style:v9 context:v6];
+  v10 = [self _attributedStringForButtonText:itemText type:0 style:style context:contextCopy];
 
   return v10;
 }

@@ -4,23 +4,23 @@
 - (ICAuthorHighlightsUpdater)authorHighlightsUpdater;
 - (ICTextView)textView;
 - (double)fullContentWidth;
-- (void)analyticsSessionWillEnd:(id)a3;
-- (void)focusAttributionView:(id)a3;
-- (void)handleTapGesture:(id)a3;
+- (void)analyticsSessionWillEnd:(id)end;
+- (void)focusAttributionView:(id)view;
+- (void)handleTapGesture:(id)gesture;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reload;
-- (void)reloadAttributionsWithCompletion:(id)a3;
+- (void)reloadAttributionsWithCompletion:(id)completion;
 - (void)removeAllAttributionViews;
-- (void)renderAttributionView:(id)a3;
+- (void)renderAttributionView:(id)view;
 - (void)renderAttributions;
-- (void)scrollToRangeIfNeeded:(_NSRange)a3;
-- (void)setFilter:(id)a3 animated:(BOOL)a4;
-- (void)setTextView:(id)a3;
-- (void)setVisibleContentWidth:(double)a3 isGestureActive:(BOOL)a4;
-- (void)textViewLayoutDidChange:(id)a3;
+- (void)scrollToRangeIfNeeded:(_NSRange)needed;
+- (void)setFilter:(id)filter animated:(BOOL)animated;
+- (void)setTextView:(id)view;
+- (void)setVisibleContentWidth:(double)width isGestureActive:(BOOL)active;
+- (void)textViewLayoutDidChange:(id)change;
 - (void)unfocusAttributionDetails;
-- (void)willEnterForeground:(id)a3;
+- (void)willEnterForeground:(id)foreground;
 @end
 
 @implementation ICAttributionSidebarView
@@ -42,11 +42,11 @@
     reloadAttributionsDelayer = v2->_reloadAttributionsDelayer;
     v2->_reloadAttributionsDelayer = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel_willEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willEnterForeground_ name:*MEMORY[0x277D76758] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel_analyticsSessionWillEnd_ name:*MEMORY[0x277D35960] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_analyticsSessionWillEnd_ name:*MEMORY[0x277D35960] object:0];
   }
 
   return v2;
@@ -54,23 +54,23 @@
 
 - (double)fullContentWidth
 {
-  v3 = [(ICAttributionSidebarView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(ICAttributionSidebarView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
     return 160.0;
   }
 
-  v7 = [(ICAttributionSidebarView *)self textView];
-  [v7 bounds];
+  textView = [(ICAttributionSidebarView *)self textView];
+  [textView bounds];
   v9 = v8 * 0.38;
 
   v10 = floor(fmin(v9, 160.0));
-  v11 = [MEMORY[0x277D75418] ic_isVision];
+  ic_isVision = [MEMORY[0x277D75418] ic_isVision];
   v12 = *MEMORY[0x277D36A20];
-  if (!v11)
+  if (!ic_isVision)
   {
     v12 = 0.0;
   }
@@ -92,67 +92,67 @@
   [(ICAttributionSidebarView *)&v12 layoutSubviews];
   [(ICAttributionSidebarView *)self fullContentWidth];
   v4 = v3;
-  v5 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-  [v5 setPanelWidth:v4];
+  attributionLayoutManager = [(ICAttributionSidebarView *)self attributionLayoutManager];
+  [attributionLayoutManager setPanelWidth:v4];
 
   [(ICAttributionSidebarView *)self previewContentWidth];
   v7 = v6;
-  v8 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-  [v8 setPreviewPanelWidth:v7];
+  attributionLayoutManager2 = [(ICAttributionSidebarView *)self attributionLayoutManager];
+  [attributionLayoutManager2 setPreviewPanelWidth:v7];
 
   [(ICAttributionSidebarView *)self visibleContentWidth];
   v10 = v9;
-  v11 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-  [v11 setVisiblePanelWidth:v10];
+  attributionLayoutManager3 = [(ICAttributionSidebarView *)self attributionLayoutManager];
+  [attributionLayoutManager3 setVisiblePanelWidth:v10];
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
+  gestureCopy = gesture;
+  focusedAttributionViewConfiguration = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
 
-  if (v5)
+  if (focusedAttributionViewConfiguration)
   {
     [(ICAttributionSidebarView *)self unfocusAttributionDetails];
 LABEL_3:
-    v6 = [(ICAttributionSidebarView *)self textView];
-    v7 = [v6 editorController];
-    v8 = [v7 eventReporter];
+    textView = [(ICAttributionSidebarView *)self textView];
+    editorController = [textView editorController];
+    eventReporter = [editorController eventReporter];
 
-    v9 = [(ICAttributionSidebarView *)self textView];
-    v10 = [v9 editorController];
-    v11 = [v10 note];
+    textView2 = [(ICAttributionSidebarView *)self textView];
+    editorController2 = [textView2 editorController];
+    note = [editorController2 note];
 
-    if (v11)
+    if (note)
     {
-      [v8 submitAttributionSideBarViewEventForNote:v11 contextPath:0 startState:3 endState:3];
-      [v8 startAttributionSideBarViewEventForNote:v11];
+      [eventReporter submitAttributionSideBarViewEventForNote:note contextPath:0 startState:3 endState:3];
+      [eventReporter startAttributionSideBarViewEventForNote:note];
     }
 
     goto LABEL_6;
   }
 
-  [v4 locationInView:self];
+  [gestureCopy locationInView:self];
   if (v12 < 0.0 || (v13 = v12, [(ICAttributionSidebarView *)self bounds], v13 > v14))
   {
-    v15 = [(ICAttributionSidebarView *)self textView];
-    v16 = [v15 editorController];
-    v17 = [v16 attributionSidebarController];
-    [v17 hideSidebarAnimated:1 contextPath:3];
+    textView3 = [(ICAttributionSidebarView *)self textView];
+    editorController3 = [textView3 editorController];
+    attributionSidebarController = [editorController3 attributionSidebarController];
+    [attributionSidebarController hideSidebarAnimated:1 contextPath:3];
 
     goto LABEL_10;
   }
 
-  v18 = [(ICAttributionSidebarView *)self attributionViewMap];
-  v19 = [v18 objectEnumerator];
-  v8 = [v19 allObjects];
+  attributionViewMap = [(ICAttributionSidebarView *)self attributionViewMap];
+  objectEnumerator = [attributionViewMap objectEnumerator];
+  eventReporter = [objectEnumerator allObjects];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __45__ICAttributionSidebarView_handleTapGesture___block_invoke;
   v22[3] = &unk_2781AF780;
-  v23 = v4;
-  v20 = [v8 ic_objectPassingTest:v22];
+  v23 = gestureCopy;
+  v20 = [eventReporter ic_objectPassingTest:v22];
   if (v20)
   {
     v21 = v20;
@@ -187,32 +187,32 @@ BOOL __45__ICAttributionSidebarView_handleTapGesture___block_invoke(uint64_t a1,
   return CGRectContainsPoint(*&v16, *&v20);
 }
 
-- (void)setTextView:(id)a3
+- (void)setTextView:(id)view
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
+  viewCopy = view;
+  defaultCenter = [v4 defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_textView);
-  [v6 removeObserver:self name:@"ICTextViewLayoutDidChangeNotification" object:WeakRetained];
+  [defaultCenter removeObserver:self name:@"ICTextViewLayoutDidChangeNotification" object:WeakRetained];
 
   v8 = objc_loadWeakRetained(&self->_textView);
   [v8 ic_removeObserver:self forKeyPath:@"contentOffset" context:&compoundliteral_6];
 
-  v9 = objc_storeWeak(&self->_textView, v5);
-  [v5 ic_addObserver:self forKeyPath:@"contentOffset" context:&compoundliteral_6];
+  v9 = objc_storeWeak(&self->_textView, viewCopy);
+  [viewCopy ic_addObserver:self forKeyPath:@"contentOffset" context:&compoundliteral_6];
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v11 = objc_loadWeakRetained(&self->_textView);
-  [v10 addObserver:self selector:sel_textViewLayoutDidChange_ name:@"ICTextViewLayoutDidChangeNotification" object:v11];
+  [defaultCenter2 addObserver:self selector:sel_textViewLayoutDidChange_ name:@"ICTextViewLayoutDidChangeNotification" object:v11];
 
   [(ICAttributionSidebarView *)self setHidden:1];
   v12 = [ICAttributionLayoutManager alloc];
-  v13 = [MEMORY[0x277D35F30] sharedContext];
-  v14 = [v13 workerManagedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x277D35F30] workerManagedObjectContext];
   [(ICAttributionSidebarView *)self fullContentWidth];
   v16 = v15;
   [(ICAttributionSidebarView *)self previewContentWidth];
-  v18 = [(ICAttributionLayoutManager *)v12 initWithTextView:v5 managedObjectContext:v14 panelWidth:v16 previewPanelWidth:v17];
+  v18 = [(ICAttributionLayoutManager *)v12 initWithTextView:viewCopy managedObjectContext:workerManagedObjectContext panelWidth:v16 previewPanelWidth:v17];
   [(ICAttributionSidebarView *)self setAttributionLayoutManager:v18];
 
   objc_initWeak(&location, self);
@@ -221,14 +221,14 @@ BOOL __45__ICAttributionSidebarView_handleTapGesture___block_invoke(uint64_t a1,
   v19 = [(ICAttributionSidebarView *)self attributionLayoutManager:v23];
   [v19 setUpdatedConfigurationHandler:&v23];
 
-  v20 = [v5 editorController];
-  v21 = [v20 note];
-  LODWORD(v14) = [v21 isSharedViaICloud];
+  editorController = [viewCopy editorController];
+  note = [editorController note];
+  LODWORD(workerManagedObjectContext) = [note isSharedViaICloud];
 
-  if (v14)
+  if (workerManagedObjectContext)
   {
-    v22 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-    [v22 fireImmediately];
+    reloadAttributionsDelayer = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+    [reloadAttributionsDelayer fireImmediately];
   }
 
   objc_destroyWeak(&v24);
@@ -275,51 +275,51 @@ void __40__ICAttributionSidebarView_setTextView___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)setVisibleContentWidth:(double)a3 isGestureActive:(BOOL)a4
+- (void)setVisibleContentWidth:(double)width isGestureActive:(BOOL)active
 {
-  v4 = a4;
+  activeCopy = active;
   v46 = *MEMORY[0x277D85DE8];
-  [(ICAttributionSidebarView *)self setHidden:a3 == 0.0];
+  [(ICAttributionSidebarView *)self setHidden:width == 0.0];
   [(ICAttributionSidebarView *)self visibleContentWidth];
   v8 = v7;
-  v9 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-  [v9 previewPanelWidth];
+  attributionLayoutManager = [(ICAttributionSidebarView *)self attributionLayoutManager];
+  [attributionLayoutManager previewPanelWidth];
   v11 = v10;
 
-  v12 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-  [v12 previewPanelWidth];
+  attributionLayoutManager2 = [(ICAttributionSidebarView *)self attributionLayoutManager];
+  [attributionLayoutManager2 previewPanelWidth];
   v14 = v13;
 
   [(ICAttributionSidebarView *)self visibleContentWidth];
-  if (a3 > 0.0 && v15 <= 0.0)
+  if (width > 0.0 && v15 <= 0.0)
   {
-    v16 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-    [v16 cancelPreviousFireRequests];
+    reloadAttributionsDelayer = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+    [reloadAttributionsDelayer cancelPreviousFireRequests];
 
-    v17 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-    [v17 fireImmediately];
+    reloadAttributionsDelayer2 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+    [reloadAttributionsDelayer2 fireImmediately];
   }
 
-  [(ICAttributionSidebarView *)self setVisibleContentWidth:a3];
-  v18 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-  [v18 setVisiblePanelWidth:a3];
+  [(ICAttributionSidebarView *)self setVisibleContentWidth:width];
+  attributionLayoutManager3 = [(ICAttributionSidebarView *)self attributionLayoutManager];
+  [attributionLayoutManager3 setVisiblePanelWidth:width];
 
-  if (v8 <= v11 && v14 <= a3)
+  if (v8 <= v11 && v14 <= width)
   {
     [(ICAttributionSidebarView *)self setDidExpandSidebar:1];
     +[ICAttributionsUpdater sidebarOpenedRenderDelay];
     v20 = v19;
-    v21 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-    [v21 setDelay:v20];
+    reloadAttributionsDelayer3 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+    [reloadAttributionsDelayer3 setDelay:v20];
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v22 = [(ICAttributionSidebarView *)self attributionViewMap];
-    v23 = [v22 objectEnumerator];
+    attributionViewMap = [(ICAttributionSidebarView *)self attributionViewMap];
+    objectEnumerator = [attributionViewMap objectEnumerator];
 
-    v24 = [v23 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    v24 = [objectEnumerator countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v24)
     {
       v25 = v24;
@@ -330,44 +330,44 @@ void __40__ICAttributionSidebarView_setTextView___block_invoke(uint64_t a1, void
         {
           if (*v42 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v28 = *(*(&v41 + 1) + 8 * i);
-          v29 = [v28 configuration];
-          [v29 setPreview:0];
+          configuration = [v28 configuration];
+          [configuration setPreview:0];
 
           [v28 updateContentAnimated:1];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v41 objects:v45 count:16];
+        v25 = [objectEnumerator countByEnumeratingWithState:&v41 objects:v45 count:16];
       }
 
       while (v25);
     }
   }
 
-  if (a3 == 0.0 && !v4)
+  if (width == 0.0 && !activeCopy)
   {
     +[ICAttributionsUpdater sidebarClosedRenderDelay];
     v31 = v30;
-    v32 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-    [v32 setDelay:v31];
+    reloadAttributionsDelayer4 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+    [reloadAttributionsDelayer4 setDelay:v31];
 
     [(ICAttributionSidebarView *)self setDidExpandSidebar:0];
     [(ICAttributionSidebarView *)self renderAttributions];
   }
 
-  if (!v4 || (-[ICAttributionSidebarView authorHighlightsUpdater](self, "authorHighlightsUpdater"), v33 = objc_claimAutoreleasedReturnValue(), [v33 highlightedValue], v35 = v34, v33, v35 < 1.0))
+  if (!activeCopy || (-[ICAttributionSidebarView authorHighlightsUpdater](self, "authorHighlightsUpdater"), v33 = objc_claimAutoreleasedReturnValue(), [v33 highlightedValue], v35 = v34, v33, v35 < 1.0))
   {
-    v36 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-    [v36 preferredHighlightValue];
+    attributionLayoutManager4 = [(ICAttributionSidebarView *)self attributionLayoutManager];
+    [attributionLayoutManager4 preferredHighlightValue];
     v38 = v37;
-    v39 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-    [v39 setHighlightedValue:v38];
+    authorHighlightsUpdater = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+    [authorHighlightsUpdater setHighlightedValue:v38];
 
-    v40 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-    [v40 scheduleUpdateAnimated:!v4];
+    authorHighlightsUpdater2 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+    [authorHighlightsUpdater2 scheduleUpdateAnimated:!activeCopy];
   }
 
   dispatchMainAfterDelay();
@@ -382,26 +382,26 @@ void __67__ICAttributionSidebarView_setVisibleContentWidth_isGestureActive___blo
 
 - (void)reload
 {
-  v2 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-  [v2 requestFire];
+  reloadAttributionsDelayer = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+  [reloadAttributionsDelayer requestFire];
 }
 
 - (void)unfocusAttributionDetails
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
+  focusedAttributionViewConfiguration = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
 
-  if (v3)
+  if (focusedAttributionViewConfiguration)
   {
     [(ICAttributionSidebarView *)self setFocusedAttributionViewConfiguration:0];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = [(ICAttributionSidebarView *)self attributionViewMap];
-    v5 = [v4 objectEnumerator];
+    attributionViewMap = [(ICAttributionSidebarView *)self attributionViewMap];
+    objectEnumerator = [attributionViewMap objectEnumerator];
 
-    v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -412,18 +412,18 @@ void __67__ICAttributionSidebarView_setVisibleContentWidth_isGestureActive___blo
         {
           if (*v26 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v10 = *(*(&v25 + 1) + 8 * i);
-          v11 = [v10 configuration];
-          [v11 setBlurred:0];
+          configuration = [v10 configuration];
+          [configuration setBlurred:0];
 
-          v12 = [v10 configuration];
-          [v12 setFocused:0];
+          configuration2 = [v10 configuration];
+          [configuration2 setFocused:0];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v7);
@@ -433,10 +433,10 @@ void __67__ICAttributionSidebarView_setVisibleContentWidth_isGestureActive___blo
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [(ICAttributionSidebarView *)self attributionViewMap];
-    v14 = [v13 objectEnumerator];
+    attributionViewMap2 = [(ICAttributionSidebarView *)self attributionViewMap];
+    objectEnumerator2 = [attributionViewMap2 objectEnumerator];
 
-    v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    v15 = [objectEnumerator2 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v15)
     {
       v16 = v15;
@@ -447,54 +447,54 @@ void __67__ICAttributionSidebarView_setVisibleContentWidth_isGestureActive___blo
         {
           if (*v22 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(objectEnumerator2);
           }
 
           [*(*(&v21 + 1) + 8 * j) updateContentAnimated:1];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v16 = [objectEnumerator2 countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v16);
     }
 
-    v19 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-    [v19 setFocusedRangeValue:0];
+    authorHighlightsUpdater = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+    [authorHighlightsUpdater setFocusedRangeValue:0];
 
-    v20 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-    [v20 scheduleUpdateAnimated:1];
+    authorHighlightsUpdater2 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+    [authorHighlightsUpdater2 scheduleUpdateAnimated:1];
   }
 }
 
-- (void)setFilter:(id)a3 animated:(BOOL)a4
+- (void)setFilter:(id)filter animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = v6;
+  filterCopy = filter;
+  v7 = filterCopy;
   filter = self->_filter;
   v9 = *MEMORY[0x277CBEEE8];
-  if (*MEMORY[0x277CBEEE8] == v6)
+  if (*MEMORY[0x277CBEEE8] == filterCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v6;
+    v10 = filterCopy;
   }
 
   v11 = v10;
   if (v9 == filter)
   {
-    v12 = 0;
+    filterCopy2 = 0;
   }
 
   else
   {
-    v12 = filter;
+    filterCopy2 = filter;
   }
 
-  v13 = v12;
+  v13 = filterCopy2;
   if (v11 | v13)
   {
     v14 = v13;
@@ -512,15 +512,15 @@ void __67__ICAttributionSidebarView_setVisibleContentWidth_isGestureActive___blo
     {
 
 LABEL_15:
-      objc_storeStrong(&self->_filter, a3);
-      v17 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-      [v17 setFilter:v7];
+      objc_storeStrong(&self->_filter, filter);
+      authorHighlightsUpdater = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+      [authorHighlightsUpdater setFilter:v7];
 
-      v18 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-      [v18 scheduleUpdateAnimated:1];
+      authorHighlightsUpdater2 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+      [authorHighlightsUpdater2 scheduleUpdateAnimated:1];
 
-      v19 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-      [v19 setFilter:v7];
+      attributionLayoutManager = [(ICAttributionSidebarView *)self attributionLayoutManager];
+      [attributionLayoutManager setFilter:v7];
 
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -581,61 +581,61 @@ void __47__ICAttributionSidebarView_setFilter_animated___block_invoke_2(uint64_t
   }
 }
 
-- (void)willEnterForeground:(id)a3
+- (void)willEnterForeground:(id)foreground
 {
   [(ICAttributionSidebarView *)self visibleContentWidth];
   v5 = v4;
   [(ICAttributionSidebarView *)self fullContentWidth];
   if (v5 == v6)
   {
-    v7 = [(ICAttributionSidebarView *)self textView];
-    v8 = [v7 editorController];
-    v12 = [v8 eventReporter];
+    textView = [(ICAttributionSidebarView *)self textView];
+    editorController = [textView editorController];
+    eventReporter = [editorController eventReporter];
 
-    v9 = [(ICAttributionSidebarView *)self textView];
-    v10 = [v9 editorController];
-    v11 = [v10 note];
+    textView2 = [(ICAttributionSidebarView *)self textView];
+    editorController2 = [textView2 editorController];
+    note = [editorController2 note];
 
-    if (v11)
+    if (note)
     {
-      [v12 startAttributionSideBarViewEventForNote:v11];
+      [eventReporter startAttributionSideBarViewEventForNote:note];
     }
   }
 }
 
-- (void)analyticsSessionWillEnd:(id)a3
+- (void)analyticsSessionWillEnd:(id)end
 {
-  v4 = [(ICAttributionSidebarView *)self textView];
-  v5 = [v4 editorController];
-  v9 = [v5 eventReporter];
+  textView = [(ICAttributionSidebarView *)self textView];
+  editorController = [textView editorController];
+  eventReporter = [editorController eventReporter];
 
-  v6 = [(ICAttributionSidebarView *)self textView];
-  v7 = [v6 editorController];
-  v8 = [v7 note];
+  textView2 = [(ICAttributionSidebarView *)self textView];
+  editorController2 = [textView2 editorController];
+  note = [editorController2 note];
 
-  if (v8)
+  if (note)
   {
-    [v9 submitAttributionSideBarViewEventForNote:v8 contextPath:0 startState:3 endState:3];
+    [eventReporter submitAttributionSideBarViewEventForNote:note contextPath:0 startState:3 endState:3];
   }
 }
 
-- (void)textViewLayoutDidChange:(id)a3
+- (void)textViewLayoutDidChange:(id)change
 {
-  v4 = [(ICAttributionSidebarView *)self textView];
-  v5 = [v4 editorController];
-  v12 = [v5 note];
+  textView = [(ICAttributionSidebarView *)self textView];
+  editorController = [textView editorController];
+  note = [editorController note];
 
-  if ((-[ICAttributionSidebarView isHidden](self, "isHidden") & 1) == 0 && [v12 isSharedViaICloud])
+  if ((-[ICAttributionSidebarView isHidden](self, "isHidden") & 1) == 0 && [note isSharedViaICloud])
   {
-    v6 = [(ICAttributionSidebarView *)self textView];
-    v7 = [v6 TTTextStorage];
-    if ([v7 isEditingTemporaryAttributes])
+    textView2 = [(ICAttributionSidebarView *)self textView];
+    tTTextStorage = [textView2 TTTextStorage];
+    if ([tTTextStorage isEditingTemporaryAttributes])
     {
-      v8 = [(ICAttributionSidebarView *)self textView];
-      v9 = [v8 TTTextStorage];
-      v10 = [v9 changeInLength];
+      textView3 = [(ICAttributionSidebarView *)self textView];
+      tTTextStorage2 = [textView3 TTTextStorage];
+      changeInLength = [tTTextStorage2 changeInLength];
 
-      if (v10 < 1)
+      if (changeInLength < 1)
       {
         goto LABEL_8;
       }
@@ -645,50 +645,50 @@ void __47__ICAttributionSidebarView_setFilter_animated___block_invoke_2(uint64_t
     {
     }
 
-    v11 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-    [v11 requestFire];
+    reloadAttributionsDelayer = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+    [reloadAttributionsDelayer requestFire];
   }
 
 LABEL_8:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([(ICAttributionSidebarView *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/Editor/Attributions/ICAttributionSidebarView.m"]& 1) != 0)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([(ICAttributionSidebarView *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/Editor/Attributions/ICAttributionSidebarView.m"]& 1) != 0)
   {
-    v13 = [(ICAttributionSidebarView *)self ic_shouldIgnoreObserveValue:v12 ofObject:v11 forKeyPath:v10];
+    v13 = [(ICAttributionSidebarView *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &compoundliteral_6 && (v13 & 1) == 0)
+    if (context == &compoundliteral_6 && (v13 & 1) == 0)
     {
-      v14 = [(ICAttributionSidebarView *)self textView];
-      if (v14 != v11)
+      textView = [(ICAttributionSidebarView *)self textView];
+      if (textView != objectCopy)
       {
         goto LABEL_5;
       }
 
-      v15 = [v10 isEqualToString:@"contentOffset"];
+      v15 = [pathCopy isEqualToString:@"contentOffset"];
 
       if (!v15)
       {
         goto LABEL_7;
       }
 
-      v14 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-      if ([v14 isScheduledToFire])
+      textView = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+      if ([textView isScheduledToFire])
       {
         [(ICAttributionSidebarView *)self visibleContentWidth];
         v17 = v16;
 
         if (v17 == 0.0)
         {
-          v18 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-          [v18 cancelPreviousFireRequests];
+          reloadAttributionsDelayer = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+          [reloadAttributionsDelayer cancelPreviousFireRequests];
 
-          v19 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
-          [v19 requestFire];
+          reloadAttributionsDelayer2 = [(ICAttributionSidebarView *)self reloadAttributionsDelayer];
+          [reloadAttributionsDelayer2 requestFire];
         }
       }
 
@@ -703,7 +703,7 @@ LABEL_5:
   {
     v20.receiver = self;
     v20.super_class = ICAttributionSidebarView;
-    [(ICAttributionSidebarView *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ICAttributionSidebarView *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_7:
@@ -717,18 +717,18 @@ LABEL_7:
   return v4 < v5;
 }
 
-- (void)reloadAttributionsWithCompletion:(id)a3
+- (void)reloadAttributionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICAttributionSidebarView *)self attributionLayoutManager];
+  completionCopy = completion;
+  attributionLayoutManager = [(ICAttributionSidebarView *)self attributionLayoutManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block_invoke;
   v7[3] = &unk_2781AF7D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 reloadConfigurationsWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [attributionLayoutManager reloadConfigurationsWithCompletion:v7];
 }
 
 void __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block_invoke(uint64_t a1)
@@ -755,31 +755,31 @@ uint64_t __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block
 {
   v34 = *MEMORY[0x277D85DE8];
   [(ICAttributionSidebarView *)self removeAllAttributionViews];
-  v3 = [(ICAttributionSidebarView *)self textView];
-  v4 = [v3 editorController];
-  v5 = [v4 note];
-  v6 = [v5 isSharedViaICloud];
+  textView = [(ICAttributionSidebarView *)self textView];
+  editorController = [textView editorController];
+  note = [editorController note];
+  isSharedViaICloud = [note isSharedViaICloud];
 
-  if (v6)
+  if (isSharedViaICloud)
   {
-    v7 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-    v8 = [v7 viewConfigurations];
+    attributionLayoutManager = [(ICAttributionSidebarView *)self attributionLayoutManager];
+    viewConfigurations = [attributionLayoutManager viewConfigurations];
 
-    v9 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
-    if (v9)
+    focusedAttributionViewConfiguration = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
+    if (focusedAttributionViewConfiguration)
     {
-      v10 = v9;
-      v11 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
-      v12 = [v8 containsObject:v11];
+      v10 = focusedAttributionViewConfiguration;
+      focusedAttributionViewConfiguration2 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
+      v12 = [viewConfigurations containsObject:focusedAttributionViewConfiguration2];
 
       if ((v12 & 1) == 0)
       {
         [(ICAttributionSidebarView *)self setFocusedAttributionViewConfiguration:0];
-        v13 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-        [v13 setFocusedRangeValue:0];
+        authorHighlightsUpdater = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+        [authorHighlightsUpdater setFocusedRangeValue:0];
 
-        v14 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-        [v14 scheduleUpdateAnimated:0];
+        authorHighlightsUpdater2 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+        [authorHighlightsUpdater2 scheduleUpdateAnimated:0];
       }
     }
 
@@ -787,7 +787,7 @@ uint64_t __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v15 = v8;
+    v15 = viewConfigurations;
     v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v16)
     {
@@ -804,17 +804,17 @@ uint64_t __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block
           }
 
           v20 = *(*(&v29 + 1) + 8 * v19);
-          v21 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
-          v22 = [v21 isEqualToAttributionViewConfiguration:v20];
+          focusedAttributionViewConfiguration3 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
+          v22 = [focusedAttributionViewConfiguration3 isEqualToAttributionViewConfiguration:v20];
 
           [v20 setFocused:v22];
-          v23 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
-          [v20 setBlurred:(v23 != 0) & (v22 ^ 1)];
+          focusedAttributionViewConfiguration4 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
+          [v20 setBlurred:(focusedAttributionViewConfiguration4 != 0) & (v22 ^ 1)];
 
           [(ICAttributionSidebarView *)self visibleContentWidth];
           v25 = v24;
-          v26 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-          [v26 previewPanelWidth];
+          attributionLayoutManager2 = [(ICAttributionSidebarView *)self attributionLayoutManager];
+          [attributionLayoutManager2 previewPanelWidth];
           [v20 setPreview:v25 < v27];
 
           v28 = [[ICAttributionView alloc] initWithConfiguration:v20];
@@ -839,8 +839,8 @@ uint64_t __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(ICAttributionSidebarView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [(ICAttributionSidebarView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -852,41 +852,41 @@ uint64_t __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(ICAttributionSidebarView *)self attributionViewMap];
-  [v8 removeAllObjects];
+  attributionViewMap = [(ICAttributionSidebarView *)self attributionViewMap];
+  [attributionViewMap removeAllObjects];
 }
 
-- (void)focusAttributionView:(id)a3
+- (void)focusAttributionView:(id)view
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 configuration];
-  [(ICAttributionSidebarView *)self setFocusedAttributionViewConfiguration:v5];
+  viewCopy = view;
+  configuration = [viewCopy configuration];
+  [(ICAttributionSidebarView *)self setFocusedAttributionViewConfiguration:configuration];
 
-  v6 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
-  [v6 setFocused:1];
+  focusedAttributionViewConfiguration = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
+  [focusedAttributionViewConfiguration setFocused:1];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(ICAttributionSidebarView *)self attributionViewMap];
-  v8 = [v7 objectEnumerator];
+  attributionViewMap = [(ICAttributionSidebarView *)self attributionViewMap];
+  objectEnumerator = [attributionViewMap objectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -898,14 +898,14 @@ uint64_t __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v13 = *(*(&v22 + 1) + 8 * v12);
-        if (v13 != v4)
+        if (v13 != viewCopy)
         {
-          v14 = [*(*(&v22 + 1) + 8 * v12) configuration];
-          [v14 setBlurred:1];
+          configuration2 = [*(*(&v22 + 1) + 8 * v12) configuration];
+          [configuration2 setBlurred:1];
         }
 
         [v13 updateContentAnimated:1];
@@ -913,47 +913,47 @@ uint64_t __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
   }
 
   v15 = MEMORY[0x277CCAE60];
-  v16 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
-  v17 = [v16 range];
-  v19 = [v15 valueWithRange:{v17, v18}];
-  v20 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-  [v20 setFocusedRangeValue:v19];
+  focusedAttributionViewConfiguration2 = [(ICAttributionSidebarView *)self focusedAttributionViewConfiguration];
+  range = [focusedAttributionViewConfiguration2 range];
+  v19 = [v15 valueWithRange:{range, v18}];
+  authorHighlightsUpdater = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+  [authorHighlightsUpdater setFocusedRangeValue:v19];
 
-  v21 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
-  [v21 scheduleUpdateAnimated:1];
+  authorHighlightsUpdater2 = [(ICAttributionSidebarView *)self authorHighlightsUpdater];
+  [authorHighlightsUpdater2 scheduleUpdateAnimated:1];
 }
 
-- (void)renderAttributionView:(id)a3
+- (void)renderAttributionView:(id)view
 {
-  v8 = a3;
-  v4 = [v8 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
 
-  if (v4 != self)
+  if (superview != self)
   {
-    [(ICAttributionSidebarView *)self addSubview:v8];
+    [(ICAttributionSidebarView *)self addSubview:viewCopy];
   }
 
-  v5 = [(ICAttributionSidebarView *)self attributionViewMap];
-  v6 = [v8 configuration];
-  [v5 setObject:v8 forKey:v6];
+  attributionViewMap = [(ICAttributionSidebarView *)self attributionViewMap];
+  configuration = [viewCopy configuration];
+  [attributionViewMap setObject:viewCopy forKey:configuration];
 
-  [v8 updateContentAnimated:0];
-  v7 = [v8 configuration];
-  [v7 adjustedFrame];
-  [v8 setFrame:?];
+  [viewCopy updateContentAnimated:0];
+  configuration2 = [viewCopy configuration];
+  [configuration2 adjustedFrame];
+  [viewCopy setFrame:?];
 }
 
-- (void)scrollToRangeIfNeeded:(_NSRange)a3
+- (void)scrollToRangeIfNeeded:(_NSRange)needed
 {
-  length = a3.length;
-  location = a3.location;
+  length = needed.length;
+  location = needed.location;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     v72[0] = MEMORY[0x277D85DD0];
@@ -967,71 +967,71 @@ uint64_t __61__ICAttributionSidebarView_reloadAttributionsWithCompletion___block
     return;
   }
 
-  v6 = [(ICAttributionSidebarView *)self textView];
-  v7 = [v6 textStorage];
-  v8 = [v7 ic_range];
+  textView = [(ICAttributionSidebarView *)self textView];
+  textStorage = [textView textStorage];
+  ic_range = [textStorage ic_range];
   v10 = v9;
 
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v74.location = v8;
+    v74.location = ic_range;
     v74.length = v10;
     v75.location = location;
     v75.length = length;
     v11 = NSUnionRange(v74, v75);
-    if (v11.location == v8 && v11.length == v10)
+    if (v11.location == ic_range && v11.length == v10)
     {
-      v12 = [(ICAttributionSidebarView *)self textView];
-      v13 = [v12 layoutManager];
-      [v13 ensureLayoutForCharacterRange:{location, length}];
+      textView2 = [(ICAttributionSidebarView *)self textView];
+      layoutManager = [textView2 layoutManager];
+      [layoutManager ensureLayoutForCharacterRange:{location, length}];
 
-      v14 = [(ICAttributionSidebarView *)self textView];
-      v15 = [v14 layoutManager];
-      [v15 ensureGlyphsForCharacterRange:{location, length}];
+      textView3 = [(ICAttributionSidebarView *)self textView];
+      layoutManager2 = [textView3 layoutManager];
+      [layoutManager2 ensureGlyphsForCharacterRange:{location, length}];
 
-      v16 = [(ICAttributionSidebarView *)self textView];
-      [v16 ic_rectForRange:{location, length}];
+      textView4 = [(ICAttributionSidebarView *)self textView];
+      [textView4 ic_rectForRange:{location, length}];
       v70 = v17;
 
-      v18 = [(ICAttributionSidebarView *)self textView];
-      [v18 bounds];
+      textView5 = [(ICAttributionSidebarView *)self textView];
+      [textView5 bounds];
       v20 = v19;
       v22 = v21;
       v69 = v23;
       v25 = v24;
-      v26 = [(ICAttributionSidebarView *)self textView];
-      [v26 contentInset];
+      textView6 = [(ICAttributionSidebarView *)self textView];
+      [textView6 contentInset];
       v28 = v27;
       v30 = v29;
       v32 = v29 + v31;
       v34 = v27 + v33;
 
-      v35 = [(ICAttributionSidebarView *)self textView];
-      v36 = [v35 editorController];
-      v71 = [v36 presentedViewController];
+      textView7 = [(ICAttributionSidebarView *)self textView];
+      editorController = [textView7 editorController];
+      presentedViewController = [editorController presentedViewController];
 
-      v37 = [(ICAttributionSidebarView *)self textView];
+      textView8 = [(ICAttributionSidebarView *)self textView];
       v38 = 0.0;
-      if ([v37 ic_hasCompactWidth])
+      if ([textView8 ic_hasCompactWidth])
       {
-        v39 = [v71 view];
-        v40 = [v39 window];
+        view = [presentedViewController view];
+        window = [view window];
 
-        if (!v40)
+        if (!window)
         {
 LABEL_11:
           v42 = v20 + v30;
           v43 = v25 - v34;
-          v44 = [(ICAttributionSidebarView *)self textView];
-          v45 = [v44 editorController];
-          v46 = [v45 activityStreamToolbar];
+          textView9 = [(ICAttributionSidebarView *)self textView];
+          editorController2 = [textView9 editorController];
+          activityStreamToolbar = [editorController2 activityStreamToolbar];
 
-          if (v46)
+          if (activityStreamToolbar)
           {
-            v47 = [(ICAttributionSidebarView *)self textView];
-            v48 = [v47 editorController];
-            v49 = [v48 activityStreamToolbar];
-            [v49 frame];
+            textView10 = [(ICAttributionSidebarView *)self textView];
+            editorController3 = [textView10 editorController];
+            activityStreamToolbar2 = [editorController3 activityStreamToolbar];
+            [activityStreamToolbar2 frame];
             v38 = v38 + v50;
           }
 
@@ -1054,10 +1054,10 @@ LABEL_11:
 
             else
             {
-              v53 = [(ICAttributionSidebarView *)self attributionLayoutManager];
-              v54 = [v53 viewConfigurations];
-              v55 = [v54 lastObject];
-              [v55 associatedTextFrame];
+              attributionLayoutManager = [(ICAttributionSidebarView *)self attributionLayoutManager];
+              viewConfigurations = [attributionLayoutManager viewConfigurations];
+              lastObject = [viewConfigurations lastObject];
+              [lastObject associatedTextFrame];
               v57 = v56;
               v59 = v58;
 
@@ -1073,19 +1073,19 @@ LABEL_11:
             }
 
             v64 = v63 + v52;
-            v65 = [(ICAttributionSidebarView *)self textView];
-            [v65 safeAreaInsets];
+            textView11 = [(ICAttributionSidebarView *)self textView];
+            [textView11 safeAreaInsets];
             v67 = v64 - v66;
 
-            v68 = [(ICAttributionSidebarView *)self textView];
-            [v68 setContentOffset:{0.0, v67}];
+            textView12 = [(ICAttributionSidebarView *)self textView];
+            [textView12 setContentOffset:{0.0, v67}];
           }
 
           return;
         }
 
-        v37 = [v71 view];
-        [v37 frame];
+        textView8 = [presentedViewController view];
+        [textView8 frame];
         v38 = v41 + 0.0;
       }
 

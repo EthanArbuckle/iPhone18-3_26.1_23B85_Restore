@@ -1,48 +1,48 @@
 @interface _SFPBRFMapMarkerImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFMapMarkerImage)initWithDictionary:(id)a3;
-- (_SFPBRFMapMarkerImage)initWithFacade:(id)a3;
-- (_SFPBRFMapMarkerImage)initWithJSON:(id)a3;
+- (_SFPBRFMapMarkerImage)initWithDictionary:(id)dictionary;
+- (_SFPBRFMapMarkerImage)initWithFacade:(id)facade;
+- (_SFPBRFMapMarkerImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setSystemImage:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSystemImage:(id)image;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFMapMarkerImage
 
-- (_SFPBRFMapMarkerImage)initWithFacade:(id)a3
+- (_SFPBRFMapMarkerImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFMapMarkerImage *)self init];
   if (v5)
   {
-    v6 = [v4 coordinate];
+    coordinate = [facadeCopy coordinate];
 
-    if (v6)
+    if (coordinate)
     {
       v7 = [_SFPBLatLng alloc];
-      v8 = [v4 coordinate];
-      v9 = [(_SFPBLatLng *)v7 initWithFacade:v8];
+      coordinate2 = [facadeCopy coordinate];
+      v9 = [(_SFPBLatLng *)v7 initWithFacade:coordinate2];
       [(_SFPBRFMapMarkerImage *)v5 setCoordinate:v9];
     }
 
-    v10 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v10)
+    if (title)
     {
-      v11 = [v4 title];
-      [(_SFPBRFMapMarkerImage *)v5 setTitle:v11];
+      title2 = [facadeCopy title];
+      [(_SFPBRFMapMarkerImage *)v5 setTitle:title2];
     }
 
-    v12 = [v4 systemImage];
+    systemImage = [facadeCopy systemImage];
 
-    if (v12)
+    if (systemImage)
     {
-      v13 = [v4 systemImage];
-      [(_SFPBRFMapMarkerImage *)v5 setSystemImage:v13];
+      systemImage2 = [facadeCopy systemImage];
+      [(_SFPBRFMapMarkerImage *)v5 setSystemImage:systemImage2];
     }
 
     v14 = v5;
@@ -51,15 +51,15 @@
   return v5;
 }
 
-- (_SFPBRFMapMarkerImage)initWithDictionary:(id)a3
+- (_SFPBRFMapMarkerImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBRFMapMarkerImage;
   v5 = [(_SFPBRFMapMarkerImage *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"coordinate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"coordinate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(_SFPBRFMapMarkerImage *)v5 setCoordinate:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"title"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(_SFPBRFMapMarkerImage *)v5 setTitle:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"systemImage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"systemImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (_SFPBRFMapMarkerImage)initWithJSON:(id)a3
+- (_SFPBRFMapMarkerImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFMapMarkerImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFMapMarkerImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFMapMarkerImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,38 +125,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_coordinate)
   {
-    v4 = [(_SFPBRFMapMarkerImage *)self coordinate];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    coordinate = [(_SFPBRFMapMarkerImage *)self coordinate];
+    dictionaryRepresentation = [coordinate dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"coordinate"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"coordinate"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"coordinate"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"coordinate"];
     }
   }
 
   if (self->_systemImage)
   {
-    v7 = [(_SFPBRFMapMarkerImage *)self systemImage];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"systemImage"];
+    systemImage = [(_SFPBRFMapMarkerImage *)self systemImage];
+    v8 = [systemImage copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"systemImage"];
   }
 
   if (self->_title)
   {
-    v9 = [(_SFPBRFMapMarkerImage *)self title];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"title"];
+    title = [(_SFPBRFMapMarkerImage *)self title];
+    v10 = [title copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -166,28 +166,28 @@
   return v4 ^ [(NSString *)self->_systemImage hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBRFMapMarkerImage *)self coordinate];
-  v6 = [v4 coordinate];
-  if ((v5 != 0) == (v6 == 0))
+  coordinate = [(_SFPBRFMapMarkerImage *)self coordinate];
+  coordinate2 = [equalCopy coordinate];
+  if ((coordinate != 0) == (coordinate2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBRFMapMarkerImage *)self coordinate];
-  if (v7)
+  coordinate3 = [(_SFPBRFMapMarkerImage *)self coordinate];
+  if (coordinate3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFMapMarkerImage *)self coordinate];
-    v10 = [v4 coordinate];
-    v11 = [v9 isEqual:v10];
+    v8 = coordinate3;
+    coordinate4 = [(_SFPBRFMapMarkerImage *)self coordinate];
+    coordinate5 = [equalCopy coordinate];
+    v11 = [coordinate4 isEqual:coordinate5];
 
     if (!v11)
     {
@@ -199,20 +199,20 @@
   {
   }
 
-  v5 = [(_SFPBRFMapMarkerImage *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  coordinate = [(_SFPBRFMapMarkerImage *)self title];
+  coordinate2 = [equalCopy title];
+  if ((coordinate != 0) == (coordinate2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBRFMapMarkerImage *)self title];
-  if (v12)
+  title = [(_SFPBRFMapMarkerImage *)self title];
+  if (title)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFMapMarkerImage *)self title];
-    v15 = [v4 title];
-    v16 = [v14 isEqual:v15];
+    v13 = title;
+    title2 = [(_SFPBRFMapMarkerImage *)self title];
+    title3 = [equalCopy title];
+    v16 = [title2 isEqual:title3];
 
     if (!v16)
     {
@@ -224,12 +224,12 @@
   {
   }
 
-  v5 = [(_SFPBRFMapMarkerImage *)self systemImage];
-  v6 = [v4 systemImage];
-  if ((v5 != 0) != (v6 == 0))
+  coordinate = [(_SFPBRFMapMarkerImage *)self systemImage];
+  coordinate2 = [equalCopy systemImage];
+  if ((coordinate != 0) != (coordinate2 == 0))
   {
-    v17 = [(_SFPBRFMapMarkerImage *)self systemImage];
-    if (!v17)
+    systemImage = [(_SFPBRFMapMarkerImage *)self systemImage];
+    if (!systemImage)
     {
 
 LABEL_20:
@@ -237,10 +237,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBRFMapMarkerImage *)self systemImage];
-    v20 = [v4 systemImage];
-    v21 = [v19 isEqual:v20];
+    v18 = systemImage;
+    systemImage2 = [(_SFPBRFMapMarkerImage *)self systemImage];
+    systemImage3 = [equalCopy systemImage];
+    v21 = [systemImage2 isEqual:systemImage3];
 
     if (v21)
     {
@@ -260,40 +260,40 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBRFMapMarkerImage *)self coordinate];
-  if (v4)
+  toCopy = to;
+  coordinate = [(_SFPBRFMapMarkerImage *)self coordinate];
+  if (coordinate)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFMapMarkerImage *)self title];
-  if (v5)
+  title = [(_SFPBRFMapMarkerImage *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBRFMapMarkerImage *)self systemImage];
-  if (v6)
+  systemImage = [(_SFPBRFMapMarkerImage *)self systemImage];
+  if (systemImage)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setSystemImage:(id)a3
+- (void)setSystemImage:(id)image
 {
-  v4 = [a3 copy];
+  v4 = [image copy];
   systemImage = self->_systemImage;
   self->_systemImage = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

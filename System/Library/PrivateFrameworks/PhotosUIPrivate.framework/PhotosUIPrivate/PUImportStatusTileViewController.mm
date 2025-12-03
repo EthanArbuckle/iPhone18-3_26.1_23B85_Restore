@@ -1,37 +1,37 @@
 @interface PUImportStatusTileViewController
 - (void)_updateIfNeeded;
 - (void)_updateStatusView;
-- (void)applyLayoutInfo:(id)a3;
+- (void)applyLayoutInfo:(id)info;
 - (void)becomeReusable;
-- (void)performChanges:(id)a3;
-- (void)setAssetViewModel:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setAssetViewModel:(id)model;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUImportStatusTileViewController
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
   v7.receiver = self;
   v7.super_class = PUImportStatusTileViewController;
-  [(PUTileViewController *)&v7 applyLayoutInfo:a3];
-  v4 = [(PUTileViewController *)self view];
-  [v4 bounds];
+  [(PUTileViewController *)&v7 applyLayoutInfo:info];
+  view = [(PUTileViewController *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v8);
-  [v4 bounds];
+  [view bounds];
   MidY = CGRectGetMidY(v9);
   [(UIView *)self->_successView setCenter:MidX, MidY];
   [(UIView *)self->_errorView setCenter:MidX, MidY];
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUImportStatusTileViewController *)self assetViewModel];
+  changeCopy = change;
+  modelCopy = model;
+  assetViewModel = [(PUImportStatusTileViewController *)self assetViewModel];
 
-  if (v8 == v7 && [v6 importStateChanged])
+  if (assetViewModel == modelCopy && [changeCopy importStateChanged])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -61,18 +61,18 @@ uint64_t __56__PUImportStatusTileViewController_viewModel_didChange___block_invo
 {
   if ([(PUTileViewController *)self isViewLoaded])
   {
-    v3 = [(PUImportStatusTileViewController *)self assetViewModel];
-    v4 = [v3 importState];
+    assetViewModel = [(PUImportStatusTileViewController *)self assetViewModel];
+    importState = [assetViewModel importState];
 
-    v5 = v4 < 4;
-    v6 = v5 & (2u >> (v4 & 0xF));
-    v22 = [(PUTileViewController *)self view];
-    [v22 bounds];
+    v5 = importState < 4;
+    v6 = v5 & (2u >> (importState & 0xF));
+    view = [(PUTileViewController *)self view];
+    [view bounds];
     MidX = CGRectGetMidX(v24);
-    [v22 bounds];
+    [view bounds];
     MidY = CGRectGetMidY(v25);
     successView = self->_successView;
-    if (v4 <= 3 && ((4u >> (v4 & 0xF)) & 1) != 0)
+    if (importState <= 3 && ((4u >> (importState & 0xF)) & 1) != 0)
     {
       if (!successView)
       {
@@ -81,7 +81,7 @@ uint64_t __56__PUImportStatusTileViewController_viewModel_didChange___block_invo
         self->_successView = v10;
 
         [(UIView *)self->_successView setCenter:MidX, MidY];
-        [v22 addSubview:self->_successView];
+        [view addSubview:self->_successView];
         successView = self->_successView;
       }
 
@@ -94,7 +94,7 @@ uint64_t __56__PUImportStatusTileViewController_viewModel_didChange___block_invo
     }
 
     [(UIView *)successView setHidden:v12];
-    v13 = v5 & (8u >> (v4 & 0xF));
+    v13 = v5 & (8u >> (importState & 0xF));
     progressIndicatorView = self->_progressIndicatorView;
     if (v6)
     {
@@ -104,13 +104,13 @@ uint64_t __56__PUImportStatusTileViewController_viewModel_didChange___block_invo
         v16 = self->_progressIndicatorView;
         self->_progressIndicatorView = v15;
 
-        v17 = [MEMORY[0x1E69DC888] whiteColor];
-        [(UIActivityIndicatorView *)self->_progressIndicatorView setColor:v17];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [(UIActivityIndicatorView *)self->_progressIndicatorView setColor:whiteColor];
 
-        [v22 bounds];
+        [view bounds];
         [(UIActivityIndicatorView *)self->_progressIndicatorView setFrame:?];
         [(UIActivityIndicatorView *)self->_progressIndicatorView setAutoresizingMask:18];
-        [v22 addSubview:self->_progressIndicatorView];
+        [view addSubview:self->_progressIndicatorView];
         progressIndicatorView = self->_progressIndicatorView;
       }
 
@@ -134,7 +134,7 @@ uint64_t __56__PUImportStatusTileViewController_viewModel_didChange___block_invo
         self->_errorView = v19;
 
         [(UIView *)self->_errorView setCenter:MidX, MidY];
-        [v22 addSubview:self->_errorView];
+        [view addSubview:self->_errorView];
         errorView = self->_errorView;
       }
 
@@ -159,9 +159,9 @@ uint64_t __56__PUImportStatusTileViewController_viewModel_didChange___block_invo
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PUImportStatusTileViewController _updateIfNeeded]"];
-      [v5 handleFailureInFunction:v6 file:@"PUImportStatusTileViewController.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PUImportStatusTileViewController.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -178,36 +178,36 @@ uint64_t __56__PUImportStatusTileViewController_viewModel_didChange___block_invo
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PUImportStatusTileViewController _updateIfNeeded]"];
-      [v8 handleFailureInFunction:v7 file:@"PUImportStatusTileViewController.m" lineNumber:86 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v7 file:@"PUImportStatusTileViewController.m" lineNumber:86 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PUImportStatusTileViewController *)self _isPerformingChanges];
+  changesCopy = changes;
+  _isPerformingChanges = [(PUImportStatusTileViewController *)self _isPerformingChanges];
   [(PUImportStatusTileViewController *)self set_isPerformingChanges:1];
-  v4[2](v4);
+  changesCopy[2](changesCopy);
 
-  [(PUImportStatusTileViewController *)self set_isPerformingChanges:v5];
-  if (!v5)
+  [(PUImportStatusTileViewController *)self set_isPerformingChanges:_isPerformingChanges];
+  if (!_isPerformingChanges)
   {
 
     [(PUImportStatusTileViewController *)self _updateIfNeeded];
   }
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   assetViewModel = self->_assetViewModel;
-  if (assetViewModel != v5)
+  if (assetViewModel != modelCopy)
   {
     [(PUAssetViewModel *)assetViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_assetViewModel, a3);
+    objc_storeStrong(&self->_assetViewModel, model);
     [(PUAssetViewModel *)self->_assetViewModel registerChangeObserver:self];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -244,8 +244,8 @@ uint64_t __54__PUImportStatusTileViewController_setAssetViewModel___block_invoke
   v4[3] = &unk_1E7B80DD0;
   v4[4] = self;
   [(PUImportStatusTileViewController *)self performChanges:v4];
-  v3 = [(PUTileViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(PUTileViewController *)self view];
+  [view setUserInteractionEnabled:0];
 }
 
 uint64_t __47__PUImportStatusTileViewController_viewDidLoad__block_invoke(uint64_t result)

@@ -1,22 +1,22 @@
 @interface AAUIAppleIDSignInConfigForSplitAccounts
-- (AAUIAppleIDSignInConfigForSplitAccounts)initWithNavController:(id)a3;
+- (AAUIAppleIDSignInConfigForSplitAccounts)initWithNavController:(id)controller;
 @end
 
 @implementation AAUIAppleIDSignInConfigForSplitAccounts
 
-- (AAUIAppleIDSignInConfigForSplitAccounts)initWithNavController:(id)a3
+- (AAUIAppleIDSignInConfigForSplitAccounts)initWithNavController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = AAUIAppleIDSignInConfigForSplitAccounts;
-  v3 = [(AAUIAppleIDSignInConfiguration *)&v8 initWithNavController:a3];
+  v3 = [(AAUIAppleIDSignInConfiguration *)&v8 initWithNavController:controller];
   v4 = v3;
   if (v3)
   {
-    v5 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
-    [v5 setAllowSkip:1];
+    signInConfiguration = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
+    [signInConfiguration setAllowSkip:1];
 
-    v6 = [(AAUIAppleIDSignInConfiguration *)v4 signInConfiguration];
-    [v6 setOfferiCloudAMSSplitSignIn:1];
+    signInConfiguration2 = [(AAUIAppleIDSignInConfiguration *)v4 signInConfiguration];
+    [signInConfiguration2 setOfferiCloudAMSSplitSignIn:1];
   }
 
   return v4;

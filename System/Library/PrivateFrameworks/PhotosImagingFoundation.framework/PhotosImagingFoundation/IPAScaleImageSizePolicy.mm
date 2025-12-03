@@ -1,51 +1,51 @@
 @interface IPAScaleImageSizePolicy
-- (CGSize)transformSize:(CGSize)a3;
-- (IPAScaleImageSizePolicy)initWithCoder:(id)a3;
-- (IPAScaleImageSizePolicy)initWithScale:(double)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CGSize)transformSize:(CGSize)size;
+- (IPAScaleImageSizePolicy)initWithCoder:(id)coder;
+- (IPAScaleImageSizePolicy)initWithScale:(double)scale;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IPAScaleImageSizePolicy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IPAScaleImageSizePolicy;
-  v4 = a3;
-  [(IPAImageSizePolicy *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IPAImageSizePolicy *)&v6 encodeWithCoder:coderCopy];
   scale = self->_scale;
   *&scale = scale;
-  [v4 encodeFloat:@"scale" forKey:{scale, v6.receiver, v6.super_class}];
+  [coderCopy encodeFloat:@"scale" forKey:{scale, v6.receiver, v6.super_class}];
 }
 
-- (IPAScaleImageSizePolicy)initWithCoder:(id)a3
+- (IPAScaleImageSizePolicy)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = IPAScaleImageSizePolicy;
-  v3 = a3;
-  v4 = [(IPAImageSizePolicy *)&v8 initWithCoder:v3];
-  [v3 decodeFloatForKey:{@"scale", v8.receiver, v8.super_class}];
+  coderCopy = coder;
+  v4 = [(IPAImageSizePolicy *)&v8 initWithCoder:coderCopy];
+  [coderCopy decodeFloatForKey:{@"scale", v8.receiver, v8.super_class}];
   v6 = v5;
 
   v4->_scale = v6;
   return v4;
 }
 
-- (CGSize)transformSize:(CGSize)a3
+- (CGSize)transformSize:(CGSize)size
 {
   scale = self->_scale;
-  v4 = round(a3.width * scale);
-  v5 = round(a3.height * scale);
+  v4 = round(size.width * scale);
+  v5 = round(size.height * scale);
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (IPAScaleImageSizePolicy)initWithScale:(double)a3
+- (IPAScaleImageSizePolicy)initWithScale:(double)scale
 {
-  if (a3 <= 0.0 || a3 >= 100.0)
+  if (scale <= 0.0 || scale >= 100.0)
   {
-    v7 = a3;
+    scaleCopy = scale;
     _PFAssertContinueHandler();
   }
 
@@ -54,7 +54,7 @@
   result = [(IPAScaleImageSizePolicy *)&v8 init];
   if (result)
   {
-    result->_scale = a3;
+    result->_scale = scale;
   }
 
   return result;

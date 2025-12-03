@@ -1,16 +1,16 @@
 @interface TVElementFactory
-+ (Class)classForElementType:(unint64_t)a3;
++ (Class)classForElementType:(unint64_t)type;
 + (void)_registerDefaultElements;
 + (void)initialize;
-+ (void)registerClass:(Class)a3 forElementName:(id)a4 elementType:(unint64_t)a5 dependent:(BOOL)a6;
-+ (void)registerViewElementClass:(Class)a3 forElementName:(id)a4;
++ (void)registerClass:(Class)class forElementName:(id)name elementType:(unint64_t)type dependent:(BOOL)dependent;
++ (void)registerViewElementClass:(Class)class forElementName:(id)name;
 @end
 
 @implementation TVElementFactory
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     +[TVElementFactory _registerDefaultElements];
@@ -97,17 +97,17 @@
   [TVElementFactory registerIKClass:v2 forElementName:@"favoriteList" elementType:22 dependent:0];
 }
 
-+ (void)registerViewElementClass:(Class)a3 forElementName:(id)a4
++ (void)registerViewElementClass:(Class)class forElementName:(id)name
 {
   ++registerViewElementClass_forElementName__sElementType;
-  v5 = a4;
-  [objc_opt_class() registerClass:a3 forElementName:v5 elementType:registerViewElementClass_forElementName__sElementType dependent:0];
+  nameCopy = name;
+  [objc_opt_class() registerClass:class forElementName:nameCopy elementType:registerViewElementClass_forElementName__sElementType dependent:0];
 }
 
-+ (void)registerClass:(Class)a3 forElementName:(id)a4 elementType:(unint64_t)a5 dependent:(BOOL)a6
++ (void)registerClass:(Class)class forElementName:(id)name elementType:(unint64_t)type dependent:(BOOL)dependent
 {
-  v13 = a6;
-  v14 = a4;
+  dependentCopy = dependent;
+  nameCopy = name;
   v8 = sClassMap;
   if (!sClassMap)
   {
@@ -118,15 +118,15 @@
     v8 = sClassMap;
   }
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  [v8 setObject:a3 forKey:v11];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [v8 setObject:class forKey:v11];
 
-  if (a3)
+  if (class)
   {
-    while (a3 != objc_opt_class() && a3 != objc_opt_class() && a3 != objc_opt_class() && a3 != objc_opt_class() && a3 != objc_opt_class() && a3 != objc_opt_class())
+    while (class != objc_opt_class() && class != objc_opt_class() && class != objc_opt_class() && class != objc_opt_class() && class != objc_opt_class() && class != objc_opt_class())
     {
-      a3 = [(objc_class *)a3 superclass];
-      if (!a3)
+      class = [(objc_class *)class superclass];
+      if (!class)
       {
         goto LABEL_14;
       }
@@ -135,17 +135,17 @@
     v12 = objc_opt_class();
     if (v12)
     {
-      [objc_opt_class() registerIKClass:v12 forElementName:v14 elementType:a5 dependent:v13];
+      [objc_opt_class() registerIKClass:v12 forElementName:nameCopy elementType:type dependent:dependentCopy];
     }
   }
 
 LABEL_14:
 }
 
-+ (Class)classForElementType:(unint64_t)a3
++ (Class)classForElementType:(unint64_t)type
 {
   v3 = sClassMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v5 = [v3 objectForKey:v4];
 
   return v5;

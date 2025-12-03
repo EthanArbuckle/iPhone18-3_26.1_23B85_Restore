@@ -1,13 +1,13 @@
 @interface FCPushNotificationCenter
 - (FCPushNotificationCenter)init;
 - (id)serverChangeTokenKey;
-- (void)addObserver:(void *)a3 forChangesToRecordZoneID:(void *)a4 usingBlock:;
+- (void)addObserver:(void *)observer forChangesToRecordZoneID:(void *)d usingBlock:;
 - (void)disableSyncing;
 - (void)enableSyncing;
-- (void)handleRemoteNotification:(id)a3 completionHandler:(id)a4;
-- (void)initWithPrivateDatabase:(void *)a3 storeDirectory:;
+- (void)handleRemoteNotification:(id)notification completionHandler:(id)handler;
+- (void)initWithPrivateDatabase:(void *)database storeDirectory:;
 - (void)prepareForUse;
-- (void)removeRecordZoneObserver:(uint64_t)a1;
+- (void)removeRecordZoneObserver:(uint64_t)observer;
 @end
 
 @implementation FCPushNotificationCenter
@@ -15,15 +15,15 @@
 - (void)disableSyncing
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
-    *(a1 + 8) = 0;
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3 = [FCPushNotificationCenter serverChangeTokenKey];
-    [v2 removeObjectForKey:v3];
+    *(self + 8) = 0;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    serverChangeTokenKey = [FCPushNotificationCenter serverChangeTokenKey];
+    [standardUserDefaults removeObjectForKey:serverChangeTokenKey];
 
-    if (*(a1 + 8) == 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (*(self + 8) == 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"syncing should be disabled"];
       v6 = 136315906;
@@ -74,12 +74,12 @@
   objc_exception_throw(v6);
 }
 
-- (void)initWithPrivateDatabase:(void *)a3 storeDirectory:
+- (void)initWithPrivateDatabase:(void *)database storeDirectory:
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  databaseCopy = database;
+  if (self)
   {
     if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -95,30 +95,30 @@
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = FCPushNotificationCenter;
     v8 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 2, a2);
       v9 = [[FCMapTable alloc] initWithKeyOptions:5 valueOptions:0 capacity:0];
-      v10 = a1[3];
-      a1[3] = v9;
+      v10 = self[3];
+      self[3] = v9;
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (void)addObserver:(void *)a3 forChangesToRecordZoneID:(void *)a4 usingBlock:
+- (void)addObserver:(void *)observer forChangesToRecordZoneID:(void *)d usingBlock:
 {
   v24 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  observerCopy = observer;
+  dCopy = d;
+  if (!self)
   {
     goto LABEL_13;
   }
@@ -137,7 +137,7 @@
     v23 = v13;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v8)
+    if (!observerCopy)
     {
 LABEL_5:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -156,19 +156,19 @@ LABEL_5:
     }
   }
 
-  else if (!v8)
+  else if (!observerCopy)
   {
     goto LABEL_5;
   }
 
-  if (v9)
+  if (dCopy)
   {
-    if (v7 && v8)
+    if (v7 && observerCopy)
     {
-      v10 = [v9 copy];
-      v11 = [FCPair pairWithFirst:v8 second:v10];
+      v10 = [dCopy copy];
+      v11 = [FCPair pairWithFirst:observerCopy second:v10];
 
-      [*(a1 + 24) setObject:v11 forKey:v7];
+      [*(self + 24) setObject:v11 forKey:v7];
     }
   }
 
@@ -191,16 +191,16 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeRecordZoneObserver:(uint64_t)a1
+- (void)removeRecordZoneObserver:(uint64_t)observer
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (observer)
   {
     [MEMORY[0x1E696AF00] isMainThread];
     if (v3)
     {
-      [*(a1 + 24) removeObjectForKey:v3];
+      [*(observer + 24) removeObjectForKey:v3];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -221,30 +221,30 @@ LABEL_13:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRemoteNotification:(id)a3 completionHandler:(id)a4
+- (void)handleRemoteNotification:(id)notification completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   [MEMORY[0x1E696AF00] isMainThread];
   v8 = FCCloudKitLog;
   if (os_log_type_enabled(FCCloudKitLog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = notificationCopy;
     _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "handling notification userInfo:%@", &buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E695B9D8] notificationFromRemoteNotificationDictionary:v6];
-  v10 = [v9 subscriptionID];
-  if ([v9 notificationType] == 4 && objc_msgSend(v10, "isEqualToString:", @"private-db-sub"))
+  v9 = [MEMORY[0x1E695B9D8] notificationFromRemoteNotificationDictionary:notificationCopy];
+  subscriptionID = [v9 subscriptionID];
+  if ([v9 notificationType] == 4 && objc_msgSend(subscriptionID, "isEqualToString:", @"private-db-sub"))
   {
-    v11 = v7;
+    v11 = handlerCopy;
     if (self)
     {
-      v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v13 = [FCPushNotificationCenter serverChangeTokenKey];
-      v14 = [v12 objectForKey:v13];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      serverChangeTokenKey = [FCPushNotificationCenter serverChangeTokenKey];
+      v14 = [standardUserDefaults objectForKey:serverChangeTokenKey];
 
       v15 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
       v24 = v14;
@@ -274,7 +274,7 @@ LABEL_13:
       *(&buf + 1) = 3221225472;
       v26 = __81__FCPushNotificationCenter__handlePrivateDatabaseNotification_completionHandler___block_invoke;
       v27 = &unk_1E7C3C9C8;
-      v28 = self;
+      selfCopy = self;
       v29 = v16;
       v22 = privateDatabase;
       v11 = v16;
@@ -291,9 +291,9 @@ LABEL_13:
       *(v18 + 8) = 0;
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, v18);
+      (*(handlerCopy + 2))(handlerCopy, v18);
     }
   }
 
@@ -502,12 +502,12 @@ void __81__FCPushNotificationCenter__handlePrivateDatabaseNotification_completio
 - (void)enableSyncing
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
-    a1[8] = 1;
-    [a1 prepareForUse];
-    if ((a1[8] & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    self[8] = 1;
+    [self prepareForUse];
+    if ((self[8] & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"syncing should be enabled"];
       v4 = 136315906;
@@ -527,8 +527,8 @@ void __81__FCPushNotificationCenter__handlePrivateDatabaseNotification_completio
 
 - (void)prepareForUse
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"record-zone-subs-deleted"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"record-zone-subs-deleted"];
 
   if ((v4 & 1) == 0)
   {
@@ -546,8 +546,8 @@ void __81__FCPushNotificationCenter__handlePrivateDatabaseNotification_completio
     }
 
     [(FCCKPrivateDatabase *)privateDatabase addOperation:v5];
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v7 setBool:1 forKey:@"record-zone-subs-deleted"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 setBool:1 forKey:@"record-zone-subs-deleted"];
   }
 
   v10 = objc_alloc_init(FCCKPrivateSaveDatabaseSubscriptionOperation);

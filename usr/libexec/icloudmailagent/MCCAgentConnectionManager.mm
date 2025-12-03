@@ -1,8 +1,8 @@
 @interface MCCAgentConnectionManager
 + (_TtC15icloudmailagent25MCCAgentConnectionManager)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC15icloudmailagent25MCCAgentConnectionManager)init;
-- (void)setSecretAgentServiceListener:(id)a3;
+- (void)setSecretAgentServiceListener:(id)listener;
 - (void)start;
 @end
 
@@ -10,15 +10,15 @@
 
 - (void)start
 {
-  v1 = a1;
+  selfCopy = self;
   MCCAgentConnectionManager._setupServices()();
 }
 
-- (void)setSecretAgentServiceListener:(id)a3
+- (void)setSecretAgentServiceListener:(id)listener
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC15icloudmailagent25MCCAgentConnectionManager_secretAgentServiceListener);
-  *(&self->super.isa + OBJC_IVAR____TtC15icloudmailagent25MCCAgentConnectionManager_secretAgentServiceListener) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC15icloudmailagent25MCCAgentConnectionManager_secretAgentServiceListener) = listener;
+  listenerCopy = listener;
 }
 
 + (_TtC15icloudmailagent25MCCAgentConnectionManager)sharedInstance
@@ -46,12 +46,12 @@
   return [(MCCAgentConnectionManager *)&v7 init];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = MCCAgentConnectionManager.listener(_:shouldAcceptNewConnection:)(v6, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = MCCAgentConnectionManager.listener(_:shouldAcceptNewConnection:)(listenerCopy, connectionCopy);
 
   return v9;
 }

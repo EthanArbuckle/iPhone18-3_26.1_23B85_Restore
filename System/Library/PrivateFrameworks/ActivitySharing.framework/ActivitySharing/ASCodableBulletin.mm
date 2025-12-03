@@ -1,21 +1,21 @@
 @interface ASCodableBulletin
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableBulletin
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -49,62 +49,62 @@
   v8.receiver = self;
   v8.super_class = ASCodableBulletin;
   v4 = [(ASCodableBulletin *)&v8 description];
-  v5 = [(ASCodableBulletin *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableBulletin *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_type];
-    [v3 setObject:v4 forKey:@"type"];
+    [dictionary setObject:v4 forKey:@"type"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   friendUUID = self->_friendUUID;
   if (friendUUID)
   {
-    [v3 setObject:friendUUID forKey:@"friendUUID"];
+    [dictionary setObject:friendUUID forKey:@"friendUUID"];
   }
 
   friendListData = self->_friendListData;
   if (friendListData)
   {
-    [v3 setObject:friendListData forKey:@"friendListData"];
+    [dictionary setObject:friendListData forKey:@"friendListData"];
   }
 
   achievementData = self->_achievementData;
   if (achievementData)
   {
-    [v3 setObject:achievementData forKey:@"achievementData"];
+    [dictionary setObject:achievementData forKey:@"achievementData"];
   }
 
   workoutData = self->_workoutData;
   if (workoutData)
   {
-    [v3 setObject:workoutData forKey:@"workoutData"];
+    [dictionary setObject:workoutData forKey:@"workoutData"];
   }
 
   snapshotData = self->_snapshotData;
   if (snapshotData)
   {
-    [v3 setObject:snapshotData forKey:@"snapshotData"];
+    [dictionary setObject:snapshotData forKey:@"snapshotData"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
-    [v3 setObject:v12 forKey:@"timestamp"];
+    [dictionary setObject:v12 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -112,15 +112,15 @@
   if (has)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_competitionStage];
-    [v3 setObject:v13 forKey:@"competitionStage"];
+    [dictionary setObject:v13 forKey:@"competitionStage"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     type = self->_type;
@@ -172,63 +172,63 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v5[3] = self->_type;
-    *(v5 + 80) |= 4u;
+    toCopy[3] = self->_type;
+    *(toCopy + 80) |= 4u;
   }
 
   if (self->_title)
   {
-    [v5 setTitle:?];
+    [toCopy setTitle:?];
   }
 
   if (self->_friendUUID)
   {
-    [v5 setFriendUUID:?];
+    [toCopy setFriendUUID:?];
   }
 
   if (self->_friendListData)
   {
-    [v5 setFriendListData:?];
+    [toCopy setFriendListData:?];
   }
 
   if (self->_achievementData)
   {
-    [v5 setAchievementData:?];
+    [toCopy setAchievementData:?];
   }
 
   if (self->_workoutData)
   {
-    [v5 setWorkoutData:?];
+    [toCopy setWorkoutData:?];
   }
 
   if (self->_snapshotData)
   {
-    [v5 setSnapshotData:?];
+    [toCopy setSnapshotData:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v5[2] = *&self->_timestamp;
-    *(v5 + 80) |= 2u;
+    toCopy[2] = *&self->_timestamp;
+    *(toCopy + 80) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v5[1] = self->_competitionStage;
-    *(v5 + 80) |= 1u;
+    toCopy[1] = self->_competitionStage;
+    *(toCopy + 80) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -236,27 +236,27 @@
     *(v5 + 80) |= 4u;
   }
 
-  v7 = [(NSString *)self->_title copyWithZone:a3];
+  v7 = [(NSString *)self->_title copyWithZone:zone];
   v8 = *(v6 + 64);
   *(v6 + 64) = v7;
 
-  v9 = [(NSString *)self->_friendUUID copyWithZone:a3];
+  v9 = [(NSString *)self->_friendUUID copyWithZone:zone];
   v10 = *(v6 + 48);
   *(v6 + 48) = v9;
 
-  v11 = [(NSData *)self->_friendListData copyWithZone:a3];
+  v11 = [(NSData *)self->_friendListData copyWithZone:zone];
   v12 = *(v6 + 40);
   *(v6 + 40) = v11;
 
-  v13 = [(NSData *)self->_achievementData copyWithZone:a3];
+  v13 = [(NSData *)self->_achievementData copyWithZone:zone];
   v14 = *(v6 + 32);
   *(v6 + 32) = v13;
 
-  v15 = [(NSData *)self->_workoutData copyWithZone:a3];
+  v15 = [(NSData *)self->_workoutData copyWithZone:zone];
   v16 = *(v6 + 72);
   *(v6 + 72) = v15;
 
-  v17 = [(NSData *)self->_snapshotData copyWithZone:a3];
+  v17 = [(NSData *)self->_snapshotData copyWithZone:zone];
   v18 = *(v6 + 56);
   *(v6 + 56) = v17;
 
@@ -277,24 +277,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(equalCopy + 80);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0 || self->_type != *(v4 + 3))
+    if ((*(equalCopy + 80) & 4) == 0 || self->_type != *(equalCopy + 3))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
 LABEL_28:
     v12 = 0;
@@ -302,13 +302,13 @@ LABEL_28:
   }
 
   title = self->_title;
-  if (title | *(v4 + 8) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 8) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_28;
   }
 
   friendUUID = self->_friendUUID;
-  if (friendUUID | *(v4 + 6))
+  if (friendUUID | *(equalCopy + 6))
   {
     if (![(NSString *)friendUUID isEqual:?])
     {
@@ -317,7 +317,7 @@ LABEL_28:
   }
 
   friendListData = self->_friendListData;
-  if (friendListData | *(v4 + 5))
+  if (friendListData | *(equalCopy + 5))
   {
     if (![(NSData *)friendListData isEqual:?])
     {
@@ -326,7 +326,7 @@ LABEL_28:
   }
 
   achievementData = self->_achievementData;
-  if (achievementData | *(v4 + 4))
+  if (achievementData | *(equalCopy + 4))
   {
     if (![(NSData *)achievementData isEqual:?])
     {
@@ -335,7 +335,7 @@ LABEL_28:
   }
 
   workoutData = self->_workoutData;
-  if (workoutData | *(v4 + 9))
+  if (workoutData | *(equalCopy + 9))
   {
     if (![(NSData *)workoutData isEqual:?])
     {
@@ -344,7 +344,7 @@ LABEL_28:
   }
 
   snapshotData = self->_snapshotData;
-  if (snapshotData | *(v4 + 7))
+  if (snapshotData | *(equalCopy + 7))
   {
     if (![(NSData *)snapshotData isEqual:?])
     {
@@ -354,21 +354,21 @@ LABEL_28:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_28;
   }
 
-  v12 = (*(v4 + 80) & 1) == 0;
+  v12 = (*(equalCopy + 80) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_competitionStage != *(v4 + 1))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_competitionStage != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
@@ -445,63 +445,63 @@ LABEL_29:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v12 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 80) & 4) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 80) & 4) != 0)
   {
-    self->_type = *(v4 + 3);
+    self->_type = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  v6 = v4;
-  if (*(v4 + 8))
+  v6 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(ASCodableBulletin *)self setTitle:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ASCodableBulletin *)self setFriendUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ASCodableBulletin *)self setFriendListData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ASCodableBulletin *)self setAchievementData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ASCodableBulletin *)self setWorkoutData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ASCodableBulletin *)self setSnapshotData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(fromCopy + 80);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 80);
+    v5 = *(fromCopy + 80);
   }
 
   if (v5)
   {
-    self->_competitionStage = *(v4 + 1);
+    self->_competitionStage = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

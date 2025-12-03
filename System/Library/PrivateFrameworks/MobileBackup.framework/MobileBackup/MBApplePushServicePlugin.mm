@@ -1,16 +1,16 @@
 @interface MBApplePushServicePlugin
-- (BOOL)shouldRestoreContentWithPolicy:(id)a3 atPath:(id)a4;
+- (BOOL)shouldRestoreContentWithPolicy:(id)policy atPath:(id)path;
 @end
 
 @implementation MBApplePushServicePlugin
 
-- (BOOL)shouldRestoreContentWithPolicy:(id)a3 atPath:(id)a4
+- (BOOL)shouldRestoreContentWithPolicy:(id)policy atPath:(id)path
 {
-  v5 = a3;
-  if ([a4 isEqualToString:@"/var/mobile/Library/Preferences/com.apple.apsd.plist"] && (objc_msgSend(v5, "isRestoringToSameDevice") & 1) == 0)
+  policyCopy = policy;
+  if ([path isEqualToString:@"/var/mobile/Library/Preferences/com.apple.apsd.plist"] && (objc_msgSend(policyCopy, "isRestoringToSameDevice") & 1) == 0)
   {
-    v7 = [v5 osBuildVersionOfBackup];
-    v8 = [v7 hasPrefix:@"8A"];
+    osBuildVersionOfBackup = [policyCopy osBuildVersionOfBackup];
+    v8 = [osBuildVersionOfBackup hasPrefix:@"8A"];
 
     v6 = v8 ^ 1;
   }

@@ -1,10 +1,10 @@
 @interface MailAccountViewsProvider
 + (void)initialize;
-- (Class)controllerClassForCreatingAccountWithType:(id)a3;
-- (Class)controllerClassForCreatingRemoteAccountWithType:(id)a3;
-- (Class)viewControllerClassForCreatingAccountWithType:(id)a3;
-- (Class)viewControllerClassForViewingAccount:(id)a3;
-- (id)configurationInfoForCreatingAccountWithType:(id)a3;
+- (Class)controllerClassForCreatingAccountWithType:(id)type;
+- (Class)controllerClassForCreatingRemoteAccountWithType:(id)type;
+- (Class)viewControllerClassForCreatingAccountWithType:(id)type;
+- (Class)viewControllerClassForViewingAccount:(id)account;
+- (id)configurationInfoForCreatingAccountWithType:(id)type;
 - (id)supportedAccountTypeIdentifiers;
 @end
 
@@ -28,33 +28,33 @@
   return v2;
 }
 
-- (Class)viewControllerClassForCreatingAccountWithType:(id)a3
+- (Class)viewControllerClassForCreatingAccountWithType:(id)type
 {
   v3 = objc_opt_class();
 
   return v3;
 }
 
-- (Class)viewControllerClassForViewingAccount:(id)a3
+- (Class)viewControllerClassForViewingAccount:(id)account
 {
-  v3 = [a3 accountType];
-  v4 = [v3 supportedDataclasses];
-  v5 = [v4 count];
+  accountType = [account accountType];
+  supportedDataclasses = [accountType supportedDataclasses];
+  v5 = [supportedDataclasses count];
 
   if (v5 >= 2)
   {
-    v6 = [v3 identifier];
-    v7 = [v6 isEqualToString:ACAccountTypeIdentifierGmail];
+    identifier = [accountType identifier];
+    v7 = [identifier isEqualToString:ACAccountTypeIdentifierGmail];
 
     if ((v7 & 1) == 0)
     {
-      v11 = [v3 identifier];
-      v12 = [v11 isEqualToString:ACAccountTypeIdentifierYahoo];
+      identifier2 = [accountType identifier];
+      v12 = [identifier2 isEqualToString:ACAccountTypeIdentifierYahoo];
 
       if ((v12 & 1) == 0)
       {
-        v13 = [v3 identifier];
-        [v13 isEqualToString:ACAccountTypeIdentifierAol];
+        identifier3 = [accountType identifier];
+        [identifier3 isEqualToString:ACAccountTypeIdentifierAol];
       }
     }
   }
@@ -65,10 +65,10 @@
   return v8;
 }
 
-- (Class)controllerClassForCreatingAccountWithType:(id)a3
+- (Class)controllerClassForCreatingAccountWithType:(id)type
 {
-  v3 = a3;
-  if (([v3 isEqualToString:ACAccountTypeIdentifierGmail] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierYahoo) & 1) != 0 || objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierAol))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:ACAccountTypeIdentifierGmail] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierYahoo) & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierAol))
   {
     v4 = objc_opt_class();
   }
@@ -83,10 +83,10 @@
   return v4;
 }
 
-- (Class)controllerClassForCreatingRemoteAccountWithType:(id)a3
+- (Class)controllerClassForCreatingRemoteAccountWithType:(id)type
 {
-  v3 = a3;
-  if (([v3 isEqualToString:ACAccountTypeIdentifierGmail] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierYahoo) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierAol) & 1) != 0 || objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierHotmail))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:ACAccountTypeIdentifierGmail] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierYahoo) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierAol) & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierHotmail))
   {
     v4 = objc_opt_class();
   }
@@ -101,10 +101,10 @@
   return v4;
 }
 
-- (id)configurationInfoForCreatingAccountWithType:(id)a3
+- (id)configurationInfoForCreatingAccountWithType:(id)type
 {
-  v3 = a3;
-  if (([v3 isEqualToString:ACAccountTypeIdentifierYahoo] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierGmail) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierAol) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierIMAP) & 1) != 0 || objc_msgSend(v3, "isEqualToString:", ACAccountTypeIdentifierPOP))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:ACAccountTypeIdentifierYahoo] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierGmail) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierAol) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierIMAP) & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", ACAccountTypeIdentifierPOP))
   {
     v4 = objc_opt_class();
   }
@@ -114,9 +114,9 @@
     v4 = 0;
   }
 
-  v5 = [v4 userInfoForAccountTopLevelSpecifier];
+  userInfoForAccountTopLevelSpecifier = [v4 userInfoForAccountTopLevelSpecifier];
 
-  return v5;
+  return userInfoForAccountTopLevelSpecifier;
 }
 
 @end

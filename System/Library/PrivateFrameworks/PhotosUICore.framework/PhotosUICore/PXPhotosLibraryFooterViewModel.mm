@@ -1,10 +1,10 @@
 @interface PXPhotosLibraryFooterViewModel
 - (PXPhotosLibraryFooterViewModel)init;
-- (PXPhotosLibraryFooterViewModel)initWithDataSource:(id)a3;
+- (PXPhotosLibraryFooterViewModel)initWithDataSource:(id)source;
 - (PXPhotosLibraryFooterViewModelPresentationDelegate)presentingDelegate;
-- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)a3;
+- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)helper;
 - (void)_updateExposedProperties;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXPhotosLibraryFooterViewModel
@@ -16,21 +16,21 @@
   return WeakRetained;
 }
 
-- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)a3
+- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)helper
 {
-  v4 = [(PXPhotosLibraryFooterViewModel *)self presentingDelegate];
-  v5 = [v4 presentingViewControllerForViewModel:self];
+  presentingDelegate = [(PXPhotosLibraryFooterViewModel *)self presentingDelegate];
+  v5 = [presentingDelegate presentingViewControllerForViewModel:self];
 
   return v5;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXPhotosLibraryFooterViewModelObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXPhotosLibraryFooterViewModelObserverContext == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -40,21 +40,21 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (PXCPLUIStatusProviderObservationContext_254606 != a5)
+  if (PXCPLUIStatusProviderObservationContext_254606 != context)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotosLibraryFooterViewModel.m" lineNumber:166 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLibraryFooterViewModel.m" lineNumber:166 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x10) == 0)
+  if ((changeCopy & 0x10) == 0)
   {
     goto LABEL_6;
   }
 
-  v10 = [(PXCPLUIStatusProvider *)self->_cplUIStatusProvider status];
-  [v10 progress];
+  status = [(PXCPLUIStatusProvider *)self->_cplUIStatusProvider status];
+  [status progress];
   v12 = v11;
 
   v14[0] = MEMORY[0x1E69E9820];
@@ -68,68 +68,68 @@ LABEL_7:
 
 - (void)_updateExposedProperties
 {
-  v3 = [(PXPhotosLibraryFooterViewModel *)self assetsDataSourceManager];
-  v4 = [v3 dataSource];
+  assetsDataSourceManager = [(PXPhotosLibraryFooterViewModel *)self assetsDataSourceManager];
+  dataSource = [assetsDataSourceManager dataSource];
 
-  v43 = v4;
-  v5 = [v4 photosDataSource];
-  [v5 estimatedPhotosCount];
-  [v5 estimatedVideosCount];
-  v42 = v5;
-  [v5 estimatedOtherCount];
+  v43 = dataSource;
+  photosDataSource = [dataSource photosDataSource];
+  [photosDataSource estimatedPhotosCount];
+  [photosDataSource estimatedVideosCount];
+  v42 = photosDataSource;
+  [photosDataSource estimatedOtherCount];
   v41 = PLLocalizedCountDescription();
-  v6 = [(PXCPLUIStatusProvider *)self->_cplUIStatusProvider status];
-  if (PXCloudQuotaCanShowInformationView(v6))
+  status = [(PXCPLUIStatusProvider *)self->_cplUIStatusProvider status];
+  if (PXCloudQuotaCanShowInformationView(status))
   {
-    v39 = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper informationView];
-    v7 = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper premiumInformationView];
+    informationView = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper informationView];
+    premiumInformationView = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper premiumInformationView];
   }
 
   else
   {
-    v39 = 0;
-    v7 = 0;
+    informationView = 0;
+    premiumInformationView = 0;
   }
 
   v8 = *off_1E7721FC8;
   v60[0] = 0;
-  v9 = [(PXPhotosLibraryFooterViewModel *)self photoLibrary];
-  v10 = [v9 hasSyncProgressReturningImportOperations:v60];
+  photoLibrary = [(PXPhotosLibraryFooterViewModel *)self photoLibrary];
+  v10 = [photoLibrary hasSyncProgressReturningImportOperations:v60];
 
-  v38 = self;
+  selfCopy = self;
   if (v10)
   {
     v11 = PLProgressDescription();
     v12 = 0;
     v13 = 0;
-    v14 = 0;
-    v15 = 0;
+    actionConfirmationAlertTitle = 0;
+    actionConfirmationAlertButtonTitle = 0;
     v16 = 0;
     v17 = 0;
-    v18 = 0;
+    failureDescription = 0;
   }
 
-  else if (v6)
+  else if (status)
   {
-    v36 = [v6 stateDescription];
-    v18 = [v6 failureDescription];
-    v34 = [v6 internalInformationMessage];
-    v32 = [v6 isPaused];
-    [v6 progress];
+    stateDescription = [status stateDescription];
+    failureDescription = [status failureDescription];
+    internalInformationMessage = [status internalInformationMessage];
+    isPaused = [status isPaused];
+    [status progress];
     v8 = v19;
-    v20 = [v6 actionTitle];
-    v14 = [v6 actionConfirmationAlertTitle];
-    v15 = [v6 actionConfirmationAlertButtonTitle];
-    v21 = [v6 action];
-    v22 = v21;
-    if (v21)
+    actionTitle = [status actionTitle];
+    actionConfirmationAlertTitle = [status actionConfirmationAlertTitle];
+    actionConfirmationAlertButtonTitle = [status actionConfirmationAlertButtonTitle];
+    action = [status action];
+    v22 = action;
+    if (action)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __58__PXPhotosLibraryFooterViewModel__updateExposedProperties__block_invoke;
       aBlock[3] = &unk_1E774C2F0;
-      v59 = v21;
-      v58 = v6;
+      v59 = action;
+      v58 = status;
       v16 = _Block_copy(aBlock);
     }
 
@@ -138,21 +138,21 @@ LABEL_7:
       v16 = 0;
     }
 
-    v17 = v34;
-    v11 = v36;
-    v13 = v20;
-    v12 = v32;
+    v17 = internalInformationMessage;
+    v11 = stateDescription;
+    v13 = actionTitle;
+    v12 = isPaused;
   }
 
   else
   {
     v12 = 0;
     v13 = 0;
-    v14 = 0;
-    v15 = 0;
+    actionConfirmationAlertTitle = 0;
+    actionConfirmationAlertButtonTitle = 0;
     v16 = 0;
     v17 = 0;
-    v18 = 0;
+    failureDescription = 0;
     v11 = 0;
   }
 
@@ -162,30 +162,30 @@ LABEL_7:
   v44[3] = &unk_1E774BB98;
   v45 = v41;
   v46 = v11;
-  v47 = v18;
+  v47 = failureDescription;
   v48 = v17;
   v56 = v12;
   v55 = v8;
   v49 = v13;
-  v50 = v14;
-  v51 = v15;
-  v52 = v39;
-  v53 = v7;
+  v50 = actionConfirmationAlertTitle;
+  v51 = actionConfirmationAlertButtonTitle;
+  v52 = informationView;
+  v53 = premiumInformationView;
   v54 = v16;
   v23 = v17;
-  v24 = v7;
+  v24 = premiumInformationView;
   v25 = v13;
   v33 = v24;
-  v40 = v39;
+  v40 = informationView;
   v26 = v16;
-  v37 = v15;
-  v35 = v14;
+  v37 = actionConfirmationAlertButtonTitle;
+  v35 = actionConfirmationAlertTitle;
   v27 = v25;
   v28 = v23;
-  v29 = v18;
+  v29 = failureDescription;
   v30 = v11;
   v31 = v41;
-  [(PXPhotosLibraryFooterViewModel *)v38 performChanges:v44];
+  [(PXPhotosLibraryFooterViewModel *)selfCopy performChanges:v44];
 }
 
 void __58__PXPhotosLibraryFooterViewModel__updateExposedProperties__block_invoke_2(uint64_t a1, void *a2)
@@ -208,22 +208,22 @@ void __58__PXPhotosLibraryFooterViewModel__updateExposedProperties__block_invoke
   [v5 setTopAccessoryView:*(a1 + 96)];
 }
 
-- (PXPhotosLibraryFooterViewModel)initWithDataSource:(id)a3
+- (PXPhotosLibraryFooterViewModel)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = PXPhotosLibraryFooterViewModel;
   v5 = [(PXPhotosLibraryFooterViewModel *)&v16 init];
   if (v5)
   {
-    v6 = [[PXPhotoKitAssetsDataSourceManager alloc] initWithPhotosDataSource:v4];
+    v6 = [[PXPhotoKitAssetsDataSourceManager alloc] initWithPhotosDataSource:sourceCopy];
     assetsDataSourceManager = v5->_assetsDataSourceManager;
     v5->_assetsDataSourceManager = v6;
 
     [(PXSectionedDataSourceManager *)v5->_assetsDataSourceManager registerChangeObserver:v5 context:PXPhotosLibraryFooterViewModelObserverContext];
-    v8 = [v4 photoLibrary];
+    photoLibrary = [sourceCopy photoLibrary];
     photoLibrary = v5->_photoLibrary;
-    v5->_photoLibrary = v8;
+    v5->_photoLibrary = photoLibrary;
 
     v10 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:v5->_photoLibrary];
     v11 = [[PXCPLUIStatusProvider alloc] initWithPhotoLibrary:v5->_photoLibrary actionManager:v10];
@@ -244,8 +244,8 @@ void __58__PXPhotosLibraryFooterViewModel__updateExposedProperties__block_invoke
 
 - (PXPhotosLibraryFooterViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosLibraryFooterViewModel.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXPhotosLibraryFooterViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosLibraryFooterViewModel.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXPhotosLibraryFooterViewModel init]"}];
 
   abort();
 }

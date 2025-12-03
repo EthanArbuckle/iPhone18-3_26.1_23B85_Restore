@@ -1,35 +1,35 @@
 @interface ErrorControllerImplementation
-- (void)reportCriticalError:(id)a3 forItem:(id)a4;
-- (void)resetWithReason:(id)a3;
-- (void)resolveError:(id)a3 forItem:(id)a4 completion:(id)a5;
+- (void)reportCriticalError:(id)error forItem:(id)item;
+- (void)resetWithReason:(id)reason;
+- (void)resolveError:(id)error forItem:(id)item completion:(id)completion;
 @end
 
 @implementation ErrorControllerImplementation
 
-- (void)resolveError:(id)a3 forItem:(id)a4 completion:(id)a5
+- (void)resolveError:(id)error forItem:(id)item completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
+  errorCopy = error;
   swift_unknownObjectRetain();
 
-  sub_1C5DBB834(v9, a4, self, v8);
+  sub_1C5DBB834(errorCopy, item, self, v8);
   _Block_release(v8);
   swift_unknownObjectRelease();
 }
 
-- (void)reportCriticalError:(id)a3 forItem:(id)a4
+- (void)reportCriticalError:(id)error forItem:(id)item
 {
-  v5 = a3;
+  errorCopy = error;
   swift_unknownObjectRetain();
 
-  sub_1C5DBBC74(v5, a4);
+  sub_1C5DBBC74(errorCopy, item);
   swift_unknownObjectRelease();
 }
 
-- (void)resetWithReason:(id)a3
+- (void)resetWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
 
   sub_1C5DBBDF8();
 }

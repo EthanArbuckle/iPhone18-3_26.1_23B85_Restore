@@ -1,6 +1,6 @@
 @interface MCMClientIdentity
-+ (id)anonymousPrivilegedClientIdentityWithUserIdentity:(id)a3;
-+ (id)privilegedClientIdentityWithUserIdentity:(id)a3 kernel:(BOOL)a4;
++ (id)anonymousPrivilegedClientIdentityWithUserIdentity:(id)identity;
++ (id)privilegedClientIdentityWithUserIdentity:(id)identity kernel:(BOOL)kernel;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (BOOL)cached;
 - (BOOL)isAllowedToAccessCodesignMapping;
@@ -27,19 +27,19 @@
 - (MCMClientCodeSignInfo)codeSignInfo;
 - (MCMClientHasEntitlementsAllowingOperation)proximateClient;
 - (MCMClientIdentity)init;
-- (MCMClientIdentity)initWithPOSIXUser:(id)a3 POSIXPID:(int)a4 platform:(unsigned int)a5 userIdentity:(id)a6 proximateClient:(id)a7 auditToken:(id *)a8 codeSignInfo:(id)a9 sandboxed:(BOOL)a10 sandboxContainerURL:(id)a11 testClient:(BOOL)a12 kernel:(BOOL)a13;
+- (MCMClientIdentity)initWithPOSIXUser:(id)user POSIXPID:(int)d platform:(unsigned int)platform userIdentity:(id)identity proximateClient:(id)client auditToken:(id *)token codeSignInfo:(id)info sandboxed:(BOOL)self0 sandboxContainerURL:(id)self1 testClient:(BOOL)self2 kernel:(BOOL)self3;
 - (MCMPOSIXUser)posixUser;
 - (MCMUserIdentity)userIdentity;
 - (NSString)description;
 - (NSURL)sandboxContainerURL;
 - (container_client)createLibsystemClient;
-- (id)clientIdentityByChangingCached:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)clientIdentityByChangingCached:(BOOL)cached;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initInternal;
 - (id)shortDescription;
 - (int)posixPID;
-- (unint64_t)isAllowedToPerformOperationType:(unint64_t)a3 containerIdentity:(id)a4 part:(unint64_t)a5 partDomain:(id)a6 access:(unint64_t)a7;
-- (unint64_t)isAllowedToPerformOperationType:(unint64_t)a3 forAllContainersOfContainerConfig:(id)a4 part:(unint64_t)a5 partDomain:(id)a6 access:(unint64_t)a7;
+- (unint64_t)isAllowedToPerformOperationType:(unint64_t)type containerIdentity:(id)identity part:(unint64_t)part partDomain:(id)domain access:(unint64_t)access;
+- (unint64_t)isAllowedToPerformOperationType:(unint64_t)type forAllContainersOfContainerConfig:(id)config part:(unint64_t)part partDomain:(id)domain access:(unint64_t)access;
 - (unsigned)platform;
 @end
 
@@ -472,10 +472,10 @@ id __32__MCMClientIdentity_description__block_invoke(uint64_t a1, int a2)
   return v29;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initInternal"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initInternal"}];
   v5 = v4;
   if (v4)
   {
@@ -502,221 +502,221 @@ id __32__MCMClientIdentity_description__block_invoke(uint64_t a1, int a2)
 - (BOOL)isAllowedToCheckAuthorization
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToCheckAuthorization];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToCheckAuthorization = [entitlements isAllowedToCheckAuthorization];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToCheckAuthorization;
 }
 
 - (BOOL)isAllowedToChangeReferences
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToChangeReferences];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToChangeReferences = [entitlements isAllowedToChangeReferences];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToChangeReferences;
 }
 
 - (BOOL)isAllowedToReadReferences
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToReadReferences];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToReadReferences = [entitlements isAllowedToReadReferences];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToReadReferences;
 }
 
 - (BOOL)isAllowedToAccessUserAssets
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToAccessUserAssets];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToAccessUserAssets = [entitlements isAllowedToAccessUserAssets];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToAccessUserAssets;
 }
 
 - (BOOL)isAllowedToStageSharedContent
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToStageSharedContent];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToStageSharedContent = [entitlements isAllowedToStageSharedContent];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToStageSharedContent;
 }
 
 - (BOOL)isAllowedToStartUserDataMigration
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToStartUserDataMigration];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToStartUserDataMigration = [entitlements isAllowedToStartUserDataMigration];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToStartUserDataMigration;
 }
 
 - (BOOL)isAllowedToStartDataMigration
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToStartDataMigration];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToStartDataMigration = [entitlements isAllowedToStartDataMigration];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToStartDataMigration;
 }
 
 - (BOOL)isAllowedToRestoreContainer
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToRestoreContainer];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToRestoreContainer = [entitlements isAllowedToRestoreContainer];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToRestoreContainer;
 }
 
 - (BOOL)isAllowedToSetDataProtection
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToSetDataProtection];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToSetDataProtection = [entitlements isAllowedToSetDataProtection];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToSetDataProtection;
 }
 
 - (BOOL)isAllowedToAccessCodesignMapping
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToAccessCodesignMapping];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToAccessCodesignMapping = [entitlements isAllowedToAccessCodesignMapping];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToAccessCodesignMapping;
 }
 
 - (BOOL)isAllowedToTest
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToTest];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToTest = [entitlements isAllowedToTest];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToTest;
 }
 
 - (BOOL)isAllowedToDelete
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToDelete];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToDelete = [entitlements isAllowedToDelete];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToDelete;
 }
 
 - (BOOL)isAllowedToRegenerateDirectoryUUIDs
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToRegenerateDirectoryUUIDs];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToRegenerateDirectoryUUIDs = [entitlements isAllowedToRegenerateDirectoryUUIDs];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToRegenerateDirectoryUUIDs;
 }
 
 - (BOOL)isAllowedToRecreateContainerStructure
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToRecreateContainerStructure];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToRecreateContainerStructure = [entitlements isAllowedToRecreateContainerStructure];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToRecreateContainerStructure;
 }
 
 - (BOOL)isAllowedToAccessInfoMetadata
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToAccessInfoMetadata];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToAccessInfoMetadata = [entitlements isAllowedToAccessInfoMetadata];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToAccessInfoMetadata;
 }
 
 - (BOOL)isAllowedToReplaceContainers
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToReplaceContainers];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToReplaceContainers = [entitlements isAllowedToReplaceContainers];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToReplaceContainers;
 }
 
 - (BOOL)isAllowedToControlCaches
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v2 entitlements];
-  v4 = [v3 isAllowedToControlCaches];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  isAllowedToControlCaches = [entitlements isAllowedToControlCaches];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToControlCaches;
 }
 
-- (unint64_t)isAllowedToPerformOperationType:(unint64_t)a3 forAllContainersOfContainerConfig:(id)a4 part:(unint64_t)a5 partDomain:(id)a6 access:(unint64_t)a7
+- (unint64_t)isAllowedToPerformOperationType:(unint64_t)type forAllContainersOfContainerConfig:(id)config part:(unint64_t)part partDomain:(id)domain access:(unint64_t)access
 {
   v19 = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a4;
-  v14 = [(MCMClientIdentity *)self codeSignInfo];
-  v15 = [v14 entitlements];
-  v16 = [v15 isAllowedToPerformOperationType:a3 forAllContainersOfContainerConfig:v13 part:a5 partDomain:v12 access:a7];
+  domainCopy = domain;
+  configCopy = config;
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  v16 = [entitlements isAllowedToPerformOperationType:type forAllContainersOfContainerConfig:configCopy part:part partDomain:domainCopy access:access];
 
   v17 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (unint64_t)isAllowedToPerformOperationType:(unint64_t)a3 containerIdentity:(id)a4 part:(unint64_t)a5 partDomain:(id)a6 access:(unint64_t)a7
+- (unint64_t)isAllowedToPerformOperationType:(unint64_t)type containerIdentity:(id)identity part:(unint64_t)part partDomain:(id)domain access:(unint64_t)access
 {
   v19 = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a4;
-  v14 = [(MCMClientIdentity *)self codeSignInfo];
-  v15 = [v14 entitlements];
-  v16 = [v15 isAllowedToPerformOperationType:a3 containerIdentity:v13 part:a5 partDomain:v12 access:a7];
+  domainCopy = domain;
+  identityCopy = identity;
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  v16 = [entitlements isAllowedToPerformOperationType:type containerIdentity:identityCopy part:part partDomain:domainCopy access:access];
 
   v17 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (id)clientIdentityByChangingCached:(BOOL)a3
+- (id)clientIdentityByChangingCached:(BOOL)cached
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = [(MCMClientIdentity *)self copy];
-  v4[26] = a3;
+  v4[26] = cached;
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
@@ -726,61 +726,61 @@ id __32__MCMClientIdentity_description__block_invoke(uint64_t a1, int a2)
 {
   v17 = *MEMORY[0x1E69E9840];
   [(MCMClientIdentity *)self isTestClient];
-  v16 = [(MCMClientIdentity *)self codeSignInfo];
-  v15 = [v16 identifier];
-  [v15 UTF8String];
-  v14 = [(MCMClientIdentity *)self codeSignInfo];
-  v3 = [v14 teamIdentifier];
-  [v3 UTF8String];
+  codeSignInfo = [(MCMClientIdentity *)self codeSignInfo];
+  identifier = [codeSignInfo identifier];
+  [identifier UTF8String];
+  codeSignInfo2 = [(MCMClientIdentity *)self codeSignInfo];
+  teamIdentifier = [codeSignInfo2 teamIdentifier];
+  [teamIdentifier UTF8String];
   [(MCMClientIdentity *)self platform];
-  v13 = [(MCMClientIdentity *)self userIdentity];
-  v4 = [v13 personaUniqueString];
-  [v4 UTF8String];
-  v5 = [(MCMClientIdentity *)self posixUser];
-  [v5 UID];
-  v6 = [(MCMClientIdentity *)self posixUser];
-  [v6 primaryGID];
+  userIdentity = [(MCMClientIdentity *)self userIdentity];
+  personaUniqueString = [userIdentity personaUniqueString];
+  [personaUniqueString UTF8String];
+  posixUser = [(MCMClientIdentity *)self posixUser];
+  [posixUser UID];
+  posixUser2 = [(MCMClientIdentity *)self posixUser];
+  [posixUser2 primaryGID];
   [(MCMClientIdentity *)self auditToken];
   [(MCMClientIdentity *)self posixPID];
-  v7 = [(MCMClientIdentity *)self codeSignInfo];
-  [v7 isSigned];
-  v8 = [(MCMClientIdentity *)self codeSignInfo];
-  [v8 isSignatureValid];
-  v9 = [(MCMClientIdentity *)self codeSignInfo];
-  [v9 isPlatformBinary];
+  codeSignInfo3 = [(MCMClientIdentity *)self codeSignInfo];
+  [codeSignInfo3 isSigned];
+  codeSignInfo4 = [(MCMClientIdentity *)self codeSignInfo];
+  [codeSignInfo4 isSignatureValid];
+  codeSignInfo5 = [(MCMClientIdentity *)self codeSignInfo];
+  [codeSignInfo5 isPlatformBinary];
   v10 = container_client_initializer();
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (MCMClientIdentity)initWithPOSIXUser:(id)a3 POSIXPID:(int)a4 platform:(unsigned int)a5 userIdentity:(id)a6 proximateClient:(id)a7 auditToken:(id *)a8 codeSignInfo:(id)a9 sandboxed:(BOOL)a10 sandboxContainerURL:(id)a11 testClient:(BOOL)a12 kernel:(BOOL)a13
+- (MCMClientIdentity)initWithPOSIXUser:(id)user POSIXPID:(int)d platform:(unsigned int)platform userIdentity:(id)identity proximateClient:(id)client auditToken:(id *)token codeSignInfo:(id)info sandboxed:(BOOL)self0 sandboxContainerURL:(id)self1 testClient:(BOOL)self2 kernel:(BOOL)self3
 {
   v31 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a6;
-  v29 = a7;
-  v28 = a9;
-  v20 = a11;
+  userCopy = user;
+  identityCopy = identity;
+  clientCopy = client;
+  infoCopy = info;
+  lCopy = l;
   v30.receiver = self;
   v30.super_class = MCMClientIdentity;
   v21 = [(MCMClientIdentity *)&v30 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_posixUser, a3);
-    v22->_posixPID = a4;
-    v22->_platform = a5;
-    objc_storeStrong(&v22->_userIdentity, a6);
-    objc_storeStrong(&v22->_proximateClient, a7);
-    v23 = *a8->var0;
-    *&v22->_auditToken.val[4] = *&a8->var0[4];
+    objc_storeStrong(&v21->_posixUser, user);
+    v22->_posixPID = d;
+    v22->_platform = platform;
+    objc_storeStrong(&v22->_userIdentity, identity);
+    objc_storeStrong(&v22->_proximateClient, client);
+    v23 = *token->var0;
+    *&v22->_auditToken.val[4] = *&token->var0[4];
     *v22->_auditToken.val = v23;
-    objc_storeStrong(&v22->_codeSignInfo, a9);
-    v22->_sandboxed = a10;
-    objc_storeStrong(&v22->_sandboxContainerURL, a11);
-    v22->_testClient = a12;
-    v22->_kernel = a13;
+    objc_storeStrong(&v22->_codeSignInfo, info);
+    v22->_sandboxed = sandboxed;
+    objc_storeStrong(&v22->_sandboxContainerURL, l);
+    v22->_testClient = testClient;
+    v22->_kernel = kernel;
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -801,33 +801,33 @@ id __32__MCMClientIdentity_description__block_invoke(uint64_t a1, int a2)
   return 0;
 }
 
-+ (id)privilegedClientIdentityWithUserIdentity:(id)a3 kernel:(BOOL)a4
++ (id)privilegedClientIdentityWithUserIdentity:(id)identity kernel:(BOOL)kernel
 {
   v29 = *MEMORY[0x1E69E9840];
   v27 = 0u;
   v28 = 0u;
-  v6 = a3;
+  identityCopy = identity;
   container_codesign_get_self_audit_token();
   v7 = [MCMEntitlements alloc];
   v8 = containermanager_copy_global_configuration();
-  v9 = [v8 staticConfig];
-  v10 = [v9 containerConfigMap];
-  v11 = [(MCMEntitlements *)v7 initWithEntitlements:&unk_1F5A759B0 clientIdentifier:@"com.apple.containermanagerd" containerConfigMap:v10];
+  staticConfig = [v8 staticConfig];
+  containerConfigMap = [staticConfig containerConfigMap];
+  v11 = [(MCMEntitlements *)v7 initWithEntitlements:&unk_1F5A759B0 clientIdentifier:@"com.apple.containermanagerd" containerConfigMap:containerConfigMap];
 
   v12 = [MCMClientCodeSignInfo alloc];
   v13 = objc_opt_new();
   v14 = [(MCMClientCodeSignInfo *)v12 initWithCDHash:v13 entitlements:v11 identifier:@"com.apple.containermanagerd" teamIdentifier:0 status:7];
 
-  v15 = [a1 alloc];
+  v15 = [self alloc];
   v16 = containermanager_copy_global_configuration();
-  v17 = [v16 currentUser];
+  currentUser = [v16 currentUser];
   v18 = getpid();
   *buf = 0u;
   v26 = 0u;
-  BYTE1(v24) = a4;
+  BYTE1(v24) = kernel;
   LOBYTE(v24) = 0;
   LOBYTE(v23) = 0;
-  v19 = [v15 initWithPOSIXUser:v17 POSIXPID:v18 platform:dyld_get_active_platform() userIdentity:v6 proximateClient:0 auditToken:buf codeSignInfo:v14 sandboxed:v23 sandboxContainerURL:0 testClient:v24 kernel:?];
+  v19 = [v15 initWithPOSIXUser:currentUser POSIXPID:v18 platform:dyld_get_active_platform() userIdentity:identityCopy proximateClient:0 auditToken:buf codeSignInfo:v14 sandboxed:v23 sandboxContainerURL:0 testClient:v24 kernel:?];
 
   if (!v19)
   {
@@ -844,12 +844,12 @@ id __32__MCMClientIdentity_description__block_invoke(uint64_t a1, int a2)
   return v19;
 }
 
-+ (id)anonymousPrivilegedClientIdentityWithUserIdentity:(id)a3
++ (id)anonymousPrivilegedClientIdentityWithUserIdentity:(id)identity
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  return [a1 privilegedClientIdentityWithUserIdentity:a3 kernel:0];
+  return [self privilegedClientIdentityWithUserIdentity:identity kernel:0];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface _UISearchTokenAttachmentViewProvider
 - (BOOL)isLastAttachmentBeforeText;
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
-- (_UISearchTokenAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
+- (_UISearchTokenAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location;
 - (void)loadView;
 @end
 
 @implementation _UISearchTokenAttachmentViewProvider
 
-- (_UISearchTokenAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6
+- (_UISearchTokenAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location
 {
-  v10 = a4;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = _UISearchTokenAttachmentViewProvider;
-  v11 = [(NSTextAttachmentViewProvider *)&v14 initWithTextAttachment:a3 parentView:v10 textLayoutManager:a5 location:a6];
+  v11 = [(NSTextAttachmentViewProvider *)&v14 initWithTextAttachment:attachment parentView:viewCopy textLayoutManager:manager location:location];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_parentView, v10);
+    objc_storeWeak(&v11->_parentView, viewCopy);
   }
 
   return v12;
@@ -25,13 +25,13 @@
 
 - (void)loadView
 {
-  v3 = [(NSTextAttachmentViewProvider *)self textLayoutManager];
-  v19 = [v3 textContentManager];
+  textLayoutManager = [(NSTextAttachmentViewProvider *)self textLayoutManager];
+  textContentManager = [textLayoutManager textContentManager];
 
   v4 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v19;
+    v5 = textContentManager;
   }
 
   else
@@ -43,27 +43,27 @@
 
   if (v6)
   {
-    v7 = [v6 attributedString];
+    attributedString = [v6 attributedString];
   }
 
   else
   {
-    v8 = [(NSTextAttachmentViewProvider *)self layoutManager];
-    v7 = [v8 textStorage];
+    layoutManager = [(NSTextAttachmentViewProvider *)self layoutManager];
+    attributedString = [layoutManager textStorage];
   }
 
-  v9 = [v7 attribute:*off_1E70EC918 atIndex:-[NSTextAttachmentViewProvider characterIndex](self effectiveRange:{"characterIndex"), 0}];
+  v9 = [attributedString attribute:*off_1E70EC918 atIndex:-[NSTextAttachmentViewProvider characterIndex](self effectiveRange:{"characterIndex"), 0}];
   v10 = objc_alloc_init(_UISearchAtomView);
-  v11 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  v12 = [v11 token];
+  textAttachment = [(NSTextAttachmentViewProvider *)self textAttachment];
+  token = [textAttachment token];
 
-  v13 = [v12 text];
-  v14 = [(_UISearchAtomView *)v10 textLabel];
-  [v14 setText:v13];
+  text = [token text];
+  textLabel = [(_UISearchAtomView *)v10 textLabel];
+  [textLabel setText:text];
 
-  v15 = [v12 image];
-  v16 = [(_UISearchAtomView *)v10 leadingImage];
-  [v16 setImage:v15];
+  image = [token image];
+  leadingImage = [(_UISearchAtomView *)v10 leadingImage];
+  [leadingImage setImage:image];
 
   [(_UISearchAtomView *)v10 setAtomFont:v9];
   WeakRetained = objc_loadWeakRetained(&self->_parentView);
@@ -80,9 +80,9 @@
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(NSTextAttachmentViewProvider *)self textLayoutManager];
-  v4 = [(NSTextAttachmentViewProvider *)self location];
-  v5 = [v3 locationFromLocation:v4 withOffset:1];
+  textLayoutManager = [(NSTextAttachmentViewProvider *)self textLayoutManager];
+  location = [(NSTextAttachmentViewProvider *)self location];
+  v5 = [textLayoutManager locationFromLocation:location withOffset:1];
 
   if (v5)
   {
@@ -91,7 +91,7 @@
     v8[2] = __66___UISearchTokenAttachmentViewProvider_isLastAttachmentBeforeText__block_invoke;
     v8[3] = &unk_1E70F8BE0;
     v8[4] = &v9;
-    [v3 enumerateSubstringsFromLocation:v5 options:2 usingBlock:v8];
+    [textLayoutManager enumerateSubstringsFromLocation:v5 options:2 usingBlock:v8];
   }
 
   v6 = *(v10 + 24);
@@ -100,17 +100,17 @@
   return v6;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v10 = a4.origin.y;
-  v11 = a4.origin.x;
-  v13 = a3;
-  v14 = [(NSTextAttachmentViewProvider *)self view];
-  [v14 boundsForTextContainer:v13 proposedLineFragment:v11 glyphPosition:{v10, width, height, x, y}];
+  y = position.y;
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v10 = fragment.origin.y;
+  v11 = fragment.origin.x;
+  containerCopy = container;
+  view = [(NSTextAttachmentViewProvider *)self view];
+  [view boundsForTextContainer:containerCopy proposedLineFragment:v11 glyphPosition:{v10, width, height, x, y}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -127,18 +127,18 @@
   return result;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
-  y = a7.y;
-  x = a7.x;
-  height = a6.size.height;
-  width = a6.size.width;
-  v11 = a6.origin.y;
-  v12 = a6.origin.x;
-  v14 = a5;
-  v15 = [(NSTextAttachmentViewProvider *)self view];
-  [v15 setIsLastSearchToken:{-[_UISearchTokenAttachmentViewProvider isLastAttachmentBeforeText](self, "isLastAttachmentBeforeText")}];
-  [v15 boundsForTextContainer:v14 proposedLineFragment:v12 glyphPosition:{v11, width, height, x, y}];
+  y = position.y;
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v11 = fragment.origin.y;
+  v12 = fragment.origin.x;
+  containerCopy = container;
+  view = [(NSTextAttachmentViewProvider *)self view];
+  [view setIsLastSearchToken:{-[_UISearchTokenAttachmentViewProvider isLastAttachmentBeforeText](self, "isLastAttachmentBeforeText")}];
+  [view boundsForTextContainer:containerCopy proposedLineFragment:v12 glyphPosition:{v11, width, height, x, y}];
   v17 = v16;
   v19 = v18;
   v21 = v20;

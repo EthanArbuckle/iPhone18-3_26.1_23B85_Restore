@@ -1,8 +1,8 @@
 @interface CNUILikenessRenderer
-+ (id)cachingRendererWithLikenessResolver:(id)a3 capacity:(unint64_t)a4 schedulerProvider:(id)a5;
-+ (id)cachingRendererWithLikenessResolver:(id)a3 schedulerProvider:(id)a4;
-+ (id)concurrentCachingRendererWithLikenessResolver:(id)a3 capacity:(unint64_t)a4 schedulerProvider:(id)a5;
-+ (id)rendererWithLikenessResolver:(id)a3 schedulerProvider:(id)a4;
++ (id)cachingRendererWithLikenessResolver:(id)resolver capacity:(unint64_t)capacity schedulerProvider:(id)provider;
++ (id)cachingRendererWithLikenessResolver:(id)resolver schedulerProvider:(id)provider;
++ (id)concurrentCachingRendererWithLikenessResolver:(id)resolver capacity:(unint64_t)capacity schedulerProvider:(id)provider;
++ (id)rendererWithLikenessResolver:(id)resolver schedulerProvider:(id)provider;
 @end
 
 @implementation CNUILikenessRenderer
@@ -127,48 +127,48 @@ id __63___CNUILikenessRenderer_renderedBasicMonogramFromString_scope___block_inv
   return v7;
 }
 
-+ (id)rendererWithLikenessResolver:(id)a3 schedulerProvider:(id)a4
++ (id)rendererWithLikenessResolver:(id)resolver schedulerProvider:(id)provider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_CNUILikenessRenderer alloc] initWithLikenessResolver:v6 schedulerProvider:v5];
+  providerCopy = provider;
+  resolverCopy = resolver;
+  v7 = [[_CNUILikenessRenderer alloc] initWithLikenessResolver:resolverCopy schedulerProvider:providerCopy];
 
   return v7;
 }
 
-+ (id)cachingRendererWithLikenessResolver:(id)a3 schedulerProvider:(id)a4
++ (id)cachingRendererWithLikenessResolver:(id)resolver schedulerProvider:(id)provider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_CNUILikenessRenderer alloc] initWithLikenessResolver:v6 schedulerProvider:v5];
+  providerCopy = provider;
+  resolverCopy = resolver;
+  v7 = [[_CNUILikenessRenderer alloc] initWithLikenessResolver:resolverCopy schedulerProvider:providerCopy];
 
-  v8 = [[_CNUICachingLikenessRenderer alloc] initWithLikenessRenderer:v7 schedulerProvider:v5];
+  v8 = [[_CNUICachingLikenessRenderer alloc] initWithLikenessRenderer:v7 schedulerProvider:providerCopy];
 
   return v8;
 }
 
-+ (id)cachingRendererWithLikenessResolver:(id)a3 capacity:(unint64_t)a4 schedulerProvider:(id)a5
++ (id)cachingRendererWithLikenessResolver:(id)resolver capacity:(unint64_t)capacity schedulerProvider:(id)provider
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[_CNUILikenessRenderer alloc] initWithLikenessResolver:v8 schedulerProvider:v7];
+  providerCopy = provider;
+  resolverCopy = resolver;
+  v9 = [[_CNUILikenessRenderer alloc] initWithLikenessResolver:resolverCopy schedulerProvider:providerCopy];
   v10 = [_CNUICachingLikenessRenderer alloc];
-  v11 = [v8 contactStore];
+  contactStore = [resolverCopy contactStore];
 
-  v12 = [(_CNUICachingLikenessRenderer *)v10 initWithLikenessRenderer:v9 schedulerProvider:v7 capacity:a4 shouldRequireMainThread:1 contactStore:v11];
+  v12 = [(_CNUICachingLikenessRenderer *)v10 initWithLikenessRenderer:v9 schedulerProvider:providerCopy capacity:capacity shouldRequireMainThread:1 contactStore:contactStore];
 
   return v12;
 }
 
-+ (id)concurrentCachingRendererWithLikenessResolver:(id)a3 capacity:(unint64_t)a4 schedulerProvider:(id)a5
++ (id)concurrentCachingRendererWithLikenessResolver:(id)resolver capacity:(unint64_t)capacity schedulerProvider:(id)provider
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[_CNUILikenessRenderer alloc] initWithLikenessResolver:v8 schedulerProvider:v7];
+  providerCopy = provider;
+  resolverCopy = resolver;
+  v9 = [[_CNUILikenessRenderer alloc] initWithLikenessResolver:resolverCopy schedulerProvider:providerCopy];
   v10 = [_CNUICachingLikenessRenderer alloc];
-  v11 = [v8 contactStore];
+  contactStore = [resolverCopy contactStore];
 
-  v12 = [(_CNUICachingLikenessRenderer *)v10 initWithLikenessRenderer:v9 schedulerProvider:v7 capacity:a4 shouldRequireMainThread:0 contactStore:v11];
+  v12 = [(_CNUICachingLikenessRenderer *)v10 initWithLikenessRenderer:v9 schedulerProvider:providerCopy capacity:capacity shouldRequireMainThread:0 contactStore:contactStore];
 
   return v12;
 }

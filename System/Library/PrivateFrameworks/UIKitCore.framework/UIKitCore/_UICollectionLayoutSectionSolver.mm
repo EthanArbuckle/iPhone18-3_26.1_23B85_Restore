@@ -1,13 +1,13 @@
 @interface _UICollectionLayoutSectionSolver
-+ (id)solverWithLayoutSection:(uint64_t)a3 layoutAxis:;
++ (id)solverWithLayoutSection:(uint64_t)section layoutAxis:;
 @end
 
 @implementation _UICollectionLayoutSectionSolver
 
-+ (id)solverWithLayoutSection:(uint64_t)a3 layoutAxis:
++ (id)solverWithLayoutSection:(uint64_t)section layoutAxis:
 {
   objc_opt_self();
-  if ([a2 _isListSolverCompatibleForLayoutAxis:a3])
+  if ([a2 _isListSolverCompatibleForLayoutAxis:section])
   {
     v5 = [[_UICollectionLayoutSectionListSolver alloc] initWithLayoutSection:a2];
   }

@@ -1,35 +1,35 @@
 @interface MSCMSEnvelopedDataInternal
 - (MSCMSEnvelopedDataInternal)init;
-- (MSCMSEnvelopedDataInternal)initWithEnvelopedData:(id)a3;
-- (id)encodeMessageSecurityObject:(id *)a3;
+- (MSCMSEnvelopedDataInternal)initWithEnvelopedData:(id)data;
+- (id)encodeMessageSecurityObject:(id *)object;
 @end
 
 @implementation MSCMSEnvelopedDataInternal
 
-- (MSCMSEnvelopedDataInternal)initWithEnvelopedData:(id)a3
+- (MSCMSEnvelopedDataInternal)initWithEnvelopedData:(id)data
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___MSCMSEnvelopedDataInternal_envelopedData) = a3;
+  *(&self->super.isa + OBJC_IVAR___MSCMSEnvelopedDataInternal_envelopedData) = data;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  dataCopy = data;
   return [(MSCMSEnvelopedDataInternal *)&v8 init];
 }
 
-- (id)encodeMessageSecurityObject:(id *)a3
+- (id)encodeMessageSecurityObject:(id *)object
 {
-  v4 = self;
+  selfCopy = self;
   v5.super.isa = MSCMSEnvelopedDataInternal.encodeMessageSecurityObject()().super.isa;
 
   if (v6.super.isa)
   {
-    if (a3)
+    if (object)
     {
       v7 = sub_258CBEA00();
 
       v8 = v7;
       isa = 0;
-      *a3 = v7;
+      *object = v7;
     }
 
     else

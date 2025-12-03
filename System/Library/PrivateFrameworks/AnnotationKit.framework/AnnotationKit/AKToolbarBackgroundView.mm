@@ -1,43 +1,43 @@
 @interface AKToolbarBackgroundView
-- (AKToolbarBackgroundView)initWithFrame:(CGRect)a3;
-- (void)_hostSeparatorInView:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBlurStyle:(int64_t)a3;
-- (void)setOpaque:(BOOL)a3;
-- (void)setSeparatorColor:(id)a3;
-- (void)setTranslucent:(BOOL)a3;
+- (AKToolbarBackgroundView)initWithFrame:(CGRect)frame;
+- (void)_hostSeparatorInView:(id)view;
+- (void)setBackgroundColor:(id)color;
+- (void)setBlurStyle:(int64_t)style;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setSeparatorColor:(id)color;
+- (void)setTranslucent:(BOOL)translucent;
 - (void)updateSeparatorVisibility;
 @end
 
 @implementation AKToolbarBackgroundView
 
-- (AKToolbarBackgroundView)initWithFrame:(CGRect)a3
+- (AKToolbarBackgroundView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = AKToolbarBackgroundView;
-  v3 = [(AKToolbarBackgroundView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKToolbarBackgroundView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] _secondarySystemBackgroundColor];
-    [(AKToolbarBackgroundView *)v3 setBackgroundColor:v4];
+    _secondarySystemBackgroundColor = [MEMORY[0x277D75348] _secondarySystemBackgroundColor];
+    [(AKToolbarBackgroundView *)v3 setBackgroundColor:_secondarySystemBackgroundColor];
 
     v3->_blurStyle = 2;
     v5 = objc_alloc(MEMORY[0x277D75D18]);
     v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(AKToolbarBackgroundView *)v3 setSeparatorLine:v6];
 
-    v7 = [MEMORY[0x277D75348] _separatorColor];
-    v8 = [(AKToolbarBackgroundView *)v3 separatorLine];
-    [v8 setBackgroundColor:v7];
+    _separatorColor = [MEMORY[0x277D75348] _separatorColor];
+    separatorLine = [(AKToolbarBackgroundView *)v3 separatorLine];
+    [separatorLine setBackgroundColor:_separatorColor];
 
-    v9 = [(AKToolbarBackgroundView *)v3 separatorLine];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    separatorLine2 = [(AKToolbarBackgroundView *)v3 separatorLine];
+    [separatorLine2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(AKToolbarBackgroundView *)v3 separatorLine];
-    v11 = [v10 heightAnchor];
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
-    v14 = [v11 constraintEqualToConstant:1.0 / v13];
+    separatorLine3 = [(AKToolbarBackgroundView *)v3 separatorLine];
+    heightAnchor = [separatorLine3 heightAnchor];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v14 = [heightAnchor constraintEqualToConstant:1.0 / v13];
     [v14 setActive:1];
 
     [(AKToolbarBackgroundView *)v3 _hostSeparatorInView:v3];
@@ -46,19 +46,19 @@
   return v3;
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
   v4.receiver = self;
   v4.super_class = AKToolbarBackgroundView;
-  [(AKToolbarBackgroundView *)&v4 setOpaque:a3];
+  [(AKToolbarBackgroundView *)&v4 setOpaque:opaque];
   [(AKToolbarBackgroundView *)self updateSeparatorVisibility];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = AKToolbarBackgroundView;
-  [(AKToolbarBackgroundView *)&v4 setBackgroundColor:a3];
+  [(AKToolbarBackgroundView *)&v4 setBackgroundColor:color];
   [(AKToolbarBackgroundView *)self updateSeparatorVisibility];
 }
 
@@ -71,9 +71,9 @@
 
   else if ([(AKToolbarBackgroundView *)self isOpaque])
   {
-    v4 = [(AKToolbarBackgroundView *)self backgroundColor];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    v3 = [v4 isEqual:v5];
+    backgroundColor = [(AKToolbarBackgroundView *)self backgroundColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    v3 = [backgroundColor isEqual:clearColor];
   }
 
   else
@@ -81,46 +81,46 @@
     v3 = 1;
   }
 
-  v6 = [(AKToolbarBackgroundView *)self separatorLine];
-  [v6 setHidden:v3];
+  separatorLine = [(AKToolbarBackgroundView *)self separatorLine];
+  [separatorLine setHidden:v3];
 }
 
-- (void)setBlurStyle:(int64_t)a3
+- (void)setBlurStyle:(int64_t)style
 {
-  if (self->_blurStyle != a3)
+  if (self->_blurStyle != style)
   {
-    self->_blurStyle = a3;
+    self->_blurStyle = style;
     v5 = [MEMORY[0x277D75210] effectWithStyle:{-[AKToolbarBackgroundView blurStyle](self, "blurStyle")}];
     [(UIVisualEffectView *)self->_visualEffectView setEffect:v5];
   }
 }
 
-- (void)setTranslucent:(BOOL)a3
+- (void)setTranslucent:(BOOL)translucent
 {
-  self->_translucent = a3;
-  if (a3)
+  self->_translucent = translucent;
+  if (translucent)
   {
     v4 = [MEMORY[0x277D75210] effectWithStyle:{-[AKToolbarBackgroundView blurStyle](self, "blurStyle")}];
     v5 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v4];
     visualEffectView = self->_visualEffectView;
     self->_visualEffectView = v5;
 
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UIVisualEffectView *)self->_visualEffectView setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIVisualEffectView *)self->_visualEffectView setBackgroundColor:clearColor];
 
     [(UIView *)self ak_addSubview:self->_visualEffectView withEdgeInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
     [(AKToolbarBackgroundView *)self sendSubviewToBack:self->_visualEffectView];
-    v8 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-    [(AKToolbarBackgroundView *)self _hostSeparatorInView:v8];
+    contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+    [(AKToolbarBackgroundView *)self _hostSeparatorInView:contentView];
 
-    v9 = [(AKToolbarBackgroundView *)self separatorLine];
-    [v9 setOpaque:0];
+    separatorLine = [(AKToolbarBackgroundView *)self separatorLine];
+    [separatorLine setOpaque:0];
   }
 
   else
   {
-    v10 = [(AKToolbarBackgroundView *)self separatorLine];
-    [v10 setOpaque:1];
+    separatorLine2 = [(AKToolbarBackgroundView *)self separatorLine];
+    [separatorLine2 setOpaque:1];
 
     [(AKToolbarBackgroundView *)self _hostSeparatorInView:self];
     [(UIVisualEffectView *)self->_visualEffectView removeFromSuperview];
@@ -131,39 +131,39 @@
   [(AKToolbarBackgroundView *)self updateSeparatorVisibility];
 }
 
-- (void)setSeparatorColor:(id)a3
+- (void)setSeparatorColor:(id)color
 {
-  v4 = a3;
-  v5 = [(AKToolbarBackgroundView *)self separatorLine];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  separatorLine = [(AKToolbarBackgroundView *)self separatorLine];
+  [separatorLine setBackgroundColor:colorCopy];
 }
 
-- (void)_hostSeparatorInView:(id)a3
+- (void)_hostSeparatorInView:(id)view
 {
-  v4 = a3;
-  v5 = [(AKToolbarBackgroundView *)self separatorLine];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  viewCopy = view;
+  separatorLine = [(AKToolbarBackgroundView *)self separatorLine];
+  [separatorLine setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(AKToolbarBackgroundView *)self separatorLine];
-  [v4 addSubview:v6];
+  separatorLine2 = [(AKToolbarBackgroundView *)self separatorLine];
+  [viewCopy addSubview:separatorLine2];
 
-  v7 = [(AKToolbarBackgroundView *)self separatorLine];
-  v8 = [v7 topAnchor];
-  v9 = [v4 topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  separatorLine3 = [(AKToolbarBackgroundView *)self separatorLine];
+  topAnchor = [separatorLine3 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v10 setActive:1];
 
-  v11 = [(AKToolbarBackgroundView *)self separatorLine];
-  v12 = [v11 leadingAnchor];
-  v13 = [v4 leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  separatorLine4 = [(AKToolbarBackgroundView *)self separatorLine];
+  leadingAnchor = [separatorLine4 leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v14 setActive:1];
 
-  v18 = [(AKToolbarBackgroundView *)self separatorLine];
-  v15 = [v18 trailingAnchor];
-  v16 = [v4 trailingAnchor];
+  separatorLine5 = [(AKToolbarBackgroundView *)self separatorLine];
+  trailingAnchor = [separatorLine5 trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
 
-  v17 = [v15 constraintEqualToAnchor:v16];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v17 setActive:1];
 }
 

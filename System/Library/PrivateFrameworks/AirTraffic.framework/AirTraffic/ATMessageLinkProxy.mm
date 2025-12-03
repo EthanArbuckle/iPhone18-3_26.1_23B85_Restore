@@ -1,26 +1,26 @@
 @interface ATMessageLinkProxy
-- (ATMessageLinkProxy)initWithCoder:(id)a3;
-- (ATMessageLinkProxy)initWithEndpoint:(id)a3;
+- (ATMessageLinkProxy)initWithCoder:(id)coder;
+- (ATMessageLinkProxy)initWithEndpoint:(id)endpoint;
 - (NSString)description;
-- (void)addObserver:(id)a3;
-- (void)addRequestHandler:(id)a3 forDataClass:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)addRequestHandler:(id)handler forDataClass:(id)class;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4 completion:(id)a5;
-- (void)messageLinkWasClosed:(id)a3;
-- (void)messageLinkWasInitialized:(id)a3;
-- (void)messageLinkWasOpened:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeRequestHandlerForDataClass:(id)a3;
-- (void)sendRequest:(id)a3 withCompletion:(id)a4;
-- (void)sendResponse:(id)a3 withCompletion:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)messageLink:(id)link didReceiveRequest:(id)request completion:(id)completion;
+- (void)messageLinkWasClosed:(id)closed;
+- (void)messageLinkWasInitialized:(id)initialized;
+- (void)messageLinkWasOpened:(id)opened;
+- (void)removeObserver:(id)observer;
+- (void)removeRequestHandlerForDataClass:(id)class;
+- (void)sendRequest:(id)request withCompletion:(id)completion;
+- (void)sendResponse:(id)response withCompletion:(id)completion;
 @end
 
 @implementation ATMessageLinkProxy
 
-- (void)removeRequestHandlerForDataClass:(id)a3
+- (void)removeRequestHandlerForDataClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   v5 = self->_requestHandlers;
   objc_sync_enter(v5);
   v6 = dispatch_semaphore_create(0);
@@ -37,13 +37,13 @@
   v12 = 3221225472;
   v13 = __55__ATMessageLinkProxy_removeRequestHandlerForDataClass___block_invoke_100;
   v14 = &unk_278C6D8A0;
-  v15 = self;
+  selfCopy = self;
   v10 = v8;
   v16 = v10;
-  [v9 removeRequestHandlerForDataClass:v4 completion:&v11];
+  [v9 removeRequestHandlerForDataClass:classCopy completion:&v11];
 
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  [(NSMutableDictionary *)self->_requestHandlers removeObjectForKey:v4, v11, v12, v13, v14, v15];
+  [(NSMutableDictionary *)self->_requestHandlers removeObjectForKey:classCopy, v11, v12, v13, v14, selfCopy];
 
   objc_sync_exit(v5);
 }
@@ -86,13 +86,13 @@ void __55__ATMessageLinkProxy_removeRequestHandlerForDataClass___block_invoke_10
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRequestHandler:(id)a3 forDataClass:(id)a4
+- (void)addRequestHandler:(id)handler forDataClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  classCopy = class;
   v8 = self->_requestHandlers;
   objc_sync_enter(v8);
-  [(NSMutableDictionary *)self->_requestHandlers setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)self->_requestHandlers setObject:handlerCopy forKey:classCopy];
   v9 = dispatch_semaphore_create(0);
   connection = self->_connection;
   v16[0] = MEMORY[0x277D85DD0];
@@ -110,7 +110,7 @@ void __55__ATMessageLinkProxy_removeRequestHandlerForDataClass___block_invoke_10
   v14[4] = self;
   v13 = v11;
   v15 = v13;
-  [v12 addRequestHandler:0 forDataClass:v7 completion:v14];
+  [v12 addRequestHandler:0 forDataClass:classCopy completion:v14];
 
   dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
   objc_sync_exit(v8);
@@ -154,21 +154,21 @@ void __53__ATMessageLinkProxy_addRequestHandler_forDataClass___block_invoke_99(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = self->_observers;
   objc_sync_enter(v5);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v5);
 
   v6 = dispatch_semaphore_create(0);
@@ -235,17 +235,17 @@ void __34__ATMessageLinkProxy_addObserver___block_invoke_98(uint64_t a1, void *a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendResponse:(id)a3 withCompletion:(id)a4
+- (void)sendResponse:(id)response withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   connection = self->_connection;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__ATMessageLinkProxy_sendResponse_withCompletion___block_invoke;
   v14[3] = &unk_278C6DA58;
-  v8 = v6;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a3;
+  responseCopy = response;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -253,7 +253,7 @@ void __34__ATMessageLinkProxy_addObserver___block_invoke_98(uint64_t a1, void *a
   v12[3] = &unk_278C6DA58;
   v13 = v8;
   v11 = v8;
-  [v10 sendResponse:v9 withCompletion:v12];
+  [v10 sendResponse:responseCopy withCompletion:v12];
 }
 
 uint64_t __50__ATMessageLinkProxy_sendResponse_withCompletion___block_invoke(uint64_t a1)
@@ -278,17 +278,17 @@ uint64_t __50__ATMessageLinkProxy_sendResponse_withCompletion___block_invoke_2(u
   return result;
 }
 
-- (void)sendRequest:(id)a3 withCompletion:(id)a4
+- (void)sendRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   connection = self->_connection;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__ATMessageLinkProxy_sendRequest_withCompletion___block_invoke;
   v14[3] = &unk_278C6DA58;
-  v8 = v6;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a3;
+  requestCopy = request;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -296,7 +296,7 @@ uint64_t __50__ATMessageLinkProxy_sendResponse_withCompletion___block_invoke_2(u
   v12[3] = &unk_278C6D560;
   v13 = v8;
   v11 = v8;
-  [v10 sendRequest:v9 withCompletion:v12];
+  [v10 sendRequest:requestCopy withCompletion:v12];
 }
 
 uint64_t __49__ATMessageLinkProxy_sendRequest_withCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -321,16 +321,16 @@ uint64_t __49__ATMessageLinkProxy_sendRequest_withCompletion___block_invoke_2(ui
   return result;
 }
 
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4 completion:(id)a5
+- (void)messageLink:(id)link didReceiveRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  linkCopy = link;
+  requestCopy = request;
+  completionCopy = completion;
   v11 = self->_requestHandlers;
   objc_sync_enter(v11);
   requestHandlers = self->_requestHandlers;
-  v13 = [v9 dataClass];
-  v14 = [(NSMutableDictionary *)requestHandlers objectForKey:v13];
+  dataClass = [requestCopy dataClass];
+  v14 = [(NSMutableDictionary *)requestHandlers objectForKey:dataClass];
 
   v15 = dispatch_get_global_queue(0, 0);
   v19[0] = MEMORY[0x277D85DD0];
@@ -338,11 +338,11 @@ uint64_t __49__ATMessageLinkProxy_sendRequest_withCompletion___block_invoke_2(ui
   v19[2] = __63__ATMessageLinkProxy_messageLink_didReceiveRequest_completion___block_invoke;
   v19[3] = &unk_278C6D538;
   v20 = v14;
-  v21 = self;
-  v22 = v9;
-  v23 = v10;
-  v16 = v10;
-  v17 = v9;
+  selfCopy = self;
+  v22 = requestCopy;
+  v23 = completionCopy;
+  v16 = completionCopy;
+  v17 = requestCopy;
   v18 = v14;
   dispatch_async(v15, v19);
 
@@ -369,7 +369,7 @@ uint64_t __63__ATMessageLinkProxy_messageLink_didReceiveRequest_completion___blo
   return v5();
 }
 
-- (void)messageLinkWasClosed:(id)a3
+- (void)messageLinkWasClosed:(id)closed
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -430,7 +430,7 @@ void __43__ATMessageLinkProxy_messageLinkWasClosed___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageLinkWasInitialized:(id)a3
+- (void)messageLinkWasInitialized:(id)initialized
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -486,7 +486,7 @@ void __48__ATMessageLinkProxy_messageLinkWasInitialized___block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageLinkWasOpened:(id)a3
+- (void)messageLinkWasOpened:(id)opened
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -542,31 +542,31 @@ void __43__ATMessageLinkProxy_messageLinkWasOpened___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   endpoint = self->_endpoint;
-  v5 = a3;
-  [v5 encodeObject:endpoint forKey:@"endpoint"];
-  [v5 encodeBool:self->_initialized forKey:@"initialized"];
-  [v5 encodeBool:self->_open forKey:@"open"];
-  [v5 encodeInt32:self->_endpointType forKey:@"endpointType"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:endpoint forKey:@"endpoint"];
+  [coderCopy encodeBool:self->_initialized forKey:@"initialized"];
+  [coderCopy encodeBool:self->_open forKey:@"open"];
+  [coderCopy encodeInt32:self->_endpointType forKey:@"endpointType"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (ATMessageLinkProxy)initWithCoder:(id)a3
+- (ATMessageLinkProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ATMessageLinkProxy *)self initWithEndpoint:0];
   if (v5)
   {
-    v5->_open = [v4 decodeBoolForKey:@"open"];
-    v5->_initialized = [v4 decodeBoolForKey:@"initialized"];
-    v5->_endpointType = [v4 decodeInt32ForKey:@"endpointType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5->_open = [coderCopy decodeBoolForKey:@"open"];
+    v5->_initialized = [coderCopy decodeBoolForKey:@"initialized"];
+    v5->_endpointType = [coderCopy decodeInt32ForKey:@"endpointType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
     v9 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v8];
     connection = v5->_connection;
     v5->_connection = v9;
@@ -604,8 +604,8 @@ void __36__ATMessageLinkProxy_initWithCoder___block_invoke(uint64_t a1)
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ATMessageLinkProxy *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p %@ open=%d, initialized=%d, endpointType=%d>", v5, self, v6, self->_open, self->_initialized, self->_endpointType];
+  identifier = [(ATMessageLinkProxy *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p %@ open=%d, initialized=%d, endpointType=%d>", v5, self, identifier, self->_open, self->_initialized, self->_endpointType];
 
   return v7;
 }
@@ -623,19 +623,19 @@ void __36__ATMessageLinkProxy_initWithCoder___block_invoke(uint64_t a1)
   [(ATMessageLinkProxy *)&v4 dealloc];
 }
 
-- (ATMessageLinkProxy)initWithEndpoint:(id)a3
+- (ATMessageLinkProxy)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v15.receiver = self;
   v15.super_class = ATMessageLinkProxy;
   v6 = [(ATMessageLink *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_endpoint, endpoint);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
 
     v10 = objc_opt_new();
     requestHandlers = v7->_requestHandlers;

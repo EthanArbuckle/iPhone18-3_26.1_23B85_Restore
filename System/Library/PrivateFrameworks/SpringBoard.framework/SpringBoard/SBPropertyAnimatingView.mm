@@ -1,14 +1,14 @@
 @interface SBPropertyAnimatingView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation SBPropertyAnimatingView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SBPropertyAnimatingView *)self animatedLayerProperties];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  animatedLayerProperties = [(SBPropertyAnimatingView *)self animatedLayerProperties];
+  v6 = [animatedLayerProperties containsObject:keyCopy];
 
   if (v6)
   {
@@ -19,7 +19,7 @@
   {
     v9.receiver = self;
     v9.super_class = SBPropertyAnimatingView;
-    v7 = [(SBPropertyAnimatingView *)&v9 _shouldAnimatePropertyWithKey:v4];
+    v7 = [(SBPropertyAnimatingView *)&v9 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v7;

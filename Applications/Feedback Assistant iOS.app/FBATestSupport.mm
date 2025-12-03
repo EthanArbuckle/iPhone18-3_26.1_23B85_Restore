@@ -1,18 +1,18 @@
 @interface FBATestSupport
-- (void)addVisibleClickableLinkWithIdentifier:(id)a3 andUrlString:(id)a4;
-- (void)openLink:(id)a3;
-- (void)processLaunchArgumentsWithArgs:(id)a3;
+- (void)addVisibleClickableLinkWithIdentifier:(id)identifier andUrlString:(id)string;
+- (void)openLink:(id)link;
+- (void)processLaunchArgumentsWithArgs:(id)args;
 @end
 
 @implementation FBATestSupport
 
-- (void)processLaunchArgumentsWithArgs:(id)a3
+- (void)processLaunchArgumentsWithArgs:(id)args
 {
-  v4 = a3;
-  if (!v4)
+  argsCopy = args;
+  if (!argsCopy)
   {
     v5 = +[NSProcessInfo processInfo];
-    v4 = [v5 arguments];
+    argsCopy = [v5 arguments];
   }
 
   if (FBKIsInternalInstall())
@@ -21,8 +21,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v4;
-    v6 = v4;
+    v18 = argsCopy;
+    v6 = argsCopy;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (!v7)
     {
@@ -50,8 +50,8 @@
         if ([v11 isEqualToString:@"FBA_TEST_LOG_OUT"])
         {
           v12 = +[FBKData sharedInstance];
-          v13 = [v12 loginManager];
-          [v13 logOut];
+          loginManager = [v12 loginManager];
+          [loginManager logOut];
           goto LABEL_13;
         }
 
@@ -59,8 +59,8 @@
         {
           v14 = +[NSUserDefaults standardUserDefaults];
           v15 = +[NSBundle mainBundle];
-          v16 = [v15 bundleIdentifier];
-          [v14 removePersistentDomainForName:v16];
+          bundleIdentifier = [v15 bundleIdentifier];
+          [v14 removePersistentDomainForName:bundleIdentifier];
         }
 
         else if ([v11 hasPrefix:@"FBA_TEST_ULR_SCHEME_BUTTON"])
@@ -68,10 +68,10 @@
           v12 = [v11 componentsSeparatedByString:@"|"];
           if ([v12 count] == 2)
           {
-            v13 = [v12 lastObject];
-            v17 = [v12 firstObject];
-            [(FBATestSupport *)self addVisibleClickableLinkWithIdentifier:v17 andUrlString:v13];
-            [(FBATestSupport *)self addVisibleClickableLinkWithIdentifier:v17 andUrlString:v13];
+            loginManager = [v12 lastObject];
+            firstObject = [v12 firstObject];
+            [(FBATestSupport *)self addVisibleClickableLinkWithIdentifier:firstObject andUrlString:loginManager];
+            [(FBATestSupport *)self addVisibleClickableLinkWithIdentifier:firstObject andUrlString:loginManager];
 
 LABEL_13:
           }
@@ -85,37 +85,37 @@ LABEL_13:
       {
 LABEL_22:
 
-        v4 = v18;
+        argsCopy = v18;
         break;
       }
     }
   }
 }
 
-- (void)addVisibleClickableLinkWithIdentifier:(id)a3 andUrlString:(id)a4
+- (void)addVisibleClickableLinkWithIdentifier:(id)identifier andUrlString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  stringCopy = string;
   v8 = +[NSNotificationCenter defaultCenter];
   v9 = +[NSOperationQueue mainQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000388E4;
   v13[3] = &unk_1000DFA38;
-  v14 = v7;
-  v15 = self;
-  v16 = v6;
-  v10 = v6;
-  v11 = v7;
+  v14 = stringCopy;
+  selfCopy = self;
+  v16 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = stringCopy;
   v12 = [v8 addObserverForName:UIApplicationDidBecomeActiveNotification object:0 queue:v9 usingBlock:v13];
 }
 
-- (void)openLink:(id)a3
+- (void)openLink:(id)link
 {
-  v3 = [a3 titleLabel];
-  v6 = [v3 text];
+  titleLabel = [link titleLabel];
+  text = [titleLabel text];
 
-  if (v6)
+  if (text)
   {
     v4 = [NSURL URLWithString:?];
     if (v4)

@@ -10,7 +10,7 @@
 - (BOOL)isInternalInstall;
 - (BOOL)isPhone6PlusOrLarger;
 - (BOOL)isWifiEnabled;
-- (BOOL)openURL:(id)a3;
+- (BOOL)openURL:(id)l;
 - (BOOL)overrideBlurStyle;
 - (BOOL)shouldCaptureMapViewGestureAnalytics;
 - (BOOL)supports3DImagery;
@@ -22,21 +22,21 @@
 - (double)screenScale;
 - (id)_defaultOpenURLOptions;
 - (int)userInterfaceIdiom;
-- (void)openURL:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
-- (void)openURL:(id)a3 fromScene:(id)a4 completionHandler:(id)a5;
-- (void)openUserActivity:(id)a3 withApplicationRecord:(id)a4 requireOptionKeyPromptUnlockDevice:(BOOL)a5 completionHandler:(id)a6;
-- (void)placeDialRequest:(id)a3 completionHandler:(id)a4;
+- (void)openURL:(id)l bundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)openURL:(id)l completionHandler:(id)handler;
+- (void)openURL:(id)l fromScene:(id)scene completionHandler:(id)handler;
+- (void)openUserActivity:(id)activity withApplicationRecord:(id)record requireOptionKeyPromptUnlockDevice:(BOOL)device completionHandler:(id)handler;
+- (void)placeDialRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MKSystemController
 
 - (BOOL)isInternalInstall
 {
-  v2 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v3 = [v2 isInternalInstall];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  isInternalInstall = [mEMORY[0x1E69A2398] isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
 + (id)sharedInstance
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __36__MKSystemController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_sPredicate != -1)
   {
     dispatch_once(&sharedInstance_sPredicate, block);
@@ -75,26 +75,26 @@ void __36__MKSystemController_sharedInstance__block_invoke(uint64_t a1)
 
 - (int)userInterfaceIdiom
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 - 1) > 5)
+  if ((userInterfaceIdiom - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return dword_1A30F76D0[v3 - 1];
+    return dword_1A30F76D0[userInterfaceIdiom - 1];
   }
 }
 
 - (BOOL)supportsPitchAPI
 {
-  v3 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v4 = [v3 mapsFeatureFreedomEnabled];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  mapsFeatureFreedomEnabled = [mEMORY[0x1E69A2398] mapsFeatureFreedomEnabled];
 
-  if (v4)
+  if (mapsFeatureFreedomEnabled)
   {
     return 1;
   }
@@ -104,10 +104,10 @@ void __36__MKSystemController_sharedInstance__block_invoke(uint64_t a1)
 
 - (BOOL)supports3DMaps
 {
-  v2 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v3 = [v2 mapsFeatureFreedomEnabled];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  mapsFeatureFreedomEnabled = [mEMORY[0x1E69A2398] mapsFeatureFreedomEnabled];
 
-  if (v3)
+  if (mapsFeatureFreedomEnabled)
   {
     v4 = 1;
   }
@@ -237,12 +237,12 @@ void __58__MKSystemController_shouldCaptureMapViewGestureAnalytics__block_invoke
   }
 }
 
-- (void)openUserActivity:(id)a3 withApplicationRecord:(id)a4 requireOptionKeyPromptUnlockDevice:(BOOL)a5 completionHandler:(id)a6
+- (void)openUserActivity:(id)activity withApplicationRecord:(id)record requireOptionKeyPromptUnlockDevice:(BOOL)device completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  recordCopy = record;
+  activityCopy = activity;
   v11 = objc_opt_new();
   v12 = getFBSOpenApplicationOptionKeyPromptUnlockDevice();
   v18 = v12;
@@ -250,14 +250,14 @@ void __58__MKSystemController_shouldCaptureMapViewGestureAnalytics__block_invoke
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
   [v11 setFrontBoardOptions:v13];
 
-  v14 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __114__MKSystemController_openUserActivity_withApplicationRecord_requireOptionKeyPromptUnlockDevice_completionHandler___block_invoke;
   v16[3] = &unk_1E76C8FE8;
-  v17 = v8;
-  v15 = v8;
-  [v14 openUserActivity:v10 usingApplicationRecord:v9 configuration:v11 completionHandler:v16];
+  v17 = handlerCopy;
+  v15 = handlerCopy;
+  [defaultWorkspace openUserActivity:activityCopy usingApplicationRecord:recordCopy configuration:v11 completionHandler:v16];
 }
 
 uint64_t __114__MKSystemController_openUserActivity_withApplicationRecord_requireOptionKeyPromptUnlockDevice_completionHandler___block_invoke(uint64_t a1)
@@ -271,32 +271,32 @@ uint64_t __114__MKSystemController_openUserActivity_withApplicationRecord_requir
   return result;
 }
 
-- (void)openURL:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)openURL:(id)l bundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_openURLDelegate);
   v12 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained openURL:v8 bundleIdentifier:v9 completionHandler:v10];
+    [WeakRetained openURL:lCopy bundleIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E6963608] defaultWorkspace];
-    v14 = [v13 operationToOpenResource:v8 usingApplication:v9 userInfo:0];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    v14 = [defaultWorkspace operationToOpenResource:lCopy usingApplication:identifierCopy userInfo:0];
 
     if (v14)
     {
-      if (v10)
+      if (handlerCopy)
       {
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __65__MKSystemController_openURL_bundleIdentifier_completionHandler___block_invoke;
         v18[3] = &unk_1E76CD4D0;
-        v19 = v10;
+        v19 = handlerCopy;
         [v14 setCompletionBlock:v18];
       }
 
@@ -309,9 +309,9 @@ uint64_t __114__MKSystemController_openUserActivity_withApplicationRecord_requir
       dispatch_async(v15, v16);
     }
 
-    else if (v10)
+    else if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
@@ -326,11 +326,11 @@ void __65__MKSystemController_openURL_bundleIdentifier_completionHandler___block
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)placeDialRequest:(id)a3 completionHandler:(id)a4
+- (void)placeDialRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isValid])
+  requestCopy = request;
+  handlerCopy = handler;
+  if ([requestCopy isValid])
   {
     v14 = 0;
     v20 = 0;
@@ -362,7 +362,7 @@ void __65__MKSystemController_openURL_bundleIdentifier_completionHandler___block
 
     if (v7(&v14) && v14)
     {
-      [v5 setShowUIPrompt:0];
+      [requestCopy setShowUIPrompt:0];
     }
 
     v9 = dispatch_get_global_queue(25, 0);
@@ -370,8 +370,8 @@ void __65__MKSystemController_openURL_bundleIdentifier_completionHandler___block
     block[1] = 3221225472;
     block[2] = __57__MKSystemController_placeDialRequest_completionHandler___block_invoke;
     block[3] = &unk_1E76CDA20;
-    v12 = v5;
-    v13 = v6;
+    v12 = requestCopy;
+    v13 = handlerCopy;
     dispatch_async(v9, block);
   }
 }
@@ -430,15 +430,15 @@ void __57__MKSystemController_placeDialRequest_completionHandler___block_invoke_
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_openURLDelegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained openURL:v6 completionHandler:v7];
+    [WeakRetained openURL:lCopy completionHandler:handlerCopy];
   }
 
   else
@@ -448,12 +448,12 @@ void __57__MKSystemController_placeDialRequest_completionHandler___block_invoke_
     v17[2] = __48__MKSystemController_openURL_completionHandler___block_invoke;
     v17[3] = &unk_1E76C8F98;
     v17[4] = self;
-    v10 = v7;
+    v10 = handlerCopy;
     v18 = v10;
     v11 = MEMORY[0x1A58E9F30](v17);
     if ([(MKSystemController *)self _shouldUseLaunchServices])
     {
-      (v11)[2](v11, v6);
+      (v11)[2](v11, lCopy);
     }
 
     else
@@ -465,7 +465,7 @@ void __57__MKSystemController_placeDialRequest_completionHandler___block_invoke_
       v13[3] = &unk_1E76C8FC0;
       v15 = v10;
       v16 = v11;
-      v14 = v6;
+      v14 = lCopy;
       [v12 openURL:v14 withCompletionHandler:v13];
     }
   }
@@ -525,56 +525,56 @@ void __48__MKSystemController_openURL_completionHandler___block_invoke_2(uint64_
   }
 }
 
-- (void)openURL:(id)a3 fromScene:(id)a4 completionHandler:(id)a5
+- (void)openURL:(id)l fromScene:(id)scene completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  sceneCopy = scene;
+  handlerCopy = handler;
+  if (sceneCopy)
   {
     v10 = MEMORY[0x1E69636B8];
-    v11 = a3;
-    v12 = objc_alloc_init(v10);
-    v13 = [v8 _currentOpenApplicationEndpoint];
-    [v12 setTargetConnectionEndpoint:v13];
+    lCopy = l;
+    lCopy2 = objc_alloc_init(v10);
+    _currentOpenApplicationEndpoint = [sceneCopy _currentOpenApplicationEndpoint];
+    [lCopy2 setTargetConnectionEndpoint:_currentOpenApplicationEndpoint];
 
-    v14 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __58__MKSystemController_openURL_fromScene_completionHandler___block_invoke;
     v15[3] = &unk_1E76C8F70;
-    v16 = v9;
-    [v14 openURL:v11 configuration:v12 completionHandler:v15];
+    v16 = handlerCopy;
+    [defaultWorkspace openURL:lCopy configuration:lCopy2 completionHandler:v15];
   }
 
   else
   {
-    v12 = a3;
-    [(MKSystemController *)self openURL:v12 completionHandler:v9];
+    lCopy2 = l;
+    [(MKSystemController *)self openURL:lCopy2 completionHandler:handlerCopy];
   }
 }
 
-- (BOOL)openURL:(id)a3
+- (BOOL)openURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_openURLDelegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained openURL:v4 completionHandler:0];
+    [WeakRetained openURL:lCopy completionHandler:0];
   }
 
   else
   {
-    if (-[MKSystemController _shouldUseLaunchServices](self, "_shouldUseLaunchServices") || (v8 = MEMORY[0x1E69DDA98], ![*MEMORY[0x1E69DDA98] canOpenURL:v4]))
+    if (-[MKSystemController _shouldUseLaunchServices](self, "_shouldUseLaunchServices") || (v8 = MEMORY[0x1E69DDA98], ![*MEMORY[0x1E69DDA98] canOpenURL:lCopy]))
     {
-      v9 = [MEMORY[0x1E6963608] defaultWorkspace];
-      v10 = [(MKSystemController *)self _defaultOpenURLOptions];
-      v7 = [v9 openURL:v4 withOptions:v10 error:0];
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+      _defaultOpenURLOptions = [(MKSystemController *)self _defaultOpenURLOptions];
+      v7 = [defaultWorkspace openURL:lCopy withOptions:_defaultOpenURLOptions error:0];
 
       goto LABEL_8;
     }
 
-    [*v8 openURL:v4 withCompletionHandler:&__block_literal_global_75];
+    [*v8 openURL:lCopy withCompletionHandler:&__block_literal_global_75];
   }
 
   v7 = 1;
@@ -590,10 +590,10 @@ LABEL_8:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 connectedScenes];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -605,13 +605,13 @@ LABEL_8:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 session];
-        v11 = [v10 role];
-        if ([v11 isEqualToString:v7])
+        session = [v9 session];
+        role = [session role];
+        if ([role isEqualToString:v7])
         {
           if (![v9 activationState])
           {
@@ -621,9 +621,9 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v12 = [v9 activationState];
+          activationState = [v9 activationState];
 
-          if (v12 == 1)
+          if (activationState == 1)
           {
             goto LABEL_15;
           }
@@ -634,7 +634,7 @@ LABEL_15:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -652,9 +652,9 @@ LABEL_16:
 
 - (BOOL)_shouldUseLaunchServices
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  if (!v3 || (_UIApplicationIsExtension() & 1) != 0 || [(MKSystemController *)self _isInSpotlight])
+  if (!mEMORY[0x1E69DC668] || (_UIApplicationIsExtension() & 1) != 0 || [(MKSystemController *)self _isInSpotlight])
   {
     return 1;
   }
@@ -702,10 +702,10 @@ void __36__MKSystemController__isInSpotlight__block_invoke()
 
 - (BOOL)supports3DImagery
 {
-  v2 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v3 = [v2 mapsFeatureFreedomEnabled];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  mapsFeatureFreedomEnabled = [mEMORY[0x1E69A2398] mapsFeatureFreedomEnabled];
 
-  if (v3)
+  if (mapsFeatureFreedomEnabled)
   {
     v4 = 1;
   }
@@ -732,8 +732,8 @@ uint64_t __39__MKSystemController_supports3DImagery__block_invoke()
 
 - (CGSize)screenSize
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -767,10 +767,10 @@ uint64_t __39__MKSystemController_supports3DImagery__block_invoke()
 
 - (BOOL)isWifiEnabled
 {
-  v2 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  v3 = [v2 isWiFiEnabled];
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  isWiFiEnabled = [mEMORY[0x1E698B6A0] isWiFiEnabled];
 
-  return v3;
+  return isWiFiEnabled;
 }
 
 - (BOOL)_loadSwiftBridgeIfNeeded

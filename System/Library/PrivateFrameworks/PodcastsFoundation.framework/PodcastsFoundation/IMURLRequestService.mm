@@ -1,24 +1,24 @@
 @interface IMURLRequestService
 - (NSURLSessionDelegate)urlSessionDelegate;
-- (void)setUrlSessionDelegate:(id)a3;
+- (void)setUrlSessionDelegate:(id)delegate;
 @end
 
 @implementation IMURLRequestService
 
 - (NSURLSessionDelegate)urlSessionDelegate
 {
-  v2 = [(IMBaseStoreService *)self amsUrlSession];
-  v3 = [v2 session];
-  v4 = [v3 delegate];
+  amsUrlSession = [(IMBaseStoreService *)self amsUrlSession];
+  session = [amsUrlSession session];
+  delegate = [session delegate];
 
-  return v4;
+  return delegate;
 }
 
-- (void)setUrlSessionDelegate:(id)a3
+- (void)setUrlSessionDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(IMBaseStoreService *)self amsUrlSession];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  amsUrlSession = [(IMBaseStoreService *)self amsUrlSession];
+  [amsUrlSession setDelegate:delegateCopy];
 }
 
 @end

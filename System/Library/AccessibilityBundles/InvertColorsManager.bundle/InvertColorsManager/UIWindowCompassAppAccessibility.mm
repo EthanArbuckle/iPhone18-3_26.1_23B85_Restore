@@ -7,7 +7,7 @@
 - (BOOL)_accessibilityInvertColorsIsDarkWindow
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
   NSClassFromString(@"CompassAppDelegate");
   isKindOfClass = objc_opt_isKindOfClass();
 

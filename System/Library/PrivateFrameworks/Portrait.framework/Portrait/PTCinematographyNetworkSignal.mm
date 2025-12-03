@@ -1,26 +1,26 @@
 @interface PTCinematographyNetworkSignal
-+ (Class)subclassForName:(id)a3;
-+ (id)networkSignalWithModelDictionary:(id)a3;
-- (BOOL)checkSignalForStream:(id)a3;
-- (PTCinematographyNetworkSignal)initWithModelDictionary:(id)a3;
++ (Class)subclassForName:(id)name;
++ (id)networkSignalWithModelDictionary:(id)dictionary;
+- (BOOL)checkSignalForStream:(id)stream;
+- (PTCinematographyNetworkSignal)initWithModelDictionary:(id)dictionary;
 @end
 
 @implementation PTCinematographyNetworkSignal
 
-+ (id)networkSignalWithModelDictionary:(id)a3
++ (id)networkSignalWithModelDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithModelDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithModelDictionary:dictionaryCopy];
 
   return v5;
 }
 
-+ (Class)subclassForName:(id)a3
++ (Class)subclassForName:(id)name
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"__rect"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"__uncertainty") & 1) == 0)
+  nameCopy = name;
+  if (([nameCopy isEqualToString:@"__rect"] & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", @"__uncertainty") & 1) == 0)
   {
-    [v3 isEqualToString:@"__label_onehot"];
+    [nameCopy isEqualToString:@"__label_onehot"];
   }
 
   v4 = objc_opt_class();
@@ -28,14 +28,14 @@
   return v4;
 }
 
-- (PTCinematographyNetworkSignal)initWithModelDictionary:(id)a3
+- (PTCinematographyNetworkSignal)initWithModelDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"name"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v10 = [objc_alloc(objc_msgSend(objc_opt_class() subclassForName:{v5)), "initWithModelDictionary:", v4}];
+    v10 = [objc_alloc(objc_msgSend(objc_opt_class() subclassForName:{v5)), "initWithModelDictionary:", dictionaryCopy}];
   }
 
   else
@@ -47,7 +47,7 @@
     if (v7)
     {
       objc_storeStrong(&v7->_name, v5);
-      v9 = [v4 objectForKeyedSubscript:@"count"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"count"];
       v8->_count = [v9 unsignedIntegerValue];
     }
 
@@ -60,14 +60,14 @@
   return v11;
 }
 
-- (BOOL)checkSignalForStream:(id)a3
+- (BOOL)checkSignalForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = [(PTCinematographyNetworkSignal *)self count];
-  v6 = [v4 count];
-  v7 = [v4 index];
+  v6 = [streamCopy count];
+  index = [streamCopy index];
 
-  return v5 <= v6 - v7;
+  return v5 <= v6 - index;
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface _UIHIDPathSynchronizationFilter
-- (double)initWithPosition:(double)a3 timestamp:(double)a4;
-- (double)initWithPosition:(double)a3 timestamp:(double)a4 configuration:(double)a5;
+- (double)initWithPosition:(double)position timestamp:(double)timestamp;
+- (double)initWithPosition:(double)position timestamp:(double)timestamp configuration:(double)configuration;
 - (double)outputPosition;
 - (uint64_t)addInputEvent:(uint64_t)result;
-- (void)computeNextOutputPosition:(uint64_t)a1;
+- (void)computeNextOutputPosition:(uint64_t)position;
 @end
 
 @implementation _UIHIDPathSynchronizationFilter
 
-- (double)initWithPosition:(double)a3 timestamp:(double)a4 configuration:(double)a5
+- (double)initWithPosition:(double)position timestamp:(double)timestamp configuration:(double)configuration
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = _UIHIDPathSynchronizationFilter;
   v13 = objc_msgSendSuper2(&v20, sel_init);
   v14 = v13;
   if (v13)
   {
-    v13[9] = a5;
+    v13[9] = configuration;
     v13[10] = a6;
     v13[11] = a7;
     v13[1] = a2;
-    v13[2] = a3;
-    v13[3] = a4;
+    v13[2] = position;
+    v13[3] = timestamp;
     v13[4] = a2;
-    v13[5] = a3;
-    v13[6] = a4;
-    v15 = [MEMORY[0x1E695DF70] array];
+    v13[5] = position;
+    v13[6] = timestamp;
+    array = [MEMORY[0x1E695DF70] array];
     v16 = *(v14 + 8);
-    *(v14 + 8) = v15;
+    *(v14 + 8) = array;
 
     v14[12] = 0.0;
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("HIDEventSynchronization", &initWithPosition_timestamp_configuration____s_category);
@@ -45,11 +45,11 @@
         *buf = 134219264;
         v22 = a2;
         v23 = 2048;
-        v24 = a3;
+        positionCopy = position;
         v25 = 2048;
-        v26 = a4;
+        timestampCopy = timestamp;
         v27 = 2048;
-        v28 = a5;
+        configurationCopy = configuration;
         v29 = 2048;
         v30 = a6;
         v31 = 2048;
@@ -62,14 +62,14 @@
   return v14;
 }
 
-- (double)initWithPosition:(double)a3 timestamp:(double)a4
+- (double)initWithPosition:(double)position timestamp:(double)timestamp
 {
   if (result)
   {
     v7 = result;
     v10 = _UIHIDPathSynchronizationFilterConfigurationDefault();
 
-    return [(_UIHIDPathSynchronizationFilter *)v7 initWithPosition:a2 timestamp:a3 configuration:a4, v10, v8, v9];
+    return [(_UIHIDPathSynchronizationFilter *)v7 initWithPosition:a2 timestamp:position configuration:timestamp, v10, v8, v9];
   }
 
   return result;
@@ -108,12 +108,12 @@
   return result;
 }
 
-- (void)computeNextOutputPosition:(uint64_t)a1
+- (void)computeNextOutputPosition:(uint64_t)position
 {
   v60 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (position)
   {
-    v3 = *(a1 + 96);
+    v3 = *(position + 96);
     if (v3 == 2)
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("HIDEventSynchronization", &qword_1ED499D88);
@@ -122,7 +122,7 @@
         v27 = *(CategoryCachedImpl + 8);
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v28 = *(a1 + 96);
+          v28 = *(position + 96);
           *buf = 134217984;
           v47 = v28;
           _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_ERROR, "[FILTER] computeNextOutputPosition: unexpected state '%ld'.", buf, 0xCu);
@@ -150,29 +150,29 @@
           }
         }
 
-        *(a1 + 112) = *(a1 + 8);
-        *(a1 + 104) = a2;
-        *(a1 + 56) = *(a1 + 24);
+        *(position + 112) = *(position + 8);
+        *(position + 104) = a2;
+        *(position + 56) = *(position + 24);
         v6 = 1;
         goto LABEL_32;
       }
 
-      v7 = *(a1 + 112);
-      v8 = *(a1 + 120);
-      if ([*(a1 + 64) count])
+      v7 = *(position + 112);
+      v8 = *(position + 120);
+      if ([*(position + 64) count])
       {
         v45 = v7;
         *&v9 = 134218752;
         v44 = v9;
         while (1)
         {
-          [*(a1 + 64) firstObject];
-          v10 = *(a1 + 56);
+          [*(position + 64) firstObject];
+          v10 = *(position + 56);
           TimeStamp = IOHIDEventGetTimeStamp();
           v12 = _UIMediaTimeForMachTime(TimeStamp) - v10;
-          v13 = (*(a1 + 56) - *(a1 + 24)) / (*(a1 + 48) - *(a1 + 24));
-          v14 = *(a1 + 104);
-          v15 = *(a1 + 88);
+          v13 = (*(position + 56) - *(position + 24)) / (*(position + 48) - *(position + 24));
+          v14 = *(position + 104);
+          v15 = *(position + 88);
           v16 = v13 < v15;
           v17 = (v13 - v15) / (1.0 - v15) * ((v13 - v15) / (1.0 - v15) * ((v13 - v15) / (1.0 - v15) * ((v13 - v15) / (1.0 - v15))));
           v18 = (v13 / v15 + -1.0) * ((v13 / v15 + -1.0) * ((v13 / v15 + -1.0) * (v13 / v15 + -1.0)));
@@ -181,14 +181,14 @@
             v18 = v17;
           }
 
-          v19 = *(a1 + 80) * (1.0 - v18) + *(a1 + 72) * (1.0 - (1.0 - v18));
+          v19 = *(position + 80) * (1.0 - v18) + *(position + 72) * (1.0 - (1.0 - v18));
           v20 = __UILogGetCategoryCachedImpl("HIDEventSynchronization", &_MergedGlobals_9_13);
           if (*v20)
           {
             v22 = *(v20 + 8);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v23 = *(a1 + 64);
+              v23 = *(position + 64);
               v24 = v22;
               *&v25 = COERCE_DOUBLE([v23 count]);
               *buf = v44;
@@ -209,15 +209,15 @@
             break;
           }
 
-          [*(a1 + 64) removeObjectAtIndex:0];
-          if (![*(a1 + 64) count])
+          [*(position + 64) removeObjectAtIndex:0];
+          if (![*(position + 64) count])
           {
             goto LABEL_22;
           }
         }
 
-        v30 = *(a1 + 112);
-        v29 = *(a1 + 120);
+        v30 = *(position + 112);
+        v29 = *(position + 120);
         IOHIDEventGetFloatValue();
         v32 = v31;
         IOHIDEventGetFloatValue();
@@ -249,21 +249,21 @@
           }
         }
 
-        *(a1 + 56) = v21 + *(a1 + 56);
+        *(position + 56) = v21 + *(position + 56);
 LABEL_22:
         v7 = v45;
       }
 
-      if (![*(a1 + 64) count])
+      if (![*(position + 64) count])
       {
-        v7 = *(a1 + 32);
-        v8 = *(a1 + 40);
+        v7 = *(position + 32);
+        v8 = *(position + 40);
       }
 
-      *(a1 + 112) = v7;
-      *(a1 + 120) = v8;
-      *(a1 + 104) = a2;
-      if (![*(a1 + 64) count] || ((v37 = vsubq_f64(*(a1 + 32), *(a1 + 112)), v37.f64[0] = vaddvq_f64(vmulq_f64(v37, v37)), v38 = fabs(v37.f64[0]), v37.f64[0] > 1.0) ? (v39 = v38 > 2.22044605e-16) : (v39 = 0), !v39))
+      *(position + 112) = v7;
+      *(position + 120) = v8;
+      *(position + 104) = a2;
+      if (![*(position + 64) count] || ((v37 = vsubq_f64(*(position + 32), *(position + 112)), v37.f64[0] = vaddvq_f64(vmulq_f64(v37, v37)), v38 = fabs(v37.f64[0]), v37.f64[0] > 1.0) ? (v39 = v38 > 2.22044605e-16) : (v39 = 0), !v39))
       {
         v40 = __UILogGetCategoryCachedImpl("HIDEventSynchronization", &qword_1ED499D80);
         if (*v40)
@@ -278,7 +278,7 @@ LABEL_22:
 
         v6 = 2;
 LABEL_32:
-        *(a1 + 96) = v6;
+        *(position + 96) = v6;
       }
     }
   }
@@ -286,9 +286,9 @@ LABEL_32:
 
 - (double)outputPosition
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 112);
+    return *(self + 112);
   }
 
   else

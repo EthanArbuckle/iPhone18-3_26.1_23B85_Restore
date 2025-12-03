@@ -1,17 +1,17 @@
 @interface PHShareParticipantChangeRequest
-+ (id)creationRequestForShareParticipantWithEmailAddress:(id)a3 permission:(signed __int16)a4;
-+ (id)creationRequestForShareParticipantWithPhoneNumber:(id)a3 permission:(signed __int16)a4;
-+ (void)deleteShareParticipants:(id)a3;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
++ (id)creationRequestForShareParticipantWithEmailAddress:(id)address permission:(signed __int16)permission;
++ (id)creationRequestForShareParticipantWithPhoneNumber:(id)number permission:(signed __int16)permission;
++ (void)deleteShareParticipants:(id)participants;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
 - (BOOL)isCurrentUser;
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4;
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error;
 - (NSString)emailAddress;
 - (NSString)phoneNumber;
 - (PHObjectPlaceholder)placeholderForCreatedShareParticipant;
-- (PHShareParticipantChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHShareParticipantChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHShareParticipantChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHShareParticipantChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (id)_mutablePersonObjectIDsAndUUIDs;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (id)participantID;
 - (signed)acceptanceStatus;
@@ -20,35 +20,35 @@
 - (signed)permission;
 - (unsigned)role;
 - (void)_preparePersonIDIfNeeded;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setAcceptanceStatus:(signed __int16)a3;
-- (void)setEmailAddress:(id)a3;
-- (void)setExitState:(signed __int16)a3;
-- (void)setIsCurrentUser:(BOOL)a3;
-- (void)setParticipantID:(id)a3;
-- (void)setParticipantKind:(signed __int16)a3;
-- (void)setPermission:(signed __int16)a3;
-- (void)setPerson:(id)a3;
-- (void)setPhoneNumber:(id)a3;
-- (void)setRole:(unsigned __int16)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setAcceptanceStatus:(signed __int16)status;
+- (void)setEmailAddress:(id)address;
+- (void)setExitState:(signed __int16)state;
+- (void)setIsCurrentUser:(BOOL)user;
+- (void)setParticipantID:(id)d;
+- (void)setParticipantKind:(signed __int16)kind;
+- (void)setPermission:(signed __int16)permission;
+- (void)setPerson:(id)person;
+- (void)setPhoneNumber:(id)number;
+- (void)setRole:(unsigned __int16)role;
 @end
 
 @implementation PHShareParticipantChangeRequest
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  helper = [(PHChangeRequest *)self helper];
   v21 = 0;
-  v9 = [v8 applyMutationsToManagedObject:v7 error:&v21];
+  v9 = [helper applyMutationsToManagedObject:objectCopy error:&v21];
   v10 = v21;
 
-  v11 = [(PHShareParticipantChangeRequest *)self personHelper];
-  v12 = v11;
+  personHelper = [(PHShareParticipantChangeRequest *)self personHelper];
+  v12 = personHelper;
   if (v9)
   {
-    v13 = [v11 mutableObjectIDsAndUUIDs];
-    v14 = [v13 count];
+    mutableObjectIDsAndUUIDs = [personHelper mutableObjectIDsAndUUIDs];
+    v14 = [mutableObjectIDsAndUUIDs count];
 
     if (!v14)
     {
@@ -57,16 +57,16 @@
     }
 
     [v12 setAllowsInsert:1];
-    v15 = [MEMORY[0x1E69BE608] entityName];
-    [v12 setDestinationEntityName:v15];
+    entityName = [MEMORY[0x1E69BE608] entityName];
+    [v12 setDestinationEntityName:entityName];
 
     [v12 setIsDestinationObjectValid:&__block_literal_global_32333];
     v20 = v10;
-    v16 = [v12 applyMutationsToManagedObjectToOneRelationship:v7 error:&v20];
+    v16 = [v12 applyMutationsToManagedObjectToOneRelationship:objectCopy error:&v20];
     v17 = v20;
 
     v10 = v17;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -75,7 +75,7 @@
   else
   {
     v16 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -85,7 +85,7 @@
   {
     v18 = v10;
     v16 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
 LABEL_9:
@@ -93,33 +93,33 @@ LABEL_9:
   return v16;
 }
 
-- (void)setPerson:(id)a3
+- (void)setPerson:(id)person
 {
-  v4 = a3;
-  if (v4)
+  personCopy = person;
+  if (personCopy)
   {
-    v10 = v4;
+    v10 = personCopy;
     [(PHChangeRequest *)self didMutate];
     v5 = PLObjectIDOrUUIDFromPHObject(v10);
-    v4 = v10;
+    personCopy = v10;
     if (v5)
     {
-      v6 = [(PHShareParticipantChangeRequest *)self _mutablePersonObjectIDsAndUUIDs];
-      v7 = [v6 count];
+      _mutablePersonObjectIDsAndUUIDs = [(PHShareParticipantChangeRequest *)self _mutablePersonObjectIDsAndUUIDs];
+      v7 = [_mutablePersonObjectIDsAndUUIDs count];
 
-      v8 = [(PHShareParticipantChangeRequest *)self _mutablePersonObjectIDsAndUUIDs];
-      v9 = v8;
+      _mutablePersonObjectIDsAndUUIDs2 = [(PHShareParticipantChangeRequest *)self _mutablePersonObjectIDsAndUUIDs];
+      v9 = _mutablePersonObjectIDsAndUUIDs2;
       if (v7)
       {
-        [v8 replaceObjectAtIndex:0 withObject:v5];
+        [_mutablePersonObjectIDsAndUUIDs2 replaceObjectAtIndex:0 withObject:v5];
       }
 
       else
       {
-        [v8 addObject:v5];
+        [_mutablePersonObjectIDsAndUUIDs2 addObject:v5];
       }
 
-      v4 = v10;
+      personCopy = v10;
     }
   }
 }
@@ -127,52 +127,52 @@ LABEL_9:
 - (id)_mutablePersonObjectIDsAndUUIDs
 {
   [(PHShareParticipantChangeRequest *)self _preparePersonIDIfNeeded];
-  v3 = [(PHShareParticipantChangeRequest *)self personHelper];
-  v4 = [v3 mutableObjectIDsAndUUIDs];
+  personHelper = [(PHShareParticipantChangeRequest *)self personHelper];
+  mutableObjectIDsAndUUIDs = [personHelper mutableObjectIDsAndUUIDs];
 
-  return v4;
+  return mutableObjectIDsAndUUIDs;
 }
 
 - (void)_preparePersonIDIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_personHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_personHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
     [(PHRelationshipChangeRequestHelper *)self->_personHelper setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
   }
 
-  v4 = [(PHRelationshipChangeRequestHelper *)self->_personHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_personHelper mutableObjectIDsAndUUIDs];
 
-  if (!v4)
+  if (!mutableObjectIDsAndUUIDs)
   {
     personHelper = self->_personHelper;
-    v7 = [(PHRelationshipChangeRequestHelper *)personHelper originalObjectIDs];
-    v6 = [v7 mutableCopy];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)personHelper originalObjectIDs];
+    v6 = [originalObjectIDs2 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)personHelper setMutableObjectIDsAndUUIDs:v6];
   }
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v6 = MEMORY[0x1E69BE7D8];
-  v7 = [a3 managedObjectContext];
-  v8 = [v6 insertInManagedObjectContext:v7];
+  managedObjectContext = [library managedObjectContext];
+  v8 = [v6 insertInManagedObjectContext:managedObjectContext];
 
-  v9 = [(PHShareParticipantChangeRequest *)self emailAddress];
-  [v8 setEmailAddress:v9];
+  emailAddress = [(PHShareParticipantChangeRequest *)self emailAddress];
+  [v8 setEmailAddress:emailAddress];
 
-  v10 = [(PHShareParticipantChangeRequest *)self phoneNumber];
-  [v8 setPhoneNumber:v10];
+  phoneNumber = [(PHShareParticipantChangeRequest *)self phoneNumber];
+  [v8 setPhoneNumber:phoneNumber];
 
-  v11 = [(PHChangeRequest *)self uuid];
-  [v8 setUuid:v11];
+  uuid = [(PHChangeRequest *)self uuid];
+  [v8 setUuid:uuid];
 
-  v12 = [(PHShareParticipantChangeRequest *)self role];
-  if ((v12 - 1) < 3)
+  role = [(PHShareParticipantChangeRequest *)self role];
+  if ((role - 1) < 3)
   {
-    v13 = (v12 - 1) + 1;
+    v13 = (role - 1) + 1;
   }
 
   else
@@ -181,324 +181,324 @@ LABEL_9:
   }
 
   [v8 setRole:v13];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
   }
 
   return v8;
 }
 
-- (void)setParticipantKind:(signed __int16)a3
+- (void)setParticipantKind:(signed __int16)kind
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  kindCopy = kind;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"participantKind"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:kindCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"participantKind"];
 }
 
 - (signed)participantKind
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"participantKind"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"participantKind"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setExitState:(signed __int16)a3
+- (void)setExitState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"exitState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"exitState"];
 }
 
 - (signed)exitState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"exitState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"exitState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setIsCurrentUser:(BOOL)a3
+- (void)setIsCurrentUser:(BOOL)user
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  userCopy = user;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"isCurrentUser"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:userCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"isCurrentUser"];
 }
 
 - (BOOL)isCurrentUser
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"isCurrentUser"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"isCurrentUser"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setPermission:(signed __int16)a3
+- (void)setPermission:(signed __int16)permission
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  permissionCopy = permission;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"permission"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:permissionCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"permission"];
 }
 
 - (signed)permission
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"permission"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"permission"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setAcceptanceStatus:(signed __int16)a3
+- (void)setAcceptanceStatus:(signed __int16)status
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  statusCopy = status;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"acceptanceStatus"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:statusCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"acceptanceStatus"];
 }
 
 - (signed)acceptanceStatus
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"acceptanceStatus"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"acceptanceStatus"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setRole:(unsigned __int16)a3
+- (void)setRole:(unsigned __int16)role
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  roleCopy = role;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"role"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:roleCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"role"];
 }
 
 - (unsigned)role
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"role"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"role"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setParticipantID:(id)a3
+- (void)setParticipantID:(id)d
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dCopy = d;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"participantID"];
+    [mutations setObject:dCopy forKeyedSubscript:@"participantID"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"participantID"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"participantID"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"participantID"];
+    [mutations removeObjectForKey:@"participantID"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"participantID"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"participantID"];
   }
 }
 
 - (id)participantID
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"participantID"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"participantID"];
 
   return v5;
 }
 
-- (void)setPhoneNumber:(id)a3
+- (void)setPhoneNumber:(id)number
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  numberCopy = number;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (numberCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"phoneNumber"];
+    [mutations setObject:numberCopy forKeyedSubscript:@"phoneNumber"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"phoneNumber"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"phoneNumber"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"phoneNumber"];
+    [mutations removeObjectForKey:@"phoneNumber"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"phoneNumber"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"phoneNumber"];
   }
 }
 
 - (NSString)phoneNumber
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"phoneNumber"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"phoneNumber"];
 
   return v5;
 }
 
-- (void)setEmailAddress:(id)a3
+- (void)setEmailAddress:(id)address
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  addressCopy = address;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (addressCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"emailAddress"];
+    [mutations setObject:addressCopy forKeyedSubscript:@"emailAddress"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"emailAddress"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"emailAddress"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"emailAddress"];
+    [mutations removeObjectForKey:@"emailAddress"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"emailAddress"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"emailAddress"];
   }
 }
 
 - (NSString)emailAddress
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"emailAddress"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"emailAddress"];
 
   return v5;
 }
 
 - (PHObjectPlaceholder)placeholderForCreatedShareParticipant
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 type] && objc_msgSend(v5, "type") != 1)
+  checkCopy = check;
+  if ([checkCopy type] && objc_msgSend(checkCopy, "type") != 1)
   {
-    if (a4)
+    if (error)
     {
       v6 = MEMORY[0x1E696ABC0];
       v9 = *MEMORY[0x1E696A578];
       v10[0] = @"Change must be performed within the sharedPhotoLibrary or sharedMomentSharePhotoLibrary";
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-      *a4 = [v6 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v7];
+      *error = [v6 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v7];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a4) = 1;
+    LOBYTE(error) = 1;
   }
 
-  return a4;
+  return error;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v5 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:v5];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 
-  [(PHRelationshipChangeRequestHelper *)self->_personHelper encodeToXPCDict:v5];
+  [(PHRelationshipChangeRequestHelper *)self->_personHelper encodeToXPCDict:dictCopy];
 }
 
-- (PHShareParticipantChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHShareParticipantChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v17.receiver = self;
   v17.super_class = PHShareParticipantChangeRequest;
   v11 = [(PHChangeRequest *)&v17 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
-    v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"person" xpcDict:v8 changeRequestHelper:v11->super._helper];
+    v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"person" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
     personHelper = v11->_personHelper;
     v11->_personHelper = v14;
   }
@@ -506,16 +506,16 @@ LABEL_9:
   return v11;
 }
 
-- (PHShareParticipantChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHShareParticipantChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = PHShareParticipantChangeRequest;
   v8 = [(PHChangeRequest *)&v14 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -546,34 +546,34 @@ LABEL_9:
   return v2;
 }
 
-+ (void)deleteShareParticipants:(id)a3
++ (void)deleteShareParticipants:(id)participants
 {
-  v5 = a3;
-  v4 = [(PHObjectDeleteRequest *)PHShareParticipantDeleteRequest deleteRequestsForObjects:v5 ofType:objc_opt_class() forSelector:a2];
+  participantsCopy = participants;
+  v4 = [(PHObjectDeleteRequest *)PHShareParticipantDeleteRequest deleteRequestsForObjects:participantsCopy ofType:objc_opt_class() forSelector:a2];
 }
 
-+ (id)creationRequestForShareParticipantWithPhoneNumber:(id)a3 permission:(signed __int16)a4
++ (id)creationRequestForShareParticipantWithPhoneNumber:(id)number permission:(signed __int16)permission
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[PHShareParticipantChangeRequest alloc] initForNewObject];
-  [v6 setPhoneNumber:v5];
+  permissionCopy = permission;
+  numberCopy = number;
+  initForNewObject = [[PHShareParticipantChangeRequest alloc] initForNewObject];
+  [initForNewObject setPhoneNumber:numberCopy];
 
-  [v6 setPermission:v4];
+  [initForNewObject setPermission:permissionCopy];
 
-  return v6;
+  return initForNewObject;
 }
 
-+ (id)creationRequestForShareParticipantWithEmailAddress:(id)a3 permission:(signed __int16)a4
++ (id)creationRequestForShareParticipantWithEmailAddress:(id)address permission:(signed __int16)permission
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[PHShareParticipantChangeRequest alloc] initForNewObject];
-  [v6 setEmailAddress:v5];
+  permissionCopy = permission;
+  addressCopy = address;
+  initForNewObject = [[PHShareParticipantChangeRequest alloc] initForNewObject];
+  [initForNewObject setEmailAddress:addressCopy];
 
-  [v6 setPermission:v4];
+  [initForNewObject setPermission:permissionCopy];
 
-  return v6;
+  return initForNewObject;
 }
 
 @end

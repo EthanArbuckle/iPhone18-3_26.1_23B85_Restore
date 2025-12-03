@@ -8,12 +8,12 @@
 - (id)textFindingResultsMatchingExpression:()TextFinding ignoreCase:wholeWords:startsWith:
 {
   v9 = a3;
-  v10 = [a1 uiModel];
-  v11 = [v10 attributedStringWithSurroundingAttributes:MEMORY[0x277CBEC10] formatter:0];
+  uiModel = [self uiModel];
+  v11 = [uiModel attributedStringWithSurroundingAttributes:MEMORY[0x277CBEC10] formatter:0];
 
-  v12 = [v11 string];
-  v13 = [v11 ic_range];
-  v15 = [v9 matchesInString:v12 options:0 range:{v13, v14}];
+  string = [v11 string];
+  ic_range = [v11 ic_range];
+  v15 = [v9 matchesInString:string options:0 range:{ic_range, v14}];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -22,7 +22,7 @@
   v22 = a5;
   v23 = a6;
   v20 = v11;
-  v21 = a1;
+  selfCopy = self;
   v16 = v11;
   v17 = [v15 ic_compactMap:v19];
 
@@ -56,7 +56,7 @@
   }
 
   v20 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v17 options:v19 error:0];
-  v21 = [a1 textFindingResultsMatchingExpression:v20 ignoreCase:a5 wholeWords:a6 startsWith:a7];
+  v21 = [self textFindingResultsMatchingExpression:v20 ignoreCase:a5 wholeWords:a6 startsWith:a7];
   if (v16)
   {
     v16[2](v16, v21);

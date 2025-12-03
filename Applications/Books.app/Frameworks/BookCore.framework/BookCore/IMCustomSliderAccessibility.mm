@@ -1,8 +1,8 @@
 @interface IMCustomSliderAccessibility
 - (BOOL)_imaxSliderRepresentsBookPosition;
-- (double)_accessibilityIncreaseAmount:(BOOL)a3;
+- (double)_accessibilityIncreaseAmount:(BOOL)amount;
 - (id)_imaxDelegate;
-- (id)_imaxDurationStringForDuration:(double)a3;
+- (id)_imaxDurationStringForDuration:(double)duration;
 - (id)_imaxTarget;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -28,59 +28,59 @@
 
 - (id)_imaxDelegate
 {
-  v2 = [(IMCustomSliderAccessibility *)self _imaxTarget];
-  v3 = [v2 delegate];
+  _imaxTarget = [(IMCustomSliderAccessibility *)self _imaxTarget];
+  delegate = [_imaxTarget delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (id)accessibilityLabel
 {
   v6.receiver = self;
   v6.super_class = IMCustomSliderAccessibility;
-  v3 = [(IMCustomSliderAccessibility *)&v6 accessibilityLabel];
+  accessibilityLabel = [(IMCustomSliderAccessibility *)&v6 accessibilityLabel];
   if ([(IMCustomSliderAccessibility *)self _imaxSliderRepresentsBookPosition])
   {
-    v4 = [(IMCustomSliderAccessibility *)self bookPositionAccessibilityLabel];
+    bookPositionAccessibilityLabel = [(IMCustomSliderAccessibility *)self bookPositionAccessibilityLabel];
 
-    v3 = v4;
+    accessibilityLabel = bookPositionAccessibilityLabel;
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v6.receiver = self;
   v6.super_class = IMCustomSliderAccessibility;
-  v3 = [(IMCustomSliderAccessibility *)&v6 accessibilityValue];
+  accessibilityValue = [(IMCustomSliderAccessibility *)&v6 accessibilityValue];
   if ([(IMCustomSliderAccessibility *)self _imaxSliderRepresentsBookPosition])
   {
-    v4 = [(IMCustomSliderAccessibility *)self bookPositionAccessibilityValue];
+    bookPositionAccessibilityValue = [(IMCustomSliderAccessibility *)self bookPositionAccessibilityValue];
 
-    v3 = v4;
+    accessibilityValue = bookPositionAccessibilityValue;
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
-- (double)_accessibilityIncreaseAmount:(BOOL)a3
+- (double)_accessibilityIncreaseAmount:(BOOL)amount
 {
-  v3 = a3;
-  v5 = [(IMCustomSliderAccessibility *)self _imaxTarget];
-  [v5 minimumValue];
+  amountCopy = amount;
+  _imaxTarget = [(IMCustomSliderAccessibility *)self _imaxTarget];
+  [_imaxTarget minimumValue];
   v7 = v6;
 
-  v8 = [(IMCustomSliderAccessibility *)self _imaxTarget];
-  [v8 maximumValue];
+  _imaxTarget2 = [(IMCustomSliderAccessibility *)self _imaxTarget];
+  [_imaxTarget2 maximumValue];
   v10 = v9;
 
-  v11 = [(IMCustomSliderAccessibility *)self _imaxTarget];
-  [v11 value];
+  _imaxTarget3 = [(IMCustomSliderAccessibility *)self _imaxTarget];
+  [_imaxTarget3 value];
   v13 = v12;
 
   v14 = (v10 - v7) / 20.0;
-  if (!v3)
+  if (!amountCopy)
   {
     v14 = -v14;
   }
@@ -90,10 +90,10 @@
 
 - (void)accessibilityIncrement
 {
-  v3 = [(IMCustomSliderAccessibility *)self _imaxTarget];
-  v4 = [v3 isUserInteractionEnabled];
+  _imaxTarget = [(IMCustomSliderAccessibility *)self _imaxTarget];
+  isUserInteractionEnabled = [_imaxTarget isUserInteractionEnabled];
 
-  if (v4)
+  if (isUserInteractionEnabled)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -109,10 +109,10 @@
 
 - (void)accessibilityDecrement
 {
-  v3 = [(IMCustomSliderAccessibility *)self _imaxTarget];
-  v4 = [v3 isUserInteractionEnabled];
+  _imaxTarget = [(IMCustomSliderAccessibility *)self _imaxTarget];
+  isUserInteractionEnabled = [_imaxTarget isUserInteractionEnabled];
 
-  if (v4)
+  if (isUserInteractionEnabled)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -130,20 +130,20 @@
 {
   v4.receiver = self;
   v4.super_class = IMCustomSliderAccessibility;
-  v2 = [(IMCustomSliderAccessibility *)&v4 accessibilityValue];
+  accessibilityValue = [(IMCustomSliderAccessibility *)&v4 accessibilityValue];
 
-  return v2;
+  return accessibilityValue;
 }
 
-- (id)_imaxDurationStringForDuration:(double)a3
+- (id)_imaxDurationStringForDuration:(double)duration
 {
   v5 = objc_opt_new();
   [v5 setZeroFormattingBehavior:1];
   [v5 setUnitsStyle:4];
   [v5 setAllowedUnits:224];
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&duration & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v6 = [v5 stringFromTimeInterval:a3];
+    v6 = [v5 stringFromTimeInterval:duration];
   }
 
   else
@@ -156,11 +156,11 @@
 
 - (BOOL)_imaxSliderRepresentsBookPosition
 {
-  v3 = [(IMCustomSliderAccessibility *)self _imaxDelegate];
+  _imaxDelegate = [(IMCustomSliderAccessibility *)self _imaxDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(IMCustomSliderAccessibility *)self _imaxTarget];
-    v5 = [v3 sliderIsProgressSlider:v4];
+    _imaxTarget = [(IMCustomSliderAccessibility *)self _imaxTarget];
+    v5 = [_imaxDelegate sliderIsProgressSlider:_imaxTarget];
   }
 
   else

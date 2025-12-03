@@ -1,22 +1,22 @@
 @interface CSListItemDiscoveryProvider
 - (CSListItemDiscoveryProvider)init;
 - (CSListItemSection)section;
-- (id)_customizeFocusDiscoveryViewWithDNDSemanticType:(int64_t)a3;
-- (id)_discoveryTypeForSuggestion:(id)a3;
-- (id)_explorePostersDiscoveryItemViewControllerForPlatter:(id)a3 firstDidAppearCompletion:(id)a4;
+- (id)_customizeFocusDiscoveryViewWithDNDSemanticType:(int64_t)type;
+- (id)_discoveryTypeForSuggestion:(id)suggestion;
+- (id)_explorePostersDiscoveryItemViewControllerForPlatter:(id)platter firstDidAppearCompletion:(id)completion;
 - (id)_explorePostersDiscoveryView;
 - (id)_sleepMigrationDiscoveryView;
-- (void)_handleDismissSuggestion:(id)a3 type:(id)a4;
-- (void)_handleShowSuggestion:(id)a3 type:(id)a4 isPrototyping:(BOOL)a5;
-- (void)_presentPlatterDiscoveryView:(id)a3 discoveryItemViewController:(id)a4 withSuggestion:(id)a5 type:(id)a6;
+- (void)_handleDismissSuggestion:(id)suggestion type:(id)type;
+- (void)_handleShowSuggestion:(id)suggestion type:(id)type isPrototyping:(BOOL)prototyping;
+- (void)_presentPlatterDiscoveryView:(id)view discoveryItemViewController:(id)controller withSuggestion:(id)suggestion type:(id)type;
 - (void)_prototypeTest_addItem;
 - (void)_prototypeTest_registerRecipe;
 - (void)_prototypeTest_removeItem;
-- (void)_removeDiscoveryOfType:(id)a3;
-- (void)didReceiveUserEducationSuggestionEvent:(id)a3;
-- (void)handleRemovedItems:(id)a3;
-- (void)onboardingPlatter:(id)a3 requestsModalPresentationOfViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)_removeDiscoveryOfType:(id)type;
+- (void)didReceiveUserEducationSuggestionEvent:(id)event;
+- (void)handleRemovedItems:(id)items;
+- (void)onboardingPlatter:(id)platter requestsModalPresentationOfViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 - (void)willPresentPosterSwitcher;
 @end
 
@@ -33,8 +33,8 @@
     discoveryTypeToDiscoverySuggestionAndListItems = v2->_discoveryTypeToDiscoverySuggestionAndListItems;
     v2->_discoveryTypeToDiscoverySuggestionAndListItems = v3;
 
-    v5 = [MEMORY[0x277CEB920] sharedInstance];
-    [v5 registerObserver:v2];
+    mEMORY[0x277CEB920] = [MEMORY[0x277CEB920] sharedInstance];
+    [mEMORY[0x277CEB920] registerObserver:v2];
 
     [(CSListItemDiscoveryProvider *)v2 _prototypeTest_registerRecipe];
     v6 = [MEMORY[0x277D05AB0] serviceForClientIdentifier:@"com.apple.springboard.CoverSheetDiscoveryProvider"];
@@ -60,10 +60,10 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 discoverySuggestion];
-    v6 = [MEMORY[0x277CEB920] sharedInstance];
-    v7 = [objc_alloc(MEMORY[0x277CEB948]) initWithUserEducationSuggestion:v5 feedbackType:9];
-    [v6 logUserEducationSuggestionFeedback:v7];
+    discoverySuggestion = [v3 discoverySuggestion];
+    mEMORY[0x277CEB920] = [MEMORY[0x277CEB920] sharedInstance];
+    v7 = [objc_alloc(MEMORY[0x277CEB948]) initWithUserEducationSuggestion:discoverySuggestion feedbackType:9];
+    [mEMORY[0x277CEB920] logUserEducationSuggestionFeedback:v7];
 
     v8 = dispatch_time(0, 250000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -75,15 +75,15 @@
   }
 }
 
-- (void)handleRemovedItems:(id)a3
+- (void)handleRemovedItems:(id)items
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -95,45 +95,45 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) identifier];
-        v10 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems objectForKey:v9];
-        v11 = [v10 discoverySuggestion];
+        identifier = [*(*(&v14 + 1) + 8 * v8) identifier];
+        v10 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems objectForKey:identifier];
+        discoverySuggestion = [v10 discoverySuggestion];
 
-        if (v11)
+        if (discoverySuggestion)
         {
-          v12 = [MEMORY[0x277CEB920] sharedInstance];
-          v13 = [objc_alloc(MEMORY[0x277CEB948]) initWithUserEducationSuggestion:v11 feedbackType:3];
-          [v12 logUserEducationSuggestionFeedback:v13];
+          mEMORY[0x277CEB920] = [MEMORY[0x277CEB920] sharedInstance];
+          v13 = [objc_alloc(MEMORY[0x277CEB948]) initWithUserEducationSuggestion:discoverySuggestion feedbackType:3];
+          [mEMORY[0x277CEB920] logUserEducationSuggestionFeedback:v13];
         }
 
-        [(CSListItemDiscoveryProvider *)self _removeDiscoveryOfType:v9];
+        [(CSListItemDiscoveryProvider *)self _removeDiscoveryOfType:identifier];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)didReceiveUserEducationSuggestionEvent:(id)a3
+- (void)didReceiveUserEducationSuggestionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__CSListItemDiscoveryProvider_didReceiveUserEducationSuggestionEvent___block_invoke;
   v6[3] = &unk_27838C438;
   objc_copyWeak(&v9, &location);
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = eventCopy;
+  selfCopy = self;
+  v5 = eventCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 
   objc_destroyWeak(&v9);
@@ -163,60 +163,60 @@ void __70__CSListItemDiscoveryProvider_didReceiveUserEducationSuggestionEvent___
   }
 }
 
-- (void)_handleShowSuggestion:(id)a3 type:(id)a4 isPrototyping:(BOOL)a5
+- (void)_handleShowSuggestion:(id)suggestion type:(id)type isPrototyping:(BOOL)prototyping
 {
-  v5 = a5;
+  prototypingCopy = prototyping;
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems objectForKey:v9];
+  suggestionCopy = suggestion;
+  typeCopy = type;
+  v10 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems objectForKey:typeCopy];
 
   if (!v10)
   {
     v14 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems count];
     if ([(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems count]== 1)
     {
-      v15 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems allKeys];
-      v12 = [v15 firstObject];
+      allKeys = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems allKeys];
+      firstObject = [allKeys firstObject];
     }
 
     else
     {
-      v12 = 0;
+      firstObject = 0;
     }
 
-    if ([v12 isEqualToString:@"CSListItemDiscoveryTypeSleepMigration"])
+    if ([firstObject isEqualToString:@"CSListItemDiscoveryTypeSleepMigration"])
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = [v12 isEqualToString:@"CSListItemDiscoveryTypeCustomizeFocus"];
+      v16 = [firstObject isEqualToString:@"CSListItemDiscoveryTypeCustomizeFocus"];
     }
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __72__CSListItemDiscoveryProvider__handleShowSuggestion_type_isPrototyping___block_invoke;
     v33[3] = &unk_27838B770;
-    v17 = v8;
+    v17 = suggestionCopy;
     v34 = v17;
     v18 = MEMORY[0x223D698D0](v33);
-    v19 = (v14 == 0) | v16 | v5;
-    if ([v9 isEqualToString:@"CSListItemDiscoveryTypeSleepMigration"] && (v19 & 1) != 0)
+    v19 = (v14 == 0) | v16 | prototypingCopy;
+    if ([typeCopy isEqualToString:@"CSListItemDiscoveryTypeSleepMigration"] && (v19 & 1) != 0)
     {
-      v20 = [(CSListItemDiscoveryProvider *)self _sleepMigrationDiscoveryView];
+      _sleepMigrationDiscoveryView = [(CSListItemDiscoveryProvider *)self _sleepMigrationDiscoveryView];
     }
 
     else
     {
-      if (([v9 isEqualToString:@"CSListItemDiscoveryTypeCustomizeFocus"] & v19) != 1)
+      if (([typeCopy isEqualToString:@"CSListItemDiscoveryTypeCustomizeFocus"] & v19) != 1)
       {
-        v25 = [v9 isEqualToString:@"CSListItemDiscoveryTypeExplorePosters"];
+        v25 = [typeCopy isEqualToString:@"CSListItemDiscoveryTypeExplorePosters"];
         v13 = 0;
         if (v14)
         {
-          v26 = v5;
+          v26 = prototypingCopy;
         }
 
         else
@@ -228,9 +228,9 @@ void __70__CSListItemDiscoveryProvider_didReceiveUserEducationSuggestionEvent___
         {
           if (v26)
           {
-            v21 = [(CSListItemDiscoveryProvider *)self _explorePostersDiscoveryView];
-            v13 = [(CSListItemDiscoveryProvider *)self _explorePostersDiscoveryItemViewControllerForPlatter:v21 firstDidAppearCompletion:v18];
-            if (v21)
+            _explorePostersDiscoveryView = [(CSListItemDiscoveryProvider *)self _explorePostersDiscoveryView];
+            v13 = [(CSListItemDiscoveryProvider *)self _explorePostersDiscoveryItemViewControllerForPlatter:_explorePostersDiscoveryView firstDidAppearCompletion:v18];
+            if (_explorePostersDiscoveryView)
             {
               goto LABEL_17;
             }
@@ -244,45 +244,45 @@ void __70__CSListItemDiscoveryProvider_didReceiveUserEducationSuggestionEvent___
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v30 = [(DNDStateService *)self->_stateService queryCurrentStateWithError:0];
-        v31 = [v30 activeModeConfiguration];
-        v32 = [v31 mode];
+        activeModeConfiguration = [v30 activeModeConfiguration];
+        mode = [activeModeConfiguration mode];
 
-        if (v32)
+        if (mode)
         {
-          v21 = -[CSListItemDiscoveryProvider _customizeFocusDiscoveryViewWithDNDSemanticType:](self, "_customizeFocusDiscoveryViewWithDNDSemanticType:", [v32 semanticType]);
+          _explorePostersDiscoveryView = -[CSListItemDiscoveryProvider _customizeFocusDiscoveryViewWithDNDSemanticType:](self, "_customizeFocusDiscoveryViewWithDNDSemanticType:", [mode semanticType]);
         }
 
         else
         {
-          v21 = 0;
+          _explorePostersDiscoveryView = 0;
         }
 
 LABEL_16:
         v13 = 0;
-        if (v21)
+        if (_explorePostersDiscoveryView)
         {
 LABEL_17:
           v22 = SBLogDashBoard();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v36 = v9;
+            v36 = typeCopy;
             _os_log_impl(&dword_21EB05000, v22, OS_LOG_TYPE_DEFAULT, "[Discovery UI, type: '%{public}@']: Will appear.", buf, 0xCu);
           }
 
           if (v17)
           {
-            v23 = [MEMORY[0x277CEB920] sharedInstance];
+            mEMORY[0x277CEB920] = [MEMORY[0x277CEB920] sharedInstance];
             v24 = [objc_alloc(MEMORY[0x277CEB948]) initWithUserEducationSuggestion:v17 feedbackType:0];
-            [v23 logUserEducationSuggestionFeedback:v24];
+            [mEMORY[0x277CEB920] logUserEducationSuggestionFeedback:v24];
           }
 
           if (!v13)
           {
-            v13 = [[CSDiscoveryItemViewController alloc] initWithPlatterDiscoveryView:v21 firstDidAppearCompletion:v18];
+            v13 = [[CSDiscoveryItemViewController alloc] initWithPlatterDiscoveryView:_explorePostersDiscoveryView firstDidAppearCompletion:v18];
           }
 
-          [(CSListItemDiscoveryProvider *)self _presentPlatterDiscoveryView:v21 discoveryItemViewController:v13 withSuggestion:v17 type:v9];
+          [(CSListItemDiscoveryProvider *)self _presentPlatterDiscoveryView:_explorePostersDiscoveryView discoveryItemViewController:v13 withSuggestion:v17 type:typeCopy];
           goto LABEL_37;
         }
 
@@ -292,7 +292,7 @@ LABEL_33:
         {
           discoveryTypeToDiscoverySuggestionAndListItems = self->_discoveryTypeToDiscoverySuggestionAndListItems;
           *buf = 138543618;
-          v36 = v9;
+          v36 = typeCopy;
           v37 = 2114;
           v38 = discoveryTypeToDiscoverySuggestionAndListItems;
           _os_log_impl(&dword_21EB05000, v27, OS_LOG_TYPE_DEFAULT, "[Discovery UI, type: '%{public}@']: Will not show. Other suggestions: %{public}@ ", buf, 0x16u);
@@ -303,9 +303,9 @@ LABEL_33:
           goto LABEL_38;
         }
 
-        v21 = [MEMORY[0x277CEB920] sharedInstance];
+        _explorePostersDiscoveryView = [MEMORY[0x277CEB920] sharedInstance];
         v29 = [objc_alloc(MEMORY[0x277CEB948]) initWithUserEducationSuggestion:v17 feedbackType:5];
-        [v21 logUserEducationSuggestionFeedback:v29];
+        [_explorePostersDiscoveryView logUserEducationSuggestionFeedback:v29];
 
 LABEL_37:
 LABEL_38:
@@ -313,10 +313,10 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      v20 = -[CSListItemDiscoveryProvider _customizeFocusDiscoveryViewWithDNDSemanticType:](self, "_customizeFocusDiscoveryViewWithDNDSemanticType:", [v17 modeSemanticType]);
+      _sleepMigrationDiscoveryView = -[CSListItemDiscoveryProvider _customizeFocusDiscoveryViewWithDNDSemanticType:](self, "_customizeFocusDiscoveryViewWithDNDSemanticType:", [v17 modeSemanticType]);
     }
 
-    v21 = v20;
+    _explorePostersDiscoveryView = _sleepMigrationDiscoveryView;
     goto LABEL_16;
   }
 
@@ -324,15 +324,15 @@ LABEL_38:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v36 = v9;
+    v36 = typeCopy;
     _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "[Discovery UI, type: '%{public}@']: Will not show because this type is currently presented. ", buf, 0xCu);
   }
 
-  if (v8)
+  if (suggestionCopy)
   {
-    v12 = [MEMORY[0x277CEB920] sharedInstance];
-    v13 = [objc_alloc(MEMORY[0x277CEB948]) initWithUserEducationSuggestion:v8 feedbackType:5];
-    [v12 logUserEducationSuggestionFeedback:v13];
+    firstObject = [MEMORY[0x277CEB920] sharedInstance];
+    v13 = [objc_alloc(MEMORY[0x277CEB948]) initWithUserEducationSuggestion:suggestionCopy feedbackType:5];
+    [firstObject logUserEducationSuggestionFeedback:v13];
 LABEL_39:
   }
 }
@@ -354,18 +354,18 @@ void __72__CSListItemDiscoveryProvider__handleShowSuggestion_type_isPrototyping_
   }
 }
 
-- (void)_handleDismissSuggestion:(id)a3 type:(id)a4
+- (void)_handleDismissSuggestion:(id)suggestion type:(id)type
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  typeCopy = type;
+  if (typeCopy)
   {
-    [(CSListItemDiscoveryProvider *)self _removeDiscoveryOfType:v5];
+    [(CSListItemDiscoveryProvider *)self _removeDiscoveryOfType:typeCopy];
     v6 = SBLogDashBoard();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v5;
+      v8 = typeCopy;
       _os_log_impl(&dword_21EB05000, v6, OS_LOG_TYPE_DEFAULT, "[Discovery UI, type: '%{public}@']: Dismissed suggestion", &v7, 0xCu);
     }
   }
@@ -380,9 +380,9 @@ void __72__CSListItemDiscoveryProvider__handleShowSuggestion_type_isPrototyping_
   }
 }
 
-- (id)_discoveryTypeForSuggestion:(id)a3
+- (id)_discoveryTypeForSuggestion:(id)suggestion
 {
-  v3 = a3;
+  suggestionCopy = suggestion;
   v4 = 0;
   if (CSFeatureEnabled(0))
   {
@@ -419,25 +419,25 @@ void __72__CSListItemDiscoveryProvider__handleShowSuggestion_type_isPrototyping_
   return v4;
 }
 
-- (void)_presentPlatterDiscoveryView:(id)a3 discoveryItemViewController:(id)a4 withSuggestion:(id)a5 type:(id)a6
+- (void)_presentPlatterDiscoveryView:(id)view discoveryItemViewController:(id)controller withSuggestion:(id)suggestion type:(id)type
 {
-  v10 = a3;
-  v25 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[CSListItem alloc] initWithIdentifier:v12 groupingIdentifier:v12 sectionIdentifier:@"Discovery"];
+  viewCopy = view;
+  controllerCopy = controller;
+  suggestionCopy = suggestion;
+  typeCopy = type;
+  v13 = [[CSListItem alloc] initWithIdentifier:typeCopy groupingIdentifier:typeCopy sectionIdentifier:@"Discovery"];
   v26 = objc_alloc_init(MEMORY[0x277D78068]);
   v14 = objc_alloc_init(CSDiscoverySuggestionAndListItemTuple);
   [(CSDiscoverySuggestionAndListItemTuple *)v14 setListItem:v13];
-  [(CSDiscoverySuggestionAndListItemTuple *)v14 setDiscoverySuggestion:v11];
-  [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems setObject:v14 forKey:v12];
+  [(CSDiscoverySuggestionAndListItemTuple *)v14 setDiscoverySuggestion:suggestionCopy];
+  [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems setObject:v14 forKey:typeCopy];
   objc_initWeak(location, self);
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy__1;
   v44 = __Block_byref_object_dispose__1;
-  v45 = [v10 defaultAction];
+  defaultAction = [viewCopy defaultAction];
   if (v41[5])
   {
     v15 = MEMORY[0x277D750C8];
@@ -448,13 +448,13 @@ void __72__CSListItemDiscoveryProvider__handleShowSuggestion_type_isPrototyping_
     v31[2] = __108__CSListItemDiscoveryProvider__presentPlatterDiscoveryView_discoveryItemViewController_withSuggestion_type___block_invoke;
     v31[3] = &unk_27838CC68;
     objc_copyWeak(&v39, location);
-    v32 = v12;
+    v32 = typeCopy;
     v33 = v14;
-    v34 = v11;
-    v35 = self;
+    v34 = suggestionCopy;
+    selfCopy = self;
     v36 = v13;
     v38 = &v40;
-    v37 = v25;
+    v37 = controllerCopy;
     v18 = [v15 actionWithTitle:v17 image:0 identifier:0 handler:v31];
 
     [v26 setDefaultAction:v18];
@@ -469,17 +469,17 @@ void __72__CSListItemDiscoveryProvider__handleShowSuggestion_type_isPrototyping_
   v27[2] = __108__CSListItemDiscoveryProvider__presentPlatterDiscoveryView_discoveryItemViewController_withSuggestion_type___block_invoke_2;
   v27[3] = &unk_27838CC90;
   objc_copyWeak(&v30, location);
-  v22 = v12;
+  v22 = typeCopy;
   v28 = v22;
-  v23 = v11;
+  v23 = suggestionCopy;
   v29 = v23;
   v24 = [v19 actionWithTitle:v21 image:0 identifier:0 handler:v27];
 
-  [v10 setClearAction:v24];
-  [v10 setUsesBackgroundView:0];
-  [v26 setMaterialRecipe:{objc_msgSend(v10, "materialRecipe")}];
+  [viewCopy setClearAction:v24];
+  [viewCopy setUsesBackgroundView:0];
+  [v26 setMaterialRecipe:{objc_msgSend(viewCopy, "materialRecipe")}];
   [(CSListItem *)v13 setConfiguration:v26];
-  [(CSListItem *)v13 setContentHost:v25];
+  [(CSListItem *)v13 setContentHost:controllerCopy];
   [(CSListItemManaging *)self->_itemManager addItem:v13];
 
   objc_destroyWeak(&v30);
@@ -553,16 +553,16 @@ void __108__CSListItemDiscoveryProvider__presentPlatterDiscoveryView_discoveryIt
   }
 }
 
-- (void)_removeDiscoveryOfType:(id)a3
+- (void)_removeDiscoveryOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__CSListItemDiscoveryProvider__removeDiscoveryOfType___block_invoke;
   v6[3] = &unk_27838B838;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = typeCopy;
+  v5 = typeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -605,15 +605,15 @@ void __54__CSListItemDiscoveryProvider__removeDiscoveryOfType___block_invoke(uin
   return v2;
 }
 
-- (id)_customizeFocusDiscoveryViewWithDNDSemanticType:(int64_t)a3
+- (id)_customizeFocusDiscoveryViewWithDNDSemanticType:(int64_t)type
 {
   v5 = [(DNDStateService *)self->_stateService queryCurrentStateWithError:0];
-  v6 = [v5 activeModeConfiguration];
-  v7 = [v6 mode];
+  activeModeConfiguration = [v5 activeModeConfiguration];
+  mode = [activeModeConfiguration mode];
 
-  if (v7 && [v7 semanticType] == a3)
+  if (mode && [mode semanticType] == type)
   {
-    v8 = [MEMORY[0x277D0AA20] onboardingPlatterDiscoveryViewForMode:v7];
+    v8 = [MEMORY[0x277D0AA20] onboardingPlatterDiscoveryViewForMode:mode];
     [v8 setDelegate:self];
   }
 
@@ -639,25 +639,25 @@ void __54__CSListItemDiscoveryProvider__removeDiscoveryOfType___block_invoke(uin
   return v3;
 }
 
-- (id)_explorePostersDiscoveryItemViewControllerForPlatter:(id)a3 firstDidAppearCompletion:(id)a4
+- (id)_explorePostersDiscoveryItemViewControllerForPlatter:(id)platter firstDidAppearCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CSDiscoveryItemExplorePostersViewController alloc] initWithPlatter:v6 firstDidAppearCompletion:v5];
+  completionCopy = completion;
+  platterCopy = platter;
+  v7 = [[CSDiscoveryItemExplorePostersViewController alloc] initWithPlatter:platterCopy firstDidAppearCompletion:completionCopy];
 
   return v7;
 }
 
-- (void)onboardingPlatter:(id)a3 requestsModalPresentationOfViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)onboardingPlatter:(id)platter requestsModalPresentationOfViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
+  animatedCopy = animated;
   discoveryTypeToDiscoverySuggestionAndListItems = self->_discoveryTypeToDiscoverySuggestionAndListItems;
-  v10 = a6;
-  v11 = a4;
+  completionCopy = completion;
+  controllerCopy = controller;
   v12 = [(NSMutableDictionary *)discoveryTypeToDiscoverySuggestionAndListItems objectForKey:@"CSListItemDiscoveryTypeCustomizeFocus"];
-  v13 = [v12 listItem];
+  listItem = [v12 listItem];
 
-  [(CSListItemManaging *)self->_itemManager item:v13 requestsModalPresentationOfViewController:v11 animated:v6 completion:v10];
+  [(CSListItemManaging *)self->_itemManager item:listItem requestsModalPresentationOfViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (void)_prototypeTest_registerRecipe
@@ -735,38 +735,38 @@ void __60__CSListItemDiscoveryProvider__prototypeTest_registerRecipe__block_invo
 {
   if ([(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems count])
   {
-    v3 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems allKeys];
-    v4 = [v3 firstObject];
+    allKeys = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems allKeys];
+    firstObject = [allKeys firstObject];
 
-    [(CSListItemDiscoveryProvider *)self _handleDismissSuggestion:0 type:v4];
+    [(CSListItemDiscoveryProvider *)self _handleDismissSuggestion:0 type:firstObject];
   }
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 state];
-  v7 = [v6 activeModeConfiguration];
-  v8 = [v7 mode];
+  updateCopy = update;
+  state = [updateCopy state];
+  activeModeConfiguration = [state activeModeConfiguration];
+  mode = [activeModeConfiguration mode];
 
-  v31 = v5;
-  v9 = [v5 previousState];
-  v10 = [v9 activeModeConfiguration];
-  v11 = [v10 mode];
+  v31 = updateCopy;
+  previousState = [updateCopy previousState];
+  activeModeConfiguration2 = [previousState activeModeConfiguration];
+  mode2 = [activeModeConfiguration2 mode];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  allKeys = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v35;
     v32 = *v35;
-    v33 = v8;
+    v33 = mode;
     do
     {
       v16 = 0;
@@ -774,17 +774,17 @@ void __60__CSListItemDiscoveryProvider__prototypeTest_registerRecipe__block_invo
       {
         if (*v35 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v34 + 1) + 8 * v16);
-        if (v8)
+        if (mode)
         {
-          v18 = [v11 semanticType];
-          if (v18 == [v8 semanticType])
+          semanticType = [mode2 semanticType];
+          if (semanticType == [mode semanticType])
           {
             v19 = [(NSMutableDictionary *)self->_discoveryTypeToDiscoverySuggestionAndListItems objectForKey:v17];
-            v20 = [v19 discoverySuggestion];
+            discoverySuggestion = [v19 discoverySuggestion];
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
@@ -792,21 +792,21 @@ void __60__CSListItemDiscoveryProvider__prototypeTest_registerRecipe__block_invo
               goto LABEL_13;
             }
 
-            v21 = v20;
-            v22 = v12;
-            v23 = self;
-            v24 = v11;
-            v25 = [v8 semanticType];
+            v21 = discoverySuggestion;
+            v22 = allKeys;
+            selfCopy = self;
+            v24 = mode2;
+            semanticType2 = [mode semanticType];
             v26 = v14;
-            v27 = [v21 modeSemanticType];
+            modeSemanticType = [v21 modeSemanticType];
 
-            v28 = v25 == v27;
+            v28 = semanticType2 == modeSemanticType;
             v14 = v26;
-            v11 = v24;
-            self = v23;
-            v12 = v22;
+            mode2 = v24;
+            self = selfCopy;
+            allKeys = v22;
             v15 = v32;
-            v8 = v33;
+            mode = v33;
             if (v28)
             {
               goto LABEL_13;
@@ -828,7 +828,7 @@ LABEL_13:
       }
 
       while (v14 != v16);
-      v30 = [v12 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v30 = [allKeys countByEnumeratingWithState:&v34 objects:v40 count:16];
       v14 = v30;
     }
 

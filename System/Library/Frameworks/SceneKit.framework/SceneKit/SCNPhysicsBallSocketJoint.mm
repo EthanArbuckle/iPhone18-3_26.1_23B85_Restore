@@ -1,16 +1,16 @@
 @interface SCNPhysicsBallSocketJoint
 + (SCNPhysicsBallSocketJoint)jointWithBody:(SCNPhysicsBody *)body anchor:(SCNVector3)anchor;
 + (SCNPhysicsBallSocketJoint)jointWithBodyA:(SCNPhysicsBody *)bodyA anchorA:(SCNVector3)anchorA bodyB:(SCNPhysicsBody *)bodyB anchorB:(SCNVector3)anchorB;
-- (SCNPhysicsBallSocketJoint)initWithBody:(id)a3 anchor:(SCNVector3)a4;
-- (SCNPhysicsBallSocketJoint)initWithBodyA:(id)a3 anchorA:(SCNVector3)a4 bodyB:(id)a5 anchorB:(SCNVector3)a6;
-- (SCNPhysicsBallSocketJoint)initWithCoder:(id)a3;
+- (SCNPhysicsBallSocketJoint)initWithBody:(id)body anchor:(SCNVector3)anchor;
+- (SCNPhysicsBallSocketJoint)initWithBodyA:(id)a anchorA:(SCNVector3)anchorA bodyB:(id)b anchorB:(SCNVector3)anchorB;
+- (SCNPhysicsBallSocketJoint)initWithCoder:(id)coder;
 - (SCNVector3)anchorA;
 - (SCNVector3)anchorB;
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4;
-- (void)_copyDefinition:(id *)a3;
-- (void)_willRemoveFromPhysicsWorld:(id)a3;
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition;
+- (void)_copyDefinition:(id *)definition;
+- (void)_willRemoveFromPhysicsWorld:(id)world;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAnchorA:(SCNVector3)anchorA;
 - (void)setAnchorB:(SCNVector3)anchorB;
 @end
@@ -30,24 +30,24 @@
   [(SCNPhysicsBallSocketJoint *)&v4 dealloc];
 }
 
-- (SCNPhysicsBallSocketJoint)initWithBodyA:(id)a3 anchorA:(SCNVector3)a4 bodyB:(id)a5 anchorB:(SCNVector3)a6
+- (SCNPhysicsBallSocketJoint)initWithBodyA:(id)a anchorA:(SCNVector3)anchorA bodyB:(id)b anchorB:(SCNVector3)anchorB
 {
-  z = a6.z;
-  y = a6.y;
-  x = a6.x;
-  v10 = a4.z;
-  v11 = a4.y;
-  v12 = a4.x;
+  z = anchorB.z;
+  y = anchorB.y;
+  x = anchorB.x;
+  v10 = anchorA.z;
+  v11 = anchorA.y;
+  v12 = anchorA.x;
   v16.receiver = self;
   v16.super_class = SCNPhysicsBallSocketJoint;
   v14 = [(SCNPhysicsBallSocketJoint *)&v16 init];
   if (v14)
   {
-    v14->_definition.bodyA = a3;
+    v14->_definition.bodyA = a;
     v14->_definition.anchorA.x = v12;
     v14->_definition.anchorA.y = v11;
     v14->_definition.anchorA.z = v10;
-    v14->_definition.bodyB = a5;
+    v14->_definition.bodyB = b;
     v14->_definition.anchorB.x = x;
     v14->_definition.anchorB.y = y;
     v14->_definition.anchorB.z = z;
@@ -56,17 +56,17 @@
   return v14;
 }
 
-- (SCNPhysicsBallSocketJoint)initWithBody:(id)a3 anchor:(SCNVector3)a4
+- (SCNPhysicsBallSocketJoint)initWithBody:(id)body anchor:(SCNVector3)anchor
 {
-  z = a4.z;
-  y = a4.y;
-  x = a4.x;
+  z = anchor.z;
+  y = anchor.y;
+  x = anchor.x;
   v10.receiver = self;
   v10.super_class = SCNPhysicsBallSocketJoint;
   v8 = [(SCNPhysicsBallSocketJoint *)&v10 init];
   if (v8)
   {
-    v8->_definition.bodyA = a3;
+    v8->_definition.bodyA = body;
     v8->_definition.anchorA.x = x;
     v8->_definition.anchorA.y = y;
     v8->_definition.anchorA.z = z;
@@ -83,7 +83,7 @@
   v10 = anchorA.z;
   v11 = anchorA.y;
   v12 = anchorA.x;
-  v14 = [a1 alloc];
+  v14 = [self alloc];
   *&v15 = v12;
   *&v16 = v11;
   *&v17 = v10;
@@ -100,7 +100,7 @@
   z = anchor.z;
   y = anchor.y;
   x = anchor.x;
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   *&v9 = x;
   *&v10 = y;
   *&v11 = z;
@@ -183,21 +183,21 @@ float __40__SCNPhysicsBallSocketJoint_setAnchorB___block_invoke(uint64_t a1)
   return *&v2;
 }
 
-- (void)_copyDefinition:(id *)a3
+- (void)_copyDefinition:(id *)definition
 {
   v3 = *&self->_definition.anchorB.y;
   v4 = *&self->_definition.anchorA.x;
-  *a3->var0 = *&self->_definition.bodyA;
-  *&a3->var0[16] = v4;
-  *&a3->var0[32] = v3;
+  *definition->var0 = *&self->_definition.bodyA;
+  *&definition->var0[16] = v4;
+  *&definition->var0[32] = v3;
 }
 
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition
 {
   world = self->_world;
   if (world)
   {
-    v8 = world == a3;
+    v8 = world == world;
   }
 
   else
@@ -214,22 +214,22 @@ float __40__SCNPhysicsBallSocketJoint_setAnchorB___block_invoke(uint64_t a1)
     }
   }
 
-  self->_world = a3;
-  v10 = *&a4->var0[16];
-  v12[0] = *a4->var0;
+  self->_world = world;
+  v10 = *&definition->var0[16];
+  v12[0] = *definition->var0;
   v12[1] = v10;
-  v13 = *&a4->var0[32];
+  v13 = *&definition->var0[32];
   self->_constraint = _createConstraintFromDefinition(v12);
-  v11 = [a3 _handle];
-  (*(*v11 + 112))(v11, self->_constraint, 0);
+  _handle = [world _handle];
+  (*(*_handle + 112))(_handle, self->_constraint, 0);
 }
 
-- (void)_willRemoveFromPhysicsWorld:(id)a3
+- (void)_willRemoveFromPhysicsWorld:(id)world
 {
   if (self->_constraint)
   {
-    v4 = [a3 _handle];
-    (*(*v4 + 120))(v4, self->_constraint);
+    _handle = [world _handle];
+    (*(*_handle + 120))(_handle, self->_constraint);
     constraint = self->_constraint;
     if (constraint)
     {
@@ -241,7 +241,7 @@ float __40__SCNPhysicsBallSocketJoint_setAnchorB___block_invoke(uint64_t a1)
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNPhysicsBallSocketJoint;
@@ -249,20 +249,20 @@ float __40__SCNPhysicsBallSocketJoint_setAnchorB___block_invoke(uint64_t a1)
   p_definition = &self->_definition;
   if (p_definition->bodyA)
   {
-    [a3 encodeObject:p_definition->bodyA forKey:@"bodyA"];
+    [coder encodeObject:p_definition->bodyA forKey:@"bodyA"];
   }
 
   bodyB = p_definition->bodyB;
   if (bodyB)
   {
-    [a3 encodeObject:bodyB forKey:@"bodyB"];
+    [coder encodeObject:bodyB forKey:@"bodyB"];
   }
 
-  SCNEncodeVector3(a3, @"anchorA", p_definition->anchorA.x, p_definition->anchorA.y, p_definition->anchorA.z);
-  SCNEncodeVector3(a3, @"anchorB", p_definition->anchorB.x, p_definition->anchorB.y, p_definition->anchorB.z);
+  SCNEncodeVector3(coder, @"anchorA", p_definition->anchorA.x, p_definition->anchorA.y, p_definition->anchorA.z);
+  SCNEncodeVector3(coder, @"anchorB", p_definition->anchorB.x, p_definition->anchorB.y, p_definition->anchorB.z);
 }
 
-- (SCNPhysicsBallSocketJoint)initWithCoder:(id)a3
+- (SCNPhysicsBallSocketJoint)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = SCNPhysicsBallSocketJoint;
@@ -271,14 +271,14 @@ float __40__SCNPhysicsBallSocketJoint_setAnchorB___block_invoke(uint64_t a1)
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v4->_definition.anchorA.x = SCNDecodeVector3(a3, @"anchorA");
+    v4->_definition.anchorA.x = SCNDecodeVector3(coder, @"anchorA");
     v4->_definition.anchorA.y = v6;
     v4->_definition.anchorA.z = v7;
-    v4->_definition.anchorB.x = SCNDecodeVector3(a3, @"anchorB");
+    v4->_definition.anchorB.x = SCNDecodeVector3(coder, @"anchorB");
     v4->_definition.anchorB.y = v8;
     v4->_definition.anchorB.z = v9;
-    v4->_definition.bodyA = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bodyA"];
-    v4->_definition.bodyB = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bodyB"];
+    v4->_definition.bodyA = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bodyA"];
+    v4->_definition.bodyB = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bodyB"];
     [SCNTransaction setImmediateMode:v5];
   }
 

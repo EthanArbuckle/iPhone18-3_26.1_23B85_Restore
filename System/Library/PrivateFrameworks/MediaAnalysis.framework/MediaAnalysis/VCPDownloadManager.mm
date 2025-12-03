@@ -1,8 +1,8 @@
 @interface VCPDownloadManager
 + (id)sharedManager;
-+ (void)_reportDownload:(unint64_t)a3;
++ (void)_reportDownload:(unint64_t)download;
 - (VCPDownloadManager)init;
-- (id)requestDownloadOfResource:(id)a3;
+- (id)requestDownloadOfResource:(id)resource;
 - (void)flush;
 @end
 
@@ -46,7 +46,7 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
   sharedManager_instance_0 = v0;
 }
 
-+ (void)_reportDownload:(unint64_t)a3
++ (void)_reportDownload:(unint64_t)download
 {
   v23 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -61,7 +61,7 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
     v19 = 2112;
     v20 = v6;
     v21 = 2048;
-    v22 = a3;
+    downloadCopy = download;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[DAS QoS] %@: %@ (%@) download %lu bytes", buf, 0x2Au);
   }
 
@@ -69,17 +69,17 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
   v8 = VCPTaskIDDescription(1);
   v9 = qos_class_self();
   v10 = VCPMAQoSDescription(v9);
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{a3, @"taskName", @"QoS", @"DownloadAssetCount", @"DownloadBytes", v8, v10, &unk_1F49BE350}];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{download, @"taskName", @"QoS", @"DownloadAssetCount", @"DownloadBytes", v8, v10, &unk_1F49BE350}];
   v14[3] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:4];
   [v7 sendEvent:@"com.apple.mediaanalysisd.das.dutycycle.task" withAnalytics:v12];
 }
 
-- (id)requestDownloadOfResource:(id)a3
+- (id)requestDownloadOfResource:(id)resource
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 fileSize] > 0xA00000)
+  resourceCopy = resource;
+  if ([resourceCopy fileSize] > 0xA00000)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -87,14 +87,14 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Requested resource exceeds maximum supported size", buf, 2u);
     }
 
-    v3 = 0;
+    defaultManager2 = 0;
     goto LABEL_51;
   }
 
   dispatch_semaphore_wait(self->_mutex, 0xFFFFFFFFFFFFFFFFLL);
   localIdentifier = self->_localIdentifier;
-  v7 = [v5 assetLocalIdentifier];
-  LODWORD(localIdentifier) = [(NSString *)localIdentifier isEqualToString:v7];
+  assetLocalIdentifier = [resourceCopy assetLocalIdentifier];
+  LODWORD(localIdentifier) = [(NSString *)localIdentifier isEqualToString:assetLocalIdentifier];
 
   v8 = MediaAnalysisLogLevel();
   if (localIdentifier)
@@ -106,24 +106,24 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
     }
 
     v9 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v10 = [(NSMutableData *)self->_buffer mutableBytes];
+    mutableBytes = [(NSMutableData *)self->_buffer mutableBytes];
     length = self->_length;
     v60[0] = MEMORY[0x1E69E9820];
     v60[1] = 3221225472;
     v60[2] = __48__VCPDownloadManager_requestDownloadOfResource___block_invoke;
     v60[3] = &unk_1E8350FC8;
     v60[4] = self;
-    v3 = [v9 initWithBytesNoCopy:v10 length:length deallocator:v60];
+    defaultManager2 = [v9 initWithBytesNoCopy:mutableBytes length:length deallocator:v60];
     goto LABEL_51;
   }
 
   if (v8 >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v12 = [v5 assetLocalIdentifier];
+    assetLocalIdentifier2 = [resourceCopy assetLocalIdentifier];
     *buf = 138412546;
-    *&buf[4] = v12;
+    *&buf[4] = assetLocalIdentifier2;
     *&buf[12] = 2112;
-    *&buf[14] = v5;
+    *&buf[14] = resourceCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@] requestDownloadOfResource: %@", buf, 0x16u);
   }
 
@@ -148,8 +148,8 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
     aBlock[3] = &unk_1E8350FF0;
     v54 = &v56;
     aBlock[4] = self;
-    v3 = v5;
-    v53 = v3;
+    defaultManager2 = resourceCopy;
+    v53 = defaultManager2;
     v55 = buf;
     v41 = _Block_copy(aBlock);
     v51[0] = 0;
@@ -184,14 +184,14 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
     v43[8] = &v44;
     v43[9] = v17;
     v40 = _Block_copy(v43);
-    v20 = [MEMORY[0x1E69786E8] defaultManager];
-    v21 = [v20 requestDataForAssetResource:v3 options:v15 dataReceivedHandler:v41 completionHandler:v40];
+    defaultManager = [MEMORY[0x1E69786E8] defaultManager];
+    v21 = [defaultManager requestDataForAssetResource:defaultManager2 options:v15 dataReceivedHandler:v41 completionHandler:v40];
 
     if (v21)
     {
-      v22 = [(VCPDownloadManager *)self cancel];
+      cancel = [(VCPDownloadManager *)self cancel];
 
-      if (v22)
+      if (cancel)
       {
         v23 = -100000000;
         while (1)
@@ -215,8 +215,8 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
             goto LABEL_44;
           }
 
-          v26 = [(VCPDownloadManager *)self cancel];
-          v27 = v26[2]();
+          cancel2 = [(VCPDownloadManager *)self cancel];
+          v27 = cancel2[2]();
 
           if (v27)
           {
@@ -226,8 +226,8 @@ void __35__VCPDownloadManager_sharedManager__block_invoke()
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Cancelling download", v50, 2u);
             }
 
-            v3 = [MEMORY[0x1E69786E8] defaultManager];
-            [v3 cancelDataRequest:v21];
+            defaultManager2 = [MEMORY[0x1E69786E8] defaultManager];
+            [defaultManager2 cancelDataRequest:v21];
 
             dispatch_semaphore_wait(v45[5], 0xFFFFFFFFFFFFFFFFLL);
             v28 = *&buf[8];
@@ -240,19 +240,19 @@ LABEL_38:
         if (!*(*&buf[8] + 24))
         {
           self->_length = v57[3];
-          v32 = [v3 assetLocalIdentifier];
+          assetLocalIdentifier3 = [defaultManager2 assetLocalIdentifier];
           v33 = self->_localIdentifier;
-          self->_localIdentifier = v32;
+          self->_localIdentifier = assetLocalIdentifier3;
 
           v34 = objc_alloc(MEMORY[0x1E695DEF0]);
-          v35 = [(NSMutableData *)self->_buffer mutableBytes];
+          mutableBytes2 = [(NSMutableData *)self->_buffer mutableBytes];
           v36 = self->_length;
           v42[0] = MEMORY[0x1E69E9820];
           v42[1] = 3221225472;
           v42[2] = __48__VCPDownloadManager_requestDownloadOfResource___block_invoke_206;
           v42[3] = &unk_1E8350FC8;
           v42[4] = self;
-          v3 = [v34 initWithBytesNoCopy:v35 length:v36 deallocator:v42];
+          defaultManager2 = [v34 initWithBytesNoCopy:mutableBytes2 length:v36 deallocator:v42];
           v37 = 0;
 LABEL_47:
 
@@ -281,8 +281,8 @@ LABEL_46:
       }
 
 LABEL_44:
-      v3 = [MEMORY[0x1E69786E8] defaultManager];
-      [v3 cancelDataRequest:v21];
+      defaultManager2 = [MEMORY[0x1E69786E8] defaultManager];
+      [defaultManager2 cancelDataRequest:v21];
 
       dispatch_semaphore_wait(v45[5], 0xFFFFFFFFFFFFFFFFLL);
       v28 = *&buf[8];
@@ -293,7 +293,7 @@ LABEL_44:
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
-        v3 = 16;
+        defaultManager2 = 16;
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *v50 = 0;
@@ -317,14 +317,14 @@ LABEL_48:
   if (v37)
   {
     dispatch_semaphore_signal(self->_mutex);
-    v3 = 0;
+    defaultManager2 = 0;
   }
 
   _Block_object_dispose(&v56, 8);
   _Block_object_dispose(buf, 8);
 LABEL_51:
 
-  return v3;
+  return defaultManager2;
 }
 
 void __48__VCPDownloadManager_requestDownloadOfResource___block_invoke_196(double a1)

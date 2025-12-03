@@ -6,11 +6,11 @@
 
 - (uint64_t)pg_hasVisiblePIPContent
 {
-  v1 = [a1 transientLocalSettings];
-  v2 = [v1 objectForSetting:4821];
-  v3 = [v2 BOOLValue];
+  transientLocalSettings = [self transientLocalSettings];
+  v2 = [transientLocalSettings objectForSetting:4821];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

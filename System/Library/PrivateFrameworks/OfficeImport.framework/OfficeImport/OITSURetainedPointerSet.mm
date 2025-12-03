@@ -1,11 +1,11 @@
 @interface OITSURetainedPointerSet
-- (OITSURetainedPointerSet)initWithObjects:(const void *)a3 count:(unint64_t)a4;
+- (OITSURetainedPointerSet)initWithObjects:(const void *)objects count:(unint64_t)count;
 - (id)allObjects;
 @end
 
 @implementation OITSURetainedPointerSet
 
-- (OITSURetainedPointerSet)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (OITSURetainedPointerSet)initWithObjects:(const void *)objects count:(unint64_t)count
 {
   v10.receiver = self;
   v10.super_class = OITSURetainedPointerSet;
@@ -18,7 +18,7 @@
     v9.equal = 0;
     v9.hash = 0;
     v9.copyDescription = v7;
-    v6->super.mSet = CFSetCreate(0, a3, a4, &v9);
+    v6->super.mSet = CFSetCreate(0, objects, count, &v9);
   }
 
   return v6;

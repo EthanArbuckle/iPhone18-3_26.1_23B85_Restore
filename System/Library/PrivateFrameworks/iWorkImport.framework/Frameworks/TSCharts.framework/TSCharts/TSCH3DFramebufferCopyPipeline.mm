@@ -1,25 +1,25 @@
 @interface TSCH3DFramebufferCopyPipeline
 - (RenderState)renderState;
-- (TSCH3DFramebufferCopyPipeline)initWithProcessor:(id)a3 session:(id)a4;
+- (TSCH3DFramebufferCopyPipeline)initWithProcessor:(id)processor session:(id)session;
 - (box<glm::detail::tvec2<int>>)targetViewport;
 - (id).cxx_construct;
 - (tmat4x4<float>)transform;
 - (tvec4<float>)wipeColor;
-- (void)setRenderState:(RenderState *)a3;
+- (void)setRenderState:(RenderState *)state;
 - (void)transformFramebuffer;
 - (void)updateShaderEffectsStates;
 @end
 
 @implementation TSCH3DFramebufferCopyPipeline
 
-- (TSCH3DFramebufferCopyPipeline)initWithProcessor:(id)a3 session:(id)a4
+- (TSCH3DFramebufferCopyPipeline)initWithProcessor:(id)processor session:(id)session
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  processorCopy = processor;
+  sessionCopy = session;
   v38.receiver = self;
   v38.super_class = TSCH3DFramebufferCopyPipeline;
-  v9 = [(TSCH3DRenderPipeline *)&v38 initWithProcessor:v6 session:v7];
+  v9 = [(TSCH3DRenderPipeline *)&v38 initWithProcessor:processorCopy session:sessionCopy];
   if (v9)
   {
     v13 = objc_msgSend_effect(TSCH3DVertexShaderEffect, v8, v10, v11, v12);
@@ -135,10 +135,10 @@
   return self;
 }
 
-- (void)setRenderState:(RenderState *)a3
+- (void)setRenderState:(RenderState *)state
 {
-  v3 = *&a3->polygonOffsetFactor;
-  *&self->_renderState.blendState._blend = *&a3->blendState._blend;
+  v3 = *&state->polygonOffsetFactor;
+  *&self->_renderState.blendState._blend = *&state->blendState._blend;
   *&self->_renderState.polygonOffsetFactor = v3;
 }
 

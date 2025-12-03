@@ -1,68 +1,68 @@
 @interface HDHealthStoreClient
-- (BOOL)_isAuthorizedToAccessProfile:(id)a3;
-- (BOOL)hasArrayEntitlement:(id)a3 containing:(id)a4;
-- (BOOL)hasEntitlement:(id)a3;
+- (BOOL)_isAuthorizedToAccessProfile:(id)profile;
+- (BOOL)hasArrayEntitlement:(id)entitlement containing:(id)containing;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (BOOL)hasPrivateMetadataAccess;
-- (BOOL)hasRequiredArrayEntitlement:(id)a3 containing:(id)a4 error:(id *)a5;
-- (BOOL)hasRequiredEntitlement:(id)a3 error:(id *)a4;
+- (BOOL)hasRequiredArrayEntitlement:(id)entitlement containing:(id)containing error:(id *)error;
+- (BOOL)hasRequiredEntitlement:(id)entitlement error:(id *)error;
 - (BOOL)shouldBypassAuthorization;
-- (BOOL)verifyHealthRecordsPermissionGrantedWithError:(id *)a3;
+- (BOOL)verifyHealthRecordsPermissionGrantedWithError:(id *)error;
 - (HDClientAuthorizationOracle)authorizationOracle;
-- (HDHealthStoreClient)initWithXPCClient:(id)a3 configuration:(id)a4 profile:(id)a5 databaseAccessibilityAssertions:(id)a6;
+- (HDHealthStoreClient)initWithXPCClient:(id)client configuration:(id)configuration profile:(id)profile databaseAccessibilityAssertions:(id)assertions;
 - (HDProfile)profile;
 - (_HKEntitlements)entitlements;
 - (_TtC12HealthDaemon29HDHealthStoreClientAssertions)databaseAccessibilityAssertions;
 - (id)accessibilityAssertions;
-- (id)assertionForHKDatabaseAccessibilityAssertion:(id)a3;
+- (id)assertionForHKDatabaseAccessibilityAssertion:(id)assertion;
 - (id)baseDataEntityEncodingOptions;
-- (id)filterWithQueryFilter:(id)a3 objectType:(id)a4;
+- (id)filterWithQueryFilter:(id)filter objectType:(id)type;
 - (id)firstAssertion;
-- (id)valueForEntitlement:(id)a3;
-- (void)addAssertionMapping:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
+- (void)addAssertionMapping:(id)mapping;
 - (void)invalidateAssertions;
-- (void)removeAssertionMappingForAssertion:(id)a3;
+- (void)removeAssertionMappingForAssertion:(id)assertion;
 @end
 
 @implementation HDHealthStoreClient
 
-- (HDHealthStoreClient)initWithXPCClient:(id)a3 configuration:(id)a4 profile:(id)a5 databaseAccessibilityAssertions:(id)a6
+- (HDHealthStoreClient)initWithXPCClient:(id)client configuration:(id)configuration profile:(id)profile databaseAccessibilityAssertions:(id)assertions
 {
   v53 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  clientCopy = client;
+  configurationCopy = configuration;
+  profileCopy = profile;
+  assertionsCopy = assertions;
   v46.receiver = self;
   v46.super_class = HDHealthStoreClient;
   v15 = [(HDHealthStoreClient *)&v46 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_XPCClient, a3);
-    objc_storeWeak(&v16->_profile, v13);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_XPCClient, client);
+    objc_storeWeak(&v16->_profile, profileCopy);
+    v17 = [configurationCopy copy];
     configuration = v16->_configuration;
     v16->_configuration = v17;
 
-    objc_storeStrong(&v16->_databaseAccessibilityAssertions, a6);
+    objc_storeStrong(&v16->_databaseAccessibilityAssertions, assertions);
     authorizationOracle = v16->_authorizationOracle;
     v16->_authorizationOracle = 0;
 
     v16->_propertyLock._os_unfair_lock_opaque = 0;
-    v20 = [v11 process];
+    process = [clientCopy process];
     v21 = MEMORY[0x277CCDA00];
-    v22 = [v20 entitlements];
-    v23 = [v20 bundleIdentifier];
-    v24 = [v21 _sourceBundleIdentifierWithEntitlements:v22 processBundleIdentifier:v23 isExtension:{objc_msgSend(v20, "isExtension")}];
+    entitlements = [process entitlements];
+    bundleIdentifier = [process bundleIdentifier];
+    v24 = [v21 _sourceBundleIdentifierWithEntitlements:entitlements processBundleIdentifier:bundleIdentifier isExtension:{objc_msgSend(process, "isExtension")}];
     defaultSourceBundleIdentifier = v16->_defaultSourceBundleIdentifier;
     v16->_defaultSourceBundleIdentifier = v24;
 
-    v26 = [v12 sourceBundleIdentifier];
+    sourceBundleIdentifier = [configurationCopy sourceBundleIdentifier];
 
-    if (v26)
+    if (sourceBundleIdentifier)
     {
-      v27 = [v12 sourceBundleIdentifier];
-      v28 = [v27 copy];
+      sourceBundleIdentifier2 = [configurationCopy sourceBundleIdentifier];
+      v28 = [sourceBundleIdentifier2 copy];
       sourceBundleIdentifier = v16->_sourceBundleIdentifier;
       v16->_sourceBundleIdentifier = v28;
     }
@@ -70,25 +70,25 @@
     else
     {
       v30 = v16->_defaultSourceBundleIdentifier;
-      v27 = v16->_sourceBundleIdentifier;
+      sourceBundleIdentifier2 = v16->_sourceBundleIdentifier;
       v16->_sourceBundleIdentifier = v30;
     }
 
-    if ([v20 hasEntitlement:*MEMORY[0x277CCB810]])
+    if ([process hasEntitlement:*MEMORY[0x277CCB810]])
     {
       WeakRetained = objc_loadWeakRetained(&v16->_profile);
-      v32 = [WeakRetained daemon];
-      v33 = [v32 behavior];
-      v34 = [v33 currentOSVersion];
+      daemon = [WeakRetained daemon];
+      behavior = [daemon behavior];
+      currentOSVersion = [behavior currentOSVersion];
       sourceVersion = v16->_sourceVersion;
-      v16->_sourceVersion = v34;
+      v16->_sourceVersion = currentOSVersion;
     }
 
     else
     {
-      WeakRetained = [v12 sourceVersion];
+      WeakRetained = [configurationCopy sourceVersion];
       v36 = [WeakRetained copy];
-      v32 = v36;
+      daemon = v36;
       v37 = &stru_283BF39C8;
       if (v36)
       {
@@ -96,7 +96,7 @@
       }
 
       v38 = v37;
-      v33 = v16->_sourceVersion;
+      behavior = v16->_sourceVersion;
       v16->_sourceVersion = &v38->isa;
     }
 
@@ -106,16 +106,16 @@
       v39 = HKLogAuthorization();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
-        v42 = [v20 name];
-        v45 = [v20 auditToken];
-        v43 = [v45 processIdentifier];
-        v44 = [v20 entitlements];
+        name = [process name];
+        auditToken = [process auditToken];
+        processIdentifier = [auditToken processIdentifier];
+        entitlements2 = [process entitlements];
         *buf = 138412802;
-        v48 = v42;
+        v48 = name;
         v49 = 1024;
-        v50 = v43;
+        v50 = processIdentifier;
         v51 = 2112;
-        v52 = v44;
+        v52 = entitlements2;
         _os_log_error_impl(&dword_228986000, v39, OS_LOG_TYPE_ERROR, "Process %@ (%d) has nil source bundle identifier without auth bypass. Client entitlements: %@", buf, 0x1Cu);
       }
     }
@@ -131,8 +131,8 @@
 
   if (!WeakRetained)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDHealthStoreClient.m" lineNumber:87 description:@"_profile null in HDHealthStoreClient"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDHealthStoreClient.m" lineNumber:87 description:@"_profile null in HDHealthStoreClient"];
   }
 
   v5 = objc_loadWeakRetained(&self->_profile);
@@ -142,109 +142,109 @@
 
 - (_HKEntitlements)entitlements
 {
-  v2 = [(HDHealthStoreClient *)self process];
-  v3 = [v2 entitlements];
+  process = [(HDHealthStoreClient *)self process];
+  entitlements = [process entitlements];
 
-  return v3;
+  return entitlements;
 }
 
-- (BOOL)hasRequiredEntitlement:(id)a3 error:(id *)a4
+- (BOOL)hasRequiredEntitlement:(id)entitlement error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDHealthStoreClient *)self process];
-  LOBYTE(a4) = [v7 hasRequiredEntitlement:v6 error:a4];
+  entitlementCopy = entitlement;
+  process = [(HDHealthStoreClient *)self process];
+  LOBYTE(error) = [process hasRequiredEntitlement:entitlementCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)self process];
-  v6 = [v5 hasEntitlement:v4];
+  entitlementCopy = entitlement;
+  process = [(HDHealthStoreClient *)self process];
+  v6 = [process hasEntitlement:entitlementCopy];
 
   return v6;
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)self process];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  process = [(HDHealthStoreClient *)self process];
+  v6 = [process valueForEntitlement:entitlementCopy];
 
   return v6;
 }
 
-- (BOOL)hasRequiredArrayEntitlement:(id)a3 containing:(id)a4 error:(id *)a5
+- (BOOL)hasRequiredArrayEntitlement:(id)entitlement containing:(id)containing error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HDHealthStoreClient *)self process];
-  LOBYTE(a5) = [v10 hasRequiredArrayEntitlement:v9 containing:v8 error:a5];
+  containingCopy = containing;
+  entitlementCopy = entitlement;
+  process = [(HDHealthStoreClient *)self process];
+  LOBYTE(error) = [process hasRequiredArrayEntitlement:entitlementCopy containing:containingCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)hasArrayEntitlement:(id)a3 containing:(id)a4
+- (BOOL)hasArrayEntitlement:(id)entitlement containing:(id)containing
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDHealthStoreClient *)self process];
-  v9 = [v8 hasArrayEntitlement:v7 containing:v6];
+  containingCopy = containing;
+  entitlementCopy = entitlement;
+  process = [(HDHealthStoreClient *)self process];
+  v9 = [process hasArrayEntitlement:entitlementCopy containing:containingCopy];
 
   return v9;
 }
 
 - (BOOL)shouldBypassAuthorization
 {
-  v2 = [(HDHealthStoreClient *)self process];
-  v3 = [v2 hasEntitlement:*MEMORY[0x277CCB868]];
+  process = [(HDHealthStoreClient *)self process];
+  v3 = [process hasEntitlement:*MEMORY[0x277CCB868]];
 
   return v3;
 }
 
 - (BOOL)hasPrivateMetadataAccess
 {
-  v3 = [(HDHealthStoreClient *)self process];
-  if ([v3 hasEntitlement:*MEMORY[0x277CCC8B8]])
+  process = [(HDHealthStoreClient *)self process];
+  if ([process hasEntitlement:*MEMORY[0x277CCC8B8]])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HDHealthStoreClient *)self process];
-    v4 = [v5 hasEntitlement:*MEMORY[0x277CCC8B0]];
+    process2 = [(HDHealthStoreClient *)self process];
+    v4 = [process2 hasEntitlement:*MEMORY[0x277CCC8B0]];
   }
 
   return v4;
 }
 
-- (BOOL)verifyHealthRecordsPermissionGrantedWithError:(id *)a3
+- (BOOL)verifyHealthRecordsPermissionGrantedWithError:(id *)error
 {
-  if ([(HDHealthStoreClient *)self hasRequiredEntitlement:*MEMORY[0x277CCC8B0] error:a3])
+  if ([(HDHealthStoreClient *)self hasRequiredEntitlement:*MEMORY[0x277CCC8B0] error:error])
   {
     return 1;
   }
 
-  v5 = [(HDHealthStoreClient *)self entitlements];
+  entitlements = [(HDHealthStoreClient *)self entitlements];
   v6 = *MEMORY[0x277CCC198];
-  v7 = [v5 hasAccessEntitlementWithIdentifier:*MEMORY[0x277CCC198]];
+  v7 = [entitlements hasAccessEntitlementWithIdentifier:*MEMORY[0x277CCC198]];
 
   if (v7)
   {
     return 1;
   }
 
-  v8 = [(HDHealthStoreClient *)self entitlements];
-  v9 = [v8 hasPrivateAccessEntitlementWithIdentifier:*MEMORY[0x277CCC888]];
+  entitlements2 = [(HDHealthStoreClient *)self entitlements];
+  v9 = [entitlements2 hasPrivateAccessEntitlementWithIdentifier:*MEMORY[0x277CCC888]];
 
   if (v9)
   {
     return 1;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:4 format:{@"Missing %@ entitlement.", v6}];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:4 format:{@"Missing %@ entitlement.", v6}];
   return 0;
 }
 
@@ -255,10 +255,10 @@
   {
     v3 = [HDClientAuthorizationOracle alloc];
     sourceBundleIdentifier = self->_sourceBundleIdentifier;
-    v5 = [(HDHealthStoreClient *)self process];
-    v6 = [v5 entitlements];
+    process = [(HDHealthStoreClient *)self process];
+    entitlements = [process entitlements];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v8 = [(HDClientAuthorizationOracle *)v3 initWithSourceBundleIdentifier:sourceBundleIdentifier entitlements:v6 profile:WeakRetained];
+    v8 = [(HDClientAuthorizationOracle *)v3 initWithSourceBundleIdentifier:sourceBundleIdentifier entitlements:entitlements profile:WeakRetained];
     authorizationOracle = self->_authorizationOracle;
     self->_authorizationOracle = v8;
   }
@@ -285,21 +285,21 @@
   return v5;
 }
 
-- (void)addAssertionMapping:(id)a3
+- (void)addAssertionMapping:(id)mapping
 {
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
-  [v5 addAssertionMappingWithAssertion:v4];
+  mappingCopy = mapping;
+  databaseAccessibilityAssertions = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
+  [databaseAccessibilityAssertions addAssertionMappingWithAssertion:mappingCopy];
 }
 
-- (void)removeAssertionMappingForAssertion:(id)a3
+- (void)removeAssertionMappingForAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
-  [v5 removeAssertionMappingWithAssertion:v4];
+  assertionCopy = assertion;
+  databaseAccessibilityAssertions = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
+  [databaseAccessibilityAssertions removeAssertionMappingWithAssertion:assertionCopy];
 
-  v6 = [(HDHealthStoreClient *)self accessibilityAssertions];
-  v7 = [v6 count];
+  accessibilityAssertions = [(HDHealthStoreClient *)self accessibilityAssertions];
+  v7 = [accessibilityAssertions count];
 
   if (!v7)
   {
@@ -310,77 +310,77 @@
 
 - (id)firstAssertion
 {
-  v2 = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
-  v3 = [v2 firstAssertion];
+  databaseAccessibilityAssertions = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
+  firstAssertion = [databaseAccessibilityAssertions firstAssertion];
 
-  return v3;
+  return firstAssertion;
 }
 
 - (id)accessibilityAssertions
 {
-  v2 = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
-  v3 = [v2 accessibilityAssertions];
+  databaseAccessibilityAssertions = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
+  accessibilityAssertions = [databaseAccessibilityAssertions accessibilityAssertions];
 
-  return v3;
+  return accessibilityAssertions;
 }
 
-- (id)assertionForHKDatabaseAccessibilityAssertion:(id)a3
+- (id)assertionForHKDatabaseAccessibilityAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
-  v6 = [v5 assertionForHKDatabaseAccessibilityAssertionWithHkDatabaseAccessibilityAssertion:v4];
+  assertionCopy = assertion;
+  databaseAccessibilityAssertions = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
+  v6 = [databaseAccessibilityAssertions assertionForHKDatabaseAccessibilityAssertionWithHkDatabaseAccessibilityAssertion:assertionCopy];
 
   return v6;
 }
 
 - (void)invalidateAssertions
 {
-  v2 = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
-  [v2 invalidateAssertions];
+  databaseAccessibilityAssertions = [(HDHealthStoreClient *)self databaseAccessibilityAssertions];
+  [databaseAccessibilityAssertions invalidateAssertions];
 }
 
-- (id)filterWithQueryFilter:(id)a3 objectType:(id)a4
+- (id)filterWithQueryFilter:(id)filter objectType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  filterCopy = filter;
+  typeCopy = type;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(HDHealthStoreClient *)self hasEntitlement:*MEMORY[0x277CCC8B0]])
   {
-    if (v6)
+    if (filterCopy)
     {
-      [v8 addObject:v6];
+      [v8 addObject:filterCopy];
     }
   }
 
   else
   {
-    if (v6)
+    if (filterCopy)
     {
       if (![(HDHealthStoreClient *)self hasPrivateMetadataAccess])
       {
-        v9 = [v6 filterIgnoringPrivateMetadata];
+        filterIgnoringPrivateMetadata = [filterCopy filterIgnoringPrivateMetadata];
 
-        v6 = v9;
+        filterCopy = filterIgnoringPrivateMetadata;
       }
 
-      [v8 addObject:v6];
+      [v8 addObject:filterCopy];
     }
 
-    v10 = [(HDHealthStoreClient *)self profile];
-    v11 = [v10 daemon];
-    v12 = [v11 behavior];
-    v13 = [v12 supportsSampleExpiration];
+    profile = [(HDHealthStoreClient *)self profile];
+    daemon = [profile daemon];
+    behavior = [daemon behavior];
+    supportsSampleExpiration = [behavior supportsSampleExpiration];
 
-    if (v13)
+    if (supportsSampleExpiration)
     {
       if (self)
       {
         v14 = MEMORY[0x277CBEA80];
-        v15 = v7;
-        v16 = [v14 currentCalendar];
+        v15 = typeCopy;
+        currentCalendar = [v14 currentCalendar];
         v17 = *MEMORY[0x277CCCEE8];
-        v18 = [MEMORY[0x277CBEAA8] date];
-        v19 = [v16 hk_startOfDateBySubtractingDays:v17 fromDate:v18];
+        date = [MEMORY[0x277CBEAA8] date];
+        v19 = [currentCalendar hk_startOfDateBySubtractingDays:v17 fromDate:date];
 
         v20 = MEMORY[0x277CCDE38];
         v21 = [MEMORY[0x277CBEB98] setWithObject:v15];
@@ -426,20 +426,20 @@
   return v2;
 }
 
-- (BOOL)_isAuthorizedToAccessProfile:(id)a3
+- (BOOL)_isAuthorizedToAccessProfile:(id)profile
 {
-  v4 = a3;
-  if (-[HDHealthStoreClient hasEntitlement:](self, "hasEntitlement:", *MEMORY[0x277CCC8B0]) || [v4 profileType] == 1)
+  profileCopy = profile;
+  if (-[HDHealthStoreClient hasEntitlement:](self, "hasEntitlement:", *MEMORY[0x277CCC8B0]) || [profileCopy profileType] == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v7 = [v4 profileIdentifier];
-    v8 = [v7 type];
+    profileIdentifier = [profileCopy profileIdentifier];
+    type = [profileIdentifier type];
 
-    v5 = v8 == 100 && _HDIsUnitTesting != 0;
+    v5 = type == 100 && _HDIsUnitTesting != 0;
   }
 
   return v5;

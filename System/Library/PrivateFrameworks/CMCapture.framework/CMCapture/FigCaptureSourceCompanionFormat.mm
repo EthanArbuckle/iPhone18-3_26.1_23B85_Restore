@@ -1,6 +1,6 @@
 @interface FigCaptureSourceCompanionFormat
 - (CGPoint)sensorCenterOffset;
-- (FigCaptureSourceCompanionFormat)initWithCompanionFormatDictionary:(id)a3;
+- (FigCaptureSourceCompanionFormat)initWithCompanionFormatDictionary:(id)dictionary;
 - (id)description;
 - (void)dealloc;
 @end
@@ -24,54 +24,54 @@
   return result;
 }
 
-- (FigCaptureSourceCompanionFormat)initWithCompanionFormatDictionary:(id)a3
+- (FigCaptureSourceCompanionFormat)initWithCompanionFormatDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v25.receiver = self;
     v25.super_class = FigCaptureSourceCompanionFormat;
     v4 = [(FigCaptureSourceCompanionFormat *)&v25 init];
     if (v4)
     {
-      v4->_formatIndex = [objc_msgSend(a3 objectForKeyedSubscript:{@"Index", "intValue"}];
-      v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"Width", "intValue"}];
-      v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"Height", "intValue"}];
+      v4->_formatIndex = [objc_msgSend(dictionary objectForKeyedSubscript:{@"Index", "intValue"}];
+      v5 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"Width", "intValue"}];
+      v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"Height", "intValue"}];
       v4->_fesDimensions.width = v5;
       v4->_fesDimensions.height = v6;
-      v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"FESInputCropWidth", "intValue"}];
-      v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"FESInputCropHeight", "intValue"}];
+      v7 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"FESInputCropWidth", "intValue"}];
+      v8 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"FESInputCropHeight", "intValue"}];
       v4->_fesInputCropDimensions.width = v7;
       v4->_fesInputCropDimensions.height = v8;
-      v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"CropWidthForFES", "intValue"}];
-      v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"CropHeightForFES", "intValue"}];
+      v9 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"CropWidthForFES", "intValue"}];
+      v10 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"CropHeightForFES", "intValue"}];
       v4->_outputCropDimensionsWhenFesIsEnabled.width = v9;
       v4->_outputCropDimensionsWhenFesIsEnabled.height = v10;
-      v11 = [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798C988), "intValue"}];
-      v12 = [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798C980), "intValue"}];
+      v11 = [objc_msgSend(dictionary objectForKeyedSubscript:{*off_1E798C988), "intValue"}];
+      v12 = [objc_msgSend(dictionary objectForKeyedSubscript:{*off_1E798C980), "intValue"}];
       v4->_sensorDimensions.width = v11;
       v4->_sensorDimensions.height = v12;
-      v13 = [objc_msgSend(a3 objectForKeyedSubscript:{@"SensorCropWidth", "intValue"}];
-      v14 = [objc_msgSend(a3 objectForKeyedSubscript:{@"SensorCropHeight", "intValue"}];
+      v13 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SensorCropWidth", "intValue"}];
+      v14 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SensorCropHeight", "intValue"}];
       v4->_sensorCropDimensions.width = v13;
       v4->_sensorCropDimensions.height = v14;
-      v15 = [objc_msgSend(a3 objectForKeyedSubscript:{@"SensorCenterOffsetX", "intValue"}];
-      v16 = [objc_msgSend(a3 objectForKeyedSubscript:{@"SensorCenterOffsetY", "intValue"}];
+      v15 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SensorCenterOffsetX", "intValue"}];
+      v16 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SensorCenterOffsetY", "intValue"}];
       v4->_sensorCenterOffset.x = v15;
       v4->_sensorCenterOffset.y = v16;
-      v17 = [objc_msgSend(a3 objectForKeyedSubscript:{@"PostGDCCropWidth", "intValue"}];
-      v18 = [objc_msgSend(a3 objectForKeyedSubscript:{@"PostGDCCropHeight", "intValue"}];
+      v17 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"PostGDCCropWidth", "intValue"}];
+      v18 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"PostGDCCropHeight", "intValue"}];
       v4->_postGDCCropDimensions.width = v17;
       v4->_postGDCCropDimensions.height = v18;
-      v4->_sifrEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"SIFREnabled", "BOOLValue"}];
-      v19 = [objc_msgSend(a3 objectForKeyedSubscript:{@"HighQualitySensorWidth", "intValue"}];
-      v20 = [objc_msgSend(a3 objectForKeyedSubscript:{@"HighQualitySensorHeight", "intValue"}];
+      v4->_sifrEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SIFREnabled", "BOOLValue"}];
+      v19 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"HighQualitySensorWidth", "intValue"}];
+      v20 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"HighQualitySensorHeight", "intValue"}];
       v4->_highQualitySensorDimensions.width = v19;
       v4->_highQualitySensorDimensions.height = v20;
-      v21 = [objc_msgSend(a3 objectForKeyedSubscript:{@"GeometricDistortionCorrectedNativeWidth", "intValue"}];
-      v22 = [objc_msgSend(a3 objectForKeyedSubscript:{@"GeometricDistortionCorrectedNativeHeight", "intValue"}];
+      v21 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"GeometricDistortionCorrectedNativeWidth", "intValue"}];
+      v22 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"GeometricDistortionCorrectedNativeHeight", "intValue"}];
       v4->_geometricDistortionCorrectedNativeDimensions.width = v21;
       v4->_geometricDistortionCorrectedNativeDimensions.height = v22;
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"StereoVideoAEMaxGain", "floatValue"}];
+      [objc_msgSend(dictionary objectForKeyedSubscript:{@"StereoVideoAEMaxGain", "floatValue"}];
       v4->_stereoVideoAEMaxGain = v23;
     }
   }

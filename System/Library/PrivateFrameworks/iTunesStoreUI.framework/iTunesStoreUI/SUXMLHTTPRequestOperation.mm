@@ -1,22 +1,22 @@
 @interface SUXMLHTTPRequestOperation
-- (BOOL)_isAllowedURL:(id)a3 withURLBag:(id)a4;
-- (SUXMLHTTPRequestOperation)initWithRequestProperties:(id)a3;
+- (BOOL)_isAllowedURL:(id)l withURLBag:(id)bag;
+- (SUXMLHTTPRequestOperation)initWithRequestProperties:(id)properties;
 - (id)outputBlock;
 - (void)run;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SUXMLHTTPRequestOperation
 
-- (SUXMLHTTPRequestOperation)initWithRequestProperties:(id)a3
+- (SUXMLHTTPRequestOperation)initWithRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = SUXMLHTTPRequestOperation;
   v5 = [(SUXMLHTTPRequestOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     requestProperties = v5->_requestProperties;
     v5->_requestProperties = v6;
   }
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(SUXMLHTTPRequestOperation *)self lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -58,8 +58,8 @@
   if (!v4)
   {
     v10 = 0;
-    v14 = 0;
-    v13 = 0;
+    response = 0;
+    output = 0;
     goto LABEL_16;
   }
 
@@ -68,20 +68,20 @@
 
   if (!v7)
   {
-    v15 = [MEMORY[0x1E69D4938] sharedConfig];
-    v16 = [v15 shouldLog];
-    if ([v15 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 &= 2u;
     }
@@ -106,14 +106,14 @@ LABEL_14:
 
         v11 = SSError();
         v10 = 0;
-        v14 = 0;
-        v13 = 0;
+        response = 0;
+        output = 0;
         goto LABEL_15;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v30, v27}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v30, v27}];
       free(v23);
-      v26 = v18;
+      v26 = oSLogObject;
       SSFileLog();
     }
 
@@ -121,48 +121,48 @@ LABEL_14:
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E69E4808]);
-  v9 = [MEMORY[0x1E69E4738] provider];
-  [v8 setDataProvider:v9];
+  provider = [MEMORY[0x1E69E4738] provider];
+  [v8 setDataProvider:provider];
 
   [v8 setRequestProperties:self->_requestProperties];
   v28 = v5;
   v10 = [(SUXMLHTTPRequestOperation *)self runSubOperation:v8 returningError:&v28];
   v11 = v28;
 
-  v12 = [v8 dataProvider];
-  v13 = [v12 output];
+  dataProvider = [v8 dataProvider];
+  output = [dataProvider output];
 
-  v14 = [v8 response];
+  response = [v8 response];
   v5 = v8;
 LABEL_15:
 
   v5 = v11;
 LABEL_16:
-  v24 = [(SUXMLHTTPRequestOperation *)self outputBlock];
-  v25 = v24;
-  if (v24)
+  outputBlock = [(SUXMLHTTPRequestOperation *)self outputBlock];
+  v25 = outputBlock;
+  if (outputBlock)
   {
-    (*(v24 + 16))(v24, v10, v5, v14, v13);
+    (*(outputBlock + 16))(outputBlock, v10, v5, response, output);
     [(SUXMLHTTPRequestOperation *)self setOutputBlock:0];
   }
 }
 
-- (BOOL)_isAllowedURL:(id)a3 withURLBag:(id)a4
+- (BOOL)_isAllowedURL:(id)l withURLBag:(id)bag
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  bagCopy = bag;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if ([v5 isFileURL])
+  if ([lCopy isFileURL])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v6 valueForKey:@"p2-client-options"];
+    v8 = [bagCopy valueForKey:@"p2-client-options"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -170,12 +170,12 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v5 host];
+        host = [lCopy host];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __54__SUXMLHTTPRequestOperation__isAllowedURL_withURLBag___block_invoke;
         v13[3] = &unk_1E8164FC8;
-        v11 = v10;
+        v11 = host;
         v14 = v11;
         v15 = &v16;
         [v9 enumerateKeysAndObjectsUsingBlock:v13];

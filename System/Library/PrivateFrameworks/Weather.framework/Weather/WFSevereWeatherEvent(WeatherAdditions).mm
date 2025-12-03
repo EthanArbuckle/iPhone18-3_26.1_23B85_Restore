@@ -13,11 +13,11 @@
   v6 = [v3 objectForKey:0x28822C588];
   v7 = [v3 objectForKey:0x28822C5A8];
   v8 = [v3 objectForKey:0x28822C368];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  if (v9)
+  if (unsignedIntegerValue)
   {
-    v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v9];
+    unsignedIntegerValue = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:unsignedIntegerValue];
   }
 
   v10 = [v3 objectForKey:0x28822C5C8];
@@ -32,9 +32,9 @@
   }
 
   v12 = [v3 objectForKey:0x28822C5E8];
-  v13 = [v12 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v12 unsignedIntegerValue];
 
-  v14 = [a1 initWithIdentifier:v4 areaName:v5 eventDescription:v6 source:v7 expirationDate:v9 URL:v11 importance:v13];
+  v14 = [self initWithIdentifier:v4 areaName:v5 eventDescription:v6 source:v7 expirationDate:unsignedIntegerValue URL:v11 importance:unsignedIntegerValue2];
   return v14;
 }
 
@@ -42,34 +42,34 @@
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v17[0] = 0x28822C548;
-  v2 = [a1 identifier];
+  identifier = [self identifier];
   v17[1] = 0x28822C5E8;
-  v18[0] = v2;
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "importance")}];
+  v18[0] = identifier;
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "importance")}];
   v18[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v5 = [v4 mutableCopy];
 
-  v6 = [a1 areaName];
-  [v5 na_safeSetObject:v6 forKey:0x28822C568];
+  areaName = [self areaName];
+  [v5 na_safeSetObject:areaName forKey:0x28822C568];
 
-  v7 = [a1 eventDescription];
-  [v5 na_safeSetObject:v7 forKey:0x28822C588];
+  eventDescription = [self eventDescription];
+  [v5 na_safeSetObject:eventDescription forKey:0x28822C588];
 
-  v8 = [a1 source];
-  [v5 na_safeSetObject:v8 forKey:0x28822C5A8];
+  source = [self source];
+  [v5 na_safeSetObject:source forKey:0x28822C5A8];
 
-  v9 = [a1 URL];
-  v10 = [v9 absoluteString];
-  [v5 na_safeSetObject:v10 forKey:0x28822C5C8];
+  v9 = [self URL];
+  absoluteString = [v9 absoluteString];
+  [v5 na_safeSetObject:absoluteString forKey:0x28822C5C8];
 
-  v11 = [a1 expirationDate];
+  expirationDate = [self expirationDate];
 
-  if (v11)
+  if (expirationDate)
   {
     v12 = MEMORY[0x277CCABB0];
-    v13 = [a1 expirationDate];
-    [v13 timeIntervalSince1970];
+    expirationDate2 = [self expirationDate];
+    [expirationDate2 timeIntervalSince1970];
     v14 = [v12 numberWithDouble:?];
     [v5 setObject:v14 forKey:0x28822C368];
   }

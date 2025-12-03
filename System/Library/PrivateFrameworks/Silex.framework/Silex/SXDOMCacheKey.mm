@@ -1,32 +1,32 @@
 @interface SXDOMCacheKey
-- (BOOL)isEqual:(id)a3;
-- (SXDOMCacheKey)initWithLayoutOptions:(id)a3 hints:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SXDOMCacheKey)initWithLayoutOptions:(id)options hints:(id)hints;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SXDOMCacheKey
 
-- (SXDOMCacheKey)initWithLayoutOptions:(id)a3 hints:(id)a4
+- (SXDOMCacheKey)initWithLayoutOptions:(id)options hints:(id)hints
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  hintsCopy = hints;
   v12.receiver = self;
   v12.super_class = SXDOMCacheKey;
   v9 = [(SXDOMCacheKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_options, a3);
-    objc_storeStrong(&v10->_hints, a4);
+    objc_storeStrong(&v9->_options, options);
+    objc_storeStrong(&v10->_hints, hints);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (!v4)
+  equalCopy = equal;
+  if (!equalCopy)
   {
     goto LABEL_47;
   }
@@ -37,7 +37,7 @@
     goto LABEL_47;
   }
 
-  if (self == v4 || (options = self->_options, options == v4->_options) || (v6 = [(SXLayoutOptions *)options diffWithLayoutOptions:?]) == 0)
+  if (self == equalCopy || (options = self->_options, options == equalCopy->_options) || (v6 = [(SXLayoutOptions *)options diffWithLayoutOptions:?]) == 0)
   {
 LABEL_48:
     v10 = 1;
@@ -51,7 +51,7 @@ LABEL_48:
     goto LABEL_47;
   }
 
-  v9 = v4->_hints;
+  v9 = equalCopy->_hints;
   if (!v9 || hints != v9 && ![(SXJSONObject *)hints isEqual:?])
   {
     goto LABEL_47;
@@ -90,7 +90,7 @@ LABEL_49:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SXDOMCacheKey alloc];
   options = self->_options;

@@ -8,20 +8,20 @@
 - (id)_intents_encodeWithJSONEncoder:()INJSONSerialization codableDescription:
 {
   v4 = a3;
-  if ([a1 isFileURL] && (v5 = MEMORY[0x193AD70C0](a1)) != 0)
+  if ([self isFileURL] && (v5 = MEMORY[0x193AD70C0](self)) != 0)
   {
     v6 = v5;
-    v7 = [a1 absoluteString];
+    absoluteString = [self absoluteString];
     v8 = [v4 encodeObject:v6];
-    v9 = [v7 stringByAppendingFormat:@"?%@=%@", @"scope", v8];
+    absoluteString2 = [absoluteString stringByAppendingFormat:@"?%@=%@", @"scope", v8];
   }
 
   else
   {
-    v9 = [a1 absoluteString];
+    absoluteString2 = [self absoluteString];
   }
 
-  return v9;
+  return absoluteString2;
 }
 
 + (id)_intents_decodeWithJSONDecoder:()INJSONSerialization codableDescription:from:
@@ -34,10 +34,10 @@
   {
     v10 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v9];
     v11 = [v10 URL];
-    v12 = [v11 isFileURL];
+    isFileURL = [v11 isFileURL];
 
     v13 = MEMORY[0x1E695DFF8];
-    if (v12)
+    if (isFileURL)
     {
       v29 = v8;
       v14 = [v9 componentsSeparatedByString:@"?"];
@@ -49,8 +49,8 @@
       v31 = 0u;
       v32 = 0u;
       v28 = v10;
-      v16 = [v10 queryItems];
-      v17 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      queryItems = [v10 queryItems];
+      v17 = [queryItems countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v17)
       {
         v18 = v17;
@@ -61,17 +61,17 @@
           {
             if (*v32 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(queryItems);
             }
 
             v21 = *(*(&v31 + 1) + 8 * i);
-            v22 = [v21 name];
-            v23 = [v22 isEqualToString:@"scope"];
+            name = [v21 name];
+            v23 = [name isEqualToString:@"scope"];
 
             if (v23)
             {
-              v24 = [v21 value];
-              v25 = [v7 decodeObjectOfClass:objc_opt_class() from:v24];
+              value = [v21 value];
+              v25 = [v7 decodeObjectOfClass:objc_opt_class() from:value];
               if (v25)
               {
                 MEMORY[0x193AD70B0](v30, v25);
@@ -79,7 +79,7 @@
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+          v18 = [queryItems countByEnumeratingWithState:&v31 objects:v35 count:16];
         }
 
         while (v18);

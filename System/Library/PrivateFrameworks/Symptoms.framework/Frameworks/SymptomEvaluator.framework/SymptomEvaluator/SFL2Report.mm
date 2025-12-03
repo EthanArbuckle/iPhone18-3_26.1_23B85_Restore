@@ -15,20 +15,20 @@
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[SFL2Report cellularKnownGood](self, "cellularKnownGood")}];
   [v3 setObject:v5 forKeyedSubscript:@"cellularKnownGood"];
 
-  v6 = [(SFL2Report *)self cellularRadioTechnology];
-  if (v6 <= 10)
+  cellularRadioTechnology = [(SFL2Report *)self cellularRadioTechnology];
+  if (cellularRadioTechnology <= 10)
   {
-    if (v6 <= 4)
+    if (cellularRadioTechnology <= 4)
     {
-      if (v6 <= 1)
+      if (cellularRadioTechnology <= 1)
       {
-        if (!v6)
+        if (!cellularRadioTechnology)
         {
           v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_UNKNOWN";
           goto LABEL_50;
         }
 
-        if (v6 == 1)
+        if (cellularRadioTechnology == 1)
         {
           v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLOTHERS";
           goto LABEL_50;
@@ -37,12 +37,12 @@
         goto LABEL_49;
       }
 
-      if (v6 == 2)
+      if (cellularRadioTechnology == 2)
       {
         v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLLTE";
       }
 
-      else if (v6 == 3)
+      else if (cellularRadioTechnology == 3)
       {
         v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLGSM";
       }
@@ -53,14 +53,14 @@
       }
     }
 
-    else if (v6 > 7)
+    else if (cellularRadioTechnology > 7)
     {
-      if (v6 == 8)
+      if (cellularRadioTechnology == 8)
       {
         v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLTDSCDMA";
       }
 
-      else if (v6 == 9)
+      else if (cellularRadioTechnology == 9)
       {
         v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUMTS";
       }
@@ -71,12 +71,12 @@
       }
     }
 
-    else if (v6 == 5)
+    else if (cellularRadioTechnology == 5)
     {
       v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMA1X";
     }
 
-    else if (v6 == 6)
+    else if (cellularRadioTechnology == 6)
     {
       v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAEVDO";
     }
@@ -87,11 +87,11 @@
     }
   }
 
-  else if (v6 > 130)
+  else if (cellularRadioTechnology > 130)
   {
-    if (v6 > 133)
+    if (cellularRadioTechnology > 133)
     {
-      switch(v6)
+      switch(cellularRadioTechnology)
       {
         case 0x86:
           v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AC";
@@ -107,12 +107,12 @@
       goto LABEL_49;
     }
 
-    if (v6 == 131)
+    if (cellularRadioTechnology == 131)
     {
       v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11N";
     }
 
-    else if (v6 == 132)
+    else if (cellularRadioTechnology == 132)
     {
       v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOA";
     }
@@ -125,9 +125,9 @@
 
   else
   {
-    if (v6 <= 127)
+    if (cellularRadioTechnology <= 127)
     {
-      switch(v6)
+      switch(cellularRadioTechnology)
       {
         case 0xB:
           v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_NR";
@@ -141,16 +141,16 @@
       }
 
 LABEL_49:
-      v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v6];
+      v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", cellularRadioTechnology];
       goto LABEL_50;
     }
 
-    if (v6 == 128)
+    if (cellularRadioTechnology == 128)
     {
       v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11A";
     }
 
-    else if (v6 == 129)
+    else if (cellularRadioTechnology == 129)
     {
       v7 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11B";
     }
@@ -179,8 +179,8 @@ LABEL_50:
   v12 = [MEMORY[0x277CCABB0] numberWithInt:{-[SFL2Report cellularBandInfo](self, "cellularBandInfo")}];
   [v3 setObject:v12 forKeyedSubscript:@"cellularBandInfo"];
 
-  v13 = [(SFL2Report *)self cellularCellType];
-  [v3 setObject:v13 forKeyedSubscript:@"cellularCellType"];
+  cellularCellType = [(SFL2Report *)self cellularCellType];
+  [v3 setObject:cellularCellType forKeyedSubscript:@"cellularCellType"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInt:{-[SFL2Report cellularBandwidth](self, "cellularBandwidth")}];
   [v3 setObject:v14 forKeyedSubscript:@"cellularBandwidth"];
@@ -202,41 +202,41 @@ LABEL_50:
   v20 = [MEMORY[0x277CCABB0] numberWithBool:{-[SFL2Report cellularSliceActive](self, "cellularSliceActive")}];
   [v3 setObject:v20 forKeyedSubscript:@"cellularSliceActive"];
 
-  v21 = [(SFL2Report *)self cellularBand];
-  if ((v21 + 1) >= 4u)
+  cellularBand = [(SFL2Report *)self cellularBand];
+  if ((cellularBand + 1) >= 4u)
   {
-    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v21];
+    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", cellularBand];
   }
 
   else
   {
-    v22 = *(&off_27898A4A8 + (v21 + 1));
+    v22 = *(&off_27898A4A8 + (cellularBand + 1));
   }
 
   [v3 setObject:v22 forKeyedSubscript:@"cellularBand"];
 
-  v23 = [(SFL2Report *)self cellularMode];
-  if (v23 >= 4)
+  cellularMode = [(SFL2Report *)self cellularMode];
+  if (cellularMode >= 4)
   {
-    v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v23];
+    v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", cellularMode];
   }
 
   else
   {
-    v24 = *(&off_27898A4C8 + v23);
+    v24 = *(&off_27898A4C8 + cellularMode);
   }
 
   [v3 setObject:v24 forKeyedSubscript:@"cellularMode"];
 
-  v25 = [(SFL2Report *)self cellularDualSimStatus];
-  if (v25 >= 6)
+  cellularDualSimStatus = [(SFL2Report *)self cellularDualSimStatus];
+  if (cellularDualSimStatus >= 6)
   {
-    v26 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v25];
+    v26 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", cellularDualSimStatus];
   }
 
   else
   {
-    v26 = *(&off_27898A4E8 + v25);
+    v26 = *(&off_27898A4E8 + cellularDualSimStatus);
   }
 
   [v3 setObject:v26 forKeyedSubscript:@"cellularDualSimStatus"];
@@ -250,9 +250,9 @@ LABEL_50:
   v29 = [MEMORY[0x277CCABB0] numberWithBool:{-[SFL2Report cellularOutranksWiFi](self, "cellularOutranksWiFi")}];
   [v3 setObject:v29 forKeyedSubscript:@"cellularOutranksWifi"];
 
-  v30 = [(SFL2Report *)self cellularOutrankPrimaryReason];
+  cellularOutrankPrimaryReason = [(SFL2Report *)self cellularOutrankPrimaryReason];
   v31 = @"Unknown";
-  switch(v30)
+  switch(cellularOutrankPrimaryReason)
   {
     case -1:
       break;
@@ -416,7 +416,7 @@ LABEL_50:
       v31 = @"PrivateNetworkNoLongerActive";
       break;
     default:
-      v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v30];
+      v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", cellularOutrankPrimaryReason];
       break;
   }
 
@@ -434,20 +434,20 @@ LABEL_50:
   v35 = [MEMORY[0x277CCABB0] numberWithBool:{-[SFL2Report wifiKnownGood](self, "wifiKnownGood")}];
   [v3 setObject:v35 forKeyedSubscript:@"wifiKnownGood"];
 
-  v36 = [(SFL2Report *)self wifiRadioTechnology];
-  if (v36 <= 10)
+  wifiRadioTechnology = [(SFL2Report *)self wifiRadioTechnology];
+  if (wifiRadioTechnology <= 10)
   {
-    if (v36 <= 4)
+    if (wifiRadioTechnology <= 4)
     {
-      if (v36 <= 1)
+      if (wifiRadioTechnology <= 1)
       {
-        if (!v36)
+        if (!wifiRadioTechnology)
         {
           v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_UNKNOWN";
           goto LABEL_163;
         }
 
-        if (v36 == 1)
+        if (wifiRadioTechnology == 1)
         {
           v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLOTHERS";
           goto LABEL_163;
@@ -456,12 +456,12 @@ LABEL_50:
         goto LABEL_162;
       }
 
-      if (v36 == 2)
+      if (wifiRadioTechnology == 2)
       {
         v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLLTE";
       }
 
-      else if (v36 == 3)
+      else if (wifiRadioTechnology == 3)
       {
         v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLGSM";
       }
@@ -472,14 +472,14 @@ LABEL_50:
       }
     }
 
-    else if (v36 > 7)
+    else if (wifiRadioTechnology > 7)
     {
-      if (v36 == 8)
+      if (wifiRadioTechnology == 8)
       {
         v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLTDSCDMA";
       }
 
-      else if (v36 == 9)
+      else if (wifiRadioTechnology == 9)
       {
         v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLUMTS";
       }
@@ -490,12 +490,12 @@ LABEL_50:
       }
     }
 
-    else if (v36 == 5)
+    else if (wifiRadioTechnology == 5)
     {
       v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMA1X";
     }
 
-    else if (v36 == 6)
+    else if (wifiRadioTechnology == 6)
     {
       v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_CELLCDMAEVDO";
     }
@@ -506,11 +506,11 @@ LABEL_50:
     }
   }
 
-  else if (v36 > 130)
+  else if (wifiRadioTechnology > 130)
   {
-    if (v36 > 133)
+    if (wifiRadioTechnology > 133)
     {
-      switch(v36)
+      switch(wifiRadioTechnology)
       {
         case 0x86:
           v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11AC";
@@ -526,12 +526,12 @@ LABEL_50:
       goto LABEL_162;
     }
 
-    if (v36 == 131)
+    if (wifiRadioTechnology == 131)
     {
       v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11N";
     }
 
-    else if (v36 == 132)
+    else if (wifiRadioTechnology == 132)
     {
       v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFITURBOA";
     }
@@ -544,9 +544,9 @@ LABEL_50:
 
   else
   {
-    if (v36 <= 127)
+    if (wifiRadioTechnology <= 127)
     {
-      switch(v36)
+      switch(wifiRadioTechnology)
       {
         case 0xB:
           v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_NR";
@@ -560,16 +560,16 @@ LABEL_50:
       }
 
 LABEL_162:
-      v37 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v36];
+      v37 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", wifiRadioTechnology];
       goto LABEL_163;
     }
 
-    if (v36 == 128)
+    if (wifiRadioTechnology == 128)
     {
       v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11A";
     }
 
-    else if (v36 == 129)
+    else if (wifiRadioTechnology == 129)
     {
       v37 = @"NW_L2_RADIO_TECHNOLOGY_TYPE_WIFI11B";
     }
@@ -589,19 +589,19 @@ LABEL_163:
   v39 = [MEMORY[0x277CCABB0] numberWithBool:{-[SFL2Report wifiIsApplePersonalHotspot](self, "wifiIsApplePersonalHotspot")}];
   [v3 setObject:v39 forKeyedSubscript:@"wifiIsApplePersonalHotspot"];
 
-  v40 = [(SFL2Report *)self interfaceQueueStats];
-  if (v40 && (v41 = v40, -[SFL2Report interfaceQueueStats](self, "interfaceQueueStats"), v42 = objc_claimAutoreleasedReturnValue(), v43 = [v42 count], v42, v41, v43))
+  interfaceQueueStats = [(SFL2Report *)self interfaceQueueStats];
+  if (interfaceQueueStats && (v41 = interfaceQueueStats, -[SFL2Report interfaceQueueStats](self, "interfaceQueueStats"), v42 = objc_claimAutoreleasedReturnValue(), v43 = [v42 count], v42, v41, v43))
   {
     v66 = v3;
     v44 = objc_alloc(MEMORY[0x277CBEB18]);
-    v45 = [(SFL2Report *)self interfaceQueueStats];
-    v46 = [v44 initWithCapacity:{objc_msgSend(v45, "count")}];
+    interfaceQueueStats2 = [(SFL2Report *)self interfaceQueueStats];
+    v46 = [v44 initWithCapacity:{objc_msgSend(interfaceQueueStats2, "count")}];
 
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v65 = self;
+    selfCopy = self;
     obj = [(SFL2Report *)self interfaceQueueStats];
     v47 = [obj countByEnumeratingWithState:&v69 objects:v73 count:16];
     if (v47)
@@ -619,31 +619,31 @@ LABEL_163:
 
           v51 = *(*(&v69 + 1) + 8 * i);
           v52 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v53 = [v51 interfaceType];
-          if (v53 >= 5)
+          interfaceType = [v51 interfaceType];
+          if (interfaceType >= 5)
           {
-            v54 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v53];
+            v54 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", interfaceType];
           }
 
           else
           {
-            v54 = *(&off_27898A628 + v53);
+            v54 = *(&off_27898A628 + interfaceType);
           }
 
           [v52 setObject:v54 forKeyedSubscript:@"interfaceType"];
 
-          v55 = [v51 interfaceName];
-          [v52 setObject:v55 forKeyedSubscript:@"interfaceName"];
+          interfaceName = [v51 interfaceName];
+          [v52 setObject:interfaceName forKeyedSubscript:@"interfaceName"];
 
-          v56 = [v51 slot];
-          if (v56 >= 0xA)
+          slot = [v51 slot];
+          if (slot >= 0xA)
           {
-            v57 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v56];
+            v57 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", slot];
           }
 
           else
           {
-            v57 = *(&off_27898A518 + v56);
+            v57 = *(&off_27898A518 + slot);
           }
 
           [v52 setObject:v57 forKeyedSubscript:@"slot"];
@@ -669,7 +669,7 @@ LABEL_163:
     v3 = v66;
     [v66 setObject:v46 forKeyedSubscript:@"queueStats"];
 
-    self = v65;
+    self = selfCopy;
   }
 
   else
@@ -682,8 +682,8 @@ LABEL_163:
     }
   }
 
-  v62 = [(SFL2Report *)self activeRadio];
-  [v3 setObject:v62 forKeyedSubscript:@"activeRadio"];
+  activeRadio = [(SFL2Report *)self activeRadio];
+  [v3 setObject:activeRadio forKeyedSubscript:@"activeRadio"];
 
   v63 = *MEMORY[0x277D85DE8];
 
@@ -693,7 +693,7 @@ LABEL_163:
 - (id)description
 {
   v39 = objc_alloc(MEMORY[0x277CCACA8]);
-  v38 = [(SFL2Report *)self cellularLQM];
+  cellularLQM = [(SFL2Report *)self cellularLQM];
   v3 = "No";
   if ([(SFL2Report *)self cellularKnownGood])
   {
@@ -706,17 +706,17 @@ LABEL_163:
   }
 
   v37 = v4;
-  v36 = [(SFL2Report *)self cellularRadioTechnology];
-  v35 = [(SFL2Report *)self cellularMNC];
-  v34 = [(SFL2Report *)self cellularMCC];
-  v33 = [(SFL2Report *)self cellularUARFCN];
-  v32 = [(SFL2Report *)self cellularPID];
-  v31 = [(SFL2Report *)self cellularBandInfo];
-  v30 = [(SFL2Report *)self cellularCellType];
-  v29 = [(SFL2Report *)self cellularBandwidth];
-  v28 = [(SFL2Report *)self cellularTAC];
-  v27 = [(SFL2Report *)self cellularBars];
-  v26 = [(SFL2Report *)self cellularRSRP];
+  cellularRadioTechnology = [(SFL2Report *)self cellularRadioTechnology];
+  cellularMNC = [(SFL2Report *)self cellularMNC];
+  cellularMCC = [(SFL2Report *)self cellularMCC];
+  cellularUARFCN = [(SFL2Report *)self cellularUARFCN];
+  cellularPID = [(SFL2Report *)self cellularPID];
+  cellularBandInfo = [(SFL2Report *)self cellularBandInfo];
+  cellularCellType = [(SFL2Report *)self cellularCellType];
+  cellularBandwidth = [(SFL2Report *)self cellularBandwidth];
+  cellularTAC = [(SFL2Report *)self cellularTAC];
+  cellularBars = [(SFL2Report *)self cellularBars];
+  cellularRSRP = [(SFL2Report *)self cellularRSRP];
   [(SFL2Report *)self cellularSNR];
   v6 = v5;
   if ([(SFL2Report *)self cellularSliceActive])
@@ -730,16 +730,16 @@ LABEL_163:
   }
 
   v25 = v7;
-  v24 = [(SFL2Report *)self cellularBand];
-  v23 = [(SFL2Report *)self cellularMode];
-  v22 = [(SFL2Report *)self cellularDualSimStatus];
-  v21 = [(SFL2Report *)self cellularSecondaryMnc];
-  v20 = [(SFL2Report *)self cellularSecondaryMcc];
-  v19 = [(SFL2Report *)self cellularOutranksWiFi];
-  v8 = [(SFL2Report *)self cellularOutrankPrimaryReason];
-  v9 = [(SFL2Report *)self cellularOutrankReasonFlags];
-  v10 = [(SFL2Report *)self wifiLQM];
-  v11 = [(SFL2Report *)self wifiRSSI];
+  cellularBand = [(SFL2Report *)self cellularBand];
+  cellularMode = [(SFL2Report *)self cellularMode];
+  cellularDualSimStatus = [(SFL2Report *)self cellularDualSimStatus];
+  cellularSecondaryMnc = [(SFL2Report *)self cellularSecondaryMnc];
+  cellularSecondaryMcc = [(SFL2Report *)self cellularSecondaryMcc];
+  cellularOutranksWiFi = [(SFL2Report *)self cellularOutranksWiFi];
+  cellularOutrankPrimaryReason = [(SFL2Report *)self cellularOutrankPrimaryReason];
+  cellularOutrankReasonFlags = [(SFL2Report *)self cellularOutrankReasonFlags];
+  wifiLQM = [(SFL2Report *)self wifiLQM];
+  wifiRSSI = [(SFL2Report *)self wifiRSSI];
   if ([(SFL2Report *)self wifiKnownGood])
   {
     v12 = "Yes";
@@ -750,7 +750,7 @@ LABEL_163:
     v12 = "No";
   }
 
-  v13 = [(SFL2Report *)self wifiRadioTechnology];
+  wifiRadioTechnology = [(SFL2Report *)self wifiRadioTechnology];
   if ([(SFL2Report *)self wifiIsHotspot])
   {
     v14 = "Yes";
@@ -766,9 +766,9 @@ LABEL_163:
     v3 = "Yes";
   }
 
-  v15 = [(SFL2Report *)self interfaceQueueStats];
-  v16 = [(SFL2Report *)self activeRadio];
-  v17 = [v39 initWithFormat:@"<NWL2Report:\n\tCellular LQM:\t\t\t%d\n\tCellular Known Good:\t\t%s\n\tCellular Radio Technology:\t%d\n\tCellular MNC:\t\t\t%d\n\tCellular MCC:\t\t\t%d\n\tCellular UARFCN:\t\t%d\n\tCellular PID:\t\t\t%d\n\tCellular Band Info:\t\t%d\n\tCellular Cell Type:\t\t%@\n\tCellular Bandwidth:\t\t%d\n\tCellular TAC:\t\t\t%d\n\tCellular Bars:\t\t\t%d\n\tCellular RSRP:\t\t\t%d\n\tCellular SNR:\t\t\t%f\n\tCellular Slice Active:\t%s\n\tCellular Band:\t\t\t%u\n\tCellular Mode:\t\t%u\n\tCellular Dual SIM Status:\t%d\n\tCellular Secondary MNC:\t\t%d\n\tCellular Secondary MCC:\t\t%d\n\tCellular Outranks Wi-Fi:\t\t%d\n\tCellular Outrank Primary Reason:\t\t%d\n\tCellular Outrank Reason Flags:\t\t%llu\n\tWi-Fi LQM:\t\t\t%d\n\tWi-Fi RSSI:\t\t\t%d\n\tWi-Fi Known Good:\t\t%s\n\tWi-Fi Radio Technology:\t\t%d\n\tWi-Fi Is Hotspot:\t\t%s\n\tWi-Fi Is Apple Personal Hotspot:\t\t%s\n\tInterface Queue Stats:\t\t%@\n\tActive Radio:\t\t\t%@\n>", v38, v37, v36, v35, v34, v33, v32, v31, v30, v29, v28, v27, v26, v6, v25, v24, v23, v22, v21, v20, v19, v8, v9, v10, v11, v12, v13, v14, v3, v15, v16];
+  interfaceQueueStats = [(SFL2Report *)self interfaceQueueStats];
+  activeRadio = [(SFL2Report *)self activeRadio];
+  v17 = [v39 initWithFormat:@"<NWL2Report:\n\tCellular LQM:\t\t\t%d\n\tCellular Known Good:\t\t%s\n\tCellular Radio Technology:\t%d\n\tCellular MNC:\t\t\t%d\n\tCellular MCC:\t\t\t%d\n\tCellular UARFCN:\t\t%d\n\tCellular PID:\t\t\t%d\n\tCellular Band Info:\t\t%d\n\tCellular Cell Type:\t\t%@\n\tCellular Bandwidth:\t\t%d\n\tCellular TAC:\t\t\t%d\n\tCellular Bars:\t\t\t%d\n\tCellular RSRP:\t\t\t%d\n\tCellular SNR:\t\t\t%f\n\tCellular Slice Active:\t%s\n\tCellular Band:\t\t\t%u\n\tCellular Mode:\t\t%u\n\tCellular Dual SIM Status:\t%d\n\tCellular Secondary MNC:\t\t%d\n\tCellular Secondary MCC:\t\t%d\n\tCellular Outranks Wi-Fi:\t\t%d\n\tCellular Outrank Primary Reason:\t\t%d\n\tCellular Outrank Reason Flags:\t\t%llu\n\tWi-Fi LQM:\t\t\t%d\n\tWi-Fi RSSI:\t\t\t%d\n\tWi-Fi Known Good:\t\t%s\n\tWi-Fi Radio Technology:\t\t%d\n\tWi-Fi Is Hotspot:\t\t%s\n\tWi-Fi Is Apple Personal Hotspot:\t\t%s\n\tInterface Queue Stats:\t\t%@\n\tActive Radio:\t\t\t%@\n>", cellularLQM, v37, cellularRadioTechnology, cellularMNC, cellularMCC, cellularUARFCN, cellularPID, cellularBandInfo, cellularCellType, cellularBandwidth, cellularTAC, cellularBars, cellularRSRP, v6, v25, cellularBand, cellularMode, cellularDualSimStatus, cellularSecondaryMnc, cellularSecondaryMcc, cellularOutranksWiFi, cellularOutrankPrimaryReason, cellularOutrankReasonFlags, wifiLQM, wifiRSSI, v12, wifiRadioTechnology, v14, v3, interfaceQueueStats, activeRadio];
 
   return v17;
 }

@@ -15,18 +15,18 @@
   }
 
   v5 = v4;
-  v6 = [a1 localizationKey];
-  v7 = [v6 stringByAppendingString:v5];
+  localizationKey = [self localizationKey];
+  v7 = [localizationKey stringByAppendingString:v5];
 
   return v7;
 }
 
 + (BOOL)enabled
 {
-  v2 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  v3 = [v2 canUseVoiceTriggerDuringPhoneCall];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  canUseVoiceTriggerDuringPhoneCall = [mEMORY[0x277D7A8D0] canUseVoiceTriggerDuringPhoneCall];
 
-  return v3;
+  return canUseVoiceTriggerDuringPhoneCall;
 }
 
 @end

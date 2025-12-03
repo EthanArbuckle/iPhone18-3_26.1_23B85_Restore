@@ -1,19 +1,19 @@
 @interface _UIAlertControllerTransitioningDelegate
-- (BOOL)_isSolariumActionSheet:(id)a3;
-- (id)_interactionControllerForTransitionOfType:(int64_t)a3 forAlertController:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)interactionControllerForPresentation:(id)a3;
+- (BOOL)_isSolariumActionSheet:(id)sheet;
+- (id)_interactionControllerForTransitionOfType:(int64_t)type forAlertController:(id)controller;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)interactionControllerForPresentation:(id)presentation;
 @end
 
 @implementation _UIAlertControllerTransitioningDelegate
 
-- (BOOL)_isSolariumActionSheet:(id)a3
+- (BOOL)_isSolariumActionSheet:(id)sheet
 {
-  v3 = a3;
-  if (_UISolariumEnabled() && ![v3 preferredStyle])
+  sheetCopy = sheet;
+  if (_UISolariumEnabled() && ![sheetCopy preferredStyle])
   {
-    v4 = [v3 _forceAlertStyle] ^ 1;
+    v4 = [sheetCopy _forceAlertStyle] ^ 1;
   }
 
   else
@@ -24,15 +24,15 @@
   return v4;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v7 = a4;
-  v8 = a3;
+  presentingControllerCopy = presentingController;
+  controllerCopy = controller;
   v9 = [_UIAlertControllerAnimatedTransitioning alloc];
-  v10 = [(_UIAlertControllerTransitioningDelegate *)self interactionProgressForPresentation];
-  v11 = [(_UIAlertControllerAnimatedTransitioning *)v9 initWithInteractionProgress:v10];
+  interactionProgressForPresentation = [(_UIAlertControllerTransitioningDelegate *)self interactionProgressForPresentation];
+  v11 = [(_UIAlertControllerAnimatedTransitioning *)v9 initWithInteractionProgress:interactionProgressForPresentation];
 
-  v12 = [UIAlertController _alertControllerContainedInViewController:v8];
+  v12 = [UIAlertController _alertControllerContainedInViewController:controllerCopy];
 
   if ([(_UIAlertControllerTransitioningDelegate *)self _isSolariumActionSheet:v12])
   {
@@ -42,8 +42,8 @@
   else
   {
     [(_UIAlertControllerAnimatedTransitioning *)v11 setAlertController:v12];
-    v14 = [v7 traitCollection];
-    [v12 _updateProvidedStyleWithTraitCollection:v14];
+    traitCollection = [presentingControllerCopy traitCollection];
+    [v12 _updateProvidedStyleWithTraitCollection:traitCollection];
 
     [(_UIAlertControllerAnimatedTransitioning *)v11 setPresentation:1];
     v13 = v11;
@@ -52,11 +52,11 @@
   return v13;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_alloc_init(_UIAlertControllerAnimatedTransitioning);
-  v6 = [UIAlertController _alertControllerContainedInViewController:v4];
+  v6 = [UIAlertController _alertControllerContainedInViewController:controllerCopy];
 
   if ([(_UIAlertControllerTransitioningDelegate *)self _isSolariumActionSheet:v6])
   {
@@ -73,32 +73,32 @@
   return v7;
 }
 
-- (id)_interactionControllerForTransitionOfType:(int64_t)a3 forAlertController:(id)a4
+- (id)_interactionControllerForTransitionOfType:(int64_t)type forAlertController:(id)controller
 {
-  v5 = a4;
-  v6 = [v5 _visualStyle];
-  if (-[_UIAlertControllerTransitioningDelegate _isSolariumActionSheet:](self, "_isSolariumActionSheet:", v5) || ![v6 transitionOfType:0 shouldBeInteractiveForAlertController:v5])
+  controllerCopy = controller;
+  _visualStyle = [controllerCopy _visualStyle];
+  if (-[_UIAlertControllerTransitioningDelegate _isSolariumActionSheet:](self, "_isSolariumActionSheet:", controllerCopy) || ![_visualStyle transitionOfType:0 shouldBeInteractiveForAlertController:controllerCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v6 interactionProgressForTransitionOfType:0 forAlertController:v5];
+    v7 = [_visualStyle interactionProgressForTransitionOfType:0 forAlertController:controllerCopy];
 
     if (v7)
     {
       v7 = objc_alloc_init(_UIAlertControllerInteractionController);
-      [(_UIAlertControllerInteractionController *)v7 setAlertController:v5];
+      [(_UIAlertControllerInteractionController *)v7 setAlertController:controllerCopy];
     }
   }
 
   return v7;
 }
 
-- (id)interactionControllerForPresentation:(id)a3
+- (id)interactionControllerForPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -128,15 +128,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 alertController];
-    if ([(_UIAlertControllerTransitioningDelegate *)self _isSolariumActionSheet:v7])
+    alertController = [presentationCopy alertController];
+    if ([(_UIAlertControllerTransitioningDelegate *)self _isSolariumActionSheet:alertController])
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = [(_UIAlertControllerTransitioningDelegate *)self _interactionControllerForTransitionOfType:0 forAlertController:v7];
+      v8 = [(_UIAlertControllerTransitioningDelegate *)self _interactionControllerForTransitionOfType:0 forAlertController:alertController];
     }
   }
 

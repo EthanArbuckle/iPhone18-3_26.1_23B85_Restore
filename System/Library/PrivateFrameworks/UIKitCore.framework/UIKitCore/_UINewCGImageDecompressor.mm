@@ -2,10 +2,10 @@
 + (CMPhotoDecompressionSession)_sharedDecompressionSession;
 - (CGImage)waitForImageRef;
 - (_UINewCGImageDecompressor)init;
-- (id)initWithSourceImage:(void *)a3 completionQueue:;
-- (void)_finishDecompressingWithImage:(CGImage *)a3 error:(id)a4;
+- (id)initWithSourceImage:(void *)image completionQueue:;
+- (void)_finishDecompressingWithImage:(CGImage *)image error:(id)error;
 - (void)dealloc;
-- (void)decompressAsync:(uint64_t)a1;
+- (void)decompressAsync:(uint64_t)async;
 @end
 
 @implementation _UINewCGImageDecompressor
@@ -117,29 +117,29 @@
   objc_exception_throw(v2);
 }
 
-- (id)initWithSourceImage:(void *)a3 completionQueue:
+- (id)initWithSourceImage:(void *)image completionQueue:
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  imageCopy = image;
+  if (self)
   {
     if (!a2)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:sel_initWithSourceImage_completionQueue_ object:a1 file:@"_UINewCGImageDecompressor.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"imageRef != NULL"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithSourceImage_completionQueue_ object:self file:@"_UINewCGImageDecompressor.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"imageRef != NULL"}];
     }
 
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = _UINewCGImageDecompressor;
-    a1 = objc_msgSendSuper2(&v17, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v17, sel_init);
+    if (self)
     {
       v6 = CGImageCopySourceData();
       if (!v6)
       {
 LABEL_13:
 
-        a1 = 0;
+        self = 0;
         goto LABEL_14;
       }
 
@@ -181,15 +181,15 @@ LABEL_11:
         if (!Container)
         {
           v11 = dispatch_queue_attr_make_initially_inactive(0);
-          v12 = dispatch_queue_create_with_target_V2("com.apple.UIKit.decompressor-reply", v11, v5);
-          v13 = *(a1 + 3);
-          *(a1 + 3) = v12;
+          v12 = dispatch_queue_create_with_target_V2("com.apple.UIKit.decompressor-reply", v11, imageCopy);
+          v13 = *(self + 3);
+          *(self + 3) = v12;
 
           v14 = dispatch_semaphore_create(0);
-          v15 = *(a1 + 4);
-          *(a1 + 4) = v14;
+          v15 = *(self + 4);
+          *(self + 4) = v14;
 
-          *(a1 + 10) = 0;
+          *(self + 10) = 0;
           goto LABEL_14;
         }
       }
@@ -208,43 +208,43 @@ LABEL_11:
 
 LABEL_14:
 
-  return a1;
+  return self;
 }
 
-- (void)_finishDecompressingWithImage:(CGImage *)a3 error:(id)a4
+- (void)_finishDecompressingWithImage:(CGImage *)image error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  errorCopy = error;
+  v8 = errorCopy;
+  if (image)
   {
     v9 = UIDecompressorLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v15 = 134217984;
-      v16 = a3;
+      imageCopy = image;
       _os_log_debug_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEBUG, "Decode finished with image=%p", &v15, 0xCu);
     }
 
-    v10 = CGImageRetain(a3);
+    v10 = CGImageRetain(image);
     imageOrError = self->_imageOrError;
     self->_imageOrError = v10;
   }
 
-  else if (v7)
+  else if (errorCopy)
   {
     v12 = UIDecompressorLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v8 domain];
+      domain = [v8 domain];
       v15 = 138412546;
-      v16 = v14;
+      imageCopy = domain;
       v17 = 1024;
-      v18 = [v8 code];
+      code = [v8 code];
       _os_log_debug_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEBUG, "Decode failed with error.domain=%@ error.code=%d", &v15, 0x12u);
     }
 
-    objc_storeStrong(&self->_imageOrError, a4);
+    objc_storeStrong(&self->_imageOrError, error);
     *&self->_flags |= 4u;
   }
 
@@ -259,13 +259,13 @@ LABEL_14:
   dispatch_activate(self->_replyQueue);
 }
 
-- (void)decompressAsync:(uint64_t)a1
+- (void)decompressAsync:(uint64_t)async
 {
   v3 = a2;
-  if (a1)
+  if (async)
   {
-    v4 = os_unfair_lock_trylock((a1 + 40));
-    if (!v4 || (*(a1 + 44) & 1) != 0)
+    v4 = os_unfair_lock_trylock((async + 40));
+    if (!v4 || (*(async + 44) & 1) != 0)
     {
       v13 = UIDecompressorLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -274,18 +274,18 @@ LABEL_14:
         _os_log_debug_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEBUG, "Async decode lost race, enqueueing deferred reply", buf, 2u);
       }
 
-      v14 = *(a1 + 24);
+      v14 = *(async + 24);
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __45___UINewCGImageDecompressor_decompressAsync___block_invoke;
       v25[3] = &unk_1E70F37C0;
-      v25[4] = a1;
+      v25[4] = async;
       v6 = &v26;
       v26 = v3;
       dispatch_async(v14, v25);
       if (v4)
       {
-        os_unfair_lock_unlock((a1 + 40));
+        os_unfair_lock_unlock((async + 40));
       }
     }
 
@@ -298,13 +298,13 @@ LABEL_14:
         _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "Async decode beginning", buf, 2u);
       }
 
-      *(a1 + 44) |= 1u;
-      os_unfair_lock_unlock((a1 + 40));
+      *(async + 44) |= 1u;
+      os_unfair_lock_unlock((async + 40));
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v21 = __45___UINewCGImageDecompressor_decompressAsync___block_invoke_18;
       v22 = &unk_1E710D7C8;
-      v23 = a1;
+      asyncCopy = async;
       v6 = &v24;
       v7 = v3;
       v24 = v7;
@@ -313,8 +313,8 @@ LABEL_14:
       {
         v9 = v8;
         v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v8 userInfo:0];
-        [a1 _finishDecompressingWithImage:0 error:v10];
-        v11 = *(a1 + 24);
+        [async _finishDecompressingWithImage:0 error:v10];
+        v11 = *(async + 24);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __45___UINewCGImageDecompressor_decompressAsync___block_invoke_21;

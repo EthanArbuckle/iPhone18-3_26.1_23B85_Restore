@@ -1,7 +1,7 @@
 @interface PLFeatureAvailabilityConfig
 - (NSDictionary)dictionary;
 - (PLFeatureAvailabilityConfig)init;
-- (PLFeatureAvailabilityConfig)initWithFeature:(unint64_t)a3;
+- (PLFeatureAvailabilityConfig)initWithFeature:(unint64_t)feature;
 @end
 
 @implementation PLFeatureAvailabilityConfig
@@ -45,20 +45,20 @@
   return v15;
 }
 
-- (PLFeatureAvailabilityConfig)initWithFeature:(unint64_t)a3
+- (PLFeatureAvailabilityConfig)initWithFeature:(unint64_t)feature
 {
   v4 = [(PLFeatureAvailabilityConfig *)self init];
   v5 = v4;
   if (v4)
   {
-    if (a3 - 2 < 2)
+    if (feature - 2 < 2)
     {
       v4->_fractionOfAllAssetsWithMediaAnalysisInSearchIndexThreshold = 0.9;
     }
 
     else
     {
-      if (a3 == 1)
+      if (feature == 1)
       {
         __asm { FMOV            V0.2D, #0.75 }
 
@@ -68,7 +68,7 @@
         goto LABEL_8;
       }
 
-      if (a3 == 6)
+      if (feature == 6)
       {
         v4->_fractionOfCuratedAssetsWithCaptionsThreshold = 0.9;
         v4->_fractionOfAllAssetsWithMediaAnalysisInSearchIndexThreshold = 0.8;

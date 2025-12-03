@@ -1,39 +1,39 @@
 @interface MKMapView
-- ($873BFAB23BBB6E2F0B0288ED2F935688)clampRect:(id)a3 toMinZoom:(id)a4 maxZoom:(id)a5;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)clampRect:(id)a3 toMinZoom:(id)a4 maxZoom:(id)a5 withFixedPoint:(id)a6;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)displayMapRegionForSearchResult:(id)a3;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectContainingSearchResults:(id)a3;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectContainingSearchResults:(id)a3 edgePadding:(UIEdgeInsets)a4;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectThatFits:(id)a3 minMetersPerPoint:(double)a4;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)regionForSearchResults:(id)a3 suggestedRegion:(id)a4 minZoom:(id)a5 maxZoom:(id)a6 disableAdditionalViewportPadding:(BOOL)a7;
-- (BOOL)isCoordinateVisible:(CLLocationCoordinate2D)a3;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)clampRect:(id)rect toMinZoom:(id)zoom maxZoom:(id)maxZoom;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)clampRect:(id)rect toMinZoom:(id)zoom maxZoom:(id)maxZoom withFixedPoint:(id)point;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)displayMapRegionForSearchResult:(id)result;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectContainingSearchResults:(id)results;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectContainingSearchResults:(id)results edgePadding:(UIEdgeInsets)padding;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectThatFits:(id)fits minMetersPerPoint:(double)point;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)regionForSearchResults:(id)results suggestedRegion:(id)region minZoom:(id)zoom maxZoom:(id)maxZoom disableAdditionalViewportPadding:(BOOL)padding;
+- (BOOL)isCoordinateVisible:(CLLocationCoordinate2D)visible;
 - (UIEdgeInsets)defaultInsetsForBalloonCallout;
 - (UIEdgeInsets)defaultInsetsForPinAnnotations;
 - (UIEdgeInsets)splitViewInsetsForPinAnnotations;
 - (id)snapshotImage;
-- (id)snapshotImageWithScale:(double)a3 allowSnapshotting:(BOOL)a4;
+- (id)snapshotImageWithScale:(double)scale allowSnapshotting:(BOOL)snapshotting;
 - (id)snapshotOptions;
-- (void)_performFlyoverAnnouncementAnimation:(id)a3;
-- (void)animateToVisibleMapRect:(id)a3 usingDefaultAnimationDuration:(BOOL)a4 resetHeading:(BOOL)a5 completion:(id)a6;
-- (void)getRapSnapshotImageDataWithCompletion:(id)a3;
-- (void)goToSearchResults:(id)a3 mapRegion:(id)a4 requireMapMovement:(BOOL)a5 setCameraFromMapItemViewportFrame:(BOOL)a6 animation:(int64_t)a7 minZoom:(id)a8 maxZoom:(id)a9 disableAdditionalViewportPadding:(BOOL)a10 completion:(id)a11;
+- (void)_performFlyoverAnnouncementAnimation:(id)animation;
+- (void)animateToVisibleMapRect:(id)rect usingDefaultAnimationDuration:(BOOL)duration resetHeading:(BOOL)heading completion:(id)completion;
+- (void)getRapSnapshotImageDataWithCompletion:(id)completion;
+- (void)goToSearchResults:(id)results mapRegion:(id)region requireMapMovement:(BOOL)movement setCameraFromMapItemViewportFrame:(BOOL)frame animation:(int64_t)animation minZoom:(id)zoom maxZoom:(id)maxZoom disableAdditionalViewportPadding:(BOOL)self0 completion:(id)self1;
 @end
 
 @implementation MKMapView
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)clampRect:(id)a3 toMinZoom:(id)a4 maxZoom:(id)a5 withFixedPoint:(id)a6
+- ($873BFAB23BBB6E2F0B0288ED2F935688)clampRect:(id)rect toMinZoom:(id)zoom maxZoom:(id)maxZoom withFixedPoint:(id)point
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v9 = a3.var1.var1;
-  v10 = a3.var1.var0;
-  v11 = a3.var0.var1;
-  v12 = a3.var0.var0;
-  v14 = a4;
-  v15 = a5;
+  var1 = point.var1;
+  var0 = point.var0;
+  v9 = rect.var1.var1;
+  v10 = rect.var1.var0;
+  v11 = rect.var0.var1;
+  v12 = rect.var0.var0;
+  zoomCopy = zoom;
+  maxZoomCopy = maxZoom;
   [(MKMapView *)self _zoomLevelForMapRect:0 includeAccessoryPadding:v12, v11, v10, v9];
   v17 = v16;
-  if (v14 && ([v14 doubleValue], v18 = v14, v17 < v19) || v15 && (objc_msgSend(v15, "doubleValue"), v18 = v15, v17 > v20))
+  if (zoomCopy && ([zoomCopy doubleValue], v18 = zoomCopy, v17 < v19) || maxZoomCopy && (objc_msgSend(maxZoomCopy, "doubleValue"), v18 = maxZoomCopy, v17 > v20))
   {
     [v18 doubleValue];
     v22 = exp2(v17 - v21);
@@ -54,9 +54,9 @@
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)clampRect:(id)a3 toMinZoom:(id)a4 maxZoom:(id)a5
+- ($873BFAB23BBB6E2F0B0288ED2F935688)clampRect:(id)rect toMinZoom:(id)zoom maxZoom:(id)maxZoom
 {
-  [(MKMapView *)self clampRect:a4 toMinZoom:a5 maxZoom:a3.var0.var0 withFixedPoint:a3.var0.var1, a3.var1.var0, a3.var1.var1, a3.var0.var0 + a3.var1.var0 * 0.5, a3.var0.var1 + a3.var1.var1 * 0.5];
+  [(MKMapView *)self clampRect:zoom toMinZoom:maxZoom maxZoom:rect.var0.var0 withFixedPoint:rect.var0.var1, rect.var1.var0, rect.var1.var1, rect.var0.var0 + rect.var1.var0 * 0.5, rect.var0.var1 + rect.var1.var1 * 0.5];
   result.var1.var1 = v8;
   result.var1.var0 = v7;
   result.var0.var1 = v6;
@@ -64,13 +64,13 @@
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)displayMapRegionForSearchResult:(id)a3
+- ($873BFAB23BBB6E2F0B0288ED2F935688)displayMapRegionForSearchResult:(id)result
 {
-  v3 = [a3 mapItem];
-  v4 = [v3 _geoMapItem];
-  v5 = [v4 displayMapRegionOrNil];
+  mapItem = [result mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  displayMapRegionOrNil = [_geoMapItem displayMapRegionOrNil];
 
-  if (v5)
+  if (displayMapRegionOrNil)
   {
     GEOMapRectForMapRegion();
     x = v6;
@@ -98,23 +98,23 @@
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)regionForSearchResults:(id)a3 suggestedRegion:(id)a4 minZoom:(id)a5 maxZoom:(id)a6 disableAdditionalViewportPadding:(BOOL)a7
+- ($873BFAB23BBB6E2F0B0288ED2F935688)regionForSearchResults:(id)results suggestedRegion:(id)region minZoom:(id)zoom maxZoom:(id)maxZoom disableAdditionalViewportPadding:(BOOL)padding
 {
-  v7 = a7;
-  var1 = a4.var1.var1;
-  var0 = a4.var1.var0;
-  v12 = a4.var0.var1;
-  v13 = a4.var0.var0;
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
+  paddingCopy = padding;
+  var1 = region.var1.var1;
+  var0 = region.var1.var0;
+  v12 = region.var0.var1;
+  v13 = region.var0.var0;
+  resultsCopy = results;
+  zoomCopy = zoom;
+  maxZoomCopy = maxZoom;
   if ([(MKMapView *)self rectIsEmpty:v13, v12, var0, var1])
   {
-    if ([v15 count] != 1)
+    if ([resultsCopy count] != 1)
     {
-      v18 = 0;
+      firstObject = 0;
 LABEL_21:
-      [(MKMapView *)self mapRectContainingSearchResults:v15];
+      [(MKMapView *)self mapRectContainingSearchResults:resultsCopy];
       v13 = v30;
       v12 = v31;
       var0 = v32;
@@ -123,11 +123,11 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v18 = [v15 firstObject];
+    firstObject = [resultsCopy firstObject];
 LABEL_16:
-    if (v18)
+    if (firstObject)
     {
-      [(MKMapView *)self displayMapRegionForSearchResult:v18];
+      [(MKMapView *)self displayMapRegionForSearchResult:firstObject];
       v13 = v25;
       v12 = v26;
       var0 = v27;
@@ -146,7 +146,7 @@ LABEL_16:
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v19 = v15;
+  v19 = resultsCopy;
   v20 = [v19 countByEnumeratingWithState:&v93 objects:v97 count:16];
   if (v20)
   {
@@ -189,7 +189,7 @@ LABEL_14:
 
   if ([v19 count] != 1)
   {
-    v18 = 0;
+    firstObject = 0;
     if ((v24 & 1) == 0)
     {
       goto LABEL_28;
@@ -198,7 +198,7 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v18 = [v19 firstObject];
+  firstObject = [v19 firstObject];
   if (v24)
   {
     goto LABEL_16;
@@ -206,10 +206,10 @@ LABEL_14:
 
   v29 = 0;
 LABEL_22:
-  if (v18)
+  if (firstObject)
   {
 LABEL_23:
-    [v18 coordinate];
+    [firstObject coordinate];
     v102 = MKMapPointForCoordinate(v99);
     v105.origin.x = v13;
     v105.origin.y = v12;
@@ -217,7 +217,7 @@ LABEL_23:
     v105.size.height = var1;
     if (!MKMapRectContainsPoint(v105, v102))
     {
-      [(MKMapView *)self displayMapRegionForSearchResult:v18];
+      [(MKMapView *)self displayMapRegionForSearchResult:firstObject];
       v13 = v34;
       v12 = v35;
       var0 = v36;
@@ -225,45 +225,45 @@ LABEL_23:
       v29 = [(MKMapView *)self rectIsEmpty:?];
     }
 
-    v38 = [v18 mapItem];
-    if ([v38 _hasVenueFeatureType])
+    mapItem = [firstObject mapItem];
+    if ([mapItem _hasVenueFeatureType])
     {
-      v39 = [v18 mapItem];
-      if ([v39 _venueFeatureType] == 1)
+      mapItem2 = [firstObject mapItem];
+      if ([mapItem2 _venueFeatureType] == 1)
       {
       }
 
       else
       {
-        [v18 mapItem];
+        [firstObject mapItem];
         v49 = v29;
-        v50 = v15;
-        v51 = v16;
-        v52 = v17;
-        v54 = v53 = v7;
-        v91 = [v54 _venueFeatureType];
+        v50 = resultsCopy;
+        v51 = zoomCopy;
+        v52 = maxZoomCopy;
+        v54 = v53 = paddingCopy;
+        _venueFeatureType = [v54 _venueFeatureType];
 
-        v7 = v53;
-        v17 = v52;
-        v16 = v51;
-        v15 = v50;
+        paddingCopy = v53;
+        maxZoomCopy = v52;
+        zoomCopy = v51;
+        resultsCopy = v50;
         v29 = v49;
 
-        if (v91 != 2)
+        if (_venueFeatureType != 2)
         {
           goto LABEL_36;
         }
       }
 
-      v55 = [v18 mapItem];
-      v56 = [v55 _hasDisplayMaxZoom];
+      mapItem3 = [firstObject mapItem];
+      _hasDisplayMaxZoom = [mapItem3 _hasDisplayMaxZoom];
 
-      if (!v56)
+      if (!_hasDisplayMaxZoom)
       {
 LABEL_36:
         if (v29)
         {
-          [v18 coordinate];
+          [firstObject coordinate];
           MKMapRectMakeWithRadialDistance();
           v13 = v62;
           v12 = v63;
@@ -272,7 +272,7 @@ LABEL_36:
         }
 
         v40 = 0;
-        if (v7)
+        if (paddingCopy)
         {
           goto LABEL_39;
         }
@@ -286,16 +286,16 @@ LABEL_29:
         goto LABEL_40;
       }
 
-      v57 = [v18 mapItem];
-      [v57 _displayMaxZoom];
+      mapItem4 = [firstObject mapItem];
+      [mapItem4 _displayMaxZoom];
       [(MKMapView *)self _mapKitZoomLevelForVectorKitTileZoomLevel:v58];
-      v38 = [NSNumber numberWithDouble:?];
+      mapItem = [NSNumber numberWithDouble:?];
 
-      if (!v16 || ([v38 floatValue], v60 = v59, objc_msgSend(v16, "floatValue"), v60 > v61))
+      if (!zoomCopy || ([mapItem floatValue], v60 = v59, objc_msgSend(zoomCopy, "floatValue"), v60 > v61))
       {
-        v38 = v38;
+        mapItem = mapItem;
 
-        v16 = v38;
+        zoomCopy = mapItem;
       }
     }
 
@@ -304,7 +304,7 @@ LABEL_29:
 
 LABEL_28:
   v40 = 1;
-  if (!v7)
+  if (!paddingCopy)
   {
     goto LABEL_29;
   }
@@ -321,11 +321,11 @@ LABEL_40:
   v69 = v68;
   v71 = v70;
   v73 = v72;
-  if (v17 | v16)
+  if (maxZoomCopy | zoomCopy)
   {
     if (v40)
     {
-      v74 = sub_100729204(v15);
+      v74 = sub_100729204(resultsCopy);
       v103.x = v74 + v75 * 0.5;
       v103.y = v76 + v77 * 0.5;
       y = v103.y;
@@ -346,13 +346,13 @@ LABEL_40:
 
     else
     {
-      [v18 coordinate];
+      [firstObject coordinate];
       v81 = MKMapPointForCoordinate(v100);
       v79 = v81.x;
       v80 = v81.y;
     }
 
-    [(MKMapView *)self clampRect:v16 toMinZoom:v17 maxZoom:v67 withFixedPoint:v69, v71, v73, v79, v80, *&y];
+    [(MKMapView *)self clampRect:zoomCopy toMinZoom:maxZoomCopy maxZoom:v67 withFixedPoint:v69, v71, v73, v79, v80, *&y];
     v67 = v82;
     v69 = v83;
     v71 = v84;
@@ -370,28 +370,28 @@ LABEL_40:
   return result;
 }
 
-- (void)goToSearchResults:(id)a3 mapRegion:(id)a4 requireMapMovement:(BOOL)a5 setCameraFromMapItemViewportFrame:(BOOL)a6 animation:(int64_t)a7 minZoom:(id)a8 maxZoom:(id)a9 disableAdditionalViewportPadding:(BOOL)a10 completion:(id)a11
+- (void)goToSearchResults:(id)results mapRegion:(id)region requireMapMovement:(BOOL)movement setCameraFromMapItemViewportFrame:(BOOL)frame animation:(int64_t)animation minZoom:(id)zoom maxZoom:(id)maxZoom disableAdditionalViewportPadding:(BOOL)self0 completion:(id)self1
 {
-  v12 = a6;
-  v13 = a5;
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
-  v19 = a9;
-  v20 = a11;
-  if ([v16 count])
+  frameCopy = frame;
+  movementCopy = movement;
+  resultsCopy = results;
+  regionCopy = region;
+  zoomCopy = zoom;
+  maxZoomCopy = maxZoom;
+  completionCopy = completion;
+  if ([resultsCopy count])
   {
-    if ([v16 count] == 1)
+    if ([resultsCopy count] == 1)
     {
-      v82 = v18;
-      v21 = [v16 firstObject];
-      v22 = [v21 mapItem];
-      v23 = [v22 _viewportFrame];
+      v82 = zoomCopy;
+      firstObject = [resultsCopy firstObject];
+      mapItem = [firstObject mapItem];
+      _viewportFrame = [mapItem _viewportFrame];
 
-      if (v23 && v12)
+      if (_viewportFrame && frameCopy)
       {
-        [v22 _viewportFrame];
-        v25 = v24 = v19;
+        [mapItem _viewportFrame];
+        v25 = v24 = maxZoomCopy;
         [v25 latitude];
         v27 = v26;
         [v25 longitude];
@@ -414,23 +414,23 @@ LABEL_40:
         v95[1] = 3221225472;
         v95[2] = sub_1007299F4;
         v95[3] = &unk_1016279D8;
-        v96 = v20;
+        v96 = completionCopy;
         v97 = v30;
         v98 = v32;
         v99 = v34;
         v100 = v36;
         [(MKMapView *)self setCamera:v39 animated:0 completionHandler:v95];
 
-        v19 = v24;
-        v18 = v82;
+        maxZoomCopy = v24;
+        zoomCopy = v82;
         goto LABEL_46;
       }
 
-      v18 = v82;
+      zoomCopy = v82;
     }
 
-    v42 = a10;
-    if (v13)
+    paddingCopy2 = padding;
+    if (movementCopy)
     {
       v43 = 0;
       v44 = 1;
@@ -442,15 +442,15 @@ LABEL_40:
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v45 = v16;
+      v45 = resultsCopy;
       v46 = [v45 countByEnumeratingWithState:&v91 objects:v101 count:16];
       if (v46)
       {
         v47 = v46;
-        v79 = v13;
-        v80 = v19;
-        v81 = v17;
-        v83 = v18;
+        v79 = movementCopy;
+        v80 = maxZoomCopy;
+        v81 = regionCopy;
+        v83 = zoomCopy;
         v43 = 0;
         v48 = 0;
         v49 = *v92;
@@ -481,10 +481,10 @@ LABEL_40:
 
         while (v47);
         v44 = v48 == 0;
-        v19 = v80;
-        v17 = v81;
-        v18 = v83;
-        v13 = v79;
+        maxZoomCopy = v80;
+        regionCopy = v81;
+        zoomCopy = v83;
+        movementCopy = v79;
       }
 
       else
@@ -493,11 +493,11 @@ LABEL_40:
         v44 = 1;
       }
 
-      v42 = a10;
+      paddingCopy2 = padding;
     }
 
     GEOMapRectForMapRegion();
-    [(MKMapView *)self regionForSearchResults:v16 suggestedRegion:v18 minZoom:v19 maxZoom:v42 disableAdditionalViewportPadding:?];
+    [(MKMapView *)self regionForSearchResults:resultsCopy suggestedRegion:zoomCopy minZoom:maxZoomCopy maxZoom:paddingCopy2 disableAdditionalViewportPadding:?];
     v53 = v52;
     v55 = v54;
     v57 = v56;
@@ -521,13 +521,13 @@ LABEL_40:
       v70 = v71;
     }
 
-    if (v20)
+    if (completionCopy)
     {
       v85[0] = _NSConcreteStackBlock;
       v85[1] = 3221225472;
       v85[2] = sub_100729A1C;
       v85[3] = &unk_1016279D8;
-      v86 = v20;
+      v86 = completionCopy;
       v87 = v53;
       v88 = v55;
       v89 = v57;
@@ -537,17 +537,17 @@ LABEL_40:
       if (v44)
       {
 LABEL_33:
-        if (a7)
+        if (animation)
         {
-          v13 = a7 != 2;
+          movementCopy = animation != 2;
         }
 
-        v74 = self;
+        selfCopy2 = self;
         v75 = v53;
         v76 = v55;
         v77 = v57;
         v78 = v59;
-        v73 = v13;
+        v73 = movementCopy;
         goto LABEL_44;
       }
     }
@@ -563,17 +563,17 @@ LABEL_33:
 
     if (v62 / v70 <= 4.0)
     {
-      if (v20)
+      if (completionCopy)
       {
-        (*(v20 + 2))(v20, 1, v43, v53, v55, v57, v59);
+        (*(completionCopy + 2))(completionCopy, 1, v43, v53, v55, v57, v59);
       }
 
       goto LABEL_45;
     }
 
-    if (a7)
+    if (animation)
     {
-      v73 = a7 != 2;
+      v73 = animation != 2;
     }
 
     else
@@ -581,29 +581,29 @@ LABEL_33:
       v73 = v62 / v70 < 18.0;
     }
 
-    v74 = self;
+    selfCopy2 = self;
     v75 = v53;
     v76 = v55;
     v77 = v57;
     v78 = v59;
 LABEL_44:
-    [(MKMapView *)v74 _setVisibleMapRect:v73 animated:v72 completionHandler:v75, v76, v77, v78];
+    [(MKMapView *)selfCopy2 _setVisibleMapRect:v73 animated:v72 completionHandler:v75, v76, v77, v78];
 LABEL_45:
 
     goto LABEL_46;
   }
 
-  if (v20)
+  if (completionCopy)
   {
-    (*(v20 + 2))(v20, 1, 0, MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height);
+    (*(completionCopy + 2))(completionCopy, 1, 0, MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height);
   }
 
 LABEL_46:
 }
 
-- (BOOL)isCoordinateVisible:(CLLocationCoordinate2D)a3
+- (BOOL)isCoordinateVisible:(CLLocationCoordinate2D)visible
 {
-  [(MKMapView *)self convertCoordinate:self toPointToView:a3.latitude, a3.longitude];
+  [(MKMapView *)self convertCoordinate:self toPointToView:visible.latitude, visible.longitude];
   v5 = v4;
   v7 = v6;
   [(MKMapView *)self bounds];
@@ -624,9 +624,9 @@ LABEL_46:
   return CGRectContainsPoint(*&v23, *&v26);
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectContainingSearchResults:(id)a3 edgePadding:(UIEdgeInsets)a4
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectContainingSearchResults:(id)results edgePadding:(UIEdgeInsets)padding
 {
-  [(MKMapView *)self mapRectThatFits:sub_100729204(a3) edgePadding:?];
+  [(MKMapView *)self mapRectThatFits:sub_100729204(results) edgePadding:?];
 
   [MKMapView mapRectThatFits:"mapRectThatFits:minMetersPerPoint:" minMetersPerPoint:?];
   result.var1.var1 = v8;
@@ -636,11 +636,11 @@ LABEL_46:
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectContainingSearchResults:(id)a3
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectContainingSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   [(MKMapView *)self defaultInsetsForPinAnnotations];
-  [(MKMapView *)self mapRectContainingSearchResults:v4 edgePadding:?];
+  [(MKMapView *)self mapRectContainingSearchResults:resultsCopy edgePadding:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -686,10 +686,10 @@ LABEL_46:
 
 - (UIEdgeInsets)defaultInsetsForPinAnnotations
 {
-  v2 = [(MKMapView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(MKMapView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v3 == 3)
+  if (userInterfaceIdiom == 3)
   {
     v4 = 10.0;
   }
@@ -699,7 +699,7 @@ LABEL_46:
     v4 = 40.0;
   }
 
-  if (v3 == 3)
+  if (userInterfaceIdiom == 3)
   {
     v5 = 0.0;
   }
@@ -721,25 +721,25 @@ LABEL_46:
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectThatFits:(id)a3 minMetersPerPoint:(double)a4
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectThatFits:(id)fits minMetersPerPoint:(double)point
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  y = a3.var0.var1;
-  x = a3.var0.var0;
-  v10 = a3.var0.var0 + a3.var1.var0;
-  v11 = a3.var0.var1 + a3.var1.var1;
+  var1 = fits.var1.var1;
+  var0 = fits.var1.var0;
+  y = fits.var0.var1;
+  x = fits.var0.var0;
+  v10 = fits.var0.var0 + fits.var1.var0;
+  v11 = fits.var0.var1 + fits.var1.var1;
   v9 = v11;
-  MKCoordinateForMapPoint(a3.var0);
+  MKCoordinateForMapPoint(fits.var0);
   v23.x = v10;
   v23.y = v9;
   MKCoordinateForMapPoint(v23);
   GEOCalculateDistance();
   v13 = v12;
   [(MKMapView *)self bounds];
-  if (v13 / v14 < a4)
+  if (v13 / v14 < point)
   {
-    v15 = a4 / (v13 / v14);
+    v15 = point / (v13 / v14);
     v16 = var0 * -0.5 * v15;
     v17 = var1 * -0.5 * v15;
     v24.origin.x = x;
@@ -776,21 +776,21 @@ LABEL_46:
   [v3 setMapType:{-[MKMapView mapType](self, "mapType")}];
   [(MKMapView *)self visibleMapRect];
   [v3 setMapRect:?];
-  v7 = [(MKMapView *)self camera];
-  [v3 setCamera:v7];
+  camera = [(MKMapView *)self camera];
+  [v3 setCamera:camera];
 
   return v3;
 }
 
-- (void)animateToVisibleMapRect:(id)a3 usingDefaultAnimationDuration:(BOOL)a4 resetHeading:(BOOL)a5 completion:(id)a6
+- (void)animateToVisibleMapRect:(id)rect usingDefaultAnimationDuration:(BOOL)duration resetHeading:(BOOL)heading completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v10 = a3.var0.var1;
-  v11 = a3.var0.var0;
-  v13 = a6;
+  headingCopy = heading;
+  durationCopy = duration;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v10 = rect.var0.var1;
+  v11 = rect.var0.var0;
+  completionCopy = completion;
   if (v11 != MKMapRectNull.origin.x || v10 != MKMapRectNull.origin.y)
   {
     [(MKMapView *)self mapRectThatFits:v11 edgePadding:v10, var0, var1, 60.0, 60.0, 60.0, 60.0];
@@ -801,10 +801,10 @@ LABEL_46:
     [(MKMapView *)self bounds];
     v25 = [MKMapCamera _cameraLookingAtMapRect:v16 forViewSize:v18, v20, v22, v23, v24];
     v26 = v25;
-    if (v6)
+    if (headingCopy)
     {
       [v25 setHeading:0.0];
-      if (!v7)
+      if (!durationCopy)
       {
 LABEL_7:
         v27 = objc_opt_class();
@@ -817,7 +817,7 @@ LABEL_7:
         v31[3] = &unk_101661A90;
         v31[4] = self;
         v32 = v26;
-        [UIView animateWithDuration:v31 animations:v13 completion:v29];
+        [UIView animateWithDuration:v31 animations:completionCopy completion:v29];
 
 LABEL_10:
         goto LABEL_11;
@@ -826,52 +826,52 @@ LABEL_10:
 
     else
     {
-      v30 = [(MKMapView *)self camera];
-      [v30 heading];
+      camera = [(MKMapView *)self camera];
+      [camera heading];
       [v26 setHeading:?];
 
-      if (!v7)
+      if (!durationCopy)
       {
         goto LABEL_7;
       }
     }
 
-    [(MKMapView *)self setCamera:v26 animated:1 completionHandler:v13];
+    [(MKMapView *)self setCamera:v26 animated:1 completionHandler:completionCopy];
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (id)snapshotImageWithScale:(double)a3 allowSnapshotting:(BOOL)a4
+- (id)snapshotImageWithScale:(double)scale allowSnapshotting:(BOOL)snapshotting
 {
-  v4 = a4;
+  snapshottingCopy = snapshotting;
   [(MKMapView *)self bounds];
   v21.width = v7;
   v21.height = v8;
-  UIGraphicsBeginImageContextWithOptions(v21, 0, a3);
-  v9 = [(MKMapView *)self window];
-  v10 = [v9 windowScene];
+  UIGraphicsBeginImageContextWithOptions(v21, 0, scale);
+  window = [(MKMapView *)self window];
+  windowScene = [window windowScene];
 
-  if ([v10 activationState])
+  if ([windowScene activationState])
   {
-    v11 = [v10 activationState];
-    if (!v4 || v11 != 1)
+    activationState = [windowScene activationState];
+    if (!snapshottingCopy || activationState != 1)
     {
       goto LABEL_10;
     }
   }
 
-  else if (!v4)
+  else if (!snapshottingCopy)
   {
     goto LABEL_10;
   }
 
-  v12 = [(MKMapView *)self window];
-  v13 = [v12 screen];
-  if (v13)
+  window2 = [(MKMapView *)self window];
+  screen = [window2 screen];
+  if (screen)
   {
-    v14 = v13;
+    v14 = screen;
     v15 = [UIApplication _maps_isAnySceneForegroundForRole:_UIWindowSceneSessionTypeCoverSheet];
 
     if (!v15)
@@ -887,12 +887,12 @@ LABEL_11:
   }
 
 LABEL_10:
-  v16 = [(MKMapView *)self rendersInBackground];
+  rendersInBackground = [(MKMapView *)self rendersInBackground];
   [(MKMapView *)self setRendersInBackground:1];
-  v17 = [(MKMapView *)self layer];
-  [v17 renderInContext:UIGraphicsGetCurrentContext()];
+  layer = [(MKMapView *)self layer];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
 
-  [(MKMapView *)self setRendersInBackground:v16];
+  [(MKMapView *)self setRendersInBackground:rendersInBackground];
 LABEL_11:
   v18 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -909,38 +909,38 @@ LABEL_11:
   return v4;
 }
 
-- (void)getRapSnapshotImageDataWithCompletion:(id)a3
+- (void)getRapSnapshotImageDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (MapsFeature_IsEnabled_RAPCommunityID())
   {
-    v5 = [(MKMapView *)self snapshotOptions];
-    v6 = [[MKMapSnapshotter alloc] initWithOptions:v5];
+    snapshotOptions = [(MKMapView *)self snapshotOptions];
+    v6 = [[MKMapSnapshotter alloc] initWithOptions:snapshotOptions];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100E6368C;
     v7[3] = &unk_101656670;
-    v8 = v4;
+    v8 = completionCopy;
     [v6 startWithCompletionHandler:v7];
   }
 
   else
   {
-    v5 = [(MKMapView *)self snapshotImage];
-    v6 = UIImageJPEGRepresentation(v5, 0.400000006);
-    (*(v4 + 2))(v4, v6);
+    snapshotOptions = [(MKMapView *)self snapshotImage];
+    v6 = UIImageJPEGRepresentation(snapshotOptions, 0.400000006);
+    (*(completionCopy + 2))(completionCopy, v6);
   }
 }
 
-- (void)_performFlyoverAnnouncementAnimation:(id)a3
+- (void)_performFlyoverAnnouncementAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v5 = +[MKMapService sharedService];
-  [v5 captureUserAction:17024 flyoverAnimationID:{objc_msgSend(v4, "animationID")}];
+  [v5 captureUserAction:17024 flyoverAnimationID:{objc_msgSend(animationCopy, "animationID")}];
 
-  v6 = [v4 flyover];
+  flyover = [animationCopy flyover];
 
-  [(MKMapView *)self _performFlyoverAnimation:v6];
+  [(MKMapView *)self _performFlyoverAnimation:flyover];
 }
 
 @end

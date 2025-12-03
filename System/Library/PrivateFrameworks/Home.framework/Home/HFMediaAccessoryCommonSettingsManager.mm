@@ -1,48 +1,48 @@
 @interface HFMediaAccessoryCommonSettingsManager
-- (HFMediaAccessoryCommonSettingsManager)initWithMediaProfileContainer:(id)a3 home:(id)a4;
+- (HFMediaAccessoryCommonSettingsManager)initWithMediaProfileContainer:(id)container home:(id)home;
 - (id)_settingKeyPaths;
-- (id)settingForKeyPath:(id)a3;
-- (id)settingValueForKeyPath:(id)a3;
-- (id)updateAccessorySettingWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 keyPath:(id)a5 rawSettingValue:(id)a6;
+- (id)settingForKeyPath:(id)path;
+- (id)settingValueForKeyPath:(id)path;
+- (id)updateAccessorySettingWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier keyPath:(id)path rawSettingValue:(id)value;
 - (void)_subscribeToAccessorySettings;
-- (void)_updateCachedValue:(id)a3 forKeyPath:(id)a4;
-- (void)_updateSettings:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a3 settings:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)updateSettingValue:(id)a3 forKeyPath:(id)a4 accessoryIdentifier:(id)a5;
+- (void)_updateCachedValue:(id)value forKeyPath:(id)path;
+- (void)_updateSettings:(id)settings;
+- (void)addObserver:(id)observer;
+- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings;
+- (void)removeObserver:(id)observer;
+- (void)updateSettingValue:(id)value forKeyPath:(id)path accessoryIdentifier:(id)identifier;
 @end
 
 @implementation HFMediaAccessoryCommonSettingsManager
 
-- (HFMediaAccessoryCommonSettingsManager)initWithMediaProfileContainer:(id)a3 home:(id)a4
+- (HFMediaAccessoryCommonSettingsManager)initWithMediaProfileContainer:(id)container home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  homeCopy = home;
   v21.receiver = self;
   v21.super_class = HFMediaAccessoryCommonSettingsManager;
   v9 = [(HFMediaAccessoryCommonSettingsManager *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaProfileContainer, a3);
-    objc_storeStrong(&v10->_home, a4);
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v9->_mediaProfileContainer, container);
+    objc_storeStrong(&v10->_home, home);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v10->_observers;
-    v10->_observers = v11;
+    v10->_observers = weakObjectsHashTable;
 
     v13 = +[HFHomeKitDispatcher sharedDispatcher];
-    v14 = [v13 homeManager];
+    homeManager = [v13 homeManager];
     homeManager = v10->_homeManager;
-    v10->_homeManager = v14;
+    v10->_homeManager = homeManager;
 
     v16 = +[HFHomeKitDispatcher sharedDispatcher];
-    v17 = [v16 accessorySettingsDataSource];
-    [v17 addObserver:v10];
+    accessorySettingsDataSource = [v16 accessorySettingsDataSource];
+    [accessorySettingsDataSource addObserver:v10];
 
-    v18 = [(HMHomeManager *)v10->_homeManager hf_accessorySettingsController];
+    hf_accessorySettingsController = [(HMHomeManager *)v10->_homeManager hf_accessorySettingsController];
     settingsController = v10->_settingsController;
-    v10->_settingsController = v18;
+    v10->_settingsController = hf_accessorySettingsController;
 
     [(HFMediaAccessoryCommonSettingsManager *)v10 _subscribeToAccessorySettings];
   }
@@ -50,34 +50,34 @@
   return v10;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFMediaAccessoryCommonSettingsManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFMediaAccessoryCommonSettingsManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFMediaAccessoryCommonSettingsManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFMediaAccessoryCommonSettingsManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (id)updateAccessorySettingWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 keyPath:(id)a5 rawSettingValue:(id)a6
+- (id)updateAccessorySettingWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier keyPath:(id)path rawSettingValue:(id)value
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
+  pathCopy = path;
+  valueCopy = value;
   v14 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v15 = [(HFMediaAccessoryCommonSettingsManager *)self settingForKeyPath:v12];
+  v15 = [(HFMediaAccessoryCommonSettingsManager *)self settingForKeyPath:pathCopy];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 homeKitAccessorySettingValueForRawValue:v13];
-    v18 = [(HFMediaAccessoryCommonSettingsManager *)self settingsController];
-    v19 = [v18 hf_updateAccessorySettingWithHomeIdentifier:v10 accessoryIdentifier:v11 keyPath:v12 settingValue:v17];
+    v17 = [v15 homeKitAccessorySettingValueForRawValue:valueCopy];
+    settingsController = [(HFMediaAccessoryCommonSettingsManager *)self settingsController];
+    v19 = [settingsController hf_updateAccessorySettingWithHomeIdentifier:identifierCopy accessoryIdentifier:accessoryIdentifierCopy keyPath:pathCopy settingValue:v17];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -85,23 +85,23 @@
     v26[3] = &unk_277E00208;
     v20 = v14;
     v27 = v20;
-    v28 = self;
+    selfCopy = self;
     v29 = v17;
-    v30 = v12;
-    v31 = v13;
-    v32 = v11;
+    v30 = pathCopy;
+    v31 = valueCopy;
+    v32 = accessoryIdentifierCopy;
     v21 = v17;
     v22 = [v19 addCompletionBlock:v26];
 
-    v23 = v20;
+    futureWithNoResult = v20;
   }
 
   else
   {
-    v23 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  v24 = v23;
+  v24 = futureWithNoResult;
 
   return v24;
 }
@@ -128,44 +128,44 @@ uint64_t __126__HFMediaAccessoryCommonSettingsManager_updateAccessorySettingWith
   }
 }
 
-- (id)settingValueForKeyPath:(id)a3
+- (id)settingValueForKeyPath:(id)path
 {
-  v4 = a3;
-  if ([v4 isEqualToString:HFAnnounceEnabledKeyPath])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:HFAnnounceEnabledKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self announceEnabledSettingCachedValue];
+    announceEnabledSettingCachedValue = [(HFMediaAccessoryCommonSettingsManager *)self announceEnabledSettingCachedValue];
 LABEL_13:
-    v6 = v5;
+    v6 = announceEnabledSettingCachedValue;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:HFAudioAnalysisEnabledKeyPath])
+  if ([pathCopy isEqualToString:HFAudioAnalysisEnabledKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self audioAnalysisEnabledSettingCachedValue];
+    announceEnabledSettingCachedValue = [(HFMediaAccessoryCommonSettingsManager *)self audioAnalysisEnabledSettingCachedValue];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HFAllowHeySiriSettingKeyPath])
+  if ([pathCopy isEqualToString:HFAllowHeySiriSettingKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self heySiriSettingCachedValue];
+    announceEnabledSettingCachedValue = [(HFMediaAccessoryCommonSettingsManager *)self heySiriSettingCachedValue];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HFTapToAccessSiriSettingKeyPath])
+  if ([pathCopy isEqualToString:HFTapToAccessSiriSettingKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self tapToAccessSiriSettingCachedValue];
+    announceEnabledSettingCachedValue = [(HFMediaAccessoryCommonSettingsManager *)self tapToAccessSiriSettingCachedValue];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HFAirPlayEnabledSettingKeyPath])
+  if ([pathCopy isEqualToString:HFAirPlayEnabledSettingKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self airPlayEnabledSettingCachedValue];
+    announceEnabledSettingCachedValue = [(HFMediaAccessoryCommonSettingsManager *)self airPlayEnabledSettingCachedValue];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HFDoorbellChimeEnabledKeyPath])
+  if ([pathCopy isEqualToString:HFDoorbellChimeEnabledKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self doorbellChimeEnabledSettingCachedValue];
+    announceEnabledSettingCachedValue = [(HFMediaAccessoryCommonSettingsManager *)self doorbellChimeEnabledSettingCachedValue];
     goto LABEL_13;
   }
 
@@ -175,44 +175,44 @@ LABEL_14:
   return v6;
 }
 
-- (id)settingForKeyPath:(id)a3
+- (id)settingForKeyPath:(id)path
 {
-  v4 = a3;
-  if ([v4 isEqualToString:HFAnnounceEnabledKeyPath])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:HFAnnounceEnabledKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self announceEnabledSetting];
+    announceEnabledSetting = [(HFMediaAccessoryCommonSettingsManager *)self announceEnabledSetting];
 LABEL_13:
-    v6 = v5;
+    v6 = announceEnabledSetting;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:HFAudioAnalysisEnabledKeyPath])
+  if ([pathCopy isEqualToString:HFAudioAnalysisEnabledKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self audioAnalysisEnabledSetting];
+    announceEnabledSetting = [(HFMediaAccessoryCommonSettingsManager *)self audioAnalysisEnabledSetting];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HFAllowHeySiriSettingKeyPath])
+  if ([pathCopy isEqualToString:HFAllowHeySiriSettingKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self heySiriSetting];
+    announceEnabledSetting = [(HFMediaAccessoryCommonSettingsManager *)self heySiriSetting];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HFTapToAccessSiriSettingKeyPath])
+  if ([pathCopy isEqualToString:HFTapToAccessSiriSettingKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self tapToAccessSiriSetting];
+    announceEnabledSetting = [(HFMediaAccessoryCommonSettingsManager *)self tapToAccessSiriSetting];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HFAirPlayEnabledSettingKeyPath])
+  if ([pathCopy isEqualToString:HFAirPlayEnabledSettingKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self airPlayEnabledSetting];
+    announceEnabledSetting = [(HFMediaAccessoryCommonSettingsManager *)self airPlayEnabledSetting];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HFDoorbellChimeEnabledKeyPath])
+  if ([pathCopy isEqualToString:HFDoorbellChimeEnabledKeyPath])
   {
-    v5 = [(HFMediaAccessoryCommonSettingsManager *)self doorbellChimeEnabledSetting];
+    announceEnabledSetting = [(HFMediaAccessoryCommonSettingsManager *)self doorbellChimeEnabledSetting];
     goto LABEL_13;
   }
 
@@ -238,24 +238,24 @@ LABEL_14:
 
 - (void)_subscribeToAccessorySettings
 {
-  v3 = [(HFMediaAccessoryCommonSettingsManager *)self mediaProfileContainer];
-  v4 = [v3 hf_backingAccessory];
-  v5 = [v4 uniqueIdentifier];
+  mediaProfileContainer = [(HFMediaAccessoryCommonSettingsManager *)self mediaProfileContainer];
+  hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+  uniqueIdentifier = [hf_backingAccessory uniqueIdentifier];
 
-  v6 = [(HFMediaAccessoryCommonSettingsManager *)self _settingKeyPaths];
+  _settingKeyPaths = [(HFMediaAccessoryCommonSettingsManager *)self _settingKeyPaths];
   v7 = +[HFHomeKitDispatcher sharedDispatcher];
-  v8 = [v7 accessorySettingsDataSource];
-  v9 = [(HFMediaAccessoryCommonSettingsManager *)self home];
-  v10 = [v9 uniqueIdentifier];
+  accessorySettingsDataSource = [v7 accessorySettingsDataSource];
+  home = [(HFMediaAccessoryCommonSettingsManager *)self home];
+  uniqueIdentifier2 = [home uniqueIdentifier];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__block_invoke;
   v13[3] = &unk_277DF2748;
-  v14 = v6;
-  v15 = v5;
-  v11 = v5;
-  v12 = v6;
-  [v8 hf_subscribeToAccessorySettingsWithHomeIdentifier:v10 accessoryIdentifier:v11 keyPaths:v12 options:0 completionHandler:v13];
+  v14 = _settingKeyPaths;
+  v15 = uniqueIdentifier;
+  v11 = uniqueIdentifier;
+  v12 = _settingKeyPaths;
+  [accessorySettingsDataSource hf_subscribeToAccessorySettingsWithHomeIdentifier:uniqueIdentifier2 accessoryIdentifier:v11 keyPaths:v12 options:0 completionHandler:v13];
 }
 
 void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__block_invoke(uint64_t a1, void *a2)
@@ -282,14 +282,14 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSettings:(id)a3
+- (void)_updateSettings:(id)settings
 {
   v52 = *MEMORY[0x277D85DE8];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = a3;
+  obj = settings;
   v4 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v4)
   {
@@ -308,8 +308,8 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
         }
 
         v8 = *(*(&v46 + 1) + 8 * v7);
-        v9 = [v8 keyPath];
-        v10 = [v9 isEqualToString:HFAllowHeySiriSettingKeyPath];
+        keyPath = [v8 keyPath];
+        v10 = [keyPath isEqualToString:HFAllowHeySiriSettingKeyPath];
 
         if (v10)
         {
@@ -318,8 +318,8 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
 
         else
         {
-          v11 = [v8 keyPath];
-          v12 = [v11 isEqualToString:HFTapToAccessSiriSettingKeyPath];
+          keyPath2 = [v8 keyPath];
+          v12 = [keyPath2 isEqualToString:HFTapToAccessSiriSettingKeyPath];
 
           if (v12)
           {
@@ -328,8 +328,8 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
 
           else
           {
-            v13 = [v8 keyPath];
-            v14 = [v13 isEqualToString:HFAnnounceEnabledKeyPath];
+            keyPath3 = [v8 keyPath];
+            v14 = [keyPath3 isEqualToString:HFAnnounceEnabledKeyPath];
 
             if (v14)
             {
@@ -338,8 +338,8 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
 
             else
             {
-              v15 = [v8 keyPath];
-              v16 = [v15 isEqualToString:HFAudioAnalysisEnabledKeyPath];
+              keyPath4 = [v8 keyPath];
+              v16 = [keyPath4 isEqualToString:HFAudioAnalysisEnabledKeyPath];
 
               if (v16)
               {
@@ -348,8 +348,8 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
 
               else
               {
-                v17 = [v8 keyPath];
-                v18 = [v17 isEqualToString:HFAirPlayEnabledSettingKeyPath];
+                keyPath5 = [v8 keyPath];
+                v18 = [keyPath5 isEqualToString:HFAirPlayEnabledSettingKeyPath];
 
                 if (v18)
                 {
@@ -358,8 +358,8 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
 
                 else
                 {
-                  v19 = [v8 keyPath];
-                  v20 = [v19 isEqualToString:HFDoorbellChimeEnabledKeyPath];
+                  keyPath6 = [v8 keyPath];
+                  v20 = [keyPath6 isEqualToString:HFDoorbellChimeEnabledKeyPath];
 
                   if (v20)
                   {
@@ -371,24 +371,24 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
           }
         }
 
-        v21 = [(HFMediaAccessoryCommonSettingsManager *)self _settingKeyPaths];
-        v22 = [v8 keyPath];
-        v23 = [v21 containsObject:v22];
+        _settingKeyPaths = [(HFMediaAccessoryCommonSettingsManager *)self _settingKeyPaths];
+        keyPath7 = [v8 keyPath];
+        v23 = [_settingKeyPaths containsObject:keyPath7];
 
         if (v23)
         {
           v40 = v7;
-          v24 = [v8 value];
+          value = [v8 value];
           v41 = v8;
-          v25 = [v8 keyPath];
-          [(HFMediaAccessoryCommonSettingsManager *)self _updateCachedValue:v24 forKeyPath:v25];
+          keyPath8 = [v8 keyPath];
+          [(HFMediaAccessoryCommonSettingsManager *)self _updateCachedValue:value forKeyPath:keyPath8];
 
           v44 = 0u;
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v26 = [(HFMediaAccessoryCommonSettingsManager *)self observers];
-          v27 = [v26 countByEnumeratingWithState:&v42 objects:v50 count:16];
+          observers = [(HFMediaAccessoryCommonSettingsManager *)self observers];
+          v27 = [observers countByEnumeratingWithState:&v42 objects:v50 count:16];
           if (v27)
           {
             v28 = v27;
@@ -399,23 +399,23 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
               {
                 if (*v43 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(observers);
                 }
 
                 v31 = *(*(&v42 + 1) + 8 * i);
                 if (objc_opt_respondsToSelector())
                 {
-                  v32 = [(HFMediaAccessoryCommonSettingsManager *)self mediaProfileContainer];
-                  v33 = [v41 keyPath];
+                  mediaProfileContainer = [(HFMediaAccessoryCommonSettingsManager *)self mediaProfileContainer];
+                  keyPath9 = [v41 keyPath];
                   [v41 value];
                   v35 = v34 = self;
-                  [v31 mediaProfileContainer:v32 didUpdateSettingKeypath:v33 value:v35];
+                  [v31 mediaProfileContainer:mediaProfileContainer didUpdateSettingKeypath:keyPath9 value:v35];
 
                   self = v34;
                 }
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v42 objects:v50 count:16];
+              v28 = [observers countByEnumeratingWithState:&v42 objects:v50 count:16];
             }
 
             while (v28);
@@ -439,54 +439,54 @@ void __70__HFMediaAccessoryCommonSettingsManager__subscribeToAccessorySettings__
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCachedValue:(id)a3 forKeyPath:(id)a4
+- (void)_updateCachedValue:(id)value forKeyPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v9 = HFLogForCategory(0x28uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v8;
+    v13 = pathCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = valueCopy;
     _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Updating Cached Value for keyPath [%@] to [%@]", &v12, 0x16u);
   }
 
-  if ([v8 isEqualToString:HFAnnounceEnabledKeyPath])
+  if ([pathCopy isEqualToString:HFAnnounceEnabledKeyPath])
   {
     v10 = 104;
 LABEL_15:
-    objc_storeStrong((&self->super.isa + v10), a3);
+    objc_storeStrong((&self->super.isa + v10), value);
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:HFAudioAnalysisGroupKeyPath])
+  if ([pathCopy isEqualToString:HFAudioAnalysisGroupKeyPath])
   {
     v10 = 112;
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:HFTapToAccessSiriSettingKeyPath])
+  if ([pathCopy isEqualToString:HFTapToAccessSiriSettingKeyPath])
   {
     v10 = 72;
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:HFAllowHeySiriSettingKeyPath])
+  if ([pathCopy isEqualToString:HFAllowHeySiriSettingKeyPath])
   {
     v10 = 96;
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:HFAirPlayEnabledSettingKeyPath])
+  if ([pathCopy isEqualToString:HFAirPlayEnabledSettingKeyPath])
   {
     v10 = 120;
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:HFDoorbellChimeEnabledKeyPath])
+  if ([pathCopy isEqualToString:HFDoorbellChimeEnabledKeyPath])
   {
     v10 = 128;
     goto LABEL_15;
@@ -497,34 +497,34 @@ LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a3 settings:(id)a4
+- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(HFMediaAccessoryCommonSettingsManager *)self mediaProfileContainer];
-  v8 = [v7 hf_backingAccessory];
-  v9 = [v8 uniqueIdentifier];
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  mediaProfileContainer = [(HFMediaAccessoryCommonSettingsManager *)self mediaProfileContainer];
+  hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+  uniqueIdentifier = [hf_backingAccessory uniqueIdentifier];
 
-  LODWORD(v7) = [v6 isEqual:v9];
-  if (v7)
+  LODWORD(mediaProfileContainer) = [identifierCopy isEqual:uniqueIdentifier];
+  if (mediaProfileContainer)
   {
-    [(HFMediaAccessoryCommonSettingsManager *)self _updateSettings:v10];
+    [(HFMediaAccessoryCommonSettingsManager *)self _updateSettings:settingsCopy];
   }
 }
 
-- (void)updateSettingValue:(id)a3 forKeyPath:(id)a4 accessoryIdentifier:(id)a5
+- (void)updateSettingValue:(id)value forKeyPath:(id)path accessoryIdentifier:(id)identifier
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HFMediaAccessoryCommonSettingsManager *)self mediaProfileContainer];
-  v11 = [v10 hf_backingAccessory];
-  v12 = [v11 uniqueIdentifier];
+  valueCopy = value;
+  pathCopy = path;
+  identifierCopy = identifier;
+  mediaProfileContainer = [(HFMediaAccessoryCommonSettingsManager *)self mediaProfileContainer];
+  hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+  uniqueIdentifier = [hf_backingAccessory uniqueIdentifier];
 
-  LODWORD(v10) = [v9 isEqual:v12];
-  if (v10)
+  LODWORD(mediaProfileContainer) = [identifierCopy isEqual:uniqueIdentifier];
+  if (mediaProfileContainer)
   {
-    [(HFMediaAccessoryCommonSettingsManager *)self _updateCachedValue:v13 forKeyPath:v8];
+    [(HFMediaAccessoryCommonSettingsManager *)self _updateCachedValue:valueCopy forKeyPath:pathCopy];
   }
 }
 

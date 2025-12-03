@@ -1,8 +1,8 @@
 @interface TSKChangeGroup
 - (TSKChangeGroup)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)registerChange:(int)a3 details:(id)a4 forChangeSource:(id)a5;
+- (void)registerChange:(int)change details:(id)details forChangeSource:(id)source;
 @end
 
 @implementation TSKChangeGroup
@@ -27,7 +27,7 @@
   [(TSKChangeGroup *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
 
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (void)registerChange:(int)a3 details:(id)a4 forChangeSource:(id)a5
+- (void)registerChange:(int)change details:(id)details forChangeSource:(id)source
 {
-  v7 = *&a3;
+  v7 = *&change;
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
@@ -51,7 +51,7 @@
   }
 
   v11 = v10;
-  v12 = 0;
+  changes = 0;
   v13 = *v18;
   do
   {
@@ -63,9 +63,9 @@
       }
 
       v15 = *(*(&v17 + 1) + 8 * i);
-      if ([v15 changeSource] == a5)
+      if ([v15 changeSource] == source)
       {
-        v12 = [v15 changes];
+        changes = [v15 changes];
       }
     }
 
@@ -73,18 +73,18 @@
   }
 
   while (v11);
-  if (!v12)
+  if (!changes)
   {
 LABEL_11:
-    v12 = [MEMORY[0x277CBEB18] array];
-    v16 = [[TSKChangeEntry alloc] initWithChangeSource:a5 changes:v12];
+    changes = [MEMORY[0x277CBEB18] array];
+    v16 = [[TSKChangeEntry alloc] initWithChangeSource:source changes:changes];
     [(NSMutableArray *)self->mChangesArray addObject:v16];
   }
 
-  [v12 addObject:{+[TSKChangeRecord changeRecordWithKind:details:](TSKChangeRecord, "changeRecordWithKind:details:", v7, a4)}];
-  if ([v12 count] >= 2 && (objc_opt_respondsToSelector() & 1) != 0)
+  [changes addObject:{+[TSKChangeRecord changeRecordWithKind:details:](TSKChangeRecord, "changeRecordWithKind:details:", v7, details)}];
+  if ([changes count] >= 2 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [a5 coalesceChanges:v12];
+    [source coalesceChanges:changes];
   }
 }
 

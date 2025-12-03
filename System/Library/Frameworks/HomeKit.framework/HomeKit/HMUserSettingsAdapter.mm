@@ -2,20 +2,20 @@
 + (id)logCategory;
 + (id)privateSettingsSchema;
 + (id)sharedSettingsSchema;
-- (BOOL)mergeUsingPreOrder:(id)a3 withDictionary:(id)a4;
+- (BOOL)mergeUsingPreOrder:(id)order withDictionary:(id)dictionary;
 - (HMSettingsDelegate)delegate;
 - (HMUser)user;
-- (HMUserSettingsAdapter)initWithUser:(id)a3 settingsType:(int64_t)a4;
-- (id)createKeyPathArrayWithKeyPath:(id)a3;
-- (id)findOrAddUserSettingGroupWithKeyPath:(id)a3;
-- (id)groupKeyArrayFromKeyPath:(id)a3;
-- (id)settingKeyFromKeyPath:(id)a3;
-- (void)_notifyDelegateDidUpdateKeyPath:(id)a3;
+- (HMUserSettingsAdapter)initWithUser:(id)user settingsType:(int64_t)type;
+- (id)createKeyPathArrayWithKeyPath:(id)path;
+- (id)findOrAddUserSettingGroupWithKeyPath:(id)path;
+- (id)groupKeyArrayFromKeyPath:(id)path;
+- (id)settingKeyFromKeyPath:(id)path;
+- (void)_notifyDelegateDidUpdateKeyPath:(id)path;
 - (void)_notifyDelegateSettingsDidUpdate;
-- (void)configureWithContext:(id)a3;
+- (void)configureWithContext:(id)context;
 - (void)createRootSettingGroup;
-- (void)mergeWithDictionary:(id)a3;
-- (void)updateValueForSetting:(id)a3 value:(id)a4 completionHandler:(id)a5;
+- (void)mergeWithDictionary:(id)dictionary;
+- (void)updateValueForSetting:(id)setting value:(id)value completionHandler:(id)handler;
 @end
 
 @implementation HMUserSettingsAdapter
@@ -37,23 +37,23 @@
 - (void)_notifyDelegateSettingsDidUpdate
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(HMUserSettingsAdapter *)self context];
-  v4 = [v3 queue];
+  context = [(HMUserSettingsAdapter *)self context];
+  queue = [context queue];
 
-  if (v4)
+  if (queue)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__HMUserSettingsAdapter__notifyDelegateSettingsDidUpdate__block_invoke;
     block[3] = &unk_1E754E2A8;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -138,28 +138,28 @@ void __57__HMUserSettingsAdapter__notifyDelegateSettingsDidUpdate__block_invoke_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDelegateDidUpdateKeyPath:(id)a3
+- (void)_notifyDelegateDidUpdateKeyPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMUserSettingsAdapter *)self context];
-  v6 = [v5 queue];
+  pathCopy = path;
+  context = [(HMUserSettingsAdapter *)self context];
+  queue = [context queue];
 
-  if (v6)
+  if (queue)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke;
     v12[3] = &unk_1E754E5C0;
     v12[4] = self;
-    v13 = v4;
-    dispatch_async(v6, v12);
+    v13 = pathCopy;
+    dispatch_async(queue, v12);
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -167,7 +167,7 @@ void __57__HMUserSettingsAdapter__notifyDelegateSettingsDidUpdate__block_invoke_
       *buf = 138543618;
       v15 = v10;
       v16 = 2112;
-      v17 = v4;
+      v17 = pathCopy;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_ERROR, "%{public}@Not notifying updated setting keypath: %@ due to nil queue", buf, 0x16u);
     }
 
@@ -261,52 +261,52 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)mergeUsingPreOrder:(id)a3 withDictionary:(id)a4
+- (BOOL)mergeUsingPreOrder:(id)order withDictionary:(id)dictionary
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  orderCopy = order;
+  dictionaryCopy = dictionary;
+  if (orderCopy)
   {
-    v8 = [(HMUserSettingsAdapter *)self user];
-    v9 = [v8 home];
-    v41 = [v9 homeManager];
+    user = [(HMUserSettingsAdapter *)self user];
+    home = [user home];
+    homeManager = [home homeManager];
 
-    v38 = v8;
-    v10 = [v8 uuid];
-    v11 = [v10 UUIDString];
-    v40 = [@"Home.user.settings." stringByAppendingString:v11];
+    v38 = user;
+    uuid = [user uuid];
+    uUIDString = [uuid UUIDString];
+    v40 = [@"Home.user.settings." stringByAppendingString:uUIDString];
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v39 = v6;
-    v12 = [v6 settings];
-    v47 = [v12 countByEnumeratingWithState:&v52 objects:v61 count:16];
+    v39 = orderCopy;
+    settings = [orderCopy settings];
+    v47 = [settings countByEnumeratingWithState:&v52 objects:v61 count:16];
     if (v47)
     {
       v45 = 0;
       v13 = 0;
       v46 = *v53;
-      v43 = v12;
-      v44 = self;
-      v42 = v7;
+      v43 = settings;
+      selfCopy = self;
+      v42 = dictionaryCopy;
       do
       {
         for (i = 0; i != v47; ++i)
         {
           if (*v53 != v46)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(settings);
           }
 
           v15 = *(*(&v52 + 1) + 8 * i);
-          v16 = [v15 keyPath];
-          v17 = [v7 objectForKeyedSubscript:v16];
+          keyPath = [v15 keyPath];
+          v17 = [dictionaryCopy objectForKeyedSubscript:keyPath];
           if (v17)
           {
-            v18 = [v15 value];
+            value = [v15 value];
             v19 = HMFEqualObjects();
 
             if ((v19 & 1) == 0)
@@ -329,12 +329,12 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
               {
                 if ((v45 & 1) == 0)
                 {
-                  [v41 notifyDelegateOfBatchNotificationsStartWithReason:v40];
+                  [homeManager notifyDelegateOfBatchNotificationsStartWithReason:v40];
                 }
 
                 [v22 setValue:v17];
                 v23 = objc_autoreleasePoolPush();
-                v24 = self;
+                selfCopy2 = self;
                 v25 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
                 {
@@ -345,11 +345,11 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
                   v60 = v22;
                   _os_log_impl(&dword_19BB39000, v25, OS_LOG_TYPE_DEBUG, "%{public}@Merged setting: %@", buf, 0x16u);
 
-                  v12 = v43;
+                  settings = v43;
                 }
 
                 objc_autoreleasePoolPop(v23);
-                [(HMUserSettingsAdapter *)v24 _notifyDelegateDidUpdateKeyPath:v16];
+                [(HMUserSettingsAdapter *)selfCopy2 _notifyDelegateDidUpdateKeyPath:keyPath];
                 v45 = 1;
                 v13 = 1;
               }
@@ -357,7 +357,7 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
               else
               {
                 v27 = objc_autoreleasePoolPush();
-                v28 = self;
+                selfCopy3 = self;
                 v29 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
                 {
@@ -368,19 +368,19 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
                   v60 = v20;
                   _os_log_impl(&dword_19BB39000, v29, OS_LOG_TYPE_ERROR, "%{public}@Looks like we have non number setting. Need to handle that. %@", buf, 0x16u);
 
-                  v12 = v43;
+                  settings = v43;
                 }
 
                 objc_autoreleasePoolPop(v27);
-                v7 = v42;
+                dictionaryCopy = v42;
               }
 
-              self = v44;
+              self = selfCopy;
             }
           }
         }
 
-        v47 = [v12 countByEnumeratingWithState:&v52 objects:v61 count:16];
+        v47 = [settings countByEnumeratingWithState:&v52 objects:v61 count:16];
       }
 
       while (v47);
@@ -396,9 +396,9 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v6 = v39;
-    v31 = [v39 groups];
-    v32 = [v31 countByEnumeratingWithState:&v48 objects:v56 count:16];
+    orderCopy = v39;
+    groups = [v39 groups];
+    v32 = [groups countByEnumeratingWithState:&v48 objects:v56 count:16];
     if (v32)
     {
       v33 = v32;
@@ -409,13 +409,13 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
         {
           if (*v49 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(groups);
           }
 
-          v13 |= [(HMUserSettingsAdapter *)self mergeUsingPreOrder:*(*(&v48 + 1) + 8 * j) withDictionary:v7];
+          v13 |= [(HMUserSettingsAdapter *)self mergeUsingPreOrder:*(*(&v48 + 1) + 8 * j) withDictionary:dictionaryCopy];
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v48 objects:v56 count:16];
+        v33 = [groups countByEnumeratingWithState:&v48 objects:v56 count:16];
       }
 
       while (v33);
@@ -423,7 +423,7 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
 
     if (v45)
     {
-      [v41 notifyDelegateOfBatchNotificationsEndWithReason:v40];
+      [homeManager notifyDelegateOfBatchNotificationsEndWithReason:v40];
     }
   }
 
@@ -436,9 +436,9 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
   return v13 & 1;
 }
 
-- (void)mergeWithDictionary:(id)a3
+- (void)mergeWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if ([(HMUserSettingsAdapter *)self didEverSentOutSettingsDidUpdate])
   {
     v5 = 0;
@@ -450,8 +450,8 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
     [(HMUserSettingsAdapter *)self setDidEverSentOutSettingsDidUpdate:1];
   }
 
-  v6 = [(HMUserSettingsAdapter *)self rootGroup];
-  v7 = [(HMUserSettingsAdapter *)self mergeUsingPreOrder:v6 withDictionary:v4];
+  rootGroup = [(HMUserSettingsAdapter *)self rootGroup];
+  v7 = [(HMUserSettingsAdapter *)self mergeUsingPreOrder:rootGroup withDictionary:dictionaryCopy];
 
   if (v5 | v7)
   {
@@ -460,14 +460,14 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
   }
 }
 
-- (void)updateValueForSetting:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)updateValueForSetting:(id)setting value:(id)value completionHandler:(id)handler
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingCopy = setting;
+  valueCopy = value;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -475,19 +475,19 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
     *buf = 138543874;
     v69 = v14;
     v70 = 2112;
-    v71 = v8;
+    v71 = settingCopy;
     v72 = 2112;
-    v73 = v9;
+    v73 = valueCopy;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Ask to update value for [%@] to [%@]", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMUserSettingsAdapter *)v12 context];
-  if (!v10)
+  context = [(HMUserSettingsAdapter *)selfCopy context];
+  if (!handlerCopy)
   {
     v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMUserSettingsAdapter updateValueForSetting:value:completionHandler:]", @"completionHandler"];
     v49 = objc_autoreleasePoolPush();
-    v50 = v12;
+    v50 = selfCopy;
     v51 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
@@ -504,45 +504,45 @@ void __57__HMUserSettingsAdapter__notifyDelegateDidUpdateKeyPath___block_invoke_
     objc_exception_throw(v53);
   }
 
-  v16 = v15;
-  if (v15)
+  v16 = context;
+  if (context)
   {
-    v17 = [(HMUserSettingsAdapter *)v12 user];
-    if (v17)
+    user = [(HMUserSettingsAdapter *)selfCopy user];
+    if (user)
     {
-      if (([v8 properties] & 2) == 0)
+      if (([settingCopy properties] & 2) == 0)
       {
-        v18 = [v16 delegateCaller];
+        delegateCaller = [v16 delegateCaller];
         v19 = MEMORY[0x1E696ABC0];
         v20 = @"User Setting is not writable";
         v21 = @"UserSetting is not writable";
         v22 = 48;
 LABEL_19:
-        v30 = [v19 hmErrorWithCode:v22 description:v20 reason:v21 suggestion:0];
-        [v18 callCompletion:v10 error:v30];
+        delegateCaller3 = [v19 hmErrorWithCode:v22 description:v20 reason:v21 suggestion:0];
+        [delegateCaller callCompletion:handlerCopy error:delegateCaller3];
         goto LABEL_20;
       }
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      if (v9 && (isKindOfClass & 1) != 0)
+      if (valueCopy && (isKindOfClass & 1) != 0)
       {
-        if ([v8 doesValueConformToConstraints:v9])
+        if ([settingCopy doesValueConformToConstraints:valueCopy])
         {
-          v28 = [v8 value];
+          value = [settingCopy value];
           v29 = HMFEqualObjects();
 
           if (v29)
           {
-            v18 = [v16 delegateCaller];
-            [v18 callCompletion:v10 error:0];
+            delegateCaller = [v16 delegateCaller];
+            [delegateCaller callCompletion:handlerCopy error:0];
           }
 
           else
           {
-            v18 = [[HMSettingValue alloc] initNumberSettingWithValue:v9];
+            delegateCaller = [[HMSettingValue alloc] initNumberSettingWithValue:valueCopy];
             v65 = 0;
-            v36 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v18 requiringSecureCoding:1 error:&v65];
+            v36 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:delegateCaller requiringSecureCoding:1 error:&v65];
             v57 = v36;
             v58 = v65;
             if (v36)
@@ -550,30 +550,30 @@ LABEL_19:
               v67[0] = v36;
               v66[0] = @"value";
               v66[1] = @"keyPath";
-              v55 = [v8 keyPath];
-              v67[1] = v55;
+              keyPath = [settingCopy keyPath];
+              v67[1] = keyPath;
               v66[2] = @"SettingTargetType";
-              v54 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HMUserSettingsAdapter type](v12, "type")}];
+              v54 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HMUserSettingsAdapter type](selfCopy, "type")}];
               v67[2] = v54;
               v66[3] = @"kUserUUIDKey";
-              v37 = [v17 uuid];
-              v38 = [v37 UUIDString];
-              v67[3] = v38;
-              v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:4];
+              uuid = [user uuid];
+              uUIDString = [uuid UUIDString];
+              v67[3] = uUIDString;
+              delegateCaller2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:4];
 
-              v40 = [v17 home];
-              v41 = [v40 uuid];
+              home = [user home];
+              uuid2 = [home uuid];
               v59[0] = MEMORY[0x1E69E9820];
               v59[1] = 3221225472;
               v59[2] = __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler___block_invoke;
               v59[3] = &unk_1E75470B0;
-              v59[4] = v12;
-              v60 = v17;
-              v61 = v8;
-              v62 = v9;
+              v59[4] = selfCopy;
+              v60 = user;
+              v61 = settingCopy;
+              v62 = valueCopy;
               v63 = v16;
-              v64 = v10;
-              [(_HMContext *)v63 sendMessage:v41 target:v39 payload:v59 responseHandler:?];
+              v64 = handlerCopy;
+              [(_HMContext *)v63 sendMessage:uuid2 target:delegateCaller2 payload:v59 responseHandler:?];
 
               v42 = v57;
             }
@@ -581,7 +581,7 @@ LABEL_19:
             else
             {
               v43 = objc_autoreleasePoolPush();
-              v44 = v12;
+              v44 = selfCopy;
               v45 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
               {
@@ -590,9 +590,9 @@ LABEL_19:
                 *buf = 138544130;
                 v69 = v46;
                 v70 = 2112;
-                v71 = v9;
+                v71 = valueCopy;
                 v72 = 2112;
-                v73 = v8;
+                v73 = settingCopy;
                 v74 = 2112;
                 v75 = v58;
                 _os_log_impl(&dword_19BB39000, v45, OS_LOG_TYPE_ERROR, "%{public}@Could not obtain encoded setting value %@ for setting %@. Error : %@", buf, 0x2Au);
@@ -601,9 +601,9 @@ LABEL_19:
               }
 
               objc_autoreleasePoolPop(v43);
-              v39 = [v16 delegateCaller];
+              delegateCaller2 = [v16 delegateCaller];
               v47 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3 description:@"Could not encode value" reason:@"Could not encode value" suggestion:0];
-              [v39 callCompletion:v10 error:v47];
+              [delegateCaller2 callCompletion:handlerCopy error:v47];
 
               v42 = 0;
             }
@@ -613,13 +613,13 @@ LABEL_19:
         }
 
         v32 = MEMORY[0x1E696AEC0];
-        v33 = [v8 minimumValue];
-        v34 = [v8 maximumValue];
-        v18 = [v32 stringWithFormat:@"Value should be between %@ & %@", v33, v34];
+        minimumValue = [settingCopy minimumValue];
+        maximumValue = [settingCopy maximumValue];
+        delegateCaller = [v32 stringWithFormat:@"Value should be between %@ & %@", minimumValue, maximumValue];
 
-        v30 = [v16 delegateCaller];
-        v35 = [MEMORY[0x1E696ABC0] hmErrorWithCode:43 description:v18 reason:v18 suggestion:0];
-        [v30 callCompletion:v10 error:v35];
+        delegateCaller3 = [v16 delegateCaller];
+        v35 = [MEMORY[0x1E696ABC0] hmErrorWithCode:43 description:delegateCaller reason:delegateCaller suggestion:0];
+        [delegateCaller3 callCompletion:handlerCopy error:v35];
 
 LABEL_20:
 LABEL_21:
@@ -627,7 +627,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v18 = [v16 delegateCaller];
+      delegateCaller = [v16 delegateCaller];
       v19 = MEMORY[0x1E696ABC0];
       v20 = @"Either value is nil or not of type NSNumber";
       v22 = 43;
@@ -635,7 +635,7 @@ LABEL_21:
 
     else
     {
-      v18 = [v16 delegateCaller];
+      delegateCaller = [v16 delegateCaller];
       v19 = MEMORY[0x1E696ABC0];
       v20 = @"User object is nil";
       v22 = 20;
@@ -646,7 +646,7 @@ LABEL_21:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = v12;
+  v24 = selfCopy;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
@@ -659,8 +659,8 @@ LABEL_21:
   }
 
   objc_autoreleasePoolPop(v23);
-  v17 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-  (*(v10 + 2))(v10, v17);
+  user = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+  (*(handlerCopy + 2))(handlerCopy, user);
 LABEL_22:
 
   v31 = *MEMORY[0x1E69E9840];
@@ -753,27 +753,27 @@ void __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler__
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)settingKeyFromKeyPath:(id)a3
+- (id)settingKeyFromKeyPath:(id)path
 {
-  v3 = [(HMUserSettingsAdapter *)self createKeyPathArrayWithKeyPath:a3];
+  v3 = [(HMUserSettingsAdapter *)self createKeyPathArrayWithKeyPath:path];
   if ([v3 hmf_isEmpty])
   {
-    v4 = 0;
+    lastObject = 0;
   }
 
   else
   {
-    v4 = [v3 lastObject];
+    lastObject = [v3 lastObject];
   }
 
-  return v4;
+  return lastObject;
 }
 
-- (id)createKeyPathArrayWithKeyPath:(id)a3
+- (id)createKeyPathArrayWithKeyPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"."];
+  pathCopy = path;
+  v5 = [pathCopy componentsSeparatedByString:@"."];
   if ([v5 count] > 1)
   {
     v11 = v5;
@@ -782,7 +782,7 @@ void __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler__
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -790,15 +790,15 @@ void __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler__
       *buf = 138543874;
       v16 = v9;
       v17 = 2112;
-      v18 = v4;
+      v18 = pathCopy;
       v19 = 2048;
       v20 = [v5 count];
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_ERROR, "%{public}@The keypath %@ needs at least 2 keys, but only has %lu component.", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [v5 firstObject];
-    v14 = v10;
+    firstObject = [v5 firstObject];
+    v14 = firstObject;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
   }
 
@@ -807,60 +807,60 @@ void __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler__
   return v11;
 }
 
-- (id)findOrAddUserSettingGroupWithKeyPath:(id)a3
+- (id)findOrAddUserSettingGroupWithKeyPath:(id)path
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMUserSettingsAdapter *)self rootGroup];
+  pathCopy = path;
+  rootGroup = [(HMUserSettingsAdapter *)self rootGroup];
 
-  if (!v5)
+  if (!rootGroup)
   {
     v6 = [HMSettingGroup alloc];
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v4 firstObject];
-    v9 = [(HMSettingGroup *)v6 initWithIdentifier:v7 name:v8 groups:MEMORY[0x1E695E0F0] settings:MEMORY[0x1E695E0F0]];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    firstObject = [pathCopy firstObject];
+    v9 = [(HMSettingGroup *)v6 initWithIdentifier:uUID name:firstObject groups:MEMORY[0x1E695E0F0] settings:MEMORY[0x1E695E0F0]];
     [(HMUserSettingsAdapter *)self setRootGroup:v9];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = v4;
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HMUserSettingsAdapter type](v11, "type")}];
+      v14 = pathCopy;
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HMUserSettingsAdapter type](selfCopy, "type")}];
       *buf = 138543618;
       v52 = v13;
       v53 = 2112;
       v54 = v15;
       _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@User settings group created for : %@", buf, 0x16u);
 
-      v4 = v14;
+      pathCopy = v14;
     }
 
     objc_autoreleasePoolPop(v10);
   }
 
-  v16 = [(HMUserSettingsAdapter *)self rootGroup];
+  rootGroup2 = [(HMUserSettingsAdapter *)self rootGroup];
 
-  if (v16)
+  if (rootGroup2)
   {
-    v17 = [(HMUserSettingsAdapter *)self rootGroup];
-    v18 = [v17 keyPath];
-    if ([v4 hmf_isEmpty])
+    rootGroup3 = [(HMUserSettingsAdapter *)self rootGroup];
+    keyPath = [rootGroup3 keyPath];
+    if ([pathCopy hmf_isEmpty])
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy2 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v23 = v22 = v4;
+        v23 = v22 = pathCopy;
         *buf = 138543362;
         v52 = v23;
         _os_log_impl(&dword_19BB39000, v21, OS_LOG_TYPE_ERROR, "%{public}@Group key array cannot be empty.", buf, 0xCu);
 
-        v4 = v22;
+        pathCopy = v22;
       }
 
       objc_autoreleasePoolPop(v19);
@@ -868,8 +868,8 @@ void __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler__
 
     else
     {
-      v29 = [v4 objectAtIndexedSubscript:0];
-      v30 = [v18 isEqual:v29];
+      v29 = [pathCopy objectAtIndexedSubscript:0];
+      v30 = [keyPath isEqual:v29];
 
       if (v30)
       {
@@ -877,8 +877,8 @@ void __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler__
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v44 = v4;
-        obj = v4;
+        v44 = pathCopy;
+        obj = pathCopy;
         v31 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
         if (v31)
         {
@@ -897,22 +897,22 @@ void __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler__
               if ((v34 & 1) == 0)
               {
                 v36 = *(*(&v46 + 1) + 8 * i);
-                v37 = self;
-                v38 = [(HMUserSettingsAdapter *)self appendKeyPath:v18 withNextKey:v36];
+                selfCopy3 = self;
+                v38 = [(HMUserSettingsAdapter *)self appendKeyPath:keyPath withNextKey:v36];
 
-                v39 = [v17 settingGroupWithKeyPath:v38];
+                v39 = [rootGroup3 settingGroupWithKeyPath:v38];
                 if (!v39)
                 {
                   v40 = [HMSettingGroup alloc];
-                  v41 = [MEMORY[0x1E696AFB0] UUID];
-                  v39 = [(HMSettingGroup *)v40 initWithIdentifier:v41 name:v36 groups:MEMORY[0x1E695E0F0] settings:MEMORY[0x1E695E0F0]];
+                  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+                  v39 = [(HMSettingGroup *)v40 initWithIdentifier:uUID2 name:v36 groups:MEMORY[0x1E695E0F0] settings:MEMORY[0x1E695E0F0]];
 
-                  [v17 addGroup:v39];
+                  [rootGroup3 addGroup:v39];
                 }
 
-                v18 = v38;
-                v17 = v39;
-                self = v37;
+                keyPath = v38;
+                rootGroup3 = v39;
+                self = selfCopy3;
               }
 
               v34 = 0;
@@ -925,9 +925,9 @@ void __71__HMUserSettingsAdapter_updateValueForSetting_value_completionHandler__
           while (v32);
         }
 
-        v17 = v17;
-        v28 = v17;
-        v4 = v44;
+        rootGroup3 = rootGroup3;
+        v28 = rootGroup3;
+        pathCopy = v44;
         goto LABEL_27;
       }
     }
@@ -939,7 +939,7 @@ LABEL_27:
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy4 = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -958,9 +958,9 @@ LABEL_28:
   return v28;
 }
 
-- (id)groupKeyArrayFromKeyPath:(id)a3
+- (id)groupKeyArrayFromKeyPath:(id)path
 {
-  v3 = [(HMUserSettingsAdapter *)self createKeyPathArrayWithKeyPath:a3];
+  v3 = [(HMUserSettingsAdapter *)self createKeyPathArrayWithKeyPath:path];
   v4 = [v3 mutableCopy];
   if ([v4 hmf_isEmpty])
   {
@@ -979,13 +979,13 @@ LABEL_28:
 - (void)createRootSettingGroup
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = [(HMUserSettingsAdapter *)self rootGroup];
+  rootGroup = [(HMUserSettingsAdapter *)self rootGroup];
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (rootGroup)
   {
     if (v7)
     {
@@ -1003,45 +1003,45 @@ LABEL_28:
     if (v7)
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HMUserSettingsAdapter *)v5 user];
+      user = [(HMUserSettingsAdapter *)selfCopy user];
       *buf = 138543618;
       v52 = v9;
       v53 = 2112;
-      v54 = v10;
+      v54 = user;
       _os_log_impl(&dword_19BB39000, v6, OS_LOG_TYPE_INFO, "%{public}@Creating settings for user %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
-    v11 = [(HMUserSettingsAdapter *)v5 user];
-    v12 = [v11 isCurrentUser];
+    user2 = [(HMUserSettingsAdapter *)selfCopy user];
+    isCurrentUser = [user2 isCurrentUser];
 
-    v13 = [(HMUserSettingsAdapter *)v5 type];
-    if (v13 == 2)
+    type = [(HMUserSettingsAdapter *)selfCopy type];
+    if (type == 2)
     {
-      v14 = [objc_opt_class() sharedSettingsSchema];
+      sharedSettingsSchema = [objc_opt_class() sharedSettingsSchema];
     }
 
-    else if (v13 == 1 && v12)
+    else if (type == 1 && isCurrentUser)
     {
-      v14 = [objc_opt_class() privateSettingsSchema];
+      sharedSettingsSchema = [objc_opt_class() privateSettingsSchema];
     }
 
     else
     {
-      v14 = 0;
+      sharedSettingsSchema = 0;
     }
 
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    obj = v14;
+    obj = sharedSettingsSchema;
     v44 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v44)
     {
       v43 = *v47;
       v15 = 3;
-      if (!v12)
+      if (!isCurrentUser)
       {
         v15 = 1;
       }
@@ -1057,38 +1057,38 @@ LABEL_28:
           }
 
           v17 = *(*(&v46 + 1) + 8 * i);
-          v18 = [v17 keyPath];
-          v19 = [(HMUserSettingsAdapter *)v5 groupKeyArrayFromKeyPath:v18];
-          v20 = [(HMUserSettingsAdapter *)v5 findOrAddUserSettingGroupWithKeyPath:v19];
-          v21 = [v17 constraints];
-          if ([v21 count] == 5)
+          keyPath = [v17 keyPath];
+          v19 = [(HMUserSettingsAdapter *)selfCopy groupKeyArrayFromKeyPath:keyPath];
+          v20 = [(HMUserSettingsAdapter *)selfCopy findOrAddUserSettingGroupWithKeyPath:v19];
+          constraints = [v17 constraints];
+          if ([constraints count] == 5)
           {
-            v45 = [(HMUserSettingsAdapter *)v5 settingKeyFromKeyPath:v18];
-            v22 = [v21 objectAtIndexedSubscript:0];
-            [v21 objectAtIndexedSubscript:1];
+            v45 = [(HMUserSettingsAdapter *)selfCopy settingKeyFromKeyPath:keyPath];
+            v22 = [constraints objectAtIndexedSubscript:0];
+            [constraints objectAtIndexedSubscript:1];
             v23 = v40 = v20;
-            v24 = [v21 objectAtIndexedSubscript:2];
-            [v21 objectAtIndexedSubscript:3];
+            v24 = [constraints objectAtIndexedSubscript:2];
+            [constraints objectAtIndexedSubscript:3];
             v25 = v42 = v19;
-            v41 = v18;
+            v41 = keyPath;
             v26 = [HMUserNumberSetting alloc];
             [MEMORY[0x1E696AFB0] UUID];
-            v28 = v27 = v5;
+            v28 = v27 = selfCopy;
             v29 = [(HMNumberSetting *)v26 initWithIdentifier:v28 name:v45 type:2 value:v25 properties:v38 minimumValue:v22 maximumValue:v23 stepValue:v24];
 
-            v5 = v27;
+            selfCopy = v27;
             [(HMSetting *)v29 setSettingManager:v27];
             v30 = v40;
             [v40 addSetting:v29];
 
-            v18 = v41;
+            keyPath = v41;
             v19 = v42;
           }
 
           else
           {
             v31 = objc_autoreleasePoolPush();
-            v32 = v5;
+            v32 = selfCopy;
             v33 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
             {
@@ -1109,34 +1109,34 @@ LABEL_28:
       while (v44);
     }
 
-    v35 = [[HMSettings alloc] initWithSettingsOwner:v5];
-    settings = v5->_settings;
-    v5->_settings = v35;
+    v35 = [[HMSettings alloc] initWithSettingsOwner:selfCopy];
+    settings = selfCopy->_settings;
+    selfCopy->_settings = v35;
   }
 
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureWithContext:(id)a3
+- (void)configureWithContext:(id)context
 {
-  v5 = a3;
-  [(HMUserSettingsAdapter *)self setContext:v5];
+  contextCopy = context;
+  [(HMUserSettingsAdapter *)self setContext:contextCopy];
   v4 = objc_autoreleasePoolPush();
   [(HMUserSettingsAdapter *)self createRootSettingGroup];
   objc_autoreleasePoolPop(v4);
 }
 
-- (HMUserSettingsAdapter)initWithUser:(id)a3 settingsType:(int64_t)a4
+- (HMUserSettingsAdapter)initWithUser:(id)user settingsType:(int64_t)type
 {
-  v6 = a3;
+  userCopy = user;
   v10.receiver = self;
   v10.super_class = HMUserSettingsAdapter;
   v7 = [(HMUserSettingsAdapter *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_user, v6);
-    v8->_type = a4;
+    objc_storeWeak(&v7->_user, userCopy);
+    v8->_type = type;
   }
 
   return v8;

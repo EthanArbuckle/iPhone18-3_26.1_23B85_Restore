@@ -1,6 +1,6 @@
 @interface HACycleTrackingDiagnosticExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (void)enabledHealthSensitiveLogging;
 @end
 
@@ -54,19 +54,19 @@
   return v4;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = sub_100000E20();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v4;
+    *&buf[4] = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "attachments for parameters: %{public}@", buf, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
-  if ((([v6 isEqualToString:@"com.apple.taptoradard"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.TapToRadar")) && (objc_msgSend(v4, "objectForKeyedSubscript:", @"DEExtensionAttachmentsParamConsentProvidedKey"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, !v8))
+  v6 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  if ((([v6 isEqualToString:@"com.apple.taptoradard"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.TapToRadar")) && (objc_msgSend(parametersCopy, "objectForKeyedSubscript:", @"DEExtensionAttachmentsParamConsentProvidedKey"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, !v8))
   {
     v19 = &__NSArray0__struct;
   }

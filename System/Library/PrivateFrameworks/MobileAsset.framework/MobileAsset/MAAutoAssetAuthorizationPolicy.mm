@@ -1,5 +1,5 @@
 @interface MAAutoAssetAuthorizationPolicy
-+ (BOOL)consumeSandboxExtension:(id)a3 forPath:(id)a4;
++ (BOOL)consumeSandboxExtension:(id)extension forPath:(id)path;
 + (id)_existingSandboxExtensions;
 @end
 
@@ -24,16 +24,16 @@ uint64_t __60__MAAutoAssetAuthorizationPolicy__existingSandboxExtensions__block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)consumeSandboxExtension:(id)a3 forPath:(id)a4
++ (BOOL)consumeSandboxExtension:(id)extension forPath:(id)path
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 UTF8String];
+  pathCopy = path;
+  uTF8String = [extension UTF8String];
   v7 = +[MAAutoAssetAuthorizationPolicy _existingSandboxExtensions];
   v8 = v7;
-  if (!v5 || ![v7 containsObject:v5])
+  if (!pathCopy || ![v7 containsObject:pathCopy])
   {
-    if (v6)
+    if (uTF8String)
     {
       v10 = sandbox_extension_consume();
       v11 = _MAClientLog(@"Auto");
@@ -43,13 +43,13 @@ uint64_t __60__MAAutoAssetAuthorizationPolicy__existingSandboxExtensions__block_
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v22 = 138543362;
-          v23 = v5;
+          v23 = pathCopy;
           _os_log_impl(&dword_197AD5000, v12, OS_LOG_TYPE_DEFAULT, "{MAAutoAssetAuthorizationPolicy}(consumeSandboxExtensionFromMessage) consumed sandbox extension for path %{public}@", &v22, 0xCu);
         }
 
-        if (v5)
+        if (pathCopy)
         {
-          [v8 addObject:v5];
+          [v8 addObject:pathCopy];
         }
 
         goto LABEL_12;
@@ -65,7 +65,7 @@ uint64_t __60__MAAutoAssetAuthorizationPolicy__existingSandboxExtensions__block_
         v24 = 1024;
         v25 = v19;
         v26 = 2114;
-        v27 = v5;
+        v27 = pathCopy;
         v14 = "{MAAutoAssetAuthorizationPolicy}(consumeSandboxExtensionFromMessage) unable to consume sandbox extension with errno %{public}s (%d) for path %{public}@";
         v15 = v12;
         v16 = 28;
@@ -79,7 +79,7 @@ uint64_t __60__MAAutoAssetAuthorizationPolicy__existingSandboxExtensions__block_
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v22 = 138543362;
-        v23 = v5;
+        v23 = pathCopy;
         v14 = "{MAAutoAssetAuthorizationPolicy}(consumeSandboxExtensionFromMessage) unable to consume sandbox extension as there is no extension available for path %{public}@";
         v15 = v12;
         v16 = 12;
@@ -96,7 +96,7 @@ LABEL_17:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138543362;
-    v23 = v5;
+    v23 = pathCopy;
     _os_log_impl(&dword_197AD5000, v9, OS_LOG_TYPE_DEFAULT, "{MAAutoAssetAuthorizationPolicy}(consumeSandboxExtensionFromMessage) found existing consumed sandbox extension for path %{public}@", &v22, 0xCu);
   }
 

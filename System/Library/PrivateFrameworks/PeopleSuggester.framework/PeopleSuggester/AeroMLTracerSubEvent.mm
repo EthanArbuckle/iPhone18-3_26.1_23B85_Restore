@@ -1,33 +1,33 @@
 @interface AeroMLTracerSubEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttributes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttributes:(id)attributes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AeroMLTracerSubEvent
 
-- (void)addAttributes:(id)a3
+- (void)addAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   attributes = self->_attributes;
-  v8 = v4;
+  v8 = attributesCopy;
   if (!attributes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_attributes;
     self->_attributes = v6;
 
-    v4 = v8;
+    attributesCopy = v8;
     attributes = self->_attributes;
   }
 
-  [(NSMutableArray *)attributes addObject:v4];
+  [(NSMutableArray *)attributes addObject:attributesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = AeroMLTracerSubEvent;
   v4 = [(AeroMLTracerSubEvent *)&v8 description];
-  v5 = [(AeroMLTracerSubEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AeroMLTracerSubEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if (*&self->_has)
@@ -87,8 +87,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -105,10 +105,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -160,20 +160,20 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v9;
+    [toCopy setName:?];
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_privatizedTimeStamp;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 8) = self->_privatizedTimeStamp;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_details)
@@ -184,10 +184,10 @@
   if ([(AeroMLTracerSubEvent *)self attributesCount])
   {
     [v9 clearAttributes];
-    v5 = [(AeroMLTracerSubEvent *)self attributesCount];
-    if (v5)
+    attributesCount = [(AeroMLTracerSubEvent *)self attributesCount];
+    if (attributesCount)
     {
-      v6 = v5;
+      v6 = attributesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(AeroMLTracerSubEvent *)self attributesAtIndex:i];
@@ -197,11 +197,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -211,7 +211,7 @@
     *(v5 + 36) |= 1u;
   }
 
-  v8 = [(NSString *)self->_details copyWithZone:a3];
+  v8 = [(NSString *)self->_details copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -235,7 +235,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addAttributes:v15];
 
         ++v14;
@@ -252,16 +252,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   name = self->_name;
-  if (name | *(v4 + 3))
+  if (name | *(equalCopy + 3))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -269,16 +269,16 @@
     }
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_privatizedTimeStamp != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_privatizedTimeStamp != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -286,13 +286,13 @@ LABEL_13:
   }
 
   details = self->_details;
-  if (details | *(v4 + 2) && ![(NSString *)details isEqual:?])
+  if (details | *(equalCopy + 2) && ![(NSString *)details isEqual:?])
   {
     goto LABEL_13;
   }
 
   attributes = self->_attributes;
-  if (attributes | *(v4 + 1))
+  if (attributes | *(equalCopy + 1))
   {
     v9 = [(NSMutableArray *)attributes isEqual:?];
   }
@@ -325,22 +325,22 @@ LABEL_14:
   return v5 ^ v6 ^ [(NSMutableArray *)self->_attributes hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(AeroMLTracerSubEvent *)self setName:?];
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_privatizedTimeStamp = *(v4 + 8);
+    self->_privatizedTimeStamp = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(AeroMLTracerSubEvent *)self setDetails:?];
   }
@@ -349,7 +349,7 @@ LABEL_14:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

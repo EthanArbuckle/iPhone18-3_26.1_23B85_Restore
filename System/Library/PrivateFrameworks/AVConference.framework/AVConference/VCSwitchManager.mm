@@ -1,8 +1,8 @@
 @interface VCSwitchManager
 - (id)description;
 - (void)initializeLocalSwitches;
-- (void)negotiateSwitchesForIsCaller:(BOOL)a3;
-- (void)setRemoteSwitches:(unsigned int)a3 isCaller:(BOOL)a4;
+- (void)negotiateSwitchesForIsCaller:(BOOL)caller;
+- (void)setRemoteSwitches:(unsigned int)switches isCaller:(BOOL)caller;
 - (void)setupLocalABTestSwitches;
 - (void)setupLocalAudioTestGroupSwitches;
 - (void)setupLocalDuplicationTestGroupSwitches;
@@ -389,10 +389,10 @@
   }
 }
 
-- (void)negotiateSwitchesForIsCaller:(BOOL)a3
+- (void)negotiateSwitchesForIsCaller:(BOOL)caller
 {
   localSwitches = self->_localSwitches;
-  if (!a3)
+  if (!caller)
   {
     localSwitches = self->_remoteSwitches;
   }
@@ -400,16 +400,16 @@
   self->_negotiatedSwitches = [(VCSwitchManager *)self applyNegotiationRulesUsingLocalSwitches:self->_localSwitches negotiatedSwitches:localSwitches];
 }
 
-- (void)setRemoteSwitches:(unsigned int)a3 isCaller:(BOOL)a4
+- (void)setRemoteSwitches:(unsigned int)switches isCaller:(BOOL)caller
 {
-  v4 = a4;
-  localSwitches = *&a3;
-  if (v4)
+  callerCopy = caller;
+  localSwitches = *&switches;
+  if (callerCopy)
   {
     localSwitches = self->_localSwitches;
   }
 
-  self->_remoteSwitches = [(VCSwitchManager *)self applyNegotiationRulesUsingLocalSwitches:*&a3 negotiatedSwitches:localSwitches];
+  self->_remoteSwitches = [(VCSwitchManager *)self applyNegotiationRulesUsingLocalSwitches:*&switches negotiatedSwitches:localSwitches];
 }
 
 - (id)description

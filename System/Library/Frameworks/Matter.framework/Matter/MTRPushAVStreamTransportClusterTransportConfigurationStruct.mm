@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterTransportConfigurationStruct
 - (MTRPushAVStreamTransportClusterTransportConfigurationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterTransportConfigurationStruct);
-  v5 = [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)self connectionID];
-  [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)v4 setConnectionID:v5];
+  connectionID = [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)self connectionID];
+  [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)v4 setConnectionID:connectionID];
 
-  v6 = [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)self transportStatus];
-  [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)v4 setTransportStatus:v6];
+  transportStatus = [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)self transportStatus];
+  [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)v4 setTransportStatus:transportStatus];
 
-  v7 = [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)self transportOptions];
-  [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)v4 setTransportOptions:v7];
+  transportOptions = [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)self transportOptions];
+  [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)v4 setTransportOptions:transportOptions];
 
-  v8 = [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)self fabricIndex];
-  [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)self fabricIndex];
+  [(MTRPushAVStreamTransportClusterTransportConfigurationStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

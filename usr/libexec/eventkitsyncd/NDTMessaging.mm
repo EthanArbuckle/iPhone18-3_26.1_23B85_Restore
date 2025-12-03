@@ -1,24 +1,24 @@
 @interface NDTMessaging
-- (NDTMessaging)initWithIDSServiceName:(id)a3 logging:(id)a4;
-- (id)_makeMessageFromWireData:(id)a3;
-- (id)_makeWireMessageType:(id)a3 content:(id)a4;
-- (id)_rawSendData:(id)a3 type:(id)a4 responseIdentifier:(id)a5 error:(id *)a6;
-- (id)_rawSendFile:(id)a3 type:(id)a4 responseIdentifier:(id)a5 error:(id *)a6;
-- (void)registerMessageType:(id)a3 handler:(id)a4;
-- (void)reply:(id)a3 to:(id)a4 completion:(id)a5;
-- (void)sendMessage:(id)a3 responseHandler:(id)a4 completion:(id)a5;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)setPriority:(unsigned int)a3;
+- (NDTMessaging)initWithIDSServiceName:(id)name logging:(id)logging;
+- (id)_makeMessageFromWireData:(id)data;
+- (id)_makeWireMessageType:(id)type content:(id)content;
+- (id)_rawSendData:(id)data type:(id)type responseIdentifier:(id)identifier error:(id *)error;
+- (id)_rawSendFile:(id)file type:(id)type responseIdentifier:(id)identifier error:(id *)error;
+- (void)registerMessageType:(id)type handler:(id)handler;
+- (void)reply:(id)reply to:(id)to completion:(id)completion;
+- (void)sendMessage:(id)message responseHandler:(id)handler completion:(id)completion;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)setPriority:(unsigned int)priority;
 @end
 
 @implementation NDTMessaging
 
-- (NDTMessaging)initWithIDSServiceName:(id)a3 logging:(id)a4
+- (NDTMessaging)initWithIDSServiceName:(id)name logging:(id)logging
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  loggingCopy = logging;
   v20.receiver = self;
   v20.super_class = NDTMessaging;
   v8 = [(NDTMessaging *)&v20 init];
@@ -32,7 +32,7 @@
     v12 = *(v8 + 2);
     *(v8 + 2) = v11;
 
-    objc_storeStrong(v8 + 6, a4);
+    objc_storeStrong(v8 + 6, logging);
     v13 = dispatch_queue_create("NDTMessaging", 0);
     v14 = *(v8 + 3);
     *(v8 + 3) = v13;
@@ -50,7 +50,7 @@
     v16 = *(v8 + 8);
     *(v8 + 8) = v15;
 
-    v17 = [[IDSService alloc] initWithService:v6];
+    v17 = [[IDSService alloc] initWithService:nameCopy];
     v18 = *(v8 + 4);
     *(v8 + 4) = v17;
 
@@ -60,23 +60,23 @@
   return v8;
 }
 
-- (void)registerMessageType:(id)a3 handler:(id)a4
+- (void)registerMessageType:(id)type handler:(id)handler
 {
-  v6 = a3;
-  v8 = [a4 copy];
+  typeCopy = type;
+  v8 = [handler copy];
   v7 = objc_retainBlock(v8);
-  [(NSMutableDictionary *)self->_handlers setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_handlers setObject:v7 forKeyedSubscript:typeCopy];
 }
 
-- (void)setPriority:(unsigned int)a3
+- (void)setPriority:(unsigned int)priority
 {
   v3 = 200;
-  if (a3 == 300)
+  if (priority == 300)
   {
     v3 = 300;
   }
 
-  if (a3 == 100)
+  if (priority == 100)
   {
     v3 = 100;
   }
@@ -84,36 +84,36 @@
   self->_priority = v3;
 }
 
-- (id)_makeWireMessageType:(id)a3 content:(id)a4
+- (id)_makeWireMessageType:(id)type content:(id)content
 {
-  v5 = a4;
-  v6 = [a3 dataUsingEncoding:4];
+  contentCopy = content;
+  v6 = [type dataUsingEncoding:4];
   v7 = objc_opt_new();
   if (!([v6 length] >> 32))
   {
-    [v5 length];
+    [contentCopy length];
   }
 
   v9 = [v6 length];
   [v7 appendBytes:&v9 length:4];
   [v7 appendData:v6];
-  v9 = [v5 length];
+  v9 = [contentCopy length];
   [v7 appendBytes:&v9 length:4];
-  [v7 appendData:v5];
+  [v7 appendData:contentCopy];
 
   return v7;
 }
 
-- (id)_makeMessageFromWireData:(id)a3
+- (id)_makeMessageFromWireData:(id)data
 {
   v10 = 0;
-  v3 = a3;
-  [v3 getBytes:&v10 range:{0, 4}];
-  v4 = [v3 subdataWithRange:{4, v10}];
+  dataCopy = data;
+  [dataCopy getBytes:&v10 range:{0, 4}];
+  v4 = [dataCopy subdataWithRange:{4, v10}];
   v5 = [[NSString alloc] initWithData:v4 encoding:4];
   v9 = 0;
-  [v3 getBytes:&v9 range:{v10 + 4, 4}];
-  v6 = [v3 subdataWithRange:{v10 + 8, v9}];
+  [dataCopy getBytes:&v9 range:{v10 + 4, 4}];
+  v6 = [dataCopy subdataWithRange:{v10 + 8, v9}];
 
   v7 = [[NDTMessage alloc] initWithData:v6];
   [(NDTMessage *)v7 setMsgType:v5];
@@ -121,17 +121,17 @@
   return v7;
 }
 
-- (id)_rawSendData:(id)a3 type:(id)a4 responseIdentifier:(id)a5 error:(id *)a6
+- (id)_rawSendData:(id)data type:(id)type responseIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(NDTMessaging *)self idsOptions];
-  v14 = [v13 mutableCopy];
+  identifierCopy = identifier;
+  typeCopy = type;
+  dataCopy = data;
+  idsOptions = [(NDTMessaging *)self idsOptions];
+  v14 = [idsOptions mutableCopy];
 
-  if (v10)
+  if (identifierCopy)
   {
-    v15 = v10;
+    v15 = identifierCopy;
   }
 
   else
@@ -140,7 +140,7 @@
   }
 
   v16 = &IDSSendMessageOptionExpectsPeerResponseKey;
-  if (v10)
+  if (identifierCopy)
   {
     v16 = &IDSSendMessageOptionPeerResponseIdentifierKey;
   }
@@ -149,13 +149,13 @@
   v17 = [NSNumber numberWithBool:self->_cloudFallback];
   [v14 setObject:v17 forKeyedSubscript:IDSSendMessageOptionAllowCloudDeliveryKey];
 
-  v18 = [(NDTMessaging *)self _makeWireMessageType:v11 content:v12];
+  v18 = [(NDTMessaging *)self _makeWireMessageType:typeCopy content:dataCopy];
 
   service = self->_service;
   v20 = [NSSet setWithObject:IDSDefaultPairedDevice];
   priority = self->_priority;
   v29 = 0;
-  v22 = [(IDSService *)service sendData:v18 toDestinations:v20 priority:priority options:v14 identifier:&v29 error:a6];
+  v22 = [(IDSService *)service sendData:v18 toDestinations:v20 priority:priority options:v14 identifier:&v29 error:error];
   v23 = v29;
 
   os_log_facility = self->_logFacility->os_log_facility;
@@ -179,7 +179,7 @@
       goto LABEL_12;
     }
 
-    v27 = *a6;
+    v27 = *error;
     *buf = 138543362;
     v31 = v27;
     v26 = "_rawSendData has an error: %{public}@";
@@ -191,17 +191,17 @@ LABEL_12:
   return v23;
 }
 
-- (id)_rawSendFile:(id)a3 type:(id)a4 responseIdentifier:(id)a5 error:(id *)a6
+- (id)_rawSendFile:(id)file type:(id)type responseIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(NDTMessaging *)self idsOptions];
-  v14 = [v13 mutableCopy];
+  typeCopy = type;
+  identifierCopy = identifier;
+  fileCopy = file;
+  idsOptions = [(NDTMessaging *)self idsOptions];
+  v14 = [idsOptions mutableCopy];
 
-  if (v11)
+  if (identifierCopy)
   {
-    v15 = v11;
+    v15 = identifierCopy;
   }
 
   else
@@ -210,7 +210,7 @@ LABEL_12:
   }
 
   v16 = &IDSSendMessageOptionExpectsPeerResponseKey;
-  if (v11)
+  if (identifierCopy)
   {
     v16 = &IDSSendMessageOptionPeerResponseIdentifierKey;
   }
@@ -219,9 +219,9 @@ LABEL_12:
   v17 = [NSNumber numberWithBool:self->_cloudFallback];
   [v14 setObject:v17 forKeyedSubscript:IDSSendMessageOptionAllowCloudDeliveryKey];
 
-  if (v10)
+  if (typeCopy)
   {
-    v18 = v10;
+    v18 = typeCopy;
   }
 
   else
@@ -233,12 +233,12 @@ LABEL_12:
   v34 = v18;
   v19 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
   service = self->_service;
-  v21 = [NSURL fileURLWithPath:v12];
+  v21 = [NSURL fileURLWithPath:fileCopy];
 
   v22 = [NSSet setWithObject:IDSDefaultPairedDevice];
   priority = self->_priority;
   v30 = 0;
-  LODWORD(service) = [(IDSService *)service sendResourceAtURL:v21 metadata:v19 toDestinations:v22 priority:priority options:v14 identifier:&v30 error:a6];
+  LODWORD(service) = [(IDSService *)service sendResourceAtURL:v21 metadata:v19 toDestinations:v22 priority:priority options:v14 identifier:&v30 error:error];
   v24 = v30;
 
   os_log_facility = self->_logFacility->os_log_facility;
@@ -262,7 +262,7 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    v28 = *a6;
+    v28 = *error;
     *buf = 138543362;
     v32 = v28;
     v27 = "_rawSendFile has an error: %{public}@";
@@ -274,11 +274,11 @@ LABEL_15:
   return v24;
 }
 
-- (void)sendMessage:(id)a3 responseHandler:(id)a4 completion:(id)a5
+- (void)sendMessage:(id)message responseHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
+  completionCopy = completion;
   v11 = os_transaction_create();
   objc_initWeak(&location, self);
   q = self->_q;
@@ -287,58 +287,58 @@ LABEL_15:
   v17[2] = sub_100012F6C;
   v17[3] = &unk_1000B4E48;
   objc_copyWeak(&v22, &location);
-  v18 = v8;
+  v18 = messageCopy;
   v19 = v11;
-  v20 = v9;
-  v21 = v10;
-  v13 = v10;
+  v20 = handlerCopy;
+  v21 = completionCopy;
+  v13 = completionCopy;
   v14 = v11;
-  v15 = v9;
-  v16 = v8;
+  v15 = handlerCopy;
+  v16 = messageCopy;
   dispatch_async(q, v17);
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
 }
 
-- (void)reply:(id)a3 to:(id)a4 completion:(id)a5
+- (void)reply:(id)reply to:(id)to completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  replyCopy = reply;
+  toCopy = to;
+  completionCopy = completion;
   v11 = os_transaction_create();
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100013304;
   block[3] = &unk_1000B4E70;
-  v18 = v8;
-  v19 = self;
+  v18 = replyCopy;
+  selfCopy = self;
   v21 = v11;
-  v22 = v10;
-  v20 = v9;
+  v22 = completionCopy;
+  v20 = toCopy;
   v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = completionCopy;
+  v15 = toCopy;
+  v16 = replyCopy;
   dispatch_async(q, block);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v9 = a7;
-  v10 = [(NDTMessaging *)self _makeMessageFromWireData:a5];
+  contextCopy = context;
+  v10 = [(NDTMessaging *)self _makeMessageFromWireData:data];
   v11 = os_transaction_create();
-  v12 = [v9 incomingResponseIdentifier];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
 
-  if (!v12)
+  if (!incomingResponseIdentifier)
   {
-    v21 = [v9 outgoingResponseIdentifier];
-    [v10 setResponseIdentifier:v21];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    [v10 setResponseIdentifier:outgoingResponseIdentifier];
 
     handlers = self->_handlers;
-    v23 = [v10 msgType];
-    v24 = [(NSMutableDictionary *)handlers objectForKeyedSubscript:v23];
+    msgType = [v10 msgType];
+    v24 = [(NSMutableDictionary *)handlers objectForKeyedSubscript:msgType];
 
     if (v24)
     {
@@ -371,8 +371,8 @@ LABEL_11:
   }
 
   outstanding = self->_outstanding;
-  v14 = [v9 incomingResponseIdentifier];
-  v15 = [(NSMutableDictionary *)outstanding objectForKeyedSubscript:v14];
+  incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+  v15 = [(NSMutableDictionary *)outstanding objectForKeyedSubscript:incomingResponseIdentifier2];
 
   if (!v15)
   {
@@ -399,8 +399,8 @@ LABEL_11:
   dispatch_async(v16, block);
 
   v18 = self->_outstanding;
-  v19 = [v9 incomingResponseIdentifier];
-  [(NSMutableDictionary *)v18 removeObjectForKey:v19];
+  incomingResponseIdentifier3 = [contextCopy incomingResponseIdentifier];
+  [(NSMutableDictionary *)v18 removeObjectForKey:incomingResponseIdentifier3];
 
   v20 = v36;
 LABEL_6:
@@ -408,39 +408,39 @@ LABEL_6:
 LABEL_12:
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
-  v11 = a5;
-  v12 = a8;
-  v13 = a6;
+  lCopy = l;
+  contextCopy = context;
+  metadataCopy = metadata;
   v14 = [NDTMessage alloc];
-  v15 = [v11 path];
-  v16 = [(NDTMessage *)v14 initWithFile:v15];
+  path = [lCopy path];
+  v16 = [(NDTMessage *)v14 initWithFile:path];
 
-  v17 = [v13 objectForKeyedSubscript:@"msgType"];
+  v17 = [metadataCopy objectForKeyedSubscript:@"msgType"];
 
   [(NDTMessage *)v16 setMsgType:v17];
   strcpy(buf, "/tmp/verifier_data.XXXXXX");
-  v18 = v11;
-  v19 = [v18 lastPathComponent];
+  v18 = lCopy;
+  lastPathComponent = [v18 lastPathComponent];
   mkdtemp(buf);
-  v20 = [NSString stringWithFormat:@"%s/%@", buf, v19];
-  v21 = [v18 fileSystemRepresentation];
+  v20 = [NSString stringWithFormat:@"%s/%@", buf, lastPathComponent];
+  fileSystemRepresentation = [v18 fileSystemRepresentation];
 
-  link(v21, [v20 UTF8String]);
+  link(fileSystemRepresentation, [v20 UTF8String]);
   [(NDTMessage *)v16 setPath:v20];
 
   v22 = os_transaction_create();
-  v23 = [v12 incomingResponseIdentifier];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
 
-  if (!v23)
+  if (!incomingResponseIdentifier)
   {
-    v32 = [v12 outgoingResponseIdentifier];
-    [(NDTMessage *)v16 setResponseIdentifier:v32];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    [(NDTMessage *)v16 setResponseIdentifier:outgoingResponseIdentifier];
 
     handlers = self->_handlers;
-    v34 = [(NDTMessage *)v16 msgType];
-    v35 = [(NSMutableDictionary *)handlers objectForKeyedSubscript:v34];
+    msgType = [(NDTMessage *)v16 msgType];
+    v35 = [(NSMutableDictionary *)handlers objectForKeyedSubscript:msgType];
 
     if (v35)
     {
@@ -473,8 +473,8 @@ LABEL_11:
   }
 
   outstanding = self->_outstanding;
-  v25 = [v12 incomingResponseIdentifier];
-  v26 = [(NSMutableDictionary *)outstanding objectForKeyedSubscript:v25];
+  incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+  v26 = [(NSMutableDictionary *)outstanding objectForKeyedSubscript:incomingResponseIdentifier2];
 
   if (!v26)
   {
@@ -501,8 +501,8 @@ LABEL_11:
   dispatch_async(v27, block);
 
   v29 = self->_outstanding;
-  v30 = [v12 incomingResponseIdentifier];
-  [(NSMutableDictionary *)v29 removeObjectForKey:v30];
+  incomingResponseIdentifier3 = [contextCopy incomingResponseIdentifier];
+  [(NSMutableDictionary *)v29 removeObjectForKey:incomingResponseIdentifier3];
 
   v31 = v46;
 LABEL_6:
@@ -510,16 +510,16 @@ LABEL_6:
 LABEL_12:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v10 = a5;
-  v11 = a7;
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
   os_log_facility = self->_logFacility->os_log_facility;
   if (os_log_type_enabled(os_log_facility, OS_LOG_TYPE_DEFAULT))
   {
     v14[0] = 67109634;
-    if (v8)
+    if (successCopy)
     {
       v13 = 89;
     }
@@ -531,9 +531,9 @@ LABEL_12:
 
     v14[1] = v13;
     v15 = 2114;
-    v16 = v10;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v11;
+    v18 = errorCopy;
     _os_log_impl(&_mh_execute_header, os_log_facility, OS_LOG_TYPE_DEFAULT, "didSend:%c IDS id: %{public}@, error: %{public}@", v14, 0x1Cu);
   }
 }

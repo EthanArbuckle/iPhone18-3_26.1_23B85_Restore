@@ -1,17 +1,17 @@
 @interface _INPBSearchForTimersIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForTimersIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForTimersIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMatchedTimers:(id)a3;
-- (void)addTimers:(id)a3;
-- (void)addUnmatchedTimers:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMatchedTimers:(id)a3;
-- (void)setTimers:(id)a3;
-- (void)setUnmatchedTimers:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatchedTimers:(id)timers;
+- (void)addTimers:(id)timers;
+- (void)addUnmatchedTimers:(id)timers;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMatchedTimers:(id)timers;
+- (void)setTimers:(id)timers;
+- (void)setUnmatchedTimers:(id)timers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForTimersIntentResponse
@@ -19,10 +19,10 @@
 - (id)dictionaryRepresentation
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_matchedTimers count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -42,8 +42,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v35 objects:v41 count:16];
@@ -52,12 +52,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"matchedTimers"];
+    [dictionary setObject:array forKeyedSubscript:@"matchedTimers"];
   }
 
   if ([(NSArray *)self->_timers count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -77,8 +77,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSArray *)v12 countByEnumeratingWithState:&v31 objects:v40 count:16];
@@ -87,12 +87,12 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"timers"];
+    [dictionary setObject:array2 forKeyedSubscript:@"timers"];
   }
 
   if ([(NSArray *)self->_unmatchedTimers count])
   {
-    v18 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -112,8 +112,8 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v27 + 1) + 8 * k) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation3 = [*(*(&v27 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation3];
         }
 
         v21 = [(NSArray *)v19 countByEnumeratingWithState:&v27 objects:v39 count:16];
@@ -122,12 +122,12 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"unmatchedTimers"];
+    [dictionary setObject:array3 forKeyedSubscript:@"unmatchedTimers"];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -137,28 +137,28 @@
   return v4 ^ [(NSArray *)self->_unmatchedTimers hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBSearchForTimersIntentResponse *)self matchedTimers];
-  v6 = [v4 matchedTimers];
-  if ((v5 != 0) == (v6 == 0))
+  matchedTimers = [(_INPBSearchForTimersIntentResponse *)self matchedTimers];
+  matchedTimers2 = [equalCopy matchedTimers];
+  if ((matchedTimers != 0) == (matchedTimers2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBSearchForTimersIntentResponse *)self matchedTimers];
-  if (v7)
+  matchedTimers3 = [(_INPBSearchForTimersIntentResponse *)self matchedTimers];
+  if (matchedTimers3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchForTimersIntentResponse *)self matchedTimers];
-    v10 = [v4 matchedTimers];
-    v11 = [v9 isEqual:v10];
+    v8 = matchedTimers3;
+    matchedTimers4 = [(_INPBSearchForTimersIntentResponse *)self matchedTimers];
+    matchedTimers5 = [equalCopy matchedTimers];
+    v11 = [matchedTimers4 isEqual:matchedTimers5];
 
     if (!v11)
     {
@@ -170,20 +170,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForTimersIntentResponse *)self timers];
-  v6 = [v4 timers];
-  if ((v5 != 0) == (v6 == 0))
+  matchedTimers = [(_INPBSearchForTimersIntentResponse *)self timers];
+  matchedTimers2 = [equalCopy timers];
+  if ((matchedTimers != 0) == (matchedTimers2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBSearchForTimersIntentResponse *)self timers];
-  if (v12)
+  timers = [(_INPBSearchForTimersIntentResponse *)self timers];
+  if (timers)
   {
-    v13 = v12;
-    v14 = [(_INPBSearchForTimersIntentResponse *)self timers];
-    v15 = [v4 timers];
-    v16 = [v14 isEqual:v15];
+    v13 = timers;
+    timers2 = [(_INPBSearchForTimersIntentResponse *)self timers];
+    timers3 = [equalCopy timers];
+    v16 = [timers2 isEqual:timers3];
 
     if (!v16)
     {
@@ -195,12 +195,12 @@
   {
   }
 
-  v5 = [(_INPBSearchForTimersIntentResponse *)self unmatchedTimers];
-  v6 = [v4 unmatchedTimers];
-  if ((v5 != 0) != (v6 == 0))
+  matchedTimers = [(_INPBSearchForTimersIntentResponse *)self unmatchedTimers];
+  matchedTimers2 = [equalCopy unmatchedTimers];
+  if ((matchedTimers != 0) != (matchedTimers2 == 0))
   {
-    v17 = [(_INPBSearchForTimersIntentResponse *)self unmatchedTimers];
-    if (!v17)
+    unmatchedTimers = [(_INPBSearchForTimersIntentResponse *)self unmatchedTimers];
+    if (!unmatchedTimers)
     {
 
 LABEL_20:
@@ -208,10 +208,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBSearchForTimersIntentResponse *)self unmatchedTimers];
-    v20 = [v4 unmatchedTimers];
-    v21 = [v19 isEqual:v20];
+    v18 = unmatchedTimers;
+    unmatchedTimers2 = [(_INPBSearchForTimersIntentResponse *)self unmatchedTimers];
+    unmatchedTimers3 = [equalCopy unmatchedTimers];
+    v21 = [unmatchedTimers2 isEqual:unmatchedTimers3];
 
     if (v21)
     {
@@ -231,49 +231,49 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForTimersIntentResponse allocWithZone:](_INPBSearchForTimersIntentResponse init];
-  v6 = [(NSArray *)self->_matchedTimers copyWithZone:a3];
+  v6 = [(NSArray *)self->_matchedTimers copyWithZone:zone];
   [(_INPBSearchForTimersIntentResponse *)v5 setMatchedTimers:v6];
 
-  v7 = [(NSArray *)self->_timers copyWithZone:a3];
+  v7 = [(NSArray *)self->_timers copyWithZone:zone];
   [(_INPBSearchForTimersIntentResponse *)v5 setTimers:v7];
 
-  v8 = [(NSArray *)self->_unmatchedTimers copyWithZone:a3];
+  v8 = [(NSArray *)self->_unmatchedTimers copyWithZone:zone];
   [(_INPBSearchForTimersIntentResponse *)v5 setUnmatchedTimers:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForTimersIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForTimersIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForTimersIntentResponse)initWithCoder:(id)a3
+- (_INPBSearchForTimersIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForTimersIntentResponse *)self initWithData:v6];
+    self = [(_INPBSearchForTimersIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -373,81 +373,81 @@ LABEL_18:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addUnmatchedTimers:(id)a3
+- (void)addUnmatchedTimers:(id)timers
 {
-  v4 = a3;
+  timersCopy = timers;
   unmatchedTimers = self->_unmatchedTimers;
-  v8 = v4;
+  v8 = timersCopy;
   if (!unmatchedTimers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_unmatchedTimers;
-    self->_unmatchedTimers = v6;
+    self->_unmatchedTimers = array;
 
-    v4 = v8;
+    timersCopy = v8;
     unmatchedTimers = self->_unmatchedTimers;
   }
 
-  [(NSArray *)unmatchedTimers addObject:v4];
+  [(NSArray *)unmatchedTimers addObject:timersCopy];
 }
 
-- (void)setUnmatchedTimers:(id)a3
+- (void)setUnmatchedTimers:(id)timers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [timers mutableCopy];
   unmatchedTimers = self->_unmatchedTimers;
   self->_unmatchedTimers = v4;
 
   MEMORY[0x1EEE66BB8](v4, unmatchedTimers);
 }
 
-- (void)addTimers:(id)a3
+- (void)addTimers:(id)timers
 {
-  v4 = a3;
+  timersCopy = timers;
   timers = self->_timers;
-  v8 = v4;
+  v8 = timersCopy;
   if (!timers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_timers;
-    self->_timers = v6;
+    self->_timers = array;
 
-    v4 = v8;
+    timersCopy = v8;
     timers = self->_timers;
   }
 
-  [(NSArray *)timers addObject:v4];
+  [(NSArray *)timers addObject:timersCopy];
 }
 
-- (void)setTimers:(id)a3
+- (void)setTimers:(id)timers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [timers mutableCopy];
   timers = self->_timers;
   self->_timers = v4;
 
   MEMORY[0x1EEE66BB8](v4, timers);
 }
 
-- (void)addMatchedTimers:(id)a3
+- (void)addMatchedTimers:(id)timers
 {
-  v4 = a3;
+  timersCopy = timers;
   matchedTimers = self->_matchedTimers;
-  v8 = v4;
+  v8 = timersCopy;
   if (!matchedTimers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matchedTimers;
-    self->_matchedTimers = v6;
+    self->_matchedTimers = array;
 
-    v4 = v8;
+    timersCopy = v8;
     matchedTimers = self->_matchedTimers;
   }
 
-  [(NSArray *)matchedTimers addObject:v4];
+  [(NSArray *)matchedTimers addObject:timersCopy];
 }
 
-- (void)setMatchedTimers:(id)a3
+- (void)setMatchedTimers:(id)timers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [timers mutableCopy];
   matchedTimers = self->_matchedTimers;
   self->_matchedTimers = v4;
 

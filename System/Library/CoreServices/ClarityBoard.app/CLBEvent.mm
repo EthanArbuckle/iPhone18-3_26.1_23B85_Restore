@@ -1,26 +1,26 @@
 @interface CLBEvent
-+ (id)eventWithType:(int64_t)a3 context:(id)a4;
++ (id)eventWithType:(int64_t)type context:(id)context;
 - (CLBOpenApplicationRequest)openApplicationRequest;
 @end
 
 @implementation CLBEvent
 
-+ (id)eventWithType:(int64_t)a3 context:(id)a4
++ (id)eventWithType:(int64_t)type context:(id)context
 {
-  v6 = a4;
-  v7 = objc_alloc_init(a1);
+  contextCopy = context;
+  v7 = objc_alloc_init(self);
   v8 = v7[2];
-  v7[1] = a3;
-  v7[2] = v6;
+  v7[1] = type;
+  v7[2] = contextCopy;
 
   return v7;
 }
 
 - (CLBOpenApplicationRequest)openApplicationRequest
 {
-  v2 = [(CLBEvent *)self context];
+  context = [(CLBEvent *)self context];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = context;
   if (v3)
   {
     if (objc_opt_isKindOfClass())

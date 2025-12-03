@@ -1,7 +1,7 @@
 @interface PersonalizationScriptTestCase
 - (NSString)testName;
 - (_TtC7NewsUI229PersonalizationScriptTestCase)init;
-- (void)runTestWithContext:(id)a3 completion:(id)a4;
+- (void)runTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation PersonalizationScriptTestCase
@@ -14,14 +14,14 @@
   return v2;
 }
 
-- (void)runTestWithContext:(id)a3 completion:(id)a4
+- (void)runTestWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_21973F404(v8, sub_218967168, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_21973F404(contextCopy, sub_218967168, v7);
 }
 
 - (_TtC7NewsUI229PersonalizationScriptTestCase)init

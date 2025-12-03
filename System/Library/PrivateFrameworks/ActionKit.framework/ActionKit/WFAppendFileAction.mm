@@ -1,10 +1,10 @@
 @interface WFAppendFileAction
 - (BOOL)requiresRemoteExecution;
-- (id)contentDestinationWithError:(id *)a3;
+- (id)contentDestinationWithError:(id *)error;
 - (id)filenamePlaceholderText;
 - (id)minimumSupportedClientVersion;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3 storageService:(id)a4;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input storageService:(id)service;
 @end
 
 @implementation WFAppendFileAction
@@ -13,16 +13,16 @@
 {
   v5.receiver = self;
   v5.super_class = WFAppendFileAction;
-  v2 = [(WFAppendFileAction *)&v5 minimumSupportedClientVersion];
+  minimumSupportedClientVersion = [(WFAppendFileAction *)&v5 minimumSupportedClientVersion];
   v3 = WFMaximumBundleVersion();
 
   return v3;
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v7 = a5;
-  v8 = a3;
+  nameCopy = name;
+  descriptionCopy = description;
   v9 = [(WFAppendFileAction *)self parameterValueForKey:@"WFAppendFileWriteMode" ofClass:objc_opt_class()];
   v10 = [v9 isEqualToString:@"Prepend"];
 
@@ -38,12 +38,12 @@
   }
 
   v13 = WFLocalizedString(v12);
-  v14 = [v11 localizedStringWithFormat:v13, v7, v8];
+  descriptionCopy = [v11 localizedStringWithFormat:v13, nameCopy, descriptionCopy];
 
-  return v14;
+  return descriptionCopy;
 }
 
-- (id)contentDestinationWithError:(id *)a3
+- (id)contentDestinationWithError:(id *)error
 {
   v3 = [(WFAppendFileAction *)self parameterValueForKey:@"WFFile" ofClass:objc_opt_class()];
   v4 = [MEMORY[0x277CFC318] contentLocationForFile:v3];
@@ -53,9 +53,9 @@
 
 - (id)filenamePlaceholderText
 {
-  v2 = [(WFStorageServiceAction *)self storageService];
-  v3 = [v2 storageLocationPrefix];
-  v4 = [v3 hasSuffix:@"/"];
+  storageService = [(WFStorageServiceAction *)self storageService];
+  storageLocationPrefix = [storageService storageLocationPrefix];
+  v4 = [storageLocationPrefix hasSuffix:@"/"];
 
   if (v4)
   {
@@ -79,25 +79,25 @@
   return [(WFStorageServiceAction *)&v3 requiresRemoteExecution];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3 storageService:(id)a4
+- (void)runAsynchronouslyWithInput:(id)input storageService:(id)service
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFStorageServiceAction *)self filePathKey];
-  v9 = [(WFAppendFileAction *)self parameterValueForKey:v8 ofClass:objc_opt_class()];
+  inputCopy = input;
+  serviceCopy = service;
+  filePathKey = [(WFStorageServiceAction *)self filePathKey];
+  v9 = [(WFAppendFileAction *)self parameterValueForKey:filePathKey ofClass:objc_opt_class()];
 
   v10 = [(WFAppendFileAction *)self parameterValueForKey:@"WFFile" ofClass:objc_opt_class()];
   if ([v9 length])
   {
     v11 = [(WFAppendFileAction *)self parameterValueForKey:@"WFAppendOnNewLine" ofClass:objc_opt_class()];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
     v13 = [(WFAppendFileAction *)self parameterValueForKey:@"WFAppendFileWriteMode" ofClass:objc_opt_class()];
     v14 = [v13 isEqualToString:@"Prepend"];
 
     v15 = 9;
-    if (!v12)
+    if (!bOOLValue)
     {
       v15 = 1;
     }
@@ -114,11 +114,11 @@
     v25[2] = __64__WFAppendFileAction_runAsynchronouslyWithInput_storageService___block_invoke;
     v25[3] = &unk_278C1B168;
     v25[4] = self;
-    v26 = v7;
+    v26 = serviceCopy;
     v27 = v10;
     v28 = v9;
     v29 = v17;
-    [v6 getStringRepresentation:v25];
+    [inputCopy getStringRepresentation:v25];
   }
 
   else

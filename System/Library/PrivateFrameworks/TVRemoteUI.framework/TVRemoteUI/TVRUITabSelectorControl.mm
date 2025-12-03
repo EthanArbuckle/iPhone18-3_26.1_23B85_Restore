@@ -1,41 +1,41 @@
 @interface TVRUITabSelectorControl
 + (double)defaultHeight;
-- (TVRUITabSelectorControl)initWithItems:(id)a3 styleProvider:(id)a4;
+- (TVRUITabSelectorControl)initWithItems:(id)items styleProvider:(id)provider;
 - (TVRUITabSelectorControlDelegate)delegate;
-- (id)_cellResolvedLayoutResultsForItems:(id)a3;
+- (id)_cellResolvedLayoutResultsForItems:(id)items;
 - (id)_layout;
 - (unint64_t)selectedIndex;
 - (void)_configure;
-- (void)_updateFromItemsAnimated:(BOOL)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)setSelectedIndex:(unint64_t)a3;
-- (void)updateItems:(id)a3 animated:(BOOL)a4;
+- (void)_updateFromItemsAnimated:(BOOL)animated;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)setSelectedIndex:(unint64_t)index;
+- (void)updateItems:(id)items animated:(BOOL)animated;
 @end
 
 @implementation TVRUITabSelectorControl
 
-- (TVRUITabSelectorControl)initWithItems:(id)a3 styleProvider:(id)a4
+- (TVRUITabSelectorControl)initWithItems:(id)items styleProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = TVRUITabSelectorControl;
   v8 = [(TVRUITabSelectorControl *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB70] orderedSetWithArray:v6];
-    v10 = [v9 array];
+    v9 = [MEMORY[0x277CBEB70] orderedSetWithArray:itemsCopy];
+    array = [v9 array];
     items = v8->_items;
-    v8->_items = v10;
+    v8->_items = array;
 
-    objc_storeStrong(&v8->_styleProvider, a4);
+    objc_storeStrong(&v8->_styleProvider, provider);
     v8->_prefersCenteredItems = 1;
     previousSelectedItem = v8->_previousSelectedItem;
     v8->_previousSelectedItem = 0;
 
     [(TVRUITabSelectorControl *)v8 _configure];
     [(TVRUITabSelectorControl *)v8 _updateFromItemsAnimated:0];
-    if ([v6 count])
+    if ([itemsCopy count])
     {
       [(TVRUITabSelectorControl *)v8 setSelectedIndex:0];
     }
@@ -44,38 +44,38 @@
   return v8;
 }
 
-- (void)updateItems:(id)a3 animated:(BOOL)a4
+- (void)updateItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:a3];
-  v6 = [v8 array];
+  animatedCopy = animated;
+  v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:items];
+  array = [v8 array];
   items = self->_items;
-  self->_items = v6;
+  self->_items = array;
 
-  [(TVRUITabSelectorControl *)self _updateFromItemsAnimated:v4];
+  [(TVRUITabSelectorControl *)self _updateFromItemsAnimated:animatedCopy];
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  v5 = [(TVRUITabSelectorControl *)self items];
-  v6 = [v5 count];
+  items = [(TVRUITabSelectorControl *)self items];
+  v6 = [items count];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(TVRUITabSelectorControl *)self collectionView];
-    v8 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
-    [v7 selectItemAtIndexPath:v8 animated:0 scrollPosition:0];
+    collectionView = [(TVRUITabSelectorControl *)self collectionView];
+    v8 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
+    [collectionView selectItemAtIndexPath:v8 animated:0 scrollPosition:0];
 
-    v11 = [(TVRUITabSelectorControl *)self items];
-    if ([v11 count] <= a3)
+    items2 = [(TVRUITabSelectorControl *)self items];
+    if ([items2 count] <= index)
     {
       [(TVRUITabSelectorControl *)self setPreviousSelectedItem:0];
     }
 
     else
     {
-      v9 = [(TVRUITabSelectorControl *)self items];
-      v10 = [v9 objectAtIndexedSubscript:a3];
+      items3 = [(TVRUITabSelectorControl *)self items];
+      v10 = [items3 objectAtIndexedSubscript:index];
       [(TVRUITabSelectorControl *)self setPreviousSelectedItem:v10];
     }
   }
@@ -83,21 +83,21 @@
 
 - (unint64_t)selectedIndex
 {
-  v2 = [(TVRUITabSelectorControl *)self collectionView];
-  v3 = [v2 indexPathsForSelectedItems];
-  v4 = [v3 firstObject];
+  collectionView = [(TVRUITabSelectorControl *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [v4 item];
+    item = [firstObject item];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    item = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return item;
 }
 
 + (double)defaultHeight
@@ -117,8 +117,8 @@
   v28[4] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D752B0] registrationWithCellClass:objc_opt_class() configurationHandler:&__block_literal_global_6];
   v4 = objc_alloc(MEMORY[0x277D752A0]);
-  v5 = [(TVRUITabSelectorControl *)self _layout];
-  v6 = [v4 initWithFrame:v5 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _layout = [(TVRUITabSelectorControl *)self _layout];
+  v6 = [v4 initWithFrame:_layout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   [v6 setDelegate:self];
   v7 = objc_alloc(MEMORY[0x277D752D0]);
@@ -129,38 +129,38 @@
   v27 = v3;
   v25 = v3;
   v24 = [v7 initWithCollectionView:v6 cellProvider:v26];
-  v8 = self;
+  selfCopy = self;
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   [v6 setBouncesVertically:0];
   [v6 setClipsToBounds:0];
   [v6 setShowsHorizontalScrollIndicator:0];
   [v6 setShowsVerticalScrollIndicator:0];
-  [(TVRUITabSelectorControl *)v8 addSubview:v6];
+  [(TVRUITabSelectorControl *)selfCopy addSubview:v6];
   v18 = MEMORY[0x277CCAAD0];
-  v23 = [(TVRUITabSelectorControl *)v8 leadingAnchor];
-  v22 = [v6 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  leadingAnchor = [(TVRUITabSelectorControl *)selfCopy leadingAnchor];
+  leadingAnchor2 = [v6 leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v28[0] = v21;
-  v20 = [(TVRUITabSelectorControl *)v8 trailingAnchor];
-  v19 = [v6 trailingAnchor];
-  v10 = [v20 constraintEqualToAnchor:v19];
+  trailingAnchor = [(TVRUITabSelectorControl *)selfCopy trailingAnchor];
+  trailingAnchor2 = [v6 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v28[1] = v10;
-  v11 = [(TVRUITabSelectorControl *)v8 topAnchor];
-  v12 = [v6 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [(TVRUITabSelectorControl *)selfCopy topAnchor];
+  topAnchor2 = [v6 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v28[2] = v13;
-  v14 = [(TVRUITabSelectorControl *)v8 bottomAnchor];
-  v15 = [v6 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor = [(TVRUITabSelectorControl *)selfCopy bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v28[3] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
   [v18 activateConstraints:v17];
 
-  [(TVRUITabSelectorControl *)v8 setCollectionView:v6];
-  [(TVRUITabSelectorControl *)v8 setDataSource:v24];
+  [(TVRUITabSelectorControl *)selfCopy setCollectionView:v6];
+  [(TVRUITabSelectorControl *)selfCopy setDataSource:v24];
 }
 
 void __37__TVRUITabSelectorControl__configure__block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -390,21 +390,21 @@ id __34__TVRUITabSelectorControl__layout__block_invoke(uint64_t a1, uint64_t a2,
   return v23;
 }
 
-- (void)_updateFromItemsAnimated:(BOOL)a3
+- (void)_updateFromItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v9 = objc_alloc_init(MEMORY[0x277CFB890]);
   [v9 appendSectionsWithIdentifiers:&unk_287E84AB0];
-  v5 = [(TVRUITabSelectorControl *)self items];
-  [v9 appendItemsWithIdentifiers:v5];
+  items = [(TVRUITabSelectorControl *)self items];
+  [v9 appendItemsWithIdentifiers:items];
 
-  v6 = [(TVRUITabSelectorControl *)self dataSource];
-  [v6 applySnapshot:v9 animatingDifferences:v3];
+  dataSource = [(TVRUITabSelectorControl *)self dataSource];
+  [dataSource applySnapshot:v9 animatingDifferences:animatedCopy];
 
   if ([(TVRUITabSelectorControl *)self selectedIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(TVRUITabSelectorControl *)self items];
-    v8 = [v7 count];
+    items2 = [(TVRUITabSelectorControl *)self items];
+    v8 = [items2 count];
 
     if (v8)
     {
@@ -413,10 +413,10 @@ id __34__TVRUITabSelectorControl__layout__block_invoke(uint64_t a1, uint64_t a2,
   }
 }
 
-- (id)_cellResolvedLayoutResultsForItems:(id)a3
+- (id)_cellResolvedLayoutResultsForItems:(id)items
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   if (+[TVRUIFeatures isSolariumEnabled])
   {
     v5 = 15.0;
@@ -434,7 +434,7 @@ id __34__TVRUITabSelectorControl__layout__block_invoke(uint64_t a1, uint64_t a2,
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v4;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -452,8 +452,8 @@ id __34__TVRUITabSelectorControl__layout__block_invoke(uint64_t a1, uint64_t a2,
         v13 = *(*(&v21 + 1) + 8 * i);
         v14 = [_TVRUITabSelectorControlCell alloc];
         v15 = [(_TVRUITabSelectorControlCell *)v14 initWithFrame:0.0, 0.0, 20000.0, Height, v21];
-        v16 = [(_TVRUITabSelectorControlCell *)v15 label];
-        [v16 setText:v13];
+        label = [(_TVRUITabSelectorControlCell *)v15 label];
+        [label setText:v13];
 
         [(_TVRUITabSelectorControlCell *)v15 systemLayoutSizeFittingSize:20000.0, Height];
         v19 = [[_TVRUITabSelectorControlCellLayoutResult alloc] initWithResolvedLayoutSize:v5 + v17, v18];
@@ -469,22 +469,22 @@ id __34__TVRUITabSelectorControl__layout__block_invoke(uint64_t a1, uint64_t a2,
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v15 = a4;
+  pathCopy = path;
   [(TVRUITabSelectorControl *)self sendActionsForControlEvents:4096];
-  v5 = [(TVRUITabSelectorControl *)self delegate];
+  delegate = [(TVRUITabSelectorControl *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v15 item];
-    v8 = [(TVRUITabSelectorControl *)self previousSelectedItem];
-    if ([v8 length])
+    item = [pathCopy item];
+    previousSelectedItem = [(TVRUITabSelectorControl *)self previousSelectedItem];
+    if ([previousSelectedItem length])
     {
-      v9 = [(TVRUITabSelectorControl *)self items];
-      v10 = [(TVRUITabSelectorControl *)self previousSelectedItem];
-      v11 = [v9 indexOfObject:v10];
+      items = [(TVRUITabSelectorControl *)self items];
+      previousSelectedItem2 = [(TVRUITabSelectorControl *)self previousSelectedItem];
+      v11 = [items indexOfObject:previousSelectedItem2];
     }
 
     else
@@ -492,12 +492,12 @@ id __34__TVRUITabSelectorControl__layout__block_invoke(uint64_t a1, uint64_t a2,
       v11 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v12 = [(TVRUITabSelectorControl *)self delegate];
-    [v12 tabSelectorControl:self didSelectIndex:v7 previousIndex:v11];
+    delegate2 = [(TVRUITabSelectorControl *)self delegate];
+    [delegate2 tabSelectorControl:self didSelectIndex:item previousIndex:v11];
   }
 
-  v13 = [(TVRUITabSelectorControl *)self dataSource];
-  v14 = [v13 itemIdentifierForIndexPath:v15];
+  dataSource = [(TVRUITabSelectorControl *)self dataSource];
+  v14 = [dataSource itemIdentifierForIndexPath:pathCopy];
   [(TVRUITabSelectorControl *)self setPreviousSelectedItem:v14];
 }
 

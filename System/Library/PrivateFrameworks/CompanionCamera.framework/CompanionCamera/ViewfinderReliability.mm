@@ -1,12 +1,12 @@
 @interface ViewfinderReliability
 + (id)sharedInstance;
 - (ViewfinderReliability)init;
-- (void)_checkForRepeatedEvent:(int64_t)a3;
-- (void)_checkForUnexpectedEvent:(int64_t)a3;
+- (void)_checkForRepeatedEvent:(int64_t)event;
+- (void)_checkForUnexpectedEvent:(int64_t)event;
 - (void)_print;
 - (void)_registerSources;
 - (void)_reset;
-- (void)logEvent:(int64_t)a3;
+- (void)logEvent:(int64_t)event;
 @end
 
 @implementation ViewfinderReliability
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __39__ViewfinderReliability_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -56,25 +56,25 @@ uint64_t __39__ViewfinderReliability_sharedInstance__block_invoke(uint64_t a1)
     }
 
     self = v3;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)logEvent:(int64_t)a3
+- (void)logEvent:(int64_t)event
 {
   v14 = *MEMORY[0x277D85DE8];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = log;
-    v7 = NSStringFromViewfinderReliabiliyEvent(a3);
+    v7 = NSStringFromViewfinderReliabiliyEvent(event);
     v12 = 138412290;
     v13 = v7;
     _os_log_impl(&dword_243CBC000, v6, OS_LOG_TYPE_DEFAULT, "%@", &v12, 0xCu);
@@ -83,11 +83,11 @@ uint64_t __39__ViewfinderReliability_sharedInstance__block_invoke(uint64_t a1)
   v8 = self->_events;
   objc_sync_enter(v8);
   events = self->_events;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:event];
   [(NSCountedSet *)events addObject:v10];
 
-  [(ViewfinderReliability *)self _checkForUnexpectedEvent:a3];
-  [(ViewfinderReliability *)self _checkForRepeatedEvent:a3];
+  [(ViewfinderReliability *)self _checkForUnexpectedEvent:event];
+  [(ViewfinderReliability *)self _checkForRepeatedEvent:event];
   objc_sync_exit(v8);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -160,7 +160,7 @@ void __41__ViewfinderReliability__registerSources__block_invoke_2(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
   v13 = self->_events;
   objc_sync_enter(v13);
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -183,7 +183,7 @@ void __41__ViewfinderReliability__registerSources__block_invoke_2(uint64_t a1)
         v8 = MEMORY[0x277CCACA8];
         v9 = NSStringFromViewfinderReliabiliyEvent([v7 integerValue]);
         v10 = [v8 stringWithFormat:@"%@: %lu\n", v9, -[NSCountedSet countForObject:](self->_events, "countForObject:", v7)];
-        [v3 appendString:v10];
+        [string appendString:v10];
       }
 
       v4 = [(NSCountedSet *)obj countByEnumeratingWithState:&v15 objects:v21 count:16];
@@ -196,7 +196,7 @@ void __41__ViewfinderReliability__registerSources__block_invoke_2(uint64_t a1)
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v3;
+    v20 = string;
     _os_log_impl(&dword_243CBC000, log, OS_LOG_TYPE_DEFAULT, "Count of events:\n%@", buf, 0xCu);
   }
 
@@ -204,12 +204,12 @@ void __41__ViewfinderReliability__registerSources__block_invoke_2(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkForUnexpectedEvent:(int64_t)a3
+- (void)_checkForUnexpectedEvent:(int64_t)event
 {
   if (CFPreferencesGetAppBooleanValue(@"ViewfinderReliability_CheckUnexpectedEvents", @"com.apple.NanoCamera", 0))
   {
     v5 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2856ED578, &unk_2856ED590, &unk_2856ED5A8, &unk_2856ED5C0, &unk_2856ED5D8, &unk_2856ED5F0, &unk_2856ED608, 0}];
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:event];
     v7 = [v5 containsObject:v6];
 
     if (v7)
@@ -217,18 +217,18 @@ void __41__ViewfinderReliability__registerSources__block_invoke_2(uint64_t a1)
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
       {
-        [(ViewfinderReliability *)log _checkForUnexpectedEvent:a3];
+        [(ViewfinderReliability *)log _checkForUnexpectedEvent:event];
       }
     }
   }
 }
 
-- (void)_checkForRepeatedEvent:(int64_t)a3
+- (void)_checkForRepeatedEvent:(int64_t)event
 {
   if (CFPreferencesGetAppBooleanValue(@"ViewfinderReliability_CheckRepeatedEvents", @"com.apple.NanoCamera", 0))
   {
     events = self->_events;
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:event];
     v7 = [(NSCountedSet *)events countForObject:v6];
 
     if (v7 >= 2)
@@ -236,7 +236,7 @@ void __41__ViewfinderReliability__registerSources__block_invoke_2(uint64_t a1)
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
       {
-        [(ViewfinderReliability *)log _checkForRepeatedEvent:a3];
+        [(ViewfinderReliability *)log _checkForRepeatedEvent:event];
       }
     }
   }

@@ -1,41 +1,41 @@
 @interface _VOSProfileCommand
-+ (_VOSProfileCommand)profileCommandWithCommand:(id)a3;
-+ (_VOSProfileCommand)profileCommandWithStringValue:(id)a3;
-- (_VOSProfileCommand)initWithCoder:(id)a3;
++ (_VOSProfileCommand)profileCommandWithCommand:(id)command;
++ (_VOSProfileCommand)profileCommandWithStringValue:(id)value;
+- (_VOSProfileCommand)initWithCoder:(id)coder;
 - (_VOSProfileMode)mode;
-- (id)_initWithCommand:(id)a3 gestures:(id)a4 keyboardShortcuts:(id)a5 quickNavShortcuts:(id)a6 secondaryCommands:(id)a7;
+- (id)_initWithCommand:(id)command gestures:(id)gestures keyboardShortcuts:(id)shortcuts quickNavShortcuts:(id)navShortcuts secondaryCommands:(id)commands;
 - (id)description;
-- (id)profileGestureForGesture:(id)a3;
-- (id)profileKeyboardShortcutForKeyChord:(id)a3;
-- (id)profileQuickNavShortcutForKeyChord:(id)a3;
-- (id)secondaryCommandsForPressCount:(int64_t)a3;
-- (void)addGesture:(id)a3;
-- (void)addKeyboardShortcut:(id)a3;
-- (void)addQuickNavShortcut:(id)a3;
-- (void)addSecondaryCommand:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeGesture:(id)a3;
-- (void)removeKeyboardShortcut:(id)a3;
-- (void)removeQuickNavShortcut:(id)a3;
-- (void)removeSecondaryCommand:(id)a3;
+- (id)profileGestureForGesture:(id)gesture;
+- (id)profileKeyboardShortcutForKeyChord:(id)chord;
+- (id)profileQuickNavShortcutForKeyChord:(id)chord;
+- (id)secondaryCommandsForPressCount:(int64_t)count;
+- (void)addGesture:(id)gesture;
+- (void)addKeyboardShortcut:(id)shortcut;
+- (void)addQuickNavShortcut:(id)shortcut;
+- (void)addSecondaryCommand:(id)command;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeGesture:(id)gesture;
+- (void)removeKeyboardShortcut:(id)shortcut;
+- (void)removeQuickNavShortcut:(id)shortcut;
+- (void)removeSecondaryCommand:(id)command;
 @end
 
 @implementation _VOSProfileCommand
 
-+ (_VOSProfileCommand)profileCommandWithCommand:(id)a3
++ (_VOSProfileCommand)profileCommandWithCommand:(id)command
 {
-  v3 = a3;
-  v4 = [[_VOSProfileCommand alloc] _initWithCommand:v3 gestures:0 keyboardShortcuts:0 quickNavShortcuts:0 secondaryCommands:0];
+  commandCopy = command;
+  v4 = [[_VOSProfileCommand alloc] _initWithCommand:commandCopy gestures:0 keyboardShortcuts:0 quickNavShortcuts:0 secondaryCommands:0];
 
   return v4;
 }
 
-+ (_VOSProfileCommand)profileCommandWithStringValue:(id)a3
++ (_VOSProfileCommand)profileCommandWithStringValue:(id)value
 {
-  v4 = [VOSCommand builtInCommandWithStringValue:a3];
+  v4 = [VOSCommand builtInCommandWithStringValue:value];
   if (v4)
   {
-    v5 = [a1 profileCommandWithCommand:v4];
+    v5 = [self profileCommandWithCommand:v4];
   }
 
   else
@@ -46,24 +46,24 @@
   return v5;
 }
 
-- (id)_initWithCommand:(id)a3 gestures:(id)a4 keyboardShortcuts:(id)a5 quickNavShortcuts:(id)a6 secondaryCommands:(id)a7
+- (id)_initWithCommand:(id)command gestures:(id)gestures keyboardShortcuts:(id)shortcuts quickNavShortcuts:(id)navShortcuts secondaryCommands:(id)commands
 {
   v74 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  commandCopy = command;
+  gesturesCopy = gestures;
+  shortcutsCopy = shortcuts;
+  navShortcutsCopy = navShortcuts;
+  commandsCopy = commands;
   v69.receiver = self;
   v69.super_class = _VOSProfileCommand;
   v18 = [(_VOSProfileCommand *)&v69 init];
   p_isa = &v18->super.isa;
   if (v18)
   {
-    objc_storeStrong(&v18->_command, a3);
-    if (v14)
+    objc_storeStrong(&v18->_command, command);
+    if (gesturesCopy)
     {
-      v20 = v14;
+      v20 = gesturesCopy;
     }
 
     else
@@ -73,11 +73,11 @@
 
     v21 = p_isa[2];
     p_isa[2] = v20;
-    v52 = v13;
+    v52 = commandCopy;
 
-    if (v15)
+    if (shortcutsCopy)
     {
-      v22 = v15;
+      v22 = shortcutsCopy;
     }
 
     else
@@ -88,9 +88,9 @@
     v23 = p_isa[3];
     p_isa[3] = v22;
 
-    if (v16)
+    if (navShortcutsCopy)
     {
-      v24 = v16;
+      v24 = navShortcutsCopy;
     }
 
     else
@@ -101,11 +101,11 @@
     v25 = p_isa[4];
     p_isa[4] = v24;
 
-    v51 = v14;
-    v26 = v15;
-    if (v17)
+    v51 = gesturesCopy;
+    v26 = shortcutsCopy;
+    if (commandsCopy)
     {
-      v27 = v17;
+      v27 = commandsCopy;
     }
 
     else
@@ -150,7 +150,7 @@
     v62 = 0u;
     v34 = p_isa[3];
     v35 = [v34 countByEnumeratingWithState:&v61 objects:v72 count:16];
-    v15 = v26;
+    shortcutsCopy = v26;
     if (v35)
     {
       v36 = v35;
@@ -229,8 +229,8 @@
       while (v46);
     }
 
-    v14 = v51;
-    v13 = v52;
+    gesturesCopy = v51;
+    commandCopy = v52;
   }
 
   v49 = *MEMORY[0x277D85DE8];
@@ -242,19 +242,19 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_VOSProfileCommand *)self command];
-  v7 = [v3 stringWithFormat:@"%@<%p>: cmd '%@'", v5, self, v6];
+  command = [(_VOSProfileCommand *)self command];
+  v7 = [v3 stringWithFormat:@"%@<%p>: cmd '%@'", v5, self, command];
 
   return v7;
 }
 
-- (_VOSProfileCommand)initWithCoder:(id)a3
+- (_VOSProfileCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"commandType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"commandType"];
   if (v5 == 1)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"siriShortcut"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"siriShortcut"];
     v7 = [VOSCommand commandWithSiriShortcut:v6];
   }
 
@@ -267,7 +267,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"command"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"command"];
     v7 = [VOSCommand builtInCommandWithStringValue:v6];
   }
 
@@ -282,77 +282,77 @@ LABEL_7:
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"gestures"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"gestures"];
 
   v13 = MEMORY[0x277CBEB98];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"keyboardShortcuts"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"keyboardShortcuts"];
 
   v17 = MEMORY[0x277CBEB98];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v20 = [v4 decodeObjectOfClasses:v19 forKey:@"quickNavShortcuts"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"quickNavShortcuts"];
 
   v21 = MEMORY[0x277CBEB98];
   v22 = objc_opt_class();
   v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-  v24 = [v4 decodeObjectOfClasses:v23 forKey:@"secondaryCommands"];
+  v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"secondaryCommands"];
 
   v25 = [(_VOSProfileCommand *)self _initWithCommand:v8 gestures:v12 keyboardShortcuts:v16 quickNavShortcuts:v20 secondaryCommands:v24];
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:-[VOSCommand commandType](self->_command forKey:{"commandType"), @"commandType"}];
-  v4 = [(VOSCommand *)self->_command commandType];
-  if (v4 == 1)
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[VOSCommand commandType](self->_command forKey:{"commandType"), @"commandType"}];
+  commandType = [(VOSCommand *)self->_command commandType];
+  if (commandType == 1)
   {
-    v5 = [(VOSCommand *)self->_command siriShortcut];
+    siriShortcut = [(VOSCommand *)self->_command siriShortcut];
     v6 = @"siriShortcut";
   }
 
   else
   {
-    if (v4)
+    if (commandType)
     {
       goto LABEL_6;
     }
 
-    v5 = [(VOSCommand *)self->_command rawValue];
+    siriShortcut = [(VOSCommand *)self->_command rawValue];
     v6 = @"command";
   }
 
-  [v7 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:siriShortcut forKey:v6];
 
 LABEL_6:
-  [v7 encodeObject:self->_gestures forKey:@"gestures"];
-  [v7 encodeObject:self->_keyboardShortcuts forKey:@"keyboardShortcuts"];
-  [v7 encodeObject:self->_quickNavShortcuts forKey:@"quickNavShortcuts"];
-  [v7 encodeObject:self->_secondaryCommands forKey:@"secondaryCommands"];
+  [coderCopy encodeObject:self->_gestures forKey:@"gestures"];
+  [coderCopy encodeObject:self->_keyboardShortcuts forKey:@"keyboardShortcuts"];
+  [coderCopy encodeObject:self->_quickNavShortcuts forKey:@"quickNavShortcuts"];
+  [coderCopy encodeObject:self->_secondaryCommands forKey:@"secondaryCommands"];
 }
 
-- (void)addGesture:(id)a3
+- (void)addGesture:(id)gesture
 {
   gestures = self->_gestures;
-  v5 = a3;
-  [(NSMutableSet *)gestures addObject:v5];
-  [v5 setCommand:self];
+  gestureCopy = gesture;
+  [(NSMutableSet *)gestures addObject:gestureCopy];
+  [gestureCopy setCommand:self];
 }
 
-- (void)removeGesture:(id)a3
+- (void)removeGesture:(id)gesture
 {
-  v4 = a3;
-  [v4 setCommand:0];
-  [(NSMutableSet *)self->_gestures removeObject:v4];
+  gestureCopy = gesture;
+  [gestureCopy setCommand:0];
+  [(NSMutableSet *)self->_gestures removeObject:gestureCopy];
 }
 
-- (id)profileGestureForGesture:(id)a3
+- (id)profileGestureForGesture:(id)gesture
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -372,8 +372,8 @@ LABEL_6:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 gesture];
-        v11 = [v10 isEqual:v4];
+        gesture = [v9 gesture];
+        v11 = [gesture isEqual:gestureCopy];
 
         if (v11)
         {
@@ -399,25 +399,25 @@ LABEL_11:
   return v6;
 }
 
-- (void)addKeyboardShortcut:(id)a3
+- (void)addKeyboardShortcut:(id)shortcut
 {
   keyboardShortcuts = self->_keyboardShortcuts;
-  v5 = a3;
-  [(NSMutableSet *)keyboardShortcuts addObject:v5];
-  [v5 setCommand:self];
+  shortcutCopy = shortcut;
+  [(NSMutableSet *)keyboardShortcuts addObject:shortcutCopy];
+  [shortcutCopy setCommand:self];
 }
 
-- (void)removeKeyboardShortcut:(id)a3
+- (void)removeKeyboardShortcut:(id)shortcut
 {
-  v4 = a3;
-  [v4 setCommand:0];
-  [(NSMutableSet *)self->_keyboardShortcuts removeObject:v4];
+  shortcutCopy = shortcut;
+  [shortcutCopy setCommand:0];
+  [(NSMutableSet *)self->_keyboardShortcuts removeObject:shortcutCopy];
 }
 
-- (id)profileKeyboardShortcutForKeyChord:(id)a3
+- (id)profileKeyboardShortcutForKeyChord:(id)chord
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chordCopy = chord;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -437,8 +437,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 keyChord];
-        v11 = [v10 isEqual:v4];
+        keyChord = [v9 keyChord];
+        v11 = [keyChord isEqual:chordCopy];
 
         if (v11)
         {
@@ -464,25 +464,25 @@ LABEL_11:
   return v6;
 }
 
-- (void)addQuickNavShortcut:(id)a3
+- (void)addQuickNavShortcut:(id)shortcut
 {
   quickNavShortcuts = self->_quickNavShortcuts;
-  v5 = a3;
-  [(NSMutableSet *)quickNavShortcuts addObject:v5];
-  [v5 setCommand:self];
+  shortcutCopy = shortcut;
+  [(NSMutableSet *)quickNavShortcuts addObject:shortcutCopy];
+  [shortcutCopy setCommand:self];
 }
 
-- (void)removeQuickNavShortcut:(id)a3
+- (void)removeQuickNavShortcut:(id)shortcut
 {
-  v4 = a3;
-  [v4 setCommand:0];
-  [(NSMutableSet *)self->_quickNavShortcuts removeObject:v4];
+  shortcutCopy = shortcut;
+  [shortcutCopy setCommand:0];
+  [(NSMutableSet *)self->_quickNavShortcuts removeObject:shortcutCopy];
 }
 
-- (id)profileQuickNavShortcutForKeyChord:(id)a3
+- (id)profileQuickNavShortcutForKeyChord:(id)chord
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chordCopy = chord;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -502,8 +502,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 keyChord];
-        v11 = [v10 isEqual:v4];
+        keyChord = [v9 keyChord];
+        v11 = [keyChord isEqual:chordCopy];
 
         if (v11)
         {
@@ -529,29 +529,29 @@ LABEL_11:
   return v6;
 }
 
-- (void)addSecondaryCommand:(id)a3
+- (void)addSecondaryCommand:(id)command
 {
   secondaryCommands = self->_secondaryCommands;
-  v5 = a3;
-  [(NSMutableSet *)secondaryCommands addObject:v5];
-  [v5 setPrimaryProfileCommand:self];
+  commandCopy = command;
+  [(NSMutableSet *)secondaryCommands addObject:commandCopy];
+  [commandCopy setPrimaryProfileCommand:self];
 }
 
-- (void)removeSecondaryCommand:(id)a3
+- (void)removeSecondaryCommand:(id)command
 {
-  v4 = a3;
-  [v4 setPrimaryProfileCommand:0];
-  [(NSMutableSet *)self->_secondaryCommands removeObject:v4];
+  commandCopy = command;
+  [commandCopy setPrimaryProfileCommand:0];
+  [(NSMutableSet *)self->_secondaryCommands removeObject:commandCopy];
 }
 
-- (id)secondaryCommandsForPressCount:(int64_t)a3
+- (id)secondaryCommandsForPressCount:(int64_t)count
 {
   secondaryCommands = self->_secondaryCommands;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53___VOSProfileCommand_secondaryCommandsForPressCount___block_invoke;
   v6[3] = &__block_descriptor_40_e41_B24__0___VOSProfileSecondaryCommand_8_B16l;
-  v6[4] = a3;
+  v6[4] = count;
   v4 = [(NSMutableSet *)secondaryCommands ax_filteredSetUsingBlock:v6];
 
   return v4;

@@ -8,28 +8,28 @@
 
 - (id)em_displayableString
 {
-  v2 = [a1 displayName];
-  if (v2 && ([a1 simpleAddress], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v2, "localizedCaseInsensitiveCompare:", v3), v3, !v4))
+  displayName = [self displayName];
+  if (displayName && ([self simpleAddress], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(displayName, "localizedCaseInsensitiveCompare:", v3), v3, !v4))
   {
     v9 = 0;
   }
 
   else
   {
-    v5 = [v2 ea_personNameComponents];
-    v6 = v5;
-    if (v5)
+    ea_personNameComponents = [displayName ea_personNameComponents];
+    v6 = ea_personNameComponents;
+    if (ea_personNameComponents)
     {
-      [v5 setNamePrefix:0];
+      [ea_personNameComponents setNamePrefix:0];
       [v6 setNameSuffix:0];
       v7 = objc_alloc_init(MEMORY[0x1E696ADF8]);
       [v7 setStyle:3];
       v8 = [v7 stringFromPersonNameComponents:v6];
     }
 
-    else if ([v2 length])
+    else if ([displayName length])
     {
-      v8 = v2;
+      v8 = displayName;
     }
 
     else
@@ -56,15 +56,15 @@
 - (id)em_person
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 simpleAddress];
-  if (v2)
+  simpleAddress = [self simpleAddress];
+  if (simpleAddress)
   {
     v3 = objc_alloc(MEMORY[0x1E6964E50]);
-    v4 = [a1 displayName];
-    v5 = [a1 simpleAddress];
-    v10[0] = v5;
+    displayName = [self displayName];
+    simpleAddress2 = [self simpleAddress];
+    v10[0] = simpleAddress2;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v7 = [v3 initWithDisplayName:v4 handles:v6 handleIdentifier:*MEMORY[0x1E695C208]];
+    v7 = [v3 initWithDisplayName:displayName handles:v6 handleIdentifier:*MEMORY[0x1E695C208]];
   }
 
   else

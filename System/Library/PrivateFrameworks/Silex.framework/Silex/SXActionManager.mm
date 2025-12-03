@@ -1,79 +1,79 @@
 @interface SXActionManager
-- (SXActionManager)initWithActionActivityManager:(id)a3 viewManager:(id)a4 postActionHandlerManager:(id)a5;
-- (id)contextMenuConfigurationForAction:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5;
-- (id)previewViewControllerForAction:(id)a3;
-- (void)commitPreviewViewController:(id)a3;
-- (void)notifyPostActionHandlers:(id)a3 action:(id)a4 state:(unint64_t)a5;
-- (void)performAction:(id)a3 postActionHandlers:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 mode:(unint64_t)a7;
+- (SXActionManager)initWithActionActivityManager:(id)manager viewManager:(id)viewManager postActionHandlerManager:(id)handlerManager;
+- (id)contextMenuConfigurationForAction:(id)action sourceView:(id)view sourceRect:(CGRect)rect;
+- (id)previewViewControllerForAction:(id)action;
+- (void)commitPreviewViewController:(id)controller;
+- (void)notifyPostActionHandlers:(id)handlers action:(id)action state:(unint64_t)state;
+- (void)performAction:(id)action postActionHandlers:(id)handlers sourceView:(id)view sourceRect:(CGRect)rect mode:(unint64_t)mode;
 @end
 
 @implementation SXActionManager
 
-- (SXActionManager)initWithActionActivityManager:(id)a3 viewManager:(id)a4 postActionHandlerManager:(id)a5
+- (SXActionManager)initWithActionActivityManager:(id)manager viewManager:(id)viewManager postActionHandlerManager:(id)handlerManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  viewManagerCopy = viewManager;
+  handlerManagerCopy = handlerManager;
   v15.receiver = self;
   v15.super_class = SXActionManager;
   v12 = [(SXActionManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activityManager, a3);
-    objc_storeStrong(&v13->_viewManager, a4);
-    objc_storeStrong(&v13->_postActionHandlerManager, a5);
+    objc_storeStrong(&v12->_activityManager, manager);
+    objc_storeStrong(&v13->_viewManager, viewManager);
+    objc_storeStrong(&v13->_postActionHandlerManager, handlerManager);
   }
 
   return v13;
 }
 
-- (void)performAction:(id)a3 postActionHandlers:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 mode:(unint64_t)a7
+- (void)performAction:(id)action postActionHandlers:(id)handlers sourceView:(id)view sourceRect:(CGRect)rect mode:(unint64_t)mode
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v43 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  if (v15 && v16)
+  actionCopy = action;
+  handlersCopy = handlers;
+  viewCopy = view;
+  if (actionCopy && handlersCopy)
   {
-    v18 = [(SXActionManager *)self activityManager];
-    v19 = [v18 activityGroupForAction:v15 sourceView:v17 sourceRect:{x, y, width, height}];
+    activityManager = [(SXActionManager *)self activityManager];
+    v19 = [activityManager activityGroupForAction:actionCopy sourceView:viewCopy sourceRect:{x, y, width, height}];
 
-    if ((a7 | 2) == 2)
+    if ((mode | 2) == 2)
     {
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v20 = [v19 activities];
-      v21 = [v20 countByEnumeratingWithState:&v38 objects:v42 count:16];
-      if (v21)
+      activities = [v19 activities];
+      firstObject = [activities countByEnumeratingWithState:&v38 objects:v42 count:16];
+      if (firstObject)
       {
         v33 = v19;
         v22 = *v39;
         while (2)
         {
-          for (i = 0; i != v21; i = i + 1)
+          for (i = 0; i != firstObject; i = i + 1)
           {
             if (*v39 != v22)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(activities);
             }
 
             v24 = *(*(&v38 + 1) + 8 * i);
             if (![v24 type])
             {
-              v21 = v24;
+              firstObject = v24;
               goto LABEL_14;
             }
           }
 
-          v21 = [v20 countByEnumeratingWithState:&v38 objects:v42 count:16];
-          if (v21)
+          firstObject = [activities countByEnumeratingWithState:&v38 objects:v42 count:16];
+          if (firstObject)
           {
             continue;
           }
@@ -88,51 +88,51 @@ LABEL_14:
 
     else
     {
-      v21 = 0;
+      firstObject = 0;
     }
 
-    if (a7 == 2 && !v21)
+    if (mode == 2 && !firstObject)
     {
-      v25 = [v19 activities];
-      v21 = [v25 firstObject];
+      activities2 = [v19 activities];
+      firstObject = [activities2 firstObject];
     }
 
-    if (v21)
+    if (firstObject)
     {
-      [v21 invokeWithAction:v15 invocationMethod:0];
-      v26 = self;
-      v27 = v16;
-      v28 = v15;
+      [firstObject invokeWithAction:actionCopy invocationMethod:0];
+      selfCopy3 = self;
+      v27 = handlersCopy;
+      v28 = actionCopy;
       v29 = 2;
     }
 
     else
     {
-      v30 = [v19 activities];
-      v31 = [v30 count];
+      activities3 = [v19 activities];
+      v31 = [activities3 count];
 
       if (v31)
       {
-        v32 = [(SXActionManager *)self viewManager];
+        viewManager = [(SXActionManager *)self viewManager];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __79__SXActionManager_performAction_postActionHandlers_sourceView_sourceRect_mode___block_invoke;
         v34[3] = &unk_1E84FEDF8;
-        v35 = v15;
-        v36 = self;
-        v37 = v16;
-        [v32 presentActivityGroup:v19 action:v35 sourceView:v17 sourceRect:v34 completion:{x, y, width, height}];
+        v35 = actionCopy;
+        selfCopy2 = self;
+        v37 = handlersCopy;
+        [viewManager presentActivityGroup:v19 action:v35 sourceView:viewCopy sourceRect:v34 completion:{x, y, width, height}];
 
         goto LABEL_25;
       }
 
-      v26 = self;
-      v27 = v16;
-      v28 = v15;
+      selfCopy3 = self;
+      v27 = handlersCopy;
+      v28 = actionCopy;
       v29 = 0;
     }
 
-    [(SXActionManager *)v26 notifyPostActionHandlers:v27 action:v28 state:v29];
+    [(SXActionManager *)selfCopy3 notifyPostActionHandlers:v27 action:v28 state:v29];
 LABEL_25:
   }
 }
@@ -160,29 +160,29 @@ void __79__SXActionManager_performAction_postActionHandlers_sourceView_sourceRec
   [*(a1 + 40) notifyPostActionHandlers:*(a1 + 48) action:*(a1 + 32) state:v6];
 }
 
-- (id)contextMenuConfigurationForAction:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5
+- (id)contextMenuConfigurationForAction:(id)action sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v51 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = [(SXActionManager *)self activityManager];
-  v36 = v12;
-  v14 = [v13 activityGroupForAction:v11 sourceView:v12 sourceRect:{x, y, width, height}];
+  actionCopy = action;
+  viewCopy = view;
+  activityManager = [(SXActionManager *)self activityManager];
+  v36 = viewCopy;
+  v14 = [activityManager activityGroupForAction:actionCopy sourceView:viewCopy sourceRect:{x, y, width, height}];
 
-  v39 = v11;
-  v38 = [(SXActionManager *)self previewViewControllerForAction:v11];
-  v15 = [MEMORY[0x1E695DF70] array];
+  v39 = actionCopy;
+  v38 = [(SXActionManager *)self previewViewControllerForAction:actionCopy];
+  array = [MEMORY[0x1E695DF70] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v37 = v14;
-  v16 = [v14 activities];
-  v17 = [v16 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  activities = [v14 activities];
+  v17 = [activities countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v17)
   {
     v18 = v17;
@@ -193,7 +193,7 @@ void __79__SXActionManager_performAction_postActionHandlers_sourceView_sourceRec
       {
         if (*v47 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(activities);
         }
 
         v21 = *(*(&v46 + 1) + 8 * i);
@@ -204,8 +204,8 @@ void __79__SXActionManager_performAction_postActionHandlers_sourceView_sourceRec
             continue;
           }
 
-          v26 = [v37 activities];
-          v27 = [v26 count];
+          activities2 = [v37 activities];
+          v27 = [activities2 count];
 
           if (v27 == 1)
           {
@@ -214,30 +214,30 @@ void __79__SXActionManager_performAction_postActionHandlers_sourceView_sourceRec
         }
 
         v22 = MEMORY[0x1E69DC628];
-        v23 = [v21 label];
-        v24 = [v21 image];
+        label = [v21 label];
+        image = [v21 image];
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
         v44[2] = __75__SXActionManager_contextMenuConfigurationForAction_sourceView_sourceRect___block_invoke;
         v44[3] = &unk_1E84FEE20;
         v44[4] = v21;
-        v45 = v11;
-        v25 = [v22 actionWithTitle:v23 image:v24 identifier:0 handler:v44];
-        [v15 addObject:v25];
+        v45 = actionCopy;
+        v25 = [v22 actionWithTitle:label image:image identifier:0 handler:v44];
+        [array addObject:v25];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v46 objects:v50 count:16];
+      v18 = [activities countByEnumeratingWithState:&v46 objects:v50 count:16];
     }
 
     while (v18);
   }
 
-  if ([v15 count] || v38)
+  if ([array count] || v38)
   {
     v30 = MEMORY[0x1E69DCC60];
     v29 = v37;
-    v31 = [v37 title];
-    v32 = [v30 menuWithTitle:v31 children:v15];
+    title = [v37 title];
+    v32 = [v30 menuWithTitle:title children:array];
 
     v33 = MEMORY[0x1E69DC8D8];
     v42[0] = MEMORY[0x1E69E9820];
@@ -263,51 +263,51 @@ void __79__SXActionManager_performAction_postActionHandlers_sourceView_sourceRec
   return v28;
 }
 
-- (id)previewViewControllerForAction:(id)a3
+- (id)previewViewControllerForAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SXActionManager *)self activityManager];
-  v6 = [v5 previewActivityForAction:v4];
+  actionCopy = action;
+  activityManager = [(SXActionManager *)self activityManager];
+  v6 = [activityManager previewActivityForAction:actionCopy];
 
-  v7 = [v6 previewViewControllerForAction:v4];
+  v7 = [v6 previewViewControllerForAction:actionCopy];
   if (v7)
   {
-    v8 = [[SXActionManagerPreview alloc] initWithAction:v4 viewController:v7 previewActivity:v6];
+    v8 = [[SXActionManagerPreview alloc] initWithAction:actionCopy viewController:v7 previewActivity:v6];
     [(SXActionManager *)self setCurrentPreview:v8];
   }
 
   return v7;
 }
 
-- (void)commitPreviewViewController:(id)a3
+- (void)commitPreviewViewController:(id)controller
 {
-  v9 = a3;
-  v4 = [(SXActionManager *)self currentPreview];
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  currentPreview = [(SXActionManager *)self currentPreview];
+  v5 = currentPreview;
+  if (currentPreview)
   {
-    v6 = [(SXActionManagerPreview *)v4 viewController];
+    viewController = [(SXActionManagerPreview *)currentPreview viewController];
 
-    if (v6 == v9)
+    if (viewController == controllerCopy)
     {
       [(SXActionManager *)self setCurrentPreview:0];
-      v7 = [(SXFullscreenCaption *)v5 caption];
-      v8 = [(SXFullscreenCaption *)v5 text];
-      [v7 commitViewController:v9 action:v8];
+      caption = [(SXFullscreenCaption *)v5 caption];
+      text = [(SXFullscreenCaption *)v5 text];
+      [caption commitViewController:controllerCopy action:text];
     }
   }
 }
 
-- (void)notifyPostActionHandlers:(id)a3 action:(id)a4 state:(unint64_t)a5
+- (void)notifyPostActionHandlers:(id)handlers action:(id)action state:(unint64_t)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  handlersCopy = handlers;
+  actionCopy = action;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [handlersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -319,21 +319,21 @@ void __79__SXActionManager_performAction_postActionHandlers_sourceView_sourceRec
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(handlersCopy);
         }
 
-        [*(*(&v15 + 1) + 8 * v13++) handledAction:v9 state:a5];
+        [*(*(&v15 + 1) + 8 * v13++) handledAction:actionCopy state:state];
       }
 
       while (v11 != v13);
-      v11 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [handlersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [(SXActionManager *)self postActionHandlerManager];
-  [v14 handledAction:v9 state:a5];
+  postActionHandlerManager = [(SXActionManager *)self postActionHandlerManager];
+  [postActionHandlerManager handledAction:actionCopy state:state];
 }
 
 @end

@@ -1,42 +1,42 @@
 @interface CAMExternalStorage
 - (BOOL)connected;
-- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 verbose:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging verbose:(BOOL)verbose;
+- (BOOL)isEqual:(id)equal;
 - (CAMExternalStorage)initWithNoDevice;
-- (CAMExternalStorage)initWithStorageDevice:(id)a3;
+- (CAMExternalStorage)initWithStorageDevice:(id)device;
 - (CAMPurgeableStorageContainerDelegate)delegate;
 - (NSString)description;
-- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)a3;
-- (id)generateDestinationURLWithExtension:(id)a3;
+- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)configuration;
+- (id)generateDestinationURLWithExtension:(id)extension;
 - (int64_t)totalFreeBytes;
-- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 completion:(id)a5;
+- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging completion:(id)completion;
 - (void)totalFreeBytes;
 @end
 
 @implementation CAMExternalStorage
 
-- (CAMExternalStorage)initWithStorageDevice:(id)a3
+- (CAMExternalStorage)initWithStorageDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = CAMExternalStorage;
   v6 = [(CAMExternalStorage *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__underlyingStorageDevice, a3);
-    v8 = [v5 uuid];
+    objc_storeStrong(&v6->__underlyingStorageDevice, device);
+    uuid = [deviceCopy uuid];
     uniqueIdentifier = v7->_uniqueIdentifier;
-    v7->_uniqueIdentifier = v8;
+    v7->_uniqueIdentifier = uuid;
 
-    v10 = [v5 displayName];
+    displayName = [deviceCopy displayName];
     displayName = v7->_displayName;
-    v7->_displayName = v10;
+    v7->_displayName = displayName;
 
-    v7->_notRecommendedForCaptureUse = [v5 isNotRecommendedForCaptureUse];
-    v12 = [v5 baseURL];
+    v7->_notRecommendedForCaptureUse = [deviceCopy isNotRecommendedForCaptureUse];
+    baseURL = [deviceCopy baseURL];
     baseURL = v7->__baseURL;
-    v7->__baseURL = v12;
+    v7->__baseURL = baseURL;
   }
 
   return v7;
@@ -51,11 +51,11 @@
 
 - (int64_t)totalFreeBytes
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(CAMExternalStorage *)self _baseURL];
-  v5 = [v4 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _baseURL = [(CAMExternalStorage *)self _baseURL];
+  path = [_baseURL path];
   v12 = 0;
-  v6 = [v3 attributesOfFileSystemForPath:v5 error:&v12];
+  v6 = [defaultManager attributesOfFileSystemForPath:path error:&v12];
   v7 = v12;
 
   if (v6)
@@ -71,7 +71,7 @@
   if (v8)
   {
     v9 = [v6 objectForKey:*MEMORY[0x1E696A3C0]];
-    v10 = [v9 longValue];
+    longValue = [v9 longValue];
   }
 
   else
@@ -82,31 +82,31 @@
       [(CAMExternalStorage *)self totalFreeBytes];
     }
 
-    v10 = -1;
+    longValue = -1;
   }
 
-  return v10;
+  return longValue;
 }
 
-- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 completion:(id)a5
+- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v8[2](v8, [(CAMExternalStorage *)self hasDiskSpaceToAllowCaptureWithConfiguration:a3 allowPurging:v5 verbose:0]);
+  purgingCopy = purging;
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [(CAMExternalStorage *)self hasDiskSpaceToAllowCaptureWithConfiguration:configuration allowPurging:purgingCopy verbose:0]);
 }
 
-- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 verbose:(BOOL)a5
+- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging verbose:(BOOL)verbose
 {
-  v6 = a3;
-  v7 = [v6 mode];
-  if (v7 > 8 || ((1 << v7) & 0x186) == 0)
+  configurationCopy = configuration;
+  mode = [configurationCopy mode];
+  if (mode > 8 || ((1 << mode) & 0x186) == 0)
   {
     v10 = [(CAMExternalStorage *)self totalFreeBytes]<= 104857600;
   }
 
   else
   {
-    [(CAMExternalStorage *)self availableRecordingTimeInSecondsForGraphConfiguration:v6];
+    [(CAMExternalStorage *)self availableRecordingTimeInSecondsForGraphConfiguration:configurationCopy];
     v10 = v9 <= 2.0;
   }
 
@@ -115,15 +115,15 @@
   return v11;
 }
 
-- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)a3
+- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 mode];
+  configurationCopy = configuration;
+  mode = [configurationCopy mode];
   v6 = 0.0;
-  if (v5 <= 8 && ((1 << v5) & 0x186) != 0)
+  if (mode <= 8 && ((1 << mode) & 0x186) != 0)
   {
     v8 = +[CAMCaptureCapabilities capabilities];
-    v9 = [v8 bytesPerMinuteForGraphConfiguration:v4 outputToExternalStorage:1];
+    v9 = [v8 bytesPerMinuteForGraphConfiguration:configurationCopy outputToExternalStorage:1];
 
     if (v9)
     {
@@ -134,17 +134,17 @@
   return v6;
 }
 
-- (id)generateDestinationURLWithExtension:(id)a3
+- (id)generateDestinationURLWithExtension:(id)extension
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  extensionCopy = extension;
+  if (extensionCopy)
   {
-    v5 = [(CAMExternalStorage *)self _underlyingStorageDevice];
-    v18[0] = v4;
+    _underlyingStorageDevice = [(CAMExternalStorage *)self _underlyingStorageDevice];
+    v18[0] = extensionCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     v15 = 0;
-    v7 = [v5 nextAvailableURLsWithPathExtensions:v6 error:&v15];
+    v7 = [_underlyingStorageDevice nextAvailableURLsWithPathExtensions:v6 error:&v15];
     v8 = v15;
 
     if (v8 || ![v7 count])
@@ -155,7 +155,7 @@
         [(CAMExternalStorage *)self generateDestinationURLWithExtension:v8, v9];
       }
 
-      v10 = 0;
+      firstObject2 = 0;
     }
 
     else
@@ -163,43 +163,43 @@
       v11 = os_log_create("com.apple.camera", "ExternalStorage");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v7 firstObject];
-        v13 = [v12 path];
+        firstObject = [v7 firstObject];
+        path = [firstObject path];
         *buf = 138543362;
-        v17 = v13;
+        v17 = path;
         _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "External storage: got destination url (%{public}@)", buf, 0xCu);
       }
 
-      v10 = [v7 firstObject];
+      firstObject2 = [v7 firstObject];
     }
   }
 
   else
   {
-    v10 = 0;
+    firstObject2 = 0;
   }
 
-  return v10;
+  return firstObject2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CAMExternalStorage *)self _underlyingStorageDevice];
+    _underlyingStorageDevice = [(CAMExternalStorage *)self _underlyingStorageDevice];
 
-    if (v5)
+    if (_underlyingStorageDevice)
     {
-      v6 = [(CAMExternalStorage *)self _underlyingStorageDevice];
-      v7 = [(CAMExternalStorage *)v4 _underlyingStorageDevice];
-      v8 = v6 == v7;
+      _underlyingStorageDevice2 = [(CAMExternalStorage *)self _underlyingStorageDevice];
+      _underlyingStorageDevice3 = [(CAMExternalStorage *)equalCopy _underlyingStorageDevice];
+      v8 = _underlyingStorageDevice2 == _underlyingStorageDevice3;
     }
 
     else
     {
-      v8 = self == v4;
+      v8 = self == equalCopy;
     }
   }
 
@@ -214,18 +214,18 @@
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(CAMExternalStorage *)self displayName];
-  v4 = [v2 stringWithFormat:@"External storage: %@", v3];
+  displayName = [(CAMExternalStorage *)self displayName];
+  v4 = [v2 stringWithFormat:@"External storage: %@", displayName];
 
   return v4;
 }
 
 - (BOOL)connected
 {
-  v2 = [(CAMExternalStorage *)self _underlyingStorageDevice];
-  v3 = [v2 isConnected];
+  _underlyingStorageDevice = [(CAMExternalStorage *)self _underlyingStorageDevice];
+  isConnected = [_underlyingStorageDevice isConnected];
 
-  return v3;
+  return isConnected;
 }
 
 - (CAMPurgeableStorageContainerDelegate)delegate
@@ -238,10 +238,10 @@
 - (void)totalFreeBytes
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = [a1 _baseURL];
-  v6 = [v5 path];
+  _baseURL = [self _baseURL];
+  path = [_baseURL path];
   v7 = 138543618;
-  v8 = v6;
+  v8 = path;
   v9 = 2114;
   v10 = a2;
   _os_log_error_impl(&dword_1A3640000, a3, OS_LOG_TYPE_ERROR, "External storage: failed to retrieve free space from %{public}@ : (%{public}@)", &v7, 0x16u);

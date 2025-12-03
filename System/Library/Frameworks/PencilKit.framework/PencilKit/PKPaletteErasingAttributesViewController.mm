@@ -3,12 +3,12 @@
 - (PKPaletteErasingAttributesViewControllerDelegate)delegate;
 - (double)weight;
 - (int64_t)eraserType;
-- (void)_segmentedControlDidChangeValue:(id)a3;
-- (void)_thicknessValueChanged:(id)a3;
+- (void)_segmentedControlDidChangeValue:(id)value;
+- (void)_thicknessValueChanged:(id)changed;
 - (void)loadView;
-- (void)setEraserType:(int64_t)a3;
-- (void)setHideWeightPicker:(BOOL)a3;
-- (void)setWeight:(double)a3;
+- (void)setEraserType:(int64_t)type;
+- (void)setHideWeightPicker:(BOOL)picker;
+- (void)setWeight:(double)weight;
 - (void)viewDidLoad;
 @end
 
@@ -17,11 +17,11 @@
 - (void)loadView
 {
   v5 = objc_alloc_init(PKPaletteErasingAttributesView);
-  v3 = [(PKPaletteErasingAttributesView *)v5 segmentedControl];
-  [v3 addTarget:self action:sel__segmentedControlDidChangeValue_ forControlEvents:4096];
+  segmentedControl = [(PKPaletteErasingAttributesView *)v5 segmentedControl];
+  [segmentedControl addTarget:self action:sel__segmentedControlDidChangeValue_ forControlEvents:4096];
 
-  v4 = [(PKPaletteErasingAttributesView *)v5 thicknessPicker];
-  [v4 addTarget:self action:sel__thicknessValueChanged_ forControlEvents:4096];
+  thicknessPicker = [(PKPaletteErasingAttributesView *)v5 thicknessPicker];
+  [thicknessPicker addTarget:self action:sel__thicknessValueChanged_ forControlEvents:4096];
 
   [(PKPaletteErasingAttributesViewController *)self setView:v5];
 }
@@ -33,35 +33,35 @@
   [(PKPaletteErasingAttributesViewController *)&v4 viewDidLoad];
   if (PKIsVisionDevice())
   {
-    v3 = [(PKPaletteErasingAttributesViewController *)self view];
-    [v3 setOverrideUserInterfaceStyle:2];
+    view = [(PKPaletteErasingAttributesViewController *)self view];
+    [view setOverrideUserInterfaceStyle:2];
   }
 }
 
-- (void)_segmentedControlDidChangeValue:(id)a3
+- (void)_segmentedControlDidChangeValue:(id)value
 {
   [(PKPaletteAttributeViewController *)self setDidExperienceUserInteraction:1];
-  v4 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
-  [v4 _updateThicknessPickerToolConfiguration];
+  _attributesView = [(PKPaletteErasingAttributesViewController *)self _attributesView];
+  [_attributesView _updateThicknessPickerToolConfiguration];
 
-  v5 = [(PKPaletteErasingAttributesViewController *)self delegate];
-  [v5 erasingAttributesViewControllerDidChangeErasingType:self];
+  delegate = [(PKPaletteErasingAttributesViewController *)self delegate];
+  [delegate erasingAttributesViewControllerDidChangeErasingType:self];
 }
 
-- (void)setHideWeightPicker:(BOOL)a3
+- (void)setHideWeightPicker:(BOOL)picker
 {
-  v3 = a3;
-  v4 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
-  [v4 setHideWeightPicker:v3];
+  pickerCopy = picker;
+  _attributesView = [(PKPaletteErasingAttributesViewController *)self _attributesView];
+  [_attributesView setHideWeightPicker:pickerCopy];
 }
 
 - (double)weight
 {
-  v2 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
-  v3 = [v2 thicknessPicker];
-  if (v3)
+  _attributesView = [(PKPaletteErasingAttributesViewController *)self _attributesView];
+  thicknessPicker = [_attributesView thicknessPicker];
+  if (thicknessPicker)
   {
-    v4 = v3[58];
+    v4 = thicknessPicker[58];
   }
 
   else
@@ -72,36 +72,36 @@
   return v4;
 }
 
-- (void)setWeight:(double)a3
+- (void)setWeight:(double)weight
 {
-  v6 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
-  v4 = [v6 thicknessPicker];
-  v5 = v4;
-  if (v4)
+  _attributesView = [(PKPaletteErasingAttributesViewController *)self _attributesView];
+  thicknessPicker = [_attributesView thicknessPicker];
+  v5 = thicknessPicker;
+  if (thicknessPicker)
   {
-    v4[58] = a3;
-    [v4 setNeedsLayout];
+    thicknessPicker[58] = weight;
+    [thicknessPicker setNeedsLayout];
   }
 }
 
-- (void)setEraserType:(int64_t)a3
+- (void)setEraserType:(int64_t)type
 {
-  v4 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
-  [v4 setEraserType:a3];
+  _attributesView = [(PKPaletteErasingAttributesViewController *)self _attributesView];
+  [_attributesView setEraserType:type];
 }
 
 - (int64_t)eraserType
 {
-  v2 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
-  v3 = [v2 eraserType];
+  _attributesView = [(PKPaletteErasingAttributesViewController *)self _attributesView];
+  eraserType = [_attributesView eraserType];
 
-  return v3;
+  return eraserType;
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
-  [v3 intrinsicContentSize];
+  _attributesView = [(PKPaletteErasingAttributesViewController *)self _attributesView];
+  [_attributesView intrinsicContentSize];
   v5 = v4;
 
   v6 = fmax(v5, 320.0);
@@ -115,8 +115,8 @@
     v7 = 400.0;
   }
 
-  v8 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
-  [v8 intrinsicContentSize];
+  _attributesView2 = [(PKPaletteErasingAttributesViewController *)self _attributesView];
+  [_attributesView2 intrinsicContentSize];
   v10 = v9;
 
   v11 = v7;
@@ -126,10 +126,10 @@
   return result;
 }
 
-- (void)_thicknessValueChanged:(id)a3
+- (void)_thicknessValueChanged:(id)changed
 {
-  v4 = [(PKPaletteErasingAttributesViewController *)self delegate];
-  [v4 erasingAttributesViewControllerDidChangeInkThickness:self];
+  delegate = [(PKPaletteErasingAttributesViewController *)self delegate];
+  [delegate erasingAttributesViewControllerDidChangeInkThickness:self];
 }
 
 - (PKPaletteErasingAttributesViewControllerDelegate)delegate

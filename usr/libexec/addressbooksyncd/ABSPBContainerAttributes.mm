@@ -1,22 +1,22 @@
 @interface ABSPBContainerAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEnabled:(BOOL)a3;
-- (void)setHasGuardianRestricted:(BOOL)a3;
-- (void)setHasParentallyManaged:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEnabled:(BOOL)enabled;
+- (void)setHasGuardianRestricted:(BOOL)restricted;
+- (void)setHasParentallyManaged:(BOOL)managed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBContainerAttributes
 
-- (void)setHasEnabled:(BOOL)a3
+- (void)setHasEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasGuardianRestricted:(BOOL)a3
+- (void)setHasGuardianRestricted:(BOOL)restricted
 {
-  if (a3)
+  if (restricted)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasParentallyManaged:(BOOL)a3
+- (void)setHasParentallyManaged:(BOOL)managed
 {
-  if (a3)
+  if (managed)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBContainerAttributes;
   v3 = [(ABSPBContainerAttributes *)&v7 description];
-  v4 = [(ABSPBContainerAttributes *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBContainerAttributes *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -82,8 +82,8 @@
   permissions = self->_permissions;
   if (permissions)
   {
-    v6 = [(ABSPBContainerPermissions *)permissions dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"permissions"];
+    dictionaryRepresentation = [(ABSPBContainerPermissions *)permissions dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"permissions"];
   }
 
   has = self->_has;
@@ -122,21 +122,21 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     enabled = self->_enabled;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_permissions)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -144,7 +144,7 @@
   {
     guardianRestricted = self->_guardianRestricted;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -152,81 +152,81 @@
   {
     parentallyManaged = self->_parentallyManaged;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_accountExternalIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[36] = self->_enabled;
-    v4[40] |= 2u;
+    toCopy[36] = self->_enabled;
+    toCopy[40] |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_permissions)
   {
-    [v4 setPermissions:?];
-    v4 = v6;
+    [toCopy setPermissions:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[37] = self->_guardianRestricted;
-    v4[40] |= 4u;
+    toCopy[37] = self->_guardianRestricted;
+    toCopy[40] |= 4u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[38] = self->_parentallyManaged;
-    v4[40] |= 8u;
+    toCopy[38] = self->_parentallyManaged;
+    toCopy[40] |= 8u;
   }
 
   if (self->_name)
   {
     [v6 setName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_type;
-    v4[40] |= 1u;
+    *(toCopy + 8) = self->_type;
+    toCopy[40] |= 1u;
   }
 
   if (self->_accountExternalIdentifier)
   {
     [v6 setAccountExternalIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -234,7 +234,7 @@
     v5[40] |= 2u;
   }
 
-  v7 = [(ABSPBContainerPermissions *)self->_permissions copyWithZone:a3];
+  v7 = [(ABSPBContainerPermissions *)self->_permissions copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -252,7 +252,7 @@
     *(v6 + 40) |= 8u;
   }
 
-  v10 = [(NSString *)self->_name copyWithZone:a3];
+  v10 = [(NSString *)self->_name copyWithZone:zone];
   v11 = v6[2];
   v6[2] = v10;
 
@@ -262,52 +262,52 @@
     *(v6 + 40) |= 1u;
   }
 
-  v12 = [(NSString *)self->_accountExternalIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_accountExternalIdentifier copyWithZone:zone];
   v13 = v6[1];
   v6[1] = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0)
+    if ((*(equalCopy + 40) & 2) == 0)
     {
       goto LABEL_38;
     }
 
-    v11 = *(v4 + 36);
+    v11 = *(equalCopy + 36);
     if (self->_enabled)
     {
-      if ((*(v4 + 36) & 1) == 0)
+      if ((*(equalCopy + 36) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 36))
+    else if (*(equalCopy + 36))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_38;
   }
 
   permissions = self->_permissions;
-  if (permissions | *(v4 + 3))
+  if (permissions | *(equalCopy + 3))
   {
     if (![(ABSPBContainerPermissions *)permissions isEqual:?])
     {
@@ -317,63 +317,63 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0)
+    if ((*(equalCopy + 40) & 4) == 0)
     {
       goto LABEL_38;
     }
 
-    v12 = *(v4 + 37);
+    v12 = *(equalCopy + 37);
     if (self->_guardianRestricted)
     {
-      if ((*(v4 + 37) & 1) == 0)
+      if ((*(equalCopy + 37) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 37))
+    else if (*(equalCopy + 37))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_38;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0)
+    if ((*(equalCopy + 40) & 8) == 0)
     {
       goto LABEL_38;
     }
 
-    v13 = *(v4 + 38);
+    v13 = *(equalCopy + 38);
     if (self->_parentallyManaged)
     {
-      if ((*(v4 + 38) & 1) == 0)
+      if ((*(equalCopy + 38) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 38))
+    else if (*(equalCopy + 38))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_38;
   }
 
   name = self->_name;
-  if (!(name | *(v4 + 2)))
+  if (!(name | *(equalCopy + 2)))
   {
     goto LABEL_14;
   }
@@ -387,22 +387,22 @@ LABEL_38:
 
   has = self->_has;
 LABEL_14:
-  v10 = *(v4 + 40);
+  v10 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_type != *(v4 + 8))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_type != *(equalCopy + 8))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_38;
   }
 
   accountExternalIdentifier = self->_accountExternalIdentifier;
-  if (accountExternalIdentifier | *(v4 + 1))
+  if (accountExternalIdentifier | *(equalCopy + 1))
   {
     v15 = [(NSString *)accountExternalIdentifier isEqual:?];
   }
@@ -466,13 +466,13 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_accountExternalIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[40] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[40] & 2) != 0)
   {
-    self->_enabled = v4[36];
+    self->_enabled = fromCopy[36];
     *&self->_has |= 2u;
   }
 

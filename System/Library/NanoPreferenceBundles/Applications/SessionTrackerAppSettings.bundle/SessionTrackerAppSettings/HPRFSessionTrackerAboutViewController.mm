@@ -1,5 +1,5 @@
 @interface HPRFSessionTrackerAboutViewController
-- (HPRFSessionTrackerAboutViewController)initWithTitle:(id)a3 message:(id)a4;
+- (HPRFSessionTrackerAboutViewController)initWithTitle:(id)title message:(id)message;
 - (void)_dismiss;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
@@ -7,18 +7,18 @@
 
 @implementation HPRFSessionTrackerAboutViewController
 
-- (HPRFSessionTrackerAboutViewController)initWithTitle:(id)a3 message:(id)a4
+- (HPRFSessionTrackerAboutViewController)initWithTitle:(id)title message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = HPRFSessionTrackerAboutViewController;
   v9 = [(HPRFSessionTrackerAboutViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_message, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_message, message);
   }
 
   return v10;
@@ -37,24 +37,24 @@
   descriptionLabel = self->_descriptionLabel;
   self->_descriptionLabel = v5;
 
-  v7 = [(HPRFSessionTrackerAboutViewController *)self view];
-  [v7 addSubview:self->_scrollView];
+  view = [(HPRFSessionTrackerAboutViewController *)self view];
+  [view addSubview:self->_scrollView];
 
   [(UIScrollView *)self->_scrollView addSubview:self->_descriptionLabel];
   v8 = +[PSListController appearance];
-  v9 = [v8 backgroundColor];
+  backgroundColor = [v8 backgroundColor];
 
   v10 = +[PSListController appearance];
-  v11 = [v10 separatorColor];
+  separatorColor = [v10 separatorColor];
 
-  v12 = [(HPRFSessionTrackerAboutViewController *)self view];
-  [v12 setBackgroundColor:v9];
+  view2 = [(HPRFSessionTrackerAboutViewController *)self view];
+  [view2 setBackgroundColor:backgroundColor];
 
-  v13 = [(HPRFSessionTrackerAboutViewController *)self view];
-  [v13 setTintColor:v9];
+  view3 = [(HPRFSessionTrackerAboutViewController *)self view];
+  [view3 setTintColor:backgroundColor];
 
-  [(UIScrollView *)self->_scrollView setBackgroundColor:v9];
-  [(UIScrollView *)self->_scrollView setTintColor:v9];
+  [(UIScrollView *)self->_scrollView setBackgroundColor:backgroundColor];
+  [(UIScrollView *)self->_scrollView setTintColor:backgroundColor];
   [(UIScrollView *)self->_scrollView setIndicatorStyle:2];
   [(UILabel *)self->_descriptionLabel setAttributedText:self->_message];
   v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -63,46 +63,46 @@
   [(UILabel *)self->_descriptionLabel setLineBreakMode:0];
   [(UILabel *)self->_descriptionLabel setTextAlignment:4];
   v15 = +[PSListController appearance];
-  v16 = [v15 textColor];
-  [(UILabel *)self->_descriptionLabel setTextColor:v16];
+  textColor = [v15 textColor];
+  [(UILabel *)self->_descriptionLabel setTextColor:textColor];
 
   [(UILabel *)self->_descriptionLabel setNumberOfLines:0];
   v17 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismiss"];
-  v18 = [(HPRFSessionTrackerAboutViewController *)self navigationItem];
-  [v18 setRightBarButtonItem:v17];
+  navigationItem = [(HPRFSessionTrackerAboutViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v17];
 
   title = self->_title;
-  v20 = [(HPRFSessionTrackerAboutViewController *)self navigationItem];
-  [v20 setTitle:title];
+  navigationItem2 = [(HPRFSessionTrackerAboutViewController *)self navigationItem];
+  [navigationItem2 setTitle:title];
 
-  v21 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
-  v22 = [v21 navigationBar];
-  [v22 setBarStyle:1];
+  navigationController = [(HPRFSessionTrackerAboutViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setBarStyle:1];
 
   v23 = +[PSListController appearance];
-  v24 = [v23 buttonTextColor];
-  v25 = [(HPRFSessionTrackerAboutViewController *)self navigationItem];
-  v26 = [v25 rightBarButtonItem];
-  [v26 setTintColor:v24];
+  buttonTextColor = [v23 buttonTextColor];
+  navigationItem3 = [(HPRFSessionTrackerAboutViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem3 rightBarButtonItem];
+  [rightBarButtonItem setTintColor:buttonTextColor];
 
-  v27 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
-  v28 = [v27 navigationBar];
-  [v28 setBackgroundColor:v9];
+  navigationController2 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setBackgroundColor:backgroundColor];
 
-  v29 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
-  v30 = [v29 navigationBar];
+  navigationController3 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
   v31 = BPSBridgeTintColor();
-  [v30 setTintColor:v31];
+  [navigationBar3 setTintColor:v31];
 
-  v32 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
-  v33 = [v32 navigationBar];
-  v34 = HPRFPointImageWithColor(v9);
-  [v33 setBackgroundImage:v34 forBarMetrics:0];
+  navigationController4 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
+  navigationBar4 = [navigationController4 navigationBar];
+  v34 = HPRFPointImageWithColor(backgroundColor);
+  [navigationBar4 setBackgroundImage:v34 forBarMetrics:0];
 
-  v35 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
-  v36 = [v35 navigationBar];
-  v37 = HPRFPointImageWithColor(v11);
-  [v36 setShadowImage:v37];
+  navigationController5 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
+  navigationBar5 = [navigationController5 navigationBar];
+  v37 = HPRFPointImageWithColor(separatorColor);
+  [navigationBar5 setShadowImage:v37];
 }
 
 - (void)viewWillLayoutSubviews
@@ -110,14 +110,14 @@
   v17.receiver = self;
   v17.super_class = HPRFSessionTrackerAboutViewController;
   [(HPRFSessionTrackerAboutViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(HPRFSessionTrackerAboutViewController *)self view];
-  [v3 bounds];
+  view = [(HPRFSessionTrackerAboutViewController *)self view];
+  [view bounds];
   v5 = v4 + -32.0;
 
   [(UILabel *)self->_descriptionLabel sizeThatFits:v5, 1.79769313e308];
   v7 = v6;
-  v8 = [(HPRFSessionTrackerAboutViewController *)self view];
-  [v8 bounds];
+  view2 = [(HPRFSessionTrackerAboutViewController *)self view];
+  [view2 bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -134,9 +134,9 @@
 
 - (void)_dismiss
 {
-  v3 = [(HPRFSessionTrackerAboutViewController *)self navigationController];
-  v2 = [v3 presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(HPRFSessionTrackerAboutViewController *)self navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface POMMESSchemaPOMMESResourceDownloadEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESResourceDownloadEnded)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESResourceDownloadEnded)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESResourceDownloadEnded)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESResourceDownloadEnded)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESResourceDownloadEnded
 
-- (POMMESSchemaPOMMESResourceDownloadEnded)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESResourceDownloadEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = POMMESSchemaPOMMESResourceDownloadEnded;
   v5 = [(POMMESSchemaPOMMESResourceDownloadEnded *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"resourceDownloadSizeInBytes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"resourceDownloadSizeInBytes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESResourceDownloadEnded)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESResourceDownloadEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESResourceDownloadEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESResourceDownloadEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESResourceDownloadEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,16 +68,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESResourceDownloadEnded resourceDownloadSizeInBytes](self, "resourceDownloadSizeInBytes")}];
-    [v3 setObject:v4 forKeyedSubscript:@"resourceDownloadSizeInBytes"];
+    [dictionary setObject:v4 forKeyedSubscript:@"resourceDownloadSizeInBytes"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -93,15 +93,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[12] & 1))
+    if ((*&self->_has & 1) == (equalCopy[12] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (resourceDownloadSizeInBytes = self->_resourceDownloadSizeInBytes, resourceDownloadSizeInBytes == [v4 resourceDownloadSizeInBytes]))
+      if ((*&self->_has & 1) == 0 || (resourceDownloadSizeInBytes = self->_resourceDownloadSizeInBytes, resourceDownloadSizeInBytes == [equalCopy resourceDownloadSizeInBytes]))
       {
         v6 = 1;
       }
@@ -111,7 +111,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {

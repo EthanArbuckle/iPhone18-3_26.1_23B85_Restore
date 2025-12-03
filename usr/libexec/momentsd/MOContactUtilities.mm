@@ -1,15 +1,15 @@
 @interface MOContactUtilities
-+ (id)cNContactIdentifierFromPPContactIdentifier:(id)a3;
++ (id)cNContactIdentifierFromPPContactIdentifier:(id)identifier;
 @end
 
 @implementation MOContactUtilities
 
-+ (id)cNContactIdentifierFromPPContactIdentifier:(id)a3
++ (id)cNContactIdentifierFromPPContactIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"CN:"])
+  identifierCopy = identifier;
+  if ([identifierCopy hasPrefix:@"CN:"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"CN:", "length")}];
+    v4 = [identifierCopy substringFromIndex:{objc_msgSend(@"CN:", "length")}];
   }
 
   else

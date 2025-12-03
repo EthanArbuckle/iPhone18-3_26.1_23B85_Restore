@@ -18,7 +18,7 @@
   v7 = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v7 count:1];
 
-  v5 = [a1 CUIKFontByApplyingFeatureSettings:v4];
+  v5 = [self CUIKFontByApplyingFeatureSettings:v4];
 
   return v5;
 }
@@ -44,27 +44,27 @@
     v11[1] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
 
-    v9 = [a1 CUIKFontByApplyingFeatureSettings:v8];
+    selfCopy = [self CUIKFontByApplyingFeatureSettings:v8];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)CUIKFontByApplyingFeatureSettings:()CUIKWidgetFontUtils
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 fontDescriptor];
+  fontDescriptor = [self fontDescriptor];
   v10 = *MEMORY[0x1E69DB8B0];
   v11[0] = v4;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 fontDescriptorByAddingAttributes:v6];
+  v7 = [fontDescriptor fontDescriptorByAddingAttributes:v6];
 
   v8 = [objc_opt_class() fontWithDescriptor:v7 size:0.0];
 

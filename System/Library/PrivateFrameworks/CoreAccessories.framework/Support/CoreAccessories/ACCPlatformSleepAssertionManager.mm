@@ -1,11 +1,11 @@
 @interface ACCPlatformSleepAssertionManager
 + (id)sharedManager;
 - (ACCPlatformSleepAssertionManager)init;
-- (void)_addSleepAssertionForUUID:(id)a3;
-- (void)_removeSleepAssertionForUUID:(id)a3 expiredOnly:(BOOL)a4;
-- (void)addSleepAssertionForUUID:(id)a3;
+- (void)_addSleepAssertionForUUID:(id)d;
+- (void)_removeSleepAssertionForUUID:(id)d expiredOnly:(BOOL)only;
+- (void)addSleepAssertionForUUID:(id)d;
 - (void)dealloc;
-- (void)powerInfoChangeNotificationHandler:(id)a3;
+- (void)powerInfoChangeNotificationHandler:(id)handler;
 - (void)updateAssertions;
 @end
 
@@ -50,8 +50,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  sleepAssertionUUIDs = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
+  v6 = [sleepAssertionUUIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -63,34 +63,34 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sleepAssertionUUIDs);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
-        v11 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDsLock];
+        sleepAssertionUUIDsLock = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDsLock];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __43__ACCPlatformSleepAssertionManager_dealloc__block_invoke;
         block[3] = &unk_100225968;
         block[4] = v10;
-        dispatch_sync(v11, block);
+        dispatch_sync(sleepAssertionUUIDsLock, block);
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [sleepAssertionUUIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionTimersForUUIDs];
-  [v12 removeAllObjects];
+  sleepAssertionTimersForUUIDs = [(ACCPlatformSleepAssertionManager *)self sleepAssertionTimersForUUIDs];
+  [sleepAssertionTimersForUUIDs removeAllObjects];
 
   [(ACCPlatformSleepAssertionManager *)self setSleepAssertionTimersForUUIDs:0];
-  v13 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
-  [v13 removeAllObjects];
+  sleepAssertionUUIDs2 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
+  [sleepAssertionUUIDs2 removeAllObjects];
 
   [(ACCPlatformSleepAssertionManager *)self setSleepAssertionUUIDs:0];
   v14.receiver = self;
@@ -104,9 +104,9 @@ void __43__ACCPlatformSleepAssertionManager_dealloc__block_invoke(uint64_t a1)
   [v2 destroySleepAssertionForUUID:*(a1 + 32)];
 }
 
-- (void)_addSleepAssertionForUUID:(id)a3
+- (void)_addSleepAssertionForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 7;
@@ -136,29 +136,29 @@ void __43__ACCPlatformSleepAssertionManager_dealloc__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v50 = v4;
+    v50 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[#SleepAssertions] _addSleepAssertionForUUID: uuid %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v8 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
+    sleepAssertionUUIDs = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
 
-    if (!v8)
+    if (!sleepAssertionUUIDs)
     {
       v9 = objc_alloc_init(NSMutableSet);
       [(ACCPlatformSleepAssertionManager *)self setSleepAssertionUUIDs:v9];
     }
 
-    v10 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionTimersForUUIDs];
+    sleepAssertionTimersForUUIDs = [(ACCPlatformSleepAssertionManager *)self sleepAssertionTimersForUUIDs];
 
-    if (!v10)
+    if (!sleepAssertionTimersForUUIDs)
     {
       v11 = +[NSMutableDictionary dictionary];
       [(ACCPlatformSleepAssertionManager *)self setSleepAssertionTimersForUUIDs:v11];
     }
 
-    ConnectionWithUUID = acc_manager_getConnectionWithUUID(v4);
+    ConnectionWithUUID = acc_manager_getConnectionWithUUID(dCopy);
     if (ConnectionWithUUID)
     {
       Type = acc_connection_getType(ConnectionWithUUID);
@@ -178,18 +178,18 @@ void __43__ACCPlatformSleepAssertionManager_dealloc__block_invoke(uint64_t a1)
     handler[2] = __62__ACCPlatformSleepAssertionManager__addSleepAssertionForUUID___block_invoke;
     handler[3] = &unk_100225A08;
     handler[4] = self;
-    v15 = v4;
+    v15 = dCopy;
     v48 = v15;
     dispatch_source_set_event_handler(v14, handler);
     dispatch_activate(v14);
-    v16 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionTimersForUUIDs];
-    [v16 setObject:v14 forKey:v15];
+    sleepAssertionTimersForUUIDs2 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionTimersForUUIDs];
+    [sleepAssertionTimersForUUIDs2 setObject:v14 forKey:v15];
 
-    v17 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
-    [v17 addObject:v15];
+    sleepAssertionUUIDs2 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
+    [sleepAssertionUUIDs2 addObject:v15];
 
-    v18 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
-    v19 = [v18 count];
+    sleepAssertionUUIDs3 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
+    v19 = [sleepAssertionUUIDs3 count];
 
     if (v19 == 1)
     {
@@ -197,8 +197,8 @@ void __43__ACCPlatformSleepAssertionManager_dealloc__block_invoke(uint64_t a1)
       [v20 addObserver:self selector:"powerInfoChangeNotificationHandler:" name:ACCPlatformIOKitPowerPlugin_IsExternalChargerConnected object:0];
 
       v21 = _getACPowerPluginInstance();
-      v22 = [v21 createBatteryNotificationClient];
-      [(ACCPlatformSleepAssertionManager *)self setBatteryNotificationClientUUID:v22];
+      createBatteryNotificationClient = [v21 createBatteryNotificationClient];
+      [(ACCPlatformSleepAssertionManager *)self setBatteryNotificationClientUUID:createBatteryNotificationClient];
 
       v23 = _getACPowerPluginInstance();
       -[ACCPlatformSleepAssertionManager setIsOnAC:](self, "setIsOnAC:", [v23 isExternalChargerConnected]);
@@ -235,16 +235,16 @@ void __43__ACCPlatformSleepAssertionManager_dealloc__block_invoke(uint64_t a1)
 
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(ACCPlatformSleepAssertionManager *)self isOnAC];
-      v29 = [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive];
+      isOnAC = [(ACCPlatformSleepAssertionManager *)self isOnAC];
+      chargingTypeExternalIsInductive = [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive];
       *buf = 138413314;
       v50 = v15;
       v51 = 1024;
-      v52 = v28;
+      v52 = isOnAC;
       v53 = 1024;
       v54 = v25;
       v55 = 1024;
-      v56 = v29;
+      v56 = chargingTypeExternalIsInductive;
       v57 = 1024;
       v58 = v13;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[#SleepAssertions] Addded sleep assertion timer for uuid %@, isOnAC %d -> %d, chargingTypeExternalIsInductive %d, bIsInductiveConnection %d", buf, 0x24u);
@@ -276,9 +276,9 @@ LABEL_44:
 
         if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
         {
-          v42 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
+          sleepAssertionUUIDs4 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDs];
           *buf = 138412290;
-          v50 = v42;
+          v50 = sleepAssertionUUIDs4;
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[#SleepAssertions] sleepAssertionUUIDs: %@", buf, 0xCu);
         }
 
@@ -306,21 +306,21 @@ LABEL_44:
       {
 LABEL_43:
 
-        v37 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionTimersForUUIDs];
-        v38 = [v37 objectForKey:v15];
+        sleepAssertionTimersForUUIDs3 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionTimersForUUIDs];
+        v38 = [sleepAssertionTimersForUUIDs3 objectForKey:v15];
         v39 = dispatch_time(0, v33);
         dispatch_source_set_timer(v38, v39, 0xFFFFFFFFFFFFFFFFLL, 0);
 
         goto LABEL_44;
       }
 
-      v45 = [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive];
+      chargingTypeExternalIsInductive2 = [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive];
       *buf = 134218496;
       v50 = 300;
       v51 = 1024;
       v52 = Type;
       v53 = 1024;
-      v54 = v45;
+      v54 = chargingTypeExternalIsInductive2;
       v34 = "[#SleepAssertions] Holding sleep assertion for [%lld] secs on connectionType:%{coreacc:ACCConnection_Type_t}d, externalIsInductive %d";
       v35 = v31;
       v36 = 24;
@@ -414,9 +414,9 @@ void __62__ACCPlatformSleepAssertionManager__addSleepAssertionForUUID___block_in
   [*(a1 + 32) removeExpiredSleepAssertionForUUID:*(a1 + 40)];
 }
 
-- (void)addSleepAssertionForUUID:(id)a3
+- (void)addSleepAssertionForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 7;
@@ -446,37 +446,37 @@ void __62__ACCPlatformSleepAssertionManager__addSleepAssertionForUUID___block_in
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[#SleepAssertions] addSleepAssertionForUUID: uuid %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v8 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDsLock];
+    sleepAssertionUUIDsLock = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDsLock];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __61__ACCPlatformSleepAssertionManager_addSleepAssertionForUUID___block_invoke;
     v9[3] = &unk_100225A08;
     v9[4] = self;
-    v10 = v4;
-    dispatch_sync(v8, v9);
+    v10 = dCopy;
+    dispatch_sync(sleepAssertionUUIDsLock, v9);
   }
 }
 
-- (void)_removeSleepAssertionForUUID:(id)a3 expiredOnly:(BOOL)a4
+- (void)_removeSleepAssertionForUUID:(id)d expiredOnly:(BOOL)only
 {
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDsLock];
+    sleepAssertionUUIDsLock = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDsLock];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __77__ACCPlatformSleepAssertionManager__removeSleepAssertionForUUID_expiredOnly___block_invoke;
     block[3] = &unk_100225A30;
-    v9 = v6;
-    v10 = self;
-    v11 = a4;
-    dispatch_sync(v7, block);
+    v9 = dCopy;
+    selfCopy = self;
+    onlyCopy = only;
+    dispatch_sync(sleepAssertionUUIDsLock, block);
   }
 }
 
@@ -567,13 +567,13 @@ void __77__ACCPlatformSleepAssertionManager__removeSleepAssertionForUUID_expired
   }
 }
 
-- (void)powerInfoChangeNotificationHandler:(id)a3
+- (void)powerInfoChangeNotificationHandler:(id)handler
 {
-  v4 = [a3 name];
-  if (([v4 isEqualToString:ACCPlatformIOKitPowerPlugin_IsExternalChargerConnected] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", ACCPlatformIOKitPowerPlugin_BatteryChargingTypeChanged))
+  name = [handler name];
+  if (([name isEqualToString:ACCPlatformIOKitPowerPlugin_IsExternalChargerConnected] & 1) != 0 || objc_msgSend(name, "isEqualToString:", ACCPlatformIOKitPowerPlugin_BatteryChargingTypeChanged))
   {
-    v5 = [(ACCPlatformSleepAssertionManager *)self isOnAC];
-    v6 = [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive];
+    isOnAC = [(ACCPlatformSleepAssertionManager *)self isOnAC];
+    chargingTypeExternalIsInductive = [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive];
     v7 = _getACPowerPluginInstance();
     -[ACCPlatformSleepAssertionManager setIsOnAC:](self, "setIsOnAC:", [v7 isExternalChargerConnected]);
 
@@ -599,19 +599,19 @@ void __77__ACCPlatformSleepAssertionManager__removeSleepAssertionForUUID_expired
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138413314;
-      v12 = v4;
+      v12 = name;
       v13 = 1024;
-      v14 = [(ACCPlatformSleepAssertionManager *)self isOnAC];
+      isOnAC2 = [(ACCPlatformSleepAssertionManager *)self isOnAC];
       v15 = 1024;
-      v16 = v5;
+      v16 = isOnAC;
       v17 = 1024;
-      v18 = [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive];
+      chargingTypeExternalIsInductive2 = [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive];
       v19 = 1024;
-      v20 = v6;
+      v20 = chargingTypeExternalIsInductive;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[#SleepAssertions] Received notification: %@, isOnAC: %d, oldVal: %d, chargingTypeExternalIsInductive: %d, oldExtInductive: %d\n", &v11, 0x24u);
     }
 
-    if (v5 != [(ACCPlatformSleepAssertionManager *)self isOnAC]|| v6 != [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive])
+    if (isOnAC != [(ACCPlatformSleepAssertionManager *)self isOnAC]|| chargingTypeExternalIsInductive != [(ACCPlatformSleepAssertionManager *)self chargingTypeExternalIsInductive])
     {
       [(ACCPlatformSleepAssertionManager *)self updateAssertions];
     }
@@ -620,13 +620,13 @@ void __77__ACCPlatformSleepAssertionManager__removeSleepAssertionForUUID_expired
 
 - (void)updateAssertions
 {
-  v3 = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDsLock];
+  sleepAssertionUUIDsLock = [(ACCPlatformSleepAssertionManager *)self sleepAssertionUUIDsLock];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __52__ACCPlatformSleepAssertionManager_updateAssertions__block_invoke;
   block[3] = &unk_100225968;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(sleepAssertionUUIDsLock, block);
 }
 
 void __52__ACCPlatformSleepAssertionManager_updateAssertions__block_invoke(uint64_t a1)
@@ -891,7 +891,7 @@ LABEL_34:
   block[1] = 3221225472;
   block[2] = __49__ACCPlatformSleepAssertionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once != -1)
   {
     dispatch_once(&sharedManager_once, block);

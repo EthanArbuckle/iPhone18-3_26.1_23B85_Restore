@@ -2,11 +2,11 @@
 + (id)os_log;
 - (CNContactSharedProfileSettingsActionDelegate)sharedProfileSettingsActionDelegate;
 - (id)meContact;
-- (void)performActionWithSender:(id)a3;
-- (void)presentSharingSettingsWithNicknameContact:(id)a3 sender:(id)a4;
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateSharingState:(BOOL)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4;
+- (void)performActionWithSender:(id)sender;
+- (void)presentSharingSettingsWithNicknameContact:(id)contact sender:(id)sender;
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience;
+- (void)sharingSettingsViewController:(id)controller didUpdateSharingState:(BOOL)state;
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result;
 @end
 
 @implementation CNContactSharedProfileSettingsAction
@@ -37,103 +37,103 @@ uint64_t __46__CNContactSharedProfileSettingsAction_os_log__block_invoke()
   return WeakRetained;
 }
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result
 {
   v5 = MEMORY[0x1E69966E8];
-  v6 = a4;
-  v7 = [v5 currentEnvironment];
-  v8 = [v7 nicknameProvider];
-  [v8 setPersonalNicknameWithSharingResult:v6];
+  resultCopy = result;
+  currentEnvironment = [v5 currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
+  [nicknameProvider setPersonalNicknameWithSharingResult:resultCopy];
 
-  v9 = [(CNContactSharedProfileSettingsAction *)self sharedProfileSettingsActionDelegate];
-  [v9 sharedProfileSettingsDidUpdate];
+  sharedProfileSettingsActionDelegate = [(CNContactSharedProfileSettingsAction *)self sharedProfileSettingsActionDelegate];
+  [sharedProfileSettingsActionDelegate sharedProfileSettingsDidUpdate];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience
 {
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 nicknameProvider];
-  [v7 setSharingAudience:a4];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
+  [nicknameProvider setSharingAudience:audience];
 
-  v8 = [(CNContactSharedProfileSettingsAction *)self sharedProfileSettingsActionDelegate];
-  [v8 sharedProfileSettingsDidUpdate];
+  sharedProfileSettingsActionDelegate = [(CNContactSharedProfileSettingsAction *)self sharedProfileSettingsActionDelegate];
+  [sharedProfileSettingsActionDelegate sharedProfileSettingsDidUpdate];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateSharingState:(BOOL)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateSharingState:(BOOL)state
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 nicknameProvider];
-  [v7 setSharingEnabled:v4];
+  stateCopy = state;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
+  [nicknameProvider setSharingEnabled:stateCopy];
 
-  v8 = [(CNContactSharedProfileSettingsAction *)self sharedProfileSettingsActionDelegate];
-  [v8 sharedProfileSettingsDidUpdate];
+  sharedProfileSettingsActionDelegate = [(CNContactSharedProfileSettingsAction *)self sharedProfileSettingsActionDelegate];
+  [sharedProfileSettingsActionDelegate sharedProfileSettingsDidUpdate];
 }
 
 - (id)meContact
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CNContactSharedProfileSettingsAction *)self contactStore];
+  contactStore = [(CNContactSharedProfileSettingsAction *)self contactStore];
   v3 = +[CNMeCardSharingSettingsViewController descriptorForRequiredKeys];
   v12[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v9 = 0;
-  v5 = [v2 _crossPlatformUnifiedMeContactWithKeysToFetch:v4 error:&v9];
+  v5 = [contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:v4 error:&v9];
   v6 = v9;
 
   if (!v5)
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       v11 = v6;
-      _os_log_impl(&dword_199A75000, v7, OS_LOG_TYPE_INFO, "No me contact found, error: %@", buf, 0xCu);
+      _os_log_impl(&dword_199A75000, os_log, OS_LOG_TYPE_INFO, "No me contact found, error: %@", buf, 0xCu);
     }
   }
 
   return v5;
 }
 
-- (void)presentSharingSettingsWithNicknameContact:(id)a3 sender:(id)a4
+- (void)presentSharingSettingsWithNicknameContact:(id)contact sender:(id)sender
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [(CNContactSharedProfileSettingsAction *)self meContact];
-  v8 = [(CNContactSharedProfileSettingsAction *)self contactStore];
-  v9 = [CNSharedProfileOnboardingController sharingSettingsViewControllerForNicknameContact:v7 meContact:v11 mode:1 contactStore:v8];
+  senderCopy = sender;
+  contactCopy = contact;
+  meContact = [(CNContactSharedProfileSettingsAction *)self meContact];
+  contactStore = [(CNContactSharedProfileSettingsAction *)self contactStore];
+  v9 = [CNSharedProfileOnboardingController sharingSettingsViewControllerForNicknameContact:contactCopy meContact:meContact mode:1 contactStore:contactStore];
 
   [v9 setDelegate:self];
-  v10 = [(CNContactAction *)self delegate];
-  [v10 action:self pushViewController:v9 sender:v6];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self pushViewController:v9 sender:senderCopy];
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(CNContactSharedProfileSettingsAction *)self contactStore];
+  senderCopy = sender;
+  contactStore = [(CNContactSharedProfileSettingsAction *)self contactStore];
 
-  if (v5)
+  if (contactStore)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __64__CNContactSharedProfileSettingsAction_performActionWithSender___block_invoke;
     aBlock[3] = &unk_1E74E1A18;
     aBlock[4] = self;
-    v23 = v4;
+    v23 = senderCopy;
     v6 = _Block_copy(aBlock);
     v7 = [CNSharedProfileOnboardingController alloc];
-    v8 = [(CNContactSharedProfileSettingsAction *)self contactStore];
-    v9 = [(CNSharedProfileOnboardingController *)v7 initWithContactStore:v8];
+    contactStore2 = [(CNContactSharedProfileSettingsAction *)self contactStore];
+    v9 = [(CNSharedProfileOnboardingController *)v7 initWithContactStore:contactStore2];
 
-    v10 = [(CNContactAction *)self delegate];
+    delegate = [(CNContactAction *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
       [(CNContactSharedProfileSettingsAction *)self setOnboardingController:v9];
-      v12 = [(CNContactAction *)self delegate];
-      v13 = [v12 actionPresentingViewController];
+      delegate2 = [(CNContactAction *)self delegate];
+      actionPresentingViewController = [delegate2 actionPresentingViewController];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __64__CNContactSharedProfileSettingsAction_performActionWithSender___block_invoke_2;
@@ -141,13 +141,13 @@ uint64_t __46__CNContactSharedProfileSettingsAction_os_log__block_invoke()
       v14 = &v21;
       v21 = v6;
       v15 = v6;
-      [(CNSharedProfileOnboardingController *)v9 presentOnboardingFlowIfNeededForSettingsMode:1 fromViewController:v13 completion:v20];
+      [(CNSharedProfileOnboardingController *)v9 presentOnboardingFlowIfNeededForSettingsMode:1 fromViewController:actionPresentingViewController completion:v20];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E69966E8] currentEnvironment];
-      v13 = [v12 nicknameProvider];
+      delegate2 = [MEMORY[0x1E69966E8] currentEnvironment];
+      actionPresentingViewController = [delegate2 nicknameProvider];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __64__CNContactSharedProfileSettingsAction_performActionWithSender___block_invoke_3;
@@ -155,17 +155,17 @@ uint64_t __46__CNContactSharedProfileSettingsAction_os_log__block_invoke()
       v14 = &v19;
       v19 = v6;
       v17 = v6;
-      [v13 fetchPersonalNicknameAsContactWithCompletion:v18];
+      [actionPresentingViewController fetchPersonalNicknameAsContactWithCompletion:v18];
     }
   }
 
   else
   {
-    v16 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_199A75000, v16, OS_LOG_TYPE_ERROR, "me card sharing settings requires a contact store", buf, 2u);
+      _os_log_error_impl(&dword_199A75000, os_log, OS_LOG_TYPE_ERROR, "me card sharing settings requires a contact store", buf, 2u);
     }
   }
 }
@@ -208,10 +208,6 @@ uint64_t __64__CNContactSharedProfileSettingsAction_performActionWithSender___bl
 uint64_t __64__CNContactSharedProfileSettingsAction_performActionWithSender___block_invoke_3(uint64_t a1)
 {
   return (*(*(a1 + 32) + 16))();
-}
-
-{
-  return [*(a1 + 32) presentSharingSettingsWithNicknameContact:*(a1 + 40) sender:*(a1 + 48)];
 }
 
 @end

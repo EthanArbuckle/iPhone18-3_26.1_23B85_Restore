@@ -1,26 +1,26 @@
 @interface IDENTITYSchemaIDENTITYResultCandidateReceived
-- (BOOL)isEqual:(id)a3;
-- (IDENTITYSchemaIDENTITYResultCandidateReceived)initWithDictionary:(id)a3;
-- (IDENTITYSchemaIDENTITYResultCandidateReceived)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDENTITYSchemaIDENTITYResultCandidateReceived)initWithDictionary:(id)dictionary;
+- (IDENTITYSchemaIDENTITYResultCandidateReceived)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDENTITYSchemaIDENTITYResultCandidateReceived
 
-- (IDENTITYSchemaIDENTITYResultCandidateReceived)initWithDictionary:(id)a3
+- (IDENTITYSchemaIDENTITYResultCandidateReceived)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = IDENTITYSchemaIDENTITYResultCandidateReceived;
   v5 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(IDENTITYSchemaIDENTITYResultCandidateReceived *)v5 setResultCandidateId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isSelected"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IDENTITYSchemaIDENTITYResultCandidateReceived setIsSelected:](v5, "setIsSelected:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"identityScoreCard"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"identityScoreCard"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IDENTITYSchemaIDENTITYResultCandidateReceived)initWithJSON:(id)a3
+- (IDENTITYSchemaIDENTITYResultCandidateReceived)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,39 +85,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_identityScoreCard)
   {
-    v4 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    identityScoreCard = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
+    dictionaryRepresentation = [identityScoreCard dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"identityScoreCard"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"identityScoreCard"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"identityScoreCard"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"identityScoreCard"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDENTITYSchemaIDENTITYResultCandidateReceived isSelected](self, "isSelected")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isSelected"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isSelected"];
   }
 
   if (self->_resultCandidateId)
   {
-    v8 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
+    v9 = [resultCandidateId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"resultCandidateId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,28 +136,28 @@
   return v4 ^ v3 ^ [(IDENTITYSchemaIDENTITYIDScoreCard *)self->_identityScoreCard hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  resultCandidateId = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
+  resultCandidateId2 = [equalCopy resultCandidateId];
+  if ((resultCandidateId != 0) == (resultCandidateId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
-  if (v7)
+  resultCandidateId3 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
+  if (resultCandidateId3)
   {
-    v8 = v7;
-    v9 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
-    v10 = [v4 resultCandidateId];
-    v11 = [v9 isEqual:v10];
+    v8 = resultCandidateId3;
+    resultCandidateId4 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
+    resultCandidateId5 = [equalCopy resultCandidateId];
+    v11 = [resultCandidateId4 isEqual:resultCandidateId5];
 
     if (!v11)
     {
@@ -169,7 +169,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -177,18 +177,18 @@
   if (*&self->_has)
   {
     isSelected = self->_isSelected;
-    if (isSelected != [v4 isSelected])
+    if (isSelected != [equalCopy isSelected])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
-  v6 = [v4 identityScoreCard];
-  if ((v5 != 0) != (v6 == 0))
+  resultCandidateId = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
+  resultCandidateId2 = [equalCopy identityScoreCard];
+  if ((resultCandidateId != 0) != (resultCandidateId2 == 0))
   {
-    v13 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
-    if (!v13)
+    identityScoreCard = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
+    if (!identityScoreCard)
     {
 
 LABEL_18:
@@ -196,10 +196,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
-    v16 = [v4 identityScoreCard];
-    v17 = [v15 isEqual:v16];
+    v14 = identityScoreCard;
+    identityScoreCard2 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
+    identityScoreCard3 = [equalCopy identityScoreCard];
+    v17 = [identityScoreCard2 isEqual:identityScoreCard3];
 
     if (v17)
     {
@@ -219,12 +219,12 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
+  toCopy = to;
+  resultCandidateId = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self resultCandidateId];
 
-  if (v4)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
@@ -234,29 +234,29 @@ LABEL_16:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
+  identityScoreCard = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (identityScoreCard)
   {
-    v7 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
+    identityScoreCard2 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IDENTITYSchemaIDENTITYResultCandidateReceived;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self identityScoreCard:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IDENTITYSchemaIDENTITYResultCandidateReceived *)self deleteIdentityScoreCard];
   }

@@ -1,90 +1,90 @@
 @interface CCUIMenuModuleItemView
-+ (BOOL)_shouldLimitContentSizeCategory:(id)a3 forceLimitContentSizeCategory:(BOOL)a4;
-+ (double)defaultMenuItemHeightForContentSizeCategory:(id)a3;
-+ (id)_preferredFontForTextStyle:(id)a3 hiFontStyle:(int64_t)a4 contentSizeCategory:(id)a5 shouldLimitContentSizeCategory:(BOOL)a6;
++ (BOOL)_shouldLimitContentSizeCategory:(id)category forceLimitContentSizeCategory:(BOOL)sizeCategory;
++ (double)defaultMenuItemHeightForContentSizeCategory:(id)category;
++ (id)_preferredFontForTextStyle:(id)style hiFontStyle:(int64_t)fontStyle contentSizeCategory:(id)category shouldLimitContentSizeCategory:(BOOL)sizeCategory;
 - (BOOL)_shouldHorizontallyCenterText;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CCUIMenuModuleItemView)initWithMenuItem:(id)a3;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)isEqual:(id)equal;
+- (CCUIMenuModuleItemView)initWithMenuItem:(id)item;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDirectionalEdgeInsets)_labelInsets;
 - (double)_labelLeadingInset;
 - (double)_labelTrailingInset;
 - (double)_separatorHeight;
-- (double)_textHeightForEmojiLabel:(id)a3 width:(double)a4;
+- (double)_textHeightForEmojiLabel:(id)label width:(double)width;
 - (double)_titleBaselineToBottom;
 - (double)_titleBaselineToTop;
 - (double)_trailingWidthForCustomViews;
 - (id)_subtitleFont;
 - (id)_titleFont;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (unint64_t)hash;
 - (void)_contentSizeCategoryDidChange;
 - (void)_layoutLeadingCustomView;
 - (void)_layoutTrailingCustomViews;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setSubtitle:(id)a3;
-- (void)_setTitle:(id)a3;
-- (void)_stopAutomaticallyUpdatingView:(id)a3 recursivelyIfNeeded:(BOOL)a4;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setSubtitle:(id)subtitle;
+- (void)_setTitle:(id)title;
+- (void)_stopAutomaticallyUpdatingView:(id)view recursivelyIfNeeded:(BOOL)needed;
 - (void)_updateForStateChange;
-- (void)_updateVisualStyleOfView:(id)a3 withStyle:(int64_t)a4 recursivelyIfNeeded:(BOOL)a5;
+- (void)_updateVisualStyleOfView:(id)view withStyle:(int64_t)style recursivelyIfNeeded:(BOOL)needed;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIndentation:(unint64_t)a3;
-- (void)setLeadingView:(id)a3;
-- (void)setMenuItem:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSeparatorVisible:(BOOL)a3;
-- (void)setShouldLimitContentSizeCategory:(BOOL)a3;
-- (void)setTrailingView:(id)a3;
-- (void)setUseTrailingCheckmarkLayout:(BOOL)a3;
-- (void)setUseTrailingInset:(BOOL)a3;
-- (void)updateSubviewsAlpha:(double)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIndentation:(unint64_t)indentation;
+- (void)setLeadingView:(id)view;
+- (void)setMenuItem:(id)item;
+- (void)setSelected:(BOOL)selected;
+- (void)setSeparatorVisible:(BOOL)visible;
+- (void)setShouldLimitContentSizeCategory:(BOOL)category;
+- (void)setTrailingView:(id)view;
+- (void)setUseTrailingCheckmarkLayout:(BOOL)layout;
+- (void)setUseTrailingInset:(BOOL)inset;
+- (void)updateSubviewsAlpha:(double)alpha;
 @end
 
 @implementation CCUIMenuModuleItemView
 
-+ (BOOL)_shouldLimitContentSizeCategory:(id)a3 forceLimitContentSizeCategory:(BOOL)a4
++ (BOOL)_shouldLimitContentSizeCategory:(id)category forceLimitContentSizeCategory:(BOOL)sizeCategory
 {
-  v5 = a3;
-  v6 = (a4 || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) <= 1) && UIContentSizeCategoryCompareToCategory(v5, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
+  categoryCopy = category;
+  v6 = (sizeCategory || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) <= 1) && UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
 
   return v6;
 }
 
-+ (id)_preferredFontForTextStyle:(id)a3 hiFontStyle:(int64_t)a4 contentSizeCategory:(id)a5 shouldLimitContentSizeCategory:(BOOL)a6
++ (id)_preferredFontForTextStyle:(id)style hiFontStyle:(int64_t)fontStyle contentSizeCategory:(id)category shouldLimitContentSizeCategory:(BOOL)sizeCategory
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  if ([a1 _shouldLimitContentSizeCategory:v11 forceLimitContentSizeCategory:v6])
+  sizeCategoryCopy = sizeCategory;
+  styleCopy = style;
+  categoryCopy = category;
+  if ([self _shouldLimitContentSizeCategory:categoryCopy forceLimitContentSizeCategory:sizeCategoryCopy])
   {
     v12 = *MEMORY[0x1E69DDC38];
 
-    v11 = v12;
+    categoryCopy = v12;
   }
 
-  v13 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:v10 hiFontStyle:a4 contentSizeCategory:v11];
+  v13 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:styleCopy hiFontStyle:fontStyle contentSizeCategory:categoryCopy];
 
   return v13;
 }
 
-+ (double)defaultMenuItemHeightForContentSizeCategory:(id)a3
++ (double)defaultMenuItemHeightForContentSizeCategory:(id)category
 {
-  v3 = [a1 _titleFontForContentSizeCategory:a3];
+  v3 = [self _titleFontForContentSizeCategory:category];
   [v3 _scaledValueForValue:52.0];
   v5 = v4;
 
   return v5;
 }
 
-- (CCUIMenuModuleItemView)initWithMenuItem:(id)a3
+- (CCUIMenuModuleItemView)initWithMenuItem:(id)item
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   v35.receiver = self;
   v35.super_class = CCUIMenuModuleItemView;
   v6 = *MEMORY[0x1E695F058];
@@ -95,7 +95,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_menuItem, a3);
+    objc_storeStrong(&v10->_menuItem, item);
     v12 = +[CCUIControlCenterMaterialView _tertiaryView];
     highlightedBackgroundView = v11->_highlightedBackgroundView;
     v11->_highlightedBackgroundView = v12;
@@ -109,13 +109,13 @@
 
     [(CCUIMenuModuleItemView *)v11 addSubview:v11->_titleLabel];
     v16 = v11->_titleLabel;
-    v17 = [(CCUIMenuModuleItemView *)v11 _titleFont];
-    [(BSUIEmojiLabelView *)v16 setFont:v17];
+    _titleFont = [(CCUIMenuModuleItemView *)v11 _titleFont];
+    [(BSUIEmojiLabelView *)v16 setFont:_titleFont];
 
     [(BSUIEmojiLabelView *)v11->_titleLabel setUserInteractionEnabled:0];
     v18 = v11->_titleLabel;
-    v19 = [v5 title];
-    [(BSUIEmojiLabelView *)v18 setText:v19];
+    title = [itemCopy title];
+    [(BSUIEmojiLabelView *)v18 setText:title];
 
     [(BSUIEmojiLabelView *)v11->_titleLabel setNumberOfLines:0];
     v20 = [objc_alloc(MEMORY[0x1E698E7E0]) initWithFrame:{v6, v7, v8, v9}];
@@ -124,13 +124,13 @@
 
     [(CCUIMenuModuleItemView *)v11 addSubview:v11->_subtitleLabel];
     v22 = v11->_subtitleLabel;
-    v23 = [(CCUIMenuModuleItemView *)v11 _subtitleFont];
-    [(BSUIEmojiLabelView *)v22 setFont:v23];
+    _subtitleFont = [(CCUIMenuModuleItemView *)v11 _subtitleFont];
+    [(BSUIEmojiLabelView *)v22 setFont:_subtitleFont];
 
     [(BSUIEmojiLabelView *)v11->_subtitleLabel setUserInteractionEnabled:0];
     v24 = v11->_subtitleLabel;
-    v25 = [v5 subtitle];
-    [(BSUIEmojiLabelView *)v24 setText:v25];
+    subtitle = [itemCopy subtitle];
+    [(BSUIEmojiLabelView *)v24 setText:subtitle];
 
     [(BSUIEmojiLabelView *)v11->_subtitleLabel setNumberOfLines:0];
     v11->_separatorVisible = 0;
@@ -139,10 +139,10 @@
     v11->_separatorView = v26;
 
     [(CCUIMenuModuleItemView *)v11 addSubview:v11->_separatorView];
-    v28 = [MEMORY[0x1E69DC938] currentDevice];
-    v29 = [v28 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v29 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v30 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v11];
       [(CCUIMenuModuleItemView *)v11 addInteraction:v30];
@@ -157,48 +157,48 @@
   return v11;
 }
 
-- (void)setMenuItem:(id)a3
+- (void)setMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CCUIMenuModuleItem *)v4 title];
-  [(CCUIMenuModuleItemView *)self _setTitle:v5];
+  itemCopy = item;
+  title = [(CCUIMenuModuleItem *)itemCopy title];
+  [(CCUIMenuModuleItemView *)self _setTitle:title];
 
-  v6 = [(CCUIMenuModuleItem *)v4 subtitle];
-  [(CCUIMenuModuleItemView *)self _setSubtitle:v6];
+  subtitle = [(CCUIMenuModuleItem *)itemCopy subtitle];
+  [(CCUIMenuModuleItemView *)self _setSubtitle:subtitle];
 
   menuItem = self->_menuItem;
-  self->_menuItem = v4;
+  self->_menuItem = itemCopy;
 }
 
-- (void)_setTitle:(id)a3
+- (void)_setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(CCUIMenuModuleItem *)self->_menuItem title];
+  titleCopy = title;
+  title = [(CCUIMenuModuleItem *)self->_menuItem title];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    [(BSUIEmojiLabelView *)self->_titleLabel setText:v6];
+    [(BSUIEmojiLabelView *)self->_titleLabel setText:titleCopy];
     [(BSUIEmojiLabelView *)self->_titleLabel pl_performCrossFadeIfNecessary];
     [(CCUIMenuModuleItemView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)_setSubtitle:(id)a3
+- (void)_setSubtitle:(id)subtitle
 {
-  v9 = a3;
-  v4 = [(CCUIMenuModuleItem *)self->_menuItem subtitle];
+  subtitleCopy = subtitle;
+  subtitle = [(CCUIMenuModuleItem *)self->_menuItem subtitle];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    [(BSUIEmojiLabelView *)self->_subtitleLabel setText:v9];
+    [(BSUIEmojiLabelView *)self->_subtitleLabel setText:subtitleCopy];
     [(BSUIEmojiLabelView *)self->_subtitleLabel pl_performCrossFadeIfNecessary];
     [(CCUIMenuModuleItemView *)self invalidateIntrinsicContentSize];
   }
 
   subtitleLabel = self->_subtitleLabel;
-  v7 = [v9 length];
+  v7 = [subtitleCopy length];
   v8 = 1.0;
   if (!v7)
   {
@@ -208,11 +208,11 @@
   [(BSUIEmojiLabelView *)subtitleLabel setAlpha:v8];
 }
 
-- (void)setLeadingView:(id)a3
+- (void)setLeadingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   leadingView = self->_leadingView;
-  if (leadingView != v5)
+  if (leadingView != viewCopy)
   {
     if (leadingView)
     {
@@ -220,11 +220,11 @@
       [(CCUIMenuModuleItemView *)self _stopAutomaticallyUpdatingView:self->_leadingView recursivelyIfNeeded:1];
     }
 
-    objc_storeStrong(&self->_leadingView, a3);
-    if (v5)
+    objc_storeStrong(&self->_leadingView, view);
+    if (viewCopy)
     {
-      [(CCUIMenuModuleItemView *)self addSubview:v5];
-      [(CCUIMenuModuleItemView *)self _updateVisualStyleOfView:v5 withStyle:0 recursivelyIfNeeded:1];
+      [(CCUIMenuModuleItemView *)self addSubview:viewCopy];
+      [(CCUIMenuModuleItemView *)self _updateVisualStyleOfView:viewCopy withStyle:0 recursivelyIfNeeded:1];
     }
 
     v7[0] = MEMORY[0x1E69E9820];
@@ -236,11 +236,11 @@
   }
 }
 
-- (void)setTrailingView:(id)a3
+- (void)setTrailingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   trailingView = self->_trailingView;
-  if (trailingView != v5)
+  if (trailingView != viewCopy)
   {
     if (trailingView)
     {
@@ -248,11 +248,11 @@
       [(CCUIMenuModuleItemView *)self _stopAutomaticallyUpdatingView:self->_trailingView recursivelyIfNeeded:1];
     }
 
-    objc_storeStrong(&self->_trailingView, a3);
-    if (v5)
+    objc_storeStrong(&self->_trailingView, view);
+    if (viewCopy)
     {
-      [(CCUIMenuModuleItemView *)self addSubview:v5];
-      [(CCUIMenuModuleItemView *)self _updateVisualStyleOfView:v5 withStyle:0 recursivelyIfNeeded:1];
+      [(CCUIMenuModuleItemView *)self addSubview:viewCopy];
+      [(CCUIMenuModuleItemView *)self _updateVisualStyleOfView:viewCopy withStyle:0 recursivelyIfNeeded:1];
     }
 
     v7[0] = MEMORY[0x1E69E9820];
@@ -264,19 +264,19 @@
   }
 }
 
-- (void)setShouldLimitContentSizeCategory:(BOOL)a3
+- (void)setShouldLimitContentSizeCategory:(BOOL)category
 {
-  if (self->_shouldLimitContentSizeCategory != a3)
+  if (self->_shouldLimitContentSizeCategory != category)
   {
-    self->_shouldLimitContentSizeCategory = a3;
+    self->_shouldLimitContentSizeCategory = category;
     [(CCUIMenuModuleItemView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -286,9 +286,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CCUIMenuModuleItemView *)self menuItem];
-      v7 = [(CCUIMenuModuleItemView *)v5 menuItem];
+      v5 = equalCopy;
+      menuItem = [(CCUIMenuModuleItemView *)self menuItem];
+      menuItem2 = [(CCUIMenuModuleItemView *)v5 menuItem];
 
       v8 = BSEqualObjects();
     }
@@ -304,29 +304,29 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(CCUIMenuModuleItemView *)self menuItem];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  menuItem = [(CCUIMenuModuleItemView *)self menuItem];
+  v5 = [builder appendObject:menuItem];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(CCUIMenuModuleItemView *)self _labelInsets:a3.width];
+  width = fits.width;
+  [(CCUIMenuModuleItemView *)self _labelInsets:fits.width];
   v7 = width - v5 - v6;
   [(CCUIMenuModuleItemView *)self _textHeightForEmojiLabel:self->_titleLabel width:v7];
   v9 = v8;
   [(CCUIMenuModuleItemView *)self _textHeightForEmojiLabel:self->_subtitleLabel width:v7];
   v11 = v10;
-  v12 = [(BSUIEmojiLabelView *)self->_titleLabel font];
+  font = [(BSUIEmojiLabelView *)self->_titleLabel font];
   [(CCUIMenuModuleItemView *)self _titleBaselineToTop];
-  [v12 _scaledValueForValue:?];
+  [font _scaledValueForValue:?];
   v14 = v11 + v9 + v13;
   [(CCUIMenuModuleItemView *)self _titleBaselineToBottom];
-  [v12 _scaledValueForValue:?];
+  [font _scaledValueForValue:?];
   v16 = v14 + v15;
 
   v17 = width;
@@ -352,12 +352,12 @@
   v48.super_class = CCUIMenuModuleItemView;
   [(CCUIMenuModuleItemView *)&v48 layoutSubviews];
   titleLabel = self->_titleLabel;
-  v4 = [(CCUIMenuModuleItemView *)self _titleFont];
-  [(BSUIEmojiLabelView *)titleLabel setFont:v4];
+  _titleFont = [(CCUIMenuModuleItemView *)self _titleFont];
+  [(BSUIEmojiLabelView *)titleLabel setFont:_titleFont];
 
   subtitleLabel = self->_subtitleLabel;
-  v6 = [(CCUIMenuModuleItemView *)self _subtitleFont];
-  [(BSUIEmojiLabelView *)subtitleLabel setFont:v6];
+  _subtitleFont = [(CCUIMenuModuleItemView *)self _subtitleFont];
+  [(BSUIEmojiLabelView *)subtitleLabel setFont:_subtitleFont];
 
   [(CCUIMenuModuleItemView *)self _layoutLeadingCustomView];
   [(CCUIMenuModuleItemView *)self _layoutTrailingCustomViews];
@@ -398,9 +398,9 @@
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(BSUIEmojiLabelView *)self->_titleLabel font];
+  font = [(BSUIEmojiLabelView *)self->_titleLabel font];
   [(CCUIMenuModuleItemView *)self _titleBaselineToTop];
-  [v31 _scaledValueForValue:?];
+  [font _scaledValueForValue:?];
   v33 = v32;
   [(BSUIEmojiLabelView *)self->_titleLabel _firstLineBaselineOffsetFromBoundsTop];
   v35 = v33 - v34;
@@ -410,8 +410,8 @@
   v51.size.width = v28;
   v51.size.height = v30;
   Width = CGRectGetWidth(v51);
-  v37 = [(BSUIEmojiLabelView *)self->_subtitleLabel text];
-  v38 = [v37 length];
+  text = [(BSUIEmojiLabelView *)self->_subtitleLabel text];
+  v38 = [text length];
 
   if (v38)
   {
@@ -488,83 +488,83 @@
   [(UIView *)self->_separatorView setHidden:!self->_separatorVisible];
 }
 
-- (void)updateSubviewsAlpha:(double)a3
+- (void)updateSubviewsAlpha:(double)alpha
 {
   [(BSUIEmojiLabelView *)self->_titleLabel setAlpha:?];
-  [(BSUIEmojiLabelView *)self->_subtitleLabel setAlpha:a3];
-  [(UIView *)self->_leadingView setAlpha:a3];
+  [(BSUIEmojiLabelView *)self->_subtitleLabel setAlpha:alpha];
+  [(UIView *)self->_leadingView setAlpha:alpha];
   trailingView = self->_trailingView;
 
-  [(UIView *)trailingView setAlpha:a3];
+  [(UIView *)trailingView setAlpha:alpha];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleItemView;
-  [(CCUIMenuModuleItemView *)&v4 setHighlighted:a3];
+  [(CCUIMenuModuleItemView *)&v4 setHighlighted:highlighted];
   [(CCUIMenuModuleItemView *)self _updateForStateChange];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleItemView;
-  [(CCUIMenuModuleItemView *)&v4 setSelected:a3];
+  [(CCUIMenuModuleItemView *)&v4 setSelected:selected];
   [(CCUIMenuModuleItemView *)self _updateForStateChange];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleItemView;
-  [(CCUIMenuModuleItemView *)&v4 setEnabled:a3];
+  [(CCUIMenuModuleItemView *)&v4 setEnabled:enabled];
   [(CCUIMenuModuleItemView *)self _updateForStateChange];
 }
 
-- (void)setSeparatorVisible:(BOOL)a3
+- (void)setSeparatorVisible:(BOOL)visible
 {
-  if (self->_separatorVisible != a3)
+  if (self->_separatorVisible != visible)
   {
-    self->_separatorVisible = a3;
+    self->_separatorVisible = visible;
     [(CCUIMenuModuleItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setIndentation:(unint64_t)a3
+- (void)setIndentation:(unint64_t)indentation
 {
-  if (self->_indentation != a3)
+  if (self->_indentation != indentation)
   {
-    self->_indentation = a3;
+    self->_indentation = indentation;
     [(CCUIMenuModuleItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setUseTrailingCheckmarkLayout:(BOOL)a3
+- (void)setUseTrailingCheckmarkLayout:(BOOL)layout
 {
-  if (self->_useTrailingCheckmarkLayout != a3)
+  if (self->_useTrailingCheckmarkLayout != layout)
   {
-    self->_useTrailingCheckmarkLayout = a3;
+    self->_useTrailingCheckmarkLayout = layout;
     [(CCUIMenuModuleItemView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setUseTrailingInset:(BOOL)a3
+- (void)setUseTrailingInset:(BOOL)inset
 {
-  if (self->_useTrailingInset != a3)
+  if (self->_useTrailingInset != inset)
   {
-    self->_useTrailingInset = a3;
+    self->_useTrailingInset = inset;
     [(CCUIMenuModuleItemView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   [(UIView *)self->_highlightedBackgroundView _setContinuousCornerRadius:?];
-  if (a3 > 0.0)
+  if (radius > 0.0)
   {
-    v5 = [(UIView *)self->_highlightedBackgroundView layer];
-    [v5 setMaskedCorners:12];
+    layer = [(UIView *)self->_highlightedBackgroundView layer];
+    [layer setMaskedCorners:12];
   }
 }
 
@@ -573,9 +573,9 @@
   v5.receiver = self;
   v5.super_class = CCUIMenuModuleItemView;
   [(CCUIMenuModuleItemView *)&v5 didMoveToWindow];
-  v3 = [(CCUIMenuModuleItemView *)self window];
+  window = [(CCUIMenuModuleItemView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CCUIMenuModuleItemView *)self _contentSizeCategoryDidChange];
     v4 = [(CCUIMenuModuleItemView *)self visualStylingProviderForCategory:1];
@@ -596,22 +596,22 @@
   }
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  [a3 locationInView:self];
-  LOBYTE(a3) = [(CCUIMenuModuleItemView *)self pointInside:v6 withEvent:?];
+  eventCopy = event;
+  [touch locationInView:self];
+  LOBYTE(touch) = [(CCUIMenuModuleItemView *)self pointInside:eventCopy withEvent:?];
 
-  return a3;
+  return touch;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  if ([(CCUIMenuModuleItemView *)v4 _isInAWindow])
+  selfCopy = self;
+  if ([(CCUIMenuModuleItemView *)selfCopy _isInAWindow])
   {
-    v5 = [(CCUIMenuModuleItemView *)v4 window];
+    window = [(CCUIMenuModuleItemView *)selfCopy window];
     v6 = CCUILogUserInterface;
     if (os_log_type_enabled(CCUILogUserInterface, OS_LOG_TYPE_DEFAULT))
     {
@@ -621,13 +621,13 @@
       v14 = 138543874;
       v15 = v9;
       v16 = 2114;
-      v17 = v4;
+      v17 = selfCopy;
       v18 = 2114;
-      v19 = v5;
+      v19 = window;
       _os_log_impl(&dword_1D168A000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Control Center is about to call [UITargetedPreview initWithView:], view = %{public}@, window = %{public}@", &v14, 0x20u);
     }
 
-    v10 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v4];
+    v10 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:selfCopy];
     v11 = [MEMORY[0x1E69DCD98] effectWithPreview:v10];
     v12 = [MEMORY[0x1E69DCDD0] styleWithEffect:v11 shape:0];
   }
@@ -642,13 +642,13 @@
 
 - (double)_separatorHeight
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v4 = [(CCUIMenuModuleItemView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [(CCUIMenuModuleItemView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v6 = 1.0;
-  if (!UIContentSizeCategoryIsAccessibilityCategory(v5))
+  if (!UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    [v3 scale];
+    [mainScreen scale];
     v6 = v7;
   }
 
@@ -657,39 +657,39 @@
 
 - (id)_titleFont
 {
-  v3 = [(CCUIMenuModuleItemView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(CCUIMenuModuleItemView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v5 = [objc_opt_class() _titleFontForContentSizeCategory:v4 shouldLimitContentSizeCategory:{-[CCUIMenuModuleItemView shouldLimitContentSizeCategory](self, "shouldLimitContentSizeCategory")}];
+  v5 = [objc_opt_class() _titleFontForContentSizeCategory:preferredContentSizeCategory shouldLimitContentSizeCategory:{-[CCUIMenuModuleItemView shouldLimitContentSizeCategory](self, "shouldLimitContentSizeCategory")}];
 
   return v5;
 }
 
 - (id)_subtitleFont
 {
-  v3 = [(CCUIMenuModuleItemView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(CCUIMenuModuleItemView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v5 = [objc_opt_class() _subtitleFontForContentSizeCategory:v4 shouldLimitContentSizeCategory:{-[CCUIMenuModuleItemView shouldLimitContentSizeCategory](self, "shouldLimitContentSizeCategory")}];
+  v5 = [objc_opt_class() _subtitleFontForContentSizeCategory:preferredContentSizeCategory shouldLimitContentSizeCategory:{-[CCUIMenuModuleItemView shouldLimitContentSizeCategory](self, "shouldLimitContentSizeCategory")}];
 
   return v5;
 }
 
-- (double)_textHeightForEmojiLabel:(id)a3 width:(double)a4
+- (double)_textHeightForEmojiLabel:(id)label width:(double)width
 {
-  v5 = a3;
-  v6 = [v5 text];
-  v7 = [v6 length];
+  labelCopy = label;
+  text = [labelCopy text];
+  v7 = [text length];
 
   if (v7)
   {
-    [v5 sizeThatFits:{a4, 0.0}];
+    [labelCopy sizeThatFits:{width, 0.0}];
     v9 = v8;
-    [v5 bounds];
-    [v5 setBounds:?];
-    [v5 _firstLineBaselineOffsetFromBoundsTop];
+    [labelCopy bounds];
+    [labelCopy setBounds:?];
+    [labelCopy _firstLineBaselineOffsetFromBoundsTop];
     v11 = v9 - v10;
-    [v5 _baselineOffsetFromBottom];
+    [labelCopy _baselineOffsetFromBottom];
     v13 = v11 - v12;
   }
 
@@ -708,8 +708,8 @@
     return 0;
   }
 
-  v4 = [(BSUIEmojiLabelView *)self->_subtitleLabel text];
-  v2 = [v4 length] == 0;
+  text = [(BSUIEmojiLabelView *)self->_subtitleLabel text];
+  v2 = [text length] == 0;
 
   return v2;
 }
@@ -828,12 +828,12 @@
 {
   [(CCUIMenuModuleItemView *)self invalidateIntrinsicContentSize];
   titleLabel = self->_titleLabel;
-  v4 = [(CCUIMenuModuleItemView *)self _titleFont];
-  [(BSUIEmojiLabelView *)titleLabel setFont:v4];
+  _titleFont = [(CCUIMenuModuleItemView *)self _titleFont];
+  [(BSUIEmojiLabelView *)titleLabel setFont:_titleFont];
 
   subtitleLabel = self->_subtitleLabel;
-  v6 = [(CCUIMenuModuleItemView *)self _subtitleFont];
-  [(BSUIEmojiLabelView *)subtitleLabel setFont:v6];
+  _subtitleFont = [(CCUIMenuModuleItemView *)self _subtitleFont];
+  [(BSUIEmojiLabelView *)subtitleLabel setFont:_subtitleFont];
 }
 
 - (void)_layoutLeadingCustomView
@@ -856,8 +856,8 @@
       CGRectGetMaxX(v14);
     }
 
-    v11 = [(CCUIMenuModuleItemView *)self traitCollection];
-    [v11 displayScale];
+    traitCollection = [(CCUIMenuModuleItemView *)self traitCollection];
+    [traitCollection displayScale];
 
     v15.origin.x = v4;
     v15.origin.y = v6;
@@ -890,8 +890,8 @@
       CGRectGetMaxX(v14);
     }
 
-    v11 = [(CCUIMenuModuleItemView *)self traitCollection];
-    [v11 displayScale];
+    traitCollection = [(CCUIMenuModuleItemView *)self traitCollection];
+    [traitCollection displayScale];
 
     v15.origin.x = v4;
     v15.origin.y = v6;
@@ -905,20 +905,20 @@
   }
 }
 
-- (void)_updateVisualStyleOfView:(id)a3 withStyle:(int64_t)a4 recursivelyIfNeeded:(BOOL)a5
+- (void)_updateVisualStyleOfView:(id)view withStyle:(int64_t)style recursivelyIfNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (v5 && ([v8 subviews], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v11))
+  viewCopy = view;
+  v9 = viewCopy;
+  if (neededCopy && ([viewCopy subviews], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v11))
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v12 = [v9 subviews];
-    v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    subviews = [v9 subviews];
+    v13 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v13)
     {
       v14 = v13;
@@ -930,14 +930,14 @@
         {
           if (*v18 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(subviews);
           }
 
-          [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:*(*(&v17 + 1) + 8 * v16++) withStyle:a4];
+          [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:*(*(&v17 + 1) + 8 * v16++) withStyle:style];
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v14 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v14);
@@ -946,24 +946,24 @@
 
   else
   {
-    [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:v9 withStyle:a4];
+    [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:v9 withStyle:style];
   }
 }
 
-- (void)_stopAutomaticallyUpdatingView:(id)a3 recursivelyIfNeeded:(BOOL)a4
+- (void)_stopAutomaticallyUpdatingView:(id)view recursivelyIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v4 && ([v6 subviews], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9))
+  viewCopy = view;
+  v7 = viewCopy;
+  if (neededCopy && ([viewCopy subviews], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9))
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = [v7 subviews];
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subviews = [v7 subviews];
+    v11 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -975,14 +975,14 @@
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subviews);
           }
 
           [(MTVisualStylingProvider *)self->_visualStylingProvider stopAutomaticallyUpdatingView:*(*(&v15 + 1) + 8 * v14++)];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v12 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v12);

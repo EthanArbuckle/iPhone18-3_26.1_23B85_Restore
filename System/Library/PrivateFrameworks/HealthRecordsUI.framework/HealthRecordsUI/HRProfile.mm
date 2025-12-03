@@ -1,32 +1,32 @@
 @interface HRProfile
-+ (id)userProfileWithProfileIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)userProfileWithProfileIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (HKConceptStore)conceptStore;
-- (HRProfile)initWithHealthStore:(id)a3 healthRecordsStore:(id)a4 clinicalAccountStore:(id)a5 ingestionStore:(id)a6;
-- (HRProfile)initWithHealthStore:(id)a3 profileIdentifier:(id)a4;
+- (HRProfile)initWithHealthStore:(id)store healthRecordsStore:(id)recordsStore clinicalAccountStore:(id)accountStore ingestionStore:(id)ingestionStore;
+- (HRProfile)initWithHealthStore:(id)store profileIdentifier:(id)identifier;
 - (WDClinicalSampleAccountsLoader)clinicalSampleAccountsLoader;
 - (unint64_t)hash;
 @end
 
 @implementation HRProfile
 
-- (HRProfile)initWithHealthStore:(id)a3 profileIdentifier:(id)a4
+- (HRProfile)initWithHealthStore:(id)store profileIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  storeCopy = store;
+  identifierCopy = identifier;
+  v8 = storeCopy;
   v9 = v8;
   v10 = v8;
-  if (v7)
+  if (identifierCopy)
   {
-    v11 = [v8 profileIdentifier];
-    v12 = [v11 isEqual:v7];
+    profileIdentifier = [v8 profileIdentifier];
+    v12 = [profileIdentifier isEqual:identifierCopy];
 
     v10 = v9;
     if ((v12 & 1) == 0)
     {
       v10 = objc_alloc_init(MEMORY[0x1E696C1C0]);
-      [v10 setProfileIdentifier:v7];
+      [v10 setProfileIdentifier:identifierCopy];
       [v10 resume];
     }
   }
@@ -39,22 +39,22 @@
   return v16;
 }
 
-- (HRProfile)initWithHealthStore:(id)a3 healthRecordsStore:(id)a4 clinicalAccountStore:(id)a5 ingestionStore:(id)a6
+- (HRProfile)initWithHealthStore:(id)store healthRecordsStore:(id)recordsStore clinicalAccountStore:(id)accountStore ingestionStore:(id)ingestionStore
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  recordsStoreCopy = recordsStore;
+  accountStoreCopy = accountStore;
+  ingestionStoreCopy = ingestionStore;
   v36.receiver = self;
   v36.super_class = HRProfile;
   v15 = [(HRProfile *)&v36 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_healthStore, a3);
-    objc_storeStrong(&v16->_healthRecordsStore, a4);
-    objc_storeStrong(&v16->_clinicalAccountStore, a5);
-    objc_storeStrong(&v16->_ingestionStore, a6);
+    objc_storeStrong(&v15->_healthStore, store);
+    objc_storeStrong(&v16->_healthRecordsStore, recordsStore);
+    objc_storeStrong(&v16->_clinicalAccountStore, accountStore);
+    objc_storeStrong(&v16->_ingestionStore, ingestionStore);
     v17 = [[WDClinicalSourcesDataProvider alloc] initWithHealthRecordsStore:v16->_healthRecordsStore];
     clinicalSourcesDataProvider = v16->_clinicalSourcesDataProvider;
     v16->_clinicalSourcesDataProvider = v17;
@@ -64,8 +64,8 @@
     v16->_updateController = v19;
 
     v21 = objc_alloc(MEMORY[0x1E69A4358]);
-    v22 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v23 = [v21 initWithCalendar:v22];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v23 = [v21 initWithCalendar:currentCalendar];
     dateCache = v16->_dateCache;
     v16->_dateCache = v23;
 
@@ -122,17 +122,17 @@ void __88__HRProfile_initWithHealthStore_healthRecordsStore_clinicalAccountStore
 
 - (unint64_t)hash
 {
-  v2 = [(HRProfile *)self healthStore];
-  v3 = [v2 profileIdentifier];
-  v4 = [v3 hash];
+  healthStore = [(HRProfile *)self healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  v4 = [profileIdentifier hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -142,11 +142,11 @@ void __88__HRProfile_initWithHealthStore_healthRecordsStore_clinicalAccountStore
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HRProfile *)v4 healthStore];
-      v6 = [v5 profileIdentifier];
-      v7 = [(HRProfile *)self healthStore];
-      v8 = [v7 profileIdentifier];
-      v9 = [v6 isEqual:v8];
+      healthStore = [(HRProfile *)equalCopy healthStore];
+      profileIdentifier = [healthStore profileIdentifier];
+      healthStore2 = [(HRProfile *)self healthStore];
+      profileIdentifier2 = [healthStore2 profileIdentifier];
+      v9 = [profileIdentifier isEqual:profileIdentifier2];
     }
 
     else
@@ -158,34 +158,34 @@ void __88__HRProfile_initWithHealthStore_healthRecordsStore_clinicalAccountStore
   return v9;
 }
 
-+ (id)userProfileWithProfileIdentifier:(id)a3
++ (id)userProfileWithProfileIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [HRProfile alloc];
   v5 = objc_alloc_init(MEMORY[0x1E696C1C0]);
-  v6 = [(HRProfile *)v4 initWithHealthStore:v5 profileIdentifier:v3];
+  v6 = [(HRProfile *)v4 initWithHealthStore:v5 profileIdentifier:identifierCopy];
 
   return v6;
 }
 
 - (HKConceptStore)conceptStore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  conceptStore = v2->_conceptStore;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  conceptStore = selfCopy->_conceptStore;
   if (!conceptStore)
   {
     v4 = objc_alloc(MEMORY[0x1E696C038]);
-    v5 = [(HRProfile *)v2 healthStore];
-    v6 = [v4 initWithHealthStore:v5];
-    v7 = v2->_conceptStore;
-    v2->_conceptStore = v6;
+    healthStore = [(HRProfile *)selfCopy healthStore];
+    v6 = [v4 initWithHealthStore:healthStore];
+    v7 = selfCopy->_conceptStore;
+    selfCopy->_conceptStore = v6;
 
-    conceptStore = v2->_conceptStore;
+    conceptStore = selfCopy->_conceptStore;
   }
 
   v8 = conceptStore;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }

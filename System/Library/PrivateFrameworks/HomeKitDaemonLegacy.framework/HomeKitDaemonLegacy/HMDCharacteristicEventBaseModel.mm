@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __45__HMDCharacteristicEventBaseModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_129932 != -1)
   {
     dispatch_once(&properties_onceToken_129932, block);
@@ -52,23 +52,23 @@ void __45__HMDCharacteristicEventBaseModel_properties__block_invoke(uint64_t a1)
 - (id)dependentUUIDs
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
-  v6 = [(HMDCharacteristicEventBaseModel *)self serviceID];
+  serviceID = [(HMDCharacteristicEventBaseModel *)self serviceID];
 
-  if (v6)
+  if (serviceID)
   {
     v7 = objc_alloc(MEMORY[0x277CCAD78]);
-    v8 = [(HMDCharacteristicEventBaseModel *)self accessory];
-    v9 = [v7 initWithUUIDString:v8];
-    v10 = [(HMDCharacteristicEventBaseModel *)self serviceID];
-    v11 = [HMDService generateUUIDWithAccessoryUUID:v9 serviceID:v10];
+    accessory = [(HMDCharacteristicEventBaseModel *)self accessory];
+    v9 = [v7 initWithUUIDString:accessory];
+    serviceID2 = [(HMDCharacteristicEventBaseModel *)self serviceID];
+    v11 = [HMDService generateUUIDWithAccessoryUUID:v9 serviceID:serviceID2];
 
     [v3 addObject:v11];
   }

@@ -1,48 +1,48 @@
 @interface MediaControlsMasterVolumeSlider
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (MediaControlsMasterVolumeSlider)initWithFrame:(CGRect)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (MediaControlsMasterVolumeSlider)initWithFrame:(CGRect)frame;
 - (MediaControlsMasterVolumeSliderDelegate)delegate;
 - (id)createThumbView;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)handleLongPress:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)handleLongPress:(id)press;
 - (void)layoutSubviews;
-- (void)setSyncState:(int64_t)a3;
-- (void)shrinkThumbAfterDelay:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSyncState:(int64_t)state;
+- (void)shrinkThumbAfterDelay:(double)delay;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MediaControlsMasterVolumeSlider
 
-- (MediaControlsMasterVolumeSlider)initWithFrame:(CGRect)a3
+- (MediaControlsMasterVolumeSlider)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = MediaControlsMasterVolumeSlider;
-  v3 = [(MPVolumeSlider *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPVolumeSlider *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MediaControlsMasterVolumeSlider *)v3 setSyncState:0];
     v5 = objc_alloc(MEMORY[0x1E69DD250]);
-    v6 = [(MPVolumeSlider *)v4 thumbView];
-    [v6 frame];
+    thumbView = [(MPVolumeSlider *)v4 thumbView];
+    [thumbView frame];
     v7 = [v5 initWithFrame:?];
     growingThumbView = v4->_growingThumbView;
     v4->_growingThumbView = v7;
 
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v4->_growingThumbView setBackgroundColor:v9];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v4->_growingThumbView setBackgroundColor:whiteColor];
 
     [(UIView *)v4->_growingThumbView setAlpha:1.0];
     [(UIView *)v4->_growingThumbView setUserInteractionEnabled:0];
-    v10 = [(UIView *)v4->_growingThumbView layer];
-    [v10 setShadowRadius:5.0];
+    layer = [(UIView *)v4->_growingThumbView layer];
+    [layer setShadowRadius:5.0];
 
-    v11 = [(UIView *)v4->_growingThumbView layer];
+    layer2 = [(UIView *)v4->_growingThumbView layer];
     LODWORD(v12) = 1045220557;
-    [v11 setShadowOpacity:v12];
+    [layer2 setShadowOpacity:v12];
 
     [(MediaControlsMasterVolumeSlider *)v4 addSubview:v4->_growingThumbView];
     v13 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v4 action:sel_handleLongPress_];
@@ -62,33 +62,33 @@
 {
   v6.receiver = self;
   v6.super_class = MediaControlsMasterVolumeSlider;
-  v3 = [(MediaControlsVolumeSlider *)&v6 createThumbView];
-  v4 = [(MPVolumeSlider *)self thumbView];
-  [v4 setHidden:1];
+  createThumbView = [(MediaControlsVolumeSlider *)&v6 createThumbView];
+  thumbView = [(MPVolumeSlider *)self thumbView];
+  [thumbView setHidden:1];
 
-  return v3;
+  return createThumbView;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = MediaControlsMasterVolumeSlider;
-  [(MediaControlsMasterVolumeSlider *)&v5 traitCollectionDidChange:a3];
-  v4 = [(MediaControlsMasterVolumeSlider *)self traitCollection];
-  -[UILongPressGestureRecognizer setEnabled:](self->_longPressRecognizer, "setEnabled:", [v4 forceTouchCapability] == 1);
+  [(MediaControlsMasterVolumeSlider *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(MediaControlsMasterVolumeSlider *)self traitCollection];
+  -[UILongPressGestureRecognizer setEnabled:](self->_longPressRecognizer, "setEnabled:", [traitCollection forceTouchCapability] == 1);
 }
 
-- (void)setSyncState:(int64_t)a3
+- (void)setSyncState:(int64_t)state
 {
-  if (self->_syncState == a3 || !self->_syncingEnabled)
+  if (self->_syncState == state || !self->_syncingEnabled)
   {
     return;
   }
 
-  v9 = [(MediaControlsMasterVolumeSlider *)self delegate];
+  delegate = [(MediaControlsMasterVolumeSlider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v9 slider:self syncStateWillChangeFromState:self->_syncState toState:a3];
+    v5 = [delegate slider:self syncStateWillChangeFromState:self->_syncState toState:state];
   }
 
   else
@@ -96,18 +96,18 @@
     v5 = 1;
   }
 
-  self->_syncState = a3;
-  v6 = [(MediaControlsMasterVolumeSlider *)self syncState];
-  if (v6 == 4)
+  self->_syncState = state;
+  syncState = [(MediaControlsMasterVolumeSlider *)self syncState];
+  if (syncState == 4)
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
 LABEL_12:
-    [(MediaControlsMasterVolumeSlider *)v7 setSyncState:v8];
+    [(MediaControlsMasterVolumeSlider *)selfCopy2 setSyncState:v8];
     goto LABEL_14;
   }
 
-  if (v6 == 1)
+  if (syncState == 1)
   {
     if (!v5)
     {
@@ -120,7 +120,7 @@ LABEL_12:
 
     [(UIImpactFeedbackGenerator *)self->_positiveFeedbackGenerator impactOccurred];
     [(UIImpactFeedbackGenerator *)self->_positiveFeedbackGenerator prepare];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 2;
     goto LABEL_12;
   }
@@ -128,7 +128,7 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
   if ([(UILongPressGestureRecognizer *)self->_longPressRecognizer state]== 1)
   {
@@ -143,10 +143,10 @@ LABEL_14:
   }
 }
 
-- (void)shrinkThumbAfterDelay:(double)a3
+- (void)shrinkThumbAfterDelay:(double)delay
 {
-  v5 = [(MPVolumeSlider *)self thumbView];
-  [v5 frame];
+  thumbView = [(MPVolumeSlider *)self thumbView];
+  [thumbView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -167,7 +167,7 @@ LABEL_14:
   v17[7] = v11;
   v17[8] = v13;
   [v16 addAnimations:v17];
-  [v16 startAnimationAfterDelay:a3];
+  [v16 startAnimationAfterDelay:delay];
   self->_forcePercent = 0.0;
   [(MediaControlsMasterVolumeSlider *)self setNeedsLayout];
 }
@@ -183,14 +183,14 @@ void __57__MediaControlsMasterVolumeSlider_shrinkThumbAfterDelay___block_invoke(
   [v4 setCornerRadius:v3];
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MediaControlsMasterVolumeSlider *)self delegate];
+  eventCopy = event;
+  touchCopy = touch;
+  delegate = [(MediaControlsMasterVolumeSlider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 shouldEnableSyncingForSlider:self];
+    v9 = [delegate shouldEnableSyncingForSlider:self];
     self->_syncingEnabled = v9;
     if (!v9)
     {
@@ -215,38 +215,38 @@ LABEL_5:
   }
 
 LABEL_6:
-  [v7 locationInView:0];
+  [touchCopy locationInView:0];
   *&v14 = v14;
   self->_initialX = *&v14;
   v17.receiver = self;
   v17.super_class = MediaControlsMasterVolumeSlider;
-  v15 = [(MPVolumeSlider *)&v17 beginTrackingWithTouch:v7 withEvent:v6];
+  v15 = [(MPVolumeSlider *)&v17 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return v15;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   if (!self->_syncingEnabled || self->_syncState == 3)
   {
     goto LABEL_14;
   }
 
   [(MediaControlsMasterVolumeSlider *)self setNeedsLayout];
-  [v6 locationInView:0];
+  [touchCopy locationInView:0];
   *&v8 = v8;
   if (vabds_f32(*&v8, self->_initialX) <= 15.0)
   {
-    v9 = [(MediaControlsMasterVolumeSlider *)self traitCollection];
-    v10 = [v9 forceTouchCapability];
+    traitCollection = [(MediaControlsMasterVolumeSlider *)self traitCollection];
+    forceTouchCapability = [traitCollection forceTouchCapability];
 
-    if (v10 == 2)
+    if (forceTouchCapability == 2)
     {
-      [v6 force];
+      [touchCopy force];
       v12 = v11;
-      [v6 maximumPossibleForce];
+      [touchCopy maximumPossibleForce];
       self->_forcePercent = v12 / v13;
       [(MediaControlsMasterVolumeSlider *)self setNeedsLayout];
       forcePercent = self->_forcePercent;
@@ -273,8 +273,8 @@ LABEL_6:
 
   v15 = 1;
 LABEL_10:
-  v16 = [(MediaControlsMasterVolumeSlider *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v16 slider:self shouldCancelSnapWithTouch:v6])
+  delegate = [(MediaControlsMasterVolumeSlider *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate slider:self shouldCancelSnapWithTouch:touchCopy])
   {
     [(MediaControlsMasterVolumeSlider *)self setSyncState:3];
     [(MediaControlsMasterVolumeSlider *)self shrinkThumbAfterDelay:0.0];
@@ -296,17 +296,17 @@ LABEL_10:
 LABEL_14:
   v19.receiver = self;
   v19.super_class = MediaControlsMasterVolumeSlider;
-  v17 = [(MPVolumeSlider *)&v19 continueTrackingWithTouch:v6 withEvent:v7];
+  v17 = [(MPVolumeSlider *)&v19 continueTrackingWithTouch:touchCopy withEvent:eventCopy];
 LABEL_15:
 
   return v17;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = MediaControlsMasterVolumeSlider;
-  [(MPVolumeSlider *)&v7 endTrackingWithTouch:a3 withEvent:a4];
+  [(MPVolumeSlider *)&v7 endTrackingWithTouch:touch withEvent:event];
   if (self->_syncingEnabled)
   {
     [(MediaControlsMasterVolumeSlider *)self shrinkThumbAfterDelay:0.0];
@@ -319,11 +319,11 @@ LABEL_15:
   }
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = MediaControlsMasterVolumeSlider;
-  [(MPVolumeSlider *)&v4 cancelTrackingWithEvent:a3];
+  [(MPVolumeSlider *)&v4 cancelTrackingWithEvent:event];
   [(MediaControlsMasterVolumeSlider *)self setSyncState:3];
   [(MediaControlsMasterVolumeSlider *)self shrinkThumbAfterDelay:0.0];
 }
@@ -334,32 +334,32 @@ LABEL_15:
   v10.super_class = MediaControlsMasterVolumeSlider;
   [(MediaControlsMasterVolumeSlider *)&v10 layoutSubviews];
   [(MediaControlsMasterVolumeSlider *)self bringSubviewToFront:self->_growingThumbView];
-  v3 = [(MPVolumeSlider *)self thumbView];
-  [v3 frame];
-  v4 = [(MPVolumeSlider *)self volumeController];
-  v5 = [v4 isVolumeControlAvailable];
+  thumbView = [(MPVolumeSlider *)self thumbView];
+  [thumbView frame];
+  volumeController = [(MPVolumeSlider *)self volumeController];
+  isVolumeControlAvailable = [volumeController isVolumeControlAvailable];
   v6 = 0.0;
-  if (v5)
+  if (isVolumeControlAvailable)
   {
     v6 = 1.0;
   }
 
   [(UIView *)self->_growingThumbView setAlpha:v6];
 
-  [v3 frame];
+  [thumbView frame];
   UIRectGetCenter();
   UIRectCenteredAboutPoint();
   [(UIView *)self->_growingThumbView setFrame:?];
   [(UIView *)self->_growingThumbView frame];
   v8 = v7 * 0.5;
-  v9 = [(UIView *)self->_growingThumbView layer];
-  [v9 setCornerRadius:v8];
+  layer = [(UIView *)self->_growingThumbView layer];
+  [layer setCornerRadius:v8];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_longPressRecognizer == v4 || (v8.receiver = self, v8.super_class = MediaControlsMasterVolumeSlider, ![(MediaControlsMasterVolumeSlider *)&v8 respondsToSelector:sel_gestureRecognizerShouldBegin_]))
+  beginCopy = begin;
+  if (self->_longPressRecognizer == beginCopy || (v8.receiver = self, v8.super_class = MediaControlsMasterVolumeSlider, ![(MediaControlsMasterVolumeSlider *)&v8 respondsToSelector:sel_gestureRecognizerShouldBegin_]))
   {
     v5 = 1;
   }
@@ -368,7 +368,7 @@ LABEL_15:
   {
     v7.receiver = self;
     v7.super_class = MediaControlsMasterVolumeSlider;
-    v5 = [(MediaControlsVolumeSlider *)&v7 gestureRecognizerShouldBegin:v4];
+    v5 = [(MediaControlsVolumeSlider *)&v7 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v5;

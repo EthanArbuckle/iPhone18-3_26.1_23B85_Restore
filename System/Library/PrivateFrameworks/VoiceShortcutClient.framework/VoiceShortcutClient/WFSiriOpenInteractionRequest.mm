@@ -1,30 +1,30 @@
 @interface WFSiriOpenInteractionRequest
-- (WFSiriOpenInteractionRequest)initWithCoder:(id)a3;
-- (WFSiriOpenInteractionRequest)initWithInteraction:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFSiriOpenInteractionRequest)initWithCoder:(id)coder;
+- (WFSiriOpenInteractionRequest)initWithInteraction:(id)interaction;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSiriOpenInteractionRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFSiriOpenInteractionRequest;
-  v4 = a3;
-  [(WFSiriActionRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFSiriActionRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFSiriOpenInteractionRequest *)self interaction:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"interaction"];
+  [coderCopy encodeObject:v5 forKey:@"interaction"];
 }
 
-- (WFSiriOpenInteractionRequest)initWithCoder:(id)a3
+- (WFSiriOpenInteractionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFSiriOpenInteractionRequest;
-  v5 = [(WFSiriActionRequest *)&v10 initWithCoder:v4];
+  v5 = [(WFSiriActionRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
     interaction = v5->_interaction;
     v5->_interaction = v6;
 
@@ -34,16 +34,16 @@
   return v5;
 }
 
-- (WFSiriOpenInteractionRequest)initWithInteraction:(id)a3
+- (WFSiriOpenInteractionRequest)initWithInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v10.receiver = self;
   v10.super_class = WFSiriOpenInteractionRequest;
   v6 = [(WFSiriActionRequest *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_interaction, a3);
+    objc_storeStrong(&v6->_interaction, interaction);
     v8 = v7;
   }
 

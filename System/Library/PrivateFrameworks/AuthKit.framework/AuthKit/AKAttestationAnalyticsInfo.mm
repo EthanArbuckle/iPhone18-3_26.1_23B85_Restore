@@ -1,24 +1,24 @@
 @interface AKAttestationAnalyticsInfo
-- (AKAttestationAnalyticsInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AKAttestationAnalyticsInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKAttestationAnalyticsInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v10 = self;
+  selfCopy = self;
   v9[2] = a2;
-  v9[1] = a3;
+  v9[1] = zone;
   v9[0] = objc_alloc_init(objc_opt_class());
-  v3 = [(NSString *)v10->_endPointVIP copy];
+  v3 = [(NSString *)selfCopy->_endPointVIP copy];
   v4 = *(v9[0] + 1);
   *(v9[0] + 1) = v3;
   MEMORY[0x1E69E5920](v4);
-  *(v9[0] + 3) = v10->_headerSize;
-  *(v9[0] + 6) = v10->_errorCode;
-  v5 = [(NSString *)v10->_errorDomain copy];
+  *(v9[0] + 3) = selfCopy->_headerSize;
+  *(v9[0] + 6) = selfCopy->_errorCode;
+  v5 = [(NSString *)selfCopy->_errorDomain copy];
   v6 = *(v9[0] + 5);
   *(v9[0] + 5) = v5;
   MEMORY[0x1E69E5920](v6);
@@ -27,72 +27,72 @@
   return v8;
 }
 
-- (AKAttestationAnalyticsInfo)initWithCoder:(id)a3
+- (AKAttestationAnalyticsInfo)initWithCoder:(id)coder
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v20;
-  v20 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v18 = [(AKAttestationAnalyticsInfo *)v3 init];
-  v20 = v18;
-  objc_storeStrong(&v20, v18);
+  selfCopy = v18;
+  objc_storeStrong(&selfCopy, v18);
   if (v18)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_endPointVIP"];
-    endPointVIP = v20->_endPointVIP;
-    v20->_endPointVIP = v4;
+    endPointVIP = selfCopy->_endPointVIP;
+    selfCopy->_endPointVIP = v4;
     MEMORY[0x1E69E5920](endPointVIP);
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_requestMethod"];
-    requestMethod = v20->_requestMethod;
-    v20->_requestMethod = v6;
+    requestMethod = selfCopy->_requestMethod;
+    selfCopy->_requestMethod = v6;
     MEMORY[0x1E69E5920](requestMethod);
     v15 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_headerSize"];
-    v8 = [v15 unsignedIntegerValue];
-    v20->_headerSize = v8;
+    unsignedIntegerValue = [v15 unsignedIntegerValue];
+    selfCopy->_headerSize = unsignedIntegerValue;
     MEMORY[0x1E69E5920](v15);
     v16 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_bodySize"];
-    v9 = [v16 unsignedIntegerValue];
-    v20->_bodySize = v9;
+    unsignedIntegerValue2 = [v16 unsignedIntegerValue];
+    selfCopy->_bodySize = unsignedIntegerValue2;
     MEMORY[0x1E69E5920](v16);
     v17 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_errorCode"];
-    v10 = [v17 integerValue];
-    v20->_errorCode = v10;
+    integerValue = [v17 integerValue];
+    selfCopy->_errorCode = integerValue;
     MEMORY[0x1E69E5920](v17);
     v11 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_errorDomain"];
-    errorDomain = v20->_errorDomain;
-    v20->_errorDomain = v11;
+    errorDomain = selfCopy->_errorDomain;
+    selfCopy->_errorDomain = v11;
     MEMORY[0x1E69E5920](errorDomain);
   }
 
-  v14 = MEMORY[0x1E69E5928](v20);
+  v14 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v10->_endPointVIP forKey:@"_endPointVIP"];
-  [location[0] encodeObject:v10->_requestMethod forKey:@"_requestMethod"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_endPointVIP forKey:@"_endPointVIP"];
+  [location[0] encodeObject:selfCopy->_requestMethod forKey:@"_requestMethod"];
   v3 = location[0];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10->_headerSize];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:selfCopy->_headerSize];
   [v3 encodeObject:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   v5 = location[0];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10->_bodySize];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:selfCopy->_bodySize];
   [v5 encodeObject:? forKey:?];
   MEMORY[0x1E69E5920](v6);
   v7 = location[0];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:v10->_errorCode];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:selfCopy->_errorCode];
   [v7 encodeObject:? forKey:?];
   MEMORY[0x1E69E5920](v8);
-  [location[0] encodeObject:v10->_errorDomain forKey:@"_errorDomain"];
+  [location[0] encodeObject:selfCopy->_errorDomain forKey:@"_errorDomain"];
   objc_storeStrong(location, 0);
 }
 

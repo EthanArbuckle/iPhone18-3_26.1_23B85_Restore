@@ -1,20 +1,20 @@
 @interface HMIHomePersonManagerSettings
-- (BOOL)isEqual:(id)a3;
-- (HMIHomePersonManagerSettings)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMIHomePersonManagerSettings)initWithCoder:(id)coder;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIHomePersonManagerSettings
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -25,8 +25,8 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMIHomePersonManagerSettings *)self isFaceClassificationEnabled];
-    v8 = v7 ^ [v6 isFaceClassificationEnabled] ^ 1;
+    isFaceClassificationEnabled = [(HMIHomePersonManagerSettings *)self isFaceClassificationEnabled];
+    v8 = isFaceClassificationEnabled ^ [v6 isFaceClassificationEnabled] ^ 1;
   }
 
   else
@@ -37,24 +37,24 @@
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[HMIMutableHomePersonManagerSettings allocWithZone:?]];
   [(HMIHomePersonManagerSettings *)v4 setFaceClassificationEnabled:[(HMIHomePersonManagerSettings *)self isFaceClassificationEnabled]];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[HMIHomePersonManagerSettings isFaceClassificationEnabled](self forKey:{"isFaceClassificationEnabled"), @"HMPMS.fce"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[HMIHomePersonManagerSettings isFaceClassificationEnabled](self forKey:{"isFaceClassificationEnabled"), @"HMPMS.fce"}];
 }
 
-- (HMIHomePersonManagerSettings)initWithCoder:(id)a3
+- (HMIHomePersonManagerSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [v4 decodeBoolForKey:@"HMPMS.fce"];
+  v6 = [coderCopy decodeBoolForKey:@"HMPMS.fce"];
 
   [(HMIHomePersonManagerSettings *)v5 setFaceClassificationEnabled:v6];
   return v5;

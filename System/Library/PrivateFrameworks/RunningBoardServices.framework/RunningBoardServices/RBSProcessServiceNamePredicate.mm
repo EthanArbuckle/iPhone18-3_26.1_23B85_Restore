@@ -1,43 +1,43 @@
 @interface RBSProcessServiceNamePredicate
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessServiceNamePredicate
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = [(RBSProcessStringPredicate *)self identifier];
-  v6 = [v4 identity];
+  processCopy = process;
+  identifier = [(RBSProcessStringPredicate *)self identifier];
+  identity = [processCopy identity];
 
-  if ([v6 hasConsistentLaunchdJob])
+  if ([identity hasConsistentLaunchdJob])
   {
-    v7 = [v6 consistentLaunchdJobLabel];
+    consistentLaunchdJobLabel = [identity consistentLaunchdJobLabel];
   }
 
-  else if ([v6 isXPCService])
+  else if ([identity isXPCService])
   {
-    v7 = [v6 xpcServiceIdentifier];
+    consistentLaunchdJobLabel = [identity xpcServiceIdentifier];
   }
 
-  else if ([v6 isEmbeddedApplication])
+  else if ([identity isEmbeddedApplication])
   {
-    v7 = [v6 embeddedApplicationIdentifier];
+    consistentLaunchdJobLabel = [identity embeddedApplicationIdentifier];
   }
 
   else
   {
-    if (![v6 isApplication])
+    if (![identity isApplication])
     {
       v9 = 0;
       goto LABEL_10;
     }
 
-    v7 = [v6 applicationJobLabel];
+    consistentLaunchdJobLabel = [identity applicationJobLabel];
   }
 
-  v8 = v7;
-  v9 = [v5 isEqualToString:v7];
+  v8 = consistentLaunchdJobLabel;
+  v9 = [identifier isEqualToString:consistentLaunchdJobLabel];
 
 LABEL_10:
   return v9;

@@ -1,11 +1,11 @@
 @interface CUINamedVectorGlyph
-+ (CGColor)_derivedGradientColorFromColor:(CGColor *)a3 reverse:(BOOL *)a4;
-+ (CGGradient)_createAxialGradientWithColors:(id)a3 useSCurve:(BOOL)a4 height:(double)a5;
-+ (CGGradient)_createSCurveGradientWithStartColor:(CGColor *)a3 endColor:(CGColor *)a4 height:(double)a5;
-+ (CGPath)_createPathFromPoints:(id)a1 count:(SEL)a2;
++ (CGColor)_derivedGradientColorFromColor:(CGColor *)color reverse:(BOOL *)reverse;
++ (CGGradient)_createAxialGradientWithColors:(id)colors useSCurve:(BOOL)curve height:(double)height;
++ (CGGradient)_createSCurveGradientWithStartColor:(CGColor *)color endColor:(CGColor *)endColor height:(double)height;
++ (CGPath)_createPathFromPoints:(id)points count:(SEL)count;
 + (id)_colorStyleNames;
 + (id)_layerHierarchyStyleNames;
-+ (id)copyFromInstance:(id)a3;
++ (id)copyFromInstance:(id)instance;
 + (unsigned)_backgroundImageNamesAtom;
 + (unsigned)_drawReversesMotionGroupsAtom;
 + (unsigned)_hasImageFillsAtom;
@@ -15,106 +15,106 @@
 + (unsigned)_wiggleAngleAtom;
 + (unsigned)_wiggleStyleAtom;
 - (BOOL)_containsWideGamutColor;
-- (BOOL)canBeInterpolatedWith:(id)a3;
-- (BOOL)containsNamedColorStyle:(id)a3;
+- (BOOL)canBeInterpolatedWith:(id)with;
+- (BOOL)containsNamedColorStyle:(id)style;
 - (BOOL)containsNamedColorStyles;
 - (BOOL)hasImageFills;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInterpolatable;
-- (BOOL)isKnockoutEnabledForHierarchicalLayerAtIndex:(int64_t)a3 opacity:(double *)a4;
-- (BOOL)isKnockoutEnabledForMulticolorLayerAtIndex:(int64_t)a3 opacity:(double *)a4;
-- (CGImage)fillImageWithName:(id)a3;
+- (BOOL)isKnockoutEnabledForHierarchicalLayerAtIndex:(int64_t)index opacity:(double *)opacity;
+- (BOOL)isKnockoutEnabledForMulticolorLayerAtIndex:(int64_t)index opacity:(double *)opacity;
+- (CGImage)fillImageWithName:(id)name;
 - (CGImage)image;
-- (CGImage)imageWithColorResolver:(id)a3;
-- (CGImage)imageWithHierarchicalPrimaryColor:(CGColor *)a3;
-- (CGImage)imageWithHierarchyColorResolver:(id)a3;
-- (CGImage)imageWithPaletteColorResolver:(id)a3;
-- (CGImage)imageWithPaletteColors:(id)a3;
-- (CGImage)imageWithTintColor:(CGColor *)a3;
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4;
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 hierarchicalPrimaryColor:(CGColor *)a5;
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 withColorResolver:(id)a5;
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 withHierarchyColorResolver:(id)a5;
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 withPaletteColorResolver:(id)a5;
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 withPaletteColors:(id)a5;
-- (CGImage)rasterizeImageWithTintColor:(CGColor *)a3 usingScaleFactor:(double)a4 forTargetSize:(CGSize)a5;
-- (CGImageRef)_rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(double)a4 renderingMode:(double)a5 colorResolver:;
+- (CGImage)imageWithColorResolver:(id)resolver;
+- (CGImage)imageWithHierarchicalPrimaryColor:(CGColor *)color;
+- (CGImage)imageWithHierarchyColorResolver:(id)resolver;
+- (CGImage)imageWithPaletteColorResolver:(id)resolver;
+- (CGImage)imageWithPaletteColors:(id)colors;
+- (CGImage)imageWithTintColor:(CGColor *)color;
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size;
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size hierarchicalPrimaryColor:(CGColor *)color;
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size withColorResolver:(id)resolver;
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size withHierarchyColorResolver:(id)resolver;
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size withPaletteColorResolver:(id)resolver;
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size withPaletteColors:(id)colors;
+- (CGImage)rasterizeImageWithTintColor:(CGColor *)color usingScaleFactor:(double)factor forTargetSize:(CGSize)size;
+- (CGImageRef)_rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(double)size renderingMode:(double)mode colorResolver:;
 - (CGPath)CGPath;
-- (CGPath)_rawVisibleMonochromePath:(CGAffineTransform *)a3;
+- (CGPath)_rawVisibleMonochromePath:(CGAffineTransform *)path;
 - (CGPath)maskShape;
-- (CGPoint)_getMetricCenterInRendition:(id)a3;
-- (CGPoint)_interpolatedAnchorWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(CGPoint)a5 regular:(CGPoint)a6 black:(CGPoint)a7;
+- (CGPoint)_getMetricCenterInRendition:(id)rendition;
+- (CGPoint)_interpolatedAnchorWithWeight:(double)weight glyphSize:(double)size fromUltralight:(CGPoint)ultralight regular:(CGPoint)regular black:(CGPoint)black;
 - (CGPoint)metricCenter;
 - (CGPoint)rotationAnchor;
 - (CGRect)alignmentRect;
 - (CGRect)alignmentRectUnrounded;
 - (CGRect)contentBounds;
 - (CGRect)contentBoundsUnrounded;
-- (CGSVGAttributeMap)attributesForLayerNamed:(id)a3;
-- (CGSVGAttributeMap)attributesForLayerNamed:(id)a3 inRendition:(id)a4;
-- (CGSVGAttributeMap)styleForLayerName:(id)a3;
+- (CGSVGAttributeMap)attributesForLayerNamed:(id)named;
+- (CGSVGAttributeMap)attributesForLayerNamed:(id)named inRendition:(id)rendition;
+- (CGSVGAttributeMap)styleForLayerName:(id)name;
 - (CGSVGDocument)referenceGlyph;
-- (CGSVGNode)_getOutlineNodeForDocument:(CGSVGDocument *)a3;
-- (CGSize)_interpolatedCanvasSizeWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(CGSize)a5 regular:(CGSize)a6 black:(CGSize)a7;
+- (CGSVGNode)_getOutlineNodeForDocument:(CGSVGDocument *)document;
+- (CGSize)_interpolatedCanvasSizeWithWeight:(double)weight glyphSize:(double)size fromUltralight:(CGSize)ultralight regular:(CGSize)regular black:(CGSize)black;
 - (CGSize)referenceCanvasSize;
-- (CUINamedVectorGlyph)initWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 pointSize:(double)a6 continuousWeight:(double)a7 continuousSize:(double)a8 interpolatedFromRegular:(id)a9 ultralight:(id)a10 black:(id)a11 fromCatalog:(id)a12 themeRef:(unint64_t)a13 locale:(id)a14;
-- (CUINamedVectorGlyph)initWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 pointSize:(double)a6 fromCatalog:(id)a7 usingRenditionKey:(id)a8 fromTheme:(unint64_t)a9;
-- (CUINamedVectorGlyph)initWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 pointSize:(double)a6 fromCatalog:(id)a7 usingRenditionKey:(id)a8 themeRef:(unint64_t)a9 locale:(id)a10;
+- (CUINamedVectorGlyph)initWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom pointSize:(double)size continuousWeight:(double)weight continuousSize:(double)continuousSize interpolatedFromRegular:(id)regular ultralight:(id)self0 black:(id)self1 fromCatalog:(id)self2 themeRef:(unint64_t)self3 locale:(id)self4;
+- (CUINamedVectorGlyph)initWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom pointSize:(double)size fromCatalog:(id)catalog usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
+- (CUINamedVectorGlyph)initWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom pointSize:(double)size fromCatalog:(id)catalog usingRenditionKey:(id)key themeRef:(unint64_t)ref locale:(id)self0;
 - (__CFString)colorNameForRenderingStyle:(__CFString *)result;
-- (const)_fillColorOfStyle:(uint64_t)a1;
-- (double)_interpolatedAlignmentRectInsetsWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(double)a5 regular:(double)a6 black:(double)a7;
-- (double)_interpolatedBaselineOffsetWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(double)a5 regular:(double)a6 black:(double)a7;
-- (double)_interpolatedStrokeWidthWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(double)a5 regular:(double)a6 black:(double)a7;
+- (const)_fillColorOfStyle:(uint64_t)style;
+- (double)_interpolatedAlignmentRectInsetsWithWeight:(double)weight glyphSize:(double)size fromUltralight:(double)ultralight regular:(double)regular black:(double)black;
+- (double)_interpolatedBaselineOffsetWithWeight:(double)weight glyphSize:(double)size fromUltralight:(double)ultralight regular:(double)regular black:(double)black;
+- (double)_interpolatedStrokeWidthWithWeight:(double)weight glyphSize:(double)size fromUltralight:(double)ultralight regular:(double)regular black:(double)black;
 - (double)_requestedPointSizeRatio;
 - (double)baselineOffset;
 - (double)baselineOffsetUnrounded;
 - (double)capHeight;
 - (double)capHeightUnrounded;
 - (double)referencePointSize;
-- (double)strokeWidthForLayerNamed:(id)a3;
-- (double)strokeWidthForLayerNamed:(id)a3 inRendition:(id)a4;
+- (double)strokeWidthForLayerNamed:(id)named;
+- (double)strokeWidthForLayerNamed:(id)named inRendition:(id)rendition;
 - (float)templateVersion;
-- (id)_assumeConcatenatedPathForLayerNamed:(void *)a3 inRendition:;
+- (id)_assumeConcatenatedPathForLayerNamed:(void *)named inRendition:;
 - (id)_blackRendition;
-- (id)_createAttachmentStoreFromNodeNamed:(id)a3 inRendition:(id)a4;
-- (id)_createInterpolatedDrawAttachmentDataStoreWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(id)a5 regular:(id)a6 black:(id)a7;
+- (id)_createAttachmentStoreFromNodeNamed:(id)named inRendition:(id)rendition;
+- (id)_createInterpolatedDrawAttachmentDataStoreWithWeight:(double)weight glyphSize:(double)size fromUltralight:(id)ultralight regular:(id)regular black:(id)black;
 - (id)_createShapeGroupSubpaths;
-- (id)_getAnchor:(id)a3 inRendition:(id)a4;
-- (id)_interpolatedPathWithWeight:(double)a3 glyphSize:(double)a4 fromUltralightSmall:(id)a5 regularSmall:(id)a6 blackSmall:(id)a7;
-- (id)_layerNamesForRenderingMode:(int)a3 inRendition:(id)a4;
+- (id)_getAnchor:(id)anchor inRendition:(id)rendition;
+- (id)_interpolatedPathWithWeight:(double)weight glyphSize:(double)size fromUltralightSmall:(id)small regularSmall:(id)regularSmall blackSmall:(id)blackSmall;
+- (id)_layerNamesForRenderingMode:(int)mode inRendition:(id)rendition;
 - (id)_partialLocale;
 - (id)_performWithLockedRenditions:(id *)result;
 - (id)_regularRendition;
-- (id)_stylePrefixForRenderingMode:(int)a3;
+- (id)_stylePrefixForRenderingMode:(int)mode;
 - (id)_symbolDefaults;
 - (id)_ultralightRendition;
 - (id)containsNamedColorStyles;
-- (id)copyWithContinuousWeight:(double)a3 continuousSize:(double)a4;
-- (id)copyWithPointSize:(double)a3;
-- (id)copyWithPointSize:(double)a3 continuousWeight:(double)a4 continuousSize:(double)a5;
+- (id)copyWithContinuousWeight:(double)weight continuousSize:(double)size;
+- (id)copyWithPointSize:(double)size;
+- (id)copyWithPointSize:(double)size continuousWeight:(double)weight continuousSize:(double)continuousSize;
 - (id)debugDescription;
-- (id)edgeDefinitionTextureWithBufferAllocator:(id)a3;
+- (id)edgeDefinitionTextureWithBufferAllocator:(id)allocator;
 - (id)ensureBaseGlyph;
 - (id)fillImageNames;
-- (id)gradientTextureWithBufferAllocator:(id)a3;
-- (id)graphicVariantWithOptions:(id)a3;
+- (id)gradientTextureWithBufferAllocator:(id)allocator;
+- (id)graphicVariantWithOptions:(id)options;
 - (id)hierarchicalLayerThresholds;
 - (id)hierarchicalLayers;
 - (id)hierarchyLayers;
 - (id)hierarchyLevels;
-- (id)intWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 pointSize:(double)a6 weight:(int64_t)a7 glyphSize:(int64_t)a8 interpolatedFromRegular:(id)a9 ultralight:(id)a10 black:(id)a11 fromCatalog:(id)a12 themeRef:(unint64_t)a13;
+- (id)intWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom pointSize:(double)size weight:(int64_t)weight glyphSize:(int64_t)glyphSize interpolatedFromRegular:(id)regular ultralight:(id)self0 black:(id)self1 fromCatalog:(id)self2 themeRef:(unint64_t)self3;
 - (id)knownAvailableVectorSizes;
-- (id)makeLayerWithColorResolver:(id)a3;
+- (id)makeLayerWithColorResolver:(id)resolver;
 - (id)monochromeLayers;
 - (id)multicolorColorNames;
 - (id)multicolorLayerColorNames;
 - (id)multicolorLayerThresholds;
 - (id)multicolorLayers;
-- (id)newEncapsulatedGlyphWithConfiguration:(id)a3;
+- (id)newEncapsulatedGlyphWithConfiguration:(id)configuration;
 - (id)paletteLevels;
-- (id)pathForLayerNamed:(id)a3;
-- (id)resolveAutomaticWithConfig:(id)a3 adjustX:(BOOL)a4 adjustY:(BOOL)a5 sizeAdjustment:(int64_t)a6;
-- (id)resolveMetricCenterWithConfig:(id)a3 offsetX:(double)a4 offsetY:(double)a5 scaleFactor:(double)a6;
+- (id)pathForLayerNamed:(id)named;
+- (id)resolveAutomaticWithConfig:(id)config adjustX:(BOOL)x adjustY:(BOOL)y sizeAdjustment:(int64_t)adjustment;
+- (id)resolveMetricCenterWithConfig:(id)config offsetX:(double)x offsetY:(double)y scaleFactor:(double)factor;
 - (id)symbolDefaults;
 - (id)templateLayerThresholds;
 - (id)unsafeDrawAttachmentData;
@@ -123,37 +123,37 @@
 - (int64_t)preferredRenderingMode;
 - (int64_t)resolvedFillStyle;
 - (int64_t)resolvedVariableMode;
-- (uint64_t)_imageForRenderingMode:(uint64_t)a3 withColorResolver:;
-- (uint64_t)_prepareShapeNode:(uint64_t)a3 atNodeIndex:(void *)a4 forRenderingStyle:(uint64_t)a5 withColorResolver:;
-- (uint64_t)_setFillColor:(uint64_t)a3 ofStyle:;
+- (uint64_t)_imageForRenderingMode:(uint64_t)mode withColorResolver:;
+- (uint64_t)_prepareShapeNode:(uint64_t)node atNodeIndex:(void *)index forRenderingStyle:(uint64_t)style withColorResolver:;
+- (uint64_t)_setFillColor:(uint64_t)color ofStyle:;
 - (unint64_t)hash;
 - (unint64_t)numberOfHierarchyLayers;
 - (unint64_t)numberOfMulticolorLayers;
 - (unint64_t)numberOfTemplateLayers;
-- (void)_drawInContext:(void *)result primaryColor:(uint64_t)a2;
+- (void)_drawInContext:(void *)result primaryColor:(uint64_t)color;
 - (void)_drawInContext:(void *)result scaleFactor:targetSize:primaryColor:tertiaryColor:;
-- (void)_legacy_drawHierarchicalLayerNamed:(id)a3 inContext:(CGContext *)a4 scaleFactor:(double)a5 targetSize:(CGSize)a6 colorResolver:(id)a7;
-- (void)_legacy_drawMonochromeLayerNamed:(id)a3 inContext:(CGContext *)a4 scaleFactor:(double)a5 targetSize:(CGSize)a6 onFillColor:(CGColor *)a7 offFillColor:(CGColor *)a8;
-- (void)_legacy_drawMulticolorLayerNamed:(id)a3 inContext:(CGContext *)a4 scaleFactor:(double)a5 targetSize:(CGSize)a6 colorResolver:(id)a7;
-- (void)_lookupCatalogImageForIdiom:(int64_t)a3 locale:(id)a4;
-- (void)_setBlackInterpolationSource:(id)a3;
-- (void)_setCanUsePathConcatenation:(BOOL)a3;
-- (void)_setFlippable:(BOOL)a3;
-- (void)_setImage:(CGImage *)a3;
-- (void)_setUltralightInterpolationSource:(id)a3;
+- (void)_legacy_drawHierarchicalLayerNamed:(id)named inContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size colorResolver:(id)resolver;
+- (void)_legacy_drawMonochromeLayerNamed:(id)named inContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor;
+- (void)_legacy_drawMulticolorLayerNamed:(id)named inContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size colorResolver:(id)resolver;
+- (void)_lookupCatalogImageForIdiom:(int64_t)idiom locale:(id)locale;
+- (void)_setBlackInterpolationSource:(id)source;
+- (void)_setCanUsePathConcatenation:(BOOL)concatenation;
+- (void)_setFlippable:(BOOL)flippable;
+- (void)_setImage:(CGImage *)image;
+- (void)_setUltralightInterpolationSource:(id)source;
 - (void)_unsafeComputeIfNeededDrawAttachmentData;
 - (void)dealloc;
-- (void)drawHierarchyLayerAtIndex:(unint64_t)a3 inContext:(CGContext *)a4 withColorResolver:(id)a5;
-- (void)drawInContext:(CGContext *)a3;
-- (void)drawInContext:(CGContext *)a3 withPaletteColors:(id)a4;
-- (void)drawMulticolorLayerAtIndex:(unint64_t)a3 inContext:(CGContext *)a4 withColorResolver:(id)a5;
-- (void)drawPaletteLayerAtIndex:(unint64_t)a3 inContext:(CGContext *)a4 withColorResolver:(id)a5;
-- (void)drawWithTintColor:(CGColor *)a3 inContext:(CGContext *)a4;
+- (void)drawHierarchyLayerAtIndex:(unint64_t)index inContext:(CGContext *)context withColorResolver:(id)resolver;
+- (void)drawInContext:(CGContext *)context;
+- (void)drawInContext:(CGContext *)context withPaletteColors:(id)colors;
+- (void)drawMulticolorLayerAtIndex:(unint64_t)index inContext:(CGContext *)context withColorResolver:(id)resolver;
+- (void)drawPaletteLayerAtIndex:(unint64_t)index inContext:(CGContext *)context withColorResolver:(id)resolver;
+- (void)drawWithTintColor:(CGColor *)color inContext:(CGContext *)context;
 - (void)hierarchicalLayerGroup;
 - (void)monochromeLayerGroup;
 - (void)multicolorLayerGroup;
-- (void)setFontMatchingScaleFactor:(double)a3;
-- (void)setRepresentsOnDemandContent:(BOOL)a3;
+- (void)setFontMatchingScaleFactor:(double)factor;
+- (void)setRepresentsOnDemandContent:(BOOL)content;
 @end
 
 @implementation CUINamedVectorGlyph
@@ -245,13 +245,13 @@ LABEL_10:
 {
   if (self->_containsNamedColorStyles < 0)
   {
-    v3 = [(CUINamedVectorGlyph *)self _regularRendition];
-    [v3 vectorGlyphTemplateVersion];
+    _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
+    [_regularRendition vectorGlyphTemplateVersion];
     if (v4 >= 2.1)
     {
-      v5 = [v3 containsMulticolorLayers];
-      self->_containsNamedColorStyles = v5;
-      if ((v5 & 0x80000000) != 0)
+      containsMulticolorLayers = [_regularRendition containsMulticolorLayers];
+      self->_containsNamedColorStyles = containsMulticolorLayers;
+      if ((containsMulticolorLayers & 0x80000000) != 0)
       {
         [(CUINamedVectorGlyph *)&v7 containsNamedColorStyles];
       }
@@ -282,9 +282,9 @@ LABEL_10:
 
 - (id)knownAvailableVectorSizes
 {
-  v2 = [(CUINamedVectorGlyph *)self _regularRendition];
+  _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
 
-  return [v2 vectorGlyphAvailableSizes];
+  return [_regularRendition vectorGlyphAvailableSizes];
 }
 
 - (double)_requestedPointSizeRatio
@@ -565,9 +565,9 @@ float64x2_t __36__CUINamedVectorGlyph_alignmentRect__block_invoke(uint64_t a1, v
 
 - (double)referencePointSize
 {
-  v2 = [(CUINamedVectorGlyph *)self _regularRendition];
+  _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
 
-  [v2 vectorGlyphReferencePointSize];
+  [_regularRendition vectorGlyphReferencePointSize];
   return result;
 }
 
@@ -592,9 +592,9 @@ float64x2_t __36__CUINamedVectorGlyph_alignmentRect__block_invoke(uint64_t a1, v
 
   else
   {
-    v19 = [(CUINamedVectorGlyph *)self _regularRendition];
+    _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
 
-    [v19 canvasSize];
+    [_regularRendition canvasSize];
   }
 
   result.height = v18;
@@ -618,9 +618,9 @@ float64x2_t __36__CUINamedVectorGlyph_alignmentRect__block_invoke(uint64_t a1, v
 
 - (float)templateVersion
 {
-  v2 = [(CUINamedVectorGlyph *)self _regularRendition];
+  _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
 
-  [v2 vectorGlyphTemplateVersion];
+  [_regularRendition vectorGlyphTemplateVersion];
   return result;
 }
 
@@ -637,7 +637,7 @@ float64x2_t __36__CUINamedVectorGlyph_alignmentRect__block_invoke(uint64_t a1, v
       CGSVGDocumentGetRootNode();
       if (v4 >= 5.0 && CGSVGNodeFindChildWithStringIdentifier())
       {
-        v5 = [OUTLINED_FUNCTION_26() _createShapeGroupSubpaths];
+        _createShapeGroupSubpaths = [OUTLINED_FUNCTION_26() _createShapeGroupSubpaths];
         v2[19] = OUTLINED_FUNCTION_20([v2 _stylePrefixForRenderingMode:1]);
       }
 
@@ -955,7 +955,7 @@ void __39__CUINamedVectorGlyph_monochromeLayers__block_invoke(uint64_t a1)
       CGSVGDocumentGetRootNode();
       if (v3 >= 5.0 && CGSVGNodeFindChildWithStringIdentifier())
       {
-        v4 = [OUTLINED_FUNCTION_26() _createShapeGroupSubpaths];
+        _createShapeGroupSubpaths = [OUTLINED_FUNCTION_26() _createShapeGroupSubpaths];
         v1[20] = OUTLINED_FUNCTION_20([v1 _stylePrefixForRenderingMode:2]);
 
         return v1[20];
@@ -1408,7 +1408,7 @@ uint64_t __52__CUINamedVectorGlyph__drawReversesMotionGroupsAtom__block_invoke()
       CGSVGDocumentGetRootNode();
       if (v3 >= 5.0 && CGSVGNodeFindChildWithStringIdentifier())
       {
-        v4 = [OUTLINED_FUNCTION_26() _createShapeGroupSubpaths];
+        _createShapeGroupSubpaths = [OUTLINED_FUNCTION_26() _createShapeGroupSubpaths];
         v1[21] = OUTLINED_FUNCTION_20([v1 _stylePrefixForRenderingMode:3]);
 
         return v1[21];
@@ -1490,13 +1490,13 @@ void *__48__CUINamedVectorGlyph__layerHierarchyStyleNames__block_invoke()
 
 - (id)debugDescription
 {
-  v3 = [(CUINamedVectorGlyph *)self glyphWeight];
+  glyphWeight = [(CUINamedVectorGlyph *)self glyphWeight];
   v4 = 0;
-  if (v3 > 4)
+  if (glyphWeight > 4)
   {
-    if (v3 <= 6)
+    if (glyphWeight <= 6)
     {
-      if (v3 == 5)
+      if (glyphWeight == 5)
       {
         v4 = @"Medium";
       }
@@ -1509,7 +1509,7 @@ void *__48__CUINamedVectorGlyph__layerHierarchyStyleNames__block_invoke()
 
     else
     {
-      switch(v3)
+      switch(glyphWeight)
       {
         case 7:
           v4 = @"Bold";
@@ -1524,11 +1524,11 @@ void *__48__CUINamedVectorGlyph__layerHierarchyStyleNames__block_invoke()
     }
   }
 
-  else if (v3 <= 1)
+  else if (glyphWeight <= 1)
   {
-    if (v3)
+    if (glyphWeight)
     {
-      if (v3 == 1)
+      if (glyphWeight == 1)
       {
         v4 = @"Ultralight";
       }
@@ -1541,12 +1541,12 @@ void *__48__CUINamedVectorGlyph__layerHierarchyStyleNames__block_invoke()
     }
   }
 
-  else if (v3 == 2)
+  else if (glyphWeight == 2)
   {
     v4 = @"Thin";
   }
 
-  else if (v3 == 3)
+  else if (glyphWeight == 3)
   {
     v4 = @"Light";
   }
@@ -1556,24 +1556,24 @@ void *__48__CUINamedVectorGlyph__layerHierarchyStyleNames__block_invoke()
     v4 = @"Regular";
   }
 
-  v6 = [(CUINamedVectorGlyph *)self glyphSize];
+  glyphSize = [(CUINamedVectorGlyph *)self glyphSize];
   v7 = 0;
-  if (v6 > 1)
+  if (glyphSize > 1)
   {
-    if (v6 == 2)
+    if (glyphSize == 2)
     {
       v7 = @"Medium";
     }
 
-    else if (v6 == 3)
+    else if (glyphSize == 3)
     {
       v7 = @"Large";
     }
   }
 
-  else if (v6)
+  else if (glyphSize)
   {
-    if (v6 == 1)
+    if (glyphSize == 1)
     {
       v7 = @"Small";
     }
@@ -1588,23 +1588,23 @@ void *__48__CUINamedVectorGlyph__layerHierarchyStyleNames__block_invoke()
   [(CUINamedVectorGlyph *)self alignmentRect];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v21);
   v10 = objc_opt_class();
-  v11 = [(CUINamedLookup *)self name];
+  name = [(CUINamedLookup *)self name];
   lookedupScaleFactor = self->_lookedupScaleFactor;
   pointSize = self->_pointSize;
   [(CUINamedVectorGlyph *)self baselineOffset];
-  v15 = [NSString stringWithFormat:@"<%@: %p> '%@' @%dx, %.0f-points, %@ weight, %@ size, baseline offset = %.2f, alignment rect = %@", v10, self, v11, lookedupScaleFactor, *&pointSize, v4, v7, v14, DictionaryRepresentation];
+  dictionaryRepresentation = [NSString stringWithFormat:@"<%@: %p> '%@' @%dx, %.0f-points, %@ weight, %@ size, baseline offset = %.2f, alignment rect = %@", v10, self, name, lookedupScaleFactor, *&pointSize, v4, v7, v14, DictionaryRepresentation];
   [(CUINamedVectorGlyph *)self variableMinValue];
   if (v16 != INFINITY)
   {
     [(CUINamedVectorGlyph *)self variableMinValue];
-    v15 = [(NSString *)v15 stringByAppendingFormat:@", variable min = %f", v17];
+    dictionaryRepresentation = [(NSString *)dictionaryRepresentation stringByAppendingFormat:@", variable min = %f", v17];
   }
 
   [(CUINamedVectorGlyph *)self variableMaxValue];
   if (v18 != INFINITY)
   {
     [(CUINamedVectorGlyph *)self variableMaxValue];
-    v15 = [(NSString *)v15 stringByAppendingFormat:@", variable max = %f", v19];
+    dictionaryRepresentation = [(NSString *)dictionaryRepresentation stringByAppendingFormat:@", variable max = %f", v19];
   }
 
   if (DictionaryRepresentation)
@@ -1612,7 +1612,7 @@ void *__48__CUINamedVectorGlyph__layerHierarchyStyleNames__block_invoke()
     CFRelease(DictionaryRepresentation);
   }
 
-  return v15;
+  return dictionaryRepresentation;
 }
 
 - (int64_t)glyphWeight
@@ -1684,9 +1684,9 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CUINamedVectorGlyph)initWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 pointSize:(double)a6 continuousWeight:(double)a7 continuousSize:(double)a8 interpolatedFromRegular:(id)a9 ultralight:(id)a10 black:(id)a11 fromCatalog:(id)a12 themeRef:(unint64_t)a13 locale:(id)a14
+- (CUINamedVectorGlyph)initWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom pointSize:(double)size continuousWeight:(double)weight continuousSize:(double)continuousSize interpolatedFromRegular:(id)regular ultralight:(id)self0 black:(id)self1 fromCatalog:(id)self2 themeRef:(unint64_t)self3 locale:(id)self4
 {
-  if (!a9 || !a10 || !a11)
+  if (!regular || !ultralight || !black)
   {
 
     return 0;
@@ -1694,14 +1694,14 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
 
   v27.receiver = self;
   v27.super_class = CUINamedVectorGlyph;
-  v23 = [(CUINamedLookup *)&v27 initWithName:a3 usingRenditionKey:a9 fromTheme:a13];
+  v23 = [(CUINamedLookup *)&v27 initWithName:name usingRenditionKey:regular fromTheme:ref];
   if (!v23)
   {
     return v23;
   }
 
-  v23->_ultralightInterpolationSource = [[CUINamedLookup alloc] initWithName:a3 usingRenditionKey:a10 fromTheme:a13];
-  v23->_blackInterpolationSource = [[CUINamedLookup alloc] initWithName:a3 usingRenditionKey:a11 fromTheme:a13];
+  v23->_ultralightInterpolationSource = [[CUINamedLookup alloc] initWithName:name usingRenditionKey:ultralight fromTheme:ref];
+  v23->_blackInterpolationSource = [[CUINamedLookup alloc] initWithName:name usingRenditionKey:black fromTheme:ref];
   if (![(CUIThemeRendition *)[(CUINamedLookup *)v23 _rendition] isInterpolatable]|| ![(CUIThemeRendition *)[(CUINamedLookup *)v23->_ultralightInterpolationSource _rendition] isInterpolatable]|| ![(CUIThemeRendition *)[(CUINamedLookup *)v23->_blackInterpolationSource _rendition] isInterpolatable])
   {
 
@@ -1709,19 +1709,19 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
   }
 
   *(v23 + 112) |= 4u;
-  v23->_pointSize = a6;
-  v23->_lookedupScaleFactor = a4;
-  v23->_lookedupLocale = a14;
-  objc_storeWeak(&v23->_catalog, a12);
+  v23->_pointSize = size;
+  v23->_lookedupScaleFactor = factor;
+  v23->_lookedupLocale = locale;
+  objc_storeWeak(&v23->_catalog, catalog);
   v23->_fontMatchingScaleFactor = 1.0;
   v23->_containsNamedColorStyles = -1;
-  v23->_glyphWeight = a7;
-  v23->_glyphSize = a8;
+  v23->_glyphWeight = weight;
+  v23->_glyphSize = continuousSize;
   v23->_variableMinValue = INFINITY;
   v23->_variableMaxValue = INFINITY;
   v23->_variableMode = 0;
   v23->_fillStyle = 0;
-  [(CUINamedVectorGlyph *)v23 _lookupCatalogImageForIdiom:a5 locale:a14];
+  [(CUINamedVectorGlyph *)v23 _lookupCatalogImageForIdiom:idiom locale:locale];
   if ([(CUIThemeRendition *)[(CUINamedLookup *)v23 _rendition] isFlippable])
   {
     v24 = 2;
@@ -1734,7 +1734,7 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
 
   *(v23 + 112) = *(v23 + 112) & 0xFD | v24;
   v23->_layoutDirection = [(CUIRenditionKey *)[(CUINamedLookup *)v23 renditionKey] themeDirection];
-  if ((*(v23 + 112) & 2) == 0 && [_LookupStructuredThemeProvider(a13 v25)])
+  if ((*(v23 + 112) & 2) == 0 && [_LookupStructuredThemeProvider(ref v25)])
   {
     *(v23 + 112) |= 2u;
     v23->_layoutDirection = 5;
@@ -1743,65 +1743,65 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
   return v23;
 }
 
-- (id)intWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 pointSize:(double)a6 weight:(int64_t)a7 glyphSize:(int64_t)a8 interpolatedFromRegular:(id)a9 ultralight:(id)a10 black:(id)a11 fromCatalog:(id)a12 themeRef:(unint64_t)a13
+- (id)intWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom pointSize:(double)size weight:(int64_t)weight glyphSize:(int64_t)glyphSize interpolatedFromRegular:(id)regular ultralight:(id)self0 black:(id)self1 fromCatalog:(id)self2 themeRef:(unint64_t)self3
 {
-  if (a7 > 9)
+  if (weight > 9)
   {
     v13 = -0.8;
   }
 
   else
   {
-    v13 = dbl_18E020CE8[a7];
+    v13 = dbl_18E020CE8[weight];
   }
 
   v14 = 1.0;
-  if (a8 <= 3)
+  if (glyphSize <= 3)
   {
-    v14 = dbl_18E020D38[a8];
+    v14 = dbl_18E020D38[glyphSize];
   }
 
-  return [(CUINamedVectorGlyph *)self initWithName:a3 scaleFactor:a5 deviceIdiom:a9 pointSize:a10 continuousWeight:a11 continuousSize:a12 interpolatedFromRegular:a4 ultralight:a6 black:v13 fromCatalog:v14 themeRef:?];
+  return [(CUINamedVectorGlyph *)self initWithName:name scaleFactor:idiom deviceIdiom:regular pointSize:ultralight continuousWeight:black continuousSize:catalog interpolatedFromRegular:factor ultralight:size black:v13 fromCatalog:v14 themeRef:?];
 }
 
-- (CUINamedVectorGlyph)initWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 pointSize:(double)a6 fromCatalog:(id)a7 usingRenditionKey:(id)a8 fromTheme:(unint64_t)a9
+- (CUINamedVectorGlyph)initWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom pointSize:(double)size fromCatalog:(id)catalog usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
-  v17 = [(CUINamedVectorGlyph *)self _partialLocale];
+  _partialLocale = [(CUINamedVectorGlyph *)self _partialLocale];
 
-  return [(CUINamedVectorGlyph *)self initWithName:a3 scaleFactor:a5 deviceIdiom:a7 pointSize:a8 fromCatalog:a9 usingRenditionKey:v17 themeRef:a4 locale:a6];
+  return [(CUINamedVectorGlyph *)self initWithName:name scaleFactor:idiom deviceIdiom:catalog pointSize:key fromCatalog:theme usingRenditionKey:_partialLocale themeRef:factor locale:size];
 }
 
-- (CUINamedVectorGlyph)initWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 pointSize:(double)a6 fromCatalog:(id)a7 usingRenditionKey:(id)a8 themeRef:(unint64_t)a9 locale:(id)a10
+- (CUINamedVectorGlyph)initWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom pointSize:(double)size fromCatalog:(id)catalog usingRenditionKey:(id)key themeRef:(unint64_t)ref locale:(id)self0
 {
   v29.receiver = self;
   v29.super_class = CUINamedVectorGlyph;
-  v18 = [(CUINamedLookup *)&v29 initWithName:a3 usingRenditionKey:a8 fromTheme:a9];
+  v18 = [(CUINamedLookup *)&v29 initWithName:name usingRenditionKey:key fromTheme:ref];
   v19 = v18;
   if (v18)
   {
-    v18->_pointSize = a6;
-    v18->_lookedupScaleFactor = a4;
-    v18->_lookedupLocale = a10;
-    objc_storeWeak(&v19->_catalog, a7);
+    v18->_pointSize = size;
+    v18->_lookedupScaleFactor = factor;
+    v18->_lookedupLocale = locale;
+    objc_storeWeak(&v19->_catalog, catalog);
     v19->_fontMatchingScaleFactor = 1.0;
     v19->_containsNamedColorStyles = -1;
-    v20 = [a8 themeGlyphWeight];
-    if (v20 > 9)
+    themeGlyphWeight = [key themeGlyphWeight];
+    if (themeGlyphWeight > 9)
     {
       v21 = -0.8;
     }
 
     else
     {
-      v21 = dbl_18E020CE8[v20];
+      v21 = dbl_18E020CE8[themeGlyphWeight];
     }
 
     v19->_glyphWeight = v21;
-    v22 = [a8 themeGlyphSize];
+    themeGlyphSize = [key themeGlyphSize];
     v23 = 1.0;
-    if (v22 <= 3)
+    if (themeGlyphSize <= 3)
     {
-      v23 = dbl_18E020D38[v22];
+      v23 = dbl_18E020D38[themeGlyphSize];
     }
 
     v19->_glyphSize = v23;
@@ -1809,8 +1809,8 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
     v19->_variableMaxValue = INFINITY;
     v19->_variableMode = 0;
     v19->_fillStyle = 0;
-    v24 = [(CUINamedLookup *)v19 _rendition];
-    if ([(CUIThemeRendition *)v24 isInterpolatable])
+    _rendition = [(CUINamedLookup *)v19 _rendition];
+    if ([(CUIThemeRendition *)_rendition isInterpolatable])
     {
       v25 = 4;
     }
@@ -1821,8 +1821,8 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
     }
 
     *(v19 + 112) = *(v19 + 112) & 0xFB | v25;
-    [(CUINamedVectorGlyph *)v19 _lookupCatalogImageForIdiom:a5 locale:a10];
-    if ([(CUIThemeRendition *)v24 isFlippable])
+    [(CUINamedVectorGlyph *)v19 _lookupCatalogImageForIdiom:idiom locale:locale];
+    if ([(CUIThemeRendition *)_rendition isFlippable])
     {
       v26 = 2;
     }
@@ -1834,7 +1834,7 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
 
     *(v19 + 112) = *(v19 + 112) & 0xFD | v26;
     v19->_layoutDirection = [(CUIRenditionKey *)[(CUINamedLookup *)v19 renditionKey] themeDirection];
-    if ((*(v19 + 112) & 2) == 0 && [_LookupStructuredThemeProvider(a9 v27)])
+    if ((*(v19 + 112) & 2) == 0 && [_LookupStructuredThemeProvider(ref v27)])
     {
       *(v19 + 112) |= 2u;
       v19->_layoutDirection = 5;
@@ -1844,58 +1844,58 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
   return v19;
 }
 
-+ (id)copyFromInstance:(id)a3
++ (id)copyFromInstance:(id)instance
 {
-  v4 = -[CUINamedLookup initWithName:usingRenditionKey:fromTheme:]([CUINamedVectorGlyph alloc], "initWithName:usingRenditionKey:fromTheme:", [a3 name], objc_msgSend(a3, "renditionKey"), objc_msgSend(a3, "storageRef"));
+  v4 = -[CUINamedLookup initWithName:usingRenditionKey:fromTheme:]([CUINamedVectorGlyph alloc], "initWithName:usingRenditionKey:fromTheme:", [instance name], objc_msgSend(instance, "renditionKey"), objc_msgSend(instance, "storageRef"));
   if (v4)
   {
-    if (*(a3 + 17))
+    if (*(instance + 17))
     {
-      v4->_ultralightInterpolationSource = -[CUINamedLookup initWithName:usingRenditionKey:fromTheme:]([CUINamedLookup alloc], "initWithName:usingRenditionKey:fromTheme:", [*(a3 + 17) name], objc_msgSend(*(a3 + 17), "renditionKey"), objc_msgSend(*(a3 + 17), "storageRef"));
+      v4->_ultralightInterpolationSource = -[CUINamedLookup initWithName:usingRenditionKey:fromTheme:]([CUINamedLookup alloc], "initWithName:usingRenditionKey:fromTheme:", [*(instance + 17) name], objc_msgSend(*(instance + 17), "renditionKey"), objc_msgSend(*(instance + 17), "storageRef"));
     }
 
-    if (*(a3 + 18))
+    if (*(instance + 18))
     {
-      v4->_blackInterpolationSource = -[CUINamedLookup initWithName:usingRenditionKey:fromTheme:]([CUINamedLookup alloc], "initWithName:usingRenditionKey:fromTheme:", [*(a3 + 18) name], objc_msgSend(*(a3 + 18), "renditionKey"), objc_msgSend(*(a3 + 18), "storageRef"));
+      v4->_blackInterpolationSource = -[CUINamedLookup initWithName:usingRenditionKey:fromTheme:]([CUINamedLookup alloc], "initWithName:usingRenditionKey:fromTheme:", [*(instance + 18) name], objc_msgSend(*(instance + 18), "renditionKey"), objc_msgSend(*(instance + 18), "storageRef"));
     }
 
-    [a3 pointSize];
+    [instance pointSize];
     [(CUINamedVectorGlyph *)v4 _setPointSize:?];
-    [a3 scale];
+    [instance scale];
     [(CUINamedVectorGlyph *)v4 _setScale:?];
-    -[CUINamedVectorGlyph _setCatalog:](v4, "_setCatalog:", [a3 _catalog]);
-    [a3 fontMatchingScaleFactor];
+    -[CUINamedVectorGlyph _setCatalog:](v4, "_setCatalog:", [instance _catalog]);
+    [instance fontMatchingScaleFactor];
     [(CUINamedVectorGlyph *)v4 setFontMatchingScaleFactor:?];
-    [a3 glyphContinuousWeight];
+    [instance glyphContinuousWeight];
     [(CUINamedVectorGlyph *)v4 _setGlyphWeight:?];
-    [a3 glyphContinuousSize];
+    [instance glyphContinuousSize];
     [(CUINamedVectorGlyph *)v4 _setGlyphSize:?];
-    -[CUINamedVectorGlyph _setFlippable:](v4, "_setFlippable:", [a3 isFlippable]);
-    -[CUINamedVectorGlyph _setLayoutDirection:](v4, "_setLayoutDirection:", [a3 layoutDirection]);
-    -[CUINamedVectorGlyph _setCanUsePathConcatenation:](v4, "_setCanUsePathConcatenation:", [a3 _canUsePathConcatenation]);
-    [(CUINamedVectorGlyph *)v4 _setContainsNamedColorStyles:*(a3 + 57)];
-    v5 = *(a3 + 10);
+    -[CUINamedVectorGlyph _setFlippable:](v4, "_setFlippable:", [instance isFlippable]);
+    -[CUINamedVectorGlyph _setLayoutDirection:](v4, "_setLayoutDirection:", [instance layoutDirection]);
+    -[CUINamedVectorGlyph _setCanUsePathConcatenation:](v4, "_setCanUsePathConcatenation:", [instance _canUsePathConcatenation]);
+    [(CUINamedVectorGlyph *)v4 _setContainsNamedColorStyles:*(instance + 57)];
+    v5 = *(instance + 10);
     if (v5)
     {
       v4->_cgImageRef = CGImageRetain(v5);
-      v4->_lookedupScaleFactor = *(a3 + 8);
+      v4->_lookedupScaleFactor = *(instance + 8);
     }
 
-    v4->_lookedupLocale = *(a3 + 9);
-    [a3 variableMinValue];
+    v4->_lookedupLocale = *(instance + 9);
+    [instance variableMinValue];
     [(CUINamedVectorGlyph *)v4 setVariableMinValue:?];
-    [a3 variableMaxValue];
+    [instance variableMaxValue];
     [(CUINamedVectorGlyph *)v4 setVariableMaxValue:?];
-    -[CUINamedVectorGlyph setVariableMode:](v4, "setVariableMode:", [a3 variableMode]);
-    -[CUINamedVectorGlyph setFillStyle:](v4, "setFillStyle:", [a3 fillStyle]);
+    -[CUINamedVectorGlyph setVariableMode:](v4, "setVariableMode:", [instance variableMode]);
+    -[CUINamedVectorGlyph setFillStyle:](v4, "setFillStyle:", [instance fillStyle]);
   }
 
   return v4;
 }
 
-- (id)copyWithPointSize:(double)a3
+- (id)copyWithPointSize:(double)size
 {
-  if (a3 <= 0.0)
+  if (size <= 0.0)
   {
     return 0;
   }
@@ -1904,31 +1904,31 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    [v4 _setPointSize:a3];
+    [v4 _setPointSize:size];
     [v5 _setImage:0];
   }
 
   return v5;
 }
 
-- (id)copyWithContinuousWeight:(double)a3 continuousSize:(double)a4
+- (id)copyWithContinuousWeight:(double)weight continuousSize:(double)size
 {
   [(CUINamedVectorGlyph *)self pointSize];
 
   return [CUINamedVectorGlyph copyWithPointSize:"copyWithPointSize:continuousWeight:continuousSize:" continuousWeight:? continuousSize:?];
 }
 
-- (id)copyWithPointSize:(double)a3 continuousWeight:(double)a4 continuousSize:(double)a5
+- (id)copyWithPointSize:(double)size continuousWeight:(double)weight continuousSize:(double)continuousSize
 {
-  if (a3 <= 0.0)
+  if (size <= 0.0)
   {
     return 0;
   }
 
-  if (self->_glyphWeight == a4 && self->_glyphSize == a5)
+  if (self->_glyphWeight == weight && self->_glyphSize == continuousSize)
   {
 
-    return [(CUINamedVectorGlyph *)self copyWithPointSize:a3];
+    return [(CUINamedVectorGlyph *)self copyWithPointSize:size];
   }
 
   Weak = objc_loadWeak(&self->_catalog);
@@ -1938,9 +1938,9 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
   }
 
   v11 = Weak;
-  v12 = [(CUINamedLookup *)self name];
+  name = [(CUINamedLookup *)self name];
   [(CUINamedVectorGlyph *)self scale];
-  v14 = [v11 namedVectorGlyphWithName:v12 scaleFactor:-[CUINamedLookup idiom](self deviceIdiom:"idiom") layoutDirection:-[CUINamedVectorGlyph layoutDirection](self glyphContinuousSize:"layoutDirection") glyphContinuousWeight:-[CUINamedLookup appearance](self glyphPointSize:"appearance") appearanceName:-[CUINamedVectorGlyph requestedLocale](self locale:{"requestedLocale"), v13, a5, a4, a3}];
+  v14 = [v11 namedVectorGlyphWithName:name scaleFactor:-[CUINamedLookup idiom](self deviceIdiom:"idiom") layoutDirection:-[CUINamedVectorGlyph layoutDirection](self glyphContinuousSize:"layoutDirection") glyphContinuousWeight:-[CUINamedLookup appearance](self glyphPointSize:"appearance") appearanceName:-[CUINamedVectorGlyph requestedLocale](self locale:{"requestedLocale"), v13, continuousSize, weight, size}];
   if (!v14)
   {
     return 0;
@@ -1957,14 +1957,14 @@ void __39__CUINamedVectorGlyph_multicolorLayers__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (void)_lookupCatalogImageForIdiom:(int64_t)a3 locale:(id)a4
+- (void)_lookupCatalogImageForIdiom:(int64_t)idiom locale:(id)locale
 {
   if (!self->_cgImageRef && objc_loadWeak(&self->_catalog))
   {
-    v22 = [(CUINamedLookup *)self name];
-    v21 = [(CUINamedVectorGlyph *)self layoutDirection];
-    v7 = [(CUINamedVectorGlyph *)self knownAvailableVectorSizes];
-    v8 = [v7 count];
+    name = [(CUINamedLookup *)self name];
+    layoutDirection = [(CUINamedVectorGlyph *)self layoutDirection];
+    knownAvailableVectorSizes = [(CUINamedVectorGlyph *)self knownAvailableVectorSizes];
+    v8 = [knownAvailableVectorSizes count];
     v9 = v8;
     v10 = 0;
     while (*&kCoreThemeContinuousGlyphWeights[v10] != self->_glyphWeight)
@@ -1993,7 +1993,7 @@ LABEL_9:
       v20 = kCoreThemeDiscreteGlyphSizes[v12];
       while (1)
       {
-        [objc_msgSend(v7 objectAtIndex:{v13), "floatValue"}];
+        [objc_msgSend(knownAvailableVectorSizes objectAtIndex:{v13), "floatValue"}];
         if (self->_pointSize == v14)
         {
           break;
@@ -2015,7 +2015,7 @@ LABEL_9:
       v23[5] = v13;
       v23[6] = v20;
       v23[7] = v11;
-      v17 = [Weak imageWithName:v22 scaleFactor:a3 deviceIdiom:v21 layoutDirection:a4 locale:v23 adjustRenditionKeyWithBlock:lookedupScaleFactor];
+      v17 = [Weak imageWithName:name scaleFactor:idiom deviceIdiom:layoutDirection layoutDirection:locale locale:v23 adjustRenditionKeyWithBlock:lookedupScaleFactor];
       v18 = CGImageRetain([v17 image]);
       self->_cgImageRef = v18;
       if (v18)
@@ -2037,42 +2037,42 @@ id __58__CUINamedVectorGlyph__lookupCatalogImageForIdiom_locale___block_invoke(u
   return [a2 setThemeGlyphWeight:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v7.receiver = self;
   v7.super_class = CUINamedVectorGlyph;
   v5 = [(CUINamedLookup *)&v7 isEqual:?];
   if (v5)
   {
-    LOBYTE(v5) = vabdd_f64(self->_pointSize, *(a3 + 7)) < 2.22044605e-16 && vabdd_f64(self->_lookedupScaleFactor, *(a3 + 8)) < 2.22044605e-16 && self->_glyphSize == *(a3 + 15) && self->_glyphWeight == *(a3 + 16) && self->_layoutDirection == *(a3 + 13) && self->_variableMinValue == *(a3 + 26) && self->_variableMaxValue == *(a3 + 27) && self->_variableMode == *(a3 + 29) && self->_fillStyle == *(a3 + 30);
+    LOBYTE(v5) = vabdd_f64(self->_pointSize, *(equal + 7)) < 2.22044605e-16 && vabdd_f64(self->_lookedupScaleFactor, *(equal + 8)) < 2.22044605e-16 && self->_glyphSize == *(equal + 15) && self->_glyphWeight == *(equal + 16) && self->_layoutDirection == *(equal + 13) && self->_variableMinValue == *(equal + 26) && self->_variableMaxValue == *(equal + 27) && self->_variableMode == *(equal + 29) && self->_fillStyle == *(equal + 30);
   }
 
   return v5;
 }
 
-- (void)_setUltralightInterpolationSource:(id)a3
+- (void)_setUltralightInterpolationSource:(id)source
 {
-  if (self->_ultralightInterpolationSource != a3)
+  if (self->_ultralightInterpolationSource != source)
   {
-    v5 = a3;
+    sourceCopy = source;
 
-    self->_ultralightInterpolationSource = a3;
+    self->_ultralightInterpolationSource = source;
   }
 }
 
-- (void)_setBlackInterpolationSource:(id)a3
+- (void)_setBlackInterpolationSource:(id)source
 {
-  if (self->_blackInterpolationSource != a3)
+  if (self->_blackInterpolationSource != source)
   {
-    v5 = a3;
+    sourceCopy = source;
 
-    self->_blackInterpolationSource = a3;
+    self->_blackInterpolationSource = source;
   }
 }
 
-- (void)_setCanUsePathConcatenation:(BOOL)a3
+- (void)_setCanUsePathConcatenation:(BOOL)concatenation
 {
-  if (a3)
+  if (concatenation)
   {
     v3 = 4;
   }
@@ -2085,76 +2085,76 @@ id __58__CUINamedVectorGlyph__lookupCatalogImageForIdiom_locale___block_invoke(u
   *(self + 112) = *(self + 112) & 0xFB | v3;
 }
 
-- (void)_setImage:(CGImage *)a3
+- (void)_setImage:(CGImage *)image
 {
-  if (self->_cgImageRef != a3)
+  if (self->_cgImageRef != image)
   {
-    CGImageRetain(a3);
+    CGImageRetain(image);
     CGImageRelease(self->_cgImageRef);
-    self->_cgImageRef = a3;
+    self->_cgImageRef = image;
   }
 }
 
-- (void)setRepresentsOnDemandContent:(BOOL)a3
+- (void)setRepresentsOnDemandContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v5.receiver = self;
   v5.super_class = CUINamedVectorGlyph;
   [(CUINamedLookup *)&v5 setRepresentsOnDemandContent:?];
-  [(CUINamedLookup *)self->_ultralightInterpolationSource setRepresentsOnDemandContent:v3];
-  [(CUINamedLookup *)self->_blackInterpolationSource setRepresentsOnDemandContent:v3];
+  [(CUINamedLookup *)self->_ultralightInterpolationSource setRepresentsOnDemandContent:contentCopy];
+  [(CUINamedLookup *)self->_blackInterpolationSource setRepresentsOnDemandContent:contentCopy];
 }
 
 - (CGSVGDocument)referenceGlyph
 {
-  v2 = [(CUINamedVectorGlyph *)self _regularRendition];
+  _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
 
-  return [v2 svgDocument];
+  return [_regularRendition svgDocument];
 }
 
 - (BOOL)isInterpolatable
 {
-  v2 = [(CUINamedVectorGlyph *)self _regularRendition];
+  _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
 
-  return [v2 isInterpolatable];
+  return [_regularRendition isInterpolatable];
 }
 
-- (BOOL)canBeInterpolatedWith:(id)a3
+- (BOOL)canBeInterpolatedWith:(id)with
 {
-  if (self == a3)
+  if (self == with)
   {
-    LOBYTE(v6) = 1;
+    LOBYTE(isInterpolatable) = 1;
   }
 
   else
   {
     objc_opt_self();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (Weak = objc_loadWeak(&self->_catalog), Weak == [a3 _catalog]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (Weak = objc_loadWeak(&self->_catalog), Weak == [with _catalog]))
     {
-      v6 = -[NSString isEqual:](-[CUINamedLookup name](self, "name"), "isEqual:", [a3 name]);
-      if (v6)
+      isInterpolatable = -[NSString isEqual:](-[CUINamedLookup name](self, "name"), "isEqual:", [with name]);
+      if (isInterpolatable)
       {
-        v6 = [(CUINamedVectorGlyph *)self isInterpolatable];
-        if (v6)
+        isInterpolatable = [(CUINamedVectorGlyph *)self isInterpolatable];
+        if (isInterpolatable)
         {
 
-          LOBYTE(v6) = [a3 isInterpolatable];
+          LOBYTE(isInterpolatable) = [with isInterpolatable];
         }
       }
     }
 
     else
     {
-      LOBYTE(v6) = 0;
+      LOBYTE(isInterpolatable) = 0;
     }
   }
 
-  return v6;
+  return isInterpolatable;
 }
 
-- (void)_setFlippable:(BOOL)a3
+- (void)_setFlippable:(BOOL)flippable
 {
-  if (a3)
+  if (flippable)
   {
     v3 = 2;
   }
@@ -2251,11 +2251,11 @@ double __45__CUINamedVectorGlyph_contentBoundsUnrounded__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setFontMatchingScaleFactor:(double)a3
+- (void)setFontMatchingScaleFactor:(double)factor
 {
-  if (self->_fontMatchingScaleFactor != a3)
+  if (self->_fontMatchingScaleFactor != factor)
   {
-    self->_fontMatchingScaleFactor = a3;
+    self->_fontMatchingScaleFactor = factor;
     CGImageRelease(self->_cgImageRef);
     self->_cgImageRef = 0;
   }
@@ -2290,25 +2290,25 @@ uint64_t __46__CUINamedVectorGlyph__containsWideGamutColor__block_invoke(uint64_
   return result;
 }
 
-- (id)_getAnchor:(id)a3 inRendition:(id)a4
+- (id)_getAnchor:(id)anchor inRendition:(id)rendition
 {
-  [a4 svgDocument];
+  [rendition svgDocument];
   CGSVGDocumentGetRootNode();
   result = CGSVGNodeFindChildWithStringIdentifier();
   if (result)
   {
     v6 = CGPointZero;
     CGSVGShapeNodeGetCircleGeometry();
-    [a4 canvasSize];
+    [rendition canvasSize];
     return [NSValue valueWithPoint:v6.x];
   }
 
   return result;
 }
 
-- (id)_createAttachmentStoreFromNodeNamed:(id)a3 inRendition:(id)a4
+- (id)_createAttachmentStoreFromNodeNamed:(id)named inRendition:(id)rendition
 {
-  [a4 svgDocument];
+  [rendition svgDocument];
   CGSVGDocumentGetRootNode();
   ChildWithStringIdentifier = CGSVGNodeFindChildWithStringIdentifier();
   if (ChildWithStringIdentifier)
@@ -2318,13 +2318,13 @@ uint64_t __46__CUINamedVectorGlyph__containsWideGamutColor__block_invoke(uint64_
     if (v7)
     {
       v8 = v7;
-      [a4 canvasSize];
+      [rendition canvasSize];
       __B[1] = v9;
       v14 = -v10;
       __B[0] = -1.0;
-      v11 = [(CUIVectorGlyphManagedPointArray *)[(CUIVectorGlyphDrawAttachmentDataStore *)v6 anchors] rawArray];
-      vDSP_vsaddD(v11 + 1, 2, &v14, v11 + 1, 2, v8);
-      vDSP_vsmulD(v11 + 1, 2, __B, v11 + 1, 2, v8);
+      rawArray = [(CUIVectorGlyphManagedPointArray *)[(CUIVectorGlyphDrawAttachmentDataStore *)v6 anchors] rawArray];
+      vDSP_vsaddD(rawArray + 1, 2, &v14, rawArray + 1, 2, v8);
+      vDSP_vsmulD(rawArray + 1, 2, __B, rawArray + 1, 2, v8);
     }
 
     return v6;
@@ -2337,17 +2337,17 @@ uint64_t __46__CUINamedVectorGlyph__containsWideGamutColor__block_invoke(uint64_
   }
 }
 
-- (CGPoint)_getMetricCenterInRendition:(id)a3
+- (CGPoint)_getMetricCenterInRendition:(id)rendition
 {
-  [a3 vectorGlyphAlignmentRectInsets];
+  [rendition vectorGlyphAlignmentRectInsets];
   v5 = v4;
   v7 = v6;
-  [a3 canvasSize];
+  [rendition canvasSize];
   v9 = v8;
-  [a3 vectorGlyphCapLine];
+  [rendition vectorGlyphCapLine];
   v10 = (v7 + v5 + v9) * 0.5 - v5;
   v12 = v11 * 0.5;
-  [a3 vectorGlyphBaseline];
+  [rendition vectorGlyphBaseline];
   v14 = v12 + v13;
   v15 = v10;
   result.y = v14;
@@ -2369,15 +2369,15 @@ uint64_t __46__CUINamedVectorGlyph__containsWideGamutColor__block_invoke(uint64_
 {
   if (!self->_drawAttachmentData)
   {
-    v3 = [(CUINamedVectorGlyph *)self _regularRendition];
-    v4 = [(CUINamedVectorGlyph *)self _ultralightRendition];
-    v5 = [(CUINamedVectorGlyph *)self _blackRendition];
-    v6 = [(CUINamedVectorGlyph *)self _createAttachmentStoreFromNodeNamed:@"da" inRendition:v3];
+    _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
+    _ultralightRendition = [(CUINamedVectorGlyph *)self _ultralightRendition];
+    _blackRendition = [(CUINamedVectorGlyph *)self _blackRendition];
+    v6 = [(CUINamedVectorGlyph *)self _createAttachmentStoreFromNodeNamed:@"da" inRendition:_regularRendition];
     v7 = v6;
-    if (v4 && v5)
+    if (_ultralightRendition && _blackRendition)
     {
-      v8 = [(CUINamedVectorGlyph *)self _createAttachmentStoreFromNodeNamed:@"da" inRendition:v4];
-      v12 = [(CUINamedVectorGlyph *)self _createAttachmentStoreFromNodeNamed:@"da" inRendition:v5];
+      v8 = [(CUINamedVectorGlyph *)self _createAttachmentStoreFromNodeNamed:@"da" inRendition:_ultralightRendition];
+      v12 = [(CUINamedVectorGlyph *)self _createAttachmentStoreFromNodeNamed:@"da" inRendition:_blackRendition];
       [(CUINamedVectorGlyph *)self glyphContinuousWeight];
       v10 = v9;
       [(CUINamedVectorGlyph *)self glyphContinuousSize];
@@ -2399,33 +2399,33 @@ uint64_t __46__CUINamedVectorGlyph__containsWideGamutColor__block_invoke(uint64_
     return v3;
   }
 
-  v4 = [(CUINamedVectorGlyph *)self symbolDefaults];
+  symbolDefaults = [(CUINamedVectorGlyph *)self symbolDefaults];
   v5 = CUIVectorGlyphDefaultsKeyFillImageNames;
 
-  return [v4 objectForKeyedSubscript:v5];
+  return [symbolDefaults objectForKeyedSubscript:v5];
 }
 
-- (CGImage)fillImageWithName:(id)a3
+- (CGImage)fillImageWithName:(id)name
 {
-  v5 = [(CUINamedVectorGlyph *)self fillImageNames];
-  v6 = v5;
-  if (!a3)
+  fillImageNames = [(CUINamedVectorGlyph *)self fillImageNames];
+  v6 = fillImageNames;
+  if (!name)
   {
-    a3 = [v5 anyObject];
+    name = [fillImageNames anyObject];
   }
 
-  if (!-[CUINamedVectorGlyph hasImageFills](self, "hasImageFills") || ![v6 containsObject:a3] || !objc_loadWeak(&self->_catalog))
+  if (!-[CUINamedVectorGlyph hasImageFills](self, "hasImageFills") || ![v6 containsObject:name] || !objc_loadWeak(&self->_catalog))
   {
     return 0;
   }
 
   lookedupScaleFactor = self->_lookedupScaleFactor;
-  v8 = [(CUINamedLookup *)self idiom];
-  v9 = [(CUINamedLookup *)self localization];
-  v10 = [(CUINamedVectorGlyph *)self layoutDirection];
-  if (v9)
+  idiom = [(CUINamedLookup *)self idiom];
+  localization = [(CUINamedLookup *)self localization];
+  layoutDirection = [(CUINamedVectorGlyph *)self layoutDirection];
+  if (localization)
   {
-    v9 = +[NSLocale localeWithLocaleIdentifier:](NSLocale, "localeWithLocaleIdentifier:", [objc_loadWeak(&self->_catalog) _nameForLocalizationIdentifier:v9]);
+    localization = +[NSLocale localeWithLocaleIdentifier:](NSLocale, "localeWithLocaleIdentifier:", [objc_loadWeak(&self->_catalog) _nameForLocalizationIdentifier:localization]);
   }
 
   v14[0] = _NSConcreteStackBlock;
@@ -2433,7 +2433,7 @@ uint64_t __46__CUINamedVectorGlyph__containsWideGamutColor__block_invoke(uint64_
   v14[2] = __41__CUINamedVectorGlyph_fillImageWithName___block_invoke;
   v14[3] = &unk_1E7249990;
   v14[4] = self;
-  v11 = [objc_loadWeak(&self->_catalog) imageWithName:a3 scaleFactor:v8 deviceIdiom:v10 layoutDirection:v9 locale:v14 adjustRenditionKeyWithBlock:lookedupScaleFactor];
+  v11 = [objc_loadWeak(&self->_catalog) imageWithName:name scaleFactor:idiom deviceIdiom:layoutDirection layoutDirection:localization locale:v14 adjustRenditionKeyWithBlock:lookedupScaleFactor];
   if (!v11)
   {
     return 0;
@@ -2453,8 +2453,8 @@ id __41__CUINamedVectorGlyph_fillImageWithName___block_invoke(uint64_t a1, void 
 
 - (BOOL)hasImageFills
 {
-  v2 = [(CUINamedVectorGlyph *)self symbolDefaults];
-  v3 = [v2 objectForKeyedSubscript:CUIVectorGlyphDefaultsKeyHasImageFills];
+  symbolDefaults = [(CUINamedVectorGlyph *)self symbolDefaults];
+  v3 = [symbolDefaults objectForKeyedSubscript:CUIVectorGlyphDefaultsKeyHasImageFills];
   if (v3)
   {
 
@@ -2582,9 +2582,9 @@ id __46__CUINamedVectorGlyph_templateLayerThresholds__block_invoke_2(uint64_t a1
   return [v2 addObject:v3];
 }
 
-- (uint64_t)_imageForRenderingMode:(uint64_t)a3 withColorResolver:
+- (uint64_t)_imageForRenderingMode:(uint64_t)mode withColorResolver:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -2598,16 +2598,16 @@ id __46__CUINamedVectorGlyph_templateLayerThresholds__block_invoke_2(uint64_t a1
   v5[2] = __64__CUINamedVectorGlyph__imageForRenderingMode_withColorResolver___block_invoke;
   v5[3] = &unk_1E7249D60;
   v6 = a2;
-  v5[4] = a1;
-  v5[5] = a3;
+  v5[4] = self;
+  v5[5] = mode;
   v5[6] = &v7;
-  [(CUINamedVectorGlyph *)a1 _performWithLockedRenditions:v5];
+  [(CUINamedVectorGlyph *)self _performWithLockedRenditions:v5];
   v3 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v3;
 }
 
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size
 {
   v8 = 0;
   v9 = &v8;
@@ -2619,8 +2619,8 @@ id __46__CUINamedVectorGlyph_templateLayerThresholds__block_invoke_2(uint64_t a1
   v6[3] = &unk_1E7249A50;
   v6[4] = self;
   v6[5] = &v8;
-  *&v6[6] = a3;
-  v7 = a4;
+  *&v6[6] = factor;
+  sizeCopy = size;
   [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v6];
   v4 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -2634,17 +2634,17 @@ CGImageRef __68__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSiz
   return result;
 }
 
-- (CGImage)imageWithTintColor:(CGColor *)a3
+- (CGImage)imageWithTintColor:(CGColor *)color
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __42__CUINamedVectorGlyph_imageWithTintColor___block_invoke;
   v4[3] = &__block_descriptor_40_e74___CGColor__56__0__NSString_8__CGColor__16Q24Q32q40__CUIVectorGlyphLayer_48l;
-  v4[4] = a3;
+  v4[4] = color;
   return [(CUINamedVectorGlyph *)&self->super.super.isa _imageForRenderingMode:v4 withColorResolver:?];
 }
 
-- (CGImage)rasterizeImageWithTintColor:(CGColor *)a3 usingScaleFactor:(double)a4 forTargetSize:(CGSize)a5
+- (CGImage)rasterizeImageWithTintColor:(CGColor *)color usingScaleFactor:(double)factor forTargetSize:(CGSize)size
 {
   v10 = 0;
   v11 = &v10;
@@ -2656,25 +2656,25 @@ CGImageRef __68__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSiz
   v7[3] = &unk_1E7249AC0;
   v7[4] = self;
   v7[5] = &v10;
-  *&v7[6] = a4;
-  v8 = a5;
-  v9 = a3;
+  *&v7[6] = factor;
+  sizeCopy = size;
+  colorCopy = color;
   [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v7];
   v5 = v11[3];
   _Block_object_dispose(&v10, 8);
   return v5;
 }
 
-- (void)_drawInContext:(void *)result primaryColor:(uint64_t)a2
+- (void)_drawInContext:(void *)result primaryColor:(uint64_t)color
 {
-  if (result && a2)
+  if (result && color)
   {
     v2 = result;
     [result referenceCanvasSize];
     [v2 scale];
     [v2 _requestedPointSizeRatio];
-    v3 = [v2 name];
-    _CUILog(3, "[CUINamedVectorGlyph (%@)]", v4, v5, v6, v7, v8, v9, v3);
+    name = [v2 name];
+    _CUILog(3, "[CUINamedVectorGlyph (%@)]", v4, v5, v6, v7, v8, v9, name);
 
     return [CUINamedVectorGlyph _drawInContext:v2 scaleFactor:? targetSize:? primaryColor:? tertiaryColor:?];
   }
@@ -2781,7 +2781,7 @@ void *__29__CUINamedVectorGlyph_CGPath__block_invoke(void *result)
   return result;
 }
 
-- (CGPath)_rawVisibleMonochromePath:(CGAffineTransform *)a3
+- (CGPath)_rawVisibleMonochromePath:(CGAffineTransform *)path
 {
   v6 = 0;
   v7 = &v6;
@@ -2793,7 +2793,7 @@ void *__29__CUINamedVectorGlyph_CGPath__block_invoke(void *result)
   v5[3] = &unk_1E7249B10;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = path;
   [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v5];
   Mutable = v7[3];
   if (!Mutable)
@@ -2805,7 +2805,7 @@ void *__29__CUINamedVectorGlyph_CGPath__block_invoke(void *result)
   return Mutable;
 }
 
-+ (CGPath)_createPathFromPoints:(id)a1 count:(SEL)a2
++ (CGPath)_createPathFromPoints:(id)points count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -3217,13 +3217,13 @@ id __48__CUINamedVectorGlyph_multicolorLayerThresholds__block_invoke_2(uint64_t 
   return [v2 addObject:v3];
 }
 
-- (CGImage)imageWithColorResolver:(id)a3
+- (CGImage)imageWithColorResolver:(id)resolver
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __46__CUINamedVectorGlyph_imageWithColorResolver___block_invoke;
   v4[3] = &unk_1E7249B60;
-  v4[4] = a3;
+  v4[4] = resolver;
   return [(CUINamedVectorGlyph *)&self->super.super.isa _imageForRenderingMode:v4 withColorResolver:?];
 }
 
@@ -3238,7 +3238,7 @@ uint64_t __46__CUINamedVectorGlyph_imageWithColorResolver___block_invoke(uint64_
   return result;
 }
 
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 withColorResolver:(id)a5
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size withColorResolver:(id)resolver
 {
   v9 = 0;
   v10 = &v9;
@@ -3248,10 +3248,10 @@ uint64_t __46__CUINamedVectorGlyph_imageWithColorResolver___block_invoke(uint64_
   v7[1] = 3221225472;
   v7[2] = __86__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_withColorResolver___block_invoke;
   v7[3] = &unk_1E7249B88;
-  v7[5] = a5;
+  v7[5] = resolver;
   v7[6] = &v9;
-  *&v7[7] = a3;
-  v8 = a4;
+  *&v7[7] = factor;
+  sizeCopy = size;
   v7[4] = self;
   [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v7];
   v5 = v10[3];
@@ -3270,9 +3270,9 @@ uint64_t __86__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_
   return result;
 }
 
-- (id)makeLayerWithColorResolver:(id)a3
+- (id)makeLayerWithColorResolver:(id)resolver
 {
-  v3 = [(CUINamedVectorGlyph *)self imageWithColorResolver:a3];
+  v3 = [(CUINamedVectorGlyph *)self imageWithColorResolver:resolver];
   if (!v3)
   {
     return 0;
@@ -3305,7 +3305,7 @@ id __47__CUINamedVectorGlyph_containsNamedColorStyles__block_invoke(uint64_t a1,
   return result;
 }
 
-- (BOOL)containsNamedColorStyle:(id)a3
+- (BOOL)containsNamedColorStyle:(id)style
 {
   v9 = 0;
   v10 = &v9;
@@ -3319,7 +3319,7 @@ id __47__CUINamedVectorGlyph_containsNamedColorStyles__block_invoke(uint64_t a1,
     v8[2] = __47__CUINamedVectorGlyph_containsNamedColorStyle___block_invoke;
     v8[3] = &unk_1E7249C00;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = style;
     v8[6] = &v9;
     [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v8];
   }
@@ -3389,7 +3389,7 @@ id __47__CUINamedVectorGlyph_containsNamedColorStyle___block_invoke(uint64_t a1,
 
 - (id)multicolorColorNames
 {
-  v1 = OUTLINED_FUNCTION_1(a1);
+  v1 = OUTLINED_FUNCTION_1(self);
   v2 = OUTLINED_FUNCTION_30(v1, COERCE_DOUBLE(3221225472));
   return OUTLINED_FUNCTION_13(v2, v3, v4, v5);
 }
@@ -3444,7 +3444,7 @@ id __43__CUINamedVectorGlyph_multicolorColorNames__block_invoke(uint64_t a1, uin
 
 - (id)multicolorLayerColorNames
 {
-  v1 = OUTLINED_FUNCTION_1(a1);
+  v1 = OUTLINED_FUNCTION_1(self);
   v2 = OUTLINED_FUNCTION_30(v1, COERCE_DOUBLE(3221225472));
   return OUTLINED_FUNCTION_13(v2, v3, v4, v5);
 }
@@ -3497,7 +3497,7 @@ id __48__CUINamedVectorGlyph_multicolorLayerColorNames__block_invoke(uint64_t a1
   return result;
 }
 
-- (BOOL)isKnockoutEnabledForMulticolorLayerAtIndex:(int64_t)a3 opacity:(double *)a4
+- (BOOL)isKnockoutEnabledForMulticolorLayerAtIndex:(int64_t)index opacity:(double *)opacity
 {
   v11 = 0;
   v12 = &v11;
@@ -3512,8 +3512,8 @@ id __48__CUINamedVectorGlyph_multicolorLayerColorNames__block_invoke(uint64_t a1
     v10[3] = &unk_1E7249C50;
     v10[4] = self;
     v10[5] = &v11;
-    v10[6] = a3;
-    v10[7] = a4;
+    v10[6] = index;
+    v10[7] = opacity;
     [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v10];
   }
 
@@ -3664,25 +3664,25 @@ id __50__CUINamedVectorGlyph_hierarchicalLayerThresholds__block_invoke_2(uint64_
 
 - (id)hierarchyLayers
 {
-  v1 = OUTLINED_FUNCTION_1(a1);
+  v1 = OUTLINED_FUNCTION_1(self);
   v2 = OUTLINED_FUNCTION_30(v1, COERCE_DOUBLE(3221225472));
   return OUTLINED_FUNCTION_13(v2, v3, v4, v5);
 }
 
 - (id)hierarchyLevels
 {
-  v1 = OUTLINED_FUNCTION_1(a1);
+  v1 = OUTLINED_FUNCTION_1(self);
   v2 = OUTLINED_FUNCTION_30(v1, COERCE_DOUBLE(3221225472));
   return OUTLINED_FUNCTION_13(v2, v3, v4, v5);
 }
 
-- (CGImage)imageWithHierarchyColorResolver:(id)a3
+- (CGImage)imageWithHierarchyColorResolver:(id)resolver
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __55__CUINamedVectorGlyph_imageWithHierarchyColorResolver___block_invoke;
   v4[3] = &unk_1E7249B60;
-  v4[4] = a3;
+  v4[4] = resolver;
   return [(CUINamedVectorGlyph *)&self->super.super.isa _imageForRenderingMode:v4 withColorResolver:?];
 }
 
@@ -3697,7 +3697,7 @@ uint64_t __55__CUINamedVectorGlyph_imageWithHierarchyColorResolver___block_invok
   return result;
 }
 
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 withHierarchyColorResolver:(id)a5
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size withHierarchyColorResolver:(id)resolver
 {
   v9 = 0;
   v10 = &v9;
@@ -3707,10 +3707,10 @@ uint64_t __55__CUINamedVectorGlyph_imageWithHierarchyColorResolver___block_invok
   v7[1] = 3221225472;
   v7[2] = __95__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_withHierarchyColorResolver___block_invoke;
   v7[3] = &unk_1E7249B88;
-  v7[5] = a5;
+  v7[5] = resolver;
   v7[6] = &v9;
-  *&v7[7] = a3;
-  v8 = a4;
+  *&v7[7] = factor;
+  sizeCopy = size;
   v7[4] = self;
   [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v7];
   v5 = v10[3];
@@ -3729,17 +3729,17 @@ uint64_t __95__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_
   return result;
 }
 
-- (CGImage)imageWithHierarchicalPrimaryColor:(CGColor *)a3
+- (CGImage)imageWithHierarchicalPrimaryColor:(CGColor *)color
 {
-  if (a3)
+  if (color)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = __57__CUINamedVectorGlyph_imageWithHierarchicalPrimaryColor___block_invoke;
     v5[3] = &__block_descriptor_56_e21___CGColor__24__0Q8Q16l;
-    v5[4] = a3;
+    v5[4] = color;
     v5[5] = 4;
-    v5[6] = CGColorGetAlpha(a3);
+    v5[6] = CGColorGetAlpha(color);
     return [(CUINamedVectorGlyph *)self imageWithHierarchyColorResolver:v5];
   }
 
@@ -3773,20 +3773,20 @@ CFTypeRef __57__CUINamedVectorGlyph_imageWithHierarchicalPrimaryColor___block_in
   return CFAutorelease(CopyWithAlpha);
 }
 
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 hierarchicalPrimaryColor:(CGColor *)a5
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size hierarchicalPrimaryColor:(CGColor *)color
 {
-  if (a5)
+  if (color)
   {
-    height = a4.height;
-    width = a4.width;
+    height = size.height;
+    width = size.width;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_hierarchicalPrimaryColor___block_invoke;
     v10[3] = &__block_descriptor_56_e21___CGColor__24__0Q8Q16l;
-    v10[4] = a5;
+    v10[4] = color;
     v10[5] = 4;
-    v10[6] = CGColorGetAlpha(a5);
-    return [(CUINamedVectorGlyph *)self rasterizeImageUsingScaleFactor:v10 forTargetSize:a3 withHierarchyColorResolver:width, height];
+    v10[6] = CGColorGetAlpha(color);
+    return [(CUINamedVectorGlyph *)self rasterizeImageUsingScaleFactor:v10 forTargetSize:factor withHierarchyColorResolver:width, height];
   }
 
   else
@@ -3819,15 +3819,15 @@ CFTypeRef __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize
   return CFAutorelease(CopyWithAlpha);
 }
 
-- (BOOL)isKnockoutEnabledForHierarchicalLayerAtIndex:(int64_t)a3 opacity:(double *)a4
+- (BOOL)isKnockoutEnabledForHierarchicalLayerAtIndex:(int64_t)index opacity:(double *)opacity
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (a4)
+  if (opacity)
   {
-    *a4 = 1.0;
+    *opacity = 1.0;
   }
 
   [(CUINamedVectorGlyph *)self templateVersion];
@@ -3839,8 +3839,8 @@ CFTypeRef __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize
     v10[3] = &unk_1E7249C50;
     v10[4] = self;
     v10[5] = &v11;
-    v10[6] = a3;
-    v10[7] = a4;
+    v10[6] = index;
+    v10[7] = opacity;
     [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v10];
   }
 
@@ -3851,7 +3851,7 @@ CFTypeRef __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize
 
 - (id)paletteLevels
 {
-  v1 = OUTLINED_FUNCTION_1(a1);
+  v1 = OUTLINED_FUNCTION_1(self);
   v2 = OUTLINED_FUNCTION_30(v1, COERCE_DOUBLE(3221225472));
   return OUTLINED_FUNCTION_13(v2, v3, v4, v5);
 }
@@ -3905,13 +3905,13 @@ id __36__CUINamedVectorGlyph_paletteLevels__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (CGImage)imageWithPaletteColorResolver:(id)a3
+- (CGImage)imageWithPaletteColorResolver:(id)resolver
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __53__CUINamedVectorGlyph_imageWithPaletteColorResolver___block_invoke;
   v4[3] = &unk_1E7249B60;
-  v4[4] = a3;
+  v4[4] = resolver;
   return [(CUINamedVectorGlyph *)&self->super.super.isa _imageForRenderingMode:v4 withColorResolver:?];
 }
 
@@ -3926,7 +3926,7 @@ uint64_t __53__CUINamedVectorGlyph_imageWithPaletteColorResolver___block_invoke(
   return result;
 }
 
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 withPaletteColorResolver:(id)a5
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size withPaletteColorResolver:(id)resolver
 {
   v9 = 0;
   v10 = &v9;
@@ -3936,10 +3936,10 @@ uint64_t __53__CUINamedVectorGlyph_imageWithPaletteColorResolver___block_invoke(
   v7[1] = 3221225472;
   v7[2] = __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_withPaletteColorResolver___block_invoke;
   v7[3] = &unk_1E7249B88;
-  v7[5] = a5;
+  v7[5] = resolver;
   v7[6] = &v9;
-  *&v7[7] = a3;
-  v8 = a4;
+  *&v7[7] = factor;
+  sizeCopy = size;
   v7[4] = self;
   [(CUINamedVectorGlyph *)&self->super.super.isa _performWithLockedRenditions:v7];
   v5 = v10[3];
@@ -3958,15 +3958,15 @@ uint64_t __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_
   return result;
 }
 
-- (CGImage)imageWithPaletteColors:(id)a3
+- (CGImage)imageWithPaletteColors:(id)colors
 {
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (a3)
+  if (colors)
   {
-    v5 = [a3 count];
+    v5 = [colors count];
     if (v5 == 1)
     {
       [(CUINamedVectorGlyph *)self referenceCanvasSize];
@@ -3979,7 +3979,7 @@ uint64_t __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_
       v17[0] = _NSConcreteStackBlock;
       v17[2] = __46__CUINamedVectorGlyph_imageWithPaletteColors___block_invoke;
       v17[3] = &unk_1E7249CC0;
-      v17[5] = a3;
+      v17[5] = colors;
       v17[6] = &v18;
       *&v17[7] = v11 * v12;
       v17[8] = v7;
@@ -3994,7 +3994,7 @@ uint64_t __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_
       v16[1] = 3221225472;
       v16[2] = __46__CUINamedVectorGlyph_imageWithPaletteColors___block_invoke_3;
       v16[3] = &unk_1E7249CE8;
-      v16[4] = a3;
+      v16[4] = colors;
       v16[5] = v5;
       v13 = [(CUINamedVectorGlyph *)self imageWithPaletteColorResolver:v16];
       v19[3] = v13;
@@ -4026,26 +4026,26 @@ id __46__CUINamedVectorGlyph_imageWithPaletteColors___block_invoke_3(uint64_t a1
   }
 }
 
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4 withPaletteColors:(id)a5
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size withPaletteColors:(id)colors
 {
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (a5)
+  if (colors)
   {
-    height = a4.height;
-    width = a4.width;
-    v10 = [a5 count];
+    height = size.height;
+    width = size.width;
+    v10 = [colors count];
     if (v10 == 1)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = __86__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_withPaletteColors___block_invoke;
       v15[3] = &unk_1E7249CC0;
-      v15[5] = a5;
+      v15[5] = colors;
       v15[6] = &v16;
-      *&v15[7] = a3;
+      *&v15[7] = factor;
       *&v15[8] = width;
       *&v15[9] = height;
       v15[4] = self;
@@ -4058,10 +4058,10 @@ id __46__CUINamedVectorGlyph_imageWithPaletteColors___block_invoke_3(uint64_t a1
       v14[1] = 3221225472;
       v14[2] = __86__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_withPaletteColors___block_invoke_3;
       v14[3] = &unk_1E7249CE8;
-      v14[4] = a5;
+      v14[4] = colors;
       v14[5] = v10;
-      v11 = [(CUINamedVectorGlyph *)self rasterizeImageUsingScaleFactor:v14 forTargetSize:a3 withPaletteColorResolver:width, height];
-      v17[3] = v11;
+      height = [(CUINamedVectorGlyph *)self rasterizeImageUsingScaleFactor:v14 forTargetSize:factor withPaletteColorResolver:width, height];
+      v17[3] = height;
     }
   }
 
@@ -4090,29 +4090,29 @@ id __86__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_withPa
   }
 }
 
-- (void)drawInContext:(CGContext *)a3 withPaletteColors:(id)a4
+- (void)drawInContext:(CGContext *)context withPaletteColors:(id)colors
 {
-  if (a4)
+  if (colors)
   {
-    v7 = [(CUINamedVectorGlyph *)self numberOfHierarchyLayers];
-    v8 = [a4 count];
+    numberOfHierarchyLayers = [(CUINamedVectorGlyph *)self numberOfHierarchyLayers];
+    v8 = [colors count];
     if (v8 == 1)
     {
-      [(CUINamedVectorGlyph *)self drawInContext:v12 withPaletteColors:a3, a4];
+      [(CUINamedVectorGlyph *)self drawInContext:v12 withPaletteColors:context, colors];
     }
 
-    else if (v7)
+    else if (numberOfHierarchyLayers)
     {
       v9 = v8;
-      for (i = 0; i != v7; ++i)
+      for (i = 0; i != numberOfHierarchyLayers; ++i)
       {
         v11[0] = _NSConcreteStackBlock;
         v11[1] = 3221225472;
         v11[2] = __55__CUINamedVectorGlyph_drawInContext_withPaletteColors___block_invoke_2;
         v11[3] = &unk_1E7249CE8;
-        v11[4] = a4;
+        v11[4] = colors;
         v11[5] = v9;
-        [(CUINamedVectorGlyph *)self drawPaletteLayerAtIndex:i inContext:a3 withColorResolver:v11];
+        [(CUINamedVectorGlyph *)self drawPaletteLayerAtIndex:i inContext:context withColorResolver:v11];
       }
     }
   }
@@ -4138,14 +4138,14 @@ id __55__CUINamedVectorGlyph_drawInContext_withPaletteColors___block_invoke_2(ui
   }
 }
 
-- (id)graphicVariantWithOptions:(id)a3
+- (id)graphicVariantWithOptions:(id)options
 {
-  if (([a3 _areValid] & 1) == 0)
+  if (([options _areValid] & 1) == 0)
   {
     [CUINamedVectorGlyph graphicVariantWithOptions:];
   }
 
-  v5 = [[_CUIGraphicVariantVectorGlyph alloc] _initWithBaseGlyph:self options:a3];
+  v5 = [[_CUIGraphicVariantVectorGlyph alloc] _initWithBaseGlyph:self options:options];
 
   return v5;
 }
@@ -4343,10 +4343,10 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
   return v10(v6, 0, SRGBBlack, a2, a3, v8, v9);
 }
 
-- (const)_fillColorOfStyle:(uint64_t)a1
+- (const)_fillColorOfStyle:(uint64_t)style
 {
   v2 = 0;
-  if (a1 && a2)
+  if (style && a2)
   {
     if (CGSVGAttributeMapGetAttribute())
     {
@@ -4372,9 +4372,9 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
   return v2;
 }
 
-- (uint64_t)_setFillColor:(uint64_t)a3 ofStyle:
+- (uint64_t)_setFillColor:(uint64_t)color ofStyle:
 {
-  if (result && a3)
+  if (result && color)
   {
     if (a2)
     {
@@ -4404,32 +4404,32 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
     else
     {
 
-      return _CGSVGAttributeMapRemoveAttribute(a3, 18);
+      return _CGSVGAttributeMapRemoveAttribute(color, 18);
     }
   }
 
   return result;
 }
 
-- (void)_legacy_drawMonochromeLayerNamed:(id)a3 inContext:(CGContext *)a4 scaleFactor:(double)a5 targetSize:(CGSize)a6 onFillColor:(CGColor *)a7 offFillColor:(CGColor *)a8
+- (void)_legacy_drawMonochromeLayerNamed:(id)named inContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor
 {
-  v10 = a6.width * a5;
-  v11 = a6.height * a5;
-  [(CUINamedVectorGlyph *)self referenceCanvasSize:a3];
+  v10 = size.width * factor;
+  v11 = size.height * factor;
+  [(CUINamedVectorGlyph *)self referenceCanvasSize:named];
   v13 = v12;
   v15 = v14;
-  CGContextSaveGState(a4);
-  CGContextScaleCTM(a4, v10 / v13, v11 / v15);
+  CGContextSaveGState(context);
+  CGContextScaleCTM(context, v10 / v13, v11 / v15);
   [-[CUINamedVectorGlyph _regularRendition](self "_regularRendition")];
   CGContextDrawSVGDocument();
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)_legacy_drawMulticolorLayerNamed:(id)a3 inContext:(CGContext *)a4 scaleFactor:(double)a5 targetSize:(CGSize)a6 colorResolver:(id)a7
+- (void)_legacy_drawMulticolorLayerNamed:(id)named inContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size colorResolver:(id)resolver
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   if ([-[CUINamedVectorGlyph _regularRendition](self "_regularRendition")])
   {
     CGSVGDocumentGetRootNode();
@@ -4438,8 +4438,8 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
     [(CUINamedVectorGlyph *)self referenceCanvasSize];
     v16 = v15;
     v18 = v17;
-    CGContextSaveGState(a4);
-    CGContextScaleCTM(a4, width * a5 / v16, height * a5 / v18);
+    CGContextSaveGState(context);
+    CGContextScaleCTM(context, width * factor / v16, height * factor / v18);
     if (ChildCount)
     {
       for (i = 0; i != ChildCount; ++i)
@@ -4448,11 +4448,11 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
         if (CGSVGNodeGetType() == 2 && CGSVGNodeFindAttribute())
         {
           v21 = CGSVGAttributeCopyString();
-          if ([v21 containsString:a3])
+          if ([v21 containsString:named])
           {
-            if (a7)
+            if (resolver)
             {
-              [(CUINamedVectorGlyph *)self _prepareShapeNode:i atNodeIndex:a3 forRenderingStyle:a7 withColorResolver:?];
+              [(CUINamedVectorGlyph *)self _prepareShapeNode:i atNodeIndex:named forRenderingStyle:resolver withColorResolver:?];
             }
 
             CGContextDrawSVGNode();
@@ -4461,14 +4461,14 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
       }
     }
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)_legacy_drawHierarchicalLayerNamed:(id)a3 inContext:(CGContext *)a4 scaleFactor:(double)a5 targetSize:(CGSize)a6 colorResolver:(id)a7
+- (void)_legacy_drawHierarchicalLayerNamed:(id)named inContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size colorResolver:(id)resolver
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   if ((*(self + 112) & 4) != 0)
   {
     v28 = 0;
@@ -4481,7 +4481,7 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
     v27[1] = 3221225472;
     v27[2] = __105__CUINamedVectorGlyph__legacy_drawHierarchicalLayerNamed_inContext_scaleFactor_targetSize_colorResolver___block_invoke;
     v27[3] = &unk_1E7249DD8;
-    v27[4] = a3;
+    v27[4] = named;
     v27[5] = &v28;
     [objc_msgSend(-[CUINamedVectorGlyph hierarchicalLayerGroup](self) "sublayers")];
     v22 = v29[5];
@@ -4494,9 +4494,9 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
       v26[1] = 3221225472;
       v26[2] = __105__CUINamedVectorGlyph__legacy_drawHierarchicalLayerNamed_inContext_scaleFactor_targetSize_colorResolver___block_invoke_2;
       v26[3] = &unk_1E7249E00;
-      v26[4] = a7;
+      v26[4] = resolver;
       v26[5] = &v28;
-      [v22 drawInContext:a4 scaleFactor:v26 targetSize:a5 variableMinValue:width variableMaxValue:height hierarchicalColorResolver:{v24, v25}];
+      [v22 drawInContext:context scaleFactor:v26 targetSize:factor variableMinValue:width variableMaxValue:height hierarchicalColorResolver:{v24, v25}];
     }
 
     _Block_object_dispose(&v28, 8);
@@ -4510,8 +4510,8 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
     [(CUINamedVectorGlyph *)self referenceCanvasSize];
     v16 = v15;
     v18 = v17;
-    CGContextSaveGState(a4);
-    CGContextScaleCTM(a4, width * a5 / v16, height * a5 / v18);
+    CGContextSaveGState(context);
+    CGContextScaleCTM(context, width * factor / v16, height * factor / v18);
     if (ChildCount)
     {
       for (i = 0; i != ChildCount; ++i)
@@ -4520,11 +4520,11 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
         if (CGSVGNodeGetType() == 2 && CGSVGNodeFindAttribute())
         {
           v21 = CGSVGAttributeCopyString();
-          if ([v21 containsString:a3])
+          if ([v21 containsString:named])
           {
-            if (a7)
+            if (resolver)
             {
-              [(CUINamedVectorGlyph *)self _prepareShapeNode:i atNodeIndex:a3 forRenderingStyle:a7 withColorResolver:?];
+              [(CUINamedVectorGlyph *)self _prepareShapeNode:i atNodeIndex:named forRenderingStyle:resolver withColorResolver:?];
             }
 
             CGContextDrawSVGNode();
@@ -4533,7 +4533,7 @@ uint64_t __88__CUINamedVectorGlyph__drawPaletteLayersInContext_scaleFactor_targe
       }
     }
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
@@ -4559,7 +4559,7 @@ uint64_t __105__CUINamedVectorGlyph__legacy_drawHierarchicalLayerNamed_inContext
   return v9(v6, 0, SRGBBlack, a2, a3, -1, v8);
 }
 
-- (CGSVGNode)_getOutlineNodeForDocument:(CGSVGDocument *)a3
+- (CGSVGNode)_getOutlineNodeForDocument:(CGSVGDocument *)document
 {
   RootNode = CGSVGDocumentGetRootNode();
   [(CUINamedVectorGlyph *)self templateVersion];
@@ -4613,9 +4613,9 @@ uint64_t __105__CUINamedVectorGlyph__legacy_drawHierarchicalLayerNamed_inContext
     [(CUINamedVectorGlyph *)self glyphContinuousSize];
     v18 = [(CUINamedVectorGlyph *)self _interpolatedPathWithWeight:v12 glyphSize:v13 fromUltralightSmall:v14 regularSmall:v16 blackSmall:v17];
 
-    v4 = [v18 createSubpaths];
+    createSubpaths = [v18 createSubpaths];
     kdebug_trace();
-    return v4;
+    return createSubpaths;
   }
 
   return CUICreateSubpathsFromSVGNode(v5);
@@ -4638,26 +4638,26 @@ void *__39__CUINamedVectorGlyph__colorStyleNames__block_invoke()
   return result;
 }
 
-- (id)_stylePrefixForRenderingMode:(int)a3
+- (id)_stylePrefixForRenderingMode:(int)mode
 {
-  if ((a3 - 1) > 3)
+  if ((mode - 1) > 3)
   {
     return &stru_1F00D74D0;
   }
 
   else
   {
-    return off_1E7249E90[a3 - 1];
+    return off_1E7249E90[mode - 1];
   }
 }
 
-- (id)_layerNamesForRenderingMode:(int)a3 inRendition:(id)a4
+- (id)_layerNamesForRenderingMode:(int)mode inRendition:(id)rendition
 {
-  v5 = *&a3;
+  v5 = *&mode;
   v7 = objc_alloc_init(NSMutableOrderedSet);
   [(CUINamedVectorGlyph *)self templateVersion];
   v9 = v8 >= 5.0;
-  [a4 svgDocument];
+  [rendition svgDocument];
   CGSVGDocumentGetRootNode();
   v11[6] = _NSConcreteStackBlock;
   v11[7] = 3221225472;
@@ -4751,12 +4751,12 @@ uint64_t __63__CUINamedVectorGlyph__layerNamesForRenderingMode_inRendition___blo
   }
 }
 
-- (id)_assumeConcatenatedPathForLayerNamed:(void *)a3 inRendition:
+- (id)_assumeConcatenatedPathForLayerNamed:(void *)named inRendition:
 {
   result = 0;
-  if (a1 && a3)
+  if (self && named)
   {
-    [a3 svgDocument];
+    [named svgDocument];
     CGSVGDocumentGetRootNode();
     CGSVGNodeGetChildAtIndex();
     ChildCount = CGSVGNodeGetChildCount();
@@ -4788,7 +4788,7 @@ uint64_t __63__CUINamedVectorGlyph__layerNamesForRenderingMode_inRendition___blo
   return result;
 }
 
-- (id)pathForLayerNamed:(id)a3
+- (id)pathForLayerNamed:(id)named
 {
   if ((*(self + 112) & 4) != 0)
   {
@@ -4800,12 +4800,12 @@ uint64_t __63__CUINamedVectorGlyph__layerNamesForRenderingMode_inRendition___blo
       [(CUINamedVectorGlyph *)self glyphContinuousSize];
       [(CUINamedVectorGlyph *)self glyphContinuousWeight];
       kdebug_trace();
-      if ([a3 length])
+      if ([named length])
       {
-        v7 = [(CUINamedVectorGlyph *)self _ultralightRendition];
+        _ultralightRendition = [(CUINamedVectorGlyph *)self _ultralightRendition];
         if ((*(self + 112) & 4) != 0)
         {
-          v8 = [(CUINamedVectorGlyph *)self _assumeConcatenatedPathForLayerNamed:a3 inRendition:v7];
+          v8 = [(CUINamedVectorGlyph *)self _assumeConcatenatedPathForLayerNamed:named inRendition:_ultralightRendition];
         }
 
         else
@@ -4813,10 +4813,10 @@ uint64_t __63__CUINamedVectorGlyph__layerNamesForRenderingMode_inRendition___blo
           v8 = 0;
         }
 
-        v27 = [(CUINamedVectorGlyph *)self _regularRendition];
+        _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
         if ((*(self + 112) & 4) != 0)
         {
-          v28 = [(CUINamedVectorGlyph *)self _assumeConcatenatedPathForLayerNamed:a3 inRendition:v27];
+          v28 = [(CUINamedVectorGlyph *)self _assumeConcatenatedPathForLayerNamed:named inRendition:_regularRendition];
         }
 
         else
@@ -4824,10 +4824,10 @@ uint64_t __63__CUINamedVectorGlyph__layerNamesForRenderingMode_inRendition___blo
           v28 = 0;
         }
 
-        v29 = [(CUINamedVectorGlyph *)self _blackRendition];
+        _blackRendition = [(CUINamedVectorGlyph *)self _blackRendition];
         if ((*(self + 112) & 4) != 0)
         {
-          v30 = [(CUINamedVectorGlyph *)self _assumeConcatenatedPathForLayerNamed:a3 inRendition:v29];
+          v30 = [(CUINamedVectorGlyph *)self _assumeConcatenatedPathForLayerNamed:named inRendition:_blackRendition];
         }
 
         else
@@ -4902,33 +4902,33 @@ LABEL_15:
     }
   }
 
-  if (![a3 length])
+  if (![named length])
   {
     v11 = 0;
     goto LABEL_15;
   }
 
-  v9 = [(CUINamedVectorGlyph *)self _regularRendition];
+  _regularRendition2 = [(CUINamedVectorGlyph *)self _regularRendition];
 
-  return [(CUINamedVectorGlyph *)self _assumeConcatenatedPathForLayerNamed:a3 inRendition:v9];
+  return [(CUINamedVectorGlyph *)self _assumeConcatenatedPathForLayerNamed:named inRendition:_regularRendition2];
 }
 
-- (CGSVGAttributeMap)styleForLayerName:(id)a3
+- (CGSVGAttributeMap)styleForLayerName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
   [-[CUINamedVectorGlyph _regularRendition](self "_regularRendition")];
-  [@"." stringByAppendingString:a3];
+  [@"." stringByAppendingString:name];
 
   return CGSVGDocumentGetNamedStyle();
 }
 
-- (double)strokeWidthForLayerNamed:(id)a3 inRendition:(id)a4
+- (double)strokeWidthForLayerNamed:(id)named inRendition:(id)rendition
 {
-  if ([(CUINamedVectorGlyph *)self attributesForLayerNamed:a3 inRendition:a4]&& CGSVGAttributeMapGetAttribute())
+  if ([(CUINamedVectorGlyph *)self attributesForLayerNamed:named inRendition:rendition]&& CGSVGAttributeMapGetAttribute())
   {
     CGSVGAttributeGetFloat();
   }
@@ -4936,7 +4936,7 @@ LABEL_15:
   return 0.0;
 }
 
-- (double)strokeWidthForLayerNamed:(id)a3
+- (double)strokeWidthForLayerNamed:(id)named
 {
   [(CUINamedVectorGlyph *)self templateVersion];
   if (v5 < 6.0)
@@ -4946,11 +4946,11 @@ LABEL_15:
 
   if ((*(self + 112) & 4) != 0 && self->_ultralightInterpolationSource && self->_blackInterpolationSource)
   {
-    [(CUINamedVectorGlyph *)self strokeWidthForLayerNamed:a3 inRendition:[(CUINamedVectorGlyph *)self _ultralightRendition]];
+    [(CUINamedVectorGlyph *)self strokeWidthForLayerNamed:named inRendition:[(CUINamedVectorGlyph *)self _ultralightRendition]];
     v8 = v7;
-    [(CUINamedVectorGlyph *)self strokeWidthForLayerNamed:a3 inRendition:[(CUINamedVectorGlyph *)self _regularRendition]];
+    [(CUINamedVectorGlyph *)self strokeWidthForLayerNamed:named inRendition:[(CUINamedVectorGlyph *)self _regularRendition]];
     v10 = v9;
-    [(CUINamedVectorGlyph *)self strokeWidthForLayerNamed:a3 inRendition:[(CUINamedVectorGlyph *)self _blackRendition]];
+    [(CUINamedVectorGlyph *)self strokeWidthForLayerNamed:named inRendition:[(CUINamedVectorGlyph *)self _blackRendition]];
     v12 = v11;
     [(CUINamedVectorGlyph *)self glyphContinuousWeight];
     v14 = v13;
@@ -4961,18 +4961,18 @@ LABEL_15:
 
   else
   {
-    v16 = [(CUINamedVectorGlyph *)self _regularRendition];
+    _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
 
-    [(CUINamedVectorGlyph *)self strokeWidthForLayerNamed:a3 inRendition:v16];
+    [(CUINamedVectorGlyph *)self strokeWidthForLayerNamed:named inRendition:_regularRendition];
   }
 
   return result;
 }
 
-- (CGSVGAttributeMap)attributesForLayerNamed:(id)a3 inRendition:(id)a4
+- (CGSVGAttributeMap)attributesForLayerNamed:(id)named inRendition:(id)rendition
 {
-  [a4 svgDocument];
-  if (a3)
+  [rendition svgDocument];
+  if (named)
   {
     [(CUINamedVectorGlyph *)self templateVersion];
     v7 = v6;
@@ -4989,7 +4989,7 @@ LABEL_15:
           if (CGSVGNodeFindAttribute())
           {
             v11 = CGSVGAttributeCopyString();
-            if ([v11 containsString:a3])
+            if ([v11 containsString:named])
             {
               AttributeMap = CGSVGNodeGetAttributeMap();
 
@@ -5020,7 +5020,7 @@ LABEL_15:
           if (CGSVGNodeFindAttribute())
           {
             v16 = CGSVGAttributeCopyString();
-            if ([v16 containsString:a3])
+            if ([v16 containsString:named])
             {
               AttributeMap = CGSVGNodeGetAttributeMap();
 
@@ -5050,20 +5050,20 @@ LABEL_15:
   }
 }
 
-- (CGSVGAttributeMap)attributesForLayerNamed:(id)a3
+- (CGSVGAttributeMap)attributesForLayerNamed:(id)named
 {
-  v5 = [(CUINamedVectorGlyph *)self _regularRendition];
+  _regularRendition = [(CUINamedVectorGlyph *)self _regularRendition];
 
-  return [(CUINamedVectorGlyph *)self attributesForLayerNamed:a3 inRendition:v5];
+  return [(CUINamedVectorGlyph *)self attributesForLayerNamed:named inRendition:_regularRendition];
 }
 
-+ (CGColor)_derivedGradientColorFromColor:(CGColor *)a3 reverse:(BOOL *)a4
++ (CGColor)_derivedGradientColorFromColor:(CGColor *)color reverse:(BOOL *)reverse
 {
   GenericLab = _CUIColorSpaceGetGenericLab();
-  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(GenericLab, kCGRenderingIntentDefault, a3, 0);
+  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(GenericLab, kCGRenderingIntentDefault, color, 0);
   v38 = *CGColorGetComponents(CopyByMatchingToColorSpace) / 100.0;
   CGColorRelease(CopyByMatchingToColorSpace);
-  *a4 = 0;
+  *reverse = 0;
   v8 = 0.2;
   v9 = 0.2;
   if (v38 > 0.25)
@@ -5078,14 +5078,14 @@ LABEL_15:
 
       else
       {
-        *a4 = 1;
+        *reverse = 1;
         v9 = -0.11;
       }
     }
   }
 
   v37 = v9;
-  v10 = CGColorGetComponents(a3);
+  v10 = CGColorGetComponents(color);
   v11 = *v10;
   v12 = v10[2];
   v41 = *(v10 + 3);
@@ -5140,44 +5140,44 @@ LABEL_15:
   return CGColorCreate(ExtendedRangeSRGB, components);
 }
 
-+ (CGGradient)_createAxialGradientWithColors:(id)a3 useSCurve:(BOOL)a4 height:(double)a5
++ (CGGradient)_createAxialGradientWithColors:(id)colors useSCurve:(BOOL)curve height:(double)height
 {
-  v6 = a4;
-  v9 = [a3 count];
+  curveCopy = curve;
+  v9 = [colors count];
   ExtendedRangeSRGB = _CUIColorSpaceGetExtendedRangeSRGB();
   if (v9 == 2)
   {
-    v13 = [a3 firstObject];
-    v14 = [a3 lastObject];
+    firstObject = [colors firstObject];
+    lastObject = [colors lastObject];
     GrayGamma2_2 = _CUIColorSpaceGetGrayGamma2_2();
-    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(GrayGamma2_2, kCGRenderingIntentRelativeColorimetric, v13, 0);
+    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(GrayGamma2_2, kCGRenderingIntentRelativeColorimetric, firstObject, 0);
     v17 = *CGColorGetComponents(CopyByMatchingToColorSpace);
     CGColorRelease(CopyByMatchingToColorSpace);
     v18 = _CUIColorSpaceGetGrayGamma2_2();
-    v19 = CGColorCreateCopyByMatchingToColorSpace(v18, kCGRenderingIntentRelativeColorimetric, v14, 0);
+    v19 = CGColorCreateCopyByMatchingToColorSpace(v18, kCGRenderingIntentRelativeColorimetric, lastObject, 0);
     v20 = *CGColorGetComponents(v19);
     CGColorRelease(v19);
     if (v17 <= v20)
     {
-      v21 = v14;
+      v21 = lastObject;
     }
 
     else
     {
-      v21 = v13;
+      v21 = firstObject;
     }
 
     if (v17 <= v20)
     {
-      v22 = v13;
+      v22 = firstObject;
     }
 
     else
     {
-      v22 = v14;
+      v22 = lastObject;
     }
 
-    if (!v6)
+    if (!curveCopy)
     {
       v33 = 0;
       *locations = xmmword_18E020B68;
@@ -5186,7 +5186,7 @@ LABEL_15:
       return CGGradientCreateWithColors(0, [NSArray arrayWithObjects:v30 count:2], locations);
     }
 
-    return [a1 _createSCurveGradientWithStartColor:v22 endColor:v21 height:a5];
+    return [self _createSCurveGradientWithStartColor:v22 endColor:v21 height:height];
   }
 
   else
@@ -5194,23 +5194,23 @@ LABEL_15:
     if (v9 == 1)
     {
       v11 = ExtendedRangeSRGB;
-      v12 = [a3 firstObject];
-      CGColorGetColorSpace(v12);
+      firstObject2 = [colors firstObject];
+      CGColorGetColorSpace(firstObject2);
       if (CGColorSpaceEqualToColorSpace())
       {
-        CGColorRetain(v12);
+        CGColorRetain(firstObject2);
       }
 
       else
       {
-        v12 = CGColorCreateCopyByMatchingToColorSpace(v11, kCGRenderingIntentRelativeColorimetric, v12, 0);
+        firstObject2 = CGColorCreateCopyByMatchingToColorSpace(v11, kCGRenderingIntentRelativeColorimetric, firstObject2, 0);
       }
 
       v29 = 0;
-      v24 = [CUINamedVectorGlyph _derivedGradientColorFromColor:v12 reverse:&v29];
+      v24 = [CUINamedVectorGlyph _derivedGradientColorFromColor:firstObject2 reverse:&v29];
       if (v29)
       {
-        v25 = v12;
+        v25 = firstObject2;
       }
 
       else
@@ -5220,12 +5220,12 @@ LABEL_15:
 
       if (v29)
       {
-        v12 = v24;
+        firstObject2 = v24;
       }
 
-      if (v6)
+      if (curveCopy)
       {
-        v26 = [a1 _createSCurveGradientWithStartColor:v12 endColor:v25 height:a5];
+        v26 = [self _createSCurveGradientWithStartColor:firstObject2 endColor:v25 height:height];
       }
 
       else
@@ -5233,27 +5233,27 @@ LABEL_15:
         v33 = 0x3FF0000000000000;
         *locations = xmmword_18E020B50;
         v27 = _CUIColorSpaceGetExtendedRangeSRGB();
-        v31[0] = v12;
-        v31[1] = v12;
+        v31[0] = firstObject2;
+        v31[1] = firstObject2;
         v31[2] = v25;
         v26 = CGGradientCreateWithColors(v27, [NSArray arrayWithObjects:v31 count:3], locations);
       }
 
       v28 = v26;
-      CGColorRelease(v12);
+      CGColorRelease(firstObject2);
       CGColorRelease(v25);
       return v28;
     }
 
-    return CGGradientCreateWithColors(0, a3, 0);
+    return CGGradientCreateWithColors(0, colors, 0);
   }
 }
 
-+ (CGGradient)_createSCurveGradientWithStartColor:(CGColor *)a3 endColor:(CGColor *)a4 height:(double)a5
++ (CGGradient)_createSCurveGradientWithStartColor:(CGColor *)color endColor:(CGColor *)endColor height:(double)height
 {
   SRGB = _CUIColorSpaceGetSRGB();
   v8 = 0;
-  if (a3 && a4)
+  if (color && endColor)
   {
     v9 = [CAMediaTimingFunction alloc];
     LODWORD(v10) = 1046631210;
@@ -5261,9 +5261,9 @@ LABEL_15:
     LODWORD(v12) = 1062073097;
     LODWORD(v13) = 1.0;
     v14 = [v9 initWithControlPoints:v10 :v11 :v12 :v13];
-    v15 = (a5 * 5.0);
-    v16 = CGColorGetComponents(a3);
-    v17 = CGColorGetComponents(a4);
+    v15 = (height * 5.0);
+    v16 = CGColorGetComponents(color);
+    v17 = CGColorGetComponents(endColor);
     v18 = objc_opt_new();
     v33 = &v33;
     v20 = (&v33 - ((8 * v15 + 15) & 0xFFFFFFFF0));
@@ -5277,7 +5277,7 @@ LABEL_15:
         if (v23 >= 1.0)
         {
           v30 = v18;
-          v31 = a4;
+          colorCopy = endColor;
         }
 
         else
@@ -5303,10 +5303,10 @@ LABEL_15:
           }
 
           v30 = v18;
-          v31 = a3;
+          colorCopy = color;
         }
 
-        [v30 addObject:v31];
+        [v30 addObject:colorCopy];
         v19 = v22;
         v20[i] = v22;
       }
@@ -5318,7 +5318,7 @@ LABEL_15:
   return v8;
 }
 
-- (id)edgeDefinitionTextureWithBufferAllocator:(id)a3
+- (id)edgeDefinitionTextureWithBufferAllocator:(id)allocator
 {
   CUICurrentPlatform();
   [(CUINamedVectorGlyph *)self image];
@@ -5327,7 +5327,7 @@ LABEL_15:
   return v4;
 }
 
-- (id)gradientTextureWithBufferAllocator:(id)a3
+- (id)gradientTextureWithBufferAllocator:(id)allocator
 {
   CUICurrentPlatform();
   [(CUINamedVectorGlyph *)self image];
@@ -5336,46 +5336,46 @@ LABEL_15:
   return v4;
 }
 
-- (id)_interpolatedPathWithWeight:(double)a3 glyphSize:(double)a4 fromUltralightSmall:(id)a5 regularSmall:(id)a6 blackSmall:(id)a7
+- (id)_interpolatedPathWithWeight:(double)weight glyphSize:(double)size fromUltralightSmall:(id)small regularSmall:(id)regularSmall blackSmall:(id)blackSmall
 {
   v7 = 0;
-  if (a5 && a6 && a7)
+  if (small && regularSmall && blackSmall)
   {
     v14 = [CUIVectorGlyphMutator alloc];
     [(CUINamedVectorGlyph *)self referencePointSize];
-    v15 = [(CUIVectorGlyphMutator *)v14 initWithPointSize:a6 regular:a5 ultralight:a7 black:?];
-    [CUIVectorGlyphMutator transformForGlyphContinuousSize:a4];
-    [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:a3 glyphContinuousSize:a4];
+    v15 = [(CUIVectorGlyphMutator *)v14 initWithPointSize:regularSmall regular:small ultralight:blackSmall black:?];
+    [CUIVectorGlyphMutator transformForGlyphContinuousSize:size];
+    [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:weight glyphContinuousSize:size];
     v7 = [CUIVectorGlyphMutator pathForScalars:v15 andTransform:"pathForScalars:andTransform:"];
   }
 
   return v7;
 }
 
-- (double)_interpolatedBaselineOffsetWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(double)a5 regular:(double)a6 black:(double)a7
+- (double)_interpolatedBaselineOffsetWithWeight:(double)weight glyphSize:(double)size fromUltralight:(double)ultralight regular:(double)regular black:(double)black
 {
-  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:a3 glyphContinuousSize:?];
+  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:weight glyphContinuousSize:?];
   v13 = v12;
   v15 = v14;
-  [CUIVectorGlyphMutator transformForGlyphContinuousSize:a4];
+  [CUIVectorGlyphMutator transformForGlyphContinuousSize:size];
   v17 = v16;
   v19 = v18;
   [(CUINamedVectorGlyph *)self referencePointSize];
-  return (a6 + (a5 - a6) * v13 + (a7 - a6) * v15) * v17 - v19 * v20;
+  return (regular + (ultralight - regular) * v13 + (black - regular) * v15) * v17 - v19 * v20;
 }
 
-- (CGSize)_interpolatedCanvasSizeWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(CGSize)a5 regular:(CGSize)a6 black:(CGSize)a7
+- (CGSize)_interpolatedCanvasSizeWithWeight:(double)weight glyphSize:(double)size fromUltralight:(CGSize)ultralight regular:(CGSize)regular black:(CGSize)black
 {
-  height = a7.height;
-  width = a7.width;
-  v8 = a6.height;
-  v9 = a6.width;
-  v10 = a5.height;
-  v11 = a5.width;
-  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:a3 glyphContinuousSize:?];
+  height = black.height;
+  width = black.width;
+  v8 = regular.height;
+  v9 = regular.width;
+  v10 = ultralight.height;
+  v11 = ultralight.width;
+  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:weight glyphContinuousSize:?];
   v14 = v13;
   v16 = v15;
-  [CUIVectorGlyphMutator transformForGlyphContinuousSize:a4];
+  [CUIVectorGlyphMutator transformForGlyphContinuousSize:size];
   v18 = (v8 + (v10 - v8) * v14 + (height - v8) * v16) * v17;
   v19 = (v9 + (v11 - v9) * v14 + (width - v9) * v16) * v17;
   result.height = v18;
@@ -5383,34 +5383,34 @@ LABEL_15:
   return result;
 }
 
-- (double)_interpolatedAlignmentRectInsetsWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(double)a5 regular:(double)a6 black:(double)a7
+- (double)_interpolatedAlignmentRectInsetsWithWeight:(double)weight glyphSize:(double)size fromUltralight:(double)ultralight regular:(double)regular black:(double)black
 {
-  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:a1 glyphContinuousSize:a2];
+  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:self glyphContinuousSize:a2];
   v18 = v17;
   v20 = v19;
   [CUIVectorGlyphMutator transformForGlyphContinuousSize:a2];
-  return (a9 + (a3 - a9) * v18 + (a13 - a9) * v20) * v21;
+  return (a9 + (weight - a9) * v18 + (a13 - a9) * v20) * v21;
 }
 
-- (double)_interpolatedStrokeWidthWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(double)a5 regular:(double)a6 black:(double)a7
+- (double)_interpolatedStrokeWidthWithWeight:(double)weight glyphSize:(double)size fromUltralight:(double)ultralight regular:(double)regular black:(double)black
 {
-  [CUIVectorGlyphMutator transformForGlyphContinuousSize:a4];
+  [CUIVectorGlyphMutator transformForGlyphContinuousSize:size];
   v13 = v12;
-  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:a3 glyphContinuousSize:a4];
-  return v13 * (a6 + (a5 - a6) * v14 + (a7 - a6) * v15);
+  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:weight glyphContinuousSize:size];
+  return v13 * (regular + (ultralight - regular) * v14 + (black - regular) * v15);
 }
 
-- (CGPoint)_interpolatedAnchorWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(CGPoint)a5 regular:(CGPoint)a6 black:(CGPoint)a7
+- (CGPoint)_interpolatedAnchorWithWeight:(double)weight glyphSize:(double)size fromUltralight:(CGPoint)ultralight regular:(CGPoint)regular black:(CGPoint)black
 {
-  y = a7.y;
-  x = a7.x;
-  v8 = a6.y;
-  v9 = a6.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  [CUIVectorGlyphMutator transformForGlyphContinuousSize:a4];
+  y = black.y;
+  x = black.x;
+  v8 = regular.y;
+  v9 = regular.x;
+  v10 = ultralight.y;
+  v11 = ultralight.x;
+  [CUIVectorGlyphMutator transformForGlyphContinuousSize:size];
   v15 = v14;
-  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:a3 glyphContinuousSize:a4];
+  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:weight glyphContinuousSize:size];
   v18 = v9 + (x - v9) * v16 + (v11 - v9) * v17;
   v19 = v8 + (y - v8) * v16 + (v10 - v8) * v17;
   v20 = v15 * v18;
@@ -5420,54 +5420,54 @@ LABEL_15:
   return result;
 }
 
-- (id)_createInterpolatedDrawAttachmentDataStoreWithWeight:(double)a3 glyphSize:(double)a4 fromUltralight:(id)a5 regular:(id)a6 black:(id)a7
+- (id)_createInterpolatedDrawAttachmentDataStoreWithWeight:(double)weight glyphSize:(double)size fromUltralight:(id)ultralight regular:(id)regular black:(id)black
 {
-  if (!a5 || !a6 || !a7)
+  if (!ultralight || !regular || !black)
   {
     v12 = objc_alloc_init(CUIVectorGlyphDrawAttachmentDataStore);
   }
 
-  v13 = +[CUIVectorGlyphMutator createFloatDeltasFrom:to:](CUIVectorGlyphMutator, "createFloatDeltasFrom:to:", [a6 data], objc_msgSend(a5, "data"));
-  v14 = +[CUIVectorGlyphMutator createFloatDeltasFrom:to:](CUIVectorGlyphMutator, "createFloatDeltasFrom:to:", [a6 data], objc_msgSend(a7, "data"));
-  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:a3 glyphContinuousSize:a4];
+  v13 = +[CUIVectorGlyphMutator createFloatDeltasFrom:to:](CUIVectorGlyphMutator, "createFloatDeltasFrom:to:", [regular data], objc_msgSend(ultralight, "data"));
+  v14 = +[CUIVectorGlyphMutator createFloatDeltasFrom:to:](CUIVectorGlyphMutator, "createFloatDeltasFrom:to:", [regular data], objc_msgSend(black, "data"));
+  [CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:weight glyphContinuousSize:size];
   v16 = v15;
   v18 = v17;
-  v19 = +[CUIVectorGlyphMutator createInterpolatedFloatsFromFloats:ultralightDeltas:blackDeltas:withScalars:](CUIVectorGlyphMutator, "createInterpolatedFloatsFromFloats:ultralightDeltas:blackDeltas:withScalars:", [a6 data], v13, v14, v15, v17);
+  v19 = +[CUIVectorGlyphMutator createInterpolatedFloatsFromFloats:ultralightDeltas:blackDeltas:withScalars:](CUIVectorGlyphMutator, "createInterpolatedFloatsFromFloats:ultralightDeltas:blackDeltas:withScalars:", [regular data], v13, v14, v15, v17);
 
-  v20 = [objc_msgSend(a6 "anchors")];
+  v20 = [objc_msgSend(regular "anchors")];
   v22 = v21;
-  v23 = [objc_msgSend(a5 "anchors")];
+  v23 = [objc_msgSend(ultralight "anchors")];
   v25 = [CUIVectorGlyphMutator deltaArrayFrom:v20 to:v22, v23, v24];
   v27 = v26;
-  v28 = [objc_msgSend(a6 "anchors")];
+  v28 = [objc_msgSend(regular "anchors")];
   v30 = v29;
-  v31 = [objc_msgSend(a7 "anchors")];
+  v31 = [objc_msgSend(black "anchors")];
   v33 = [CUIVectorGlyphMutator deltaArrayFrom:v28 to:v30, v31, v32];
   v35 = v34;
-  v36 = [objc_msgSend(a6 "anchors")];
+  v36 = [objc_msgSend(regular "anchors")];
   v38 = [CUIVectorGlyphMutator createInterpolatedPointsFromPoints:v36 ultralightDeltas:v37 blackDeltas:v25 withScalars:v27, v33, v35, v16, v18];
   v40 = v39;
   free(v25);
   free(v33);
-  [CUIVectorGlyphMutator transformForGlyphContinuousSize:a4];
+  [CUIVectorGlyphMutator transformForGlyphContinuousSize:size];
   v44[0] = v41;
   v44[1] = v42;
   vDSP_vsmulD(v38, 1, v44, v38, 1, 2 * v40);
   return [[CUIVectorGlyphDrawAttachmentDataStore alloc] initAdoptingData:v19 anchors:[CUIVectorGlyphManagedPointArray createManagedPointArrayWrapping:v38, v40]];
 }
 
-- (id)newEncapsulatedGlyphWithConfiguration:(id)a3
+- (id)newEncapsulatedGlyphWithConfiguration:(id)configuration
 {
-  v5 = a3 + OBJC_IVAR___CUIEncapsulatedVectorGlyphConfiguration_backing;
+  v5 = configuration + OBJC_IVAR___CUIEncapsulatedVectorGlyphConfiguration_backing;
   swift_beginAccess();
   if (v5[40])
   {
-    v6 = [(CUINamedVectorGlyph *)self resolveAutomaticWithConfig:a3 adjustX:*(v5 + 2) & 1 adjustY:(*(v5 + 2) >> 8) & 1 sizeAdjustment:*(v5 + 3)];
+    v6 = [(CUINamedVectorGlyph *)self resolveAutomaticWithConfig:configuration adjustX:*(v5 + 2) & 1 adjustY:(*(v5 + 2) >> 8) & 1 sizeAdjustment:*(v5 + 3)];
   }
 
   else
   {
-    v6 = [(CUINamedVectorGlyph *)self resolveMetricCenterWithConfig:a3 offsetX:*(v5 + 2) offsetY:*(v5 + 3) scaleFactor:*(v5 + 4)];
+    v6 = [(CUINamedVectorGlyph *)self resolveMetricCenterWithConfig:configuration offsetX:*(v5 + 2) offsetY:*(v5 + 3) scaleFactor:*(v5 + 4)];
   }
 
   return v6;
@@ -5475,28 +5475,28 @@ LABEL_15:
 
 - (id)ensureBaseGlyph
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18E000A4C();
 
   return v3;
 }
 
-- (id)resolveMetricCenterWithConfig:(id)a3 offsetX:(double)a4 offsetY:(double)a5 scaleFactor:(double)a6
+- (id)resolveMetricCenterWithConfig:(id)config offsetX:(double)x offsetY:(double)y scaleFactor:(double)factor
 {
-  v9 = a3;
-  v10 = self;
-  v11 = sub_18E000B5C(v9, a4, a5);
+  configCopy = config;
+  selfCopy = self;
+  v11 = sub_18E000B5C(configCopy, x, y);
 
   return v11;
 }
 
-- (id)resolveAutomaticWithConfig:(id)a3 adjustX:(BOOL)a4 adjustY:(BOOL)a5 sizeAdjustment:(int64_t)a6
+- (id)resolveAutomaticWithConfig:(id)config adjustX:(BOOL)x adjustY:(BOOL)y sizeAdjustment:(int64_t)adjustment
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = self;
-  sub_18E001344(v10, v8, v7, a6);
+  yCopy = y;
+  xCopy = x;
+  configCopy = config;
+  selfCopy = self;
+  sub_18E001344(configCopy, xCopy, yCopy, adjustment);
 }
 
 - (id)_performWithLockedRenditions:(id *)result
@@ -5505,20 +5505,20 @@ LABEL_15:
   {
     v3 = result;
     [result lock];
-    v4 = [v3 _rendition];
-    v10 = v4;
-    [v4 lock];
-    v5 = v4;
-    v6 = [v3[17] _rendition];
-    v11 = v6;
-    [v6 lock];
-    v7 = v6;
-    v8 = [v3[18] _rendition];
-    v12 = v8;
-    [v8 lock];
-    v9 = v8;
+    _rendition = [v3 _rendition];
+    v10 = _rendition;
+    [_rendition lock];
+    v5 = _rendition;
+    _rendition2 = [v3[17] _rendition];
+    v11 = _rendition2;
+    [_rendition2 lock];
+    v7 = _rendition2;
+    _rendition3 = [v3[18] _rendition];
+    v12 = _rendition3;
+    [_rendition3 lock];
+    v9 = _rendition3;
     v3[28] = &v10;
-    (*(a2 + 16))(a2, v4, v6, v8);
+    (*(a2 + 16))(a2, _rendition, _rendition2, _rendition3);
     v3[28] = 0;
     [v10 unlock];
 
@@ -5531,28 +5531,28 @@ LABEL_15:
   return result;
 }
 
-- (CGImageRef)_rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(double)a4 renderingMode:(double)a5 colorResolver:
+- (CGImageRef)_rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(double)size renderingMode:(double)mode colorResolver:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (a3 == 0.0)
+  if (factor == 0.0)
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel__rasterizeImageUsingScaleFactor_forTargetSize_renderingMode_colorResolver_ file:a1 lineNumber:@"CUINamedVectorGlyph.m" description:2595, @"Invalid parameter not satisfying: %@", @"scale"];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel__rasterizeImageUsingScaleFactor_forTargetSize_renderingMode_colorResolver_ file:self lineNumber:@"CUINamedVectorGlyph.m" description:2595, @"Invalid parameter not satisfying: %@", @"scale"];
   }
 
-  if (a4 <= 0.0 || a5 <= 0.0)
+  if (size <= 0.0 || mode <= 0.0)
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel__rasterizeImageUsingScaleFactor_forTargetSize_renderingMode_colorResolver_ file:a1 lineNumber:@"CUINamedVectorGlyph.m" description:2596, @"Invalid parameter not satisfying: %@", @"targetSizeInPoints.width>0 && targetSizeInPoints.height>0"];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel__rasterizeImageUsingScaleFactor_forTargetSize_renderingMode_colorResolver_ file:self lineNumber:@"CUINamedVectorGlyph.m" description:2596, @"Invalid parameter not satisfying: %@", @"targetSizeInPoints.width>0 && targetSizeInPoints.height>0"];
   }
 
-  v11 = [a1 name];
-  _CUILog(3, "[CUINamedVectorGlyph (%@)]", v12, v13, v14, v15, v16, v17, v11);
-  [a1 referenceCanvasSize];
-  [objc_msgSend(a1 "_regularRendition")];
-  if ([objc_msgSend(a1 "renditionKey")])
+  name = [self name];
+  _CUILog(3, "[CUINamedVectorGlyph (%@)]", v12, v13, v14, v15, v16, v17, name);
+  [self referenceCanvasSize];
+  [objc_msgSend(self "_regularRendition")];
+  if ([objc_msgSend(self "renditionKey")])
   {
     CGSVGDocumentContainsWideGamutContent();
     OUTLINED_FUNCTION_40();
@@ -5612,7 +5612,7 @@ LABEL_11:
   return Image;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_39();
@@ -5647,7 +5647,7 @@ void __82__CUINamedVectorGlyph_rasterizeImageWithTintColor_usingScaleFactor_forT
   *(v4 + 24) = v3;
 }
 
-- (void)drawWithTintColor:(CGColor *)a3 inContext:(CGContext *)a4
+- (void)drawWithTintColor:(CGColor *)color inContext:(CGContext *)context
 {
   OUTLINED_FUNCTION_0();
   v8 = 3221225472;
@@ -5690,7 +5690,7 @@ uint64_t __86__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_
   return OUTLINED_FUNCTION_12(v5);
 }
 
-- (void)drawMulticolorLayerAtIndex:(unint64_t)a3 inContext:(CGContext *)a4 withColorResolver:(id)a5
+- (void)drawMulticolorLayerAtIndex:(unint64_t)index inContext:(CGContext *)context withColorResolver:(id)resolver
 {
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_39();
@@ -5929,7 +5929,7 @@ uint64_t __95__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_
   return OUTLINED_FUNCTION_12(v5);
 }
 
-- (void)drawHierarchyLayerAtIndex:(unint64_t)a3 inContext:(CGContext *)a4 withColorResolver:(id)a5
+- (void)drawHierarchyLayerAtIndex:(unint64_t)index inContext:(CGContext *)context withColorResolver:(id)resolver
 {
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_39();
@@ -5984,8 +5984,8 @@ void __77__CUINamedVectorGlyph_drawHierarchyLayerAtIndex_inContext_withColorReso
     v9 = 0u;
     v10 = 0u;
     v8 = 0u;
-    v2 = [-[CUINamedVectorGlyph monochromeLayerGroup](v1) sublayers];
-    result = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    sublayers = [-[CUINamedVectorGlyph monochromeLayerGroup](v1) sublayers];
+    result = [sublayers countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (result)
     {
       v3 = result;
@@ -5997,7 +5997,7 @@ void __77__CUINamedVectorGlyph_drawHierarchyLayerAtIndex_inContext_withColorReso
         {
           if (*v8 != v4)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(sublayers);
           }
 
           OUTLINED_FUNCTION_5();
@@ -6007,7 +6007,7 @@ void __77__CUINamedVectorGlyph_drawHierarchyLayerAtIndex_inContext_withColorReso
         }
 
         while (v3 != v5);
-        result = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        result = [sublayers countByEnumeratingWithState:&v7 objects:v11 count:16];
         v3 = result;
       }
 
@@ -6097,7 +6097,7 @@ uint64_t __93__CUINamedVectorGlyph_rasterizeImageUsingScaleFactor_forTargetSize_
   return OUTLINED_FUNCTION_12(v5);
 }
 
-- (void)drawPaletteLayerAtIndex:(unint64_t)a3 inContext:(CGContext *)a4 withColorResolver:(id)a5
+- (void)drawPaletteLayerAtIndex:(unint64_t)index inContext:(CGContext *)context withColorResolver:(id)resolver
 {
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_39();
@@ -6165,7 +6165,7 @@ void *__55__CUINamedVectorGlyph_drawInContext_withPaletteColors___block_invoke(u
   return [CUINamedVectorGlyph _drawInContext:v1 scaleFactor:? targetSize:? primaryColor:? tertiaryColor:?];
 }
 
-- (uint64_t)_prepareShapeNode:(uint64_t)a3 atNodeIndex:(void *)a4 forRenderingStyle:(uint64_t)a5 withColorResolver:
+- (uint64_t)_prepareShapeNode:(uint64_t)node atNodeIndex:(void *)index forRenderingStyle:(uint64_t)style withColorResolver:
 {
   if (!result)
   {
@@ -6181,10 +6181,10 @@ void *__55__CUINamedVectorGlyph_drawInContext_withPaletteColors___block_invoke(u
 
   AttributeMap = CGSVGNodeGetAttributeMap();
   v10 = [(CUINamedVectorGlyph *)v8 _fillColorOfStyle:?];
-  v11 = [a4 rangeOfString:@":"];
-  if (v12 == 1 && (v13 = v11 + 1, v11 + 1 < [a4 length] - 1))
+  v11 = [index rangeOfString:@":"];
+  if (v12 == 1 && (v13 = v11 + 1, v11 + 1 < [index length] - 1))
   {
-    v14 = [a4 substringFromIndex:v13];
+    v14 = [index substringFromIndex:v13];
   }
 
   else
@@ -6208,14 +6208,14 @@ LABEL_12:
   }
 
 LABEL_13:
-  v17 = (*(a5 + 16))(a5, v14, v10, a3, v15, -1, 0);
+  v17 = (*(style + 16))(style, v14, v10, node, v15, -1, 0);
 
   return [(CUINamedVectorGlyph *)v8 _setFillColor:v17 ofStyle:AttributeMap];
 }
 
 - (id)containsNamedColorStyles
 {
-  v1 = OUTLINED_FUNCTION_1(a1);
+  v1 = OUTLINED_FUNCTION_1(self);
   v2 = OUTLINED_FUNCTION_30(v1, COERCE_DOUBLE(3221225472));
   v2[2] = __47__CUINamedVectorGlyph_containsNamedColorStyles__block_invoke;
   v2[3] = &unk_1E7249BD8;

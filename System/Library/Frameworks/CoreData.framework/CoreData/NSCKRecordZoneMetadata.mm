@@ -1,14 +1,14 @@
 @interface NSCKRecordZoneMetadata
-+ (NSManagedObject)zoneMetadataForZoneID:(uint64_t)a3 inDatabaseWithScope:(uint64_t)a4 forStore:(void *)a5 inContext:(int)a6 createIfMissing:(uint64_t)a7 error:;
-+ (NSManagedObject)zoneMetadataForZoneID:(uint64_t)a3 inDatabaseWithScope:(uint64_t)a4 forStore:(void *)a5 inContext:(uint64_t)a6 error:;
++ (NSManagedObject)zoneMetadataForZoneID:(uint64_t)d inDatabaseWithScope:(uint64_t)scope forStore:(void *)store inContext:(int)context createIfMissing:(uint64_t)missing error:;
++ (NSManagedObject)zoneMetadataForZoneID:(uint64_t)d inDatabaseWithScope:(uint64_t)scope forStore:(void *)store inContext:(uint64_t)context error:;
 + (NSString)entityPath;
-+ (id)countZonesInStore:(id)a3 matchingPredicate:(id)a4 withManagedObjectContext:(id)a5 error:(id *)a6;
-+ (id)fetchZoneIDsAssignedToObjectsWithIDs:(id)a3 fromStore:(id)a4 inContext:(id)a5 error:(id *)a6;
++ (id)countZonesInStore:(id)store matchingPredicate:(id)predicate withManagedObjectContext:(id)context error:(id *)error;
++ (id)fetchZoneIDsAssignedToObjectsWithIDs:(id)ds fromStore:(id)store inContext:(id)context error:(id *)error;
 - (BOOL)hasRecordZone;
 - (BOOL)hasSubscription;
 - (void)createRecordZoneID;
 - (void)destroyEncodedShareData;
-- (void)updateEncodedShareWithData:(id)a3;
+- (void)updateEncodedShareWithData:(id)data;
 @end
 
 @implementation NSCKRecordZoneMetadata
@@ -23,16 +23,16 @@
 
 - (BOOL)hasRecordZone
 {
-  v2 = [(NSCKRecordZoneMetadata *)self hasRecordZoneNum];
+  hasRecordZoneNum = [(NSCKRecordZoneMetadata *)self hasRecordZoneNum];
 
-  return [v2 BOOLValue];
+  return [hasRecordZoneNum BOOLValue];
 }
 
 - (BOOL)hasSubscription
 {
-  v2 = [(NSCKRecordZoneMetadata *)self hasSubscriptionNum];
+  hasSubscriptionNum = [(NSCKRecordZoneMetadata *)self hasSubscriptionNum];
 
-  return [v2 BOOLValue];
+  return [hasSubscriptionNum BOOLValue];
 }
 
 - (void)createRecordZoneID
@@ -67,18 +67,18 @@
   return result;
 }
 
-+ (NSManagedObject)zoneMetadataForZoneID:(uint64_t)a3 inDatabaseWithScope:(uint64_t)a4 forStore:(void *)a5 inContext:(uint64_t)a6 error:
++ (NSManagedObject)zoneMetadataForZoneID:(uint64_t)d inDatabaseWithScope:(uint64_t)scope forStore:(void *)store inContext:(uint64_t)context error:
 {
   objc_opt_self();
 
-  return [NSCKRecordZoneMetadata zoneMetadataForZoneID:a2 inDatabaseWithScope:a3 forStore:a4 inContext:a5 createIfMissing:1 error:a6];
+  return [NSCKRecordZoneMetadata zoneMetadataForZoneID:a2 inDatabaseWithScope:d forStore:scope inContext:store createIfMissing:1 error:context];
 }
 
-+ (NSManagedObject)zoneMetadataForZoneID:(uint64_t)a3 inDatabaseWithScope:(uint64_t)a4 forStore:(void *)a5 inContext:(int)a6 createIfMissing:(uint64_t)a7 error:
++ (NSManagedObject)zoneMetadataForZoneID:(uint64_t)d inDatabaseWithScope:(uint64_t)scope forStore:(void *)store inContext:(int)context createIfMissing:(uint64_t)missing error:
 {
   v32[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (a3 == 3)
+  if (d == 3)
   {
     if (([objc_msgSend(a2 "zoneName")] & 1) != 0 || (v12 = objc_msgSend(a2, "zoneName"), objc_msgSend(v12, "isEqualToString:", getCloudKitCKRecordZoneDefaultName[0]())))
     {
@@ -86,7 +86,7 @@
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v29 = a4;
+        scopeCopy2 = scope;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Illegal attempt to work with the core-data or default zone in the shared database: %@\n", buf, 0xCu);
       }
 
@@ -94,21 +94,21 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v29 = a4;
+        scopeCopy2 = scope;
         _os_log_fault_impl(&dword_18565F000, v14, OS_LOG_TYPE_FAULT, "CoreData: Illegal attempt to work with the core-data or default zone in the shared database: %@", buf, 0xCu);
       }
     }
   }
 
   v15 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordZoneMetadata entityPath]);
-  v32[0] = a4;
+  v32[0] = scope;
   -[NSFetchRequest setAffectedStores:](v15, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1]);
   v16 = MEMORY[0x1E696AE18];
-  v17 = [a2 zoneName];
-  v18 = [a2 ownerName];
-  -[NSFetchRequest setPredicate:](v15, "setPredicate:", [v16 predicateWithFormat:@"%K = %@ AND %K = %@ AND database.databaseScopeNum = %@", @"ckRecordZoneName", v17, @"ckOwnerName", v18, objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)]);
-  v19 = [a5 executeFetchRequest:v15 error:a7];
-  v20 = v19;
+  zoneName = [a2 zoneName];
+  ownerName = [a2 ownerName];
+  -[NSFetchRequest setPredicate:](v15, "setPredicate:", [v16 predicateWithFormat:@"%K = %@ AND %K = %@ AND database.databaseScopeNum = %@", @"ckRecordZoneName", zoneName, @"ckOwnerName", ownerName, objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", d)]);
+  v19 = [store executeFetchRequest:v15 error:missing];
+  lastObject = v19;
   if (v19)
   {
     if ([(NSManagedObject *)v19 count]>= 2)
@@ -117,9 +117,9 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v29 = a2;
+        scopeCopy2 = a2;
         v30 = 2112;
-        v31 = v20;
+        v31 = lastObject;
         _os_log_error_impl(&dword_18565F000, v21, OS_LOG_TYPE_ERROR, "CoreData: fault: Multiple zone entires discovered for a single record zone: %@\n%@\n", buf, 0x16u);
       }
 
@@ -127,39 +127,39 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412546;
-        v29 = a2;
+        scopeCopy2 = a2;
         v30 = 2112;
-        v31 = v20;
+        v31 = lastObject;
         _os_log_fault_impl(&dword_18565F000, v22, OS_LOG_TYPE_FAULT, "CoreData: Multiple zone entires discovered for a single record zone: %@\n%@", buf, 0x16u);
       }
     }
 
-    v20 = [(NSManagedObject *)v20 lastObject];
-    if (!v20 && a6)
+    lastObject = [(NSManagedObject *)lastObject lastObject];
+    if (!lastObject && context)
     {
-      v23 = [NSCKDatabaseMetadata databaseMetadataForScope:a3 forStore:a4 inContext:a5 error:a7];
+      v23 = [NSCKDatabaseMetadata databaseMetadataForScope:d forStore:scope inContext:store error:missing];
       if (v23)
       {
         v24 = v23;
-        v20 = +[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", +[NSCKRecordZoneMetadata entityPath], a5);
-        -[NSManagedObject setCkRecordZoneName:](v20, "setCkRecordZoneName:", [a2 zoneName]);
-        -[NSManagedObject setCkOwnerName:](v20, "setCkOwnerName:", [a2 ownerName]);
-        [(NSManagedObject *)v20 setDatabase:v24];
-        [a5 assignObject:v20 toPersistentStore:a4];
+        lastObject = +[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", +[NSCKRecordZoneMetadata entityPath], store);
+        -[NSManagedObject setCkRecordZoneName:](lastObject, "setCkRecordZoneName:", [a2 zoneName]);
+        -[NSManagedObject setCkOwnerName:](lastObject, "setCkOwnerName:", [a2 ownerName]);
+        [(NSManagedObject *)lastObject setDatabase:v24];
+        [store assignObject:lastObject toPersistentStore:scope];
       }
 
       else
       {
-        v20 = 0;
+        lastObject = 0;
       }
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
-  return v20;
+  return lastObject;
 }
 
-+ (id)fetchZoneIDsAssignedToObjectsWithIDs:(id)a3 fromStore:(id)a4 inContext:(id)a5 error:(id *)a6
++ (id)fetchZoneIDsAssignedToObjectsWithIDs:(id)ds fromStore:(id)store inContext:(id)context error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
   v38 = 0;
@@ -168,11 +168,11 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = [PFCloudKitMetadataModel createMapOfEntityIDToPrimaryKeySetForObjectIDs:a3];
+  obj = [PFCloudKitMetadataModel createMapOfEntityIDToPrimaryKeySetForObjectIDs:ds];
   v8 = [obj countByEnumeratingWithState:&v34 objects:v45 count:16];
   if (v8)
   {
-    v23 = a6;
+    errorCopy = error;
     v24 = *v35;
     while (2)
     {
@@ -191,17 +191,17 @@
         [(NSFetchRequest *)v12 setResultType:2];
         [(NSFetchRequest *)v12 setPropertiesToFetch:&unk_1EF43D510];
         [(NSFetchRequest *)v12 setPropertiesToGroupBy:&unk_1EF43D528];
-        v44 = a4;
-        -[NSFetchRequest setAffectedStores:](v12, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1]);
-        v13 = [a5 executeFetchRequest:v12 error:&v38];
+        storeCopy = store;
+        -[NSFetchRequest setAffectedStores:](v12, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&storeCopy count:1]);
+        v13 = [context executeFetchRequest:v12 error:&v38];
         v14 = v13;
         if (!v13)
         {
           if (v38)
           {
-            if (v23)
+            if (errorCopy)
             {
-              *v23 = v38;
+              *errorCopy = v38;
             }
           }
 
@@ -280,24 +280,24 @@ LABEL_25:
   return v29;
 }
 
-+ (id)countZonesInStore:(id)a3 matchingPredicate:(id)a4 withManagedObjectContext:(id)a5 error:(id *)a6
++ (id)countZonesInStore:(id)store matchingPredicate:(id)predicate withManagedObjectContext:(id)context error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v16 = 0;
   v10 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordZoneMetadata entityPath]);
-  [(NSFetchRequest *)v10 setPredicate:a4];
+  [(NSFetchRequest *)v10 setPredicate:predicate];
   [(NSFetchRequest *)v10 setResultType:4];
-  v21[0] = a3;
+  v21[0] = store;
   -[NSFetchRequest setAffectedStores:](v10, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1]);
-  v11 = [a5 executeFetchRequest:v10 error:&v16];
+  v11 = [context executeFetchRequest:v10 error:&v16];
   if (!v11 || (result = [v11 lastObject]) == 0)
   {
     if (v16)
     {
-      if (a6)
+      if (error)
       {
         result = 0;
-        *a6 = v16;
+        *error = v16;
         goto LABEL_11;
       }
     }
@@ -333,25 +333,25 @@ LABEL_11:
   return result;
 }
 
-- (void)updateEncodedShareWithData:(id)a3
+- (void)updateEncodedShareWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     if (![(NSCKRecordZoneMetadata *)self encodedShareAsset])
     {
       [(NSCKRecordZoneMetadata *)self setEncodedShareAsset:+[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", +[NSCKRecordZoneMetadataEncodedShareAsset entityPath], [(NSManagedObject *)self managedObjectContext])];
       [(NSManagedObjectContext *)[(NSManagedObject *)self managedObjectContext] assignObject:[(NSCKRecordZoneMetadata *)self encodedShareAsset] toPersistentStore:[(NSManagedObjectID *)[(NSManagedObject *)self objectID] persistentStore]];
     }
 
-    v5 = [(NSCKRecordZoneMetadata *)self encodedShareAsset];
-    if (v5)
+    encodedShareAsset = [(NSCKRecordZoneMetadata *)self encodedShareAsset];
+    if (encodedShareAsset)
     {
-      v6 = v5;
-      v7 = [v4 length];
+      v6 = encodedShareAsset;
+      v7 = [dataCopy length];
       if (v7 <= 0x4000)
       {
-        v8 = v4;
+        v8 = dataCopy;
       }
 
       else
@@ -361,12 +361,12 @@ LABEL_11:
 
       if (v7 <= 0x4000)
       {
-        v4 = 0;
+        dataCopy = 0;
       }
 
       [v6 setBinaryData:v8];
 
-      [v6 setExternalBinaryData:v4];
+      [v6 setExternalBinaryData:dataCopy];
     }
   }
 
@@ -381,10 +381,10 @@ LABEL_11:
 {
   if ([(NSCKRecordZoneMetadata *)self encodedShareAsset])
   {
-    v3 = [(NSManagedObject *)self managedObjectContext];
-    v4 = [(NSCKRecordZoneMetadata *)self encodedShareAsset];
+    managedObjectContext = [(NSManagedObject *)self managedObjectContext];
+    encodedShareAsset = [(NSCKRecordZoneMetadata *)self encodedShareAsset];
 
-    [(NSManagedObjectContext *)v3 deleteObject:v4];
+    [(NSManagedObjectContext *)managedObjectContext deleteObject:encodedShareAsset];
   }
 }
 

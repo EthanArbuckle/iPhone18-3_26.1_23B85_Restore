@@ -1,27 +1,27 @@
 @interface TIKeyboardInputManagerPolymorph
 - (void)dealloc;
-- (void)handleKeyboardInput:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5;
-- (void)handleKeyboardState:(id)a3 withInputEvent:(id)a4;
-- (void)setInputManagerForInputMode:(id)a3 withKeyboardState:(id)a4 class:(Class)a5;
-- (void)setInputManagerForKeyboardState:(id)a3 withInputEvent:(id)a4;
-- (void)skipHitTestForTouchEvent:(id)a3 keyboardState:(id)a4;
-- (void)syncToKeyboardState:(id)a3 completionHandler:(id)a4;
+- (void)handleKeyboardInput:(id)input keyboardState:(id)state completionHandler:(id)handler;
+- (void)handleKeyboardState:(id)state withInputEvent:(id)event;
+- (void)setInputManagerForInputMode:(id)mode withKeyboardState:(id)state class:(Class)class;
+- (void)setInputManagerForKeyboardState:(id)state withInputEvent:(id)event;
+- (void)skipHitTestForTouchEvent:(id)event keyboardState:(id)state;
+- (void)syncToKeyboardState:(id)state completionHandler:(id)handler;
 @end
 
 @implementation TIKeyboardInputManagerPolymorph
 
-- (void)syncToKeyboardState:(id)a3 completionHandler:(id)a4
+- (void)syncToKeyboardState:(id)state completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__TIKeyboardInputManagerPolymorph_syncToKeyboardState_completionHandler___block_invoke;
   v9[3] = &unk_27872F5E8;
-  v10 = v6;
+  v10 = handlerCopy;
   v8.receiver = self;
   v8.super_class = TIKeyboardInputManagerPolymorph;
-  v7 = v6;
-  [(TIKeyboardInputManagerWrapper *)&v8 syncToKeyboardState:a3 completionHandler:v9];
+  v7 = handlerCopy;
+  [(TIKeyboardInputManagerWrapper *)&v8 syncToKeyboardState:state completionHandler:v9];
 }
 
 void __73__TIKeyboardInputManagerPolymorph_syncToKeyboardState_completionHandler___block_invoke(uint64_t a1)
@@ -31,10 +31,10 @@ void __73__TIKeyboardInputManagerPolymorph_syncToKeyboardState_completionHandler
   [v1 touchWithReason:0];
 }
 
-- (void)skipHitTestForTouchEvent:(id)a3 keyboardState:(id)a4
+- (void)skipHitTestForTouchEvent:(id)event keyboardState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  stateCopy = state;
   kdebug_trace();
   v8 = kac_get_log();
   v9 = os_signpost_id_make_with_pointer(v8, (self ^ 0x66));
@@ -48,13 +48,13 @@ void __73__TIKeyboardInputManagerPolymorph_syncToKeyboardState_completionHandler
     }
   }
 
-  v11 = [v6 pathIndex];
-  if (v6 && (v12 = v11, [v7 layoutState], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "userInterfaceIdiom"), v13, v14 == 1))
+  pathIndex = [eventCopy pathIndex];
+  if (eventCopy && (v12 = pathIndex, [stateCopy layoutState], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "userInterfaceIdiom"), v13, v14 == 1))
   {
-    v15 = [v6 stage];
-    if (v15 != 5)
+    stage = [eventCopy stage];
+    if (stage != 5)
     {
-      if (v15 == 4)
+      if (stage == 4)
       {
         v16 = +[TITypingAssertion sharedTypingAssertion];
         [v16 restTouchStartWithPathIndex:v12];
@@ -64,12 +64,12 @@ void __73__TIKeyboardInputManagerPolymorph_syncToKeyboardState_completionHandler
       {
         v23.receiver = self;
         v23.super_class = TIKeyboardInputManagerPolymorph;
-        [(TIKeyboardInputManagerWrapper *)&v23 skipHitTestForTouchEvent:v6 keyboardState:v7];
+        [(TIKeyboardInputManagerWrapper *)&v23 skipHitTestForTouchEvent:eventCopy keyboardState:stateCopy];
       }
     }
 
-    v18 = [v6 stage];
-    if (v18 == 5 || !v18)
+    stage2 = [eventCopy stage];
+    if (stage2 == 5 || !stage2)
     {
       v19 = +[TITypingAssertion sharedTypingAssertion];
       [v19 restTouchEndWithPathIndex:v12];
@@ -83,7 +83,7 @@ void __73__TIKeyboardInputManagerPolymorph_syncToKeyboardState_completionHandler
 
     v23.receiver = self;
     v23.super_class = TIKeyboardInputManagerPolymorph;
-    [(TIKeyboardInputManagerWrapper *)&v23 skipHitTestForTouchEvent:v6 keyboardState:v7];
+    [(TIKeyboardInputManagerWrapper *)&v23 skipHitTestForTouchEvent:eventCopy keyboardState:stateCopy];
   }
 
   kdebug_trace();
@@ -100,11 +100,11 @@ void __73__TIKeyboardInputManagerPolymorph_syncToKeyboardState_completionHandler
   }
 }
 
-- (void)handleKeyboardInput:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5
+- (void)handleKeyboardInput:(id)input keyboardState:(id)state completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  inputCopy = input;
+  stateCopy = state;
+  handlerCopy = handler;
   kdebug_trace();
   v11 = kac_get_log();
   v12 = os_signpost_id_make_with_pointer(v11, (self ^ 0x64));
@@ -118,38 +118,38 @@ void __73__TIKeyboardInputManagerPolymorph_syncToKeyboardState_completionHandler
     }
   }
 
-  v14 = [v8 touchEvent];
-  v15 = [v14 pathIndex];
+  touchEvent = [inputCopy touchEvent];
+  pathIndex = [touchEvent pathIndex];
 
-  v16 = [v8 touchEvent];
-  if (v16 && (v17 = v16, [v9 layoutState], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "userInterfaceIdiom"), v18, v17, v19 == 1))
+  touchEvent2 = [inputCopy touchEvent];
+  if (touchEvent2 && (v17 = touchEvent2, [stateCopy layoutState], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "userInterfaceIdiom"), v18, v17, v19 == 1))
   {
-    v20 = [v8 touchEvent];
-    v21 = [v20 stage];
+    touchEvent3 = [inputCopy touchEvent];
+    stage = [touchEvent3 stage];
 
-    if (v21 == 5)
+    if (stage == 5)
     {
 LABEL_15:
-      v27 = [v8 touchEvent];
-      v28 = [v27 stage];
+      touchEvent4 = [inputCopy touchEvent];
+      stage2 = [touchEvent4 stage];
 
-      if (v28 == 5 || !v28)
+      if (stage2 == 5 || !stage2)
       {
         v29 = +[TITypingAssertion sharedTypingAssertion];
-        [v29 restTouchEndWithPathIndex:v15];
+        [v29 restTouchEndWithPathIndex:pathIndex];
       }
 
       goto LABEL_18;
     }
 
-    if (v21 != 4)
+    if (stage != 4)
     {
       v23 = 1;
       goto LABEL_11;
     }
 
     v22 = +[TITypingAssertion sharedTypingAssertion];
-    [v22 restTouchStartWithPathIndex:v15];
+    [v22 restTouchStartWithPathIndex:pathIndex];
     v23 = 1;
   }
 
@@ -179,10 +179,10 @@ LABEL_11:
   v34[2] = __87__TIKeyboardInputManagerPolymorph_handleKeyboardInput_keyboardState_completionHandler___block_invoke;
   v34[3] = &unk_27872F5C0;
   v34[4] = self;
-  v35 = v10;
+  v35 = handlerCopy;
   v33.receiver = self;
   v33.super_class = TIKeyboardInputManagerPolymorph;
-  [(TIKeyboardInputManagerWrapper *)&v33 handleKeyboardInput:v8 keyboardState:v9 completionHandler:v34];
+  [(TIKeyboardInputManagerWrapper *)&v33 handleKeyboardInput:inputCopy keyboardState:stateCopy completionHandler:v34];
 
   if (v23)
   {
@@ -226,20 +226,20 @@ void __87__TIKeyboardInputManagerPolymorph_handleKeyboardInput_keyboardState_com
   }
 }
 
-- (void)setInputManagerForInputMode:(id)a3 withKeyboardState:(id)a4 class:(Class)a5
+- (void)setInputManagerForInputMode:(id)mode withKeyboardState:(id)state class:(Class)class
 {
-  v26 = a3;
-  v8 = a4;
+  modeCopy = mode;
+  stateCopy = state;
   v9 = +[TIKeyboardInputManagerLoader sharedLoader];
-  v10 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  if ([v9 isActiveInputManager:v10])
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  if ([v9 isActiveInputManager:inputManager])
   {
-    v11 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    if ([v11 isMemberOfClass:a5])
+    inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    if ([inputManager2 isMemberOfClass:class])
     {
-      v12 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-      v13 = [v12 inputMode];
-      v14 = [v13 isEqual:v26];
+      inputManager3 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+      inputMode = [inputManager3 inputMode];
+      v14 = [inputMode isEqual:modeCopy];
 
       if (v14)
       {
@@ -251,19 +251,19 @@ void __87__TIKeyboardInputManagerPolymorph_handleKeyboardInput_keyboardState_com
   }
 
 LABEL_7:
-  v15 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v9 cacheInputManager:v15 switchingToInputMode:v26];
+  inputManager4 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [v9 cacheInputManager:inputManager4 switchingToInputMode:modeCopy];
 
-  v16 = [v9 inputManagerForInputMode:v26 withKeyboardState:v8 class:a5];
+  v16 = [v9 inputManagerForInputMode:modeCopy withKeyboardState:stateCopy class:class];
   [(TIKeyboardInputManagerWrapper *)self setInputManager:v16];
 
-  v17 = [(TIKeyboardInputManagerWrapper *)self cachedContextChangeTrigger];
+  cachedContextChangeTrigger = [(TIKeyboardInputManagerWrapper *)self cachedContextChangeTrigger];
 
-  if (v17)
+  if (cachedContextChangeTrigger)
   {
-    v18 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    v19 = [(TIKeyboardInputManagerWrapper *)self cachedContextChangeTrigger];
-    [v18 changingContextWithTrigger:v19];
+    inputManager5 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    cachedContextChangeTrigger2 = [(TIKeyboardInputManagerWrapper *)self cachedContextChangeTrigger];
+    [inputManager5 changingContextWithTrigger:cachedContextChangeTrigger2];
 
     [(TIKeyboardInputManagerWrapper *)self setCachedContextChangeTrigger:0];
   }
@@ -275,49 +275,49 @@ LABEL_7:
   }
 
   [(TITypologyPreferences *)v20 setTypologyProfileOptInManager:_typologyProfileOptInManager(void)::optInManager];
-  v21 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v21 setTypologyPreferences:v20];
+  inputManager6 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager6 setTypologyPreferences:v20];
 
   v22 = [[TIKeyboardInputManagerLogger alloc] initWithTypologyPreferences:v20];
-  v23 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v23 setInputManagerLogger:v22];
+  inputManager7 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager7 setInputManagerLogger:v22];
 
-  v24 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v25 = [v24 configurationPropertyList];
-  [(TIKeyboardInputManagerLogger *)v22 setConfig:v25];
+  inputManager8 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  configurationPropertyList = [inputManager8 configurationPropertyList];
+  [(TIKeyboardInputManagerLogger *)v22 setConfig:configurationPropertyList];
 
 LABEL_12:
 }
 
-- (void)setInputManagerForKeyboardState:(id)a3 withInputEvent:(id)a4
+- (void)setInputManagerForKeyboardState:(id)state withInputEvent:(id)event
 {
-  v25 = a3;
-  v5 = [v25 clientIdentifier];
-  v6 = [v25 inputMode];
+  stateCopy = state;
+  clientIdentifier = [stateCopy clientIdentifier];
+  inputMode = [stateCopy inputMode];
   v7 = TIIsTypeToSiriModeEnabled();
 
-  v8 = [v25 inputMode];
-  v9 = [TIInputMode inputModeWithIdentifier:v8 isSiriMode:v7];
+  inputMode2 = [stateCopy inputMode];
+  v9 = [TIInputMode inputModeWithIdentifier:inputMode2 isSiriMode:v7];
 
   if (_os_feature_enabled_impl() && ([MEMORY[0x277D6F470] sharedPreferencesController], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLForPreferenceKey:", *MEMORY[0x277D6F8B0]), v10, v11) && (objc_msgSend(v9, "isSiriMode") & 1) == 0)
   {
-    v12 = [v9 multilingualInputManagerClass];
+    multilingualInputManagerClass = [v9 multilingualInputManagerClass];
   }
 
   else
   {
-    v12 = [v9 inputManagerClass];
+    multilingualInputManagerClass = [v9 inputManagerClass];
   }
 
-  v13 = v12;
-  if ([v25 hardwareKeyboardMode])
+  inputManagerClass = multilingualInputManagerClass;
+  if ([stateCopy hardwareKeyboardMode])
   {
-    v14 = [v9 languageWithRegion];
-    v15 = [v14 isEqualToString:@"ja_JP"];
+    languageWithRegion = [v9 languageWithRegion];
+    v15 = [languageWithRegion isEqualToString:@"ja_JP"];
 
     if (v15)
     {
-      v16 = [v25 inputMode];
+      inputMode3 = [stateCopy inputMode];
       v17 = TIInputModeGetComponentsFromIdentifier();
       v18 = [v17 objectForKey:@"hw"];
       v19 = [v18 isEqualToString:@"KANA"];
@@ -334,13 +334,13 @@ LABEL_12:
 
       v21 = [TIInputMode inputModeWithIdentifier:v20 isSiriMode:v7];
 
-      v13 = [v21 inputManagerClass];
+      inputManagerClass = [v21 inputManagerClass];
       v9 = v21;
     }
   }
 
-  v22 = [v9 languageWithRegion];
-  v23 = [v22 hasPrefix:@"ars"];
+  languageWithRegion2 = [v9 languageWithRegion];
+  v23 = [languageWithRegion2 hasPrefix:@"ars"];
 
   if (v23)
   {
@@ -349,33 +349,33 @@ LABEL_12:
     v9 = v24;
   }
 
-  [(TIKeyboardInputManagerPolymorph *)self setInputManagerForInputMode:v9 withKeyboardState:v25 class:v13];
+  [(TIKeyboardInputManagerPolymorph *)self setInputManagerForInputMode:v9 withKeyboardState:stateCopy class:inputManagerClass];
 }
 
-- (void)handleKeyboardState:(id)a3 withInputEvent:(id)a4
+- (void)handleKeyboardState:(id)state withInputEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = TIKeyboardInputManagerPolymorph;
-  v6 = a4;
-  v7 = a3;
-  [(TIKeyboardInputManagerWrapper *)&v8 handleKeyboardState:v7 withInputEvent:v6];
-  [(TIKeyboardInputManagerPolymorph *)self setInputManagerForKeyboardState:v7 withInputEvent:v6, v8.receiver, v8.super_class];
+  eventCopy = event;
+  stateCopy = state;
+  [(TIKeyboardInputManagerWrapper *)&v8 handleKeyboardState:stateCopy withInputEvent:eventCopy];
+  [(TIKeyboardInputManagerPolymorph *)self setInputManagerForKeyboardState:stateCopy withInputEvent:eventCopy, v8.receiver, v8.super_class];
 }
 
 - (void)dealloc
 {
-  v3 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v4 = [v3 inputMode];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  inputMode = [inputManager inputMode];
 
-  if (v4)
+  if (inputMode)
   {
-    v5 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __42__TIKeyboardInputManagerPolymorph_dealloc__block_invoke;
     v11 = &unk_278733308;
-    v12 = v5;
-    v6 = v5;
+    v12 = inputManager2;
+    v6 = inputManager2;
     TIDispatchAsync();
   }
 

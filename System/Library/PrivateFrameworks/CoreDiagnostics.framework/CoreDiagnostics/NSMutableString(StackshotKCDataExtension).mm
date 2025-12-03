@@ -21,7 +21,7 @@
       }
     }
 
-    [a1 appendFormat:@" (%@)", v7];
+    [self appendFormat:@" (%@)", v7];
   }
 }
 

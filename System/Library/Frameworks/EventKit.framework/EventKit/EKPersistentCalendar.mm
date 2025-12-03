@@ -3,7 +3,7 @@
 + (id)defaultPropertiesToLoad;
 + (id)relations;
 - (id)description;
-- (void)setExternalRepresentation:(id)a3;
+- (void)setExternalRepresentation:(id)representation;
 @end
 
 @implementation EKPersistentCalendar
@@ -87,19 +87,19 @@ void __33__EKPersistentCalendar_relations__block_invoke()
   relations_relations_0 = v10;
 }
 
-- (void)setExternalRepresentation:(id)a3
+- (void)setExternalRepresentation:(id)representation
 {
-  v4 = [a3 copy];
+  v4 = [representation copy];
   [(EKPersistentObject *)self primitiveSetDataValue:v4 forKey:*MEMORY[0x1E6992758]];
 }
 
 - (id)description
 {
-  v3 = [(EKPersistentCalendar *)self flags];
+  flags = [(EKPersistentCalendar *)self flags];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [(EKPersistentCalendar *)self unlocalizedTitle];
-  if (v3)
+  unlocalizedTitle = [(EKPersistentCalendar *)self unlocalizedTitle];
+  if (flags)
   {
     v7 = "NO";
   }
@@ -109,10 +109,10 @@ void __33__EKPersistentCalendar_relations__block_invoke()
     v7 = "YES";
   }
 
-  v8 = [(EKPersistentCalendar *)self colorStringRaw];
-  v9 = [(EKPersistentCalendar *)self source];
-  v10 = [(EKPersistentCalendar *)self sharees];
-  v11 = [v4 stringWithFormat:@"%@ <%p> {title = %@ allowsModify = %s; color = %@; source = %@; sharees = %@}", v5, self, v6, v7, v8, v9, v10];;
+  colorStringRaw = [(EKPersistentCalendar *)self colorStringRaw];
+  source = [(EKPersistentCalendar *)self source];
+  sharees = [(EKPersistentCalendar *)self sharees];
+  v11 = [v4 stringWithFormat:@"%@ <%p> {title = %@ allowsModify = %s; color = %@; source = %@; sharees = %@}", v5, self, unlocalizedTitle, v7, colorStringRaw, source, sharees];;
 
   return v11;
 }

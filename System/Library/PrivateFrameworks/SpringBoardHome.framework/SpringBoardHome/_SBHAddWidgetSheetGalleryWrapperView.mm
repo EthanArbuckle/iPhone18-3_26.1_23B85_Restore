@@ -1,20 +1,20 @@
 @interface _SBHAddWidgetSheetGalleryWrapperView
 - (NSDirectionalEdgeInsets)contentInsets;
-- (_SBHAddWidgetSheetGalleryWrapperView)initWithFrame:(CGRect)a3;
+- (_SBHAddWidgetSheetGalleryWrapperView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setContentScaleFactor:(double)a3;
-- (void)setContentView:(id)a3;
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setContentScaleFactor:(double)factor;
+- (void)setContentView:(id)view;
 @end
 
 @implementation _SBHAddWidgetSheetGalleryWrapperView
 
-- (_SBHAddWidgetSheetGalleryWrapperView)initWithFrame:(CGRect)a3
+- (_SBHAddWidgetSheetGalleryWrapperView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = _SBHAddWidgetSheetGalleryWrapperView;
   v7 = [(_SBHAddWidgetSheetGalleryWrapperView *)&v12 initWithFrame:?];
@@ -32,38 +32,38 @@
   return v8;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
-  if (self->_contentView != v5)
+  viewCopy = view;
+  if (self->_contentView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_contentView, view);
     [(UIView *)self->_contentView removeFromSuperview];
     [(UIView *)self->_scalingView addSubview:v6];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_contentScaleFactor = a3;
+    self->_contentScaleFactor = factor;
 
     [(_SBHAddWidgetSheetGalleryWrapperView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(_SBHAddWidgetSheetGalleryWrapperView *)self setNeedsLayout];
   }
 }

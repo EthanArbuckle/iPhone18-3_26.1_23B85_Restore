@@ -1,5 +1,5 @@
 @interface ACCiAP2ShimAccessory
-- (ACCiAP2ShimAccessory)initWithUID:(id)a3 keyTag:(id)a4 features:(unsigned int)a5;
+- (ACCiAP2ShimAccessory)initWithUID:(id)d keyTag:(id)tag features:(unsigned int)features;
 - (id)accessoryInfoDict;
 @end
 
@@ -120,10 +120,10 @@ LABEL_24:
   return v3;
 }
 
-- (ACCiAP2ShimAccessory)initWithUID:(id)a3 keyTag:(id)a4 features:(unsigned int)a5
+- (ACCiAP2ShimAccessory)initWithUID:(id)d keyTag:(id)tag features:(unsigned int)features
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  tagCopy = tag;
   v26.receiver = self;
   v26.super_class = ACCiAP2ShimAccessory;
   v11 = [(ACCiAP2ShimAccessory *)&v26 init];
@@ -146,8 +146,8 @@ LABEL_24:
 
     _Generate32BitConnectionID_connectionID = v12 & 0xFFFFFF | 0x2000000;
     v11->_connectionID = _Generate32BitConnectionID_connectionID;
-    objc_storeStrong(&v11->_accessoryUID, a3);
-    objc_storeStrong(&v11->_keyTag, a4);
+    objc_storeStrong(&v11->_accessoryUID, d);
+    objc_storeStrong(&v11->_keyTag, tag);
     name = v11->_name;
     v11->_name = @"TEST_NAME";
 
@@ -166,7 +166,7 @@ LABEL_24:
     hardwareVersion = v11->_hardwareVersion;
     v11->_hardwareVersion = @"0.0.0";
 
-    v11->_featureTypeMask = a5;
+    v11->_featureTypeMask = features;
     v11->_dontPublish = 0;
     context = v11->_context;
     v11->_context = 0;

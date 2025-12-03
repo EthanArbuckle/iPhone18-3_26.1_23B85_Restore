@@ -1,18 +1,18 @@
 @interface _CPPhotosAttributes
-- (BOOL)isEqual:(id)a3;
-- (_CPPhotosAttributes)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPPhotosAttributes)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPPhotosAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (positionIndex = self->_positionIndex, positionIndex == objc_msgSend(v4, "positionIndex")) && (isEmbeddingMatched = self->_isEmbeddingMatched, isEmbeddingMatched == objc_msgSend(v4, "isEmbeddingMatched")) && (isMetadataMatched = self->_isMetadataMatched, isMetadataMatched == objc_msgSend(v4, "isMetadataMatched")) && (isVideo = self->_isVideo, isVideo == objc_msgSend(v4, "isVideo")) && (isFavorite = self->_isFavorite, isFavorite == objc_msgSend(v4, "isFavorite")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (positionIndex = self->_positionIndex, positionIndex == objc_msgSend(equalCopy, "positionIndex")) && (isEmbeddingMatched = self->_isEmbeddingMatched, isEmbeddingMatched == objc_msgSend(equalCopy, "isEmbeddingMatched")) && (isMetadataMatched = self->_isMetadataMatched, isMetadataMatched == objc_msgSend(equalCopy, "isMetadataMatched")) && (isVideo = self->_isVideo, isVideo == objc_msgSend(equalCopy, "isVideo")) && (isFavorite = self->_isFavorite, isFavorite == objc_msgSend(equalCopy, "isFavorite")))
   {
     photosSuggestionType = self->_photosSuggestionType;
-    v11 = photosSuggestionType == [v4 photosSuggestionType];
+    v11 = photosSuggestionType == [equalCopy photosSuggestionType];
   }
 
   else
@@ -23,9 +23,9 @@
   return v11;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPPhotosAttributes *)self positionIndex])
   {
     positionIndex = self->_positionIndex;
@@ -65,17 +65,17 @@
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPPhotosAttributes)initWithFacade:(id)a3
+- (_CPPhotosAttributes)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPPhotosAttributes *)self init];
   if (v5)
   {
-    -[_CPPhotosAttributes setPositionIndex:](v5, "setPositionIndex:", [v4 positionIndex]);
-    -[_CPPhotosAttributes setIsEmbeddingMatched:](v5, "setIsEmbeddingMatched:", [v4 isEmbeddingMatched]);
-    -[_CPPhotosAttributes setIsMetadataMatched:](v5, "setIsMetadataMatched:", [v4 isMetadataMatched]);
-    -[_CPPhotosAttributes setIsVideo:](v5, "setIsVideo:", [v4 isVideo]);
-    -[_CPPhotosAttributes setIsFavorite:](v5, "setIsFavorite:", [v4 isFavorite]);
+    -[_CPPhotosAttributes setPositionIndex:](v5, "setPositionIndex:", [facadeCopy positionIndex]);
+    -[_CPPhotosAttributes setIsEmbeddingMatched:](v5, "setIsEmbeddingMatched:", [facadeCopy isEmbeddingMatched]);
+    -[_CPPhotosAttributes setIsMetadataMatched:](v5, "setIsMetadataMatched:", [facadeCopy isMetadataMatched]);
+    -[_CPPhotosAttributes setIsVideo:](v5, "setIsVideo:", [facadeCopy isVideo]);
+    -[_CPPhotosAttributes setIsFavorite:](v5, "setIsFavorite:", [facadeCopy isFavorite]);
     v6 = v5;
   }
 

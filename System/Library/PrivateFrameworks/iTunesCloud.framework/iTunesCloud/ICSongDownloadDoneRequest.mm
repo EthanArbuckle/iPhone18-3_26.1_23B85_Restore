@@ -1,8 +1,8 @@
 @interface ICSongDownloadDoneRequest
-- (ICSongDownloadDoneRequest)initWithRequestContext:(id)a3 downloadIdentifier:(id)a4 songID:(unint64_t)a5;
+- (ICSongDownloadDoneRequest)initWithRequestContext:(id)context downloadIdentifier:(id)identifier songID:(unint64_t)d;
 - (void)cancel;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICSongDownloadDoneRequest
@@ -97,16 +97,16 @@ void __36__ICSongDownloadDoneRequest_execute__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__ICSongDownloadDoneRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
@@ -118,19 +118,19 @@ void __63__ICSongDownloadDoneRequest_performRequestWithResponseHandler___block_i
   *(v2 + 328) = 0;
 }
 
-- (ICSongDownloadDoneRequest)initWithRequestContext:(id)a3 downloadIdentifier:(id)a4 songID:(unint64_t)a5
+- (ICSongDownloadDoneRequest)initWithRequestContext:(id)context downloadIdentifier:(id)identifier songID:(unint64_t)d
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = ICSongDownloadDoneRequest;
   v11 = [(ICRequestOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_requestContext, a3);
-    objc_storeStrong(&v12->_downloadIdentifier, a4);
-    v12->_songID = a5;
+    objc_storeStrong(&v11->_requestContext, context);
+    objc_storeStrong(&v12->_downloadIdentifier, identifier);
+    v12->_songID = d;
   }
 
   return v12;

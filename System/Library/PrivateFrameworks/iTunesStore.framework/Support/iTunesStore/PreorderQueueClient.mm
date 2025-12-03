@@ -1,8 +1,8 @@
 @interface PreorderQueueClient
-- (BOOL)supportsItemKind:(id)a3;
+- (BOOL)supportsItemKind:(id)kind;
 - (NSSet)itemKinds;
 - (void)dealloc;
-- (void)setItemKinds:(id)a3;
+- (void)setItemKinds:(id)kinds;
 @end
 
 @implementation PreorderQueueClient
@@ -35,7 +35,7 @@
   return v3;
 }
 
-- (void)setItemKinds:(id)a3
+- (void)setItemKinds:(id)kinds
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -43,11 +43,11 @@
   v4[2] = sub_100183954;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = kinds;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (BOOL)supportsItemKind:(id)a3
+- (BOOL)supportsItemKind:(id)kind
 {
   v7 = 0;
   v8 = &v7;
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = sub_100183A5C;
   block[3] = &unk_100329338;
-  block[5] = a3;
+  block[5] = kind;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(dispatchQueue, block);

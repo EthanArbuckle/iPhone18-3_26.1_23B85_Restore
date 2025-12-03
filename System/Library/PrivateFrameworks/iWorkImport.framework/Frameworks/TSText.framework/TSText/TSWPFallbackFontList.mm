@@ -1,12 +1,12 @@
 @interface TSWPFallbackFontList
 + (id)sharedInstance;
-- (BOOL)isMasqueradingFontName:(id)a3;
+- (BOOL)isMasqueradingFontName:(id)name;
 - (NSSet)replaceableFontNames;
 - (TSWPFallbackFontList)init;
-- (TSWPFallbackFontList)initWithList:(id)a3;
-- (id)fallbackFontNameForFontWithName:(id)a3;
-- (id)fallbackListForPostscriptFontName:(id)a3;
-- (id)localizedNameForMasqueradingFontName:(id)a3;
+- (TSWPFallbackFontList)initWithList:(id)list;
+- (id)fallbackFontNameForFontWithName:(id)name;
+- (id)fallbackListForPostscriptFontName:(id)name;
+- (id)localizedNameForMasqueradingFontName:(id)name;
 @end
 
 @implementation TSWPFallbackFontList
@@ -35,16 +35,16 @@
   return v11;
 }
 
-- (TSWPFallbackFontList)initWithList:(id)a3
+- (TSWPFallbackFontList)initWithList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v10.receiver = self;
   v10.super_class = TSWPFallbackFontList;
   v6 = [(TSWPFallbackFontList *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fallbackFontList, a3);
+    objc_storeStrong(&v6->_fallbackFontList, list);
     localizedFontFamilyNameResolver = v7->_localizedFontFamilyNameResolver;
     v7->_localizedFontFamilyNameResolver = &unk_2886098F0;
   }
@@ -62,13 +62,13 @@
   return v9;
 }
 
-- (id)fallbackListForPostscriptFontName:(id)a3
+- (id)fallbackListForPostscriptFontName:(id)name
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6);
   v10 = objc_msgSend_fallbackFontList(self, v8, v9);
-  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, v4);
+  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, nameCopy);
 
   v25 = 0u;
   v26 = 0u;
@@ -102,12 +102,12 @@
   return v7;
 }
 
-- (id)fallbackFontNameForFontWithName:(id)a3
+- (id)fallbackFontNameForFontWithName:(id)name
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_fallbackFontList(self, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, nameCopy);
 
   v26 = 0u;
   v27 = 0u;
@@ -159,22 +159,22 @@ LABEL_9:
   return v17;
 }
 
-- (id)localizedNameForMasqueradingFontName:(id)a3
+- (id)localizedNameForMasqueradingFontName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_localizedFontFamilyNameResolver(self, v5, v6);
   v8 = v7[2]();
 
-  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, v4);
+  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, nameCopy);
 
   return v10;
 }
 
-- (BOOL)isMasqueradingFontName:(id)a3
+- (BOOL)isMasqueradingFontName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_sharedInstance(TSWPFontVerifier, v5, v6);
-  isFontWithPostscriptNameInstalled = objc_msgSend_isFontWithPostscriptNameInstalled_(v7, v8, v4);
+  isFontWithPostscriptNameInstalled = objc_msgSend_isFontWithPostscriptNameInstalled_(v7, v8, nameCopy);
 
   if (isFontWithPostscriptNameInstalled)
   {
@@ -183,7 +183,7 @@ LABEL_9:
 
   else
   {
-    v12 = objc_msgSend_fallbackFontNameForFontWithName_(self, v10, v4);
+    v12 = objc_msgSend_fallbackFontNameForFontWithName_(self, v10, nameCopy);
     if (objc_msgSend_length(v12, v13, v14))
     {
       v17 = objc_msgSend_masqueradingFontNames(self, v15, v16);

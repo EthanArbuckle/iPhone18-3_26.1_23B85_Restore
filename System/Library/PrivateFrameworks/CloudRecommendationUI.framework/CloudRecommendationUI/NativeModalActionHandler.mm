@@ -1,21 +1,21 @@
 @interface NativeModalActionHandler
 - (_TtC21CloudRecommendationUI24NativeModalActionHandler)init;
 - (void)userDidCancelAction;
-- (void)userDidCompleteAction:(id)a3;
+- (void)userDidCompleteAction:(id)action;
 @end
 
 @implementation NativeModalActionHandler
 
-- (void)userDidCompleteAction:(id)a3
+- (void)userDidCompleteAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_243A71408(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_243A71408(actionCopy);
 }
 
 - (void)userDidCancelAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_243A71540();
 }
 

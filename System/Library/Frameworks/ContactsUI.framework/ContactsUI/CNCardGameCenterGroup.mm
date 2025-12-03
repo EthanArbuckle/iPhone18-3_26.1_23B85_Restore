@@ -1,8 +1,8 @@
 @interface CNCardGameCenterGroup
-+ (BOOL)relationshipResultsContainsFriend:(id)a3;
-+ (BOOL)shouldShowAddFriendActionForRelationshipResults:(id)a3;
-+ (id)actionForRelationshipResults:(id)a3 forContact:(id)a4;
-- (CNCardGameCenterGroup)initWithContact:(id)a3 relationshipResults:(id)a4;
++ (BOOL)relationshipResultsContainsFriend:(id)friend;
++ (BOOL)shouldShowAddFriendActionForRelationshipResults:(id)results;
++ (id)actionForRelationshipResults:(id)results forContact:(id)contact;
+- (CNCardGameCenterGroup)initWithContact:(id)contact relationshipResults:(id)results;
 - (id)displayItems;
 @end
 
@@ -10,8 +10,8 @@
 
 - (id)displayItems
 {
-  v2 = [(CNCardGameCenterGroup *)self relationshipResults];
-  v3 = [v2 _cn_compactMap:&__block_literal_global_3];
+  relationshipResults = [(CNCardGameCenterGroup *)self relationshipResults];
+  v3 = [relationshipResults _cn_compactMap:&__block_literal_global_3];
 
   return v3;
 }
@@ -32,31 +32,31 @@ CNCardGameCenterGroupItem *__37__CNCardGameCenterGroup_displayItems__block_invok
   return v3;
 }
 
-- (CNCardGameCenterGroup)initWithContact:(id)a3 relationshipResults:(id)a4
+- (CNCardGameCenterGroup)initWithContact:(id)contact relationshipResults:(id)results
 {
-  v7 = a4;
+  resultsCopy = results;
   v12.receiver = self;
   v12.super_class = CNCardGameCenterGroup;
-  v8 = [(CNCardGroup *)&v12 initWithContact:a3];
+  v8 = [(CNCardGroup *)&v12 initWithContact:contact];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_relationshipResults, a4);
+    objc_storeStrong(&v8->_relationshipResults, results);
     v10 = v9;
   }
 
   return v9;
 }
 
-+ (id)actionForRelationshipResults:(id)a3 forContact:(id)a4
++ (id)actionForRelationshipResults:(id)results forContact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() shouldShowAddFriendActionForRelationshipResults:v6];
+  contactCopy = contact;
+  resultsCopy = results;
+  v7 = [objc_opt_class() shouldShowAddFriendActionForRelationshipResults:resultsCopy];
 
   if (v7)
   {
-    v8 = [[CNGameCenterAddFriendAction alloc] initWithContact:v5];
+    v8 = [[CNGameCenterAddFriendAction alloc] initWithContact:contactCopy];
   }
 
   else
@@ -67,17 +67,17 @@ CNCardGameCenterGroupItem *__37__CNCardGameCenterGroup_displayItems__block_invok
   return v8;
 }
 
-+ (BOOL)shouldShowAddFriendActionForRelationshipResults:(id)a3
++ (BOOL)shouldShowAddFriendActionForRelationshipResults:(id)results
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = resultsCopy;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -125,9 +125,9 @@ LABEL_12:
   return v7 & 1;
 }
 
-+ (BOOL)relationshipResultsContainsFriend:(id)a3
++ (BOOL)relationshipResultsContainsFriend:(id)friend
 {
-  v3 = [a3 _cn_firstObjectPassingTest:&__block_literal_global_3681];
+  v3 = [friend _cn_firstObjectPassingTest:&__block_literal_global_3681];
   v4 = v3 != 0;
 
   return v4;

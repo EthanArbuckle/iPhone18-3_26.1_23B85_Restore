@@ -4,23 +4,23 @@
 + (BOOL)_isRunningInSettings;
 - (AAUIButton)createButton;
 - (AAUIButton)forgotButton;
-- (AAUISignInViewController)initWithCoder:(id)a3;
-- (AAUISignInViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AAUISignInViewController)initWithCoder:(id)coder;
+- (AAUISignInViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (AAUISignInViewControllerDelegate)delegate;
 - (AKAppleIDAuthenticationController)authenticationController;
 - (BOOL)_hasValidCredentials;
 - (BOOL)_shouldShowChildSignButton;
 - (BOOL)_showOnlyPassword;
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (UIButton)forgotOrCreateButton;
 - (UIImageView)headerImageView;
 - (double)_initialHeight;
 - (double)_navigationBarHeight;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_accountHelpStackView;
-- (id)_authorizationValueForAuthenticationResults:(id)a3;
+- (id)_authorizationValueForAuthenticationResults:(id)results;
 - (id)_backBarButtonItem;
 - (id)_cancelBarButtonItem;
 - (id)_childSignInButton;
@@ -29,74 +29,74 @@
 - (id)_otherOptionsButton;
 - (id)_passwordCell;
 - (id)_prepareOBHeaderView;
-- (id)_serverFriendlyUsername:(id)a3;
+- (id)_serverFriendlyUsername:(id)username;
 - (id)_tableFooterView;
 - (id)_tableHeaderView;
 - (id)_tableView;
 - (id)_usernameCell;
 - (id)authenticationContext;
 - (id)forgotButtonLocalizedString;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_actionButtonSelected:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_actionButtonSelected:(id)selected;
 - (void)_attemptAuthentication;
-- (void)_attemptAuthenticationWithContext:(id)a3;
+- (void)_attemptAuthenticationWithContext:(id)context;
 - (void)_beginObservingKeyboardNotifications;
 - (void)_beginObservingSizeCategoryNotification;
 - (void)_beginObservingTextFieldDidChangeNotifications;
 - (void)_cancelPasswordDelegateIfNecessary;
-- (void)_childSignInSelected:(id)a3;
-- (void)_continueButtonSelected:(id)a3;
+- (void)_childSignInSelected:(id)selected;
+- (void)_continueButtonSelected:(id)selected;
 - (void)_delegate_signInViewControllerDidCancel;
-- (void)_delegate_signInViewControllerDidCompleteWithAuthenticationResults:(id)a3 completionHandler:(id)a4;
+- (void)_delegate_signInViewControllerDidCompleteWithAuthenticationResults:(id)results completionHandler:(id)handler;
 - (void)_delegate_signInViewControllerDidSelectOtherOptions;
 - (void)_delegate_signInViewControllerDidSkip;
 - (void)_endObservingKeyboardNotifications;
 - (void)_endObservingSizeCategoryNotification;
 - (void)_endObservingTextFieldDidChangeNotifications;
 - (void)_formatUsernameAsPhoneNumberIfNeeded;
-- (void)_handleKeyboardChangeNotification:(id)a3;
+- (void)_handleKeyboardChangeNotification:(id)notification;
 - (void)_presentCreateAppleIDPane;
 - (void)_presentForgotAppleIDPane;
 - (void)_prewarmSignInFlowIfApplicable;
-- (void)_repairCloudAccountWithAuthenticationResults:(id)a3;
+- (void)_repairCloudAccountWithAuthenticationResults:(id)results;
 - (void)_resignFirstResponderForAppropriateTextField;
-- (void)_setContinueButtonEnabled:(BOOL)a3;
-- (void)_setEnabled:(BOOL)a3;
-- (void)_setPasswordFieldHidden:(BOOL)a3;
-- (void)_setUsernameCellWaiting:(BOOL)a3;
-- (void)_textFieldDidChange:(id)a3;
-- (void)_updateContentInsetWithHeight:(double)a3;
-- (void)_updateExpandingViewInFooterForCellChange:(BOOL)a3;
-- (void)_updateScrollIndicatorInsetWithHeight:(double)a3;
-- (void)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6 completion:(id)a7;
-- (void)constrainView:(id)a3 toFillHeaderFooterView:(id)a4;
-- (void)context:(id)a3 needsPasswordWithCompletion:(id)a4;
+- (void)_setContinueButtonEnabled:(BOOL)enabled;
+- (void)_setEnabled:(BOOL)enabled;
+- (void)_setPasswordFieldHidden:(BOOL)hidden;
+- (void)_setUsernameCellWaiting:(BOOL)waiting;
+- (void)_textFieldDidChange:(id)change;
+- (void)_updateContentInsetWithHeight:(double)height;
+- (void)_updateExpandingViewInFooterForCellChange:(BOOL)change;
+- (void)_updateScrollIndicatorInsetWithHeight:(double)height;
+- (void)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context completion:(id)completion;
+- (void)constrainView:(id)view toFillHeaderFooterView:(id)footerView;
+- (void)context:(id)context needsPasswordWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)loadView;
-- (void)passwordCellTapped:(id)a3;
-- (void)setHeaderImage:(id)a3;
-- (void)setHideCreationAndForgotPasswordButton:(BOOL)a3;
-- (void)setMessageLabel:(id)a3;
-- (void)sizeCategoryDidChange:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)usernameCellTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)passwordCellTapped:(id)tapped;
+- (void)setHeaderImage:(id)image;
+- (void)setHideCreationAndForgotPasswordButton:(BOOL)button;
+- (void)setMessageLabel:(id)label;
+- (void)sizeCategoryDidChange:(id)change;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)usernameCellTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AAUISignInViewController
 
-- (AAUISignInViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AAUISignInViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AAUISignInViewController;
-  v4 = [(AAUISignInViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(AAUISignInViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -106,11 +106,11 @@
   return v5;
 }
 
-- (AAUISignInViewController)initWithCoder:(id)a3
+- (AAUISignInViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUISignInViewController;
-  v3 = [(AAUISignInViewController *)&v6 initWithCoder:a3];
+  v3 = [(AAUISignInViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -126,9 +126,9 @@
   v4 = [(AAUIBuddyView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(AAUISignInViewController *)self setView:v4];
 
-  v6 = [(AAUISignInViewController *)self view];
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v6 setBackgroundColor:v5];
+  view = [(AAUISignInViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 }
 
 - (void)viewDidLoad
@@ -137,57 +137,57 @@
   v46.receiver = self;
   v46.super_class = AAUISignInViewController;
   [(AAUISignInViewController *)&v46 viewDidLoad];
-  v3 = [(AAUISignInViewController *)self authenticationContext];
-  v4 = [v3 proxiedDevice];
+  authenticationContext = [(AAUISignInViewController *)self authenticationContext];
+  proxiedDevice = [authenticationContext proxiedDevice];
 
-  if (v4)
+  if (proxiedDevice)
   {
-    v5 = [(AAUISignInViewController *)self navigationItem];
-    [v5 setHidesBackButton:0 animated:0];
+    navigationItem = [(AAUISignInViewController *)self navigationItem];
+    [navigationItem setHidesBackButton:0 animated:0];
 
-    v6 = [(AAUISignInViewController *)self navigationItem];
-    [v6 setLeftBarButtonItem:0 animated:0];
+    navigationItem2 = [(AAUISignInViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:0 animated:0];
   }
 
   else if ([(AAUISignInViewController *)self hidesBackOrCancelButton])
   {
-    v6 = [(AAUISignInViewController *)self navigationItem];
-    [v6 setHidesBackButton:1 animated:0];
+    navigationItem2 = [(AAUISignInViewController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
   }
 
   else
   {
     if ([(AAUISignInViewController *)self allowSkip]|| [(AAUISignInViewController *)self shouldShowSystemBackButton])
     {
-      v6 = [(AAUISignInViewController *)self navigationItem];
-      v7 = [(AAUISignInViewController *)self _backBarButtonItem];
-      [v6 setLeftBarButtonItem:v7];
+      navigationItem2 = [(AAUISignInViewController *)self navigationItem];
+      _backBarButtonItem = [(AAUISignInViewController *)self _backBarButtonItem];
+      [navigationItem2 setLeftBarButtonItem:_backBarButtonItem];
     }
 
     else
     {
-      v6 = [(AAUISignInViewController *)self navigationItem];
-      v7 = [(AAUISignInViewController *)self _cancelBarButtonItem];
-      [v6 setRightBarButtonItem:v7];
+      navigationItem2 = [(AAUISignInViewController *)self navigationItem];
+      _backBarButtonItem = [(AAUISignInViewController *)self _cancelBarButtonItem];
+      [navigationItem2 setRightBarButtonItem:_backBarButtonItem];
     }
   }
 
-  v8 = [(AAUISignInViewController *)self _tableView];
-  v9 = [(AAUISignInViewController *)self view];
-  [v9 addSubview:v8];
+  _tableView = [(AAUISignInViewController *)self _tableView];
+  view = [(AAUISignInViewController *)self view];
+  [view addSubview:_tableView];
 
-  v10 = [(AAUISignInViewController *)self navigationController];
+  navigationController = [(AAUISignInViewController *)self navigationController];
   v11 = 0.0;
-  if (v10)
+  if (navigationController)
   {
-    v12 = v10;
-    v13 = [(AAUISignInViewController *)self navigationController];
-    if ([v13 modalPresentationStyle])
+    v12 = navigationController;
+    navigationController2 = [(AAUISignInViewController *)self navigationController];
+    if ([navigationController2 modalPresentationStyle])
     {
-      v14 = [(AAUISignInViewController *)self navigationController];
-      v15 = [v14 modalPresentationStyle];
+      navigationController3 = [(AAUISignInViewController *)self navigationController];
+      modalPresentationStyle = [navigationController3 modalPresentationStyle];
 
-      if (v15 != 5)
+      if (modalPresentationStyle != 5)
       {
         goto LABEL_18;
       }
@@ -197,10 +197,10 @@
     {
     }
 
-    v16 = [MEMORY[0x1E69DC938] currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v17 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v18 = objc_alloc_init(MEMORY[0x1E69DCCC0]);
       [v18 intrinsicContentSize];
@@ -209,8 +209,8 @@
 
     else
     {
-      v20 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v20 statusBarFrame];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] statusBarFrame];
       v22 = v21;
 
       v11 = v22 + 0.0;
@@ -219,30 +219,30 @@
 
 LABEL_18:
   v36 = MEMORY[0x1E696ACD8];
-  v44 = [v8 topAnchor];
-  v45 = [(AAUISignInViewController *)self view];
-  v43 = [v45 topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43 constant:v11];
+  topAnchor = [_tableView topAnchor];
+  view2 = [(AAUISignInViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v42 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v11];
   v47[0] = v42;
-  v40 = [v8 leadingAnchor];
-  v41 = [(AAUISignInViewController *)self view];
-  v39 = [v41 contentLayoutGuide];
-  v37 = [v39 leadingAnchor];
-  v35 = [v40 constraintEqualToAnchor:v37];
+  leadingAnchor = [_tableView leadingAnchor];
+  view3 = [(AAUISignInViewController *)self view];
+  contentLayoutGuide = [view3 contentLayoutGuide];
+  leadingAnchor2 = [contentLayoutGuide leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[1] = v35;
-  v33 = [v8 trailingAnchor];
-  v34 = [(AAUISignInViewController *)self view];
-  [v34 contentLayoutGuide];
-  v23 = v8;
-  v24 = v38 = v8;
-  v25 = [v24 trailingAnchor];
-  v26 = [v33 constraintEqualToAnchor:v25];
+  trailingAnchor = [_tableView trailingAnchor];
+  view4 = [(AAUISignInViewController *)self view];
+  [view4 contentLayoutGuide];
+  v23 = _tableView;
+  v24 = v38 = _tableView;
+  trailingAnchor2 = [v24 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[2] = v26;
-  v27 = [v23 bottomAnchor];
-  v28 = [(AAUISignInViewController *)self view];
-  v29 = [v28 contentLayoutGuide];
-  v30 = [v29 bottomAnchor];
-  v31 = [v27 constraintEqualToAnchor:v30];
+  bottomAnchor = [v23 bottomAnchor];
+  view5 = [(AAUISignInViewController *)self view];
+  contentLayoutGuide2 = [view5 contentLayoutGuide];
+  bottomAnchor2 = [contentLayoutGuide2 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v47[3] = v31;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:4];
   [v36 activateConstraints:v32];
@@ -250,28 +250,28 @@ LABEL_18:
   [(AAUISignInViewController *)self setModalInPresentation:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = AAUISignInViewController;
-  [(AAUISignInViewController *)&v8 viewWillAppear:a3];
+  [(AAUISignInViewController *)&v8 viewWillAppear:appear];
   [(AAUISignInViewController *)self _beginObservingTextFieldDidChangeNotifications];
   [(AAUISignInViewController *)self _beginObservingKeyboardNotifications];
   [(AAUISignInViewController *)self _beginObservingSizeCategoryNotification];
   [(AAUISignInViewController *)self _setEnabled:1];
-  v4 = [(AAUISignInViewController *)self _usernameCell];
-  v5 = [v4 cellTextField];
+  _usernameCell = [(AAUISignInViewController *)self _usernameCell];
+  cellTextField = [_usernameCell cellTextField];
 
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SIGN_IN_USERNAME_PLACEHOLDER" value:&stru_1F447F790 table:@"Localizable"];
-  [v5 setPlaceholder:v7];
+  [cellTextField setPlaceholder:v7];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = AAUISignInViewController;
-  [(AAUISignInViewController *)&v3 viewDidAppear:a3];
+  [(AAUISignInViewController *)&v3 viewDidAppear:appear];
 }
 
 - (void)viewWillLayoutSubviews
@@ -312,8 +312,8 @@ uint64_t __50__AAUISignInViewController_viewWillLayoutSubviews__block_invoke(uin
   if (!initialHeight)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(AAUISignInViewController *)self view];
-    [v5 frame];
+    view = [(AAUISignInViewController *)self view];
+    [view frame];
     v7 = [v4 numberWithDouble:v6];
     v8 = self->_initialHeight;
     self->_initialHeight = v7;
@@ -325,17 +325,17 @@ uint64_t __50__AAUISignInViewController_viewWillLayoutSubviews__block_invoke(uin
   return v9;
 }
 
-- (void)_updateExpandingViewInFooterForCellChange:(BOOL)a3
+- (void)_updateExpandingViewInFooterForCellChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   if (+[AAUIFeatureFlags isSolariumEnabled])
   {
-    v5 = [(AAUISignInViewController *)self view];
-    [v5 bounds];
+    view = [(AAUISignInViewController *)self view];
+    [view bounds];
     v7 = v6;
 
-    v8 = [(AAUISignInViewController *)self view];
-    [v8 safeAreaInsets];
+    view2 = [(AAUISignInViewController *)self view];
+    [view2 safeAreaInsets];
     v10 = v9;
     v12 = v11;
 
@@ -343,8 +343,8 @@ uint64_t __50__AAUISignInViewController_viewWillLayoutSubviews__block_invoke(uin
     goto LABEL_8;
   }
 
-  v14 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v14 sf_isiPad])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice sf_isiPad])
   {
 
 LABEL_6:
@@ -353,22 +353,22 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v15 = [MEMORY[0x1E69DC938] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if (v16 == 6)
+  if (userInterfaceIdiom == 6)
   {
     goto LABEL_6;
   }
 
-  v18 = [MEMORY[0x1E69DC668] sharedApplication];
-  v19 = [v18 keyWindow];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
 
-  [v19 safeAreaInsets];
+  [keyWindow safeAreaInsets];
   v21 = v20;
   v23 = v22;
-  v24 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v24 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v26 = v25;
 
   v13 = v26 - v23 - v21;
@@ -379,9 +379,9 @@ LABEL_8:
   v30 = v29;
   [(UITableView *)self->_tableView rectForFooterInSection:0];
   v32 = v31;
-  if (v3)
+  if (changeCopy)
   {
-    v33 = [(AAUISignInViewController *)self _isPasswordFieldVisible];
+    _isPasswordFieldVisible = [(AAUISignInViewController *)self _isPasswordFieldVisible];
     v34 = +[AAUIFeatureFlags isSolariumEnabled];
     v35 = 44.0;
     if (v34)
@@ -395,7 +395,7 @@ LABEL_8:
       v36 = -52.0;
     }
 
-    if (!v33)
+    if (!_isPasswordFieldVisible)
     {
       v35 = v36;
     }
@@ -428,14 +428,14 @@ LABEL_8:
 
 - (double)_navigationBarHeight
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 orientation];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  orientation = [currentDevice orientation];
 
-  if ((v4 - 1) > 1)
+  if ((orientation - 1) > 1)
   {
-    v9 = [(AAUISignInViewController *)self navigationController];
-    v10 = [v9 navigationBar];
-    [v10 frame];
+    navigationController = [(AAUISignInViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     navigationBarHeightPortrait = v11;
   }
 
@@ -444,9 +444,9 @@ LABEL_8:
     navigationBarHeightPortrait = self->_navigationBarHeightPortrait;
     if (navigationBarHeightPortrait == 0.0)
     {
-      v6 = [(AAUISignInViewController *)self navigationController];
-      v7 = [v6 navigationBar];
-      [v7 frame];
+      navigationController2 = [(AAUISignInViewController *)self navigationController];
+      navigationBar2 = [navigationController2 navigationBar];
+      [navigationBar2 frame];
       self->_navigationBarHeightPortrait = v8;
 
       return self->_navigationBarHeightPortrait;
@@ -456,11 +456,11 @@ LABEL_8:
   return navigationBarHeightPortrait;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = AAUISignInViewController;
-  [(AAUISignInViewController *)&v4 viewDidDisappear:a3];
+  [(AAUISignInViewController *)&v4 viewDidDisappear:disappear];
   [(AAUISignInViewController *)self _endObservingSizeCategoryNotification];
   [(AAUISignInViewController *)self _endObservingTextFieldDidChangeNotifications];
   [(AAUISignInViewController *)self _endObservingKeyboardNotifications];
@@ -479,25 +479,25 @@ LABEL_8:
 - (id)authenticationContext
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AAUISignInViewController *)self delegate];
+  delegate = [(AAUISignInViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 authenticationContext];
+    authenticationContext = [delegate authenticationContext];
   }
 
   else
   {
-    v4 = objc_alloc_init(MEMORY[0x1E698DE80]);
-    [v4 setAuthenticationType:2];
-    [v4 setFirstTimeLogin:1];
-    [v4 setPresentingViewController:self];
-    [v4 setServiceType:{-[AAUISignInViewController _akServiceType](self, "_akServiceType")}];
-    [v4 setShouldOfferSecurityUpgrade:0];
-    [v4 setShouldUpdatePersistentServiceTokens:1];
-    v5 = [(AAUISignInViewController *)self _shouldAnticipatePiggybacking];
+    authenticationContext = objc_alloc_init(MEMORY[0x1E698DE80]);
+    [authenticationContext setAuthenticationType:2];
+    [authenticationContext setFirstTimeLogin:1];
+    [authenticationContext setPresentingViewController:self];
+    [authenticationContext setServiceType:{-[AAUISignInViewController _akServiceType](self, "_akServiceType")}];
+    [authenticationContext setShouldOfferSecurityUpgrade:0];
+    [authenticationContext setShouldUpdatePersistentServiceTokens:1];
+    _shouldAnticipatePiggybacking = [(AAUISignInViewController *)self _shouldAnticipatePiggybacking];
     v6 = _AAUILogSystem();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (_shouldAnticipatePiggybacking)
     {
       if (v7)
       {
@@ -508,9 +508,9 @@ LABEL_8:
         _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "%@ detected primary iCloud sign in.", &v15, 0xCu);
       }
 
-      [v4 setAnticipateEscrowAttempt:1];
-      [v4 setShouldOfferSecurityUpgrade:1];
-      [v4 setSupportsPiggybacking:1];
+      [authenticationContext setAnticipateEscrowAttempt:1];
+      [authenticationContext setShouldOfferSecurityUpgrade:1];
+      [authenticationContext setSupportsPiggybacking:1];
     }
 
     else
@@ -526,15 +526,15 @@ LABEL_8:
     }
   }
 
-  v12 = [(AAUISignInViewController *)self protoAccountContext];
+  protoAccountContext = [(AAUISignInViewController *)self protoAccountContext];
 
-  if (v12)
+  if (protoAccountContext)
   {
-    v13 = [(AAUISignInViewController *)self protoAccountContext];
-    [v4 setProtoAccountContext:v13];
+    protoAccountContext2 = [(AAUISignInViewController *)self protoAccountContext];
+    [authenticationContext setProtoAccountContext:protoAccountContext2];
   }
 
-  return v4;
+  return authenticationContext;
 }
 
 - (UIImageView)headerImageView
@@ -544,14 +544,14 @@ LABEL_8:
   return v2;
 }
 
-- (void)setHeaderImage:(id)a3
+- (void)setHeaderImage:(id)image
 {
-  v6 = a3;
-  objc_storeStrong(&self->_headerImage, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_headerImage, image);
   obHeaderView = self->_obHeaderView;
   if (obHeaderView)
   {
-    [(AAUIOBHeaderView *)obHeaderView setIcon:v6 accessibilityLabel:0];
+    [(AAUIOBHeaderView *)obHeaderView setIcon:imageCopy accessibilityLabel:0];
   }
 }
 
@@ -596,22 +596,22 @@ LABEL_8:
   {
     v4 = [AAUIBuddyView alloc];
     v5 = [(AAUIBuddyView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(AAUIBuddyView *)v5 setBackgroundColor:v6];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(AAUIBuddyView *)v5 setBackgroundColor:systemBackgroundColor];
 
     [(AAUIBuddyView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(AAUISignInViewController *)self _prepareOBHeaderView];
+    _prepareOBHeaderView = [(AAUISignInViewController *)self _prepareOBHeaderView];
     v8 = objc_alloc_init(MEMORY[0x1E69DD050]);
     v9 = self->_tableHeaderView;
     self->_tableHeaderView = v8;
 
     v10 = self->_tableHeaderView;
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UITableViewHeaderFooterView *)v10 setBackgroundColor:v11];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UITableViewHeaderFooterView *)v10 setBackgroundColor:systemBackgroundColor2];
 
     [(UITableViewHeaderFooterView *)self->_tableHeaderView setAccessibilityIdentifier:@"header-view"];
     [(AAUISignInViewController *)self constrainView:self->_obHeaderView toFillHeaderFooterView:self->_tableHeaderView];
-    [MEMORY[0x1E696ACD8] activateConstraints:v7];
+    [MEMORY[0x1E696ACD8] activateConstraints:_prepareOBHeaderView];
     [(AAUIOBHeaderView *)self->_obHeaderView setNeedsLayout];
     [(AAUIOBHeaderView *)self->_obHeaderView layoutIfNeeded];
 
@@ -641,23 +641,23 @@ LABEL_8:
 {
   v49[8] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(AAUISignInViewController *)self authenticationContext];
-  v5 = [v4 title];
-  if ([v5 length])
+  authenticationContext = [(AAUISignInViewController *)self authenticationContext];
+  title = [authenticationContext title];
+  if ([title length])
   {
-    v6 = [v4 title];
+    title2 = [authenticationContext title];
   }
 
   else
   {
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v6 = [v7 localizedStringForKey:@"SIGN_IN_TITLE_REBRAND" value:&stru_1F447F790 table:@"Localizable"];
+    title2 = [v7 localizedStringForKey:@"SIGN_IN_TITLE_REBRAND" value:&stru_1F447F790 table:@"Localizable"];
   }
 
-  v8 = [v4 reason];
-  if ([v8 length])
+  reason = [authenticationContext reason];
+  if ([reason length])
   {
-    [v4 reason];
+    [authenticationContext reason];
   }
 
   else
@@ -678,7 +678,7 @@ LABEL_8:
     v12 = 0;
   }
 
-  v13 = [(AAUIOBHeaderView *)v11 initWithTitle:v6 detailText:v9 icon:v12];
+  v13 = [(AAUIOBHeaderView *)v11 initWithTitle:title2 detailText:v9 icon:v12];
   obHeaderView = self->_obHeaderView;
   self->_obHeaderView = v13;
 
@@ -698,46 +698,46 @@ LABEL_8:
 
     [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_logoContainerView addSubview:self->_appleLogoMicaView];
-    v19 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
-    [v19 addSubview:self->_logoContainerView];
+    animationView = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
+    [animationView addSubview:self->_logoContainerView];
 
-    v20 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    animationView2 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
+    [animationView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
-    [v21 setClipsToBounds:1];
+    animationView3 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
+    [animationView3 setClipsToBounds:1];
 
-    v47 = [(UIView *)self->_logoContainerView centerXAnchor];
-    v48 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
-    v46 = [v48 centerXAnchor];
-    v44 = [v47 constraintEqualToAnchor:v46];
+    centerXAnchor = [(UIView *)self->_logoContainerView centerXAnchor];
+    animationView4 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
+    centerXAnchor2 = [animationView4 centerXAnchor];
+    v44 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v49[0] = v44;
-    v42 = [(UIView *)self->_logoContainerView centerYAnchor];
-    v43 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
-    v41 = [v43 centerYAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    centerYAnchor = [(UIView *)self->_logoContainerView centerYAnchor];
+    animationView5 = [(AAUIOBHeaderView *)self->_obHeaderView animationView];
+    centerYAnchor2 = [animationView5 centerYAnchor];
+    v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v49[1] = v40;
-    v39 = [(UIView *)self->_logoContainerView heightAnchor];
-    v38 = [v39 constraintEqualToConstant:373.0];
+    heightAnchor = [(UIView *)self->_logoContainerView heightAnchor];
+    v38 = [heightAnchor constraintEqualToConstant:373.0];
     v49[2] = v38;
-    v37 = [(UIView *)self->_logoContainerView widthAnchor];
-    v36 = [v37 constraintEqualToConstant:373.0];
+    widthAnchor = [(UIView *)self->_logoContainerView widthAnchor];
+    v36 = [widthAnchor constraintEqualToConstant:373.0];
     v49[3] = v36;
-    v35 = [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView topAnchor];
-    v34 = [(UIView *)self->_logoContainerView topAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    topAnchor = [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView topAnchor];
+    topAnchor2 = [(UIView *)self->_logoContainerView topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v49[4] = v33;
-    v31 = [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView bottomAnchor];
-    v30 = [(UIView *)self->_logoContainerView bottomAnchor];
-    v22 = [v31 constraintEqualToAnchor:v30];
+    bottomAnchor = [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_logoContainerView bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v49[5] = v22;
-    v23 = [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView leadingAnchor];
-    v24 = [(UIView *)self->_logoContainerView leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    leadingAnchor = [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_logoContainerView leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v49[6] = v25;
-    v26 = [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView trailingAnchor];
-    v27 = [(UIView *)self->_logoContainerView trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor = [(AAUIAppleLogoMicaView *)self->_appleLogoMicaView trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_logoContainerView trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v49[7] = v28;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:8];
 
@@ -747,15 +747,15 @@ LABEL_8:
   return v3;
 }
 
-- (void)setMessageLabel:(id)a3
+- (void)setMessageLabel:(id)label
 {
-  self->_messageLabel = a3;
+  self->_messageLabel = label;
   obHeaderView = self->_obHeaderView;
-  v5 = a3;
-  v6 = [(AAUIOBHeaderView *)obHeaderView title];
-  v7 = [v6 copy];
+  labelCopy = label;
+  title = [(AAUIOBHeaderView *)obHeaderView title];
+  v7 = [title copy];
 
-  [(AAUIOBHeaderView *)self->_obHeaderView setDetailText:v5];
+  [(AAUIOBHeaderView *)self->_obHeaderView setDetailText:labelCopy];
   [(AAUIOBHeaderView *)self->_obHeaderView setTitle:v7];
 }
 
@@ -771,8 +771,8 @@ LABEL_8:
 
     [(UITableView *)self->_tableView setAllowsSelection:0];
     v7 = self->_tableView;
-    v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UITableView *)v7 setBackgroundColor:v8];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UITableView *)v7 setBackgroundColor:systemBackgroundColor];
 
     [(UITableView *)self->_tableView setClipsToBounds:0];
     [(UITableView *)self->_tableView setDataSource:self];
@@ -804,58 +804,58 @@ LABEL_8:
     if (self->_cellBackgroundColor)
     {
       [(AKBasicLoginTableViewCell *)self->_usernameCell setBackgroundColor:?];
-      v6 = [(AKBasicLoginTableViewCell *)self->_usernameCell contentView];
-      [v6 setBackgroundColor:self->_cellBackgroundColor];
+      contentView = [(AKBasicLoginTableViewCell *)self->_usernameCell contentView];
+      [contentView setBackgroundColor:self->_cellBackgroundColor];
     }
 
     v7 = self->_usernameCell;
     v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_usernameCellTapped_];
     [(AKBasicLoginTableViewCell *)v7 addGestureRecognizer:v8];
 
-    v9 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-    [v9 setDelegate:self];
+    cellTextField = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    [cellTextField setDelegate:self];
 
-    v10 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-    [v10 setKeyboardType:7];
+    cellTextField2 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    [cellTextField2 setKeyboardType:7];
 
-    v11 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-    [v11 setReturnKeyType:11];
+    cellTextField3 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    [cellTextField3 setReturnKeyType:11];
 
-    v12 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    cellTextField4 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
     v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"SIGN_IN_USERNAME_PLACEHOLDER" value:&stru_1F447F790 table:@"Localizable"];
-    [v12 setPlaceholder:v14];
+    [cellTextField4 setPlaceholder:v14];
 
-    v15 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-    [v15 setTextContentType:*MEMORY[0x1E69DE588]];
+    cellTextField5 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    [cellTextField5 setTextContentType:*MEMORY[0x1E69DE588]];
 
-    v16 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    [v16 setTextColor:v17];
+    cellTextField6 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [cellTextField6 setTextColor:labelColor];
 
     if (self->_username)
     {
-      v18 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-      [v18 setText:self->_username];
+      cellTextField7 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+      [cellTextField7 setText:self->_username];
 
       if (!self->_canEditUsername)
       {
-        v19 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-        v20 = [MEMORY[0x1E69DC888] lightGrayColor];
-        [v19 setTextColor:v20];
+        cellTextField8 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+        lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+        [cellTextField8 setTextColor:lightGrayColor];
 
-        v21 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-        [v21 setUserInteractionEnabled:0];
+        cellTextField9 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+        [cellTextField9 setUserInteractionEnabled:0];
       }
 
       [(AAUISignInViewController *)self _setContinueButtonEnabled:1];
-      v22 = [(AAUISignInViewController *)self navigationItem];
-      v23 = [v22 rightBarButtonItem];
-      [v23 setEnabled:1];
+      navigationItem = [(AAUISignInViewController *)self navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
+      [rightBarButtonItem setEnabled:1];
     }
 
-    v24 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-    [v24 setAccessibilityIdentifier:@"username-field"];
+    cellTextField10 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    [cellTextField10 setAccessibilityIdentifier:@"username-field"];
 
     usernameCell = self->_usernameCell;
   }
@@ -875,37 +875,37 @@ LABEL_8:
     if (self->_cellBackgroundColor)
     {
       [(AKBasicLoginTableViewCell *)self->_passwordCell setBackgroundColor:?];
-      v6 = [(AKBasicLoginTableViewCell *)self->_passwordCell contentView];
-      [v6 setBackgroundColor:self->_cellBackgroundColor];
+      contentView = [(AKBasicLoginTableViewCell *)self->_passwordCell contentView];
+      [contentView setBackgroundColor:self->_cellBackgroundColor];
     }
 
     v7 = self->_passwordCell;
     v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_passwordCellTapped_];
     [(AKBasicLoginTableViewCell *)v7 addGestureRecognizer:v8];
 
-    v9 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-    [v9 setDelegate:self];
+    cellTextField = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    [cellTextField setDelegate:self];
 
-    v10 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-    [v10 setReturnKeyType:9];
+    cellTextField2 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    [cellTextField2 setReturnKeyType:9];
 
-    v11 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    cellTextField3 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
     v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"SIGN_IN_PASSWORD_PLACEHOLDER" value:&stru_1F447F790 table:@"Localizable"];
-    [v11 setPlaceholder:v13];
+    [cellTextField3 setPlaceholder:v13];
 
-    v14 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-    [v14 setSecureTextEntry:1];
+    cellTextField4 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    [cellTextField4 setSecureTextEntry:1];
 
-    v15 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [v15 setTextColor:v16];
+    cellTextField5 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [cellTextField5 setTextColor:labelColor];
 
-    v17 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-    [v17 setTextContentType:*MEMORY[0x1E69DE528]];
+    cellTextField6 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    [cellTextField6 setTextContentType:*MEMORY[0x1E69DE528]];
 
-    v18 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-    [v18 setAccessibilityIdentifier:@"password-field"];
+    cellTextField7 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    [cellTextField7 setAccessibilityIdentifier:@"password-field"];
 
     passwordCell = self->_passwordCell;
   }
@@ -913,16 +913,16 @@ LABEL_8:
   return passwordCell;
 }
 
-- (void)usernameCellTapped:(id)a3
+- (void)usernameCellTapped:(id)tapped
 {
-  v3 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-  [v3 becomeFirstResponder];
+  cellTextField = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+  [cellTextField becomeFirstResponder];
 }
 
-- (void)passwordCellTapped:(id)a3
+- (void)passwordCellTapped:(id)tapped
 {
-  v3 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-  [v3 becomeFirstResponder];
+  cellTextField = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+  [cellTextField becomeFirstResponder];
 }
 
 - (id)forgotButtonLocalizedString
@@ -950,12 +950,12 @@ LABEL_8:
   return v6;
 }
 
-- (void)setHideCreationAndForgotPasswordButton:(BOOL)a3
+- (void)setHideCreationAndForgotPasswordButton:(BOOL)button
 {
-  self->_hideCreationAndForgotPasswordButton = a3;
-  v4 = [(AAUISignInViewController *)self hideCreationAndForgotPasswordButton];
-  v5 = [(AAUISignInViewController *)self forgotOrCreateButton];
-  [v5 setHidden:v4];
+  self->_hideCreationAndForgotPasswordButton = button;
+  hideCreationAndForgotPasswordButton = [(AAUISignInViewController *)self hideCreationAndForgotPasswordButton];
+  forgotOrCreateButton = [(AAUISignInViewController *)self forgotOrCreateButton];
+  [forgotOrCreateButton setHidden:hideCreationAndForgotPasswordButton];
 }
 
 - (id)_accountHelpStackView
@@ -991,29 +991,29 @@ LABEL_8:
     v8 = [MEMORY[0x1E69DC738] buttonWithType:1];
     [(AAUISignInViewController *)self setForgotOrCreateButton:v8];
     [v8 addTarget:self action:sel__actionButtonSelected_ forControlEvents:64];
-    v9 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    v10 = [(AAUISignInViewController *)self forgotButtonLocalizedString];
-    [v9 setTitle:v10];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    forgotButtonLocalizedString = [(AAUISignInViewController *)self forgotButtonLocalizedString];
+    [plainButtonConfiguration setTitle:forgotButtonLocalizedString];
 
     v11 = MEMORY[0x1E69DCAB8];
     v12 = [MEMORY[0x1E69DCAD8] configurationWithScale:2];
     v13 = [v11 systemImageNamed:@"info.circle.fill" withConfiguration:v12];
-    [v9 setImage:v13];
+    [plainButtonConfiguration setImage:v13];
 
-    [v9 setImagePadding:8.0];
-    [v9 setContentInsets:{0.0, 0.0, 0.0, 0.0}];
-    [v9 setTitleLineBreakMode:0];
-    [v9 setTitleAlignment:0];
-    [v8 setConfiguration:v9];
-    v14 = [v8 titleLabel];
-    [v14 setNumberOfLines:0];
+    [plainButtonConfiguration setImagePadding:8.0];
+    [plainButtonConfiguration setContentInsets:{0.0, 0.0, 0.0, 0.0}];
+    [plainButtonConfiguration setTitleLineBreakMode:0];
+    [plainButtonConfiguration setTitleAlignment:0];
+    [v8 setConfiguration:plainButtonConfiguration];
+    titleLabel = [v8 titleLabel];
+    [titleLabel setNumberOfLines:0];
 
-    v15 = [v8 titleLabel];
-    [v15 setTextAlignment:0];
+    titleLabel2 = [v8 titleLabel];
+    [titleLabel2 setTextAlignment:0];
 
-    v16 = [v8 titleLabel];
+    titleLabel3 = [v8 titleLabel];
     v17 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    [v16 setFont:v17];
+    [titleLabel3 setFont:v17];
 
     [v8 setAccessibilityIdentifier:@"footer-button"];
     [(UIStackView *)v5 addArrangedSubview:v8];
@@ -1024,24 +1024,24 @@ LABEL_8:
     v8 = [AAUIButton buttonWithType:1];
     [(AAUISignInViewController *)self setForgotOrCreateButton:v8];
     [v8 addTarget:self action:sel__actionButtonSelected_ forControlEvents:64];
-    v18 = [(AAUISignInViewController *)self forgotButtonLocalizedString];
-    [v8 setTitle:v18 forState:0];
+    forgotButtonLocalizedString2 = [(AAUISignInViewController *)self forgotButtonLocalizedString];
+    [v8 setTitle:forgotButtonLocalizedString2 forState:0];
 
-    v19 = [v8 titleLabel];
-    [v19 setAdjustsFontForContentSizeCategory:1];
+    titleLabel4 = [v8 titleLabel];
+    [titleLabel4 setAdjustsFontForContentSizeCategory:1];
 
-    v20 = [v8 titleLabel];
-    [v20 setLineBreakMode:0];
+    titleLabel5 = [v8 titleLabel];
+    [titleLabel5 setLineBreakMode:0];
 
-    v21 = [v8 titleLabel];
-    [v21 setNumberOfLines:0];
+    titleLabel6 = [v8 titleLabel];
+    [titleLabel6 setNumberOfLines:0];
 
-    v22 = [v8 titleLabel];
-    [v22 setTextAlignment:1];
+    titleLabel7 = [v8 titleLabel];
+    [titleLabel7 setTextAlignment:1];
 
-    v23 = [v8 titleLabel];
+    titleLabel8 = [v8 titleLabel];
     v24 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    [v23 setFont:v24];
+    [titleLabel8 setFont:v24];
 
     [v8 setAccessibilityIdentifier:@"footer-button"];
     [(UIStackView *)v5 addArrangedSubview:v8];
@@ -1056,21 +1056,21 @@ LABEL_11:
     v27 = [v26 localizedStringForKey:@"SIGN_IN_FOR_CHILD_BUTTON_TITLE" value:&stru_1F447F790 table:@"Localizable"];
     [v25 setTitle:v27 forState:0];
 
-    v28 = [v25 titleLabel];
-    [v28 setAdjustsFontForContentSizeCategory:1];
+    titleLabel9 = [v25 titleLabel];
+    [titleLabel9 setAdjustsFontForContentSizeCategory:1];
 
-    v29 = [v25 titleLabel];
-    [v29 setLineBreakMode:0];
+    titleLabel10 = [v25 titleLabel];
+    [titleLabel10 setLineBreakMode:0];
 
-    v30 = [v25 titleLabel];
-    [v30 setNumberOfLines:0];
+    titleLabel11 = [v25 titleLabel];
+    [titleLabel11 setNumberOfLines:0];
 
-    v31 = [v25 titleLabel];
-    [v31 setTextAlignment:1];
+    titleLabel12 = [v25 titleLabel];
+    [titleLabel12 setTextAlignment:1];
 
-    v32 = [v25 titleLabel];
+    titleLabel13 = [v25 titleLabel];
     v33 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    [v32 setFont:v33];
+    [titleLabel13 setFont:v33];
 
     [v25 setAccessibilityIdentifier:@"child-sign-in-button"];
     [(UIStackView *)v5 addArrangedSubview:v25];
@@ -1090,18 +1090,18 @@ LABEL_15:
   continueButton = self->_continueButton;
   if (!continueButton)
   {
-    v4 = [MEMORY[0x1E69B7D00] boldButton];
+    boldButton = [MEMORY[0x1E69B7D00] boldButton];
     v5 = self->_continueButton;
-    self->_continueButton = v4;
+    self->_continueButton = boldButton;
 
     if (!+[AAUIFeatureFlags isSolariumEnabled])
     {
-      v6 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-      [v6 setButtonSize:3];
-      v7 = [v6 background];
-      [v7 setCornerRadius:14.0];
+      filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+      [filledButtonConfiguration setButtonSize:3];
+      background = [filledButtonConfiguration background];
+      [background setCornerRadius:14.0];
 
-      [(OBBoldTrayButton *)self->_continueButton setConfiguration:v6];
+      [(OBBoldTrayButton *)self->_continueButton setConfiguration:filledButtonConfiguration];
     }
 
     [(OBBoldTrayButton *)self->_continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -1128,17 +1128,17 @@ LABEL_15:
     self->_childSignInButton = v4;
 
     v6 = self->_childSignInButton;
-    v7 = [MEMORY[0x1E69DC888] systemGray6Color];
-    [(UIButton *)v6 setBackgroundColor:v7];
+    systemGray6Color = [MEMORY[0x1E69DC888] systemGray6Color];
+    [(UIButton *)v6 setBackgroundColor:systemGray6Color];
 
     v8 = self->_childSignInButton;
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIButton *)v8 setTintColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIButton *)v8 setTintColor:labelColor];
 
-    v10 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v10 setCornerStyle:4];
-    [v10 setButtonSize:3];
-    [(UIButton *)self->_childSignInButton setConfiguration:v10];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setCornerStyle:4];
+    [plainButtonConfiguration setButtonSize:3];
+    [(UIButton *)self->_childSignInButton setConfiguration:plainButtonConfiguration];
     [(UIButton *)self->_childSignInButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = self->_childSignInButton;
     v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -1166,9 +1166,9 @@ LABEL_15:
     [(UIButton *)v4 setTitle:v6 forState:0];
 
     [(UIButton *)v4 addTarget:self action:sel__delegate_signInViewControllerDidSelectOtherOptions forControlEvents:64];
-    v7 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v7 setButtonSize:0];
-    [(UIButton *)v4 setConfiguration:v7];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setButtonSize:0];
+    [(UIButton *)v4 setConfiguration:plainButtonConfiguration];
     v8 = self->_otherOptionsButton;
     self->_otherOptionsButton = v4;
     v9 = v4;
@@ -1180,35 +1180,35 @@ LABEL_15:
   return otherOptionsButton;
 }
 
-- (void)constrainView:(id)a3 toFillHeaderFooterView:(id)a4
+- (void)constrainView:(id)view toFillHeaderFooterView:(id)footerView
 {
   v38[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 contentView];
-  [v7 addSubview:v5];
+  viewCopy = view;
+  footerViewCopy = footerView;
+  contentView = [footerViewCopy contentView];
+  [contentView addSubview:viewCopy];
 
-  v29 = [v5 topAnchor];
-  v30 = [v6 contentView];
-  v28 = [v30 topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  topAnchor = [viewCopy topAnchor];
+  contentView2 = [footerViewCopy contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[0] = v27;
-  v25 = [v5 leftAnchor];
-  v26 = [v6 contentView];
-  v8 = [v26 leftAnchor];
-  v9 = [v25 constraintEqualToAnchor:v8];
+  leftAnchor = [viewCopy leftAnchor];
+  contentView3 = [footerViewCopy contentView];
+  leftAnchor2 = [contentView3 leftAnchor];
+  v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v38[1] = v9;
-  v10 = [v5 bottomAnchor];
-  v11 = [v6 contentView];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor = [viewCopy bottomAnchor];
+  contentView4 = [footerViewCopy contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[2] = v13;
-  v32 = v5;
-  v14 = [v5 rightAnchor];
-  v31 = v6;
-  v15 = [v6 contentView];
-  v16 = [v15 rightAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  v32 = viewCopy;
+  rightAnchor = [viewCopy rightAnchor];
+  v31 = footerViewCopy;
+  contentView5 = [footerViewCopy contentView];
+  rightAnchor2 = [contentView5 rightAnchor];
+  v17 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v38[3] = v17;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
 
@@ -1248,9 +1248,9 @@ LABEL_15:
 
 - (BOOL)_hasValidCredentials
 {
-  v3 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  cellTextField = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+  text = [cellTextField text];
+  v5 = [text length];
 
   if (!v5)
   {
@@ -1262,9 +1262,9 @@ LABEL_15:
     return 1;
   }
 
-  v6 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-  v7 = [v6 text];
-  v8 = [v7 length] != 0;
+  cellTextField2 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+  text2 = [cellTextField2 text];
+  v8 = [text2 length] != 0;
 
   return v8;
 }
@@ -1332,24 +1332,24 @@ void __46__AAUISignInViewController__isRunningInBridge__block_invoke()
   return v3;
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(AAUISignInViewController *)self navigationItem];
-  v6 = [v5 leftBarButtonItem];
-  [v6 setEnabled:v3];
+  enabledCopy = enabled;
+  navigationItem = [(AAUISignInViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:enabledCopy];
 
-  v7 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-  [v7 setEnabled:v3];
+  cellTextField = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+  [cellTextField setEnabled:enabledCopy];
 
-  v8 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-  [v8 setEnabled:v3];
+  cellTextField2 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+  [cellTextField2 setEnabled:enabledCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_forgotOrCreateButton);
   if (WeakRetained)
   {
     v10 = objc_loadWeakRetained(&self->_forgotOrCreateButton);
-    [v10 setEnabled:v3];
+    [v10 setEnabled:enabledCopy];
   }
 
   v11 = objc_loadWeakRetained(&self->_forgotButton);
@@ -1357,7 +1357,7 @@ void __46__AAUISignInViewController__isRunningInBridge__block_invoke()
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_forgotButton);
-    [v12 setEnabled:v3];
+    [v12 setEnabled:enabledCopy];
   }
 
   v13 = objc_loadWeakRetained(&self->_createButton);
@@ -1365,29 +1365,29 @@ void __46__AAUISignInViewController__isRunningInBridge__block_invoke()
   if (v13)
   {
     v14 = objc_loadWeakRetained(&self->_createButton);
-    [v14 setEnabled:v3];
+    [v14 setEnabled:enabledCopy];
   }
 
   otherOptionsButton = self->_otherOptionsButton;
   if (otherOptionsButton)
   {
-    [(UIButton *)otherOptionsButton setEnabled:v3];
+    [(UIButton *)otherOptionsButton setEnabled:enabledCopy];
   }
 
-  v16 = [(AAUISignInViewControllerTableFooterView *)self->_tableFooterView privacyLinkController];
+  privacyLinkController = [(AAUISignInViewControllerTableFooterView *)self->_tableFooterView privacyLinkController];
 
-  if (v16)
+  if (privacyLinkController)
   {
-    v17 = [(AAUISignInViewControllerTableFooterView *)self->_tableFooterView privacyLinkController];
-    [v17 setLinkEnabled:v3];
+    privacyLinkController2 = [(AAUISignInViewControllerTableFooterView *)self->_tableFooterView privacyLinkController];
+    [privacyLinkController2 setLinkEnabled:enabledCopy];
 
-    if (v3)
+    if (enabledCopy)
     {
       tintColor = self->_tintColor;
       if (tintColor)
       {
-        v19 = [(AAUISignInViewControllerTableFooterView *)self->_tableFooterView privacyLinkController];
-        [v19 setCustomTintColor:tintColor];
+        privacyLinkController3 = [(AAUISignInViewControllerTableFooterView *)self->_tableFooterView privacyLinkController];
+        [privacyLinkController3 setCustomTintColor:tintColor];
       }
 
       [(AAUISignInViewController *)self _setUsernameCellWaiting:0];
@@ -1399,30 +1399,30 @@ void __46__AAUISignInViewController__isRunningInBridge__block_invoke()
 
   else
   {
-    v20 = v3 ^ 1;
+    v20 = enabledCopy ^ 1;
     [(AAUISignInViewController *)self _setUsernameCellWaiting:v20];
     if ((v20 & 1) == 0)
     {
 LABEL_15:
-      v21 = [(AAUISignInViewController *)self _hasValidCredentials];
+      _hasValidCredentials = [(AAUISignInViewController *)self _hasValidCredentials];
       goto LABEL_18;
     }
   }
 
-  v21 = 0;
+  _hasValidCredentials = 0;
 LABEL_18:
 
-  [(AAUISignInViewController *)self _setContinueButtonEnabled:v21];
+  [(AAUISignInViewController *)self _setContinueButtonEnabled:_hasValidCredentials];
 }
 
-- (void)_setContinueButtonEnabled:(BOOL)a3
+- (void)_setContinueButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(AAUISignInViewController *)self _continueButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  _continueButton = [(AAUISignInViewController *)self _continueButton];
+  [_continueButton setEnabled:enabledCopy];
 }
 
-- (void)_continueButtonSelected:(id)a3
+- (void)_continueButtonSelected:(id)selected
 {
   if ([(AAUISignInViewController *)self _hasValidCredentials])
   {
@@ -1432,9 +1432,9 @@ LABEL_18:
   }
 }
 
-- (void)_actionButtonSelected:(id)a3
+- (void)_actionButtonSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1445,12 +1445,12 @@ LABEL_18:
   [(AAUISignInViewController *)self _setEnabled:0];
   if ([(AAUISignInViewController *)self allowsAccountCreation]|| [(AAUISignInViewController *)self allowSkip])
   {
-    v29 = v4;
+    v29 = selectedCopy;
     [(AAUISignInViewController *)self _resignFirstResponderForAppropriateTextField];
-    v6 = [(AAUISignInViewController *)self allowsAccountCreation];
+    allowsAccountCreation = [(AAUISignInViewController *)self allowsAccountCreation];
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v8 = v7;
-    if (v6)
+    if (allowsAccountCreation)
     {
       v9 = @"SIGN_IN_HELP_ALERT_TITLE_FORGOT_OR_CREATE";
     }
@@ -1518,7 +1518,7 @@ LABEL_18:
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
 
-    v4 = v29;
+    selectedCopy = v29;
   }
 
   else
@@ -1549,22 +1549,22 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
 
 - (void)_resignFirstResponderForAppropriateTextField
 {
-  v3 = [(AAUISignInViewController *)self _isPasswordFieldVisible];
+  _isPasswordFieldVisible = [(AAUISignInViewController *)self _isPasswordFieldVisible];
   v4 = &OBJC_IVAR___AAUISignInViewController__usernameCell;
-  if (v3)
+  if (_isPasswordFieldVisible)
   {
     v4 = &OBJC_IVAR___AAUISignInViewController__passwordCell;
   }
 
-  v5 = [*(&self->super.super.super.isa + *v4) cellTextField];
-  [v5 resignFirstResponder];
+  cellTextField = [*(&self->super.super.super.isa + *v4) cellTextField];
+  [cellTextField resignFirstResponder];
 }
 
 - (void)_presentCreateAppleIDPane
 {
-  v3 = [(AAUISignInViewController *)self authenticationContext];
-  [v3 setNeedsCredentialRecovery:0];
-  [v3 setNeedsNewAppleID:1];
+  authenticationContext = [(AAUISignInViewController *)self authenticationContext];
+  [authenticationContext setNeedsCredentialRecovery:0];
+  [authenticationContext setNeedsNewAppleID:1];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -1592,8 +1592,8 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
       _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "Device warranty needed", v13, 2u);
     }
 
-    v7 = [v3 httpHeadersForRemoteUI];
-    v8 = [v7 mutableCopy];
+    httpHeadersForRemoteUI = [authenticationContext httpHeadersForRemoteUI];
+    v8 = [httpHeadersForRemoteUI mutableCopy];
     v9 = v8;
     if (v8)
     {
@@ -1608,7 +1608,7 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
     v11 = v10;
 
     [v11 setObject:@"true" forKey:@"X-MMe-Show-Warranty"];
-    [v3 setHttpHeadersForRemoteUI:v11];
+    [authenticationContext setHttpHeadersForRemoteUI:v11];
   }
 
   v12 = _AAUILogSystem();
@@ -1618,14 +1618,14 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
     _os_log_impl(&dword_1C5355000, v12, OS_LOG_TYPE_DEFAULT, "User wants a new Apple ID, presenting AuthKit...", v13, 2u);
   }
 
-  [(AAUISignInViewController *)self _attemptAuthenticationWithContext:v3];
+  [(AAUISignInViewController *)self _attemptAuthenticationWithContext:authenticationContext];
 }
 
 - (void)_presentForgotAppleIDPane
 {
-  v3 = [(AAUISignInViewController *)self authenticationContext];
-  [v3 setNeedsCredentialRecovery:1];
-  [v3 setNeedsNewAppleID:0];
+  authenticationContext = [(AAUISignInViewController *)self authenticationContext];
+  [authenticationContext setNeedsCredentialRecovery:1];
+  [authenticationContext setNeedsNewAppleID:0];
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1633,10 +1633,10 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
     _os_log_impl(&dword_1C5355000, v4, OS_LOG_TYPE_DEFAULT, "User forgot their Apple ID, presenting AuthKit...", v5, 2u);
   }
 
-  [(AAUISignInViewController *)self _attemptAuthenticationWithContext:v3];
+  [(AAUISignInViewController *)self _attemptAuthenticationWithContext:authenticationContext];
 }
 
-- (void)_childSignInSelected:(id)a3
+- (void)_childSignInSelected:(id)selected
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1646,10 +1646,10 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
   }
 
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(AAUISignInViewController *)self delegate];
+  delegate = [(AAUISignInViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 signInViewControllerDidSelectChildSignIn:self];
+    [delegate signInViewControllerDidSelectChildSignIn:self];
   }
 }
 
@@ -1670,9 +1670,9 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
   {
     [(AAUISignInViewController *)self _setEnabled:0];
     passwordHandler = self->_passwordHandler;
-    v4 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-    v5 = [v4 text];
-    passwordHandler[2](passwordHandler, v5, 0);
+    cellTextField = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    text = [cellTextField text];
+    passwordHandler[2](passwordHandler, text, 0);
 
     v6 = self->_passwordHandler;
     self->_passwordHandler = 0;
@@ -1680,31 +1680,31 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
 
   else
   {
-    v7 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-    v8 = [v7 text];
+    cellTextField2 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    text2 = [cellTextField2 text];
 
-    v9 = [(AAUISignInViewController *)self _serverFriendlyUsername:v8];
+    v9 = [(AAUISignInViewController *)self _serverFriendlyUsername:text2];
 
     if ([(AAUISignInViewController *)self _isPasswordFieldVisible])
     {
-      v10 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-      v11 = [v10 text];
+      cellTextField3 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+      text3 = [cellTextField3 text];
     }
 
     else
     {
-      v11 = 0;
+      text3 = 0;
     }
 
-    v12 = [(AAUISignInViewController *)self authenticationContext];
-    [v12 setNeedsCredentialRecovery:0];
-    [v12 setNeedsNewAppleID:0];
-    [v12 setUsername:v9];
-    [v12 _setPassword:v11];
-    [v12 _setPasswordDelegate:self];
+    authenticationContext = [(AAUISignInViewController *)self authenticationContext];
+    [authenticationContext setNeedsCredentialRecovery:0];
+    [authenticationContext setNeedsNewAppleID:0];
+    [authenticationContext setUsername:v9];
+    [authenticationContext _setPassword:text3];
+    [authenticationContext _setPasswordDelegate:self];
     if (+[AAUISignInViewController _isRunningInSettings]&& ![(AAUISignInViewController *)self isChildSetupFlow])
     {
-      [v12 setAppProvidedContext:*MEMORY[0x1E698DB30]];
+      [authenticationContext setAppProvidedContext:*MEMORY[0x1E698DB30]];
     }
 
     v13 = _AAUILogSystem();
@@ -1715,13 +1715,13 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
       _os_log_impl(&dword_1C5355000, v13, OS_LOG_TYPE_DEFAULT, "Attempting authentication for username '%{public}@'", &v14, 0xCu);
     }
 
-    [(AAUISignInViewController *)self _attemptAuthenticationWithContext:v12];
+    [(AAUISignInViewController *)self _attemptAuthenticationWithContext:authenticationContext];
   }
 }
 
-- (void)_attemptAuthenticationWithContext:(id)a3
+- (void)_attemptAuthenticationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(AAUISignInViewController *)self _setEnabled:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -1729,7 +1729,7 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 willAuthenticateWithContext:v4];
+    [v7 willAuthenticateWithContext:contextCopy];
   }
 
   v8 = _AAUILogSystem();
@@ -1744,7 +1744,7 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__3;
   v15 = __Block_byref_object_dispose__3;
-  v16 = [(AAUISignInViewController *)self authenticationController];
+  authenticationController = [(AAUISignInViewController *)self authenticationController];
   [v12[5] setDelegate:self];
   v9 = v12[5];
   v10[0] = MEMORY[0x1E69E9820];
@@ -1753,7 +1753,7 @@ void __50__AAUISignInViewController__actionButtonSelected___block_invoke_4(uint6
   v10[3] = &unk_1E820C0F0;
   v10[4] = self;
   v10[5] = &v11;
-  [v9 authenticateWithContext:v4 completion:v10];
+  [v9 authenticateWithContext:contextCopy completion:v10];
   [MEMORY[0x1E698B940] personaConsistencyCheck:self->_originalPersona];
   _Block_object_dispose(&v11, 8);
 }
@@ -1838,19 +1838,19 @@ LABEL_5:
   [v9 _delegate_signInViewControllerDidCompleteWithAuthenticationResults:v10 completionHandler:v18];
 }
 
-- (void)_repairCloudAccountWithAuthenticationResults:(id)a3
+- (void)_repairCloudAccountWithAuthenticationResults:(id)results
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698B9C0] urlConfiguration];
-  v6 = [v5 repairCloudAccountUIURL];
+  resultsCopy = results;
+  urlConfiguration = [MEMORY[0x1E698B9C0] urlConfiguration];
+  repairCloudAccountUIURL = [urlConfiguration repairCloudAccountUIURL];
 
-  v7 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+  v7 = [MEMORY[0x1E695DFF8] URLWithString:repairCloudAccountUIURL];
   v8 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v7];
   [v8 setHTTPMethod:@"POST"];
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698DBC0]];
+  v9 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBC0]];
   [v8 setValue:v9 forHTTPHeaderField:@"X-Apple-AK-Continuation-Data"];
 
-  v10 = [(AAUISignInViewController *)self _authorizationValueForAuthenticationResults:v4];
+  v10 = [(AAUISignInViewController *)self _authorizationValueForAuthenticationResults:resultsCopy];
   [v8 setValue:v10 forHTTPHeaderField:@"Authorization"];
 
   [v8 ak_addCountryHeader];
@@ -1862,8 +1862,8 @@ LABEL_5:
   v22 = [[AAUIRemoteUIController alloc] initWithIdentifier:@"com.apple.AppleAccountUI.SignIn"];
   [v18[5] setDelegate:self];
   v11 = v18[5];
-  v12 = [(AAUISignInViewController *)self navigationController];
-  [v11 setNavigationController:v12];
+  navigationController = [(AAUISignInViewController *)self navigationController];
+  [v11 setNavigationController:navigationController];
 
   v13 = _AAUILogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1914,19 +1914,19 @@ void __73__AAUISignInViewController__repairCloudAccountWithAuthenticationResults
     return 0;
   }
 
-  v3 = [(AAUISignInViewController *)self authenticationContext];
-  v4 = [v3 proxiedDevice];
-  v2 = v4 != 0;
+  authenticationContext = [(AAUISignInViewController *)self authenticationContext];
+  proxiedDevice = [authenticationContext proxiedDevice];
+  v2 = proxiedDevice != 0;
 
   return v2;
 }
 
-- (id)_authorizationValueForAuthenticationResults:(id)a3
+- (id)_authorizationValueForAuthenticationResults:(id)results
 {
   v3 = *MEMORY[0x1E698DB40];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
+  resultsCopy = results;
+  v5 = [resultsCopy objectForKeyedSubscript:v3];
+  v6 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
 
   if ([v5 length] && objc_msgSend(v6, "length"))
   {
@@ -1966,19 +1966,19 @@ void __73__AAUISignInViewController__repairCloudAccountWithAuthenticationResults
   }
 }
 
-- (void)_setPasswordFieldHidden:(BOOL)a3
+- (void)_setPasswordFieldHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(AAUISignInViewController *)self _isPasswordFieldVisible];
-  if (v3)
+  hiddenCopy = hidden;
+  _isPasswordFieldVisible = [(AAUISignInViewController *)self _isPasswordFieldVisible];
+  if (hiddenCopy)
   {
-    if (!v5)
+    if (!_isPasswordFieldVisible)
     {
       return;
     }
 
-    v6 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
-    [v6 setText:0];
+    cellTextField = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    [cellTextField setText:0];
 
     self->_showingPasswordCell = 0;
     v7 = MEMORY[0x1E69DD250];
@@ -1986,13 +1986,13 @@ void __73__AAUISignInViewController__repairCloudAccountWithAuthenticationResults
     v15 = 3221225472;
     v16 = __52__AAUISignInViewController__setPasswordFieldHidden___block_invoke;
     v17 = &unk_1E820B8F0;
-    v18 = self;
+    selfCopy = self;
     v8 = &v14;
   }
 
   else
   {
-    if (v5)
+    if (_isPasswordFieldVisible)
     {
       return;
     }
@@ -2003,11 +2003,11 @@ void __73__AAUISignInViewController__repairCloudAccountWithAuthenticationResults
     v10 = 3221225472;
     v11 = __52__AAUISignInViewController__setPasswordFieldHidden___block_invoke_4;
     v12 = &unk_1E820B8F0;
-    v13 = self;
+    selfCopy2 = self;
     v8 = &v9;
   }
 
-  [v7 animateWithDuration:v8 animations:{0.2, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18}];
+  [v7 animateWithDuration:v8 animations:{0.2, v9, v10, v11, v12, selfCopy2, v14, v15, v16, v17, selfCopy}];
 }
 
 uint64_t __52__AAUISignInViewController__setPasswordFieldHidden___block_invoke(uint64_t a1)
@@ -2085,10 +2085,10 @@ uint64_t __52__AAUISignInViewController__setPasswordFieldHidden___block_invoke_6
   return [v3 _setContinueButtonEnabled:v4];
 }
 
-- (void)_setUsernameCellWaiting:(BOOL)a3
+- (void)_setUsernameCellWaiting:(BOOL)waiting
 {
   continueButton = self->_continueButton;
-  if (a3)
+  if (waiting)
   {
     [(OBBoldTrayButton *)continueButton showsBusyIndicator];
   }
@@ -2101,30 +2101,30 @@ uint64_t __52__AAUISignInViewController__setPasswordFieldHidden___block_invoke_6
 
 - (void)_formatUsernameAsPhoneNumberIfNeeded
 {
-  v3 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-  v7 = [v3 text];
+  cellTextField = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+  text = [cellTextField text];
 
-  if (([v7 containsString:@"@"] & 1) == 0)
+  if (([text containsString:@"@"] & 1) == 0)
   {
     v4 = objc_opt_new();
-    v5 = [v4 displayFormatFor:v7];
-    v6 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-    [v6 setText:v5];
+    v5 = [v4 displayFormatFor:text];
+    cellTextField2 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    [cellTextField2 setText:v5];
   }
 }
 
-- (id)_serverFriendlyUsername:(id)a3
+- (id)_serverFriendlyUsername:(id)username
 {
-  v3 = a3;
-  if ([v3 containsString:@"@"])
+  usernameCopy = username;
+  if ([usernameCopy containsString:@"@"])
   {
-    v4 = v3;
+    v4 = usernameCopy;
   }
 
   else
   {
     v5 = objc_opt_new();
-    v4 = [v5 normalizedFormatFor:v3];
+    v4 = [v5 normalizedFormatFor:usernameCopy];
   }
 
   return v4;
@@ -2132,80 +2132,80 @@ uint64_t __52__AAUISignInViewController__setPasswordFieldHidden___block_invoke_6
 
 - (void)_beginObservingTextFieldDidChangeNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__textFieldDidChange_ name:*MEMORY[0x1E69DE5C0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__textFieldDidChange_ name:*MEMORY[0x1E69DE5C0] object:0];
 }
 
 - (void)_endObservingTextFieldDidChangeNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE5C0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE5C0] object:0];
 }
 
-- (void)_textFieldDidChange:(id)a3
+- (void)_textFieldDidChange:(id)change
 {
-  v7 = [a3 object];
-  v4 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-  if (v7 == v4)
+  object = [change object];
+  cellTextField = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+  if (object == cellTextField)
   {
   }
 
   else
   {
-    v5 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    cellTextField2 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
 
-    v6 = v7;
-    if (v7 != v5)
+    v6 = object;
+    if (object != cellTextField2)
     {
       goto LABEL_6;
     }
   }
 
   [(AAUISignInViewController *)self _setContinueButtonEnabled:[(AAUISignInViewController *)self _hasValidCredentials]];
-  v6 = v7;
+  v6 = object;
 LABEL_6:
 }
 
 - (void)_beginObservingKeyboardNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleKeyboardChangeNotification_ name:*MEMORY[0x1E69DDF78] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleKeyboardChangeNotification_ name:*MEMORY[0x1E69DDF78] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__handleKeyboardChangeNotification_ name:*MEMORY[0x1E69DE068] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleKeyboardChangeNotification_ name:*MEMORY[0x1E69DE068] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__handleKeyboardChangeNotification_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__handleKeyboardChangeNotification_ name:*MEMORY[0x1E69DE078] object:0];
 }
 
 - (void)_endObservingKeyboardNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DE068] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DE068] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
 }
 
-- (void)_handleKeyboardChangeNotification:(id)a3
+- (void)_handleKeyboardChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69DDFA0]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v4 object];
-  v16 = [v15 coordinateSpace];
+  object = [notificationCopy object];
+  coordinateSpace = [object coordinateSpace];
 
   v17 = self->_tableView;
-  [v16 convertRect:v17 toCoordinateSpace:{v8, v10, v12, v14}];
+  [coordinateSpace convertRect:v17 toCoordinateSpace:{v8, v10, v12, v14}];
   r2.origin.x = v18;
   v20 = v19;
   v22 = v21;
@@ -2215,15 +2215,15 @@ LABEL_6:
   v43.size.width = v12;
   v43.size.height = v14;
   MinX = CGRectGetMinX(v43);
-  [v16 bounds];
-  if (MinX == CGRectGetMinX(v44) && (v45.origin.x = v8, v45.origin.y = v10, v45.size.width = v12, v45.size.height = v14, MaxX = CGRectGetMaxX(v45), [v16 bounds], MaxX == CGRectGetMaxX(v46)))
+  [coordinateSpace bounds];
+  if (MinX == CGRectGetMinX(v44) && (v45.origin.x = v8, v45.origin.y = v10, v45.size.width = v12, v45.size.height = v14, MaxX = CGRectGetMaxX(v45), [coordinateSpace bounds], MaxX == CGRectGetMaxX(v46)))
   {
     v51.origin.x = v8;
     v51.origin.y = v10;
     v51.size.width = v12;
     v51.size.height = v14;
     MaxY = CGRectGetMaxY(v51);
-    [v16 bounds];
+    [coordinateSpace bounds];
     v27 = MaxY == CGRectGetMaxY(v52);
   }
 
@@ -2259,8 +2259,8 @@ LABEL_6:
     }
   }
 
-  v35 = [v4 userInfo];
-  v36 = [v35 objectForKeyedSubscript:*MEMORY[0x1E69DDF40]];
+  userInfo2 = [notificationCopy userInfo];
+  v36 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69DDF40]];
 
   v37 = MEMORY[0x1E69DD250];
   [v36 doubleValue];
@@ -2268,25 +2268,25 @@ LABEL_6:
   *&r2.size.width = 3221225472;
   *&r2.size.height = __62__AAUISignInViewController__handleKeyboardChangeNotification___block_invoke;
   v40 = &unk_1E820C168;
-  v41 = self;
+  selfCopy = self;
   v42 = v28;
   [v37 animateWithDuration:&r2.origin.y animations:?];
 }
 
-- (void)_updateContentInsetWithHeight:(double)a3
+- (void)_updateContentInsetWithHeight:(double)height
 {
-  [(UITableView *)self->_tableView _setContentScrollInset:0.0, 0.0, a3, 0.0];
+  [(UITableView *)self->_tableView _setContentScrollInset:0.0, 0.0, height, 0.0];
 
-  [(AAUISignInViewController *)self _updateScrollIndicatorInsetWithHeight:a3];
+  [(AAUISignInViewController *)self _updateScrollIndicatorInsetWithHeight:height];
 }
 
-- (void)_updateScrollIndicatorInsetWithHeight:(double)a3
+- (void)_updateScrollIndicatorInsetWithHeight:(double)height
 {
   [(UITableView *)self->_tableView frame];
   MaxX = CGRectGetMaxX(v9);
-  v6 = [(AAUISignInViewController *)self view];
-  [v6 bounds];
-  [(UITableView *)self->_tableView setScrollIndicatorInsets:0.0, 0.0, a3, MaxX - CGRectGetWidth(v10)];
+  view = [(AAUISignInViewController *)self view];
+  [view bounds];
+  [(UITableView *)self->_tableView setScrollIndicatorInsets:0.0, 0.0, height, MaxX - CGRectGetWidth(v10)];
 
   tableView = self->_tableView;
 
@@ -2295,17 +2295,17 @@ LABEL_6:
 
 - (void)_beginObservingSizeCategoryNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_sizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_sizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 }
 
 - (void)_endObservingSizeCategoryNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 }
 
-- (void)sizeCategoryDidChange:(id)a3
+- (void)sizeCategoryDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2338,31 +2338,31 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
   return [v10 reloadData];
 }
 
-- (void)_delegate_signInViewControllerDidCompleteWithAuthenticationResults:(id)a3 completionHandler:(id)a4
+- (void)_delegate_signInViewControllerDidCompleteWithAuthenticationResults:(id)results completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v7 = [(AAUISignInViewController *)self delegate];
+  delegate = [(AAUISignInViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 signInViewController:self didCompleteWithAuthenticationResults:v8 completionHandler:v6];
+    [delegate signInViewController:self didCompleteWithAuthenticationResults:resultsCopy completionHandler:handlerCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v7 signInViewController:self didCompleteWithAuthenticationResults:v8];
-    if (v6)
+    [delegate signInViewController:self didCompleteWithAuthenticationResults:resultsCopy];
+    if (handlerCopy)
     {
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
 
     [(AAUISignInViewController *)self dismissViewControllerAnimated:1 completion:0];
@@ -2372,10 +2372,10 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
 - (void)_delegate_signInViewControllerDidCancel
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(AAUISignInViewController *)self delegate];
+  delegate = [(AAUISignInViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 signInViewControllerDidCancel:self];
+    [delegate signInViewControllerDidCancel:self];
   }
 
   else
@@ -2387,10 +2387,10 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
 - (void)_delegate_signInViewControllerDidSkip
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(AAUISignInViewController *)self delegate];
+  delegate = [(AAUISignInViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 signInViewControllerDidSkip:self];
+    [delegate signInViewControllerDidSkip:self];
   }
 
   else
@@ -2402,10 +2402,10 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
 - (void)_delegate_signInViewControllerDidSelectOtherOptions
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(AAUISignInViewController *)self delegate];
+  delegate = [(AAUISignInViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 signInViewControllerDidSelectOtherOptions:self];
+    [delegate signInViewControllerDidSelectOtherOptions:self];
   }
 
   else
@@ -2414,9 +2414,9 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
   }
 }
 
-- (void)context:(id)a3 needsPasswordWithCompletion:(id)a4
+- (void)context:(id)context needsPasswordWithCompletion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   passwordHandler = self->_passwordHandler;
   self->_passwordHandler = v5;
 
@@ -2425,12 +2425,12 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
   [(AAUISignInViewController *)self _setEnabled:1];
 }
 
-- (void)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6 completion:(id)a7
+- (void)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context completion:(id)completion
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  resultsCopy = results;
+  errorCopy = error;
+  contextCopy = context;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(MEMORY[0x1E69E96A0]);
   v15 = _AAUILogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2439,7 +2439,7 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
     _os_log_impl(&dword_1C5355000, v15, OS_LOG_TYPE_DEFAULT, "Authentication controller called back with auth results.", v25, 2u);
   }
 
-  v16 = [(AAUISignInViewController *)self delegate];
+  delegate = [(AAUISignInViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v17 = _AAUILogSystem();
@@ -2448,52 +2448,52 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
       [AAUISignInViewController authenticationController:v17 shouldContinueWithAuthenticationResults:? error:? forContext:? completion:?];
     }
 
-    [v16 signInViewController:self shouldContinueWithAuthenticationResults:v11 error:v12 forContext:v13 completion:v14];
+    [delegate signInViewController:self shouldContinueWithAuthenticationResults:resultsCopy error:errorCopy forContext:contextCopy completion:completionCopy];
   }
 
-  else if (v12)
+  else if (errorCopy)
   {
     v18 = _AAUILogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [(AAUISignInViewController *)v12 authenticationController:v18 shouldContinueWithAuthenticationResults:v19 error:v20 forContext:v21 completion:v22, v23, v24];
+      [(AAUISignInViewController *)errorCopy authenticationController:v18 shouldContinueWithAuthenticationResults:v19 error:v20 forContext:v21 completion:v22, v23, v24];
     }
 
-    v14[2](v14, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v14[2](v14, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response
 {
-  v5 = a4;
-  [v5 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
-  v6 = [MEMORY[0x1E698B890] userAgentHeader];
-  [v5 setValue:v6 forHTTPHeaderField:@"User-Agent"];
+  requestCopy = request;
+  [requestCopy setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
+  userAgentHeader = [MEMORY[0x1E698B890] userAgentHeader];
+  [requestCopy setValue:userAgentHeader forHTTPHeaderField:@"User-Agent"];
 
-  v7 = [MEMORY[0x1E698B890] clientInfoHeader];
-  [v5 setValue:v7 forHTTPHeaderField:@"X-MMe-Client-Info"];
+  clientInfoHeader = [MEMORY[0x1E698B890] clientInfoHeader];
+  [requestCopy setValue:clientInfoHeader forHTTPHeaderField:@"X-MMe-Client-Info"];
 
-  v8 = [MEMORY[0x1E695DF58] currentLocale];
-  v9 = [v8 objectForKey:*MEMORY[0x1E695D978]];
-  v10 = [v9 uppercaseString];
-  [v5 setValue:v10 forHTTPHeaderField:@"X-MMe-Country"];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v9 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
+  uppercaseString = [v9 uppercaseString];
+  [requestCopy setValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (!self->_showingPasswordCell)
   {
     return 1;
   }
 
-  if ([(AAUISignInViewController *)self _showOnlyPassword:a3])
+  if ([(AAUISignInViewController *)self _showOnlyPassword:view])
   {
     return 1;
   }
@@ -2501,18 +2501,18 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
   return 2;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] || objc_msgSend(v7, "row"))
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] || objc_msgSend(pathCopy, "row"))
   {
-    v8 = [(AAUISignInViewController *)self _passwordFieldIndexPath];
-    v9 = [v7 isEqual:v8];
+    _passwordFieldIndexPath = [(AAUISignInViewController *)self _passwordFieldIndexPath];
+    v9 = [pathCopy isEqual:_passwordFieldIndexPath];
 
     if (!v9)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid index path (%@) for %@.", v7, self];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid index path (%@) for %@.", pathCopy, self];
       v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v13);
     }
@@ -2523,55 +2523,55 @@ uint64_t __50__AAUISignInViewController_sizeCategoryDidChange___block_invoke(uin
   if ([(AAUISignInViewController *)self _showOnlyPassword])
   {
 LABEL_4:
-    v10 = [(AAUISignInViewController *)self _passwordCell];
+    _passwordCell = [(AAUISignInViewController *)self _passwordCell];
     goto LABEL_5;
   }
 
-  v10 = [(AAUISignInViewController *)self _usernameCell];
+  _passwordCell = [(AAUISignInViewController *)self _usernameCell];
 LABEL_5:
-  v11 = v10;
+  v11 = _passwordCell;
 
   return v11;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  [v5 setSeparatorStyle:1];
-  [v5 _setShouldHaveFullLengthBottomSeparator:0];
-  [v5 _setShouldHaveFullLengthTopSeparator:0];
+  cellCopy = cell;
+  [cellCopy setSeparatorStyle:1];
+  [cellCopy _setShouldHaveFullLengthBottomSeparator:0];
+  [cellCopy _setShouldHaveFullLengthTopSeparator:0];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(AAUISignInViewController *)self _tableHeaderView:a3];
+    v6 = [(AAUISignInViewController *)self _tableHeaderView:view];
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v4 = 0;
+    _tableFooterView = 0;
   }
 
   else
   {
-    v4 = [(AAUISignInViewController *)self _tableFooterView];
-    [v4 setNeedsLayout];
-    [v4 layoutIfNeeded];
+    _tableFooterView = [(AAUISignInViewController *)self _tableFooterView];
+    [_tableFooterView setNeedsLayout];
+    [_tableFooterView layoutIfNeeded];
   }
 
-  return v4;
+  return _tableFooterView;
 }
 
 - (id)_tableFooterView
@@ -2581,34 +2581,34 @@ LABEL_5:
   {
     v4 = [(UITableView *)self->_tableView dequeueReusableHeaderFooterViewWithIdentifier:@"AAUISignInViewControllerTableFooterView"];
     [(AAUISignInViewControllerTableFooterView *)v4 setParentForPrivacyController:self];
-    v5 = [(AAUISignInViewController *)self privacyLinkIdentifiers];
-    [(AAUISignInViewControllerTableFooterView *)v4 setPrivacyLinkIdentifiers:v5];
+    privacyLinkIdentifiers = [(AAUISignInViewController *)self privacyLinkIdentifiers];
+    [(AAUISignInViewControllerTableFooterView *)v4 setPrivacyLinkIdentifiers:privacyLinkIdentifiers];
 
-    v6 = [(AAUISignInViewController *)self _accountHelpStackView];
-    [(AAUISignInViewControllerTableFooterView *)v4 addActionButtonStackView:v6];
+    _accountHelpStackView = [(AAUISignInViewController *)self _accountHelpStackView];
+    [(AAUISignInViewControllerTableFooterView *)v4 addActionButtonStackView:_accountHelpStackView];
 
-    v7 = [(AAUISignInViewController *)self _continueButton];
-    [(AAUISignInViewControllerTableFooterView *)v4 addContinueButton:v7];
+    _continueButton = [(AAUISignInViewController *)self _continueButton];
+    [(AAUISignInViewControllerTableFooterView *)v4 addContinueButton:_continueButton];
 
     if ([(AAUISignInViewController *)self _shouldShowChildSignButton]&& +[AAUIFeatureFlags isSolariumEnabled])
     {
-      v8 = [(AAUISignInViewController *)self _childSignInButton];
-      [(AAUISignInViewControllerTableFooterView *)v4 addChildSignInButton:v8];
+      _childSignInButton = [(AAUISignInViewController *)self _childSignInButton];
+      [(AAUISignInViewControllerTableFooterView *)v4 addChildSignInButton:_childSignInButton];
     }
 
     if ([(AAUISignInViewController *)self showOtherOptions])
     {
-      v9 = [(AAUISignInViewController *)self _otherOptionsButton];
-      [(AAUISignInViewControllerTableFooterView *)v4 addOtherButton:v9];
+      _otherOptionsButton = [(AAUISignInViewController *)self _otherOptionsButton];
+      [(AAUISignInViewControllerTableFooterView *)v4 addOtherButton:_otherOptionsButton];
     }
 
-    v10 = [(AAUISignInViewControllerTableFooterView *)v4 privacyLinkController];
+    privacyLinkController = [(AAUISignInViewControllerTableFooterView *)v4 privacyLinkController];
 
-    if (v10)
+    if (privacyLinkController)
     {
       tintColor = self->_tintColor;
-      v12 = [(AAUISignInViewControllerTableFooterView *)v4 privacyLinkController];
-      [v12 setCustomTintColor:tintColor];
+      privacyLinkController2 = [(AAUISignInViewControllerTableFooterView *)v4 privacyLinkController];
+      [privacyLinkController2 setCustomTintColor:tintColor];
     }
 
     v13 = self->_tableFooterView;
@@ -2620,11 +2620,11 @@ LABEL_5:
   return tableFooterView;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [(AAUISignInViewController *)self traitCollection:a3];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  v4 = [(AAUISignInViewController *)self traitCollection:view];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -2641,7 +2641,7 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   if ([(AAUISignInViewController *)self _hasValidCredentials])
   {
@@ -2651,15 +2651,15 @@ LABEL_5:
   return 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
-  if (v9 == v7 && [(AAUISignInViewController *)self _isPasswordFieldVisible])
+  fieldCopy = field;
+  stringCopy = string;
+  cellTextField = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+  if (cellTextField == fieldCopy && [(AAUISignInViewController *)self _isPasswordFieldVisible])
   {
-    v10 = [v7 text];
-    v11 = [v10 isEqualToString:v8];
+    text = [fieldCopy text];
+    v11 = [text isEqualToString:stringCopy];
 
     if ((v11 & 1) == 0)
     {

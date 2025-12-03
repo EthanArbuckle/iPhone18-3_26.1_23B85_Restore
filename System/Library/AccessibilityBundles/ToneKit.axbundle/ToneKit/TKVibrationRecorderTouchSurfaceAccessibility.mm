@@ -8,7 +8,7 @@
 {
   v6.receiver = self;
   v6.super_class = TKVibrationRecorderTouchSurfaceAccessibility;
-  v3 = [(TKVibrationRecorderTouchSurfaceAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(TKVibrationRecorderTouchSurfaceAccessibility *)&v6 accessibilityTraits];
   if ([(TKVibrationRecorderTouchSurfaceAccessibility *)self safeBoolForKey:@"_isRecordingModeEnabled"])
   {
     v4 = -1;
@@ -19,7 +19,7 @@
     v4 = ~*MEMORY[0x29EDC7F68];
   }
 
-  return v4 & v3;
+  return v4 & accessibilityTraits;
 }
 
 @end

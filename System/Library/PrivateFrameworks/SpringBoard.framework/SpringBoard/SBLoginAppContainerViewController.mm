@@ -3,75 +3,75 @@
 - (BOOL)handleVolumeDownButtonPress;
 - (BOOL)handleVolumeUpButtonPress;
 - (BOOL)suppressesControlCenter;
-- (SBLoginAppContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SBLoginAppContainerViewController)initWithNibName:(id)a3 bundle:(id)a4 sceneHoster:(id)a5 wallpaperController:(id)a6;
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3;
+- (SBLoginAppContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SBLoginAppContainerViewController)initWithNibName:(id)name bundle:(id)bundle sceneHoster:(id)hoster wallpaperController:(id)controller;
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior;
 - (void)_addBatteryChargingView;
-- (void)_cleanupBatteryChargingViewWithAnimationDuration:(double)a3;
-- (void)_fadeViewsForChargingViewVisible:(BOOL)a3;
+- (void)_cleanupBatteryChargingViewWithAnimationDuration:(double)duration;
+- (void)_fadeViewsForChargingViewVisible:(BOOL)visible;
 - (void)_handleBacklightFadeEnded;
-- (void)_reallyAcquireStatusBarAssertionIfNecessaryInitiallyVisible:(BOOL)a3;
+- (void)_reallyAcquireStatusBarAssertionIfNecessaryInitiallyVisible:(BOOL)visible;
 - (void)_reallyRelinquishStatusBarAssertion;
 - (void)_removeBatteryChargingView;
 - (void)_setupLoginScene;
-- (void)_showOrHideThermalTrapUIAnimated:(BOOL)a3;
-- (void)_updateBatteryChargingViewAnimated:(BOOL)a3;
+- (void)_showOrHideThermalTrapUIAnimated:(BOOL)animated;
+- (void)_updateBatteryChargingViewAnimated:(BOOL)animated;
 - (void)_updateLegibility;
-- (void)addLoginObserver:(id)a3;
+- (void)addLoginObserver:(id)observer;
 - (void)dealloc;
-- (void)disableLockScreenPluginWithContext:(id)a3;
-- (void)enableLockScreenPluginWithContext:(id)a3;
+- (void)disableLockScreenPluginWithContext:(id)context;
+- (void)enableLockScreenPluginWithContext:(id)context;
 - (void)loadView;
 - (void)noteDeviceBlockedStatusUpdated;
-- (void)pluginManager:(id)a3 willUnloadPlugin:(id)a4;
+- (void)pluginManager:(id)manager willUnloadPlugin:(id)plugin;
 - (void)prepareForUILock;
 - (void)prepareForUIUnlock;
-- (void)removeLoginObserver:(id)a3;
+- (void)removeLoginObserver:(id)observer;
 - (void)sceneInvalidated;
-- (void)sceneUpdatedIdleTimerMode:(int64_t)a3;
-- (void)sceneUpdatedRotationMode:(int64_t)a3;
-- (void)sceneUpdatedStatusBarUserName:(id)a3;
-- (void)sceneUpdatedWallpaperMode:(unint64_t)a3;
-- (void)startLockScreenFadeInAnimationForSource:(int)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)wallpaperDidChangeForVariant:(int64_t)a3;
-- (void)wallpaperLegibilitySettingsDidChange:(id)a3 forVariant:(int64_t)a4;
+- (void)sceneUpdatedIdleTimerMode:(int64_t)mode;
+- (void)sceneUpdatedRotationMode:(int64_t)mode;
+- (void)sceneUpdatedStatusBarUserName:(id)name;
+- (void)sceneUpdatedWallpaperMode:(unint64_t)mode;
+- (void)startLockScreenFadeInAnimationForSource:(int)source;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)wallpaperDidChangeForVariant:(int64_t)variant;
+- (void)wallpaperLegibilitySettingsDidChange:(id)change forVariant:(int64_t)variant;
 @end
 
 @implementation SBLoginAppContainerViewController
 
-- (SBLoginAppContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBLoginAppContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  nameCopy = name;
   v8 = objc_alloc_init(SBLoginAppSceneHoster);
   v9 = +[SBWallpaperController sharedInstance];
-  v10 = [(SBLoginAppContainerViewController *)self initWithNibName:v7 bundle:v6 sceneHoster:v8 wallpaperController:v9];
+  v10 = [(SBLoginAppContainerViewController *)self initWithNibName:nameCopy bundle:bundleCopy sceneHoster:v8 wallpaperController:v9];
 
   return v10;
 }
 
-- (SBLoginAppContainerViewController)initWithNibName:(id)a3 bundle:(id)a4 sceneHoster:(id)a5 wallpaperController:(id)a6
+- (SBLoginAppContainerViewController)initWithNibName:(id)name bundle:(id)bundle sceneHoster:(id)hoster wallpaperController:(id)controller
 {
-  v11 = a5;
-  v12 = a6;
+  hosterCopy = hoster;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = SBLoginAppContainerViewController;
-  v13 = [(SBLoginAppContainerViewController *)&v20 initWithNibName:a3 bundle:a4];
+  v13 = [(SBLoginAppContainerViewController *)&v20 initWithNibName:name bundle:bundle];
   if (v13)
   {
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v13 selector:sel__handleBacklightFadeEnded name:*MEMORY[0x277D67A18] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__handleBacklightFadeEnded name:*MEMORY[0x277D67A18] object:0];
     v15 = [MEMORY[0x277CBEB58] set];
     showStatusBarReasons = v13->_showStatusBarReasons;
     v13->_showStatusBarReasons = v15;
 
-    objc_storeStrong(&v13->_sceneHoster, a5);
+    objc_storeStrong(&v13->_sceneHoster, hoster);
     [(SBLoginAppSceneHoster *)v13->_sceneHoster setDelegate:v13];
-    objc_storeStrong(&v13->_wallpaperController, a6);
+    objc_storeStrong(&v13->_wallpaperController, controller);
     [(SBWallpaperController *)v13->_wallpaperController addObserver:v13 forVariant:0];
     v13->_idleTimerMode = 0;
     v17 = objc_alloc_init(SBLockScreenPluginManager);
@@ -95,14 +95,14 @@
   [(SBLoginAppContainerViewController *)&v4 dealloc];
 }
 
-- (void)addLoginObserver:(id)a3
+- (void)addLoginObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v9;
+    v9 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v9;
     if (!v5)
     {
       observers = self->_observers;
@@ -116,23 +116,23 @@
       }
 
       [(NSHashTable *)observers addObject:v9];
-      v4 = v9;
+      observerCopy = v9;
     }
   }
 }
 
-- (void)removeLoginObserver:(id)a3
+- (void)removeLoginObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v6;
+    v6 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v6;
     if (v5)
     {
       [(NSHashTable *)self->_observers removeObject:v6];
-      v4 = v6;
+      observerCopy = v6;
     }
   }
 }
@@ -147,11 +147,11 @@
   [(SBLoginAppContainerViewController *)self _updateLegibility];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SBLoginAppContainerViewController;
-  [(SBLoginAppContainerViewController *)&v5 viewWillAppear:a3];
+  [(SBLoginAppContainerViewController *)&v5 viewWillAppear:appear];
   [(SBLockScreenPluginManager *)self->_pluginManager setEnabled:1];
   [(SBLoginAppContainerViewController *)self _showOrHideThermalTrapUIAnimated:0];
   v4 = +[SBLockScreenManager sharedInstanceIfExists];
@@ -161,29 +161,29 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBLoginAppContainerViewController;
-  [(SBLoginAppContainerViewController *)&v4 viewWillDisappear:a3];
+  [(SBLoginAppContainerViewController *)&v4 viewWillDisappear:disappear];
   [(SBLockScreenPluginManager *)self->_pluginManager setEnabled:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = SBLoginAppContainerViewController;
-  [(SBLockScreenViewControllerBase *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SBLockScreenViewControllerBase *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   sceneHoster = self->_sceneHoster;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__SBLoginAppContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v10[3] = &unk_2783BE728;
-  v11 = v7;
-  v9 = v7;
+  v11 = coordinatorCopy;
+  v9 = coordinatorCopy;
   [(SBLoginAppSceneHoster *)sceneHoster updateSettingsWithTransitionBlock:v10];
 }
 
@@ -206,12 +206,12 @@ id __88__SBLoginAppContainerViewController_viewWillTransitionToSize_withTransiti
   return v5;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SBLoginAppContainerViewController;
-  [(SBLoginAppContainerViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(SBLoginAppContainerViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     [(SBLoginAppContainerViewController *)self _reallyAcquireStatusBarAssertionIfNecessaryInitiallyVisible:1];
   }
@@ -228,54 +228,54 @@ id __88__SBLoginAppContainerViewController_viewWillTransitionToSize_withTransiti
   -[SBLoginAppContainerViewController _showOrHideThermalTrapUIAnimated:](self, "_showOrHideThermalTrapUIAnimated:", [v3 screenIsOn]);
 }
 
-- (void)startLockScreenFadeInAnimationForSource:(int)a3
+- (void)startLockScreenFadeInAnimationForSource:(int)source
 {
-  if ((a3 - 21) <= 1 && !self->_batteryChargingViewController)
+  if ((source - 21) <= 1 && !self->_batteryChargingViewController)
   {
     [(SBLoginAppContainerViewController *)self _updateBatteryChargingViewAnimated:0];
   }
 
   v7 = +[SBScreenWakeAnimationController sharedInstance];
-  v4 = +[SBBacklightController sharedInstance];
-  if (([v4 screenIsOn] & 1) == 0)
+  legacyWallpaperWakeAnimator = +[SBBacklightController sharedInstance];
+  if (([legacyWallpaperWakeAnimator screenIsOn] & 1) == 0)
   {
-    v5 = [v7 isWakeAnimationInProgress];
+    isWakeAnimationInProgress = [v7 isWakeAnimationInProgress];
 
-    if (v5)
+    if (isWakeAnimationInProgress)
     {
       goto LABEL_8;
     }
 
     v6 = SBUIConvertUnlockSourceToBacklightChangeSource();
-    v4 = [(SBLockScreenViewControllerBase *)self legacyWallpaperWakeAnimator];
-    [v7 prepareToWakeForSource:v6 timeAlpha:v4 statusBarAlpha:0 target:0 dateView:0.0 completion:0.0];
+    legacyWallpaperWakeAnimator = [(SBLockScreenViewControllerBase *)self legacyWallpaperWakeAnimator];
+    [v7 prepareToWakeForSource:v6 timeAlpha:legacyWallpaperWakeAnimator statusBarAlpha:0 target:0 dateView:0.0 completion:0.0];
   }
 
 LABEL_8:
 }
 
-- (void)enableLockScreenPluginWithContext:(id)a3
+- (void)enableLockScreenPluginWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"FindMyiPhoneLockScreen"];
+  contextCopy = context;
+  name = [contextCopy name];
+  v6 = [name isEqualToString:@"FindMyiPhoneLockScreen"];
 
-  if (v6 && !self->_pluginWrapperViewController && [(SBLockScreenPluginManager *)self->_pluginManager enableLockScreenPluginWithContext:v4])
+  if (v6 && !self->_pluginWrapperViewController && [(SBLockScreenPluginManager *)self->_pluginManager enableLockScreenPluginWithContext:contextCopy])
   {
     v7 = [SBLoginAppContainerPluginWrapperViewController alloc];
-    v8 = [(SBLockScreenPluginManager *)self->_pluginManager activePlugin];
-    v9 = [(SBLoginAppContainerPluginWrapperViewController *)v7 initWithPlugin:v8];
+    activePlugin = [(SBLockScreenPluginManager *)self->_pluginManager activePlugin];
+    v9 = [(SBLoginAppContainerPluginWrapperViewController *)v7 initWithPlugin:activePlugin];
     pluginWrapperViewController = self->_pluginWrapperViewController;
     self->_pluginWrapperViewController = v9;
 
     [(SBLoginAppContainerViewController *)self addChildViewController:self->_pluginWrapperViewController];
-    v11 = [(SBLoginAppContainerViewController *)self loginContainerView];
-    v12 = [(SBLoginAppContainerPluginWrapperViewController *)self->_pluginWrapperViewController view];
-    [v11 setPluginView:v12];
+    loginContainerView = [(SBLoginAppContainerViewController *)self loginContainerView];
+    view = [(SBLoginAppContainerPluginWrapperViewController *)self->_pluginWrapperViewController view];
+    [loginContainerView setPluginView:view];
 
     [(SBLoginAppContainerPluginWrapperViewController *)self->_pluginWrapperViewController didMoveToParentViewController:self];
-    v13 = [(SBLoginAppContainerPluginWrapperViewController *)self->_pluginWrapperViewController view];
-    [v13 setAlpha:0.0];
+    view2 = [(SBLoginAppContainerPluginWrapperViewController *)self->_pluginWrapperViewController view];
+    [view2 setAlpha:0.0];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -295,14 +295,14 @@ void __71__SBLoginAppContainerViewController_enableLockScreenPluginWithContext__
   [v3 setContentHidden:1 forRequester:@"LockScreenPlugin"];
 }
 
-- (void)disableLockScreenPluginWithContext:(id)a3
+- (void)disableLockScreenPluginWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   if (self->_pluginWrapperViewController)
   {
-    v6 = [v4 name];
-    v7 = [v6 isEqualToString:@"FindMyiPhoneLockScreen"];
+    name = [contextCopy name];
+    v7 = [name isEqualToString:@"FindMyiPhoneLockScreen"];
 
     if (v7)
     {
@@ -352,26 +352,26 @@ uint64_t __72__SBLoginAppContainerViewController_disableLockScreenPluginWithCont
 - (BOOL)handleHomeButtonDoublePress
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(SBLoginAppSceneHoster *)self->_sceneHoster hostedApp];
-  v3 = [SBApp menuButtonInterceptApp];
-  v4 = [v3 processState];
-  v5 = v4;
-  if (v2 == v3 && [v4 isRunning])
+  hostedApp = [(SBLoginAppSceneHoster *)self->_sceneHoster hostedApp];
+  menuButtonInterceptApp = [SBApp menuButtonInterceptApp];
+  processState = [menuButtonInterceptApp processState];
+  v5 = processState;
+  if (hostedApp == menuButtonInterceptApp && [processState isRunning])
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v3 bundleIdentifier];
+      bundleIdentifier = [menuButtonInterceptApp bundleIdentifier];
       v12 = 138543362;
-      v13 = v7;
+      v13 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "intercepting menu button event and forwarding to %{public}@", &v12, 0xCu);
     }
 
-    v8 = [v3 bundleIdentifier];
-    SBSendFakeHomeButtonTapEventToApplication(v8, [v5 pid]);
+    bundleIdentifier2 = [menuButtonInterceptApp bundleIdentifier];
+    SBSendFakeHomeButtonTapEventToApplication(bundleIdentifier2, [v5 pid]);
 
-    v9 = [v3 bundleIdentifier];
-    SBSendFakeHomeButtonTapEventToApplication(v9, [v5 pid]);
+    bundleIdentifier3 = [menuButtonInterceptApp bundleIdentifier];
+    SBSendFakeHomeButtonTapEventToApplication(bundleIdentifier3, [v5 pid]);
 
     if (([SBApp menuButtonInterceptAppEnabledForever] & 1) == 0)
     {
@@ -432,26 +432,26 @@ uint64_t __72__SBLoginAppContainerViewController_disableLockScreenPluginWithCont
 
 - (BOOL)suppressesControlCenter
 {
-  v2 = [MEMORY[0x277CFC880] standardDefaults];
-  v3 = [v2 shouldAlwaysBeEnabled];
+  standardDefaults = [MEMORY[0x277CFC880] standardDefaults];
+  shouldAlwaysBeEnabled = [standardDefaults shouldAlwaysBeEnabled];
 
-  return v3 ^ 1;
+  return shouldAlwaysBeEnabled ^ 1;
 }
 
-- (void)_reallyAcquireStatusBarAssertionIfNecessaryInitiallyVisible:(BOOL)a3
+- (void)_reallyAcquireStatusBarAssertionIfNecessaryInitiallyVisible:(BOOL)visible
 {
   if (!self->_statusBarAssertion)
   {
-    v3 = a3;
-    v5 = [(UIViewController *)self _sbWindowScene];
+    visibleCopy = visible;
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
 
-    if (v5)
+    if (_sbWindowScene)
     {
-      v6 = [(UIViewController *)self _sbWindowScene];
-      v7 = [v6 statusBarManager];
-      v10 = [v7 assertionManager];
+      _sbWindowScene2 = [(UIViewController *)self _sbWindowScene];
+      statusBarManager = [_sbWindowScene2 statusBarManager];
+      assertionManager = [statusBarManager assertionManager];
 
-      v8 = [v10 newSettingsAssertionWithStatusBarHidden:!v3 atLevel:11 reason:@"login"];
+      v8 = [assertionManager newSettingsAssertionWithStatusBarHidden:!visibleCopy atLevel:11 reason:@"login"];
       statusBarAssertion = self->_statusBarAssertion;
       self->_statusBarAssertion = v8;
 
@@ -469,19 +469,19 @@ uint64_t __72__SBLoginAppContainerViewController_disableLockScreenPluginWithCont
 
 - (void)_setupLoginScene
 {
-  v3 = [MEMORY[0x277D0AB20] sharedInstance];
-  v4 = [objc_alloc(MEMORY[0x277D0AB28]) initWithEventQueue:v3 reason:@"Launch LoginUI"];
-  v5 = [(SBLoginAppContainerViewController *)self interfaceOrientation];
+  mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
+  v4 = [objc_alloc(MEMORY[0x277D0AB28]) initWithEventQueue:mEMORY[0x277D0AB20] reason:@"Launch LoginUI"];
+  interfaceOrientation = [(SBLoginAppContainerViewController *)self interfaceOrientation];
   sceneHoster = self->_sceneHoster;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__SBLoginAppContainerViewController__setupLoginScene__block_invoke;
   v8[3] = &unk_2783BE750;
   v9 = v4;
-  v10 = self;
-  v11 = v5;
+  selfCopy = self;
+  v11 = interfaceOrientation;
   v7 = v4;
-  [(SBLoginAppSceneHoster *)sceneHoster launchLoginAppWithInitialOrientation:v5 completion:v8];
+  [(SBLoginAppSceneHoster *)sceneHoster launchLoginAppWithInitialOrientation:interfaceOrientation completion:v8];
 }
 
 void __53__SBLoginAppContainerViewController__setupLoginScene__block_invoke(uint64_t a1, int a2, void *a3)
@@ -604,34 +604,34 @@ uint64_t __53__SBLoginAppContainerViewController_sceneInvalidated__block_invoke(
   return [*(a1 + 32) _setupLoginScene];
 }
 
-- (void)sceneUpdatedIdleTimerMode:(int64_t)a3
+- (void)sceneUpdatedIdleTimerMode:(int64_t)mode
 {
-  if (self->_idleTimerMode != a3)
+  if (self->_idleTimerMode != mode)
   {
-    self->_idleTimerMode = a3;
-    v5 = [(SBLockScreenViewControllerBase *)self idleTimerCoordinator];
-    if (v5)
+    self->_idleTimerMode = mode;
+    idleTimerCoordinator = [(SBLockScreenViewControllerBase *)self idleTimerCoordinator];
+    if (idleTimerCoordinator)
     {
-      v8 = v5;
-      v6 = [(SBLoginAppContainerViewController *)self coordinatorRequestedIdleTimerBehavior:v5];
+      v8 = idleTimerCoordinator;
+      v6 = [(SBLoginAppContainerViewController *)self coordinatorRequestedIdleTimerBehavior:idleTimerCoordinator];
       v7 = [v8 idleTimerProvider:self didProposeBehavior:v6 forReason:@"SBLoginAppContainerViewControllerSceneUpdatedIdleTimerMode"];
 
-      v5 = v8;
+      idleTimerCoordinator = v8;
     }
   }
 }
 
-- (void)sceneUpdatedStatusBarUserName:(id)a3
+- (void)sceneUpdatedStatusBarUserName:(id)name
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 statusBarStateAggregator];
-  [v5 setUserNameOverride:v4];
+  nameCopy = name;
+  statusBarStateAggregator = [v3 statusBarStateAggregator];
+  [statusBarStateAggregator setUserNameOverride:nameCopy];
 }
 
-- (void)sceneUpdatedRotationMode:(int64_t)a3
+- (void)sceneUpdatedRotationMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v4 = [SBApp deviceOrientationUpdateDeferralAssertionWithReason:@"LoginAppDisablingRotation"];
     deferOrientationUpdatesAssertion = self->_deferOrientationUpdatesAssertion;
@@ -646,11 +646,11 @@ uint64_t __53__SBLoginAppContainerViewController_sceneInvalidated__block_invoke(
   }
 }
 
-- (void)sceneUpdatedWallpaperMode:(unint64_t)a3
+- (void)sceneUpdatedWallpaperMode:(unint64_t)mode
 {
-  if (a3)
+  if (mode)
   {
-    if (a3 != 1)
+    if (mode != 1)
     {
       return;
     }
@@ -669,9 +669,9 @@ uint64_t __53__SBLoginAppContainerViewController_sceneInvalidated__block_invoke(
 - (void)_handleBacklightFadeEnded
 {
   v3 = +[SBBacklightController sharedInstance];
-  v4 = [v3 screenIsOn];
+  screenIsOn = [v3 screenIsOn];
 
-  if ((v4 & 1) == 0)
+  if ((screenIsOn & 1) == 0)
   {
 
     [(SBLoginAppContainerViewController *)self _cleanupBatteryChargingViewWithAnimationDuration:0.0];
@@ -692,9 +692,9 @@ uint64_t __53__SBLoginAppContainerViewController_sceneInvalidated__block_invoke(
   }
 
   [(SBLoginAppContainerViewController *)self addChildViewController:batteryChargingViewController];
-  v6 = [(SBLoginAppContainerViewController *)self loginContainerView];
-  v7 = [(SBLockScreenBatteryChargingViewController *)self->_batteryChargingViewController chargingView];
-  [v6 setBatteryChargingView:v7];
+  loginContainerView = [(SBLoginAppContainerViewController *)self loginContainerView];
+  chargingView = [(SBLockScreenBatteryChargingViewController *)self->_batteryChargingViewController chargingView];
+  [loginContainerView setBatteryChargingView:chargingView];
 
   v8 = self->_batteryChargingViewController;
 
@@ -704,23 +704,23 @@ uint64_t __53__SBLoginAppContainerViewController_sceneInvalidated__block_invoke(
 - (void)_removeBatteryChargingView
 {
   [(SBLockScreenBatteryChargingViewController *)self->_batteryChargingViewController willMoveToParentViewController:0];
-  v3 = [(SBLoginAppContainerViewController *)self loginContainerView];
-  [v3 setBatteryChargingView:0];
+  loginContainerView = [(SBLoginAppContainerViewController *)self loginContainerView];
+  [loginContainerView setBatteryChargingView:0];
 
   [(SBLockScreenBatteryChargingViewController *)self->_batteryChargingViewController removeFromParentViewController];
   batteryChargingViewController = self->_batteryChargingViewController;
   self->_batteryChargingViewController = 0;
 }
 
-- (void)_updateBatteryChargingViewAnimated:(BOOL)a3
+- (void)_updateBatteryChargingViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = +[SBUIController sharedInstanceIfExists];
-  v6 = [v5 isConnectedToExternalChargingSource];
+  isConnectedToExternalChargingSource = [v5 isConnectedToExternalChargingSource];
 
-  if (v6)
+  if (isConnectedToExternalChargingSource)
   {
-    if (v3)
+    if (animatedCopy)
     {
       v7 = 0.25;
     }
@@ -732,8 +732,8 @@ uint64_t __53__SBLoginAppContainerViewController_sceneInvalidated__block_invoke(
 
     [(SBLoginAppContainerViewController *)self _addBatteryChargingView];
     [(SBLockScreenBatteryChargingViewController *)self->_batteryChargingViewController showChargeLevelWithBatteryVisible:1];
-    v8 = [(SBLockScreenBatteryChargingViewController *)self->_batteryChargingViewController view];
-    [v8 setAlpha:0.0];
+    view = [(SBLockScreenBatteryChargingViewController *)self->_batteryChargingViewController view];
+    [view setAlpha:0.0];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -773,14 +773,14 @@ void __72__SBLoginAppContainerViewController__updateBatteryChargingViewAnimated_
   [v1 setAlpha:1.0];
 }
 
-- (void)_fadeViewsForChargingViewVisible:(BOOL)a3
+- (void)_fadeViewsForChargingViewVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(SBLoginAppContainerViewController *)self loginContainerView];
-  [v4 setContentHidden:v3 forRequester:@"ChargingView"];
+  visibleCopy = visible;
+  loginContainerView = [(SBLoginAppContainerViewController *)self loginContainerView];
+  [loginContainerView setContentHidden:visibleCopy forRequester:@"ChargingView"];
 }
 
-- (void)_cleanupBatteryChargingViewWithAnimationDuration:(double)a3
+- (void)_cleanupBatteryChargingViewWithAnimationDuration:(double)duration
 {
   [(SBLockScreenBatteryChargingViewController *)self->_batteryChargingViewController prepareForDismissalWithAnimation:0];
   [(SBLoginAppContainerViewController *)self _removeBatteryChargingView];
@@ -789,12 +789,12 @@ void __72__SBLoginAppContainerViewController__updateBatteryChargingViewAnimated_
   v5[2] = __86__SBLoginAppContainerViewController__cleanupBatteryChargingViewWithAnimationDuration___block_invoke;
   v5[3] = &unk_2783A8C18;
   v5[4] = self;
-  [MEMORY[0x277D75D18] animateWithDuration:v5 animations:a3];
+  [MEMORY[0x277D75D18] animateWithDuration:v5 animations:duration];
 }
 
-- (void)_showOrHideThermalTrapUIAnimated:(BOOL)a3
+- (void)_showOrHideThermalTrapUIAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     v4 = 0.5;
   }
@@ -804,11 +804,11 @@ void __72__SBLoginAppContainerViewController__updateBatteryChargingViewAnimated_
     v4 = 0.0;
   }
 
-  v5 = [SBApp lockOutController];
-  v6 = [v5 isThermallyBlocked];
+  lockOutController = [SBApp lockOutController];
+  isThermallyBlocked = [lockOutController isThermallyBlocked];
 
   thermalWarningViewController = self->_thermalWarningViewController;
-  if (v6)
+  if (isThermallyBlocked)
   {
     if (!thermalWarningViewController)
     {
@@ -816,12 +816,12 @@ void __72__SBLoginAppContainerViewController__updateBatteryChargingViewAnimated_
       v9 = self->_thermalWarningViewController;
       self->_thermalWarningViewController = v8;
 
-      v10 = [(SBLockOverlayViewController *)self->_thermalWarningViewController overlayView];
+      overlayView = [(SBLockOverlayViewController *)self->_thermalWarningViewController overlayView];
       v11 = [SBLoginAppContainerOverlayWrapperView alloc];
-      v12 = [(SBLoginAppContainerOverlayWrapperView *)v11 initWithFrame:v10 overlayView:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+      v12 = [(SBLoginAppContainerOverlayWrapperView *)v11 initWithFrame:overlayView overlayView:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
       [(SBLoginAppContainerViewController *)self addChildViewController:self->_thermalWarningViewController];
-      v13 = [(SBLoginAppContainerViewController *)self loginContainerView];
-      [v13 setThermalWarningView:v12];
+      loginContainerView = [(SBLoginAppContainerViewController *)self loginContainerView];
+      [loginContainerView setThermalWarningView:v12];
 
       [(SBLockScreenTemperatureWarningViewController *)self->_thermalWarningViewController didMoveToParentViewController:self];
       [(SBLoginAppContainerOverlayWrapperView *)v12 setAlpha:0.0];
@@ -831,7 +831,7 @@ void __72__SBLoginAppContainerViewController__updateBatteryChargingViewAnimated_
       v18[2] = __70__SBLoginAppContainerViewController__showOrHideThermalTrapUIAnimated___block_invoke;
       v18[3] = &unk_2783A92D8;
       v19 = v12;
-      v20 = self;
+      selfCopy = self;
       v15 = v12;
       [v14 animateWithDuration:v18 animations:v4];
     }
@@ -882,17 +882,17 @@ void __70__SBLoginAppContainerViewController__showOrHideThermalTrapUIAnimated___
   *(v3 + 1064) = 0;
 }
 
-- (void)wallpaperLegibilitySettingsDidChange:(id)a3 forVariant:(int64_t)a4
+- (void)wallpaperLegibilitySettingsDidChange:(id)change forVariant:(int64_t)variant
 {
-  if (!a4)
+  if (!variant)
   {
     [(SBLoginAppContainerViewController *)self _updateLegibility];
   }
 }
 
-- (void)wallpaperDidChangeForVariant:(int64_t)a3
+- (void)wallpaperDidChangeForVariant:(int64_t)variant
 {
-  if (!a3)
+  if (!variant)
   {
     [(SBLoginAppContainerViewController *)self _updateLegibility];
   }
@@ -900,34 +900,34 @@ void __70__SBLoginAppContainerViewController__showOrHideThermalTrapUIAnimated___
 
 - (void)_updateLegibility
 {
-  v4 = [(SBLoginAppContainerViewController *)self loginContainerView];
+  loginContainerView = [(SBLoginAppContainerViewController *)self loginContainerView];
   v2 = +[SBWallpaperController sharedInstance];
   v3 = [v2 legibilitySettingsForVariant:0];
-  [v4 setLegibilitySettings:v3];
+  [loginContainerView setLegibilitySettings:v3];
 }
 
-- (void)pluginManager:(id)a3 willUnloadPlugin:(id)a4
+- (void)pluginManager:(id)manager willUnloadPlugin:(id)plugin
 {
-  v12 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  pluginCopy = plugin;
   pluginWrapperViewController = self->_pluginWrapperViewController;
   if (pluginWrapperViewController)
   {
-    v8 = [(SBLoginAppContainerPluginWrapperViewController *)pluginWrapperViewController plugin];
+    plugin = [(SBLoginAppContainerPluginWrapperViewController *)pluginWrapperViewController plugin];
 
-    if (v8 == v6)
+    if (plugin == pluginCopy)
     {
       v9 = MEMORY[0x277D67958];
-      v10 = [v6 name];
-      v11 = [v9 contextWithName:v10];
+      name = [pluginCopy name];
+      v11 = [v9 contextWithName:name];
       [(SBLoginAppContainerViewController *)self disableLockScreenPluginWithContext:v11];
     }
   }
 }
 
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   idleTimerMode = self->_idleTimerMode;
   if (idleTimerMode == 1)
   {

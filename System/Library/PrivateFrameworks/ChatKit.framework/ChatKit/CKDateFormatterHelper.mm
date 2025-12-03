@@ -1,12 +1,12 @@
 @interface CKDateFormatterHelper
 + (id)sharedInstance;
 - (CKDateFormatterHelper)init;
-- (id)_createDateFormatterFor:(int64_t)a3;
+- (id)_createDateFormatterFor:(int64_t)for;
 - (id)_createRelativeStandaloneDateFormatter;
 - (id)_createShortDateNoTimeInSentenceDateFormatter;
-- (id)_keyForDateFormatterType:(int64_t)a3;
-- (id)_templateStringForFormatterType:(int64_t)a3;
-- (id)getDateFormatterFor:(int64_t)a3;
+- (id)_keyForDateFormatterType:(int64_t)type;
+- (id)_templateStringForFormatterType:(int64_t)type;
+- (id)getDateFormatterFor:(int64_t)for;
 - (void)removeAllObjects;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __39__CKDateFormatterHelper_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_8 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_8, block);
@@ -62,31 +62,31 @@ void __39__CKDateFormatterHelper_sharedInstance__block_invoke()
     lockList = v2->_lockList;
     v2->_lockList = v8;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v2 selector:sel_removeAllObjects name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_removeAllObjects name:*MEMORY[0x1E69DDAC8] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v2 selector:sel_removeAllObjects name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_removeAllObjects name:*MEMORY[0x1E69DDAD8] object:0];
   }
 
   return v2;
 }
 
-- (id)getDateFormatterFor:(int64_t)a3
+- (id)getDateFormatterFor:(int64_t)for
 {
   v5 = [(CKDateFormatterHelper *)self _keyForDateFormatterType:?];
-  v6 = [(CKDateFormatterHelper *)self lockList];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  lockList = [(CKDateFormatterHelper *)self lockList];
+  v7 = [lockList objectAtIndexedSubscript:for];
 
   [v7 lock];
-  v8 = [(CKDateFormatterHelper *)self dateFormatterContainer];
-  v9 = [v8 objectForKey:v5];
+  dateFormatterContainer = [(CKDateFormatterHelper *)self dateFormatterContainer];
+  v9 = [dateFormatterContainer objectForKey:v5];
 
   if (!v9)
   {
-    v9 = [(CKDateFormatterHelper *)self _createDateFormatterFor:a3];
-    v10 = [(CKDateFormatterHelper *)self dateFormatterContainer];
-    [v10 setObject:v9 forKey:v5];
+    v9 = [(CKDateFormatterHelper *)self _createDateFormatterFor:for];
+    dateFormatterContainer2 = [(CKDateFormatterHelper *)self dateFormatterContainer];
+    [dateFormatterContainer2 setObject:v9 forKey:v5];
   }
 
   [v7 unlock];
@@ -94,39 +94,39 @@ void __39__CKDateFormatterHelper_sharedInstance__block_invoke()
   return v9;
 }
 
-- (id)_createDateFormatterFor:(int64_t)a3
+- (id)_createDateFormatterFor:(int64_t)for
 {
   v5 = [(CKDateFormatterHelper *)self _templateStringForFormatterType:?];
   v6 = 0;
-  if (a3 > 4)
+  if (for > 4)
   {
-    if (a3 > 7)
+    if (for > 7)
     {
-      if (a3 == 8)
+      if (for == 8)
       {
-        v8 = [(CKDateFormatterHelper *)self _createShortDateNoTimeInSentenceDateFormatter];
+        _createShortDateNoTimeInSentenceDateFormatter = [(CKDateFormatterHelper *)self _createShortDateNoTimeInSentenceDateFormatter];
         goto LABEL_14;
       }
 
-      if (a3 != 9)
+      if (for != 9)
       {
-        if (a3 != 10)
+        if (for != 10)
         {
           goto LABEL_15;
         }
 
-        v8 = [(CKDateFormatterHelper *)self _createRelativeStandaloneDateFormatter];
+        _createShortDateNoTimeInSentenceDateFormatter = [(CKDateFormatterHelper *)self _createRelativeStandaloneDateFormatter];
         goto LABEL_14;
       }
     }
 
-    else if (a3 != 5)
+    else if (for != 5)
     {
       v7 = CKAutoupdatingRelativeDateFormatter;
 LABEL_13:
-      v8 = [[v7 alloc] initWithTemplate:v5];
+      _createShortDateNoTimeInSentenceDateFormatter = [[v7 alloc] initWithTemplate:v5];
 LABEL_14:
-      v6 = v8;
+      v6 = _createShortDateNoTimeInSentenceDateFormatter;
       goto LABEL_15;
     }
 
@@ -135,7 +135,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3 > 1 || a3 <= 1)
+  if (for > 1 || for <= 1)
   {
     goto LABEL_12;
   }
@@ -148,8 +148,8 @@ LABEL_15:
 - (id)_createShortDateNoTimeInSentenceDateFormatter
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  v3 = [MEMORY[0x1E695DF58] __ck_currentLocale];
-  [v2 setLocale:v3];
+  __ck_currentLocale = [MEMORY[0x1E695DF58] __ck_currentLocale];
+  [v2 setLocale:__ck_currentLocale];
 
   [v2 setTimeStyle:0];
   [v2 setDateStyle:1];
@@ -163,8 +163,8 @@ LABEL_15:
   v2 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v2 setTimeStyle:0];
   [v2 setDateStyle:1];
-  v3 = [MEMORY[0x1E695DF58] __ck_currentLocale];
-  [v2 setLocale:v3];
+  __ck_currentLocale = [MEMORY[0x1E695DF58] __ck_currentLocale];
+  [v2 setLocale:__ck_currentLocale];
 
   [v2 setDoesRelativeDateFormatting:1];
   [v2 setFormattingContext:2];
@@ -172,29 +172,29 @@ LABEL_15:
   return v2;
 }
 
-- (id)_keyForDateFormatterType:(int64_t)a3
+- (id)_keyForDateFormatterType:(int64_t)type
 {
-  if ((a3 - 1) > 0xA)
+  if ((type - 1) > 0xA)
   {
     return @"kThePastDateFormatterKey";
   }
 
   else
   {
-    return off_1E72F7478[a3 - 1];
+    return off_1E72F7478[type - 1];
   }
 }
 
-- (id)_templateStringForFormatterType:(int64_t)a3
+- (id)_templateStringForFormatterType:(int64_t)type
 {
-  if ((a3 - 1) > 0xA)
+  if ((type - 1) > 0xA)
   {
     return @"yMMMdjm";
   }
 
   else
   {
-    return off_1E72F74D0[a3 - 1];
+    return off_1E72F74D0[type - 1];
   }
 }
 
@@ -210,8 +210,8 @@ LABEL_15:
     }
   }
 
-  v4 = [(CKDateFormatterHelper *)self dateFormatterContainer];
-  [v4 removeAllObjects];
+  dateFormatterContainer = [(CKDateFormatterHelper *)self dateFormatterContainer];
+  [dateFormatterContainer removeAllObjects];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface CHTabBarController
-- (void)setCustomizableViewControllers:(id)a3;
+- (void)setCustomizableViewControllers:(id)controllers;
 @end
 
 @implementation CHTabBarController
 
-- (void)setCustomizableViewControllers:(id)a3
+- (void)setCustomizableViewControllers:(id)controllers
 {
   v3.receiver = self;
   v3.super_class = CHTabBarController;

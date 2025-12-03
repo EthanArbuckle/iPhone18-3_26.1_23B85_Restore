@@ -4,14 +4,14 @@
 - (CGRect)box;
 - (UIPDFPageContentDelegate)init;
 - (UIPDFPageView)view;
-- (void)addRect:(CGRect)a3 toPath:(CGPath *)a4 transform:(CGAffineTransform *)a5 view:(id)a6 owner:(id)a7;
+- (void)addRect:(CGRect)rect toPath:(CGPath *)path transform:(CGAffineTransform *)transform view:(id)view owner:(id)owner;
 - (void)computeTransform;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)drawSelectionLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)drawSelectionLayerBlockMode:(id)a3 inContext:(CGContext *)a4;
-- (void)setIsCancelled:(BOOL)a3;
-- (void)setView:(id)a3;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)drawSelectionLayer:(id)layer inContext:(CGContext *)context;
+- (void)drawSelectionLayerBlockMode:(id)mode inContext:(CGContext *)context;
+- (void)setIsCancelled:(BOOL)cancelled;
+- (void)setView:(id)view;
 @end
 
 @implementation UIPDFPageContentDelegate
@@ -77,10 +77,10 @@
   return v3;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_view = a3;
+  self->_view = view;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -93,15 +93,15 @@
   return isCancelled;
 }
 
-- (void)setIsCancelled:(BOOL)a3
+- (void)setIsCancelled:(BOOL)cancelled
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_isCancelled = a3;
+  self->_isCancelled = cancelled;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   if (!self->_view)
   {
@@ -113,13 +113,13 @@
     return;
   }
 
-  v6 = [[(UIPDFPageView *)self->_view page] copyPage];
-  if (!v6)
+  copyPage = [[(UIPDFPageView *)self->_view page] copyPage];
+  if (!copyPage)
   {
     return;
   }
 
-  v7 = v6;
+  v7 = copyPage;
   os_unfair_lock_lock(&self->_lock);
   threadCount = self->_threadCount;
   if (threadCount)
@@ -142,35 +142,35 @@
   v17 = v16;
   memset(&v23[1], 0, sizeof(CGAffineTransform));
   [(UIPDFPageContentDelegate *)self transform];
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   if (isCancelled)
   {
     v24.origin.x = v11;
     v24.origin.y = v13;
     v24.size.width = v15;
     v24.size.height = v17;
-    CGContextClipToRect(a4, v24);
+    CGContextClipToRect(context, v24);
     v23[0] = v23[1];
-    CGContextConcatCTM(a4, v23);
-    CGContextSetInterpolationQuality(a4, kCGInterpolationMedium);
+    CGContextConcatCTM(context, v23);
+    CGContextSetInterpolationQuality(context, kCGInterpolationMedium);
   }
 
   else
   {
-    CGContextSetFillColorWithColor(a4, [+[UIColor CGColor] whiteColor];
+    CGContextSetFillColorWithColor(context, [+[UIColor CGColor] whiteColor];
     v25.origin.x = v11;
     v25.origin.y = v13;
     v25.size.width = v15;
     v25.size.height = v17;
-    CGContextFillRect(a4, v25);
+    CGContextFillRect(context, v25);
     v26.origin.x = v11;
     v26.origin.y = v13;
     v26.size.width = v15;
     v26.size.height = v17;
-    CGContextClipToRect(a4, v26);
+    CGContextClipToRect(context, v26);
     v23[0] = v23[1];
-    CGContextConcatCTM(a4, v23);
-    CGContextSetInterpolationQuality(a4, kCGInterpolationMedium);
+    CGContextConcatCTM(context, v23);
+    CGContextSetInterpolationQuality(context, kCGInterpolationMedium);
     [v7 CGPage];
     CGContextDrawPDFPageWithProgressCallback();
   }
@@ -201,42 +201,42 @@ LABEL_15:
 LABEL_17:
   os_unfair_lock_unlock(&self->_lock);
 
-  v21 = [(UIPDFPageContentDelegate *)self view];
-  if ([(UIPDFPageView *)v21 showAnnotations])
+  view = [(UIPDFPageContentDelegate *)self view];
+  if ([(UIPDFPageView *)view showAnnotations])
   {
     LOBYTE(v22) = 0;
   }
 
   else
   {
-    v22 = ![(UIPDFPageView *)v21 allowHighlighting];
+    v22 = ![(UIPDFPageView *)view allowHighlighting];
   }
 
-  if (!v19 && v21 != 0 && (v22 & 1) == 0)
+  if (!v19 && view != 0 && (v22 & 1) == 0)
   {
-    [(UIPDFPageView *)v21 drawAnnotations:a4];
+    [(UIPDFPageView *)view drawAnnotations:context];
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)drawSelectionLayerBlockMode:(id)a3 inContext:(CGContext *)a4
+- (void)drawSelectionLayerBlockMode:(id)mode inContext:(CGContext *)context
 {
-  v6 = [(UIPDFPageContentDelegate *)self view];
-  if (v6)
+  view = [(UIPDFPageContentDelegate *)self view];
+  if (view)
   {
-    v7 = v6;
-    v8 = [(UIPDFPageView *)v6 page];
-    if (v8)
+    v7 = view;
+    page = [(UIPDFPageView *)view page];
+    if (page)
     {
-      v9 = [(UIPDFPage *)v8 selection];
-      if (v9)
+      selection = [(UIPDFPage *)page selection];
+      if (selection)
       {
-        v10 = v9;
-        v11 = [(UIPDFPageContentDelegate *)self owner];
-        if (v11)
+        v10 = selection;
+        owner = [(UIPDFPageContentDelegate *)self owner];
+        if (owner)
         {
-          v12 = v11;
+          v12 = owner;
           [v10 bounds];
           [(UIPDFPageView *)v7 convertRectFromPDFPageSpace:?];
           [(CALayer *)v12 convertRect:[(UIView *)v7 layer] fromLayer:v13, v14, v15, v16];
@@ -244,29 +244,29 @@ LABEL_17:
           v20 = v19;
           v22 = v21;
           v24 = v23;
-          v25 = [(UIPDFPageContentDelegate *)self highlightColor];
-          CGContextSaveGState(a4);
-          CGContextSetFillColorWithColor(a4, v25);
+          highlightColor = [(UIPDFPageContentDelegate *)self highlightColor];
+          CGContextSaveGState(context);
+          CGContextSetFillColorWithColor(context, highlightColor);
           v27.origin.x = v18;
           v27.origin.y = v20;
           v27.size.width = v22;
           v27.size.height = v24;
-          CGContextFillRect(a4, v27);
+          CGContextFillRect(context, v27);
 
-          CGContextRestoreGState(a4);
+          CGContextRestoreGState(context);
         }
       }
     }
   }
 }
 
-- (void)addRect:(CGRect)a3 toPath:(CGPath *)a4 transform:(CGAffineTransform *)a5 view:(id)a6 owner:(id)a7
+- (void)addRect:(CGRect)rect toPath:(CGPath *)path transform:(CGAffineTransform *)transform view:(id)view owner:(id)owner
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v42.origin.x = x;
   v42.origin.y = y;
   v42.size.width = width;
@@ -282,63 +282,63 @@ LABEL_17:
   v44.size.width = width;
   v44.size.height = height;
   MaxY = CGRectGetMaxY(v44);
-  [a6 convertPointFromPDFPageSpace:{vaddq_f64(*&a5->tx, vaddq_f64(vmulq_n_f64(*&a5->a, MinX), vmulq_n_f64(*&a5->c, MinY)))}];
-  [a7 convertPoint:objc_msgSend(a6 fromLayer:{"layer"), v15, v16}];
+  [view convertPointFromPDFPageSpace:{vaddq_f64(*&transform->tx, vaddq_f64(vmulq_n_f64(*&transform->a, MinX), vmulq_n_f64(*&transform->c, MinY)))}];
+  [owner convertPoint:objc_msgSend(view fromLayer:{"layer"), v15, v16}];
   v18 = v17;
   v20 = v19;
-  [a6 convertPointFromPDFPageSpace:{vaddq_f64(*&a5->tx, vaddq_f64(vmulq_n_f64(*&a5->a, MaxX), vmulq_n_f64(*&a5->c, MinY)))}];
-  [a7 convertPoint:objc_msgSend(a6 fromLayer:{"layer"), v21, v22}];
+  [view convertPointFromPDFPageSpace:{vaddq_f64(*&transform->tx, vaddq_f64(vmulq_n_f64(*&transform->a, MaxX), vmulq_n_f64(*&transform->c, MinY)))}];
+  [owner convertPoint:objc_msgSend(view fromLayer:{"layer"), v21, v22}];
   v24 = v23;
   v26 = v25;
-  [a6 convertPointFromPDFPageSpace:{vaddq_f64(*&a5->tx, vaddq_f64(vmulq_n_f64(*&a5->a, MaxX), vmulq_n_f64(*&a5->c, MaxY)))}];
-  [a7 convertPoint:objc_msgSend(a6 fromLayer:{"layer"), v27, v28}];
+  [view convertPointFromPDFPageSpace:{vaddq_f64(*&transform->tx, vaddq_f64(vmulq_n_f64(*&transform->a, MaxX), vmulq_n_f64(*&transform->c, MaxY)))}];
+  [owner convertPoint:objc_msgSend(view fromLayer:{"layer"), v27, v28}];
   v30 = v29;
   v32 = v31;
-  [a6 convertPointFromPDFPageSpace:{vaddq_f64(*&a5->tx, vaddq_f64(vmulq_n_f64(*&a5->a, MinX), vmulq_n_f64(*&a5->c, MaxY)))}];
-  [a7 convertPoint:objc_msgSend(a6 fromLayer:{"layer"), v33, v34}];
-  CPSetCGPathPoints4(a4, v18, v20, v24, v26, v30, v32, v35, v36);
+  [view convertPointFromPDFPageSpace:{vaddq_f64(*&transform->tx, vaddq_f64(vmulq_n_f64(*&transform->a, MinX), vmulq_n_f64(*&transform->c, MaxY)))}];
+  [owner convertPoint:objc_msgSend(view fromLayer:{"layer"), v33, v34}];
+  CPSetCGPathPoints4(path, v18, v20, v24, v26, v30, v32, v35, v36);
 
-  CGPathCloseSubpath(a4);
+  CGPathCloseSubpath(path);
 }
 
 - (BOOL)pageHasSelection
 {
-  v2 = [(UIPDFPageView *)[(UIPDFPageContentDelegate *)self view] page];
-  if (v2)
+  page = [(UIPDFPageView *)[(UIPDFPageContentDelegate *)self view] page];
+  if (page)
   {
-    LOBYTE(v2) = [(UIPDFPage *)v2 selection]!= 0;
+    LOBYTE(page) = [(UIPDFPage *)page selection]!= 0;
   }
 
-  return v2;
+  return page;
 }
 
-- (void)drawSelectionLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawSelectionLayer:(id)layer inContext:(CGContext *)context
 {
-  v7 = [(UIPDFPageContentDelegate *)self view];
-  if (v7)
+  view = [(UIPDFPageContentDelegate *)self view];
+  if (view)
   {
-    v8 = v7;
-    v9 = [(UIPDFPageView *)v7 selectionController];
-    if (v9)
+    v8 = view;
+    selectionController = [(UIPDFPageView *)view selectionController];
+    if (selectionController)
     {
-      v10 = v9;
-      if ([(UIPDFSelectionController *)v9 rangeMode]|| [(UIPDFSelectionController *)v10 instantHighlightMode])
+      v10 = selectionController;
+      if ([(UIPDFSelectionController *)selectionController rangeMode]|| [(UIPDFSelectionController *)v10 instantHighlightMode])
       {
-        v11 = [(UIPDFPageView *)v8 page];
-        if (v11)
+        page = [(UIPDFPageView *)v8 page];
+        if (page)
         {
-          v12 = [(UIPDFPage *)v11 selection];
-          if (v12)
+          selection = [(UIPDFPage *)page selection];
+          if (selection)
           {
-            if ([(UIPDFSelection *)v12 CGSelection])
+            if ([(UIPDFSelection *)selection CGSelection])
             {
-              v13 = [(UIPDFPageContentDelegate *)self owner];
-              if (v13)
+              owner = [(UIPDFPageContentDelegate *)self owner];
+              if (owner)
               {
-                v14 = v13;
+                v14 = owner;
                 v15 = v8;
                 CGPDFSelectionRetain();
-                v16 = [(UIPDFPageContentDelegate *)self highlightColor];
+                highlightColor = [(UIPDFPageContentDelegate *)self highlightColor];
                 NumberOfRectsAndTransforms = CGPDFSelectionGetNumberOfRectsAndTransforms();
                 if (NumberOfRectsAndTransforms)
                 {
@@ -351,11 +351,11 @@ LABEL_17:
                     CGPDFSelectionGetRectAndTransform();
                     Mutable = CGPathCreateMutable();
                     [(UIPDFPageContentDelegate *)self addRect:Mutable toPath:v21 transform:v8 view:v14 owner:v22, v23];
-                    CGContextSaveGState(a4);
-                    CGContextSetFillColorWithColor(a4, v16);
-                    CGContextAddPath(a4, Mutable);
-                    CGContextFillPath(a4);
-                    CGContextRestoreGState(a4);
+                    CGContextSaveGState(context);
+                    CGContextSetFillColorWithColor(context, highlightColor);
+                    CGContextAddPath(context, Mutable);
+                    CGContextFillPath(context);
+                    CGContextRestoreGState(context);
                     CGPathRelease(Mutable);
                   }
                 }
@@ -370,7 +370,7 @@ LABEL_17:
       else
       {
 
-        [(UIPDFPageContentDelegate *)self drawSelectionLayerBlockMode:a3 inContext:a4];
+        [(UIPDFPageContentDelegate *)self drawSelectionLayerBlockMode:layer inContext:context];
       }
     }
   }

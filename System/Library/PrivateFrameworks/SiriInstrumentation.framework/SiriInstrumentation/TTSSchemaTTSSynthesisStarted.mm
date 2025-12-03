@@ -1,36 +1,36 @@
 @interface TTSSchemaTTSSynthesisStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTSSchemaTTSSynthesisStarted)initWithDictionary:(id)a3;
-- (TTSSchemaTTSSynthesisStarted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTSSchemaTTSSynthesisStarted)initWithDictionary:(id)dictionary;
+- (TTSSchemaTTSSynthesisStarted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSynthesisEffect:(BOOL)a3;
-- (void)setHasThermalLevel:(BOOL)a3;
-- (void)setHasThermalState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSynthesisEffect:(BOOL)effect;
+- (void)setHasThermalLevel:(BOOL)level;
+- (void)setHasThermalState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTSSchemaTTSSynthesisStarted
 
-- (TTSSchemaTTSSynthesisStarted)initWithDictionary:(id)a3
+- (TTSSchemaTTSSynthesisStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = TTSSchemaTTSSynthesisStarted;
   v5 = [(TTSSchemaTTSSynthesisStarted *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"synthesisSource"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"synthesisSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSynthesisStarted setSynthesisSource:](v5, "setSynthesisSource:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"voiceContext"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"voiceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,21 +38,21 @@
       [(TTSSchemaTTSSynthesisStarted *)v5 setVoiceContext:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"synthesisEffect"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"synthesisEffect"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSynthesisStarted setSynthesisEffect:](v5, "setSynthesisEffect:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"thermalState"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"thermalState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSynthesisStarted setThermalState:](v5, "setThermalState:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"thermalLevel"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"thermalLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (TTSSchemaTTSSynthesisStarted)initWithJSON:(id)a3
+- (TTSSchemaTTSSynthesisStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTSSchemaTTSSynthesisStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTSSchemaTTSSynthesisStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTSSchemaTTSSynthesisStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,7 +101,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -116,7 +116,7 @@
       v6 = off_1E78E81E0[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"synthesisEffect"];
+    [dictionary setObject:v6 forKeyedSubscript:@"synthesisEffect"];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -146,7 +146,7 @@ LABEL_3:
     v8 = off_1E78E81F8[v7];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"synthesisSource"];
+  [dictionary setObject:v8 forKeyedSubscript:@"synthesisSource"];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -161,7 +161,7 @@ LABEL_4:
 
 LABEL_14:
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[TTSSchemaTTSSynthesisStarted thermalLevel](self, "thermalLevel")}];
-  [v3 setObject:v9 forKeyedSubscript:@"thermalLevel"];
+  [dictionary setObject:v9 forKeyedSubscript:@"thermalLevel"];
 
   if ((*&self->_has & 4) == 0)
   {
@@ -180,27 +180,27 @@ LABEL_15:
     v11 = off_1E78E8240[v10];
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"thermalState"];
+  [dictionary setObject:v11 forKeyedSubscript:@"thermalState"];
 LABEL_19:
   if (self->_voiceContext)
   {
-    v12 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    voiceContext = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
+    dictionaryRepresentation = [voiceContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"voiceContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"voiceContext"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"voiceContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"voiceContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -254,15 +254,15 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  if ((*&self->_has & 1) != (v4[36] & 1))
+  if ((*&self->_has & 1) != (equalCopy[36] & 1))
   {
     goto LABEL_23;
   }
@@ -270,28 +270,28 @@ LABEL_7:
   if (*&self->_has)
   {
     synthesisSource = self->_synthesisSource;
-    if (synthesisSource != [v4 synthesisSource])
+    if (synthesisSource != [equalCopy synthesisSource])
     {
       goto LABEL_23;
     }
   }
 
-  v6 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
-  v7 = [v4 voiceContext];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  voiceContext = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
+  voiceContext2 = [equalCopy voiceContext];
+  v8 = voiceContext2;
+  if ((voiceContext != 0) == (voiceContext2 == 0))
   {
 
     goto LABEL_23;
   }
 
-  v9 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
-  if (v9)
+  voiceContext3 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
+  if (voiceContext3)
   {
-    v10 = v9;
-    v11 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
-    v12 = [v4 voiceContext];
-    v13 = [v11 isEqual:v12];
+    v10 = voiceContext3;
+    voiceContext4 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
+    voiceContext5 = [equalCopy voiceContext];
+    v13 = [voiceContext4 isEqual:voiceContext5];
 
     if (!v13)
     {
@@ -305,7 +305,7 @@ LABEL_7:
 
   has = self->_has;
   v15 = (*&has >> 1) & 1;
-  v16 = v4[36];
+  v16 = equalCopy[36];
   if (v15 != ((v16 >> 1) & 1))
   {
 LABEL_23:
@@ -316,13 +316,13 @@ LABEL_23:
   if (v15)
   {
     synthesisEffect = self->_synthesisEffect;
-    if (synthesisEffect != [v4 synthesisEffect])
+    if (synthesisEffect != [equalCopy synthesisEffect])
     {
       goto LABEL_23;
     }
 
     has = self->_has;
-    v16 = v4[36];
+    v16 = equalCopy[36];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -334,10 +334,10 @@ LABEL_23:
   if (v18)
   {
     thermalState = self->_thermalState;
-    if (thermalState == [v4 thermalState])
+    if (thermalState == [equalCopy thermalState])
     {
       has = self->_has;
-      v16 = v4[36];
+      v16 = equalCopy[36];
       goto LABEL_19;
     }
 
@@ -354,7 +354,7 @@ LABEL_19:
   if (v20)
   {
     thermalLevel = self->_thermalLevel;
-    if (thermalLevel != [v4 thermalLevel])
+    if (thermalLevel != [equalCopy thermalLevel])
     {
       goto LABEL_23;
     }
@@ -366,19 +366,19 @@ LABEL_24:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
+  voiceContext = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
 
-  if (v4)
+  if (voiceContext)
   {
-    v5 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
+    voiceContext2 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -414,9 +414,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHasThermalLevel:(BOOL)a3
+- (void)setHasThermalLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 8;
   }
@@ -429,9 +429,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasThermalState:(BOOL)a3
+- (void)setHasThermalState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -444,9 +444,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSynthesisEffect:(BOOL)a3
+- (void)setHasSynthesisEffect:(BOOL)effect
 {
-  if (a3)
+  if (effect)
   {
     v3 = 2;
   }
@@ -459,17 +459,17 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = TTSSchemaTTSSynthesisStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(TTSSchemaTTSSynthesisStarted *)self voiceContext:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(TTSSchemaTTSSynthesisStarted *)self deleteVoiceContext];
   }

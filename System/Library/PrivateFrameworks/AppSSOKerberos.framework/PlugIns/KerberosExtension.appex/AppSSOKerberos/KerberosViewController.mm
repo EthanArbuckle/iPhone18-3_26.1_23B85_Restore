@@ -1,18 +1,18 @@
 @interface KerberosViewController
-- (KerberosViewController)initWithCoder:(id)a3;
-- (KerberosViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (KerberosViewController)initWithCoder:(id)coder;
+- (KerberosViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)resetUI;
 @end
 
 @implementation KerberosViewController
 
-- (KerberosViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (KerberosViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v16.receiver = self;
   v16.super_class = KerberosViewController;
-  v8 = [(KerberosBaseViewController *)&v16 initWithNibName:v6 bundle:v7];
+  v8 = [(KerberosBaseViewController *)&v16 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     objc_initWeak(&location, v8);
@@ -32,11 +32,11 @@
   return v8;
 }
 
-- (KerberosViewController)initWithCoder:(id)a3
+- (KerberosViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = KerberosViewController;
-  return [(KerberosBaseViewController *)&v4 initWithCoder:a3];
+  return [(KerberosBaseViewController *)&v4 initWithCoder:coder];
 }
 
 - (void)resetUI
@@ -52,8 +52,8 @@
     sub_10000BB9C(v3, self);
   }
 
-  v4 = [(KerberosBaseViewController *)self loginViewController];
-  [v4 resetUI];
+  loginViewController = [(KerberosBaseViewController *)self loginViewController];
+  [loginViewController resetUI];
 
   [(KerberosBaseViewController *)self setLoginViewController:0];
   [(KerberosBaseViewController *)self setPasswordViewController:0];

@@ -1,6 +1,6 @@
 @interface SBBlurItemContainerParameters
 + (id)defaultCrossblurBlurParameters;
-- (SBBlurItemContainerParameters)initWithBlurRadius:(double)a3 shouldRasterize:(BOOL)a4 rasterizationScale:(double)a5 inputQuality:(int64_t)a6 inputIntermediateBitDepth:(int64_t)a7 blurAnimationSettings:(id)a8;
+- (SBBlurItemContainerParameters)initWithBlurRadius:(double)radius shouldRasterize:(BOOL)rasterize rasterizationScale:(double)scale inputQuality:(int64_t)quality inputIntermediateBitDepth:(int64_t)depth blurAnimationSettings:(id)settings;
 @end
 
 @implementation SBBlurItemContainerParameters
@@ -8,34 +8,34 @@
 + (id)defaultCrossblurBlurParameters
 {
   v2 = +[SBAppSwitcherDomain rootSettings];
-  v3 = [v2 animationSettings];
+  animationSettings = [v2 animationSettings];
 
   v4 = [SBBlurItemContainerParameters alloc];
-  [v3 crossblurDosidoBlurRadius];
+  [animationSettings crossblurDosidoBlurRadius];
   v6 = v5;
-  [v3 crossblurRasterizationScale];
+  [animationSettings crossblurRasterizationScale];
   v8 = v7;
-  v9 = [v3 crossblurDosidoSettings];
-  v10 = [(SBBlurItemContainerParameters *)v4 initWithBlurRadius:0 shouldRasterize:1 rasterizationScale:1 inputQuality:v9 inputIntermediateBitDepth:v6 blurAnimationSettings:v8];
+  crossblurDosidoSettings = [animationSettings crossblurDosidoSettings];
+  v10 = [(SBBlurItemContainerParameters *)v4 initWithBlurRadius:0 shouldRasterize:1 rasterizationScale:1 inputQuality:crossblurDosidoSettings inputIntermediateBitDepth:v6 blurAnimationSettings:v8];
 
   return v10;
 }
 
-- (SBBlurItemContainerParameters)initWithBlurRadius:(double)a3 shouldRasterize:(BOOL)a4 rasterizationScale:(double)a5 inputQuality:(int64_t)a6 inputIntermediateBitDepth:(int64_t)a7 blurAnimationSettings:(id)a8
+- (SBBlurItemContainerParameters)initWithBlurRadius:(double)radius shouldRasterize:(BOOL)rasterize rasterizationScale:(double)scale inputQuality:(int64_t)quality inputIntermediateBitDepth:(int64_t)depth blurAnimationSettings:(id)settings
 {
-  v15 = a8;
+  settingsCopy = settings;
   v19.receiver = self;
   v19.super_class = SBBlurItemContainerParameters;
   v16 = [(SBBlurItemContainerParameters *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_shouldRasterize = a4;
-    v16->_blurRadius = a3;
-    v16->_rasterizationScale = a5;
-    v16->_inputQuality = a6;
-    v16->_inputIntermediateBitDepth = a7;
-    objc_storeStrong(&v16->_blurAnimationSettings, a8);
+    v16->_shouldRasterize = rasterize;
+    v16->_blurRadius = radius;
+    v16->_rasterizationScale = scale;
+    v16->_inputQuality = quality;
+    v16->_inputIntermediateBitDepth = depth;
+    objc_storeStrong(&v16->_blurAnimationSettings, settings);
   }
 
   return v17;

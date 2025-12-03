@@ -8,18 +8,18 @@
 
 + (void)reportStatistics
 {
-  [a1 reportGeneralStatistics];
+  [self reportGeneralStatistics];
 
-  [a1 reportPerAppLanguageStatistics];
+  [self reportPerAppLanguageStatistics];
 }
 
 + (void)reportGeneralStatistics
 {
   v38[10] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAF8] _globalPreferredLanguages];
-  if ([v2 count])
+  _globalPreferredLanguages = [MEMORY[0x277CBEAF8] _globalPreferredLanguages];
+  if ([_globalPreferredLanguages count])
   {
-    v36 = [v2 objectAtIndexedSubscript:0];
+    v36 = [_globalPreferredLanguages objectAtIndexedSubscript:0];
   }
 
   else
@@ -27,34 +27,34 @@
     v36 = 0;
   }
 
-  if ([v2 count] < 2)
+  if ([_globalPreferredLanguages count] < 2)
   {
     v33 = 0;
   }
 
   else
   {
-    v33 = [v2 objectAtIndexedSubscript:1];
+    v33 = [_globalPreferredLanguages objectAtIndexedSubscript:1];
   }
 
-  if ([v2 count] < 3)
+  if ([_globalPreferredLanguages count] < 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [v2 objectAtIndexedSubscript:2];
+    v3 = [_globalPreferredLanguages objectAtIndexedSubscript:2];
   }
 
   v4 = +[IntlUtility perAppLanguageSelectionBundleIdentifiers];
-  v34 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [MEMORY[0x277CCAEA8] _currentGlobalUserInflection];
-  v35 = v2;
-  v32 = v5;
-  if (v5)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  _currentGlobalUserInflection = [MEMORY[0x277CCAEA8] _currentGlobalUserInflection];
+  v35 = _globalPreferredLanguages;
+  v32 = _currentGlobalUserInflection;
+  if (_currentGlobalUserInflection)
   {
-    v6 = [v5 isIdentity] ^ 1;
+    v6 = [_currentGlobalUserInflection isIdentity] ^ 1;
   }
 
   else
@@ -63,15 +63,15 @@
   }
 
   v37[0] = @"deviceLanguage";
-  v31 = [MEMORY[0x277CBEAF8] _deviceLanguage];
-  v38[0] = v31;
+  _deviceLanguage = [MEMORY[0x277CBEAF8] _deviceLanguage];
+  v38[0] = _deviceLanguage;
   v37[1] = @"deviceRegion";
-  v30 = [MEMORY[0x277CBEAF8] preferredLocale];
-  v7 = [v30 countryCode];
-  v8 = v7;
-  if (v7)
+  preferredLocale = [MEMORY[0x277CBEAF8] preferredLocale];
+  countryCode = [preferredLocale countryCode];
+  v8 = countryCode;
+  if (countryCode)
   {
-    v9 = v7;
+    v9 = countryCode;
   }
 
   else
@@ -121,11 +121,11 @@
   v15 = [MEMORY[0x277CCABB0] numberWithBool:v6];
   v38[6] = v15;
   v37[7] = 0x2841A0BD8;
-  v16 = [MEMORY[0x277CBEAF8] _preferredTemperatureUnit];
-  v17 = v16;
-  if (v16)
+  _preferredTemperatureUnit = [MEMORY[0x277CBEAF8] _preferredTemperatureUnit];
+  v17 = _preferredTemperatureUnit;
+  if (_preferredTemperatureUnit)
   {
-    v18 = v16;
+    v18 = _preferredTemperatureUnit;
   }
 
   else
@@ -136,7 +136,7 @@
   v38[7] = v18;
   v37[8] = 0x28419F478;
   v19 = *MEMORY[0x277CCA208];
-  v20 = [v34 objectForKey:? inDomain:?];
+  v20 = [standardUserDefaults objectForKey:? inDomain:?];
   v21 = v20;
   if (v20)
   {
@@ -150,7 +150,7 @@
 
   v38[8] = v22;
   v37[9] = 0x28419F498;
-  v23 = [v34 objectForKey:? inDomain:?];
+  v23 = [standardUserDefaults objectForKey:? inDomain:?];
   v24 = v23;
   if (v23)
   {
@@ -202,16 +202,16 @@
           v22[0] = v7;
           v22[1] = v8;
           v21[2] = @"deviceLanguage";
-          v10 = [MEMORY[0x277CBEAF8] _deviceLanguage];
-          v22[2] = v10;
+          _deviceLanguage = [MEMORY[0x277CBEAF8] _deviceLanguage];
+          v22[2] = _deviceLanguage;
           v21[3] = @"deviceRegion";
-          v11 = [MEMORY[0x277CBEAF8] preferredLocale];
-          v12 = [v11 countryCode];
-          v13 = v12;
+          preferredLocale = [MEMORY[0x277CBEAF8] preferredLocale];
+          countryCode = [preferredLocale countryCode];
+          v13 = countryCode;
           v14 = @"Not Specified";
-          if (v12)
+          if (countryCode)
           {
-            v14 = v12;
+            v14 = countryCode;
           }
 
           v22[3] = v14;

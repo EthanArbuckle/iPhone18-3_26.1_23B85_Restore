@@ -1,21 +1,21 @@
 @interface WFAutomationSelectTypeViewController
-+ (unint64_t)automationTypeForHomeManager:(id)a3;
-- (WFAutomationSelectTypeViewController)initWithTriggerManager:(id)a3;
++ (unint64_t)automationTypeForHomeManager:(id)manager;
+- (WFAutomationSelectTypeViewController)initWithTriggerManager:(id)manager;
 - (WFAutomationSelectTypeViewControllerDelegate)delegate;
 - (id)buildTableContent;
 - (id)currentSections;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)triggerForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)chooseHomeAutomation:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)showHomeUpdateRequiredAlert:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)triggerForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)chooseHomeAutomation:(id)automation;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)showHomeUpdateRequiredAlert:(id)alert;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFAutomationSelectTypeViewController
@@ -27,22 +27,22 @@
   return WeakRetained;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v3 = [(WFAutomationSelectTypeViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(WFAutomationSelectTypeViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)buildTableContent
 {
   v22 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277D7C978] availableTriggersByCategory];
+  availableTriggersByCategory = [MEMORY[0x277D7C978] availableTriggersByCategory];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  v4 = [availableTriggersByCategory countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -53,7 +53,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableTriggersByCategory);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -65,7 +65,7 @@
         [v2 addObject:v9];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v5 = [availableTriggersByCategory countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v5);
@@ -81,14 +81,14 @@
   return v11;
 }
 
-- (id)triggerForIndexPath:(id)a3
+- (id)triggerForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(WFAutomationSelectTypeViewController *)self currentSections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  currentSections = [(WFAutomationSelectTypeViewController *)self currentSections];
+  v6 = [currentSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   v7 = [v6 objectForKeyedSubscript:@"triggers"];
-  v8 = [v4 row];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
 
@@ -97,28 +97,28 @@
 
 - (id)currentSections
 {
-  v3 = [(WFAutomationSelectTypeViewController *)self searchController];
-  if ([v3 isActive])
+  searchController = [(WFAutomationSelectTypeViewController *)self searchController];
+  if ([searchController isActive])
   {
-    v4 = [(WFAutomationSelectTypeViewController *)self searchController];
-    v5 = [v4 searchBar];
-    v6 = [v5 text];
-    v7 = [v6 length];
+    searchController2 = [(WFAutomationSelectTypeViewController *)self searchController];
+    searchBar = [searchController2 searchBar];
+    text = [searchBar text];
+    v7 = [text length];
 
     if (v7)
     {
-      v8 = [(WFAutomationSelectTypeViewController *)self searchController];
-      v9 = [v8 searchBar];
-      v10 = [v9 text];
+      searchController3 = [(WFAutomationSelectTypeViewController *)self searchController];
+      searchBar2 = [searchController3 searchBar];
+      text2 = [searchBar2 text];
 
-      v11 = [(WFAutomationSelectTypeViewController *)self tableContent];
+      tableContent = [(WFAutomationSelectTypeViewController *)self tableContent];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __55__WFAutomationSelectTypeViewController_currentSections__block_invoke;
       v15[3] = &unk_279EE7F68;
-      v16 = v10;
-      v12 = v10;
-      v13 = [v11 if_compactMap:v15];
+      v16 = text2;
+      v12 = text2;
+      tableContent2 = [tableContent if_compactMap:v15];
 
       goto LABEL_6;
     }
@@ -128,10 +128,10 @@
   {
   }
 
-  v13 = [(WFAutomationSelectTypeViewController *)self tableContent];
+  tableContent2 = [(WFAutomationSelectTypeViewController *)self tableContent];
 LABEL_6:
 
-  return v13;
+  return tableContent2;
 }
 
 id __55__WFAutomationSelectTypeViewController_currentSections__block_invoke(uint64_t a1, void *a2)
@@ -192,28 +192,28 @@ uint64_t __55__WFAutomationSelectTypeViewController_currentSections__block_invok
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(WFAutomationSelectTypeViewController *)self currentSections];
-  v8 = [v7 objectAtIndexedSubscript:a4];
+  viewCopy = view;
+  currentSections = [(WFAutomationSelectTypeViewController *)self currentSections];
+  v8 = [currentSections objectAtIndexedSubscript:section];
 
   v9 = [v8 objectForKeyedSubscript:@"sectionIdentifier"];
   v10 = [v9 isEqualToString:@"homePlatter"];
 
   if (v10)
   {
-    v11 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
-    v12 = [MEMORY[0x277D756E0] extraProminentInsetGroupedHeaderConfiguration];
+    v11 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+    extraProminentInsetGroupedHeaderConfiguration = [MEMORY[0x277D756E0] extraProminentInsetGroupedHeaderConfiguration];
     v13 = WFLocalizedString(@"Home Automation");
-    [v12 setText:v13];
+    [extraProminentInsetGroupedHeaderConfiguration setText:v13];
 
     v14 = 8.0;
     v15 = 8.0;
     v16 = 12.0;
 LABEL_9:
-    [v12 setDirectionalLayoutMargins:{v14, v15, v16, 8.0}];
-    [v11 setContentConfiguration:v12];
+    [extraProminentInsetGroupedHeaderConfiguration setDirectionalLayoutMargins:{v14, v15, v16, 8.0}];
+    [v11 setContentConfiguration:extraProminentInsetGroupedHeaderConfiguration];
 
     goto LABEL_10;
   }
@@ -222,28 +222,28 @@ LABEL_9:
   v18 = [v17 isEqualToString:@"triggerTypes"];
 
   v11 = 0;
-  if (!a4 && v18)
+  if (!section && v18)
   {
-    v11 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
-    v12 = [MEMORY[0x277D756E0] extraProminentInsetGroupedHeaderConfiguration];
+    v11 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+    extraProminentInsetGroupedHeaderConfiguration = [MEMORY[0x277D756E0] extraProminentInsetGroupedHeaderConfiguration];
     v19 = WFLocalizedString(@"Personal Automation");
-    [v12 setText:v19];
+    [extraProminentInsetGroupedHeaderConfiguration setText:v19];
 
-    v20 = [MEMORY[0x277D79F18] currentDevice];
-    v21 = [v20 idiom];
+    currentDevice = [MEMORY[0x277D79F18] currentDevice];
+    idiom = [currentDevice idiom];
 
-    if (v21 > 4)
+    if (idiom > 4)
     {
       v22 = @"An automation that runs on your device.";
     }
 
     else
     {
-      v22 = off_279EE8E78[v21];
+      v22 = off_279EE8E78[idiom];
     }
 
     v23 = WFLocalizedString(v22);
-    [v12 setSecondaryText:v23];
+    [extraProminentInsetGroupedHeaderConfiguration setSecondaryText:v23];
 
     v14 = 8.0;
     v15 = 8.0;
@@ -256,31 +256,31 @@ LABEL_10:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v8 = [(WFAutomationSelectTypeViewController *)self triggerForIndexPath:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [(WFAutomationSelectTypeViewController *)self triggerForIndexPath:pathCopy];
 
   if (v8)
   {
-    v7 = [(WFAutomationSelectTypeViewController *)self delegate];
-    [v7 selectTypeViewController:self didChooseTrigger:v8];
+    delegate = [(WFAutomationSelectTypeViewController *)self delegate];
+    [delegate selectTypeViewController:self didChooseTrigger:v8];
   }
 }
 
-- (void)showHomeUpdateRequiredAlert:(id)a3
+- (void)showHomeUpdateRequiredAlert:(id)alert
 {
   v10 = [MEMORY[0x277CFC218] alertWithPreferredStyle:0];
-  v3 = [MEMORY[0x277D7C4F0] localizedHomeUpdateRequiredTitle];
-  [v10 setTitle:v3];
+  localizedHomeUpdateRequiredTitle = [MEMORY[0x277D7C4F0] localizedHomeUpdateRequiredTitle];
+  [v10 setTitle:localizedHomeUpdateRequiredTitle];
 
-  v4 = [MEMORY[0x277D7C4F0] localizedHomeUpdateRequiredMessage];
-  [v10 setMessage:v4];
+  localizedHomeUpdateRequiredMessage = [MEMORY[0x277D7C4F0] localizedHomeUpdateRequiredMessage];
+  [v10 setMessage:localizedHomeUpdateRequiredMessage];
 
   v5 = MEMORY[0x277CFC220];
-  v6 = [MEMORY[0x277D7C4F0] localizedHomeUpdateRequiredButtonLabel];
-  v7 = [v5 buttonWithTitle:v6 style:0 preferred:1 handler:&__block_literal_global_11979];
+  localizedHomeUpdateRequiredButtonLabel = [MEMORY[0x277D7C4F0] localizedHomeUpdateRequiredButtonLabel];
+  v7 = [v5 buttonWithTitle:localizedHomeUpdateRequiredButtonLabel style:0 preferred:1 handler:&__block_literal_global_11979];
 
   v8 = [MEMORY[0x277CFC220] cancelButtonWithHandler:0];
   [v10 addButton:v8];
@@ -290,29 +290,29 @@ LABEL_10:
   [v9 presentAlert:v10];
 }
 
-- (void)chooseHomeAutomation:(id)a3
+- (void)chooseHomeAutomation:(id)automation
 {
-  v4 = [(WFAutomationSelectTypeViewController *)self delegate];
-  [v4 selectTypeViewController:self didChooseAutomationType:1];
+  delegate = [(WFAutomationSelectTypeViewController *)self delegate];
+  [delegate selectTypeViewController:self didChooseAutomationType:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WFAutomationSelectTypeViewController *)self currentSections];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  currentSections = [(WFAutomationSelectTypeViewController *)self currentSections];
+  v7 = [currentSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   v8 = [v7 objectForKeyedSubscript:@"sectionIdentifier"];
   v9 = [v8 isEqualToString:@"triggerTypes"];
 
-  v10 = [(WFAutomationSelectTypeViewController *)self tableView];
+  tableView = [(WFAutomationSelectTypeViewController *)self tableView];
   if (v9)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v10 dequeueReusableCellWithIdentifier:v12 forIndexPath:v5];
+    v13 = [tableView dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
 
-    v14 = [(WFAutomationSelectTypeViewController *)self triggerForIndexPath:v5];
+    v14 = [(WFAutomationSelectTypeViewController *)self triggerForIndexPath:pathCopy];
     [v13 setTrigger:v14];
 
     [v13 setAccessoryType:1];
@@ -322,17 +322,17 @@ LABEL_10:
   {
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v13 = [v10 dequeueReusableCellWithIdentifier:v16 forIndexPath:v5];
+    v13 = [tableView dequeueReusableCellWithIdentifier:v16 forIndexPath:pathCopy];
 
     v17 = objc_opt_class();
-    v18 = [(WFAutomationSelectTypeViewController *)self homeManager];
-    v19 = [v17 automationTypeForHomeManager:v18];
+    homeManager = [(WFAutomationSelectTypeViewController *)self homeManager];
+    v19 = [v17 automationTypeForHomeManager:homeManager];
 
-    v20 = [(WFAutomationSelectTypeViewController *)self homeManager];
-    v21 = [v20 requiresHomeUpdate];
+    homeManager2 = [(WFAutomationSelectTypeViewController *)self homeManager];
+    requiresHomeUpdate = [homeManager2 requiresHomeUpdate];
 
     v22 = &selRef_showHomeUpdateRequiredAlert_;
-    if (!v21)
+    if (!requiresHomeUpdate)
     {
       v22 = &selRef_chooseHomeAutomation_;
     }
@@ -344,10 +344,10 @@ LABEL_10:
   return v13;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFAutomationSelectTypeViewController *)self currentSections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  currentSections = [(WFAutomationSelectTypeViewController *)self currentSections];
+  v6 = [currentSections objectAtIndexedSubscript:section];
 
   v7 = [v6 objectForKeyedSubscript:@"sectionIdentifier"];
   v8 = [v7 isEqualToString:@"triggerTypes"];
@@ -366,26 +366,26 @@ LABEL_10:
   return v10;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFAutomationSelectTypeViewController *)self currentSections];
-  v4 = [v3 count];
+  currentSections = [(WFAutomationSelectTypeViewController *)self currentSections];
+  v4 = [currentSections count];
 
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = [(WFAutomationSelectTypeViewController *)self homeManager];
-  [v4 reloadData];
+  homeManager = [(WFAutomationSelectTypeViewController *)self homeManager];
+  [homeManager reloadData];
 
-  v7 = [MEMORY[0x277D75348] wf_accentColor];
-  v5 = [(WFAutomationSelectTypeViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setTintColor:v7];
+  wf_accentColor = [MEMORY[0x277D75348] wf_accentColor];
+  navigationController = [(WFAutomationSelectTypeViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setTintColor:wf_accentColor];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -406,61 +406,61 @@ void __66__WFAutomationSelectTypeViewController_homeManagerDidUpdateHomes___bloc
   v19.receiver = self;
   v19.super_class = WFAutomationSelectTypeViewController;
   [(WFAutomationSelectTypeViewController *)&v19 viewDidLoad];
-  v3 = [(WFAutomationSelectTypeViewController *)self tableView];
+  tableView = [(WFAutomationSelectTypeViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forCellReuseIdentifier:v6];
+  [tableView registerClass:v4 forCellReuseIdentifier:v6];
 
-  v7 = [(WFAutomationSelectTypeViewController *)self tableView];
+  tableView2 = [(WFAutomationSelectTypeViewController *)self tableView];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v7 registerClass:v8 forCellReuseIdentifier:v10];
+  [tableView2 registerClass:v8 forCellReuseIdentifier:v10];
 
-  v11 = [(WFAutomationSelectTypeViewController *)self tableView];
-  [v11 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"header"];
+  tableView3 = [(WFAutomationSelectTypeViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"header"];
 
   v12 = *MEMORY[0x277D76F30];
-  v13 = [(WFAutomationSelectTypeViewController *)self tableView];
-  [v13 setRowHeight:v12];
+  tableView4 = [(WFAutomationSelectTypeViewController *)self tableView];
+  [tableView4 setRowHeight:v12];
 
-  v14 = [(WFAutomationSelectTypeViewController *)self tableView];
-  [v14 setEstimatedRowHeight:60.0];
+  tableView5 = [(WFAutomationSelectTypeViewController *)self tableView];
+  [tableView5 setEstimatedRowHeight:60.0];
 
-  v15 = [(WFAutomationSelectTypeViewController *)self searchController];
-  [v15 setSearchResultsUpdater:self];
+  searchController = [(WFAutomationSelectTypeViewController *)self searchController];
+  [searchController setSearchResultsUpdater:self];
 
-  v16 = [(WFAutomationSelectTypeViewController *)self searchController];
-  [v16 setObscuresBackgroundDuringPresentation:0];
+  searchController2 = [(WFAutomationSelectTypeViewController *)self searchController];
+  [searchController2 setObscuresBackgroundDuringPresentation:0];
 
-  v17 = [(WFAutomationSelectTypeViewController *)self searchController];
-  v18 = [(WFAutomationSelectTypeViewController *)self navigationItem];
-  [v18 setSearchController:v17];
+  searchController3 = [(WFAutomationSelectTypeViewController *)self searchController];
+  navigationItem = [(WFAutomationSelectTypeViewController *)self navigationItem];
+  [navigationItem setSearchController:searchController3];
 }
 
-- (WFAutomationSelectTypeViewController)initWithTriggerManager:(id)a3
+- (WFAutomationSelectTypeViewController)initWithTriggerManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = WFAutomationSelectTypeViewController;
   v6 = [(WFAutomationSelectTypeViewController *)&v16 initWithStyle:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_triggerManager, a3);
-    v8 = [MEMORY[0x277D7C4F0] sharedManager];
+    objc_storeStrong(&v6->_triggerManager, manager);
+    mEMORY[0x277D7C4F0] = [MEMORY[0x277D7C4F0] sharedManager];
     homeManager = v7->_homeManager;
-    v7->_homeManager = v8;
+    v7->_homeManager = mEMORY[0x277D7C4F0];
 
     [(WFHomeManager *)v7->_homeManager addEventObserver:v7];
     v10 = objc_alloc_init(MEMORY[0x277D759F0]);
     searchController = v7->_searchController;
     v7->_searchController = v10;
 
-    v12 = [(WFAutomationSelectTypeViewController *)v7 buildTableContent];
+    buildTableContent = [(WFAutomationSelectTypeViewController *)v7 buildTableContent];
     tableContent = v7->_tableContent;
-    v7->_tableContent = v12;
+    v7->_tableContent = buildTableContent;
 
     v14 = v7;
   }
@@ -468,16 +468,16 @@ void __66__WFAutomationSelectTypeViewController_homeManagerDidUpdateHomes___bloc
   return v7;
 }
 
-+ (unint64_t)automationTypeForHomeManager:(id)a3
++ (unint64_t)automationTypeForHomeManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 homesToWhichWeHaveAdminAccess];
-  v5 = [v4 count];
+  managerCopy = manager;
+  homesToWhichWeHaveAdminAccess = [managerCopy homesToWhichWeHaveAdminAccess];
+  v5 = [homesToWhichWeHaveAdminAccess count];
 
   if (v5)
   {
-    v6 = [v3 homesToWhichWeCanAddHomeAutomations];
-    v7 = [v6 count];
+    homesToWhichWeCanAddHomeAutomations = [managerCopy homesToWhichWeCanAddHomeAutomations];
+    v7 = [homesToWhichWeCanAddHomeAutomations count];
 
     if (v7)
     {

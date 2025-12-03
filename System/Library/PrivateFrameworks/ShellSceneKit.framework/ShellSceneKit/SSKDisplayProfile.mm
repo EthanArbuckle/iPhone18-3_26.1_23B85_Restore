@@ -1,11 +1,11 @@
 @interface SSKDisplayProfile
-+ (id)mirroringMainDisplayProfileWithDelegate:(id)a3;
-+ (id)sceneHostingProfileWithDelegate:(id)a3 builder:(id)a4;
++ (id)mirroringMainDisplayProfileWithDelegate:(id)delegate;
++ (id)sceneHostingProfileWithDelegate:(id)delegate builder:(id)builder;
 - (SSKDisplayProfile)init;
-- (SSKDisplayProfile)initWithAnyConfiguration:(id)a3;
-- (SSKDisplayProfile)initWithDelegate:(id)a3 builder:(id)a4;
+- (SSKDisplayProfile)initWithAnyConfiguration:(id)configuration;
+- (SSKDisplayProfile)initWithDelegate:(id)delegate builder:(id)builder;
 - (SSKDisplayProfileDelegate)delegate;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SSKDisplayProfile
@@ -18,9 +18,9 @@
   return Strong;
 }
 
-+ (id)sceneHostingProfileWithDelegate:(id)a3 builder:(id)a4
++ (id)sceneHostingProfileWithDelegate:(id)delegate builder:(id)builder
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(builder);
   v8[2] = v4;
   swift_getObjCClassMetadata();
   v5 = swift_unknownObjectRetain();
@@ -31,7 +31,7 @@
   return v6;
 }
 
-+ (id)mirroringMainDisplayProfileWithDelegate:(id)a3
++ (id)mirroringMainDisplayProfileWithDelegate:(id)delegate
 {
   swift_getObjCClassMetadata();
   v3 = _sSo17SSKDisplayProfileC13ShellSceneKitE020mirroringMainDisplayB04withABXDSo0aB8Delegate_p_tFZ_0();
@@ -39,17 +39,17 @@
   return v3;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   SSKDisplayProfile.appendDescription(toFormatter:)();
   swift_unknownObjectRelease();
 }
 
-- (SSKDisplayProfile)initWithDelegate:(id)a3 builder:(id)a4
+- (SSKDisplayProfile)initWithDelegate:(id)delegate builder:(id)builder
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(builder);
   v6 = swift_unknownObjectRetain();
   v7 = sub_265FDB664(v6, self, v5);
   _Block_release(v5);
@@ -57,7 +57,7 @@
   return v7;
 }
 
-- (SSKDisplayProfile)initWithAnyConfiguration:(id)a3
+- (SSKDisplayProfile)initWithAnyConfiguration:(id)configuration
 {
   swift_unknownObjectRetain();
   sub_265FEC450();

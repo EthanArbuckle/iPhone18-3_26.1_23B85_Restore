@@ -1,20 +1,20 @@
 @interface UISApplicationState
 - (NSDate)_nextWakeDate;
 - (UISApplicationState)init;
-- (UISApplicationState)initWithBundleIdentifier:(id)a3;
+- (UISApplicationState)initWithBundleIdentifier:(id)identifier;
 - (id)initForCurrentApplication;
-- (void)_setNextWakeDate:(id)a3;
+- (void)_setNextWakeDate:(id)date;
 - (void)dealloc;
-- (void)setBadgeValue:(id)a3;
+- (void)setBadgeValue:(id)value;
 @end
 
 @implementation UISApplicationState
 
 - (id)initForCurrentApplication
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [(UISApplicationState *)self initWithBundleIdentifier:v4];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [(UISApplicationState *)self initWithBundleIdentifier:bundleIdentifier];
 
   return v5;
 }
@@ -29,23 +29,23 @@
 
 - (UISApplicationState)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UISApplicationState.m" lineNumber:27 description:@"[-init] is unavailable for UIApplicationState."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationState.m" lineNumber:27 description:@"[-init] is unavailable for UIApplicationState."];
 
   return 0;
 }
 
-- (UISApplicationState)initWithBundleIdentifier:(id)a3
+- (UISApplicationState)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = UISApplicationState;
   v6 = [(UISApplicationState *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
-    v8 = [[UISApplicationStateClient alloc] initWithBundleIdentifier:v5];
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
+    v8 = [[UISApplicationStateClient alloc] initWithBundleIdentifier:identifierCopy];
     client = v7->_client;
     v7->_client = v8;
   }
@@ -53,27 +53,27 @@
   return v7;
 }
 
-- (void)setBadgeValue:(id)a3
+- (void)setBadgeValue:(id)value
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (!valueCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = _UISStateServiceLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [MEMORY[0x1E698E740] processHandle];
+      processHandle = [MEMORY[0x1E698E740] processHandle];
       bundleIdentifier = self->_bundleIdentifier;
       v8 = 138543874;
-      v9 = v6;
+      v9 = processHandle;
       v10 = 2114;
       v11 = bundleIdentifier;
       v12 = 2114;
-      v13 = v4;
+      v13 = valueCopy;
       _os_log_impl(&dword_195FF3000, v5, OS_LOG_TYPE_DEFAULT, "Client %{public}@ is requesting to change the badge value of %{public}@ to %{public}@", &v8, 0x20u);
     }
 
-    [(UISApplicationStateClient *)self->_client setBadgeValue:v4];
+    [(UISApplicationStateClient *)self->_client setBadgeValue:valueCopy];
   }
 }
 
@@ -93,10 +93,10 @@
   return v3;
 }
 
-- (void)_setNextWakeDate:(id)a3
+- (void)_setNextWakeDate:(id)date
 {
   client = self->_client;
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
   [(UISApplicationStateClient *)client setNextWakeIntervalSinceReferenceDate:?];
 }

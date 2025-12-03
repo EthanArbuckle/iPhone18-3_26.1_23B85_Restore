@@ -1,10 +1,10 @@
 @interface WFScanManager
 - (WFScanManager)init;
-- (WFScanManager)initWithScanProxy:(id)a3 delegate:(id)a4;
+- (WFScanManager)initWithScanProxy:(id)proxy delegate:(id)delegate;
 - (WFScanManagerDelegate)delegate;
-- (double)setTwentyPercentSkew:(double)a3;
+- (double)setTwentyPercentSkew:(double)skew;
 - (id)_knownHiddenNetworkNames;
-- (id)hotspotHelperForScanRecord:(id)a3;
+- (id)hotspotHelperForScanRecord:(id)record;
 - (int64_t)state;
 - (void)_cancelQueuedScan;
 - (void)_checkForNoNetworksFound;
@@ -13,15 +13,15 @@
 - (void)_removeQueuedScans;
 - (void)_resetNoNetworksFoundCounters;
 - (void)_scan;
-- (void)_scanningDidFinishWithError:(id)a3;
+- (void)_scanningDidFinishWithError:(id)error;
 - (void)_scanningWillStart;
 - (void)_startHotspotPluginScan;
 - (void)_stopNetworkPluginScan;
-- (void)_updatePartialScanResults:(id)a3;
+- (void)_updatePartialScanResults:(id)results;
 - (void)pause;
 - (void)resume;
-- (void)setScanInterval:(double)a3;
-- (void)setState:(int64_t)a3;
+- (void)setScanInterval:(double)interval;
+- (void)setState:(int64_t)state;
 - (void)start;
 - (void)stop;
 @end
@@ -44,15 +44,15 @@
     v5 = v3;
     if (os_log_type_enabled(v5, v4))
     {
-      v6 = [(WFScanManager *)self state];
-      if (v6 > 3)
+      state = [(WFScanManager *)self state];
+      if (state > 3)
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = off_279EBE378[v6];
+        v7 = off_279EBE378[state];
       }
 
       v18 = 138412290;
@@ -61,10 +61,10 @@
     }
   }
 
-  v8 = [(WFScanManager *)self scanProxy];
-  v9 = [v8 isScanningAllowed];
+  scanProxy = [(WFScanManager *)self scanProxy];
+  isScanningAllowed = [scanProxy isScanningAllowed];
 
-  if (v9)
+  if (isScanningAllowed)
   {
     if ([(WFScanManager *)self state])
     {
@@ -75,15 +75,15 @@
         v12 = v10;
         if (os_log_type_enabled(v12, v11))
         {
-          v13 = [(WFScanManager *)self state];
-          if (v13 > 3)
+          state2 = [(WFScanManager *)self state];
+          if (state2 > 3)
           {
             v14 = 0;
           }
 
           else
           {
-            v14 = off_279EBE378[v13];
+            v14 = off_279EBE378[state2];
           }
 
           v18 = 138412290;
@@ -121,9 +121,9 @@
 - (void)stop
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(WFScanManager *)self state];
+  state = [(WFScanManager *)self state];
   v4 = WFLogForCategory(6uLL);
-  if (v3)
+  if (state)
   {
     v5 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v4)
@@ -131,15 +131,15 @@
       v6 = v4;
       if (os_log_type_enabled(v6, v5))
       {
-        v7 = [(WFScanManager *)self state];
-        if (v7 > 3)
+        state2 = [(WFScanManager *)self state];
+        if (state2 > 3)
         {
           v8 = 0;
         }
 
         else
         {
-          v8 = off_279EBE378[v7];
+          v8 = off_279EBE378[state2];
         }
 
         v14 = 138412290;
@@ -164,15 +164,15 @@
       v10 = v4;
       if (os_log_type_enabled(v10, v9))
       {
-        v11 = [(WFScanManager *)self state];
-        if (v11 > 3)
+        state3 = [(WFScanManager *)self state];
+        if (state3 > 3)
         {
           v12 = 0;
         }
 
         else
         {
-          v12 = off_279EBE378[v11];
+          v12 = off_279EBE378[state3];
         }
 
         v14 = 138412290;
@@ -188,7 +188,7 @@
 - (void)pause
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(WFScanManager *)self state];
+  state = [(WFScanManager *)self state];
   v4 = WFLogForCategory(6uLL);
   v5 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel())
@@ -202,22 +202,22 @@
   }
 
   v7 = !v6;
-  if (v3 == 3)
+  if (state == 3)
   {
     if (v7)
     {
       v8 = v4;
       if (os_log_type_enabled(v8, v5))
       {
-        v9 = [(WFScanManager *)self state];
-        if (v9 > 3)
+        state2 = [(WFScanManager *)self state];
+        if (state2 > 3)
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = off_279EBE378[v9];
+          v10 = off_279EBE378[state2];
         }
 
         v15 = 138412290;
@@ -234,15 +234,15 @@
       v11 = v4;
       if (os_log_type_enabled(v11, v5))
       {
-        v12 = [(WFScanManager *)self state];
-        if (v12 > 3)
+        state3 = [(WFScanManager *)self state];
+        if (state3 > 3)
         {
           v13 = 0;
         }
 
         else
         {
-          v13 = off_279EBE378[v12];
+          v13 = off_279EBE378[state3];
         }
 
         v15 = 138412290;
@@ -264,7 +264,7 @@
 - (void)resume
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(WFScanManager *)self _canResumeScanning];
+  _canResumeScanning = [(WFScanManager *)self _canResumeScanning];
   v4 = WFLogForCategory(6uLL);
   v5 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel())
@@ -278,22 +278,22 @@
   }
 
   v7 = !v6;
-  if (!v3)
+  if (!_canResumeScanning)
   {
     if (v7)
     {
       v11 = v4;
       if (os_log_type_enabled(v11, v5))
       {
-        v12 = [(WFScanManager *)self state];
-        if (v12 > 3)
+        state = [(WFScanManager *)self state];
+        if (state > 3)
         {
           v13 = 0;
         }
 
         else
         {
-          v13 = off_279EBE378[v12];
+          v13 = off_279EBE378[state];
         }
 
         v18 = 138412290;
@@ -310,15 +310,15 @@
     v8 = v4;
     if (os_log_type_enabled(v8, v5))
     {
-      v9 = [(WFScanManager *)self state];
-      if (v9 > 3)
+      state2 = [(WFScanManager *)self state];
+      if (state2 > 3)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = off_279EBE378[v9];
+        v10 = off_279EBE378[state2];
       }
 
       v18 = 138412290;
@@ -327,10 +327,10 @@
     }
   }
 
-  v14 = [(WFScanManager *)self scanProxy];
-  v15 = [v14 isScanningAllowed];
+  scanProxy = [(WFScanManager *)self scanProxy];
+  isScanningAllowed = [scanProxy isScanningAllowed];
 
-  if (!v15)
+  if (!isScanningAllowed)
   {
     v4 = WFLogForCategory(6uLL);
     v16 = OSLogForWFLogLevel(1uLL);
@@ -352,10 +352,10 @@ LABEL_29:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setScanInterval:(double)a3
+- (void)setScanInterval:(double)interval
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_scanInterval != a3)
+  if (self->_scanInterval != interval)
   {
     v5 = WFLogForCategory(6uLL);
     v6 = OSLogForWFLogLevel(1uLL);
@@ -365,11 +365,11 @@ LABEL_29:
       v9 = 134218240;
       v10 = scanInterval;
       v11 = 2048;
-      v12 = a3;
+      intervalCopy = interval;
       _os_log_impl(&dword_273ECD000, v5, v6, "scan interval changed from %f to %f", &v9, 0x16u);
     }
 
-    self->_scanInterval = a3;
+    self->_scanInterval = interval;
     if ([(WFScanManager *)self state]== 1)
     {
       [(WFScanManager *)self _cancelQueuedScan];
@@ -380,42 +380,42 @@ LABEL_29:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  if ([(WFScanManager *)self state]!= a3)
+  if ([(WFScanManager *)self state]!= state)
   {
-    v5 = [(WFScanManager *)self state];
+    state = [(WFScanManager *)self state];
     internalQueue = self->_internalQueue;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __26__WFScanManager_setState___block_invoke;
     v13[3] = &unk_279EBCFB8;
     v13[4] = self;
-    v13[5] = a3;
+    v13[5] = state;
     dispatch_barrier_async(internalQueue, v13);
     v7 = WFLogForCategory(6uLL);
     v8 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v7 && os_log_type_enabled(v7, v8))
     {
-      if (v5 > 3)
+      if (state > 3)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = off_279EBE378[v5];
+        v9 = off_279EBE378[state];
       }
 
-      if (a3 > 3)
+      if (state > 3)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = off_279EBE378[a3];
+        v10 = off_279EBE378[state];
       }
 
       *buf = 138412546;
@@ -425,10 +425,10 @@ LABEL_29:
       _os_log_impl(&dword_273ECD000, v7, v8, "scan manager state changed from %@ to %@", buf, 0x16u);
     }
 
-    v11 = [(WFScanManager *)self delegate];
+    delegate = [(WFScanManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v11 scanManager:self stateDidChange:a3];
+      [delegate scanManager:self stateDidChange:state];
     }
   }
 
@@ -454,10 +454,10 @@ LABEL_29:
   return v3;
 }
 
-- (double)setTwentyPercentSkew:(double)a3
+- (double)setTwentyPercentSkew:(double)skew
 {
-  v3 = a3 - a3 * 0.1;
-  v4 = a3 * 0.1 + a3;
+  v3 = skew - skew * 0.1;
+  v4 = skew * 0.1 + skew;
   v5 = arc4random();
   return v3 + (v5 + ((v5 / 0x7FFFFFFF) | ((v5 / 0x7FFFFFFF) << 31))) / 2147483650.0 * (v4 - v3);
 }
@@ -512,15 +512,15 @@ LABEL_29:
       v8 = v6;
       if (os_log_type_enabled(v8, v7))
       {
-        v9 = [(WFScanManager *)self state];
-        if (v9 > 3)
+        state = [(WFScanManager *)self state];
+        if (state > 3)
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = off_279EBE378[v9];
+          v10 = off_279EBE378[state];
         }
 
         LODWORD(buf) = 138412290;
@@ -567,10 +567,10 @@ void __34__WFScanManager__cancelQueuedScan__block_invoke(uint64_t a1)
 
 - (void)_scan
 {
-  v3 = [(WFScanManager *)self scanProxy];
-  v4 = [v3 isScanningAllowed];
+  scanProxy = [(WFScanManager *)self scanProxy];
+  isScanningAllowed = [scanProxy isScanningAllowed];
 
-  if (v4)
+  if (isScanningAllowed)
   {
     v5 = [MEMORY[0x277CBEB58] set];
     [(WFScanManager *)self setNetworks:v5];
@@ -799,32 +799,32 @@ void __22__WFScanManager__scan__block_invoke(uint64_t a1)
 - (void)_processNextScan
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(WFScanManager *)self scanQueue];
-  if ([v3 count])
+  scanQueue = [(WFScanManager *)self scanQueue];
+  if ([scanQueue count])
   {
-    v4 = [(WFScanManager *)self _isScanning];
+    _isScanning = [(WFScanManager *)self _isScanning];
 
-    if (v4)
+    if (_isScanning)
     {
-      v5 = [(WFScanManager *)self scanQueue];
-      v6 = [v5 firstObject];
+      scanQueue2 = [(WFScanManager *)self scanQueue];
+      firstObject = [scanQueue2 firstObject];
 
       v7 = WFLogForCategory(6uLL);
       v8 = OSLogForWFLogLevel(1uLL);
       if (WFCurrentLogLevel() && v7 && os_log_type_enabled(v7, v8))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v6;
+        *(&buf + 4) = firstObject;
         _os_log_impl(&dword_273ECD000, v7, v8, "{SCAN+} starting scan: %@", &buf, 0xCu);
       }
 
-      v9 = [(WFScanManager *)self delegate];
+      delegate = [(WFScanManager *)self delegate];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
-        v11 = [(WFScanManager *)self delegate];
-        [v11 scanManager:self willStartScanRequest:v6];
+        delegate2 = [(WFScanManager *)self delegate];
+        [delegate2 scanManager:self willStartScanRequest:firstObject];
       }
 
       if ([(WFScanManager *)self supportsUnfilteredScanning]&& self->_doUnFilteredScanning)
@@ -837,30 +837,30 @@ void __22__WFScanManager__scan__block_invoke(uint64_t a1)
           _os_log_impl(&dword_273ECD000, v12, v13, "removing scan filter", &buf, 2u);
         }
 
-        [v6 setApplyRssiThresholdFilter:0];
+        [firstObject setApplyRssiThresholdFilter:0];
       }
 
-      v14 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       *&buf = 0;
       *(&buf + 1) = &buf;
       v29 = 0x2020000000;
-      v15 = [v6 ssid];
-      v16 = v15 != 0;
+      ssid = [firstObject ssid];
+      v16 = ssid != 0;
 
       v30 = v16;
       objc_initWeak(&location, self);
-      v17 = [(WFScanManager *)self scanProxy];
+      scanProxy = [(WFScanManager *)self scanProxy];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __33__WFScanManager__processNextScan__block_invoke;
       v22[3] = &unk_279EBE310;
       objc_copyWeak(&v26, &location);
-      v18 = v14;
+      v18 = date;
       v23 = v18;
-      v19 = v6;
+      v19 = firstObject;
       v24 = v19;
       p_buf = &buf;
-      [v17 performScanWithRequest:v19 reply:v22];
+      [scanProxy performScanWithRequest:v19 reply:v22];
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(&location);
@@ -1050,18 +1050,18 @@ LABEL_39:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updatePartialScanResults:(id)a3
+- (void)_updatePartialScanResults:(id)results
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFScanManager *)self networks];
+  resultsCopy = results;
+  networks = [(WFScanManager *)self networks];
 
-  if (v5)
+  if (networks)
   {
-    v6 = [(WFScanManager *)self networks];
-    v7 = [v6 mutableCopy];
+    networks2 = [(WFScanManager *)self networks];
+    v7 = [networks2 mutableCopy];
 
-    [v7 intersectSet:v4];
+    [v7 intersectSet:resultsCopy];
     if ([v7 count])
     {
       v8 = WFLogForCategory(6uLL);
@@ -1072,19 +1072,19 @@ LABEL_39:
         if (os_log_type_enabled(v10, v9))
         {
           v11 = [v7 count];
-          v12 = [v7 logStringWithScanRecords];
+          logStringWithScanRecords = [v7 logStringWithScanRecords];
           *buf = 67109378;
           v45 = v11;
           v46 = 2112;
-          v47 = v12;
+          v47 = logStringWithScanRecords;
           _os_log_impl(&dword_273ECD000, v10, v9, "found duplicate (%d networks): %@", buf, 0x12u);
         }
       }
     }
 
-    v13 = [v4 mutableCopy];
-    v14 = [(WFScanManager *)self networks];
-    [v13 minusSet:v14];
+    v13 = [resultsCopy mutableCopy];
+    networks3 = [(WFScanManager *)self networks];
+    [v13 minusSet:networks3];
 
     if (v13)
     {
@@ -1096,26 +1096,26 @@ LABEL_39:
         if (os_log_type_enabled(v17, v16))
         {
           v18 = [v13 count];
-          v19 = [v13 logStringWithScanRecords];
+          logStringWithScanRecords2 = [v13 logStringWithScanRecords];
           *buf = 67109378;
           v45 = v18;
           v46 = 2112;
-          v47 = v19;
+          v47 = logStringWithScanRecords2;
           _os_log_impl(&dword_273ECD000, v17, v16, "found new networks (%d networks): %@", buf, 0x12u);
         }
       }
     }
   }
 
-  v20 = [(WFScanManager *)self networks];
-  [v20 compareAndUpdateDuplicateScanRecords:v4];
+  networks4 = [(WFScanManager *)self networks];
+  [networks4 compareAndUpdateDuplicateScanRecords:resultsCopy];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v21 = [(WFScanManager *)self networks];
-  v22 = [v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  networks5 = [(WFScanManager *)self networks];
+  v22 = [networks5 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1126,7 +1126,7 @@ LABEL_39:
       {
         if (*v40 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(networks5);
         }
 
         v26 = *(*(&v39 + 1) + 8 * i);
@@ -1134,21 +1134,21 @@ LABEL_39:
         v28 = v27;
         if (v27)
         {
-          v29 = [v27 label];
-          [v26 setHotspotPluginLabel:v29];
+          label = [v27 label];
+          [v26 setHotspotPluginLabel:label];
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v23 = [networks5 countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v23);
   }
 
-  v30 = [(WFScanManager *)self networks];
-  v31 = [v30 mutableCopy];
+  networks6 = [(WFScanManager *)self networks];
+  v31 = [networks6 mutableCopy];
 
-  [v31 intersectSet:v4];
+  [v31 intersectSet:resultsCopy];
   v32 = WFLogForCategory(6uLL);
   v33 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v32)
@@ -1157,17 +1157,17 @@ LABEL_39:
     if (os_log_type_enabled(v34, v33))
     {
       v35 = [v31 count];
-      v36 = [v31 logStringWithScanRecords];
+      logStringWithScanRecords3 = [v31 logStringWithScanRecords];
       *buf = 67109378;
       v45 = v35;
       v46 = 2112;
-      v47 = v36;
+      v47 = logStringWithScanRecords3;
       _os_log_impl(&dword_273ECD000, v34, v33, "partial scan results (%d networks): %@", buf, 0x12u);
     }
   }
 
-  v37 = [(WFScanManager *)self delegate];
-  [v37 scanManager:self updatedPartialResults:v31];
+  delegate = [(WFScanManager *)self delegate];
+  [delegate scanManager:self updatedPartialResults:v31];
 
   v38 = *MEMORY[0x277D85DE8];
 }
@@ -1183,17 +1183,17 @@ LABEL_39:
   }
 
   [(WFScanManager *)self setState:2];
-  v5 = [(WFScanManager *)self delegate];
+  delegate = [(WFScanManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 scanManagerScanningWillStart:self];
+    [delegate scanManagerScanningWillStart:self];
   }
 }
 
-- (void)_scanningDidFinishWithError:(id)a3
+- (void)_scanningDidFinishWithError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = WFLogForCategory(6uLL);
   v6 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v5)
@@ -1201,24 +1201,24 @@ LABEL_39:
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = [(WFScanManager *)self state];
-      if (v8 > 3)
+      state = [(WFScanManager *)self state];
+      if (state > 3)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = off_279EBE378[v8];
+        v9 = off_279EBE378[state];
       }
 
-      v10 = [(WFScanManager *)self networks];
+      networks = [(WFScanManager *)self networks];
       *buf = 138412802;
       v21 = v9;
       v22 = 2048;
-      v23 = [v10 count];
+      v23 = [networks count];
       v24 = 1024;
-      v25 = [(WFScanManager *)self supportsUnfilteredScanning];
+      supportsUnfilteredScanning = [(WFScanManager *)self supportsUnfilteredScanning];
       _os_log_impl(&dword_273ECD000, v7, v6, "scanning did finish (current state='%@'), results=%lu, supportsUnfilteredScanning=%u", buf, 0x1Cu);
     }
   }
@@ -1226,7 +1226,7 @@ LABEL_39:
   ++self->_numberOfScansPerformed;
   if ([(WFScanManager *)self supportsUnfilteredScanning])
   {
-    if (v4)
+    if (errorCopy)
     {
       [(WFScanManager *)self _resetNoNetworksFoundCounters];
     }
@@ -1237,22 +1237,22 @@ LABEL_39:
     }
   }
 
-  v11 = [(WFScanManager *)self delegate];
-  v12 = [(WFScanManager *)self networks];
-  [v11 scanManagerScanningDidFinish:self withResults:v12 error:v4];
+  delegate = [(WFScanManager *)self delegate];
+  networks2 = [(WFScanManager *)self networks];
+  [delegate scanManagerScanningDidFinish:self withResults:networks2 error:errorCopy];
 
-  v13 = [(WFScanManager *)self networks];
-  if (v13)
+  networks3 = [(WFScanManager *)self networks];
+  if (networks3)
   {
-    v14 = v13;
-    v15 = [(WFScanManager *)self hotspotPluginNetworks];
+    v14 = networks3;
+    hotspotPluginNetworks = [(WFScanManager *)self hotspotPluginNetworks];
 
-    if (v15)
+    if (hotspotPluginNetworks)
     {
       if (objc_opt_respondsToSelector())
       {
-        v16 = [(WFScanManager *)self hotspotPluginNetworks];
-        [v11 scanManager:self didFindHotspotHelperNetworks:v16];
+        hotspotPluginNetworks2 = [(WFScanManager *)self hotspotPluginNetworks];
+        [delegate scanManager:self didFindHotspotHelperNetworks:hotspotPluginNetworks2];
       }
     }
   }
@@ -1276,8 +1276,8 @@ LABEL_39:
 
 - (void)_checkForNoNetworksFound
 {
-  v3 = [(WFScanManager *)self networks];
-  v4 = [v3 count];
+  networks = [(WFScanManager *)self networks];
+  v4 = [networks count];
 
   if (v4)
   {
@@ -1303,8 +1303,8 @@ LABEL_39:
       self->_doUnFilteredScanning = 1;
     }
 
-    v6 = [(WFScanManager *)self scanProxy];
-    [v6 initiateNoNetworksSoftError];
+    scanProxy = [(WFScanManager *)self scanProxy];
+    [scanProxy initiateNoNetworksSoftError];
   }
 }
 
@@ -1479,9 +1479,9 @@ void __40__WFScanManager__startHotspotPluginScan__block_invoke(uint64_t a1, WFHo
 {
   if ([(WFScanManager *)self supportsHotspotHelper])
   {
-    v3 = [(WFScanManager *)self hotspotHelperScanning];
+    hotspotHelperScanning = [(WFScanManager *)self hotspotHelperScanning];
     v4 = WFLogForCategory(6uLL);
-    if (v3)
+    if (hotspotHelperScanning)
     {
       v5 = OSLogForWFLogLevel(4uLL);
       if (WFCurrentLogLevel() >= 4 && v4 && os_log_type_enabled(v4, v5))
@@ -1506,28 +1506,28 @@ void __40__WFScanManager__startHotspotPluginScan__block_invoke(uint64_t a1, WFHo
   }
 }
 
-- (id)hotspotHelperForScanRecord:(id)a3
+- (id)hotspotHelperForScanRecord:(id)record
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFScanManager *)self hotspotPluginNetworks];
-  if (v5)
+  recordCopy = record;
+  hotspotPluginNetworks = [(WFScanManager *)self hotspotPluginNetworks];
+  if (hotspotPluginNetworks)
   {
-    v6 = [(WFScanManager *)self hotspotPluginNetworks];
-    v7 = [v6 count];
+    hotspotPluginNetworks2 = [(WFScanManager *)self hotspotPluginNetworks];
+    v7 = [hotspotPluginNetworks2 count];
 
     if (v7)
     {
-      v8 = [(WFScanManager *)self hotspotPluginNetworks];
+      hotspotPluginNetworks3 = [(WFScanManager *)self hotspotPluginNetworks];
       v9 = MEMORY[0x277CCAC30];
-      v10 = [v4 ssid];
-      v11 = [v9 predicateWithFormat:@"ssid == %@", v10];
-      v12 = [v8 filteredSetUsingPredicate:v11];
+      ssid = [recordCopy ssid];
+      v11 = [v9 predicateWithFormat:@"ssid == %@", ssid];
+      v12 = [hotspotPluginNetworks3 filteredSetUsingPredicate:v11];
 
       if ([v12 count])
       {
-        v13 = [v12 allObjects];
-        v5 = [v13 firstObject];
+        allObjects = [v12 allObjects];
+        hotspotPluginNetworks = [allObjects firstObject];
 
         v14 = WFLogForCategory(6uLL);
         v15 = OSLogForWFLogLevel(1uLL);
@@ -1536,11 +1536,11 @@ void __40__WFScanManager__startHotspotPluginScan__block_invoke(uint64_t a1, WFHo
           v16 = v14;
           if (os_log_type_enabled(v16, v15))
           {
-            v17 = [v4 ssid];
+            ssid2 = [recordCopy ssid];
             *buf = 138412546;
-            v21 = v17;
+            v21 = ssid2;
             v22 = 2112;
-            v23 = v5;
+            v23 = hotspotPluginNetworks;
             _os_log_impl(&dword_273ECD000, v16, v15, "found hotspot network for %@ (helper %@)", buf, 0x16u);
           }
         }
@@ -1548,30 +1548,30 @@ void __40__WFScanManager__startHotspotPluginScan__block_invoke(uint64_t a1, WFHo
 
       else
       {
-        v5 = 0;
+        hotspotPluginNetworks = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      hotspotPluginNetworks = 0;
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return hotspotPluginNetworks;
 }
 
 - (id)_knownHiddenNetworkNames
 {
-  v3 = [(WFScanManager *)self delegate];
+  delegate = [(WFScanManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFScanManager *)self delegate];
-    v6 = [v5 scanManagerKnownHiddenNetworkNames:self];
+    delegate2 = [(WFScanManager *)self delegate];
+    v6 = [delegate2 scanManagerKnownHiddenNetworkNames:self];
   }
 
   else
@@ -1627,12 +1627,12 @@ void __35__WFScanManager__removeQueuedScans__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (WFScanManager)initWithScanProxy:(id)a3 delegate:(id)a4
+- (WFScanManager)initWithScanProxy:(id)proxy delegate:(id)delegate
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  [v7 scanInterval];
+  proxyCopy = proxy;
+  delegateCopy = delegate;
+  [proxyCopy scanInterval];
   if (v9 < 1.0)
   {
     v27 = WFLogForCategory(0);
@@ -1647,9 +1647,9 @@ void __35__WFScanManager__removeQueuedScans__block_invoke(uint64_t a1)
     goto LABEL_24;
   }
 
-  [v7 scanInterval];
+  [proxyCopy scanInterval];
   self->_scanInterval = v10;
-  if (!v8)
+  if (!delegateCopy)
   {
 LABEL_26:
     p_super = &self->super;
@@ -1657,9 +1657,9 @@ LABEL_26:
     goto LABEL_15;
   }
 
-  objc_storeWeak(&self->_delegate, v8);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   self->_state = 0;
-  if (!v7)
+  if (!proxyCopy)
   {
     v27 = WFLogForCategory(0);
     v35 = OSLogForWFLogLevel(1uLL);
@@ -1677,7 +1677,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  objc_storeStrong(&self->_scanProxy, a3);
+  objc_storeStrong(&self->_scanProxy, proxy);
   v11 = dispatch_queue_create(0, MEMORY[0x277D85CD8]);
   internalQueue = self->_internalQueue;
   self->_internalQueue = v11;
@@ -1703,13 +1703,13 @@ LABEL_25:
   v16 = 0;
   if (v15)
   {
-    v16 = [v8 scanManagerShouldSupportUnfilteredScanning:self];
+    v16 = [delegateCopy scanManagerShouldSupportUnfilteredScanning:self];
   }
 
   self->_supportsUnfilteredScanning = v16;
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v8 scanManagerShouldSupportHotspotHelper:self];
+    v17 = [delegateCopy scanManagerShouldSupportHotspotHelper:self];
   }
 
   else

@@ -1,5 +1,5 @@
 @interface MedicationDoseLogMedicationView
-- (void)didTapUnitTime:(id)a3;
+- (void)didTapUnitTime:(id)time;
 - (void)layoutSubviews;
 @end
 
@@ -7,19 +7,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2281D1390();
 }
 
-- (void)didTapUnitTime:(id)a3
+- (void)didTapUnitTime:(id)time
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_228392F90();
   swift_unknownObjectRelease();
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v5 = *(&v4->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI31MedicationDoseLogMedicationView_viewModel);
+    v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI31MedicationDoseLogMedicationView_viewModel);
 
     sub_2282D2868(v6);
 

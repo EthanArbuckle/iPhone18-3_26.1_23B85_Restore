@@ -1,46 +1,46 @@
 @interface RBLaunchTracker
-- (RBLaunchTracker)initWithTimeProvider:(id)a3;
-- (double)nextAllowedLaunchOfIdentity:(id)a3;
-- (void)trackLaunchOfIdentity:(id)a3;
+- (RBLaunchTracker)initWithTimeProvider:(id)provider;
+- (double)nextAllowedLaunchOfIdentity:(id)identity;
+- (void)trackLaunchOfIdentity:(id)identity;
 @end
 
 @implementation RBLaunchTracker
 
-- (RBLaunchTracker)initWithTimeProvider:(id)a3
+- (RBLaunchTracker)initWithTimeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = RBLaunchTracker;
   v6 = [(RBLaunchTracker *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     lastLaunch = v6->_lastLaunch;
-    v6->_lastLaunch = v7;
+    v6->_lastLaunch = dictionary;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     launchBeforeLast = v6->_launchBeforeLast;
-    v6->_launchBeforeLast = v9;
+    v6->_launchBeforeLast = dictionary2;
 
-    objc_storeStrong(&v6->_timeProvider, a3);
+    objc_storeStrong(&v6->_timeProvider, provider);
     v11 = v6;
   }
 
   return v6;
 }
 
-- (void)trackLaunchOfIdentity:(id)a3
+- (void)trackLaunchOfIdentity:(id)identity
 {
-  v4 = a3;
-  if ([v4 isMultiInstanceExtension])
+  identityCopy = identity;
+  if ([identityCopy isMultiInstanceExtension])
   {
     goto LABEL_15;
   }
 
   [(RBTimeProviding *)self->_timeProvider currentTime];
   v6 = v5;
-  v7 = [(NSMutableDictionary *)self->_lastLaunch objectForKey:v4];
-  v8 = [(NSMutableDictionary *)self->_launchBeforeLast objectForKey:v4];
+  v7 = [(NSMutableDictionary *)self->_lastLaunch objectForKey:identityCopy];
+  v8 = [(NSMutableDictionary *)self->_launchBeforeLast objectForKey:identityCopy];
   v9 = v8;
   if (v7)
   {
@@ -74,28 +74,28 @@ LABEL_6:
 LABEL_10:
   lastLaunch = self->_lastLaunch;
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
-  [(NSMutableDictionary *)lastLaunch setObject:v15 forKey:v4];
+  [(NSMutableDictionary *)lastLaunch setObject:v15 forKey:identityCopy];
 
   if (v11)
   {
-    [(NSMutableDictionary *)self->_launchBeforeLast setObject:v7 forKey:v4];
+    [(NSMutableDictionary *)self->_launchBeforeLast setObject:v7 forKey:identityCopy];
   }
 
   else if (v9)
   {
-    [(NSMutableDictionary *)self->_launchBeforeLast removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_launchBeforeLast removeObjectForKey:identityCopy];
   }
 
 LABEL_15:
 }
 
-- (double)nextAllowedLaunchOfIdentity:(id)a3
+- (double)nextAllowedLaunchOfIdentity:(id)identity
 {
   timeProvider = self->_timeProvider;
-  v5 = a3;
+  identityCopy = identity;
   [(RBTimeProviding *)timeProvider currentTime];
   v7 = v6;
-  v8 = [(NSMutableDictionary *)self->_launchBeforeLast objectForKey:v5];
+  v8 = [(NSMutableDictionary *)self->_launchBeforeLast objectForKey:identityCopy];
 
   v9 = 0.0;
   if (v8)

@@ -1,8 +1,8 @@
 @interface CNVisualSimilarity
-+ (BOOL)isData:(id)a3 similarTo:(id)a4;
-+ (BOOL)isFingerprint:(id)a3 similarTo:(id)a4 threshold:(double)a5;
-+ (id)fingerprintForData:(id)a3;
-+ (id)fingerprintForImageRequestHandler:(id)a3;
++ (BOOL)isData:(id)data similarTo:(id)to;
++ (BOOL)isFingerprint:(id)fingerprint similarTo:(id)to threshold:(double)threshold;
++ (id)fingerprintForData:(id)data;
++ (id)fingerprintForImageRequestHandler:(id)handler;
 + (id)log;
 @end
 
@@ -29,39 +29,39 @@ uint64_t __25__CNVisualSimilarity_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)isData:(id)a3 similarTo:(id)a4
++ (BOOL)isData:(id)data similarTo:(id)to
 {
-  v6 = a4;
-  v7 = [a1 fingerprintForData:a3];
-  v8 = [a1 fingerprintForData:v6];
+  toCopy = to;
+  v7 = [self fingerprintForData:data];
+  v8 = [self fingerprintForData:toCopy];
 
-  LOBYTE(a1) = [a1 isFingerprint:v7 similarTo:v8];
-  return a1;
+  LOBYTE(self) = [self isFingerprint:v7 similarTo:v8];
+  return self;
 }
 
-+ (id)fingerprintForData:(id)a3
++ (id)fingerprintForData:(id)data
 {
   v4 = MEMORY[0x1E69845B8];
-  v5 = a3;
+  dataCopy = data;
   v6 = [v4 alloc];
-  v7 = [v6 initWithData:v5 options:MEMORY[0x1E695E0F8]];
+  v7 = [v6 initWithData:dataCopy options:MEMORY[0x1E695E0F8]];
 
-  v8 = [a1 fingerprintForImageRequestHandler:v7];
+  v8 = [self fingerprintForImageRequestHandler:v7];
 
   return v8;
 }
 
-+ (id)fingerprintForImageRequestHandler:(id)a3
++ (id)fingerprintForImageRequestHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(MEMORY[0x1E6984480]);
   [v4 setRevision:1];
   v5 = objc_autoreleasePoolPush();
   v16[0] = v4;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v15 = 0;
-  v7 = [v3 performRequests:v6 error:&v15];
+  v7 = [handlerCopy performRequests:v6 error:&v15];
   v8 = v15;
 
   if ((v7 & 1) == 0)
@@ -74,10 +74,10 @@ uint64_t __25__CNVisualSimilarity_log__block_invoke()
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [v4 results];
-  v11 = [v10 firstObject];
+  results = [v4 results];
+  firstObject = [results firstObject];
 
-  v12 = [v11 fingerprintHashes];
+  fingerprintHashes = [firstObject fingerprintHashes];
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
     v13 = 0;
@@ -85,22 +85,22 @@ uint64_t __25__CNVisualSimilarity_log__block_invoke()
 
   else
   {
-    v13 = [[CNVisualFingerprint alloc] initWithVNFingerprintHashes:v12];
+    v13 = [[CNVisualFingerprint alloc] initWithVNFingerprintHashes:fingerprintHashes];
   }
 
   return v13;
 }
 
-+ (BOOL)isFingerprint:(id)a3 similarTo:(id)a4 threshold:(double)a5
++ (BOOL)isFingerprint:(id)fingerprint similarTo:(id)to threshold:(double)threshold
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [a3 hashData];
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  hashData = [fingerprint hashData];
+  v9 = [hashData countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -111,7 +111,7 @@ uint64_t __25__CNVisualSimilarity_log__block_invoke()
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(hashData);
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
@@ -119,8 +119,8 @@ uint64_t __25__CNVisualSimilarity_log__block_invoke()
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v14 = [v7 hashData];
-        v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        hashData2 = [toCopy hashData];
+        v15 = [hashData2 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v15)
         {
           v16 = v15;
@@ -131,11 +131,11 @@ uint64_t __25__CNVisualSimilarity_log__block_invoke()
             {
               if (*v23 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(hashData2);
               }
 
               v19 = [v13 _cn_distanceFromData:*(*(&v22 + 1) + 8 * j)];
-              if (v19 < a5)
+              if (v19 < threshold)
               {
 
                 v20 = 1;
@@ -143,7 +143,7 @@ uint64_t __25__CNVisualSimilarity_log__block_invoke()
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:{16, v19}];
+            v16 = [hashData2 countByEnumeratingWithState:&v22 objects:v30 count:{16, v19}];
             if (v16)
             {
               continue;
@@ -154,7 +154,7 @@ uint64_t __25__CNVisualSimilarity_log__block_invoke()
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v10 = [hashData countByEnumeratingWithState:&v26 objects:v31 count:16];
       v20 = 0;
     }
 

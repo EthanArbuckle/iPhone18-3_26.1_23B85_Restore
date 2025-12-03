@@ -1,15 +1,15 @@
 @interface HMDHAPAccessoryLocalNotifyUpdate
 + (id)logCategory;
-- (BOOL)cachedEnableValueForCharacteristic:(id)a3 presentInCache:(BOOL *)a4;
+- (BOOL)cachedEnableValueForCharacteristic:(id)characteristic presentInCache:(BOOL *)cache;
 - (HMDHAPAccessory)hmdHAPAccessory;
-- (HMDHAPAccessoryLocalNotifyUpdate)initWithHome:(id)a3 hmdHAPAccessory:(id)a4 queue:(id)a5;
+- (HMDHAPAccessoryLocalNotifyUpdate)initWithHome:(id)home hmdHAPAccessory:(id)accessory queue:(id)queue;
 - (HMDHome)home;
-- (id)_arrayForCharacteristicsWithEnable:(BOOL)a3;
+- (id)_arrayForCharacteristicsWithEnable:(BOOL)enable;
 - (id)logIdentifier;
-- (void)_clearCachedValueForCharacteristics:(id)a3;
+- (void)_clearCachedValueForCharacteristics:(id)characteristics;
 - (void)_performLocalNotifyUpdate;
-- (void)_performLocalNotifyUpdateForCharacteristics:(id)a3 enable:(BOOL)a4;
-- (void)copyRelevantFieldsFrom:(id)a3;
+- (void)_performLocalNotifyUpdateForCharacteristics:(id)characteristics enable:(BOOL)enable;
+- (void)copyRelevantFieldsFrom:(id)from;
 - (void)performLocalNotifyUpdate;
 @end
 
@@ -31,18 +31,18 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHAPAccessoryLocalNotifyUpdate *)self hmdHAPAccessory];
-  v3 = [v2 shortDescription];
+  hmdHAPAccessory = [(HMDHAPAccessoryLocalNotifyUpdate *)self hmdHAPAccessory];
+  shortDescription = [hmdHAPAccessory shortDescription];
 
-  return v3;
+  return shortDescription;
 }
 
-- (void)_performLocalNotifyUpdateForCharacteristics:(id)a3 enable:(BOOL)a4
+- (void)_performLocalNotifyUpdateForCharacteristics:(id)characteristics enable:(BOOL)enable
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  characteristicsCopy = characteristics;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -53,23 +53,23 @@
     v58 = 2112;
     v59 = v11;
     v60 = 2112;
-    v61 = v6;
+    v61 = characteristicsCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Performing local enable(%@) notify update for: %@.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMDHAPAccessoryLocalNotifyUpdate *)v8 hmdHAPAccessory];
-  objc_initWeak(&location, v8);
+  hmdHAPAccessory = [(HMDHAPAccessoryLocalNotifyUpdate *)selfCopy hmdHAPAccessory];
+  objc_initWeak(&location, selfCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__HMDHAPAccessoryLocalNotifyUpdate__performLocalNotifyUpdateForCharacteristics_enable___block_invoke;
   aBlock[3] = &unk_278672700;
-  aBlock[4] = v8;
-  v54 = a4;
-  v44 = v6;
+  aBlock[4] = selfCopy;
+  enableCopy = enable;
+  v44 = characteristicsCopy;
   v51 = v44;
   objc_copyWeak(&v53, &location);
-  v45 = v12;
+  v45 = hmdHAPAccessory;
   v52 = v45;
   v43 = _Block_copy(aBlock);
   v49 = 0;
@@ -78,12 +78,12 @@
   v42 = v14;
   while ([v44 count] && v49)
   {
-    v15 = [(HMDHAPAccessoryLocalNotifyUpdate *)v8 transportGroup];
-    dispatch_group_enter(v15);
+    transportGroup = [(HMDHAPAccessoryLocalNotifyUpdate *)selfCopy transportGroup];
+    dispatch_group_enter(transportGroup);
 
-    v16 = [v13 server];
+    server = [v13 server];
     v17 = objc_autoreleasePoolPush();
-    v18 = v8;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -98,16 +98,16 @@
       v60 = 2112;
       v61 = v22;
       v62 = 2112;
-      v63 = v16;
+      v63 = server;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Preferred link type: %@. HAP Accessory reachable: %@. AccessoryServer: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v16)
+    if (server)
     {
       if ([v13 isReachable])
       {
-        v43[2](v43, v13, v16);
+        v43[2](v43, v13, server);
       }
 
       else
@@ -121,7 +121,7 @@
           *buf = v42;
           v57 = v32;
           v58 = 2112;
-          v59 = v16;
+          v59 = server;
           v60 = 2112;
           v61 = v13;
           _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@HAP accessory server: %@ is nil or HAP accessory: %@ is not reachable.", buf, 0x20u);
@@ -131,8 +131,8 @@
         v33 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
         [(HMDHAPAccessoryLocalNotifyUpdate *)v30 setError:v33];
 
-        v34 = [(HMDHAPAccessoryLocalNotifyUpdate *)v30 transportGroup];
-        dispatch_group_leave(v34);
+        transportGroup2 = [(HMDHAPAccessoryLocalNotifyUpdate *)v30 transportGroup];
+        dispatch_group_leave(transportGroup2);
       }
     }
 
@@ -154,8 +154,8 @@
 
         objc_autoreleasePoolPop(v24);
         [(HMDHAPAccessoryLocalNotifyUpdate *)v25 setSkipLocalNotificationsUpdate:1];
-        v28 = [(HMDHAPAccessoryLocalNotifyUpdate *)v25 transportGroup];
-        dispatch_group_leave(v28);
+        transportGroup3 = [(HMDHAPAccessoryLocalNotifyUpdate *)v25 transportGroup];
+        dispatch_group_leave(transportGroup3);
 
         [v45 updateAccessoryTracking];
       }
@@ -172,9 +172,9 @@
         }
 
         objc_autoreleasePoolPop(v24);
-        v37 = [(HMDHAPAccessoryLocalNotifyUpdate *)v25 home];
+        home = [(HMDHAPAccessoryLocalNotifyUpdate *)v25 home];
         v38 = v49;
-        v39 = [(HMDHAPAccessoryLocalNotifyUpdate *)v25 queue];
+        queue = [(HMDHAPAccessoryLocalNotifyUpdate *)v25 queue];
         v46[0] = MEMORY[0x277D85DD0];
         v46[1] = 3221225472;
         v46[2] = __87__HMDHAPAccessoryLocalNotifyUpdate__performLocalNotifyUpdateForCharacteristics_enable___block_invoke_15;
@@ -182,7 +182,7 @@
         objc_copyWeak(v48, &location);
         v48[1] = v49;
         v47 = v43;
-        [v37 retrieveHAPAccessoryForHMDAccessory:v45 linkType:v38 forceRetrieve:0 queue:v39 completion:v46];
+        [home retrieveHAPAccessoryForHMDAccessory:v45 linkType:v38 forceRetrieve:0 queue:queue completion:v46];
 
         objc_destroyWeak(v48);
       }
@@ -562,7 +562,7 @@ void __87__HMDHAPAccessoryLocalNotifyUpdate__performLocalNotifyUpdateForCharacte
 {
   v33 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -574,65 +574,65 @@ void __87__HMDHAPAccessoryLocalNotifyUpdate__performLocalNotifyUpdateForCharacte
 
   objc_autoreleasePoolPop(v3);
   v7 = dispatch_group_create();
-  [(HMDHAPAccessoryLocalNotifyUpdate *)v4 setTransportGroup:v7];
+  [(HMDHAPAccessoryLocalNotifyUpdate *)selfCopy setTransportGroup:v7];
 
-  v8 = [(HMDHAPAccessoryLocalNotifyUpdate *)v4 characteristicsWithEnableYes];
-  v9 = [v8 count] == 0;
+  characteristicsWithEnableYes = [(HMDHAPAccessoryLocalNotifyUpdate *)selfCopy characteristicsWithEnableYes];
+  v9 = [characteristicsWithEnableYes count] == 0;
 
   if (!v9)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v4;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMDHAPAccessoryLocalNotifyUpdate *)v11 characteristicsWithEnableYes];
+      characteristicsWithEnableYes2 = [(HMDHAPAccessoryLocalNotifyUpdate *)v11 characteristicsWithEnableYes];
       *buf = 138543618;
       v30 = v13;
       v31 = 2112;
-      v32 = v14;
+      v32 = characteristicsWithEnableYes2;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Performing local update for characteristics with enable YES: %@.", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = [(HMDHAPAccessoryLocalNotifyUpdate *)v11 characteristicsWithEnableYes];
-    [(HMDHAPAccessoryLocalNotifyUpdate *)v11 _performLocalNotifyUpdateForCharacteristics:v15 enable:1];
+    characteristicsWithEnableYes3 = [(HMDHAPAccessoryLocalNotifyUpdate *)v11 characteristicsWithEnableYes];
+    [(HMDHAPAccessoryLocalNotifyUpdate *)v11 _performLocalNotifyUpdateForCharacteristics:characteristicsWithEnableYes3 enable:1];
   }
 
-  v16 = [(HMDHAPAccessoryLocalNotifyUpdate *)v4 characteristicsWithEnableNo];
-  v17 = [v16 count] == 0;
+  characteristicsWithEnableNo = [(HMDHAPAccessoryLocalNotifyUpdate *)selfCopy characteristicsWithEnableNo];
+  v17 = [characteristicsWithEnableNo count] == 0;
 
   if (!v17)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v4;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [(HMDHAPAccessoryLocalNotifyUpdate *)v19 characteristicsWithEnableNo];
+      characteristicsWithEnableNo2 = [(HMDHAPAccessoryLocalNotifyUpdate *)v19 characteristicsWithEnableNo];
       *buf = 138543618;
       v30 = v21;
       v31 = 2112;
-      v32 = v22;
+      v32 = characteristicsWithEnableNo2;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@Performing local update for characteristics with enable NO: %@.", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v18);
-    v23 = [(HMDHAPAccessoryLocalNotifyUpdate *)v19 characteristicsWithEnableNo];
-    [(HMDHAPAccessoryLocalNotifyUpdate *)v19 _performLocalNotifyUpdateForCharacteristics:v23 enable:0];
+    characteristicsWithEnableNo3 = [(HMDHAPAccessoryLocalNotifyUpdate *)v19 characteristicsWithEnableNo];
+    [(HMDHAPAccessoryLocalNotifyUpdate *)v19 _performLocalNotifyUpdateForCharacteristics:characteristicsWithEnableNo3 enable:0];
   }
 
-  objc_initWeak(buf, v4);
-  v24 = [(HMDHAPAccessoryLocalNotifyUpdate *)v4 transportGroup];
-  v25 = [(HMDHAPAccessoryLocalNotifyUpdate *)v4 queue];
+  objc_initWeak(buf, selfCopy);
+  transportGroup = [(HMDHAPAccessoryLocalNotifyUpdate *)selfCopy transportGroup];
+  queue = [(HMDHAPAccessoryLocalNotifyUpdate *)selfCopy queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__HMDHAPAccessoryLocalNotifyUpdate__performLocalNotifyUpdate__block_invoke;
   block[3] = &unk_278686B80;
   objc_copyWeak(&v28, buf);
-  dispatch_group_notify(v24, v25, block);
+  dispatch_group_notify(transportGroup, queue, block);
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(buf);
@@ -694,13 +694,13 @@ void __61__HMDHAPAccessoryLocalNotifyUpdate__performLocalNotifyUpdate__block_inv
 
 - (void)performLocalNotifyUpdate
 {
-  v3 = [(HMDHAPAccessoryLocalNotifyUpdate *)self queue];
+  queue = [(HMDHAPAccessoryLocalNotifyUpdate *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__HMDHAPAccessoryLocalNotifyUpdate_performLocalNotifyUpdate__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __60__HMDHAPAccessoryLocalNotifyUpdate_performLocalNotifyUpdate__block_invoke(uint64_t a1)
@@ -711,16 +711,16 @@ uint64_t __60__HMDHAPAccessoryLocalNotifyUpdate_performLocalNotifyUpdate__block_
   return [v2 _performLocalNotifyUpdate];
 }
 
-- (BOOL)cachedEnableValueForCharacteristic:(id)a3 presentInCache:(BOOL *)a4
+- (BOOL)cachedEnableValueForCharacteristic:(id)characteristic presentInCache:(BOOL *)cache
 {
-  v6 = a3;
-  v7 = [(HMDHAPAccessoryLocalNotifyUpdate *)self characteristicsWithEnableYes];
-  v8 = [v7 containsObject:v6];
+  characteristicCopy = characteristic;
+  characteristicsWithEnableYes = [(HMDHAPAccessoryLocalNotifyUpdate *)self characteristicsWithEnableYes];
+  v8 = [characteristicsWithEnableYes containsObject:characteristicCopy];
 
   if (v8)
   {
     v9 = 1;
-    if (!a4)
+    if (!cache)
     {
       goto LABEL_6;
     }
@@ -728,13 +728,13 @@ uint64_t __60__HMDHAPAccessoryLocalNotifyUpdate_performLocalNotifyUpdate__block_
     goto LABEL_5;
   }
 
-  v10 = [(HMDHAPAccessoryLocalNotifyUpdate *)self characteristicsWithEnableNo];
-  v9 = [v10 containsObject:v6];
+  characteristicsWithEnableNo = [(HMDHAPAccessoryLocalNotifyUpdate *)self characteristicsWithEnableNo];
+  v9 = [characteristicsWithEnableNo containsObject:characteristicCopy];
 
-  if (a4)
+  if (cache)
   {
 LABEL_5:
-    *a4 = v9;
+    *cache = v9;
   }
 
 LABEL_6:
@@ -753,25 +753,25 @@ void __75__HMDHAPAccessoryLocalNotifyUpdate__copyRelevantFieldsFrom_forEnableVal
   }
 }
 
-- (void)copyRelevantFieldsFrom:(id)a3
+- (void)copyRelevantFieldsFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 characteristicsWithEnableYes];
-  [(HMDHAPAccessoryLocalNotifyUpdate *)self _copyRelevantFieldsFrom:v5 forEnableValue:1];
+  fromCopy = from;
+  characteristicsWithEnableYes = [fromCopy characteristicsWithEnableYes];
+  [(HMDHAPAccessoryLocalNotifyUpdate *)self _copyRelevantFieldsFrom:characteristicsWithEnableYes forEnableValue:1];
 
-  v6 = [v4 characteristicsWithEnableNo];
+  characteristicsWithEnableNo = [fromCopy characteristicsWithEnableNo];
 
-  [(HMDHAPAccessoryLocalNotifyUpdate *)self _copyRelevantFieldsFrom:v6 forEnableValue:0];
+  [(HMDHAPAccessoryLocalNotifyUpdate *)self _copyRelevantFieldsFrom:characteristicsWithEnableNo forEnableValue:0];
 }
 
-- (void)_clearCachedValueForCharacteristics:(id)a3
+- (void)_clearCachedValueForCharacteristics:(id)characteristics
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __72__HMDHAPAccessoryLocalNotifyUpdate__clearCachedValueForCharacteristics___block_invoke;
   v3[3] = &unk_278687388;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [characteristics enumerateObjectsUsingBlock:v3];
 }
 
 void __72__HMDHAPAccessoryLocalNotifyUpdate__clearCachedValueForCharacteristics___block_invoke(uint64_t a1, void *a2)
@@ -785,9 +785,9 @@ void __72__HMDHAPAccessoryLocalNotifyUpdate__clearCachedValueForCharacteristics_
   [v6 removeObject:v4];
 }
 
-- (id)_arrayForCharacteristicsWithEnable:(BOOL)a3
+- (id)_arrayForCharacteristicsWithEnable:(BOOL)enable
 {
-  if (a3)
+  if (enable)
   {
     [(HMDHAPAccessoryLocalNotifyUpdate *)self characteristicsWithEnableYes];
   }
@@ -801,35 +801,35 @@ void __72__HMDHAPAccessoryLocalNotifyUpdate__clearCachedValueForCharacteristics_
   return v3;
 }
 
-- (HMDHAPAccessoryLocalNotifyUpdate)initWithHome:(id)a3 hmdHAPAccessory:(id)a4 queue:(id)a5
+- (HMDHAPAccessoryLocalNotifyUpdate)initWithHome:(id)home hmdHAPAccessory:(id)accessory queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  accessoryCopy = accessory;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = HMDHAPAccessoryLocalNotifyUpdate;
   v11 = [(HMDHAPAccessoryLocalNotifyUpdate *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_home, v8);
-    objc_storeWeak(&v12->_hmdHAPAccessory, v9);
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeWeak(&v11->_home, homeCopy);
+    objc_storeWeak(&v12->_hmdHAPAccessory, accessoryCopy);
+    objc_storeStrong(&v12->_queue, queue);
     v13 = [MEMORY[0x277D0F7C0] futureWithPromise:&v12->_enableNotifyCompletionPromise];
     completionFuture = v12->_completionFuture;
     v12->_completionFuture = v13;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     characteristicsWithEnableYes = v12->_characteristicsWithEnableYes;
-    v12->_characteristicsWithEnableYes = v15;
+    v12->_characteristicsWithEnableYes = array;
 
-    v17 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     characteristicsWithEnableNo = v12->_characteristicsWithEnableNo;
-    v12->_characteristicsWithEnableNo = v17;
+    v12->_characteristicsWithEnableNo = array2;
 
-    v19 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     characteristicResponseTuples = v12->_characteristicResponseTuples;
-    v12->_characteristicResponseTuples = v19;
+    v12->_characteristicResponseTuples = array3;
 
     *&v12->_skipLocalNotificationsUpdate = 0;
   }

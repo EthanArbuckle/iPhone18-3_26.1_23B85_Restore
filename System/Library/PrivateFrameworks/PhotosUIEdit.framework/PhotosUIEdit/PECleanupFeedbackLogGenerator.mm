@@ -1,21 +1,21 @@
 @interface PECleanupFeedbackLogGenerator
-+ (id)logForCompositionController:(id)a3;
++ (id)logForCompositionController:(id)controller;
 @end
 
 @implementation PECleanupFeedbackLogGenerator
 
-+ (id)logForCompositionController:(id)a3
++ (id)logForCompositionController:(id)controller
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
-  v5 = [v3 inpaintAdjustmentController];
-  v6 = v5;
-  if (v5)
+  controllerCopy = controller;
+  string = [MEMORY[0x277CCAB68] string];
+  inpaintAdjustmentController = [controllerCopy inpaintAdjustmentController];
+  v6 = inpaintAdjustmentController;
+  if (inpaintAdjustmentController)
   {
-    [v4 appendFormat:@"Cleanup Operations: %d", objc_msgSend(v5, "operationCount")];
-    v7 = [v6 adjustment];
-    v8 = [v7 objectForKeyedSubscript:@"operations"];
+    [string appendFormat:@"Cleanup Operations: %d", objc_msgSend(inpaintAdjustmentController, "operationCount")];
+    adjustment = [v6 adjustment];
+    v8 = [adjustment objectForKeyedSubscript:@"operations"];
 
     if (v8)
     {
@@ -23,8 +23,8 @@
       if (objc_opt_isKindOfClass())
       {
         v35 = v6;
-        v36 = v3;
-        v37 = v4;
+        v36 = controllerCopy;
+        v37 = string;
         v44 = 0u;
         v45 = 0u;
         v42 = 0u;
@@ -63,9 +63,9 @@
                   v19 = v14;
                   v20 = v13;
                   v21 = v12;
-                  v22 = [v17 isTapSelect];
-                  v23 = [v18 isTargetPoints];
-                  v24 = [v18 isFilledBrushStroke];
+                  isTapSelect = [v17 isTapSelect];
+                  isTargetPoints = [v18 isTargetPoints];
+                  isFilledBrushStroke = [v18 isFilledBrushStroke];
                   if ([v18 mode] == 2)
                   {
                     v25 = (v41 + 1);
@@ -84,9 +84,9 @@
                     v38 = (v38 + 1);
                   }
 
-                  v13 = (v20 + v22);
-                  v11 = (v11 + v23);
-                  v12 = (v21 + v24);
+                  v13 = (v20 + isTapSelect);
+                  v11 = (v11 + isTargetPoints);
+                  v12 = (v21 + isFilledBrushStroke);
 
                   v14 = v19;
                   v10 = v39;
@@ -112,36 +112,36 @@
           v13 = 0;
         }
 
-        v4 = v37;
+        string = v37;
         [v37 appendFormat:@"\nTaps: %d", v13];
         [v37 appendFormat:@"\nLassoes: %d", v12];
         [v37 appendFormat:@"\nBrushstrokes: %d", v41];
         [v37 appendFormat:@"\nOn Demand: %d", v11];
         [v37 appendFormat:@"\nRedactions: %d", v38];
         v6 = v35;
-        v3 = v36;
+        controllerCopy = v36;
         v8 = v34;
       }
     }
 
-    v27 = [MEMORY[0x277D3A908] shared];
-    v28 = [v27 cleanupVersion];
-    [v4 appendFormat:@"\nC: %@", v28];
+    mEMORY[0x277D3A908] = [MEMORY[0x277D3A908] shared];
+    cleanupVersion = [mEMORY[0x277D3A908] cleanupVersion];
+    [string appendFormat:@"\nC: %@", cleanupVersion];
 
-    v29 = [v27 inpaintModelVersion];
-    [v4 appendFormat:@"\nIN: %@", v29];
+    inpaintModelVersion = [mEMORY[0x277D3A908] inpaintModelVersion];
+    [string appendFormat:@"\nIN: %@", inpaintModelVersion];
 
-    v30 = [v27 segmentationModelVersion];
-    [v4 appendFormat:@"\nSE: %@", v30];
+    segmentationModelVersion = [mEMORY[0x277D3A908] segmentationModelVersion];
+    [string appendFormat:@"\nSE: %@", segmentationModelVersion];
 
-    v31 = [v27 refinementModelVersion];
-    [v4 appendFormat:@"\nRE: %@", v31];
+    refinementModelVersion = [mEMORY[0x277D3A908] refinementModelVersion];
+    [string appendFormat:@"\nRE: %@", refinementModelVersion];
 
-    v32 = [MEMORY[0x277D4D330] currentModelVersion];
-    [v4 appendFormat:@"\nSA: %@", v32];
+    currentModelVersion = [MEMORY[0x277D4D330] currentModelVersion];
+    [string appendFormat:@"\nSA: %@", currentModelVersion];
   }
 
-  return v4;
+  return string;
 }
 
 @end

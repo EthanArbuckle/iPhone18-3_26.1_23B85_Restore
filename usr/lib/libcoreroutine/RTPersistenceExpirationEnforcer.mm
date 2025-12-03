@@ -1,24 +1,24 @@
 @interface RTPersistenceExpirationEnforcer
-- (BOOL)removeExpiredRecordsBeforeDate:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)removeExpiredRecordsWithObjectIDs:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)removeRecordsOwnedByOtherDevicesExpiredBeforeDate:(id)a3 allowPropagation:(BOOL)a4 context:(id)a5 error:(id *)a6;
-- (BOOL)removeRecordsOwnedByThisDeviceExpiredBeforeDate:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)repairInvalidExpirationDatesWithContext:(id)a3 error:(id *)a4;
-- (RTPersistenceExpirationEnforcer)initWithPersistenceManager:(id)a3;
-- (id)collectRecordIDsByTypeExpiredBeforeDate:(id)a3 ownedByThisDevice:(BOOL)a4 context:(id)a5 error:(id *)a6;
-- (id)entitiesWithDeviceAndExpirationProperty:(id)a3 ownedByThisDevice:(BOOL)a4;
-- (id)objectIDsByTypeAffectedByDeletingObjectWithID:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)objectsWithLifetimeMatchingObjectWithID:(id)a3 context:(id)a4 error:(id *)a5;
-- (void)mergeEntriesFromDictionary:(id)a3 intoDictionary:(id)a4;
-- (void)mergeIdentifiersFromArray:(id)a3 entityName:(id)a4 intoDictionary:(id)a5;
+- (BOOL)removeExpiredRecordsBeforeDate:(id)date context:(id)context error:(id *)error;
+- (BOOL)removeExpiredRecordsWithObjectIDs:(id)ds context:(id)context error:(id *)error;
+- (BOOL)removeRecordsOwnedByOtherDevicesExpiredBeforeDate:(id)date allowPropagation:(BOOL)propagation context:(id)context error:(id *)error;
+- (BOOL)removeRecordsOwnedByThisDeviceExpiredBeforeDate:(id)date context:(id)context error:(id *)error;
+- (BOOL)repairInvalidExpirationDatesWithContext:(id)context error:(id *)error;
+- (RTPersistenceExpirationEnforcer)initWithPersistenceManager:(id)manager;
+- (id)collectRecordIDsByTypeExpiredBeforeDate:(id)date ownedByThisDevice:(BOOL)device context:(id)context error:(id *)error;
+- (id)entitiesWithDeviceAndExpirationProperty:(id)property ownedByThisDevice:(BOOL)device;
+- (id)objectIDsByTypeAffectedByDeletingObjectWithID:(id)d context:(id)context error:(id *)error;
+- (id)objectsWithLifetimeMatchingObjectWithID:(id)d context:(id)context error:(id *)error;
+- (void)mergeEntriesFromDictionary:(id)dictionary intoDictionary:(id)intoDictionary;
+- (void)mergeIdentifiersFromArray:(id)array entityName:(id)name intoDictionary:(id)dictionary;
 @end
 
 @implementation RTPersistenceExpirationEnforcer
 
-- (RTPersistenceExpirationEnforcer)initWithPersistenceManager:(id)a3
+- (RTPersistenceExpirationEnforcer)initWithPersistenceManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v29.receiver = self;
     v29.super_class = RTPersistenceExpirationEnforcer;
@@ -26,32 +26,32 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_persistenceManager, a3);
+      objc_storeStrong(&v6->_persistenceManager, manager);
       v28 = MEMORY[0x277CBEB98];
       v8 = +[RTAddressMO entity];
-      v9 = [v8 name];
+      name = [v8 name];
       v10 = +[RTDeviceMO entity];
-      v11 = [v10 name];
+      name2 = [v10 name];
       v12 = +[RTEntityDeletionRequestMO entity];
-      v13 = [v12 name];
+      name3 = [v12 name];
       v14 = +[RTMapItemMO entity];
-      v15 = [v14 name];
-      v16 = [v28 setWithObjects:{v9, v11, v13, v15, 0}];
+      name4 = [v14 name];
+      v16 = [v28 setWithObjects:{name, name2, name3, name4, 0}];
       v17 = _MergedGlobals_117;
       _MergedGlobals_117 = v16;
 
       v18 = MEMORY[0x277CBEB98];
       v19 = +[RTDeviceMO entity];
-      v20 = [v19 name];
+      name5 = [v19 name];
       v21 = +[RTEntityDeletionRequestMO entity];
-      v22 = [v21 name];
-      v23 = [v18 setWithObjects:{v20, v22, 0}];
+      name6 = [v21 name];
+      v23 = [v18 setWithObjects:{name5, name6, 0}];
       v24 = qword_2814A7D48;
       qword_2814A7D48 = v23;
     }
 
     self = v7;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
@@ -63,18 +63,18 @@
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: persistenceManager", buf, 2u);
     }
 
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
-- (id)entitiesWithDeviceAndExpirationProperty:(id)a3 ownedByThisDevice:(BOOL)a4
+- (id)entitiesWithDeviceAndExpirationProperty:(id)property ownedByThisDevice:(BOOL)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [a3 persistentStoreCoordinator];
-  v21 = [v5 managedObjectModel];
+  persistentStoreCoordinator = [property persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
 
   v6 = objc_opt_new();
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K != nil", @"propertiesByName", @"expirationDate"];
@@ -91,7 +91,7 @@
   }
 
   v9 = &_MergedGlobals_117;
-  if (!v4)
+  if (!deviceCopy)
   {
     v9 = &qword_2814A7D48;
   }
@@ -129,24 +129,24 @@
   }
 
   v16 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v6];
-  v17 = [v21 entities];
-  v18 = [v17 filteredArrayUsingPredicate:v16];
+  entities = [managedObjectModel entities];
+  v18 = [entities filteredArrayUsingPredicate:v16];
 
   return v18;
 }
 
-- (id)collectRecordIDsByTypeExpiredBeforeDate:(id)a3 ownedByThisDevice:(BOOL)a4 context:(id)a5 error:(id *)a6
+- (id)collectRecordIDsByTypeExpiredBeforeDate:(id)date ownedByThisDevice:(BOOL)device context:(id)context error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = v12;
-  if (a6)
+  dateCopy = date;
+  contextCopy = context;
+  v13 = contextCopy;
+  if (error)
   {
-    if (v11)
+    if (dateCopy)
     {
-      if (v12)
+      if (contextCopy)
       {
-        v14 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         *buf = 0;
         v34 = buf;
         v35 = 0x3032000000;
@@ -158,19 +158,19 @@
         v26[2] = __107__RTPersistenceExpirationEnforcer_collectRecordIDsByTypeExpiredBeforeDate_ownedByThisDevice_context_error___block_invoke;
         v26[3] = &unk_2788CDC10;
         v26[4] = self;
-        v32 = a4;
+        deviceCopy = device;
         v27 = v13;
         v30 = buf;
-        v28 = v11;
+        v28 = dateCopy;
         v31 = a2;
-        v15 = v14;
+        v15 = array;
         v29 = v15;
         [v27 performBlockAndWait:v26];
         v16 = _RTSafeArray();
         v17 = _RTMultiErrorCreate();
 
         v18 = _RTSafeArray();
-        *a6 = _RTMultiErrorCreate();
+        *error = _RTMultiErrorCreate();
 
         if (v17)
         {
@@ -211,7 +211,7 @@
     }
 
     _RTErrorInvalidParameterCreate(v23);
-    *a6 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else
@@ -350,13 +350,13 @@ void __107__RTPersistenceExpirationEnforcer_collectRecordIDsByTypeExpiredBeforeD
   }
 }
 
-- (BOOL)removeRecordsOwnedByOtherDevicesExpiredBeforeDate:(id)a3 allowPropagation:(BOOL)a4 context:(id)a5 error:(id *)a6
+- (BOOL)removeRecordsOwnedByOtherDevicesExpiredBeforeDate:(id)date allowPropagation:(BOOL)propagation context:(id)context error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = v12;
-  if (!a6)
+  dateCopy = date;
+  contextCopy = context;
+  v13 = contextCopy;
+  if (!error)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -368,7 +368,7 @@ void __107__RTPersistenceExpirationEnforcer_collectRecordIDsByTypeExpiredBeforeD
     goto LABEL_12;
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -381,7 +381,7 @@ void __107__RTPersistenceExpirationEnforcer_collectRecordIDsByTypeExpiredBeforeD
     goto LABEL_19;
   }
 
-  if (!v12)
+  if (!contextCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -393,7 +393,7 @@ void __107__RTPersistenceExpirationEnforcer_collectRecordIDsByTypeExpiredBeforeD
     v19 = @"context";
 LABEL_19:
     _RTErrorInvalidParameterCreate(v19);
-    *a6 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_20;
   }
 
@@ -407,7 +407,7 @@ LABEL_19:
     v24 = [v22 errorWithDomain:@"RTPersistenceMirroringManagerErrorDomain" code:7 userInfo:v23];
 
     v25 = v24;
-    *a6 = v24;
+    *error = v24;
 
 LABEL_12:
     v16 = 0;
@@ -416,24 +416,24 @@ LABEL_12:
 
   if (v14)
   {
-    v26 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __116__RTPersistenceExpirationEnforcer_removeRecordsOwnedByOtherDevicesExpiredBeforeDate_allowPropagation_context_error___block_invoke;
     v31[3] = &unk_2788CCA70;
     v32 = v13;
-    v33 = self;
-    v35 = v26;
+    selfCopy = self;
+    v35 = array;
     v36 = a2;
-    v34 = v11;
-    v37 = a4;
-    v27 = v26;
+    v34 = dateCopy;
+    propagationCopy = propagation;
+    v27 = array;
     [v32 performBlockAndWait:v31];
     v28 = _RTSafeArray();
     v29 = _RTMultiErrorCreate();
 
     v30 = v29;
-    *a6 = v29;
+    *error = v29;
     v16 = v29 == 0;
   }
 
@@ -446,7 +446,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Attempted to remove records from other device with RTPersistenceMirroringDelegateStateUnknown", buf, 2u);
     }
 
-    *a6 = 0;
+    *error = 0;
     v16 = 1;
   }
 
@@ -919,16 +919,16 @@ void __116__RTPersistenceExpirationEnforcer_removeRecordsOwnedByOtherDevicesExpi
   [v3 addObjectsFromArray:v4];
 }
 
-- (id)objectsWithLifetimeMatchingObjectWithID:(id)a3 context:(id)a4 error:(id *)a5
+- (id)objectsWithLifetimeMatchingObjectWithID:(id)d context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5)
+  dCopy = d;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (error)
   {
-    if (v8)
+    if (dCopy)
     {
-      if (v9)
+      if (contextCopy)
       {
         v11 = objc_opt_new();
         *buf = 0;
@@ -943,12 +943,12 @@ void __116__RTPersistenceExpirationEnforcer_removeRecordsOwnedByOtherDevicesExpi
         v20[3] = &unk_2788C98E0;
         v21 = v10;
         v25 = buf;
-        v22 = v8;
-        v23 = self;
+        v22 = dCopy;
+        selfCopy = self;
         v12 = v11;
         v24 = v12;
         [v21 performBlockAndWait:v20];
-        *a5 = *(v27 + 5);
+        *error = *(v27 + 5);
         v13 = v24;
         v14 = v12;
 
@@ -979,7 +979,7 @@ void __116__RTPersistenceExpirationEnforcer_removeRecordsOwnedByOtherDevicesExpi
     }
 
     _RTErrorInvalidParameterCreate(v17);
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -1220,16 +1220,16 @@ LABEL_14:
 LABEL_35:
 }
 
-- (id)objectIDsByTypeAffectedByDeletingObjectWithID:(id)a3 context:(id)a4 error:(id *)a5
+- (id)objectIDsByTypeAffectedByDeletingObjectWithID:(id)d context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5)
+  dCopy = d;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (error)
   {
-    if (v8)
+    if (dCopy)
     {
-      if (v9)
+      if (contextCopy)
       {
         *buf = 0;
         v26 = buf;
@@ -1243,13 +1243,13 @@ LABEL_35:
         v19[2] = __95__RTPersistenceExpirationEnforcer_objectIDsByTypeAffectedByDeletingObjectWithID_context_error___block_invoke;
         v19[3] = &unk_2788C98E0;
         v20 = v10;
-        v21 = v8;
+        v21 = dCopy;
         v24 = buf;
         v12 = v11;
         v22 = v12;
-        v23 = self;
+        selfCopy = self;
         [v20 performBlockAndWait:v19];
-        *a5 = *(v26 + 5);
+        *error = *(v26 + 5);
         v13 = v12;
 
         _Block_object_dispose(buf, 8);
@@ -1279,7 +1279,7 @@ LABEL_35:
     }
 
     _RTErrorInvalidParameterCreate(v16);
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -1380,38 +1380,38 @@ void __95__RTPersistenceExpirationEnforcer_objectIDsByTypeAffectedByDeletingObje
   [v7 mergeIdentifiersFromArray:v10 entityName:v9 intoDictionary:a1[6]];
 }
 
-- (void)mergeIdentifiersFromArray:(id)a3 entityName:(id)a4 intoDictionary:(id)a5
+- (void)mergeIdentifiersFromArray:(id)array entityName:(id)name intoDictionary:(id)dictionary
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 objectForKey:v8];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  arrayCopy = array;
+  v10 = [dictionaryCopy objectForKey:nameCopy];
   v11 = [v10 mutableCopy];
 
   if (v11)
   {
-    [v11 addObjectsFromArray:v9];
+    [v11 addObjectsFromArray:arrayCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB58] setWithArray:v9];
+    v11 = [MEMORY[0x277CBEB58] setWithArray:arrayCopy];
   }
 
-  [v7 setObject:v11 forKey:v8];
+  [dictionaryCopy setObject:v11 forKey:nameCopy];
 }
 
-- (void)mergeEntriesFromDictionary:(id)a3 intoDictionary:(id)a4
+- (void)mergeEntriesFromDictionary:(id)dictionary intoDictionary:(id)intoDictionary
 {
-  v6 = a4;
+  intoDictionaryCopy = intoDictionary;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__RTPersistenceExpirationEnforcer_mergeEntriesFromDictionary_intoDictionary___block_invoke;
   v8[3] = &unk_2788CDCD8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = intoDictionaryCopy;
+  v7 = intoDictionaryCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __77__RTPersistenceExpirationEnforcer_mergeEntriesFromDictionary_intoDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1422,34 +1422,34 @@ void __77__RTPersistenceExpirationEnforcer_mergeEntriesFromDictionary_intoDictio
   [v5 mergeIdentifiersFromArray:v7 entityName:v6 intoDictionary:*(a1 + 40)];
 }
 
-- (BOOL)removeRecordsOwnedByThisDeviceExpiredBeforeDate:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)removeRecordsOwnedByThisDeviceExpiredBeforeDate:(id)date context:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (a5)
+  dateCopy = date;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (error)
   {
-    if (v9)
+    if (dateCopy)
     {
-      if (v10)
+      if (contextCopy)
       {
-        v12 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __97__RTPersistenceExpirationEnforcer_removeRecordsOwnedByThisDeviceExpiredBeforeDate_context_error___block_invoke;
         v23[3] = &unk_2788C50E8;
         v23[4] = self;
-        v24 = v9;
-        v26 = v12;
+        v24 = dateCopy;
+        v26 = array;
         v27 = a2;
         v25 = v11;
-        v13 = v12;
+        v13 = array;
         [v25 performBlockAndWait:v23];
         v14 = _RTSafeArray();
         v15 = _RTMultiErrorCreate();
 
         v16 = v15;
-        *a5 = v15;
+        *error = v15;
         v17 = v15 == 0;
 
         goto LABEL_15;
@@ -1478,7 +1478,7 @@ void __77__RTPersistenceExpirationEnforcer_mergeEntriesFromDictionary_intoDictio
     }
 
     _RTErrorInvalidParameterCreate(v20);
-    *a5 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_15;
   }
 
@@ -1557,31 +1557,31 @@ void __97__RTPersistenceExpirationEnforcer_removeRecordsOwnedByThisDeviceExpired
   }
 }
 
-- (BOOL)removeExpiredRecordsWithObjectIDs:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)removeExpiredRecordsWithObjectIDs:(id)ds context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5)
+  dsCopy = ds;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (error)
   {
-    if (v9)
+    if (contextCopy)
     {
-      v11 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __83__RTPersistenceExpirationEnforcer_removeExpiredRecordsWithObjectIDs_context_error___block_invoke;
       v20[3] = &unk_2788C4C70;
       v21 = v10;
-      v23 = v11;
+      v23 = array;
       v24 = a2;
-      v22 = v8;
-      v12 = v11;
+      v22 = dsCopy;
+      v12 = array;
       [v21 performBlockAndWait:v20];
       v13 = _RTSafeArray();
       v14 = _RTMultiErrorCreate();
 
       v15 = v14;
-      *a5 = v14;
+      *error = v14;
       v16 = v14 == 0;
     }
 
@@ -1595,7 +1595,7 @@ void __97__RTPersistenceExpirationEnforcer_removeRecordsOwnedByThisDeviceExpired
       }
 
       _RTErrorInvalidParameterCreate(@"context");
-      *a5 = v16 = 0;
+      *error = v16 = 0;
     }
   }
 
@@ -1682,26 +1682,26 @@ void __83__RTPersistenceExpirationEnforcer_removeExpiredRecordsWithObjectIDs_con
   }
 }
 
-- (BOOL)removeExpiredRecordsBeforeDate:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)removeExpiredRecordsBeforeDate:(id)date context:(id)context error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (a5)
+  dateCopy = date;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (error)
   {
-    if (v9)
+    if (dateCopy)
     {
-      if (v10)
+      if (contextCopy)
       {
         v33 = 0;
-        v12 = [(RTPersistenceExpirationEnforcer *)self repairInvalidExpirationDatesWithContext:v10 error:&v33];
+        v12 = [(RTPersistenceExpirationEnforcer *)self repairInvalidExpirationDatesWithContext:contextCopy error:&v33];
         v13 = v33;
         v32 = 0;
-        v14 = [(RTPersistenceExpirationEnforcer *)self removeRecordsOwnedByThisDeviceExpiredBeforeDate:v9 context:v11 error:&v32];
+        v14 = [(RTPersistenceExpirationEnforcer *)self removeRecordsOwnedByThisDeviceExpiredBeforeDate:dateCopy context:v11 error:&v32];
         v15 = v32;
         v31 = 0;
-        v16 = [(RTPersistenceExpirationEnforcer *)self removeRecordsOwnedByOtherDevicesExpiredBeforeDate:v9 allowPropagation:0 context:v11 error:&v31];
+        v16 = [(RTPersistenceExpirationEnforcer *)self removeRecordsOwnedByOtherDevicesExpiredBeforeDate:dateCopy allowPropagation:0 context:v11 error:&v31];
         v17 = v31;
         v18 = v17;
         if (!v12 || v13 || !v16 || !v14 || v15 || v17)
@@ -1744,7 +1744,7 @@ LABEL_22:
         v27 = _RTMultiErrorCreate();
 
         v28 = v27;
-        *a5 = v27;
+        *error = v27;
         v23 = v27 == 0;
 
         goto LABEL_29;
@@ -1773,7 +1773,7 @@ LABEL_22:
     }
 
     _RTErrorInvalidParameterCreate(v25);
-    *a5 = v23 = 0;
+    *error = v23 = 0;
     goto LABEL_29;
   }
 
@@ -1790,13 +1790,13 @@ LABEL_29:
   return v23;
 }
 
-- (BOOL)repairInvalidExpirationDatesWithContext:(id)a3 error:(id *)a4
+- (BOOL)repairInvalidExpirationDatesWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (error)
   {
-    if (v6)
+    if (contextCopy)
     {
       v8 = objc_opt_new();
       v17[0] = MEMORY[0x277D85DD0];
@@ -1812,7 +1812,7 @@ LABEL_29:
       v11 = _RTMultiErrorCreate();
 
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
       v13 = v11 == 0;
     }
 
@@ -1826,7 +1826,7 @@ LABEL_29:
       }
 
       _RTErrorInvalidParameterCreate(@"context");
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
   }
 

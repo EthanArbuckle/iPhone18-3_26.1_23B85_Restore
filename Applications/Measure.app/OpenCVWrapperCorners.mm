@@ -1,6 +1,6 @@
 @interface OpenCVWrapperCorners
 - (OpenCVWrapperCorners)init;
-- (OpenCVWrapperCorners)initWithCorners:(void *)a3;
+- (OpenCVWrapperCorners)initWithCorners:(void *)corners;
 - (id).cxx_construct;
 @end
 
@@ -13,16 +13,16 @@
   return [(OpenCVWrapperCorners *)&v3 init];
 }
 
-- (OpenCVWrapperCorners)initWithCorners:(void *)a3
+- (OpenCVWrapperCorners)initWithCorners:(void *)corners
 {
   v4 = [(OpenCVWrapperCorners *)self init];
   v5 = v4;
   if (v4)
   {
     p_corners = &v4->_corners;
-    if (&v5->_corners != a3)
+    if (&v5->_corners != corners)
     {
-      sub_10000AD58(p_corners, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+      sub_10000AD58(p_corners, *corners, *(corners + 1), 0xAAAAAAAAAAAAAAABLL * ((*(corners + 1) - *corners) >> 3));
     }
   }
 

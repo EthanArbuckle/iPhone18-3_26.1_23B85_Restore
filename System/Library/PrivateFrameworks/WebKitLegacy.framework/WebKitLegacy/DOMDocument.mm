@@ -68,7 +68,7 @@
 - (NSURL)URLWithAttributeString:(NSString *)string;
 - (WebFrame)webFrame;
 - (id)_documentRange;
-- (id)caretRangeFromPoint:(int)a3 y:(int)a4;
+- (id)caretRangeFromPoint:(int)point y:(int)y;
 - (id)children;
 - (id)compatMode;
 - (id)contentType;
@@ -87,7 +87,7 @@
 - (void)setBody:(DOMHTMLElement *)body;
 - (void)setCharset:(NSString *)charset;
 - (void)setCookie:(NSString *)cookie;
-- (void)setDir:(id)a3;
+- (void)setDir:(id)dir;
 - (void)setDocumentURI:(NSString *)documentURI;
 - (void)setTitle:(NSString *)title;
 - (void)setXmlStandalone:(BOOL)xmlStandalone;
@@ -488,10 +488,10 @@
   return v5;
 }
 
-- (void)setDir:(id)a3
+- (void)setDir:(id)dir
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, dir, v4);
   v6 = v8;
   WebCore::Document::setDir();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -3194,7 +3194,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)caretRangeFromPoint:(int)a3 y:(int)a4
+- (id)caretRangeFromPoint:(int)point y:(int)y
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v8);
   WebCore::Document::caretRangeFromPoint();
@@ -3642,14 +3642,14 @@ LABEL_16:
 
 - (id)_documentRange
 {
-  v3 = [(DOMDocument *)self createRange];
-  v4 = [(DOMDocument *)self documentElement];
-  if (v4)
+  createRange = [(DOMDocument *)self createRange];
+  documentElement = [(DOMDocument *)self documentElement];
+  if (documentElement)
   {
-    [(DOMRange *)v3 selectNode:v4];
+    [(DOMRange *)createRange selectNode:documentElement];
   }
 
-  return v3;
+  return createRange;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CPSLaunchContentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (CGRect)_axFrameForInformationContainerView;
 - (id)_axBackgroundView;
@@ -7,39 +7,39 @@
 - (id)_axLabels;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateContent;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation CPSLaunchContentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceMethod:@"_updateContent" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_clipNameVibrantLabel" withType:"CPSVibrantLabel"];
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_clipDescriptionVibrantLabel" withType:"CPSVibrantLabel"];
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_openButton" withType:"UIButton"];
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_closeButton" withType:"CPSVibrantButton"];
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_clipInformationContainerView" withType:"UIView"];
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceMethod:@"_openAppClip:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CPSLaunchContentViewController" hasInstanceMethod:@"dismiss:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UITransitionView"];
-  [v3 validateClass:@"CPSLaunchContentViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceMethod:@"_updateContent" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_clipNameVibrantLabel" withType:"CPSVibrantLabel"];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_clipDescriptionVibrantLabel" withType:"CPSVibrantLabel"];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_openButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_closeButton" withType:"CPSVibrantButton"];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceVariable:@"_clipInformationContainerView" withType:"UIView"];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceMethod:@"_openAppClip:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" hasInstanceMethod:@"dismiss:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UITransitionView"];
+  [validationsCopy validateClass:@"CPSLaunchContentViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (CGRect)_axFrameForInformationContainerView
 {
-  v3 = [(CPSLaunchContentViewControllerAccessibility *)self _axNameLabel];
-  [v3 accessibilityFrame];
+  _axNameLabel = [(CPSLaunchContentViewControllerAccessibility *)self _axNameLabel];
+  [_axNameLabel accessibilityFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CPSLaunchContentViewControllerAccessibility *)self _axDescriptionLabel];
-  [v12 accessibilityFrame];
+  _axDescriptionLabel = [(CPSLaunchContentViewControllerAccessibility *)self _axDescriptionLabel];
+  [_axDescriptionLabel accessibilityFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -60,17 +60,17 @@
 - (id)_axLabels
 {
   v3 = MEMORY[0x29EDB8D80];
-  v4 = [(CPSLaunchContentViewControllerAccessibility *)self _axNameLabel];
-  v5 = [(CPSLaunchContentViewControllerAccessibility *)self _axDescriptionLabel];
-  v6 = [v3 axArrayByIgnoringNilElementsWithCount:{2, v4, v5}];
+  _axNameLabel = [(CPSLaunchContentViewControllerAccessibility *)self _axNameLabel];
+  _axDescriptionLabel = [(CPSLaunchContentViewControllerAccessibility *)self _axDescriptionLabel];
+  v6 = [v3 axArrayByIgnoringNilElementsWithCount:{2, _axNameLabel, _axDescriptionLabel}];
 
   return v6;
 }
 
 - (id)_axButtons
 {
-  v2 = [(CPSLaunchContentViewControllerAccessibility *)self _axInformationContainerView];
-  v3 = [v2 _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_1];
+  _axInformationContainerView = [(CPSLaunchContentViewControllerAccessibility *)self _axInformationContainerView];
+  v3 = [_axInformationContainerView _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_1];
 
   return v3;
 }
@@ -91,20 +91,20 @@ uint64_t __57__CPSLaunchContentViewControllerAccessibility__axButtons__block_inv
   v4 = [v3 _accessibilityFindAncestor:&__block_literal_global_334 startWithSelf:0];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 subviews];
-  if ([v6 count] == 2)
+  subviews = [v5 subviews];
+  if ([subviews count] == 2)
   {
-    v7 = [v6 objectAtIndexedSubscript:0];
+    v7 = [subviews objectAtIndexedSubscript:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 objectAtIndexedSubscript:1];
+      v8 = [subviews objectAtIndexedSubscript:1];
       MEMORY[0x29C2D0B70](@"PRXCardContainerView");
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v10 = [v6 objectAtIndexedSubscript:0];
+        v10 = [subviews objectAtIndexedSubscript:0];
         goto LABEL_7;
       }
     }
@@ -158,14 +158,14 @@ void __73__CPSLaunchContentViewControllerAccessibility_accessibilityPerformEscap
   [(CPSLaunchContentViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CPSLaunchContentViewControllerAccessibility;
-  [(CPSLaunchContentViewControllerAccessibility *)&v6 viewDidAppear:a3];
+  [(CPSLaunchContentViewControllerAccessibility *)&v6 viewDidAppear:appear];
   v4 = *MEMORY[0x29EDC7ED8];
-  v5 = [(CPSLaunchContentViewControllerAccessibility *)self _axNameLabel];
-  UIAccessibilityPostNotification(v4, v5);
+  _axNameLabel = [(CPSLaunchContentViewControllerAccessibility *)self _axNameLabel];
+  UIAccessibilityPostNotification(v4, _axNameLabel);
 }
 
 - (void)_updateContent
@@ -181,18 +181,18 @@ void __73__CPSLaunchContentViewControllerAccessibility_accessibilityPerformEscap
   v17.receiver = self;
   v17.super_class = CPSLaunchContentViewControllerAccessibility;
   [(CPSLaunchContentViewControllerAccessibility *)&v17 _accessibilityLoadAccessibilityInformation];
-  v3 = [(CPSLaunchContentViewControllerAccessibility *)self _axBackgroundView];
-  v4 = [(CPSLaunchContentViewControllerAccessibility *)self _axInformationContainerView];
-  [v3 setIsAccessibilityElement:1];
+  _axBackgroundView = [(CPSLaunchContentViewControllerAccessibility *)self _axBackgroundView];
+  _axInformationContainerView = [(CPSLaunchContentViewControllerAccessibility *)self _axInformationContainerView];
+  [_axBackgroundView setIsAccessibilityElement:1];
   v5 = accessibilityLocalizedString(@"popover.view.dismiss");
-  [v3 setAccessibilityLabel:v5];
+  [_axBackgroundView setAccessibilityLabel:v5];
 
-  [v4 _setAccessibilityServesAsFirstElement:1];
+  [_axInformationContainerView _setAccessibilityServesAsFirstElement:1];
   v6 = MEMORY[0x29EDB8D80];
-  v7 = [(CPSLaunchContentViewControllerAccessibility *)self _axLabels];
-  v8 = [(CPSLaunchContentViewControllerAccessibility *)self _axButtons];
-  v9 = [v6 axArrayWithPossiblyNilArrays:{2, v7, v8}];
-  [v4 setAccessibilityElements:v9];
+  _axLabels = [(CPSLaunchContentViewControllerAccessibility *)self _axLabels];
+  _axButtons = [(CPSLaunchContentViewControllerAccessibility *)self _axButtons];
+  v9 = [v6 axArrayWithPossiblyNilArrays:{2, _axLabels, _axButtons}];
+  [_axInformationContainerView setAccessibilityElements:v9];
 
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x29EDCA5F8];
@@ -200,19 +200,19 @@ void __73__CPSLaunchContentViewControllerAccessibility_accessibilityPerformEscap
   v14[2] = __89__CPSLaunchContentViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v14[3] = &unk_29F2B3A90;
   objc_copyWeak(&v15, &location);
-  [v3 _setAccessibilityActivateBlock:v14];
+  [_axBackgroundView _setAccessibilityActivateBlock:v14];
   v12[0] = MEMORY[0x29EDCA5F8];
   v12[1] = 3221225472;
   v12[2] = __89__CPSLaunchContentViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_2;
   v12[3] = &unk_29F2B3AB8;
   objc_copyWeak(&v13, &location);
-  [v4 _setAccessibilityFrameBlock:v12];
+  [_axInformationContainerView _setAccessibilityFrameBlock:v12];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __89__CPSLaunchContentViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_3;
   v10[3] = &unk_29F2B3A90;
   objc_copyWeak(&v11, &location);
-  [v4 _setAccessibilityActivateBlock:v10];
+  [_axInformationContainerView _setAccessibilityActivateBlock:v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);

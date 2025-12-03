@@ -1,14 +1,14 @@
 @interface CNHandleStringsContactPredicate
-- (BOOL)isEqual:(id)a3;
-- (CNHandleStringsContactPredicate)initWithCoder:(id)a3;
-- (CNHandleStringsContactPredicate)initWithHandleStrings:(id)a3 containerIdentifiers:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CNHandleStringsContactPredicate)initWithCoder:(id)coder;
+- (CNHandleStringsContactPredicate)initWithHandleStrings:(id)strings containerIdentifiers:(id)identifiers;
 - (NSString)description;
-- (id)cn_resultTransformWithMatchInfos:(id)a3;
-- (id)contactsFromRecentsLibrary:(id)a3;
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3;
+- (id)cn_resultTransformWithMatchInfos:(id)infos;
+- (id)contactsFromRecentsLibrary:(id)library;
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library;
 - (unint64_t)hash;
-- (void)cn_triageWithLog:(id)a3 serialNumber:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)cn_triageWithLog:(id)log serialNumber:(unint64_t)number;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNHandleStringsContactPredicate
@@ -16,38 +16,38 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNHandleStringsContactPredicate *)self containerIdentifiers];
+  containerIdentifiers = [(CNHandleStringsContactPredicate *)self containerIdentifiers];
 
-  if (v4)
+  if (containerIdentifiers)
   {
     v5 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingHandleStrings:inContainersWithIdentifiers:]"];
-    v6 = [(CNHandleStringsContactPredicate *)self handleStrings];
-    v7 = [v3 appendName:@"handleStrings" object:v6];
+    handleStrings = [(CNHandleStringsContactPredicate *)self handleStrings];
+    v7 = [v3 appendName:@"handleStrings" object:handleStrings];
 
-    v8 = [(CNHandleStringsContactPredicate *)self containerIdentifiers];
+    containerIdentifiers2 = [(CNHandleStringsContactPredicate *)self containerIdentifiers];
     v9 = @"containerIdentifiers";
   }
 
   else
   {
     v10 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingHandleStrings:]"];
-    v8 = [(CNHandleStringsContactPredicate *)self handleStrings];
+    containerIdentifiers2 = [(CNHandleStringsContactPredicate *)self handleStrings];
     v9 = @"handleStrings";
   }
 
-  v11 = [v3 appendName:v9 object:v8];
+  v11 = [v3 appendName:v9 object:containerIdentifiers2];
 
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
-- (id)contactsFromRecentsLibrary:(id)a3
+- (id)contactsFromRecentsLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996530];
-  v6 = [(CNHandleStringsContactPredicate *)self handleStrings];
-  LODWORD(v5) = (*(v5 + 16))(v5, v6);
+  handleStrings = [(CNHandleStringsContactPredicate *)self handleStrings];
+  LODWORD(v5) = (*(v5 + 16))(v5, handleStrings);
 
   if (v5)
   {
@@ -56,9 +56,9 @@
 
   else
   {
-    v8 = [(CNHandleStringsContactPredicate *)self handleStrings];
+    handleStrings2 = [(CNHandleStringsContactPredicate *)self handleStrings];
     v14 = 0;
-    v9 = [v4 contactsWithHandles:v8 error:&v14];
+    v9 = [libraryCopy contactsWithHandles:handleStrings2 error:&v14];
     v10 = v14;
 
     v11 = MEMORY[0x1E6996810];
@@ -69,12 +69,12 @@
   return v7;
 }
 
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996530];
-  v6 = [(CNHandleStringsContactPredicate *)self handleStrings];
-  LOBYTE(v5) = (*(v5 + 16))(v5, v6);
+  handleStrings = [(CNHandleStringsContactPredicate *)self handleStrings];
+  LOBYTE(v5) = (*(v5 + 16))(v5, handleStrings);
 
   if (v5)
   {
@@ -83,27 +83,27 @@
 
   else
   {
-    v8 = [(CNHandleStringsContactPredicate *)self handleStrings];
-    v7 = [v4 countOfContactsWithHandles:v8 error:0];
+    handleStrings2 = [(CNHandleStringsContactPredicate *)self handleStrings];
+    v7 = [libraryCopy countOfContactsWithHandles:handleStrings2 error:0];
   }
 
   return v7;
 }
 
-- (CNHandleStringsContactPredicate)initWithHandleStrings:(id)a3 containerIdentifiers:(id)a4
+- (CNHandleStringsContactPredicate)initWithHandleStrings:(id)strings containerIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  identifiersCopy = identifiers;
   v15.receiver = self;
   v15.super_class = CNHandleStringsContactPredicate;
   v8 = [(CNPredicate *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringsCopy copy];
     handleStrings = v8->_handleStrings;
     v8->_handleStrings = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifiersCopy copy];
     containerIdentifiers = v8->_containerIdentifiers;
     v8->_containerIdentifiers = v11;
 
@@ -113,17 +113,17 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__CNHandleStringsContactPredicate_isEqual___block_invoke;
   v8[3] = &unk_1E7412228;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v8, 0}];
 
   return self;
@@ -158,18 +158,18 @@ uint64_t __39__CNHandleStringsContactPredicate_hash__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (CNHandleStringsContactPredicate)initWithCoder:(id)a3
+- (CNHandleStringsContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CNHandleStringsContactPredicate;
-  v5 = [(CNPredicate *)&v14 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_handleStrings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_handleStrings"];
     v10 = [v9 copy];
     handleStrings = v5->_handleStrings;
     v5->_handleStrings = v10;
@@ -180,30 +180,30 @@ uint64_t __39__CNHandleStringsContactPredicate_hash__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNHandleStringsContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_handleStrings forKey:{@"_handleStrings", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_handleStrings forKey:{@"_handleStrings", v5.receiver, v5.super_class}];
 }
 
-- (id)cn_resultTransformWithMatchInfos:(id)a3
+- (id)cn_resultTransformWithMatchInfos:(id)infos
 {
-  v4 = a3;
-  v5 = [v4 allValues];
-  v6 = [v5 _cn_any:&__block_literal_global_57];
+  infosCopy = infos;
+  allValues = [infosCopy allValues];
+  v6 = [allValues _cn_any:&__block_literal_global_57];
 
-  v7 = [(CNHandleStringsContactPredicate *)self handleStrings];
-  v8 = v7;
+  handleStrings = [(CNHandleStringsContactPredicate *)self handleStrings];
+  v8 = handleStrings;
   if (v6)
   {
     v9 = v15;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v10 = __68__CNHandleStringsContactPredicate_cn_resultTransformWithMatchInfos___block_invoke_2;
-    v11 = v4;
+    v11 = infosCopy;
   }
 
   else
@@ -212,7 +212,7 @@ uint64_t __39__CNHandleStringsContactPredicate_hash__block_invoke(uint64_t a1)
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v10 = __68__CNHandleStringsContactPredicate_cn_resultTransformWithMatchInfos___block_invoke_3;
-    v11 = v7;
+    v11 = handleStrings;
   }
 
   v9[2] = v10;
@@ -321,20 +321,20 @@ id __68__CNHandleStringsContactPredicate_cn_resultTransformWithMatchInfos___bloc
   return v5;
 }
 
-- (void)cn_triageWithLog:(id)a3 serialNumber:(unint64_t)a4
+- (void)cn_triageWithLog:(id)log serialNumber:(unint64_t)number
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v6 = MEMORY[0x1E69966E8];
-    v7 = a3;
-    v8 = [v6 currentEnvironment];
-    v9 = [v8 defaultCountryCode];
+    logCopy = log;
+    currentEnvironment = [v6 currentEnvironment];
+    defaultCountryCode = [currentEnvironment defaultCountryCode];
     v10 = 134218242;
-    v11 = a4;
+    numberCopy = number;
     v12 = 2114;
-    v13 = v9;
-    _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_INFO, "%04llx Default country code: %{public}@", &v10, 0x16u);
+    v13 = defaultCountryCode;
+    _os_log_impl(&dword_1954A0000, logCopy, OS_LOG_TYPE_INFO, "%04llx Default country code: %{public}@", &v10, 0x16u);
   }
 }
 

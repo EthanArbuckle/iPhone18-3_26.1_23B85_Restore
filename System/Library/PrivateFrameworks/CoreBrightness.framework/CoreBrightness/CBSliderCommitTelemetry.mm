@@ -1,47 +1,47 @@
 @interface CBSliderCommitTelemetry
-+ (id)sliderInfoToNSDictionary:(const CBSliderCommitInfo *)a3;
-- (BOOL)getUserAABParams:(CBAABParams *)a3 key:(id)a4;
-- (BOOL)handleAODStateUpdate:(unint64_t)a3 transitionTime:(float)a4 context:(id)a5;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
++ (id)sliderInfoToNSDictionary:(const CBSliderCommitInfo *)dictionary;
+- (BOOL)getUserAABParams:(CBAABParams *)params key:(id)key;
+- (BOOL)handleAODStateUpdate:(unint64_t)update transitionTime:(float)time context:(id)context;
+- (BOOL)setProperty:(id)property forKey:(id)key;
 - (CBSliderCommitInfo)getLastFilledEntry;
 - (CBSliderCommitInfo)getNextEntryAndAdvanceBufferIndex;
-- (CBSliderCommitTelemetry)initWithQueue:(id)a3 andDisplayContainer:(id)a4;
-- (double)timestampFromCurveDistionary:(id)a3;
+- (CBSliderCommitTelemetry)initWithQueue:(id)queue andDisplayContainer:(id)container;
+- (double)timestampFromCurveDistionary:(id)distionary;
 - (float)getAPCE;
-- (id)copyPropertyForKey:(id)a3;
+- (id)copyPropertyForKey:(id)key;
 - (void)cancelDelayedAPCETimer;
-- (void)delayedAPCETimerHandler:(CBSliderCommitInfo *)a3;
-- (void)fillEntry:(CBSliderCommitInfo *)a3 withTimestamp:(int64_t)a4 andRestoreTimeTarget:(int64_t)a5 andAABParams:(CBAABParams *)a6 andAlternativeAABParams:(CBAABParams *)a7;
-- (void)fillEntry:(CBSliderCommitInfo *)a3 withTimestamp:(int64_t)a4 slider:(float)a5 apce:(float)a6 andTrackedState:(TrackedState)a7;
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4;
-- (void)logAfterUserBrightnessCommitWithTimestamp:(int64_t)a3 slider:(float)a4 apce:(float)a5 andTrackedState:(TrackedState)a6;
+- (void)delayedAPCETimerHandler:(CBSliderCommitInfo *)handler;
+- (void)fillEntry:(CBSliderCommitInfo *)entry withTimestamp:(int64_t)timestamp andRestoreTimeTarget:(int64_t)target andAABParams:(CBAABParams *)params andAlternativeAABParams:(CBAABParams *)bParams;
+- (void)fillEntry:(CBSliderCommitInfo *)entry withTimestamp:(int64_t)timestamp slider:(float)slider apce:(float)apce andTrackedState:(TrackedState)state;
+- (void)handleNotificationForKey:(id)key withProperty:(id)property;
+- (void)logAfterUserBrightnessCommitWithTimestamp:(int64_t)timestamp slider:(float)slider apce:(float)apce andTrackedState:(TrackedState)state;
 - (void)logAllFilledEntries;
-- (void)reportCommit:(CBSliderCommitInfo *)a3;
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4;
+- (void)reportCommit:(CBSliderCommitInfo *)commit;
+- (void)sendNotificationForKey:(id)key withValue:(id)value;
 @end
 
 @implementation CBSliderCommitTelemetry
 
-- (CBSliderCommitTelemetry)initWithQueue:(id)a3 andDisplayContainer:(id)a4
+- (CBSliderCommitTelemetry)initWithQueue:(id)queue andDisplayContainer:(id)container
 {
   v25 = *MEMORY[0x1E69E9840];
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v19 = a4;
+  queueCopy = queue;
+  containerCopy = container;
   v18.receiver = self;
   v18.super_class = CBSliderCommitTelemetry;
-  v22 = [(CBModule *)&v18 initWithQueue:a3];
-  if (!v22)
+  selfCopy = [(CBModule *)&v18 initWithQueue:queue];
+  if (!selfCopy)
   {
     goto LABEL_22;
   }
 
   v4 = os_log_create("com.apple.CoreBrightness.SliderCommitTelemetry", "default");
-  *(v22 + 2) = v4;
+  *(selfCopy + 2) = v4;
   v5 = os_log_create("com.apple.CoreBrightness.SliderCommitTelemetry", "LiveOn");
-  *(v22 + 2920) = v5;
-  if (!*(v22 + 2) || !*(v22 + 2920))
+  *(selfCopy + 2920) = v5;
+  if (!*(selfCopy + 2) || !*(selfCopy + 2920))
   {
     v12 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
     v17 = v12;
@@ -56,26 +56,26 @@
   }
 
   v6 = dispatch_queue_create("com.apple.CoreBrightness.SliderCommitTelemetry", 0);
-  *(v22 + 6) = v6;
-  *(v22 + 2922) = 0;
-  *(v22 + 4) = v19;
-  *(v22 + 2907) = 0;
-  *(v22 + 2908) = 0;
-  *(v22 + 2923) = 0;
-  *(v22 + 2924) = 0;
-  *(v22 + 23408) = 0;
-  *(v22 + 2909) = 5;
-  for (i = 0; i < 0x64; *(std::array<CBSliderCommitInfo,100ul>::operator[][abi:de200100](v22 + 56, i++) + 8) = -1)
+  *(selfCopy + 6) = v6;
+  *(selfCopy + 2922) = 0;
+  *(selfCopy + 4) = containerCopy;
+  *(selfCopy + 2907) = 0;
+  *(selfCopy + 2908) = 0;
+  *(selfCopy + 2923) = 0;
+  *(selfCopy + 2924) = 0;
+  *(selfCopy + 23408) = 0;
+  *(selfCopy + 2909) = 5;
+  for (i = 0; i < 0x64; *(std::array<CBSliderCommitInfo,100ul>::operator[][abi:de200100](selfCopy + 56, i++) + 8) = -1)
   {
-    *std::array<CBSliderCommitInfo,100ul>::operator[][abi:de200100](v22 + 56, i) = -1;
+    *std::array<CBSliderCommitInfo,100ul>::operator[][abi:de200100](selfCopy + 56, i) = -1;
   }
 
   MainDisplay = IOMobileFramebufferGetMainDisplay();
   if (MainDisplay)
   {
-    if (*(v22 + 2))
+    if (*(selfCopy + 2))
     {
-      v9 = *(v22 + 2);
+      v9 = *(selfCopy + 2);
     }
 
     else
@@ -99,35 +99,35 @@
       _os_log_error_impl(&dword_1DE8E5000, v9, OS_LOG_TYPE_ERROR, "SliderCommitTelemetry Initialization | Unable to obtain IOMFB display object | ErrorCode=0x%x", v24, 8u);
     }
 
-    MEMORY[0x1E69E5920](v22);
+    MEMORY[0x1E69E5920](selfCopy);
     v23 = 0;
   }
 
   else
   {
 LABEL_22:
-    v23 = v22;
+    v23 = selfCopy;
   }
 
   *MEMORY[0x1E69E9840];
   return v23;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  v40 = self;
+  selfCopy = self;
   v39 = a2;
-  v38 = a3;
-  v37 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v37 isEqualToString:@"CBFinalBrightnessCommitDelay"])
+    if ([keyCopy isEqualToString:@"CBFinalBrightnessCommitDelay"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v40->_delayedAPCEDelay = [v38 longLongValue];
+        selfCopy->_delayedAPCEDelay = [propertyCopy longLongValue];
         v41 = 1;
       }
 
@@ -137,12 +137,12 @@ LABEL_22:
       }
     }
 
-    else if ([v37 isEqualToString:@"DisplayBrightness"])
+    else if ([keyCopy isEqualToString:@"DisplayBrightness"])
     {
-      if (v40->_initialFactorUpdateArrived && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (selfCopy->_initialFactorUpdateArrived && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v36 = [v38 objectForKey:@"Commit"];
-        v35 = [v38 objectForKey:@"Brightness"];
+        v36 = [propertyCopy objectForKey:@"Commit"];
+        v35 = [propertyCopy objectForKey:@"Brightness"];
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && ([v36 BOOLValue])
         {
@@ -152,11 +152,11 @@ LABEL_22:
             Current = CFAbsoluteTimeGetCurrent();
             [v35 floatValue];
             v14 = v4;
-            [(CBSliderCommitTelemetry *)v40 getAPCE];
+            [(CBSliderCommitTelemetry *)selfCopy getAPCE];
             LODWORD(v6) = v5;
             LODWORD(v7) = v14;
-            LODWORD(v34) = v40->_state;
-            [(CBSliderCommitTelemetry *)v40 logAfterUserBrightnessCommitWithTimestamp:Current slider:v34 apce:v7 andTrackedState:v6];
+            LODWORD(v34) = selfCopy->_state;
+            [(CBSliderCommitTelemetry *)selfCopy logAfterUserBrightnessCommitWithTimestamp:Current slider:v34 apce:v7 andTrackedState:v6];
           }
         }
 
@@ -169,74 +169,74 @@ LABEL_22:
       }
     }
 
-    else if ([v37 isEqualToString:@"DisplayBrightnessAuto"])
+    else if ([keyCopy isEqualToString:@"DisplayBrightnessAuto"])
     {
-      v33 = [v38 BOOLValue];
-      autobrightnessEnabled = v40->_state.autobrightnessEnabled;
-      v40->_state.autobrightnessEnabled = v33 & 1;
-      if (v40->_initialFactorUpdateArrived && (v33 & 1) != 0 && autobrightnessEnabled != (v33 & 1))
+      bOOLValue = [propertyCopy BOOLValue];
+      autobrightnessEnabled = selfCopy->_state.autobrightnessEnabled;
+      selfCopy->_state.autobrightnessEnabled = bOOLValue & 1;
+      if (selfCopy->_initialFactorUpdateArrived && (bOOLValue & 1) != 0 && autobrightnessEnabled != (bOOLValue & 1))
       {
-        loggingQueue = v40->_loggingQueue;
+        loggingQueue = selfCopy->_loggingQueue;
         block = MEMORY[0x1E69E9820];
         v27 = -1073741824;
         v28 = 0;
         v29 = __46__CBSliderCommitTelemetry_setProperty_forKey___block_invoke;
         v30 = &unk_1E867B480;
-        v31 = v40;
+        v31 = selfCopy;
         dispatch_async(loggingQueue, &block);
       }
 
       v41 = 1;
     }
 
-    else if ([v37 isEqualToString:@"EcoMode"])
+    else if ([keyCopy isEqualToString:@"EcoMode"])
     {
-      v40->_state.ecoModeEnabled = [v38 BOOLValue];
+      selfCopy->_state.ecoModeEnabled = [propertyCopy BOOLValue];
       v41 = 1;
     }
 
-    else if ([v37 isEqualToString:@"CBUIUserStyle"])
+    else if ([keyCopy isEqualToString:@"CBUIUserStyle"])
     {
-      v40->_state.darkThemeApplied = [v38 integerValue] == 2;
+      selfCopy->_state.darkThemeApplied = [propertyCopy integerValue] == 2;
       v41 = 1;
     }
 
-    else if ([v37 isEqualToString:@"CBUIOrientation"])
+    else if ([keyCopy isEqualToString:@"CBUIOrientation"])
     {
       v12 = 1;
-      if ([v38 integerValue] != 4)
+      if ([propertyCopy integerValue] != 4)
       {
-        v12 = [v38 integerValue] == 3;
+        v12 = [propertyCopy integerValue] == 3;
       }
 
-      v40->_state.landscapeOrientation = v12;
+      selfCopy->_state.landscapeOrientation = v12;
       v41 = 1;
     }
 
-    else if ([v37 isEqualToString:@"ALSUserPreference"])
+    else if ([keyCopy isEqualToString:@"ALSUserPreference"])
     {
       v22[0] = 0;
       v22[1] = v22;
       v23 = 0x20000000;
       v24 = 32;
-      [(CBSliderCommitTelemetry *)v40 timestampFromCurveDistionary:v38];
+      [(CBSliderCommitTelemetry *)selfCopy timestampFromCurveDistionary:propertyCopy];
       v25 = v9;
-      v10 = v40->_loggingQueue;
+      v10 = selfCopy->_loggingQueue;
       v15 = MEMORY[0x1E69E9820];
       v16 = -1073741824;
       v17 = 0;
       v18 = __46__CBSliderCommitTelemetry_setProperty_forKey___block_invoke_2;
       v19 = &unk_1E867C080;
-      v20 = v40;
+      v20 = selfCopy;
       v21 = v22;
       dispatch_async(v10, &v15);
       v41 = 1;
       _Block_object_dispose(v22, 8);
     }
 
-    else if (([v37 isEqualToString:@"DisplayBrightnessFactorWithFade"] & 1) != 0 || (objc_msgSend(v37, "isEqualToString:", @"DisplayBrightnessFactorWithFade")) && v38)
+    else if (([keyCopy isEqualToString:@"DisplayBrightnessFactorWithFade"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DisplayBrightnessFactorWithFade")) && propertyCopy)
     {
-      v40->_initialFactorUpdateArrived = 1;
+      selfCopy->_initialFactorUpdateArrived = 1;
       v41 = 1;
     }
 
@@ -313,14 +313,14 @@ void __46__CBSliderCommitTelemetry_setProperty_forKey___block_invoke_2(uint64_t 
   *MEMORY[0x1E69E9840];
 }
 
-- (id)copyPropertyForKey:(id)a3
+- (id)copyPropertyForKey:(id)key
 {
-  if ([a3 isEqualToString:@"CBFinalBrightnessCommitDelay"])
+  if ([key isEqualToString:@"CBFinalBrightnessCommitDelay"])
   {
     return [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:self->_delayedAPCEDelay];
   }
 
-  if ([a3 isEqualToString:@"CBSupportsFinalCommit"])
+  if ([key isEqualToString:@"CBSupportsFinalCommit"])
   {
     return [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
   }
@@ -328,28 +328,28 @@ void __46__CBSliderCommitTelemetry_setProperty_forKey___block_invoke_2(uint64_t 
   return 0;
 }
 
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4
+- (void)handleNotificationForKey:(id)key withProperty:(id)property
 {
   v29 = *MEMORY[0x1E69E9840];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
-  if ([a3 isEqualToString:@"DisplayOn"])
+  keyCopy = key;
+  propertyCopy = property;
+  if ([key isEqualToString:@"DisplayOn"])
   {
-    if ([v24 BOOLValue])
+    if ([propertyCopy BOOLValue])
     {
-      if (v27->_displayOffTimestamp > 0.0)
+      if (selfCopy->_displayOffTimestamp > 0.0)
       {
         Current = CFAbsoluteTimeGetCurrent();
-        v16 = Current - v27->_displayOffTimestamp;
-        if (v16 > v27->_longestInactivityLength)
+        v16 = Current - selfCopy->_displayOffTimestamp;
+        if (v16 > selfCopy->_longestInactivityLength)
         {
-          v27->_longestInactivityLength = v16;
-          v27->_inactivityStartTimestamp = v27->_displayOffTimestamp;
-          if (v27->super._logHandle)
+          selfCopy->_longestInactivityLength = v16;
+          selfCopy->_inactivityStartTimestamp = selfCopy->_displayOffTimestamp;
+          if (selfCopy->super._logHandle)
           {
-            logHandle = v27->super._logHandle;
+            logHandle = selfCopy->super._logHandle;
           }
 
           else
@@ -371,32 +371,32 @@ void __46__CBSliderCommitTelemetry_setProperty_forKey___block_invoke_2(uint64_t 
           type = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
           {
-            __os_log_helper_16_0_2_8_0_8_0(v28, *&v27->_longestInactivityLength, *&v27->_inactivityStartTimestamp);
+            __os_log_helper_16_0_2_8_0_8_0(v28, *&selfCopy->_longestInactivityLength, *&selfCopy->_inactivityStartTimestamp);
             _os_log_impl(&dword_1DE8E5000, oslog, type, "Display turns on: Longest inactivity length is %f seconds with start timestamp = %f", v28, 0x16u);
           }
         }
       }
 
-      loggingQueue = v27->_loggingQueue;
+      loggingQueue = selfCopy->_loggingQueue;
       v8 = MEMORY[0x1E69E9820];
       v9 = -1073741824;
       v10 = 0;
       v11 = __65__CBSliderCommitTelemetry_handleNotificationForKey_withProperty___block_invoke_71;
       v12 = &unk_1E867B480;
-      v13 = v27;
+      v13 = selfCopy;
       dispatch_async(loggingQueue, &v8);
     }
 
     else
     {
-      v27->_displayOffTimestamp = CFAbsoluteTimeGetCurrent();
-      v4 = v27->_loggingQueue;
+      selfCopy->_displayOffTimestamp = CFAbsoluteTimeGetCurrent();
+      v4 = selfCopy->_loggingQueue;
       block = MEMORY[0x1E69E9820];
       v19 = -1073741824;
       v20 = 0;
       v21 = __65__CBSliderCommitTelemetry_handleNotificationForKey_withProperty___block_invoke;
       v22 = &unk_1E867B480;
-      v23 = v27;
+      v23 = selfCopy;
       dispatch_async(v4, &block);
     }
   }
@@ -533,22 +533,22 @@ uint64_t __65__CBSliderCommitTelemetry_handleNotificationForKey_withProperty___b
   return result;
 }
 
-- (BOOL)handleAODStateUpdate:(unint64_t)a3 transitionTime:(float)a4 context:(id)a5
+- (BOOL)handleAODStateUpdate:(unint64_t)update transitionTime:(float)time context:(id)context
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
-  v13 = a5;
-  if (a3 == 2)
+  updateCopy = update;
+  timeCopy = time;
+  contextCopy = context;
+  if (update == 2)
   {
-    loggingQueue = v17->_loggingQueue;
+    loggingQueue = selfCopy->_loggingQueue;
     v7 = MEMORY[0x1E69E9820];
     v8 = -1073741824;
     v9 = 0;
     v10 = __71__CBSliderCommitTelemetry_handleAODStateUpdate_transitionTime_context___block_invoke;
     v11 = &unk_1E867B480;
-    v12 = v17;
+    v12 = selfCopy;
     dispatch_async(loggingQueue, &v7);
   }
 
@@ -634,28 +634,28 @@ void __71__CBSliderCommitTelemetry_handleAODStateUpdate_transitionTime_context__
   }
 }
 
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4
+- (void)sendNotificationForKey:(id)key withValue:(id)value
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  keyCopy = key;
+  valueCopy = value;
   if (self->super._notificationBlock)
   {
-    v13 = _Block_copy(v17->super._notificationBlock);
+    v13 = _Block_copy(selfCopy->super._notificationBlock);
     if (v13)
     {
-      MEMORY[0x1E69E5928](v14);
-      MEMORY[0x1E69E5928](v15);
-      queue = v17->super._queue;
+      MEMORY[0x1E69E5928](valueCopy);
+      MEMORY[0x1E69E5928](keyCopy);
+      queue = selfCopy->super._queue;
       v5 = MEMORY[0x1E69E9820];
       v6 = -1073741824;
       v7 = 0;
       v8 = __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_invoke;
       v9 = &unk_1E867C0A8;
       v12 = v13;
-      v10 = v15;
-      v11 = v14;
+      v10 = keyCopy;
+      v11 = valueCopy;
       dispatch_async(queue, &v5);
     }
   }
@@ -672,140 +672,140 @@ double __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_in
   return result;
 }
 
-+ (id)sliderInfoToNSDictionary:(const CBSliderCommitInfo *)a3
++ (id)sliderInfoToNSDictionary:(const CBSliderCommitInfo *)dictionary
 {
   v38[50] = *MEMORY[0x1E69E9840];
   v37[0] = @"timestamp";
-  v38[0] = [MEMORY[0x1E696AD98] numberWithLongLong:a3->timestamp];
+  v38[0] = [MEMORY[0x1E696AD98] numberWithLongLong:dictionary->timestamp];
   v37[1] = @"localTimestamp";
-  v38[1] = [MEMORY[0x1E696AD98] numberWithLongLong:a3->localTimestamp];
+  v38[1] = [MEMORY[0x1E696AD98] numberWithLongLong:dictionary->localTimestamp];
   v37[2] = @"trustedLux";
-  v38[2] = [MEMORY[0x1E696AD98] numberWithInt:a3->trustedLux];
+  v38[2] = [MEMORY[0x1E696AD98] numberWithInt:dictionary->trustedLux];
   v37[3] = @"frontLux";
-  *&v3 = a3->frontLux;
+  *&v3 = dictionary->frontLux;
   v38[3] = [MEMORY[0x1E696AD98] numberWithFloat:v3];
   v37[4] = @"rearLux";
-  *&v4 = a3->rearLux;
+  *&v4 = dictionary->rearLux;
   v38[4] = [MEMORY[0x1E696AD98] numberWithFloat:v4];
   v37[5] = @"rearLuxInUse";
-  v38[5] = [MEMORY[0x1E696AD98] numberWithBool:a3->rearLuxInUse];
+  v38[5] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->rearLuxInUse];
   v37[6] = @"nits";
-  *&v5 = a3->nits;
+  *&v5 = dictionary->nits;
   v38[6] = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   v37[7] = @"slider";
-  *&v6 = a3->slider;
+  *&v6 = dictionary->slider;
   v38[7] = [MEMORY[0x1E696AD98] numberWithFloat:v6];
   v37[8] = @"apce";
-  *&v7 = a3->apce;
+  *&v7 = dictionary->apce;
   v38[8] = [MEMORY[0x1E696AD98] numberWithFloat:v7];
   v37[9] = @"delayedAPCE";
-  *&v8 = a3->delayedAPCE;
+  *&v8 = dictionary->delayedAPCE;
   v38[9] = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   v37[10] = @"delayedAPCEStatus";
-  v38[10] = [MEMORY[0x1E696AD98] numberWithInt:a3->delayedAPCEStatus];
+  v38[10] = [MEMORY[0x1E696AD98] numberWithInt:dictionary->delayedAPCEStatus];
   v37[11] = @"autobrightnessEnabled";
-  v38[11] = [MEMORY[0x1E696AD98] numberWithBool:a3->autobrightnessEnabled];
+  v38[11] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->autobrightnessEnabled];
   v37[12] = @"ecoModeEnabled";
-  v38[12] = [MEMORY[0x1E696AD98] numberWithBool:a3->ecoModeEnabled];
+  v38[12] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->ecoModeEnabled];
   v37[13] = @"ecoModeFactor";
-  *&v9 = a3->ecoModeFactor;
+  *&v9 = dictionary->ecoModeFactor;
   v38[13] = [MEMORY[0x1E696AD98] numberWithFloat:v9];
   v37[14] = @"e0a";
-  *&v10 = a3->aabParams.e0a;
+  *&v10 = dictionary->aabParams.e0a;
   v38[14] = [MEMORY[0x1E696AD98] numberWithFloat:v10];
   v37[15] = @"e0b";
-  *&v11 = a3->aabParams.e0b;
+  *&v11 = dictionary->aabParams.e0b;
   v38[15] = [MEMORY[0x1E696AD98] numberWithFloat:v11];
   v37[16] = @"e1";
-  *&v12 = a3->aabParams.e1;
+  *&v12 = dictionary->aabParams.e1;
   v38[16] = [MEMORY[0x1E696AD98] numberWithFloat:v12];
   v37[17] = @"e2";
-  *&v13 = a3->aabParams.e2;
+  *&v13 = dictionary->aabParams.e2;
   v38[17] = [MEMORY[0x1E696AD98] numberWithFloat:v13];
   v37[18] = @"l0a";
-  *&v14 = a3->aabParams.l0a;
+  *&v14 = dictionary->aabParams.l0a;
   v38[18] = [MEMORY[0x1E696AD98] numberWithFloat:v14];
   v37[19] = @"l0b";
-  *&v15 = a3->aabParams.l0b;
+  *&v15 = dictionary->aabParams.l0b;
   v38[19] = [MEMORY[0x1E696AD98] numberWithFloat:v15];
   v37[20] = @"l1";
-  *&v16 = a3->aabParams.l1;
+  *&v16 = dictionary->aabParams.l1;
   v38[20] = [MEMORY[0x1E696AD98] numberWithFloat:v16];
   v37[21] = @"l2";
-  *&v17 = a3->aabParams.l2;
+  *&v17 = dictionary->aabParams.l2;
   v38[21] = [MEMORY[0x1E696AD98] numberWithFloat:v17];
   v37[22] = @"thirdSlope";
-  *&v18 = a3->aabParams.thirdSlope;
+  *&v18 = dictionary->aabParams.thirdSlope;
   v38[22] = [MEMORY[0x1E696AD98] numberWithFloat:v18];
   v37[23] = @"curveType";
-  v38[23] = [MEMORY[0x1E696AD98] numberWithInt:a3->aabParams.curveType];
+  v38[23] = [MEMORY[0x1E696AD98] numberWithInt:dictionary->aabParams.curveType];
   v37[24] = @"alternativeE0a";
-  *&v19 = a3->aabAlternativeParams.e0a;
+  *&v19 = dictionary->aabAlternativeParams.e0a;
   v38[24] = [MEMORY[0x1E696AD98] numberWithFloat:v19];
   v37[25] = @"alternativeE0b";
-  *&v20 = a3->aabAlternativeParams.e0b;
+  *&v20 = dictionary->aabAlternativeParams.e0b;
   v38[25] = [MEMORY[0x1E696AD98] numberWithFloat:v20];
   v37[26] = @"alternativeE1";
-  *&v21 = a3->aabAlternativeParams.e1;
+  *&v21 = dictionary->aabAlternativeParams.e1;
   v38[26] = [MEMORY[0x1E696AD98] numberWithFloat:v21];
   v37[27] = @"alternativeE2";
-  *&v22 = a3->aabAlternativeParams.e2;
+  *&v22 = dictionary->aabAlternativeParams.e2;
   v38[27] = [MEMORY[0x1E696AD98] numberWithFloat:v22];
   v37[28] = @"alternativeL0a";
-  *&v23 = a3->aabAlternativeParams.l0a;
+  *&v23 = dictionary->aabAlternativeParams.l0a;
   v38[28] = [MEMORY[0x1E696AD98] numberWithFloat:v23];
   v37[29] = @"alternativeL0b";
-  *&v24 = a3->aabAlternativeParams.l0b;
+  *&v24 = dictionary->aabAlternativeParams.l0b;
   v38[29] = [MEMORY[0x1E696AD98] numberWithFloat:v24];
   v37[30] = @"alternativeL1";
-  *&v25 = a3->aabAlternativeParams.l1;
+  *&v25 = dictionary->aabAlternativeParams.l1;
   v38[30] = [MEMORY[0x1E696AD98] numberWithFloat:v25];
   v37[31] = @"alternativeL2";
-  *&v26 = a3->aabAlternativeParams.l2;
+  *&v26 = dictionary->aabAlternativeParams.l2;
   v38[31] = [MEMORY[0x1E696AD98] numberWithFloat:v26];
   v37[32] = @"alternativeThirdSlope";
-  *&v27 = a3->aabAlternativeParams.thirdSlope;
+  *&v27 = dictionary->aabAlternativeParams.thirdSlope;
   v38[32] = [MEMORY[0x1E696AD98] numberWithFloat:v27];
   v37[33] = @"alternativeCurveType";
-  v38[33] = [MEMORY[0x1E696AD98] numberWithInt:a3->aabAlternativeParams.curveType];
+  v38[33] = [MEMORY[0x1E696AD98] numberWithInt:dictionary->aabAlternativeParams.curveType];
   v37[34] = @"aabParamsUpdateOnly";
-  v38[34] = [MEMORY[0x1E696AD98] numberWithBool:a3->aabParamsUpdateOnly];
+  v38[34] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->aabParamsUpdateOnly];
   v37[35] = @"aabParamsUpdateReason";
-  v38[35] = [MEMORY[0x1E696AD98] numberWithInt:a3->aabParamsUpdateReason];
+  v38[35] = [MEMORY[0x1E696AD98] numberWithInt:dictionary->aabParamsUpdateReason];
   v37[36] = @"nitsDelta";
-  *&v28 = a3->nitsDelta;
+  *&v28 = dictionary->nitsDelta;
   v38[36] = [MEMORY[0x1E696AD98] numberWithFloat:v28];
   v37[37] = @"nitsDeltaAlternative";
-  *&v29 = a3->nitsDeltaAlternative;
+  *&v29 = dictionary->nitsDeltaAlternative;
   v38[37] = [MEMORY[0x1E696AD98] numberWithFloat:v29];
   v37[38] = @"restoreTimeTarget";
-  v38[38] = [MEMORY[0x1E696AD98] numberWithLongLong:a3->restoreTimeTarget];
+  v38[38] = [MEMORY[0x1E696AD98] numberWithLongLong:dictionary->restoreTimeTarget];
   v37[39] = @"inactiveLength";
-  *&v30 = a3->inactiveLength;
+  *&v30 = dictionary->inactiveLength;
   v38[39] = [MEMORY[0x1E696AD98] numberWithFloat:v30];
   v37[40] = @"inactiveStart";
-  v38[40] = [MEMORY[0x1E696AD98] numberWithLongLong:a3->inactiveStart];
+  v38[40] = [MEMORY[0x1E696AD98] numberWithLongLong:dictionary->inactiveStart];
   v37[41] = @"cpmsMitigationLimitingBrightness";
-  v38[41] = [MEMORY[0x1E696AD98] numberWithBool:a3->cpmsMitigationLimitingBrightness];
+  v38[41] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->cpmsMitigationLimitingBrightness];
   v37[42] = @"touchMitigationTriggered";
-  v38[42] = [MEMORY[0x1E696AD98] numberWithBool:a3->touchMitigationTriggered];
+  v38[42] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->touchMitigationTriggered];
   v37[43] = @"proxMitigationTriggered";
-  v38[43] = [MEMORY[0x1E696AD98] numberWithBool:a3->proxMitigationTriggered];
+  v38[43] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->proxMitigationTriggered];
   v37[44] = @"auroraFactor";
-  *&v31 = a3->auroraFactor;
+  *&v31 = dictionary->auroraFactor;
   v38[44] = [MEMORY[0x1E696AD98] numberWithFloat:v31];
   v37[45] = @"edrHeadroom";
-  *&v32 = a3->edrHeadroom;
+  *&v32 = dictionary->edrHeadroom;
   v38[45] = [MEMORY[0x1E696AD98] numberWithFloat:v32];
   v37[46] = @"colorAdaptationStrength";
-  *&v33 = a3->colorAdaptationStrength;
+  *&v33 = dictionary->colorAdaptationStrength;
   v38[46] = [MEMORY[0x1E696AD98] numberWithFloat:v33];
   v37[47] = @"colorAdaptationMode";
-  v38[47] = [MEMORY[0x1E696AD98] numberWithInt:a3->colorAdaptationMode];
+  v38[47] = [MEMORY[0x1E696AD98] numberWithInt:dictionary->colorAdaptationMode];
   v37[48] = @"darkThemeApplied";
-  v38[48] = [MEMORY[0x1E696AD98] numberWithBool:a3->darkThemeApplied];
+  v38[48] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->darkThemeApplied];
   v37[49] = @"landscapeOrientation";
-  v38[49] = [MEMORY[0x1E696AD98] numberWithBool:a3->landscapeOrientation];
+  v38[49] = [MEMORY[0x1E696AD98] numberWithBool:dictionary->landscapeOrientation];
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:50];
   *MEMORY[0x1E69E9840];
   return v35;
@@ -818,44 +818,44 @@ double __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_in
   return 0.0;
 }
 
-- (BOOL)getUserAABParams:(CBAABParams *)a3 key:(id)a4
+- (BOOL)getUserAABParams:(CBAABParams *)params key:(id)key
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
+  paramsCopy = params;
+  keyCopy = key;
   context = objc_autoreleasePoolPush();
-  v23 = [(CBDisplayContaineriOS *)v27->_displayContainer copyPropertyForKey:v24];
+  v23 = [(CBDisplayContaineriOS *)selfCopy->_displayContainer copyPropertyForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [objc_msgSend(v23 objectForKey:{@"E0a", "floatValue"}];
-    v25->e0a = v4;
+    paramsCopy->e0a = v4;
     [objc_msgSend(v23 objectForKey:{@"E0b", "floatValue"}];
-    v25->e0b = v5;
+    paramsCopy->e0b = v5;
     [objc_msgSend(v23 objectForKey:{@"E1", "floatValue"}];
-    v25->e1 = v6;
+    paramsCopy->e1 = v6;
     [objc_msgSend(v23 objectForKey:{@"E2", "floatValue"}];
-    v25->e2 = v7;
+    paramsCopy->e2 = v7;
     [objc_msgSend(v23 objectForKey:{@"L0a", "floatValue"}];
-    v25->l0a = v8;
+    paramsCopy->l0a = v8;
     [objc_msgSend(v23 objectForKey:{@"L0b", "floatValue"}];
-    v25->l0b = v9;
+    paramsCopy->l0b = v9;
     [objc_msgSend(v23 objectForKey:{@"L1", "floatValue"}];
-    v25->l1 = v10;
+    paramsCopy->l1 = v10;
     [objc_msgSend(v23 objectForKey:{@"L2", "floatValue"}];
-    v25->l2 = v11;
+    paramsCopy->l2 = v11;
     [objc_msgSend(objc_msgSend(v23 "objectForKey:{"objectForKey:", @"thirdSlope", "floatValue"}")];
-    v25->thirdSlope = v12;
-    v25->curveType = [objc_msgSend(objc_msgSend(v23 objectForKey:{@"Prefs", "objectForKey:", @"curveType", "intValue"}];
+    paramsCopy->thirdSlope = v12;
+    paramsCopy->curveType = [objc_msgSend(objc_msgSend(v23 objectForKey:{@"Prefs", "objectForKey:", @"curveType", "intValue"}];
     v19 = 0;
   }
 
   else
   {
-    if (v27->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v27->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -898,13 +898,13 @@ double __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_in
 
 - (CBSliderCommitInfo)getNextEntryAndAdvanceBufferIndex
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5 = std::array<CBSliderCommitInfo,100ul>::operator[][abi:de200100](&self->_entryBuffer, self->_bufferIndex);
-  v7->_bufferIndex = nextBufferIndex(v7->_bufferIndex, 1);
-  v4 = v7->_bufferEntriesFilled + 1;
+  selfCopy->_bufferIndex = nextBufferIndex(selfCopy->_bufferIndex, 1);
+  v4 = selfCopy->_bufferEntriesFilled + 1;
   v2 = std::min[abi:de200100]<unsigned long>(&v4, &kCBSliderCommitTelemetryEntryBufferSize);
-  v7->_bufferEntriesFilled = *v2;
+  selfCopy->_bufferEntriesFilled = *v2;
   return v5;
 }
 
@@ -922,11 +922,11 @@ double __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_in
 - (void)logAllFilledEntries
 {
   v27 = *MEMORY[0x1E69E9840];
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
   if (self->_bufferLogHandle)
   {
-    bufferLogHandle = v25->_bufferLogHandle;
+    bufferLogHandle = selfCopy->_bufferLogHandle;
   }
 
   else
@@ -954,14 +954,14 @@ double __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_in
     _os_log_impl(&dword_1DE8E5000, log, type, "======================= Brightness commit =======================", v21, 2u);
   }
 
-  for (i = 100 - v25->_bufferEntriesFilled; i < 0x64; ++i)
+  for (i = 100 - selfCopy->_bufferEntriesFilled; i < 0x64; ++i)
   {
-    p_entryBuffer = &v25->_entryBuffer;
-    BufferIndex = nextBufferIndex(v25->_bufferIndex, i);
+    p_entryBuffer = &selfCopy->_entryBuffer;
+    BufferIndex = nextBufferIndex(selfCopy->_bufferIndex, i);
     v19 = std::array<CBSliderCommitInfo,100ul>::operator[][abi:de200100](p_entryBuffer, BufferIndex);
-    if (v25->_bufferLogHandle)
+    if (selfCopy->_bufferLogHandle)
     {
-      v8 = v25->_bufferLogHandle;
+      v8 = selfCopy->_bufferLogHandle;
     }
 
     else
@@ -988,9 +988,9 @@ double __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_in
     }
   }
 
-  if (v25->_bufferLogHandle)
+  if (selfCopy->_bufferLogHandle)
   {
-    v6 = v25->_bufferLogHandle;
+    v6 = selfCopy->_bufferLogHandle;
   }
 
   else
@@ -1028,58 +1028,58 @@ double __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_in
   self->_delayedAPCETimer = 0;
 }
 
-- (void)reportCommit:(CBSliderCommitInfo *)a3
+- (void)reportCommit:(CBSliderCommitInfo *)commit
 {
   self->_longestInactivityLength = 0.0;
   [(CBSliderCommitTelemetry *)self logAllFilledEntries];
-  [CBAnalytics userSliderCommit:a3];
-  [(CBSliderCommitTelemetry *)self sendNotificationForKey:@"CBFinalBrightnessCommit" withValue:[CBSliderCommitTelemetry sliderInfoToNSDictionary:a3]];
+  [CBAnalytics userSliderCommit:commit];
+  [(CBSliderCommitTelemetry *)self sendNotificationForKey:@"CBFinalBrightnessCommit" withValue:[CBSliderCommitTelemetry sliderInfoToNSDictionary:commit]];
 }
 
-- (void)delayedAPCETimerHandler:(CBSliderCommitInfo *)a3
+- (void)delayedAPCETimerHandler:(CBSliderCommitInfo *)handler
 {
   [(CBSliderCommitTelemetry *)self getAPCE];
-  a3->delayedAPCE = v3;
-  a3->delayedAPCEStatus = 0;
+  handler->delayedAPCE = v3;
+  handler->delayedAPCEStatus = 0;
   [(CBSliderCommitTelemetry *)self cancelDelayedAPCETimer];
-  [(CBSliderCommitTelemetry *)self reportCommit:a3];
+  [(CBSliderCommitTelemetry *)self reportCommit:handler];
 }
 
-- (void)fillEntry:(CBSliderCommitInfo *)a3 withTimestamp:(int64_t)a4 slider:(float)a5 apce:(float)a6 andTrackedState:(TrackedState)a7
+- (void)fillEntry:(CBSliderCommitInfo *)entry withTimestamp:(int64_t)timestamp slider:(float)slider apce:(float)apce andTrackedState:(TrackedState)state
 {
   context = objc_autoreleasePoolPush();
-  a3->timestamp = a4;
-  a3->localTimestamp = localizeTimestamp(a4);
-  a3->trustedLux = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"TrustedLux", "intValue"}];
+  entry->timestamp = timestamp;
+  entry->localTimestamp = localizeTimestamp(timestamp);
+  entry->trustedLux = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"TrustedLux", "intValue"}];
   v26 = [(CBDisplayContaineriOS *)self->_displayContainer copyPropertyForKey:@"RLuxStats"];
   [objc_msgSend(v26 objectForKey:{@"frontLux", "floatValue"}];
-  a3->frontLux = v7;
+  entry->frontLux = v7;
   [objc_msgSend(v26 objectForKey:{@"rearLux", "floatValue"}];
-  a3->rearLux = v8;
-  a3->rearLuxInUse = [objc_msgSend(v26 objectForKey:{@"rearLuxInUse", "BOOLValue"}];
+  entry->rearLux = v8;
+  entry->rearLuxInUse = [objc_msgSend(v26 objectForKey:{@"rearLuxInUse", "BOOLValue"}];
   v25 = [(CBDisplayContaineriOS *)self->_displayContainer copyPropertyForKey:@"DisplayBrightness"];
   [objc_msgSend(v25 objectForKey:{@"NitsPhysical", "floatValue"}];
-  a3->nits = v9;
-  a3->slider = a5;
+  entry->nits = v9;
+  entry->slider = slider;
   [objc_msgSend(v25 objectForKey:{@"AuroraFactor", "floatValue"}];
-  a3->auroraFactor = v10;
+  entry->auroraFactor = v10;
   [objc_msgSend(v25 objectForKey:{@"EDRHeadroom", "floatValue"}];
-  a3->edrHeadroom = v11;
+  entry->edrHeadroom = v11;
   [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"ColorAdaptationStrength", "floatValue"}];
-  a3->colorAdaptationStrength = v12;
-  a3->colorAdaptationMode = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"ColorAdaptationMode", "intValue"}];
-  a3->cpmsMitigationLimitingBrightness = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"ThermalMitigationLimitingBrightness", "BOOLValue"}];
+  entry->colorAdaptationStrength = v12;
+  entry->colorAdaptationMode = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"ColorAdaptationMode", "intValue"}];
+  entry->cpmsMitigationLimitingBrightness = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"ThermalMitigationLimitingBrightness", "BOOLValue"}];
   [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"EcoModeFactor", "floatValue"}];
-  a3->ecoModeFactor = v13;
-  a3->touchMitigationTriggered = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"TouchMitigationTriggered", "BOOLValue"}];
-  a3->proxMitigationTriggered = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"ProxMitigationTriggered", "BOOLValue"}];
-  [(CBSliderCommitTelemetry *)self getUserAABParams:&a3->aabParams alternativeAABParams:&a3->aabAlternativeParams];
-  a3->aabParamsUpdateOnly = 0;
-  a3->aabParamsUpdateReason = -1;
+  entry->ecoModeFactor = v13;
+  entry->touchMitigationTriggered = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"TouchMitigationTriggered", "BOOLValue"}];
+  entry->proxMitigationTriggered = [-[CBDisplayContaineriOS copyPropertyForKey:](self->_displayContainer copyPropertyForKey:{@"ProxMitigationTriggered", "BOOLValue"}];
+  [(CBSliderCommitTelemetry *)self getUserAABParams:&entry->aabParams alternativeAABParams:&entry->aabAlternativeParams];
+  entry->aabParamsUpdateOnly = 0;
+  entry->aabParamsUpdateReason = -1;
   v24 = [(CBDisplayContaineriOS *)self->_displayContainer copyPropertyForKey:@"AABCurveUpdateReason"];
   if (v24)
   {
-    a3->aabParamsUpdateReason = [v24 intValue];
+    entry->aabParamsUpdateReason = [v24 intValue];
   }
 
   v23 = [(CBDisplayContaineriOS *)self->_displayContainer copyPropertyForKey:@"AABCurveUpdateNitsDelta", &OBJC_IVAR___CBAODState__thresholdsAPDeltaPBrightenBuckets];
@@ -1087,107 +1087,107 @@ double __60__CBSliderCommitTelemetry_sendNotificationForKey_withValue___block_in
   if (v23)
   {
     [v23 floatValue];
-    a3->nitsDelta = a3->nitsDelta + v14;
+    entry->nitsDelta = entry->nitsDelta + v14;
   }
 
   if (v22)
   {
     [v22 floatValue];
-    a3->nitsDeltaAlternative = a3->nitsDeltaAlternative + v15;
+    entry->nitsDeltaAlternative = entry->nitsDeltaAlternative + v15;
   }
 
-  a3->apce = a6;
-  a3->delayedAPCE = -1.0;
-  a3->delayedAPCEStatus = 1;
-  a3->autobrightnessEnabled = a7.autobrightnessEnabled;
-  a3->ecoModeEnabled = a7.ecoModeEnabled;
-  a3->darkThemeApplied = a7.darkThemeApplied;
-  a3->landscapeOrientation = a7.landscapeOrientation;
-  MEMORY[0x1E69E5920](a3->trialExperimentId);
-  v21 = [+[CBTrialSettingsProvider copyExperimentIdentifiers:MEMORY[0x1E69E5920](a3->trialTreatmentId).n128_f64[0]]];
+  entry->apce = apce;
+  entry->delayedAPCE = -1.0;
+  entry->delayedAPCEStatus = 1;
+  entry->autobrightnessEnabled = state.autobrightnessEnabled;
+  entry->ecoModeEnabled = state.ecoModeEnabled;
+  entry->darkThemeApplied = state.darkThemeApplied;
+  entry->landscapeOrientation = state.landscapeOrientation;
+  MEMORY[0x1E69E5920](entry->trialExperimentId);
+  v21 = [+[CBTrialSettingsProvider copyExperimentIdentifiers:MEMORY[0x1E69E5920](entry->trialTreatmentId).n128_f64[0]]];
   if (v21)
   {
-    v16 = [v21 experimentId];
-    a3->trialExperimentId = MEMORY[0x1E69E5928](v16);
-    a3->trialDeploymentId = [v21 deploymentId];
-    v17 = [v21 treatmentId];
-    a3->trialTreatmentId = MEMORY[0x1E69E5928](v17);
+    experimentId = [v21 experimentId];
+    entry->trialExperimentId = MEMORY[0x1E69E5928](experimentId);
+    entry->trialDeploymentId = [v21 deploymentId];
+    treatmentId = [v21 treatmentId];
+    entry->trialTreatmentId = MEMORY[0x1E69E5928](treatmentId);
     MEMORY[0x1E69E5920](v21);
   }
 
   else
   {
-    a3->trialExperimentId = 0;
-    a3->trialDeploymentId = 0;
-    a3->trialTreatmentId = 0;
+    entry->trialExperimentId = 0;
+    entry->trialDeploymentId = 0;
+    entry->trialTreatmentId = 0;
   }
 
   v18 = round(self->_longestInactivityLength * 10.0 / 3600.0) / 10.0;
-  a3->inactiveLength = v18;
-  a3->inactiveStart = self->_inactivityStartTimestamp;
+  entry->inactiveLength = v18;
+  entry->inactiveStart = self->_inactivityStartTimestamp;
   objc_autoreleasePoolPop(context);
 }
 
-- (void)fillEntry:(CBSliderCommitInfo *)a3 withTimestamp:(int64_t)a4 andRestoreTimeTarget:(int64_t)a5 andAABParams:(CBAABParams *)a6 andAlternativeAABParams:(CBAABParams *)a7
+- (void)fillEntry:(CBSliderCommitInfo *)entry withTimestamp:(int64_t)timestamp andRestoreTimeTarget:(int64_t)target andAABParams:(CBAABParams *)params andAlternativeAABParams:(CBAABParams *)bParams
 {
-  a3->timestamp = a4;
-  a3->localTimestamp = localizeTimestamp(a4);
-  memcpy(&a3->aabParams, a6, sizeof(a3->aabParams));
-  memcpy(&a3->aabAlternativeParams, a7, sizeof(a3->aabAlternativeParams));
-  a3->aabParamsUpdateOnly = 1;
-  a3->autobrightnessEnabled = self->_state.autobrightnessEnabled;
-  a3->aabParamsUpdateReason = -1;
+  entry->timestamp = timestamp;
+  entry->localTimestamp = localizeTimestamp(timestamp);
+  memcpy(&entry->aabParams, params, sizeof(entry->aabParams));
+  memcpy(&entry->aabAlternativeParams, bParams, sizeof(entry->aabAlternativeParams));
+  entry->aabParamsUpdateOnly = 1;
+  entry->autobrightnessEnabled = self->_state.autobrightnessEnabled;
+  entry->aabParamsUpdateReason = -1;
   v12 = [(CBDisplayContaineriOS *)self->_displayContainer copyPropertyForKey:@"AABCurveUpdateReason"];
   if (v12)
   {
-    a3->aabParamsUpdateReason = [v12 intValue];
+    entry->aabParamsUpdateReason = [v12 intValue];
   }
 
-  a3->restoreTimeTarget = a5;
-  v11 = [+[CBTrialSettingsProvider sharedInstance](CBTrialSettingsProvider copyExperimentIdentifiers];
-  MEMORY[0x1E69E5920](a3->trialExperimentId);
-  *&v7 = MEMORY[0x1E69E5920](a3->trialTreatmentId).n128_u64[0];
-  if (v11)
+  entry->restoreTimeTarget = target;
+  copyExperimentIdentifiers = [+[CBTrialSettingsProvider sharedInstance](CBTrialSettingsProvider copyExperimentIdentifiers];
+  MEMORY[0x1E69E5920](entry->trialExperimentId);
+  *&v7 = MEMORY[0x1E69E5920](entry->trialTreatmentId).n128_u64[0];
+  if (copyExperimentIdentifiers)
   {
-    v8 = [v11 experimentId];
-    a3->trialExperimentId = MEMORY[0x1E69E5928](v8);
-    a3->trialDeploymentId = [v11 deploymentId];
-    v9 = [v11 treatmentId];
-    a3->trialTreatmentId = MEMORY[0x1E69E5928](v9);
-    MEMORY[0x1E69E5920](v11);
+    experimentId = [copyExperimentIdentifiers experimentId];
+    entry->trialExperimentId = MEMORY[0x1E69E5928](experimentId);
+    entry->trialDeploymentId = [copyExperimentIdentifiers deploymentId];
+    treatmentId = [copyExperimentIdentifiers treatmentId];
+    entry->trialTreatmentId = MEMORY[0x1E69E5928](treatmentId);
+    MEMORY[0x1E69E5920](copyExperimentIdentifiers);
   }
 
   else
   {
-    a3->trialExperimentId = 0;
-    a3->trialDeploymentId = 0;
-    a3->trialTreatmentId = 0;
+    entry->trialExperimentId = 0;
+    entry->trialDeploymentId = 0;
+    entry->trialTreatmentId = 0;
   }
 
   v10 = round(self->_longestInactivityLength * 10.0 / 3600.0) / 10.0;
-  a3->inactiveLength = v10;
-  a3->inactiveStart = self->_inactivityStartTimestamp;
+  entry->inactiveLength = v10;
+  entry->inactiveStart = self->_inactivityStartTimestamp;
 }
 
-- (void)logAfterUserBrightnessCommitWithTimestamp:(int64_t)a3 slider:(float)a4 apce:(float)a5 andTrackedState:(TrackedState)a6
+- (void)logAfterUserBrightnessCommitWithTimestamp:(int64_t)timestamp slider:(float)slider apce:(float)apce andTrackedState:(TrackedState)state
 {
-  v22 = a6;
-  v21 = self;
+  stateCopy = state;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
-  v17 = a5;
+  timestampCopy = timestamp;
+  sliderCopy = slider;
+  apceCopy = apce;
   loggingQueue = self->_loggingQueue;
   block = MEMORY[0x1E69E9820];
   v8 = -1073741824;
   v9 = 0;
   v10 = __97__CBSliderCommitTelemetry_logAfterUserBrightnessCommitWithTimestamp_slider_apce_andTrackedState___block_invoke;
   v11 = &unk_1E867C0D0;
-  v12 = v21;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  v12 = selfCopy;
+  timestampCopy2 = timestamp;
+  sliderCopy2 = slider;
+  apceCopy2 = apce;
+  stateCopy2 = state;
   dispatch_async(loggingQueue, &block);
 }
 
@@ -1199,10 +1199,10 @@ uint64_t __97__CBSliderCommitTelemetry_logAfterUserBrightnessCommitWithTimestamp
   return [*(a1 + 32) addOrUpdateEntryWithTimestamp:*(a1 + 40) slider:v4 apce:a2 andTrackedState:{a3, v4}];
 }
 
-- (double)timestampFromCurveDistionary:(id)a3
+- (double)timestampFromCurveDistionary:(id)distionary
 {
   v7 = 0.0;
-  v6 = [a3 objectForKey:@"Prefs"];
+  v6 = [distionary objectForKey:@"Prefs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

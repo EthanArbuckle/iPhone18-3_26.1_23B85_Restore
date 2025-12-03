@@ -1,9 +1,9 @@
 @interface ICSystemPaperDocumentController
 + (ICSystemPaperDocumentController)sharedInstance;
 - (ICSystemPaperDocumentController)init;
-- (id)presenterForPaperIdentifier:(id)a3;
-- (void)addPresenter:(id)a3;
-- (void)removePresenter:(id)a3;
+- (id)presenterForPaperIdentifier:(id)identifier;
+- (void)addPresenter:(id)presenter;
+- (void)removePresenter:(id)presenter;
 @end
 
 @implementation ICSystemPaperDocumentController
@@ -31,25 +31,25 @@
   return [(ICSystemPaperDocumentController *)&v5 init];
 }
 
-- (void)addPresenter:(id)a3
+- (void)addPresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = self;
-  ICSystemPaperDocumentController.add(_:)(v4);
+  presenterCopy = presenter;
+  selfCopy = self;
+  ICSystemPaperDocumentController.add(_:)(presenterCopy);
 }
 
-- (void)removePresenter:(id)a3
+- (void)removePresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = self;
-  ICSystemPaperDocumentController.remove(_:)(v4);
+  presenterCopy = presenter;
+  selfCopy = self;
+  ICSystemPaperDocumentController.remove(_:)(presenterCopy);
 }
 
-- (id)presenterForPaperIdentifier:(id)a3
+- (id)presenterForPaperIdentifier:(id)identifier
 {
   v4 = sub_2154A1D6C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   ICSystemPaperDocumentController.presenter(for:)(v9, v8);

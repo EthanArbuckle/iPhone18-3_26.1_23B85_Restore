@@ -1,10 +1,10 @@
 @interface TRIClientFactorPackStreamingParser
 - (NSString)factorPackId;
-- (TRIClientFactorPackStreamingParser)initWithData:(id)a3 error:(id *)a4;
+- (TRIClientFactorPackStreamingParser)initWithData:(id)data error:(id *)error;
 - (TRIClientSelectedNamespace)selectedNamespace;
-- (id)downloadedFactorsWithPaths:(id)a3;
-- (unsigned)_fieldTagForFieldName:(id)a3;
-- (void)_parseWithHandleFactorLevel:(id)a3;
+- (id)downloadedFactorsWithPaths:(id)paths;
+- (unsigned)_fieldTagForFieldName:(id)name;
+- (void)_parseWithHandleFactorLevel:(id)level;
 @end
 
 @implementation TRIClientFactorPackStreamingParser
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (TRIClientFactorPackStreamingParser)initWithData:(id)a3 error:(id *)a4
+- (TRIClientFactorPackStreamingParser)initWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_autoreleasePoolPush();
   v12.receiver = self;
   v12.super_class = TRIClientFactorPackStreamingParser;
@@ -48,7 +48,7 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_data, a3);
+    objc_storeStrong(&v8->_data, data);
     [(TRIClientFactorPackStreamingParser *)v9 _parseWithHandleFactorLevel:0];
   }
 
@@ -58,18 +58,18 @@
   return v10;
 }
 
-- (unsigned)_fieldTagForFieldName:(id)a3
+- (unsigned)_fieldTagForFieldName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277D73AD8] descriptor];
+  descriptor = [MEMORY[0x277D73AD8] descriptor];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 fields];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  fields = [descriptor fields];
+  v7 = [fields countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -80,11 +80,11 @@ LABEL_3:
     {
       if (*v20 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(fields);
       }
 
-      v11 = [*(*(&v19 + 1) + 8 * v10) name];
-      v12 = [v3 isEqualToString:v11];
+      name = [*(*(&v19 + 1) + 8 * v10) name];
+      v12 = [nameCopy isEqualToString:name];
 
       if (v12)
       {
@@ -93,7 +93,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [fields countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -116,8 +116,8 @@ LABEL_3:
 LABEL_9:
 
 LABEL_10:
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:91 description:{@"Failed to determine field tag for %@", v3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:91 description:{@"Failed to determine field tag for %@", nameCopy}];
 
     v14 = -1;
   }
@@ -127,24 +127,24 @@ LABEL_10:
   return v14;
 }
 
-- (void)_parseWithHandleFactorLevel:(id)a3
+- (void)_parseWithHandleFactorLevel:(id)level
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  levelCopy = level;
   context = objc_autoreleasePoolPush();
   v5 = [(TRIClientFactorPackStreamingParser *)self _fieldTagForFieldName:@"factorPackId"];
   v6 = [(TRIClientFactorPackStreamingParser *)self _fieldTagForFieldName:@"selectedNamespace"];
   v7 = [(TRIClientFactorPackStreamingParser *)self _fieldTagForFieldName:@"factorLevelArray"];
   v8 = [objc_alloc(MEMORY[0x277D73B58]) initWithData:self->_data];
-  v9 = [v8 readTag];
-  if (v9)
+  readTag = [v8 readTag];
+  if (readTag)
   {
-    v11 = v9;
+    readTag2 = readTag;
     *&v10 = 67109120;
     v25 = v10;
     do
     {
-      if (v11 == v5)
+      if (readTag2 == v5)
       {
         if (self->_factorPackId)
         {
@@ -156,25 +156,25 @@ LABEL_21:
         }
 
         v17 = objc_autoreleasePoolPush();
-        v18 = [v8 readString];
+        readString = [v8 readString];
         objc_autoreleasePoolPop(v17);
         factorPackId = self->_factorPackId;
-        self->_factorPackId = v18;
+        self->_factorPackId = readString;
       }
 
       else
       {
-        if (v11 != v6)
+        if (readTag2 != v6)
         {
-          if (v11 == v7)
+          if (readTag2 == v7)
           {
-            if (v4)
+            if (levelCopy)
             {
               v14 = objc_autoreleasePoolPush();
               v15 = objc_opt_new();
               [v8 readMessage:v15 extensionRegistry:0];
               buf[0] = 0;
-              v4[2](v4, v15, buf);
+              levelCopy[2](levelCopy, v15, buf);
               v16 = buf[0];
 
               objc_autoreleasePoolPop(v14);
@@ -198,7 +198,7 @@ LABEL_21:
               if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
               {
                 *buf = v25;
-                v28 = v11;
+                v28 = readTag2;
                 _os_log_impl(&dword_22EA6B000, v20, OS_LOG_TYPE_INFO, "TRIClientFactorPackStreamingParser: skipping unrecognized tag: %u", buf, 8u);
               }
 
@@ -206,7 +206,7 @@ LABEL_21:
             }
 
             v12 = v8;
-            v13 = v11;
+            v13 = readTag2;
           }
 
           goto LABEL_21;
@@ -229,35 +229,35 @@ LABEL_21:
       }
 
 LABEL_22:
-      v11 = [v8 readTag];
+      readTag2 = [v8 readTag];
     }
 
-    while (v11);
+    while (readTag2);
   }
 
   objc_autoreleasePoolPop(context);
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)downloadedFactorsWithPaths:(id)a3
+- (id)downloadedFactorsWithPaths:(id)paths
 {
-  v4 = [a3 treatmentsDir];
-  v5 = [(TRIClientFactorPackStreamingParser *)self selectedNamespace];
-  v6 = [v5 name];
+  treatmentsDir = [paths treatmentsDir];
+  selectedNamespace = [(TRIClientFactorPackStreamingParser *)self selectedNamespace];
+  name = [selectedNamespace name];
 
-  v7 = [(TRIClientFactorPackStreamingParser *)self factorPackId];
+  factorPackId = [(TRIClientFactorPackStreamingParser *)self factorPackId];
   v8 = objc_opt_new();
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __65__TRIClientFactorPackStreamingParser_downloadedFactorsWithPaths___block_invoke;
   v18 = &unk_27885E140;
   v19 = v8;
-  v20 = v4;
-  v21 = v6;
-  v22 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = v4;
+  v20 = treatmentsDir;
+  v21 = name;
+  v22 = factorPackId;
+  v9 = factorPackId;
+  v10 = name;
+  v11 = treatmentsDir;
   v12 = v8;
   [(TRIClientFactorPackStreamingParser *)self enumerateFactorLevelsWithBlock:&v15];
   v13 = [MEMORY[0x277CBEB98] setWithSet:{v12, v15, v16, v17, v18}];

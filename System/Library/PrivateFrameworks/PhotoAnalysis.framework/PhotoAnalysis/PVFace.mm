@@ -1,28 +1,28 @@
 @interface PVFace
-+ (PVFace)faceWithFace:(id)a3 copyPropertiesOption:(int64_t)a4;
-- (BOOL)setCenterAndSizeFromNormalizedFaceRect:(CGRect)a3;
++ (PVFace)faceWithFace:(id)face copyPropertiesOption:(int64_t)option;
+- (BOOL)setCenterAndSizeFromNormalizedFaceRect:(CGRect)rect;
 - (CGRect)absoluteFaceRect;
-- (CGRect)absoluteFaceRectForImageSize:(CGSize)a3;
+- (CGRect)absoluteFaceRectForImageSize:(CGSize)size;
 - (CGRect)normalizedFaceRect;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_copyPropertiesFrom:(id)a3 copyPropertiesOption:(int64_t)a4;
-- (void)setCoordinatesAndFeaturesFromFace:(id)a3;
+- (void)_copyPropertiesFrom:(id)from copyPropertiesOption:(int64_t)option;
+- (void)setCoordinatesAndFeaturesFromFace:(id)face;
 @end
 
 @implementation PVFace
 
-- (CGRect)absoluteFaceRectForImageSize:(CGSize)a3
+- (CGRect)absoluteFaceRectForImageSize:(CGSize)size
 {
-  width = a3.width;
-  if (a3.width <= a3.height)
+  width = size.width;
+  if (size.width <= size.height)
   {
-    width = a3.height;
+    width = size.height;
   }
 
   v4 = self->_size * width;
-  v5 = -(v4 * 0.5 - self->_centerX * a3.width);
-  v6 = a3.height - self->_centerY * a3.height - v4 * 0.5;
+  v5 = -(v4 * 0.5 - self->_centerX * size.width);
+  v6 = size.height - self->_centerY * size.height - v4 * 0.5;
   v7 = v4;
   result.size.height = v7;
   result.size.width = v4;
@@ -100,12 +100,12 @@
   return result;
 }
 
-- (BOOL)setCenterAndSizeFromNormalizedFaceRect:(CGRect)a3
+- (BOOL)setCenterAndSizeFromNormalizedFaceRect:(CGRect)rect
 {
   v7 = 0.0;
   v8 = 0.0;
   v6 = 0.0;
-  PVFaceGetCenterAndSizeForNormalizedRect(self->_sourceWidth, self->_sourceHeight, &v8, &v7, &v6, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  PVFaceGetCenterAndSizeForNormalizedRect(self->_sourceWidth, self->_sourceHeight, &v8, &v7, &v6, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v4 = v7;
   self->_centerX = v8;
   self->_centerY = v4;
@@ -154,112 +154,112 @@
   return v5;
 }
 
-- (void)setCoordinatesAndFeaturesFromFace:(id)a3
+- (void)setCoordinatesAndFeaturesFromFace:(id)face
 {
-  v4 = a3;
-  self->_sourceWidth = [v4 sourceWidth];
-  self->_sourceHeight = [v4 sourceHeight];
-  [v4 centerX];
+  faceCopy = face;
+  self->_sourceWidth = [faceCopy sourceWidth];
+  self->_sourceHeight = [faceCopy sourceHeight];
+  [faceCopy centerX];
   self->_centerX = v5;
-  [v4 centerY];
+  [faceCopy centerY];
   self->_centerY = v6;
-  [v4 size];
+  [faceCopy size];
   self->_size = v7;
-  [v4 leftEyeX];
+  [faceCopy leftEyeX];
   self->_leftEyeX = v8;
-  [v4 leftEyeY];
+  [faceCopy leftEyeY];
   self->_leftEyeY = v9;
-  [v4 rightEyeX];
+  [faceCopy rightEyeX];
   self->_rightEyeX = v10;
-  [v4 rightEyeY];
+  [faceCopy rightEyeY];
   self->_rightEyeY = v11;
-  [v4 mouthX];
+  [faceCopy mouthX];
   self->_mouthX = v12;
-  [v4 mouthY];
+  [faceCopy mouthY];
   self->_mouthY = v13;
-  self->_hasSmile = [v4 hasSmile];
-  [v4 blurScore];
+  self->_hasSmile = [faceCopy hasSmile];
+  [faceCopy blurScore];
   self->_blurScore = v14;
-  self->_isLeftEyeClosed = [v4 isLeftEyeClosed];
-  self->_isRightEyeClosed = [v4 isRightEyeClosed];
-  [v4 poseYaw];
+  self->_isLeftEyeClosed = [faceCopy isLeftEyeClosed];
+  self->_isRightEyeClosed = [faceCopy isRightEyeClosed];
+  [faceCopy poseYaw];
   self->_poseYaw = v15;
-  self->_faceAlgorithmVersion = [v4 faceAlgorithmVersion];
-  self->_qualityMeasure = [v4 qualityMeasure];
-  self->_isTooSmall = [v4 isTooSmall];
-  v16 = [v4 groupingIdentifier];
+  self->_faceAlgorithmVersion = [faceCopy faceAlgorithmVersion];
+  self->_qualityMeasure = [faceCopy qualityMeasure];
+  self->_isTooSmall = [faceCopy isTooSmall];
+  groupingIdentifier = [faceCopy groupingIdentifier];
   groupingIdentifier = self->_groupingIdentifier;
-  self->_groupingIdentifier = v16;
+  self->_groupingIdentifier = groupingIdentifier;
 
-  self->_ageType = [v4 ageType];
-  self->_sexType = [v4 sexType];
-  self->_eyesState = [v4 eyesState];
-  self->_smileType = [v4 smileType];
-  self->_facialHairType = [v4 facialHairType];
-  self->_hairColorType = [v4 hairColorType];
-  self->_baldType = [v4 baldType];
-  self->_glassesType = [v4 glassesType];
-  self->_eyeMakeupType = [v4 eyeMakeupType];
-  self->_lipMakeupType = [v4 lipMakeupType];
-  [v4 roll];
+  self->_ageType = [faceCopy ageType];
+  self->_sexType = [faceCopy sexType];
+  self->_eyesState = [faceCopy eyesState];
+  self->_smileType = [faceCopy smileType];
+  self->_facialHairType = [faceCopy facialHairType];
+  self->_hairColorType = [faceCopy hairColorType];
+  self->_baldType = [faceCopy baldType];
+  self->_glassesType = [faceCopy glassesType];
+  self->_eyeMakeupType = [faceCopy eyeMakeupType];
+  self->_lipMakeupType = [faceCopy lipMakeupType];
+  [faceCopy roll];
   self->_roll = v18;
-  [v4 quality];
+  [faceCopy quality];
   v20 = v19;
 
   self->_quality = v20;
 }
 
-- (void)_copyPropertiesFrom:(id)a3 copyPropertiesOption:(int64_t)a4
+- (void)_copyPropertiesFrom:(id)from copyPropertiesOption:(int64_t)option
 {
-  v6 = a3;
-  v7 = v6;
-  v25 = v6;
-  if (a4 > 1)
+  fromCopy = from;
+  v7 = fromCopy;
+  v25 = fromCopy;
+  if (option > 1)
   {
-    if (a4 == 2)
+    if (option == 2)
     {
-      [(PVFace *)self setCoordinatesAndFeaturesFromFace:v6];
+      [(PVFace *)self setCoordinatesAndFeaturesFromFace:fromCopy];
       self->_isTooSmall = [v25 isTooSmall];
       self->_hidden = [v25 hidden];
       self->_isInTrash = [v25 isInTrash];
       self->_manual = [v25 manual];
-      v17 = [v25 adjustmentVersion];
+      adjustmentVersion = [v25 adjustmentVersion];
       adjustmentVersion = self->_adjustmentVersion;
-      self->_adjustmentVersion = v17;
+      self->_adjustmentVersion = adjustmentVersion;
 
       v7 = v25;
     }
 
-    else if (a4 != 3)
+    else if (option != 3)
     {
       goto LABEL_11;
     }
 
     self->_nameSource = [v7 nameSource];
     self->_trainingType = [v25 trainingType];
-    v19 = [v25 personLocalIdentifier];
+    personLocalIdentifier = [v25 personLocalIdentifier];
     personLocalIdentifier = self->_personLocalIdentifier;
-    self->_personLocalIdentifier = v19;
+    self->_personLocalIdentifier = personLocalIdentifier;
 
     self->_clusterSequenceNumber = [v25 clusterSequenceNumber];
-    v21 = [v25 faceprint];
+    faceprint = [v25 faceprint];
     faceprint = self->_faceprint;
-    self->_faceprint = v21;
+    self->_faceprint = faceprint;
 
-    v23 = [v25 groupingIdentifier];
+    groupingIdentifier = [v25 groupingIdentifier];
     groupingIdentifier = self->_groupingIdentifier;
-    self->_groupingIdentifier = v23;
+    self->_groupingIdentifier = groupingIdentifier;
 
     goto LABEL_11;
   }
 
-  if (a4)
+  if (option)
   {
-    if (a4 == 1)
+    if (option == 1)
     {
-      v8 = [v6 personLocalIdentifier];
+      personLocalIdentifier2 = [fromCopy personLocalIdentifier];
       v9 = self->_personLocalIdentifier;
-      self->_personLocalIdentifier = v8;
+      self->_personLocalIdentifier = personLocalIdentifier2;
 
       self->_sourceWidth = [v25 sourceWidth];
       self->_sourceHeight = [v25 sourceHeight];
@@ -280,18 +280,18 @@
 
   else
   {
-    v13 = [v6 personLocalIdentifier];
+    personLocalIdentifier3 = [fromCopy personLocalIdentifier];
     v14 = self->_personLocalIdentifier;
-    self->_personLocalIdentifier = v13;
+    self->_personLocalIdentifier = personLocalIdentifier3;
 
     [(PVFace *)self setCoordinatesAndFeaturesFromFace:v25];
     self->_isTooSmall = [v25 isTooSmall];
     self->_hidden = [v25 hidden];
     self->_isInTrash = [v25 isInTrash];
     self->_manual = [v25 manual];
-    v15 = [v25 adjustmentVersion];
+    adjustmentVersion2 = [v25 adjustmentVersion];
     v16 = self->_adjustmentVersion;
-    self->_adjustmentVersion = v15;
+    self->_adjustmentVersion = adjustmentVersion2;
 
     self->_nameSource = [v25 nameSource];
     self->_trainingType = [v25 trainingType];
@@ -303,23 +303,23 @@ LABEL_11:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PVFace;
-  v4 = [(PVObject *)&v6 copyWithZone:a3];
+  v4 = [(PVObject *)&v6 copyWithZone:zone];
   [v4 _copyPropertiesFrom:self copyPropertiesOption:0];
   return v4;
 }
 
-+ (PVFace)faceWithFace:(id)a3 copyPropertiesOption:(int64_t)a4
++ (PVFace)faceWithFace:(id)face copyPropertiesOption:(int64_t)option
 {
-  v5 = a3;
+  faceCopy = face;
   v6 = [PVFace alloc];
-  v7 = [v5 localIdentifier];
-  v8 = [(PVObject *)v6 initWithLocalIdentifier:v7];
+  localIdentifier = [faceCopy localIdentifier];
+  v8 = [(PVObject *)v6 initWithLocalIdentifier:localIdentifier];
 
-  [(PVFace *)v8 _copyPropertiesFrom:v5 copyPropertiesOption:a4];
+  [(PVFace *)v8 _copyPropertiesFrom:faceCopy copyPropertiesOption:option];
 
   return v8;
 }

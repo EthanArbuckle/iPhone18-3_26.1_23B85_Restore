@@ -3,41 +3,41 @@
 - (BOOL)isRunning;
 - (double)fractionComplete;
 - (int64_t)state;
-- (void)addCompletion:(id)a3;
-- (void)continueAnimationWithTimingParameters:(id)a3 durationFactor:(double)a4;
-- (void)finishAnimationAtPosition:(int64_t)a3;
+- (void)addCompletion:(id)completion;
+- (void)continueAnimationWithTimingParameters:(id)parameters durationFactor:(double)factor;
+- (void)finishAnimationAtPosition:(int64_t)position;
 - (void)pauseAnimation;
-- (void)setAnimators:(id)a3;
-- (void)setFractionComplete:(double)a3;
-- (void)setReversed:(BOOL)a3;
+- (void)setAnimators:(id)animators;
+- (void)setFractionComplete:(double)complete;
+- (void)setReversed:(BOOL)reversed;
 - (void)startAnimation;
-- (void)startAnimationAfterDelay:(double)a3;
-- (void)stopAnimation:(BOOL)a3;
+- (void)startAnimationAfterDelay:(double)delay;
+- (void)stopAnimation:(BOOL)animation;
 @end
 
 @implementation BCViewPropertyAnimatorGroup
 
-- (void)setAnimators:(id)a3
+- (void)setAnimators:(id)animators
 {
-  v5 = a3;
+  animatorsCopy = animators;
   animators = self->_animators;
   p_animators = &self->_animators;
-  if (animators != v5)
+  if (animators != animatorsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_animators, a3);
-    v5 = v8;
+    v8 = animatorsCopy;
+    objc_storeStrong(p_animators, animators);
+    animatorsCopy = v8;
   }
 }
 
-- (void)finishAnimationAtPosition:(int64_t)a3
+- (void)finishAnimationAtPosition:(int64_t)position
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v5 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -49,15 +49,15 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animators);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) finishAnimationAtPosition:a3];
+        [*(*(&v9 + 1) + 8 * v8) finishAnimationAtPosition:position];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -70,8 +70,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v3 = [animators countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -83,7 +83,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(animators);
         }
 
         [*(*(&v7 + 1) + 8 * v6) pauseAnimation];
@@ -91,7 +91,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [animators countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -104,8 +104,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v3 = [animators countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -117,7 +117,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(animators);
         }
 
         [*(*(&v7 + 1) + 8 * v6) startAnimation];
@@ -125,21 +125,21 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [animators countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)startAnimationAfterDelay:(double)a3
+- (void)startAnimationAfterDelay:(double)delay
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v5 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -151,30 +151,30 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animators);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) startAnimationAfterDelay:a3];
+        [*(*(&v9 + 1) + 8 * v8) startAnimationAfterDelay:delay];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)stopAnimation:(BOOL)a3
+- (void)stopAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v5 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -186,15 +186,15 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animators);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) stopAnimation:v3];
+        [*(*(&v9 + 1) + 8 * v8) stopAnimation:animationCopy];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -203,31 +203,31 @@
 
 - (BOOL)isRunning
 {
-  v2 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v3 = [v2 objectAtIndexedSubscript:0];
-  v4 = [v3 isRunning];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v3 = [animators objectAtIndexedSubscript:0];
+  isRunning = [v3 isRunning];
 
-  return v4;
+  return isRunning;
 }
 
 - (BOOL)isReversed
 {
-  v2 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v3 = [v2 objectAtIndexedSubscript:0];
-  v4 = [v3 isReversed];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v3 = [animators objectAtIndexedSubscript:0];
+  isReversed = [v3 isReversed];
 
-  return v4;
+  return isReversed;
 }
 
-- (void)setReversed:(BOOL)a3
+- (void)setReversed:(BOOL)reversed
 {
-  v3 = a3;
+  reversedCopy = reversed;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v5 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -239,15 +239,15 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animators);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setReversed:v3];
+        [*(*(&v9 + 1) + 8 * v8) setReversed:reversedCopy];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -256,22 +256,22 @@
 
 - (double)fractionComplete
 {
-  v2 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v3 = [animators objectAtIndexedSubscript:0];
   [v3 fractionComplete];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setFractionComplete:(double)a3
+- (void)setFractionComplete:(double)complete
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v5 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -283,15 +283,15 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animators);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setFractionComplete:a3];
+        [*(*(&v9 + 1) + 8 * v8) setFractionComplete:complete];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [animators countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -300,30 +300,30 @@
 
 - (int64_t)state
 {
-  v2 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v3 = [v2 objectAtIndexedSubscript:0];
-  v4 = [v3 state];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v3 = [animators objectAtIndexedSubscript:0];
+  state = [v3 state];
 
-  return v4;
+  return state;
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v5 = [v6 objectAtIndexedSubscript:0];
-  [v5 addCompletion:v4];
+  completionCopy = completion;
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v5 = [animators objectAtIndexedSubscript:0];
+  [v5 addCompletion:completionCopy];
 }
 
-- (void)continueAnimationWithTimingParameters:(id)a3 durationFactor:(double)a4
+- (void)continueAnimationWithTimingParameters:(id)parameters durationFactor:(double)factor
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(BCViewPropertyAnimatorGroup *)self animators];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  animators = [(BCViewPropertyAnimatorGroup *)self animators];
+  v8 = [animators countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -335,15 +335,15 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(animators);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) continueAnimationWithTimingParameters:v6 durationFactor:a4];
+        [*(*(&v12 + 1) + 8 * v11) continueAnimationWithTimingParameters:parametersCopy durationFactor:factor];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [animators countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);

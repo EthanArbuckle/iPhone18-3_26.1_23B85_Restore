@@ -1,21 +1,21 @@
 @interface SHLCloudModifyZoneTransformer
-- (SHLCloudModifyZoneTransformer)initWithConfiguration:(id)a3;
-- (id)cloudBackedOperationForZonesToSave:(id)a3 container:(id)a4;
-- (id)recordZonesFromCloudBackedZones:(id)a3;
+- (SHLCloudModifyZoneTransformer)initWithConfiguration:(id)configuration;
+- (id)cloudBackedOperationForZonesToSave:(id)save container:(id)container;
+- (id)recordZonesFromCloudBackedZones:(id)zones;
 @end
 
 @implementation SHLCloudModifyZoneTransformer
 
-- (SHLCloudModifyZoneTransformer)initWithConfiguration:(id)a3
+- (SHLCloudModifyZoneTransformer)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SHLCloudModifyZoneTransformer;
   v6 = [(SHLCloudModifyZoneTransformer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = objc_alloc_init(CKModifyRecordZonesOperation);
     modifyRecordZonesOperation = v7->_modifyRecordZonesOperation;
     v7->_modifyRecordZonesOperation = v8;
@@ -24,29 +24,29 @@
   return v7;
 }
 
-- (id)cloudBackedOperationForZonesToSave:(id)a3 container:(id)a4
+- (id)cloudBackedOperationForZonesToSave:(id)save container:(id)container
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 container];
-  v9 = [v8 privateCloudDatabase];
-  v10 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
-  [v10 setDatabase:v9];
+  containerCopy = container;
+  saveCopy = save;
+  container = [containerCopy container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  modifyRecordZonesOperation = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
+  [modifyRecordZonesOperation setDatabase:privateCloudDatabase];
 
-  v11 = [(SHLCloudModifyZoneTransformer *)self recordZonesFromCloudBackedZones:v7];
+  v11 = [(SHLCloudModifyZoneTransformer *)self recordZonesFromCloudBackedZones:saveCopy];
 
-  v12 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
-  [v12 setRecordZonesToSave:v11];
+  modifyRecordZonesOperation2 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
+  [modifyRecordZonesOperation2 setRecordZonesToSave:v11];
 
   v13 = [SHLCloudLibraryCache alloc];
-  v14 = [(SHLCloudModifyZoneTransformer *)self configuration];
-  v15 = [v14 callingProcessIdentifier];
-  v16 = [v6 container];
+  configuration = [(SHLCloudModifyZoneTransformer *)self configuration];
+  callingProcessIdentifier = [configuration callingProcessIdentifier];
+  container2 = [containerCopy container];
 
-  v17 = [v16 containerIdentifier];
-  v18 = [(SHLCloudModifyZoneTransformer *)self configuration];
-  v19 = [v18 sessionIdentifier];
-  v20 = [(SHLCloudLibraryCache *)v13 initWithCallingProcessIdentifier:v15 containerIdentifier:v17 transactionIdentifier:v19];
+  containerIdentifier = [container2 containerIdentifier];
+  configuration2 = [(SHLCloudModifyZoneTransformer *)self configuration];
+  sessionIdentifier = [configuration2 sessionIdentifier];
+  v20 = [(SHLCloudLibraryCache *)v13 initWithCallingProcessIdentifier:callingProcessIdentifier containerIdentifier:containerIdentifier transactionIdentifier:sessionIdentifier];
 
   v35 = _NSConcreteStackBlock;
   v36 = 3221225472;
@@ -54,40 +54,40 @@
   v38 = &unk_10007E168;
   v39 = v20;
   v21 = v20;
-  v22 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
-  [v22 setModifyRecordZonesCompletionBlock:&v35];
+  modifyRecordZonesOperation3 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
+  [modifyRecordZonesOperation3 setModifyRecordZonesCompletionBlock:&v35];
 
   v23 = objc_alloc_init(CKOperationGroup);
   [v23 setExpectedSendSize:1];
-  v24 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
-  v25 = [v24 recordZonesToSave];
-  v26 = [v25 count];
-  v27 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
-  v28 = [v27 recordZoneIDsToDelete];
-  [v23 setQuantity:{&v26[objc_msgSend(v28, "count")]}];
+  modifyRecordZonesOperation4 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
+  recordZonesToSave = [modifyRecordZonesOperation4 recordZonesToSave];
+  v26 = [recordZonesToSave count];
+  modifyRecordZonesOperation5 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
+  recordZoneIDsToDelete = [modifyRecordZonesOperation5 recordZoneIDsToDelete];
+  [v23 setQuantity:{&v26[objc_msgSend(recordZoneIDsToDelete, "count")]}];
 
   v29 = [NSString stringWithFormat:@"%@", @"ModifyZones", v35, v36, v37, v38];
   [v23 setName:v29];
 
-  v30 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
-  [v30 setGroup:v23];
+  modifyRecordZonesOperation6 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
+  [modifyRecordZonesOperation6 setGroup:v23];
 
   v31 = [SHLCloudBackedOperation alloc];
-  v32 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
-  v33 = [(SHLCloudBackedOperation *)v31 initWithOperation:v32];
+  modifyRecordZonesOperation7 = [(SHLCloudModifyZoneTransformer *)self modifyRecordZonesOperation];
+  v33 = [(SHLCloudBackedOperation *)v31 initWithOperation:modifyRecordZonesOperation7];
 
   return v33;
 }
 
-- (id)recordZonesFromCloudBackedZones:(id)a3
+- (id)recordZonesFromCloudBackedZones:(id)zones
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  zonesCopy = zones;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [zonesCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = zonesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

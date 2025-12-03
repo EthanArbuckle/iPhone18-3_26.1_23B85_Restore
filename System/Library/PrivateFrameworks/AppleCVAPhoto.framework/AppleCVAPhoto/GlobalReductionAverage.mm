@@ -1,17 +1,17 @@
 @interface GlobalReductionAverage
-- (GlobalReductionAverage)initWithFigMetalContext:(id)a3 textureSize:(CGSize)a4;
-- (void)parallelReductionAverage:(id)a3 inTexture:(id)a4 outGlobalAverage:(id)a5;
+- (GlobalReductionAverage)initWithFigMetalContext:(id)context textureSize:(CGSize)size;
+- (void)parallelReductionAverage:(id)average inTexture:(id)texture outGlobalAverage:(id)globalAverage;
 @end
 
 @implementation GlobalReductionAverage
 
-- (void)parallelReductionAverage:(id)a3 inTexture:(id)a4 outGlobalAverage:(id)a5
+- (void)parallelReductionAverage:(id)average inTexture:(id)texture outGlobalAverage:(id)globalAverage
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v8 width] != self->_textureSize.width || objc_msgSend(v8, "height") != self->_textureSize.height) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  averageCopy = average;
+  textureCopy = texture;
+  globalAverageCopy = globalAverage;
+  if (([textureCopy width] != self->_textureSize.width || objc_msgSend(textureCopy, "height") != self->_textureSize.height) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     width = self->_textureSize.width;
     height = self->_textureSize.height;
@@ -20,13 +20,13 @@
     LOWORD(v24) = 1024;
     *(&v24 + 2) = height;
     HIWORD(v24) = 1024;
-    LODWORD(v25[0]) = [v8 width];
+    LODWORD(v25[0]) = [textureCopy width];
     WORD2(v25[0]) = 1024;
-    *(v25 + 6) = [v8 height];
+    *(v25 + 6) = [textureCopy height];
     _os_log_error_impl(&dword_1DED23000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "TextureSize does not mathc input, expected w:%i h:%i got w:%i h:%i", buf, 0x1Au);
   }
 
-  v10 = [v20 computeCommandEncoder];
+  computeCommandEncoder = [averageCopy computeCommandEncoder];
   for (i = 0; i <= [(NSArray *)self->_simdTextures count]; ++i)
   {
     if (i)
@@ -36,7 +36,7 @@
 
     else
     {
-      v12 = v8;
+      v12 = textureCopy;
     }
 
     v13 = v12;
@@ -50,51 +50,51 @@
       v14 = [(NSArray *)self->_simdTextures objectAtIndexedSubscript:i];
     }
 
-    v15 = [v13 width];
-    v16 = [v13 height];
-    [v10 setComputePipelineState:self->_parallelReductionAverageSimd];
-    [v10 setTexture:v13 atIndex:0];
-    [v10 setTexture:v14 atIndex:1];
-    [v10 setBytes:&self->_numberOfElements length:4 atIndex:0];
-    [v10 setBuffer:v9 offset:0 atIndex:1];
-    *buf = (v15 + 1) >> 1;
-    v24 = (v16 + 1) >> 1;
+    width = [v13 width];
+    height = [v13 height];
+    [computeCommandEncoder setComputePipelineState:self->_parallelReductionAverageSimd];
+    [computeCommandEncoder setTexture:v13 atIndex:0];
+    [computeCommandEncoder setTexture:v14 atIndex:1];
+    [computeCommandEncoder setBytes:&self->_numberOfElements length:4 atIndex:0];
+    [computeCommandEncoder setBuffer:globalAverageCopy offset:0 atIndex:1];
+    *buf = (width + 1) >> 1;
+    v24 = (height + 1) >> 1;
     v25[0] = 1;
     v21 = *&self->_simdReductionThreadsPerGroup.width;
     depth = self->_simdReductionThreadsPerGroup.depth;
-    [v10 dispatchThreads:buf threadsPerThreadgroup:&v21];
+    [computeCommandEncoder dispatchThreads:buf threadsPerThreadgroup:&v21];
   }
 
-  [v10 endEncoding];
+  [computeCommandEncoder endEncoding];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (GlobalReductionAverage)initWithFigMetalContext:(id)a3 textureSize:(CGSize)a4
+- (GlobalReductionAverage)initWithFigMetalContext:(id)context textureSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
   v33.receiver = self;
   v33.super_class = GlobalReductionAverage;
   v8 = [(GlobalReductionAverage *)&v33 init];
-  if (v8 && ([v7 device], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "supportsFamily:", 1007), v9, (v10 & 1) != 0))
+  if (v8 && ([contextCopy device], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "supportsFamily:", 1007), v9, (v10 & 1) != 0))
   {
-    v11 = [v7 device];
+    device = [contextCopy device];
     device = v8->_device;
-    v8->_device = v11;
+    v8->_device = device;
 
-    v13 = [v7 library];
+    library = [contextCopy library];
     library = v8->_library;
-    v8->_library = v13;
+    v8->_library = library;
 
-    v15 = [v7 pipelineLibrary];
+    pipelineLibrary = [contextCopy pipelineLibrary];
     pipelineLibrary = v8->_pipelineLibrary;
-    v8->_pipelineLibrary = v15;
+    v8->_pipelineLibrary = pipelineLibrary;
 
     v8->_textureSize.width = width;
     v8->_textureSize.height = height;
-    sub_1DED422A0(&v8->_parallelReductionAverageSimd, v7, @"parallelReductionAverageSimd", 0);
+    sub_1DED422A0(&v8->_parallelReductionAverageSimd, contextCopy, @"parallelReductionAverageSimd", 0);
     parallelReductionAverageSimd = v8->_parallelReductionAverageSimd;
     if (width <= height)
     {

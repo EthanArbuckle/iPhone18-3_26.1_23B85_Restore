@@ -1,17 +1,17 @@
 @interface _MRSendCommandResultStatusProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatusCode:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsStatusCode:(id)code;
+- (int)StringAsType:(id)type;
 - (int)statusCode;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSendCommandResultStatusProtobuf
@@ -29,105 +29,105 @@
   }
 }
 
-- (int)StringAsStatusCode:(id)a3
+- (int)StringAsStatusCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Success"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"Success"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NoSuchContent"])
+  else if ([codeCopy isEqualToString:@"NoSuchContent"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CommandFailed"])
+  else if ([codeCopy isEqualToString:@"CommandFailed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NoActionableNowPlayingItem"])
+  else if ([codeCopy isEqualToString:@"NoActionableNowPlayingItem"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"DeviceNotFound"])
+  else if ([codeCopy isEqualToString:@"DeviceNotFound"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"UIKitLegacy"])
+  else if ([codeCopy isEqualToString:@"UIKitLegacy"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SkipAdProhibited"])
+  else if ([codeCopy isEqualToString:@"SkipAdProhibited"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"QueueIsUserCurated"])
+  else if ([codeCopy isEqualToString:@"QueueIsUserCurated"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"UserModifiedQueueDisable"])
+  else if ([codeCopy isEqualToString:@"UserModifiedQueueDisable"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"UserQueueModificationNotSupportedForCurrentItem"])
+  else if ([codeCopy isEqualToString:@"UserQueueModificationNotSupportedForCurrentItem"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"SubscriptionRequiredForSharedQueue"])
+  else if ([codeCopy isEqualToString:@"SubscriptionRequiredForSharedQueue"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"InsertionPositionNotSpecified"])
+  else if ([codeCopy isEqualToString:@"InsertionPositionNotSpecified"])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:@"InvalidInsertionPosition"])
+  else if ([codeCopy isEqualToString:@"InvalidInsertionPosition"])
   {
     v4 = 106;
   }
 
-  else if ([v3 isEqualToString:@"RequestParametersOutOfBounds"])
+  else if ([codeCopy isEqualToString:@"RequestParametersOutOfBounds"])
   {
     v4 = 107;
   }
 
-  else if ([v3 isEqualToString:@"SkipLimitReached"])
+  else if ([codeCopy isEqualToString:@"SkipLimitReached"])
   {
     v4 = 108;
   }
 
-  else if ([v3 isEqualToString:@"CannotModifyQueueWithPlaybackTokenItems"])
+  else if ([codeCopy isEqualToString:@"CannotModifyQueueWithPlaybackTokenItems"])
   {
     v4 = 109;
   }
 
-  else if ([v3 isEqualToString:@"AuthenticationFailure"])
+  else if ([codeCopy isEqualToString:@"AuthenticationFailure"])
   {
     v4 = 401;
   }
 
-  else if ([v3 isEqualToString:@"MediaServicesUnavailable"])
+  else if ([codeCopy isEqualToString:@"MediaServicesUnavailable"])
   {
     v4 = 501;
   }
 
-  else if ([v3 isEqualToString:@"Timeout"])
+  else if ([codeCopy isEqualToString:@"Timeout"])
   {
     v4 = 555;
   }
 
-  else if ([v3 isEqualToString:@"UnsupportedCommand"])
+  else if ([codeCopy isEqualToString:@"UnsupportedCommand"])
   {
     v4 = 404;
   }
@@ -153,9 +153,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -168,25 +168,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Dialog"])
+  else if ([typeCopy isEqualToString:@"Dialog"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Error"])
+  else if ([typeCopy isEqualToString:@"Error"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Custom"])
+  else if ([typeCopy isEqualToString:@"Custom"])
   {
     v4 = 999;
   }
@@ -205,15 +205,15 @@
   v8.receiver = self;
   v8.super_class = _MRSendCommandResultStatusProtobuf;
   v4 = [(_MRSendCommandResultStatusProtobuf *)&v8 description];
-  v5 = [(_MRSendCommandResultStatusProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSendCommandResultStatusProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -348,7 +348,7 @@
         case 10:
           v6 = @"NoActionableNowPlayingItem";
 LABEL_47:
-          [v3 setObject:v6 forKey:@"statusCode"];
+          [dictionary setObject:v6 forKey:@"statusCode"];
 
           has = self->_has;
           goto LABEL_48;
@@ -398,48 +398,48 @@ LABEL_56:
 
   v8 = @"Dialog";
 LABEL_59:
-  [v3 setObject:v8 forKey:@"type"];
+  [dictionary setObject:v8 forKey:@"type"];
 
 LABEL_60:
   dialog = self->_dialog;
   if (dialog)
   {
-    v10 = [(_MRSendCommandResultHandlerDialogProtobuf *)dialog dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"dialog"];
+    dictionaryRepresentation = [(_MRSendCommandResultHandlerDialogProtobuf *)dialog dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"dialog"];
   }
 
   error = self->_error;
   if (error)
   {
-    v12 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"error"];
+    dictionaryRepresentation2 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
   customData = self->_customData;
   if (customData)
   {
-    [v3 setObject:customData forKey:@"customData"];
+    [dictionary setObject:customData forKey:@"customData"];
   }
 
   customDataType = self->_customDataType;
   if (customDataType)
   {
-    [v3 setObject:customDataType forKey:@"customDataType"];
+    [dictionary setObject:customDataType forKey:@"customDataType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     statusCode = self->_statusCode;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -447,80 +447,80 @@ LABEL_60:
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_dialog)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_error)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_customData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_customDataType)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[10] = self->_statusCode;
-    *(v4 + 48) |= 1u;
+    toCopy[10] = self->_statusCode;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[11] = self->_type;
-    *(v4 + 48) |= 2u;
+    toCopy[11] = self->_type;
+    *(toCopy + 48) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_dialog)
   {
-    [v4 setDialog:?];
-    v4 = v6;
+    [toCopy setDialog:?];
+    toCopy = v6;
   }
 
   if (self->_error)
   {
     [v6 setError:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_customData)
   {
     [v6 setCustomData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_customDataType)
   {
     [v6 setCustomDataType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -536,43 +536,43 @@ LABEL_60:
     *(v5 + 48) |= 2u;
   }
 
-  v8 = [(_MRSendCommandResultHandlerDialogProtobuf *)self->_dialog copyWithZone:a3];
+  v8 = [(_MRSendCommandResultHandlerDialogProtobuf *)self->_dialog copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
-  v10 = [(_MRErrorProtobuf *)self->_error copyWithZone:a3];
+  v10 = [(_MRErrorProtobuf *)self->_error copyWithZone:zone];
   v11 = v6[4];
   v6[4] = v10;
 
-  v12 = [(NSData *)self->_customData copyWithZone:a3];
+  v12 = [(NSData *)self->_customData copyWithZone:zone];
   v13 = v6[1];
   v6[1] = v12;
 
-  v14 = [(NSString *)self->_customDataType copyWithZone:a3];
+  v14 = [(NSString *)self->_customDataType copyWithZone:zone];
   v15 = v6[2];
   v6[2] = v14;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_statusCode != *(v4 + 10))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_statusCode != *(equalCopy + 10))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_20:
     v10 = 0;
@@ -581,25 +581,25 @@ LABEL_20:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_type != *(v4 + 11))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_type != *(equalCopy + 11))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_20;
   }
 
   dialog = self->_dialog;
-  if (dialog | *(v4 + 3) && ![(_MRSendCommandResultHandlerDialogProtobuf *)dialog isEqual:?])
+  if (dialog | *(equalCopy + 3) && ![(_MRSendCommandResultHandlerDialogProtobuf *)dialog isEqual:?])
   {
     goto LABEL_20;
   }
 
   error = self->_error;
-  if (error | *(v4 + 4))
+  if (error | *(equalCopy + 4))
   {
     if (![(_MRErrorProtobuf *)error isEqual:?])
     {
@@ -608,7 +608,7 @@ LABEL_20:
   }
 
   customData = self->_customData;
-  if (customData | *(v4 + 1))
+  if (customData | *(equalCopy + 1))
   {
     if (![(NSData *)customData isEqual:?])
     {
@@ -617,7 +617,7 @@ LABEL_20:
   }
 
   customDataType = self->_customDataType;
-  if (customDataType | *(v4 + 2))
+  if (customDataType | *(equalCopy + 2))
   {
     v10 = [(NSString *)customDataType isEqual:?];
   }
@@ -662,21 +662,21 @@ LABEL_6:
   return v7 ^ [(NSString *)self->_customDataType hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 48);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 48);
   if (v6)
   {
-    self->_statusCode = *(v4 + 10);
+    self->_statusCode = *(fromCopy + 10);
     *&self->_has |= 1u;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_type = *(v4 + 11);
+    self->_type = *(fromCopy + 11);
     *&self->_has |= 2u;
   }
 

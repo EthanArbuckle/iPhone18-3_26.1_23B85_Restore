@@ -3,11 +3,11 @@
 - (BOOL)shouldHideCanvasLayer;
 - (TSWPTextMagnifierVerticalRanged)initWithDefaultFrame;
 - (double)currentOffset;
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6;
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
 - (void)dealloc;
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context;
 - (void)remove;
-- (void)stopMagnifying:(BOOL)a3;
+- (void)stopMagnifying:(BOOL)magnifying;
 - (void)updateFrame;
 - (void)zoomLeftAnimation;
 - (void)zoomRightAnimation;
@@ -124,9 +124,9 @@ uint64_t __53__TSWPTextMagnifierVerticalRanged_zoomRightAnimation__block_invoke_
 
 - (void)updateFrame
 {
-  v3 = [(TSWPTextMagnifierVerticalRanged *)self superview];
+  superview = [(TSWPTextMagnifierVerticalRanged *)self superview];
   [(TSWPTextMagnifierRanged *)self magnificationPoint];
-  [v3 convertPoint:-[TSDCanvasLayerHosting canvasView](-[TSDInteractiveCanvasController layerHost](-[TSDRep interactiveCanvasController](-[TSWPTextMagnifierRanged target](self fromView:{"target"), "interactiveCanvasController"), "layerHost"), "canvasView"), v4, v5}];
+  [superview convertPoint:-[TSDCanvasLayerHosting canvasView](-[TSDInteractiveCanvasController layerHost](-[TSDRep interactiveCanvasController](-[TSWPTextMagnifierRanged target](self fromView:{"target"), "interactiveCanvasController"), "layerHost"), "canvasView"), v4, v5}];
   v7 = v6;
   v9 = v8;
   [(TSWPTextMagnifierVerticalRanged *)self bounds];
@@ -158,22 +158,22 @@ uint64_t __53__TSWPTextMagnifierVerticalRanged_zoomRightAnimation__block_invoke_
   [(TSWPTextMagnifierRanged *)self setFrame:0.0, 0.0, 65.0, 150.0];
 }
 
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  v9 = point.y;
+  v10 = point.x;
   [+[TSWPTextMagnifierCaret sharedCaretMagnifier](TSWPTextMagnifierCaret "sharedCaretMagnifier")];
-  [(TSWPTextMagnifierRanged *)self setTarget:a3];
+  [(TSWPTextMagnifierRanged *)self setTarget:target];
   [(TSWPTextMagnifierTimeWeightedPoint *)self->super._weightedPoint clearHistory];
   [(TSWPTextMagnifierRanged *)self setAutoscrollDirections:0];
   [(TSWPTextMagnifierVerticalRanged *)self setNeedsLayout];
   [(TSWPTextMagnifierRanged *)self setNeedsDisplay];
   if (![(TSWPTextMagnifierVerticalRanged *)self window])
   {
-    [+[TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:](TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:{objc_msgSend(objc_msgSend(a3, "interactiveCanvasController"), "canvasView")), "addSubview:", self}];
+    [+[TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:](TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:{objc_msgSend(objc_msgSend(target, "interactiveCanvasController"), "canvasView")), "addSubview:", self}];
   }
 
   v13 = 0.0;
@@ -184,16 +184,16 @@ uint64_t __53__TSWPTextMagnifierVerticalRanged_zoomRightAnimation__block_invoke_
 
   [(TSWPTextMagnifierRanged *)self setOffset:round(v13), round(y)];
   [(TSWPTextMagnifierRanged *)self setMagnificationPoint:v10, v9];
-  if (v6)
+  if (animatedCopy)
   {
 
     [(TSWPTextMagnifierVerticalRanged *)self zoomLeftAnimation];
   }
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
-  if (a3)
+  if (magnifying)
   {
     [(TSWPTextMagnifierVerticalRanged *)self zoomRightAnimation];
   }
@@ -233,21 +233,21 @@ uint64_t __53__TSWPTextMagnifierVerticalRanged_zoomRightAnimation__block_invoke_
   return [v4 shouldHideCanvasLayerInMagnifier];
 }
 
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = [(TSDRep *)[(TSWPTextMagnifierRanged *)self target] interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)[(TSWPTextMagnifierRanged *)self target] interactiveCanvasController];
   objc_opt_class();
-  [(TSDInteractiveCanvasController *)v6 layerHost];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController layerHost];
   v7 = TSUDynamicCast();
-  v8 = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)v6 layerHost] canvasView];
+  canvasView = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)interactiveCanvasController layerHost] canvasView];
   [(TSWPTextMagnifierVerticalRanged *)self frame];
-  [v8 convertRect:-[TSWPTextMagnifierVerticalRanged superview](self fromView:{"superview"), v9 + -18.0, v11, v10 + -3.0 + -18.0, v12}];
+  [canvasView convertRect:-[TSWPTextMagnifierVerticalRanged superview](self fromView:{"superview"), v9 + -18.0, v11, v10 + -3.0 + -18.0, v12}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   [(TSWPTextMagnifierVerticalRanged *)self frame];
   v22 = v21;
   [(TSWPTextMagnifierVerticalRanged *)self frame];
@@ -257,52 +257,52 @@ uint64_t __53__TSWPTextMagnifierVerticalRanged_zoomRightAnimation__block_invoke_
   v62.origin.y = 0.0;
   v62.size.width = v22;
   v62.size.height = v24;
-  CGContextClipToMask(a4, v62, v25);
-  if (v6)
+  CGContextClipToMask(context, v62, v25);
+  if (interactiveCanvasController)
   {
-    v26 = [v7 backgroundColorForMagnifier];
-    if (v26)
+    backgroundColorForMagnifier = [v7 backgroundColorForMagnifier];
+    if (backgroundColorForMagnifier)
     {
-      CGContextSetFillColorWithColor(a4, [v26 CGColor]);
+      CGContextSetFillColorWithColor(context, [backgroundColorForMagnifier CGColor]);
       v63.origin.x = 0.0;
       v63.origin.y = 0.0;
       v63.size.width = v22;
       v63.size.height = v24;
-      CGContextFillRect(a4, v63);
+      CGContextFillRect(context, v63);
     }
   }
 
-  CGContextScaleCTM(a4, 1.2, 1.2);
+  CGContextScaleCTM(context, 1.2, 1.2);
   [(TSWPTextMagnifierVerticalRanged *)self currentOffset];
   v28 = v27;
   objc_opt_class();
-  [(TSDEditorController *)[(TSDInteractiveCanvasController *)v6 editorController] textInputEditor];
-  v29 = [TSUDynamicCast() selection];
+  [(TSDEditorController *)[(TSDInteractiveCanvasController *)interactiveCanvasController editorController] textInputEditor];
+  selection = [TSUDynamicCast() selection];
   v30 = [[(TSDKnobTracker *)[(TSDRep *)[(TSWPTextMagnifierRanged *)self target] currentKnobTracker] knob] tag];
   if (v30 == 11)
   {
-    v31 = [v29 start];
+    start = [selection start];
   }
 
   else
   {
-    v31 = [v29 end];
+    start = [selection end];
   }
 
-  v32 = v31;
+  v32 = start;
   v33 = v14 + v28;
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v34 = [(TSWPRep *)[(TSWPTextMagnifierRanged *)self target] columns];
-  v35 = [(NSArray *)v34 countByEnumeratingWithState:&v56 objects:v60 count:16];
+  columns = [(TSWPRep *)[(TSWPTextMagnifierRanged *)self target] columns];
+  v35 = [(NSArray *)columns countByEnumeratingWithState:&v56 objects:v60 count:16];
   if (v35)
   {
     v36 = v35;
-    v50 = v6;
-    v51 = v8;
-    v52 = a4;
+    v50 = interactiveCanvasController;
+    v51 = canvasView;
+    contextCopy = context;
     v37 = *v57;
     while (2)
     {
@@ -310,11 +310,11 @@ uint64_t __53__TSWPTextMagnifierVerticalRanged_zoomRightAnimation__block_invoke_
       {
         if (*v57 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(columns);
         }
 
         v39 = *(*(&v56 + 1) + 8 * i);
-        v40 = [v39 lineFragmentForCharIndex:v32 knobTag:v30 selectionType:{objc_msgSend(v29, "type")}];
+        v40 = [v39 lineFragmentForCharIndex:v32 knobTag:v30 selectionType:{objc_msgSend(selection, "type")}];
         if (v40)
         {
           v41 = v40;
@@ -339,7 +339,7 @@ uint64_t __53__TSWPTextMagnifierVerticalRanged_zoomRightAnimation__block_invoke_
         }
       }
 
-      v36 = [(NSArray *)v34 countByEnumeratingWithState:&v56 objects:v60 count:16];
+      v36 = [(NSArray *)columns countByEnumeratingWithState:&v56 objects:v60 count:16];
       if (v36)
       {
         continue;
@@ -349,14 +349,14 @@ uint64_t __53__TSWPTextMagnifierVerticalRanged_zoomRightAnimation__block_invoke_
     }
 
 LABEL_19:
-    v8 = v51;
-    a4 = v52;
+    canvasView = v51;
+    context = contextCopy;
   }
 
-  CGContextTranslateCTM(a4, v33, -v16);
-  CGContextTranslateCTM(a4, v18 * -0.100000001, v20 * -0.100000001);
-  [objc_msgSend(v8 "canvasLayer")];
-  CGContextRestoreGState(a4);
+  CGContextTranslateCTM(context, v33, -v16);
+  CGContextTranslateCTM(context, v18 * -0.100000001, v20 * -0.100000001);
+  [objc_msgSend(canvasView "canvasLayer")];
+  CGContextRestoreGState(context);
 }
 
 @end

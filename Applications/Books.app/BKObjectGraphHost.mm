@@ -1,17 +1,17 @@
 @interface BKObjectGraphHost
 - (BKObjectGraphHost)init;
-- (void)resolveAsyncDependenciesWithLibraryItemStateProvider:(id)a3 downloadProgressCenter:(id)a4 assetActionHandler:(id)a5 serviceCenter:(id)a6;
+- (void)resolveAsyncDependenciesWithLibraryItemStateProvider:(id)provider downloadProgressCenter:(id)center assetActionHandler:(id)handler serviceCenter:(id)serviceCenter;
 @end
 
 @implementation BKObjectGraphHost
 
-- (void)resolveAsyncDependenciesWithLibraryItemStateProvider:(id)a3 downloadProgressCenter:(id)a4 assetActionHandler:(id)a5 serviceCenter:(id)a6
+- (void)resolveAsyncDependenciesWithLibraryItemStateProvider:(id)provider downloadProgressCenter:(id)center assetActionHandler:(id)handler serviceCenter:(id)serviceCenter
 {
   swift_unknownObjectRetain();
-  v9 = a4;
+  centerCopy = center;
   swift_unknownObjectRetain();
-  v10 = a6;
-  v13 = self;
+  serviceCenterCopy = serviceCenter;
+  selfCopy = self;
   if (sub_1007A1F94())
   {
     swift_unknownObjectRelease();
@@ -22,9 +22,9 @@
   else
   {
     swift_unknownObjectRetain();
-    v11 = v9;
+    v11 = centerCopy;
     swift_unknownObjectRetain();
-    v12 = v10;
+    v12 = serviceCenterCopy;
     sub_1007A1FA4();
 
     swift_unknownObjectRelease_n();

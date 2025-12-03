@@ -13,14 +13,14 @@
   v8 = v7;
   if (v6)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696E8B8]) _init];
+    _init = [objc_alloc(MEMORY[0x1E696E8B8]) _init];
     v10 = [objc_alloc(MEMORY[0x1E696E9B0]) initWithWorkflowReference:v6];
     v11 = *MEMORY[0x1E696EAF0];
-    v12 = *&v9[v11];
-    *&v9[v11] = v10;
+    v12 = *&_init[v11];
+    *&_init[v11] = v10;
 
-    v13 = [v6 identifier];
-    [v9 setGroupIdentifier:v13];
+    identifier = [v6 identifier];
+    [_init setGroupIdentifier:identifier];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -28,7 +28,7 @@
     v14[3] = &unk_1E837FA10;
     v15 = v6;
     v16 = v8;
-    [v9 donateInteractionWithCompletion:v14];
+    [_init donateInteractionWithCompletion:v14];
   }
 
   else
@@ -42,7 +42,7 @@
   v8 = a4;
   v9 = a5;
   v19 = 0;
-  v10 = [a1 workflowReferenceWithDatabase:v8 error:&v19];
+  v10 = [self workflowReferenceWithDatabase:v8 error:&v19];
   v11 = v19;
   v12 = v11;
   if (v10)
@@ -79,25 +79,25 @@
 {
   v28 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 identifier];
+  identifier = [self identifier];
 
-  if (v7)
+  if (identifier)
   {
-    v8 = [a1 identifier];
-    v7 = [v6 referenceForWorkflowID:v8];
+    identifier2 = [self identifier];
+    identifier = [v6 referenceForWorkflowID:identifier2];
   }
 
-  v9 = [a1 name];
+  name = [self name];
 
-  if (v9 && !v7)
+  if (name && !identifier)
   {
-    v10 = [a1 name];
-    v7 = [v6 uniqueVisibleReferenceForWorkflowName:v10];
+    name2 = [self name];
+    identifier = [v6 uniqueVisibleReferenceForWorkflowName:name2];
   }
 
-  if (v7)
+  if (identifier)
   {
-    v11 = v7;
+    v11 = identifier;
   }
 
   else
@@ -108,20 +108,20 @@
       *buf = 136315394;
       v25 = "[WFWorkflowDatabaseRunDescriptor(Conversion) workflowReferenceWithDatabase:error:]";
       v26 = 2112;
-      v27 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_ERROR, "%s Couldn't find shortcut with descriptor: %@", buf, 0x16u);
     }
 
     if (a4)
     {
-      v13 = [a1 name];
+      name3 = [self name];
 
-      if (v13)
+      if (name3)
       {
         v14 = MEMORY[0x1E696AEC0];
         v15 = WFLocalizedString(@"Unable to find a shortcut named “%@”.");
-        v16 = [a1 name];
-        v17 = [v14 localizedStringWithFormat:v15, v16];
+        name4 = [self name];
+        v17 = [v14 localizedStringWithFormat:v15, name4];
       }
 
       else
@@ -139,7 +139,7 @@
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return identifier;
 }
 
 @end

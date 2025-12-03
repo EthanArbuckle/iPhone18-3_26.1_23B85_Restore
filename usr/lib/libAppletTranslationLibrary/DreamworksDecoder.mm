@@ -1,20 +1,20 @@
 @interface DreamworksDecoder
 + (id)getInstance;
 - (DreamworksDecoder)init;
-- (id)DecodeEndE1TLV:(id *)a3 error:(id *)a4;
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-- (id)getAppletStateAndHistory:(id)a3 withError:(id *)a4;
-- (id)getHistory:(id)a3 state:(id)a4 error:(id *)a5;
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9;
-- (id)getState:(id)a3;
-- (id)parseEndEvent:(id)a3 withApplet:(id)a4 withError:(id *)a5;
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8;
-- (id)parseStartEvent:(id)a3 withApplet:(id)a4 withError:(id *)a5;
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-- (void)adjustSN:(id)a3;
+- (id)DecodeEndE1TLV:(id *)v error:(id *)error;
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
+- (id)getAppletStateAndHistory:(id)history withError:(id *)error;
+- (id)getHistory:(id)history state:(id)state error:(id *)error;
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error;
+- (id)getState:(id)state;
+- (id)parseEndEvent:(id)event withApplet:(id)applet withError:(id *)error;
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)parseStartEvent:(id)event withApplet:(id)applet withError:(id *)error;
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
+- (void)adjustSN:(id)n;
 - (void)cleanup;
-- (void)parseTransit:(id)a3 fileTrans:(id)a4 into:(id)a5;
+- (void)parseTransit:(id)transit fileTrans:(id)trans into:(id)into;
 @end
 
 @implementation DreamworksDecoder
@@ -62,32 +62,32 @@ uint64_t __32__DreamworksDecoder_getInstance__block_invoke()
   return v3;
 }
 
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"Supported";
   v10[1] = @"DelayExpressReentry";
   v11[0] = MEMORY[0x277CBEC38];
   v11[1] = &unk_2843C71C0;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:{2, a6, a7}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:{2, transceiver, error}];
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
-  v10 = a3;
-  v11 = [MEMORY[0x277CBEA90] dataWithHexString:a4];
+  historyCopy = history;
+  v11 = [MEMORY[0x277CBEA90] dataWithHexString:applet];
   v12 = SelectByNameCmd(v11);
 
-  v13 = [v10 transceiveAndCheckSW:v12 error:a7];
+  v13 = [historyCopy transceiveAndCheckSW:v12 error:error];
   if (v13)
   {
-    v14 = [DreamworksReaderContext readAllFiles:v10 debug:self->debug error:a7];
+    v14 = [DreamworksReaderContext readAllFiles:historyCopy debug:self->debug error:error];
     if (v14)
     {
-      v15 = [(DreamworksDecoder *)self getAppletStateAndHistory:v14 withError:a7];
+      v15 = [(DreamworksDecoder *)self getAppletStateAndHistory:v14 withError:error];
     }
 
     else
@@ -104,12 +104,12 @@ uint64_t __32__DreamworksDecoder_getInstance__block_invoke()
   return v15;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withError:(id *)a4
+- (id)getAppletStateAndHistory:(id)history withError:(id *)error
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(DreamworksDecoder *)self getState:v6];
-  v8 = [(DreamworksDecoder *)self getHistory:v6 state:v7 error:a4];
+  historyCopy = history;
+  v7 = [(DreamworksDecoder *)self getState:historyCopy];
+  v8 = [(DreamworksDecoder *)self getHistory:historyCopy state:v7 error:error];
   v9 = v8;
   if (v8)
   {
@@ -118,7 +118,7 @@ uint64_t __32__DreamworksDecoder_getInstance__block_invoke()
     v14[0] = v7;
     v14[1] = v8;
     v13[2] = @"ATLInternal";
-    v14[2] = v6;
+    v14[2] = historyCopy;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   }
 
@@ -132,29 +132,29 @@ uint64_t __32__DreamworksDecoder_getInstance__block_invoke()
   return v10;
 }
 
-- (id)getState:(id)a3
+- (id)getState:(id)state
 {
   v31[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = MEMORY[0x277CBEAB8];
-  v6 = [v4 filePurseInfo];
-  v7 = DecodeBCD([v6 bytes], 25, 2);
-  v8 = [v4 filePurseInfo];
-  v9 = DecodeBCD([v8 bytes], 27, 1);
-  v10 = [v4 filePurseInfo];
-  v25 = [v5 dateWithYear:v7 month:v9 day:{DecodeBCD(objc_msgSend(v10, "bytes"), 28, 1)}];
+  filePurseInfo = [stateCopy filePurseInfo];
+  v7 = DecodeBCD([filePurseInfo bytes], 25, 2);
+  filePurseInfo2 = [stateCopy filePurseInfo];
+  v9 = DecodeBCD([filePurseInfo2 bytes], 27, 1);
+  filePurseInfo3 = [stateCopy filePurseInfo];
+  v25 = [v5 dateWithYear:v7 month:v9 day:{DecodeBCD(objc_msgSend(filePurseInfo3, "bytes"), 28, 1)}];
 
-  v11 = [v4 filePurseInfo];
-  v23 = [v11 subdataWithRange:{8, 8}];
+  filePurseInfo4 = [stateCopy filePurseInfo];
+  v23 = [filePurseInfo4 subdataWithRange:{8, 8}];
 
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-  v13 = [v4 fileTrans];
+  fileTrans = [stateCopy fileTrans];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __30__DreamworksDecoder_getState___block_invoke;
   v26[3] = &unk_2788753A8;
   v26[4] = self;
-  v14 = [v13 firstWhere:v26];
+  v14 = [fileTrans firstWhere:v26];
 
   if (v14 && [v14 isIn])
   {
@@ -168,8 +168,8 @@ uint64_t __32__DreamworksDecoder_getInstance__block_invoke()
   v28[1] = &unk_2843C71D8;
   v27[2] = @"Balance";
   v15 = MEMORY[0x277CCA980];
-  v16 = [v4 balance];
-  v17 = [v15 decimalNumberWithMantissa:objc_msgSend(v16 exponent:"unsignedIntValue") isNegative:{0, 0}];
+  balance = [stateCopy balance];
+  v17 = [v15 decimalNumberWithMantissa:objc_msgSend(balance exponent:"unsignedIntValue") isNegative:{0, 0}];
   v27[3] = @"BalanceIdentifier";
   v28[2] = v17;
   v28[3] = @"PurseBalance";
@@ -202,20 +202,20 @@ BOOL __30__DreamworksDecoder_getState___block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)getHistory:(id)a3 state:(id)a4 error:(id *)a5
+- (id)getHistory:(id)history state:(id)state error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  historyCopy = history;
   v6 = MEMORY[0x277CBEB18];
-  v7 = [v5 filePurse];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  filePurse = [historyCopy filePurse];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(filePurse, "count")}];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v32 = v5;
-  obj = [v5 filePurse];
+  v32 = historyCopy;
+  obj = [historyCopy filePurse];
   v9 = [obj countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v9)
   {
@@ -234,36 +234,36 @@ BOOL __30__DreamworksDecoder_getState___block_invoke(uint64_t a1, void *a2)
         }
 
         v14 = *(*(&v35 + 1) + 8 * v13);
-        v15 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v16 = [v14 trt];
         v17 = v16;
         v19 = (v16 == 64 || v16 == 2) && [v14 amount] != 0;
         v20 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:objc_msgSend(v14 exponent:"amount") isNegative:{0, v19}];
-        [v15 setObject:v20 forKeyedSubscript:@"Amount"];
+        [dictionary setObject:v20 forKeyedSubscript:@"Amount"];
 
         v21 = [MEMORY[0x277CBEA90] dataWithLongBE:{objc_msgSend(v14, "idSam")}];
-        [v15 setObject:v21 forKeyedSubscript:@"TerminalIdentifier"];
+        [dictionary setObject:v21 forKeyedSubscript:@"TerminalIdentifier"];
 
         v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v14, "seqnum")}];
-        [v15 setObject:v22 forKeyedSubscript:@"SerialNumber"];
+        [dictionary setObject:v22 forKeyedSubscript:@"SerialNumber"];
 
         v23 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:objc_msgSend(v14 exponent:"balance") isNegative:{0, 0}];
-        [v15 setObject:v23 forKeyedSubscript:@"FinalBalance"];
+        [dictionary setObject:v23 forKeyedSubscript:@"FinalBalance"];
 
         if (v17 <= 2)
         {
           if (v17 == 1)
           {
-            [v15 setObject:@"Purchase" forKeyedSubscript:@"TypeDetail"];
-            v26 = [v32 fileTrans];
-            [(DreamworksDecoder *)self parseTransit:v14 fileTrans:v26 into:v15];
+            [dictionary setObject:@"Purchase" forKeyedSubscript:@"TypeDetail"];
+            fileTrans = [v32 fileTrans];
+            [(DreamworksDecoder *)self parseTransit:v14 fileTrans:fileTrans into:dictionary];
 
             goto LABEL_23;
           }
 
           if (v17 == 2)
           {
-            v24 = v15;
+            v24 = dictionary;
             v25 = @"TopUp";
             goto LABEL_22;
           }
@@ -274,15 +274,15 @@ BOOL __30__DreamworksDecoder_getState___block_invoke(uint64_t a1, void *a2)
           switch(v17)
           {
             case 3:
-              v24 = v15;
+              v24 = dictionary;
               v25 = @"PurchaseRefundReturn";
               goto LABEL_22;
             case 4:
-              v24 = v15;
+              v24 = dictionary;
               v25 = @"TopUpCancel";
               goto LABEL_22;
             case 64:
-              v24 = v15;
+              v24 = dictionary;
               v25 = @"PurchaseRefund";
 LABEL_22:
               [v24 setObject:v25 forKeyedSubscript:@"TypeDetail"];
@@ -299,7 +299,7 @@ LABEL_22:
         }
 
 LABEL_23:
-        [v8 addObject:v15];
+        [v8 addObject:dictionary];
 
         ++v13;
       }
@@ -318,17 +318,17 @@ LABEL_23:
   return v8;
 }
 
-- (void)parseTransit:(id)a3 fileTrans:(id)a4 into:(id)a5
+- (void)parseTransit:(id)transit fileTrans:(id)trans into:(id)into
 {
-  v8 = a3;
-  v9 = a5;
+  transitCopy = transit;
+  intoCopy = into;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __49__DreamworksDecoder_parseTransit_fileTrans_into___block_invoke;
   v20[3] = &unk_2788753A8;
-  v10 = v8;
+  v10 = transitCopy;
   v21 = v10;
-  v11 = [a4 filter:v20];
+  v11 = [trans filter:v20];
   v12 = [v11 count];
   if (v12)
   {
@@ -339,22 +339,22 @@ LABEL_23:
       v11 = v13;
     }
 
-    v14 = [v11 lastObject];
-    v15 = [v14 datetime];
-    [v9 setObject:v15 forKeyedSubscript:@"TransactionTime"];
+    lastObject = [v11 lastObject];
+    datetime = [lastObject datetime];
+    [intoCopy setObject:datetime forKeyedSubscript:@"TransactionTime"];
 
-    v16 = -[DreamworksDecoder resolveTransitModality:](self, "resolveTransitModality:", [v14 vehicleType]);
-    [v9 setObject:v16 forKeyedSubscript:@"TypeDetail"];
+    v16 = -[DreamworksDecoder resolveTransitModality:](self, "resolveTransitModality:", [lastObject vehicleType]);
+    [intoCopy setObject:v16 forKeyedSubscript:@"TypeDetail"];
 
-    v17 = [MEMORY[0x277CBEA90] dataWithShortBE:{objc_msgSend(v14, "vehicleType")}];
-    [v9 setObject:v17 forKeyedSubscript:@"TypeDetailRaw"];
+    v17 = [MEMORY[0x277CBEA90] dataWithShortBE:{objc_msgSend(lastObject, "vehicleType")}];
+    [intoCopy setObject:v17 forKeyedSubscript:@"TypeDetailRaw"];
 
-    v18 = [v9 objectForKeyedSubscript:@"TypeDetail"];
+    v18 = [intoCopy objectForKeyedSubscript:@"TypeDetail"];
 
     if (v18 == @"TransitMetro")
     {
-      v19 = [MEMORY[0x277CBEA90] dataWithIntBE:{objc_msgSend(v14, "stationCode")}];
-      [v9 setObject:v19 forKeyedSubscript:@"EndStation"];
+      v19 = [MEMORY[0x277CBEA90] dataWithIntBE:{objc_msgSend(lastObject, "stationCode")}];
+      [intoCopy setObject:v19 forKeyedSubscript:@"EndStation"];
     }
   }
 }
@@ -386,15 +386,15 @@ uint64_t __49__DreamworksDecoder_parseTransit_fileTrans_into___block_invoke_2(ui
   return v7;
 }
 
-- (void)adjustSN:(id)a3
+- (void)adjustSN:(id)n
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nCopy = n;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [nCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -405,7 +405,7 @@ uint64_t __49__DreamworksDecoder_parseTransit_fileTrans_into___block_invoke_2(ui
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(nCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -415,7 +415,7 @@ uint64_t __49__DreamworksDecoder_parseTransit_fileTrans_into___block_invoke_2(ui
         [v8 setObject:v11 forKeyedSubscript:@"SerialNumber"];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [nCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -424,25 +424,25 @@ uint64_t __49__DreamworksDecoder_parseTransit_fileTrans_into___block_invoke_2(ui
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  if ([v11 length] > 1)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] > 1)
   {
-    v23 = *[v11 bytes];
+    v23 = *[eventCopy bytes];
     if (v23 <= 4)
     {
       if (v23 == 1)
       {
-        v24 = [(DreamworksDecoder *)self parseStartEvent:v11 withApplet:v12 withError:a8];
+        v24 = [(DreamworksDecoder *)self parseStartEvent:eventCopy withApplet:appletCopy withError:error];
         goto LABEL_26;
       }
 
       if (v23 == 2)
       {
-        v24 = [(DreamworksDecoder *)self parseEndEvent:v11 withApplet:v12 withError:a8];
+        v24 = [(DreamworksDecoder *)self parseEndEvent:eventCopy withApplet:appletCopy withError:error];
 LABEL_26:
         v32 = v24;
         goto LABEL_31;
@@ -459,15 +459,15 @@ LABEL_20:
 
       v28 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown event type %u", v23];
       v15 = v28;
-      if (!a8)
+      if (!error)
       {
         goto LABEL_19;
       }
 
-      v29 = *a8;
+      v29 = *error;
       v17 = MEMORY[0x277CCA9B8];
       v30 = *MEMORY[0x277CCA450];
-      if (*a8)
+      if (*error)
       {
         v31 = *MEMORY[0x277CCA7E8];
         v36[0] = *MEMORY[0x277CCA450];
@@ -495,9 +495,9 @@ LABEL_17:
       v25 = ATLLogObject();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v11 asHexString];
+        asHexString = [eventCopy asHexString];
         *buf = 138412290;
-        v41 = v33;
+        v41 = asHexString;
         _os_log_impl(&dword_22EEF5000, v25, OS_LOG_TYPE_DEFAULT, "State change event, nothing to do here. %@", buf, 0xCu);
       }
     }
@@ -524,20 +524,20 @@ LABEL_17:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    LODWORD(v41) = [v11 length];
+    LODWORD(v41) = [eventCopy length];
     _os_log_impl(&dword_22EEF5000, v13, OS_LOG_TYPE_ERROR, "Short eventData? %u", buf, 8u);
   }
 
-  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Short eventData? %u", objc_msgSend(v11, "length")];
+  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Short eventData? %u", objc_msgSend(eventCopy, "length")];
   v15 = v14;
-  if (!a8)
+  if (!error)
   {
     goto LABEL_19;
   }
 
-  v16 = *a8;
+  v16 = *error;
   v17 = MEMORY[0x277CCA9B8];
-  if (!*a8)
+  if (!*error)
   {
     v44 = *MEMORY[0x277CCA450];
     v45[0] = v14;
@@ -559,7 +559,7 @@ LABEL_7:
   v22 = 2;
 LABEL_18:
   v26 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:v22];
-  *a8 = [v17 errorWithDomain:@"ATL" code:6 userInfo:v26];
+  *error = [v17 errorWithDomain:@"ATL" code:6 userInfo:v26];
 
 LABEL_19:
 LABEL_30:
@@ -571,34 +571,34 @@ LABEL_31:
   return v32;
 }
 
-- (id)parseStartEvent:(id)a3 withApplet:(id)a4 withError:(id *)a5
+- (id)parseStartEvent:(id)event withApplet:(id)applet withError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] != 5)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] != 5)
   {
     v16 = ATLLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109376;
-      v48 = [v8 length];
+      v48 = [eventCopy length];
       v49 = 2048;
       v50 = 5;
       _os_log_impl(&dword_22EEF5000, v16, OS_LOG_TYPE_ERROR, "Start event length %u expected %lu", buf, 0x12u);
     }
 
-    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start event length %u expected %lu", objc_msgSend(v8, "length"), 5];
+    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start event length %u expected %lu", objc_msgSend(eventCopy, "length"), 5];
     v14 = v17;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_28;
     }
 
-    v18 = *a5;
+    v18 = *error;
     v19 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v21 = *MEMORY[0x277CCA7E8];
       v43[0] = *MEMORY[0x277CCA450];
@@ -612,7 +612,7 @@ LABEL_17:
       v30 = 2;
 LABEL_27:
       v34 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v30];
-      *a5 = [v19 errorWithDomain:@"ATL" code:6 userInfo:v34];
+      *error = [v19 errorWithDomain:@"ATL" code:6 userInfo:v34];
 
       goto LABEL_28;
     }
@@ -627,9 +627,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v10 = [v8 bytes];
-  v11 = v10;
-  if (*(v10 + 1) != 8)
+  bytes = [eventCopy bytes];
+  v11 = bytes;
+  if (*(bytes + 1) != 8)
   {
     v25 = ATLLogObject();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -642,14 +642,14 @@ LABEL_26:
 
     v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start event got unexpected version 0x%x", *(v11 + 1)];
     v14 = v27;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_28;
     }
 
-    v28 = *a5;
+    v28 = *error;
     v19 = MEMORY[0x277CCA9B8];
-    if (*a5)
+    if (*error)
     {
       v29 = *MEMORY[0x277CCA7E8];
       v39[0] = *MEMORY[0x277CCA450];
@@ -670,7 +670,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!*(v10 + 2))
+  if (!*(bytes + 2))
   {
     v14 = ATLLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -713,7 +713,7 @@ LABEL_21:
   v37[0] = @"EventType";
   v37[1] = @"appletIdentifier";
   v38[0] = @"StartEvent";
-  v38[1] = v9;
+  v38[1] = appletCopy;
   v37[2] = @"Version";
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v11 + 1)];
   v38[2] = v14;
@@ -739,32 +739,32 @@ LABEL_29:
   return v33;
 }
 
-- (id)parseEndEvent:(id)a3 withApplet:(id)a4 withError:(id *)a5
+- (id)parseEndEvent:(id)event withApplet:(id)applet withError:(id *)error
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] <= 8)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] <= 8)
   {
     v10 = ATLLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v8 length];
+      *(&buf + 4) = [eventCopy length];
       _os_log_impl(&dword_22EEF5000, v10, OS_LOG_TYPE_ERROR, "End event length %zu", &buf, 0xCu);
     }
 
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu", objc_msgSend(v8, "length")];
+    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu", objc_msgSend(eventCopy, "length")];
     v12 = v11;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_34;
     }
 
-    v13 = *a5;
+    v13 = *error;
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v16 = *MEMORY[0x277CCA7E8];
       v63[0] = *MEMORY[0x277CCA450];
@@ -791,16 +791,16 @@ LABEL_29:
     v38 = v14;
     v39 = 3;
 LABEL_33:
-    *a5 = [v38 errorWithDomain:@"ATL" code:v39 userInfo:v37];
+    *error = [v38 errorWithDomain:@"ATL" code:v39 userInfo:v37];
 
 LABEL_34:
     v45 = 0;
     goto LABEL_37;
   }
 
-  v21 = [v8 bytes];
-  v22 = v21;
-  if (*(v21 + 1) != 8)
+  bytes = [eventCopy bytes];
+  v22 = bytes;
+  if (*(bytes + 1) != 8)
   {
     v26 = ATLLogObject();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -813,15 +813,15 @@ LABEL_34:
 
     v28 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event got unexpected version 0x%x", *(v22 + 1)];
     v12 = v28;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_34;
     }
 
-    v29 = *a5;
+    v29 = *error;
     v30 = MEMORY[0x277CCA9B8];
     v31 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v32 = *MEMORY[0x277CCA7E8];
       v59[0] = *MEMORY[0x277CCA450];
@@ -850,7 +850,7 @@ LABEL_34:
     goto LABEL_33;
   }
 
-  if (*(v21 + 2) == 1)
+  if (*(bytes + 2) == 1)
   {
     decoderState = self->decoderState;
     v24 = ATLLogObject();
@@ -891,16 +891,16 @@ LABEL_34:
     v42 = 1;
   }
 
-  v12 = [v8 subdataWithRange:{9, objc_msgSend(v8, "length") - 9}];
+  v12 = [eventCopy subdataWithRange:{9, objc_msgSend(eventCopy, "length") - 9}];
   *&buf = [v12 bytes];
   *(&buf + 1) = [v12 length];
-  v44 = [(DreamworksDecoder *)self DecodeEndE1TLV:&buf error:a5];
-  if (v44 && !*a5)
+  v44 = [(DreamworksDecoder *)self DecodeEndE1TLV:&buf error:error];
+  if (v44 && !*error)
   {
     v56[0] = @"EventType";
     v56[1] = @"appletIdentifier";
     v57[0] = @"EndEvent";
-    v57[1] = v9;
+    v57[1] = appletCopy;
     v56[2] = @"Version";
     v55 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v22 + 1)];
     v57[2] = v55;
@@ -943,13 +943,13 @@ LABEL_37:
   return v45;
 }
 
-- (id)DecodeEndE1TLV:(id *)a3 error:(id *)a4
+- (id)DecodeEndE1TLV:(id *)v error:(id *)error
 {
   v69[1] = *MEMORY[0x277D85DE8];
   v52 = 0;
   v53[0] = 0;
   v53[1] = 0;
-  v6 = DERDecodeItemCtx(a3, &v52);
+  v6 = DERDecodeItemCtx(v, &v52);
   if (v6)
   {
     v7 = v6;
@@ -963,12 +963,12 @@ LABEL_37:
 
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode End Event E1 %d", v7];
     v10 = v9;
-    if (a4)
+    if (error)
     {
-      v11 = *a4;
+      v11 = *error;
       v12 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v14 = *MEMORY[0x277CCA7E8];
         v66[0] = *MEMORY[0x277CCA450];
@@ -992,11 +992,11 @@ LABEL_37:
       }
 
       v43 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-      *a4 = [v12 errorWithDomain:@"ATL" code:3 userInfo:v43];
+      *error = [v12 errorWithDomain:@"ATL" code:3 userInfo:v43];
     }
 
 LABEL_27:
-    a4 = 0;
+    error = 0;
     goto LABEL_28;
   }
 
@@ -1014,11 +1014,11 @@ LABEL_27:
     v51 = v52;
     v34 = [v33 initWithFormat:@"Unexpected tag 0x%llx"];
     v35 = v34;
-    if (a4)
+    if (error)
     {
-      v36 = *a4;
+      v36 = *error;
       v37 = MEMORY[0x277CCA9B8];
-      if (*a4)
+      if (*error)
       {
         v38 = *MEMORY[0x277CCA7E8];
         v62[0] = *MEMORY[0x277CCA450];
@@ -1042,10 +1042,10 @@ LABEL_27:
       }
 
       v45 = [v39 dictionaryWithObjects:v40 forKeys:v41 count:v42];
-      *a4 = [v37 errorWithDomain:@"ATL" code:3 userInfo:v45];
+      *error = [v37 errorWithDomain:@"ATL" code:3 userInfo:v45];
     }
 
-    LogBinary(OS_LOG_TYPE_ERROR, "[DreamworksDecoder DecodeEndE1TLV:error:]", 420, a3->var0, a3->var1, @"E1 TLV data", v46, v47, v51);
+    LogBinary(OS_LOG_TYPE_ERROR, "[DreamworksDecoder DecodeEndE1TLV:error:]", 420, v->var0, v->var1, @"E1 TLV data", v46, v47, v51);
     goto LABEL_27;
   }
 
@@ -1065,12 +1065,12 @@ LABEL_27:
 
     v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode E1 contents %d", v20];
     v23 = v22;
-    if (a4)
+    if (error)
     {
-      v24 = *a4;
+      v24 = *error;
       v25 = MEMORY[0x277CCA9B8];
       v26 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v27 = *MEMORY[0x277CCA7E8];
         v54[0] = *MEMORY[0x277CCA450];
@@ -1094,34 +1094,34 @@ LABEL_27:
       }
 
       v50 = [v28 dictionaryWithObjects:v29 forKeys:v30 count:v31];
-      *a4 = [v25 errorWithDomain:@"ATL" code:3 userInfo:v50];
+      *error = [v25 errorWithDomain:@"ATL" code:3 userInfo:v50];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
+    error = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
     if (!*&buf[8])
     {
       goto LABEL_28;
     }
 
     v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:ReadS32BE(buf)];
-    [a4 setObject:v44 forKeyedSubscript:@"ReadOperationInfo"];
+    [error setObject:v44 forKeyedSubscript:@"ReadOperationInfo"];
 
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:ReadS32BE(&v61)];
-    [a4 setObject:v23 forKeyedSubscript:@"WriteOperationInfo"];
+    [error setObject:v23 forKeyedSubscript:@"WriteOperationInfo"];
   }
 
 LABEL_28:
   v48 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v8 = ATLLogObject();
@@ -1133,12 +1133,12 @@ LABEL_28:
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Dreamworks decoder doesn't expect processEndOfTransaction"];
   v10 = v9;
-  if (a7)
+  if (error)
   {
-    v11 = *a7;
+    v11 = *error;
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v14 = *MEMORY[0x277CCA7E8];
       v23[0] = *MEMORY[0x277CCA450];
@@ -1162,27 +1162,27 @@ LABEL_28:
     }
 
     v19 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-    *a7 = [v12 errorWithDomain:@"ATL" code:7 userInfo:v19];
+    *error = [v12 errorWithDomain:@"ATL" code:7 userInfo:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error
 {
-  v10 = a3;
-  v11 = [TransceiverWrapper withTransceiver:a8];
-  v12 = [MEMORY[0x277CBEA90] dataWithHexString:v10];
+  dataCopy = data;
+  v11 = [TransceiverWrapper withTransceiver:transceiver];
+  v12 = [MEMORY[0x277CBEA90] dataWithHexString:dataCopy];
 
   v13 = SelectByNameCmd(v12);
 
-  v14 = [v11 transceiveAndCheckSW:v13 error:a9];
+  v14 = [v11 transceiveAndCheckSW:v13 error:error];
   if (v14)
   {
     v15 = [MEMORY[0x277CBEA90] dataWithIntBE:2163278080];
     v16 = [MEMORY[0x277CBEA90] dataWithIntBE:12582912];
-    v17 = [v11 transceiveAndGetAllData:v15 withGetMoreData:v16 withMoreDataSW:24832 withError:a9];
+    v17 = [v11 transceiveAndGetAllData:v15 withGetMoreData:v16 withMoreDataSW:24832 withError:error];
   }
 
   else

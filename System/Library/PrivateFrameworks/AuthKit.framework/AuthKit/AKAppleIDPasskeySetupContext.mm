@@ -1,58 +1,58 @@
 @interface AKAppleIDPasskeySetupContext
-- (AKAppleIDPasskeySetupContext)initWithAltDSID:(id)a3;
-- (AKAppleIDPasskeySetupContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AKAppleIDPasskeySetupContext)initWithAltDSID:(id)d;
+- (AKAppleIDPasskeySetupContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKAppleIDPasskeySetupContext
 
-- (AKAppleIDPasskeySetupContext)initWithAltDSID:(id)a3
+- (AKAppleIDPasskeySetupContext)initWithAltDSID:(id)d
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, d);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKAppleIDPasskeySetupContext;
   v6 = [(AKAppleIDPasskeySetupContext *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_altDSID, location[0]);
+    objc_storeStrong(&selfCopy->_altDSID, location[0]);
   }
 
-  v5 = MEMORY[0x1E69E5928](v9);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKAppleIDPasskeySetupContext)initWithCoder:(id)a3
+- (AKAppleIDPasskeySetupContext)initWithCoder:(id)coder
 {
-  v22 = &v27;
-  v27 = self;
+  v22 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v27;
-  v27 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v25.receiver = v3;
   v25.super_class = AKAppleIDPasskeySetupContext;
   v23 = [(AKAppleIDPasskeySetupContext *)&v25 init];
-  v27 = v23;
-  objc_storeStrong(&v27, v23);
+  selfCopy = v23;
+  objc_storeStrong(&selfCopy, v23);
   if (v23)
   {
     v14 = location[0];
     v15 = 0x1E696A000uLL;
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
-    altDSID = v27->_altDSID;
-    v27->_altDSID = v4;
+    altDSID = selfCopy->_altDSID;
+    selfCopy->_altDSID = v4;
     MEMORY[0x1E69E5920](altDSID);
     v19 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
@@ -64,42 +64,42 @@
     v20 = &v24;
     v24 = v7;
     v8 = [location[0] decodeObjectOfClasses:v7 forKey:@"_appProvidedData"];
-    appProvidedData = v27->_appProvidedData;
-    v27->_appProvidedData = v8;
+    appProvidedData = selfCopy->_appProvidedData;
+    selfCopy->_appProvidedData = v8;
     MEMORY[0x1E69E5920](appProvidedData);
     objc_storeStrong(v20, v21);
   }
 
-  v11 = &v27;
-  v13 = MEMORY[0x1E69E5928](v27);
+  v11 = &selfCopy;
+  v13 = MEMORY[0x1E69E5928](selfCopy);
   obj = 0;
   objc_storeStrong(location, 0);
   objc_storeStrong(v11, obj);
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_altDSID forKey:@"_altDSID"];
-  [location[0] encodeObject:v4->_appProvidedData forKey:@"_appProvidedData"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_altDSID forKey:@"_altDSID"];
+  [location[0] encodeObject:selfCopy->_appProvidedData forKey:@"_appProvidedData"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v10 = self;
+  selfCopy = self;
   v9[2] = a2;
-  v9[1] = a3;
-  v9[0] = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v3 = [(NSString *)v10->_altDSID copy];
+  v9[1] = zone;
+  v9[0] = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v3 = [(NSString *)selfCopy->_altDSID copy];
   v4 = *(v9[0] + 1);
   *(v9[0] + 1) = v3;
   MEMORY[0x1E69E5920](v4);
-  v5 = [(NSDictionary *)v10->_appProvidedData copy];
+  v5 = [(NSDictionary *)selfCopy->_appProvidedData copy];
   v6 = *(v9[0] + 2);
   *(v9[0] + 2) = v5;
   MEMORY[0x1E69E5920](v6);

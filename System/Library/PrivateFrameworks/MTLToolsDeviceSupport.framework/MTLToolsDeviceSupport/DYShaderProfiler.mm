@@ -1,5 +1,5 @@
 @interface DYShaderProfiler
-+ (id)extractShaderBinaryTextSegment:(id)a3;
++ (id)extractShaderBinaryTextSegment:(id)segment;
 - (DYShaderProfiler)init;
 @end
 
@@ -19,16 +19,16 @@
   return v3;
 }
 
-+ (id)extractShaderBinaryTextSegment:(id)a3
++ (id)extractShaderBinaryTextSegment:(id)segment
 {
-  v3 = a3;
-  v4 = [v3 binary];
-  v5 = [v4 bytes];
+  segmentCopy = segment;
+  binary = [segmentCopy binary];
+  bytes = [binary bytes];
 
-  if (v5)
+  if (bytes)
   {
-    v6 = v5 + 8;
-    for (i = v5[4]; i; --i)
+    v6 = bytes + 8;
+    for (i = bytes[4]; i; --i)
     {
       if (*v6 == 25)
       {
@@ -51,17 +51,17 @@
         }
       }
 
-      v5 = [MEMORY[0x277CBEA90] dataWithBytes:v5 + v9[8] length:v9[6]];
+      bytes = [MEMORY[0x277CBEA90] dataWithBytes:bytes + v9[8] length:v9[6]];
     }
 
     else
     {
 LABEL_12:
-      v5 = 0;
+      bytes = 0;
     }
   }
 
-  return v5;
+  return bytes;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface SHSHeadphoneLevelLimitDescriptionCell
-- (SHSHeadphoneLevelLimitDescriptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (SHSHeadphoneLevelLimitDescriptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation SHSHeadphoneLevelLimitDescriptionCell
 
-- (SHSHeadphoneLevelLimitDescriptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SHSHeadphoneLevelLimitDescriptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = SHSHeadphoneLevelLimitDescriptionCell;
-  v4 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-    v6 = [(SHSHeadphoneLevelLimitDescriptionCell *)v4 detailTextLabel];
-    [v6 setFont:v5];
+    detailTextLabel = [(SHSHeadphoneLevelLimitDescriptionCell *)v4 detailTextLabel];
+    [detailTextLabel setFont:v5];
 
-    v7 = [(SHSHeadphoneLevelLimitDescriptionCell *)v4 detailTextLabel];
-    [v7 setNumberOfLines:0];
+    detailTextLabel2 = [(SHSHeadphoneLevelLimitDescriptionCell *)v4 detailTextLabel];
+    [detailTextLabel2 setNumberOfLines:0];
 
-    v8 = [(SHSHeadphoneLevelLimitDescriptionCell *)v4 detailTextLabel];
-    [v8 setLineBreakMode:0];
+    detailTextLabel3 = [(SHSHeadphoneLevelLimitDescriptionCell *)v4 detailTextLabel];
+    [detailTextLabel3 setLineBreakMode:0];
   }
 
   return v4;
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = SHSHeadphoneLevelLimitDescriptionCell;

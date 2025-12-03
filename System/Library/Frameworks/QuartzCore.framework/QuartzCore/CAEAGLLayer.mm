@@ -1,49 +1,49 @@
 @interface CAEAGLLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
 - (BOOL)isDrawableAvailable;
 - (BOOL)isDrawableAvailableInternal;
 - (BOOL)lowLatency;
 - (BOOL)presentsWithTransaction;
-- (BOOL)shouldArchiveValueForKey:(id)a3;
+- (BOOL)shouldArchiveValueForKey:(id)key;
 - (NSDictionary)drawableProperties;
 - (_EAGLNativeWindowObject)nativeWindow;
 - (double)drawableTimeoutSeconds;
 - (double)inputTime;
 - (unint64_t)maximumDrawableCount;
-- (void)_didCommitLayer:(void *)a3;
+- (void)_didCommitLayer:(void *)layer;
 - (void)_display;
 - (void)dealloc;
-- (void)didChangeValueForKey:(id)a3;
+- (void)didChangeValueForKey:(id)key;
 - (void)discardContents;
-- (void)layerDidBecomeVisible:(BOOL)a3;
-- (void)setDrawableProperties:(id)a3;
-- (void)setDrawableTimeoutSeconds:(double)a3;
-- (void)setInputTime:(double)a3;
-- (void)setLowLatency:(BOOL)a3;
-- (void)setMaximumDrawableCount:(unint64_t)a3;
+- (void)layerDidBecomeVisible:(BOOL)visible;
+- (void)setDrawableProperties:(id)properties;
+- (void)setDrawableTimeoutSeconds:(double)seconds;
+- (void)setInputTime:(double)time;
+- (void)setLowLatency:(BOOL)latency;
+- (void)setMaximumDrawableCount:(unint64_t)count;
 - (void)setPresentsWithTransaction:(BOOL)presentsWithTransaction;
 @end
 
 @implementation CAEAGLLayer
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAEAGLLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setDrawableProperties:(id)a3
+- (void)setDrawableProperties:(id)properties
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = properties;
   CA::Layer::setter(self->super._attr.layer, 0xD0, 3, v3);
 }
 
@@ -84,7 +84,7 @@
   return v5 != 0;
 }
 
-- (void)_didCommitLayer:(void *)a3
+- (void)_didCommitLayer:(void *)layer
 {
   v14 = *MEMORY[0x1E69E9840];
   win = self->_win;
@@ -92,7 +92,7 @@
   {
     if ((*(win + 33) & 4) != 0)
     {
-      v6 = *(a3 + 5);
+      v6 = *(layer + 5);
       if (v6)
       {
         v7 = *(win + 18);
@@ -118,22 +118,22 @@
 
   v12.receiver = self;
   v12.super_class = CAEAGLLayer;
-  [(CALayer *)&v12 _didCommitLayer:a3];
+  [(CALayer *)&v12 _didCommitLayer:layer];
 }
 
 - (void)_display
 {
-  v3 = [(CALayer *)self contents];
+  contents = [(CALayer *)self contents];
 
-  [(CALayer *)self setContents:v3];
+  [(CALayer *)self setContents:contents];
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
   win = self->_win;
   if (win)
   {
-    if (a3)
+    if (visible)
     {
       v4 = 2;
     }
@@ -203,12 +203,12 @@ LABEL_8:
   {
     if (byte_1ED4E9849)
     {
-      v7 = 2;
+      maximumDrawableCount = 2;
     }
 
     else
     {
-      v7 = [(CAEAGLLayer *)self maximumDrawableCount];
+      maximumDrawableCount = [(CAEAGLLayer *)self maximumDrawableCount];
     }
 
     if ((native_window_new(unsigned long)::initialized & 1) == 0)
@@ -252,12 +252,12 @@ LABEL_8:
     *(win + 32) = 1;
     *(win + 29) = dispatch_semaphore_create(0);
     *(win + 60) = 0;
-    v11 = CAImageQueueCreate_(0, v7);
+    v11 = CAImageQueueCreate_(0, maximumDrawableCount);
     if (v11)
     {
       *(v11 + 32) = 0;
       *(win + 18) = v11;
-      *(win + 31) = v7;
+      *(win + 31) = maximumDrawableCount;
       *(win + 21) = 0x3FF0000000000000;
       if (CADeviceSupportsAPT::once != -1)
       {
@@ -355,26 +355,26 @@ LABEL_8:
   return win;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v13 = *MEMORY[0x1E69E9840];
   if (self->_win)
   {
-    if ([a3 isEqualToString:@"opaque"])
+    if ([key isEqualToString:@"opaque"])
     {
-      v5 = [(CALayer *)self isOpaque];
+      isOpaque = [(CALayer *)self isOpaque];
       win = self->_win;
-      v7 = *(win + 256) & 0xFE | v5;
+      v7 = *(win + 256) & 0xFE | isOpaque;
 LABEL_15:
       *(win + 256) = v7;
       goto LABEL_16;
     }
 
-    if ([a3 isEqualToString:@"presentsWithTransaction"])
+    if ([key isEqualToString:@"presentsWithTransaction"])
     {
-      v8 = [(CAEAGLLayer *)self presentsWithTransaction];
+      presentsWithTransaction = [(CAEAGLLayer *)self presentsWithTransaction];
       win = self->_win;
-      if (v8)
+      if (presentsWithTransaction)
       {
         v9 = 4;
       }
@@ -390,11 +390,11 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    if ([a3 isEqualToString:@"lowLatency"])
+    if ([key isEqualToString:@"lowLatency"])
     {
-      v11 = [(CAEAGLLayer *)self lowLatency];
+      lowLatency = [(CAEAGLLayer *)self lowLatency];
       win = self->_win;
-      if (v11)
+      if (lowLatency)
       {
         v9 = 8;
       }
@@ -412,13 +412,13 @@ LABEL_14:
 LABEL_16:
   v12.receiver = self;
   v12.super_class = CAEAGLLayer;
-  [(CAEAGLLayer *)&v12 didChangeValueForKey:a3];
+  [(CAEAGLLayer *)&v12 didChangeValueForKey:key];
 }
 
-- (BOOL)shouldArchiveValueForKey:(id)a3
+- (BOOL)shouldArchiveValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"contents"])
+  if ([key isEqualToString:@"contents"])
   {
     v5 = CAEncodeIOSurfacesAsCGImages;
   }
@@ -427,28 +427,28 @@ LABEL_16:
   {
     v7.receiver = self;
     v7.super_class = CAEAGLLayer;
-    v5 = [(CALayer *)&v7 shouldArchiveValueForKey:a3];
+    v5 = [(CALayer *)&v7 shouldArchiveValueForKey:key];
   }
 
   return v5 & 1;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (([a3 isEqualToString:@"opaque"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"allowsDisplayCompositing"))
+  if (([key isEqualToString:@"opaque"] & 1) != 0 || objc_msgSend(key, "isEqualToString:", @"allowsDisplayCompositing"))
   {
     v5 = MEMORY[0x1E695E4D0];
     return *v5;
   }
 
-  if ([a3 isEqualToString:@"presentsWithTransaction"] || objc_msgSend(a3, "isEqualToString:", @"lowLatency"))
+  if ([key isEqualToString:@"presentsWithTransaction"] || objc_msgSend(key, "isEqualToString:", @"lowLatency"))
   {
     v5 = MEMORY[0x1E695E4C0];
     return *v5;
   }
 
-  if ([a3 isEqualToString:@"maximumDrawableCount"])
+  if ([key isEqualToString:@"maximumDrawableCount"])
   {
     result = +[CAEAGLLayer defaultValueForKey:]::max_buffers;
     if (!+[CAEAGLLayer defaultValueForKey:]::max_buffers)
@@ -470,9 +470,9 @@ LABEL_16:
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___CAEAGLLayer;
-    return objc_msgSendSuper2(&v8, sel_defaultValueForKey_, a3);
+    return objc_msgSendSuper2(&v8, sel_defaultValueForKey_, key);
   }
 
   return result;
@@ -492,12 +492,12 @@ LABEL_16:
   }
 }
 
-- (void)setDrawableTimeoutSeconds:(double)a3
+- (void)setDrawableTimeoutSeconds:(double)seconds
 {
   win = self->_win;
   if (win)
   {
-    *(win + 21) = a3;
+    *(win + 21) = seconds;
   }
 }
 
@@ -515,7 +515,7 @@ LABEL_16:
   }
 }
 
-- (void)setInputTime:(double)a3
+- (void)setInputTime:(double)time
 {
   v7 = *MEMORY[0x1E69E9840];
   win = self->_win;
@@ -536,11 +536,11 @@ LABEL_16:
       }
     }
 
-    *(win + 20) = a3;
+    *(win + 20) = time;
   }
 }
 
-- (void)setLowLatency:(BOOL)a3
+- (void)setLowLatency:(BOOL)latency
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = lowLatency_atom;
@@ -550,8 +550,8 @@ LABEL_16:
     lowLatency_atom = v5;
   }
 
-  v6 = a3;
-  CA::Layer::setter(self->super._attr.layer, v5, 7, &v6);
+  latencyCopy = latency;
+  CA::Layer::setter(self->super._attr.layer, v5, 7, &latencyCopy);
 }
 
 - (BOOL)lowLatency
@@ -569,7 +569,7 @@ LABEL_16:
   return v5 != 0;
 }
 
-- (void)setMaximumDrawableCount:(unint64_t)a3
+- (void)setMaximumDrawableCount:(unint64_t)count
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = maximumDrawableCount_atom;
@@ -579,7 +579,7 @@ LABEL_16:
     maximumDrawableCount_atom = v5;
   }
 
-  *&v6[0] = a3;
+  *&v6[0] = count;
   CA::Layer::setter(self->super._attr.layer, v5, 0xE, v6);
 }
 
@@ -632,10 +632,10 @@ LABEL_16:
   v4 = CATimeWithHostTime(v3);
   while (1)
   {
-    v5 = [(CAEAGLLayer *)self isDrawableAvailableInternal];
+    isDrawableAvailableInternal = [(CAEAGLLayer *)self isDrawableAvailableInternal];
     v6 = mach_absolute_time();
     v7 = CATimeWithHostTime(v6);
-    if (v5 || v7 - v4 > 0.001)
+    if (isDrawableAvailableInternal || v7 - v4 > 0.001)
     {
       break;
     }
@@ -643,7 +643,7 @@ LABEL_16:
     usleep(0x64u);
   }
 
-  return v5;
+  return isDrawableAvailableInternal;
 }
 
 @end

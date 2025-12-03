@@ -18,7 +18,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_70 = v2;
     acceptsTopLevelLeaves___haveChecked_69 = 1;
   }
@@ -35,7 +35,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_72 = v2;
     parsingLeafNode___haveChecked_71 = 1;
   }
@@ -52,7 +52,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_74 = v2;
     parsingWithSubItems___haveChecked_73 = 1;
   }
@@ -69,7 +69,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_76 = v2;
     frontingBasicTypes___haveChecked_75 = 1;
   }
@@ -86,7 +86,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_78 = v2;
     notifyOfUnknownTokens___haveChecked_77 = 1;
   }
@@ -97,7 +97,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -112,7 +112,7 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, v11, v12, 0}];
 
     v13 = +[ASItem parseRuleCache];
-    v14 = NSStringFromClass(a1);
+    v14 = NSStringFromClass(self);
     [v13 setObject:v5 forKey:v14];
   }
 

@@ -1,16 +1,16 @@
 @interface HMDPresenceNotificationConditionDefaultPresenceProvider
-- (id)presenceForHome:(id)a3;
+- (id)presenceForHome:(id)home;
 @end
 
 @implementation HMDPresenceNotificationConditionDefaultPresenceProvider
 
-- (id)presenceForHome:(id)a3
+- (id)presenceForHome:(id)home
 {
-  v3 = [a3 presenceMonitor];
-  v4 = [v3 currentHomePresence];
-  v5 = [v4 serializedIdentifierDictionary];
+  presenceMonitor = [home presenceMonitor];
+  currentHomePresence = [presenceMonitor currentHomePresence];
+  serializedIdentifierDictionary = [currentHomePresence serializedIdentifierDictionary];
 
-  v6 = [[HMDHomePresenceRemote alloc] initWithPresenceByPairingIdentity:v5];
+  v6 = [[HMDHomePresenceRemote alloc] initWithPresenceByPairingIdentity:serializedIdentifierDictionary];
 
   return v6;
 }

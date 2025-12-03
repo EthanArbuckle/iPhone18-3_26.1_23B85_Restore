@@ -1,19 +1,19 @@
 @interface DTOBiometryAlertFactory
-- (id)biometryRequiredAlertWithBiometryType:(int64_t)a3;
+- (id)biometryRequiredAlertWithBiometryType:(int64_t)type;
 @end
 
 @implementation DTOBiometryAlertFactory
 
-- (id)biometryRequiredAlertWithBiometryType:(int64_t)a3
+- (id)biometryRequiredAlertWithBiometryType:(int64_t)type
 {
-  if (LACBiometryTypeFaceID == a3 || LACBiometryTypeTouchID == a3)
+  if (LACBiometryTypeFaceID == type || LACBiometryTypeTouchID == type)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000038FC;
     v12[3] = &unk_1000961C0;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = type;
     v10 = sub_1000038FC(v12);
     [v10 setPreferredStyle:1];
     v4 = [NSBundle bundleForClass:objc_opt_class()];

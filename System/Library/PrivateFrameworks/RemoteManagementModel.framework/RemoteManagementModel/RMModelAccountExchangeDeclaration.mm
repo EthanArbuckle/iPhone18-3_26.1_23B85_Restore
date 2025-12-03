@@ -1,12 +1,12 @@
 @interface RMModelAccountExchangeDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 enabledProtocolTypes:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 enabledProtocolTypes:(id)a5 userIdentityAssetReference:(id)a6 hostName:(id)a7 port:(id)a8 path:(id)a9 externalHostName:(id)a10 externalPort:(id)a11 externalPath:(id)a12 oAuth:(id)a13 authenticationCredentialsAssetReference:(id)a14 authenticationIdentityAssetReference:(id)a15 SMIME:(id)a16 mailServiceActive:(id)a17 lockMailService:(id)a18 contactsServiceActive:(id)a19 lockContactsService:(id)a20 calendarServiceActive:(id)a21 lockCalendarService:(id)a22 remindersServiceActive:(id)a23 lockRemindersService:(id)a24 notesServiceActive:(id)a25 lockNotesService:(id)a26;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier enabledProtocolTypes:(id)types;
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name enabledProtocolTypes:(id)types userIdentityAssetReference:(id)reference hostName:(id)hostName port:(id)port path:(id)path externalHostName:(id)self0 externalPort:(id)self1 externalPath:(id)self2 oAuth:(id)self3 authenticationCredentialsAssetReference:(id)self4 authenticationIdentityAssetReference:(id)self5 SMIME:(id)self6 mailServiceActive:(id)self7 lockMailService:(id)self8 contactsServiceActive:(id)self9 lockContactsService:(id)contactsService calendarServiceActive:(id)calendarServiceActive lockCalendarService:(id)calendarService remindersServiceActive:(id)remindersServiceActive lockRemindersService:(id)remindersService notesServiceActive:(id)notesServiceActive lockNotesService:(id)notesService;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountExchangeDeclaration
@@ -77,81 +77,81 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 enabledProtocolTypes:(id)a5 userIdentityAssetReference:(id)a6 hostName:(id)a7 port:(id)a8 path:(id)a9 externalHostName:(id)a10 externalPort:(id)a11 externalPath:(id)a12 oAuth:(id)a13 authenticationCredentialsAssetReference:(id)a14 authenticationIdentityAssetReference:(id)a15 SMIME:(id)a16 mailServiceActive:(id)a17 lockMailService:(id)a18 contactsServiceActive:(id)a19 lockContactsService:(id)a20 calendarServiceActive:(id)a21 lockCalendarService:(id)a22 remindersServiceActive:(id)a23 lockRemindersService:(id)a24 notesServiceActive:(id)a25 lockNotesService:(id)a26
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name enabledProtocolTypes:(id)types userIdentityAssetReference:(id)reference hostName:(id)hostName port:(id)port path:(id)path externalHostName:(id)self0 externalPort:(id)self1 externalPath:(id)self2 oAuth:(id)self3 authenticationCredentialsAssetReference:(id)self4 authenticationIdentityAssetReference:(id)self5 SMIME:(id)self6 mailServiceActive:(id)self7 lockMailService:(id)self8 contactsServiceActive:(id)self9 lockContactsService:(id)contactsService calendarServiceActive:(id)calendarServiceActive lockCalendarService:(id)calendarService remindersServiceActive:(id)remindersServiceActive lockRemindersService:(id)remindersService notesServiceActive:(id)notesServiceActive lockNotesService:(id)notesService
 {
-  v26 = a3;
-  v74 = a26;
-  v27 = a25;
-  v28 = a24;
-  v73 = a23;
-  v29 = a22;
-  v30 = a21;
-  v72 = a20;
-  v71 = a19;
-  v70 = a18;
-  v69 = a17;
-  v68 = a16;
-  v67 = a15;
-  v66 = a14;
-  v65 = a13;
-  v64 = a12;
-  v62 = a11;
-  v57 = a10;
-  v54 = a9;
-  v56 = a8;
-  v31 = a7;
-  v32 = a6;
-  v33 = a5;
-  v34 = a4;
+  identifierCopy = identifier;
+  notesServiceCopy = notesService;
+  notesServiceActiveCopy = notesServiceActive;
+  remindersServiceCopy = remindersService;
+  remindersServiceActiveCopy = remindersServiceActive;
+  calendarServiceCopy = calendarService;
+  calendarServiceActiveCopy = calendarServiceActive;
+  contactsServiceCopy = contactsService;
+  serviceActiveCopy = serviceActive;
+  serviceCopy = service;
+  activeCopy = active;
+  eCopy = e;
+  identityAssetReferenceCopy = identityAssetReference;
+  assetReferenceCopy = assetReference;
+  authCopy = auth;
+  externalPathCopy = externalPath;
+  externalPortCopy = externalPort;
+  externalHostNameCopy = externalHostName;
+  pathCopy = path;
+  portCopy = port;
+  hostNameCopy = hostName;
+  referenceCopy = reference;
+  typesCopy = types;
+  nameCopy = name;
   v35 = objc_opt_new();
   [v35 setDeclarationType:@"com.apple.configuration.account.exchange"];
-  if (v26)
+  if (identifierCopy)
   {
-    [v35 setDeclarationIdentifier:v26];
+    [v35 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v36 = [MEMORY[0x277CCAD78] UUID];
-    [v36 UUIDString];
-    v61 = v30;
-    v37 = v29;
-    v38 = v28;
-    v40 = v39 = v27;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [uUID UUIDString];
+    v61 = calendarServiceActiveCopy;
+    v37 = calendarServiceCopy;
+    v38 = remindersServiceCopy;
+    v40 = v39 = notesServiceActiveCopy;
     [v35 setDeclarationIdentifier:v40];
 
-    v27 = v39;
-    v28 = v38;
-    v29 = v37;
-    v30 = v61;
+    notesServiceActiveCopy = v39;
+    remindersServiceCopy = v38;
+    calendarServiceCopy = v37;
+    calendarServiceActiveCopy = v61;
 
-    v26 = 0;
+    identifierCopy = 0;
   }
 
-  [v35 setPayloadVisibleName:v34];
+  [v35 setPayloadVisibleName:nameCopy];
 
-  [v35 setPayloadEnabledProtocolTypes:v33];
-  [v35 setPayloadUserIdentityAssetReference:v32];
+  [v35 setPayloadEnabledProtocolTypes:typesCopy];
+  [v35 setPayloadUserIdentityAssetReference:referenceCopy];
 
-  [v35 setPayloadHostName:v31];
-  [v35 setPayloadPort:v56];
+  [v35 setPayloadHostName:hostNameCopy];
+  [v35 setPayloadPort:portCopy];
 
-  [v35 setPayloadPath:v54];
-  [v35 setPayloadExternalHostName:v57];
+  [v35 setPayloadPath:pathCopy];
+  [v35 setPayloadExternalHostName:externalHostNameCopy];
 
-  [v35 setPayloadExternalPort:v62];
-  [v35 setPayloadExternalPath:v64];
+  [v35 setPayloadExternalPort:externalPortCopy];
+  [v35 setPayloadExternalPath:externalPathCopy];
 
-  [v35 setPayloadOAuth:v65];
-  [v35 setPayloadAuthenticationCredentialsAssetReference:v66];
+  [v35 setPayloadOAuth:authCopy];
+  [v35 setPayloadAuthenticationCredentialsAssetReference:assetReferenceCopy];
 
-  [v35 setPayloadAuthenticationIdentityAssetReference:v67];
-  [v35 setPayloadSMIME:v68];
+  [v35 setPayloadAuthenticationIdentityAssetReference:identityAssetReferenceCopy];
+  [v35 setPayloadSMIME:eCopy];
 
   v41 = MEMORY[0x277CBEC38];
-  if (v69)
+  if (activeCopy)
   {
-    v42 = v69;
+    v42 = activeCopy;
   }
 
   else
@@ -162,9 +162,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
   [v35 setPayloadMailServiceActive:v42];
 
   v43 = MEMORY[0x277CBEC28];
-  if (v70)
+  if (serviceCopy)
   {
-    v44 = v70;
+    v44 = serviceCopy;
   }
 
   else
@@ -174,9 +174,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
 
   [v35 setPayloadLockMailService:v44];
 
-  if (v71)
+  if (serviceActiveCopy)
   {
-    v45 = v71;
+    v45 = serviceActiveCopy;
   }
 
   else
@@ -186,9 +186,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
 
   [v35 setPayloadContactsServiceActive:v45];
 
-  if (v72)
+  if (contactsServiceCopy)
   {
-    v46 = v72;
+    v46 = contactsServiceCopy;
   }
 
   else
@@ -198,9 +198,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
 
   [v35 setPayloadLockContactsService:v46];
 
-  if (v30)
+  if (calendarServiceActiveCopy)
   {
-    v47 = v30;
+    v47 = calendarServiceActiveCopy;
   }
 
   else
@@ -210,9 +210,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
 
   [v35 setPayloadCalendarServiceActive:v47];
 
-  if (v29)
+  if (calendarServiceCopy)
   {
-    v48 = v29;
+    v48 = calendarServiceCopy;
   }
 
   else
@@ -222,9 +222,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
 
   [v35 setPayloadLockCalendarService:v48];
 
-  if (v73)
+  if (remindersServiceActiveCopy)
   {
-    v49 = v73;
+    v49 = remindersServiceActiveCopy;
   }
 
   else
@@ -234,9 +234,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
 
   [v35 setPayloadRemindersServiceActive:v49];
 
-  if (v28)
+  if (remindersServiceCopy)
   {
-    v50 = v28;
+    v50 = remindersServiceCopy;
   }
 
   else
@@ -246,9 +246,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
 
   [v35 setPayloadLockRemindersService:v50];
 
-  if (v27)
+  if (notesServiceActiveCopy)
   {
-    v51 = v27;
+    v51 = notesServiceActiveCopy;
   }
 
   else
@@ -258,9 +258,9 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
 
   [v35 setPayloadNotesServiceActive:v51];
 
-  if (v74)
+  if (notesServiceCopy)
   {
-    v52 = v74;
+    v52 = notesServiceCopy;
   }
 
   else
@@ -275,25 +275,25 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
   return v35;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 enabledProtocolTypes:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier enabledProtocolTypes:(id)types
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  typesCopy = types;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.account.exchange"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadEnabledProtocolTypes:v6];
+  [v7 setPayloadEnabledProtocolTypes:typesCopy];
 
   [v7 updateServerToken];
 
@@ -338,12 +338,12 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelAccountExchangeDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -351,29 +351,29 @@ void __52__RMModelAccountExchangeDeclaration_assetReferences__block_invoke()
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  v14 = [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"EnabledProtocolTypes" forKeyPath:@"payloadEnabledProtocolTypes" validator:&__block_literal_global_166 isRequired:1 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"UserIdentityAssetReference" forKeyPath:@"payloadUserIdentityAssetReference" isRequired:0 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:0 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Path" forKeyPath:@"payloadPath" isRequired:0 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"ExternalHostName" forKeyPath:@"payloadExternalHostName" isRequired:0 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"ExternalPort" forKeyPath:@"payloadExternalPort" isRequired:0 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"External Path" forKeyPath:@"payloadExternalPath" isRequired:0 defaultValue:0 error:a5]
-     && (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"OAuth" forKeyPath:@"payloadOAuth" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5])
-     && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:a5]
-     && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"AuthenticationIdentityAssetReference" forKeyPath:@"payloadAuthenticationIdentityAssetReference" isRequired:0 defaultValue:0 error:a5]
-     && (LOWORD(v17) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"SMIME" forKeyPath:@"payloadSMIME" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:a5])
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"MailServiceActive" forKeyPath:@"payloadMailServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"LockMailService" forKeyPath:@"payloadLockMailService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"ContactsServiceActive" forKeyPath:@"payloadContactsServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"LockContactsService" forKeyPath:@"payloadLockContactsService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"CalendarServiceActive" forKeyPath:@"payloadCalendarServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"LockCalendarService" forKeyPath:@"payloadLockCalendarService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"RemindersServiceActive" forKeyPath:@"payloadRemindersServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"LockRemindersService" forKeyPath:@"payloadLockRemindersService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"NotesServiceActive" forKeyPath:@"payloadNotesServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]
-     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"LockNotesService" forKeyPath:@"payloadLockNotesService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5];
+  v14 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"EnabledProtocolTypes" forKeyPath:@"payloadEnabledProtocolTypes" validator:&__block_literal_global_166 isRequired:1 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"UserIdentityAssetReference" forKeyPath:@"payloadUserIdentityAssetReference" isRequired:0 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:0 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Path" forKeyPath:@"payloadPath" isRequired:0 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ExternalHostName" forKeyPath:@"payloadExternalHostName" isRequired:0 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"ExternalPort" forKeyPath:@"payloadExternalPort" isRequired:0 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"External Path" forKeyPath:@"payloadExternalPath" isRequired:0 defaultValue:0 error:error]
+     && (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"OAuth" forKeyPath:@"payloadOAuth" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error])
+     && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:error]
+     && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationIdentityAssetReference" forKeyPath:@"payloadAuthenticationIdentityAssetReference" isRequired:0 defaultValue:0 error:error]
+     && (LOWORD(v17) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"SMIME" forKeyPath:@"payloadSMIME" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:error])
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"MailServiceActive" forKeyPath:@"payloadMailServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"LockMailService" forKeyPath:@"payloadLockMailService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"ContactsServiceActive" forKeyPath:@"payloadContactsServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"LockContactsService" forKeyPath:@"payloadLockContactsService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"CalendarServiceActive" forKeyPath:@"payloadCalendarServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"LockCalendarService" forKeyPath:@"payloadLockCalendarService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"RemindersServiceActive" forKeyPath:@"payloadRemindersServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"LockRemindersService" forKeyPath:@"payloadLockRemindersService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"NotesServiceActive" forKeyPath:@"payloadNotesServiceActive" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]
+     && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"LockNotesService" forKeyPath:@"payloadLockNotesService" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error];
 
   return v14;
 }
@@ -387,100 +387,100 @@ uint64_t __87__RMModelAccountExchangeDeclaration_loadPayloadFromDictionary_seria
   return isKindOfClass & 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelAccountExchangeDeclaration *)self payloadVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"VisibleName" value:v6 isRequired:0 defaultValue:0];
+  payloadVisibleName = [(RMModelAccountExchangeDeclaration *)self payloadVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"VisibleName" value:payloadVisibleName isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAccountExchangeDeclaration *)self payloadEnabledProtocolTypes];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"EnabledProtocolTypes" value:v7 itemSerializer:&__block_literal_global_236 isRequired:1 defaultValue:0];
+  payloadEnabledProtocolTypes = [(RMModelAccountExchangeDeclaration *)self payloadEnabledProtocolTypes];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"EnabledProtocolTypes" value:payloadEnabledProtocolTypes itemSerializer:&__block_literal_global_236 isRequired:1 defaultValue:0];
 
-  v8 = [(RMModelAccountExchangeDeclaration *)self payloadUserIdentityAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"UserIdentityAssetReference" value:v8 isRequired:0 defaultValue:0];
+  payloadUserIdentityAssetReference = [(RMModelAccountExchangeDeclaration *)self payloadUserIdentityAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"UserIdentityAssetReference" value:payloadUserIdentityAssetReference isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelAccountExchangeDeclaration *)self payloadHostName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"HostName" value:v9 isRequired:0 defaultValue:0];
+  payloadHostName = [(RMModelAccountExchangeDeclaration *)self payloadHostName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"HostName" value:payloadHostName isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelAccountExchangeDeclaration *)self payloadPort];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"Port" value:v10 isRequired:0 defaultValue:0];
+  payloadPort = [(RMModelAccountExchangeDeclaration *)self payloadPort];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"Port" value:payloadPort isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelAccountExchangeDeclaration *)self payloadPath];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Path" value:v11 isRequired:0 defaultValue:0];
+  payloadPath = [(RMModelAccountExchangeDeclaration *)self payloadPath];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Path" value:payloadPath isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelAccountExchangeDeclaration *)self payloadExternalHostName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ExternalHostName" value:v12 isRequired:0 defaultValue:0];
+  payloadExternalHostName = [(RMModelAccountExchangeDeclaration *)self payloadExternalHostName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ExternalHostName" value:payloadExternalHostName isRequired:0 defaultValue:0];
 
-  v13 = [(RMModelAccountExchangeDeclaration *)self payloadExternalPort];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"ExternalPort" value:v13 isRequired:0 defaultValue:0];
+  payloadExternalPort = [(RMModelAccountExchangeDeclaration *)self payloadExternalPort];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"ExternalPort" value:payloadExternalPort isRequired:0 defaultValue:0];
 
-  v14 = [(RMModelAccountExchangeDeclaration *)self payloadExternalPath];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"External Path" value:v14 isRequired:0 defaultValue:0];
+  payloadExternalPath = [(RMModelAccountExchangeDeclaration *)self payloadExternalPath];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"External Path" value:payloadExternalPath isRequired:0 defaultValue:0];
 
-  v15 = [(RMModelAccountExchangeDeclaration *)self payloadOAuth];
+  payloadOAuth = [(RMModelAccountExchangeDeclaration *)self payloadOAuth];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __62__RMModelAccountExchangeDeclaration_serializePayloadWithType___block_invoke_2;
   v35[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v36 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"OAuth" value:v15 dictSerializer:v35 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"OAuth" value:payloadOAuth dictSerializer:v35 isRequired:0 defaultValue:0];
 
-  v16 = [(RMModelAccountExchangeDeclaration *)self payloadAuthenticationCredentialsAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AuthenticationCredentialsAssetReference" value:v16 isRequired:0 defaultValue:0];
+  payloadAuthenticationCredentialsAssetReference = [(RMModelAccountExchangeDeclaration *)self payloadAuthenticationCredentialsAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AuthenticationCredentialsAssetReference" value:payloadAuthenticationCredentialsAssetReference isRequired:0 defaultValue:0];
 
-  v17 = [(RMModelAccountExchangeDeclaration *)self payloadAuthenticationIdentityAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AuthenticationIdentityAssetReference" value:v17 isRequired:0 defaultValue:0];
+  payloadAuthenticationIdentityAssetReference = [(RMModelAccountExchangeDeclaration *)self payloadAuthenticationIdentityAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AuthenticationIdentityAssetReference" value:payloadAuthenticationIdentityAssetReference isRequired:0 defaultValue:0];
 
-  v18 = [(RMModelAccountExchangeDeclaration *)self payloadSMIME];
+  payloadSMIME = [(RMModelAccountExchangeDeclaration *)self payloadSMIME];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __62__RMModelAccountExchangeDeclaration_serializePayloadWithType___block_invoke_3;
   v33[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v34 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"SMIME" value:v18 dictSerializer:v33 isRequired:0 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"SMIME" value:payloadSMIME dictSerializer:v33 isRequired:0 defaultValue:0];
 
-  v19 = [(RMModelAccountExchangeDeclaration *)self payloadMailServiceActive];
+  payloadMailServiceActive = [(RMModelAccountExchangeDeclaration *)self payloadMailServiceActive];
   v20 = MEMORY[0x277CBEC38];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"MailServiceActive" value:v19 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"MailServiceActive" value:payloadMailServiceActive isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v21 = [(RMModelAccountExchangeDeclaration *)self payloadLockMailService];
+  payloadLockMailService = [(RMModelAccountExchangeDeclaration *)self payloadLockMailService];
   v22 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockMailService" value:v21 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockMailService" value:payloadLockMailService isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v23 = [(RMModelAccountExchangeDeclaration *)self payloadContactsServiceActive];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"ContactsServiceActive" value:v23 isRequired:0 defaultValue:v20];
+  payloadContactsServiceActive = [(RMModelAccountExchangeDeclaration *)self payloadContactsServiceActive];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"ContactsServiceActive" value:payloadContactsServiceActive isRequired:0 defaultValue:v20];
 
-  v24 = [(RMModelAccountExchangeDeclaration *)self payloadLockContactsService];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockContactsService" value:v24 isRequired:0 defaultValue:v22];
+  payloadLockContactsService = [(RMModelAccountExchangeDeclaration *)self payloadLockContactsService];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockContactsService" value:payloadLockContactsService isRequired:0 defaultValue:v22];
 
-  v25 = [(RMModelAccountExchangeDeclaration *)self payloadCalendarServiceActive];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"CalendarServiceActive" value:v25 isRequired:0 defaultValue:v20];
+  payloadCalendarServiceActive = [(RMModelAccountExchangeDeclaration *)self payloadCalendarServiceActive];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"CalendarServiceActive" value:payloadCalendarServiceActive isRequired:0 defaultValue:v20];
 
-  v26 = [(RMModelAccountExchangeDeclaration *)self payloadLockCalendarService];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockCalendarService" value:v26 isRequired:0 defaultValue:v22];
+  payloadLockCalendarService = [(RMModelAccountExchangeDeclaration *)self payloadLockCalendarService];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockCalendarService" value:payloadLockCalendarService isRequired:0 defaultValue:v22];
 
-  v27 = [(RMModelAccountExchangeDeclaration *)self payloadRemindersServiceActive];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"RemindersServiceActive" value:v27 isRequired:0 defaultValue:v20];
+  payloadRemindersServiceActive = [(RMModelAccountExchangeDeclaration *)self payloadRemindersServiceActive];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"RemindersServiceActive" value:payloadRemindersServiceActive isRequired:0 defaultValue:v20];
 
-  v28 = [(RMModelAccountExchangeDeclaration *)self payloadLockRemindersService];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockRemindersService" value:v28 isRequired:0 defaultValue:v22];
+  payloadLockRemindersService = [(RMModelAccountExchangeDeclaration *)self payloadLockRemindersService];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockRemindersService" value:payloadLockRemindersService isRequired:0 defaultValue:v22];
 
-  v29 = [(RMModelAccountExchangeDeclaration *)self payloadNotesServiceActive];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"NotesServiceActive" value:v29 isRequired:0 defaultValue:v20];
+  payloadNotesServiceActive = [(RMModelAccountExchangeDeclaration *)self payloadNotesServiceActive];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"NotesServiceActive" value:payloadNotesServiceActive isRequired:0 defaultValue:v20];
 
-  v30 = [(RMModelAccountExchangeDeclaration *)self payloadLockNotesService];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockNotesService" value:v30 isRequired:0 defaultValue:v22];
+  payloadLockNotesService = [(RMModelAccountExchangeDeclaration *)self payloadLockNotesService];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"LockNotesService" value:payloadLockNotesService isRequired:0 defaultValue:v22];
 
   v31 = [v5 copy];
 
   return v31;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v52.receiver = self;
   v52.super_class = RMModelAccountExchangeDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v52 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v52 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadVisibleName copy];
   v6 = v4[6];
   v4[6] = v5;

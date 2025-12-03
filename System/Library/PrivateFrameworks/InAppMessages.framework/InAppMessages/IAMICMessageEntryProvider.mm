@@ -2,7 +2,7 @@
 - (IAMICMessageEntryProvider)init;
 - (IAMMessageEntryProviderDelegate)delegate;
 - (void)_handleMessagesDidChangeNotification;
-- (void)removeMessageEntryWithIdentifier:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
+- (void)removeMessageEntryWithIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier completion:(id)completion;
 @end
 
 @implementation IAMICMessageEntryProvider
@@ -14,33 +14,33 @@
   v2 = [(IAMICMessageEntryProvider *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D7FAE0] sharedManager];
+    mEMORY[0x277D7FAE0] = [MEMORY[0x277D7FAE0] sharedManager];
     iTunesCloudIAMManager = v2->_iTunesCloudIAMManager;
-    v2->_iTunesCloudIAMManager = v3;
+    v2->_iTunesCloudIAMManager = mEMORY[0x277D7FAE0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleMessagesDidChangeNotification name:*MEMORY[0x277D7F928] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleMessagesDidChangeNotification name:*MEMORY[0x277D7F928] object:0];
   }
 
   return v2;
 }
 
-- (void)removeMessageEntryWithIdentifier:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)removeMessageEntryWithIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   iTunesCloudIAMManager = self->_iTunesCloudIAMManager;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __93__IAMICMessageEntryProvider_removeMessageEntryWithIdentifier_forBundleIdentifier_completion___block_invoke;
   v13[3] = &unk_2797A7048;
-  v12 = v10;
+  v12 = completionCopy;
   v14 = v12;
   objc_copyWeak(&v15, &location);
   v13[4] = self;
-  [(ICInAppMessageManager *)iTunesCloudIAMManager removeMessageEntryWithIdentifier:v8 forBundleIdentifier:v9 completion:v13];
+  [(ICInAppMessageManager *)iTunesCloudIAMManager removeMessageEntryWithIdentifier:identifierCopy forBundleIdentifier:bundleIdentifierCopy completion:v13];
   objc_destroyWeak(&v15);
 
   objc_destroyWeak(&location);
@@ -72,17 +72,17 @@ void __93__IAMICMessageEntryProvider_removeMessageEntryWithIdentifier_forBundleI
 
 - (void)_handleMessagesDidChangeNotification
 {
-  v3 = [(IAMICMessageEntryProvider *)self delegate];
-  if (v3)
+  delegate = [(IAMICMessageEntryProvider *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(IAMICMessageEntryProvider *)self delegate];
+    v4 = delegate;
+    delegate2 = [(IAMICMessageEntryProvider *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(IAMICMessageEntryProvider *)self delegate];
-      [v7 messageEntriesDidChange:self];
+      delegate3 = [(IAMICMessageEntryProvider *)self delegate];
+      [delegate3 messageEntriesDidChange:self];
     }
   }
 }

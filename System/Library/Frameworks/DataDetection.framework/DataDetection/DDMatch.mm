@@ -1,33 +1,33 @@
 @interface DDMatch
-+ (id)resultWithDDScannerResult:(id)a3 originalString:(id)a4;
-- (DDMatch)initWithDDScannerResult:(id)a3;
-- (DDMatch)initWithDDScannerResult:(id)a3 originalString:(id)a4;
++ (id)resultWithDDScannerResult:(id)result originalString:(id)string;
+- (DDMatch)initWithDDScannerResult:(id)result;
+- (DDMatch)initWithDDScannerResult:(id)result originalString:(id)string;
 - (_NSRange)matchedRange;
-- (void)commonInitWithDDScannerResult:(id)a3 originalString:(id)a4;
+- (void)commonInitWithDDScannerResult:(id)result originalString:(id)string;
 @end
 
 @implementation DDMatch
 
-+ (id)resultWithDDScannerResult:(id)a3 originalString:(id)a4
++ (id)resultWithDDScannerResult:(id)result originalString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  resultCopy = result;
+  stringCopy = string;
+  if (resultCopy)
   {
-    v7 = [v5 category];
+    category = [resultCopy category];
     v8 = 0;
-    if (v7 <= 3)
+    if (category <= 3)
     {
-      if (v7 != 1)
+      if (category != 1)
       {
-        if (v7 == 2)
+        if (category == 2)
         {
           v9 = DDMatchPhoneNumber;
         }
 
         else
         {
-          if (v7 != 3)
+          if (category != 3)
           {
             goto LABEL_24;
           }
@@ -38,8 +38,8 @@
         goto LABEL_16;
       }
 
-      v10 = [v5 type];
-      v11 = [v10 isEqualToString:*MEMORY[0x277D040C8]];
+      type = [resultCopy type];
+      v11 = [type isEqualToString:*MEMORY[0x277D040C8]];
       v12 = off_278A447F8;
       if (!v11)
       {
@@ -49,17 +49,17 @@
       goto LABEL_21;
     }
 
-    if (v7 == 4)
+    if (category == 4)
     {
       v9 = DDMatchCalendarEvent;
 LABEL_16:
-      v8 = [[v9 alloc] initWithDDScannerResult:v5];
+      v8 = [[v9 alloc] initWithDDScannerResult:resultCopy];
       goto LABEL_24;
     }
 
-    if (v7 != 5)
+    if (category != 5)
     {
-      if (v7 != 6)
+      if (category != 6)
       {
         goto LABEL_24;
       }
@@ -68,17 +68,17 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v10 = [v5 type];
-    if ([v10 isEqualToString:*MEMORY[0x277D041B0]])
+    type = [resultCopy type];
+    if ([type isEqualToString:*MEMORY[0x277D041B0]])
     {
       v12 = &off_278A44828;
 LABEL_21:
-      v8 = [objc_alloc(*v12) initWithDDScannerResult:v5];
+      v8 = [objc_alloc(*v12) initWithDDScannerResult:resultCopy];
 
       goto LABEL_24;
     }
 
-    if ([v10 isEqualToString:*MEMORY[0x277D040D0]])
+    if ([type isEqualToString:*MEMORY[0x277D040D0]])
     {
       v12 = off_278A44800;
       goto LABEL_21;
@@ -91,15 +91,15 @@ LABEL_24:
   return v8;
 }
 
-- (void)commonInitWithDDScannerResult:(id)a3 originalString:(id)a4
+- (void)commonInitWithDDScannerResult:(id)result originalString:(id)string
 {
-  v5 = a3;
-  v6 = [v5 urlificationRange];
+  resultCopy = result;
+  urlificationRange = [resultCopy urlificationRange];
   v8 = v7;
-  self->_matchedRange.location = v6;
+  self->_matchedRange.location = urlificationRange;
   self->_matchedRange.length = v7;
-  v9 = v6 - [v5 range];
-  [v5 matchedString];
+  v9 = urlificationRange - [resultCopy range];
+  [resultCopy matchedString];
   if (v9)
     v14 = {;
 
@@ -118,32 +118,32 @@ LABEL_24:
   }
 }
 
-- (DDMatch)initWithDDScannerResult:(id)a3
+- (DDMatch)initWithDDScannerResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8.receiver = self;
   v8.super_class = DDMatch;
   v5 = [(DDMatch *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DDMatch *)v5 commonInitWithDDScannerResult:v4 originalString:0];
+    [(DDMatch *)v5 commonInitWithDDScannerResult:resultCopy originalString:0];
   }
 
   return v6;
 }
 
-- (DDMatch)initWithDDScannerResult:(id)a3 originalString:(id)a4
+- (DDMatch)initWithDDScannerResult:(id)result originalString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = DDMatch;
   v8 = [(DDMatch *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(DDMatch *)v8 commonInitWithDDScannerResult:v6 originalString:v7];
+    [(DDMatch *)v8 commonInitWithDDScannerResult:resultCopy originalString:stringCopy];
   }
 
   return v9;

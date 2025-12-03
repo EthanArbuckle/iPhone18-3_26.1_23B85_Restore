@@ -2,8 +2,8 @@
 - (HUCameraErrorView)init;
 - (NSString)descriptionText;
 - (NSString)titleText;
-- (void)setDescriptionText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setDescriptionText:(id)text;
+- (void)setTitleText:(id)text;
 @end
 
 @implementation HUCameraErrorView
@@ -20,23 +20,23 @@
     [(HUCameraErrorView *)v2 setAxis:1];
     [(HUCameraErrorView *)v3 setAlignment:3];
     [(HUCameraErrorView *)v3 setSpacing:20.0];
-    v4 = [MEMORY[0x277D755B8] hu_cameraErrorImage];
-    v5 = [v4 imageWithRenderingMode:2];
+    hu_cameraErrorImage = [MEMORY[0x277D755B8] hu_cameraErrorImage];
+    v5 = [hu_cameraErrorImage imageWithRenderingMode:2];
 
     v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v5];
     imageView = v3->_imageView;
     v3->_imageView = v6;
 
     [(UIImageView *)v3->_imageView setAlpha:0.5];
-    v8 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UIImageView *)v3->_imageView setTintColor:v8];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UIImageView *)v3->_imageView setTintColor:systemGrayColor];
 
     [(UIImageView *)v3->_imageView setContentMode:1];
-    v9 = [(UIImageView *)v3->_imageView widthAnchor];
-    v10 = [v9 constraintEqualToConstant:61.0];
+    widthAnchor = [(UIImageView *)v3->_imageView widthAnchor];
+    v10 = [widthAnchor constraintEqualToConstant:61.0];
     v22[0] = v10;
-    v11 = [(UIImageView *)v3->_imageView heightAnchor];
-    v12 = [v11 constraintEqualToConstant:50.0];
+    heightAnchor = [(UIImageView *)v3->_imageView heightAnchor];
+    v12 = [heightAnchor constraintEqualToConstant:50.0];
     v22[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
 
@@ -67,55 +67,55 @@
 
 - (NSString)titleText
 {
-  v2 = [(HUCameraErrorView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(HUCameraErrorView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUCameraErrorView *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(HUCameraErrorView *)self titleLabel];
+  [titleLabel setText:textCopy];
 
-  v6 = [(HUCameraErrorView *)self titleLabel];
-  v7 = v6;
-  if (v4)
+  titleLabel2 = [(HUCameraErrorView *)self titleLabel];
+  v7 = titleLabel2;
+  if (textCopy)
   {
-    [(HUCameraErrorView *)self addArrangedSubview:v6];
+    [(HUCameraErrorView *)self addArrangedSubview:titleLabel2];
   }
 
   else
   {
-    [v6 removeFromSuperview];
+    [titleLabel2 removeFromSuperview];
   }
 }
 
 - (NSString)descriptionText
 {
-  v2 = [(HUCameraErrorView *)self descriptionLabel];
-  v3 = [v2 text];
+  descriptionLabel = [(HUCameraErrorView *)self descriptionLabel];
+  text = [descriptionLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUCameraErrorView *)self descriptionLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  descriptionLabel = [(HUCameraErrorView *)self descriptionLabel];
+  [descriptionLabel setText:textCopy];
 
-  v6 = [(HUCameraErrorView *)self descriptionLabel];
-  v7 = v6;
-  if (v4)
+  descriptionLabel2 = [(HUCameraErrorView *)self descriptionLabel];
+  v7 = descriptionLabel2;
+  if (textCopy)
   {
-    [(HUCameraErrorView *)self addArrangedSubview:v6];
+    [(HUCameraErrorView *)self addArrangedSubview:descriptionLabel2];
   }
 
   else
   {
-    [v6 removeFromSuperview];
+    [descriptionLabel2 removeFromSuperview];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface CPLBrokenScope
 - (BOOL)hasEngineRecoveryMechanism;
-- (CPLBrokenScope)initWithEngineScope:(id)a3 engineLibrary:(id)a4;
+- (CPLBrokenScope)initWithEngineScope:(id)scope engineLibrary:(id)library;
 - (CPLEngineLibrary)engineLibrary;
 - (NSString)alertMessage;
 - (NSString)alternateRecoverDescription;
@@ -9,8 +9,8 @@
 - (NSString)radarTitle;
 - (NSURL)createRadarURL;
 - (NSURL)readMoreURL;
-- (void)_showAlertWithMessage:(id)a3 readMoreURL:(id)a4 createRadarURL:(id)a5 showsRecoverButton:(BOOL)a6;
-- (void)recoverUsingEngineWithCompletionHandler:(id)a3;
+- (void)_showAlertWithMessage:(id)message readMoreURL:(id)l createRadarURL:(id)rL showsRecoverButton:(BOOL)button;
+- (void)recoverUsingEngineWithCompletionHandler:(id)handler;
 - (void)showAlertToUser;
 @end
 
@@ -23,11 +23,11 @@
   return WeakRetained;
 }
 
-- (void)recoverUsingEngineWithCompletionHandler:(id)a3
+- (void)recoverUsingEngineWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[CPLErrors notImplementedError];
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
 - (BOOL)hasEngineRecoveryMechanism
@@ -37,8 +37,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"CPLProposeBrokenScopeRecovery"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"CPLProposeBrokenScopeRecovery"];
 
   return v3;
 }
@@ -112,19 +112,19 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_showAlertWithMessage:(id)a3 readMoreURL:(id)a4 createRadarURL:(id)a5 showsRecoverButton:(BOOL)a6
+- (void)_showAlertWithMessage:(id)message readMoreURL:(id)l createRadarURL:(id)rL showsRecoverButton:(BOOL)button
 {
-  v6 = a6;
+  buttonCopy = button;
   v43[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  messageCopy = message;
+  lCopy = l;
+  rLCopy = rL;
   dispatch_assert_queue_V2(self->_queue);
   v13 = *MEMORY[0x1E695EE60];
   v42[0] = *MEMORY[0x1E695EE58];
   v42[1] = v13;
   v43[0] = @"iCloud Photo Library";
-  v43[1] = v10;
+  v43[1] = messageCopy;
   v14 = *MEMORY[0x1E695EE68];
   v42[2] = *MEMORY[0x1E695EE78];
   v42[3] = v14;
@@ -133,29 +133,29 @@ LABEL_11:
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:4];
   v16 = [v15 mutableCopy];
 
-  if (v11)
+  if (lCopy)
   {
-    v17 = [(CPLBrokenScope *)self readMoreButtonTitle];
-    [v16 setObject:v17 forKeyedSubscript:*MEMORY[0x1E695EE70]];
+    readMoreButtonTitle = [(CPLBrokenScope *)self readMoreButtonTitle];
+    [v16 setObject:readMoreButtonTitle forKeyedSubscript:*MEMORY[0x1E695EE70]];
   }
 
-  if (v6)
+  if (buttonCopy)
   {
-    v18 = [(CPLBrokenScope *)self recoverButtonTitle];
+    recoverButtonTitle = [(CPLBrokenScope *)self recoverButtonTitle];
   }
 
   else
   {
-    if (!v12)
+    if (!rLCopy)
     {
       goto LABEL_8;
     }
 
-    v18 = [(CPLBrokenScope *)self createRadarButtonTitle];
+    recoverButtonTitle = [(CPLBrokenScope *)self createRadarButtonTitle];
   }
 
-  v19 = v18;
-  [v16 setObject:v18 forKeyedSubscript:*MEMORY[0x1E695EE98]];
+  v19 = recoverButtonTitle;
+  [v16 setObject:recoverButtonTitle forKeyedSubscript:*MEMORY[0x1E695EE98]];
 
 LABEL_8:
   error = 0;
@@ -169,7 +169,7 @@ LABEL_8:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v39 = v10;
+        v39 = messageCopy;
         _os_log_impl(&dword_1DC05A000, v22, OS_LOG_TYPE_DEFAULT, "Waiting for response to message: %@", buf, 0xCu);
       }
     }
@@ -190,10 +190,10 @@ LABEL_8:
       }
     }
 
-    if (v11 && v23 == 1)
+    if (lCopy && v23 == 1)
     {
       v26 = MEMORY[0x1E6963608];
-      v27 = v11;
+      v27 = lCopy;
     }
 
     else
@@ -203,7 +203,7 @@ LABEL_8:
         goto LABEL_30;
       }
 
-      if (v6)
+      if (buttonCopy)
       {
         shouldShowAlertToUser = self->_shouldShowAlertToUser;
         self->_shouldShowAlertToUser = 0;
@@ -217,18 +217,18 @@ LABEL_8:
         goto LABEL_30;
       }
 
-      if (!v12)
+      if (!rLCopy)
       {
         goto LABEL_30;
       }
 
       v26 = MEMORY[0x1E6963608];
-      v27 = v12;
+      v27 = rLCopy;
     }
 
     v28 = v27;
-    v29 = [v26 defaultWorkspace];
-    [v29 openURL:v28 configuration:0 completionHandler:0];
+    defaultWorkspace = [v26 defaultWorkspace];
+    [defaultWorkspace openURL:v28 configuration:0 completionHandler:0];
   }
 
   else if ((_CPLSilentLogging & 1) == 0)
@@ -334,8 +334,8 @@ void __86__CPLBrokenScope__showAlertWithMessage_readMoreURL_createRadarURL_shows
   if (self->_internal)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v4 = [(CPLBrokenScope *)self radarTitle];
-    [v3 setObject:v4 forKeyedSubscript:@"Title"];
+    radarTitle = [(CPLBrokenScope *)self radarTitle];
+    [v3 setObject:radarTitle forKeyedSubscript:@"Title"];
 
     [v3 setObject:@"Other Bug" forKeyedSubscript:@"Classification"];
     [v3 setObject:@"com.apple.PhotoLibraryServices.PhotosDiagnostics" forKeyedSubscript:@"ExtensionIdentifiers"];
@@ -343,8 +343,8 @@ void __86__CPLBrokenScope__showAlertWithMessage_readMoreURL_createRadarURL_shows
     [v3 setObject:@"Photos Backend iCloud" forKeyedSubscript:@"ComponentName"];
     [v3 setObject:@"630691" forKeyedSubscript:@"ComponentID"];
     [v3 setObject:@"all" forKeyedSubscript:@"ComponentVersion"];
-    v5 = [(CPLBrokenScope *)self radarDescription];
-    [v3 setObject:v5 forKeyedSubscript:@"Description"];
+    radarDescription = [(CPLBrokenScope *)self radarDescription];
+    [v3 setObject:radarDescription forKeyedSubscript:@"Description"];
 
     v6 = [MEMORY[0x1E696AF20] componentsWithString:@"tap-to-radar://new"];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -397,8 +397,8 @@ void __86__CPLBrokenScope__showAlertWithMessage_readMoreURL_createRadarURL_shows
 - (NSString)radarDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CPLBrokenScope *)self brokenMessage];
-  v5 = [v3 initWithFormat:@"%@\n\nremaining scope is: %@", v4, self->_engineScope];
+  brokenMessage = [(CPLBrokenScope *)self brokenMessage];
+  v5 = [v3 initWithFormat:@"%@\n\nremaining scope is: %@", brokenMessage, self->_engineScope];
 
   return v5;
 }
@@ -406,9 +406,9 @@ void __86__CPLBrokenScope__showAlertWithMessage_readMoreURL_createRadarURL_shows
 - (NSString)radarTitle
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CPLEngineScope *)self->_engineScope scopeIdentifier];
+  scopeIdentifier = [(CPLEngineScope *)self->_engineScope scopeIdentifier];
   v5 = [CPLScopeChange descriptionForScopeType:[(CPLEngineScope *)self->_engineScope scopeType]];
-  v6 = [v3 initWithFormat:@"Library has broken scope %@ (%@)", v4, v5];
+  v6 = [v3 initWithFormat:@"Library has broken scope %@ (%@)", scopeIdentifier, v5];
 
   return v6;
 }
@@ -430,37 +430,37 @@ void __86__CPLBrokenScope__showAlertWithMessage_readMoreURL_createRadarURL_shows
 
 - (NSString)alertMessage
 {
-  v3 = [(CPLBrokenScope *)self brokenMessage];
+  brokenMessage = [(CPLBrokenScope *)self brokenMessage];
   if (self->_internal)
   {
-    v4 = [(CPLBrokenScope *)self internalRecoveryInstructions];
-    v5 = v4;
-    if (v4)
+    internalRecoveryInstructions = [(CPLBrokenScope *)self internalRecoveryInstructions];
+    v5 = internalRecoveryInstructions;
+    if (internalRecoveryInstructions)
     {
-      v6 = [v3 stringByAppendingFormat:@"\n\nTo clean-up library, run the following command:\n%@", v4];
+      v6 = [brokenMessage stringByAppendingFormat:@"\n\nTo clean-up library, run the following command:\n%@", internalRecoveryInstructions];
 
-      v3 = v6;
+      brokenMessage = v6;
     }
   }
 
-  return v3;
+  return brokenMessage;
 }
 
 - (NSString)brokenMessage
 {
   if (self->_internal)
   {
-    v4 = [(CPLEngineScope *)self->_engineScope scopeType];
-    if (v4 - 4 < 2)
+    scopeType = [(CPLEngineScope *)self->_engineScope scopeType];
+    if (scopeType - 4 < 2)
     {
       return @"Library has remains of shared library and must be cleaned before synchronization can continue.";
     }
 
-    if (v4 <= 8 && ((1 << v4) & 0x18E) != 0)
+    if (scopeType <= 8 && ((1 << scopeType) & 0x18E) != 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBrokenScope.m"];
-      [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:84 description:{@"%@ should not be a broken scope", self->_engineScope}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:84 description:{@"%@ should not be a broken scope", self->_engineScope}];
 
       abort();
     }
@@ -471,17 +471,17 @@ void __86__CPLBrokenScope__showAlertWithMessage_readMoreURL_createRadarURL_shows
 
 - (NSString)alternateRecoverDescription
 {
-  v4 = [(CPLEngineScope *)self->_engineScope scopeType];
-  if (v4 - 4 < 2)
+  scopeType = [(CPLEngineScope *)self->_engineScope scopeType];
+  if (scopeType - 4 < 2)
   {
     return @"feature is enabled";
   }
 
-  if (v4 <= 8 && ((1 << v4) & 0x18E) != 0)
+  if (scopeType <= 8 && ((1 << scopeType) & 0x18E) != 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBrokenScope.m"];
-    [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:56 description:{@"%@ should not be a broken scope", self->_engineScope}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:56 description:{@"%@ should not be a broken scope", self->_engineScope}];
 
     abort();
   }
@@ -489,10 +489,10 @@ void __86__CPLBrokenScope__showAlertWithMessage_readMoreURL_createRadarURL_shows
   return 0;
 }
 
-- (CPLBrokenScope)initWithEngineScope:(id)a3 engineLibrary:(id)a4
+- (CPLBrokenScope)initWithEngineScope:(id)scope engineLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = CPLBrokenScope;
   v9 = [(CPLBrokenScope *)&v13 init];
@@ -502,8 +502,8 @@ void __86__CPLBrokenScope__showAlertWithMessage_readMoreURL_createRadarURL_shows
     queue = v9->_queue;
     v9->_queue = v10;
 
-    objc_storeStrong(&v9->_engineScope, a3);
-    objc_storeWeak(&v9->_engineLibrary, v8);
+    objc_storeStrong(&v9->_engineScope, scope);
+    objc_storeWeak(&v9->_engineLibrary, libraryCopy);
     v9->_internal = os_variant_has_internal_content();
     v9->_shouldShowAlertToUser = CPLDontWarnAboutUnsupportedScopes() ^ 1;
   }

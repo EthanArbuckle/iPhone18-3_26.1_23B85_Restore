@@ -1,20 +1,20 @@
 @interface HDCloudSyncMasterRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isMasterRecord:(id)a3;
-+ (BOOL)isMasterRecordID:(id)a3;
-+ (HDCloudSyncMasterRecord)recordWithCKRecord:(id)a3 error:(id *)a4;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isMasterRecord:(id)record;
++ (BOOL)isMasterRecordID:(id)d;
++ (HDCloudSyncMasterRecord)recordWithCKRecord:(id)record error:(id *)error;
 + (id)fieldsForUnprotectedSerialization;
-+ (id)recordIDWithZoneID:(id)a3;
-- (HDCloudSyncMasterRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
-- (id)initInSyncCircle:(id)a3 disabledOwnerIdentifiers:(id)a4;
-- (id)initInZone:(id)a3 disabledOwnerIdentifiers:(id)a4;
-- (id)initWithCKRecord:(void *)a3 disabledOwnerIdentifiers:(uint64_t)a4 schemaVersion:;
-- (void)setDisabledOwnerIdentifiers:(id)a3;
++ (id)recordIDWithZoneID:(id)d;
+- (HDCloudSyncMasterRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
+- (id)initInSyncCircle:(id)circle disabledOwnerIdentifiers:(id)identifiers;
+- (id)initInZone:(id)zone disabledOwnerIdentifiers:(id)identifiers;
+- (id)initWithCKRecord:(void *)record disabledOwnerIdentifiers:(uint64_t)identifiers schemaVersion:;
+- (void)setDisabledOwnerIdentifiers:(id)identifiers;
 @end
 
 @implementation HDCloudSyncMasterRecord
 
-- (HDCloudSyncMasterRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncMasterRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -24,43 +24,43 @@
   return 0;
 }
 
-- (id)initInSyncCircle:(id)a3 disabledOwnerIdentifiers:(id)a4
+- (id)initInSyncCircle:(id)circle disabledOwnerIdentifiers:(id)identifiers
 {
   v6 = MEMORY[0x277CBC5F8];
-  v7 = a4;
-  v8 = [v6 hd_masterZoneIDForSyncCircleIdentifier:a3];
-  v9 = [(HDCloudSyncMasterRecord *)self initInZone:v8 disabledOwnerIdentifiers:v7];
+  identifiersCopy = identifiers;
+  v8 = [v6 hd_masterZoneIDForSyncCircleIdentifier:circle];
+  v9 = [(HDCloudSyncMasterRecord *)self initInZone:v8 disabledOwnerIdentifiers:identifiersCopy];
 
   return v9;
 }
 
-- (id)initInZone:(id)a3 disabledOwnerIdentifiers:(id)a4
+- (id)initInZone:(id)zone disabledOwnerIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() recordIDWithZoneID:v7];
+  identifiersCopy = identifiers;
+  zoneCopy = zone;
+  v8 = [objc_opt_class() recordIDWithZoneID:zoneCopy];
 
   v9 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncMasterRecord" recordID:v8];
-  v10 = [(HDCloudSyncMasterRecord *)self initWithCKRecord:v9 disabledOwnerIdentifiers:v6 schemaVersion:1];
+  v10 = [(HDCloudSyncMasterRecord *)self initWithCKRecord:v9 disabledOwnerIdentifiers:identifiersCopy schemaVersion:1];
 
   return v10;
 }
 
-- (id)initWithCKRecord:(void *)a3 disabledOwnerIdentifiers:(uint64_t)a4 schemaVersion:
+- (id)initWithCKRecord:(void *)record disabledOwnerIdentifiers:(uint64_t)identifiers schemaVersion:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  recordCopy = record;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = HDCloudSyncMasterRecord;
-    v9 = objc_msgSendSuper2(&v14, sel_initWithCKRecord_schemaVersion_, v7, a4);
+    v9 = objc_msgSendSuper2(&v14, sel_initWithCKRecord_schemaVersion_, v7, identifiers);
     if (v9)
     {
-      v10 = [v8 allObjects];
-      [v7 setObject:v10 forKeyedSubscript:@"DeletedOwnerIdentifiers"];
+      allObjects = [recordCopy allObjects];
+      [v7 setObject:allObjects forKeyedSubscript:@"DeletedOwnerIdentifiers"];
 
-      v11 = [v8 copy];
+      v11 = [recordCopy copy];
       v12 = v11;
       if (!v11)
       {
@@ -82,23 +82,23 @@
   return v9;
 }
 
-- (void)setDisabledOwnerIdentifiers:(id)a3
+- (void)setDisabledOwnerIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  identifiersCopy = identifiers;
+  v5 = [identifiersCopy copy];
   disabledOwnerIdentifiers = self->_disabledOwnerIdentifiers;
   self->_disabledOwnerIdentifiers = v5;
 
-  v8 = [v4 allObjects];
+  allObjects = [identifiersCopy allObjects];
 
-  v7 = [(HDCloudSyncRecord *)self record];
-  [v7 setObject:v8 forKeyedSubscript:@"DeletedOwnerIdentifiers"];
+  record = [(HDCloudSyncRecord *)self record];
+  [record setObject:allObjects forKeyedSubscript:@"DeletedOwnerIdentifiers"];
 }
 
 + (id)fieldsForUnprotectedSerialization
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___HDCloudSyncMasterRecord;
   v2 = objc_msgSendSuper2(&v9, sel_fieldsForUnprotectedSerialization);
   v10[0] = objc_opt_class();
@@ -114,23 +114,23 @@
   return v6;
 }
 
-+ (HDCloudSyncMasterRecord)recordWithCKRecord:(id)a3 error:(id *)a4
++ (HDCloudSyncMasterRecord)recordWithCKRecord:(id)record error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 recordType];
-  v8 = [v7 isEqualToString:@"CloudSyncMasterRecord"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v8 = [recordType isEqualToString:@"CloudSyncMasterRecord"];
 
   if (v8)
   {
-    v9 = [v6 hd_requiredValueForKey:@"Version" type:objc_opt_class() error:a4];
+    v9 = [recordCopy hd_requiredValueForKey:@"Version" type:objc_opt_class() error:error];
     if (v9)
     {
-      v10 = [v6 hd_requiredValueForKey:@"DeletedOwnerIdentifiers" type:objc_opt_class() error:a4];
+      v10 = [recordCopy hd_requiredValueForKey:@"DeletedOwnerIdentifiers" type:objc_opt_class() error:error];
       v11 = v10;
       if (v10)
       {
-        v30 = v6;
+        v30 = recordCopy;
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
@@ -157,10 +157,10 @@
                 v18 = v17;
                 if (v17)
                 {
-                  if (a4)
+                  if (error)
                   {
                     v19 = v17;
-                    *a4 = v18;
+                    *error = v18;
                   }
 
                   else
@@ -179,7 +179,7 @@
 
         v20 = [HDCloudSyncMasterRecord alloc];
         v21 = [MEMORY[0x277CBEB98] setWithArray:v11];
-        v6 = v30;
+        recordCopy = v30;
         v22 = -[HDCloudSyncMasterRecord initWithCKRecord:disabledOwnerIdentifiers:schemaVersion:](v20, v30, v21, [v9 integerValue]);
       }
 
@@ -199,14 +199,14 @@
   {
     v23 = MEMORY[0x277CCA9B8];
     v24 = objc_opt_class();
-    v25 = [v6 recordType];
-    v26 = [v23 hk_errorForInvalidArgument:@"@" class:v24 selector:a2 format:{@"record has type (%@), but expected (%@)", v25, @"CloudSyncMasterRecord"}];
+    recordType2 = [recordCopy recordType];
+    v26 = [v23 hk_errorForInvalidArgument:@"@" class:v24 selector:a2 format:{@"record has type (%@), but expected (%@)", recordType2, @"CloudSyncMasterRecord"}];
     if (v26)
     {
-      if (a4)
+      if (error)
       {
         v27 = v26;
-        *a4 = v26;
+        *error = v26;
       }
 
       else
@@ -223,36 +223,36 @@
   return v22;
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 
   return v5;
 }
 
-+ (id)recordIDWithZoneID:(id)a3
++ (id)recordIDWithZoneID:(id)d
 {
   v3 = MEMORY[0x277CBC5D0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithRecordName:@"CloudSyncMaster" zoneID:v4];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithRecordName:@"CloudSyncMaster" zoneID:dCopy];
 
   return v5;
 }
 
-+ (BOOL)isMasterRecord:(id)a3
++ (BOOL)isMasterRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncMasterRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncMasterRecord"];
 
   return v4;
 }
 
-+ (BOOL)isMasterRecordID:(id)a3
++ (BOOL)isMasterRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 isEqualToString:@"CloudSyncMaster"];
+  recordName = [d recordName];
+  v4 = [recordName isEqualToString:@"CloudSyncMaster"];
 
   return v4;
 }

@@ -1,71 +1,71 @@
 @interface ICBrowseAttachmentsCollectionController
-- (BOOL)browseAttachmentsCell:(id)a3 didSelectAttachment:(id)a4;
-- (BOOL)useImagesAndMoviesScrollViewAtIndexPath:(id)a3;
-- (BOOL)useImagesAndMoviesScrollViewForSection:(signed __int16)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (ICBrowseAttachmentsCollectionController)initWithAttachmentSection:(signed __int16)a3;
+- (BOOL)browseAttachmentsCell:(id)cell didSelectAttachment:(id)attachment;
+- (BOOL)useImagesAndMoviesScrollViewAtIndexPath:(id)path;
+- (BOOL)useImagesAndMoviesScrollViewForSection:(signed __int16)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (ICBrowseAttachmentsCollectionController)initWithAttachmentSection:(signed __int16)section;
 - (ICNAEventReporter)eventReporter;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (UISegmentedControl)segmentedControl;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (double)estimatedHeightForAXLargerTextSizesForSection:(unint64_t)a3;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (double)estimatedHeightForAXLargerTextSizesForSection:(unint64_t)section;
 - (double)leadingMargin;
 - (double)trailingMargin;
-- (id)attachmentAtIndexPath:(id)a3;
-- (id)attachmentPresenter:(id)a3 transitionViewForAttachment:(id)a4;
-- (id)attachmentsToPreviewWhenSelectingAttachment:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)collectionViewIndexPathFromFetchedResultsControllerIndexPath:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)emptyTextForAttachmentSection:(signed __int16)a3;
-- (id)nonScrollingCellIdentifierForAttachmentType:(signed __int16)a3;
-- (id)titleForAttachmentSection:(signed __int16)a3;
-- (id)viewControllerForAttachmentSection:(signed __int16)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfItemsToDisplayInSection:(int64_t)a3 withTraitCollection:(id)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (id)attachmentAtIndexPath:(id)path;
+- (id)attachmentPresenter:(id)presenter transitionViewForAttachment:(id)attachment;
+- (id)attachmentsToPreviewWhenSelectingAttachment:(id)attachment;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)collectionViewIndexPathFromFetchedResultsControllerIndexPath:(id)path;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)emptyTextForAttachmentSection:(signed __int16)section;
+- (id)nonScrollingCellIdentifierForAttachmentType:(signed __int16)type;
+- (id)titleForAttachmentSection:(signed __int16)section;
+- (id)viewControllerForAttachmentSection:(signed __int16)section;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfItemsToDisplayInSection:(int64_t)section withTraitCollection:(id)collection;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (unint64_t)cellsPerRow;
 - (void)accountsDidChange;
 - (void)accountsWillChange;
-- (void)adjustContentInsetOfImageScroller:(id)a3;
+- (void)adjustContentInsetOfImageScroller:(id)scroller;
 - (void)applyAccessibilityInfo;
-- (void)browseAttachmentsCell:(id)a3 shouldInspectAttachment:(id)a4;
-- (void)browseAttachmentsCell:(id)a3 shouldShareAttachment:(id)a4;
-- (void)browseAttachmentsCollectionView:(id)a3 cell:(id)a4 shouldShareAttachment:(id)a5;
-- (void)browseAttachmentsCollectionView:(id)a3 didSelectAttachment:(id)a4 indexPath:(id)a5;
-- (void)browseAttachmentsCollectionView:(id)a3 shouldInspectAttachment:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)browseAttachmentsCell:(id)cell shouldInspectAttachment:(id)attachment;
+- (void)browseAttachmentsCell:(id)cell shouldShareAttachment:(id)attachment;
+- (void)browseAttachmentsCollectionView:(id)view cell:(id)cell shouldShareAttachment:(id)attachment;
+- (void)browseAttachmentsCollectionView:(id)view didSelectAttachment:(id)attachment indexPath:(id)path;
+- (void)browseAttachmentsCollectionView:(id)view shouldInspectAttachment:(id)attachment;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)contentSizeCategoryDidChange;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)controllerDidChangeContent:(id)content;
 - (void)dealloc;
-- (void)doneAction:(id)a3;
-- (void)eventReporterLostSession:(id)a3;
-- (void)notesContextRefreshNotification:(id)a3;
+- (void)doneAction:(id)action;
+- (void)eventReporterLostSession:(id)session;
+- (void)notesContextRefreshNotification:(id)notification;
 - (void)reload;
-- (void)respondToTapGesture:(id)a3;
-- (void)segmentedControlValueDidChange:(id)a3;
-- (void)showAllForAttachmentSection:(signed __int16)a3;
+- (void)respondToTapGesture:(id)gesture;
+- (void)segmentedControlValueDidChange:(id)change;
+- (void)showAllForAttachmentSection:(signed __int16)section;
 - (void)sortFetchedResultsSections;
 - (void)updateEmptyView;
 - (void)updateEmptyViewFonts;
 - (void)updateHeaderViewMargins;
 - (void)updateImagesAndMoviesScrollViewContentInset;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICBrowseAttachmentsCollectionController
 
-- (ICBrowseAttachmentsCollectionController)initWithAttachmentSection:(signed __int16)a3
+- (ICBrowseAttachmentsCollectionController)initWithAttachmentSection:(signed __int16)section
 {
   v5 = objc_alloc_init(ICBrowseAttachmentsCollectionViewLayout);
   v10.receiver = self;
@@ -74,12 +74,12 @@
 
   if (v6)
   {
-    v6->_attachmentSection = a3;
-    v7 = [(ICBrowseAttachmentsCollectionController *)v6 collectionView];
-    [v7 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsImagesAndMoviesCell"];
+    v6->_attachmentSection = section;
+    collectionView = [(ICBrowseAttachmentsCollectionController *)v6 collectionView];
+    [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsImagesAndMoviesCell"];
 
-    v8 = [(ICBrowseAttachmentsCollectionController *)v6 collectionView];
-    [v8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsScannedPagesCell"];
+    collectionView2 = [(ICBrowseAttachmentsCollectionController *)v6 collectionView];
+    [collectionView2 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsScannedPagesCell"];
   }
 
   return v6;
@@ -100,9 +100,9 @@
   v35.receiver = self;
   v35.super_class = ICBrowseAttachmentsCollectionController;
   [(ICBrowseAttachmentsCollectionController *)&v35 viewDidLoad];
-  v3 = [(ICBrowseAttachmentsCollectionController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 setPrefersLargeTitles:1];
+  navigationController = [(ICBrowseAttachmentsCollectionController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
   if ([(ICBrowseAttachmentsCollectionController *)self displayAllSections])
   {
@@ -114,40 +114,40 @@
     v5 = 2;
   }
 
-  v6 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
-  [v6 setLargeTitleDisplayMode:v5];
+  navigationItem = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:v5];
 
   if (+[UIDevice ic_isVision])
   {
-    v7 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
-    [v7 setStyle:0];
+    navigationItem2 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
+    [navigationItem2 setStyle:0];
 
-    v8 = [(ICBrowseAttachmentsCollectionController *)self segmentedControl];
-    v9 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
-    [v9 setTitleView:v8];
+    segmentedControl = [(ICBrowseAttachmentsCollectionController *)self segmentedControl];
+    navigationItem3 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
+    [navigationItem3 setTitleView:segmentedControl];
   }
 
   v10 = +[UIColor ICBackgroundColor];
-  v11 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v11 setBackgroundColor:v10];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView setBackgroundColor:v10];
 
-  v12 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v12 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsImagesAndMoviesCell"];
+  collectionView2 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView2 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsImagesAndMoviesCell"];
 
-  v13 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v13 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsScannedPagesCell"];
+  collectionView3 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsScannedPagesCell"];
 
-  v14 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v14 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsBrickCell"];
+  collectionView4 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICBrowseAttachmentsBrickCell"];
 
-  v15 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v15 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kICBrowseAttachmentsImageCell"];
+  collectionView5 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kICBrowseAttachmentsImageCell"];
 
-  v16 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v16 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kICBrowseAttachmentsMovieCell"];
+  collectionView6 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kICBrowseAttachmentsMovieCell"];
 
-  v17 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v17 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kICBrowseAttachmentsDrawingCell"];
+  collectionView7 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView7 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kICBrowseAttachmentsDrawingCell"];
 
   v18 = [[ICBrowseAttachmentsBrickCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   defaultSizingBrickCell = self->_defaultSizingBrickCell;
@@ -158,29 +158,29 @@
   v22 = [NSBundle bundleForClass:objc_opt_class()];
   v23 = [UINib nibWithNibName:v21 bundle:v22];
 
-  v24 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v24 registerNib:v23 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ICBrowseAttachmentsHeaderView"];
+  collectionView8 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView8 registerNib:v23 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ICBrowseAttachmentsHeaderView"];
 
   v25 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneAction:"];
   v36 = v25;
   v26 = [NSArray arrayWithObjects:&v36 count:1];
-  v27 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
-  [v27 setRightBarButtonItems:v26];
+  navigationItem4 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
+  [navigationItem4 setRightBarButtonItems:v26];
 
   v28 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"respondToTapGesture:"];
-  v29 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v29 addGestureRecognizer:v28];
+  collectionView9 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView9 addGestureRecognizer:v28];
 
   v30 = +[ICBrowseAttachmentsDragAndDropDelegate sharedInstance];
-  v31 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v31 setDragDelegate:v30];
+  collectionView10 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView10 setDragDelegate:v30];
 
   v32 = [[UIContextMenuInteraction alloc] initWithDelegate:self];
   [(ICBrowseAttachmentsCollectionController *)self setContextInteraction:v32];
 
-  v33 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v34 = [(ICBrowseAttachmentsCollectionController *)self contextInteraction];
-  [v33 addInteraction:v34];
+  collectionView11 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  contextInteraction = [(ICBrowseAttachmentsCollectionController *)self contextInteraction];
+  [collectionView11 addInteraction:contextInteraction];
 }
 
 - (void)viewWillLayoutSubviews
@@ -188,8 +188,8 @@
   v14.receiver = self;
   v14.super_class = ICBrowseAttachmentsCollectionController;
   [(ICBrowseAttachmentsCollectionController *)&v14 viewWillLayoutSubviews];
-  v3 = [(ICBrowseAttachmentsCollectionController *)self view];
-  [v3 directionalLayoutMargins];
+  view = [(ICBrowseAttachmentsCollectionController *)self view];
+  [view directionalLayoutMargins];
   v5 = v4;
   v7 = v6;
 
@@ -200,11 +200,11 @@
 
   else
   {
-    v9 = [(ICBrowseAttachmentsCollectionController *)self view];
-    v10 = [v9 traitCollection];
-    v11 = [v10 horizontalSizeClass];
+    view2 = [(ICBrowseAttachmentsCollectionController *)self view];
+    traitCollection = [view2 traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v11 == 2)
+    if (horizontalSizeClass == 2)
     {
       v8 = 28.0;
     }
@@ -215,18 +215,18 @@
     }
   }
 
-  v12 = [(ICBrowseAttachmentsCollectionController *)self view];
-  [v12 setDirectionalLayoutMargins:{v5, v8, v7, v8}];
+  view3 = [(ICBrowseAttachmentsCollectionController *)self view];
+  [view3 setDirectionalLayoutMargins:{v5, v8, v7, v8}];
 
-  v13 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
-  [v13 setLargeTitleInsets:{0.0, v8, 0.0, v8}];
+  navigationItem = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
+  [navigationItem setLargeTitleInsets:{0.0, v8, 0.0, v8}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = ICBrowseAttachmentsCollectionController;
-  [(ICBrowseAttachmentsCollectionController *)&v8 viewWillAppear:a3];
+  [(ICBrowseAttachmentsCollectionController *)&v8 viewWillAppear:appear];
   [(ICBrowseAttachmentsCollectionController *)self reload];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"notesContextRefreshNotification:" name:ICNotesContextRefreshNotification object:0];
@@ -241,19 +241,19 @@
   [v7 addObserver:self selector:"accountsDidChange" name:ICAccountsDidChangeNotification object:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ICBrowseAttachmentsCollectionController;
-  [(ICBrowseAttachmentsCollectionController *)&v3 viewDidAppear:a3];
+  [(ICBrowseAttachmentsCollectionController *)&v3 viewDidAppear:appear];
   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, 0);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = ICBrowseAttachmentsCollectionController;
-  [(ICBrowseAttachmentsCollectionController *)&v8 viewWillDisappear:a3];
+  [(ICBrowseAttachmentsCollectionController *)&v8 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:ICNotesContextRefreshNotification object:0];
 
@@ -267,41 +267,41 @@
   [v7 removeObserver:self name:ICAccountsDidChangeNotification object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = ICBrowseAttachmentsCollectionController;
-  [(ICBrowseAttachmentsCollectionController *)&v7 viewDidDisappear:a3];
-  v4 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-  [v4 setDelegate:0];
+  [(ICBrowseAttachmentsCollectionController *)&v7 viewDidDisappear:disappear];
+  fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  [fetchedResultsController setDelegate:0];
 
   [(ICBrowseAttachmentsCollectionController *)self setFetchedResultsController:0];
-  v5 = [(ICBrowseAttachmentsCollectionController *)self browserDidCloseHandler];
+  browserDidCloseHandler = [(ICBrowseAttachmentsCollectionController *)self browserDidCloseHandler];
 
-  if (v5)
+  if (browserDidCloseHandler)
   {
-    v6 = [(ICBrowseAttachmentsCollectionController *)self browserDidCloseHandler];
-    v6[2](v6, 0);
+    browserDidCloseHandler2 = [(ICBrowseAttachmentsCollectionController *)self browserDidCloseHandler];
+    browserDidCloseHandler2[2](browserDidCloseHandler2, 0);
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(ICBrowseAttachmentsCollectionController *)self collectionViewLayout];
-  [v8 invalidateLayout];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  collectionViewLayout = [(ICBrowseAttachmentsCollectionController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100143D98;
   v10[3] = &unk_100645E08;
   v10[4] = self;
-  [v7 animateAlongsideTransition:v10 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:0];
   v9.receiver = self;
   v9.super_class = ICBrowseAttachmentsCollectionController;
-  [(ICBrowseAttachmentsCollectionController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(ICBrowseAttachmentsCollectionController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (void)reload
@@ -320,8 +320,8 @@
     if ([(ICBrowseAttachmentsCollectionController *)self attachmentSection]== 6)
     {
       v34[0] = v7;
-      v8 = [NSPredicate predicateWithFormat:@"typeUTI == %@", ICAttachmentUTTypePaperDocumentScan];
-      v34[1] = v8;
+      iCAttachmentUTTypePaperDocumentScan = [NSPredicate predicateWithFormat:@"typeUTI == %@", ICAttachmentUTTypePaperDocumentScan];
+      v34[1] = iCAttachmentUTTypePaperDocumentScan;
       v9 = [NSArray arrayWithObjects:v34 count:2];
       v10 = [NSCompoundPredicate orPredicateWithSubpredicates:v9];
 
@@ -330,8 +330,8 @@
 
     v33[0] = v7;
     v11 = +[ICNoteContext sharedContext];
-    v12 = [v11 managedObjectContext];
-    v13 = [ICAttachment predicateForAttachmentBrowserWithContext:v12];
+    managedObjectContext = [v11 managedObjectContext];
+    v13 = [ICAttachment predicateForAttachmentBrowserWithContext:managedObjectContext];
     v33[1] = v13;
     v14 = [NSArray arrayWithObjects:v33 count:2];
 
@@ -343,8 +343,8 @@
     v16 = [NSPredicate predicateWithFormat:@"section != %d", 0];
     v32[0] = v16;
     v17 = +[ICNoteContext sharedContext];
-    v18 = [v17 managedObjectContext];
-    v19 = [ICAttachment predicateForAttachmentBrowserWithContext:v18];
+    managedObjectContext2 = [v17 managedObjectContext];
+    v19 = [ICAttachment predicateForAttachmentBrowserWithContext:managedObjectContext2];
     v32[1] = v19;
     v7 = [NSArray arrayWithObjects:v32 count:2];
 
@@ -359,77 +359,77 @@
   v22 = +[NSArray array];
   [(ICBrowseAttachmentsCollectionController *)self setSortedSections:v22];
 
-  v23 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-  [v23 setDelegate:self];
+  fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  [fetchedResultsController setDelegate:self];
 
   [(ICBrowseAttachmentsCollectionController *)self sortFetchedResultsSections];
   if ([(ICBrowseAttachmentsCollectionController *)self displayAllSections])
   {
     v24 = +[NSBundle mainBundle];
-    v25 = [v24 localizedStringForKey:@"Attachments" value:&stru_100661CF0 table:0];
-    v26 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
-    [v26 setTitle:v25];
+    navigationItem2 = [v24 localizedStringForKey:@"Attachments" value:&stru_100661CF0 table:0];
+    navigationItem = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
+    [navigationItem setTitle:navigationItem2];
   }
 
   else
   {
     v24 = [(ICBrowseAttachmentsCollectionController *)self titleForAttachmentSection:[(ICBrowseAttachmentsCollectionController *)self attachmentSection]];
-    v25 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
-    [v25 setTitle:v24];
+    navigationItem2 = [(ICBrowseAttachmentsCollectionController *)self navigationItem];
+    [navigationItem2 setTitle:v24];
   }
 
   v27 = +[ICAttachment attachmentSectionSortOrder];
   v28 = [NSNumber numberWithShort:[(ICBrowseAttachmentsCollectionController *)self attachmentSection]];
   v29 = [v27 indexOfObject:v28];
-  v30 = [(ICBrowseAttachmentsCollectionController *)self segmentedControl];
-  [v30 setSelectedSegmentIndex:v29];
+  segmentedControl = [(ICBrowseAttachmentsCollectionController *)self segmentedControl];
+  [segmentedControl setSelectedSegmentIndex:v29];
 
   [(ICBrowseAttachmentsCollectionController *)self updateEmptyView];
-  v31 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-  [(ICBrowseAttachmentsCollectionController *)self controllerDidChangeContent:v31];
+  fetchedResultsController2 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  [(ICBrowseAttachmentsCollectionController *)self controllerDidChangeContent:fetchedResultsController2];
 
   [(ICBrowseAttachmentsCollectionController *)self applyAccessibilityInfo];
 }
 
-- (id)attachmentAtIndexPath:(id)a3
+- (id)attachmentAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  pathCopy = path;
+  fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
 
-  if (!v5)
+  if (!fetchedResultsController)
   {
     v16 = 0;
     goto LABEL_14;
   }
 
-  v6 = [v4 section];
-  v7 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v8 = [v7 count];
+  section = [pathCopy section];
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v8 = [sortedSections count];
 
-  if (v6 >= v8)
+  if (section >= v8)
   {
     v10 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1004E1A6C(v4, self);
+      sub_1004E1A6C(pathCopy, self);
     }
 
     goto LABEL_12;
   }
 
-  v9 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  sortedSections2 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v10 = [sortedSections2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v11 = [v4 row];
-  v12 = [v10 objects];
-  v13 = [v12 count];
+  v11 = [pathCopy row];
+  objects = [v10 objects];
+  v13 = [objects count];
 
   if (v11 >= v13)
   {
     v17 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_1004E1A6C(v4, self);
+      sub_1004E1A6C(pathCopy, self);
     }
 
 LABEL_12:
@@ -438,8 +438,8 @@ LABEL_12:
   }
 
   objc_opt_class();
-  v14 = [v10 objects];
-  v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+  objects2 = [v10 objects];
+  v15 = [objects2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   v16 = ICCheckedDynamicCast();
 
 LABEL_13:
@@ -448,26 +448,26 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)useImagesAndMoviesScrollViewForSection:(signed __int16)a3
+- (BOOL)useImagesAndMoviesScrollViewForSection:(signed __int16)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v4 = +[UIDevice ic_isVision];
-  v6 = v3 == 1 || v3 == 7;
+  v6 = sectionCopy == 1 || sectionCopy == 7;
   return (v4 & 1) == 0 && v6;
 }
 
-- (BOOL)useImagesAndMoviesScrollViewAtIndexPath:(id)a3
+- (BOOL)useImagesAndMoviesScrollViewAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v6 = [v4 section];
+  pathCopy = path;
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  section = [pathCopy section];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [sortedSections objectAtIndexedSubscript:section];
 
-  v8 = [v7 name];
-  LOWORD(v6) = [v8 intValue];
+  name = [v7 name];
+  LOWORD(section) = [name intValue];
 
-  LOBYTE(self) = [(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewForSection:v6];
+  LOBYTE(self) = [(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewForSection:section];
   return self;
 }
 
@@ -477,13 +477,13 @@ LABEL_14:
   if (!segmentedControl)
   {
     v4 = +[ICAttachment attachmentSectionSortOrder];
-    v5 = [v4 array];
+    array = [v4 array];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1001446B4;
     v10[3] = &unk_10064B078;
     v10[4] = self;
-    v6 = [v5 ic_compactMap:v10];
+    v6 = [array ic_compactMap:v10];
 
     v7 = [[UISegmentedControl alloc] initWithItems:v6];
     v8 = self->_segmentedControl;
@@ -498,20 +498,20 @@ LABEL_14:
   return segmentedControl;
 }
 
-- (void)segmentedControlValueDidChange:(id)a3
+- (void)segmentedControlValueDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7 = +[ICAttachment attachmentSectionSortOrder];
-  v5 = [v4 selectedSegmentIndex];
+  selectedSegmentIndex = [changeCopy selectedSegmentIndex];
 
-  v6 = [v7 objectAtIndexedSubscript:v5];
+  v6 = [v7 objectAtIndexedSubscript:selectedSegmentIndex];
   -[ICBrowseAttachmentsCollectionController setAttachmentSection:](self, "setAttachmentSection:", [v6 integerValue]);
 }
 
-- (void)doneAction:(id)a3
+- (void)doneAction:(id)action
 {
-  v4 = [(ICBrowseAttachmentsCollectionController *)self browserDidCloseHandler];
-  v5 = [v4 copy];
+  browserDidCloseHandler = [(ICBrowseAttachmentsCollectionController *)self browserDidCloseHandler];
+  v5 = [browserDidCloseHandler copy];
 
   [(ICBrowseAttachmentsCollectionController *)self setBrowserDidCloseHandler:0];
   v8[0] = _NSConcreteStackBlock;
@@ -521,58 +521,58 @@ LABEL_14:
   v9 = v5;
   v6 = v5;
   [(ICBrowseAttachmentsCollectionController *)self dismissViewControllerAnimated:1 completion:v8];
-  v7 = [(ICBrowseAttachmentsCollectionController *)self eventReporter];
-  [v7 submitAttachmentBrowserActionEventForType:1];
+  eventReporter = [(ICBrowseAttachmentsCollectionController *)self eventReporter];
+  [eventReporter submitAttachmentBrowserActionEventForType:1];
 }
 
-- (void)respondToTapGesture:(id)a3
+- (void)respondToTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [gestureCopy locationInView:collectionView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v13 = [v10 indexPathForItemAtPoint:{v7, v9}];
+  collectionView2 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  v13 = [collectionView2 indexPathForItemAtPoint:{v7, v9}];
 
   if (v13)
   {
     v11 = [(ICBrowseAttachmentsCollectionController *)self attachmentAtIndexPath:v13];
-    v12 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-    [(ICBrowseAttachmentsCollectionController *)self browseAttachmentsCollectionView:v12 didSelectAttachment:v11 indexPath:v13];
+    collectionView3 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+    [(ICBrowseAttachmentsCollectionController *)self browseAttachmentsCollectionView:collectionView3 didSelectAttachment:v11 indexPath:v13];
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if ([(ICBrowseAttachmentsCollectionController *)self updatingAccounts])
   {
     return 0;
   }
 
-  v5 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v6 = [v5 count];
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v6 = [sortedSections count];
 
   return v6;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v7 = [v6 traitCollection];
-  v8 = [(ICBrowseAttachmentsCollectionController *)self numberOfItemsToDisplayInSection:a4 withTraitCollection:v7];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  traitCollection = [collectionView traitCollection];
+  v8 = [(ICBrowseAttachmentsCollectionController *)self numberOfItemsToDisplayInSection:section withTraitCollection:traitCollection];
 
   return v8;
 }
 
-- (id)nonScrollingCellIdentifierForAttachmentType:(signed __int16)a3
+- (id)nonScrollingCellIdentifierForAttachmentType:(signed __int16)type
 {
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 >= 3 && a3 != 4)
+    if (type >= 3 && type != 4)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
         v3 = @"kICBrowseAttachmentsMovieCell";
       }
@@ -590,18 +590,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 > 0xF)
+  if (type > 0xF)
   {
     v3 = @"kICBrowseAttachmentsImageCell";
     goto LABEL_12;
   }
 
-  if (((1 << a3) & 0x59C0) != 0)
+  if (((1 << type) & 0x59C0) != 0)
   {
     goto LABEL_11;
   }
 
-  if (((1 << a3) & 0x2600) != 0)
+  if (((1 << type) & 0x2600) != 0)
   {
     v3 = @"kICBrowseAttachmentsDrawingCell";
   }
@@ -609,7 +609,7 @@ LABEL_11:
   else
   {
     v3 = @"kICBrowseAttachmentsImageCell";
-    if (a3 == 15)
+    if (type == 15)
     {
       v3 = @"ICBrowseAttachmentsBrickCell";
       if (+[UIDevice ic_isVision])
@@ -634,22 +634,22 @@ LABEL_12:
   return v3;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v9 = [sortedSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v9 name];
-  v11 = [v10 intValue];
+  name = [v9 name];
+  intValue = [name intValue];
 
-  v12 = [(ICBrowseAttachmentsCollectionController *)self attachmentAtIndexPath:v7];
-  if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewAtIndexPath:v7])
+  v12 = [(ICBrowseAttachmentsCollectionController *)self attachmentAtIndexPath:pathCopy];
+  if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewAtIndexPath:pathCopy])
   {
-    v13 = v11;
-    v32 = v6;
-    if (v11 == 1)
+    v13 = intValue;
+    v32 = viewCopy;
+    if (intValue == 1)
     {
       v14 = @"ICBrowseAttachmentsImagesAndMoviesCell";
     }
@@ -665,19 +665,19 @@ LABEL_12:
       v14 = &stru_100661CF0;
     }
 
-    v17 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-    v16 = [v17 dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:v7];
+    collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+    v16 = [collectionView dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:pathCopy];
 
-    v18 = [v16 contentView];
-    v19 = [v18 subviews];
-    v20 = [v19 count];
+    contentView = [v16 contentView];
+    subviews = [contentView subviews];
+    v20 = [subviews count];
 
     if (v20)
     {
       objc_opt_class();
-      v21 = [v16 contentView];
-      v22 = [v21 subviews];
-      v23 = [v22 firstObject];
+      contentView2 = [v16 contentView];
+      subviews2 = [contentView2 subviews];
+      firstObject = [subviews2 firstObject];
       v15 = ICCheckedDynamicCast();
 
       [(ICImagesAndMoviesScrollView *)v15 setAttachmentSection:v13];
@@ -686,31 +686,31 @@ LABEL_12:
     else
     {
       v24 = [ICImagesAndMoviesScrollView alloc];
-      v25 = [v16 contentView];
-      [v25 bounds];
+      contentView3 = [v16 contentView];
+      [contentView3 bounds];
       v15 = [(ICImagesAndMoviesScrollView *)v24 initWithFrame:v13 forAttachmentSection:?];
 
       [(ICImagesAndMoviesScrollView *)v15 setViewController:self];
       [(ICImagesAndMoviesScrollView *)v15 setDelegate:self];
       [(ICImagesAndMoviesScrollView *)v15 setAutoresizingMask:18];
-      v26 = [(ICImagesAndMoviesScrollView *)v15 collectionView];
-      [v26 setContentInsetAdjustmentBehavior:2];
+      collectionView2 = [(ICImagesAndMoviesScrollView *)v15 collectionView];
+      [collectionView2 setContentInsetAdjustmentBehavior:2];
 
-      v27 = [(ICImagesAndMoviesScrollView *)v15 collectionView];
-      [v16 setInnerCollectionView:v27];
+      collectionView3 = [(ICImagesAndMoviesScrollView *)v15 collectionView];
+      [v16 setInnerCollectionView:collectionView3];
 
-      v28 = [v16 contentView];
-      [v28 addSubview:v15];
+      contentView4 = [v16 contentView];
+      [contentView4 addSubview:v15];
     }
 
     [(ICBrowseAttachmentsCollectionController *)self adjustContentInsetOfImageScroller:v15];
-    v6 = v32;
+    viewCopy = v32;
   }
 
   else
   {
     v15 = -[ICBrowseAttachmentsCollectionController nonScrollingCellIdentifierForAttachmentType:](self, "nonScrollingCellIdentifierForAttachmentType:", [v12 attachmentType]);
-    v16 = [v6 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v7];
+    v16 = [viewCopy dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
   }
 
   objc_opt_class();
@@ -725,32 +725,32 @@ LABEL_12:
   return v16;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v9, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  kindCopy = kind;
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v12 = [sortedSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v13 = [v12 name];
-  v14 = [v13 intValue];
+  name = [v12 name];
+  intValue = [name intValue];
 
-  v15 = [v10 isEqualToString:UICollectionElementKindSectionHeader];
+  v15 = [kindCopy isEqualToString:UICollectionElementKindSectionHeader];
   if (v15)
   {
-    v16 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ICBrowseAttachmentsHeaderView" forIndexPath:v9];
-    v17 = v14;
+    v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ICBrowseAttachmentsHeaderView" forIndexPath:pathCopy];
+    v17 = intValue;
     v18 = [(ICBrowseAttachmentsCollectionController *)self titleForAttachmentSection:v17];
-    v19 = [v16 sectionLabel];
-    [v19 setText:v18];
+    sectionLabel = [v16 sectionLabel];
+    [sectionLabel setText:v18];
 
-    v20 = [(ICBrowseAttachmentsCollectionController *)self view];
-    [v20 directionalLayoutMargins];
+    view = [(ICBrowseAttachmentsCollectionController *)self view];
+    [view directionalLayoutMargins];
     [v16 setLeadingMargin:v21];
 
-    v22 = [(ICBrowseAttachmentsCollectionController *)self view];
-    [v22 directionalLayoutMargins];
+    view2 = [(ICBrowseAttachmentsCollectionController *)self view];
+    [view2 directionalLayoutMargins];
     [v16 setTrailingMargin:v23];
 
     [v16 setAttachmentSection:v17];
@@ -766,12 +766,12 @@ LABEL_12:
   return v16;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  v8 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
   v10 = ICDynamicCast();
 
@@ -787,24 +787,24 @@ LABEL_12:
 {
   if (+[UIDevice ic_isVision])
   {
-    v3 = [(ICBrowseAttachmentsCollectionController *)self attachmentSection];
-    if (v3 < 8)
+    attachmentSection = [(ICBrowseAttachmentsCollectionController *)self attachmentSection];
+    if (attachmentSection < 8)
     {
-      return qword_100531DD0[v3];
+      return qword_100531DD0[attachmentSection];
     }
   }
 
-  v5 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v6 = [v5 traitCollection];
-  v7 = [v6 verticalSizeClass];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  traitCollection = [collectionView traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v7 == 1)
+  if (verticalSizeClass == 1)
   {
     return 2;
   }
 
-  v8 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v8 frame];
+  collectionView2 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView2 frame];
   v10 = v9;
   [(ICBrowseAttachmentsCollectionController *)self leadingMargin];
   v12 = v10 - v11;
@@ -814,24 +814,24 @@ LABEL_12:
   return v4;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 frame];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy frame];
   v10 = v9;
-  if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewAtIndexPath:v8])
+  if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewAtIndexPath:pathCopy])
   {
     *&v11 = 128.0;
   }
 
   else
   {
-    v12 = [(ICBrowseAttachmentsCollectionController *)self attachmentAtIndexPath:v8];
-    v13 = [v7 traitCollection];
-    v14 = [v13 horizontalSizeClass];
+    v12 = [(ICBrowseAttachmentsCollectionController *)self attachmentAtIndexPath:pathCopy];
+    traitCollection = [viewCopy traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v14 == 1 && (+[ICDeviceSupport isLargerCompactHorizontalWidthDevice]& 1) == 0)
+    if (horizontalSizeClass == 1 && (+[ICDeviceSupport isLargerCompactHorizontalWidthDevice]& 1) == 0)
     {
       [(ICBrowseAttachmentsCollectionController *)self leadingMargin];
       v23 = v10 - v22;
@@ -841,7 +841,7 @@ LABEL_12:
 
     else
     {
-      v15 = [(ICBrowseAttachmentsCollectionController *)self cellsPerRow];
+      cellsPerRow = [(ICBrowseAttachmentsCollectionController *)self cellsPerRow];
       v16 = +[UIDevice ic_isVision];
       v17 = -28.0;
       if (v16)
@@ -849,22 +849,22 @@ LABEL_12:
         v17 = -20.0;
       }
 
-      v18 = v10 + v17 * (v15 + -1.0);
+      v18 = v10 + v17 * (cellsPerRow + -1.0);
       [(ICBrowseAttachmentsCollectionController *)self leadingMargin];
       v20 = v18 - v19;
       [(ICBrowseAttachmentsCollectionController *)self trailingMargin];
-      v10 = floor((v20 - v21) / v15);
+      v10 = floor((v20 - v21) / cellsPerRow);
     }
 
     v25 = -[ICBrowseAttachmentsCollectionController nonScrollingCellIdentifierForAttachmentType:](self, "nonScrollingCellIdentifierForAttachmentType:", [v12 attachmentType]);
     *&v11 = v10;
     if ([v25 isEqual:@"ICBrowseAttachmentsBrickCell"])
     {
-      v26 = [(ICBrowseAttachmentsCollectionController *)self attachmentAtIndexPath:v8];
+      v26 = [(ICBrowseAttachmentsCollectionController *)self attachmentAtIndexPath:pathCopy];
       [(ICBrowseAttachmentsBrickCell *)self->_defaultSizingBrickCell setAttachment:v26];
 
-      v27 = [(ICBrowseAttachmentsBrickCell *)self->_defaultSizingBrickCell attachmentBrickView];
-      [v27 computedSize];
+      attachmentBrickView = [(ICBrowseAttachmentsBrickCell *)self->_defaultSizingBrickCell attachmentBrickView];
+      [attachmentBrickView computedSize];
       v11 = v28;
     }
   }
@@ -876,21 +876,21 @@ LABEL_12:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v9 = [v8 objectAtIndexedSubscript:a5];
+  viewCopy = view;
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v9 = [sortedSections objectAtIndexedSubscript:index];
 
-  v10 = [v9 name];
-  v11 = [v10 intValue];
+  name = [v9 name];
+  intValue = [name intValue];
 
-  v12 = [v7 traitCollection];
+  traitCollection = [viewCopy traitCollection];
 
-  v13 = [v12 horizontalSizeClass];
-  if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewForSection:v11])
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewForSection:intValue])
   {
-    if (v13 == 1)
+    if (horizontalSizeClass == 1)
     {
       v14 = 16.0;
     }
@@ -908,7 +908,7 @@ LABEL_12:
   {
     [(ICBrowseAttachmentsCollectionController *)self leadingMargin];
     v15 = v17;
-    if (v13 == 1)
+    if (horizontalSizeClass == 1)
     {
       v14 = 16.0;
     }
@@ -922,10 +922,10 @@ LABEL_12:
     v16 = v18;
   }
 
-  v19 = [(ICBrowseAttachmentsCollectionController *)self view];
-  v20 = [v19 effectiveUserInterfaceLayoutDirection];
+  view = [(ICBrowseAttachmentsCollectionController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  if (v20 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v21 = v15;
   }
@@ -935,7 +935,7 @@ LABEL_12:
     v21 = v16;
   }
 
-  if (v20 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v15 = v16;
   }
@@ -951,9 +951,9 @@ LABEL_12:
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  v5 = [UIDevice ic_isVision:a3];
+  v5 = [UIDevice ic_isVision:view];
   result = 16.0;
   if (v5)
   {
@@ -963,30 +963,30 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a3;
+  viewCopy = view;
   if ([(ICBrowseAttachmentsCollectionController *)self displayAllSections])
   {
     v8 = +[UIFont ic_attachmentBrowserTitleFont];
     [v8 lineHeight];
     v10 = round(v9);
 
-    v11 = [v7 window];
-    v12 = [v11 windowScene];
-    v13 = [v12 interfaceOrientation];
+    window = [viewCopy window];
+    windowScene = [window windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    v14 = [v7 traitCollection];
-    v15 = [v14 horizontalSizeClass];
+    traitCollection = [viewCopy traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (ICAccessibilityAccessibilityLargerTextSizesEnabled() && (v13 - 3) >= 0xFFFFFFFFFFFFFFFELL && v15 == 1)
+    if (ICAccessibilityAccessibilityLargerTextSizesEnabled() && (interfaceOrientation - 3) >= 0xFFFFFFFFFFFFFFFELL && horizontalSizeClass == 1)
     {
-      [(ICBrowseAttachmentsCollectionController *)self estimatedHeightForAXLargerTextSizesForSection:a5];
+      [(ICBrowseAttachmentsCollectionController *)self estimatedHeightForAXLargerTextSizesForSection:section];
       v10 = v10 + v16;
     }
 
     v17 = 15.0;
-    if (a5 > 0)
+    if (section > 0)
     {
       v17 = 14.0;
     }
@@ -1010,9 +1010,9 @@ LABEL_12:
 
 - (void)sortFetchedResultsSections
 {
-  v3 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-  v4 = [v3 sections];
-  v5 = [v4 mutableCopy];
+  fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  sections = [fetchedResultsController sections];
+  v5 = [sections mutableCopy];
 
   +[NSMutableSet set];
   v24 = 0;
@@ -1049,18 +1049,18 @@ LABEL_12:
     if (v25[3] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = 0;
-      v10 = 0;
+      stringValue = 0;
       goto LABEL_8;
     }
   }
 
-  v10 = [&off_10066E160 stringValue];
+  stringValue = [&off_10066E160 stringValue];
   v11 = 1;
 LABEL_8:
   v12 = [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:0];
   v28 = v12;
   v13 = [NSArray arrayWithObjects:&v28 count:1];
-  v14 = [(ICBrowseAttachmentsSectionInfo *)v7 initWithSectionInfo:v9 name:v10 additionalObjects:v6 sortDescriptors:v13];
+  v14 = [(ICBrowseAttachmentsSectionInfo *)v7 initWithSectionInfo:v9 name:stringValue additionalObjects:v6 sortDescriptors:v13];
 
   if (v11)
   {
@@ -1094,7 +1094,7 @@ LABEL_16:
   _Block_object_dispose(&v24, 8);
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1104,23 +1104,23 @@ LABEL_16:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)notesContextRefreshNotification:(id)a3
+- (void)notesContextRefreshNotification:(id)notification
 {
-  v3 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-  [v3 performFetch:0];
+  fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  [fetchedResultsController performFetch:0];
 }
 
 - (void)accountsWillChange
 {
   [(ICBrowseAttachmentsCollectionController *)self setUpdatingAccounts:1];
-  v3 = [(ICBrowseAttachmentsCollectionController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(ICBrowseAttachmentsCollectionController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView reloadData];
 
-  v5 = [(ICBrowseAttachmentsCollectionController *)self collectionViewLayout];
-  [v5 invalidateLayout];
+  collectionViewLayout = [(ICBrowseAttachmentsCollectionController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   [(ICBrowseAttachmentsCollectionController *)self updateEmptyView];
 }
@@ -1128,25 +1128,25 @@ LABEL_16:
 - (void)accountsDidChange
 {
   [(ICBrowseAttachmentsCollectionController *)self setUpdatingAccounts:0];
-  v3 = [(ICBrowseAttachmentsCollectionController *)self view];
-  [v3 setUserInteractionEnabled:1];
+  view = [(ICBrowseAttachmentsCollectionController *)self view];
+  [view setUserInteractionEnabled:1];
 
-  v4 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-  [v4 performFetch:0];
+  fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  [fetchedResultsController performFetch:0];
 
   [(ICBrowseAttachmentsCollectionController *)self sortFetchedResultsSections];
-  v5 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v5 reloadData];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [collectionView reloadData];
 
-  v6 = [(ICBrowseAttachmentsCollectionController *)self collectionViewLayout];
-  [v6 invalidateLayout];
+  collectionViewLayout = [(ICBrowseAttachmentsCollectionController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   [(ICBrowseAttachmentsCollectionController *)self updateEmptyView];
 }
 
-- (id)viewControllerForAttachmentSection:(signed __int16)a3
+- (id)viewControllerForAttachmentSection:(signed __int16)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v4 = [(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewForSection:?];
   v5 = off_10063FFA0;
   if (!v4)
@@ -1154,68 +1154,68 @@ LABEL_16:
     v5 = off_10063FF80;
   }
 
-  v6 = [objc_alloc(*v5) initWithAttachmentSection:v3];
+  v6 = [objc_alloc(*v5) initWithAttachmentSection:sectionCopy];
 
   return v6;
 }
 
-- (void)showAllForAttachmentSection:(signed __int16)a3
+- (void)showAllForAttachmentSection:(signed __int16)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v9 = [(ICBrowseAttachmentsCollectionController *)self viewControllerForAttachmentSection:?];
-  v5 = [(ICBrowseAttachmentsCollectionController *)self titleForAttachmentSection:v3];
-  v6 = [v9 navigationItem];
-  [v6 setTitle:v5];
+  v5 = [(ICBrowseAttachmentsCollectionController *)self titleForAttachmentSection:sectionCopy];
+  navigationItem = [v9 navigationItem];
+  [navigationItem setTitle:v5];
 
-  v7 = [(ICBrowseAttachmentsCollectionController *)self navigationController];
-  [v7 showViewController:v9 sender:self];
+  navigationController = [(ICBrowseAttachmentsCollectionController *)self navigationController];
+  [navigationController showViewController:v9 sender:self];
 
-  v8 = [(ICBrowseAttachmentsCollectionController *)self eventReporter];
-  [v8 submitAttachmentBrowserActionEventForType:2];
+  eventReporter = [(ICBrowseAttachmentsCollectionController *)self eventReporter];
+  [eventReporter submitAttachmentBrowserActionEventForType:2];
 }
 
-- (BOOL)browseAttachmentsCell:(id)a3 didSelectAttachment:(id)a4
+- (BOOL)browseAttachmentsCell:(id)cell didSelectAttachment:(id)attachment
 {
-  v5 = a4;
-  v6 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [(ICBrowseAttachmentsCollectionController *)self browseAttachmentsCollectionView:v6 didSelectAttachment:v5 indexPath:0];
+  attachmentCopy = attachment;
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [(ICBrowseAttachmentsCollectionController *)self browseAttachmentsCollectionView:collectionView didSelectAttachment:attachmentCopy indexPath:0];
 
   return 1;
 }
 
-- (void)browseAttachmentsCell:(id)a3 shouldShareAttachment:(id)a4
+- (void)browseAttachmentsCell:(id)cell shouldShareAttachment:(id)attachment
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [(ICBrowseAttachmentsCollectionController *)self browseAttachmentsCollectionView:v8 cell:v7 shouldShareAttachment:v6];
+  attachmentCopy = attachment;
+  cellCopy = cell;
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [(ICBrowseAttachmentsCollectionController *)self browseAttachmentsCollectionView:collectionView cell:cellCopy shouldShareAttachment:attachmentCopy];
 }
 
-- (void)browseAttachmentsCell:(id)a3 shouldInspectAttachment:(id)a4
+- (void)browseAttachmentsCell:(id)cell shouldInspectAttachment:(id)attachment
 {
-  v5 = a4;
-  v6 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [(ICBrowseAttachmentsCollectionController *)self browseAttachmentsCollectionView:v6 shouldInspectAttachment:v5];
+  attachmentCopy = attachment;
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [(ICBrowseAttachmentsCollectionController *)self browseAttachmentsCollectionView:collectionView shouldInspectAttachment:attachmentCopy];
 }
 
-- (void)browseAttachmentsCollectionView:(id)a3 didSelectAttachment:(id)a4 indexPath:(id)a5
+- (void)browseAttachmentsCollectionView:(id)view didSelectAttachment:(id)attachment indexPath:(id)path
 {
-  v7 = a4;
-  [(ICBrowseAttachmentsCollectionController *)self setSelectedIndexPath:a5];
-  v8 = [(ICBrowseAttachmentsCollectionController *)self attachmentsToPreviewWhenSelectingAttachment:v7];
-  v9 = [v8 indexOfObject:v7];
+  attachmentCopy = attachment;
+  [(ICBrowseAttachmentsCollectionController *)self setSelectedIndexPath:path];
+  v8 = [(ICBrowseAttachmentsCollectionController *)self attachmentsToPreviewWhenSelectingAttachment:attachmentCopy];
+  v9 = [v8 indexOfObject:attachmentCopy];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v7 shortLoggingDescription];
+      shortLoggingDescription = [attachmentCopy shortLoggingDescription];
       *buf = 138412290;
-      v18 = v11;
+      v18 = shortLoggingDescription;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Could not find attachment %@ in list of attachments in attachment browser. Falling back to single attachment", buf, 0xCu);
     }
 
-    v16 = v7;
+    v16 = attachmentCopy;
     v12 = [NSArray arrayWithObjects:&v16 count:1];
 
     v13 = 0;
@@ -1227,76 +1227,76 @@ LABEL_16:
     v13 = v9;
   }
 
-  v14 = [(ICBrowseAttachmentsCollectionController *)self eventReporter];
-  [v14 submitAttachmentBrowserActionEventForType:4];
+  eventReporter = [(ICBrowseAttachmentsCollectionController *)self eventReporter];
+  [eventReporter submitAttachmentBrowserActionEventForType:4];
 
-  v15 = [(ICBrowseAttachmentsCollectionController *)self ic_viewControllerManager];
-  [v15 presentAttachments:v8 startingAtIndex:v13 delegate:self displayShowInNote:1 editable:0 selectedSubAttachment:0 presentingViewController:self];
+  ic_viewControllerManager = [(ICBrowseAttachmentsCollectionController *)self ic_viewControllerManager];
+  [ic_viewControllerManager presentAttachments:v8 startingAtIndex:v13 delegate:self displayShowInNote:1 editable:0 selectedSubAttachment:0 presentingViewController:self];
 }
 
-- (void)browseAttachmentsCollectionView:(id)a3 cell:(id)a4 shouldShareAttachment:(id)a5
+- (void)browseAttachmentsCollectionView:(id)view cell:(id)cell shouldShareAttachment:(id)attachment
 {
-  v7 = a4;
-  v9 = [ICAttachmentActivityViewController makeWithAttachment:a5 quickLookItemDelegate:0 completion:0];
-  v8 = [v9 popoverPresentationController];
-  [v8 setSourceView:v7];
+  cellCopy = cell;
+  v9 = [ICAttachmentActivityViewController makeWithAttachment:attachment quickLookItemDelegate:0 completion:0];
+  popoverPresentationController = [v9 popoverPresentationController];
+  [popoverPresentationController setSourceView:cellCopy];
 
   [(ICBrowseAttachmentsCollectionController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)browseAttachmentsCollectionView:(id)a3 shouldInspectAttachment:(id)a4
+- (void)browseAttachmentsCollectionView:(id)view shouldInspectAttachment:(id)attachment
 {
-  v5 = a4;
-  v7 = [[ICAttachmentInspectorViewController alloc] initWithAttachment:v5];
+  attachmentCopy = attachment;
+  v7 = [[ICAttachmentInspectorViewController alloc] initWithAttachment:attachmentCopy];
 
-  v6 = [(ICAttachmentInspectorViewController *)v7 ic_embedInNavigationControllerForModalPresentation];
-  [(ICBrowseAttachmentsCollectionController *)self presentViewController:v6 animated:1 completion:0];
+  ic_embedInNavigationControllerForModalPresentation = [(ICAttachmentInspectorViewController *)v7 ic_embedInNavigationControllerForModalPresentation];
+  [(ICBrowseAttachmentsCollectionController *)self presentViewController:ic_embedInNavigationControllerForModalPresentation animated:1 completion:0];
 }
 
-- (id)attachmentPresenter:(id)a3 transitionViewForAttachment:(id)a4
+- (id)attachmentPresenter:(id)presenter transitionViewForAttachment:(id)attachment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICBrowseAttachmentsCollectionController *)self selectedIndexPath];
+  presenterCopy = presenter;
+  attachmentCopy = attachment;
+  selectedIndexPath = [(ICBrowseAttachmentsCollectionController *)self selectedIndexPath];
 
-  if (v8)
+  if (selectedIndexPath)
   {
-    v9 = [(ICBrowseAttachmentsCollectionController *)self selectedIndexPath];
+    selectedIndexPath2 = [(ICBrowseAttachmentsCollectionController *)self selectedIndexPath];
   }
 
   else
   {
-    v10 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-    v11 = [v10 indexPathForObject:v7];
+    fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+    v11 = [fetchedResultsController indexPathForObject:attachmentCopy];
 
-    v9 = [(ICBrowseAttachmentsCollectionController *)self collectionViewIndexPathFromFetchedResultsControllerIndexPath:v11];
-    if (!v9)
+    selectedIndexPath2 = [(ICBrowseAttachmentsCollectionController *)self collectionViewIndexPathFromFetchedResultsControllerIndexPath:v11];
+    if (!selectedIndexPath2)
     {
-      v9 = v11;
+      selectedIndexPath2 = v11;
     }
   }
 
-  if ([v9 item] >= 1 && (-[ICBrowseAttachmentsCollectionController collectionView](self, "collectionView"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "numberOfItemsInSection:", objc_msgSend(v9, "section")), v12, v13 == 1))
+  if ([selectedIndexPath2 item] >= 1 && (-[ICBrowseAttachmentsCollectionController collectionView](self, "collectionView"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "numberOfItemsInSection:", objc_msgSend(selectedIndexPath2, "section")), v12, v13 == 1))
   {
-    v14 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", 0, [v9 section]);
-    v15 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-    v16 = [v15 cellForItemAtIndexPath:v14];
+    collectionView2 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", 0, [selectedIndexPath2 section]);
+    collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+    v16 = [collectionView cellForItemAtIndexPath:collectionView2];
   }
 
   else
   {
-    v14 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-    v16 = [v14 cellForItemAtIndexPath:v9];
+    collectionView2 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+    v16 = [collectionView2 cellForItemAtIndexPath:selectedIndexPath2];
   }
 
-  v17 = [v16 contentView];
-  v18 = [v17 subviews];
-  v19 = [v18 firstObject];
+  contentView = [v16 contentView];
+  subviews = [contentView subviews];
+  firstObject = [subviews firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v19 attachmentPresenter:v6 transitionViewForAttachment:v7];
+    view = [firstObject attachmentPresenter:presenterCopy transitionViewForAttachment:attachmentCopy];
   }
 
   else
@@ -1306,58 +1306,58 @@ LABEL_16:
     {
       objc_opt_class();
       v21 = ICDynamicCast();
-      v22 = [v21 attachmentBrickView];
-      v23 = [v22 quickLookTransitionView];
+      attachmentBrickView = [v21 attachmentBrickView];
+      quickLookTransitionView = [attachmentBrickView quickLookTransitionView];
 
       goto LABEL_16;
     }
 
-    v20 = [(ICBrowseAttachmentsCollectionController *)self view];
+    view = [(ICBrowseAttachmentsCollectionController *)self view];
   }
 
-  v23 = v20;
+  quickLookTransitionView = view;
 LABEL_16:
 
-  return v23;
+  return quickLookTransitionView;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v7 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v5 locationInView:v7];
+  interactionCopy = interaction;
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  collectionView2 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [interactionCopy locationInView:collectionView2];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v6 ic_cellAtLocation:{v9, v11}];
+  v12 = [collectionView ic_cellAtLocation:{v9, v11}];
 
   if (v12 && [v12 conformsToProtocol:&OBJC_PROTOCOL___ICNotePreviewingActions])
   {
     v13 = v12;
     objc_opt_class();
     v14 = ICDynamicCast();
-    v15 = [v14 attachment];
-    if ([v15 attachmentType] == 11)
+    attachment = [v14 attachment];
+    if ([attachment attachmentType] == 11)
     {
       objc_opt_class();
-      v16 = [v15 attachmentModel];
+      attachmentModel = [attachment attachmentModel];
       v17 = ICDynamicCast();
 
       if (v17)
       {
-        v18 = [v17 firstSubAttachment];
+        firstSubAttachment = [v17 firstSubAttachment];
 
-        v15 = v18;
+        attachment = firstSubAttachment;
       }
     }
 
-    if (v15)
+    if (attachment)
     {
-      v19 = [(ICBrowseAttachmentsCollectionController *)self ic_viewControllerManager];
-      v31 = v15;
+      ic_viewControllerManager = [(ICBrowseAttachmentsCollectionController *)self ic_viewControllerManager];
+      v31 = attachment;
       v20 = [NSArray arrayWithObjects:&v31 count:1];
-      v21 = [ICAttachmentPresenter previewViewControllerWithViewControllerManager:v19 attachments:v20 startingAtIndex:0 delegate:0 editable:0 isFromAttachmentBrowser:1];
+      v21 = [ICAttachmentPresenter previewViewControllerWithViewControllerManager:ic_viewControllerManager attachments:v20 startingAtIndex:0 delegate:0 editable:0 isFromAttachmentBrowser:1];
     }
 
     else
@@ -1375,7 +1375,7 @@ LABEL_16:
     v26[2] = sub_1001469BC;
     v26[3] = &unk_10064B108;
     v27 = v13;
-    v28 = self;
+    selfCopy = self;
     v23 = v13;
     v24 = v21;
     v22 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:v29 actionProvider:v26];
@@ -1389,31 +1389,31 @@ LABEL_16:
   return v22;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v8 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v6 locationInView:v8];
+  interactionCopy = interaction;
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  collectionView2 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [interactionCopy locationInView:collectionView2];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v7 ic_cellAtLocation:{v10, v12}];
+  v13 = [collectionView ic_cellAtLocation:{v10, v12}];
 
-  v14 = [v13 contentView];
+  contentView = [v13 contentView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     v15 = ICDynamicCast();
-    v16 = [v15 attachmentBrickView];
+    attachmentBrickView = [v15 attachmentBrickView];
 
-    v14 = v16;
+    contentView = attachmentBrickView;
   }
 
-  if (v14)
+  if (contentView)
   {
-    v17 = [[UITargetedPreview alloc] initWithView:v14];
+    v17 = [[UITargetedPreview alloc] initWithView:contentView];
   }
 
   else
@@ -1424,20 +1424,20 @@ LABEL_16:
   return v17;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v10 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  [v8 locationInView:v10];
+  animatorCopy = animator;
+  interactionCopy = interaction;
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  collectionView2 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  [interactionCopy locationInView:collectionView2];
   v12 = v11;
   v14 = v13;
 
-  v15 = [v9 indexPathForItemAtPoint:{v12, v14}];
+  v15 = [collectionView indexPathForItemAtPoint:{v12, v14}];
 
   v16 = [(ICBrowseAttachmentsCollectionController *)self attachmentAtIndexPath:v15];
-  [v7 setPreferredCommitStyle:1];
+  [animatorCopy setPreferredCommitStyle:1];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100146CE4;
@@ -1447,30 +1447,30 @@ LABEL_16:
   v21 = v15;
   v17 = v15;
   v18 = v16;
-  [v7 addCompletion:v19];
+  [animatorCopy addCompletion:v19];
 }
 
-- (id)collectionViewIndexPathFromFetchedResultsControllerIndexPath:(id)a3
+- (id)collectionViewIndexPathFromFetchedResultsControllerIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-  v6 = [v5 sections];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  sections = [fetchedResultsController sections];
+  v7 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v8 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v9 = [v8 count];
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v9 = [sortedSections count];
 
   if (v9)
   {
     v10 = 0;
     while (1)
     {
-      v11 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-      v12 = [v11 objectAtIndexedSubscript:v10];
+      sortedSections2 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+      v12 = [sortedSections2 objectAtIndexedSubscript:v10];
 
-      v13 = [v12 name];
-      v14 = [v7 name];
-      v15 = [v13 isEqual:v14];
+      name = [v12 name];
+      name2 = [v7 name];
+      v15 = [name isEqual:name2];
 
       if (v15)
       {
@@ -1478,8 +1478,8 @@ LABEL_16:
       }
 
       ++v10;
-      v16 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-      v17 = [v16 count];
+      sortedSections3 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+      v17 = [sortedSections3 count];
 
       if (v10 >= v17)
       {
@@ -1487,7 +1487,7 @@ LABEL_16:
       }
     }
 
-    v18 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", [v4 item], v10);
+    v18 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", [pathCopy item], v10);
   }
 
   else
@@ -1499,75 +1499,75 @@ LABEL_5:
   return v18;
 }
 
-- (int64_t)numberOfItemsToDisplayInSection:(int64_t)a3 withTraitCollection:(id)a4
+- (int64_t)numberOfItemsToDisplayInSection:(int64_t)section withTraitCollection:(id)collection
 {
-  v6 = a4;
-  v7 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  collectionCopy = collection;
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v8 = [sortedSections objectAtIndexedSubscript:section];
 
-  v9 = [v8 name];
-  v10 = [v9 intValue];
+  name = [v8 name];
+  intValue = [name intValue];
 
-  if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewForSection:v10])
+  if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewForSection:intValue])
   {
-    v11 = 1;
+    numberOfObjects = 1;
   }
 
   else
   {
-    v11 = [v8 numberOfObjects];
+    numberOfObjects = [v8 numberOfObjects];
     if ([(ICBrowseAttachmentsCollectionController *)self displayAllSections])
     {
-      v12 = [v6 horizontalSizeClass];
-      v13 = [v6 verticalSizeClass];
+      horizontalSizeClass = [collectionCopy horizontalSizeClass];
+      verticalSizeClass = [collectionCopy verticalSizeClass];
       v14 = 6;
-      if (v11 < 6)
+      if (numberOfObjects < 6)
       {
-        v14 = v11;
+        v14 = numberOfObjects;
       }
 
       v15 = 4;
-      if (v11 < 4)
+      if (numberOfObjects < 4)
       {
-        v15 = v11;
+        v15 = numberOfObjects;
       }
 
-      if (v13 == 1)
+      if (verticalSizeClass == 1)
       {
         v14 = v15;
       }
 
       v16 = 3;
-      if (v11 == 4)
+      if (numberOfObjects == 4)
       {
         v16 = 4;
       }
 
-      if (v11 < 4)
+      if (numberOfObjects < 4)
       {
-        v16 = v11;
+        v16 = numberOfObjects;
       }
 
-      if (v12 == 1)
+      if (horizontalSizeClass == 1)
       {
-        v11 = v16;
+        numberOfObjects = v16;
       }
 
       else
       {
-        v11 = v14;
+        numberOfObjects = v14;
       }
     }
   }
 
-  return v11;
+  return numberOfObjects;
 }
 
-- (id)titleForAttachmentSection:(signed __int16)a3
+- (id)titleForAttachmentSection:(signed __int16)section
 {
-  if (a3 - 1) <= 6 && ((0x7Du >> (a3 - 1)))
+  if (section - 1) <= 6 && ((0x7Du >> (section - 1)))
   {
-    v3 = off_10064B128[(a3 - 1)];
+    v3 = off_10064B128[(section - 1)];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:&stru_100661CF0 table:0];
   }
@@ -1587,8 +1587,8 @@ LABEL_5:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v4 = [v3 _visibleSupplementaryViewsOfKind:UICollectionElementKindSectionHeader];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  v4 = [collectionView _visibleSupplementaryViewsOfKind:UICollectionElementKindSectionHeader];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -1622,8 +1622,8 @@ LABEL_5:
     while (v6);
   }
 
-  v10 = [(ICBrowseAttachmentsCollectionController *)self collectionViewLayout];
-  [v10 invalidateLayout];
+  collectionViewLayout = [(ICBrowseAttachmentsCollectionController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   [(ICBrowseAttachmentsCollectionController *)self updateEmptyViewFonts];
 }
@@ -1655,12 +1655,12 @@ LABEL_5:
         v9 = ICDynamicCast();
         if (v9)
         {
-          v10 = [(ICBrowseAttachmentsCollectionController *)self view];
-          [v10 directionalLayoutMargins];
+          view = [(ICBrowseAttachmentsCollectionController *)self view];
+          [view directionalLayoutMargins];
           [v9 setLeadingMargin:v11];
 
-          v12 = [(ICBrowseAttachmentsCollectionController *)self view];
-          [v12 directionalLayoutMargins];
+          view2 = [(ICBrowseAttachmentsCollectionController *)self view];
+          [view2 directionalLayoutMargins];
           [v9 setTrailingMargin:v13];
         }
 
@@ -1681,10 +1681,10 @@ LABEL_5:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1695,37 +1695,37 @@ LABEL_5:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         if ([(ICBrowseAttachmentsCollectionController *)self useImagesAndMoviesScrollViewAtIndexPath:v9])
         {
-          v10 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-          v11 = [v10 cellForItemAtIndexPath:v9];
+          collectionView2 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+          v11 = [collectionView2 cellForItemAtIndexPath:v9];
 
           objc_opt_class();
-          v12 = [v11 contentView];
-          v13 = [v12 subviews];
-          v14 = [v13 firstObject];
+          contentView = [v11 contentView];
+          subviews = [contentView subviews];
+          firstObject = [subviews firstObject];
           v15 = ICCheckedDynamicCast();
 
           [(ICBrowseAttachmentsCollectionController *)self adjustContentInsetOfImageScroller:v15];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)emptyTextForAttachmentSection:(signed __int16)a3
+- (id)emptyTextForAttachmentSection:(signed __int16)section
 {
-  if (a3 <= 7)
+  if (section <= 7)
   {
-    v4 = off_10064B160[a3];
+    v4 = off_10064B160[section];
     v5 = +[NSBundle mainBundle];
     v3 = [v5 localizedStringForKey:v4 value:&stru_100661CF0 table:0];
   }
@@ -1735,14 +1735,14 @@ LABEL_5:
 
 - (void)updateEmptyView
 {
-  v3 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v4 = [(ICBrowseAttachmentsCollectionController *)self numberOfSectionsInCollectionView:v3];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  v4 = [(ICBrowseAttachmentsCollectionController *)self numberOfSectionsInCollectionView:collectionView];
 
-  v5 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
-  v26 = v5;
+  emptyView = [(ICBrowseAttachmentsCollectionController *)self emptyView];
+  v26 = emptyView;
   if (v4)
   {
-    [v5 removeFromSuperview];
+    [emptyView removeFromSuperview];
   }
 
   else
@@ -1754,8 +1754,8 @@ LABEL_5:
       v7 = [UINib nibWithNibName:@"ICBrowseAttachmentsEmpty" bundle:v6];
 
       v8 = [v7 instantiateWithOwner:self options:0];
-      v9 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      emptyView2 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
+      [emptyView2 setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
     v10 = objc_alloc_init(NSMutableParagraphStyle);
@@ -1768,41 +1768,41 @@ LABEL_5:
     v12 = [NSAttributedString alloc];
     v13 = [(ICBrowseAttachmentsCollectionController *)self emptyTextForAttachmentSection:[(ICBrowseAttachmentsCollectionController *)self attachmentSection]];
     v14 = [v12 initWithString:v13 attributes:v11];
-    v15 = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
-    [v15 setAttributedText:v14];
+    emptyDetailsLabel = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
+    [emptyDetailsLabel setAttributedText:v14];
 
-    v16 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
-    v17 = [v16 superview];
+    emptyView3 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
+    superview = [emptyView3 superview];
 
-    if (!v17)
+    if (!superview)
     {
-      v18 = [(ICBrowseAttachmentsCollectionController *)self view];
-      v19 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
-      [v18 addSubview:v19];
+      view = [(ICBrowseAttachmentsCollectionController *)self view];
+      emptyView4 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
+      [view addSubview:emptyView4];
 
       v27 = @"emptyView";
-      v20 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
-      v28 = v20;
+      emptyView5 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
+      v28 = emptyView5;
       v21 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
-      v22 = [(ICBrowseAttachmentsCollectionController *)self view];
+      view2 = [(ICBrowseAttachmentsCollectionController *)self view];
       v23 = [NSLayoutConstraint constraintsWithVisualFormat:@"|[emptyView]|" options:0 metrics:0 views:v21];
-      [v22 addConstraints:v23];
+      [view2 addConstraints:v23];
 
-      v24 = [(ICBrowseAttachmentsCollectionController *)self view];
+      view3 = [(ICBrowseAttachmentsCollectionController *)self view];
       v25 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[emptyView]|" options:0 metrics:0 views:v21];
-      [v24 addConstraints:v25];
+      [view3 addConstraints:v25];
     }
 
     [(ICBrowseAttachmentsCollectionController *)self updateEmptyViewFonts];
   }
 }
 
-- (id)attachmentsToPreviewWhenSelectingAttachment:(id)a3
+- (id)attachmentsToPreviewWhenSelectingAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-  v6 = [v5 indexPathForObject:v4];
+  attachmentCopy = attachment;
+  fetchedResultsController = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+  v6 = [fetchedResultsController indexPathForObject:attachmentCopy];
 
   v7 = [(ICBrowseAttachmentsCollectionController *)self collectionViewIndexPathFromFetchedResultsControllerIndexPath:v6];
   if (!v7)
@@ -1811,35 +1811,35 @@ LABEL_5:
   }
 
   v8 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", 0, [v7 section]);
-  v9 = [(ICBrowseAttachmentsCollectionController *)self collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v8];
+  collectionView = [(ICBrowseAttachmentsCollectionController *)self collectionView];
+  v10 = [collectionView cellForItemAtIndexPath:v8];
 
-  v11 = [v10 contentView];
-  v12 = [v11 subviews];
-  v13 = [v12 firstObject];
+  contentView = [v10 contentView];
+  subviews = [contentView subviews];
+  firstObject = [subviews firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v13 attachments];
+    attachments = [firstObject attachments];
   }
 
   else
   {
-    v15 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
-    v16 = [v15 sections];
-    v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+    fetchedResultsController2 = [(ICBrowseAttachmentsCollectionController *)self fetchedResultsController];
+    sections = [fetchedResultsController2 sections];
+    v17 = [sections objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
 
-    v14 = [v17 objects];
+    attachments = [v17 objects];
   }
 
-  return v14;
+  return attachments;
 }
 
 - (double)leadingMargin
 {
-  v2 = [(ICBrowseAttachmentsCollectionController *)self view];
-  [v2 directionalLayoutMargins];
+  view = [(ICBrowseAttachmentsCollectionController *)self view];
+  [view directionalLayoutMargins];
   v4 = v3;
 
   return v4;
@@ -1847,33 +1847,33 @@ LABEL_5:
 
 - (double)trailingMargin
 {
-  v2 = [(ICBrowseAttachmentsCollectionController *)self view];
-  [v2 directionalLayoutMargins];
+  view = [(ICBrowseAttachmentsCollectionController *)self view];
+  [view directionalLayoutMargins];
   v4 = v3;
 
   return v4;
 }
 
-- (void)adjustContentInsetOfImageScroller:(id)a3
+- (void)adjustContentInsetOfImageScroller:(id)scroller
 {
-  v32 = a3;
+  scrollerCopy = scroller;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v4 userInterfaceLayoutDirection];
 
-  v6 = [v32 collectionView];
-  [v6 contentInset];
+  collectionView = [scrollerCopy collectionView];
+  [collectionView contentInset];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v32 collectionView];
-  [v15 contentOffset];
+  collectionView2 = [scrollerCopy collectionView];
+  [collectionView2 contentOffset];
   v17 = v16;
   v19 = v18;
 
   v20 = -v17;
-  if (v5 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v21 = v14;
   }
@@ -1884,7 +1884,7 @@ LABEL_5:
   }
 
   v22 = v21 == v20 || vabdd_f64(v20, v21) < fabs(v21 * 0.000000999999997);
-  if (v5 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     [(ICBrowseAttachmentsCollectionController *)self trailingMargin];
     v24 = v23;
@@ -1902,45 +1902,45 @@ LABEL_5:
     v26 = v24;
   }
 
-  v30 = [v32 collectionView];
-  [v30 setContentInset:{v8, v24, v12, v27}];
+  collectionView3 = [scrollerCopy collectionView];
+  [collectionView3 setContentInset:{v8, v24, v12, v27}];
 
   if (v22)
   {
-    v31 = [v32 collectionView];
-    [v31 setContentOffset:{-v26, v19}];
+    collectionView4 = [scrollerCopy collectionView];
+    [collectionView4 setContentOffset:{-v26, v19}];
   }
 }
 
 - (void)applyAccessibilityInfo
 {
-  v3 = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
-  v2 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:UIAccessibilityTraitHeader | v2];
+  noAttachmentsLabel = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
+  accessibilityTraits = [noAttachmentsLabel accessibilityTraits];
+  [noAttachmentsLabel setAccessibilityTraits:UIAccessibilityTraitHeader | accessibilityTraits];
 }
 
-- (double)estimatedHeightForAXLargerTextSizesForSection:(unint64_t)a3
+- (double)estimatedHeightForAXLargerTextSizesForSection:(unint64_t)section
 {
-  v5 = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  sortedSections = [(ICBrowseAttachmentsCollectionController *)self sortedSections];
+  v6 = [sortedSections objectAtIndexedSubscript:section];
 
-  v7 = [v6 name];
-  v8 = [v7 intValue];
+  name = [v6 name];
+  intValue = [name intValue];
 
-  v9 = [(ICBrowseAttachmentsCollectionController *)self titleForAttachmentSection:v8];
+  v9 = [(ICBrowseAttachmentsCollectionController *)self titleForAttachmentSection:intValue];
   v10 = +[UIFont ic_attachmentBrowserTitleFont];
   if (UIAccessibilityIsBoldTextEnabled())
   {
     [v10 pointSize];
     *&v11 = v11 * 1.1;
     v12 = [UIFont systemFontOfSize:roundf(*&v11) weight:UIFontWeightHeavy];
-    v13 = [v12 ic_fontWithSingleLineA];
+    ic_fontWithSingleLineA = [v12 ic_fontWithSingleLineA];
 
-    v10 = v13;
+    v10 = ic_fontWithSingleLineA;
   }
 
-  v14 = [(ICBrowseAttachmentsCollectionController *)self view];
-  [v14 frame];
+  view = [(ICBrowseAttachmentsCollectionController *)self view];
+  [view frame];
   v16 = v15;
   v21 = NSFontAttributeName;
   v22 = v10;
@@ -1953,42 +1953,42 @@ LABEL_5:
 
 - (void)updateEmptyViewFonts
 {
-  v3 = [(ICBrowseAttachmentsCollectionController *)self emptyView];
+  emptyView = [(ICBrowseAttachmentsCollectionController *)self emptyView];
 
-  if (v3)
+  if (emptyView)
   {
     v4 = [UIFont ic_preferredFontForTextStyle:UIFontTextStyleBody adjustedForDefaultSize:28.0 maxSize:53.0];
-    v5 = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
-    [v5 setFont:v4];
+    noAttachmentsLabel = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
+    [noAttachmentsLabel setFont:v4];
 
     v6 = [UIFont ic_preferredFontForTextStyle:UIFontTextStyleBody adjustedForDefaultSize:17.0 maxSize:44.0];
-    v7 = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
-    [v7 setFont:v6];
+    emptyDetailsLabel = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
+    [emptyDetailsLabel setFont:v6];
 
-    v8 = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
-    v9 = [v8 font];
-    v10 = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
-    v11 = [v10 font];
-    NSLog(@"Setting fonts:\n\t%@\n\t%@", v9, v11);
+    noAttachmentsLabel2 = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
+    font = [noAttachmentsLabel2 font];
+    emptyDetailsLabel2 = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
+    font2 = [emptyDetailsLabel2 font];
+    NSLog(@"Setting fonts:\n\t%@\n\t%@", font, font2);
 
     v16 = [UIColor colorWithWhite:0.6 alpha:1.0];
     if (ICAccessibilityAccessibilityLargerTextSizesEnabled())
     {
-      v12 = [UIColor ic_darkerAccessibilityColorForColor:v16];
-      v13 = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
-      [v13 setTextColor:v12];
+      emptyDetailsLabel4 = [UIColor ic_darkerAccessibilityColorForColor:v16];
+      noAttachmentsLabel3 = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
+      [noAttachmentsLabel3 setTextColor:emptyDetailsLabel4];
 
-      v14 = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
-      [v14 setTextColor:v12];
+      emptyDetailsLabel3 = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
+      [emptyDetailsLabel3 setTextColor:emptyDetailsLabel4];
     }
 
     else
     {
-      v15 = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
-      [v15 setTextColor:v16];
+      noAttachmentsLabel4 = [(ICBrowseAttachmentsCollectionController *)self noAttachmentsLabel];
+      [noAttachmentsLabel4 setTextColor:v16];
 
-      v12 = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
-      [v12 setTextColor:v16];
+      emptyDetailsLabel4 = [(ICBrowseAttachmentsCollectionController *)self emptyDetailsLabel];
+      [emptyDetailsLabel4 setTextColor:v16];
     }
   }
 }
@@ -1999,15 +1999,15 @@ LABEL_5:
   {
     if (+[ICNAEventReporter isOptedInForAnalytics])
     {
-      v3 = [(ICBrowseAttachmentsCollectionController *)self viewIfLoaded];
+      viewIfLoaded = [(ICBrowseAttachmentsCollectionController *)self viewIfLoaded];
 
-      if (v3)
+      if (viewIfLoaded)
       {
         v4 = [ICNAEventReporter alloc];
         v5 = objc_opt_class();
         v6 = NSStringFromClass(v5);
-        v7 = [(ICBrowseAttachmentsCollectionController *)self view];
-        v8 = [v4 initWithSubTrackerName:v6 view:v7];
+        view = [(ICBrowseAttachmentsCollectionController *)self view];
+        v8 = [v4 initWithSubTrackerName:v6 view:view];
         eventReporter = self->_eventReporter;
         self->_eventReporter = v8;
 
@@ -2022,17 +2022,17 @@ LABEL_5:
   return v11;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
   v8 = +[NSNotificationCenter defaultCenter];
   v6 = ICNAEventReporterLostSessionNotification;
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [v8 removeObserver:self name:v6 object:object];
 }
 
 @end

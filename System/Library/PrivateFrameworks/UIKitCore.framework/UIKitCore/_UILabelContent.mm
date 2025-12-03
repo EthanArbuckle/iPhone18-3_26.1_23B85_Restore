@@ -1,36 +1,36 @@
 @interface _UILabelContent
-- (BOOL)_isContentEqualToContent:(id)a3;
-- (BOOL)isAttribute:(id)a3 uniformlyEqualToValue:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContent:(id)a3 byAttribute:(id)a4;
-- (_UILabelContent)contentWithAttributedString:(id)a3;
-- (_UILabelContent)contentWithDefaultAttributes:(id)a3;
-- (_UILabelContent)contentWithString:(id)a3;
-- (_UILabelContent)initWithDefaultAttributes:(id)a3;
-- (id)_fullRangeFont:(void *)a1;
-- (id)contentByAddingAttribute:(id)a3 toDefaultAttributesWithValue:(id)a4;
-- (id)contentByAddingAttributesToDefaultAttributes:(id)a3;
-- (id)contentByApplyingAttribute:(id)a3 value:(id)a4 toRange:(_NSRange)a5;
-- (id)contentByApplyingAttributeToEntireRange:(id)a3 value:(id)a4;
-- (id)contentByCompletingDefaultAttributesWithAttributes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_isContentEqualToContent:(id)content;
+- (BOOL)isAttribute:(id)attribute uniformlyEqualToValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContent:(id)content byAttribute:(id)attribute;
+- (_UILabelContent)contentWithAttributedString:(id)string;
+- (_UILabelContent)contentWithDefaultAttributes:(id)attributes;
+- (_UILabelContent)contentWithString:(id)string;
+- (_UILabelContent)initWithDefaultAttributes:(id)attributes;
+- (id)_fullRangeFont:(void *)font;
+- (id)contentByAddingAttribute:(id)attribute toDefaultAttributesWithValue:(id)value;
+- (id)contentByAddingAttributesToDefaultAttributes:(id)attributes;
+- (id)contentByApplyingAttribute:(id)attribute value:(id)value toRange:(_NSRange)range;
+- (id)contentByApplyingAttributeToEntireRange:(id)range value:(id)value;
+- (id)contentByCompletingDefaultAttributesWithAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)widthVariantContentForView:(id)a3;
-- (int64_t)differenceVersusContent:(id)a3 checkFontDifference:(BOOL)a4;
-- (int64_t)supportedMonochromaticTreatment:(id)a3;
+- (id)widthVariantContentForView:(id)view;
+- (int64_t)differenceVersusContent:(id)content checkFontDifference:(BOOL)difference;
+- (int64_t)supportedMonochromaticTreatment:(id)treatment;
 @end
 
 @implementation _UILabelContent
 
-- (_UILabelContent)initWithDefaultAttributes:(id)a3
+- (_UILabelContent)initWithDefaultAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = _UILabelContent;
   v5 = [(_UILabelContent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [attributesCopy copy];
     defaultAttributes = v5->_defaultAttributes;
     v5->_defaultAttributes = v6;
   }
@@ -38,11 +38,11 @@
   return v5;
 }
 
-- (_UILabelContent)contentWithDefaultAttributes:(id)a3
+- (_UILabelContent)contentWithDefaultAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   defaultAttributes = self->_defaultAttributes;
-  v6 = v4;
+  v6 = attributesCopy;
   v7 = defaultAttributes;
   v8 = v7;
   if (v7 == v6)
@@ -61,46 +61,46 @@
     }
 
 LABEL_7:
-    v10 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v10 = [(_UILabelContent *)self copy];
+  selfCopy = [(_UILabelContent *)self copy];
   v11 = [(NSDictionary *)v6 copy];
-  v12 = v10->_defaultAttributes;
-  v10->_defaultAttributes = v11;
+  v12 = selfCopy->_defaultAttributes;
+  selfCopy->_defaultAttributes = v11;
 
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)contentByAddingAttributesToDefaultAttributes:(id)a3
+- (id)contentByAddingAttributesToDefaultAttributes:(id)attributes
 {
-  v4 = a3;
-  if (!v4)
+  attributesCopy = attributes;
+  if (!attributesCopy)
   {
     goto LABEL_12;
   }
 
   if (![(NSDictionary *)self->_defaultAttributes count])
   {
-    v11 = [(_UILabelContent *)self contentWithDefaultAttributes:v4];
+    selfCopy = [(_UILabelContent *)self contentWithDefaultAttributes:attributesCopy];
 LABEL_13:
-    v12 = v11;
+    v12 = selfCopy;
     goto LABEL_14;
   }
 
-  if (![v4 count])
+  if (![attributesCopy count])
   {
 LABEL_12:
-    v11 = self;
+    selfCopy = self;
     goto LABEL_13;
   }
 
   v5 = [(NSDictionary *)self->_defaultAttributes mutableCopy];
-  [v5 addEntriesFromDictionary:v4];
+  [v5 addEntriesFromDictionary:attributesCopy];
   defaultAttributes = self->_defaultAttributes;
   v7 = v5;
   v8 = defaultAttributes;
@@ -135,13 +135,13 @@ LABEL_14:
   return v12;
 }
 
-- (id)contentByAddingAttribute:(id)a3 toDefaultAttributesWithValue:(id)a4
+- (id)contentByAddingAttribute:(id)attribute toDefaultAttributesWithValue:(id)value
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSDictionary *)self->_defaultAttributes objectForKeyedSubscript:v6];
-  v9 = v7;
+  attributeCopy = attribute;
+  valueCopy = value;
+  v8 = [(NSDictionary *)self->_defaultAttributes objectForKeyedSubscript:attributeCopy];
+  v9 = valueCopy;
   v10 = v9;
   if (v8 == v9)
   {
@@ -159,45 +159,45 @@ LABEL_14:
     }
 
 LABEL_7:
-    v12 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v15 = v6;
+  v15 = attributeCopy;
   v16[0] = v10;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v12 = [(_UILabelContent *)self contentByAddingAttributesToDefaultAttributes:v13];
+  selfCopy = [(_UILabelContent *)self contentByAddingAttributesToDefaultAttributes:v13];
 
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)contentByCompletingDefaultAttributesWithAttributes:(id)a3
+- (id)contentByCompletingDefaultAttributesWithAttributes:(id)attributes
 {
-  v4 = a3;
-  if (!v4)
+  attributesCopy = attributes;
+  if (!attributesCopy)
   {
     goto LABEL_15;
   }
 
   if (![(NSDictionary *)self->_defaultAttributes count])
   {
-    v13 = [(_UILabelContent *)self contentWithDefaultAttributes:v4];
+    selfCopy = [(_UILabelContent *)self contentWithDefaultAttributes:attributesCopy];
 LABEL_16:
-    v14 = v13;
+    v14 = selfCopy;
     goto LABEL_17;
   }
 
-  if (![v4 count])
+  if (![attributesCopy count])
   {
 LABEL_15:
-    v13 = self;
+    selfCopy = self;
     goto LABEL_16;
   }
 
-  v5 = [v4 mutableCopy];
+  v5 = [attributesCopy mutableCopy];
   v6 = v5;
   if (self->_defaultAttributes)
   {
@@ -244,84 +244,84 @@ LABEL_17:
   return v14;
 }
 
-- (_UILabelContent)contentWithString:(id)a3
+- (_UILabelContent)contentWithString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = a3;
-    v5 = [[_UILabelStringContent alloc] initWithString:v4 defaultAttributes:self->_defaultAttributes];
+    stringCopy = string;
+    selfCopy = [[_UILabelStringContent alloc] initWithString:stringCopy defaultAttributes:self->_defaultAttributes];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (_UILabelContent)contentWithAttributedString:(id)a3
+- (_UILabelContent)contentWithAttributedString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = a3;
-    v5 = [[_UILabelAttributedStringContent alloc] initWithAttributedString:v4 defaultAttributes:self->_defaultAttributes];
+    stringCopy = string;
+    selfCopy = [[_UILabelAttributedStringContent alloc] initWithAttributedString:stringCopy defaultAttributes:self->_defaultAttributes];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)widthVariantContentForView:(id)a3
+- (id)widthVariantContentForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(_UILabelContent *)self isWidthVariant])
   {
-    v5 = [(_UILabelContent *)self string];
-    v6 = _UIAdaptLocalizedStringForView(v5, v4);
-    v7 = [(_UILabelContent *)self contentWithString:v6];
+    string = [(_UILabelContent *)self string];
+    v6 = _UIAdaptLocalizedStringForView(string, viewCopy);
+    selfCopy = [(_UILabelContent *)self contentWithString:v6];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)contentByApplyingAttributeToEntireRange:(id)a3 value:(id)a4
+- (id)contentByApplyingAttributeToEntireRange:(id)range value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UILabelContent *)self contentByApplyingAttribute:v7 value:v6 toRange:0, [(_UILabelContent *)self length]];
+  valueCopy = value;
+  rangeCopy = range;
+  v8 = [(_UILabelContent *)self contentByApplyingAttribute:rangeCopy value:valueCopy toRange:0, [(_UILabelContent *)self length]];
 
   return v8;
 }
 
-- (id)contentByApplyingAttribute:(id)a3 value:(id)a4 toRange:(_NSRange)a5
+- (id)contentByApplyingAttribute:(id)attribute value:(id)value toRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3;
-  v10 = a4;
-  if (!v9 || location || length != [(_UILabelContent *)self length])
+  length = range.length;
+  location = range.location;
+  attributeCopy = attribute;
+  valueCopy = value;
+  if (!attributeCopy || location || length != [(_UILabelContent *)self length])
   {
     goto LABEL_14;
   }
 
-  v11 = [(NSDictionary *)self->_defaultAttributes objectForKeyedSubscript:v9];
+  v11 = [(NSDictionary *)self->_defaultAttributes objectForKeyedSubscript:attributeCopy];
   v12 = v11;
-  if (v10 || !v11)
+  if (valueCopy || !v11)
   {
-    if (v10)
+    if (valueCopy)
     {
       v15 = v11;
-      v16 = v10;
+      v16 = valueCopy;
       v17 = v16;
       if (v15 == v16)
       {
@@ -333,7 +333,7 @@ LABEL_17:
         {
 
 LABEL_19:
-          v14 = [(_UILabelContent *)self contentByAddingAttribute:v9 toDefaultAttributesWithValue:v17];
+          selfCopy = [(_UILabelContent *)self contentByAddingAttribute:attributeCopy toDefaultAttributesWithValue:v17];
           goto LABEL_20;
         }
 
@@ -347,25 +347,25 @@ LABEL_19:
     }
 
 LABEL_14:
-    v14 = self;
+    selfCopy = self;
     goto LABEL_15;
   }
 
   v13 = [(NSDictionary *)self->_defaultAttributes mutableCopy];
-  [v13 removeObjectForKey:v9];
-  v14 = [(_UILabelContent *)self contentWithDefaultAttributes:v13];
+  [v13 removeObjectForKey:attributeCopy];
+  selfCopy = [(_UILabelContent *)self contentWithDefaultAttributes:v13];
 
 LABEL_20:
 LABEL_15:
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isAttribute:(id)a3 uniformlyEqualToValue:(id)a4
+- (BOOL)isAttribute:(id)attribute uniformlyEqualToValue:(id)value
 {
-  v6 = a4;
-  v7 = [(_UILabelContent *)self defaultValueForAttribute:a3];
-  v8 = v6;
+  valueCopy = value;
+  v7 = [(_UILabelContent *)self defaultValueForAttribute:attribute];
+  v8 = valueCopy;
   v9 = v8;
   if (v7 == v8)
   {
@@ -384,21 +384,21 @@ LABEL_15:
   return v10;
 }
 
-- (int64_t)supportedMonochromaticTreatment:(id)a3
+- (int64_t)supportedMonochromaticTreatment:(id)treatment
 {
-  v4 = a3;
-  v5 = [(_UILabelContent *)self attributedString];
-  v6 = [v5 supportedMonochromaticTreatment:v4];
+  treatmentCopy = treatment;
+  attributedString = [(_UILabelContent *)self attributedString];
+  v6 = [attributedString supportedMonochromaticTreatment:treatmentCopy];
 
   return v6;
 }
 
-- (BOOL)isEqualToContent:(id)a3 byAttribute:(id)a4
+- (BOOL)isEqualToContent:(id)content byAttribute:(id)attribute
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UILabelContent *)self defaultValueForAttribute:v6];
-  v9 = [v7 defaultValueForAttribute:v6];
+  attributeCopy = attribute;
+  contentCopy = content;
+  v8 = [(_UILabelContent *)self defaultValueForAttribute:attributeCopy];
+  v9 = [contentCopy defaultValueForAttribute:attributeCopy];
 
   v10 = v8;
   v11 = v9;
@@ -420,10 +420,10 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)_isContentEqualToContent:(id)a3
+- (BOOL)_isContentEqualToContent:(id)content
 {
-  v4 = a3;
-  v5 = v4[1];
+  contentCopy = content;
+  v5 = contentCopy[1];
   v6 = self->_defaultAttributes;
   v7 = v5;
   v8 = v7;
@@ -458,16 +458,16 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v6 = [(_UILabelContent *)v5 isNil], v6 == [(_UILabelContent *)self isNil]) && (v7 = [(_UILabelContent *)v5 isAttributed], v7 == [(_UILabelContent *)self isAttributed]) && (v8 = [(_UILabelContent *)v5 isWidthVariant], v8 == [(_UILabelContent *)self isWidthVariant]) && (v9 = [(_UILabelContent *)v5 length], v9 == [(_UILabelContent *)self length]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v6 = [(_UILabelContent *)v5 isNil], v6 == [(_UILabelContent *)self isNil]) && (v7 = [(_UILabelContent *)v5 isAttributed], v7 == [(_UILabelContent *)self isAttributed]) && (v8 = [(_UILabelContent *)v5 isWidthVariant], v8 == [(_UILabelContent *)self isWidthVariant]) && (v9 = [(_UILabelContent *)v5 length], v9 == [(_UILabelContent *)self length]))
   {
     v10 = [(_UILabelContent *)v5 _isContentEqualToContent:self];
   }
@@ -480,25 +480,25 @@ LABEL_15:
   return v10;
 }
 
-- (int64_t)differenceVersusContent:(id)a3 checkFontDifference:(BOOL)a4
+- (int64_t)differenceVersusContent:(id)content checkFontDifference:(BOOL)difference
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  differenceCopy = difference;
+  contentCopy = content;
+  v7 = contentCopy;
+  if (contentCopy == self)
   {
     v17 = 0;
   }
 
-  else if (v6)
+  else if (contentCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(_UILabelContent *)v7 isNil];
-      v9 = v8 ^ [(_UILabelContent *)self isNil];
-      v10 = [(_UILabelContent *)v7 isAttributed];
-      if ((v10 ^ [(_UILabelContent *)self isAttributed]| v9))
+      isNil = [(_UILabelContent *)v7 isNil];
+      v9 = isNil ^ [(_UILabelContent *)self isNil];
+      isAttributed = [(_UILabelContent *)v7 isAttributed];
+      if ((isAttributed ^ [(_UILabelContent *)self isAttributed]| v9))
       {
         v11 = 256;
       }
@@ -508,8 +508,8 @@ LABEL_15:
         v11 = 0;
       }
 
-      v12 = [(_UILabelContent *)v7 isWidthVariant];
-      if (v12 != [(_UILabelContent *)self isWidthVariant])
+      isWidthVariant = [(_UILabelContent *)v7 isWidthVariant];
+      if (isWidthVariant != [(_UILabelContent *)self isWidthVariant])
       {
         v13 = 8448;
       }
@@ -519,11 +519,11 @@ LABEL_15:
         v13 = v11;
       }
 
-      v14 = [(_UILabelContent *)v7 defaultAttributes];
-      v15 = [(_UILabelContent *)self defaultAttributes];
-      v16 = [(_UILabelContent *)v7 isAttributed]|| [(_UILabelContent *)self isAttributed];
-      v18 = v14;
-      v19 = v15;
+      defaultAttributes = [(_UILabelContent *)v7 defaultAttributes];
+      defaultAttributes2 = [(_UILabelContent *)self defaultAttributes];
+      isAttributed2 = [(_UILabelContent *)v7 isAttributed]|| [(_UILabelContent *)self isAttributed];
+      v18 = defaultAttributes;
+      v19 = defaultAttributes2;
       v20 = v19;
       if (v18 == v19)
       {
@@ -543,7 +543,7 @@ LABEL_15:
         {
 LABEL_24:
           v13 |= 0x200uLL;
-          if (v16)
+          if (isAttributed2)
           {
             v22 = 0;
           }
@@ -574,7 +574,7 @@ LABEL_24:
             v27 = v26 | GetShadowAttributeDifferenceDefaults(v24, v25);
             v67 = HasAttributeDifferenceDefaults(*off_1E70EC918, v24, v25);
             v66 = v27 | 0x14000;
-            v28 = v16;
+            v28 = isAttributed2;
             v29 = v18;
             v30 = HasAttributeDifferenceDefaults(*MEMORY[0x1E69656F0], v24, v25);
             v31 = HasAttributeDifferenceDefaults(*MEMORY[0x1E69657E0], v24, v25);
@@ -582,7 +582,7 @@ LABEL_24:
             v22 = 0;
             v32 = v31 | v30;
             v18 = v29;
-            v16 = v28;
+            isAttributed2 = v28;
             v33 = ((v32 | v67) & 1) == 0;
             v34 = v27 | 0x14000;
             if (v33)
@@ -598,7 +598,7 @@ LABEL_35:
           v35 = [(_UILabelContent *)v7 length];
           if (v35 != [(_UILabelContent *)self length])
           {
-            if (v4)
+            if (differenceCopy)
             {
               LOBYTE(v74) = 1;
               LOBYTE(v72) = 1;
@@ -614,12 +614,12 @@ LABEL_35:
             goto LABEL_84;
           }
 
-          if (!v16)
+          if (!isAttributed2)
           {
-            v50 = [(_UILabelContent *)v7 string];
-            v51 = [(_UILabelContent *)self string];
-            v52 = v50;
-            v53 = v51;
+            string = [(_UILabelContent *)v7 string];
+            string2 = [(_UILabelContent *)self string];
+            v52 = string;
+            v53 = string2;
             v54 = v53;
             if (v52 == v53)
             {
@@ -643,17 +643,17 @@ LABEL_35:
             goto LABEL_84;
           }
 
-          v36 = [(_UILabelContent *)v7 attributedString];
-          v37 = [(_UILabelContent *)self attributedString];
-          if (!v22 || ([v36 isEqualToAttributedString:v37] & 1) == 0)
+          attributedString = [(_UILabelContent *)v7 attributedString];
+          attributedString2 = [(_UILabelContent *)self attributedString];
+          if (!v22 || ([attributedString isEqualToAttributedString:attributedString2] & 1) == 0)
           {
             v38 = v22;
             v69 = v18;
             v71 = v20;
             v39 = [(_UILabelContent *)self length];
-            v40 = [v36 string];
-            v41 = [v37 string];
-            v42 = [v40 isEqualToString:v41];
+            string3 = [attributedString string];
+            string4 = [attributedString2 string];
+            v42 = [string3 isEqualToString:string4];
 
             if (v42)
             {
@@ -664,8 +664,8 @@ LABEL_35:
                 v75 = 0;
                 v72 = 0;
                 v73 = 0;
-                v44 = [v36 attributesAtIndex:0 longestEffectiveRange:&v74 inRange:{0, v39}];
-                v45 = [v37 attributesAtIndex:0 longestEffectiveRange:&v72 inRange:{0, v39}];
+                v44 = [attributedString attributesAtIndex:0 longestEffectiveRange:&v74 inRange:{0, v39}];
+                v45 = [attributedString2 attributesAtIndex:0 longestEffectiveRange:&v72 inRange:{0, v39}];
                 if (v75 == v39 && v74 == v72 && v39 == v73)
                 {
                   v18 = v69;
@@ -705,15 +705,15 @@ LABEL_75:
 
                 else
                 {
-                  v56 = [(_UILabelContent *)v7 defaultAttributes];
-                  v46 = [(NSAttributedString *)v36 _ui_synthesizeAttributedSubstringFromRange:v39 usingDefaultAttributes:v56];
+                  defaultAttributes3 = [(_UILabelContent *)v7 defaultAttributes];
+                  v46 = [(NSAttributedString *)attributedString _ui_synthesizeAttributedSubstringFromRange:v39 usingDefaultAttributes:defaultAttributes3];
 
-                  v57 = [(_UILabelContent *)self defaultAttributes];
-                  v47 = [(NSAttributedString *)v37 _ui_synthesizeAttributedSubstringFromRange:v39 usingDefaultAttributes:v57];
+                  defaultAttributes4 = [(_UILabelContent *)self defaultAttributes];
+                  v47 = [(NSAttributedString *)attributedString2 _ui_synthesizeAttributedSubstringFromRange:v39 usingDefaultAttributes:defaultAttributes4];
 
                   if ([v46 isEqualToAttributedString:v47])
                   {
-                    if ([v36 isEqualToAttributedString:v37])
+                    if ([attributedString isEqualToAttributedString:attributedString2])
                     {
 
                       v13 = v43;
@@ -724,8 +724,8 @@ LABEL_80:
 
                     v60 = HasAttributeDifferenceString;
                     v61 = GetShadowAttributeDifferenceString;
-                    v62 = v36;
-                    v63 = v37;
+                    v62 = attributedString;
+                    v63 = attributedString2;
                     goto LABEL_75;
                   }
 
@@ -792,9 +792,9 @@ LABEL_85:
   return v17;
 }
 
-- (id)_fullRangeFont:(void *)a1
+- (id)_fullRangeFont:(void *)font
 {
-  if (a1)
+  if (font)
   {
     v19 = 0;
     v20 = &v19;
@@ -806,10 +806,10 @@ LABEL_85:
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 1;
-    if ([a1 isAttributed] && objc_msgSend(a1, "length") >= 1)
+    if ([font isAttributed] && objc_msgSend(font, "length") >= 1)
     {
-      v4 = [a1 attributedString];
-      v5 = [v4 length];
+      attributedString = [font attributedString];
+      v5 = [attributedString length];
       v6 = *off_1E70EC918;
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -819,15 +819,15 @@ LABEL_85:
       v14[5] = &v15;
       v14[6] = 0;
       v14[7] = v5;
-      [v4 enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v14}];
+      [attributedString enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v14}];
     }
 
     v7 = *(v16 + 24);
     v8 = v20;
     if (v7 == 1 && !v20[5])
     {
-      v9 = [a1 defaultAttributes];
-      v10 = [v9 objectForKey:*off_1E70EC918];
+      defaultAttributes = [font defaultAttributes];
+      v10 = [defaultAttributes objectForKey:*off_1E70EC918];
       v11 = v20[5];
       v20[5] = v10;
 
@@ -859,13 +859,13 @@ LABEL_85:
 
   else
   {
-    v4 = [(_UILabelContent *)self string];
-    if ([v4 length] >= 0x21)
+    string = [(_UILabelContent *)self string];
+    if ([string length] >= 0x21)
     {
-      v5 = [v4 substringWithRange:{0, 32}];
+      v5 = [string substringWithRange:{0, 32}];
       v6 = [v5 stringByAppendingString:@"..."];
 
-      v4 = v6;
+      string = v6;
     }
 
     v7 = MEMORY[0x1E696AEC0];
@@ -890,13 +890,13 @@ LABEL_85:
       v10 = &stru_1EFB14550;
     }
 
-    v11 = [v7 stringWithFormat:@"<%@:%p %@%@len=%ld %@ attr=%@>", v8, self, v9, v10, -[_UILabelContent length](self, "length"), v4, self->_defaultAttributes];
+    v11 = [v7 stringWithFormat:@"<%@:%p %@%@len=%ld %@ attr=%@>", v8, self, v9, v10, -[_UILabelContent length](self, "length"), string, self->_defaultAttributes];
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UILabelContent alloc];
   defaultAttributes = self->_defaultAttributes;

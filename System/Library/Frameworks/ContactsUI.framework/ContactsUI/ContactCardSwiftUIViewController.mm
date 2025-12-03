@@ -2,24 +2,24 @@
 + (NSArray)descriptorsForRequiredKeys;
 - (BOOL)forceReload;
 - (CNContact)contact;
-- (_TtC10ContactsUI32ContactCardSwiftUIViewController)initWithContact:(id)a3 contactStore:(id)a4 actionsProvider:(id)a5 customViewConfiguration:(id)a6 propertyViewConfiguration:(id)a7 isInlineContactCard:(BOOL)a8 geminiManager:(id)a9;
-- (_TtC10ContactsUI32ContactCardSwiftUIViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)runPPTTestWithTestName:(id)a3 options:(id)a4;
-- (void)setContact:(id)a3;
-- (void)setCustomViewConfiguration:(id)a3;
-- (void)setForceReload:(BOOL)a3;
-- (void)setPropertyViewConfiguration:(id)a3;
+- (_TtC10ContactsUI32ContactCardSwiftUIViewController)initWithContact:(id)contact contactStore:(id)store actionsProvider:(id)provider customViewConfiguration:(id)configuration propertyViewConfiguration:(id)viewConfiguration isInlineContactCard:(BOOL)card geminiManager:(id)manager;
+- (_TtC10ContactsUI32ContactCardSwiftUIViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)runPPTTestWithTestName:(id)name options:(id)options;
+- (void)setContact:(id)contact;
+- (void)setCustomViewConfiguration:(id)configuration;
+- (void)setForceReload:(BOOL)reload;
+- (void)setPropertyViewConfiguration:(id)configuration;
 - (void)viewDidLoad;
 @end
 
 @implementation ContactCardSwiftUIViewController
 
-- (void)runPPTTestWithTestName:(id)a3 options:(id)a4
+- (void)runPPTTestWithTestName:(id)name options:(id)options
 {
   v5 = sub_199DF9F8C();
   v7 = v6;
   v8 = sub_199DF9E9C();
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v5;
   v10._object = v7;
   ContactCardSwiftUIViewController.runPPTTest(testName:options:)(v10, v8);
@@ -32,14 +32,14 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v5 = OBJC_IVAR____TtC10ContactsUI32ContactCardSwiftUIViewController_contact;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = contact;
+  contactCopy = contact;
+  selfCopy = self;
   sub_199AB4F30(v6);
 }
 
@@ -50,11 +50,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setForceReload:(BOOL)a3
+- (void)setForceReload:(BOOL)reload
 {
   v5 = OBJC_IVAR____TtC10ContactsUI32ContactCardSwiftUIViewController_forceReload;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = reload;
 }
 
 + (NSArray)descriptorsForRequiredKeys
@@ -70,29 +70,29 @@
   return v2;
 }
 
-- (void)setCustomViewConfiguration:(id)a3
+- (void)setCustomViewConfiguration:(id)configuration
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10ContactsUI32ContactCardSwiftUIViewController_customViewConfiguration);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC10ContactsUI32ContactCardSwiftUIViewController_customViewConfiguration) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC10ContactsUI32ContactCardSwiftUIViewController_customViewConfiguration) = configuration;
+  configurationCopy = configuration;
 }
 
-- (void)setPropertyViewConfiguration:(id)a3
+- (void)setPropertyViewConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = self;
-  sub_199AB6B84(a3);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_199AB6B84(configuration);
 }
 
-- (_TtC10ContactsUI32ContactCardSwiftUIViewController)initWithContact:(id)a3 contactStore:(id)a4 actionsProvider:(id)a5 customViewConfiguration:(id)a6 propertyViewConfiguration:(id)a7 isInlineContactCard:(BOOL)a8 geminiManager:(id)a9
+- (_TtC10ContactsUI32ContactCardSwiftUIViewController)initWithContact:(id)contact contactStore:(id)store actionsProvider:(id)provider customViewConfiguration:(id)configuration propertyViewConfiguration:(id)viewConfiguration isInlineContactCard:(BOOL)card geminiManager:(id)manager
 {
-  v15 = a3;
-  v16 = a4;
+  contactCopy = contact;
+  storeCopy = store;
   swift_unknownObjectRetain();
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  return sub_199AB6E3C(a3, v16, a5, a6, a7, a8, a9);
+  configurationCopy = configuration;
+  viewConfigurationCopy = viewConfiguration;
+  managerCopy = manager;
+  return sub_199AB6E3C(contact, storeCopy, provider, configuration, viewConfiguration, card, manager);
 }
 
 - (void)viewDidLoad
@@ -104,7 +104,7 @@
   sub_199AB5030();
 }
 
-- (_TtC10ContactsUI32ContactCardSwiftUIViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10ContactsUI32ContactCardSwiftUIViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

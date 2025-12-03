@@ -1,14 +1,14 @@
 @interface PKSavingsAccountAssessmentManager
-- (PKSavingsAccountAssessmentManager)initWithType:(int64_t)a3;
+- (PKSavingsAccountAssessmentManager)initWithType:(int64_t)type;
 - (id)_serviceProviderIdentifierForAssessmentType;
 - (void)_restartODIAssessment;
-- (void)updateAssessmentType:(int64_t)a3;
-- (void)waitForAssessmentWithCompletion:(id)a3;
+- (void)updateAssessmentType:(int64_t)type;
+- (void)waitForAssessmentWithCompletion:(id)completion;
 @end
 
 @implementation PKSavingsAccountAssessmentManager
 
-- (PKSavingsAccountAssessmentManager)initWithType:(int64_t)a3
+- (PKSavingsAccountAssessmentManager)initWithType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKSavingsAccountAssessmentManager;
@@ -16,31 +16,31 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     [(PKSavingsAccountAssessmentManager *)v4 _restartODIAssessment];
   }
 
   return v5;
 }
 
-- (void)updateAssessmentType:(int64_t)a3
+- (void)updateAssessmentType:(int64_t)type
 {
-  self->_type = a3;
+  self->_type = type;
   [(PKSavingsAccountAssessmentManager *)self provideSessionFeedbackDiscarded];
 
   [(PKSavingsAccountAssessmentManager *)self _restartODIAssessment];
 }
 
-- (void)waitForAssessmentWithCompletion:(id)a3
+- (void)waitForAssessmentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   odiServiceProviderAssessment = self->_odiServiceProviderAssessment;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__PKSavingsAccountAssessmentManager_waitForAssessmentWithCompletion___block_invoke;
   v7[3] = &unk_1E79DAFA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(PKODIAssessment *)odiServiceProviderAssessment waitForAssessmentWithContinueBlock:v7];
 }
 
@@ -71,14 +71,14 @@ uint64_t __69__PKSavingsAccountAssessmentManager_waitForAssessmentWithCompletion
 
 - (void)_restartODIAssessment
 {
-  v3 = [(PKSavingsAccountAssessmentManager *)self _serviceProviderIdentifierForAssessmentType];
-  if (v3)
+  _serviceProviderIdentifierForAssessmentType = [(PKSavingsAccountAssessmentManager *)self _serviceProviderIdentifierForAssessmentType];
+  if (_serviceProviderIdentifierForAssessmentType)
   {
-    v21 = v3;
-    v4 = [(PKODIServiceProviderAssessment *)self->_odiServiceProviderAssessment serviceIdentifier];
-    v5 = [v21 isEqualToString:v4];
+    v21 = _serviceProviderIdentifierForAssessmentType;
+    serviceIdentifier = [(PKODIServiceProviderAssessment *)self->_odiServiceProviderAssessment serviceIdentifier];
+    v5 = [v21 isEqualToString:serviceIdentifier];
 
-    v3 = v21;
+    _serviceProviderIdentifierForAssessmentType = v21;
     if ((v5 & 1) == 0)
     {
       v6 = [PKODIServiceProviderAssessment alloc];
@@ -89,35 +89,35 @@ uint64_t __69__PKSavingsAccountAssessmentManager_waitForAssessmentWithCompletion
 
       [(PKODIAssessment *)self->_odiServiceProviderAssessment startAssessment];
       v10 = +[PKAppleAccountManager sharedInstance];
-      v11 = [v10 appleAccountInformation];
+      appleAccountInformation = [v10 appleAccountInformation];
 
       v12 = +[PKAppleAccountManager sharedInstance];
-      v13 = [v12 appleAccountInformation];
-      v14 = [v13 aaDSID];
+      appleAccountInformation2 = [v12 appleAccountInformation];
+      aaDSID = [appleAccountInformation2 aaDSID];
 
-      v15 = [v11 firstName];
-      v16 = [v11 lastName];
-      v17 = [v11 primaryEmailAddress];
+      firstName = [appleAccountInformation firstName];
+      lastName = [appleAccountInformation lastName];
+      primaryEmailAddress = [appleAccountInformation primaryEmailAddress];
       v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v19 = v18;
-      if (v14)
+      if (aaDSID)
       {
-        [v18 setObject:v14 forKey:*MEMORY[0x1E6998528]];
+        [v18 setObject:aaDSID forKey:*MEMORY[0x1E6998528]];
       }
 
-      if (v15)
+      if (firstName)
       {
-        [v19 setObject:v15 forKey:*MEMORY[0x1E6998510]];
+        [v19 setObject:firstName forKey:*MEMORY[0x1E6998510]];
       }
 
-      if (v16)
+      if (lastName)
       {
-        [v19 setObject:v16 forKey:*MEMORY[0x1E6998538]];
+        [v19 setObject:lastName forKey:*MEMORY[0x1E6998538]];
       }
 
-      if (v17)
+      if (primaryEmailAddress)
       {
-        [v19 setObject:v17 forKey:*MEMORY[0x1E6998508]];
+        [v19 setObject:primaryEmailAddress forKey:*MEMORY[0x1E6998508]];
       }
 
       v20 = objc_alloc_init(MEMORY[0x1E69983B0]);
@@ -125,7 +125,7 @@ uint64_t __69__PKSavingsAccountAssessmentManager_waitForAssessmentWithCompletion
       [(PKODIAssessment *)self->_odiServiceProviderAssessment updateAssessment:v20];
       [(PKODIAssessment *)self->_odiServiceProviderAssessment computeAssessment];
 
-      v3 = v21;
+      _serviceProviderIdentifierForAssessmentType = v21;
     }
   }
 }

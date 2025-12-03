@@ -6,26 +6,26 @@
 
 - (id)displayTitle
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 url];
+    v2 = [self url];
 
     if (v2)
     {
-      v1 = [v1 title];
+      selfCopy = [selfCopy title];
     }
 
     else
     {
       v3 = +[Application sharedApplication];
-      v4 = [v3 automationController];
-      v5 = [v4 automationSession];
-      v1 = [TabDocument blankTabTitleWithLibraryType:0 controlledByAutomation:v5 != 0];
+      automationController = [v3 automationController];
+      automationSession = [automationController automationSession];
+      selfCopy = [TabDocument blankTabTitleWithLibraryType:0 controlledByAutomation:automationSession != 0];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

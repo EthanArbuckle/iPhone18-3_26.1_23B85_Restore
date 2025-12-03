@@ -1,26 +1,26 @@
 @interface PXErrorRecoveryAttempter
-- (int64_t)_alertActionStyleForRecoveryOptionAtIndex:(unint64_t)a3;
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 delegate:(id)a5 didRecoverSelector:(SEL)a6 contextInfo:(void *)a7;
+- (int64_t)_alertActionStyleForRecoveryOptionAtIndex:(unint64_t)index;
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index delegate:(id)delegate didRecoverSelector:(SEL)selector contextInfo:(void *)info;
 @end
 
 @implementation PXErrorRecoveryAttempter
 
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 delegate:(id)a5 didRecoverSelector:(SEL)a6 contextInfo:(void *)a7
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index delegate:(id)delegate didRecoverSelector:(SEL)selector contextInfo:(void *)info
 {
-  v12 = a5;
-  v13 = a3;
-  v14 = [(PXErrorRecoveryAttempter *)self recoveryOptions];
-  v15 = [v14 objectAtIndexedSubscript:a4];
+  delegateCopy = delegate;
+  errorCopy = error;
+  recoveryOptions = [(PXErrorRecoveryAttempter *)self recoveryOptions];
+  v15 = [recoveryOptions objectAtIndexedSubscript:index];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __105__PXErrorRecoveryAttempter_attemptRecoveryFromError_optionIndex_delegate_didRecoverSelector_contextInfo___block_invoke;
   v17[3] = &unk_1E7735F50;
-  v18 = v12;
-  v19 = a6;
-  v20 = a7;
-  v16 = v12;
-  [v15 _attemptRecoveryFromError:v13 completionHandler:v17];
+  v18 = delegateCopy;
+  selectorCopy = selector;
+  infoCopy = info;
+  v16 = delegateCopy;
+  [v15 _attemptRecoveryFromError:errorCopy completionHandler:v17];
 }
 
 id __105__PXErrorRecoveryAttempter_attemptRecoveryFromError_optionIndex_delegate_didRecoverSelector_contextInfo___block_invoke(void *a1, uint64_t a2)
@@ -38,20 +38,20 @@ id __105__PXErrorRecoveryAttempter_attemptRecoveryFromError_optionIndex_delegate
   return result;
 }
 
-- (int64_t)_alertActionStyleForRecoveryOptionAtIndex:(unint64_t)a3
+- (int64_t)_alertActionStyleForRecoveryOptionAtIndex:(unint64_t)index
 {
-  v4 = [(PXErrorRecoveryAttempter *)self recoveryOptions];
-  v5 = [v4 objectAtIndex:a3];
+  recoveryOptions = [(PXErrorRecoveryAttempter *)self recoveryOptions];
+  v5 = [recoveryOptions objectAtIndex:index];
 
-  v6 = [v5 style];
-  if (v6 == 2)
+  style = [v5 style];
+  if (style == 2)
   {
     v7 = 2;
   }
 
   else
   {
-    v7 = v6 == 1;
+    v7 = style == 1;
   }
 
   return v7;

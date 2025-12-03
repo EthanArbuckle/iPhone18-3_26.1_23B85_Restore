@@ -1,10 +1,10 @@
 @interface SNTestSuite
 - (SNTestSuite)init;
 - (SNTestSuite)parentTestSuite;
-- (id)testRunForTestName:(id)a3;
+- (id)testRunForTestName:(id)name;
 - (id)testSetupList;
-- (void)addSubTestSuite:(id)a3;
-- (void)addTestCase:(id)a3;
+- (void)addSubTestSuite:(id)suite;
+- (void)addTestCase:(id)case;
 @end
 
 @implementation SNTestSuite
@@ -28,31 +28,31 @@
   return v2;
 }
 
-- (void)addTestCase:(id)a3
+- (void)addTestCase:(id)case
 {
-  v4 = a3;
-  v6 = [(SNTestSuite *)self testCases];
-  v5 = [v4 testName];
-  [v6 setObject:v4 forKey:v5];
+  caseCopy = case;
+  testCases = [(SNTestSuite *)self testCases];
+  testName = [caseCopy testName];
+  [testCases setObject:caseCopy forKey:testName];
 }
 
-- (void)addSubTestSuite:(id)a3
+- (void)addSubTestSuite:(id)suite
 {
-  if (a3 != self)
+  if (suite != self)
   {
-    v5 = a3;
-    [v5 setParentTestSuite:self];
-    v6 = [(SNTestSuite *)self subTestSuites];
-    [v6 addObject:v5];
+    suiteCopy = suite;
+    [suiteCopy setParentTestSuite:self];
+    subTestSuites = [(SNTestSuite *)self subTestSuites];
+    [subTestSuites addObject:suiteCopy];
   }
 }
 
-- (id)testRunForTestName:(id)a3
+- (id)testRunForTestName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SNTestSuite *)self testCases];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  testCases = [(SNTestSuite *)self testCases];
+  v6 = [testCases objectForKey:nameCopy];
 
   if (v6)
   {
@@ -65,8 +65,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(SNTestSuite *)self subTestSuites];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subTestSuites = [(SNTestSuite *)self subTestSuites];
+    v9 = [subTestSuites countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -77,10 +77,10 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subTestSuites);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) testRunForTestName:v4];
+          v13 = [*(*(&v16 + 1) + 8 * i) testRunForTestName:nameCopy];
           if (v13)
           {
             v7 = v13;
@@ -89,7 +89,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [subTestSuites countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           continue;
@@ -117,10 +117,10 @@ LABEL_13:
     [v3 addObject:self];
   }
 
-  v4 = [(SNTestSuite *)self parentTestSuite];
-  if (v4)
+  parentTestSuite = [(SNTestSuite *)self parentTestSuite];
+  if (parentTestSuite)
   {
-    v5 = v4;
+    v5 = parentTestSuite;
     do
     {
       if ([v5 conformsToProtocol:&unk_287E962B8])
@@ -128,12 +128,12 @@ LABEL_13:
         [v3 insertObject:v5 atIndex:0];
       }
 
-      v6 = [v5 parentTestSuite];
+      parentTestSuite2 = [v5 parentTestSuite];
 
-      v5 = v6;
+      v5 = parentTestSuite2;
     }
 
-    while (v6);
+    while (parentTestSuite2);
   }
 
   return v3;

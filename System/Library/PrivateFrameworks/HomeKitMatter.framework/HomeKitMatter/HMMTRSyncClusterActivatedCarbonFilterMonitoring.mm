@@ -1,7 +1,7 @@
 @interface HMMTRSyncClusterActivatedCarbonFilterMonitoring
 + (id)logCategory;
-- (id)readAttributePluginConditionWithParams:(id)a3;
-- (void)updatedValuePluginConditionForAttributeReport:(id)a3 responseHandler:(id)a4;
+- (id)readAttributePluginConditionWithParams:(id)params;
+- (void)updatedValuePluginConditionForAttributeReport:(id)report responseHandler:(id)handler;
 @end
 
 @implementation HMMTRSyncClusterActivatedCarbonFilterMonitoring
@@ -26,12 +26,12 @@ uint64_t __62__HMMTRSyncClusterActivatedCarbonFilterMonitoring_logCategory__bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)updatedValuePluginConditionForAttributeReport:(id)a3 responseHandler:(id)a4
+- (void)updatedValuePluginConditionForAttributeReport:(id)report responseHandler:(id)handler
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  handlerCopy = handler;
+  v8 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -45,7 +45,7 @@ uint64_t __62__HMMTRSyncClusterActivatedCarbonFilterMonitoring_logCategory__bloc
 
   v10 = v9;
 
-  v11 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD5128]];
+  v11 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD5128]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -60,36 +60,36 @@ uint64_t __62__HMMTRSyncClusterActivatedCarbonFilterMonitoring_logCategory__bloc
   v13 = v12;
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
     v17 = v68 = v13;
     [v10 endpoint];
-    v18 = v66 = v7;
-    v19 = [v10 cluster];
+    v18 = v66 = handlerCopy;
+    cluster = [v10 cluster];
     [v10 attribute];
     v20 = v64 = v14;
     v21 = *MEMORY[0x277CD50D8];
-    [v6 objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
-    v23 = v22 = v15;
+    [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
+    v23 = v22 = selfCopy;
     *buf = 138544386;
     v71 = v17;
     v72 = 2112;
     v73 = v18;
     v74 = 2112;
-    v75 = v19;
+    v75 = cluster;
     v76 = 2112;
     v77 = v20;
     v78 = 2112;
     v79 = v23;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Handling Attribute report endpoint:%@ cluster:%@ attribute:%@ value:%@", buf, 0x34u);
 
-    v15 = v22;
+    selfCopy = v22;
     v14 = v64;
 
-    v7 = v66;
+    handlerCopy = v66;
     v13 = v68;
   }
 
@@ -99,10 +99,10 @@ uint64_t __62__HMMTRSyncClusterActivatedCarbonFilterMonitoring_logCategory__bloc
   }
 
   objc_autoreleasePoolPop(v14);
-  v24 = [v6 objectForKeyedSubscript:v21];
+  v24 = [reportCopy objectForKeyedSubscript:v21];
   if (v24)
   {
-    v25 = v6;
+    v25 = reportCopy;
   }
 
   else
@@ -112,18 +112,18 @@ uint64_t __62__HMMTRSyncClusterActivatedCarbonFilterMonitoring_logCategory__bloc
 
   v26 = v25;
 
-  v27 = [v10 cluster];
-  if (([v27 isEqualToNumber:&unk_283EE7B48] & 1) == 0)
+  cluster2 = [v10 cluster];
+  if (([cluster2 isEqualToNumber:&unk_283EE7B48] & 1) == 0)
   {
 
 LABEL_21:
-    (v7[2])(v7, 0, v13);
+    (handlerCopy[2])(handlerCopy, 0, v13);
     goto LABEL_22;
   }
 
-  v28 = v15;
-  v29 = [v10 attribute];
-  v30 = [v29 isEqualToNumber:&unk_283EE7B60];
+  v28 = selfCopy;
+  attribute = [v10 attribute];
+  v30 = [attribute isEqualToNumber:&unk_283EE7B60];
 
   if (!v30)
   {
@@ -139,15 +139,15 @@ LABEL_21:
   v32 = v31;
   v69 = v13;
   v65 = v10;
-  v33 = [v31 integerValue];
-  if (v33 < 0x65)
+  integerValue = [v31 integerValue];
+  if (integerValue < 0x65)
   {
-    v40 = v33;
+    v40 = integerValue;
     v63 = v32;
     v41 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v42 = [(MTRClusterActivatedCarbonFilterMonitoring *)v28 readAttributeDegradationDirectionWithParams:v41];
     v43 = v42;
-    v67 = v7;
+    v67 = handlerCopy;
     if (v42)
     {
       v44 = [v42 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
@@ -166,15 +166,15 @@ LABEL_21:
 
       if (v46)
       {
-        v47 = [v46 integerValue];
-        if (v47 == 1)
+        integerValue2 = [v46 integerValue];
+        if (integerValue2 == 1)
         {
           (v67[2])(v67, v63, v69);
         }
 
         else
         {
-          if (v47)
+          if (integerValue2)
           {
             v59 = objc_autoreleasePoolPush();
             v60 = v28;
@@ -243,7 +243,7 @@ LABEL_21:
       (v67[2])(v67, 0, v46);
     }
 
-    v7 = v67;
+    handlerCopy = v67;
   }
 
   else
@@ -263,7 +263,7 @@ LABEL_21:
 
     objc_autoreleasePoolPop(v34);
     v38 = [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
-    (v7[2])(v7, 0, v38);
+    (handlerCopy[2])(handlerCopy, 0, v38);
   }
 
   v10 = v65;
@@ -273,10 +273,10 @@ LABEL_22:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributePluginConditionWithParams:(id)a3
+- (id)readAttributePluginConditionWithParams:(id)params
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  paramsCopy = params;
   v5 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v6 = [(MTRClusterActivatedCarbonFilterMonitoring *)self readAttributeDegradationDirectionWithParams:v5];
   v7 = *MEMORY[0x277CD51A0];
@@ -314,7 +314,7 @@ LABEL_22:
     if (!v14)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy3 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -333,11 +333,11 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v15 = [v14 integerValue];
-    if (v15 >= 0x65)
+    integerValue = [v14 integerValue];
+    if (integerValue >= 0x65)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy3 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -356,9 +356,9 @@ LABEL_23:
       goto LABEL_25;
     }
 
-    v28 = v15;
-    v29 = [v10 integerValue];
-    if (v29 == 1)
+    v28 = integerValue;
+    integerValue2 = [v10 integerValue];
+    if (integerValue2 == 1)
     {
       v33 = *MEMORY[0x277CD5198];
       v36[0] = *MEMORY[0x277CD5188];
@@ -370,10 +370,10 @@ LABEL_23:
 
     else
     {
-      if (v29)
+      if (integerValue2)
       {
         v16 = objc_autoreleasePoolPush();
-        v17 = self;
+        selfCopy3 = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
@@ -409,7 +409,7 @@ LABEL_26:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy4 = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {

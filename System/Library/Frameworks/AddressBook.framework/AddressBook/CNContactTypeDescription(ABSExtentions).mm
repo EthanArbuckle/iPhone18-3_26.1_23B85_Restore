@@ -18,7 +18,7 @@
 
 - (uint64_t)ABSValueFromCNValue:()ABSExtentions
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &off_2849B1450;
   v1 = objc_msgSendSuper2(&v5, sel_ABSValueFromCNValue_);
   v2 = +[ABSConstantsMapping CNToABPersonKindConstantsMapping];
@@ -29,7 +29,7 @@
 
 - (id)CNValueFromABSValue:()ABSExtentions
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &off_2849B1450;
   v1 = objc_msgSendSuper2(&v5, sel_CNValueFromABSValue_);
   v2 = +[ABSConstantsMapping ABToCNPersonKindConstantsMapping];

@@ -1,13 +1,13 @@
 @interface EKRecurrenceEnd
 + (EKRecurrenceEnd)recurrenceEndWithEndDate:(NSDate *)endDate;
 + (EKRecurrenceEnd)recurrenceEndWithOccurrenceCount:(NSUInteger)occurrenceCount;
-- (BOOL)isEqual:(id)a3;
-- (EKRecurrenceEnd)initWithCoder:(id)a3;
-- (EKRecurrenceEnd)initWithEndDate:(id)a3;
-- (EKRecurrenceEnd)initWithOccurrenceCount:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (EKRecurrenceEnd)initWithCoder:(id)coder;
+- (EKRecurrenceEnd)initWithEndDate:(id)date;
+- (EKRecurrenceEnd)initWithOccurrenceCount:(unint64_t)count;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EKRecurrenceEnd
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (EKRecurrenceEnd)initWithEndDate:(id)a3
+- (EKRecurrenceEnd)initWithEndDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"endDate is nil"];
   }
@@ -40,10 +40,10 @@
   v5 = [(EKRecurrenceEnd *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (dateCopy)
     {
       v6 = MEMORY[0x1E695DF00];
-      [v4 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v8 = [v6 dateWithTimeIntervalSinceReferenceDate:floor(v7)];
     }
 
@@ -59,9 +59,9 @@
   return v5;
 }
 
-- (EKRecurrenceEnd)initWithOccurrenceCount:(unint64_t)a3
+- (EKRecurrenceEnd)initWithOccurrenceCount:(unint64_t)count
 {
-  if (!a3)
+  if (!count)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"occurrenceCount == 0"];
   }
@@ -71,47 +71,47 @@
   result = [(EKRecurrenceEnd *)&v6 init];
   if (result)
   {
-    result->_occurrenceCount = a3;
+    result->_occurrenceCount = count;
   }
 
   return result;
 }
 
-- (EKRecurrenceEnd)initWithCoder:(id)a3
+- (EKRecurrenceEnd)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EKRecurrenceEnd;
   v5 = [(EKRecurrenceEnd *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v6;
 
-    v5->_occurrenceCount = [v4 decodeIntForKey:@"occurrenceCount"];
+    v5->_occurrenceCount = [coderCopy decodeIntForKey:@"occurrenceCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   endDate = self->_endDate;
-  v5 = a3;
-  [v5 encodeObject:endDate forKey:@"endDate"];
-  [v5 encodeInteger:self->_occurrenceCount forKey:@"occurrenceCount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
+  [coderCopy encodeInteger:self->_occurrenceCount forKey:@"occurrenceCount"];
 }
 
 - (NSString)description
 {
-  v3 = [(EKRecurrenceEnd *)self usesEndDate];
+  usesEndDate = [(EKRecurrenceEnd *)self usesEndDate];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  if (v3)
+  if (usesEndDate)
   {
-    v6 = [(EKRecurrenceEnd *)self endDate];
-    v7 = [EKRecurrenceRule iCalendarValueFromDate:v6 isDateOnly:0 isFloating:0];
+    endDate = [(EKRecurrenceEnd *)self endDate];
+    v7 = [EKRecurrenceRule iCalendarValueFromDate:endDate isDateOnly:0 isFloating:0];
     v8 = [v4 stringWithFormat:@"%@ <%p> { UNTIL=%@ } ", v5, self, v7];
   }
 
@@ -125,17 +125,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(EKRecurrenceEnd *)self occurrenceCount];
-  v4 = [(EKRecurrenceEnd *)self endDate];
-  v5 = [v4 hash];
+  occurrenceCount = [(EKRecurrenceEnd *)self occurrenceCount];
+  endDate = [(EKRecurrenceEnd *)self endDate];
+  v5 = [endDate hash];
 
-  return v5 ^ v3;
+  return v5 ^ occurrenceCount;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -143,20 +143,20 @@
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && (v6 = [(EKRecurrenceEnd *)self occurrenceCount], v6 == [(EKRecurrenceEnd *)v4 occurrenceCount]))
+    if (v5 == objc_opt_class() && (v6 = [(EKRecurrenceEnd *)self occurrenceCount], v6 == [(EKRecurrenceEnd *)equalCopy occurrenceCount]))
     {
-      v7 = [(EKRecurrenceEnd *)self endDate];
-      v8 = [(EKRecurrenceEnd *)v4 endDate];
-      if (v7 == v8)
+      endDate = [(EKRecurrenceEnd *)self endDate];
+      endDate2 = [(EKRecurrenceEnd *)equalCopy endDate];
+      if (endDate == endDate2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(EKRecurrenceEnd *)self endDate];
-        v10 = [(EKRecurrenceEnd *)v4 endDate];
-        v11 = [v9 isEqualToDate:v10];
+        endDate3 = [(EKRecurrenceEnd *)self endDate];
+        endDate4 = [(EKRecurrenceEnd *)equalCopy endDate];
+        v11 = [endDate3 isEqualToDate:endDate4];
       }
     }
 

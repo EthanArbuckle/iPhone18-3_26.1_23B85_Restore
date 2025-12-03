@@ -1,6 +1,6 @@
 @interface BarometerSensorDataController
 - (void)finish;
-- (void)handleHIDEvent:(__IOHIDEvent *)a3;
+- (void)handleHIDEvent:(__IOHIDEvent *)event;
 - (void)start;
 - (void)teardown;
 @end
@@ -13,14 +13,14 @@
   v3 = +[DAHIDEventMonitor sharedInstance];
   [(BarometerSensorDataController *)self setEventMonitor:v3];
 
-  v4 = [(BarometerSensorDataController *)self eventMonitor];
-  [v4 setDelegate:self];
+  eventMonitor = [(BarometerSensorDataController *)self eventMonitor];
+  [eventMonitor setDelegate:self];
 
   if (([(BarometerSensorDataController *)self isCancelled]& 1) == 0)
   {
-    v5 = [(BarometerSensorDataController *)self eventMonitor];
+    eventMonitor2 = [(BarometerSensorDataController *)self eventMonitor];
     v6 = [NSSet setWithObject:&off_1000044D0];
-    v7 = [v5 startMonitoringWithHIDEvents:v6];
+    v7 = [eventMonitor2 startMonitoringWithHIDEvents:v6];
 
     if (v7 && (-[BarometerSensorDataController eventMonitor](self, "eventMonitor"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 serviceClientSetPropertyValue:+[NSNumber numberWithInt:](NSNumber forKey:"numberWithInt:" forHIDEvent:{40000), @"ReportInterval", 5}], v8, v9))
     {
@@ -35,15 +35,15 @@
 
     else
     {
-      v11 = [(BarometerSensorDataController *)self result];
-      [v11 setStatusCode:&off_1000044E8];
+      result = [(BarometerSensorDataController *)self result];
+      [result setStatusCode:&off_1000044E8];
 
       [(BarometerSensorDataController *)self setFinished:1];
     }
   }
 }
 
-- (void)handleHIDEvent:(__IOHIDEvent *)a3
+- (void)handleHIDEvent:(__IOHIDEvent *)event
 {
   if (([(BarometerSensorDataController *)self isCancelled]& 1) == 0 && IOHIDEventGetType() == 31)
   {
@@ -59,10 +59,10 @@
   if (([(BarometerSensorDataController *)self isCancelled]& 1) == 0)
   {
     [(BarometerSensorDataController *)self teardown];
-    v3 = [(BarometerSensorDataController *)self barometerDataCount];
+    barometerDataCount = [(BarometerSensorDataController *)self barometerDataCount];
     v4 = DiagnosticLogHandleForCategory();
     v5 = v4;
-    if (v3 < 1)
+    if (barometerDataCount < 1)
     {
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
@@ -84,8 +84,8 @@
       v6 = &off_100004500;
     }
 
-    v7 = [(BarometerSensorDataController *)self result];
-    [v7 setStatusCode:v6];
+    result = [(BarometerSensorDataController *)self result];
+    [result setStatusCode:v6];
   }
 
   [(BarometerSensorDataController *)self setFinished:1];
@@ -93,17 +93,17 @@
 
 - (void)teardown
 {
-  v3 = [(BarometerSensorDataController *)self eventMonitor];
+  eventMonitor = [(BarometerSensorDataController *)self eventMonitor];
 
-  if (v3)
+  if (eventMonitor)
   {
-    v4 = [(BarometerSensorDataController *)self eventMonitor];
-    v5 = [v4 currentlyMonitoring];
+    eventMonitor2 = [(BarometerSensorDataController *)self eventMonitor];
+    currentlyMonitoring = [eventMonitor2 currentlyMonitoring];
 
-    if (v5)
+    if (currentlyMonitoring)
     {
-      v6 = [(BarometerSensorDataController *)self eventMonitor];
-      [v6 stopMonitoring];
+      eventMonitor3 = [(BarometerSensorDataController *)self eventMonitor];
+      [eventMonitor3 stopMonitoring];
     }
 
     [(BarometerSensorDataController *)self setEventMonitor:0];

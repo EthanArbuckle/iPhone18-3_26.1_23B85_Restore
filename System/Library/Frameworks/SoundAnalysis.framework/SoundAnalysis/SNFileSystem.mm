@@ -1,26 +1,26 @@
 @interface SNFileSystem
-- (void)addRequest:(id)a3 completionHandler:(id)a4 resultsHandler:(id)a5;
-- (void)removeRequest:(id)a3;
+- (void)addRequest:(id)request completionHandler:(id)handler resultsHandler:(id)resultsHandler;
+- (void)removeRequest:(id)request;
 @end
 
 @implementation SNFileSystem
 
-- (void)addRequest:(id)a3 completionHandler:(id)a4 resultsHandler:(id)a5
+- (void)addRequest:(id)request completionHandler:(id)handler resultsHandler:(id)resultsHandler
 {
-  v7 = _Block_copy(a4);
-  v8 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
+  v8 = _Block_copy(resultsHandler);
   *(swift_allocObject() + 16) = v7;
   *(swift_allocObject() + 16) = v8;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   sub_1C981ED30();
   swift_unknownObjectRelease();
 }
 
-- (void)removeRequest:(id)a3
+- (void)removeRequest:(id)request
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C981F6E0();
   swift_unknownObjectRelease();
 }

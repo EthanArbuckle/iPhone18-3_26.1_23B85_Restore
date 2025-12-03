@@ -2,12 +2,12 @@
 - (BOOL)hasRelevantRetainedSearchQuery;
 - (void)_sendAnalyticsRetainedQueryEvent;
 - (void)clearRetainedSearchQuery;
-- (void)restoreIfNeededWithBlock:(id)a3;
-- (void)retainSearchQuery:(id)a3 metadata:(id)a4 forTimeInterval:(double)a5;
-- (void)retainSearchQueryForSelectedAutocompleteItem:(id)a3 query:(id)a4 forTimeInterval:(double)a5;
-- (void)retainSearchQueryForSelectedSearchCompletion:(id)a3 query:(id)a4 forTimeInterval:(double)a5;
-- (void)retainSearchQueryForSelectedSearchResult:(id)a3 query:(id)a4 forTimeInterval:(double)a5;
-- (void)retainSearchQueryWithRetainedSearchMetadata:(id)a3 query:(id)a4 forTimeInterval:(double)a5;
+- (void)restoreIfNeededWithBlock:(id)block;
+- (void)retainSearchQuery:(id)query metadata:(id)metadata forTimeInterval:(double)interval;
+- (void)retainSearchQueryForSelectedAutocompleteItem:(id)item query:(id)query forTimeInterval:(double)interval;
+- (void)retainSearchQueryForSelectedSearchCompletion:(id)completion query:(id)query forTimeInterval:(double)interval;
+- (void)retainSearchQueryForSelectedSearchResult:(id)result query:(id)query forTimeInterval:(double)interval;
+- (void)retainSearchQueryWithRetainedSearchMetadata:(id)metadata query:(id)query forTimeInterval:(double)interval;
 @end
 
 @implementation RetainedQueryController
@@ -17,10 +17,10 @@
   retainedSearchQueryMetadata = self->_retainedSearchQueryMetadata;
   if (retainedSearchQueryMetadata)
   {
-    v2 = [(GEORetainedSearchMetadata *)self->_retainedSearchQueryMetadata sourceAppID];
-    if (v2 == @"com.apple.Spotlight")
+    sourceAppID = [(GEORetainedSearchMetadata *)self->_retainedSearchQueryMetadata sourceAppID];
+    if (sourceAppID == @"com.apple.Spotlight")
     {
-      v2 = @"com.apple.Spotlight";
+      sourceAppID = @"com.apple.Spotlight";
       if (self->_timeToRetainSearchQuery > 0.0)
       {
         v5 = 1;
@@ -78,16 +78,16 @@ LABEL_11:
   self->_timeToRetainSearchQuery = 0.0;
 }
 
-- (void)retainSearchQuery:(id)a3 metadata:(id)a4 forTimeInterval:(double)a5
+- (void)retainSearchQuery:(id)query metadata:(id)metadata forTimeInterval:(double)interval
 {
-  v14 = a3;
-  v8 = a4;
+  queryCopy = query;
+  metadataCopy = metadata;
   v9 = +[NSDate date];
   retainedSearchQueryTimestamp = self->_retainedSearchQueryTimestamp;
   self->_retainedSearchQueryTimestamp = v9;
 
-  v11 = [v14 length];
-  retainedSearchQueryString = v14;
+  v11 = [queryCopy length];
+  retainedSearchQueryString = queryCopy;
   if (!v11)
   {
     if ([(NSString *)self->_retainedSearchQueryString length])
@@ -103,67 +103,67 @@ LABEL_11:
 
   objc_storeStrong(&self->_retainedSearchQueryString, retainedSearchQueryString);
   retainedSearchQueryMetadata = self->_retainedSearchQueryMetadata;
-  self->_retainedSearchQueryMetadata = v8;
+  self->_retainedSearchQueryMetadata = metadataCopy;
 
-  self->_timeToRetainSearchQuery = a5;
+  self->_timeToRetainSearchQuery = interval;
 }
 
-- (void)retainSearchQueryForSelectedSearchCompletion:(id)a3 query:(id)a4 forTimeInterval:(double)a5
+- (void)retainSearchQueryForSelectedSearchCompletion:(id)completion query:(id)query forTimeInterval:(double)interval
 {
-  v8 = a4;
-  v9 = [a3 retainedSearchMetadata];
-  [(RetainedQueryController *)self retainSearchQueryWithRetainedSearchMetadata:v9 query:v8 forTimeInterval:a5];
+  queryCopy = query;
+  retainedSearchMetadata = [completion retainedSearchMetadata];
+  [(RetainedQueryController *)self retainSearchQueryWithRetainedSearchMetadata:retainedSearchMetadata query:queryCopy forTimeInterval:interval];
 }
 
-- (void)retainSearchQueryForSelectedAutocompleteItem:(id)a3 query:(id)a4 forTimeInterval:(double)a5
+- (void)retainSearchQueryForSelectedAutocompleteItem:(id)item query:(id)query forTimeInterval:(double)interval
 {
-  v9 = a3;
-  v8 = a4;
+  itemCopy = item;
+  queryCopy = query;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(RetainedQueryController *)self retainSearchQueryForSelectedSearchCompletion:v9 query:v8 forTimeInterval:a5];
+    [(RetainedQueryController *)self retainSearchQueryForSelectedSearchCompletion:itemCopy query:queryCopy forTimeInterval:interval];
   }
 
   else
   {
-    [(RetainedQueryController *)self retainSearchQueryWithRetainedSearchMetadata:0 query:v8 forTimeInterval:a5];
+    [(RetainedQueryController *)self retainSearchQueryWithRetainedSearchMetadata:0 query:queryCopy forTimeInterval:interval];
   }
 }
 
-- (void)retainSearchQueryWithRetainedSearchMetadata:(id)a3 query:(id)a4 forTimeInterval:(double)a5
+- (void)retainSearchQueryWithRetainedSearchMetadata:(id)metadata query:(id)query forTimeInterval:(double)interval
 {
-  v12 = a4;
-  v8 = a3;
-  v9 = [v8 _query];
-  if (v9)
+  queryCopy = query;
+  metadataCopy = metadata;
+  _query = [metadataCopy _query];
+  if (_query)
   {
-    v10 = v9;
+    v10 = _query;
   }
 
   else
   {
-    v10 = v12;
+    v10 = queryCopy;
   }
 
   v11 = v10;
 
-  [(RetainedQueryController *)self retainSearchQuery:v11 metadata:v8 forTimeInterval:a5];
+  [(RetainedQueryController *)self retainSearchQuery:v11 metadata:metadataCopy forTimeInterval:interval];
 }
 
-- (void)retainSearchQueryForSelectedSearchResult:(id)a3 query:(id)a4 forTimeInterval:(double)a5
+- (void)retainSearchQueryForSelectedSearchResult:(id)result query:(id)query forTimeInterval:(double)interval
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [v12 retainedSearchMetadata];
-  if (v9)
+  resultCopy = result;
+  queryCopy = query;
+  retainedSearchMetadata = [resultCopy retainedSearchMetadata];
+  if (retainedSearchMetadata)
   {
     retainedSearchQueryMetadata = self->_retainedSearchQueryMetadata;
 
     if (!retainedSearchQueryMetadata)
     {
-      v11 = [v12 retainedSearchMetadata];
-      [(RetainedQueryController *)self retainSearchQueryWithRetainedSearchMetadata:v11 query:v8 forTimeInterval:a5];
+      retainedSearchMetadata2 = [resultCopy retainedSearchMetadata];
+      [(RetainedQueryController *)self retainSearchQueryWithRetainedSearchMetadata:retainedSearchMetadata2 query:queryCopy forTimeInterval:interval];
     }
   }
 }
@@ -176,9 +176,9 @@ LABEL_11:
   [v4 captureUserAction:2024 onTarget:11 eventValue:v5];
 }
 
-- (void)restoreIfNeededWithBlock:(id)a3
+- (void)restoreIfNeededWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(RetainedQueryController *)self hasRelevantRetainedSearchQuery])
   {
     v5 = sub_100067540();
@@ -192,16 +192,16 @@ LABEL_11:
     v6 = objc_alloc_init(SearchFieldItem);
     [(SearchFieldItem *)v6 setSearchString:self->_retainedSearchQueryString];
     [(SearchFieldItem *)v6 setRetainedSearchMetadata:self->_retainedSearchQueryMetadata];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
 
     objc_storeStrong(&self->_restoredRetainedSearchQueryMetadata, self->_retainedSearchQueryMetadata);
-    v4 = v6;
+    blockCopy = v6;
   }
 
   else
   {
     [(RetainedQueryController *)self clearRetainedSearchQuery];
-    v4[2](v4, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 

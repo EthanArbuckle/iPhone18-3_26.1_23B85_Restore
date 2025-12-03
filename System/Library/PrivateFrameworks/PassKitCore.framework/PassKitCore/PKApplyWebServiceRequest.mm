@@ -1,22 +1,22 @@
 @interface PKApplyWebServiceRequest
-- (PKApplyWebServiceRequest)initWithCoder:(id)a3;
+- (PKApplyWebServiceRequest)initWithCoder:(id)coder;
 - (id)_createMutableBody;
-- (id)_murlRequestWithServiceURL:(id)a3 endpointComponents:(id)a4 queryParameters:(id)a5 appleAccountInformation:(id)a6;
-- (id)_murlRequestWithURL:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_murlRequestWithServiceURL:(id)l endpointComponents:(id)components queryParameters:(id)parameters appleAccountInformation:(id)information;
+- (id)_murlRequestWithURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceRequest
 
-- (PKApplyWebServiceRequest)initWithCoder:(id)a3
+- (PKApplyWebServiceRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKApplyWebServiceRequest;
-  v5 = [(PKOverlayableWebServiceRequest *)&v15 initWithCoder:v4];
+  v5 = [(PKOverlayableWebServiceRequest *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerIdentifier"];
     referrerIdentifier = v5->_referrerIdentifier;
     v5->_referrerIdentifier = v6;
 
@@ -24,7 +24,7 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"experimentDetails"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"experimentDetails"];
     experimentDetails = v5->_experimentDetails;
     v5->_experimentDetails = v12;
   }
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplyWebServiceRequest;
-  v4 = a3;
-  [(PKOverlayableWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_referrerIdentifier forKey:{@"referrerIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_experimentDetails forKey:@"experimentDetails"];
+  coderCopy = coder;
+  [(PKOverlayableWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_referrerIdentifier forKey:{@"referrerIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_experimentDetails forKey:@"experimentDetails"];
 }
 
-- (id)_murlRequestWithServiceURL:(id)a3 endpointComponents:(id)a4 queryParameters:(id)a5 appleAccountInformation:(id)a6
+- (id)_murlRequestWithServiceURL:(id)l endpointComponents:(id)components queryParameters:(id)parameters appleAccountInformation:(id)information
 {
   v8.receiver = self;
   v8.super_class = PKApplyWebServiceRequest;
-  v6 = [(PKPaymentWebServiceRequest *)&v8 _murlRequestWithServiceURL:a3 version:@"1" endpointComponents:a4 queryParameters:a5 appleAccountInformation:a6];
+  v6 = [(PKPaymentWebServiceRequest *)&v8 _murlRequestWithServiceURL:l version:@"1" endpointComponents:components queryParameters:parameters appleAccountInformation:information];
 
   return v6;
 }
 
-- (id)_murlRequestWithURL:(id)a3
+- (id)_murlRequestWithURL:(id)l
 {
   v8.receiver = self;
   v8.super_class = PKApplyWebServiceRequest;
-  v4 = [(PKPaymentWebServiceRequest *)&v8 _murlRequestWithURL:a3];
+  v4 = [(PKPaymentWebServiceRequest *)&v8 _murlRequestWithURL:l];
   v5 = v4;
   referrerIdentifier = self->_referrerIdentifier;
   if (referrerIdentifier)
